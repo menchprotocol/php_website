@@ -12,13 +12,27 @@ class Intents extends CI_Controller
     }
 
 
-    function titles(){
-       foreach ($this->Database_model->fn___in_fetch(array(
-           'in_outcome LIKE \'% with :: %\'' => null,
-       )) as $counter => $in){
-           echo ($counter+1).') '.$in['in_outcome'].'<br />';
-           //$this->Database_model->fn___in_update($in['in_id'], array( 'in_outcome' => str_replace(' with ',' with :: ',$in['in_outcome']) ), true, 1);
-       }
+
+
+    function recursive($in_id=6623, $direction_is_downward = 1, $add_actionplan = 0){
+
+        if($add_actionplan){
+            $actionplan = $this->Database_model->fn___tr_create(array(
+                'tr_type_entity_id' => 4235, //Action Plan Intent
+                'tr_status' => 0, //New (Not yet completed)
+                'tr_miner_entity_id' => 1,
+                'tr_child_intent_id' => $in_id, //The Intent they are adding
+                'tr_order' => 1 + $this->Database_model->fn___tr_max_order(array( //Place this intent at the end of all intents the Student is drafting...
+                    'tr_type_entity_id' => 4235, //Action Plan Intent
+                    'tr_status IN (' . join(',', $this->config->item('tr_status_incomplete')) . ')' => null, //incomplete
+                    'tr_miner_entity_id' => 1, //Belongs to this Student
+                )),
+            ));
+        } else {
+            $actionplan = array();
+        }
+
+        fn___echo_json($this->Matrix_model->fn___in_fetch_recursive($in_id, $direction_is_downward, false, $actionplan));
     }
 
     //Loaded as default function of the default controller:
@@ -546,7 +560,7 @@ class Intents extends CI_Controller
                     if(intval($_POST['apply_recursively'])){
                         //Intent status has changed and there is a recursive update request:
                         //Yes, sync downwards where current statuses match:
-                        $children = $this->Matrix_model->fn___in_recursive_fetch(intval($_POST['in_id']), true);
+                        $children = $this->Matrix_model->fn___in_fetch_recursive(intval($_POST['in_id']), true);
 
                         //Fetch all intents that match parent intent status:
                         $child_ins = $this->Database_model->fn___in_fetch(array(
@@ -1405,7 +1419,7 @@ class Intents extends CI_Controller
         //Cron Settings: 31 * * * *
         //Syncs intents with latest caching data:
 
-        $sync = $this->Matrix_model->fn___in_recursive_fetch($in_id, true, $update_db);
+        $sync = $this->Matrix_model->fn___in_fetch_recursive($in_id, true, $update_db);
         if (isset($_GET['redirect']) && strlen($_GET['redirect']) > 0) {
             //Now redirect;
             header('Location: ' . $_GET['redirect']);

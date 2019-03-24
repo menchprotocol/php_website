@@ -951,7 +951,7 @@ class Matrix_model extends CI_Model
     }
 
 
-    function fn___metadata_tree_update($obj_type, $focus_obj_id, $metadata_new = array(), $direction_is_downward = 0)
+    function fn___metadata_tree_update($obj_type, $focus_obj_id, $metadata_new = array(), $direction_is_downward = false)
     {
 
         /*
@@ -969,7 +969,7 @@ class Matrix_model extends CI_Model
         if (in_array($obj_type, array('in'))) {
 
             //Fetch tree that needs adjustment:
-            $tree = $this->Matrix_model->fn___in_recursive_fetch($focus_obj_id, $direction_is_downward);
+            $tree = $this->Matrix_model->fn___in_fetch_recursive($focus_obj_id, $direction_is_downward);
 
             if (count($tree['in_flat_tree']) == 0) {
                 return false;
@@ -1193,7 +1193,7 @@ class Matrix_model extends CI_Model
 
     }
 
-    function fn___in_recursive_fetch($in_id, $direction_is_downward = false, $update_db_table = false, $actionplan = array(), $previous_in = array(), $metadata_aggregate = null)
+    function fn___in_fetch_recursive($in_id, $direction_is_downward, $update_metadata = false, $actionplan = array(), $previous_in = array(), $metadata_aggregate = null)
     {
 
         /*
@@ -1207,7 +1207,7 @@ class Matrix_model extends CI_Model
          *
          * - $direction_is_downward:    Whether to go up or down, sets the direction
          *
-         * - $update_db_table:          Whether or not to update a copy of the
+         * - $update_metadata:          Whether or not to update a copy of the
          *                              $metadata_this array into in_metadata
          *
          * - $actionplan:               The Action Plan object which if provided, will
@@ -1228,7 +1228,7 @@ class Matrix_model extends CI_Model
             //Invalid Intent ID:
             return false;
         } elseif (count($actionplan) > 0 && !$direction_is_downward) {
-            //Caching Action Plan intents only words in the downward direction:
+            //Adding Action Plan Steps for a given intention only works downwards:
             return false;
         }
 
@@ -1255,6 +1255,7 @@ class Matrix_model extends CI_Model
             '___tree_miners' => array(), //miner references considering Intent Notes
             '___tree_contents' => array(), //Content types entity references on messages
             'metadatas_updated' => 0, //Keeps count of database metadata fields that were not in sync with the latest version of the cahced data
+
         );
 
         if (!$metadata_aggregate) {
@@ -1262,7 +1263,7 @@ class Matrix_model extends CI_Model
             $metadata_aggregate = $metadata_this;
         }
 
-        //Are we 1+ levels deep? If so, we'll have $previous_in set
+        //Are we 1+ recursions deep? If so, we'll have $previous_in set
         if (isset($previous_in['tr_id'])) {
 
             //Yes, so now we can fetch children:
@@ -1291,7 +1292,7 @@ class Matrix_model extends CI_Model
 
         } else {
 
-            //This is the very first intent, fetch intention itself as we don't have any links yet:
+            //This is the very first recursion, fetch intention itself as we don't have any links yet:
             $ins = $this->Database_model->fn___in_fetch(array(
                 'in_id' => $in_id,
             ));
@@ -1311,10 +1312,10 @@ class Matrix_model extends CI_Model
         //Always add intent to the flat intent tree which is part of the metadata:
         array_push($metadata_this['in_flat_tree'], intval($in_id));
 
-        if ($this_in['in_status'] >= 2 && !in_array(intval($in_id), $metadata_this['in_flat_unique_published_tree'])) {
+        //Add to published flat tree if not already there:
+        if ($this_in['in_status'] == 2 && !in_array(intval($in_id), $metadata_this['in_flat_unique_published_tree'])) {
             array_push($metadata_this['in_flat_unique_published_tree'], intval($in_id));
         }
-
 
         //Add the link relations before we start recursion so we can have the Tree in up-custom order:
         if (isset($this_in['tr_id'])) {
@@ -1340,8 +1341,9 @@ class Matrix_model extends CI_Model
 
         }
 
+
         //Terminate at OR branches for Action Plan caching
-        if (count($actionplan) > 0 && intval($this_in['in_type'])) {
+        if ($this_in['in_type']==1 && count($actionplan) > 0) {
             /*
              *
              * We do this as we don't know which OR path will be
@@ -1400,7 +1402,7 @@ class Matrix_model extends CI_Model
                 } else {
 
                     //Recursively fetch the next level (up or down):
-                    $recursion = $this->Matrix_model->fn___in_recursive_fetch($next_in['in_id'], $direction_is_downward, $update_db_table, $actionplan, $next_in, $metadata_this);
+                    $recursion = $this->Matrix_model->fn___in_fetch_recursive($next_in['in_id'], $direction_is_downward, $update_metadata, $actionplan, $next_in, $metadata_this);
 
                     if (!$recursion) {
                         //There was an infinity break
@@ -1446,7 +1448,7 @@ class Matrix_model extends CI_Model
                     }
 
 
-                    if ($update_db_table) {
+                    if ($update_metadata) {
 
                         //Update DB requested:
                         $metadata_this['___metadata_tree_count'] += $recursion['___metadata_tree_count'];
@@ -1516,7 +1518,7 @@ class Matrix_model extends CI_Model
 
 
         //Count messages only if DB updating:
-        if ($update_db_table) {
+        if ($update_metadata) {
 
             $this_in['___tree_experts'] = array();
             $this_in['___tree_miners'] = array();
@@ -1660,7 +1662,7 @@ class Matrix_model extends CI_Model
         $metadata_this['in_links_flat_tree'] = $result;
 
 
-        if ($update_db_table) {
+        if ($update_metadata) {
 
             //Assign aggregates:
             $this_in['___tree_experts'] = $metadata_this['___tree_experts'];
@@ -2173,7 +2175,7 @@ class Matrix_model extends CI_Model
         ), true, $tr_miner_entity_id);
 
         //Sync the metadata of this new intent:
-        $this->Matrix_model->fn___in_recursive_fetch($intent_new['in_id'], true, true);
+        $this->Matrix_model->fn___in_fetch_recursive($intent_new['in_id'], true, true);
 
         //Return success:
         return array(
@@ -2417,7 +2419,7 @@ class Matrix_model extends CI_Model
             $intent_new = $ins[0];
 
             //check all parents as this intent cannot be duplicated with any of its parents:
-            $parent_tree = $this->Matrix_model->fn___in_recursive_fetch($origin_in_id);
+            $parent_tree = $this->Matrix_model->fn___in_fetch_recursive($origin_in_id, false);
             if (in_array($intent_new['in_id'], $parent_tree['in_flat_tree'])) {
                 return array(
                     'status' => 0,

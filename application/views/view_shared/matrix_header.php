@@ -43,13 +43,6 @@ $uri_segment_2 = $this->uri->segment(2);
     <!-- Managed by JS to edit various fields -->
     <div class="edit-box hidden"></div>
 
-    <?php
-    if (!isset($_GET['skip_header'])) {
-        //Include the chat plugin:
-        $this->load->view('view_shared/messenger_web_chat');
-    }
-    ?>
-
     <div class="wrapper" id="matrix">
 
         <?php if (!isset($_GET['skip_header'])) { ?>

@@ -26,8 +26,6 @@ $url_part_1 = $this->uri->segment(1);
 
 <body class="landing-page">
 
-<?php $this->load->view('view_shared/messenger_web_chat'); ?>
-
 <nav class="navbar navbar-warning navbar-fixed-top navbar-color-on-scroll no-adj">
     <div class="container">
         <!-- Brand and toggle get grouped for better mobile display -->

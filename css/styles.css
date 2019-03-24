@@ -580,6 +580,7 @@ input::-webkit-inner-spin-button {
 .is_level3_sortable:hover {
     background-color: #F5F5F5 !important;
     border-color: transparent !important;
+    cursor: default !important;
 }
 
 .is_level2_sortable:hover {

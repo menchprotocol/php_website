@@ -53,7 +53,7 @@
     </div>
 </footer>
 
-
+<?php $this->load->view('view_shared/messenger_web_chat'); ?>
 
 </body>
 </html>

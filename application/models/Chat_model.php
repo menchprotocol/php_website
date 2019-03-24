@@ -1996,13 +1996,10 @@ class Chat_model extends CI_Model
 
                 //Add intent to Student's Action Plan:
                 $actionplan = $this->Database_model->fn___tr_create(array(
-
                     'tr_type_entity_id' => 4235, //Action Plan Intent
-                    'tr_status' => 0, //New
+                    'tr_status' => 0, //New (Not yet completed)
                     'tr_miner_entity_id' => $en['en_id'], //Belongs to this Student
-
                     'tr_child_intent_id' => $ins[0]['in_id'], //The Intent they are adding
-
                     'tr_order' => 1 + $this->Database_model->fn___tr_max_order(array( //Place this intent at the end of all intents the Student is drafting...
                         'tr_type_entity_id' => 4235, //Action Plan Intent
                         'tr_status IN (' . join(',', $this->config->item('tr_status_incomplete')) . ')' => null, //incomplete
@@ -2010,12 +2007,11 @@ class Chat_model extends CI_Model
                     )),
                 ));
 
-
                 //Was this added successfully?
                 if (isset($actionplan['tr_id']) && $actionplan['tr_id'] > 0) {
 
                     //Also add all relevant child intents:
-                    $this->Matrix_model->fn___in_recursive_fetch($ins[0]['in_id'], true, false, $actionplan);
+                    $this->Matrix_model->fn___in_fetch_recursive($ins[0]['in_id'], true, false, $actionplan);
 
                     //Confirm with them that we're now ready:
                     $this->Chat_model->fn___dispatch_message(
