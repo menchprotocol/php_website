@@ -2588,10 +2588,13 @@ class Chat_model extends CI_Model
 
                 //Respond to user:
                 $this->Chat_model->fn___dispatch_message(
-                    'I did not find any intentions to "' . $master_command . '", but I have made a note of this and will let you know as soon as I am trained on this. Are there any other intentions you want to share with me?',
+                    'I did not find any intentions to "' . $master_command . '", but I have made a note of this and will let you know as soon as I am trained on this.',
                     $en,
                     true
                 );
+
+                //List featured intents and let them choose:
+                $this->Chat_model->fn___compose_message($this->config->item('in_featured'), $en);
 
             }
 
