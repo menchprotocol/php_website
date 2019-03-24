@@ -64,7 +64,7 @@ class Intents extends CI_Controller
 
                 //Show index page:
                 $this->load->view('view_shared/public_header', array(
-                    'title' => echo_in_outcome($home_ins[0]['in_outcome'], true),
+                    'title' => fn___echo_in_outcome($home_ins[0]['in_outcome'], true),
                 ));
                 $this->load->view('view_intents/in_home_featured_ui', array(
                     'in' => $home_ins[0],
@@ -527,7 +527,7 @@ class Intents extends CI_Controller
                         }
 
                         //Unlink intent links:
-                        $links_removed = $this->Matrix_model->unlink_intent($_POST['in_id'] , $session_en['en_id']);
+                        $links_removed = $this->Matrix_model->fn___in_unlink($_POST['in_id'] , $session_en['en_id']);
 
                         //Prep metadata:
                         $metadata = unserialize($ins[0]['in_metadata']);
@@ -718,7 +718,7 @@ class Intents extends CI_Controller
             'status' => 1,
             'message' => '<i class="fas fa-check"></i> Saved',
             'remove_from_ui' => $remove_from_ui,
-            'formatted_in_outcome' => ( isset($in_update['in_outcome']) ? echo_in_outcome($in_update['in_outcome']) : null ),
+            'formatted_in_outcome' => ( isset($in_update['in_outcome']) ? fn___echo_in_outcome($in_update['in_outcome']) : null ),
             'remove_redirect_url' => $remove_redirect_url,
             'status_update_children' => $status_update_children,
             'in__tree_in_active_count' => -( isset($in_metadata['in__tree_in_active_count']) ? $in_metadata['in__tree_in_active_count'] : 0 ),
@@ -1056,7 +1056,7 @@ class Intents extends CI_Controller
 
 
         //Save URL and connect it to the Mench CDN entity:
-        $url_entity = $this->Matrix_model->fn___sync_url($new_file_url, $session_en['en_id'], 4396 /* Mench CDN Entity */);
+        $url_entity = $this->Matrix_model->fn___en_sync_url($new_file_url, $session_en['en_id'], 4396 /* Mench CDN Entity */);
 
         //Did we have an error?
         if (!$url_entity['status']) {

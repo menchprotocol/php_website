@@ -185,7 +185,7 @@ $(document).ready(function () {
             } else if (hash_parts[0] == 'loadmodify') {
                 fn___in_modify_load(hash_parts[1], hash_parts[2]);
             } else if (hash_parts[0] == 'loadinactionplans') {
-                fn___in_action_plans(hash_parts[1]);
+                fn___in_actionplans(hash_parts[1]);
             }
         }
     }
@@ -194,8 +194,8 @@ $(document).ready(function () {
 });
 
 
-function fn___in_action_plans(in_id){
-    if(parseInt($('.action_plans_in_'+in_id).attr('ap-count')) < 1){
+function fn___in_actionplans(in_id){
+    if(parseInt($('.actionplans_in_'+in_id).attr('ap-count')) < 1){
         alert('Intent not added to any Action Plans yet');
         return false;
     }
@@ -227,9 +227,9 @@ function fn___in_adjust_link_ui() {
         //What's the selected intent status?
         if (parseInt($('#tr_status').find(":selected").val()) < 0) {
             //About to delete? Notify them:
-            $('.notify_in_unlink').removeClass('hidden');
+            $('.notify_unlink_in').removeClass('hidden');
         } else {
-            $('.notify_in_unlink').addClass('hidden');
+            $('.notify_unlink_in').addClass('hidden');
         }
 
         //What's the intent link type?
@@ -627,7 +627,7 @@ function fn___in_modify_load(in_id, tr_id) {
             }
 
             //Make the frame visible:
-            $('.notify_in_remove, .notify_in_unlink').addClass('hidden'); //Hide potential previous notices
+            $('.notify_in_remove, .notify_unlink_in').addClass('hidden'); //Hide potential previous notices
             $('#modifybox .grey-box .loadcontent').removeClass('hidden');
             $('#modifybox .grey-box .loadbox').addClass('hidden');
 

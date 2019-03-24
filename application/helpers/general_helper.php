@@ -205,7 +205,7 @@ function fn___detect_tr_type_entity_id($string)
 
         //It's a URL, see what type (this could fail if duplicate, etc...):
         $CI =& get_instance();
-        return $CI->Matrix_model->fn___sync_url($string);
+        return $CI->Matrix_model->fn___en_sync_url($string);
 
     } elseif (strlen($string) > 9 && (fn___isDate($string) || strtotime($string) > 0)) {
 

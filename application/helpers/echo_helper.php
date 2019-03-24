@@ -195,7 +195,7 @@ function fn___echo_url_embed($url, $full_message = null, $return_array = false, 
     }
 }
 
-function echo_in_outcome($in_outcome, $hide = false){
+function fn___echo_in_outcome($in_outcome, $hide = false){
 
     /*
      * This function applies the double column
@@ -602,10 +602,12 @@ function fn___echo_tr_row($tr, $is_inner = false)
     return $ui;
 }
 
-function echo_k($k, $is_parent, $in_type_tr_parent_intent_id = 0)
+function echo_actionplan_step($k, $is_parent, $in_type_tr_parent_intent_id = 0)
 {
 
-    $ui = '<a href="' . ($in_type_tr_parent_intent_id ? '/my/choose_any_path/' . $k['tr_id'] . '/' . $in_type_tr_parent_intent_id . '/' . $k['in_id'] . '/' . md5($k['tr_id'] . 'kjaghksjha*(^' . $k['in_id'] . $in_type_tr_parent_intent_id) : '/my/actionplan/' . $k['tr_parent_transaction_id'] . '/' . $k['in_id']) . '" class="list-group-item">';
+    $CI =& get_instance();
+
+    $ui = '<a href="' . ($in_type_tr_parent_intent_id ? '/my/choose_or_path/' . $k['tr_id'] . '/' . $in_type_tr_parent_intent_id . '/' . $k['in_id'] . '/' . md5($k['tr_id'] . $CI->config->item('actionplan_salt') . $k['in_id'] . $in_type_tr_parent_intent_id) : '/my/actionplan/' . $k['tr_parent_transaction_id'] . '/' . $k['in_id']) . '" class="list-group-item">';
 
     //Different pointer position based on direction:
     if ($is_parent) {
@@ -668,7 +670,7 @@ function fn___echo_time_hours($seconds, $micro = false)
 }
 
 
-function fn___echo_tree_sources($in, $fb_messenger_format = false, $expand_mode = false)
+function fn___echo_tree_references($in, $fb_messenger_format = false, $expand_mode = false)
 {
 
     /*
@@ -869,7 +871,7 @@ function fn___echo_tree_steps($in, $fb_messenger_format = 0, $expand_mode = fals
 
     $metadata['in__flat_unique_published_count']--;
 
-    $pitch = 'Action Plan contains ' . $metadata['in__flat_unique_published_count'] . ' steps.';
+    $pitch = 'Action Plan contains ' . $metadata['in__flat_unique_published_count'] . ' steps';
 
     if ($fb_messenger_format) {
 
@@ -892,10 +894,14 @@ function fn___echo_tree_steps($in, $fb_messenger_format = 0, $expand_mode = fals
         </div>
         <div id="collapse' . $id . '" class="panel-collapse collapse ' . ($expand_mode ? 'in' : 'out') . '" role="tabpanel" aria-labelledby="heading' . $id . '">
             <div class="panel-body overview-pitch">';
-        $return_html .= $pitch.'.';
+
+        //TODO Add note for step range to inform students it depends on their chosen answers:
+        $return_html .= $pitch.':';
 
         //Action Plan:
-        $return_html .= fn___echo_action_plan($in, false);
+        $return_html .= '<div class="inner_actionplan">';
+        $return_html .= fn___echo_public_actionplan($in, false);
+        $return_html .= '</div>';
 
         //Close the section:
         $return_html .= '</div></div></div></div>';
@@ -907,7 +913,7 @@ function fn___echo_tree_steps($in, $fb_messenger_format = 0, $expand_mode = fals
 
 }
 
-function fn___echo_action_plan($in, $expand_mode){
+function fn___echo_public_actionplan($in, $expand_mode){
 
 
     $CI =& get_instance();
@@ -924,7 +930,7 @@ function fn___echo_action_plan($in, $expand_mode){
 
 
     $return_html = '';
-    $return_html .= '<div class="list-group grey_list actionplan_list maxout" style="margin:5px 0 0 5px;">';
+    $return_html .= '<div class="list-group grey_list actionplan_list maxout public_ap">';
 
     foreach ($children_ins as $in_level2_counter => $in_level2) {
 
@@ -954,7 +960,7 @@ function fn___echo_action_plan($in, $expand_mode){
         $return_html .= '<div class="panel-heading" role="tab" id="heading' . $in_level2_counter . '">';
 
 
-        $return_html .= '<h4 class="panel-title"><a role="button" data-toggle="collapse" data-parent="#open' . $in_level2_counter . '" href="#collapse' . $in_level2_counter . '" aria-expanded="' . ($expand_mode ? 'true' : 'false') . '" aria-controls="collapse' . $in_level2_counter . '">' . '<i class="fal fa-plus-circle" style="font-size: 1em !important; margin-left: 0; width: 21px;"></i>'. ( $in['in_type'] ? 'Option #'. ($in_level2_counter + 1).': ' : '') . '<span id="title-' . $in_level2['in_id'] . '">' . echo_in_outcome($in_level2['in_outcome'], true) . '</span>';
+        $return_html .= '<h4 class="panel-title"><a role="button" data-toggle="collapse" data-parent="#open' . $in_level2_counter . '" href="#collapse' . $in_level2_counter . '" aria-expanded="' . ($expand_mode ? 'true' : 'false') . '" aria-controls="collapse' . $in_level2_counter . '">' . '<i class="fal fa-plus-circle" style="font-size: 1em !important; margin-left: 0; width: 21px;"></i>'. ( $in['in_type'] ? 'Option #'. ($in_level2_counter + 1).': ' : '') . '<span id="title-' . $in_level2['in_id'] . '">' . fn___echo_in_outcome($in_level2['in_outcome'], true) . '</span>';
 
         $in_level2_metadata = unserialize($in_level2['in_metadata']);
         if (isset($in_level2_metadata['in__tree_max_seconds']) && $in_level2_metadata['in__tree_max_seconds'] > 0) {
@@ -981,7 +987,7 @@ function fn___echo_action_plan($in, $expand_mode){
             $return_html .= '<ul style="list-style-type: circle; margin:10px 0 10px -15px; font-size:1em;">';
             foreach ($grandchildren_ins as $in_level3_counter => $in_level3) {
 
-                $return_html .= '<li>' . ($in_level2['in_type'] ? 'Option #' . ($in_level3_counter + 1) . ': ' : '') . echo_in_outcome($in_level3['in_outcome'], true);
+                $return_html .= '<li>' . ($in_level2['in_type'] ? 'Option #' . ($in_level3_counter + 1) . ': ' : '') . fn___echo_in_outcome($in_level3['in_outcome'], true);
                 $in_level3_metadata = unserialize($in_level3['in_metadata']);
                 if (isset($in_level3_metadata['in__tree_max_seconds']) && $in_level3_metadata['in__tree_max_seconds'] > 0) {
                     $return_html .= ' <span style="font-size: 0.9em; font-weight: 300;"><i class="fal fa-clock"></i> ' . fn___echo_time_range($in_level3, true) . '</span>';
@@ -1001,7 +1007,7 @@ function fn___echo_action_plan($in, $expand_mode){
     return $return_html;
 }
 
-function fn___echo_tree_cost($in, $fb_messenger_format = 0, $expand_mode = false)
+function fn___echo_tree_costs($in, $fb_messenger_format = 0, $expand_mode = false)
 {
 
     /*
@@ -1284,7 +1290,7 @@ function fn___echo_in_featured($in)
     $ui .= '<span class="badge badge-primary fr-bgd"><i class="fas fa-angle-right"></i></span>';
     $ui .= '</span>';
 
-    $ui .= '<span style="color:#222; font-weight:500; font-size:1.2em;">'.echo_in_outcome($in['in_outcome'], true).'</span>';
+    $ui .= '<span style="color:#222; font-weight:500; font-size:1.2em;">'.fn___echo_in_outcome($in['in_outcome'], true).'</span>';
     $ui .= '<span style="font-size:0.8em; font-weight:300; margin-left:5px; display:inline-block;">';
     $ui .= '<span><i class="fal fa-clock"></i>' . fn___echo_time_range($in) . '</span>';
     $ui .= '</span>';
@@ -1427,16 +1433,16 @@ function fn___echo_in($in, $level, $in_parent_id = 0, $is_parent = false)
     if ($level <= 1) {
 
         $ui .= '<span><b id="in_level1_outcome" style="font-size: 1.4em; padding-left: 5px;">';
-        $ui .= '<span class="in_outcome_' . $in['in_id'] . '">' . echo_in_outcome($in['in_outcome']) . '</span>';
+        $ui .= '<span class="in_outcome_' . $in['in_id'] . '">' . fn___echo_in_outcome($in['in_outcome']) . '</span>';
         $ui .= '</b></span>';
 
     } elseif ($level == 2) {
 
-        $ui .= '<span>&nbsp;<i id="handle-' . $tr_id . '" class="fal click_expand fa-plus-circle"></i> <span id="title_' . $tr_id . '" style="font-weight: 500;" class="cdr_crnt click_expand tree_title in_outcome_' . $in['in_id'] . '">' . echo_in_outcome($in['in_outcome']) . '</span></span>';
+        $ui .= '<span>&nbsp;<i id="handle-' . $tr_id . '" class="fal click_expand fa-plus-circle"></i> <span id="title_' . $tr_id . '" style="font-weight: 500;" class="cdr_crnt click_expand tree_title in_outcome_' . $in['in_id'] . '">' . fn___echo_in_outcome($in['in_outcome']) . '</span></span>';
 
     } elseif ($level == 3) {
 
-        $ui .= '<span id="title_' . $tr_id . '" class="tree_title in_outcome_' . $in['in_id'] . '" style="padding-left:23px;">' .echo_in_outcome($in['in_outcome']) . '</span> ';
+        $ui .= '<span id="title_' . $tr_id . '" class="tree_title in_outcome_' . $in['in_id'] . '" style="padding-left:23px;">' .fn___echo_in_outcome($in['in_outcome']) . '</span> ';
 
         //Is this the focused item in the parent sibling dropdown?
         if($is_child_focused){
@@ -1516,7 +1522,7 @@ function fn___echo_in($in, $level, $in_parent_id = 0, $is_parent = false)
 
     //Action Plan:
     //TODO Count transactions and Implement later...
-    $ui .= '<a href="#loadinactionplans-' . $in['in_id'] . '" onclick="'.( $level==0 ? 'alert(\'Cannot manage here. Go to the intent to manage.\')' : 'fn___in_action_plans(' . $in['in_id'] . ')' ).'" class="badge badge-primary ' . fn___echo_advance() . ' white-primary action_plans_in_'.$in['in_id'].'" ap-count="'.(0).'" style="margin:-2px -3px 0 5px; width:40px;" data-toggle="tooltip" data-placement="top" title="Intent Action Plans"><span class="btn-counter">'.fn___echo_number(0).'</span><i class="far fa-flag" style="width:28px; padding-right:7px; text-align:center;"></i></a>';
+    $ui .= '<a href="#loadinactionplans-' . $in['in_id'] . '" onclick="'.( $level==0 ? 'alert(\'Cannot manage here. Go to the intent to manage.\')' : 'fn___in_actionplans(' . $in['in_id'] . ')' ).'" class="badge badge-primary ' . fn___echo_advance() . ' white-primary actionplans_in_'.$in['in_id'].'" ap-count="'.(0).'" style="margin:-2px -3px 0 5px; width:40px;" data-toggle="tooltip" data-placement="top" title="Intent Action Plans"><span class="btn-counter">'.fn___echo_number(0).'</span><i class="far fa-flag" style="width:28px; padding-right:7px; text-align:center;"></i></a>';
 
 
 
@@ -1770,7 +1776,7 @@ function fn___echo_en($en, $level, $is_parent = false)
 
     //Action Plan:
     //TODO Count transactions and Implement later...
-    $ui .= '<a href="#loadenactionplans-' . $en['en_id'] . '" onclick="'.( $level==0 ? 'alert(\'Cannot manage here. Go to the entity to manage.\')' : 'fn___en_action_plans(' . $en['en_id'] . ')' ).'" class="badge badge-secondary ' . fn___echo_advance() . ' white-secondary action_plans_en_'.$en['en_id'].'" ap-count="'.(0).'" style="margin:-2px -3px 0 5px;; width:40px;" data-toggle="tooltip" data-placement="top" title="Entity Action Plans"><span class="btn-counter">'.fn___echo_number(0).'</span><i class="far fa-flag" style="width:28px; padding-right:7px; text-align:center;"></i></a>';
+    $ui .= '<a href="#loadenactionplans-' . $en['en_id'] . '" onclick="'.( $level==0 ? 'alert(\'Cannot manage here. Go to the entity to manage.\')' : 'fn___en_actionplans(' . $en['en_id'] . ')' ).'" class="badge badge-secondary ' . fn___echo_advance() . ' white-secondary actionplans_en_'.$en['en_id'].'" ap-count="'.(0).'" style="margin:-2px -3px 0 5px;; width:40px;" data-toggle="tooltip" data-placement="top" title="Entity Action Plans"><span class="btn-counter">'.fn___echo_number(0).'</span><i class="far fa-flag" style="width:28px; padding-right:7px; text-align:center;"></i></a>';
 
 
 

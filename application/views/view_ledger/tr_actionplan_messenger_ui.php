@@ -49,7 +49,7 @@ echo '<script src="/js/custom/actionplan-master-js.js?v=v' . $this->config->item
 //Fetch parent tree all the way to the top of Action Plan tr_child_intent_id
 echo '<div class="list-group" style="margin-top: 10px;">';
 foreach ($actionplan_parents as $k) {
-    echo echo_k($k, 1);
+    echo echo_actionplan_step($k, 1);
 }
 echo '</div>';
 
@@ -157,7 +157,7 @@ if ($has_children && $list_children) {
     echo '<h5 class="badge badge-hy">' . ($in['in_type'] ? '<i class="fas fa-code-merge"></i> Choose One' : '<i class="fas fa-sitemap"></i> Complete All') . ':</h5>';
     echo '<div class="list-group">';
     foreach ($actionplan_children as $k) {
-        echo echo_k($k, 0, ($in['in_type'] && $k['tr_status'] == 0 ? $in['in_id'] : 0));
+        echo echo_actionplan_step($k, 0, ($in['in_type'] && $k['tr_status'] == 0 ? $in['in_id'] : 0));
     }
     echo '</div>';
     echo '</div>';

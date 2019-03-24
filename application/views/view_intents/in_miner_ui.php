@@ -308,7 +308,7 @@ $metadata = unserialize($in['in_metadata']);
                                     ?>
                                 </select>
 
-                                <div class="notify_in_unlink hidden">
+                                <div class="notify_unlink_in hidden">
                                     <div class="alert alert-warning" style="margin:5px 0px; padding:7px;">
                                         <i class="fas fa-exclamation-triangle"></i>
                                         Saving will unlink intent

@@ -107,9 +107,9 @@ $(document).ready(function () {
     $('#tr_status').change(function () {
         if (parseInt($('#tr_status').find(":selected").val()) < 0) {
             //About to delete? Notify them:
-            $('.notify_en_unlink').removeClass('hidden');
+            $('.notify_unlink_en').removeClass('hidden');
         } else {
-            $('.notify_en_unlink').addClass('hidden');
+            $('.notify_unlink_en').addClass('hidden');
         }
     });
 
@@ -213,7 +213,7 @@ $(document).ready(function () {
             } else if (hash_parts[0] == 'loadmodify') {
                 fn___en_modify_load(hash_parts[1], hash_parts[2]);
             } else if (hash_parts[0] == 'loadenactionplans') {
-                fn___en_action_plans(hash_parts[1]);
+                fn___en_actionplans(hash_parts[1]);
             } else if (hash_parts[0] == 'status') {
                 //Update status:
                 u_load_filter_status(hash_parts[1]);
@@ -253,9 +253,9 @@ $(document).ready(function () {
 });
 
 
-function fn___en_action_plans(en_id){
+function fn___en_actionplans(en_id){
 
-    if(parseInt($('.action_plans_en_'+en_id).attr('ap-count')) < 1){
+    if(parseInt($('.actionplans_en_'+en_id).attr('ap-count')) < 1){
         alert('Entity not added any intents to their Action Plan yet');
         return false;
     }
@@ -433,7 +433,7 @@ function fn___en_modify_load(en_id, tr_id) {
     $('#modifybox').attr('entity-id', en_id);
 
     //Cannot be removed OR unlinked as this would not load, so remove them:
-    $('.notify_en_remove, .notify_en_unlink').addClass('hidden');
+    $('.notify_en_remove, .notify_unlink_en').addClass('hidden');
 
 
     var en_full_name = $(".en_name_" + en_id + ":first").text();

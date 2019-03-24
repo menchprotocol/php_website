@@ -662,7 +662,7 @@ class Messenger extends CI_Controller
     function skip_tree($tr_id, $in_id, $tr_id2)
     {
         //Start skipping:
-        $total_skipped = count($this->Matrix_model->k_skip_recursive_down($tr_id));
+        $total_skipped = count($this->Matrix_model->actionplan_skip_recursive_down($tr_id));
 
         //Draft message:
         $message = '<div class="alert alert-success" role="alert">' . $total_skipped . ' key idea' . fn___echo__s($total_skipped) . ' successfully skipped.</div>';
@@ -676,14 +676,14 @@ class Messenger extends CI_Controller
         }
     }
 
-    function choose_any_path($actionplan_tr_id, $tr_parent_intent_id, $in_id, $w_key)
+    function choose_or_path($actionplan_tr_id, $origin_in_id, $in_answer_id, $w_key)
     {
-        if (md5($actionplan_tr_id . 'kjaghksjha*(^' . $in_id . $tr_parent_intent_id) == $w_key) {
-            if ($this->Matrix_model->fn___actionplan_choose_or($actionplan_tr_id, $tr_parent_intent_id, $in_id)) {
-                return fn___redirect_message('/my/actionplan/' . $actionplan_tr_id . '/' . $in_id, '<div class="alert alert-success" role="alert">Your answer was saved.</div>');
+        if (md5($actionplan_tr_id . $this->config->item('actionplan_salt') . $in_answer_id . $origin_in_id) == $w_key) {
+            if ($this->Matrix_model->fn___actionplan_choose_or($origin_in_id, $in_answer_id, $actionplan_tr_id)) {
+                return fn___redirect_message('/my/actionplan/' . $actionplan_tr_id . '/' . $in_answer_id, '<div class="alert alert-success" role="alert">Your answer was saved.</div>');
             } else {
                 //We had some sort of an error:
-                return fn___redirect_message('/my/actionplan/' . $actionplan_tr_id . '/' . $tr_parent_intent_id, '<div class="alert alert-danger" role="alert">There was an error saving your answer.</div>');
+                return fn___redirect_message('/my/actionplan/' . $actionplan_tr_id . '/' . $origin_in_id, '<div class="alert alert-danger" role="alert">There was an error saving your answer.</div>');
             }
         }
     }
@@ -773,7 +773,7 @@ class Messenger extends CI_Controller
 
         if ($status_changed) {
             //Also update tr_status, determine what it should be:
-            $this->Matrix_model->in_actionplan_complete_up($trs[0], $trs[0]);
+            $this->Matrix_model->actionplan_complete_recursive_up($trs[0], $trs[0]);
         }
 
 
@@ -917,7 +917,7 @@ class Messenger extends CI_Controller
         ), array(), 20);
 
         //Set transaction statuses to drafting so other Cron jobs don't pick them up:
-        $this->Matrix_model->draft_trs($tr_pending);
+        $this->Matrix_model->fn___trs_set_drafting($tr_pending);
 
         $counter = 0;
         foreach($tr_pending as $tr){
@@ -982,7 +982,7 @@ class Messenger extends CI_Controller
 
 
         //Set transaction statuses to drafting so other Cron jobs don't pick them up:
-        $this->Matrix_model->draft_trs($tr_pending);
+        $this->Matrix_model->fn___trs_set_drafting($tr_pending);
 
         //Now go through and upload to CDN:
         foreach ($tr_pending as $tr) {

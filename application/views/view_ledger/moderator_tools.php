@@ -102,7 +102,7 @@ if(!$action) {
                 if($command1=='remove_all'){
 
                     //Remove intent links:
-                    $links_removed = $this->Matrix_model->unlink_intent($orphan_in['in_id'] , $session_en['en_id']);
+                    $links_removed = $this->Matrix_model->fn___in_unlink($orphan_in['in_id'] , $session_en['en_id']);
 
                     //Remove intent:
                     $this->Database_model->fn___in_update($orphan_in['in_id'], array( 'in_status' => -1 ), true, $session_en['en_id']);
@@ -150,7 +150,7 @@ if(!$action) {
                 if($command1=='remove_all'){
 
                     //Remove links:
-                    $links_removed = $this->Matrix_model->unlink_entity($orphan_en['en_id'], $session_en['en_id']);
+                    $links_removed = $this->Matrix_model->fn___en_unlink($orphan_en['en_id'], $session_en['en_id']);
 
                     //Remove entity:
                     $this->Database_model->fn___en_update($orphan_en['en_id'], array( 'en_status' => -1 ), true, $session_en['en_id']);

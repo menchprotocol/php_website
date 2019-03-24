@@ -22,7 +22,7 @@ echo '<div class="landing-page-intro" id="in_landing_page">';
 
 
 //Intent Title:
-echo '<h1 style="margin-bottom:30px;" id="title-parent">' . echo_in_outcome($in['in_outcome'], true) . '</h1>';
+echo '<h1 style="margin-bottom:30px;" id="title-parent">' . fn___echo_in_outcome($in['in_outcome'], true) . '</h1>';
 
 
 //Fetch & Display Intent Note Messages for this intent:
@@ -39,8 +39,8 @@ foreach ($this->Database_model->fn___tr_fetch(array(
 if (!$hide_subscribe) {
 
     $step_info = fn___echo_tree_steps($in, false);
-    $source_info = fn___echo_tree_sources($in, false);
-    $cost_info = fn___echo_tree_cost($in, false);
+    $source_info = fn___echo_tree_references($in, false);
+    $cost_info = fn___echo_tree_costs($in, false);
 
     if($step_info || $source_info || $cost_info){
         echo '<h3 style="margin-bottom:5px; margin-top:0px !important;">Overview:</h3>';
@@ -53,6 +53,12 @@ if (!$hide_subscribe) {
 
     //Call to action button:
     echo '<a class="btn btn-primary" href="https://m.me/askmench?ref='.$in['in_id'].'" style="display: inline-block; padding:12px 36px;">Get Started &nbsp;&nbsp;&nbsp; <i class="fas fa-angle-double-right"></i></a>';
+
+} else {
+
+    //Just show the Action Plan:
+    echo '<br />'.fn___echo_public_actionplan($in, $expand_mode);
+
 }
 
 echo '</div>';

@@ -11,7 +11,7 @@ defined('BASEPATH') OR exit('No direct script access allowed');
  *
  */
 
-//Generated 2019-03-22 15:52:25 PST
+//Generated 2019-03-23 20:31:49 PST
 
 //Student Action Plan:
 $config['en_ids_6107'] = array(4235, 4559);
@@ -35,13 +35,13 @@ $config['en_ids_4277'] = array(4248, 4460, 4547, 4548, 4549, 4550, 4551, 4557);
 $config['en_all_4277'] = array(
     4248 => array(
         'm_icon' => '<i class="fas fa-star-half-alt"></i>',
-        'm_name' => 'Sent Net Promoter Score',
+        'm_name' => 'Rated Mench',
         'm_desc' => 'Logged when masters submit their Net Promoter Score rating of Mench that shares how likely are they to share Mench with a friend from a scale of 1-10.',
         'm_parents' => array(4755, 4593, 4428, 4277),
     ),
     4460 => array(
         'm_icon' => '<i class="fal fa-ballot-check"></i>',
-        'm_name' => 'Sent Quick Reply Message',
+        'm_name' => 'Sent Quick Reply',
         'm_desc' => 'When Master chooses their answer to an OR branch',
         'm_parents' => array(4755, 4593, 4428, 4595, 4277),
     ),
@@ -430,7 +430,7 @@ $config['en_all_4997'] = array(
 );
 
 //Entity Message Reference Appendix:
-$config['en_ids_4990'] = array(1326, 2793, 2997, 2998, 2999, 3005, 3084, 3147, 3192, 3300, 3301, 3320, 4257, 4258, 4259, 4260, 4446, 4763, 4883, 5948);
+$config['en_ids_4990'] = array(1326, 2793, 2997, 2998, 2999, 3005, 3084, 3147, 3192, 3300, 3301, 3302, 3303, 3308, 3314, 3320, 4257, 4258, 4259, 4260, 4399, 4446, 4763, 4883, 5948);
 $config['en_all_4990'] = array(
     1326 => array(
         'm_icon' => '<i class="fal fa-bookmark"></i>',
@@ -498,6 +498,30 @@ $config['en_all_4990'] = array(
         'm_desc' => '',
         'm_parents' => array(4990, 1326, 2750),
     ),
+    3302 => array(
+        'm_icon' => '<i class="fab fa-linkedin"></i>',
+        'm_name' => 'LinkedIn',
+        'm_desc' => '',
+        'm_parents' => array(4990, 1326, 4763, 2750),
+    ),
+    3303 => array(
+        'm_icon' => '<i class="fab fa-github"></i>',
+        'm_name' => 'Github',
+        'm_desc' => '',
+        'm_parents' => array(4990, 4763, 1326, 2750),
+    ),
+    3308 => array(
+        'm_icon' => '<i class="fab fa-youtube"></i>',
+        'm_name' => 'YouTube',
+        'm_desc' => '',
+        'm_parents' => array(4990, 4763, 4257, 2750, 1326),
+    ),
+    3314 => array(
+        'm_icon' => '<i class="fab fa-slack"></i>',
+        'm_name' => 'Slack',
+        'm_desc' => '',
+        'm_parents' => array(4990, 1326, 2750),
+    ),
     3320 => array(
         'm_icon' => '<i class="fab fa-facebook-messenger"></i>',
         'm_name' => 'Messenger',
@@ -527,6 +551,12 @@ $config['en_all_4990'] = array(
         'm_name' => 'Linked Entities Image',
         'm_desc' => '',
         'm_parents' => array(4990, 4593, 4592, 4537, 4595, 4331),
+    ),
+    4399 => array(
+        'm_icon' => '<i class="fab fa-angellist"></i>',
+        'm_name' => 'Angel Co',
+        'm_desc' => '',
+        'm_parents' => array(4990, 4763, 2750, 1326),
     ),
     4446 => array(
         'm_icon' => '<i class="fal fa-tachometer"></i>',
@@ -630,7 +660,7 @@ $config['en_all_4755'] = array(
     ),
     4248 => array(
         'm_icon' => '<i class="fas fa-star-half-alt"></i>',
-        'm_name' => 'Sent Net Promoter Score',
+        'm_name' => 'Rated Mench',
         'm_desc' => '',
         'm_parents' => array(4755, 4593, 4428, 4277),
     ),
@@ -678,7 +708,7 @@ $config['en_all_4755'] = array(
     ),
     4460 => array(
         'm_icon' => '<i class="fal fa-ballot-check"></i>',
-        'm_name' => 'Sent Quick Reply Message',
+        'm_name' => 'Sent Quick Reply',
         'm_desc' => '',
         'm_parents' => array(4755, 4593, 4428, 4595, 4277),
     ),
@@ -923,7 +953,7 @@ $config['en_all_4595'] = array(
     ),
     4460 => array(
         'm_icon' => '<i class="fal fa-ballot-check"></i>',
-        'm_name' => 'Sent Quick Reply Message',
+        'm_name' => 'Sent Quick Reply',
         'm_desc' => '3',
         'm_parents' => array(4755, 4593, 4428, 4595, 4277),
     ),
@@ -1035,7 +1065,7 @@ $config['en_all_4593'] = array(
     ),
     4248 => array(
         'm_icon' => '<i class="fas fa-star-half-alt"></i>',
-        'm_name' => 'Sent Net Promoter Score',
+        'm_name' => 'Rated Mench',
         'm_desc' => '',
         'm_parents' => array(4755, 4593, 4428, 4277),
     ),
@@ -1203,7 +1233,7 @@ $config['en_all_4593'] = array(
     ),
     4460 => array(
         'm_icon' => '<i class="fal fa-ballot-check"></i>',
-        'm_name' => 'Sent Quick Reply Message',
+        'm_name' => 'Sent Quick Reply',
         'm_desc' => '',
         'm_parents' => array(4755, 4593, 4428, 4595, 4277),
     ),

@@ -120,7 +120,7 @@ class Entities extends CI_Controller
         }
 
         //All seems good, fetch URL:
-        $url_entity = $this->Matrix_model->fn___sync_url($_POST['input_url']);
+        $url_entity = $this->Matrix_model->fn___en_sync_url($_POST['input_url']);
 
         if (!$url_entity['status']) {
             //Oooopsi, we had some error:
@@ -423,7 +423,7 @@ class Entities extends CI_Controller
             if (filter_var($_POST['en_new_string'], FILTER_VALIDATE_URL)) {
 
                 //Digest URL to see what type it is and if we have any errors:
-                $url_entity = $this->Matrix_model->fn___sync_url($_POST['en_new_string']);
+                $url_entity = $this->Matrix_model->fn___en_sync_url($_POST['en_new_string']);
                 if (!$url_entity['status']) {
                     return fn___echo_json($url_entity);
                 }
@@ -437,7 +437,7 @@ class Entities extends CI_Controller
                 } else {
 
                     //Let's first find/add the domain:
-                    $domain_entity = $this->Matrix_model->fn___sync_domain($_POST['en_new_string'], $session_en['en_id']);
+                    $domain_entity = $this->Matrix_model->fn___en_sync_domain($_POST['en_new_string'], $session_en['en_id']);
 
                     //Link to this entity:
                     $entity_new = $domain_entity['en_domain'];
@@ -742,7 +742,7 @@ class Entities extends CI_Controller
             $_POST['tr_id'] = 0; //Do not consider the link as the entity is being Removed
             $remove_from_ui = 1; //Removing entity
             $merger_en_id = (count($merged_ens) > 0 ? $merged_ens[0]['en_id'] : 0);
-            $links_adjusted = $this->Matrix_model->unlink_entity($_POST['en_id'], $session_en['en_id'], $merger_en_id);
+            $links_adjusted = $this->Matrix_model->fn___en_unlink($_POST['en_id'], $session_en['en_id'], $merger_en_id);
 
             //Show appropriate message based on action:
             if ($merger_en_id > 0) {
@@ -1285,7 +1285,7 @@ class Entities extends CI_Controller
         }
 
         //Fetch URL:
-        $url_entity = $this->Matrix_model->fn___sync_url($_POST['search_url']);
+        $url_entity = $this->Matrix_model->fn___en_sync_url($_POST['search_url']);
 
         if($url_entity['url_already_existed']){
             return fn___echo_json(array(
@@ -1453,7 +1453,7 @@ class Entities extends CI_Controller
                 //Seems to be a new contributor entity...
 
                 //First analyze URL:
-                $contributor_url_entity = $this->Matrix_model->fn___sync_url($_POST['ref_url_' . $contributor_num]);
+                $contributor_url_entity = $this->Matrix_model->fn___en_sync_url($_POST['ref_url_' . $contributor_num]);
 
                 //Validate contributor inputs before creating anything:
                 if (!$contributor_url_entity['status']) {
@@ -1501,7 +1501,7 @@ class Entities extends CI_Controller
                 }
 
                 //Add contributor with its URL:
-                $sync_contributor = $this->Matrix_model->fn___sync_url($_POST['ref_url_' . $contributor_num], $session_en['en_id'], 0, 0, $_POST['contributor_' . $contributor_num]);
+                $sync_contributor = $this->Matrix_model->fn___en_sync_url($_POST['ref_url_' . $contributor_num], $session_en['en_id'], 0, 0, $_POST['contributor_' . $contributor_num]);
 
 
                 //Add contributor to People or Organizations entity:
@@ -1551,7 +1551,7 @@ class Entities extends CI_Controller
 
 
         //Save URL & domain:
-        $url_entity = $this->Matrix_model->fn___sync_url($_POST['source_url'], $session_en['en_id'], 0, 0, $_POST['en_name']);
+        $url_entity = $this->Matrix_model->fn___en_sync_url($_POST['source_url'], $session_en['en_id'], 0, 0, $_POST['en_name']);
         if (!$url_entity['status']) {
             return fn___echo_json($url_entity);
         }

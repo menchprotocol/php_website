@@ -1,7 +1,7 @@
 <?php
 
 //Header:
-echo '<h1>'.echo_in_outcome($in['in_outcome'], true).'</h1>';
+echo '<h1>'.fn___echo_in_outcome($in['in_outcome'], true).'</h1>';
 
 
 //Display intent messages:

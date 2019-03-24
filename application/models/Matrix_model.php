@@ -184,7 +184,7 @@ class Matrix_model extends CI_Model
 
     }
 
-    function draft_trs($trs){
+    function fn___trs_set_drafting($trs){
         /*
          *
          * A function that simply updates the status
@@ -202,7 +202,7 @@ class Matrix_model extends CI_Model
         }
     }
 
-    function unlink_entity($en_id, $tr_miner_entity_id = 0, $merger_en_id = 0){
+    function fn___en_unlink($en_id, $tr_miner_entity_id = 0, $merger_en_id = 0){
 
         //Fetch all entity links:
         $adjusted_count = 0;
@@ -252,7 +252,7 @@ class Matrix_model extends CI_Model
         return $adjusted_count;
     }
 
-    function unlink_intent($in_id, $tr_miner_entity_id = 0){
+    function fn___in_unlink($in_id, $tr_miner_entity_id = 0){
 
         //Remove intent relations:
         $adjust_trs = array_merge(
@@ -278,7 +278,7 @@ class Matrix_model extends CI_Model
         return count($adjust_trs);
     }
 
-    function fn___sync_domain($url, $tr_miner_entity_id = 0, $page_title = null)
+    function fn___en_sync_domain($url, $tr_miner_entity_id = 0, $page_title = null)
     {
         /*
          *
@@ -346,7 +346,7 @@ class Matrix_model extends CI_Model
 
     }
 
-    function fn___sync_url($url, $tr_miner_entity_id = 0, $add_to_parent_en_id = 0, $add_to_child_en_id = 0, $page_title = null)
+    function fn___en_sync_url($url, $tr_miner_entity_id = 0, $add_to_parent_en_id = 0, $add_to_child_en_id = 0, $page_title = null)
     {
 
         /*
@@ -516,7 +516,7 @@ class Matrix_model extends CI_Model
 
 
         //Fetch/Create domain entity:
-        $domain_entity = $this->Matrix_model->fn___sync_domain($url, $tr_miner_entity_id, ( $domain_analysis['url_is_root'] && $name_was_passed ? $page_title : null ));
+        $domain_entity = $this->Matrix_model->fn___en_sync_domain($url, $tr_miner_entity_id, ( $domain_analysis['url_is_root'] && $name_was_passed ? $page_title : null ));
 
 
         //Was this not a root domain? If so, also check to see if URL exists:
@@ -999,11 +999,13 @@ class Matrix_model extends CI_Model
     }
 
 
-    function k_skip_recursive_down($tr_id, $update_db = true)
+    function actionplan_skip_recursive_down($tr_id, $update_db = true)
     {
+
         //TODO Readjust the removal of $tr_id, $in_id variables
+
         //User has requested to skip an intent starting from:
-        $dwn_tree = $this->Matrix_model->k_recursive_fetch($tr_id, $in_id, true);
+        $dwn_tree = $this->Matrix_model->actionplan_fetch_recursive($tr_id, $in_id, true);
         $skip_ks = array_merge(array(intval($tr_id)), $dwn_tree['actionplan_ins_flat']);
 
         //Now see how many should we actually skip based on current status:
@@ -1027,7 +1029,7 @@ class Matrix_model extends CI_Model
     }
 
 
-    function k_recursive_fetch($tr_id, $in_id, $direction_is_downward, $parent_in = array(), $metadata_aggregate = null)
+    function actionplan_fetch_recursive($tr_id, $in_id, $direction_is_downward, $previous_in = array(), $metadata_aggregate = null)
     {
 
         //Get core data:
@@ -1038,7 +1040,7 @@ class Matrix_model extends CI_Model
             'actionplan_ins_flat' => array(),
         );
 
-        if (!$metadata_aggregate && !isset($parent_in['tr_id'])) {
+        if (!$metadata_aggregate && !isset($previous_in['tr_id'])) {
 
             //First item:
             $metadata_aggregate = $metadata_this;
@@ -1051,7 +1053,7 @@ class Matrix_model extends CI_Model
             //Recursive item:
             $ins = $this->Database_model->fn___tr_fetch(array(
                 'tr_parent_transaction_id' => $tr_id,
-                'tr_id' => $parent_in['tr_id'],
+                'tr_id' => $previous_in['tr_id'],
             ), array(($direction_is_downward ? 'in_child' : 'in_parent')));
 
         }
@@ -1086,7 +1088,7 @@ class Matrix_model extends CI_Model
             foreach ($next_level_ins as $in) {
 
                 //Fetch children for this intent, if any:
-                $recursion = $this->Matrix_model->k_recursive_fetch($tr_id, $in['in_id'], $direction_is_downward, $in, $metadata_this);
+                $recursion = $this->Matrix_model->actionplan_fetch_recursive($tr_id, $in['in_id'], $direction_is_downward, $in, $metadata_this);
 
                 //return $recursion;
 
@@ -1134,7 +1136,7 @@ class Matrix_model extends CI_Model
     }
 
 
-    function fn___actionplan_choose_or($actionplan_tr_id, $origin_in_id, $in_answer_id)
+    function fn___actionplan_choose_or($origin_in_id, $in_answer_id, $actionplan_tr_id = 0)
     {
 
         /*
@@ -1146,12 +1148,12 @@ class Matrix_model extends CI_Model
          *
          * Inputs:
          *
-         * $actionplan_tr_id:   Action Plan ID
-         *
          * $origin_in_id:       The OR Intent that one of its children need
          *                      to be selected by the Student
          *
          * $in_answer_id:       The selected child intent
+         *
+         * $actionplan_tr_id:   Action Plan ID which may or may not be set
          *
          * */
 
@@ -1184,10 +1186,11 @@ class Matrix_model extends CI_Model
         $message_in_requirements = $this->Matrix_model->fn___in_req_completion($answer_ins[0]['in_requirement_entity_id'], $in_answer_id, $actionplan_tr_id);
 
         //Now mark intent as complete (and this will SKIP all siblings) and move on:
-        $this->Matrix_model->in_actionplan_complete_up($chosen_path[0], $chosen_path[0], ($message_in_requirements ? 1 /* drafting */ : null));
+        $this->Matrix_model->actionplan_complete_recursive_up($chosen_path[0], $chosen_path[0], ($message_in_requirements ? 1 /* drafting */ : null));
 
         //Successful:
         return true;
+
     }
 
     function fn___in_recursive_fetch($in_id, $direction_is_downward = false, $update_db_table = false, $actionplan = array(), $previous_in = array(), $metadata_aggregate = null)
@@ -1881,7 +1884,7 @@ class Matrix_model extends CI_Model
     }
 
 
-    function in_actionplan_complete_up($cr, $w, $force_tr_status = null)
+    function actionplan_complete_recursive_up($cr, $w, $force_tr_status = null)
     {
 
         //Check if parent of this item is not started, because if not, we need to mark that as drafting:
@@ -1916,7 +1919,7 @@ class Matrix_model extends CI_Model
             //This is the none chosen answers, if any:
             foreach ($none_chosen_paths as $k) {
                 //Skip this intent:
-                $total_skipped += count($this->Matrix_model->k_skip_recursive_down($k['tr_id']));
+                $total_skipped += count($this->Matrix_model->actionplan_skip_recursive_down($k['tr_id']));
             }
         }
 
@@ -1925,7 +1928,7 @@ class Matrix_model extends CI_Model
             //Regardless of Branch type, we need all children to be complete if we are to mark this as complete...
             //If not, we will mark is as drafting...
             //So lets fetch the down tree and see Whatssup:
-            $dwn_tree = $this->Matrix_model->k_recursive_fetch($w['tr_id'], $cr['tr_child_intent_id'], true);
+            $dwn_tree = $this->Matrix_model->actionplan_fetch_recursive($w['tr_id'], $cr['tr_child_intent_id'], true);
 
             //Does it have OUTs?
             if (count($dwn_tree['actionplan_ins_flat']) > 0) {
@@ -1954,7 +1957,7 @@ class Matrix_model extends CI_Model
 
             //Since down tree is now complete, see if up tree needs completion as well:
             //Fetch all parents:
-            $up_tree = $this->Matrix_model->k_recursive_fetch($w['tr_id'], $cr['tr_child_intent_id'], false);
+            $up_tree = $this->Matrix_model->actionplan_fetch_recursive($w['tr_id'], $cr['tr_child_intent_id'], false);
 
             //Now loop through each level and see whatssup:
             foreach ($up_tree['actionplan_ins_flat'] as $parent_tr_id) {
@@ -2014,7 +2017,7 @@ class Matrix_model extends CI_Model
     }
 
 
-    function in_force_verb_creation($in_outcome, $tr_miner_entity_id = 0){
+    function fn___in_force_verb_creation($in_outcome, $tr_miner_entity_id = 0){
 
         //Fetch related variables:
         $outcome_words = explode(' ', $in_outcome);
@@ -2116,7 +2119,7 @@ class Matrix_model extends CI_Model
         } elseif(substr_count($in_outcome , '/force') > 0){
 
             //Force command detected, pass it on to the force function:
-            $force_outcome = $this->Matrix_model->in_force_verb_creation($in_outcome, $tr_miner_entity_id);
+            $force_outcome = $this->Matrix_model->fn___in_force_verb_creation($in_outcome, $tr_miner_entity_id);
 
             if(!$force_outcome['status']){
                 //We had some errors in outcome structure:
