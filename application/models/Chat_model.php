@@ -976,7 +976,7 @@ class Chat_model extends CI_Model
                             'id' => $recipient_en['en_psid'],
                         ),
                         'message' => array(
-                            'text' => 'Select an option to continue:', //Generic/fixed message
+                            'text' => '', //Generic/fixed message
                             'quick_replies' => $quick_replies,
                             'metadata' => 'system_logged', //Prevents duplicate Transaction logs
                         ),
