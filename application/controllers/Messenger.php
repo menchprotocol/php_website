@@ -157,7 +157,7 @@ class Messenger extends CI_Controller
 
                     //Digest quick reply Payload if any:
                     if($quick_reply_payload){
-                        $this->Chat_model->fn___digest_received_quick_reply($en, $quick_reply_payload);
+                        $this->Chat_model->fn___digest_quick_reply($en, $quick_reply_payload);
                     }
 
                     /*
@@ -259,7 +259,7 @@ class Messenger extends CI_Controller
                         $tr_data['tr_content'] = $im['message']['text']; //Quick reply always has a text
 
                         //Digest the Quick Reply payload:
-                        $this->Chat_model->fn___digest_received_quick_reply($en, $im['message']['quick_reply']['payload']);
+                        $this->Chat_model->fn___digest_quick_reply($en, $im['message']['quick_reply']['payload']);
 
                     } elseif(isset($im['message']['text'])){
 
@@ -277,7 +277,7 @@ class Messenger extends CI_Controller
                             $tr_data['tr_type_entity_id'] = 4547; //Text Message Received
 
                             //Digest message & try to make sense of it:
-                            $this->Chat_model->fn___digest_received_message($en, $im['message']['text']);
+                            $this->Chat_model->fn___digest_message($en, $im['message']['text']);
 
                         }
 

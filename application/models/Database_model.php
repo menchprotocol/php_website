@@ -856,7 +856,7 @@ class Database_model extends CI_Model
 
         $valid_objects = array('en','in');
 
-        if (!$this->config->item('app_update_algolia')) {
+        if (!$this->config->item('app_enable_algolia')) {
             //Algolia is disabled, so avoid syncing:
             return array(
                 'status' => 0,

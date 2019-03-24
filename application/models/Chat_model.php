@@ -1683,7 +1683,7 @@ class Chat_model extends CI_Model
     }
 
 
-    function fn___digest_received_quick_reply($en, $quick_reply_payload)
+    function fn___digest_quick_reply($en, $quick_reply_payload)
     {
 
         /*
@@ -2063,7 +2063,7 @@ class Chat_model extends CI_Model
 
                 //Log error:
                 $this->Database_model->fn___tr_create(array(
-                    'tr_content' => 'fn___digest_received_quick_reply() failed to fetch proper data for a skip request with reference value [' . $quick_reply_payload . ']',
+                    'tr_content' => 'fn___digest_quick_reply() failed to fetch proper data for a skip request with reference value [' . $quick_reply_payload . ']',
                     'tr_type_entity_id' => 4246, //Platform Error
                     'tr_miner_entity_id' => 1, //Shervin/Developer
                     'tr_parent_transaction_id' => $tr_id,
@@ -2099,7 +2099,7 @@ class Chat_model extends CI_Model
 
                     //Nothing found to skip! This should not happen, log error:
                     $this->Database_model->fn___tr_create(array(
-                        'tr_content' => 'fn___digest_received_quick_reply() did not find anything to skip for [' . $quick_reply_payload . ']',
+                        'tr_content' => 'fn___digest_quick_reply() did not find anything to skip for [' . $quick_reply_payload . ']',
                         'tr_type_entity_id' => 4246, //Platform Error
                         'tr_parent_transaction_id' => $tr_id,
                         'tr_miner_entity_id' => $en['en_id'], //Belongs to this Student
@@ -2236,7 +2236,7 @@ class Chat_model extends CI_Model
 
                 //Invalid Action Plan Intent ID!
                 $this->Database_model->fn___tr_create(array(
-                    'tr_content' => 'fn___digest_received_quick_reply() failed to fetch proper data for intent completion request with reference value [' . $quick_reply_payload . ']',
+                    'tr_content' => 'fn___digest_quick_reply() failed to fetch proper data for intent completion request with reference value [' . $quick_reply_payload . ']',
                     'tr_type_entity_id' => 4246, //Platform Error
                     'tr_parent_transaction_id' => $tr_id,
                     'tr_miner_entity_id' => $en['en_id'], //Belongs to this Student
@@ -2319,7 +2319,7 @@ class Chat_model extends CI_Model
 
                 //Log Unknown error:
                 $this->Database_model->fn___tr_create(array(
-                    'tr_content' => 'fn___digest_received_quick_reply() failed to save OR answer with reference value [' . $quick_reply_payload . ']',
+                    'tr_content' => 'fn___digest_quick_reply() failed to save OR answer with reference value [' . $quick_reply_payload . ']',
                     'tr_type_entity_id' => 4246, //Platform Error
                     'tr_miner_entity_id' => 1, //Shervin/Developer
                     'tr_metadata' => $en,
@@ -2340,13 +2340,13 @@ class Chat_model extends CI_Model
         }
     }
 
-    function fn___digest_received_message($en, $fb_received_message)
+    function fn___digest_message($en, $fb_received_message)
     {
 
         /*
          *
          * Will process the chat message only in the absence of a chat metadata
-         * otherwise the fn___digest_received_quick_reply() will process the message since we
+         * otherwise the fn___digest_quick_reply() will process the message since we
          * know that the medata would have more precise instructions on what
          * needs to be done for the Student response.
          *
@@ -2512,33 +2512,20 @@ class Chat_model extends CI_Model
 
             }
 
-        } elseif (fn___includes_any($fb_received_message, array('lets ', 'let’s ', 'let\'s ', '?'))) {
+        } elseif (substr(strtolower(trim($fb_received_message)), 0, 9) == 'i want to') {
+
 
             //This looks like they are giving us a command:
-            $master_command = null;
+            $master_command = trim(substr(trim($fb_received_message), 9));
             $result_limit = 6;
 
-            if ($fb_received_message) {
-                $fb_received_message = trim(strtolower($fb_received_message));
-                if (substr_count($fb_received_message, 'lets ') > 0) {
-                    $master_command = fn___one_two_explode('lets ', '', $fb_received_message);
-                } elseif (substr_count($fb_received_message, 'let’s ') > 0) {
-                    $master_command = fn___one_two_explode('let’s ', '', $fb_received_message);
-                } elseif (substr_count($fb_received_message, 'let\'s ') > 0) {
-                    $master_command = fn___one_two_explode('let\'s ', '', $fb_received_message);
-                } elseif (substr_count($fb_received_message, '?') > 0) {
-                    //Them seem to be asking a question, lets treat this as a command:
-                    $master_command = str_replace('?', '', $fb_received_message);
-                }
-            }
-
             //Do a search to see what we find...
-            if ($this->config->item('app_update_algolia')) {
+            if ($this->config->item('app_enable_algolia')) {
 
-                $search_index = fn___load_php_algolia('alg_intents');
+                $search_index = fn___load_php_algolia('alg_index');
                 $res = $search_index->search($master_command, [
                     'hitsPerPage' => $result_limit,
-                    'filters' => 'in_status>=2', //Search published intents
+                    'filters' => 'alg_obj_is_in=1 AND in_status=2', //Search published intents
                 ]);
                 $search_results = $res['hits'];
 
@@ -2557,6 +2544,7 @@ class Chat_model extends CI_Model
             $this->Database_model->fn___tr_create(array(
                 'tr_content' => 'Found ' . count($search_results) . ' intent' . fn___echo__s(count($search_results)) . ' matching "' . $master_command . '"',
                 'tr_metadata' => array(
+                    'app_enable_algolia' => $this->config->item('app_enable_algolia'),
                     'input_data' => $master_command,
                     'output' => $search_results,
                 ),
@@ -2569,7 +2557,7 @@ class Chat_model extends CI_Model
 
                 //Show options for the Student to add to their Action Plan:
                 $quick_replies = array();
-                $message = 'I found these intents:';
+                $message = 'I found these intentions:';
 
                 foreach ($search_results as $count => $in) {
                     $message .= "\n\n" . ($count + 1) . '/ ' . $in['in_outcome'] . ' in ' . strip_tags(fn___echo_time_range($in));
@@ -2600,7 +2588,7 @@ class Chat_model extends CI_Model
 
                 //Respond to user:
                 $this->Chat_model->fn___dispatch_message(
-                    'I did not find any intentions to "' . $master_command . '", but I will let you know as soon as I am trained on this. Is there anything else I can help you with right now?',
+                    'I did not find any intentions to "' . $master_command . '", but I have made a note of this and will let you know as soon as I am trained on this. Are there any other intentions you want to share with me?',
                     $en,
                     true
                 );
@@ -2683,7 +2671,7 @@ class Chat_model extends CI_Model
                 if (count($default_actionplans) == 0) {
 
                     //They have never taken the default intent, recommend it to them:
-                    $this->Chat_model->fn___digest_received_quick_reply($en, $this->config->item('in_home_page'));
+                    $this->Chat_model->fn___digest_quick_reply($en, $this->config->item('in_home_page'));
 
                 }
                 */

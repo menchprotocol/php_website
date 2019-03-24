@@ -27,7 +27,7 @@ function fn___load_php_algolia($index_name)
 {
     //Loads up algolia search engine functions
     $CI =& get_instance();
-    if ($CI->config->item('app_update_algolia')) {
+    if ($CI->config->item('app_enable_algolia')) {
         require_once('application/libraries/algoliasearch.php');
         $client = new \AlgoliaSearch\Client("49OCX1ZXLJ", "84a8df1fecf21978299e31c5b535ebeb");
         return $client->initIndex($index_name);
