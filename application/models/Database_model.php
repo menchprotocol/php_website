@@ -435,7 +435,7 @@ class Database_model extends CI_Model
                 //Search & Append this Student's Action Plans:
                 $res[$key]['en__actionplans'] = $this->Database_model->fn___tr_fetch(array(
                     'tr_miner_entity_id' => $val['en_id'],
-                    'tr_type_entity_id' => 4235, //Action Plan
+                    'tr_type_entity_id' => 4235, //Action Plan Intent
                     'tr_status >=' => 0, //New+
                 ), array('in_child'), 0, 0, array('tr_order' => 'ASC'));
 

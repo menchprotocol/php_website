@@ -1508,7 +1508,7 @@ function fn___echo_in($in, $level, $in_parent_id = 0, $is_parent = false)
             ), array(), 0, 0, array(), 'COUNT(tr_id) as totals');
 
             //Show link to load these intents in Student Action Plans:
-            $ui .= '<a href="/ledger?cc=' . $in['in_id'] . '-' . $tr_id . '-4559" class="badge badge-primary is_not_bg" style="width:40px; margin-right:2px;" data-toggle="tooltip" title="' . $count_in_actionplans_complete[0]['totals'] . '/' . $count_in_actionplans[0]['totals'] . ' completed (or skipped) across all Action Plans" data-placement="top"><span class="btn-counter">' . round($count_in_actionplans_complete[0]['totals'] / $count_in_actionplans[0]['totals'] * 100) . '%</span><i class="far fa-flag" style="font-size:0.85em;"></i></a>';
+            $ui .= '<a href="/ledger?cc=' . $in['in_id'] . '-' . $tr_id . '" class="badge badge-primary is_not_bg" style="width:40px; margin-right:2px;" data-toggle="tooltip" title="' . $count_in_actionplans_complete[0]['totals'] . '/' . $count_in_actionplans[0]['totals'] . ' completed (or skipped) across all Action Plans" data-placement="top"><span class="btn-counter">' . round($count_in_actionplans_complete[0]['totals'] / $count_in_actionplans[0]['totals'] * 100) . '%</span><i class="far fa-flag" style="font-size:0.85em;"></i></a>';
 
         }
     }

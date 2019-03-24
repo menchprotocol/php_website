@@ -1192,8 +1192,15 @@ class Chat_model extends CI_Model
         }
 
 
-        //This is only true IF $actionplan_tr_id > 0 AND $in_id = Top level action plan intent!
-        $is_top_level_actionplan = false;
+
+        /*
+         *
+         * We assume false to start. This is only true
+         * IF $actionplan_tr_id > 0 AND $in_id is
+         * the top-level Action Plan Intent:
+         *
+         * */
+        $is_action_plan_intent = false;
 
 
         //Validate Action Plan if we have one:
@@ -1202,7 +1209,7 @@ class Chat_model extends CI_Model
             $actionplans = $this->Database_model->fn___tr_fetch(array(
                 'tr_id' => $actionplan_tr_id,
                 'tr_miner_entity_id' => $recipient_en['en_id'],
-                'tr_type_entity_id' => 4235, //Action Plan
+                'tr_type_entity_id' => 4235, //Action Plan Intent
                 'tr_status >=' => 0, //New+
             ), array('in_child'));
 
@@ -1224,7 +1231,7 @@ class Chat_model extends CI_Model
             }
 
             //Is this a top-level Action Plan intent?
-            $is_top_level_actionplan = ( $actionplans[0]['tr_child_intent_id'] == $in_id );
+            $is_action_plan_intent = ( $actionplans[0]['tr_child_intent_id'] == $in_id );
 
         }
 
@@ -1233,22 +1240,28 @@ class Chat_model extends CI_Model
 
         /*
          *
-         * Share Intent Notes if not the top-level Action Plan Intent.
-         * In that case the Intent Notes have already been distributed
-         * and we only need to give Students the next steps.
+         * Share Noted Intent Messages only if this is NOT a
+         * Action Plan intent because if it is, the messages
+         * have already been communicated to students to help
+         * them decide if they want to add this intention to
+         * their Action Plan.
          *
          * */
-        if(!$is_top_level_actionplan){
+        if(!$is_action_plan_intent){
 
-            //These messages all need to be sent first:
-            $messages_on_start = $this->Database_model->fn___tr_fetch(array(
+            /*
+             *
+             * This is an Action Plan Step or does not belong to
+             * an Action Plan at all, so we should go ahead
+             * and communicate its messages to the student:
+             *
+             * */
+
+            foreach ($this->Database_model->fn___tr_fetch(array(
                 'tr_status' => 2, //Published
                 'tr_type_entity_id' => 4231, //Intent Note Messages
                 'tr_child_intent_id' => $in_id,
-            ), array(), 0, 0, array('tr_order' => 'ASC'));
-
-            //Append only if this is an Action Plan Intent (Since we've already communicated them)
-            foreach ($messages_on_start as $message_tr) {
+            ), array(), 0, 0, array('tr_order' => 'ASC')) as $message_tr) {
 
                 //Dispatch message:
                 $this->Chat_model->fn___dispatch_message(
@@ -1264,7 +1277,88 @@ class Chat_model extends CI_Model
                 );
 
             }
+        }
 
+
+        //To be populated soon:
+        $next_step_message = null;
+        $quick_replies = array();
+
+
+        //Is this an OR intent?
+        if ($ins[0]['in_type']==1) {
+
+            /*
+             *
+             * YES! It's an OR intent.
+             *
+             * Note that the children of OR branches are NOT added
+             * to the student action plans until they make a selection.
+             * IF $actionplan_tr_id>0 then this is an OR branch within
+             * a current Action plan, in this case we will add the chosen
+             * intent as an Action Plan Step @4559 within $actionplan_tr_id.
+             * If $actionplan_tr_id=0, then the chosen path would be
+             * added as a new Action Plan Intent @4235.
+             *
+             * */
+
+            //Fetch children:
+            $in__children = $this->Database_model->fn___tr_fetch(array(
+                'tr_status >=' => 0, //New+
+                'in_status >=' => 0, //New+
+                'tr_type_entity_id IN (' . join(',', $this->config->item('en_ids_4486')) . ')' => null, //Intent Link Types
+                'tr_parent_intent_id' => $ins[0]['in_id'],
+            ), array('in_child'), 0, 0, array('tr_order' => 'ASC')); //Child intents must be ordered
+
+            if(count($in__children) > 0){
+
+                //Yes, this OR branch has children, give option to add to Action Plan:
+                $next_step_message = 'Select one of the following options to continue:';
+
+                foreach ($in__children as $counter => $or_child_in) {
+
+                    if ($counter == 10) {
+
+                        //Log error transaction so we can look into it:
+                        $this->Database_model->fn___tr_create(array(
+                            'tr_miner_entity_id' => 1, //Shervin/Developer
+                            'tr_content' => 'fn___compose_validate_message() encountered intent with too many children to be listed as OR Intent options! Trim and iterate that intent tree.',
+                            'tr_type_entity_id' => 4246, //Platform Error
+                            'tr_parent_transaction_id' => $actionplan_tr_id, //The action plan
+                            'tr_parent_intent_id' => $in_id,
+                            'tr_child_intent_id' => $or_child_in['in_id'],
+                        ));
+
+                        //Quick reply accepts 11 options max:
+                        break;
+                    }
+
+                    $next_step_message .= "\n\n" . ($counter + 1) . '/ ' . echo_in_outcome($or_child_in['in_outcome'], true);
+                    array_push($quick_replies, array(
+                        'content_type' => 'text',
+                        'title' => '/' . ($counter + 1),
+                        'payload' => 'CHOOSEOR_' . $actionplan_tr_id . '_' . $in_id . '_' . $or_child_in['in_id'],
+                    ));
+
+                }
+
+                //Dispatch messages:
+                $this->Chat_model->fn___dispatch_message(
+                    $next_step_message,
+                    $recipient_en,
+                    true,
+                    $quick_replies,
+                    array(
+                        'tr_parent_intent_id' => $actionplans[0]['in_id'], //Action Plan Intent
+                        'tr_child_intent_id' => $in_id, //Focus Intent
+                    )
+                );
+
+            } else {
+
+                //We would deal with this situation below only IF $actionplan_tr_id > 0
+
+            }
         }
 
 
@@ -1279,67 +1373,74 @@ class Chat_model extends CI_Model
         }
 
 
+
+
         /*
          *
-         * Let's append more messages to give Students a better
-         * understanding on what to do to move forward.
+         * At this point we'd only be dealing with AND intents
+         * within an Action Plan where $actionplan_tr_id > 0
+         * or we're deadling with an OR branch within an Action
+         * Plan that does not have any children, so we'd need to
+         * offer the next step forward.
          *
          * */
 
 
-        //Check the required notes as we'll use this later:
-        $message_in_requirements = $this->Matrix_model->fn___in_req_completion($ins[0]['in_requirement_entity_id'],$ins[0]['id_id'], $actionplan_tr_id);
+        //Check intent completion requirements IF AND branch:
+        if ($ins[0]['in_type']==0) {
 
-        //Do we have a Action Plan, if so, we need to add a next step message:
-        if ($message_in_requirements) {
+            //This is an AND intent, it might have completion requirements:
+            $message_in_requirements = $this->Matrix_model->fn___in_req_completion($ins[0]['in_requirement_entity_id'],$ins[0]['id_id'], $actionplan_tr_id);
 
-            //Let the user know what they need to do
-            //Completing this requirement of this intent is the next step:
-            $this->Chat_model->fn___dispatch_message(
-                $message_in_requirements,
-                $recipient_en,
-                true,
-                array(),
-                array(
-                    'tr_parent_intent_id' => $actionplans[0]['in_id'], //Action Plan Intent
-                    'tr_child_intent_id' => $in_id, //Focus Intent
-                )
-            );
+            //Do we have a Action Plan, if so, we need to add a next step message:
+            if ($message_in_requirements) {
 
-            return array(
-                'status' => 1,
-                'message' => 'Student must now complete intent requirements',
-            );
+                //Let the user know what they need to do
+                //Completing this requirement of this intent is the next step:
+                $this->Chat_model->fn___dispatch_message(
+                    $message_in_requirements,
+                    $recipient_en,
+                    true,
+                    array(),
+                    array(
+                        'tr_parent_intent_id' => $actionplans[0]['in_id'], //Action Plan Intent
+                        'tr_child_intent_id' => $in_id, //Focus Intent
+                    )
+                );
+
+                //Nothing more to do until student submits completion requirements:
+                return array(
+                    'status' => 1,
+                    'message' => 'Student must now complete intent requirements',
+                );
+            }
+
+
+            /*
+             *
+             * Still here? It either does not have requirements or
+             * the requirements have been completed by the Student
+             *
+             * Let's attempt to give direction on what's next...
+             *
+             * */
+
+            //Lets fetch incomplete children of $in_id within Action Plan $actionplan_tr_id
+            $actionplan_child_ins = $this->Database_model->fn___tr_fetch(array(
+                'tr_status IN (' . join(',', $this->config->item('tr_status_incomplete')) . ')' => null, //incomplete
+                'tr_type_entity_id' => 4559, //Action Plan Step
+                'tr_parent_transaction_id' => $actionplan_tr_id,
+                'tr_parent_intent_id' => $in_id,
+            ), array('in_child'));
 
         }
 
 
 
 
-        /*
-         *
-         * Still here? It either does not have requirements or
-         * the requirements have been completed by the Student
-         *
-         * Let's attempt to give direction on what's next...
-         *
-         * */
-
-        //To be populated soon:
-        $next_step_message = null;
-        $quick_replies = array();
 
 
-        //Lets fetch incomplete children of $in_id within Action Plan $actionplan_tr_id
-        $actionplan_child_ins = $this->Database_model->fn___tr_fetch(array(
-            'tr_status IN (' . join(',', $this->config->item('tr_status_incomplete')) . ')' => null, //incomplete
-            'tr_type_entity_id' => 4559, //Action Plan Step
-            'tr_parent_transaction_id' => $actionplan_tr_id,
-            'tr_parent_intent_id' => $in_id,
-        ), array('in_child'));
-
-
-        if (count($actionplan_child_ins) == 0) {
+        if ($ins[0]['in_type']==1 /* OR Intent with no children */ || count($actionplan_child_ins) <= 1 /* Action Plan AND Intent with 0-1 children */) {
 
             //No children! So there is a single path forward, the next intent in line:
             $next_ins = $this->Matrix_model->fn___actionplan_next_in($actionplan_tr_id);
@@ -1366,100 +1467,52 @@ class Chat_model extends CI_Model
 
             }
 
-        } elseif (count($actionplan_child_ins) == 1) {
-
-            //We 1 child intents, which means again that we have a single path forward...
-            $next_step_message .= 'The next step to ' . $ins[0]['in_outcome'] . ' is to ' . $actionplan_child_ins[0]['in_outcome'] . '.';
-            array_push($quick_replies, array(
-                'content_type' => 'text',
-                'title' => 'Ok Continue ▶️',
-                'payload' => 'MARKCOMPLETE_' . $actionplan_child_ins[0]['tr_id'],
-            ));
-
         } else {
 
-            //Re-affirm the outcome of the input Intent before listing children:
-            $this->Chat_model->fn___dispatch_message(
-                'Let’s ' . $ins[0]['in_outcome'] . '.',
-                $recipient_en,
-                true,
-                array(),
-                array(
-                    'tr_parent_intent_id' => $actionplans[0]['in_id'], //Action Plan Intent
-                    'tr_child_intent_id' => $in_id, //Focus Intent
-                )
-            );
+            /*
+             *
+             * This is an AND intent within an Action Plan
+             * that has 2 or more children.
+             *
+             * */
 
-            //We have multiple immediate children that need to be marked as complete...
-            //Let's see if the intent is ALL or ANY to know how to present these children:
-            if (intval($ins[0]['in_type'])) {
 
-                //Note that ANY nodes cannot require a written response or a URL
-                //User needs to choose one of the following:
-                $next_step_message .= 'Choose one of these ' . count($actionplan_child_ins) . ' options to ' . $ins[0]['in_outcome'] . ':';
-                foreach ($actionplan_child_ins as $counter => $or_child_in) {
-                    if ($counter == 10) {
+            //User needs to complete all children, and we'd recommend the first item as their next step:
+            $next_step_message .= 'Here are ' . count($actionplan_child_ins) . ' steps to ' . echo_in_outcome($ins[0]['in_outcome'], true) . ':';
 
-                        //Log error transaction so we can look into it:
-                        $this->Database_model->fn___tr_create(array(
-                            'tr_miner_entity_id' => 1, //Shervin/Developer
-                            'tr_content' => 'fn___compose_validate_message() encountered intent with too many children to be listed as OR Intent options! Trim and iterate that intent tree.',
-                            'tr_type_entity_id' => 4246, //Platform Error
-                            'tr_parent_transaction_id' => $actionplan_tr_id, //The action plan
-                            'tr_parent_intent_id' => $in_id,
-                            'tr_child_intent_id' => $or_child_in['in_id'],
-                        ));
+            foreach ($actionplan_child_ins as $counter => $and_child_in) {
 
-                        //Quick reply accepts 11 options max:
-                        break;
+                if ($counter == 0) {
 
-                    }
-                    $next_step_message .= "\n\n" . ($counter + 1) . '/ ' . $or_child_in['in_outcome'];
                     array_push($quick_replies, array(
                         'content_type' => 'text',
-                        'title' => '/' . ($counter + 1),
-                        'payload' => 'CHOOSEOR_' . $actionplan_tr_id . '_' . $in_id . '_' . $or_child_in['in_id'],
+                        'title' => 'Start Step 1 ▶️',
+                        'payload' => 'MARKCOMPLETE_' . $and_child_in['tr_id'],
                     ));
+
                 }
 
-            } else {
+                //We know that the $next_step_message length cannot surpass the limit defined by fb_max_message variable!
+                //make sure message is within range:
+                if (strlen($next_step_message) < ($this->config->item('fb_max_message') - 200 /* Cushion for appendix messages */)) {
 
-                //User needs to complete all children, and we'd recommend the first item as their next step:
-                $next_step_message .= 'There are ' . count($actionplan_child_ins) . ' steps to ' . $ins[0]['in_outcome'] . ':';
+                    //Add message:
+                    $next_step_message .= "\n\n" . 'Step ' . ($counter + 1) . ': ' . $and_child_in['in_outcome'];
 
-                foreach ($actionplan_child_ins as $counter => $and_child_in) {
+                } else {
 
-                    if ($counter == 0) {
+                    //We cannot add any more, indicate truncating:
+                    $remainder = count($actionplan_child_ins) - $counter;
+                    $next_step_message .= "\n\n" . 'And ' . $remainder . ' more step' . fn___echo__s($remainder) . '!';
+                    break;
 
-                        array_push($quick_replies, array(
-                            'content_type' => 'text',
-                            'title' => 'Start Step 1 ▶️',
-                            'payload' => 'MARKCOMPLETE_' . $and_child_in['tr_id'],
-                        ));
-
-                    }
-
-                    //We know that the $next_step_message length cannot surpass the limit defined by fb_max_message variable!
-                    //make sure message is within range:
-                    if (strlen($next_step_message) < ($this->config->item('fb_max_message') - 200 /* Cushion for appendix messages */)) {
-
-                        //Add message:
-                        $next_step_message .= "\n\n" . 'Step ' . ($counter + 1) . ': ' . $and_child_in['in_outcome'];
-
-                    } else {
-
-                        //We cannot add any more, indicate truncating:
-                        $remainder = count($actionplan_child_ins) - $counter;
-                        $next_step_message .= "\n\n" . 'And ' . $remainder . ' more step' . fn___echo__s($remainder) . '!';
-                        break;
-
-                    }
                 }
-
             }
 
 
-            if(!$is_top_level_actionplan){
+
+
+            if(!$is_action_plan_intent){
 
                 //Give option to skip:
                 $actionplan_parents = $this->Database_model->fn___tr_fetch(array(
@@ -1672,7 +1725,7 @@ class Chat_model extends CI_Model
 
                 //Remove all Action Plans:
                 $actionplans = $this->Database_model->fn___tr_fetch(array(
-                    'tr_type_entity_id' => 4235, //Action Plans
+                    'tr_type_entity_id' => 4235, //Action Plan Intent
                     'tr_miner_entity_id' => $en['en_id'], //Belongs to this Student
                     'tr_status IN (0,1,2)' => null, //Actively drafting (Status 2 is syncing updates, and they want out)
                 ));
@@ -1696,7 +1749,7 @@ class Chat_model extends CI_Model
 
                 //User wants to Remove a specific Action Plan, validate it:
                 $actionplans = $this->Database_model->fn___tr_fetch(array(
-                    'tr_type_entity_id' => 4235, //Action Plan
+                    'tr_type_entity_id' => 4235, //Action Plan Intent
                     'tr_miner_entity_id' => $en['en_id'], //Belongs to this Student
                     'tr_child_intent_id' => intval($action_unsubscribe),
                 ), array('en_child'));
@@ -1861,7 +1914,7 @@ class Chat_model extends CI_Model
 
                     //Let Student know that they have already subscribed to this intention:
                     $this->Chat_model->fn___dispatch_message(
-                        'The intention to ' . $ins[0]['in_outcome'] . ' has already been added to your Action Plan. We have been working on it together since ' . fn___echo_time_date($actionplans[0]['tr_timestamp'], true) . '. /link:See in 🚩Action Plan:https://mench.com/my/actionplan/' . ( $actionplans[0]['tr_type_entity_id']==4235 ? $actionplans[0]['tr_id'] : $actionplans[0]['tr_parent_transaction_id'] ) . '/' . $actionplans[0]['tr_child_intent_id'],
+                        'The intention to ' . $ins[0]['in_outcome'] . ' has already been added to your Action Plan. We have been working on it together since ' . fn___echo_time_date($actionplans[0]['tr_timestamp'], true) . '. /link:See in 🚩Action Plan:https://mench.com/my/actionplan/' . ( $actionplans[0]['tr_type_entity_id']==4235 /* Action Plan Intent*/ ? $actionplans[0]['tr_id'] : $actionplans[0]['tr_parent_transaction_id'] ) . '/' . $actionplans[0]['tr_child_intent_id'],
                         $en,
                         true,
                         array(),
@@ -1875,13 +1928,11 @@ class Chat_model extends CI_Model
                     //Do final confirmation by giving Student more context on this intention before adding to their Action Plan...
 
                     //Send all Intent Note Messages for this intention so they can review it:
-                    $messages_on_start = $this->Database_model->fn___tr_fetch(array(
+                    foreach ($this->Database_model->fn___tr_fetch(array(
                         'tr_status' => 2, //Published
                         'tr_type_entity_id' => 4231, //Intent Note Messages
                         'tr_child_intent_id' => $ins[0]['in_id'],
-                    ), array(), 0, 0, array('tr_order' => 'ASC'));
-
-                    foreach ($messages_on_start as $tr) {
+                    ), array(), 0, 0, array('tr_order' => 'ASC')) as $tr) {
                         $this->Chat_model->fn___dispatch_message(
                             $tr['tr_content'],
                             $en,
@@ -1939,14 +1990,14 @@ class Chat_model extends CI_Model
                 //Add intent to Student's Action Plan:
                 $actionplan = $this->Database_model->fn___tr_create(array(
 
-                    'tr_type_entity_id' => 4235, //Action Plan
+                    'tr_type_entity_id' => 4235, //Action Plan Intent
                     'tr_status' => 0, //New
                     'tr_miner_entity_id' => $en['en_id'], //Belongs to this Student
 
                     'tr_child_intent_id' => $ins[0]['in_id'], //The Intent they are adding
 
                     'tr_order' => 1 + $this->Database_model->fn___tr_max_order(array( //Place this intent at the end of all intents the Student is drafting...
-                        'tr_type_entity_id' => 4235, //Action Plan
+                        'tr_type_entity_id' => 4235, //Action Plan Intent
                         'tr_status IN (' . join(',', $this->config->item('tr_status_incomplete')) . ')' => null, //incomplete
                         'tr_miner_entity_id' => $en['en_id'], //Belongs to this Student
                     )),
@@ -2354,7 +2405,7 @@ class Chat_model extends CI_Model
             //They seem to want to unsubscribe
             //List their Action Plans:
             $actionplans = $this->Database_model->fn___tr_fetch(array(
-                'tr_type_entity_id' => 4235, //Intents added to the action plan
+                'tr_type_entity_id' => 4235, //Action Plan Intent
                 'tr_miner_entity_id' => $en['en_id'], //Belongs to this Student
                 'tr_status IN (0,1,2)' => null, //Actively drafting
             ), array('in_child'), 10 /* Max quick replies allowed */, 0, array('tr_order' => 'ASC'));
@@ -2563,7 +2614,7 @@ class Chat_model extends CI_Model
             //Do they have an Action Plan that they are drafting?
             //If so, we can recommend the next step within that Action Plan...
             $actionplans = $this->Database_model->fn___tr_fetch(array(
-                'tr_type_entity_id' => 4235, //Action Plan
+                'tr_type_entity_id' => 4235, //Action Plan Intent
                 'tr_miner_entity_id' => $en['en_id'], //Belongs to this Student
                 'tr_status IN (' . join(',', $this->config->item('tr_status_incomplete')) . ')' => null, //incomplete
             ), array('in_child'), 1, 0, array('tr_order' => 'ASC'));

@@ -553,7 +553,7 @@ class Messenger extends CI_Controller
             $filters['tr_child_intent_id'] = $in_id;
         } elseif (!$empty_session) {
             //Yes! It seems to be a desktop login (versus Facebook Messenger)
-            $filters['tr_type_entity_id'] = 4235; //Action Plan
+            $filters['tr_type_entity_id'] = 4235; //Action Plan Intent
             $filters['tr_miner_entity_id'] = $session_en['en_id'];
             $filters['tr_status >='] = 0;
         }
