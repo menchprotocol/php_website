@@ -911,6 +911,11 @@ class Chat_model extends CI_Model
 
         if ($fb_messenger_format) {
 
+
+            if(count($quick_replies) > 0){
+                //TODO Validate $quick_replies content?
+            }
+
             //Do we have a text message?
             if ($has_text || $fb_button_title) {
 
@@ -946,6 +951,10 @@ class Chat_model extends CI_Model
                         'metadata' => 'system_logged', //Prevents duplicate Transaction logs
                     );
 
+                    if(count($quick_replies) > 0){
+                        $fb_message['quick_replies'] = $quick_replies;
+                    }
+
                 }
 
                 //Add to output message:
@@ -964,11 +973,9 @@ class Chat_model extends CI_Model
             }
 
 
-            if (count($quick_replies) > 0) {
+            if (!$has_text && count($quick_replies) > 0) {
 
-                //TODO Validate $quick_replies content?
-
-                //Append quick reply option:
+                //We have a quick reply without a text, so append a generix text message as its required to have one:
                 array_push($output_messages, array(
                     'message_type' => 4552, //Text Message Sent
                     'message_body' => array(
@@ -976,7 +983,7 @@ class Chat_model extends CI_Model
                             'id' => $recipient_en['en_psid'],
                         ),
                         'message' => array(
-                            'text' => '', //Generic/fixed message
+                            'text' => 'Select an option to continue:', //Generic/fixed message
                             'quick_replies' => $quick_replies,
                             'metadata' => 'system_logged', //Prevents duplicate Transaction logs
                         ),
