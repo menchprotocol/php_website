@@ -1132,7 +1132,7 @@ class Entities extends CI_Controller
                 header('Location: /intents/' . $this->config->item('in_miner_start'));
             } else {
                 //Student default:
-                header('Location: /my/actionplan');
+                header('Location: /messenger/actionplan');
             }
         }
     }

@@ -16,7 +16,7 @@ if ((isset($session_en['en__actionplans']) && count($session_en['en__actionplans
     //Fetch page instantly as we know who this is:
     ?>
     <script>
-        $.post("/my/display_actionplan/0/<?= ( isset($actionplan_tr_id) ? $actionplan_tr_id : $session_en['en__actionplans'][0]['tr_id']) ?>/<?= (isset($in_id) ? intval($in_id) : $session_en['en__actionplans'][0]['tr_child_intent_id']) ?>", {}, function (data) {
+        $.post("/messenger/display_actionplan/0/<?= ( isset($actionplan_tr_id) ? $actionplan_tr_id : $session_en['en__actionplans'][0]['tr_id']) ?>/<?= (isset($in_id) ? intval($in_id) : $session_en['en__actionplans'][0]['tr_child_intent_id']) ?>", {}, function (data) {
             $("#page_content").html(data);
 
             //Load tooldip:
@@ -51,7 +51,7 @@ if ((isset($session_en['en__actionplans']) && count($session_en['en__actionplans
                     var psid = thread_context.psid;
                     var signed_request = thread_context.signed_request;
                     //Fetch Page:
-                    $.post("/my/display_actionplan/" + psid + "/<?= (isset($actionplan_tr_id) ? intval($actionplan_tr_id) : 0) ?>/<?= (isset($in_id) ? intval($in_id) : 0) ?>?sr=" + signed_request, {}, function (data) {
+                    $.post("/messenger/display_actionplan/" + psid + "/<?= (isset($actionplan_tr_id) ? intval($actionplan_tr_id) : 0) ?>/<?= (isset($in_id) ? intval($in_id) : 0) ?>?sr=" + signed_request, {}, function (data) {
                         //Update UI to confirm with user:
                         $("#page_content").html(data);
                     });
@@ -59,7 +59,7 @@ if ((isset($session_en['en__actionplans']) && count($session_en['en__actionplans
                 function error(err) {
 
                     //Give them instructions on how to access via mench.co:
-                    $("#page_content").html('<div class="alert alert-info" role="alert" style="line-height:110%;"><i class="fas fa-exclamation-triangle"></i> To access your Action Plan you need to <a href="https://mench.com/login?url=<?= urlencode($_SERVER['REQUEST_URI']) ?>" style="font-weight:bold;">Sign In</a>. Use [Forgot Password] if you never logged in before.</div>');
+                    $("#page_content").html('<div class="alert alert-info" role="alert" style="line-height:110%;"><i class="fas fa-exclamation-triangle"></i> To access your Action Plan you need to <a href="https://mench.com/login?url=<?= urlencode($_SERVER['REQUEST_URI']) ?>" style="font-weight:bold;">Sign In</a>. Use [Forgot Password] if you never signed in before.</div>');
 
                 }
             );

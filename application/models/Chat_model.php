@@ -1953,7 +1953,7 @@ class Chat_model extends CI_Model
 
                     //Let Student know that they have already subscribed to this intention:
                     $this->Chat_model->fn___dispatch_message(
-                        'The intention to ' . $ins[0]['in_outcome'] . ' has already been added to your Action Plan. We have been working on it together since ' . fn___echo_time_date($actionplans[0]['tr_timestamp'], true) . '. /link:See in 🚩Action Plan:https://mench.com/my/actionplan/' . ( $actionplans[0]['tr_type_entity_id']==4235 /* Action Plan Intent*/ ? $actionplans[0]['tr_id'] : $actionplans[0]['tr_parent_transaction_id'] ) . '/' . $actionplans[0]['tr_child_intent_id'],
+                        'The intention to ' . $ins[0]['in_outcome'] . ' has already been added to your Action Plan. We have been working on it together since ' . fn___echo_time_date($actionplans[0]['tr_timestamp'], true) . '. /link:See in 🚩Action Plan:https://mench.com/messenger/actionplan/' . ( $actionplans[0]['tr_type_entity_id']==4235 /* Action Plan Intent*/ ? $actionplans[0]['tr_id'] : $actionplans[0]['tr_parent_transaction_id'] ) . '/' . $actionplans[0]['tr_child_intent_id'],
                         $en,
                         true,
                         array(),
@@ -2018,7 +2018,7 @@ class Chat_model extends CI_Model
             //Student has requested to add this intention to their Action Plan:
             $in_id = intval(fn___one_two_explode('SUBSCRIBE-CONFIRM_', '', $quick_reply_payload));
 
-            //Validate Intent ID:
+            //Validate Intent ID and ensure it's published:
             $ins = $this->Database_model->fn___in_fetch(array(
                 'in_id' => $in_id,
                 'in_status' => 2, //Published
@@ -2047,7 +2047,7 @@ class Chat_model extends CI_Model
 
                     //Confirm with them that we're now ready:
                     $this->Chat_model->fn___dispatch_message(
-                        'Success! I added the intention to ' . $ins[0]['in_outcome'] . ' to your Action Plan 🙌 /link:Open 🚩Action Plan:https://mench.com/my/actionplan/' . $actionplan['tr_id'] . '/' . $ins[0]['in_id'],
+                        'Success! I added the intention to ' . $ins[0]['in_outcome'] . ' to your Action Plan 🙌 /link:Open 🚩Action Plan:https://mench.com/messenger/actionplan/' . $actionplan['tr_id'] . '/' . $ins[0]['in_id'],
                         $en,
                         true,
                         array(),
@@ -2219,7 +2219,7 @@ class Chat_model extends CI_Model
                     $this->Matrix_model->actionplan_skip_recursive_down($tr_id);
 
                     //Confirm the skip:
-                    $message = 'Confirmed, I marked this section as skipped. You can always re-visit these steps in your Action Plan and complete them at any time. /link:See in 🚩Action Plan:https://mench.com/my/actionplan/' . $actionplans[0]['tr_parent_transaction_id'] . '/' . $actionplans[0]['tr_child_intent_id'];
+                    $message = 'Confirmed, I marked this section as skipped. You can always re-visit these steps in your Action Plan and complete them at any time. /link:See in 🚩Action Plan:https://mench.com/messenger/actionplan/' . $actionplans[0]['tr_parent_transaction_id'] . '/' . $actionplans[0]['tr_child_intent_id'];
 
                 }
 

@@ -152,7 +152,7 @@ body.grey-bg {
     background-color: transparent;
     border-bottom: 1px solid #ddd;
     padding: 0px 10px 0px 0px;
-    font-size: 0.85em;
+    font-size: 0.9em;
 }
 
 .add-msg {
@@ -190,6 +190,7 @@ body.grey-bg {
 .panel-primary > .panel-heading + .panel-collapse > .panel-body {
     border-top-color: #337ab7;
     margin-bottom: 20px;
+    font-size: 1.1em !important;
 }
 
 .skippable a {
@@ -1938,6 +1939,11 @@ input.form-control, textarea.form-control, select {
 
 #funnel .list-group-item {
     padding: 10px 5px 8px;
+    margin-bottom: 3px;
+}
+
+.parent-actionplans .list-group-item {
+    padding: 10px 5px 13px !important;
 }
 
 #funnel .list-group {

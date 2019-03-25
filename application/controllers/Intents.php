@@ -14,7 +14,7 @@ class Intents extends CI_Controller
 
 
 
-    function recursive($in_id=6623, $direction_is_downward = 1, $add_actionplan = 0){
+    function recursive($in_id=7463, $add_actionplan = 0, $direction_is_downward = 1){
 
         if($add_actionplan){
             $actionplan = $this->Database_model->fn___tr_create(array(
@@ -482,7 +482,7 @@ class Intents extends CI_Controller
                 //Does it required a recursive tree update?
                 if ($key == 'in_seconds_cost') {
 
-                    $in_metadata_modify['in__tree_min_seconds_cost'] = intval($_POST[$key]) - ( isset($in_metadata['in__tree_min_seconds_cost']) ? intval($in_metadata['in__tree_min_seconds_cost']) : 0 );
+                    $in_metadata_modify['in__tree_min_seconds'] = intval($_POST[$key]) - ( isset($in_metadata['in__tree_min_seconds']) ? intval($in_metadata['in__tree_min_seconds']) : 0 );
                     $in_metadata_modify['in__tree_max_seconds'] = intval($_POST[$key]) - ( isset($in_metadata['in__tree_max_seconds']) ? intval($in_metadata['in__tree_max_seconds']) : 0 );
 
                 } elseif ($key == 'in_dollar_cost') {

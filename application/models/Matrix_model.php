@@ -85,7 +85,7 @@ class Matrix_model extends CI_Model
 
             //Inform user that they are now complete with all steps:
             $this->Chat_model->fn___dispatch_message(
-                'Congratulations for completing your Action Plan 🎉 Over time I will keep sharing new steps that will help you to ' . $actionplans[0]['in_outcome'] . ' 🙌 You can, at any time, stop updates on your Action Plans by saying "unsubscribe".',
+                'You completed all the steps to ' . $actionplans[0]['in_outcome'] . ' 🙌 I will keep you updated on new steps and you can at any time stop these updates by saying "unsubscribe".',
                 array('en_id' => $actionplans[0]['tr_parent_entity_id']),
                 true,
                 array(),
@@ -846,7 +846,7 @@ class Matrix_model extends CI_Model
 
         //Give clear directions to complete if Action Plan ID is provided...
         if ($actionplan_tr_id > 0 && $in_id > 0) {
-            $message .= ', which you can submit using your Action Plan. /link:See in 🚩Action Plan:https://mench.com/my/actionplan/' . $actionplan_tr_id . '/' . $in_id;
+            $message .= ', which you can submit using your Action Plan. /link:See in 🚩Action Plan:https://mench.com/messenger/actionplan/' . $actionplan_tr_id . '/' . $in_id;
         }
 
         //Return Student-friendly message for completion requirements:
@@ -1308,6 +1308,12 @@ class Matrix_model extends CI_Model
         //Set the current intent:
         $this_in = $ins[0];
 
+        //Terminate Action Plan Step adding for conditional intent links and unpublished intents:
+        $is_conditional = (isset($this_in['tr_type_entity_id']) && $this_in['tr_type_entity_id']==4229);
+        $is_unpublished = ($this_in['in_status'] < 2);
+        if (count($actionplan) > 0 && ($is_conditional || $is_unpublished)) {
+            return false;
+        }
 
         //Always add intent to the flat intent tree which is part of the metadata:
         array_push($metadata_this['in_flat_tree'], intval($in_id));
@@ -1330,7 +1336,7 @@ class Matrix_model extends CI_Model
                 $this->Database_model->fn___tr_create(array(
                     'tr_status' => 0, //New
                     'tr_type_entity_id' => 4559, //Action Plan Step
-                    'tr_miner_entity_id' => $actionplan['tr_parent_entity_id'], //Action Plan owner
+                    'tr_miner_entity_id' => $actionplan['tr_miner_entity_id'], //Action Plan owner
                     'tr_parent_intent_id' => $this_in['tr_parent_intent_id'],
                     'tr_child_intent_id' => $this_in['tr_child_intent_id'],
                     'tr_order' => $this_in['tr_order'],
@@ -1342,7 +1348,7 @@ class Matrix_model extends CI_Model
         }
 
 
-        //Terminate at OR branches for Action Plan caching
+        //Terminate OR branches for Action Plan caching:
         if ($this_in['in_type']==1 && count($actionplan) > 0) {
             /*
              *
@@ -1405,10 +1411,8 @@ class Matrix_model extends CI_Model
                     $recursion = $this->Matrix_model->fn___in_fetch_recursive($current_in['in_id'], $direction_is_downward, $update_metadata, $actionplan, $current_in, $metadata_this);
 
                     if (!$recursion) {
-                        //There was an infinity-loop break:
-                        return false;
+                        continue;
                     }
-
 
                     //Addup if any:
                     $metadata_this['___tree_active_count'] += $recursion['___tree_active_count'];
@@ -1687,7 +1691,7 @@ class Matrix_model extends CI_Model
             //Update DB only if any of these metadata fields have changed:
             $metadata = unserialize($this_in['in_metadata']);
             if (!(
-                intval($this_in['___tree_min_seconds_cost']) == intval(@$metadata['in__tree_min_seconds_cost']) &&
+                intval($this_in['___tree_min_seconds_cost']) == intval(@$metadata['in__tree_min_seconds']) &&
                 intval($this_in['___tree_max_seconds']) == intval(@$metadata['in__tree_max_seconds']) &&
                 number_format($this_in['___tree_min_cost'], 2) == number_format(@$metadata['in__tree_min_cost'], 2) &&
                 number_format($this_in['___tree_max_cost'], 2) == number_format(@$metadata['in__tree_max_cost'], 2) &&
@@ -1703,7 +1707,7 @@ class Matrix_model extends CI_Model
                 //Something was not up to date, let's update:
                 if ($this->Matrix_model->fn___metadata_update('in', $this_in['in_id'], array(
 
-                    'in__tree_min_seconds_cost' => intval($this_in['___tree_min_seconds_cost']),
+                    'in__tree_min_seconds' => intval($this_in['___tree_min_seconds_cost']),
                     'in__tree_max_seconds' => intval($this_in['___tree_max_seconds']),
 
                     'in__tree_min_cost' => number_format($this_in['___tree_min_cost'], 2),
@@ -2346,7 +2350,7 @@ class Matrix_model extends CI_Model
         if(!$fetched_fb_info){
             //Let them know to complete their profile:
             $this->Chat_model->fn___dispatch_message(
-                'Hi stranger! Let\'s get started by completing your profile information by opening the My Account tab in the menu below. /link:Open 👤My Account:https://mench.com/my/account',
+                'Hi stranger! Let\'s get started by completing your profile information by opening the My Account tab in the menu below. /link:Open 👤My Account:https://mench.com/messenger/account',
                 $added_en['en'],
                 true
             );

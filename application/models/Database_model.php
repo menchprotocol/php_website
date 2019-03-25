@@ -177,6 +177,8 @@ class Database_model extends CI_Model
 
         if (fn___detect_missing_columns($insert_columns, array('tr_type_entity_id', 'tr_miner_entity_id'))) {
             return false;
+        } elseif(intval($insert_columns['tr_miner_entity_id']) < 1){
+            return false;
         }
 
         //Unset un-allowed columns to be manually added:

@@ -4,12 +4,12 @@
 $on_start_messages = $this->Database_model->fn___tr_fetch(array(
     'tr_status' => 2, //Published
     'tr_type_entity_id' => 4231, //Intent Note Messages
-    'tr_child_intent_id' => $value['in_id'],
+    'tr_child_intent_id' => $in['in_id'],
 ), array(), 0, 0, array('tr_order' => 'ASC'));
 
 
 //Fetch completion requirements for this intent:
-$message_in_requirements = $this->Matrix_model->fn___in_req_completion($value['in_requirement_entity_id']);
+$message_in_requirements = $this->Matrix_model->fn___in_req_completion($in['in_requirement_entity_id']);
 
 
 $has_children = (count($actionplan_children) > 0);
@@ -38,7 +38,7 @@ if ($actionplan['tr_status'] == 1) {
             //$next_button = '<span style="font-size: 0.7em; padding-left:5px; display:inline-block;"><i class="fas fa-shield-check"></i> This is the next-in-line intent</span>';
             $next_button = null;
         } else {
-            $next_button = '<a href="/my/actionplan/' . $next_ins[0]['tr_parent_transaction_id'] . '/' . $next_ins[0]['in_id'] . '" class="btn ' . (count($actionplan_parents) == 1 && !$show_written_input && !$is_incomplete ? 'btn-md btn-primary' : 'btn-xs btn-black') . '" data-toggle="tooltip" data-placement="top" title="Next intent-in-line is to ' . $next_ins[0]['in_outcome'] . '">Next-in-line <i class="fas fa-angle-right"></i></a>';
+            $next_button = '<a href="/messenger/actionplan/' . $next_ins[0]['tr_parent_transaction_id'] . '/' . $next_ins[0]['in_id'] . '" class="btn ' . (count($actionplan_parents) == 1 && !$show_written_input && !$is_incomplete ? 'btn-md btn-primary' : 'btn-xs btn-black') . '" data-toggle="tooltip" data-placement="top" title="Next intent-in-line is to ' . $next_ins[0]['in_outcome'] . '">Next-in-line <i class="fas fa-angle-right"></i></a>';
         }
     }
 }
@@ -47,9 +47,9 @@ if ($actionplan['tr_status'] == 1) {
 echo '<script src="/js/custom/actionplan-master-js.js?v=v' . $this->config->item('app_version') . '" type="text/javascript"></script>';
 
 //Fetch parent tree all the way to the top of Action Plan tr_child_intent_id
-echo '<div class="list-group" style="margin-top: 10px;">';
-foreach ($actionplan_parents as $k) {
-    echo echo_actionplan_step($k, 1);
+echo '<div class="list-group parent-actionplans" style="margin-top: 10px;">';
+foreach ($actionplan_parents as $tr) {
+    echo echo_in_actionplan_step($tr, 1);
 }
 echo '</div>';
 
@@ -64,9 +64,8 @@ if (count($actionplan_parents) == 0) {
 
     //This must be top level Action Plan, show Action Plan data:
     echo '<div class="sub_title">';
-    echo fn___echo_fixed_fields('tr_status', $actionplan['tr_status']);
-    echo ' &nbsp;&nbsp;<i class="fas fa-calendar-check"></i> ' . fn___echo_time_difference($actionplan['tr_timestamp']) . ' ago';
-    //TODO show Action Plan pace data such as start/end time, weekly rate & notification type
+    echo fn___echo_fixed_fields('tr_student_status', $actionplan['tr_status']);
+    echo ' &nbsp;&nbsp;<i class="fas fa-calendar-check"></i> ' . fn___echo_time_range($in);
     echo '</div>';
 
 } elseif (count($actionplan_parents) == 1) {
@@ -76,14 +75,13 @@ if (count($actionplan_parents) == 0) {
     //Show completion progress for the single parent intent:
     echo '<div class="sub_title">';
 
-    echo fn___echo_fixed_fields('tr_status', $actionplan_parents[0]['tr_status']);
+    echo fn___echo_fixed_fields('tr_student_status', $actionplan_parents[0]['tr_status']);
 
-    //Either show completion time or when it was completed:
-    if ($actionplan_parents[0]['tr_timestamp']) {
-        echo ' &nbsp;&nbsp;<i class="fas fa-calendar-check"></i> ' . fn___echo_time_difference($actionplan_parents[0]['tr_timestamp']) . ' ago';
-    } else {
+    //Show completion estimate if any:
+    if($in['in_seconds_cost'] > 0){
         echo ' &nbsp;&nbsp;<i class="fal fa-clock"></i> ' . fn___echo_time_hours($in['in_seconds_cost']) . ' to complete';
     }
+
 
     if (strlen($actionplan_parents[0]['tr_content']) > 0) {
         echo '<div style="margin:15px 0 0 3px;"><i class="fas fa-edit"></i> ' . fn___echo_link(nl2br(htmlentities($actionplan_parents[0]['tr_content']))) . '</div>';
@@ -100,11 +98,9 @@ if (count($on_start_messages) > 0) {
     echo '<div class="tips_content message_content left-grey" style="display: ' . ($hide_messages ? 'none' : 'block') . ';">';
     echo '<h5 class="badge badge-hy"><i class="fas fa-comment-dots"></i> ' . count($on_start_messages) . ' Message' . fn___echo__s(count($on_start_messages)) . ':</h5>';
     foreach ($on_start_messages as $tr) {
-        if ($tr['tr_status'] == 1) {
-            echo '<div class="tip_bubble">';
-            echo $this->Chat_model->fn___dispatch_message($tr['tr_content'], $actionplan);
-            echo '</div>';
-        }
+        echo '<div class="tip_bubble">';
+        echo $this->Chat_model->fn___dispatch_message($tr['tr_content'], $actionplan);
+        echo '</div>';
     }
     echo '</div>';
 
@@ -124,11 +120,9 @@ if (count($actionplan_parents) == 1 && ($message_in_requirements || (!intval($in
     }
 
     echo '<div class="left-grey">';
-    echo '<form method="POST" action="/my/update_k_save">';
+    echo '<form method="POST" action="/messenger/update_k_save">';
 
     echo '<input type="hidden" name="tr_id"  value="' . $actionplan_parents[0]['tr_id'] . '" />';
-
-    //echo '<input type="hidden" name="k_key" value="'.md5($actionplan_parents[0]['tr_id'].'k_key_SALT555').'" />'; //TODO Wire in for more security?!
 
     echo '<div class="toggle_text" style="' . ($show_written_input ? '' : 'display:none; ') . '">';
     if ($message_in_requirements) {
@@ -157,7 +151,7 @@ if ($has_children && $list_children) {
     echo '<h5 class="badge badge-hy">' . ($in['in_type'] ? '<i class="fas fa-code-merge"></i> Choose One' : '<i class="fas fa-sitemap"></i> Complete All') . ':</h5>';
     echo '<div class="list-group">';
     foreach ($actionplan_children as $k) {
-        echo echo_actionplan_step($k, 0, ($in['in_type'] && $k['tr_status'] == 0 ? $in['in_id'] : 0));
+        echo echo_in_actionplan_step($k, 0, ($in['in_type'] && $k['tr_status'] == 0 ? $in['in_id'] : 0));
     }
     echo '</div>';
     echo '</div>';

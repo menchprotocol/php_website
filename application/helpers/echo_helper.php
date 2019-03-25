@@ -602,12 +602,12 @@ function fn___echo_tr_row($tr, $is_inner = false)
     return $ui;
 }
 
-function echo_actionplan_step($k, $is_parent, $in_type_tr_parent_intent_id = 0)
+function echo_in_actionplan_step($tr, $is_parent, $in_type_tr_parent_intent_id = 0)
 {
 
     $CI =& get_instance();
 
-    $ui = '<a href="' . ($in_type_tr_parent_intent_id ? '/my/choose_or_path/' . $k['tr_id'] . '/' . $in_type_tr_parent_intent_id . '/' . $k['in_id'] . '/' . md5($k['tr_id'] . $CI->config->item('actionplan_salt') . $k['in_id'] . $in_type_tr_parent_intent_id) : '/my/actionplan/' . $k['tr_parent_transaction_id'] . '/' . $k['in_id']) . '" class="list-group-item">';
+    $ui = '<a href="' . ($in_type_tr_parent_intent_id ? '/messenger/choose_or_path/' . $tr['tr_id'] . '/' . $in_type_tr_parent_intent_id . '/' . $tr['in_id'] . '/' . md5($tr['tr_id'] . $CI->config->item('actionplan_salt') . $tr['in_id'] . $in_type_tr_parent_intent_id) : '/messenger/actionplan/' . $tr['tr_parent_transaction_id'] . '/' . $tr['in_id']) . '" class="list-group-item">';
 
     //Different pointer position based on direction:
     if ($is_parent) {
@@ -625,13 +625,13 @@ function echo_actionplan_step($k, $is_parent, $in_type_tr_parent_intent_id = 0)
             $ui .= '<span class="status-label" style="padding-bottom:1px;"><i class="fal fa-circle"></i> </span>';
         } else {
             //Proper status:
-            $ui .= fn___echo_fixed_fields('tr_status', $k['tr_status'], 1, 'right');
+            $ui .= fn___echo_fixed_fields('tr_student_status', $tr['tr_status'], 1, 'right');
         }
     }
 
-    $ui .= ' ' . $k['in_outcome'];
-    if (strlen($k['tr_content']) > 0) {
-        $ui .= ' <i class="fas fa-edit"></i> ' . htmlentities($k['tr_content']);
+    $ui .= ' ' . $tr['in_outcome'];
+    if (strlen($tr['tr_content']) > 0) {
+        $ui .= ' <i class="fas fa-edit"></i> ' . htmlentities($tr['tr_content']);
     }
 
     $ui .= '</a>';
@@ -839,7 +839,7 @@ function fn___echo_tree_references($in, $fb_messenger_format = false, $expand_mo
             <div class="panel-heading" role="tab" id="heading' . $id . '">
                 <h4 class="panel-title">
                     <a role="button" data-toggle="collapse" data-parent="#open' . $id . '" href="#collapse' . $id . '" aria-expanded="' . ($expand_mode ? 'true' : 'false') . '" aria-controls="collapse' . $id . '">
-                        <i class="fas" style="transform:none !important;">⭐</i> ' . $pitch_title . '<i class="fal fa-info-circle" style="transform:none !important; font-size:0.85em !important;"></i>
+                        <i class="fas" style="transform:none !important;"><i class="fas fa-star" style="transform:none !important;"></i></i> ' . $pitch_title . '<i class="fal fa-info-circle" style="transform:none !important; font-size:0.85em !important;"></i>
                     </a>
                 </h4>
             </div>
@@ -875,7 +875,7 @@ function fn___echo_tree_steps($in, $fb_messenger_format = 0, $expand_mode = fals
 
     if ($fb_messenger_format) {
 
-        return '🚩 ' . $pitch . "\n";
+        return '🚶 ' . $pitch . "\n";
 
     } else {
 
@@ -888,7 +888,7 @@ function fn___echo_tree_steps($in, $fb_messenger_format = 0, $expand_mode = fals
             <div class="panel-heading" role="tab" id="heading' . $id . '">
                 <h4 class="panel-title">
                     <a role="button" data-toggle="collapse" data-parent="#open' . $id . '" href="#collapse' . $id . '" aria-expanded="' . ($expand_mode ? 'true' : 'false') . '" aria-controls="collapse' . $id . '">
-                    <i class="fas" style="transform:none !important;">✅</i> ' . $metadata['in__flat_unique_published_count'] . ' Steps<i class="fal fa-info-circle" style="transform:none !important; font-size:0.85em !important;"></i>
+                    <i class="fas" style="transform:none !important;"><i class="fas fa-walking" style="transform:none !important;"></i></i> ' . $metadata['in__flat_unique_published_count'] . ' Steps<i class="fal fa-info-circle" style="transform:none !important; font-size:0.85em !important;"></i>
                 </a>
             </h4>
         </div>
@@ -905,7 +905,6 @@ function fn___echo_tree_steps($in, $fb_messenger_format = 0, $expand_mode = fals
 
         //Close the section:
         $return_html .= '</div></div></div></div>';
-
 
         return $return_html;
 
@@ -960,7 +959,7 @@ function fn___echo_public_actionplan($in, $expand_mode){
         $return_html .= '<div class="panel-heading" role="tab" id="heading' . $in_level2_counter . '">';
 
 
-        $return_html .= '<h4 class="panel-title"><a role="button" data-toggle="collapse" data-parent="#open' . $in_level2_counter . '" href="#collapse' . $in_level2_counter . '" aria-expanded="' . ($expand_mode ? 'true' : 'false') . '" aria-controls="collapse' . $in_level2_counter . '">' . '<i class="fal fa-plus-circle" style="font-size: 1em !important; margin-left: 0; width: 21px;"></i>'. ( $in['in_type'] ? 'Option #'. ($in_level2_counter + 1).': ' : '') . '<span id="title-' . $in_level2['in_id'] . '">' . fn___echo_in_outcome($in_level2['in_outcome'], true) . '</span>';
+        $return_html .= '<h4 class="panel-title"><a role="button" data-toggle="collapse" data-parent="#open' . $in_level2_counter . '" href="#collapse' . $in_level2_counter . '" aria-expanded="' . ($expand_mode ? 'true' : 'false') . '" aria-controls="collapse' . $in_level2_counter . '">' . '<i class="fal fa-plus-circle" style="font-size: 1em !important; margin-left: 0; width: 21px;"></i>'. ( $in['in_type'] ? 'Option #'. ($in_level2_counter + 1).': ' : '') . '<span style="text-decoration:underline;" id="title-' . $in_level2['in_id'] . '">' . fn___echo_in_outcome($in_level2['in_outcome'], true) . '</span>';
 
         $in_level2_metadata = unserialize($in_level2['in_metadata']);
         if (isset($in_level2_metadata['in__tree_max_seconds']) && $in_level2_metadata['in__tree_max_seconds'] > 0) {
@@ -973,7 +972,7 @@ function fn___echo_public_actionplan($in, $expand_mode){
 
         //Level 2 body:
         $return_html .= '<div id="collapse' . $in_level2_counter . '" class="panel-collapse collapse ' . ($expand_mode ? 'in' : 'out') . '" role="tabpanel" aria-labelledby="heading' . $in_level2_counter . '">';
-        $return_html .= '<div class="panel-body" style="padding:5px 0 0 25px;">';
+        $return_html .= '<div class="panel-body" style="padding:5px 0 0 25px; font-size:0.85em !important;">';
 
         //Messages:
         foreach ($in_level2_messages as $tr) {
@@ -984,7 +983,7 @@ function fn___echo_public_actionplan($in, $expand_mode){
         if (count($grandchildren_ins) > 0) {
 
             //List level 3:
-            $return_html .= '<ul style="list-style-type: circle; margin:10px 0 10px -15px; font-size:1em;">';
+            $return_html .= '<ul style="list-style-type: circle; margin:10px 0 10px -15px; font-size:1em !important;">';
             foreach ($grandchildren_ins as $in_level3_counter => $in_level3) {
 
                 $return_html .= '<li>' . ($in_level2['in_type'] ? 'Option #' . ($in_level3_counter + 1) . ': ' : '') . fn___echo_in_outcome($in_level3['in_outcome'], true);
@@ -1042,7 +1041,6 @@ function fn___echo_tree_costs($in, $fb_messenger_format = 0, $expand_mode = fals
     $title = '';
     $title .= ( $has_time_estimate ? fn___echo_time_range($in).' ' : '' );
     $title .= ( $has_cost_estimate ? ( $has_time_estimate ? 'and ' : '' ) . $price_range : '' );
-    $title .= ' to Complete';
 
     //As messenger default format and HTML extra notes:
     $pitch  = 'Action Plan estimates ';
@@ -1059,7 +1057,7 @@ function fn___echo_tree_costs($in, $fb_messenger_format = 0, $expand_mode = fals
             <div class="panel-heading" role="tab" id="heading' . $id . '">
                 <h4 class="panel-title">
                     <a role="button" data-toggle="collapse" data-parent="#open' . $id . '" href="#collapse' . $id . '" aria-expanded="' . ($expand_mode ? 'true' : 'false') . '" aria-controls="collapse' . $id . '">
-                        <i class="fas" style="transform:none !important;">⏰</i> ' . $title . '<i class="fal fa-info-circle" style="transform:none !important; font-size:0.85em !important;"></i>
+                        <i class="fas" style="transform:none !important;"><i class="fas fa-alarm-clock" style="transform:none !important;"></i></i> ' . $title . '<i class="fal fa-info-circle" style="transform:none !important; font-size:0.85em !important;"></i>
                     </a>
                 </h4>
             </div>
@@ -1130,24 +1128,24 @@ function fn___echo_time_range($in, $micro = false, $hide_zero = false)
     //By now we have the metadata, extract it:
     $metadata = unserialize($in['in_metadata']);
 
-    if (!isset($metadata['in__tree_max_seconds']) || !isset($metadata['in__tree_min_seconds_cost'])) {
+    if (!isset($metadata['in__tree_max_seconds']) || !isset($metadata['in__tree_min_seconds'])) {
         return false;
     } elseif($hide_zero && $metadata['in__tree_max_seconds'] < 1){
         return false;
     }
 
     //Construct the UI:
-    if ($metadata['in__tree_max_seconds'] == $metadata['in__tree_min_seconds_cost']) {
+    if ($metadata['in__tree_max_seconds'] == $metadata['in__tree_min_seconds']) {
 
         //Exactly the same, show a single value:
         return fn___echo_time_hours($metadata['in__tree_max_seconds'], $micro);
 
-    } elseif ($metadata['in__tree_min_seconds_cost'] < 3600) {
+    } elseif ($metadata['in__tree_min_seconds'] < 3600) {
 
-        if ($metadata['in__tree_min_seconds_cost'] < 7200 && $metadata['in__tree_max_seconds'] < 10800 && ($metadata['in__tree_max_seconds'] - $metadata['in__tree_min_seconds_cost']) > 1800) {
+        if ($metadata['in__tree_min_seconds'] < 7200 && $metadata['in__tree_max_seconds'] < 10800 && ($metadata['in__tree_max_seconds'] - $metadata['in__tree_min_seconds']) > 1800) {
             $is_minutes = true;
             $hours_decimal = 0;
-        } elseif ($metadata['in__tree_min_seconds_cost'] < 36000) {
+        } elseif ($metadata['in__tree_min_seconds'] < 36000) {
             $is_minutes = false;
             $hours_decimal = 1;
         } else {
@@ -1160,8 +1158,8 @@ function fn___echo_time_range($in, $micro = false, $hide_zero = false)
         $hours_decimal = 0;
     }
 
-    $min_minutes = round($metadata['in__tree_min_seconds_cost'] / 60);
-    $min_hours = round(($metadata['in__tree_min_seconds_cost'] / 3600), $hours_decimal);
+    $min_minutes = round($metadata['in__tree_min_seconds'] / 60);
+    $min_hours = round(($metadata['in__tree_min_seconds'] / 3600), $hours_decimal);
     $max_minutes = round($metadata['in__tree_max_seconds'] / 60);
     $max_hours = round(($metadata['in__tree_max_seconds'] / 3600), $hours_decimal);
 
