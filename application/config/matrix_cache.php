@@ -5,7 +5,7 @@ defined('BASEPATH') OR exit('No direct script access allowed');
  * Keep a cache of certain parts of the Intent tree for faster processing
  * So we don't have to make DB calls to figure them out every time!
  * See here for all entities cached: https://mench.com/entities/4527
- * use-case format: $this->config->item('en_ids_3000')
+ * use-case format: $this->config->item('en_all_6107')
  *
  * ATTENTION: Also search for "en_ids_" and "en_all_" when trying to manage these throughout the code base
  *
@@ -18,14 +18,14 @@ $config['en_ids_6107'] = array(4235, 4559);
 $config['en_all_6107'] = array(
     4235 => array(
         'm_icon' => '<i class="fas fa-flag"></i>',
-        'm_name' => 'Intent',
-        'm_desc' => '',
+        'm_name' => 'Intention',
+        'm_desc' => 'A goal set by the student to be accomplished in collaboration with Mench',
         'm_parents' => array(4593, 4463, 4595),
     ),
     4559 => array(
-        'm_icon' => '<i class="fal fa-square"></i>',
+        'm_icon' => '<i class="fas fa-walking"></i>',
         'm_name' => 'Step',
-        'm_desc' => '',
+        'm_desc' => 'An actionable task or key idea recommended by Mench to accomplish the target Intention',
         'm_parents' => array(4593),
     ),
 );

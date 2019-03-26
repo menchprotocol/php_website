@@ -98,6 +98,12 @@ $uri_segment_2 = $this->uri->segment(2);
                                 </a>
                             </li>
 
+                            <li class="ledger-inactive" data-toggle="tooltip" data-placement="left" title="You've added <?= count($session_en['en__actionplans']).' intent'.fn___echo__s(count($session_en['en__actionplans'])) ?> to your Action Plan">
+                                <a href="/messenger/actionplan">
+                                    <i class="<?= ( count($session_en['en__actionplans']) > 0 ? 'fas fa-flag' : 'fal fa-flag' ) ?>"></i>
+                                </a>
+                            </li>
+
                             <li class="ledger-inactive" data-toggle="tooltip" data-placement="left" title="Toggle Advance Mode">
                                 <a href="javascript:void(0)" onclick="fn___toggle_advance(0)">
                                     <i class="<?= ( $this->session->userdata('advance_view_enabled')==1 ? 'fas fa-expand-arrows' : 'fal fa-expand-arrows ' ) ?> advance-icon"></i>

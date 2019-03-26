@@ -602,42 +602,62 @@ function fn___echo_tr_row($tr, $is_inner = false)
     return $ui;
 }
 
-function echo_in_actionplan_step($tr, $is_parent, $in_type_tr_parent_intent_id = 0)
+function fn___echo_in_actionplan_step($tr, $is_parent, $or_intent_id = 0)
 {
 
     $CI =& get_instance();
 
-    $ui = '<a href="' . ($in_type_tr_parent_intent_id ? '/messenger/choose_or_path/' . $tr['tr_id'] . '/' . $in_type_tr_parent_intent_id . '/' . $tr['in_id'] . '/' . md5($tr['tr_id'] . $CI->config->item('actionplan_salt') . $tr['in_id'] . $in_type_tr_parent_intent_id) : '/messenger/actionplan/' . $tr['tr_parent_transaction_id'] . '/' . $tr['in_id']) . '" class="list-group-item">';
+
+    $ui = '<a href="' . ($or_intent_id ? '/messenger/choose_path/' . $or_intent_id . '/' . $tr['in_id'] . '/' . md5($CI->config->item('actionplan_salt') . $tr['in_id'] . $or_intent_id) : '/messenger/actionplan/' . $tr['in_id']) . '" class="list-group-item">';
 
     //Different pointer position based on direction:
     if ($is_parent) {
+
         $ui .= '<span class="pull-left">';
         $ui .= '<span class="badge badge-primary fr-bgd"><i class="fas fa-angle-left"></i></span>';
         $ui .= '</span>';
+
     } else {
+
         $ui .= '<span class="pull-right">';
-        $ui .= '<span class="badge badge-primary fr-bgd">' . ($in_type_tr_parent_intent_id ? 'Select <i class="fas fa-check-circle"></i>' : '<i class="fas fa-angle-right"></i>') . '</span>';
+
+        if(!$or_intent_id){
+            $time_estimate = fn___echo_time_range($tr, true);
+            if ($time_estimate) {
+                $ui .= $time_estimate . ' <i class="fal fa-alarm-clock"></i> ';
+            }
+        }
+
+        $ui .= '<span class="badge badge-primary fr-bgd">' . ($or_intent_id ? 'Select <i class="fas fa-check-circle"></i>' : '<i class="fas fa-angle-right"></i>') . '</span>';
+
         $ui .= '</span>';
 
         //For children show icon:
-        if ($in_type_tr_parent_intent_id) {
+        if ($or_intent_id) {
             //Radio button to indicate a single selection:
-            $ui .= '<span class="status-label" style="padding-bottom:1px;"><i class="fal fa-circle"></i> </span>';
+            $ui .= '<span class="status-label" style="padding-bottom:1px;"><i class="fal fa-circle"></i></span>';
         } else {
-            //Proper status:
+            //Action Plan Step Status:
             $ui .= fn___echo_fixed_fields('tr_student_status', $tr['tr_status'], 1, 'right');
         }
+
     }
 
-    $ui .= ' ' . $tr['in_outcome'];
-    if (strlen($tr['tr_content']) > 0) {
-        $ui .= ' <i class="fas fa-edit"></i> ' . htmlentities($tr['tr_content']);
+    $ui .= ' ' . fn___echo_in_outcome($tr['in_outcome'], true);
+
+    //Show completion requirements if not OR branch (We do not want to influence the student's response)
+    if(!$or_intent_id && $tr['in_requirement_entity_id'] != 6087){
+        $en_all_4331 = $CI->config->item('en_all_4331');
+        //This has a completion requirement, show it:
+        $ui .= '&nbsp;&nbsp;<span>'.$en_all_4331[$tr['in_requirement_entity_id']]['m_icon'].' '.$en_all_4331[$tr['in_requirement_entity_id']]['m_name'].' Response</span>';
     }
 
     $ui .= '</a>';
 
     return $ui;
 }
+
+
 
 
 function fn___echo_url_clean($url)
@@ -659,7 +679,7 @@ function fn___echo_time_hours($seconds, $micro = false)
      * */
 
     if ($seconds < 1) {
-        return '0' . ($micro ? 'm' : ' Minutes ');
+        return false;
     } elseif ($seconds <= 5400) {
         return round($seconds / 60) . ($micro ? 'm' : ' Minutes');
     } else {
@@ -1142,7 +1162,7 @@ function fn___echo_time_range($in, $micro = false, $hide_zero = false)
 
     } elseif ($metadata['in__tree_min_seconds'] < 3600) {
 
-        if ($metadata['in__tree_min_seconds'] < 7200 && $metadata['in__tree_max_seconds'] < 10800 && ($metadata['in__tree_max_seconds'] - $metadata['in__tree_min_seconds']) > 1800) {
+        if ($metadata['in__tree_min_seconds'] < 7200 && $metadata['in__tree_max_seconds'] < 10800) {
             $is_minutes = true;
             $hours_decimal = 0;
         } elseif ($metadata['in__tree_min_seconds'] < 36000) {

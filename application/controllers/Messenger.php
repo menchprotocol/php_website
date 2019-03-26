@@ -508,7 +508,7 @@ class Messenger extends CI_Controller
 
 
 
-    function actionplan($actionplan_tr_id = 0, $in_id = 0)
+    function actionplan($in_id = 0)
     {
 
         $this->load->view('view_shared/messenger_header', array(
@@ -517,12 +517,11 @@ class Messenger extends CI_Controller
         //include main body:
         $this->load->view('view_ledger/tr_actionplan_messenger_frame', array(
             'in_id' => $in_id,
-            'actionplan_tr_id' => $actionplan_tr_id,
         ));
         $this->load->view('view_shared/messenger_footer');
     }
 
-    function display_actionplan($psid, $actionplan_tr_id = 0, $in_id = 0)
+    function display_actionplan($psid, $in_id = 0)
     {
 
         //Get session data in case user is doing a browser login:
@@ -542,14 +541,16 @@ class Messenger extends CI_Controller
             $session_en = $this->Matrix_model->fn___en_student_messenger_authenticate($psid);
         }
 
-        //Set Action Plan filters:
+
+        //Fetch/Validate Action Plan:
         $trs = array();
         $filters = array();
 
         //Do we have a use session?
-        if ($actionplan_tr_id > 0 && $in_id > 0) {
+        if ($in_id > 0) {
             //Yes, this is either an action plan intent OR step:
-            $filters['(tr_type_entity_id=4559 AND tr_parent_transaction_id='.$actionplan_tr_id.' AND tr_child_intent_id='.$in_id.') OR (tr_type_entity_id=4235 AND tr_id='.$actionplan_tr_id.' AND tr_child_intent_id='.$in_id.')'] = null;
+            $filters['tr_child_intent_id'] = $in_id;
+            $filters['tr_type_entity_id IN ('.join(',',$this->config->item('en_ids_6107')).')'] = null; //Student Action Plan
         } elseif (!$empty_session) {
             //Yes! It seems to be a desktop login (versus Facebook Messenger)
             $filters['tr_type_entity_id'] = 4235; //Action Plan Intent
@@ -569,11 +570,9 @@ class Messenger extends CI_Controller
 
         } else {
 
-            //Determine Action Plan IDs if not provided:
-            if(!$actionplan_tr_id || !$in_id){
-                $actionplan_tr_id = ( $trs[0]['tr_parent_transaction_id'] == 0 ? $trs[0]['tr_id'] : $trs[0]['tr_parent_transaction_id'] );
-                $in_id = $trs[0]['tr_child_intent_id'];
-            }
+            //Determine Action Plan ID:
+            $actionplan_tr_id = ( $trs[0]['tr_parent_transaction_id'] == 0 ? $trs[0]['tr_id'] : $trs[0]['tr_parent_transaction_id'] );
+            $in_id = $trs[0]['tr_child_intent_id']; //might have been 0 initially, so we'll set it anyways...
 
             //Log action plan view transaction:
             $this->Database_model->fn___tr_create(array(
@@ -592,7 +591,7 @@ class Messenger extends CI_Controller
                     //Prepare metadata:
                     $metadata = unserialize($tr['in_metadata']);
                     //Display row:
-                    echo '<a href="/messenger/actionplan/' . $tr['tr_id'] . '/' . $tr['tr_child_intent_id'] . '" class="list-group-item">';
+                    echo '<a href="/messenger/actionplan/' . $tr['tr_child_intent_id'] . '" class="list-group-item">';
                     echo '<span class="pull-right">';
                     echo '<span class="badge badge-primary"><i class="fas fa-angle-right"></i></span>';
                     echo '</span>';
@@ -673,21 +672,34 @@ class Messenger extends CI_Controller
         //Find the next item to navigate them to:
         $next_ins = $this->Matrix_model->fn___actionplan_next_in($tr_id);
         if ($next_ins) {
-            return fn___redirect_message('/messenger/actionplan/' . $next_ins[0]['tr_parent_transaction_id'] . '/' . $next_ins[0]['in_id'], $message);
+            return fn___redirect_message('/messenger/actionplan/' . $next_ins[0]['in_id'], $message);
         } else {
             return fn___redirect_message('/messenger/actionplan', $message);
         }
     }
 
-    function choose_or_path($actionplan_tr_id, $origin_in_id, $in_answer_id, $w_key)
+    function choose_path($actionplan_in_id, $in_append_id, $w_key)
     {
-        if (md5($actionplan_tr_id . $this->config->item('actionplan_salt') . $in_answer_id . $origin_in_id) == $w_key) {
-            if ($this->Matrix_model->fn___actionplan_choose_or($origin_in_id, $in_answer_id, $actionplan_tr_id)) {
-                return fn___redirect_message('/messenger/actionplan/' . $actionplan_tr_id . '/' . $in_answer_id, '<div class="alert alert-success" role="alert">Your answer was saved.</div>');
-            } else {
-                //We had some sort of an error:
-                return fn___redirect_message('/messenger/actionplan/' . $actionplan_tr_id . '/' . $origin_in_id, '<div class="alert alert-danger" role="alert">There was an error saving your answer.</div>');
-            }
+
+        if($w_key != md5($this->config->item('actionplan_salt') . $in_append_id . $actionplan_in_id)){
+            return fn___redirect_message('/messenger/actionplan/' . $actionplan_in_id, '<div class="alert alert-danger" role="alert">Invalid Secret Key</div>');
+        }
+
+        //Validate Action Plan:
+        $actionplans = $this->Database_model->fn___tr_fetch(array(
+            'tr_child_intent_id' => $actionplan_in_id,
+            'tr_type_entity_id IN ('.join(',',$this->config->item('en_ids_6107')).')' => null, //Student Action Plan
+            'tr_status >=' => 0, //New+
+        ));
+        if(count($actionplans) < 1){
+            return fn___redirect_message('/messenger/actionplan/' . $actionplan_in_id, '<div class="alert alert-danger" role="alert">Action Plan Not Found</div>');
+        }
+
+        if ($this->Matrix_model->fn___actionplan_append_in($in_append_id, $actionplans[0]['tr_miner_entity_id'], $actionplan_in_id)) {
+            return fn___redirect_message('/messenger/actionplan/' . $in_append_id, '<div class="alert alert-success" role="alert">Your answer was saved.</div>');
+        } else {
+            //We had some sort of an error:
+            return fn___redirect_message('/messenger/actionplan/' . $actionplan_in_id, '<div class="alert alert-danger" role="alert">There was an error saving your answer.</div>');
         }
     }
 
@@ -708,7 +720,7 @@ class Messenger extends CI_Controller
         if (!(count($trs) == 1)) {
             return fn___redirect_message('/messenger/actionplan', '<div class="alert alert-danger" role="alert">Error: Invalid submission ID.</div>');
         }
-        $k_url = '/messenger/actionplan/' . $trs[0]['tr_parent_transaction_id'] . '/' . $trs[0]['in_id'];
+        $k_url = '/messenger/actionplan/' . $trs[0]['in_id'];
 
 
         //Fetch completion requirements:
@@ -776,7 +788,7 @@ class Messenger extends CI_Controller
 
         if ($status_changed) {
             //Also update tr_status, determine what it should be:
-            $this->Matrix_model->actionplan_complete_recursive_up($trs[0], $trs[0]);
+            $this->Matrix_model->actionplan_complete_recursive_up($trs[0]);
         }
 
 
@@ -786,7 +798,7 @@ class Messenger extends CI_Controller
             $next_ins = $this->Matrix_model->fn___actionplan_next_in($trs[0]['tr_id']);
             if ($next_ins) {
                 //Override original item:
-                $k_url = '/messenger/actionplan/' . $next_ins[0]['tr_parent_transaction_id'] . '/' . $next_ins[0]['in_id'];
+                $k_url = '/messenger/actionplan/' . $next_ins[0]['in_id'];
             }
         }
 

@@ -1309,7 +1309,7 @@ class Chat_model extends CI_Model
              *
              * */
 
-            //Fetch children:
+            //Fetch OR Children:
             $in__children = $this->Database_model->fn___tr_fetch(array(
                 'tr_status >=' => 0, //New+
                 'in_status >=' => 0, //New+
@@ -1383,7 +1383,6 @@ class Chat_model extends CI_Model
                     true,
                     $quick_replies,
                     array(
-                        'tr_parent_intent_id' => $actionplans[0]['in_id'], //Action Plan Intent
                         'tr_child_intent_id' => $in_id, //Focus Intent
                     )
                 );
@@ -1429,7 +1428,7 @@ class Chat_model extends CI_Model
         if ($ins[0]['in_type']==0) {
 
             //This is an AND intent, it might have completion requirements:
-            $message_in_requirements = $this->Matrix_model->fn___in_req_completion($ins[0]['in_requirement_entity_id'],$ins[0]['id_id'], $actionplan_tr_id);
+            $message_in_requirements = $this->Matrix_model->fn___in_req_completion($ins[0], true);
 
             //Do we have a Action Plan, if so, we need to add a next step message:
             if ($message_in_requirements) {
@@ -1953,7 +1952,7 @@ class Chat_model extends CI_Model
 
                     //Let Student know that they have already subscribed to this intention:
                     $this->Chat_model->fn___dispatch_message(
-                        'The intention to ' . $ins[0]['in_outcome'] . ' has already been added to your Action Plan. We have been working on it together since ' . fn___echo_time_date($actionplans[0]['tr_timestamp'], true) . '. /link:See in 🚩Action Plan:https://mench.com/messenger/actionplan/' . ( $actionplans[0]['tr_type_entity_id']==4235 /* Action Plan Intent*/ ? $actionplans[0]['tr_id'] : $actionplans[0]['tr_parent_transaction_id'] ) . '/' . $actionplans[0]['tr_child_intent_id'],
+                        'The intention to ' . $ins[0]['in_outcome'] . ' has already been added to your Action Plan. We have been working on it together since ' . fn___echo_time_date($actionplans[0]['tr_timestamp'], true) . '. /link:See in 🚩Action Plan:https://mench.com/messenger/actionplan/' . $actionplans[0]['tr_child_intent_id'],
                         $en,
                         true,
                         array(),
@@ -2029,12 +2028,12 @@ class Chat_model extends CI_Model
                 //Add intent to Student's Action Plan:
                 $actionplan = $this->Database_model->fn___tr_create(array(
                     'tr_type_entity_id' => 4235, //Action Plan Intent
-                    'tr_status' => 0, //New (Not yet completed)
+                    'tr_status' => 0, //New
                     'tr_miner_entity_id' => $en['en_id'], //Belongs to this Student
                     'tr_child_intent_id' => $ins[0]['in_id'], //The Intent they are adding
                     'tr_order' => 1 + $this->Database_model->fn___tr_max_order(array( //Place this intent at the end of all intents the Student is drafting...
                         'tr_type_entity_id' => 4235, //Action Plan Intent
-                        'tr_status IN (' . join(',', $this->config->item('tr_status_incomplete')) . ')' => null, //incomplete
+                        'tr_status >=' => 0, //New+
                         'tr_miner_entity_id' => $en['en_id'], //Belongs to this Student
                     )),
                 ));
@@ -2047,7 +2046,7 @@ class Chat_model extends CI_Model
 
                     //Confirm with them that we're now ready:
                     $this->Chat_model->fn___dispatch_message(
-                        'Success! I added the intention to ' . $ins[0]['in_outcome'] . ' to your Action Plan 🙌 /link:Open 🚩Action Plan:https://mench.com/messenger/actionplan/' . $actionplan['tr_id'] . '/' . $ins[0]['in_id'],
+                        'Success! I added the intention to ' . $ins[0]['in_outcome'] . ' to your Action Plan 🙌 /link:Open 🚩Action Plan:https://mench.com/messenger/actionplan/' . $ins[0]['in_id'],
                         $en,
                         true,
                         array(),
@@ -2219,7 +2218,7 @@ class Chat_model extends CI_Model
                     $this->Matrix_model->actionplan_skip_recursive_down($tr_id);
 
                     //Confirm the skip:
-                    $message = 'Confirmed, I marked this section as skipped. You can always re-visit these steps in your Action Plan and complete them at any time. /link:See in 🚩Action Plan:https://mench.com/messenger/actionplan/' . $actionplans[0]['tr_parent_transaction_id'] . '/' . $actionplans[0]['tr_child_intent_id'];
+                    $message = 'Confirmed, I marked this section as skipped. You can always re-visit these steps in your Action Plan and complete them at any time. /link:See in 🚩Action Plan:https://mench.com/messenger/actionplan/' . $actionplans[0]['tr_child_intent_id'];
 
                 }
 
@@ -2288,7 +2287,7 @@ class Chat_model extends CI_Model
             $actionplan_tr_id = $actionplans[0]['tr_parent_transaction_id'];
 
             //Mark this intent as complete:
-            $this->Matrix_model->actionplan_complete_recursive_up($actionplans[0], $actionplans[0]);
+            $this->Matrix_model->actionplan_complete_recursive_up($actionplans[0]);
 
             //Go to next item:
             $next_ins = $this->Matrix_model->fn___actionplan_next_in($actionplan_tr_id);
@@ -2312,10 +2311,17 @@ class Chat_model extends CI_Model
             //Student has responded to a multiple-choice OR tree
             $input_parts = explode('_', fn___one_two_explode('ADDORINTENT_', '', $quick_reply_payload));
             $actionplan_tr_id = intval($input_parts[0]);
-            $origin_in_id = intval($input_parts[1]);
-            $in_answer_id = intval($input_parts[2]);
+            $actionplan_in_id = intval($input_parts[1]);
+            $in_append_id = intval($input_parts[2]);
 
-            if ($origin_in_id > 0 && $in_answer_id > 0 && $this->Matrix_model->fn___actionplan_choose_or($origin_in_id, $in_answer_id, $actionplan_tr_id)) {
+            //Validate Action Plan:
+            $actionplans = $this->Database_model->fn___tr_fetch(array(
+                'tr_id' => $actionplan_tr_id,
+                'tr_type_entity_id' => 4235, //Action Plan Intent
+                'tr_status >=' => 0, //New+
+            ));
+
+            if (count($actionplans)>0 && $in_append_id > 0 && $this->Matrix_model->fn___actionplan_append_in($in_append_id, $actionplans[0]['tr_miner_entity_id'], $actionplan_in_id)) {
 
                 //Confirm answer received by acknowledging progress with Student:
                 $this->Chat_model->fn___dispatch_random_intro(8333, $en);
@@ -2334,7 +2340,7 @@ class Chat_model extends CI_Model
 
                     //Fetch answer intention's outcome:
                     $answer_ins = $this->Database_model->fn___in_fetch(array(
-                        'in_id' => $in_answer_id,
+                        'in_id' => $in_append_id,
                     ));
 
                     //Inform them that intention has been added to their Action Plan:
@@ -2356,8 +2362,8 @@ class Chat_model extends CI_Model
                     'tr_miner_entity_id' => 1, //Shervin/Developer
                     'tr_metadata' => $en,
                     'tr_parent_transaction_id' => $actionplan_tr_id,
-                    'tr_parent_intent_id' => $origin_in_id,
-                    'tr_child_intent_id' => $in_answer_id,
+                    'tr_parent_intent_id' => $actionplan_in_id,
+                    'tr_child_intent_id' => $in_append_id,
                 ));
 
                 //Inform Student:

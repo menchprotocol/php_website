@@ -179,7 +179,7 @@ class Ledger extends CI_Controller
         //Load Action Plan iFrame:
         return fn___echo_json(array(
             'status' => 1,
-            'url' => '/messenger/actionplan/' . $w['tr_id'] . '/' . $w['tr_child_intent_id'],
+            'url' => '/messenger/actionplan/' . $w['tr_child_intent_id'],
         ));
 
     }
