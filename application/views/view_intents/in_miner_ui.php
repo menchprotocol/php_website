@@ -344,7 +344,7 @@ $metadata = unserialize($in['in_metadata']);
             <div style="text-align:right; font-size: 22px; margin:-32px 3px -20px 0;">
                 <a href="javascript:void(0)" onclick="$('#load_messaging_frame').addClass('hidden');"><i class="fas fa-times-circle"></i></a>
             </div>
-            <div class="grey-box grey-box-w" style="padding-bottom: 10px;">
+            <div class="grey-box grey-box-messages" style="padding-bottom: 10px;">
                 <iframe class="ajax-frame hidden" id="ajax_messaging_iframe" src=""></iframe>
                 <span class="frame-loader hidden"><i class="fas fa-spinner fa-spin"></i> Loading Messages...</span></div>
         </div>

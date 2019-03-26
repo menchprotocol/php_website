@@ -54,7 +54,7 @@ $(document).ready(function () {
     } else {
 
         //Adjust height of the messaging windows:
-        $('.grey-box-w').css('height', (parseInt($(window).height()) - 190) + 'px');
+        $('.grey-box').css('height', (parseInt($(window).height()) - 190) + 'px');
         $('.grey-box').css('max-height', (parseInt($(window).height()) - 190) + 'px');
 
         $('.ajax-frame').css('height', (parseInt($(window).height()) - 225) + 'px');
@@ -65,7 +65,7 @@ $(document).ready(function () {
             var top_position = $(this).scrollTop();
             clearTimeout($.data(this, 'scrollTimer'));
             $.data(this, 'scrollTimer', setTimeout(function () {
-                $("#modifybox").css('top', (top_position - 0)); //PX also set in style.css for initial load
+                $("#modifybox, #load_messaging_frame").css('top', (top_position - 0)); //PX also set in style.css for initial load
             }, 34));
         });
 
