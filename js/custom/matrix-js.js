@@ -146,8 +146,8 @@ function toggle_advance(basic_toggle){
     }
 
     //If an iframe is loaded, also apply logic to iframe UI:
-    if($('#ajax_frame').attr('src') && $('#ajax_frame').attr('src').length > 0){
-        document.getElementById('ajax_frame').contentWindow.toggle_advance(1);
+    if($('#ajax_messaging_iframe').attr('src') && $('#ajax_messaging_iframe').attr('src').length > 0){
+        document.getElementById('ajax_messaging_iframe').contentWindow.toggle_advance(1);
     }
 
     //Change top menu icon:

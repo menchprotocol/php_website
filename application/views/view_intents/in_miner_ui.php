@@ -338,5 +338,16 @@ $metadata = unserialize($in['in_metadata']);
 
         </div>
 
+
+        <div id="load_messaging_frame" class="fixed-box hidden">
+            <h5 class="badge badge-h badge-h-max" id="tr_title"></h5>
+            <div style="text-align:right; font-size: 22px; margin:-32px 3px -20px 0;">
+                <a href="javascript:void(0)" onclick="$('#load_messaging_frame').addClass('hidden');"><i class="fas fa-times-circle"></i></a>
+            </div>
+            <div class="grey-box grey-box-w" style="padding-bottom: 10px;">
+                <iframe class="ajax-frame hidden" id="ajax_messaging_iframe" src=""></iframe>
+                <span class="frame-loader hidden"><i class="fas fa-spinner fa-spin"></i> Loading Messages...</span></div>
+        </div>
+
     </div>
 </div>

@@ -49,11 +49,16 @@ $(document).ready(function () {
         //Adjust columns:
         $('.cols').removeClass('col-xs-6').addClass('col-sm-6');
         $('.fixed-box').addClass('release-fixture');
+        $('.dash').css('margin-bottom', '0px'); //For iframe to show better
 
     } else {
 
         //Adjust height of the messaging windows:
-        $('.grey-box').css('max-height', (parseInt($(window).height()) - 130) + 'px');
+        $('.grey-box-w').css('height', (parseInt($(window).height()) - 190) + 'px');
+        $('.grey-box').css('max-height', (parseInt($(window).height()) - 190) + 'px');
+
+        $('.ajax-frame').css('height', (parseInt($(window).height()) - 225) + 'px');
+        $('.ajax-frame').css('max-height', (parseInt($(window).height()) - 225) + 'px');
 
         //Make editing frames Sticky for scrolling longer lists
         $(".main-panel").scroll(function () {
@@ -452,10 +457,11 @@ function in_sort_load(in_id, level) {
 
 
 function in_messages_iframe(in_id) {
+
     //Start loading:
     $('.fixed-box').addClass('hidden');
     $('.frame-loader').addClass('hidden');
-    $('#load_tr_frame').removeClass('hidden').hide().fadeIn();
+    $('#load_messaging_frame').removeClass('hidden').hide().fadeIn();
     //Set title:
     $('#tr_title').html('<i class="fas fa-comment-plus"></i> ' + $('.in_outcome_' + in_id + ':first').text());
 
