@@ -317,28 +317,27 @@ if(!$has_filters){
             //Top Miners:
             $top = 20;
             $days_ago = null;
-            $top_coin_awarded = 0;
+            $top_point_awarded = 0;
             $top_miners = ''; //For the UI table
             $filters = array(
-                'tr_coins !=' => 0,
+                'tr_points !=' => 0,
             );
             if(!is_null($days_ago)){
                 $start_date = date("Y-m-d" , (time() - ($days_ago * 24 * 3600)));
                 $filters['tr_timestamp >='] = $start_date.' 00:00:00'; //From beginning of the day
             }
-            foreach ($this->Database_model->tr_fetch($filters, array('en_miner'), $top, 0, array('coins_sum' => 'DESC'), 'COUNT(tr_miner_entity_id) as trs_count, SUM(tr_coins) as coins_sum, en_name, en_icon, tr_miner_entity_id', 'tr_miner_entity_id, en_name, en_icon') as $count=>$tr) {
+            foreach ($this->Database_model->tr_fetch($filters, array('en_miner'), $top, 0, array('points_sum' => 'DESC'), 'COUNT(tr_miner_entity_id) as trs_count, SUM(tr_points) as points_sum, en_name, en_icon, tr_miner_entity_id', 'tr_miner_entity_id, en_name, en_icon') as $count=>$tr) {
                 $top_miners .= '<tr>';
                 $top_miners .= '<td style="text-align: left;"><span style="width:29px; display: inline-block; text-align: center; '.( $count > 2 ? 'font-size:0.8em;' : '' ).'">'.echo_rank($count+1).'</span><span class="parent-icon" style="width: 29px; display: inline-block; text-align: center;">'.( strlen($tr['en_icon']) > 0 ? $tr['en_icon'] : '<i class="fas fa-at grey-at"></i>' ).'</span><a href="/entities/'.$tr['tr_miner_entity_id'].'">'.$tr['en_name'].'</a></td>';
-                $top_miners .= '<td style="text-align: right;"><a href="/ledger?tr_miner_entity_id='.$tr['tr_miner_entity_id'].( is_null($days_ago) ? '' : '&start_range='.$start_date ).'"  data-toggle="tooltip" title="Mined with '.number_format($tr['trs_count'],0).' transactions averaging '.round(($tr['coins_sum']/$tr['trs_count']),1).' coins/transaction" data-placement="top">'.number_format($tr['coins_sum'], 0).'</a> <i class="fal fa-coins"></i></td>';
+                $top_miners .= '<td style="text-align: right;"><a href="/ledger?tr_miner_entity_id='.$tr['tr_miner_entity_id'].( is_null($days_ago) ? '' : '&start_range='.$start_date ).'"  data-toggle="tooltip" title="Mined with '.number_format($tr['trs_count'],0).' transactions averaging '.round(($tr['points_sum']/$tr['trs_count']),1).' coins/transaction" data-placement="top">'.number_format($tr['points_sum'], 0).'</a> <i class="fas fa-award"></i></td>';
                 $top_miners .= '</tr>';
 
-                $top_coin_awarded += $tr['coins_sum'];
+                $top_point_awarded += $tr['points_sum'];
             }
             $top_miners .= '<tr style="font-weight: bold;">';
             $top_miners .= '<td style="text-align: left;"><span style="width: 26px; display: inline-block; text-align: center;"><i class="fas fa-asterisk"></i></span>Top '.$top.' Miners:</td>';
-            $top_miners .= '<td style="text-align: right;">'.number_format($top_coin_awarded, 0).' <i class="fal fa-coins"></i></td>';
+            $top_miners .= '<td style="text-align: right;">'.number_format($top_point_awarded, 0).' <i class="fas fa-award"></i></td>';
             $top_miners .= '</tr>';
-
 
 
 
@@ -362,13 +361,13 @@ if(!$has_filters){
 
 
 
-            //Coin Transaction Types:
+            //Point Transaction Types:
             $all_engs = $this->Database_model->tr_fetch(array(
-                'tr_coins !=' => 0,
-            ), array('en_type'), 0, 0, array('en_name' => 'ASC'), 'COUNT(tr_type_entity_id) as trs_count, SUM(tr_coins) as coins_sum, en_name, en_icon, tr_type_entity_id', 'tr_type_entity_id, en_name, en_icon');
+                'tr_points !=' => 0,
+            ), array('en_type'), 0, 0, array('en_name' => 'ASC'), 'COUNT(tr_type_entity_id) as trs_count, SUM(tr_points) as points_sum, en_name, en_icon, tr_type_entity_id', 'tr_type_entity_id, en_name, en_icon');
 
-            $all_coin_payouts = 0;
-            $coin_tr_types = '';
+            $all_point_payouts = 0;
+            $point_tr_types = '';
             foreach ($all_engs as $tr) {
 
                 //DOes it have a rate?
@@ -376,32 +375,32 @@ if(!$has_filters){
                 $rate_trs = $this->Database_model->tr_fetch(array(
                     'tr_status' => 2, //Published
                     'en_status' => 2, //Published
-                    'tr_parent_entity_id' => 4595, //Mench Coins
+                    'tr_parent_entity_id' => 4595, //Mench Points
                     'tr_type_entity_id IN (' . join(',', $this->config->item('en_ids_4592')) . ')' => null, //Entity Link Connectors
                     'tr_child_entity_id' => $tr['tr_type_entity_id'],
                 ), array('en_child'), 1);
 
                 //Echo stats:
-                $coin_tr_types .= '<tr>';
-                $coin_tr_types .= '<td style="text-align: left;"><span style="width: 26px; display: inline-block; text-align: center;">'.( strlen($tr['en_icon']) > 0 ? $tr['en_icon'] : '<i class="fas fa-at grey-at"></i>' ).'</span><a href="/entities/'.$tr['tr_type_entity_id'].'">'.$tr['en_name'].'</a>'.( count($rate_trs) > 0 ? '<span class="underdot" data-toggle="tooltip" title="Each transaction currently issues '.$rate_trs[0]['tr_content'].' coins" data-placement="top" style="font-size:0.7em; margin-left:5px;">'.number_format($rate_trs[0]['tr_content'],0).'<i class="fal fa-coins" style="margin-left: 2px;"></i></span>' : '' ).'</td>';
-                $coin_tr_types .= '<td style="text-align: right;"><a href="/ledger?tr_type_entity_id='.$tr['tr_type_entity_id'].'"  data-toggle="tooltip" title="View all '.number_format($tr['trs_count'],0).' transactions" data-placement="top">'.number_format($tr['coins_sum'], 0).'</a> <i class="fal fa-coins"></i></td>';
-                $coin_tr_types .= '</tr>';
+                $point_tr_types .= '<tr>';
+                $point_tr_types .= '<td style="text-align: left;"><span style="width: 26px; display: inline-block; text-align: center;">'.( strlen($tr['en_icon']) > 0 ? $tr['en_icon'] : '<i class="fas fa-at grey-at"></i>' ).'</span><a href="/entities/'.$tr['tr_type_entity_id'].'">'.$tr['en_name'].'</a>'.( count($rate_trs) > 0 ? '<span class="underdot" data-toggle="tooltip" title="Each transaction currently issues '.$rate_trs[0]['tr_content'].' coins" data-placement="top" style="font-size:0.7em; margin-left:5px;">'.number_format($rate_trs[0]['tr_content'],0).'<i class="fas fa-award" style="margin-left: 2px;"></i></span>' : '' ).'</td>';
+                $point_tr_types .= '<td style="text-align: right;"><a href="/ledger?tr_type_entity_id='.$tr['tr_type_entity_id'].'"  data-toggle="tooltip" title="View all '.number_format($tr['trs_count'],0).' transactions" data-placement="top">'.number_format($tr['points_sum'], 0).'</a> <i class="fas fa-award"></i></td>';
+                $point_tr_types .= '</tr>';
 
-                $all_coin_payouts += $tr['coins_sum'];
+                $all_point_payouts += $tr['points_sum'];
 
             }
 
-            $coin_tr_types .= '<tr style="font-weight: bold;">';
-            $coin_tr_types .= '<td style="text-align: left;"><span style="width: 26px; display: inline-block; text-align: center;"><i class="fas fa-asterisk"></i></span>'.count($all_engs).' Transaction Types:</td>';
-            $coin_tr_types .= '<td style="text-align: right;">'.number_format($all_coin_payouts, 0).' <i class="fal fa-coins"></i></td>';
-            $coin_tr_types .= '</tr>';
+            $point_tr_types .= '<tr style="font-weight: bold;">';
+            $point_tr_types .= '<td style="text-align: left;"><span style="width: 26px; display: inline-block; text-align: center;"><i class="fas fa-asterisk"></i></span>'.count($all_engs).' Transaction Types:</td>';
+            $point_tr_types .= '<td style="text-align: right;">'.number_format($all_point_payouts, 0).' <i class="fas fa-award"></i></td>';
+            $point_tr_types .= '</tr>';
 
 
             //Report types:
             echo '<select id="tr_group_by" class="form-control border stats-select">';
             echo '<option value="by_tr_status">Group By: 4 Statuses</option>';
             echo '<option value="by_tr_type">Group By: '.count($all_eng_types).' Transaction Types</option>';
-            echo '<option value="by_tr_coin_types">List Subset: '.echo_number($all_coin_payouts).' Mench Coins</option>';
+            echo '<option value="by_tr_point_types">List Subset: '.echo_number($all_point_payouts).' Mench Points</option>';
             echo '<option value="by_tr_top_miners">List Subset: '.$top.' Top Miners</option>';
             echo '</select>';
 
@@ -415,15 +414,15 @@ if(!$has_filters){
             echo $all_tr_types;
             echo '</table>';
 
-            //Coin Top Miners:
+            //Point Top Miners:
             echo '<table class="table table-condensed table-striped stats-table tr_group_by by_tr_top_miners hidden">';
             echo $top_miners;
             echo '</table>';
 
 
-            //Coin Transaction Types
-            echo '<table class="table table-condensed table-striped stats-table tr_group_by by_tr_coin_types hidden">';
-            echo $coin_tr_types;
+            //Point Transaction Types
+            echo '<table class="table table-condensed table-striped stats-table tr_group_by by_tr_point_types hidden">';
+            echo $point_tr_types;
             echo '</table>';
 
 
@@ -631,7 +630,7 @@ foreach($filters as $key => $value){
         $ini_filter[$key] = $value;
     }
 }
-$all_engs = $this->Database_model->tr_fetch($ini_filter, array('en_type'), 0, 0, array('en_name' => 'ASC'), 'COUNT(tr_type_entity_id) as trs_count, SUM(tr_coins) as coins_sum, en_name, tr_type_entity_id', 'tr_type_entity_id, en_name');
+$all_engs = $this->Database_model->tr_fetch($ini_filter, array('en_type'), 0, 0, array('en_name' => 'ASC'), 'COUNT(tr_type_entity_id) as trs_count, SUM(tr_points) as points_sum, en_name, tr_type_entity_id', 'tr_type_entity_id, en_name');
 
 
 
@@ -667,7 +666,7 @@ if(!en_auth(array(1281))){
 
     if(count($_GET) < 1){
         //This makes the public ledger focus on transactions with coins which is a nicer initial view into the ledger:
-        $filters['tr_coins >'] = 0;
+        $filters['tr_points >'] = 0;
         //Also give warning about this applied filter on the UI:
         $filter_note = 'Showing recent transaction with awarded coins.';
     } else {
@@ -680,7 +679,7 @@ if(!en_auth(array(1281))){
     }
 }
 
-$trs_count = $this->Database_model->tr_fetch($filters, $join_by, 0, 0, array(), 'COUNT(tr_id) as trs_count, SUM(tr_coins) as coins_sum');
+$trs_count = $this->Database_model->tr_fetch($filters, $join_by, 0, 0, array(), 'COUNT(tr_id) as trs_count, SUM(tr_points) as points_sum');
 $trs = $this->Database_model->tr_fetch($filters, $join_by, (is_dev() ? 50 : 200));
 
 
@@ -709,20 +708,20 @@ echo '<table class="table table-condensed maxout"><tr>';
 
     //Transaction Type:
     $all_transaction_count = 0;
-    $all_coins = 0;
+    $all_points = 0;
     $select_ui = '';
     foreach ($all_engs as $tr) {
         //Echo drop down:
-        $select_ui .= '<option value="' . $tr['tr_type_entity_id'] . '" ' . ((isset($_GET['tr_type_entity_id']) && $_GET['tr_type_entity_id'] == $tr['tr_type_entity_id']) ? 'selected="selected"' : '') . '>' . $tr['en_name'] . ' ('  . echo_number($tr['trs_count']) . 'T' . ' = '.echo_number($tr['coins_sum']).'C' . ')</option>';
+        $select_ui .= '<option value="' . $tr['tr_type_entity_id'] . '" ' . ((isset($_GET['tr_type_entity_id']) && $_GET['tr_type_entity_id'] == $tr['tr_type_entity_id']) ? 'selected="selected"' : '') . '>' . $tr['en_name'] . ' ('  . echo_number($tr['trs_count']) . 'T' . ' = '.echo_number($tr['points_sum']).'C' . ')</option>';
         $all_transaction_count += $tr['trs_count'];
-        $all_coins += $tr['coins_sum'];
+        $all_points += $tr['points_sum'];
     }
 
     echo '<td>';
     echo '<div>';
     echo '<span class="mini-header">Transaction Type:</span>';
     echo '<select class="form-control border" name="tr_type_entity_id" id="tr_type_entity_id" class="border" style="width: 100% !important;">';
-    echo '<option value="0">All ('  . echo_number($all_transaction_count) . 'T' . ' = '.echo_number($all_coins).'C' . ')</option>';
+    echo '<option value="0">All ('  . echo_number($all_transaction_count) . 'T' . ' = '.echo_number($all_points).'C' . ')</option>';
     echo $select_ui;
     echo '</select>';
     echo '</div>';
@@ -819,7 +818,7 @@ echo '</div>';
 
 if($has_filters){
     //Display Transactions:
-    echo '<p style="margin: 10px 0 0 0;">Showing '.count($trs) . ( $trs_count[0]['trs_count'] > count($trs) ? ' of '. number_format($trs_count[0]['trs_count'] , 0) : '' ) .' transactions with '.number_format($trs_count[0]['coins_sum'], 0).' awarded coins:</p>';
+    echo '<p style="margin: 10px 0 0 0;">Showing '.count($trs) . ( $trs_count[0]['trs_count'] > count($trs) ? ' of '. number_format($trs_count[0]['trs_count'] , 0) : '' ) .' transactions with '.number_format($trs_count[0]['points_sum'], 0).' awarded coins:</p>';
 }
 
 if($filter_note){

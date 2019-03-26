@@ -182,8 +182,8 @@ class Database_model extends CI_Model
         }
 
         //Unset un-allowed columns to be manually added:
-        if (isset($insert_columns['tr_coins'])) {
-            unset($insert_columns['tr_coins']);
+        if (isset($insert_columns['tr_points'])) {
+            unset($insert_columns['tr_points']);
         }
 
         //Clean metadata is provided:
@@ -222,7 +222,7 @@ class Database_model extends CI_Model
         if(in_array($insert_columns['tr_type_entity_id'], $this->config->item('en_ids_4595'))){
             //Yes, issue coins:
             $en_all_4595 = $this->config->item('en_all_4595');
-            $insert_columns['tr_coins'] = doubleval($en_all_4595[$insert_columns['tr_type_entity_id']]['m_desc']);
+            $insert_columns['tr_points'] = doubleval($en_all_4595[$insert_columns['tr_type_entity_id']]['m_desc']);
         }
 
         //Lets log:

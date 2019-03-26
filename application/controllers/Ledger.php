@@ -208,7 +208,7 @@ class Ledger extends CI_Controller
     }
 
 
-    function dev__reset_coins(){
+    function dev__reset_points(){
 
         exit; //Maybe use to update all rates if needed?
 
@@ -225,13 +225,13 @@ class Ledger extends CI_Controller
                 'tr_status' => 2, //Published
                 'en_status' => 2, //Published
                 'tr_type_entity_id' => 4319, //Number
-                'tr_parent_entity_id' => 4595, //Mench Coins
+                'tr_parent_entity_id' => 4595, //Mench Points
                 'tr_child_entity_id' => $tr['tr_type_entity_id'],
             ), array('en_child'), 1);
 
             if(count($rate_trs) > 0){
                 //Issue coins at this rate:
-                $this->db->query("UPDATE table_ledger SET tr_coins = '".$rate_trs[0]['tr_content']."' WHERE tr_type_entity_id = " . $tr['tr_type_entity_id']);
+                $this->db->query("UPDATE table_ledger SET tr_points = '".$rate_trs[0]['tr_content']."' WHERE tr_type_entity_id = " . $tr['tr_type_entity_id']);
             }
 
         }

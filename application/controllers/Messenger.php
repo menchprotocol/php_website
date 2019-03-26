@@ -46,7 +46,7 @@ class Messenger extends CI_Controller
         if (!isset($tr_metadata['object']) || !isset($tr_metadata['entry'])) {
             //Likely loaded the URL in browser:
             return false;
-        } elseif (!$tr_metadata['object'] == 'page') {
+        } elseif ($tr_metadata['object'] != 'page') {
             $this->Database_model->tr_create(array(
                 'tr_content' => 'facebook_webhook() Function call object value is not equal to [page], which is what was expected.',
                 'tr_metadata' => $tr_metadata,
