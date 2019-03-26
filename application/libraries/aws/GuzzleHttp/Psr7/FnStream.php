@@ -74,7 +74,7 @@ class FnStream implements StreamInterface
 
     public function __toString()
     {
-        return call_user_func($this->_fn___toString);
+        return call_user_func($this->_toString);
     }
 
     public function close()

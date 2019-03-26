@@ -11,7 +11,7 @@ var isAdvancedUpload = function () {
 }();
 
 
-function fn___validURL(str) {
+function validURL(str) {
     var pattern = new RegExp('^(https?:\\/\\/)?'+ // protocol
         '((([a-z\\d]([a-z\\d-]*[a-z\\d])*)\\.)+[a-z]{2,}|'+ // domain name
         '((\\d{1,3}\\.){3}\\d{1,3}))'+ // OR ip (v4) address
@@ -22,7 +22,7 @@ function fn___validURL(str) {
 }
 
 
-function fn___in_help_messages(in_id) {
+function in_help_messages(in_id) {
 
     //See if this tip needs to be loaded:
     if (!$("div#content_" + in_id).html().length) {
@@ -31,11 +31,11 @@ function fn___in_help_messages(in_id) {
         $("div#content_" + in_id).html('<i class="fas fa-spinner fa-spin"></i>');
 
         //Let's check to see if this user has already seen this:
-        $.post("/intents/fn___in_help_messages", {in_id: in_id}, function (data) {
+        $.post("/intents/in_help_messages", {in_id: in_id}, function (data) {
             //Let's see what we got:
             if (data.status) {
                 //Load the content:
-                $("div#content_" + in_id).html('<div class="row"><div class="col-xs-6"><a href="javascript:fn___close_tip(' + in_id + ')">' + tips_button + '</a></div><div class="col-xs-6" style="text-align:right;"><a href="javascript:fn___close_tip(' + in_id + ')"><i class="fas fa-times"></i></a></div></div>'); //Show the same button at top for UX
+                $("div#content_" + in_id).html('<div class="row"><div class="col-xs-6"><a href="javascript:close_tip(' + in_id + ')">' + tips_button + '</a></div><div class="col-xs-6" style="text-align:right;"><a href="javascript:close_tip(' + in_id + ')"><i class="fas fa-times"></i></a></div></div>'); //Show the same button at top for UX
                 $("div#content_" + in_id).append(data.tip_messages);
 
                 //Reload tooldip:
@@ -52,7 +52,7 @@ function fn___in_help_messages(in_id) {
     $("div#content_" + in_id).fadeIn();
 }
 
-function fn___add_to_list(sort_list_id, sort_handler, html_content) {
+function add_to_list(sort_list_id, sort_handler, html_content) {
     //See if we already have a list in place?
     if ($("#" + sort_list_id + " " + sort_handler).length > 0) {
         //yes we do! add this:
@@ -63,7 +63,7 @@ function fn___add_to_list(sort_list_id, sort_handler, html_content) {
     }
 }
 
-function fn___close_tip(in_id) {
+function close_tip(in_id) {
     $("div#content_" + in_id).hide();
     $('#hb_' + in_id).fadeIn('slow');
 }
@@ -101,7 +101,7 @@ function load_edit(handler){
     $('.edit-box').css('top', position.top).css('left', position.left).removeClass('hidden');
 }
 
-function fn___ms_toggle(tr_id, new_state) {
+function ms_toggle(tr_id, new_state) {
 
     if (new_state < 0) {
         //Detect new state:
@@ -119,12 +119,12 @@ function fn___ms_toggle(tr_id, new_state) {
     }
 }
 
-function fn___load_help(in_id) {
+function load_help(in_id) {
     //Loads the help button:
-    $('#hb_' + in_id).html('<a class="tipbtn" href="javascript:fn___in_help_messages(' + in_id + ')">' + tips_button + '</a>');
+    $('#hb_' + in_id).html('<a class="tipbtn" href="javascript:in_help_messages(' + in_id + ')">' + tips_button + '</a>');
 }
 
-function fn___load_js_algolia() {
+function load_js_algolia() {
     $(".algolia_search").focus(function () {
         //Loadup Algolia once:
         if (!algolia_loaded) {
@@ -135,7 +135,7 @@ function fn___load_js_algolia() {
     });
 }
 
-function fn___toggle_advance(basic_toggle){
+function toggle_advance(basic_toggle){
 
     //Toggle UI elements:
     $('.advance-ui').toggleClass('hidden');
@@ -147,14 +147,14 @@ function fn___toggle_advance(basic_toggle){
 
     //If an iframe is loaded, also apply logic to iframe UI:
     if($('#ajax_frame').attr('src') && $('#ajax_frame').attr('src').length > 0){
-        document.getElementById('ajax_frame').contentWindow.fn___toggle_advance(1);
+        document.getElementById('ajax_frame').contentWindow.toggle_advance(1);
     }
 
     //Change top menu icon:
     $('.advance-icon').toggleClass('fal').toggleClass('fas');
 
     //Save session variable to save the state of advance setting:
-    $.post("/entities/fn___toggle_advance", {}, function (data) {
+    $.post("/ledger/toggle_advance", {}, function (data) {
         if(!data.status){
             alert('Error: ' + data.message);
         }
@@ -172,13 +172,13 @@ function tr_content_word_count(el_textarea, el_counter) {
     }
 }
 
-function fn___add_in_en_top_search(){
+function add_search_item(){
 
     //Lock search bar:
     $('#matrix_search').prop("disabled", true);
 
     //Attemps to create a new intent OR entity based on the value in the search box
-    $.post("/ledger/fn___add_in_en_top_search", { raw_string: $("#matrix_search").val() }, function (data) {
+    $.post("/ledger/add_search_item", { raw_string: $("#matrix_search").val() }, function (data) {
 
         if(!data.status){
 
@@ -198,7 +198,7 @@ function fn___add_in_en_top_search(){
 //Function to load all help messages throughout the matrix:
 $(document).ready(function () {
 
-    fn___load_js_algolia();
+    load_js_algolia();
 
     $("#matrix_search").on('autocomplete:selected', function (event, suggestion, dataset) {
 
@@ -233,16 +233,16 @@ $(document).ready(function () {
                 },
                 header: function (data) {
                     if($("#matrix_search").val().charAt(0)=='#' || $("#matrix_search").val().charAt(0)=='@'){
-                        return '<a href="javascript:fn___add_in_en_top_search()" class="suggestion"><i class="fal fa-plus-circle" style="margin: 0 5px;"></i> Create ' + data.query + '</a>';
+                        return '<a href="javascript:add_search_item()" class="suggestion"><i class="fal fa-plus-circle" style="margin: 0 5px;"></i> Create ' + data.query + '</a>';
                     }
                 },
                 empty: function (data) {
 
 
-                    if(fn___validURL(data.query)){
+                    if(validURL(data.query)){
 
                         //Do a call to PHP to fetch canonical URL and see if that exists:
-                        $.post("/entities/fn___find_url", { search_url:data.query }, function (searchdata) {
+                        $.post("/entities/en_fetch_canonical_url", { search_url:data.query }, function (searchdata) {
                             if(searchdata.status && searchdata.url_already_existed){
                                 //URL was detected via PHP, update the search results:
                                 $('.add-source-suggest').remove();
@@ -251,7 +251,7 @@ $(document).ready(function () {
                         });
 
                         //We did not find the URL, offer them option to add it:
-                        return '<a href="/entities/fn___add_source_wizard?url='+ encodeURI(data.query) +'" class="suggestion add-source-suggest"><i class="fal fa-plus-circle" style="margin: 0 5px;"></i> Add Source Wizard</a>'
+                        return '<a href="/entities/add_source_wizard?url='+ encodeURI(data.query) +'" class="suggestion add-source-suggest"><i class="fal fa-plus-circle" style="margin: 0 5px;"></i> Add Source Wizard</a>'
                             + '<div class="not-found"><i class="fas fa-exclamation-triangle"></i> URL not found</div>';
 
                     } else if($("#matrix_search").val().charAt(0)=='#'){
@@ -313,7 +313,7 @@ $(document).ready(function () {
                 //Its valid as all elements match! Let's continue:
                 loaded_messages.push(in_id);
                 //Load the Tip icon so they can access the tip if they like:
-                fn___load_help(in_id);
+                load_help(in_id);
             }
         });
     }
@@ -323,12 +323,12 @@ $(document).ready(function () {
         event.preventDefault();
         var hash = $(this).attr('href').replace('#', '');
         window.location.hash = hash;
-        fn___adjust_hash(hash);
+        adjust_hash(hash);
     });
 
 });
 
-function fn___adjust_hash(hash) {
+function adjust_hash(hash) {
     if (hash.length > 0 && $('#tab' + hash).length && !$('#tab' + hash).hasClass("hidden")) {
         //Adjust Header:
         $('#topnav>li').removeClass('active');

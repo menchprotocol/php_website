@@ -1,4 +1,4 @@
-function fn___en_load_search(focus_element, is_en_parent) {
+function en_load_search(focus_element, is_en_parent) {
 
 
     $(focus_element + ' .new-input').focus(function() {
@@ -7,7 +7,7 @@ function fn___en_load_search(focus_element, is_en_parent) {
         $(focus_element + ' .algolia_search_pad' ).addClass('hidden');
     }).on('autocomplete:selected', function (event, suggestion, dataset) {
 
-        fn___add_or_link_entities(suggestion.alg_obj_id, is_en_parent);
+        en_add_or_link(suggestion.alg_obj_id, is_en_parent);
 
     }).autocomplete({hint: false, minLength: 3, keyboardShortcuts: ['a']}, [{
 
@@ -25,23 +25,23 @@ function fn___en_load_search(focus_element, is_en_parent) {
         },
         templates: {
             suggestion: function (suggestion) {
-                //If clicked, would trigger the autocomplete:selected above which will trigger the fn___add_or_link_entities() function
+                //If clicked, would trigger the autocomplete:selected above which will trigger the en_add_or_link() function
                 return echo_js_suggestion(suggestion, 0);
             },
             header: function (data) {
                 if (!data.isEmpty) {
-                    return '<a href="javascript:fn___add_or_link_entities(0,'+is_en_parent+')" class="suggestion"><span><i class="fal fa-plus-circle add-plus"></i></span> <b>' + data.query + '</b></a>';
+                    return '<a href="javascript:en_add_or_link(0,'+is_en_parent+')" class="suggestion"><span><i class="fal fa-plus-circle add-plus"></i></span> <b>' + data.query + '</b></a>';
                 }
             },
             empty: function (data) {
-                return '<a href="javascript:fn___add_or_link_entities(0,'+is_en_parent+')" class="suggestion"><span><i class="fal fa-plus-circle add-plus"></i></span> <b>' + data.query + '</b></a>';
+                return '<a href="javascript:en_add_or_link(0,'+is_en_parent+')" class="suggestion"><span><i class="fal fa-plus-circle add-plus"></i></span> <b>' + data.query + '</b></a>';
             },
         }
     }]).keypress(function (e) {
 
         var code = (e.keyCode ? e.keyCode : e.which);
         if ((code == 13) || (e.ctrlKey && code == 13)) {
-            fn___add_or_link_entities(0, is_en_parent);
+            en_add_or_link(0, is_en_parent);
             return true;
         }
 
@@ -126,7 +126,7 @@ $(document).ready(function () {
             $('.entity_remove_stats').html('<i class="fas fa-spinner fa-spin"></i>');
 
             //About to delete... Fetch total links:
-            $.post("/entities/fn___en_count_links", { en_id: parseInt($('#modifybox').attr('entity-id')) }, function (data) {
+            $.post("/entities/en_count_to_be_removed_links", { en_id: parseInt($('#modifybox').attr('entity-id')) }, function (data) {
 
                 if(data.status){
                     $('.entity_remove_stats').html('<b>'+data.en_link_count+'</b>');
@@ -168,13 +168,13 @@ $(document).ready(function () {
 
 
     //Loadup various search bars:
-    fn___en_load_search("#new-parent", 1);
-    fn___en_load_search("#new-children", 0);
+    en_load_search("#new-parent", 1);
+    en_load_search("#new-children", 0);
 
 
     //Watchout for file uplods:
     $('.drag-box').find('input[type="file"]').change(function () {
-        fn___en_new_url_from_attachment(droppedFiles, 'file');
+        en_save_file_upload(droppedFiles, 'file');
     });
 
     //Should we auto start?
@@ -196,7 +196,7 @@ $(document).ready(function () {
             .on('drop', function (e) {
                 droppedFiles = e.originalEvent.dataTransfer.files;
                 e.preventDefault();
-                fn___en_new_url_from_attachment(droppedFiles, 'drop');
+                en_save_file_upload(droppedFiles, 'drop');
             });
     }
 
@@ -209,14 +209,14 @@ $(document).ready(function () {
         if (hash_parts.length >= 2) {
             //Fetch level if available:
             if (hash_parts[0] == 'entitymessages') {
-                fn___load_en_messages( hash_parts[1]);
+                en_load_messages( hash_parts[1]);
             } else if (hash_parts[0] == 'loadmodify') {
-                fn___en_modify_load(hash_parts[1], hash_parts[2]);
+                en_modify_load(hash_parts[1], hash_parts[2]);
             } else if (hash_parts[0] == 'loadenactionplans') {
-                fn___en_actionplans(hash_parts[1]);
+                en_actionplans(hash_parts[1]);
             } else if (hash_parts[0] == 'status') {
                 //Update status:
-                u_load_filter_status(hash_parts[1]);
+                en_filter_status(hash_parts[1]);
             }
         }
     }
@@ -244,7 +244,7 @@ $(document).ready(function () {
         // Make a new timeout set to go off in 800ms
         timeout = setTimeout(function () {
             //update type:
-            fn___update_link_type();
+            en_tr_type_preview();
         }, 610);
     };
 
@@ -253,7 +253,7 @@ $(document).ready(function () {
 });
 
 
-function fn___en_actionplans(en_id){
+function en_actionplans(en_id){
 
     if(parseInt($('.actionplans_en_'+en_id).attr('ap-count')) < 1){
         alert('Entity not added any intents to their Action Plan yet');
@@ -264,7 +264,7 @@ function fn___en_actionplans(en_id){
 
 
 //Adds OR links entities to entities
-function fn___add_or_link_entities(en_existing_id, is_parent) {
+function en_add_or_link(en_existing_id, is_parent) {
 
     //if en_existing_id>0 it means we're linking to an existing entity, in which case en_new_string should be null
     //If en_existing_id=0 it means we are creating a new entity and then linking it, in which case en_new_string is required
@@ -292,7 +292,7 @@ function fn___add_or_link_entities(en_existing_id, is_parent) {
 
 
     //Add via Ajax:
-    $.post("/entities/fn___add_or_link_entities", {
+    $.post("/entities/en_add_or_link", {
 
         en_id: en_focus_id,
         en_existing_id: en_existing_id,
@@ -310,7 +310,7 @@ function fn___add_or_link_entities(en_existing_id, is_parent) {
             input.focus();
 
             //Add new object to list:
-            fn___add_to_list(list_id, '.en-item', data.en_new_echo);
+            add_to_list(list_id, '.en-item', data.en_new_echo);
 
             //Adjust counters:
             $(counter_class).text((parseInt($(counter_class + ':first').text()) + 1));
@@ -328,14 +328,14 @@ function fn___add_or_link_entities(en_existing_id, is_parent) {
 }
 
 
-function u_load_filter_status(new_val) {
+function en_filter_status(new_val) {
     if (new_val >= -1 || new_val <= 3) {
         //Remove active class:
         $('.u-status-filter').removeClass('btn-secondary');
         //We do have a filter:
         en_focus_filter = parseInt(new_val);
         $('.u-status-' + new_val).addClass('btn-secondary');
-        fn___en_load_next_page(0, 1);
+        en_load_next_page(0, 1);
     } else {
         alert('Invalid new status');
         return false;
@@ -353,7 +353,7 @@ function en_name_word_count() {
 
 
 
-function fn___en_load_next_page(page, load_new_filter = 0) {
+function en_load_next_page(page, load_new_filter = 0) {
 
     if (load_new_filter) {
         //Replace load more with spinner:
@@ -365,7 +365,7 @@ function fn___en_load_next_page(page, load_new_filter = 0) {
         $('.load-more').html('<span class="load-more"><i class="fas fa-spinner fa-spin"></i></span>').hide().fadeIn();
     }
 
-    $.post("/entities/fn___en_load_next_page", {
+    $.post("/entities/en_load_next_page", {
         page: page,
         parent_en_id: en_focus_id,
         en_focus_filter: en_focus_filter,
@@ -377,7 +377,7 @@ function fn___en_load_next_page(page, load_new_filter = 0) {
         if (load_new_filter) {
             $('#list-children').html(data + '<div id="new-children" class="list-group-item list_input grey-input">' + append_div + '</div>').hide().fadeIn();
             //Reset search engine:
-            fn___en_load_search("#new-children", 0);
+            en_load_search("#new-children", 0);
         } else {
             //Update UI to confirm with user:
             $(data).insertBefore('#new-children');
@@ -390,7 +390,8 @@ function fn___en_load_next_page(page, load_new_filter = 0) {
 }
 
 
-function fn___update_link_type() {
+function en_tr_type_preview() {
+
     /*
      * Updates the type of link based on the link content
      *
@@ -400,7 +401,7 @@ function fn___update_link_type() {
 
 
     //Fetch Intent Data to load modify widget:
-    $.post("/entities/fn___update_link_type", {
+    $.post("/entities/en_tr_type_preview", {
         tr_content: $('#tr_content').val(),
         tr_id: parseInt($('#modifybox').attr('entity-link-id')),
     }, function (data) {
@@ -420,7 +421,7 @@ function fn___update_link_type() {
 
 
 
-function fn___en_modify_load(en_id, tr_id) {
+function en_modify_load(en_id, tr_id) {
 
     //Make sure inputs are valid:
     if (!$('.en___' + en_id).length) {
@@ -470,7 +471,7 @@ function fn___en_modify_load(en_id, tr_id) {
         //Update count:
         tr_content_word_count('#tr_content','#chartr_contentNum');
         //Also update type:
-        fn___update_link_type();
+        en_tr_type_preview();
 
     } else {
 
@@ -492,14 +493,14 @@ function fn___en_modify_load(en_id, tr_id) {
     }
 }
 
-function fn___entity_link_form_lock(){
+function entity_link_form_lock(){
     $('#tr_content').prop("disabled", true).css('background-color','#CCC');
 
     $('.btn-save').addClass('grey').attr('href', '#').html('<i class="fas fa-spinner fa-spin"></i> Uploading');
 
 }
 
-function fn___entity_link_form_unlock(result){
+function entity_link_form_unlock(result){
 
     //What was the result?
     if (!result.status) {
@@ -509,7 +510,7 @@ function fn___entity_link_form_unlock(result){
     //Unlock either way:
     $('#tr_content').prop("disabled", false).css('background-color','#FFF');
 
-    $('.btn-save').removeClass('grey').attr('href', 'javascript:fn___en_modify_save();').html('Save');
+    $('.btn-save').removeClass('grey').attr('href', 'javascript:en_modify_save();').html('Save');
 
     //Tooltips:
     $('[data-toggle="tooltip"]').tooltip();
@@ -519,7 +520,7 @@ function fn___entity_link_form_unlock(result){
 }
 
 
-function fn___en_new_url_from_attachment(droppedFiles, uploadType) {
+function en_save_file_upload(droppedFiles, uploadType) {
 
     //Prevent multiple concurrent uploads:
     if ($('.drag-box').hasClass('is-uploading')) {
@@ -539,7 +540,7 @@ function fn___en_new_url_from_attachment(droppedFiles, uploadType) {
     if (isAdvancedUpload) {
 
         //Lock message:
-        fn___entity_link_form_lock();
+        entity_link_form_lock();
 
         var ajaxData = new FormData($('.drag-box').get(0));
         if (droppedFiles) {
@@ -555,7 +556,7 @@ function fn___en_new_url_from_attachment(droppedFiles, uploadType) {
         ajaxData.append('upload_type', uploadType);
 
         $.ajax({
-            url: '/entities/fn___en_new_url_from_attachment',
+            url: '/entities/en_save_file_upload',
             type: 'post',
             data: ajaxData,
             dataType: 'json',
@@ -575,18 +576,18 @@ function fn___en_new_url_from_attachment(droppedFiles, uploadType) {
                     //Update count:
                     tr_content_word_count('#tr_content','#chartr_contentNum');
                     //Also update type:
-                    fn___update_link_type();
+                    en_tr_type_preview();
                 }
 
                 //Unlock form:
-                fn___entity_link_form_unlock(data);
+                entity_link_form_unlock(data);
 
             },
             error: function (data) {
                 var result = [];
                 result.status = 0;
                 result.message = data.responseText;
-                fn___entity_link_form_unlock(result);
+                entity_link_form_unlock(result);
             }
         });
     } else {
@@ -595,7 +596,7 @@ function fn___en_new_url_from_attachment(droppedFiles, uploadType) {
 }
 
 
-function fn___en_modify_save() {
+function en_modify_save() {
 
     //Validate that we have all we need:
     if ($('#modifybox').hasClass('hidden') || !parseInt($('#modifybox').attr('entity-id'))) {
@@ -636,7 +637,7 @@ function fn___en_modify_save() {
     $('.save_entity_changes').html('<span><i class="fas fa-spinner fa-spin"></i></span> Saving...').hide().fadeIn();
 
 
-    $.post("/entities/fn___en_modify_save", modify_data, function (data) {
+    $.post("/entities/en_modify_save", modify_data, function (data) {
 
         if (data.status) {
 
@@ -746,7 +747,7 @@ function fn___en_modify_save() {
 
 
 
-function fn___load_en_messages(en_id) {
+function en_load_messages(en_id) {
 
     //Make the frame visible:
     $('.fixed-box').addClass('hidden');
@@ -766,7 +767,7 @@ function fn___load_en_messages(en_id) {
     }
 
     //Load the frame:
-    $.post("/entities/fn___load_en_messages/"+en_id, {}, function (data) {
+    $.post("/entities/en_load_messages/"+en_id, {}, function (data) {
         //Raw Inputs Fields if success:
         handler.html(data);
 

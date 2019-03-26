@@ -2,8 +2,8 @@
 
 
 
-//This also has an equal PHP function fn___echo_time_hours() which we want to make sure has more/less the same logic:
-function fn___echo_js_hours(in_seconds_cost) {
+//This also has an equal PHP function echo_time_hours() which we want to make sure has more/less the same logic:
+function echo_js_hours(in_seconds_cost) {
 
     in_seconds_cost = parseInt(in_seconds_cost);
     if (in_seconds_cost < 1) {
@@ -18,7 +18,7 @@ function fn___echo_js_hours(in_seconds_cost) {
 }
 
 function in_cost_overview(seconds, in_id){
-    return fn___echo_js_hours(seconds) + ( parseFloat($('.t_estimate_' + in_id + ':first').attr('intent-usd')) > 0 ? '$' : '' );
+    return echo_js_hours(seconds) + ( parseFloat($('.t_estimate_' + in_id + ':first').attr('intent-usd')) > 0 ? '$' : '' );
 }
 
 function activate_expansion(){
@@ -35,7 +35,7 @@ function activate_expansion(){
                 }
 
                 //Expand children:
-                fn___ms_toggle(parseInt($(this).attr('in-tr-id')), -1);
+                ms_toggle(parseInt($(this).attr('in-tr-id')), -1);
             });
 
         }
@@ -73,8 +73,8 @@ $(document).ready(function () {
     activate_expansion();
 
     //Load top/bottom intent searches:
-    fn___in_load_search(".intentadder-level-2-top",    1, 2);
-    fn___in_load_search(".intentadder-level-2-bottom", 0, 2);
+    in_load_search(".intentadder-level-2-top",    1, 2);
+    in_load_search(".intentadder-level-2-bottom", 0, 2);
 
 
     //Expand level 3 search results:
@@ -100,17 +100,17 @@ $(document).ready(function () {
     //Watch the expand/close all buttons:
     $('#expand_intents .expand_all').click(function (e) {
         $(".list-is-children .is_level2_sortable").each(function () {
-            fn___ms_toggle($(this).attr('in-tr-id'), 1);
+            ms_toggle($(this).attr('in-tr-id'), 1);
         });
     });
     $('#expand_intents .close_all').click(function (e) {
         $(".list-is-children .is_level2_sortable").each(function () {
-            fn___ms_toggle($(this).attr('in-tr-id'), 0);
+            ms_toggle($(this).attr('in-tr-id'), 0);
         });
     });
 
     //Load Sortable for level 2:
-    fn___in_sort_load(in_focus_id, 2);
+    in_sort_load(in_focus_id, 2);
 
 
     //Watch for intent status change:
@@ -134,12 +134,12 @@ $(document).ready(function () {
 
     //Lookout for intent link related changes:
     $('input[type=radio][name=tr_type_entity_id], #tr_status').change(function () {
-        fn___in_adjust_link_ui();
+        in_adjust_link_ui();
     });
 
     //Look for AND/OR changes:
     $('input[type=radio][name=in_type]').change(function () {
-        fn___in_adjust_isany_ui();
+        in_adjust_isany_ui();
     });
 
 
@@ -151,7 +151,7 @@ $(document).ready(function () {
             var in_id = parseInt($(this).attr('intent-id'));
 
             //Load sorting for level 3 intents:
-            fn___in_sort_load(in_id, 3);
+            in_sort_load(in_id, 3);
 
             //Load time:
             $('.t_estimate_' + in_id).text(in_cost_overview($('.t_estimate_' + in_id + ':first').attr('tree-max-seconds'), in_id));
@@ -181,11 +181,11 @@ $(document).ready(function () {
         if (hash_parts.length >= 2) {
             //Fetch level if available:
             if (hash_parts[0] == 'intentmessages') {
-                fn___in_messages_iframe(hash_parts[1]);
+                in_messages_iframe(hash_parts[1]);
             } else if (hash_parts[0] == 'loadmodify') {
-                fn___in_modify_load(hash_parts[1], hash_parts[2]);
+                in_modify_load(hash_parts[1], hash_parts[2]);
             } else if (hash_parts[0] == 'loadinactionplans') {
-                fn___in_actionplans(hash_parts[1]);
+                in_actionplans(hash_parts[1]);
             }
         }
     }
@@ -194,7 +194,7 @@ $(document).ready(function () {
 });
 
 
-function fn___in_actionplans(in_id){
+function in_actionplans(in_id){
     if(parseInt($('.actionplans_in_'+in_id).attr('ap-count')) < 1){
         alert('Intent not added to any Action Plans yet');
         return false;
@@ -202,7 +202,7 @@ function fn___in_actionplans(in_id){
 }
 
 
-function fn___in_adjust_isany_ui() {
+function in_adjust_isany_ui() {
     if ($('#in_type_0').is(':checked')) {
         //Unlock settings:
         $('#in_requirement_entity_id').prop('disabled', false);
@@ -213,7 +213,7 @@ function fn___in_adjust_isany_ui() {
 }
 
 
-function fn___in_adjust_link_ui() {
+function in_adjust_link_ui() {
 
     //Fetch intent link ID:
     var tr_id = parseInt($('#modifybox').attr('intent-tr-id'));
@@ -251,7 +251,7 @@ function fn___in_adjust_link_ui() {
 }
 
 
-function fn___in_load_search(focus_element, is_in_parent, next_in_level) {
+function in_load_search(focus_element, is_in_parent, next_in_level) {
 
     //Loads the intent search bar only once for the add intent inputs
     if($(focus_element).hasClass('search-bar-loaded')){
@@ -262,7 +262,7 @@ function fn___in_load_search(focus_element, is_in_parent, next_in_level) {
     //Not yet loaded, continue with loading it:
     $(focus_element).addClass('search-bar-loaded').on('autocomplete:selected', function (event, suggestion, dataset) {
 
-        fn___in_link_or_create($(this).attr('intent-id'), is_in_parent, next_in_level, suggestion.alg_obj_id);
+        in_link_or_create($(this).attr('intent-id'), is_in_parent, next_in_level, suggestion.alg_obj_id);
 
     }).autocomplete({hint: false, minLength: 3, keyboardShortcuts: ['a']}, [{
 
@@ -287,24 +287,24 @@ function fn___in_load_search(focus_element, is_in_parent, next_in_level) {
             },
             header: function (data) {
                 if (!data.isEmpty) {
-                    return '<a href="javascript:fn___in_link_or_create(' + parseInt($(focus_element).attr('intent-id')) + ','+is_in_parent+','+next_in_level+')" class="suggestion"><span><i class="fal fa-plus-circle add-plus"></i></span> <b>' + data.query + '</b></a>';
+                    return '<a href="javascript:in_link_or_create(' + parseInt($(focus_element).attr('intent-id')) + ','+is_in_parent+','+next_in_level+')" class="suggestion"><span><i class="fal fa-plus-circle add-plus"></i></span> <b>' + data.query + '</b></a>';
                 }
             },
             empty: function (data) {
-                return '<a href="javascript:fn___in_link_or_create(' + parseInt($(focus_element).attr('intent-id')) + ','+is_in_parent+','+next_in_level+')" class="suggestion"><span><i class="fal fa-plus-circle add-plus"></i></span> <b>' + data.query + '</b></a>';
+                return '<a href="javascript:in_link_or_create(' + parseInt($(focus_element).attr('intent-id')) + ','+is_in_parent+','+next_in_level+')" class="suggestion"><span><i class="fal fa-plus-circle add-plus"></i></span> <b>' + data.query + '</b></a>';
             },
         }
     }]).keypress(function (e) {
         var code = (e.keyCode ? e.keyCode : e.which);
         if ((code == 13) || (e.ctrlKey && code == 13)) {
-            return fn___in_link_or_create($(this).attr('intent-id'), is_in_parent, next_in_level);
+            return in_link_or_create($(this).attr('intent-id'), is_in_parent, next_in_level);
         }
     });
 
 }
 
 
-function fn___in_sort_save(in_id, level) {
+function in_sort_save(in_id, level) {
 
     if (level == 2) {
         var s_element = "list-in-" + in_focus_id + '-0';
@@ -340,7 +340,7 @@ function fn___in_sort_save(in_id, level) {
     //It might be zero for lists that have jsut been emptied
     if (sort_rank > 0 && in_id) {
         //Update backend:
-        $.post("/intents/fn___in_sort_save", {in_id: in_id, new_tr_orders: new_tr_orders}, function (data) {
+        $.post("/intents/in_sort_save", {in_id: in_id, new_tr_orders: new_tr_orders}, function (data) {
             //Update UI to confirm with user:
             if (!data.status) {
                 //There was some sort of an error returned!
@@ -351,7 +351,7 @@ function fn___in_sort_save(in_id, level) {
 }
 
 
-function fn___in_sort_load(in_id, level) {
+function in_sort_load(in_id, level) {
 
     if (level == 2) {
         var element_key = null;
@@ -387,7 +387,7 @@ function fn___in_sort_load(in_id, level) {
         draggable: s_draggable, // Specifies which items inside the element should be sortable
         handle: ".enable-sorting", // Restricts sort start click/touch to the specified element
         onUpdate: function (evt/**Event*/) {
-            fn___in_sort_save(in_id, level);
+            in_sort_save(in_id, level);
         }
     };
 
@@ -408,7 +408,7 @@ function fn___in_sort_load(in_id, level) {
             };
 
             //Update:
-            $.post("/intents/fn___in_migrate", inputs, function (data) {
+            $.post("/intents/in_migrate", inputs, function (data) {
                 //Update sorts in both lists:
                 if (!data.status) {
 
@@ -428,18 +428,18 @@ function fn___in_sort_load(in_id, level) {
                     if (!(step_hours == 0)) {
                         //Remove from old one:
                         var from_hours_new = parseFloat($('.t_estimate_' + inputs.from_in_id + ':first').attr('tree-max-seconds')) - step_hours;
-                        $('.t_estimate_' + inputs.from_in_id).attr('tree-max-seconds', from_hours_new).text(fn___echo_js_hours(from_hours_new));
+                        $('.t_estimate_' + inputs.from_in_id).attr('tree-max-seconds', from_hours_new).text(echo_js_hours(from_hours_new));
                         $('.children-counter-' + inputs.from_in_id).text(parseInt($('.children-counter-' + inputs.from_in_id + ':first').text()) - intent_count);
 
                         //Add to new:
                         var to_hours_new = parseFloat($('.t_estimate_' + inputs.to_in_id + ':first').attr('tree-max-seconds')) + step_hours;
-                        $('.t_estimate_' + inputs.to_in_id).attr('tree-max-seconds', to_hours_new).text(fn___echo_js_hours(to_hours_new));
+                        $('.t_estimate_' + inputs.to_in_id).attr('tree-max-seconds', to_hours_new).text(echo_js_hours(to_hours_new));
                         $('.children-counter-' + inputs.to_in_id).text(parseInt($('.children-counter-' + inputs.to_in_id + ':first').text()) + intent_count);
                     }
 
                     //Update sorting for both lists:
-                    fn___in_sort_save(inputs.from_in_id, 3);
-                    fn___in_sort_save(inputs.to_in_id, 3);
+                    in_sort_save(inputs.from_in_id, 3);
+                    in_sort_save(inputs.to_in_id, 3);
 
                 }
             });
@@ -451,7 +451,7 @@ function fn___in_sort_load(in_id, level) {
 }
 
 
-function fn___in_messages_iframe(in_id) {
+function in_messages_iframe(in_id) {
     //Start loading:
     $('.fixed-box').addClass('hidden');
     $('.frame-loader').addClass('hidden');
@@ -460,13 +460,13 @@ function fn___in_messages_iframe(in_id) {
     $('#tr_title').html('<i class="fas fa-comment-plus"></i> ' + $('.in_outcome_' + in_id + ':first').text());
 
     //Load content via a URL:
-    $('.ajax-frame').attr('src', '/intents/fn___in_messages_iframe/' + in_id).removeClass('hidden').css('margin-top', '0');
+    $('.ajax-frame').attr('src', '/intents/in_messages_iframe/' + in_id).removeClass('hidden').css('margin-top', '0');
 
     //Tooltips:
     $('[data-toggle="tooltip"]').tooltip();
 }
 
-function fn___adjust_js_ui(in_id, level, new_hours, intent_deficit_count=0, apply_to_tree=0, skip_intent_adjustments=0, usd_cost=0) {
+function adjust_js_ui(in_id, level, new_hours, intent_deficit_count=0, apply_to_tree=0, skip_intent_adjustments=0, usd_cost=0) {
 
     intent_deficit_count = parseInt(intent_deficit_count);
     var in_seconds_cost = parseFloat($('.t_estimate_' + in_id + ':first').attr('intent-seconds'));
@@ -509,7 +509,7 @@ function fn___adjust_js_ui(in_id, level, new_hours, intent_deficit_count=0, appl
         //Update Hours (Either level 1 or 2):
         $('.t_estimate_' + in_parent_id)
             .attr('tree-max-seconds', in_new_parent__tree_seconds)
-            .text(fn___echo_js_hours(in_new_parent__tree_seconds));
+            .text(echo_js_hours(in_new_parent__tree_seconds));
 
 
         if (level == 3) {
@@ -525,13 +525,13 @@ function fn___adjust_js_ui(in_id, level, new_hours, intent_deficit_count=0, appl
             //Update Hours:
             $('.t_estimate_' + in_top_level)
                 .attr('tree-max-seconds', in_new__tree_seconds)
-                .text(fn___echo_js_hours(in_new__tree_seconds));
+                .text(echo_js_hours(in_new__tree_seconds));
         }
     }
 }
 
 
-function fn___in_outcome_counter() {
+function in_outcome_counter() {
     var len = $('#in_outcome').val().length;
     if (len > in_outcome_max) {
         $('#charNameNum').addClass('overload').text(len);
@@ -541,7 +541,7 @@ function fn___in_outcome_counter() {
 }
 
 
-function fn___in_modify_load(in_id, tr_id) {
+function in_modify_load(in_id, tr_id) {
 
     //Indicate Loading:
     $('#modifybox .grey-box .loadcontent').addClass('hidden');
@@ -560,7 +560,7 @@ function fn___in_modify_load(in_id, tr_id) {
     $('.edit-header').html('<i class="fas fa-cog"></i> ' + $('.in_outcome_' + in_id + ':first').text());
 
     //Fetch Intent Data to load modify widget:
-    $.post("/intents/fn___in_load_data", {
+    $.post("/intents/in_load_data", {
         in_id: in_id,
         tr_id: tr_id,
         is_parent: ( $('.intent_line_' + in_id).hasClass('parent-intent') ? 1 : 0 ),
@@ -639,9 +639,9 @@ function fn___in_modify_load(in_id, tr_id) {
             $('#modifybox .grey-box .loadbox').addClass('hidden');
 
             //Run UI Updating functions after we've removed the hidden class from #modifybox:
-            fn___in_outcome_counter();
-            fn___in_adjust_isany_ui();
-            fn___in_adjust_link_ui();
+            in_outcome_counter();
+            in_adjust_isany_ui();
+            in_adjust_link_ui();
 
             //Reload Tooltip again:
             $('[data-toggle="tooltip"]').tooltip();
@@ -656,7 +656,7 @@ function fn___in_modify_load(in_id, tr_id) {
     });
 }
 
-function fn___in_modify_save() {
+function in_modify_save() {
 
     //Validate that we have all we need:
     if ($('#modifybox').hasClass('hidden') || !parseInt($('#modifybox').attr('intent-id'))) {
@@ -715,7 +715,7 @@ function fn___in_modify_save() {
 
 
     //Save the rest of the content:
-    $.post("/intents/fn___in_modify_save", modify_data, function (data) {
+    $.post("/intents/in_modify_save", modify_data, function (data) {
 
         if (!data.status) {
 
@@ -739,7 +739,7 @@ function fn___in_modify_save() {
                     window.location.hash = '#';
 
                     //Adjust completion cost:
-                    fn___adjust_js_ui(modify_data['in_id'], modify_data['level'], 0, data.in__tree_in_active_count, 1);
+                    adjust_js_ui(modify_data['in_id'], modify_data['level'], 0, data.in__tree_in_active_count, 1);
 
                     //Remove from UI:
                     $('.in__tr_' + modify_data['tr_id']).html('<span style="color:#2f2739;"><i class="fas fa-trash-alt"></i> Removed</span>');
@@ -757,7 +757,7 @@ function fn___in_modify_save() {
                         $('#modifybox').addClass('hidden');
 
                         //Resort all Steps to illustrate changes on UI:
-                        fn___in_sort_save(parseInt($('.intent_line_' + modify_data['in_id']).attr('parent-intent-id')), modify_data['level']);
+                        in_sort_save(parseInt($('.intent_line_' + modify_data['in_id']).attr('parent-intent-id')), modify_data['level']);
 
                     }, 610);
 
@@ -811,7 +811,7 @@ function fn___in_modify_save() {
                 $('.save_intent_changes').html(data.message).hide().fadeIn();
 
                 //Adjust completion cost:
-                fn___adjust_js_ui(modify_data['in_id'], modify_data['level'], modify_data['in_seconds_cost'], 0, 0, 0, modify_data['in_dollar_cost']); //intent-usd
+                adjust_js_ui(modify_data['in_id'], modify_data['level'], modify_data['in_seconds_cost'], 0, 0, 0, modify_data['in_dollar_cost']); //intent-usd
 
             }
 
@@ -834,7 +834,7 @@ function fn___in_modify_save() {
 }
 
 
-function fn___in_link_or_create(in_parent_id, is_parent, next_level, in_link_child_id=0) {
+function in_link_or_create(in_parent_id, is_parent, next_level, in_link_child_id=0) {
 
     /*
      *
@@ -869,10 +869,10 @@ function fn___in_link_or_create(in_parent_id, is_parent, next_level, in_link_chi
     }
 
     //Set processing status:
-    fn___add_to_list(sort_list_id, sort_handler, '<div id="temp' + next_level + '" class="list-group-item"><i class="fas fa-spinner fa-spin"></i> Adding... </div>');
+    add_to_list(sort_list_id, sort_handler, '<div id="temp' + next_level + '" class="list-group-item"><i class="fas fa-spinner fa-spin"></i> Adding... </div>');
 
     //Update backend:
-    $.post("/intents/fn___in_link_or_create", {
+    $.post("/intents/in_link_or_create", {
         in_parent_id: in_parent_id,
         is_parent:is_parent,
         in_outcome: intent_name,
@@ -886,28 +886,28 @@ function fn___in_link_or_create(in_parent_id, is_parent, next_level, in_link_chi
         if (data.status) {
 
             //Add new
-            fn___add_to_list(sort_list_id, sort_handler, data.in_child_html);
+            add_to_list(sort_list_id, sort_handler, data.in_child_html);
 
             //Reload sorting to enable sorting for the newly added intent:
-            fn___in_sort_load(in_parent_id, next_level);
+            in_sort_load(in_parent_id, next_level);
 
             if (next_level == 2) {
 
                 if(!is_parent){
                     //Adjust the Step count:
-                    fn___in_sort_save(0, 2);
+                    in_sort_save(0, 2);
                 }
 
                 //Reload sorting to enable sorting for the newly added intent:
-                fn___in_sort_load(data.in_child_id, 3);
+                in_sort_load(data.in_child_id, 3);
 
                 //Load search again:
-                fn___in_load_search(".intentadder-id-"+data.in_child_id, 0, 3);
+                in_load_search(".intentadder-id-"+data.in_child_id, 0, 3);
 
             } else if(!is_parent) {
 
                 //Adjust Intent Level 3 sorting:
-                fn___in_sort_save(in_parent_id, next_level);
+                in_sort_save(in_parent_id, next_level);
 
             }
 
@@ -918,7 +918,7 @@ function fn___in_link_or_create(in_parent_id, is_parent, next_level, in_link_chi
             $('[data-toggle="tooltip"]').tooltip();
 
             //Adjust time:
-            fn___adjust_js_ui(data.in_child_id, next_level, data.in__tree_max_seconds, data.in__tree_in_active_count, 0, 1);
+            adjust_js_ui(data.in_child_id, next_level, data.in__tree_max_seconds, data.in__tree_in_active_count, 0, 1);
 
         } else {
             //Show errors:

@@ -1,5 +1,5 @@
 <?php
-$session_en = fn___en_auth(array(1308)); //Is miners
+$session_en = en_auth(array(1308)); //Is miners
 ?>
 <div class="p-header <?= ($session_en ? 'hidden' : '') ?>">
     <ul class="nav nav-pills nav-pills-primary full-width">

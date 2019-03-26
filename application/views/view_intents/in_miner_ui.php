@@ -21,12 +21,12 @@ $metadata = unserialize($in['in_metadata']);
         <?php
 
         //Parent intents:
-        echo '<h5 class="badge badge-h"><span class="li-parent-count parent-counter-' . $in['in_id'] . '">' . count($in['in__parents']) . '</span> Parent' . fn___echo__s(count($in['in__parents'])) . '</h5>';
+        echo '<h5 class="badge badge-h"><span class="li-parent-count parent-counter-' . $in['in_id'] . '">' . count($in['in__parents']) . '</span> Parent' . echo__s(count($in['in__parents'])) . '</h5>';
         echo '<div id="list-in-' . $in['in_id'] . '-1" class="list-group list-level-2">';
 
         //List current parent intents:
         foreach ($in['in__parents'] as $parent_in) {
-            echo fn___echo_in($parent_in, 2, 0, true);
+            echo echo_in($parent_in, 2, 0, true);
         }
 
         //Add parent intent:
@@ -51,10 +51,10 @@ $metadata = unserialize($in['in_metadata']);
 
         //Focus intent:
         echo '<h5 class="badge badge-h indent1" style="display: inline-block;">Intent #'.$in['in_id'].'</h5>';
-        echo '<a class="secret" href="/intents/cron__update_metadata/' . $in['in_id'] . '/1?redirect=/' . $in['in_id'] . '" style="margin-left: 5px;" onclick="fn___turn_off()"><i class="fal fa-sync-alt" data-toggle="tooltip" title="Updates intent tree cache" data-placement="top"></i></a>';
+        echo '<a class="secret" href="/intents/cron__update_metadata/' . $in['in_id'] . '/1?redirect=/' . $in['in_id'] . '" style="margin-left: 5px;" onclick="turn_off()"><i class="fal fa-sync-alt" data-toggle="tooltip" title="Updates intent tree cache" data-placement="top"></i></a>';
 
         echo '<div class="list-group indent1">';
-        echo fn___echo_in($in, 1);
+        echo echo_in($in, 1);
         echo '</div>';
 
 
@@ -77,7 +77,7 @@ $metadata = unserialize($in['in_metadata']);
         //List child intents:
         echo '<div id="list-in-' . $in['in_id'] . '-0" class="list-group list-is-children list-level-2 indent2">';
         foreach ($in['in__children'] as $child_in) {
-            echo fn___echo_in($child_in, 2, $in['in_id']);
+            echo echo_in($child_in, 2, $in['in_id']);
         }
 
         //Add child intent:
@@ -133,7 +133,7 @@ $metadata = unserialize($in['in_metadata']);
                             <span class="mini-header">Intent Status:</span>
                             <select class="form-control border" id="in_status" original-status="" data-toggle="tooltip" title="Intent Status" data-placement="top" style="display: inline-block !important;">
                                 <?php
-                                foreach (fn___echo_fixed_fields('in_status') as $status_id => $status) {
+                                foreach (echo_fixed_fields('in_status') as $status_id => $status) {
                                     echo '<option value="' . $status_id . '" title="' . $status['s_desc'] . '">' . $status['s_name'] . '</option>';
                                 }
                                 ?>
@@ -161,7 +161,7 @@ $metadata = unserialize($in['in_metadata']);
                                         style="margin:0 0 10px 0;"><span
                                             id="charNameNum">0</span>/<?= $this->config->item('in_outcome_max') ?></span>][<a href="/entities/5008" data-toggle="tooltip" title="See (and manage) list of supporting verbs that intent outcomes can start with" data-placement="right" target="_blank"><b>Verbs</b></a>]</span>
                             <div class="form-group label-floating is-empty" style="height: 40px !important;">
-                                <span class="white-wrapper"><textarea class="form-control text-edit msg main-box border" id="in_outcome" onkeyup="fn___in_outcome_counter()"></textarea></span>
+                                <span class="white-wrapper"><textarea class="form-control text-edit msg main-box border" id="in_outcome" onkeyup="in_outcome_counter()"></textarea></span>
                             </div>
 
 
@@ -169,7 +169,7 @@ $metadata = unserialize($in['in_metadata']);
                             <span class="mini-header" style="margin-top: 20px;">Intent Type:</span>
                             <div class="form-group label-floating is-empty" style="margin-bottom: 0; padding-bottom: 0; display:block !important;">
                                 <?php
-                                foreach (fn___echo_fixed_fields('in_type') as $in_val => $intent_type) {
+                                foreach (echo_fixed_fields('in_type') as $in_val => $intent_type) {
                                     echo '<span class="radio" style="display:inline-block; margin-top: 0 !important;" data-toggle="tooltip" title="' . $intent_type['s_desc'] . '" data-placement="top">
                                         <label class="underdot" style="display:inline-block;">
                                             <input type="radio" id="in_type_' . $in_val . '" name="in_type" value="' . $in_val . '" />
@@ -182,7 +182,7 @@ $metadata = unserialize($in['in_metadata']);
 
 
 
-                            <div class="<?= fn___echo_advance() ?>">
+                            <div class="<?= echo_advance() ?>">
 
                                 <span class="mini-header">Completion Method:</span>
                                 <select class="form-control border" id="in_requirement_entity_id" data-toggle="tooltip" title="Defines what students need to do to mark this intent as complete" data-placement="top" style="margin-bottom: 12px;">
@@ -251,7 +251,7 @@ $metadata = unserialize($in['in_metadata']);
                                 </div>
 
 
-                                <span class="mini-header">Link Type: <span class="<?= fn___echo_advance() ?>">[<a href="javscript:void(0);" onclick="$('.modify_parent_in').toggleClass('hidden')" data-toggle="tooltip" title="Modify Linked Intent" data-placement="top"><u>EDIT</u></a>]</span></span>
+                                <span class="mini-header">Link Type: <span class="<?= echo_advance() ?>">[<a href="javscript:void(0);" onclick="$('.modify_parent_in').toggleClass('hidden')" data-toggle="tooltip" title="Modify Linked Intent" data-placement="top"><u>EDIT</u></a>]</span></span>
                                 <div class="form-group label-floating is-empty">
 
                                     <?php
@@ -290,7 +290,7 @@ $metadata = unserialize($in['in_metadata']);
                                     <select class="form-control border" id="tr__assessment_points" data-toggle="tooltip" title="Points adjusted when student completes intent" data-placement="top" style="margin-bottom:12px;">
                                         <?php
                                         foreach (array(-233, -144, -89, -55, -34, -21, -13, -8, -5, -3, -2, -1, 0, 1, 2, 3, 5, 8, 13, 21, 34, 55, 89, 144, 233) as $point) {
-                                            echo '<option value="' . $point . '">' . ( $point>=0 ? 'Award ' : 'Subtract ' ) . ($point == 0 ? 'No Points' : abs($point) . ' Point' . fn___echo__s($point)) . '</option>';
+                                            echo '<option value="' . $point . '">' . ( $point>=0 ? 'Award ' : 'Subtract ' ) . ($point == 0 ? 'No Points' : abs($point) . ' Point' . echo__s($point)) . '</option>';
                                         }
                                         ?>
                                     </select>
@@ -300,7 +300,7 @@ $metadata = unserialize($in['in_metadata']);
                                 <span class="mini-header">Transaction Status:</span>
                                 <select class="form-control border" data-toggle="tooltip" title="Transaction Status" data-placement="top" id="tr_status" style="display: inline-block !important;">
                                     <?php
-                                    foreach (fn___echo_fixed_fields('tr_status') as $status_id => $status) {
+                                    foreach (echo_fixed_fields('tr_status') as $status_id => $status) {
                                         if($status_id < 3){ //No need to verify intent links!
                                             echo '<option value="' . $status_id . '" title="' . $status['s_desc'] . '">' . $status['s_name'] . '</option>';
                                         }
@@ -330,15 +330,13 @@ $metadata = unserialize($in['in_metadata']);
                 <table class="save-btn-box loadcontent">
                     <tr>
                         <td class="save-result-td"><span class="save_intent_changes"></span></td>
-                        <td class="save-td"><a href="javascript:fn___in_modify_save();" class="btn btn-primary">Save</a></td>
+                        <td class="save-td"><a href="javascript:in_modify_save();" class="btn btn-primary">Save</a></td>
                     </tr>
                 </table>
 
             </div>
 
         </div>
-
-        <?php $this->load->view('view_ledger/tr_actionplan_right_column'); ?>
 
     </div>
 </div>

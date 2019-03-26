@@ -6,14 +6,14 @@
 * */
 
 
-function fn___add_first_name() {
+function add_first_name() {
     $('#tr_content' + in_id).insertAtCaret('/firstname ');
-    fn___count_message();
+    count_message();
 }
 
 
 //Count text area characters:
-function fn___count_message() {
+function count_message() {
     //Update count:
     var len = $('#tr_content' + in_id).val().length;
     if (len > tr_content_max_length) {
@@ -23,7 +23,7 @@ function fn___count_message() {
     }
 }
 
-function fn___changeMessageEditing(tr_id) {
+function changeMessageEditing(tr_id) {
     //See if this is a valid text message editing:
     if (!($('#charNumEditing' + tr_id).length)) {
         return false;
@@ -57,7 +57,7 @@ $input.on('change', function (e) {
 });
 
 
-function fn___message_load_type(tr_type_entity_id) {
+function message_load_type(tr_type_entity_id) {
 
     //Change Nav header:
     $('.iphone-nav-tabs li').removeClass('active');
@@ -71,15 +71,15 @@ function fn___message_load_type(tr_type_entity_id) {
     $('.msg_en_type_' + tr_type_entity_id).removeClass('hidden');
 
     //Load sorting:
-    fn___message_tr_order_load();
+    message_tr_order_load();
 
 }
 
 
-function fn___initiate_search() {
+function initiate_search() {
 
     //Loadup algolia if not already:
-    fn___load_js_algolia();
+    load_js_algolia();
 
     $('.msgin').textcomplete([
         {
@@ -138,7 +138,7 @@ $(document).ready(function () {
 
     $(".messages-counter-" + in_id, window.parent.document).text(metadata_count);
 
-    fn___initiate_search();
+    initiate_search();
 
     //Load Nice sort for messages body
     new SimpleBar(document.getElementById('intent_messages' + in_id), {
@@ -149,7 +149,7 @@ $(document).ready(function () {
     //Watch for message creation:
     $('#tr_content' + in_id).keydown(function (e) {
         if (e.ctrlKey && e.keyCode == 13) {
-            fn___message_create();
+            message_create();
         }
     });
 
@@ -164,7 +164,7 @@ $(document).ready(function () {
     }
 
     //Function to control clicks on Message type header:
-    fn___message_load_type(focus_tr_type_entity_id);
+    message_load_type(focus_tr_type_entity_id);
 
 
     $('.iphone-nav-tabs a').click(function (e) {
@@ -172,13 +172,13 @@ $(document).ready(function () {
         var parts = $(this).attr('href').split("-");
 
         //Load new message body into view:
-        fn___message_load_type(parts[2]);
+        message_load_type(parts[2]);
     });
 
 
     //Watchout for file uplods:
     $('.box' + in_id).find('input[type="file"]').change(function () {
-        fn___in_new_message_from_attachment(droppedFiles, 'file');
+        in_new_message_from_attachment(droppedFiles, 'file');
     });
 
 
@@ -201,13 +201,13 @@ $(document).ready(function () {
             .on('drop', function (e) {
                 droppedFiles = e.originalEvent.dataTransfer.files;
                 e.preventDefault();
-                fn___in_new_message_from_attachment(droppedFiles, 'drop');
+                in_new_message_from_attachment(droppedFiles, 'drop');
             });
     }
 });
 
 
-function fn___message_tr_order_apply(tr_type_entity_id) {
+function message_tr_order_apply(tr_type_entity_id) {
 
     var new_tr_orders = [];
     var sort_rank = 0;
@@ -222,7 +222,7 @@ function fn___message_tr_order_apply(tr_type_entity_id) {
     });
 
     //Update backend:
-    $.post("/intents/fn___in_message_sort", {new_tr_orders: new_tr_orders}, function (data) {
+    $.post("/intents/in_message_sort", {new_tr_orders: new_tr_orders}, function (data) {
         //Only show message if there was an error:
         if (!data.status) {
             //Show error:
@@ -232,7 +232,7 @@ function fn___message_tr_order_apply(tr_type_entity_id) {
 
 }
 
-function fn___message_tr_order_load() {
+function message_tr_order_load() {
 
     var inner_content = null;
 
@@ -242,7 +242,7 @@ function fn___message_tr_order_load() {
         draggable: ".is_level2_sortable", // Specifies which items inside the element should be sortable
         onUpdate: function (evt/**Event*/) {
             //Apply new sort:
-            fn___message_tr_order_apply(focus_tr_type_entity_id);
+            message_tr_order_apply(focus_tr_type_entity_id);
         },
         //The next two functions resolve a Bug with sorting iframes like YouTube embeds while also making the UI more informative
         onChoose: function (evt/**Event*/) {
@@ -265,7 +265,7 @@ function fn___message_tr_order_load() {
 
 }
 
-function fn___message_modify_start(tr_id, initial_tr_type_entity_id) {
+function message_modify_start(tr_id, initial_tr_type_entity_id) {
 
     //Start editing:
     $("#ul-nav-" + tr_id).addClass('in-editing');
@@ -275,23 +275,23 @@ function fn___message_modify_start(tr_id, initial_tr_type_entity_id) {
     $("#ul-nav-" + tr_id + " textarea").focus();
 
     //Initiate search:
-    fn___initiate_search();
+    initiate_search();
 
     //Try to initiate the editor, which only applies to text messages:
-    fn___changeMessageEditing(tr_id);
+    changeMessageEditing(tr_id);
 
     //Watch typing:
     $(document).keyup(function (e) {
         //Watch for action keys:
         if (e.ctrlKey && e.keyCode === 13) {
-            fn___in_message_modify(tr_id, initial_tr_type_entity_id);
+            in_message_modify(tr_id, initial_tr_type_entity_id);
         } else if (e.keyCode === 27) {
-            fn___message_modify_cancel(tr_id);
+            message_modify_cancel(tr_id);
         }
     });
 }
 
-function fn___message_modify_cancel(tr_id, success=0) {
+function message_modify_cancel(tr_id, success=0) {
     //Revert editing:
     $("#ul-nav-" + tr_id).removeClass('in-editing');
     $("#ul-nav-" + tr_id + " .edit-off").removeClass('hidden');
@@ -299,19 +299,19 @@ function fn___message_modify_cancel(tr_id, success=0) {
     $("#ul-nav-" + tr_id + ">div").css('width', 'inherit');
 }
 
-function fn___in_message_modify(tr_id, initial_tr_type_entity_id) {
+function in_message_modify(tr_id, initial_tr_type_entity_id) {
 
     //Show loader:
     $("#ul-nav-" + tr_id + " .edit-updates").html('<div><i class="fas fa-spinner fa-spin"></i></div>');
 
     //Revert View:
-    fn___message_modify_cancel(tr_id, 1);
+    message_modify_cancel(tr_id, 1);
 
     //Detect new status, and a potential change:
     var new_message_tr_status = $("#message_tr_status_" + tr_id).val();
 
     //Update message:
-    $.post("/intents/fn___in_message_modify", {
+    $.post("/intents/in_message_modify", {
 
         tr_id: tr_id,
         tr_content: $("#ul-nav-" + tr_id + " textarea").val(),
@@ -346,7 +346,7 @@ function fn___in_message_modify(tr_id, initial_tr_type_entity_id) {
                         $("#ul-nav-" + tr_id).remove();
 
                         //Adjust sort for this message type:
-                        fn___message_tr_order_apply(focus_tr_type_entity_id);
+                        message_tr_order_apply(focus_tr_type_entity_id);
 
                     }, 610);
                 }, 610);
@@ -384,7 +384,7 @@ function fn___in_message_modify(tr_id, initial_tr_type_entity_id) {
 
 var button_value = null;
 
-function fn___message_form_lock() {
+function message_form_lock() {
     button_value = $('#add_message_' + focus_tr_type_entity_id + '_' + in_id).html();
     $('#add_message_' + focus_tr_type_entity_id + '_' + in_id).html('<span><i class="fas fa-spinner fa-spin"></i></span>');
     $('#add_message_' + focus_tr_type_entity_id + '_' + in_id).attr('href', '#');
@@ -395,14 +395,14 @@ function fn___message_form_lock() {
 }
 
 
-function fn___message_form_unlock(result) {
+function message_form_unlock(result) {
 
     //Update UI to unlock:
     $('.add-msg' + in_id).removeClass('is-working');
     $('.remove_loading').fadeIn();
 
     $('#add_message_' + focus_tr_type_entity_id + '_' + in_id).html(button_value);
-    $('#add_message_' + focus_tr_type_entity_id + '_' + in_id).attr('href', 'javascript:fn___message_create();');
+    $('#add_message_' + focus_tr_type_entity_id + '_' + in_id).attr('href', 'javascript:message_create();');
 
     //Remove possible "No message" info box:
     if ($('.no-messages' + in_id + '_' + focus_tr_type_entity_id).length) {
@@ -419,7 +419,7 @@ function fn___message_form_unlock(result) {
         $("#message-sorting").append(result.message);
 
         //Resort/Re-adjust:
-        fn___message_load_type(focus_tr_type_entity_id);
+        message_load_type(focus_tr_type_entity_id);
 
         //Tooltips:
         $('[data-toggle="tooltip"]').tooltip();
@@ -436,7 +436,7 @@ function fn___message_form_unlock(result) {
     }
 }
 
-function fn___in_new_message_from_attachment(droppedFiles, uploadType) {
+function in_new_message_from_attachment(droppedFiles, uploadType) {
 
     //Prevent multiple concurrent uploads:
     if ($('.box' + in_id).hasClass('is-uploading')) {
@@ -446,7 +446,7 @@ function fn___in_new_message_from_attachment(droppedFiles, uploadType) {
     if (isAdvancedUpload) {
 
         //Lock message:
-        fn___message_form_lock();
+        message_form_lock();
 
         var ajaxData = new FormData($('.box' + in_id).get(0));
         if (droppedFiles) {
@@ -464,7 +464,7 @@ function fn___in_new_message_from_attachment(droppedFiles, uploadType) {
         ajaxData.append('in_id', in_id);
 
         $.ajax({
-            url: '/intents/fn___in_new_message_from_attachment',
+            url: '/intents/in_new_message_from_attachment',
             type: $('.box' + in_id).attr('method'),
             data: ajaxData,
             dataType: 'json',
@@ -475,7 +475,7 @@ function fn___in_new_message_from_attachment(droppedFiles, uploadType) {
                 $('.box' + in_id).removeClass('is-uploading');
             },
             success: function (data) {
-                fn___message_form_unlock(data);
+                message_form_unlock(data);
 
                 //Adjust Action Plan counter by one:
                 metadata_count++;
@@ -485,7 +485,7 @@ function fn___in_new_message_from_attachment(droppedFiles, uploadType) {
                 var result = [];
                 result.status = 0;
                 result.message = data.responseText;
-                fn___message_form_unlock(result);
+                message_form_unlock(result);
             }
         });
     } else {
@@ -493,7 +493,7 @@ function fn___in_new_message_from_attachment(droppedFiles, uploadType) {
     }
 }
 
-function fn___message_create() {
+function message_create() {
 
     if ($('#tr_content' + in_id).val().length == 0) {
         alert('ERROR: Enter a message');
@@ -501,10 +501,10 @@ function fn___message_create() {
     }
 
     //Lock message:
-    fn___message_form_lock();
+    message_form_lock();
 
     //Update backend:
-    $.post("/intents/fn___in_new_message_from_text", {
+    $.post("/intents/in_new_message_from_text", {
 
         in_id: in_id, //Synonymous
         tr_content: $('#tr_content' + in_id).val(),
@@ -521,12 +521,12 @@ function fn___message_create() {
 
             //Reset input field:
             $("#tr_content" + in_id).val("");
-            fn___count_message();
+            count_message();
 
         }
 
         //Unlock field:
-        fn___message_form_unlock(data);
+        message_form_unlock(data);
 
     });
 }

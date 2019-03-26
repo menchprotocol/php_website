@@ -14,7 +14,7 @@ defined('BASEPATH') OR exit('No direct script access allowed');
 date_default_timezone_set('America/Los_Angeles');
 
 //App Functionality:
-$config['app_version']              = '0.7892'; //Cache buster for static JS/CSS files, so needs to be updated if you update static files
+$config['app_version']              = '0.79'; //Cache buster for static JS/CSS files, so needs to be updated if you update static files
 $config['app_enable_algolia']       = true; //May need to turn off if/when we reach free monthly quota of 50k calls
 $config['app_in_en_ratio']          = 10; // = Intent tree max seconds / Entity trust score
 
@@ -38,7 +38,7 @@ $config['en_per_page']              = 100; //Limits the maximum entities loaded 
 $config['en_name_max_length']       = 250; //Max number of characters allowed in the title of intents
 $config['en_file_max_size']         = 25; //Server setting is 32MB. see here: mench.com/ses
 $config['en_mass_actions']          = array( //Various mass actions to be taken on Entity children
-                                        //IMPORTANT: Mass action logic for each item must be coded in Entities/fn___en_miner_ui()
+                                        //IMPORTANT: Mass action logic for each item must be coded in Entities/en_miner_ui()
                                         'prefix_add' => 'Add string as prefix',
                                         'postfix_add' => 'Add string as postfix',
                                         'replace_match' => 'Replace entity matching strings',

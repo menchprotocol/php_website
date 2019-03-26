@@ -27,11 +27,11 @@ class Database_model extends CI_Model
     }
 
 
-    function fn___en_create($insert_columns, $external_sync = false, $tr_miner_entity_id = 0)
+    function en_create($insert_columns, $external_sync = false, $tr_miner_entity_id = 0)
     {
 
         //What is required to create a new intent?
-        if (fn___detect_missing_columns($insert_columns, array('en_status', 'en_name'))) {
+        if (detect_missing_columns($insert_columns, array('en_status', 'en_name'))) {
             return false;
         }
 
@@ -59,10 +59,10 @@ class Database_model extends CI_Model
             if ($external_sync) {
 
                 //Update Algolia:
-                $algolia_sync = $this->Database_model->fn___update_algolia('en', $insert_columns['en_id']);
+                $algolia_sync = $this->Database_model->update_algolia('en', $insert_columns['en_id']);
 
                 //Log transaction new entity:
-                $this->Database_model->fn___tr_create(array(
+                $this->Database_model->tr_create(array(
                     'tr_miner_entity_id' => ($tr_miner_entity_id > 0 ? $tr_miner_entity_id : $insert_columns['en_id']),
                     'tr_child_entity_id' => $insert_columns['en_id'],
                     'tr_type_entity_id' => 4251, //New Entity Created
@@ -72,7 +72,7 @@ class Database_model extends CI_Model
                 ));
 
                 //Fetch to return the complete entity data:
-                $ens = $this->Database_model->fn___en_fetch(array(
+                $ens = $this->Database_model->en_fetch(array(
                     'en_id' => $insert_columns['en_id'],
                 ));
 
@@ -88,9 +88,9 @@ class Database_model extends CI_Model
         } else {
 
             //Ooopsi, something went wrong!
-            $this->Database_model->fn___tr_create(array(
+            $this->Database_model->tr_create(array(
                 'tr_parent_entity_id' => $tr_miner_entity_id,
-                'tr_content' => 'fn___en_create() failed to create a new entity',
+                'tr_content' => 'en_create() failed to create a new entity',
                 'tr_type_entity_id' => 4246, //Platform Error
                 'tr_miner_entity_id' => 1, //Shervin/Developer
                 'tr_metadata' => $insert_columns,
@@ -100,11 +100,11 @@ class Database_model extends CI_Model
         }
     }
 
-    function fn___in_create($insert_columns, $external_sync = false, $tr_miner_entity_id = 0)
+    function in_create($insert_columns, $external_sync = false, $tr_miner_entity_id = 0)
     {
 
         //What is required to create a new intent?
-        if (fn___detect_missing_columns($insert_columns, array('in_status', 'in_outcome', 'in_verb_entity_id'))) {
+        if (detect_missing_columns($insert_columns, array('in_status', 'in_outcome', 'in_verb_entity_id'))) {
             return false;
         }
 
@@ -131,10 +131,10 @@ class Database_model extends CI_Model
             if ($external_sync) {
 
                 //Update Algolia:
-                $algolia_sync = $this->Database_model->fn___update_algolia('in', $insert_columns['in_id']);
+                $algolia_sync = $this->Database_model->update_algolia('in', $insert_columns['in_id']);
 
                 //Log transaction new entity:
-                $this->Database_model->fn___tr_create(array(
+                $this->Database_model->tr_create(array(
                     'tr_miner_entity_id' => $tr_miner_entity_id,
                     'tr_child_intent_id' => $insert_columns['in_id'],
                     'tr_type_entity_id' => 4250, //New Intent Created
@@ -144,7 +144,7 @@ class Database_model extends CI_Model
                 ));
 
                 //Fetch to return the complete entity data:
-                $ins = $this->Database_model->fn___in_fetch(array(
+                $ins = $this->Database_model->in_fetch(array(
                     'in_id' => $insert_columns['in_id'],
                 ));
 
@@ -160,9 +160,9 @@ class Database_model extends CI_Model
         } else {
 
             //Ooopsi, something went wrong!
-            $this->Database_model->fn___tr_create(array(
+            $this->Database_model->tr_create(array(
                 'tr_parent_entity_id' => $tr_miner_entity_id,
-                'tr_content' => 'fn___in_create() failed to create a new intent',
+                'tr_content' => 'in_create() failed to create a new intent',
                 'tr_type_entity_id' => 4246, //Platform Error
                 'tr_miner_entity_id' => 1, //Shervin/Developer
                 'tr_metadata' => $insert_columns,
@@ -172,10 +172,10 @@ class Database_model extends CI_Model
         }
     }
 
-    function fn___tr_create($insert_columns, $external_sync = false)
+    function tr_create($insert_columns, $external_sync = false)
     {
 
-        if (fn___detect_missing_columns($insert_columns, array('tr_type_entity_id', 'tr_miner_entity_id'))) {
+        if (detect_missing_columns($insert_columns, array('tr_type_entity_id', 'tr_miner_entity_id'))) {
             return false;
         } elseif(intval($insert_columns['tr_miner_entity_id']) < 1){
             return false;
@@ -235,10 +235,10 @@ class Database_model extends CI_Model
         if ($insert_columns['tr_id'] < 1) {
 
             //This should not happen:
-            $this->Database_model->fn___tr_create(array(
+            $this->Database_model->tr_create(array(
                 'tr_type_entity_id' => 4246, //Platform Error
                 'tr_miner_entity_id' => 1, //Shervin/Developer
-                'tr_content' => 'fn___tr_create() Failed to create',
+                'tr_content' => 'tr_create() Failed to create',
                 'tr_metadata' => array(
                     'input' => $insert_columns,
                 ),
@@ -249,10 +249,10 @@ class Database_model extends CI_Model
         } elseif($insert_columns['tr_miner_entity_id'] < 1){
 
             //This should not happen:
-            $this->Database_model->fn___tr_create(array(
+            $this->Database_model->tr_create(array(
                 'tr_type_entity_id' => 4246, //Platform Error
                 'tr_miner_entity_id' => 1, //Shervin/Developer
-                'tr_content' => 'fn___tr_create() missing miner',
+                'tr_content' => 'tr_create() missing miner',
                 'tr_metadata' => array(
                     'input' => $insert_columns,
                 ),
@@ -266,38 +266,38 @@ class Database_model extends CI_Model
         //Sync algolia?
         if ($external_sync) {
             if ($insert_columns['tr_parent_entity_id'] > 0) {
-                $algolia_sync = $this->Database_model->fn___update_algolia('en', $insert_columns['tr_parent_entity_id']);
+                $algolia_sync = $this->Database_model->update_algolia('en', $insert_columns['tr_parent_entity_id']);
             }
 
             if ($insert_columns['tr_child_entity_id'] > 0) {
-                $algolia_sync = $this->Database_model->fn___update_algolia('en', $insert_columns['tr_child_entity_id']);
+                $algolia_sync = $this->Database_model->update_algolia('en', $insert_columns['tr_child_entity_id']);
             }
 
             if ($insert_columns['tr_parent_intent_id'] > 0) {
-                $algolia_sync = $this->Database_model->fn___update_algolia('in', $insert_columns['tr_parent_intent_id']);
+                $algolia_sync = $this->Database_model->update_algolia('in', $insert_columns['tr_parent_intent_id']);
             }
 
             if ($insert_columns['tr_child_intent_id'] > 0) {
-                $algolia_sync = $this->Database_model->fn___update_algolia('in', $insert_columns['tr_child_intent_id']);
+                $algolia_sync = $this->Database_model->update_algolia('in', $insert_columns['tr_child_intent_id']);
             }
         }
 
 
 
         //See if this transaction type has any subscribers:
-        if(in_array($insert_columns['tr_type_entity_id'] , $this->config->item('en_ids_5966')) && $insert_columns['tr_type_entity_id']!=5967 /* Email Sent causes endless loop */ && !fn___is_dev()){
+        if(in_array($insert_columns['tr_type_entity_id'] , $this->config->item('en_ids_5966')) && $insert_columns['tr_type_entity_id']!=5967 /* Email Sent causes endless loop */ && !is_dev()){
 
             //Try to fetch subscribers:
             $en_all_5966 = $this->config->item('en_all_5966'); //Include subscription details
             $sub_emails = array();
             $sub_en_ids = array();
-            foreach(explode(',', fn___one_two_explode('&var_en_subscriber_ids=','', $en_all_5966[$insert_columns['tr_type_entity_id']]['m_desc'])) as $subscriber_en_id){
+            foreach(explode(',', one_two_explode('&var_en_subscriber_ids=','', $en_all_5966[$insert_columns['tr_type_entity_id']]['m_desc'])) as $subscriber_en_id){
 
                 //Do not email the miner themselves, as already they know:
                 if($subscriber_en_id != $insert_columns['tr_miner_entity_id']){
 
                     //Try fetching subscribers email:
-                    foreach($this->Database_model->fn___tr_fetch(array(
+                    foreach($this->Database_model->tr_fetch(array(
                         'tr_status' => 2, //Published
                         'en_status' => 2, //Published
                         'tr_type_entity_id' => 4255, //Linked Entities Text (Email is text)
@@ -320,7 +320,7 @@ class Database_model extends CI_Model
                 //yes, start drafting email to be sent to them...
 
                 //Fetch miner details:
-                $miner_ens = $this->Database_model->fn___en_fetch(array(
+                $miner_ens = $this->Database_model->en_fetch(array(
                     'en_id' => $insert_columns['tr_miner_entity_id'],
                 ));
 
@@ -340,7 +340,7 @@ class Database_model extends CI_Model
                        if ($obj_type == 'in') {
 
                            //Fetch Intent:
-                           $ins = $this->Database_model->fn___in_fetch(array(
+                           $ins = $this->Database_model->in_fetch(array(
                                'in_id' => $insert_columns[$tr_field],
                            ));
                            $html_message .= '<div>' . $clean_name . ': <a href="https://mench.com/intents/' . $ins[0]['in_id'] . '" target="_parent">#'.$ins[0]['in_id'].' '.$ins[0]['in_outcome'].'</a></div>';
@@ -348,7 +348,7 @@ class Database_model extends CI_Model
                        } elseif ($obj_type == 'en') {
 
                            //Fetch entity:
-                           $ens = $this->Database_model->fn___en_fetch(array(
+                           $ens = $this->Database_model->en_fetch(array(
                                'en_id' => $insert_columns[$tr_field],
                            ));
                            $html_message .= '<div>' . $clean_name . ': <a href="https://mench.com/entities/' . $ens[0]['en_id'] . '" target="_parent">@'.$ens[0]['en_id'].' '.$ens[0]['en_name'].'</a></div>';
@@ -369,7 +369,7 @@ class Database_model extends CI_Model
                 $html_message .= '<div style="color: #AAAAAA; font-size:0.9em; margin-top:20px;">Manage your email notifications via <a href="https://mench.com/entities/5966" target="_blank">@5966</a></div>';
 
                 //Send email:
-                $this->Chat_model->fn___dispatch_email($sub_emails, $sub_en_ids, $subject, $html_message);
+                $this->Chat_model->dispatch_email($sub_emails, $sub_en_ids, $subject, $html_message);
 
             }
 
@@ -381,7 +381,7 @@ class Database_model extends CI_Model
     }
 
 
-    function fn___en_fetch($match_columns, $join_objects = array(), $limit = 0, $limit_offset = 0, $order_columns = array('en_trust_score' => 'DESC'), $select = '*', $group_by = null)
+    function en_fetch($match_columns, $join_objects = array(), $limit = 0, $limit_offset = 0, $order_columns = array('en_trust_score' => 'DESC'), $select = '*', $group_by = null)
     {
 
         //Fetch the target entities:
@@ -415,14 +415,14 @@ class Database_model extends CI_Model
             if (in_array('en__child_count', $join_objects)) {
 
                 //ACount children:
-                $res[$key]['en__child_count'] = $this->Matrix_model->fn___en_child_count($val['en_id']);
+                $res[$key]['en__child_count'] = $this->Matrix_model->en_child_count($val['en_id']);
 
             }
 
             //This will fetch Children up to a maximum of $this->config->item('en_per_page')
             if (in_array('en__children', $join_objects)) {
 
-                $res[$key]['en__children'] = $this->Database_model->fn___tr_fetch(array(
+                $res[$key]['en__children'] = $this->Database_model->tr_fetch(array(
                     'tr_parent_entity_id' => $val['en_id'],
                     'tr_type_entity_id IN (' . join(',', $this->config->item('en_ids_4592')) . ')' => null, //Entity Link Connectors
                     'tr_status >=' => 0, //New+
@@ -435,7 +435,7 @@ class Database_model extends CI_Model
             if (in_array('en__actionplans', $join_objects)) {
 
                 //Search & Append this Student's Action Plans:
-                $res[$key]['en__actionplans'] = $this->Database_model->fn___tr_fetch(array(
+                $res[$key]['en__actionplans'] = $this->Database_model->tr_fetch(array(
                     'tr_miner_entity_id' => $val['en_id'],
                     'tr_type_entity_id' => 4235, //Action Plan Intent
                     'tr_status >=' => 0, //New+
@@ -452,7 +452,7 @@ class Database_model extends CI_Model
             } else {
 
                 //Fetch parents by default:
-                $res[$key]['en__parents'] = $this->Database_model->fn___tr_fetch(array(
+                $res[$key]['en__parents'] = $this->Database_model->tr_fetch(array(
                     'tr_type_entity_id IN (' . join(',', $this->config->item('en_ids_4592')) . ')' => null, //Entity Link Connectors
                     'tr_child_entity_id' => $val['en_id'], //This child entity
                     'tr_status >=' => 0, //New+
@@ -465,7 +465,7 @@ class Database_model extends CI_Model
         return $res;
     }
 
-    function fn___in_fetch($match_columns, $join_objects = array(), $limit = 0, $limit_offset = 0, $order_columns = array(), $select = '*', $group_by = null)
+    function in_fetch($match_columns, $join_objects = array(), $limit = 0, $limit_offset = 0, $order_columns = array(), $select = '*', $group_by = null)
     {
 
         //The basic fetcher for intents
@@ -498,7 +498,7 @@ class Database_model extends CI_Model
 
             //Should we append Intent Notes?
             if (in_array('in__messages', $join_objects)) {
-                $ins[$key]['in__messages'] = $this->Database_model->fn___tr_fetch(array(
+                $ins[$key]['in__messages'] = $this->Database_model->tr_fetch(array(
                     'tr_status >=' => 0, //New+
                     'tr_type_entity_id IN (' . join(',', $this->config->item('en_ids_4485')) . ')' => null, //All Intent Notes
                     'tr_child_intent_id' => $value['in_id'],
@@ -508,7 +508,7 @@ class Database_model extends CI_Model
             //Should we fetch all parent intentions?
             if (in_array('in__parents', $join_objects)) {
 
-                $ins[$key]['in__parents'] = $this->Database_model->fn___tr_fetch(array(
+                $ins[$key]['in__parents'] = $this->Database_model->tr_fetch(array(
                     'tr_status >=' => 0, //New+
                     'in_status >=' => 0, //New+
                     'tr_type_entity_id IN (' . join(',', $this->config->item('en_ids_4486')) . ')' => null, //Intent Link Types
@@ -521,7 +521,7 @@ class Database_model extends CI_Model
             if (in_array('in__children', $join_objects) || in_array('in__grandchildren', $join_objects)) {
 
                 //Fetch immediate children:
-                $ins[$key]['in__children'] = $this->Database_model->fn___tr_fetch(array(
+                $ins[$key]['in__children'] = $this->Database_model->tr_fetch(array(
                     'tr_status >=' => 0, //New+
                     'in_status >=' => 0, //New+
                     'tr_type_entity_id IN (' . join(',', $this->config->item('en_ids_4486')) . ')' => null, //Intent Link Types
@@ -533,7 +533,7 @@ class Database_model extends CI_Model
                     //Fetch second-level grandchildren intents:
                     foreach ($ins[$key]['in__children'] as $key2 => $value2) {
 
-                        $ins[$key]['in__children'][$key2]['in__grandchildren'] = $this->Database_model->fn___tr_fetch(array(
+                        $ins[$key]['in__children'][$key2]['in__grandchildren'] = $this->Database_model->tr_fetch(array(
                             'tr_status >=' => 0, //New+
                             'in_status >=' => 0, //New+
                             'tr_type_entity_id IN (' . join(',', $this->config->item('en_ids_4486')) . ')' => null, //Intent Link Types
@@ -549,7 +549,7 @@ class Database_model extends CI_Model
         return $ins;
     }
 
-    function fn___tr_fetch($match_columns, $join_objects = array(), $limit = 100, $limit_offset = 0, $order_columns = array('tr_id' => 'DESC'), $select = '*', $group_by = null)
+    function tr_fetch($match_columns, $join_objects = array(), $limit = 100, $limit_offset = 0, $order_columns = array('tr_id' => 'DESC'), $select = '*', $group_by = null)
     {
 
         $this->db->select($select);
@@ -597,7 +597,7 @@ class Database_model extends CI_Model
     }
 
 
-    function fn___en_update($id, $update_columns, $external_sync = false, $tr_miner_entity_id = 0)
+    function en_update($id, $update_columns, $external_sync = false, $tr_miner_entity_id = 0)
     {
 
         /*
@@ -613,7 +613,7 @@ class Database_model extends CI_Model
 
         //Fetch current entity filed values so we can compare later on after we've updated it:
         if($external_sync){
-            $before_data = $this->Database_model->fn___en_fetch(array('en_id' => $id));
+            $before_data = $this->Database_model->en_fetch(array('en_id' => $id));
         }
 
         //Cleanup metadata if needed:
@@ -639,7 +639,7 @@ class Database_model extends CI_Model
                 if (!($before_data[0][$key] == $value) && !in_array($key, array('en_metadata', 'en_trust_score'))) {
 
                     //Value has changed, log transaction:
-                    $this->Database_model->fn___tr_create(array(
+                    $this->Database_model->tr_create(array(
                         'tr_miner_entity_id' => ($tr_miner_entity_id > 0 ? $tr_miner_entity_id : $id),
                         'tr_type_entity_id' => 4263, //Entity Attribute Modified
                         'tr_child_entity_id' => $id,
@@ -658,16 +658,16 @@ class Database_model extends CI_Model
             }
 
             //Sync algolia:
-            $algolia_sync = $this->Database_model->fn___update_algolia('en', $id);
+            $algolia_sync = $this->Database_model->update_algolia('en', $id);
 
         } elseif($affected_rows < 1){
 
             //This should not happen:
-            $this->Database_model->fn___tr_create(array(
+            $this->Database_model->tr_create(array(
                 'tr_child_entity_id' => $id,
                 'tr_type_entity_id' => 4246, //Platform Error
                 'tr_miner_entity_id' => 1, //Shervin/Developer
-                'tr_content' => 'fn___en_update() Failed to update',
+                'tr_content' => 'en_update() Failed to update',
                 'tr_metadata' => array(
                     'input' => $update_columns,
                 ),
@@ -678,7 +678,7 @@ class Database_model extends CI_Model
         return $affected_rows;
     }
 
-    function fn___in_update($id, $update_columns, $external_sync = false, $tr_miner_entity_id = 0)
+    function in_update($id, $update_columns, $external_sync = false, $tr_miner_entity_id = 0)
     {
 
         if (count($update_columns) == 0) {
@@ -687,7 +687,7 @@ class Database_model extends CI_Model
 
         //Fetch current intent filed values so we can compare later on after we've updated it:
         if($external_sync){
-            $before_data = $this->Database_model->fn___in_fetch(array('in_id' => $id));
+            $before_data = $this->Database_model->in_fetch(array('in_id' => $id));
         }
 
         //Cleanup metadata if needed:
@@ -713,7 +713,7 @@ class Database_model extends CI_Model
                 if (!($before_data[0][$key] == $value) && !in_array($key, array('in_metadata'))) {
 
                     //Value has changed, log transaction:
-                    $this->Database_model->fn___tr_create(array(
+                    $this->Database_model->tr_create(array(
                         'tr_miner_entity_id' => $tr_miner_entity_id,
                         'tr_type_entity_id' => 4264, //Intent Attribute Modified
                         'tr_child_intent_id' => $id,
@@ -731,16 +731,16 @@ class Database_model extends CI_Model
             }
 
             //Sync algolia:
-            $this->Database_model->fn___update_algolia('in', $id);
+            $this->Database_model->update_algolia('in', $id);
 
         } elseif($affected_rows < 1){
 
             //This should not happen:
-            $this->Database_model->fn___tr_create(array(
+            $this->Database_model->tr_create(array(
                 'tr_child_intent_id' => $id,
                 'tr_type_entity_id' => 4246, //Platform Error
                 'tr_miner_entity_id' => 1, //Shervin/Developer
-                'tr_content' => 'fn___in_update() Failed to update',
+                'tr_content' => 'in_update() Failed to update',
                 'tr_metadata' => array(
                     'input' => $update_columns,
                 ),
@@ -751,7 +751,7 @@ class Database_model extends CI_Model
         return $affected_rows;
     }
 
-    function fn___tr_update($id, $update_columns, $tr_miner_entity_id = 0)
+    function tr_update($id, $update_columns, $tr_miner_entity_id = 0)
     {
 
         if (count($update_columns) == 0) {
@@ -760,7 +760,7 @@ class Database_model extends CI_Model
 
         if($tr_miner_entity_id > 0){
             //Fetch transaction before updating:
-            $before_data = $this->Database_model->fn___tr_fetch(array(
+            $before_data = $this->Database_model->tr_fetch(array(
                 'tr_id' => $id,
             ));
         }
@@ -787,7 +787,7 @@ class Database_model extends CI_Model
                 if ( !($before_data[0][$key] == $value) && in_array($key, array('tr_status', 'tr_content', 'tr_order', 'tr_parent_entity_id', 'tr_child_entity_id', 'tr_parent_intent_id', 'tr_child_intent_id', 'tr_metadata', 'tr_type_entity_id'))) {
 
                     //Value has changed, log transaction:
-                    $this->Database_model->fn___tr_create(array(
+                    $this->Database_model->tr_create(array(
                         'tr_parent_transaction_id' => $id, //Transaction Reference
                         'tr_miner_entity_id' => $tr_miner_entity_id,
                         'tr_type_entity_id' => 4242, //Transaction Attribute Modified
@@ -811,11 +811,11 @@ class Database_model extends CI_Model
         } elseif($affected_rows < 1){
 
             //This should not happen:
-            $this->Database_model->fn___tr_create(array(
+            $this->Database_model->tr_create(array(
                 'tr_parent_transaction_id' => $id, //Transaction Reference
                 'tr_type_entity_id' => 4246, //Platform Error
                 'tr_miner_entity_id' => 1, //Shervin/Developer
-                'tr_content' => 'fn___tr_update() Failed to update',
+                'tr_content' => 'tr_update() Failed to update',
                 'tr_metadata' => array(
                     'input' => $update_columns,
                 ),
@@ -827,7 +827,7 @@ class Database_model extends CI_Model
     }
 
 
-    function fn___tr_max_order($match_columns)
+    function tr_max_order($match_columns)
     {
 
         //Counts the current highest order value
@@ -847,7 +847,7 @@ class Database_model extends CI_Model
     }
 
 
-    function fn___update_algolia($input_obj_type = null, $input_obj_id = 0, $return_row_only = false)
+    function update_algolia($input_obj_type = null, $input_obj_id = 0, $return_row_only = false)
     {
 
         /*
@@ -884,13 +884,13 @@ class Database_model extends CI_Model
 
         if (!$return_row_only) {
 
-            if(fn___is_dev()){
+            if(is_dev()){
                 //Do a call on live as this does not work on local due to security limitations:
                 return json_decode(@file_get_contents("https://mench.com/ledger/cron__sync_algolia/" . ( $input_obj_type ? $input_obj_type . '/' . $input_obj_id : '' )));
             }
 
             //Load Algolia Index
-            $search_index = fn___load_php_algolia('alg_index');
+            $search_index = load_php_algolia('alg_index');
         }
 
 
@@ -910,7 +910,7 @@ class Database_model extends CI_Model
                 $search_index->clearIndex();
 
                 //Boost processing power:
-                fn___boost_power();
+                boost_power();
             }
         }
 
@@ -932,7 +932,7 @@ class Database_model extends CI_Model
                     $limits['in_status >='] = 0; //New+
                 }
 
-                $db_rows['in'] = $this->Database_model->fn___in_fetch($limits, array('in__messages'));
+                $db_rows['in'] = $this->Database_model->in_fetch($limits, array('in__messages'));
 
             } elseif ($loop_obj == 'en') {
 
@@ -942,7 +942,7 @@ class Database_model extends CI_Model
                     $limits['en_status >='] = 0; //New+
                 }
 
-                $db_rows['en'] = $this->Database_model->fn___en_fetch($limits, array('en__parents'));
+                $db_rows['en'] = $this->Database_model->en_fetch($limits, array('en__parents'));
 
             }
 
@@ -974,7 +974,7 @@ class Database_model extends CI_Model
                 } else {
 
                     //Clear possible metadata algolia ID's that have been cached:
-                    $this->Matrix_model->fn___metadata_update($loop_obj, $db_row[$loop_obj.'_id'], array(
+                    $this->Matrix_model->metadata_single_update($loop_obj, $db_row[$loop_obj.'_id'], array(
                         $loop_obj . '__algolia_id' => null, //Since all objects have been mass removed!
                     ));
 
@@ -1010,7 +1010,7 @@ class Database_model extends CI_Model
                 } elseif ($loop_obj == 'in') {
 
                     //See if this tree has a time-range:
-                    $time_range = fn___echo_time_range($db_row, true, true);
+                    $time_range = echo_time_range($db_row, true, true);
 
                     $export_row['alg_obj_is_in'] = 1;
                     $export_row['alg_obj_id'] = intval($db_row['in_id']);
@@ -1080,7 +1080,7 @@ class Database_model extends CI_Model
                     //Now update local database with the new objectIDs:
                     if (isset($algolia_results['objectIDs']) && count($algolia_results['objectIDs']) == 1 ) {
                         foreach ($algolia_results['objectIDs'] as $key => $algolia_id) {
-                            $this->Matrix_model->fn___metadata_update($input_obj_type, $all_db_rows[$key][$input_obj_type.'_id'], array(
+                            $this->Matrix_model->metadata_single_update($input_obj_type, $all_db_rows[$key][$input_obj_type.'_id'], array(
                                 $input_obj_type . '__algolia_id' => $algolia_id, //The newly created algolia object
                             ));
                         }
@@ -1100,7 +1100,7 @@ class Database_model extends CI_Model
                     $algolia_results = $search_index->deleteObject($all_export_rows[0]['objectID']);
 
                     //also set its algolia_id to 0 locally:
-                    $this->Matrix_model->fn___metadata_update($input_obj_type, $all_db_rows[0][$input_obj_type.'_id'], array(
+                    $this->Matrix_model->metadata_single_update($input_obj_type, $all_db_rows[0][$input_obj_type.'_id'], array(
                         $input_obj_type . '__algolia_id' => null, //Since this item has been removed!
                     ));
 
@@ -1136,7 +1136,7 @@ class Database_model extends CI_Model
 
                     $this_obj = ( isset($all_db_rows[$key]['in_id']) ? 'in' : 'en');
 
-                    $this->Matrix_model->fn___metadata_update($this_obj, $all_db_rows[$key][$this_obj.'_id'], array(
+                    $this->Matrix_model->metadata_single_update($this_obj, $all_db_rows[$key][$this_obj.'_id'], array(
                         $this_obj . '__algolia_id' => intval($algolia_id),
                     ));
                 }

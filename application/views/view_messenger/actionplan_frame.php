@@ -4,7 +4,7 @@
 $session_en = $this->session->userdata('user');
 $fb_settings = $this->config->item('fb_settings');
 
-if ((isset($session_en['en__actionplans']) && count($session_en['en__actionplans'])) || (isset($session_en['en__parents']) && count($session_en['en__parents']) > 0 && fn___filter_array($session_en['en__parents'], 'en_id', 1308))) {
+if ((isset($session_en['en__actionplans']) && count($session_en['en__actionplans'])) || (isset($session_en['en__parents']) && count($session_en['en__parents']) > 0 && filter_array($session_en['en__parents'], 'en_id', 1308))) {
 
     //User is accessing the Action Plan from their browser
 
@@ -16,7 +16,7 @@ if ((isset($session_en['en__actionplans']) && count($session_en['en__actionplans
     //Fetch page instantly as we know who this is:
     ?>
     <script>
-        $.post("/messenger/display_actionplan/0/<?= (isset($in_id) ? intval($in_id) : $session_en['en__actionplans'][0]['tr_child_intent_id']) ?>", {}, function (data) {
+        $.post("/messenger/actionplan_load/0/<?= (isset($in_id) ? intval($in_id) : $session_en['en__actionplans'][0]['tr_child_intent_id']) ?>", {}, function (data) {
             $("#page_content").html(data);
 
             //Load tooldip:
@@ -51,7 +51,7 @@ if ((isset($session_en['en__actionplans']) && count($session_en['en__actionplans
                     var psid = thread_context.psid;
                     var signed_request = thread_context.signed_request;
                     //Fetch Page:
-                    $.post("/messenger/display_actionplan/" + psid + "/<?= (isset($in_id) ? intval($in_id) : 0) ?>?sr=" + signed_request, {}, function (data) {
+                    $.post("/messenger/actionplan_load/" + psid + "/<?= (isset($in_id) ? intval($in_id) : 0) ?>?sr=" + signed_request, {}, function (data) {
                         //Update UI to confirm with user:
                         $("#page_content").html(data);
                     });

@@ -35,4 +35,4 @@ $url_part_1 = $this->uri->segment(1);
 </div>
 
 
-<div class="app-version hide-mini <?= fn___echo_advance() ?>">v<?= $this->config->item('app_version') ?></div>
+<div class="app-version hide-mini <?= echo_advance() ?>">v<?= $this->config->item('app_version') ?></div>

@@ -24,7 +24,7 @@ class Ledger extends CI_Controller
          * */
 
 
-        $session_en = fn___en_auth(array(1308)); //Just be logged in to browse
+        $session_en = en_auth(array(1308)); //Just be logged in to browse
 
         //Load header:
         $this->load->view(($session_en ? 'view_shared/matrix_header' : 'view_shared/public_header'), array(
@@ -41,21 +41,21 @@ class Ledger extends CI_Controller
 
 
 
-    function fn___add_in_en_top_search(){
+    function add_search_item(){
 
         //Authenticate Miner:
-        $session_en = fn___en_auth(array(1308));
+        $session_en = en_auth(array(1308));
 
         if (!$session_en) {
 
-            return fn___echo_json(array(
+            return echo_json(array(
                 'status' => 0,
                 'message' => 'Session Expired. Sign In and try again',
             ));
 
         } elseif (!isset($_POST['raw_string'])) {
 
-            return fn___echo_json(array(
+            return echo_json(array(
                 'status' => 0,
                 'message' => 'Missing Transaction ID',
             ));
@@ -67,19 +67,19 @@ class Ledger extends CI_Controller
 
             $in_outcome = trim(substr($_POST['raw_string'], 1));
             if(strlen($in_outcome)<2){
-                return fn___echo_json(array(
+                return echo_json(array(
                     'status' => 0,
                     'message' => 'Intent outcome must be at-least 2 characters long.',
                 ));
             }
 
             //Create Intent:
-            $added_in = $this->Matrix_model->fn___in_verify_create($in_outcome, $session_en['en_id']);
+            $added_in = $this->Matrix_model->in_verify_create($in_outcome, $session_en['en_id']);
             if(!$added_in['status']){
                 //We had an error, return it:
-                return fn___echo_json($added_in);
+                return echo_json($added_in);
             } else {
-                return fn___echo_json(array(
+                return echo_json(array(
                     'status' => 1,
                     'new_item_url' => '/intents/' . $added_in['in']['in_id'],
                 ));
@@ -88,20 +88,20 @@ class Ledger extends CI_Controller
         } elseif(substr($_POST['raw_string'], 0, 1)=='@'){
 
             //Create entity:
-            $added_en = $this->Matrix_model->fn___en_verify_create(trim(substr($_POST['raw_string'], 1)), $session_en['en_id']);
+            $added_en = $this->Matrix_model->en_verify_create(trim(substr($_POST['raw_string'], 1)), $session_en['en_id']);
             if(!$added_en['status']){
                 //We had an error, return it:
-                return fn___echo_json($added_en);
+                return echo_json($added_en);
             } else {
                 //Assign new entity:
-                return fn___echo_json(array(
+                return echo_json(array(
                     'status' => 1,
                     'new_item_url' => '/entities/' . $added_en['en']['en_id'],
                 ));
             }
 
         } else {
-            return fn___echo_json(array(
+            return echo_json(array(
                 'status' => 0,
                 'message' => 'Invalid string. Must start with either # or @.',
             ));
@@ -110,26 +110,26 @@ class Ledger extends CI_Controller
 
 
 
-    function fn___view_transaction_json($tr_id)
+    function transaction_json($tr_id)
     {
 
         //Fetch transaction metadata and display it:
-        $trs = $this->Database_model->fn___tr_fetch(array(
+        $trs = $this->Database_model->tr_fetch(array(
             'tr_id' => $tr_id,
         ));
 
         if (count($trs) < 1) {
-            return fn___echo_json(array(
+            return echo_json(array(
                 'status' => 0,
                 'message' => 'Invalid Transaction ID',
             ));
-        } elseif(in_array($trs[0]['tr_type_entity_id'] , $this->config->item('en_ids_4755')) /* Transaction Type is locked */ && !fn___en_auth(array(1281)) /* Viewer NOT a moderator */){
-            return fn___echo_json(array(
+        } elseif(in_array($trs[0]['tr_type_entity_id'] , $this->config->item('en_ids_4755')) /* Transaction Type is locked */ && !en_auth(array(1281)) /* Viewer NOT a moderator */){
+            return echo_json(array(
                 'status' => 0,
                 'message' => 'Transaction content visible to moderators only',
             ));
-        } elseif(!fn___en_auth(array(1308)) /* Viewer NOT a miner */) {
-            return fn___echo_json(array(
+        } elseif(!en_auth(array(1308)) /* Viewer NOT a miner */) {
+            return echo_json(array(
                 'status' => 0,
                 'message' => 'Transaction metadata visible to miners only',
             ));
@@ -141,47 +141,9 @@ class Ledger extends CI_Controller
             }
 
             //Print on scree:
-            fn___echo_json($trs[0]);
+            echo_json($trs[0]);
 
         }
-    }
-
-    function load_w_actionplan()
-    {
-
-        //Auth user and check required variables:
-        $session_en = fn___en_auth(array(1308)); //miners
-
-        if (!$session_en) {
-            return fn___echo_json(array(
-                'status' => 0,
-                'message' => 'Session Expired',
-            ));
-        } elseif (!isset($_POST['tr_id']) || intval($_POST['tr_id']) < 1) {
-            return fn___echo_json(array(
-                'status' => 0,
-                'message' => 'Missing Action Plan ID',
-            ));
-        }
-
-        //Fetch Action Plan
-        $actionplans = $this->Database_model->w_fetch(array(
-            'tr_id' => $_POST['tr_id'], //Other than this one...
-        ));
-        if (!(count($actionplans) == 1)) {
-            return fn___echo_json(array(
-                'status' => 0,
-                'message' => 'Invalid Action Plan ID',
-            ));
-        }
-        $w = $actionplans[0];
-
-        //Load Action Plan iFrame:
-        return fn___echo_json(array(
-            'status' => 1,
-            'url' => '/messenger/actionplan/' . $w['tr_child_intent_id'],
-        ));
-
     }
 
 
@@ -194,7 +156,7 @@ class Ledger extends CI_Controller
         //Validate the inputs:
         if(isset($_POST['recipient_en']['en_id']) && isset($_POST['actionplan_in']['in_id'])){
 
-            $this->Chat_model->fn___dispatch_message(
+            $this->Chat_model->dispatch_message(
                 'OFFICIAL MENCH CERTIFICATE OF COMPLETION for intent #'.$_POST['actionplan_in']['in_id'],
                 $_POST['recipient_en'],
                 true,
@@ -204,7 +166,7 @@ class Ledger extends CI_Controller
 
         } else {
 
-            $this->Chat_model->fn___dispatch_message(
+            $this->Chat_model->dispatch_message(
                 'ERROR: MENCH CERTIFICATE missing info... '.print_r($_POST, true),
                 array('en_id' => 1),
                 true,
@@ -217,20 +179,20 @@ class Ledger extends CI_Controller
     }
 
 
-    function dev_php_info(){
+    function dev__php_info(){
         echo phpinfo();
     }
 
     function cron__sync_algolia($input_obj_type = null, $input_obj_id = null){
         //Call the update function and passon possible values:
-        fn___echo_json($this->Database_model->fn___update_algolia($input_obj_type, $input_obj_id));
+        echo_json($this->Database_model->update_algolia($input_obj_type, $input_obj_id));
     }
 
-    function fn___moderate($action = null, $command1 = null, $command2 = null)
+    function moderator_tools($action = null, $command1 = null, $command2 = null)
     {
 
         //Validate moderator:
-        $session_en = fn___en_auth(array(1281), true);
+        $session_en = en_auth(array(1281), true);
 
         //Load tools:
         $this->load->view('view_shared/matrix_header', array(
@@ -246,20 +208,20 @@ class Ledger extends CI_Controller
     }
 
 
-    function dev_reset_coins(){
+    function dev__reset_coins(){
 
         exit; //Maybe use to update all rates if needed?
 
         //Issue coins for each transaction type:
-        $all_engs = $this->Database_model->fn___tr_fetch(array(), array('en_type'), 0, 0, array('trs_count' => 'DESC'), 'COUNT(tr_type_entity_id) as trs_count, en_name, tr_type_entity_id', 'tr_type_entity_id, en_name');
+        $all_engs = $this->Database_model->tr_fetch(array(), array('en_type'), 0, 0, array('trs_count' => 'DESC'), 'COUNT(tr_type_entity_id) as trs_count, en_name, tr_type_entity_id', 'tr_type_entity_id, en_name');
 
-        //return fn___echo_json($all_engs);
+        //return echo_json($all_engs);
 
         //Give option to select:
         foreach ($all_engs as $tr) {
 
             //DOes it have a rate?
-            $rate_trs = $this->Database_model->fn___tr_fetch(array(
+            $rate_trs = $this->Database_model->tr_fetch(array(
                 'tr_status' => 2, //Published
                 'en_status' => 2, //Published
                 'tr_type_entity_id' => 4319, //Number
@@ -289,7 +251,7 @@ class Ledger extends CI_Controller
 
 
         //Boost processing power:
-        fn___boost_power();
+        boost_power();
 
         //Empty both tables:
         $this->db->query("TRUNCATE TABLE public.gephi_edges CONTINUE IDENTITY RESTRICT;");
@@ -312,7 +274,7 @@ class Ledger extends CI_Controller
         );
 
         //Add intents:
-        $ins = $this->Database_model->fn___in_fetch(array('in_status >=' => 0));
+        $ins = $this->Database_model->in_fetch(array('in_status >=' => 0));
         foreach($ins as $in){
 
             //Prep metadata:
@@ -329,7 +291,7 @@ class Ledger extends CI_Controller
             ));
 
             //Fetch children:
-            foreach($this->Database_model->fn___tr_fetch(array(
+            foreach($this->Database_model->tr_fetch(array(
                 'tr_status >=' => 0, //New+
                 'in_status >=' => 0, //New+
                 'tr_type_entity_id IN (' . join(',', $this->config->item('en_ids_4486')) . ')' => null, //Intent Link Types
@@ -350,7 +312,7 @@ class Ledger extends CI_Controller
 
 
         //Add entities:
-        $ens = $this->Database_model->fn___en_fetch(array('en_status >=' => 0));
+        $ens = $this->Database_model->en_fetch(array('en_status >=' => 0));
         foreach($ens as $en){
 
             //Add entity node:
@@ -363,7 +325,7 @@ class Ledger extends CI_Controller
             ));
 
             //Fetch children:
-            foreach($this->Database_model->fn___tr_fetch(array(
+            foreach($this->Database_model->tr_fetch(array(
                 'tr_status >=' => 0, //New+
                 'en_status >=' => 0, //New+
                 'tr_type_entity_id IN (' . join(',', $this->config->item('en_ids_4592')) . ')' => null, //Entity Link Connectors
@@ -383,7 +345,7 @@ class Ledger extends CI_Controller
         }
 
         //Add messages:
-        $messages = $this->Database_model->fn___tr_fetch(array(
+        $messages = $this->Database_model->tr_fetch(array(
             'tr_status >=' => 0, //New+
             'in_status >=' => 0, //New+
             'tr_type_entity_id IN (' . join(',', $this->config->item('en_ids_4485')) . ')' => null, //All Intent Notes
@@ -432,5 +394,45 @@ class Ledger extends CI_Controller
 
         echo count($ins).' intents & '.count($ens).' entities & '.count($messages).' messages synced.';
     }
+
+
+
+    function toggle_advance(){
+
+        //Toggles the advance session variable for the miner on/off for logged-in miners:
+        $session_en = en_auth(array(1308));
+
+        if($session_en){
+
+            //Figure out new toggle state:
+            $toggled_setting = ( $this->session->userdata('advance_view_enabled')==1 ? 0 : 1 );
+
+            //Set session variable:
+            $this->session->set_userdata('advance_view_enabled', $toggled_setting);
+
+            //Log Transaction:
+            $this->Database_model->tr_create(array(
+                'tr_miner_entity_id' => $session_en['en_id'],
+                'tr_type_entity_id' => 5007, //Toggled Advance Mode
+                'tr_content' => 'Toggled '.( $toggled_setting ? 'ON' : 'OFF' ), //To be used when miner logs in again
+            ));
+
+            //Return to JS function:
+            return echo_json(array(
+                'status' => 1,
+                'message' => 'Success',
+            ));
+
+        } else {
+
+            //Show error:
+            return echo_json(array(
+                'status' => 0,
+                'message' => 'Session expired. Login and try again.',
+            ));
+
+        }
+    }
+
 
 }

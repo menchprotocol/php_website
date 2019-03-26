@@ -14,10 +14,10 @@
         <?php
 
         //Parents
-        echo '<h5><span class="badge badge-h"><span class="li-parent-count">' . count($entity['en__parents']) . '</span> Parent' . fn___echo__s(count($entity['en__parents'])) . '</span></h5>';
+        echo '<h5><span class="badge badge-h"><span class="li-parent-count">' . count($entity['en__parents']) . '</span> Parent' . echo__s(count($entity['en__parents'])) . '</span></h5>';
         echo '<div id="list-parent" class="list-group  grey-list">';
         foreach ($entity['en__parents'] as $en) {
-            echo fn___echo_en($en, 2, true);
+            echo echo_en($en, 2, true);
         }
         //Input to add new parents:
         echo '<div id="new-parent" class="list-group-item list_input grey-input">
@@ -34,7 +34,7 @@
         //Focused/current entity:
         echo '<h5 class="badge badge-h indent1">Entity @'.$entity['en_id'].'</h5>';
         echo '<div id="entity-box" class="list-group indent1">';
-        echo fn___echo_en($entity, 1);
+        echo echo_en($entity, 1);
         echo '</div>';
 
 
@@ -49,15 +49,15 @@
 
             echo '<h5 class="badge badge-h inline-block"><span class="li-children-count inline-block">' . $entity['en__child_count'] . '</span> Children</h5>';
 
-            echo '<span class="'.( !fn___has_moderator_rights(4997) ? 'hidden' : '' ).'"><a href="javascript:void(0);" onclick="$(\'.mass_modify\').toggleClass(\'hidden\');mass_action_ui();" style="text-decoration: none; margin-left: 5px;"  data-toggle="tooltip" data-placement="right" title="Entity Mass Updates applied to all child entities" class="' . fn___echo_advance() . '"><i class="fal fa-list-alt" style="font-size: 1.2em; color: #2b2b2b;"></i></a></span>';
+            echo '<span class="'.( !en_auth(array(1281)) ? 'hidden' : '' ).'"><a href="javascript:void(0);" onclick="$(\'.mass_modify\').toggleClass(\'hidden\');mass_action_ui();" style="text-decoration: none; margin-left: 5px;"  data-toggle="tooltip" data-placement="right" title="Entity Mass Updates applied to all child entities" class="' . echo_advance() . '"><i class="fal fa-list-alt" style="font-size: 1.2em; color: #2b2b2b;"></i></a></span>';
 
             echo '</td>';
 
 
-        echo '<td style="text-align: right;"><div class="btn-group btn-group-sm ' . fn___echo_advance() . '" style="margin-top:-5px;" role="group">';
+        echo '<td style="text-align: right;"><div class="btn-group btn-group-sm ' . echo_advance() . '" style="margin-top:-5px;" role="group">';
 
         //Fetch current count for each status from DB:
-        $child_en_filters = $this->Database_model->fn___tr_fetch(array(
+        $child_en_filters = $this->Database_model->tr_fetch(array(
             'tr_parent_entity_id' => $entity['en_id'],
             'tr_type_entity_id IN (' . join(',', $this->config->item('en_ids_4592')) . ')' => null, //Entity Link Connectors
             'tr_status >=' => 0, //New+
@@ -72,12 +72,12 @@
             $fixed_fields = $this->config->item('fixed_fields');
 
             //Show fixed All button:
-            echo '<a href="#" onclick="u_load_filter_status(-1)" class="btn btn-default btn-secondary u-status-filter u-status--1" data-toggle="tooltip" data-placement="top" title="View all entities"><i class="fas fa-at"></i><span class="hide-small"> All</span> [<span class="li-children-count">' . $entity['en__child_count'] . '</span>]</a>';
+            echo '<a href="#" onclick="en_filter_status(-1)" class="btn btn-default btn-secondary u-status-filter u-status--1" data-toggle="tooltip" data-placement="top" title="View all entities"><i class="fas fa-at"></i><span class="hide-small"> All</span> [<span class="li-children-count">' . $entity['en__child_count'] . '</span>]</a>';
 
             //Show each specific filter based on DB counts:
             foreach ($child_en_filters as $c_c) {
                 $st = $fixed_fields['en_status'][$c_c['en_status']];
-                echo '<a href="#status-' . $c_c['en_status'] . '" onclick="u_load_filter_status(' . $c_c['en_status'] . ')" class="btn btn-default u-status-filter u-status-' . $c_c['en_status'] . '" data-toggle="tooltip" data-placement="top" title="' . $st['s_desc'] . '">' . $st['s_icon'] . '<span class="hide-small"> ' . $st['s_name'] . '</span> [<span class="count-u-status-' . $c_c['en_status'] . '">' . $c_c['totals'] . '</span>]</a>';
+                echo '<a href="#status-' . $c_c['en_status'] . '" onclick="en_filter_status(' . $c_c['en_status'] . ')" class="btn btn-default u-status-filter u-status-' . $c_c['en_status'] . '" data-toggle="tooltip" data-placement="top" title="' . $st['s_desc'] . '">' . $st['s_icon'] . '<span class="hide-small"> ' . $st['s_name'] . '</span> [<span class="count-u-status-' . $c_c['en_status'] . '">' . $c_c['totals'] . '</span>]</a>';
             }
 
         }
@@ -198,10 +198,10 @@
         echo '<div id="list-children" class="list-group grey-list indent2">';
 
         foreach ($entity['en__children'] as $en) {
-            echo fn___echo_en($en, 2);
+            echo echo_en($en, 2);
         }
         if ($entity['en__child_count'] > count($entity['en__children'])) {
-            fn___echo_en_load_more(1, $this->config->item('en_per_page'), $entity['en__child_count']);
+            echo_en_load_more(1, $this->config->item('en_per_page'), $entity['en__child_count']);
         }
 
 
@@ -242,7 +242,7 @@
                             <span class="mini-header">Entity Status:</span>
                             <select class="form-control border" id="en_status" data-toggle="tooltip" title="Entity Status" data-placement="top">
                                 <?php
-                                foreach (fn___echo_fixed_fields('en_status') as $status_id => $status) {
+                                foreach (echo_fixed_fields('en_status') as $status_id => $status) {
                                     echo '<option value="' . $status_id . '" title="' . $status['s_desc'] . '">' . $status['s_name'] . '</option>';
                                 }
                                 ?>
@@ -333,7 +333,7 @@
                                     <span class="mini-header">Transaction Status:</span>
                                     <select class="form-control border" id="tr_status" data-toggle="tooltip" title="Transaction Status" data-placement="top">
                                         <?php
-                                        foreach (fn___echo_fixed_fields('tr_status') as $status_id => $status) {
+                                        foreach (echo_fixed_fields('tr_status') as $status_id => $status) {
                                             if($status_id < 3){ //No need to verify entity links!
                                                 echo '<option value="' . $status_id . '" title="' . $status['s_desc'] . '">' . $status['s_name'] . '</option>';
                                             }
@@ -363,7 +363,7 @@
                 <table class="save-btn-box">
                     <tr>
                         <td class="save-result-td"><span class="save_entity_changes"></span></td>
-                        <td class="save-td"><a href="javascript:fn___en_modify_save();" class="btn btn-secondary btn-save">Save</a></td>
+                        <td class="save-td"><a href="javascript:en_modify_save();" class="btn btn-secondary btn-save">Save</a></td>
                     </tr>
                 </table>
 
@@ -388,10 +388,6 @@
             </div>
 
         </div>
-
-
-        <?php $this->load->view('view_ledger/tr_actionplan_right_column'); ?>
-
 
     </div>
 </div>

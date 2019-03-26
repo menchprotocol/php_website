@@ -22,7 +22,7 @@ function echo_js_suggestion(alg_obj, is_top){
 }
 
 
-function fn___turn_off() {
+function turn_off() {
     $('.dash').html('<span><i class="fas fa-spinner fa-spin"></i></span> Processing...');
 }
 

@@ -5,11 +5,11 @@ $fixed_fields = $this->config->item('fixed_fields');
 
 
 $moderation_tools = array(
-    '/ledger/fn___moderate/identical_intent_outcomes' => 'Identical Intent Outcomes',
-    '/ledger/fn___moderate/identical_entity_names' => 'Identical Entity Names',
-    '/ledger/fn___moderate/orphan_intents' => 'Orphan Intents',
-    '/ledger/fn___moderate/orphan_entities' => 'Orphan Entities',
-    '/ledger/fn___moderate/compose_test_message' => 'Compose Test Message',
+    '/ledger/moderator_tools/identical_intent_outcomes' => 'Identical Intent Outcomes',
+    '/ledger/moderator_tools/identical_entity_names' => 'Identical Entity Names',
+    '/ledger/moderator_tools/orphan_intents' => 'Orphan Intents',
+    '/ledger/moderator_tools/orphan_entities' => 'Orphan Entities',
+    '/ledger/moderator_tools/compose_test_message' => 'Compose Test Message',
 );
 
 $cron_jobs = array(
@@ -19,9 +19,9 @@ $cron_jobs = array(
 );
 
 $developer_tools = array(
-    '/entities/dev_matrix_cache' => 'Matrix PHP Cache',
-    '/entities/dev_session' => 'My Session Variables',
-    '/ledger/dev_php_info' => 'Server PHP Info',
+    '/entities/dev__matrix_cache' => 'Matrix PHP Cache',
+    '/entities/dev__session' => 'My Session Variables',
+    '/ledger/dev__php_info' => 'Server PHP Info',
 );
 
 
@@ -77,13 +77,13 @@ if(!$action) {
 } else {
 
     //Show back button:
-    echo '<ul class="breadcrumb maxout" style="margin-bottom: 10px;"><li><a href="/ledger">Ledger</a></li><li><a href="/ledger/fn___moderate">Moderator Tools</a></li></ul>';
+    echo '<ul class="breadcrumb maxout" style="margin-bottom: 10px;"><li><a href="/ledger">Ledger</a></li><li><a href="/ledger/moderator_tools">Moderator Tools</a></li></ul>';
 
     if($action=='orphan_intents') {
 
         echo '<h1>Orphan Intents</h1>';
 
-        $orphan_ins = $this->Database_model->fn___in_fetch(array(
+        $orphan_ins = $this->Database_model->in_fetch(array(
             ' NOT EXISTS (SELECT 1 FROM table_ledger WHERE in_id=tr_child_intent_id AND tr_type_entity_id IN (' . join(',', $this->config->item('en_ids_4486')) . ') AND tr_status>=0) ' => null,
             'in_status >=' => 0,
             'in_id !=' => $this->config->item('in_mission_id'),
@@ -102,10 +102,10 @@ if(!$action) {
                 if($command1=='remove_all'){
 
                     //Remove intent links:
-                    $links_removed = $this->Matrix_model->fn___in_unlink($orphan_in['in_id'] , $session_en['en_id']);
+                    $links_removed = $this->Matrix_model->in_unlink($orphan_in['in_id'] , $session_en['en_id']);
 
                     //Remove intent:
-                    $this->Database_model->fn___in_update($orphan_in['in_id'], array( 'in_status' => -1 ), true, $session_en['en_id']);
+                    $this->Database_model->in_update($orphan_in['in_id'], array( 'in_status' => -1 ), true, $session_en['en_id']);
 
                     //Show confirmation:
                     echo ' [Intent + '.$links_removed.' links Removed]';
@@ -121,7 +121,7 @@ if(!$action) {
                 echo '<br />';
                 echo '<a class="remove-all" href="javascript:void(0);" onclick="$(\'.remove-all\').toggleClass(\'hidden\')">Remove All</a>';
                 echo '<div class="remove-all hidden maxout"><b style="color: #FF0000;">WARNING</b>: All intents and all their links will be removed. ONLY do this after reviewing all orphans one-by-one and making sure they cannot become a child of an existing intent.<br /><br /></div>';
-                echo '<a class="remove-all hidden maxout" href="/ledger/fn___moderate/orphan_intents/remove_all" onclick="">Confirm: <b>Remove All</b> &raquo;</a>';
+                echo '<a class="remove-all hidden maxout" href="/ledger/moderator_tools/orphan_intents/remove_all" onclick="">Confirm: <b>Remove All</b> &raquo;</a>';
             }
 
         } else {
@@ -132,7 +132,7 @@ if(!$action) {
 
         echo '<h1>Orphan Entities</h1>';
 
-        $orphan_ens = $this->Database_model->fn___en_fetch(array(
+        $orphan_ens = $this->Database_model->en_fetch(array(
             ' NOT EXISTS (SELECT 1 FROM table_ledger WHERE en_id=tr_child_entity_id AND tr_type_entity_id IN (' . join(',', $this->config->item('en_ids_4592')) . ') AND tr_status>=0) ' => null,
             'en_status >=' => 0,
             'en_id !=' => $this->config->item('en_top_focus_id'),
@@ -150,10 +150,10 @@ if(!$action) {
                 if($command1=='remove_all'){
 
                     //Remove links:
-                    $links_removed = $this->Matrix_model->fn___en_unlink($orphan_en['en_id'], $session_en['en_id']);
+                    $links_removed = $this->Matrix_model->en_unlink($orphan_en['en_id'], $session_en['en_id']);
 
                     //Remove entity:
-                    $this->Database_model->fn___en_update($orphan_en['en_id'], array( 'en_status' => -1 ), true, $session_en['en_id']);
+                    $this->Database_model->en_update($orphan_en['en_id'], array( 'en_status' => -1 ), true, $session_en['en_id']);
 
                     //Show confirmation:
                     echo ' [Entity + '.$links_removed.' links Removed]';
@@ -169,7 +169,7 @@ if(!$action) {
                 echo '<br />';
                 echo '<a class="remove-all" href="javascript:void(0);" onclick="$(\'.remove-all\').toggleClass(\'hidden\')">Remove All</a>';
                 echo '<div class="remove-all hidden maxout"><b style="color: #FF0000;">WARNING</b>: All entities and all their links will be removed. ONLY do this after reviewing all orphans one-by-one and making sure they cannot become a child of an existing entity.<br /><br /></div>';
-                echo '<a class="remove-all hidden maxout" href="/ledger/fn___moderate/orphan_entities/remove_all" onclick="">Confirm: <b>Remove All</b> &raquo;</a>';
+                echo '<a class="remove-all hidden maxout" href="/ledger/moderator_tools/orphan_entities/remove_all" onclick="">Confirm: <b>Remove All</b> &raquo;</a>';
             }
 
         } else {
@@ -230,16 +230,16 @@ if(!$action) {
 
         if(isset($_POST['test_message'])){
 
-            $msg_validation = $this->Chat_model->fn___dispatch_validate_message($_POST['test_message'], ( intval($_POST['recipient_en']) ? array('en_id' => $_POST['recipient_en']) : array() ), $_POST['fb_messenger_format']);
+            $msg_validation = $this->Chat_model->dispatch_validate_message($_POST['test_message'], ( intval($_POST['recipient_en']) ? array('en_id' => $_POST['recipient_en']) : array() ), $_POST['fb_messenger_format']);
 
             if($_POST['fb_messenger_format'] || !$msg_validation['status']){
-                fn___echo_json(array(
-                    'analyze' => fn___extract_message_references($_POST['test_message']),
+                echo_json(array(
+                    'analyze' => extract_message_references($_POST['test_message']),
                     'results' => $msg_validation,
                 ));
             } else {
                 //HTML:
-                echo '<div><a href="/ledger/fn___moderate/compose_test_message"> &laquo; Back to Message Compose</a></div><hr />';
+                echo '<div><a href="/ledger/moderator_tools/compose_test_message"> &laquo; Back to Message Compose</a></div><hr />';
                 echo $msg_validation['output_messages'][0]['message_body'];
             }
 

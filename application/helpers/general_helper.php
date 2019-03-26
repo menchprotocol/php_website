@@ -1,12 +1,12 @@
 <?php
 
-function fn___is_dev()
+function is_dev()
 {
     //Determines if our development environment is development or not
     return (isset($_SERVER['SERVER_NAME']) && $_SERVER['SERVER_NAME'] == 'local.mench.co');
 }
 
-function fn___includes_any($string, $items)
+function includes_any($string, $items)
 {
     //Determines if any of the items in array $items includes $string
     foreach ($items as $item) {
@@ -17,13 +17,13 @@ function fn___includes_any($string, $items)
     return false;
 }
 
-function fn___sortByScore($a, $b)
+function sort_by_en_trust_score($a, $b)
 {
     //An array sorting function for entities based on their trust score:
     return intval($b['en_trust_score']) - intval($a['en_trust_score']);
 }
 
-function fn___load_php_algolia($index_name)
+function load_php_algolia($index_name)
 {
     //Loads up algolia search engine functions
     $CI =& get_instance();
@@ -34,14 +34,14 @@ function fn___load_php_algolia($index_name)
     }
 }
 
-function fn___detect_missing_columns($insert_columns, $required_columns)
+function detect_missing_columns($insert_columns, $required_columns)
 {
     //A function used to review and require certain fields when inserting new rows in DB
     foreach ($required_columns as $req_field) {
         if (!isset($insert_columns[$req_field]) || strlen($insert_columns[$req_field]) == 0) {
             //Ooops, we're missing this required field:
             $CI =& get_instance();
-            $CI->Database_model->fn___tr_create(array(
+            $CI->Database_model->tr_create(array(
                 'tr_content' => 'Missing required field [' . $req_field . '] for inserting new DB row',
                 'tr_metadata' => array(
                     'insert_columns' => $insert_columns,
@@ -60,7 +60,7 @@ function fn___detect_missing_columns($insert_columns, $required_columns)
 }
 
 
-function fn___fetch_file_ext($url)
+function fetch_file_ext($url)
 {
     //A function that attempts to fetch the file extension of an input URL:
     //https://cdn.fbsbx.com/v/t59.3654-21/19359558_10158969505640587_4006997452564463616_n.aac/audioclip-1500335487327-1590.aac?oh=5344e3d423b14dee5efe93edd432d245&oe=596FEA95
@@ -71,7 +71,7 @@ function fn___fetch_file_ext($url)
 }
 
 
-function fn___parse_signed_request($signed_request)
+function parse_signed_request($signed_request)
 {
 
     //A function recommended by Facebook tp parse the signed request we receive from Facebook servers
@@ -82,8 +82,8 @@ function fn___parse_signed_request($signed_request)
     list($encoded_sig, $payload) = explode('.', $signed_request, 2);
 
     // Decode the data
-    $sig = fn___base64_url_decode($encoded_sig);
-    $data = json_decode(fn___base64_url_decode($payload), true);
+    $sig = base64_url_decode($encoded_sig);
+    $data = json_decode(base64_url_decode($payload), true);
 
     // Confirm the signature
     $expected_sig = hash_hmac('sha256', $payload, $fb_settings['client_secret'], $raw = true);
@@ -95,14 +95,14 @@ function fn___parse_signed_request($signed_request)
     return $data;
 }
 
-function fn___base64_url_decode($input)
+function base64_url_decode($input)
 {
-    //Another Facebook Recommended function that supports the fn___parse_signed_request() function
+    //Another Facebook Recommended function that supports the parse_signed_request() function
     return base64_decode(strtr($input, '-_', '+/'));
 }
 
 
-function fn___extract_message_references($tr_content)
+function extract_message_references($tr_content)
 {
 
     //Analyzes a message text to extract Entity References (Like @123) and URLs
@@ -130,7 +130,7 @@ function fn___extract_message_references($tr_content)
             array_push($msg_references['ref_intents'], intval(substr($part, 1)));
         } elseif(substr($part, 0, 1) == '/') {
             //Check maybe it's a command?
-            $command = fn___includes_any($part, $CI->config->item('in_message_commands'));
+            $command = includes_any($part, $CI->config->item('in_message_commands'));
             if ($command) {
                 //Yes!
                 array_push($msg_references['ref_commands'], $command);
@@ -141,7 +141,7 @@ function fn___extract_message_references($tr_content)
 }
 
 
-function fn___isDate($string)
+function is_valid_date($string)
 {
     //Determines if the input $string is a valid date
     if (!$string) {
@@ -169,7 +169,19 @@ function bigintval($value) {
 }
 
 
-function fn___detect_tr_type_entity_id($string)
+
+function detect_fav_icon($url_clean_domain, $return_icon = false){
+    //Does this domain have a Favicon?
+    $fav_icon = $url_clean_domain . '/favicon.ico';
+    $is_valid_icon = @file_get_contents($fav_icon);
+    if ($is_valid_icon) {
+        return '<img src="'.$fav_icon.'">';
+    } else {
+        return ( $return_icon ? '<i class="fas fa-at grey-at"></i>' : null );
+    }
+}
+
+function detect_tr_type_entity_id($string)
 {
 
     /*
@@ -205,9 +217,9 @@ function fn___detect_tr_type_entity_id($string)
 
         //It's a URL, see what type (this could fail if duplicate, etc...):
         $CI =& get_instance();
-        return $CI->Matrix_model->fn___en_sync_url($string);
+        return $CI->Matrix_model->en_sync_url($string);
 
-    } elseif (strlen($string) > 9 && (fn___isDate($string) || strtotime($string) > 0)) {
+    } elseif (strlen($string) > 9 && (is_valid_date($string) || strtotime($string) > 0)) {
 
         //Date/time:
         return array(
@@ -254,7 +266,7 @@ function is_valid_icon($string, $only_return_requirements = false){
 
 
     //Check if this is an HTML image tag:
-    $is_img = (substr($string, 0, 10) == '<img src="' && substr($string, -2) == '">' && filter_var(fn___one_two_explode('<img src="','">',$string), FILTER_VALIDATE_URL));
+    $is_img = (substr($string, 0, 10) == '<img src="' && substr($string, -2) == '">' && filter_var(one_two_explode('<img src="','">',$string), FILTER_VALIDATE_URL));
 
     //See if this is an image URL:
     if ($is_img) {
@@ -283,7 +295,7 @@ function is_valid_icon($string, $only_return_requirements = false){
 }
 
 
-function starting_verb_id($string){
+function detect_starting_verb_id($string){
 
     //Prep variables:
     $CI =& get_instance();
@@ -293,7 +305,7 @@ function starting_verb_id($string){
     if(count($letters) >= 2){
 
         //Do a DB call to see if this verb is supported:
-        $found_verbs = $CI->Database_model->fn___tr_fetch(array(
+        $found_verbs = $CI->Database_model->tr_fetch(array(
             'tr_status' => 2, //Published
             'en_status' => 2, //Published
             'tr_parent_entity_id' => 5008, //Intent Supported Verbs
@@ -310,7 +322,7 @@ function starting_verb_id($string){
     return 0;
 }
 
-function fn___filter_array($array, $match_key, $match_value)
+function filter_array($array, $match_key, $match_value)
 {
 
     //Searches through $array and attempts to find $array[$match_key] = $match_value
@@ -326,12 +338,7 @@ function fn___filter_array($array, $match_key, $match_value)
     return false;
 }
 
-function fn___has_moderator_rights($section_en_id){
-    $CI =& get_instance();
-    return (!in_array($section_en_id , $CI->config->item('en_ids_4426')) || fn___en_auth(array(1281)));
-}
-
-function fn___en_auth($en_permission_group = null, $force_redirect = 0)
+function en_auth($en_permission_group = null, $force_redirect = 0)
 {
 
     //Authenticates logged-in users with their session information
@@ -344,7 +351,7 @@ function fn___en_auth($en_permission_group = null, $force_redirect = 0)
         //No minimum level required, grant access IF user is logged in:
         return $session_en;
 
-    } elseif (isset($session_en['en_id']) && fn___filter_array($session_en['en__parents'], 'en_id', $en_permission_group)) {
+    } elseif (isset($session_en['en_id']) && filter_array($session_en['en__parents'], 'en_id', $en_permission_group)) {
 
         //They are part of one of the levels assigned to them:
         return $session_en;
@@ -357,12 +364,12 @@ function fn___en_auth($en_permission_group = null, $force_redirect = 0)
         return false;
     } else {
         //Block access:
-        return fn___redirect_message((isset($session_en['en__parents'][0]) && fn___filter_array($session_en['en__parents'], 'en_id', 1308) ? '/intents/' . $CI->config->item('in_miner_start') : '/login?url=' . urlencode($_SERVER['REQUEST_URI'])), '<div class="alert alert-danger" role="alert">Error: ' . (isset($session_en['en_id']) ? 'Access not authorized.' : 'Sign In to access.') . '</div>');
+        return redirect_message((isset($session_en['en__parents'][0]) && filter_array($session_en['en__parents'], 'en_id', 1308) ? '/intents/' . $CI->config->item('in_miner_start') : '/login?url=' . urlencode($_SERVER['REQUEST_URI'])), '<div class="alert alert-danger" role="alert">Error: ' . (isset($session_en['en_id']) ? 'Access not authorized.' : 'Sign In to access.') . '</div>');
     }
 
 }
 
-function fn___redirect_message($url, $message = null)
+function redirect_message($url, $message = null)
 {
     //An error handling function that would redirect user to $url with optional $message
     //Do we have a Message?
@@ -382,7 +389,7 @@ function fn___redirect_message($url, $message = null)
 }
 
 
-function fn___upload_to_cdn($file_url, $tr_metadata = null, $is_local = false)
+function upload_to_cdn($file_url, $tr_metadata = null, $is_local = false)
 {
 
     /*
@@ -390,7 +397,7 @@ function fn___upload_to_cdn($file_url, $tr_metadata = null, $is_local = false)
      * */
     $CI =& get_instance();
 
-    $file_name = md5($file_url . 'fileSavingSa!t') . '.' . fn___fetch_file_ext($file_url);
+    $file_name = md5($file_url . 'fileSavingSa!t') . '.' . fetch_file_ext($file_url);
 
     if (!$is_local) {
         //Save this remote file to local first:
@@ -438,10 +445,10 @@ function fn___upload_to_cdn($file_url, $tr_metadata = null, $is_local = false)
 
         } else {
 
-            $CI->Database_model->fn___tr_create(array(
+            $CI->Database_model->tr_create(array(
                 'tr_type_entity_id' => 4246, //Platform Error
                 'tr_miner_entity_id' => 1, //Shervin/Developer
-                'tr_content' => 'fn___upload_to_cdn() Unable to upload file [' . $file_url . '] to Mench cloud.',
+                'tr_content' => 'upload_to_cdn() Unable to upload file [' . $file_url . '] to Mench cloud.',
                 'tr_metadata' => $tr_metadata,
             ));
             return false;
@@ -455,45 +462,8 @@ function fn___upload_to_cdn($file_url, $tr_metadata = null, $is_local = false)
 }
 
 
-function detect_download_file_url($url, $mime_code) {
 
-    $mime_types = array(
-        //Web sources:
-        'swf' => 'application/x-shockwave-flash',
-
-        //archives
-        'zip' => 'application/zip',
-        'rar' => 'application/x-rar-compressed',
-        'exe' => 'application/x-msdownload',
-        'msi' => 'application/x-msdownload',
-        'cab' => 'application/vnd.ms-cab-compressed',
-
-        // adobe
-        'pdf' => 'application/pdf',
-        'ai'  => 'application/postscript',
-        'eps' => 'application/postscript',
-        'ps'  => 'application/postscript',
-
-        // ms office
-        'doc' => 'application/msword',
-        'rtf' => 'application/rtf',
-        'xls' => 'application/vnd.ms-excel',
-        'ppt' => 'application/vnd.ms-powerpoint',
-
-        // open office
-        'odt' => 'application/vnd.oasis.opendocument.text',
-        'ods' => 'application/vnd.oasis.opendocument.spreadsheet',
-    );
-
-    $parts = explode('.', $url);
-    $ext = strtolower(array_pop($parts));
-
-    //Return if we found this file type:
-    return (array_key_exists($ext, $mime_types) || in_array($mime_code, $mime_types));
-
-}
-
-function fn___analyze_domain($full_url){
+function analyze_domain($full_url){
 
     //Detects the base domain of a URL, and also if the URL is the base domain...
 
@@ -549,48 +519,8 @@ function fn___analyze_domain($full_url){
 
 }
 
-function fn___curl_call($url){
 
-    /*
-     *
-     * Deprecated for now since it did not do a good job
-     * getting the content of amazon.com pages, and
-     * decided to use file_get_contents() instead.
-     *
-     * */
-
-    exit;
-
-    //Make CURL call:
-    $ch = curl_init($url);
-    curl_setopt($ch, CURLOPT_USERAGENT, "Mozilla/5.0 (Windows; U; Windows NT 5.1; en-US; rv:1.8.1.1) Gecko/20061204 Firefox/2.0.0.1");
-    curl_setopt($ch, CURLOPT_REFERER, "https://mench.com");
-    curl_setopt($ch, CURLOPT_FOLLOWLOCATION, TRUE);
-    curl_setopt($ch, CURLOPT_CUSTOMREQUEST, 'GET');
-    curl_setopt($ch, CURLOPT_POST, FALSE);
-    curl_setopt($ch, CURLOPT_RETURNTRANSFER, TRUE);
-    curl_setopt($ch, CURLOPT_VERBOSE, 1);
-    curl_setopt($ch, CURLOPT_HEADER, 1);
-    curl_setopt($ch, CURLOPT_CONNECTTIMEOUT, 8); //If site takes longer than this to connect, we have an issue!
-
-    if (fn___is_dev()) {
-        //SSL does not work on my (Shervin) local dev env.
-        curl_setopt($ch, CURLOPT_SSL_VERIFYHOST, 0);
-        curl_setopt($ch, CURLOPT_SSL_VERIFYPEER, 0);
-    }
-
-    //Make the call:
-    $response = curl_exec($ch);
-
-    //Return all elements:
-    return array(
-        'response'      => $response,
-        'body_html'     => substr($response, curl_getinfo($ch, CURLINFO_HEADER_SIZE)),
-        'content_type'  => fn___one_two_explode('', ';', curl_getinfo($ch, CURLINFO_CONTENT_TYPE)),
-    );
-}
-
-function fn___boost_power()
+function boost_power()
 {
     //Give php page instance more processing power
     ini_set('memory_limit', '-1');
@@ -598,7 +528,7 @@ function fn___boost_power()
 }
 
 
-function fn___objectToArray($object)
+function objectToArray($object)
 {
     //Transform an object into an array
     if (!is_object($object) && !is_array($object)) {
@@ -607,11 +537,11 @@ function fn___objectToArray($object)
     if (is_object($object)) {
         $object = (array)$object;
     }
-    return array_map('fn___objectToArray', $object);
+    return array_map('objectToArray', $object);
 }
 
 
-function fn___one_two_explode($one, $two, $string)
+function one_two_explode($one, $two, $string)
 {
     //A quick function to extract a subset of $string between $one and $two
     if (strlen($one) > 0) {
@@ -632,3 +562,32 @@ function fn___one_two_explode($one, $two, $string)
 }
 
 
+
+function extract_youtube_id($url)
+{
+
+    //Attemp to extract YouTube ID from URL:
+    $video_id = null;
+
+    if (substr_count($url, 'youtube.com/embed/') == 1) {
+
+        //We might have start and end here too!
+        $video_id = trim(one_two_explode('youtube.com/embed/', '?', $url));
+
+    } elseif (substr_count($url, 'youtube.com/watch?v=') == 1) {
+
+        $video_id = trim(one_two_explode('youtube.com/watch?v=', '&', $url));
+
+    } elseif (substr_count($url, 'youtu.be/') == 1) {
+
+        $video_id = trim(one_two_explode('youtu.be/', '?', $url));
+
+    }
+
+    //This should be 11 characters!
+    if (strlen($video_id) == 11) {
+        return $video_id;
+    } else {
+        return false;
+    }
+}

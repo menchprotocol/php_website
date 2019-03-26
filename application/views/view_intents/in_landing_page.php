@@ -22,25 +22,25 @@ echo '<div class="landing-page-intro" id="in_landing_page">';
 
 
 //Intent Title:
-echo '<h1 style="margin-bottom:30px;" id="title-parent">' . fn___echo_in_outcome($in['in_outcome'], true) . '</h1>';
+echo '<h1 style="margin-bottom:30px;" id="title-parent">' . echo_in_outcome($in['in_outcome'], true) . '</h1>';
 
 
 //Fetch & Display Intent Note Messages for this intent:
-foreach ($this->Database_model->fn___tr_fetch(array(
+foreach ($this->Database_model->tr_fetch(array(
     'tr_status' => 2, //Published
     'tr_type_entity_id' => 4231, //Intent Note Messages
     'tr_child_intent_id' => $in['in_id'],
 ), array(), 0, 0, array('tr_order' => 'ASC')) as $tr) {
-    echo $this->Chat_model->fn___dispatch_message($tr['tr_content']);
+    echo $this->Chat_model->dispatch_message($tr['tr_content']);
 }
 
 
 //Overview:
 if (!$hide_subscribe) {
 
-    $step_info = fn___echo_tree_steps($in, false);
-    $source_info = fn___echo_tree_references($in, false);
-    $cost_info = fn___echo_tree_costs($in, false);
+    $step_info = echo_tree_steps($in, false);
+    $source_info = echo_tree_references($in, false);
+    $cost_info = echo_tree_costs($in, false);
 
     if($step_info || $source_info || $cost_info){
         echo '<h3 style="margin-bottom:5px; margin-top:0px !important;">Overview:</h3>';
@@ -57,7 +57,7 @@ if (!$hide_subscribe) {
 } else {
 
     //Just show the Action Plan:
-    echo '<br />'.fn___echo_public_actionplan($in, $expand_mode);
+    echo '<br />'.echo_public_actionplan($in, $expand_mode);
 
 }
 
@@ -75,7 +75,7 @@ echo '<h3 style="margin-bottom:5px; margin-top:22px;">Other Intentions:</h3>';
 echo '<div class="list-group grey_list actionplan_list maxout">';
 
 //Parent intentions:
-foreach ($this->Database_model->fn___tr_fetch(array(
+foreach ($this->Database_model->tr_fetch(array(
     'tr_status' => 2, //Published
     'in_status' => 2, //Published
     'tr_type_entity_id' => 4228, //Fixed intent links only
@@ -83,20 +83,20 @@ foreach ($this->Database_model->fn___tr_fetch(array(
     'in_id NOT IN (' . join(',', $exclude_array) . ')' => null,
 ), array('in_parent')) as $parent_intention) {
     //Add parent intention to UI:
-    echo fn___echo_in_featured($parent_intention);
+    echo echo_in_featured($parent_intention);
     //Make sure to not load this again:
     array_push($exclude_array, $parent_intention['in_id']);
 }
 
 //Now fetch featured intents:
-foreach ($this->Database_model->fn___tr_fetch(array(
+foreach ($this->Database_model->tr_fetch(array(
     'tr_status' => 2, //Published
     'in_status' => 2, //Published
     'tr_type_entity_id' => 4228, //Fixed intent links only
     'tr_parent_intent_id' => $this->config->item('in_featured'), //Feature Mench Intentions
     'in_id NOT IN (' . join(',', $exclude_array) . ')' => null,
 ), array('in_child'), 0, 0, array('tr_order' => 'ASC')) as $featured_intention) {
-    echo fn___echo_in_featured($featured_intention);
+    echo echo_in_featured($featured_intention);
 }
 
 echo '</div>';

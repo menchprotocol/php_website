@@ -53,7 +53,7 @@ $(document).ready(function() {
 
 
     if($('#source_url').val().length > 0){
-        fn___add_source_paste_url();
+        en_add_source_paste_url();
     }
 
     //Watchout for source URL change
@@ -72,7 +72,7 @@ $(document).ready(function() {
 
         // Make a new timeout set to go off in 800ms
         timeout = setTimeout(function () {
-            fn___add_source_paste_url();
+            en_add_source_paste_url();
         }, 610);
     };
 
@@ -81,7 +81,7 @@ $(document).ready(function() {
 
 
 
-function fn___add_source_paste_url() {
+function en_add_source_paste_url() {
 
     var input_url = $('#source_url').val();
     $('#cleaned_url').html('');
@@ -93,7 +93,7 @@ function fn___add_source_paste_url() {
         $('.url-parsed').addClass('hidden');
 
         //Send for processing to see if all good:
-        $.post("/entities/fn___add_source_paste_url", { input_url:input_url }, function (data) {
+        $.post("/entities/en_add_source_paste_url", { input_url:input_url }, function (data) {
 
             //Update sorts in both lists:
             if (!data.status) {
@@ -131,7 +131,7 @@ function fn___add_source_paste_url() {
 }
 
 
-function fn___add_source_process(){
+function en_add_source_process(){
 
     //Compile parent entities and their descriptions:
     var source_parent_ens = $(".source_parent_ens:checkbox:checked").map(function(){
@@ -147,7 +147,7 @@ function fn___add_source_process(){
     $('.add_source_result').html('<div class="center"><span><i class="fas fa-spinner fa-spin"></i></span> Processing...</div>');
 
     //Fetch Intent Data to load modify widget:
-    $.post("/entities/fn___add_source_process", {
+    $.post("/entities/en_add_source_process", {
 
         source_url: $('#source_url').val(),
         source_parent_ens: source_parent_ens,
