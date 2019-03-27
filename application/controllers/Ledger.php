@@ -147,7 +147,7 @@ class Ledger extends CI_Controller
     }
 
 
-    function issue_certificate(){
+    function process_assessment_score(){
 
         //TODO to view the student's history and issue a certificate
 
@@ -157,7 +157,7 @@ class Ledger extends CI_Controller
         if(isset($_POST['recipient_en']['en_id']) && isset($_POST['actionplan_in']['in_id'])){
 
             $this->Chat_model->dispatch_message(
-                'OFFICIAL MENCH CERTIFICATE OF COMPLETION for intent #'.$_POST['actionplan_in']['in_id'],
+                'MENCH ASSESSMENT for intent #'.$_POST['actionplan_in']['in_id'],
                 $_POST['recipient_en'],
                 true,
                 array(),
@@ -167,7 +167,7 @@ class Ledger extends CI_Controller
         } else {
 
             $this->Chat_model->dispatch_message(
-                'ERROR: MENCH CERTIFICATE missing info... '.print_r($_POST, true),
+                'ERROR: MENCH ASSESSMENT missing info... '.print_r($_POST, true),
                 array('en_id' => 1),
                 true,
                 array(),

@@ -60,7 +60,7 @@ if(!$has_filters){
 
     //Fetch & Display Intent Note Messages to explain the ledger:
     echo '<h1>Mench Ledger <span id="hb_8438" class="help_button bold-header" intent-id="8438"></span></h1>';
-    echo '<div class="help_body" id="content_8438"></div>';
+    echo '<div class="help_body maxout" id="content_8438"></div>';
 
 
     //Load core Mench Objects:

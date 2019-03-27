@@ -842,7 +842,7 @@ class Matrix_model extends CI_Model
         $en_all_4331 = $this->config->item('en_all_4331'); //Intent Completion Requirements
 
         //Single option:
-        $message = 'Marking as complete requires ' . $en_all_4331[$in['in_requirement_entity_id']]['m_name'];
+        $message = 'Marking as complete requires a ' . $en_all_4331[$in['in_requirement_entity_id']]['m_name'].' Message';
 
         //Give clear directions to complete if Action Plan ID is provided...
         if ($offer_instructions) {
@@ -1242,13 +1242,13 @@ class Matrix_model extends CI_Model
             $this->Matrix_model->in_fetch_recursive($in_append_id, true, false, $current_actionplans[0]);
 
             //Try to mark intent as complete (might not be depending on how many new intents where added as a result of the OR answer):
-            $this->Matrix_model->actionplan_complete_recursive_up($append_ins[0], ($needs_more_work ? 1 /* drafting */ : null));
+            $this->Matrix_model->actionplan_complete_recursive_up($current_actionplans[0], ($needs_more_work ? 1 /* drafting */ : null));
 
         } else {
 
             //New Action Plan Intention:
             $actionplan = $this->Database_model->tr_create(array(
-                'tr_status' => 0, //New
+                'tr_status' => 1, //Working on...
                 'tr_type_entity_id' => 4235, //Action Plan Intent
                 'tr_miner_entity_id' => $tr_miner_entity_id,
                 'tr_child_intent_id' => $in_append_id,
@@ -1259,7 +1259,7 @@ class Matrix_model extends CI_Model
                 )),
             ));
 
-            //Add possible children:
+            //Add all steps recursively down:
             $this->Matrix_model->in_fetch_recursive($in_append_id, true, false, $actionplan);
 
         }
@@ -1327,6 +1327,7 @@ class Matrix_model extends CI_Model
             //Adding Action Plan Steps for a given intention only works downwards and should not update DB concurrently:
             return false;
         }
+
 
         //Calculate metadata variables:
         $metadata_this = array(
@@ -1483,7 +1484,7 @@ class Matrix_model extends CI_Model
 
 
         //Terminate OR branches for Action Plan caching:
-        if ($this_in['in_type']==1 && $add_to_actionplan) {
+        if (isset($this_in['tr_id']) && $this_in['in_type']==1 && $add_to_actionplan) {
             /*
              *
              * We do this as we don't know which OR path will be

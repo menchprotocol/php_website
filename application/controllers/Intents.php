@@ -13,27 +13,6 @@ class Intents extends CI_Controller
 
 
 
-    function test($in_id=7463, $add_actionplan = 0, $direction_is_downward = 1){
-
-        if($add_actionplan){
-            $actionplan = $this->Database_model->tr_create(array(
-                'tr_type_entity_id' => 4235, //Action Plan Intent
-                'tr_status' => 0, //New (Not yet completed)
-                'tr_miner_entity_id' => 1,
-                'tr_child_intent_id' => $in_id, //The Intent they are adding
-                'tr_order' => 1 + $this->Database_model->tr_max_order(array( //Place this intent at the end of all intents the Student is drafting...
-                    'tr_type_entity_id' => 4235, //Action Plan Intent
-                    'tr_status >=' => 0, //New+
-                    'tr_miner_entity_id' => 1, //Belongs to this Student
-                )),
-            ));
-        } else {
-            $actionplan = array();
-        }
-
-        echo_json($this->Matrix_model->in_fetch_recursive($in_id, $direction_is_downward, false, $actionplan));
-    }
-
     //Loaded as default function of the default controller:
     function index()
     {

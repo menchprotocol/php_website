@@ -581,7 +581,7 @@ function echo_in_actionplan_step($tr, $is_parent, $or_intent_id = 0)
     $CI =& get_instance();
 
 
-    $ui = '<a href="' . ($or_intent_id ? '/messenger/actionplan_choose_step/' . $or_intent_id . '/' . $tr['in_id'] . '/' . md5($CI->config->item('actionplan_salt') . $tr['in_id'] . $or_intent_id) : '/messenger/actionplan/' . $tr['in_id']) . '" class="list-group-item">';
+    $ui = '<a href="' . ($or_intent_id ? '/messenger/actionplan_choose_step/'.$tr['tr_parent_transaction_id'].'/' . $or_intent_id . '/' . $tr['in_id'] . '/' . md5($CI->config->item('actionplan_salt') . $tr['in_id'] . $or_intent_id . $tr['tr_parent_transaction_id']) : '/messenger/actionplan/' . $tr['in_id']) . '" class="list-group-item">';
 
     //Different pointer position based on direction:
     if ($is_parent) {
@@ -651,7 +651,8 @@ function echo_time_hours($seconds, $micro = false)
      *
      * */
 
-    if ($seconds < 1) {
+    if ($seconds < 30) {
+        //Under 30 seconds would not round up to even 1 minute, so don't show:
         return false;
     } elseif ($seconds <= 5400) {
         return round($seconds / 60) . ($micro ? 'm' : ' Minutes');
@@ -838,7 +839,7 @@ function echo_tree_references($in, $fb_messenger_format = false, $expand_mode = 
             </div>
             <div id="collapse' . $id . '" class="panel-collapse collapse ' . ($expand_mode ? 'in' : 'out') . '" role="tabpanel" aria-labelledby="heading' . $id . '">
                 <div class="panel-body overview-pitch">
-                    ' . $pitch . '.
+                    ' . $pitch . '
                 </div>
             </div>
         </div></div>';
@@ -954,9 +955,9 @@ function echo_public_actionplan($in, $expand_mode){
 
         $return_html .= '<h4 class="panel-title"><a role="button" data-toggle="collapse" data-parent="#open' . $in_level2_counter . '" href="#collapse' . $in_level2_counter . '" aria-expanded="' . ($expand_mode ? 'true' : 'false') . '" aria-controls="collapse' . $in_level2_counter . '">' . '<i class="fal fa-plus-circle" style="font-size: 1em !important; margin-left: 0; width: 21px;"></i>'. ( $in['in_type'] ? 'Option #'. ($in_level2_counter + 1).': ' : '') . '<span style="text-decoration:underline;" id="title-' . $in_level2['in_id'] . '">' . echo_in_outcome($in_level2['in_outcome'], true) . '</span>';
 
-        $in_level2_metadata = unserialize($in_level2['in_metadata']);
-        if (isset($in_level2_metadata['in__tree_max_seconds']) && $in_level2_metadata['in__tree_max_seconds'] > 0) {
-            $return_html .= ' <span style="font-size: 0.9em; font-weight: 300;"><i class="fal fa-clock" style="width:16px; text-transform: none !important;"></i>' . echo_time_range($in_level2, true) . '</span>';
+        $in_level2_time = echo_time_range($in_level2, true);
+        if ($in_level2_time) {
+            $return_html .= ' <span style="font-size: 0.9em; font-weight: 300;"><i class="fal fa-clock" style="width:16px; text-transform: none !important;"></i>' . $in_level2_time . '</span>';
         }
 
         $return_html .= '</a></h4>';
@@ -980,9 +981,9 @@ function echo_public_actionplan($in, $expand_mode){
             foreach ($grandchildren_ins as $in_level3_counter => $in_level3) {
 
                 $return_html .= '<li>' . ($in_level2['in_type'] ? 'Option #' . ($in_level3_counter + 1) . ': ' : '') . echo_in_outcome($in_level3['in_outcome'], true);
-                $in_level3_metadata = unserialize($in_level3['in_metadata']);
-                if (isset($in_level3_metadata['in__tree_max_seconds']) && $in_level3_metadata['in__tree_max_seconds'] > 0) {
-                    $return_html .= ' <span style="font-size: 0.9em; font-weight: 300;"><i class="fal fa-clock"></i> ' . echo_time_range($in_level3, true) . '</span>';
+                $in_level3_time = echo_time_range($in_level3, true);
+                if ($in_level3_time) {
+                    $return_html .= ' <span style="font-size: 0.9em; font-weight: 300;"><i class="fal fa-clock"></i>' . $in_level3_time . '</span>';
                 }
                 $return_html .= '</li>';
 
@@ -1066,32 +1067,44 @@ function echo_en_messages($tr){
     $CI =& get_instance();
     $session_en = $CI->session->userdata('user');
     $fixed_fields = $CI->config->item('fixed_fields');
+    $en_all_4485 = $CI->config->item('en_all_4485');
 
     $ui = '<div class="entities-msg">';
 
     $ui .= '<div>';
 
     //Editing menu:
-    $ui .= '<ul class="msg-nav" style="margin-bottom: 15px;">';
+    $ui .= '<ul class="msg-nav">';
 
 
     //Referenced Intent:
-    $ui .= '<li class="edit-off"><a class="btn btn-primary button-max" style="border:2px solid #fedd16 !important;" href="/intents/' . $tr['tr_child_intent_id'] . '" target="_parent" title="Message Intent: '.$tr['in_outcome'].'" data-toggle="tooltip" data-placement="top">'.$fixed_fields['in_type'][$tr['in_type']]['s_icon'].' '.$tr['in_outcome'].'</a></li>';
+    $ui .= '<li><a class="btn btn-primary button-max" style="border:2px solid #fedd16 !important;" href="/intents/' . $tr['tr_child_intent_id'] . '" target="_parent" title="Message Intent: '.$tr['in_outcome'].'" data-toggle="tooltip" data-placement="top">'.$fixed_fields['in_status'][$tr['in_status']]['s_icon'].'&nbsp; '.$fixed_fields['in_type'][$tr['in_type']]['s_icon'].' '.$tr['in_outcome'].'</a></li>';
 
     //Transactions:
     $count_msg_trs = $CI->Database_model->tr_fetch(array(
         '( tr_id = ' . $tr['tr_id'] . ' OR tr_parent_transaction_id = ' . $tr['tr_id'] . ')' => null,
     ), array(), 0, 0, array(), 'COUNT(tr_id) as totals');
-    $ui .= '<li class="edit-off ' . echo_advance() . '"><a class="btn btn-primary" style="border:2px solid #fedd16 !important;" href="/ledger?tr_id=' . $tr['tr_id'] . '" target="_parent" title="Go to Transactions" data-toggle="tooltip" data-placement="top"><i class="fas fa-atlas"></i> '.echo_number($count_msg_trs[0]['totals']).'</a></li>';
+    $ui .= '<li class="' . echo_advance() . '"><a class="btn btn-primary" style="border:2px solid #fedd16 !important;" href="/ledger?tr_id=' . $tr['tr_id'] . '" target="_parent" title="Go to Transactions" data-toggle="tooltip" data-placement="top"><i class="fas fa-atlas"></i> '.echo_number($count_msg_trs[0]['totals']).'</a></li>';
+
+    //Intent Note Type:
+    $ui .= '<li class="' . echo_advance() . '" style="margin: 0 3px 0 0;"><span title="'.$en_all_4485[$tr['tr_type_entity_id']]['m_name'].': '.$en_all_4485[$tr['tr_type_entity_id']]['m_desc'].'" data-toggle="tooltip" data-placement="top">'.$en_all_4485[$tr['tr_type_entity_id']]['m_icon'].'</span></li>';
+
+    //Transaction Status:
+    $ui .= '<li class="' . echo_advance() . '" style="margin: 0 3px 0 0;"><span title="'.$fixed_fields['tr_status'][$tr['tr_status']]['s_name'].': '.$fixed_fields['tr_status'][$tr['tr_status']]['s_desc'].'" data-toggle="tooltip" data-placement="top">'.$fixed_fields['tr_status'][$tr['tr_status']]['s_icon'].'</span></li>';
 
     //Order:
-    $ui .= '<li class="edit-off ' . echo_advance() . '" style="margin: 0 3px 0 0;"><span title="Message order relative to siblings" data-toggle="tooltip" data-placement="top"><i class="fas fa-sort"></i>' . echo_ordinal_number($tr['tr_order']) . '</span></li>';
+    $ui .= '<li class="' . echo_advance() . '" style="margin: 0 3px 0 0;"><span title="Message order relative to siblings" data-toggle="tooltip" data-placement="top"><i class="fas fa-sort"></i>' . echo_ordinal_number($tr['tr_order']) . '</span></li>';
 
     $ui .= '<li style="clear: both;">&nbsp;</li>';
 
     $ui .= '</ul>';
 
-    $ui .= $CI->Chat_model->dispatch_message($tr['tr_content'], $session_en, false);
+    //Show message only if its not a plain reference and includes additional text/info:
+    if($tr['tr_content'] != '@'.$tr['tr_parent_entity_id']){
+        $ui .= '<div style="margin-top: 15px;">';
+        $ui .= $CI->Chat_model->dispatch_message($tr['tr_content'], $session_en, false);
+        $ui .= '</div>';
+    }
 
 
     $ui .= '</div>';

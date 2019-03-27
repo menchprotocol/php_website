@@ -612,7 +612,7 @@ class Messenger extends CI_Controller
                     //Display row:
                     echo '<a href="/messenger/actionplan/' . $tr['tr_child_intent_id'] . '" class="list-group-item">';
                     echo '<span class="pull-right">';
-                    echo '<span class="badge badge-primary"><i class="fas fa-angle-right"></i></span>';
+                    echo '<span class="badge badge-primary" style="margin-top: -8px;"><i class="fas fa-angle-right"></i></span>';
                     echo '</span>';
                     echo echo_fixed_fields('tr_status', $tr['tr_status'], 1, 'right');
                     echo ' ' . $tr['in_outcome'];
@@ -807,7 +807,7 @@ class Messenger extends CI_Controller
         } else {
 
             //We actually skipped, draft message:
-            $message = '<div class="alert alert-success" role="alert">You successfully skipped ' . $total_skipped . ' step' . echo__s($total_skipped) . '.</div>';
+            $message = '<div class="alert alert-success" role="alert">Successfully skipped ' . $total_skipped . ' step' . echo__s($total_skipped) . '.</div>';
 
             //Find the next item to navigate them to:
             $next_ins = $this->Matrix_model->actionplan_fetch_next($actionplan_steps[0]['tr_parent_transaction_id']);
@@ -819,24 +819,25 @@ class Messenger extends CI_Controller
         }
     }
 
-    function actionplan_choose_step($actionplan_in_id, $in_append_id, $w_key)
+    function actionplan_choose_step($actionplan_tr_id, $actionplan_in_id, $in_append_id, $w_key)
     {
 
-        if($w_key != md5($this->config->item('actionplan_salt') . $in_append_id . $actionplan_in_id)){
+        if($w_key != md5($this->config->item('actionplan_salt') . $in_append_id . $actionplan_in_id . $actionplan_tr_id)){
             return redirect_message('/messenger/actionplan/' . $actionplan_in_id, '<div class="alert alert-danger" role="alert">Invalid Secret Key</div>');
         }
 
         //Validate Action Plan:
-        $actionplans = $this->Database_model->tr_fetch(array(
+        $actionplan_steps = $this->Database_model->tr_fetch(array(
+            'tr_parent_transaction_id' => $actionplan_tr_id,
             'tr_child_intent_id' => $actionplan_in_id,
-            'tr_type_entity_id IN ('.join(',',$this->config->item('en_ids_6107')).')' => null, //Student Action Plan
+            'tr_type_entity_id' => 4559, //Action Plan Step
             'tr_status >=' => 0, //New+
         ));
-        if(count($actionplans) < 1){
-            return redirect_message('/messenger/actionplan/' . $actionplan_in_id, '<div class="alert alert-danger" role="alert">Action Plan Not Found</div>');
+        if(count($actionplan_steps) < 1){
+            return redirect_message('/messenger/actionplan/' . $actionplan_in_id, '<div class="alert alert-danger" role="alert">Step Not Found</div>');
         }
 
-        if ($this->Matrix_model->actionplan_append_in($in_append_id, $actionplans[0]['tr_miner_entity_id'], $actionplan_in_id)) {
+        if ($this->Matrix_model->actionplan_append_in($in_append_id, $actionplan_steps[0]['tr_miner_entity_id'], $actionplan_in_id)) {
             return redirect_message('/messenger/actionplan/' . $in_append_id, '<div class="alert alert-success" role="alert">Your answer was saved.</div>');
         } else {
             //We had some sort of an error:
@@ -845,6 +846,27 @@ class Messenger extends CI_Controller
     }
 
 
+
+    function test($in_id=7463, $add_actionplan = 1, $direction_is_downward = 1){
+
+        if($add_actionplan){
+            $actionplan = $this->Database_model->tr_create(array(
+                'tr_type_entity_id' => 4235, //Action Plan Intent
+                'tr_status' => 1, //Working on...
+                'tr_miner_entity_id' => 1,
+                'tr_child_intent_id' => $in_id, //The Intent they are adding
+                'tr_order' => 1 + $this->Database_model->tr_max_order(array( //Place this intent at the end of all intents the Student is drafting...
+                        'tr_type_entity_id' => 4235, //Action Plan Intent
+                        'tr_status >=' => 0, //New+
+                        'tr_miner_entity_id' => 1, //Belongs to this Student
+                    )),
+            ));
+        } else {
+            $actionplan = array();
+        }
+
+        echo_json($this->Matrix_model->in_fetch_recursive($in_id, $direction_is_downward, false, $actionplan));
+    }
 
 
     function cron__sync_attachments()
