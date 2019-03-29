@@ -1248,7 +1248,7 @@ class Matrix_model extends CI_Model
 
             //New Action Plan Intention:
             $actionplan = $this->Database_model->tr_create(array(
-                'tr_status' => 1, //Working on...
+                'tr_status' => 0, //New
                 'tr_type_entity_id' => 4235, //Action Plan Intent
                 'tr_miner_entity_id' => $tr_miner_entity_id,
                 'tr_child_intent_id' => $in_append_id,

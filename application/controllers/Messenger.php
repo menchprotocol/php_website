@@ -607,17 +607,20 @@ class Messenger extends CI_Controller
                 echo '<h3 class="master-h3 primary-title">My Action Plan</h3>';
                 echo '<div class="list-group" style="margin-top: 10px;">';
                 foreach ($trs as $tr) {
-                    //Prepare metadata:
-                    $metadata = unserialize($tr['in_metadata']);
+
                     //Display row:
                     echo '<a href="/messenger/actionplan/' . $tr['tr_child_intent_id'] . '" class="list-group-item">';
                     echo '<span class="pull-right">';
+
+                    $time_estimate = echo_time_range($tr, true);
+                    if ($time_estimate) {
+                        echo $time_estimate . ' <i class="fal fa-alarm-clock"></i> ';
+                    }
+
                     echo '<span class="badge badge-primary" style="margin-top: -8px;"><i class="fas fa-angle-right"></i></span>';
                     echo '</span>';
                     echo echo_fixed_fields('tr_status', $tr['tr_status'], 1, 'right');
                     echo ' ' . $tr['in_outcome'];
-                    echo ' ' . $metadata['in__tree_in_active_count'];
-                    echo ' &nbsp;<i class="fal fa-clock"></i> ' . echo_time_range($tr, true);
                     echo '</a>';
                 }
                 echo '</div>';
@@ -647,18 +650,7 @@ class Messenger extends CI_Controller
                     'in_id' => $in_id,
                 ));
 
-                if (count($ins) < 1 || (!count($actionplan_parents) && !count($actionplan_children))) {
-
-                    //Ooops, we had issues finding th is intent! Should not happen, report:
-                    $this->Database_model->tr_create(array(
-                        'tr_miner_entity_id' => $trs[0]['tr_miner_entity_id'],
-                        'tr_metadata' => $trs,
-                        'tr_content' => 'Unable to load a specific intent for the master Action Plan! Should not happen...',
-                        'tr_type_entity_id' => 4246, //Platform Error
-                        'tr_parent_transaction_id' => $actionplan_tr_id,
-                        'tr_child_intent_id' => $in_id,
-                    ));
-
+                if (count($ins) < 1) {
                     die('<div class="alert alert-danger" role="alert">Invalid Intent ID.</div>');
                 }
 
@@ -668,6 +660,7 @@ class Messenger extends CI_Controller
                     'in' => $ins[0],
                     'actionplan_parents' => $actionplan_parents,
                     'actionplan_children' => $actionplan_children,
+                    'session_en' => $session_en,
                 ));
 
             }
@@ -852,7 +845,7 @@ class Messenger extends CI_Controller
         if($add_actionplan){
             $actionplan = $this->Database_model->tr_create(array(
                 'tr_type_entity_id' => 4235, //Action Plan Intent
-                'tr_status' => 1, //Working on...
+                'tr_status' => 0, //New
                 'tr_miner_entity_id' => 1,
                 'tr_child_intent_id' => $in_id, //The Intent they are adding
                 'tr_order' => 1 + $this->Database_model->tr_max_order(array( //Place this intent at the end of all intents the Student is drafting...

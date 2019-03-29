@@ -2,73 +2,17 @@
 
 //Is this an un-answered OR intent?
 $en_all_6107 = $this->config->item('en_all_6107');
-$or_answer_in_id = 0; //We would assume so unless proven otherwise...
-$actionplan_non_responses = array(); //Will only be populated if an OR branch has already been answered
-$is_step = (count($actionplan_parents) == 1); //This could be the top-level Action Plan Intent OR an Action Plan Step to get to the intent...
-
-//Fetch OR Children since they are never added to Action Plans:
-if($in['in_type']==1){
-
-    if(count($actionplan_children) == 1){
-
-        //Student has already responded to this OR branch, fetch non-responded intent to give students FYI view:
-        $actionplan_non_responses = $this->Database_model->tr_fetch(array(
-            'tr_status' => 2, //Published
-            'in_status' => 2, //Published
-            'tr_type_entity_id' => 4228, //Fixed intent links only
-            'tr_parent_intent_id' => $in['in_id'],
-            'tr_child_intent_id !=' => $actionplan_children[0]['tr_child_intent_id'],
-        ), array('in_child'), 0, 0, array('tr_order' => 'ASC')); //Child intents must be ordered
-
-        /*
-         *
-         * Future Note/Warning:
-         *
-         * Student might see OR branch options that
-         * they had not seen when making their selection.
-         * For now, this is ok as its best to give them
-         * more transparency than to not give it at all.
-         * In the future, we can allow them to adjust
-         * their response and even see which new options
-         * have become available for this OR branch...
-         *
-         * */
-
-    } elseif(count($actionplan_children) > 1){
-
-        //This should never happen as we can only have a single response to an OR branch!
-
-    } else {
-
-        //Student has not yet responded, fetch OR children:
-        $actionplan_children = $this->Database_model->tr_fetch(array(
-            'tr_status' => 2, //Published
-            'in_status' => 2, //Published
-            'tr_type_entity_id' => 4228, //Fixed intent links only
-            'tr_parent_intent_id' => $in['in_id'],
-        ), array('in_child'), 0, 0, array('tr_order' => 'ASC')); //Child intents must be ordered
-
-        if(count($actionplan_children) < 1){
-            //Ooooopsi, this OR branch does not have any children, so nothing can be done from the student side...
-            //Treat it as an AND branch for now:
-            $in['in_type'] = 0;
-        } else {
-            //All good, this OR branch has not yet been answered:
-            $or_answer_in_id = $in['in_id'];
-        }
-    }
-}
-
-
-//Fetch completion requirements for this intent:
-$message_in_requirements = $this->Matrix_model->in_req_completion($in);
-$time_estimate = echo_time_range($in);
-
-
+$is_step = (count($actionplan_parents) > 0); //This could be the top-level Action Plan Intent OR an Action Plan Step to get to the intent...
 $has_children = (count($actionplan_children) > 0);
+$is_or_branch = ( $in['in_type']==1 );
+$or_path_chosen = ( $is_or_branch && $has_children ); //Or branches do not have a children until students choose one...
+$message_in_requirements = $this->Matrix_model->in_req_completion($in); //Fetch completion requirements for this intent
+$time_estimate = echo_time_range($in);
+$show_children = ( $is_or_branch || ( $has_children && ( !$message_in_requirements || $actionplan_parents[0]['tr_status']==2 ) ) );
+$force_linear = true; //If true, will force students to complete AND branches linearly
+
 //We want to show the child intents in specific conditions to ensure a step-by-step navigation by the user through the browser Action Plan
 //(Note that the conversational UI already has this step-by-step navigation in mind, but the user has more flexibility in the Browser side)
-$list_children = (count($actionplan_parents) == 0 || !($actionplan_parents[0]['tr_status'] == 0) || $in['in_type']==1 || !$message_in_requirements);
 
 
 if ($is_step) {
@@ -76,7 +20,7 @@ if ($is_step) {
     $message_in_requirements = $this->Matrix_model->in_req_completion($in);
 
     //Submission button visible after first button was clicked:
-    $is_incomplete = ($actionplan_parents[0]['tr_status'] < 1 || ($actionplan_parents[0]['tr_status'] == 1 && count($actionplan_children) == 0));
+    $is_incomplete = ($actionplan_parents[0]['tr_status'] < 1 || ($actionplan_parents[0]['tr_status'] == 1 && !$has_children));
     $show_written_input = ($message_in_requirements && $is_incomplete);
 }
 
@@ -96,14 +40,35 @@ if ($actionplan['tr_status'] == 1) {
     }
 }
 
+
+
+
 //Include JS file:
 echo '<script src="/js/custom/actionplan-ui-js.js?v=v' . $this->config->item('app_version') . '" type="text/javascript"></script>';
 
 //Fetch parent tree all the way to the top of Action Plan tr_child_intent_id
 echo '<div class="list-group parent-actionplans" style="margin-top: 10px;">';
-foreach ($actionplan_parents as $tr) {
-    echo echo_in_actionplan_step($tr, 1);
+if($is_step){
+    foreach ($actionplan_parents as $tr) {
+        echo echo_in_actionplan_step($tr, 1, 1);
+    }
+} else {
+    //Show link to Action Plan if we have 1+ intentions:
+    $actionplan_intent_counts = count($this->Database_model->tr_fetch(array(
+        'tr_miner_entity_id' => $session_en['en_id'],
+        'tr_type_entity_id' => 4235, //Action Plan Intent
+        'tr_status >=' => 0, //New+
+    )));
+    if($actionplan_intent_counts > 1){
+        echo '<a href="/messenger/actionplan" class="list-group-item">';
+        echo '<span class="pull-left">';
+        echo '<span class="badge badge-primary fr-bgd"><i class="fas fa-angle-left"></i> '.$actionplan_intent_counts.'</span>';
+        echo '</span>';
+        echo ' Action Plan Intents';
+        echo '</a>';
+    }
 }
+
 echo '</div>';
 
 
@@ -169,7 +134,7 @@ if ($is_step && ($message_in_requirements || ($in['in_type']==0 && !$has_childre
     echo '</div>';
 
 
-    if ($has_children && !$list_children) {
+    if (!$show_children) {
         echo '<button type="submit" class="btn btn-primary"><i class="fas fa-check-square"></i> Got It, Continue <i class="fas fa-angle-right"></i></button>';
     } elseif ($is_incomplete) {
         echo '<button type="submit" name="fetch_next_step" value="1" class="btn btn-primary"><i class="fas fa-check-square"></i> Mark Complete & Go Next <i class="fas fa-angle-right"></i></button>';
@@ -186,25 +151,81 @@ if ($is_step && ($message_in_requirements || ($in['in_type']==0 && !$has_childre
 
 
 
-if ($has_children && $list_children) {
+if ($show_children) {
+
     echo '<div class="left-grey">';
-    echo '<h5 class="badge badge-hy">' . ( $in['in_type']==1 /* OR Intent */ ? ( $or_answer_in_id ? 'Choose One:' : 'Choose One:' ) : 'Complete All:') . '</h5>';
+    echo '<h5 class="badge badge-hy">' . ( $is_or_branch && !$or_path_chosen ? 'Choose One:' : 'Complete All:' ) . '</h5>';
     echo '<div class="list-group">';
 
-    foreach ($actionplan_children as $tr) {
-        echo echo_in_actionplan_step($tr, 0, $or_answer_in_id);
+
+    if($is_or_branch){
+
+        if($or_path_chosen){
+
+            //List selected response:
+            foreach ($actionplan_children as $tr) {
+                echo echo_in_actionplan_step($tr, 0, 1);
+            }
+
+            //Line non-selected responses for FYI purposes:
+            foreach($this->Database_model->tr_fetch(array(
+                'tr_status' => 2, //Published
+                'in_status' => 2, //Published
+                'tr_type_entity_id' => 4228, //Fixed intent links only
+                'tr_parent_intent_id' => $in['in_id'],
+                'tr_child_intent_id !=' => $actionplan_children[0]['tr_child_intent_id'],
+            ), array('in_child'), 0, 0, array('tr_order' => 'ASC')) as $tr){
+                echo '<div class="list-group-item" style="text-decoration: line-through;">';
+                echo '<span class="status-label" style="padding-bottom:1px;"><i class="fal fa-minus-square"></i></span> ';
+                echo echo_in_outcome($tr['in_outcome'], true);
+                echo '</div>';
+            }
+
+            /*
+             *
+             * Note/Warning:
+             *
+             * Student might see OR branch options that
+             * they had not seen when making their selection.
+             * For now, this is ok as its best to give them
+             * more transparency than to not give it at all.
+             * In the future, we can allow them to adjust
+             * their response and even see which new options
+             * have become available for this OR branch...
+             *
+             * */
+
+        } else {
+
+            //List all possible responses to enable student to choose:
+            foreach ($this->Database_model->tr_fetch(array(
+                'tr_status' => 2, //Published
+                'in_status' => 2, //Published
+                'tr_type_entity_id' => 4228, //Fixed intent links only
+                'tr_parent_intent_id' => $in['in_id'],
+            ), array('in_child'), 0, 0, array('tr_order' => 'ASC')) as $tr) {
+                echo echo_in_actionplan_or_choose($in['in_id'], $actionplan['tr_parent_transaction_id'], $tr);
+            }
+
+        }
+
+    } else {
+
+        //AND branch:
+        $incomplete_step = 0;
+        foreach ($actionplan_children as $tr) {
+            if($tr['tr_status'] < 2){
+                $incomplete_step++;
+            }
+            echo echo_in_actionplan_step($tr, 0, ( $force_linear ? $incomplete_step : 1 ));
+        }
+
     }
 
-    //Do we have any non-response OR branches to also show?
-    if(!$or_answer_in_id){
-        //We might! Let's see:
-       foreach($actionplan_non_responses as $tr){
-           echo '<div class="list-group-item" style="text-decoration: line-through;">';
-           echo '<span class="status-label" style="padding-bottom:1px;"><i class="fal fa-minus-square"></i></span> ';
-           echo echo_in_outcome($tr['in_outcome'], true);
-           echo '</div>';
-       }
-    }
+
+
+
+
 
     echo '</div>';
     echo '</div>';

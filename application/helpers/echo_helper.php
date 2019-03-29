@@ -575,13 +575,36 @@ function echo_tr_row($tr, $is_inner = false)
     return $ui;
 }
 
-function echo_in_actionplan_step($tr, $is_parent, $or_intent_id = 0)
+
+
+function echo_in_actionplan_or_choose($parent_in_id, $actionplan_tr_id, $in)
+{
+
+    $CI =& get_instance();
+
+    $ui = '<a href="/messenger/actionplan_choose_step/'.$actionplan_tr_id.'/' . $parent_in_id . '/' . $in['in_id'] . '/' . md5($CI->config->item('actionplan_salt') . $in['in_id'] . $parent_in_id . $actionplan_tr_id) . '" class="list-group-item">';
+
+    //Different pointer position based on direction:
+    $ui .= '<span class="pull-right">';
+    $ui .= '<span class="badge badge-primary fr-bgd">Select <i class="fas fa-check-circle"></i></span>';
+    $ui .= '</span>';
+
+    //OR Option with Radio button UI:
+    $ui .= '<span class="status-label" style="padding-bottom:1px;"><i class="fal fa-circle"></i></span> ';
+    $ui .= echo_in_outcome($in['in_outcome'], true);
+
+    $ui .= '</a>';
+
+    return $ui;
+}
+
+function echo_in_actionplan_step($tr, $is_parent, $incomplete_step)
 {
 
     $CI =& get_instance();
 
 
-    $ui = '<a href="' . ($or_intent_id ? '/messenger/actionplan_choose_step/'.$tr['tr_parent_transaction_id'].'/' . $or_intent_id . '/' . $tr['in_id'] . '/' . md5($CI->config->item('actionplan_salt') . $tr['in_id'] . $or_intent_id . $tr['tr_parent_transaction_id']) : '/messenger/actionplan/' . $tr['in_id']) . '" class="list-group-item">';
+    $ui = ( $incomplete_step<=1 ? '<a href="/messenger/actionplan/' . $tr['in_id'] . '" class="list-group-item">' : '<span class="list-group-item">' );
 
     //Different pointer position based on direction:
     if ($is_parent) {
@@ -593,39 +616,36 @@ function echo_in_actionplan_step($tr, $is_parent, $or_intent_id = 0)
     } else {
 
         $ui .= '<span class="pull-right">';
-
-        if(!$or_intent_id){
-            $time_estimate = echo_time_range($tr, true);
-            if ($time_estimate) {
-                $ui .= $time_estimate . ' <i class="fal fa-alarm-clock"></i> ';
-            }
+        $time_estimate = echo_time_range($tr, true);
+        if ($time_estimate) {
+            $ui .= $time_estimate . ' <i class="fal fa-alarm-clock"></i> ';
         }
-
-        $ui .= '<span class="badge badge-primary fr-bgd">' . ($or_intent_id ? 'Select <i class="fas fa-check-circle"></i>' : '<i class="fas fa-angle-right"></i>') . '</span>';
-
+        if($incomplete_step<=1){
+            $ui .= '<span class="badge badge-primary fr-bgd"><i class="fas fa-angle-right"></i></span>';
+        }
         $ui .= '</span>';
 
         //For children show icon:
-        if ($or_intent_id) {
-            //Radio button to indicate a single selection:
-            $ui .= '<span class="status-label" style="padding-bottom:1px;"><i class="fal fa-circle"></i></span>';
-        } else {
+        if ($incomplete_step<=1) {
             //Action Plan Step Status:
             $ui .= echo_fixed_fields('tr_student_status', $tr['tr_status'], 1, 'right');
+        } else {
+            //Item is locked:
+            $ui .= '<span class="status-label" style="padding-bottom:1px;"><i class="fas fa-lock"></i></span>';
         }
 
     }
 
-    $ui .= ' ' . echo_in_outcome($tr['in_outcome'], true);
+    $ui .= ' <span '.( $incomplete_step<=1 ? '' : 'style="color:#AAA;"' ).'>' . echo_in_outcome($tr['in_outcome'], true).'</span>';
 
     //Show completion requirements if not OR branch (We do not want to influence the student's response)
-    if(!$or_intent_id && $tr['in_requirement_entity_id'] != 6087){
+    if($tr['in_requirement_entity_id'] != 6087){
         $en_all_4331 = $CI->config->item('en_all_4331');
         //This has a completion requirement, show it:
         $ui .= '&nbsp;&nbsp;<span>'.$en_all_4331[$tr['in_requirement_entity_id']]['m_icon'].' '.$en_all_4331[$tr['in_requirement_entity_id']]['m_name'].' Response</span>';
     }
 
-    $ui .= '</a>';
+    $ui .= ( $incomplete_step<=1 ? '</a>' : '</span>' );
 
     return $ui;
 }

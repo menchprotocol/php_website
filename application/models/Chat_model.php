@@ -1765,7 +1765,7 @@ class Chat_model extends CI_Model
                 $actionplans = $this->Database_model->tr_fetch(array(
                     'tr_type_entity_id' => 4235, //Action Plan Intent
                     'tr_miner_entity_id' => $en['en_id'], //Belongs to this Student
-                    'tr_status IN (0,1,2)' => null, //Actively drafting (Status 2 is syncing updates, and they want out)
+                    'tr_status >=' => 0, //Actively drafting (Status 2 is syncing updates, and they want out)
                 ));
                 foreach ($actionplans as $tr) {
                     $this->Database_model->tr_update($tr['tr_id'], array(
@@ -2028,7 +2028,7 @@ class Chat_model extends CI_Model
                 //Add intent to Student's Action Plan:
                 $actionplan = $this->Database_model->tr_create(array(
                     'tr_type_entity_id' => 4235, //Action Plan Intent
-                    'tr_status' => 1, //Working on...
+                    'tr_status' => 0, //New
                     'tr_miner_entity_id' => $en['en_id'], //Belongs to this Student
                     'tr_child_intent_id' => $ins[0]['in_id'], //The Intent they are adding
                     'tr_order' => 1 + $this->Database_model->tr_max_order(array( //Place this intent at the end of all intents the Student is drafting...
