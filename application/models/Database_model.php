@@ -980,7 +980,7 @@ class Database_model extends CI_Model
                         'ln_type_entity_id IN (' . join(',', $this->config->item('en_ids_4592')) . ')' => null, //Entity Link Connectors
                         'ln_status' => 2, //Published
                         'en_status' => 2, //Published
-                    ), array('en_child'), 0, 0, array(), 'COUNT(tr_id) AS published_child_count');
+                    ), array('en_child'), 0, 0, array(), 'COUNT(ln_id) AS published_child_count');
 
                     $export_row['alg_obj_is_in'] = 0;
                     $export_row['alg_obj_id'] = intval($db_row['en_id']);
