@@ -976,6 +976,7 @@ class Database_model extends CI_Model
 
                     $export_row['alg_obj_is_in'] = 0;
                     $export_row['alg_obj_id'] = intval($db_row['en_id']);
+                    $export_row['alg_obj_weight'] = $db_row['en_trust_score'];
                     $export_row['alg_obj_status'] = intval($db_row['en_status']);
                     $export_row['alg_obj_icon'] = ( strlen($db_row['en_icon']) > 0 ? $db_row['en_icon'] : '<i class="fas fa-at grey-at"></i>' );
                     $export_row['alg_obj_name'] = $db_row['en_name'];
@@ -999,9 +1000,11 @@ class Database_model extends CI_Model
 
                     //See if this tree has a time-range:
                     $time_range = echo_time_range($db_row, true, true);
+                    $metadata = unserialize($db_row['in_metadata']);
 
                     $export_row['alg_obj_is_in'] = 1;
                     $export_row['alg_obj_id'] = intval($db_row['in_id']);
+                    $export_row['alg_obj_weight'] = ( isset($metadata['in__tree_max_seconds']) ? $metadata['in__tree_max_seconds'] : 0 );
                     $export_row['alg_obj_status'] = intval($db_row['in_status']);
                     $export_row['alg_obj_icon'] = $fixed_fields['in_type'][$db_row['in_type']]['s_icon']; //Entity type icon
                     $export_row['alg_obj_name'] = $db_row['in_outcome'];

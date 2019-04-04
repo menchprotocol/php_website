@@ -64,6 +64,24 @@
             </div>
         </div>';
     }
+
+    //Print social URLs:
+    foreach($this->config->item('en_all_4461') as $acc_en_id => $acc_detail){
+        echo '<div class="panel panel-default">
+            <div class="panel-heading" role="tab" id="openEn'.$acc_en_id.'">
+                <h4 class="panel-title">
+                    <a role="button" data-toggle="collapse" data-parent="#accordion" href="#collapse'.$acc_en_id.'" aria-expanded="true" aria-controls="collapse'.$acc_en_id.'">
+                        '.$acc_detail['m_icon'].' '.$acc_detail['m_name'].'
+                    </a>
+                </h4>
+            </div>
+            <div id="collapse'.$acc_en_id.'" class="panel-collapse collapse out" role="tabpanel" aria-labelledby="openEn'.$acc_en_id.'">
+                <div class="panel-body entity-list">
+                    '.echo_radio_entities($acc_en_id, $session_en['en_id'], in_array(6122, $acc_detail['m_parents'])).'
+                </div>
+            </div>
+        </div>';
+    }
     ?>
 
 </div>
