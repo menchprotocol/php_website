@@ -1561,8 +1561,9 @@ class Entities extends CI_Controller
         //Algorithm Weights:
         $score_weights = array(
             'score_parent' => 5, //Score per each parent entity
-            'score_children' => 1, //Score per each child entity
-            'score_miner_points' => 0.10, // So 1 minining points = [score_miner_points] entity trust score
+            'score_children' => 2, //Score per each child entity
+            'score_transaction' => 0.25, //Score per each transaction of any type and any status
+            'score_miner_points' => 0.10, // This is X where: 1 miner points = X score
         );
 
         //Fetch entities with/without filter:
@@ -1579,6 +1580,7 @@ class Entities extends CI_Controller
             //Parents
             $en_parents = $this->Database_model->tr_fetch(array(
                 'tr_child_entity_id' => $en['en_id'],
+                'tr_type_entity_id IN (' . join(',', $this->config->item('en_ids_4592')) . ')' => null, //Entity Link Connectors
                 'tr_status >=' => 0,
             ), array(), 0, 0, array(), 'COUNT(tr_id) as totals');
             $score += $en_parents[0]['totals'] * $score_weights['score_parent'];
@@ -1586,9 +1588,16 @@ class Entities extends CI_Controller
             //Children:
             $en_children = $this->Database_model->tr_fetch(array(
                 'tr_parent_entity_id' => $en['en_id'],
+                'tr_type_entity_id IN (' . join(',', $this->config->item('en_ids_4592')) . ')' => null, //Entity Link Connectors
                 'tr_status >=' => 0,
             ), array(), 0, 0, array(), 'COUNT(tr_id) as totals');
             $score += $en_children[0]['totals'] * $score_weights['score_children'];
+
+            //Transactions:
+            $en_trs = $this->Database_model->tr_fetch(array(
+                '(tr_parent_entity_id='.$en['en_id'].' OR tr_child_entity_id='.$en['en_id'].')' => null,
+            ), array(), 0, 0, array(), 'COUNT(tr_id) as totals');
+            $score += $en_trs[0]['totals'] * $score_weights['score_transaction'];
 
             //Mining points:
             $en_miner_points = $this->Database_model->tr_fetch(array(
@@ -1601,7 +1610,7 @@ class Entities extends CI_Controller
             if($en['en_trust_score'] != $score){
                 //Yes:
                 $this->Database_model->en_update($en['en_id'], array(
-                    'en_trust_score' => $score,
+                    'en_trust_score' => round($score, 0),
                 ));
             }
         }
