@@ -17,7 +17,7 @@ class Ledger extends CI_Controller
     {
         /*
          *
-         * List all Transactions on reverse chronological order
+         * List all Patterns on reverse chronological order
          * and Display statuses for intents, entities and
          * ledger transactions.
          *
@@ -28,7 +28,7 @@ class Ledger extends CI_Controller
 
         //Load header:
         $this->load->view(($session_en ? 'view_shared/matrix_header' : 'view_shared/public_header'), array(
-            'title' => 'Mench Ledger',
+            'title' => 'Mench Patterns',
         ));
 
         //Load main:
@@ -57,7 +57,7 @@ class Ledger extends CI_Controller
 
             return echo_json(array(
                 'status' => 0,
-                'message' => 'Missing Transaction ID',
+                'message' => 'Missing Pattern ID',
             ));
 
         }
@@ -121,17 +121,17 @@ class Ledger extends CI_Controller
         if (count($trs) < 1) {
             return echo_json(array(
                 'status' => 0,
-                'message' => 'Invalid Transaction ID',
+                'message' => 'Invalid Pattern ID',
             ));
-        } elseif(in_array($trs[0]['tr_type_entity_id'] , $this->config->item('en_ids_4755')) /* Transaction Type is locked */ && !en_auth(array(1281)) /* Viewer NOT a moderator */){
+        } elseif(in_array($trs[0]['tr_type_entity_id'] , $this->config->item('en_ids_4755')) /* Pattern Type is locked */ && !en_auth(array(1281)) /* Viewer NOT a moderator */){
             return echo_json(array(
                 'status' => 0,
-                'message' => 'Transaction content visible to moderators only',
+                'message' => 'Pattern content visible to moderators only',
             ));
         } elseif(!en_auth(array(1308)) /* Viewer NOT a miner */) {
             return echo_json(array(
                 'status' => 0,
-                'message' => 'Transaction metadata visible to miners only',
+                'message' => 'Pattern metadata visible to miners only',
             ));
         } else {
 
@@ -410,7 +410,7 @@ class Ledger extends CI_Controller
             //Set session variable:
             $this->session->set_userdata('advance_view_enabled', $toggled_setting);
 
-            //Log Transaction:
+            //Log Pattern:
             $this->Database_model->tr_create(array(
                 'tr_miner_entity_id' => $session_en['en_id'],
                 'tr_type_entity_id' => 5007, //Toggled Advance Mode

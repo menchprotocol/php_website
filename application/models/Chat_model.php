@@ -100,7 +100,7 @@ class Chat_model extends CI_Model
         //Did we have ane error in message validation?
         if (!$msg_validation['status']) {
 
-            //Log Error Transaction:
+            //Log Error Pattern:
             $this->Database_model->tr_create(array_merge(array(
                 'tr_type_entity_id' => 4246, //Platform Error
                 'tr_miner_entity_id' => 1, //Shervin/Developer
@@ -154,7 +154,7 @@ class Chat_model extends CI_Model
 
             }
 
-            //Log successful Transaction for message delivery (Unless Miners viewing HTML):
+            //Log successful Pattern for message delivery (Unless Miners viewing HTML):
             if(isset($recipient_en['en_id']) && ($fb_messenger_format || isset($_GET['log_miner_messages']))){
                 $this->Database_model->tr_create(array_merge(array(
                     'tr_content' => $msg_validation['input_message'],
@@ -643,7 +643,7 @@ class Chat_model extends CI_Model
 
             //We send Media in their original format IF $fb_messenger_format = TRUE, which means we need to convert transaction types:
             if ($fb_messenger_format) {
-                //Converts Entity Link Types to their corresponding Student Message Sent Transaction Types:
+                //Converts Entity Link Types to their corresponding Student Message Sent Pattern Types:
                 $master_media_sent_conv = array(
                     4258 => 4553, //video
                     4259 => 4554, //audio
@@ -940,7 +940,7 @@ class Chat_model extends CI_Model
                                 ),
                             ),
                         ),
-                        'metadata' => 'system_logged', //Prevents duplicate Transaction logs
+                        'metadata' => 'system_logged', //Prevents duplicate Pattern logs
                     );
 
                 } elseif ($has_text) {
@@ -948,7 +948,7 @@ class Chat_model extends CI_Model
                     //No button, just text:
                     $fb_message = array(
                         'text' => $output_body_message,
-                        'metadata' => 'system_logged', //Prevents duplicate Transaction logs
+                        'metadata' => 'system_logged', //Prevents duplicate Pattern logs
                     );
 
                     if(count($quick_replies) > 0){
@@ -985,7 +985,7 @@ class Chat_model extends CI_Model
                         'message' => array(
                             'text' => 'Select an option to continue:', //Generic/fixed message
                             'quick_replies' => $quick_replies,
-                            'metadata' => 'system_logged', //Prevents duplicate Transaction logs
+                            'metadata' => 'system_logged', //Prevents duplicate Pattern logs
                         ),
                         'notification_type' => $notification_type,
                         'messaging_type' => 'NON_PROMOTIONAL_SUBSCRIPTION',
@@ -1009,7 +1009,7 @@ class Chat_model extends CI_Model
                         //This is a text message, not an attachment:
                         $fb_message = array(
                             'text' => $fb_media_attachment['tr_content'],
-                            'metadata' => 'system_logged', //Prevents duplicate Transaction logs
+                            'metadata' => 'system_logged', //Prevents duplicate Pattern logs
                         );
 
                     } elseif ($fb_media_attachment['fb_att_id'] > 0) {
@@ -1022,7 +1022,7 @@ class Chat_model extends CI_Model
                                     'attachment_id' => $fb_media_attachment['fb_att_id'],
                                 ),
                             ),
-                            'metadata' => 'system_logged', //Prevents duplicate Transaction logs
+                            'metadata' => 'system_logged', //Prevents duplicate Pattern logs
                         );
 
                     } else {
@@ -1036,7 +1036,7 @@ class Chat_model extends CI_Model
                                     'is_reusable' => true,
                                 ),
                             ),
-                            'metadata' => 'system_logged', //Prevents duplicate Transaction logs
+                            'metadata' => 'system_logged', //Prevents duplicate Pattern logs
                         );
 
                     }
@@ -1204,7 +1204,7 @@ class Chat_model extends CI_Model
          *
          * We assume false to start. This is only true
          * IF $actionplan_tr_id > 0 AND $in_id is
-         * the top-level Action Plan Intent:
+         * the top-level Student Intent:
          *
          * */
         $is_actionplan_intent = false;
@@ -1216,7 +1216,7 @@ class Chat_model extends CI_Model
             $actionplans = $this->Database_model->tr_fetch(array(
                 'tr_id' => $actionplan_tr_id,
                 'tr_miner_entity_id' => $recipient_en['en_id'],
-                'tr_type_entity_id' => 4235, //Action Plan Intent
+                'tr_type_entity_id' => 4235, //Student Intent
                 'tr_status >=' => 0, //New+
             ), array('in_child'));
 
@@ -1237,7 +1237,7 @@ class Chat_model extends CI_Model
 
             }
 
-            //Is this a top-level Action Plan intent?
+            //Is this a top-level Student Intent?
             $is_actionplan_intent = ( $actionplans[0]['tr_child_intent_id'] == $in_id );
 
         }
@@ -1248,7 +1248,7 @@ class Chat_model extends CI_Model
         /*
          *
          * Share Noted Intent Messages only if this is NOT a
-         * Action Plan intent because if it is, the messages
+         * Student Intent because if it is, the messages
          * have already been communicated to students to help
          * them decide if they want to add this intention to
          * their Action Plan.
@@ -1258,7 +1258,7 @@ class Chat_model extends CI_Model
 
             /*
              *
-             * This is an Action Plan Step or does not belong to
+             * This is an Completed Step or does not belong to
              * an Action Plan at all, so we should go ahead
              * and communicate its messages to the student:
              *
@@ -1277,7 +1277,7 @@ class Chat_model extends CI_Model
                     true,
                     array(),
                     array(
-                        'tr_parent_intent_id' => $actionplans[0]['in_id'], //Action Plan Intent
+                        'tr_parent_intent_id' => $actionplans[0]['in_id'], //Student Intent
                         'tr_child_intent_id' => $in_id, //Focus Intent
                         'tr_parent_transaction_id' => $message_tr['tr_id'], //This message
                     )
@@ -1303,9 +1303,9 @@ class Chat_model extends CI_Model
              * to the student action plans until they make a selection.
              * IF $actionplan_tr_id>0 then this is an OR branch within
              * a current Action plan, in this case we will add the chosen
-             * intent as an Action Plan Step @4559 within $actionplan_tr_id.
+             * intent as an Completed Step @4559 within $actionplan_tr_id.
              * If $actionplan_tr_id=0, then the chosen path would be
-             * added as a new Action Plan Intent @4235.
+             * added as a new Student Intent @4235.
              *
              * */
 
@@ -1441,7 +1441,7 @@ class Chat_model extends CI_Model
                     true,
                     array(),
                     array(
-                        'tr_parent_intent_id' => $actionplans[0]['in_id'], //Action Plan Intent
+                        'tr_parent_intent_id' => $actionplans[0]['in_id'], //Student Intent
                         'tr_child_intent_id' => $in_id, //Focus Intent
                     )
                 );
@@ -1466,7 +1466,7 @@ class Chat_model extends CI_Model
             //Lets fetch incomplete children of $in_id within Action Plan $actionplan_tr_id
             $actionplan_child_ins = $this->Database_model->tr_fetch(array(
                 'tr_status IN (' . join(',', $this->config->item('tr_status_incomplete')) . ')' => null, //incomplete
-                'tr_type_entity_id' => 4559, //Action Plan Step
+                'tr_type_entity_id' => 4559, //Completed Step
                 'tr_parent_transaction_id' => $actionplan_tr_id,
                 'tr_parent_intent_id' => $in_id,
             ), array('in_child'));
@@ -1555,13 +1555,13 @@ class Chat_model extends CI_Model
                 //Give option to skip:
                 $actionplan_parents = $this->Database_model->tr_fetch(array(
                     'tr_parent_transaction_id' => $actionplan_tr_id,
-                    'tr_type_entity_id' => 4559, //Action Plan Step
+                    'tr_type_entity_id' => 4559, //Completed Step
                     'tr_status IN (' . join(',', $this->config->item('tr_status_incomplete')) . ')' => null, //incomplete
                     'tr_child_intent_id' => $in_id,
                 ));
 
                 if (count($actionplan_parents) > 0) {
-                    //Give option to skip Action Plan Intent:
+                    //Give option to skip Student Intent:
                     array_push($quick_replies, array(
                         'content_type' => 'text',
                         'title' => 'Skip',
@@ -1608,7 +1608,7 @@ class Chat_model extends CI_Model
             true,
             $quick_replies,
             array(
-                'tr_parent_intent_id' => $actionplans[0]['in_id'], //Action Plan Intent
+                'tr_parent_intent_id' => $actionplans[0]['in_id'], //Student Intent
                 'tr_child_intent_id' => $in_id, //Focus Intent
             )
         );
@@ -1763,7 +1763,7 @@ class Chat_model extends CI_Model
 
                 //Remove all Action Plans:
                 $actionplans = $this->Database_model->tr_fetch(array(
-                    'tr_type_entity_id' => 4235, //Action Plan Intent
+                    'tr_type_entity_id' => 4235, //Student Intent
                     'tr_miner_entity_id' => $en['en_id'], //Belongs to this Student
                     'tr_status >=' => 0, //Actively drafting (Status 2 is syncing updates, and they want out)
                 ));
@@ -1787,7 +1787,7 @@ class Chat_model extends CI_Model
 
                 //User wants to Remove a specific Action Plan, validate it:
                 $actionplans = $this->Database_model->tr_fetch(array(
-                    'tr_type_entity_id' => 4235, //Action Plan Intent
+                    'tr_type_entity_id' => 4235, //Student Intent
                     'tr_miner_entity_id' => $en['en_id'], //Belongs to this Student
                     'tr_child_intent_id' => intval($action_unsubscribe),
                 ), array('en_child'));
@@ -1941,7 +1941,7 @@ class Chat_model extends CI_Model
             if (count($ins) == 1) {
 
                 //Intent seems good...
-                //See if this intent belong to ANY of this Student's Action Plans or Action Plan Intents:
+                //See if this intent belong to ANY of this Student's Action Plans or Student Intents:
                 $actionplans = $this->Database_model->tr_fetch(array(
                     'tr_type_entity_id IN ('.join(',',$this->config->item('en_ids_6107')).')' => null, //Student Action Plan
                     'tr_miner_entity_id' => $en['en_id'], //Belongs to this Student
@@ -1986,8 +1986,8 @@ class Chat_model extends CI_Model
                     //Send message for final confirmation with the overview of how long/difficult it would be to accomplish this intention:
                     $this->Chat_model->dispatch_message(
                         'Here is an overview:' . "\n\n" .
-                        echo_tree_steps($ins[0], true) .
                         echo_tree_references($ins[0], true) .
+                        echo_tree_steps($ins[0], true) .
                         echo_tree_costs($ins[0], true) .
                         "\n" . 'Are you ready to ' . $ins[0]['in_outcome'] . '?',
                         $en,
@@ -2027,12 +2027,12 @@ class Chat_model extends CI_Model
 
                 //Add intent to Student's Action Plan:
                 $actionplan = $this->Database_model->tr_create(array(
-                    'tr_type_entity_id' => 4235, //Action Plan Intent
+                    'tr_type_entity_id' => 4235, //Student Intent
                     'tr_status' => 0, //New
                     'tr_miner_entity_id' => $en['en_id'], //Belongs to this Student
                     'tr_child_intent_id' => $ins[0]['in_id'], //The Intent they are adding
                     'tr_order' => 1 + $this->Database_model->tr_max_order(array( //Place this intent at the end of all intents the Student is drafting...
-                        'tr_type_entity_id' => 4235, //Action Plan Intent
+                        'tr_type_entity_id' => 4235, //Student Intent
                         'tr_status >=' => 0, //New+
                         'tr_miner_entity_id' => $en['en_id'], //Belongs to this Student
                     )),
@@ -2076,15 +2076,15 @@ class Chat_model extends CI_Model
             //Extract variables from REF:
             $input_parts = explode('_', one_two_explode('SKIP-ACTIONPLAN_', '', $quick_reply_payload));
             $tr_status = intval($input_parts[0]); //It would be $tr_status=1 initial (drafting) and then would change to either -1 IF skip was cancelled or 2 IF skip was confirmed.
-            $tr_id = intval($input_parts[1]); //Action Plan Step Transaction ID
-            $skip_tr_id = intval($input_parts[2]); //Would initially be zero and would then be set to a Transaction ID when Student confirms/cancels skipping
+            $tr_id = intval($input_parts[1]); //Completed Step Pattern ID
+            $skip_tr_id = intval($input_parts[2]); //Would initially be zero and would then be set to a Pattern ID when Student confirms/cancels skipping
 
 
             if($tr_id > 0){
-                //Fetch Action Plan Intent:
+                //Fetch Student Intent:
                 $actionplans = $this->Database_model->tr_fetch(array(
                     'tr_id' => $tr_id,
-                    'tr_type_entity_id' => 4559, //Action Plan Step
+                    'tr_type_entity_id' => 4559, //Completed Step
                     'tr_miner_entity_id' => $en['en_id'], //Belongs to this Student
                 ), array('in_child'));
             }
@@ -2156,7 +2156,7 @@ class Chat_model extends CI_Model
                 $new_tr = $this->Database_model->tr_create(array(
                     'tr_miner_entity_id' => $en['en_id'],
                     'tr_type_entity_id' => 4284, //Skip Intent
-                    'tr_parent_transaction_id' => $tr_id, //The Transaction Reference that points to this intent in the Students Action Plan
+                    'tr_parent_transaction_id' => $tr_id, //The Pattern Reference that points to this intent in the Students Action Plan
                     'tr_status' => 1, //drafting... not yet decided to skip or not as they need to see the consequences before making an informed decision. Will be updated to -1 or 2 based on their response...
                     'tr_metadata' => array(
                         'would_be_skipped' => $would_be_skipped,
@@ -2254,10 +2254,10 @@ class Chat_model extends CI_Model
             $tr_id = intval(one_two_explode('MARKCOMPLETE_', '', $quick_reply_payload));
 
             if ($tr_id > 0) {
-                //Fetch Action Plan Intent with its Student:
+                //Fetch Student Intent with its Student:
                 $actionplans = $this->Database_model->tr_fetch(array(
                     'tr_id' => $tr_id,
-                    'tr_type_entity_id' => 4559, //Action Plan Step
+                    'tr_type_entity_id' => 4559, //Completed Step
                     'tr_parent_entity_id' => $en['en_id'], //Belongs to this Student
                 ), array('in_child', 'en_parent'));
             }
@@ -2265,7 +2265,7 @@ class Chat_model extends CI_Model
 
             if($tr_id < 0 || count($actionplans) < 1){
 
-                //Invalid Action Plan Intent ID!
+                //Invalid Student Intent ID!
                 $this->Database_model->tr_create(array(
                     'tr_content' => 'digest_quick_reply() failed to fetch proper data for intent completion request with reference value [' . $quick_reply_payload . ']',
                     'tr_type_entity_id' => 4246, //Platform Error
@@ -2302,7 +2302,7 @@ class Chat_model extends CI_Model
             /*
              *
              * A selection of an OR branch either within
-             * an existing Action Plan Intent or as a new
+             * an existing Student Intent or as a new
              * Intention to be added to the student's
              * Action Plan.
              *
@@ -2317,7 +2317,7 @@ class Chat_model extends CI_Model
             //Validate Action Plan:
             $actionplans = $this->Database_model->tr_fetch(array(
                 'tr_id' => $actionplan_tr_id,
-                'tr_type_entity_id' => 4235, //Action Plan Intent
+                'tr_type_entity_id' => 4235, //Student Intent
                 'tr_status >=' => 0, //New+
             ));
 
@@ -2475,7 +2475,7 @@ class Chat_model extends CI_Model
             //They seem to want to unsubscribe
             //List their Action Plans:
             $actionplans = $this->Database_model->tr_fetch(array(
-                'tr_type_entity_id' => 4235, //Action Plan Intent
+                'tr_type_entity_id' => 4235, //Student Intent
                 'tr_miner_entity_id' => $en['en_id'], //Belongs to this Student
                 'tr_status IN (0,1,2)' => null, //Actively drafting
             ), array('in_child'), 10 /* Max quick replies allowed */, 0, array('tr_order' => 'ASC'));
@@ -2651,7 +2651,7 @@ class Chat_model extends CI_Model
             //First, let's check to see if a Mench admin has not started a manual conversation with them via Facebook Inbox Chat:
             $admin_conversations = $this->Database_model->tr_fetch(array(
                 'tr_miner_entity_id' => $en['en_id'],
-                'tr_type_entity_id IN (' . join(',', $this->config->item('en_ids_4280')) . ')' => null, //Student/Miner Received Message Transactions
+                'tr_type_entity_id IN (' . join(',', $this->config->item('en_ids_4280')) . ')' => null, //Student/Miner Received Message Patterns
                 'tr_timestamp >=' => date("Y-m-d H:i:s", (time() - (1800))), //Messages sent from us less than 30 minutes ago
             ), array(), 1);
             if (count($admin_conversations) > 0) {
@@ -2675,7 +2675,7 @@ class Chat_model extends CI_Model
             //Do they have an Action Plan that they are drafting?
             //If so, we can recommend the next step within that Action Plan...
             $actionplans = $this->Database_model->tr_fetch(array(
-                'tr_type_entity_id' => 4235, //Action Plan Intent
+                'tr_type_entity_id' => 4235, //Student Intent
                 'tr_miner_entity_id' => $en['en_id'], //Belongs to this Student
                 'tr_status IN (' . join(',', $this->config->item('tr_status_incomplete')) . ')' => null, //incomplete
             ), array('in_child'), 1, 0, array('tr_order' => 'ASC'));

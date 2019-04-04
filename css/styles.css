@@ -202,6 +202,15 @@ body.grey-bg {
     color: #FFF;
 }
 
+.actionplan-sort .fa-bars {
+    color: #999;
+    padding: 0 5px;
+    cursor: move; /* fallback if grab cursor is unsupported */
+    cursor: grab;
+    cursor: -moz-grab;
+    cursor: -webkit-grab;
+}
+
 .fr-bgd {
     margin-top: -7px;
     margin-right: 3px;
@@ -629,8 +638,6 @@ input::-webkit-inner-spin-button {
 .p-header {
     clear: both;
     margin-bottom: 15px;
-    padding-bottom: 10px;
-    border-bottom: 1px solid #2f2739;
 }
 
 
@@ -1940,7 +1947,7 @@ input.form-control, textarea.form-control, select {
 }
 
 #funnel .list-group-item {
-    padding: 10px 5px 8px;
+    padding: 15px 5px 14px;
     margin-bottom: 3px;
 }
 
@@ -4116,4 +4123,36 @@ h4 .tip-badge {
 
 .inner_actionplan .public_ap {
     margin:0;
+}
+
+.panel-title .fal, .panel-title .fas, .panel-title .far, .panel-title .fab { transform:none !important; }
+
+#funnel .actionplan-add {
+    max-width: 100% !important;
+    margin: 0 !important;
+    padding: 15px 2px !important;
+    background-color: #FFF !important;
+    font-size: 18px !important;
+    border: 0 !important;
+    font-weight: bold;
+    color: #222;
+}
+
+.actionplan-title{
+    font-weight: bold;
+    font-size: 18px !important;
+    padding-left:2px;
+    color: #222;
+
+}
+
+#funnel .entity-list .list-group-item{
+    font-size: 18px !important;
+    padding-left: 10px;
+    text-decoration: none;
+}
+
+.entity-list .list-group-item.active, .entity-list .list-group-item.active:focus, .entity-list .list-group-item.active:hover {
+    background-color: #0084ff;
+    border-color: #0084ff;
 }

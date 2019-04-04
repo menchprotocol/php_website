@@ -80,6 +80,9 @@ class Intents extends CI_Controller
          *
          * */
 
+        //Fetch user session:
+        $session_en = en_auth(array(1308));
+
         //Fetch data:
         $ins = $this->Database_model->in_fetch(array(
             'in_id' => $in_id,
@@ -95,9 +98,13 @@ class Intents extends CI_Controller
         //Load home page:
         $this->load->view('view_shared/public_header', array(
             'title' => $ins[0]['in_outcome'],
+            'session_en' => $session_en,
             'in' => $ins[0],
         ));
-        $this->load->view('view_intents/in_landing_page', array( 'in' => $ins[0] ));
+        $this->load->view('view_intents/in_landing_page', array(
+            'in' => $ins[0],
+            'session_en' => $session_en,
+        ));
         $this->load->view('view_shared/public_footer');
 
     }
@@ -573,7 +580,7 @@ class Intents extends CI_Controller
         //Does this request has an intent transaction?
         if($tr_id > 0){
 
-            //Validate Transaction and inputs:
+            //Validate Pattern and inputs:
             $trs = $this->Database_model->tr_fetch(array(
                 'tr_id' => $tr_id,
                 'tr_type_entity_id IN (' . join(',', $this->config->item('en_ids_4486')) . ')' => null, //Intent Link Types
@@ -717,7 +724,7 @@ class Intents extends CI_Controller
         //Did we have an intent link update? If so, update the last updated UI:
         if($transaction_was_updated){
 
-            //Fetch last intent Ledger Transaction:
+            //Fetch last intent Pattern:
             $trs = $this->Database_model->tr_fetch(array(
                 'tr_id' => $tr_id,
             ), array('en_miner'));
@@ -1237,7 +1244,7 @@ class Intents extends CI_Controller
         } elseif (!isset($_POST['tr_id']) || intval($_POST['tr_id']) < 1) {
             return echo_json(array(
                 'status' => 0,
-                'message' => 'Missing Transaction ID',
+                'message' => 'Missing Pattern ID',
             ));
         } elseif (!isset($_POST['new_message_tr_status'])) {
             return echo_json(array(

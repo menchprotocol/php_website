@@ -2,7 +2,7 @@
 
 //Is this an un-answered OR intent?
 $en_all_6107 = $this->config->item('en_all_6107');
-$is_step = (count($actionplan_parents) > 0); //This could be the top-level Action Plan Intent OR an Action Plan Step to get to the intent...
+$is_step = (count($actionplan_parents) > 0); //This could be the top-level Student Intent OR an Completed Step to get to the intent...
 $has_children = (count($actionplan_children) > 0);
 $is_or_branch = ( $in['in_type']==1 );
 $or_path_chosen = ( $is_or_branch && $has_children ); //Or branches do not have a children until students choose one...
@@ -41,11 +41,6 @@ if ($actionplan['tr_status'] == 1) {
 }
 
 
-
-
-//Include JS file:
-echo '<script src="/js/custom/actionplan-ui-js.js?v=v' . $this->config->item('app_version') . '" type="text/javascript"></script>';
-
 //Fetch parent tree all the way to the top of Action Plan tr_child_intent_id
 echo '<div class="list-group parent-actionplans" style="margin-top: 10px;">';
 if($is_step){
@@ -56,7 +51,7 @@ if($is_step){
     //Show link to Action Plan if we have 1+ intentions:
     $actionplan_intent_counts = count($this->Database_model->tr_fetch(array(
         'tr_miner_entity_id' => $session_en['en_id'],
-        'tr_type_entity_id' => 4235, //Action Plan Intent
+        'tr_type_entity_id' => 4235, //Student Intent
         'tr_status >=' => 0, //New+
     )));
     if($actionplan_intent_counts > 1){
@@ -64,7 +59,7 @@ if($is_step){
         echo '<span class="pull-left">';
         echo '<span class="badge badge-primary fr-bgd"><i class="fas fa-angle-left"></i> '.$actionplan_intent_counts.'</span>';
         echo '</span>';
-        echo ' Action Plan Intents';
+        echo ' Student Intents';
         echo '</a>';
     }
 }

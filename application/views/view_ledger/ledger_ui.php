@@ -2,12 +2,12 @@
 
     function check_in_en_status(){
         //Checks to see if the Intent/Entity status filter should be visible
-        //Would only make visible if Transaction type is Created Intent/Entity
+        //Would only make visible if Pattern type is Created Intent/Entity
 
         //Hide both in/en status:
         $(".filter-statuses").addClass('hidden');
 
-        //Show only if creating new in/en Transaction type:
+        //Show only if creating new in/en Pattern type:
         if($("#tr_type_entity_id").val()==4250){
             $(".filter-in-status").removeClass('hidden');
         } else if($("#tr_type_entity_id").val()==4251){
@@ -59,7 +59,7 @@ $fixed_fields = $this->config->item('fixed_fields');
 if(!$has_filters){
 
     //Fetch & Display Intent Note Messages to explain the ledger:
-    echo '<h1>Mench Ledger <span id="hb_8438" class="help_button bold-header" intent-id="8438"></span></h1>';
+    echo '<h1>Mench Patterns <span id="hb_8438" class="help_button bold-header" intent-id="8438"></span></h1>';
     echo '<div class="help_body maxout" id="content_8438"></div>';
 
 
@@ -85,7 +85,7 @@ if(!$has_filters){
 
         } elseif($object_id=='tr_status'){
 
-            $obj_en_id = 4341; //Ledger
+            $obj_en_id = 4341; //Patterns
             $created_en_type_id = 0; //No particular filters needed
             $spacing = 'col-md-offset-4 bottom-space';
             $objects_count = $this->Database_model->tr_fetch(array(), array(), 0, 0, array(), 'tr_status, COUNT(tr_id) as totals', 'tr_status');
@@ -115,7 +115,7 @@ if(!$has_filters){
             //Display this status count:
             $this_ui .= '<tr'.( $status_num < 0 ? ' class="is-removed" ' : '' ).'>';
             $this_ui .= '<td style="text-align: left;"><span style="width:29px; display: inline-block; text-align: center;">'.$status['s_icon'].'</span><span class="underdot" data-toggle="tooltip" title="'.$status['s_desc'].'" data-placement="top">'.$status['s_name'].'</span></td>';
-            $this_ui .= '<td style="text-align: right;">'.( $count > 0 ? '<a href="/ledger?'.$object_id.'='.$status_num.'&tr_type_entity_id='.$created_en_type_id.'"  data-toggle="tooltip" title="View Transactions" data-placement="top">'.number_format($count,0).'</a>' : $count ).' '.$en_all_4534[$obj_en_id]['m_icon'].'</td>';
+            $this_ui .= '<td style="text-align: right;">'.( $count > 0 ? '<a href="/ledger?'.$object_id.'='.$status_num.'&tr_type_entity_id='.$created_en_type_id.'"  data-toggle="tooltip" title="View Patterns" data-placement="top">'.number_format($count,0).'</a>' : $count ).' '.$en_all_4534[$obj_en_id]['m_icon'].'</td>';
             $this_ui .= '</tr>';
 
             if($status_num >= 0){
@@ -342,7 +342,7 @@ if(!$has_filters){
 
 
 
-            //All Transaction Types:
+            //All Pattern Types:
             $all_eng_types = $this->Database_model->tr_fetch(array('tr_status >=' => 0), array('en_type'), 0, 0, array('en_name' => 'ASC'), 'COUNT(tr_type_entity_id) as trs_count, en_name, en_icon, tr_type_entity_id', 'tr_type_entity_id, en_name, en_icon');
 
             $all_transaction_count = 0;
@@ -352,7 +352,7 @@ if(!$has_filters){
                 //Echo stats:
                 $all_tr_types .= '<tr>';
                 $all_tr_types .= '<td style="text-align: left;"><span style="width: 26px; display: inline-block; text-align: center;">'.( strlen($tr['en_icon']) > 0 ? $tr['en_icon'] : '<i class="fas fa-at grey-at"></i>' ).'</span><a href="/entities/'.$tr['tr_type_entity_id'].'">'.$tr['en_name'].'</a></td>';
-                $all_tr_types .= '<td style="text-align: right;"><a href="/ledger?tr_type_entity_id='.$tr['tr_type_entity_id'].'"  data-toggle="tooltip" title="View all '.number_format($tr['trs_count'],0).' transactions" data-placement="top">'.number_format($tr['trs_count'], 0).'</a> <i class="fas fa-atlas"></i></td>';
+                $all_tr_types .= '<td style="text-align: right;"><a href="/ledger?tr_type_entity_id='.$tr['tr_type_entity_id'].'"  data-toggle="tooltip" title="View all '.number_format($tr['trs_count'],0).' transactions" data-placement="top">'.number_format($tr['trs_count'], 0).'</a> <i class="fas fa-link rotate90"></i></td>';
                 $all_tr_types .= '</tr>';
 
                 $all_transaction_count += $tr['trs_count'];
@@ -361,7 +361,7 @@ if(!$has_filters){
 
 
 
-            //Point Transaction Types:
+            //Point Pattern Types:
             $all_engs = $this->Database_model->tr_fetch(array(
                 'tr_points !=' => 0,
             ), array('en_type'), 0, 0, array('en_name' => 'ASC'), 'COUNT(tr_type_entity_id) as trs_count, SUM(tr_points) as points_sum, en_name, en_icon, tr_type_entity_id', 'tr_type_entity_id, en_name, en_icon');
@@ -391,7 +391,7 @@ if(!$has_filters){
             }
 
             $point_tr_types .= '<tr style="font-weight: bold;">';
-            $point_tr_types .= '<td style="text-align: left;"><span style="width: 26px; display: inline-block; text-align: center;"><i class="fas fa-asterisk"></i></span>'.count($all_engs).' Transaction Types:</td>';
+            $point_tr_types .= '<td style="text-align: left;"><span style="width: 26px; display: inline-block; text-align: center;"><i class="fas fa-asterisk"></i></span>'.count($all_engs).' Pattern Types:</td>';
             $point_tr_types .= '<td style="text-align: right;">'.number_format($all_point_payouts, 0).' <i class="fas fa-award"></i></td>';
             $point_tr_types .= '</tr>';
 
@@ -399,17 +399,17 @@ if(!$has_filters){
             //Report types:
             echo '<select id="tr_group_by" class="form-control border stats-select">';
             echo '<option value="by_tr_status">Group By: 4 Statuses</option>';
-            echo '<option value="by_tr_type">Group By: '.count($all_eng_types).' Transaction Types</option>';
+            echo '<option value="by_tr_type">Group By: '.count($all_eng_types).' Pattern Types</option>';
             echo '<option value="by_tr_point_types">List Subset: '.echo_number($all_point_payouts).' Mench Points</option>';
             echo '<option value="by_tr_top_miners">List Subset: '.$top.' Top Miners</option>';
             echo '</select>';
 
-            //Transaction Status:
+            //Pattern Status:
             echo '<table class="table table-condensed table-striped stats-table mini-stats-table tr_group_by by_tr_status">';
             echo $this_ui;
             echo '</table>';
 
-            //Transaction Types:
+            //Pattern Types:
             echo '<table class="table table-condensed table-striped stats-table mini-stats-table tr_group_by by_tr_type hidden">';
             echo $all_tr_types;
             echo '</table>';
@@ -420,7 +420,7 @@ if(!$has_filters){
             echo '</table>';
 
 
-            //Point Transaction Types
+            //Point Pattern Types
             echo '<table class="table table-condensed table-striped stats-table tr_group_by by_tr_point_types hidden">';
             echo $point_tr_types;
             echo '</table>';
@@ -444,7 +444,7 @@ if(!$has_filters){
 
 
 
-echo '<h1>Recent Transactions</h1>';
+echo '<h1>Recent Patterns</h1>';
 
 
 //Construct filters based on GET variables:
@@ -706,7 +706,7 @@ echo '<table class="table table-condensed maxout"><tr>';
     echo '<input type="date" class="form-control border" name="end_range" value="'.( isset($_GET['end_range']) ? $_GET['end_range'] : '' ).'">';
     echo '</div></td>';
 
-    //Transaction Type:
+    //Pattern Type:
     $all_transaction_count = 0;
     $all_points = 0;
     $select_ui = '';
@@ -719,14 +719,14 @@ echo '<table class="table table-condensed maxout"><tr>';
 
     echo '<td>';
     echo '<div>';
-    echo '<span class="mini-header">Transaction Type:</span>';
+    echo '<span class="mini-header">Pattern Type:</span>';
     echo '<select class="form-control border" name="tr_type_entity_id" id="tr_type_entity_id" class="border" style="width: 100% !important;">';
     echo '<option value="0">All ('  . echo_number($all_transaction_count) . 'T' . ' = '.echo_number($all_points).'C' . ')</option>';
     echo $select_ui;
     echo '</select>';
     echo '</div>';
 
-    //Optional Intent/Entity status filter ONLY IF Transaction Type = Create New Intent/Entity
+    //Optional Intent/Entity status filter ONLY IF Pattern Type = Create New Intent/Entity
 
     echo '<div class="filter-statuses filter-in-status hidden"><span class="mini-header">Intent Status:</span><input type="text" name="in_status" value="' . ((isset($_GET['in_status'])) ? $_GET['in_status'] : '') . '" class="form-control border"></div>';
     echo '<div class="filter-statuses filter-in-status hidden"><span class="mini-header">Intent Verb Entity IDS:</span><input type="text" name="in_verb_entity_id" value="' . ((isset($_GET['in_verb_entity_id'])) ? $_GET['in_verb_entity_id'] : '') . '" class="form-control border"></div>';
@@ -785,7 +785,7 @@ echo '</tr></table>';
 
 echo '<table class="table table-condensed maxout"><tr>';
 
-//ANY Transaction
+//ANY Pattern
 echo '<td><div style="padding-right:5px;">';
 echo '<span class="mini-header">Any Trans. IDs:</span>';
 echo '<input type="text" name="any_tr_id" value="' . ((isset($_GET['any_tr_id'])) ? $_GET['any_tr_id'] : '') . '" class="form-control border">';
@@ -817,7 +817,7 @@ echo '</div>';
 
 
 if($has_filters){
-    //Display Transactions:
+    //Display Patterns:
     echo '<p style="margin: 10px 0 0 0;">Showing '.count($trs) . ( $trs_count[0]['trs_count'] > count($trs) ? ' of '. number_format($trs_count[0]['trs_count'] , 0) : '' ) .' transactions with '.number_format($trs_count[0]['points_sum'], 0).' awarded coins:</p>';
 }
 
@@ -837,7 +837,7 @@ echo '<div class="row">';
             echo '</div>';
         } else {
             //Show no transaction warning:
-            echo '<div class="alert alert-info" role="alert" style="margin-top: 0;"><i class="fas fa-exclamation-triangle"></i> No Transactions found with the selected filters. Modify filters and try again.</div>';
+            echo '<div class="alert alert-info" role="alert" style="margin-top: 0;"><i class="fas fa-exclamation-triangle"></i> No Patterns found with the selected filters. Modify filters and try again.</div>';
         }
 
     echo '</div>';

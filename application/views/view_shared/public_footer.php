@@ -40,8 +40,8 @@
                                 class="fab fa-instagram"></i></a>
 
                     <a href="/ledger"
-                       class="social-link" data-toggle="tooltip" title="Mench Ledger"
-                       data-placement="top"><i class="fas fa-atlas"></i></a>
+                       class="social-link" data-toggle="tooltip" title="Mench Patterns"
+                       data-placement="top"><i class="fas fa-link rotate90"></i></a>
 
                     <a href="/8263?expand_mode=1&hide_subscribe=1" class="social-link" data-toggle="tooltip"
                        title="Read terms of service and privacy policy" data-placement="top"><i

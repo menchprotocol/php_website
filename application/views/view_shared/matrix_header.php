@@ -76,7 +76,7 @@ $uri_segment_2 = $this->uri->segment(2);
 
                             <li class="<?= ($uri_segment_1 == 'ledger' ? 'ledger-active' : 'ledger-inactive') ?>">
                                 <a href="/ledger">
-                                    <i class="fas fa-atlas"></i> Ledger
+                                    <i class="fas fa-link rotate90"></i> Patterns
                                 </a>
                             </li>
 
@@ -98,9 +98,9 @@ $uri_segment_2 = $this->uri->segment(2);
                                 </a>
                             </li>
 
-                            <li class="ledger-inactive" data-toggle="tooltip" data-placement="left" title="You've added <?= count($session_en['en__actionplans']).' intent'.echo__s(count($session_en['en__actionplans'])) ?> to your Action Plan">
+                            <li class="ledger-inactive" data-toggle="tooltip" data-placement="left" title="My Action Plan">
                                 <a href="/messenger/actionplan">
-                                    <i class="<?= ( count($session_en['en__actionplans']) > 0 ? 'fas fa-flag' : 'fal fa-flag' ) ?>"></i>
+                                    <i class="fas fa-flag"></i>
                                 </a>
                             </li>
 

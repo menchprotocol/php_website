@@ -14,7 +14,7 @@ defined('BASEPATH') OR exit('No direct script access allowed');
 date_default_timezone_set('America/Los_Angeles');
 
 //App Functionality:
-$config['app_version']              = '0.792'; //Cache buster for static JS/CSS files, so needs to be updated if you update static files
+$config['app_version']              = '0.800'; //Cache buster for static JS/CSS files, so needs to be updated if you update static files
 $config['app_enable_algolia']       = true; //May need to turn off if/when we reach free monthly quota of 50k calls
 $config['app_in_en_ratio']          = 10; // = Intent tree max seconds / Entity trust score
 
@@ -23,7 +23,7 @@ $config['app_in_en_ratio']          = 10; // = Intent tree max seconds / Entity 
 $config['in_mission_id']            = 7766; //highest-level intent which defines the mission of Mench
 $config['in_home_page']             = 8493; //featured on the home page
 $config['in_miner_start']           = 6623; //Where miners would go when click on top/right "Intents" link
-$config['in_leger_intro']           = 8438; //Understand the Mench Ledger
+$config['in_leger_intro']           = 8438; //Understand the Mench Patterns
 $config['in_featured']              = 8469; //Child intents of this are featured on all intent pages
 $config['in_status_locked']         = array(8493, 8438, 8469, 7766); //Once set to published, their status will be locked by system
 
@@ -47,9 +47,9 @@ $config['en_mass_actions']          = array( //Various mass actions to be taken 
                                     );
 
 
-//Transactions:
+//Patterns:
 $config['tr_content_max_length']    = 610; //Max number of characters allowed in messages. Facebook's cap is 2000 characters/message
-$config['tr_status_incomplete']     = array(0, 1); //Transaction statuses that are considered in-complete to determine progress and more
+$config['tr_status_incomplete']     = array(0, 1); //Pattern statuses that are considered in-complete to determine progress and more
 $config['tr_object_links']          = array( //Each transaction can have any of the following object links
                                         'tr_type_entity_id' => 'en',
                                         'tr_miner_entity_id' => 'en',
@@ -88,22 +88,22 @@ $config['fixed_fields']             = array(
                                         'tr_status' => array(
                                             2 => array(
                                                 's_name' => 'Published',
-                                                's_desc' => 'Transaction is complete, ready and live',
+                                                's_desc' => 'Pattern is complete, ready and live',
                                                 's_icon' => '<i class="fas fa-check-square"></i>',
                                             ),
                                             1 => array(
                                                 's_name' => 'Drafting',
-                                                's_desc' => 'Transaction is being worked-on so it can be published',
+                                                's_desc' => 'Pattern is being worked-on so it can be published',
                                                 's_icon' => '<i class="fas fa-spinner fa-spin"></i>',
                                             ),
                                             0 => array(
                                                 's_name' => 'New',
-                                                's_desc' => 'Transaction is newly added and pending to be mined',
+                                                's_desc' => 'Pattern is newly added and pending to be mined',
                                                 's_icon' => '<i class="fal fa-square"></i>',
                                             ),
                                             -1 => array(
                                                 's_name' => 'Removed',
-                                                's_desc' => 'Transaction is in-active',
+                                                's_desc' => 'Pattern is in-active',
                                                 's_icon' => '<i class="fal fa-minus-square"></i>',
                                             ),
                                         ),
@@ -111,7 +111,7 @@ $config['fixed_fields']             = array(
                                         'tr_student_status' => array(
                                             2 => array(
                                                 's_name' => 'Completed',
-                                                's_desc' => 'Step is marked as complete by student',
+                                                's_desc' => 'Marked as complete and pending new updates',
                                                 's_icon' => '<i class="fas fa-check-square"></i>',
                                             ),
                                             1 => array(

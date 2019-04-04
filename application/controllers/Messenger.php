@@ -85,11 +85,11 @@ class Messenger extends CI_Controller
                     //Authenticate Student:
                     $en = $this->Matrix_model->en_student_messenger_authenticate($im['sender']['id']);
 
-                    //Log Transaction Only IF last delivery transaction was 3+ minutes ago (Since Facebook sends many of these):
+                    //Log Pattern Only IF last delivery transaction was 3+ minutes ago (Since Facebook sends many of these):
                     $last_trs_logged = $this->Database_model->tr_fetch(array(
                         'tr_type_entity_id' => $tr_type_entity_id,
                         'tr_miner_entity_id' => $en['en_id'],
-                        'tr_timestamp >=' => date("Y-m-d H:i:s", (time() - (180))), //Transactions logged less than 3 minutes ago
+                        'tr_timestamp >=' => date("Y-m-d H:i:s", (time() - (180))), //Patterns logged less than 3 minutes ago
                     ), array(), 1);
 
                     if(count($last_trs_logged) == 0){
@@ -292,8 +292,8 @@ class Messenger extends CI_Controller
                             //Define 4 main Attachment Message Types:
                             $att_media_types = array( //Converts video, audio, image and file messages
                                 'video' => array(
-                                    'sent' => 4553,     //Transaction type for when sent to Students via Messenger
-                                    'received' => 4548, //Transaction type for when received from Students via Messenger
+                                    'sent' => 4553,     //Pattern type for when sent to Students via Messenger
+                                    'received' => 4548, //Pattern type for when received from Students via Messenger
                                 ),
                                 'audio' => array(
                                     'sent' => 4554,
@@ -498,6 +498,14 @@ class Messenger extends CI_Controller
                             'webview_share_button' => 'hide',
                             'messenger_extensions' => true,
                         ),
+                        array(
+                            'title' => '👤 My Account',
+                            'type' => 'web_url',
+                            'url' => 'https://mench.com/messenger/myaccount',
+                            'webview_height_ratio' => 'tall',
+                            'webview_share_button' => 'hide',
+                            'messenger_extensions' => true,
+                        ),
                     ),
                 ),
             ),
@@ -508,6 +516,56 @@ class Messenger extends CI_Controller
     }
 
 
+    function myaccount(){
+        /*
+         *
+         * Loads student my account "frame" which would
+         * then use JS/Facebook API to determine Student
+         * PSID which then loads their Account via
+         * myaccount_load() function below.
+         *
+         * */
+
+        $this->load->view('view_shared/messenger_header', array(
+            'title' => '👤 My Account',
+        ));
+        $this->load->view('view_messenger/myaccount_frame');
+        $this->load->view('view_shared/messenger_footer');
+    }
+
+    function myaccount_load($psid)
+    {
+
+        /*
+         *
+         * My Account Web UI used for both Messenger
+         * Webview and web-browser login
+         *
+         * */
+
+        //Authenticate user:
+        $session_en = $this->session->userdata('user');
+        if (!$psid && !isset($session_en['en_id'])) {
+            die('<div class="alert alert-danger" role="alert">Invalid Credentials</div>');
+        } elseif (!is_dev() && isset($_GET['sr']) && !parse_signed_request($_GET['sr'])) {
+            die('<div class="alert alert-danger" role="alert">Failed to authenticate your origin.</div>');
+        } elseif(!isset($session_en['en_id'])){
+            //Messenger Webview, authenticate PSID:
+            $session_en = $this->Matrix_model->en_student_messenger_authenticate($psid);
+            //Make sure we found them:
+            if (!$session_en) {
+                //We could not authenticate the user!
+                die('<div class="alert alert-danger" role="alert">Credentials could not be validated</div>');
+            }
+        }
+
+
+        //Load Action Plan UI:
+        $this->load->view('view_messenger/myaccount_ui.php', array(
+            'session_en' => $session_en,
+        ));
+
+    }
 
 
 
@@ -543,127 +601,71 @@ class Messenger extends CI_Controller
          *
          * */
 
-        //Get session data in case user is doing a browser login:
-        $session_en = $this->session->userdata('user');
-        $empty_session = (!isset($session_en['en__actionplans']) || count($session_en['en__actionplans']) < 1);
-        $is_miner = filter_array($session_en['en__parents'], 'en_id', 1308);
-
         //Authenticate user:
-        if (!$psid && $empty_session && !$is_miner) {
+        $session_en = $this->session->userdata('user');
+        if (!$psid && !isset($session_en['en_id'])) {
             die('<div class="alert alert-danger" role="alert">Invalid Credentials</div>');
-        } elseif ($empty_session && !is_dev() && isset($_GET['sr']) && !parse_signed_request($_GET['sr'])) {
-            die('<div class="alert alert-danger" role="alert">Unable to authenticate your origin.</div>');
-        }
-
-        if($empty_session && $psid > 0){
-            //Authenticate this user:
+        } elseif (!is_dev() && isset($_GET['sr']) && !parse_signed_request($_GET['sr'])) {
+            die('<div class="alert alert-danger" role="alert">Failed to authenticate your origin.</div>');
+        } elseif(!isset($session_en['en_id'])){
+            //Messenger Webview, authenticate PSID:
             $session_en = $this->Matrix_model->en_student_messenger_authenticate($psid);
+            //Make sure we found them:
+            if (!$session_en) {
+                //We could not authenticate the user!
+                die('<div class="alert alert-danger" role="alert">Credentials could not be validated</div>');
+            }
         }
 
+        //Show appropriate UI:
+        if ($in_id < 1) {
 
-        //Fetch/Validate Action Plan:
-        $trs = array();
-        $filters = array();
+            //Log Action Plan View:
+            $this->Database_model->tr_create(array(
+                'tr_type_entity_id' => 4283, //Opened Action Plan
+                'tr_miner_entity_id' => $session_en['en_id'],
+            ));
 
-        //Do we have a use session?
-        if ($in_id > 0) {
-            //Yes, this is either an action plan intent OR step:
-            $filters['tr_child_intent_id'] = $in_id;
-            $filters['tr_type_entity_id IN ('.join(',',$this->config->item('en_ids_6107')).')'] = null; //Student Action Plan
-        } elseif (!$empty_session) {
-            //Yes! It seems to be a desktop login (versus Facebook Messenger)
-            $filters['tr_type_entity_id'] = 4235; //Action Plan Intent
-            $filters['tr_miner_entity_id'] = $session_en['en_id'];
-            $filters['tr_status >='] = 0; //New+
-        }
-
-        if(count($filters) > 0){
-            //Try finding them:
-            $trs = $this->Database_model->tr_fetch($filters, array('in_child'));
-        }
-
-        if (count($trs) < 1) {
-
-            //No Action Plans found:
-            die('<div class="alert alert-danger" role="alert">You have not added any intentions to your Action Plan yet.</div>');
+            //List all student intentions:
+            $this->load->view('view_messenger/actionplan_all.php', array(
+                'student_intents' => $this->Database_model->tr_fetch(array(
+                    'tr_miner_entity_id' => $session_en['en_id'],
+                    'tr_type_entity_id' => 4235, //Student Intents
+                    'tr_status >=' => 0, //New+
+                    'in_status' => 2, //Published
+                ), array('in_child'), 0, 0, array('tr_order' => 'ASC')),
+            ));
 
         } else {
 
-            //Determine Action Plan ID:
-            $actionplan_tr_id = ( $trs[0]['tr_parent_transaction_id'] == 0 ? $trs[0]['tr_id'] : $trs[0]['tr_parent_transaction_id'] );
-            $in_id = $trs[0]['tr_child_intent_id']; //might have been 0 initially, so we'll set it anyways...
+            //Fetch/validate selected intent:
+            $ins = $this->Database_model->in_fetch(array(
+                'in_id' => $in_id,
+            ), array('in__parents', 'in__children'));
+            if(count($ins) < 1){
+                die('<div class="alert alert-danger" role="alert">Invalid Intent ID.</div>');
+            } elseif($ins[0]['in_status'] != 2){
+                die('<div class="alert alert-danger" role="alert">Intent cannot be accessed because it is not published.</div>');
+            }
 
-            //Log action plan view transaction:
+            //Log Action Plan View:
             $this->Database_model->tr_create(array(
-                'tr_type_entity_id' => 4283,
-                'tr_miner_entity_id' => $trs[0]['tr_parent_entity_id'],
-                'tr_parent_transaction_id' => $actionplan_tr_id,
+                'tr_type_entity_id' => 4283, //Opened Action Plan
+                'tr_miner_entity_id' => $session_en['en_id'],
                 'tr_child_intent_id' => $in_id,
             ));
 
-            if(count($trs) > 1) {
-
-                //Student has multiple Action Plans, so list all Action Plans to enable Student to choose:
-                echo '<h3 class="master-h3 primary-title">My Action Plan</h3>';
-                echo '<div class="list-group" style="margin-top: 10px;">';
-                foreach ($trs as $tr) {
-
-                    //Display row:
-                    echo '<a href="/messenger/actionplan/' . $tr['tr_child_intent_id'] . '" class="list-group-item">';
-                    echo '<span class="pull-right">';
-
-                    $time_estimate = echo_time_range($tr, true);
-                    if ($time_estimate) {
-                        echo $time_estimate . ' <i class="fal fa-alarm-clock"></i> ';
-                    }
-
-                    echo '<span class="badge badge-primary" style="margin-top: -8px;"><i class="fas fa-angle-right"></i></span>';
-                    echo '</span>';
-                    echo echo_fixed_fields('tr_status', $tr['tr_status'], 1, 'right');
-                    echo ' ' . $tr['in_outcome'];
-                    echo '</a>';
-                }
-                echo '</div>';
-
-            } elseif(count($trs)==1){
-
-                //We have a single Action Plan Intent to load...
-
-                //Now we need to load the action plan:
-                $actionplan_parents = $this->Database_model->tr_fetch(array(
-                    'tr_type_entity_id' => 4559, //Action Plan Step
-                    'tr_parent_transaction_id' => $actionplan_tr_id,
-                    'in_status' => 2, //Published Intents
+            //Load Action Plan UI:
+            $this->load->view('view_messenger/actionplan_intent.php', array(
+                'session_en' => $session_en,
+                'in' => $ins[0],
+                'actionplans' => $this->Database_model->tr_fetch(array(
+                    'tr_type_entity_id IN ('.join(',',$this->config->item('en_ids_6107')).')' => null, //Student Action Plan
+                    'tr_miner_entity_id' => $session_en['en_id'],
                     'tr_child_intent_id' => $in_id,
-                ), array('in_parent'), 0, 0, array('tr_order' => 'ASC'));
-
-                $actionplan_children = $this->Database_model->tr_fetch(array(
-                    'tr_type_entity_id' => 4559, //Action Plan Step
-                    'tr_parent_transaction_id' => $actionplan_tr_id,
-                    'in_status' => 2, //Published Intents
-                    'tr_parent_intent_id' => $in_id,
-                ), array('in_child'), 0, 0, array('tr_order' => 'ASC'));
-
-
-                $ins = $this->Database_model->in_fetch(array(
-                    'in_status' => 2,
-                    'in_id' => $in_id,
-                ));
-
-                if (count($ins) < 1) {
-                    die('<div class="alert alert-danger" role="alert">Invalid Intent ID.</div>');
-                }
-
-                //All good, Load UI:
-                $this->load->view('view_messenger/actionplan_ui.php', array(
-                    'actionplan' => $trs[0], //We must have 1 by now!
-                    'in' => $ins[0],
-                    'actionplan_parents' => $actionplan_parents,
-                    'actionplan_children' => $actionplan_children,
-                    'session_en' => $session_en,
-                ));
-
-            }
+                    'tr_status >=' => 0, //New+
+                ), array('in_child')),
+            ));
 
         }
     }
@@ -687,13 +689,13 @@ class Messenger extends CI_Controller
             return redirect_message('/messenger/actionplan', '<div class="alert alert-danger" role="alert">Error: Missing Core Data.</div>');
         }
 
-        //Fetch/validate Action Plan Step:
+        //Fetch/validate Completed Step:
         $actionplan_steps = $this->Database_model->tr_fetch(array(
             'tr_id' => $_POST['tr_id'],
-            'tr_type_entity_id' => 4559, //Action Plan Step
+            'tr_type_entity_id' => 4559, //Completed Step
         ), array('in_child'));
         if (count($actionplan_steps) < 1) {
-            return redirect_message('/messenger/actionplan', '<div class="alert alert-danger" role="alert">Error: Action Plan Step not found.</div>');
+            return redirect_message('/messenger/actionplan', '<div class="alert alert-danger" role="alert">Error: Completed Step not found.</div>');
         }
 
         //Set some variables:
@@ -730,7 +732,7 @@ class Messenger extends CI_Controller
         if ($completion_notes_added) {
             //Save notes:
             $this->Database_model->tr_create(array(
-                'tr_parent_transaction_id' => $actionplan_steps[0]['tr_id'], //Submission for Action Plan Step
+                'tr_parent_transaction_id' => $actionplan_steps[0]['tr_id'], //Submission for Completed Step
                 'tr_miner_entity_id' => $actionplan_steps[0]['tr_miner_entity_id'],
                 'tr_status' => 2, //Published
                 'tr_content' => trim($_POST['tr_content']),
@@ -768,10 +770,10 @@ class Messenger extends CI_Controller
     function actionplan_skip_step($tr_id, $apply_skip)
     {
 
-        //Fetch/validate Action Plan Step:
+        //Fetch/validate Completed Step:
         $actionplan_steps = $this->Database_model->tr_fetch(array(
             'tr_id' => $tr_id,
-            'tr_type_entity_id' => 4559, //Action Plan Step
+            'tr_type_entity_id' => 4559, //Completed Step
             'tr_status >=' => 0, //New+
         ));
 
@@ -823,7 +825,7 @@ class Messenger extends CI_Controller
         $actionplan_steps = $this->Database_model->tr_fetch(array(
             'tr_parent_transaction_id' => $actionplan_tr_id,
             'tr_child_intent_id' => $actionplan_in_id,
-            'tr_type_entity_id' => 4559, //Action Plan Step
+            'tr_type_entity_id' => 4559, //Completed Step
             'tr_status >=' => 0, //New+
         ));
         if(count($actionplan_steps) < 1){
@@ -844,12 +846,12 @@ class Messenger extends CI_Controller
 
         if($add_actionplan){
             $actionplan = $this->Database_model->tr_create(array(
-                'tr_type_entity_id' => 4235, //Action Plan Intent
+                'tr_type_entity_id' => 4235, //Student Intent
                 'tr_status' => 0, //New
                 'tr_miner_entity_id' => 1,
                 'tr_child_intent_id' => $in_id, //The Intent they are adding
                 'tr_order' => 1 + $this->Database_model->tr_max_order(array( //Place this intent at the end of all intents the Student is drafting...
-                        'tr_type_entity_id' => 4235, //Action Plan Intent
+                        'tr_type_entity_id' => 4235, //Student Intent
                         'tr_status >=' => 0, //New+
                         'tr_miner_entity_id' => 1, //Belongs to this Student
                     )),
@@ -982,7 +984,7 @@ class Messenger extends CI_Controller
 
         $tr_pending = $this->Database_model->tr_fetch(array(
             'tr_status' => 0, //New
-            'tr_type_entity_id IN (' . join(',', $this->config->item('en_ids_6102')) . ')' => null, //Student Sent/Received Media Transactions
+            'tr_type_entity_id IN (' . join(',', $this->config->item('en_ids_6102')) . ')' => null, //Student Sent/Received Media Patterns
         ), array(), 20);
 
         //Set transaction statuses to drafting so other Cron jobs don't pick them up:
@@ -1037,7 +1039,7 @@ class Messenger extends CI_Controller
          * short-lived URL provided by Facebook so we can
          * access it indefinitely without restriction.
          * This process is managed by creating a @4299
-         * Transaction Type which this cron job grabs and
+         * Pattern Type which this cron job grabs and
          * uploads to Mench CDN.
          *
          * Runs every minute with the cron job.

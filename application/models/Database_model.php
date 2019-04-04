@@ -335,7 +335,7 @@ class Database_model extends CI_Model
                    if (intval($insert_columns[$tr_field]) > 0) {
 
                        //Generate a clean name for this transaction field:
-                       $clean_name = ucwords(str_replace('_', ' ', str_replace('_id', '', str_replace('tr_', 'Transaction ', $tr_field))));
+                       $clean_name = ucwords(str_replace('_', ' ', str_replace('_id', '', str_replace('tr_', 'Pattern ', $tr_field))));
 
                        if ($obj_type == 'in') {
 
@@ -363,7 +363,7 @@ class Database_model extends CI_Model
                 }
 
                 //Finally append transaction ID with link to ledger:
-                $html_message .= '<div>Ledger Transaction ID: <a href="https://mench.com/ledger?tr_id=' . $insert_columns['tr_id'] . '" target="_blank">' . $insert_columns['tr_id'] . '</a></div>';
+                $html_message .= '<div>Pattern ID: <a href="https://mench.com/ledger?tr_id=' . $insert_columns['tr_id'] . '" target="_blank">' . $insert_columns['tr_id'] . '</a></div>';
 
                 //Inform how to change settings:
                 $html_message .= '<div style="color: #AAAAAA; font-size:0.9em; margin-top:20px;">Manage your email notifications via <a href="https://mench.com/entities/5966" target="_blank">@5966</a></div>';
@@ -428,18 +428,6 @@ class Database_model extends CI_Model
                     'tr_status >=' => 0, //New+
                     'en_status >=' => 0, //New+
                 ), array('en_child'), $this->config->item('en_per_page'), 0, array('tr_order' => 'ASC', 'en_trust_score' => 'DESC'));
-
-            }
-
-
-            if (in_array('en__actionplans', $join_objects)) {
-
-                //Search & Append this Student's Action Plans:
-                $res[$key]['en__actionplans'] = $this->Database_model->tr_fetch(array(
-                    'tr_miner_entity_id' => $val['en_id'],
-                    'tr_type_entity_id' => 4235, //Action Plan Intent
-                    'tr_status >=' => 0, //New+
-                ), array('in_child'), 0, 0, array('tr_order' => 'ASC'));
 
             }
 
@@ -788,10 +776,10 @@ class Database_model extends CI_Model
 
                     //Value has changed, log transaction:
                     $this->Database_model->tr_create(array(
-                        'tr_parent_transaction_id' => $id, //Transaction Reference
+                        'tr_parent_transaction_id' => $id, //Pattern Reference
                         'tr_miner_entity_id' => $tr_miner_entity_id,
-                        'tr_type_entity_id' => 4242, //Transaction Attribute Modified
-                        'tr_content' => 'Transaction ' . ucwords(str_replace('_', ' ', str_replace('tr_', '', $key))) . ' changed from "' . ( $key=='tr_status' ? $fixed_fields['tr_status'][$before_data[0][$key]]['s_name']  : $before_data[0][$key] ) . '" to "' . ( $key=='tr_status' ? $fixed_fields['tr_status'][$value]['s_name']  : $value ) . '"',
+                        'tr_type_entity_id' => 4242, //Pattern Attribute Modified
+                        'tr_content' => 'Pattern ' . ucwords(str_replace('_', ' ', str_replace('tr_', '', $key))) . ' changed from "' . ( $key=='tr_status' ? $fixed_fields['tr_status'][$before_data[0][$key]]['s_name']  : $before_data[0][$key] ) . '" to "' . ( $key=='tr_status' ? $fixed_fields['tr_status'][$value]['s_name']  : $value ) . '"',
                         'tr_metadata' => array(
                             'tr_id' => $id,
                             'field' => $key,
@@ -812,7 +800,7 @@ class Database_model extends CI_Model
 
             //This should not happen:
             $this->Database_model->tr_create(array(
-                'tr_parent_transaction_id' => $id, //Transaction Reference
+                'tr_parent_transaction_id' => $id, //Pattern Reference
                 'tr_type_entity_id' => 4246, //Platform Error
                 'tr_miner_entity_id' => 1, //Shervin/Developer
                 'tr_content' => 'tr_update() Failed to update',

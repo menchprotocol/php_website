@@ -231,7 +231,7 @@ $metadata = unserialize($in['in_metadata']);
 
                         <div class="title">
                             <h4>
-                                <i class="fas fa-atlas"></i> Transaction Settings
+                                <i class="fas fa-link rotate90"></i> Pattern Settings
                             </h4>
                         </div>
 
@@ -297,8 +297,8 @@ $metadata = unserialize($in['in_metadata']);
                                 </div>
 
 
-                                <span class="mini-header">Transaction Status:</span>
-                                <select class="form-control border" data-toggle="tooltip" title="Transaction Status" data-placement="top" id="tr_status" style="display: inline-block !important;">
+                                <span class="mini-header">Pattern Status:</span>
+                                <select class="form-control border" data-toggle="tooltip" title="Pattern Status" data-placement="top" id="tr_status" style="display: inline-block !important;">
                                     <?php
                                     foreach (echo_fixed_fields('tr_status') as $status_id => $status) {
                                         if($status_id < 3){ //No need to verify intent links!

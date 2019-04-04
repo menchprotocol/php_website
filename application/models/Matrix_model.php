@@ -236,7 +236,7 @@ class Matrix_model extends CI_Model
                     $updating_fields['tr_content'] = str_replace('@'.$adjust_tr[$target_field],'@'.$merger_en_id, $adjust_tr['tr_content']);
                 }
 
-                //Update Transaction:
+                //Update Pattern:
                 $adjusted_count += $this->Database_model->tr_update($adjust_tr['tr_id'], $updating_fields, $tr_miner_entity_id);
 
             } else {
@@ -744,7 +744,7 @@ class Matrix_model extends CI_Model
 
                 $applied_success++;
 
-            } elseif ($action_en_id == 5001 && substr_count($en['tr_content'], $action_command1) > 0) { //Replace Transaction Matching String
+            } elseif ($action_en_id == 5001 && substr_count($en['tr_content'], $action_command1) > 0) { //Replace Pattern Matching String
 
                 $this->Database_model->tr_update($en['tr_id'], array(
                     'tr_content' => str_replace($action_command1, $action_command2, $en['tr_content']),
@@ -760,7 +760,7 @@ class Matrix_model extends CI_Model
 
                 $applied_success++;
 
-            } elseif ($action_en_id == 5865 && ($action_command1=='*' || $en['tr_status']==$action_command1) && array_key_exists($action_command2, $fixed_fields['tr_status'])) { //Update Matching Transaction Status
+            } elseif ($action_en_id == 5865 && ($action_command1=='*' || $en['tr_status']==$action_command1) && array_key_exists($action_command2, $fixed_fields['tr_status'])) { //Update Matching Pattern Status
 
                 $this->Database_model->tr_update($en['tr_id'], array(
                     'tr_status' => $action_command2,
@@ -1003,10 +1003,10 @@ class Matrix_model extends CI_Model
     function actionplan_skip_recursive_down($tr_id, $apply_skip = true)
     {
 
-        //Fetch/validate Action Plan Step:
+        //Fetch/validate Completed Step:
         $actionplan_steps = $this->Database_model->tr_fetch(array(
             'tr_id' => $tr_id,
-            'tr_type_entity_id' => 4559, //Action Plan Step
+            'tr_type_entity_id' => 4559, //Completed Step
             'tr_status >=' => 0, //New+
         ));
 
@@ -1154,7 +1154,7 @@ class Matrix_model extends CI_Model
          * $tr_miner_entity_id: The Student who is adding this new intent to their Action Plan
          *
          * $actionplan_in_id:   Determines if we're adding as a Step to an existing Action Plan ($actionplan_in_id > 0)
-         *                      OR if we're adding as a new Action Plan Intent ($actionplan_in_id = 0)
+         *                      OR if we're adding as a new Student Intent ($actionplan_in_id = 0)
          *
          * */
 
@@ -1191,7 +1191,7 @@ class Matrix_model extends CI_Model
             $this->Database_model->tr_create(array(
                 'tr_parent_entity_id' => $tr_miner_entity_id,
                 'tr_child_intent_id' => $in_append_id,
-                'tr_content' => 'actionplan_append_in() failed to locate child Action Plan Intent',
+                'tr_content' => 'actionplan_append_in() failed to locate child Student Intent',
                 'tr_type_entity_id' => 4246, //Platform Error
                 'tr_miner_entity_id' => 1, //Shervin/Developer
             ));
@@ -1205,7 +1205,7 @@ class Matrix_model extends CI_Model
 
             //We're adding as a Step to an existing Action Plan, let's fetch that:
             $current_actionplans = $this->Database_model->tr_fetch(array(
-                'tr_type_entity_id' => 4559, //Action Plan Step
+                'tr_type_entity_id' => 4559, //Completed Step
                 'tr_miner_entity_id' => $tr_miner_entity_id, //Belongs to this Student
                 'tr_child_intent_id' => $actionplan_in_id,
                 'tr_status >=' => 0, //New+
@@ -1218,7 +1218,7 @@ class Matrix_model extends CI_Model
                     'tr_parent_entity_id' => $tr_miner_entity_id,
                     'tr_parent_intent_id' => $actionplan_in_id,
                     'tr_child_intent_id' => $in_append_id,
-                    'tr_content' => 'actionplan_append_in() failed to locate parent Action Plan Intent',
+                    'tr_content' => 'actionplan_append_in() failed to locate parent Student Intent',
                     'tr_type_entity_id' => 4246, //Platform Error
                     'tr_miner_entity_id' => 1, //Shervin/Developer
                 ));
@@ -1246,14 +1246,14 @@ class Matrix_model extends CI_Model
 
         } else {
 
-            //New Action Plan Intention:
+            //New Student Intention:
             $actionplan = $this->Database_model->tr_create(array(
                 'tr_status' => 0, //New
-                'tr_type_entity_id' => 4235, //Action Plan Intent
+                'tr_type_entity_id' => 4235, //Student Intent
                 'tr_miner_entity_id' => $tr_miner_entity_id,
                 'tr_child_intent_id' => $in_append_id,
-                'tr_order' => 1 + $this->Database_model->tr_max_order(array( //Append to the end of existing Action Plan intents
-                    'tr_type_entity_id' => 4235, //Action Plan Intent
+                'tr_order' => 1 + $this->Database_model->tr_max_order(array( //Append to the end of existing Student Intents
+                    'tr_type_entity_id' => 4235, //Student Intent
                     'tr_status >=' => 0, //New+
                     'tr_miner_entity_id' => $tr_miner_entity_id,
                 )),
@@ -1324,7 +1324,7 @@ class Matrix_model extends CI_Model
             //Invalid Intent ID:
             return false;
         } elseif ($add_to_actionplan && (!$direction_is_downward || $update_metadata)) {
-            //Adding Action Plan Steps for a given intention only works downwards and should not update DB concurrently:
+            //Adding Completed Steps for a given intention only works downwards and should not update DB concurrently:
             return false;
         }
 
@@ -1404,7 +1404,7 @@ class Matrix_model extends CI_Model
         //Set the current intent:
         $this_in = $ins[0];
 
-        //Terminate Action Plan Step adding for conditional intent links and unpublished intents:
+        //Terminate Completed Step adding for conditional intent links and unpublished intents:
         $is_conditional = (isset($this_in['tr_type_entity_id']) && $this_in['tr_type_entity_id']==4229);
         $is_unpublished = ($this_in['in_status'] < 2);
         if ($add_to_actionplan && ($is_conditional || $is_unpublished)) {
@@ -1426,15 +1426,15 @@ class Matrix_model extends CI_Model
              *
              * Ok so there are two general scenarios where we would be adding intents to an Action Plan:
              *
-             * 1) Action Plan Intention: in this scenario we would
+             * 1) Student Intention: in this scenario we would
              *    add a new intent to the Student Action Plan.
-             *    The Action Plan intent would already be added
+             *    The Student Intent would already be added
              *    before calling this function and then passed on
              *    here where $is_actionplan_intent = TRUE
              *
-             * 2) Action Plan Steps by answering OR branches:
+             * 2) Completed Steps by answering OR branches:
              *    In this case we would be appending $in_id to
-             *    an existing Action Plan Step once the student
+             *    an existing Completed Step once the student
              *    selects their answer to an OR branch.
              *
              * */
@@ -1451,7 +1451,7 @@ class Matrix_model extends CI_Model
 
                 $this->Database_model->tr_create(array(
                     'tr_status' => 0, //New
-                    'tr_type_entity_id' => 4559, //Action Plan Step
+                    'tr_type_entity_id' => 4559, //Completed Step
                     'tr_miner_entity_id' => $actionplan['tr_miner_entity_id'], //Action Plan owner
                     'tr_parent_intent_id' => $this_in['tr_parent_intent_id'],
                     'tr_child_intent_id' => $this_in['tr_child_intent_id'],
@@ -1465,13 +1465,13 @@ class Matrix_model extends CI_Model
                  * We are at the very first intent, so we would
                  * only add if this is Scenario 2) which means
                  * $is_actionplan_intent = FALSE as we're
-                 * appending to an existing Action Plan Step.
+                 * appending to an existing Completed Step.
                  *
                  * */
 
                 $this->Database_model->tr_create(array(
                     'tr_status' => 0, //New
-                    'tr_type_entity_id' => 4559, //Action Plan Step
+                    'tr_type_entity_id' => 4559, //Completed Step
                     'tr_miner_entity_id' => $actionplan['tr_miner_entity_id'],
                     'tr_parent_intent_id' => $actionplan['tr_child_intent_id'],
                     'tr_child_intent_id' => $this_in['in_id'],
@@ -1489,7 +1489,7 @@ class Matrix_model extends CI_Model
              *
              * We do this as we don't know which OR path will be
              * chosen by Student so no point in adding every branch
-             * possible! We will then add a new Action Plan intent
+             * possible! We will then add a new Student Intent
              * every time an OR branch poth is chosen.
              *
              * */
@@ -1871,7 +1871,7 @@ class Matrix_model extends CI_Model
          *
          * $obj_type:               Either in, en or tr
          *
-         * $obj:                    The Entity, Intent or Transaction itself.
+         * $obj:                    The Entity, Intent or Pattern itself.
          *                          We're looking for the $obj ID and METADATA
          *
          * $new_fields:             The new array of metadata fields to be Set,
@@ -2053,7 +2053,7 @@ class Matrix_model extends CI_Model
 
         //Check to see if parent of this item is NEW, if so, we need to update its status to DRAFTING:
         $parent_ins = $this->Database_model->tr_fetch(array(
-            'tr_type_entity_id' => 4559, //Action Plan Step 
+            'tr_type_entity_id' => 4559, //Completed Step
             'tr_miner_entity_id' => $actionplan['tr_miner_entity_id'],
             'tr_status' => 0, //ignore intents that are not drafting...
             'tr_child_intent_id' => $actionplan['tr_parent_intent_id'],

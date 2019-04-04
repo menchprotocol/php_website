@@ -627,7 +627,7 @@ function en_modify_save() {
         en_icon: $('#en_icon').val(),
         en_status: $('#en_status').val(), //The new status (might not have changed too)
         en_merge: $('#en_merge').val(),
-        //Transaction data:
+        //Pattern data:
         tr_id: parseInt($('#modifybox').attr('entity-link-id')),
         tr_content: $('#tr_content').val(),
         tr_status: $('#tr_status').val(),

@@ -38,21 +38,32 @@ foreach ($this->Database_model->tr_fetch(array(
 //Overview:
 if (!$hide_subscribe) {
 
-    $step_info = echo_tree_steps($in, false);
     $source_info = echo_tree_references($in, false);
+    $step_info = echo_tree_steps($in, false);
     $cost_info = echo_tree_costs($in, false);
 
     if($step_info || $source_info || $cost_info){
         echo '<h3 style="margin-bottom:5px; margin-top:0px !important;">Overview:</h3>';
         echo '<div style="margin:5px 0 25px 5px;" class="maxout">';
-        echo $step_info;
         echo $source_info;
+        echo $step_info;
         echo $cost_info;
         echo '</div>';
     }
 
-    //Call to action button:
-    echo '<a class="btn btn-primary" href="https://m.me/askmench?ref='.$in['in_id'].'" style="display: inline-block; padding:12px 36px;">Get Started &nbsp;&nbsp;&nbsp; <i class="fas fa-angle-double-right"></i></a>';
+    //Check to see if added to Action Plan for logged-in students:
+    $already_inactionplan = false;
+    if(isset($session_en['en_id'])){
+
+    }
+
+    if($already_inactionplan){
+        //Show when was added:
+        echo '<p>You added to Action Plan on '.date("Y-m-d H:i:s").'</p>';
+    } else {
+        //Give option to add:
+        echo '<a class="btn btn-primary" href="https://m.me/askmench?ref='.$in['in_id'].'" style="display: inline-block; padding:12px 36px;">Get Started &nbsp;&nbsp;&nbsp;<i class="fas fa-angle-double-right"></i></a>';
+    }
 
 } else {
 

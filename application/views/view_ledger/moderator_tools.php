@@ -14,9 +14,11 @@ $moderation_tools = array(
 
 $cron_jobs = array(
     '/intents/cron__update_metadata' => 'Sync Intents Metadata',
+    '/entities/cron__update_trust_score' => 'Update All Entity Trust Scores',
     '/ledger/cron__sync_algolia' => 'Sync Algolia Index [Limited transactions!]',
     '/ledger/cron__sync_gephi' => 'Sync Gephi Graph Index',
 );
+
 
 $developer_tools = array(
     '/entities/dev__matrix_cache' => 'Matrix PHP Cache',
@@ -30,7 +32,7 @@ $developer_tools = array(
 
 if(!$action) {
 
-    echo '<ul class="breadcrumb maxout" style="margin-bottom: 10px;"><li><a href="/ledger">Ledger</a></li></ul>';
+    echo '<ul class="breadcrumb maxout" style="margin-bottom: 10px;"><li><a href="/ledger">Patterns</a></li></ul>';
 
     echo '<h1>Moderation Tools</h1>';
 
@@ -77,7 +79,7 @@ if(!$action) {
 } else {
 
     //Show back button:
-    echo '<ul class="breadcrumb maxout" style="margin-bottom: 10px;"><li><a href="/ledger">Ledger</a></li><li><a href="/ledger/moderator_tools">Moderator Tools</a></li></ul>';
+    echo '<ul class="breadcrumb maxout" style="margin-bottom: 10px;"><li><a href="/ledger">Patterns</a></li><li><a href="/ledger/moderator_tools">Moderator Tools</a></li></ul>';
 
     if($action=='orphan_intents') {
 

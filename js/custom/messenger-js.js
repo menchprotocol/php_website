@@ -8,3 +8,8 @@ function confirm_skip(tr_id) {
         }
     });
 }
+
+
+function save_full_name(){
+    alert('howdy');
+}

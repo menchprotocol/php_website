@@ -181,7 +181,7 @@ class Entities extends CI_Controller
         //Validate entity ID and fetch data:
         $ens = $this->Database_model->en_fetch(array(
             'en_id' => $en_id,
-        ), array('en__child_count', 'en__children', 'en__actionplans'));
+        ), array('en__child_count', 'en__children'));
         if (count($ens) < 1) {
             return redirect_message('/entities', '<div class="alert alert-danger" role="alert">Invalid Entity ID</div>');
         }
@@ -786,13 +786,13 @@ class Entities extends CI_Controller
 
             if ($en_trs[0]['tr_content'] == $_POST['tr_content']) {
 
-                //Transaction content has not changed:
+                //Pattern content has not changed:
                 $js_tr_type_entity_id = $en_trs[0]['tr_type_entity_id'];
                 $tr_content = $en_trs[0]['tr_content'];
 
             } else {
 
-                //Transaction content has changed:
+                //Pattern content has changed:
                 $detected_tr_type = detect_tr_type_entity_id($_POST['tr_content']);
 
                 if (!$detected_tr_type['status']) {
@@ -999,7 +999,7 @@ class Entities extends CI_Controller
         //Fetch full entity data with their active Action Plans:
         $ens = $this->Database_model->en_fetch(array(
             'en_id' => $trs[0]['tr_child_entity_id'],
-        ), array('en__actionplans'));
+        ));
 
         if ($ens[0]['en_status'] < 0 || $trs[0]['tr_status'] < 0) {
 
@@ -1101,7 +1101,7 @@ class Entities extends CI_Controller
         $ens[0]['input_post_data'] = $_POST;
 
 
-        //Log Sign In Transaction:
+        //Log Sign In Pattern:
         if($is_miner){
             $this->Database_model->tr_create(array(
                 'tr_miner_entity_id' => $ens[0]['en_id'],
@@ -1545,10 +1545,8 @@ class Entities extends CI_Controller
 
 
 
-    function cron__update_trust_score()
+    function cron__update_trust_score($en_id = 0)
     {
-
-        exit; //TBD
 
         /*
          *
@@ -1556,53 +1554,59 @@ class Entities extends CI_Controller
          * It's how we primarily assess the weight of each entity in our network.
          * This function defines this algorithm.
          *
+         * If $en_id not provided it would update all entities...
+         *
          * */
 
         //Algorithm Weights:
         $score_weights = array(
-            'en__childrens' => 0, //Child entities are just containers, no score on the link
-
-            'tr_miner_entity_id' => 1, //Transaction recipient
-            'tr_child_entity_id' => 1, //Transaction initiator
-
-            'tr_parent_entity_id' => 13, //Action Plan Items
+            'score_parent' => 5, //Score per each parent entity
+            'score_children' => 1, //Score per each child entity
+            'score_miner_points' => 0.10, // So 1 minining points = [score_miner_points] entity trust score
         );
 
+        //Fetch entities with/without filter:
+        $ens = $this->Database_model->en_fetch(array(
+            'en_id '.( $en_id > 0 ? '=' : '>=' ) => $en_id,
+        ));
+
         //Fetch child entities:
-        $ens = array();
+        foreach ($ens as $en){
 
-        //Recursively loops through child entities:
-        $score = 0;
-        foreach ($ens as $en) {
-            //Addup all child sores:
-            $score += $this->e_score_recursive($en);
+            //Calculate trust score:
+            $score = 0;
+
+            //Parents
+            $en_parents = $this->Database_model->tr_fetch(array(
+                'tr_child_entity_id' => $en['en_id'],
+                'tr_status >=' => 0,
+            ), array(), 0, 0, array(), 'COUNT(tr_id) as totals');
+            $score += $en_parents[0]['totals'] * $score_weights['score_parent'];
+
+            //Children:
+            $en_children = $this->Database_model->tr_fetch(array(
+                'tr_parent_entity_id' => $en['en_id'],
+                'tr_status >=' => 0,
+            ), array(), 0, 0, array(), 'COUNT(tr_id) as totals');
+            $score += $en_children[0]['totals'] * $score_weights['score_children'];
+
+            //Mining points:
+            $en_miner_points = $this->Database_model->tr_fetch(array(
+                'tr_miner_entity_id' => $en['en_id'],
+                'tr_status >=' => 0,
+            ), array(), 0, 0, array(), 'SUM(tr_points) as total_points');
+            $score += $en_miner_points[0]['total_points'] * $score_weights['score_miner_points'];
+
+            //Do we need to update?
+            if($en['en_trust_score'] != $score){
+                //Yes:
+                $this->Database_model->en_update($en['en_id'], array(
+                    'en_trust_score' => $score,
+                ));
+            }
         }
 
-        //Anything to update?
-        if (count($u) > 0) {
-
-            //Update this row:
-            $score += count($ens) * $score_weights['en__childrens'];
-
-            $score += count($this->Database_model->tr_fetch(array(
-                    'tr_child_entity_id' => $u['en_id'],
-                ), array(), 5000)) * $score_weights['tr_child_entity_id'];
-            $score += count($this->Database_model->tr_fetch(array(
-                    'tr_miner_entity_id' => $u['en_id'],
-                ), array(), 5000)) * $score_weights['tr_miner_entity_id'];
-            $score += count($this->Database_model->w_fetch(array(
-                    'tr_parent_entity_id' => $u['en_id'],
-                ))) * $score_weights['tr_parent_entity_id'];
-
-            //Update the score:
-            $this->Database_model->en_update($u['en_id'], array(
-                'en_trust_score' => $score,
-            ));
-
-            //return the score:
-            return $score;
-
-        }
+        echo 'Successfully updated trust score for '.count($ens).' entities.';
     }
 
 

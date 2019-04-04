@@ -11,20 +11,55 @@ defined('BASEPATH') OR exit('No direct script access allowed');
  *
  */
 
-//Generated 2019-03-26 12:19:18 PST
+//Generated 2019-04-03 16:52:58 PST
 
-//Student Action Plan:
+//Student Account Details:
+$config['en_ids_4461'] = array(4454, 3290, 3287, 3089, 3289);
+$config['en_all_4461'] = array(
+    4454 => array(
+        'm_icon' => '<i class="fal fa-bells"></i>',
+        'm_name' => 'Notification Level',
+        'm_desc' => '',
+        'm_parents' => array(4527, 4461),
+    ),
+    3290 => array(
+        'm_icon' => '<i class="fal fa-transgender"></i>',
+        'm_name' => 'Gender',
+        'm_desc' => '',
+        'm_parents' => array(3285, 4461),
+    ),
+    3287 => array(
+        'm_icon' => '<i class="fal fa-language"></i>',
+        'm_name' => 'Languages',
+        'm_desc' => '',
+        'm_parents' => array(4603, 4461, 3285),
+    ),
+    3089 => array(
+        'm_icon' => '<i class="fal fa-globe"></i>',
+        'm_name' => 'Current Country',
+        'm_desc' => '',
+        'm_parents' => array(4461, 3285),
+    ),
+    3289 => array(
+        'm_icon' => '<i class="fal fa-map"></i>',
+        'm_name' => 'Current Timezone',
+        'm_desc' => '',
+        'm_parents' => array(4461, 3285),
+    ),
+);
+
+//Action Plan:
 $config['en_ids_6107'] = array(4235, 4559);
 $config['en_all_6107'] = array(
     4235 => array(
         'm_icon' => '<i class="fas fa-flag"></i>',
-        'm_name' => 'Intention',
+        'm_name' => 'Set Intention',
         'm_desc' => 'A goal set by the student to be accomplished in collaboration with Mench',
         'm_parents' => array(4593, 4463),
     ),
     4559 => array(
         'm_icon' => '<i class="fas fa-walking"></i>',
-        'm_name' => 'Step',
+        'm_name' => 'Completed Step',
         'm_desc' => 'An actionable task or key idea recommended by Mench to accomplish the target Intention',
         'm_parents' => array(4593),
     ),
@@ -820,7 +855,7 @@ $config['en_all_4595'] = array(
         'm_parents' => array(4593, 4486, 4595),
     ),
     4230 => array(
-        'm_icon' => '<i class="fal fa-link rotate90"></i>',
+        'm_icon' => '<i class="fal fa-level-up rotate90"></i>',
         'm_name' => 'Linked Entities Raw',
         'm_desc' => '10',
         'm_parents' => array(4593, 4592, 4595),
@@ -992,7 +1027,7 @@ $config['en_all_4593'] = array(
         'm_parents' => array(4593, 4486, 4595),
     ),
     4230 => array(
-        'm_icon' => '<i class="fal fa-link rotate90"></i>',
+        'm_icon' => '<i class="fal fa-level-up rotate90"></i>',
         'm_name' => 'Linked Entities Raw',
         'm_desc' => '',
         'm_parents' => array(4593, 4592, 4595),
@@ -1023,7 +1058,7 @@ $config['en_all_4593'] = array(
     ),
     4235 => array(
         'm_icon' => '<i class="fas fa-flag"></i>',
-        'm_name' => 'Added Action Plan Intention',
+        'm_name' => 'Set Intention',
         'm_desc' => 'Created when the Master adds an intent tree to their Action Plan. We will create 1 link for each intent link to create a cache of the intent tree at that point in time.',
         'm_parents' => array(4593, 4463),
     ),
@@ -1281,7 +1316,7 @@ $config['en_all_4593'] = array(
     ),
     4559 => array(
         'm_icon' => '<i class="fas fa-walking"></i>',
-        'm_name' => 'Added Action Plan Step',
+        'm_name' => 'Completed Step',
         'm_desc' => 'Every Action Plan has a number of intentions that define what the Masters needs to complete in order to accomplish the intention of the Action Plan',
         'm_parents' => array(4593),
     ),
@@ -1423,7 +1458,7 @@ $config['en_all_4593'] = array(
 $config['en_ids_4592'] = array(4230, 4255, 4256, 4257, 4258, 4259, 4260, 4261, 4318, 4319);
 $config['en_all_4592'] = array(
     4230 => array(
-        'm_icon' => '<i class="fal fa-link rotate90"></i>',
+        'm_icon' => '<i class="fal fa-level-up rotate90"></i>',
         'm_name' => 'Raw',
         'm_desc' => '',
         'm_parents' => array(4593, 4592, 4595),
@@ -1531,12 +1566,12 @@ $config['en_all_4331'] = array(
     ),
 );
 
-//Mench Core Objects:
+//Mench Triple Tables:
 $config['en_ids_4534'] = array(4341, 4535, 4536);
 $config['en_all_4534'] = array(
     4341 => array(
-        'm_icon' => '<i class="fas fa-atlas"></i>',
-        'm_name' => 'Transactions',
+        'm_icon' => '<i class="fas fa-link rotate90"></i>',
+        'm_name' => 'Patterns',
         'm_desc' => '',
         'm_parents' => array(4534, 4463),
     ),
@@ -1554,7 +1589,7 @@ $config['en_all_4534'] = array(
     ),
 );
 
-//Messenger Notification Levels:
+//Notification Level:
 $config['en_ids_4454'] = array(4455, 4456, 4457, 4458);
 $config['en_all_4454'] = array(
     4455 => array(

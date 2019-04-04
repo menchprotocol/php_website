@@ -48,11 +48,13 @@ $url_part_1 = $this->uri->segment(1);
                 <?php
                 if (isset($session_en['en_id'])) {
 
-                    echo '<li id="isloggedin"><a href="/intents/' . (isset($in['in_id']) ? $in['in_id'] : $this->config->item('in_miner_start')) . '">The Matrix <i class="fas fa-chevron-circle-right"></i></a></li>';
+                    //Everyone has an Action Plan:
+                    echo '<li id="isloggedin"><a href="/messenger/actionplan"><i class="fas fa-flag"></i> Action Plan</a></li>';
 
-                } elseif (isset($session_en['en__actionplans']) && count($session_en['en__actionplans']) > 0) {
-
-                    echo '<li id="isloggedin"><a href="/messenger/actionplan">Action Plan <i class="fas fa-chevron-circle-right"></i></a></li>';
+                    //Is this user a Miner?
+                    if(isset($session_en['en__parents']) && filter_array($session_en['en__parents'], 'en_id', 1308)){
+                        echo '<li id="isloggedin"><a href="/intents/' . (isset($in['in_id']) ? $in['in_id'] : $this->config->item('in_miner_start')) . '"><i class="fas fa-yin-yang fa-spin"></i> The Matrix</a></li>';
+                    }
 
                 } else {
                     echo '<li><a href="/login'. ( isset($in['in_id']) ? '?url=%2Fintents%2F'.$in['in_id'] : '' ) .'"><i class="fas fa-sign-in"></i> Sign In</a></li>';
