@@ -308,7 +308,7 @@ class Intents extends CI_Controller
         //Authenticate Miner:
         $session_en = en_auth(array(1308));
         $ln_id = intval($_POST['ln_id']);
-        $tr_in_link_id = 0; //If >0 means linked intent is being updated...
+        $ln_in_link_id = 0; //If >0 means linked intent is being updated...
 
         //Validate intent:
         $ins = $this->Database_model->in_fetch(array(
@@ -581,12 +581,12 @@ class Intents extends CI_Controller
         if($ln_id > 0){
 
             //Validate Link and inputs:
-            $trs = $this->Database_model->ln_fetch(array(
+            $lns = $this->Database_model->ln_fetch(array(
                 'ln_id' => $ln_id,
                 'ln_type_entity_id IN (' . join(',', $this->config->item('en_ids_4486')) . ')' => null, //Intent Link Connectors
                 'ln_status >=' => 0, //New+
             ), array(( $_POST['is_parent'] ? 'in_child' : 'in_parent')));
-            if(count($trs) < 1){
+            if(count($lns) < 1){
                 return echo_json(array(
                     'status' => 0,
                     'message' => 'Invalid link ID',
@@ -605,12 +605,12 @@ class Intents extends CI_Controller
             //Validate the input for updating linked intent:
             if(substr($_POST['tr_in_link_update'], 0, 1)=='#'){
                 $parts = explode(' ', $_POST['tr_in_link_update']);
-                $tr_in_link_id = intval(str_replace('#', '', $parts[0]));
+                $ln_in_link_id = intval(str_replace('#', '', $parts[0]));
             }
-            if($tr_in_link_id > 0){
+            if($ln_in_link_id > 0){
 
                 //Did we find it?
-                if($tr_in_link_id==$trs[0]['ln_parent_intent_id'] || $tr_in_link_id==$trs[0]['ln_child_intent_id']){
+                if($ln_in_link_id==$lns[0]['ln_parent_intent_id'] || $ln_in_link_id==$lns[0]['ln_child_intent_id']){
                     return echo_json(array(
                         'status' => 0,
                         'message' => 'Intent already linked here',
@@ -619,7 +619,7 @@ class Intents extends CI_Controller
 
                 //Validate intent:
                 $linked_ins = $this->Database_model->in_fetch(array(
-                    'in_id' => $tr_in_link_id,
+                    'in_id' => $ln_in_link_id,
                 ));
                 if(count($linked_ins)==0){
                     return echo_json(array(
@@ -629,15 +629,15 @@ class Intents extends CI_Controller
                 }
 
                 //All good, make the move:
-                $ln_update[( $_POST['is_parent'] ? 'ln_child_intent_id' : 'ln_parent_intent_id')] = $tr_in_link_id;
+                $ln_update[( $_POST['is_parent'] ? 'ln_child_intent_id' : 'ln_parent_intent_id')] = $ln_in_link_id;
                 $ln_update['ln_order'] = 9999; //Place at the bottom of this new list
                 $remove_from_ui = 1;
                 //Did we move it on another intent on the same page? If so reload to show accurate info:
-                if(in_array($tr_in_link_id, $_POST['tr_in_focus_ids'])){
+                if(in_array($ln_in_link_id, $_POST['tr_in_focus_ids'])){
                     //Yes, refresh the page:
                     $remove_redirect_url = '/intents/' . $_POST['tr_in_focus_ids'][0]; //First item is the main intent
                 }
-            } elseif(strlen($_POST['tr_in_link_update']) > 0 && !($_POST['tr_in_link_update']==$trs[0]['in_outcome'])){
+            } elseif(strlen($_POST['tr_in_link_update']) > 0 && !($_POST['tr_in_link_update']==$lns[0]['in_outcome'])){
                 //The value changed in an unknown way...
                 return echo_json(array(
                     'status' => 0,
@@ -647,7 +647,7 @@ class Intents extends CI_Controller
 
 
             //Prep variables:
-            $ln_metadata = ( strlen($trs[0]['ln_metadata']) > 0 ? unserialize($trs[0]['ln_metadata']) : array() );
+            $ln_metadata = ( strlen($lns[0]['ln_metadata']) > 0 ? unserialize($lns[0]['ln_metadata']) : array() );
 
             //Check to see if anything changed in the link?
             $link_meta_updated = ( (($ln_update['ln_type_entity_id'] == 4228 && (
@@ -665,7 +665,7 @@ class Intents extends CI_Controller
             foreach ($ln_update as $key => $value) {
 
                 //Did this value change?
-                if ($value == $trs[0][$key]) {
+                if ($value == $lns[0][$key]) {
 
                     //No it did not! Remove it!
                     unset($ln_update[$key]);
@@ -725,7 +725,7 @@ class Intents extends CI_Controller
         if($link_was_updated){
 
             //Fetch last intent Link:
-            $trs = $this->Database_model->ln_fetch(array(
+            $lns = $this->Database_model->ln_fetch(array(
                 'ln_id' => $ln_id,
             ), array('en_miner'));
 
@@ -841,9 +841,9 @@ class Intents extends CI_Controller
         $_GET['log_miner_messages'] = 1; //Will log miner messages which normally do not get logged (so we prevent Intent Note editing logs)
 
         $tip_messages = null;
-        foreach ($on_start_messages as $tr) {
+        foreach ($on_start_messages as $ln) {
             //What type of message is this?
-            $tip_messages .= $this->Chat_model->dispatch_message($tr['ln_content'], $session_en, false, array(), array(
+            $tip_messages .= $this->Chat_model->dispatch_message($ln['ln_content'], $session_en, false, array(), array(
                 'ln_parent_intent_id' => $_POST['in_id'],
             ));
         }
@@ -934,7 +934,7 @@ class Intents extends CI_Controller
         }
 
         //Create Message:
-        $tr = $this->Database_model->ln_create(array(
+        $ln = $this->Database_model->ln_create(array(
             'ln_status' => 0, //New
             'ln_miner_entity_id' => $session_en['en_id'],
             'ln_order' => 1 + $this->Database_model->ln_max_order(array(
@@ -963,7 +963,7 @@ class Intents extends CI_Controller
         //Print the challenge:
         return echo_json(array(
             'status' => 1,
-            'message' => echo_in_message_manage(array_merge($tr, array(
+            'message' => echo_in_message_manage(array_merge($ln, array(
                 'ln_child_entity_id' => $session_en['en_id'],
             ))),
         ));
@@ -1062,7 +1062,7 @@ class Intents extends CI_Controller
 
 
         //Create message:
-        $tr = $this->Database_model->ln_create(array(
+        $ln = $this->Database_model->ln_create(array(
             'ln_status' => 0, //New
             'ln_miner_entity_id' => $session_en['en_id'],
             'ln_type_entity_id' => $_POST['focus_ln_type_entity_id'],
@@ -1089,7 +1089,7 @@ class Intents extends CI_Controller
 
         //Fetch full message for proper UI display:
         $new_messages = $this->Database_model->ln_fetch(array(
-            'ln_id' => $tr['ln_id'],
+            'ln_id' => $ln['ln_id'],
         ));
 
         //Echo message:
@@ -1150,13 +1150,13 @@ class Intents extends CI_Controller
         if(intval($_POST['ln_id'])>0){
 
             //Fetch intent link:
-            $trs = $this->Database_model->ln_fetch(array(
+            $lns = $this->Database_model->ln_fetch(array(
                 'ln_id' => $_POST['ln_id'],
                 'ln_type_entity_id IN (' . join(',', $this->config->item('en_ids_4486')) . ')' => null, //Intent Link Connectors
                 'ln_status >=' => 0, //New+
             ), array(( $_POST['is_parent'] ? 'in_child' : 'in_parent' )));
 
-            if(count($trs) < 1){
+            if(count($lns) < 1){
                 return echo_json(array(
                     'status' => 0,
                     'message' => 'Invalid Intent Link ID',
@@ -1164,11 +1164,11 @@ class Intents extends CI_Controller
             }
 
             //Add link connector:
-            $trs[0]['ln_metadata'] = ( strlen($trs[0]['ln_metadata']) > 0 ? unserialize($trs[0]['ln_metadata']) : array());
+            $lns[0]['ln_metadata'] = ( strlen($lns[0]['ln_metadata']) > 0 ? unserialize($lns[0]['ln_metadata']) : array());
 
             //Make sure points are set:
-            if(!isset($trs[0]['ln_metadata']['tr__assessment_points'])){
-                $trs[0]['ln_metadata']['tr__assessment_points'] = 0;
+            if(!isset($lns[0]['ln_metadata']['tr__assessment_points'])){
+                $lns[0]['ln_metadata']['tr__assessment_points'] = 0;
             }
 
         }
@@ -1183,7 +1183,7 @@ class Intents extends CI_Controller
         return echo_json(array(
             'status' => 1,
             'in' => $ins[0],
-            'ln' => ( isset($trs[0]) ? $trs[0] : array() ),
+            'ln' => ( isset($lns[0]) ? $lns[0] : array() ),
         ));
 
     }

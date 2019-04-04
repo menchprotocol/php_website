@@ -10,9 +10,9 @@ foreach ($this->Database_model->ln_fetch(array(
     'ln_status' => 2, //Published
     'ln_type_entity_id' => 4231, //Intent Note Messages
     'ln_child_intent_id' => $in['in_id'],
-), array(), 0, 0, array('ln_order' => 'ASC')) as $tr) {
+), array(), 0, 0, array('ln_order' => 'ASC')) as $ln) {
     //Echo HTML format of this message:
-    echo $this->Chat_model->dispatch_message($tr['ln_content']);
+    echo $this->Chat_model->dispatch_message($ln['ln_content']);
 }
 echo '</div>';
 

@@ -153,16 +153,16 @@ class Matrix_model extends CI_Model
             'ln_child_entity_id' => $en_student_id,
             'ln_parent_entity_id IN (' . join(',', $children) . ')' => null, //Current children
             'ln_status >=' => 0,
-        ), array(), 200) as $tr) {
+        ), array(), 200) as $ln) {
 
-            if (!$already_assigned && $tr['ln_parent_entity_id'] == $set_en_child_id) {
+            if (!$already_assigned && $ln['ln_parent_entity_id'] == $set_en_child_id) {
                 $already_assigned = true;
             } else {
                 //Remove assignment:
-                $updated_ln_id = $tr['ln_id'];
+                $updated_ln_id = $ln['ln_id'];
 
                 //Do not log update link here as we would log it further below:
-                $this->Database_model->ln_update($tr['ln_id'], array(
+                $this->Database_model->ln_update($ln['ln_id'], array(
                     'ln_status' => -1, //Removed
                 ));
             }
@@ -184,7 +184,7 @@ class Matrix_model extends CI_Model
 
     }
 
-    function trs_set_drafting($trs){
+    function trs_set_drafting($lns){
         /*
          *
          * A function that simply updates the status
@@ -193,9 +193,9 @@ class Matrix_model extends CI_Model
          *
          * */
 
-        foreach ($trs as $tr) {
-            if($tr['ln_status'] == 0){
-                $this->Database_model->ln_update($tr['ln_id'], array(
+        foreach ($lns as $ln) {
+            if($ln['ln_status'] == 0){
+                $this->Database_model->ln_update($ln['ln_id'], array(
                     'ln_status' => 1, //Drafting
                 ));
             }
@@ -933,9 +933,9 @@ class Matrix_model extends CI_Model
                 'ln_child_intent_id' => $actionplan_ins[0]['ln_child_intent_id'],
             ), array('en_parent'), 0, 0, array('ln_order' => 'ASC'));
 
-            foreach ($on_complete_messages as $tr) {
+            foreach ($on_complete_messages as $ln) {
                 $this->Chat_model->dispatch_message(
-                    $tr['ln_content'], //Message content
+                    $ln['ln_content'], //Message content
                     $actionplan_ins[0], //Includes entity data for Action Plan Student
                     true,
                     array(),
@@ -1037,8 +1037,8 @@ class Matrix_model extends CI_Model
 
         if ($apply_skip) {
             //Now start skipping:
-            foreach ($skipping_steps as $tr) {
-                $this->Matrix_model->actionplan_update_status($tr['ln_id'], -1);
+            foreach ($skipping_steps as $ln) {
+                $this->Matrix_model->actionplan_update_status($ln['ln_id'], -1);
             }
         }
 
@@ -1679,36 +1679,36 @@ class Matrix_model extends CI_Model
             $parent_ids = array();
 
             if ($this_in['in_status'] >= 2) {
-                foreach ($in__messages as $tr) {
+                foreach ($in__messages as $ln) {
 
                     //Who are the Miners of this message?
-                    if (!in_array($tr['ln_miner_entity_id'], $parent_ids)) {
-                        array_push($parent_ids, $tr['ln_miner_entity_id']);
+                    if (!in_array($ln['ln_miner_entity_id'], $parent_ids)) {
+                        array_push($parent_ids, $ln['ln_miner_entity_id']);
                     }
 
                     //Check the Miners of this message in the miner array:
-                    if (!isset($this_in['___tree_miners'][$tr['ln_miner_entity_id']])) {
+                    if (!isset($this_in['___tree_miners'][$ln['ln_miner_entity_id']])) {
                         //Add the entire message which would also hold the miner details:
-                        $this_in['___tree_miners'][$tr['ln_miner_entity_id']] = $tr;
+                        $this_in['___tree_miners'][$ln['ln_miner_entity_id']] = $ln;
                     }
                     //How about the parent of this one?
-                    if (!isset($metadata_this['___tree_miners'][$tr['ln_miner_entity_id']])) {
+                    if (!isset($metadata_this['___tree_miners'][$ln['ln_miner_entity_id']])) {
                         //Yes, add them to the list:
-                        $metadata_this['___tree_miners'][$tr['ln_miner_entity_id']] = $tr;
+                        $metadata_this['___tree_miners'][$ln['ln_miner_entity_id']] = $ln;
                     }
 
 
                     //Does this message have any entity references?
-                    if ($tr['ln_parent_entity_id'] > 0) {
+                    if ($ln['ln_parent_entity_id'] > 0) {
 
                         //Add the reference it self:
-                        if (!in_array($tr['ln_parent_entity_id'], $parent_ids)) {
-                            array_push($parent_ids, $tr['ln_parent_entity_id']);
+                        if (!in_array($ln['ln_parent_entity_id'], $parent_ids)) {
+                            array_push($parent_ids, $ln['ln_parent_entity_id']);
                         }
 
                         //Yes! Let's see if any of the parents/creators are industry experts:
                         $ens = $this->Database_model->en_fetch(array(
-                            'en_id' => $tr['ln_parent_entity_id'],
+                            'en_id' => $ln['ln_parent_entity_id'],
                         ), array('en__parents'));
 
                         if (isset($ens[0]) && count($ens[0]['en__parents']) > 0) {
@@ -2647,7 +2647,7 @@ class Matrix_model extends CI_Model
         //Add Up-Vote if not yet added for this miner:
         if($ln_miner_entity_id > 0){
 
-            $tr_miner_upvotes = $this->Database_model->ln_fetch(array(
+            $ln_miner_upvotes = $this->Database_model->ln_fetch(array(
                 ( $is_parent ? 'ln_child_intent_id' : 'ln_parent_intent_id' ) => $actionplan_in_id,
                 ( $is_parent ? 'ln_parent_intent_id' : 'ln_child_intent_id' ) => $intent_new['in_id'],
                 'ln_parent_entity_id' => $ln_miner_entity_id,
@@ -2655,7 +2655,7 @@ class Matrix_model extends CI_Model
                 'ln_status >=' => 0, //New+
             ));
 
-            if(count($tr_miner_upvotes) == 0){
+            if(count($ln_miner_upvotes) == 0){
                 //Add new up-vote
                 //No need to sync external sources via ln_create()
                 $up_vote = $this->Database_model->ln_create(array(

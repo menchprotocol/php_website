@@ -22,7 +22,7 @@ class Chat_model extends CI_Model
     }
 
 
-    function dispatch_message($input_message, $recipient_en = array(), $fb_messenger_format = false, $quick_replies = array(), $tr_append = array(), $message_in_id = 0)
+    function dispatch_message($input_message, $recipient_en = array(), $fb_messenger_format = false, $quick_replies = array(), $ln_append = array(), $message_in_id = 0)
     {
 
         /*
@@ -63,24 +63,24 @@ class Chat_model extends CI_Model
          *                          Students an easy way to tap and select their next step.
          *
          *
-         * - $tr_append:            Since this function logs a "message sent" engagement for
-         *                          every message it processes, the $tr_append will append
+         * - $ln_append:            Since this function logs a "message sent" engagement for
+         *                          every message it processes, the $ln_append will append
          *                          additional data to capture more context for this message.
          *                          Supported fields only include:
          *
-         *                          - $tr_append['ln_parent_intent_id']
-         *                          - $tr_append['ln_child_intent_id']
-         *                          - $tr_append['ln_parent_link_id']
+         *                          - $ln_append['ln_parent_intent_id']
+         *                          - $ln_append['ln_child_intent_id']
+         *                          - $ln_append['ln_parent_link_id']
          *
          *                          Following fields are not allowed, because:
          *
-         *                          - $tr_append['ln_metadata']: Reserved for message body IF $fb_messenger_format = TRUE
-         *                          - $tr_append['ln_timestamp']: Auto generated to current timestamp
-         *                          - $tr_append['ln_status']: Will always equal 2 as a completed message
-         *                          - $tr_append['ln_type_entity_id']: Auto calculated based on message content (or error)
-         *                          - $tr_append['ln_miner_entity_id']: Mench will always get credit to miner, so this is set to zero
-         *                          - $tr_append['ln_parent_entity_id']: This is auto set with an entity reference within $input_message
-         *                          - $tr_append['ln_child_entity_id']: This will be equal to $recipient_en['en_id']
+         *                          - $ln_append['ln_metadata']: Reserved for message body IF $fb_messenger_format = TRUE
+         *                          - $ln_append['ln_timestamp']: Auto generated to current timestamp
+         *                          - $ln_append['ln_status']: Will always equal 2 as a completed message
+         *                          - $ln_append['ln_type_entity_id']: Auto calculated based on message content (or error)
+         *                          - $ln_append['ln_miner_entity_id']: Mench will always get credit to miner, so this is set to zero
+         *                          - $ln_append['ln_parent_entity_id']: This is auto set with an entity reference within $input_message
+         *                          - $ln_append['ln_child_entity_id']: This will be equal to $recipient_en['en_id']
          *
          * */
 
@@ -90,7 +90,7 @@ class Chat_model extends CI_Model
         //Prepare data to be appended to success/fail link:
         $allowed_tr_append = array('ln_parent_intent_id', 'ln_child_intent_id', 'ln_parent_link_id');
         $filtered_tr_append = array();
-        foreach ($tr_append as $key => $value) {
+        foreach ($ln_append as $key => $value) {
             if (in_array($key, $allowed_tr_append)) {
                 $filtered_tr_append[$key] = $value;
             }
@@ -298,12 +298,12 @@ class Chat_model extends CI_Model
             $completion_requirements = array_intersect($en_all_4485[$message_type_en_id]['m_parents'], $this->config->item('en_ids_4331'));
 
             //See what this is:
-            $detected_tr_type = detect_ln_type_entity_id($_POST['ln_content']);
+            $detected_ln_type = detect_ln_type_entity_id($_POST['ln_content']);
 
-            if (!$detected_tr_type['status']) {
+            if (!$detected_ln_type['status']) {
 
                 //return error:
-                return echo_json($detected_tr_type);
+                return echo_json($detected_ln_type);
 
             } elseif(count($completion_requirements) > 1){
 
@@ -317,10 +317,10 @@ class Chat_model extends CI_Model
                 $en_id = array_shift($completion_requirements);
                 $is_url_reference = (count($msg_references['ref_entities'])>0 && $en_id==4256); //TODO Also check/require @4986 as parent entity
 
-                if(!($en_id==$detected_tr_type['ln_type_entity_id']) && !$is_url_reference){
+                if(!($en_id==$detected_ln_type['ln_type_entity_id']) && !$is_url_reference){
                     return array(
                         'status' => 0,
-                        'message' => $en_all_4485[$message_type_en_id]['m_name'].' requires a ['.$en_all_4331[$en_id]['m_name'].'] message. You entered a ['.$en_all_4592[$detected_tr_type['ln_type_entity_id']]['m_name'].'] message.',
+                        'message' => $en_all_4485[$message_type_en_id]['m_name'].' requires a ['.$en_all_4331[$en_id]['m_name'].'] message. You entered a ['.$en_all_4592[$detected_ln_type['ln_type_entity_id']]['m_name'].'] message.',
                     );
                 }
 
@@ -420,21 +420,21 @@ class Chat_model extends CI_Model
             $fb_convert_4454 = $this->config->item('fb_convert_4454');
 
             //Fetch recipient notification type:
-            $trs_comm_level = $this->Database_model->ln_fetch(array(
+            $lns_comm_level = $this->Database_model->ln_fetch(array(
                 'ln_parent_entity_id IN (' . join(',', $this->config->item('en_ids_4454')) . ')' => null,
                 'ln_child_entity_id' => $recipient_en['en_id'],
                 'ln_status' => 2, //Published
             ));
 
             //Start validating communication settings we fetched to ensure everything is A-OK:
-            if (count($trs_comm_level) < 1) {
+            if (count($lns_comm_level) < 1) {
 
                 return array(
                     'status' => 0,
                     'message' => 'Student is missing their Notification Level parent entity relation',
                 );
 
-            } elseif (count($trs_comm_level) > 1) {
+            } elseif (count($lns_comm_level) > 1) {
 
                 //This should find exactly one result as it belongs to Student Radio Entity @4461
                 return array(
@@ -442,24 +442,24 @@ class Chat_model extends CI_Model
                     'message' => 'Student has more than 1 Notification Level parent entity relation',
                 );
 
-            } elseif ($trs_comm_level[0]['ln_parent_entity_id'] == 4455) {
+            } elseif ($lns_comm_level[0]['ln_parent_entity_id'] == 4455) {
 
                 return array(
                     'status' => 0,
                     'message' => 'Student is unsubscribed',
                 );
 
-            } elseif (!array_key_exists($trs_comm_level[0]['ln_parent_entity_id'], $fb_convert_4454)) {
+            } elseif (!array_key_exists($lns_comm_level[0]['ln_parent_entity_id'], $fb_convert_4454)) {
 
                 return array(
                     'status' => 0,
-                    'message' => 'Fetched unknown Notification Level [' . $trs_comm_level[0]['ln_parent_entity_id'] . ']',
+                    'message' => 'Fetched unknown Notification Level [' . $lns_comm_level[0]['ln_parent_entity_id'] . ']',
                 );
 
             }
 
             //All good, Set notification type:
-            $notification_type = $fb_convert_4454[$trs_comm_level[0]['ln_parent_entity_id']];
+            $notification_type = $fb_convert_4454[$lns_comm_level[0]['ln_parent_entity_id']];
 
         }
 
@@ -1767,8 +1767,8 @@ class Chat_model extends CI_Model
                     'ln_miner_entity_id' => $en['en_id'], //Belongs to this Student
                     'ln_status >=' => 0, //Actively drafting (Status 2 is syncing updates, and they want out)
                 ));
-                foreach ($actionplans as $tr) {
-                    $this->Database_model->ln_update($tr['ln_id'], array(
+                foreach ($actionplans as $ln) {
+                    $this->Database_model->ln_update($ln['ln_id'], array(
                         'ln_status' => -1, //Removed
                     ), $en['en_id']); //Give credit to miner
                 }
@@ -1970,14 +1970,14 @@ class Chat_model extends CI_Model
                         'ln_status' => 2, //Published
                         'ln_type_entity_id' => 4231, //Intent Note Messages
                         'ln_child_intent_id' => $ins[0]['in_id'],
-                    ), array(), 0, 0, array('ln_order' => 'ASC')) as $tr) {
+                    ), array(), 0, 0, array('ln_order' => 'ASC')) as $ln) {
                         $this->Chat_model->dispatch_message(
-                            $tr['ln_content'],
+                            $ln['ln_content'],
                             $en,
                             true,
                             array(),
                             array(
-                                'ln_parent_link_id' => $tr['ln_id'],
+                                'ln_parent_link_id' => $ln['ln_id'],
                                 'ln_child_intent_id' => $ins[0]['in_id'],
                             )
                         );

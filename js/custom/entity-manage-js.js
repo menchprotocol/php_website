@@ -244,7 +244,7 @@ $(document).ready(function () {
         // Make a new timeout set to go off in 800ms
         timeout = setTimeout(function () {
             //update type:
-            en_tr_type_preview();
+            en_ln_type_preview();
         }, 610);
     };
 
@@ -390,7 +390,7 @@ function en_load_next_page(page, load_new_filter = 0) {
 }
 
 
-function en_tr_type_preview() {
+function en_ln_type_preview() {
 
     /*
      * Updates the type of link based on the link content
@@ -401,7 +401,7 @@ function en_tr_type_preview() {
 
 
     //Fetch Intent Data to load modify widget:
-    $.post("/entities/en_tr_type_preview", {
+    $.post("/entities/en_ln_type_preview", {
         ln_content: $('#ln_content').val(),
         ln_id: parseInt($('#modifybox').attr('entity-link-id')),
     }, function (data) {
@@ -471,7 +471,7 @@ function en_modify_load(en_id, ln_id) {
         //Update count:
         ln_content_word_count('#ln_content','#charln_contentNum');
         //Also update type:
-        en_tr_type_preview();
+        en_ln_type_preview();
 
     } else {
 
@@ -576,7 +576,7 @@ function en_save_file_upload(droppedFiles, uploadType) {
                     //Update count:
                     ln_content_word_count('#ln_content','#charln_contentNum');
                     //Also update type:
-                    en_tr_type_preview();
+                    en_ln_type_preview();
                 }
 
                 //Unlock form:
@@ -712,7 +712,7 @@ function en_modify_save() {
 
 
                     //Update 2x icons:
-                    $('.tr_type_' + modify_data['ln_id']).html('<span data-toggle="tooltip" data-placement="right" title="' + en_all_4592[data.js_ln_type_entity_id]["m_name"] + ': ' + en_all_4592[data.js_ln_type_entity_id]["m_desc"] + '">' + en_all_4592[data.js_ln_type_entity_id]["m_icon"] + '</span>');
+                    $('.ln_type_' + modify_data['ln_id']).html('<span data-toggle="tooltip" data-placement="right" title="' + en_all_4592[data.js_ln_type_entity_id]["m_name"] + ': ' + en_all_4592[data.js_ln_type_entity_id]["m_desc"] + '">' + en_all_4592[data.js_ln_type_entity_id]["m_icon"] + '</span>');
 
                     //Update status icon:
                     $('.ln_status_' + modify_data['ln_id']).html('<span class="ln_status_val" data-toggle="tooltip" data-placement="right" title="' + object_js_statuses['ln_status'][modify_data['ln_status']]["s_name"] + ': ' + object_js_statuses['ln_status'][modify_data['ln_status']]["s_desc"] + '">' + object_js_statuses['ln_status'][modify_data['ln_status']]["s_icon"] + '</span>');

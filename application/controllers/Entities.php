@@ -210,7 +210,7 @@ class Entities extends CI_Controller
     }
 
 
-    function en_tr_type_preview()
+    function en_ln_type_preview()
     {
 
         if (!isset($_POST['ln_content']) || !isset($_POST['ln_id'])) {
@@ -224,9 +224,9 @@ class Entities extends CI_Controller
         $en_all_4592 = $this->config->item('en_all_4592');
 
         //See what this is:
-        $detected_tr_type = detect_ln_type_entity_id($_POST['ln_content']);
+        $detected_ln_type = detect_ln_type_entity_id($_POST['ln_content']);
 
-        if (!$detected_tr_type['status'] && isset($detected_tr_type['url_already_existed']) && $detected_tr_type['url_already_existed']) {
+        if (!$detected_ln_type['status'] && isset($detected_ln_type['url_already_existed']) && $detected_ln_type['url_already_existed']) {
 
             //See if this is duplicate to either link:
             $en_trs = $this->Database_model->ln_fetch(array(
@@ -235,16 +235,16 @@ class Entities extends CI_Controller
             ));
 
             //Are they both different?
-            if (count($en_trs) < 1 || ($en_trs[0]['ln_parent_entity_id'] != $detected_tr_type['en_url']['en_id'] && $en_trs[0]['ln_child_entity_id'] != $detected_tr_type['en_url']['en_id'])) {
+            if (count($en_trs) < 1 || ($en_trs[0]['ln_parent_entity_id'] != $detected_ln_type['en_url']['en_id'] && $en_trs[0]['ln_child_entity_id'] != $detected_ln_type['en_url']['en_id'])) {
                 //return error:
-                return echo_json($detected_tr_type);
+                return echo_json($detected_ln_type);
             }
         }
 
         return echo_json(array(
             'status' => 1,
-            'html_ui' => '<a href="/entities/' . $detected_tr_type['ln_type_entity_id'] . '" style="font-weight: bold;" data-toggle="tooltip" data-placement="top" title="' . $en_all_4592[$detected_tr_type['ln_type_entity_id']]['m_desc'] . '">' . $en_all_4592[$detected_tr_type['ln_type_entity_id']]['m_icon'] . ' ' . $en_all_4592[$detected_tr_type['ln_type_entity_id']]['m_name'] . '</a>',
-            'en_link_preview' => echo_url_type($_POST['ln_content'], $detected_tr_type['ln_type_entity_id']),
+            'html_ui' => '<a href="/entities/' . $detected_ln_type['ln_type_entity_id'] . '" style="font-weight: bold;" data-toggle="tooltip" data-placement="top" title="' . $en_all_4592[$detected_ln_type['ln_type_entity_id']]['m_desc'] . '">' . $en_all_4592[$detected_ln_type['ln_type_entity_id']]['m_icon'] . ' ' . $en_all_4592[$detected_ln_type['ln_type_entity_id']]['m_name'] . '</a>',
+            'en_link_preview' => echo_url_type($_POST['ln_content'], $detected_ln_type['ln_type_entity_id']),
         ));
     }
 
@@ -600,7 +600,7 @@ class Entities extends CI_Controller
             ));
         }
 
-        $tr_has_updated = false;
+        $ln_has_updated = false;
         $remove_from_ui = 0;
         $remove_redirect_url = null;
         $js_ln_type_entity_id = 0; //Detect link type based on content
@@ -793,22 +793,22 @@ class Entities extends CI_Controller
             } else {
 
                 //Link content has changed:
-                $detected_tr_type = detect_ln_type_entity_id($_POST['ln_content']);
+                $detected_ln_type = detect_ln_type_entity_id($_POST['ln_content']);
 
-                if (!$detected_tr_type['status']) {
+                if (!$detected_ln_type['status']) {
 
-                    return echo_json($detected_tr_type);
+                    return echo_json($detected_ln_type);
 
-                } elseif (in_array($detected_tr_type['ln_type_entity_id'], $this->config->item('en_ids_4537'))) {
+                } elseif (in_array($detected_ln_type['ln_type_entity_id'], $this->config->item('en_ids_4537'))) {
 
                     //This is a URL, validate modification:
 
-                    if ($detected_tr_type['url_is_root']) {
+                    if ($detected_ln_type['url_is_root']) {
 
                         if ($en_trs[0]['ln_parent_entity_id'] == 1326) {
 
                             //Override with the clean domain for consistency:
-                            $_POST['ln_content'] = $detected_tr_type['url_clean_domain'];
+                            $_POST['ln_content'] = $detected_ln_type['url_clean_domain'];
 
                         } else {
 
@@ -829,19 +829,19 @@ class Entities extends CI_Controller
                                 'message' => 'Only domain URLs can be linked to Domain entity.',
                             ));
 
-                        } elseif ($detected_tr_type['en_domain']) {
+                        } elseif ($detected_ln_type['en_domain']) {
                             //We do have the domain mapped! Is this connected to the domain entity as its parent?
-                            if ($detected_tr_type['en_domain']['en_id'] != $en_trs[0]['ln_parent_entity_id']) {
+                            if ($detected_ln_type['en_domain']['en_id'] != $en_trs[0]['ln_parent_entity_id']) {
                                 return echo_json(array(
                                     'status' => 0,
-                                    'message' => 'Must link to <b>@' . $detected_tr_type['en_domain']['en_id'] . ' ' . $detected_tr_type['en_domain']['en_name'] . '</b> as their parent entity',
+                                    'message' => 'Must link to <b>@' . $detected_ln_type['en_domain']['en_id'] . ' ' . $detected_ln_type['en_domain']['en_name'] . '</b> as their parent entity',
                                 ));
                             }
                         } else {
                             //We don't have the domain mapped, this is for sure not allowed:
                             return echo_json(array(
                                 'status' => 0,
-                                'message' => 'Requires a new parent entity for <b>' . $detected_tr_type['url_tld'] . '</b>. Add by pasting URL into the [Add @Entity] input field.',
+                                'message' => 'Requires a new parent entity for <b>' . $detected_ln_type['url_tld'] . '</b>. Add by pasting URL into the [Add @Entity] input field.',
                             ));
                         }
 
@@ -851,7 +851,7 @@ class Entities extends CI_Controller
 
                 //Update variables:
                 $ln_content = $_POST['ln_content'];
-                $js_ln_type_entity_id = $detected_tr_type['ln_type_entity_id'];
+                $js_ln_type_entity_id = $detected_ln_type['ln_type_entity_id'];
             }
 
 
@@ -862,7 +862,7 @@ class Entities extends CI_Controller
                     $remove_from_ui = 1;
                 }
 
-                $tr_has_updated = true;
+                $ln_has_updated = true;
 
                 //Something has changed, log this:
                 $this->Database_model->ln_update($_POST['ln_id'], array(
@@ -910,7 +910,7 @@ class Entities extends CI_Controller
         if (intval($_POST['ln_id']) > 0) {
 
             //Fetch entity link:
-            $trs = $this->Database_model->ln_fetch(array(
+            $lns = $this->Database_model->ln_fetch(array(
                 'ln_id' => $_POST['ln_id'],
             ), array('en_miner'));
 
@@ -950,8 +950,8 @@ class Entities extends CI_Controller
             'title' => 'Managed Intent Notes',
         ));
         echo '<div id="list-messages" class="list-group grey-list">';
-        foreach ($messages as $tr) {
-            echo echo_en_messages($tr);
+        foreach ($messages as $ln) {
+            echo echo_en_messages($ln);
         }
         echo '</div>';
         $this->load->view('view_shared/matrix_footer');
@@ -986,22 +986,22 @@ class Entities extends CI_Controller
         }
 
         //Validate user email:
-        $trs = $this->Database_model->ln_fetch(array(
+        $lns = $this->Database_model->ln_fetch(array(
             'ln_parent_entity_id' => 3288, //Primary email
             'LOWER(ln_content)' => strtolower($_POST['input_email']),
         ));
 
-        if (count($trs) == 0) {
+        if (count($lns) == 0) {
             //Not found!
             return redirect_message('/login', '<div class="alert alert-danger" role="alert">Error: ' . $_POST['input_email'] . ' not found.</div>');
         }
 
         //Fetch full entity data with their active Action Plans:
         $ens = $this->Database_model->en_fetch(array(
-            'en_id' => $trs[0]['ln_child_entity_id'],
+            'en_id' => $lns[0]['ln_child_entity_id'],
         ));
 
-        if ($ens[0]['en_status'] < 0 || $trs[0]['ln_status'] < 0) {
+        if ($ens[0]['en_status'] < 0 || $lns[0]['ln_status'] < 0) {
 
             return redirect_message('/login', '<div class="alert alert-danger" role="alert">Error: Your account has been de-activated. Contact us to re-active your account.</div>');
 
@@ -1202,15 +1202,15 @@ class Entities extends CI_Controller
 
             if (count($login_passwords) > 0) {
 
-                $detected_tr_type = detect_ln_type_entity_id($new_password);
-                if (!$detected_tr_type['status']) {
-                    echo '<div class="alert alert-danger"><i class="fas fa-exclamation-triangle"></i> Error: ' . $detected_tr_type['message'] . '</div>';
+                $detected_ln_type = detect_ln_type_entity_id($new_password);
+                if (!$detected_ln_type['status']) {
+                    echo '<div class="alert alert-danger"><i class="fas fa-exclamation-triangle"></i> Error: ' . $detected_ln_type['message'] . '</div>';
                 }
 
                 //Update existing password:
                 $this->Database_model->ln_update($login_passwords[0]['ln_id'], array(
                     'ln_content' => $new_password,
-                    'ln_type_entity_id' => $detected_tr_type['ln_type_entity_id'],
+                    'ln_type_entity_id' => $detected_ln_type['ln_type_entity_id'],
                 ), $login_passwords[0]['ln_child_entity_id']);
 
             } else {
@@ -1315,16 +1315,16 @@ class Entities extends CI_Controller
         //Validate Parent descriptions:
         foreach ($_POST['source_parent_ens'] as $this_parent_en) {
 
-            $detected_tr_type = detect_ln_type_entity_id($this_parent_en['this_parent_en_desc']);
+            $detected_ln_type = detect_ln_type_entity_id($this_parent_en['this_parent_en_desc']);
 
-            if (!$detected_tr_type['status']) {
+            if (!$detected_ln_type['status']) {
 
                 return echo_json(array(
                     'status' => 0,
-                    'message' => $en_all_3000[$this_parent_en['this_parent_en_id']]['m_name'] . ' description error: ' . $detected_tr_type['message'],
+                    'message' => $en_all_3000[$this_parent_en['this_parent_en_id']]['m_name'] . ' description error: ' . $detected_ln_type['message'],
                 ));
 
-            } elseif (!in_array($detected_tr_type['ln_type_entity_id'], $contributor_type_requirement)) {
+            } elseif (!in_array($detected_ln_type['ln_type_entity_id'], $contributor_type_requirement)) {
 
                 return echo_json(array(
                     'status' => 0,
@@ -1336,7 +1336,7 @@ class Entities extends CI_Controller
             //Add expert source type to parent source array:
             array_push($parent_ens, array(
                 'this_parent_en_id' => $this_parent_en['this_parent_en_id'],
-                'this_parent_en_type' => $detected_tr_type['ln_type_entity_id'],
+                'this_parent_en_type' => $detected_ln_type['ln_type_entity_id'],
                 'this_parent_en_desc' => trim($this_parent_en['this_parent_en_desc']),
             ));
 
@@ -1353,16 +1353,16 @@ class Entities extends CI_Controller
             }
 
             //Validate role information:
-            $detected_role_tr_type = detect_ln_type_entity_id($_POST['auth_role_' . $contributor_num]);
+            $detected_role_ln_type = detect_ln_type_entity_id($_POST['auth_role_' . $contributor_num]);
 
-            if (!$detected_role_tr_type['status']) {
+            if (!$detected_role_ln_type['status']) {
 
                 return echo_json(array(
                     'status' => 0,
-                    'message' => 'Contributor #' . $contributor_num . ' role error: ' . $detected_role_tr_type['message'],
+                    'message' => 'Contributor #' . $contributor_num . ' role error: ' . $detected_role_ln_type['message'],
                 ));
 
-            } elseif (!in_array($detected_role_tr_type['ln_type_entity_id'], $contributor_type_requirement)) {
+            } elseif (!in_array($detected_role_ln_type['ln_type_entity_id'], $contributor_type_requirement)) {
 
                 return echo_json(array(
                     'status' => 0,
@@ -1373,24 +1373,24 @@ class Entities extends CI_Controller
 
 
             //Is this referencing an existing entity or is it a new entity?
-            $tr_en_link_id = 0; //Assume it's a new entity...
+            $ln_en_link_id = 0; //Assume it's a new entity...
 
             if (substr($_POST['contributor_' . $contributor_num], 0, 1) == '@') {
                 $parts = explode(' ', $_POST['contributor_' . $contributor_num]);
-                $tr_en_link_id = intval(str_replace('@', '', $parts[0]));
+                $ln_en_link_id = intval(str_replace('@', '', $parts[0]));
             }
 
-            if ($tr_en_link_id > 0) {
+            if ($ln_en_link_id > 0) {
 
                 //Validate existing entity reference:
                 $referenced_ens = $this->Database_model->en_fetch(array(
                     'en_status >=' => 0, //New+
-                    'en_id' => $tr_en_link_id,
+                    'en_id' => $ln_en_link_id,
                 ));
                 if (count($referenced_ens) < 1) {
                     return echo_json(array(
                         'status' => 0,
-                        'message' => 'Contributor #' . $contributor_num . ' entity ID @' . $tr_en_link_id . ' is invalid',
+                        'message' => 'Contributor #' . $contributor_num . ' entity ID @' . $ln_en_link_id . ' is invalid',
                     ));
                 } elseif(count($this->Database_model->ln_fetch(array( //Make sure this entity is linked to industry experts:
                         'ln_type_entity_id IN (' . join(',', $this->config->item('en_ids_4592')) . ')' => null, //Entity Link Connectors
@@ -1406,8 +1406,8 @@ class Entities extends CI_Controller
 
                 //Add contributor to parent source array:
                 array_push($parent_ens, array(
-                    'this_parent_en_id' => $tr_en_link_id,
-                    'this_parent_en_type' => $detected_role_tr_type['ln_type_entity_id'],
+                    'this_parent_en_id' => $ln_en_link_id,
+                    'this_parent_en_type' => $detected_role_ln_type['ln_type_entity_id'],
                     'this_parent_en_desc' => trim($_POST['auth_role_' . $contributor_num]),
                 ));
 
@@ -1445,16 +1445,16 @@ class Entities extends CI_Controller
                 }
 
                 //Validate Expert summary notes:
-                $detected_tr_type = detect_ln_type_entity_id($_POST['why_expert_' . $contributor_num]);
+                $detected_ln_type = detect_ln_type_entity_id($_POST['why_expert_' . $contributor_num]);
 
-                if (!$detected_tr_type['status']) {
+                if (!$detected_ln_type['status']) {
 
                     return echo_json(array(
                         'status' => 0,
-                        'message' => 'Contributor #' . $contributor_num . ' error: ' . $detected_tr_type['message'],
+                        'message' => 'Contributor #' . $contributor_num . ' error: ' . $detected_ln_type['message'],
                     ));
 
-                } elseif (!in_array($detected_tr_type['ln_type_entity_id'], $contributor_type_requirement)) {
+                } elseif (!in_array($detected_ln_type['ln_type_entity_id'], $contributor_type_requirement)) {
 
                     return echo_json(array(
                         'status' => 0,
@@ -1484,7 +1484,7 @@ class Entities extends CI_Controller
                         'ln_status' => 2, //Published
                         'ln_miner_entity_id' => $session_en['en_id'],
                         'ln_content' => trim($_POST['why_expert_' . $contributor_num]),
-                        'ln_type_entity_id' => $detected_tr_type['ln_type_entity_id'],
+                        'ln_type_entity_id' => $detected_ln_type['ln_type_entity_id'],
                         'ln_parent_entity_id' => 3084, //Industry Experts
                         'ln_child_entity_id' => $sync_contributor['en_url']['en_id'],
                     ), true);
@@ -1493,7 +1493,7 @@ class Entities extends CI_Controller
                 //Add contributor to parent source array:
                 array_push($parent_ens, array(
                     'this_parent_en_id' => $sync_contributor['en_url']['en_id'],
-                    'this_parent_en_type' => $detected_role_tr_type['ln_type_entity_id'],
+                    'this_parent_en_type' => $detected_role_ln_type['ln_type_entity_id'],
                     'this_parent_en_desc' => trim($_POST['auth_role_' . $contributor_num]),
                 ));
 

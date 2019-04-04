@@ -44,8 +44,8 @@ if ($actionplan['ln_status'] == 1) {
 //Fetch parent tree all the way to the top of Action Plan ln_child_intent_id
 echo '<div class="list-group parent-actionplans" style="margin-top: 10px;">';
 if($is_step){
-    foreach ($actionplan_parents as $tr) {
-        echo echo_in_actionplan_step($tr, 1, 1);
+    foreach ($actionplan_parents as $ln) {
+        echo echo_in_actionplan_step($ln, 1, 1);
     }
 } else {
     //Show link to Action Plan if we have 1+ intentions:
@@ -102,9 +102,9 @@ foreach ($this->Database_model->ln_fetch(array(
     'ln_status' => 2, //Published
     'ln_type_entity_id' => 4231, //Intent Note Messages
     'ln_child_intent_id' => $in['in_id'],
-), array(), 0, 0, array('ln_order' => 'ASC')) as $tr) {
+), array(), 0, 0, array('ln_order' => 'ASC')) as $ln) {
     echo '<div class="tip_bubble">';
-    echo $this->Chat_model->dispatch_message($tr['ln_content'], $actionplan);
+    echo $this->Chat_model->dispatch_message($ln['ln_content'], $actionplan);
     echo '</div>';
 }
 
@@ -158,8 +158,8 @@ if ($show_children) {
         if($or_path_chosen){
 
             //List selected response:
-            foreach ($actionplan_children as $tr) {
-                echo echo_in_actionplan_step($tr, 0, 1);
+            foreach ($actionplan_children as $ln) {
+                echo echo_in_actionplan_step($ln, 0, 1);
             }
 
             //Line non-selected responses for FYI purposes:
@@ -169,10 +169,10 @@ if ($show_children) {
                 'ln_type_entity_id' => 4228, //Fixed intent links only
                 'ln_parent_intent_id' => $in['in_id'],
                 'ln_child_intent_id !=' => $actionplan_children[0]['ln_child_intent_id'],
-            ), array('in_child'), 0, 0, array('ln_order' => 'ASC')) as $tr){
+            ), array('in_child'), 0, 0, array('ln_order' => 'ASC')) as $ln){
                 echo '<div class="list-group-item" style="text-decoration: line-through;">';
                 echo '<span class="status-label" style="padding-bottom:1px;"><i class="fal fa-minus-square"></i></span> ';
-                echo echo_in_outcome($tr['in_outcome'], true);
+                echo echo_in_outcome($ln['in_outcome'], true);
                 echo '</div>';
             }
 
@@ -198,8 +198,8 @@ if ($show_children) {
                 'in_status' => 2, //Published
                 'ln_type_entity_id' => 4228, //Fixed intent links only
                 'ln_parent_intent_id' => $in['in_id'],
-            ), array('in_child'), 0, 0, array('ln_order' => 'ASC')) as $tr) {
-                echo echo_in_actionplan_or_choose($in['in_id'], $actionplan['ln_parent_link_id'], $tr);
+            ), array('in_child'), 0, 0, array('ln_order' => 'ASC')) as $ln) {
+                echo echo_in_actionplan_or_choose($in['in_id'], $actionplan['ln_parent_link_id'], $ln);
             }
 
         }
@@ -208,11 +208,11 @@ if ($show_children) {
 
         //AND branch:
         $incomplete_step = 0;
-        foreach ($actionplan_children as $tr) {
-            if($tr['ln_status'] < 2){
+        foreach ($actionplan_children as $ln) {
+            if($ln['ln_status'] < 2){
                 $incomplete_step++;
             }
-            echo echo_in_actionplan_step($tr, 0, ( $force_linear ? $incomplete_step : 1 ));
+            echo echo_in_actionplan_step($ln, 0, ( $force_linear ? $incomplete_step : 1 ));
         }
 
     }

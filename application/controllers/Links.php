@@ -114,16 +114,16 @@ class Links extends CI_Controller
     {
 
         //Fetch link metadata and display it:
-        $trs = $this->Database_model->ln_fetch(array(
+        $lns = $this->Database_model->ln_fetch(array(
             'ln_id' => $ln_id,
         ));
 
-        if (count($trs) < 1) {
+        if (count($lns) < 1) {
             return echo_json(array(
                 'status' => 0,
                 'message' => 'Invalid Link ID',
             ));
-        } elseif(in_array($trs[0]['ln_type_entity_id'] , $this->config->item('en_ids_4755')) /* Link Type is locked */ && !en_auth(array(1281)) /* Viewer NOT a moderator */){
+        } elseif(in_array($lns[0]['ln_type_entity_id'] , $this->config->item('en_ids_4755')) /* Link Type is locked */ && !en_auth(array(1281)) /* Viewer NOT a moderator */){
             return echo_json(array(
                 'status' => 0,
                 'message' => 'Link content visible to moderators only',
@@ -136,12 +136,12 @@ class Links extends CI_Controller
         } else {
 
             //unserialize metadata if needed:
-            if(strlen($trs[0]['ln_metadata']) > 0){
-                $trs[0]['ln_metadata'] = unserialize($trs[0]['ln_metadata']);
+            if(strlen($lns[0]['ln_metadata']) > 0){
+                $lns[0]['ln_metadata'] = unserialize($lns[0]['ln_metadata']);
             }
 
             //Print on scree:
-            echo_json($trs[0]);
+            echo_json($lns[0]);
 
         }
     }
@@ -218,7 +218,7 @@ class Links extends CI_Controller
         //return echo_json($all_engs);
 
         //Give option to select:
-        foreach ($all_engs as $tr) {
+        foreach ($all_engs as $ln) {
 
             //DOes it have a rate?
             $rate_trs = $this->Database_model->ln_fetch(array(
@@ -226,12 +226,12 @@ class Links extends CI_Controller
                 'en_status' => 2, //Published
                 'ln_type_entity_id' => 4319, //Number
                 'ln_parent_entity_id' => 4595, //Link Points
-                'ln_child_entity_id' => $tr['ln_type_entity_id'],
+                'ln_child_entity_id' => $ln['ln_type_entity_id'],
             ), array('en_child'), 1);
 
             if(count($rate_trs) > 0){
                 //Issue coins at this rate:
-                $this->db->query("UPDATE table_links SET ln_points = '".$rate_trs[0]['ln_content']."' WHERE ln_type_entity_id = " . $tr['ln_type_entity_id']);
+                $this->db->query("UPDATE table_links SET ln_points = '".$rate_trs[0]['ln_content']."' WHERE ln_type_entity_id = " . $ln['ln_type_entity_id']);
             }
 
         }

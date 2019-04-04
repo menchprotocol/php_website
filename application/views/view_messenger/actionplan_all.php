@@ -5,14 +5,14 @@
 
 //Student has multiple Action Plans, so list all Action Plans to enable Student to choose:
 echo '<div class="list-group actionplan-sort" style="margin-top: 10px;">';
-foreach ($student_intents as $tr) {
+foreach ($student_intents as $ln) {
 
     //Display row:
-    echo '<a href="/messenger/actionplan/' . $tr['ln_child_intent_id'] . '" class="list-group-item">';
+    echo '<a href="/messenger/actionplan/' . $ln['ln_child_intent_id'] . '" class="list-group-item">';
 
     //Right:
     echo '<span class="pull-right">';
-        $time_estimate = echo_time_range($tr, true);
+        $time_estimate = echo_time_range($ln, true);
         if ($time_estimate) {
             echo $time_estimate . ' <i class="fal fa-alarm-clock"></i> ';
         }
@@ -21,8 +21,8 @@ foreach ($student_intents as $tr) {
 
     //Left:
     echo '<i class="fas fa-sort"></i>'; //For sorting Action Plan
-    //echo echo_fixed_fields('ln_status', $tr['ln_status'], 1, 'right');
-    echo '<span class="actionplan-title">' . $tr['in_outcome'] . '</span>';
+    //echo echo_fixed_fields('ln_status', $ln['ln_status'], 1, 'right');
+    echo '<span class="actionplan-title">' . $ln['in_outcome'] . '</span>';
 
 
     echo '</a>';

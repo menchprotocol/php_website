@@ -331,17 +331,17 @@ class Database_model extends CI_Model
                 $html_message = '<div>' . ( strlen($insert_columns['ln_content']) > 0 ? $insert_columns['ln_content'] : '<i>No link content</i>') . '</div><br />';
 
                 //Append link object links:
-                foreach ($this->config->item('tr_object_links') as $tr_field => $obj_type) {
-                   if (intval($insert_columns[$tr_field]) > 0) {
+                foreach ($this->config->item('tr_object_links') as $ln_field => $obj_type) {
+                   if (intval($insert_columns[$ln_field]) > 0) {
 
                        //Generate a clean name for this link field:
-                       $clean_name = ucwords(str_replace('_', ' ', str_replace('_id', '', str_replace('tr_', 'Link ', $tr_field))));
+                       $clean_name = ucwords(str_replace('_', ' ', str_replace('_id', '', str_replace('ln_', 'Link ', $ln_field))));
 
                        if ($obj_type == 'in') {
 
                            //Fetch Intent:
                            $ins = $this->Database_model->in_fetch(array(
-                               'in_id' => $insert_columns[$tr_field],
+                               'in_id' => $insert_columns[$ln_field],
                            ));
                            $html_message .= '<div>' . $clean_name . ': <a href="https://mench.com/intents/' . $ins[0]['in_id'] . '" target="_parent">#'.$ins[0]['in_id'].' '.$ins[0]['in_outcome'].'</a></div>';
 
@@ -349,14 +349,14 @@ class Database_model extends CI_Model
 
                            //Fetch entity:
                            $ens = $this->Database_model->en_fetch(array(
-                               'en_id' => $insert_columns[$tr_field],
+                               'en_id' => $insert_columns[$ln_field],
                            ));
                            $html_message .= '<div>' . $clean_name . ': <a href="https://mench.com/entities/' . $ens[0]['en_id'] . '" target="_parent">@'.$ens[0]['en_id'].' '.$ens[0]['en_name'].'</a></div>';
 
                        } elseif ($obj_type == 'ln') {
 
                            //Include link:
-                           $html_message .= '<div>' . $clean_name . ' ID: <a href="https://mench.com/links?ln_id=' . $insert_columns[$tr_field] . '" target="_parent">'.$insert_columns[$tr_field].'</a></div>';
+                           $html_message .= '<div>' . $clean_name . ' ID: <a href="https://mench.com/links?ln_id=' . $insert_columns[$ln_field] . '" target="_parent">'.$insert_columns[$ln_field].'</a></div>';
 
                        }
                    }
@@ -779,7 +779,7 @@ class Database_model extends CI_Model
                         'ln_parent_link_id' => $id, //Link Reference
                         'ln_miner_entity_id' => $ln_miner_entity_id,
                         'ln_type_entity_id' => 4242, //Link Attribute Modified
-                        'ln_content' => 'Link ' . ucwords(str_replace('_', ' ', str_replace('tr_', '', $key))) . ' changed from "' . ( $key=='ln_status' ? $fixed_fields['ln_status'][$before_data[0][$key]]['s_name']  : $before_data[0][$key] ) . '" to "' . ( $key=='ln_status' ? $fixed_fields['ln_status'][$value]['s_name']  : $value ) . '"',
+                        'ln_content' => 'Link ' . ucwords(str_replace('_', ' ', str_replace('ln_', '', $key))) . ' changed from "' . ( $key=='ln_status' ? $fixed_fields['ln_status'][$before_data[0][$key]]['s_name']  : $before_data[0][$key] ) . '" to "' . ( $key=='ln_status' ? $fixed_fields['ln_status'][$value]['s_name']  : $value ) . '"',
                         'ln_metadata' => array(
                             'ln_id' => $id,
                             'field' => $key,
@@ -984,14 +984,14 @@ class Database_model extends CI_Model
 
                     //Add keywords:
                     $export_row['alg_obj_keywords'] = '';
-                    foreach ($db_row['en__parents'] as $tr) {
+                    foreach ($db_row['en__parents'] as $ln) {
 
                         //Always add to tags:
-                        array_push($export_row['_tags'], 'tag_en_parent_' . $tr['en_id']);
+                        array_push($export_row['_tags'], 'tag_en_parent_' . $ln['en_id']);
 
                         //Add content to keywords if any:
-                        if (strlen($tr['ln_content']) > 0) {
-                            $export_row['alg_obj_keywords'] .= $tr['ln_content'] . ' ';
+                        if (strlen($ln['ln_content']) > 0) {
+                            $export_row['alg_obj_keywords'] .= $ln['ln_content'] . ' ';
                         }
                     }
                     $export_row['alg_obj_keywords'] = trim(strip_tags($export_row['alg_obj_keywords']));
@@ -1012,16 +1012,16 @@ class Database_model extends CI_Model
 
                     //Add parent/child tags: (No use for now, so will remove this) (If wanted to include again, add "in__parents" to intent query)
                     /*
-                    foreach ($db_row['in__parents'] as $tr) {
+                    foreach ($db_row['in__parents'] as $ln) {
                         //Always add to tags:
-                        array_push($export_row['_tags'], 'tag_in_parent_' . $tr['in_id']);
+                        array_push($export_row['_tags'], 'tag_in_parent_' . $ln['in_id']);
                     }
                     */
 
                     //Add keywords:
                     $export_row['alg_obj_keywords'] = '';
-                    foreach ($db_row['in__messages'] as $tr) {
-                        $export_row['alg_obj_keywords'] .= $tr['ln_content'] . ' ';
+                    foreach ($db_row['in__messages'] as $ln) {
+                        $export_row['alg_obj_keywords'] .= $ln['ln_content'] . ' ';
                     }
                     $export_row['alg_obj_keywords'] = trim(strip_tags($export_row['alg_obj_keywords']));
 

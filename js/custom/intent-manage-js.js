@@ -776,7 +776,7 @@ function in_modify_save() {
                 //Did the Link update?
                 if (modify_data['ln_id'] > 0) {
 
-                    $('.tr_type_' + modify_data['ln_id']).html('<span data-toggle="tooltip" data-placement="right" title="'+ en_all_4486[modify_data['ln_type_entity_id']]["m_name"] + ': '+ en_all_4486[modify_data['ln_type_entity_id']]["m_desc"] + '">'+ en_all_4486[modify_data['ln_type_entity_id']]["m_icon"] +'</span>');
+                    $('.ln_type_' + modify_data['ln_id']).html('<span data-toggle="tooltip" data-placement="right" title="'+ en_all_4486[modify_data['ln_type_entity_id']]["m_name"] + ': '+ en_all_4486[modify_data['ln_type_entity_id']]["m_desc"] + '">'+ en_all_4486[modify_data['ln_type_entity_id']]["m_icon"] +'</span>');
 
                     $('.ln_status_' + modify_data['ln_id']).html('<span class="ln_status_val" data-toggle="tooltip" data-placement="right" title="'+ object_js_statuses['ln_status'][modify_data['ln_status']]["s_name"] + ': '+ object_js_statuses['ln_status'][modify_data['ln_status']]["s_desc"] + '">'+ object_js_statuses['ln_status'][modify_data['ln_status']]["s_icon"] +'</span>');
 

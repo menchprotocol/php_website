@@ -326,13 +326,13 @@ if(!$has_filters){
                 $start_date = date("Y-m-d" , (time() - ($days_ago * 24 * 3600)));
                 $filters['ln_timestamp >='] = $start_date.' 00:00:00'; //From beginning of the day
             }
-            foreach ($this->Database_model->ln_fetch($filters, array('en_miner'), $top, 0, array('points_sum' => 'DESC'), 'COUNT(ln_miner_entity_id) as trs_count, SUM(ln_points) as points_sum, en_name, en_icon, ln_miner_entity_id', 'ln_miner_entity_id, en_name, en_icon') as $count=>$tr) {
+            foreach ($this->Database_model->ln_fetch($filters, array('en_miner'), $top, 0, array('points_sum' => 'DESC'), 'COUNT(ln_miner_entity_id) as trs_count, SUM(ln_points) as points_sum, en_name, en_icon, ln_miner_entity_id', 'ln_miner_entity_id, en_name, en_icon') as $count=>$ln) {
                 $top_miners .= '<tr>';
-                $top_miners .= '<td style="text-align: left;"><span style="width:29px; display: inline-block; text-align: center; '.( $count > 2 ? 'font-size:0.8em;' : '' ).'">'.echo_rank($count+1).'</span><span class="parent-icon" style="width: 29px; display: inline-block; text-align: center;">'.( strlen($tr['en_icon']) > 0 ? $tr['en_icon'] : '<i class="fas fa-at grey-at"></i>' ).'</span><a href="/entities/'.$tr['ln_miner_entity_id'].'">'.$tr['en_name'].'</a></td>';
-                $top_miners .= '<td style="text-align: right;"><a href="/links?ln_miner_entity_id='.$tr['ln_miner_entity_id'].( is_null($days_ago) ? '' : '&start_range='.$start_date ).'"  data-toggle="tooltip" title="Mined with '.number_format($tr['trs_count'],0).' links averaging '.round(($tr['points_sum']/$tr['trs_count']),1).' coins/link" data-placement="top">'.number_format($tr['points_sum'], 0).'</a> <i class="fas fa-award"></i></td>';
+                $top_miners .= '<td style="text-align: left;"><span style="width:29px; display: inline-block; text-align: center; '.( $count > 2 ? 'font-size:0.8em;' : '' ).'">'.echo_rank($count+1).'</span><span class="parent-icon" style="width: 29px; display: inline-block; text-align: center;">'.( strlen($ln['en_icon']) > 0 ? $ln['en_icon'] : '<i class="fas fa-at grey-at"></i>' ).'</span><a href="/entities/'.$ln['ln_miner_entity_id'].'">'.$ln['en_name'].'</a></td>';
+                $top_miners .= '<td style="text-align: right;"><a href="/links?ln_miner_entity_id='.$ln['ln_miner_entity_id'].( is_null($days_ago) ? '' : '&start_range='.$start_date ).'"  data-toggle="tooltip" title="Mined with '.number_format($ln['trs_count'],0).' links averaging '.round(($ln['points_sum']/$ln['trs_count']),1).' coins/link" data-placement="top">'.number_format($ln['points_sum'], 0).'</a> <i class="fas fa-award"></i></td>';
                 $top_miners .= '</tr>';
 
-                $top_point_awarded += $tr['points_sum'];
+                $top_point_awarded += $ln['points_sum'];
             }
             $top_miners .= '<tr style="font-weight: bold;">';
             $top_miners .= '<td style="text-align: left;"><span style="width: 26px; display: inline-block; text-align: center;"><i class="fas fa-asterisk"></i></span>Top '.$top.' Miners:</td>';
@@ -346,16 +346,16 @@ if(!$has_filters){
             $all_eng_types = $this->Database_model->ln_fetch(array('ln_status >=' => 0), array('en_type'), 0, 0, array('en_name' => 'ASC'), 'COUNT(ln_type_entity_id) as trs_count, en_name, en_icon, ln_type_entity_id', 'ln_type_entity_id, en_name, en_icon');
 
             $all_link_count = 0;
-            $all_tr_types = '';
-            foreach ($all_eng_types as $tr) {
+            $all_ln_types = '';
+            foreach ($all_eng_types as $ln) {
 
                 //Echo stats:
-                $all_tr_types .= '<tr>';
-                $all_tr_types .= '<td style="text-align: left;"><span style="width: 26px; display: inline-block; text-align: center;">'.( strlen($tr['en_icon']) > 0 ? $tr['en_icon'] : '<i class="fas fa-at grey-at"></i>' ).'</span><a href="/entities/'.$tr['ln_type_entity_id'].'">'.$tr['en_name'].'</a></td>';
-                $all_tr_types .= '<td style="text-align: right;"><a href="/links?ln_type_entity_id='.$tr['ln_type_entity_id'].'"  data-toggle="tooltip" title="View all '.number_format($tr['trs_count'],0).' links" data-placement="top">'.number_format($tr['trs_count'], 0).'</a> <i class="fas fa-link rotate90"></i></td>';
-                $all_tr_types .= '</tr>';
+                $all_ln_types .= '<tr>';
+                $all_ln_types .= '<td style="text-align: left;"><span style="width: 26px; display: inline-block; text-align: center;">'.( strlen($ln['en_icon']) > 0 ? $ln['en_icon'] : '<i class="fas fa-at grey-at"></i>' ).'</span><a href="/entities/'.$ln['ln_type_entity_id'].'">'.$ln['en_name'].'</a></td>';
+                $all_ln_types .= '<td style="text-align: right;"><a href="/links?ln_type_entity_id='.$ln['ln_type_entity_id'].'"  data-toggle="tooltip" title="View all '.number_format($ln['trs_count'],0).' links" data-placement="top">'.number_format($ln['trs_count'], 0).'</a> <i class="fas fa-link rotate90"></i></td>';
+                $all_ln_types .= '</tr>';
 
-                $all_link_count += $tr['trs_count'];
+                $all_link_count += $ln['trs_count'];
 
             }
 
@@ -367,8 +367,8 @@ if(!$has_filters){
             ), array('en_type'), 0, 0, array('en_name' => 'ASC'), 'COUNT(ln_type_entity_id) as trs_count, SUM(ln_points) as points_sum, en_name, en_icon, ln_type_entity_id', 'ln_type_entity_id, en_name, en_icon');
 
             $all_point_payouts = 0;
-            $point_tr_types = '';
-            foreach ($all_engs as $tr) {
+            $point_ln_types = '';
+            foreach ($all_engs as $ln) {
 
                 //DOes it have a rate?
                 //TODO use PHP cache version, dont make a call
@@ -377,29 +377,29 @@ if(!$has_filters){
                     'en_status' => 2, //Published
                     'ln_parent_entity_id' => 4595, //Link Points
                     'ln_type_entity_id IN (' . join(',', $this->config->item('en_ids_4592')) . ')' => null, //Entity Link Connectors
-                    'ln_child_entity_id' => $tr['ln_type_entity_id'],
+                    'ln_child_entity_id' => $ln['ln_type_entity_id'],
                 ), array('en_child'), 1);
 
                 //Echo stats:
-                $point_tr_types .= '<tr>';
-                $point_tr_types .= '<td style="text-align: left;"><span style="width: 26px; display: inline-block; text-align: center;">'.( strlen($tr['en_icon']) > 0 ? $tr['en_icon'] : '<i class="fas fa-at grey-at"></i>' ).'</span><a href="/entities/'.$tr['ln_type_entity_id'].'">'.$tr['en_name'].'</a>'.( count($rate_trs) > 0 ? '<span class="underdot" data-toggle="tooltip" title="Each link currently issues '.$rate_trs[0]['ln_content'].' coins" data-placement="top" style="font-size:0.7em; margin-left:5px;">'.number_format($rate_trs[0]['ln_content'],0).'<i class="fas fa-award" style="margin-left: 2px;"></i></span>' : '' ).'</td>';
-                $point_tr_types .= '<td style="text-align: right;"><a href="/links?ln_type_entity_id='.$tr['ln_type_entity_id'].'"  data-toggle="tooltip" title="View all '.number_format($tr['trs_count'],0).' links" data-placement="top">'.number_format($tr['points_sum'], 0).'</a> <i class="fas fa-award"></i></td>';
-                $point_tr_types .= '</tr>';
+                $point_ln_types .= '<tr>';
+                $point_ln_types .= '<td style="text-align: left;"><span style="width: 26px; display: inline-block; text-align: center;">'.( strlen($ln['en_icon']) > 0 ? $ln['en_icon'] : '<i class="fas fa-at grey-at"></i>' ).'</span><a href="/entities/'.$ln['ln_type_entity_id'].'">'.$ln['en_name'].'</a>'.( count($rate_trs) > 0 ? '<span class="underdot" data-toggle="tooltip" title="Each link currently issues '.$rate_trs[0]['ln_content'].' coins" data-placement="top" style="font-size:0.7em; margin-left:5px;">'.number_format($rate_trs[0]['ln_content'],0).'<i class="fas fa-award" style="margin-left: 2px;"></i></span>' : '' ).'</td>';
+                $point_ln_types .= '<td style="text-align: right;"><a href="/links?ln_type_entity_id='.$ln['ln_type_entity_id'].'"  data-toggle="tooltip" title="View all '.number_format($ln['trs_count'],0).' links" data-placement="top">'.number_format($ln['points_sum'], 0).'</a> <i class="fas fa-award"></i></td>';
+                $point_ln_types .= '</tr>';
 
-                $all_point_payouts += $tr['points_sum'];
+                $all_point_payouts += $ln['points_sum'];
 
             }
 
-            $point_tr_types .= '<tr style="font-weight: bold;">';
-            $point_tr_types .= '<td style="text-align: left;"><span style="width: 26px; display: inline-block; text-align: center;"><i class="fas fa-asterisk"></i></span>'.count($all_engs).' Link Types:</td>';
-            $point_tr_types .= '<td style="text-align: right;">'.number_format($all_point_payouts, 0).' <i class="fas fa-award"></i></td>';
-            $point_tr_types .= '</tr>';
+            $point_ln_types .= '<tr style="font-weight: bold;">';
+            $point_ln_types .= '<td style="text-align: left;"><span style="width: 26px; display: inline-block; text-align: center;"><i class="fas fa-asterisk"></i></span>'.count($all_engs).' Link Types:</td>';
+            $point_ln_types .= '<td style="text-align: right;">'.number_format($all_point_payouts, 0).' <i class="fas fa-award"></i></td>';
+            $point_ln_types .= '</tr>';
 
 
             //Report types:
             echo '<select id="tr_group_by" class="form-control border stats-select">';
             echo '<option value="by_ln_status">Group By: 4 Statuses</option>';
-            echo '<option value="by_tr_type">Group By: '.count($all_eng_types).' Link Types</option>';
+            echo '<option value="by_ln_type">Group By: '.count($all_eng_types).' Link Types</option>';
             echo '<option value="by_tr_point_types">List Subset: '.echo_number($all_point_payouts).' Link Points</option>';
             echo '<option value="by_tr_top_miners">List Subset: '.$top.' Top Miners</option>';
             echo '</select>';
@@ -410,8 +410,8 @@ if(!$has_filters){
             echo '</table>';
 
             //Link Types:
-            echo '<table class="table table-condensed table-striped stats-table mini-stats-table tr_group_by by_tr_type hidden">';
-            echo $all_tr_types;
+            echo '<table class="table table-condensed table-striped stats-table mini-stats-table tr_group_by by_ln_type hidden">';
+            echo $all_ln_types;
             echo '</table>';
 
             //Point Top Miners:
@@ -422,7 +422,7 @@ if(!$has_filters){
 
             //Point Link Types
             echo '<table class="table table-condensed table-striped stats-table tr_group_by by_tr_point_types hidden">';
-            echo $point_tr_types;
+            echo $point_ln_types;
             echo '</table>';
 
 
@@ -639,8 +639,8 @@ $all_engs = $this->Database_model->ln_fetch($ini_filter, array('en_type'), 0, 0,
 if(isset($_GET['ln_type_entity_id'])){
 
     $found = false;
-    foreach ($all_engs as $tr) {
-        if($_GET['ln_type_entity_id'] == $tr['ln_type_entity_id']){
+    foreach ($all_engs as $ln) {
+        if($_GET['ln_type_entity_id'] == $ln['ln_type_entity_id']){
             $found = true;
             break;
         }
@@ -679,8 +679,8 @@ if(!en_auth(array(1281))){
     }
 }
 
-$trs_count = $this->Database_model->ln_fetch($filters, $join_by, 0, 0, array(), 'COUNT(ln_id) as trs_count, SUM(ln_points) as points_sum');
-$trs = $this->Database_model->ln_fetch($filters, $join_by, (is_dev() ? 50 : 200));
+$lns_count = $this->Database_model->ln_fetch($filters, $join_by, 0, 0, array(), 'COUNT(ln_id) as trs_count, SUM(ln_points) as points_sum');
+$lns = $this->Database_model->ln_fetch($filters, $join_by, (is_dev() ? 50 : 200));
 
 
 
@@ -710,11 +710,11 @@ echo '<table class="table table-condensed maxout"><tr>';
     $all_link_count = 0;
     $all_points = 0;
     $select_ui = '';
-    foreach ($all_engs as $tr) {
+    foreach ($all_engs as $ln) {
         //Echo drop down:
-        $select_ui .= '<option value="' . $tr['ln_type_entity_id'] . '" ' . ((isset($_GET['ln_type_entity_id']) && $_GET['ln_type_entity_id'] == $tr['ln_type_entity_id']) ? 'selected="selected"' : '') . '>' . $tr['en_name'] . ' ('  . echo_number($tr['trs_count']) . 'T' . ' = '.echo_number($tr['points_sum']).'C' . ')</option>';
-        $all_link_count += $tr['trs_count'];
-        $all_points += $tr['points_sum'];
+        $select_ui .= '<option value="' . $ln['ln_type_entity_id'] . '" ' . ((isset($_GET['ln_type_entity_id']) && $_GET['ln_type_entity_id'] == $ln['ln_type_entity_id']) ? 'selected="selected"' : '') . '>' . $ln['en_name'] . ' ('  . echo_number($ln['trs_count']) . 'T' . ' = '.echo_number($ln['points_sum']).'C' . ')</option>';
+        $all_link_count += $ln['trs_count'];
+        $all_points += $ln['points_sum'];
     }
 
     echo '<td>';
@@ -818,7 +818,7 @@ echo '</div>';
 
 if($has_filters){
     //Display Links:
-    echo '<p style="margin: 10px 0 0 0;">Showing '.count($trs) . ( $trs_count[0]['trs_count'] > count($trs) ? ' of '. number_format($trs_count[0]['trs_count'] , 0) : '' ) .' links with '.number_format($trs_count[0]['points_sum'], 0).' awarded coins:</p>';
+    echo '<p style="margin: 10px 0 0 0;">Showing '.count($lns) . ( $lns_count[0]['trs_count'] > count($lns) ? ' of '. number_format($lns_count[0]['trs_count'] , 0) : '' ) .' links with '.number_format($lns_count[0]['points_sum'], 0).' awarded coins:</p>';
 }
 
 if($filter_note){
@@ -829,10 +829,10 @@ if($filter_note){
 echo '<div class="row">';
     echo '<div class="col-md-7">';
 
-        if(count($trs)>0){
+        if(count($lns)>0){
             echo '<div class="list-group list-grey">';
-            foreach ($trs as $tr) {
-                echo echo_tr_row($tr);
+            foreach ($lns as $ln) {
+                echo echo_tr_row($ln);
             }
             echo '</div>';
         } else {

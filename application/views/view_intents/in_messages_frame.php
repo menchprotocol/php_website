@@ -17,17 +17,17 @@ $metadatas = $this->Database_model->ln_fetch(array(
 //To be populated:
 $counters = array();
 $metadata_body_ui = '';
-foreach ($metadatas as $tr) {
+foreach ($metadatas as $ln) {
 
-    $metadata_body_ui .= echo_in_message_manage(array_merge($tr, array(
+    $metadata_body_ui .= echo_in_message_manage(array_merge($ln, array(
         'ln_child_entity_id' => $session_en['en_id'],
     )));
 
     //Increase counter:
-    if (isset($counters[$tr['ln_type_entity_id']])) {
-        $counters[$tr['ln_type_entity_id']]++;
+    if (isset($counters[$ln['ln_type_entity_id']])) {
+        $counters[$ln['ln_type_entity_id']]++;
     } else {
-        $counters[$tr['ln_type_entity_id']] = 1;
+        $counters[$ln['ln_type_entity_id']] = 1;
     }
 
 }
