@@ -29,7 +29,7 @@ if ($is_step) {
 $next_button = null;
 if ($actionplan['tr_status'] == 1) {
     //Active Action Plan, attempt to find next item, which we should be able to find:
-    $next_ins = $this->Matrix_model->actionplan_fetch_next($actionplan['tr_parent_transaction_id']);
+    $next_ins = $this->Matrix_model->actionplan_fetch_next($actionplan['tr_parent_link_id']);
     if ($next_ins) {
         if ($next_ins[0]['in_id'] == $in['in_id']) {
             //$next_button = '<span style="font-size: 0.7em; padding-left:5px; display:inline-block;"><i class="fas fa-shield-check"></i> This is the next-in-line intent</span>';
@@ -199,7 +199,7 @@ if ($show_children) {
                 'tr_type_entity_id' => 4228, //Fixed intent links only
                 'tr_parent_intent_id' => $in['in_id'],
             ), array('in_child'), 0, 0, array('tr_order' => 'ASC')) as $tr) {
-                echo echo_in_actionplan_or_choose($in['in_id'], $actionplan['tr_parent_transaction_id'], $tr);
+                echo echo_in_actionplan_or_choose($in['in_id'], $actionplan['tr_parent_link_id'], $tr);
             }
 
         }

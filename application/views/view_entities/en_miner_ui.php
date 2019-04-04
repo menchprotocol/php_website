@@ -148,7 +148,7 @@
 
                 } elseif($action_en_id == 5865){
 
-                    //Pattern Status update:
+                    //Link Status update:
 
                     //Find:
                     $input_options .= '<select name="mass_value1_'.$action_en_id.'" class="form-control border">';
@@ -294,14 +294,14 @@
 
                             <div class="title">
                                 <h4>
-                                    <i class="fas fa-link rotate90"></i> Pattern Settings
+                                    <i class="fas fa-link rotate90"></i> Link Settings
                                 </h4>
                             </div>
 
                             <div class="inline-box">
 
                                 <div class="en-no-tr hidden">
-                                    <p>No transaction available as your viewing the entity itself.</p>
+                                    <p>No link available as your viewing the entity itself.</p>
                                 </div>
 
                                 <div class="en-has-tr">
@@ -330,8 +330,8 @@
                                     <p id="en_link_preview"></p>
 
 
-                                    <span class="mini-header">Pattern Status:</span>
-                                    <select class="form-control border" id="tr_status" data-toggle="tooltip" title="Pattern Status" data-placement="top">
+                                    <span class="mini-header">Link Status:</span>
+                                    <select class="form-control border" id="tr_status" data-toggle="tooltip" title="Link Status" data-placement="top">
                                         <?php
                                         foreach (echo_fixed_fields('tr_status') as $status_id => $status) {
                                             if($status_id < 3){ //No need to verify entity links!

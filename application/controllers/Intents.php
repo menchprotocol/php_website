@@ -138,7 +138,7 @@ class Intents extends CI_Controller
             return redirect_message('/intents/' . $this->config->item('in_miner_start'), '<div class="alert alert-danger" role="alert">Intent #' . $in_id . ' not found</div>');
         }
 
-        //Update session count and log transaction:
+        //Update session count and log link:
         $new_order = ( $this->session->userdata('miner_session_count') + 1 );
         $this->session->set_userdata('miner_session_count', $new_order);
         $this->Database_model->tr_create(array(
@@ -245,7 +245,7 @@ class Intents extends CI_Controller
         }
 
 
-        //Fetch all three intents to ensure they are all valid and use them for transaction logging:
+        //Fetch all three intents to ensure they are all valid and use them for link logging:
         $this_in = $this->Database_model->in_fetch(array(
             'in_id' => intval($_POST['in_id']),
         ));
@@ -328,7 +328,7 @@ class Intents extends CI_Controller
         } elseif (intval($_POST['level'])==1 && intval($_POST['tr_id'])>0) {
             return echo_json(array(
                 'status' => 0,
-                'message' => 'Level 1 intent should not have a transaction',
+                'message' => 'Level 1 intent should not have a link',
             ));
         } elseif (!isset($_POST['tr__conditional_score_min']) || !isset($_POST['tr__conditional_score_max'])) {
             return echo_json(array(
@@ -574,16 +574,16 @@ class Intents extends CI_Controller
 
 
 
-        //Assume transaction is not updated:
-        $transaction_was_updated = false;
+        //Assume link is not updated:
+        $link_was_updated = false;
 
-        //Does this request has an intent transaction?
+        //Does this request has an intent link?
         if($tr_id > 0){
 
-            //Validate Pattern and inputs:
+            //Validate Link and inputs:
             $trs = $this->Database_model->tr_fetch(array(
                 'tr_id' => $tr_id,
-                'tr_type_entity_id IN (' . join(',', $this->config->item('en_ids_4486')) . ')' => null, //Intent Link Types
+                'tr_type_entity_id IN (' . join(',', $this->config->item('en_ids_4486')) . ')' => null, //Intent Link Connectors
                 'tr_status >=' => 0, //New+
             ), array(( $_POST['is_parent'] ? 'in_child' : 'in_parent')));
             if(count($trs) < 1){
@@ -649,8 +649,8 @@ class Intents extends CI_Controller
             //Prep variables:
             $tr_metadata = ( strlen($trs[0]['tr_metadata']) > 0 ? unserialize($trs[0]['tr_metadata']) : array() );
 
-            //Check to see if anything changed in the transaction?
-            $transaction_meta_updated = ( (($tr_update['tr_type_entity_id'] == 4228 && (
+            //Check to see if anything changed in the link?
+            $link_meta_updated = ( (($tr_update['tr_type_entity_id'] == 4228 && (
                         !isset($tr_metadata['tr__assessment_points']) ||
                         !(intval($tr_metadata['tr__assessment_points'])==intval($_POST['tr__assessment_points']))
                     ))) || (($tr_update['tr_type_entity_id'] == 4229 && (
@@ -681,16 +681,16 @@ class Intents extends CI_Controller
             }
 
             //Was anything updated?
-            if(count($tr_update) > 0 || $transaction_meta_updated){
-                $transaction_was_updated = true;
+            if(count($tr_update) > 0 || $link_meta_updated){
+                $link_was_updated = true;
             }
 
 
 
             //Did anything change?
-            if( $transaction_was_updated ){
+            if( $link_was_updated ){
 
-                if($transaction_meta_updated && (!isset($tr_update['tr_status']) || $tr_update['tr_status'] >= 0)){
+                if($link_meta_updated && (!isset($tr_update['tr_status']) || $tr_update['tr_status'] >= 0)){
                     $tr_update['tr_metadata'] = array_merge( $tr_metadata, array(
                         'tr__conditional_score_min' => doubleval($_POST['tr__conditional_score_min']),
                         'tr__conditional_score_max' => doubleval($_POST['tr__conditional_score_max']),
@@ -702,7 +702,7 @@ class Intents extends CI_Controller
                 $tr_update['tr_timestamp'] = date("Y-m-d H:i:s");
                 $tr_update['tr_miner_entity_id'] = $session_en['en_id'];
 
-                //Update transactions:
+                //Update links:
                 $this->Database_model->tr_update($tr_id, $tr_update, $session_en['en_id']);
             }
 
@@ -722,9 +722,9 @@ class Intents extends CI_Controller
 
 
         //Did we have an intent link update? If so, update the last updated UI:
-        if($transaction_was_updated){
+        if($link_was_updated){
 
-            //Fetch last intent Pattern:
+            //Fetch last intent Link:
             $trs = $this->Database_model->tr_fetch(array(
                 'tr_id' => $tr_id,
             ), array('en_miner'));
@@ -773,7 +773,7 @@ class Intents extends CI_Controller
                 //Fetch for the record:
                 $children_before = $this->Database_model->tr_fetch(array(
                     'tr_parent_intent_id' => intval($_POST['in_id']),
-                    'tr_type_entity_id IN (' . join(',', $this->config->item('en_ids_4486')) . ')' => null, //Intent Link Types
+                    'tr_type_entity_id IN (' . join(',', $this->config->item('en_ids_4486')) . ')' => null, //Intent Link Connectors
                     'tr_status >=' => 0,
                 ), array('in_child'), 0, 0, array('tr_order' => 'ASC'));
 
@@ -787,7 +787,7 @@ class Intents extends CI_Controller
                 //Fetch again for the record:
                 $children_after = $this->Database_model->tr_fetch(array(
                     'tr_parent_intent_id' => intval($_POST['in_id']),
-                    'tr_type_entity_id IN (' . join(',', $this->config->item('en_ids_4486')) . ')' => null, //Intent Link Types
+                    'tr_type_entity_id IN (' . join(',', $this->config->item('en_ids_4486')) . ')' => null, //Intent Link Connectors
                     'tr_status >=' => 0,
                 ), array('in_child'), 0, 0, array('tr_order' => 'ASC'));
 
@@ -1152,7 +1152,7 @@ class Intents extends CI_Controller
             //Fetch intent link:
             $trs = $this->Database_model->tr_fetch(array(
                 'tr_id' => $_POST['tr_id'],
-                'tr_type_entity_id IN (' . join(',', $this->config->item('en_ids_4486')) . ')' => null, //Intent Link Types
+                'tr_type_entity_id IN (' . join(',', $this->config->item('en_ids_4486')) . ')' => null, //Intent Link Connectors
                 'tr_status >=' => 0, //New+
             ), array(( $_POST['is_parent'] ? 'in_child' : 'in_parent' )));
 
@@ -1212,7 +1212,7 @@ class Intents extends CI_Controller
 
         }
 
-        //Update all transaction orders:
+        //Update all link orders:
         $sort_count = 0;
         foreach ($_POST['new_tr_orders'] as $tr_order => $tr_id) {
             if (intval($tr_id) > 0) {
@@ -1244,7 +1244,7 @@ class Intents extends CI_Controller
         } elseif (!isset($_POST['tr_id']) || intval($_POST['tr_id']) < 1) {
             return echo_json(array(
                 'status' => 0,
-                'message' => 'Missing Pattern ID',
+                'message' => 'Missing Link ID',
             ));
         } elseif (!isset($_POST['new_message_tr_status'])) {
             return echo_json(array(

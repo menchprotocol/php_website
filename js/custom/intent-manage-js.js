@@ -689,7 +689,7 @@ function in_modify_save() {
         in_type: parseInt($('input[name=in_type]:checked').val()),
         apply_recursively: (document.getElementById('apply_recursively').checked ? 1 : 0),
         is_parent: ( $('.intent_line_' + in_id).hasClass('parent-intent') ? 1 : 0 ),
-        //Pattern variables:
+        //Link variables:
         tr_id: parseInt($('#modifybox').attr('intent-tr-id')), //Will be zero for Level 1 intent!
         tr_in_focus_ids: tr_in_focus_ids,
         tr_type_entity_id: null,
@@ -699,7 +699,7 @@ function in_modify_save() {
         tr__assessment_points: null,
     };
 
-    //Do we have the intent Pattern?
+    //Do we have the intent Link?
     if (modify_data['tr_id'] > 0) {
 
         modify_data['tr_status'] = parseInt($('#tr_status').val());
@@ -773,7 +773,7 @@ function in_modify_save() {
 
                 //Intent has not been updated:
 
-                //Did the Pattern update?
+                //Did the Link update?
                 if (modify_data['tr_id'] > 0) {
 
                     $('.tr_type_' + modify_data['tr_id']).html('<span data-toggle="tooltip" data-placement="right" title="'+ en_all_4486[modify_data['tr_type_entity_id']]["m_name"] + ': '+ en_all_4486[modify_data['tr_type_entity_id']]["m_desc"] + '">'+ en_all_4486[modify_data['tr_type_entity_id']]["m_icon"] +'</span>');

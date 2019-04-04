@@ -11,7 +11,7 @@ defined('BASEPATH') OR exit('No direct script access allowed');
  *
  */
 
-//Generated 2019-04-03 20:49:17 PST
+//Generated 2019-04-04 15:48:41 PST
 
 //Social Profiles:
 $config['en_ids_6123'] = array(2793, 3300, 3301, 3302, 3303, 3320);
@@ -60,31 +60,31 @@ $config['en_all_4461'] = array(
     4454 => array(
         'm_icon' => '<i class="fal fa-bells"></i>',
         'm_name' => 'Notification Level',
-        'm_desc' => '',
+        'm_desc' => 'Choose how you like to be notified for messages I send you via Messenger:',
         'm_parents' => array(4527, 4461),
     ),
     3290 => array(
         'm_icon' => '<i class="fal fa-transgender"></i>',
         'm_name' => 'Gender',
-        'm_desc' => '',
+        'm_desc' => 'Choose one of the following:',
         'm_parents' => array(3285, 4461),
     ),
     3287 => array(
         'm_icon' => '<i class="fal fa-language"></i>',
         'm_name' => 'Languages',
-        'm_desc' => '',
+        'm_desc' => 'Choose all the languages you speak fluently:',
         'm_parents' => array(4603, 4461, 3285),
     ),
     3089 => array(
         'm_icon' => '<i class="fal fa-globe"></i>',
         'm_name' => 'Current Country',
-        'm_desc' => '',
+        'm_desc' => 'Choose your current country of residence:',
         'm_parents' => array(4461, 3285),
     ),
     3289 => array(
         'm_icon' => '<i class="fal fa-map"></i>',
         'm_name' => 'Current Timezone',
-        'm_desc' => '',
+        'm_desc' => 'Choose your current timezone:',
         'm_parents' => array(4461, 3285),
     ),
 );
@@ -106,7 +106,7 @@ $config['en_all_6107'] = array(
     ),
 );
 
-//Student Sent Message Transactions:
+//Student Sent Message Links:
 $config['en_ids_4277'] = array(4248, 4460, 4547, 4548, 4549, 4550, 4551, 4557);
 $config['en_all_4277'] = array(
     4248 => array(
@@ -159,7 +159,7 @@ $config['en_all_4277'] = array(
     ),
 );
 
-//Student Sent/Received Media Transactions:
+//Student Sent/Received Media Links:
 $config['en_ids_6102'] = array(4548, 4549, 4550, 4551, 4553, 4554, 4555, 4556);
 $config['en_all_6102'] = array(
     4548 => array(
@@ -212,7 +212,7 @@ $config['en_all_6102'] = array(
     ),
 );
 
-//Student Received Message Transactions:
+//Student Received Message Links:
 $config['en_ids_4280'] = array(4552, 4553, 4554, 4555, 4556, 4570, 5967);
 $config['en_all_4280'] = array(
     4552 => array(
@@ -305,7 +305,7 @@ $config['en_all_5969'] = array(
     ),
 );
 
-//Transaction Type Email Subscription:
+//Link Type Email Subscription:
 $config['en_ids_5966'] = array(4246);
 $config['en_all_5966'] = array(
     4246 => array(
@@ -427,8 +427,8 @@ $config['en_all_5005'] = array(
         'm_parents' => array(4506, 4426, 5005, 4527),
     ),
     5006 => array(
-        'm_icon' => '<i class="fas fa-atlas"></i>',
-        'm_name' => 'Intent Ledger History',
+        'm_icon' => '<i class="fas fa-link"></i>',
+        'm_name' => 'Intent History',
         'm_desc' => '',
         'm_parents' => array(4535, 5005),
     ),
@@ -463,8 +463,8 @@ $config['en_all_4997'] = array(
     ),
     5001 => array(
         'm_icon' => '<i class="fal fa-list-alt"></i>',
-        'm_name' => 'Transaction Content Replace',
-        'm_desc' => 'Search for occurance of string in child entity transaction contents and if found, updates it with a replacement string',
+        'm_name' => 'Link Content Replace',
+        'm_desc' => 'Search for occurance of string in child entity link contents and if found, updates it with a replacement string',
         'm_parents' => array(4593, 4997),
     ),
     5003 => array(
@@ -475,8 +475,8 @@ $config['en_all_4997'] = array(
     ),
     5865 => array(
         'm_icon' => '<i class="fal fa-list-alt"></i>',
-        'm_name' => 'Transaction Status Replace',
-        'm_desc' => 'Updates all child entity transaction statuses that match the initial transaction status condition',
+        'm_name' => 'Link Status Replace',
+        'm_desc' => 'Updates all child entity link statuses that match the initial link status condition',
         'm_parents' => array(4593, 4997),
     ),
     5943 => array(
@@ -695,7 +695,7 @@ $config['en_all_4426'] = array(
     ),
     4755 => array(
         'm_icon' => '<i class="fas fa-eye-slash"></i>',
-        'm_name' => 'Transaction Viewable by Moderators Only',
+        'm_name' => 'Link Visible to Moderators Only',
         'm_desc' => '',
         'm_parents' => array(4426, 4527, 4757),
     ),
@@ -713,7 +713,7 @@ $config['en_all_4426'] = array(
     ),
 );
 
-//Transaction Viewable by Moderators Only:
+//Link Visible to Moderators Only:
 $config['en_ids_4755'] = array(3286, 3288, 4248, 4266, 4267, 4268, 4275, 4278, 4279, 4299, 4460, 4547, 4548, 4549, 4550, 4551, 4552, 4553, 4554, 4555, 4556, 4557, 4567, 4568, 4570, 4783, 5967);
 $config['en_all_4755'] = array(
     3286 => array(
@@ -927,7 +927,7 @@ $config['en_all_4595'] = array(
     ),
     4242 => array(
         'm_icon' => '<i class="fal fa-sync"></i>',
-        'm_name' => 'Iterated Transaction',
+        'm_name' => 'Iterated Link',
         'm_desc' => '20',
         'm_parents' => array(4593, 4595),
     ),
@@ -1052,7 +1052,7 @@ $config['en_all_4600'] = array(
     ),
 );
 
-//Transaction Types:
+//Link Types:
 $config['en_ids_4593'] = array(4228, 4229, 4230, 4231, 4232, 4233, 4234, 4235, 4242, 4246, 4248, 4250, 4251, 4255, 4256, 4257, 4258, 4259, 4260, 4261, 4263, 4264, 4266, 4267, 4268, 4269, 4272, 4275, 4278, 4279, 4282, 4283, 4284, 4287, 4299, 4318, 4319, 4452, 4460, 4547, 4548, 4549, 4550, 4551, 4552, 4553, 4554, 4555, 4556, 4557, 4559, 4567, 4568, 4570, 4577, 4601, 4602, 4983, 4993, 4994, 4996, 4998, 4999, 5000, 5001, 5003, 5007, 5865, 5943, 5967, 5981, 5982, 6093);
 $config['en_all_4593'] = array(
     4228 => array(
@@ -1105,8 +1105,8 @@ $config['en_all_4593'] = array(
     ),
     4242 => array(
         'm_icon' => '<i class="fal fa-sync"></i>',
-        'm_name' => 'Iterated Transaction',
-        'm_desc' => 'Logged for each transaction column that is updated consciously by the user',
+        'm_name' => 'Iterated Link',
+        'm_desc' => 'Logged for each link column that is updated consciously by the user',
         'm_parents' => array(4593, 4595),
     ),
     4246 => array(
@@ -1244,13 +1244,13 @@ $config['en_all_4593'] = array(
     4283 => array(
         'm_icon' => '<i class="fas fa-eye"></i>',
         'm_name' => 'Opened Action Plan',
-        'm_desc' => 'Once a Master has added an Intention to their Action Plan, this Transaction will be logged every time they access that Action Plan and view its intentions.',
+        'm_desc' => 'Once a student has added an Intention to their Action Plan, this link will be logged every time they access that Action Plan and view its intentions.',
         'm_parents' => array(4593),
     ),
     4284 => array(
         'm_icon' => '<i class="fal fa-fast-forward"></i>',
         'm_name' => 'Skipped Action Plan Step',
-        'm_desc' => 'Transaction logged every time the Master decides to skip an Action Plan.',
+        'm_desc' => 'Logged every time the student decides to skip an Action Plan.',
         'm_parents' => array(4593),
     ),
     4287 => array(
@@ -1441,7 +1441,7 @@ $config['en_all_4593'] = array(
     ),
     5001 => array(
         'm_icon' => '<i class="fal fa-list-alt"></i>',
-        'm_name' => 'Mass Transaction Content Replace',
+        'm_name' => 'Mass Link Content Replace',
         'm_desc' => '',
         'm_parents' => array(4593, 4997),
     ),
@@ -1459,7 +1459,7 @@ $config['en_all_4593'] = array(
     ),
     5865 => array(
         'm_icon' => '<i class="fal fa-list-alt"></i>',
-        'm_name' => 'Mass Transaction Status Replace',
+        'm_name' => 'Mass Link Status Replace',
         'm_desc' => '',
         'm_parents' => array(4593, 4997),
     ),
@@ -1495,7 +1495,7 @@ $config['en_all_4593'] = array(
     ),
 );
 
-//Linked Entities Transactions:
+//Entity Connector Links:
 $config['en_ids_4592'] = array(4230, 4255, 4256, 4257, 4258, 4259, 4260, 4261, 4318, 4319);
 $config['en_all_4592'] = array(
     4230 => array(
@@ -1612,7 +1612,7 @@ $config['en_ids_4534'] = array(4341, 4535, 4536);
 $config['en_all_4534'] = array(
     4341 => array(
         'm_icon' => '<i class="fas fa-link rotate90"></i>',
-        'm_name' => 'Patterns',
+        'm_name' => 'Links',
         'm_desc' => '',
         'm_parents' => array(4534, 4463),
     ),
@@ -1706,7 +1706,7 @@ $config['en_all_4485'] = array(
     ),
 );
 
-//Linked Intents Transactions:
+//Intent Connector Links:
 $config['en_ids_4486'] = array(4228, 4229);
 $config['en_all_4486'] = array(
     4228 => array(
@@ -1723,7 +1723,7 @@ $config['en_all_4486'] = array(
     ),
 );
 
-//URL Linked Entities Transactions:
+//Entity Connector URLs:
 $config['en_ids_4537'] = array(4256, 4257, 4258, 4259, 4260, 4261);
 $config['en_all_4537'] = array(
     4256 => array(

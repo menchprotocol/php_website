@@ -85,15 +85,15 @@ class Messenger extends CI_Controller
                     //Authenticate Student:
                     $en = $this->Matrix_model->en_student_messenger_authenticate($im['sender']['id']);
 
-                    //Log Pattern Only IF last delivery transaction was 3+ minutes ago (Since Facebook sends many of these):
+                    //Log Link Only IF last delivery link was 3+ minutes ago (Since Facebook sends many of these):
                     $last_trs_logged = $this->Database_model->tr_fetch(array(
                         'tr_type_entity_id' => $tr_type_entity_id,
                         'tr_miner_entity_id' => $en['en_id'],
-                        'tr_timestamp >=' => date("Y-m-d H:i:s", (time() - (180))), //Patterns logged less than 3 minutes ago
+                        'tr_timestamp >=' => date("Y-m-d H:i:s", (time() - (180))), //Links logged less than 3 minutes ago
                     ), array(), 1);
 
                     if(count($last_trs_logged) == 0){
-                        //We had no recent transactions of this kind, so go ahead and log:
+                        //We had no recent links of this kind, so go ahead and log:
                         $this->Database_model->tr_create(array(
                             'tr_metadata' => $tr_metadata,
                             'tr_type_entity_id' => $tr_type_entity_id,
@@ -149,7 +149,7 @@ class Messenger extends CI_Controller
                     //Did we have a ref from Messenger?
                     $quick_reply_payload = ($array_ref && isset($array_ref['ref']) && strlen($array_ref['ref']) > 0 ? $array_ref['ref'] : null);
 
-                    //Log primary transaction:
+                    //Log primary link:
                     $this->Database_model->tr_create(array(
                         'tr_type_entity_id' => $tr_type_entity_id,
                         'tr_metadata' => $tr_metadata,
@@ -191,7 +191,7 @@ class Messenger extends CI_Controller
 
                     $en = $this->Matrix_model->en_student_messenger_authenticate($im['sender']['id']);
 
-                    //Log transaction:
+                    //Log link:
                     $this->Database_model->tr_create(array(
                         'tr_metadata' => $tr_metadata,
                         'tr_type_entity_id' => 4266, //Messenger Optin
@@ -204,7 +204,7 @@ class Messenger extends CI_Controller
                     //This is when we message them and they accept to chat because they had Removed Messenger or something...
                     $en = $this->Matrix_model->en_student_messenger_authenticate($im['sender']['id']);
 
-                    //Log transaction:
+                    //Log link:
                     $this->Database_model->tr_create(array(
                         'tr_metadata' => $tr_metadata,
                         'tr_type_entity_id' => 4577, //Message Request Accepted
@@ -243,7 +243,7 @@ class Messenger extends CI_Controller
 
                     /*
                      *
-                     * Now complete the transaction data based on message type.
+                     * Now complete the link data based on message type.
                      * We will generally receive 3 types of Facebook Messages:
                      *
                      * - Quick Replies
@@ -292,8 +292,8 @@ class Messenger extends CI_Controller
                             //Define 4 main Attachment Message Types:
                             $att_media_types = array( //Converts video, audio, image and file messages
                                 'video' => array(
-                                    'sent' => 4553,     //Pattern type for when sent to Students via Messenger
-                                    'received' => 4548, //Pattern type for when received from Students via Messenger
+                                    'sent' => 4553,     //Link type for when sent to Students via Messenger
+                                    'received' => 4548, //Link type for when received from Students via Messenger
                                 ),
                                 'audio' => array(
                                     'sent' => 4554,
@@ -322,7 +322,7 @@ class Messenger extends CI_Controller
                                  * our server is none-responsive which would cause
                                  * Facebook to resent this Attachment!
                                  *
-                                 * The solution is to create a @4299 transaction to save
+                                 * The solution is to create a @4299 link to save
                                  * this attachment using a cron job later on.
                                  *
                                  * */
@@ -732,14 +732,14 @@ class Messenger extends CI_Controller
         if ($completion_notes_added) {
             //Save notes:
             $this->Database_model->tr_create(array(
-                'tr_parent_transaction_id' => $actionplan_steps[0]['tr_id'], //Submission for Completed Step
+                'tr_parent_link_id' => $actionplan_steps[0]['tr_id'], //Submission for Completed Step
                 'tr_miner_entity_id' => $actionplan_steps[0]['tr_miner_entity_id'],
                 'tr_status' => 2, //Published
                 'tr_content' => trim($_POST['tr_content']),
                 'tr_type_entity_id' => $detected_tr_type['tr_type_entity_id'],
                 'tr_parent_intent_id' => $actionplan_steps[0]['tr_child_intent_id'],
                 'tr_order' => 1 + $this->Database_model->tr_max_order(array(
-                    'tr_parent_transaction_id' => $actionplan_steps[0]['tr_id'],
+                    'tr_parent_link_id' => $actionplan_steps[0]['tr_id'],
                 )),
             ));
         }
@@ -753,7 +753,7 @@ class Messenger extends CI_Controller
         //Redirect back to page with success message:
         if (isset($_POST['fetch_next_step'])) {
             //Go to next item:
-            $next_ins = $this->Matrix_model->actionplan_fetch_next($actionplan_steps[0]['tr_parent_transaction_id']);
+            $next_ins = $this->Matrix_model->actionplan_fetch_next($actionplan_steps[0]['tr_parent_link_id']);
             if ($next_ins) {
                 //Override original item:
                 $step_url = '/messenger/actionplan/' . $next_ins[0]['in_id'];
@@ -780,7 +780,7 @@ class Messenger extends CI_Controller
         if(count($actionplan_steps) < 1){
             //Ooooopsi, could not find it:
             $this->Database_model->tr_create(array(
-                'tr_parent_transaction_id' => $tr_id,
+                'tr_parent_link_id' => $tr_id,
                 'tr_content' => 'actionplan_skip_recursive_down() failed to locate step [Apply: '.( $apply_skip ? 'YES' : 'NO' ).']',
                 'tr_type_entity_id' => 4246, //Platform Error
                 'tr_miner_entity_id' => 1, //Shervin/Developer
@@ -805,7 +805,7 @@ class Messenger extends CI_Controller
             $message = '<div class="alert alert-success" role="alert">Successfully skipped ' . $total_skipped . ' step' . echo__s($total_skipped) . '.</div>';
 
             //Find the next item to navigate them to:
-            $next_ins = $this->Matrix_model->actionplan_fetch_next($actionplan_steps[0]['tr_parent_transaction_id']);
+            $next_ins = $this->Matrix_model->actionplan_fetch_next($actionplan_steps[0]['tr_parent_link_id']);
             if ($next_ins) {
                 return redirect_message('/messenger/actionplan/' . $next_ins[0]['in_id'], $message);
             } else {
@@ -823,7 +823,7 @@ class Messenger extends CI_Controller
 
         //Validate Action Plan:
         $actionplan_steps = $this->Database_model->tr_fetch(array(
-            'tr_parent_transaction_id' => $actionplan_tr_id,
+            'tr_parent_link_id' => $actionplan_tr_id,
             'tr_child_intent_id' => $actionplan_in_id,
             'tr_type_entity_id' => 4559, //Completed Step
             'tr_status >=' => 0, //New+
@@ -885,7 +885,7 @@ class Messenger extends CI_Controller
         $tr_pending = $this->Database_model->tr_fetch(array(
             'tr_type_entity_id IN (' . join(',',array_keys($fb_convert_4537)) . ')' => null,
             'tr_status' => 2, //Publish
-            'tr_metadata' => null, //Missing Facebook Attachment ID [NOTE: Must make sure tr_metadata is not used for anything else for these transaction types]
+            'tr_metadata' => null, //Missing Facebook Attachment ID [NOTE: Must make sure tr_metadata is not used for anything else for these link types]
         ), array(), 10, 0 , array('tr_id' => 'ASC')); //Sort by oldest added first
 
 
@@ -937,7 +937,7 @@ class Messenger extends CI_Controller
                 $this->Database_model->tr_create(array(
                     'tr_type_entity_id' => 4246, //Platform Error
                     'tr_miner_entity_id' => 1, //Shervin/Developer
-                    'tr_parent_transaction_id' => $tr['tr_id'],
+                    'tr_parent_link_id' => $tr['tr_id'],
                     'tr_content' => 'cron__sync_attachments() Failed to sync attachment to Facebook API: '.( isset($result['tr_metadata']['result']['error']['message']) ? $result['tr_metadata']['result']['error']['message'] : 'Unknown Error' ),
                     'tr_metadata' => array(
                         'payload' => $payload,
@@ -984,10 +984,10 @@ class Messenger extends CI_Controller
 
         $tr_pending = $this->Database_model->tr_fetch(array(
             'tr_status' => 0, //New
-            'tr_type_entity_id IN (' . join(',', $this->config->item('en_ids_6102')) . ')' => null, //Student Sent/Received Media Patterns
+            'tr_type_entity_id IN (' . join(',', $this->config->item('en_ids_6102')) . ')' => null, //Student Sent/Received Media Links
         ), array(), 20);
 
-        //Set transaction statuses to drafting so other Cron jobs don't pick them up:
+        //Set link statuses to drafting so other Cron jobs don't pick them up:
         $this->Matrix_model->trs_set_drafting($tr_pending);
 
         $counter = 0;
@@ -998,7 +998,7 @@ class Messenger extends CI_Controller
 
             if($new_file_url && filter_var($new_file_url, FILTER_VALIDATE_URL)){
 
-                //Update transaction:
+                //Update link:
                 $this->Database_model->tr_update($tr['tr_id'], array(
                     'tr_content' => $new_file_url,
                     'tr_status' => 2,
@@ -1013,7 +1013,7 @@ class Messenger extends CI_Controller
                 $this->Database_model->tr_create(array(
                     'tr_type_entity_id' => 4246, //Platform Error
                     'tr_miner_entity_id' => 1, //Shervin/Developer
-                    'tr_parent_transaction_id' => $tr['tr_id'],
+                    'tr_parent_link_id' => $tr['tr_id'],
                     'tr_content' => 'cron__save_chat_media() Failed to save media from Messenger',
                     'tr_metadata' => array(
                         'new_file_url' => $new_file_url,
@@ -1039,7 +1039,7 @@ class Messenger extends CI_Controller
          * short-lived URL provided by Facebook so we can
          * access it indefinitely without restriction.
          * This process is managed by creating a @4299
-         * Pattern Type which this cron job grabs and
+         * Link Type which this cron job grabs and
          * uploads to Mench CDN.
          *
          * Runs every minute with the cron job.
@@ -1052,7 +1052,7 @@ class Messenger extends CI_Controller
         ), array('en_miner'), 20); //Max number of scans per run
 
 
-        //Set transaction statuses to drafting so other Cron jobs don't pick them up:
+        //Set link statuses to drafting so other Cron jobs don't pick them up:
         $this->Matrix_model->trs_set_drafting($tr_pending);
 
         //Now go through and upload to CDN:
@@ -1068,7 +1068,7 @@ class Messenger extends CI_Controller
                     'tr_content' => 'cron__save_profile_photo() failed to store file in CDN',
                     'tr_type_entity_id' => 4246, //Platform Error
                     'tr_miner_entity_id' => 1, //Shervin/Developer
-                    'tr_parent_transaction_id' => $tr['tr_id'],
+                    'tr_parent_link_id' => $tr['tr_id'],
                 ));
 
                 continue;
@@ -1083,12 +1083,12 @@ class Messenger extends CI_Controller
                     'en_icon' => '<img src="' . $new_file_url . '">',
                 ), true, $tr['en_id']);
 
-                //Link transaction to entity:
+                //Link link to entity:
                 $tr_child_entity_id = $tr['en_id'];
 
             }
 
-            //Update transaction:
+            //Update link:
             $this->Database_model->tr_update($tr['tr_id'], array(
                 'tr_status' => 2, //Publish
                 'tr_content' => null, //Remove URL from content to indicate its done

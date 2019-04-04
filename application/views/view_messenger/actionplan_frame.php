@@ -30,6 +30,7 @@ if (isset($session_en['en_id'])) {
     //Use Facebook to see if we can find this user's identity:
     ?>
     <script>
+
         (function (d, s, id) {
             var js, fjs = d.getElementsByTagName(s)[0];
             if (d.getElementById(id)) {
@@ -52,8 +53,10 @@ if (isset($session_en['en_id'])) {
                     var signed_request = thread_context.signed_request;
                     //Fetch Page:
                     $.post("/messenger/actionplan_load/" + psid + "/<?= (isset($in_id) ? intval($in_id) : 0) ?>?sr=" + signed_request, {}, function (data) {
+
                         //Update UI to confirm with user:
                         $("#page_content").html(data);
+
                     });
                 },
                 function error(err) {
@@ -70,8 +73,6 @@ if (isset($session_en['en_id'])) {
 }
 ?>
 
-
-<script src="/js/custom/messenger-js.js?v=v<?= $this->config->item('app_version') ?>" type="text/javascript"></script>
 
 <div id="page_content" class="maxout">
     <div style="text-align:center; margin-top: 30px;"><i class="fas fa-spinner fa-spin"></i></div>

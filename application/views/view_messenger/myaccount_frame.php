@@ -70,8 +70,6 @@ if (isset($session_en['en_id'])) {
 }
 ?>
 
-<script src="/js/custom/messenger-js.js?v=v<?= $this->config->item('app_version') ?>" type="text/javascript"></script>
-
 <div id="page_content" class="maxout">
     <div style="text-align:center; margin-top: 30px;"><i class="fas fa-spinner fa-spin"></i></div>
 </div>

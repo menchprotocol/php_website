@@ -1,3 +1,6 @@
+//Loadup algolia when any related field is focused on:
+var algolia_loaded = false;
+
 //Google Analytics:
 (function (i, s, o, g, r, a, m) {
     i['GoogleAnalyticsObject'] = r;
@@ -63,6 +66,17 @@ function is_mobile() {
     return isMobile;
 }
 
+
+function load_js_algolia() {
+    $(".algolia_search").focus(function () {
+        //Loadup Algolia once:
+        if (!algolia_loaded) {
+            algolia_loaded = true;
+            client = algoliasearch('49OCX1ZXLJ', 'ca3cf5f541daee514976bc49f8399716');
+            algolia_index = client.initIndex('alg_index');
+        }
+    });
+}
 
 $(document).ready(function () {
 

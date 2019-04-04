@@ -30,7 +30,7 @@ class Matrix_model extends CI_Model
 
         //Let's first check if we have an OR Intent that is drafting, which means it's children have not been answered!
         $first_pending_or_intent = $this->Database_model->tr_fetch(array(
-            'tr_parent_transaction_id' => $actionplan_tr_id, //This action Plan
+            'tr_parent_link_id' => $actionplan_tr_id, //This action Plan
             'in_status' => 2, //Published
             'in_type' => 1, //OR Branch
             'tr_status' => 1, //drafting, which means OR branch has not been answered yet
@@ -43,7 +43,7 @@ class Matrix_model extends CI_Model
 
         //Now check the next AND intent that has not been started:
         $next_new_intent = $this->Database_model->tr_fetch(array(
-            'tr_parent_transaction_id' => $actionplan_tr_id, //This action Plan
+            'tr_parent_link_id' => $actionplan_tr_id, //This action Plan
             'in_status' => 2, //Published
             'tr_status' => 0, //New (not started yet) for either AND/OR branches
         ), array('in_child'), 1, 0, array('tr_order' => 'ASC'));
@@ -58,7 +58,7 @@ class Matrix_model extends CI_Model
         //Because if we don't have any of the previous ones,
         //how can we have this? 🤔 But let's keep it for now...
         $next_working_on_intent = $this->Database_model->tr_fetch(array(
-            'tr_parent_transaction_id' => $actionplan_tr_id, //This action Plan
+            'tr_parent_link_id' => $actionplan_tr_id, //This action Plan
             'in_status' => 2, //Published
             'in_type' => 0, //AND Branch
             'tr_status' => 1, //drafting
@@ -91,7 +91,7 @@ class Matrix_model extends CI_Model
                 array(),
                 array(
                     'tr_child_intent_id' => $actionplans[0]['tr_child_intent_id'],
-                    'tr_parent_transaction_id' => $actionplans[0]['tr_id'],
+                    'tr_parent_link_id' => $actionplans[0]['tr_id'],
                 )
             );
 
@@ -102,7 +102,7 @@ class Matrix_model extends CI_Model
                 array(),
                 array(
                     'tr_child_intent_id' => $actionplans[0]['tr_child_intent_id'],
-                    'tr_parent_transaction_id' => $actionplans[0]['tr_id'],
+                    'tr_parent_link_id' => $actionplans[0]['tr_id'],
                 )
             );
 
@@ -146,7 +146,7 @@ class Matrix_model extends CI_Model
             return false;
         }
 
-        //First remove existing parent/child transactions for this drop down:
+        //First remove existing parent/child links for this drop down:
         $already_assigned = ($set_en_child_id < 1);
         $updated_tr_id = 0;
         foreach ($this->Database_model->tr_fetch(array(
@@ -161,7 +161,7 @@ class Matrix_model extends CI_Model
                 //Remove assignment:
                 $updated_tr_id = $tr['tr_id'];
 
-                //Do not log update transaction here as we would log it further below:
+                //Do not log update link here as we would log it further below:
                 $this->Database_model->tr_update($tr['tr_id'], array(
                     'tr_status' => -1, //Removed
                 ));
@@ -178,7 +178,7 @@ class Matrix_model extends CI_Model
                 'tr_child_entity_id' => $en_student_id,
                 'tr_parent_entity_id' => $set_en_child_id,
                 'tr_type_entity_id' => 4230, //Raw link
-                'tr_parent_transaction_id' => $updated_tr_id,
+                'tr_parent_link_id' => $updated_tr_id,
             ));
         }
 
@@ -188,7 +188,7 @@ class Matrix_model extends CI_Model
         /*
          *
          * A function that simply updates the status
-         * of input transactions so other cron jobs
+         * of input links so other cron jobs
          * do not pick them up and re-process them.
          *
          * */
@@ -236,7 +236,7 @@ class Matrix_model extends CI_Model
                     $updating_fields['tr_content'] = str_replace('@'.$adjust_tr[$target_field],'@'.$merger_en_id, $adjust_tr['tr_content']);
                 }
 
-                //Update Pattern:
+                //Update Link:
                 $adjusted_count += $this->Database_model->tr_update($adjust_tr['tr_id'], $updating_fields, $tr_miner_entity_id);
 
             } else {
@@ -258,7 +258,7 @@ class Matrix_model extends CI_Model
         $adjust_trs = array_merge(
             $this->Database_model->tr_fetch(array( //Intent Links
                 'tr_status >=' => 0, //New+
-                'tr_type_entity_id IN (' . join(',', $this->config->item('en_ids_4486')) . ')' => null, //Intent Link Types
+                'tr_type_entity_id IN (' . join(',', $this->config->item('en_ids_4486')) . ')' => null, //Intent Link Connectors
                 '(tr_child_intent_id = '.$in_id.' OR tr_parent_intent_id = '.$in_id.')' => null,
             ), array(), 0),
             $this->Database_model->tr_fetch(array( //Intent Notes
@@ -744,7 +744,7 @@ class Matrix_model extends CI_Model
 
                 $applied_success++;
 
-            } elseif ($action_en_id == 5001 && substr_count($en['tr_content'], $action_command1) > 0) { //Replace Pattern Matching String
+            } elseif ($action_en_id == 5001 && substr_count($en['tr_content'], $action_command1) > 0) { //Replace Link Matching String
 
                 $this->Database_model->tr_update($en['tr_id'], array(
                     'tr_content' => str_replace($action_command1, $action_command2, $en['tr_content']),
@@ -760,7 +760,7 @@ class Matrix_model extends CI_Model
 
                 $applied_success++;
 
-            } elseif ($action_en_id == 5865 && ($action_command1=='*' || $en['tr_status']==$action_command1) && array_key_exists($action_command2, $fixed_fields['tr_status'])) { //Update Matching Pattern Status
+            } elseif ($action_en_id == 5865 && ($action_command1=='*' || $en['tr_status']==$action_command1) && array_key_exists($action_command2, $fixed_fields['tr_status'])) { //Update Matching Link Status
 
                 $this->Database_model->tr_update($en['tr_id'], array(
                     'tr_status' => $action_command2,
@@ -772,7 +772,7 @@ class Matrix_model extends CI_Model
         }
 
 
-        //Log mass entity edit transaction:
+        //Log mass entity edit link:
         $this->Database_model->tr_create(array(
             'tr_miner_entity_id' => $tr_miner_entity_id,
             'tr_type_entity_id' => $action_en_id,
@@ -940,7 +940,7 @@ class Matrix_model extends CI_Model
                     true,
                     array(),
                     array(
-                        'tr_parent_transaction_id' => $actionplan_ins[0]['tr_parent_transaction_id'],
+                        'tr_parent_link_id' => $actionplan_ins[0]['tr_parent_link_id'],
                     )
                 );
             }
@@ -1013,7 +1013,7 @@ class Matrix_model extends CI_Model
         if(count($actionplan_steps) < 1){
             //Ooooopsi, could not find it:
             $this->Database_model->tr_create(array(
-                'tr_parent_transaction_id' => $tr_id,
+                'tr_parent_link_id' => $tr_id,
                 'tr_content' => 'actionplan_skip_recursive_down() failed to locate step [Apply: '.( $apply_skip ? 'YES' : 'NO' ).']',
                 'tr_type_entity_id' => 4246, //Platform Error
                 'tr_miner_entity_id' => 1, //Shervin/Developer
@@ -1024,12 +1024,12 @@ class Matrix_model extends CI_Model
 
 
         //See how many children there are:
-        $dwn_tree = $this->Matrix_model->actionplan_fetch_recursive($actionplan_steps[0]['tr_parent_transaction_id'], $actionplan_steps[0]['tr_child_intent_id'], true);
+        $dwn_tree = $this->Matrix_model->actionplan_fetch_recursive($actionplan_steps[0]['tr_parent_link_id'], $actionplan_steps[0]['tr_child_intent_id'], true);
 
         //Combine this step with child steps to determine total steps that would be skipped:
-        $skippable_trs = array_merge(array(intval($tr_id)), $dwn_tree['actionplan_transactions_flat']);
+        $skippable_trs = array_merge(array(intval($tr_id)), $dwn_tree['actionplan_links_flat']);
 
-        //Count how many of the skippable transactions are incomplete (Would actually be skipped):
+        //Count how many of the skippable links are incomplete (Would actually be skipped):
         $skipping_steps = $this->Database_model->tr_fetch(array(
             'tr_id IN (' . join(',', $skippable_trs) . ')' => null,
             'tr_status IN (' . join(',', $this->config->item('tr_status_incomplete')) . ')' => null, //incomplete
@@ -1054,7 +1054,7 @@ class Matrix_model extends CI_Model
         //Get core data:
         $metadata_this = array(
             'in_flat_unique_published_tree' => array(),
-            'actionplan_transactions_flat' => array(),
+            'actionplan_links_flat' => array(),
         );
 
         if (!$metadata_aggregate && !isset($previous_in['tr_id'])) {
@@ -1070,7 +1070,7 @@ class Matrix_model extends CI_Model
 
             //Recursive item:
             $ins = $this->Database_model->tr_fetch(array(
-                'tr_parent_transaction_id' => $actionplan_tr_id,
+                'tr_parent_link_id' => $actionplan_tr_id,
                 'tr_id' => $previous_in['tr_id'],
                 'in_status' => 2, //Actions plans support published intents only
             ), array(($direction_is_downward ? 'in_child' : 'in_parent')));
@@ -1087,13 +1087,13 @@ class Matrix_model extends CI_Model
             array_push($metadata_this['in_flat_unique_published_tree'], intval($in_id));
         }
         if (isset($ins[0]['tr_id'])) {
-            array_push($metadata_this['actionplan_transactions_flat'], intval($ins[0]['tr_id']));
+            array_push($metadata_this['actionplan_links_flat'], intval($ins[0]['tr_id']));
         }
 
 
         //A recursive function to fetch all Tree for a given intent, either upwards or downwards
         $fetch_tree_ins = $this->Database_model->tr_fetch(array(
-            'tr_parent_transaction_id' => $actionplan_tr_id,
+            'tr_parent_link_id' => $actionplan_tr_id,
             'in_status' => 2, //Published
             ($direction_is_downward ? 'tr_parent_intent_id' : 'tr_child_intent_id') => $in_id,
         ), array(($direction_is_downward ? 'in_child' : 'in_parent')));
@@ -1113,7 +1113,7 @@ class Matrix_model extends CI_Model
                 }
 
                 //Addup values:
-                array_push($metadata_this['actionplan_transactions_flat'], $recursion['actionplan_transactions_flat']);
+                array_push($metadata_this['actionplan_links_flat'], $recursion['actionplan_links_flat']);
                 array_push($metadata_this['in_flat_unique_published_tree'], $recursion['in_flat_unique_published_tree']);
             }
         }
@@ -1127,10 +1127,10 @@ class Matrix_model extends CI_Model
         $metadata_this['in_flat_unique_published_tree'] = $result;
 
         $result = array();
-        array_walk_recursive($metadata_this['actionplan_transactions_flat'], function ($v, $k) use (&$result) {
+        array_walk_recursive($metadata_this['actionplan_links_flat'], function ($v, $k) use (&$result) {
             $result[] = $v;
         });
-        $metadata_this['actionplan_transactions_flat'] = $result;
+        $metadata_this['actionplan_links_flat'] = $result;
 
         //Return data:
         return $metadata_this;
@@ -1309,7 +1309,7 @@ class Matrix_model extends CI_Model
             $is_actionplan_intent = ($actionplan['tr_type_entity_id']==4235);
 
             //Determine Action Plan ID based on type:
-            $actionplan_tr_id = ( $is_actionplan_intent ? $actionplan['tr_id'] : $actionplan['tr_parent_transaction_id']);
+            $actionplan_tr_id = ( $is_actionplan_intent ? $actionplan['tr_id'] : $actionplan['tr_parent_link_id']);
 
         } else {
 
@@ -1370,7 +1370,7 @@ class Matrix_model extends CI_Model
                 $ins = $this->Database_model->tr_fetch(array(
                     'tr_status' => 2, //Published
                     'in_status >=' => 0, //New+
-                    'tr_type_entity_id IN (' . join(',', $this->config->item('en_ids_4486')) . ')' => null, //Intent Link Types
+                    'tr_type_entity_id IN (' . join(',', $this->config->item('en_ids_4486')) . ')' => null, //Intent Link Connectors
                     'tr_id' => $previous_in['tr_id'],
                 ), array('in_child'), 0, 0, array('tr_order' => 'ASC')); //Child intents must be ordered
 
@@ -1380,7 +1380,7 @@ class Matrix_model extends CI_Model
                 $ins = $this->Database_model->tr_fetch(array(
                     'tr_status' => 2, //Published
                     'in_status >=' => 0, //New+
-                    'tr_type_entity_id IN (' . join(',', $this->config->item('en_ids_4486')) . ')' => null, //Intent Link Types
+                    'tr_type_entity_id IN (' . join(',', $this->config->item('en_ids_4486')) . ')' => null, //Intent Link Connectors
                     'tr_id' => $previous_in['tr_id'],
                 ), array('in_parent')); //Note that parents do not need any sorting, since we only sort child intents
 
@@ -1456,7 +1456,7 @@ class Matrix_model extends CI_Model
                     'tr_parent_intent_id' => $this_in['tr_parent_intent_id'],
                     'tr_child_intent_id' => $this_in['tr_child_intent_id'],
                     'tr_order' => $this_in['tr_order'],
-                    'tr_parent_transaction_id' => $actionplan_tr_id,
+                    'tr_parent_link_id' => $actionplan_tr_id,
                 ));
 
             } elseif(!$is_actionplan_intent){
@@ -1476,7 +1476,7 @@ class Matrix_model extends CI_Model
                     'tr_parent_intent_id' => $actionplan['tr_child_intent_id'],
                     'tr_child_intent_id' => $this_in['in_id'],
                     'tr_order' => 1, //OR Branches would only have a single response...
-                    'tr_parent_transaction_id' => $actionplan_tr_id,
+                    'tr_parent_link_id' => $actionplan_tr_id,
                 ));
 
             }
@@ -1505,7 +1505,7 @@ class Matrix_model extends CI_Model
                 'tr_parent_intent_id' => $in_id,
                 'tr_status' => 2, //Published
                 'in_status >=' => 0, //New+
-                'tr_type_entity_id IN (' . join(',', $this->config->item('en_ids_4486')) . ')' => null, //Intent Link Types
+                'tr_type_entity_id IN (' . join(',', $this->config->item('en_ids_4486')) . ')' => null, //Intent Link Connectors
             ), array('in_child'), 0, 0, array('tr_order' => 'ASC')); //Child intents must be ordered
 
         } else {
@@ -1515,7 +1515,7 @@ class Matrix_model extends CI_Model
                 'tr_child_intent_id' => $in_id,
                 'tr_status' => 2, //Published
                 'in_status >=' => 0, //New+
-                'tr_type_entity_id IN (' . join(',', $this->config->item('en_ids_4486')) . ')' => null, //Intent Link Types
+                'tr_type_entity_id IN (' . join(',', $this->config->item('en_ids_4486')) . ')' => null, //Intent Link Connectors
             ), array('in_parent')); //Note that parents do not need any sorting, since we only sort child intents
 
         }
@@ -1871,7 +1871,7 @@ class Matrix_model extends CI_Model
          *
          * $obj_type:               Either in, en or tr
          *
-         * $obj:                    The Entity, Intent or Pattern itself.
+         * $obj:                    The Entity, Intent or Link itself.
          *                          We're looking for the $obj ID and METADATA
          *
          * $new_fields:             The new array of metadata fields to be Set,
@@ -1946,7 +1946,7 @@ class Matrix_model extends CI_Model
             }
         }
 
-        //Now update DB without logging any transactions as this is considered a back-end update:
+        //Now update DB without logging any links as this is considered a back-end update:
         if ($obj_type == 'in') {
 
             $affected_rows = $this->Database_model->in_update($obj_id, array(
@@ -1991,7 +1991,7 @@ class Matrix_model extends CI_Model
         }
 
 
-        //Search and see if we can find $value in the transaction content:
+        //Search and see if we can find $value in the link content:
         $matching_entities = $this->Database_model->tr_fetch(array(
             'tr_parent_entity_id' => $en_parent_id,
             'tr_type_entity_id IN (' . join(',', $this->config->item('en_ids_4592')) . ')' => null, //Entity Link Connectors
@@ -2049,7 +2049,7 @@ class Matrix_model extends CI_Model
          * */
 
         //Determine Action Plan ID based on $actionplan input (Could be Intent OR Step):
-        $actionplan_tr_id = ( $actionplan['tr_type_entity_id']==4235 ? $actionplan['tr_id'] : $actionplan['tr_parent_transaction_id'] );
+        $actionplan_tr_id = ( $actionplan['tr_type_entity_id']==4235 ? $actionplan['tr_id'] : $actionplan['tr_parent_link_id'] );
 
         //Check to see if parent of this item is NEW, if so, we need to update its status to DRAFTING:
         $parent_ins = $this->Database_model->tr_fetch(array(
@@ -2081,11 +2081,11 @@ class Matrix_model extends CI_Model
             $dwn_tree = $this->Matrix_model->actionplan_fetch_recursive($actionplan_tr_id, $actionplan['tr_child_intent_id'], true);
 
             //Did we find any children?
-            if (count($dwn_tree['actionplan_transactions_flat']) > 0) {
+            if (count($dwn_tree['actionplan_links_flat']) > 0) {
 
-                //YES! let's see if we can find any incomplete transactions among all child intents:
+                //YES! let's see if we can find any incomplete links among all child intents:
                 if (count($this->Database_model->tr_fetch(array(
-                        'tr_id IN (' . join(',', $dwn_tree['actionplan_transactions_flat']) . ')' => null, //All children
+                        'tr_id IN (' . join(',', $dwn_tree['actionplan_links_flat']) . ')' => null, //All children
                         'tr_status IN (' . join(',', $this->config->item('tr_status_incomplete')) . ')' => null, //incomplete
                     ))) > 0) {
                     //We do have some incomplete children, so this parent intent is NOT complete:
@@ -2117,7 +2117,7 @@ class Matrix_model extends CI_Model
 
             //Loop through incomplete parents to see if they should now be marked as complete:
             foreach ($this->Database_model->tr_fetch(array(
-                'tr_id IN (' . join(',', $up_tree['actionplan_transactions_flat']) . ')' => null, //All parents
+                'tr_id IN (' . join(',', $up_tree['actionplan_links_flat']) . ')' => null, //All parents
                 'tr_status IN (' . join(',', $this->config->item('tr_status_incomplete')) . ')' => null, //incomplete
             )) as $incomplete_parent) {
 
@@ -2420,10 +2420,10 @@ class Matrix_model extends CI_Model
                          $this->Matrix_model->en_search_match(3089, strtolower($locale[1])), //Country
                      ) as $tr_parent_entity_id) {
 
-                //Did we find a relation? Create the transaction:
+                //Did we find a relation? Create the link:
                 if ($tr_parent_entity_id > 0) {
 
-                    //Create new transaction:
+                    //Create new link:
                     $this->Database_model->tr_create(array(
                         'tr_type_entity_id' => 4230, //Raw link
                         'tr_miner_entity_id' => $added_en['en']['en_id'], //Student gets credit as miner
@@ -2434,7 +2434,7 @@ class Matrix_model extends CI_Model
                 }
             }
 
-            //Create transaction to save profile picture:
+            //Create link to save profile picture:
             $this->Database_model->tr_create(array(
                 'tr_status' => 0, //New
                 'tr_type_entity_id' => 4299, //Updated Profile Picture
@@ -2445,8 +2445,8 @@ class Matrix_model extends CI_Model
         }
 
 
-        //Note that new entity transaction is already logged in the entity creation function
-        //Now create more relevant transactions:
+        //Note that new entity link is already logged in the entity creation function
+        //Now create more relevant links:
 
         //Add default Notification Level:
         $this->Database_model->tr_create(array(
@@ -2563,7 +2563,7 @@ class Matrix_model extends CI_Model
             $dup_links = $this->Database_model->tr_fetch(array(
                 ( $is_parent ? 'tr_child_intent_id' : 'tr_parent_intent_id' ) => $actionplan_in_id,
                 ( $is_parent ? 'tr_parent_intent_id' : 'tr_child_intent_id' ) => $link_in_id,
-                'tr_type_entity_id IN (' . join(',', $this->config->item('en_ids_4486')) . ')' => null, //Intent Link Types
+                'tr_type_entity_id IN (' . join(',', $this->config->item('en_ids_4486')) . ')' => null, //Intent Link Connectors
                 'tr_status >=' => 0, //New+
             ));
 
@@ -2637,7 +2637,7 @@ class Matrix_model extends CI_Model
             ( $is_parent ? 'tr_parent_intent_id' : 'tr_child_intent_id' ) => $intent_new['in_id'],
             'tr_order' => 1 + $this->Database_model->tr_max_order(array(
                     'tr_status >=' => 0, //New+
-                    'tr_type_entity_id IN (' . join(',', $this->config->item('en_ids_4486')) . ')' => null, //Intent Link Types
+                    'tr_type_entity_id IN (' . join(',', $this->config->item('en_ids_4486')) . ')' => null, //Intent Link Connectors
                     'tr_parent_intent_id' => ( $is_parent ? $intent_new['in_id'] : $actionplan_in_id ),
                 )),
         ), true);
@@ -2680,7 +2680,7 @@ class Matrix_model extends CI_Model
         $new_ins = $this->Database_model->tr_fetch(array(
             ( $is_parent ? 'tr_child_intent_id' : 'tr_parent_intent_id' ) => $actionplan_in_id,
             ( $is_parent ? 'tr_parent_intent_id' : 'tr_child_intent_id' ) => $intent_new['in_id'],
-            'tr_type_entity_id IN (' . join(',', $this->config->item('en_ids_4486')) . ')' => null, //Intent Link Types
+            'tr_type_entity_id IN (' . join(',', $this->config->item('en_ids_4486')) . ')' => null, //Intent Link Connectors
             'tr_status >=' => 0,
             'in_status >=' => 0,
         ), array(($is_parent ? 'in_parent' : 'in_child')), 1); //We did a limit to 1, but this should return 1 anyways since it's a specific/unique relation

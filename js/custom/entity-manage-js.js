@@ -530,7 +530,7 @@ function en_save_file_upload(droppedFiles, uploadType) {
     var current_value = $('#tr_content').val();
     if(current_value.length > 0){
         //There is something in the input field, notify the user:
-        var r = confirm("Current transaction content [" + current_value + "] will be removed. Continue?");
+        var r = confirm("Current link content [" + current_value + "] will be removed. Continue?");
         if (r == false) {
             return false;
         }
@@ -627,7 +627,7 @@ function en_modify_save() {
         en_icon: $('#en_icon').val(),
         en_status: $('#en_status').val(), //The new status (might not have changed too)
         en_merge: $('#en_merge').val(),
-        //Pattern data:
+        //Link data:
         tr_id: parseInt($('#modifybox').attr('entity-link-id')),
         tr_content: $('#tr_content').val(),
         tr_status: $('#tr_status').val(),

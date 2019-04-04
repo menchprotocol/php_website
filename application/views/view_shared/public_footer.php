@@ -39,8 +39,8 @@
                        data-toggle="tooltip" title="Follow on Instagram" data-placement="top"><i
                                 class="fab fa-instagram"></i></a>
 
-                    <a href="/ledger"
-                       class="social-link" data-toggle="tooltip" title="Mench Patterns"
+                    <a href="/links"
+                       class="social-link" data-toggle="tooltip" title="Mench Links"
                        data-placement="top"><i class="fas fa-link rotate90"></i></a>
 
                     <a href="/8263?expand_mode=1&hide_subscribe=1" class="social-link" data-toggle="tooltip"

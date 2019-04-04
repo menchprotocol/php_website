@@ -1,5 +1,7 @@
-<?php
 
+<script src="/js/custom/messenger-actionplan.js?v=v<?= $this->config->item('app_version') ?>" type="text/javascript"></script>
+
+<?php
 
 //Student has multiple Action Plans, so list all Action Plans to enable Student to choose:
 echo '<div class="list-group actionplan-sort" style="margin-top: 10px;">';
@@ -28,8 +30,8 @@ foreach ($student_intents as $tr) {
 
 
 //Input to add new parents:
-echo '<div id="new-parent" class="list-group-item list_input grey-input">
-                    <div class="form-group is-empty"><input type="text" class="form-control new-input algolia_search actionplan-add" data-lpignore="true" placeholder="Search/Add New Intention..."></div>
+echo '<div id="new-actionplan" class="list-group-item list_input grey-input">
+                    <div class="form-group is-empty"><input type="text" class="form-control new-input algolia_search actionplanadder" data-lpignore="true" placeholder="Search/Add New Intention..."></div>
                     <div class="algolia_search_pad hidden"><span>Search published intention (or browse them on <a href="https://mench.com">mench.com</a>)</span></div>
             </div>';
 

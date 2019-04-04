@@ -3717,7 +3717,7 @@ h4 .tip-badge {
     cursor: pointer !important;
 }
 
-#matrix_body .ledger-active > a, #matrix_body .ledger-active > a:hover, #matrix_body .ledger-active > a:focus, #matrix_body .ledger-inactive > a:hover {
+#matrix_body .links-active > a, #matrix_body .links-active > a:hover, #matrix_body .links-active > a:focus, #matrix_body .links-inactive > a:hover {
     background-color: #fff !important;
     color: #2b2b2b !important;
     cursor: pointer !important;
@@ -4127,7 +4127,7 @@ h4 .tip-badge {
 
 .panel-title .fal, .panel-title .fas, .panel-title .far, .panel-title .fab { transform:none !important; }
 
-#funnel .actionplan-add {
+#funnel .actionplanadder {
     max-width: 100% !important;
     margin: 0 !important;
     padding: 15px 2px !important;
@@ -4159,12 +4159,16 @@ h4 .tip-badge {
     font-size: 18px !important;
     padding-left:2px;
     color: #222;
-
 }
 
 #funnel .entity-list .form-control {
     max-width:550px;
     width: 80%;
+}
+
+#funnel .entity-list p {
+    font-size:0.9em !important;
+    font-weight: 300 !important;
 }
 
 #funnel .entity-list .list-group-item{

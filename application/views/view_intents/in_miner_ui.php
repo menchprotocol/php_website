@@ -231,7 +231,7 @@ $metadata = unserialize($in['in_metadata']);
 
                         <div class="title">
                             <h4>
-                                <i class="fas fa-link rotate90"></i> Pattern Settings
+                                <i class="fas fa-link rotate90"></i> Link Settings
                             </h4>
                         </div>
 
@@ -239,7 +239,7 @@ $metadata = unserialize($in['in_metadata']);
                         <div class="inline-box" style="margin-bottom:0px;">
 
                             <div class="in-no-tr hidden">
-                                <p>No transaction available as your viewing the intent itself.</p>
+                                <p>No link available as your viewing the intent itself.</p>
                             </div>
 
                             <div class="in-has-tr">
@@ -297,8 +297,8 @@ $metadata = unserialize($in['in_metadata']);
                                 </div>
 
 
-                                <span class="mini-header">Pattern Status:</span>
-                                <select class="form-control border" data-toggle="tooltip" title="Pattern Status" data-placement="top" id="tr_status" style="display: inline-block !important;">
+                                <span class="mini-header">Link Status:</span>
+                                <select class="form-control border" data-toggle="tooltip" title="Link Status" data-placement="top" id="tr_status" style="display: inline-block !important;">
                                     <?php
                                     foreach (echo_fixed_fields('tr_status') as $status_id => $status) {
                                         if($status_id < 3){ //No need to verify intent links!

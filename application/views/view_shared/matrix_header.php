@@ -28,11 +28,6 @@ $uri_segment_2 = $this->uri->segment(2);
     <link href="/css/lib/devices.min.css" rel="stylesheet"/>
     <link href="/css/lib/jquery.mCustomScrollbar.min.css" rel="stylesheet"/>
     <?php $this->load->view('view_shared/global_js_css'); ?>
-
-    <script src="/js/lib/jquery.textcomplete.min.js"></script>
-    <script src="/js/lib/autocomplete.jquery.min.js"></script>
-    <script src="/js/lib/algoliasearch.min.js"></script>
-    <script src="/js/lib/sortable.min.js" type="text/javascript"></script>
     <script src="/js/custom/matrix-js.js?v=v<?= $this->config->item('app_version') ?>" type="text/javascript"></script>
 
 </head>
@@ -74,9 +69,9 @@ $uri_segment_2 = $this->uri->segment(2);
                     <div class="collapse navbar-collapse">
                         <ul class="nav navbar-nav navbar-main navbar-right">
 
-                            <li class="<?= ($uri_segment_1 == 'ledger' ? 'ledger-active' : 'ledger-inactive') ?>">
-                                <a href="/ledger">
-                                    <i class="fas fa-link rotate90"></i> Patterns
+                            <li class="<?= ($uri_segment_1 == 'links' ? 'links-active' : 'links-inactive') ?>">
+                                <a href="/links">
+                                    <i class="fas fa-link rotate90"></i> Links
                                 </a>
                             </li>
 
@@ -98,13 +93,13 @@ $uri_segment_2 = $this->uri->segment(2);
                                 </a>
                             </li>
 
-                            <li class="ledger-inactive" data-toggle="tooltip" data-placement="left" title="My Action Plan">
+                            <li class="links-inactive" data-toggle="tooltip" data-placement="left" title="My Action Plan">
                                 <a href="/messenger/actionplan">
                                     <i class="fas fa-flag"></i>
                                 </a>
                             </li>
 
-                            <li class="ledger-inactive" data-toggle="tooltip" data-placement="left" title="Toggle Advance Mode">
+                            <li class="links-inactive" data-toggle="tooltip" data-placement="left" title="Toggle Advance Mode">
                                 <a href="javascript:void(0)" onclick="toggle_advance(0)">
                                     <i class="<?= ( $this->session->userdata('advance_view_enabled')==1 ? 'fas fa-expand-arrows' : 'fal fa-expand-arrows ' ) ?> advance-icon"></i>
                                 </a>

@@ -1,5 +1,3 @@
-//Loadup algolia when any related field is focused on:
-var algolia_loaded = false;
 
 //Define tip style:
 var tips_button = '<span class="badge tip-badge"><i class="fal fa-info-circle"></i></span>';
@@ -124,17 +122,6 @@ function load_help(in_id) {
     $('#hb_' + in_id).html('<a class="tipbtn" href="javascript:in_help_messages(' + in_id + ')">' + tips_button + '</a>');
 }
 
-function load_js_algolia() {
-    $(".algolia_search").focus(function () {
-        //Loadup Algolia once:
-        if (!algolia_loaded) {
-            algolia_loaded = true;
-            client = algoliasearch('49OCX1ZXLJ', 'ca3cf5f541daee514976bc49f8399716');
-            algolia_index = client.initIndex('alg_index');
-        }
-    });
-}
-
 function toggle_advance(basic_toggle){
 
     //Toggle UI elements:
@@ -154,7 +141,7 @@ function toggle_advance(basic_toggle){
     $('.advance-icon').toggleClass('fal').toggleClass('fas');
 
     //Save session variable to save the state of advance setting:
-    $.post("/ledger/toggle_advance", {}, function (data) {
+    $.post("/links/toggle_advance", {}, function (data) {
         if(!data.status){
             alert('Error: ' + data.message);
         }
@@ -178,7 +165,7 @@ function add_search_item(){
     $('#matrix_search').prop("disabled", true);
 
     //Attemps to create a new intent OR entity based on the value in the search box
-    $.post("/ledger/add_search_item", { raw_string: $("#matrix_search").val() }, function (data) {
+    $.post("/links/add_search_item", { raw_string: $("#matrix_search").val() }, function (data) {
 
         if(!data.status){
 

@@ -11,7 +11,7 @@ class Database_model extends CI_Model
      *
      * - table_entities
      * - table_intents
-     * - table_ledger
+     * - table_links
      *
      * Think of this as the most internal layer
      * input/output processor for our platform.
@@ -61,7 +61,7 @@ class Database_model extends CI_Model
                 //Update Algolia:
                 $algolia_sync = $this->Database_model->update_algolia('en', $insert_columns['en_id']);
 
-                //Log transaction new entity:
+                //Log link new entity:
                 $this->Database_model->tr_create(array(
                     'tr_miner_entity_id' => ($tr_miner_entity_id > 0 ? $tr_miner_entity_id : $insert_columns['en_id']),
                     'tr_child_entity_id' => $insert_columns['en_id'],
@@ -133,7 +133,7 @@ class Database_model extends CI_Model
                 //Update Algolia:
                 $algolia_sync = $this->Database_model->update_algolia('in', $insert_columns['in_id']);
 
-                //Log transaction new entity:
+                //Log link new entity:
                 $this->Database_model->tr_create(array(
                     'tr_miner_entity_id' => $tr_miner_entity_id,
                     'tr_child_intent_id' => $insert_columns['in_id'],
@@ -211,14 +211,14 @@ class Database_model extends CI_Model
         }
 
         //Set some zero defaults if not set:
-        foreach (array('tr_child_intent_id', 'tr_parent_intent_id', 'tr_child_entity_id', 'tr_parent_entity_id', 'tr_parent_transaction_id') as $dz) {
+        foreach (array('tr_child_intent_id', 'tr_parent_intent_id', 'tr_child_entity_id', 'tr_parent_entity_id', 'tr_parent_link_id') as $dz) {
             if (!isset($insert_columns[$dz])) {
                 $insert_columns[$dz] = 0;
             }
         }
 
 
-        //Does this transaction type award coins?
+        //Does this link type award coins?
         if(in_array($insert_columns['tr_type_entity_id'], $this->config->item('en_ids_4595'))){
             //Yes, issue coins:
             $en_all_4595 = $this->config->item('en_all_4595');
@@ -226,7 +226,7 @@ class Database_model extends CI_Model
         }
 
         //Lets log:
-        $this->db->insert('table_ledger', $insert_columns);
+        $this->db->insert('table_links', $insert_columns);
 
         //Fetch inserted id:
         $insert_columns['tr_id'] = $this->db->insert_id();
@@ -284,7 +284,7 @@ class Database_model extends CI_Model
 
 
 
-        //See if this transaction type has any subscribers:
+        //See if this link type has any subscribers:
         if(in_array($insert_columns['tr_type_entity_id'] , $this->config->item('en_ids_5966')) && $insert_columns['tr_type_entity_id']!=5967 /* Email Sent causes endless loop */ && !is_dev()){
 
             //Try to fetch subscribers:
@@ -327,15 +327,15 @@ class Database_model extends CI_Model
                 //Email Subject:
                 $subject = 'Notification: '  . $miner_ens[0]['en_name'] . ' ' . $en_all_5966[$insert_columns['tr_type_entity_id']]['m_name'];
 
-                //Compose email body, start with transaction content:
-                $html_message = '<div>' . ( strlen($insert_columns['tr_content']) > 0 ? $insert_columns['tr_content'] : '<i>No transaction content</i>') . '</div><br />';
+                //Compose email body, start with link content:
+                $html_message = '<div>' . ( strlen($insert_columns['tr_content']) > 0 ? $insert_columns['tr_content'] : '<i>No link content</i>') . '</div><br />';
 
-                //Append transaction object links:
+                //Append link object links:
                 foreach ($this->config->item('tr_object_links') as $tr_field => $obj_type) {
                    if (intval($insert_columns[$tr_field]) > 0) {
 
-                       //Generate a clean name for this transaction field:
-                       $clean_name = ucwords(str_replace('_', ' ', str_replace('_id', '', str_replace('tr_', 'Pattern ', $tr_field))));
+                       //Generate a clean name for this link field:
+                       $clean_name = ucwords(str_replace('_', ' ', str_replace('_id', '', str_replace('tr_', 'Link ', $tr_field))));
 
                        if ($obj_type == 'in') {
 
@@ -355,15 +355,15 @@ class Database_model extends CI_Model
 
                        } elseif ($obj_type == 'tr') {
 
-                           //Include transaction:
-                           $html_message .= '<div>' . $clean_name . ' ID: <a href="https://mench.com/ledger?tr_id=' . $insert_columns[$tr_field] . '" target="_parent">'.$insert_columns[$tr_field].'</a></div>';
+                           //Include link:
+                           $html_message .= '<div>' . $clean_name . ' ID: <a href="https://mench.com/links?tr_id=' . $insert_columns[$tr_field] . '" target="_parent">'.$insert_columns[$tr_field].'</a></div>';
 
                        }
                    }
                 }
 
-                //Finally append transaction ID with link to ledger:
-                $html_message .= '<div>Pattern ID: <a href="https://mench.com/ledger?tr_id=' . $insert_columns['tr_id'] . '" target="_blank">' . $insert_columns['tr_id'] . '</a></div>';
+                //Finally append link ID:
+                $html_message .= '<div>Link ID: <a href="https://mench.com/links?tr_id=' . $insert_columns['tr_id'] . '" target="_blank">' . $insert_columns['tr_id'] . '</a></div>';
 
                 //Inform how to change settings:
                 $html_message .= '<div style="color: #AAAAAA; font-size:0.9em; margin-top:20px;">Manage your email notifications via <a href="https://mench.com/entities/5966" target="_blank">@5966</a></div>';
@@ -499,7 +499,7 @@ class Database_model extends CI_Model
                 $ins[$key]['in__parents'] = $this->Database_model->tr_fetch(array(
                     'tr_status >=' => 0, //New+
                     'in_status >=' => 0, //New+
-                    'tr_type_entity_id IN (' . join(',', $this->config->item('en_ids_4486')) . ')' => null, //Intent Link Types
+                    'tr_type_entity_id IN (' . join(',', $this->config->item('en_ids_4486')) . ')' => null, //Intent Link Connectors
                     'tr_child_intent_id' => $value['in_id'],
                 ), array('in_parent')); //Note that parents do not need any sorting, since we only sort child intents
 
@@ -512,7 +512,7 @@ class Database_model extends CI_Model
                 $ins[$key]['in__children'] = $this->Database_model->tr_fetch(array(
                     'tr_status >=' => 0, //New+
                     'in_status >=' => 0, //New+
-                    'tr_type_entity_id IN (' . join(',', $this->config->item('en_ids_4486')) . ')' => null, //Intent Link Types
+                    'tr_type_entity_id IN (' . join(',', $this->config->item('en_ids_4486')) . ')' => null, //Intent Link Connectors
                     'tr_parent_intent_id' => $value['in_id'],
                 ), array('in_child'), 0, 0, array('tr_order' => 'ASC')); //Child intents must be ordered
 
@@ -524,7 +524,7 @@ class Database_model extends CI_Model
                         $ins[$key]['in__children'][$key2]['in__grandchildren'] = $this->Database_model->tr_fetch(array(
                             'tr_status >=' => 0, //New+
                             'in_status >=' => 0, //New+
-                            'tr_type_entity_id IN (' . join(',', $this->config->item('en_ids_4486')) . ')' => null, //Intent Link Types
+                            'tr_type_entity_id IN (' . join(',', $this->config->item('en_ids_4486')) . ')' => null, //Intent Link Connectors
                             'tr_parent_intent_id' => $value2['in_id'],
                         ), array('in_child'), 0, 0, array('tr_order' => 'ASC')); //Child intents must be ordered
 
@@ -541,7 +541,7 @@ class Database_model extends CI_Model
     {
 
         $this->db->select($select);
-        $this->db->from('table_ledger');
+        $this->db->from('table_links');
 
         //Any intent joins?
         if (in_array('in_parent', $join_objects)) {
@@ -590,7 +590,7 @@ class Database_model extends CI_Model
 
         /*
          *
-         * $external_sync helps log a transaction for the new entity that is about to
+         * $external_sync helps log a link for the new entity that is about to
          * be created but we yet dont have its entity ID to use in $tr_miner_entity_id!
          *
          * */
@@ -620,13 +620,13 @@ class Database_model extends CI_Model
 
             $fixed_fields = $this->config->item('fixed_fields');
 
-            //Log modification transaction for every field changed:
+            //Log modification link for every field changed:
             foreach ($update_columns as $key => $value) {
 
                 //Has this value changed compared to what we initially had in DB?
                 if (!($before_data[0][$key] == $value) && !in_array($key, array('en_metadata', 'en_trust_score'))) {
 
-                    //Value has changed, log transaction:
+                    //Value has changed, log link:
                     $this->Database_model->tr_create(array(
                         'tr_miner_entity_id' => ($tr_miner_entity_id > 0 ? $tr_miner_entity_id : $id),
                         'tr_type_entity_id' => 4263, //Entity Attribute Modified
@@ -693,14 +693,14 @@ class Database_model extends CI_Model
 
             $fixed_fields = $this->config->item('fixed_fields');
 
-            //Note that unlike entity modification, we require a miner entity ID to log the modification transaction:
-            //Log modification transaction for every field changed:
+            //Note that unlike entity modification, we require a miner entity ID to log the modification link:
+            //Log modification link for every field changed:
             foreach ($update_columns as $key => $value) {
 
                 //Has this value changed compared to what we initially had in DB?
                 if (!($before_data[0][$key] == $value) && !in_array($key, array('in_metadata'))) {
 
-                    //Value has changed, log transaction:
+                    //Value has changed, log link:
                     $this->Database_model->tr_create(array(
                         'tr_miner_entity_id' => $tr_miner_entity_id,
                         'tr_type_entity_id' => 4264, //Intent Attribute Modified
@@ -747,7 +747,7 @@ class Database_model extends CI_Model
         }
 
         if($tr_miner_entity_id > 0){
-            //Fetch transaction before updating:
+            //Fetch link before updating:
             $before_data = $this->Database_model->tr_fetch(array(
                 'tr_id' => $id,
             ));
@@ -760,7 +760,7 @@ class Database_model extends CI_Model
 
         //Update:
         $this->db->where('tr_id', $id);
-        $this->db->update('table_ledger', $update_columns);
+        $this->db->update('table_links', $update_columns);
         $affected_rows = $this->db->affected_rows();
 
         //Log changes if successful:
@@ -768,18 +768,18 @@ class Database_model extends CI_Model
 
             $fixed_fields = $this->config->item('fixed_fields');
 
-            //Log modification transaction for every field changed:
+            //Log modification link for every field changed:
             foreach ($update_columns as $key => $value) {
 
                 //Has this value changed compared to what we initially had in DB?
                 if ( !($before_data[0][$key] == $value) && in_array($key, array('tr_status', 'tr_content', 'tr_order', 'tr_parent_entity_id', 'tr_child_entity_id', 'tr_parent_intent_id', 'tr_child_intent_id', 'tr_metadata', 'tr_type_entity_id'))) {
 
-                    //Value has changed, log transaction:
+                    //Value has changed, log link:
                     $this->Database_model->tr_create(array(
-                        'tr_parent_transaction_id' => $id, //Pattern Reference
+                        'tr_parent_link_id' => $id, //Link Reference
                         'tr_miner_entity_id' => $tr_miner_entity_id,
-                        'tr_type_entity_id' => 4242, //Pattern Attribute Modified
-                        'tr_content' => 'Pattern ' . ucwords(str_replace('_', ' ', str_replace('tr_', '', $key))) . ' changed from "' . ( $key=='tr_status' ? $fixed_fields['tr_status'][$before_data[0][$key]]['s_name']  : $before_data[0][$key] ) . '" to "' . ( $key=='tr_status' ? $fixed_fields['tr_status'][$value]['s_name']  : $value ) . '"',
+                        'tr_type_entity_id' => 4242, //Link Attribute Modified
+                        'tr_content' => 'Link ' . ucwords(str_replace('_', ' ', str_replace('tr_', '', $key))) . ' changed from "' . ( $key=='tr_status' ? $fixed_fields['tr_status'][$before_data[0][$key]]['s_name']  : $before_data[0][$key] ) . '" to "' . ( $key=='tr_status' ? $fixed_fields['tr_status'][$value]['s_name']  : $value ) . '"',
                         'tr_metadata' => array(
                             'tr_id' => $id,
                             'field' => $key,
@@ -800,7 +800,7 @@ class Database_model extends CI_Model
 
             //This should not happen:
             $this->Database_model->tr_create(array(
-                'tr_parent_transaction_id' => $id, //Pattern Reference
+                'tr_parent_link_id' => $id, //Link Reference
                 'tr_type_entity_id' => 4246, //Platform Error
                 'tr_miner_entity_id' => 1, //Shervin/Developer
                 'tr_content' => 'tr_update() Failed to update',
@@ -820,7 +820,7 @@ class Database_model extends CI_Model
 
         //Counts the current highest order value
         $this->db->select('MAX(tr_order) as largest_order');
-        $this->db->from('table_ledger');
+        $this->db->from('table_links');
         foreach ($match_columns as $key => $value) {
             $this->db->where($key, $value);
         }
@@ -874,7 +874,7 @@ class Database_model extends CI_Model
 
             if(is_dev()){
                 //Do a call on live as this does not work on local due to security limitations:
-                return json_decode(@file_get_contents("https://mench.com/ledger/cron__sync_algolia/" . ( $input_obj_type ? $input_obj_type . '/' . $input_obj_id : '' )));
+                return json_decode(@file_get_contents("https://mench.com/links/cron__sync_algolia/" . ( $input_obj_type ? $input_obj_type . '/' . $input_obj_id : '' )));
             }
 
             //Load Algolia Index

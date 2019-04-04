@@ -164,7 +164,7 @@ class Entities extends CI_Controller
         } else {
 
             //No mass action, just viewing...
-            //Update session count and log transaction:
+            //Update session count and log link:
             $message = null; //No mass-action message to be appended...
 
             $new_order = ( $this->session->userdata('miner_session_count') + 1 );
@@ -635,7 +635,7 @@ class Entities extends CI_Controller
             $en_miners = $this->Database_model->tr_fetch(array(
                 'tr_miner_entity_id' => $_POST['en_id'],
             ), array(), 0, 0, array(), 'COUNT(tr_id) as totals');
-            $en_transaction_types = $this->Database_model->tr_fetch(array(
+            $en_link_types = $this->Database_model->tr_fetch(array(
                 'tr_type_entity_id' => $_POST['en_id'],
             ), array(), 0, 0, array(), 'COUNT(tr_id) as totals');
             $en_verbs = $this->Database_model->in_fetch(array(
@@ -649,13 +649,13 @@ class Entities extends CI_Controller
                 //Cannot delete this entity until intent references are removed:
                 return echo_json(array(
                     'status' => 0,
-                    'message' => 'Cannot be removed because entity is a miner with '.echo_number($en_miners[0]['totals']).' ledger transactions',
+                    'message' => 'Cannot be removed because entity has mined '.echo_number($en_miners[0]['totals']).' links',
                 ));
-            } elseif(count($en_transaction_types) > 0 && $en_transaction_types[0]['totals'] > 0){
+            } elseif(count($en_link_types) > 0 && $en_link_types[0]['totals'] > 0){
                 //Cannot delete this entity until intent references are removed:
                 return echo_json(array(
                     'status' => 0,
-                    'message' => 'Cannot be removed because entity is a transaction type with '.echo_number($en_transaction_types[0]['totals']).' ledger transactions',
+                    'message' => 'Cannot be removed because entity is a link type with '.echo_number($en_link_types[0]['totals']).' links',
                 ));
             } elseif(count($en_verbs) > 0 && $en_verbs[0]['totals'] > 0){
                 //Cannot delete this entity until intent references are removed:
@@ -786,13 +786,13 @@ class Entities extends CI_Controller
 
             if ($en_trs[0]['tr_content'] == $_POST['tr_content']) {
 
-                //Pattern content has not changed:
+                //Link content has not changed:
                 $js_tr_type_entity_id = $en_trs[0]['tr_type_entity_id'];
                 $tr_content = $en_trs[0]['tr_content'];
 
             } else {
 
-                //Pattern content has changed:
+                //Link content has changed:
                 $detected_tr_type = detect_tr_type_entity_id($_POST['tr_content']);
 
                 if (!$detected_tr_type['status']) {
@@ -1101,7 +1101,7 @@ class Entities extends CI_Controller
         $ens[0]['input_post_data'] = $_POST;
 
 
-        //Log Sign In Pattern:
+        //Log Sign In Link:
         if($is_miner){
             $this->Database_model->tr_create(array(
                 'tr_miner_entity_id' => $ens[0]['en_id'],
@@ -1562,7 +1562,7 @@ class Entities extends CI_Controller
         $score_weights = array(
             'score_parent' => 5, //Score per each parent entity
             'score_children' => 2, //Score per each child entity
-            'score_transaction' => 0.25, //Score per each transaction of any type and any status
+            'score_link' => 0.25, //Score per each link of any type and any status
             'score_miner_points' => 0.10, // This is X where: 1 miner points = X score
         );
 
@@ -1593,11 +1593,11 @@ class Entities extends CI_Controller
             ), array(), 0, 0, array(), 'COUNT(tr_id) as totals');
             $score += $en_children[0]['totals'] * $score_weights['score_children'];
 
-            //Transactions:
+            //Links:
             $en_trs = $this->Database_model->tr_fetch(array(
                 '(tr_parent_entity_id='.$en['en_id'].' OR tr_child_entity_id='.$en['en_id'].')' => null,
             ), array(), 0, 0, array(), 'COUNT(tr_id) as totals');
-            $score += $en_trs[0]['totals'] * $score_weights['score_transaction'];
+            $score += $en_trs[0]['totals'] * $score_weights['score_link'];
 
             //Mining points:
             $en_miner_points = $this->Database_model->tr_fetch(array(

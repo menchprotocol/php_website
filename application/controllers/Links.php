@@ -1,7 +1,7 @@
 <?php
 defined('BASEPATH') OR exit('No direct script access allowed');
 
-class Ledger extends CI_Controller
+class Links extends CI_Controller
 {
 
     function __construct()
@@ -17,9 +17,9 @@ class Ledger extends CI_Controller
     {
         /*
          *
-         * List all Patterns on reverse chronological order
+         * List all Links on reverse chronological order
          * and Display statuses for intents, entities and
-         * ledger transactions.
+         * links.
          *
          * */
 
@@ -28,11 +28,11 @@ class Ledger extends CI_Controller
 
         //Load header:
         $this->load->view(($session_en ? 'view_shared/matrix_header' : 'view_shared/public_header'), array(
-            'title' => 'Mench Patterns',
+            'title' => 'Mench Links',
         ));
 
         //Load main:
-        $this->load->view('view_ledger/ledger_ui');
+        $this->load->view('view_links/links_ui');
 
         //Load footer:
         $this->load->view(($session_en ? 'view_shared/matrix_footer' : 'view_shared/public_footer'));
@@ -57,7 +57,7 @@ class Ledger extends CI_Controller
 
             return echo_json(array(
                 'status' => 0,
-                'message' => 'Missing Pattern ID',
+                'message' => 'Missing Link ID',
             ));
 
         }
@@ -110,10 +110,10 @@ class Ledger extends CI_Controller
 
 
 
-    function transaction_json($tr_id)
+    function link_json($tr_id)
     {
 
-        //Fetch transaction metadata and display it:
+        //Fetch link metadata and display it:
         $trs = $this->Database_model->tr_fetch(array(
             'tr_id' => $tr_id,
         ));
@@ -121,17 +121,17 @@ class Ledger extends CI_Controller
         if (count($trs) < 1) {
             return echo_json(array(
                 'status' => 0,
-                'message' => 'Invalid Pattern ID',
+                'message' => 'Invalid Link ID',
             ));
-        } elseif(in_array($trs[0]['tr_type_entity_id'] , $this->config->item('en_ids_4755')) /* Pattern Type is locked */ && !en_auth(array(1281)) /* Viewer NOT a moderator */){
+        } elseif(in_array($trs[0]['tr_type_entity_id'] , $this->config->item('en_ids_4755')) /* Link Type is locked */ && !en_auth(array(1281)) /* Viewer NOT a moderator */){
             return echo_json(array(
                 'status' => 0,
-                'message' => 'Pattern content visible to moderators only',
+                'message' => 'Link content visible to moderators only',
             ));
         } elseif(!en_auth(array(1308)) /* Viewer NOT a miner */) {
             return echo_json(array(
                 'status' => 0,
-                'message' => 'Pattern metadata visible to miners only',
+                'message' => 'Link metadata visible to miners only',
             ));
         } else {
 
@@ -151,7 +151,7 @@ class Ledger extends CI_Controller
 
         //TODO to view the student's history and issue a certificate
 
-        //TODO Add a new transaction to enable the certificate to be created/issued when a min number of student's (20?) take the assessment
+        //TODO Add a new link to enable the certificate to be created/issued when a min number of student's (20?) take the assessment
 
         //Validate the inputs:
         if(isset($_POST['recipient_en']['en_id']) && isset($_POST['actionplan_in']['in_id'])){
@@ -198,7 +198,7 @@ class Ledger extends CI_Controller
         $this->load->view('view_shared/matrix_header', array(
             'title' => 'Moderation Tools',
         ));
-        $this->load->view('view_ledger/moderator_tools' , array(
+        $this->load->view('view_links/moderator_tools' , array(
             'action' => $action,
             'command1' => $command1,
             'command2' => $command2,
@@ -212,7 +212,7 @@ class Ledger extends CI_Controller
 
         exit; //Maybe use to update all rates if needed?
 
-        //Issue coins for each transaction type:
+        //Issue coins for each link type:
         $all_engs = $this->Database_model->tr_fetch(array(), array('en_type'), 0, 0, array('trs_count' => 'DESC'), 'COUNT(tr_type_entity_id) as trs_count, en_name, tr_type_entity_id', 'tr_type_entity_id, en_name');
 
         //return echo_json($all_engs);
@@ -231,7 +231,7 @@ class Ledger extends CI_Controller
 
             if(count($rate_trs) > 0){
                 //Issue coins at this rate:
-                $this->db->query("UPDATE table_ledger SET tr_points = '".$rate_trs[0]['tr_content']."' WHERE tr_type_entity_id = " . $tr['tr_type_entity_id']);
+                $this->db->query("UPDATE table_links SET tr_points = '".$rate_trs[0]['tr_content']."' WHERE tr_type_entity_id = " . $tr['tr_type_entity_id']);
             }
 
         }
@@ -257,7 +257,7 @@ class Ledger extends CI_Controller
         $this->db->query("TRUNCATE TABLE public.gephi_edges CONTINUE IDENTITY RESTRICT;");
         $this->db->query("TRUNCATE TABLE public.gephi_nodes CONTINUE IDENTITY RESTRICT;");
 
-        //Load intent link types:
+        //Load Intent Link Connectors:
         $en_all_4593 = $this->config->item('en_all_4593');
 
         //To make sure intent/entity IDs are unique:
@@ -294,7 +294,7 @@ class Ledger extends CI_Controller
             foreach($this->Database_model->tr_fetch(array(
                 'tr_status >=' => 0, //New+
                 'in_status >=' => 0, //New+
-                'tr_type_entity_id IN (' . join(',', $this->config->item('en_ids_4486')) . ')' => null, //Intent Link Types
+                'tr_type_entity_id IN (' . join(',', $this->config->item('en_ids_4486')) . ')' => null, //Intent Link Connectors
                 'tr_parent_intent_id' => $in['in_id'],
             ), array('in_child'), 0, 0) as $in_child){
 
@@ -410,7 +410,7 @@ class Ledger extends CI_Controller
             //Set session variable:
             $this->session->set_userdata('advance_view_enabled', $toggled_setting);
 
-            //Log Pattern:
+            //Log Link:
             $this->Database_model->tr_create(array(
                 'tr_miner_entity_id' => $session_en['en_id'],
                 'tr_type_entity_id' => 5007, //Toggled Advance Mode
