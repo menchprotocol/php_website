@@ -44,11 +44,11 @@
 
 
     //Portal Password
-    $current_pass_trs = $this->Database_model->tr_fetch(array(
-        'tr_status' => 2,
-        'tr_type_entity_id' => 4255, //Text
-        'tr_parent_entity_id' => 3286, //Password
-        'tr_child_entity_id' => $session_en['en_id'], //For this student
+    $current_pass_trs = $this->Database_model->ln_fetch(array(
+        'ln_status' => 2,
+        'ln_type_entity_id' => 4255, //Text
+        'ln_parent_entity_id' => 3286, //Password
+        'ln_child_entity_id' => $session_en['en_id'], //For this student
     ));
     $acc_en_id = 2;
     echo '<div class="panel panel-default">
@@ -64,7 +64,7 @@
                     <p>The password used to login to your Action Plan on mench.com:</p>
                     <input type="password" id="en_password" class="form-control border" placeholder="Set new password..." style="display: inline-block;" />
                     <a href="javascript:void(0)" onclick="save_password()" class="btn btn-sm btn-secondary">Save</a>
-                    <p>Note: '. ( count($current_pass_trs) > 0 ? 'Password updated '.echo_time_difference(strtotime($current_pass_trs[0]['tr_timestamp'])).' ago.' : 'You have not yet set a password.') .'</p>
+                    <p>Note: '. ( count($current_pass_trs) > 0 ? 'Password updated '.echo_time_difference(strtotime($current_pass_trs[0]['ln_timestamp'])).' ago.' : 'You have not yet set a password.') .'</p>
                 </div>
             </div>
         </div>';

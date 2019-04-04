@@ -8,9 +8,9 @@
         $(".filter-statuses").addClass('hidden');
 
         //Show only if creating new in/en Link type:
-        if($("#tr_type_entity_id").val()==4250){
+        if($("#ln_type_entity_id").val()==4250){
             $(".filter-in-status").removeClass('hidden');
-        } else if($("#tr_type_entity_id").val()==4251){
+        } else if($("#ln_type_entity_id").val()==4251){
             $(".filter-en-status").removeClass('hidden');
         }
     }
@@ -20,7 +20,7 @@
         check_in_en_status();
 
         //Watch for intent status change:
-        $("#tr_type_entity_id").change(function () {
+        $("#ln_type_entity_id").change(function () {
             check_in_en_status();
         });
 
@@ -83,12 +83,12 @@ if(!$has_filters){
             $spacing = '';
             $objects_count = $this->Database_model->en_fetch(array(), array('skip_en__parents'), 0, 0, array(), 'en_status, COUNT(en_id) as totals', 'en_status');
 
-        } elseif($object_id=='tr_status'){
+        } elseif($object_id=='ln_status'){
 
             $obj_en_id = 4341; //Links
             $created_en_type_id = 0; //No particular filters needed
             $spacing = 'col-md-offset-4 bottom-space';
-            $objects_count = $this->Database_model->tr_fetch(array(), array(), 0, 0, array(), 'tr_status, COUNT(tr_id) as totals', 'tr_status');
+            $objects_count = $this->Database_model->ln_fetch(array(), array(), 0, 0, array(), 'ln_status, COUNT(ln_id) as totals', 'ln_status');
 
         } else {
 
@@ -115,7 +115,7 @@ if(!$has_filters){
             //Display this status count:
             $this_ui .= '<tr'.( $status_num < 0 ? ' class="is-removed" ' : '' ).'>';
             $this_ui .= '<td style="text-align: left;"><span style="width:29px; display: inline-block; text-align: center;">'.$status['s_icon'].'</span><span class="underdot" data-toggle="tooltip" title="'.$status['s_desc'].'" data-placement="top">'.$status['s_name'].'</span></td>';
-            $this_ui .= '<td style="text-align: right;">'.( $count > 0 ? '<a href="/links?'.$object_id.'='.$status_num.'&tr_type_entity_id='.$created_en_type_id.'"  data-toggle="tooltip" title="View Links" data-placement="top">'.number_format($count,0).'</a>' : $count ).' '.$en_all_4534[$obj_en_id]['m_icon'].'</td>';
+            $this_ui .= '<td style="text-align: right;">'.( $count > 0 ? '<a href="/links?'.$object_id.'='.$status_num.'&ln_type_entity_id='.$created_en_type_id.'"  data-toggle="tooltip" title="View Links" data-placement="top">'.number_format($count,0).'</a>' : $count ).' '.$en_all_4534[$obj_en_id]['m_icon'].'</td>';
             $this_ui .= '</tr>';
 
             if($status_num >= 0){
@@ -131,7 +131,7 @@ if(!$has_filters){
         echo '<div class="col-lg-4">';
 
 
-        echo '<a href="javascript:void(0);" onclick="$(\'.obj-'.$object_id.'\').toggleClass(\'hidden\');" class="large-stat"><span><span class="obj-'.$object_id.'">'. echo_number($this_totals) . '</span><span class="obj-'.$object_id.' hidden">'. number_format($this_totals) . '</span> '.$en_all_4534[$obj_en_id]['m_icon']. '</span>'.$en_all_4534[$obj_en_id]['m_name'].' <i class="obj-'.$object_id.' fal fa-plus-circle"></i><i class="obj-'.$object_id.' fal fa-minus-circle hidden"></i></a>';
+        echo '<a href="javascript:void(0);" onclick="$(\'.obj-'.$object_id.'\').toggleClass(\'hidden\');" class="large-stat"><span>'.$en_all_4534[$obj_en_id]['m_icon']. ' <span class="obj-'.$object_id.'">'. echo_number($this_totals) . '</span><span class="obj-'.$object_id.' hidden">'. number_format($this_totals) . '</span></span>'.$en_all_4534[$obj_en_id]['m_name'].' <i class="obj-'.$object_id.' fal fa-plus-circle"></i><i class="obj-'.$object_id.' fal fa-minus-circle hidden"></i></a>';
 
 
         echo '<div class="obj-'.$object_id.' hidden">';
@@ -164,7 +164,7 @@ if(!$has_filters){
             foreach($in_verbs as $verb){
                 echo '<tr>';
                 echo '<td style="text-align: left;">'.$verb['en_name'].'</td>';
-                echo '<td style="text-align: right;"><a href="/links?tr_type_entity_id=4250&in_verb_entity_id='.$verb['in_verb_entity_id'].'"  data-toggle="tooltip" title="View Intents starting with this verb" data-placement="top">'.number_format($verb['totals'],0).'</a> <i class="fas fa-hashtag"></i></td>';
+                echo '<td style="text-align: right;"><a href="/links?ln_type_entity_id=4250&in_verb_entity_id='.$verb['in_verb_entity_id'].'"  data-toggle="tooltip" title="View Intents starting with this verb" data-placement="top">'.number_format($verb['totals'],0).'</a> <i class="fas fa-hashtag"></i></td>';
                 echo '</tr>';
             }
             echo '</table>';
@@ -226,7 +226,7 @@ if(!$has_filters){
 
                 //Count any/all sources (complete or incomplete):
                 $source_count = $this->Matrix_model->en_child_count($source_en['en_id']);
-                $weight = ( substr_count($source_en['tr_content'], '&var_weight=')==1 ? intval(one_two_explode('&var_weight=','',$source_en['tr_content'])) : 0 );
+                $weight = ( substr_count($source_en['ln_content'], '&var_weight=')==1 ? intval(one_two_explode('&var_weight=','',$source_en['ln_content'])) : 0 );
                 $all_source_count += $source_count;
                 $all_source_count_weight += ($source_count * $weight);
                 if($source_count < 1 || $weight < 1){
@@ -261,10 +261,10 @@ if(!$has_filters){
             foreach($this->config->item('en_all_4432') as $group_en_id=>$people_group){
 
                 //Do a child count:
-                $child_trs = $this->Database_model->tr_fetch(array(
-                    'tr_parent_entity_id' => $group_en_id,
-                    'tr_type_entity_id IN (' . join(',', $this->config->item('en_ids_4592')) . ')' => null, //Entity Link Connectors
-                    'tr_status >=' => 0, //New+
+                $child_trs = $this->Database_model->ln_fetch(array(
+                    'ln_parent_entity_id' => $group_en_id,
+                    'ln_type_entity_id IN (' . join(',', $this->config->item('en_ids_4592')) . ')' => null, //Entity Link Connectors
+                    'ln_status >=' => 0, //New+
                     'en_status >=' => 0, //New+
                 ), array('en_child'), 0, 0, array(), 'COUNT(en_id) as en__child_count');
 
@@ -311,7 +311,7 @@ if(!$has_filters){
             echo '</table>';
 
 
-        } elseif($object_id=='tr_status'){
+        } elseif($object_id=='ln_status'){
 
 
             //Top Miners:
@@ -320,16 +320,16 @@ if(!$has_filters){
             $top_point_awarded = 0;
             $top_miners = ''; //For the UI table
             $filters = array(
-                'tr_points !=' => 0,
+                'ln_points !=' => 0,
             );
             if(!is_null($days_ago)){
                 $start_date = date("Y-m-d" , (time() - ($days_ago * 24 * 3600)));
-                $filters['tr_timestamp >='] = $start_date.' 00:00:00'; //From beginning of the day
+                $filters['ln_timestamp >='] = $start_date.' 00:00:00'; //From beginning of the day
             }
-            foreach ($this->Database_model->tr_fetch($filters, array('en_miner'), $top, 0, array('points_sum' => 'DESC'), 'COUNT(tr_miner_entity_id) as trs_count, SUM(tr_points) as points_sum, en_name, en_icon, tr_miner_entity_id', 'tr_miner_entity_id, en_name, en_icon') as $count=>$tr) {
+            foreach ($this->Database_model->ln_fetch($filters, array('en_miner'), $top, 0, array('points_sum' => 'DESC'), 'COUNT(ln_miner_entity_id) as trs_count, SUM(ln_points) as points_sum, en_name, en_icon, ln_miner_entity_id', 'ln_miner_entity_id, en_name, en_icon') as $count=>$tr) {
                 $top_miners .= '<tr>';
-                $top_miners .= '<td style="text-align: left;"><span style="width:29px; display: inline-block; text-align: center; '.( $count > 2 ? 'font-size:0.8em;' : '' ).'">'.echo_rank($count+1).'</span><span class="parent-icon" style="width: 29px; display: inline-block; text-align: center;">'.( strlen($tr['en_icon']) > 0 ? $tr['en_icon'] : '<i class="fas fa-at grey-at"></i>' ).'</span><a href="/entities/'.$tr['tr_miner_entity_id'].'">'.$tr['en_name'].'</a></td>';
-                $top_miners .= '<td style="text-align: right;"><a href="/links?tr_miner_entity_id='.$tr['tr_miner_entity_id'].( is_null($days_ago) ? '' : '&start_range='.$start_date ).'"  data-toggle="tooltip" title="Mined with '.number_format($tr['trs_count'],0).' links averaging '.round(($tr['points_sum']/$tr['trs_count']),1).' coins/link" data-placement="top">'.number_format($tr['points_sum'], 0).'</a> <i class="fas fa-award"></i></td>';
+                $top_miners .= '<td style="text-align: left;"><span style="width:29px; display: inline-block; text-align: center; '.( $count > 2 ? 'font-size:0.8em;' : '' ).'">'.echo_rank($count+1).'</span><span class="parent-icon" style="width: 29px; display: inline-block; text-align: center;">'.( strlen($tr['en_icon']) > 0 ? $tr['en_icon'] : '<i class="fas fa-at grey-at"></i>' ).'</span><a href="/entities/'.$tr['ln_miner_entity_id'].'">'.$tr['en_name'].'</a></td>';
+                $top_miners .= '<td style="text-align: right;"><a href="/links?ln_miner_entity_id='.$tr['ln_miner_entity_id'].( is_null($days_ago) ? '' : '&start_range='.$start_date ).'"  data-toggle="tooltip" title="Mined with '.number_format($tr['trs_count'],0).' links averaging '.round(($tr['points_sum']/$tr['trs_count']),1).' coins/link" data-placement="top">'.number_format($tr['points_sum'], 0).'</a> <i class="fas fa-award"></i></td>';
                 $top_miners .= '</tr>';
 
                 $top_point_awarded += $tr['points_sum'];
@@ -343,7 +343,7 @@ if(!$has_filters){
 
 
             //All Link Types:
-            $all_eng_types = $this->Database_model->tr_fetch(array('tr_status >=' => 0), array('en_type'), 0, 0, array('en_name' => 'ASC'), 'COUNT(tr_type_entity_id) as trs_count, en_name, en_icon, tr_type_entity_id', 'tr_type_entity_id, en_name, en_icon');
+            $all_eng_types = $this->Database_model->ln_fetch(array('ln_status >=' => 0), array('en_type'), 0, 0, array('en_name' => 'ASC'), 'COUNT(ln_type_entity_id) as trs_count, en_name, en_icon, ln_type_entity_id', 'ln_type_entity_id, en_name, en_icon');
 
             $all_link_count = 0;
             $all_tr_types = '';
@@ -351,8 +351,8 @@ if(!$has_filters){
 
                 //Echo stats:
                 $all_tr_types .= '<tr>';
-                $all_tr_types .= '<td style="text-align: left;"><span style="width: 26px; display: inline-block; text-align: center;">'.( strlen($tr['en_icon']) > 0 ? $tr['en_icon'] : '<i class="fas fa-at grey-at"></i>' ).'</span><a href="/entities/'.$tr['tr_type_entity_id'].'">'.$tr['en_name'].'</a></td>';
-                $all_tr_types .= '<td style="text-align: right;"><a href="/links?tr_type_entity_id='.$tr['tr_type_entity_id'].'"  data-toggle="tooltip" title="View all '.number_format($tr['trs_count'],0).' links" data-placement="top">'.number_format($tr['trs_count'], 0).'</a> <i class="fas fa-link rotate90"></i></td>';
+                $all_tr_types .= '<td style="text-align: left;"><span style="width: 26px; display: inline-block; text-align: center;">'.( strlen($tr['en_icon']) > 0 ? $tr['en_icon'] : '<i class="fas fa-at grey-at"></i>' ).'</span><a href="/entities/'.$tr['ln_type_entity_id'].'">'.$tr['en_name'].'</a></td>';
+                $all_tr_types .= '<td style="text-align: right;"><a href="/links?ln_type_entity_id='.$tr['ln_type_entity_id'].'"  data-toggle="tooltip" title="View all '.number_format($tr['trs_count'],0).' links" data-placement="top">'.number_format($tr['trs_count'], 0).'</a> <i class="fas fa-link rotate90"></i></td>';
                 $all_tr_types .= '</tr>';
 
                 $all_link_count += $tr['trs_count'];
@@ -362,9 +362,9 @@ if(!$has_filters){
 
 
             //Point Link Types:
-            $all_engs = $this->Database_model->tr_fetch(array(
-                'tr_points !=' => 0,
-            ), array('en_type'), 0, 0, array('en_name' => 'ASC'), 'COUNT(tr_type_entity_id) as trs_count, SUM(tr_points) as points_sum, en_name, en_icon, tr_type_entity_id', 'tr_type_entity_id, en_name, en_icon');
+            $all_engs = $this->Database_model->ln_fetch(array(
+                'ln_points !=' => 0,
+            ), array('en_type'), 0, 0, array('en_name' => 'ASC'), 'COUNT(ln_type_entity_id) as trs_count, SUM(ln_points) as points_sum, en_name, en_icon, ln_type_entity_id', 'ln_type_entity_id, en_name, en_icon');
 
             $all_point_payouts = 0;
             $point_tr_types = '';
@@ -372,18 +372,18 @@ if(!$has_filters){
 
                 //DOes it have a rate?
                 //TODO use PHP cache version, dont make a call
-                $rate_trs = $this->Database_model->tr_fetch(array(
-                    'tr_status' => 2, //Published
+                $rate_trs = $this->Database_model->ln_fetch(array(
+                    'ln_status' => 2, //Published
                     'en_status' => 2, //Published
-                    'tr_parent_entity_id' => 4595, //Mench Points
-                    'tr_type_entity_id IN (' . join(',', $this->config->item('en_ids_4592')) . ')' => null, //Entity Link Connectors
-                    'tr_child_entity_id' => $tr['tr_type_entity_id'],
+                    'ln_parent_entity_id' => 4595, //Mench Points
+                    'ln_type_entity_id IN (' . join(',', $this->config->item('en_ids_4592')) . ')' => null, //Entity Link Connectors
+                    'ln_child_entity_id' => $tr['ln_type_entity_id'],
                 ), array('en_child'), 1);
 
                 //Echo stats:
                 $point_tr_types .= '<tr>';
-                $point_tr_types .= '<td style="text-align: left;"><span style="width: 26px; display: inline-block; text-align: center;">'.( strlen($tr['en_icon']) > 0 ? $tr['en_icon'] : '<i class="fas fa-at grey-at"></i>' ).'</span><a href="/entities/'.$tr['tr_type_entity_id'].'">'.$tr['en_name'].'</a>'.( count($rate_trs) > 0 ? '<span class="underdot" data-toggle="tooltip" title="Each link currently issues '.$rate_trs[0]['tr_content'].' coins" data-placement="top" style="font-size:0.7em; margin-left:5px;">'.number_format($rate_trs[0]['tr_content'],0).'<i class="fas fa-award" style="margin-left: 2px;"></i></span>' : '' ).'</td>';
-                $point_tr_types .= '<td style="text-align: right;"><a href="/links?tr_type_entity_id='.$tr['tr_type_entity_id'].'"  data-toggle="tooltip" title="View all '.number_format($tr['trs_count'],0).' links" data-placement="top">'.number_format($tr['points_sum'], 0).'</a> <i class="fas fa-award"></i></td>';
+                $point_tr_types .= '<td style="text-align: left;"><span style="width: 26px; display: inline-block; text-align: center;">'.( strlen($tr['en_icon']) > 0 ? $tr['en_icon'] : '<i class="fas fa-at grey-at"></i>' ).'</span><a href="/entities/'.$tr['ln_type_entity_id'].'">'.$tr['en_name'].'</a>'.( count($rate_trs) > 0 ? '<span class="underdot" data-toggle="tooltip" title="Each link currently issues '.$rate_trs[0]['ln_content'].' coins" data-placement="top" style="font-size:0.7em; margin-left:5px;">'.number_format($rate_trs[0]['ln_content'],0).'<i class="fas fa-award" style="margin-left: 2px;"></i></span>' : '' ).'</td>';
+                $point_tr_types .= '<td style="text-align: right;"><a href="/links?ln_type_entity_id='.$tr['ln_type_entity_id'].'"  data-toggle="tooltip" title="View all '.number_format($tr['trs_count'],0).' links" data-placement="top">'.number_format($tr['points_sum'], 0).'</a> <i class="fas fa-award"></i></td>';
                 $point_tr_types .= '</tr>';
 
                 $all_point_payouts += $tr['points_sum'];
@@ -398,14 +398,14 @@ if(!$has_filters){
 
             //Report types:
             echo '<select id="tr_group_by" class="form-control border stats-select">';
-            echo '<option value="by_tr_status">Group By: 4 Statuses</option>';
+            echo '<option value="by_ln_status">Group By: 4 Statuses</option>';
             echo '<option value="by_tr_type">Group By: '.count($all_eng_types).' Link Types</option>';
             echo '<option value="by_tr_point_types">List Subset: '.echo_number($all_point_payouts).' Mench Points</option>';
             echo '<option value="by_tr_top_miners">List Subset: '.$top.' Top Miners</option>';
             echo '</select>';
 
             //Link Status:
-            echo '<table class="table table-condensed table-striped stats-table mini-stats-table tr_group_by by_tr_status">';
+            echo '<table class="table table-condensed table-striped stats-table mini-stats-table tr_group_by by_ln_status">';
             echo $this_ui;
             echo '</table>';
 
@@ -453,12 +453,12 @@ $join_by = array();
 
 //We have a special OR filter when combined with any_en_id & any_in_id
 $any_in_en_set = ( ( isset($_GET['any_en_id']) && $_GET['any_en_id'] > 0 ) || ( isset($_GET['any_in_id']) && $_GET['any_in_id'] > 0 ) );
-$parent_tr_filter = ( isset($_GET['tr_parent_link_id']) && $_GET['tr_parent_link_id'] > 0 ? ' OR tr_parent_link_id = '.$_GET['tr_parent_link_id'].' ' : false );
+$parent_tr_filter = ( isset($_GET['ln_parent_link_id']) && $_GET['ln_parent_link_id'] > 0 ? ' OR ln_parent_link_id = '.$_GET['ln_parent_link_id'].' ' : false );
 
 
 //Apply filters:
 if(isset($_GET['in_status']) && strlen($_GET['in_status']) > 0){
-    if(isset($_GET['tr_type_entity_id']) && $_GET['tr_type_entity_id']==4250){ //Intent created
+    if(isset($_GET['ln_type_entity_id']) && $_GET['ln_type_entity_id']==4250){ //Intent created
         //Filter intent status based on
         $join_by = array('in_child');
 
@@ -474,7 +474,7 @@ if(isset($_GET['in_status']) && strlen($_GET['in_status']) > 0){
 }
 
 if(isset($_GET['in_verb_entity_id']) && strlen($_GET['in_verb_entity_id']) > 0){
-    if(isset($_GET['tr_type_entity_id']) && $_GET['tr_type_entity_id']==4250){ //Intent created
+    if(isset($_GET['ln_type_entity_id']) && $_GET['ln_type_entity_id']==4250){ //Intent created
         //Filter intent status based on
         $join_by = array('in_child');
         if (substr_count($_GET['in_verb_entity_id'], ',') > 0) {
@@ -489,7 +489,7 @@ if(isset($_GET['in_verb_entity_id']) && strlen($_GET['in_verb_entity_id']) > 0){
 }
 
 if(isset($_GET['en_status']) && strlen($_GET['en_status']) > 0){
-    if(isset($_GET['tr_type_entity_id']) && $_GET['tr_type_entity_id']==4251){ //Entity Created
+    if(isset($_GET['ln_type_entity_id']) && $_GET['ln_type_entity_id']==4251){ //Entity Created
 
         //Filter intent status based on
         $join_by = array('en_child');
@@ -505,76 +505,76 @@ if(isset($_GET['en_status']) && strlen($_GET['en_status']) > 0){
     }
 }
 
-if(isset($_GET['tr_status']) && strlen($_GET['tr_status']) > 0){
-    if (substr_count($_GET['tr_status'], ',') > 0) {
+if(isset($_GET['ln_status']) && strlen($_GET['ln_status']) > 0){
+    if (substr_count($_GET['ln_status'], ',') > 0) {
         //This is multiple IDs:
-        $filters['( tr_status IN (' . $_GET['tr_status'] . '))'] = null;
+        $filters['( ln_status IN (' . $_GET['ln_status'] . '))'] = null;
     } else {
-        $filters['tr_status'] = intval($_GET['tr_status']);
+        $filters['ln_status'] = intval($_GET['ln_status']);
     }
 }
 
-if(isset($_GET['tr_miner_entity_id']) && strlen($_GET['tr_miner_entity_id']) > 0){
-    if (substr_count($_GET['tr_miner_entity_id'], ',') > 0) {
+if(isset($_GET['ln_miner_entity_id']) && strlen($_GET['ln_miner_entity_id']) > 0){
+    if (substr_count($_GET['ln_miner_entity_id'], ',') > 0) {
         //This is multiple IDs:
-        $filters['( tr_miner_entity_id IN (' . $_GET['tr_miner_entity_id'] . '))'] = null;
-    } elseif (intval($_GET['tr_miner_entity_id']) > 0) {
-        $filters['tr_miner_entity_id'] = $_GET['tr_miner_entity_id'];
+        $filters['( ln_miner_entity_id IN (' . $_GET['ln_miner_entity_id'] . '))'] = null;
+    } elseif (intval($_GET['ln_miner_entity_id']) > 0) {
+        $filters['ln_miner_entity_id'] = $_GET['ln_miner_entity_id'];
     }
 }
 
 
-if(isset($_GET['tr_parent_entity_id']) && strlen($_GET['tr_parent_entity_id']) > 0){
-    if (substr_count($_GET['tr_parent_entity_id'], ',') > 0) {
+if(isset($_GET['ln_parent_entity_id']) && strlen($_GET['ln_parent_entity_id']) > 0){
+    if (substr_count($_GET['ln_parent_entity_id'], ',') > 0) {
         //This is multiple IDs:
-        $filters['( tr_parent_entity_id IN (' . $_GET['tr_parent_entity_id'] . '))'] = null;
-    } elseif (intval($_GET['tr_parent_entity_id']) > 0) {
-        $filters['tr_parent_entity_id'] = $_GET['tr_parent_entity_id'];
+        $filters['( ln_parent_entity_id IN (' . $_GET['ln_parent_entity_id'] . '))'] = null;
+    } elseif (intval($_GET['ln_parent_entity_id']) > 0) {
+        $filters['ln_parent_entity_id'] = $_GET['ln_parent_entity_id'];
     }
 }
 
-if(isset($_GET['tr_child_entity_id']) && strlen($_GET['tr_child_entity_id']) > 0){
-    if (substr_count($_GET['tr_child_entity_id'], ',') > 0) {
+if(isset($_GET['ln_child_entity_id']) && strlen($_GET['ln_child_entity_id']) > 0){
+    if (substr_count($_GET['ln_child_entity_id'], ',') > 0) {
         //This is multiple IDs:
-        $filters['( tr_child_entity_id IN (' . $_GET['tr_child_entity_id'] . '))'] = null;
-    } elseif (intval($_GET['tr_child_entity_id']) > 0) {
-        $filters['tr_child_entity_id'] = $_GET['tr_child_entity_id'];
+        $filters['( ln_child_entity_id IN (' . $_GET['ln_child_entity_id'] . '))'] = null;
+    } elseif (intval($_GET['ln_child_entity_id']) > 0) {
+        $filters['ln_child_entity_id'] = $_GET['ln_child_entity_id'];
     }
 }
 
-if(isset($_GET['tr_parent_intent_id']) && strlen($_GET['tr_parent_intent_id']) > 0){
-    if (substr_count($_GET['tr_parent_intent_id'], ',') > 0) {
+if(isset($_GET['ln_parent_intent_id']) && strlen($_GET['ln_parent_intent_id']) > 0){
+    if (substr_count($_GET['ln_parent_intent_id'], ',') > 0) {
         //This is multiple IDs:
-        $filters['( tr_parent_intent_id IN (' . $_GET['tr_parent_intent_id'] . '))'] = null;
-    } elseif (intval($_GET['tr_parent_intent_id']) > 0) {
-        $filters['tr_parent_intent_id'] = $_GET['tr_parent_intent_id'];
+        $filters['( ln_parent_intent_id IN (' . $_GET['ln_parent_intent_id'] . '))'] = null;
+    } elseif (intval($_GET['ln_parent_intent_id']) > 0) {
+        $filters['ln_parent_intent_id'] = $_GET['ln_parent_intent_id'];
     }
 }
 
-if(isset($_GET['tr_child_intent_id']) && strlen($_GET['tr_child_intent_id']) > 0){
-    if (substr_count($_GET['tr_child_intent_id'], ',') > 0) {
+if(isset($_GET['ln_child_intent_id']) && strlen($_GET['ln_child_intent_id']) > 0){
+    if (substr_count($_GET['ln_child_intent_id'], ',') > 0) {
         //This is multiple IDs:
-        $filters['( tr_child_intent_id IN (' . $_GET['tr_child_intent_id'] . '))'] = null;
-    } elseif (intval($_GET['tr_child_intent_id']) > 0) {
-        $filters['tr_child_intent_id'] = $_GET['tr_child_intent_id'];
+        $filters['( ln_child_intent_id IN (' . $_GET['ln_child_intent_id'] . '))'] = null;
+    } elseif (intval($_GET['ln_child_intent_id']) > 0) {
+        $filters['ln_child_intent_id'] = $_GET['ln_child_intent_id'];
     }
 }
 
-if(isset($_GET['tr_parent_link_id']) && strlen($_GET['tr_parent_link_id']) > 0 && !$any_in_en_set){
-    if (substr_count($_GET['tr_parent_link_id'], ',') > 0) {
+if(isset($_GET['ln_parent_link_id']) && strlen($_GET['ln_parent_link_id']) > 0 && !$any_in_en_set){
+    if (substr_count($_GET['ln_parent_link_id'], ',') > 0) {
         //This is multiple IDs:
-        $filters['( tr_parent_link_id IN (' . $_GET['tr_parent_link_id'] . '))'] = null;
-    } elseif (intval($_GET['tr_parent_link_id']) > 0) {
-        $filters['tr_parent_link_id'] = $_GET['tr_parent_link_id'];
+        $filters['( ln_parent_link_id IN (' . $_GET['ln_parent_link_id'] . '))'] = null;
+    } elseif (intval($_GET['ln_parent_link_id']) > 0) {
+        $filters['ln_parent_link_id'] = $_GET['ln_parent_link_id'];
     }
 }
 
-if(isset($_GET['tr_id']) && strlen($_GET['tr_id']) > 0){
-    if (substr_count($_GET['tr_id'], ',') > 0) {
+if(isset($_GET['ln_id']) && strlen($_GET['ln_id']) > 0){
+    if (substr_count($_GET['ln_id'], ',') > 0) {
         //This is multiple IDs:
-        $filters['( tr_id IN (' . $_GET['tr_id'] . '))'] = null;
-    } elseif (intval($_GET['tr_id']) > 0) {
-        $filters['tr_id'] = $_GET['tr_id'];
+        $filters['( ln_id IN (' . $_GET['ln_id'] . '))'] = null;
+    } elseif (intval($_GET['ln_id']) > 0) {
+        $filters['ln_id'] = $_GET['ln_id'];
     }
 }
 
@@ -582,9 +582,9 @@ if(isset($_GET['any_en_id']) && strlen($_GET['any_en_id']) > 0){
     //We need to look for both parent/child
     if (substr_count($_GET['any_en_id'], ',') > 0) {
         //This is multiple IDs:
-        $filters['( tr_child_entity_id IN (' . $_GET['any_en_id'] . ') OR tr_parent_entity_id IN (' . $_GET['any_en_id'] . ') OR tr_miner_entity_id IN (' . $_GET['any_en_id'] . ') ' . $parent_tr_filter . ' )'] = null;
+        $filters['( ln_child_entity_id IN (' . $_GET['any_en_id'] . ') OR ln_parent_entity_id IN (' . $_GET['any_en_id'] . ') OR ln_miner_entity_id IN (' . $_GET['any_en_id'] . ') ' . $parent_tr_filter . ' )'] = null;
     } elseif (intval($_GET['any_en_id']) > 0) {
-        $filters['( tr_child_entity_id = ' . $_GET['any_en_id'] . ' OR tr_parent_entity_id = ' . $_GET['any_en_id'] . ' OR tr_miner_entity_id = ' . $_GET['any_en_id'] . $parent_tr_filter . ' )'] = null;
+        $filters['( ln_child_entity_id = ' . $_GET['any_en_id'] . ' OR ln_parent_entity_id = ' . $_GET['any_en_id'] . ' OR ln_miner_entity_id = ' . $_GET['any_en_id'] . $parent_tr_filter . ' )'] = null;
     }
 }
 
@@ -592,27 +592,27 @@ if(isset($_GET['any_in_id']) && strlen($_GET['any_in_id']) > 0){
     //We need to look for both parent/child
     if (substr_count($_GET['any_in_id'], ',') > 0) {
         //This is multiple IDs:
-        $filters['( tr_child_intent_id IN (' . $_GET['any_in_id'] . ') OR tr_parent_intent_id IN (' . $_GET['any_in_id'] . ') ' . $parent_tr_filter . ' )'] = null;
+        $filters['( ln_child_intent_id IN (' . $_GET['any_in_id'] . ') OR ln_parent_intent_id IN (' . $_GET['any_in_id'] . ') ' . $parent_tr_filter . ' )'] = null;
     } elseif (intval($_GET['any_in_id']) > 0) {
-        $filters['( tr_child_intent_id = ' . $_GET['any_in_id'] . ' OR tr_parent_intent_id = ' . $_GET['any_in_id'] . $parent_tr_filter . ')'] = null;
+        $filters['( ln_child_intent_id = ' . $_GET['any_in_id'] . ' OR ln_parent_intent_id = ' . $_GET['any_in_id'] . $parent_tr_filter . ')'] = null;
     }
 }
 
-if(isset($_GET['any_tr_id']) && strlen($_GET['any_tr_id']) > 0){
+if(isset($_GET['any_ln_id']) && strlen($_GET['any_ln_id']) > 0){
     //We need to look for both parent/child
-    if (substr_count($_GET['any_tr_id'], ',') > 0) {
+    if (substr_count($_GET['any_ln_id'], ',') > 0) {
         //This is multiple IDs:
-        $filters['( tr_id IN (' . $_GET['any_tr_id'] . ') OR tr_parent_link_id IN (' . $_GET['any_tr_id'] . '))'] = null;
-    } elseif (intval($_GET['any_tr_id']) > 0) {
-        $filters['( tr_id = ' . $_GET['any_tr_id'] . ' OR tr_parent_link_id = ' . $_GET['any_tr_id'] . ')'] = null;
+        $filters['( ln_id IN (' . $_GET['any_ln_id'] . ') OR ln_parent_link_id IN (' . $_GET['any_ln_id'] . '))'] = null;
+    } elseif (intval($_GET['any_ln_id']) > 0) {
+        $filters['( ln_id = ' . $_GET['any_ln_id'] . ' OR ln_parent_link_id = ' . $_GET['any_ln_id'] . ')'] = null;
     }
 }
 
 if(isset($_GET['start_range']) && is_valid_date($_GET['start_range'])){
-    $filters['tr_timestamp >='] = $_GET['start_range'].' 00:00:00';
+    $filters['ln_timestamp >='] = $_GET['start_range'].' 00:00:00';
 }
 if(isset($_GET['end_range']) && is_valid_date($_GET['end_range'])){
-    $filters['tr_timestamp <='] = $_GET['end_range'].' 23:59:59';
+    $filters['ln_timestamp <='] = $_GET['end_range'].' 23:59:59';
 }
 
 
@@ -630,27 +630,27 @@ foreach($filters as $key => $value){
         $ini_filter[$key] = $value;
     }
 }
-$all_engs = $this->Database_model->tr_fetch($ini_filter, array('en_type'), 0, 0, array('en_name' => 'ASC'), 'COUNT(tr_type_entity_id) as trs_count, SUM(tr_points) as points_sum, en_name, tr_type_entity_id', 'tr_type_entity_id, en_name');
+$all_engs = $this->Database_model->ln_fetch($ini_filter, array('en_type'), 0, 0, array('en_name' => 'ASC'), 'COUNT(ln_type_entity_id) as trs_count, SUM(ln_points) as points_sum, en_name, ln_type_entity_id', 'ln_type_entity_id, en_name');
 
 
 
 
 //Make sure its a valid type considering other filters:
-if(isset($_GET['tr_type_entity_id'])){
+if(isset($_GET['ln_type_entity_id'])){
 
     $found = false;
     foreach ($all_engs as $tr) {
-        if($_GET['tr_type_entity_id'] == $tr['tr_type_entity_id']){
+        if($_GET['ln_type_entity_id'] == $tr['ln_type_entity_id']){
             $found = true;
             break;
         }
     }
 
     if(!$found){
-        unset($_GET['tr_type_entity_id']);
+        unset($_GET['ln_type_entity_id']);
     } else {
         //Assign filter:
-        $filters['tr_type_entity_id'] = intval($_GET['tr_type_entity_id']);
+        $filters['ln_type_entity_id'] = intval($_GET['ln_type_entity_id']);
     }
 
 }
@@ -666,21 +666,21 @@ if(!en_auth(array(1281))){
 
     if(count($_GET) < 1){
         //This makes the public data focus on links with coins which is a nicer initial view into links:
-        $filters['tr_points >'] = 0;
+        $filters['ln_points >'] = 0;
         //Also give warning about this applied filter on the UI:
         $filter_note = 'Showing recent link with awarded coins.';
     } else {
         //We do have some filters passed...
         //Make sure not to show the invisible link types:
-        $filters['tr_type_entity_id NOT IN ('.join(',' , $this->config->item('en_ids_4755')).')'] = null;
+        $filters['ln_type_entity_id NOT IN ('.join(',' , $this->config->item('en_ids_4755')).')'] = null;
 
         //Also give warning about this applied filter on the UI:
         $filter_note = 'Only showing publicly visible link.';
     }
 }
 
-$trs_count = $this->Database_model->tr_fetch($filters, $join_by, 0, 0, array(), 'COUNT(tr_id) as trs_count, SUM(tr_points) as points_sum');
-$trs = $this->Database_model->tr_fetch($filters, $join_by, (is_dev() ? 50 : 200));
+$trs_count = $this->Database_model->ln_fetch($filters, $join_by, 0, 0, array(), 'COUNT(ln_id) as trs_count, SUM(ln_points) as points_sum');
+$trs = $this->Database_model->ln_fetch($filters, $join_by, (is_dev() ? 50 : 200));
 
 
 
@@ -712,7 +712,7 @@ echo '<table class="table table-condensed maxout"><tr>';
     $select_ui = '';
     foreach ($all_engs as $tr) {
         //Echo drop down:
-        $select_ui .= '<option value="' . $tr['tr_type_entity_id'] . '" ' . ((isset($_GET['tr_type_entity_id']) && $_GET['tr_type_entity_id'] == $tr['tr_type_entity_id']) ? 'selected="selected"' : '') . '>' . $tr['en_name'] . ' ('  . echo_number($tr['trs_count']) . 'T' . ' = '.echo_number($tr['points_sum']).'C' . ')</option>';
+        $select_ui .= '<option value="' . $tr['ln_type_entity_id'] . '" ' . ((isset($_GET['ln_type_entity_id']) && $_GET['ln_type_entity_id'] == $tr['ln_type_entity_id']) ? 'selected="selected"' : '') . '>' . $tr['en_name'] . ' ('  . echo_number($tr['trs_count']) . 'T' . ' = '.echo_number($tr['points_sum']).'C' . ')</option>';
         $all_link_count += $tr['trs_count'];
         $all_points += $tr['points_sum'];
     }
@@ -720,7 +720,7 @@ echo '<table class="table table-condensed maxout"><tr>';
     echo '<td>';
     echo '<div>';
     echo '<span class="mini-header">Link Type:</span>';
-    echo '<select class="form-control border" name="tr_type_entity_id" id="tr_type_entity_id" class="border" style="width: 100% !important;">';
+    echo '<select class="form-control border" name="ln_type_entity_id" id="ln_type_entity_id" class="border" style="width: 100% !important;">';
     echo '<option value="0">All ('  . echo_number($all_link_count) . 'T' . ' = '.echo_number($all_points).'C' . ')</option>';
     echo $select_ui;
     echo '</select>';
@@ -751,9 +751,9 @@ echo '<span class="mini-header">Any Intent IDs:</span>';
 echo '<input type="text" name="any_in_id" value="' . ((isset($_GET['any_in_id'])) ? $_GET['any_in_id'] : '') . '" class="form-control border">';
 echo '</div></td>';
 
-echo '<td><span class="mini-header">Intent Parent IDs:</span><input type="text" name="tr_parent_intent_id" value="' . ((isset($_GET['tr_parent_intent_id'])) ? $_GET['tr_parent_intent_id'] : '') . '" class="form-control border"></td>';
+echo '<td><span class="mini-header">Intent Parent IDs:</span><input type="text" name="ln_parent_intent_id" value="' . ((isset($_GET['ln_parent_intent_id'])) ? $_GET['ln_parent_intent_id'] : '') . '" class="form-control border"></td>';
 
-echo '<td><span class="mini-header">Intent Child IDs:</span><input type="text" name="tr_child_intent_id" value="' . ((isset($_GET['tr_child_intent_id'])) ? $_GET['tr_child_intent_id'] : '') . '" class="form-control border"></td>';
+echo '<td><span class="mini-header">Intent Child IDs:</span><input type="text" name="ln_child_intent_id" value="' . ((isset($_GET['ln_child_intent_id'])) ? $_GET['ln_child_intent_id'] : '') . '" class="form-control border"></td>';
 
 echo '</tr></table>';
 
@@ -771,11 +771,11 @@ echo '<table class="table table-condensed maxout"><tr>';
     echo '<input type="text" name="any_en_id" value="' . ((isset($_GET['any_en_id'])) ? $_GET['any_en_id'] : '') . '" class="form-control border">';
     echo '</div></td>';
 
-    echo '<td><span class="mini-header">Entity Miner IDs:</span><input type="text" name="tr_miner_entity_id" value="' . ((isset($_GET['tr_miner_entity_id'])) ? $_GET['tr_miner_entity_id'] : '') . '" class="form-control border"></td>';
+    echo '<td><span class="mini-header">Entity Miner IDs:</span><input type="text" name="ln_miner_entity_id" value="' . ((isset($_GET['ln_miner_entity_id'])) ? $_GET['ln_miner_entity_id'] : '') . '" class="form-control border"></td>';
 
-    echo '<td><span class="mini-header">Entity Parent IDs:</span><input type="text" name="tr_parent_entity_id" value="' . ((isset($_GET['tr_parent_entity_id'])) ? $_GET['tr_parent_entity_id'] : '') . '" class="form-control border"></td>';
+    echo '<td><span class="mini-header">Entity Parent IDs:</span><input type="text" name="ln_parent_entity_id" value="' . ((isset($_GET['ln_parent_entity_id'])) ? $_GET['ln_parent_entity_id'] : '') . '" class="form-control border"></td>';
 
-    echo '<td><span class="mini-header">Entity Child IDs:</span><input type="text" name="tr_child_entity_id" value="' . ((isset($_GET['tr_child_entity_id'])) ? $_GET['tr_child_entity_id'] : '') . '" class="form-control border"></td>';
+    echo '<td><span class="mini-header">Entity Child IDs:</span><input type="text" name="ln_child_entity_id" value="' . ((isset($_GET['ln_child_entity_id'])) ? $_GET['ln_child_entity_id'] : '') . '" class="form-control border"></td>';
 
 echo '</tr></table>';
 
@@ -788,14 +788,14 @@ echo '<table class="table table-condensed maxout"><tr>';
 //ANY Link
 echo '<td><div style="padding-right:5px;">';
 echo '<span class="mini-header">Any Trans. IDs:</span>';
-echo '<input type="text" name="any_tr_id" value="' . ((isset($_GET['any_tr_id'])) ? $_GET['any_tr_id'] : '') . '" class="form-control border">';
+echo '<input type="text" name="any_ln_id" value="' . ((isset($_GET['any_ln_id'])) ? $_GET['any_ln_id'] : '') . '" class="form-control border">';
 echo '</div></td>';
 
-echo '<td><span class="mini-header">Trans. IDs:</span><input type="text" name="tr_id" value="' . ((isset($_GET['tr_id'])) ? $_GET['tr_id'] : '') . '" class="form-control border"></td>';
+echo '<td><span class="mini-header">Trans. IDs:</span><input type="text" name="ln_id" value="' . ((isset($_GET['ln_id'])) ? $_GET['ln_id'] : '') . '" class="form-control border"></td>';
 
-echo '<td><span class="mini-header">Parent Trans. IDs:</span><input type="text" name="tr_parent_link_id" value="' . ((isset($_GET['tr_parent_link_id'])) ? $_GET['tr_parent_link_id'] : '') . '" class="form-control border"></td>';
+echo '<td><span class="mini-header">Parent Trans. IDs:</span><input type="text" name="ln_parent_link_id" value="' . ((isset($_GET['ln_parent_link_id'])) ? $_GET['ln_parent_link_id'] : '') . '" class="form-control border"></td>';
 
-echo '<td><span class="mini-header">Trans. Status:</span><input type="text" name="tr_status" value="' . ((isset($_GET['tr_status'])) ? $_GET['tr_status'] : '') . '" class="form-control border"></td>';
+echo '<td><span class="mini-header">Trans. Status:</span><input type="text" name="ln_status" value="' . ((isset($_GET['ln_status'])) ? $_GET['ln_status'] : '') . '" class="form-control border"></td>';
 
 echo '</tr></table>';
 

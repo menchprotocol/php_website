@@ -110,12 +110,12 @@ class Links extends CI_Controller
 
 
 
-    function link_json($tr_id)
+    function link_json($ln_id)
     {
 
         //Fetch link metadata and display it:
-        $trs = $this->Database_model->tr_fetch(array(
-            'tr_id' => $tr_id,
+        $trs = $this->Database_model->ln_fetch(array(
+            'ln_id' => $ln_id,
         ));
 
         if (count($trs) < 1) {
@@ -123,7 +123,7 @@ class Links extends CI_Controller
                 'status' => 0,
                 'message' => 'Invalid Link ID',
             ));
-        } elseif(in_array($trs[0]['tr_type_entity_id'] , $this->config->item('en_ids_4755')) /* Link Type is locked */ && !en_auth(array(1281)) /* Viewer NOT a moderator */){
+        } elseif(in_array($trs[0]['ln_type_entity_id'] , $this->config->item('en_ids_4755')) /* Link Type is locked */ && !en_auth(array(1281)) /* Viewer NOT a moderator */){
             return echo_json(array(
                 'status' => 0,
                 'message' => 'Link content visible to moderators only',
@@ -136,8 +136,8 @@ class Links extends CI_Controller
         } else {
 
             //unserialize metadata if needed:
-            if(strlen($trs[0]['tr_metadata']) > 0){
-                $trs[0]['tr_metadata'] = unserialize($trs[0]['tr_metadata']);
+            if(strlen($trs[0]['ln_metadata']) > 0){
+                $trs[0]['ln_metadata'] = unserialize($trs[0]['ln_metadata']);
             }
 
             //Print on scree:
@@ -213,7 +213,7 @@ class Links extends CI_Controller
         exit; //Maybe use to update all rates if needed?
 
         //Issue coins for each link type:
-        $all_engs = $this->Database_model->tr_fetch(array(), array('en_type'), 0, 0, array('trs_count' => 'DESC'), 'COUNT(tr_type_entity_id) as trs_count, en_name, tr_type_entity_id', 'tr_type_entity_id, en_name');
+        $all_engs = $this->Database_model->ln_fetch(array(), array('en_type'), 0, 0, array('trs_count' => 'DESC'), 'COUNT(ln_type_entity_id) as trs_count, en_name, ln_type_entity_id', 'ln_type_entity_id, en_name');
 
         //return echo_json($all_engs);
 
@@ -221,17 +221,17 @@ class Links extends CI_Controller
         foreach ($all_engs as $tr) {
 
             //DOes it have a rate?
-            $rate_trs = $this->Database_model->tr_fetch(array(
-                'tr_status' => 2, //Published
+            $rate_trs = $this->Database_model->ln_fetch(array(
+                'ln_status' => 2, //Published
                 'en_status' => 2, //Published
-                'tr_type_entity_id' => 4319, //Number
-                'tr_parent_entity_id' => 4595, //Mench Points
-                'tr_child_entity_id' => $tr['tr_type_entity_id'],
+                'ln_type_entity_id' => 4319, //Number
+                'ln_parent_entity_id' => 4595, //Mench Points
+                'ln_child_entity_id' => $tr['ln_type_entity_id'],
             ), array('en_child'), 1);
 
             if(count($rate_trs) > 0){
                 //Issue coins at this rate:
-                $this->db->query("UPDATE table_links SET tr_points = '".$rate_trs[0]['tr_content']."' WHERE tr_type_entity_id = " . $tr['tr_type_entity_id']);
+                $this->db->query("UPDATE table_links SET ln_points = '".$rate_trs[0]['ln_content']."' WHERE ln_type_entity_id = " . $tr['ln_type_entity_id']);
             }
 
         }
@@ -291,20 +291,20 @@ class Links extends CI_Controller
             ));
 
             //Fetch children:
-            foreach($this->Database_model->tr_fetch(array(
-                'tr_status >=' => 0, //New+
+            foreach($this->Database_model->ln_fetch(array(
+                'ln_status >=' => 0, //New+
                 'in_status >=' => 0, //New+
-                'tr_type_entity_id IN (' . join(',', $this->config->item('en_ids_4486')) . ')' => null, //Intent Link Connectors
-                'tr_parent_intent_id' => $in['in_id'],
+                'ln_type_entity_id IN (' . join(',', $this->config->item('en_ids_4486')) . ')' => null, //Intent Link Connectors
+                'ln_parent_intent_id' => $in['in_id'],
             ), array('in_child'), 0, 0) as $in_child){
 
                 $this->db->insert('gephi_edges', array(
-                    'source' => $id_prefix['in'].$in_child['tr_parent_intent_id'],
-                    'target' => $id_prefix['in'].$in_child['tr_child_intent_id'],
-                    'label' => $en_all_4593[$in_child['tr_type_entity_id']]['m_name'], //TODO maybe give visibility to points/condition here?
+                    'source' => $id_prefix['in'].$in_child['ln_parent_intent_id'],
+                    'target' => $id_prefix['in'].$in_child['ln_child_intent_id'],
+                    'label' => $en_all_4593[$in_child['ln_type_entity_id']]['m_name'], //TODO maybe give visibility to points/condition here?
                     'weight' => 1, //TODO Maybe update later?
-                    'edge_type_en_id' => $in_child['tr_type_entity_id'],
-                    'edge_status' => $in_child['tr_status'],
+                    'edge_type_en_id' => $in_child['ln_type_entity_id'],
+                    'edge_status' => $in_child['ln_status'],
                 ));
 
             }
@@ -325,66 +325,66 @@ class Links extends CI_Controller
             ));
 
             //Fetch children:
-            foreach($this->Database_model->tr_fetch(array(
-                'tr_status >=' => 0, //New+
+            foreach($this->Database_model->ln_fetch(array(
+                'ln_status >=' => 0, //New+
                 'en_status >=' => 0, //New+
-                'tr_type_entity_id IN (' . join(',', $this->config->item('en_ids_4592')) . ')' => null, //Entity Link Connectors
-                'tr_parent_entity_id' => $en['en_id'],
+                'ln_type_entity_id IN (' . join(',', $this->config->item('en_ids_4592')) . ')' => null, //Entity Link Connectors
+                'ln_parent_entity_id' => $en['en_id'],
             ), array('en_child'), 0, 0) as $en_child){
 
                 $this->db->insert('gephi_edges', array(
-                    'source' => $id_prefix['en'].$en_child['tr_parent_entity_id'],
-                    'target' => $id_prefix['en'].$en_child['tr_child_entity_id'],
-                    'label' => $en_all_4593[$en_child['tr_type_entity_id']]['m_name'].': '.$en_child['tr_content'],
+                    'source' => $id_prefix['en'].$en_child['ln_parent_entity_id'],
+                    'target' => $id_prefix['en'].$en_child['ln_child_entity_id'],
+                    'label' => $en_all_4593[$en_child['ln_type_entity_id']]['m_name'].': '.$en_child['ln_content'],
                     'weight' => 1, //TODO Maybe update later?
-                    'edge_type_en_id' => $en_child['tr_type_entity_id'],
-                    'edge_status' => $en_child['tr_status'],
+                    'edge_type_en_id' => $en_child['ln_type_entity_id'],
+                    'edge_status' => $en_child['ln_status'],
                 ));
 
             }
         }
 
         //Add messages:
-        $messages = $this->Database_model->tr_fetch(array(
-            'tr_status >=' => 0, //New+
+        $messages = $this->Database_model->ln_fetch(array(
+            'ln_status >=' => 0, //New+
             'in_status >=' => 0, //New+
-            'tr_type_entity_id IN (' . join(',', $this->config->item('en_ids_4485')) . ')' => null, //All Intent Notes
-            //'tr_type_entity_id' => 4231, //Intent Messages only
+            'ln_type_entity_id IN (' . join(',', $this->config->item('en_ids_4485')) . ')' => null, //All Intent Notes
+            //'ln_type_entity_id' => 4231, //Intent Messages only
         ), array('in_child'), 0, 0);
         foreach($messages as $message) {
 
             //Add message node:
             $this->db->insert('gephi_nodes', array(
-                'id' => $message['tr_id'],
-                'label' => $en_all_4593[$message['tr_type_entity_id']]['m_name'] . ': ' . $message['tr_content'],
+                'id' => $message['ln_id'],
+                'label' => $en_all_4593[$message['ln_type_entity_id']]['m_name'] . ': ' . $message['ln_content'],
                 'size' => $node_size['msg'],
-                'node_type' => $message['tr_type_entity_id'], //Message type
-                'node_status' => $message['tr_status'],
+                'node_type' => $message['ln_type_entity_id'], //Message type
+                'node_status' => $message['ln_status'],
             ));
 
             //Add child intent link:
             $this->db->insert('gephi_edges', array(
-                'source' => $message['tr_id'],
-                'target' => $id_prefix['in'].$message['tr_child_intent_id'],
+                'source' => $message['ln_id'],
+                'target' => $id_prefix['in'].$message['ln_child_intent_id'],
                 'label' => 'Child Intent',
                 'weight' => 1, //TODO Maybe update later?
             ));
 
             //Add parent intent link?
-            if ($message['tr_parent_intent_id'] > 0) {
+            if ($message['ln_parent_intent_id'] > 0) {
                 $this->db->insert('gephi_edges', array(
-                    'source' => $id_prefix['in'].$message['tr_parent_intent_id'],
-                    'target' => $message['tr_id'],
+                    'source' => $id_prefix['in'].$message['ln_parent_intent_id'],
+                    'target' => $message['ln_id'],
                     'label' => 'Parent Intent',
                     'weight' => 1, //TODO Maybe update later?
                 ));
             }
 
             //Add parent entity link?
-            if ($message['tr_parent_entity_id'] > 0) {
+            if ($message['ln_parent_entity_id'] > 0) {
                 $this->db->insert('gephi_edges', array(
-                    'source' => $id_prefix['en'].$message['tr_parent_entity_id'],
-                    'target' => $message['tr_id'],
+                    'source' => $id_prefix['en'].$message['ln_parent_entity_id'],
+                    'target' => $message['ln_id'],
                     'label' => 'Parent Entity',
                     'weight' => 1, //TODO Maybe update later?
                 ));
@@ -411,10 +411,10 @@ class Links extends CI_Controller
             $this->session->set_userdata('advance_view_enabled', $toggled_setting);
 
             //Log Link:
-            $this->Database_model->tr_create(array(
-                'tr_miner_entity_id' => $session_en['en_id'],
-                'tr_type_entity_id' => 5007, //Toggled Advance Mode
-                'tr_content' => 'Toggled '.( $toggled_setting ? 'ON' : 'OFF' ), //To be used when miner logs in again
+            $this->Database_model->ln_create(array(
+                'ln_miner_entity_id' => $session_en['en_id'],
+                'ln_type_entity_id' => 5007, //Toggled Advance Mode
+                'ln_content' => 'Toggled '.( $toggled_setting ? 'ON' : 'OFF' ), //To be used when miner logs in again
             ));
 
             //Return to JS function:

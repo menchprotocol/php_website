@@ -99,21 +99,21 @@ function load_edit(handler){
     $('.edit-box').css('top', position.top).css('left', position.left).removeClass('hidden');
 }
 
-function ms_toggle(tr_id, new_state) {
+function ms_toggle(ln_id, new_state) {
 
     if (new_state < 0) {
         //Detect new state:
-        new_state = ($('.cr-class-' + tr_id).hasClass('hidden') ? 1 : 0);
+        new_state = ($('.cr-class-' + ln_id).hasClass('hidden') ? 1 : 0);
     }
 
     if (new_state) {
         //open:
-        $('.cr-class-' + tr_id).removeClass('hidden');
-        $('#handle-' + tr_id).removeClass('fa-plus-circle').addClass('fa-minus-circle');
+        $('.cr-class-' + ln_id).removeClass('hidden');
+        $('#handle-' + ln_id).removeClass('fa-plus-circle').addClass('fa-minus-circle');
     } else {
         //Close:
-        $('.cr-class-' + tr_id).addClass('hidden');
-        $('#handle-' + tr_id).removeClass('fa-minus-circle').addClass('fa-plus-circle');
+        $('.cr-class-' + ln_id).addClass('hidden');
+        $('#handle-' + ln_id).removeClass('fa-minus-circle').addClass('fa-plus-circle');
     }
 }
 
@@ -150,9 +150,9 @@ function toggle_advance(basic_toggle){
 }
 
 
-function tr_content_word_count(el_textarea, el_counter) {
+function ln_content_word_count(el_textarea, el_counter) {
     var len = $(el_textarea).val().length;
-    if (len > tr_content_max_length) {
+    if (len > ln_content_max_length) {
         $(el_counter).addClass('overload').text(len);
     } else {
         $(el_counter).removeClass('overload').text(len);

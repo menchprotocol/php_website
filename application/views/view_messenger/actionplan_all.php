@@ -8,7 +8,7 @@ echo '<div class="list-group actionplan-sort" style="margin-top: 10px;">';
 foreach ($student_intents as $tr) {
 
     //Display row:
-    echo '<a href="/messenger/actionplan/' . $tr['tr_child_intent_id'] . '" class="list-group-item">';
+    echo '<a href="/messenger/actionplan/' . $tr['ln_child_intent_id'] . '" class="list-group-item">';
 
     //Right:
     echo '<span class="pull-right">';
@@ -21,7 +21,7 @@ foreach ($student_intents as $tr) {
 
     //Left:
     echo '<i class="fas fa-sort"></i>'; //For sorting Action Plan
-    //echo echo_fixed_fields('tr_status', $tr['tr_status'], 1, 'right');
+    //echo echo_fixed_fields('ln_status', $tr['ln_status'], 1, 'right');
     echo '<span class="actionplan-title">' . $tr['in_outcome'] . '</span>';
 
 

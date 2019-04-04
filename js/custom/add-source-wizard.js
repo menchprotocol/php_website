@@ -38,7 +38,7 @@ $(document).ready(function() {
 
     //Watch for counter changes:
     $( ".characterLimiter" ).keyup(function() {
-        tr_content_word_count('.textarea_'+$(this).attr('id-postfix'),'#char_count_'+$(this).attr('id-postfix'));
+        ln_content_word_count('.textarea_'+$(this).attr('id-postfix'),'#char_count_'+$(this).attr('id-postfix'));
     });
 
 

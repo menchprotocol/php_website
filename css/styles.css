@@ -1153,7 +1153,7 @@ h5, .h5 {
 }
 
 
-.tr_content {
+.ln_content {
     display: inline-block;
     font-size: 0.8em;
     color: #999;
@@ -1163,7 +1163,7 @@ h5, .h5 {
     line-height: 120%;
 }
 
-.tr_content a {
+.ln_content a {
     text-decoration: underline;
     color: #999;
 }

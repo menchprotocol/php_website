@@ -8,7 +8,7 @@
             ),
             array(
                 'my_url' => 'myaccount',
-                'anchor' => '<i class="fas fa-user blue"></i> My Account',
+                'anchor' => '<i class="fas fa-user-circle blue"></i> My Account',
             ),
         );
         foreach ($navigation as $nav_item) {

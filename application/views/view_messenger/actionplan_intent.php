@@ -8,7 +8,7 @@ $is_or_branch = ( $in['in_type']==1 );
 $or_path_chosen = ( $is_or_branch && $has_children ); //Or branches do not have a children until students choose one...
 $message_in_requirements = $this->Matrix_model->in_req_completion($in); //Fetch completion requirements for this intent
 $time_estimate = echo_time_range($in);
-$show_children = ( $is_or_branch || ( $has_children && ( !$message_in_requirements || $actionplan_parents[0]['tr_status']==2 ) ) );
+$show_children = ( $is_or_branch || ( $has_children && ( !$message_in_requirements || $actionplan_parents[0]['ln_status']==2 ) ) );
 $force_linear = true; //If true, will force students to complete AND branches linearly
 
 //We want to show the child intents in specific conditions to ensure a step-by-step navigation by the user through the browser Action Plan
@@ -20,16 +20,16 @@ if ($is_step) {
     $message_in_requirements = $this->Matrix_model->in_req_completion($in);
 
     //Submission button visible after first button was clicked:
-    $is_incomplete = ($actionplan_parents[0]['tr_status'] < 1 || ($actionplan_parents[0]['tr_status'] == 1 && !$has_children));
+    $is_incomplete = ($actionplan_parents[0]['ln_status'] < 1 || ($actionplan_parents[0]['ln_status'] == 1 && !$has_children));
     $show_written_input = ($message_in_requirements && $is_incomplete);
 }
 
 
 //Do we have a next item?
 $next_button = null;
-if ($actionplan['tr_status'] == 1) {
+if ($actionplan['ln_status'] == 1) {
     //Active Action Plan, attempt to find next item, which we should be able to find:
-    $next_ins = $this->Matrix_model->actionplan_fetch_next($actionplan['tr_parent_link_id']);
+    $next_ins = $this->Matrix_model->actionplan_fetch_next($actionplan['ln_parent_link_id']);
     if ($next_ins) {
         if ($next_ins[0]['in_id'] == $in['in_id']) {
             //$next_button = '<span style="font-size: 0.7em; padding-left:5px; display:inline-block;"><i class="fas fa-shield-check"></i> This is the next-in-line intent</span>';
@@ -41,7 +41,7 @@ if ($actionplan['tr_status'] == 1) {
 }
 
 
-//Fetch parent tree all the way to the top of Action Plan tr_child_intent_id
+//Fetch parent tree all the way to the top of Action Plan ln_child_intent_id
 echo '<div class="list-group parent-actionplans" style="margin-top: 10px;">';
 if($is_step){
     foreach ($actionplan_parents as $tr) {
@@ -49,10 +49,10 @@ if($is_step){
     }
 } else {
     //Show link to Action Plan if we have 1+ intentions:
-    $actionplan_intent_counts = count($this->Database_model->tr_fetch(array(
-        'tr_miner_entity_id' => $session_en['en_id'],
-        'tr_type_entity_id' => 4235, //Student Intent
-        'tr_status >=' => 0, //New+
+    $actionplan_intent_counts = count($this->Database_model->ln_fetch(array(
+        'ln_miner_entity_id' => $session_en['en_id'],
+        'ln_type_entity_id' => 4235, //Student Intent
+        'ln_status >=' => 0, //New+
     )));
     if($actionplan_intent_counts > 1){
         echo '<a href="/messenger/actionplan" class="list-group-item">';
@@ -77,7 +77,7 @@ if ($is_step) {
 
     //Show completion progress for the single parent intent:
 
-    echo echo_fixed_fields('tr_student_status', $actionplan_parents[0]['tr_status'], false, 'top');
+    echo echo_fixed_fields('tr_student_status', $actionplan_parents[0]['ln_status'], false, 'top');
     if($time_estimate){
         echo ' &nbsp;&nbsp;<span class="status-label underdot" data-toggle="tooltip" data-placement="top" title="The estimated time to complete this '.$en_all_6107[4559]['m_name'].'"><i class="fas fa-alarm-clock"></i> ' . $time_estimate.'</span>';
     }
@@ -89,7 +89,7 @@ if ($is_step) {
     echo '<span class="status-label underdot" data-toggle="tooltip" data-placement="top" title="'.$en_all_6107[4235]['m_desc'].'">'.$en_all_6107[4235]['m_icon'].$en_all_6107[4235]['m_name'].'</span> &nbsp;&nbsp;';
 
     //This must be top level Action Plan, show Action Plan data:
-    echo echo_fixed_fields('tr_student_status', $actionplan['tr_status'], false, 'top');
+    echo echo_fixed_fields('tr_student_status', $actionplan['ln_status'], false, 'top');
     if($time_estimate){
         echo ' &nbsp;&nbsp;<span class="status-label underdot" data-toggle="tooltip" data-placement="top" title="The estimated time to complete this '.$en_all_6107[4559]['m_name'].'"><i class="fas fa-alarm-clock"></i> ' . $time_estimate.'</span>';
     }
@@ -98,20 +98,20 @@ echo '</div>';
 
 
 //Show Published Messages:
-foreach ($this->Database_model->tr_fetch(array(
-    'tr_status' => 2, //Published
-    'tr_type_entity_id' => 4231, //Intent Note Messages
-    'tr_child_intent_id' => $in['in_id'],
-), array(), 0, 0, array('tr_order' => 'ASC')) as $tr) {
+foreach ($this->Database_model->ln_fetch(array(
+    'ln_status' => 2, //Published
+    'ln_type_entity_id' => 4231, //Intent Note Messages
+    'ln_child_intent_id' => $in['in_id'],
+), array(), 0, 0, array('ln_order' => 'ASC')) as $tr) {
     echo '<div class="tip_bubble">';
-    echo $this->Chat_model->dispatch_message($tr['tr_content'], $actionplan);
+    echo $this->Chat_model->dispatch_message($tr['ln_content'], $actionplan);
     echo '</div>';
 }
 
 //Show completion options below messages:
 if ($is_step && ($message_in_requirements || ($in['in_type']==0 && !$has_children))) {
 
-    if (!$show_written_input && !$is_incomplete && strlen($actionplan_parents[0]['tr_content']) > 0 /* For now only allow is complete */) {
+    if (!$show_written_input && !$is_incomplete && strlen($actionplan_parents[0]['ln_content']) > 0 /* For now only allow is complete */) {
         //Show button to make text visible:
         echo '<div class="left-grey"><a href="javascript:void(0);" onclick="$(\'.toggle_text\').toggle();" class="toggle_text btn btn-xs btn-black"><i class="fas fa-edit"></i> ' . ($is_incomplete ? 'Add Written Answer' : 'Modify Answer') . '</a></div>';
     }
@@ -119,13 +119,13 @@ if ($is_step && ($message_in_requirements || ($in['in_type']==0 && !$has_childre
     echo '<div class="left-grey">';
     echo '<form method="POST" action="/messenger/actionplan_update_step">';
 
-    echo '<input type="hidden" name="tr_id"  value="' . $actionplan_parents[0]['tr_id'] . '" />';
+    echo '<input type="hidden" name="ln_id"  value="' . $actionplan_parents[0]['ln_id'] . '" />';
 
     echo '<div class="toggle_text" style="' . ($show_written_input ? '' : 'display:none; ') . '">';
     if ($message_in_requirements) {
         echo '<div style="color:#2b2b2b; font-size:0.7em; margin:0 !important; padding:0;"><i class="fas fa-exclamation-triangle"></i> ' . $message_in_requirements . '</div>';
     }
-    echo '<textarea name="tr_content" class="form-control maxout" style="padding:5px !important; margin:0 !important;">' . $actionplan_parents[0]['tr_content'] . '</textarea>';
+    echo '<textarea name="ln_content" class="form-control maxout" style="padding:5px !important; margin:0 !important;">' . $actionplan_parents[0]['ln_content'] . '</textarea>';
     echo '</div>';
 
 
@@ -163,13 +163,13 @@ if ($show_children) {
             }
 
             //Line non-selected responses for FYI purposes:
-            foreach($this->Database_model->tr_fetch(array(
-                'tr_status' => 2, //Published
+            foreach($this->Database_model->ln_fetch(array(
+                'ln_status' => 2, //Published
                 'in_status' => 2, //Published
-                'tr_type_entity_id' => 4228, //Fixed intent links only
-                'tr_parent_intent_id' => $in['in_id'],
-                'tr_child_intent_id !=' => $actionplan_children[0]['tr_child_intent_id'],
-            ), array('in_child'), 0, 0, array('tr_order' => 'ASC')) as $tr){
+                'ln_type_entity_id' => 4228, //Fixed intent links only
+                'ln_parent_intent_id' => $in['in_id'],
+                'ln_child_intent_id !=' => $actionplan_children[0]['ln_child_intent_id'],
+            ), array('in_child'), 0, 0, array('ln_order' => 'ASC')) as $tr){
                 echo '<div class="list-group-item" style="text-decoration: line-through;">';
                 echo '<span class="status-label" style="padding-bottom:1px;"><i class="fal fa-minus-square"></i></span> ';
                 echo echo_in_outcome($tr['in_outcome'], true);
@@ -193,13 +193,13 @@ if ($show_children) {
         } else {
 
             //List all possible responses to enable student to choose:
-            foreach ($this->Database_model->tr_fetch(array(
-                'tr_status' => 2, //Published
+            foreach ($this->Database_model->ln_fetch(array(
+                'ln_status' => 2, //Published
                 'in_status' => 2, //Published
-                'tr_type_entity_id' => 4228, //Fixed intent links only
-                'tr_parent_intent_id' => $in['in_id'],
-            ), array('in_child'), 0, 0, array('tr_order' => 'ASC')) as $tr) {
-                echo echo_in_actionplan_or_choose($in['in_id'], $actionplan['tr_parent_link_id'], $tr);
+                'ln_type_entity_id' => 4228, //Fixed intent links only
+                'ln_parent_intent_id' => $in['in_id'],
+            ), array('in_child'), 0, 0, array('ln_order' => 'ASC')) as $tr) {
+                echo echo_in_actionplan_or_choose($in['in_id'], $actionplan['ln_parent_link_id'], $tr);
             }
 
         }
@@ -209,7 +209,7 @@ if ($show_children) {
         //AND branch:
         $incomplete_step = 0;
         foreach ($actionplan_children as $tr) {
-            if($tr['tr_status'] < 2){
+            if($tr['ln_status'] < 2){
                 $incomplete_step++;
             }
             echo echo_in_actionplan_step($tr, 0, ( $force_linear ? $incomplete_step : 1 ));
@@ -231,8 +231,8 @@ if ($show_children) {
 echo $next_button;
 
 //Give a skip option if not complete:
-if ($is_step && in_array($actionplan_parents[0]['tr_status'], $this->config->item('tr_status_incomplete'))) {
-    echo '<span class="skippable">or <a href="javascript:void(0);" onclick="confirm_skip(' . $actionplan['tr_id'] . ')">Skip this step</a></span>';
+if ($is_step && in_array($actionplan_parents[0]['ln_status'], $this->config->item('ln_status_incomplete'))) {
+    echo '<span class="skippable">or <a href="javascript:void(0);" onclick="confirm_skip(' . $actionplan['ln_id'] . ')">Skip this step</a></span>';
 }
 
 ?>

@@ -36,40 +36,40 @@ class Messenger extends CI_Controller
         }
 
         //Fetch input data:
-        $tr_metadata = json_decode(file_get_contents('php://input'), true);
+        $ln_metadata = json_decode(file_get_contents('php://input'), true);
 
         //This is for local testing only:
-        //$tr_metadata = objectToArray(json_decode('{"object":"page","entry":[{"id":"381488558920384","time":1505007977668,"messaging":[{"sender":{"id":"1443101719058431"},"recipient":{"id":"381488558920384"},"timestamp":1505007977521,"message":{"mid":"mid.$cAAFa9hmVoehkmryMMVeaXdGIY9x5","seq":19898,"text":"Yes"}}]}]}'));
+        //$ln_metadata = objectToArray(json_decode('{"object":"page","entry":[{"id":"381488558920384","time":1505007977668,"messaging":[{"sender":{"id":"1443101719058431"},"recipient":{"id":"381488558920384"},"timestamp":1505007977521,"message":{"mid":"mid.$cAAFa9hmVoehkmryMMVeaXdGIY9x5","seq":19898,"text":"Yes"}}]}]}'));
 
 
         //Do some basic checks:
-        if (!isset($tr_metadata['object']) || !isset($tr_metadata['entry'])) {
+        if (!isset($ln_metadata['object']) || !isset($ln_metadata['entry'])) {
             //Likely loaded the URL in browser:
             return false;
-        } elseif ($tr_metadata['object'] != 'page') {
-            $this->Database_model->tr_create(array(
-                'tr_content' => 'facebook_webhook() Function call object value is not equal to [page], which is what was expected.',
-                'tr_metadata' => $tr_metadata,
-                'tr_type_entity_id' => 4246, //Platform Error
-                'tr_miner_entity_id' => 1, //Shervin/Developer
+        } elseif ($ln_metadata['object'] != 'page') {
+            $this->Database_model->ln_create(array(
+                'ln_content' => 'facebook_webhook() Function call object value is not equal to [page], which is what was expected.',
+                'ln_metadata' => $ln_metadata,
+                'ln_type_entity_id' => 4246, //Platform Error
+                'ln_miner_entity_id' => 1, //Shervin/Developer
             ));
             return false;
         }
 
 
         //Loop through entries:
-        foreach ($tr_metadata['entry'] as $entry) {
+        foreach ($ln_metadata['entry'] as $entry) {
 
             //check the page ID:
             if (!isset($entry['id']) || !($entry['id'] == $fb_settings['page_id'])) {
                 //This can happen for the older webhook that we offered to other FB pages:
                 continue;
             } elseif (!isset($entry['messaging'])) {
-                $this->Database_model->tr_create(array(
-                    'tr_content' => 'facebook_webhook() call missing messaging Array().',
-                    'tr_metadata' => $tr_metadata,
-                    'tr_type_entity_id' => 4246, //Platform Error
-                    'tr_miner_entity_id' => 1, //Shervin/Developer
+                $this->Database_model->ln_create(array(
+                    'ln_content' => 'facebook_webhook() call missing messaging Array().',
+                    'ln_metadata' => $ln_metadata,
+                    'ln_type_entity_id' => 4246, //Platform Error
+                    'ln_miner_entity_id' => 1, //Shervin/Developer
                 ));
                 continue;
             }
@@ -80,25 +80,25 @@ class Messenger extends CI_Controller
                 if (isset($im['read']) || isset($im['delivery'])) {
 
                     //Message read OR delivered
-                    $tr_type_entity_id = ( isset($im['delivery']) ? 4279 /* Message Delivered */ : 4278 /* Message Read */ );
+                    $ln_type_entity_id = ( isset($im['delivery']) ? 4279 /* Message Delivered */ : 4278 /* Message Read */ );
 
                     //Authenticate Student:
                     $en = $this->Matrix_model->en_student_messenger_authenticate($im['sender']['id']);
 
                     //Log Link Only IF last delivery link was 3+ minutes ago (Since Facebook sends many of these):
-                    $last_trs_logged = $this->Database_model->tr_fetch(array(
-                        'tr_type_entity_id' => $tr_type_entity_id,
-                        'tr_miner_entity_id' => $en['en_id'],
-                        'tr_timestamp >=' => date("Y-m-d H:i:s", (time() - (180))), //Links logged less than 3 minutes ago
+                    $last_trs_logged = $this->Database_model->ln_fetch(array(
+                        'ln_type_entity_id' => $ln_type_entity_id,
+                        'ln_miner_entity_id' => $en['en_id'],
+                        'ln_timestamp >=' => date("Y-m-d H:i:s", (time() - (180))), //Links logged less than 3 minutes ago
                     ), array(), 1);
 
                     if(count($last_trs_logged) == 0){
                         //We had no recent links of this kind, so go ahead and log:
-                        $this->Database_model->tr_create(array(
-                            'tr_metadata' => $tr_metadata,
-                            'tr_type_entity_id' => $tr_type_entity_id,
-                            'tr_miner_entity_id' => $en['en_id'],
-                            'tr_timestamp' => echo_time_milliseconds($im['timestamp']), //The Facebook time
+                        $this->Database_model->ln_create(array(
+                            'ln_metadata' => $ln_metadata,
+                            'ln_type_entity_id' => $ln_type_entity_id,
+                            'ln_miner_entity_id' => $en['en_id'],
+                            'ln_timestamp' => echo_time_milliseconds($im['timestamp']), //The Facebook time
                         ));
                     }
 
@@ -113,7 +113,7 @@ class Messenger extends CI_Controller
                      * */
 
                     //Messenger Referral OR Postback
-                    $tr_type_entity_id = ( isset($im['delivery']) ? 4267 /* Messenger Referral */ : 4268 /* Messenger Postback */ );
+                    $ln_type_entity_id = ( isset($im['delivery']) ? 4267 /* Messenger Referral */ : 4268 /* Messenger Postback */ );
 
                     //Authenticate Student:
                     $en = $this->Matrix_model->en_student_messenger_authenticate($im['sender']['id']);
@@ -150,12 +150,12 @@ class Messenger extends CI_Controller
                     $quick_reply_payload = ($array_ref && isset($array_ref['ref']) && strlen($array_ref['ref']) > 0 ? $array_ref['ref'] : null);
 
                     //Log primary link:
-                    $this->Database_model->tr_create(array(
-                        'tr_type_entity_id' => $tr_type_entity_id,
-                        'tr_metadata' => $tr_metadata,
-                        'tr_content' => $quick_reply_payload,
-                        'tr_miner_entity_id' => $en['en_id'],
-                        'tr_timestamp' => echo_time_milliseconds($im['timestamp']), //The Facebook time
+                    $this->Database_model->ln_create(array(
+                        'ln_type_entity_id' => $ln_type_entity_id,
+                        'ln_metadata' => $ln_metadata,
+                        'ln_content' => $quick_reply_payload,
+                        'ln_miner_entity_id' => $en['en_id'],
+                        'ln_timestamp' => echo_time_milliseconds($im['timestamp']), //The Facebook time
                     ));
 
                     //Digest quick reply Payload if any:
@@ -192,11 +192,11 @@ class Messenger extends CI_Controller
                     $en = $this->Matrix_model->en_student_messenger_authenticate($im['sender']['id']);
 
                     //Log link:
-                    $this->Database_model->tr_create(array(
-                        'tr_metadata' => $tr_metadata,
-                        'tr_type_entity_id' => 4266, //Messenger Optin
-                        'tr_miner_entity_id' => $en['en_id'],
-                        'tr_timestamp' => echo_time_milliseconds($im['timestamp']), //The Facebook time
+                    $this->Database_model->ln_create(array(
+                        'ln_metadata' => $ln_metadata,
+                        'ln_type_entity_id' => 4266, //Messenger Optin
+                        'ln_miner_entity_id' => $en['en_id'],
+                        'ln_timestamp' => echo_time_milliseconds($im['timestamp']), //The Facebook time
                     ));
 
                 } elseif (isset($im['message_request']) && $im['message_request'] == 'accept') {
@@ -205,11 +205,11 @@ class Messenger extends CI_Controller
                     $en = $this->Matrix_model->en_student_messenger_authenticate($im['sender']['id']);
 
                     //Log link:
-                    $this->Database_model->tr_create(array(
-                        'tr_metadata' => $tr_metadata,
-                        'tr_type_entity_id' => 4577, //Message Request Accepted
-                        'tr_miner_entity_id' => $en['en_id'],
-                        'tr_timestamp' => echo_time_milliseconds($im['timestamp']), //The Facebook time
+                    $this->Database_model->ln_create(array(
+                        'ln_metadata' => $ln_metadata,
+                        'ln_type_entity_id' => 4577, //Message Request Accepted
+                        'ln_miner_entity_id' => $en['en_id'],
+                        'ln_timestamp' => echo_time_milliseconds($im['timestamp']), //The Facebook time
                     ));
 
                 } elseif (isset($im['message'])) {
@@ -236,9 +236,9 @@ class Messenger extends CI_Controller
                     $en = $this->Matrix_model->en_student_messenger_authenticate(($sent_by_mench ? $im['recipient']['id'] : $im['sender']['id']));
 
                     $tr_data = array(
-                        'tr_miner_entity_id' => $en['en_id'],
-                        'tr_timestamp' => ($sent_by_mench ? null : echo_time_milliseconds($im['timestamp']) ), //Facebook time if received from Student
-                        'tr_metadata' => $tr_metadata, //Entire JSON object received by Facebook API
+                        'ln_miner_entity_id' => $en['en_id'],
+                        'ln_timestamp' => ($sent_by_mench ? null : echo_time_milliseconds($im['timestamp']) ), //Facebook time if received from Student
+                        'ln_metadata' => $ln_metadata, //Entire JSON object received by Facebook API
                     );
 
                     /*
@@ -258,8 +258,8 @@ class Messenger extends CI_Controller
                     if(isset($im['message']['quick_reply']['payload'])){
 
                         //Quick Reply Answer Received (Cannot be sent as we never send quick replies)
-                        $tr_data['tr_type_entity_id'] = 4460;
-                        $tr_data['tr_content'] = $im['message']['text']; //Quick reply always has a text
+                        $tr_data['ln_type_entity_id'] = 4460;
+                        $tr_data['ln_content'] = $im['message']['text']; //Quick reply always has a text
 
                         //Digest the Quick Reply payload:
                         $this->Chat_model->digest_quick_reply($en, $im['message']['quick_reply']['payload']);
@@ -267,17 +267,17 @@ class Messenger extends CI_Controller
                     } elseif(isset($im['message']['text'])){
 
                         //Set message content:
-                        $tr_data['tr_content'] = $im['message']['text'];
+                        $tr_data['ln_content'] = $im['message']['text'];
 
                         //Who sent this?
                         if ($sent_by_mench) {
 
                             //Text Message Sent By Mench Admin via Facebook Inbox UI
-                            $tr_data['tr_type_entity_id'] = 4552; //Text Message Sent
+                            $tr_data['ln_type_entity_id'] = 4552; //Text Message Sent
 
                         } else {
 
-                            $tr_data['tr_type_entity_id'] = 4547; //Text Message Received
+                            $tr_data['ln_type_entity_id'] = 4547; //Text Message Received
 
                             //Digest message & try to make sense of it:
                             $this->Chat_model->digest_message($en, $im['message']['text']);
@@ -327,14 +327,14 @@ class Messenger extends CI_Controller
                                  *
                                  * */
 
-                                $tr_data['tr_type_entity_id'] = $att_media_types[$att['type']][( $sent_by_mench ? 'sent' : 'received' )];
-                                $tr_data['tr_content'] = $att['payload']['url']; //Media Attachment Temporary Facebook URL
-                                $tr_data['tr_status'] = 0; //drafting, since URL needs to be uploaded to Mench CDN via cron__save_chat_media()
+                                $tr_data['ln_type_entity_id'] = $att_media_types[$att['type']][( $sent_by_mench ? 'sent' : 'received' )];
+                                $tr_data['ln_content'] = $att['payload']['url']; //Media Attachment Temporary Facebook URL
+                                $tr_data['ln_status'] = 0; //drafting, since URL needs to be uploaded to Mench CDN via cron__save_chat_media()
 
                             } elseif ($att['type'] == 'location') {
 
                                 //Location Message Received:
-                                $tr_data['tr_type_entity_id'] = 4557;
+                                $tr_data['ln_type_entity_id'] = 4557;
 
                                 /*
                                  *
@@ -351,10 +351,10 @@ class Messenger extends CI_Controller
                                 //Generate a URL from this location data:
                                 if(isset($att['url']) && strlen($att['url'])>0 ){
                                     //Sometimes Facebook Might provide a full URL:
-                                    $tr_data['tr_content'] = $att['url'];
+                                    $tr_data['ln_content'] = $att['url'];
                                 } else {
                                     //If not, we can generate our own URL using the Lat/Lng that will always be provided:
-                                    $tr_data['tr_content'] = 'https://www.google.com/maps?q='.$att['payload']['coordinates']['lat'].'+'.$att['payload']['coordinates']['long'];
+                                    $tr_data['ln_content'] = 'https://www.google.com/maps?q='.$att['payload']['coordinates']['lat'].'+'.$att['payload']['coordinates']['long'];
                                 }
 
                             } elseif ($att['type'] == 'template') {
@@ -389,19 +389,19 @@ class Messenger extends CI_Controller
 
 
                     //So did we recognized the
-                    if(isset($tr_data['tr_type_entity_id']) && isset($tr_data['tr_miner_entity_id'])){
+                    if(isset($tr_data['ln_type_entity_id']) && isset($tr_data['ln_miner_entity_id'])){
 
                         //We're all good, log this message:
-                        $this->Database_model->tr_create($tr_data);
+                        $this->Database_model->ln_create($tr_data);
 
                     } else {
 
                         //Ooooopsi, this seems to be an unknown message type:
-                        $this->Database_model->tr_create(array(
-                            'tr_type_entity_id' => 4246, //Platform Error
-                            'tr_miner_entity_id' => 1, //Shervin/Developer
-                            'tr_content' => 'facebook_webhook() Received unknown message type! Analyze metadata for more details',
-                            'tr_metadata' => $tr_metadata,
+                        $this->Database_model->ln_create(array(
+                            'ln_type_entity_id' => 4246, //Platform Error
+                            'ln_miner_entity_id' => 1, //Shervin/Developer
+                            'ln_content' => 'facebook_webhook() Received unknown message type! Analyze metadata for more details',
+                            'ln_metadata' => $ln_metadata,
                         ));
 
                     }
@@ -409,11 +409,11 @@ class Messenger extends CI_Controller
                 } else {
 
                     //This should really not happen!
-                    $this->Database_model->tr_create(array(
-                        'tr_content' => 'facebook_webhook() received unrecognized webhook call',
-                        'tr_metadata' => $tr_metadata,
-                        'tr_type_entity_id' => 4246, //Platform Error
-                        'tr_miner_entity_id' => 1, //Shervin/Developer
+                    $this->Database_model->ln_create(array(
+                        'ln_content' => 'facebook_webhook() received unrecognized webhook call',
+                        'ln_metadata' => $ln_metadata,
+                        'ln_type_entity_id' => 4246, //Platform Error
+                        'ln_miner_entity_id' => 1, //Shervin/Developer
                     ));
 
                 }
@@ -621,19 +621,19 @@ class Messenger extends CI_Controller
         if ($in_id < 1) {
 
             //Log Action Plan View:
-            $this->Database_model->tr_create(array(
-                'tr_type_entity_id' => 4283, //Opened Action Plan
-                'tr_miner_entity_id' => $session_en['en_id'],
+            $this->Database_model->ln_create(array(
+                'ln_type_entity_id' => 4283, //Opened Action Plan
+                'ln_miner_entity_id' => $session_en['en_id'],
             ));
 
             //List all student intentions:
             $this->load->view('view_messenger/actionplan_all.php', array(
-                'student_intents' => $this->Database_model->tr_fetch(array(
-                    'tr_miner_entity_id' => $session_en['en_id'],
-                    'tr_type_entity_id' => 4235, //Student Intents
-                    'tr_status >=' => 0, //New+
+                'student_intents' => $this->Database_model->ln_fetch(array(
+                    'ln_miner_entity_id' => $session_en['en_id'],
+                    'ln_type_entity_id' => 4235, //Student Intents
+                    'ln_status >=' => 0, //New+
                     'in_status' => 2, //Published
-                ), array('in_child'), 0, 0, array('tr_order' => 'ASC')),
+                ), array('in_child'), 0, 0, array('ln_order' => 'ASC')),
             ));
 
         } else {
@@ -649,21 +649,21 @@ class Messenger extends CI_Controller
             }
 
             //Log Action Plan View:
-            $this->Database_model->tr_create(array(
-                'tr_type_entity_id' => 4283, //Opened Action Plan
-                'tr_miner_entity_id' => $session_en['en_id'],
-                'tr_child_intent_id' => $in_id,
+            $this->Database_model->ln_create(array(
+                'ln_type_entity_id' => 4283, //Opened Action Plan
+                'ln_miner_entity_id' => $session_en['en_id'],
+                'ln_child_intent_id' => $in_id,
             ));
 
             //Load Action Plan UI:
             $this->load->view('view_messenger/actionplan_intent.php', array(
                 'session_en' => $session_en,
                 'in' => $ins[0],
-                'actionplans' => $this->Database_model->tr_fetch(array(
-                    'tr_type_entity_id IN ('.join(',',$this->config->item('en_ids_6107')).')' => null, //Student Action Plan
-                    'tr_miner_entity_id' => $session_en['en_id'],
-                    'tr_child_intent_id' => $in_id,
-                    'tr_status >=' => 0, //New+
+                'actionplans' => $this->Database_model->ln_fetch(array(
+                    'ln_type_entity_id IN ('.join(',',$this->config->item('en_ids_6107')).')' => null, //Student Action Plan
+                    'ln_miner_entity_id' => $session_en['en_id'],
+                    'ln_child_intent_id' => $in_id,
+                    'ln_status >=' => 0, //New+
                 ), array('in_child')),
             ));
 
@@ -685,14 +685,14 @@ class Messenger extends CI_Controller
          * */
 
         //Validate input variables:
-        if (!isset($_POST['tr_id']) || intval($_POST['tr_id']) < 1 || !isset($_POST['tr_content'])) {
+        if (!isset($_POST['ln_id']) || intval($_POST['ln_id']) < 1 || !isset($_POST['ln_content'])) {
             return redirect_message('/messenger/actionplan', '<div class="alert alert-danger" role="alert">Error: Missing Core Data.</div>');
         }
 
         //Fetch/validate Completed Step:
-        $actionplan_steps = $this->Database_model->tr_fetch(array(
-            'tr_id' => $_POST['tr_id'],
-            'tr_type_entity_id' => 4559, //Completed Step
+        $actionplan_steps = $this->Database_model->ln_fetch(array(
+            'ln_id' => $_POST['ln_id'],
+            'ln_type_entity_id' => 4559, //Completed Step
         ), array('in_child'));
         if (count($actionplan_steps) < 1) {
             return redirect_message('/messenger/actionplan', '<div class="alert alert-danger" role="alert">Error: Completed Step not found.</div>');
@@ -700,10 +700,10 @@ class Messenger extends CI_Controller
 
         //Set some variables:
         $session_en = $this->session->userdata('user');
-        $step_url = '/messenger/actionplan/' . $actionplan_steps[0]['tr_child_intent_id'];
-        $step_is_incomplete = ($actionplan_steps[0]['tr_status'] < 2);
-        $completion_notes_added = ( strlen($_POST['tr_content']) > 0 );
-        if(isset($session_en['en_id']) && $session_en['en_id']!=$actionplan_steps[0]['tr_miner_entity_id']){
+        $step_url = '/messenger/actionplan/' . $actionplan_steps[0]['ln_child_intent_id'];
+        $step_is_incomplete = ($actionplan_steps[0]['ln_status'] < 2);
+        $completion_notes_added = ( strlen($_POST['ln_content']) > 0 );
+        if(isset($session_en['en_id']) && $session_en['en_id']!=$actionplan_steps[0]['ln_miner_entity_id']){
             //This seems to be a Mench miner/moderator that is NOT the Action Plan Student:
             return redirect_message($step_url, '<div class="alert alert-info" role="alert">Note: You do not seem to be the Action Plan Student so you cannot submit changes.</div>');
         } elseif (!$completion_notes_added && !$step_is_incomplete) {
@@ -715,7 +715,7 @@ class Messenger extends CI_Controller
 
         if($completion_notes_added){
             //Validate submission:
-            $detected_tr_type = detect_tr_type_entity_id($_POST['tr_content']);
+            $detected_tr_type = detect_ln_type_entity_id($_POST['ln_content']);
             if(!$detected_tr_type['status']){
                 return redirect_message('/messenger/actionplan', '<div class="alert alert-danger" role="alert">Error: '.$detected_tr_type['message'].'</div>');
             }
@@ -723,7 +723,7 @@ class Messenger extends CI_Controller
 
         //Validate intent completion requirement and see if Student meets it:
         $message_in_requirements = $this->Matrix_model->in_req_completion($actionplan_steps[0]);
-        if($message_in_requirements && $actionplan_steps[0]['in_requirement_entity_id'] != $detected_tr_type['tr_type_entity_id']){
+        if($message_in_requirements && $actionplan_steps[0]['in_requirement_entity_id'] != $detected_tr_type['ln_type_entity_id']){
             //Nope, it does not seem that the submission meets the requirements:
             return redirect_message($step_url, '<div class="alert alert-danger" role="alert">Error: '.$message_in_requirements.'</div>');
         }
@@ -731,21 +731,21 @@ class Messenger extends CI_Controller
 
         if ($completion_notes_added) {
             //Save notes:
-            $this->Database_model->tr_create(array(
-                'tr_parent_link_id' => $actionplan_steps[0]['tr_id'], //Submission for Completed Step
-                'tr_miner_entity_id' => $actionplan_steps[0]['tr_miner_entity_id'],
-                'tr_status' => 2, //Published
-                'tr_content' => trim($_POST['tr_content']),
-                'tr_type_entity_id' => $detected_tr_type['tr_type_entity_id'],
-                'tr_parent_intent_id' => $actionplan_steps[0]['tr_child_intent_id'],
-                'tr_order' => 1 + $this->Database_model->tr_max_order(array(
-                    'tr_parent_link_id' => $actionplan_steps[0]['tr_id'],
+            $this->Database_model->ln_create(array(
+                'ln_parent_link_id' => $actionplan_steps[0]['ln_id'], //Submission for Completed Step
+                'ln_miner_entity_id' => $actionplan_steps[0]['ln_miner_entity_id'],
+                'ln_status' => 2, //Published
+                'ln_content' => trim($_POST['ln_content']),
+                'ln_type_entity_id' => $detected_tr_type['ln_type_entity_id'],
+                'ln_parent_intent_id' => $actionplan_steps[0]['ln_child_intent_id'],
+                'ln_order' => 1 + $this->Database_model->ln_max_order(array(
+                    'ln_parent_link_id' => $actionplan_steps[0]['ln_id'],
                 )),
             ));
         }
 
         if ($step_is_incomplete) {
-            //Also update tr_status, determine what it should be:
+            //Also update ln_status, determine what it should be:
             $this->Matrix_model->actionplan_complete_recursive_up($actionplan_steps[0]);
         }
 
@@ -753,7 +753,7 @@ class Messenger extends CI_Controller
         //Redirect back to page with success message:
         if (isset($_POST['fetch_next_step'])) {
             //Go to next item:
-            $next_ins = $this->Matrix_model->actionplan_fetch_next($actionplan_steps[0]['tr_parent_link_id']);
+            $next_ins = $this->Matrix_model->actionplan_fetch_next($actionplan_steps[0]['ln_parent_link_id']);
             if ($next_ins) {
                 //Override original item:
                 $step_url = '/messenger/actionplan/' . $next_ins[0]['in_id'];
@@ -767,30 +767,30 @@ class Messenger extends CI_Controller
 
 
 
-    function actionplan_skip_step($tr_id, $apply_skip)
+    function actionplan_skip_step($ln_id, $apply_skip)
     {
 
         //Fetch/validate Completed Step:
-        $actionplan_steps = $this->Database_model->tr_fetch(array(
-            'tr_id' => $tr_id,
-            'tr_type_entity_id' => 4559, //Completed Step
-            'tr_status >=' => 0, //New+
+        $actionplan_steps = $this->Database_model->ln_fetch(array(
+            'ln_id' => $ln_id,
+            'ln_type_entity_id' => 4559, //Completed Step
+            'ln_status >=' => 0, //New+
         ));
 
         if(count($actionplan_steps) < 1){
             //Ooooopsi, could not find it:
-            $this->Database_model->tr_create(array(
-                'tr_parent_link_id' => $tr_id,
-                'tr_content' => 'actionplan_skip_recursive_down() failed to locate step [Apply: '.( $apply_skip ? 'YES' : 'NO' ).']',
-                'tr_type_entity_id' => 4246, //Platform Error
-                'tr_miner_entity_id' => 1, //Shervin/Developer
+            $this->Database_model->ln_create(array(
+                'ln_parent_link_id' => $ln_id,
+                'ln_content' => 'actionplan_skip_recursive_down() failed to locate step [Apply: '.( $apply_skip ? 'YES' : 'NO' ).']',
+                'ln_type_entity_id' => 4246, //Platform Error
+                'ln_miner_entity_id' => 1, //Shervin/Developer
             ));
 
             return false;
         }
 
         //Run skip function
-        $total_skipped = count($this->Matrix_model->actionplan_skip_recursive_down($tr_id, $apply_skip));
+        $total_skipped = count($this->Matrix_model->actionplan_skip_recursive_down($ln_id, $apply_skip));
 
         if(!$apply_skip){
 
@@ -805,7 +805,7 @@ class Messenger extends CI_Controller
             $message = '<div class="alert alert-success" role="alert">Successfully skipped ' . $total_skipped . ' step' . echo__s($total_skipped) . '.</div>';
 
             //Find the next item to navigate them to:
-            $next_ins = $this->Matrix_model->actionplan_fetch_next($actionplan_steps[0]['tr_parent_link_id']);
+            $next_ins = $this->Matrix_model->actionplan_fetch_next($actionplan_steps[0]['ln_parent_link_id']);
             if ($next_ins) {
                 return redirect_message('/messenger/actionplan/' . $next_ins[0]['in_id'], $message);
             } else {
@@ -814,25 +814,25 @@ class Messenger extends CI_Controller
         }
     }
 
-    function actionplan_choose_step($actionplan_tr_id, $actionplan_in_id, $in_append_id, $w_key)
+    function actionplan_choose_step($actionplan_ln_id, $actionplan_in_id, $in_append_id, $w_key)
     {
 
-        if($w_key != md5($this->config->item('actionplan_salt') . $in_append_id . $actionplan_in_id . $actionplan_tr_id)){
+        if($w_key != md5($this->config->item('actionplan_salt') . $in_append_id . $actionplan_in_id . $actionplan_ln_id)){
             return redirect_message('/messenger/actionplan/' . $actionplan_in_id, '<div class="alert alert-danger" role="alert">Invalid Secret Key</div>');
         }
 
         //Validate Action Plan:
-        $actionplan_steps = $this->Database_model->tr_fetch(array(
-            'tr_parent_link_id' => $actionplan_tr_id,
-            'tr_child_intent_id' => $actionplan_in_id,
-            'tr_type_entity_id' => 4559, //Completed Step
-            'tr_status >=' => 0, //New+
+        $actionplan_steps = $this->Database_model->ln_fetch(array(
+            'ln_parent_link_id' => $actionplan_ln_id,
+            'ln_child_intent_id' => $actionplan_in_id,
+            'ln_type_entity_id' => 4559, //Completed Step
+            'ln_status >=' => 0, //New+
         ));
         if(count($actionplan_steps) < 1){
             return redirect_message('/messenger/actionplan/' . $actionplan_in_id, '<div class="alert alert-danger" role="alert">Step Not Found</div>');
         }
 
-        if ($this->Matrix_model->actionplan_append_in($in_append_id, $actionplan_steps[0]['tr_miner_entity_id'], $actionplan_in_id)) {
+        if ($this->Matrix_model->actionplan_append_in($in_append_id, $actionplan_steps[0]['ln_miner_entity_id'], $actionplan_in_id)) {
             return redirect_message('/messenger/actionplan/' . $in_append_id, '<div class="alert alert-success" role="alert">Your answer was saved.</div>');
         } else {
             //We had some sort of an error:
@@ -845,15 +845,15 @@ class Messenger extends CI_Controller
     function test($in_id=7463, $add_actionplan = 1, $direction_is_downward = 1){
 
         if($add_actionplan){
-            $actionplan = $this->Database_model->tr_create(array(
-                'tr_type_entity_id' => 4235, //Student Intent
-                'tr_status' => 0, //New
-                'tr_miner_entity_id' => 1,
-                'tr_child_intent_id' => $in_id, //The Intent they are adding
-                'tr_order' => 1 + $this->Database_model->tr_max_order(array( //Place this intent at the end of all intents the Student is drafting...
-                        'tr_type_entity_id' => 4235, //Student Intent
-                        'tr_status >=' => 0, //New+
-                        'tr_miner_entity_id' => 1, //Belongs to this Student
+            $actionplan = $this->Database_model->ln_create(array(
+                'ln_type_entity_id' => 4235, //Student Intent
+                'ln_status' => 0, //New
+                'ln_miner_entity_id' => 1,
+                'ln_child_intent_id' => $in_id, //The Intent they are adding
+                'ln_order' => 1 + $this->Database_model->ln_max_order(array( //Place this intent at the end of all intents the Student is drafting...
+                        'ln_type_entity_id' => 4235, //Student Intent
+                        'ln_status >=' => 0, //New+
+                        'ln_miner_entity_id' => 1, //Belongs to this Student
                     )),
             ));
         } else {
@@ -878,20 +878,20 @@ class Messenger extends CI_Controller
 
         $fb_convert_4537 = $this->config->item('fb_convert_4537'); //Supported Media Types
         $success_count = 0; //Track success
-        $tr_metadata = array();
+        $ln_metadata = array();
 
 
         //Let's fetch all Media files without a Facebook attachment ID:
-        $tr_pending = $this->Database_model->tr_fetch(array(
-            'tr_type_entity_id IN (' . join(',',array_keys($fb_convert_4537)) . ')' => null,
-            'tr_status' => 2, //Publish
-            'tr_metadata' => null, //Missing Facebook Attachment ID [NOTE: Must make sure tr_metadata is not used for anything else for these link types]
-        ), array(), 10, 0 , array('tr_id' => 'ASC')); //Sort by oldest added first
+        $tr_pending = $this->Database_model->ln_fetch(array(
+            'ln_type_entity_id IN (' . join(',',array_keys($fb_convert_4537)) . ')' => null,
+            'ln_status' => 2, //Publish
+            'ln_metadata' => null, //Missing Facebook Attachment ID [NOTE: Must make sure ln_metadata is not used for anything else for these link types]
+        ), array(), 10, 0 , array('ln_id' => 'ASC')); //Sort by oldest added first
 
 
-        //Put something in the tr_metadata so other cron jobs do not pick  up on it:
+        //Put something in the ln_metadata so other cron jobs do not pick  up on it:
         foreach ($tr_pending as $tr) {
-            $this->Matrix_model->metadata_single_update('tr', $tr['tr_id'], array(
+            $this->Matrix_model->metadata_single_update('ln', $tr['ln_id'], array(
                 'fb_att_id' => 0,
             ));
         }
@@ -905,10 +905,10 @@ class Messenger extends CI_Controller
             $payload = array(
                 'message' => array(
                     'attachment' => array(
-                        'type' => $fb_convert_4537[$tr['tr_type_entity_id']],
+                        'type' => $fb_convert_4537[$tr['ln_type_entity_id']],
                         'payload' => array(
                             'is_reusable' => true,
-                            'url' => $tr['tr_content'], //The URL to the media file
+                            'url' => $tr['ln_content'], //The URL to the media file
                         ),
                     ),
                 )
@@ -917,11 +917,11 @@ class Messenger extends CI_Controller
             //Attempt to sync Media to Facebook:
             $result = $this->Chat_model->facebook_graph('POST', '/me/message_attachments', $payload);
 
-            if (isset($result['tr_metadata']['result']['attachment_id']) && $result['status']) {
+            if (isset($result['ln_metadata']['result']['attachment_id']) && $result['status']) {
 
                 //Save Facebook Attachment ID to DB:
-                $db_result = $this->Matrix_model->metadata_single_update('tr', $tr['tr_id'], array(
-                    'fb_att_id' => intval($result['tr_metadata']['result']['attachment_id']),
+                $db_result = $this->Matrix_model->metadata_single_update('ln', $tr['ln_id'], array(
+                    'fb_att_id' => intval($result['ln_metadata']['result']['attachment_id']),
                 ));
 
             }
@@ -934,22 +934,22 @@ class Messenger extends CI_Controller
             } else {
 
                 //Log error:
-                $this->Database_model->tr_create(array(
-                    'tr_type_entity_id' => 4246, //Platform Error
-                    'tr_miner_entity_id' => 1, //Shervin/Developer
-                    'tr_parent_link_id' => $tr['tr_id'],
-                    'tr_content' => 'cron__sync_attachments() Failed to sync attachment to Facebook API: '.( isset($result['tr_metadata']['result']['error']['message']) ? $result['tr_metadata']['result']['error']['message'] : 'Unknown Error' ),
-                    'tr_metadata' => array(
+                $this->Database_model->ln_create(array(
+                    'ln_type_entity_id' => 4246, //Platform Error
+                    'ln_miner_entity_id' => 1, //Shervin/Developer
+                    'ln_parent_link_id' => $tr['ln_id'],
+                    'ln_content' => 'cron__sync_attachments() Failed to sync attachment to Facebook API: '.( isset($result['ln_metadata']['result']['error']['message']) ? $result['ln_metadata']['result']['error']['message'] : 'Unknown Error' ),
+                    'ln_metadata' => array(
                         'payload' => $payload,
                         'result' => $result,
-                        'tr' => $tr,
+                        'ln' => $tr,
                     ),
                 ));
 
             }
 
             //Save stats:
-            array_push($tr_metadata, array(
+            array_push($ln_metadata, array(
                 'payload' => $payload,
                 'fb_result' => $result,
             ));
@@ -960,7 +960,7 @@ class Messenger extends CI_Controller
         echo_json(array(
             'status' => ($success_count == count($tr_pending) && $success_count > 0 ? 1 : 0),
             'message' => $success_count . '/' . count($tr_pending) . ' synced using Facebook Attachment API',
-            'tr_metadata' => $tr_metadata,
+            'ln_metadata' => $ln_metadata,
         ));
 
     }
@@ -982,9 +982,9 @@ class Messenger extends CI_Controller
          *
          * */
 
-        $tr_pending = $this->Database_model->tr_fetch(array(
-            'tr_status' => 0, //New
-            'tr_type_entity_id IN (' . join(',', $this->config->item('en_ids_6102')) . ')' => null, //Student Sent/Received Media Links
+        $tr_pending = $this->Database_model->ln_fetch(array(
+            'ln_status' => 0, //New
+            'ln_type_entity_id IN (' . join(',', $this->config->item('en_ids_6102')) . ')' => null, //Student Sent/Received Media Links
         ), array(), 20);
 
         //Set link statuses to drafting so other Cron jobs don't pick them up:
@@ -994,14 +994,14 @@ class Messenger extends CI_Controller
         foreach($tr_pending as $tr){
 
             //Store to CDN:
-            $new_file_url = upload_to_cdn($tr['tr_content'], $tr);
+            $new_file_url = upload_to_cdn($tr['ln_content'], $tr);
 
             if($new_file_url && filter_var($new_file_url, FILTER_VALIDATE_URL)){
 
                 //Update link:
-                $this->Database_model->tr_update($tr['tr_id'], array(
-                    'tr_content' => $new_file_url,
-                    'tr_status' => 2,
+                $this->Database_model->ln_update($tr['ln_id'], array(
+                    'ln_content' => $new_file_url,
+                    'ln_status' => 2,
                 ));
 
                 //Increase counter:
@@ -1010,14 +1010,14 @@ class Messenger extends CI_Controller
             } else {
 
                 //Log error:
-                $this->Database_model->tr_create(array(
-                    'tr_type_entity_id' => 4246, //Platform Error
-                    'tr_miner_entity_id' => 1, //Shervin/Developer
-                    'tr_parent_link_id' => $tr['tr_id'],
-                    'tr_content' => 'cron__save_chat_media() Failed to save media from Messenger',
-                    'tr_metadata' => array(
+                $this->Database_model->ln_create(array(
+                    'ln_type_entity_id' => 4246, //Platform Error
+                    'ln_miner_entity_id' => 1, //Shervin/Developer
+                    'ln_parent_link_id' => $tr['ln_id'],
+                    'ln_content' => 'cron__save_chat_media() Failed to save media from Messenger',
+                    'ln_metadata' => array(
                         'new_file_url' => $new_file_url,
-                        'tr' => $tr,
+                        'ln' => $tr,
                     ),
                 ));
 
@@ -1046,9 +1046,9 @@ class Messenger extends CI_Controller
          *
          * */
 
-        $tr_pending = $this->Database_model->tr_fetch(array(
-            'tr_status' => 0, //New
-            'tr_type_entity_id' => 4299, //Updated Profile Picture
+        $tr_pending = $this->Database_model->ln_fetch(array(
+            'ln_status' => 0, //New
+            'ln_type_entity_id' => 4299, //Updated Profile Picture
         ), array('en_miner'), 20); //Max number of scans per run
 
 
@@ -1059,23 +1059,23 @@ class Messenger extends CI_Controller
         foreach ($tr_pending as $tr) {
 
             //Save photo to S3 if content is URL
-            $new_file_url = (filter_var($tr['tr_content'], FILTER_VALIDATE_URL) ? upload_to_cdn($tr['tr_content'], $tr) : false);
+            $new_file_url = (filter_var($tr['ln_content'], FILTER_VALIDATE_URL) ? upload_to_cdn($tr['ln_content'], $tr) : false);
 
             if(!$new_file_url){
 
                 //Ooopsi, there was an error:
-                $this->Database_model->tr_create(array(
-                    'tr_content' => 'cron__save_profile_photo() failed to store file in CDN',
-                    'tr_type_entity_id' => 4246, //Platform Error
-                    'tr_miner_entity_id' => 1, //Shervin/Developer
-                    'tr_parent_link_id' => $tr['tr_id'],
+                $this->Database_model->ln_create(array(
+                    'ln_content' => 'cron__save_profile_photo() failed to store file in CDN',
+                    'ln_type_entity_id' => 4246, //Platform Error
+                    'ln_miner_entity_id' => 1, //Shervin/Developer
+                    'ln_parent_link_id' => $tr['ln_id'],
                 ));
 
                 continue;
             }
 
             //Update entity icon only if not already set:
-            $tr_child_entity_id = 0;
+            $ln_child_entity_id = 0;
             if (strlen($tr['en_icon'])<1) {
 
                 //Update Cover ID:
@@ -1084,17 +1084,17 @@ class Messenger extends CI_Controller
                 ), true, $tr['en_id']);
 
                 //Link link to entity:
-                $tr_child_entity_id = $tr['en_id'];
+                $ln_child_entity_id = $tr['en_id'];
 
             }
 
             //Update link:
-            $this->Database_model->tr_update($tr['tr_id'], array(
-                'tr_status' => 2, //Publish
-                'tr_content' => null, //Remove URL from content to indicate its done
-                'tr_child_entity_id' => $tr_child_entity_id,
-                'tr_metadata' => array(
-                    'original_url' => $tr['tr_content'],
+            $this->Database_model->ln_update($tr['ln_id'], array(
+                'ln_status' => 2, //Publish
+                'ln_content' => null, //Remove URL from content to indicate its done
+                'ln_child_entity_id' => $ln_child_entity_id,
+                'ln_metadata' => array(
+                    'original_url' => $tr['ln_content'],
                     'cdn_url' => $new_file_url,
                 ),
             ));

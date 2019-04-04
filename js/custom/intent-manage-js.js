@@ -138,7 +138,7 @@ $(document).ready(function () {
     });
 
     //Lookout for intent link related changes:
-    $('input[type=radio][name=tr_type_entity_id], #tr_status').change(function () {
+    $('input[type=radio][name=ln_type_entity_id], #ln_status').change(function () {
         in_adjust_link_ui();
     });
 
@@ -221,16 +221,16 @@ function in_adjust_isany_ui() {
 function in_adjust_link_ui() {
 
     //Fetch intent link ID:
-    var tr_id = parseInt($('#modifybox').attr('intent-tr-id'));
+    var ln_id = parseInt($('#modifybox').attr('intent-tr-id'));
 
-    if (!$('#modifybox').hasClass('hidden') && tr_id > 0) {
+    if (!$('#modifybox').hasClass('hidden') && ln_id > 0) {
 
         //Yes show that section:
         $('.in-has-tr').removeClass('hidden');
         $('.in-no-tr').addClass('hidden');
 
         //What's the selected intent status?
-        if (parseInt($('#tr_status').find(":selected").val()) < 0) {
+        if (parseInt($('#ln_status').find(":selected").val()) < 0) {
             //About to delete? Notify them:
             $('.notify_unlink_in').removeClass('hidden');
         } else {
@@ -238,7 +238,7 @@ function in_adjust_link_ui() {
         }
 
         //What's the intent link type?
-        if ($('#tr_type_entity_id_4229').is(':checked')) {
+        if ($('#ln_type_entity_id_4229').is(':checked')) {
             //Conditional link is checked:
             $('.score_range_box').removeClass('hidden');
             $('.score_points').addClass('hidden');
@@ -323,7 +323,7 @@ function in_sort_save(in_id, level) {
     }
 
     //Fetch new sort:
-    var new_tr_orders = [];
+    var new_ln_orders = [];
     var sort_rank = 0;
 
     $("#" + s_element + " " + s_draggable).each(function () {
@@ -332,12 +332,12 @@ function in_sort_save(in_id, level) {
 
             //Fetch variables for this intent:
             var in_id = parseInt($(this).attr('intent-id'));
-            var tr_id = parseInt($(this).attr('in-tr-id'));
+            var ln_id = parseInt($(this).attr('in-tr-id'));
 
             sort_rank++;
 
             //Store in DB:
-            new_tr_orders[sort_rank] = tr_id;
+            new_ln_orders[sort_rank] = ln_id;
         }
     });
 
@@ -345,7 +345,7 @@ function in_sort_save(in_id, level) {
     //It might be zero for lists that have jsut been emptied
     if (sort_rank > 0 && in_id) {
         //Update backend:
-        $.post("/intents/in_sort_save", {in_id: in_id, new_tr_orders: new_tr_orders}, function (data) {
+        $.post("/intents/in_sort_save", {in_id: in_id, new_ln_orders: new_ln_orders}, function (data) {
             //Update UI to confirm with user:
             if (!data.status) {
                 //There was some sort of an error returned!
@@ -406,7 +406,7 @@ function in_sort_load(in_id, level) {
 
             //Define variables:
             var inputs = {
-                tr_id: parseInt(evt.item.attributes['in-tr-id'].nodeValue),
+                ln_id: parseInt(evt.item.attributes['in-tr-id'].nodeValue),
                 in_id: parseInt(evt.item.attributes['intent-id'].nodeValue),
                 from_in_id: parseInt(evt.from.attributes['intent-id'].value),
                 to_in_id: parseInt(evt.to.attributes['intent-id'].value),
@@ -547,7 +547,7 @@ function in_outcome_counter() {
 }
 
 
-function in_modify_load(in_id, tr_id) {
+function in_modify_load(in_id, ln_id) {
 
     //Indicate Loading:
     $('#modifybox .grey-box .loadcontent').addClass('hidden');
@@ -568,7 +568,7 @@ function in_modify_load(in_id, tr_id) {
     //Fetch Intent Data to load modify widget:
     $.post("/intents/in_load_data", {
         in_id: in_id,
-        tr_id: tr_id,
+        ln_id: ln_id,
         is_parent: ( $('.intent_line_' + in_id).hasClass('parent-intent') ? 1 : 0 ),
     }, function (data) {
         if (!data.status) {
@@ -581,8 +581,8 @@ function in_modify_load(in_id, tr_id) {
             //All good, let's load the data into the Modify Widget...
 
             //Update variables:
-            var level = (tr_id == 0 ? 1 : parseInt($('.in__tr_' + tr_id).attr('intent-level'))); //Either 1, 2 or 3
-            $('#modifybox').attr('intent-tr-id', tr_id);
+            var level = (ln_id == 0 ? 1 : parseInt($('.in__tr_' + ln_id).attr('intent-level'))); //Either 1, 2 or 3
+            $('#modifybox').attr('intent-tr-id', ln_id);
             $('#modifybox').attr('intent-id', in_id);
             $('#modifybox').attr('level', level);
 
@@ -617,25 +617,25 @@ function in_modify_load(in_id, tr_id) {
             }
 
             //Load intent link data if available:
-            if (tr_id > 0) {
+            if (ln_id > 0) {
 
                 //Always load:
-                $("#tr_status").val(data.tr.tr_status);
-                $('#tr__conditional_score_min').val(data.tr.tr_metadata.tr__conditional_score_min);
-                $('#tr__conditional_score_max').val(data.tr.tr_metadata.tr__conditional_score_max);
-                $('#tr__assessment_points').val(data.tr.tr_metadata.tr__assessment_points);
+                $("#ln_status").val(data.tr.ln_status);
+                $('#tr__conditional_score_min').val(data.tr.ln_metadata.tr__conditional_score_min);
+                $('#tr__conditional_score_max').val(data.tr.ln_metadata.tr__conditional_score_max);
+                $('#tr__assessment_points').val(data.tr.ln_metadata.tr__assessment_points);
 
                 //Link editing adjustments:
                 $('#tr_in_link_update').val(data.tr.in_outcome);
                 $('.tr_in_link_title').text(( $('.intent_line_' + in_id).hasClass('parent-intent') ? 'Child' : 'Parent' ));
 
                 //Is this a conditional link? If so, load the min/max range:
-                if (data.tr.tr_type_entity_id == 4229) {
+                if (data.tr.ln_type_entity_id == 4229) {
                     //Yes, load the data (which must be there):
-                    $('#tr_type_entity_id_4229').prop("checked", true);
+                    $('#ln_type_entity_id_4229').prop("checked", true);
                 } else {
                     //Fixed link:
-                    $('#tr_type_entity_id_4228').prop("checked", true);
+                    $('#ln_type_entity_id_4228').prop("checked", true);
                 }
             }
 
@@ -690,9 +690,9 @@ function in_modify_save() {
         apply_recursively: (document.getElementById('apply_recursively').checked ? 1 : 0),
         is_parent: ( $('.intent_line_' + in_id).hasClass('parent-intent') ? 1 : 0 ),
         //Link variables:
-        tr_id: parseInt($('#modifybox').attr('intent-tr-id')), //Will be zero for Level 1 intent!
+        ln_id: parseInt($('#modifybox').attr('intent-tr-id')), //Will be zero for Level 1 intent!
         tr_in_focus_ids: tr_in_focus_ids,
-        tr_type_entity_id: null,
+        ln_type_entity_id: null,
         tr_in_link_update: null,
         tr__conditional_score_min: null,
         tr__conditional_score_max: null,
@@ -700,17 +700,17 @@ function in_modify_save() {
     };
 
     //Do we have the intent Link?
-    if (modify_data['tr_id'] > 0) {
+    if (modify_data['ln_id'] > 0) {
 
-        modify_data['tr_status'] = parseInt($('#tr_status').val());
-        modify_data['tr_type_entity_id'] = parseInt($('input[name=tr_type_entity_id]:checked').val());
+        modify_data['ln_status'] = parseInt($('#ln_status').val());
+        modify_data['ln_type_entity_id'] = parseInt($('input[name=ln_type_entity_id]:checked').val());
         modify_data['tr_in_link_update'] = $('#tr_in_link_update').val();
 
-        if(modify_data['tr_type_entity_id'] == 4229){ //Conditional Intent Link
+        if(modify_data['ln_type_entity_id'] == 4229){ //Conditional Intent Link
             //Condition score range:
             modify_data['tr__conditional_score_min'] = $('#tr__conditional_score_min').val();
             modify_data['tr__conditional_score_max'] = $('#tr__conditional_score_max').val();
-        } else if(modify_data['tr_type_entity_id'] == 4228){
+        } else if(modify_data['ln_type_entity_id'] == 4228){
             //Fixed link awarded points:
             modify_data['tr__assessment_points'] = $('#tr__assessment_points').val();
         }
@@ -748,16 +748,16 @@ function in_modify_save() {
                     adjust_js_ui(modify_data['in_id'], modify_data['level'], 0, data.in__tree_in_active_count, 1);
 
                     //Remove from UI:
-                    $('.in__tr_' + modify_data['tr_id']).html('<span style="color:#2f2739;"><i class="fas fa-trash-alt"></i> Removed</span>');
+                    $('.in__tr_' + modify_data['ln_id']).html('<span style="color:#2f2739;"><i class="fas fa-trash-alt"></i> Removed</span>');
 
                     //Hide the editor & saving results:
-                    $('.in__tr_' + modify_data['tr_id']).fadeOut();
+                    $('.in__tr_' + modify_data['ln_id']).fadeOut();
 
                     //Disappear in a while:
                     setTimeout(function () {
 
                         //Hide the editor & saving results:
-                        $('.in__tr_' + modify_data['tr_id']).remove();
+                        $('.in__tr_' + modify_data['ln_id']).remove();
 
                         //Hide editing box:
                         $('#modifybox').addClass('hidden');
@@ -774,14 +774,14 @@ function in_modify_save() {
                 //Intent has not been updated:
 
                 //Did the Link update?
-                if (modify_data['tr_id'] > 0) {
+                if (modify_data['ln_id'] > 0) {
 
-                    $('.tr_type_' + modify_data['tr_id']).html('<span data-toggle="tooltip" data-placement="right" title="'+ en_all_4486[modify_data['tr_type_entity_id']]["m_name"] + ': '+ en_all_4486[modify_data['tr_type_entity_id']]["m_desc"] + '">'+ en_all_4486[modify_data['tr_type_entity_id']]["m_icon"] +'</span>');
+                    $('.tr_type_' + modify_data['ln_id']).html('<span data-toggle="tooltip" data-placement="right" title="'+ en_all_4486[modify_data['ln_type_entity_id']]["m_name"] + ': '+ en_all_4486[modify_data['ln_type_entity_id']]["m_desc"] + '">'+ en_all_4486[modify_data['ln_type_entity_id']]["m_icon"] +'</span>');
 
-                    $('.tr_status_' + modify_data['tr_id']).html('<span class="tr_status_val" data-toggle="tooltip" data-placement="right" title="'+ object_js_statuses['tr_status'][modify_data['tr_status']]["s_name"] + ': '+ object_js_statuses['tr_status'][modify_data['tr_status']]["s_desc"] + '">'+ object_js_statuses['tr_status'][modify_data['tr_status']]["s_icon"] +'</span>');
+                    $('.ln_status_' + modify_data['ln_id']).html('<span class="ln_status_val" data-toggle="tooltip" data-placement="right" title="'+ object_js_statuses['ln_status'][modify_data['ln_status']]["s_name"] + ': '+ object_js_statuses['ln_status'][modify_data['ln_status']]["s_desc"] + '">'+ object_js_statuses['ln_status'][modify_data['ln_status']]["s_icon"] +'</span>');
 
                     //Update Assessment
-                    $(".in_assessment_" + modify_data['tr_id']).html(( modify_data['tr_type_entity_id']==4228 ? ( modify_data['tr__assessment_points'] != 0 ? ( modify_data['tr__assessment_points'] > 0 ? '+' : '' ) + modify_data['tr__assessment_points'] : '' ) : modify_data['tr__conditional_score_min'] + ( modify_data['tr__conditional_score_min']==modify_data['tr__conditional_score_max'] ? '' : '-' + modify_data['tr__conditional_score_max'] ) + '%' ));
+                    $(".in_assessment_" + modify_data['ln_id']).html(( modify_data['ln_type_entity_id']==4228 ? ( modify_data['tr__assessment_points'] != 0 ? ( modify_data['tr__assessment_points'] > 0 ? '+' : '' ) + modify_data['tr__assessment_points'] : '' ) : modify_data['tr__conditional_score_min'] + ( modify_data['tr__conditional_score_min']==modify_data['tr__conditional_score_max'] ? '' : '-' + modify_data['tr__conditional_score_max'] ) + '%' ));
 
                 }
 

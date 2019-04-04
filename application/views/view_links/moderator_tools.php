@@ -86,7 +86,7 @@ if(!$action) {
         echo '<h1>Orphan Intents</h1>';
 
         $orphan_ins = $this->Database_model->in_fetch(array(
-            ' NOT EXISTS (SELECT 1 FROM table_links WHERE in_id=tr_child_intent_id AND tr_type_entity_id IN (' . join(',', $this->config->item('en_ids_4486')) . ') AND tr_status>=0) ' => null,
+            ' NOT EXISTS (SELECT 1 FROM table_links WHERE in_id=ln_child_intent_id AND ln_type_entity_id IN (' . join(',', $this->config->item('en_ids_4486')) . ') AND ln_status>=0) ' => null,
             'in_status >=' => 0,
             'in_id !=' => $this->config->item('in_mission_id'),
             'in_id NOT IN (' . join(',', $this->config->item('in_status_locked')) . ')' => null,
@@ -135,7 +135,7 @@ if(!$action) {
         echo '<h1>Orphan Entities</h1>';
 
         $orphan_ens = $this->Database_model->en_fetch(array(
-            ' NOT EXISTS (SELECT 1 FROM table_links WHERE en_id=tr_child_entity_id AND tr_type_entity_id IN (' . join(',', $this->config->item('en_ids_4592')) . ') AND tr_status>=0) ' => null,
+            ' NOT EXISTS (SELECT 1 FROM table_links WHERE en_id=ln_child_entity_id AND ln_type_entity_id IN (' . join(',', $this->config->item('en_ids_4592')) . ') AND ln_status>=0) ' => null,
             'en_status >=' => 0,
             'en_id !=' => $this->config->item('en_top_focus_id'),
         ), array('skip_en__parents'));

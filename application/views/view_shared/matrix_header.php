@@ -69,12 +69,6 @@ $uri_segment_2 = $this->uri->segment(2);
                     <div class="collapse navbar-collapse">
                         <ul class="nav navbar-nav navbar-main navbar-right">
 
-                            <li class="<?= ($uri_segment_1 == 'links' ? 'links-active' : 'links-inactive') ?>">
-                                <a href="/links">
-                                    <i class="fas fa-link rotate90"></i> Links
-                                </a>
-                            </li>
-
                             <li class="<?= ($uri_segment_1 == 'intents' ? 'intent-active' : 'intent-inactive') ?>">
                                 <a href="/intents/<?= $this->config->item('in_miner_start') ?>">
                                     <i class="fas fa-hashtag"></i> Intents
@@ -87,15 +81,21 @@ $uri_segment_2 = $this->uri->segment(2);
                                 </a>
                             </li>
 
-                            <li class="<?= ($uri_segment_1 == 'entities' && $uri_segment_2 == $session_en['en_id'] ? 'entity-active' : 'entity-inactive') ?>" data-toggle="tooltip" data-placement="left" title="My Entity">
-                                <a href="/entities/<?= $session_en['en_id'] ?>">
-                                    <i class="fas fa-user-circle"></i>
+                            <li class="<?= ($uri_segment_1 == 'links' ? 'links-active' : 'links-inactive') ?>">
+                                <a href="/links">
+                                    <i class="fas fa-link rotate90"></i> Links
                                 </a>
                             </li>
 
                             <li class="links-inactive" data-toggle="tooltip" data-placement="left" title="My Action Plan">
                                 <a href="/messenger/actionplan">
                                     <i class="fas fa-flag"></i>
+                                </a>
+                            </li>
+
+                            <li class="links-inactive" data-toggle="tooltip" data-placement="left" title="My Account">
+                                <a href="/messenger/myaccount">
+                                    <i class="fas fa-user-circle"></i>
                                 </a>
                             </li>
 

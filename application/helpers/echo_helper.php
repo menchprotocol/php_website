@@ -95,7 +95,7 @@ function echo_url_embed($url, $full_message = null, $return_array = false, $star
      * Detects and displays URLs from supported website with an embed widget
      *
      * NOTE: Changes to this function requires us to re-calculate all current
-     *       values for tr_type_entity_id as this could change the equation for those
+     *       values for ln_type_entity_id as this could change the equation for those
      *       link types. Change with care...
      *
      * */
@@ -214,20 +214,20 @@ function echo_in_message_manage($tr)
 
     //Build the HTML UI:
     $ui = '';
-    $ui .= '<div class="list-group-item is-msg is_level2_sortable all_msg msg_en_type_' . $tr['tr_type_entity_id'] . '" id="ul-nav-' . $tr['tr_id'] . '" tr-id="' . $tr['tr_id'] . '">';
+    $ui .= '<div class="list-group-item is-msg is_level2_sortable all_msg msg_en_type_' . $tr['ln_type_entity_id'] . '" id="ul-nav-' . $tr['ln_id'] . '" tr-id="' . $tr['ln_id'] . '">';
     $ui .= '<div style="overflow:visible !important;">';
 
     //Type & Delivery Method:
-    $ui .= '<div class="edit-off text_message" id="msgbody_' . $tr['tr_id'] . '" style="margin:2px 0 0 0;">';
+    $ui .= '<div class="edit-off text_message" id="msgbody_' . $tr['ln_id'] . '" style="margin:2px 0 0 0;">';
 
     //Now get the message snippet:
-    $ui .= $CI->Chat_model->dispatch_message($tr['tr_content'], $session_en, false, array(), array(), $tr['tr_child_intent_id']);
+    $ui .= $CI->Chat_model->dispatch_message($tr['ln_content'], $session_en, false, array(), array(), $tr['ln_child_intent_id']);
 
     $ui .= '</div>';
 
 
     //Text editing:
-    $ui .= '<textarea onkeyup="changeMessageEditing(' . $tr['tr_id'] . ')" name="tr_content" id="message_body_' . $tr['tr_id'] . '" class="edit-on hidden msg msgin algolia_search" placeholder="Write Message..." style="margin-top: 4px;">' . $tr['tr_content'] . '</textarea>';
+    $ui .= '<textarea onkeyup="changeMessageEditing(' . $tr['ln_id'] . ')" name="ln_content" id="message_body_' . $tr['ln_id'] . '" class="edit-on hidden msg msgin algolia_search" placeholder="Write Message..." style="margin-top: 4px;">' . $tr['ln_content'] . '</textarea>';
 
     //Editing menu:
     $ui .= '<ul class="msg-nav">';
@@ -236,39 +236,39 @@ function echo_in_message_manage($tr)
 
 
     //Links:
-    $count_msg_trs = $CI->Database_model->tr_fetch(array(
-        '( tr_id = ' . $tr['tr_id'] . ' OR tr_parent_link_id = ' . $tr['tr_id'] . ')' => null,
-    ), array(), 0, 0, array(), 'COUNT(tr_id) as totals');
-    $ui .= '<li class="' . echo_advance() . '" style="min-width:48px; display:inline-block;"><a class="btn btn-primary edit-off" style="border:2px solid #fedd16 !important;" href="/links?tr_id=' . $tr['tr_id'] . '" target="_parent" title="Go to Links" data-toggle="tooltip" data-placement="top"><i class="fas fa-link rotate90"></i> '.echo_number($count_msg_trs[0]['totals']).'</a></li>';
+    $count_msg_trs = $CI->Database_model->ln_fetch(array(
+        '( ln_id = ' . $tr['ln_id'] . ' OR ln_parent_link_id = ' . $tr['ln_id'] . ')' => null,
+    ), array(), 0, 0, array(), 'COUNT(ln_id) as totals');
+    $ui .= '<li class="' . echo_advance() . '" style="min-width:48px; display:inline-block;"><a class="btn btn-primary edit-off" style="border:2px solid #fedd16 !important;" href="/links?ln_id=' . $tr['ln_id'] . '" target="_parent" title="Go to Links" data-toggle="tooltip" data-placement="top"><i class="fas fa-link rotate90"></i> '.echo_number($count_msg_trs[0]['totals']).'</a></li>';
 
     //Modify:
-    $ui .= '<li class="edit-off" style="margin-left:0;"><span class="on-hover"><a class="btn btn-primary white-primary" href="javascript:message_modify_start(' . $tr['tr_id'] . ',' . $tr['tr_type_entity_id'] . ');" title="Modify Message" data-toggle="tooltip" data-placement="top" style="border:2px solid #fedd16 !important; margin-right:4px !important;"><i class="fas fa-pen-square"></i></a></span></li>';
+    $ui .= '<li class="edit-off" style="margin-left:0;"><span class="on-hover"><a class="btn btn-primary white-primary" href="javascript:message_modify_start(' . $tr['ln_id'] . ',' . $tr['ln_type_entity_id'] . ');" title="Modify Message" data-toggle="tooltip" data-placement="top" style="border:2px solid #fedd16 !important; margin-right:4px !important;"><i class="fas fa-pen-square"></i></a></span></li>';
 
 
     //Status:
-    $ui .= '<li class="edit-off message_status" style="margin:0 8px 0 0;"><span title="' . $fixed_fields['tr_status'][$tr['tr_status']]['s_name'] . ': ' . $fixed_fields['tr_status'][$tr['tr_status']]['s_desc'] . '" data-toggle="tooltip" data-placement="top">' . $fixed_fields['tr_status'][$tr['tr_status']]['s_icon'] . '</span></li>';
+    $ui .= '<li class="edit-off message_status" style="margin:0 8px 0 0;"><span title="' . $fixed_fields['ln_status'][$tr['ln_status']]['s_name'] . ': ' . $fixed_fields['ln_status'][$tr['ln_status']]['s_desc'] . '" data-toggle="tooltip" data-placement="top">' . $fixed_fields['ln_status'][$tr['ln_status']]['s_icon'] . '</span></li>';
 
     //Sort:
-    $ui .= '<li class="edit-off"><span title="Drag up/down to sort" data-toggle="tooltip" data-placement="top"><i class="fas fa-sort '.( in_array(4603, $en_all_4485[$tr['tr_type_entity_id']]['m_parents']) ? 'message-sorting' : '' ).'"></i></span></li>';
+    $ui .= '<li class="edit-off"><span title="Drag up/down to sort" data-toggle="tooltip" data-placement="top"><i class="fas fa-sort '.( in_array(4603, $en_all_4485[$tr['ln_type_entity_id']]['m_parents']) ? 'message-sorting' : '' ).'"></i></span></li>';
 
 
 
 
 
     //Counter:
-    $ui .= '<li class="edit-on hidden"><span id="charNumEditing' . $tr['tr_id'] . '">0</span>/' . $CI->config->item('tr_content_max_length') . '</li>';
+    $ui .= '<li class="edit-on hidden"><span id="charNumEditing' . $tr['ln_id'] . '">0</span>/' . $CI->config->item('ln_content_max_length') . '</li>';
 
     //Save Edit:
-    $ui .= '<li class="pull-right edit-on hidden"><a class="btn btn-primary white-primary" title="Save changes" data-toggle="tooltip" data-placement="top" href="javascript:in_message_modify(' . $tr['tr_id'] . ',' . $tr['tr_type_entity_id'] . ');"><i class="fas fa-check"></i> Save</a></li>';
+    $ui .= '<li class="pull-right edit-on hidden"><a class="btn btn-primary white-primary" title="Save changes" data-toggle="tooltip" data-placement="top" href="javascript:in_message_modify(' . $tr['ln_id'] . ',' . $tr['ln_type_entity_id'] . ');"><i class="fas fa-check"></i> Save</a></li>';
 
     //Cancel Edit:
-    $ui .= '<li class="pull-right edit-on hidden"><a class="btn btn-primary white-primary" title="Cancel editing" data-toggle="tooltip" data-placement="top" href="javascript:message_modify_cancel(' . $tr['tr_id'] . ');"><i class="fas fa-times"></i></a></li>';
+    $ui .= '<li class="pull-right edit-on hidden"><a class="btn btn-primary white-primary" title="Cancel editing" data-toggle="tooltip" data-placement="top" href="javascript:message_modify_cancel(' . $tr['ln_id'] . ');"><i class="fas fa-times"></i></a></li>';
 
     //Show drop down for message link status:
     $ui .= '<li class="pull-right edit-on hidden"><span class="white-wrapper" style="margin:-12px 0 0 0;">';
-    $ui .= '<select id="message_tr_status_' . $tr['tr_id'] . '"  class="form-control border" style="margin-bottom:0;" title="Change message status" data-toggle="tooltip" data-placement="top">';
-    foreach($fixed_fields['tr_status'] as $status_id => $status){
-        $ui .= '<option value="' . $status_id . '" '.( $status_id==$tr['tr_status'] ? 'selected="selected"' : '' ).'>' . $status['s_name'] . '</option>';
+    $ui .= '<select id="message_ln_status_' . $tr['ln_id'] . '"  class="form-control border" style="margin-bottom:0;" title="Change message status" data-toggle="tooltip" data-placement="top">';
+    foreach($fixed_fields['ln_status'] as $status_id => $status){
+        $ui .= '<option value="' . $status_id . '" '.( $status_id==$tr['ln_status'] ? 'selected="selected"' : '' ).'>' . $status['s_name'] . '</option>';
     }
     $ui .= '</select>';
     $ui .= '</span></li>';
@@ -414,19 +414,19 @@ function echo_number($number, $micro = true, $fb_messenger_format = false)
     }
 }
 
-function echo_tr_urls($tr_content, $tr_type_entity_id){
+function echo_tr_urls($ln_content, $ln_type_entity_id){
 
-    $tr_content = htmlentities($tr_content);
+    $ln_content = htmlentities($ln_content);
 
     $CI =& get_instance();
-    if (in_array($tr_type_entity_id, $CI->config->item('en_ids_4537'))) {
+    if (in_array($ln_type_entity_id, $CI->config->item('en_ids_4537'))) {
 
         //Entity URL Links
-        return echo_url_type($tr_content, $tr_type_entity_id);
+        return echo_url_type($ln_content, $ln_type_entity_id);
 
-    } elseif(strlen($tr_content) > 0) {
+    } elseif(strlen($ln_content) > 0) {
 
-        return echo_link($tr_content);
+        return echo_link($ln_content);
 
     } else {
 
@@ -441,9 +441,9 @@ function echo_tr_row($tr, $is_inner = false)
     $CI =& get_instance();
     $en_all_4593 = $CI->config->item('en_all_4593');
 
-    if(!isset($en_all_4593[$tr['tr_type_entity_id']])){
+    if(!isset($en_all_4593[$tr['ln_type_entity_id']])){
         //We've probably have not yet updated php cache, set error:
-        $en_all_4593[$tr['tr_type_entity_id']] = array(
+        $en_all_4593[$tr['ln_type_entity_id']] = array(
             'm_icon' => '<i class="fal fa-exclamation-triangle redalert"></i>',
             'm_name' => 'Link Type Not Synced in PHP Cache',
             'm_desc' => '',
@@ -451,11 +451,11 @@ function echo_tr_row($tr, $is_inner = false)
         );
     }
 
-    $hide_sensitive_details = (in_array($tr['tr_type_entity_id'] , $CI->config->item('en_ids_4755')) /* Link Type is locked */ && !en_auth(array(1281)) /* Viewer NOT a moderator */);
+    $hide_sensitive_details = (in_array($tr['ln_type_entity_id'] , $CI->config->item('en_ids_4755')) /* Link Type is locked */ && !en_auth(array(1281)) /* Viewer NOT a moderator */);
 
     //Fetch Miner Entity:
     $miner_ens = $CI->Database_model->en_fetch(array(
-        'en_id' => $tr['tr_miner_entity_id'],
+        'en_id' => $tr['ln_miner_entity_id'],
     ));
 
     //Display the item
@@ -482,34 +482,34 @@ function echo_tr_row($tr, $is_inner = false)
         }
 
         //Link Type:
-        $ui .= '<a href="/entities/'.$tr['tr_type_entity_id'].'" data-toggle="tooltip" data-placement="top" title="View link type entity"><b style="padding-left:5px;">'. ( strlen($en_all_4593[$tr['tr_type_entity_id']]['m_icon']) > 0 ? $en_all_4593[$tr['tr_type_entity_id']]['m_icon'] . ' ' : '' ) . $en_all_4593[$tr['tr_type_entity_id']]['m_name'] . '</b></a>';
+        $ui .= '<a href="/entities/'.$tr['ln_type_entity_id'].'" data-toggle="tooltip" data-placement="top" title="View link type entity"><b style="padding-left:5px;">'. ( strlen($en_all_4593[$tr['ln_type_entity_id']]['m_icon']) > 0 ? $en_all_4593[$tr['ln_type_entity_id']]['m_icon'] . ' ' : '' ) . $en_all_4593[$tr['ln_type_entity_id']]['m_name'] . '</b></a>';
 
     $ui .= '</div>';
 
 
     //2nd Row of data:
     $ui .= '<div style="padding:7px 0 9px 13px; font-size:0.8em;">';
-    $ui .= '<span data-toggle="tooltip" data-placement="top" title="Link ID" style="min-width:80px; display: inline-block;"><i class="fas fa-link rotate90"></i> '.$tr['tr_id'].'</span>';
-    $ui .= ' &nbsp;<span data-toggle="tooltip" data-placement="top" title="Mined Points" style="min-width:47px; display: inline-block;"><i class="fas fa-award"></i> <b>'. $tr['tr_points'] .'</b></span>';
-    $ui .= ' &nbsp;<span data-toggle="tooltip" data-placement="top" title="'.$fixed_fields['tr_status'][$tr['tr_status']]['s_desc'].'" style="min-width:82px; display: inline-block;">'.$fixed_fields['tr_status'][$tr['tr_status']]['s_icon'].' '.$fixed_fields['tr_status'][$tr['tr_status']]['s_name'].'</span>';
-    $ui .= ' &nbsp;<span data-toggle="tooltip" data-placement="top" title="Link Log Time: ' . $tr['tr_timestamp'] . ' PST" style="min-width:120px; display: inline-block;"><i class="fal fa-clock"></i> ' . echo_time_difference(strtotime($tr['tr_timestamp'])) . ' ago</span>';
+    $ui .= '<span data-toggle="tooltip" data-placement="top" title="Link ID" style="min-width:80px; display: inline-block;"><i class="fas fa-link rotate90"></i> '.$tr['ln_id'].'</span>';
+    $ui .= ' &nbsp;<span data-toggle="tooltip" data-placement="top" title="Mined Points" style="min-width:47px; display: inline-block;"><i class="fas fa-award"></i> <b>'. $tr['ln_points'] .'</b></span>';
+    $ui .= ' &nbsp;<span data-toggle="tooltip" data-placement="top" title="'.$fixed_fields['ln_status'][$tr['ln_status']]['s_desc'].'" style="min-width:82px; display: inline-block;">'.$fixed_fields['ln_status'][$tr['ln_status']]['s_icon'].' '.$fixed_fields['ln_status'][$tr['ln_status']]['s_name'].'</span>';
+    $ui .= ' &nbsp;<span data-toggle="tooltip" data-placement="top" title="Link Log Time: ' . $tr['ln_timestamp'] . ' PST" style="min-width:120px; display: inline-block;"><i class="fal fa-clock"></i> ' . echo_time_difference(strtotime($tr['ln_timestamp'])) . ' ago</span>';
 
 
-    if($tr['tr_order'] != 0){
-        $ui .= ' &nbsp;<span data-toggle="tooltip" data-placement="top" title="Link ordered '.echo_ordinal_number($tr['tr_order']).' relative to its siblings" style="min-width:30px; display: inline-block;" class="' . echo_advance() . '"><i class="fas fa-sort"></i>'.$tr['tr_order'].'</span>';
+    if($tr['ln_order'] != 0){
+        $ui .= ' &nbsp;<span data-toggle="tooltip" data-placement="top" title="Link ordered '.echo_ordinal_number($tr['ln_order']).' relative to its siblings" style="min-width:30px; display: inline-block;" class="' . echo_advance() . '"><i class="fas fa-sort"></i>'.$tr['ln_order'].'</span>';
     } else {
         $ui .= ' &nbsp;<span data-toggle="tooltip" data-placement="top" title="Link is not ordered" style="min-width:30px; display: inline-block;" class="' . echo_advance() . '"><i class="fas fa-sort" style="color: #AAA;"></i></span>';
     }
 
 
-    if(!$hide_sensitive_details && strlen($tr['tr_content']) < 1){
+    if(!$hide_sensitive_details && strlen($tr['ln_content']) < 1){
         $ui .= ' &nbsp;<span data-toggle="tooltip" data-placement="top" title="Link has no content" class="' . echo_advance() . '"><i class="fal fa-comment-slash" style="color: #AAA;"></i></span>';
     }
 
     //Is this a miner? Show them metadata status:
     if(!$hide_sensitive_details && en_auth(array(1308))){
-        if(strlen($tr['tr_metadata']) > 0){
-            $ui .= ' &nbsp;<a href="/links/link_json/' . $tr['tr_id'] . '" target="_blank" data-toggle="tooltip" data-placement="top" title="Open link metadata json object (in new window)" style="min-width:26px; display: inline-block;" class="' . echo_advance() . '"><i class="fas fa-search-plus"></i></a>';
+        if(strlen($tr['ln_metadata']) > 0){
+            $ui .= ' &nbsp;<a href="/links/link_json/' . $tr['ln_id'] . '" target="_blank" data-toggle="tooltip" data-placement="top" title="Open link metadata json object (in new window)" style="min-width:26px; display: inline-block;" class="' . echo_advance() . '"><i class="fas fa-search-plus"></i></a>';
         } else {
             $ui .= ' &nbsp;<span data-toggle="tooltip" data-placement="top" title="No Metadata" style="min-width:26px; display: inline-block;" class="' . echo_advance() . '"><i class="fal fa-search-minus" style="color: #AAA;"></i></span>';
         }
@@ -519,7 +519,7 @@ function echo_tr_row($tr, $is_inner = false)
 
     //Do we have a content to show?
     if(!$hide_sensitive_details){
-        $main_content = echo_tr_urls($tr['tr_content'], $tr['tr_type_entity_id']);
+        $main_content = echo_tr_urls($tr['ln_content'], $tr['ln_type_entity_id']);
         $ui .= '<div class="e-msg ' . ($main_content ? '' : 'hidden') . '">';
         $ui .= $main_content;
         $ui .= '</div>';
@@ -533,7 +533,7 @@ function echo_tr_row($tr, $is_inner = false)
         //Show Links:
         foreach ($CI->config->item('tr_object_links') as $tr_field => $obj_type) {
 
-            if(!(!in_array($tr_field, array('tr_miner_entity_id','tr_type_entity_id')) && intval($tr[$tr_field]) > 0)){
+            if(!(!in_array($tr_field, array('ln_miner_entity_id','ln_type_entity_id')) && intval($tr[$tr_field]) > 0)){
                 //Don't show miner and type as they are already printed on the first line:
                 continue;
             }
@@ -551,9 +551,9 @@ function echo_tr_row($tr, $is_inner = false)
                 if(count($ins) > 0){
                     $ui .= echo_in($ins[0], 0);
                 }
-            } elseif($obj_type=='tr'){
+            } elseif($obj_type=='ln'){
                 //Fetch
-                $trs = $CI->Database_model->tr_fetch(array('tr_id' => $tr[$tr_field]));
+                $trs = $CI->Database_model->ln_fetch(array('ln_id' => $tr[$tr_field]));
                 if(count($trs) > 0){
                     $ui .= echo_tr_row($trs[0], true);
                 }
@@ -562,10 +562,10 @@ function echo_tr_row($tr, $is_inner = false)
         }
 
         //Now show all links for this link:
-        foreach ($CI->Database_model->tr_fetch(array(
-            'tr_status >=' => 0, //New+
-            'tr_parent_link_id' => $tr['tr_id'],
-        ), array(), 0, 0, array('tr_id' => 'DESC')) as $tr_child) {
+        foreach ($CI->Database_model->ln_fetch(array(
+            'ln_status >=' => 0, //New+
+            'ln_parent_link_id' => $tr['ln_id'],
+        ), array(), 0, 0, array('ln_id' => 'DESC')) as $tr_child) {
             $ui .= '<div class="tr-child">' . echo_tr_row($tr_child, true) . '</div>';
         }
 
@@ -577,12 +577,12 @@ function echo_tr_row($tr, $is_inner = false)
 
 
 
-function echo_in_actionplan_or_choose($parent_in_id, $actionplan_tr_id, $in)
+function echo_in_actionplan_or_choose($parent_in_id, $actionplan_ln_id, $in)
 {
 
     $CI =& get_instance();
 
-    $ui = '<a href="/messenger/actionplan_choose_step/'.$actionplan_tr_id.'/' . $parent_in_id . '/' . $in['in_id'] . '/' . md5($CI->config->item('actionplan_salt') . $in['in_id'] . $parent_in_id . $actionplan_tr_id) . '" class="list-group-item">';
+    $ui = '<a href="/messenger/actionplan_choose_step/'.$actionplan_ln_id.'/' . $parent_in_id . '/' . $in['in_id'] . '/' . md5($CI->config->item('actionplan_salt') . $in['in_id'] . $parent_in_id . $actionplan_ln_id) . '" class="list-group-item">';
 
     //Different pointer position based on direction:
     $ui .= '<span class="pull-right">';
@@ -628,7 +628,7 @@ function echo_in_actionplan_step($tr, $is_parent, $incomplete_step)
         //For children show icon:
         if ($incomplete_step<=1) {
             //Completed Step Status:
-            $ui .= echo_fixed_fields('tr_student_status', $tr['tr_status'], 1, 'right');
+            $ui .= echo_fixed_fields('tr_student_status', $tr['ln_status'], 1, 'right');
         } else {
             //Item is locked:
             $ui .= '<span class="status-label" style="padding-bottom:1px;"><i class="fas fa-lock"></i></span>';
@@ -930,12 +930,12 @@ function echo_public_actionplan($in, $expand_mode){
 
 
     $CI =& get_instance();
-    $children_ins = $CI->Database_model->tr_fetch(array(
-        'tr_status' => 2, //Published
+    $children_ins = $CI->Database_model->ln_fetch(array(
+        'ln_status' => 2, //Published
         'in_status' => 2, //Published
-        'tr_type_entity_id' => 4228, //Fixed intent links only
-        'tr_parent_intent_id' => $in['in_id'],
-    ), array('in_child'), 0, 0, array('tr_order' => 'ASC'));
+        'ln_type_entity_id' => 4228, //Fixed intent links only
+        'ln_parent_intent_id' => $in['in_id'],
+    ), array('in_child'), 0, 0, array('ln_order' => 'ASC'));
 
     if(count($children_ins) < 1){
         return null;
@@ -948,19 +948,19 @@ function echo_public_actionplan($in, $expand_mode){
     foreach ($children_ins as $in_level2_counter => $in_level2) {
 
         //Level 3 intents:
-        $grandchildren_ins = $CI->Database_model->tr_fetch(array(
-            'tr_status' => 2, //Published
+        $grandchildren_ins = $CI->Database_model->ln_fetch(array(
+            'ln_status' => 2, //Published
             'in_status' => 2, //Published
-            'tr_type_entity_id' => 4228, //Fixed intent links only
-            'tr_parent_intent_id' => $in_level2['in_id'],
-        ), array('in_child'), 0, 0, array('tr_order' => 'ASC'));
+            'ln_type_entity_id' => 4228, //Fixed intent links only
+            'ln_parent_intent_id' => $in_level2['in_id'],
+        ), array('in_child'), 0, 0, array('ln_order' => 'ASC'));
 
         //Fetch messages:
-        $in_level2_messages = $CI->Database_model->tr_fetch(array(
-            'tr_status' => 2, //Published
-            'tr_type_entity_id' => 4231, //Intent Note Messages
-            'tr_child_intent_id' => $in_level2['in_id'],
-        ), array(), 0, 0, array('tr_order' => 'ASC'));
+        $in_level2_messages = $CI->Database_model->ln_fetch(array(
+            'ln_status' => 2, //Published
+            'ln_type_entity_id' => 4231, //Intent Note Messages
+            'ln_child_intent_id' => $in_level2['in_id'],
+        ), array(), 0, 0, array('ln_order' => 'ASC'));
 
         //Skip if intent has no message and no level 3 children:
         if(count($grandchildren_ins) == 0 && count($in_level2_messages) == 0){
@@ -990,7 +990,7 @@ function echo_public_actionplan($in, $expand_mode){
 
         //Messages:
         foreach ($in_level2_messages as $tr) {
-            $return_html .= $CI->Chat_model->dispatch_message($tr['tr_content']);
+            $return_html .= $CI->Chat_model->dispatch_message($tr['ln_content']);
         }
 
 
@@ -1098,31 +1098,31 @@ function echo_en_messages($tr){
 
 
     //Referenced Intent:
-    $ui .= '<li><a class="btn btn-primary button-max" style="border:2px solid #fedd16 !important;" href="/intents/' . $tr['tr_child_intent_id'] . '" target="_parent" title="Message Intent: '.$tr['in_outcome'].'" data-toggle="tooltip" data-placement="top">'.$fixed_fields['in_status'][$tr['in_status']]['s_icon'].'&nbsp; '.$fixed_fields['in_type'][$tr['in_type']]['s_icon'].' '.$tr['in_outcome'].'</a></li>';
+    $ui .= '<li><a class="btn btn-primary button-max" style="border:2px solid #fedd16 !important;" href="/intents/' . $tr['ln_child_intent_id'] . '" target="_parent" title="Message Intent: '.$tr['in_outcome'].'" data-toggle="tooltip" data-placement="top">'.$fixed_fields['in_status'][$tr['in_status']]['s_icon'].'&nbsp; '.$fixed_fields['in_type'][$tr['in_type']]['s_icon'].' '.$tr['in_outcome'].'</a></li>';
 
     //Links:
-    $count_msg_trs = $CI->Database_model->tr_fetch(array(
-        '( tr_id = ' . $tr['tr_id'] . ' OR tr_parent_link_id = ' . $tr['tr_id'] . ')' => null,
-    ), array(), 0, 0, array(), 'COUNT(tr_id) as totals');
-    $ui .= '<li class="' . echo_advance() . '"><a class="btn btn-primary" style="border:2px solid #fedd16 !important;" href="/links?tr_id=' . $tr['tr_id'] . '" target="_parent" title="Go to Links" data-toggle="tooltip" data-placement="top"><i class="fas fa-link rotate90"></i> '.echo_number($count_msg_trs[0]['totals']).'</a></li>';
+    $count_msg_trs = $CI->Database_model->ln_fetch(array(
+        '( ln_id = ' . $tr['ln_id'] . ' OR ln_parent_link_id = ' . $tr['ln_id'] . ')' => null,
+    ), array(), 0, 0, array(), 'COUNT(ln_id) as totals');
+    $ui .= '<li class="' . echo_advance() . '"><a class="btn btn-primary" style="border:2px solid #fedd16 !important;" href="/links?ln_id=' . $tr['ln_id'] . '" target="_parent" title="Go to Links" data-toggle="tooltip" data-placement="top"><i class="fas fa-link rotate90"></i> '.echo_number($count_msg_trs[0]['totals']).'</a></li>';
 
     //Intent Note Type:
-    $ui .= '<li class="' . echo_advance() . '" style="margin: 0 3px 0 0;"><span title="'.$en_all_4485[$tr['tr_type_entity_id']]['m_name'].': '.$en_all_4485[$tr['tr_type_entity_id']]['m_desc'].'" data-toggle="tooltip" data-placement="top">'.$en_all_4485[$tr['tr_type_entity_id']]['m_icon'].'</span></li>';
+    $ui .= '<li class="' . echo_advance() . '" style="margin: 0 3px 0 0;"><span title="'.$en_all_4485[$tr['ln_type_entity_id']]['m_name'].': '.$en_all_4485[$tr['ln_type_entity_id']]['m_desc'].'" data-toggle="tooltip" data-placement="top">'.$en_all_4485[$tr['ln_type_entity_id']]['m_icon'].'</span></li>';
 
     //Link Status:
-    $ui .= '<li class="' . echo_advance() . '" style="margin: 0 3px 0 0;"><span title="'.$fixed_fields['tr_status'][$tr['tr_status']]['s_name'].': '.$fixed_fields['tr_status'][$tr['tr_status']]['s_desc'].'" data-toggle="tooltip" data-placement="top">'.$fixed_fields['tr_status'][$tr['tr_status']]['s_icon'].'</span></li>';
+    $ui .= '<li class="' . echo_advance() . '" style="margin: 0 3px 0 0;"><span title="'.$fixed_fields['ln_status'][$tr['ln_status']]['s_name'].': '.$fixed_fields['ln_status'][$tr['ln_status']]['s_desc'].'" data-toggle="tooltip" data-placement="top">'.$fixed_fields['ln_status'][$tr['ln_status']]['s_icon'].'</span></li>';
 
     //Order:
-    $ui .= '<li class="' . echo_advance() . '" style="margin: 0 3px 0 0;"><span title="Message order relative to siblings" data-toggle="tooltip" data-placement="top"><i class="fas fa-sort"></i>' . echo_ordinal_number($tr['tr_order']) . '</span></li>';
+    $ui .= '<li class="' . echo_advance() . '" style="margin: 0 3px 0 0;"><span title="Message order relative to siblings" data-toggle="tooltip" data-placement="top"><i class="fas fa-sort"></i>' . echo_ordinal_number($tr['ln_order']) . '</span></li>';
 
     $ui .= '<li style="clear: both;">&nbsp;</li>';
 
     $ui .= '</ul>';
 
     //Show message only if its not a plain reference and includes additional text/info:
-    if($tr['tr_content'] != '@'.$tr['tr_parent_entity_id']){
+    if($tr['ln_content'] != '@'.$tr['ln_parent_entity_id']){
         $ui .= '<div style="margin-top: 15px;">';
-        $ui .= $CI->Chat_model->dispatch_message($tr['tr_content'], $session_en, false);
+        $ui .= $CI->Chat_model->dispatch_message($tr['ln_content'], $session_en, false);
         $ui .= '</div>';
     }
 
@@ -1340,26 +1340,26 @@ function echo_radio_entities($parent_en_id, $child_en_id, $enable_mulitiselect){
     $ui = '<div class="list-group">';
 
     //Fetch all children:
-    foreach($CI->Database_model->tr_fetch(array(
-        'tr_parent_entity_id' => $parent_en_id,
-        'tr_type_entity_id IN (' . join(',', $CI->config->item('en_ids_4592')) . ')' => null, //Entity Link Connectors
-        'tr_status' => 2, //Published
+    foreach($CI->Database_model->ln_fetch(array(
+        'ln_parent_entity_id' => $parent_en_id,
+        'ln_type_entity_id IN (' . join(',', $CI->config->item('en_ids_4592')) . ')' => null, //Entity Link Connectors
+        'ln_status' => 2, //Published
         'en_status' => 2, //Published
-    ), array('en_child'), 0, 0, array('tr_order' => 'ASC', 'en_trust_score' => 'DESC')) as $count => $item){
+    ), array('en_child'), 0, 0, array('ln_order' => 'ASC', 'en_trust_score' => 'DESC')) as $count => $item){
 
         //Count total children:
-        $student_count = $CI->Database_model->tr_fetch(array(
-            'tr_type_entity_id IN (' . join(',', $CI->config->item('en_ids_4592')) . ')' => null, //Entity Link Connectors
-            'tr_parent_entity_id' => $item['en_id'],
-            'tr_status' => 2, //Published
-        ), array(), 0, 0, array(), 'COUNT(tr_id) as totals');
+        $student_count = $CI->Database_model->ln_fetch(array(
+            'ln_type_entity_id IN (' . join(',', $CI->config->item('en_ids_4592')) . ')' => null, //Entity Link Connectors
+            'ln_parent_entity_id' => $item['en_id'],
+            'ln_status' => 2, //Published
+        ), array(), 0, 0, array(), 'COUNT(ln_id) as totals');
 
         //Echo box:
-        $ui .= '<a href="javascript:void(0);" class="list-group-item '.( $count>=$show_max ? 'extra-items-'.$parent_en_id.' hidden ' : '' ).( count($CI->Database_model->tr_fetch(array(
-                'tr_parent_entity_id' => $item['en_id'],
-                'tr_child_entity_id' => $child_en_id,
-                'tr_type_entity_id IN (' . join(',', $CI->config->item('en_ids_4592')) . ')' => null, //Entity Link Connectors
-                'tr_status' => 2, //Published
+        $ui .= '<a href="javascript:void(0);" class="list-group-item '.( $count>=$show_max ? 'extra-items-'.$parent_en_id.' hidden ' : '' ).( count($CI->Database_model->ln_fetch(array(
+                'ln_parent_entity_id' => $item['en_id'],
+                'ln_child_entity_id' => $child_en_id,
+                'ln_type_entity_id IN (' . join(',', $CI->config->item('en_ids_4592')) . ')' => null, //Entity Link Connectors
+                'ln_status' => 2, //Published
             )))>0 ? ' active ' : '' ). '">'.( strlen($item['en_icon'])>0 ? $item['en_icon'].' ' : '' ).$item['en_name'].' <span class="pull-right">'.echo_number($student_count[0]['totals']).' <i class="fal fa-users"></i></span></a>';
     }
 
@@ -1400,18 +1400,18 @@ function echo_in($in, $level, $in_parent_id = 0, $is_parent = false)
     if ($level <= 1) {
 
         //No Link for level 1 intent:
-        $tr_id = 0;
-        $tr_metadata = array();
+        $ln_id = 0;
+        $ln_metadata = array();
 
         $ui = '<div class="list-group-item top_intent">';
 
     } else {
 
         //Prep link metadata to be analyzed later:
-        $tr_id = $in['tr_id'];
-        $tr_metadata = unserialize($in['tr_metadata']);
+        $ln_id = $in['ln_id'];
+        $ln_metadata = unserialize($in['ln_metadata']);
 
-        $ui = '<div in-tr-id="' . $tr_id . '" in-tr-type="' . $in['tr_type_entity_id'] . '" intent-id="' . $in['in_id'] . '" parent-intent-id="' . $in_parent_id . '" intent-level="' . $level . '" class="list-group-item ' . ($level == 3 || ($level == 2 && !$is_parent) ? ' enable-sorting ' : '') . ($level == 3 ? 'is_level3_sortable' : 'is_level2_sortable level2_in') . ' intent_line_' . $in['in_id'] . ( $is_parent && $level!=3 ? ' parent-intent ' : '' ) . ' in__tr_'.$tr_id.'">';
+        $ui = '<div in-tr-id="' . $ln_id . '" in-tr-type="' . $in['ln_type_entity_id'] . '" intent-id="' . $in['in_id'] . '" parent-intent-id="' . $in_parent_id . '" intent-level="' . $level . '" class="list-group-item ' . ($level == 3 || ($level == 2 && !$is_parent) ? ' enable-sorting ' : '') . ($level == 3 ? 'is_level3_sortable' : 'is_level2_sortable level2_in') . ' intent_line_' . $in['in_id'] . ( $is_parent && $level!=3 ? ' parent-intent ' : '' ) . ' in__tr_'.$ln_id.'">';
 
     }
 
@@ -1451,23 +1451,23 @@ function echo_in($in, $level, $in_parent_id = 0, $is_parent = false)
         $ui .= '<span class="double-icon" style="margin:0 3px 0 -3px;">';
 
         //Show larger icon for link type (auto detected based on link content):
-        $ui .= '<span class="icon-main tr_type_' . $tr_id . '"><span data-toggle="tooltip" data-placement="right" title="' . $en_all_4486[$in['tr_type_entity_id']]['m_name'] . ': ' . $en_all_4486[$in['tr_type_entity_id']]['m_desc'] . '">' . $en_all_4486[$in['tr_type_entity_id']]['m_icon'] . '</span></span>';
+        $ui .= '<span class="icon-main tr_type_' . $ln_id . '"><span data-toggle="tooltip" data-placement="right" title="' . $en_all_4486[$in['ln_type_entity_id']]['m_name'] . ': ' . $en_all_4486[$in['ln_type_entity_id']]['m_desc'] . '">' . $en_all_4486[$in['ln_type_entity_id']]['m_icon'] . '</span></span>';
 
         //Show smaller link status icon:
-        $ui .= '<span class="icon-top-right tr_status_' . $tr_id . '"><span data-toggle="tooltip" data-placement="right" title="'.$fixed_fields['tr_status'][$in['tr_status']]['s_name'].': '.$fixed_fields['tr_status'][$in['tr_status']]['s_desc'].'">' . $fixed_fields['tr_status'][$in['tr_status']]['s_icon'] . '</span></span>';
+        $ui .= '<span class="icon-top-right ln_status_' . $ln_id . '"><span data-toggle="tooltip" data-placement="right" title="'.$fixed_fields['ln_status'][$in['ln_status']]['s_name'].': '.$fixed_fields['ln_status'][$in['ln_status']]['s_desc'].'">' . $fixed_fields['ln_status'][$in['ln_status']]['s_icon'] . '</span></span>';
 
         //Count and show total up-votes for this intent correlation (not necessarily this exact link, but the parent/child intent relation)
-        $tr_upvotes = $CI->Database_model->tr_fetch(array(
-            'tr_parent_intent_id' => $in['tr_parent_intent_id'],
-            'tr_child_intent_id' => $in['tr_child_intent_id'],
-            'tr_type_entity_id' => 4983, //Up-votes
-            'tr_status >=' => 0, //New+
-        ), array(), 0, 0, array(), 'COUNT(tr_id) as totals');
+        $tr_upvotes = $CI->Database_model->ln_fetch(array(
+            'ln_parent_intent_id' => $in['ln_parent_intent_id'],
+            'ln_child_intent_id' => $in['ln_child_intent_id'],
+            'ln_type_entity_id' => 4983, //Up-votes
+            'ln_status >=' => 0, //New+
+        ), array(), 0, 0, array(), 'COUNT(ln_id) as totals');
 
-        $ui .= '<span class="icon-top-left ' . echo_advance() . ' in_upvotes_' . $in['tr_child_intent_id'] . '_'.$in['tr_parent_intent_id'].'" data-toggle="tooltip" data-placement="right" title="Up-Votes">' . ( $tr_upvotes[0]['totals'] > 0 ? $tr_upvotes[0]['totals'] : '' ) . '</span>';
+        $ui .= '<span class="icon-top-left ' . echo_advance() . ' in_upvotes_' . $in['ln_child_intent_id'] . '_'.$in['ln_parent_intent_id'].'" data-toggle="tooltip" data-placement="right" title="Up-Votes">' . ( $tr_upvotes[0]['totals'] > 0 ? $tr_upvotes[0]['totals'] : '' ) . '</span>';
 
         //Show assessment score based on Intent Link Type:
-        $ui .= '<span class="icon-3rd in_assessment_' . $tr_id . '" data-toggle="tooltip" data-placement="right" title="Assessment Score">'. ( $in['tr_type_entity_id'] == 4228 ? ( !isset($tr_metadata['tr__assessment_points']) || $tr_metadata['tr__assessment_points'] == 0 ? '' : ( $tr_metadata['tr__assessment_points'] > 0 ? '+' : '' ) . $tr_metadata['tr__assessment_points'] ) : $tr_metadata['tr__conditional_score_min'] . ( $tr_metadata['tr__conditional_score_min']==$tr_metadata['tr__conditional_score_max'] ? '' : '-'.$tr_metadata['tr__conditional_score_max'] ).'%' ) .'</span>';
+        $ui .= '<span class="icon-3rd in_assessment_' . $ln_id . '" data-toggle="tooltip" data-placement="right" title="Assessment Score">'. ( $in['ln_type_entity_id'] == 4228 ? ( !isset($ln_metadata['tr__assessment_points']) || $ln_metadata['tr__assessment_points'] == 0 ? '' : ( $ln_metadata['tr__assessment_points'] > 0 ? '+' : '' ) . $ln_metadata['tr__assessment_points'] ) : $ln_metadata['tr__conditional_score_min'] . ( $ln_metadata['tr__conditional_score_min']==$ln_metadata['tr__conditional_score_max'] ? '' : '-'.$ln_metadata['tr__conditional_score_max'] ).'%' ) .'</span>';
 
         $ui .= '</span>';
 
@@ -1507,11 +1507,11 @@ function echo_in($in, $level, $in_parent_id = 0, $is_parent = false)
 
     } elseif ($level == 2) {
 
-        $ui .= '<span>&nbsp;<i id="handle-' . $tr_id . '" class="fal click_expand fa-plus-circle"></i> <span id="title_' . $tr_id . '" style="font-weight: 500;" class="cdr_crnt click_expand tree_title in_outcome_' . $in['in_id'] . '">' . echo_in_outcome($in['in_outcome']) . '</span></span>';
+        $ui .= '<span>&nbsp;<i id="handle-' . $ln_id . '" class="fal click_expand fa-plus-circle"></i> <span id="title_' . $ln_id . '" style="font-weight: 500;" class="cdr_crnt click_expand tree_title in_outcome_' . $in['in_id'] . '">' . echo_in_outcome($in['in_outcome']) . '</span></span>';
 
     } elseif ($level == 3) {
 
-        $ui .= '<span id="title_' . $tr_id . '" class="tree_title in_outcome_' . $in['in_id'] . '" style="padding-left:23px;">' .echo_in_outcome($in['in_outcome']) . '</span> ';
+        $ui .= '<span id="title_' . $ln_id . '" class="tree_title in_outcome_' . $in['in_id'] . '" style="padding-left:23px;">' .echo_in_outcome($in['in_outcome']) . '</span> ';
 
         //Is this the focused item in the parent sibling dropdown?
         if($is_child_focused){
@@ -1542,11 +1542,11 @@ function echo_in($in, $level, $in_parent_id = 0, $is_parent = false)
     //Do we have entity parents loaded in our data-set?
     if (!isset($in['in__parents'])) {
         //Fetch parents at this point:
-        $in['in__parents'] = $CI->Database_model->tr_fetch(array(
-            'tr_status >=' => 0, //New+
+        $in['in__parents'] = $CI->Database_model->ln_fetch(array(
+            'ln_status >=' => 0, //New+
             'in_status >=' => 0, //New+
-            'tr_type_entity_id IN (' . join(',', $CI->config->item('en_ids_4486')) . ')' => null, //Intent Link Connectors
-            'tr_child_intent_id' => $in['in_id'],
+            'ln_type_entity_id IN (' . join(',', $CI->config->item('en_ids_4486')) . ')' => null, //Intent Link Connectors
+            'ln_child_intent_id' => $in['in_id'],
         ), array('in_parent')); //Note that parents do not need any sorting, since we only sort child intents
 
     }
@@ -1570,26 +1570,26 @@ function echo_in($in, $level, $in_parent_id = 0, $is_parent = false)
 
 
     //Intent Notes:
-    $count_in_metadata = $CI->Database_model->tr_fetch(array(
-        'tr_status >=' => 0, //New+
-        'tr_type_entity_id IN (' . join(',', $CI->config->item('en_ids_4485')) . ')' => null, //All Intent Notes
-        'tr_child_intent_id' => $in['in_id'],
-    ), array(), 0, 0, array(), 'COUNT(tr_id) as totals');
+    $count_in_metadata = $CI->Database_model->ln_fetch(array(
+        'ln_status >=' => 0, //New+
+        'ln_type_entity_id IN (' . join(',', $CI->config->item('en_ids_4485')) . ')' => null, //All Intent Notes
+        'ln_child_intent_id' => $in['in_id'],
+    ), array(), 0, 0, array(), 'COUNT(ln_id) as totals');
     $ui .= '<a href="#intentmessages-' . $in['in_id'] . '" onclick="'.( $level==0 ? 'alert(\'Cannot manage here. Go to the intent to manage.\')' : 'in_messages_iframe('.$in['in_id'].')' ).'" class="msg-badge-' . $in['in_id'] . ' badge badge-primary white-primary is_not_bg '.( $level==0 ? '' . echo_advance() . '' : '' ).'" style="width:40px; margin-right:2px; margin-left:5px;" data-toggle="tooltip" title="Intent Notes" data-placement="top"><span class="btn-counter messages-counter-' . $in['in_id'] . '">' . $count_in_metadata[0]['totals'] . '</span><i class="fas fa-comment-plus"></i></a>';
 
 
 
     //Intent modify:
     $in__tree_max_seconds = (isset($in_metadata['in__tree_max_seconds']) ? $in_metadata['in__tree_max_seconds'] : 0);
-    $ui .= '<a class="badge badge-primary white-primary is_not_bg '.( $level==0 ? '' . echo_advance() . '' : '' ).'" onclick="'.( $level==0 ? 'alert(\'Cannot manage here. Go to the intent to manage.\')' : 'in_modify_load(' . $in['in_id'] . ',' . $tr_id . ')' ).'" style="margin:-2px -8px 0 0; width:40px;" href="#loadmodify-' . $in['in_id'] . '-' . $tr_id . '" data-toggle="tooltip" title="Intent completion cost. Click to modify intent'.( $level>1 ? ' and link' : '' ).'" data-placement="top"><span class="btn-counter slim-time t_estimate_' . $in['in_id'] . '" intent-usd="'.$in['in_dollar_cost'].'" tree-max-seconds="' . $in__tree_max_seconds . '" intent-seconds="' . $in['in_seconds_cost'] . '">'.( $in__tree_max_seconds > 0 ? echo_time_hours($in__tree_max_seconds , true) : 0 ).'</span><i class="fas fa-cog"></i></a> &nbsp;';
+    $ui .= '<a class="badge badge-primary white-primary is_not_bg '.( $level==0 ? '' . echo_advance() . '' : '' ).'" onclick="'.( $level==0 ? 'alert(\'Cannot manage here. Go to the intent to manage.\')' : 'in_modify_load(' . $in['in_id'] . ',' . $ln_id . ')' ).'" style="margin:-2px -8px 0 0; width:40px;" href="#loadmodify-' . $in['in_id'] . '-' . $ln_id . '" data-toggle="tooltip" title="Intent completion cost. Click to modify intent'.( $level>1 ? ' and link' : '' ).'" data-placement="top"><span class="btn-counter slim-time t_estimate_' . $in['in_id'] . '" intent-usd="'.$in['in_dollar_cost'].'" tree-max-seconds="' . $in__tree_max_seconds . '" intent-seconds="' . $in['in_seconds_cost'] . '">'.( $in__tree_max_seconds > 0 ? echo_time_hours($in__tree_max_seconds , true) : 0 ).'</span><i class="fas fa-cog"></i></a> &nbsp;';
 
 
     //Intent Links:
-    $count_in_trs = $CI->Database_model->tr_fetch(array(
-        '(tr_parent_intent_id=' . $in['in_id'] . ' OR tr_child_intent_id=' . $in['in_id'] . ($tr_id > 0 ? ' OR tr_parent_link_id=' . $tr_id : '') . ')' => null,
-    ), array(), 0, 0, array(), 'COUNT(tr_id) as totals');
+    $count_in_trs = $CI->Database_model->ln_fetch(array(
+        '(ln_parent_intent_id=' . $in['in_id'] . ' OR ln_child_intent_id=' . $in['in_id'] . ($ln_id > 0 ? ' OR ln_parent_link_id=' . $ln_id : '') . ')' => null,
+    ), array(), 0, 0, array(), 'COUNT(ln_id) as totals');
     //Show link to load these links:
-    $ui .= '<a href="/links?any_in_id=' . $in['in_id'] . '&tr_parent_link_id=' . $tr_id . '" class="badge badge-primary ' . echo_advance() . ' is_not_bg" style="width:40px; margin:-3px 0px 0 4px; border:2px solid #fedd16 !important;" data-toggle="tooltip" data-placement="top" title="Go to Links"><span class="btn-counter">' . echo_number($count_in_trs[0]['totals']) . '</span><i class="fas fa-link rotate90"></i></a>';
+    $ui .= '<a href="/links?any_in_id=' . $in['in_id'] . '&ln_parent_link_id=' . $ln_id . '" class="badge badge-primary ' . echo_advance() . ' is_not_bg" style="width:40px; margin:-3px 0px 0 4px; border:2px solid #fedd16 !important;" data-toggle="tooltip" data-placement="top" title="Go to Links"><span class="btn-counter">' . echo_number($count_in_trs[0]['totals']) . '</span><i class="fas fa-link rotate90"></i></a>';
 
     $tree_count = null;
     if(isset($in_metadata['in__tree_in_active_count'])){
@@ -1632,16 +1632,16 @@ function echo_in($in, $level, $in_parent_id = 0, $is_parent = false)
 
         //Fetch children if parent, since there are no children fetched:
         if(!isset($in['in__grandchildren'])){
-            $in['in__grandchildren'] = $CI->Database_model->tr_fetch(array(
-                'tr_status >=' => 0, //New+
+            $in['in__grandchildren'] = $CI->Database_model->ln_fetch(array(
+                'ln_status >=' => 0, //New+
                 'in_status >=' => 0, //New+
-                'tr_type_entity_id IN (' . join(',', $CI->config->item('en_ids_4486')) . ')' => null, //Intent Link Connectors
-                'tr_parent_intent_id' => $in['in_id'],
-            ), array('in_child'), 0, 0, array('tr_order' => 'ASC')); //Child intents must be ordered
+                'ln_type_entity_id IN (' . join(',', $CI->config->item('en_ids_4486')) . ')' => null, //Intent Link Connectors
+                'ln_parent_intent_id' => $in['in_id'],
+            ), array('in_child'), 0, 0, array('ln_order' => 'ASC')); //Child intents must be ordered
         }
 
 
-        $ui .= '<div id="list-cr-' . $tr_id . '" class="list-group step-group cr-class-' . $tr_id . ' hidden" intent-id="' . $in['in_id'] . '">';
+        $ui .= '<div id="list-cr-' . $ln_id . '" class="list-group step-group cr-class-' . $ln_id . ' hidden" intent-id="' . $in['in_id'] . '">';
         //This line enables the in-between list moves to happen for empty lists:
         $ui .= '<div class="is_level3_sortable dropin-box" style="height:1px;">&nbsp;</div>';
 
@@ -1653,8 +1653,8 @@ function echo_in($in, $level, $in_parent_id = 0, $is_parent = false)
         }
 
 
-        $ui .= '<div class="list-group-item list_input new-in3-input cr-class-' . $tr_id . ' hidden">
-                <div class="form-group is-empty"  style="margin: 0; padding: 0;"><form action="#" onsubmit="in_link_or_create(' . $in['in_id'] . ',3);" intent-id="' . $in['in_id'] . '"><input type="text" class="form-control autosearch intentadder-id-'.$in['in_id'].' algolia_search" maxlength="' . $CI->config->item('in_outcome_max') . '" id="addintent-cr-' . $tr_id . '" intent-id="' . $in['in_id'] . '" placeholder="Add #Intent"></form></div>
+        $ui .= '<div class="list-group-item list_input new-in3-input cr-class-' . $ln_id . ' hidden">
+                <div class="form-group is-empty"  style="margin: 0; padding: 0;"><form action="#" onsubmit="in_link_or_create(' . $in['in_id'] . ',3);" intent-id="' . $in['in_id'] . '"><input type="text" class="form-control autosearch intentadder-id-'.$in['in_id'].' algolia_search" maxlength="' . $CI->config->item('in_outcome_max') . '" id="addintent-cr-' . $ln_id . '" intent-id="' . $in['in_id'] . '" placeholder="Add #Intent"></form></div>
         </div>';
 
         $ui .= '<div class="algolia_search_pad in_pad_'.$in['in_id'].' hidden"><span>Search existing intents or create a new one...</span></div>';
@@ -1692,11 +1692,11 @@ function echo_en($en, $level, $is_parent = false)
     $CI =& get_instance();
     $session_en = $CI->session->userdata('user');
     $fixed_fields = $CI->config->item('fixed_fields');
-    $tr_id = (isset($en['tr_id']) ? $en['tr_id'] : 0);
+    $ln_id = (isset($en['ln_id']) ? $en['ln_id'] : 0);
     $ui = null;
 
 
-    $ui .= '<div entity-id="' . $en['en_id'] . '" entity-status="' . $en['en_status'] . '" tr-id="'.$tr_id.'" tr-status="'.( $tr_id > 0 ? $en['tr_status'] : 0 ).'" is-parent="' . ($is_parent ? 1 : 0) . '" class="list-group-item en-item en___' . $en['en_id'] . ' ' . ($level <= 1 ? 'top_entity' : 'tr_' . $en['tr_id']) . ( $is_parent ? ' parent-entity ' : '' ) . '">';
+    $ui .= '<div entity-id="' . $en['en_id'] . '" entity-status="' . $en['en_status'] . '" tr-id="'.$ln_id.'" tr-status="'.( $ln_id > 0 ? $en['ln_status'] : 0 ).'" is-parent="' . ($is_parent ? 1 : 0) . '" class="list-group-item en-item en___' . $en['en_id'] . ' ' . ($level <= 1 ? 'top_entity' : 'tr_' . $en['ln_id']) . ( $is_parent ? ' parent-entity ' : '' ) . '">';
 
 
 
@@ -1711,7 +1711,7 @@ function echo_en($en, $level, $is_parent = false)
 
     //Hidden fields to store dynamic value for on-demand JS modifications:
     //Show Link Status if Available:
-    if ($tr_id > 0) {
+    if ($ln_id > 0) {
 
         //Link Type Full List:
         $en_all_4593 = $CI->config->item('en_all_4593');
@@ -1720,10 +1720,10 @@ function echo_en($en, $level, $is_parent = false)
         $ui .= '<span class="double-icon" style="margin-right:7px;">';
 
         //Show larger icon for link type (auto detected based on link content):
-        $ui .= '<span class="icon-main tr_type_' . $tr_id . '"><span data-toggle="tooltip" data-placement="right" title="'.$en_all_4593[$en['tr_type_entity_id']]['m_name'].'">' . $en_all_4593[$en['tr_type_entity_id']]['m_icon'] . '</span></span> ';
+        $ui .= '<span class="icon-main tr_type_' . $ln_id . '"><span data-toggle="tooltip" data-placement="right" title="'.$en_all_4593[$en['ln_type_entity_id']]['m_name'].'">' . $en_all_4593[$en['ln_type_entity_id']]['m_icon'] . '</span></span> ';
 
         //Show smaller link status icon:
-        $ui .= '<span class="icon-top-right tr_status_' . $tr_id . '"><span data-toggle="tooltip" data-placement="right" title="'.$fixed_fields['tr_status'][$en['tr_status']]['s_name'].': '.$fixed_fields['tr_status'][$en['tr_status']]['s_desc'].'">' . $fixed_fields['tr_status'][$en['tr_status']]['s_icon'] . '</span></span>';
+        $ui .= '<span class="icon-top-right ln_status_' . $ln_id . '"><span data-toggle="tooltip" data-placement="right" title="'.$fixed_fields['ln_status'][$en['ln_status']]['s_name'].': '.$fixed_fields['ln_status'][$en['ln_status']]['s_desc'].'">' . $fixed_fields['ln_status'][$en['ln_status']]['s_icon'] . '</span></span>';
 
         $ui .= '</span>';
 
@@ -1771,18 +1771,18 @@ function echo_en($en, $level, $is_parent = false)
 
 
     //Does this entity also include a link?
-    if ($tr_id > 0) {
+    if ($ln_id > 0) {
 
         //Show link content:
-        $tr_content = echo_tr_urls($en['tr_content'] , $en['tr_type_entity_id']);
+        $ln_content = echo_tr_urls($en['ln_content'] , $en['ln_type_entity_id']);
 
         //Is this Entity link an Embeddable URL type or not?
-        $ui .= ' <span class="tr_content tr_content_' . $tr_id . '" style="min-width:240px; line-height: 140%; display:inline-block;">';
-        $ui .= $tr_content;
+        $ui .= ' <span class="ln_content ln_content_' . $ln_id . '" style="min-width:240px; line-height: 140%; display:inline-block;">';
+        $ui .= $ln_content;
         $ui .= '</span>';
 
         //This is for JS editing:
-        $ui .= '<span class="tr_content_val_' . $tr_id . ' hidden">' . $en['tr_content'] . '</span>';
+        $ui .= '<span class="ln_content_val_' . $ln_id . ' hidden">' . $en['ln_content'] . '</span>';
 
     }
 
@@ -1797,10 +1797,10 @@ function echo_en($en, $level, $is_parent = false)
     //Do we have entity parents loaded in our data-set? If not, load it:
     if (!isset($en['en__parents'])) {
         //Fetch parents at this point:
-        $en['en__parents'] = $CI->Database_model->tr_fetch(array(
-            'tr_type_entity_id IN (' . join(',', $CI->config->item('en_ids_4592')) . ')' => null, //Entity Link Connectors
-            'tr_child_entity_id' => $en['en_id'], //This child entity
-            'tr_status >=' => 0, //New+
+        $en['en__parents'] = $CI->Database_model->ln_fetch(array(
+            'ln_type_entity_id IN (' . join(',', $CI->config->item('en_ids_4592')) . ')' => null, //Entity Link Connectors
+            'ln_child_entity_id' => $en['en_id'], //This child entity
+            'ln_status >=' => 0, //New+
             'en_status >=' => 0, //New+
         ), array('en_parent'), 0, 0, array('en_trust_score' => 'DESC'));
     }
@@ -1808,7 +1808,7 @@ function echo_en($en, $level, $is_parent = false)
     //Loop through parents and only show those that have en_icon set:
     $ui .= '<span class="' . echo_advance() . '">';
     foreach ($en['en__parents'] as $en_parent) {
-        $ui .= ' &nbsp;<a href="/entities/' . $en_parent['en_id'] . '" data-toggle="tooltip" title="' . $en_parent['en_name'] . (strlen($en_parent['tr_content']) > 0 ? ' = ' . $en_parent['tr_content'] : '') . '" data-placement="top" class="parent-icon en_child_icon_' . $en_parent['en_id'] . '">' . (strlen($en_parent['en_icon']) > 0 ? $en_parent['en_icon'] : '<i class="fas fa-at grey-at"></i>' ) . '</a>';
+        $ui .= ' &nbsp;<a href="/entities/' . $en_parent['en_id'] . '" data-toggle="tooltip" title="' . $en_parent['en_name'] . (strlen($en_parent['ln_content']) > 0 ? ' = ' . $en_parent['ln_content'] : '') . '" data-placement="top" class="parent-icon en_child_icon_' . $en_parent['en_id'] . '">' . (strlen($en_parent['en_icon']) > 0 ? $en_parent['en_icon'] : '<i class="fas fa-at grey-at"></i>' ) . '</a>';
     }
     $ui .= '</span>';
 
@@ -1826,29 +1826,29 @@ function echo_en($en, $level, $is_parent = false)
 
 
     //Count & Display active Intent Notes that this entity has been referenced within:
-    $messages = $CI->Database_model->tr_fetch(array(
-        'tr_status >=' => 0, //New+
-        'tr_type_entity_id IN (' . join(',', $CI->config->item('en_ids_4485')) . ')' => null, //All Intent Notes
-        'tr_parent_entity_id' => $en['en_id'], //Entity Referenced in message content
-    ), array(), 0, 0, array(), 'COUNT(tr_id) AS total_messages');
+    $messages = $CI->Database_model->ln_fetch(array(
+        'ln_status >=' => 0, //New+
+        'ln_type_entity_id IN (' . join(',', $CI->config->item('en_ids_4485')) . ')' => null, //All Intent Notes
+        'ln_parent_entity_id' => $en['en_id'], //Entity Referenced in message content
+    ), array(), 0, 0, array(), 'COUNT(ln_id) AS total_messages');
 
     //Only show in non-advance mode if we have messages:
-    $ui .= '<a class="badge badge-secondary white-secondary '.( $level==0 || $messages[0]['total_messages'] == 0 ? echo_advance() : '' ) . '" href="#entitymessages-' . $en['en_id'] . '" onclick="' . ( $messages[0]['total_messages'] == 0 ? 'alert(\'No Intent Notes found that reference this entity\')' : ( $level==0 ? 'alert(\'Cannot manage here. Go to the entity to manage.\')' : 'en_load_messages('.$en['en_id'].')' ) ) . '" style="width:40px; margin-left:5px;" data-toggle="tooltip" data-placement="top" title="Entity References within Intent Notes"><span class="btn-counter">' . $messages[0]['total_messages'] . '</span><i class="fas fa-comment-plus"></i></a>';
+    $ui .= '<a class="badge badge-secondary white-secondary '.( $level==0 || $messages[0]['total_messages'] == 0 ? echo_advance() : '' ) . '" href="#entitymessages-' . $en['en_id'] . '" onclick="' . ( $messages[0]['total_messages'] == 0 ? 'alert(\'No Intent Notes found that reference this entity\')' : ( $level==0 ? 'alert(\'Cannot manage here. Go to the entity to manage.\')' : 'en_load_messages('.$en['en_id'].')' ) ) . '" style="width:40px; margin-left:5px;" data-toggle="tooltip" data-placement="top" title="Entity References within Intent Notes"><span class="btn-counter">' . echo_number($messages[0]['total_messages']) . '</span><i class="fas fa-comment-plus"></i></a>';
 
 
 
     //Modify Entity:
-    $ui .= '<a href="#loadmodify-' . $en['en_id'] . '-' . $tr_id . '" onclick="'.( $level==0 ? 'alert(\'Cannot manage here. Go to the entity to manage.\')' : 'en_modify_load(' . $en['en_id'] . ',' . $tr_id . ')' ).'" class="badge badge-secondary white-secondary '.( $level==0 ? '' . echo_advance() . '' : '' ).'" style="margin:-2px -6px 0 2px; width:40px;" data-toggle="tooltip" data-placement="top" title="Entity trust score. Click to modify entity'.( $level>1 ? ' and link' : '' ).'"><span class="btn-counter ' . echo_advance() . '">'.echo_number($en['en_trust_score']).'</span><i class="fas fa-cog" style="width:28px; padding-right:7px; text-align:center;"></i></a> &nbsp;';
+    $ui .= '<a href="#loadmodify-' . $en['en_id'] . '-' . $ln_id . '" onclick="'.( $level==0 ? 'alert(\'Cannot manage here. Go to the entity to manage.\')' : 'en_modify_load(' . $en['en_id'] . ',' . $ln_id . ')' ).'" class="badge badge-secondary white-secondary '.( $level==0 ? '' . echo_advance() . '' : '' ).'" style="margin:-2px -6px 0 2px; width:40px;" data-toggle="tooltip" data-placement="top" title="Entity trust score. Click to modify entity'.( $level>1 ? ' and link' : '' ).'"><span class="btn-counter ' . echo_advance() . '">'.echo_number($en['en_trust_score']).'</span><i class="fas fa-cog" style="width:28px; padding-right:7px; text-align:center;"></i></a> &nbsp;';
 
 
 
     //Count & link to Entity links:
-    $count_in_trs = $CI->Database_model->tr_fetch(array(
-        '(tr_parent_entity_id=' . $en['en_id'] . ' OR  tr_child_entity_id=' . $en['en_id'] . ' OR  tr_miner_entity_id=' . $en['en_id'] . ($tr_id > 0 ? ' OR tr_parent_link_id=' . $tr_id : '') . ')' => null,
-    ), array(), 0, 0, array(), 'COUNT(tr_id) as totals');
+    $count_in_trs = $CI->Database_model->ln_fetch(array(
+        '(ln_parent_entity_id=' . $en['en_id'] . ' OR  ln_child_entity_id=' . $en['en_id'] . ' OR  ln_miner_entity_id=' . $en['en_id'] . ($ln_id > 0 ? ' OR ln_parent_link_id=' . $ln_id : '') . ')' => null,
+    ), array(), 0, 0, array(), 'COUNT(ln_id) as totals');
     if ($count_in_trs[0]['totals'] > 0) {
         //Show the link button:
-        $ui .= '<a href="/links?any_en_id=' . $en['en_id'] . '&tr_parent_link_id=' . $tr_id . '" class="badge badge-secondary ' . echo_advance() . '" style="width:40px; margin:-3px 2px 0 2px; border:2px solid #0084ff !important;" data-toggle="tooltip" data-placement="top" title="Go to Links"><span class="btn-counter">' . echo_number($count_in_trs[0]['totals']) . '</span><i class="fas fa-link rotate90"></i></a>';
+        $ui .= '<a href="/links?any_en_id=' . $en['en_id'] . '&ln_parent_link_id=' . $ln_id . '" class="badge badge-secondary ' . echo_advance() . '" style="width:40px; margin:-3px 2px 0 2px; border:2px solid #0084ff !important;" data-toggle="tooltip" data-placement="top" title="Go to Links"><span class="btn-counter">' . echo_number($count_in_trs[0]['totals']) . '</span><i class="fas fa-link rotate90"></i></a>';
     }
 
 
@@ -1862,10 +1862,10 @@ function echo_en($en, $level, $is_parent = false)
         $en['en__child_count'] = 0;
 
         //Do a child count:
-        $child_trs = $CI->Database_model->tr_fetch(array(
-            'tr_parent_entity_id' => $en['en_id'],
-            'tr_type_entity_id IN (' . join(',', $CI->config->item('en_ids_4592')) . ')' => null, //Entity Link Connectors
-            'tr_status >=' => 0, //New+
+        $child_trs = $CI->Database_model->ln_fetch(array(
+            'ln_parent_entity_id' => $en['en_id'],
+            'ln_type_entity_id IN (' . join(',', $CI->config->item('en_ids_4592')) . ')' => null, //Entity Link Connectors
+            'ln_status >=' => 0, //New+
             'en_status >=' => 0, //New+
         ), array('en_child'), 0, 0, array(), 'COUNT(en_id) as en__child_count');
 

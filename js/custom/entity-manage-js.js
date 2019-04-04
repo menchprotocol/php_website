@@ -104,8 +104,8 @@ $(document).ready(function () {
 
 
     //Lookout for intent link related changes:
-    $('#tr_status').change(function () {
-        if (parseInt($('#tr_status').find(":selected").val()) < 0) {
+    $('#ln_status').change(function () {
+        if (parseInt($('#ln_status').find(":selected").val()) < 0) {
             //About to delete? Notify them:
             $('.notify_unlink_en').removeClass('hidden');
         } else {
@@ -225,7 +225,7 @@ $(document).ready(function () {
 
 
     //Watchout for content change
-    var textInput = document.getElementById('tr_content');
+    var textInput = document.getElementById('ln_content');
 
     //Init a timeout variable to be used below
     var timeout = null;
@@ -234,7 +234,7 @@ $(document).ready(function () {
     textInput.onkeyup = function (e) {
 
         //Instantly update count:
-        tr_content_word_count('#tr_content','#chartr_contentNum');
+        ln_content_word_count('#ln_content','#charln_contentNum');
 
         // Clear the timeout if it has already been set.
         // This will prevent the previous step from executing
@@ -402,8 +402,8 @@ function en_tr_type_preview() {
 
     //Fetch Intent Data to load modify widget:
     $.post("/entities/en_tr_type_preview", {
-        tr_content: $('#tr_content').val(),
-        tr_id: parseInt($('#modifybox').attr('entity-link-id')),
+        ln_content: $('#ln_content').val(),
+        ln_id: parseInt($('#modifybox').attr('entity-link-id')),
     }, function (data) {
         //All good, let's load the data into the Modify Widget...
         $('#en_link_type_id').html((data.status ? data.html_ui : 'Error: ' + data.message));
@@ -421,7 +421,7 @@ function en_tr_type_preview() {
 
 
 
-function en_modify_load(en_id, tr_id) {
+function en_modify_load(en_id, ln_id) {
 
     //Make sure inputs are valid:
     if (!$('.en___' + en_id).length) {
@@ -430,7 +430,7 @@ function en_modify_load(en_id, tr_id) {
     }
 
     //Update variables:
-    $('#modifybox').attr('entity-link-id', tr_id);
+    $('#modifybox').attr('entity-link-id', ln_id);
     $('#modifybox').attr('entity-id', en_id);
 
     //Cannot be removed OR unlinked as this would not load, so remove them:
@@ -441,7 +441,7 @@ function en_modify_load(en_id, tr_id) {
     $('#en_name').val(en_full_name);
     $('.edit-header').html('<i class="fas fa-cog"></i> ' + en_full_name);
     $('#en_status').val($(".en___" + en_id + ":first").attr('entity-status'));
-    $('#tr_status').val($(".en___" + en_id + ":first").attr('tr-status'));
+    $('#ln_status').val($(".en___" + en_id + ":first").attr('tr-status'));
     $('.save_entity_changes').html('');
     $('.entity_remove_stats').html('');
     $('#en_link_count').val('0');
@@ -459,17 +459,17 @@ function en_modify_load(en_id, tr_id) {
     en_name_word_count();
 
     //Only show unlink button if not level 1
-    if (parseInt(tr_id) > 0) {
+    if (parseInt(ln_id) > 0) {
 
         //Make the UI link and the notes in the edit box:
         $('.unlink-entity, .en-has-tr').removeClass('hidden');
         $('.en-no-tr').addClass('hidden');
 
         //Assign value:
-        $('#tr_content').val($(".tr_content_val_" + tr_id + ":first").text());
+        $('#ln_content').val($(".ln_content_val_" + ln_id + ":first").text());
 
         //Update count:
-        tr_content_word_count('#tr_content','#chartr_contentNum');
+        ln_content_word_count('#ln_content','#charln_contentNum');
         //Also update type:
         en_tr_type_preview();
 
@@ -494,7 +494,7 @@ function en_modify_load(en_id, tr_id) {
 }
 
 function entity_link_form_lock(){
-    $('#tr_content').prop("disabled", true).css('background-color','#CCC');
+    $('#ln_content').prop("disabled", true).css('background-color','#CCC');
 
     $('.btn-save').addClass('grey').attr('href', '#').html('<i class="fas fa-spinner fa-spin"></i> Uploading');
 
@@ -508,7 +508,7 @@ function entity_link_form_unlock(result){
     }
 
     //Unlock either way:
-    $('#tr_content').prop("disabled", false).css('background-color','#FFF');
+    $('#ln_content').prop("disabled", false).css('background-color','#FFF');
 
     $('.btn-save').removeClass('grey').attr('href', 'javascript:en_modify_save();').html('Save');
 
@@ -527,7 +527,7 @@ function en_save_file_upload(droppedFiles, uploadType) {
         return false;
     }
 
-    var current_value = $('#tr_content').val();
+    var current_value = $('#ln_content').val();
     if(current_value.length > 0){
         //There is something in the input field, notify the user:
         var r = confirm("Current link content [" + current_value + "] will be removed. Continue?");
@@ -571,10 +571,10 @@ function en_save_file_upload(droppedFiles, uploadType) {
                 if(data.status){
 
                     //Add URL to input:
-                    $('#tr_content').val( data.new__url );
+                    $('#ln_content').val( data.new__url );
 
                     //Update count:
-                    tr_content_word_count('#tr_content','#chartr_contentNum');
+                    ln_content_word_count('#ln_content','#charln_contentNum');
                     //Also update type:
                     en_tr_type_preview();
                 }
@@ -628,9 +628,9 @@ function en_modify_save() {
         en_status: $('#en_status').val(), //The new status (might not have changed too)
         en_merge: $('#en_merge').val(),
         //Link data:
-        tr_id: parseInt($('#modifybox').attr('entity-link-id')),
-        tr_content: $('#tr_content').val(),
-        tr_status: $('#tr_status').val(),
+        ln_id: parseInt($('#modifybox').attr('entity-link-id')),
+        ln_content: $('#ln_content').val(),
+        ln_status: $('#ln_status').val(),
     };
 
     //Show spinner:
@@ -656,13 +656,13 @@ function en_modify_save() {
                     window.location.hash = '#';
 
                     //Remove from UI:
-                    $('.tr_' + modify_data['tr_id']).html('<span style="color:#2f2739;"><i class="fas fa-trash-alt"></i> Removed</span>').fadeOut();
+                    $('.tr_' + modify_data['ln_id']).html('<span style="color:#2f2739;"><i class="fas fa-trash-alt"></i> Removed</span>').fadeOut();
 
                     //Disappear in a while:
                     setTimeout(function () {
 
                         //Hide the editor & saving results:
-                        $('.tr_' + modify_data['tr_id']).remove();
+                        $('.tr_' + modify_data['ln_id']).remove();
 
                         //Hide editing box:
                         $('#modifybox').addClass('hidden');
@@ -699,23 +699,23 @@ function en_modify_save() {
 
 
                 //Did we have notes to update?
-                if (modify_data['tr_id'] > 0) {
+                if (modify_data['ln_id'] > 0) {
 
                     //Yes, update the notes:
-                    $(".tr_content_" + modify_data['tr_id']).html(data.tr_content);
-                    $(".tr_content_val_" + modify_data['tr_id']).text(data.tr_content_final);
+                    $(".ln_content_" + modify_data['ln_id']).html(data.ln_content);
+                    $(".ln_content_val_" + modify_data['ln_id']).text(data.ln_content_final);
 
                     //Did the content get modified? (Likely for a domain URL):
-                    if(!(data.tr_content_final==modify_data['tr_content'])){
-                        $("#tr_content").val(data.tr_content_final).hide().fadeIn('slow');
+                    if(!(data.ln_content_final==modify_data['ln_content'])){
+                        $("#ln_content").val(data.ln_content_final).hide().fadeIn('slow');
                     }
 
 
                     //Update 2x icons:
-                    $('.tr_type_' + modify_data['tr_id']).html('<span data-toggle="tooltip" data-placement="right" title="' + en_all_4592[data.js_tr_type_entity_id]["m_name"] + ': ' + en_all_4592[data.js_tr_type_entity_id]["m_desc"] + '">' + en_all_4592[data.js_tr_type_entity_id]["m_icon"] + '</span>');
+                    $('.tr_type_' + modify_data['ln_id']).html('<span data-toggle="tooltip" data-placement="right" title="' + en_all_4592[data.js_ln_type_entity_id]["m_name"] + ': ' + en_all_4592[data.js_ln_type_entity_id]["m_desc"] + '">' + en_all_4592[data.js_ln_type_entity_id]["m_icon"] + '</span>');
 
                     //Update status icon:
-                    $('.tr_status_' + modify_data['tr_id']).html('<span class="tr_status_val" data-toggle="tooltip" data-placement="right" title="' + object_js_statuses['tr_status'][modify_data['tr_status']]["s_name"] + ': ' + object_js_statuses['tr_status'][modify_data['tr_status']]["s_desc"] + '">' + object_js_statuses['tr_status'][modify_data['tr_status']]["s_icon"] + '</span>');
+                    $('.ln_status_' + modify_data['ln_id']).html('<span class="ln_status_val" data-toggle="tooltip" data-placement="right" title="' + object_js_statuses['ln_status'][modify_data['ln_status']]["s_name"] + ': ' + object_js_statuses['ln_status'][modify_data['ln_status']]["s_desc"] + '">' + object_js_statuses['ln_status'][modify_data['ln_status']]["s_icon"] + '</span>');
 
                 }
 

@@ -27,10 +27,10 @@ class Entities extends CI_Controller
          * */
 
         //First first all entities that have Cache in PHP Config @4527 as their parent:
-        $config_ens = $this->Database_model->tr_fetch(array(
-            'tr_status' => 2,
-            'tr_type_entity_id IN (' . join(',', $this->config->item('en_ids_4592')) . ')' => null, //Entity Link Connectors
-            'tr_parent_entity_id' => 4527,
+        $config_ens = $this->Database_model->ln_fetch(array(
+            'ln_status' => 2,
+            'ln_type_entity_id IN (' . join(',', $this->config->item('en_ids_4592')) . ')' => null, //Entity Link Connectors
+            'ln_parent_entity_id' => 4527,
         ), array('en_child'), 0);
 
         echo '//Generated '.date("Y-m-d H:i:s").' PST<br />';
@@ -38,12 +38,12 @@ class Entities extends CI_Controller
         foreach($config_ens as $en){
 
             //Now fetch all its children:
-            $children = $this->Database_model->tr_fetch(array(
-                'tr_status' => 2, //Published
+            $children = $this->Database_model->ln_fetch(array(
+                'ln_status' => 2, //Published
                 'en_status' => 2, //Published
-                'tr_parent_entity_id' => $en['tr_child_entity_id'],
-                'tr_type_entity_id IN (' . join(',', $this->config->item('en_ids_4592')) . ')' => null, //Entity Link Connectors
-            ), array('en_child'), 0, 0, array('tr_order' => 'ASC', 'en_id' => 'ASC'));
+                'ln_parent_entity_id' => $en['ln_child_entity_id'],
+                'ln_type_entity_id IN (' . join(',', $this->config->item('en_ids_4592')) . ')' => null, //Entity Link Connectors
+            ), array('en_child'), 0, 0, array('ln_order' => 'ASC', 'en_id' => 'ASC'));
 
 
             $child_ids = array();
@@ -52,22 +52,22 @@ class Entities extends CI_Controller
             }
 
             echo '<br />//'.$en['en_name'].':<br />';
-            echo '$config[\'en_ids_'.$en['tr_child_entity_id'].'\'] = array('.join(', ',$child_ids).');<br />';
-            echo '$config[\'en_all_'.$en['tr_child_entity_id'].'\'] = array(<br />';
+            echo '$config[\'en_ids_'.$en['ln_child_entity_id'].'\'] = array('.join(', ',$child_ids).');<br />';
+            echo '$config[\'en_all_'.$en['ln_child_entity_id'].'\'] = array(<br />';
             foreach($children as $child){
 
                 //Do we have an omit command?
-                if(substr_count($en['tr_content'], '&var_trimcache=') == 1){
-                    $child['en_name'] = trim(str_replace(one_two_explode('&var_trimcache=','',$en['tr_content']) , '', $child['en_name']));
+                if(substr_count($en['ln_content'], '&var_trimcache=') == 1){
+                    $child['en_name'] = trim(str_replace(one_two_explode('&var_trimcache=','',$en['ln_content']) , '', $child['en_name']));
                 }
 
                 //Fetch all parents for this child:
                 $child_parent_ids = array(); //To be populated soon
-                $child_parents = $this->Database_model->tr_fetch(array(
-                    'tr_status' => 2, //Published
+                $child_parents = $this->Database_model->ln_fetch(array(
+                    'ln_status' => 2, //Published
                     'en_status' => 2, //Published
-                    'tr_child_entity_id' => $child['en_id'],
-                    'tr_type_entity_id IN (' . join(',', $this->config->item('en_ids_4592')) . ')' => null, //Entity Link Connectors
+                    'ln_child_entity_id' => $child['en_id'],
+                    'ln_type_entity_id IN (' . join(',', $this->config->item('en_ids_4592')) . ')' => null, //Entity Link Connectors
                 ), array('en_parent'), 0);
                 foreach($child_parents as $cp_en){
                     array_push($child_parent_ids, $cp_en['en_id']);
@@ -77,7 +77,7 @@ class Entities extends CI_Controller
 
                 echo '&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;\'m_icon\' => \''.htmlentities($child['en_icon']).'\',<br />';
                 echo '&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;\'m_name\' => \''.$child['en_name'].'\',<br />';
-                echo '&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;\'m_desc\' => \''.str_replace('\'','\\\'',$child['tr_content']).'\',<br />';
+                echo '&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;\'m_desc\' => \''.str_replace('\'','\\\'',$child['ln_content']).'\',<br />';
                 echo '&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;\'m_parents\' => array('.join(', ',$child_parent_ids).'),<br />';
 
                 echo '&nbsp;&nbsp;&nbsp;&nbsp; ),<br />';
@@ -169,11 +169,11 @@ class Entities extends CI_Controller
 
             $new_order = ( $this->session->userdata('miner_session_count') + 1 );
             $this->session->set_userdata('miner_session_count', $new_order);
-            $this->Database_model->tr_create(array(
-                'tr_miner_entity_id' => $session_en['en_id'],
-                'tr_type_entity_id' => 4994, //Miner Opened Entity
-                'tr_child_entity_id' => $en_id,
-                'tr_order' => $new_order,
+            $this->Database_model->ln_create(array(
+                'ln_miner_entity_id' => $session_en['en_id'],
+                'ln_type_entity_id' => 4994, //Miner Opened Entity
+                'ln_child_entity_id' => $en_id,
+                'ln_order' => $new_order,
             ));
 
         }
@@ -213,7 +213,7 @@ class Entities extends CI_Controller
     function en_tr_type_preview()
     {
 
-        if (!isset($_POST['tr_content']) || !isset($_POST['tr_id'])) {
+        if (!isset($_POST['ln_content']) || !isset($_POST['ln_id'])) {
             return echo_json(array(
                 'status' => 0,
                 'message' => 'Missing inputs',
@@ -224,18 +224,18 @@ class Entities extends CI_Controller
         $en_all_4592 = $this->config->item('en_all_4592');
 
         //See what this is:
-        $detected_tr_type = detect_tr_type_entity_id($_POST['tr_content']);
+        $detected_tr_type = detect_ln_type_entity_id($_POST['ln_content']);
 
         if (!$detected_tr_type['status'] && isset($detected_tr_type['url_already_existed']) && $detected_tr_type['url_already_existed']) {
 
             //See if this is duplicate to either link:
-            $en_trs = $this->Database_model->tr_fetch(array(
-                'tr_id' => $_POST['tr_id'],
-                'tr_type_entity_id IN (' . join(',', $this->config->item('en_ids_4537')) . ')' => null, //Entity URL Links
+            $en_trs = $this->Database_model->ln_fetch(array(
+                'ln_id' => $_POST['ln_id'],
+                'ln_type_entity_id IN (' . join(',', $this->config->item('en_ids_4537')) . ')' => null, //Entity URL Links
             ));
 
             //Are they both different?
-            if (count($en_trs) < 1 || ($en_trs[0]['tr_parent_entity_id'] != $detected_tr_type['en_url']['en_id'] && $en_trs[0]['tr_child_entity_id'] != $detected_tr_type['en_url']['en_id'])) {
+            if (count($en_trs) < 1 || ($en_trs[0]['ln_parent_entity_id'] != $detected_tr_type['en_url']['en_id'] && $en_trs[0]['ln_child_entity_id'] != $detected_tr_type['en_url']['en_id'])) {
                 //return error:
                 return echo_json($detected_tr_type);
             }
@@ -243,8 +243,8 @@ class Entities extends CI_Controller
 
         return echo_json(array(
             'status' => 1,
-            'html_ui' => '<a href="/entities/' . $detected_tr_type['tr_type_entity_id'] . '" style="font-weight: bold;" data-toggle="tooltip" data-placement="top" title="' . $en_all_4592[$detected_tr_type['tr_type_entity_id']]['m_desc'] . '">' . $en_all_4592[$detected_tr_type['tr_type_entity_id']]['m_icon'] . ' ' . $en_all_4592[$detected_tr_type['tr_type_entity_id']]['m_name'] . '</a>',
-            'en_link_preview' => echo_url_type($_POST['tr_content'], $detected_tr_type['tr_type_entity_id']),
+            'html_ui' => '<a href="/entities/' . $detected_tr_type['ln_type_entity_id'] . '" style="font-weight: bold;" data-toggle="tooltip" data-placement="top" title="' . $en_all_4592[$detected_tr_type['ln_type_entity_id']]['m_desc'] . '">' . $en_all_4592[$detected_tr_type['ln_type_entity_id']]['m_icon'] . ' ' . $en_all_4592[$detected_tr_type['ln_type_entity_id']]['m_name'] . '</a>',
+            'en_link_preview' => echo_url_type($_POST['ln_content'], $detected_tr_type['ln_type_entity_id']),
         ));
     }
 
@@ -317,10 +317,10 @@ class Entities extends CI_Controller
         $page = intval($_POST['page']);
         $session_en = en_auth(array(1308));
         $filters = array(
-            'tr_parent_entity_id' => $parent_en_id,
-            'tr_type_entity_id IN (' . join(',', $this->config->item('en_ids_4592')) . ')' => null, //Entity Link Connectors
+            'ln_parent_entity_id' => $parent_en_id,
+            'ln_type_entity_id IN (' . join(',', $this->config->item('en_ids_4592')) . ')' => null, //Entity Link Connectors
             'en_status' . ($en_focus_filter < 0 ? ' >=' : '') => ($en_focus_filter < 0 ? 0 /* New+ */ : intval($en_focus_filter)), //Pending or Active
-            'tr_status >=' => 0, //New+
+            'ln_status >=' => 0, //New+
         );
 
         if (!$session_en) {
@@ -329,14 +329,14 @@ class Entities extends CI_Controller
         }
 
         //Fetch & display next batch of children, ordered by en_trust_score DESC which is aligned with other entity ordering:
-        $child_entities = $this->Database_model->tr_fetch($filters, array('en_child'), $en_per_page, ($page * $en_per_page), array('en_trust_score' => 'DESC'));
+        $child_entities = $this->Database_model->ln_fetch($filters, array('en_child'), $en_per_page, ($page * $en_per_page), array('en_trust_score' => 'DESC'));
 
         foreach ($child_entities as $en) {
             echo echo_en($en, 2, false);
         }
 
         //Count total children:
-        $child_entities_count = $this->Database_model->tr_fetch($filters, array('en_child'), 0, 0, array(), 'COUNT(tr_id) as totals');
+        $child_entities_count = $this->Database_model->ln_fetch($filters, array('en_child'), 0, 0, array(), 'COUNT(ln_id) as totals');
 
         //Do we need another load more button?
         if ($child_entities_count[0]['totals'] > (($page * $en_per_page) + count($child_entities))) {
@@ -468,41 +468,41 @@ class Entities extends CI_Controller
             //Add links only if not already added by the URL function:
             if ($_POST['is_parent']) {
 
-                $tr_child_entity_id = $current_us[0]['en_id'];
-                $tr_parent_entity_id = $entity_new['en_id'];
+                $ln_child_entity_id = $current_us[0]['en_id'];
+                $ln_parent_entity_id = $entity_new['en_id'];
 
             } else {
 
-                $tr_child_entity_id = $entity_new['en_id'];
-                $tr_parent_entity_id = $current_us[0]['en_id'];
+                $ln_child_entity_id = $entity_new['en_id'];
+                $ln_parent_entity_id = $current_us[0]['en_id'];
 
             }
 
 
             if (isset($url_entity['url_is_root']) && $url_entity['url_is_root']) {
 
-                $tr_type_entity_id = 4256; //Generic URL (Domains always are generic)
-                $tr_content = $url_entity['cleaned_url'];
+                $ln_type_entity_id = 4256; //Generic URL (Domains always are generic)
+                $ln_content = $url_entity['cleaned_url'];
 
             } elseif (isset($domain_entity['en_domain'])) {
 
-                $tr_type_entity_id = $url_entity['tr_type_entity_id'];
-                $tr_content = $url_entity['cleaned_url'];
+                $ln_type_entity_id = $url_entity['ln_type_entity_id'];
+                $ln_content = $url_entity['cleaned_url'];
 
             } else {
 
-                $tr_type_entity_id = 4230; //Raw
-                $tr_content = null;
+                $ln_type_entity_id = 4230; //Raw
+                $ln_content = null;
 
             }
 
             // Link to new OR existing entity:
-            $ur2 = $this->Database_model->tr_create(array(
-                'tr_miner_entity_id' => $session_en['en_id'],
-                'tr_type_entity_id' => $tr_type_entity_id,
-                'tr_content' => $tr_content,
-                'tr_child_entity_id' => $tr_child_entity_id,
-                'tr_parent_entity_id' => $tr_parent_entity_id,
+            $ur2 = $this->Database_model->ln_create(array(
+                'ln_miner_entity_id' => $session_en['en_id'],
+                'ln_type_entity_id' => $ln_type_entity_id,
+                'ln_content' => $ln_content,
+                'ln_child_entity_id' => $ln_child_entity_id,
+                'ln_parent_entity_id' => $ln_parent_entity_id,
             ));
         }
 
@@ -530,10 +530,10 @@ class Entities extends CI_Controller
         }
 
         //Simply counts the links for a given entity:
-        $all_en_links = $this->Database_model->tr_fetch(array(
-            'tr_status >=' => 0, //New+
-            'tr_type_entity_id IN (' . join(',', $this->config->item('en_ids_4592')) . ')' => null, //Entity Link Connectors
-            '(tr_child_entity_id = ' . $_POST['en_id'] . ' OR tr_parent_entity_id = ' . $_POST['en_id'] . ')' => null,
+        $all_en_links = $this->Database_model->ln_fetch(array(
+            'ln_status >=' => 0, //New+
+            'ln_type_entity_id IN (' . join(',', $this->config->item('en_ids_4592')) . ')' => null, //Entity Link Connectors
+            '(ln_child_entity_id = ' . $_POST['en_id'] . ' OR ln_parent_entity_id = ' . $_POST['en_id'] . ')' => null,
         ), array(), 999999);
 
         return echo_json(array(
@@ -549,7 +549,7 @@ class Entities extends CI_Controller
 
         //Auth user and check required variables:
         $session_en = en_auth(array(1308));
-        $tr_content_max_length = $this->config->item('tr_content_max_length');
+        $ln_content_max_length = $this->config->item('ln_content_max_length');
         $success_message = 'Saved'; //Default, might change based on what we do...
 
         //Fetch current data:
@@ -582,7 +582,7 @@ class Entities extends CI_Controller
                 'status' => 0,
                 'message' => 'Missing status',
             ));
-        } elseif (!isset($_POST['tr_id']) || !isset($_POST['tr_content']) || !isset($_POST['tr_status'])) {
+        } elseif (!isset($_POST['ln_id']) || !isset($_POST['ln_content']) || !isset($_POST['ln_status'])) {
             return echo_json(array(
                 'status' => 0,
                 'message' => 'Missing entity link data',
@@ -603,7 +603,7 @@ class Entities extends CI_Controller
         $tr_has_updated = false;
         $remove_from_ui = 0;
         $remove_redirect_url = null;
-        $js_tr_type_entity_id = 0; //Detect link type based on content
+        $js_ln_type_entity_id = 0; //Detect link type based on content
 
         //Prepare data to be updated:
         $en_update = array(
@@ -632,12 +632,12 @@ class Entities extends CI_Controller
 
 
             //Make sure entity is not referenced in key DB reference fields:
-            $en_miners = $this->Database_model->tr_fetch(array(
-                'tr_miner_entity_id' => $_POST['en_id'],
-            ), array(), 0, 0, array(), 'COUNT(tr_id) as totals');
-            $en_link_types = $this->Database_model->tr_fetch(array(
-                'tr_type_entity_id' => $_POST['en_id'],
-            ), array(), 0, 0, array(), 'COUNT(tr_id) as totals');
+            $en_miners = $this->Database_model->ln_fetch(array(
+                'ln_miner_entity_id' => $_POST['en_id'],
+            ), array(), 0, 0, array(), 'COUNT(ln_id) as totals');
+            $en_link_types = $this->Database_model->ln_fetch(array(
+                'ln_type_entity_id' => $_POST['en_id'],
+            ), array(), 0, 0, array(), 'COUNT(ln_id) as totals');
             $en_verbs = $this->Database_model->in_fetch(array(
                 'in_verb_entity_id' => $_POST['en_id'],
             ), array(), 0, 0, array(), 'COUNT(in_id) as totals');
@@ -676,12 +676,12 @@ class Entities extends CI_Controller
 
 
             //Count entity references in Intent Notes:
-            $messages = $this->Database_model->tr_fetch(array(
-                'tr_status >=' => 0, //New+
+            $messages = $this->Database_model->ln_fetch(array(
+                'ln_status >=' => 0, //New+
                 'in_status >=' => 0, //New+
-                'tr_type_entity_id IN (' . join(',', $this->config->item('en_ids_4485')) . ')' => null, //All Intent Notes
-                'tr_parent_entity_id' => $_POST['en_id'],
-            ), array('in_child'), 0, 0, array('tr_order' => 'ASC'));
+                'ln_type_entity_id IN (' . join(',', $this->config->item('en_ids_4485')) . ')' => null, //All Intent Notes
+                'ln_parent_entity_id' => $_POST['en_id'],
+            ), array('in_child'), 0, 0, array('ln_order' => 'ASC'));
 
             //Assume no merge:
             $merged_ens = array();
@@ -739,7 +739,7 @@ class Entities extends CI_Controller
             }
 
             //Remove/merge entity links:
-            $_POST['tr_id'] = 0; //Do not consider the link as the entity is being Removed
+            $_POST['ln_id'] = 0; //Do not consider the link as the entity is being Removed
             $remove_from_ui = 1; //Removing entity
             $merger_en_id = (count($merged_ens) > 0 ? $merged_ens[0]['en_id'] : 0);
             $links_adjusted = $this->Matrix_model->en_unlink($_POST['en_id'], $session_en['en_id'], $merger_en_id);
@@ -769,12 +769,12 @@ class Entities extends CI_Controller
         }
 
 
-        if (intval($_POST['tr_id']) > 0) { //DO we have a link to update?
+        if (intval($_POST['ln_id']) > 0) { //DO we have a link to update?
 
             //Yes, first validate entity link:
-            $en_trs = $this->Database_model->tr_fetch(array(
-                'tr_id' => $_POST['tr_id'],
-                'tr_status >=' => 0, //New+
+            $en_trs = $this->Database_model->ln_fetch(array(
+                'ln_id' => $_POST['ln_id'],
+                'ln_status >=' => 0, //New+
             ));
 
             if (count($en_trs) < 1) {
@@ -784,31 +784,31 @@ class Entities extends CI_Controller
                 ));
             }
 
-            if ($en_trs[0]['tr_content'] == $_POST['tr_content']) {
+            if ($en_trs[0]['ln_content'] == $_POST['ln_content']) {
 
                 //Link content has not changed:
-                $js_tr_type_entity_id = $en_trs[0]['tr_type_entity_id'];
-                $tr_content = $en_trs[0]['tr_content'];
+                $js_ln_type_entity_id = $en_trs[0]['ln_type_entity_id'];
+                $ln_content = $en_trs[0]['ln_content'];
 
             } else {
 
                 //Link content has changed:
-                $detected_tr_type = detect_tr_type_entity_id($_POST['tr_content']);
+                $detected_tr_type = detect_ln_type_entity_id($_POST['ln_content']);
 
                 if (!$detected_tr_type['status']) {
 
                     return echo_json($detected_tr_type);
 
-                } elseif (in_array($detected_tr_type['tr_type_entity_id'], $this->config->item('en_ids_4537'))) {
+                } elseif (in_array($detected_tr_type['ln_type_entity_id'], $this->config->item('en_ids_4537'))) {
 
                     //This is a URL, validate modification:
 
                     if ($detected_tr_type['url_is_root']) {
 
-                        if ($en_trs[0]['tr_parent_entity_id'] == 1326) {
+                        if ($en_trs[0]['ln_parent_entity_id'] == 1326) {
 
                             //Override with the clean domain for consistency:
-                            $_POST['tr_content'] = $detected_tr_type['url_clean_domain'];
+                            $_POST['ln_content'] = $detected_tr_type['url_clean_domain'];
 
                         } else {
 
@@ -822,7 +822,7 @@ class Entities extends CI_Controller
 
                     } else {
 
-                        if ($en_trs[0]['tr_parent_entity_id'] == 1326) {
+                        if ($en_trs[0]['ln_parent_entity_id'] == 1326) {
 
                             return echo_json(array(
                                 'status' => 0,
@@ -831,7 +831,7 @@ class Entities extends CI_Controller
 
                         } elseif ($detected_tr_type['en_domain']) {
                             //We do have the domain mapped! Is this connected to the domain entity as its parent?
-                            if ($detected_tr_type['en_domain']['en_id'] != $en_trs[0]['tr_parent_entity_id']) {
+                            if ($detected_tr_type['en_domain']['en_id'] != $en_trs[0]['ln_parent_entity_id']) {
                                 return echo_json(array(
                                     'status' => 0,
                                     'message' => 'Must link to <b>@' . $detected_tr_type['en_domain']['en_id'] . ' ' . $detected_tr_type['en_domain']['en_name'] . '</b> as their parent entity',
@@ -850,28 +850,28 @@ class Entities extends CI_Controller
                 }
 
                 //Update variables:
-                $tr_content = $_POST['tr_content'];
-                $js_tr_type_entity_id = $detected_tr_type['tr_type_entity_id'];
+                $ln_content = $_POST['ln_content'];
+                $js_ln_type_entity_id = $detected_tr_type['ln_type_entity_id'];
             }
 
 
             //Has the link content changes?
-            if (!($en_trs[0]['tr_content'] == $_POST['tr_content']) || !($en_trs[0]['tr_status'] == $_POST['tr_status'])) {
+            if (!($en_trs[0]['ln_content'] == $_POST['ln_content']) || !($en_trs[0]['ln_status'] == $_POST['ln_status'])) {
 
-                if ($_POST['tr_status'] < 0) {
+                if ($_POST['ln_status'] < 0) {
                     $remove_from_ui = 1;
                 }
 
                 $tr_has_updated = true;
 
                 //Something has changed, log this:
-                $this->Database_model->tr_update($_POST['tr_id'], array(
-                    'tr_content' => $tr_content,
-                    'tr_type_entity_id' => $js_tr_type_entity_id,
-                    'tr_status' => intval($_POST['tr_status']),
+                $this->Database_model->ln_update($_POST['ln_id'], array(
+                    'ln_content' => $ln_content,
+                    'ln_type_entity_id' => $js_ln_type_entity_id,
+                    'ln_status' => intval($_POST['ln_status']),
                     //Auto append timestamp and most recent miner:
-                    'tr_miner_entity_id' => $session_en['en_id'],
-                    'tr_timestamp' => date("Y-m-d H:i:s"),
+                    'ln_miner_entity_id' => $session_en['en_id'],
+                    'ln_timestamp' => date("Y-m-d H:i:s"),
                 ), $session_en['en_id']);
 
             }
@@ -904,19 +904,19 @@ class Entities extends CI_Controller
             'message' => '<i class="fas fa-check"></i> ' . $success_message,
             'remove_from_ui' => $remove_from_ui,
             'remove_redirect_url' => $remove_redirect_url,
-            'js_tr_type_entity_id' => intval($js_tr_type_entity_id),
+            'js_ln_type_entity_id' => intval($js_ln_type_entity_id),
         );
 
-        if (intval($_POST['tr_id']) > 0) {
+        if (intval($_POST['ln_id']) > 0) {
 
             //Fetch entity link:
-            $trs = $this->Database_model->tr_fetch(array(
-                'tr_id' => $_POST['tr_id'],
+            $trs = $this->Database_model->ln_fetch(array(
+                'ln_id' => $_POST['ln_id'],
             ), array('en_miner'));
 
             //Prep last updated:
-            $return_array['tr_content'] = echo_tr_urls($tr_content, $js_tr_type_entity_id);
-            $return_array['tr_content_final'] = $tr_content; //In case content was updated
+            $return_array['ln_content'] = echo_tr_urls($ln_content, $js_ln_type_entity_id);
+            $return_array['ln_content_final'] = $ln_content; //In case content was updated
 
         }
 
@@ -935,11 +935,11 @@ class Entities extends CI_Controller
             die('<span style="color:#FF0000;">Error: Invalid Session. Sign In again to continue.</span>');
         }
 
-        $messages = $this->Database_model->tr_fetch(array(
-            'tr_status >=' => 0, //New+
-            'tr_type_entity_id IN (' . join(',', $this->config->item('en_ids_4485')) . ')' => null, //All Intent Notes
-            'tr_parent_entity_id' => $en_id,
-        ), array('in_child'), 0, 0, array('tr_order' => 'ASC'));
+        $messages = $this->Database_model->ln_fetch(array(
+            'ln_status >=' => 0, //New+
+            'ln_type_entity_id IN (' . join(',', $this->config->item('en_ids_4485')) . ')' => null, //All Intent Notes
+            'ln_parent_entity_id' => $en_id,
+        ), array('in_child'), 0, 0, array('ln_order' => 'ASC'));
 
 
         //Always skip header:
@@ -986,9 +986,9 @@ class Entities extends CI_Controller
         }
 
         //Validate user email:
-        $trs = $this->Database_model->tr_fetch(array(
-            'tr_parent_entity_id' => 3288, //Primary email
-            'LOWER(tr_content)' => strtolower($_POST['input_email']),
+        $trs = $this->Database_model->ln_fetch(array(
+            'ln_parent_entity_id' => 3288, //Primary email
+            'LOWER(ln_content)' => strtolower($_POST['input_email']),
         ));
 
         if (count($trs) == 0) {
@@ -998,30 +998,30 @@ class Entities extends CI_Controller
 
         //Fetch full entity data with their active Action Plans:
         $ens = $this->Database_model->en_fetch(array(
-            'en_id' => $trs[0]['tr_child_entity_id'],
+            'en_id' => $trs[0]['ln_child_entity_id'],
         ));
 
-        if ($ens[0]['en_status'] < 0 || $trs[0]['tr_status'] < 0) {
+        if ($ens[0]['en_status'] < 0 || $trs[0]['ln_status'] < 0) {
 
             return redirect_message('/login', '<div class="alert alert-danger" role="alert">Error: Your account has been de-activated. Contact us to re-active your account.</div>');
 
         }
 
         //Authenticate their password:
-        $login_passwords = $this->Database_model->tr_fetch(array(
-            'tr_parent_entity_id' => 3286, //Mench Sign In Password
-            'tr_child_entity_id' => $ens[0]['en_id'],
+        $login_passwords = $this->Database_model->ln_fetch(array(
+            'ln_parent_entity_id' => 3286, //Mench Sign In Password
+            'ln_child_entity_id' => $ens[0]['en_id'],
         ), array(), 1 /* get the top status */, 0, array(
             //Order by highest status:
-            'tr_status' => 'DESC',
+            'ln_status' => 'DESC',
         ));
         if (count($login_passwords) == 0) {
             //They do not have a password assigned yet!
             return redirect_message('/login', '<div class="alert alert-danger" role="alert">Error: An active login password has not been assigned to your account yet. You can assign a new password using the Forgot Password Button.</div>');
-        } elseif ($login_passwords[0]['tr_status'] < 2) {
+        } elseif ($login_passwords[0]['ln_status'] < 2) {
             //They do not have a password assigned yet!
-            return redirect_message('/login', '<div class="alert alert-danger" role="alert">Error: Password is not activated with status [' . $login_passwords[0]['tr_status'] . '].</div>');
-        } elseif (!(strtolower($login_passwords[0]['tr_content']) == strtolower(hash('sha256', $this->config->item('password_salt') . $_POST['input_password'])))) {
+            return redirect_message('/login', '<div class="alert alert-danger" role="alert">Error: Password is not activated with status [' . $login_passwords[0]['ln_status'] . '].</div>');
+        } elseif (!(strtolower($login_passwords[0]['ln_content']) == strtolower(hash('sha256', $this->config->item('password_salt') . $_POST['input_password'])))) {
             //Bad password
             return redirect_message('/login', '<div class="alert alert-danger" role="alert">Error: Incorrect password for [' . $_POST['input_email'] . ']</div>');
         }
@@ -1034,10 +1034,10 @@ class Entities extends CI_Controller
         }
 
         //Make sure Student is not unsubscribed:
-        if (count($this->Database_model->tr_fetch(array(
-                'tr_child_entity_id' => $ens[0]['en_id'],
-                'tr_parent_entity_id' => 4455, //Unsubscribed
-                'tr_status >=' => 0,
+        if (count($this->Database_model->ln_fetch(array(
+                'ln_child_entity_id' => $ens[0]['en_id'],
+                'ln_parent_entity_id' => 4455, //Unsubscribed
+                'ln_status >=' => 0,
             ))) > 0) {
             return redirect_message('/login', '<div class="alert alert-danger" role="alert">Error: You cannot login to the Matrix because you are unsubscribed from Mench. You can re-active your account by sending a message to Mench on Messenger.</div>');
         }
@@ -1053,16 +1053,16 @@ class Entities extends CI_Controller
         if (filter_array($ens[0]['en__parents'], 'en_id', 1308)) {
 
             //Check their advance mode status:
-            $last_advance_settings = $this->Database_model->tr_fetch(array(
-                'tr_miner_entity_id' => $ens[0]['en_id'],
-                'tr_type_entity_id' => 5007, //Toggled Advance Mode
-                'tr_status >=' => 0, //New+
-            ), array(), 1, 0, array('tr_id' => 'DESC'));
+            $last_advance_settings = $this->Database_model->ln_fetch(array(
+                'ln_miner_entity_id' => $ens[0]['en_id'],
+                'ln_type_entity_id' => 5007, //Toggled Advance Mode
+                'ln_status >=' => 0, //New+
+            ), array(), 1, 0, array('ln_id' => 'DESC'));
 
             //They have admin rights:
             $session_data['user'] = $ens[0];
             $session_data['miner_session_count'] = 0;
-            $session_data['advance_view_enabled'] = ( count($last_advance_settings) > 0 && substr_count($last_advance_settings[0]['tr_content'] , ' ON')==1 ? 1 : 0 );
+            $session_data['advance_view_enabled'] = ( count($last_advance_settings) > 0 && substr_count($last_advance_settings[0]['ln_content'] , ' ON')==1 ? 1 : 0 );
             $is_miner = true;
         }
 
@@ -1103,17 +1103,17 @@ class Entities extends CI_Controller
 
         //Log Sign In Link:
         if($is_miner){
-            $this->Database_model->tr_create(array(
-                'tr_miner_entity_id' => $ens[0]['en_id'],
-                'tr_metadata' => $ens[0],
-                'tr_type_entity_id' => 4269, //Miner Matrix Login
-                'tr_order' => $session_data['miner_session_count'], //First Action
+            $this->Database_model->ln_create(array(
+                'ln_miner_entity_id' => $ens[0]['en_id'],
+                'ln_metadata' => $ens[0],
+                'ln_type_entity_id' => 4269, //Miner Matrix Login
+                'ln_order' => $session_data['miner_session_count'], //First Action
             ));
         } else {
-            $this->Database_model->tr_create(array(
-                'tr_miner_entity_id' => $ens[0]['en_id'],
-                'tr_metadata' => $ens[0],
-                'tr_type_entity_id' => 4996, //Action Plan Web Login
+            $this->Database_model->ln_create(array(
+                'ln_miner_entity_id' => $ens[0]['en_id'],
+                'ln_metadata' => $ens[0],
+                'ln_type_entity_id' => 4996, //Action Plan Web Login
             ));
         }
 
@@ -1192,26 +1192,26 @@ class Entities extends CI_Controller
         } else {
 
             //Fetch their passwords to authenticate login:
-            $login_passwords = $this->Database_model->tr_fetch(array(
-                'tr_status' => 2, //Published
-                'tr_parent_entity_id' => 3286, //Mench Sign In Password
-                'tr_child_entity_id' => $_POST['en_id'], //For this user
+            $login_passwords = $this->Database_model->ln_fetch(array(
+                'ln_status' => 2, //Published
+                'ln_parent_entity_id' => 3286, //Mench Sign In Password
+                'ln_child_entity_id' => $_POST['en_id'], //For this user
             ));
 
             $new_password = hash('sha256', $this->config->item('password_salt') . $_POST['new_pass']);
 
             if (count($login_passwords) > 0) {
 
-                $detected_tr_type = detect_tr_type_entity_id($new_password);
+                $detected_tr_type = detect_ln_type_entity_id($new_password);
                 if (!$detected_tr_type['status']) {
                     echo '<div class="alert alert-danger"><i class="fas fa-exclamation-triangle"></i> Error: ' . $detected_tr_type['message'] . '</div>';
                 }
 
                 //Update existing password:
-                $this->Database_model->tr_update($login_passwords[0]['tr_id'], array(
-                    'tr_content' => $new_password,
-                    'tr_type_entity_id' => $detected_tr_type['tr_type_entity_id'],
-                ), $login_passwords[0]['tr_child_entity_id']);
+                $this->Database_model->ln_update($login_passwords[0]['ln_id'], array(
+                    'ln_content' => $new_password,
+                    'ln_type_entity_id' => $detected_tr_type['ln_type_entity_id'],
+                ), $login_passwords[0]['ln_child_entity_id']);
 
             } else {
                 //Create new password link:
@@ -1315,7 +1315,7 @@ class Entities extends CI_Controller
         //Validate Parent descriptions:
         foreach ($_POST['source_parent_ens'] as $this_parent_en) {
 
-            $detected_tr_type = detect_tr_type_entity_id($this_parent_en['this_parent_en_desc']);
+            $detected_tr_type = detect_ln_type_entity_id($this_parent_en['this_parent_en_desc']);
 
             if (!$detected_tr_type['status']) {
 
@@ -1324,7 +1324,7 @@ class Entities extends CI_Controller
                     'message' => $en_all_3000[$this_parent_en['this_parent_en_id']]['m_name'] . ' description error: ' . $detected_tr_type['message'],
                 ));
 
-            } elseif (!in_array($detected_tr_type['tr_type_entity_id'], $contributor_type_requirement)) {
+            } elseif (!in_array($detected_tr_type['ln_type_entity_id'], $contributor_type_requirement)) {
 
                 return echo_json(array(
                     'status' => 0,
@@ -1336,7 +1336,7 @@ class Entities extends CI_Controller
             //Add expert source type to parent source array:
             array_push($parent_ens, array(
                 'this_parent_en_id' => $this_parent_en['this_parent_en_id'],
-                'this_parent_en_type' => $detected_tr_type['tr_type_entity_id'],
+                'this_parent_en_type' => $detected_tr_type['ln_type_entity_id'],
                 'this_parent_en_desc' => trim($this_parent_en['this_parent_en_desc']),
             ));
 
@@ -1353,7 +1353,7 @@ class Entities extends CI_Controller
             }
 
             //Validate role information:
-            $detected_role_tr_type = detect_tr_type_entity_id($_POST['auth_role_' . $contributor_num]);
+            $detected_role_tr_type = detect_ln_type_entity_id($_POST['auth_role_' . $contributor_num]);
 
             if (!$detected_role_tr_type['status']) {
 
@@ -1362,7 +1362,7 @@ class Entities extends CI_Controller
                     'message' => 'Contributor #' . $contributor_num . ' role error: ' . $detected_role_tr_type['message'],
                 ));
 
-            } elseif (!in_array($detected_role_tr_type['tr_type_entity_id'], $contributor_type_requirement)) {
+            } elseif (!in_array($detected_role_tr_type['ln_type_entity_id'], $contributor_type_requirement)) {
 
                 return echo_json(array(
                     'status' => 0,
@@ -1392,11 +1392,11 @@ class Entities extends CI_Controller
                         'status' => 0,
                         'message' => 'Contributor #' . $contributor_num . ' entity ID @' . $tr_en_link_id . ' is invalid',
                     ));
-                } elseif(count($this->Database_model->tr_fetch(array( //Make sure this entity is linked to industry experts:
-                        'tr_type_entity_id IN (' . join(',', $this->config->item('en_ids_4592')) . ')' => null, //Entity Link Connectors
-                        'tr_parent_entity_id' => 3084, //Industry Experts
-                        'tr_child_entity_id' => $referenced_ens[0]['en_id'],
-                        'tr_status >=' => 0, //New+
+                } elseif(count($this->Database_model->ln_fetch(array( //Make sure this entity is linked to industry experts:
+                        'ln_type_entity_id IN (' . join(',', $this->config->item('en_ids_4592')) . ')' => null, //Entity Link Connectors
+                        'ln_parent_entity_id' => 3084, //Industry Experts
+                        'ln_child_entity_id' => $referenced_ens[0]['en_id'],
+                        'ln_status >=' => 0, //New+
                     ))) == 0){
                     return echo_json(array(
                         'status' => 0,
@@ -1407,7 +1407,7 @@ class Entities extends CI_Controller
                 //Add contributor to parent source array:
                 array_push($parent_ens, array(
                     'this_parent_en_id' => $tr_en_link_id,
-                    'this_parent_en_type' => $detected_role_tr_type['tr_type_entity_id'],
+                    'this_parent_en_type' => $detected_role_tr_type['ln_type_entity_id'],
                     'this_parent_en_desc' => trim($_POST['auth_role_' . $contributor_num]),
                 ));
 
@@ -1445,7 +1445,7 @@ class Entities extends CI_Controller
                 }
 
                 //Validate Expert summary notes:
-                $detected_tr_type = detect_tr_type_entity_id($_POST['why_expert_' . $contributor_num]);
+                $detected_tr_type = detect_ln_type_entity_id($_POST['why_expert_' . $contributor_num]);
 
                 if (!$detected_tr_type['status']) {
 
@@ -1454,7 +1454,7 @@ class Entities extends CI_Controller
                         'message' => 'Contributor #' . $contributor_num . ' error: ' . $detected_tr_type['message'],
                     ));
 
-                } elseif (!in_array($detected_tr_type['tr_type_entity_id'], $contributor_type_requirement)) {
+                } elseif (!in_array($detected_tr_type['ln_type_entity_id'], $contributor_type_requirement)) {
 
                     return echo_json(array(
                         'status' => 0,
@@ -1468,32 +1468,32 @@ class Entities extends CI_Controller
 
 
                 //Add contributor to People or Organizations entity:
-                $this->Database_model->tr_create(array(
-                    'tr_status' => 2, //Published
-                    'tr_miner_entity_id' => $session_en['en_id'],
-                    'tr_type_entity_id' => 4230, //Raw
-                    'tr_parent_entity_id' => $_POST['entity_parent_id_' . $contributor_num], //People or Organizations
-                    'tr_child_entity_id' => $sync_contributor['en_url']['en_id'],
+                $this->Database_model->ln_create(array(
+                    'ln_status' => 2, //Published
+                    'ln_miner_entity_id' => $session_en['en_id'],
+                    'ln_type_entity_id' => 4230, //Raw
+                    'ln_parent_entity_id' => $_POST['entity_parent_id_' . $contributor_num], //People or Organizations
+                    'ln_child_entity_id' => $sync_contributor['en_url']['en_id'],
                 ), true);
 
 
                 //Should we also link contributor to to Industry Experts entity?
                 if (strlen($_POST['why_expert_' . $contributor_num]) > 0) {
                     //Add contributor to industry experts:
-                    $this->Database_model->tr_create(array(
-                        'tr_status' => 2, //Published
-                        'tr_miner_entity_id' => $session_en['en_id'],
-                        'tr_content' => trim($_POST['why_expert_' . $contributor_num]),
-                        'tr_type_entity_id' => $detected_tr_type['tr_type_entity_id'],
-                        'tr_parent_entity_id' => 3084, //Industry Experts
-                        'tr_child_entity_id' => $sync_contributor['en_url']['en_id'],
+                    $this->Database_model->ln_create(array(
+                        'ln_status' => 2, //Published
+                        'ln_miner_entity_id' => $session_en['en_id'],
+                        'ln_content' => trim($_POST['why_expert_' . $contributor_num]),
+                        'ln_type_entity_id' => $detected_tr_type['ln_type_entity_id'],
+                        'ln_parent_entity_id' => 3084, //Industry Experts
+                        'ln_child_entity_id' => $sync_contributor['en_url']['en_id'],
                     ), true);
                 }
 
                 //Add contributor to parent source array:
                 array_push($parent_ens, array(
                     'this_parent_en_id' => $sync_contributor['en_url']['en_id'],
-                    'this_parent_en_type' => $detected_role_tr_type['tr_type_entity_id'],
+                    'this_parent_en_type' => $detected_role_tr_type['ln_type_entity_id'],
                     'this_parent_en_desc' => trim($_POST['auth_role_' . $contributor_num]),
                 ));
 
@@ -1523,13 +1523,13 @@ class Entities extends CI_Controller
         //Link content to all parent entities:
         foreach ($parent_ens as $this_parent_en) {
             //Insert new relation:
-            $this->Database_model->tr_create(array(
-                'tr_status' => 2, //Published
-                'tr_miner_entity_id' => $session_en['en_id'],
-                'tr_child_entity_id' => $url_entity['en_url']['en_id'],
-                'tr_parent_entity_id' => $this_parent_en['this_parent_en_id'],
-                'tr_type_entity_id' => $this_parent_en['this_parent_en_type'],
-                'tr_content' => $this_parent_en['this_parent_en_desc'],
+            $this->Database_model->ln_create(array(
+                'ln_status' => 2, //Published
+                'ln_miner_entity_id' => $session_en['en_id'],
+                'ln_child_entity_id' => $url_entity['en_url']['en_id'],
+                'ln_parent_entity_id' => $this_parent_en['this_parent_en_id'],
+                'ln_type_entity_id' => $this_parent_en['this_parent_en_type'],
+                'ln_content' => $this_parent_en['this_parent_en_desc'],
             ), true);
         }
 
@@ -1578,32 +1578,32 @@ class Entities extends CI_Controller
             $score = 0;
 
             //Parents
-            $en_parents = $this->Database_model->tr_fetch(array(
-                'tr_child_entity_id' => $en['en_id'],
-                'tr_type_entity_id IN (' . join(',', $this->config->item('en_ids_4592')) . ')' => null, //Entity Link Connectors
-                'tr_status >=' => 0,
-            ), array(), 0, 0, array(), 'COUNT(tr_id) as totals');
+            $en_parents = $this->Database_model->ln_fetch(array(
+                'ln_child_entity_id' => $en['en_id'],
+                'ln_type_entity_id IN (' . join(',', $this->config->item('en_ids_4592')) . ')' => null, //Entity Link Connectors
+                'ln_status >=' => 0,
+            ), array(), 0, 0, array(), 'COUNT(ln_id) as totals');
             $score += $en_parents[0]['totals'] * $score_weights['score_parent'];
 
             //Children:
-            $en_children = $this->Database_model->tr_fetch(array(
-                'tr_parent_entity_id' => $en['en_id'],
-                'tr_type_entity_id IN (' . join(',', $this->config->item('en_ids_4592')) . ')' => null, //Entity Link Connectors
-                'tr_status >=' => 0,
-            ), array(), 0, 0, array(), 'COUNT(tr_id) as totals');
+            $en_children = $this->Database_model->ln_fetch(array(
+                'ln_parent_entity_id' => $en['en_id'],
+                'ln_type_entity_id IN (' . join(',', $this->config->item('en_ids_4592')) . ')' => null, //Entity Link Connectors
+                'ln_status >=' => 0,
+            ), array(), 0, 0, array(), 'COUNT(ln_id) as totals');
             $score += $en_children[0]['totals'] * $score_weights['score_children'];
 
             //Links:
-            $en_trs = $this->Database_model->tr_fetch(array(
-                '(tr_parent_entity_id='.$en['en_id'].' OR tr_child_entity_id='.$en['en_id'].')' => null,
-            ), array(), 0, 0, array(), 'COUNT(tr_id) as totals');
+            $en_trs = $this->Database_model->ln_fetch(array(
+                '(ln_parent_entity_id='.$en['en_id'].' OR ln_child_entity_id='.$en['en_id'].')' => null,
+            ), array(), 0, 0, array(), 'COUNT(ln_id) as totals');
             $score += $en_trs[0]['totals'] * $score_weights['score_link'];
 
             //Mining points:
-            $en_miner_points = $this->Database_model->tr_fetch(array(
-                'tr_miner_entity_id' => $en['en_id'],
-                'tr_status >=' => 0,
-            ), array(), 0, 0, array(), 'SUM(tr_points) as total_points');
+            $en_miner_points = $this->Database_model->ln_fetch(array(
+                'ln_miner_entity_id' => $en['en_id'],
+                'ln_status >=' => 0,
+            ), array(), 0, 0, array(), 'SUM(ln_points) as total_points');
             $score += $en_miner_points[0]['total_points'] * $score_weights['score_miner_points'];
 
             //Do we need to update?

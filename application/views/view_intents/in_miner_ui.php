@@ -258,7 +258,7 @@ $metadata = unserialize($in['in_metadata']);
                                     foreach ($this->config->item('en_all_4486') as $en_id => $m) {
                                         echo '<span class="radio" style="display:inline-block; margin-top: 0 !important;" data-toggle="tooltip" title="' . $m['m_desc'] . '" data-placement="top">
                                             <label class="underdot">
-                                                <input type="radio" id="tr_type_entity_id_' . $en_id . '" name="tr_type_entity_id" value="' . $en_id . '" />
+                                                <input type="radio" id="ln_type_entity_id_' . $en_id . '" name="ln_type_entity_id" value="' . $en_id . '" />
                                                 '.$m['m_icon'].' ' . $m['m_name'] . '
                                             </label>
                                         </span>';
@@ -298,9 +298,9 @@ $metadata = unserialize($in['in_metadata']);
 
 
                                 <span class="mini-header">Link Status:</span>
-                                <select class="form-control border" data-toggle="tooltip" title="Link Status" data-placement="top" id="tr_status" style="display: inline-block !important;">
+                                <select class="form-control border" data-toggle="tooltip" title="Link Status" data-placement="top" id="ln_status" style="display: inline-block !important;">
                                     <?php
-                                    foreach (echo_fixed_fields('tr_status') as $status_id => $status) {
+                                    foreach (echo_fixed_fields('ln_status') as $status_id => $status) {
                                         if($status_id < 3){ //No need to verify intent links!
                                             echo '<option value="' . $status_id . '" title="' . $status['s_desc'] . '">' . $status['s_name'] . '</option>';
                                         }

@@ -37,17 +37,17 @@ class Intents extends CI_Controller
             ));
 
             //How many featured intents do we have?
-            $featured_ins = $this->Database_model->tr_fetch(array(
-                'tr_status' => 2, //Published
+            $featured_ins = $this->Database_model->ln_fetch(array(
+                'ln_status' => 2, //Published
                 'in_status' => 2, //Published
-                'tr_type_entity_id' => 4228, //Fixed Intent Links
-                'tr_parent_intent_id' => $this->config->item('in_featured'), //Feature Mench Intentions
-            ), array('in_child'), 0, 0, array('tr_order' => 'ASC'));
+                'ln_type_entity_id' => 4228, //Fixed Intent Links
+                'ln_parent_intent_id' => $this->config->item('in_featured'), //Feature Mench Intentions
+            ), array('in_child'), 0, 0, array('ln_order' => 'ASC'));
 
             if(count($home_ins)<1 && count($featured_ins) > 0){
 
                 //Go to the first featured intent:
-                redirect_message('/'.$featured_ins[0]['tr_child_intent_id']);
+                redirect_message('/'.$featured_ins[0]['ln_child_intent_id']);
 
             } elseif(count($home_ins) > 0){
 
@@ -141,11 +141,11 @@ class Intents extends CI_Controller
         //Update session count and log link:
         $new_order = ( $this->session->userdata('miner_session_count') + 1 );
         $this->session->set_userdata('miner_session_count', $new_order);
-        $this->Database_model->tr_create(array(
-            'tr_miner_entity_id' => $session_en['en_id'],
-            'tr_type_entity_id' => 4993, //Miner Opened Intent
-            'tr_child_intent_id' => $in_id,
-            'tr_order' => $new_order,
+        $this->Database_model->ln_create(array(
+            'ln_miner_entity_id' => $session_en['en_id'],
+            'ln_type_entity_id' => 4993, //Miner Opened Intent
+            'ln_child_intent_id' => $in_id,
+            'ln_order' => $new_order,
         ));
 
         //Load views:
@@ -222,10 +222,10 @@ class Intents extends CI_Controller
                 'status' => 0,
                 'message' => 'Invalid Session. Sign In again to Continue.',
             ));
-        } elseif (!isset($_POST['tr_id']) || intval($_POST['tr_id']) < 1) {
+        } elseif (!isset($_POST['ln_id']) || intval($_POST['ln_id']) < 1) {
             return echo_json(array(
                 'status' => 0,
-                'message' => 'Invalid tr_id',
+                'message' => 'Invalid ln_id',
             ));
         } elseif (!isset($_POST['in_id']) || intval($_POST['in_id']) < 1) {
             return echo_json(array(
@@ -279,8 +279,8 @@ class Intents extends CI_Controller
 
 
         //Make the move:
-        $this->Database_model->tr_update(intval($_POST['tr_id']), array(
-            'tr_parent_intent_id' => $to_in[0]['in_id'],
+        $this->Database_model->ln_update(intval($_POST['ln_id']), array(
+            'ln_parent_intent_id' => $to_in[0]['in_id'],
         ), $session_en['en_id']);
 
 
@@ -307,7 +307,7 @@ class Intents extends CI_Controller
 
         //Authenticate Miner:
         $session_en = en_auth(array(1308));
-        $tr_id = intval($_POST['tr_id']);
+        $ln_id = intval($_POST['ln_id']);
         $tr_in_link_id = 0; //If >0 means linked intent is being updated...
 
         //Validate intent:
@@ -325,7 +325,7 @@ class Intents extends CI_Controller
                 'status' => 0,
                 'message' => 'Invalid Intent ID',
             ));
-        } elseif (intval($_POST['level'])==1 && intval($_POST['tr_id'])>0) {
+        } elseif (intval($_POST['level'])==1 && intval($_POST['ln_id'])>0) {
             return echo_json(array(
                 'status' => 0,
                 'message' => 'Level 1 intent should not have a link',
@@ -400,7 +400,7 @@ class Intents extends CI_Controller
                 'status' => 0,
                 'message' => 'Intent Not Found',
             ));
-        } elseif($tr_id > 0 && intval($_POST['tr_type_entity_id']) == 4229){
+        } elseif($ln_id > 0 && intval($_POST['ln_type_entity_id']) == 4229){
             //Conditional links, we require range values:
             if(strlen($_POST['tr__conditional_score_min']) < 1 || !is_numeric($_POST['tr__conditional_score_min'])){
                 return echo_json(array(
@@ -536,7 +536,7 @@ class Intents extends CI_Controller
                         ));
 
                         //Treat as if no link (Since it was removed):
-                        $tr_id = 0;
+                        $ln_id = 0;
                     }
 
                     if(intval($_POST['apply_recursively'])){
@@ -578,13 +578,13 @@ class Intents extends CI_Controller
         $link_was_updated = false;
 
         //Does this request has an intent link?
-        if($tr_id > 0){
+        if($ln_id > 0){
 
             //Validate Link and inputs:
-            $trs = $this->Database_model->tr_fetch(array(
-                'tr_id' => $tr_id,
-                'tr_type_entity_id IN (' . join(',', $this->config->item('en_ids_4486')) . ')' => null, //Intent Link Connectors
-                'tr_status >=' => 0, //New+
+            $trs = $this->Database_model->ln_fetch(array(
+                'ln_id' => $ln_id,
+                'ln_type_entity_id IN (' . join(',', $this->config->item('en_ids_4486')) . ')' => null, //Intent Link Connectors
+                'ln_status >=' => 0, //New+
             ), array(( $_POST['is_parent'] ? 'in_child' : 'in_parent')));
             if(count($trs) < 1){
                 return echo_json(array(
@@ -594,9 +594,9 @@ class Intents extends CI_Controller
             }
 
             //Prep link Metadata to see if the conditional score variables have changed:
-            $tr_update = array(
-                'tr_type_entity_id'     => intval($_POST['tr_type_entity_id']),
-                'tr_status'         => intval($_POST['tr_status']),
+            $ln_update = array(
+                'ln_type_entity_id'     => intval($_POST['ln_type_entity_id']),
+                'ln_status'         => intval($_POST['ln_status']),
             );
 
 
@@ -610,7 +610,7 @@ class Intents extends CI_Controller
             if($tr_in_link_id > 0){
 
                 //Did we find it?
-                if($tr_in_link_id==$trs[0]['tr_parent_intent_id'] || $tr_in_link_id==$trs[0]['tr_child_intent_id']){
+                if($tr_in_link_id==$trs[0]['ln_parent_intent_id'] || $tr_in_link_id==$trs[0]['ln_child_intent_id']){
                     return echo_json(array(
                         'status' => 0,
                         'message' => 'Intent already linked here',
@@ -629,8 +629,8 @@ class Intents extends CI_Controller
                 }
 
                 //All good, make the move:
-                $tr_update[( $_POST['is_parent'] ? 'tr_child_intent_id' : 'tr_parent_intent_id')] = $tr_in_link_id;
-                $tr_update['tr_order'] = 9999; //Place at the bottom of this new list
+                $ln_update[( $_POST['is_parent'] ? 'ln_child_intent_id' : 'ln_parent_intent_id')] = $tr_in_link_id;
+                $ln_update['ln_order'] = 9999; //Place at the bottom of this new list
                 $remove_from_ui = 1;
                 //Did we move it on another intent on the same page? If so reload to show accurate info:
                 if(in_array($tr_in_link_id, $_POST['tr_in_focus_ids'])){
@@ -647,32 +647,32 @@ class Intents extends CI_Controller
 
 
             //Prep variables:
-            $tr_metadata = ( strlen($trs[0]['tr_metadata']) > 0 ? unserialize($trs[0]['tr_metadata']) : array() );
+            $ln_metadata = ( strlen($trs[0]['ln_metadata']) > 0 ? unserialize($trs[0]['ln_metadata']) : array() );
 
             //Check to see if anything changed in the link?
-            $link_meta_updated = ( (($tr_update['tr_type_entity_id'] == 4228 && (
-                        !isset($tr_metadata['tr__assessment_points']) ||
-                        !(intval($tr_metadata['tr__assessment_points'])==intval($_POST['tr__assessment_points']))
-                    ))) || (($tr_update['tr_type_entity_id'] == 4229 && (
-                        !isset($tr_metadata['tr__conditional_score_min']) ||
-                        !isset($tr_metadata['tr__conditional_score_max']) ||
-                        !(doubleval($tr_metadata['tr__conditional_score_max'])==doubleval($_POST['tr__conditional_score_max'])) ||
-                        !(doubleval($tr_metadata['tr__conditional_score_min'])==doubleval($_POST['tr__conditional_score_min']))
+            $link_meta_updated = ( (($ln_update['ln_type_entity_id'] == 4228 && (
+                        !isset($ln_metadata['tr__assessment_points']) ||
+                        !(intval($ln_metadata['tr__assessment_points'])==intval($_POST['tr__assessment_points']))
+                    ))) || (($ln_update['ln_type_entity_id'] == 4229 && (
+                        !isset($ln_metadata['tr__conditional_score_min']) ||
+                        !isset($ln_metadata['tr__conditional_score_max']) ||
+                        !(doubleval($ln_metadata['tr__conditional_score_max'])==doubleval($_POST['tr__conditional_score_max'])) ||
+                        !(doubleval($ln_metadata['tr__conditional_score_min'])==doubleval($_POST['tr__conditional_score_min']))
                     ))));
 
 
 
-            foreach ($tr_update as $key => $value) {
+            foreach ($ln_update as $key => $value) {
 
                 //Did this value change?
                 if ($value == $trs[0][$key]) {
 
                     //No it did not! Remove it!
-                    unset($tr_update[$key]);
+                    unset($ln_update[$key]);
 
                 } else {
 
-                    if($key=='tr_status' && $value < 0){
+                    if($key=='ln_status' && $value < 0){
                         $remove_from_ui = 1;
                     }
 
@@ -681,7 +681,7 @@ class Intents extends CI_Controller
             }
 
             //Was anything updated?
-            if(count($tr_update) > 0 || $link_meta_updated){
+            if(count($ln_update) > 0 || $link_meta_updated){
                 $link_was_updated = true;
             }
 
@@ -690,8 +690,8 @@ class Intents extends CI_Controller
             //Did anything change?
             if( $link_was_updated ){
 
-                if($link_meta_updated && (!isset($tr_update['tr_status']) || $tr_update['tr_status'] >= 0)){
-                    $tr_update['tr_metadata'] = array_merge( $tr_metadata, array(
+                if($link_meta_updated && (!isset($ln_update['ln_status']) || $ln_update['ln_status'] >= 0)){
+                    $ln_update['ln_metadata'] = array_merge( $ln_metadata, array(
                         'tr__conditional_score_min' => doubleval($_POST['tr__conditional_score_min']),
                         'tr__conditional_score_max' => doubleval($_POST['tr__conditional_score_max']),
                         'tr__assessment_points' => intval($_POST['tr__assessment_points']),
@@ -699,11 +699,11 @@ class Intents extends CI_Controller
                 }
 
                 //Also update the timestamp & new miner:
-                $tr_update['tr_timestamp'] = date("Y-m-d H:i:s");
-                $tr_update['tr_miner_entity_id'] = $session_en['en_id'];
+                $ln_update['ln_timestamp'] = date("Y-m-d H:i:s");
+                $ln_update['ln_miner_entity_id'] = $session_en['en_id'];
 
                 //Update links:
-                $this->Database_model->tr_update($tr_id, $tr_update, $session_en['en_id']);
+                $this->Database_model->ln_update($ln_id, $ln_update, $session_en['en_id']);
             }
 
         }
@@ -725,8 +725,8 @@ class Intents extends CI_Controller
         if($link_was_updated){
 
             //Fetch last intent Link:
-            $trs = $this->Database_model->tr_fetch(array(
-                'tr_id' => $tr_id,
+            $trs = $this->Database_model->ln_fetch(array(
+                'ln_id' => $ln_id,
             ), array('en_miner'));
 
         }
@@ -752,7 +752,7 @@ class Intents extends CI_Controller
                 'status' => 0,
                 'message' => 'Invalid in_id',
             ));
-        } elseif (!isset($_POST['new_tr_orders']) || !is_array($_POST['new_tr_orders']) || count($_POST['new_tr_orders']) < 1) {
+        } elseif (!isset($_POST['new_ln_orders']) || !is_array($_POST['new_ln_orders']) || count($_POST['new_ln_orders']) < 1) {
             echo_json(array(
                 'status' => 0,
                 'message' => 'Nothing passed for sorting',
@@ -771,25 +771,25 @@ class Intents extends CI_Controller
             } else {
 
                 //Fetch for the record:
-                $children_before = $this->Database_model->tr_fetch(array(
-                    'tr_parent_intent_id' => intval($_POST['in_id']),
-                    'tr_type_entity_id IN (' . join(',', $this->config->item('en_ids_4486')) . ')' => null, //Intent Link Connectors
-                    'tr_status >=' => 0,
-                ), array('in_child'), 0, 0, array('tr_order' => 'ASC'));
+                $children_before = $this->Database_model->ln_fetch(array(
+                    'ln_parent_intent_id' => intval($_POST['in_id']),
+                    'ln_type_entity_id IN (' . join(',', $this->config->item('en_ids_4486')) . ')' => null, //Intent Link Connectors
+                    'ln_status >=' => 0,
+                ), array('in_child'), 0, 0, array('ln_order' => 'ASC'));
 
                 //Update them all:
-                foreach ($_POST['new_tr_orders'] as $rank => $tr_id) {
-                    $this->Database_model->tr_update(intval($tr_id), array(
-                        'tr_order' => intval($rank),
+                foreach ($_POST['new_ln_orders'] as $rank => $ln_id) {
+                    $this->Database_model->ln_update(intval($ln_id), array(
+                        'ln_order' => intval($rank),
                     ), $session_en['en_id']);
                 }
 
                 //Fetch again for the record:
-                $children_after = $this->Database_model->tr_fetch(array(
-                    'tr_parent_intent_id' => intval($_POST['in_id']),
-                    'tr_type_entity_id IN (' . join(',', $this->config->item('en_ids_4486')) . ')' => null, //Intent Link Connectors
-                    'tr_status >=' => 0,
-                ), array('in_child'), 0, 0, array('tr_order' => 'ASC'));
+                $children_after = $this->Database_model->ln_fetch(array(
+                    'ln_parent_intent_id' => intval($_POST['in_id']),
+                    'ln_type_entity_id IN (' . join(',', $this->config->item('en_ids_4486')) . ')' => null, //Intent Link Connectors
+                    'ln_status >=' => 0,
+                ), array('in_child'), 0, 0, array('ln_order' => 'ASC'));
 
                 //Display message:
                 echo_json(array(
@@ -825,11 +825,11 @@ class Intents extends CI_Controller
         }
 
         //Fetch Intent Note Messages for this intent:
-        $on_start_messages = $this->Database_model->tr_fetch(array(
-            'tr_status' => 2, //Published
-            'tr_type_entity_id' => 4231, //Intent Note Messages
-            'tr_child_intent_id' => $_POST['in_id'],
-        ), array(), 0, 0, array('tr_order' => 'ASC'));
+        $on_start_messages = $this->Database_model->ln_fetch(array(
+            'ln_status' => 2, //Published
+            'ln_type_entity_id' => 4231, //Intent Note Messages
+            'ln_child_intent_id' => $_POST['in_id'],
+        ), array(), 0, 0, array('ln_order' => 'ASC'));
 
         if (count($on_start_messages) < 1) {
             return echo_json(array(
@@ -843,8 +843,8 @@ class Intents extends CI_Controller
         $tip_messages = null;
         foreach ($on_start_messages as $tr) {
             //What type of message is this?
-            $tip_messages .= $this->Chat_model->dispatch_message($tr['tr_content'], $session_en, false, array(), array(
-                'tr_parent_intent_id' => $_POST['in_id'],
+            $tip_messages .= $this->Chat_model->dispatch_message($tr['ln_content'], $session_en, false, array(), array(
+                'ln_parent_intent_id' => $_POST['in_id'],
             ));
         }
 
@@ -903,7 +903,7 @@ class Intents extends CI_Controller
                 'message' => 'Invalid Intent ID',
             ));
 
-        } elseif (!isset($_POST['focus_tr_type_entity_id']) || intval($_POST['focus_tr_type_entity_id']) < 1) {
+        } elseif (!isset($_POST['focus_ln_type_entity_id']) || intval($_POST['focus_ln_type_entity_id']) < 1) {
 
             return echo_json(array(
                 'status' => 0,
@@ -926,7 +926,7 @@ class Intents extends CI_Controller
         }
 
         //Make sure message is all good:
-        $msg_validation = $this->Chat_model->dispatch_validate_message($_POST['tr_content'], array(), false, array(), $_POST['focus_tr_type_entity_id'], $_POST['in_id']);
+        $msg_validation = $this->Chat_model->dispatch_validate_message($_POST['ln_content'], array(), false, array(), $_POST['focus_ln_type_entity_id'], $_POST['in_id']);
 
         if (!$msg_validation['status']) {
             //There was some sort of an error:
@@ -934,20 +934,20 @@ class Intents extends CI_Controller
         }
 
         //Create Message:
-        $tr = $this->Database_model->tr_create(array(
-            'tr_status' => 0, //New
-            'tr_miner_entity_id' => $session_en['en_id'],
-            'tr_order' => 1 + $this->Database_model->tr_max_order(array(
-                    'tr_status >=' => 0, //New+
-                    'tr_type_entity_id' => intval($_POST['focus_tr_type_entity_id']),
-                    'tr_child_intent_id' => intval($_POST['in_id']),
+        $tr = $this->Database_model->ln_create(array(
+            'ln_status' => 0, //New
+            'ln_miner_entity_id' => $session_en['en_id'],
+            'ln_order' => 1 + $this->Database_model->ln_max_order(array(
+                    'ln_status >=' => 0, //New+
+                    'ln_type_entity_id' => intval($_POST['focus_ln_type_entity_id']),
+                    'ln_child_intent_id' => intval($_POST['in_id']),
                 )),
             //Referencing attributes:
-            'tr_type_entity_id' => intval($_POST['focus_tr_type_entity_id']),
-            'tr_parent_entity_id' => $msg_validation['tr_parent_entity_id'],
-            'tr_parent_intent_id' => $msg_validation['tr_parent_intent_id'],
-            'tr_child_intent_id' => intval($_POST['in_id']),
-            'tr_content' => $msg_validation['input_message'],
+            'ln_type_entity_id' => intval($_POST['focus_ln_type_entity_id']),
+            'ln_parent_entity_id' => $msg_validation['ln_parent_entity_id'],
+            'ln_parent_intent_id' => $msg_validation['ln_parent_intent_id'],
+            'ln_child_intent_id' => intval($_POST['in_id']),
+            'ln_content' => $msg_validation['input_message'],
         ), true);
 
         //Do a relative adjustment for this intent's metadata
@@ -964,7 +964,7 @@ class Intents extends CI_Controller
         return echo_json(array(
             'status' => 1,
             'message' => echo_in_message_manage(array_merge($tr, array(
-                'tr_child_entity_id' => $session_en['en_id'],
+                'ln_child_entity_id' => $session_en['en_id'],
             ))),
         ));
     }
@@ -982,7 +982,7 @@ class Intents extends CI_Controller
                 'message' => 'Invalid Session. Refresh to Continue',
             ));
 
-        } elseif (!isset($_POST['in_id']) || !isset($_POST['focus_tr_type_entity_id'])) {
+        } elseif (!isset($_POST['in_id']) || !isset($_POST['focus_ln_type_entity_id'])) {
 
             return echo_json(array(
                 'status' => 0,
@@ -1062,16 +1062,16 @@ class Intents extends CI_Controller
 
 
         //Create message:
-        $tr = $this->Database_model->tr_create(array(
-            'tr_status' => 0, //New
-            'tr_miner_entity_id' => $session_en['en_id'],
-            'tr_type_entity_id' => $_POST['focus_tr_type_entity_id'],
-            'tr_parent_entity_id' => $url_entity['en_url']['en_id'],
-            'tr_child_intent_id' => intval($_POST['in_id']),
-            'tr_content' => '@' . $url_entity['en_url']['en_id'], //Just place the entity reference as the entire message
-            'tr_order' => 1 + $this->Database_model->tr_max_order(array(
-                'tr_type_entity_id' => $_POST['focus_tr_type_entity_id'],
-                'tr_child_intent_id' => $_POST['in_id'],
+        $tr = $this->Database_model->ln_create(array(
+            'ln_status' => 0, //New
+            'ln_miner_entity_id' => $session_en['en_id'],
+            'ln_type_entity_id' => $_POST['focus_ln_type_entity_id'],
+            'ln_parent_entity_id' => $url_entity['en_url']['en_id'],
+            'ln_child_intent_id' => intval($_POST['in_id']),
+            'ln_content' => '@' . $url_entity['en_url']['en_id'], //Just place the entity reference as the entire message
+            'ln_order' => 1 + $this->Database_model->ln_max_order(array(
+                'ln_type_entity_id' => $_POST['focus_ln_type_entity_id'],
+                'ln_child_intent_id' => $_POST['in_id'],
             )),
         ));
 
@@ -1088,15 +1088,15 @@ class Intents extends CI_Controller
 
 
         //Fetch full message for proper UI display:
-        $new_messages = $this->Database_model->tr_fetch(array(
-            'tr_id' => $tr['tr_id'],
+        $new_messages = $this->Database_model->ln_fetch(array(
+            'ln_id' => $tr['ln_id'],
         ));
 
         //Echo message:
         echo_json(array(
             'status' => 1,
             'message' => echo_in_message_manage(array_merge($new_messages[0], array(
-                'tr_child_entity_id' => $session_en['en_id'],
+                'ln_child_entity_id' => $session_en['en_id'],
             ))),
         ));
     }
@@ -1125,7 +1125,7 @@ class Intents extends CI_Controller
                 'status' => 0,
                 'message' => 'Missing Intent ID',
             ));
-        } elseif (!isset($_POST['tr_id'])) {
+        } elseif (!isset($_POST['ln_id'])) {
             return echo_json(array(
                 'status' => 0,
                 'message' => 'Missing Intent Link ID',
@@ -1147,13 +1147,13 @@ class Intents extends CI_Controller
         $ins[0]['in_metadata'] = ( strlen($ins[0]['in_metadata']) > 0 ? unserialize($ins[0]['in_metadata']) : array());
 
 
-        if(intval($_POST['tr_id'])>0){
+        if(intval($_POST['ln_id'])>0){
 
             //Fetch intent link:
-            $trs = $this->Database_model->tr_fetch(array(
-                'tr_id' => $_POST['tr_id'],
-                'tr_type_entity_id IN (' . join(',', $this->config->item('en_ids_4486')) . ')' => null, //Intent Link Connectors
-                'tr_status >=' => 0, //New+
+            $trs = $this->Database_model->ln_fetch(array(
+                'ln_id' => $_POST['ln_id'],
+                'ln_type_entity_id IN (' . join(',', $this->config->item('en_ids_4486')) . ')' => null, //Intent Link Connectors
+                'ln_status >=' => 0, //New+
             ), array(( $_POST['is_parent'] ? 'in_child' : 'in_parent' )));
 
             if(count($trs) < 1){
@@ -1164,11 +1164,11 @@ class Intents extends CI_Controller
             }
 
             //Add link connector:
-            $trs[0]['tr_metadata'] = ( strlen($trs[0]['tr_metadata']) > 0 ? unserialize($trs[0]['tr_metadata']) : array());
+            $trs[0]['ln_metadata'] = ( strlen($trs[0]['ln_metadata']) > 0 ? unserialize($trs[0]['ln_metadata']) : array());
 
             //Make sure points are set:
-            if(!isset($trs[0]['tr_metadata']['tr__assessment_points'])){
-                $trs[0]['tr_metadata']['tr__assessment_points'] = 0;
+            if(!isset($trs[0]['ln_metadata']['tr__assessment_points'])){
+                $trs[0]['ln_metadata']['tr__assessment_points'] = 0;
             }
 
         }
@@ -1183,7 +1183,7 @@ class Intents extends CI_Controller
         return echo_json(array(
             'status' => 1,
             'in' => $ins[0],
-            'tr' => ( isset($trs[0]) ? $trs[0] : array() ),
+            'ln' => ( isset($trs[0]) ? $trs[0] : array() ),
         ));
 
     }
@@ -1202,7 +1202,7 @@ class Intents extends CI_Controller
                 'message' => 'Session Expired. Sign In and try again',
             ));
 
-        } elseif (!isset($_POST['new_tr_orders']) || !is_array($_POST['new_tr_orders']) || count($_POST['new_tr_orders']) < 1) {
+        } elseif (!isset($_POST['new_ln_orders']) || !is_array($_POST['new_ln_orders']) || count($_POST['new_ln_orders']) < 1) {
 
             //Do not treat this case as error as it could happen in moving Messages between types:
             return echo_json(array(
@@ -1214,12 +1214,12 @@ class Intents extends CI_Controller
 
         //Update all link orders:
         $sort_count = 0;
-        foreach ($_POST['new_tr_orders'] as $tr_order => $tr_id) {
-            if (intval($tr_id) > 0) {
+        foreach ($_POST['new_ln_orders'] as $ln_order => $ln_id) {
+            if (intval($ln_id) > 0) {
                 $sort_count++;
                 //Log update and give credit to the session Miner:
-                $this->Database_model->tr_update($tr_id, array(
-                    'tr_order' => intval($tr_order),
+                $this->Database_model->ln_update($ln_id, array(
+                    'ln_order' => intval($ln_order),
                 ), $session_en['en_id']);
             }
         }
@@ -1241,17 +1241,17 @@ class Intents extends CI_Controller
                 'status' => 0,
                 'message' => 'Invalid Session. Refresh.',
             ));
-        } elseif (!isset($_POST['tr_id']) || intval($_POST['tr_id']) < 1) {
+        } elseif (!isset($_POST['ln_id']) || intval($_POST['ln_id']) < 1) {
             return echo_json(array(
                 'status' => 0,
                 'message' => 'Missing Link ID',
             ));
-        } elseif (!isset($_POST['new_message_tr_status'])) {
+        } elseif (!isset($_POST['new_message_ln_status'])) {
             return echo_json(array(
                 'status' => 0,
                 'message' => 'Missing Message Status',
             ));
-        } elseif (!isset($_POST['tr_content'])) {
+        } elseif (!isset($_POST['ln_content'])) {
             return echo_json(array(
                 'status' => 0,
                 'message' => 'Missing Message',
@@ -1275,9 +1275,9 @@ class Intents extends CI_Controller
         }
 
         //Validate Message:
-        $messages = $this->Database_model->tr_fetch(array(
-            'tr_id' => intval($_POST['tr_id']),
-            'tr_status >=' => 0,
+        $messages = $this->Database_model->ln_fetch(array(
+            'ln_id' => intval($_POST['ln_id']),
+            'ln_status >=' => 0,
         ));
         if (count($messages) < 1) {
             return echo_json(array(
@@ -1288,13 +1288,13 @@ class Intents extends CI_Controller
 
 
         //Did the message status change?
-        if($messages[0]['tr_status'] != $_POST['new_message_tr_status']){
+        if($messages[0]['ln_status'] != $_POST['new_message_ln_status']){
 
             //Are we deleting this message?
-            if($_POST['new_message_tr_status'] == -1){
+            if($_POST['new_message_ln_status'] == -1){
 
                 //yes, do so and return results:
-                $affected_rows = $this->Database_model->tr_update(intval($_POST['tr_id']), array( 'tr_status' => $_POST['new_message_tr_status'] ), $session_en['en_id']);
+                $affected_rows = $this->Database_model->ln_update(intval($_POST['ln_id']), array( 'ln_status' => $_POST['new_message_ln_status'] ), $session_en['en_id']);
 
                 //Return success:
                 if($affected_rows > 0){
@@ -1320,10 +1320,10 @@ class Intents extends CI_Controller
                     ));
                 }
 
-            } elseif($_POST['new_message_tr_status'] == 2){
+            } elseif($_POST['new_message_ln_status'] == 2){
 
                 //We're publishing, make sure potential entity references are also published:
-                $msg_references = extract_message_references($_POST['tr_content']);
+                $msg_references = extract_message_references($_POST['ln_content']);
 
                 if (count($msg_references['ref_entities']) > 0) {
 
@@ -1345,7 +1345,7 @@ class Intents extends CI_Controller
 
 
         //Validate new message:
-        $msg_validation = $this->Chat_model->dispatch_validate_message($_POST['tr_content'], array(), false, array(), $messages[0]['tr_type_entity_id'], $_POST['in_id']);
+        $msg_validation = $this->Chat_model->dispatch_validate_message($_POST['ln_content'], array(), false, array(), $messages[0]['ln_type_entity_id'], $_POST['in_id']);
         if (!$msg_validation['status']) {
             //There was some sort of an error:
             return echo_json($msg_validation);
@@ -1355,18 +1355,18 @@ class Intents extends CI_Controller
         //All good, lets move on:
         //Define what needs to be updated:
         $to_update = array(
-            'tr_status' => $_POST['new_message_tr_status'],
-            'tr_content' => $msg_validation['input_message'],
-            'tr_parent_entity_id' => $msg_validation['tr_parent_entity_id'],
-            'tr_parent_intent_id' => $msg_validation['tr_parent_intent_id'],
+            'ln_status' => $_POST['new_message_ln_status'],
+            'ln_content' => $msg_validation['input_message'],
+            'ln_parent_entity_id' => $msg_validation['ln_parent_entity_id'],
+            'ln_parent_intent_id' => $msg_validation['ln_parent_intent_id'],
         );
 
         //Now update the DB:
-        $this->Database_model->tr_update(intval($_POST['tr_id']), $to_update, $session_en['en_id']);
+        $this->Database_model->ln_update(intval($_POST['ln_id']), $to_update, $session_en['en_id']);
 
         //Re-fetch the message for display purposes:
-        $new_messages = $this->Database_model->tr_fetch(array(
-            'tr_id' => intval($_POST['tr_id']),
+        $new_messages = $this->Database_model->ln_fetch(array(
+            'ln_id' => intval($_POST['ln_id']),
         ));
 
         $fixed_fields = $this->config->item('fixed_fields');
@@ -1375,7 +1375,7 @@ class Intents extends CI_Controller
         return echo_json(array(
             'status' => 1,
             'message' => $this->Chat_model->dispatch_message($msg_validation['input_message'], $session_en, false, array(), array(), $_POST['in_id']),
-            'message_new_status_icon' => '<span title="' . $fixed_fields['tr_status'][$to_update['tr_status']]['s_name'] . ': ' . $fixed_fields['tr_status'][$to_update['tr_status']]['s_desc'] . '" data-toggle="tooltip" data-placement="top">' . $fixed_fields['tr_status'][$to_update['tr_status']]['s_icon'] . '</span>', //This might have changed
+            'message_new_status_icon' => '<span title="' . $fixed_fields['ln_status'][$to_update['ln_status']]['s_name'] . ': ' . $fixed_fields['ln_status'][$to_update['ln_status']]['s_desc'] . '" data-toggle="tooltip" data-placement="top">' . $fixed_fields['ln_status'][$to_update['ln_status']]['s_icon'] . '</span>', //This might have changed
             'success_icon' => '<span><i class="fas fa-check"></i> Saved</span>',
         ));
     }

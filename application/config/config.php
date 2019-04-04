@@ -48,16 +48,16 @@ $config['en_mass_actions']          = array( //Various mass actions to be taken 
 
 
 //Links:
-$config['tr_content_max_length']    = 610; //Max number of characters allowed in messages. Facebook's cap is 2000 characters/message
-$config['tr_status_incomplete']     = array(0, 1); //Link statuses that are considered in-complete to determine progress and more
+$config['ln_content_max_length']    = 610; //Max number of characters allowed in messages. Facebook's cap is 2000 characters/message
+$config['ln_status_incomplete']     = array(0, 1); //Link statuses that are considered in-complete to determine progress and more
 $config['tr_object_links']          = array( //Each link can have any of the following object links
-                                        'tr_type_entity_id' => 'en',
-                                        'tr_miner_entity_id' => 'en',
-                                        'tr_parent_entity_id' => 'en',
-                                        'tr_child_entity_id'  => 'en',
-                                        'tr_parent_intent_id' => 'in',
-                                        'tr_child_intent_id'  => 'in',
-                                        'tr_parent_link_id' => 'tr',
+                                        'ln_type_entity_id' => 'en',
+                                        'ln_miner_entity_id' => 'en',
+                                        'ln_parent_entity_id' => 'en',
+                                        'ln_child_entity_id'  => 'en',
+                                        'ln_parent_intent_id' => 'in',
+                                        'ln_child_intent_id'  => 'in',
+                                        'ln_parent_link_id' => 'ln',
                                     );
 
 
@@ -85,51 +85,6 @@ $config['fb_convert_4537']          = array( //Dedicated media formats supported
 
 //3x Table Status:
 $config['fixed_fields']             = array(
-                                        'tr_status' => array(
-                                            2 => array(
-                                                's_name' => 'Published',
-                                                's_desc' => 'Link is complete, ready and live',
-                                                's_icon' => '<i class="fas fa-check-square"></i>',
-                                            ),
-                                            1 => array(
-                                                's_name' => 'Drafting',
-                                                's_desc' => 'Link is being worked-on so it can be published',
-                                                's_icon' => '<i class="fas fa-spinner fa-spin"></i>',
-                                            ),
-                                            0 => array(
-                                                's_name' => 'New',
-                                                's_desc' => 'Link is newly added and pending to be mined',
-                                                's_icon' => '<i class="fal fa-square"></i>',
-                                            ),
-                                            -1 => array(
-                                                's_name' => 'Removed',
-                                                's_desc' => 'Link is in-active',
-                                                's_icon' => '<i class="fal fa-minus-square"></i>',
-                                            ),
-                                        ),
-                                        //The same as tr_status with terminology optimized for students
-                                        'tr_student_status' => array(
-                                            2 => array(
-                                                's_name' => 'Completed',
-                                                's_desc' => 'Marked as complete and pending new updates',
-                                                's_icon' => '<i class="fas fa-check-square"></i>',
-                                            ),
-                                            1 => array(
-                                                's_name' => 'Working On',
-                                                's_desc' => 'Started but not yet complete',
-                                                's_icon' => '<i class="fas fa-spinner fa-spin"></i>',
-                                            ),
-                                            0 => array(
-                                                's_name' => 'Not Started',
-                                                's_desc' => 'Pending completion',
-                                                's_icon' => '<i class="fal fa-square"></i>',
-                                            ),
-                                            -1 => array(
-                                                's_name' => 'Skipped',
-                                                's_desc' => 'Step was skipped by student',
-                                                's_icon' => '<i class="fal fa-minus-square"></i>',
-                                            ),
-                                        ),
                                         'in_status' => array(
                                             2 => array(
                                                 's_name' => 'Published',
@@ -171,6 +126,51 @@ $config['fixed_fields']             = array(
                                             -1 => array(
                                                 's_name' => 'Removed',
                                                 's_desc' => 'Entity is in-active',
+                                                's_icon' => '<i class="fal fa-minus-square"></i>',
+                                            ),
+                                        ),
+                                        'ln_status' => array(
+                                            2 => array(
+                                                's_name' => 'Published',
+                                                's_desc' => 'Link is complete, ready and live',
+                                                's_icon' => '<i class="fas fa-check-square"></i>',
+                                            ),
+                                            1 => array(
+                                                's_name' => 'Drafting',
+                                                's_desc' => 'Link is being worked-on so it can be published',
+                                                's_icon' => '<i class="fas fa-spinner fa-spin"></i>',
+                                            ),
+                                            0 => array(
+                                                's_name' => 'New',
+                                                's_desc' => 'Link is newly added and pending to be mined',
+                                                's_icon' => '<i class="fal fa-square"></i>',
+                                            ),
+                                            -1 => array(
+                                                's_name' => 'Removed',
+                                                's_desc' => 'Link is in-active',
+                                                's_icon' => '<i class="fal fa-minus-square"></i>',
+                                            ),
+                                        ),
+                                        //The same as ln_status with terminology optimized for students
+                                        'tr_student_status' => array(
+                                            2 => array(
+                                                's_name' => 'Completed',
+                                                's_desc' => 'Marked as complete and pending new updates',
+                                                's_icon' => '<i class="fas fa-check-square"></i>',
+                                            ),
+                                            1 => array(
+                                                's_name' => 'Working On',
+                                                's_desc' => 'Started but not yet complete',
+                                                's_icon' => '<i class="fas fa-spinner fa-spin"></i>',
+                                            ),
+                                            0 => array(
+                                                's_name' => 'Not Started',
+                                                's_desc' => 'Pending completion',
+                                                's_icon' => '<i class="fal fa-square"></i>',
+                                            ),
+                                            -1 => array(
+                                                's_name' => 'Skipped',
+                                                's_desc' => 'Step was skipped by student',
                                                 's_icon' => '<i class="fal fa-minus-square"></i>',
                                             ),
                                         ),

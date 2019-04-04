@@ -41,14 +41,14 @@ function detect_missing_columns($insert_columns, $required_columns)
         if (!isset($insert_columns[$req_field]) || strlen($insert_columns[$req_field]) == 0) {
             //Ooops, we're missing this required field:
             $CI =& get_instance();
-            $CI->Database_model->tr_create(array(
-                'tr_content' => 'Missing required field [' . $req_field . '] for inserting new DB row',
-                'tr_metadata' => array(
+            $CI->Database_model->ln_create(array(
+                'ln_content' => 'Missing required field [' . $req_field . '] for inserting new DB row',
+                'ln_metadata' => array(
                     'insert_columns' => $insert_columns,
                     'required_columns' => $required_columns,
                 ),
-                'tr_type_entity_id' => 4246, //Platform Error
-                'tr_miner_entity_id' => 1, //Shervin/Developer
+                'ln_type_entity_id' => 4246, //Platform Error
+                'ln_miner_entity_id' => 1, //Shervin/Developer
             ));
 
             return true; //We have an issue
@@ -102,15 +102,15 @@ function base64_url_decode($input)
 }
 
 
-function extract_message_references($tr_content)
+function extract_message_references($ln_content)
 {
 
     //Analyzes a message text to extract Entity References (Like @123) and URLs
     $CI =& get_instance();
 
     //Replace non-ascii characters with space:
-    $tr_content = preg_replace('/[[:^print:]]/', ' ', $tr_content);
-    $parts = preg_split('/\s+/', $tr_content);
+    $ln_content = preg_replace('/[[:^print:]]/', ' ', $ln_content);
+    $parts = preg_split('/\s+/', $ln_content);
 
     //Analyze the message to find referencing URLs and Entities in the message text:
     $msg_references = array(
@@ -181,7 +181,7 @@ function detect_fav_icon($url_clean_domain, $return_icon = false){
     }
 }
 
-function detect_tr_type_entity_id($string)
+function detect_ln_type_entity_id($string)
 {
 
     /*
@@ -192,25 +192,25 @@ function detect_tr_type_entity_id($string)
     $string = trim($string);
     $CI =& get_instance();
 
-    if(strlen($string) > $CI->config->item('tr_content_max_length')){
+    if(strlen($string) > $CI->config->item('ln_content_max_length')){
 
         return array(
             'status' => 0,
-            'message' => 'String is ['.(strlen($string) - $CI->config->item('tr_content_max_length')).'] characters longer than the allowed length of '.$CI->config->item('tr_content_max_length').' characters.',
+            'message' => 'String is ['.(strlen($string) - $CI->config->item('ln_content_max_length')).'] characters longer than the allowed length of '.$CI->config->item('ln_content_max_length').' characters.',
         );
 
     } elseif (is_null($string) || strlen($string) == 0) {
 
         return array(
             'status' => 1,
-            'tr_type_entity_id' => 4230, //Raw
+            'ln_type_entity_id' => 4230, //Raw
         );
 
     } elseif ((strlen(bigintval($string)) == strlen($string) || (in_array(substr($string , 0, 1), array('+','-')) && strlen(bigintval(substr($string , 1))) == strlen(substr($string , 1)))) && (intval($string) != 0 || $string == '0')) {
 
         return array(
             'status' => 1,
-            'tr_type_entity_id' => 4319, //Number
+            'ln_type_entity_id' => 4319, //Number
         );
 
     } elseif (filter_var($string, FILTER_VALIDATE_URL)) {
@@ -224,7 +224,7 @@ function detect_tr_type_entity_id($string)
         //Date/time:
         return array(
             'status' => 1,
-            'tr_type_entity_id' => 4318,
+            'ln_type_entity_id' => 4318,
         );
 
     } else {
@@ -232,7 +232,7 @@ function detect_tr_type_entity_id($string)
         //Regular text link:
         return array(
             'status' => 1,
-            'tr_type_entity_id' => 4255,
+            'ln_type_entity_id' => 4255,
         );
 
     }
@@ -305,10 +305,10 @@ function detect_starting_verb_id($string){
     if(count($letters) >= 2){
 
         //Do a DB call to see if this verb is supported:
-        $found_verbs = $CI->Database_model->tr_fetch(array(
-            'tr_status' => 2, //Published
+        $found_verbs = $CI->Database_model->ln_fetch(array(
+            'ln_status' => 2, //Published
             'en_status' => 2, //Published
-            'tr_parent_entity_id' => 5008, //Intent Supported Verbs
+            'ln_parent_entity_id' => 5008, //Intent Supported Verbs
             'LOWER(en_name)' => strtolower($letters[0]),
         ), array('en_child'), 1);
 
@@ -389,7 +389,7 @@ function redirect_message($url, $message = null)
 }
 
 
-function upload_to_cdn($file_url, $tr_metadata = null, $is_local = false)
+function upload_to_cdn($file_url, $ln_metadata = null, $is_local = false)
 {
 
     /*
@@ -445,11 +445,11 @@ function upload_to_cdn($file_url, $tr_metadata = null, $is_local = false)
 
         } else {
 
-            $CI->Database_model->tr_create(array(
-                'tr_type_entity_id' => 4246, //Platform Error
-                'tr_miner_entity_id' => 1, //Shervin/Developer
-                'tr_content' => 'upload_to_cdn() Unable to upload file [' . $file_url . '] to Mench cloud.',
-                'tr_metadata' => $tr_metadata,
+            $CI->Database_model->ln_create(array(
+                'ln_type_entity_id' => 4246, //Platform Error
+                'ln_miner_entity_id' => 1, //Shervin/Developer
+                'ln_content' => 'upload_to_cdn() Unable to upload file [' . $file_url . '] to Mench cloud.',
+                'ln_metadata' => $ln_metadata,
             ));
             return false;
 

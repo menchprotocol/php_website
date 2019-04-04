@@ -57,10 +57,10 @@
         echo '<td style="text-align: right;"><div class="btn-group btn-group-sm ' . echo_advance() . '" style="margin-top:-5px;" role="group">';
 
         //Fetch current count for each status from DB:
-        $child_en_filters = $this->Database_model->tr_fetch(array(
-            'tr_parent_entity_id' => $entity['en_id'],
-            'tr_type_entity_id IN (' . join(',', $this->config->item('en_ids_4592')) . ')' => null, //Entity Link Connectors
-            'tr_status >=' => 0, //New+
+        $child_en_filters = $this->Database_model->ln_fetch(array(
+            'ln_parent_entity_id' => $entity['en_id'],
+            'ln_type_entity_id IN (' . join(',', $this->config->item('en_ids_4592')) . ')' => null, //Entity Link Connectors
+            'ln_status >=' => 0, //New+
             'en_status >=' => 0, //New+
         ), array('en_child'), 0, 0, array('en_status' => 'ASC'), 'COUNT(en_id) as totals, en_status', 'en_status');
 
@@ -154,7 +154,7 @@
                     $input_options .= '<select name="mass_value1_'.$action_en_id.'" class="form-control border">';
                     $input_options .= '<option value="">Set Condition...</option>';
                     $input_options .= '<option value="*">Update All Statuses</option>';
-                    foreach($fixed_fields['tr_status'] as $status_id => $status){
+                    foreach($fixed_fields['ln_status'] as $status_id => $status){
                         $input_options .= '<option value="'.$status_id.'">Update All '.$status['s_name'].'</option>';
                     }
                     $input_options .= '</select>';
@@ -162,7 +162,7 @@
                     //Replace:
                     $input_options .= '<select name="mass_value2_'.$action_en_id.'" class="form-control border">';
                     $input_options .= '<option value="">Set New Status...</option>';
-                    foreach($fixed_fields['tr_status'] as $status_id => $status){
+                    foreach($fixed_fields['ln_status'] as $status_id => $status){
                         $input_options .= '<option value="'.$status_id.'">Set to '.$status['s_name'].'</option>';
                     }
                     $input_options .= '</select>';
@@ -309,11 +309,11 @@
                                     <form class="drag-box" method="post" enctype="multipart/form-data">
 
                                         <span class="mini-header">Link Content: [<span style="margin:0 0 10px 0;">
-                                    <span id="chartr_contentNum">0</span>/<?= $this->config->item('tr_content_max_length') ?>
+                                    <span id="charln_contentNum">0</span>/<?= $this->config->item('ln_content_max_length') ?>
                                 </span>]</span>
                                         <span class="white-wrapper">
-                                        <textarea class="form-control text-edit border" id="tr_content"
-                                                  maxlength="<?= $this->config->item('tr_content_max_length') ?>" data-lpignore="true"
+                                        <textarea class="form-control text-edit border" id="ln_content"
+                                                  maxlength="<?= $this->config->item('ln_content_max_length') ?>" data-lpignore="true"
                                                   placeholder="Write Message, Drop a File or Paste URL"
                                                   style="height:126px; min-height:126px;">
                                         </textarea>
@@ -331,9 +331,9 @@
 
 
                                     <span class="mini-header">Link Status:</span>
-                                    <select class="form-control border" id="tr_status" data-toggle="tooltip" title="Link Status" data-placement="top">
+                                    <select class="form-control border" id="ln_status" data-toggle="tooltip" title="Link Status" data-placement="top">
                                         <?php
-                                        foreach (echo_fixed_fields('tr_status') as $status_id => $status) {
+                                        foreach (echo_fixed_fields('ln_status') as $status_id => $status) {
                                             if($status_id < 3){ //No need to verify entity links!
                                                 echo '<option value="' . $status_id . '" title="' . $status['s_desc'] . '">' . $status['s_name'] . '</option>';
                                             }

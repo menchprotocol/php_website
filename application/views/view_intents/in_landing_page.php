@@ -26,12 +26,12 @@ echo '<h1 style="margin-bottom:30px;" id="title-parent">' . echo_in_outcome($in[
 
 
 //Fetch & Display Intent Note Messages for this intent:
-foreach ($this->Database_model->tr_fetch(array(
-    'tr_status' => 2, //Published
-    'tr_type_entity_id' => 4231, //Intent Note Messages
-    'tr_child_intent_id' => $in['in_id'],
-), array(), 0, 0, array('tr_order' => 'ASC')) as $tr) {
-    echo $this->Chat_model->dispatch_message($tr['tr_content']);
+foreach ($this->Database_model->ln_fetch(array(
+    'ln_status' => 2, //Published
+    'ln_type_entity_id' => 4231, //Intent Note Messages
+    'ln_child_intent_id' => $in['in_id'],
+), array(), 0, 0, array('ln_order' => 'ASC')) as $tr) {
+    echo $this->Chat_model->dispatch_message($tr['ln_content']);
 }
 
 
@@ -86,11 +86,11 @@ echo '<h3 style="margin-bottom:5px; margin-top:22px;">Other Intentions:</h3>';
 echo '<div class="list-group grey_list actionplan_list maxout">';
 
 //Parent intentions:
-foreach ($this->Database_model->tr_fetch(array(
-    'tr_status' => 2, //Published
+foreach ($this->Database_model->ln_fetch(array(
+    'ln_status' => 2, //Published
     'in_status' => 2, //Published
-    'tr_type_entity_id' => 4228, //Fixed intent links only
-    'tr_child_intent_id' => $in['in_id'],
+    'ln_type_entity_id' => 4228, //Fixed intent links only
+    'ln_child_intent_id' => $in['in_id'],
     'in_id NOT IN (' . join(',', $exclude_array) . ')' => null,
 ), array('in_parent')) as $parent_intention) {
     //Add parent intention to UI:
@@ -100,13 +100,13 @@ foreach ($this->Database_model->tr_fetch(array(
 }
 
 //Now fetch featured intents:
-foreach ($this->Database_model->tr_fetch(array(
-    'tr_status' => 2, //Published
+foreach ($this->Database_model->ln_fetch(array(
+    'ln_status' => 2, //Published
     'in_status' => 2, //Published
-    'tr_type_entity_id' => 4228, //Fixed intent links only
-    'tr_parent_intent_id' => $this->config->item('in_featured'), //Feature Mench Intentions
+    'ln_type_entity_id' => 4228, //Fixed intent links only
+    'ln_parent_intent_id' => $this->config->item('in_featured'), //Feature Mench Intentions
     'in_id NOT IN (' . join(',', $exclude_array) . ')' => null,
-), array('in_child'), 0, 0, array('tr_order' => 'ASC')) as $featured_intention) {
+), array('in_child'), 0, 0, array('ln_order' => 'ASC')) as $featured_intention) {
     echo echo_in_featured($featured_intention);
 }
 
