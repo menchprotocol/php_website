@@ -628,7 +628,7 @@ function echo_in_actionplan_step($tr, $is_parent, $incomplete_step)
         //For children show icon:
         if ($incomplete_step<=1) {
             //Completed Step Status:
-            $ui .= echo_fixed_fields('tr_student_status', $tr['ln_status'], 1, 'right');
+            $ui .= echo_fixed_fields('ln_student_status', $tr['ln_status'], 1, 'right');
         } else {
             //Item is locked:
             $ui .= '<span class="status-label" style="padding-bottom:1px;"><i class="fas fa-lock"></i></span>';

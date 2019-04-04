@@ -59,7 +59,7 @@ $fixed_fields = $this->config->item('fixed_fields');
 if(!$has_filters){
 
     //Fetch & Display Intent Note Messages to explain links:
-    echo '<h1>Mench Links <span id="hb_8438" class="help_button bold-header" intent-id="8438"></span></h1>';
+    echo '<h1>Platform Stats <span id="hb_8438" class="help_button bold-header" intent-id="8438"></span></h1>';
     echo '<div class="help_body maxout" id="content_8438"></div>';
 
 
@@ -375,7 +375,7 @@ if(!$has_filters){
                 $rate_trs = $this->Database_model->ln_fetch(array(
                     'ln_status' => 2, //Published
                     'en_status' => 2, //Published
-                    'ln_parent_entity_id' => 4595, //Mench Points
+                    'ln_parent_entity_id' => 4595, //Link Points
                     'ln_type_entity_id IN (' . join(',', $this->config->item('en_ids_4592')) . ')' => null, //Entity Link Connectors
                     'ln_child_entity_id' => $tr['ln_type_entity_id'],
                 ), array('en_child'), 1);
@@ -400,7 +400,7 @@ if(!$has_filters){
             echo '<select id="tr_group_by" class="form-control border stats-select">';
             echo '<option value="by_ln_status">Group By: 4 Statuses</option>';
             echo '<option value="by_tr_type">Group By: '.count($all_eng_types).' Link Types</option>';
-            echo '<option value="by_tr_point_types">List Subset: '.echo_number($all_point_payouts).' Mench Points</option>';
+            echo '<option value="by_tr_point_types">List Subset: '.echo_number($all_point_payouts).' Link Points</option>';
             echo '<option value="by_tr_top_miners">List Subset: '.$top.' Top Miners</option>';
             echo '</select>';
 

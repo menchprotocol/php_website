@@ -689,7 +689,7 @@ $config['en_all_4426'] = array(
     ),
     4595 => array(
         'm_icon' => '<i class="fas fa-award"></i>',
-        'm_name' => 'Mench Points',
+        'm_name' => 'Link Points',
         'm_desc' => '',
         'm_parents' => array(4426, 4527, 4463, 4341, 4319),
     ),
@@ -880,7 +880,7 @@ $config['en_all_4755'] = array(
     ),
 );
 
-//Mench Points:
+//Link Points:
 $config['en_ids_4595'] = array(4228, 4229, 4230, 4231, 4232, 4233, 4234, 4242, 4250, 4251, 4255, 4256, 4257, 4258, 4259, 4260, 4261, 4263, 4264, 4318, 4319, 4601, 4602, 4983, 6093);
 $config['en_all_4595'] = array(
     4228 => array(

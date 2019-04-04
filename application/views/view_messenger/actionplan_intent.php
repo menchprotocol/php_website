@@ -77,7 +77,7 @@ if ($is_step) {
 
     //Show completion progress for the single parent intent:
 
-    echo echo_fixed_fields('tr_student_status', $actionplan_parents[0]['ln_status'], false, 'top');
+    echo echo_fixed_fields('ln_student_status', $actionplan_parents[0]['ln_status'], false, 'top');
     if($time_estimate){
         echo ' &nbsp;&nbsp;<span class="status-label underdot" data-toggle="tooltip" data-placement="top" title="The estimated time to complete this '.$en_all_6107[4559]['m_name'].'"><i class="fas fa-alarm-clock"></i> ' . $time_estimate.'</span>';
     }
@@ -89,7 +89,7 @@ if ($is_step) {
     echo '<span class="status-label underdot" data-toggle="tooltip" data-placement="top" title="'.$en_all_6107[4235]['m_desc'].'">'.$en_all_6107[4235]['m_icon'].$en_all_6107[4235]['m_name'].'</span> &nbsp;&nbsp;';
 
     //This must be top level Action Plan, show Action Plan data:
-    echo echo_fixed_fields('tr_student_status', $actionplan['ln_status'], false, 'top');
+    echo echo_fixed_fields('ln_student_status', $actionplan['ln_status'], false, 'top');
     if($time_estimate){
         echo ' &nbsp;&nbsp;<span class="status-label underdot" data-toggle="tooltip" data-placement="top" title="The estimated time to complete this '.$en_all_6107[4559]['m_name'].'"><i class="fas fa-alarm-clock"></i> ' . $time_estimate.'</span>';
     }

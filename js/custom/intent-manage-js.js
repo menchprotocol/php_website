@@ -620,17 +620,17 @@ function in_modify_load(in_id, ln_id) {
             if (ln_id > 0) {
 
                 //Always load:
-                $("#ln_status").val(data.tr.ln_status);
-                $('#tr__conditional_score_min').val(data.tr.ln_metadata.tr__conditional_score_min);
-                $('#tr__conditional_score_max').val(data.tr.ln_metadata.tr__conditional_score_max);
-                $('#tr__assessment_points').val(data.tr.ln_metadata.tr__assessment_points);
+                $("#ln_status").val(data.ln.ln_status);
+                $('#tr__conditional_score_min').val(data.ln.ln_metadata.tr__conditional_score_min);
+                $('#tr__conditional_score_max').val(data.ln.ln_metadata.tr__conditional_score_max);
+                $('#tr__assessment_points').val(data.ln.ln_metadata.tr__assessment_points);
 
                 //Link editing adjustments:
-                $('#tr_in_link_update').val(data.tr.in_outcome);
+                $('#tr_in_link_update').val(data.ln.in_outcome);
                 $('.tr_in_link_title').text(( $('.intent_line_' + in_id).hasClass('parent-intent') ? 'Child' : 'Parent' ));
 
                 //Is this a conditional link? If so, load the min/max range:
-                if (data.tr.ln_type_entity_id == 4229) {
+                if (data.ln.ln_type_entity_id == 4229) {
                     //Yes, load the data (which must be there):
                     $('#ln_type_entity_id_4229').prop("checked", true);
                 } else {

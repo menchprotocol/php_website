@@ -225,7 +225,7 @@ class Links extends CI_Controller
                 'ln_status' => 2, //Published
                 'en_status' => 2, //Published
                 'ln_type_entity_id' => 4319, //Number
-                'ln_parent_entity_id' => 4595, //Mench Points
+                'ln_parent_entity_id' => 4595, //Link Points
                 'ln_child_entity_id' => $tr['ln_type_entity_id'],
             ), array('en_child'), 1);
 
