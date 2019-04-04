@@ -853,21 +853,6 @@ class Chat_model extends CI_Model
                     }
                 }
 
-                //Each entity can vote only once per intent correlation:
-                $duplicate_votes = $this->Database_model->ln_fetch(array(
-                    'ln_status >=' => 0,
-                    'ln_parent_entity_id' => $msg_references['ref_entities'][0],
-                    'ln_parent_intent_id' => $msg_references['ref_intents'][0],
-                    'ln_child_intent_id' => $message_in_id,
-                    'ln_type_entity_id' => 4983, //Up-votes
-                ));
-                if(count($duplicate_votes) > 0){
-                    return array(
-                        'status' => 0,
-                        'message' => 'This entity has already up-voted this intent correlation and cannot cast a second identical vote.',
-                    );
-                }
-
             }
 
 
