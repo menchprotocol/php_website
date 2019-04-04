@@ -4164,6 +4164,7 @@ h4 .tip-badge {
 
 #funnel .entity-list .form-control {
     max-width:550px;
+    width: 80%;
 }
 
 #funnel .entity-list .list-group-item{

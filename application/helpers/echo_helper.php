@@ -1334,6 +1334,7 @@ function echo_radio_entities($parent_en_id, $child_en_id, $enable_mulitiselect){
      * Print UI for
      * */
 
+    $show_max = 10; //This is visible and the rest need to be loaded
     $CI =& get_instance();
 
     $ui = '<div class="list-group">';
@@ -1344,15 +1345,28 @@ function echo_radio_entities($parent_en_id, $child_en_id, $enable_mulitiselect){
         'tr_type_entity_id IN (' . join(',', $CI->config->item('en_ids_4592')) . ')' => null, //Entity Link Connectors
         'tr_status' => 2, //Published
         'en_status' => 2, //Published
-    ), array('en_child'), 0, 0, array('tr_order' => 'ASC', 'en_trust_score' => 'DESC')) as $item){
+    ), array('en_child'), 0, 0, array('tr_order' => 'ASC', 'en_trust_score' => 'DESC')) as $count => $item){
+
+        //Count total children:
+        $student_count = $CI->Database_model->tr_fetch(array(
+            'tr_type_entity_id IN (' . join(',', $CI->config->item('en_ids_4592')) . ')' => null, //Entity Link Connectors
+            'tr_parent_entity_id' => $item['en_id'],
+            'tr_status' => 2, //Published
+        ), array(), 0, 0, array(), 'COUNT(tr_id) as totals');
 
         //Echo box:
-        $ui .= '<a href="#" class="list-group-item '.( count($CI->Database_model->tr_fetch(array(
+        $ui .= '<a href="javascript:void(0);" class="list-group-item '.( $count>=$show_max ? 'extra-items-'.$parent_en_id.' hidden' : '' ).( count($CI->Database_model->tr_fetch(array(
                 'tr_parent_entity_id' => $item['en_id'],
                 'tr_child_entity_id' => $child_en_id,
                 'tr_type_entity_id IN (' . join(',', $CI->config->item('en_ids_4592')) . ')' => null, //Entity Link Connectors
                 'tr_status' => 2, //Published
-            )))>0 ? 'active' : '' ).'">'.( strlen($item['en_icon'])>0 ? $item['en_icon'].' ' : '' ).$item['en_name'].'</a>';
+            )))>0 ? 'active' : '' ). '">'.( strlen($item['en_icon'])>0 ? $item['en_icon'].' ' : '' ).$item['en_name'].' <span class="pull-right">'.echo_number($student_count[0]['totals']).' <i class="fal fa-users"></i></span></a>';
+    }
+
+    //Did we have too many items?
+    if($count>=$show_max){
+        //Show "Show more" button
+        $ui .= '<a href="javascript:void(0);" class="list-group-item extra-items-'.$parent_en_id.'" onclick="$(\'.extra-items-'.$parent_en_id.'\').toggleClass(\'hidden\')"><i class="fal fa-plus-circle"></i> Show '.($count-$show_max).' more</a>';
     }
 
     $ui .= '</div>';
