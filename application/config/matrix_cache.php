@@ -11,7 +11,48 @@ defined('BASEPATH') OR exit('No direct script access allowed');
  *
  */
 
-//Generated 2019-04-03 16:52:58 PST
+//Generated 2019-04-03 20:49:17 PST
+
+//Social Profiles:
+$config['en_ids_6123'] = array(2793, 3300, 3301, 3302, 3303, 3320);
+$config['en_all_6123'] = array(
+    2793 => array(
+        'm_icon' => '<i class="fab fa-facebook"></i>',
+        'm_name' => 'Facebook',
+        'm_desc' => '',
+        'm_parents' => array(4990, 1326, 1326, 2750),
+    ),
+    3300 => array(
+        'm_icon' => '<i class="fab fa-twitter"></i>',
+        'm_name' => 'Twitter',
+        'm_desc' => '',
+        'm_parents' => array(4990, 2750, 1326, 3304),
+    ),
+    3301 => array(
+        'm_icon' => '<i class="fab fa-instagram"></i>',
+        'm_name' => 'Instagram',
+        'm_desc' => '',
+        'm_parents' => array(4990, 1326, 2750),
+    ),
+    3302 => array(
+        'm_icon' => '<i class="fab fa-linkedin"></i>',
+        'm_name' => 'LinkedIn',
+        'm_desc' => '',
+        'm_parents' => array(4990, 1326, 4763, 2750),
+    ),
+    3303 => array(
+        'm_icon' => '<i class="fab fa-github"></i>',
+        'm_name' => 'Github',
+        'm_desc' => '',
+        'm_parents' => array(4990, 4763, 1326, 2750),
+    ),
+    3320 => array(
+        'm_icon' => '<i class="fab fa-facebook-messenger"></i>',
+        'm_name' => 'Messenger',
+        'm_desc' => '',
+        'm_parents' => array(4990, 1326, 1326, 2750, 2793),
+    ),
+);
 
 //Student Account Details:
 $config['en_ids_4461'] = array(4454, 3290, 3287, 3089, 3289);
@@ -257,8 +298,8 @@ $config['en_all_4432'] = array(
 $config['en_ids_5969'] = array(3286);
 $config['en_all_5969'] = array(
     3286 => array(
-        'm_icon' => '<i class="fal fa-key"></i>',
-        'm_name' => 'Matrix Password',
+        'm_icon' => '<i class="fal fa-lock-open"></i>',
+        'm_name' => 'Mench Password',
         'm_desc' => 'Managed through the Forgot Password section in the Login page',
         'm_parents' => array(5969, 4755, 4255, 3285),
     ),
@@ -309,8 +350,8 @@ $config['en_all_4255'] = array(
         'm_parents' => array(4990, 4255, 3000),
     ),
     3286 => array(
-        'm_icon' => '<i class="fal fa-key"></i>',
-        'm_name' => 'Matrix Password',
+        'm_icon' => '<i class="fal fa-lock-open"></i>',
+        'm_name' => 'Mench Password',
         'm_desc' => 'Enter SHA256 encoded password string combined with our SALT variables',
         'm_parents' => array(5969, 4755, 4255, 3285),
     ),
@@ -553,7 +594,7 @@ $config['en_all_4990'] = array(
     ),
     3320 => array(
         'm_icon' => '<i class="fab fa-facebook-messenger"></i>',
-        'm_name' => 'Facebook Messenger',
+        'm_name' => 'Messenger',
         'm_desc' => '',
         'm_parents' => array(4990, 1326, 1326, 2750, 2793),
     ),
@@ -676,8 +717,8 @@ $config['en_all_4426'] = array(
 $config['en_ids_4755'] = array(3286, 3288, 4248, 4266, 4267, 4268, 4275, 4278, 4279, 4299, 4460, 4547, 4548, 4549, 4550, 4551, 4552, 4553, 4554, 4555, 4556, 4557, 4567, 4568, 4570, 4783, 5967);
 $config['en_all_4755'] = array(
     3286 => array(
-        'm_icon' => '<i class="fal fa-key"></i>',
-        'm_name' => 'Matrix Password',
+        'm_icon' => '<i class="fal fa-lock-open"></i>',
+        'm_name' => 'Mench Password',
         'm_desc' => '',
         'm_parents' => array(5969, 4755, 4255, 3285),
     ),
@@ -1590,14 +1631,8 @@ $config['en_all_4534'] = array(
 );
 
 //Notification Level:
-$config['en_ids_4454'] = array(4455, 4456, 4457, 4458);
+$config['en_ids_4454'] = array(4456, 4457, 4458);
 $config['en_all_4454'] = array(
-    4455 => array(
-        'm_icon' => '<i class="fas fa-ban"></i>',
-        'm_name' => 'Unsubscribed from Mench',
-        'm_desc' => 'User was connected but requested to be unsubscribed, so we can no longer reach-out to them',
-        'm_parents' => array(4454),
-    ),
     4456 => array(
         'm_icon' => '<i class="fal fa-volume-up"></i>',
         'm_name' => 'Receive Regular Notifications',

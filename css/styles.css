@@ -4138,12 +4138,32 @@ h4 .tip-badge {
     color: #222;
 }
 
+
+#funnel .entity-list .input-group{
+    width: 100% !important;
+    border: 0 !important;
+}
+
+.entity-list .input-group-addon{
+    border: 0 !important;
+    color:#2f2739;
+    width:50px !important;
+    display: inline-block;
+}
+.entity-list .input-group-addon i{
+    font-size: 30px !important;
+}
+
 .actionplan-title{
     font-weight: bold;
     font-size: 18px !important;
     padding-left:2px;
     color: #222;
 
+}
+
+#funnel .entity-list .form-control {
+    max-width:550px;
 }
 
 #funnel .entity-list .list-group-item{
