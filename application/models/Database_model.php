@@ -974,9 +974,18 @@ class Database_model extends CI_Model
                 //Now build object-specific index:
                 if ($loop_obj == 'en') {
 
+                    //Count published children:
+                    $published_child_count = $this->Database_model->ln_fetch(array(
+                        'ln_parent_entity_id' => $db_row['en_id'],
+                        'ln_type_entity_id IN (' . join(',', $this->config->item('en_ids_4592')) . ')' => null, //Entity Link Connectors
+                        'ln_status' => 2, //Published
+                        'en_status' => 2, //Published
+                    ), array('en_child'), 0, 0, array(), 'COUNT(tr_id) AS published_child_count');
+
                     $export_row['alg_obj_is_in'] = 0;
                     $export_row['alg_obj_id'] = intval($db_row['en_id']);
                     $export_row['alg_obj_weight'] = $db_row['en_trust_score'];
+                    $export_row['alg_obj_published_children'] = $published_child_count[0]['published_child_count'];
                     $export_row['alg_obj_status'] = intval($db_row['en_status']);
                     $export_row['alg_obj_icon'] = ( strlen($db_row['en_icon']) > 0 ? $db_row['en_icon'] : '<i class="fas fa-at grey-at"></i>' );
                     $export_row['alg_obj_name'] = $db_row['en_name'];
@@ -1005,6 +1014,7 @@ class Database_model extends CI_Model
                     $export_row['alg_obj_is_in'] = 1;
                     $export_row['alg_obj_id'] = intval($db_row['in_id']);
                     $export_row['alg_obj_weight'] = ( isset($metadata['in__tree_max_seconds']) ? $metadata['in__tree_max_seconds'] : 0 );
+                    $export_row['alg_obj_published_children'] = ( isset($metadata['in__tree_in_published_count']) ? ($metadata['in__tree_in_published_count']-1) : 0 );
                     $export_row['alg_obj_status'] = intval($db_row['in_status']);
                     $export_row['alg_obj_icon'] = $fixed_fields['in_type'][$db_row['in_type']]['s_icon']; //Entity type icon
                     $export_row['alg_obj_name'] = $db_row['in_outcome'];

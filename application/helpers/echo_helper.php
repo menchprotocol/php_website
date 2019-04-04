@@ -1497,21 +1497,22 @@ function echo_in($in, $level, $in_parent_id = 0, $is_parent = false)
 
 
 
+    $active = ' ('.( isset($in_metadata['in__tree_in_published_count']) ? $in_metadata['in__tree_in_published_count'] : 'N/A' ).') ';
 
     //Intent UI based on level:
     if ($level <= 1) {
 
         $ui .= '<span><b id="in_level1_outcome" style="font-size: 1.4em; padding-left: 5px;">';
-        $ui .= '<span class="in_outcome_' . $in['in_id'] . '">' . echo_in_outcome($in['in_outcome']) . '</span>';
+        $ui .= '<span class="in_outcome_' . $in['in_id'] . '">' . echo_in_outcome($in['in_outcome']) .$active . '</span>';
         $ui .= '</b></span>';
 
     } elseif ($level == 2) {
 
-        $ui .= '<span>&nbsp;<i id="handle-' . $ln_id . '" class="fal click_expand fa-plus-circle"></i> <span id="title_' . $ln_id . '" style="font-weight: 500;" class="cdr_crnt click_expand tree_title in_outcome_' . $in['in_id'] . '">' . echo_in_outcome($in['in_outcome']) . '</span></span>';
+        $ui .= '<span>&nbsp;<i id="handle-' . $ln_id . '" class="fal click_expand fa-plus-circle"></i> <span id="title_' . $ln_id . '" style="font-weight: 500;" class="cdr_crnt click_expand tree_title in_outcome_' . $in['in_id'] . '">' . echo_in_outcome($in['in_outcome']) .$active. '</span></span>';
 
     } elseif ($level == 3) {
 
-        $ui .= '<span id="title_' . $ln_id . '" class="tree_title in_outcome_' . $in['in_id'] . '" style="padding-left:23px;">' .echo_in_outcome($in['in_outcome']) . '</span> ';
+        $ui .= '<span id="title_' . $ln_id . '" class="tree_title in_outcome_' . $in['in_id'] . '" style="padding-left:23px;">' .echo_in_outcome($in['in_outcome']) .$active . '</span> ';
 
         //Is this the focused item in the parent sibling dropdown?
         if($is_child_focused){
@@ -1593,7 +1594,7 @@ function echo_in($in, $level, $in_parent_id = 0, $is_parent = false)
 
     $tree_count = null;
     if(isset($in_metadata['in__tree_in_active_count'])){
-        $tree_count = '<span class="btn-counter ' . echo_advance() . ' children-counter-' . $in['in_id'] . ' ' . ($is_parent && $level == 2 ? 'inb-counter' : '') . '">' . echo_number($in_metadata['in__tree_in_active_count']) . '</span>';
+        $tree_count = '<span class="btn-counter ' . echo_advance() . ' children-counter-' . $in['in_id'] . ' ' . ($is_parent && $level == 2 ? 'inb-counter' : '') . '">' . $in_metadata['in__tree_in_active_count'] . '</span>';
     }
 
     //Intent Link to Travel Down/UP the Tree:
