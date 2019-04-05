@@ -1,7 +1,7 @@
 
 function add_to_actionplan(in_id){
     //Adds a new or existing intention to the student's Action Plan:
-
+    alert(in_id+' has been added to your action plan.');
 }
 
 load_js_algolia();
@@ -19,7 +19,7 @@ $('.actionplanadder').focus(function() {
 
     source: function (q, cb) {
         algolia_index.search(q, {
-            filters: 'alg_obj_is_in=1 AND alg_obj_status=2',
+            filters: 'alg_obj_is_in=1 AND alg_obj_status=2 AND alg_obj_published_children>=7', //Published intents with 7+ published children
             hitsPerPage: 7,
         }, function (error, content) {
             if (error) {
