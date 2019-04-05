@@ -32,7 +32,7 @@
 			<span class="input-group-addon" style="font-size: 1.2em; padding: 0px 7px 0 2px; color: #2b2b2b; text-align: center;">
 				<i class="fas fa-lock"></i>
 			</span>
-            <div class="form-group is-empty"><input type="password" name="input_password" required="required"
+            <div class="form-group is-empty"><input type="password" name="en_password" required="required"
                                                     placeholder="Password" class="form-control border"><span
                         class="material-input"></span></div>
         </div>

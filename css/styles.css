@@ -3785,6 +3785,12 @@ h4 .tip-badge {
     display: inline-block;
 }
 
+.saving-account{
+    font-size: 0.9em;
+    font-weight: normal;
+    line-height: 110%;
+}
+
 .badge-hy {
     color: #FFF;
     background-color: #2f2739;

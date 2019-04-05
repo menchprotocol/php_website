@@ -567,6 +567,220 @@ class Messenger extends CI_Controller
 
     }
 
+    function myaccount_save_full_name(){
+
+
+        if(!isset($_POST['en_id']) || intval($_POST['en_id'])<1){
+            return echo_json(array(
+                'status' => 0,
+                'message' => 'Missing entity ID',
+            ));
+        } elseif(!isset($_POST['en_name']) || strlen($_POST['en_name'])<2){
+            return echo_json(array(
+                'status' => 0,
+                'message' => 'Name must be at-least 2 characters long',
+            ));
+        }
+
+        //Cleanup:
+        $_POST['en_name'] = trim($_POST['en_name']);
+
+        //Check to make sure not duplicate:
+        $duplicates = $this->Database_model->en_fetch(array(
+            'en_id !=' => $_POST['en_id'],
+            'en_status >=' => 0, //New+
+            'LOWER(en_name)' => strtolower($_POST['en_name']),
+        ));
+        if(count($duplicates) > 0){
+            //This is a duplicate, disallow:
+            return echo_json(array(
+                'status' => 0,
+                'message' => 'Name already in-use. Add a post-fix to make it unique.',
+            ));
+        }
+
+
+        //Update name and notify
+        $this->Database_model->en_update($_POST['en_id'], array(
+            'en_name' => $_POST['en_name'],
+        ), true, $_POST['en_id']);
+
+        return echo_json(array(
+            'status' => 1,
+            'message' => 'Name updated',
+        ));
+    }
+
+    function myaccount_save_email(){
+
+
+        if(!isset($_POST['en_id']) || intval($_POST['en_id'])<1){
+            return echo_json(array(
+                'status' => 0,
+                'message' => 'Missing entity ID',
+            ));
+        } elseif(!isset($_POST['en_email']) || (strlen($_POST['en_email'])>0 && !filter_var($_POST['en_email'], FILTER_VALIDATE_EMAIL))){
+            return echo_json(array(
+                'status' => 0,
+                'message' => 'Invalid email address',
+            ));
+        }
+
+
+        if(strlen($_POST['en_email']) > 0){
+            //Cleanup:
+            $_POST['en_email'] = trim(strtolower($_POST['en_email']));
+
+            //Check to make sure not duplicate:
+            $duplicates = $this->Database_model->ln_fetch(array(
+                'ln_status >=' => 0, //New+
+                'ln_type_entity_id' => 4255, //Emails are of type Text
+                'ln_parent_entity_id' => 3288, //Email Address
+                'ln_child_entity_id !=' => $_POST['en_id'],
+                'LOWER(ln_content)' => $_POST['en_email'],
+            ));
+            if(count($duplicates) > 0){
+                //This is a duplicate, disallow:
+                return echo_json(array(
+                    'status' => 0,
+                    'message' => 'Email already in-use. Use another email or contact support for assisstance.',
+                ));
+            }
+        }
+
+
+        //Fetch existing email:
+        $student_emails = $this->Database_model->ln_fetch(array(
+            'ln_status' => 2, //Published
+            'ln_child_entity_id' => $_POST['en_id'],
+            'ln_type_entity_id' => 4255, //Emails are of type Text
+            'ln_parent_entity_id' => 3288, //Email Address
+        ));
+        if(count($student_emails) > 0){
+
+            if(strlen($_POST['en_email'])==0){
+
+                //Remove email:
+                $this->Database_model->ln_update($student_emails[0]['ln_id'], array(
+                    'ln_status' => -1,
+                ), $_POST['en_id']);
+
+                return echo_json(array(
+                    'status' => 1,
+                    'message' => 'Email removed',
+                ));
+
+            } elseif($student_emails[0]['ln_content']!=$_POST['en_email']){
+
+                //Update if not duplicate:
+                $this->Database_model->ln_update($student_emails[0]['ln_id'], array(
+                    'ln_content' => $_POST['en_email'],
+                ), $_POST['en_id']);
+
+                return echo_json(array(
+                    'status' => 1,
+                    'message' => 'Email updated',
+                ));
+
+            }
+
+        } elseif(strlen($_POST['en_email']) > 0){
+
+            //Create new link:
+            $this->Database_model->ln_create(array(
+                'ln_status' => 2, //Published
+                'ln_miner_entity_id' => $_POST['en_id'],
+                'ln_child_entity_id' => $_POST['en_id'],
+                'ln_type_entity_id' => 4255, //Emails are of type Text
+                'ln_parent_entity_id' => 3288, //Email Address
+                'ln_content' => $_POST['en_email'],
+            ), true);
+
+            return echo_json(array(
+                'status' => 1,
+                'message' => 'Email added',
+            ));
+
+        } else {
+
+            return echo_json(array(
+                'status' => 1,
+                'message' => 'Nothing changed',
+            ));
+
+        }
+
+    }
+
+
+    function myaccount_save_password(){
+
+
+        if(!isset($_POST['en_id']) || intval($_POST['en_id'])<1){
+            return echo_json(array(
+                'status' => 0,
+                'message' => 'Missing entity ID',
+            ));
+        } elseif(!isset($_POST['en_password']) || strlen($_POST['en_password'])<4) {
+            return echo_json(array(
+                'status' => 0,
+                'message' => 'New password must be 4 characters or more',
+            ));
+        }
+
+
+        //Fetch existing password:
+        $student_passwords = $this->Database_model->ln_fetch(array(
+            'ln_status' => 2,
+            'ln_type_entity_id' => 4255, //Passwords are of type Text
+            'ln_parent_entity_id' => 3286, //Password
+            'ln_child_entity_id' => $_POST['en_id'],
+        ));
+
+        $hashed_password = strtolower(hash('sha256', $this->config->item('password_salt') . $_POST['en_password']));
+
+
+        if(count($student_passwords) > 0){
+
+            if($hashed_password==$student_passwords[0]['ln_content']){
+                return echo_json(array(
+                    'status' => 1,
+                    'message' => 'Nothing Updated',
+                ));
+            } else {
+                //Update password:
+                $this->Database_model->ln_update($student_passwords[0]['ln_id'], array(
+                    'ln_content' => $hashed_password,
+                ), $_POST['en_id']);
+
+                return echo_json(array(
+                    'status' => 1,
+                    'message' => 'Password updated',
+                ));
+            }
+
+        } else {
+
+            //Create new link:
+            $this->Database_model->ln_create(array(
+                'ln_status' => 2,
+                'ln_type_entity_id' => 4255, //Passwords are of type Text
+                'ln_parent_entity_id' => 3286, //Password
+                'ln_miner_entity_id' => $_POST['en_id'],
+                'ln_child_entity_id' => $_POST['en_id'],
+                'ln_content' => $hashed_password,
+            ), true);
+
+            return echo_json(array(
+                'status' => 1,
+                'message' => 'Password added',
+            ));
+
+        }
+
+    }
+
+
 
 
     function actionplan($in_id = 0)

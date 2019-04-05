@@ -981,7 +981,7 @@ class Entities extends CI_Controller
 
         if (!isset($_POST['input_email']) || !filter_var($_POST['input_email'], FILTER_VALIDATE_EMAIL)) {
             return redirect_message('/login', '<div class="alert alert-danger" role="alert">Error: Enter valid email to continue.</div>');
-        } elseif (!isset($_POST['input_password'])) {
+        } elseif (!isset($_POST['en_password'])) {
             return redirect_message('/login', '<div class="alert alert-danger" role="alert">Error: Enter valid password to continue.</div>');
         }
 
@@ -1008,20 +1008,19 @@ class Entities extends CI_Controller
         }
 
         //Authenticate their password:
-        $login_passwords = $this->Database_model->ln_fetch(array(
-            'ln_parent_entity_id' => 3286, //Mench Sign In Password
+        $student_passwords = $this->Database_model->ln_fetch(array(
+            'ln_status' => 2,
+            'ln_type_entity_id' => 4255, //Text
+            'ln_parent_entity_id' => 3286, //Password
             'ln_child_entity_id' => $ens[0]['en_id'],
-        ), array(), 1 /* get the top status */, 0, array(
-            //Order by highest status:
-            'ln_status' => 'DESC',
         ));
-        if (count($login_passwords) == 0) {
+        if (count($student_passwords) == 0) {
             //They do not have a password assigned yet!
             return redirect_message('/login', '<div class="alert alert-danger" role="alert">Error: An active login password has not been assigned to your account yet. You can assign a new password using the Forgot Password Button.</div>');
-        } elseif ($login_passwords[0]['ln_status'] < 2) {
+        } elseif ($student_passwords[0]['ln_status'] < 2) {
             //They do not have a password assigned yet!
-            return redirect_message('/login', '<div class="alert alert-danger" role="alert">Error: Password is not activated with status [' . $login_passwords[0]['ln_status'] . '].</div>');
-        } elseif (!(strtolower($login_passwords[0]['ln_content']) == strtolower(hash('sha256', $this->config->item('password_salt') . $_POST['input_password'])))) {
+            return redirect_message('/login', '<div class="alert alert-danger" role="alert">Error: Password is not activated with status [' . $student_passwords[0]['ln_status'] . '].</div>');
+        } elseif ($student_passwords[0]['ln_content'] != strtolower(hash('sha256', $this->config->item('password_salt') . $_POST['en_password']))) {
             //Bad password
             return redirect_message('/login', '<div class="alert alert-danger" role="alert">Error: Incorrect password for [' . $_POST['input_email'] . ']</div>');
         }
@@ -1091,8 +1090,8 @@ class Entities extends CI_Controller
 
 
         //Append user IP and agent information
-        if (isset($_POST['input_password'])) {
-            unset($_POST['input_password']); //Sensitive information to be removed and NOT logged
+        if (isset($_POST['en_password'])) {
+            unset($_POST['en_password']); //Sensitive information to be removed and NOT logged
         }
 
         //Log additional information:
@@ -1192,7 +1191,7 @@ class Entities extends CI_Controller
         } else {
 
             //Fetch their passwords to authenticate login:
-            $login_passwords = $this->Database_model->ln_fetch(array(
+            $student_passwords = $this->Database_model->ln_fetch(array(
                 'ln_status' => 2, //Published
                 'ln_parent_entity_id' => 3286, //Mench Sign In Password
                 'ln_child_entity_id' => $_POST['en_id'], //For this user
@@ -1200,7 +1199,7 @@ class Entities extends CI_Controller
 
             $new_password = hash('sha256', $this->config->item('password_salt') . $_POST['new_pass']);
 
-            if (count($login_passwords) > 0) {
+            if (count($student_passwords) > 0) {
 
                 $detected_ln_type = detect_ln_type_entity_id($new_password);
                 if (!$detected_ln_type['status']) {
@@ -1208,10 +1207,10 @@ class Entities extends CI_Controller
                 }
 
                 //Update existing password:
-                $this->Database_model->ln_update($login_passwords[0]['ln_id'], array(
+                $this->Database_model->ln_update($student_passwords[0]['ln_id'], array(
                     'ln_content' => $new_password,
                     'ln_type_entity_id' => $detected_ln_type['ln_type_entity_id'],
-                ), $login_passwords[0]['ln_child_entity_id']);
+                ), $student_passwords[0]['ln_child_entity_id']);
 
             } else {
                 //Create new password link:
