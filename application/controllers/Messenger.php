@@ -628,6 +628,7 @@ class Messenger extends CI_Controller
 
             //List all student intentions:
             $this->load->view('view_messenger/actionplan_all.php', array(
+                'session_en' => $session_en,
                 'student_intents' => $this->Database_model->ln_fetch(array(
                     'ln_miner_entity_id' => $session_en['en_id'],
                     'ln_type_entity_id' => 4235, //Student Intents
@@ -812,6 +813,35 @@ class Messenger extends CI_Controller
                 return redirect_message('/messenger/actionplan', $message);
             }
         }
+    }
+
+    function actionplan_sort_save()
+    {
+        /*
+         *
+         * Saves the order of Action Plan intents based on
+         * student preferences.
+         *
+         * */
+
+        if (!isset($_POST['en_miner_id']) || intval($_POST['en_miner_id'])<1) {
+            return echo_json(array(
+                'status' => 0,
+                'message' => 'Invalid miner ID',
+            ));
+        } elseif (!isset($_POST['new_actionplan_order']) || !is_array($_POST['new_actionplan_order']) || count($_POST['new_actionplan_order'])<1) {
+            return echo_json(array(
+                'status' => 0,
+                'message' => 'Missing sorting intents',
+            ));
+        }
+
+
+        //All good:
+        return echo_json(array(
+            'status' => 1,
+            'message' => 'Intents sorted',
+        ));
     }
 
     function actionplan_choose_step($actionplan_ln_id, $actionplan_in_id, $in_append_id, $w_key)

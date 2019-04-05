@@ -1,14 +1,18 @@
 
+<script>
+    //Set global variables:
+    var en_miner_id = <?= $session_en['en_id'] ?>;
+</script>
 <script src="/js/custom/messenger-actionplan.js?v=v<?= $this->config->item('app_version') ?>" type="text/javascript"></script>
 
 <?php
 
 //Student has multiple Action Plans, so list all Action Plans to enable Student to choose:
-echo '<div class="list-group actionplan-sort" style="margin-top: 10px;">';
+echo '<div id="actionplan_intents" class="list-group actionplan-sort" style="margin-top: 10px;">';
 foreach ($student_intents as $ln) {
 
     //Display row:
-    echo '<a href="/messenger/actionplan/' . $ln['ln_child_intent_id'] . '" class="list-group-item">';
+    echo '<a href="/messenger/actionplan/' . $ln['ln_child_intent_id'] . '" intent-id="'.$ln['ln_child_intent_id'].'" class="list-group-item actionplan_sort">';
 
     //Right:
     echo '<span class="pull-right">';

@@ -4,6 +4,41 @@ function add_to_actionplan(in_id){
     alert(in_id+' has been added to your action plan.');
 }
 
+
+
+
+function actionplan_sort_save() {
+
+    var sort_rank = 0;
+    var new_actionplan_order = [];
+    $("#actionplan_intents .actionplan_sort").each(function () {
+        sort_rank++;
+        new_actionplan_order[sort_rank] = parseInt($(this).attr('intent-id'));
+    });
+
+    //Update Action Plan order:
+    $.post("/messenger/actionplan_sort_save", {en_miner_id: en_miner_id, new_actionplan_order: new_actionplan_order}, function (data) {
+        //Update UI to confirm with user:
+        if (!data.status) {
+            //There was some sort of an error returned!
+            alert('ERROR: ' + data.message);
+        }
+    });
+
+}
+
+
+//Load sorter:
+var sort = Sortable.create(document.getElementById('actionplan_intents'), {
+    animation: 150, // ms, animation speed moving items when sorting, `0` � without animation
+    draggable: ".actionplan_sort", // Specifies which items inside the element should be sortable
+    handle: ".fa-sort", // Restricts sort start click/touch to the specified element
+    onUpdate: function (evt/**Event*/) {
+        actionplan_sort_save();
+    }
+});
+
+//Load search:
 load_js_algolia();
 
 //Not yet loaded, continue with loading it:
@@ -37,20 +72,16 @@ $('.actionplanadder').focus(function() {
             return echo_js_suggestion(suggestion, 0);
         },
         header: function (data) {
-            if (!data.isEmpty) {
-                return '<a href="javascript:add_to_actionplan(0)" class="suggestion"><span><i class="fal fa-plus-circle add-plus"></i> Suggest </span> <b>' + data.query + '</b></a>';
-            }
+
         },
         empty: function (data) {
-            return '<a href="javascript:add_to_actionplan(0)" class="suggestion"><span><i class="fal fa-plus-circle add-plus"></i> Suggest </span> <b>' + data.query + '</b></a>';
+            return '<div class="not-found" style="font-size:2em !important; margin: 10px 0;"><i class="fas fa-exclamation-triangle"></i> No intents found</div>';
         },
     }
-}]).keypress(function (e) {
-    var code = (e.keyCode ? e.keyCode : e.which);
-    if ((code == 13) || (e.ctrlKey && code == 13)) {
-        return add_to_actionplan(0);
-    }
-});
+}]);
+
+
+
 
 
 
