@@ -832,7 +832,7 @@ function in_modify_save() {
                 } else {
                     $('.save_intent_changes').html(' ');
                 }
-            }, 1210);
+            }, 1597);
 
         }
     });

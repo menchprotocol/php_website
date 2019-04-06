@@ -95,16 +95,31 @@
                 <p>Share your social profiles with the Mench community:</p>';
 
     //Print social URLs:
+    echo '<script> var en_ids_6123 = ' . json_encode($this->config->item('en_ids_6123')) . '; </script>'; //Used for JS variables:
+    $student_social_profiles = $this->Database_model->ln_fetch(array(
+        'ln_status' => 2,
+        'ln_type_entity_id' => 4256, //Generic URL
+        'ln_parent_entity_id IN ('.join(',', $this->config->item('en_ids_6123')).')' => null, //Any social profile
+        'ln_child_entity_id' => $session_en['en_id'], //For this student
+    ));
+
+    //Display all social profiles:
     foreach($this->config->item('en_all_6123') as $acc_en_id => $acc_detail){
+
+        //Do we have this social profile?
+        $profile_array = filter_array($student_social_profiles, 'ln_parent_entity_id', $acc_en_id);
+
+
         echo '<div class="form-group label-floating is-empty">
                         <div class="input-group border" style="width: 155px;">
                             <span class="input-group-addon addon-lean addon-grey">'.$acc_detail['m_icon'].'</span>
-                            <input type="url" id="social_'.$acc_en_id.'" class="form-control border" placeholder="'.$acc_detail['m_name'].' Profile URL" style="display: inline-block;" />
+                            <input type="url" value="'.( count($profile_array) > 0 ? $profile_array['ln_content'] : '' ).'" parent-en-id="'.$acc_en_id.'" class="form-control border social_profile_url" placeholder="'.$acc_detail['m_name'].' Profile URL" style="display: inline-block;" />
                         </div>
                     </div>';
     }
 
-    echo '<a href="javascript:void(0)" onclick="save_social_urls()" class="btn btn-sm btn-secondary">Save</a>
+    echo '<a href="javascript:void(0)" onclick="save_social_profiles()" class="btn btn-sm btn-secondary">Save</a>
+                                <span class="saving-account save_social_profiles"></span>
                             </div>
                         </div>
                     </div>';

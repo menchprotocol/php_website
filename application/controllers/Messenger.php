@@ -80,7 +80,7 @@ class Messenger extends CI_Controller
                 if (isset($im['read']) || isset($im['delivery'])) {
 
                     //Message read OR delivered
-                    $ln_type_entity_id = ( isset($im['delivery']) ? 4279 /* Message Delivered */ : 4278 /* Message Read */ );
+                    $ln_type_entity_id = (isset($im['delivery']) ? 4279 /* Message Delivered */ : 4278 /* Message Read */);
 
                     //Authenticate Student:
                     $en = $this->Matrix_model->en_student_messenger_authenticate($im['sender']['id']);
@@ -92,7 +92,7 @@ class Messenger extends CI_Controller
                         'ln_timestamp >=' => date("Y-m-d H:i:s", (time() - (180))), //Links logged less than 3 minutes ago
                     ), array(), 1);
 
-                    if(count($last_trs_logged) == 0){
+                    if (count($last_trs_logged) == 0) {
                         //We had no recent links of this kind, so go ahead and log:
                         $this->Database_model->ln_create(array(
                             'ln_metadata' => $ln_metadata,
@@ -113,7 +113,7 @@ class Messenger extends CI_Controller
                      * */
 
                     //Messenger Referral OR Postback
-                    $ln_type_entity_id = ( isset($im['delivery']) ? 4267 /* Messenger Referral */ : 4268 /* Messenger Postback */ );
+                    $ln_type_entity_id = (isset($im['delivery']) ? 4267 /* Messenger Referral */ : 4268 /* Messenger Postback */);
 
                     //Authenticate Student:
                     $en = $this->Matrix_model->en_student_messenger_authenticate($im['sender']['id']);
@@ -159,7 +159,7 @@ class Messenger extends CI_Controller
                     ));
 
                     //Digest quick reply Payload if any:
-                    if($quick_reply_payload){
+                    if ($quick_reply_payload) {
                         $this->Chat_model->digest_quick_reply($en, $quick_reply_payload);
                     }
 
@@ -237,7 +237,7 @@ class Messenger extends CI_Controller
 
                     $ln_data = array(
                         'ln_miner_entity_id' => $en['en_id'],
-                        'ln_timestamp' => ($sent_by_mench ? null : echo_time_milliseconds($im['timestamp']) ), //Facebook time if received from Student
+                        'ln_timestamp' => ($sent_by_mench ? null : echo_time_milliseconds($im['timestamp'])), //Facebook time if received from Student
                         'ln_metadata' => $ln_metadata, //Entire JSON object received by Facebook API
                     );
 
@@ -255,7 +255,7 @@ class Messenger extends CI_Controller
                      *
                      * */
 
-                    if(isset($im['message']['quick_reply']['payload'])){
+                    if (isset($im['message']['quick_reply']['payload'])) {
 
                         //Quick Reply Answer Received (Cannot be sent as we never send quick replies)
                         $ln_data['ln_type_entity_id'] = 4460;
@@ -264,7 +264,7 @@ class Messenger extends CI_Controller
                         //Digest the Quick Reply payload:
                         $this->Chat_model->digest_quick_reply($en, $im['message']['quick_reply']['payload']);
 
-                    } elseif(isset($im['message']['text'])){
+                    } elseif (isset($im['message']['text'])) {
 
                         //Set message content:
                         $ln_data['ln_content'] = $im['message']['text'];
@@ -327,7 +327,7 @@ class Messenger extends CI_Controller
                                  *
                                  * */
 
-                                $ln_data['ln_type_entity_id'] = $att_media_types[$att['type']][( $sent_by_mench ? 'sent' : 'received' )];
+                                $ln_data['ln_type_entity_id'] = $att_media_types[$att['type']][($sent_by_mench ? 'sent' : 'received')];
                                 $ln_data['ln_content'] = $att['payload']['url']; //Media Attachment Temporary Facebook URL
                                 $ln_data['ln_status'] = 0; //drafting, since URL needs to be uploaded to Mench CDN via cron__save_chat_media()
 
@@ -349,12 +349,12 @@ class Messenger extends CI_Controller
                                  * */
 
                                 //Generate a URL from this location data:
-                                if(isset($att['url']) && strlen($att['url'])>0 ){
+                                if (isset($att['url']) && strlen($att['url']) > 0) {
                                     //Sometimes Facebook Might provide a full URL:
                                     $ln_data['ln_content'] = $att['url'];
                                 } else {
                                     //If not, we can generate our own URL using the Lat/Lng that will always be provided:
-                                    $ln_data['ln_content'] = 'https://www.google.com/maps?q='.$att['payload']['coordinates']['lat'].'+'.$att['payload']['coordinates']['long'];
+                                    $ln_data['ln_content'] = 'https://www.google.com/maps?q=' . $att['payload']['coordinates']['lat'] . '+' . $att['payload']['coordinates']['long'];
                                 }
 
                             } elseif ($att['type'] == 'template') {
@@ -389,7 +389,7 @@ class Messenger extends CI_Controller
 
 
                     //So did we recognized the
-                    if(isset($ln_data['ln_type_entity_id']) && isset($ln_data['ln_miner_entity_id'])){
+                    if (isset($ln_data['ln_type_entity_id']) && isset($ln_data['ln_miner_entity_id'])) {
 
                         //We're all good, log this message:
                         $this->Database_model->ln_create($ln_data);
@@ -449,7 +449,7 @@ class Messenger extends CI_Controller
 
             //Fetch results and show:
             return echo_json(array(
-                'fb_profile' => $this->Chat_model->facebook_graph('GET', '/'.$current_us[0]['en_psid'], array()),
+                'fb_profile' => $this->Chat_model->facebook_graph('GET', '/' . $current_us[0]['en_psid'], array()),
                 'en' => $current_us[0],
             ));
 
@@ -516,7 +516,8 @@ class Messenger extends CI_Controller
     }
 
 
-    function myaccount(){
+    function myaccount()
+    {
         /*
          *
          * Loads student my account "frame" which would
@@ -549,7 +550,7 @@ class Messenger extends CI_Controller
             die('<div class="alert alert-danger" role="alert">Invalid Credentials</div>');
         } elseif (!is_dev() && isset($_GET['sr']) && !parse_signed_request($_GET['sr'])) {
             die('<div class="alert alert-danger" role="alert">Failed to authenticate your origin.</div>');
-        } elseif(!isset($session_en['en_id'])){
+        } elseif (!isset($session_en['en_id'])) {
             //Messenger Webview, authenticate PSID:
             $session_en = $this->Matrix_model->en_student_messenger_authenticate($psid);
             //Make sure we found them:
@@ -567,15 +568,16 @@ class Messenger extends CI_Controller
 
     }
 
-    function myaccount_save_full_name(){
+    function myaccount_save_full_name()
+    {
 
 
-        if(!isset($_POST['en_id']) || intval($_POST['en_id'])<1){
+        if (!isset($_POST['en_id']) || intval($_POST['en_id']) < 1) {
             return echo_json(array(
                 'status' => 0,
                 'message' => 'Missing entity ID',
             ));
-        } elseif(!isset($_POST['en_name']) || strlen($_POST['en_name'])<2){
+        } elseif (!isset($_POST['en_name']) || strlen($_POST['en_name']) < 2) {
             return echo_json(array(
                 'status' => 0,
                 'message' => 'Name must be at-least 2 characters long',
@@ -591,7 +593,7 @@ class Messenger extends CI_Controller
             'en_status >=' => 0, //New+
             'LOWER(en_name)' => strtolower($_POST['en_name']),
         ));
-        if(count($duplicates) > 0){
+        if (count($duplicates) > 0) {
             //This is a duplicate, disallow:
             return echo_json(array(
                 'status' => 0,
@@ -611,15 +613,16 @@ class Messenger extends CI_Controller
         ));
     }
 
-    function myaccount_save_email(){
+    function myaccount_save_email()
+    {
 
 
-        if(!isset($_POST['en_id']) || intval($_POST['en_id'])<1){
+        if (!isset($_POST['en_id']) || intval($_POST['en_id']) < 1) {
             return echo_json(array(
                 'status' => 0,
                 'message' => 'Missing entity ID',
             ));
-        } elseif(!isset($_POST['en_email']) || (strlen($_POST['en_email'])>0 && !filter_var($_POST['en_email'], FILTER_VALIDATE_EMAIL))){
+        } elseif (!isset($_POST['en_email']) || (strlen($_POST['en_email']) > 0 && !filter_var($_POST['en_email'], FILTER_VALIDATE_EMAIL))) {
             return echo_json(array(
                 'status' => 0,
                 'message' => 'Invalid email address',
@@ -627,7 +630,7 @@ class Messenger extends CI_Controller
         }
 
 
-        if(strlen($_POST['en_email']) > 0){
+        if (strlen($_POST['en_email']) > 0) {
             //Cleanup:
             $_POST['en_email'] = trim(strtolower($_POST['en_email']));
 
@@ -639,7 +642,7 @@ class Messenger extends CI_Controller
                 'ln_child_entity_id !=' => $_POST['en_id'],
                 'LOWER(ln_content)' => $_POST['en_email'],
             ));
-            if(count($duplicates) > 0){
+            if (count($duplicates) > 0) {
                 //This is a duplicate, disallow:
                 return echo_json(array(
                     'status' => 0,
@@ -656,9 +659,9 @@ class Messenger extends CI_Controller
             'ln_type_entity_id' => 4255, //Emails are of type Text
             'ln_parent_entity_id' => 3288, //Email Address
         ));
-        if(count($student_emails) > 0){
+        if (count($student_emails) > 0) {
 
-            if(strlen($_POST['en_email'])==0){
+            if (strlen($_POST['en_email']) == 0) {
 
                 //Remove email:
                 $this->Database_model->ln_update($student_emails[0]['ln_id'], array(
@@ -670,7 +673,7 @@ class Messenger extends CI_Controller
                     'message' => 'Email removed',
                 ));
 
-            } elseif($student_emails[0]['ln_content']!=$_POST['en_email']){
+            } elseif ($student_emails[0]['ln_content'] != $_POST['en_email']) {
 
                 //Update if not duplicate:
                 $this->Database_model->ln_update($student_emails[0]['ln_id'], array(
@@ -684,7 +687,7 @@ class Messenger extends CI_Controller
 
             }
 
-        } elseif(strlen($_POST['en_email']) > 0){
+        } elseif (strlen($_POST['en_email']) > 0) {
 
             //Create new link:
             $this->Database_model->ln_create(array(
@@ -713,15 +716,16 @@ class Messenger extends CI_Controller
     }
 
 
-    function myaccount_save_password(){
+    function myaccount_save_password()
+    {
 
 
-        if(!isset($_POST['en_id']) || intval($_POST['en_id'])<1){
+        if (!isset($_POST['en_id']) || intval($_POST['en_id']) < 1) {
             return echo_json(array(
                 'status' => 0,
                 'message' => 'Missing entity ID',
             ));
-        } elseif(!isset($_POST['en_password']) || strlen($_POST['en_password'])<4) {
+        } elseif (!isset($_POST['en_password']) || strlen($_POST['en_password']) < 4) {
             return echo_json(array(
                 'status' => 0,
                 'message' => 'New password must be 4 characters or more',
@@ -740,9 +744,9 @@ class Messenger extends CI_Controller
         $hashed_password = strtolower(hash('sha256', $this->config->item('password_salt') . $_POST['en_password']));
 
 
-        if(count($student_passwords) > 0){
+        if (count($student_passwords) > 0) {
 
-            if($hashed_password==$student_passwords[0]['ln_content']){
+            if ($hashed_password == $student_passwords[0]['ln_content']) {
                 return echo_json(array(
                     'status' => 1,
                     'message' => 'Nothing Updated',
@@ -781,6 +785,141 @@ class Messenger extends CI_Controller
     }
 
 
+    function myaccount_save_social_profiles()
+    {
+
+
+        if (!isset($_POST['en_id']) || intval($_POST['en_id']) < 1) {
+            return echo_json(array(
+                'status' => 0,
+                'message' => 'Missing entity ID',
+            ));
+        } elseif (!isset($_POST['social_profiles']) || !is_array($_POST['social_profiles']) || count($_POST['social_profiles']) < 1) {
+            return echo_json(array(
+                'status' => 0,
+                'message' => 'Missing social profiles',
+            ));
+        }
+
+        $en_all_6123 = $this->config->item('en_all_6123');
+
+        //Loop through and validate social profiles:
+        $success_messages = '';
+        foreach ($_POST['social_profiles'] as $social_profile) {
+
+
+            //Validate to make sure either nothing OR URL:
+            $social_en_id = intval($social_profile[0]);
+            $social_url = trim($social_profile[1]);
+            $profile_set = ( strlen($social_url) > 0 ? true : false );
+
+
+            //This profile already added for this user, are we updating or removing?
+            if ($profile_set) {
+
+                //Valiodate URL and make sure it matches:
+                $is_valid_url = false;
+                if (filter_var($social_url, FILTER_VALIDATE_URL)) {
+                    //Check to see if it's from the same domain and not in use:
+                    $domain_entity = $this->Matrix_model->en_sync_domain($social_url);
+                    if ($domain_entity['domain_already_existed'] && isset($domain_entity['en_domain']['en_id']) && $domain_entity['en_domain']['en_id'] == $social_en_id) {
+                        //Seems to be a valid domain for this social profile:
+                        $is_valid_url = true;
+                    }
+                }
+
+                if (!$is_valid_url) {
+                    return echo_json(array(
+                        'status' => 0,
+                        'message' => 'Invalid ' . $en_all_6123[$social_en_id]['m_name'] . ' URL',
+                    ));
+                }
+            }
+
+
+            //Does this user have a social URL already?
+            $social_url_exists = $this->Database_model->ln_fetch(array(
+                'ln_status' => 2, //Published
+                'ln_type_entity_id' => 4256, //Generic URL
+                'ln_parent_entity_id' => $social_en_id,
+                'ln_child_entity_id' => $_POST['en_id'],
+            ));
+
+            if (count($social_url_exists) > 0) {
+
+                //Make sure not for another entity:
+                if ($social_url_exists[0]['ln_child_entity_id'] != $_POST['en_id']) {
+                    return echo_json(array(
+                        'status' => 0,
+                        'message' => $en_all_6123[$social_en_id]['m_name'] . ' URL already taken by another entity.',
+                    ));
+                }
+
+                //This profile already added for this user, are we updating or removing?
+                if ($profile_set && $social_url_exists[0]['ln_content'] != $social_url) {
+
+                    //Check to make sure not duplicate
+                    $duplicates = $this->Database_model->ln_fetch(array(
+                        'ln_status' => 2, //Published
+                        'ln_type_entity_id' => 4256, //Generic URL
+                        'ln_parent_entity_id' => $social_en_id,
+                        'ln_child_entity_id !=' => $_POST['en_id'],
+                        'ln_content' => $social_url,
+                    ));
+                    if(count($duplicates) > 0){
+                        return echo_json(array(
+                            'status' => 0,
+                            'message' => 'Duplicates',
+                        ));
+                    }
+
+                    //Update profile since different:
+                    $this->Database_model->ln_update($social_url_exists[0]['ln_id'], array(
+                        'ln_content' => $social_url,
+                    ), $_POST['en_id']);
+
+                    $success_messages .= $en_all_6123[$social_en_id]['m_name'] . ' updated. ';
+
+                } elseif(!$profile_set) {
+
+                    //Remove profile:
+                    $this->Database_model->ln_update($social_url_exists[0]['ln_id'], array(
+                        'ln_status' => -1,
+                    ), $_POST['en_id']);
+
+                    $success_messages .= $en_all_6123[$social_en_id]['m_name'] . ' removed. ';
+
+                } else {
+
+
+
+                }
+
+            } elseif ($profile_set) {
+
+                //Create new link:
+                $this->Database_model->ln_create(array(
+                    'ln_status' => 2, //Published
+                    'ln_miner_entity_id' => $_POST['en_id'],
+                    'ln_child_entity_id' => $_POST['en_id'],
+                    'ln_type_entity_id' => 4256, //Generic URL
+                    'ln_parent_entity_id' => $social_en_id,
+                    'ln_content' => $social_url,
+                ), true);
+
+                $success_messages .= $en_all_6123[$social_en_id]['m_name'] . ' added. ';
+
+            }
+        }
+
+
+        //All good, return combined success messages:
+        return echo_json(array(
+            'status' => 1,
+            'message' => ( strlen($success_messages) > 0 ? $success_messages : 'Nothing changed.'),
+        ));
+
+    }
 
 
     function actionplan($in_id = 0)
@@ -821,7 +960,7 @@ class Messenger extends CI_Controller
             die('<div class="alert alert-danger" role="alert">Invalid Credentials</div>');
         } elseif (!is_dev() && isset($_GET['sr']) && !parse_signed_request($_GET['sr'])) {
             die('<div class="alert alert-danger" role="alert">Failed to authenticate your origin.</div>');
-        } elseif(!isset($session_en['en_id'])){
+        } elseif (!isset($session_en['en_id'])) {
             //Messenger Webview, authenticate PSID:
             $session_en = $this->Matrix_model->en_student_messenger_authenticate($psid);
             //Make sure we found them:
@@ -857,9 +996,9 @@ class Messenger extends CI_Controller
             $ins = $this->Database_model->in_fetch(array(
                 'in_id' => $in_id,
             ), array('in__parents', 'in__children'));
-            if(count($ins) < 1){
+            if (count($ins) < 1) {
                 die('<div class="alert alert-danger" role="alert">Invalid Intent ID.</div>');
-            } elseif($ins[0]['in_status'] != 2){
+            } elseif ($ins[0]['in_status'] != 2) {
                 die('<div class="alert alert-danger" role="alert">Intent cannot be accessed because it is not published.</div>');
             }
 
@@ -875,7 +1014,7 @@ class Messenger extends CI_Controller
                 'session_en' => $session_en,
                 'in' => $ins[0],
                 'actionplans' => $this->Database_model->ln_fetch(array(
-                    'ln_type_entity_id IN ('.join(',',$this->config->item('en_ids_6107')).')' => null, //Student Action Plan
+                    'ln_type_entity_id IN (' . join(',', $this->config->item('en_ids_6107')) . ')' => null, //Student Action Plan
                     'ln_miner_entity_id' => $session_en['en_id'],
                     'ln_child_intent_id' => $in_id,
                     'ln_status >=' => 0, //New+
@@ -884,8 +1023,6 @@ class Messenger extends CI_Controller
 
         }
     }
-
-
 
 
     function actionplan_update_step()
@@ -917,8 +1054,8 @@ class Messenger extends CI_Controller
         $session_en = $this->session->userdata('user');
         $step_url = '/messenger/actionplan/' . $actionplan_steps[0]['ln_child_intent_id'];
         $step_is_incomplete = ($actionplan_steps[0]['ln_status'] < 2);
-        $completion_notes_added = ( strlen($_POST['ln_content']) > 0 );
-        if(isset($session_en['en_id']) && $session_en['en_id']!=$actionplan_steps[0]['ln_miner_entity_id']){
+        $completion_notes_added = (strlen($_POST['ln_content']) > 0);
+        if (isset($session_en['en_id']) && $session_en['en_id'] != $actionplan_steps[0]['ln_miner_entity_id']) {
             //This seems to be a Mench miner/moderator that is NOT the Action Plan Student:
             return redirect_message($step_url, '<div class="alert alert-info" role="alert">Note: You do not seem to be the Action Plan Student so you cannot submit changes.</div>');
         } elseif (!$completion_notes_added && !$step_is_incomplete) {
@@ -928,19 +1065,19 @@ class Messenger extends CI_Controller
 
         //TODO Check to see intent has been un-published since it was added to student Action Plan? See Github issue #2226
 
-        if($completion_notes_added){
+        if ($completion_notes_added) {
             //Validate submission:
             $detected_ln_type = detect_ln_type_entity_id($_POST['ln_content']);
-            if(!$detected_ln_type['status']){
-                return redirect_message('/messenger/actionplan', '<div class="alert alert-danger" role="alert">Error: '.$detected_ln_type['message'].'</div>');
+            if (!$detected_ln_type['status']) {
+                return redirect_message('/messenger/actionplan', '<div class="alert alert-danger" role="alert">Error: ' . $detected_ln_type['message'] . '</div>');
             }
         }
 
         //Validate intent completion requirement and see if Student meets it:
         $message_in_requirements = $this->Matrix_model->in_req_completion($actionplan_steps[0]);
-        if($message_in_requirements && $actionplan_steps[0]['in_requirement_entity_id'] != $detected_ln_type['ln_type_entity_id']){
+        if ($message_in_requirements && $actionplan_steps[0]['in_requirement_entity_id'] != $detected_ln_type['ln_type_entity_id']) {
             //Nope, it does not seem that the submission meets the requirements:
-            return redirect_message($step_url, '<div class="alert alert-danger" role="alert">Error: '.$message_in_requirements.'</div>');
+            return redirect_message($step_url, '<div class="alert alert-danger" role="alert">Error: ' . $message_in_requirements . '</div>');
         }
 
 
@@ -954,8 +1091,8 @@ class Messenger extends CI_Controller
                 'ln_type_entity_id' => $detected_ln_type['ln_type_entity_id'],
                 'ln_parent_intent_id' => $actionplan_steps[0]['ln_child_intent_id'],
                 'ln_order' => 1 + $this->Database_model->ln_max_order(array(
-                    'ln_parent_link_id' => $actionplan_steps[0]['ln_id'],
-                )),
+                        'ln_parent_link_id' => $actionplan_steps[0]['ln_id'],
+                    )),
             ));
         }
 
@@ -979,9 +1116,6 @@ class Messenger extends CI_Controller
     }
 
 
-
-
-
     function actionplan_skip_step($ln_id, $apply_skip)
     {
 
@@ -992,11 +1126,11 @@ class Messenger extends CI_Controller
             'ln_status >=' => 0, //New+
         ));
 
-        if(count($actionplan_steps) < 1){
+        if (count($actionplan_steps) < 1) {
             //Ooooopsi, could not find it:
             $this->Database_model->ln_create(array(
                 'ln_parent_link_id' => $ln_id,
-                'ln_content' => 'actionplan_skip_recursive_down() failed to locate step [Apply: '.( $apply_skip ? 'YES' : 'NO' ).']',
+                'ln_content' => 'actionplan_skip_recursive_down() failed to locate step [Apply: ' . ($apply_skip ? 'YES' : 'NO') . ']',
                 'ln_type_entity_id' => 4246, //Platform Error
                 'ln_miner_entity_id' => 1, //Shervin/Developer
             ));
@@ -1007,7 +1141,7 @@ class Messenger extends CI_Controller
         //Run skip function
         $total_skipped = count($this->Matrix_model->actionplan_skip_recursive_down($ln_id, $apply_skip));
 
-        if(!$apply_skip){
+        if (!$apply_skip) {
 
             //Just give count on total steps so student can review/confirm:
             return echo_json(array(
@@ -1038,12 +1172,12 @@ class Messenger extends CI_Controller
          *
          * */
 
-        if (!isset($_POST['en_miner_id']) || intval($_POST['en_miner_id'])<1) {
+        if (!isset($_POST['en_miner_id']) || intval($_POST['en_miner_id']) < 1) {
             return echo_json(array(
                 'status' => 0,
                 'message' => 'Invalid miner ID',
             ));
-        } elseif (!isset($_POST['new_actionplan_order']) || !is_array($_POST['new_actionplan_order']) || count($_POST['new_actionplan_order'])<1) {
+        } elseif (!isset($_POST['new_actionplan_order']) || !is_array($_POST['new_actionplan_order']) || count($_POST['new_actionplan_order']) < 1) {
             return echo_json(array(
                 'status' => 0,
                 'message' => 'Missing sorting intents',
@@ -1061,7 +1195,7 @@ class Messenger extends CI_Controller
     function actionplan_choose_step($actionplan_ln_id, $actionplan_in_id, $in_append_id, $w_key)
     {
 
-        if($w_key != md5($this->config->item('actionplan_salt') . $in_append_id . $actionplan_in_id . $actionplan_ln_id)){
+        if ($w_key != md5($this->config->item('actionplan_salt') . $in_append_id . $actionplan_in_id . $actionplan_ln_id)) {
             return redirect_message('/messenger/actionplan/' . $actionplan_in_id, '<div class="alert alert-danger" role="alert">Invalid Secret Key</div>');
         }
 
@@ -1072,7 +1206,7 @@ class Messenger extends CI_Controller
             'ln_type_entity_id' => 4559, //Completed Step
             'ln_status >=' => 0, //New+
         ));
-        if(count($actionplan_steps) < 1){
+        if (count($actionplan_steps) < 1) {
             return redirect_message('/messenger/actionplan/' . $actionplan_in_id, '<div class="alert alert-danger" role="alert">Step Not Found</div>');
         }
 
@@ -1085,10 +1219,10 @@ class Messenger extends CI_Controller
     }
 
 
+    function test($in_id = 7463, $add_actionplan = 1, $direction_is_downward = 1)
+    {
 
-    function test($in_id=7463, $add_actionplan = 1, $direction_is_downward = 1){
-
-        if($add_actionplan){
+        if ($add_actionplan) {
             $actionplan = $this->Database_model->ln_create(array(
                 'ln_type_entity_id' => 4235, //Student Intent
                 'ln_status' => 0, //New
@@ -1127,10 +1261,10 @@ class Messenger extends CI_Controller
 
         //Let's fetch all Media files without a Facebook attachment ID:
         $ln_pending = $this->Database_model->ln_fetch(array(
-            'ln_type_entity_id IN (' . join(',',array_keys($fb_convert_4537)) . ')' => null,
+            'ln_type_entity_id IN (' . join(',', array_keys($fb_convert_4537)) . ')' => null,
             'ln_status' => 2, //Publish
             'ln_metadata' => null, //Missing Facebook Attachment ID [NOTE: Must make sure ln_metadata is not used for anything else for these link types]
-        ), array(), 10, 0 , array('ln_id' => 'ASC')); //Sort by oldest added first
+        ), array(), 10, 0, array('ln_id' => 'ASC')); //Sort by oldest added first
 
 
         //Put something in the ln_metadata so other cron jobs do not pick  up on it:
@@ -1182,7 +1316,7 @@ class Messenger extends CI_Controller
                     'ln_type_entity_id' => 4246, //Platform Error
                     'ln_miner_entity_id' => 1, //Shervin/Developer
                     'ln_parent_link_id' => $ln['ln_id'],
-                    'ln_content' => 'cron__sync_attachments() Failed to sync attachment to Facebook API: '.( isset($result['ln_metadata']['result']['error']['message']) ? $result['ln_metadata']['result']['error']['message'] : 'Unknown Error' ),
+                    'ln_content' => 'cron__sync_attachments() Failed to sync attachment to Facebook API: ' . (isset($result['ln_metadata']['result']['error']['message']) ? $result['ln_metadata']['result']['error']['message'] : 'Unknown Error'),
                     'ln_metadata' => array(
                         'payload' => $payload,
                         'result' => $result,
@@ -1210,7 +1344,6 @@ class Messenger extends CI_Controller
     }
 
 
-
     function cron__save_chat_media()
     {
 
@@ -1235,12 +1368,12 @@ class Messenger extends CI_Controller
         $this->Matrix_model->trs_set_drafting($ln_pending);
 
         $counter = 0;
-        foreach($ln_pending as $ln){
+        foreach ($ln_pending as $ln) {
 
             //Store to CDN:
             $new_file_url = upload_to_cdn($ln['ln_content'], $ln);
 
-            if($new_file_url && filter_var($new_file_url, FILTER_VALIDATE_URL)){
+            if ($new_file_url && filter_var($new_file_url, FILTER_VALIDATE_URL)) {
 
                 //Update link:
                 $this->Database_model->ln_update($ln['ln_id'], array(
@@ -1269,7 +1402,7 @@ class Messenger extends CI_Controller
         }
 
         //Echo message for cron job:
-        echo $counter.' message media files saved to Mench CDN';
+        echo $counter . ' message media files saved to Mench CDN';
 
     }
 
@@ -1305,7 +1438,7 @@ class Messenger extends CI_Controller
             //Save photo to S3 if content is URL
             $new_file_url = (filter_var($ln['ln_content'], FILTER_VALIDATE_URL) ? upload_to_cdn($ln['ln_content'], $ln) : false);
 
-            if(!$new_file_url){
+            if (!$new_file_url) {
 
                 //Ooopsi, there was an error:
                 $this->Database_model->ln_create(array(
@@ -1320,7 +1453,7 @@ class Messenger extends CI_Controller
 
             //Update entity icon only if not already set:
             $ln_child_entity_id = 0;
-            if (strlen($ln['en_icon'])<1) {
+            if (strlen($ln['en_icon']) < 1) {
 
                 //Update Cover ID:
                 $this->Database_model->en_update($ln['en_id'], array(
