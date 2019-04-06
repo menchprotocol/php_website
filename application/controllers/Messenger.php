@@ -1248,8 +1248,6 @@ class Messenger extends CI_Controller
                 ), $_POST['en_miner_id']);
             }
 
-
-
         }
 
         //Add new option if not already there:

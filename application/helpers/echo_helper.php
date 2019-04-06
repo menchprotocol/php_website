@@ -1347,12 +1347,14 @@ function echo_radio_entities($parent_en_id, $child_en_id, $enable_mulitiselect){
         'en_status' => 2, //Published
     ), array('en_child'), 0, 0, array('ln_order' => 'ASC', 'en_trust_score' => 'DESC')) as $count => $item){
 
-        //Count total children:
-        $student_count = $CI->Database_model->ln_fetch(array(
-            'ln_type_entity_id IN (' . join(',', $CI->config->item('en_ids_4592')) . ')' => null, //Entity Link Connectors
-            'ln_parent_entity_id' => $item['en_id'],
-            'ln_status' => 2, //Published
-        ), array(), 0, 0, array(), 'COUNT(ln_id) as totals');
+        //Count total children unless its for subscription levels:
+        if($parent_en_id!=4454){
+            $student_count = $CI->Database_model->ln_fetch(array(
+                'ln_type_entity_id IN (' . join(',', $CI->config->item('en_ids_4592')) . ')' => null, //Entity Link Connectors
+                'ln_parent_entity_id' => $item['en_id'],
+                'ln_status' => 2, //Published
+            ), array(), 0, 0, array(), 'COUNT(ln_id) as totals');
+        }
 
         //Echo box:
         $ui .= '<a href="javascript:void(0);" onclick="radio_update('.$parent_en_id.','.$item['en_id'].','.$enable_mulitiselect.')" class="list-group-item item-'.$item['en_id'].' '.( $count>=$show_max ? 'extra-items-'.$parent_en_id.' hidden ' : '' ).( count($CI->Database_model->ln_fetch(array(
@@ -1360,7 +1362,7 @@ function echo_radio_entities($parent_en_id, $child_en_id, $enable_mulitiselect){
                 'ln_child_entity_id' => $child_en_id,
                 'ln_type_entity_id IN (' . join(',', $CI->config->item('en_ids_4592')) . ')' => null, //Entity Link Connectors
                 'ln_status' => 2, //Published
-            )))>0 ? ' active ' : '' ). '">'.( strlen($item['en_icon'])>0 ? '<span class="left-icon">'.$item['en_icon'].'</span>' : '' ).$item['en_name'].'<span class="change-results"></span><span class="pull-right">'.echo_number($student_count[0]['totals']).' <i class="fal fa-users"></i></span></a>';
+            )))>0 ? ' active ' : '' ). '">'.( strlen($item['en_icon'])>0 ? '<span class="left-icon">'.$item['en_icon'].'</span>' : '' ).$item['en_name'].'<span class="change-results"></span>'.( $parent_en_id!=4454 ? '<span class="pull-right">'.echo_number($student_count[0]['totals']).' <i class="fal fa-users"></i></span>' : '' ).'</a>';
     }
 
     //Did we have too many items?
