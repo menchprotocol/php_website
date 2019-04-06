@@ -235,28 +235,21 @@ if(!$action) {
             if(intval($_POST['fb_messenger_format']) && intval($_POST['recipient_en'])){
 
                 //Send to Facebook Messenger:
-                echo_json($this->Chat_model->dispatch_message(
+                $msg_validation = $this->Chat_model->dispatch_message(
                     $_POST['test_message'],
                     array('en_id' => intval($_POST['recipient_en'])),
                     true
-                ));
+                );
 
             } else {
 
                 $msg_validation = $this->Chat_model->dispatch_validate_message($_POST['test_message'], ( intval($_POST['recipient_en']) ? array('en_id' => $_POST['recipient_en']) : array() ), $_POST['fb_messenger_format']);
 
-                if($_POST['fb_messenger_format'] || !$msg_validation['status']){
-                    echo_json(array(
-                        'analyze' => extract_message_references($_POST['test_message']),
-                        'results' => $msg_validation,
-                    ));
-                } else {
-                    //HTML:
-                    echo '<div><a href="/admin/tools/compose_test_message"> &laquo; Back to Message Compose</a></div><hr />';
-                    echo $msg_validation['output_messages'][0]['message_body'];
-                }
-
             }
+
+            //Show results:
+            echo '<div><a href="/admin/tools/compose_test_message"> &laquo; Back to Message Compose</a></div><hr />';
+            print_r($msg_validation);
 
         } else {
 
@@ -270,7 +263,7 @@ if(!$action) {
             echo '<input type="number" name="recipient_en" value="1"><br />';
 
             echo '<div class="mini-header">Format Is Messenger:</div>';
-            echo '<input type="number" name="fb_messenger_format" value="0"><br /><br />';
+            echo '<input type="number" name="fb_messenger_format" value="1"><br /><br />';
 
 
             echo '<input type="submit" class="btn btn-primary" value="Compose Test Message">';
