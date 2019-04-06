@@ -26,7 +26,7 @@ $url_part_1 = $this->uri->segment(1);
 
 <div class="fb-customerchat"
      attribution=setup_tool
-     minimized="true"
+     greeting_dialog_display="hide"
      page_id="<?= $fb_settings['page_id'] ?>"
      theme_color="#2f2739"
      logged_in_greeting="Hi! How can I help you land your dream job?"

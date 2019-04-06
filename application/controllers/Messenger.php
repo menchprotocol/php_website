@@ -1163,6 +1163,115 @@ class Messenger extends CI_Controller
         }
     }
 
+    function myaccount_radio_update()
+    {
+        /*
+         *
+         * Saves the radio selection of some account fields
+         * that are displayed using echo_radio_entities()
+         *
+         * */
+
+        if (!isset($_POST['en_miner_id']) || intval($_POST['en_miner_id']) < 1) {
+            return echo_json(array(
+                'status' => 0,
+                'message' => 'Invalid miner ID',
+            ));
+        } elseif (!isset($_POST['parent_en_id']) || intval($_POST['parent_en_id']) < 1) {
+            return echo_json(array(
+                'status' => 0,
+                'message' => 'Missing parent entity',
+            ));
+        } elseif (!isset($_POST['selected_en_id']) || intval($_POST['selected_en_id']) < 1) {
+            return echo_json(array(
+                'status' => 0,
+                'message' => 'Missing selected entity',
+            ));
+        } elseif (!isset($_POST['enable_mulitiselect']) || !isset($_POST['was_already_selected'])) {
+            return echo_json(array(
+                'status' => 0,
+                'message' => 'Missing multi-select setting',
+            ));
+        }
+
+
+        if(!$_POST['enable_mulitiselect'] || $_POST['was_already_selected']){
+            //Since this is not a multi-select we want to remove all existing options...
+
+            //Fetch all possible answers based on parent entity:
+            $filters = array(
+                'ln_parent_entity_id' => $_POST['parent_en_id'],
+                'ln_type_entity_id IN (' . join(',', $this->config->item('en_ids_4592')) . ')' => null, //Entity Link Connectors
+                'ln_status' => 2, //Published
+                'en_status' => 2, //Published
+            );
+
+            if($_POST['enable_mulitiselect'] && $_POST['was_already_selected']){
+                //Just remove this single item, not the other ones:
+                $filters['ln_child_entity_id'] = $_POST['selected_en_id'];
+            }
+
+            //List all possible answers:
+            $possible_answers = array();
+            foreach($this->Database_model->ln_fetch($filters, array('en_child'), 0, 0) as $answer_en){
+                array_push($possible_answers, $answer_en['en_id']);
+            }
+
+            //Remove selected options for this miner:
+            foreach($this->Database_model->ln_fetch(array(
+                'ln_parent_entity_id IN (' . join(',', $possible_answers) . ')' => null,
+                'ln_child_entity_id' => $_POST['en_miner_id'],
+                'ln_type_entity_id IN (' . join(',', $this->config->item('en_ids_4592')) . ')' => null, //Entity Link Connectors
+                'ln_status' => 2, //Published
+            )) as $remove_en){
+
+                //Does this have to do with changing Subscription Type? We need to confirm with them if so:
+                if($_POST['parent_en_id']==4454){
+                    if($_POST['selected_en_id']==4455){
+                        //They just unsubscribed, confirm with them:
+                        $this->Chat_model->dispatch_message(
+                            'This is a confirmation that you are now unsubscribed from Mench and I will not longer send you any messages. You can resume your subscription later by going to MY ACCOUNT > SUBSCRIPTION TYPE > Set Notification',
+                            array('en_id' => $_POST['en_miner_id']),
+                            true
+                        );
+                    } elseif($remove_en['ln_parent_entity_id']==4455){
+                        //They used to be ub-subscribed, not they join back, confirm with them:
+                        $this->Chat_model->dispatch_message(
+                            'Welcome back! This is a confirmation that you are not re-subscribed to Mench and I will continue to empower you to achieve your Acion Plan intentions',
+                            array('en_id' => $_POST['en_miner_id']),
+                            true
+                        );
+                    }
+                }
+
+                //Should usually remove a single option:
+                $this->Database_model->ln_update($remove_en['ln_id'], array(
+                    'ln_status' => -1,
+                ), $_POST['en_miner_id']);
+            }
+
+
+
+        }
+
+        //Add new option if not already there:
+        if(!$_POST['enable_mulitiselect'] || !$_POST['was_already_selected']){
+            $this->Database_model->ln_create(array(
+                'ln_parent_entity_id' => $_POST['selected_en_id'],
+                'ln_child_entity_id' => $_POST['en_miner_id'],
+                'ln_miner_entity_id' => $_POST['en_miner_id'],
+                'ln_type_entity_id' => 4230, //Raw
+                'ln_status' => 2, //Published
+            ));
+        }
+
+        //All good:
+        return echo_json(array(
+            'status' => 1,
+            'message' => 'Updated', //Note: NOT shown in UI
+        ));
+    }
+
     function actionplan_sort_save()
     {
         /*
@@ -1182,6 +1291,10 @@ class Messenger extends CI_Controller
                 'status' => 0,
                 'message' => 'Missing sorting intents',
             ));
+        }
+
+        foreach($_POST['new_actionplan_order'] as $ln_order => $ln_id){
+
         }
 
 

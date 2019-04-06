@@ -5,11 +5,11 @@ $fixed_fields = $this->config->item('fixed_fields');
 
 
 $moderation_tools = array(
-    '/links/moderator_tools/identical_intent_outcomes' => 'Identical Intent Outcomes',
-    '/links/moderator_tools/identical_entity_names' => 'Identical Entity Names',
-    '/links/moderator_tools/orphan_intents' => 'Orphan Intents',
-    '/links/moderator_tools/orphan_entities' => 'Orphan Entities',
-    '/links/moderator_tools/compose_test_message' => 'Compose Test Message',
+    '/admin/tools/identical_intent_outcomes' => 'Identical Intent Outcomes',
+    '/admin/tools/identical_entity_names' => 'Identical Entity Names',
+    '/admin/tools/orphan_intents' => 'Orphan Intents',
+    '/admin/tools/orphan_entities' => 'Orphan Entities',
+    '/admin/tools/compose_test_message' => 'Compose Test Message',
 );
 
 $cron_jobs = array(
@@ -21,9 +21,9 @@ $cron_jobs = array(
 
 
 $developer_tools = array(
-    '/entities/dev__matrix_cache' => 'Matrix PHP Cache',
-    '/entities/dev__session' => 'My Session Variables',
-    '/links/dev__php_info' => 'Server PHP Info',
+    '/admin/matrix_cache' => 'Matrix PHP Cache',
+    '/admin/my_session' => 'My Session Variables',
+    '/admin/php_info' => 'Server PHP Info',
 );
 
 
@@ -32,11 +32,10 @@ $developer_tools = array(
 
 if(!$action) {
 
-    echo '<ul class="breadcrumb maxout" style="margin-bottom: 10px;"><li><a href="/links">Links</a></li></ul>';
+    echo '<h1>Admin Tools</h1>';
 
-    echo '<h1>Moderation Tools</h1>';
-
-    echo '<div class="list-group actionplan_list grey_list maxout" style="margin-top:20px;">';
+    echo '<h3>Moderation Tools</h3>';
+    echo '<div class="list-group actionplan_list grey_list maxout">';
     foreach ($moderation_tools as $tool_key => $tool_name) {
         echo '<a href="' . $tool_key . '" class="list-group-item">';
         echo '<span class="pull-right">';
@@ -44,21 +43,6 @@ if(!$action) {
         echo '</span>';
         echo '<span style="color:#222; font-weight:500; font-size:1.2em;">'.$tool_name.'</span>';
         echo '</a>';
-
-    }
-    echo '</div>';
-
-
-    echo '<h3>Cron Jobs</h3>';
-    echo '<div class="list-group actionplan_list grey_list maxout">';
-    foreach ($cron_jobs as $tool_key => $tool_name) {
-        echo '<a href="' . $tool_key . '" target="_blank" class="list-group-item">';
-        echo '<span class="pull-right">';
-        echo '<span class="badge badge-primary fr-bgd"><i class="fas fa-external-link"></i></span>';
-        echo '</span>';
-        echo '<span style="color:#222; font-weight:500; font-size:1.2em;">'.$tool_name.'</span>';
-        echo '</a>';
-
     }
     echo '</div>';
 
@@ -76,10 +60,25 @@ if(!$action) {
     }
     echo '</div>';
 
+
+
+    echo '<h3>Automated Cron Jobs</h3>';
+    echo '<div class="list-group actionplan_list grey_list maxout">';
+    foreach ($cron_jobs as $tool_key => $tool_name) {
+        echo '<a href="' . $tool_key . '" target="_blank" class="list-group-item">';
+        echo '<span class="pull-right">';
+        echo '<span class="badge badge-primary fr-bgd"><i class="fas fa-external-link"></i></span>';
+        echo '</span>';
+        echo '<span style="color:#222; font-weight:500; font-size:1.2em;">'.$tool_name.'</span>';
+        echo '</a>';
+
+    }
+    echo '</div>';
+
 } else {
 
     //Show back button:
-    echo '<ul class="breadcrumb maxout" style="margin-bottom: 10px;"><li><a href="/links">Links</a></li><li><a href="/links/moderator_tools">Moderator Tools</a></li></ul>';
+    echo '<ul class="breadcrumb maxout" style="margin-bottom: 10px;"><li><a href="/links">Links</a></li><li><a href="/admin/">Moderator Tools</a></li></ul>';
 
     if($action=='orphan_intents') {
 
@@ -123,7 +122,7 @@ if(!$action) {
                 echo '<br />';
                 echo '<a class="remove-all" href="javascript:void(0);" onclick="$(\'.remove-all\').toggleClass(\'hidden\')">Remove All</a>';
                 echo '<div class="remove-all hidden maxout"><b style="color: #FF0000;">WARNING</b>: All intents and all their links will be removed. ONLY do this after reviewing all orphans one-by-one and making sure they cannot become a child of an existing intent.<br /><br /></div>';
-                echo '<a class="remove-all hidden maxout" href="/links/moderator_tools/orphan_intents/remove_all" onclick="">Confirm: <b>Remove All</b> &raquo;</a>';
+                echo '<a class="remove-all hidden maxout" href="/admin/tools/orphan_intents/remove_all" onclick="">Confirm: <b>Remove All</b> &raquo;</a>';
             }
 
         } else {
@@ -171,7 +170,7 @@ if(!$action) {
                 echo '<br />';
                 echo '<a class="remove-all" href="javascript:void(0);" onclick="$(\'.remove-all\').toggleClass(\'hidden\')">Remove All</a>';
                 echo '<div class="remove-all hidden maxout"><b style="color: #FF0000;">WARNING</b>: All entities and all their links will be removed. ONLY do this after reviewing all orphans one-by-one and making sure they cannot become a child of an existing entity.<br /><br /></div>';
-                echo '<a class="remove-all hidden maxout" href="/links/moderator_tools/orphan_entities/remove_all" onclick="">Confirm: <b>Remove All</b> &raquo;</a>';
+                echo '<a class="remove-all hidden maxout" href="/admin/tools/orphan_entities/remove_all" onclick="">Confirm: <b>Remove All</b> &raquo;</a>';
             }
 
         } else {
@@ -241,7 +240,7 @@ if(!$action) {
                 ));
             } else {
                 //HTML:
-                echo '<div><a href="/links/moderator_tools/compose_test_message"> &laquo; Back to Message Compose</a></div><hr />';
+                echo '<div><a href="/admin/tools/compose_test_message"> &laquo; Back to Message Compose</a></div><hr />';
                 echo $msg_validation['output_messages'][0]['message_body'];
             }
 

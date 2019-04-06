@@ -5,13 +5,13 @@ defined('BASEPATH') OR exit('No direct script access allowed');
  * Keep a cache of certain parts of the Intent tree for faster processing
  * So we don't have to make DB calls to figure them out every time!
  * See here for all entities cached: https://mench.com/entities/4527
- * use-case format: $this->config->item('en_all_6107')
+ * use-case format: $this->config->item('in_count')
  *
  * ATTENTION: Also search for "en_ids_" and "en_all_" when trying to manage these throughout the code base
  *
  */
 
-//Generated 2019-04-04 15:48:41 PST
+//Generated 2019-04-06 15:45:49 PST
 
 //Social Profiles:
 $config['en_ids_6123'] = array(2793, 3300, 3301, 3302, 3303, 3320);
@@ -59,9 +59,9 @@ $config['en_ids_4461'] = array(4454, 3290, 3287, 3089, 3289);
 $config['en_all_4461'] = array(
     4454 => array(
         'm_icon' => '<i class="fal fa-bells"></i>',
-        'm_name' => 'Notification Level',
+        'm_name' => 'Subscription Settings',
         'm_desc' => 'Choose how you like to be notified for messages I send you via Messenger:',
-        'm_parents' => array(4527, 4461),
+        'm_parents' => array(4603, 4527, 4461),
     ),
     3290 => array(
         'm_icon' => '<i class="fal fa-transgender"></i>',
@@ -73,7 +73,7 @@ $config['en_all_4461'] = array(
         'm_icon' => '<i class="fal fa-language"></i>',
         'm_name' => 'Languages',
         'm_desc' => 'Choose all the languages you speak fluently:',
-        'm_parents' => array(4603, 4461, 3285),
+        'm_parents' => array(6122, 4603, 4461, 3285),
     ),
     3089 => array(
         'm_icon' => '<i class="fal fa-globe"></i>',
@@ -1630,26 +1630,32 @@ $config['en_all_4534'] = array(
     ),
 );
 
-//Notification Level:
-$config['en_ids_4454'] = array(4456, 4457, 4458);
+//Subscription Settings:
+$config['en_ids_4454'] = array(4456, 4457, 4458, 4455);
 $config['en_all_4454'] = array(
     4456 => array(
         'm_icon' => '<i class="fal fa-volume-up"></i>',
-        'm_name' => 'Receive Regular Notifications',
+        'm_name' => 'Regular Notifications',
         'm_desc' => 'User is connected and will be notified by sound & vibration for new Mench messages',
         'm_parents' => array(4454),
     ),
     4457 => array(
         'm_icon' => '<i class="fal fa-volume-down"></i>',
-        'm_name' => 'Receive Silent Push Notifications',
+        'm_name' => 'Silent Notifications',
         'm_desc' => 'User is connected and will be notified by on-screen notification only for new Mench messages',
         'm_parents' => array(4454),
     ),
     4458 => array(
         'm_icon' => '<i class="fal fa-volume-mute"></i>',
-        'm_name' => 'Do Not Receive Push Notifications',
+        'm_name' => 'No Notifications',
         'm_desc' => 'User is connected but will not be notified for new Mench messages except the red icon indicator on the Messenger app which would indicate the total number of new messages they have',
         'm_parents' => array(4454),
+    ),
+    4455 => array(
+        'm_icon' => '<i class="fas fa-ban"></i>',
+        'm_name' => 'Unsubscribed from Mench',
+        'm_desc' => 'Stop all communications until you re-subscribe',
+        'm_parents' => array(4454, 3285),
     ),
 );
 

@@ -1,5 +1,67 @@
 
 
+function radio_update(parent_en_id, selected_en_id, enable_mulitiselect){
+
+    var was_already_selected = ( $('.radio-'+parent_en_id+' .item-'+selected_en_id).hasClass('active') ? 1 : 0 );
+
+    //Save the rest of the content:
+    if(!enable_mulitiselect && was_already_selected){
+        //Nothing to do here:
+        return false;
+    } else if(parent_en_id==4454 && selected_en_id==4455){
+        //It seems student wants to unsubscribe, confirm before doing so:
+        var r = confirm("Are you sure you want to unsubscribe from Mench and stop all communications? I will no longer message you unless you re-subscribe later on.");
+        if (r == false) {
+            return false;
+        }
+    }
+
+    //Show spinner on the notification element:
+    var notify_el = '.radio-'+parent_en_id+' .item-'+selected_en_id+' .change-results';
+    $(notify_el).html('<i class="fas fa-spinner fa-spin"></i>');
+
+
+    if(!enable_mulitiselect){
+        //Clear all selections:
+        $('.radio-'+parent_en_id+' .list-group-item').removeClass('active');
+    }
+
+    //Enable currently selected:
+    if(enable_mulitiselect && was_already_selected){
+        $('.radio-'+parent_en_id+' .item-'+selected_en_id).removeClass('active');
+    } else {
+        $('.radio-'+parent_en_id+' .item-'+selected_en_id).addClass('active');
+    }
+
+    $.post("/messenger/myaccount_radio_update", {
+        en_miner_id: parseInt($('#en_id').val()),
+        parent_en_id: parent_en_id,
+        selected_en_id: selected_en_id,
+        enable_mulitiselect: enable_mulitiselect,
+        was_already_selected: was_already_selected,
+    }, function (data) {
+
+        if (!data.status) {
+
+            //Ooops there was an error!
+            $(notify_el).html('<span style="color:#FF0000;"><i class="fas fa-exclamation-triangle"></i> ' + data.message + '</span>');
+
+        } else {
+
+            //Show success:
+            $(notify_el).html('<i class="fas fa-check-circle"></i></span>');
+
+            //Disappear in a while:
+            setTimeout(function () {
+                $(notify_el).html('');
+            }, 1597);
+
+        }
+    });
+
+
+}
+
 function save_full_name(){
 
     //Show spinner:

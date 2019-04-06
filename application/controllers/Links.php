@@ -23,7 +23,6 @@ class Links extends CI_Controller
          *
          * */
 
-
         $session_en = en_auth(array(1308)); //Just be logged in to browse
 
         //Load header:
@@ -179,32 +178,10 @@ class Links extends CI_Controller
     }
 
 
-    function dev__php_info(){
-        echo phpinfo();
-    }
 
     function cron__sync_algolia($input_obj_type = null, $input_obj_id = null){
         //Call the update function and passon possible values:
         echo_json($this->Database_model->update_algolia($input_obj_type, $input_obj_id));
-    }
-
-    function moderator_tools($action = null, $command1 = null, $command2 = null)
-    {
-
-        //Validate moderator:
-        $session_en = en_auth(array(1281), true);
-
-        //Load tools:
-        $this->load->view('view_shared/matrix_header', array(
-            'title' => 'Moderation Tools',
-        ));
-        $this->load->view('view_links/moderator_tools' , array(
-            'action' => $action,
-            'command1' => $command1,
-            'command2' => $command2,
-            'session_en' => $session_en,
-        ));
-        $this->load->view('view_shared/matrix_footer');
     }
 
 
