@@ -78,7 +78,7 @@ if(!$action) {
 } else {
 
     //Show back button:
-    echo '<ul class="breadcrumb maxout" style="margin-bottom: 10px;"><li><a href="/links">Links</a></li><li><a href="/admin/">Moderator Tools</a></li></ul>';
+    echo '<ul class="breadcrumb maxout" style="margin-bottom: 10px;"><li><a href="/admin">Admin Tools</a></li></ul>';
 
     if($action=='orphan_intents') {
 
@@ -231,17 +231,31 @@ if(!$action) {
 
         if(isset($_POST['test_message'])){
 
-            $msg_validation = $this->Chat_model->dispatch_validate_message($_POST['test_message'], ( intval($_POST['recipient_en']) ? array('en_id' => $_POST['recipient_en']) : array() ), $_POST['fb_messenger_format']);
 
-            if($_POST['fb_messenger_format'] || !$msg_validation['status']){
-                echo_json(array(
-                    'analyze' => extract_message_references($_POST['test_message']),
-                    'results' => $msg_validation,
+            if(intval($_POST['fb_messenger_format']) && intval($_POST['recipient_en'])){
+
+                //Send to Facebook Messenger:
+                echo_json($this->Chat_model->dispatch_message(
+                    $_POST['test_message'],
+                    array('en_id' => intval($_POST['recipient_en'])),
+                    true
                 ));
+
             } else {
-                //HTML:
-                echo '<div><a href="/admin/tools/compose_test_message"> &laquo; Back to Message Compose</a></div><hr />';
-                echo $msg_validation['output_messages'][0]['message_body'];
+
+                $msg_validation = $this->Chat_model->dispatch_validate_message($_POST['test_message'], ( intval($_POST['recipient_en']) ? array('en_id' => $_POST['recipient_en']) : array() ), $_POST['fb_messenger_format']);
+
+                if($_POST['fb_messenger_format'] || !$msg_validation['status']){
+                    echo_json(array(
+                        'analyze' => extract_message_references($_POST['test_message']),
+                        'results' => $msg_validation,
+                    ));
+                } else {
+                    //HTML:
+                    echo '<div><a href="/admin/tools/compose_test_message"> &laquo; Back to Message Compose</a></div><hr />';
+                    echo $msg_validation['output_messages'][0]['message_body'];
+                }
+
             }
 
         } else {
