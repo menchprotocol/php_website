@@ -422,6 +422,7 @@ class Chat_model extends CI_Model
             //Fetch recipient notification type:
             $lns_comm_level = $this->Database_model->ln_fetch(array(
                 'ln_parent_entity_id IN (' . join(',', $this->config->item('en_ids_4454')) . ')' => null,
+                'ln_type_entity_id IN (' . join(',', $this->config->item('en_ids_4592')) . ')' => null, //Entity Link Connectors
                 'ln_child_entity_id' => $recipient_en['en_id'],
                 'ln_status' => 2, //Published
             ));
