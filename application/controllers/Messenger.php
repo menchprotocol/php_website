@@ -1194,6 +1194,8 @@ class Messenger extends CI_Controller
             ));
         }
 
+        //Used when the user subscribed back to us:
+        $greet_them_back = false;
 
         if(!$_POST['enable_mulitiselect'] || $_POST['was_already_selected']){
             //Since this is not a multi-select we want to remove all existing options...
@@ -1228,19 +1230,15 @@ class Messenger extends CI_Controller
                 //Does this have to do with changing Subscription Type? We need to confirm with them if so:
                 if($_POST['parent_en_id']==4454){
                     if($_POST['selected_en_id']==4455){
-                        //They just unsubscribed, confirm with them:
+                        //They just unsubscribed, send them a message before its too late (changing their status):
                         $this->Chat_model->dispatch_message(
                             'This is a confirmation that you are now unsubscribed from Mench and I will not longer send you any messages. You can resume your subscription later by going to MY ACCOUNT > SUBSCRIPTION TYPE > Set Notification',
                             array('en_id' => $_POST['en_miner_id']),
                             true
                         );
                     } elseif($remove_en['ln_parent_entity_id']==4455){
-                        //They used to be ub-subscribed, not they join back, confirm with them:
-                        $this->Chat_model->dispatch_message(
-                            'Welcome back! This is a confirmation that you are not re-subscribed to Mench and I will continue to empower you to achieve your Acion Plan intentions',
-                            array('en_id' => $_POST['en_miner_id']),
-                            true
-                        );
+                        //They used to be ub-subscribed, now they join back, confirm with them AFTER we update their settings:
+                        $greet_them_back = true;
                     }
                 }
 
@@ -1263,6 +1261,15 @@ class Messenger extends CI_Controller
                 'ln_type_entity_id' => 4230, //Raw
                 'ln_status' => 2, //Published
             ));
+        }
+
+        if($greet_them_back){
+            //Now we can communicate with them again:
+            $this->Chat_model->dispatch_message(
+                'Welcome back 🎉🎉🎉 This is a confirmation that you are now re-subscribed and I will continue to work with you on your Acion Plan intentions',
+                array('en_id' => $_POST['en_miner_id']),
+                true
+            );
         }
 
         //All good:
