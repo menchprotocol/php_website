@@ -2428,6 +2428,8 @@ class Chat_model extends CI_Model
          *
          * */
 
+        $fb_received_message = strtolower($fb_received_message);
+
 
         if (in_array($fb_received_message, array('yes', 'yeah', 'ya', 'ok', 'continue', 'ok continue', 'ok continue ▶️', '▶️', 'ok continue', 'go', 'yass', 'yas', 'yea', 'yup', 'next', 'yes, learn more'))) {
 
@@ -2464,7 +2466,7 @@ class Chat_model extends CI_Model
             $actionplans = $this->Database_model->ln_fetch(array(
                 'ln_type_entity_id' => 4235, //Student Intent
                 'ln_miner_entity_id' => $en['en_id'], //Belongs to this Student
-                'ln_status IN (0,1,2)' => null, //Actively drafting
+                'ln_status >=' => 0, //New+
             ), array('in_child'), 10 /* Max quick replies allowed */, 0, array('ln_order' => 'ASC'));
 
 
