@@ -2447,7 +2447,7 @@ class Chat_model extends CI_Model
 
             //TODO Implement...
 
-        } elseif (in_array($fb_received_message, array('no', 'nope', 'nah', 'cancel', 'stop'))) {
+        } elseif (in_array($fb_received_message, array('no', 'nope', 'nah', 'cancel'))) {
 
             //Rejecting an offer...
             //TODO Implement...
@@ -2457,7 +2457,7 @@ class Chat_model extends CI_Model
             //Likely an OR response with a specific number in mind...
             //TODO Implement...
 
-        } elseif (includes_any($fb_received_message, array('unsubscribe', 'stop', 'cancel'))) {
+        } elseif (includes_any($fb_received_message, array('unsubscribe', 'stop'))) {
 
             //They seem to want to unsubscribe
             //List their Action Plans:
