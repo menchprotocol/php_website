@@ -203,7 +203,6 @@ body.grey-bg {
 }
 
 .actionplan-sort .fa-bars {
-    color: #999;
     padding: 0 5px;
     cursor: move; /* fallback if grab cursor is unsupported */
     cursor: grab;
@@ -2709,7 +2708,7 @@ a.badge:focus, a.badge:hover {
     color: #bbb;
 }
 
-.is_level3_sortable .fa-sort {
+.is_level3_sortable .fa-bars {
     margin: -10px -7px -10px -7px;
 }
 
@@ -3694,7 +3693,7 @@ h4 .tip-badge {
     text-align: center;
 }
 
-.list-group-item .fa-sort {
+.list-group-item .fa-bars {
     cursor: move; /* fallback if grab cursor is unsupported */
     cursor: grab;
     cursor: -moz-grab;
@@ -4023,6 +4022,10 @@ h4 .tip-badge {
 .change-results{
     margin-left: 5px;
     display: inline-block;
+}
+
+.actionplan-overview{
+    margin:3px 0 0 27px;
 }
 
 .text-middle{

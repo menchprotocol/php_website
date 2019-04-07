@@ -1004,7 +1004,7 @@ $config['en_all_4595'] = array(
         'm_parents' => array(4593, 4592, 4595),
     ),
     4319 => array(
-        'm_icon' => '<i class="fal fa-sort-numeric-down"></i>',
+        'm_icon' => '<i class="fal fa-bars-numeric-down"></i>',
         'm_name' => 'Linked Entities Integer',
         'm_desc' => '20',
         'm_parents' => array(4593, 4592, 4595),
@@ -1272,7 +1272,7 @@ $config['en_all_4593'] = array(
         'm_parents' => array(4593, 4592, 4595),
     ),
     4319 => array(
-        'm_icon' => '<i class="fal fa-sort-numeric-down"></i>',
+        'm_icon' => '<i class="fal fa-bars-numeric-down"></i>',
         'm_name' => 'Linked Entities Integer',
         'm_desc' => '',
         'm_parents' => array(4593, 4592, 4595),
@@ -1559,7 +1559,7 @@ $config['en_all_4592'] = array(
         'm_parents' => array(4593, 4592, 4595),
     ),
     4319 => array(
-        'm_icon' => '<i class="fal fa-sort-numeric-down"></i>',
+        'm_icon' => '<i class="fal fa-bars-numeric-down"></i>',
         'm_name' => 'Integer',
         'm_desc' => '',
         'm_parents' => array(4593, 4592, 4595),

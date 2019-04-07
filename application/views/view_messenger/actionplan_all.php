@@ -11,23 +11,23 @@
 echo '<div id="actionplan_intents" class="list-group actionplan-sort" style="margin-top: 10px;">';
 foreach ($student_intents as $ln) {
 
+    //Calculate time:
+    $time_estimate = echo_time_range($ln, true);
+
     //Display row:
     echo '<a href="/messenger/actionplan/' . $ln['ln_child_intent_id'] . '" link-id="'.$ln['ln_id'].'" class="list-group-item actionplan_sort">';
 
     //Right:
     echo '<span class="pull-right">';
-        $time_estimate = echo_time_range($ln, true);
-        if ($time_estimate) {
-            echo $time_estimate . ' <i class="fal fa-alarm-clock"></i> ';
-        }
         echo '<span class="badge badge-primary" style="margin-top: -8px;"><i class="fas fa-angle-right"></i></span>';
+        echo '<span style="padding:0px 11px;"><i class="fas fa-times"></i></span>';
     echo '</span>';
 
     //Left:
-    echo '<i class="fas fa-sort"></i>'; //For sorting Action Plan
+    echo '<i class="fas fa-bars"></i>'; //For sorting Action Plan
     //echo echo_fixed_fields('ln_status', $ln['ln_status'], 1, 'right');
-    echo '<span class="actionplan-title">' . $ln['in_outcome'] . '</span>';
-    echo '<span class="change-results"><span class="results-ln-'.$ln['ln_id'].'"></span>, '.rand(0,100).'% Complete</span>';
+    echo '<span class="actionplan-title ap-title-'.$ln['ln_id'].'">' . $ln['in_outcome'] . '</span>';
+    echo '<div class="actionplan-overview"><span class="results-ln-'.$ln['ln_id'].'"></span>, '.( $time_estimate ? $time_estimate.', ' : '').$this->Matrix_model->actionplan_completion_rate($ln, $session_en['en_id']).'% Complete</div>';
     echo '</a>';
 }
 

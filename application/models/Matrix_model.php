@@ -1765,6 +1765,39 @@ class Matrix_model extends CI_Model
         return $metadata_this;
     }
 
+    function actionplan_completion_rate($in, $miner_en_id)
+    {
+        //Determine Action Plan completion rate:
+        $in_metadata = unserialize($in['in_metadata']);
+
+        if(!isset($in_metadata['in__tree_in_published']) || count($in_metadata['in__tree_in_published']) < 1){
+
+            //Should not happen, log error:
+            $this->Database_model->ln_create(array(
+                'ln_content' => 'Detected student Action Plan without in__tree_in_published value!',
+                'ln_type_entity_id' => 4246, //Platform Error
+                'ln_miner_entity_id' => 1, //Shervin/Developer
+                'ln_parent_entity_id' => $miner_en_id,
+                'ln_child_intent_id' => $in['in_id'],
+            ));
+
+            return 0;
+
+        } else {
+
+            //Fetch total completed & skipped:
+            $completed_steps = $this->Database_model->ln_fetch(array(
+                'ln_type_entity_id' => 4559, //Completed Step
+                'ln_miner_entity_id' => $miner_en_id, //Belongs to this Student
+                'ln_child_intent_id IN (' . join(',', $in_metadata['in__tree_in_published']) . ')' => null,
+                'ln_status NOT IN (' . join(',', $this->config->item('ln_status_incomplete')) . ')' => null, //complete
+            ), array(), 0, 0, array(), 'COUNT(ln_id) as completed_steps');
+
+            return round($completed_steps[0]['completed_steps']/count($in_metadata['in__tree_in_published'])*100);
+        }
+
+    }
+
 
     function metadata_single_update($obj_type, $obj_id, $new_fields, $absolute_adjustment = true)
     {
