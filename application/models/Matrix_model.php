@@ -1165,7 +1165,7 @@ class Matrix_model extends CI_Model
 
             //New Student Intention:
             $actionplan = $this->Database_model->ln_create(array(
-                'ln_status' => 0, //New
+                'ln_status' => 1, //Working On
                 'ln_type_entity_id' => 4235, //Student Intent
                 'ln_miner_entity_id' => $ln_miner_entity_id,
                 'ln_child_intent_id' => $in_append_id,

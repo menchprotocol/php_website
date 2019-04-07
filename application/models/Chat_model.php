@@ -1748,16 +1748,13 @@ class Chat_model extends CI_Model
                 $actionplans = $this->Database_model->ln_fetch(array(
                     'ln_type_entity_id' => 4235, //Student Intent
                     'ln_miner_entity_id' => $en['en_id'], //Belongs to this Student
-                    'ln_status >=' => 0, //Actively drafting (Status 2 is syncing updates, and they want out)
+                    'ln_status >=' => 0, //New+
                 ));
                 foreach ($actionplans as $ln) {
                     $this->Database_model->ln_update($ln['ln_id'], array(
                         'ln_status' => -1, //Removed
                     ), $en['en_id']); //Give credit to miner
                 }
-
-                //Update Student communication level to Unsubscribe:
-                $this->Matrix_model->en_radio_set(4454, 4455, $en['en_id'], $en['en_id']);
 
                 //Let them know about these changes:
                 $this->Chat_model->dispatch_message(
@@ -1766,6 +1763,9 @@ class Chat_model extends CI_Model
                     true
                 );
 
+                //Update Student communication level to Unsubscribe:
+                $this->Matrix_model->en_radio_set(4454, 4455, $en['en_id'], $en['en_id']);
+
             } elseif (is_numeric($action_unsubscribe)) {
 
                 //User wants to Remove a specific Action Plan, validate it:
@@ -1773,6 +1773,7 @@ class Chat_model extends CI_Model
                     'ln_type_entity_id' => 4235, //Student Intent
                     'ln_miner_entity_id' => $en['en_id'], //Belongs to this Student
                     'ln_child_intent_id' => intval($action_unsubscribe),
+                    'ln_status >=' => 0,//New+
                 ), array('in_child'));
 
                 //All good?
@@ -1934,7 +1935,7 @@ class Chat_model extends CI_Model
                 //Intent seems good...
                 //See if this intent belong to ANY of this Student's Action Plans or Student Intents:
                 if (count($this->Database_model->ln_fetch(array(
-                        'ln_type_entity_id' => 4235, //Student Intents
+                        'ln_type_entity_id' => 4235, //Student Intent
                         'ln_child_intent_id' => $ins[0]['in_id'],
                         'ln_status >=' => 0, //New+
                         'ln_miner_entity_id' => $en['en_id'], //Belongs to this Student
@@ -2018,7 +2019,7 @@ class Chat_model extends CI_Model
                 //Add intent to Student's Action Plan:
                 $actionplan = $this->Database_model->ln_create(array(
                     'ln_type_entity_id' => 4235, //Student Intent
-                    'ln_status' => 0, //New
+                    'ln_status' => 1, //Working On
                     'ln_miner_entity_id' => $en['en_id'], //Belongs to this Student
                     'ln_child_intent_id' => $ins[0]['in_id'], //The Intent they are adding
                     'ln_order' => 1 + $this->Database_model->ln_max_order(array( //Place this intent at the end of all intents the Student is drafting...
@@ -2588,17 +2589,20 @@ class Chat_model extends CI_Model
                 $quick_replies = array();
                 $message = 'I found these intentions:';
 
-                foreach ($search_results as $count => $alg) {
+                $count = 0;
+                foreach ($search_results as $alg) {
 
                     //Make sure not already in Action Plan:
                     if(count($this->Database_model->ln_fetch(array(
                             'ln_miner_entity_id' => $en['en_id'],
-                            'ln_type_entity_id' => 4235, //Student Intents
+                            'ln_type_entity_id' => 4235, //Student Intent
                             'ln_child_intent_id' => $alg['alg_obj_id'],
                             'ln_status >=' => 0, //New+
                         ))) > 0){
                         continue;
                     }
+
+                    $count++;
 
                     //Fetch metadata:
                     $ins = $this->Database_model->in_fetch(array(
@@ -2606,10 +2610,10 @@ class Chat_model extends CI_Model
                     ));
 
                     //Show Message:
-                    $message .= "\n\n" . ($count + 1) . '/ ' . $ins[0]['in_outcome'] . ' in ' . strip_tags(echo_time_range($ins[0]));
+                    $message .= "\n\n" . $count . '/ ' . $ins[0]['in_outcome'] . ' in ' . strip_tags(echo_time_range($ins[0]));
                     array_push($quick_replies, array(
                         'content_type' => 'text',
-                        'title' => ($count + 1) . '/',
+                        'title' => $count . '/',
                         'payload' => 'SUBSCRIBE-INITIATE_' . $ins[0]['in_id'],
                     ));
 
@@ -2681,12 +2685,11 @@ class Chat_model extends CI_Model
             ));
 
 
-            //Do they have an Action Plan that they are drafting?
-            //If so, we can recommend the next step within that Action Plan...
+            //Do they have any active Action Plans? If so, we can recommend the next step within that Action Plan...
             $actionplans = $this->Database_model->ln_fetch(array(
                 'ln_type_entity_id' => 4235, //Student Intent
                 'ln_miner_entity_id' => $en['en_id'], //Belongs to this Student
-                'ln_status IN (' . join(',', $this->config->item('ln_status_incomplete')) . ')' => null, //incomplete
+                'ln_status >=' => 0, //New+
             ), array('in_child'), 1, 0, array('ln_order' => 'ASC'));
 
             if (count($actionplans) > 0) {

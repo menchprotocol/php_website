@@ -989,7 +989,7 @@ class Messenger extends CI_Controller
                 'session_en' => $session_en,
                 'student_intents' => $this->Database_model->ln_fetch(array(
                     'ln_miner_entity_id' => $session_en['en_id'],
-                    'ln_type_entity_id' => 4235, //Student Intents
+                    'ln_type_entity_id' => 4235, //Student Intent
                     'ln_status >=' => 0, //New+
                     'in_status' => 2, //Published
                 ), array('in_child'), 0, 0, array('ln_order' => 'ASC')),
@@ -1367,7 +1367,7 @@ class Messenger extends CI_Controller
         if ($add_actionplan) {
             $actionplan = $this->Database_model->ln_create(array(
                 'ln_type_entity_id' => 4235, //Student Intent
-                'ln_status' => 0, //New
+                'ln_status' => 1, //Working On
                 'ln_miner_entity_id' => 1,
                 'ln_child_intent_id' => $in_id, //The Intent they are adding
                 'ln_order' => 1 + $this->Database_model->ln_max_order(array( //Place this intent at the end of all intents the Student is drafting...
