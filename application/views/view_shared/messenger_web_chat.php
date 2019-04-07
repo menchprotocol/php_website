@@ -33,6 +33,3 @@ $url_part_1 = $this->uri->segment(1);
      logged_out_greeting="Hi! How can I help you land your dream job?">
      <?= ( is_numeric($url_part_1) ? ' ref="'.$url_part_1.'" ' : '' ) ?>
 </div>
-
-
-<div class="app-version hide-mini <?= echo_advance() ?>">v<?= $this->config->item('app_version') ?></div>
