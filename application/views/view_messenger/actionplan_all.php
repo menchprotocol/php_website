@@ -40,6 +40,8 @@ if(count($student_intents)>1){
 //Inform students how they can add new intentions:
 echo '<div class="actionplan-tip"><i class="fas fa-lightbulb"></i> TIP: You can add a new intention by sending a message starting with <span style="display:inline-block;">"<b>I want to</b>"</span> for example "I want to create a resume" or "I want to get hired".</div>';
 
-echo '<div class="actionplan-tip"><i class="fas fa-lightbulb"></i> TIP: You can remove intentions by sending a message saying <span style="display:inline-block;">"<b>stop</b>"</span>.</div>';
+if(count($student_intents)>0){
+    echo '<div class="actionplan-tip"><i class="fas fa-lightbulb"></i> TIP: You can remove intentions by sending a message saying <span style="display:inline-block;">"<b>stop</b>"</span>.</div>';
+}
 
 ?>

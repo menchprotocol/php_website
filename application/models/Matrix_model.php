@@ -85,7 +85,7 @@ class Matrix_model extends CI_Model
 
             //Inform user that they are now complete with all steps:
             $this->Chat_model->dispatch_message(
-                'You completed all the steps to ' . $actionplans[0]['in_outcome'] . ' 🙌 I will keep you updated on new steps and you can at any time stop these updates by saying "unsubscribe".',
+                'You completed all the steps to ' . $actionplans[0]['in_outcome'] . ' 🙌 I will keep you updated on new steps and you can at any time stop these updates by saying "stop".',
                 array('en_id' => $actionplans[0]['ln_parent_entity_id']),
                 true,
                 array(),

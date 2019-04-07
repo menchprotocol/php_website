@@ -1740,9 +1740,6 @@ class Chat_model extends CI_Model
                     true
                 );
 
-                //List featured intents and let them choose:
-                $this->Chat_model->compose_message($this->config->item('in_featured'), $en);
-
             } elseif ($action_unsubscribe == 'ALL') {
 
                 //Student wants to completely unsubscribe from Mench...
@@ -1786,15 +1783,23 @@ class Chat_model extends CI_Model
                         'ln_status' => -1, //Removed
                     ), $en['en_id']); //Give credit to miner
 
+                    //Adjust the sorting of remaining Action Plan intentions:
+                    foreach($this->Database_model->ln_fetch(array(
+                        'ln_type_entity_id' => 4235, //Student Intent
+                        'ln_miner_entity_id' => $en['en_id'], //Belongs to this Student
+                        'ln_status >=' => 0, //New+
+                    ), array('en_child'), 0, 0, array('ln_order' => 'ASC')) as $count => $ln){
+                        $this->Database_model->ln_update($ln['ln_id'], array(
+                            'ln_order' => ($count+1),
+                        ), $en['en_id']);
+                    }
+
                     //Show success message to user:
                     $this->Chat_model->dispatch_message(
-                        'I have successfully removed the intention to ' . $actionplans[0]['in_outcome'] . ' from your Action Plan. Say "Unsubscribe" again if you wish to stop all future communications.',
+                        'I have successfully removed the intention to ' . $actionplans[0]['in_outcome'] . ' from your Action Plan. Say "stop" again if you wish to stop all future communications.',
                         $en,
                         true
                     );
-
-                    //List featured intents and let them choose:
-                    $this->Chat_model->compose_message($this->config->item('in_featured'), $en);
 
                 } else {
 
