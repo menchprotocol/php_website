@@ -1773,7 +1773,7 @@ class Chat_model extends CI_Model
                     'ln_type_entity_id' => 4235, //Student Intent
                     'ln_miner_entity_id' => $en['en_id'], //Belongs to this Student
                     'ln_child_intent_id' => intval($action_unsubscribe),
-                ), array('en_child'));
+                ), array('in_child'));
 
                 //All good?
                 if (count($actionplans) > 0) {
