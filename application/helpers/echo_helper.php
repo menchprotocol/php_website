@@ -879,13 +879,12 @@ function echo_tree_steps($in, $fb_messenger_format = 0, $expand_mode = false)
 
     //Do we have anything to return?
     $metadata = unserialize($in['in_metadata']);
-    if (!isset($metadata['in__flat_unique_published_count']) || $metadata['in__flat_unique_published_count'] < 2) {
+    if (!isset($metadata['in__tree_in_published']) || count($metadata['in__tree_in_published']) < 2) {
         return false;
     }
 
-    $metadata['in__flat_unique_published_count']--;
 
-    $pitch = 'Action Plan contains ' . $metadata['in__flat_unique_published_count'] . ' steps';
+    $pitch = 'Action Plan contains ' . count($metadata['in__tree_in_published']) . ' steps';
 
     if ($fb_messenger_format) {
 
@@ -902,7 +901,7 @@ function echo_tree_steps($in, $fb_messenger_format = 0, $expand_mode = false)
             <div class="panel-heading" role="tab" id="heading' . $id . '">
                 <h4 class="panel-title">
                     <a role="button" data-toggle="collapse" data-parent="#open' . $id . '" href="#collapse' . $id . '" aria-expanded="' . ($expand_mode ? 'true' : 'false') . '" aria-controls="collapse' . $id . '">
-                    <i class="fas" style="transform:none !important;"><i class="fas fa-walking" style="transform:none !important;"></i></i> ' . $metadata['in__flat_unique_published_count'] . ' Steps<i class="fal fa-info-circle" style="transform:none !important; font-size:0.85em !important;"></i>
+                    <i class="fas" style="transform:none !important;"><i class="fas fa-walking" style="transform:none !important;"></i></i> ' . count($metadata['in__tree_in_published']) . ' Steps<i class="fal fa-info-circle" style="transform:none !important; font-size:0.85em !important;"></i>
                 </a>
             </h4>
         </div>

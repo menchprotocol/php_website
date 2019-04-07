@@ -32,9 +32,8 @@ $developer_tools = array(
 
 if(!$action) {
 
-    echo '<h1>Admin Tools</h1>';
+    echo '<h1>Moderator Tools</h1>';
 
-    echo '<h3>Moderation Tools</h3>';
     echo '<div class="list-group actionplan_list grey_list maxout">';
     foreach ($moderation_tools as $tool_key => $tool_name) {
         echo '<a href="' . $tool_key . '" class="list-group-item">';
@@ -78,7 +77,7 @@ if(!$action) {
 } else {
 
     //Show back button:
-    echo '<ul class="breadcrumb maxout" style="margin-bottom: 10px;"><li><a href="/admin">Admin Tools</a></li></ul>';
+    echo '<ul class="breadcrumb maxout" style="margin-bottom: 10px;"><li><a href="/admin">Moderator Tools</a></li></ul>';
 
     if($action=='orphan_intents') {
 

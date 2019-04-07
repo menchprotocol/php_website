@@ -4022,6 +4022,7 @@ h4 .tip-badge {
 
 .change-results{
     margin-left: 5px;
+    display: inline-block;
 }
 
 .text-middle{

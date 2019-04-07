@@ -189,7 +189,7 @@ class Links extends CI_Controller
 
         exit; //Maybe use to update all rates if needed?
 
-        //Issue coins for each link type:
+        //Issue points for each link type:
         $all_engs = $this->Database_model->ln_fetch(array(), array('en_type'), 0, 0, array('trs_count' => 'DESC'), 'COUNT(ln_type_entity_id) as trs_count, en_name, ln_type_entity_id', 'ln_type_entity_id, en_name');
 
         //return echo_json($all_engs);
@@ -207,7 +207,7 @@ class Links extends CI_Controller
             ), array('en_child'), 1);
 
             if(count($rate_trs) > 0){
-                //Issue coins at this rate:
+                //Issue points at this rate:
                 $this->db->query("UPDATE table_links SET ln_points = '".$rate_trs[0]['ln_content']."' WHERE ln_type_entity_id = " . $ln['ln_type_entity_id']);
             }
 

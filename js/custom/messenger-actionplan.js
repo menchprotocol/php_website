@@ -6,14 +6,26 @@ function add_to_actionplan(in_id){
 
 
 
+function actionplan_sort_ui() {
+    var sort_rank = 0;
+    $(".actionplan_sort").each(function () {
+        sort_rank++;
+        var link_id = parseInt($(this).attr('link-id'));
+        $(".results-ln-" + link_id).html(ordinal_suffix_of(sort_rank)+' Priority');
+    });
+}
 
 function actionplan_sort_save() {
 
     var sort_rank = 0;
     var new_actionplan_order = [];
     $("#actionplan_intents .actionplan_sort").each(function () {
-        sort_rank++;
-        new_actionplan_order[sort_rank] = parseInt($(this).attr('intent-id'));
+        var link_id = parseInt($(this).attr('link-id'));
+        if(link_id > 0){
+            sort_rank++;
+            new_actionplan_order[sort_rank] = link_id;
+            $(".results-ln-" + link_id).html(ordinal_suffix_of(sort_rank)+' Priority');
+        }
     });
 
     //Update Action Plan order:
@@ -26,6 +38,10 @@ function actionplan_sort_save() {
     });
 
 }
+
+$(document).ready(function () {
+    actionplan_sort_ui();
+});
 
 
 //Load sorter:

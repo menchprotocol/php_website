@@ -1024,7 +1024,7 @@ class Matrix_model extends CI_Model
 
 
         //See how many children there are:
-        $dwn_tree = $this->Matrix_model->actionplan_fetch_recursive($actionplan_steps[0]['ln_parent_link_id'], $actionplan_steps[0]['ln_child_intent_id'], true);
+        $dwn_tree = $this->Matrix_model->deprecate__actionplan_fetch_recursive($actionplan_steps[0]['ln_parent_link_id'], $actionplan_steps[0]['ln_child_intent_id'], true);
 
         //Combine this step with child steps to determine total steps that would be skipped:
         $skippable_trs = array_merge(array(intval($ln_id)), $dwn_tree['actionplan_links_flat']);
@@ -1048,92 +1048,9 @@ class Matrix_model extends CI_Model
     }
 
 
-    function actionplan_fetch_recursive($actionplan_ln_id, $in_id, $direction_is_downward, $previous_in = array(), $metadata_aggregate = null)
+    function deprecate__actionplan_fetch_recursive($actionplan_ln_id, $in_id, $direction_is_downward, $previous_in = array(), $metadata_aggregate = null)
     {
-
-        //Get core data:
-        $metadata_this = array(
-            'in_flat_unique_published_tree' => array(),
-            'actionplan_links_flat' => array(),
-        );
-
-        if (!$metadata_aggregate && !isset($previous_in['ln_id'])) {
-
-            //First item:
-            $metadata_aggregate = $metadata_this;
-            $ins = $this->Database_model->in_fetch(array(
-                'in_id' => $in_id,
-                'in_status' => 2, //Actions plans support published intents only
-            ));
-
-        } else {
-
-            //Recursive item:
-            $ins = $this->Database_model->ln_fetch(array(
-                'ln_parent_link_id' => $actionplan_ln_id,
-                'ln_id' => $previous_in['ln_id'],
-                'in_status' => 2, //Actions plans support published intents only
-            ), array(($direction_is_downward ? 'in_child' : 'in_parent')));
-
-        }
-
-        //We should have found an item by now:
-        if (count($ins) < 1) {
-            return false;
-        }
-
-
-        if ($ins[0]['in_status'] >= 2 && !in_array(intval($in_id), $metadata_this['in_flat_unique_published_tree'])) {
-            array_push($metadata_this['in_flat_unique_published_tree'], intval($in_id));
-        }
-        if (isset($ins[0]['ln_id'])) {
-            array_push($metadata_this['actionplan_links_flat'], intval($ins[0]['ln_id']));
-        }
-
-
-        //A recursive function to fetch all Tree for a given intent, either upwards or downwards
-        $fetch_tree_ins = $this->Database_model->ln_fetch(array(
-            'ln_parent_link_id' => $actionplan_ln_id,
-            'in_status' => 2, //Published
-            ($direction_is_downward ? 'ln_parent_intent_id' : 'ln_child_intent_id') => $in_id,
-        ), array(($direction_is_downward ? 'in_child' : 'in_parent')));
-
-
-        if (count($fetch_tree_ins) > 0) {
-            foreach ($fetch_tree_ins as $current_in) {
-
-                //Fetch children for this intent, if any:
-                $recursion = $this->Matrix_model->actionplan_fetch_recursive($actionplan_ln_id, $current_in['in_id'], $direction_is_downward, $current_in, $metadata_this);
-
-                //return $recursion;
-
-                if (!$recursion) {
-                    //There was an infinity break
-                    return false;
-                }
-
-                //Addup values:
-                array_push($metadata_this['actionplan_links_flat'], $recursion['actionplan_links_flat']);
-                array_push($metadata_this['in_flat_unique_published_tree'], $recursion['in_flat_unique_published_tree']);
-            }
-        }
-
-
-        //Flatten intent unique ID array:
-        $result = array();
-        array_walk_recursive($metadata_this['in_flat_unique_published_tree'], function ($v, $k) use (&$result) {
-            $result[] = $v;
-        });
-        $metadata_this['in_flat_unique_published_tree'] = $result;
-
-        $result = array();
-        array_walk_recursive($metadata_this['actionplan_links_flat'], function ($v, $k) use (&$result) {
-            $result[] = $v;
-        });
-        $metadata_this['actionplan_links_flat'] = $result;
-
-        //Return data:
-        return $metadata_this;
+        //TODO DEPRECATE
     }
 
 
@@ -1340,8 +1257,6 @@ class Matrix_model extends CI_Model
             'in_flat_unique_published_tree' => array(), //Unique IDs
 
             //Fetched for Published Intents:
-            '___tree_published_count' => 0, //A count of all published (in_status >= 2) intents within the tree
-            '___tree_published_unique_count' => 0, //A count of all published (in_status >= 2) UNIQUE intents
             '___metadata_tree_count' => 0, //A count of all messages for all tree intents that are published
             '___tree_min_seconds_cost' => 0, //The minimum number of seconds required to complete tree
             '___tree_max_seconds' => 0, //The maximum number of seconds required to complete tree
@@ -1562,8 +1477,6 @@ class Matrix_model extends CI_Model
                     }
 
 
-                    $metadata_this['___tree_published_count'] += $recursion['___tree_published_count'];
-
                     //Do calculations based on intent type (AND or OR)
                     if ($this_in['in_type']) {
                         //OR Branch, figure out the logic:
@@ -1636,14 +1549,6 @@ class Matrix_model extends CI_Model
         //Increase metadata counters for this intent:
         $metadata_this['___tree_active_count']++;
         $this_in['___tree_active_count'] = $metadata_this['___tree_active_count'];
-
-
-        //Is this a published intent?
-        if ($this_in['in_status'] >= 2) {
-            $metadata_this['___tree_published_count']++;
-        }
-
-        $this_in['___tree_published_count'] = $metadata_this['___tree_published_count'];
 
         $metadata_this['___tree_min_seconds_cost'] += intval($this_in['in_seconds_cost']);
         $metadata_this['___tree_max_seconds'] += intval($this_in['in_seconds_cost']);
@@ -1826,8 +1731,8 @@ class Matrix_model extends CI_Model
                 ((!@$metadata['in__tree_experts'] && count($this_in['___tree_experts']) < 1) || (serialize($this_in['___tree_experts']) == @$metadata['in__tree_experts'])) &&
                 ((!@$metadata['in__tree_miners'] && count($this_in['___tree_miners']) < 1) || (serialize($this_in['___tree_miners']) == @$metadata['in__tree_miners'])) &&
                 ((!@$metadata['in__tree_contents'] && count($this_in['___tree_contents']) < 1) || (serialize($this_in['___tree_contents']) == @$metadata['in__tree_contents'])) &&
+                ((!@$metadata['in__tree_in_published'] && count($metadata_this['in_flat_unique_published_tree']) < 1) || (serialize($metadata_this['in_flat_unique_published_tree']) == @$metadata['in__tree_in_published'])) &&
                 $this_in['___tree_active_count'] == @$metadata['in__tree_in_active_count'] &&
-                $this_in['___tree_published_count'] == @$metadata['in__tree_in_published_count'] &&
                 $this_in['___metadatas_count'] == @$metadata['in__metadata_count'] &&
                 $this_in['___metadata_tree_count'] == @$metadata['in__message_tree_count']
             )) {
@@ -1842,8 +1747,7 @@ class Matrix_model extends CI_Model
                     'in__tree_max_cost' => number_format($this_in['___tree_max_cost'], 2),
 
                     'in__tree_in_active_count' => $this_in['___tree_active_count'],
-                    'in__tree_in_published_count' => $this_in['___tree_published_count'],
-                    'in__flat_unique_published_count' => count(array_unique($metadata_this['in_flat_unique_published_tree'])),
+                    'in__tree_in_published' => $metadata_this['in_flat_unique_published_tree'],
                     'in__metadata_count' => $this_in['___metadatas_count'],
                     'in__message_tree_count' => $this_in['___metadata_tree_count'],
                     'in__tree_experts' => $this_in['___tree_experts'],
@@ -2078,7 +1982,7 @@ class Matrix_model extends CI_Model
              *
              * */
 
-            $dwn_tree = $this->Matrix_model->actionplan_fetch_recursive($actionplan_ln_id, $actionplan['ln_child_intent_id'], true);
+            $dwn_tree = $this->Matrix_model->deprecate__actionplan_fetch_recursive($actionplan_ln_id, $actionplan['ln_child_intent_id'], true);
 
             //Did we find any children?
             if (count($dwn_tree['actionplan_links_flat']) > 0) {
@@ -2113,7 +2017,7 @@ class Matrix_model extends CI_Model
              * */
 
             //Fetch all parents:
-            $up_tree = $this->Matrix_model->actionplan_fetch_recursive($actionplan_ln_id, $actionplan['ln_child_intent_id'], false);
+            $up_tree = $this->Matrix_model->deprecate__actionplan_fetch_recursive($actionplan_ln_id, $actionplan['ln_child_intent_id'], false);
 
             //Loop through incomplete parents to see if they should now be marked as complete:
             foreach ($this->Database_model->ln_fetch(array(

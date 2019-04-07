@@ -250,10 +250,10 @@ if(!en_auth(array(1281))){
     //Not a moderator:
 
     if(count($_GET) < 1){
-        //This makes the public data focus on links with coins which is a nicer initial view into links:
+        //This makes the public data focus on links with points which is a nicer initial view into links:
         $filters['ln_points >'] = 0;
         //Also give warning about this applied filter on the UI:
-        $filter_note = 'Showing recent link with awarded coins.';
+        $filter_note = 'Showing recent link with awarded points.';
     } else {
         //We do have some filters passed...
         //Make sure not to show the invisible link types:
@@ -404,7 +404,7 @@ echo '</div>';
 
 if($has_filters){
     //Display Links:
-    echo '<p style="margin: 10px 0 0 0;">Showing '.count($lns) . ( $lns_count[0]['trs_count'] > count($lns) ? ' of '. number_format($lns_count[0]['trs_count'] , 0) : '' ) .' links with '.number_format($lns_count[0]['points_sum'], 0).' awarded coins:</p>';
+    echo '<p style="margin: 10px 0 0 0;">Showing '.count($lns) . ( $lns_count[0]['trs_count'] > count($lns) ? ' of '. number_format($lns_count[0]['trs_count'] , 0) : '' ) .' links with '.number_format($lns_count[0]['points_sum'], 0).' awarded points:</p>';
 }
 
 if($filter_note){

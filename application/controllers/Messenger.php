@@ -560,8 +560,13 @@ class Messenger extends CI_Controller
             }
         }
 
+        //Log My Account View:
+        $this->Database_model->ln_create(array(
+            'ln_type_entity_id' => 4282, //Opened My Account
+            'ln_miner_entity_id' => $session_en['en_id'],
+        ));
 
-        //Load Action Plan UI:
+        //Load UI:
         $this->load->view('view_messenger/myaccount_ui.php', array(
             'session_en' => $session_en,
         ));
@@ -1298,15 +1303,34 @@ class Messenger extends CI_Controller
             ));
         }
 
-        foreach($_POST['new_actionplan_order'] as $ln_order => $ln_id){
 
+        //Update the order of their Action Plan:
+        $results = array();
+        foreach($_POST['new_actionplan_order'] as $ln_order => $ln_id){
+            if(intval($ln_id) > 0 && intval($ln_order) > 0){
+                //Update order of this link:
+                $results[$ln_order] = $this->Database_model->ln_update(intval($ln_id), array(
+                    'ln_order' => $ln_order,
+                ), $_POST['en_miner_id']);
+            }
         }
+
+
+        //Save sorting results:
+        $this->Database_model->ln_create(array(
+            'ln_type_entity_id' => 6132, //Action Plan Sorted
+            'ln_miner_entity_id' => $_POST['en_miner_id'],
+            'ln_metadata' => array(
+                'new_order' => $_POST['new_actionplan_order'],
+                'results' => $results,
+            ),
+        ));
 
 
         //All good:
         return echo_json(array(
             'status' => 1,
-            'message' => 'Intents sorted',
+            'message' => count($_POST['new_actionplan_order']).' Intents Sorted',
         ));
     }
 
