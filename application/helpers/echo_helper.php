@@ -1057,7 +1057,7 @@ function echo_tree_costs($in, $fb_messenger_format = 0, $expand_mode = false)
 
     //As messenger default format and HTML extra notes:
     $pitch  = 'Action Plan estimates ';
-    $pitch .= ( $has_time_estimate ? strtolower(echo_time_range($in)).' ' : '' );
+    $pitch .= ( $has_time_estimate ? strtolower(echo_time_range($in)).'' : '' );
     $pitch .= ( $has_cost_estimate ? ( $has_time_estimate ? ' and ' : '' ) . $price_range : '' );
     $pitch .= ' to ' . $in['in_outcome'];
 

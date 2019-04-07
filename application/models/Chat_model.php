@@ -1986,12 +1986,12 @@ class Chat_model extends CI_Model
                         array(
                             array(
                                 'content_type' => 'text',
-                                'title' => 'Yes, Subscribe',
+                                'title' => 'Add To Action Plan',
                                 'payload' => 'SUBSCRIBE-CONFIRM_' . $ins[0]['in_id'],
                             ),
                             array(
                                 'content_type' => 'text',
-                                'title' => 'No',
+                                'title' => 'Cancel',
                                 'payload' => 'SUBSCRIBE-REJECT',
                             ),
                         ),
