@@ -1903,7 +1903,7 @@ class Chat_model extends CI_Model
                         array(
                             'content_type' => 'text',
                             'title' => 'Yes, Learn More',
-                            'payload' => 'CONFIRM_' . $ins[0]['in_id'],
+                            'payload' => 'SUBSCRIBE-INITIATE_' . $ins[0]['in_id'],
                         ),
                         array(
                             'content_type' => 'text',
@@ -1918,32 +1918,31 @@ class Chat_model extends CI_Model
 
             }
 
-        } elseif (substr_count($quick_reply_payload, 'CONFIRM_') == 1) {
+        } elseif (substr_count($quick_reply_payload, 'SUBSCRIBE-INITIATE_') == 1) {
 
             //Student has confirmed their desire to subscribe to an intention:
-            $in_id = intval(one_two_explode('CONFIRM_', '', $quick_reply_payload));
+            $in_id = intval(one_two_explode('SUBSCRIBE-INITIATE_', '', $quick_reply_payload));
 
             //Initiating an intent Action Plan:
             $ins = $this->Database_model->in_fetch(array(
                 'in_id' => $in_id,
-                'status >=' => 2, //Published
+                'in_status' => 2, //Published
             ));
 
             if (count($ins) == 1) {
 
                 //Intent seems good...
                 //See if this intent belong to ANY of this Student's Action Plans or Student Intents:
-                $actionplans = $this->Database_model->ln_fetch(array(
-                    'ln_type_entity_id IN ('.join(',',$this->config->item('en_ids_6107')).')' => null, //Student Action Plan
-                    'ln_miner_entity_id' => $en['en_id'], //Belongs to this Student
-                    'ln_child_intent_id' => $ins[0]['in_id'],
-                ));
-
-                if (count($actionplans) > 0) {
+                if (count($this->Database_model->ln_fetch(array(
+                        'ln_type_entity_id' => 4235, //Student Intents
+                        'ln_child_intent_id' => $ins[0]['in_id'],
+                        'ln_status >=' => 0, //New+
+                        'ln_miner_entity_id' => $en['en_id'], //Belongs to this Student
+                    ))) > 0) {
 
                     //Let Student know that they have already subscribed to this intention:
                     $this->Chat_model->dispatch_message(
-                        'The intention to ' . $ins[0]['in_outcome'] . ' has already been added to your Action Plan. We have been working on it together since ' . echo_time_date($actionplans[0]['ln_timestamp'], true) . '. /link:See in 🚩Action Plan:https://mench.com/messenger/actionplan/' . $actionplans[0]['ln_child_intent_id'],
+                        'The intention to ' . $ins[0]['in_outcome'] . ' has already been added to your Action Plan. /link:See in 🚩Action Plan:https://mench.com/messenger/actionplan/' . $ins[0]['in_id'],
                         $en,
                         true,
                         array(),
@@ -2611,7 +2610,7 @@ class Chat_model extends CI_Model
                     array_push($quick_replies, array(
                         'content_type' => 'text',
                         'title' => ($count + 1) . '/',
-                        'payload' => 'CONFIRM_' . $ins[0]['in_id'],
+                        'payload' => 'SUBSCRIBE-INITIATE_' . $ins[0]['in_id'],
                     ));
 
                 }
