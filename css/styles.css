@@ -4024,9 +4024,7 @@ h4 .tip-badge {
     display: inline-block;
 }
 
-.actionplan-overview{
-    margin:3px 0 0 27px;
-}
+
 
 .text-middle{
     position: absolute;
@@ -4136,6 +4134,14 @@ h4 .tip-badge {
     margin-bottom: 0 !important;
 }
 
+.actionplan-tip{
+    font-size: 0.8em;
+    color: #777;
+    line-height: 110%;
+    font-weight: 500;
+    margin: -7px 5px 10px;
+}
+
 .inner_actionplan .panel-group{
     margin-bottom: 0;
     margin-top: 5px;
@@ -4146,18 +4152,6 @@ h4 .tip-badge {
 }
 
 .panel-title .fal, .panel-title .fas, .panel-title .far, .panel-title .fab { transform:none !important; }
-
-#funnel .actionplanadder {
-    max-width: 100% !important;
-    margin: 0 !important;
-    padding: 15px 2px !important;
-    background-color: #FFF !important;
-    font-size: 18px !important;
-    border: 0 !important;
-    font-weight: bold;
-    color: #222;
-}
-
 
 #funnel .entity-list .input-group{
     width: 100% !important;
@@ -4177,8 +4171,15 @@ h4 .tip-badge {
 .actionplan-title{
     font-weight: bold;
     font-size: 18px !important;
-    padding-left:2px;
     color: #222;
+    margin-left: 24px;
+    display: block;
+    margin-top: -18px;
+    line-height:100%;
+}
+.actionplan-overview{
+    margin-left: 24px;
+    margin-top: 5px;
 }
 
 #funnel .entity-list .form-control {
