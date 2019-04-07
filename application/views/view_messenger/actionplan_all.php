@@ -7,30 +7,40 @@
 
 <?php
 
-//Student has multiple Action Plans, so list all Action Plans to enable Student to choose:
-echo '<div id="actionplan_intents" class="list-group actionplan-sort" style="margin-top: 10px;">';
-foreach ($student_intents as $ln) {
+if(count($student_intents) > 0){
 
-    //Calculate time:
-    $time_estimate = echo_time_range($ln);
+    //Student has multiple Action Plans, so list all Action Plans to enable Student to choose:
+    echo '<div id="actionplan_intents" class="list-group actionplan-sort" style="margin-top: 10px;">';
+    foreach ($student_intents as $ln) {
 
-    //Display row:
-    echo '<a href="/messenger/actionplan/' . $ln['ln_child_intent_id'] . '" link-id="'.$ln['ln_id'].'" class="list-group-item actionplan_sort">';
+        //Calculate time:
+        $time_estimate = echo_time_range($ln);
 
-    //Right:
-    echo '<span class="pull-right">';
+        //Display row:
+        echo '<a href="/messenger/actionplan/' . $ln['ln_child_intent_id'] . '" link-id="'.$ln['ln_id'].'" class="list-group-item actionplan_sort">';
+
+        //Right:
+        echo '<span class="pull-right">';
         echo '<span class="badge badge-primary" style="margin:0 5px 0 0;"><i class="fas fa-angle-right"></i></span>';
-    echo '</span>';
+        echo '</span>';
 
-    //Left:
-    echo '<i class="fas fa-bars"></i>'; //For sorting Action Plan
-    //echo echo_fixed_fields('ln_status', $ln['ln_status'], 1, 'right');
-    echo '<span class="actionplan-title ap-title-'.$ln['ln_id'].'">' . $ln['in_outcome'] . '</span>';
-    echo '<div class="actionplan-overview"><span class="results-ln-'.$ln['ln_id'].'">'.echo_ordinal_number($ln['ln_order']).'</span> Priority, '.( $time_estimate ? $time_estimate.', ' : '').$this->Matrix_model->actionplan_completion_rate($ln, $session_en['en_id']).'% Complete</div>';
-    echo '</a>';
+        //Left:
+        echo '<i class="fas fa-bars"></i>'; //For sorting Action Plan
+        //echo echo_fixed_fields('ln_status', $ln['ln_status'], 1, 'right');
+        echo '<span class="actionplan-title ap-title-'.$ln['ln_id'].'">' . $ln['in_outcome'] . '</span>';
+        echo '<div class="actionplan-overview"><span class="results-ln-'.$ln['ln_id'].'">'.echo_ordinal_number($ln['ln_order']).'</span> Priority, '.( $time_estimate ? $time_estimate.', ' : '').$this->Matrix_model->actionplan_completion_rate($ln, $session_en['en_id']).'% Complete</div>';
+        echo '</a>';
+    }
+
+    echo '</div>';
+
+} else {
+
+    //Show warning:
+    echo '<div class="alert alert-warning"><i class="fas fa-exclamation-triangle"></i> Your Action Plan has no intentions.</div>';
+
 }
 
-echo '</div>';
 
 
 if(count($student_intents)>1){
