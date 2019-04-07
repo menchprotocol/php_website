@@ -2551,27 +2551,23 @@ class Chat_model extends CI_Model
             $master_command = trim(substr(trim($fb_received_message), 9));
             $result_limit = 6;
 
-            //Do a search to see what we find...
-            if ($this->config->item('app_enable_algolia')) {
-
-                $search_index = load_php_algolia('alg_index');
-                $res = $search_index->search($master_command, [
-                    'hitsPerPage' => $result_limit,
-                    'filters' => 'alg_obj_is_in=1 AND alg_obj_status=2 AND alg_obj_published_children>=7', //Search published intents with more than 7 published children
-                ]);
-                $search_results = $res['hits'];
-
-            } else {
-
-                //Do a regular internal search:
-                $search_results = $this->Database_model->in_fetch(array(
-                    'in_status' => 2, //Search published intents
-                    'in_outcome LIKE \'%' . $master_command . '%\'' => null, //Basic string search
-                ), array(), $result_limit);
-
-                //Note: This does not consider a minimum child count, but it will be rarely used anyways!
-
+            //Make sure algolia is enabled:
+            if (!$this->config->item('app_enable_algolia')) {
+                $this->Chat_model->dispatch_message(
+                    'Currently I cannot search for any intentions. Try again later.',
+                    $en,
+                    true
+                );
+                return false;
             }
+
+
+            $search_index = load_php_algolia('alg_index');
+            $res = $search_index->search($master_command, [
+                'hitsPerPage' => $result_limit,
+                'filters' => 'alg_obj_is_in=1 AND alg_obj_status=2 AND alg_obj_published_children>=7', //Search published intents with more than 7 published children
+            ]);
+            $search_results = $res['hits'];
 
 
             //Log intent search:
@@ -2593,13 +2589,31 @@ class Chat_model extends CI_Model
                 $quick_replies = array();
                 $message = 'I found these intentions:';
 
-                foreach ($search_results as $count => $in) {
-                    $message .= "\n\n" . ($count + 1) . '/ ' . $in['in_outcome'] . ' in ' . strip_tags(echo_time_range($in));
+                foreach ($search_results as $count => $alg) {
+
+                    //Make sure not already in Action Plan:
+                    if(count($this->Database_model->ln_fetch(array(
+                            'ln_miner_entity_id' => $en['en_id'],
+                            'ln_type_entity_id' => 4235, //Student Intents
+                            'ln_child_intent_id' => $alg['alg_obj_id'],
+                            'ln_status >=' => 0, //New+
+                        ))) > 0){
+                        continue;
+                    }
+
+                    //Fetch metadata:
+                    $ins = $this->Database_model->in_fetch(array(
+                        'in_id' => $alg['alg_obj_id'],
+                    ));
+
+                    //Show Message:
+                    $message .= "\n\n" . ($count + 1) . '/ ' . $ins[0]['in_outcome'] . ' in ' . strip_tags(echo_time_range($ins[0]));
                     array_push($quick_replies, array(
                         'content_type' => 'text',
                         'title' => ($count + 1) . '/',
-                        'payload' => 'CONFIRM_' . $in['in_id'],
+                        'payload' => 'CONFIRM_' . $ins[0]['in_id'],
                     ));
+
                 }
 
                 //Give them a "None of the above" option:
