@@ -2393,7 +2393,8 @@ class Chat_model extends CI_Model
         if (count($this->Database_model->ln_fetch(array(
                 'ln_child_entity_id' => $en['en_id'],
                 'ln_parent_entity_id' => 4455, //Unsubscribed
-                'ln_status >=' => 0,
+                'ln_type_entity_id IN (' . join(',', $this->config->item('en_ids_4592')) . ')' => null, //Entity Link Connectors
+                'ln_status' => 2,
             ))) > 0) {
 
             //Yes, this Student is Unsubscribed! Give them an option to re-activate their Mench account:
@@ -2477,7 +2478,7 @@ class Chat_model extends CI_Model
 
                 foreach ($actionplans as $counter => $in) {
                     //Construct unsubscribe confirmation body:
-                    $message .= "\n\n" . '/' . ($counter + $increment) . ' Remove ' . $in['in_outcome'];
+                    $message .= "\n\n" . '/' . ($counter + $increment) . ' Stop ' . $in['in_outcome'];
                     array_push($quick_replies, array(
                         'content_type' => 'text',
                         'title' => '/' . ($counter + $increment),
@@ -2488,7 +2489,7 @@ class Chat_model extends CI_Model
                 if (count($actionplans) >= 2) {
                     //Give option to skip all and unsubscribe:
                     $increment++;
-                    $message .= "\n\n" . '/' . ($counter + $increment) . ' Remove all intentions and unsubscribe';
+                    $message .= "\n\n" . '/' . ($counter + $increment) . ' Stop all intentions and unsubscribe';
                     array_push($quick_replies, array(
                         'content_type' => 'text',
                         'title' => '/' . ($counter + $increment),
