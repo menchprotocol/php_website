@@ -36,7 +36,7 @@ $config['in_message_commands']      = array('/firstname', '/slice', '/link'); //
 $config['en_top_focus_id']          = 3463; //The default matrix entity that is loaded when Entities is clicked
 $config['en_per_page']              = 100; //Limits the maximum entities loaded per page
 $config['en_name_max_length']       = 250; //Max number of characters allowed in the title of intents
-$config['en_file_max_size']         = 25; //Server setting is 32MB. see here: mench.com/ses
+$config['en_file_max_size']         = 25; //Server setting is 32MB
 $config['en_mass_actions']          = array( //Various mass actions to be taken on Entity children
                                         //IMPORTANT: Mass action logic for each item must be coded in Entities/en_miner_ui()
                                         'prefix_add' => 'Add string as prefix',

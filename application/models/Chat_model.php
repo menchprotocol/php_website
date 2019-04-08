@@ -2583,47 +2583,52 @@ class Chat_model extends CI_Model
             ));
 
 
-            if (count($search_results) > 0) {
+            //Show options for the Student to add to their Action Plan:
+            $new_intent_count = 0;
+            $quick_replies = array();
 
-                //Show options for the Student to add to their Action Plan:
-                $quick_replies = array();
-                $message = 'I found these intentions:';
+            foreach ($search_results as $alg) {
 
-                $count = 0;
-                foreach ($search_results as $alg) {
-
-                    //Make sure not already in Action Plan:
-                    if(count($this->Database_model->ln_fetch(array(
-                            'ln_miner_entity_id' => $en['en_id'],
-                            'ln_type_entity_id' => 4235, //Student Intent
-                            'ln_child_intent_id' => $alg['alg_obj_id'],
-                            'ln_status >=' => 0, //New+
-                        ))) > 0){
-                        continue;
-                    }
-
-                    $count++;
-
-                    //Fetch metadata:
-                    $ins = $this->Database_model->in_fetch(array(
-                        'in_id' => $alg['alg_obj_id'],
-                    ));
-
-                    //Show Message:
-                    $message .= "\n\n" . $count . '/ ' . $ins[0]['in_outcome'] . ' in ' . strip_tags(echo_time_range($ins[0]));
-                    array_push($quick_replies, array(
-                        'content_type' => 'text',
-                        'title' => $count . '/',
-                        'payload' => 'SUBSCRIBE-INITIATE_' . $ins[0]['in_id'],
-                    ));
-
+                //Make sure not already in Action Plan:
+                if(count($this->Database_model->ln_fetch(array(
+                        'ln_miner_entity_id' => $en['en_id'],
+                        'ln_type_entity_id' => 4235, //Student Intent
+                        'ln_child_intent_id' => $alg['alg_obj_id'],
+                        'ln_status >=' => 0, //New+
+                    ))) > 0){
+                    continue;
                 }
 
-                //Give them a "None of the above" option:
-                $message .= "\n\n" . ($count + 2) . '/ None of the above';
+                $new_intent_count++;
+
+                if($new_intent_count==1){
+                    $message = 'I found these intentions:';
+                }
+
+                //Fetch metadata:
+                $ins = $this->Database_model->in_fetch(array(
+                    'in_id' => $alg['alg_obj_id'],
+                ));
+
+                //Show Message:
+                $message .= "\n\n" . $new_intent_count . '/ ' . $ins[0]['in_outcome'] . ' in ' . strip_tags(echo_time_range($ins[0]));
                 array_push($quick_replies, array(
                     'content_type' => 'text',
-                    'title' => ($count + 2) . '/',
+                    'title' => $new_intent_count . '/',
+                    'payload' => 'SUBSCRIBE-INITIATE_' . $ins[0]['in_id'],
+                ));
+            }
+
+
+            if($new_intent_count > 0){
+
+                $new_intent_count++;
+
+                //Give them a "None of the above" option:
+                $message .= "\n\n" . $new_intent_count . '/ None of the above';
+                array_push($quick_replies, array(
+                    'content_type' => 'text',
+                    'title' => $new_intent_count . '/',
                     'payload' => 'SUBSCRIBE-REJECT',
                 ));
 
