@@ -1030,14 +1030,14 @@ class Entities extends CI_Controller
             $this->Database_model->ln_create(array(
                 'ln_miner_entity_id' => $ens[0]['en_id'],
                 'ln_metadata' => $ens[0],
-                'ln_type_entity_id' => 4269, //Miner Matrix Login
+                'ln_type_entity_id' => 4269, //Logged In as Miner
                 'ln_order' => $session_data['miner_session_count'], //First Action
             ));
         } else {
             $this->Database_model->ln_create(array(
                 'ln_miner_entity_id' => $ens[0]['en_id'],
                 'ln_metadata' => $ens[0],
-                'ln_type_entity_id' => 4996, //Action Plan Web Login
+                'ln_type_entity_id' => 4996, //Logged In as Student
             ));
         }
 

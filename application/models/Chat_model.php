@@ -2555,7 +2555,7 @@ class Chat_model extends CI_Model
 
                 //They do not have anything in their Action Plan, so we assume they just want to Unsubscribe and stop all future communications:
                 $this->Chat_model->dispatch_message(
-                    'Got it, just to confirm, you want to unsubscribe and stop all future communications with me?',
+                    'Just to confirm, do you want to unsubscribe and stop all future communications with me and unsubscribe?',
                     $en,
                     true,
                     array(

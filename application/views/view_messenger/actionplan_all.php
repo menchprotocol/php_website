@@ -10,7 +10,7 @@
 if(count($student_intents) > 0){
 
     //Student has multiple Action Plans, so list all Action Plans to enable Student to choose:
-    echo '<div id="actionplan_intents" class="list-group actionplan-sort" style="margin-top: 10px;">';
+    echo '<div id="actionplan_intents" class="list-group '.(count($student_intents) >= 2 ? 'actionplan-sort' : '').'" style="margin-top: 10px;">';
     foreach ($student_intents as $ln) {
 
         //Calculate time:
@@ -22,10 +22,15 @@ if(count($student_intents) > 0){
         //Right:
         echo '<span class="pull-right">';
         echo '<span class="badge badge-primary" style="margin:0 5px 0 0;"><i class="fas fa-angle-right"></i></span>';
+        echo '<span class="badge badge-primary" style="margin:0 5px 0 0;"><i class="far fa-times"></i></span>';
         echo '</span>';
 
+
         //Left:
-        echo '<i class="fas fa-bars"></i>'; //For sorting Action Plan
+        if(count($student_intents) >= 2){
+            echo '<i class="fas fa-bars"></i>'; //For sorting Action Plan
+        }
+
         //echo echo_fixed_fields('ln_status', $ln['ln_status'], 1, 'right');
         echo '<span class="actionplan-title ap-title-'.$ln['ln_id'].'">' . $ln['in_outcome'] . '</span>';
         echo '<div class="actionplan-overview"><span class="results-ln-'.$ln['ln_id'].'">'.echo_ordinal_number($ln['ln_order']).'</span> Priority, '.( $time_estimate ? $time_estimate.', ' : '').$this->Matrix_model->actionplan_completion_rate($ln, $session_en['en_id']).'% Complete</div>';
@@ -43,15 +48,12 @@ if(count($student_intents) > 0){
 
 
 
-if(count($student_intents)>1){
+if(count($student_intents)>=2){
+    //Give sorting tip:
     echo '<div class="actionplan-tip"><i class="fas fa-lightbulb"></i> TIP: You can prioritize your intentions by holding and dragging them up or down.</div>';
 }
 
 //Inform students how they can add new intentions:
 echo '<div class="actionplan-tip"><i class="fas fa-lightbulb"></i> TIP: You can add a new intention by sending a message starting with <span style="display:inline-block;">"<b>I want to</b>"</span> for example "I want to create a resume" or "I want to get hired".</div>';
-
-if(count($student_intents)>0){
-    echo '<div class="actionplan-tip"><i class="fas fa-lightbulb"></i> TIP: You can remove intentions by sending a message saying <span style="display:inline-block;">"<b>stop</b>"</span>.</div>';
-}
 
 ?>
