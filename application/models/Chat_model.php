@@ -1333,11 +1333,27 @@ class Chat_model extends CI_Model
             if(count($in__children) > 0){
 
                 //Yes, this OR branch has children, give option to add to Action Plan:
-                $next_step_message = 'Select one of the following options to continue:';
+                $key = 0;
+                foreach ($in__children as $or_child_in) {
 
-                foreach ($in__children as $key => $or_child_in) {
+                    //Make sure not already in Action Plan:
+                    if(count($this->Database_model->ln_fetch(array(
+                            'ln_miner_entity_id' => $recipient_en['en_id'], //Belongs to this Student
+                            'ln_type_entity_id' => 4235, //Student Intent
+                            'ln_child_intent_id' => $or_child_in['in_id'],
+                            'ln_status >=' => 0, //New+
+                        ))) > 0){
+                        continue;
+                    }
 
-                    if ($key == 10) {
+                    $key++;
+
+                    if($key==1){
+                        //Set intro message:
+                        $next_step_message = 'Select one of the following options to continue:';
+                    }
+
+                    if ($key >= 11) {
 
                         //Log error link so we can look into it:
                         $this->Database_model->ln_create(array(
@@ -1351,27 +1367,41 @@ class Chat_model extends CI_Model
 
                         //Quick reply accepts 11 options max:
                         break;
+
+                    } else {
+
+                        $next_step_message .= "\n\n" . $key . '/ ' . echo_in_outcome($or_child_in['in_outcome'], true);
+                        array_push($quick_replies, array(
+                            'content_type' => 'text',
+                            'title' => '/' . $key,
+                            'payload' => 'ADDORINTENT_' . $actionplan_ln_id . '_' . $in_id . '_' . $or_child_in['in_id'],
+                        ));
+
                     }
-
-                    $next_step_message .= "\n\n" . ($key + 1) . '/ ' . echo_in_outcome($or_child_in['in_outcome'], true);
-                    array_push($quick_replies, array(
-                        'content_type' => 'text',
-                        'title' => '/' . ($key + 1),
-                        'payload' => 'ADDORINTENT_' . $actionplan_ln_id . '_' . $in_id . '_' . $or_child_in['in_id'],
-                    ));
-
                 }
 
-                //Dispatch messages:
-                $this->Chat_model->dispatch_message(
-                    $next_step_message,
-                    $recipient_en,
-                    true,
-                    $quick_replies,
-                    array(
-                        'ln_child_intent_id' => $in_id, //Focus Intent
-                    )
-                );
+                //Did we find any featured intentions to offer?
+                if($key > 0){
+                    //Dispatch messages:
+                    $this->Chat_model->dispatch_message(
+                        $next_step_message,
+                        $recipient_en,
+                        true,
+                        $quick_replies,
+                        array(
+                            'ln_child_intent_id' => $in_id, //Focus Intent
+                        )
+                    );
+                } else {
+                    //Student has added all featured intentions to their Action Plan:
+                    $this->Chat_model->dispatch_message(
+                        'You have already added all featured intentions to your Action Plan and I have nothing more to offer at this time. I will keep you updated on my new featured intentions.',
+                        $recipient_en,
+                        true
+                    );
+                }
+
+
 
             } elseif($ins[0]['in_id']==$this->config->item('in_featured')) {
 
