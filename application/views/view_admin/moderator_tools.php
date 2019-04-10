@@ -229,21 +229,73 @@ if(!$action) {
     } elseif($action=='assessment_marks_list_all') {
 
         echo '<h1>'.$moderation_tools['/admin/tools/assessment_marks_list_all'].'</h1>';
-        echo '<p>Below are all the fixed intent links that award/subtract assessment marks.</p>';
+
+        echo '<p>Below are all the conditional intent links that have a routing logic:</p>';
         echo '<table class="table table-condensed table-striped maxout" style="text-align: left;">';
 
         echo '<tr style="font-weight: bold;">';
         echo '<td>&nbsp;</td>';
         echo '<td>Mark</td>';
         echo '<td>&nbsp;</td>';
-        echo '<td style="text-align: left;">Link Relation</td>';
+        echo '<td style="text-align: left;">Fixed Intent Links</td>';
+        echo '</tr>';
+        $counter = 0;
+        foreach ($this->Database_model->ln_fetch(array(
+            'ln_status >=' => 0,
+            'in_status >=' => 0,
+            'ln_type_entity_id' => 4229,
+            'LENGTH(ln_metadata) > 0' => null,
+        ), array('in_child'), 0, 0) as $in_ln) {
+            //Echo HTML format of this message:
+            $metadata = unserialize($in_ln['ln_metadata']);
+            $mark = echo_assessment_mark($in_ln);
+            if($mark){
+
+                //Fetch parent intent:
+                $parent_ins = $this->Database_model->in_fetch(array(
+                    'in_id' => $in_ln['ln_parent_intent_id'],
+                ));
+
+                $counter++;
+                echo '<tr>';
+                echo '<td style="width: 50px;">'.$counter.'</td>';
+                echo '<td style="font-weight: bold; font-size: 1.3em; width: 100px;">'.echo_assessment_mark($in_ln).'</td>';
+                echo '<td>'.$fixed_fields['ln_status'][$in_ln['ln_status']]['s_icon'].'</td>';
+                echo '<td style="text-align: left;">';
+                echo '<div>';
+                echo '<span style="width:25px; display:inline-block; text-align:center;">'.$fixed_fields['in_status'][$parent_ins[0]['in_status']]['s_icon'].'</span>';
+                echo '<a href="/intents/'.$parent_ins[0]['in_id'].'">'.$parent_ins[0]['in_outcome'].'</a>';
+                echo '</div>';
+
+                echo '<div>';
+                echo '<span style="width:25px; display:inline-block; text-align:center;">'.$fixed_fields['in_status'][$in_ln['in_status']]['s_icon'].'</span>';
+                echo '<a href="/intents/'.$in_ln['in_id'].'">'.$in_ln['in_outcome'].'</a>';
+                echo '</div>';
+                echo '</td>';
+                echo '</tr>';
+
+            }
+        }
+
+        echo '</table>';
+
+
+
+        echo '<p>Below are all the fixed intent links that award/subtract assessment marks:</p>';
+        echo '<table class="table table-condensed table-striped maxout" style="text-align: left;">';
+
+        echo '<tr style="font-weight: bold;">';
+        echo '<td>&nbsp;</td>';
+        echo '<td>Mark</td>';
+        echo '<td>&nbsp;</td>';
+        echo '<td style="text-align: left;">Fixed Intent Links</td>';
         echo '</tr>';
 
         $counter = 0;
         foreach ($this->Database_model->ln_fetch(array(
             'ln_status >=' => 0,
             'in_status >=' => 0,
-            'ln_type_entity_id' => 4228, //Intent Note Messages
+            'ln_type_entity_id' => 4228,
             'LENGTH(ln_metadata) > 0' => null,
         ), array('in_child'), 0, 0) as $in_ln) {
             //Echo HTML format of this message:
@@ -258,8 +310,8 @@ if(!$action) {
 
                 $counter++;
                 echo '<tr>';
-                echo '<td>'.$counter.'</td>';
-                echo '<td style="font-weight: bold; font-size: 1.3em;">'.echo_assessment_mark($in_ln).'</td>';
+                echo '<td style="width: 50px;">'.$counter.'</td>';
+                echo '<td style="font-weight: bold; font-size: 1.3em; width: 100px;">'.echo_assessment_mark($in_ln).'</td>';
                 echo '<td>'.$fixed_fields['ln_status'][$in_ln['ln_status']]['s_icon'].'</td>';
                 echo '<td style="text-align: left;">';
                     echo '<div>';
