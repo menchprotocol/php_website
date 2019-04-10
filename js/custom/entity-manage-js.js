@@ -440,8 +440,8 @@ function en_modify_load(en_id, ln_id) {
     var en_full_name = $(".en_name_" + en_id + ":first").text();
     $('#en_name').val(en_full_name);
     $('.edit-header').html('<i class="fas fa-cog"></i> ' + en_full_name);
-    $('#en_status').val($(".en___" + en_id + ":first").attr('entity-status'));
-    $('#ln_status').val($(".en___" + en_id + ":first").attr('tr-status'));
+    $('#en_status').val($(".en___" + en_id + ":first").attr('en-status'));
+    $('#ln_status').val($(".en___" + en_id + ":first").attr('ln-status'));
     $('.save_entity_changes').html('');
     $('.entity_remove_stats').html('');
     $('#en_link_count').val('0');
@@ -678,8 +678,11 @@ function en_modify_save() {
                 $(".en_name_" + modify_data['en_id']).text(modify_data['en_name']);
 
 
-                //Always update 2x Entity icons:
+                //Entity Icon:
                 $('.en_ui_icon_' + modify_data['en_id']).html(modify_data['en_icon']);
+
+                //Entity Status:
+                $(".en___" + modify_data['en_id']).attr('en-status', modify_data['en_status']);
                 $('.en_status_' + modify_data['en_id']).html('<span data-toggle="tooltip" data-placement="right" title="' + object_js_statuses['en_status'][modify_data['en_status']]["s_name"] + ': ' + object_js_statuses['en_status'][modify_data['en_status']]["s_desc"] + '">' + object_js_statuses['en_status'][modify_data['en_status']]["s_icon"] + '</span>');
 
 
@@ -711,10 +714,11 @@ function en_modify_save() {
                     }
 
 
-                    //Update 2x icons:
+                    //Link Icon:
                     $('.ln_type_' + modify_data['ln_id']).html('<span data-toggle="tooltip" data-placement="right" title="' + en_all_4592[data.js_ln_type_entity_id]["m_name"] + ': ' + en_all_4592[data.js_ln_type_entity_id]["m_desc"] + '">' + en_all_4592[data.js_ln_type_entity_id]["m_icon"] + '</span>');
 
-                    //Update status icon:
+                    //Link Status:
+                    $(".en___" + modify_data['en_id']).attr('ln-status', modify_data['ln_status'])
                     $('.ln_status_' + modify_data['ln_id']).html('<span class="ln_status_val" data-toggle="tooltip" data-placement="right" title="' + object_js_statuses['ln_status'][modify_data['ln_status']]["s_name"] + ': ' + object_js_statuses['ln_status'][modify_data['ln_status']]["s_desc"] + '">' + object_js_statuses['ln_status'][modify_data['ln_status']]["s_icon"] + '</span>');
 
                 }

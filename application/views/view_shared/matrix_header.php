@@ -1,6 +1,7 @@
 <?php
 //Attempt to fetch session variables:
 $session_en = $this->session->userdata('user');
+$en_all_4321 = $this->config->item('en_all_4321');
 $uri_segment_1 = $this->uri->segment(1);
 $uri_segment_2 = $this->uri->segment(2);
 ?><!doctype html>
@@ -101,21 +102,21 @@ $uri_segment_2 = $this->uri->segment(2);
                                 </a>
                             </li>
 
-                            <li class="links-inactive" data-toggle="tooltip" data-placement="left" title="Action Plan">
-                                <a href="/messenger/actionplan">
-                                    <i class="fas fa-flag"></i>
-                                </a>
-                            </li>
-
-                            <li class="links-inactive" data-toggle="tooltip" data-placement="left" title="My Account">
-                                <a href="/messenger/myaccount">
-                                    <i class="fas fa-user-circle"></i>
-                                </a>
-                            </li>
-
                             <li class="links-inactive" data-toggle="tooltip" data-placement="left" title="Toggle Advance Mode">
                                 <a href="javascript:void(0)" onclick="toggle_advance(0)">
                                     <i class="<?= ( $this->session->userdata('advance_view_enabled')==1 ? 'fas fa-expand-arrows' : 'fal fa-expand-arrows ' ) ?> advance-icon"></i>
+                                </a>
+                            </li>
+
+                            <li class="links-inactive" data-toggle="tooltip" data-placement="left" title="<?= $en_all_4321[6138]['m_name'] ?>">
+                                <a href="/messenger/actionplan">
+                                    <?= $en_all_4321[6138]['m_icon'] ?>
+                                </a>
+                            </li>
+
+                            <li class="links-inactive" data-toggle="tooltip" data-placement="left" title="<?= $en_all_4321[6137]['m_name'] ?>">
+                                <a href="/messenger/myaccount">
+                                    <?= $en_all_4321[6137]['m_icon'] ?>
                                 </a>
                             </li>
 

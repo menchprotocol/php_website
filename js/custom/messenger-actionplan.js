@@ -29,6 +29,15 @@ function actionplan_sort_save() {
 
 }
 
+//Watch for Action Plan removal click:
+$('.actionplan_remove').on('click', function(e) {
+
+    //Open Modal, confirm the removal and ask why they are removing?
+    alert('ok');
+    return false;
+
+});
+
 
 //Load sorter:
 var sort = Sortable.create(document.getElementById('actionplan_intents'), {

@@ -257,11 +257,11 @@ class Messenger extends CI_Controller
 
                     if (isset($im['message']['quick_reply']['payload'])) {
 
-                        //Quick Reply Answer Received (Cannot be sent as we never send quick replies)
+                        //Quick Reply Answer Received:
                         $ln_data['ln_type_entity_id'] = 4460;
                         $ln_data['ln_content'] = $im['message']['text']; //Quick reply always has a text
 
-                        //Digest the Quick Reply payload:
+                        //Digest it further:
                         $this->Chat_model->digest_quick_reply($en, $im['message']['quick_reply']['payload']);
 
                     } elseif (isset($im['message']['text'])) {
@@ -482,6 +482,8 @@ class Messenger extends CI_Controller
         //Wait until Facebook pro-pagates changes of our whitelisted_domains setting:
         sleep(2);
 
+        $en_all_4321 = $this->config->item('en_all_4321');
+
         //Now let's update the menu:
         array_push($res, $this->Chat_model->facebook_graph('POST', '/me/messenger_profile', array(
             'persistent_menu' => array(
@@ -491,7 +493,7 @@ class Messenger extends CI_Controller
                     'disabled_surfaces' => array('CUSTOMER_CHAT_PLUGIN'),
                     'call_to_actions' => array(
                         array(
-                            'title' => '🚩 Action Plan',
+                            'title' => $en_all_4321[6138]['m_icon'].' '.$en_all_4321[6138]['m_name'],
                             'type' => 'web_url',
                             'url' => 'https://mench.com/messenger/actionplan',
                             'webview_height_ratio' => 'tall',
@@ -499,7 +501,7 @@ class Messenger extends CI_Controller
                             'messenger_extensions' => true,
                         ),
                         array(
-                            'title' => '👤 My Account',
+                            'title' => $en_all_4321[6137]['m_icon'].' '.$en_all_4321[6137]['m_name'],
                             'type' => 'web_url',
                             'url' => 'https://mench.com/messenger/myaccount',
                             'webview_height_ratio' => 'tall',
@@ -567,7 +569,7 @@ class Messenger extends CI_Controller
         ));
 
         //Load UI:
-        $this->load->view('view_messenger/myaccount_ui.php', array(
+        $this->load->view('view_messenger/myaccount_ui', array(
             'session_en' => $session_en,
         ));
 
@@ -975,6 +977,16 @@ class Messenger extends CI_Controller
             }
         }
 
+        //Fetch student's intentions as we'd need to know their top-level goals:
+        $student_intents = $this->Database_model->ln_fetch(array(
+            'ln_miner_entity_id' => $session_en['en_id'],
+            'ln_type_entity_id' => 4235, //Set Intention
+            'ln_status IN (' . join(',', $this->config->item('ln_status_incomplete')) . ')' => null, //incomplete intentions
+            'in_status' => 2, //Published
+        ), array('in_child'), 0, 0, array('ln_order' => 'ASC'));
+
+
+
         //Show appropriate UI:
         if ($in_id < 1) {
 
@@ -985,14 +997,9 @@ class Messenger extends CI_Controller
             ));
 
             //List all student intentions:
-            $this->load->view('view_messenger/actionplan_all.php', array(
+            $this->load->view('view_messenger/actionplan_all', array(
                 'session_en' => $session_en,
-                'student_intents' => $this->Database_model->ln_fetch(array(
-                    'ln_miner_entity_id' => $session_en['en_id'],
-                    'ln_type_entity_id' => 4235, //Student Intent
-                    'ln_status >=' => 0, //New+
-                    'in_status' => 2, //Published
-                ), array('in_child'), 0, 0, array('ln_order' => 'ASC')),
+                'student_intents' => $student_intents,
             ));
 
         } else {
@@ -1000,11 +1007,12 @@ class Messenger extends CI_Controller
             //Fetch/validate selected intent:
             $ins = $this->Database_model->in_fetch(array(
                 'in_id' => $in_id,
-            ), array('in__parents', 'in__children'));
+            ));
+
             if (count($ins) < 1) {
                 die('<div class="alert alert-danger" role="alert">Invalid Intent ID.</div>');
             } elseif ($ins[0]['in_status'] != 2) {
-                die('<div class="alert alert-danger" role="alert">Intent cannot be accessed because it is not published.</div>');
+                die('<div class="alert alert-danger" role="alert">Intent is not yet published.</div>');
             }
 
             //Log Action Plan View:
@@ -1014,16 +1022,18 @@ class Messenger extends CI_Controller
                 'ln_child_intent_id' => $in_id,
             ));
 
-            //Load Action Plan UI:
-            $this->load->view('view_messenger/actionplan_intent.php', array(
+            //Load Action Plan UI with relevant variables:
+            $this->load->view('view_messenger/actionplan_intent', array(
                 'session_en' => $session_en,
-                'in' => $ins[0],
-                'actionplans' => $this->Database_model->ln_fetch(array(
-                    'ln_type_entity_id IN (' . join(',', $this->config->item('en_ids_6107')) . ')' => null, //Student Action Plan
-                    'ln_miner_entity_id' => $session_en['en_id'],
-                    'ln_child_intent_id' => $in_id,
-                    'ln_status >=' => 0, //New+
-                ), array('in_child')),
+                'student_intents' => $student_intents,
+                'in' => $ins[0], //Currently focused intention:
+                'in_is_actionplan_intention' => ( count($student_intents) > 0 && filter_array($student_intents, 'in_id', $in_id) ? 1 : 0 ),
+                'in_published_children' => $this->Database_model->ln_fetch(array(
+                    'ln_status' => 2, //Published
+                    'in_status' => 2, //Published
+                    'ln_type_entity_id' => 4228, //Fixed Intent Links
+                    'ln_parent_intent_id' => $in_id,
+                ), array('in_child'), 0, 0, array('ln_order' => 'ASC')),
             ));
 
         }
@@ -1352,12 +1362,34 @@ class Messenger extends CI_Controller
             return redirect_message('/messenger/actionplan/' . $actionplan_in_id, '<div class="alert alert-danger" role="alert">Step Not Found</div>');
         }
 
-        if ($this->Matrix_model->actionplan_append_in($in_append_id, $actionplan_steps[0]['ln_miner_entity_id'], $actionplan_in_id)) {
-            return redirect_message('/messenger/actionplan/' . $in_append_id, '<div class="alert alert-success" role="alert">Your answer was saved.</div>');
-        } else {
-            //We had some sort of an error:
-            return redirect_message('/messenger/actionplan/' . $actionplan_in_id, '<div class="alert alert-danger" role="alert">There was an error saving your answer.</div>');
+
+        //Make sure both intents are published:
+        if(count($this->Database_model->in_fetch(array(
+                'in_status' => 2, //Published
+                'in_id IN ('.$actionplan_in_id.','.$in_append_id.')' => null,
+            )))!=2){
+            $this->Database_model->ln_create(array(
+                'ln_content' => 'actionplan_choose_step() failed to validate two published intents',
+                'ln_type_entity_id' => 4246, //Platform Error
+                'ln_parent_intent_id' => $actionplan_in_id,
+                'ln_child_intent_id' => $in_append_id,
+                'ln_miner_entity_id' => $actionplan_steps[0]['ln_miner_entity_id'],
+            ));
+
+            return redirect_message('/messenger/actionplan/' . $actionplan_in_id, '<div class="alert alert-danger" role="alert">I was unable to save your answer as one or more of the steps was not yet published.</div>');
         }
+
+
+        //All good, save chosen OR path
+        $this->Database_model->ln_create(array(
+            'ln_miner_entity_id' => $actionplan_steps[0]['ln_miner_entity_id'],
+            'ln_type_entity_id' => 6157, //Action Plan OR Path Chosen
+            'ln_parent_intent_id' => $actionplan_in_id,
+            'ln_child_intent_id' => $in_append_id,
+        ));
+
+        return redirect_message('/messenger/actionplan/' . $in_append_id, '<div class="alert alert-success" role="alert">Your answer was saved.</div>');
+
     }
 
 

@@ -110,6 +110,56 @@ class Intents extends CI_Controller
     }
 
 
+
+    function assessment_marks_reports(){
+
+        //Authenticate Miner:
+        $session_en = en_auth(array(1308));
+        $fixed_fields = $this->config->item('fixed_fields');
+
+        if (!$session_en) {
+            return echo_json(array(
+                'status' => 0,
+                'message' => 'Invalid Session. Refresh the Page to Continue',
+            ));
+        } elseif (!isset($_POST['starting_in']) || intval($_POST['starting_in']) < 1) {
+            return echo_json(array(
+                'status' => 0,
+                'message' => 'Missing Starting Intent',
+            ));
+        } elseif (!isset($_POST['depth_levels']) || intval($_POST['depth_levels']) < 1) {
+            return echo_json(array(
+                'status' => 0,
+                'message' => 'Missing Depth',
+            ));
+        } elseif (!isset($_POST['min_status']) || intval($_POST['min_status']) < -1 || intval($_POST['min_status']) > 2) {
+            return echo_json(array(
+                'status' => 0,
+                'message' => 'Minimum status fall between -1 and 2',
+            ));
+        }
+
+        //Fetch/Validate intent:
+        $ins = $this->Database_model->in_fetch(array(
+            'in_id' => $_POST['starting_in'],
+            'in_status >=' => $_POST['min_status'],
+        ));
+        if(count($ins) != 1){
+            return echo_json(array(
+                'status' => 0,
+                'message' => 'Could not find intent #'.$_POST['starting_in'].' with a minimum in_status='.$_POST['min_status'],
+            ));
+        }
+
+
+        //Return report:
+        return echo_json(array(
+            'status' => 1,
+            'message' => '<h3>'.$fixed_fields['in_type'][$ins[0]['in_type']]['s_icon'].' '.$fixed_fields['in_status'][$ins[0]['in_status']]['s_icon'].' '.$ins[0]['in_outcome'].'</h3>'.echo_in_answer_scores($_POST['starting_in'], $_POST['depth_levels'], $_POST['min_status'], $_POST['depth_levels'], $ins[0]['in_type']),
+        ));
+
+    }
+
     function in_miner_ui($in_id)
     {
 

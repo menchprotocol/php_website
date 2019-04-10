@@ -8,6 +8,10 @@
 
                 <li class="social-li">
 
+                    <a href="/7436"
+                       class="social-link" data-toggle="tooltip" title="Learn more about Mench"
+                       data-placement="top"><i class="fal fa-info-circle"></i></a>
+
                     <a href="https://github.com/askmench" target="_blank"
                        class="social-link" data-toggle="tooltip" title="Mench is open-source. contribute on GitHub"
                        data-placement="top"><i class="fab fa-github"></i></a>

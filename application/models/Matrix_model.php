@@ -18,6 +18,44 @@ class Matrix_model extends CI_Model
     }
 
 
+    //        $student_ins = $this->Matrix_model->actionplan_fetch_intents($recipient_en['en_id']);
+    function actionplan_fetch_intents($en_id, $fetch_recursive = false, $calculate_completion = false, $actionplan_in_id = 0){
+
+        /*
+         *
+         * A function that generates a list of all intentions
+         * added to the student's Action Plan:
+         *
+         * $en_id:                  Student ID
+         *
+         * $calculate_completion:   Determines if completion rate should be calculated
+         *                          If False, would only return unique Action Plan intents.
+         *
+         * $actionplan_in_id:       Would limit score to a single Action Plan Intention
+         *                          If zero would calculate this for all Action Plan intents.
+         *
+         * */
+
+
+
+        $return = array(
+            'actionplan_in_ordered' => array(), //An ordered list of ALL intentions
+            'completion_rates' => array(
+                'top_level' => array(
+                    'in_count_all' => 0,
+                    'in_count_completed' => 0,
+                    'in_seconds_all' => 0,
+                    'in_seconds_completed' => 0,
+                    'in_completion_rate' => 0, //A percentage indicator of how much of the Action Plan has been completed in terms of seconds
+                ),
+                'immediate_children' => array(), //The same array as "top_level" and will calculate the same stats for each child (that needs to be in the UI)
+            ),
+        );
+
+
+        return $return;
+    }
+
     function actionplan_fetch_next($actionplan_ln_id)
     {
 
@@ -1007,7 +1045,7 @@ class Matrix_model extends CI_Model
         $actionplan_steps = $this->Database_model->ln_fetch(array(
             'ln_id' => $ln_id,
             'ln_type_entity_id' => 4559, //Completed Step
-            'ln_status >=' => 0, //New+
+            'ln_status NOT IN (' . join(',', $this->config->item('ln_status_incomplete')) . ')' => null, //completed step
         ));
 
         if(count($actionplan_steps) < 1){
@@ -1054,135 +1092,30 @@ class Matrix_model extends CI_Model
     }
 
 
-    function actionplan_append_in($in_append_id, $ln_miner_entity_id, $actionplan_in_id = 0)
-    {
+    function actionplan_communicate_next($en, $do_affirm = true){
 
         /*
          *
-         * Used when Students choose an OR Intent path in their Action Plan.
-         * When a user chooses an answer to an ANY intent, this function
-         * would mark that answer as complete while marking all siblings
-         * as Removed/Skipped (ln_status = -1)
+         * A function that does three things:
          *
-         * Inputs:
-         *
-         * $in_append_id:       The selected child intent
-         *
-         * $ln_miner_entity_id: The Student who is adding this new intent to their Action Plan
-         *
-         * $actionplan_in_id:   Determines if we're adding as a Step to an existing Action Plan ($actionplan_in_id > 0)
-         *                      OR if we're adding as a new Student Intent ($actionplan_in_id = 0)
+         * 1. Acknolwges the receival of an answer from the student
+         * 2. Tries to locate the next step in student's Action Plan
+         * 3. Communicates that next step with the student (if found)
          *
          * */
 
-
-        //Check to see if this intent has already been added to this student's Action Plan:
-        $dup_actionplans = $this->Database_model->ln_fetch(array(
-            'ln_type_entity_id IN ('.join(',',$this->config->item('en_ids_6107')).')' => null, //Student Action Plan
-            'ln_miner_entity_id' => $ln_miner_entity_id, //Belongs to this Student
-            'ln_child_intent_id' => $in_append_id,
-            'ln_status >=' => 0, //New+
-        ), array('in_child'));
-
-        if(count($dup_actionplans) > 0){
-            //This has already been added and cannot add again, inform student and abort:
-
-            $this->Chat_model->dispatch_message(
-                'The intention to '.$dup_actionplans[0]['in_outcome'].' has already been added to your action plan ' . echo_time_difference(strtotime($dup_actionplans[0]['ln_timestamp'])) . ' ago so it cannot be added again.',
-                array('en_id' => $ln_miner_entity_id),
-                true,
-                array()
-            );
-
-            return false;
+        if($do_affirm){
+            //Confirm answer received by acknowledging progress with Student:
+            $this->Chat_model->dispatch_random_intro(8333, $en);
         }
 
+        //Find the next item to navigate them to:
+        $next_ins = $this->Matrix_model->actionplan_fetch_next($en['en_id']);
 
-        //Fetch intent that's being appended:
-        $append_ins = $this->Database_model->in_fetch(array(
-            'in_id' => $in_append_id,
-            'in_status' => 2,
-        ));
-        if(count($append_ins) == 0){
-            //Ooooopsi, we were unable to fetch this intention as it's likely not published?
-            $this->Database_model->ln_create(array(
-                'ln_parent_entity_id' => $ln_miner_entity_id,
-                'ln_child_intent_id' => $in_append_id,
-                'ln_content' => 'actionplan_append_in() failed to locate child Student Intent',
-                'ln_type_entity_id' => 4246, //Platform Error
-                'ln_miner_entity_id' => 1, //Shervin/Developer
-            ));
-
-            return false;
+        if ($next_ins) {
+            //Communicate next step:
+            $this->Chat_model->compose_message($next_ins[0]['in_id'], $en);
         }
-
-
-        //Determine where we are adding this intention to:
-        if($actionplan_in_id > 0){
-
-            //We're adding as a Step to an existing Action Plan, let's fetch that:
-            $current_actionplans = $this->Database_model->ln_fetch(array(
-                'ln_type_entity_id' => 4559, //Completed Step
-                'ln_miner_entity_id' => $ln_miner_entity_id, //Belongs to this Student
-                'ln_child_intent_id' => $actionplan_in_id,
-                'ln_status >=' => 0, //New+
-            ));
-
-            if(count($current_actionplans) < 1){
-
-                //Ooooopsi, we were unable to locate this intention in the student Action Plan:
-                $this->Database_model->ln_create(array(
-                    'ln_parent_entity_id' => $ln_miner_entity_id,
-                    'ln_parent_intent_id' => $actionplan_in_id,
-                    'ln_child_intent_id' => $in_append_id,
-                    'ln_content' => 'actionplan_append_in() failed to locate parent Student Intent',
-                    'ln_type_entity_id' => 4246, //Platform Error
-                    'ln_miner_entity_id' => 1, //Shervin/Developer
-                ));
-
-                return false;
-            }
-
-            //Now examine the completion requirements and child entities for this intent:
-            $message_in_requirements = $this->Matrix_model->in_req_completion($append_ins[0]);
-            $child_ins = $this->Database_model->ln_fetch(array(
-                'ln_status' => 2, //Published
-                'in_status' => 2, //Published
-                'ln_type_entity_id' => 4228, //Fixed intent links only
-                'ln_parent_intent_id' => $in_append_id,
-            ), array('in_child'));
-
-            //Determine if the Student needs to do more work to complete this intention:
-            $needs_more_work = ( $message_in_requirements || count($child_ins) > 0 );
-
-            //Add all steps recursively down:
-            $this->Matrix_model->in_fetch_recursive($in_append_id, true, false, $current_actionplans[0]);
-
-            //Try to mark intent as complete (might not be depending on how many new intents where added as a result of the OR answer):
-            $this->Matrix_model->actionplan_complete_recursive_up($current_actionplans[0], ($needs_more_work ? 1 /* drafting */ : null));
-
-        } else {
-
-            //New Student Intention:
-            $actionplan = $this->Database_model->ln_create(array(
-                'ln_status' => 1, //Working On
-                'ln_type_entity_id' => 4235, //Student Intent
-                'ln_miner_entity_id' => $ln_miner_entity_id,
-                'ln_child_intent_id' => $in_append_id,
-                'ln_order' => 1 + $this->Database_model->ln_max_order(array( //Append to the end of existing Student Intents
-                    'ln_type_entity_id' => 4235, //Student Intent
-                    'ln_status >=' => 0, //New+
-                    'ln_miner_entity_id' => $ln_miner_entity_id,
-                )),
-            ));
-
-            //Add all steps recursively down:
-            $this->Matrix_model->in_fetch_recursive($in_append_id, true, false, $actionplan);
-
-        }
-
-        //Successful:
-        return true;
 
     }
 
@@ -1364,6 +1297,7 @@ class Matrix_model extends CI_Model
                  *
                  * */
 
+                //TODO Remove as we're no longer caching Action Plans:
                 $this->Database_model->ln_create(array(
                     'ln_status' => 0, //New
                     'ln_type_entity_id' => 4559, //Completed Step

@@ -1,7 +1,7 @@
 <?php
 
 //Is this an un-answered OR intent?
-$en_all_6107 = $this->config->item('en_all_6107');
+$en_all_6138 = $this->config->item('en_all_6138');
 $is_step = (count($actionplan_parents) > 0); //This could be the top-level Student Intent OR an Completed Step to get to the intent...
 $has_children = (count($actionplan_children) > 0);
 $is_or_branch = ( $in['in_type']==1 );
@@ -73,25 +73,25 @@ echo '<div class="sub_title">';
 
 if ($is_step) {
 
-    echo '<span class="status-label underdot" data-toggle="tooltip" data-placement="top" title="'.$en_all_6107[4559]['m_desc'].'">'.$en_all_6107[4559]['m_icon'].$en_all_6107[4559]['m_name'].'</span> &nbsp;&nbsp;';
+    echo '<span class="status-label underdot" data-toggle="tooltip" data-placement="top" title="'.$en_all_6138[4559]['m_desc'].'">'.$en_all_6138[4559]['m_icon'].$en_all_6138[4559]['m_name'].'</span> &nbsp;&nbsp;';
 
     //Show completion progress for the single parent intent:
 
     echo echo_fixed_fields('ln_student_status', $actionplan_parents[0]['ln_status'], false, 'top');
     if($time_estimate){
-        echo ' &nbsp;&nbsp;<span class="status-label underdot" data-toggle="tooltip" data-placement="top" title="The estimated time to complete this '.$en_all_6107[4559]['m_name'].'"><i class="fas fa-alarm-clock"></i> ' . $time_estimate.'</span>';
+        echo ' &nbsp;&nbsp;<span class="status-label underdot" data-toggle="tooltip" data-placement="top" title="The estimated time to complete this '.$en_all_6138[4559]['m_name'].'"><i class="fas fa-alarm-clock"></i> ' . $time_estimate.'</span>';
     }
 
     //TODO Fetch/show Student responses?
 
 } else {
 
-    echo '<span class="status-label underdot" data-toggle="tooltip" data-placement="top" title="'.$en_all_6107[4235]['m_desc'].'">'.$en_all_6107[4235]['m_icon'].$en_all_6107[4235]['m_name'].'</span> &nbsp;&nbsp;';
+    echo '<span class="status-label underdot" data-toggle="tooltip" data-placement="top" title="'.$en_all_6138[4235]['m_desc'].'">'.$en_all_6138[4235]['m_icon'].$en_all_6138[4235]['m_name'].'</span> &nbsp;&nbsp;';
 
     //This must be top level Action Plan, show Action Plan data:
     echo echo_fixed_fields('ln_student_status', $actionplan['ln_status'], false, 'top');
     if($time_estimate){
-        echo ' &nbsp;&nbsp;<span class="status-label underdot" data-toggle="tooltip" data-placement="top" title="The estimated time to complete this '.$en_all_6107[4559]['m_name'].'"><i class="fas fa-alarm-clock"></i> ' . $time_estimate.'</span>';
+        echo ' &nbsp;&nbsp;<span class="status-label underdot" data-toggle="tooltip" data-placement="top" title="The estimated time to complete this '.$en_all_6138[4559]['m_name'].'"><i class="fas fa-alarm-clock"></i> ' . $time_estimate.'</span>';
     }
 }
 echo '</div>';

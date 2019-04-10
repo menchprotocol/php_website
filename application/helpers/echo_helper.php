@@ -1327,6 +1327,68 @@ function echo_time_milliseconds($microtime)
     return date("Y-m-d H:i:s", floor($time)) . '.' . one_two_explode('.', '', $time);
 }
 
+function echo_in_answer_scores($starting_in, $depth_levels, $min_status, $original_depth_levels, $parent_in_type){
+
+    if($depth_levels<=0){
+        //End recursion:
+        return false;
+    }
+
+    //We're going 1 level deep:
+    $depth_levels--;
+
+    //Go down recursively:
+    $CI =& get_instance();
+    $fixed_fields = $CI->config->item('fixed_fields');
+    $en_all_4486 = $CI->config->item('en_all_4486');
+
+    $ui = null;
+    foreach($CI->Database_model->ln_fetch(array(
+        'ln_parent_intent_id' => $starting_in,
+        'ln_type_entity_id IN (' . join(',', $CI->config->item('en_ids_4486')) . ')' => null, //Intent Link Connectors
+        'ln_status >=' => $min_status,
+        'in_status >=' => $min_status,
+    ), array('in_child'), 0, 0, array('ln_order' => 'ASC')) as $in_ln){
+
+        //Prep Metadata:
+        $metadata = unserialize($in_ln['ln_metadata']);
+        $tr__assessment_points = ( isset($metadata['tr__assessment_points']) ? $metadata['tr__assessment_points'] : 0 );
+        $messages = $CI->Database_model->ln_fetch(array(
+            'ln_status >=' => $min_status,
+            'ln_type_entity_id' => 4231, //Intent Note Messages
+            'ln_child_intent_id' => $in_ln['in_id'],
+        ), array(), 0, 0, array('ln_order' => 'ASC'));
+
+        //Display block:
+        $ui .= '<div class="'.( $tr__assessment_points==0 ? 'no-assessment ' : 'has-assessment' ).'">';
+        $ui .= '<span style="width: 22px; display:inline-block; text-align: center;" data-toggle="tooltip" data-placement="top" title="Intent Link Type: '.$en_all_4486[$in_ln['ln_type_entity_id']]['m_name'].'">'. $en_all_4486[$in_ln['ln_type_entity_id']]['m_icon'] . '</span>';
+        $ui .= '<span style="width: 22px; display:inline-block; text-align: center;" data-toggle="tooltip" data-placement="top" title="Intent Link Status: '.$fixed_fields['ln_status'][$in_ln['ln_status']]['s_name'].'">'. $fixed_fields['ln_status'][$in_ln['ln_status']]['s_icon'] . '</span>';
+        $ui .= '<span style="width: 50px; display:inline-block; text-align: left;" data-toggle="tooltip" data-placement="top" title="Assessment Mark">'.( ($in_ln['ln_type_entity_id'] == 4228 && $parent_in_type==1) || ($in_ln['ln_type_entity_id'] == 4229) ? echo_assessment_mark($in_ln) : '' ).'</span>';
+        $ui .= '<span style="width:26px; display:inline-block; text-align: center;" data-toggle="tooltip" data-placement="top" title="Intent Type: '.$fixed_fields['in_type'][$in_ln['in_type']]['s_name'].'">'. $fixed_fields['in_type'][$in_ln['in_type']]['s_icon'] . '</span>';
+        $ui .= '<span style="width: 30px; display:inline-block; text-align: center;" data-toggle="tooltip" data-placement="top" title="Intent Status: '.$fixed_fields['in_status'][$in_ln['in_status']]['s_name'].'">'. $fixed_fields['in_status'][$in_ln['in_status']]['s_icon']. '</span>';
+        $ui .= '<a href="/admin/tools/assessment_marks_birds_eye?starting_in='.$in_ln['in_id'].'&depth_levels='.$original_depth_levels.'&min_status='.$min_status.'" data-toggle="tooltip" data-placement="top" title="Navigate report to this intent"><u>' .  $in_ln['in_outcome'] . '</u></a>';
+        if(count($messages) > 0){
+            $ui .= ' <a href="javascript:void(0);" onclick="$(\'.messages-'.$in_ln['in_id'].'\').toggleClass(\'hidden\');"><i class="fas fa-comment"></i><b>' .  count($messages) . '</b></a>';
+        }
+        $ui .= '</div>';
+
+        //Display Messages:
+        $ui .= '<div class="messages-'.$in_ln['in_id'].' hidden">';
+        foreach ($messages as $msg) {
+            $ui .= '<div class="tip_bubble" style="font-size:1em !important;">';
+            $ui .= $CI->Chat_model->dispatch_message($msg['ln_content']);
+            $ui .= '</div>';
+        }
+        $ui .= '</div>';
+
+        //Go Recursively down:
+        $ui .=  echo_in_answer_scores($in_ln['in_id'], $depth_levels, $min_status, $original_depth_levels, $in_ln['in_type']);
+
+    }
+
+    //Return the wrapped UI if existed:
+    return ($ui ? '<div class="inline-box">' . $ui . '</div>' : false);
+}
 
 function echo_radio_entities($parent_en_id, $child_en_id, $enable_mulitiselect){
     /*
@@ -1373,6 +1435,21 @@ function echo_radio_entities($parent_en_id, $child_en_id, $enable_mulitiselect){
     $ui .= '</div>';
 
     return $ui;
+}
+
+function echo_assessment_mark($in_ln){
+
+    //Validate core inputs:
+    if(!isset($in_ln['ln_metadata']) || !isset($in_ln['ln_type_entity_id'])){
+        return false;
+    }
+
+    //prep metadata:
+    $ln_metadata = unserialize($in_ln['ln_metadata']);
+
+    //Return mark:
+    return ( $in_ln['ln_type_entity_id'] == 4228 ? ( !isset($ln_metadata['tr__assessment_points']) || $ln_metadata['tr__assessment_points'] == 0 ? '' : '<span style="'.( $ln_metadata['tr__assessment_points']>0 ? 'color:#00CC00; font-weight:bold;' : ( $ln_metadata['tr__assessment_points'] < 0 ? 'color:#FF0000; font-weight:bold;' : '' )).'">' . ( $ln_metadata['tr__assessment_points'] > 0 ? '+' : '' ) . $ln_metadata['tr__assessment_points'].'</span>' ) : $ln_metadata['tr__conditional_score_min'] . ( $ln_metadata['tr__conditional_score_min']==$ln_metadata['tr__conditional_score_max'] ? '' : '-'.$ln_metadata['tr__conditional_score_max'] ).'%' );
+
 }
 
 function echo_in($in, $level, $in_parent_id = 0, $is_parent = false)
@@ -1467,8 +1544,8 @@ function echo_in($in, $level, $in_parent_id = 0, $is_parent = false)
 
         $ui .= '<span class="icon-top-left ' . echo_advance() . ' in_upvotes_' . $in['ln_child_intent_id'] . '_'.$in['ln_parent_intent_id'].'" data-toggle="tooltip" data-placement="right" title="Up-Votes">' . ( $ln_upvotes[0]['totals'] > 0 ? $ln_upvotes[0]['totals'] : '' ) . '</span>';
 
-        //Show assessment score based on Intent Link Type:
-        $ui .= '<span class="icon-3rd in_assessment_' . $ln_id . '" data-toggle="tooltip" data-placement="right" title="Assessment Score">'. ( $in['ln_type_entity_id'] == 4228 ? ( !isset($ln_metadata['tr__assessment_points']) || $ln_metadata['tr__assessment_points'] == 0 ? '' : ( $ln_metadata['tr__assessment_points'] > 0 ? '+' : '' ) . $ln_metadata['tr__assessment_points'] ) : $ln_metadata['tr__conditional_score_min'] . ( $ln_metadata['tr__conditional_score_min']==$ln_metadata['tr__conditional_score_max'] ? '' : '-'.$ln_metadata['tr__conditional_score_max'] ).'%' ) .'</span>';
+        //Show Assessment Mark based on Intent Link Type:
+        $ui .= '<span class="icon-3rd in_assessment_' . $ln_id . '" data-toggle="tooltip" data-placement="right" title="Assessment Mark">'. echo_assessment_mark() .'</span>';
 
         $ui .= '</span>';
 
@@ -1696,7 +1773,7 @@ function echo_en($en, $level, $is_parent = false)
     $ui = null;
 
 
-    $ui .= '<div entity-id="' . $en['en_id'] . '" entity-status="' . $en['en_status'] . '" tr-id="'.$ln_id.'" tr-status="'.( $ln_id > 0 ? $en['ln_status'] : 0 ).'" is-parent="' . ($is_parent ? 1 : 0) . '" class="list-group-item en-item en___' . $en['en_id'] . ' ' . ($level <= 1 ? 'top_entity' : 'tr_' . $en['ln_id']) . ( $is_parent ? ' parent-entity ' : '' ) . '">';
+    $ui .= '<div entity-id="' . $en['en_id'] . '" en-status="' . $en['en_status'] . '" tr-id="'.$ln_id.'" ln-status="'.( $ln_id > 0 ? $en['ln_status'] : 0 ).'" is-parent="' . ($is_parent ? 1 : 0) . '" class="list-group-item en-item en___' . $en['en_id'] . ' ' . ($level <= 1 ? 'top_entity' : 'tr_' . $en['ln_id']) . ( $is_parent ? ' parent-entity ' : '' ) . '">';
 
 
 

@@ -268,9 +268,9 @@ $metadata = unserialize($in['in_metadata']);
                                 </div>
 
                                 <div class="score_range_box hidden">
-                                    <span class="mini-header">Assessment Score:</span>
+                                    <span class="mini-header">Assessment Mark:</span>
                                     <div class="form-group label-floating is-empty"
-                                         style="max-width:230px; margin:1px 0 10px;" data-toggle="tooltip" title="Min/Max assessment score between 0-100%" data-placement="top">
+                                         style="max-width:230px; margin:1px 0 10px;" data-toggle="tooltip" title="Min/Max assessment marks scored between 0-100%" data-placement="top">
                                         <div class="input-group border">
                                             <span class="input-group-addon addon-lean addon-grey" style="color:#2f2739; font-weight: 300;">IF Scores </span>
                                             <input style="padding-left:0; padding-right:0; text-align:right;" type="text"
@@ -286,11 +286,11 @@ $metadata = unserialize($in['in_metadata']);
                                 </div>
 
                                 <div class="score_points hidden">
-                                    <span class="mini-header">Completion Points:</span>
-                                    <select class="form-control border" id="tr__assessment_points" data-toggle="tooltip" title="Points adjusted when student completes intent" data-placement="top" style="margin-bottom:12px;">
+                                    <span class="mini-header">Assessment Mark:</span>
+                                    <select class="form-control border" id="tr__assessment_points" data-toggle="tooltip" title="Points awarded to the student IF they choose this answer to the parent OR intent" data-placement="top" style="margin-bottom:12px;">
                                         <?php
                                         foreach (array(-233, -144, -89, -55, -34, -21, -13, -8, -5, -3, -2, -1, 0, 1, 2, 3, 5, 8, 13, 21, 34, 55, 89, 144, 233) as $point) {
-                                            echo '<option value="' . $point . '">' . ( $point>=0 ? 'Award ' : 'Subtract ' ) . ($point == 0 ? 'No Points' : abs($point) . ' Point' . echo__s($point)) . '</option>';
+                                            echo '<option value="' . $point . '">' . ($point == 0 ? 'Don\'t Score' : ( $point>0 ? '+' : '-' ). abs($point) . ' Score' . echo__s(abs($point))) . '</option>';
                                         }
                                         ?>
                                     </select>

@@ -42,21 +42,23 @@ $url_part_1 = $this->uri->segment(1);
 
         <div class="collapse navbar-collapse">
             <ul class="nav navbar-nav navbar-right">
-
-                <li><a href="/7436"><i class="fal fa-info-circle"></i> About Us</a></li>
-
                 <?php
                 if (isset($session_en['en_id'])) {
 
-                    //Everyone has an Action Plan:
-                    echo '<li id="isloggedin"><a href="/messenger/actionplan"><i class="fas fa-flag"></i> Action Plan</a></li>';
+                    $en_all_4321 = $this->config->item('en_all_4321');
 
                     //Is this user a Miner?
-                    if(isset($session_en['en__parents']) && filter_array($session_en['en__parents'], 'en_id', 1308)){
-                        echo '<li id="isloggedin"><a href="/intents/' . (isset($in['in_id']) ? $in['in_id'] : $this->config->item('in_miner_start')) . '"><i class="fas fa-yin-yang fa-spin"></i> The Matrix</a></li>';
+                    if(en_auth(array(1308))){
+                        echo '<li><a href="/intents/' . (isset($in['in_id']) ? $in['in_id'] : $this->config->item('in_miner_start')) . '">'.$en_all_4321[4488]['m_icon'].' '.$en_all_4321[4488]['m_name'].'</a></li>';
                     }
 
+
+                    echo '<li><a href="/messenger/actionplan">'.$en_all_4321[6138]['m_icon'].' '.$en_all_4321[6138]['m_name'].'</a></li>';
+                    echo '<li><a href="/messenger/myaccount">'.$en_all_4321[6137]['m_icon'].' '.$en_all_4321[6137]['m_name'].'</a></li>';
+                    echo '<li><a href="/logout"><i class="fas fa-power-off"></i> Logout</a></li>';
+
                 } else {
+                    echo '<li><a href="/7436"><i class="fal fa-info-circle"></i> About Us</a></li>';
                     echo '<li><a href="/login'. ( isset($in['in_id']) ? '?url=%2Fintents%2F'.$in['in_id'] : '' ) .'"><i class="fas fa-sign-in"></i> Sign In</a></li>';
                 }
                 ?>

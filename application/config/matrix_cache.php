@@ -5,13 +5,82 @@ defined('BASEPATH') OR exit('No direct script access allowed');
  * Keep a cache of certain parts of the Intent tree for faster processing
  * So we don't have to make DB calls to figure them out every time!
  * See here for all entities cached: https://mench.com/entities/4527
- * use-case format: $this->config->item('in_count')
+ * use-case format: $this->config->item('en_all_4321')
  *
  * ATTENTION: Also search for "en_ids_" and "en_all_" when trying to manage these throughout the code base
  *
  */
 
-//Generated 2019-04-06 17:00:41 PST
+//Generated 2019-04-09 15:41:25 PST
+
+//Action Plan Expansion:
+$config['en_ids_6147'] = array(6140, 6157);
+$config['en_all_6147'] = array(
+    6140 => array(
+        'm_icon' => '<i class="far fa-lock-open"></i>',
+        'm_name' => 'Condition Unlocked',
+        'm_desc' => '',
+        'm_parents' => array(4428, 4755, 6147, 4593),
+    ),
+    6157 => array(
+        'm_icon' => '<i class="far fa-directions"></i>',
+        'm_name' => 'Path Chosen',
+        'm_desc' => '',
+        'm_parents' => array(6146, 6147, 4755, 4593, 4460),
+    ),
+);
+
+//Action Plan Progression:
+$config['en_ids_6146'] = array(4559, 6143, 6144, 6157);
+$config['en_all_6146'] = array(
+    4559 => array(
+        'm_icon' => '<i class="far fa-comment-check"></i>',
+        'm_name' => 'Step Messages Read',
+        'm_desc' => '',
+        'm_parents' => array(4755, 6146, 4593),
+    ),
+    6143 => array(
+        'm_icon' => '<i class="far fa-minus-square"></i>',
+        'm_name' => 'Skipped Step(s)',
+        'm_desc' => '',
+        'm_parents' => array(6146, 4755, 4593),
+    ),
+    6144 => array(
+        'm_icon' => '<i class="far fa-check-square"></i>',
+        'm_name' => 'Step Requirement Submitted',
+        'm_desc' => '',
+        'm_parents' => array(4755, 6146, 4593),
+    ),
+    6157 => array(
+        'm_icon' => '<i class="far fa-directions"></i>',
+        'm_name' => 'Path Chosen',
+        'm_desc' => '',
+        'm_parents' => array(6146, 6147, 4755, 4593, 4460),
+    ),
+);
+
+//Mench Products:
+$config['en_ids_4321'] = array(4488, 6137, 6138);
+$config['en_all_4321'] = array(
+    4488 => array(
+        'm_icon' => '<i class="fas fa-yin-yang fa-spin"></i>',
+        'm_name' => 'The Matrix',
+        'm_desc' => '',
+        'm_parents' => array(4463, 4321),
+    ),
+    6137 => array(
+        'm_icon' => '👤',
+        'm_name' => 'My Account',
+        'm_desc' => '',
+        'm_parents' => array(4321),
+    ),
+    6138 => array(
+        'm_icon' => '🚩',
+        'm_name' => 'Action Plan',
+        'm_desc' => '',
+        'm_parents' => array(4463, 4321),
+    ),
+);
 
 //Social Profiles:
 $config['en_ids_6123'] = array(2793, 3300, 3301, 3302, 3303, 3320);
@@ -89,23 +158,6 @@ $config['en_all_4461'] = array(
     ),
 );
 
-//Action Plan:
-$config['en_ids_6107'] = array(4235, 4559);
-$config['en_all_6107'] = array(
-    4235 => array(
-        'm_icon' => '<i class="fas fa-flag"></i>',
-        'm_name' => 'Set Intention',
-        'm_desc' => 'A goal set by the student to be accomplished in collaboration with Mench',
-        'm_parents' => array(4593, 4463),
-    ),
-    4559 => array(
-        'm_icon' => '<i class="fas fa-walking"></i>',
-        'm_name' => 'Completed Step',
-        'm_desc' => 'An actionable task or key idea recommended by Mench to accomplish the target Intention',
-        'm_parents' => array(4593),
-    ),
-);
-
 //Student Sent Message Links:
 $config['en_ids_4277'] = array(4248, 4460, 4547, 4548, 4549, 4550, 4551, 4557);
 $config['en_all_4277'] = array(
@@ -116,10 +168,10 @@ $config['en_all_4277'] = array(
         'm_parents' => array(4755, 4593, 4428, 4277),
     ),
     4460 => array(
-        'm_icon' => '<i class="fal fa-ballot-check"></i>',
+        'm_icon' => '<i class="far fa-ballot-check"></i>',
         'm_name' => 'Sent Quick Reply',
-        'm_desc' => 'When Master chooses their answer to an OR branch',
-        'm_parents' => array(4755, 4593, 4428, 4277),
+        'm_desc' => 'When students select a quick reply answer of any kind',
+        'm_parents' => array(4755, 4593, 4277),
     ),
     4547 => array(
         'm_icon' => '<i class="fal fa-align-left"></i>',
@@ -416,7 +468,7 @@ $config['en_all_5005'] = array(
     ),
     4759 => array(
         'm_icon' => '<i class="fas fa-flag"></i>',
-        'm_name' => 'Intent Action Plans Widget',
+        'm_name' => 'Action Plan Miner Widget',
         'm_desc' => '',
         'm_parents' => array(5005, 4535),
     ),
@@ -714,7 +766,7 @@ $config['en_all_4426'] = array(
 );
 
 //Link Visible to Moderators Only:
-$config['en_ids_4755'] = array(3286, 3288, 4248, 4266, 4267, 4268, 4275, 4278, 4279, 4299, 4460, 4547, 4548, 4549, 4550, 4551, 4552, 4553, 4554, 4555, 4556, 4557, 4567, 4568, 4570, 4783, 5967);
+$config['en_ids_4755'] = array(3286, 3288, 4235, 4248, 4266, 4267, 4268, 4275, 4278, 4279, 4283, 4299, 4460, 4547, 4548, 4549, 4550, 4551, 4552, 4553, 4554, 4555, 4556, 4557, 4559, 4570, 4783, 5967, 6132, 6140, 6143, 6144, 6149, 6154, 6155, 6157);
 $config['en_all_4755'] = array(
     3286 => array(
         'm_icon' => '<i class="fal fa-lock-open"></i>',
@@ -727,6 +779,12 @@ $config['en_all_4755'] = array(
         'm_name' => 'Email Address',
         'm_desc' => '',
         'm_parents' => array(4426, 4755, 3285),
+    ),
+    4235 => array(
+        'm_icon' => '<i class="fas fa-bullseye-arrow"></i>',
+        'm_name' => 'Action Plan Add Intention',
+        'm_desc' => '',
+        'm_parents' => array(6150, 4755, 4593),
     ),
     4248 => array(
         'm_icon' => '<i class="fas fa-star-half-alt"></i>',
@@ -754,9 +812,9 @@ $config['en_all_4755'] = array(
     ),
     4275 => array(
         'm_icon' => '<i class="fas fa-search"></i>',
-        'm_name' => 'Shared Intention',
+        'm_name' => 'Action Plan Search Intention',
         'm_desc' => '',
-        'm_parents' => array(4755, 4593),
+        'm_parents' => array(6153, 4755, 4593),
     ),
     4278 => array(
         'm_icon' => '<i class="fas fa-check-double"></i>',
@@ -770,17 +828,23 @@ $config['en_all_4755'] = array(
         'm_desc' => '',
         'm_parents' => array(4755, 4593),
     ),
+    4283 => array(
+        'm_icon' => '<i class="fas fa-eye"></i>',
+        'm_name' => 'Action Plan Webview Opened',
+        'm_desc' => '',
+        'm_parents' => array(6153, 4755, 4593),
+    ),
     4299 => array(
         'm_icon' => '<i class="fal fa-cloud-upload"></i>',
-        'm_name' => 'Updated Profile Picture',
+        'm_name' => 'Student Profile Picture Update',
         'm_desc' => '',
         'm_parents' => array(4755, 4593),
     ),
     4460 => array(
-        'm_icon' => '<i class="fal fa-ballot-check"></i>',
+        'm_icon' => '<i class="far fa-ballot-check"></i>',
         'm_name' => 'Sent Quick Reply',
         'm_desc' => '',
-        'm_parents' => array(4755, 4593, 4428, 4277),
+        'm_parents' => array(4755, 4593, 4277),
     ),
     4547 => array(
         'm_icon' => '<i class="fal fa-align-left"></i>',
@@ -848,17 +912,11 @@ $config['en_all_4755'] = array(
         'm_desc' => '',
         'm_parents' => array(4755, 4593, 4277),
     ),
-    4567 => array(
-        'm_icon' => '<i class="fal fa-check-square"></i>',
-        'm_name' => 'Completed Action Plan Step',
+    4559 => array(
+        'm_icon' => '<i class="far fa-comment-check"></i>',
+        'm_name' => 'Action Plan Step Messages Read',
         'm_desc' => '',
-        'm_parents' => array(4755, 4593),
-    ),
-    4568 => array(
-        'm_icon' => '<i class="fas fa-check-square"></i>',
-        'm_name' => 'Completed Action Plan Intent',
-        'm_desc' => '',
-        'm_parents' => array(4755, 4593),
+        'm_parents' => array(4755, 6146, 4593),
     ),
     4570 => array(
         'm_icon' => '<i class="fab fa-html5"></i>',
@@ -878,6 +936,54 @@ $config['en_all_4755'] = array(
         'm_desc' => '',
         'm_parents' => array(4755, 4593, 4280),
     ),
+    6132 => array(
+        'm_icon' => '<i class="fas fa-exchange rotate90"></i>',
+        'm_name' => 'Action Plan Sort Intentions',
+        'm_desc' => '',
+        'm_parents' => array(6150, 4755, 4593),
+    ),
+    6140 => array(
+        'm_icon' => '<i class="far fa-lock-open"></i>',
+        'm_name' => 'Action Plan Condition Unlocked',
+        'm_desc' => '',
+        'm_parents' => array(4428, 4755, 6147, 4593),
+    ),
+    6143 => array(
+        'm_icon' => '<i class="far fa-minus-square"></i>',
+        'm_name' => 'Action Plan Skipped Step(s)',
+        'm_desc' => '',
+        'm_parents' => array(6146, 4755, 4593),
+    ),
+    6144 => array(
+        'm_icon' => '<i class="far fa-check-square"></i>',
+        'm_name' => 'Action Plan Step Requirement Submitted',
+        'm_desc' => '',
+        'm_parents' => array(4755, 6146, 4593),
+    ),
+    6149 => array(
+        'm_icon' => '<i class="fas fa-search-plus"></i>',
+        'm_name' => 'Action Plan Review Intention',
+        'm_desc' => '',
+        'm_parents' => array(4428, 6153, 4755, 4593),
+    ),
+    6154 => array(
+        'm_icon' => '<i class="fas fa-badge-check"></i>',
+        'm_name' => 'Action Plan Accomplish Intention',
+        'm_desc' => '',
+        'm_parents' => array(6150, 4755, 4593),
+    ),
+    6155 => array(
+        'm_icon' => '<i class="fas fa-stop-circle"></i>',
+        'm_name' => 'Action Plan Abort Intention',
+        'm_desc' => '',
+        'm_parents' => array(6150, 4593, 4755),
+    ),
+    6157 => array(
+        'm_icon' => '<i class="far fa-directions"></i>',
+        'm_name' => 'Action Plan Path Chosen',
+        'm_desc' => '',
+        'm_parents' => array(6146, 6147, 4755, 4593, 4460),
+    ),
 );
 
 //Link Points:
@@ -890,7 +996,7 @@ $config['en_all_4595'] = array(
         'm_parents' => array(4593, 4486, 4595),
     ),
     4229 => array(
-        'm_icon' => '<i class="fal fa-spin fa-question-circle"></i>',
+        'm_icon' => '<i class="fas fa-spin fa-question-circle"></i>',
         'm_name' => 'Linked Intents Conditional',
         'm_desc' => '100',
         'm_parents' => array(4593, 4486, 4595),
@@ -1004,7 +1110,7 @@ $config['en_all_4595'] = array(
         'm_parents' => array(4593, 4592, 4595),
     ),
     4319 => array(
-        'm_icon' => '<i class="fal fa-bars-numeric-down"></i>',
+        'm_icon' => '<i class="fal fa-sort-numeric-down"></i>',
         'm_name' => 'Linked Entities Integer',
         'm_desc' => '20',
         'm_parents' => array(4593, 4592, 4595),
@@ -1025,7 +1131,7 @@ $config['en_all_4595'] = array(
         'm_icon' => '<i class="fal fa-thumbs-up"></i>',
         'm_name' => 'Noted Intent Up-Vote',
         'm_desc' => '100',
-        'm_parents' => array(4463, 4986, 4985, 4595, 4593, 4485),
+        'm_parents' => array(4986, 4985, 4595, 4593, 4485),
     ),
     6093 => array(
         'm_icon' => '<i class="fal fa-megaphone"></i>',
@@ -1053,7 +1159,7 @@ $config['en_all_4600'] = array(
 );
 
 //Link Types:
-$config['en_ids_4593'] = array(4228, 4229, 4230, 4231, 4232, 4233, 4234, 4235, 4242, 4246, 4248, 4250, 4251, 4255, 4256, 4257, 4258, 4259, 4260, 4261, 4263, 4264, 4266, 4267, 4268, 4269, 4272, 4275, 4278, 4279, 4282, 4283, 4284, 4287, 4299, 4318, 4319, 4452, 4460, 4547, 4548, 4549, 4550, 4551, 4552, 4553, 4554, 4555, 4556, 4557, 4559, 4567, 4568, 4570, 4577, 4601, 4602, 4983, 4993, 4994, 4996, 4998, 4999, 5000, 5001, 5003, 5007, 5865, 5943, 5967, 5981, 5982, 6093, 6132);
+$config['en_ids_4593'] = array(4228, 4229, 4230, 4231, 4232, 4233, 4234, 4235, 4242, 4246, 4248, 4250, 4251, 4255, 4256, 4257, 4258, 4259, 4260, 4261, 4263, 4264, 4266, 4267, 4268, 4269, 4275, 4278, 4279, 4282, 4283, 4287, 4299, 4318, 4319, 4452, 4460, 4547, 4548, 4549, 4550, 4551, 4552, 4553, 4554, 4555, 4556, 4557, 4559, 4570, 4577, 4601, 4602, 4983, 4993, 4994, 4996, 4998, 4999, 5000, 5001, 5003, 5007, 5865, 5943, 5967, 5981, 5982, 6093, 6132, 6140, 6143, 6144, 6149, 6154, 6155, 6157);
 $config['en_all_4593'] = array(
     4228 => array(
         'm_icon' => '<i class="fal fa-check-circle"></i>',
@@ -1062,7 +1168,7 @@ $config['en_all_4593'] = array(
         'm_parents' => array(4593, 4486, 4595),
     ),
     4229 => array(
-        'm_icon' => '<i class="fal fa-spin fa-question-circle"></i>',
+        'm_icon' => '<i class="fas fa-spin fa-question-circle"></i>',
         'm_name' => 'Linked Intents Conditional',
         'm_desc' => '',
         'm_parents' => array(4593, 4486, 4595),
@@ -1098,10 +1204,10 @@ $config['en_all_4593'] = array(
         'm_parents' => array(5005, 4986, 4593, 4485, 4595),
     ),
     4235 => array(
-        'm_icon' => '<i class="fas fa-flag"></i>',
-        'm_name' => 'Set Intention',
-        'm_desc' => 'Created when the Master adds an intent tree to their Action Plan. We will create 1 link for each intent link to create a cache of the intent tree at that point in time.',
-        'm_parents' => array(4593, 4463),
+        'm_icon' => '<i class="fas fa-bullseye-arrow"></i>',
+        'm_name' => 'Action Plan Add Intention',
+        'm_desc' => 'A goal set by the student to be accomplished in collaboration with Mench',
+        'm_parents' => array(6150, 4755, 4593),
     ),
     4242 => array(
         'm_icon' => '<i class="fal fa-sync"></i>',
@@ -1207,21 +1313,15 @@ $config['en_all_4593'] = array(
     ),
     4269 => array(
         'm_icon' => '<i class="fas fa-sign-in"></i>',
-        'm_name' => 'Logged Into Matrix',
+        'm_name' => 'Logged In as Miner',
         'm_desc' => '',
         'm_parents' => array(4593),
     ),
-    4272 => array(
-        'm_icon' => '<i class="fas fa-question-circle"></i>',
-        'm_name' => 'Considered Action Plan Intent',
-        'm_desc' => 'Logged every time a master reviews an intent message while considering to add it to their Action Plan. ',
-        'm_parents' => array(4593, 4428),
-    ),
     4275 => array(
         'm_icon' => '<i class="fas fa-search"></i>',
-        'm_name' => 'Shared Intention',
-        'm_desc' => 'When the Master invokes the [Lets] command and searches for a new intention that they would like to add to their Action Plan.',
-        'm_parents' => array(4755, 4593),
+        'm_name' => 'Action Plan Search Intention',
+        'm_desc' => 'When students invokes the [I want to] command and search for a new intention that they would like to add to their Action Plan.',
+        'm_parents' => array(6153, 4755, 4593),
     ),
     4278 => array(
         'm_icon' => '<i class="fas fa-check-double"></i>',
@@ -1237,21 +1337,15 @@ $config['en_all_4593'] = array(
     ),
     4282 => array(
         'm_icon' => '<i class="fas fa-eye"></i>',
-        'm_name' => 'Opened My Account',
+        'm_name' => 'My Account Webview Opened',
         'm_desc' => '',
         'm_parents' => array(4593, 4428),
     ),
     4283 => array(
         'm_icon' => '<i class="fas fa-eye"></i>',
-        'm_name' => 'Opened Action Plan',
+        'm_name' => 'Action Plan Webview Opened',
         'm_desc' => 'Once a student has added an Intention to their Action Plan, this link will be logged every time they access that Action Plan and view its intentions.',
-        'm_parents' => array(4593),
-    ),
-    4284 => array(
-        'm_icon' => '<i class="fal fa-fast-forward"></i>',
-        'm_name' => 'Skipped Action Plan Step',
-        'm_desc' => 'Logged every time the student decides to skip an Action Plan.',
-        'm_parents' => array(4593),
+        'm_parents' => array(6153, 4755, 4593),
     ),
     4287 => array(
         'm_icon' => '<i class="fal fa-comment-exclamation"></i>',
@@ -1261,7 +1355,7 @@ $config['en_all_4593'] = array(
     ),
     4299 => array(
         'm_icon' => '<i class="fal fa-cloud-upload"></i>',
-        'm_name' => 'Updated Profile Picture',
+        'm_name' => 'Student Profile Picture Update',
         'm_desc' => '',
         'm_parents' => array(4755, 4593),
     ),
@@ -1272,7 +1366,7 @@ $config['en_all_4593'] = array(
         'm_parents' => array(4593, 4592, 4595),
     ),
     4319 => array(
-        'm_icon' => '<i class="fal fa-bars-numeric-down"></i>',
+        'm_icon' => '<i class="fal fa-sort-numeric-down"></i>',
         'm_name' => 'Linked Entities Integer',
         'm_desc' => '',
         'm_parents' => array(4593, 4592, 4595),
@@ -1284,10 +1378,10 @@ $config['en_all_4593'] = array(
         'm_parents' => array(4593, 4428),
     ),
     4460 => array(
-        'm_icon' => '<i class="fal fa-ballot-check"></i>',
+        'm_icon' => '<i class="far fa-ballot-check"></i>',
         'm_name' => 'Sent Quick Reply',
         'm_desc' => '',
-        'm_parents' => array(4755, 4593, 4428, 4277),
+        'm_parents' => array(4755, 4593, 4277),
     ),
     4547 => array(
         'm_icon' => '<i class="fal fa-align-left"></i>',
@@ -1356,22 +1450,10 @@ $config['en_all_4593'] = array(
         'm_parents' => array(4755, 4593, 4277),
     ),
     4559 => array(
-        'm_icon' => '<i class="fas fa-walking"></i>',
-        'm_name' => 'Completed Step',
-        'm_desc' => 'Every Action Plan has a number of intentions that define what the Masters needs to complete in order to accomplish the intention of the Action Plan',
-        'm_parents' => array(4593),
-    ),
-    4567 => array(
-        'm_icon' => '<i class="fal fa-check-square"></i>',
-        'm_name' => 'Completed Action Plan Step',
-        'm_desc' => 'When Master marks an Action Plan Intent as Complete.',
-        'm_parents' => array(4755, 4593),
-    ),
-    4568 => array(
-        'm_icon' => '<i class="fas fa-check-square"></i>',
-        'm_name' => 'Completed Action Plan Intent',
-        'm_desc' => 'When the entire Action Plan tree is marked as Complete.',
-        'm_parents' => array(4755, 4593),
+        'm_icon' => '<i class="far fa-comment-check"></i>',
+        'm_name' => 'Action Plan Step Messages Read',
+        'm_desc' => 'Logged when a student receives the messages of an AND intent that does not have any completion requirements.',
+        'm_parents' => array(4755, 6146, 4593),
     ),
     4570 => array(
         'm_icon' => '<i class="fab fa-html5"></i>',
@@ -1400,8 +1482,8 @@ $config['en_all_4593'] = array(
     4983 => array(
         'm_icon' => '<i class="fal fa-thumbs-up"></i>',
         'm_name' => 'Noted Intent Up-Vote',
-        'm_desc' => '',
-        'm_parents' => array(4463, 4986, 4985, 4595, 4593, 4485),
+        'm_desc' => 'Up-votes track intent correlations referenced within expert sources, and represent a core building block of intelligence. Up-votes are among the most precious transaction types because they indicate that IF you do A, you will likely accomplish B. As miners mine content from more experts, certain intent correlations will receive more Up-vites than others, thus gaining more credibility.',
+        'm_parents' => array(4986, 4985, 4595, 4593, 4485),
     ),
     4993 => array(
         'm_icon' => '<i class="fas fa-hashtag"></i>',
@@ -1417,7 +1499,7 @@ $config['en_all_4593'] = array(
     ),
     4996 => array(
         'm_icon' => '<i class="fas fa-sign-in"></i>',
-        'm_name' => 'Logged into Web Action Plan',
+        'm_name' => 'Logged In as Student',
         'm_desc' => '',
         'm_parents' => array(4593),
     ),
@@ -1453,7 +1535,7 @@ $config['en_all_4593'] = array(
     ),
     5007 => array(
         'm_icon' => '<i class="fal fa-expand-arrows"></i>',
-        'm_name' => 'Toggled Advance Mode',
+        'm_name' => 'Miner Toggled Advance Mode',
         'm_desc' => '',
         'm_parents' => array(4593),
     ),
@@ -1495,9 +1577,51 @@ $config['en_all_4593'] = array(
     ),
     6132 => array(
         'm_icon' => '<i class="fas fa-exchange rotate90"></i>',
-        'm_name' => 'Action Plan Sorted',
+        'm_name' => 'Action Plan Sort Intentions',
         'm_desc' => 'Student adjusted the order of their Action Plan intentions.',
-        'm_parents' => array(4593),
+        'm_parents' => array(6150, 4755, 4593),
+    ),
+    6140 => array(
+        'm_icon' => '<i class="far fa-lock-open"></i>',
+        'm_name' => 'Action Plan Condition Unlocked',
+        'm_desc' => 'Created when the student responses to OR branches meets the right % points to unlock the pathway to a conditional intent link.',
+        'm_parents' => array(4428, 4755, 6147, 4593),
+    ),
+    6143 => array(
+        'm_icon' => '<i class="far fa-minus-square"></i>',
+        'm_name' => 'Action Plan Skipped Step(s)',
+        'm_desc' => 'Logged every time a student consciously skips an intent and it\'s recursive children.',
+        'm_parents' => array(6146, 4755, 4593),
+    ),
+    6144 => array(
+        'm_icon' => '<i class="far fa-check-square"></i>',
+        'm_name' => 'Action Plan Step Requirement Submitted',
+        'm_desc' => 'Logged when a student submits the requirements (text, video, etc...) of an AND intent which could not be completed by simply receiving messages.',
+        'm_parents' => array(4755, 6146, 4593),
+    ),
+    6149 => array(
+        'm_icon' => '<i class="fas fa-search-plus"></i>',
+        'm_name' => 'Action Plan Review Intention',
+        'm_desc' => 'When a student chooses to review a given intention from the intentions they have searched or have been recommended after selecting GET STARTED from a mench.com intent landing page.',
+        'm_parents' => array(4428, 6153, 4755, 4593),
+    ),
+    6154 => array(
+        'm_icon' => '<i class="fas fa-badge-check"></i>',
+        'm_name' => 'Action Plan Accomplish Intention',
+        'm_desc' => 'Logged when the student indicates that they have accomplished the intention they had added to their Action Plan.',
+        'm_parents' => array(6150, 4755, 4593),
+    ),
+    6155 => array(
+        'm_icon' => '<i class="fas fa-stop-circle"></i>',
+        'm_name' => 'Action Plan Abort Intention',
+        'm_desc' => 'Logged when a student decides to remove an intention from their Action Plan before it has been accomplished.',
+        'm_parents' => array(6150, 4593, 4755),
+    ),
+    6157 => array(
+        'm_icon' => '<i class="far fa-directions"></i>',
+        'm_name' => 'Action Plan Path Chosen',
+        'm_desc' => 'Logged when students choose their path by selecting an OR intent answer.',
+        'm_parents' => array(6146, 6147, 4755, 4593, 4460),
     ),
 );
 
@@ -1559,7 +1683,7 @@ $config['en_all_4592'] = array(
         'm_parents' => array(4593, 4592, 4595),
     ),
     4319 => array(
-        'm_icon' => '<i class="fal fa-bars-numeric-down"></i>',
+        'm_icon' => '<i class="fal fa-sort-numeric-down"></i>',
         'm_name' => 'Integer',
         'm_desc' => '',
         'm_parents' => array(4593, 4592, 4595),
@@ -1678,7 +1802,7 @@ $config['en_all_4485'] = array(
         'm_icon' => '<i class="fal fa-thumbs-up"></i>',
         'm_name' => 'Up-Vote',
         'm_desc' => 'Tracks intent correlations mined from expert sources and miner perspectives. Up-votes give crediblity to intent correlations. Never communicated with Students and only used for weighting purposes, like how Google uses link correlations for its pagerank algorithm.',
-        'm_parents' => array(4463, 4986, 4985, 4595, 4593, 4485),
+        'm_parents' => array(4986, 4985, 4595, 4593, 4485),
     ),
     4601 => array(
         'm_icon' => '<i class="fal fa-tags"></i>',
@@ -1728,7 +1852,7 @@ $config['en_all_4486'] = array(
         'm_parents' => array(4593, 4486, 4595),
     ),
     4229 => array(
-        'm_icon' => '<i class="fal fa-spin fa-question-circle"></i>',
+        'm_icon' => '<i class="fas fa-spin fa-question-circle"></i>',
         'm_name' => 'Conditional',
         'm_desc' => 'Intent added to Action Plans after parent intent is complete AND the user\'s % score falls within the defined min/max range',
         'm_parents' => array(4593, 4486, 4595),
