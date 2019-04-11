@@ -55,7 +55,7 @@ foreach (echo_fixed_fields() as $object_id => $statuses) {
 
     } elseif($object_id=='ln_status'){
 
-        $obj_en_id = 4341; //Links
+        $obj_en_id = 6205; //Links
         $created_en_type_id = 0; //No particular filters needed
         $spacing = 'col-md-offset-4 bottom-space';
         $objects_count = $this->Database_model->ln_fetch(array(), array(), 0, 0, array(), 'ln_status, COUNT(ln_id) as totals', 'ln_status');

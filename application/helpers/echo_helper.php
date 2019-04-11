@@ -1,5 +1,115 @@
 <?php
 
+function echo_status($index, $status_num, $template = 'full', $tooltip_direction = 'top'){
+    /*
+     *
+     * Intent, Entity and Link Statuses are all stored
+     * in the database with values -1, 0, 1 or 2. So
+     * in order to display them to miners and students,
+     * we have this function that would translate them
+     * using entities cached in the matrix that would
+     * translate them based on the $index input.
+     *
+     *
+     * */
+
+
+
+    /*
+     *
+     * Object Status to Entities Translator
+     *
+     * Note: For every new item added here, you need to:
+     *
+     * 1) Publish cache_en_id with children
+     * 2) Added & loaded into the Cache
+     *
+     * */
+    $indexes = array(
+        'in_type_translator' => array(
+            'cache_en_id' => 4530,
+            'status_translator' => array(
+                1  => 6193,//OR
+                0  => 6192,//AND
+            ),
+        ),
+        'in_status_translator' => array(
+            'cache_en_id' => 4737,
+            'status_translator' => array(
+                2  => 6185,
+                1  => 6184,
+                0  => 6183,
+                -1 => 6182,
+            ),
+        ),
+        'en_status_translator' => array(
+            'cache_en_id' => 6177,
+            'status_translator' => array(
+                2  => 6181,
+                1  => 6180,
+                0  => 6179,
+                -1 => 6178,
+            ),
+        ),
+        'ln_miner_status_translator' => array(
+            'cache_en_id' => 4363,
+            'status_translator' => array(
+                2  => 6176,
+                1  => 6175,
+                0  => 6174,
+                -1 => 6173,
+            ),
+        ),
+        'ln_student_status_translator' => array(
+            'cache_en_id' => 6187,
+            'status_translator' => array(
+                2  => 6191,
+                1  => 6190,
+                0  => 6189,
+                -1 => 6188,
+            ),
+        ),
+    );
+
+    //Validate inputs:
+    if(!array_key_exists($index, $indexes) || !array_key_exists($status_num, $indexes[$index]['status_translator']) || !in_array($template, array('full','mini','m_icon','m_name','m_desc','m_parents'))){
+        //Invalid input:
+        return false;
+    }
+
+    //Load appropriate translator:
+    $CI =& get_instance();
+    $translator = $CI->config->item('en_all_'.$indexes[$index]['cache_en_id']);
+
+    if($template=='full'){
+
+        //Return full:
+        $base = $translator[$indexes[$index]['status_translator'][$status_num]]['m_icon'].' '.$translator[$indexes[$index]['status_translator'][$status_num]]['m_name'];
+        if(is_null($tooltip_direction)){
+            return $base;
+        } else {
+            return '<span data-toggle="tooltip" title="'.$translator[$indexes[$index]['status_translator'][$status_num]]['m_desc'].'" data-placement="'.$tooltip_direction.'">'.$base.'</span>';
+        }
+
+    } else if($template=='mini'){
+
+        //Return mini version:
+        $base = $translator[$indexes[$index]['status_translator'][$status_num]]['m_icon'];
+        if(is_null($tooltip_direction)){
+            return $base;
+        } else {
+            return '<span data-toggle="tooltip" title="'.$translator[$indexes[$index]['status_translator'][$status_num]]['m_name'].': '.$translator[$indexes[$index]['status_translator'][$status_num]]['m_desc'].'" data-placement="'.$tooltip_direction.'">'.$base.'</span>';
+        }
+
+    } else {
+
+        //Return only a certain part:
+        return $translator[$indexes[$index]['status_translator'][$status_num]][$template];
+
+    }
+
+
+}
 
 function echo_en_load_more($page, $limit, $en__child_count)
 {
@@ -879,12 +989,12 @@ function echo_tree_steps($in, $fb_messenger_format = 0, $expand_mode = false)
 
     //Do we have anything to return?
     $metadata = unserialize($in['in_metadata']);
-    if (!isset($metadata['in__tree_in_published']) || count($metadata['in__tree_in_published']) < 2) {
+    if (!isset($metadata['in__tree_common_steps']) || count($metadata['in__tree_common_steps']) < 2) {
         return false;
     }
 
 
-    $pitch = 'Action Plan contains ' . count($metadata['in__tree_in_published']) . ' steps';
+    $pitch = 'Action Plan contains ' . count($metadata['in__tree_common_steps']) . ' steps';
 
     if ($fb_messenger_format) {
 
@@ -901,7 +1011,7 @@ function echo_tree_steps($in, $fb_messenger_format = 0, $expand_mode = false)
             <div class="panel-heading" role="tab" id="heading' . $id . '">
                 <h4 class="panel-title">
                     <a role="button" data-toggle="collapse" data-parent="#open' . $id . '" href="#collapse' . $id . '" aria-expanded="' . ($expand_mode ? 'true' : 'false') . '" aria-controls="collapse' . $id . '">
-                    <i class="fas" style="transform:none !important;"><i class="fas fa-walking" style="transform:none !important;"></i></i> ' . count($metadata['in__tree_in_published']) . ' Steps<i class="fal fa-info-circle" style="transform:none !important; font-size:0.85em !important;"></i>
+                    <i class="fas" style="transform:none !important;"><i class="fas fa-walking" style="transform:none !important;"></i></i> ' . count($metadata['in__tree_common_steps']) . ' Steps<i class="fal fa-info-circle" style="transform:none !important; font-size:0.85em !important;"></i>
                 </a>
             </h4>
         </div>
@@ -1529,10 +1639,10 @@ function echo_in($in, $level, $in_parent_id = 0, $is_parent = false)
         $ui .= '<span class="double-icon" style="margin:0 3px 0 -3px;">';
 
         //Show larger icon for link type (auto detected based on link content):
-        $ui .= '<span class="icon-main ln_type_' . $ln_id . '"><span data-toggle="tooltip" data-placement="right" title="' . $en_all_4486[$in['ln_type_entity_id']]['m_name'] . ': ' . $en_all_4486[$in['ln_type_entity_id']]['m_desc'] . '">' . $en_all_4486[$in['ln_type_entity_id']]['m_icon'] . '</span></span>';
+        $ui .= '<span class="icon-main ln_type_' . $ln_id . '"><span data-toggle="tooltip" data-placement="right" title="' . $en_all_4486[$in['ln_type_entity_id']]['m_name'] . ': ' . $en_all_4486[$in['ln_type_entity_id']]['m_desc'] . ' @'.$in['ln_type_entity_id'].'">' . $en_all_4486[$in['ln_type_entity_id']]['m_icon'] . '</span></span>';
 
         //Show smaller link status icon:
-        $ui .= '<span class="icon-top-right ln_status_' . $ln_id . '"><span data-toggle="tooltip" data-placement="right" title="'.$fixed_fields['ln_status'][$in['ln_status']]['s_name'].': '.$fixed_fields['ln_status'][$in['ln_status']]['s_desc'].'">' . $fixed_fields['ln_status'][$in['ln_status']]['s_icon'] . '</span></span>';
+        $ui .= '<span class="icon-top-right ln_status_' . $ln_id . '"><span data-toggle="tooltip" data-placement="right" title="'.$fixed_fields['ln_status'][$in['ln_status']]['s_name'].' ['.$in['ln_status'].']: '.$fixed_fields['ln_status'][$in['ln_status']]['s_desc'].'">' . $fixed_fields['ln_status'][$in['ln_status']]['s_icon'] . '</span></span>';
 
         //Count and show total up-votes for this intent correlation (not necessarily this exact link, but the parent/child intent relation)
         $ln_upvotes = $CI->Database_model->ln_fetch(array(
@@ -1558,10 +1668,10 @@ function echo_in($in, $level, $in_parent_id = 0, $is_parent = false)
     $ui .= '<span class="double-icon" style="margin-right:5px;">';
 
     //Show larger intent icon (AND or OR):
-    $ui .= '<span class="icon-main in_type_' . $in['in_id'] . '"><span class="in_type_val" data-toggle="tooltip" data-placement="right" title="'.$fixed_fields['in_type'][$in['in_type']]['s_name'].': '.$fixed_fields['in_type'][$in['in_type']]['s_desc'].'">' . $fixed_fields['in_type'][$in['in_type']]['s_icon'] . '</span></span>';
+    $ui .= '<span class="icon-main in_type_' . $in['in_id'] . '"><span class="in_type_val" data-toggle="tooltip" data-placement="right" title="'.$fixed_fields['in_type'][$in['in_type']]['s_name'].' ['.$in['in_type'].']: '.$fixed_fields['in_type'][$in['in_type']]['s_desc'].'">' . $fixed_fields['in_type'][$in['in_type']]['s_icon'] . '</span></span>';
 
     //Show smaller intent status:
-    $ui .= '<span class="icon-top-right in_status_' . $in['in_id'] . '"><span data-toggle="tooltip" data-placement="right" title="'.$fixed_fields['in_status'][$in['in_status']]['s_name'].': '.$fixed_fields['in_status'][$in['in_status']]['s_desc'].'">' . $fixed_fields['in_status'][$in['in_status']]['s_icon'] . '</span></span>';
+    $ui .= '<span class="icon-top-right in_status_' . $in['in_id'] . '"><span data-toggle="tooltip" data-placement="right" title="'.$fixed_fields['in_status'][$in['in_status']]['s_name'].' ['.$in['in_status'].']: '.$fixed_fields['in_status'][$in['in_status']]['s_desc'].'">' . $fixed_fields['in_status'][$in['in_status']]['s_icon'] . '</span></span>';
 
     //Status locked intent?
     if(in_array($in['in_id'],$CI->config->item('in_status_locked'))){
@@ -1669,8 +1779,8 @@ function echo_in($in, $level, $in_parent_id = 0, $is_parent = false)
     $ui .= '<a href="/links?any_in_id=' . $in['in_id'] . '&ln_parent_link_id=' . $ln_id . '" class="badge badge-primary ' . echo_advance() . ' is_not_bg" style="width:40px; margin:-3px 0px 0 4px; border:2px solid #fedd16 !important;" data-toggle="tooltip" data-placement="top" title="Go to Links"><span class="btn-counter">' . echo_number($count_in_trs[0]['totals']) . '</span><i class="fas fa-link rotate90"></i></a>';
 
     $tree_count = null;
-    if(isset($in_metadata['in__tree_in_active_count'])){
-        $tree_count = '<span class="btn-counter ' . echo_advance() . ' children-counter-' . $in['in_id'] . ' ' . ($is_parent && $level == 2 ? 'inb-counter' : '') . '">' . $in_metadata['in__tree_in_active_count'] . '</span>';
+    if(isset($in_metadata['in__tree_max_steps'])){
+        $tree_count = '<span class="btn-counter ' . echo_advance() . ' children-counter-' . $in['in_id'] . ' ' . ($is_parent && $level == 2 ? 'inb-counter' : '') . '">' . $in_metadata['in__tree_max_steps'] . '</span>';
     }
 
     //Intent Link to Travel Down/UP the Tree:
@@ -1797,10 +1907,10 @@ function echo_en($en, $level, $is_parent = false)
         $ui .= '<span class="double-icon" style="margin-right:7px;">';
 
         //Show larger icon for link type (auto detected based on link content):
-        $ui .= '<span class="icon-main ln_type_' . $ln_id . '"><span data-toggle="tooltip" data-placement="right" title="'.$en_all_4593[$en['ln_type_entity_id']]['m_name'].'">' . $en_all_4593[$en['ln_type_entity_id']]['m_icon'] . '</span></span> ';
+        $ui .= '<span class="icon-main ln_type_' . $ln_id . '"><span data-toggle="tooltip" data-placement="right" title="'.$en_all_4593[$en['ln_type_entity_id']]['m_name'].' @'.$en['ln_type_entity_id'].'">' . $en_all_4593[$en['ln_type_entity_id']]['m_icon'] . '</span></span> ';
 
         //Show smaller link status icon:
-        $ui .= '<span class="icon-top-right ln_status_' . $ln_id . '"><span data-toggle="tooltip" data-placement="right" title="'.$fixed_fields['ln_status'][$en['ln_status']]['s_name'].': '.$fixed_fields['ln_status'][$en['ln_status']]['s_desc'].'">' . $fixed_fields['ln_status'][$en['ln_status']]['s_icon'] . '</span></span>';
+        $ui .= '<span class="icon-top-right ln_status_' . $ln_id . '"><span data-toggle="tooltip" data-placement="right" title="'.$fixed_fields['ln_status'][$en['ln_status']]['s_name'].' ['.$en['ln_status'].']: '.$fixed_fields['ln_status'][$en['ln_status']]['s_desc'].'">' . $fixed_fields['ln_status'][$en['ln_status']]['s_icon'] . '</span></span>';
 
         $ui .= '</span>';
 
@@ -1822,7 +1932,7 @@ function echo_en($en, $level, $is_parent = false)
     $ui .= '<span class="icon-main en_ui_icon en_ui_icon_' . $en['en_id'] . ' en-icon en__icon_'.$en['en_id'].'" en-is-set="'.( strlen($en['en_icon']) > 0 ? 1 : 0 ).'" data-toggle="tooltip" data-placement="right" title="Entity Icon">' . echo_icon($en) . '</span>';
 
     //Show smaller entity status:
-    $ui .= '<span class="icon-top-right en_status_' . $en['en_id'] . '"><span data-toggle="tooltip" data-placement="right" title="'.$fixed_fields['en_status'][$en['en_status']]['s_name'].': '.$fixed_fields['en_status'][$en['en_status']]['s_desc'].'">' . $fixed_fields['en_status'][$en['en_status']]['s_icon'] . '</span></span>';
+    $ui .= '<span class="icon-top-right en_status_' . $en['en_id'] . '"><span data-toggle="tooltip" data-placement="right" title="'.$fixed_fields['en_status'][$en['en_status']]['s_name'].' ['.$en['en_status'].']: '.$fixed_fields['en_status'][$en['en_status']]['s_desc'].'">' . $fixed_fields['en_status'][$en['en_status']]['s_icon'] . '</span></span>';
 
     //Status locked intent?
     if($en['en_psid'] > 0){

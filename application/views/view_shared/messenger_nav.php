@@ -1,15 +1,15 @@
 <div class="p-header">
     <ul class="nav nav-pills nav-pills-primary full-width">
         <?php
-        $en_all_4321 = $this->config->item('en_all_4321');
+        $en_all_6196 = $this->config->item('en_all_6196');
         $navigation = array(
             array(
                 'my_url' => 'actionplan',
-                'anchor' => $en_all_4321[6138]['m_icon'].' '.$en_all_4321[6138]['m_name'],
+                'anchor' => $en_all_6196[6138]['m_icon'].' '.$en_all_6196[6138]['m_name'],
             ),
             array(
                 'my_url' => 'myaccount',
-                'anchor' => $en_all_4321[6137]['m_icon'].' '.$en_all_4321[6137]['m_name'],
+                'anchor' => $en_all_6196[6137]['m_icon'].' '.$en_all_6196[6137]['m_name'],
             ),
         );
 

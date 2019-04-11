@@ -14,7 +14,7 @@ defined('BASEPATH') OR exit('No direct script access allowed');
 date_default_timezone_set('America/Los_Angeles');
 
 //App Functionality:
-$config['app_version']              = '0.814'; //Cache buster for static JS/CSS files, so needs to be updated if you update static files
+$config['app_version']              = '0.815'; //Cache buster for static JS/CSS files, so needs to be updated if you update static files
 $config['app_enable_algolia']       = true; //May need to turn off if/when we reach free monthly quota of 50k calls
 $config['app_in_en_ratio']          = 10; // = Intent tree max seconds / Entity trust score
 
@@ -50,7 +50,7 @@ $config['en_mass_actions']          = array( //Various mass actions to be taken 
 //Links:
 $config['ln_content_max_length']    = 610; //Max number of characters allowed in messages. Facebook's cap is 2000 characters/message
 $config['ln_status_incomplete']     = array(0, 1); //Link statuses that are considered in-complete to determine progress and more
-$config['tr_object_links']          = array( //Each link can have any of the following object links
+$config['tr_object_links']          = array( //Sets the order and defines the object type of the 7 link connections
                                         'ln_type_entity_id' => 'en',
                                         'ln_miner_entity_id' => 'en',
                                         'ln_parent_entity_id' => 'en',
@@ -90,7 +90,6 @@ $config['fb_convert_4537']          = array( //Dedicated media formats supported
                                         4260 => 'image',
                                         4261 => 'file',
                                     );
-
 
 //3x Table Status:
 $config['fixed_fields']             = array(

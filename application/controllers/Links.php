@@ -12,6 +12,9 @@ class Links extends CI_Controller
         $this->output->enable_profiler(FALSE);
     }
 
+    function test(){
+        echo echo_status('in_type_translator', 0);
+    }
 
     function index()
     {

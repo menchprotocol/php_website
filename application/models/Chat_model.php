@@ -437,7 +437,7 @@ class Chat_model extends CI_Model
 
             } elseif (count($lns_comm_level) > 1) {
 
-                //This should find exactly one result as it belongs to Student Radio Entity @4461
+                //This should find exactly one result as it belongs to Student Radio Entity @6137
                 return array(
                     'status' => 0,
                     'message' => 'Student has more than 1 Notification Level parent entity relation',
