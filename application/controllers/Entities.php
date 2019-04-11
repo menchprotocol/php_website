@@ -1053,7 +1053,7 @@ class Entities extends CI_Controller
             //Default:
             if ($is_miner) {
                 //miner default:
-                header('Location: /intents/' . $this->config->item('in_miner_start'));
+                header('Location: /matrix');
             } else {
                 //Student default:
                 header('Location: /messenger/actionplan');

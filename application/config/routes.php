@@ -20,5 +20,5 @@ $route['login']                 = "entities/en_login_ui";
 $route['logout']                = "entities/logout";
 
 //Admin:
-$route['stats']                        = "admin/stats";
+$route['matrix']                        = "admin/matrix";
 $route['admin']                        = "admin/tools";

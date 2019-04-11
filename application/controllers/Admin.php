@@ -33,13 +33,13 @@ class Admin extends CI_Controller
     }
 
 
-    function stats()
+    function matrix()
     {
         $session_en = en_auth(array(1308)); //Just be logged in to browse
         $this->load->view(($session_en ? 'view_shared/matrix_header' : 'view_shared/public_header'), array(
-            'title' => 'Platform Stats',
+            'title' => 'The Matrix',
         ));
-        $this->load->view('view_admin/public_stats');
+        $this->load->view('view_admin/the_matrix');
         $this->load->view(($session_en ? 'view_shared/matrix_footer' : 'view_shared/public_footer'));
     }
 

@@ -3791,6 +3791,15 @@ h4 .tip-badge {
     line-height: 110%;
 }
 
+.matrix-logo {
+    color: #FFF;
+    font-size: 1.8em;
+    display: inline-block;
+    position: absolute;
+    left: -3px;
+    top: 14px;
+}
+
 .badge-hy {
     color: #FFF;
     background-color: #2f2739;

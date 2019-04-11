@@ -31,7 +31,8 @@ $fixed_fields = $this->config->item('fixed_fields');
 
 
 //Fetch & Display Intent Note Messages to explain links:
-echo '<h1>Platform Stats</h1>';
+echo '<h1 style="text-align: center; margin-top: 50px;">The Matrix <i class="fas fa-yin-yang fa-spin"></i></h1>';
+echo '<p style="text-align: center; margin-top: 20px; font-size:1.5em !important;">Building consensus, one link at a time.</p>';
 
 //Load core Mench Objects:
 $en_all_4534 = $this->config->item('en_all_4534');
@@ -83,16 +84,13 @@ foreach (echo_fixed_fields() as $object_id => $statuses) {
 
 
         //Display this status count:
-        $this_ui .= '<tr'.( $status_num < 0 ? ' class="is-removed" ' : '' ).'>';
+        $this_ui .= '<tr>';
         $this_ui .= '<td style="text-align: left;"><span style="width:29px; display: inline-block; text-align: center;">'.$status['s_icon'].'</span><span class="underdot" data-toggle="tooltip" title="'.$status['s_desc'].'" data-placement="top">'.$status['s_name'].'</span></td>';
         $this_ui .= '<td style="text-align: right;">'.( $count > 0 ? '<a href="/links?'.$object_id.'='.$status_num.'&ln_type_entity_id='.$created_en_type_id.'"  data-toggle="tooltip" title="View Links" data-placement="top">'.number_format($count,0).'</a>' : $count ).' '.$en_all_4534[$obj_en_id]['m_icon'].'</td>';
         $this_ui .= '</tr>';
 
-        if($status_num >= 0){
-            //Increase total counter:
-            $this_totals += $count;
-        }
-
+        //Increase total counter:
+        $this_totals += $count;
     }
 
 

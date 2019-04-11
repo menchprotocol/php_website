@@ -466,7 +466,41 @@ function echo_tr_row($ln, $is_inner = false)
     $fixed_fields = $CI->config->item('fixed_fields');
 
 
-    $ui .= '<div style="padding: 0 10px;">';
+
+    //Link ID Row of data:
+    $ui .= '<div style="padding: 0px 0 8px 12px; font-size: 0.9em;">';
+    $ui .= '<span data-toggle="tooltip" data-placement="top" title="Link ID" style="min-width:80px; display: inline-block;"><i class="fas fa-link rotate90"></i> '.$ln['ln_id'].'</span>';
+    $ui .= ' &nbsp;<span data-toggle="tooltip" data-placement="top" title="'.$fixed_fields['ln_status'][$ln['ln_status']]['s_desc'].'" style="min-width:82px; display: inline-block;">'.$fixed_fields['ln_status'][$ln['ln_status']]['s_icon'].' '.$fixed_fields['ln_status'][$ln['ln_status']]['s_name'].'</span>';
+    $ui .= ' &nbsp;<span data-toggle="tooltip" data-placement="top" title="Link Creation Timestamp: ' . $ln['ln_timestamp'] . ' PST" style="min-width:120px; display: inline-block;"><i class="fal fa-clock"></i> ' . echo_time_difference(strtotime($ln['ln_timestamp'])) . ' ago</span>';
+    $ui .= ' &nbsp;<span data-toggle="tooltip" data-placement="top" title="Mined Points" style="min-width:47px; display: inline-block;"><i class="fas fa-award"></i> <b>'. $ln['ln_points'] .'</b></span>';
+
+
+
+    if($ln['ln_order'] != 0){
+        $ui .= ' &nbsp;<span data-toggle="tooltip" data-placement="top" title="Link ordered '.echo_ordinal_number($ln['ln_order']).' relative to its siblings" style="min-width:30px; display: inline-block;" class="' . echo_advance() . '"><i class="fas fa-sort"></i>'.$ln['ln_order'].'</span>';
+    } else {
+        $ui .= ' &nbsp;<span data-toggle="tooltip" data-placement="top" title="Link is not ordered" style="min-width:30px; display: inline-block;" class="' . echo_advance() . '"><i class="fas fa-sort" style="color: #AAA;"></i></span>';
+    }
+
+
+    if(!$hide_sensitive_details && strlen($ln['ln_content']) < 1){
+        $ui .= ' &nbsp;<span data-toggle="tooltip" data-placement="top" title="Link has no content" class="' . echo_advance() . '"><i class="fal fa-comment-slash" style="color: #AAA;"></i></span>';
+    }
+
+    //Is this a miner? Show them metadata status:
+    if(!$hide_sensitive_details && en_auth(array(1308))){
+        if(strlen($ln['ln_metadata']) > 0){
+            $ui .= ' &nbsp;<a href="/links/link_json/' . $ln['ln_id'] . '" target="_blank" data-toggle="tooltip" data-placement="top" title="Open link metadata json object (in new window)" style="min-width:26px; display: inline-block;" class="' . echo_advance() . '"><i class="fas fa-search-plus"></i></a>';
+        } else {
+            $ui .= ' &nbsp;<span data-toggle="tooltip" data-placement="top" title="No Metadata" style="min-width:26px; display: inline-block;" class="' . echo_advance() . '"><i class="fal fa-search-minus" style="color: #AAA;"></i></span>';
+        }
+    }
+
+    $ui .= '</div>';
+
+
+    //Miner and Link Type row:
+    $ui .= '<div style="padding:0 10px 12px;">';
 
         if($hide_sensitive_details){
 
@@ -487,35 +521,7 @@ function echo_tr_row($ln, $is_inner = false)
     $ui .= '</div>';
 
 
-    //2nd Row of data:
-    $ui .= '<div style="padding:7px 0 9px 13px; font-size:0.8em;">';
-    $ui .= '<span data-toggle="tooltip" data-placement="top" title="Link ID" style="min-width:80px; display: inline-block;"><i class="fas fa-link rotate90"></i> '.$ln['ln_id'].'</span>';
-    $ui .= ' &nbsp;<span data-toggle="tooltip" data-placement="top" title="Mined Points" style="min-width:47px; display: inline-block;"><i class="fas fa-award"></i> <b>'. $ln['ln_points'] .'</b></span>';
-    $ui .= ' &nbsp;<span data-toggle="tooltip" data-placement="top" title="'.$fixed_fields['ln_status'][$ln['ln_status']]['s_desc'].'" style="min-width:82px; display: inline-block;">'.$fixed_fields['ln_status'][$ln['ln_status']]['s_icon'].' '.$fixed_fields['ln_status'][$ln['ln_status']]['s_name'].'</span>';
-    $ui .= ' &nbsp;<span data-toggle="tooltip" data-placement="top" title="Link Log Time: ' . $ln['ln_timestamp'] . ' PST" style="min-width:120px; display: inline-block;"><i class="fal fa-clock"></i> ' . echo_time_difference(strtotime($ln['ln_timestamp'])) . ' ago</span>';
 
-
-    if($ln['ln_order'] != 0){
-        $ui .= ' &nbsp;<span data-toggle="tooltip" data-placement="top" title="Link ordered '.echo_ordinal_number($ln['ln_order']).' relative to its siblings" style="min-width:30px; display: inline-block;" class="' . echo_advance() . '"><i class="fas fa-bars"></i>'.$ln['ln_order'].'</span>';
-    } else {
-        $ui .= ' &nbsp;<span data-toggle="tooltip" data-placement="top" title="Link is not ordered" style="min-width:30px; display: inline-block;" class="' . echo_advance() . '"><i class="fas fa-bars" style="color: #AAA;"></i></span>';
-    }
-
-
-    if(!$hide_sensitive_details && strlen($ln['ln_content']) < 1){
-        $ui .= ' &nbsp;<span data-toggle="tooltip" data-placement="top" title="Link has no content" class="' . echo_advance() . '"><i class="fal fa-comment-slash" style="color: #AAA;"></i></span>';
-    }
-
-    //Is this a miner? Show them metadata status:
-    if(!$hide_sensitive_details && en_auth(array(1308))){
-        if(strlen($ln['ln_metadata']) > 0){
-            $ui .= ' &nbsp;<a href="/links/link_json/' . $ln['ln_id'] . '" target="_blank" data-toggle="tooltip" data-placement="top" title="Open link metadata json object (in new window)" style="min-width:26px; display: inline-block;" class="' . echo_advance() . '"><i class="fas fa-search-plus"></i></a>';
-        } else {
-            $ui .= ' &nbsp;<span data-toggle="tooltip" data-placement="top" title="No Metadata" style="min-width:26px; display: inline-block;" class="' . echo_advance() . '"><i class="fal fa-search-minus" style="color: #AAA;"></i></span>';
-        }
-    }
-
-    $ui .= '</div>';
 
     //Do we have a content to show?
     if(!$hide_sensitive_details){

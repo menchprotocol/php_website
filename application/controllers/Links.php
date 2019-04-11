@@ -40,6 +40,52 @@ class Links extends CI_Controller
 
 
 
+    function load_link_list(){
+
+        /*
+         * Loads the list of links based on the
+         * filters passed on.
+         *
+         * */
+
+        $filters = unserialize($_POST['link_filters']);
+        $join_by = unserialize($_POST['link_join_by']);
+        $message = '';
+
+        //Fetch links and total link counts:
+        $lns = $this->Database_model->ln_fetch($filters, $join_by, (is_dev() ? 50 : 200));
+        $lns_count = $this->Database_model->ln_fetch($filters, $join_by, 0, 0, array(), 'COUNT(ln_id) as trs_count, SUM(ln_points) as points_sum');
+
+
+        //Display filter notes:
+        $message .= '<p style="margin: 10px 0 0 0;">Showing '.count($lns) . ( $lns_count[0]['trs_count'] > count($lns) ? ' of '. number_format($lns_count[0]['trs_count'] , 0) : '' ) .' links with '.number_format($lns_count[0]['points_sum'], 0).' awarded points:</p>';
+
+
+        if(count($lns)>0){
+
+            $message .= '<div class="list-group list-grey">';
+            foreach ($lns as $ln) {
+                $message .= echo_tr_row($ln);
+            }
+            $message .= '</div>';
+
+        } else {
+
+            //Show no link warning:
+            $message .= '<div class="alert alert-info" role="alert" style="margin-top: 0;"><i class="fas fa-exclamation-triangle"></i> No Links found with the selected filters. Modify filters and try again.</div>';
+
+        }
+
+
+        return echo_json(array(
+            'status' => 1,
+            'message' => $message,
+        ));
+
+
+    }
+
+
     function add_search_item(){
 
         //Authenticate Miner:

@@ -1,36 +1,4 @@
-<script type="text/javascript">
-
-    function check_in_en_status(){
-        //Checks to see if the Intent/Entity status filter should be visible
-        //Would only make visible if Link type is Created Intent/Entity
-
-        //Hide both in/en status:
-        $(".filter-statuses").addClass('hidden');
-
-        //Show only if creating new in/en Link type:
-        if($("#ln_type_entity_id").val()==4250){
-            $(".filter-in-status").removeClass('hidden');
-        } else if($("#ln_type_entity_id").val()==4251){
-            $(".filter-en-status").removeClass('hidden');
-        }
-    }
-
-    $(document).ready(function () {
-
-        check_in_en_status();
-
-        //Watch for intent status change:
-        $("#ln_type_entity_id").change(function () {
-            check_in_en_status();
-        });
-
-    });
-
-</script>
-
 <?php
-
-$has_filters = ( count($_GET) > 0 );
 
 //Construct filters based on GET variables:
 $filters = array();
@@ -244,7 +212,6 @@ if(isset($_GET['ln_type_entity_id'])){
 
 
 //Fetch links:
-
 $filter_note = '';
 if(!en_auth(array(1281))){
     //Not a moderator:
@@ -264,18 +231,72 @@ if(!en_auth(array(1281))){
     }
 }
 
-$lns_count = $this->Database_model->ln_fetch($filters, $join_by, 0, 0, array(), 'COUNT(ln_id) as trs_count, SUM(ln_points) as points_sum');
-$lns = $this->Database_model->ln_fetch($filters, $join_by, (is_dev() ? 50 : 200));
 
 
 
+$has_filters = ( count($_GET) > 0 );
 
-echo '<h1>Links</h1>';
+?>
 
-echo '<div><a href="javascript:void();" onclick="$(\'.show-filter\').toggleClass(\'hidden\');">'.( $has_filters ? '<i class="fal fa-minus-circle show-filter"></i><i class="fal fa-plus-circle show-filter hidden"></i>' : '<i class="fal fa-plus-circle show-filter"></i><i class="fal fa-minus-circle show-filter hidden"></i>').' Toggle Filters</a></div>';
+<script type="text/javascript">
+
+    function check_in_en_status(){
+        //Checks to see if the Intent/Entity status filter should be visible
+        //Would only make visible if Link type is Created Intent/Entity
+
+        //Hide both in/en status:
+        $(".filter-statuses").addClass('hidden');
+
+        //Show only if creating new in/en Link type:
+        if($("#ln_type_entity_id").val()==4250){
+            $(".filter-in-status").removeClass('hidden');
+        } else if($("#ln_type_entity_id").val()==4251){
+            $(".filter-en-status").removeClass('hidden');
+        }
+    }
+
+    $(document).ready(function () {
+
+        check_in_en_status();
+
+        //Watch for intent status change:
+        $("#ln_type_entity_id").change(function () {
+            check_in_en_status();
+        });
 
 
-echo '<div class="inline-box show-filter '.( $has_filters ? '' : 'hidden' ).'">';
+        //Show spinner:
+        $('#link_list').html('<span><i class="fas fa-spinner fa-spin"></i> Loading...</span>').hide().fadeIn();
+
+        //Load report based on input fields:
+        $.post("/links/load_link_list", {
+            link_filters: '<?= serialize(count($filters) > 0 ? $filters : array()) ?>',
+            link_join_by: '<?= serialize(count($join_by) > 0 ? $join_by : array()) ?>'
+        }, function (data) {
+            if (!data.status) {
+                //Show Error:
+                $('#link_list').html('<span style="color:#FF0000;">Error: '+ data.message +'</span>');
+            } else {
+                //Load Report:
+                $('#link_list').html(data.message);
+                $('[data-toggle="tooltip"]').tooltip();
+            }
+        });
+
+
+    });
+
+</script>
+
+
+<?php
+
+echo '<h1><i class="fas fa-link rotate90"></i> Links</h1>';
+
+echo '<div><a href="javascript:void();" onclick="$(\'.show-filter\').toggleClass(\'hidden\');">'.( $has_filters && 0 ? '<i class="fal fa-minus-circle show-filter"></i><i class="fal fa-plus-circle show-filter hidden"></i>' : '<i class="fal fa-plus-circle show-filter"></i><i class="fal fa-minus-circle show-filter hidden"></i>').' Toggle Filters</a></div>';
+
+
+echo '<div class="inline-box show-filter '.( $has_filters && 0 ? '' : 'hidden' ).'">';
 echo '<form action="" method="GET">';
 
 
@@ -388,8 +409,6 @@ echo '</tr></table>';
 
 
 
-
-
 echo '<input type="submit" class="btn btn-sm btn-primary" value="Apply" />';
 
 if($has_filters){
@@ -400,32 +419,14 @@ echo '</form>';
 echo '</div>';
 
 
-
-
-if($has_filters){
-    //Display Links:
-    echo '<p style="margin: 10px 0 0 0;">Showing '.count($lns) . ( $lns_count[0]['trs_count'] > count($lns) ? ' of '. number_format($lns_count[0]['trs_count'] , 0) : '' ) .' links with '.number_format($lns_count[0]['points_sum'], 0).' awarded points:</p>';
-}
-
 if($filter_note){
     echo '<p style="margin: 10px 0 0 0;">'.$filter_note.'</p>';
 }
 
-
 echo '<div class="row">';
     echo '<div class="col-md-7">';
-
-        if(count($lns)>0){
-            echo '<div class="list-group list-grey">';
-            foreach ($lns as $ln) {
-                echo echo_tr_row($ln);
-            }
-            echo '</div>';
-        } else {
-            //Show no link warning:
-            echo '<div class="alert alert-info" role="alert" style="margin-top: 0;"><i class="fas fa-exclamation-triangle"></i> No Links found with the selected filters. Modify filters and try again.</div>';
-        }
-
+        //AJAX Would load content here:
+        echo '<div id="link_list"></div>';
     echo '</div>';
 
     echo '<div class="col-md-5">';

@@ -55,8 +55,8 @@ $uri_segment_2 = $this->uri->segment(2);
                         <span class="navbar-brand dashboard-logo">
                             <table style="width: 100%; border:0; padding:0; margin:0 0 0 0;">
                                 <tr>
-                                    <td style="width:40px;">
-                                        <img src="/img/mench_white.png"/>
+                                    <td style="width:40px;" data-placement="right" data-toggle="tooltip" title="The Matrix">
+                                        <a href="/matrix"><i class="fas fa-yin-yang fa-spin matrix-logo"></i></a>
                                     </td>
                                     <td>
                                         <input type="text" class="algolia_search" id="matrix_search" data-lpignore="true"
@@ -89,10 +89,15 @@ $uri_segment_2 = $this->uri->segment(2);
                             </li>
 
 
+                            <li class="links-inactive" data-toggle="tooltip" data-placement="left" title="<?= $en_all_4321[6138]['m_name'] ?>">
+                                <a href="/messenger/actionplan">
+                                    &nbsp;&nbsp;<?= $en_all_4321[6138]['m_icon'] ?>
+                                </a>
+                            </li>
 
-                            <li class="<?= ($uri_segment_1 == 'stats' ? 'links-active' : 'links-inactive') ?>" data-toggle="tooltip" data-placement="left" title="Platform Stats">
-                                <a href="/stats">
-                                    <i class="fas fa-analytics"></i>
+                            <li class="links-inactive" data-toggle="tooltip" data-placement="left" title="<?= $en_all_4321[6137]['m_name'] ?>">
+                                <a href="/messenger/myaccount">
+                                    <?= $en_all_4321[6137]['m_icon'] ?>
                                 </a>
                             </li>
 
@@ -105,18 +110,6 @@ $uri_segment_2 = $this->uri->segment(2);
                             <li class="links-inactive" data-toggle="tooltip" data-placement="left" title="Toggle Advance Mode">
                                 <a href="javascript:void(0)" onclick="toggle_advance(0)">
                                     <i class="<?= ( $this->session->userdata('advance_view_enabled')==1 ? 'fas fa-expand-arrows' : 'fal fa-expand-arrows ' ) ?> advance-icon"></i>
-                                </a>
-                            </li>
-
-                            <li class="links-inactive" data-toggle="tooltip" data-placement="left" title="<?= $en_all_4321[6138]['m_name'] ?>">
-                                <a href="/messenger/actionplan">
-                                    <?= $en_all_4321[6138]['m_icon'] ?>
-                                </a>
-                            </li>
-
-                            <li class="links-inactive" data-toggle="tooltip" data-placement="left" title="<?= $en_all_4321[6137]['m_name'] ?>">
-                                <a href="/messenger/myaccount">
-                                    <?= $en_all_4321[6137]['m_icon'] ?>
                                 </a>
                             </li>
 
