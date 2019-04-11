@@ -31,7 +31,7 @@ $fixed_fields = $this->config->item('fixed_fields');
 
 
 //Fetch & Display Intent Note Messages to explain links:
-echo '<h1 style="text-align: center; margin-top: 50px;">The Matrix <i class="fas fa-yin-yang fa-spin"></i></h1>';
+echo '<h1 style="text-align: center; margin-top: 50px;">The Matrix</h1>';
 echo '<p style="text-align: center; margin-top: 20px; font-size:1.5em !important;">Building consensus, one link at a time.</p>';
 
 //Load core Mench Objects:
