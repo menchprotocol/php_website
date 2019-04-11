@@ -696,7 +696,7 @@ function echo_tree_references($in, $fb_messenger_format = false, $expand_mode = 
 
     //Do we have anything to return?
     $metadata = unserialize($in['in_metadata']);
-    if ((!isset($metadata['in__tree_experts']) || count($metadata['in__tree_experts']) < 1) && (!isset($metadata['in__tree_contents']) || count($metadata['in__tree_contents']) < 1)) {
+    if ((!isset($metadata['in__tree_experts']) || count($metadata['in__tree_experts']) < 1) && (!isset($metadata['in__tree_sources']) || count($metadata['in__tree_sources']) < 1)) {
         return false;
     }
 
@@ -705,20 +705,20 @@ function echo_tree_references($in, $fb_messenger_format = false, $expand_mode = 
     $source_info = '';
     $source_count = 0;
 
-    if(isset($metadata['in__tree_contents'])){
-        foreach ($metadata['in__tree_contents'] as $type_en_id => $referenced_ens) {
+    if(isset($metadata['in__tree_sources'])){
+        foreach ($metadata['in__tree_sources'] as $type_en_id => $referenced_ens) {
             $source_count += count($referenced_ens);
         }
     }
     if ($source_count > 0) {
 
         //Set some variables and settings to get started:
-        $type_all_count = count($metadata['in__tree_contents']);
+        $type_all_count = count($metadata['in__tree_sources']);
         $CI =& get_instance();
         $en_all_3000 = $CI->config->item('en_all_3000');
         $visible_ppl = 3; //How many people to show before clicking on "see more"
         $type_count = 0;
-        foreach ($metadata['in__tree_contents'] as $type_id => $referenced_ens) {
+        foreach ($metadata['in__tree_sources'] as $type_id => $referenced_ens) {
 
             if ($type_count > 0) {
                 if (($type_count + 1) >= $type_all_count) {

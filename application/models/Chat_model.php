@@ -1739,9 +1739,11 @@ class Chat_model extends CI_Model
         }
 
         //Fetch access token and settings:
+        $fb_credentials = $this->config->item('fb_credentials');
         $fb_settings = $this->config->item('fb_settings');
+
         $access_token_payload = array(
-            'access_token' => $fb_settings['mench_access_token']
+            'access_token' => $fb_credentials['mench_access_token']
         );
 
         if ($action == 'GET' && count($payload) > 0) {

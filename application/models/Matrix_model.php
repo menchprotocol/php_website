@@ -1197,7 +1197,7 @@ class Matrix_model extends CI_Model
             '___tree_max_cost' => 0, //The maximum cost of third-party product purchases recommended to complete tree
             '___tree_experts' => array(), //Expert references across all contributions
             '___tree_miners' => array(), //miner references considering Intent Notes
-            '___tree_contents' => array(), //Content types entity references on messages
+            '___tree_sources' => array(), //Content types entity references on messages
             'metadatas_updated' => 0, //Keeps count of database metadata fields that were not in sync with the latest version of the cahced data
 
         );
@@ -1460,11 +1460,11 @@ class Matrix_model extends CI_Model
                         }
 
                         //Addup content types:
-                        foreach ($recursion['___tree_contents'] as $type_en_id => $current_us) {
+                        foreach ($recursion['___tree_sources'] as $type_en_id => $current_us) {
                             foreach ($current_us as $en_id => $u_obj) {
-                                if (!isset($metadata_this['___tree_contents'][$type_en_id][$en_id])) {
+                                if (!isset($metadata_this['___tree_sources'][$type_en_id][$en_id])) {
                                     //Yes, add them to the list:
-                                    $metadata_this['___tree_contents'][$type_en_id][$en_id] = $u_obj;
+                                    $metadata_this['___tree_sources'][$type_en_id][$en_id] = $u_obj;
                                 }
                             }
                         }
@@ -1501,7 +1501,7 @@ class Matrix_model extends CI_Model
 
             $this_in['___tree_experts'] = array();
             $this_in['___tree_miners'] = array();
-            $this_in['___tree_contents'] = array();
+            $this_in['___tree_sources'] = array();
 
             //Fetch Intent Notes to see who is involved:
             $in__messages = $this->Database_model->ln_fetch(array(
@@ -1563,13 +1563,13 @@ class Matrix_model extends CI_Model
                                 //Is this a particular content type?
                                 if (in_array($en['en_id'], $this->config->item('en_ids_3000'))) {
                                     //yes! Add it to the list if it does not already exist:
-                                    if (!isset($this_in['___tree_contents'][$en['en_id']][$ens[0]['en_id']])) {
-                                        $this_in['___tree_contents'][$en['en_id']][$ens[0]['en_id']] = $ens[0];
+                                    if (!isset($this_in['___tree_sources'][$en['en_id']][$ens[0]['en_id']])) {
+                                        $this_in['___tree_sources'][$en['en_id']][$ens[0]['en_id']] = $ens[0];
                                     }
 
                                     //How about the parent tree?
-                                    if (!isset($metadata_this['___tree_contents'][$en['en_id']][$ens[0]['en_id']])) {
-                                        $metadata_this['___tree_contents'][$en['en_id']][$ens[0]['en_id']] = $ens[0];
+                                    if (!isset($metadata_this['___tree_sources'][$en['en_id']][$ens[0]['en_id']])) {
+                                        $metadata_this['___tree_sources'][$en['en_id']][$ens[0]['en_id']] = $ens[0];
                                     }
                                 }
 
@@ -1640,7 +1640,7 @@ class Matrix_model extends CI_Model
             //Assign aggregates:
             $this_in['___tree_experts'] = $metadata_this['___tree_experts'];
             $this_in['___tree_miners'] = $metadata_this['___tree_miners'];
-            $this_in['___tree_contents'] = $metadata_this['___tree_contents'];
+            $this_in['___tree_sources'] = $metadata_this['___tree_sources'];
 
             //Start sorting:
             if (is_array($this_in['___tree_experts']) && count($this_in['___tree_experts']) > 0) {
@@ -1649,9 +1649,9 @@ class Matrix_model extends CI_Model
             if (is_array($this_in['___tree_miners']) && count($this_in['___tree_miners']) > 0) {
                 usort($this_in['___tree_miners'], 'sort_by_en_trust_score');
             }
-            foreach ($this_in['___tree_contents'] as $type_en_id => $current_us) {
-                if (isset($this_in['___tree_contents'][$type_en_id]) && count($this_in['___tree_contents'][$type_en_id]) > 0) {
-                    usort($this_in['___tree_contents'][$type_en_id], 'sort_by_en_trust_score');
+            foreach ($this_in['___tree_sources'] as $type_en_id => $current_us) {
+                if (isset($this_in['___tree_sources'][$type_en_id]) && count($this_in['___tree_sources'][$type_en_id]) > 0) {
+                    usort($this_in['___tree_sources'][$type_en_id], 'sort_by_en_trust_score');
                 }
             }
 
@@ -1664,11 +1664,9 @@ class Matrix_model extends CI_Model
                 number_format($this_in['___tree_max_cost'], 2) == number_format(@$metadata['in__tree_max_cost'], 2) &&
                 ((!@$metadata['in__tree_experts'] && count($this_in['___tree_experts']) < 1) || (serialize($this_in['___tree_experts']) == @$metadata['in__tree_experts'])) &&
                 ((!@$metadata['in__tree_miners'] && count($this_in['___tree_miners']) < 1) || (serialize($this_in['___tree_miners']) == @$metadata['in__tree_miners'])) &&
-                ((!@$metadata['in__tree_contents'] && count($this_in['___tree_contents']) < 1) || (serialize($this_in['___tree_contents']) == @$metadata['in__tree_contents'])) &&
+                ((!@$metadata['in__tree_sources'] && count($this_in['___tree_sources']) < 1) || (serialize($this_in['___tree_sources']) == @$metadata['in__tree_sources'])) &&
                 ((!@$metadata['in__tree_in_published'] && count($metadata_this['in_flat_unique_published_tree']) < 1) || (serialize($metadata_this['in_flat_unique_published_tree']) == @$metadata['in__tree_in_published'])) &&
-                $this_in['___tree_active_count'] == @$metadata['in__tree_in_active_count'] &&
-                $this_in['___metadatas_count'] == @$metadata['in__metadata_count'] &&
-                $this_in['___metadata_tree_count'] == @$metadata['in__message_tree_count']
+                $this_in['___tree_active_count'] == @$metadata['in__tree_in_active_count']
             )) {
 
                 //Something was not up to date, let's update:
@@ -1682,11 +1680,10 @@ class Matrix_model extends CI_Model
 
                     'in__tree_in_active_count' => $this_in['___tree_active_count'],
                     'in__tree_in_published' => $metadata_this['in_flat_unique_published_tree'],
-                    'in__metadata_count' => $this_in['___metadatas_count'],
-                    'in__message_tree_count' => $this_in['___metadata_tree_count'],
+
                     'in__tree_experts' => $this_in['___tree_experts'],
                     'in__tree_miners' => $this_in['___tree_miners'],
-                    'in__tree_contents' => $this_in['___tree_contents'],
+                    'in__tree_sources' => $this_in['___tree_sources'],
                 ))) {
                     //Yes update was successful:
                     $metadata_this['metadatas_updated']++;
@@ -2463,7 +2460,6 @@ class Matrix_model extends CI_Model
             $in_metadata_modify = array(
                 'in__tree_in_active_count' => (isset($metadata['in__tree_in_active_count']) ? intval($metadata['in__tree_in_active_count']) : 0),
                 'in__tree_max_seconds' => (isset($metadata['in__tree_max_seconds']) ? intval($metadata['in__tree_max_seconds']) : 0),
-                'in__message_tree_count' => (isset($metadata['in__message_tree_count']) ? intval($metadata['in__message_tree_count']) : 0),
             );
 
         } else {

@@ -25,11 +25,11 @@ $url_part_1 = $this->uri->segment(1);
     }(document, 'script', 'facebook-jssdk'));</script>
 
 <div class="fb-customerchat"
+     <?= ( is_numeric($url_part_1) ? ' ref="'.$url_part_1.'" ' : '' ) ?>
      attribution=setup_tool
      greeting_dialog_display="hide"
      page_id="<?= $fb_settings['page_id'] ?>"
      theme_color="#2f2739"
      logged_in_greeting="Hi! How can I help you land your dream job?"
      logged_out_greeting="Hi! How can I help you land your dream job?">
-     <?= ( is_numeric($url_part_1) ? ' ref="'.$url_part_1.'" ' : '' ) ?>
 </div>

@@ -96,7 +96,7 @@ $uri_segment_2 = $this->uri->segment(2);
                                 </a>
                             </li>
 
-                            <li class="<?= ($uri_segment_1 == 'admin' ? 'links-active' : 'links-inactive') ?>" data-toggle="tooltip" data-placement="left" title="Moderator Tools">
+                            <li class="<?= ($uri_segment_1 == 'admin' ? 'links-active' : 'links-inactive') ?>" data-toggle="tooltip" data-placement="left" title="Admin Tools">
                                 <a href="/admin">
                                     <i class="fas fa-tools"></i>
                                 </a>

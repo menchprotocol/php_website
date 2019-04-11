@@ -323,9 +323,6 @@ class Intents extends CI_Controller
         if(!isset($this_metadata['in__tree_max_seconds'])){
             $this_metadata['in__tree_max_seconds'] = 0;
         }
-        if(!isset($this_metadata['in__message_tree_count'])){
-            $this_metadata['in__message_tree_count'] = 0;
-        }
 
 
         //Make the move:
@@ -338,12 +335,10 @@ class Intents extends CI_Controller
         $updated_from_recursively = $this->Matrix_model->metadata_recursive_update('in', $from_in[0]['in_id'], array(
             'in__tree_in_active_count' => -(intval($this_metadata['in__tree_in_active_count'])),
             'in__tree_max_seconds' => -(intval($this_metadata['in__tree_max_seconds'])),
-            'in__message_tree_count' => -(intval($this_metadata['in__message_tree_count'])),
         ));
         $updated_to_recursively = $this->Matrix_model->metadata_recursive_update('in', $to_in[0]['in_id'], array(
             'in__tree_in_active_count' => +(intval($this_metadata['in__tree_in_active_count'])),
             'in__tree_max_seconds' => +(intval($this_metadata['in__tree_max_seconds'])),
-            'in__message_tree_count' => +(intval($this_metadata['in__message_tree_count'])),
         ));
 
         //Return success
@@ -582,7 +577,6 @@ class Intents extends CI_Controller
                         $this->Matrix_model->metadata_recursive_update('in', $ins[0]['in_id'], array(
                             'in__tree_in_active_count' => -( isset($metadata['in__tree_in_active_count']) ? $metadata['in__tree_in_active_count'] : 0 ),
                             'in__tree_max_seconds' => -( isset($metadata['in__tree_max_seconds']) ? $metadata['in__tree_max_seconds'] : 0 ),
-                            'in__message_tree_count' => -( isset($metadata['in__message_tree_count']) ? $metadata['in__message_tree_count'] : 0 ),
                         ));
 
                         //Treat as if no link (Since it was removed):
@@ -1000,16 +994,6 @@ class Intents extends CI_Controller
             'ln_content' => $msg_validation['input_message'],
         ), true);
 
-        //Do a relative adjustment for this intent's metadata
-        $this->Matrix_model->metadata_single_update('in', $ins[0]['in_id'], array(
-            'in__metadata_count' => 1, //Add 1 to existing value
-        ), false);
-
-        //Update tree as well:
-        $this->Matrix_model->metadata_recursive_update('in', $ins[0]['in_id'], array(
-            'in__message_tree_count' => 1,
-        ));
-
         //Print the challenge:
         return echo_json(array(
             'status' => 1,
@@ -1123,17 +1107,6 @@ class Intents extends CI_Controller
                 'ln_type_entity_id' => $_POST['focus_ln_type_entity_id'],
                 'ln_child_intent_id' => $_POST['in_id'],
             )),
-        ));
-
-
-        //Update intent count & tree:
-        //Do a relative adjustment for this intent's metadata
-        $this->Matrix_model->metadata_single_update('in', $ins[0]['in_id'], array(
-            'in__metadata_count' => 1, //Add 1 to existing value
-        ), false);
-
-        $this->Matrix_model->metadata_recursive_update('in', $ins[0]['in_id'], array(
-            'in__message_tree_count' => 1,
         ));
 
 
@@ -1348,17 +1321,6 @@ class Intents extends CI_Controller
 
                 //Return success:
                 if($affected_rows > 0){
-
-                    //Do a relative adjustment for this intent's metadata
-                    $this->Matrix_model->metadata_single_update('in', $ins[0]['in_id'], array(
-                        'in__metadata_count' => -1, //Remove 1 from existing value
-                    ), false);
-
-                    //Update intent tree:
-                    $this->Matrix_model->metadata_recursive_update('in', $ins[0]['in_id'], array(
-                        'in__message_tree_count' => -1,
-                    ));
-
                     return echo_json(array(
                         'status' => 1,
                         'message' => 'Successfully removed',

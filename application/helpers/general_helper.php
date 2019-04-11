@@ -77,7 +77,7 @@ function parse_signed_request($signed_request)
     //A function recommended by Facebook tp parse the signed request we receive from Facebook servers
     //Fetch app settings:
     $CI =& get_instance();
-    $fb_settings = $CI->config->item('fb_settings');
+    $fb_credentials = $CI->config->item('fb_credentials');
 
     list($encoded_sig, $payload) = explode('.', $signed_request, 2);
 
@@ -86,7 +86,7 @@ function parse_signed_request($signed_request)
     $data = json_decode(base64_url_decode($payload), true);
 
     // Confirm the signature
-    $expected_sig = hash_hmac('sha256', $payload, $fb_settings['client_secret'], $raw = true);
+    $expected_sig = hash_hmac('sha256', $payload, $fb_credentials['client_secret'], $raw = true);
     if ($sig !== $expected_sig) {
         //error_log('Bad Signed JSON signature!');
         return null;

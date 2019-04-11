@@ -70,6 +70,14 @@ $config['file_extensions']          = array('pdc','doc','docx','tex','txt','7z',
 
 //Facebook:
 $config['fb_max_message']           = 2000; //The maximum length of a Message accepted via Messenger API
+
+//Note: We have a config variable named "fb_credentials" stored in config/credentials.php
+
+$config['fb_settings']              = array(
+                                        'page_id'               => '381488558920384',
+                                        'app_id'                => '1782431902047009',
+                                        'default_graph_version' => 'v3.2', // Note if Updating: Also exists in Facebook Library. Search "DEFAULT_GRAPH_VERSION" to find it.
+                                    );
 $config['fb_convert_4454']          = array( //Facebook Messenger Notification Levels - This is a manual converter of our internal entities to Facebook API
                                         4456 => 'REGULAR',
                                         4457 => 'SILENT_PUSH',
@@ -82,6 +90,7 @@ $config['fb_convert_4537']          = array( //Dedicated media formats supported
                                         4260 => 'image',
                                         4261 => 'file',
                                     );
+
 
 //3x Table Status:
 $config['fixed_fields']             = array(
