@@ -16,7 +16,6 @@ date_default_timezone_set('America/Los_Angeles');
 //App Functionality:
 $config['app_version']              = '0.815'; //Cache buster for static JS/CSS files, so needs to be updated if you update static files
 $config['app_enable_algolia']       = true; //May need to turn off if/when we reach free monthly quota of 50k calls
-$config['app_in_en_ratio']          = 10; // = Intent tree max seconds / Entity trust score
 
 
 //Intents:
@@ -26,10 +25,8 @@ $config['in_miner_start']           = 6623; //Where miners would go when click o
 $config['in_leger_intro']           = 8438; //Understand the Mench Links
 $config['in_featured']              = 8469; //Child intents of this are featured on all intent pages
 $config['in_status_locked']         = array(8493, 8438, 8469, 7766); //Once set to published, their status will be locked by system
-
 $config['in_seconds_cost_max']      = 28800; //The maximum seconds allowed per intent. If larger, the miner is asked to break it down into smaller intents
 $config['in_outcome_max']           = 89; //Max number of characters allowed for intent outcomes
-$config['in_message_commands']      = array('/firstname', '/slice', '/link'); //Commands supported within a message content
 
 
 //Entities:
@@ -37,14 +34,6 @@ $config['en_top_focus_id']          = 3463; //The default matrix entity that is 
 $config['en_per_page']              = 100; //Limits the maximum entities loaded per page
 $config['en_name_max_length']       = 250; //Max number of characters allowed in the title of intents
 $config['en_file_max_size']         = 25; //Server setting is 32MB
-$config['en_mass_actions']          = array( //Various mass actions to be taken on Entity children
-                                        //IMPORTANT: Mass action logic for each item must be coded in Entities/en_miner_ui()
-                                        'prefix_add' => 'Add string as prefix',
-                                        'postfix_add' => 'Add string as postfix',
-                                        'replace_match' => 'Replace entity matching strings',
-                                        'replace_tr_match' => 'Replace link matching strings',
-                                        'replace_icon' => 'Update all entity icons',
-                                    );
 
 
 //Links:
@@ -61,28 +50,12 @@ $config['tr_object_links']          = array( //Sets the order and defines the ob
                                     );
 
 
-//Recognized file extensions:
-$config['image_extensions']         = array('jpeg','jpg','png','gif','tiff','bmp','img','svg','ico');
-$config['audio_extensions']         = array('pcm','wav','aiff','mp3','aac','ogg','wma','flac','alac','m4a','m4b','m4p');
-$config['video_extensions']         = array('mp4','m4v','m4p','avi','mov','flv','f4v','f4p','f4a','f4b','wmv','webm','mkv','vob','ogv','ogg','3gp','mpg','mpeg','m2v');
-$config['file_extensions']          = array('pdc','doc','docx','tex','txt','7z','rar','zip','csv','sql','tar','xml','exe');
-
-
 //Facebook:
 $config['fb_max_message']           = 2000; //The maximum length of a Message accepted via Messenger API
-
-//Note: We have a config variable named "fb_credentials" stored in config/credentials.php
-
 $config['fb_settings']              = array(
                                         'page_id'               => '381488558920384',
                                         'app_id'                => '1782431902047009',
                                         'default_graph_version' => 'v3.2', // Note if Updating: Also exists in Facebook Library. Search "DEFAULT_GRAPH_VERSION" to find it.
-                                    );
-$config['fb_convert_4454']          = array( //Facebook Messenger Notification Levels - This is a manual converter of our internal entities to Facebook API
-                                        4456 => 'REGULAR',
-                                        4457 => 'SILENT_PUSH',
-                                        4458 => 'NO_PUSH',
-                                        //@4455 => Unsubscribe NOT listed here since in that case all communication is blocked!
                                     );
 $config['fb_convert_4537']          = array( //Dedicated media formats supported by Facebook Messenger
                                         4258 => 'video',
@@ -90,6 +63,8 @@ $config['fb_convert_4537']          = array( //Dedicated media formats supported
                                         4260 => 'image',
                                         4261 => 'file',
                                     );
+//Note: We have a config variable named "fb_credentials" stored in config/credentials.php
+
 
 //3x Table Status:
 $config['fixed_fields']             = array(
@@ -159,7 +134,7 @@ $config['fixed_fields']             = array(
                                                 's_icon' => '<i class="fal fa-minus-square"></i>',
                                             ),
                                         ),
-                                        //The same as ln_status with terminology optimized for students
+                                        //The same as above with terminology optimized for students
                                         'ln_student_status' => array(
                                             2 => array(
                                                 's_name' => 'Completed',

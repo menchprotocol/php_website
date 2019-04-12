@@ -65,7 +65,7 @@ class Admin extends CI_Controller
 
         //First first all entities that have Cache in PHP Config @4527 as their parent:
         $config_ens = $this->Database_model->ln_fetch(array(
-            'ln_status' => 2,
+            'ln_status' => 2, //Published
             'ln_type_entity_id IN (' . join(',', $this->config->item('en_ids_4592')) . ')' => null, //Entity Link Connectors
             'ln_parent_entity_id' => 4527,
         ), array('en_child'), 0);

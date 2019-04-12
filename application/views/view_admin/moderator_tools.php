@@ -337,7 +337,7 @@ if(!$action) {
         //Give an overview of the point links in a hierchial format to enable moderators to overview:
         $_GET['starting_in']    = ( isset($_GET['starting_in']) && intval($_GET['starting_in']) > 0 ? $_GET['starting_in'] : $this->config->item('in_miner_start') );
         $_GET['depth_levels']   = ( isset($_GET['depth_levels']) && intval($_GET['depth_levels']) > 0 ? $_GET['depth_levels'] : 3 );
-        $_GET['min_status']     = ( isset($_GET['min_status']) && intval($_GET['min_status']) > 0 ? $_GET['min_status'] : 0 );
+        $_GET['status_min']     = ( isset($_GET['status_min']) && intval($_GET['status_min']) > 0 ? $_GET['status_min'] : 0 );
 
         echo '<form method="GET" action="">';
 
@@ -351,7 +351,7 @@ if(!$action) {
                         <span class="input-group-addon addon-lean addon-grey" style="color:#2f2739; font-weight: 300; border-left: 1px solid #ccc;"> and go </span>
                         <input style="padding-left:3px; min-width:56px;" type="number" min="1" step="1" name="depth_levels" id="depth_levels" value="'.$_GET['depth_levels'].'" class="form-control">
                         <span class="input-group-addon addon-lean addon-grey" style="color:#2f2739; font-weight: 300; border-left: 1px solid #ccc; border-right:0px solid #FFF;"> levels deep with min. status: </span>
-                        <input style="padding-left:3px; min-width:56px;" type="number" min="-1" max="2" step="1" name="min_status" id="min_status" value="'.$_GET['min_status'].'" class="form-control">
+                        <input style="padding-left:3px; min-width:56px;" type="number" min="-1" max="2" step="1" name="status_min" id="status_min" value="'.$_GET['status_min'].'" class="form-control">
                     </div>
                 </div>
                 <input type="submit" class="btn btn-primary btn-sm" value="Go" style="display: inline-block; margin-top: -41px;" />
@@ -370,7 +370,7 @@ $(document).ready(function () {
     $.post("/intents/assessment_marks_reports", {
         starting_in: parseInt($(\'#starting_in\').val()),
         depth_levels: parseInt($(\'#depth_levels\').val()),
-        min_status: parseInt($(\'#min_status\').val()),
+        status_min: parseInt($(\'#status_min\').val()),
     }, function (data) {
         if (!data.status) {
             //Show Error:

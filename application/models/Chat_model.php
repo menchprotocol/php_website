@@ -417,7 +417,12 @@ class Chat_model extends CI_Model
         if ($fb_messenger_format) {
 
             //Translates our settings to Facebook Notification Settings:
-            $fb_convert_4454 = $this->config->item('fb_convert_4454');
+            $fb_convert_4454 = array( //Facebook Messenger Notification Levels - This is a manual converter of our internal entities to Facebook API
+                4456 => 'REGULAR',
+                4457 => 'SILENT_PUSH',
+                4458 => 'NO_PUSH',
+                //@4455 => Unsubscribe NOT listed here since in that case all communication is blocked!
+            );
 
             //Fetch recipient notification type:
             $lns_comm_level = $this->Database_model->ln_fetch(array(
@@ -2136,7 +2141,7 @@ class Chat_model extends CI_Model
                 //Add intent to Student's Action Plan:
                 $actionplan = $this->Database_model->ln_create(array(
                     'ln_type_entity_id' => 4235, //Student Intent
-                    'ln_status' => 1, //Working On
+                    'ln_status' => 1, //Drafting
                     'ln_miner_entity_id' => $en['en_id'], //Belongs to this Student
                     'ln_child_intent_id' => $ins[0]['in_id'], //The Intent they are adding
                     'ln_order' => 1 + $this->Database_model->ln_max_order(array( //Place this intent at the end of all intents the Student is drafting...
@@ -2265,7 +2270,7 @@ class Chat_model extends CI_Model
                     'ln_miner_entity_id' => $en['en_id'],
                     'ln_type_entity_id' => 4559, //Action Plan Step Completed
                     'ln_parent_link_id' => $ln_id, //The Link Reference that points to this intent in the Students Action Plan
-                    'ln_status' => -1, //Indication that step was removed/skipped
+                    'ln_status' => -1, //Removed
                     'ln_metadata' => array(
                         'would_be_skipped' => $would_be_skipped,
                         'ref' => $quick_reply_payload,
@@ -2488,7 +2493,7 @@ class Chat_model extends CI_Model
                 'ln_child_entity_id' => $en['en_id'],
                 'ln_parent_entity_id' => 4455, //Unsubscribed
                 'ln_type_entity_id IN (' . join(',', $this->config->item('en_ids_4592')) . ')' => null, //Entity Link Connectors
-                'ln_status' => 2,
+                'ln_status' => 2, //Published
             ))) > 0) {
 
             //Yes, this Student is Unsubscribed! Give them an option to re-activate their Mench account:

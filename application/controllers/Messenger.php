@@ -683,7 +683,7 @@ class Messenger extends CI_Controller
 
                 //Remove:
                 $this->Database_model->ln_update($student_phones[0]['ln_id'], array(
-                    'ln_status' => -1,
+                    'ln_status' => -1, //Removed
                 ), $_POST['en_id']);
 
                 return echo_json(array(
@@ -791,7 +791,7 @@ class Messenger extends CI_Controller
 
                 //Remove email:
                 $this->Database_model->ln_update($student_emails[0]['ln_id'], array(
-                    'ln_status' => -1,
+                    'ln_status' => -1, //Removed
                 ), $_POST['en_id']);
 
                 return echo_json(array(
@@ -868,7 +868,7 @@ class Messenger extends CI_Controller
 
         //Fetch existing password:
         $student_passwords = $this->Database_model->ln_fetch(array(
-            'ln_status' => 2,
+            'ln_status' => 2, //Published
             'ln_type_entity_id' => 4255, //Passwords are of type Text
             'ln_parent_entity_id' => 3286, //Password
             'ln_child_entity_id' => $_POST['en_id'],
@@ -900,7 +900,7 @@ class Messenger extends CI_Controller
 
             //Create new link:
             $this->Database_model->ln_create(array(
-                'ln_status' => 2,
+                'ln_status' => 2, //Published
                 'ln_type_entity_id' => 4255, //Passwords are of type Text
                 'ln_parent_entity_id' => 3286, //Password
                 'ln_miner_entity_id' => $_POST['en_id'],
@@ -1017,7 +1017,7 @@ class Messenger extends CI_Controller
 
                     //Remove profile:
                     $this->Database_model->ln_update($social_url_exists[0]['ln_id'], array(
-                        'ln_status' => -1,
+                        'ln_status' => -1, //Removed
                     ), $_POST['en_id']);
 
                     $success_messages .= $en_all_6123[$social_en_id]['m_name'] . ' removed. ';
@@ -1385,7 +1385,7 @@ class Messenger extends CI_Controller
 
                 //Should usually remove a single option:
                 $this->Database_model->ln_update($remove_en['ln_id'], array(
-                    'ln_status' => -1,
+                    'ln_status' => -1, //Removed
                 ), $_POST['en_miner_id']);
             }
 
@@ -1525,7 +1525,7 @@ class Messenger extends CI_Controller
         if ($add_actionplan) {
             $actionplan = $this->Database_model->ln_create(array(
                 'ln_type_entity_id' => 4235, //Student Intent
-                'ln_status' => 1, //Working On
+                'ln_status' => 1, //Drafting
                 'ln_miner_entity_id' => 1,
                 'ln_child_intent_id' => $in_id, //The Intent they are adding
                 'ln_order' => 1 + $this->Database_model->ln_max_order(array( //Place this intent at the end of all intents the Student is drafting...
@@ -1562,7 +1562,7 @@ class Messenger extends CI_Controller
         //Let's fetch all Media files without a Facebook attachment ID:
         $ln_pending = $this->Database_model->ln_fetch(array(
             'ln_type_entity_id IN (' . join(',', array_keys($fb_convert_4537)) . ')' => null,
-            'ln_status' => 2, //Publish
+            'ln_status' => 2, //Published
             'ln_metadata' => null, //Missing Facebook Attachment ID [NOTE: Must make sure ln_metadata is not used for anything else for these link types]
         ), array(), 10, 0, array('ln_id' => 'ASC')); //Sort by oldest added first
 
@@ -1678,7 +1678,7 @@ class Messenger extends CI_Controller
                 //Update link:
                 $this->Database_model->ln_update($ln['ln_id'], array(
                     'ln_content' => $new_file_url,
-                    'ln_status' => 2,
+                    'ln_status' => 2, //Published
                 ));
 
                 //Increase counter:
@@ -1767,7 +1767,7 @@ class Messenger extends CI_Controller
 
             //Update link:
             $this->Database_model->ln_update($ln['ln_id'], array(
-                'ln_status' => 2, //Publish
+                'ln_status' => 2, //Published
                 'ln_content' => null, //Remove URL from content to indicate its done
                 'ln_child_entity_id' => $ln_child_entity_id,
                 'ln_metadata' => array(

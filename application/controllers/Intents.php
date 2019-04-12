@@ -132,7 +132,7 @@ class Intents extends CI_Controller
                 'status' => 0,
                 'message' => 'Missing Depth',
             ));
-        } elseif (!isset($_POST['min_status']) || intval($_POST['min_status']) < -1 || intval($_POST['min_status']) > 2) {
+        } elseif (!isset($_POST['status_min']) || intval($_POST['status_min']) < -1 || intval($_POST['status_min']) > 2) {
             return echo_json(array(
                 'status' => 0,
                 'message' => 'Minimum status fall between -1 and 2',
@@ -142,12 +142,12 @@ class Intents extends CI_Controller
         //Fetch/Validate intent:
         $ins = $this->Database_model->in_fetch(array(
             'in_id' => $_POST['starting_in'],
-            'in_status >=' => $_POST['min_status'],
+            'in_status >=' => $_POST['status_min'],
         ));
         if(count($ins) != 1){
             return echo_json(array(
                 'status' => 0,
-                'message' => 'Could not find intent #'.$_POST['starting_in'].' with a minimum in_status='.$_POST['min_status'],
+                'message' => 'Could not find intent #'.$_POST['starting_in'].' with a minimum in_status='.$_POST['status_min'],
             ));
         }
 
@@ -155,7 +155,7 @@ class Intents extends CI_Controller
         //Return report:
         return echo_json(array(
             'status' => 1,
-            'message' => '<h3>'.$fixed_fields['in_type'][$ins[0]['in_type']]['s_icon'].' '.$fixed_fields['in_status'][$ins[0]['in_status']]['s_icon'].' '.$ins[0]['in_outcome'].'</h3>'.echo_in_answer_scores($_POST['starting_in'], $_POST['depth_levels'], $_POST['min_status'], $_POST['depth_levels'], $ins[0]['in_type']),
+            'message' => '<h3>'.$fixed_fields['in_type'][$ins[0]['in_type']]['s_icon'].' '.$fixed_fields['in_status'][$ins[0]['in_status']]['s_icon'].' '.$ins[0]['in_outcome'].'</h3>'.echo_in_answer_scores($_POST['starting_in'], $_POST['depth_levels'], $_POST['status_min'], $_POST['depth_levels'], $ins[0]['in_type']),
         ));
 
     }

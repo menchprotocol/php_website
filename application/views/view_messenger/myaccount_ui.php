@@ -50,7 +50,7 @@
         } elseif($acc_en_id==3286 /* Password */){
 
             $student_passwords = $this->Database_model->ln_fetch(array(
-                'ln_status' => 2,
+                'ln_status' => 2, //Published
                 'ln_type_entity_id' => 4255, //Text
                 'ln_parent_entity_id' => 3286, //Password
                 'ln_child_entity_id' => $session_en['en_id'], //For this student
@@ -77,7 +77,7 @@
         } elseif($acc_en_id==6123 /* Social Profiles */){
 
             $student_social_profiles = $this->Database_model->ln_fetch(array(
-                'ln_status' => 2,
+                'ln_status' => 2, //Published
                 'ln_type_entity_id' => 4256, //Generic URL
                 'ln_parent_entity_id IN ('.join(',', $this->config->item('en_ids_6123')).')' => null, //Any social profile
                 'ln_child_entity_id' => $session_en['en_id'], //For this student

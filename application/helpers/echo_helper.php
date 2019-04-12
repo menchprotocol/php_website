@@ -1437,7 +1437,7 @@ function echo_time_milliseconds($microtime)
     return date("Y-m-d H:i:s", floor($time)) . '.' . one_two_explode('.', '', $time);
 }
 
-function echo_in_answer_scores($starting_in, $depth_levels, $min_status, $original_depth_levels, $parent_in_type){
+function echo_in_answer_scores($starting_in, $depth_levels, $status_min, $original_depth_levels, $parent_in_type){
 
     if($depth_levels<=0){
         //End recursion:
@@ -1456,15 +1456,15 @@ function echo_in_answer_scores($starting_in, $depth_levels, $min_status, $origin
     foreach($CI->Database_model->ln_fetch(array(
         'ln_parent_intent_id' => $starting_in,
         'ln_type_entity_id IN (' . join(',', $CI->config->item('en_ids_4486')) . ')' => null, //Intent Link Connectors
-        'ln_status >=' => $min_status,
-        'in_status >=' => $min_status,
+        'ln_status >=' => $status_min,
+        'in_status >=' => $status_min,
     ), array('in_child'), 0, 0, array('ln_order' => 'ASC')) as $in_ln){
 
         //Prep Metadata:
         $metadata = unserialize($in_ln['ln_metadata']);
         $tr__assessment_points = ( isset($metadata['tr__assessment_points']) ? $metadata['tr__assessment_points'] : 0 );
         $messages = $CI->Database_model->ln_fetch(array(
-            'ln_status >=' => $min_status,
+            'ln_status >=' => $status_min,
             'ln_type_entity_id' => 4231, //Intent Note Messages
             'ln_child_intent_id' => $in_ln['in_id'],
         ), array(), 0, 0, array('ln_order' => 'ASC'));
@@ -1476,7 +1476,7 @@ function echo_in_answer_scores($starting_in, $depth_levels, $min_status, $origin
         $ui .= '<span style="width: 50px; display:inline-block; text-align: left;" data-toggle="tooltip" data-placement="top" title="Assessment Mark">'.( ($in_ln['ln_type_entity_id'] == 4228 && $parent_in_type==1) || ($in_ln['ln_type_entity_id'] == 4229) ? echo_assessment_mark($in_ln) : '' ).'</span>';
         $ui .= '<span style="width:26px; display:inline-block; text-align: center;" data-toggle="tooltip" data-placement="top" title="Intent Type: '.$fixed_fields['in_type'][$in_ln['in_type']]['s_name'].'">'. $fixed_fields['in_type'][$in_ln['in_type']]['s_icon'] . '</span>';
         $ui .= '<span style="width: 30px; display:inline-block; text-align: center;" data-toggle="tooltip" data-placement="top" title="Intent Status: '.$fixed_fields['in_status'][$in_ln['in_status']]['s_name'].'">'. $fixed_fields['in_status'][$in_ln['in_status']]['s_icon']. '</span>';
-        $ui .= '<a href="/admin/tools/assessment_marks_birds_eye?starting_in='.$in_ln['in_id'].'&depth_levels='.$original_depth_levels.'&min_status='.$min_status.'" data-toggle="tooltip" data-placement="top" title="Navigate report to this intent"><u>' .  $in_ln['in_outcome'] . '</u></a>';
+        $ui .= '<a href="/admin/tools/assessment_marks_birds_eye?starting_in='.$in_ln['in_id'].'&depth_levels='.$original_depth_levels.'&status_min='.$status_min.'" data-toggle="tooltip" data-placement="top" title="Navigate report to this intent"><u>' .  $in_ln['in_outcome'] . '</u></a>';
         if(count($messages) > 0){
             $ui .= ' <a href="javascript:void(0);" onclick="$(\'.messages-'.$in_ln['in_id'].'\').toggleClass(\'hidden\');"><i class="fas fa-comment"></i><b>' .  count($messages) . '</b></a>';
         }
@@ -1492,7 +1492,7 @@ function echo_in_answer_scores($starting_in, $depth_levels, $min_status, $origin
         $ui .= '</div>';
 
         //Go Recursively down:
-        $ui .=  echo_in_answer_scores($in_ln['in_id'], $depth_levels, $min_status, $original_depth_levels, $in_ln['in_type']);
+        $ui .=  echo_in_answer_scores($in_ln['in_id'], $depth_levels, $status_min, $original_depth_levels, $in_ln['in_type']);
 
     }
 

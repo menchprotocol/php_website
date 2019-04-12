@@ -71,7 +71,7 @@ class Matrix_model extends CI_Model
             'ln_parent_link_id' => $actionplan_ln_id, //This action Plan
             'in_status' => 2, //Published
             'in_type' => 1, //OR Branch
-            'ln_status' => 1, //drafting, which means OR branch has not been answered yet
+            'ln_status' => 1, //Drafting
         ), array('in_child'), 1, 0, array('ln_order' => 'ASC'));
 
         if (count($first_pending_or_intent) > 0) {
@@ -83,7 +83,7 @@ class Matrix_model extends CI_Model
         $next_new_intent = $this->Database_model->ln_fetch(array(
             'ln_parent_link_id' => $actionplan_ln_id, //This action Plan
             'in_status' => 2, //Published
-            'ln_status' => 0, //New (not started yet) for either AND/OR branches
+            'ln_status' => 0, //New
         ), array('in_child'), 1, 0, array('ln_order' => 'ASC'));
 
         if (count($next_new_intent) > 0) {
@@ -99,7 +99,7 @@ class Matrix_model extends CI_Model
             'ln_parent_link_id' => $actionplan_ln_id, //This action Plan
             'in_status' => 2, //Published
             'in_type' => 0, //AND Branch
-            'ln_status' => 1, //drafting
+            'ln_status' => 1, //Drafting
         ), array('in_child'), 1, 0, array('ln_order' => 'ASC'));
 
         if (count($next_working_on_intent) > 0) {
@@ -146,7 +146,7 @@ class Matrix_model extends CI_Model
 
             //The entire Action Plan is now complete!
             $this->Database_model->ln_update($actionplan_ln_id, array(
-                'ln_status' => 2, //Completed
+                'ln_status' => 2, //Published
             ), $actionplans[0]['ln_parent_entity_id']);
 
             //List featured intents and let them choose:
@@ -281,7 +281,7 @@ class Matrix_model extends CI_Model
 
                 //Remove this link:
                 $adjusted_count += $this->Database_model->ln_update($adjust_tr['ln_id'], array(
-                    'ln_status' => -1, //Unlink
+                    'ln_status' => -1, //Removed
                 ), $ln_miner_entity_id);
 
             }
@@ -309,7 +309,7 @@ class Matrix_model extends CI_Model
         foreach($adjust_trs as $adjust_tr){
             //Remove this link:
             $this->Database_model->ln_update($adjust_tr['ln_id'], array(
-                'ln_status' => -1, //Unlink
+                'ln_status' => -1, //Removed
             ), $ln_miner_entity_id);
         }
 
@@ -461,16 +461,16 @@ class Matrix_model extends CI_Model
             } elseif ($domain_analysis['url_file_extension']) {
 
                 //URL ends with a file extension, try to detect file type based on that extension:
-                if(in_array($domain_analysis['url_file_extension'], $this->config->item('image_extensions'))){
+                if(in_array($domain_analysis['url_file_extension'], array('jpeg','jpg','png','gif','tiff','bmp','img','svg','ico'))){
                     //Image URL
                     $ln_type_entity_id = 4260;
-                } elseif(in_array($domain_analysis['url_file_extension'], $this->config->item('audio_extensions'))){
+                } elseif(in_array($domain_analysis['url_file_extension'], array('pcm','wav','aiff','mp3','aac','ogg','wma','flac','alac','m4a','m4b','m4p'))){
                     //Audio URL
                     $ln_type_entity_id = 4259;
-                } elseif(in_array($domain_analysis['url_file_extension'], $this->config->item('video_extensions'))){
+                } elseif(in_array($domain_analysis['url_file_extension'], array('mp4','m4v','m4p','avi','mov','flv','f4v','f4p','f4a','f4b','wmv','webm','mkv','vob','ogv','ogg','3gp','mpg','mpeg','m2v'))){
                     //Video URL
                     $ln_type_entity_id = 4258;
-                } elseif(in_array($domain_analysis['url_file_extension'], $this->config->item('file_extensions'))){
+                } elseif(in_array($domain_analysis['url_file_extension'], array('pdc','doc','docx','tex','txt','7z','rar','zip','csv','sql','tar','xml','exe'))){
                     //File URL
                     $ln_type_entity_id = 4261;
                 }
@@ -742,7 +742,7 @@ class Matrix_model extends CI_Model
 
                     //Does not exist, need to be added as parent:
                     $this->Database_model->ln_create(array(
-                        'ln_status' => 2,
+                        'ln_status' => 2, //Published
                         'ln_miner_entity_id' => $ln_miner_entity_id,
                         'ln_type_entity_id' => 4230, //Raw
                         'ln_child_entity_id' => $en['en_id'], //This child entity
@@ -1926,7 +1926,7 @@ class Matrix_model extends CI_Model
         $parent_ins = $this->Database_model->ln_fetch(array(
             'ln_type_entity_id' => 4559, //Completed Step
             'ln_miner_entity_id' => $actionplan['ln_miner_entity_id'],
-            'ln_status' => 0, //ignore intents that are not drafting...
+            'ln_status' => 0, //New
             'ln_child_intent_id' => $actionplan['ln_parent_intent_id'],
         ), array('in_parent'));
         if (count($parent_ins) > 0) {

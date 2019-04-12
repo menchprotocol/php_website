@@ -933,7 +933,7 @@ class Entities extends CI_Controller
 
         //Authenticate their password:
         $student_passwords = $this->Database_model->ln_fetch(array(
-            'ln_status' => 2,
+            'ln_status' => 2, //Published
             'ln_type_entity_id' => 4255, //Text
             'ln_parent_entity_id' => 3286, //Password
             'ln_child_entity_id' => $ens[0]['en_id'],
@@ -961,7 +961,7 @@ class Entities extends CI_Controller
                 'ln_child_entity_id' => $ens[0]['en_id'],
                 'ln_parent_entity_id' => 4455, //Unsubscribed
                 'ln_type_entity_id IN (' . join(',', $this->config->item('en_ids_4592')) . ')' => null, //Entity Link Connectors
-                'ln_status' => 2,
+                'ln_status' => 2, //Published
             ))) > 0) {
             return redirect_message('/login', '<div class="alert alert-danger" role="alert">Error: You cannot login to the Matrix because you are unsubscribed from Mench. You can re-active your account by sending a message to Mench on Messenger.</div>');
         }
