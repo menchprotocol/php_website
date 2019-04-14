@@ -27,7 +27,7 @@ class Intents extends CI_Controller
         } elseif (isset($session_en['en__parents'][0]) && filter_array($session_en['en__parents'], 'en_id', 1308)) {
 
             //Lead miner and above, go to matrix:
-            redirect_message('/intents/' . $this->config->item('in_miner_start'));
+            redirect_message('/matrix');
 
         } else {
 
