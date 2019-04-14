@@ -1,7 +1,7 @@
 <?php
 //Attempt to fetch session variables:
 $session_en = $this->session->userdata('user');
-$en_all_4321 = $this->config->item('en_all_4321');
+$en_all_6196 = $this->config->item('en_all_6196');
 $uri_segment_1 = $this->uri->segment(1);
 $uri_segment_2 = $this->uri->segment(2);
 ?><!doctype html>
@@ -89,15 +89,15 @@ $uri_segment_2 = $this->uri->segment(2);
                             </li>
 
 
-                            <li class="links-inactive" data-toggle="tooltip" data-placement="left" title="<?= $en_all_4321[6138]['m_name'] ?>">
+                            <li class="links-inactive" data-toggle="tooltip" data-placement="left" title="<?= $en_all_6196[6138]['m_name'] ?>">
                                 <a href="/messenger/actionplan">
-                                    &nbsp;&nbsp;<?= $en_all_4321[6138]['m_icon'] ?>
+                                    &nbsp;&nbsp;<?= $en_all_6196[6138]['m_icon'] ?>
                                 </a>
                             </li>
 
-                            <li class="links-inactive" data-toggle="tooltip" data-placement="left" title="<?= $en_all_4321[6137]['m_name'] ?>">
+                            <li class="links-inactive" data-toggle="tooltip" data-placement="left" title="<?= $en_all_6196[6137]['m_name'] ?>">
                                 <a href="/messenger/myaccount">
-                                    <?= $en_all_4321[6137]['m_icon'] ?>
+                                    <?= $en_all_6196[6137]['m_icon'] ?>
                                 </a>
                             </li>
 

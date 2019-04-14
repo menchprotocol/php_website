@@ -14,9 +14,8 @@ defined('BASEPATH') OR exit('No direct script access allowed');
 date_default_timezone_set('America/Los_Angeles');
 
 //App Functionality:
-$config['app_version']              = '0.82'; //Cache buster for static JS/CSS files, so needs to be updated if you update static files
+$config['app_version']              = '0.821'; //Cache buster for static JS/CSS files, so needs to be updated if you update static files
 $config['app_enable_algolia']       = true; //May need to turn off if/when we reach free monthly quota of 50k calls
-$config['app_in_en_ratio']          = 10; // = Intent tree max seconds / Entity trust score
 
 
 //Intents:
@@ -29,7 +28,6 @@ $config['in_status_locked']         = array(8493, 8438, 8469, 7766); //Once set 
 
 $config['in_seconds_cost_max']      = 28800; //The maximum seconds allowed per intent. If larger, the miner is asked to break it down into smaller intents
 $config['in_outcome_max']           = 89; //Max number of characters allowed for intent outcomes
-$config['in_message_commands']      = array('/firstname', '/slice', '/link'); //Commands supported within a message content
 
 
 //Entities:
@@ -60,14 +58,6 @@ $config['tr_object_links']          = array( //Each link can have any of the fol
                                         'ln_parent_link_id' => 'ln',
                                     );
 
-
-//Recognized file extensions:
-$config['image_extensions']         = array('jpeg','jpg','png','gif','tiff','bmp','img','svg','ico');
-$config['audio_extensions']         = array('pcm','wav','aiff','mp3','aac','ogg','wma','flac','alac','m4a','m4b','m4p');
-$config['video_extensions']         = array('mp4','m4v','m4p','avi','mov','flv','f4v','f4p','f4a','f4b','wmv','webm','mkv','vob','ogv','ogg','3gp','mpg','mpeg','m2v');
-$config['file_extensions']          = array('pdc','doc','docx','tex','txt','7z','rar','zip','csv','sql','tar','xml','exe');
-
-
 //Facebook:
 $config['fb_max_message']           = 2000; //The maximum length of a Message accepted via Messenger API
 
@@ -92,7 +82,7 @@ $config['fb_convert_4537']          = array( //Dedicated media formats supported
                                     );
 
 
-//3x Table Status:
+//TODO: To be deprecated soon...
 $config['fixed_fields']             = array(
                                         'in_status' => array(
                                             2 => array(
