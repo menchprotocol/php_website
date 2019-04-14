@@ -12,6 +12,29 @@ class Messenger extends CI_Controller
         $this->output->enable_profiler(FALSE);
     }
 
+    function get_stared($in_id = 0){
+        /*
+         *
+         * Trigerred when the "Get Started" button
+         * on a landing page is clicked.
+         *
+         * Logs link and redirects to Messenger.
+         *
+         *
+         * */
+
+        //Check if the user has a session active:
+        $session_en = en_auth();
+
+        //Log link:
+        $this->Database_model->ln_create(array(
+            'ln_miner_entity_id' => 1,
+            'ln_type_entity_id' => 4269, //Logged In as Miner
+            'ln_parent_entity_id' => $session_en['en_id'], //First Action
+        ));
+
+
+    }
 
     function api_webhook()
     {

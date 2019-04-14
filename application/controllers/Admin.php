@@ -39,7 +39,7 @@ class Admin extends CI_Controller
         $this->load->view(($session_en ? 'view_shared/matrix_header' : 'view_shared/public_header'), array(
             'title' => 'The Matrix',
         ));
-        $this->load->view('view_admin/the_matrix');
+        $this->load->view('view_admin/matrix_home');
         $this->load->view(($session_en ? 'view_shared/matrix_footer' : 'view_shared/public_footer'));
     }
 

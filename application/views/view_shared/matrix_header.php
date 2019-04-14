@@ -55,8 +55,8 @@ $uri_segment_2 = $this->uri->segment(2);
                         <span class="navbar-brand dashboard-logo">
                             <table style="width: 100%; border:0; padding:0; margin:0 0 0 0;">
                                 <tr>
-                                    <td style="width:40px;" data-placement="right" data-toggle="tooltip" title="The Matrix">
-                                        <a href="/matrix"><i class="fas fa-yin-yang fa-spin matrix-logo"></i></a>
+                                    <td style="width:40px;">
+                                        <a href="/matrix"><img src="/img/mench_white.png"/></a>
                                     </td>
                                     <td>
                                         <input type="text" class="algolia_search" id="matrix_search" data-lpignore="true"

@@ -29,8 +29,8 @@
 <?php
 
 //Fetch & Display Intent Note Messages to explain links:
-echo '<h1 style="text-align: center; margin-top: 50px;">The Matrix</h1>';
-echo '<p style="text-align: center; margin-top: 20px; font-size:1.5em !important;">Building consensus, one link at a time.</p>';
+echo '<h1 style="text-align: center; margin-top: 50px;">The Matrix <i class="fas fa-yin-yang fa-spin"></i></h1>';
+echo '<p style="text-align: center; margin-top: 20px; font-size:1.5em !important;">A tool for building and sharing consensus.</p>';
 
 //Load core Mench Objects:
 $en_all_4534 = $this->config->item('en_all_4534');
@@ -43,6 +43,7 @@ foreach (echo_fixed_fields() as $object_id => $statuses) {
         $obj_en_id = 4535; //Intents
         $created_en_type_id = 4250;
         $spacing = 'col-md-offset-2';
+        $css_add = 'yellow';
         $objects_count = $this->Database_model->in_fetch(array(), array(), 0, 0, array(), 'in_status, COUNT(in_id) as totals', 'in_status');
 
     } elseif($object_id=='en_status'){
@@ -50,6 +51,7 @@ foreach (echo_fixed_fields() as $object_id => $statuses) {
         $obj_en_id = 4536; //Entities
         $created_en_type_id = 4251;
         $spacing = '';
+        $css_add = 'blue';
         $objects_count = $this->Database_model->en_fetch(array(), array('skip_en__parents'), 0, 0, array(), 'en_status, COUNT(en_id) as totals', 'en_status');
 
     } elseif($object_id=='ln_status'){
@@ -57,6 +59,7 @@ foreach (echo_fixed_fields() as $object_id => $statuses) {
         $obj_en_id = 6205; //Links
         $created_en_type_id = 0; //No particular filters needed
         $spacing = 'col-md-offset-4 bottom-space';
+        $css_add = '';
         $objects_count = $this->Database_model->ln_fetch(array(), array(), 0, 0, array(), 'ln_status, COUNT(ln_id) as totals', 'ln_status');
 
     } else {
@@ -97,7 +100,7 @@ foreach (echo_fixed_fields() as $object_id => $statuses) {
     echo '<div class="col-lg-4">';
 
 
-    echo '<a href="javascript:void(0);" onclick="$(\'.obj-'.$object_id.'\').toggleClass(\'hidden\');" class="large-stat"><span>'.$en_all_4534[$obj_en_id]['m_icon']. ' <span class="obj-'.$object_id.'">'. echo_number($this_totals) . '</span><span class="obj-'.$object_id.' hidden">'. number_format($this_totals) . '</span></span>'.$en_all_4534[$obj_en_id]['m_name'].' <i class="obj-'.$object_id.' fal fa-plus-circle"></i><i class="obj-'.$object_id.' fal fa-minus-circle hidden"></i></a>';
+    echo '<a href="javascript:void(0);" onclick="$(\'.obj-'.$object_id.'\').toggleClass(\'hidden\');" class="large-stat '.$css_add.'"><span>'.$en_all_4534[$obj_en_id]['m_icon']. ' <span class="obj-'.$object_id.'">'. echo_number($this_totals) . '</span><span class="obj-'.$object_id.' hidden">'. number_format($this_totals) . '</span></span>'.$en_all_4534[$obj_en_id]['m_name'].' <i class="obj-'.$object_id.' fal fa-plus-circle"></i><i class="obj-'.$object_id.' fal fa-minus-circle hidden"></i></a>';
 
 
     echo '<div class="obj-'.$object_id.' hidden">';
