@@ -17,11 +17,11 @@ class Entities extends CI_Controller
         $session_en = en_auth(array(1308), true);
 
         //Show frame to be loaded in modal:
-        $this->load->view('view_shared/matrix_header', array(
+        $this->load->view('view_shared/platform_header', array(
             'title' => 'Add Source Wizard',
         ));
         $this->load->view('view_entities/add_source_frame');
-        $this->load->view('view_shared/matrix_footer');
+        $this->load->view('view_shared/platform_footer');
     }
 
 
@@ -44,7 +44,7 @@ class Entities extends CI_Controller
         }
 
         //All seems good, fetch URL:
-        $url_entity = $this->Matrix_model->en_sync_url($_POST['input_url']);
+        $url_entity = $this->Platform_model->en_sync_url($_POST['input_url']);
 
         if (!$url_entity['status']) {
             //Oooopsi, we had some error:
@@ -80,7 +80,7 @@ class Entities extends CI_Controller
         if (en_auth(array(1281)) && isset($_POST['mass_action_en_id']) && isset($_POST['mass_value1_'.$_POST['mass_action_en_id']]) && isset($_POST['mass_value2_'.$_POST['mass_action_en_id']])) {
 
             //Process mass action:
-            $process_mass_action = $this->Matrix_model->en_mass_update($en_id, intval($_POST['mass_action_en_id']), $_POST['mass_value1_'.$_POST['mass_action_en_id']], $_POST['mass_value2_'.$_POST['mass_action_en_id']], $session_en['en_id']);
+            $process_mass_action = $this->Platform_model->en_mass_update($en_id, intval($_POST['mass_action_en_id']), $_POST['mass_value1_'.$_POST['mass_action_en_id']], $_POST['mass_value2_'.$_POST['mass_action_en_id']], $session_en['en_id']);
 
             //Pass-on results to UI:
             $message = '<div class="alert '.( $process_mass_action['status'] ? 'alert-success' : 'alert-danger' ).'" role="alert">'.$process_mass_action['message'].'</div>';
@@ -111,14 +111,14 @@ class Entities extends CI_Controller
         }
 
         //Load views:
-        $this->load->view('view_shared/matrix_header', array(
+        $this->load->view('view_shared/platform_header', array(
             'title' => $ens[0]['en_name'] . ' | Entities',
             'message' => $message, //Possible mass-action message for UI:
         ));
         $this->load->view('view_entities/en_miner_ui', array(
             'entity' => $ens[0],
         ));
-        $this->load->view('view_shared/matrix_footer');
+        $this->load->view('view_shared/platform_footer');
 
     }
 
@@ -347,7 +347,7 @@ class Entities extends CI_Controller
             if (filter_var($_POST['en_new_string'], FILTER_VALIDATE_URL)) {
 
                 //Digest URL to see what type it is and if we have any errors:
-                $url_entity = $this->Matrix_model->en_sync_url($_POST['en_new_string']);
+                $url_entity = $this->Platform_model->en_sync_url($_POST['en_new_string']);
                 if (!$url_entity['status']) {
                     return echo_json($url_entity);
                 }
@@ -361,7 +361,7 @@ class Entities extends CI_Controller
                 } else {
 
                     //Let's first find/add the domain:
-                    $domain_entity = $this->Matrix_model->en_sync_domain($_POST['en_new_string'], $session_en['en_id']);
+                    $domain_entity = $this->Platform_model->en_sync_domain($_POST['en_new_string'], $session_en['en_id']);
 
                     //Link to this entity:
                     $entity_new = $domain_entity['en_domain'];
@@ -370,7 +370,7 @@ class Entities extends CI_Controller
             } else {
 
                 //Create entity:
-                $added_en = $this->Matrix_model->en_verify_create($_POST['en_new_string'], $session_en['en_id']);
+                $added_en = $this->Platform_model->en_verify_create($_POST['en_new_string'], $session_en['en_id']);
                 if(!$added_en['status']){
                     //We had an error, return it:
                     return echo_json($added_en);
@@ -666,7 +666,7 @@ class Entities extends CI_Controller
             $_POST['ln_id'] = 0; //Do not consider the link as the entity is being Removed
             $remove_from_ui = 1; //Removing entity
             $merger_en_id = (count($merged_ens) > 0 ? $merged_ens[0]['en_id'] : 0);
-            $links_adjusted = $this->Matrix_model->en_unlink($_POST['en_id'], $session_en['en_id'], $merger_en_id);
+            $links_adjusted = $this->Platform_model->en_unlink($_POST['en_id'], $session_en['en_id'], $merger_en_id);
 
             //Show appropriate message based on action:
             if ($merger_en_id > 0) {
@@ -870,7 +870,7 @@ class Entities extends CI_Controller
         $_GET['skip_header'] = 1;
 
         //Show frame to be loaded in modal:
-        $this->load->view('view_shared/matrix_header', array(
+        $this->load->view('view_shared/platform_header', array(
             'title' => 'Managed Intent Notes',
         ));
         echo '<div id="list-messages" class="list-group grey-list">';
@@ -878,7 +878,7 @@ class Entities extends CI_Controller
             echo echo_en_messages($ln);
         }
         echo '</div>';
-        $this->load->view('view_shared/matrix_footer');
+        $this->load->view('view_shared/platform_footer');
     }
 
 
@@ -953,7 +953,7 @@ class Entities extends CI_Controller
 
         //Make sure Student is connected to Mench:
         if (!intval($ens[0]['en_psid'])) {
-            return redirect_message('/login', '<div class="alert alert-danger" role="alert">Error: You are not connected to Mench on Messenger, which is required to login to the Matrix.</div>');
+            return redirect_message('/login', '<div class="alert alert-danger" role="alert">Error: You are not connected to Mench on Messenger, which is required to login to the Platform.</div>');
         }
 
         //Make sure Student is not unsubscribed:
@@ -963,7 +963,7 @@ class Entities extends CI_Controller
                 'ln_type_entity_id IN (' . join(',', $this->config->item('en_ids_4592')) . ')' => null, //Entity Link Connectors
                 'ln_status' => 2, //Published
             ))) > 0) {
-            return redirect_message('/login', '<div class="alert alert-danger" role="alert">Error: You cannot login to the Matrix because you are unsubscribed from Mench. You can re-active your account by sending a message to Mench on Messenger.</div>');
+            return redirect_message('/login', '<div class="alert alert-danger" role="alert">Error: You cannot login to the Platform because you are unsubscribed from Mench. You can re-active your account by sending a message to Mench on Messenger.</div>');
         }
 
 
@@ -996,13 +996,13 @@ class Entities extends CI_Controller
 
             if ($is_student) {
 
-                //Remove miner privileges as they cannot use the matrix with non-chrome Browser:
+                //Remove miner privileges as they cannot use the platform with non-chrome Browser:
                 $is_miner = false;
                 unset($session_data['user']);
 
             } else {
 
-                return redirect_message('/login', '<div class="alert alert-danger" role="alert">Error: Sign In Denied. The Matrix v' . $this->config->item('app_version') . ' supports <a href="https://www.google.com/chrome/browser/" target="_blank"><u>Google Chrome</u></a> only.</div>');
+                return redirect_message('/login', '<div class="alert alert-danger" role="alert">Error: Sign In Denied. Mench Platform v' . $this->config->item('app_version') . ' supports <a href="https://www.google.com/chrome/browser/" target="_blank"><u>Google Chrome</u></a> only.</div>');
 
             }
 
@@ -1053,7 +1053,7 @@ class Entities extends CI_Controller
             //Default:
             if ($is_miner) {
                 //miner default:
-                header('Location: /matrix');
+                header('Location: /platform');
             } else {
                 //Student default:
                 header('Location: /messenger/actionplan');
@@ -1172,7 +1172,7 @@ class Entities extends CI_Controller
         }
 
         //Fetch URL:
-        $url_entity = $this->Matrix_model->en_sync_url($_POST['search_url']);
+        $url_entity = $this->Platform_model->en_sync_url($_POST['search_url']);
 
         if($url_entity['url_already_existed']){
             return echo_json(array(
@@ -1340,7 +1340,7 @@ class Entities extends CI_Controller
                 //Seems to be a new contributor entity...
 
                 //First analyze URL:
-                $contributor_url_entity = $this->Matrix_model->en_sync_url($_POST['ref_url_' . $contributor_num]);
+                $contributor_url_entity = $this->Platform_model->en_sync_url($_POST['ref_url_' . $contributor_num]);
 
                 //Validate contributor inputs before creating anything:
                 if (!$contributor_url_entity['status']) {
@@ -1388,7 +1388,7 @@ class Entities extends CI_Controller
                 }
 
                 //Add contributor with its URL:
-                $sync_contributor = $this->Matrix_model->en_sync_url($_POST['ref_url_' . $contributor_num], $session_en['en_id'], 0, 0, $_POST['contributor_' . $contributor_num]);
+                $sync_contributor = $this->Platform_model->en_sync_url($_POST['ref_url_' . $contributor_num], $session_en['en_id'], 0, 0, $_POST['contributor_' . $contributor_num]);
 
 
                 //Add contributor to People or Organizations entity:
@@ -1438,7 +1438,7 @@ class Entities extends CI_Controller
 
 
         //Save URL & domain:
-        $url_entity = $this->Matrix_model->en_sync_url($_POST['source_url'], $session_en['en_id'], 0, 0, $_POST['en_name']);
+        $url_entity = $this->Platform_model->en_sync_url($_POST['source_url'], $session_en['en_id'], 0, 0, $_POST['en_name']);
         if (!$url_entity['status']) {
             return echo_json($url_entity);
         }

@@ -217,7 +217,7 @@ function detect_ln_type_entity_id($string)
 
         //It's a URL, see what type (this could fail if duplicate, etc...):
         $CI =& get_instance();
-        return $CI->Matrix_model->en_sync_url($string);
+        return $CI->Platform_model->en_sync_url($string);
 
     } elseif (strlen($string) > 9 && (is_valid_date($string) || strtotime($string) > 0)) {
 

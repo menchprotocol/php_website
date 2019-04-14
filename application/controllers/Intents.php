@@ -26,8 +26,8 @@ class Intents extends CI_Controller
 
         } elseif (isset($session_en['en__parents'][0]) && filter_array($session_en['en__parents'], 'en_id', 1308)) {
 
-            //Lead miner and above, go to matrix:
-            redirect_message('/matrix');
+            //Lead miner and above, go to platform:
+            redirect_message('/platform');
 
         } else {
 
@@ -199,9 +199,9 @@ class Intents extends CI_Controller
         ));
 
         //Load views:
-        $this->load->view('view_shared/matrix_header', array( 'title' => $ins[0]['in_outcome'].' | Intents' ));
+        $this->load->view('view_shared/platform_header', array( 'title' => $ins[0]['in_outcome'].' | Intents' ));
         $this->load->view('view_intents/in_miner_ui', array( 'in' => $ins[0] ));
-        $this->load->view('view_shared/matrix_footer');
+        $this->load->view('view_shared/platform_footer');
 
     }
 
@@ -253,7 +253,7 @@ class Intents extends CI_Controller
         }
 
         //All seems good, go ahead and try creating the intent:
-        return echo_json($this->Matrix_model->in_link_or_create($_POST['in_parent_id'], intval($_POST['is_parent']), $_POST['in_outcome'], $_POST['in_link_child_id'], $_POST['next_level'], $session_en['en_id']));
+        return echo_json($this->Platform_model->in_link_or_create($_POST['in_parent_id'], intval($_POST['is_parent']), $_POST['in_outcome'], $_POST['in_link_child_id'], $_POST['next_level'], $session_en['en_id']));
 
     }
 
@@ -332,11 +332,11 @@ class Intents extends CI_Controller
 
 
         //Adjust tree metadata on both branches that have been affected:
-        $updated_from_recursively = $this->Matrix_model->metadata_recursive_update('in', $from_in[0]['in_id'], array(
+        $updated_from_recursively = $this->Platform_model->metadata_recursive_update('in', $from_in[0]['in_id'], array(
             'in__tree_max_steps' => -(intval($this_metadata['in__tree_max_steps'])),
             'in__tree_max_seconds' => -(intval($this_metadata['in__tree_max_seconds'])),
         ));
-        $updated_to_recursively = $this->Matrix_model->metadata_recursive_update('in', $to_in[0]['in_id'], array(
+        $updated_to_recursively = $this->Platform_model->metadata_recursive_update('in', $to_in[0]['in_id'], array(
             'in__tree_max_steps' => +(intval($this_metadata['in__tree_max_steps'])),
             'in__tree_max_seconds' => +(intval($this_metadata['in__tree_max_seconds'])),
         ));
@@ -568,13 +568,13 @@ class Intents extends CI_Controller
                         }
 
                         //Unlink intent links:
-                        $links_removed = $this->Matrix_model->in_unlink($_POST['in_id'] , $session_en['en_id']);
+                        $links_removed = $this->Platform_model->in_unlink($_POST['in_id'] , $session_en['en_id']);
 
                         //Prep metadata:
                         $metadata = unserialize($ins[0]['in_metadata']);
 
                         //Update parent intent tree (and upwards) to reduce totals based on child intent metadata:
-                        $this->Matrix_model->metadata_recursive_update('in', $ins[0]['in_id'], array(
+                        $this->Platform_model->metadata_recursive_update('in', $ins[0]['in_id'], array(
                             'in__tree_max_steps' => -( isset($metadata['in__tree_max_steps']) ? $metadata['in__tree_max_steps'] : 0 ),
                             'in__tree_max_seconds' => -( isset($metadata['in__tree_max_seconds']) ? $metadata['in__tree_max_seconds'] : 0 ),
                         ));
@@ -586,7 +586,7 @@ class Intents extends CI_Controller
                     if(intval($_POST['apply_recursively'])){
                         //Intent status has changed and there is a recursive update request:
                         //Yes, sync downwards where current statuses match:
-                        $children = $this->Matrix_model->in_fetch_recursive(intval($_POST['in_id']), true);
+                        $children = $this->Platform_model->in_fetch_recursive(intval($_POST['in_id']), true);
 
                         //Fetch all intents that match parent intent status:
                         $child_ins = $this->Database_model->in_fetch(array(
@@ -611,7 +611,7 @@ class Intents extends CI_Controller
 
         //Any relative metadata upward recursive updates needed?
         if (count($in_metadata_modify) > 0) {
-            $this->Matrix_model->metadata_recursive_update('in', $_POST['in_id'], $in_metadata_modify);
+            $this->Platform_model->metadata_recursive_update('in', $_POST['in_id'], $in_metadata_modify);
         }
 
 
@@ -849,7 +849,7 @@ class Intents extends CI_Controller
 
         /*
          *
-         * A function to display Matrix Tips to give Miners
+         * A function to display Platform Tips to give Miners
          * more information on each field and their use-case.
          *
          * */
@@ -916,13 +916,13 @@ class Intents extends CI_Controller
         $_GET['skip_header'] = 1;
 
         //Load view:
-        $this->load->view('view_shared/matrix_header', array(
+        $this->load->view('view_shared/platform_header', array(
             'title' => 'Intent #' . $in_id . ' Messages',
         ));
         $this->load->view('view_intents/in_messages_frame', array(
             'in_id' => $in_id,
         ));
-        $this->load->view('view_shared/matrix_footer');
+        $this->load->view('view_shared/platform_footer');
 
     }
 
@@ -1086,7 +1086,7 @@ class Intents extends CI_Controller
 
 
         //Save URL and connect it to the Mench CDN entity:
-        $url_entity = $this->Matrix_model->en_sync_url($new_file_url, $session_en['en_id'], 4396 /* Mench CDN Entity */);
+        $url_entity = $this->Platform_model->en_sync_url($new_file_url, $session_en['en_id'], 4396 /* Mench CDN Entity */);
 
         //Did we have an error?
         if (!$url_entity['status']) {
@@ -1413,7 +1413,7 @@ class Intents extends CI_Controller
         //Cron Settings: 31 * * * *
         //Syncs intents with latest caching data:
 
-        $sync = $this->Matrix_model->in_fetch_recursive($in_id, true, $update_db);
+        $sync = $this->Platform_model->in_fetch_recursive($in_id, true, $update_db);
         if (isset($_GET['redirect']) && strlen($_GET['redirect']) > 0) {
             //Now redirect;
             header('Location: ' . $_GET['redirect']);

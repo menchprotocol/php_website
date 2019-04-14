@@ -1,12 +1,12 @@
 <?php if (!defined('BASEPATH')) exit('No direct script access allowed');
 
-class Matrix_model extends CI_Model
+class Platform_model extends CI_Model
 {
 
     /*
      *
      * This model contains all Database functions that
-     * interpret the Matrix from a particular perspective
+     * interpret the Platform from a particular perspective
      * to gain understanding from it and to perform pre-defined
      * operations.
      *
@@ -18,7 +18,7 @@ class Matrix_model extends CI_Model
     }
 
 
-    //        $student_ins = $this->Matrix_model->actionplan_fetch_intents($recipient_en['en_id']);
+    //        $student_ins = $this->Platform_model->actionplan_fetch_intents($recipient_en['en_id']);
     function actionplan_fetch_intents($en_id, $fetch_recursive = false, $calculate_completion = false, $actionplan_in_id = 0){
 
         /*
@@ -358,7 +358,7 @@ class Matrix_model extends CI_Model
         } elseif ($ln_miner_entity_id) {
 
             //Yes, let's add a new entity:
-            $added_en = $this->Matrix_model->en_verify_create(( $page_title ? $page_title : $domain_analysis['url_domain_name'] ), $ln_miner_entity_id, true, 2, detect_fav_icon($domain_analysis['url_clean_domain']));
+            $added_en = $this->Platform_model->en_verify_create(( $page_title ? $page_title : $domain_analysis['url_domain_name'] ), $ln_miner_entity_id, true, 2, detect_fav_icon($domain_analysis['url_clean_domain']));
             $en_domain = $added_en['en'];
 
             //And link entity to the domains entity:
@@ -554,7 +554,7 @@ class Matrix_model extends CI_Model
 
 
         //Fetch/Create domain entity:
-        $domain_entity = $this->Matrix_model->en_sync_domain($url, $ln_miner_entity_id, ( $domain_analysis['url_is_root'] && $name_was_passed ? $page_title : null ));
+        $domain_entity = $this->Platform_model->en_sync_domain($url, $ln_miner_entity_id, ( $domain_analysis['url_is_root'] && $name_was_passed ? $page_title : null ));
 
 
         //Was this not a root domain? If so, also check to see if URL exists:
@@ -588,7 +588,7 @@ class Matrix_model extends CI_Model
             } elseif ($ln_miner_entity_id) {
 
                 //Create a new entity for this URL:
-                $added_en = $this->Matrix_model->en_verify_create($page_title, $ln_miner_entity_id, true);
+                $added_en = $this->Platform_model->en_verify_create($page_title, $ln_miner_entity_id, true);
                 $en_url = $added_en['en'];
 
                 //Always link URL to its parent domain:
@@ -861,7 +861,7 @@ class Matrix_model extends CI_Model
          *
          * Sometimes to mark an intent as complete the Students might
          * need to meet certain requirements in what they submit to do so.
-         * This function fetches those requirements from the Matrix and
+         * This function fetches those requirements from the Platform and
          * Provides an easy to understand message to communicate
          * these requirements to Student.
          *
@@ -930,7 +930,7 @@ class Matrix_model extends CI_Model
         } else {
 
             //Student not found, create new Student:
-            return $this->Matrix_model->en_messenger_add($psid);
+            return $this->Platform_model->en_messenger_add($psid);
 
         }
 
@@ -1008,7 +1008,7 @@ class Matrix_model extends CI_Model
         if (in_array($obj_type, array('in'))) {
 
             //Fetch tree that needs adjustment:
-            $tree = $this->Matrix_model->in_fetch_recursive($focus_obj_id, $direction_is_downward);
+            $tree = $this->Platform_model->in_fetch_recursive($focus_obj_id, $direction_is_downward);
 
             if (count($tree['in_flat_tree']) == 0) {
                 return false;
@@ -1029,7 +1029,7 @@ class Matrix_model extends CI_Model
         $affected_rows = 0;
         foreach ($objects as $obj) {
             //Make a relative adjustment compared to what is currently there:
-            $affected_rows += $this->Matrix_model->metadata_update($obj_type, $obj[$obj_type . '_id'], $metadata_new, false);
+            $affected_rows += $this->Platform_model->metadata_update($obj_type, $obj[$obj_type . '_id'], $metadata_new, false);
         }
 
         //Return total affected rows:
@@ -1062,7 +1062,7 @@ class Matrix_model extends CI_Model
 
 
         //See how many children there are:
-        $dwn_tree = $this->Matrix_model->deprecate__actionplan_fetch_recursive($actionplan_steps[0]['ln_parent_link_id'], $actionplan_steps[0]['ln_child_intent_id'], true);
+        $dwn_tree = $this->Platform_model->deprecate__actionplan_fetch_recursive($actionplan_steps[0]['ln_parent_link_id'], $actionplan_steps[0]['ln_child_intent_id'], true);
 
         //Combine this step with child steps to determine total steps that would be skipped:
         $skippable_trs = array_merge(array(intval($ln_id)), $dwn_tree['actionplan_links_flat']);
@@ -1076,7 +1076,7 @@ class Matrix_model extends CI_Model
         if ($apply_skip) {
             //Now start skipping:
             foreach ($skipping_steps as $ln) {
-                $this->Matrix_model->actionplan_update_status($ln['ln_id'], -1);
+                $this->Platform_model->actionplan_update_status($ln['ln_id'], -1);
             }
         }
 
@@ -1110,7 +1110,7 @@ class Matrix_model extends CI_Model
         }
 
         //Find the next item to navigate them to:
-        $next_ins = $this->Matrix_model->actionplan_fetch_next($en['en_id']);
+        $next_ins = $this->Platform_model->actionplan_fetch_next($en['en_id']);
 
         if ($next_ins) {
             //Communicate next step:
@@ -1392,7 +1392,7 @@ class Matrix_model extends CI_Model
                 } else {
 
                     //Recursively go the next level (either up or down):
-                    $recursion = $this->Matrix_model->in_fetch_recursive($current_in['in_id'], $direction_is_downward, $update_metadata, $actionplan, $current_in, $metadata_this);
+                    $recursion = $this->Platform_model->in_fetch_recursive($current_in['in_id'], $direction_is_downward, $update_metadata, $actionplan, $current_in, $metadata_this);
 
                     if (!$recursion) {
                         continue;
@@ -1670,7 +1670,7 @@ class Matrix_model extends CI_Model
             )) {
 
                 //Something was not up to date, let's update:
-                if ($this->Matrix_model->metadata_update('in', $this_in['in_id'], array(
+                if ($this->Platform_model->metadata_update('in', $this_in['in_id'], array(
 
                     'in__tree_min_steps' => 0, //TBD
                     'in__tree_max_steps' => $this_in['___tree_active_count'],
@@ -1931,7 +1931,7 @@ class Matrix_model extends CI_Model
         ), array('in_parent'));
         if (count($parent_ins) > 0) {
             //Found it! set to DRAFTING:
-            $this->Matrix_model->actionplan_update_status($parent_ins[0]['ln_id'], 1);
+            $this->Platform_model->actionplan_update_status($parent_ins[0]['ln_id'], 1);
         }
 
         //See if current intent children are complete:
@@ -1949,7 +1949,7 @@ class Matrix_model extends CI_Model
              *
              * */
 
-            $dwn_tree = $this->Matrix_model->deprecate__actionplan_fetch_recursive($actionplan_ln_id, $actionplan['ln_child_intent_id'], true);
+            $dwn_tree = $this->Platform_model->deprecate__actionplan_fetch_recursive($actionplan_ln_id, $actionplan['ln_child_intent_id'], true);
 
             //Did we find any children?
             if (count($dwn_tree['actionplan_links_flat']) > 0) {
@@ -1970,7 +1970,7 @@ class Matrix_model extends CI_Model
         $new_ln_status = (!is_null($force_ln_status) ? $force_ln_status : ($down_is_complete ? 2 : 1));
 
         //Update this intent:
-        $this->Matrix_model->actionplan_update_status($actionplan['ln_id'], $new_ln_status);
+        $this->Platform_model->actionplan_update_status($actionplan['ln_id'], $new_ln_status);
 
 
         //We are done with this branch if the status = 2
@@ -1984,7 +1984,7 @@ class Matrix_model extends CI_Model
              * */
 
             //Fetch all parents:
-            $up_tree = $this->Matrix_model->deprecate__actionplan_fetch_recursive($actionplan_ln_id, $actionplan['ln_child_intent_id'], false);
+            $up_tree = $this->Platform_model->deprecate__actionplan_fetch_recursive($actionplan_ln_id, $actionplan['ln_child_intent_id'], false);
 
             //Loop through incomplete parents to see if they should now be marked as complete:
             foreach ($this->Database_model->ln_fetch(array(
@@ -2009,12 +2009,12 @@ class Matrix_model extends CI_Model
                     ))) == 0) {
 
                     //Parent now seems to be complete:
-                    $this->Matrix_model->actionplan_update_status($incomplete_parent['ln_id'], (!is_null($force_ln_status) ? $force_ln_status : 2));
+                    $this->Platform_model->actionplan_update_status($incomplete_parent['ln_id'], (!is_null($force_ln_status) ? $force_ln_status : 2));
 
                 } elseif ($incomplete_parent['ln_status'] == 0) {
 
                     //This parent is not yet completed, but we can update the status to DRAFTING since the status is NEW:
-                    $this->Matrix_model->actionplan_update_status($incomplete_parent['ln_id'], 1);
+                    $this->Platform_model->actionplan_update_status($incomplete_parent['ln_id'], 1);
 
                 }
             }
@@ -2076,7 +2076,7 @@ class Matrix_model extends CI_Model
         if(!$in_verb_entity_id){
 
             //Add and link verb:
-            $added_en = $this->Matrix_model->en_verify_create(ucwords(strtolower($starting_verb)), $ln_miner_entity_id, true);
+            $added_en = $this->Platform_model->en_verify_create(ucwords(strtolower($starting_verb)), $ln_miner_entity_id, true);
 
             //Link to supported verbs:
             $this->Database_model->ln_create(array(
@@ -2124,7 +2124,7 @@ class Matrix_model extends CI_Model
         } elseif(substr_count($in_outcome , '/force') > 0){
 
             //Force command detected, pass it on to the force function:
-            $force_outcome = $this->Matrix_model->in_force_verb_creation($in_outcome, $ln_miner_entity_id);
+            $force_outcome = $this->Platform_model->in_force_verb_creation($in_outcome, $ln_miner_entity_id);
 
             if(!$force_outcome['status']){
                 //We had some errors in outcome structure:
@@ -2178,7 +2178,7 @@ class Matrix_model extends CI_Model
         ), true, $ln_miner_entity_id);
 
         //Sync the metadata of this new intent:
-        $this->Matrix_model->in_fetch_recursive($intent_new['in_id'], true, true);
+        $this->Platform_model->in_fetch_recursive($intent_new['in_id'], true, true);
 
         //Return success:
         return array(
@@ -2270,7 +2270,7 @@ class Matrix_model extends CI_Model
              * */
 
             //Create student entity:
-            $added_en = $this->Matrix_model->en_verify_create('Student '.rand(100000000, 999999999), 0, true, 2, null, $psid);
+            $added_en = $this->Platform_model->en_verify_create('Student '.rand(100000000, 999999999), 0, true, 2, null, $psid);
 
         } else {
 
@@ -2278,17 +2278,17 @@ class Matrix_model extends CI_Model
             $fb_profile = $graph_fetch['ln_metadata']['result'];
 
             //Create student entity with their Facebook Graph name:
-            $added_en = $this->Matrix_model->en_verify_create($fb_profile['first_name'] . ' ' . $fb_profile['last_name'], 0, true, 2, null, $psid);
+            $added_en = $this->Platform_model->en_verify_create($fb_profile['first_name'] . ' ' . $fb_profile['last_name'], 0, true, 2, null, $psid);
 
             //Split locale variable into language and country like "EN_GB" for English in England
             $locale = explode('_', $fb_profile['locale'], 2);
 
             //Try to match Facebook profile data to internal entities and create links for the ones we find:
             foreach (array(
-                         $this->Matrix_model->en_search_match(3289, $fb_profile['timezone']), //Timezone
-                         $this->Matrix_model->en_search_match(3290, strtolower(substr($fb_profile['gender'], 0, 1))), //Gender either m/f
-                         $this->Matrix_model->en_search_match(3287, strtolower($locale[0])), //Language
-                         $this->Matrix_model->en_search_match(3089, strtolower($locale[1])), //Country
+                         $this->Platform_model->en_search_match(3289, $fb_profile['timezone']), //Timezone
+                         $this->Platform_model->en_search_match(3290, strtolower(substr($fb_profile['gender'], 0, 1))), //Gender either m/f
+                         $this->Platform_model->en_search_match(3287, strtolower($locale[0])), //Language
+                         $this->Platform_model->en_search_match(3089, strtolower($locale[1])), //Country
                      ) as $ln_parent_entity_id) {
 
                 //Did we find a relation? Create the link:
@@ -2422,7 +2422,7 @@ class Matrix_model extends CI_Model
             $intent_new = $ins[0];
 
             //check all parents as this intent cannot be duplicated with any of its parents:
-            $parent_tree = $this->Matrix_model->in_fetch_recursive($actionplan_in_id, false);
+            $parent_tree = $this->Platform_model->in_fetch_recursive($actionplan_in_id, false);
             if (in_array($intent_new['in_id'], $parent_tree['in_flat_tree'])) {
                 return array(
                     'status' => 0,
@@ -2486,7 +2486,7 @@ class Matrix_model extends CI_Model
 
             }
 
-            $added_in = $this->Matrix_model->in_verify_create($in_outcome, $ln_miner_entity_id);
+            $added_in = $this->Platform_model->in_verify_create($in_outcome, $ln_miner_entity_id);
             if(!$added_in['status']){
                 //We had an error, return it:
                 return $added_in;
@@ -2543,7 +2543,7 @@ class Matrix_model extends CI_Model
 
 
         //Update Metadata for tree:
-        $this->Matrix_model->metadata_recursive_update('in', $actionplan_in_id, $in_metadata_modify);
+        $this->Platform_model->metadata_recursive_update('in', $actionplan_in_id, $in_metadata_modify);
 
 
         //Fetch and return full data to be properly shown on the UI using the echo_in() function

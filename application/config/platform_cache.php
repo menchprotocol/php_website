@@ -285,7 +285,7 @@ $config['en_ids_4321'] = array(4488, 4534, 6196);
 $config['en_all_4321'] = array(
     4488 => array(
         'm_icon' => '<i class="fas fa-yin-yang fa-spin"></i>',
-        'm_name' => 'The Matrix',
+        'm_name' => 'Mench Platform',
         'm_desc' => 'A web platform for Miners to build consensus by adding intents, entities, and links.',
         'm_parents' => array(4523, 3326, 3324, 3325, 3323, 4463, 4321),
     ),

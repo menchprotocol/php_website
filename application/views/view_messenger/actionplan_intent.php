@@ -6,7 +6,7 @@ $is_step = (count($actionplan_parents) > 0); //This could be the top-level Stude
 $has_children = (count($actionplan_children) > 0);
 $is_or_branch = ( $in['in_type']==1 );
 $or_path_chosen = ( $is_or_branch && $has_children ); //Or branches do not have a children until students choose one...
-$message_in_requirements = $this->Matrix_model->in_req_completion($in); //Fetch completion requirements for this intent
+$message_in_requirements = $this->Platform_model->in_req_completion($in); //Fetch completion requirements for this intent
 $time_estimate = echo_time_range($in);
 $show_children = ( $is_or_branch || ( $has_children && ( !$message_in_requirements || $actionplan_parents[0]['ln_status']==2 ) ) );
 $force_linear = true; //If true, will force students to complete AND branches linearly
@@ -17,7 +17,7 @@ $force_linear = true; //If true, will force students to complete AND branches li
 
 if ($is_step) {
     //Inform the user of any completion requirements:
-    $message_in_requirements = $this->Matrix_model->in_req_completion($in);
+    $message_in_requirements = $this->Platform_model->in_req_completion($in);
 
     //Submission button visible after first button was clicked:
     $is_incomplete = ($actionplan_parents[0]['ln_status'] < 1 || ($actionplan_parents[0]['ln_status'] == 1 && !$has_children));
@@ -29,7 +29,7 @@ if ($is_step) {
 $next_button = null;
 if ($actionplan['ln_status'] == 1) {
     //Active Action Plan, attempt to find next item, which we should be able to find:
-    $next_ins = $this->Matrix_model->actionplan_fetch_next($actionplan['ln_parent_link_id']);
+    $next_ins = $this->Platform_model->actionplan_fetch_next($actionplan['ln_parent_link_id']);
     if ($next_ins) {
         if ($next_ins[0]['in_id'] == $in['in_id']) {
             //$next_button = '<span style="font-size: 0.7em; padding-left:5px; display:inline-block;"><i class="fas fa-shield-check"></i> This is the next-in-line intent</span>';

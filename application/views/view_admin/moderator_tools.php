@@ -22,7 +22,7 @@ $cron_jobs = array(
 
 
 $developer_tools = array(
-    '/admin/matrix_cache' => 'Matrix PHP Cache',
+    '/admin/platform_cache' => 'Platform PHP Cache',
     '/admin/my_session' => 'My Session Variables',
     '/admin/php_info' => 'Server PHP Info',
 );
@@ -103,7 +103,7 @@ if(!$action) {
                 if($command1=='remove_all'){
 
                     //Remove intent links:
-                    $links_removed = $this->Matrix_model->in_unlink($orphan_in['in_id'] , $session_en['en_id']);
+                    $links_removed = $this->Platform_model->in_unlink($orphan_in['in_id'] , $session_en['en_id']);
 
                     //Remove intent:
                     $this->Database_model->in_update($orphan_in['in_id'], array( 'in_status' => -1 ), true, $session_en['en_id']);
@@ -151,7 +151,7 @@ if(!$action) {
                 if($command1=='remove_all'){
 
                     //Remove links:
-                    $links_removed = $this->Matrix_model->en_unlink($orphan_en['en_id'], $session_en['en_id']);
+                    $links_removed = $this->Platform_model->en_unlink($orphan_en['en_id'], $session_en['en_id']);
 
                     //Remove entity:
                     $this->Database_model->en_update($orphan_en['en_id'], array( 'en_status' => -1 ), true, $session_en['en_id']);

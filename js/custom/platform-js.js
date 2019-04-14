@@ -162,15 +162,15 @@ function ln_content_word_count(el_textarea, el_counter) {
 function add_search_item(){
 
     //Lock search bar:
-    $('#matrix_search').prop("disabled", true);
+    $('#platform_search').prop("disabled", true);
 
     //Attemps to create a new intent OR entity based on the value in the search box
-    $.post("/links/add_search_item", { raw_string: $("#matrix_search").val() }, function (data) {
+    $.post("/links/add_search_item", { raw_string: $("#platform_search").val() }, function (data) {
 
         if(!data.status){
 
             //We had some error:
-            $('#matrix_search').prop("disabled", false);
+            $('#platform_search').prop("disabled", false);
             alert('ERROR: ' + data.message);
 
         } else {
@@ -182,12 +182,12 @@ function add_search_item(){
     });
 }
 
-//Function to load all help messages throughout the matrix:
+//Function to load all help messages throughout the platform:
 $(document).ready(function () {
 
     load_js_algolia();
 
-    $("#matrix_search").on('autocomplete:selected', function (event, suggestion, dataset) {
+    $("#platform_search").on('autocomplete:selected', function (event, suggestion, dataset) {
 
         if (parseInt(suggestion.alg_obj_is_in)==1) {
             window.location = "/intents/" + suggestion.alg_obj_id;
@@ -202,7 +202,7 @@ $(document).ready(function () {
                 //Append filters:
                 algolia_index.search(q, {
                     hitsPerPage: 14,
-                    filters: 'alg_obj_is_in ' + ( $("#matrix_search").val().charAt(0)=='#' ? '=1' : ( $("#matrix_search").val().charAt(0)=='@' ? '=0' : '>=0' ) ),
+                    filters: 'alg_obj_is_in ' + ( $("#platform_search").val().charAt(0)=='#' ? '=1' : ( $("#platform_search").val().charAt(0)=='@' ? '=0' : '>=0' ) ),
                 }, function (error, content) {
                     if (error) {
                         cb([]);
@@ -219,7 +219,7 @@ $(document).ready(function () {
                     return echo_js_suggestion(suggestion, 1);
                 },
                 header: function (data) {
-                    if($("#matrix_search").val().charAt(0)=='#' || $("#matrix_search").val().charAt(0)=='@'){
+                    if($("#platform_search").val().charAt(0)=='#' || $("#platform_search").val().charAt(0)=='@'){
                         return '<a href="javascript:add_search_item()" class="suggestion"><i class="fal fa-plus-circle" style="margin: 0 5px;"></i> Create ' + data.query + '</a>';
                     }
                 },
@@ -241,9 +241,9 @@ $(document).ready(function () {
                         return '<a href="/entities/add_source_wizard?url='+ encodeURI(data.query) +'" class="suggestion add-source-suggest"><i class="fal fa-plus-circle" style="margin: 0 5px;"></i> Add Source Wizard</a>'
                             + '<div class="not-found"><i class="fas fa-exclamation-triangle"></i> URL not found</div>';
 
-                    } else if($("#matrix_search").val().charAt(0)=='#'){
+                    } else if($("#platform_search").val().charAt(0)=='#'){
                         return '<div class="not-found"><i class="fas fa-exclamation-triangle"></i> No intents found</div>';
-                    } else if($("#matrix_search").val().charAt(0)=='@'){
+                    } else if($("#platform_search").val().charAt(0)=='@'){
                         return '<div class="not-found"><i class="fas fa-exclamation-triangle"></i> No entities found</div>';
                     } else {
                         return '<div class="not-found"><i class="fas fa-exclamation-triangle"></i> No intents/entities found</div>';

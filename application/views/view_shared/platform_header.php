@@ -29,17 +29,17 @@ $uri_segment_2 = $this->uri->segment(2);
     <link href="/css/lib/devices.min.css" rel="stylesheet"/>
     <link href="/css/lib/jquery.mCustomScrollbar.min.css" rel="stylesheet"/>
     <?php $this->load->view('view_shared/global_js_css'); ?>
-    <script src="/js/custom/matrix-js.js?v=v<?= $this->config->item('app_version') ?>" type="text/javascript"></script>
+    <script src="/js/custom/platform-js.js?v=v<?= $this->config->item('app_version') ?>" type="text/javascript"></script>
 
 </head>
 
 
-<body id="matrix_body" class="<?= (isset($_GET['skip_header']) ? 'grey-bg' : '') ?>">
+<body id="platform_body" class="<?= (isset($_GET['skip_header']) ? 'grey-bg' : '') ?>">
 
     <!-- Managed by JS to edit various fields -->
     <div class="edit-box hidden"></div>
 
-    <div class="wrapper" id="matrix">
+    <div class="wrapper" id="platform">
 
         <?php if (!isset($_GET['skip_header'])) { ?>
             <nav class="navbar navbar-transparent navbar-absolute">
@@ -56,10 +56,10 @@ $uri_segment_2 = $this->uri->segment(2);
                             <table style="width: 100%; border:0; padding:0; margin:0 0 0 0;">
                                 <tr>
                                     <td style="width:40px;">
-                                        <a href="/matrix"><img src="/img/mench_white.png"/></a>
+                                        <a href="/platform"><img src="/img/mench_white.png"/></a>
                                     </td>
                                     <td>
-                                        <input type="text" class="algolia_search" id="matrix_search" data-lpignore="true"
+                                        <input type="text" class="algolia_search" id="platform_search" data-lpignore="true"
                                                placeholder="Search/Add: Intents/Entities/URLs">
                                     </td>
                                 </tr>

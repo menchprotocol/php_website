@@ -14,7 +14,7 @@ defined('BASEPATH') OR exit('No direct script access allowed');
 date_default_timezone_set('America/Los_Angeles');
 
 //App Functionality:
-$config['app_version']              = '0.823'; //Cache buster for static JS/CSS files, so needs to be updated if you update static files
+$config['app_version']              = '0.824'; //Cache buster for static JS/CSS files, so needs to be updated if you update static files
 $config['app_enable_algolia']       = true; //May need to turn off if/when we reach free monthly quota of 50k calls
 $config['items_per_page']           = 100; //The limit of how many items should be loaded per page/section
 
@@ -31,7 +31,7 @@ $config['in_outcome_max']           = 89; //Max number of characters allowed for
 
 
 //Entities:
-$config['en_top_focus_id']          = 3463; //The default matrix entity that is loaded when Entities is clicked
+$config['en_top_focus_id']          = 3463; //The default platform entity that is loaded when Entities is clicked
 $config['en_name_max_length']       = 250; //Max number of characters allowed in the title of intents
 $config['en_file_max_size']         = 25; //Server setting is 32MB
 

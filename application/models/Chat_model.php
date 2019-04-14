@@ -489,7 +489,7 @@ class Chat_model extends CI_Model
             }
 
             //No entity linked, but we have a URL that we should turn into an entity:
-            $url_entity = $this->Matrix_model->en_sync_url($msg_references['ref_urls'][0], $session_en['en_id']);
+            $url_entity = $this->Platform_model->en_sync_url($msg_references['ref_urls'][0], $session_en['en_id']);
 
             //Did we have an error?
             if (!$url_entity['status']) {
@@ -1231,7 +1231,7 @@ class Chat_model extends CI_Model
 
         /*
          *
-         * Construct a series of messages from the Matrix with the following inputs:
+         * Construct a series of messages from the Platform with the following inputs:
          *
          * - $in_id:            The Intent used to construct messages.
          *
@@ -1535,7 +1535,7 @@ class Chat_model extends CI_Model
         if ($ins[0]['in_type']==0) {
 
             //This is an AND intent, it might have completion requirements:
-            $message_in_requirements = $this->Matrix_model->in_req_completion($ins[0], true);
+            $message_in_requirements = $this->Platform_model->in_req_completion($ins[0], true);
 
             //Do we have a Action Plan, if so, we need to add a next step message:
             if ($message_in_requirements) {
@@ -1588,7 +1588,7 @@ class Chat_model extends CI_Model
         if ($ins[0]['in_type']==1 /* OR Intent with no children */ || count($actionplan_child_ins) <= 1 /* Action Plan AND Intent with 0-1 children */) {
 
             //No children! So there is a single path forward, the next intent in line:
-            $next_ins = $this->Matrix_model->actionplan_fetch_next($actionplan_ln_id);
+            $next_ins = $this->Platform_model->actionplan_fetch_next($actionplan_ln_id);
 
             //Did we find the next intent in line in case we had zero?
             if (count($next_ins) > 0) {
@@ -1886,7 +1886,7 @@ class Chat_model extends CI_Model
                 );
 
                 //Update Student communication level to Unsubscribe:
-                $this->Matrix_model->en_radio_set(4454, 4455, $en['en_id'], $en['en_id']);
+                $this->Platform_model->en_radio_set(4454, 4455, $en['en_id'], $en['en_id']);
 
             } elseif (is_numeric($action_unsubscribe)) {
 
@@ -1951,7 +1951,7 @@ class Chat_model extends CI_Model
             if ($quick_reply_payload == 'RESUBSCRIBE_YES') {
 
                 //Update User communication level to Receive Silent Push Notifications:
-                $this->Matrix_model->en_radio_set(4454, 4457, $en['en_id'], $en['en_id']);
+                $this->Platform_model->en_radio_set(4454, 4457, $en['en_id'], $en['en_id']);
 
                 //Inform them:
                 $this->Chat_model->dispatch_message(
@@ -2155,7 +2155,7 @@ class Chat_model extends CI_Model
                 if (isset($actionplan['ln_id']) && $actionplan['ln_id'] > 0) {
 
                     //Also add all relevant child intents:
-                    $this->Matrix_model->in_fetch_recursive($ins[0]['in_id'], true, false, $actionplan);
+                    $this->Platform_model->in_fetch_recursive($ins[0]['in_id'], true, false, $actionplan);
 
                     //Confirm with them that we're now ready:
                     $this->Chat_model->dispatch_message(
@@ -2236,7 +2236,7 @@ class Chat_model extends CI_Model
                 //Lets confirm the implications of this SKIP to ensure they are aware:
 
                 //See how many children would be skipped if they decide to do so:
-                $would_be_skipped = $this->Matrix_model->actionplan_skip_recursive_down($ln_id, false);
+                $would_be_skipped = $this->Platform_model->actionplan_skip_recursive_down($ln_id, false);
                 $would_be_skipped_count = count($would_be_skipped);
 
                 if ($would_be_skipped_count == 0) {
@@ -2328,7 +2328,7 @@ class Chat_model extends CI_Model
                 } elseif ($ln_status == 2) {
 
                     //Actually skip and see if we've finished this Action Plan:
-                    $this->Matrix_model->actionplan_skip_recursive_down($ln_id);
+                    $this->Platform_model->actionplan_skip_recursive_down($ln_id);
 
                     //Confirm the skip:
                     $message = 'Confirmed, I marked this section as skipped. You can always re-visit these steps in your Action Plan and complete them at any time. /link:See in 🚩Action Plan:https://mench.com/messenger/actionplan/' . $actionplans[0]['ln_child_intent_id'];
@@ -2353,7 +2353,7 @@ class Chat_model extends CI_Model
 
 
                 //Find the next item to navigate them to:
-                $next_ins = $this->Matrix_model->actionplan_fetch_next($actionplan_ln_id);
+                $next_ins = $this->Platform_model->actionplan_fetch_next($actionplan_ln_id);
                 if ($next_ins) {
                     //Now move on to communicate the next step:
                     $this->Chat_model->compose_message($next_ins[0]['in_id'], $en, $actionplan_ln_id);
@@ -2400,10 +2400,10 @@ class Chat_model extends CI_Model
             $actionplan_ln_id = $actionplans[0]['ln_parent_link_id'];
 
             //Mark this intent as complete:
-            $this->Matrix_model->actionplan_complete_recursive_up($actionplans[0]);
+            $this->Platform_model->actionplan_complete_recursive_up($actionplans[0]);
 
             //Go to next item:
-            $next_ins = $this->Matrix_model->actionplan_fetch_next($actionplan_ln_id);
+            $next_ins = $this->Platform_model->actionplan_fetch_next($actionplan_ln_id);
 
             if ($next_ins) {
                 //Communicate next step:
@@ -2794,7 +2794,7 @@ class Chat_model extends CI_Model
             if (count($actionplans) > 0) {
 
                 //They have an Action Plan that they are drafting, Remind user of their next step:
-                $next_ins = $this->Matrix_model->actionplan_fetch_next($actionplans[0]['ln_id']);
+                $next_ins = $this->Platform_model->actionplan_fetch_next($actionplans[0]['ln_id']);
 
                 //Do we have a next step? (We should if Action Plan status is incomplete)
                 if ($next_ins) {

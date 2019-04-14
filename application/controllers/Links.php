@@ -26,7 +26,7 @@ class Links extends CI_Controller
         $session_en = en_auth(array(1308)); //Just be logged in to browse
 
         //Load header:
-        $this->load->view(($session_en ? 'view_shared/matrix_header' : 'view_shared/public_header'), array(
+        $this->load->view(($session_en ? 'view_shared/platform_header' : 'view_shared/public_header'), array(
             'title' => 'Mench Links',
         ));
 
@@ -34,7 +34,7 @@ class Links extends CI_Controller
         $this->load->view('view_links/links_ui');
 
         //Load footer:
-        $this->load->view(($session_en ? 'view_shared/matrix_footer' : 'view_shared/public_footer'));
+        $this->load->view(($session_en ? 'view_shared/platform_footer' : 'view_shared/public_footer'));
 
     }
 
@@ -119,7 +119,7 @@ class Links extends CI_Controller
             }
 
             //Create Intent:
-            $added_in = $this->Matrix_model->in_verify_create($in_outcome, $session_en['en_id']);
+            $added_in = $this->Platform_model->in_verify_create($in_outcome, $session_en['en_id']);
             if(!$added_in['status']){
                 //We had an error, return it:
                 return echo_json($added_in);
@@ -133,7 +133,7 @@ class Links extends CI_Controller
         } elseif(substr($_POST['raw_string'], 0, 1)=='@'){
 
             //Create entity:
-            $added_en = $this->Matrix_model->en_verify_create(trim(substr($_POST['raw_string'], 1)), $session_en['en_id']);
+            $added_en = $this->Platform_model->en_verify_create(trim(substr($_POST['raw_string'], 1)), $session_en['en_id']);
             if(!$added_en['status']){
                 //We had an error, return it:
                 return echo_json($added_en);

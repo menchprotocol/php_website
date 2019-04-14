@@ -20,7 +20,7 @@ class Admin extends CI_Controller
         $session_en = en_auth(array(1281), true);
 
         //Load tools:
-        $this->load->view('view_shared/matrix_header', array(
+        $this->load->view('view_shared/platform_header', array(
             'title' => 'Moderation Tools',
         ));
         $this->load->view('view_admin/moderator_tools' , array(
@@ -29,18 +29,18 @@ class Admin extends CI_Controller
             'command2' => $command2,
             'session_en' => $session_en,
         ));
-        $this->load->view('view_shared/matrix_footer');
+        $this->load->view('view_shared/platform_footer');
     }
 
 
-    function matrix()
+    function platform()
     {
         $session_en = en_auth(array(1308)); //Just be logged in to browse
-        $this->load->view(($session_en ? 'view_shared/matrix_header' : 'view_shared/public_header'), array(
-            'title' => 'The Matrix',
+        $this->load->view(($session_en ? 'view_shared/platform_header' : 'view_shared/public_header'), array(
+            'title' => 'Mench Platform',
         ));
-        $this->load->view('view_admin/matrix_home');
-        $this->load->view(($session_en ? 'view_shared/matrix_footer' : 'view_shared/public_footer'));
+        $this->load->view('view_admin/platform_home');
+        $this->load->view(($session_en ? 'view_shared/platform_footer' : 'view_shared/public_footer'));
     }
 
 
@@ -54,10 +54,10 @@ class Admin extends CI_Controller
     }
 
 
-    function matrix_cache(){
+    function platform_cache(){
         /*
          *
-         * This function prepares a PHP-friendly text to be copied to matrix_cache.php
+         * This function prepares a PHP-friendly text to be copied to platform_cache.php
          * (which is auto loaded) to provide a cache image of some entities in
          * the tree for faster application processing.
          *

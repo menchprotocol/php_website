@@ -106,7 +106,7 @@ class Messenger extends CI_Controller
                     $ln_type_entity_id = (isset($im['delivery']) ? 4279 /* Message Delivered */ : 4278 /* Message Read */);
 
                     //Authenticate Student:
-                    $en = $this->Matrix_model->en_student_messenger_authenticate($im['sender']['id']);
+                    $en = $this->Platform_model->en_student_messenger_authenticate($im['sender']['id']);
 
                     //Log Link Only IF last delivery link was 3+ minutes ago (Since Facebook sends many of these):
                     $last_trs_logged = $this->Database_model->ln_fetch(array(
@@ -139,7 +139,7 @@ class Messenger extends CI_Controller
                     $ln_type_entity_id = (isset($im['delivery']) ? 4267 /* Messenger Referral */ : 4268 /* Messenger Postback */);
 
                     //Authenticate Student:
-                    $en = $this->Matrix_model->en_student_messenger_authenticate($im['sender']['id']);
+                    $en = $this->Platform_model->en_student_messenger_authenticate($im['sender']['id']);
 
                     //Extract more insights:
                     if (isset($im['postback'])) {
@@ -212,7 +212,7 @@ class Messenger extends CI_Controller
 
                 } elseif (isset($im['optin'])) {
 
-                    $en = $this->Matrix_model->en_student_messenger_authenticate($im['sender']['id']);
+                    $en = $this->Platform_model->en_student_messenger_authenticate($im['sender']['id']);
 
                     //Log link:
                     $this->Database_model->ln_create(array(
@@ -225,7 +225,7 @@ class Messenger extends CI_Controller
                 } elseif (isset($im['message_request']) && $im['message_request'] == 'accept') {
 
                     //This is when we message them and they accept to chat because they had Removed Messenger or something...
-                    $en = $this->Matrix_model->en_student_messenger_authenticate($im['sender']['id']);
+                    $en = $this->Platform_model->en_student_messenger_authenticate($im['sender']['id']);
 
                     //Log link:
                     $this->Database_model->ln_create(array(
@@ -256,7 +256,7 @@ class Messenger extends CI_Controller
                     //Set variables:
                     unset($ln_data); //Reset everything in case its set from the previous loop!
                     $sent_by_mench = (isset($im['message']['is_echo'])); //Indicates the message sent from the page itself
-                    $en = $this->Matrix_model->en_student_messenger_authenticate(($sent_by_mench ? $im['recipient']['id'] : $im['sender']['id']));
+                    $en = $this->Platform_model->en_student_messenger_authenticate(($sent_by_mench ? $im['recipient']['id'] : $im['sender']['id']));
 
                     $ln_data = array(
                         'ln_miner_entity_id' => $en['en_id'],
@@ -577,7 +577,7 @@ class Messenger extends CI_Controller
             die('<div class="alert alert-danger" role="alert">Failed to authenticate your origin.</div>');
         } elseif (!isset($session_en['en_id'])) {
             //Messenger Webview, authenticate PSID:
-            $session_en = $this->Matrix_model->en_student_messenger_authenticate($psid);
+            $session_en = $this->Platform_model->en_student_messenger_authenticate($psid);
             //Make sure we found them:
             if (!$session_en) {
                 //We could not authenticate the user!
@@ -977,7 +977,7 @@ class Messenger extends CI_Controller
                 $is_valid_url = false;
                 if (filter_var($social_url, FILTER_VALIDATE_URL)) {
                     //Check to see if it's from the same domain and not in use:
-                    $domain_entity = $this->Matrix_model->en_sync_domain($social_url);
+                    $domain_entity = $this->Platform_model->en_sync_domain($social_url);
                     if ($domain_entity['domain_already_existed'] && isset($domain_entity['en_domain']['en_id']) && $domain_entity['en_domain']['en_id'] == $social_en_id) {
                         //Seems to be a valid domain for this social profile:
                         $is_valid_url = true;
@@ -1118,7 +1118,7 @@ class Messenger extends CI_Controller
             die('<div class="alert alert-danger" role="alert">Failed to authenticate your origin.</div>');
         } elseif (!isset($session_en['en_id'])) {
             //Messenger Webview, authenticate PSID:
-            $session_en = $this->Matrix_model->en_student_messenger_authenticate($psid);
+            $session_en = $this->Platform_model->en_student_messenger_authenticate($psid);
             //Make sure we found them:
             if (!$session_en) {
                 //We could not authenticate the user!
@@ -1238,7 +1238,7 @@ class Messenger extends CI_Controller
         }
 
         //Validate intent completion requirement and see if Student meets it:
-        $message_in_requirements = $this->Matrix_model->in_req_completion($actionplan_steps[0]);
+        $message_in_requirements = $this->Platform_model->in_req_completion($actionplan_steps[0]);
         if ($message_in_requirements && $actionplan_steps[0]['in_requirement_entity_id'] != $detected_ln_type['ln_type_entity_id']) {
             //Nope, it does not seem that the submission meets the requirements:
             return redirect_message($step_url, '<div class="alert alert-danger" role="alert">Error: ' . $message_in_requirements . '</div>');
@@ -1262,14 +1262,14 @@ class Messenger extends CI_Controller
 
         if ($step_is_incomplete) {
             //Also update ln_status, determine what it should be:
-            $this->Matrix_model->actionplan_complete_recursive_up($actionplan_steps[0]);
+            $this->Platform_model->actionplan_complete_recursive_up($actionplan_steps[0]);
         }
 
 
         //Redirect back to page with success message:
         if (isset($_POST['fetch_next_step'])) {
             //Go to next item:
-            $next_ins = $this->Matrix_model->actionplan_fetch_next($actionplan_steps[0]['ln_parent_link_id']);
+            $next_ins = $this->Platform_model->actionplan_fetch_next($actionplan_steps[0]['ln_parent_link_id']);
             if ($next_ins) {
                 //Override original item:
                 $step_url = '/messenger/actionplan/' . $next_ins[0]['in_id'];
@@ -1303,7 +1303,7 @@ class Messenger extends CI_Controller
         }
 
         //Run skip function
-        $total_skipped = count($this->Matrix_model->actionplan_skip_recursive_down($ln_id, $apply_skip));
+        $total_skipped = count($this->Platform_model->actionplan_skip_recursive_down($ln_id, $apply_skip));
 
         if (!$apply_skip) {
 
@@ -1318,7 +1318,7 @@ class Messenger extends CI_Controller
             $message = '<div class="alert alert-success" role="alert">Successfully skipped ' . $total_skipped . ' step' . echo__s($total_skipped) . '.</div>';
 
             //Find the next item to navigate them to:
-            $next_ins = $this->Matrix_model->actionplan_fetch_next($actionplan_steps[0]['ln_parent_link_id']);
+            $next_ins = $this->Platform_model->actionplan_fetch_next($actionplan_steps[0]['ln_parent_link_id']);
             if ($next_ins) {
                 return redirect_message('/messenger/actionplan/' . $next_ins[0]['in_id'], $message);
             } else {
@@ -1561,7 +1561,7 @@ class Messenger extends CI_Controller
             $actionplan = array();
         }
 
-        echo_json($this->Matrix_model->in_fetch_recursive($in_id, $direction_is_downward, false, $actionplan));
+        echo_json($this->Platform_model->in_fetch_recursive($in_id, $direction_is_downward, false, $actionplan));
     }
 
 
@@ -1592,7 +1592,7 @@ class Messenger extends CI_Controller
 
         //Put something in the ln_metadata so other cron jobs do not pick  up on it:
         foreach ($ln_pending as $ln) {
-            $this->Matrix_model->metadata_update('ln', $ln['ln_id'], array(
+            $this->Platform_model->metadata_update('ln', $ln['ln_id'], array(
                 'fb_att_id' => 0,
             ));
         }
@@ -1621,7 +1621,7 @@ class Messenger extends CI_Controller
             if (isset($result['ln_metadata']['result']['attachment_id']) && $result['status']) {
 
                 //Save Facebook Attachment ID to DB:
-                $db_result = $this->Matrix_model->metadata_update('ln', $ln['ln_id'], array(
+                $db_result = $this->Platform_model->metadata_update('ln', $ln['ln_id'], array(
                     'fb_att_id' => intval($result['ln_metadata']['result']['attachment_id']),
                 ));
 
@@ -1688,7 +1688,7 @@ class Messenger extends CI_Controller
         ), array(), 20);
 
         //Set link statuses to drafting so other Cron jobs don't pick them up:
-        $this->Matrix_model->trs_set_drafting($ln_pending);
+        $this->Platform_model->trs_set_drafting($ln_pending);
 
         $counter = 0;
         foreach ($ln_pending as $ln) {
@@ -1753,7 +1753,7 @@ class Messenger extends CI_Controller
 
 
         //Set link statuses to drafting so other Cron jobs don't pick them up:
-        $this->Matrix_model->trs_set_drafting($ln_pending);
+        $this->Platform_model->trs_set_drafting($ln_pending);
 
         //Now go through and upload to CDN:
         foreach ($ln_pending as $ln) {

@@ -196,7 +196,7 @@ function echo_in_message_manage($ln)
     /*
      *
      * A wrapper function that helps manage messages
-     * by giving the message additional matrix functions
+     * by giving the message additional platform functions
      * such as editing and changing message type.
      *
      * */
@@ -757,7 +757,7 @@ function echo_tree_references($in, $fb_messenger_format = false, $expand_mode = 
 
                     $source_info .= ' ';
 
-                    //Show link to matrix:
+                    //Show link to platform:
                     $source_info .= '<a href="/entities/' . $en['en_id'] . '">';
 
                     $source_info .= $en['en_name'];

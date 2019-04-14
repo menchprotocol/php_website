@@ -43,9 +43,9 @@
                        data-toggle="tooltip" title="Follow on Instagram" data-placement="top"><i
                                 class="fab fa-instagram"></i></a>
 
-                    <a href="/matrix"
-                       class="social-link" data-toggle="tooltip" title="The Matrix"
-                       data-placement="top"><i class="fas fa-yin-yang fa-spin"></i></a>
+                    <a href="/platform"
+                       class="social-link" data-toggle="tooltip" title="Platform Stats"
+                       data-placement="top"><img src="/img/mench_white.png" width="19" style="margin-top:-5px;"></a>
 
                     <a href="/8263?expand_mode=1&hide_subscribe=1" class="social-link" data-toggle="tooltip"
                        title="Read terms of service and privacy policy" data-placement="top"><i

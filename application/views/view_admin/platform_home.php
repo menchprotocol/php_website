@@ -29,8 +29,8 @@
 <?php
 
 //Fetch & Display Intent Note Messages to explain links:
-echo '<h1 style="text-align: center; margin-top: 50px;">The Matrix <i class="fas fa-yin-yang fa-spin"></i></h1>';
-echo '<p style="text-align: center; margin-top: 20px; font-size:1.5em !important;">Build and share consensus, one link at a time.</p>';
+echo '<h1 style="text-align: center; margin-top: 50px;">Mench Platform</h1>';
+echo '<p style="text-align: center; margin-top: 20px; font-size:1.5em !important;">Building and sharing consensus, one link at a time.</p>';
 
 //Load core Mench Objects:
 $en_all_4534 = $this->config->item('en_all_4534');
@@ -194,7 +194,7 @@ foreach (echo_fixed_fields() as $object_id => $statuses) {
         foreach ($ie_ens[0]['en__children'] as $source_en) {
 
             //Count any/all sources (complete or incomplete):
-            $source_count = $this->Matrix_model->en_child_count($source_en['en_id']);
+            $source_count = $this->Platform_model->en_child_count($source_en['en_id']);
             $weight = ( substr_count($source_en['ln_content'], '&var_weight=')==1 ? intval(one_two_explode('&var_weight=','',$source_en['ln_content'])) : 0 );
             $all_source_count += $source_count;
             $all_source_count_weight += ($source_count * $weight);
@@ -205,7 +205,7 @@ foreach (echo_fixed_fields() as $object_id => $statuses) {
             $expert_source_types++;
 
             //Count completed sources:
-            $mined_source_count = $this->Matrix_model->en_child_count($source_en['en_id'], 2);
+            $mined_source_count = $this->Platform_model->en_child_count($source_en['en_id'], 2);
             $all_mined_source_count += $mined_source_count;
             $all_mined_source_count_weigh += ($mined_source_count * $weight);
 

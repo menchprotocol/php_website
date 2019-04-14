@@ -417,7 +417,7 @@ class Database_model extends CI_Model
             if (in_array('en__child_count', $join_objects)) {
 
                 //ACount children:
-                $res[$key]['en__child_count'] = $this->Matrix_model->en_child_count($val['en_id']);
+                $res[$key]['en__child_count'] = $this->Platform_model->en_child_count($val['en_id']);
 
             }
 
@@ -964,7 +964,7 @@ class Database_model extends CI_Model
                 } else {
 
                     //Clear possible metadata algolia ID's that have been cached:
-                    $this->Matrix_model->metadata_update($loop_obj, $db_row[$loop_obj.'_id'], array(
+                    $this->Platform_model->metadata_update($loop_obj, $db_row[$loop_obj.'_id'], array(
                         $loop_obj . '__algolia_id' => null, //Since all objects have been mass removed!
                     ));
 
@@ -1083,7 +1083,7 @@ class Database_model extends CI_Model
                     //Now update local database with the new objectIDs:
                     if (isset($algolia_results['objectIDs']) && count($algolia_results['objectIDs']) == 1 ) {
                         foreach ($algolia_results['objectIDs'] as $key => $algolia_id) {
-                            $this->Matrix_model->metadata_update($input_obj_type, $all_db_rows[$key][$input_obj_type.'_id'], array(
+                            $this->Platform_model->metadata_update($input_obj_type, $all_db_rows[$key][$input_obj_type.'_id'], array(
                                 $input_obj_type . '__algolia_id' => $algolia_id, //The newly created algolia object
                             ));
                         }
@@ -1103,7 +1103,7 @@ class Database_model extends CI_Model
                     $algolia_results = $search_index->deleteObject($all_export_rows[0]['objectID']);
 
                     //also set its algolia_id to 0 locally:
-                    $this->Matrix_model->metadata_update($input_obj_type, $all_db_rows[0][$input_obj_type.'_id'], array(
+                    $this->Platform_model->metadata_update($input_obj_type, $all_db_rows[0][$input_obj_type.'_id'], array(
                         $input_obj_type . '__algolia_id' => null, //Since this item has been removed!
                     ));
 
@@ -1139,7 +1139,7 @@ class Database_model extends CI_Model
 
                     $this_obj = ( isset($all_db_rows[$key]['in_id']) ? 'in' : 'en');
 
-                    $this->Matrix_model->metadata_update($this_obj, $all_db_rows[$key][$this_obj.'_id'], array(
+                    $this->Platform_model->metadata_update($this_obj, $all_db_rows[$key][$this_obj.'_id'], array(
                         $this_obj . '__algolia_id' => intval($algolia_id),
                     ));
                 }

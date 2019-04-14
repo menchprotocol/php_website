@@ -103,7 +103,7 @@ $autoload['helper'] = array('general_helper','echo_helper');
 | config files.  Otherwise, leave it blank.
 |
 */
-$autoload['config'] = array('matrix_cache', 'credentials');
+$autoload['config'] = array('platform_cache', 'credentials');
 
 /*
 | -------------------------------------------------------------------
@@ -132,4 +132,4 @@ $autoload['language'] = array();
 |
 |	$autoload['model'] = array('first_model' => 'first');
 */
-$autoload['model'] = array('Database_model','Chat_model','Matrix_model');
+$autoload['model'] = array('Database_model','Chat_model','Platform_model');
