@@ -1029,7 +1029,7 @@ class Matrix_model extends CI_Model
         $affected_rows = 0;
         foreach ($objects as $obj) {
             //Make a relative adjustment compared to what is currently there:
-            $affected_rows += $this->Matrix_model->metadata_single_update($obj_type, $obj[$obj_type . '_id'], $metadata_new, false);
+            $affected_rows += $this->Matrix_model->metadata_update($obj_type, $obj[$obj_type . '_id'], $metadata_new, false);
         }
 
         //Return total affected rows:
@@ -1670,7 +1670,7 @@ class Matrix_model extends CI_Model
             )) {
 
                 //Something was not up to date, let's update:
-                if ($this->Matrix_model->metadata_single_update('in', $this_in['in_id'], array(
+                if ($this->Matrix_model->metadata_update('in', $this_in['in_id'], array(
 
                     'in__tree_min_steps' => 0, //TBD
                     'in__tree_max_steps' => $this_in['___tree_active_count'],
@@ -1733,7 +1733,7 @@ class Matrix_model extends CI_Model
     }
 
 
-    function metadata_single_update($obj_type, $obj_id, $new_fields, $absolute_adjustment = true)
+    function metadata_update($obj_type, $obj_id, $new_fields, $absolute_adjustment = true)
     {
 
         /*

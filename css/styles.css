@@ -2727,8 +2727,8 @@ a.badge:focus, a.badge:hover {
     padding-top: 40px;
 }
 
-.bottom-space{
-    margin-bottom: 55px;
+.bottom-spacing{
+    margin-bottom: 89px;
 }
 
 .input-group-addon .fa-plus {font-size: 19px; width: 24px; text-align: center; margin-left: 3px;}

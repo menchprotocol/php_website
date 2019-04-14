@@ -1592,7 +1592,7 @@ class Messenger extends CI_Controller
 
         //Put something in the ln_metadata so other cron jobs do not pick  up on it:
         foreach ($ln_pending as $ln) {
-            $this->Matrix_model->metadata_single_update('ln', $ln['ln_id'], array(
+            $this->Matrix_model->metadata_update('ln', $ln['ln_id'], array(
                 'fb_att_id' => 0,
             ));
         }
@@ -1621,7 +1621,7 @@ class Messenger extends CI_Controller
             if (isset($result['ln_metadata']['result']['attachment_id']) && $result['status']) {
 
                 //Save Facebook Attachment ID to DB:
-                $db_result = $this->Matrix_model->metadata_single_update('ln', $ln['ln_id'], array(
+                $db_result = $this->Matrix_model->metadata_update('ln', $ln['ln_id'], array(
                     'fb_att_id' => intval($result['ln_metadata']['result']['attachment_id']),
                 ));
 

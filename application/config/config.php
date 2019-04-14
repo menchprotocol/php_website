@@ -14,7 +14,7 @@ defined('BASEPATH') OR exit('No direct script access allowed');
 date_default_timezone_set('America/Los_Angeles');
 
 //App Functionality:
-$config['app_version']              = '0.822'; //Cache buster for static JS/CSS files, so needs to be updated if you update static files
+$config['app_version']              = '0.823'; //Cache buster for static JS/CSS files, so needs to be updated if you update static files
 $config['app_enable_algolia']       = true; //May need to turn off if/when we reach free monthly quota of 50k calls
 
 
@@ -35,14 +35,6 @@ $config['en_top_focus_id']          = 3463; //The default matrix entity that is 
 $config['en_per_page']              = 100; //Limits the maximum entities loaded per page
 $config['en_name_max_length']       = 250; //Max number of characters allowed in the title of intents
 $config['en_file_max_size']         = 25; //Server setting is 32MB
-$config['en_mass_actions']          = array( //Various mass actions to be taken on Entity children
-                                        //IMPORTANT: Mass action logic for each item must be coded in Entities/en_miner_ui()
-                                        'prefix_add' => 'Add string as prefix',
-                                        'postfix_add' => 'Add string as postfix',
-                                        'replace_match' => 'Replace entity matching strings',
-                                        'replace_tr_match' => 'Replace link matching strings',
-                                        'replace_icon' => 'Update all entity icons',
-                                    );
 
 
 //Links:
