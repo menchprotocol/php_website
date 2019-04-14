@@ -93,7 +93,36 @@ function save_full_name(){
 
 }
 
+function save_phone(){
 
+    //Show spinner:
+    $('.save_phone').html('<span><i class="fas fa-spinner fa-spin"></i> Saving...</span>').hide().fadeIn();
+
+    //Save the rest of the content:
+    $.post("/messenger/myaccount_save_phone", {
+        en_id: parseInt($('#en_id').val()),
+        en_phone: $('#en_phone').val(),
+    }, function (data) {
+
+        if (!data.status) {
+
+            //Ooops there was an error!
+            $('.save_phone').html('<span style="color:#FF0000;"><i class="fas fa-exclamation-triangle"></i> ' + data.message + '</span>').hide().fadeIn();
+
+        } else {
+
+            //Show success:
+            $('.save_phone').html('<i class="fas fa-check-circle"></i> ' + data.message + '</span>').hide().fadeIn();
+
+            //Disappear in a while:
+            setTimeout(function () {
+                $('.save_phone').html('');
+            }, 1597);
+
+        }
+    });
+
+}
 
 function save_email(){
 

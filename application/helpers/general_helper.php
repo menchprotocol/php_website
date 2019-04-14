@@ -130,7 +130,7 @@ function extract_message_references($ln_content)
             array_push($msg_references['ref_intents'], intval(substr($part, 1)));
         } elseif(substr($part, 0, 1) == '/') {
             //Check maybe it's a command?
-            $command = includes_any($part, $CI->config->item('in_message_commands'));
+            $command = includes_any($part, array('/firstname', '/slice', '/link'));
             if ($command) {
                 //Yes!
                 array_push($msg_references['ref_commands'], $command);

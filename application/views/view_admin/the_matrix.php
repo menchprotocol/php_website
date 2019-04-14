@@ -27,8 +27,6 @@
 
 </script>
 <?php
-$fixed_fields = $this->config->item('fixed_fields');
-
 
 //Fetch & Display Intent Note Messages to explain links:
 echo '<h1 style="text-align: center; margin-top: 50px;">The Matrix</h1>';
@@ -56,7 +54,7 @@ foreach (echo_fixed_fields() as $object_id => $statuses) {
 
     } elseif($object_id=='ln_status'){
 
-        $obj_en_id = 4341; //Links
+        $obj_en_id = 6205; //Links
         $created_en_type_id = 0; //No particular filters needed
         $spacing = 'col-md-offset-4 bottom-space';
         $objects_count = $this->Database_model->ln_fetch(array(), array(), 0, 0, array(), 'ln_status, COUNT(ln_id) as totals', 'ln_status');
@@ -140,7 +138,7 @@ foreach (echo_fixed_fields() as $object_id => $statuses) {
 
         //Intent Types:
         echo '<table class="table table-condensed table-striped stats-table mini-stats-table in_group_by by_in_types hidden">';
-        foreach($fixed_fields['in_type'] as $in_type_id => $in_type){
+        foreach($this->config->item('en_all_4530') as $in_type_id => $in_type){
 
             //Count this type:
             $in_types = $this->Database_model->in_fetch(array(
@@ -149,7 +147,7 @@ foreach (echo_fixed_fields() as $object_id => $statuses) {
             ), array(), 0, 0, array(), 'COUNT(in_id) as totals');
 
             echo '<tr>';
-            echo '<td style="text-align: left;"><span style="width:29px; display: inline-block; text-align: center;">'.$in_type['s_icon'].'</span><span class="underdot" data-toggle="tooltip" title="'.$in_type['s_desc'].'" data-placement="top">'.$in_type['s_name'].'</span></td>';
+            echo '<td style="text-align: left;"><span style="width:29px; display: inline-block; text-align: center;">'.$in_type['m_icon'].'</span><span class="underdot" data-toggle="tooltip" title="'.$in_type['m_desc'].'" data-placement="top">'.$in_type['m_name'].'</span></td>';
             echo '<td style="text-align: right;">'.number_format($in_types[0]['totals'],0).' <i class="fas fa-hashtag"></i></td>';
             echo '</tr>';
         }

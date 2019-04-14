@@ -132,7 +132,7 @@ class Intents extends CI_Controller
                 'status' => 0,
                 'message' => 'Missing Depth',
             ));
-        } elseif (!isset($_POST['min_status']) || intval($_POST['min_status']) < -1 || intval($_POST['min_status']) > 2) {
+        } elseif (!isset($_POST['status_min']) || intval($_POST['status_min']) < -1 || intval($_POST['status_min']) > 2) {
             return echo_json(array(
                 'status' => 0,
                 'message' => 'Minimum status fall between -1 and 2',
@@ -142,12 +142,12 @@ class Intents extends CI_Controller
         //Fetch/Validate intent:
         $ins = $this->Database_model->in_fetch(array(
             'in_id' => $_POST['starting_in'],
-            'in_status >=' => $_POST['min_status'],
+            'in_status >=' => $_POST['status_min'],
         ));
         if(count($ins) != 1){
             return echo_json(array(
                 'status' => 0,
-                'message' => 'Could not find intent #'.$_POST['starting_in'].' with a minimum in_status='.$_POST['min_status'],
+                'message' => 'Could not find intent #'.$_POST['starting_in'].' with a minimum in_status='.$_POST['status_min'],
             ));
         }
 
@@ -155,7 +155,7 @@ class Intents extends CI_Controller
         //Return report:
         return echo_json(array(
             'status' => 1,
-            'message' => '<h3>'.$fixed_fields['in_type'][$ins[0]['in_type']]['s_icon'].' '.$fixed_fields['in_status'][$ins[0]['in_status']]['s_icon'].' '.$ins[0]['in_outcome'].'</h3>'.echo_in_answer_scores($_POST['starting_in'], $_POST['depth_levels'], $_POST['min_status'], $_POST['depth_levels'], $ins[0]['in_type']),
+            'message' => '<h3>'.$fixed_fields['in_type'][$ins[0]['in_type']]['s_icon'].' '.$fixed_fields['in_status'][$ins[0]['in_status']]['s_icon'].' '.$ins[0]['in_outcome'].'</h3>'.echo_in_answer_scores($_POST['starting_in'], $_POST['depth_levels'], $_POST['status_min'], $_POST['depth_levels'], $ins[0]['in_type']),
         ));
 
     }
@@ -317,8 +317,8 @@ class Intents extends CI_Controller
         $this_metadata = unserialize($this_in[0]['in_metadata']);
 
         //Make sure we have all metadata that is needed:
-        if(!isset($this_metadata['in__tree_in_active_count'])){
-            $this_metadata['in__tree_in_active_count'] = 1;
+        if(!isset($this_metadata['in__tree_max_steps'])){
+            $this_metadata['in__tree_max_steps'] = 1;
         }
         if(!isset($this_metadata['in__tree_max_seconds'])){
             $this_metadata['in__tree_max_seconds'] = 0;
@@ -333,11 +333,11 @@ class Intents extends CI_Controller
 
         //Adjust tree metadata on both branches that have been affected:
         $updated_from_recursively = $this->Matrix_model->metadata_recursive_update('in', $from_in[0]['in_id'], array(
-            'in__tree_in_active_count' => -(intval($this_metadata['in__tree_in_active_count'])),
+            'in__tree_max_steps' => -(intval($this_metadata['in__tree_max_steps'])),
             'in__tree_max_seconds' => -(intval($this_metadata['in__tree_max_seconds'])),
         ));
         $updated_to_recursively = $this->Matrix_model->metadata_recursive_update('in', $to_in[0]['in_id'], array(
-            'in__tree_in_active_count' => +(intval($this_metadata['in__tree_in_active_count'])),
+            'in__tree_max_steps' => +(intval($this_metadata['in__tree_max_steps'])),
             'in__tree_max_seconds' => +(intval($this_metadata['in__tree_max_seconds'])),
         ));
 
@@ -575,7 +575,7 @@ class Intents extends CI_Controller
 
                         //Update parent intent tree (and upwards) to reduce totals based on child intent metadata:
                         $this->Matrix_model->metadata_recursive_update('in', $ins[0]['in_id'], array(
-                            'in__tree_in_active_count' => -( isset($metadata['in__tree_in_active_count']) ? $metadata['in__tree_in_active_count'] : 0 ),
+                            'in__tree_max_steps' => -( isset($metadata['in__tree_max_steps']) ? $metadata['in__tree_max_steps'] : 0 ),
                             'in__tree_max_seconds' => -( isset($metadata['in__tree_max_seconds']) ? $metadata['in__tree_max_seconds'] : 0 ),
                         ));
 
@@ -761,7 +761,7 @@ class Intents extends CI_Controller
             'formatted_in_outcome' => ( isset($in_update['in_outcome']) ? echo_in_outcome($in_update['in_outcome']) : null ),
             'remove_redirect_url' => $remove_redirect_url,
             'status_update_children' => $status_update_children,
-            'in__tree_in_active_count' => -( isset($in_metadata['in__tree_in_active_count']) ? $in_metadata['in__tree_in_active_count'] : 0 ),
+            'in__tree_max_steps' => -( isset($in_metadata['in__tree_max_steps']) ? $in_metadata['in__tree_max_steps'] : 0 ),
         );
 
 

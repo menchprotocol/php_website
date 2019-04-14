@@ -745,7 +745,7 @@ function in_modify_save() {
                     window.location.hash = '#';
 
                     //Adjust completion cost:
-                    adjust_js_ui(modify_data['in_id'], modify_data['level'], 0, data.in__tree_in_active_count, 1);
+                    adjust_js_ui(modify_data['in_id'], modify_data['level'], 0, data.in__tree_max_steps, 1);
 
                     //Remove from UI:
                     $('.in__tr_' + modify_data['ln_id']).html('<span style="color:#2f2739;"><i class="fas fa-trash-alt"></i> Removed</span>');
@@ -924,7 +924,7 @@ function in_link_or_create(in_parent_id, is_parent, next_level, in_link_child_id
             $('[data-toggle="tooltip"]').tooltip();
 
             //Adjust time:
-            adjust_js_ui(data.in_child_id, next_level, data.in__tree_max_seconds, data.in__tree_in_active_count, 0, 1);
+            adjust_js_ui(data.in_child_id, next_level, data.in__tree_max_seconds, data.in__tree_max_steps, 0, 1);
 
         } else {
             //Show errors:

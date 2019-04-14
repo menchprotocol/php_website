@@ -482,7 +482,7 @@ class Messenger extends CI_Controller
         //Wait until Facebook pro-pagates changes of our whitelisted_domains setting:
         sleep(2);
 
-        $en_all_4321 = $this->config->item('en_all_4321');
+        $en_all_6196 = $this->config->item('en_all_6196');
 
         //Now let's update the menu:
         array_push($res, $this->Chat_model->facebook_graph('POST', '/me/messenger_profile', array(
@@ -493,7 +493,7 @@ class Messenger extends CI_Controller
                     'disabled_surfaces' => array('CUSTOMER_CHAT_PLUGIN'),
                     'call_to_actions' => array(
                         array(
-                            'title' => $en_all_4321[6138]['m_icon'].' '.$en_all_4321[6138]['m_name'],
+                            'title' => $en_all_6196[6138]['m_icon'].' '.$en_all_6196[6138]['m_name'],
                             'type' => 'web_url',
                             'url' => 'https://mench.com/messenger/actionplan',
                             'webview_height_ratio' => 'tall',
@@ -501,7 +501,7 @@ class Messenger extends CI_Controller
                             'messenger_extensions' => true,
                         ),
                         array(
-                            'title' => $en_all_4321[6137]['m_icon'].' '.$en_all_4321[6137]['m_name'],
+                            'title' => $en_all_6196[6137]['m_icon'].' '.$en_all_6196[6137]['m_name'],
                             'type' => 'web_url',
                             'url' => 'https://mench.com/messenger/myaccount',
                             'webview_height_ratio' => 'tall',
@@ -620,6 +620,125 @@ class Messenger extends CI_Controller
         ));
     }
 
+
+    function myaccount_save_phone(){
+
+        if (!isset($_POST['en_id']) || intval($_POST['en_id']) < 1) {
+            return echo_json(array(
+                'status' => 0,
+                'message' => 'Missing entity ID',
+            ));
+        } elseif (!isset($_POST['en_phone'])) {
+            return echo_json(array(
+                'status' => 0,
+                'message' => 'Missing phone number',
+            ));
+        } elseif (strlen($_POST['en_phone'])>0 && !is_numeric($_POST['en_phone'])) {
+            return echo_json(array(
+                'status' => 0,
+                'message' => 'Invalid phone number: numbers only',
+            ));
+        } elseif (strlen($_POST['en_phone'])>0 && (strlen($_POST['en_phone'])<7 || strlen($_POST['en_phone'])>12)) {
+            return echo_json(array(
+                'status' => 0,
+                'message' => 'Phone number must be between 7-12 characters long',
+            ));
+        }
+
+        if (strlen($_POST['en_phone']) > 0) {
+
+            //Cleanup starting 1:
+            if (strlen($_POST['en_phone']) == 11) {
+                $_POST['en_phone'] = preg_replace("/^1/", '',$_POST['en_phone']);
+            }
+
+            //Check to make sure not duplicate:
+            $duplicates = $this->Database_model->ln_fetch(array(
+                'ln_status >=' => 0, //New+
+                'ln_type_entity_id' => 4319, //Phone are of type number
+                'ln_parent_entity_id' => 4783, //Phone Number
+                'ln_child_entity_id !=' => $_POST['en_id'],
+                'ln_content' => $_POST['en_phone'],
+            ));
+            if (count($duplicates) > 0) {
+                //This is a duplicate, disallow:
+                return echo_json(array(
+                    'status' => 0,
+                    'message' => 'Phone already in-use. Use another number or contact support for assistance.',
+                ));
+            }
+        }
+
+
+        //Fetch existing phone:
+        $student_phones = $this->Database_model->ln_fetch(array(
+            'ln_status' => 2, //Published
+            'ln_child_entity_id' => $_POST['en_id'],
+            'ln_type_entity_id' => 4319, //Phone are of type number
+            'ln_parent_entity_id' => 4783, //Phone Number
+        ));
+        if (count($student_phones) > 0) {
+
+            if (strlen($_POST['en_phone']) == 0) {
+
+                //Remove:
+                $this->Database_model->ln_update($student_phones[0]['ln_id'], array(
+                    'ln_status' => -1, //Removed
+                ), $_POST['en_id']);
+
+                return echo_json(array(
+                    'status' => 1,
+                    'message' => 'Phone removed',
+                ));
+
+            } elseif ($student_phones[0]['ln_content'] != $_POST['en_phone']) {
+
+                //Update if not duplicate:
+                $this->Database_model->ln_update($student_phones[0]['ln_id'], array(
+                    'ln_content' => $_POST['en_phone'],
+                ), $_POST['en_id']);
+
+                return echo_json(array(
+                    'status' => 1,
+                    'message' => 'Phone updated',
+                ));
+
+            } else {
+
+                return echo_json(array(
+                    'status' => 1,
+                    'message' => 'Nothing changed',
+                ));
+
+            }
+
+        } elseif (strlen($_POST['en_phone']) > 0) {
+
+            //Create new link:
+            $this->Database_model->ln_create(array(
+                'ln_status' => 2, //Published
+                'ln_miner_entity_id' => $_POST['en_id'],
+                'ln_child_entity_id' => $_POST['en_id'],
+                'ln_type_entity_id' => 4319, //Phone are of type number
+                'ln_parent_entity_id' => 4783, //Phone Number
+                'ln_content' => $_POST['en_phone'],
+            ), true);
+
+            return echo_json(array(
+                'status' => 1,
+                'message' => 'Phone added',
+            ));
+
+        } else {
+
+            return echo_json(array(
+                'status' => 1,
+                'message' => 'Nothing changed',
+            ));
+
+        }
+    }
+
     function myaccount_save_email()
     {
 
@@ -653,7 +772,7 @@ class Messenger extends CI_Controller
                 //This is a duplicate, disallow:
                 return echo_json(array(
                     'status' => 0,
-                    'message' => 'Email already in-use. Use another email or contact support for assisstance.',
+                    'message' => 'Email already in-use. Use another email or contact support for assistance.',
                 ));
             }
         }
@@ -672,7 +791,7 @@ class Messenger extends CI_Controller
 
                 //Remove email:
                 $this->Database_model->ln_update($student_emails[0]['ln_id'], array(
-                    'ln_status' => -1,
+                    'ln_status' => -1, //Removed
                 ), $_POST['en_id']);
 
                 return echo_json(array(
@@ -690,6 +809,13 @@ class Messenger extends CI_Controller
                 return echo_json(array(
                     'status' => 1,
                     'message' => 'Email updated',
+                ));
+
+            } else {
+
+                return echo_json(array(
+                    'status' => 1,
+                    'message' => 'Nothing changed',
                 ));
 
             }
@@ -742,7 +868,7 @@ class Messenger extends CI_Controller
 
         //Fetch existing password:
         $student_passwords = $this->Database_model->ln_fetch(array(
-            'ln_status' => 2,
+            'ln_status' => 2, //Published
             'ln_type_entity_id' => 4255, //Passwords are of type Text
             'ln_parent_entity_id' => 3286, //Password
             'ln_child_entity_id' => $_POST['en_id'],
@@ -774,7 +900,7 @@ class Messenger extends CI_Controller
 
             //Create new link:
             $this->Database_model->ln_create(array(
-                'ln_status' => 2,
+                'ln_status' => 2, //Published
                 'ln_type_entity_id' => 4255, //Passwords are of type Text
                 'ln_parent_entity_id' => 3286, //Password
                 'ln_miner_entity_id' => $_POST['en_id'],
@@ -891,7 +1017,7 @@ class Messenger extends CI_Controller
 
                     //Remove profile:
                     $this->Database_model->ln_update($social_url_exists[0]['ln_id'], array(
-                        'ln_status' => -1,
+                        'ln_status' => -1, //Removed
                     ), $_POST['en_id']);
 
                     $success_messages .= $en_all_6123[$social_en_id]['m_name'] . ' removed. ';
@@ -1259,7 +1385,7 @@ class Messenger extends CI_Controller
 
                 //Should usually remove a single option:
                 $this->Database_model->ln_update($remove_en['ln_id'], array(
-                    'ln_status' => -1,
+                    'ln_status' => -1, //Removed
                 ), $_POST['en_miner_id']);
             }
 
@@ -1399,7 +1525,7 @@ class Messenger extends CI_Controller
         if ($add_actionplan) {
             $actionplan = $this->Database_model->ln_create(array(
                 'ln_type_entity_id' => 4235, //Student Intent
-                'ln_status' => 1, //Working On
+                'ln_status' => 1, //Drafting
                 'ln_miner_entity_id' => 1,
                 'ln_child_intent_id' => $in_id, //The Intent they are adding
                 'ln_order' => 1 + $this->Database_model->ln_max_order(array( //Place this intent at the end of all intents the Student is drafting...
@@ -1436,7 +1562,7 @@ class Messenger extends CI_Controller
         //Let's fetch all Media files without a Facebook attachment ID:
         $ln_pending = $this->Database_model->ln_fetch(array(
             'ln_type_entity_id IN (' . join(',', array_keys($fb_convert_4537)) . ')' => null,
-            'ln_status' => 2, //Publish
+            'ln_status' => 2, //Published
             'ln_metadata' => null, //Missing Facebook Attachment ID [NOTE: Must make sure ln_metadata is not used for anything else for these link types]
         ), array(), 10, 0, array('ln_id' => 'ASC')); //Sort by oldest added first
 
@@ -1552,7 +1678,7 @@ class Messenger extends CI_Controller
                 //Update link:
                 $this->Database_model->ln_update($ln['ln_id'], array(
                     'ln_content' => $new_file_url,
-                    'ln_status' => 2,
+                    'ln_status' => 2, //Published
                 ));
 
                 //Increase counter:
@@ -1641,7 +1767,7 @@ class Messenger extends CI_Controller
 
             //Update link:
             $this->Database_model->ln_update($ln['ln_id'], array(
-                'ln_status' => 2, //Publish
+                'ln_status' => 2, //Published
                 'ln_content' => null, //Remove URL from content to indicate its done
                 'ln_child_entity_id' => $ln_child_entity_id,
                 'ln_metadata' => array(

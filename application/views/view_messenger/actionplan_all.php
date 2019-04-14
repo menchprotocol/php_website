@@ -34,7 +34,6 @@ if(count($student_intents) > 0){
             echo '<i class="fas fa-bars"></i>'; //For sorting Action Plan
         }
 
-        //echo echo_fixed_fields('ln_status', $ln['ln_status'], 1, 'right');
         echo '<span class="actionplan-title ap-title-'.$ln['ln_id'].'">' . $ln['in_outcome'] . '</span>';
         echo '<div class="actionplan-overview"><span class="results-ln-'.$ln['ln_id'].'">'.echo_ordinal_number($ln['ln_order']).'</span> Priority, '.( $time_estimate ? $time_estimate.', ' : '').$this->Matrix_model->actionplan_completion_rate($ln, $session_en['en_id']).'% Complete</div>';
         echo '</a>';

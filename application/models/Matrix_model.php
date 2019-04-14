@@ -71,7 +71,7 @@ class Matrix_model extends CI_Model
             'ln_parent_link_id' => $actionplan_ln_id, //This action Plan
             'in_status' => 2, //Published
             'in_type' => 1, //OR Branch
-            'ln_status' => 1, //drafting, which means OR branch has not been answered yet
+            'ln_status' => 1, //Drafting
         ), array('in_child'), 1, 0, array('ln_order' => 'ASC'));
 
         if (count($first_pending_or_intent) > 0) {
@@ -83,7 +83,7 @@ class Matrix_model extends CI_Model
         $next_new_intent = $this->Database_model->ln_fetch(array(
             'ln_parent_link_id' => $actionplan_ln_id, //This action Plan
             'in_status' => 2, //Published
-            'ln_status' => 0, //New (not started yet) for either AND/OR branches
+            'ln_status' => 0, //New
         ), array('in_child'), 1, 0, array('ln_order' => 'ASC'));
 
         if (count($next_new_intent) > 0) {
@@ -99,7 +99,7 @@ class Matrix_model extends CI_Model
             'ln_parent_link_id' => $actionplan_ln_id, //This action Plan
             'in_status' => 2, //Published
             'in_type' => 0, //AND Branch
-            'ln_status' => 1, //drafting
+            'ln_status' => 1, //Drafting
         ), array('in_child'), 1, 0, array('ln_order' => 'ASC'));
 
         if (count($next_working_on_intent) > 0) {
@@ -146,7 +146,7 @@ class Matrix_model extends CI_Model
 
             //The entire Action Plan is now complete!
             $this->Database_model->ln_update($actionplan_ln_id, array(
-                'ln_status' => 2, //Completed
+                'ln_status' => 2, //Published
             ), $actionplans[0]['ln_parent_entity_id']);
 
             //List featured intents and let them choose:
@@ -281,7 +281,7 @@ class Matrix_model extends CI_Model
 
                 //Remove this link:
                 $adjusted_count += $this->Database_model->ln_update($adjust_tr['ln_id'], array(
-                    'ln_status' => -1, //Unlink
+                    'ln_status' => -1, //Removed
                 ), $ln_miner_entity_id);
 
             }
@@ -309,7 +309,7 @@ class Matrix_model extends CI_Model
         foreach($adjust_trs as $adjust_tr){
             //Remove this link:
             $this->Database_model->ln_update($adjust_tr['ln_id'], array(
-                'ln_status' => -1, //Unlink
+                'ln_status' => -1, //Removed
             ), $ln_miner_entity_id);
         }
 
@@ -461,16 +461,16 @@ class Matrix_model extends CI_Model
             } elseif ($domain_analysis['url_file_extension']) {
 
                 //URL ends with a file extension, try to detect file type based on that extension:
-                if(in_array($domain_analysis['url_file_extension'], $this->config->item('image_extensions'))){
+                if(in_array($domain_analysis['url_file_extension'], array('jpeg','jpg','png','gif','tiff','bmp','img','svg','ico'))){
                     //Image URL
                     $ln_type_entity_id = 4260;
-                } elseif(in_array($domain_analysis['url_file_extension'], $this->config->item('audio_extensions'))){
+                } elseif(in_array($domain_analysis['url_file_extension'], array('pcm','wav','aiff','mp3','aac','ogg','wma','flac','alac','m4a','m4b','m4p'))){
                     //Audio URL
                     $ln_type_entity_id = 4259;
-                } elseif(in_array($domain_analysis['url_file_extension'], $this->config->item('video_extensions'))){
+                } elseif(in_array($domain_analysis['url_file_extension'], array('mp4','m4v','m4p','avi','mov','flv','f4v','f4p','f4a','f4b','wmv','webm','mkv','vob','ogv','ogg','3gp','mpg','mpeg','m2v'))){
                     //Video URL
                     $ln_type_entity_id = 4258;
-                } elseif(in_array($domain_analysis['url_file_extension'], $this->config->item('file_extensions'))){
+                } elseif(in_array($domain_analysis['url_file_extension'], array('pdc','doc','docx','tex','txt','7z','rar','zip','csv','sql','tar','xml','exe'))){
                     //File URL
                     $ln_type_entity_id = 4261;
                 }
@@ -742,7 +742,7 @@ class Matrix_model extends CI_Model
 
                     //Does not exist, need to be added as parent:
                     $this->Database_model->ln_create(array(
-                        'ln_status' => 2,
+                        'ln_status' => 2, //Published
                         'ln_miner_entity_id' => $ln_miner_entity_id,
                         'ln_type_entity_id' => 4230, //Raw
                         'ln_child_entity_id' => $en['en_id'], //This child entity
@@ -1187,7 +1187,7 @@ class Matrix_model extends CI_Model
             '___metadatas_count' => 0, //A count of all messages for this intent only
             'in_tree' => array(), //Fetches the intent tree with its full 2-dimensional & hierarchical beauty
             'in_flat_tree' => array(), //Puts all the tree's intent IDs in a flat array, useful for quick processing
-            'in_flat_unique_published_tree' => array(), //Unique IDs
+            'in__common_steps_array' => array(), //Unique IDs
 
             //Fetched for Published Intents:
             '___metadata_tree_count' => 0, //A count of all messages for all tree intents that are published
@@ -1263,8 +1263,8 @@ class Matrix_model extends CI_Model
         array_push($metadata_this['in_flat_tree'], intval($in_id));
 
         //Add to published flat tree if not already there:
-        if ($this_in['in_status'] == 2 && !in_array(intval($in_id), $metadata_this['in_flat_unique_published_tree'])) {
-            array_push($metadata_this['in_flat_unique_published_tree'], intval($in_id));
+        if ($this_in['in_status'] == 2 && !in_array(intval($in_id), $metadata_this['in__common_steps_array'])) {
+            array_push($metadata_this['in__common_steps_array'], intval($in_id));
         }
 
         //Are we adding steps to Action Plan?
@@ -1401,7 +1401,7 @@ class Matrix_model extends CI_Model
                     //Addup if any:
                     $metadata_this['___tree_active_count'] += $recursion['___tree_active_count'];
                     array_push($metadata_this['in_flat_tree'], $recursion['in_flat_tree']);
-                    array_push($metadata_this['in_flat_unique_published_tree'], $recursion['in_flat_unique_published_tree']);
+                    array_push($metadata_this['in__common_steps_array'], $recursion['in__common_steps_array']);
                     array_push($metadata_this['in_tree'], $recursion['in_tree']);
 
 
@@ -1628,10 +1628,10 @@ class Matrix_model extends CI_Model
 
 
         $result = array();
-        array_walk_recursive($metadata_this['in_flat_unique_published_tree'], function ($v, $k) use (&$result) {
+        array_walk_recursive($metadata_this['in__common_steps_array'], function ($v, $k) use (&$result) {
             $result[] = $v;
         });
-        $metadata_this['in_flat_unique_published_tree'] = $result;
+        $metadata_this['in__common_steps_array'] = $result;
 
 
 
@@ -1665,12 +1665,15 @@ class Matrix_model extends CI_Model
                 ((!@$metadata['in__tree_experts'] && count($this_in['___tree_experts']) < 1) || (serialize($this_in['___tree_experts']) == @$metadata['in__tree_experts'])) &&
                 ((!@$metadata['in__tree_miners'] && count($this_in['___tree_miners']) < 1) || (serialize($this_in['___tree_miners']) == @$metadata['in__tree_miners'])) &&
                 ((!@$metadata['in__tree_sources'] && count($this_in['___tree_sources']) < 1) || (serialize($this_in['___tree_sources']) == @$metadata['in__tree_sources'])) &&
-                ((!@$metadata['in__tree_in_published'] && count($metadata_this['in_flat_unique_published_tree']) < 1) || (serialize($metadata_this['in_flat_unique_published_tree']) == @$metadata['in__tree_in_published'])) &&
-                $this_in['___tree_active_count'] == @$metadata['in__tree_in_active_count']
+                ((!@$metadata['in__tree_common_steps'] && count($metadata_this['in__common_steps_array']) < 1) || (serialize($metadata_this['in__common_steps_array']) == @$metadata['in__tree_common_steps'])) &&
+                $this_in['___tree_active_count'] == @$metadata['in__tree_max_steps']
             )) {
 
                 //Something was not up to date, let's update:
                 if ($this->Matrix_model->metadata_single_update('in', $this_in['in_id'], array(
+
+                    'in__tree_min_steps' => 0, //TBD
+                    'in__tree_max_steps' => $this_in['___tree_active_count'],
 
                     'in__tree_min_seconds' => intval($this_in['___tree_min_seconds_cost']),
                     'in__tree_max_seconds' => intval($this_in['___tree_max_seconds']),
@@ -1678,8 +1681,8 @@ class Matrix_model extends CI_Model
                     'in__tree_min_cost' => number_format($this_in['___tree_min_cost'], 2),
                     'in__tree_max_cost' => number_format($this_in['___tree_max_cost'], 2),
 
-                    'in__tree_in_active_count' => $this_in['___tree_active_count'],
-                    'in__tree_in_published' => $metadata_this['in_flat_unique_published_tree'],
+
+                    'in__tree_common_steps' => $metadata_this['in__common_steps_array'],
 
                     'in__tree_experts' => $this_in['___tree_experts'],
                     'in__tree_miners' => $this_in['___tree_miners'],
@@ -1701,11 +1704,11 @@ class Matrix_model extends CI_Model
         //Determine Action Plan completion rate:
         $in_metadata = unserialize($in['in_metadata']);
 
-        if(!isset($in_metadata['in__tree_in_published']) || count($in_metadata['in__tree_in_published']) < 1){
+        if(!isset($in_metadata['in__tree_common_steps']) || count($in_metadata['in__tree_common_steps']) < 1){
 
             //Should not happen, log error:
             $this->Database_model->ln_create(array(
-                'ln_content' => 'Detected student Action Plan without in__tree_in_published value!',
+                'ln_content' => 'Detected student Action Plan without in__tree_common_steps value!',
                 'ln_type_entity_id' => 4246, //Platform Error
                 'ln_miner_entity_id' => 1, //Shervin/Developer
                 'ln_parent_entity_id' => $miner_en_id,
@@ -1720,11 +1723,11 @@ class Matrix_model extends CI_Model
             $completed_steps = $this->Database_model->ln_fetch(array(
                 'ln_type_entity_id' => 4559, //Completed Step
                 'ln_miner_entity_id' => $miner_en_id, //Belongs to this Student
-                'ln_child_intent_id IN (' . join(',', $in_metadata['in__tree_in_published']) . ')' => null,
+                'ln_child_intent_id IN (' . join(',', $in_metadata['in__tree_common_steps']) . ')' => null,
                 'ln_status NOT IN (' . join(',', $this->config->item('ln_status_incomplete')) . ')' => null, //complete
             ), array(), 0, 0, array(), 'COUNT(ln_id) as completed_steps');
 
-            return round($completed_steps[0]['completed_steps']/count($in_metadata['in__tree_in_published'])*100);
+            return round($completed_steps[0]['completed_steps']/count($in_metadata['in__tree_common_steps'])*100);
         }
 
     }
@@ -1923,7 +1926,7 @@ class Matrix_model extends CI_Model
         $parent_ins = $this->Database_model->ln_fetch(array(
             'ln_type_entity_id' => 4559, //Completed Step
             'ln_miner_entity_id' => $actionplan['ln_miner_entity_id'],
-            'ln_status' => 0, //ignore intents that are not drafting...
+            'ln_status' => 0, //New
             'ln_child_intent_id' => $actionplan['ln_parent_intent_id'],
         ), array('in_parent'));
         if (count($parent_ins) > 0) {
@@ -2163,7 +2166,7 @@ class Matrix_model extends CI_Model
 
         //Prepare recursive update:
         $in_metadata_modify = array(
-            'in__tree_in_active_count' => 1, //We just added 1 new intent to this tree
+            'in__tree_max_steps' => 1, //We just added 1 new intent to this tree
         );
 
         //Create child intent:
@@ -2458,7 +2461,7 @@ class Matrix_model extends CI_Model
             $metadata = unserialize($intent_new['in_metadata']);
             //Fetch and adjust the intent tree based on these values:
             $in_metadata_modify = array(
-                'in__tree_in_active_count' => (isset($metadata['in__tree_in_active_count']) ? intval($metadata['in__tree_in_active_count']) : 0),
+                'in__tree_max_steps' => (isset($metadata['in__tree_max_steps']) ? intval($metadata['in__tree_max_steps']) : 0),
                 'in__tree_max_seconds' => (isset($metadata['in__tree_max_seconds']) ? intval($metadata['in__tree_max_seconds']) : 0),
             );
 
@@ -2560,7 +2563,7 @@ class Matrix_model extends CI_Model
             'in_child_html' => echo_in($new_ins[0], $next_level, $actionplan_in_id, $is_parent),
             //Also append some tree data for UI modifications via JS functions:
             'in__tree_max_seconds' => (isset($in_metadata_modify['in__tree_max_seconds']) && !$is_parent ? intval($in_metadata_modify['in__tree_max_seconds']) : 0), //Seconds added because of this
-            'in__tree_in_active_count' => ( $is_parent ? 0 : intval($in_metadata_modify['in__tree_in_active_count']) ), //We must have this (Either if we're linking OR creating) to show new intents in the tree
+            'in__tree_max_steps' => ( $is_parent ? 0 : intval($in_metadata_modify['in__tree_max_steps']) ), //We must have this (Either if we're linking OR creating) to show new intents in the tree
         );
 
     }
