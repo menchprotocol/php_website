@@ -191,7 +191,7 @@ class Matrix_model extends CI_Model
             'ln_child_entity_id' => $en_student_id,
             'ln_parent_entity_id IN (' . join(',', $children) . ')' => null, //Current children
             'ln_status >=' => 0,
-        ), array(), 200) as $ln) {
+        ), array(), $this->config->item('items_per_page')) as $ln) {
 
             if (!$already_assigned && $ln['ln_parent_entity_id'] == $set_en_child_id) {
                 $already_assigned = true;

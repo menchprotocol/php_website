@@ -201,7 +201,7 @@
             echo echo_en($en, 2);
         }
         if ($entity['en__child_count'] > count($entity['en__children'])) {
-            echo_en_load_more(1, $this->config->item('en_per_page'), $entity['en__child_count']);
+            echo_en_load_more(1, $this->config->item('items_per_page'), $entity['en__child_count']);
         }
 
 

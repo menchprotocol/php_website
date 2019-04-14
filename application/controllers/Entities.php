@@ -235,7 +235,7 @@ class Entities extends CI_Controller
     function en_load_next_page()
     {
 
-        $en_per_page = $this->config->item('en_per_page');
+        $items_per_page = $this->config->item('items_per_page');
         $parent_en_id = intval($_POST['parent_en_id']);
         $en_focus_filter = intval($_POST['en_focus_filter']);
         $page = intval($_POST['page']);
@@ -253,7 +253,7 @@ class Entities extends CI_Controller
         }
 
         //Fetch & display next batch of children, ordered by en_trust_score DESC which is aligned with other entity ordering:
-        $child_entities = $this->Database_model->ln_fetch($filters, array('en_child'), $en_per_page, ($page * $en_per_page), array('en_trust_score' => 'DESC'));
+        $child_entities = $this->Database_model->ln_fetch($filters, array('en_child'), $items_per_page, ($page * $items_per_page), array('en_trust_score' => 'DESC'));
 
         foreach ($child_entities as $en) {
             echo echo_en($en, 2, false);
@@ -263,8 +263,8 @@ class Entities extends CI_Controller
         $child_entities_count = $this->Database_model->ln_fetch($filters, array('en_child'), 0, 0, array(), 'COUNT(ln_id) as totals');
 
         //Do we need another load more button?
-        if ($child_entities_count[0]['totals'] > (($page * $en_per_page) + count($child_entities))) {
-            echo_en_load_more(($page + 1), $en_per_page, $child_entities_count[0]['totals']);
+        if ($child_entities_count[0]['totals'] > (($page * $items_per_page) + count($child_entities))) {
+            echo_en_load_more(($page + 1), $items_per_page, $child_entities_count[0]['totals']);
         }
 
     }
