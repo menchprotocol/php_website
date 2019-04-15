@@ -637,6 +637,17 @@ class Messenger extends CI_Controller
             'en_name' => $_POST['en_name'],
         ), true, $_POST['en_id']);
 
+
+        //Log Account iteration link type:
+        $_POST['account_update_function'] = 'myaccount_save_full_name'; //Add this variable to indicate which My Account function created this link
+        $this->Database_model->ln_create(array(
+            'ln_miner_entity_id' => $_POST['en_id'],
+            'ln_type_entity_id' => 6224, //My Account Iterated
+            'ln_content' => 'My Account Name Updated:'.$_POST['en_name'],
+            'ln_metadata' => $_POST,
+            'ln_child_entity_id' => $_POST['en_id'],
+        ));
+
         return echo_json(array(
             'status' => 1,
             'message' => 'Name updated',
@@ -709,10 +720,10 @@ class Messenger extends CI_Controller
                     'ln_status' => -1, //Removed
                 ), $_POST['en_id']);
 
-                return echo_json(array(
+                $return = array(
                     'status' => 1,
-                    'message' => 'Phone removed',
-                ));
+                    'message' => 'Phone Removed',
+                );
 
             } elseif ($student_phones[0]['ln_content'] != $_POST['en_phone']) {
 
@@ -721,17 +732,17 @@ class Messenger extends CI_Controller
                     'ln_content' => $_POST['en_phone'],
                 ), $_POST['en_id']);
 
-                return echo_json(array(
+                $return = array(
                     'status' => 1,
-                    'message' => 'Phone updated',
-                ));
+                    'message' => 'Phone Updated',
+                );
 
             } else {
 
-                return echo_json(array(
-                    'status' => 1,
-                    'message' => 'Nothing changed',
-                ));
+                $return = array(
+                    'status' => 0,
+                    'message' => 'Phone Unchanged',
+                );
 
             }
 
@@ -747,19 +758,35 @@ class Messenger extends CI_Controller
                 'ln_content' => $_POST['en_phone'],
             ), true);
 
-            return echo_json(array(
+            $return = array(
                 'status' => 1,
-                'message' => 'Phone added',
-            ));
+                'message' => 'Phone Added',
+            );
 
         } else {
 
-            return echo_json(array(
-                'status' => 1,
-                'message' => 'Nothing changed',
-            ));
+            $return = array(
+                'status' => 0,
+                'message' => 'Phone Unchanged',
+            );
 
         }
+
+
+        //Log Account iteration link type:
+        if($return['status']){
+            $_POST['account_update_function'] = 'myaccount_save_phone'; //Add this variable to indicate which My Account function created this link
+            $this->Database_model->ln_create(array(
+                'ln_miner_entity_id' => $_POST['en_id'],
+                'ln_type_entity_id' => 6224, //My Account Iterated
+                'ln_content' => 'My Account '.$return['message']. ( strlen($_POST['en_phone']) > 0 ? ': '.$_POST['en_phone'] : ''),
+                'ln_metadata' => $_POST,
+                'ln_child_entity_id' => $_POST['en_id'],
+            ));
+        }
+
+        return echo_json($return);
+
     }
 
     function myaccount_save_email()
@@ -817,10 +844,10 @@ class Messenger extends CI_Controller
                     'ln_status' => -1, //Removed
                 ), $_POST['en_id']);
 
-                return echo_json(array(
+                $return = array(
                     'status' => 1,
                     'message' => 'Email removed',
-                ));
+                );
 
             } elseif ($student_emails[0]['ln_content'] != $_POST['en_email']) {
 
@@ -829,17 +856,17 @@ class Messenger extends CI_Controller
                     'ln_content' => $_POST['en_email'],
                 ), $_POST['en_id']);
 
-                return echo_json(array(
+                $return = array(
                     'status' => 1,
                     'message' => 'Email updated',
-                ));
+                );
 
             } else {
 
-                return echo_json(array(
-                    'status' => 1,
-                    'message' => 'Nothing changed',
-                ));
+                $return = array(
+                    'status' => 0,
+                    'message' => 'Email unchanged',
+                );
 
             }
 
@@ -855,19 +882,37 @@ class Messenger extends CI_Controller
                 'ln_content' => $_POST['en_email'],
             ), true);
 
-            return echo_json(array(
+            $return = array(
                 'status' => 1,
                 'message' => 'Email added',
-            ));
+            );
 
         } else {
 
-            return echo_json(array(
-                'status' => 1,
-                'message' => 'Nothing changed',
-            ));
+            $return = array(
+                'status' => 0,
+                'message' => 'Email unchanged',
+            );
 
         }
+
+
+        if($return['status']){
+            //Log Account iteration link type:
+            $_POST['account_update_function'] = 'myaccount_save_email'; //Add this variable to indicate which My Account function created this link
+            $this->Database_model->ln_create(array(
+                'ln_miner_entity_id' => $_POST['en_id'],
+                'ln_type_entity_id' => 6224, //My Account Iterated
+                'ln_content' => 'My Account '.$return['message']. ( strlen($_POST['en_email']) > 0 ? ': '.$_POST['en_email'] : ''),
+                'ln_metadata' => $_POST,
+                'ln_child_entity_id' => $_POST['en_id'],
+            ));
+        }
+
+
+        //Return results:
+        return echo_json($return);
+
 
     }
 
@@ -903,20 +948,24 @@ class Messenger extends CI_Controller
         if (count($student_passwords) > 0) {
 
             if ($hashed_password == $student_passwords[0]['ln_content']) {
-                return echo_json(array(
-                    'status' => 1,
-                    'message' => 'Nothing Updated',
-                ));
+
+                $return = array(
+                    'status' => 0,
+                    'message' => 'Password Unchanged',
+                );
+
             } else {
+
                 //Update password:
                 $this->Database_model->ln_update($student_passwords[0]['ln_id'], array(
                     'ln_content' => $hashed_password,
                 ), $_POST['en_id']);
 
-                return echo_json(array(
+                $return = array(
                     'status' => 1,
-                    'message' => 'Password updated',
-                ));
+                    'message' => 'Password Updated',
+                );
+
             }
 
         } else {
@@ -931,12 +980,29 @@ class Messenger extends CI_Controller
                 'ln_content' => $hashed_password,
             ), true);
 
-            return echo_json(array(
+            $return = array(
                 'status' => 1,
-                'message' => 'Password added',
-            ));
+                'message' => 'Password Added',
+            );
 
         }
+
+
+        //Log Account iteration link type:
+        if($return['status']){
+            $_POST['account_update_function'] = 'myaccount_save_password'; //Add this variable to indicate which My Account function created this link
+            $this->Database_model->ln_create(array(
+                'ln_miner_entity_id' => $_POST['en_id'],
+                'ln_type_entity_id' => 6224, //My Account Iterated
+                'ln_content' => 'My Account '.$return['message'],
+                'ln_metadata' => $_POST,
+                'ln_child_entity_id' => $_POST['en_id'],
+            ));
+        }
+
+
+        //Return results:
+        return echo_json($return);
 
     }
 
@@ -1034,7 +1100,7 @@ class Messenger extends CI_Controller
                         'ln_content' => $social_url,
                     ), $_POST['en_id']);
 
-                    $success_messages .= $en_all_6123[$social_en_id]['m_name'] . ' updated. ';
+                    $success_messages .= $en_all_6123[$social_en_id]['m_name'] . ' Updated. ';
 
                 } elseif(!$profile_set) {
 
@@ -1043,7 +1109,7 @@ class Messenger extends CI_Controller
                         'ln_status' => -1, //Removed
                     ), $_POST['en_id']);
 
-                    $success_messages .= $en_all_6123[$social_en_id]['m_name'] . ' removed. ';
+                    $success_messages .= $en_all_6123[$social_en_id]['m_name'] . ' Removed. ';
 
                 } else {
 
@@ -1063,17 +1129,40 @@ class Messenger extends CI_Controller
                     'ln_content' => $social_url,
                 ), true);
 
-                $success_messages .= $en_all_6123[$social_en_id]['m_name'] . ' added. ';
+                $success_messages .= $en_all_6123[$social_en_id]['m_name'] . ' Added. ';
 
             }
         }
 
+        if(strlen($success_messages) > 0){
 
-        //All good, return combined success messages:
-        return echo_json(array(
-            'status' => 1,
-            'message' => ( strlen($success_messages) > 0 ? $success_messages : 'Nothing changed.'),
-        ));
+            //Log Account iteration link type:
+            $_POST['account_update_function'] = 'myaccount_save_social_profiles'; //Add this variable to indicate which My Account function created this link
+            $this->Database_model->ln_create(array(
+                'ln_miner_entity_id' => $_POST['en_id'],
+                'ln_type_entity_id' => 6224, //My Account Iterated
+                'ln_content' => 'My Account '.$success_messages,
+                'ln_metadata' => $_POST,
+                'ln_child_entity_id' => $_POST['en_id'],
+            ));
+
+            //All good, return combined success messages:
+            return echo_json(array(
+                'status' => 1,
+                'message' => $success_messages,
+            ));
+
+        } else {
+
+            //All good, return combined success messages:
+            return echo_json(array(
+                'status' => 0,
+                'message' => 'Social Profiles Unchanged',
+            ));
+
+        }
+
+
 
     }
 
@@ -1433,6 +1522,18 @@ class Messenger extends CI_Controller
                 true
             );
         }
+
+
+        //Log Account iteration link type:
+        $_POST['account_update_function'] = 'myaccount_radio_update'; //Add this variable to indicate which My Account function created this link
+        $this->Database_model->ln_create(array(
+            'ln_miner_entity_id' => $_POST['en_miner_id'],
+            'ln_type_entity_id' => 6224, //My Account Iterated
+            'ln_content' => 'My Account '.( $_POST['enable_mulitiselect'] ? 'Multi' : 'Single' ).'-Select Radio Field '.( $_POST['was_already_selected'] ? 'Removed' : 'Added' ),
+            'ln_metadata' => $_POST,
+            'ln_parent_entity_id' => $_POST['parent_en_id'],
+            'ln_child_entity_id' => $_POST['selected_en_id'],
+        ));
 
         //All good:
         return echo_json(array(

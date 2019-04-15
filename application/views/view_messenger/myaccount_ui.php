@@ -5,7 +5,7 @@
 
     <?php
     //Display account fields ordered with their entity links:
-    foreach($this->config->item('en_all_6137') as $acc_en_id => $acc_detail){
+    foreach($this->config->item('en_all_6225') as $acc_en_id => $acc_detail){
 
         //Print header:
         echo '<div class="panel panel-default">

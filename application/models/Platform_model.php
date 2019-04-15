@@ -1183,21 +1183,28 @@ class Platform_model extends CI_Model
         $metadata_this = array(
 
             //Fetch for New+ intents:
-            '___tree_active_count' => 0, //A count of all active (in_status >= 0) intents within the tree
-            '___metadatas_count' => 0, //A count of all messages for this intent only
             'in_tree' => array(), //Fetches the intent tree with its full 2-dimensional & hierarchical beauty
             'in_flat_tree' => array(), //Puts all the tree's intent IDs in a flat array, useful for quick processing
-            'in__common_steps_array' => array(), //Unique IDs
+
+            '__in__tree_common_steps' => array(), //The tree structure that would be shared with all students regardless of their quick replies (OR Intent Answers)
 
             //Fetched for Published Intents:
-            '___metadata_tree_count' => 0, //A count of all messages for all tree intents that are published
-            '___tree_min_seconds_cost' => 0, //The minimum number of seconds required to complete tree
-            '___tree_max_seconds' => 0, //The maximum number of seconds required to complete tree
-            '___tree_min_cost' => 0, //The minimum cost of third-party product purchases recommended to complete tree
-            '___tree_max_cost' => 0, //The maximum cost of third-party product purchases recommended to complete tree
-            '___tree_experts' => array(), //Expert references across all contributions
-            '___tree_miners' => array(), //miner references considering Intent Notes
-            '___tree_sources' => array(), //Content types entity references on messages
+            '__in__tree_min_steps' => 0, //The minimum number of intents that the student must complete to accomplish the intent
+            '__in__tree_max_steps' => 0, //The maximum number of intents that the student must complete to accomplish the intent
+
+            '__in__tree_min_seconds' => 0, //The minimum number of seconds required to complete tree
+            '__in__tree_max_seconds' => 0, //The maximum number of seconds required to complete tree
+
+            '__in__tree_min_cost' => 0, //The minimum cost of third-party product purchases recommended to complete tree
+            '__in__tree_max_cost' => 0, //The maximum cost of third-party product purchases recommended to complete tree
+
+
+            //Entity references:
+            '__in__tree_sources' => array(), //Content types entity references on messages
+            '__in__tree_experts' => array(), //Expert references across all contributions
+            '__in__tree_miners' => array(), //miner references considering Intent Notes
+
+            //Function stats:
             'metadatas_updated' => 0, //Keeps count of database metadata fields that were not in sync with the latest version of the cahced data
 
         );
@@ -1263,8 +1270,8 @@ class Platform_model extends CI_Model
         array_push($metadata_this['in_flat_tree'], intval($in_id));
 
         //Add to published flat tree if not already there:
-        if ($this_in['in_status'] == 2 && !in_array(intval($in_id), $metadata_this['in__common_steps_array'])) {
-            array_push($metadata_this['in__common_steps_array'], intval($in_id));
+        if ($this_in['in_status'] == 2 && !in_array(intval($in_id), $metadata_this['__in__tree_common_steps'])) {
+            array_push($metadata_this['__in__tree_common_steps'], intval($in_id));
         }
 
         //Are we adding steps to Action Plan?
@@ -1375,10 +1382,10 @@ class Platform_model extends CI_Model
 
             //$resource_estimates are determined based on the intent's AND/OR type:
             $resource_estimates = array(
-                'in___tree_min_seconds_cost' => null,
-                'in___tree_max_seconds' => null,
-                'in___tree_min_cost' => null,
-                'in___tree_max_cost' => null,
+                'recursive__in__tree_min_seconds' => null,
+                'recursive__in__tree_max_seconds' => null,
+                'recursive__in__tree_min_cost' => null,
+                'recursive__in__tree_max_cost' => null,
             );
 
             foreach ($fetch_tree_ins as $current_in) {
@@ -1399,9 +1406,9 @@ class Platform_model extends CI_Model
                     }
 
                     //Addup if any:
-                    $metadata_this['___tree_active_count'] += $recursion['___tree_active_count'];
+                    $metadata_this['__in__tree_max_steps'] += $recursion['__in__tree_max_steps'];
                     array_push($metadata_this['in_flat_tree'], $recursion['in_flat_tree']);
-                    array_push($metadata_this['in__common_steps_array'], $recursion['in__common_steps_array']);
+                    array_push($metadata_this['__in__tree_common_steps'], $recursion['__in__tree_common_steps']);
                     array_push($metadata_this['in_tree'], $recursion['in_tree']);
 
 
@@ -1414,57 +1421,56 @@ class Platform_model extends CI_Model
                     //Do calculations based on intent type (AND or OR)
                     if ($this_in['in_type']) {
                         //OR Branch, figure out the logic:
-                        if ($recursion['___tree_min_seconds_cost'] < $resource_estimates['in___tree_min_seconds_cost'] || is_null($resource_estimates['in___tree_min_seconds_cost'])) {
-                            $resource_estimates['in___tree_min_seconds_cost'] = $recursion['___tree_min_seconds_cost'];
+                        if ($recursion['__in__tree_min_seconds'] < $resource_estimates['recursive__in__tree_min_seconds'] || is_null($resource_estimates['recursive__in__tree_min_seconds'])) {
+                            $resource_estimates['recursive__in__tree_min_seconds'] = $recursion['__in__tree_min_seconds'];
                         }
-                        if ($recursion['___tree_max_seconds'] > $resource_estimates['in___tree_max_seconds'] || is_null($resource_estimates['in___tree_max_seconds'])) {
-                            $resource_estimates['in___tree_max_seconds'] = $recursion['___tree_max_seconds'];
+                        if ($recursion['__in__tree_max_seconds'] > $resource_estimates['recursive__in__tree_max_seconds'] || is_null($resource_estimates['recursive__in__tree_max_seconds'])) {
+                            $resource_estimates['recursive__in__tree_max_seconds'] = $recursion['__in__tree_max_seconds'];
                         }
-                        if ($recursion['___tree_min_cost'] < $resource_estimates['in___tree_min_cost'] || is_null($resource_estimates['in___tree_min_cost'])) {
-                            $resource_estimates['in___tree_min_cost'] = $recursion['___tree_min_cost'];
+                        if ($recursion['__in__tree_min_cost'] < $resource_estimates['recursive__in__tree_min_cost'] || is_null($resource_estimates['recursive__in__tree_min_cost'])) {
+                            $resource_estimates['recursive__in__tree_min_cost'] = $recursion['__in__tree_min_cost'];
                         }
-                        if ($recursion['___tree_max_cost'] > $resource_estimates['in___tree_max_cost'] || is_null($resource_estimates['in___tree_max_cost'])) {
-                            $resource_estimates['in___tree_max_cost'] = $recursion['___tree_max_cost'];
+                        if ($recursion['__in__tree_max_cost'] > $resource_estimates['recursive__in__tree_max_cost'] || is_null($resource_estimates['recursive__in__tree_max_cost'])) {
+                            $resource_estimates['recursive__in__tree_max_cost'] = $recursion['__in__tree_max_cost'];
                         }
                     } else {
                         //AND Branch, add them all up:
-                        $resource_estimates['in___tree_min_seconds_cost'] += intval($recursion['___tree_min_seconds_cost']);
-                        $resource_estimates['in___tree_max_seconds'] += intval($recursion['___tree_max_seconds']);
-                        $resource_estimates['in___tree_min_cost'] += number_format($recursion['___tree_min_cost'], 2);
-                        $resource_estimates['in___tree_max_cost'] += number_format($recursion['___tree_max_cost'], 2);
+                        $resource_estimates['recursive__in__tree_min_seconds'] += intval($recursion['__in__tree_min_seconds']);
+                        $resource_estimates['recursive__in__tree_max_seconds'] += intval($recursion['__in__tree_max_seconds']);
+                        $resource_estimates['recursive__in__tree_min_cost'] += number_format($recursion['__in__tree_min_cost'], 2);
+                        $resource_estimates['recursive__in__tree_max_cost'] += number_format($recursion['__in__tree_max_cost'], 2);
                     }
 
 
                     if ($update_metadata) {
 
                         //Update DB requested:
-                        $metadata_this['___metadata_tree_count'] += $recursion['___metadata_tree_count'];
                         $metadata_this['metadatas_updated'] += $recursion['metadatas_updated'];
 
                         //Addup unique experts:
-                        foreach ($recursion['___tree_experts'] as $en_id => $tex) {
+                        foreach ($recursion['__in__tree_experts'] as $en_id => $tex) {
                             //Is this a new expert?
-                            if (!isset($metadata_this['___tree_experts'][$en_id])) {
+                            if (!isset($metadata_this['__in__tree_experts'][$en_id])) {
                                 //Yes, add them to the list:
-                                $metadata_this['___tree_experts'][$en_id] = $tex;
+                                $metadata_this['__in__tree_experts'][$en_id] = $tex;
                             }
                         }
 
                         //Addup unique miners:
-                        foreach ($recursion['___tree_miners'] as $en_id => $tet) {
+                        foreach ($recursion['__in__tree_miners'] as $en_id => $tet) {
                             //Is this a new expert?
-                            if (!isset($metadata_this['___tree_miners'][$en_id])) {
+                            if (!isset($metadata_this['__in__tree_miners'][$en_id])) {
                                 //Yes, add them to the list:
-                                $metadata_this['___tree_miners'][$en_id] = $tet;
+                                $metadata_this['__in__tree_miners'][$en_id] = $tet;
                             }
                         }
 
                         //Addup content types:
-                        foreach ($recursion['___tree_sources'] as $type_en_id => $current_us) {
+                        foreach ($recursion['__in__tree_sources'] as $type_en_id => $current_us) {
                             foreach ($current_us as $en_id => $u_obj) {
-                                if (!isset($metadata_this['___tree_sources'][$type_en_id][$en_id])) {
+                                if (!isset($metadata_this['__in__tree_sources'][$type_en_id][$en_id])) {
                                     //Yes, add them to the list:
-                                    $metadata_this['___tree_sources'][$type_en_id][$en_id] = $u_obj;
+                                    $metadata_this['__in__tree_sources'][$type_en_id][$en_id] = $u_obj;
                                 }
                             }
                         }
@@ -1473,35 +1479,35 @@ class Platform_model extends CI_Model
             }
 
             //Addup the totals from this tree:
-            $metadata_this['___tree_min_seconds_cost'] += $resource_estimates['in___tree_min_seconds_cost'];
-            $metadata_this['___tree_max_seconds'] += $resource_estimates['in___tree_max_seconds'];
-            $metadata_this['___tree_min_cost'] += $resource_estimates['in___tree_min_cost'];
-            $metadata_this['___tree_max_cost'] += $resource_estimates['in___tree_max_cost'];
+            $metadata_this['__in__tree_min_seconds'] += $resource_estimates['recursive__in__tree_min_seconds'];
+            $metadata_this['__in__tree_max_seconds'] += $resource_estimates['recursive__in__tree_max_seconds'];
+            $metadata_this['__in__tree_min_cost'] += $resource_estimates['recursive__in__tree_min_cost'];
+            $metadata_this['__in__tree_max_cost'] += $resource_estimates['recursive__in__tree_max_cost'];
         }
 
 
         //Increase metadata counters for this intent:
-        $metadata_this['___tree_active_count']++;
-        $this_in['___tree_active_count'] = $metadata_this['___tree_active_count'];
+        $metadata_this['__in__tree_max_steps']++;
+        $this_in['__in__tree_max_steps'] = $metadata_this['__in__tree_max_steps'];
 
-        $metadata_this['___tree_min_seconds_cost'] += intval($this_in['in_seconds_cost']);
-        $metadata_this['___tree_max_seconds'] += intval($this_in['in_seconds_cost']);
-        $metadata_this['___tree_min_cost'] += number_format(doubleval($this_in['in_dollar_cost']), 2);
-        $metadata_this['___tree_max_cost'] += number_format(doubleval($this_in['in_dollar_cost']), 2);
+        $metadata_this['__in__tree_min_seconds'] += intval($this_in['in_seconds_cost']);
+        $metadata_this['__in__tree_max_seconds'] += intval($this_in['in_seconds_cost']);
+        $metadata_this['__in__tree_min_cost'] += number_format(doubleval($this_in['in_dollar_cost']), 2);
+        $metadata_this['__in__tree_max_cost'] += number_format(doubleval($this_in['in_dollar_cost']), 2);
 
         //Set the data for this intent:
-        $this_in['___tree_min_seconds_cost'] = $metadata_this['___tree_min_seconds_cost'];
-        $this_in['___tree_max_seconds'] = $metadata_this['___tree_max_seconds'];
-        $this_in['___tree_min_cost'] = $metadata_this['___tree_min_cost'];
-        $this_in['___tree_max_cost'] = $metadata_this['___tree_max_cost'];
+        $this_in['__in__tree_min_seconds'] = $metadata_this['__in__tree_min_seconds'];
+        $this_in['__in__tree_max_seconds'] = $metadata_this['__in__tree_max_seconds'];
+        $this_in['__in__tree_min_cost'] = $metadata_this['__in__tree_min_cost'];
+        $this_in['__in__tree_max_cost'] = $metadata_this['__in__tree_max_cost'];
 
 
         //Count messages only if DB updating:
         if ($update_metadata) {
 
-            $this_in['___tree_experts'] = array();
-            $this_in['___tree_miners'] = array();
-            $this_in['___tree_sources'] = array();
+            $this_in['__in__tree_experts'] = array();
+            $this_in['__in__tree_miners'] = array();
+            $this_in['__in__tree_sources'] = array();
 
             //Fetch Intent Notes to see who is involved:
             $in__messages = $this->Database_model->ln_fetch(array(
@@ -1509,11 +1515,6 @@ class Platform_model extends CI_Model
                 'ln_type_entity_id IN (' . join(',', $this->config->item('en_ids_4485')) . ')' => null, //All Intent Notes
                 'ln_child_intent_id' => $this_in['in_id'],
             ), array('en_miner'), 0, 0, array('ln_order' => 'ASC'));
-
-            $this_in['___metadatas_count'] = count($in__messages);
-            $metadata_this['___metadata_tree_count'] += $this_in['___metadatas_count'];
-            $this_in['___metadata_tree_count'] = $metadata_this['___metadata_tree_count'];
-
 
             $parent_ids = array();
 
@@ -1526,14 +1527,14 @@ class Platform_model extends CI_Model
                     }
 
                     //Check the Miners of this message in the miner array:
-                    if (!isset($this_in['___tree_miners'][$ln['ln_miner_entity_id']])) {
+                    if (!isset($this_in['__in__tree_miners'][$ln['ln_miner_entity_id']])) {
                         //Add the entire message which would also hold the miner details:
-                        $this_in['___tree_miners'][$ln['ln_miner_entity_id']] = $ln;
+                        $this_in['__in__tree_miners'][$ln['ln_miner_entity_id']] = $ln;
                     }
                     //How about the parent of this one?
-                    if (!isset($metadata_this['___tree_miners'][$ln['ln_miner_entity_id']])) {
+                    if (!isset($metadata_this['__in__tree_miners'][$ln['ln_miner_entity_id']])) {
                         //Yes, add them to the list:
-                        $metadata_this['___tree_miners'][$ln['ln_miner_entity_id']] = $ln;
+                        $metadata_this['__in__tree_miners'][$ln['ln_miner_entity_id']] = $ln;
                     }
 
 
@@ -1563,13 +1564,13 @@ class Platform_model extends CI_Model
                                 //Is this a particular content type?
                                 if (in_array($en['en_id'], $this->config->item('en_ids_3000'))) {
                                     //yes! Add it to the list if it does not already exist:
-                                    if (!isset($this_in['___tree_sources'][$en['en_id']][$ens[0]['en_id']])) {
-                                        $this_in['___tree_sources'][$en['en_id']][$ens[0]['en_id']] = $ens[0];
+                                    if (!isset($this_in['__in__tree_sources'][$en['en_id']][$ens[0]['en_id']])) {
+                                        $this_in['__in__tree_sources'][$en['en_id']][$ens[0]['en_id']] = $ens[0];
                                     }
 
                                     //How about the parent tree?
-                                    if (!isset($metadata_this['___tree_sources'][$en['en_id']][$ens[0]['en_id']])) {
-                                        $metadata_this['___tree_sources'][$en['en_id']][$ens[0]['en_id']] = $ens[0];
+                                    if (!isset($metadata_this['__in__tree_sources'][$en['en_id']][$ens[0]['en_id']])) {
+                                        $metadata_this['__in__tree_sources'][$en['en_id']][$ens[0]['en_id']] = $ens[0];
                                     }
                                 }
 
@@ -1595,22 +1596,22 @@ class Platform_model extends CI_Model
 
                 //Put unique IDs in array key for faster searching:
                 foreach ($expert_ens as $en) {
-                    if (!isset($this_in['___tree_experts'][$en['en_id']])) {
-                        $this_in['___tree_experts'][$en['en_id']] = $en;
+                    if (!isset($this_in['__in__tree_experts'][$en['en_id']])) {
+                        $this_in['__in__tree_experts'][$en['en_id']] = $en;
                     }
                 }
             }
 
 
             //Did we find any new industry experts?
-            if (count($this_in['___tree_experts']) > 0) {
+            if (count($this_in['__in__tree_experts']) > 0) {
 
                 //Yes, lets add them uniquely to the mother array assuming they are not already there:
-                foreach ($this_in['___tree_experts'] as $new_ixs) {
+                foreach ($this_in['__in__tree_experts'] as $new_ixs) {
                     //Is this a new expert?
-                    if (!isset($metadata_this['___tree_experts'][$new_ixs['en_id']])) {
+                    if (!isset($metadata_this['__in__tree_experts'][$new_ixs['en_id']])) {
                         //Yes, add them to the list:
-                        $metadata_this['___tree_experts'][$new_ixs['en_id']] = $new_ixs;
+                        $metadata_this['__in__tree_experts'][$new_ixs['en_id']] = $new_ixs;
                     }
                 }
             }
@@ -1628,65 +1629,75 @@ class Platform_model extends CI_Model
 
 
         $result = array();
-        array_walk_recursive($metadata_this['in__common_steps_array'], function ($v, $k) use (&$result) {
+        array_walk_recursive($metadata_this['__in__tree_common_steps'], function ($v, $k) use (&$result) {
             $result[] = $v;
         });
-        $metadata_this['in__common_steps_array'] = $result;
+        $metadata_this['__in__tree_common_steps'] = $result;
 
 
 
         if ($update_metadata) {
 
-            //Assign aggregates:
-            $this_in['___tree_experts'] = $metadata_this['___tree_experts'];
-            $this_in['___tree_miners'] = $metadata_this['___tree_miners'];
-            $this_in['___tree_sources'] = $metadata_this['___tree_sources'];
 
-            //Start sorting:
-            if (is_array($this_in['___tree_experts']) && count($this_in['___tree_experts']) > 0) {
-                usort($this_in['___tree_experts'], 'sort_by_en_trust_score');
+            /*
+             *
+             * Aggregate and Sort experts, miners
+             * and sources by their trust scores.
+             *
+             * */
+
+            //Experts:
+            $this_in['__in__tree_experts'] = $metadata_this['__in__tree_experts'];
+            if (is_array($this_in['__in__tree_experts']) && count($this_in['__in__tree_experts']) > 0) {
+                usort($this_in['__in__tree_experts'], 'sort_by_en_trust_score');
             }
-            if (is_array($this_in['___tree_miners']) && count($this_in['___tree_miners']) > 0) {
-                usort($this_in['___tree_miners'], 'sort_by_en_trust_score');
+
+            //Miners:
+            $this_in['__in__tree_miners'] = $metadata_this['__in__tree_miners'];
+            if (is_array($this_in['__in__tree_miners']) && count($this_in['__in__tree_miners']) > 0) {
+                usort($this_in['__in__tree_miners'], 'sort_by_en_trust_score');
             }
-            foreach ($this_in['___tree_sources'] as $type_en_id => $current_us) {
-                if (isset($this_in['___tree_sources'][$type_en_id]) && count($this_in['___tree_sources'][$type_en_id]) > 0) {
-                    usort($this_in['___tree_sources'][$type_en_id], 'sort_by_en_trust_score');
+
+            //Sources:
+            $this_in['__in__tree_sources'] = $metadata_this['__in__tree_sources'];
+            foreach ($this_in['__in__tree_sources'] as $type_en_id => $current_us) {
+                if (isset($this_in['__in__tree_sources'][$type_en_id]) && count($this_in['__in__tree_sources'][$type_en_id]) > 0) {
+                    usort($this_in['__in__tree_sources'][$type_en_id], 'sort_by_en_trust_score');
                 }
             }
 
             //Update DB only if any of these metadata fields have changed:
             $metadata = unserialize($this_in['in_metadata']);
             if (!(
-                intval($this_in['___tree_min_seconds_cost']) == intval(@$metadata['in__tree_min_seconds']) &&
-                intval($this_in['___tree_max_seconds']) == intval(@$metadata['in__tree_max_seconds']) &&
-                number_format($this_in['___tree_min_cost'], 2) == number_format(@$metadata['in__tree_min_cost'], 2) &&
-                number_format($this_in['___tree_max_cost'], 2) == number_format(@$metadata['in__tree_max_cost'], 2) &&
-                ((!@$metadata['in__tree_experts'] && count($this_in['___tree_experts']) < 1) || (serialize($this_in['___tree_experts']) == @$metadata['in__tree_experts'])) &&
-                ((!@$metadata['in__tree_miners'] && count($this_in['___tree_miners']) < 1) || (serialize($this_in['___tree_miners']) == @$metadata['in__tree_miners'])) &&
-                ((!@$metadata['in__tree_sources'] && count($this_in['___tree_sources']) < 1) || (serialize($this_in['___tree_sources']) == @$metadata['in__tree_sources'])) &&
-                ((!@$metadata['in__tree_common_steps'] && count($metadata_this['in__common_steps_array']) < 1) || (serialize($metadata_this['in__common_steps_array']) == @$metadata['in__tree_common_steps'])) &&
-                $this_in['___tree_active_count'] == @$metadata['in__tree_max_steps']
+                intval($this_in['__in__tree_min_seconds']) == intval(@$metadata['in__tree_min_seconds']) &&
+                intval($this_in['__in__tree_max_seconds']) == intval(@$metadata['in__tree_max_seconds']) &&
+                number_format($this_in['__in__tree_min_cost'], 2) == number_format(@$metadata['in__tree_min_cost'], 2) &&
+                number_format($this_in['__in__tree_max_cost'], 2) == number_format(@$metadata['in__tree_max_cost'], 2) &&
+                ((!@$metadata['in__tree_experts'] && count($this_in['__in__tree_experts']) < 1) || (serialize($this_in['__in__tree_experts']) == @$metadata['in__tree_experts'])) &&
+                ((!@$metadata['in__tree_miners'] && count($this_in['__in__tree_miners']) < 1) || (serialize($this_in['__in__tree_miners']) == @$metadata['in__tree_miners'])) &&
+                ((!@$metadata['in__tree_sources'] && count($this_in['__in__tree_sources']) < 1) || (serialize($this_in['__in__tree_sources']) == @$metadata['in__tree_sources'])) &&
+                ((!@$metadata['in__tree_common_steps'] && count($metadata_this['__in__tree_common_steps']) < 1) || (serialize($metadata_this['__in__tree_common_steps']) == @$metadata['in__tree_common_steps'])) &&
+                $this_in['__in__tree_max_steps'] == @$metadata['in__tree_max_steps']
             )) {
 
                 //Something was not up to date, let's update:
                 if ($this->Platform_model->metadata_update('in', $this_in['in_id'], array(
 
                     'in__tree_min_steps' => 0, //TBD
-                    'in__tree_max_steps' => $this_in['___tree_active_count'],
+                    'in__tree_max_steps' => $this_in['__in__tree_max_steps'],
 
-                    'in__tree_min_seconds' => intval($this_in['___tree_min_seconds_cost']),
-                    'in__tree_max_seconds' => intval($this_in['___tree_max_seconds']),
+                    'in__tree_min_seconds' => intval($this_in['__in__tree_min_seconds']),
+                    'in__tree_max_seconds' => intval($this_in['__in__tree_max_seconds']),
 
-                    'in__tree_min_cost' => number_format($this_in['___tree_min_cost'], 2),
-                    'in__tree_max_cost' => number_format($this_in['___tree_max_cost'], 2),
+                    'in__tree_min_cost' => number_format($this_in['__in__tree_min_cost'], 2),
+                    'in__tree_max_cost' => number_format($this_in['__in__tree_max_cost'], 2),
 
 
-                    'in__tree_common_steps' => $metadata_this['in__common_steps_array'],
+                    'in__tree_common_steps' => $metadata_this['__in__tree_common_steps'],
 
-                    'in__tree_experts' => $this_in['___tree_experts'],
-                    'in__tree_miners' => $this_in['___tree_miners'],
-                    'in__tree_sources' => $this_in['___tree_sources'],
+                    'in__tree_experts' => $this_in['__in__tree_experts'],
+                    'in__tree_miners' => $this_in['__in__tree_miners'],
+                    'in__tree_sources' => $this_in['__in__tree_sources'],
                 ))) {
                     //Yes update was successful:
                     $metadata_this['metadatas_updated']++;
