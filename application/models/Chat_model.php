@@ -2102,7 +2102,7 @@ class Chat_model extends CI_Model
                         echo_tree_references($ins[0], true) .
                         echo_tree_steps($ins[0], true) .
                         echo_tree_costs($ins[0], true) .
-                        "\n" . 'Are you ready to ' . $ins[0]['in_outcome'] . '?',
+                        "\n" . 'Should I add the intention to ' . $ins[0]['in_outcome'] . ' to your Action Plan?',
                         $en,
                         true,
                         array(
@@ -2155,7 +2155,7 @@ class Chat_model extends CI_Model
                 if (isset($actionplan['ln_id']) && $actionplan['ln_id'] > 0) {
 
                     //Also add all relevant child intents:
-                    $this->Platform_model->in_fetch_recursive($ins[0]['in_id'], true, false, $actionplan);
+                    $this->Platform_model->in_recursive_metadata_primary($ins[0]['in_id'], true, false);
 
                     //Confirm with them that we're now ready:
                     $this->Chat_model->dispatch_message(

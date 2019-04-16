@@ -336,16 +336,13 @@ class Database_model extends CI_Model
                 foreach ($this->config->item('tr_object_links') as $ln_field => $obj_type) {
                    if (intval($insert_columns[$ln_field]) > 0) {
 
-                       //Generate a clean name for this link field:
-                       $clean_name = ucwords(str_replace('_', ' ', str_replace('_id', '', str_replace('ln_', 'Link ', $ln_field))));
-
                        if ($obj_type == 'in') {
 
                            //Fetch Intent:
                            $ins = $this->Database_model->in_fetch(array(
                                'in_id' => $insert_columns[$ln_field],
                            ));
-                           $html_message .= '<div>' . $clean_name . ': <a href="https://mench.com/intents/' . $ins[0]['in_id'] . '" target="_parent">#'.$ins[0]['in_id'].' '.$ins[0]['in_outcome'].'</a></div>';
+                           $html_message .= '<div>' . echo_clean_db_name($ln_field) . ': <a href="https://mench.com/intents/' . $ins[0]['in_id'] . '" target="_parent">#'.$ins[0]['in_id'].' '.$ins[0]['in_outcome'].'</a></div>';
 
                        } elseif ($obj_type == 'en') {
 
@@ -353,12 +350,12 @@ class Database_model extends CI_Model
                            $ens = $this->Database_model->en_fetch(array(
                                'en_id' => $insert_columns[$ln_field],
                            ));
-                           $html_message .= '<div>' . $clean_name . ': <a href="https://mench.com/entities/' . $ens[0]['en_id'] . '" target="_parent">@'.$ens[0]['en_id'].' '.$ens[0]['en_name'].'</a></div>';
+                           $html_message .= '<div>' . echo_clean_db_name($ln_field) . ': <a href="https://mench.com/entities/' . $ens[0]['en_id'] . '" target="_parent">@'.$ens[0]['en_id'].' '.$ens[0]['en_name'].'</a></div>';
 
                        } elseif ($obj_type == 'ln') {
 
                            //Include link:
-                           $html_message .= '<div>' . $clean_name . ' ID: <a href="https://mench.com/links?ln_id=' . $insert_columns[$ln_field] . '" target="_parent">'.$insert_columns[$ln_field].'</a></div>';
+                           $html_message .= '<div>' . echo_clean_db_name($ln_field) . ' ID: <a href="https://mench.com/links?ln_id=' . $insert_columns[$ln_field] . '" target="_parent">'.$insert_columns[$ln_field].'</a></div>';
 
                        }
                    }
@@ -628,12 +625,14 @@ class Database_model extends CI_Model
                 //Has this value changed compared to what we initially had in DB?
                 if (!($before_data[0][$key] == $value) && !in_array($key, array('en_metadata', 'en_trust_score'))) {
 
+
+
                     //Value has changed, log link:
                     $this->Database_model->ln_create(array(
                         'ln_miner_entity_id' => ($ln_miner_entity_id > 0 ? $ln_miner_entity_id : $id),
                         'ln_type_entity_id' => 4263, //Entity Attribute Modified
                         'ln_child_entity_id' => $id,
-                        'ln_content' => 'Entity ' . ucwords(str_replace('_', ' ', str_replace('en_', '', $key))) . ' changed from "' . ( $key=='en_status' ? $fixed_fields['en_status'][$before_data[0][$key]]['s_name'] : $before_data[0][$key] ) . '" to "' . ( $key=='en_status' ? $fixed_fields['en_status'][$value]['s_name'] : $value ) . '"',
+                        'ln_content' => echo_clean_db_name($key) . ' changed from "' . ( $key=='en_status' ? $fixed_fields['en_status'][$before_data[0][$key]]['s_name'] : $before_data[0][$key] ) . '" to "' . ( $key=='en_status' ? $fixed_fields['en_status'][$value]['s_name'] : $value ) . '"',
                         'ln_metadata' => array(
                             'en_id' => $id,
                             'field' => $key,
@@ -707,7 +706,7 @@ class Database_model extends CI_Model
                         'ln_miner_entity_id' => $ln_miner_entity_id,
                         'ln_type_entity_id' => 4264, //Intent Attribute Modified
                         'ln_child_intent_id' => $id,
-                        'ln_content' => 'Intent ' . ucwords(str_replace('_', ' ', str_replace('in_', '', $key))) . ' changed from "' . ( in_array($key , array('in_type','in_status')) ? $fixed_fields[$key][$before_data[0][$key]]['s_name']  : $before_data[0][$key] ) . '" to "' . ( in_array($key , array('in_type','in_status')) ? $fixed_fields[$key][$value]['s_name'] : $value ) . '"',
+                        'ln_content' => echo_clean_db_name($key) . ' changed from "' . ( in_array($key , array('in_type','in_status')) ? $fixed_fields[$key][$before_data[0][$key]]['s_name']  : $before_data[0][$key] ) . '" to "' . ( in_array($key , array('in_type','in_status')) ? $fixed_fields[$key][$value]['s_name'] : $value ) . '"',
                         'ln_metadata' => array(
                             'in_id' => $id,
                             'field' => $key,
@@ -781,7 +780,7 @@ class Database_model extends CI_Model
                         'ln_parent_link_id' => $id, //Link Reference
                         'ln_miner_entity_id' => $ln_miner_entity_id,
                         'ln_type_entity_id' => 4242, //Link Attribute Modified
-                        'ln_content' => 'Link ' . ucwords(str_replace('_', ' ', str_replace('ln_', '', $key))) . ' changed from "' . ( $key=='ln_status' ? $fixed_fields['ln_status'][$before_data[0][$key]]['s_name']  : $before_data[0][$key] ) . '" to "' . ( $key=='ln_status' ? $fixed_fields['ln_status'][$value]['s_name']  : $value ) . '"',
+                        'ln_content' => echo_clean_db_name($key) . ' changed from "' . ( $key=='ln_status' ? $fixed_fields['ln_status'][$before_data[0][$key]]['s_name']  : $before_data[0][$key] ) . '" to "' . ( $key=='ln_status' ? $fixed_fields['ln_status'][$value]['s_name']  : $value ) . '"',
                         'ln_metadata' => array(
                             'ln_id' => $id,
                             'field' => $key,
@@ -1015,8 +1014,8 @@ class Database_model extends CI_Model
 
                     $export_row['alg_obj_is_in'] = 1;
                     $export_row['alg_obj_id'] = intval($db_row['in_id']);
-                    $export_row['alg_obj_weight'] = ( isset($metadata['in__tree_max_seconds']) ? $metadata['in__tree_max_seconds'] : 0 );
-                    $export_row['alg_obj_published_children'] = ( isset($metadata['in__tree_common_steps']) ? (count($metadata['in__tree_common_steps'])-1) : 0 );
+                    $export_row['alg_obj_weight'] = ( isset($metadata['in__metadata_max_seconds']) ? $metadata['in__metadata_max_seconds'] : 0 );
+                    $export_row['alg_obj_published_children'] = ( isset($metadata['in__metadata_common_steps']) ? (count($metadata['in__metadata_common_steps'])-1) : 0 );
                     $export_row['alg_obj_status'] = intval($db_row['in_status']);
                     $export_row['alg_obj_icon'] = $fixed_fields['in_type'][$db_row['in_type']]['s_icon']; //Entity type icon
                     $export_row['alg_obj_name'] = $db_row['in_outcome'];

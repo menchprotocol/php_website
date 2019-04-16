@@ -12,6 +12,21 @@ class Intents extends CI_Controller
     }
 
 
+    function ttt($in_id = 8535){
+
+    }
+
+
+    function metadata($in_id=7463){
+        $tree = $this->Platform_model->in_recursive_metadata_primary($in_id, true);
+        echo_json(array(
+            'flat' => $tree['__in__metadata_common_steps'],
+            'flat_common' => array_flatten($tree['__in__metadata_common_steps']),
+            'flat_unique_common' => array_unique(array_flatten($tree['__in__metadata_common_steps'])),
+            'tree' => $tree,
+        ));
+    }
+
 
     //Loaded as default function of the default controller:
     function index()
@@ -314,32 +329,10 @@ class Intents extends CI_Controller
             ));
         }
 
-        $this_metadata = unserialize($this_in[0]['in_metadata']);
-
-        //Make sure we have all metadata that is needed:
-        if(!isset($this_metadata['in__tree_max_steps'])){
-            $this_metadata['in__tree_max_steps'] = 1;
-        }
-        if(!isset($this_metadata['in__tree_max_seconds'])){
-            $this_metadata['in__tree_max_seconds'] = 0;
-        }
-
-
         //Make the move:
         $this->Database_model->ln_update(intval($_POST['ln_id']), array(
             'ln_parent_intent_id' => $to_in[0]['in_id'],
         ), $session_en['en_id']);
-
-
-        //Adjust tree metadata on both branches that have been affected:
-        $updated_from_recursively = $this->Platform_model->metadata_recursive_update('in', $from_in[0]['in_id'], array(
-            'in__tree_max_steps' => -(intval($this_metadata['in__tree_max_steps'])),
-            'in__tree_max_seconds' => -(intval($this_metadata['in__tree_max_seconds'])),
-        ));
-        $updated_to_recursively = $this->Platform_model->metadata_recursive_update('in', $to_in[0]['in_id'], array(
-            'in__tree_max_steps' => +(intval($this_metadata['in__tree_max_steps'])),
-            'in__tree_max_seconds' => +(intval($this_metadata['in__tree_max_seconds'])),
-        ));
 
         //Return success
         echo_json(array(
@@ -489,9 +482,6 @@ class Intents extends CI_Controller
         $remove_from_ui = 0; //Assume not
         $remove_redirect_url = null;
 
-        //This determines if there are any recursive updates needed on the tree:
-        $in_metadata_modify = array();
-
         //Did anything change?
         $status_update_children = 0;
 
@@ -506,18 +496,7 @@ class Intents extends CI_Controller
 
             } else {
 
-                //Does it required a recursive tree update?
-                if ($key == 'in_seconds_cost') {
-
-                    $in_metadata_modify['in__tree_min_seconds'] = intval($_POST[$key]) - ( isset($in_metadata['in__tree_min_seconds']) ? intval($in_metadata['in__tree_min_seconds']) : 0 );
-                    $in_metadata_modify['in__tree_max_seconds'] = intval($_POST[$key]) - ( isset($in_metadata['in__tree_max_seconds']) ? intval($in_metadata['in__tree_max_seconds']) : 0 );
-
-                } elseif ($key == 'in_dollar_cost') {
-
-                    $in_metadata_modify['in__tree_min_cost'] = intval($_POST[$key]) - ( isset($in_metadata['in__tree_min_cost']) ? intval($in_metadata['in__tree_min_cost']) : 0 );
-                    $in_metadata_modify['in__tree_max_cost'] = intval($_POST[$key]) - ( isset($in_metadata['in__tree_max_cost']) ? intval($in_metadata['in__tree_max_cost']) : 0 );
-
-                } elseif ($key == 'in_outcome') {
+                if ($key == 'in_outcome') {
 
                     //Check to make sure starts with a verb:
                     if($in_update['in_verb_entity_id'] < 1){
@@ -570,36 +549,18 @@ class Intents extends CI_Controller
                         //Unlink intent links:
                         $links_removed = $this->Platform_model->in_unlink($_POST['in_id'] , $session_en['en_id']);
 
-                        //Prep metadata:
-                        $metadata = unserialize($ins[0]['in_metadata']);
-
-                        //Update parent intent tree (and upwards) to reduce totals based on child intent metadata:
-                        $this->Platform_model->metadata_recursive_update('in', $ins[0]['in_id'], array(
-                            'in__tree_max_steps' => -( isset($metadata['in__tree_max_steps']) ? $metadata['in__tree_max_steps'] : 0 ),
-                            'in__tree_max_seconds' => -( isset($metadata['in__tree_max_seconds']) ? $metadata['in__tree_max_seconds'] : 0 ),
-                        ));
-
                         //Treat as if no link (Since it was removed):
                         $ln_id = 0;
                     }
 
                     if(intval($_POST['apply_recursively'])){
+
                         //Intent status has changed and there is a recursive update request:
-                        //Yes, sync downwards where current statuses match:
-                        $children = $this->Platform_model->in_fetch_recursive(intval($_POST['in_id']), true);
+                        $status_update_children = $this->Platform_model->in_recursive_update($_POST['in_id'], 'in_status', $ins[0]['in_status'], $in_update['in_status'], $session_en['en_id']);
 
-                        //Fetch all intents that match parent intent status:
-                        $child_ins = $this->Database_model->in_fetch(array(
-                            'in_id IN ('.join(',' , $children['in_flat_tree']).')' => null,
-                            'in_status' => intval($ins[0]['in_status']), //Same as status before update
-                        ));
+                        //Set message in session to inform miner:
+                        $this->session->set_flashdata('flash_message', '<div class="alert alert-success" role="alert">' . 'Successfully updated '.$status_update_children.' intent'.echo__s($status_update_children).' recursively.</div>');
 
-                        foreach ($child_ins as $child_in) {
-                            //Update this intent as the status did match:
-                            $status_update_children += $this->Database_model->in_update($child_in['in_id'], array(
-                                'in_status' => $in_update['in_status']
-                            ), true, $session_en['en_id']);
-                        }
                     }
                 }
 
@@ -607,11 +568,6 @@ class Intents extends CI_Controller
                 $this->Database_model->in_update($_POST['in_id'], array( $key => $_POST[$key] ), true, $session_en['en_id']);
 
             }
-        }
-
-        //Any relative metadata upward recursive updates needed?
-        if (count($in_metadata_modify) > 0) {
-            $this->Platform_model->metadata_recursive_update('in', $_POST['in_id'], $in_metadata_modify);
         }
 
 
@@ -761,7 +717,7 @@ class Intents extends CI_Controller
             'formatted_in_outcome' => ( isset($in_update['in_outcome']) ? echo_in_outcome($in_update['in_outcome']) : null ),
             'remove_redirect_url' => $remove_redirect_url,
             'status_update_children' => $status_update_children,
-            'in__tree_max_steps' => -( isset($in_metadata['in__tree_max_steps']) ? $in_metadata['in__tree_max_steps'] : 0 ),
+            'in__metadata_max_steps' => -( isset($in_metadata['in__metadata_max_steps']) ? $in_metadata['in__metadata_max_steps'] : 0 ),
         );
 
 
@@ -1413,14 +1369,11 @@ class Intents extends CI_Controller
         //Cron Settings: 31 * * * *
         //Syncs intents with latest caching data:
 
-        $sync = $this->Platform_model->in_fetch_recursive($in_id, true, $update_db);
+        $sync = $this->Platform_model->in_recursive_metadata_primary($in_id, true, $update_db);
         if (isset($_GET['redirect']) && strlen($_GET['redirect']) > 0) {
             //Now redirect;
             header('Location: ' . $_GET['redirect']);
         } else {
-            //Remove the long "in_tree" variable which makes the page load slow:
-            unset($sync['in_tree']);
-
             //Show json:
             echo_json($sync);
         }

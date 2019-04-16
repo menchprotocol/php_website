@@ -20,6 +20,21 @@ function echo_en_load_more($page, $limit, $en__child_count)
     echo '</a>';
 }
 
+function echo_clean_db_name($field_name){
+    //Takes a database field name and returns a clean version of it:
+    if(substr($field_name, 0, 3) == 'ln_'){
+        //Link field:
+        return ucwords(str_replace('_', ' ', str_replace('_id', '', str_replace('ln_', 'Link ', $field_name))));
+    } elseif(substr($field_name, 0, 3) == 'in_'){
+        //Intent field:
+        return ucwords(str_replace('_', ' ', str_replace('_id', '', str_replace('in_', 'Intent ', $field_name))));
+    } elseif(substr($field_name, 0, 3) == 'en_'){
+        //Entity field:
+        return ucwords(str_replace('_', ' ', str_replace('_id', '', str_replace('en_', 'Entity ', $field_name))));
+    } else {
+        return false;
+    }
+}
 
 function echo_advance(){
     $CI =& get_instance();
@@ -701,7 +716,7 @@ function echo_tree_references($in, $fb_messenger_format = false, $expand_mode = 
 
     //Do we have anything to return?
     $metadata = unserialize($in['in_metadata']);
-    if ((!isset($metadata['in__tree_experts']) || count($metadata['in__tree_experts']) < 1) && (!isset($metadata['in__tree_sources']) || count($metadata['in__tree_sources']) < 1)) {
+    if ((!isset($metadata['in__metadata_experts']) || count($metadata['in__metadata_experts']) < 1) && (!isset($metadata['in__metadata_sources']) || count($metadata['in__metadata_sources']) < 1)) {
         return false;
     }
 
@@ -710,20 +725,20 @@ function echo_tree_references($in, $fb_messenger_format = false, $expand_mode = 
     $source_info = '';
     $source_count = 0;
 
-    if(isset($metadata['in__tree_sources'])){
-        foreach ($metadata['in__tree_sources'] as $type_en_id => $referenced_ens) {
+    if(isset($metadata['in__metadata_sources'])){
+        foreach ($metadata['in__metadata_sources'] as $type_en_id => $referenced_ens) {
             $source_count += count($referenced_ens);
         }
     }
     if ($source_count > 0) {
 
         //Set some variables and settings to get started:
-        $type_all_count = count($metadata['in__tree_sources']);
+        $type_all_count = count($metadata['in__metadata_sources']);
         $CI =& get_instance();
         $en_all_3000 = $CI->config->item('en_all_3000');
         $visible_ppl = 3; //How many people to show before clicking on "see more"
         $type_count = 0;
-        foreach ($metadata['in__tree_sources'] as $type_id => $referenced_ens) {
+        foreach ($metadata['in__metadata_sources'] as $type_id => $referenced_ens) {
 
             if ($type_count > 0) {
                 if (($type_count + 1) >= $type_all_count) {
@@ -775,13 +790,13 @@ function echo_tree_references($in, $fb_messenger_format = false, $expand_mode = 
 
 
     //Define some variables to get stared:
-    $expert_count = ( isset($metadata['in__tree_experts']) ? count($metadata['in__tree_experts']) : 0 );
+    $expert_count = ( isset($metadata['in__metadata_experts']) ? count($metadata['in__metadata_experts']) : 0 );
     $visible_html = 4; //Landing page, beyond this is hidden and visible with a click
     $visible_bot = 10; //Plain text style, but beyond this is cut out!
     $expert_info = '';
 
-    if(isset($metadata['in__tree_experts'])){
-        foreach ($metadata['in__tree_experts'] as $count => $en) {
+    if(isset($metadata['in__metadata_experts'])){
+        foreach ($metadata['in__metadata_experts'] as $count => $en) {
 
             $is_last_fb_item = ($fb_messenger_format && $count >= $visible_bot);
 
@@ -884,12 +899,12 @@ function echo_tree_steps($in, $fb_messenger_format = 0, $expand_mode = false)
 
     //Do we have anything to return?
     $metadata = unserialize($in['in_metadata']);
-    if (!isset($metadata['in__tree_common_steps']) || count($metadata['in__tree_common_steps']) < 2) {
+    if (!isset($metadata['in__metadata_common_steps']) || count($metadata['in__metadata_common_steps']) < 2) {
         return false;
     }
 
 
-    $pitch = 'Action Plan contains ' . count($metadata['in__tree_common_steps']) . ' steps';
+    $pitch = 'Action Plan contains ' . count($metadata['in__metadata_common_steps']) . ' steps';
 
     if ($fb_messenger_format) {
 
@@ -906,7 +921,7 @@ function echo_tree_steps($in, $fb_messenger_format = 0, $expand_mode = false)
             <div class="panel-heading" role="tab" id="heading' . $id . '">
                 <h4 class="panel-title">
                     <a role="button" data-toggle="collapse" data-parent="#open' . $id . '" href="#collapse' . $id . '" aria-expanded="' . ($expand_mode ? 'true' : 'false') . '" aria-controls="collapse' . $id . '">
-                    <i class="fas" style="transform:none !important;"><i class="fas fa-walking" style="transform:none !important;"></i></i> ' . count($metadata['in__tree_common_steps']) . ' Steps<i class="fal fa-info-circle" style="transform:none !important; font-size:0.85em !important;"></i>
+                    <i class="fas" style="transform:none !important;"><i class="fas fa-walking" style="transform:none !important;"></i></i> ' . count($metadata['in__metadata_common_steps']) . ' Steps<i class="fal fa-info-circle" style="transform:none !important; font-size:0.85em !important;"></i>
                 </a>
             </h4>
         </div>
@@ -1036,8 +1051,8 @@ function echo_tree_costs($in, $fb_messenger_format = 0, $expand_mode = false)
 
     //Do we have anything to return?
     $metadata = unserialize($in['in_metadata']);
-    $has_time_estimate = ( isset($metadata['in__tree_max_seconds']) && !($metadata['in__tree_max_seconds'] == 0) );
-    $has_cost_estimate = ( isset($metadata['in__tree_max_cost']) && !($metadata['in__tree_max_cost'] == 0) );
+    $has_time_estimate = ( isset($metadata['in__metadata_max_seconds']) && !($metadata['in__metadata_max_seconds'] == 0) );
+    $has_cost_estimate = ( isset($metadata['in__metadata_max_cost']) && !($metadata['in__metadata_max_cost'] == 0) );
     if (!$has_cost_estimate && !$has_time_estimate) {
         return false;
     }
@@ -1045,12 +1060,12 @@ function echo_tree_costs($in, $fb_messenger_format = 0, $expand_mode = false)
 
     if($has_cost_estimate){
         //Construct UI:
-        if (round($metadata['in__tree_max_cost']) == round($metadata['in__tree_min_cost']) || $metadata['in__tree_min_cost'] == 0) {
+        if (round($metadata['in__metadata_max_cost']) == round($metadata['in__metadata_min_cost']) || $metadata['in__metadata_min_cost'] == 0) {
             //Single price:
-            $price_range = '$' . round($metadata['in__tree_max_cost']) . ' USD';
+            $price_range = '$' . round($metadata['in__metadata_max_cost']) . ' USD';
         } else {
             //Price range:
-            $price_range = '$' . round($metadata['in__tree_min_cost']) . ' - $' . round($metadata['in__tree_max_cost']) . ' USD';
+            $price_range = '$' . round($metadata['in__metadata_min_cost']) . ' - $' . round($metadata['in__metadata_max_cost']) . ' USD';
         }
     }
 
@@ -1158,29 +1173,29 @@ function echo_time_range($in, $micro = false, $hide_zero = false)
     //By now we have the metadata, extract it:
     $metadata = unserialize($in['in_metadata']);
 
-    if (!isset($metadata['in__tree_max_seconds']) || !isset($metadata['in__tree_min_seconds'])) {
+    if (!isset($metadata['in__metadata_max_seconds']) || !isset($metadata['in__metadata_min_seconds'])) {
         return false;
-    } elseif($hide_zero && $metadata['in__tree_max_seconds'] < 1){
+    } elseif($hide_zero && $metadata['in__metadata_max_seconds'] < 1){
         return false;
     }
 
     //Construct the UI:
-    if ($metadata['in__tree_max_seconds'] == $metadata['in__tree_min_seconds']) {
+    if ($metadata['in__metadata_max_seconds'] == $metadata['in__metadata_min_seconds']) {
 
         //Exactly the same, show a single value:
-        return echo_time_hours($metadata['in__tree_max_seconds'], $micro);
+        return echo_time_hours($metadata['in__metadata_max_seconds'], $micro);
 
-    } elseif ($metadata['in__tree_min_seconds'] < 3600) {
+    } elseif ($metadata['in__metadata_min_seconds'] < 3600) {
 
-        if ($metadata['in__tree_min_seconds'] < 7200 && $metadata['in__tree_max_seconds'] < 10800) {
+        if ($metadata['in__metadata_min_seconds'] < 7200 && $metadata['in__metadata_max_seconds'] < 10800) {
             $is_minutes = true;
             $hours_decimal = 0;
-        } elseif ($metadata['in__tree_min_seconds'] < 36000) {
+        } elseif ($metadata['in__metadata_min_seconds'] < 36000) {
             $is_minutes = false;
             $hours_decimal = 1;
         } else {
             //Number too large to matter, just treat as one:
-            return echo_time_hours($metadata['in__tree_max_seconds'], $micro);
+            return echo_time_hours($metadata['in__metadata_max_seconds'], $micro);
         }
 
     } else {
@@ -1188,10 +1203,10 @@ function echo_time_range($in, $micro = false, $hide_zero = false)
         $hours_decimal = 0;
     }
 
-    $min_minutes = round($metadata['in__tree_min_seconds'] / 60);
-    $min_hours = round(($metadata['in__tree_min_seconds'] / 3600), $hours_decimal);
-    $max_minutes = round($metadata['in__tree_max_seconds'] / 60);
-    $max_hours = round(($metadata['in__tree_max_seconds'] / 3600), $hours_decimal);
+    $min_minutes = round($metadata['in__metadata_min_seconds'] / 60);
+    $min_hours = round(($metadata['in__metadata_min_seconds'] / 3600), $hours_decimal);
+    $max_minutes = round($metadata['in__metadata_max_seconds'] / 60);
+    $max_hours = round(($metadata['in__metadata_max_seconds'] / 3600), $hours_decimal);
 
     //Generate hours range:
     $the_min = ($is_minutes ? $min_minutes : $min_hours );
@@ -1662,8 +1677,8 @@ function echo_in($in, $level, $in_parent_id = 0, $is_parent = false)
 
 
     //Intent modify:
-    $in__tree_max_seconds = (isset($in_metadata['in__tree_max_seconds']) ? $in_metadata['in__tree_max_seconds'] : 0);
-    $ui .= '<a class="badge badge-primary white-primary is_not_bg '.( $level==0 ? '' . echo_advance() . '' : '' ).'" onclick="'.( $level==0 ? 'alert(\'Cannot manage here. Go to the intent to manage.\')' : 'in_modify_load(' . $in['in_id'] . ',' . $ln_id . ')' ).'" style="margin:-2px -8px 0 0; width:40px;" href="#loadmodify-' . $in['in_id'] . '-' . $ln_id . '" data-toggle="tooltip" title="Intent completion cost. Click to modify intent'.( $level>1 ? ' and link' : '' ).'" data-placement="top"><span class="btn-counter slim-time t_estimate_' . $in['in_id'] . '" intent-usd="'.$in['in_dollar_cost'].'" tree-max-seconds="' . $in__tree_max_seconds . '" intent-seconds="' . $in['in_seconds_cost'] . '">'.( $in__tree_max_seconds > 0 ? echo_time_hours($in__tree_max_seconds , true) : 0 ).'</span><i class="fas fa-cog"></i></a> &nbsp;';
+    $in__metadata_max_seconds = (isset($in_metadata['in__metadata_max_seconds']) ? $in_metadata['in__metadata_max_seconds'] : 0);
+    $ui .= '<a class="badge badge-primary white-primary is_not_bg '.( $level==0 ? '' . echo_advance() . '' : '' ).'" onclick="'.( $level==0 ? 'alert(\'Cannot manage here. Go to the intent to manage.\')' : 'in_modify_load(' . $in['in_id'] . ',' . $ln_id . ')' ).'" style="margin:-2px -8px 0 0; width:40px;" href="#loadmodify-' . $in['in_id'] . '-' . $ln_id . '" data-toggle="tooltip" title="Intent completion cost. Click to modify intent'.( $level>1 ? ' and link' : '' ).'" data-placement="top"><span class="btn-counter slim-time t_estimate_' . $in['in_id'] . '" intent-usd="'.$in['in_dollar_cost'].'" tree-max-seconds="' . $in__metadata_max_seconds . '" intent-seconds="' . $in['in_seconds_cost'] . '">'.( $in__metadata_max_seconds > 0 ? echo_time_hours($in__metadata_max_seconds , true) : 0 ).'</span><i class="fas fa-cog"></i></a> &nbsp;';
 
 
     //Intent Links:
@@ -1674,8 +1689,8 @@ function echo_in($in, $level, $in_parent_id = 0, $is_parent = false)
     $ui .= '<a href="/links?any_in_id=' . $in['in_id'] . '&ln_parent_link_id=' . $ln_id . '" class="badge badge-primary ' . echo_advance() . ' is_not_bg" style="width:40px; margin:-3px 0px 0 4px; border:2px solid #eacb10 !important;" data-toggle="tooltip" data-placement="top" title="Go to Links"><span class="btn-counter">' . echo_number($count_in_trs[0]['totals']) . '</span><i class="fas fa-link rotate90"></i></a>';
 
     $tree_count = null;
-    if(isset($in_metadata['in__tree_max_steps'])){
-        $tree_count = '<span class="btn-counter ' . echo_advance() . ' children-counter-' . $in['in_id'] . ' ' . ($is_parent && $level == 2 ? 'inb-counter' : '') . '">' . $in_metadata['in__tree_max_steps'] . '</span>';
+    if(isset($in_metadata['in__metadata_max_steps'])){
+        $tree_count = '<span class="btn-counter ' . echo_advance() . ' children-counter-' . $in['in_id'] . ' ' . ($is_parent && $level == 2 ? 'inb-counter' : '') . '">' . $in_metadata['in__metadata_max_steps'] . '</span>';
     }
 
     //Intent Link to Travel Down/UP the Tree:

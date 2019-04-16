@@ -95,6 +95,14 @@ function parse_signed_request($signed_request)
     return $data;
 }
 
+function array_flatten($hierarchical_array){
+    $result = array();
+    array_walk_recursive($hierarchical_array, function ($v, $k) use (&$result) {
+        $result[] = $v;
+    });
+    return $result;
+}
+
 function base64_url_decode($input)
 {
     //Another Facebook Recommended function that supports the parse_signed_request() function

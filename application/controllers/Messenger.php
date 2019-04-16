@@ -1662,7 +1662,7 @@ class Messenger extends CI_Controller
             $actionplan = array();
         }
 
-        echo_json($this->Platform_model->in_fetch_recursive($in_id, $direction_is_downward, false, $actionplan));
+        echo_json($this->Platform_model->in_recursive_metadata_primary($in_id, $direction_is_downward, false));
     }
 
 

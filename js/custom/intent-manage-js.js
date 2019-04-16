@@ -476,19 +476,19 @@ function adjust_js_ui(in_id, level, new_hours, intent_deficit_count=0, apply_to_
 
     intent_deficit_count = parseInt(intent_deficit_count);
     var in_seconds_cost = parseFloat($('.t_estimate_' + in_id + ':first').attr('intent-seconds'));
-    var in__tree_seconds = parseFloat($('.t_estimate_' + in_id + ':first').attr('tree-max-seconds'));
-    var in_deficit_seconds = new_hours - (skip_intent_adjustments ? 0 : (apply_to_tree ? in__tree_seconds : in_seconds_cost));
+    var in__metadata_seconds = parseFloat($('.t_estimate_' + in_id + ':first').attr('tree-max-seconds'));
+    var in_deficit_seconds = new_hours - (skip_intent_adjustments ? 0 : (apply_to_tree ? in__metadata_seconds : in_seconds_cost));
 
     //Adjust same level hours:
     if (!skip_intent_adjustments) {
-        var in_new__tree_seconds = in__tree_seconds + in_deficit_seconds;
+        var in_new__metadata_seconds = in__metadata_seconds + in_deficit_seconds;
         $('.t_estimate_' + in_id)
-            .attr('tree-max-seconds', in_new__tree_seconds)
+            .attr('tree-max-seconds', in_new__metadata_seconds)
             .attr('intent-usd', usd_cost)
-            .text(in_cost_overview(in_new__tree_seconds, in_id));
+            .text(in_cost_overview(in_new__metadata_seconds, in_id));
 
         if (!apply_to_tree) {
-            $('.t_estimate_' + in_id).attr('intent-seconds', new_hours).text(in_cost_overview(in_new__tree_seconds, in_id));
+            $('.t_estimate_' + in_id).attr('intent-seconds', new_hours).text(in_cost_overview(in_new__metadata_seconds, in_id));
         }
     }
 
@@ -505,8 +505,8 @@ function adjust_js_ui(in_id, level, new_hours, intent_deficit_count=0, apply_to_
 
         //Adjust the parent level hours:
         var in_parent_id = parseInt($('.intent_line_' + in_id).attr('parent-intent-id'));
-        var in_parent__tree_seconds = parseFloat($('.t_estimate_' + in_parent_id + ':first').attr('tree-max-seconds'));
-        var in_new_parent__tree_seconds = in_parent__tree_seconds + in_deficit_seconds;
+        var in_parent__metadata_seconds = parseFloat($('.t_estimate_' + in_parent_id + ':first').attr('tree-max-seconds'));
+        var in_new_parent__metadata_seconds = in_parent__metadata_seconds + in_deficit_seconds;
 
         if (!(intent_deficit_count == 0)) {
             $('.children-counter-' + in_parent_id).text(parseInt($('.children-counter-' + in_parent_id + ':first').text()) + intent_deficit_count);
@@ -514,15 +514,15 @@ function adjust_js_ui(in_id, level, new_hours, intent_deficit_count=0, apply_to_
 
         //Update Hours (Either level 1 or 2):
         $('.t_estimate_' + in_parent_id)
-            .attr('tree-max-seconds', in_new_parent__tree_seconds)
-            .text(echo_js_hours(in_new_parent__tree_seconds));
+            .attr('tree-max-seconds', in_new_parent__metadata_seconds)
+            .text(echo_js_hours(in_new_parent__metadata_seconds));
 
 
         if (level == 3) {
             //Adjust top level intent as well:
             var in_top_level = parseInt($('.intent_line_' + in_parent_id).attr('parent-intent-id'));
-            var in_primary__tree_seconds = parseFloat($('.t_estimate_' + in_top_level + ':first').attr('tree-max-seconds'));
-            var in_new__tree_seconds = in_primary__tree_seconds + in_deficit_seconds;
+            var in_primary__metadata_seconds = parseFloat($('.t_estimate_' + in_top_level + ':first').attr('tree-max-seconds'));
+            var in_new__metadata_seconds = in_primary__metadata_seconds + in_deficit_seconds;
 
             if (!(intent_deficit_count == 0)) {
                 $('.children-counter-' + in_top_level).text(parseInt($('.children-counter-' + in_top_level + ':first').text()) + intent_deficit_count);
@@ -530,8 +530,8 @@ function adjust_js_ui(in_id, level, new_hours, intent_deficit_count=0, apply_to_
 
             //Update Hours:
             $('.t_estimate_' + in_top_level)
-                .attr('tree-max-seconds', in_new__tree_seconds)
-                .text(echo_js_hours(in_new__tree_seconds));
+                .attr('tree-max-seconds', in_new__metadata_seconds)
+                .text(echo_js_hours(in_new__metadata_seconds));
         }
     }
 }
@@ -745,7 +745,7 @@ function in_modify_save() {
                     window.location.hash = '#';
 
                     //Adjust completion cost:
-                    adjust_js_ui(modify_data['in_id'], modify_data['level'], 0, data.in__tree_max_steps, 1);
+                    adjust_js_ui(modify_data['in_id'], modify_data['level'], 0, 0, 1);
 
                     //Remove from UI:
                     $('.in__tr_' + modify_data['ln_id']).html('<span style="color:#2f2739;"><i class="fas fa-trash-alt"></i> Removed</span>');
@@ -924,7 +924,7 @@ function in_link_or_create(in_parent_id, is_parent, next_level, in_link_child_id
             $('[data-toggle="tooltip"]').tooltip();
 
             //Adjust time:
-            adjust_js_ui(data.in_child_id, next_level, data.in__tree_max_seconds, data.in__tree_max_steps, 0, 1);
+            adjust_js_ui(data.in_child_id, next_level, 0, 0, 0, 1);
 
         } else {
             //Show errors:

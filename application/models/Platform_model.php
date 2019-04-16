@@ -990,54 +990,6 @@ class Platform_model extends CI_Model
     }
 
 
-    function metadata_recursive_update($obj_type, $focus_obj_id, $metadata_new = array(), $direction_is_downward = false)
-    {
-
-        /*
-         *
-         * Keeps intent/entity metadata field in-sync when adjustments are made to tree items
-         *
-         * */
-
-        //Currently only supports intents:
-        if (count($metadata_new) == 0) {
-            return false;
-        }
-
-
-        if (in_array($obj_type, array('in'))) {
-
-            //Fetch tree that needs adjustment:
-            $tree = $this->Platform_model->in_fetch_recursive($focus_obj_id, $direction_is_downward);
-
-            if (count($tree['in_flat_tree']) == 0) {
-                return false;
-            }
-
-            //Now fetch them all:
-            $objects = $this->Database_model->in_fetch(array(
-                'in_id IN (' . join(',', $tree['in_flat_tree']) . ')' => null,
-            ));
-
-        } elseif (in_array($obj_type, array('en'))) {
-
-            //TODO add entity support
-
-        }
-
-        //Apply relative changes to all objects:
-        $affected_rows = 0;
-        foreach ($objects as $obj) {
-            //Make a relative adjustment compared to what is currently there:
-            $affected_rows += $this->Platform_model->metadata_update($obj_type, $obj[$obj_type . '_id'], $metadata_new, false);
-        }
-
-        //Return total affected rows:
-        return $affected_rows;
-
-    }
-
-
     function actionplan_skip_recursive_down($ln_id, $apply_skip = true)
     {
 
@@ -1119,7 +1071,110 @@ class Platform_model extends CI_Model
 
     }
 
-    function in_fetch_recursive($in_id, $direction_is_downward, $update_metadata = false, $actionplan = array(), $previous_in = array(), $metadata_aggregate = null)
+    function in_recursive_metadata_secondary(){
+
+        //Calculate metadata variables:
+        $metadata_this = array(
+            '__in__metadata_min_steps' => 0, //The minimum number of intents that the student must complete to accomplish the intent
+            '__in__metadata_max_steps' => 0, //The maximum number of intents that the student must complete to accomplish the intent
+
+            '__in__metadata_min_seconds' => 0, //The minimum number of seconds required to complete tree
+            '__in__metadata_max_seconds' => 0, //The maximum number of seconds required to complete tree
+
+            '__in__metadata_min_cost' => 0, //The minimum cost of third-party product purchases recommended to complete tree
+            '__in__metadata_max_cost' => 0, //The maximum cost of third-party product purchases recommended to complete tree
+
+            '__in__metadata_sources' => array(), //Content types entity references on messages
+            '__in__metadata_experts' => array(), //Expert references across all contributions
+            '__in__metadata_miners' => array(), //miner references considering Intent Notes
+        );
+
+        //Fetch intent:
+
+
+        //Calculate Common Base aggregate:
+
+
+        //Loop through expansion pathways and assess size:
+
+
+
+    }
+
+    function in_recursive_update($in_id = 0, $in_field, $match_value, $replace_value, $ln_miner_entity_id, $filters = null, $recursive_in = null)
+    {
+        /*
+         *
+         * Updates a matching variable within an intent tree
+         *
+         * */
+
+        $update_count = 0;
+        if(!$filters || !is_array($filters)){
+            //Set default filters:
+            $filters = array(
+                'ln_status >=' => 0, //New+
+                'in_status >=' => 0, //New+
+                'ln_type_entity_id IN (' . join(',', $this->config->item('en_ids_4486')) . ')' => null, //Intent Link Connectors
+            );
+        }
+
+        if($match_value==$replace_value){
+
+            //Nothing to do here...
+            return 0;
+
+        } elseif($in_id > 0){
+
+            //This is the first round of the recursive function:
+            $ins = $this->Database_model->in_fetch(array(
+                'in_id' => $in_id,
+            ));
+
+            if(count($ins) < 1){
+                return false;
+            }
+
+            $recursive_in = $ins[0];
+
+        } elseif(!$recursive_in){
+
+            return 0;
+
+        }
+
+        //Go through Children FIRST:
+        foreach($this->Database_model->ln_fetch(array_merge($filters , array(
+            'ln_parent_intent_id' => $recursive_in['in_id'],
+        )), array('in_child'), 0, 0, array('ln_order' => 'ASC')) as $in_child){
+
+            //Run function on child:
+            $update_count += $this->Platform_model->in_recursive_update(0, $in_field, $match_value, $replace_value, $ln_miner_entity_id, $filters, $in_child);
+
+        }
+
+        //See if we need to update this intent:
+        if(isset($recursive_in[$in_field]) && $recursive_in[$in_field]==$match_value){
+            //Matched! Update the filed:
+            $this->Database_model->in_update($recursive_in['in_id'], array( $in_field => $replace_value ), true, $ln_miner_entity_id);
+            $update_count++;
+        }
+
+        //Log Link for recursive Intent Update:
+        if($in_id > 0 && $update_count > 0){
+            $this->Database_model->ln_create(array(
+                'ln_miner_entity_id' => $ln_miner_entity_id,
+                'ln_type_entity_id' => 6226, //Intent Tree Iterated
+                'ln_parent_intent_id' => $in_id,
+                'ln_content' => 'Successfully updated '.$update_count.' '.echo_clean_db_name($in_field).' from ['.$match_value.'] to ['.$replace_value.']',
+            ));
+        }
+
+        return $update_count;
+
+    }
+
+    function in_recursive_metadata_primary($in_id, $direction_is_downward, $update_metadata = false, $previous_in = array(), $metadata_aggregate = null, $min_status = 2)
     {
 
         /*
@@ -1136,77 +1191,32 @@ class Platform_model extends CI_Model
          * - $update_metadata:          Whether or not to update a copy of the
          *                              $metadata_this array into in_metadata
          *
-         * - $actionplan:               The Action Plan object which if provided, will
-         *                              get this function to create a copy of the intents
-         *                              of $in_id downwards
-         *
          * - $previous_in:              Keeps track of the state of recursion by passing
          *                              down/up the previous intent
          *
-         * - $metadata_aggregate:       A variable used to addup the $metadata_this
+         * - $metadata_aggregate:       A variable used to add-up the $metadata_this
          *                              values that will eventually be stored in in_metadata
          *
          * */
 
 
-        //Are we also caching intent tree to the Action Plan? If so, analyze the $actionplan:
-        if(count($actionplan) > 0) {
-
-            //Yes, we are adding to Action Plan:
-            $add_to_actionplan = true;
-
-            //Is $actionplan referencing an Intent or Step?
-            $is_actionplan_intent = ($actionplan['ln_type_entity_id']==4235);
-
-            //Determine Action Plan ID based on type:
-            $actionplan_ln_id = ( $is_actionplan_intent ? $actionplan['ln_id'] : $actionplan['ln_parent_link_id']);
-
-        } else {
-
-            //Nope:
-            $add_to_actionplan = false;
-
-        }
-
-
-        //Do basic input validation:
-        if ($in_id < 1) {
-            //Invalid Intent ID:
-            return false;
-        } elseif ($add_to_actionplan && (!$direction_is_downward || $update_metadata)) {
-            //Adding Completed Steps for a given intention only works downwards and should not update DB concurrently:
-            return false;
-        }
-
-
         //Calculate metadata variables:
         $metadata_this = array(
+            '__in__metadata_common_steps' => array(), //The tree structure that would be shared with all students regardless of their quick replies (OR Intent Answers)
+            '__in__metadata_expansion_steps' => array(), //Intents that may exist as a link to expand an Action Plan tree
 
-            //Fetch for New+ intents:
-            'in_tree' => array(), //Fetches the intent tree with its full 2-dimensional & hierarchical beauty
-            'in_flat_tree' => array(), //Puts all the tree's intent IDs in a flat array, useful for quick processing
+            '__in__metadata_min_steps' => 0, //The minimum number of intents that the student must complete to accomplish the intent
+            '__in__metadata_max_steps' => 0, //The maximum number of intents that the student must complete to accomplish the intent
 
-            '__in__tree_common_steps' => array(), //The tree structure that would be shared with all students regardless of their quick replies (OR Intent Answers)
+            '__in__metadata_min_seconds' => 0, //The minimum number of seconds required to complete tree
+            '__in__metadata_max_seconds' => 0, //The maximum number of seconds required to complete tree
 
-            //Fetched for Published Intents:
-            '__in__tree_min_steps' => 0, //The minimum number of intents that the student must complete to accomplish the intent
-            '__in__tree_max_steps' => 0, //The maximum number of intents that the student must complete to accomplish the intent
+            '__in__metadata_min_cost' => 0, //The minimum cost of third-party product purchases recommended to complete tree
+            '__in__metadata_max_cost' => 0, //The maximum cost of third-party product purchases recommended to complete tree
 
-            '__in__tree_min_seconds' => 0, //The minimum number of seconds required to complete tree
-            '__in__tree_max_seconds' => 0, //The maximum number of seconds required to complete tree
-
-            '__in__tree_min_cost' => 0, //The minimum cost of third-party product purchases recommended to complete tree
-            '__in__tree_max_cost' => 0, //The maximum cost of third-party product purchases recommended to complete tree
-
-
-            //Entity references:
-            '__in__tree_sources' => array(), //Content types entity references on messages
-            '__in__tree_experts' => array(), //Expert references across all contributions
-            '__in__tree_miners' => array(), //miner references considering Intent Notes
-
-            //Function stats:
-            'metadatas_updated' => 0, //Keeps count of database metadata fields that were not in sync with the latest version of the cahced data
-
+            '__in__metadata_sources' => array(), //Content types entity references on messages
+            '__in__metadata_experts' => array(), //Expert references across all contributions
+            '__in__metadata_miners' => array(), //miner references considering Intent Notes
         );
 
         if (!$metadata_aggregate) {
@@ -1223,8 +1233,8 @@ class Platform_model extends CI_Model
 
                 //Fetch children:
                 $ins = $this->Database_model->ln_fetch(array(
-                    'ln_status' => 2, //Published
-                    'in_status >=' => 0, //New+
+                    'ln_status >=' => $min_status,
+                    'in_status >=' => $min_status,
                     'ln_type_entity_id IN (' . join(',', $this->config->item('en_ids_4486')) . ')' => null, //Intent Link Connectors
                     'ln_id' => $previous_in['ln_id'],
                 ), array('in_child'), 0, 0, array('ln_order' => 'ASC')); //Child intents must be ordered
@@ -1233,8 +1243,8 @@ class Platform_model extends CI_Model
 
                 //Fetch parents:
                 $ins = $this->Database_model->ln_fetch(array(
-                    'ln_status' => 2, //Published
-                    'in_status >=' => 0, //New+
+                    'ln_status >=' => $min_status,
+                    'in_status >=' => $min_status,
                     'ln_type_entity_id IN (' . join(',', $this->config->item('en_ids_4486')) . ')' => null, //Intent Link Connectors
                     'ln_id' => $previous_in['ln_id'],
                 ), array('in_parent')); //Note that parents do not need any sorting, since we only sort child intents
@@ -1259,98 +1269,14 @@ class Platform_model extends CI_Model
         //Set the current intent:
         $this_in = $ins[0];
 
-        //Terminate Completed Step adding for conditional intent links and unpublished intents:
-        $is_conditional = (isset($this_in['ln_type_entity_id']) && $this_in['ln_type_entity_id']==4229);
-        $is_unpublished = ($this_in['in_status'] < 2);
-        if ($add_to_actionplan && ($is_conditional || $is_unpublished)) {
-            return false;
-        }
-
-        //Always add intent to the flat intent tree which is part of the metadata:
-        array_push($metadata_this['in_flat_tree'], intval($in_id));
-
         //Add to published flat tree if not already there:
-        if ($this_in['in_status'] == 2 && !in_array(intval($in_id), $metadata_this['__in__tree_common_steps'])) {
-            array_push($metadata_this['__in__tree_common_steps'], intval($in_id));
-        }
-
-        //Are we adding steps to Action Plan?
-        if ($add_to_actionplan) {
-
-            /*
-             *
-             * Ok so there are two general scenarios where we would be adding intents to an Action Plan:
-             *
-             * 1) Student Intention: in this scenario we would
-             *    add a new intent to the Student Action Plan.
-             *    The Student Intent would already be added
-             *    before calling this function and then passed on
-             *    here where $is_actionplan_intent = TRUE
-             *
-             * 2) Completed Steps by answering OR branches:
-             *    In this case we would be appending $in_id to
-             *    an existing Completed Step once the student
-             *    selects their answer to an OR branch.
-             *
-             * */
-
-            if(isset($this_in['ln_id'])){
-
-                /*
-                 *
-                 * We are 1+ levels deep in recursion, so
-                 * we need to add this step in either
-                 * scenario above...
-                 *
-                 * */
-
-                //TODO Remove as we're no longer caching Action Plans:
-                $this->Database_model->ln_create(array(
-                    'ln_status' => 0, //New
-                    'ln_type_entity_id' => 4559, //Completed Step
-                    'ln_miner_entity_id' => $actionplan['ln_miner_entity_id'], //Action Plan owner
-                    'ln_parent_intent_id' => $this_in['ln_parent_intent_id'],
-                    'ln_child_intent_id' => $this_in['ln_child_intent_id'],
-                    'ln_order' => $this_in['ln_order'],
-                    'ln_parent_link_id' => $actionplan_ln_id,
-                ));
-
-            } elseif(!$is_actionplan_intent){
-
-                /*
-                 * We are at the very first intent, so we would
-                 * only add if this is Scenario 2) which means
-                 * $is_actionplan_intent = FALSE as we're
-                 * appending to an existing Completed Step.
-                 *
-                 * */
-
-                $this->Database_model->ln_create(array(
-                    'ln_status' => 0, //New
-                    'ln_type_entity_id' => 4559, //Completed Step
-                    'ln_miner_entity_id' => $actionplan['ln_miner_entity_id'],
-                    'ln_parent_intent_id' => $actionplan['ln_child_intent_id'],
-                    'ln_child_intent_id' => $this_in['in_id'],
-                    'ln_order' => 1, //OR Branches would only have a single response...
-                    'ln_parent_link_id' => $actionplan_ln_id,
-                ));
-
-            }
-        }
-
-
-        //Terminate OR branches for Action Plan caching:
-        if (isset($this_in['ln_id']) && $this_in['in_type']==1 && $add_to_actionplan) {
-            /*
-             *
-             * We do this as we don't know which OR path will be
-             * chosen by Student so no point in adding every branch
-             * possible! We will then add a new Student Intent
-             * every time an OR branch poth is chosen.
-             *
-             * */
+        if ($this_in['in_status'] < $min_status) {
+            //End recursion:
             return false;
         }
+
+        //Build common base:
+        array_push($metadata_this['__in__metadata_common_steps'], intval($in_id));
 
 
         //A recursive function to fetch all Tree for a given intent, either upwards or downwards
@@ -1359,8 +1285,8 @@ class Platform_model extends CI_Model
             //Fetch children:
             $fetch_tree_ins = $this->Database_model->ln_fetch(array(
                 'ln_parent_intent_id' => $in_id,
-                'ln_status' => 2, //Published
-                'in_status >=' => 0, //New+
+                'ln_status >=' => $min_status,
+                'in_status >=' => $min_status,
                 'ln_type_entity_id IN (' . join(',', $this->config->item('en_ids_4486')) . ')' => null, //Intent Link Connectors
             ), array('in_child'), 0, 0, array('ln_order' => 'ASC')); //Child intents must be ordered
 
@@ -1369,8 +1295,8 @@ class Platform_model extends CI_Model
             //Fetch parents:
             $fetch_tree_ins = $this->Database_model->ln_fetch(array(
                 'ln_child_intent_id' => $in_id,
-                'ln_status' => 2, //Published
-                'in_status >=' => 0, //New+
+                'ln_status >=' => $min_status,
+                'in_status >=' => $min_status,
                 'ln_type_entity_id IN (' . join(',', $this->config->item('en_ids_4486')) . ')' => null, //Intent Link Connectors
             ), array('in_parent')); //Note that parents do not need any sorting, since we only sort child intents
 
@@ -1382,96 +1308,96 @@ class Platform_model extends CI_Model
 
             //$resource_estimates are determined based on the intent's AND/OR type:
             $resource_estimates = array(
-                'recursive__in__tree_min_seconds' => null,
-                'recursive__in__tree_max_seconds' => null,
-                'recursive__in__tree_min_cost' => null,
-                'recursive__in__tree_max_cost' => null,
+                'recursive__in__metadata_min_seconds' => null,
+                'recursive__in__metadata_max_seconds' => null,
+                'recursive__in__metadata_min_cost' => null,
+                'recursive__in__metadata_max_cost' => null,
             );
 
-            foreach ($fetch_tree_ins as $current_in) {
+            foreach ($fetch_tree_ins as $child_in) {
 
-                if (in_array($current_in['in_id'], $metadata_aggregate['in_flat_tree'])) {
+                //See what type of a child this is:
+                if($child_in['in_type']==1 || $child_in['ln_type_entity_id']==4229){
 
-                    //Duplicate intent detected within tree
-                    //terminate function to prevent an infinite loop:
-                    return false;
+                    //Published OR intent or conditional links, add to expansion tree:
+                    $recursion = array(
+                        '__in__metadata_max_steps' => 0,
+                        '__in__metadata_common_steps' => null,
+                    );
 
                 } else {
 
-                    //Recursively go the next level (either up or down):
-                    $recursion = $this->Platform_model->in_fetch_recursive($current_in['in_id'], $direction_is_downward, $update_metadata, $actionplan, $current_in, $metadata_this);
+                    //Recursion needed:
+                    $recursion = $this->Platform_model->in_recursive_metadata_primary($child_in['in_id'], $direction_is_downward, $update_metadata, $child_in, $metadata_this);
 
-                    if (!$recursion) {
+                    //Did we find anything?
+                    if(!$recursion){
                         continue;
                     }
+                }
 
-                    //Addup if any:
-                    $metadata_this['__in__tree_max_steps'] += $recursion['__in__tree_max_steps'];
-                    array_push($metadata_this['in_flat_tree'], $recursion['in_flat_tree']);
-                    array_push($metadata_this['__in__tree_common_steps'], $recursion['__in__tree_common_steps']);
-                    array_push($metadata_this['in_tree'], $recursion['in_tree']);
+                //Addup if any:
+                if(isset($recursion['__in__metadata_max_steps']) && $recursion['__in__metadata_max_steps']>0){
+                    $metadata_this['__in__metadata_max_steps'] += $recursion['__in__metadata_max_steps'];
+                }
+                if(isset($recursion['__in__metadata_common_steps']) && is_array($recursion['__in__metadata_common_steps'])){
+                    array_push($metadata_this['__in__metadata_common_steps'], $recursion['__in__metadata_common_steps']);
+                }
 
 
-                    //Abort if not yet published:
-                    if ($current_in['in_status'] < 2) {
-                        continue;
+                continue; //Testing for now...
+
+
+                //Do calculations based on intent type (AND or OR)
+                if ($this_in['in_type'] == 1) {
+                    //OR Branch, figure out the logic:
+                    if ($recursion['__in__metadata_min_seconds'] < $resource_estimates['recursive__in__metadata_min_seconds'] || is_null($resource_estimates['recursive__in__metadata_min_seconds'])) {
+                        $resource_estimates['recursive__in__metadata_min_seconds'] = $recursion['__in__metadata_min_seconds'];
+                    }
+                    if ($recursion['__in__metadata_max_seconds'] > $resource_estimates['recursive__in__metadata_max_seconds'] || is_null($resource_estimates['recursive__in__metadata_max_seconds'])) {
+                        $resource_estimates['recursive__in__metadata_max_seconds'] = $recursion['__in__metadata_max_seconds'];
+                    }
+                    if ($recursion['__in__metadata_min_cost'] < $resource_estimates['recursive__in__metadata_min_cost'] || is_null($resource_estimates['recursive__in__metadata_min_cost'])) {
+                        $resource_estimates['recursive__in__metadata_min_cost'] = $recursion['__in__metadata_min_cost'];
+                    }
+                    if ($recursion['__in__metadata_max_cost'] > $resource_estimates['recursive__in__metadata_max_cost'] || is_null($resource_estimates['recursive__in__metadata_max_cost'])) {
+                        $resource_estimates['recursive__in__metadata_max_cost'] = $recursion['__in__metadata_max_cost'];
+                    }
+                } else {
+                    //AND Branch, add them all up:
+                    $resource_estimates['recursive__in__metadata_min_seconds'] += intval($recursion['__in__metadata_min_seconds']);
+                    $resource_estimates['recursive__in__metadata_max_seconds'] += intval($recursion['__in__metadata_max_seconds']);
+                    $resource_estimates['recursive__in__metadata_min_cost'] += number_format($recursion['__in__metadata_min_cost'], 2);
+                    $resource_estimates['recursive__in__metadata_max_cost'] += number_format($recursion['__in__metadata_max_cost'], 2);
+                }
+
+
+                if ($update_metadata) {
+
+                    //Addup unique experts:
+                    foreach ($recursion['__in__metadata_experts'] as $en_id => $tex) {
+                        //Is this a new expert?
+                        if (!isset($metadata_this['__in__metadata_experts'][$en_id])) {
+                            //Yes, add them to the list:
+                            $metadata_this['__in__metadata_experts'][$en_id] = $tex;
+                        }
                     }
 
-
-                    //Do calculations based on intent type (AND or OR)
-                    if ($this_in['in_type']) {
-                        //OR Branch, figure out the logic:
-                        if ($recursion['__in__tree_min_seconds'] < $resource_estimates['recursive__in__tree_min_seconds'] || is_null($resource_estimates['recursive__in__tree_min_seconds'])) {
-                            $resource_estimates['recursive__in__tree_min_seconds'] = $recursion['__in__tree_min_seconds'];
+                    //Addup unique miners:
+                    foreach ($recursion['__in__metadata_miners'] as $en_id => $tet) {
+                        //Is this a new expert?
+                        if (!isset($metadata_this['__in__metadata_miners'][$en_id])) {
+                            //Yes, add them to the list:
+                            $metadata_this['__in__metadata_miners'][$en_id] = $tet;
                         }
-                        if ($recursion['__in__tree_max_seconds'] > $resource_estimates['recursive__in__tree_max_seconds'] || is_null($resource_estimates['recursive__in__tree_max_seconds'])) {
-                            $resource_estimates['recursive__in__tree_max_seconds'] = $recursion['__in__tree_max_seconds'];
-                        }
-                        if ($recursion['__in__tree_min_cost'] < $resource_estimates['recursive__in__tree_min_cost'] || is_null($resource_estimates['recursive__in__tree_min_cost'])) {
-                            $resource_estimates['recursive__in__tree_min_cost'] = $recursion['__in__tree_min_cost'];
-                        }
-                        if ($recursion['__in__tree_max_cost'] > $resource_estimates['recursive__in__tree_max_cost'] || is_null($resource_estimates['recursive__in__tree_max_cost'])) {
-                            $resource_estimates['recursive__in__tree_max_cost'] = $recursion['__in__tree_max_cost'];
-                        }
-                    } else {
-                        //AND Branch, add them all up:
-                        $resource_estimates['recursive__in__tree_min_seconds'] += intval($recursion['__in__tree_min_seconds']);
-                        $resource_estimates['recursive__in__tree_max_seconds'] += intval($recursion['__in__tree_max_seconds']);
-                        $resource_estimates['recursive__in__tree_min_cost'] += number_format($recursion['__in__tree_min_cost'], 2);
-                        $resource_estimates['recursive__in__tree_max_cost'] += number_format($recursion['__in__tree_max_cost'], 2);
                     }
 
-
-                    if ($update_metadata) {
-
-                        //Update DB requested:
-                        $metadata_this['metadatas_updated'] += $recursion['metadatas_updated'];
-
-                        //Addup unique experts:
-                        foreach ($recursion['__in__tree_experts'] as $en_id => $tex) {
-                            //Is this a new expert?
-                            if (!isset($metadata_this['__in__tree_experts'][$en_id])) {
+                    //Addup content types:
+                    foreach ($recursion['__in__metadata_sources'] as $type_en_id => $current_us) {
+                        foreach ($current_us as $en_id => $u_obj) {
+                            if (!isset($metadata_this['__in__metadata_sources'][$type_en_id][$en_id])) {
                                 //Yes, add them to the list:
-                                $metadata_this['__in__tree_experts'][$en_id] = $tex;
-                            }
-                        }
-
-                        //Addup unique miners:
-                        foreach ($recursion['__in__tree_miners'] as $en_id => $tet) {
-                            //Is this a new expert?
-                            if (!isset($metadata_this['__in__tree_miners'][$en_id])) {
-                                //Yes, add them to the list:
-                                $metadata_this['__in__tree_miners'][$en_id] = $tet;
-                            }
-                        }
-
-                        //Addup content types:
-                        foreach ($recursion['__in__tree_sources'] as $type_en_id => $current_us) {
-                            foreach ($current_us as $en_id => $u_obj) {
-                                if (!isset($metadata_this['__in__tree_sources'][$type_en_id][$en_id])) {
-                                    //Yes, add them to the list:
-                                    $metadata_this['__in__tree_sources'][$type_en_id][$en_id] = $u_obj;
-                                }
+                                $metadata_this['__in__metadata_sources'][$type_en_id][$en_id] = $u_obj;
                             }
                         }
                     }
@@ -1479,35 +1405,35 @@ class Platform_model extends CI_Model
             }
 
             //Addup the totals from this tree:
-            $metadata_this['__in__tree_min_seconds'] += $resource_estimates['recursive__in__tree_min_seconds'];
-            $metadata_this['__in__tree_max_seconds'] += $resource_estimates['recursive__in__tree_max_seconds'];
-            $metadata_this['__in__tree_min_cost'] += $resource_estimates['recursive__in__tree_min_cost'];
-            $metadata_this['__in__tree_max_cost'] += $resource_estimates['recursive__in__tree_max_cost'];
+            $metadata_this['__in__metadata_min_seconds'] += $resource_estimates['recursive__in__metadata_min_seconds'];
+            $metadata_this['__in__metadata_max_seconds'] += $resource_estimates['recursive__in__metadata_max_seconds'];
+            $metadata_this['__in__metadata_min_cost'] += $resource_estimates['recursive__in__metadata_min_cost'];
+            $metadata_this['__in__metadata_max_cost'] += $resource_estimates['recursive__in__metadata_max_cost'];
         }
 
 
         //Increase metadata counters for this intent:
-        $metadata_this['__in__tree_max_steps']++;
-        $this_in['__in__tree_max_steps'] = $metadata_this['__in__tree_max_steps'];
+        $metadata_this['__in__metadata_max_steps']++;
+        $this_in['__in__metadata_max_steps'] = $metadata_this['__in__metadata_max_steps'];
 
-        $metadata_this['__in__tree_min_seconds'] += intval($this_in['in_seconds_cost']);
-        $metadata_this['__in__tree_max_seconds'] += intval($this_in['in_seconds_cost']);
-        $metadata_this['__in__tree_min_cost'] += number_format(doubleval($this_in['in_dollar_cost']), 2);
-        $metadata_this['__in__tree_max_cost'] += number_format(doubleval($this_in['in_dollar_cost']), 2);
+        $metadata_this['__in__metadata_min_seconds'] += intval($this_in['in_seconds_cost']);
+        $metadata_this['__in__metadata_max_seconds'] += intval($this_in['in_seconds_cost']);
+        $metadata_this['__in__metadata_min_cost'] += number_format(doubleval($this_in['in_dollar_cost']), 2);
+        $metadata_this['__in__metadata_max_cost'] += number_format(doubleval($this_in['in_dollar_cost']), 2);
 
         //Set the data for this intent:
-        $this_in['__in__tree_min_seconds'] = $metadata_this['__in__tree_min_seconds'];
-        $this_in['__in__tree_max_seconds'] = $metadata_this['__in__tree_max_seconds'];
-        $this_in['__in__tree_min_cost'] = $metadata_this['__in__tree_min_cost'];
-        $this_in['__in__tree_max_cost'] = $metadata_this['__in__tree_max_cost'];
+        $this_in['__in__metadata_min_seconds'] = $metadata_this['__in__metadata_min_seconds'];
+        $this_in['__in__metadata_max_seconds'] = $metadata_this['__in__metadata_max_seconds'];
+        $this_in['__in__metadata_min_cost'] = $metadata_this['__in__metadata_min_cost'];
+        $this_in['__in__metadata_max_cost'] = $metadata_this['__in__metadata_max_cost'];
 
 
         //Count messages only if DB updating:
         if ($update_metadata) {
 
-            $this_in['__in__tree_experts'] = array();
-            $this_in['__in__tree_miners'] = array();
-            $this_in['__in__tree_sources'] = array();
+            $this_in['__in__metadata_experts'] = array();
+            $this_in['__in__metadata_miners'] = array();
+            $this_in['__in__metadata_sources'] = array();
 
             //Fetch Intent Notes to see who is involved:
             $in__messages = $this->Database_model->ln_fetch(array(
@@ -1518,7 +1444,8 @@ class Platform_model extends CI_Model
 
             $parent_ids = array();
 
-            if ($this_in['in_status'] >= 2) {
+
+            if ($this_in['in_status'] >= $min_status) {
                 foreach ($in__messages as $ln) {
 
                     //Who are the Miners of this message?
@@ -1527,14 +1454,14 @@ class Platform_model extends CI_Model
                     }
 
                     //Check the Miners of this message in the miner array:
-                    if (!isset($this_in['__in__tree_miners'][$ln['ln_miner_entity_id']])) {
+                    if (!isset($this_in['__in__metadata_miners'][$ln['ln_miner_entity_id']])) {
                         //Add the entire message which would also hold the miner details:
-                        $this_in['__in__tree_miners'][$ln['ln_miner_entity_id']] = $ln;
+                        $this_in['__in__metadata_miners'][$ln['ln_miner_entity_id']] = $ln;
                     }
                     //How about the parent of this one?
-                    if (!isset($metadata_this['__in__tree_miners'][$ln['ln_miner_entity_id']])) {
+                    if (!isset($metadata_this['__in__metadata_miners'][$ln['ln_miner_entity_id']])) {
                         //Yes, add them to the list:
-                        $metadata_this['__in__tree_miners'][$ln['ln_miner_entity_id']] = $ln;
+                        $metadata_this['__in__metadata_miners'][$ln['ln_miner_entity_id']] = $ln;
                     }
 
 
@@ -1564,13 +1491,13 @@ class Platform_model extends CI_Model
                                 //Is this a particular content type?
                                 if (in_array($en['en_id'], $this->config->item('en_ids_3000'))) {
                                     //yes! Add it to the list if it does not already exist:
-                                    if (!isset($this_in['__in__tree_sources'][$en['en_id']][$ens[0]['en_id']])) {
-                                        $this_in['__in__tree_sources'][$en['en_id']][$ens[0]['en_id']] = $ens[0];
+                                    if (!isset($this_in['__in__metadata_sources'][$en['en_id']][$ens[0]['en_id']])) {
+                                        $this_in['__in__metadata_sources'][$en['en_id']][$ens[0]['en_id']] = $ens[0];
                                     }
 
                                     //How about the parent tree?
-                                    if (!isset($metadata_this['__in__tree_sources'][$en['en_id']][$ens[0]['en_id']])) {
-                                        $metadata_this['__in__tree_sources'][$en['en_id']][$ens[0]['en_id']] = $ens[0];
+                                    if (!isset($metadata_this['__in__metadata_sources'][$en['en_id']][$ens[0]['en_id']])) {
+                                        $metadata_this['__in__metadata_sources'][$en['en_id']][$ens[0]['en_id']] = $ens[0];
                                     }
                                 }
 
@@ -1596,44 +1523,29 @@ class Platform_model extends CI_Model
 
                 //Put unique IDs in array key for faster searching:
                 foreach ($expert_ens as $en) {
-                    if (!isset($this_in['__in__tree_experts'][$en['en_id']])) {
-                        $this_in['__in__tree_experts'][$en['en_id']] = $en;
+                    if (!isset($this_in['__in__metadata_experts'][$en['en_id']])) {
+                        $this_in['__in__metadata_experts'][$en['en_id']] = $en;
                     }
                 }
             }
 
 
             //Did we find any new industry experts?
-            if (count($this_in['__in__tree_experts']) > 0) {
+            if (count($this_in['__in__metadata_experts']) > 0) {
 
                 //Yes, lets add them uniquely to the mother array assuming they are not already there:
-                foreach ($this_in['__in__tree_experts'] as $new_ixs) {
+                foreach ($this_in['__in__metadata_experts'] as $new_ixs) {
                     //Is this a new expert?
-                    if (!isset($metadata_this['__in__tree_experts'][$new_ixs['en_id']])) {
+                    if (!isset($metadata_this['__in__metadata_experts'][$new_ixs['en_id']])) {
                         //Yes, add them to the list:
-                        $metadata_this['__in__tree_experts'][$new_ixs['en_id']] = $new_ixs;
+                        $metadata_this['__in__metadata_experts'][$new_ixs['en_id']] = $new_ixs;
                     }
                 }
             }
         }
 
-        array_push($metadata_this['in_tree'], $this_in);
-
-
         //Flatten intent ID array:
-        $result = array();
-        array_walk_recursive($metadata_this['in_flat_tree'], function ($v, $k) use (&$result) {
-            $result[] = $v;
-        });
-        $metadata_this['in_flat_tree'] = $result;
-
-
-        $result = array();
-        array_walk_recursive($metadata_this['__in__tree_common_steps'], function ($v, $k) use (&$result) {
-            $result[] = $v;
-        });
-        $metadata_this['__in__tree_common_steps'] = $result;
-
+        $metadata_this['__in__metadata_common_steps'] = $metadata_this['__in__metadata_common_steps'];
 
 
         if ($update_metadata) {
@@ -1647,61 +1559,57 @@ class Platform_model extends CI_Model
              * */
 
             //Experts:
-            $this_in['__in__tree_experts'] = $metadata_this['__in__tree_experts'];
-            if (is_array($this_in['__in__tree_experts']) && count($this_in['__in__tree_experts']) > 0) {
-                usort($this_in['__in__tree_experts'], 'sort_by_en_trust_score');
+            $this_in['__in__metadata_experts'] = $metadata_this['__in__metadata_experts'];
+            if (is_array($this_in['__in__metadata_experts']) && count($this_in['__in__metadata_experts']) > 0) {
+                usort($this_in['__in__metadata_experts'], 'sort_by_en_trust_score');
             }
 
             //Miners:
-            $this_in['__in__tree_miners'] = $metadata_this['__in__tree_miners'];
-            if (is_array($this_in['__in__tree_miners']) && count($this_in['__in__tree_miners']) > 0) {
-                usort($this_in['__in__tree_miners'], 'sort_by_en_trust_score');
+            $this_in['__in__metadata_miners'] = $metadata_this['__in__metadata_miners'];
+            if (is_array($this_in['__in__metadata_miners']) && count($this_in['__in__metadata_miners']) > 0) {
+                usort($this_in['__in__metadata_miners'], 'sort_by_en_trust_score');
             }
 
             //Sources:
-            $this_in['__in__tree_sources'] = $metadata_this['__in__tree_sources'];
-            foreach ($this_in['__in__tree_sources'] as $type_en_id => $current_us) {
-                if (isset($this_in['__in__tree_sources'][$type_en_id]) && count($this_in['__in__tree_sources'][$type_en_id]) > 0) {
-                    usort($this_in['__in__tree_sources'][$type_en_id], 'sort_by_en_trust_score');
+            $this_in['__in__metadata_sources'] = $metadata_this['__in__metadata_sources'];
+            foreach ($this_in['__in__metadata_sources'] as $type_en_id => $current_us) {
+                if (isset($this_in['__in__metadata_sources'][$type_en_id]) && count($this_in['__in__metadata_sources'][$type_en_id]) > 0) {
+                    usort($this_in['__in__metadata_sources'][$type_en_id], 'sort_by_en_trust_score');
                 }
             }
 
             //Update DB only if any of these metadata fields have changed:
             $metadata = unserialize($this_in['in_metadata']);
             if (!(
-                intval($this_in['__in__tree_min_seconds']) == intval(@$metadata['in__tree_min_seconds']) &&
-                intval($this_in['__in__tree_max_seconds']) == intval(@$metadata['in__tree_max_seconds']) &&
-                number_format($this_in['__in__tree_min_cost'], 2) == number_format(@$metadata['in__tree_min_cost'], 2) &&
-                number_format($this_in['__in__tree_max_cost'], 2) == number_format(@$metadata['in__tree_max_cost'], 2) &&
-                ((!@$metadata['in__tree_experts'] && count($this_in['__in__tree_experts']) < 1) || (serialize($this_in['__in__tree_experts']) == @$metadata['in__tree_experts'])) &&
-                ((!@$metadata['in__tree_miners'] && count($this_in['__in__tree_miners']) < 1) || (serialize($this_in['__in__tree_miners']) == @$metadata['in__tree_miners'])) &&
-                ((!@$metadata['in__tree_sources'] && count($this_in['__in__tree_sources']) < 1) || (serialize($this_in['__in__tree_sources']) == @$metadata['in__tree_sources'])) &&
-                ((!@$metadata['in__tree_common_steps'] && count($metadata_this['__in__tree_common_steps']) < 1) || (serialize($metadata_this['__in__tree_common_steps']) == @$metadata['in__tree_common_steps'])) &&
-                $this_in['__in__tree_max_steps'] == @$metadata['in__tree_max_steps']
+                intval($this_in['__in__metadata_min_seconds']) == intval(@$metadata['in__metadata_min_seconds']) &&
+                intval($this_in['__in__metadata_max_seconds']) == intval(@$metadata['in__metadata_max_seconds']) &&
+                number_format($this_in['__in__metadata_min_cost'], 2) == number_format(@$metadata['in__metadata_min_cost'], 2) &&
+                number_format($this_in['__in__metadata_max_cost'], 2) == number_format(@$metadata['in__metadata_max_cost'], 2) &&
+                ((!@$metadata['in__metadata_experts'] && count($this_in['__in__metadata_experts']) < 1) || (serialize($this_in['__in__metadata_experts']) == @$metadata['in__metadata_experts'])) &&
+                ((!@$metadata['in__metadata_miners'] && count($this_in['__in__metadata_miners']) < 1) || (serialize($this_in['__in__metadata_miners']) == @$metadata['in__metadata_miners'])) &&
+                ((!@$metadata['in__metadata_sources'] && count($this_in['__in__metadata_sources']) < 1) || (serialize($this_in['__in__metadata_sources']) == @$metadata['in__metadata_sources'])) &&
+                ((!@$metadata['in__metadata_common_steps'] && count($metadata_this['__in__metadata_common_steps']) < 1) || (serialize($metadata_this['__in__metadata_common_steps']) == @$metadata['in__metadata_common_steps'])) &&
+                $this_in['__in__metadata_max_steps'] == @$metadata['in__metadata_max_steps']
             )) {
 
                 //Something was not up to date, let's update:
-                if ($this->Platform_model->metadata_update('in', $this_in['in_id'], array(
+                $this->Platform_model->metadata_update('in', $this_in['in_id'], array(
+                    'in__metadata_min_steps' => 0, //TBD
+                    'in__metadata_max_steps' => $this_in['__in__metadata_max_steps'],
 
-                    'in__tree_min_steps' => 0, //TBD
-                    'in__tree_max_steps' => $this_in['__in__tree_max_steps'],
+                    'in__metadata_min_seconds' => intval($this_in['__in__metadata_min_seconds']),
+                    'in__metadata_max_seconds' => intval($this_in['__in__metadata_max_seconds']),
 
-                    'in__tree_min_seconds' => intval($this_in['__in__tree_min_seconds']),
-                    'in__tree_max_seconds' => intval($this_in['__in__tree_max_seconds']),
+                    'in__metadata_min_cost' => number_format($this_in['__in__metadata_min_cost'], 2),
+                    'in__metadata_max_cost' => number_format($this_in['__in__metadata_max_cost'], 2),
 
-                    'in__tree_min_cost' => number_format($this_in['__in__tree_min_cost'], 2),
-                    'in__tree_max_cost' => number_format($this_in['__in__tree_max_cost'], 2),
+                    'in__metadata_common_steps' => $metadata_this['__in__metadata_common_steps'],
 
+                    'in__metadata_experts' => $this_in['__in__metadata_experts'],
+                    'in__metadata_miners' => $this_in['__in__metadata_miners'],
+                    'in__metadata_sources' => $this_in['__in__metadata_sources'],
+                ));
 
-                    'in__tree_common_steps' => $metadata_this['__in__tree_common_steps'],
-
-                    'in__tree_experts' => $this_in['__in__tree_experts'],
-                    'in__tree_miners' => $this_in['__in__tree_miners'],
-                    'in__tree_sources' => $this_in['__in__tree_sources'],
-                ))) {
-                    //Yes update was successful:
-                    $metadata_this['metadatas_updated']++;
-                }
             }
         }
 
@@ -1715,11 +1623,11 @@ class Platform_model extends CI_Model
         //Determine Action Plan completion rate:
         $in_metadata = unserialize($in['in_metadata']);
 
-        if(!isset($in_metadata['in__tree_common_steps']) || count($in_metadata['in__tree_common_steps']) < 1){
+        if(!isset($in_metadata['in__metadata_common_steps']) || count($in_metadata['in__metadata_common_steps']) < 1){
 
             //Should not happen, log error:
             $this->Database_model->ln_create(array(
-                'ln_content' => 'Detected student Action Plan without in__tree_common_steps value!',
+                'ln_content' => 'Detected student Action Plan without in__metadata_common_steps value!',
                 'ln_type_entity_id' => 4246, //Platform Error
                 'ln_miner_entity_id' => 1, //Shervin/Developer
                 'ln_parent_entity_id' => $miner_en_id,
@@ -1734,11 +1642,11 @@ class Platform_model extends CI_Model
             $completed_steps = $this->Database_model->ln_fetch(array(
                 'ln_type_entity_id' => 4559, //Completed Step
                 'ln_miner_entity_id' => $miner_en_id, //Belongs to this Student
-                'ln_child_intent_id IN (' . join(',', $in_metadata['in__tree_common_steps']) . ')' => null,
+                'ln_child_intent_id IN (' . join(',', $in_metadata['in__metadata_common_steps']) . ')' => null,
                 'ln_status NOT IN (' . join(',', $this->config->item('ln_status_incomplete')) . ')' => null, //complete
             ), array(), 0, 0, array(), 'COUNT(ln_id) as completed_steps');
 
-            return round($completed_steps[0]['completed_steps']/count($in_metadata['in__tree_common_steps'])*100);
+            return round($completed_steps[0]['completed_steps']/count($in_metadata['in__metadata_common_steps'])*100);
         }
 
     }
@@ -2175,27 +2083,20 @@ class Platform_model extends CI_Model
             );
         }
 
-        //Prepare recursive update:
-        $in_metadata_modify = array(
-            'in__tree_max_steps' => 1, //We just added 1 new intent to this tree
-        );
-
         //Create child intent:
         $intent_new = $this->Database_model->in_create(array(
             'in_status' => $in_status,
             'in_outcome' => trim($in_outcome),
             'in_verb_entity_id' => $in_verb_entity_id,
-            'in_metadata' => $in_metadata_modify,
         ), true, $ln_miner_entity_id);
 
         //Sync the metadata of this new intent:
-        $this->Platform_model->in_fetch_recursive($intent_new['in_id'], true, true);
+        $this->Platform_model->in_recursive_metadata_primary($intent_new['in_id'], true, true);
 
         //Return success:
         return array(
             'status' => 1,
             'in' => $intent_new,
-            'in_metadata_modify' => $in_metadata_modify,
         );
 
     }
@@ -2433,8 +2334,8 @@ class Platform_model extends CI_Model
             $intent_new = $ins[0];
 
             //check all parents as this intent cannot be duplicated with any of its parents:
-            $parent_tree = $this->Platform_model->in_fetch_recursive($actionplan_in_id, false);
-            if (in_array($intent_new['in_id'], $parent_tree['in_flat_tree'])) {
+            $parent_tree = $this->Platform_model->in_recursive_metadata_primary($actionplan_in_id, false);
+            if (in_array($intent_new['in_id'], array_flatten($parent_tree['__in__metadata_common_steps']))) {
                 return array(
                     'status' => 0,
                     'message' => 'You cannot link to "' . $intent_new['in_outcome'] . '" as it already belongs to the parent/grandparent tree.',
@@ -2468,14 +2369,6 @@ class Platform_model extends CI_Model
 
             }
 
-            //Prepare recursive update:
-            $metadata = unserialize($intent_new['in_metadata']);
-            //Fetch and adjust the intent tree based on these values:
-            $in_metadata_modify = array(
-                'in__tree_max_steps' => (isset($metadata['in__tree_max_steps']) ? intval($metadata['in__tree_max_steps']) : 0),
-                'in__tree_max_seconds' => (isset($metadata['in__tree_max_seconds']) ? intval($metadata['in__tree_max_seconds']) : 0),
-            );
-
         } else {
 
             //We are NOT linking to an existing intent, but instead, we're creating a new intent:
@@ -2504,7 +2397,6 @@ class Platform_model extends CI_Model
             } else {
                 //Passon variables:
                 $intent_new = $added_in['in'];
-                $in_metadata_modify = $added_in['in_metadata_modify'];
             }
 
         }
@@ -2552,11 +2444,6 @@ class Platform_model extends CI_Model
         }
 
 
-
-        //Update Metadata for tree:
-        $this->Platform_model->metadata_recursive_update('in', $actionplan_in_id, $in_metadata_modify);
-
-
         //Fetch and return full data to be properly shown on the UI using the echo_in() function
         $new_ins = $this->Database_model->ln_fetch(array(
             ( $is_parent ? 'ln_child_intent_id' : 'ln_parent_intent_id' ) => $actionplan_in_id,
@@ -2572,9 +2459,6 @@ class Platform_model extends CI_Model
             'status' => 1,
             'in_child_id' => $intent_new['in_id'],
             'in_child_html' => echo_in($new_ins[0], $next_level, $actionplan_in_id, $is_parent),
-            //Also append some tree data for UI modifications via JS functions:
-            'in__tree_max_seconds' => (isset($in_metadata_modify['in__tree_max_seconds']) && !$is_parent ? intval($in_metadata_modify['in__tree_max_seconds']) : 0), //Seconds added because of this
-            'in__tree_max_steps' => ( $is_parent ? 0 : intval($in_metadata_modify['in__tree_max_steps']) ), //We must have this (Either if we're linking OR creating) to show new intents in the tree
         );
 
     }
