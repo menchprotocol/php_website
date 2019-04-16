@@ -1167,6 +1167,12 @@ class Platform_model extends CI_Model
                 'ln_type_entity_id' => 6226, //Intent Tree Iterated
                 'ln_parent_intent_id' => $in_id,
                 'ln_content' => 'Successfully updated '.$update_count.' '.echo_clean_db_name($in_field).' from ['.$match_value.'] to ['.$replace_value.']',
+                'ln_metadata' => array(
+                    'filters' => $filters,
+                    'in_field' => $in_field,
+                    'match_value' => $match_value,
+                    'replace_value' => $replace_value,
+                ),
             ));
         }
 
