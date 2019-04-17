@@ -1260,33 +1260,28 @@ class Platform_model extends CI_Model
         }
 
         //Fetch common base and expansion paths from intent metadata:
-        $in_metadata = unserialize($ins[0]['in_metadata']);
+        $in_metadata = unserialize( $ins[0]['in_metadata'] );
         $flat_common_steps = ( isset($in_metadata['in__metadata_common_steps']) && count($in_metadata['in__metadata_common_steps']) > 0 ? array_flatten($in_metadata['in__metadata_common_steps']) : array() );
         $expansion_steps = ( isset($in_metadata['in__metadata_expansion_steps']) && count($in_metadata['in__metadata_expansion_steps']) > 0 ? $in_metadata['in__metadata_expansion_steps'] : array() );
+        $common_base_resources = array(
+            'steps' => 1,
+            'seconds' => $ins[0]['in_seconds_cost'],
+            'cost' => $ins[0]['in_dollar_cost'],
+        );
 
         if(count($flat_common_steps) > 0){
 
             //Fetch totals for common step intents:
             $common_totals = $this->Database_model->in_fetch(array(
                 'in_id IN ('.join(',',$flat_common_steps).')' => null,
+                'in_id !=' => $in_id, //This is already calculated above...
                 'in_status' => 2, //Published
             ), array(), 0, 0, array(), 'COUNT(in_id) as total_steps, SUM(in_seconds_cost) as total_seconds, SUM(in_dollar_cost) as total_cost');
 
-            $common_base_resources = array(
-                'steps' => $common_totals[0]['total_steps'],
-                'seconds' => $common_totals[0]['total_seconds'],
-                'cost' => $common_totals[0]['total_cost'],
-            );
-
-        } else {
-
-            //Has no common steps, so the base is zero:
-            $common_base_resources = array(
-                'steps' => 0,
-                'seconds' => 0,
-                'cost' => 0,
-            );
-
+            //Addup to the base:
+            $common_base_resources['steps'] += $common_totals[0]['total_steps'];
+            $common_base_resources['seconds'] += $common_totals[0]['total_seconds'];
+            $common_base_resources['cost'] += $common_totals[0]['total_cost'];
         }
 
         $metadata_this = array(
@@ -1310,7 +1305,7 @@ class Platform_model extends CI_Model
         foreach ($this->Database_model->ln_fetch(array(
             'ln_type_entity_id IN (' . join(',', $this->config->item('en_ids_4986')) . ')' => null, //Intent Notes that could possibly reference an entity
             'ln_parent_entity_id >' => 0, //Intent Notes that actually do reference an entity
-            'ln_child_intent_id' => $in_id,
+            '(ln_child_intent_id='.$in_id.( count($flat_common_steps) > 0 ? ' OR ln_child_intent_id IN ('.join(',',$flat_common_steps).')' : '' ).')' => null,
             'ln_status' => 2, //Published
             'en_status' => 2, //Published
         ), array('en_parent'), 0) as $note_en) {
@@ -1325,16 +1320,16 @@ class Platform_model extends CI_Model
                 if(in_array($parent_en['ln_parent_entity_id'], $this->config->item('en_ids_3000'))){
 
                     //Expert Source:
-                    if (!isset($this_in['__in__metadata_sources'][$parent_en['ln_parent_entity_id']][$note_en['en_id']])) {
+                    if (!isset($metadata_this['__in__metadata_sources'][$parent_en['ln_parent_entity_id']][$note_en['en_id']])) {
                         //Add since it's not there:
-                        $this_in['__in__metadata_sources'][$parent_en['ln_parent_entity_id']][$note_en['en_id']] = $note_en;
+                        $metadata_this['__in__metadata_sources'][$parent_en['ln_parent_entity_id']][$note_en['en_id']] = $note_en;
                     }
 
                 } elseif($parent_en['ln_parent_entity_id']==3084) {
 
                     //Industry Expert:
-                    if (!isset($this_in['__in__metadata_experts'][$note_en['en_id']])) {
-                        $this_in['__in__metadata_experts'][$note_en['en_id']] = $note_en;
+                    if (!isset($metadata_this['__in__metadata_experts'][$note_en['en_id']])) {
+                        $metadata_this['__in__metadata_experts'][$note_en['en_id']] = $note_en;
                     }
 
                 } else {
@@ -1351,8 +1346,8 @@ class Platform_model extends CI_Model
                     if(count($expert_parents) > 0){
 
                         //Yes, Industry Expert:
-                        if (!isset($this_in['__in__metadata_experts'][$parent_en['ln_parent_entity_id']])) {
-                            $this_in['__in__metadata_experts'][$parent_en['ln_parent_entity_id']] = $expert_parents[0];
+                        if (!isset($metadata_this['__in__metadata_experts'][$parent_en['ln_parent_entity_id']])) {
+                            $metadata_this['__in__metadata_experts'][$parent_en['ln_parent_entity_id']] = $expert_parents[0];
                         }
 
                     } else {

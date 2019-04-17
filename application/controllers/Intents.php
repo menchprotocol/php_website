@@ -1348,6 +1348,7 @@ class Intents extends CI_Controller
          *
          * */
 
+        boost_power();
         $start_time = time();
         $filters = array(
             'in_status' => 2,
@@ -1389,6 +1390,7 @@ class Intents extends CI_Controller
          *
          * */
 
+        boost_power();
         $start_time = time();
         $filters = array(
             'in_status' => 2,
@@ -1399,11 +1401,11 @@ class Intents extends CI_Controller
 
         $published_ins = $this->Database_model->in_fetch($filters);
         foreach($published_ins as $published_in){
-            $tree = $this->Platform_model->in_metadata_common_base($published_in);
+            $tree = $this->Platform_model->in_metadata_extra_insights($published_in['in_id']);
         }
 
         $total_time = time() - $start_time;
-        $success_message = 'Common Base Metadata updated for '.count($published_ins).' published intent'.echo__s(count($published_ins)).'.';
+        $success_message = 'Extra Insights Metadata updated for '.count($published_ins).' published intent'.echo__s(count($published_ins)).'.';
         if (isset($_GET['redirect']) && strlen($_GET['redirect']) > 0) {
             //Now redirect;
             $this->session->set_flashdata('flash_message', '<div class="alert alert-success" role="alert">' . $success_message . '</div>');
