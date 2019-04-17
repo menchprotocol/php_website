@@ -1263,9 +1263,9 @@ class Platform_model extends CI_Model
         $in_metadata = unserialize( $ins[0]['in_metadata'] );
 
         //Has this been updated within the last 10 minutes?
-        if(isset($in_metadata['in__metadata_extra_insights_timestamp']) && ($in_metadata['in__metadata_extra_insights_timestamp']+600) > time()){
+        if(!$force_update && isset($in_metadata['in__metadata_extra_insights_timestamp']) && ($in_metadata['in__metadata_extra_insights_timestamp']+600) > time()){
             //Yes, no more need to update:
-            //return $in_metadata;
+            return $in_metadata;
         }
 
         $flat_common_steps = ( isset($in_metadata['in__metadata_common_steps']) && count($in_metadata['in__metadata_common_steps']) > 0 ? array_flatten($in_metadata['in__metadata_common_steps']) : array() );
