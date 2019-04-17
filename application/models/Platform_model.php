@@ -1473,8 +1473,8 @@ class Platform_model extends CI_Model
             'in__metadata_max_steps' => intval($metadata_this['__in__metadata_max_steps']),
             'in__metadata_min_seconds' => intval($metadata_this['__in__metadata_min_seconds']),
             'in__metadata_max_seconds' => intval($metadata_this['__in__metadata_max_seconds']),
-            'in__metadata_min_cost' => number_format($metadata_this['__in__metadata_min_cost'], 2),
-            'in__metadata_max_cost' => number_format($metadata_this['__in__metadata_max_cost'], 2),
+            'in__metadata_min_cost' => number_format(doubleval($metadata_this['__in__metadata_min_cost']), 2),
+            'in__metadata_max_cost' => number_format(doubleval($metadata_this['__in__metadata_max_cost']), 2),
             'in__metadata_experts' => $metadata_this['__in__metadata_experts'],
             'in__metadata_sources' => $metadata_this['__in__metadata_sources'],
             'in__metadata_extra_insights_timestamp' => time(), //Use to check
