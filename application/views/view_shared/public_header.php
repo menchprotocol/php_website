@@ -48,7 +48,7 @@ $url_part_1 = $this->uri->segment(1);
                     //Is this user a Miner?
                     if(en_auth(array(1308))){
                         $en_all_4321 = $this->config->item('en_all_4321');
-                        echo '<li><a href="/intents/' . (isset($in['in_id']) ? $in['in_id'] : $this->config->item('in_miner_start')) . '">'.$en_all_4321[4488]['m_icon'].' '.$en_all_4321[4488]['m_name'].'</a></li>';
+                        echo '<li><a href="/intents/' . (isset($in['in_id']) ? $in['in_id'] : $this->config->item('in_miner_start')) . '" class="parent-icon">'.$en_all_4321[4488]['m_icon'].' '.$en_all_4321[4488]['m_name'].'</a></li>';
                     }
 
                     $en_all_6196 = $this->config->item('en_all_6196');
