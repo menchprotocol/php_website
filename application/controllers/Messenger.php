@@ -1643,7 +1643,7 @@ class Messenger extends CI_Controller
     }
 
 
-    function test($in_id = 7463, $add_actionplan = 1, $direction_is_downward = 1)
+    function test($in_id = 7463, $add_actionplan = 1)
     {
 
         if ($add_actionplan) {
@@ -1662,7 +1662,7 @@ class Messenger extends CI_Controller
             $actionplan = array();
         }
 
-        echo_json($this->Platform_model->in_recursive_metadata_primary($in_id, $direction_is_downward, false));
+        //echo_json($this->Platform_model->in_metadata_sync_common_base($in_id));
     }
 
 

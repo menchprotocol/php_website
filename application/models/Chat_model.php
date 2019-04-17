@@ -2151,37 +2151,20 @@ class Chat_model extends CI_Model
                     )),
                 ));
 
-                //Was this added successfully?
-                if (isset($actionplan['ln_id']) && $actionplan['ln_id'] > 0) {
+                //Confirm with them that we're now ready:
+                $this->Chat_model->dispatch_message(
+                    'Success! I added the intention to ' . $ins[0]['in_outcome'] . ' to your Action Plan 🙌 /link:Open 🚩Action Plan:https://mench.com/messenger/actionplan/' . $ins[0]['in_id'],
+                    $en,
+                    true,
+                    array(),
+                    array(
+                        'ln_child_intent_id' => $ins[0]['in_id'],
+                    )
+                );
 
-                    //Also add all relevant child intents:
-                    $this->Platform_model->in_recursive_metadata_primary($ins[0]['in_id'], true, false);
+                //Initiate first message for action plan tree:
+                $this->Chat_model->compose_message($ins[0]['in_id'], $en, $actionplan['ln_id']);
 
-                    //Confirm with them that we're now ready:
-                    $this->Chat_model->dispatch_message(
-                        'Success! I added the intention to ' . $ins[0]['in_outcome'] . ' to your Action Plan 🙌 /link:Open 🚩Action Plan:https://mench.com/messenger/actionplan/' . $ins[0]['in_id'],
-                        $en,
-                        true,
-                        array(),
-                        array(
-                            'ln_child_intent_id' => $ins[0]['in_id'],
-                            'ln_parent_link_id' => $actionplan['ln_id'],
-                        )
-                    );
-
-                    //Initiate first message for action plan tree:
-                    $this->Chat_model->compose_message($ins[0]['in_id'], $en, $actionplan['ln_id']);
-
-                } else {
-
-                    //Ooops we could not find the intention:
-                    $this->Chat_model->dispatch_message(
-                        'I was unable to add the intention to '.$ins[0]['in_outcome'].' to your Action Plan',
-                        $en,
-                        true
-                    );
-
-                }
             }
 
         } elseif (substr_count($quick_reply_payload, 'SKIP-ACTIONPLAN_') == 1) {

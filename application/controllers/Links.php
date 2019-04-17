@@ -308,7 +308,7 @@ class Links extends CI_Controller
                 'id' => $id_prefix['in'].$in['in_id'],
                 'label' => $in['in_outcome'],
                 //'size' => ( isset($in_metadata['in__metadata_max_seconds']) ? round(($in_metadata['in__metadata_max_seconds']/3600),0) : 0 ), //Max time
-                'size' => ( $in['in_id']==$this->config->item('in_mission_id') ? 3 * $node_size['in'] : $node_size['in'] ),
+                'size' => $node_size['in'],
                 'node_type' => 1, //Intent
                 'node_status' => $in['in_status'],
             ));

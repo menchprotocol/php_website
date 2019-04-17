@@ -12,13 +12,21 @@ class Intents extends CI_Controller
     }
 
 
-    function ttt($in_id = 8535){
-
+    function common($in_id){
+        $ins = $this->Database_model->in_fetch(array(
+            'in_id' => $in_id,
+            'in_status' => 2,
+        ));
+        if(count($ins) > 0) {
+            echo_json($this->Platform_model->in_metadata_sync_common_base($ins[0]));
+        } else {
+            echo 'Error: Published intent #'.$in_id.' not found';
+        }
     }
 
 
     function metadata($in_id=7463){
-        $tree = $this->Platform_model->in_recursive_metadata_primary($in_id, true);
+        $tree = $this->Platform_model->in_metadata_sync_common_base($in_id);
         echo_json(array(
             'flat' => $tree['__in__metadata_common_steps'],
             'flat_common' => array_flatten($tree['__in__metadata_common_steps']),
@@ -1351,31 +1359,41 @@ class Intents extends CI_Controller
 
 
 
-    function cron__update_metadata($in_id = 0, $update_db = 1)
+    function cron__sync_common_base($in_id = 0)
     {
 
         /*
          *
-         * Updates the metadata cache data for intents starting at $in_id.
-         *
-         * If $in_id is not provided, it defaults to in_mission_id which
-         * is the highest level of intent in the Mench tree.
+         * Updates common base metadata for published intents
          *
          * */
 
-        if(!$in_id){
-            $in_id = $this->config->item('in_mission_id');
+        $start_time = time();
+        $filters = array(
+            'in_status' => 2,
+        );
+        if($in_id > 0){
+            $filters['in_id'] = $in_id;
         }
-        //Cron Settings: 31 * * * *
-        //Syncs intents with latest caching data:
 
-        $sync = $this->Platform_model->in_recursive_metadata_primary($in_id, true, $update_db);
+        $published_ins = $this->Database_model->in_fetch($filters);
+        foreach($published_ins as $published_in){
+            $this->Platform_model->in_metadata_sync_common_base($published_in);
+        }
+
+        $total_time = time() - $start_time;
+        $success_message = 'Common Base Metadata updated for '.count($published_ins).' published intent'.echo__s(count($published_ins)).'.';
         if (isset($_GET['redirect']) && strlen($_GET['redirect']) > 0) {
             //Now redirect;
+            $this->session->set_flashdata('flash_message', '<div class="alert alert-success" role="alert">' . $success_message . '</div>');
             header('Location: ' . $_GET['redirect']);
         } else {
             //Show json:
-            echo_json($sync);
+            echo_json(array(
+                'message' => $success_message,
+                'total_time' => echo_time_minutes($total_time),
+                'item_time' => round(($total_time/count($published_ins)),1).' Seconds',
+            ));
         }
     }
 
