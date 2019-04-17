@@ -12,10 +12,6 @@ class Intents extends CI_Controller
     }
 
 
-    function insights($in_id){
-        echo_json($this->Platform_model->in_metadata_extra_insights($in_id));
-    }
-
     //Loaded as default function of the default controller:
     function index()
     {
@@ -1380,7 +1376,7 @@ class Intents extends CI_Controller
     }
 
 
-    function cron__sync_extra_insights($in_id = 0)
+    function cron__sync_extra_insights($in_id = 0, $force_update = 0)
     {
 
         /*
@@ -1401,7 +1397,7 @@ class Intents extends CI_Controller
 
         $published_ins = $this->Database_model->in_fetch($filters);
         foreach($published_ins as $published_in){
-            $tree = $this->Platform_model->in_metadata_extra_insights($published_in['in_id']);
+            $tree = $this->Platform_model->in_metadata_extra_insights($published_in['in_id'], $force_update);
         }
 
         $total_time = time() - $start_time;

@@ -1239,7 +1239,7 @@ class Platform_model extends CI_Model
     }
 
 
-    function in_metadata_extra_insights($in_id, $is_first_intent = true)
+    function in_metadata_extra_insights($in_id, $force_update = false, $is_first_intent = true)
     {
 
         /*
@@ -1265,7 +1265,7 @@ class Platform_model extends CI_Model
         //Has this been updated within the last 10 minutes?
         if(isset($in_metadata['in__metadata_extra_insights_timestamp']) && ($in_metadata['in__metadata_extra_insights_timestamp']+600) > time()){
             //Yes, no more need to update:
-            return $in_metadata;
+            //return $in_metadata;
         }
 
         $flat_common_steps = ( isset($in_metadata['in__metadata_common_steps']) && count($in_metadata['in__metadata_common_steps']) > 0 ? array_flatten($in_metadata['in__metadata_common_steps']) : array() );
@@ -1381,7 +1381,7 @@ class Platform_model extends CI_Model
 
             foreach($or_expansion as $or_in_id){
 
-                $metadata_recursion = $this->Platform_model->in_metadata_extra_insights($or_in_id, false);
+                $metadata_recursion = $this->Platform_model->in_metadata_extra_insights($or_in_id, $force_update, false);
 
                 if(!$metadata_recursion){
                     continue;
