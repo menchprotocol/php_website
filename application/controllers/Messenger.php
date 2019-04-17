@@ -1643,29 +1643,6 @@ class Messenger extends CI_Controller
     }
 
 
-    function test($in_id = 7463, $add_actionplan = 1)
-    {
-
-        if ($add_actionplan) {
-            $actionplan = $this->Database_model->ln_create(array(
-                'ln_type_entity_id' => 4235, //Student Intent
-                'ln_status' => 1, //Drafting
-                'ln_miner_entity_id' => 1,
-                'ln_child_intent_id' => $in_id, //The Intent they are adding
-                'ln_order' => 1 + $this->Database_model->ln_max_order(array( //Place this intent at the end of all intents the Student is drafting...
-                        'ln_type_entity_id' => 4235, //Student Intent
-                        'ln_status >=' => 0, //New+
-                        'ln_miner_entity_id' => 1, //Belongs to this Student
-                    )),
-            ));
-        } else {
-            $actionplan = array();
-        }
-
-        //echo_json($this->Platform_model->in_metadata_sync_common_base($in_id));
-    }
-
-
     function cron__sync_attachments()
     {
 

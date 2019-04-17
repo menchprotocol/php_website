@@ -11,7 +11,54 @@ defined('BASEPATH') OR exit('No direct script access allowed');
  *
  */
 
-//Generated 2019-04-16 14:02:05 PST
+//Generated 2019-04-16 20:03:25 PST
+
+//Entity Referencing in Intent Notes:
+$config['en_ids_4986'] = array(4231, 4232, 4233, 4234, 4602, 4983, 6093);
+$config['en_all_4986'] = array(
+    4231 => array(
+        'm_icon' => '<i class="fal fa-comment"></i>',
+        'm_name' => 'Noted Intent Message',
+        'm_desc' => '',
+        'm_parents' => array(4986, 4603, 4593, 4485, 4595),
+    ),
+    4232 => array(
+        'm_icon' => '<i class="fal fa-medal"></i>',
+        'm_name' => 'Noted Intent Bonus Tip',
+        'm_desc' => '',
+        'm_parents' => array(5005, 4986, 4603, 4593, 4485, 4595),
+    ),
+    4233 => array(
+        'm_icon' => '<i class="fal fa-clipboard-check"></i>',
+        'm_name' => 'Noted Intent Parting Tip',
+        'm_desc' => '',
+        'm_parents' => array(5005, 4986, 4603, 4593, 4485, 4595),
+    ),
+    4234 => array(
+        'm_icon' => '<i class="fal fa-random"></i>',
+        'm_name' => 'Noted Intent Random Intro',
+        'm_desc' => '',
+        'm_parents' => array(5005, 4986, 4593, 4485, 4595),
+    ),
+    4602 => array(
+        'm_icon' => '<i class="fal fa-cloud-upload"></i>',
+        'm_name' => 'Noted Intent Webhook',
+        'm_desc' => '',
+        'm_parents' => array(5005, 4986, 4256, 4595, 4485, 4593),
+    ),
+    4983 => array(
+        'm_icon' => '<i class="fal fa-thumbs-up"></i>',
+        'm_name' => 'Noted Intent Up-Vote',
+        'm_desc' => '',
+        'm_parents' => array(4986, 4985, 4595, 4593, 4485),
+    ),
+    6093 => array(
+        'm_icon' => '<i class="fal fa-megaphone"></i>',
+        'm_name' => 'Noted Intent Changelog',
+        'm_desc' => '',
+        'm_parents' => array(4595, 4593, 4986, 5005, 4485),
+    ),
+);
 
 //My Account Inputs:
 $config['en_ids_6225'] = array(6197, 3288, 3286, 4783, 4454, 3290, 3287, 3089, 3289, 6123);
@@ -1853,7 +1900,7 @@ $config['en_all_4593'] = array(
     ),
     6226 => array(
         'm_icon' => '<i class="fal fa-sync"></i>',
-        'm_name' => 'Intent Tree Iterated',
+        'm_name' => 'Iterated Intent Tree',
         'm_desc' => ' When all intents within a recursive tree are updated at once.',
         'm_parents' => array(4593),
     ),
