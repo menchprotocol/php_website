@@ -1261,6 +1261,13 @@ class Platform_model extends CI_Model
 
         //Fetch common base and expansion paths from intent metadata:
         $in_metadata = unserialize( $ins[0]['in_metadata'] );
+
+        //Has this been updated within the last 10 minutes?
+        if(isset($in_metadata['in__metadata_extra_insights_timestamp']) && ($in_metadata['in__metadata_extra_insights_timestamp']+600) > time()){
+            //Yes, no more need to update:
+            return $in_metadata;
+        }
+
         $flat_common_steps = ( isset($in_metadata['in__metadata_common_steps']) && count($in_metadata['in__metadata_common_steps']) > 0 ? array_flatten($in_metadata['in__metadata_common_steps']) : array() );
         $expansion_steps = ( isset($in_metadata['in__metadata_expansion_steps']) && count($in_metadata['in__metadata_expansion_steps']) > 0 ? $in_metadata['in__metadata_expansion_steps'] : array() );
         $common_base_resources = array(
@@ -1461,18 +1468,17 @@ class Platform_model extends CI_Model
          * Save to database
          *
          * */
-        if(0 && $is_first_intent){
-            $this->Platform_model->metadata_update('in', $in_id, array(
-                'in__metadata_min_steps' => intval($metadata_this['__in__metadata_max_steps']),
-                'in__metadata_max_steps' => intval($metadata_this['__in__metadata_max_steps']),
-                'in__metadata_min_seconds' => intval($metadata_this['__in__metadata_min_seconds']),
-                'in__metadata_max_seconds' => intval($metadata_this['__in__metadata_max_seconds']),
-                'in__metadata_min_cost' => number_format($metadata_this['__in__metadata_min_cost'], 2),
-                'in__metadata_max_cost' => number_format($metadata_this['__in__metadata_max_cost'], 2),
-                'in__metadata_experts' => $metadata_this['__in__metadata_experts'],
-                'in__metadata_sources' => $metadata_this['__in__metadata_sources'],
-            ));
-        }
+        $this->Platform_model->metadata_update('in', $in_id, array(
+            'in__metadata_min_steps' => intval($metadata_this['__in__metadata_max_steps']),
+            'in__metadata_max_steps' => intval($metadata_this['__in__metadata_max_steps']),
+            'in__metadata_min_seconds' => intval($metadata_this['__in__metadata_min_seconds']),
+            'in__metadata_max_seconds' => intval($metadata_this['__in__metadata_max_seconds']),
+            'in__metadata_min_cost' => number_format($metadata_this['__in__metadata_min_cost'], 2),
+            'in__metadata_max_cost' => number_format($metadata_this['__in__metadata_max_cost'], 2),
+            'in__metadata_experts' => $metadata_this['__in__metadata_experts'],
+            'in__metadata_sources' => $metadata_this['__in__metadata_sources'],
+            'in__metadata_extra_insights_timestamp' => time(), //Use to check
+        ));
 
 
         //Return data:
