@@ -1378,7 +1378,7 @@ class Intents extends CI_Controller
 
         $published_ins = $this->Database_model->in_fetch($filters);
         foreach($published_ins as $published_in){
-            $this->Platform_model->in_metadata_sync_common_base($published_in);
+            $tree = $this->Platform_model->in_metadata_sync_common_base($published_in);
         }
 
         $total_time = time() - $start_time;
@@ -1393,6 +1393,7 @@ class Intents extends CI_Controller
                 'message' => $success_message,
                 'total_time' => echo_time_minutes($total_time),
                 'item_time' => round(($total_time/count($published_ins)),1).' Seconds',
+                'last_tree' => $tree,
             ));
         }
     }
