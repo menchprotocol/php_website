@@ -1239,7 +1239,7 @@ class Platform_model extends CI_Model
     }
 
 
-    function in_metadata_extra_insights($in_id, $force_update = false, $is_first_intent = true)
+    function in_metadata_extra_insights($in_id, $force_update = 0)
     {
 
         /*
@@ -1381,7 +1381,7 @@ class Platform_model extends CI_Model
 
             foreach($or_expansion as $or_in_id){
 
-                $metadata_recursion = $this->Platform_model->in_metadata_extra_insights($or_in_id, $force_update, false);
+                $metadata_recursion = $this->Platform_model->in_metadata_extra_insights($or_in_id, $force_update);
 
                 if(!$metadata_recursion){
                     continue;
