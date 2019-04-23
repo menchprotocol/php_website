@@ -1388,20 +1388,31 @@ class Intents extends CI_Controller
 
         boost_power();
         $start_time = time();
-        $filters = array(
-            'in_status' => 2,
-        );
+        $update_count = 0;
+
         if($in_id > 0){
-            $filters['in_id'] = $in_id;
+            $update_count++;
+            $tree = $this->Platform_model->in_metadata_extra_insights($in_id, $force_update);
+        } else {
+            //Update all featured intentions and their tree:
+            foreach ($this->Database_model->ln_fetch(array(
+                'ln_status' => 2, //Published
+                'in_status' => 2, //Published
+                'ln_type_entity_id' => 4228, //Fixed intent links only
+                'ln_parent_intent_id' => $this->config->item('in_featured'), //Feature Mench Intentions
+            ), array('in_child'), 0, 0, array('ln_order' => 'ASC')) as $featured_in) {
+                $tree = $this->Platform_model->in_metadata_extra_insights($featured_in['in_id'], $force_update);
+                if($tree){
+                    $update_count++;
+                }
+            }
         }
 
-        $published_ins = $this->Database_model->in_fetch($filters);
-        foreach($published_ins as $published_in){
-            $tree = $this->Platform_model->in_metadata_extra_insights($published_in['in_id'], $force_update);
-        }
 
-        $total_time = time() - $start_time;
-        $success_message = 'Extra Insights Metadata updated for '.count($published_ins).' published intent'.echo__s(count($published_ins)).'.';
+
+        $end_time = time() - $start_time;
+        $success_message = 'Extra Insights Metadata updated for '.$update_count.' intent'.echo__s($update_count).'.';
+
         if (isset($_GET['redirect']) && strlen($_GET['redirect']) > 0) {
             //Now redirect;
             $this->session->set_flashdata('flash_message', '<div class="alert alert-success" role="alert">' . $success_message . '</div>');
@@ -1410,8 +1421,8 @@ class Intents extends CI_Controller
             //Show json:
             echo_json(array(
                 'message' => $success_message,
-                'total_time' => echo_time_minutes($total_time),
-                'item_time' => round(($total_time/count($published_ins)),1).' Seconds',
+                'total_time' => echo_time_minutes($end_time),
+                'item_time' => round(($end_time/$update_count),1).' Seconds',
                 'last_tree' => $tree,
             ));
         }

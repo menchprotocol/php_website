@@ -1430,22 +1430,22 @@ class Platform_model extends CI_Model
 
             //Add to totals if set:
             if(!is_null($metadata_local['local__in__metadata_min_steps'])){
-                $metadata_this['__in__metadata_min_steps'] += $metadata_local['local__in__metadata_min_steps'];
+                $metadata_this['__in__metadata_min_steps'] += intval($metadata_local['local__in__metadata_min_steps']);
             }
             if(!is_null($metadata_local['local__in__metadata_max_steps'])){
-                $metadata_this['__in__metadata_max_steps'] += $metadata_local['local__in__metadata_max_steps'];
+                $metadata_this['__in__metadata_max_steps'] += intval($metadata_local['local__in__metadata_max_steps']);
             }
             if(!is_null($metadata_local['local__in__metadata_min_seconds'])){
-                $metadata_this['__in__metadata_min_seconds'] += $metadata_local['local__in__metadata_min_seconds'];
+                $metadata_this['__in__metadata_min_seconds'] += intval($metadata_local['local__in__metadata_min_seconds']);
             }
             if(!is_null($metadata_local['local__in__metadata_max_seconds'])){
-                $metadata_this['__in__metadata_max_seconds'] += $metadata_local['local__in__metadata_max_seconds'];
+                $metadata_this['__in__metadata_max_seconds'] += intval($metadata_local['local__in__metadata_max_seconds']);
             }
             if(!is_null($metadata_local['local__in__metadata_min_cost'])){
-                $metadata_this['__in__metadata_min_cost'] += $metadata_local['local__in__metadata_min_cost'];
+                $metadata_this['__in__metadata_min_cost'] += doubleval($metadata_local['local__in__metadata_min_cost']);
             }
             if(!is_null($metadata_local['local__in__metadata_max_cost'])){
-                $metadata_this['__in__metadata_max_cost'] += $metadata_local['local__in__metadata_max_cost'];
+                $metadata_this['__in__metadata_max_cost'] += doubleval($metadata_local['local__in__metadata_max_cost']);
             }
 
         }
@@ -1479,7 +1479,6 @@ class Platform_model extends CI_Model
             'in__metadata_sources' => $metadata_this['__in__metadata_sources'],
             'in__metadata_extra_insights_timestamp' => time(), //Use to check
         ));
-
 
         //Return data:
         return $metadata_this;

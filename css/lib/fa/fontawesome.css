@@ -1,3 +1,7 @@
+/*!
+ * Font Awesome Pro 5.8.1 by @fontawesome - https://fontawesome.com
+ * License - https://fontawesome.com/license (Commercial License)
+ */
 .fa,
 .fas,
 .far,
@@ -228,6 +232,9 @@ readers do not read off random characters that represent icons */
 
 .fa-air-freshener:before {
   content: "\f5d0"; }
+
+.fa-airbnb:before {
+  content: "\f834"; }
 
 .fa-alarm-clock:before {
   content: "\f34e"; }
@@ -655,6 +662,9 @@ readers do not read off random characters that represent icons */
 .fa-battery-three-quarters:before {
   content: "\f241"; }
 
+.fa-battle-net:before {
+  content: "\f835"; }
+
 .fa-bed:before {
   content: "\f236"; }
 
@@ -805,6 +815,9 @@ readers do not read off random characters that represent icons */
 .fa-booth-curtain:before {
   content: "\f734"; }
 
+.fa-bootstrap:before {
+  content: "\f836"; }
+
 .fa-bow-arrow:before {
   content: "\f6b9"; }
 
@@ -891,6 +904,9 @@ readers do not read off random characters that represent icons */
 
 .fa-btc:before {
   content: "\f15a"; }
+
+.fa-buffer:before {
+  content: "\f837"; }
 
 .fa-bug:before {
   content: "\f188"; }
@@ -1296,6 +1312,9 @@ readers do not read off random characters that represent icons */
 
 .fa-chrome:before {
   content: "\f268"; }
+
+.fa-chromecast:before {
+  content: "\f838"; }
 
 .fa-church:before {
   content: "\f51d"; }
@@ -2082,6 +2101,9 @@ readers do not read off random characters that represent icons */
 
 .fa-euro-sign:before {
   content: "\f153"; }
+
+.fa-evernote:before {
+  content: "\f839"; }
 
 .fa-exchange:before {
   content: "\f0ec"; }
@@ -3159,6 +3181,9 @@ readers do not read off random characters that represent icons */
 
 .fa-italic:before {
   content: "\f033"; }
+
+.fa-itch-io:before {
+  content: "\f83a"; }
 
 .fa-itunes:before {
   content: "\f3b4"; }
@@ -4483,6 +4508,9 @@ readers do not read off random characters that represent icons */
 .fa-salad:before {
   content: "\f81e"; }
 
+.fa-salesforce:before {
+  content: "\f83b"; }
+
 .fa-sandwich:before {
   content: "\f81f"; }
 
@@ -4918,6 +4946,9 @@ readers do not read off random characters that represent icons */
 .fa-speakap:before {
   content: "\f3f3"; }
 
+.fa-speaker-deck:before {
+  content: "\f83c"; }
+
 .fa-spider:before {
   content: "\f717"; }
 
@@ -5145,6 +5176,9 @@ readers do not read off random characters that represent icons */
 
 .fa-swords:before {
   content: "\f71d"; }
+
+.fa-symfony:before {
+  content: "\f83d"; }
 
 .fa-synagogue:before {
   content: "\f69b"; }
@@ -5917,6 +5951,12 @@ readers do not read off random characters that represent icons */
 .fa-water-rise:before {
   content: "\f775"; }
 
+.fa-wave-square:before {
+  content: "\f83e"; }
+
+.fa-waze:before {
+  content: "\f83f"; }
+
 .fa-webcam:before {
   content: "\f832"; }
 
@@ -6066,6 +6106,9 @@ readers do not read off random characters that represent icons */
 
 .fa-yahoo:before {
   content: "\f19e"; }
+
+.fa-yammer:before {
+  content: "\f840"; }
 
 .fa-yandex:before {
   content: "\f413"; }
