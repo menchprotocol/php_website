@@ -201,7 +201,7 @@ function echo_in_outcome($in_outcome, $hide = false){
     if($hide){
         return trim($in_outcome_parts[1]);
     } else {
-        return '<span class="double-column-omit" data-toggle="tooltip" data-placement="top" title="Not shown to students">'.$in_outcome_parts[0].'::</span><b>'.$in_outcome_parts[1].'</b>';
+        return '<span class="double-column-omit click_expand" data-toggle="tooltip" data-placement="top" title="Not shown to students">'.$in_outcome_parts[0].'::</span><b class="click_expand">'.$in_outcome_parts[1].'</b>';
     }
 }
 
@@ -922,7 +922,7 @@ function echo_tree_steps($in, $fb_messenger_format = 0, $expand_mode = false)
             <div class="panel-heading" role="tab" id="heading' . $id . '">
                 <h4 class="panel-title">
                     <a role="button" data-toggle="collapse" data-parent="#open' . $id . '" href="#collapse' . $id . '" aria-expanded="' . ($expand_mode ? 'true' : 'false') . '" aria-controls="collapse' . $id . '">
-                    <i class="fas" style="transform:none !important;"><i class="fas fa-walking" style="transform:none !important;"></i></i> ' . ( $step_range ? $metadata['in__metadata_min_steps'].'-'.$metadata['in__metadata_max_steps'] : $metadata['in__metadata_max_steps'] ) . ' Steps<i class="fal fa-info-circle" style="transform:none !important; font-size:0.85em !important;"></i>
+                    <i class="fas" style="transform:none !important;"><i class="fas fa-walking" style="transform:none !important;"></i></i> ' . ( $step_range ? $metadata['in__metadata_min_steps'].' - '.$metadata['in__metadata_max_steps'] : $metadata['in__metadata_max_steps'] ) . ' Steps<i class="fal fa-info-circle" style="transform:none !important; font-size:0.85em !important;"></i>
                 </a>
             </h4>
         </div>
@@ -1057,16 +1057,18 @@ function echo_tree_costs($in, $fb_messenger_format = 0, $expand_mode = false)
     if (!$has_cost_estimate && !$has_time_estimate) {
         return false;
     }
+    $cost_range = ( $metadata['in__metadata_max_cost'] != $metadata['in__metadata_min_cost'] );
+    $time_range = ( $metadata['in__metadata_max_seconds'] != $metadata['in__metadata_min_seconds'] );
 
 
     if($has_cost_estimate){
         //Construct UI:
-        if (round($metadata['in__metadata_max_cost']) == round($metadata['in__metadata_min_cost'])) {
-            //Single price:
-            $price_range = '$' . round($metadata['in__metadata_max_cost']) . ' USD';
-        } else {
+        if ($cost_range) {
             //Price range:
             $price_range = '$' . round($metadata['in__metadata_min_cost']) . ' - $' . round($metadata['in__metadata_max_cost']) . ' USD';
+        } else {
+            //Single price:
+            $price_range = '$' . round($metadata['in__metadata_max_cost']) . ' USD';
         }
     }
 
@@ -1079,7 +1081,8 @@ function echo_tree_costs($in, $fb_messenger_format = 0, $expand_mode = false)
     //As messenger default format and HTML extra notes:
     $pitch  = 'Action Plan estimates ';
     $pitch .= ( $has_time_estimate ? strtolower(echo_time_range($in)).'' : '' );
-    $pitch .= ( $has_cost_estimate ? ( $has_time_estimate ? ' & ' : '' ) . $price_range : '' );
+    $pitch .= ( $has_cost_estimate ? ( $has_time_estimate ? ' and may cost '.( $cost_range ? 'between ' : '' ) : '' ) . $price_range : '' );
+    $pitch .= ( $cost_range || $time_range ? ' depending on your answers to Mench questions' : '' );
     $pitch .= ' to ' . $in['in_outcome'];
 
     if ($fb_messenger_format) {
@@ -1214,7 +1217,7 @@ function echo_time_range($in, $micro = false, $hide_zero = false)
     $the_max = ($is_minutes ? $max_minutes : $max_hours );
     $ui_time = $the_min;
     if($the_min != $the_max){
-        $ui_time .= '-';
+        $ui_time .= ' - ';
         $ui_time .= $the_max;
     }
     $ui_time .= ($is_minutes ? ($micro ? 'm' : ' Minute'.echo__s($max_minutes)) : ($micro ? 'h' : ' Hour'.echo__s($max_hours)));
