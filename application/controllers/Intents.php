@@ -1391,17 +1391,22 @@ class Intents extends CI_Controller
         $update_count = 0;
 
         if($in_id > 0){
+
+            //Increment count by 1:
             $update_count++;
+
+            //Start with common base:
+            foreach($this->Database_model->in_fetch(array('in_id' => $in_id)) as $published_in){
+                $this->Platform_model->in_metadata_common_base($published_in);
+            }
+
+            //Update extra insights:
             $tree = $this->Platform_model->in_metadata_extra_insights($in_id, $force_update);
+
         } else {
             //Update all featured intentions and their tree:
-            foreach ($this->Database_model->ln_fetch(array(
-                'ln_status' => 2, //Published
-                'in_status' => 2, //Published
-                'ln_type_entity_id' => 4228, //Fixed intent links only
-                'ln_parent_intent_id' => $this->config->item('in_featured'), //Feature Mench Intentions
-            ), array('in_child'), 0, 0, array('ln_order' => 'ASC')) as $featured_in) {
-                $tree = $this->Platform_model->in_metadata_extra_insights($featured_in['in_id'], $force_update);
+            foreach ($this->Database_model->in_fetch(array('in_status' => 2)) as $published_in) {
+                $tree = $this->Platform_model->in_metadata_extra_insights($published_in['in_id'], $force_update);
                 if($tree){
                     $update_count++;
                 }

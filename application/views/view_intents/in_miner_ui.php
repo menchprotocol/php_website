@@ -51,7 +51,8 @@ $metadata = unserialize($in['in_metadata']);
 
         //Focus intent:
         echo '<h5 class="badge badge-h indent1" style="display: inline-block;">Intent #'.$in['in_id'].'</h5>';
-        echo '<a class="secret" href="/intents/cron__update_metadata/' . $in['in_id'] . '/1?redirect=/' . $in['in_id'] . '" style="margin-left: 5px;" onclick="turn_off()"><i class="fal fa-sync-alt" data-toggle="tooltip" title="Updates intent tree cache" data-placement="top"></i></a>';
+
+        echo '<a class="secret" href="/intents/cron__sync_extra_insights/' . $in['in_id'] . '/1?redirect=/' . $in['in_id'] . '" style="margin-left: 5px;" onclick="turn_off()"><i class="fal fa-sync-alt" data-toggle="tooltip" title="Updates intent tree cache" data-placement="top"></i></a>';
 
         echo '<div class="list-group indent1">';
         echo echo_in($in, 1);

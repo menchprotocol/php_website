@@ -1061,7 +1061,7 @@ function echo_tree_costs($in, $fb_messenger_format = 0, $expand_mode = false)
 
     if($has_cost_estimate){
         //Construct UI:
-        if (round($metadata['in__metadata_max_cost']) == round($metadata['in__metadata_min_cost']) || $metadata['in__metadata_min_cost'] == 0) {
+        if (round($metadata['in__metadata_max_cost']) == round($metadata['in__metadata_min_cost'])) {
             //Single price:
             $price_range = '$' . round($metadata['in__metadata_max_cost']) . ' USD';
         } else {
@@ -1074,12 +1074,12 @@ function echo_tree_costs($in, $fb_messenger_format = 0, $expand_mode = false)
     //For HTML version only:
     $title = '';
     $title .= ( $has_time_estimate ? echo_time_range($in).' ' : '' );
-    $title .= ( $has_cost_estimate ? ( $has_time_estimate ? 'and ' : '' ) . $price_range : '' );
+    $title .= ( $has_cost_estimate ? ( $has_time_estimate ? '& ' : '' ) . $price_range : '' );
 
     //As messenger default format and HTML extra notes:
     $pitch  = 'Action Plan estimates ';
     $pitch .= ( $has_time_estimate ? strtolower(echo_time_range($in)).'' : '' );
-    $pitch .= ( $has_cost_estimate ? ( $has_time_estimate ? ' and ' : '' ) . $price_range : '' );
+    $pitch .= ( $has_cost_estimate ? ( $has_time_estimate ? ' & ' : '' ) . $price_range : '' );
     $pitch .= ' to ' . $in['in_outcome'];
 
     if ($fb_messenger_format) {
@@ -1700,16 +1700,16 @@ function echo_in($in, $level, $in_parent_id = 0, $is_parent = false)
     if ($level == 0) {
 
         //Show Landing Page URL:
-        $ui .= '&nbsp;<a href="/intents/' . $in['in_id'] . '" data-toggle="tooltip" title="'.$tree_count_range.' published intents in tree. Go to this intent." data-placement="top" class="badge badge-primary is_not_bg is_hard_link" style="display:inline-block; margin-right:-2px; width:40px; border:2px solid #eacb10 !important;">'.$tree_count.'<i class="fas fa-angle-right"></i></a>';
+        $ui .= '&nbsp;<a href="/intents/' . $in['in_id'] . '" data-toggle="tooltip" title="'.$tree_count_range.' steps in tree. Go to this intent." data-placement="top" class="badge badge-primary is_not_bg is_hard_link" style="display:inline-block; margin-right:-2px; width:40px; border:2px solid #eacb10 !important;">'.$tree_count.'<i class="fas fa-angle-right"></i></a>';
 
     } elseif ($level == 1 || $is_child_focused) {
 
         //Show Landing Page URL:
-        $ui .= '&nbsp;<a href="/' . $in['in_id'] . '" target="_blank" class="badge badge-primary is_not_bg is_hard_link" style="display:inline-block; margin-right:-2px; width:40px; border:2px solid #eacb10 !important;" data-toggle="tooltip" title="'.$tree_count_range.' published intents in tree. Open landing page in a new window." data-placement="top">'.$tree_count.'<i class="fas fa-shopping-cart" style="margin-left: -3px;"></i></a>';
+        $ui .= '&nbsp;<a href="/' . $in['in_id'] . '" target="_blank" class="badge badge-primary is_not_bg is_hard_link" style="display:inline-block; margin-right:-2px; width:40px; border:2px solid #eacb10 !important;" data-toggle="tooltip" title="'.$tree_count_range.' steps in tree. Open landing page in a new window." data-placement="top">'.$tree_count.'<i class="fas fa-shopping-cart" style="margin-left: -3px;"></i></a>';
 
     } else {
 
-        $ui .= '&nbsp;<a href="/intents/' . $in['in_id'] . '" class="tree-badge-' . $in['in_id'] . ' badge badge-primary is_not_bg is_hard_link" style="display:inline-block; margin-right:-2px; width:40px; border:2px solid #eacb10 !important;" data-toggle="tooltip" title="'.$tree_count_range.' published intents in tree. Go to this intent." data-placement="top">' . $tree_count . '<i class="'.( $is_parent ? ( $level==3 ? 'fas fa-angle-right' : 'fas fa-angle-up' ) : ( $level==3 ? 'fas fa-angle-double-down' : 'fas fa-angle-down' ) ).'"></i></a>';
+        $ui .= '&nbsp;<a href="/intents/' . $in['in_id'] . '" class="tree-badge-' . $in['in_id'] . ' badge badge-primary is_not_bg is_hard_link" style="display:inline-block; margin-right:-2px; width:40px; border:2px solid #eacb10 !important;" data-toggle="tooltip" title="'.$tree_count_range.' steps in tree. Go to this intent." data-placement="top">' . $tree_count . '<i class="'.( $is_parent ? ( $level==3 ? 'fas fa-angle-right' : 'fas fa-angle-up' ) : ( $level==3 ? 'fas fa-angle-double-down' : 'fas fa-angle-down' ) ).'"></i></a>';
 
     }
 
