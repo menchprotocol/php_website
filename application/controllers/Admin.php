@@ -139,6 +139,8 @@ class Admin extends CI_Controller
          *
          * */
 
+        boost_power();
+
         //Fetch all valid variable names:
         $valid_variables = array();
         foreach($this->Database_model->ln_fetch(array(
