@@ -181,7 +181,7 @@ function echo_url_embed($url, $full_message = null, $return_array = false, $star
     }
 }
 
-function echo_in_outcome($in_outcome, $hide = false){
+function echo_in_outcome($in_outcome, $hide = false, $append_class = ''){
 
     /*
      * This function applies the double column
@@ -201,7 +201,7 @@ function echo_in_outcome($in_outcome, $hide = false){
     if($hide){
         return trim($in_outcome_parts[1]);
     } else {
-        return '<span class="double-column-omit click_expand" data-toggle="tooltip" data-placement="top" title="Not shown to students">'.$in_outcome_parts[0].'::</span><b class="click_expand">'.$in_outcome_parts[1].'</b>';
+        return '<span class="double-column-omit '.$append_class.'" data-toggle="tooltip" data-placement="top" title="Not shown to students">'.$in_outcome_parts[0].'::</span><b class="'.$append_class.'">'.$in_outcome_parts[1].'</b>';
     }
 }
 
@@ -1608,7 +1608,7 @@ function echo_in($in, $level, $in_parent_id = 0, $is_parent = false)
 
     } elseif ($level == 2) {
 
-        $ui .= '<span>&nbsp;<i id="handle-' . $ln_id . '" class="fal click_expand fa-plus-circle"></i> <span id="title_' . $ln_id . '" style="font-weight: 500;" class="cdr_crnt click_expand tree_title in_outcome_' . $in['in_id'] . '">' . echo_in_outcome($in['in_outcome']) . '</span></span>';
+        $ui .= '<span>&nbsp;<i id="handle-' . $ln_id . '" class="fal click_expand fa-plus-circle"></i> <span id="title_' . $ln_id . '" style="font-weight: 500;" class="cdr_crnt click_expand tree_title in_outcome_' . $in['in_id'] . '">' . echo_in_outcome($in['in_outcome'], false, 'click_expand') . '</span></span>';
 
     } elseif ($level == 3) {
 
