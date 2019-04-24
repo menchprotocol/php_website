@@ -1239,7 +1239,7 @@ class Platform_model extends CI_Model
     }
 
 
-    function in_metadata_extra_insights($in_id, $force_update = 0)
+    function in_metadata_extra_insights($in_id, $update_db = true)
     {
 
         /*
@@ -1261,13 +1261,6 @@ class Platform_model extends CI_Model
 
         //Fetch common base and expansion paths from intent metadata:
         $in_metadata = unserialize( $ins[0]['in_metadata'] );
-
-        //Has this been updated within the last 10 minutes?
-        if(!$force_update && isset($in_metadata['in__metadata_extra_insights_timestamp']) && ($in_metadata['in__metadata_extra_insights_timestamp']+600) > time()){
-            //Yes, no more need to update:
-            return $in_metadata;
-        }
-
         $flat_common_steps = ( isset($in_metadata['in__metadata_common_steps']) && count($in_metadata['in__metadata_common_steps']) > 0 ? array_flatten($in_metadata['in__metadata_common_steps']) : array() );
         $expansion_steps = ( isset($in_metadata['in__metadata_expansion_steps']) && count($in_metadata['in__metadata_expansion_steps']) > 0 ? $in_metadata['in__metadata_expansion_steps'] : array() );
         $common_base_resources = array(
@@ -1307,7 +1300,8 @@ class Platform_model extends CI_Model
         );
 
 
-        //Add-up entity references:
+
+        //Add-up Intent Note References:
         //The entities we need to check and see if they are industry experts:
         foreach ($this->Database_model->ln_fetch(array(
             'ln_type_entity_id IN (' . join(',', $this->config->item('en_ids_4986')) . ')' => null, //Intent Notes that could possibly reference an entity
@@ -1381,7 +1375,7 @@ class Platform_model extends CI_Model
 
             foreach($or_expansion as $or_in_id){
 
-                $metadata_recursion = $this->Platform_model->in_metadata_extra_insights($or_in_id, $force_update);
+                $metadata_recursion = $this->Platform_model->in_metadata_extra_insights($or_in_id, false);
 
                 if(!$metadata_recursion){
                     continue;
@@ -1451,37 +1445,42 @@ class Platform_model extends CI_Model
         }
 
 
-        /*
-         *
-         * Sort Miners, Experts & Sources by trust score
-         *
-         * */
-        usort($metadata_this['__in__metadata_experts'], 'sort_by_en_trust_score');
-        foreach ($metadata_this['__in__metadata_sources'] as $type_en_id => $current_us) {
-            usort($metadata_this['__in__metadata_sources'][$type_en_id], 'sort_by_en_trust_score');
+        if($update_db){
+
+            /*
+             *
+             * Sort Miners, Experts & Sources by trust score
+             *
+             * */
+            usort($metadata_this['__in__metadata_experts'], 'sort_by_en_trust_score');
+            foreach ($metadata_this['__in__metadata_sources'] as $type_en_id => $current_us) {
+                usort($metadata_this['__in__metadata_sources'][$type_en_id], 'sort_by_en_trust_score');
+            }
+
+
+            /*
+             *
+             * Save to database
+             *
+             * */
+            $this->Platform_model->metadata_update('in', $in_id, array(
+                'in__metadata_min_steps' => intval($metadata_this['__in__metadata_min_steps']),
+                'in__metadata_max_steps' => intval($metadata_this['__in__metadata_max_steps']),
+                'in__metadata_min_seconds' => intval($metadata_this['__in__metadata_min_seconds']),
+                'in__metadata_max_seconds' => intval($metadata_this['__in__metadata_max_seconds']),
+                'in__metadata_min_cost' => number_format(doubleval($metadata_this['__in__metadata_min_cost']), 2),
+                'in__metadata_max_cost' => number_format(doubleval($metadata_this['__in__metadata_max_cost']), 2),
+                'in__metadata_experts' => $metadata_this['__in__metadata_experts'],
+                'in__metadata_sources' => $metadata_this['__in__metadata_sources'],
+                'in__metadata_extra_insights_timestamp' => time(), //Use to check
+            ));
+
         }
 
 
-
-        /*
-         *
-         * Save to database
-         *
-         * */
-        $this->Platform_model->metadata_update('in', $in_id, array(
-            'in__metadata_min_steps' => intval($metadata_this['__in__metadata_min_steps']),
-            'in__metadata_max_steps' => intval($metadata_this['__in__metadata_max_steps']),
-            'in__metadata_min_seconds' => intval($metadata_this['__in__metadata_min_seconds']),
-            'in__metadata_max_seconds' => intval($metadata_this['__in__metadata_max_seconds']),
-            'in__metadata_min_cost' => number_format(doubleval($metadata_this['__in__metadata_min_cost']), 2),
-            'in__metadata_max_cost' => number_format(doubleval($metadata_this['__in__metadata_max_cost']), 2),
-            'in__metadata_experts' => $metadata_this['__in__metadata_experts'],
-            'in__metadata_sources' => $metadata_this['__in__metadata_sources'],
-            'in__metadata_extra_insights_timestamp' => time(), //Use to check
-        ));
-
         //Return data:
         return $metadata_this;
+
     }
 
     function actionplan_completion_rate($in, $miner_en_id)

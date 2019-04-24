@@ -1376,7 +1376,7 @@ class Intents extends CI_Controller
     }
 
 
-    function cron__sync_extra_insights($in_id = 0, $force_update = 0)
+    function cron__sync_extra_insights($in_id = 0)
     {
 
         /*
@@ -1401,16 +1401,18 @@ class Intents extends CI_Controller
             }
 
             //Update extra insights:
-            $tree = $this->Platform_model->in_metadata_extra_insights($in_id, $force_update);
+            $tree = $this->Platform_model->in_metadata_extra_insights($in_id);
 
         } else {
+
             //Update all featured intentions and their tree:
             foreach ($this->Database_model->in_fetch(array('in_status' => 2)) as $published_in) {
-                $tree = $this->Platform_model->in_metadata_extra_insights($published_in['in_id'], $force_update);
+                $tree = $this->Platform_model->in_metadata_extra_insights($published_in['in_id']);
                 if($tree){
                     $update_count++;
                 }
             }
+
         }
 
 
