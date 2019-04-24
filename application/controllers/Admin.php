@@ -124,4 +124,86 @@ class Admin extends CI_Controller
         }
     }
 
+
+    function cron__clean_metadatas(){
+
+        /*
+         *
+         * A function that would run through all
+         * object metadata variables and remove
+         * all variables that are not indexed
+         * as part of Variables Names entity @6232
+         *
+         * https://mench.com/entities/6232
+         *
+         *
+         * */
+
+        //Fetch all valid variable names:
+        $valid_variables = array();
+        foreach($this->Database_model->ln_fetch(array(
+            'ln_parent_entity_id' => 6232, //Variables Names
+            'ln_type_entity_id IN (' . join(',', $this->config->item('en_ids_4592')) . ')' => null, //Entity Link Connectors
+            'ln_status' => 2, //Published
+            'en_status' => 2, //Published
+            'LENGTH(ln_content) > 0' => null,
+        ), array('en_child'), 0, 0, array('ln_order' => 'ASC', 'en_trust_score' => 'DESC')) as $var_name){
+            array_push($valid_variables, $var_name['ln_content']);
+        }
+
+        //Now let's start the cleanup process...
+        $invalid_variables = array();
+
+        //Intent Metadata
+        foreach($this->Database_model->in_fetch(array()) as $in){
+
+            if(strlen($in['in_metadata']) < 1){
+                continue;
+            }
+
+            foreach(unserialize($in['in_metadata']) as $key => $value){
+                if(!in_array($key, $valid_variables) && !in_array($key, $invalid_variables)){
+                    array_push($invalid_variables, $key);
+                }
+            }
+
+        }
+
+        //Entity Metadata
+        foreach($this->Database_model->en_fetch(array()) as $en){
+
+            if(strlen($en['en_metadata']) < 1){
+                continue;
+            }
+
+            foreach(unserialize($en['en_metadata']) as $key => $value){
+                if(!in_array($key, $valid_variables) && !in_array($key, $invalid_variables)){
+                    array_push($invalid_variables, $key);
+                }
+            }
+
+        }
+
+        //Link Metadata
+        foreach($this->Database_model->ln_fetch(array()) as $ln){
+
+            if(strlen($ln['ln_metadata']) < 1){
+                continue;
+            }
+
+            foreach(unserialize($ln['ln_metadata']) as $key => $value){
+                if(!in_array($key, $valid_variables) && !in_array($key, $invalid_variables)){
+                    array_push($invalid_variables, $key);
+                }
+            }
+
+        }
+
+        echo_json(array(
+            'invalid' => $invalid_variables,
+            'valid' => $valid_variables,
+        ));
+
+    }
+
 }
