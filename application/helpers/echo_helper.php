@@ -1082,7 +1082,7 @@ function echo_tree_costs($in, $fb_messenger_format = 0, $expand_mode = false)
     $pitch  = 'Action Plan estimates ';
     $pitch .= ( $has_time_estimate ? strtolower(echo_time_range($in)).'' : '' );
     $pitch .= ( $has_cost_estimate ? ( $has_time_estimate ? ' and may cost '.( $cost_range ? 'between ' : '' ) : '' ) . $price_range : '' );
-    $pitch .= ( $cost_range || $time_range ? ' depending on your answers to Mench questions' : '' );
+    $pitch .= ( $cost_range || $time_range ? ' depending on your answers to Mench questions' : ' to '.$in['in_outcome'] );
 
     if ($fb_messenger_format) {
         return '⏰ ' . $pitch . "\n";
