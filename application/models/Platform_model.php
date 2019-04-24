@@ -1185,6 +1185,7 @@ class Platform_model extends CI_Model
             '__in__metadata_expansion_steps' => array(), //Intents that may exist as a link to expand an Action Plan tree
         );
 
+
         //Fetch children:
         foreach($this->Database_model->ln_fetch(array(
             'ln_status' => 2, //Published
@@ -1215,7 +1216,6 @@ class Platform_model extends CI_Model
                 if(count($child_recursion['__in__metadata_expansion_steps']) > 0){
                     $metadata_this['__in__metadata_expansion_steps'] = array_merge($metadata_this['__in__metadata_expansion_steps'], $child_recursion['__in__metadata_expansion_steps']);
                 }
-
             }
         }
 
@@ -1227,6 +1227,14 @@ class Platform_model extends CI_Model
 
         //Save common base:
         if($is_first_intent){
+
+            //Make sure to add main intent to common tree:
+            if(count($metadata_this['__in__metadata_common_steps']) > 0){
+                $metadata_this['__in__metadata_common_steps'] = array_merge( array(intval($focus_in['in_id'])) , array($metadata_this['__in__metadata_common_steps']));
+            } else {
+                $metadata_this['__in__metadata_common_steps'] = array(intval($focus_in['in_id']));
+            }
+
             $this->Platform_model->metadata_update('in', $focus_in['in_id'], array(
                 'in__metadata_common_steps' => $metadata_this['__in__metadata_common_steps'],
                 'in__metadata_expansion_steps'     => $metadata_this['__in__metadata_expansion_steps'],
@@ -1259,30 +1267,26 @@ class Platform_model extends CI_Model
             return false;
         }
 
-        //Fetch common base and expansion paths from intent metadata:
         $in_metadata = unserialize( $ins[0]['in_metadata'] );
-        $flat_common_steps = ( isset($in_metadata['in__metadata_common_steps']) && count($in_metadata['in__metadata_common_steps']) > 0 ? array_flatten($in_metadata['in__metadata_common_steps']) : array() );
-        $expansion_steps = ( isset($in_metadata['in__metadata_expansion_steps']) && count($in_metadata['in__metadata_expansion_steps']) > 0 ? $in_metadata['in__metadata_expansion_steps'] : array() );
-        $common_base_resources = array(
-            'steps' => 1,
-            'seconds' => $ins[0]['in_seconds_cost'],
-            'cost' => $ins[0]['in_dollar_cost'],
-        );
-
-        if(count($flat_common_steps) > 0){
-
-            //Fetch totals for published common step intents:
-            $common_totals = $this->Database_model->in_fetch(array(
-                'in_id IN ('.join(',',$flat_common_steps).')' => null,
-                'in_id !=' => $in_id, //This is already calculated above...
-                'in_status' => 2, //Published
-            ), array(), 0, 0, array(), 'COUNT(in_id) as total_steps, SUM(in_seconds_cost) as total_seconds, SUM(in_dollar_cost) as total_cost');
-
-            //Addup to the base:
-            $common_base_resources['steps'] += $common_totals[0]['total_steps'];
-            $common_base_resources['seconds'] += $common_totals[0]['total_seconds'];
-            $common_base_resources['cost'] += $common_totals[0]['total_cost'];
+        if(!isset($in_metadata['in__metadata_common_steps']) || !isset($in_metadata['in__metadata_expansion_steps'])){
+            return false;
         }
+
+        //Fetch common base and expansion paths from intent metadata:
+        $flat_common_steps = array_flatten($in_metadata['in__metadata_common_steps']);
+        $expansion_steps = ( count($in_metadata['in__metadata_expansion_steps']) > 0 ? $in_metadata['in__metadata_expansion_steps'] : array() );
+
+        //Fetch totals for published common step intents:
+        $common_totals = $this->Database_model->in_fetch(array(
+            'in_id IN ('.join(',',$flat_common_steps).')' => null,
+            'in_status' => 2, //Published
+        ), array(), 0, 0, array(), 'COUNT(in_id) as total_steps, SUM(in_seconds_cost) as total_seconds, SUM(in_dollar_cost) as total_cost');
+
+        $common_base_resources = array(
+            'steps' => $common_totals[0]['total_steps'],
+            'seconds' => $common_totals[0]['total_seconds'],
+            'cost' => $common_totals[0]['total_cost'],
+        );
 
         $metadata_this = array(
             //Required steps/intents range to complete tree:
@@ -1488,7 +1492,7 @@ class Platform_model extends CI_Model
         //Determine Action Plan completion rate:
         $in_metadata = unserialize($in['in_metadata']);
 
-        if(!isset($in_metadata['in__metadata_common_steps']) || count($in_metadata['in__metadata_common_steps']) < 1){
+        if(!isset($in_metadata['in__metadata_common_steps'])){
 
             //Should not happen, log error:
             $this->Database_model->ln_create(array(
@@ -1503,15 +1507,17 @@ class Platform_model extends CI_Model
 
         } else {
 
+            $common_steps = array_flatten($in_metadata['in__metadata_common_steps']);
+
             //Fetch total completed & skipped:
             $completed_steps = $this->Database_model->ln_fetch(array(
                 'ln_type_entity_id' => 4559, //Completed Step
                 'ln_miner_entity_id' => $miner_en_id, //Belongs to this Student
-                'ln_child_intent_id IN (' . join(',', $in_metadata['in__metadata_common_steps']) . ')' => null,
+                'ln_child_intent_id IN (' . join(',', $common_steps ) . ')' => null,
                 'ln_status NOT IN (' . join(',', $this->config->item('ln_status_incomplete')) . ')' => null, //complete
             ), array(), 0, 0, array(), 'COUNT(ln_id) as completed_steps');
 
-            return round($completed_steps[0]['completed_steps']/count($in_metadata['in__metadata_common_steps'])*100);
+            return round($completed_steps[0]['completed_steps']/count($common_steps)*100);
         }
 
     }

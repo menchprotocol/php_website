@@ -14,7 +14,7 @@ if(count($student_intents) > 0){
 
     //Student has multiple Action Plans, so list all Action Plans to enable Student to choose:
     echo '<div id="actionplan_intents" class="list-group '.( $has_multiple_intentions ? 'actionplan-sort' : '').'" style="margin-top: 10px;">';
-    foreach ($student_intents as $ln) {
+    foreach ($student_intents as $priority => $ln) {
 
         //Calculate time:
         $time_estimate = echo_time_range($ln);
@@ -34,8 +34,8 @@ if(count($student_intents) > 0){
             echo '<i class="fas fa-bars"></i>'; //For sorting Action Plan
         }
 
-        echo '<span class="actionplan-title ap-title-'.$ln['ln_id'].'">' . $ln['in_outcome'] . '</span>';
-        echo '<div class="actionplan-overview"><span class="results-ln-'.$ln['ln_id'].'">'.echo_ordinal_number($ln['ln_order']).'</span> Priority, '.( $time_estimate ? $time_estimate.', ' : '').$this->Platform_model->actionplan_completion_rate($ln, $session_en['en_id']).'% Complete</div>';
+        echo '<span class="actionplan-title">' . $ln['in_outcome'] . '</span>';
+        echo '<div class="actionplan-overview"><span class="results-ln-'.$ln['ln_id'].'">'.echo_ordinal_number(($priority+1)).'</span> Priority, '.( $time_estimate ? $time_estimate.', ' : '').$this->Platform_model->actionplan_completion_rate($ln, $session_en['en_id']).'% Complete</div>';
         echo '</a>';
 
     }
