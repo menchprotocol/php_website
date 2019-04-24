@@ -905,7 +905,7 @@ function echo_tree_steps($in, $fb_messenger_format = 0, $expand_mode = false)
 
     $step_range = ( $metadata['in__metadata_min_steps'] != $metadata['in__metadata_max_steps'] );
 
-    $pitch = 'Action Plan contains ' . ( $step_range ? 'between '.$metadata['in__metadata_min_steps'].' - '.$metadata['in__metadata_max_steps'].' steps (depending on your answers)' : $metadata['in__metadata_max_steps'].' steps' );
+    $pitch = 'Action Plan contains ' . ( $step_range ? 'between '.$metadata['in__metadata_min_steps'].' - '.$metadata['in__metadata_max_steps'].' steps depending on your answers to Mench questions' : $metadata['in__metadata_max_steps'].' steps' );
 
     if ($fb_messenger_format) {
 
@@ -1692,8 +1692,8 @@ function echo_in($in, $level, $in_parent_id = 0, $is_parent = false)
     $tree_count = null;
     $tree_count_range = '0';
     if(isset($in_metadata['in__metadata_max_steps']) && isset($in_metadata['in__metadata_min_steps'])){
-        $tree_count = '<span class="btn-counter ' . echo_advance() . ' children-counter-' . $in['in_id'] . ' ' . ($is_parent && $level == 2 ? 'inb-counter' : '') . '">' . ( $in_metadata['in__metadata_max_steps']==$in_metadata['in__metadata_max_steps'] ? $in_metadata['in__metadata_max_steps'] : '~'.round(($in_metadata['in__metadata_min_steps']+$in_metadata['in__metadata_max_steps'])/2) ) . '</span>';
-        $tree_count_range = ( $in_metadata['in__metadata_max_steps']==$in_metadata['in__metadata_max_steps'] ? $in_metadata['in__metadata_max_steps'] : $in_metadata['in__metadata_min_steps'].'-'.$in_metadata['in__metadata_max_steps'] );
+        $tree_count = '<span class="btn-counter ' . echo_advance() . ' children-counter-' . $in['in_id'] . ' ' . ($is_parent && $level == 2 ? 'inb-counter' : '') . '">' . ( $in_metadata['in__metadata_min_steps']==$in_metadata['in__metadata_max_steps'] ? $in_metadata['in__metadata_max_steps'] : '~'.round(($in_metadata['in__metadata_min_steps']+$in_metadata['in__metadata_max_steps'])/2) ) . '</span>';
+        $tree_count_range = ( $in_metadata['in__metadata_min_steps']==$in_metadata['in__metadata_max_steps'] ? $in_metadata['in__metadata_max_steps'] : $in_metadata['in__metadata_min_steps'].'-'.$in_metadata['in__metadata_max_steps'] );
     }
 
     //Intent Link to Travel Down/UP the Tree:
