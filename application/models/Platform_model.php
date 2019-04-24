@@ -1469,7 +1469,7 @@ class Platform_model extends CI_Model
          *
          * */
         $this->Platform_model->metadata_update('in', $in_id, array(
-            'in__metadata_min_steps' => intval($metadata_this['__in__metadata_max_steps']),
+            'in__metadata_min_steps' => intval($metadata_this['__in__metadata_min_steps']),
             'in__metadata_max_steps' => intval($metadata_this['__in__metadata_max_steps']),
             'in__metadata_min_seconds' => intval($metadata_this['__in__metadata_min_seconds']),
             'in__metadata_max_seconds' => intval($metadata_this['__in__metadata_max_seconds']),

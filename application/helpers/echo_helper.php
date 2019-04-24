@@ -899,12 +899,13 @@ function echo_tree_steps($in, $fb_messenger_format = 0, $expand_mode = false)
 
     //Do we have anything to return?
     $metadata = unserialize($in['in_metadata']);
-    if (!isset($metadata['in__metadata_common_steps']) || count($metadata['in__metadata_common_steps']) < 2) {
+    if (!isset($metadata['in__metadata_min_steps']) || !isset($metadata['in__metadata_max_steps'])) {
         return false;
     }
 
+    $step_range = ( $metadata['in__metadata_min_steps'] != $metadata['in__metadata_max_steps'] );
 
-    $pitch = 'Action Plan contains ' . count($metadata['in__metadata_common_steps']) . ' steps';
+    $pitch = 'Action Plan contains ' . ( $step_range ? 'between '.$metadata['in__metadata_min_steps'].' - '.$metadata['in__metadata_max_steps'].' steps (depending on your answers)' : $metadata['in__metadata_max_steps'].' steps' );
 
     if ($fb_messenger_format) {
 
@@ -921,7 +922,7 @@ function echo_tree_steps($in, $fb_messenger_format = 0, $expand_mode = false)
             <div class="panel-heading" role="tab" id="heading' . $id . '">
                 <h4 class="panel-title">
                     <a role="button" data-toggle="collapse" data-parent="#open' . $id . '" href="#collapse' . $id . '" aria-expanded="' . ($expand_mode ? 'true' : 'false') . '" aria-controls="collapse' . $id . '">
-                    <i class="fas" style="transform:none !important;"><i class="fas fa-walking" style="transform:none !important;"></i></i> ' . count($metadata['in__metadata_common_steps']) . ' Steps<i class="fal fa-info-circle" style="transform:none !important; font-size:0.85em !important;"></i>
+                    <i class="fas" style="transform:none !important;"><i class="fas fa-walking" style="transform:none !important;"></i></i> ' . ( $step_range ? $metadata['in__metadata_min_steps'].'-'.$metadata['in__metadata_max_steps'] : $metadata['in__metadata_max_steps'] ) . ' Steps<i class="fal fa-info-circle" style="transform:none !important; font-size:0.85em !important;"></i>
                 </a>
             </h4>
         </div>

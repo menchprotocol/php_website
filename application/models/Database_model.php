@@ -1015,7 +1015,7 @@ class Database_model extends CI_Model
                     $export_row['alg_obj_is_in'] = 1;
                     $export_row['alg_obj_id'] = intval($db_row['in_id']);
                     $export_row['alg_obj_weight'] = ( isset($metadata['in__metadata_max_seconds']) ? $metadata['in__metadata_max_seconds'] : 0 );
-                    $export_row['alg_obj_published_children'] = ( isset($metadata['in__metadata_common_steps']) ? (count($metadata['in__metadata_common_steps'])-1) : 0 );
+                    $export_row['alg_obj_published_children'] = ( isset($metadata['in__metadata_max_steps']) ? $metadata['in__metadata_max_steps'] : 0 );
                     $export_row['alg_obj_status'] = intval($db_row['in_status']);
                     $export_row['alg_obj_icon'] = $fixed_fields['in_type'][$db_row['in_type']]['s_icon']; //Entity type icon
                     $export_row['alg_obj_name'] = $db_row['in_outcome'];
