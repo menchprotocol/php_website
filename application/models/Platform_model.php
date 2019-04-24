@@ -1278,7 +1278,7 @@ class Platform_model extends CI_Model
 
         if(count($flat_common_steps) > 0){
 
-            //Fetch totals for common step intents:
+            //Fetch totals for published common step intents:
             $common_totals = $this->Database_model->in_fetch(array(
                 'in_id IN ('.join(',',$flat_common_steps).')' => null,
                 'in_id !=' => $in_id, //This is already calculated above...
@@ -1366,7 +1366,7 @@ class Platform_model extends CI_Model
 
 
 
-        //Go through expansion paths:
+        //Go through expansion paths, if any:
         foreach($expansion_steps as $or_expansion){
 
             //Determine OR Answer local min/max:
@@ -1518,7 +1518,7 @@ class Platform_model extends CI_Model
     }
 
 
-    function metadata_update($obj_type, $obj_id, $new_fields, $absolute_adjustment = true)
+    function metadata_update($obj_type, $obj_id, $new_fields)
     {
 
         /*
@@ -1532,12 +1532,6 @@ class Platform_model extends CI_Model
          *
          * $new_fields:             The new array of metadata fields to be Set,
          *                          Updated or Removed (If set to null)
-         *
-         * $absolute_adjustment:    TRUE by default, meaning that values within
-         *                          $new_fields will be updated as they are. If
-         *                          this is FALSE, then this would be a relative
-         *                          adjustment (add or subtract) compared to what
-         *                          is already in the metadata field of $obj.
          *
          * */
 
@@ -1580,25 +1574,17 @@ class Platform_model extends CI_Model
 
         //Go through all the new fields and see if they differ from current metadata fields:
         foreach ($new_fields as $metadata_key => $metadata_value) {
-            if (!$absolute_adjustment) {
+            //We are doing an absolute adjustment if needed:
+            if (is_null($metadata_value) && isset($metadata[$metadata_key])) {
 
-                //We need to do a relative adjustment:
-                $metadata[$metadata_key] = (isset($metadata[$metadata_key]) ? $metadata[$metadata_key] : 0) + $metadata_value;
+                //User asked to remove this value:
+                unset($metadata[$metadata_key]);
 
-            } else {
+            } elseif (!is_null($metadata_value) && (!isset($metadata[$metadata_key]) || $metadata[$metadata_key] != $metadata_value)) {
 
-                //We are doing an absolute adjustment if needed:
-                if (is_null($metadata_value) && isset($metadata[$metadata_key])) {
+                //Value has changed, adjust:
+                $metadata[$metadata_key] = $metadata_value;
 
-                    //User asked to remove this value:
-                    unset($metadata[$metadata_key]);
-
-                } elseif (!is_null($metadata_value) && (!isset($metadata[$metadata_key]) || !($metadata[$metadata_key] === $metadata_value))) {
-
-                    //Value has changed, adjust:
-                    $metadata[$metadata_key] = $metadata_value;
-
-                }
             }
         }
 
