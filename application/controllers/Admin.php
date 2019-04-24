@@ -147,7 +147,7 @@ class Admin extends CI_Controller
             'ln_status' => 2, //Published
             'en_status' => 2, //Published
             'LENGTH(ln_content) > 0' => null,
-        ), array('en_child'), 0, 0, array('ln_order' => 'ASC', 'en_trust_score' => 'DESC')) as $var_name){
+        ), array('en_child'), 0) as $var_name){
             array_push($valid_variables, $var_name['ln_content']);
         }
 
@@ -162,8 +162,16 @@ class Admin extends CI_Controller
             }
 
             foreach(unserialize($in['in_metadata']) as $key => $value){
-                if(!in_array($key, $valid_variables) && !in_array($key, $invalid_variables)){
-                    array_push($invalid_variables, $key);
+                if(!in_array($key, $valid_variables)){
+                    //Remove this:
+                    $this->Platform_model->metadata_update('in', $in['in_id'], array(
+                        $key => null,
+                    ));
+
+                    //Add to index:
+                    if(!in_array($key, $invalid_variables)){
+                        array_push($invalid_variables, $key);
+                    }
                 }
             }
 
@@ -177,32 +185,37 @@ class Admin extends CI_Controller
             }
 
             foreach(unserialize($en['en_metadata']) as $key => $value){
-                if(!in_array($key, $valid_variables) && !in_array($key, $invalid_variables)){
-                    array_push($invalid_variables, $key);
+                if(!in_array($key, $valid_variables)){
+                    //Remove this:
+                    $this->Platform_model->metadata_update('en', $en['en_id'], array(
+                        $key => null,
+                    ));
+
+                    //Add to index:
+                    if(!in_array($key, $invalid_variables)){
+                        array_push($invalid_variables, $key);
+                    }
                 }
             }
 
         }
 
-        //Link Metadata
-        foreach($this->Database_model->ln_fetch(array()) as $ln){
-
-            if(strlen($ln['ln_metadata']) < 1){
-                continue;
-            }
-
-            foreach(unserialize($ln['ln_metadata']) as $key => $value){
-                if(!in_array($key, $valid_variables) && !in_array($key, $invalid_variables)){
-                    array_push($invalid_variables, $key);
-                }
-            }
-
-        }
-
-        echo_json(array(
+        $ln_metadata = array(
             'invalid' => $invalid_variables,
             'valid' => $valid_variables,
-        ));
+        );
+
+        if(count($invalid_variables) > 0){
+            //Did we have anything to remove? Report with system bug:
+            $this->Database_model->ln_create(array(
+                'ln_content' => 'cron__clean_metadatas() removed '.count($invalid_variables).' unknown variables from intent/entity metadatas. To prevent this from happening, register the variables via Variables Names: https://mench.com/entities/6232',
+                'ln_type_entity_id' => 4246, //Platform Error
+                'ln_miner_entity_id' => 1, //Shervin/Developer
+                'ln_metadata' => $ln_metadata,
+            ));
+        }
+
+        echo_json($ln_metadata);
 
     }
 
