@@ -296,7 +296,7 @@ class Database_model extends CI_Model
             foreach(explode(',', one_two_explode('&var_en_subscriber_ids=','', $en_all_5966[$insert_columns['ln_type_entity_id']]['m_desc'])) as $subscriber_en_id){
 
                 //Do not email the miner themselves, as already they know:
-                if($subscriber_en_id != $insert_columns['ln_miner_entity_id']){
+                if($insert_columns['ln_type_entity_id']==4246 /* Always report bugs */ || $subscriber_en_id != $insert_columns['ln_miner_entity_id']){
 
                     //Try fetching subscribers email:
                     foreach($this->Database_model->ln_fetch(array(
