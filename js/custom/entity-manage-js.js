@@ -678,27 +678,21 @@ function en_modify_save() {
                 $(".en_name_" + modify_data['en_id']).text(modify_data['en_name']);
 
 
-                //Entity Icon:
-                $('.en_ui_icon_' + modify_data['en_id']).html(modify_data['en_icon']);
-
                 //Entity Status:
                 $(".en___" + modify_data['en_id']).attr('en-status', modify_data['en_status']);
                 $('.en_status_' + modify_data['en_id']).html('<span data-toggle="tooltip" data-placement="right" title="' + object_js_statuses['en_status'][modify_data['en_status']]["s_name"] + ': ' + object_js_statuses['en_status'][modify_data['en_status']]["s_desc"] + '">' + object_js_statuses['en_status'][modify_data['en_status']]["s_icon"] + '</span>');
 
 
-                //Update other instances of the icon:
+                //Entity Icon:
                 var icon_is_set = ( modify_data['en_icon'].length > 0 ? 1 : 0 );
-                $('.en__icon_' + modify_data['en_id']).attr('en-is-set' , icon_is_set );
-
                 if(!icon_is_set){
                     //Set entity default icon:
                     modify_data['en_icon'] = '<i class="fas fa-at grey-at"></i>';
-                    $('.en_child_icon_' + modify_data['en_id']).addClass('hidden');
-                } else {
-                    $('.en_child_icon_' + modify_data['en_id']).removeClass('hidden').html(modify_data['en_icon']);
                 }
+                $('.en__icon_' + modify_data['en_id']).attr('en-is-set' , icon_is_set );
                 $('.icon-demo').html(modify_data['en_icon']);
-
+                $('.en_ui_icon_' + modify_data['en_id']).html(modify_data['en_icon']);
+                $('.en_child_icon_' + modify_data['en_id']).html(modify_data['en_icon']);
 
 
                 //Did we have notes to update?
@@ -721,15 +715,6 @@ function en_modify_save() {
                     $(".en___" + modify_data['en_id']).attr('ln-status', modify_data['ln_status'])
                     $('.ln_status_' + modify_data['ln_id']).html('<span class="ln_status_val" data-toggle="tooltip" data-placement="right" title="' + object_js_statuses['ln_status'][modify_data['ln_status']]["s_name"] + ': ' + object_js_statuses['ln_status'][modify_data['ln_status']]["s_desc"] + '">' + object_js_statuses['ln_status'][modify_data['ln_status']]["s_icon"] + '</span>');
 
-                }
-
-                if (modify_data['en_icon'].length > 0) {
-                    $('.en_ui_icon_' + modify_data['en_id']).html(modify_data['en_icon']);
-                    $('.en_child_icon_' + modify_data['en_id']).html(modify_data['en_icon']);
-                } else {
-                    //hide that section
-                    $('.en_ui_icon_' + modify_data['en_id']).html('<i class="fas fa-at grey-at"></i>');
-                    $('.en_child_icon_' + modify_data['en_id']).html('');
                 }
 
 
