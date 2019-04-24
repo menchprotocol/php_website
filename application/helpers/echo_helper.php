@@ -1083,7 +1083,7 @@ function echo_tree_costs($in, $fb_messenger_format = 0, $expand_mode = false)
     $pitch .= ( $has_time_estimate ? strtolower(echo_time_range($in)).'' : '' );
     $pitch .= ( $has_cost_estimate ? ( $has_time_estimate ? ' and may cost '.( $cost_range ? 'between ' : '' ) : '' ) . $price_range : '' );
     $pitch .= ( $cost_range || $time_range ? ' depending on your answers to Mench questions' : '' );
-    $pitch .= ' to ' . $in['in_outcome'];
+    $pitch .= '.';
 
     if ($fb_messenger_format) {
         return '⏰ ' . $pitch . "\n";
@@ -1136,7 +1136,7 @@ function echo_en_messages($ln){
     $ui .= '<li class="' . echo_advance() . '" style="margin: 0 3px 0 0;"><span title="'.$fixed_fields['ln_status'][$ln['ln_status']]['s_name'].': '.$fixed_fields['ln_status'][$ln['ln_status']]['s_desc'].'" data-toggle="tooltip" data-placement="top">'.$fixed_fields['ln_status'][$ln['ln_status']]['s_icon'].'</span></li>';
 
     //Order:
-    $ui .= '<li class="' . echo_advance() . '" style="margin: 0 3px 0 0;"><span title="Message order relative to siblings" data-toggle="tooltip" data-placement="top"><i class="fas fa-bars"></i>' . echo_ordinal_number($ln['ln_order']) . '</span></li>';
+    $ui .= '<li class="' . echo_advance() . '" style="margin: 0 3px 0 0;"><span title="Message order relative to siblings" data-toggle="tooltip" data-placement="top"><i class="fas fa-sort"></i>' . echo_ordinal_number($ln['ln_order']) . '</span></li>';
 
     $ui .= '<li style="clear: both;">&nbsp;</li>';
 
@@ -1676,7 +1676,7 @@ function echo_in($in, $level, $in_parent_id = 0, $is_parent = false)
         'ln_type_entity_id IN (' . join(',', $CI->config->item('en_ids_4485')) . ')' => null, //All Intent Notes
         'ln_child_intent_id' => $in['in_id'],
     ), array(), 0, 0, array(), 'COUNT(ln_id) as totals');
-    $ui .= '<a href="#intentmessages-' . $in['in_id'] . '" onclick="'.( $level==0 ? 'alert(\'Cannot manage here. Go to the intent to manage.\')' : 'in_messages_iframe('.$in['in_id'].')' ).'" class="msg-badge-' . $in['in_id'] . ' badge badge-primary white-primary is_not_bg '.( $level==0 ? '' . echo_advance() . '' : '' ).'" style="width:40px; margin-right:2px; margin-left:5px;" data-toggle="tooltip" title="Intent Notes" data-placement="top"><span class="btn-counter messages-counter-' . $in['in_id'] . '">' . $count_in_metadata[0]['totals'] . '</span><i class="fas fa-comment-plus"></i></a>';
+    $ui .= '<a href="#intentnotes-' . $in['in_id'] . '" onclick="'.( $level==0 ? 'alert(\'Cannot manage here. Go to the intent to manage.\')' : 'in_messages_iframe('.$in['in_id'].')' ).'" class="msg-badge-' . $in['in_id'] . ' badge badge-primary white-primary is_not_bg '.( $level==0 ? '' . echo_advance() . '' : '' ).'" style="width:40px; margin-right:2px; margin-left:5px;" data-toggle="tooltip" title="Intent Notes" data-placement="top"><span class="btn-counter messages-counter-' . $in['in_id'] . '">' . $count_in_metadata[0]['totals'] . '</span><i class="fas fa-comment-plus"></i></a>';
 
 
 
@@ -1936,7 +1936,7 @@ function echo_en($en, $level, $is_parent = false)
     ), array(), 0, 0, array(), 'COUNT(ln_id) AS total_messages');
 
     //Only show in non-advance mode if we have messages:
-    $ui .= '<a class="badge badge-secondary white-secondary '.( $level==0 || $messages[0]['total_messages'] == 0 ? echo_advance() : '' ) . '" href="#entitymessages-' . $en['en_id'] . '" onclick="' . ( $messages[0]['total_messages'] == 0 ? 'alert(\'No Intent Notes found that reference this entity\')' : ( $level==0 ? 'alert(\'Cannot manage here. Go to the entity to manage.\')' : 'en_load_messages('.$en['en_id'].')' ) ) . '" style="width:40px; margin-left:5px;" data-toggle="tooltip" data-placement="top" title="Entity References within Intent Notes"><span class="btn-counter">' . echo_number($messages[0]['total_messages']) . '</span><i class="fas fa-comment-plus"></i></a>';
+    $ui .= '<a class="badge badge-secondary white-secondary '.( $level==0 || $messages[0]['total_messages'] == 0 ? echo_advance() : '' ) . '" href="#entityreferences-' . $en['en_id'] . '" onclick="' . ( $messages[0]['total_messages'] == 0 ? 'alert(\'No Intent Notes found that reference this entity\')' : ( $level==0 ? 'alert(\'Cannot manage here. Go to the entity to manage.\')' : 'en_load_messages('.$en['en_id'].')' ) ) . '" style="width:40px; margin-left:5px;" data-toggle="tooltip" data-placement="top" title="Entity References within Intent Notes"><span class="btn-counter">' . echo_number($messages[0]['total_messages']) . '</span><i class="fas fa-comment-plus"></i></a>';
 
 
 

@@ -51,7 +51,7 @@ foreach ($metadatas as $ln) {
     <?php
     foreach ($en_all_4485 as $ln_type_entity_id => $m) {
         echo '<li role="presentation" class="nav_' . $ln_type_entity_id . ' active '.( in_array(5005 , $m['m_parents']) ? ' ' . echo_advance() . '' : '' ).'">';
-        echo '<a href="#intentmessages-' . $in_id . '-'.$ln_type_entity_id.'"> ' . $m['m_icon'] . ' ' . $m['m_name'] . 's [<span class="mtd_count_'.$in_id.'_'.$ln_type_entity_id.'">'.( isset($counters[$ln_type_entity_id]) ? $counters[$ln_type_entity_id] : 0 ).'</span>] </a>';
+        echo '<a href="#intentnotes-' . $in_id . '-'.$ln_type_entity_id.'"> ' . $m['m_icon'] . ' ' . $m['m_name'] . 's [<span class="mtd_count_'.$in_id.'_'.$ln_type_entity_id.'">'.( isset($counters[$ln_type_entity_id]) ? $counters[$ln_type_entity_id] : 0 ).'</span>] </a>';
         echo '</li>';
     }
     ?>

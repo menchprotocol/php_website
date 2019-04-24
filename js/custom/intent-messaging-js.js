@@ -71,7 +71,7 @@ function message_load_type(ln_type_entity_id) {
     $('.msg_en_type_' + ln_type_entity_id).removeClass('hidden');
 
     //Load sorting:
-    message_ln_order_load();
+    messages_sort_load();
 
 }
 
@@ -207,7 +207,7 @@ $(document).ready(function () {
 });
 
 
-function message_ln_order_apply(ln_type_entity_id) {
+function messages_sort_apply(ln_type_entity_id) {
 
     var new_ln_orders = [];
     var sort_rank = 0;
@@ -221,18 +221,19 @@ function message_ln_order_apply(ln_type_entity_id) {
         }
     });
 
-    //Update backend:
-    $.post("/intents/in_message_sort", {new_ln_orders: new_ln_orders}, function (data) {
-        //Only show message if there was an error:
-        if (!data.status) {
-            //Show error:
-            alert('ERROR: ' + data.message);
-        }
-    });
-
+    //Update backend if any:
+    if(sort_rank > 0){
+        $.post("/intents/in_message_sort", {new_ln_orders: new_ln_orders}, function (data) {
+            //Only show message if there was an error:
+            if (!data.status) {
+                //Show error:
+                alert('ERROR: ' + data.message);
+            }
+        });
+    }
 }
 
-function message_ln_order_load() {
+function messages_sort_load() {
 
     var inner_content = null;
 
@@ -242,7 +243,7 @@ function message_ln_order_load() {
         draggable: ".is_level2_sortable", // Specifies which items inside the element should be sortable
         onUpdate: function (evt/**Event*/) {
             //Apply new sort:
-            message_ln_order_apply(focus_ln_type_entity_id);
+            messages_sort_apply(focus_ln_type_entity_id);
         },
         //The next two functions resolve a Bug with sorting iframes like YouTube embeds while also making the UI more informative
         onChoose: function (evt/**Event*/) {
@@ -346,7 +347,7 @@ function in_message_modify(ln_id, initial_ln_type_entity_id) {
                         $("#ul-nav-" + ln_id).remove();
 
                         //Adjust sort for this message type:
-                        message_ln_order_apply(focus_ln_type_entity_id);
+                        messages_sort_apply(focus_ln_type_entity_id);
 
                     }, 610);
                 }, 610);

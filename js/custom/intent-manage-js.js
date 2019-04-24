@@ -185,7 +185,7 @@ $(document).ready(function () {
         var hash_parts = hash.split("-");
         if (hash_parts.length >= 2) {
             //Fetch level if available:
-            if (hash_parts[0] == 'intentmessages') {
+            if (hash_parts[0] == 'intentnotes') {
                 in_messages_iframe(hash_parts[1]);
             } else if (hash_parts[0] == 'loadmodify') {
                 in_modify_load(hash_parts[1], hash_parts[2]);
