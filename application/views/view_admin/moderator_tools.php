@@ -89,7 +89,7 @@ if(!$action) {
         $orphan_ins = $this->Database_model->in_fetch(array(
             ' NOT EXISTS (SELECT 1 FROM table_links WHERE in_id=ln_child_intent_id AND ln_type_entity_id IN (' . join(',', $this->config->item('en_ids_4486')) . ') AND ln_status>=0) ' => null,
             'in_status >=' => 0,
-            'in_id !=' => 7766, //Mench Mission
+            'in_id !=' => $this->config->item('in_mission_id'), //Mission does not have parents
             'in_id NOT IN (' . join(',', $this->config->item('in_status_locked')) . ')' => null,
         ));
 

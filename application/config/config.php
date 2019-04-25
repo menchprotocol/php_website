@@ -5,7 +5,7 @@ defined('BASEPATH') OR exit('No direct script access allowed');
 /*
  *
  * Global variables used throughout the platform.
- * Example: $this->config->item('in_miner_start')
+ * Example: $this->config->item('in_mission_id')
  *
  */
 
