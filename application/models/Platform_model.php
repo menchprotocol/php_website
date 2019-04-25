@@ -1268,13 +1268,13 @@ class Platform_model extends CI_Model
         }
 
         $in_metadata = unserialize( $ins[0]['in_metadata'] );
-        if(!isset($in_metadata['in__metadata_common_steps']) || !isset($in_metadata['in__metadata_expansion_steps'])){
+        if(!isset($in_metadata['in__metadata_common_steps'])){
             return false;
         }
 
         //Fetch common base and expansion paths from intent metadata:
         $flat_common_steps = array_flatten($in_metadata['in__metadata_common_steps']);
-        $expansion_steps = ( count($in_metadata['in__metadata_expansion_steps']) > 0 ? $in_metadata['in__metadata_expansion_steps'] : array() );
+        $expansion_steps = ( isset($in_metadata['in__metadata_expansion_steps']) && count($in_metadata['in__metadata_expansion_steps']) > 0 ? $in_metadata['in__metadata_expansion_steps'] : array() );
 
         //Fetch totals for published common step intents:
         $common_totals = $this->Database_model->in_fetch(array(
@@ -1487,38 +1487,86 @@ class Platform_model extends CI_Model
 
     }
 
-    function actionplan_completion_rate($in, $miner_en_id)
+    function actionplan_completion_rate($in_id, $miner_en_id)
     {
-        //Determine Action Plan completion rate:
-        $in_metadata = unserialize($in['in_metadata']);
 
+        //Validate Action Plan:
+        $action_plans = $this->Database_model->ln_fetch(array(
+            'ln_type_entity_id IN (' . join(',', $this->config->item('en_ids_6147')) . ')' => null, //Action Plan Intentions
+            'ln_miner_entity_id' => $miner_en_id, //Belongs to this Student
+            'ln_parent_intent_id' => $in_id,
+            'ln_status IN (' . join(',', $this->config->item('ln_status_incomplete')) . ')' => null, //incomplete
+            'in_status' => 2, //Published
+        ), array('in_parent'));
+        if(count($action_plans) != 1){
+            //Should not happen, log error:
+            $this->Database_model->ln_create(array(
+                'ln_content' => 'actionplan_completion_rate() found '.count($action_plans).' Action Plans.',
+                'ln_type_entity_id' => 4246, //Platform Error
+                'ln_miner_entity_id' => 1, //Shervin/Developer
+                'ln_parent_entity_id' => $miner_en_id,
+                'ln_parent_intent_id' => $in_id,
+            ));
+
+            return 0;
+        }
+
+
+        //Fetch/validate Action Plan Common Steps:
+        $in_metadata = unserialize($action_plans[0]['in_metadata']);
         if(!isset($in_metadata['in__metadata_common_steps'])){
 
             //Should not happen, log error:
             $this->Database_model->ln_create(array(
-                'ln_content' => 'Detected student Action Plan without in__metadata_common_steps value!',
+                'ln_content' => 'actionplan_completion_rate() Detected student Action Plan without in__metadata_common_steps value!',
                 'ln_type_entity_id' => 4246, //Platform Error
                 'ln_miner_entity_id' => 1, //Shervin/Developer
                 'ln_parent_entity_id' => $miner_en_id,
-                'ln_child_intent_id' => $in['in_id'],
+                'ln_parent_intent_id' => $in_id,
             ));
 
             return 0;
-
-        } else {
-
-            $common_steps = array_flatten($in_metadata['in__metadata_common_steps']);
-
-            //Fetch total completed & skipped:
-            $completed_steps = $this->Database_model->ln_fetch(array(
-                'ln_type_entity_id' => 4559, //Completed Step
-                'ln_miner_entity_id' => $miner_en_id, //Belongs to this Student
-                'ln_child_intent_id IN (' . join(',', $common_steps ) . ')' => null,
-                'ln_status NOT IN (' . join(',', $this->config->item('ln_status_incomplete')) . ')' => null, //complete
-            ), array(), 0, 0, array(), 'COUNT(ln_id) as completed_steps');
-
-            return round($completed_steps[0]['completed_steps']/count($common_steps)*100);
         }
+
+
+        $common_steps = array_flatten($in_metadata['in__metadata_common_steps']);
+        $completed_steps = $this->Database_model->ln_fetch(array(
+            'ln_type_entity_id IN (' . join(',', $this->config->item('en_ids_6146')) . ')' => null, //Action Plan Progression Link Types
+            'ln_miner_entity_id' => $miner_en_id, //Belongs to this Student
+            'ln_parent_intent_id IN (' . join(',', $common_steps ) . ')' => null,
+            'ln_status NOT IN (' . join(',', $this->config->item('ln_status_incomplete')) . ')' => null, //complete
+            'in_status' => 2, //Published
+        ), array('in_parent'), 0, 0, array(), 'COUNT(ln_id) as completed_steps');
+
+
+        //Calculate common steps and expansion steps recursively for this student:
+        $metadata_this = array(
+            'steps_total' => count($common_steps),
+            'steps_completed' => $completed_steps[0]['completed_steps'],
+            'seconds_total' => 0,
+            'seconds_completed' => 0,
+            'cost_total' => 0,
+            'cost_completed' => 0,
+        );
+
+        //Fetch expansion steps recursively:
+        foreach($this->Database_model->ln_fetch(array(
+            'ln_type_entity_id' => 6157, //Action Plan Question Answered
+            'ln_miner_entity_id' => $miner_en_id, //Belongs to this Student
+            'ln_parent_intent_id IN (' . join(',', $common_steps ) . ')' => null,
+            'ln_status NOT IN (' . join(',', $this->config->item('ln_status_incomplete')) . ')' => null, //complete
+            'in_status' => 2, //Published
+        ), array('in_parent')) as $expansion_in){
+
+            //Addup completion stats for this:
+            $recursive_in = $this->Platform_model->actionplan_completion_rate($ln, $session_en['en_id']);
+
+        }
+
+
+
+
+        return round($completed_steps[0]['completed_steps']/count($common_steps)*100);
 
     }
 

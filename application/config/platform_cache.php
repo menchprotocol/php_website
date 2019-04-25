@@ -11,7 +11,7 @@ defined('BASEPATH') OR exit('No direct script access allowed');
  *
  */
 
-//Generated 2019-04-16 20:03:25 PST
+//Generated 2019-04-24 18:56:15 PST
 
 //Entity Referencing in Intent Notes:
 $config['en_ids_4986'] = array(4231, 4232, 4233, 4234, 4602, 4983, 6093);
@@ -150,7 +150,7 @@ $config['en_all_6196'] = array(
         'm_icon' => '<i class="fab fa-facebook"></i>',
         'm_name' => 'Link Metadata Facebook Attachment ID',
         'm_desc' => 'File caching offered by Facebook for media delivered over Messenger.',
-        'm_parents' => array(6196, 6215, 2793, 6103),
+        'm_parents' => array(6232, 6196, 6215, 2793, 6103),
     ),
 );
 
@@ -287,20 +287,20 @@ $config['en_all_4363'] = array(
     ),
 );
 
-//Action Plan Expansion Link Types:
-$config['en_ids_6147'] = array(6140, 6157);
+//Action Plan Intentions:
+$config['en_ids_6147'] = array(4235, 6140);
 $config['en_all_6147'] = array(
+    4235 => array(
+        'm_icon' => '<i class="fas fa-bullseye-arrow"></i>',
+        'm_name' => 'Set Intention',
+        'm_desc' => '',
+        'm_parents' => array(6147, 4506, 6150, 4755, 4593),
+    ),
     6140 => array(
         'm_icon' => '<i class="far fa-lock-open"></i>',
         'm_name' => 'Condition Unlocked',
         'm_desc' => '',
         'm_parents' => array(4755, 6147, 4593),
-    ),
-    6157 => array(
-        'm_icon' => '<i class="far fa-check-circle"></i>',
-        'm_name' => 'Answer',
-        'm_desc' => '',
-        'm_parents' => array(6146, 6147, 4755, 4593, 4460),
     ),
 );
 
@@ -315,7 +315,7 @@ $config['en_all_6146'] = array(
     ),
     6143 => array(
         'm_icon' => '<i class="far fa-minus-square"></i>',
-        'm_name' => 'Skipped',
+        'm_name' => 'Skipped Step',
         'm_desc' => '',
         'm_parents' => array(6146, 4755, 4593),
     ),
@@ -329,7 +329,7 @@ $config['en_all_6146'] = array(
         'm_icon' => '<i class="far fa-check-circle"></i>',
         'm_name' => 'Answer',
         'm_desc' => '',
-        'm_parents' => array(6146, 6147, 4755, 4593, 4460),
+        'm_parents' => array(6146, 4755, 4593, 4460),
     ),
     6158 => array(
         'm_icon' => '<i class="far fa-check"></i>',
@@ -638,7 +638,7 @@ $config['en_all_5966'] = array(
 );
 
 //Linked Entities Text:
-$config['en_ids_4255'] = array(2999, 3005, 3084, 3147, 3192, 3286, 4601, 4763, 4883);
+$config['en_ids_4255'] = array(2999, 3005, 3084, 3147, 3192, 3286, 4601, 4763, 4883, 6232);
 $config['en_all_4255'] = array(
     2999 => array(
         'm_icon' => '<i class="fal fa-microphone"></i>',
@@ -693,6 +693,12 @@ $config['en_all_4255'] = array(
         'm_name' => 'Expert Services',
         'm_desc' => 'What services is offered and how much they cost',
         'm_parents' => array(4990, 4255, 3000),
+    ),
+    6232 => array(
+        'm_icon' => '<i class="far fa-file-signature"></i>',
+        'm_name' => 'Variable Names',
+        'm_desc' => 'Requires variable name',
+        'm_parents' => array(4255, 6212),
     ),
 );
 
@@ -1033,9 +1039,9 @@ $config['en_all_4755'] = array(
     ),
     4235 => array(
         'm_icon' => '<i class="fas fa-bullseye-arrow"></i>',
-        'm_name' => 'Action Plan Add Intention',
+        'm_name' => 'Action Plan Set Intention',
         'm_desc' => '',
-        'm_parents' => array(4506, 6150, 4755, 4593),
+        'm_parents' => array(6147, 4506, 6150, 4755, 4593),
     ),
     4266 => array(
         'm_icon' => '<i class="fab fa-facebook-messenger"></i>',
@@ -1201,7 +1207,7 @@ $config['en_all_4755'] = array(
     ),
     6143 => array(
         'm_icon' => '<i class="far fa-minus-square"></i>',
-        'm_name' => 'Action Plan Skipped',
+        'm_name' => 'Action Plan Skipped Step',
         'm_desc' => '',
         'm_parents' => array(6146, 4755, 4593),
     ),
@@ -1233,7 +1239,7 @@ $config['en_all_4755'] = array(
         'm_icon' => '<i class="far fa-check-circle"></i>',
         'm_name' => 'Action Plan Answer',
         'm_desc' => '',
-        'm_parents' => array(6146, 6147, 4755, 4593, 4460),
+        'm_parents' => array(6146, 4755, 4593, 4460),
     ),
     6158 => array(
         'm_icon' => '<i class="far fa-check"></i>',
@@ -1468,9 +1474,9 @@ $config['en_all_4593'] = array(
     ),
     4235 => array(
         'm_icon' => '<i class="fas fa-bullseye-arrow"></i>',
-        'm_name' => 'Action Plan Add Intention',
+        'm_name' => 'Action Plan Set Intention',
         'm_desc' => 'Top-level goals set by students that enable Mench to deliver the most relevant intelligence.',
-        'm_parents' => array(4506, 6150, 4755, 4593),
+        'm_parents' => array(6147, 4506, 6150, 4755, 4593),
     ),
     4242 => array(
         'm_icon' => '<i class="fal fa-sync"></i>',
@@ -1852,7 +1858,7 @@ $config['en_all_4593'] = array(
     ),
     6143 => array(
         'm_icon' => '<i class="far fa-minus-square"></i>',
-        'm_name' => 'Action Plan Skipped',
+        'm_name' => 'Action Plan Skipped Step',
         'm_desc' => 'Logged every time a student consciously skips an intent and it\'s recursive children.',
         'm_parents' => array(6146, 4755, 4593),
     ),
@@ -1884,7 +1890,7 @@ $config['en_all_4593'] = array(
         'm_icon' => '<i class="far fa-check-circle"></i>',
         'm_name' => 'Action Plan Answer',
         'm_desc' => 'Logged when students choose their path by selecting an OR intent answer.',
-        'm_parents' => array(6146, 6147, 4755, 4593, 4460),
+        'm_parents' => array(6146, 4755, 4593, 4460),
     ),
     6158 => array(
         'm_icon' => '<i class="far fa-check"></i>',
@@ -2018,7 +2024,7 @@ $config['en_all_4331'] = array(
     ),
 );
 
-//Platform Triple Objects:
+//Platform Objects:
 $config['en_ids_4534'] = array(4535, 4536, 6205);
 $config['en_all_4534'] = array(
     4535 => array(

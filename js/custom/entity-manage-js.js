@@ -688,7 +688,7 @@ function en_modify_save() {
                 if(!icon_is_set){
                     //Set entity default icon:
                     modify_data['en_icon'] = '<i class="fas fa-at grey-at"></i>';
-                }pla
+                }
                 $('.en__icon_' + modify_data['en_id']).attr('en-is-set' , icon_is_set );
                 $('.icon-demo').html(modify_data['en_icon']);
                 $('.en_ui_icon_' + modify_data['en_id']).html(modify_data['en_icon']);
