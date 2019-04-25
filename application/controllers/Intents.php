@@ -11,6 +11,14 @@ class Intents extends CI_Controller
         $this->output->enable_profiler(FALSE);
     }
 
+    function test($in_id){
+
+        $ins = $this->Database_model->in_fetch(array(
+            'in_id' => $in_id,
+        ));
+        $tree = $this->Platform_model->in_metadata_common_base($ins[0]);
+        echo_json($tree);
+    }
 
     //Loaded as default function of the default controller:
     function index()

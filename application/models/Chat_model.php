@@ -1073,49 +1073,69 @@ class Chat_model extends CI_Model
 
 
 
-    function dispatch_random_intro($in_id, $recipient_en){
+    function dispatch_rotating_message($recipient_en, $message_key){
 
-        //If we have rotating we'd need to pick one and send randomly:
-        $messages_rotating = $this->Database_model->ln_fetch(array(
-            'ln_status' => 2, //Published
-            'ln_type_entity_id' => 4234, //Rotating
-            'ln_child_intent_id' => $in_id,
-        ), array(), 0, 0, array('ln_order' => 'ASC'));
+        /*
+         *
+         * To make Mench personal assistant feel more natural,
+         * this function sends varying messages to communicate
+         * specific things about Mench or about the student's
+         * progress towards their Action Plan.
+         *
+         * */
 
-        //Do we have any rotating messages?
-        if (count($messages_rotating) < 1) {
+        $rotation_index = array(
+            'affirm_progress' => array(
+                'Got it 👍',
+                'Noted',
+                'Ok sweet',
+                'Nice answer',
+                'Nice 👍',
+                'Gotcha 🙌',
+                'Fabulous',
+                'Confirmed',
+                '👌',
+                '👍',
+            ),
+            'one_way_only' => array(
+                'I am not designed to respond to custom text messages. I can understand you only when you choose one of the multiple-choice options I provide.',
+                'What was that? I would only understand if you choose one of the multiple-choice options I provide.',
+                'I did not get that as I cannot respond to your text messages. Select multiple-choice option to continue...',
+            ),
+        );
+
+        if(!array_key_exists($message_key, $rotation_index)){
+            //Oooopsi, this should never happen:
+            $this->Database_model->ln_create(array(
+                'ln_parent_entity_id' => $recipient_en['en_id'],
+                'ln_content' => 'dispatch_rotating_message() failed to locate message type',
+                'ln_type_entity_id' => 4246, //Platform Error
+                'ln_miner_entity_id' => 1, //Shervin/Developer
+            ));
             return false;
         }
 
-        //yes, pick 1 random message:
-        $random_pick = $messages_rotating[rand(0, (count($messages_rotating) - 1))];
-
-        //Dispatch message:
+        //Dispatch a random message:
         $this->Chat_model->dispatch_message(
-            $random_pick['ln_content'],
+            $rotation_index[$message_key][rand(0, (count($rotation_index[$message_key]) - 1))],
             $recipient_en,
-            true,
-            array(),
-            array(
-                'ln_child_intent_id' => $in_id, //Focus Intent
-                'ln_parent_link_id' => $random_pick['ln_id'], //This message
-            )
+            true
         );
 
     }
 
 
-    function compose_message($in_id, $recipient_en, $actionplan_ln_id = 0)
+    function actionplan_message_send($in_id, $recipient_en)
     {
 
         /*
          *
-         * A wrapper function for compose_validate_message() for the sole purposes
+         * A wrapper function for actionplan_message_validate() for the sole purposes
          * of logging any errors that might happen within that function.
          *
          * */
 
-        $msg_validation = $this->Chat_model->compose_validate_message($in_id, $recipient_en, $actionplan_ln_id);
+        $msg_validation = $this->Chat_model->actionplan_message_validate($in_id, $recipient_en);
 
         if(!$msg_validation['status']){
 
@@ -1123,7 +1143,7 @@ class Chat_model extends CI_Model
             $this->Database_model->ln_create(array(
                 'ln_type_entity_id' => 4246, //Platform Error
                 'ln_miner_entity_id' => 1, //Shervin/Developer
-                'ln_content' => 'compose_validate_message() returned error [' . $msg_validation['message'] . '] for intent #' . $in_id . ' and Action Plan ['.$actionplan_ln_id.']',
+                'ln_content' => 'actionplan_message_validate() returned error [' . $msg_validation['message'] . '] for intent #' . $in_id,
                 'ln_child_entity_id' => (isset($recipient_en['en_id']) ? $recipient_en['en_id'] : 0),
                 'ln_child_intent_id' => $in_id,
             ));
@@ -1141,7 +1161,7 @@ class Chat_model extends CI_Model
 
 
 
-    function compose_featured_intents($en_id){
+    function suggest_featured_intents($en_id){
 
 
         /*
@@ -1160,18 +1180,20 @@ class Chat_model extends CI_Model
         );
 
         //Fetch student's Action Plan Intents:
-        $student_ins_ids = array(); //To be populated:
-        foreach($this->Database_model->ln_fetch(array(
+        $student_intents = $this->Database_model->ln_fetch(array(
             'ln_miner_entity_id' => $en_id,
-            'ln_type_entity_id' => 4235, //Set Intention
-            'ln_status >=' => 0, //New+ (We dont want to recommend intentions already added to Student's Action Plan or completed by student)
+            'ln_type_entity_id IN (' . join(',', $this->config->item('en_ids_6147')) . ')' => null, //Action Plan Intentions
+            'ln_status IN (' . join(',', $this->config->item('ln_status_incomplete')) . ')' => null, //incomplete intentions
             'in_status' => 2, //Published
-        ), array('in_child'), 0, 0, array('ln_order' => 'ASC')) as $student_in){
+        ), array('in_parent'), 0, 0, array('ln_order' => 'ASC'));
+
+        $student_ins_ids = array(); //To be populated:
+        foreach($student_intents as $student_in){
             array_push($student_ins_ids, $student_in['in_id']);
         }
 
         if(count($student_ins_ids) > 0){
-            //Remove
+            //Remove as its already added to student Action Plan:
             $featured_filters['ln_child_intent_id NOT IN ('.join(',', $student_ins_ids).')'] = null;
         }
 
@@ -1192,7 +1214,7 @@ class Chat_model extends CI_Model
                     //We can't have more than 10 intentions listed as Quick Reply supports a total of 11 only (and we need one for "None of the above" option)
                     $this->Database_model->ln_create(array(
                         'ln_miner_entity_id' => 1, //Shervin/Developer
-                        'ln_content' => 'compose_validate_message() encountered intent with too many children to be listed as OR Intent options! Trim and iterate that intent tree.',
+                        'ln_content' => 'actionplan_message_validate() encountered intent with too many children to be listed as OR Intent options! Trim and iterate that intent tree.',
                         'ln_type_entity_id' => 4246, //Platform Error
                         'ln_child_entity_id' => $en_id, //Affected student
                         'ln_parent_intent_id' => $this->config->item('in_featured'), //Featured intentions has an overflow!
@@ -1205,7 +1227,7 @@ class Chat_model extends CI_Model
                 }
 
 
-                $next_step_message .= "\n\n" . $key . '/ ' . echo_in_outcome($or_child_in['in_outcome'], true);
+                $message .= "\n\n" . $key . '/ ' . echo_in_outcome($or_child_in['in_outcome'], true);
                 array_push($quick_replies, array(
                     'content_type' => 'text',
                     'title' => '/' . $key,
@@ -1218,15 +1240,19 @@ class Chat_model extends CI_Model
 
         } else {
 
-            //Nope, we did not find any published featured intentions not yet taken by the student...
-            //Let them know:
+            //Student has already taken all featured intentions and there is nothing else to offer them:
+            $this->Chat_model->dispatch_message(
+                'You have already added all featured intentions to your Action Plan and I have nothing else to recommend to you at this time.',
+                array('en_id' => $en_id),
+                true
+            );
 
 
         }
 
     }
 
-    function compose_validate_message($in_id, $recipient_en, $actionplan_ln_id)
+    function actionplan_message_validate($in_id, $recipient_en)
     {
 
         /*
@@ -1238,10 +1264,6 @@ class Chat_model extends CI_Model
          * - $recipient_en:     The recipient who will receive the messages via
          *                      Facebook Messenger. Note that this function does
          *                      not support an HTML format, only Messenger.
-         *
-         * - $actionplan_ln_id: If set greater than zero, will indicate a specific
-         *                      Action Plan belonging to $recipient_en that will be
-         *                      used to construct messages.
          *
          * */
 
@@ -1265,7 +1287,6 @@ class Chat_model extends CI_Model
         //Validate intent:
         $ins = $this->Database_model->in_fetch(array(
             'in_id' => $in_id,
-            'in_status >=' => 0, //New+
         ));
 
         if (count($ins) < 1) {
@@ -1273,95 +1294,37 @@ class Chat_model extends CI_Model
                 'status' => 0,
                 'message' => 'Invalid Intent #' . $in_id,
             );
-        }
-
-
-
-        /*
-         *
-         * We assume false to start. This is only true
-         * IF $actionplan_ln_id > 0 AND $in_id is
-         * the top-level Student Intent:
-         *
-         * */
-        $is_actionplan_intent = false;
-
-
-        //Validate Action Plan if we have one:
-        if($actionplan_ln_id > 0){
-
-            $actionplans = $this->Database_model->ln_fetch(array(
-                'ln_id' => $actionplan_ln_id,
-                'ln_miner_entity_id' => $recipient_en['en_id'],
-                'ln_type_entity_id' => 4235, //Student Intent
-                'ln_status IN (' . join(',', $this->config->item('ln_status_incomplete')) . ')' => null, //incomplete
-            ), array('in_child'));
-
-            if(count($actionplans) < 1) {
-
-                return array(
-                    'status' => 0,
-                    'message' => 'Invalid Action Plan ID ['.$actionplan_ln_id.'] for Student [@'.$recipient_en['en_id'].']',
-                );
-
-            } elseif (!in_array($actionplans[0]['ln_status'], array(0, 1, 2))) {
-
-                //Action Plan Seems complete, nothing else to do:
-                return array(
-                    'status' => 0,
-                    'message' => 'Action Plan ['.$actionplans[0]['in_outcome'].'] is no longer active',
-                );
-
-            }
-
-            //Is this a top-level Student Intent?
-            $is_actionplan_intent = ( $actionplans[0]['ln_child_intent_id'] == $in_id );
-
+        } elseif ($ins[0]['in_status'] != 2) {
+            return array(
+                'status' => 0,
+                'message' => 'Invalid #' . $in_id.' is not yet published',
+            );
         }
 
 
 
 
-        /*
-         *
-         * Share Noted Intent Messages only if this is NOT a
-         * Student Intent because if it is, the messages
-         * have already been communicated to students to help
-         * them decide if they want to add this intention to
-         * their Action Plan.
-         *
-         * */
-        if(!$is_actionplan_intent){
+        //Communicate messages:
+        foreach ($this->Database_model->ln_fetch(array(
+            'ln_status' => 2, //Published
+            'ln_type_entity_id' => 4231, //Intent Note Messages
+            'ln_child_intent_id' => $in_id,
+        ), array(), 0, 0, array('ln_order' => 'ASC')) as $message_tr) {
 
-            /*
-             *
-             * This is an Completed Step or does not belong to
-             * an Action Plan at all, so we should go ahead
-             * and communicate its messages to the student:
-             *
-             * */
+            //Dispatch message:
+            $this->Chat_model->dispatch_message(
+                $message_tr['ln_content'],
+                $recipient_en,
+                true,
+                array(),
+                array(
+                    'ln_parent_intent_id' => $in_id, //Focus Intent
+                    'ln_parent_link_id' => $message_tr['ln_id'], //This message
+                )
+            );
 
-            foreach ($this->Database_model->ln_fetch(array(
-                'ln_status' => 2, //Published
-                'ln_type_entity_id' => 4231, //Intent Note Messages
-                'ln_child_intent_id' => $in_id,
-            ), array(), 0, 0, array('ln_order' => 'ASC')) as $message_tr) {
-
-                //Dispatch message:
-                $this->Chat_model->dispatch_message(
-                    $message_tr['ln_content'],
-                    $recipient_en,
-                    true,
-                    array(),
-                    array(
-                        'ln_parent_intent_id' => $actionplans[0]['in_id'], //Student Intent
-                        'ln_child_intent_id' => $in_id, //Focus Intent
-                        'ln_parent_link_id' => $message_tr['ln_id'], //This message
-                    )
-                );
-
-            }
         }
+
 
 
         //To be populated soon:
@@ -1372,54 +1335,14 @@ class Chat_model extends CI_Model
         //Is this an OR intent?
         if ($ins[0]['in_type']==1) {
 
-            /*
-             *
-             * YES! It's an OR intent.
-             *
-             * Note that the children of OR branches are NOT added
-             * to the student action plans until they make a selection.
-             * IF $actionplan_ln_id>0 then this is an OR branch within
-             * a current Action plan, in this case we will add the chosen
-             * intent as an Completed Step @4559 within $actionplan_ln_id.
-             * If $actionplan_ln_id=0, then the chosen path would be
-             * added as a new Student Intent @4235.
-             *
-             * */
-
-            //Fetch OR Children:
+            //Fetch Children:
             $in__children = $this->Database_model->ln_fetch(array(
-                'ln_status >=' => 0, //New+
-                'in_status >=' => 0, //New+
-                'ln_type_entity_id IN (' . join(',', $this->config->item('en_ids_4486')) . ')' => null, //Intent Link Connectors
-                'ln_parent_intent_id' => $ins[0]['in_id'],
-            ), array('in_child'), 0, 0, array('ln_order' => 'ASC')); //Child intents must be ordered
+                'ln_status' => 2, //Published
+                'in_status' => 2, //Published
+                'ln_type_entity_id' => 4228, //Fixed intent links only
+                'ln_parent_intent_id' => $in_id,
+            ), array('in_child'), 0, 0, array('ln_order' => 'ASC'));
 
-
-
-
-            if($actionplan_ln_id < 1){
-
-                /*
-                 *
-                 * If not part of an existing Action Plan, Make
-                 * sure that none of these OR options have been
-                 * previously added to this student's Action Plan
-                 * as we do not want to recommend them twice:
-                 *
-                 * */
-
-                foreach ($in__children as $key => $or_child_in) {
-                    //Remove if already added before:
-                    if(count($this->Database_model->ln_fetch(array(
-                            'ln_type_entity_id IN ('.join(',',$this->config->item('en_ids_6138')).')' => null, //Student Action Plan
-                            'ln_miner_entity_id' => $recipient_en['en_id'], //Belongs to this Student
-                            'ln_child_intent_id' => $or_child_in['in_id'],
-                            'ln_status >=' => 0, //New+
-                        ))) > 0){
-                        unset($in__children[$key]);
-                    }
-                }
-            }
 
             if(count($in__children) > 0){
 
@@ -1429,10 +1352,10 @@ class Chat_model extends CI_Model
 
                     //Make sure not already in Action Plan:
                     if(count($this->Database_model->ln_fetch(array(
-                            'ln_miner_entity_id' => $recipient_en['en_id'], //Belongs to this Student
-                            'ln_type_entity_id' => 4235, //Student Intent
-                            'ln_child_intent_id' => $or_child_in['in_id'],
-                            'ln_status >=' => 0, //New+
+                            'ln_miner_entity_id' => $recipient_en['en_id'],
+                            'ln_type_entity_id IN (' . join(',', $this->config->item('en_ids_6147')) . ')' => null, //Action Plan Intentions
+                            'ln_status IN (' . join(',', $this->config->item('ln_status_incomplete')) . ')' => null, //incomplete intentions
+                            'ln_parent_intent_id' => $or_child_in['in_id'],
                         ))) > 0){
                         continue;
                     }
@@ -1449,9 +1372,8 @@ class Chat_model extends CI_Model
                         //Log error link so we can look into it:
                         $this->Database_model->ln_create(array(
                             'ln_miner_entity_id' => 1, //Shervin/Developer
-                            'ln_content' => 'compose_validate_message() encountered intent with too many children to be listed as OR Intent options! Trim and iterate that intent tree.',
+                            'ln_content' => 'actionplan_message_validate() encountered intent with too many children to be listed as OR Intent options! Trim and iterate that intent tree.',
                             'ln_type_entity_id' => 4246, //Platform Error
-                            'ln_parent_link_id' => $actionplan_ln_id, //The action plan
                             'ln_parent_intent_id' => $in_id,
                             'ln_child_intent_id' => $or_child_in['in_id'],
                         ));
@@ -1492,72 +1414,37 @@ class Chat_model extends CI_Model
                     );
                 }
 
-
-
-            } elseif($ins[0]['in_id']==$this->config->item('in_featured')) {
-
-                //Student has already taken all featured intentions and there is nothing else to offer them:
-                $this->Chat_model->dispatch_message(
-                    'You have already added all featured intentions to your Action Plan and I have nothing else to recommend to you at this time.',
-                    $recipient_en,
-                    true
-                );
-
             }
-        }
 
-
-
-
-        //If we do not have an Action Plan request, we're done here:
-        if ($actionplan_ln_id < 1) {
-            return array(
-                'status' => 1,
-                'message' => 'Success',
-            );
-        }
-
-
-
-
-        /*
-         *
-         * At this point we'd only be dealing with AND intents
-         * within an Action Plan where $actionplan_ln_id > 0
-         * or we're deadling with an OR branch within an Action
-         * Plan that does not have any children, so we'd need to
-         * offer the next step forward.
-         *
-         * */
-
-
-        //Check intent completion requirements IF AND branch:
-        if ($ins[0]['in_type']==0) {
+        } else {
 
             //This is an AND intent, it might have completion requirements:
             $message_in_requirements = $this->Platform_model->in_req_completion($ins[0], true);
 
-            //Do we have a Action Plan, if so, we need to add a next step message:
             if ($message_in_requirements) {
 
-                //Let the user know what they need to do
-                //Completing this requirement of this intent is the next step:
+                //Let the user know what they need to do:
                 $this->Chat_model->dispatch_message(
                     $message_in_requirements,
                     $recipient_en,
                     true,
                     array(),
                     array(
-                        'ln_parent_intent_id' => $actionplans[0]['in_id'], //Student Intent
-                        'ln_child_intent_id' => $in_id, //Focus Intent
+                        'ln_parent_intent_id' => $in_id, //Focus Intent
                     )
                 );
 
                 //Nothing more to do until student submits completion requirements:
                 return array(
                     'status' => 1,
-                    'message' => 'Student must now complete intent requirements',
+                    'message' => 'Student must now submit intent completion requirements',
                 );
+
+            } else {
+
+                //No completion requirement, move on:
+
+
             }
 
 
@@ -1570,7 +1457,7 @@ class Chat_model extends CI_Model
              *
              * */
 
-            //Lets fetch incomplete children of $in_id within Action Plan $actionplan_ln_id
+            //Lets fetch incomplete children of $in_id in Action Plan
             $actionplan_child_ins = $this->Database_model->ln_fetch(array(
                 'ln_status IN (' . join(',', $this->config->item('ln_status_incomplete')) . ')' => null, //incomplete
                 'ln_type_entity_id' => 4559, //Completed Step
@@ -1588,27 +1475,18 @@ class Chat_model extends CI_Model
         if ($ins[0]['in_type']==1 /* OR Intent with no children */ || count($actionplan_child_ins) <= 1 /* Action Plan AND Intent with 0-1 children */) {
 
             //No children! So there is a single path forward, the next intent in line:
-            $next_ins = $this->Platform_model->actionplan_fetch_next($actionplan_ln_id);
+            $next_in_id = $this->Platform_model->actionplan_next_step($recipient_en['en_id'], false);
 
             //Did we find the next intent in line in case we had zero?
-            if (count($next_ins) > 0) {
+            if ($next_in_id > 0) {
 
                 //Give option to move on:
-                $next_step_message .= 'The next step to ' . $ins[0]['in_outcome'] . ' is to ' . $next_ins[0]['in_outcome'] . '.';
+                $next_step_message .= 'Ready to go to the next step to ' . $ins[0]['in_outcome'] . '?';
                 array_push($quick_replies, array(
                     'content_type' => 'text',
                     'title' => 'Ok Continue ▶️',
-                    'payload' => 'MARKCOMPLETE_' . $next_ins[0]['ln_id'],
+                    'payload' => 'MARKCOMPLETE_' . $next_in_id,
                 ));
-
-            } else {
-
-                /*
-                 *
-                 * This likely means that the Action Plan is complete which
-                 * will be handled accordingly within actionplan_fetch_next()
-                 *
-                 * */
 
             }
 
@@ -1654,55 +1532,13 @@ class Chat_model extends CI_Model
             }
 
 
+            //Give option to skip Student Intent:
+            array_push($quick_replies, array(
+                'content_type' => 'text',
+                'title' => 'Skip',
+                'payload' => 'SKIP-ACTIONPLAN_1_' . $ins[0]['in_id'],
+            ));
 
-
-            if(!$is_actionplan_intent){
-
-                //Give option to skip:
-                $actionplan_parents = $this->Database_model->ln_fetch(array(
-                    'ln_parent_link_id' => $actionplan_ln_id,
-                    'ln_type_entity_id' => 4559, //Completed Step
-                    'ln_status IN (' . join(',', $this->config->item('ln_status_incomplete')) . ')' => null, //incomplete
-                    'ln_child_intent_id' => $in_id,
-                ));
-
-                if (count($actionplan_parents) > 0) {
-                    //Give option to skip Student Intent:
-                    array_push($quick_replies, array(
-                        'content_type' => 'text',
-                        'title' => 'Skip',
-                        'payload' => 'SKIP-ACTIONPLAN_1_' . $actionplan_parents[0]['ln_id'].'_0',
-                    ));
-                }
-            }
-
-        }
-
-
-        /*
-         *
-         * If we have learn more we'd need to give the
-         * option to learn more... We only fetch 1 message
-         * since we only need to know if we have any
-         * as we're not delivering them now.
-         *
-         * */
-        if(0){
-            //TODO Implement LEARNMORE_
-            $messages_learn_more = $this->Database_model->ln_fetch(array(
-                'ln_status' => 2, //Published
-                'ln_type_entity_id' => 4232, //Learn More Messages
-                'ln_child_intent_id' => $in_id,
-            ), array(), 1, 0, array('ln_order' => 'ASC'));
-
-            if (count($messages_learn_more) > 0) {
-                //Yes! Give as last option:
-                array_push($quick_replies, array(
-                    'content_type' => 'text',
-                    'title' => 'Learn More',
-                    'payload' => 'LEARNMORE_' . $actionplan_ln_id . '_' . $ins[0]['in_id'],
-                ));
-            }
         }
 
 
@@ -1714,8 +1550,7 @@ class Chat_model extends CI_Model
             true,
             $quick_replies,
             array(
-                'ln_parent_intent_id' => $actionplans[0]['in_id'], //Student Intent
-                'ln_child_intent_id' => $in_id, //Focus Intent
+                'ln_parent_intent_id' => $in_id, //Focus Intent
             )
         );
 
@@ -1723,6 +1558,7 @@ class Chat_model extends CI_Model
             'status' => 1,
             'message' => 'Success',
         );
+
     }
 
 
@@ -1864,15 +1700,14 @@ class Chat_model extends CI_Model
 
             } elseif ($action_unsubscribe == 'ALL') {
 
-                //Student wants to completely unsubscribe from Mench...
-
-                //Remove all Action Plans:
-                $actionplans = $this->Database_model->ln_fetch(array(
-                    'ln_type_entity_id' => 4235, //Student Intent
-                    'ln_miner_entity_id' => $en['en_id'], //Belongs to this Student
-                    'ln_status >=' => 0, //New+
-                ));
-                foreach ($actionplans as $ln) {
+                //Student wants to completely unsubscribe from Mench:
+                $removed_intents = 0;
+                foreach ($this->Database_model->ln_fetch(array(
+                    'ln_miner_entity_id' => $en['en_id'],
+                    'ln_type_entity_id IN (' . join(',', $this->config->item('en_ids_6147')) . ')' => null, //Action Plan Intentions
+                    'ln_status IN (' . join(',', $this->config->item('ln_status_incomplete')) . ')' => null, //incomplete intentions
+                )) as $ln) {
+                    $removed_intents++;
                     $this->Database_model->ln_update($ln['ln_id'], array(
                         'ln_status' => -1, //Removed
                     ), $en['en_id']); //Give credit to miner
@@ -1880,7 +1715,7 @@ class Chat_model extends CI_Model
 
                 //Let them know about these changes:
                 $this->Chat_model->dispatch_message(
-                    'Confirmed, I removed your ' . count($actionplans) . ' Action Plan' . echo__s(count($actionplans)) . '. This is the final message you will receive from me unless you message me first. Take care of your self and I hope to talk to you soon 😘',
+                    'Confirmed, I removed ' . $removed_intents . ' intention' . echo__s($removed_intents) . ' from your Action Plan. This is the final message you will receive from me unless you message me again. I hope you take good care of your self 😘',
                     $en,
                     true
                 );
@@ -1891,27 +1726,27 @@ class Chat_model extends CI_Model
             } elseif (is_numeric($action_unsubscribe)) {
 
                 //User wants to Remove a specific Action Plan, validate it:
-                $actionplans = $this->Database_model->ln_fetch(array(
-                    'ln_type_entity_id' => 4235, //Student Intent
-                    'ln_miner_entity_id' => $en['en_id'], //Belongs to this Student
-                    'ln_child_intent_id' => intval($action_unsubscribe),
-                    'ln_status >=' => 0,//New+
-                ), array('in_child'));
+                $student_intents = $this->Database_model->ln_fetch(array(
+                    'ln_miner_entity_id' => $en['en_id'],
+                    'ln_type_entity_id IN (' . join(',', $this->config->item('en_ids_6147')) . ')' => null, //Action Plan Intentions
+                    'ln_status IN (' . join(',', $this->config->item('ln_status_incomplete')) . ')' => null, //incomplete intentions
+                    'ln_parent_intent_id' => $action_unsubscribe,
+                ), array('in_parent'), 0, 0, array('ln_order' => 'ASC'));
 
                 //All good?
-                if (count($actionplans) > 0) {
+                if (count($student_intents) > 0) {
 
                     //Update status for this single Action Plan:
-                    $this->Database_model->ln_update($actionplans[0]['ln_id'], array(
+                    $this->Database_model->ln_update($student_intents[0]['ln_id'], array(
                         'ln_status' => -1, //Removed
-                    ), $en['en_id']); //Give credit to miner
+                    ), $en['en_id']);
 
-                    //Adjust the sorting of remaining Action Plan intentions:
+                    //Re-sort remaining Action Plan intentions:
                     foreach($this->Database_model->ln_fetch(array(
-                        'ln_type_entity_id' => 4235, //Student Intent
+                        'ln_type_entity_id IN (' . join(',', $this->config->item('en_ids_6147')) . ')' => null, //Action Plan Intentions
                         'ln_miner_entity_id' => $en['en_id'], //Belongs to this Student
-                        'ln_status >=' => 0, //New+
-                    ), array('en_child'), 0, 0, array('ln_order' => 'ASC')) as $count => $ln){
+                        'ln_status IN (' . join(',', $this->config->item('ln_status_incomplete')) . ')' => null, //incomplete intentions
+                    ), array(), 0, 0, array('ln_order' => 'ASC')) as $count => $ln){
                         $this->Database_model->ln_update($ln['ln_id'], array(
                             'ln_order' => ($count+1),
                         ), $en['en_id']);
@@ -1919,7 +1754,7 @@ class Chat_model extends CI_Model
 
                     //Show success message to user:
                     $this->Chat_model->dispatch_message(
-                        'I have successfully removed the intention to ' . $actionplans[0]['in_outcome'] . ' from your Action Plan. Say "stop" again if you wish to stop all future communications.',
+                        'I have successfully removed the intention to ' . $student_intents[0]['in_outcome'] . ' from your Action Plan. Say "stop" again if you wish to stop all future communications.',
                         $en,
                         true
                     );
@@ -1929,7 +1764,7 @@ class Chat_model extends CI_Model
                     //Oooops, this should not happen
                     //let them know we had error:
                     $this->Chat_model->dispatch_message(
-                        'I was unable to process your request as I could not find your Action Plan. Please try again.',
+                        'I was unable to process your request as I could not find your Action Plan intention. Please try again.',
                         $en,
                         true
                     );
@@ -1939,7 +1774,7 @@ class Chat_model extends CI_Model
                         'ln_miner_entity_id' => $en['en_id'],
                         'ln_content' => 'Failed to skip an intent from the master Action Plan',
                         'ln_type_entity_id' => 4246, //Platform Error
-                        'ln_child_intent_id' => intval($action_unsubscribe),
+                        'ln_parent_intent_id' => $action_unsubscribe,
                     ));
 
                 }
@@ -1961,7 +1796,7 @@ class Chat_model extends CI_Model
                 );
 
                 //List featured intents and let them choose:
-                $this->Chat_model->compose_message($this->config->item('in_featured'), $en);
+                $this->Chat_model->suggest_featured_intents($en['en_id']);
 
             } elseif ($quick_reply_payload == 'RESUBSCRIBE_NO') {
 
@@ -1983,7 +1818,7 @@ class Chat_model extends CI_Model
             );
 
             //List featured intents and let them choose:
-            $this->Chat_model->compose_message($this->config->item('in_featured'), $en);
+            $this->Chat_model->suggest_featured_intents($en['en_id']);
 
         } elseif (is_numeric($quick_reply_payload)) {
 
@@ -2054,13 +1889,12 @@ class Chat_model extends CI_Model
 
             if (count($ins) == 1) {
 
-                //Intent seems good...
-                //See if this intent belong to ANY of this Student's Action Plans or Student Intents:
+                //Make sure intention has not already been added to student Action Plan:
                 if (count($this->Database_model->ln_fetch(array(
-                        'ln_type_entity_id' => 4235, //Student Intent
-                        'ln_child_intent_id' => $ins[0]['in_id'],
-                        'ln_status >=' => 0, //New+
-                        'ln_miner_entity_id' => $en['en_id'], //Belongs to this Student
+                        'ln_miner_entity_id' => $en['en_id'],
+                        'ln_type_entity_id IN (' . join(',', $this->config->item('en_ids_6147')) . ')' => null, //Action Plan Intentions
+                        'ln_status IN (' . join(',', $this->config->item('ln_status_incomplete')) . ')' => null, //incomplete intentions
+                        'ln_parent_intent_id' => $ins[0]['in_id'],
                     ))) > 0) {
 
                     //Let Student know that they have already subscribed to this intention:
@@ -2070,7 +1904,7 @@ class Chat_model extends CI_Model
                         true,
                         array(),
                         array(
-                            'ln_child_intent_id' => $ins[0]['in_id'],
+                            'ln_parent_intent_id' => $ins[0]['in_id'],
                         )
                     );
 
@@ -2090,8 +1924,7 @@ class Chat_model extends CI_Model
                             true,
                             array(),
                             array(
-                                'ln_parent_link_id' => $ln['ln_id'],
-                                'ln_child_intent_id' => $ins[0]['in_id'],
+                                'ln_parent_intent_id' => $ins[0]['in_id'],
                             )
                         );
                     }
@@ -2118,7 +1951,7 @@ class Chat_model extends CI_Model
                             ),
                         ),
                         array(
-                            'ln_child_intent_id' => $ins[0]['in_id'],
+                            'ln_parent_intent_id' => $ins[0]['in_id'],
                         )
                     );
 
@@ -2143,10 +1976,10 @@ class Chat_model extends CI_Model
                     'ln_type_entity_id' => 4235, //Student Intent
                     'ln_status' => 1, //Drafting
                     'ln_miner_entity_id' => $en['en_id'], //Belongs to this Student
-                    'ln_child_intent_id' => $ins[0]['in_id'], //The Intent they are adding
+                    'ln_parent_intent_id' => $ins[0]['in_id'], //The Intent they are adding
                     'ln_order' => 1 + $this->Database_model->ln_max_order(array( //Place this intent at the end of all intents the Student is drafting...
-                        'ln_type_entity_id' => 4235, //Student Intent
-                        'ln_status >=' => 0, //New+
+                        'ln_type_entity_id IN (' . join(',', $this->config->item('en_ids_6147')) . ')' => null, //Action Plan Intentions
+                        'ln_status IN (' . join(',', $this->config->item('ln_status_incomplete')) . ')' => null, //incomplete intentions
                         'ln_miner_entity_id' => $en['en_id'], //Belongs to this Student
                     )),
                 ));
@@ -2158,12 +1991,12 @@ class Chat_model extends CI_Model
                     true,
                     array(),
                     array(
-                        'ln_child_intent_id' => $ins[0]['in_id'],
+                        'ln_parent_intent_id' => $ins[0]['in_id'],
                     )
                 );
 
                 //Initiate first message for action plan tree:
-                $this->Chat_model->compose_message($ins[0]['in_id'], $en, $actionplan['ln_id']);
+                $this->Chat_model->actionplan_message_send($ins[0]['in_id'], $en);
 
             }
 
@@ -2172,28 +2005,17 @@ class Chat_model extends CI_Model
             //Extract variables from REF:
             $input_parts = explode('_', one_two_explode('SKIP-ACTIONPLAN_', '', $quick_reply_payload));
             $ln_status = intval($input_parts[0]); //It would be $ln_status=1 initial (drafting) and then would change to either -1 IF skip was cancelled or 2 IF skip was confirmed.
-            $ln_id = intval($input_parts[1]); //Completed Step Link ID
-            $skip_ln_id = intval($input_parts[2]); //Would initially be zero and would then be set to a Link ID when Student confirms/cancels skipping
-
-
-            if($ln_id > 0){
-                //Fetch Student Intent:
-                $actionplans = $this->Database_model->ln_fetch(array(
-                    'ln_id' => $ln_id,
-                    'ln_type_entity_id' => 4559, //Completed Step
-                    'ln_miner_entity_id' => $en['en_id'], //Belongs to this Student
-                ), array('in_child'));
-            }
+            $in_id = intval($input_parts[1]); //Intention to Skip
 
             //Validate inputs:
-            if ($ln_id < 1 || !in_array($ln_status, array(-1, 1, 2)) || count($actionplans) < 1) {
+            if ($in_id < 1 || !in_array($ln_status, array(-1, 1, 2))) {
 
                 //Log error:
                 $this->Database_model->ln_create(array(
                     'ln_content' => 'digest_quick_reply() failed to fetch proper data for a skip request with reference value [' . $quick_reply_payload . ']',
                     'ln_type_entity_id' => 4246, //Platform Error
                     'ln_miner_entity_id' => 1, //Shervin/Developer
-                    'ln_parent_link_id' => $ln_id,
+                    'ln_parent_intent_id' => $in_id,
                     'ln_parent_entity_id' => $en['en_id'], //Belongs to this Student
                 ));
 
@@ -2201,15 +2023,15 @@ class Chat_model extends CI_Model
                 $this->Chat_model->dispatch_message(
                     'I was unable to process your skip request',
                     $en,
-                    true
+                    true,
+                    array(),
+                    array(
+                        'ln_parent_intent_id' => $in_id,
+                    )
                 );
 
                 return false;
-
             }
-
-            //Set Action Plan ID:
-            $actionplan_ln_id = $actionplans[0]['ln_parent_link_id'];
 
 
             //Was this initiating?
@@ -2219,18 +2041,9 @@ class Chat_model extends CI_Model
                 //Lets confirm the implications of this SKIP to ensure they are aware:
 
                 //See how many children would be skipped if they decide to do so:
-                $would_be_skipped = $this->Platform_model->actionplan_skip_recursive_down($ln_id, false);
-                $would_be_skipped_count = count($would_be_skipped);
+                $would_be_skipped_count = $this->Platform_model->actionplan_skip_recursive_down($en['en_id'], $in_id, false);
 
                 if ($would_be_skipped_count == 0) {
-
-                    //Nothing found to skip! This should not happen, log error:
-                    $this->Database_model->ln_create(array(
-                        'ln_content' => 'digest_quick_reply() did not find anything to skip for [' . $quick_reply_payload . ']',
-                        'ln_type_entity_id' => 4246, //Platform Error
-                        'ln_parent_link_id' => $ln_id,
-                        'ln_miner_entity_id' => $en['en_id'], //Belongs to this Student
-                    ));
 
                     //Inform user:
                     $this->Chat_model->dispatch_message(
@@ -2239,66 +2052,41 @@ class Chat_model extends CI_Model
                         true,
                         array(),
                         array(
-                            'ln_parent_link_id' => $ln_id,
+                            'ln_parent_intent_id' => $in_id,
                         )
                     );
 
+                    //Find/communicate the next step:
+                    $this->Platform_model->actionplan_next_step($en['en_id'], true);
+
                     return false;
 
-                }
+                } else {
 
-
-                //Mark as complete:
-                $new_tr = $this->Database_model->ln_create(array(
-                    'ln_miner_entity_id' => $en['en_id'],
-                    'ln_type_entity_id' => 4559, //Action Plan Step Completed
-                    'ln_parent_link_id' => $ln_id, //The Link Reference that points to this intent in the Students Action Plan
-                    'ln_status' => -1, //Removed
-                    'ln_metadata' => array(
-                        'would_be_skipped' => $would_be_skipped,
-                        'ref' => $quick_reply_payload,
-                    ),
-                ));
-
-
-                //Construct the message to give more details on skipping:
-                $message = 'You are about to skip these ' . $would_be_skipped_count . ' key idea' . echo__s($would_be_skipped_count) . ':';
-                foreach ($would_be_skipped as $counter => $k_c) {
-                    if (strlen($message) < ($this->config->item('fb_max_message') - 200)) {
-                        //We have enough room to add more:
-                        $message .= "\n\n" . ($counter + 1) . '/ ' . $k_c['in_outcome'];
-                    } else {
-                        //We cannot add any more, indicate truncating:
-                        $remainder = $would_be_skipped_count - $counter;
-                        $message .= "\n\n" . 'And ' . $remainder . ' more key idea' . echo__s($remainder) . '!';
-                        break;
-                    }
-                }
-
-                //Recommend against it:
-                $message .= "\n\n" . 'I would not recommend skipping unless you feel comfortable completing these steps on your own.';
-
-                //Send them the message:
-                $this->Chat_model->dispatch_message(
-                    $message,
-                    $en,
-                    true,
-                    array(
+                    //We did find some steps to skip...
+                    //Send student a message and confirm that they want to skip:
+                    $this->Chat_model->dispatch_message(
+                        'You are about to skip ' . $would_be_skipped_count . ' step' . echo__s($would_be_skipped_count) . '. In general I would not recommend skipping steps unless you feel confident about taking these steps on your own.',
+                        $en,
+                        true,
                         array(
-                            'content_type' => 'text',
-                            'title' => 'Skip ' . $would_be_skipped_count . ' key idea' . echo__s($would_be_skipped_count) . ' 🚫',
-                            'payload' => 'SKIP-ACTIONPLAN_2_'.$ln_id.'_' . $new_tr['ln_id'], //Confirm and skip
+                            array(
+                                'content_type' => 'text',
+                                'title' => 'Skip ' . $would_be_skipped_count . ' Step' . echo__s($would_be_skipped_count) . ' 🚫',
+                                'payload' => 'SKIP-ACTIONPLAN_2_'.$in_id, //Confirm and skip
+                            ),
+                            array(
+                                'content_type' => 'text',
+                                'title' => 'Continue ▶️',
+                                'payload' => 'SKIP-ACTIONPLAN_-1_'.$in_id, //Cancel skipping
+                            ),
                         ),
                         array(
-                            'content_type' => 'text',
-                            'title' => 'Continue ▶️',
-                            'payload' => 'SKIP-ACTIONPLAN_-1_'.$ln_id.'_' . $new_tr['ln_id'], //Cancel skipping
-                        ),
-                    ),
-                    array(
-                        'ln_parent_link_id' => $ln_id,
-                    )
-                );
+                            'ln_parent_intent_id' => $in_id,
+                        )
+                    );
+
+                }
 
             } else {
 
@@ -2306,15 +2094,15 @@ class Chat_model extends CI_Model
                 if ($ln_status == -1) {
 
                     //user changed their mind and does not want to skip anymore
-                    $message = 'I am happy you changed your mind! Let\'s continue...';
+                    $message = 'I\'m glad you changed your mind! Let\'s continue...';
 
                 } elseif ($ln_status == 2) {
 
                     //Actually skip and see if we've finished this Action Plan:
-                    $this->Platform_model->actionplan_skip_recursive_down($ln_id);
+                    $total_skipped = $this->Platform_model->actionplan_skip_recursive_down($en['en_id'], $in_id, true);
 
                     //Confirm the skip:
-                    $message = 'Confirmed, I marked this section as skipped. You can always re-visit these steps in your Action Plan and complete them at any time. /link:See in 🚩Action Plan:https://mench.com/messenger/actionplan/' . $actionplans[0]['ln_child_intent_id'];
+                    $message = 'Confirmed, I skipped '.$total_skipped.' step'.echo__s($total_skipped).'. You can always re-visit these steps in your Action Plan and complete them at any time. /link:See in 🚩Action Plan:https://mench.com/messenger/actionplan/' . $in_id;
 
                 }
 
@@ -2325,22 +2113,12 @@ class Chat_model extends CI_Model
                     true,
                     array(),
                     array(
-                        'ln_parent_link_id' => $ln_id,
+                        'ln_parent_intent_id' => $in_id,
                     )
                 );
 
-                //Update Skip request status accordingly:
-                $this->Database_model->ln_update($skip_ln_id, array(
-                    'ln_status' => $ln_status,
-                ), $en['en_id']);
-
-
-                //Find the next item to navigate them to:
-                $next_ins = $this->Platform_model->actionplan_fetch_next($actionplan_ln_id);
-                if ($next_ins) {
-                    //Now move on to communicate the next step:
-                    $this->Chat_model->compose_message($next_ins[0]['in_id'], $en, $actionplan_ln_id);
-                }
+                //Find/communicate the next step:
+                $this->Platform_model->actionplan_next_step($en['en_id'], true);
 
             }
 
@@ -2382,16 +2160,10 @@ class Chat_model extends CI_Model
             //Set Action Plan ID:
             $actionplan_ln_id = $actionplans[0]['ln_parent_link_id'];
 
-            //Mark this intent as complete:
-            $this->Platform_model->actionplan_complete_recursive_up($actionplans[0]);
+            //TODO Log appropriate Action Plan Progression link type
 
-            //Go to next item:
-            $next_ins = $this->Platform_model->actionplan_fetch_next($actionplan_ln_id);
-
-            if ($next_ins) {
-                //Communicate next step:
-                $this->Chat_model->compose_message($next_ins[0]['in_id'], $en, $actionplan_ln_id);
-            }
+            //Find/communicate the next step:
+            $this->Platform_model->actionplan_next_step($en['en_id'], true);
 
         } elseif (substr_count($quick_reply_payload, 'CHOOSEORPATH_') == 1) {
 
@@ -2418,8 +2190,11 @@ class Chat_model extends CI_Model
                     'ln_child_intent_id' => intval($quickreply_parts[2]),
                 ));
 
-                //Affirm answer received & move-on:
-                $this->Chat_model->actionplan_communicate_next($en);
+                //Affirm answer received answer:
+                $this->Chat_model->dispatch_rotating_message($en, 'affirm_progress');
+
+                //Find/communicate the next step:
+                $this->Platform_model->actionplan_next_step($en['en_id'], true);
 
             } else {
 
@@ -2439,8 +2214,8 @@ class Chat_model extends CI_Model
                     true
                 );
 
-                //Move on to next item:
-                $this->Chat_model->actionplan_communicate_next($en, false);
+                //Find/communicate the next step:
+                $this->Platform_model->actionplan_next_step($en['en_id'], true);
 
             }
         }
@@ -2727,7 +2502,7 @@ class Chat_model extends CI_Model
                 );
 
                 //List featured intents and let them choose:
-                $this->Chat_model->compose_message($this->config->item('in_featured'), $en);
+                $this->Chat_model->suggest_featured_intents($en['en_id']);
 
             }
 
@@ -2756,7 +2531,7 @@ class Chat_model extends CI_Model
 
 
             //Inform Student of Mench's one-way communication limitation & that Mench did not understand their message:
-            $this->Chat_model->dispatch_random_intro(8334, $en);
+            $this->Chat_model->dispatch_rotating_message($en, 'one_way_only');
 
 
             //Log link:
@@ -2767,50 +2542,9 @@ class Chat_model extends CI_Model
             ));
 
 
-            //Do they have any active Action Plans? If so, we can recommend the next step within that Action Plan...
-            $actionplans = $this->Database_model->ln_fetch(array(
-                'ln_type_entity_id' => 4235, //Student Intent
-                'ln_miner_entity_id' => $en['en_id'], //Belongs to this Student
-                'ln_status >=' => 0, //New+
-            ), array('in_child'), 1, 0, array('ln_order' => 'ASC'));
+            //Find/communicate the next step:
+            $this->Platform_model->actionplan_next_step($en['en_id'], true);
 
-            if (count($actionplans) > 0) {
-
-                //They have an Action Plan that they are drafting, Remind user of their next step:
-                $next_ins = $this->Platform_model->actionplan_fetch_next($actionplans[0]['ln_id']);
-
-                //Do we have a next step? (We should if Action Plan status is incomplete)
-                if ($next_ins) {
-                    $this->Chat_model->compose_message($next_ins[0]['in_id'], $en, $actionplans[0]['ln_id']);
-                }
-
-            } else {
-
-                /*
-                 *
-                 * Student has no action plan...
-                 *
-                 * TODO: Give them list of featured intents
-                 * that they have not yet added to their
-                 * action plan to choose from.
-                 *
-                 * */
-
-
-                /*
-                $default_actionplans = $this->Database_model->ln_fetch(array(
-                    'ln_type_entity_id IN ('.join(',',$this->config->item('en_ids_6138')).')' => null, //Student Action Plan
-                    'ln_miner_entity_id' => $en['en_id'], //Belongs to this Student
-                    'ln_child_intent_id' => $this->config->item('in_home_page'),
-                ));
-                if (count($default_actionplans) == 0) {
-
-                    //They have never taken the default intent, recommend it to them:
-                    $this->Chat_model->digest_quick_reply($en, $this->config->item('in_home_page'));
-
-                }
-                */
-            }
         }
     }
 

@@ -11,10 +11,10 @@ defined('BASEPATH') OR exit('No direct script access allowed');
  *
  */
 
-//Generated 2019-04-24 18:56:15 PST
+//Generated 2019-04-25 15:15:29 PST
 
 //Entity Referencing in Intent Notes:
-$config['en_ids_4986'] = array(4231, 4232, 4233, 4234, 4602, 4983, 6093);
+$config['en_ids_4986'] = array(4231, 4232, 4602, 4983, 6093);
 $config['en_all_4986'] = array(
     4231 => array(
         'm_icon' => '<i class="fal fa-comment"></i>',
@@ -27,18 +27,6 @@ $config['en_all_4986'] = array(
         'm_name' => 'Noted Intent Bonus Tip',
         'm_desc' => '',
         'm_parents' => array(5005, 4986, 4603, 4593, 4485, 4595),
-    ),
-    4233 => array(
-        'm_icon' => '<i class="fal fa-clipboard-check"></i>',
-        'm_name' => 'Noted Intent Parting Tip',
-        'm_desc' => '',
-        'm_parents' => array(5005, 4986, 4603, 4593, 4485, 4595),
-    ),
-    4234 => array(
-        'm_icon' => '<i class="fal fa-random"></i>',
-        'm_name' => 'Noted Intent Random Intro',
-        'm_desc' => '',
-        'm_parents' => array(5005, 4986, 4593, 4485, 4595),
     ),
     4602 => array(
         'm_icon' => '<i class="fal fa-cloud-upload"></i>',
@@ -287,7 +275,7 @@ $config['en_all_4363'] = array(
     ),
 );
 
-//Action Plan Intentions:
+//Action Plan Intention Link Types:
 $config['en_ids_6147'] = array(4235, 6140);
 $config['en_all_6147'] = array(
     4235 => array(
@@ -298,7 +286,7 @@ $config['en_all_6147'] = array(
     ),
     6140 => array(
         'm_icon' => '<i class="far fa-lock-open"></i>',
-        'm_name' => 'Condition Unlocked',
+        'm_name' => 'Unlocked Intention',
         'm_desc' => '',
         'm_parents' => array(4755, 6147, 4593),
     ),
@@ -327,7 +315,7 @@ $config['en_all_6146'] = array(
     ),
     6157 => array(
         'm_icon' => '<i class="far fa-check-circle"></i>',
-        'm_name' => 'Answer',
+        'm_name' => 'Question Answered',
         'm_desc' => '',
         'm_parents' => array(6146, 4755, 4593, 4460),
     ),
@@ -703,25 +691,13 @@ $config['en_all_4255'] = array(
 );
 
 //Advance Mode:
-$config['en_ids_5005'] = array(4232, 4233, 4234, 4331, 4602, 4997, 6093);
+$config['en_ids_5005'] = array(4232, 4331, 4602, 4997, 6093);
 $config['en_all_5005'] = array(
     4232 => array(
         'm_icon' => '<i class="fal fa-medal"></i>',
         'm_name' => 'Noted Intent Bonus Tip',
         'm_desc' => '',
         'm_parents' => array(5005, 4986, 4603, 4593, 4485, 4595),
-    ),
-    4233 => array(
-        'm_icon' => '<i class="fal fa-clipboard-check"></i>',
-        'm_name' => 'Noted Intent Parting Tip',
-        'm_desc' => '',
-        'm_parents' => array(5005, 4986, 4603, 4593, 4485, 4595),
-    ),
-    4234 => array(
-        'm_icon' => '<i class="fal fa-random"></i>',
-        'm_name' => 'Noted Intent Random Intro',
-        'm_desc' => '',
-        'm_parents' => array(5005, 4986, 4593, 4485, 4595),
     ),
     4331 => array(
         'm_icon' => '<i class="fal fa-comment-check"></i>',
@@ -1092,7 +1068,7 @@ $config['en_all_4755'] = array(
         'm_parents' => array(6153, 4755, 4593),
     ),
     4299 => array(
-        'm_icon' => '<i class="far fa-portrait"></i>',
+        'm_icon' => '<i class="far fa-image"></i>',
         'm_name' => 'Entity Picture Updated',
         'm_desc' => '',
         'm_parents' => array(6222, 4755, 4593),
@@ -1201,7 +1177,7 @@ $config['en_all_4755'] = array(
     ),
     6140 => array(
         'm_icon' => '<i class="far fa-lock-open"></i>',
-        'm_name' => 'Action Plan Condition Unlocked',
+        'm_name' => 'Action Plan Unlocked Intention',
         'm_desc' => '',
         'm_parents' => array(4755, 6147, 4593),
     ),
@@ -1237,7 +1213,7 @@ $config['en_all_4755'] = array(
     ),
     6157 => array(
         'm_icon' => '<i class="far fa-check-circle"></i>',
-        'm_name' => 'Action Plan Answer',
+        'm_name' => 'Action Plan Question Answered',
         'm_desc' => '',
         'm_parents' => array(6146, 4755, 4593, 4460),
     ),
@@ -1256,7 +1232,7 @@ $config['en_all_4755'] = array(
 );
 
 //Link Points:
-$config['en_ids_4595'] = array(4228, 4229, 4230, 4231, 4232, 4233, 4234, 4242, 4250, 4251, 4255, 4256, 4257, 4258, 4259, 4260, 4261, 4263, 4264, 4318, 4319, 4601, 4602, 4983, 6093);
+$config['en_ids_4595'] = array(4228, 4229, 4230, 4231, 4232, 4242, 4250, 4251, 4255, 4256, 4257, 4258, 4259, 4260, 4261, 4263, 4264, 4318, 4319, 4601, 4602, 4983, 6093);
 $config['en_all_4595'] = array(
     4228 => array(
         'm_icon' => '<i class="fal fa-check-circle"></i>',
@@ -1287,18 +1263,6 @@ $config['en_all_4595'] = array(
         'm_name' => 'Noted Intent Bonus Tip',
         'm_desc' => '100',
         'm_parents' => array(5005, 4986, 4603, 4593, 4485, 4595),
-    ),
-    4233 => array(
-        'm_icon' => '<i class="fal fa-clipboard-check"></i>',
-        'm_name' => 'Noted Intent Parting Tip',
-        'm_desc' => '100',
-        'm_parents' => array(5005, 4986, 4603, 4593, 4485, 4595),
-    ),
-    4234 => array(
-        'm_icon' => '<i class="fal fa-random"></i>',
-        'm_name' => 'Noted Intent Random Intro',
-        'm_desc' => '100',
-        'm_parents' => array(5005, 4986, 4593, 4485, 4595),
     ),
     4242 => array(
         'm_icon' => '<i class="fal fa-sync"></i>',
@@ -1428,7 +1392,7 @@ $config['en_all_4600'] = array(
 );
 
 //All Link Types:
-$config['en_ids_4593'] = array(4228, 4229, 4230, 4231, 4232, 4233, 4234, 4235, 4242, 4246, 4250, 4251, 4255, 4256, 4257, 4258, 4259, 4260, 4261, 4263, 4264, 4266, 4267, 4268, 4269, 4275, 4278, 4279, 4282, 4283, 4287, 4299, 4318, 4319, 4452, 4455, 4460, 4547, 4548, 4549, 4550, 4551, 4552, 4553, 4554, 4555, 4556, 4557, 4559, 4570, 4577, 4601, 4602, 4983, 4993, 4994, 4996, 4998, 4999, 5000, 5001, 5003, 5007, 5865, 5943, 5967, 5981, 5982, 6093, 6132, 6140, 6143, 6144, 6149, 6154, 6155, 6157, 6158, 6224, 6226);
+$config['en_ids_4593'] = array(4228, 4229, 4230, 4231, 4232, 4235, 4242, 4246, 4250, 4251, 4255, 4256, 4257, 4258, 4259, 4260, 4261, 4263, 4264, 4266, 4267, 4268, 4269, 4275, 4278, 4279, 4282, 4283, 4287, 4299, 4318, 4319, 4452, 4455, 4460, 4547, 4548, 4549, 4550, 4551, 4552, 4553, 4554, 4555, 4556, 4557, 4559, 4570, 4577, 4601, 4602, 4983, 4993, 4994, 4996, 4998, 4999, 5000, 5001, 5003, 5007, 5865, 5943, 5967, 5981, 5982, 6093, 6132, 6140, 6143, 6144, 6149, 6154, 6155, 6157, 6158, 6224, 6226);
 $config['en_all_4593'] = array(
     4228 => array(
         'm_icon' => '<i class="fal fa-check-circle"></i>',
@@ -1459,18 +1423,6 @@ $config['en_all_4593'] = array(
         'm_name' => 'Noted Intent Bonus Tip',
         'm_desc' => '',
         'm_parents' => array(5005, 4986, 4603, 4593, 4485, 4595),
-    ),
-    4233 => array(
-        'm_icon' => '<i class="fal fa-clipboard-check"></i>',
-        'm_name' => 'Noted Intent Parting Tip',
-        'm_desc' => '',
-        'm_parents' => array(5005, 4986, 4603, 4593, 4485, 4595),
-    ),
-    4234 => array(
-        'm_icon' => '<i class="fal fa-random"></i>',
-        'm_name' => 'Noted Intent Random Intro',
-        'm_desc' => '',
-        'm_parents' => array(5005, 4986, 4593, 4485, 4595),
     ),
     4235 => array(
         'm_icon' => '<i class="fas fa-bullseye-arrow"></i>',
@@ -1617,7 +1569,7 @@ $config['en_all_4593'] = array(
         'm_parents' => array(4593),
     ),
     4299 => array(
-        'm_icon' => '<i class="far fa-portrait"></i>',
+        'm_icon' => '<i class="far fa-image"></i>',
         'm_name' => 'Entity Picture Updated',
         'm_desc' => '',
         'm_parents' => array(6222, 4755, 4593),
@@ -1852,7 +1804,7 @@ $config['en_all_4593'] = array(
     ),
     6140 => array(
         'm_icon' => '<i class="far fa-lock-open"></i>',
-        'm_name' => 'Action Plan Condition Unlocked',
+        'm_name' => 'Action Plan Unlocked Intention',
         'm_desc' => 'Created when the student responses to OR branches meets the right % points to unlock the pathway to a conditional intent link.',
         'm_parents' => array(4755, 6147, 4593),
     ),
@@ -1888,7 +1840,7 @@ $config['en_all_4593'] = array(
     ),
     6157 => array(
         'm_icon' => '<i class="far fa-check-circle"></i>',
-        'm_name' => 'Action Plan Answer',
+        'm_name' => 'Action Plan Question Answered',
         'm_desc' => 'Logged when students choose their path by selecting an OR intent answer.',
         'm_parents' => array(6146, 4755, 4593, 4460),
     ),
@@ -2077,7 +2029,7 @@ $config['en_all_4454'] = array(
 );
 
 //Intent Notes Link Types:
-$config['en_ids_4485'] = array(4231, 4983, 4601, 4232, 4233, 4602, 4234, 6093);
+$config['en_ids_4485'] = array(4231, 4983, 4601, 4232, 4602, 6093);
 $config['en_all_4485'] = array(
     4231 => array(
         'm_icon' => '<i class="fal fa-comment"></i>',
@@ -2103,23 +2055,11 @@ $config['en_all_4485'] = array(
         'm_desc' => 'Delivered in-order and one-by-one (drip-format) either during or after the intent completion. Goal is to re-iterate key insights to help students retain learnings over time.',
         'm_parents' => array(5005, 4986, 4603, 4593, 4485, 4595),
     ),
-    4233 => array(
-        'm_icon' => '<i class="fal fa-clipboard-check"></i>',
-        'm_name' => 'Parting Tip',
-        'm_desc' => 'All delivered in-order as soon as the student marks the intent as complete. Goal is to re-iterate key insights to help students retain learnings.',
-        'm_parents' => array(5005, 4986, 4603, 4593, 4485, 4595),
-    ),
     4602 => array(
         'm_icon' => '<i class="fal fa-cloud-upload"></i>',
         'm_name' => 'Webhook',
         'm_desc' => 'All URLs called along with POST variables that pass intent and completion details. Goal is to enable additional workflows like issuing a completion certificate.',
         'm_parents' => array(5005, 4986, 4256, 4595, 4485, 4593),
-    ),
-    4234 => array(
-        'm_icon' => '<i class="fal fa-random"></i>',
-        'm_name' => 'Random Intro',
-        'm_desc' => 'One message randomly selected right after on-start messages. Goal is to make Mench feel more authentic by mixing things up. Also called in the code-base using compose_message().',
-        'm_parents' => array(5005, 4986, 4593, 4485, 4595),
     ),
     6093 => array(
         'm_icon' => '<i class="fal fa-megaphone"></i>',

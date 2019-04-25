@@ -18,143 +18,126 @@ class Platform_model extends CI_Model
     }
 
 
-    //        $student_ins = $this->Platform_model->actionplan_fetch_intents($recipient_en['en_id']);
-    function actionplan_fetch_intents($en_id, $fetch_recursive = false, $calculate_completion = false, $actionplan_in_id = 0){
+    function actionplan_recursive_next_step($en_id, $in){
 
         /*
          *
-         * A function that generates a list of all intentions
-         * added to the student's Action Plan:
-         *
-         * $en_id:                  Student ID
-         *
-         * $calculate_completion:   Determines if completion rate should be calculated
-         *                          If False, would only return unique Action Plan intents.
-         *
-         * $actionplan_in_id:       Would limit score to a single Action Plan Intention
-         *                          If zero would calculate this for all Action Plan intents.
+         * Searches within a student Action Plan to find
+         * first incomplete step.
          *
          * */
 
+        $in_metadata = unserialize($in['in_metadata']);
+        foreach(array_flatten($in_metadata['in__metadata_common_steps']) as $common_step_in_id){
 
+            //Is this an expansion step?
+            $is_expansion = (isset($in_metadata['in__metadata_expansion_steps'][$common_step_in_id]));
 
-        $return = array(
-            'actionplan_in_ordered' => array(), //An ordered list of ALL intentions
-            'completion_rates' => array(
-                'top_level' => array(
-                    'in_count_all' => 0,
-                    'in_count_completed' => 0,
-                    'in_seconds_all' => 0,
-                    'in_seconds_completed' => 0,
-                    'in_completion_rate' => 0, //A percentage indicator of how much of the Action Plan has been completed in terms of seconds
-                ),
-                'immediate_children' => array(), //The same array as "top_level" and will calculate the same stats for each child (that needs to be in the UI)
-            ),
-        );
+            $completed_steps = $this->Database_model->ln_fetch(array(
+                'ln_type_entity_id IN (' . join(',', ( $is_expansion ? array(6157) /* Question Answered */ : $this->config->item('en_ids_6146') )) . ')' => null,
+                'ln_miner_entity_id' => $en_id, //Belongs to this Student
+                'ln_parent_intent_id' => $common_step_in_id,
+                'ln_status' => 2, //Published
+                'in_status' => 2, //Published
+            ), ( $is_expansion ? array('in_child') : array() ));
 
+            //Have they completed this?
+            if(count($completed_steps) == 0){
 
-        return $return;
+                //Nope, this is the next step:
+                return $common_step_in_id;
+
+            } elseif($is_expansion){
+
+                //Completed step that has OR expansions, check recursively to see if next step within here:
+                return $this->Platform_model->actionplan_recursive_next_step($en_id, $completed_steps[0]);
+
+            }
+
+        }
+
+        //Nothing found!
+        return 0;
+
     }
 
-    function actionplan_fetch_next($actionplan_ln_id)
+    function actionplan_next_step($en_id, $send_message)
     {
 
         /*
          *
-         * Attempts to find the next item in the Action Plan
-         * And if not, it would mark the Action Plan as complete!
+         * Searches for the next Action Plan step
          *
          * */
 
-        //Let's first check if we have an OR Intent that is drafting, which means it's children have not been answered!
-        $first_pending_or_intent = $this->Database_model->ln_fetch(array(
-            'ln_parent_link_id' => $actionplan_ln_id, //This action Plan
+        $student_intents = $this->Database_model->ln_fetch(array(
+            'ln_miner_entity_id' => $en_id,
+            'ln_type_entity_id IN (' . join(',', $this->config->item('en_ids_6147')) . ')' => null, //Action Plan Intentions
+            'ln_status IN (' . join(',', $this->config->item('ln_status_incomplete')) . ')' => null, //incomplete intentions
             'in_status' => 2, //Published
-            'in_type' => 1, //OR Branch
-            'ln_status' => 1, //Drafting
-        ), array('in_child'), 1, 0, array('ln_order' => 'ASC'));
+        ), array('in_parent'), 0, 0, array('ln_order' => 'ASC'));
 
-        if (count($first_pending_or_intent) > 0) {
-            return $first_pending_or_intent;
-        }
+        if(count($student_intents) == 0){
 
+            //Log error:
+            $this->Database_model->ln_create(array(
+                'ln_parent_entity_id' => $en_id,
+                'ln_content' => 'actionplan_next_step() failed to locate any student Action Plans',
+                'ln_type_entity_id' => 4246, //Platform Error
+                'ln_miner_entity_id' => 1, //Shervin/Developer
+            ));
 
-        //Now check the next AND intent that has not been started:
-        $next_new_intent = $this->Database_model->ln_fetch(array(
-            'ln_parent_link_id' => $actionplan_ln_id, //This action Plan
-            'in_status' => 2, //Published
-            'ln_status' => 0, //New
-        ), array('in_child'), 1, 0, array('ln_order' => 'ASC'));
+            if($send_message){
+                $this->Chat_model->dispatch_message(
+                    'You have no intentions in your Action Plan.',
+                    array('en_id' => $en_id),
+                    true
+                );
+            }
 
-        if (count($next_new_intent) > 0) {
-            return $next_new_intent;
-        }
-
-
-        //Now check the next AND intent that is drafting:
-        //I don't think this situation should ever happen...
-        //Because if we don't have any of the previous ones,
-        //how can we have this? 🤔 But let's keep it for now...
-        $next_working_on_intent = $this->Database_model->ln_fetch(array(
-            'ln_parent_link_id' => $actionplan_ln_id, //This action Plan
-            'in_status' => 2, //Published
-            'in_type' => 0, //AND Branch
-            'ln_status' => 1, //Drafting
-        ), array('in_child'), 1, 0, array('ln_order' => 'ASC'));
-
-        if (count($next_working_on_intent) > 0) {
-            return $next_working_on_intent;
-        }
-
-
-        /*
-         *
-         * The Action Plan seems to be completed as we could not find any pending intent!
-         * Nothing else left to do, we must be done with this Action Plan:
-         * What is the Action Plan Status?
-         *
-         * */
-
-        $actionplans = $this->Database_model->ln_fetch(array(
-            'ln_id' => $actionplan_ln_id,
-        ), array('in_child'));
-
-        if (count($actionplans) > 0 && in_array($actionplans[0]['ln_status'], $this->config->item('ln_status_incomplete'))) {
-
-            //Inform user that they are now complete with all steps:
-            $this->Chat_model->dispatch_message(
-                'You completed all the steps to ' . $actionplans[0]['in_outcome'] . ' 🙌 I will keep you updated on new steps and you can at any time stop these updates by saying "stop".',
-                array('en_id' => $actionplans[0]['ln_parent_entity_id']),
-                true,
-                array(),
-                array(
-                    'ln_child_intent_id' => $actionplans[0]['ln_child_intent_id'],
-                    'ln_parent_link_id' => $actionplans[0]['ln_id'],
-                )
-            );
-
-            $this->Chat_model->dispatch_message(
-                'How else can I help you with your tech career?',
-                array('en_id' => $actionplans[0]['ln_parent_entity_id']),
-                true,
-                array(),
-                array(
-                    'ln_child_intent_id' => $actionplans[0]['ln_child_intent_id'],
-                    'ln_parent_link_id' => $actionplans[0]['ln_id'],
-                )
-            );
-
-            //The entire Action Plan is now complete!
-            $this->Database_model->ln_update($actionplan_ln_id, array(
-                'ln_status' => 2, //Published
-            ), $actionplans[0]['ln_parent_entity_id']);
-
-            //List featured intents and let them choose:
-            $this->Chat_model->compose_message($this->config->item('in_featured'), array('en_id' => $actionplans[0]['ln_parent_entity_id']));
+            //No Action Plans found!
+            return false;
 
         }
 
-        return false;
+
+        //Looop through Action Plan intentions and see what's next:
+        foreach($student_intents as $student_intent){
+
+            //Find first incomplete step for this Action Plan intention:
+            $next_in_id = $this->Platform_model->actionplan_recursive_next_step($en_id, $student_intent);
+
+            if($next_in_id > 0){
+                //We found the next incomplete step, return:
+                break;
+            }
+        }
+
+        if($send_message){
+
+            //Did we find a next step?
+            if($next_in_id > 0){
+
+                //Yes, communicate it:
+                $this->Chat_model->actionplan_message_send($next_in_id, array('en_id' => $en_id));
+
+            } else {
+
+                //Inform user that they are now complete with all steps:
+                $this->Chat_model->dispatch_message(
+                    'You completed all your Action Plan steps to 🙌 I will keep you updated on new steps as they become available and you can at any time stop these updates by saying "stop".',
+                    array('en_id' => $en_id),
+                    true
+                );
+
+                //List featured intents and let them choose:
+                $this->Chat_model->suggest_featured_intents($en_id);
+
+            }
+        }
+
+        //Return next step intent or false:
+        return $next_in_id;
 
     }
 
@@ -222,7 +205,7 @@ class Platform_model extends CI_Model
 
     }
 
-    function trs_set_drafting($lns){
+    function ln_set_drafting($lns){
         /*
          *
          * A function that simply updates the status
@@ -893,7 +876,7 @@ class Platform_model extends CI_Model
     }
 
 
-    function en_student_messenger_authenticate($psid)
+    function en_authenticate_psid($psid)
     {
 
         /*
@@ -908,7 +891,7 @@ class Platform_model extends CI_Model
         if ($psid < 1) {
             //Ooops, this should never happen:
             $this->Database_model->ln_create(array(
-                'ln_content' => 'en_student_messenger_authenticate() got called without a valid Facebook $psid variable',
+                'ln_content' => 'en_authenticate_psid() got called without a valid Facebook $psid variable',
                 'ln_type_entity_id' => 4246, //Platform Error
                 'ln_miner_entity_id' => 1, //Shervin/Developer
             ));
@@ -937,138 +920,53 @@ class Platform_model extends CI_Model
     }
 
 
-    function actionplan_update_status($ln_id, $new_ln_status)
+    function actionplan_skip_recursive_down($en_id, $in_id, $apply_skip)
     {
 
-        /*
-         *
-         * Marks an Action Plan as complete
-         *
-         * */
-
-        //Validate Action Plan:
-        $actionplan_ins = $this->Database_model->ln_fetch(array(
-            'ln_id' => $ln_id,
-        ), array('in_child', 'en_parent'));
-        if (count($actionplan_ins) < 1) {
-            return false;
-        }
-
-        //Update status:
-        $this->Database_model->ln_update($ln_id, array(
-            'ln_status' => $new_ln_status,
-        ), $actionplan_ins[0]['ln_parent_entity_id']);
-
-        //Take additional action if Action Plan is Complete:
-        if ($new_ln_status == 2) {
-
-            //It's complete!
-
-            //Dispatch all on-complete messages if we have any:
-            $on_complete_messages = $this->Database_model->ln_fetch(array(
-                'ln_status' => 2, //Published
-                'ln_type_entity_id' => 4233, //On-Complete Messages
-                'ln_child_intent_id' => $actionplan_ins[0]['ln_child_intent_id'],
-            ), array('en_parent'), 0, 0, array('ln_order' => 'ASC'));
-
-            foreach ($on_complete_messages as $ln) {
-                $this->Chat_model->dispatch_message(
-                    $ln['ln_content'], //Message content
-                    $actionplan_ins[0], //Includes entity data for Action Plan Student
-                    true,
-                    array(),
-                    array(
-                        'ln_parent_link_id' => $actionplan_ins[0]['ln_parent_link_id'],
-                    )
-                );
-            }
-
-            //TODO Update Action Plan progress (In ln_metadata) at this point
-            //TODO implement drip?
-
-        }
-    }
-
-
-    function actionplan_skip_recursive_down($ln_id, $apply_skip = true)
-    {
-
-        //Fetch/validate Completed Step:
-        $actionplan_steps = $this->Database_model->ln_fetch(array(
-            'ln_id' => $ln_id,
-            'ln_type_entity_id' => 4559, //Completed Step
-            'ln_status NOT IN (' . join(',', $this->config->item('ln_status_incomplete')) . ')' => null, //completed step
+        //Fetch intent common steps:
+        $ins = $this->Database_model->in_fetch(array(
+            'in_id' => $in_id,
+            'in_status' => 2, //Published
         ));
-
-        if(count($actionplan_steps) < 1){
-            //Ooooopsi, could not find it:
+        if(count($ins) < 1){
             $this->Database_model->ln_create(array(
-                'ln_parent_link_id' => $ln_id,
-                'ln_content' => 'actionplan_skip_recursive_down() failed to locate step [Apply: '.( $apply_skip ? 'YES' : 'NO' ).']',
+                'ln_content' => 'actionplan_skip_recursive_down() failed to locate published intent',
                 'ln_type_entity_id' => 4246, //Platform Error
                 'ln_miner_entity_id' => 1, //Shervin/Developer
+                'ln_parent_entity_id' => $en_id,
             ));
-
-            return false;
+            return 0;
         }
 
 
-        //See how many children there are:
-        $dwn_tree = $this->Platform_model->deprecate__actionplan_fetch_recursive($actionplan_steps[0]['ln_parent_link_id'], $actionplan_steps[0]['ln_child_intent_id'], true);
+        $in_metadata = unserialize( $ins[0]['in_metadata'] );
+        if(!isset($in_metadata['in__metadata_common_steps'])){
+            $this->Database_model->ln_create(array(
+                'ln_content' => 'actionplan_skip_recursive_down() failed to locate metadata common steps',
+                'ln_type_entity_id' => 4246, //Platform Error
+                'ln_miner_entity_id' => 1, //Shervin/Developer
+                'ln_parent_entity_id' => $en_id,
+            ));
+            return 0;
+        }
 
-        //Combine this step with child steps to determine total steps that would be skipped:
-        $skippable_trs = array_merge(array(intval($ln_id)), $dwn_tree['actionplan_links_flat']);
+        //Fetch common base and expansion paths from intent metadata:
+        $flat_common_steps = array_flatten($in_metadata['in__metadata_common_steps']);
 
-        //Count how many of the skippable links are incomplete (Would actually be skipped):
-        $skipping_steps = $this->Database_model->ln_fetch(array(
-            'ln_id IN (' . join(',', $skippable_trs) . ')' => null,
-            'ln_status IN (' . join(',', $this->config->item('ln_status_incomplete')) . ')' => null, //incomplete
-        ));
-
-        if ($apply_skip) {
-            //Now start skipping:
-            foreach ($skipping_steps as $ln) {
-                $this->Platform_model->actionplan_update_status($ln['ln_id'], -1);
+        if($apply_skip){
+            //Add Action Plan Skipped Step Progression Links:
+            foreach($flat_common_steps as $common_in_id){
+                $this->Database_model->ln_create(array(
+                    'ln_type_entity_id' => 6143, //Action Plan Skipped Step
+                    'ln_miner_entity_id' => $en_id,
+                    'ln_parent_intent_id' => $common_in_id,
+                    'ln_status' => 2, //Published
+                ));
             }
         }
 
-        //Returned skippable steps:
-        return $skipping_steps;
-
-    }
-
-
-    function deprecate__actionplan_fetch_recursive($actionplan_ln_id, $in_id, $recursive_in = array())
-    {
-        //TODO DEPRECATE
-    }
-
-
-    function actionplan_communicate_next($en, $do_affirm = true){
-
-        /*
-         *
-         * A function that does three things:
-         *
-         * 1. Acknolwges the receival of an answer from the student
-         * 2. Tries to locate the next step in student's Action Plan
-         * 3. Communicates that next step with the student (if found)
-         *
-         * */
-
-        if($do_affirm){
-            //Confirm answer received by acknowledging progress with Student:
-            $this->Chat_model->dispatch_random_intro(8333, $en);
-        }
-
-        //Find the next item to navigate them to:
-        $next_ins = $this->Platform_model->actionplan_fetch_next($en['en_id']);
-
-        if ($next_ins) {
-            //Communicate next step:
-            $this->Chat_model->compose_message($next_ins[0]['in_id'], $en);
-        }
-
+        //Return number of skipped steps:
+        return count($flat_common_steps);
     }
 
     function in_recursive_update($in_id = 0, $in_field, $match_value, $replace_value, $ln_miner_entity_id, $filters = null, $recursive_in = null)
@@ -1213,15 +1111,20 @@ class Platform_model extends CI_Model
                     array_push($metadata_this['__in__metadata_common_steps'], $child_recursion['__in__metadata_common_steps']);
                 }
 
+                //Merge expansion steps:
                 if(count($child_recursion['__in__metadata_expansion_steps']) > 0){
-                    $metadata_this['__in__metadata_expansion_steps'] = array_merge($metadata_this['__in__metadata_expansion_steps'], $child_recursion['__in__metadata_expansion_steps']);
+                    foreach($child_recursion['__in__metadata_expansion_steps'] as $key => $value){
+                        if(!array_key_exists($key, $metadata_this['__in__metadata_expansion_steps'])){
+                            $metadata_this['__in__metadata_expansion_steps'][$key] = $value;
+                        }
+                    }
                 }
             }
         }
 
         //Was this an OR branch that needs it's children added to the array?
         if($has_or_parent && count($or_children) > 0){
-            array_push($metadata_this['__in__metadata_expansion_steps'], $or_children);
+            $metadata_this['__in__metadata_expansion_steps'][$focus_in['in_id']] = $or_children;
         }
 
 
@@ -1487,33 +1390,11 @@ class Platform_model extends CI_Model
 
     }
 
-    function actionplan_completion_rate($in_id, $miner_en_id)
+    function actionplan_completion_rate($in, $miner_en_id, $top_level = true)
     {
 
-        //Validate Action Plan:
-        $action_plans = $this->Database_model->ln_fetch(array(
-            'ln_type_entity_id IN (' . join(',', $this->config->item('en_ids_6147')) . ')' => null, //Action Plan Intentions
-            'ln_miner_entity_id' => $miner_en_id, //Belongs to this Student
-            'ln_parent_intent_id' => $in_id,
-            'ln_status IN (' . join(',', $this->config->item('ln_status_incomplete')) . ')' => null, //incomplete
-            'in_status' => 2, //Published
-        ), array('in_parent'));
-        if(count($action_plans) != 1){
-            //Should not happen, log error:
-            $this->Database_model->ln_create(array(
-                'ln_content' => 'actionplan_completion_rate() found '.count($action_plans).' Action Plans.',
-                'ln_type_entity_id' => 4246, //Platform Error
-                'ln_miner_entity_id' => 1, //Shervin/Developer
-                'ln_parent_entity_id' => $miner_en_id,
-                'ln_parent_intent_id' => $in_id,
-            ));
-
-            return 0;
-        }
-
-
         //Fetch/validate Action Plan Common Steps:
-        $in_metadata = unserialize($action_plans[0]['in_metadata']);
+        $in_metadata = unserialize($in['in_metadata']);
         if(!isset($in_metadata['in__metadata_common_steps'])){
 
             //Should not happen, log error:
@@ -1522,51 +1403,69 @@ class Platform_model extends CI_Model
                 'ln_type_entity_id' => 4246, //Platform Error
                 'ln_miner_entity_id' => 1, //Shervin/Developer
                 'ln_parent_entity_id' => $miner_en_id,
-                'ln_parent_intent_id' => $in_id,
+                'ln_parent_intent_id' => $in['in_id'],
             ));
 
             return 0;
         }
 
+        //Generate flat steps:
+        $flat_common_steps = array_flatten($in_metadata['in__metadata_common_steps']);
 
-        $common_steps = array_flatten($in_metadata['in__metadata_common_steps']);
-        $completed_steps = $this->Database_model->ln_fetch(array(
+        //Count totals:
+        $common_totals = $this->Database_model->in_fetch(array(
+            'in_id IN ('.join(',',$flat_common_steps).')' => null,
+            'in_status' => 2, //Published
+        ), array(), 0, 0, array(), 'COUNT(in_id) as total_steps, SUM(in_seconds_cost) as total_seconds');
+
+        //Count completed for student:
+        $common_completed = $this->Database_model->ln_fetch(array(
             'ln_type_entity_id IN (' . join(',', $this->config->item('en_ids_6146')) . ')' => null, //Action Plan Progression Link Types
             'ln_miner_entity_id' => $miner_en_id, //Belongs to this Student
-            'ln_parent_intent_id IN (' . join(',', $common_steps ) . ')' => null,
-            'ln_status NOT IN (' . join(',', $this->config->item('ln_status_incomplete')) . ')' => null, //complete
+            'ln_parent_intent_id IN (' . join(',', $flat_common_steps ) . ')' => null,
+            'ln_status' => 2, //Published
             'in_status' => 2, //Published
-        ), array('in_parent'), 0, 0, array(), 'COUNT(ln_id) as completed_steps');
-
+        ), array('in_parent'), 0, 0, array(), 'COUNT(in_id) as completed_steps, SUM(in_seconds_cost) as completed_seconds');
 
         //Calculate common steps and expansion steps recursively for this student:
         $metadata_this = array(
-            'steps_total' => count($common_steps),
-            'steps_completed' => $completed_steps[0]['completed_steps'],
-            'seconds_total' => 0,
-            'seconds_completed' => 0,
-            'cost_total' => 0,
-            'cost_completed' => 0,
+            'steps_total' => intval($common_totals[0]['total_steps']),
+            'steps_completed' => intval($common_completed[0]['completed_steps']),
+            'seconds_total' => intval($common_totals[0]['total_seconds']),
+            'seconds_completed' => intval($common_completed[0]['completed_seconds']),
         );
 
-        //Fetch expansion steps recursively:
-        foreach($this->Database_model->ln_fetch(array(
-            'ln_type_entity_id' => 6157, //Action Plan Question Answered
-            'ln_miner_entity_id' => $miner_en_id, //Belongs to this Student
-            'ln_parent_intent_id IN (' . join(',', $common_steps ) . ')' => null,
-            'ln_status NOT IN (' . join(',', $this->config->item('ln_status_incomplete')) . ')' => null, //complete
-            'in_status' => 2, //Published
-        ), array('in_parent')) as $expansion_in){
+        //Fetch expansion steps recursively, if any:
+        if(isset($in_metadata['in__metadata_expansion_steps']) && count($in_metadata['in__metadata_expansion_steps']) > 0){
 
-            //Addup completion stats for this:
-            $recursive_in = $this->Platform_model->actionplan_completion_rate($ln, $session_en['en_id']);
+            foreach($this->Database_model->ln_fetch(array(
+                'ln_type_entity_id' => 6157, //Action Plan Question Answered
+                'ln_miner_entity_id' => $miner_en_id, //Belongs to this Student
+                'ln_parent_intent_id IN (' . join(',', $flat_common_steps ) . ')' => null,
+                'ln_child_intent_id IN (' . join(',', array_flatten($in_metadata['in__metadata_expansion_steps'])) . ')' => null,
+                'ln_status' => 2, //Published
+                'in_status' => 2, //Published
+            ), array('in_child')) as $expansion_in){
 
+                //Fetch recursive:
+                $recursive_stats = $this->Platform_model->actionplan_completion_rate($expansion_in, $miner_en_id, false);
+
+                //Addup completion stats for this:
+                $metadata_this['steps_total'] += $recursive_stats['steps_total'];
+                $metadata_this['steps_completed'] += $recursive_stats['steps_completed'];
+                $metadata_this['seconds_total'] += $recursive_stats['seconds_total'];
+                $metadata_this['seconds_completed'] += $recursive_stats['seconds_completed'];
+
+            }
         }
 
+        if($top_level){
+            //Calculate completion rate based on estimated time cost:
+            $metadata_this['completion_rate'] = ( $metadata_this['seconds_completed'] / $metadata_this['seconds_total'] );
+        }
 
-
-
-        return round($completed_steps[0]['completed_steps']/count($common_steps)*100);
+        //Return results:
+        return $metadata_this;
 
     }
 
@@ -1711,137 +1610,6 @@ class Platform_model extends CI_Model
             ));
 
             return 0;
-        }
-    }
-
-
-    function actionplan_complete_recursive_up($actionplan, $force_ln_status = null)
-    {
-
-        /*
-         *
-         * When an intent is marked as complete OR when
-         * and OR child intent is chosen by the student,
-         * we need to determine of the child tree is
-         * complete and adjust the status of the parent
-         * intent accordingly. If the child tree is
-         * completed then the parent intent can be
-         * marked as complete, and if that results in the
-         * grandparent tree to be completed then we have
-         * to keep moving upwards until we reach a
-         * grandparent tree that has an incomplete child.
-         * If the child intent is not yet complete, we
-         * simply have to update parent ln_status from
-         * 0 to 1 to indicate that we're working on it.
-         *
-         * Inputs:
-         *
-         * $actionplan:         The Action Plan object
-         *
-         * $force_ln_status:    If set, would force a particular status
-         *                      (usually 1) instead of ln_status=2 (complete)
-         *
-         * */
-
-        //Determine Action Plan ID based on $actionplan input (Could be Intent OR Step):
-        $actionplan_ln_id = ( $actionplan['ln_type_entity_id']==4235 ? $actionplan['ln_id'] : $actionplan['ln_parent_link_id'] );
-
-        //Check to see if parent of this item is NEW, if so, we need to update its status to DRAFTING:
-        $parent_ins = $this->Database_model->ln_fetch(array(
-            'ln_type_entity_id' => 4559, //Completed Step
-            'ln_miner_entity_id' => $actionplan['ln_miner_entity_id'],
-            'ln_status' => 0, //New
-            'ln_child_intent_id' => $actionplan['ln_parent_intent_id'],
-        ), array('in_parent'));
-        if (count($parent_ins) > 0) {
-            //Found it! set to DRAFTING:
-            $this->Platform_model->actionplan_update_status($parent_ins[0]['ln_id'], 1);
-        }
-
-        //See if current intent children are complete:
-        $down_is_complete = true; //Start by assume its complete unless proven otherwise...
-
-        if (!$force_ln_status) {
-
-            /*
-             *
-             * For both AND/OR intents we need all children
-             * to be complete if we are to mark parent as
-             * complete. If not complete we will mark parent
-             * as drafting instead. So lets fetch the down
-             * tree and see what is happening:
-             *
-             * */
-
-            $dwn_tree = $this->Platform_model->deprecate__actionplan_fetch_recursive($actionplan_ln_id, $actionplan['ln_child_intent_id'], true);
-
-            //Did we find any children?
-            if (count($dwn_tree['actionplan_links_flat']) > 0) {
-
-                //YES! let's see if we can find any incomplete links among all child intents:
-                if (count($this->Database_model->ln_fetch(array(
-                        'ln_id IN (' . join(',', $dwn_tree['actionplan_links_flat']) . ')' => null, //All children
-                        'ln_status IN (' . join(',', $this->config->item('ln_status_incomplete')) . ')' => null, //incomplete
-                    ))) > 0) {
-                    //We do have some incomplete children, so this parent intent is NOT complete:
-                    $down_is_complete = false;
-                }
-            }
-        }
-
-
-        //Ok now define the new status here:
-        $new_ln_status = (!is_null($force_ln_status) ? $force_ln_status : ($down_is_complete ? 2 : 1));
-
-        //Update this intent:
-        $this->Platform_model->actionplan_update_status($actionplan['ln_id'], $new_ln_status);
-
-
-        //We are done with this branch if the status = 2
-        if ($new_ln_status==2) {
-
-            /*
-             *
-             * Yes, down tree seems complete, now let's check
-             * to see if up tree needs completion as well:
-             *
-             * */
-
-            //Fetch all parents:
-            $up_tree = $this->Platform_model->deprecate__actionplan_fetch_recursive($actionplan_ln_id, $actionplan['ln_child_intent_id'], false);
-
-            //Loop through incomplete parents to see if they should now be marked as complete:
-            foreach ($this->Database_model->ln_fetch(array(
-                'ln_id IN (' . join(',', $up_tree['actionplan_links_flat']) . ')' => null, //All parents
-                'ln_status IN (' . join(',', $this->config->item('ln_status_incomplete')) . ')' => null, //incomplete
-            )) as $incomplete_parent) {
-
-                /*
-                 *
-                 * For this parent ot be complete all its children
-                 * now need to be complete, so let's see if we
-                 * have any in-complete child intents in this
-                 * student's Action Plan:
-                 *
-                 * */
-
-                //Parent is complete if it has zero incomplete children:
-                if (count($this->Database_model->ln_fetch(array(
-                        'ln_miner_entity_id' => $actionplan['ln_miner_entity_id'],
-                        'ln_parent_intent_id' => $incomplete_parent['ln_child_intent_id'],
-                        'ln_status IN (' . join(',', $this->config->item('ln_status_incomplete')) . ')' => null, //incomplete
-                    ))) == 0) {
-
-                    //Parent now seems to be complete:
-                    $this->Platform_model->actionplan_update_status($incomplete_parent['ln_id'], (!is_null($force_ln_status) ? $force_ln_status : 2));
-
-                } elseif ($incomplete_parent['ln_status'] == 0) {
-
-                    //This parent is not yet completed, but we can update the status to DRAFTING since the status is NEW:
-                    $this->Platform_model->actionplan_update_status($incomplete_parent['ln_id'], 1);
-
-                }
-            }
         }
     }
 

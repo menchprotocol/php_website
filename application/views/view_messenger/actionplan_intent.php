@@ -1,7 +1,6 @@
 <?php
 
 //Is this an un-answered OR intent?
-$en_all_6138 = $this->config->item('en_all_6138');
 $is_step = (count($actionplan_parents) > 0); //This could be the top-level Student Intent OR an Completed Step to get to the intent...
 $has_children = (count($actionplan_children) > 0);
 $is_or_branch = ( $in['in_type']==1 );
@@ -29,14 +28,9 @@ if ($is_step) {
 $next_button = null;
 if ($actionplan['ln_status'] == 1) {
     //Active Action Plan, attempt to find next item, which we should be able to find:
-    $next_ins = $this->Platform_model->actionplan_fetch_next($actionplan['ln_parent_link_id']);
-    if ($next_ins) {
-        if ($next_ins[0]['in_id'] == $in['in_id']) {
-            //$next_button = '<span style="font-size: 0.7em; padding-left:5px; display:inline-block;"><i class="fas fa-shield-check"></i> This is the next-in-line intent</span>';
-            $next_button = null;
-        } else {
-            $next_button = '<a href="/messenger/actionplan/' . $next_ins[0]['in_id'] . '" class="btn ' . ($is_step && !$show_written_input && !$is_incomplete ? 'btn-md btn-primary' : 'btn-xs btn-black') . '" data-toggle="tooltip" data-placement="top" title="Next intent-in-line is to ' . $next_ins[0]['in_outcome'] . '">Next-in-line <i class="fas fa-angle-right"></i></a>';
-        }
+    $next_in_id = $this->Platform_model->actionplan_next_step($session_en['en_id'], false);
+    if ($next_in_id > 0 && $next_in_id != $in['in_id'] ) {
+        $next_button = '<a href="/messenger/actionplan/' . $next_in_id . '" class="btn ' . ($is_step && !$show_written_input && !$is_incomplete ? 'btn-md btn-primary' : 'btn-xs btn-black') . '">Next Step <i class="fas fa-angle-right"></i></a>';
     }
 }
 
@@ -49,15 +43,17 @@ if($is_step){
     }
 } else {
     //Show link to Action Plan if we have 1+ intentions:
-    $actionplan_intent_counts = count($this->Database_model->ln_fetch(array(
+    $student_intents = $this->Database_model->ln_fetch(array(
         'ln_miner_entity_id' => $session_en['en_id'],
-        'ln_type_entity_id' => 4235, //Student Intent
-        'ln_status >=' => 0, //New+
-    )));
-    if($actionplan_intent_counts > 1){
+        'ln_type_entity_id IN (' . join(',', $this->config->item('en_ids_6147')) . ')' => null, //Action Plan Intentions
+        'ln_status IN (' . join(',', $this->config->item('ln_status_incomplete')) . ')' => null, //incomplete intentions
+        'in_status' => 2, //Published
+    ), array('in_parent'), 0, 0, array('ln_order' => 'ASC'));
+
+    if(count($student_intents) > 1){
         echo '<a href="/messenger/actionplan" class="list-group-item">';
         echo '<span class="pull-left">';
-        echo '<span class="badge badge-primary fr-bgd"><i class="fas fa-angle-left"></i> '.$actionplan_intent_counts.'</span>';
+        echo '<span class="badge badge-primary fr-bgd"><i class="fas fa-angle-left"></i> '.count($student_intents).'</span>';
         echo '</span>';
         echo ' Student Intents';
         echo '</a>';
@@ -73,25 +69,21 @@ echo '<div class="sub_title">';
 
 if ($is_step) {
 
-    echo '<span class="status-label underdot" data-toggle="tooltip" data-placement="top" title="'.$en_all_6138[4559]['m_desc'].'">'.$en_all_6138[4559]['m_icon'].$en_all_6138[4559]['m_name'].'</span> &nbsp;&nbsp;';
-
     //Show completion progress for the single parent intent:
 
     echo echo_fixed_fields('ln_student_status', $actionplan_parents[0]['ln_status'], false, 'top');
     if($time_estimate){
-        echo ' &nbsp;&nbsp;<span class="status-label underdot" data-toggle="tooltip" data-placement="top" title="The estimated time to complete this '.$en_all_6138[4559]['m_name'].'"><i class="fas fa-alarm-clock"></i> ' . $time_estimate.'</span>';
+        echo ' &nbsp;&nbsp;<span class="status-label underdot" data-toggle="tooltip" data-placement="top" title="The estimated time to complete"><i class="fas fa-alarm-clock"></i> ' . $time_estimate.'</span>';
     }
 
     //TODO Fetch/show Student responses?
 
 } else {
 
-    echo '<span class="status-label underdot" data-toggle="tooltip" data-placement="top" title="'.$en_all_6138[4235]['m_desc'].'">'.$en_all_6138[4235]['m_icon'].$en_all_6138[4235]['m_name'].'</span> &nbsp;&nbsp;';
-
     //This must be top level Action Plan, show Action Plan data:
     echo echo_fixed_fields('ln_student_status', $actionplan['ln_status'], false, 'top');
     if($time_estimate){
-        echo ' &nbsp;&nbsp;<span class="status-label underdot" data-toggle="tooltip" data-placement="top" title="The estimated time to complete this '.$en_all_6138[4559]['m_name'].'"><i class="fas fa-alarm-clock"></i> ' . $time_estimate.'</span>';
+        echo ' &nbsp;&nbsp;<span class="status-label underdot" data-toggle="tooltip" data-placement="top" title="The estimated time to complete"><i class="fas fa-alarm-clock"></i> ' . $time_estimate.'</span>';
     }
 }
 echo '</div>';
@@ -232,7 +224,7 @@ echo $next_button;
 
 //Give a skip option if not complete:
 if ($is_step && in_array($actionplan_parents[0]['ln_status'], $this->config->item('ln_status_incomplete'))) {
-    echo '<span class="skippable">or <a href="javascript:void(0);" onclick="confirm_skip(' . $actionplan['ln_id'] . ')">Skip this step</a></span>';
+    echo '<span class="skippable">or <a href="javascript:void(0);" onclick="confirm_skip(' . $in['in_id'] . ', ' . $session_en['en_id'] . ')">Skip this step</a></span>';
 }
 
 ?>
