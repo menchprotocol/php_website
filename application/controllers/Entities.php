@@ -1089,7 +1089,7 @@ class Entities extends CI_Controller
             $timestamp = time();
 
             //Dispatch the password reset Intent:
-            $this->Chat_model->dispatch_message(
+            $this->Communication_model->dispatch_message(
                 'Hi /firstname 👋​ You can reset your Mench password here: /link:🔑 Reset Password:https://mench.com/entities/password_reset?en_id=' . $matching_users[0]['en_id'] . '&timestamp=' . $timestamp . '&p_hash=' . md5($matching_users[0]['en_id'] . $this->config->item('password_salt') . $timestamp) . ' (Link active for 24 hours)',
                 $matching_users[0],
                 true

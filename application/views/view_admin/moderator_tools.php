@@ -398,7 +398,7 @@ $(document).ready(function () {
             if(intval($_POST['fb_messenger_format']) && intval($_POST['recipient_en'])){
 
                 //Send to Facebook Messenger:
-                $msg_validation = $this->Chat_model->dispatch_message(
+                $msg_validation = $this->Communication_model->dispatch_message(
                     $_POST['test_message'],
                     array('en_id' => intval($_POST['recipient_en'])),
                     true
@@ -406,7 +406,7 @@ $(document).ready(function () {
 
             } else {
 
-                $msg_validation = $this->Chat_model->dispatch_validate_message($_POST['test_message'], ( intval($_POST['recipient_en']) ? array('en_id' => $_POST['recipient_en']) : array() ), $_POST['fb_messenger_format']);
+                $msg_validation = $this->Communication_model->dispatch_validate_message($_POST['test_message'], ( intval($_POST['recipient_en']) ? array('en_id' => $_POST['recipient_en']) : array() ), $_POST['fb_messenger_format']);
 
             }
 

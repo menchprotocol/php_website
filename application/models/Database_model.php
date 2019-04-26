@@ -368,7 +368,7 @@ class Database_model extends CI_Model
                 $html_message .= '<div style="color: #AAAAAA; font-size:0.9em; margin-top:20px;">Manage your email notifications via <a href="https://mench.com/entities/5966" target="_blank">@5966</a></div>';
 
                 //Send email:
-                $this->Chat_model->dispatch_email($sub_emails, $sub_en_ids, $subject, $html_message);
+                $this->Communication_model->dispatch_email($sub_emails, $sub_en_ids, $subject, $html_message);
 
             }
 

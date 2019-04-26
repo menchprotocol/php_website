@@ -235,7 +235,7 @@ function echo_in_message_manage($ln)
     $ui .= '<div class="edit-off text_message" id="msgbody_' . $ln['ln_id'] . '" style="margin:2px 0 0 0;">';
 
     //Now get the message snippet:
-    $ui .= $CI->Chat_model->dispatch_message($ln['ln_content'], $session_en, false, array(), array(), $ln['ln_child_intent_id']);
+    $ui .= $CI->Communication_model->dispatch_message($ln['ln_content'], $session_en, false, array(), array(), $ln['ln_child_intent_id']);
 
     $ui .= '</div>';
 
@@ -1010,7 +1010,7 @@ function echo_public_actionplan($in, $expand_mode){
 
         //Messages:
         foreach ($in_level2_messages as $ln) {
-            $return_html .= $CI->Chat_model->dispatch_message($ln['ln_content']);
+            $return_html .= $CI->Communication_model->dispatch_message($ln['ln_content']);
         }
 
 
@@ -1144,7 +1144,7 @@ function echo_en_messages($ln){
     //Show message only if its not a plain reference and includes additional text/info:
     if($ln['ln_content'] != '@'.$ln['ln_parent_entity_id']){
         $ui .= '<div style="margin-top: 15px;">';
-        $ui .= $CI->Chat_model->dispatch_message($ln['ln_content'], $session_en, false);
+        $ui .= $CI->Communication_model->dispatch_message($ln['ln_content'], $session_en, false);
         $ui .= '</div>';
     }
 
@@ -1399,7 +1399,7 @@ function echo_in_answer_scores($starting_in, $depth_levels, $status_min, $origin
         $ui .= '<div class="messages-'.$in_ln['in_id'].' hidden">';
         foreach ($messages as $msg) {
             $ui .= '<div class="tip_bubble" style="font-size:1em !important;">';
-            $ui .= $CI->Chat_model->dispatch_message($msg['ln_content']);
+            $ui .= $CI->Communication_model->dispatch_message($msg['ln_content']);
             $ui .= '</div>';
         }
         $ui .= '</div>';

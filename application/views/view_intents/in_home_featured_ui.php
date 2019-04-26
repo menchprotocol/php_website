@@ -12,7 +12,7 @@ foreach ($this->Database_model->ln_fetch(array(
     'ln_child_intent_id' => $in['in_id'],
 ), array(), 0, 0, array('ln_order' => 'ASC')) as $ln) {
     //Echo HTML format of this message:
-    echo $this->Chat_model->dispatch_message($ln['ln_content']);
+    echo $this->Communication_model->dispatch_message($ln['ln_content']);
 }
 echo '</div>';
 

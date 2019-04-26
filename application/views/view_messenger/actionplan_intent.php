@@ -28,7 +28,7 @@ if ($is_step) {
 $next_button = null;
 if ($actionplan['ln_status'] == 1) {
     //Active Action Plan, attempt to find next item, which we should be able to find:
-    $next_in_id = $this->Platform_model->actionplan_next_step($session_en['en_id'], false);
+    $next_in_id = $this->Platform_model->actionplan_find_next_step($session_en['en_id'], false);
     if ($next_in_id > 0 && $next_in_id != $in['in_id'] ) {
         $next_button = '<a href="/messenger/actionplan/' . $next_in_id . '" class="btn ' . ($is_step && !$show_written_input && !$is_incomplete ? 'btn-md btn-primary' : 'btn-xs btn-black') . '">Next Step <i class="fas fa-angle-right"></i></a>';
     }
@@ -96,7 +96,7 @@ foreach ($this->Database_model->ln_fetch(array(
     'ln_child_intent_id' => $in['in_id'],
 ), array(), 0, 0, array('ln_order' => 'ASC')) as $ln) {
     echo '<div class="tip_bubble">';
-    echo $this->Chat_model->dispatch_message($ln['ln_content'], $actionplan);
+    echo $this->Communication_model->dispatch_message($ln['ln_content'], $actionplan);
     echo '</div>';
 }
 

@@ -61,7 +61,7 @@ class Platform_model extends CI_Model
 
     }
 
-    function actionplan_next_step($en_id, $send_message)
+    function actionplan_find_next_step($en_id, $send_message)
     {
 
         /*
@@ -82,13 +82,13 @@ class Platform_model extends CI_Model
             //Log error:
             $this->Database_model->ln_create(array(
                 'ln_parent_entity_id' => $en_id,
-                'ln_content' => 'actionplan_next_step() failed to locate any student Action Plans',
+                'ln_content' => 'actionplan_find_next_step() failed to locate any student Action Plans',
                 'ln_type_entity_id' => 4246, //Platform Error
                 'ln_miner_entity_id' => 1, //Shervin/Developer
             ));
 
             if($send_message){
-                $this->Chat_model->dispatch_message(
+                $this->Communication_model->dispatch_message(
                     'You have no intentions in your Action Plan.',
                     array('en_id' => $en_id),
                     true
@@ -119,19 +119,19 @@ class Platform_model extends CI_Model
             if($next_in_id > 0){
 
                 //Yes, communicate it:
-                $this->Chat_model->actionplan_message_send($next_in_id, array('en_id' => $en_id));
+                $this->Platform_model->actionplan_advance_step(array('en_id' => $en_id), $next_in_id);
 
             } else {
 
                 //Inform user that they are now complete with all steps:
-                $this->Chat_model->dispatch_message(
+                $this->Communication_model->dispatch_message(
                     'You completed all your Action Plan steps to 🙌 I will keep you updated on new steps as they become available and you can at any time stop these updates by saying "stop".',
                     array('en_id' => $en_id),
                     true
                 );
 
                 //List featured intents and let them choose:
-                $this->Chat_model->suggest_featured_intents($en_id);
+                $this->Communication_model->suggest_featured_intents($en_id);
 
             }
         }
@@ -1390,6 +1390,387 @@ class Platform_model extends CI_Model
 
     }
 
+    function actionplan_advance_step($recipient_en, $in_id)
+    {
+
+        /*
+         *
+         * Advance the student action plan by 1 step
+         *
+         * - $in_id:            The Intent used to construct messages.
+         *
+         * - $recipient_en:     The recipient who will receive the messages via
+         *                      Facebook Messenger. Note that this function does
+         *                      not support an HTML format, only Messenger.
+         *
+         * */
+
+
+        //Basic input validation:
+        if ($in_id < 1) {
+
+            return array(
+                'status' => 0,
+                'message' => 'Missing Intent ID',
+            );
+
+        } elseif (!isset($recipient_en['en_id'])) {
+
+            return array(
+                'status' => 0,
+                'message' => 'Missing recipient entity ID',
+            );
+
+        }
+
+        //Fetch/Validate intent:
+        $ins = $this->Database_model->in_fetch(array(
+            'in_id' => $in_id,
+        ));
+
+        if (count($ins) < 1) {
+
+            $this->Database_model->ln_create(array(
+                'ln_type_entity_id' => 4246, //Platform Error
+                'ln_miner_entity_id' => 1, //Shervin/Developer
+                'ln_content' => 'actionplan_advance_step() called invalid intent',
+                'ln_child_entity_id' => $recipient_en['en_id'],
+                'ln_parent_intent_id' => $in_id,
+            ));
+
+            return array(
+                'status' => 0,
+                'message' => 'Invalid Intent #' . $in_id,
+            );
+
+        } elseif ($ins[0]['in_status'] != 2) {
+
+            $this->Database_model->ln_create(array(
+                'ln_type_entity_id' => 4246, //Platform Error
+                'ln_miner_entity_id' => 1, //Shervin/Developer
+                'ln_content' => 'actionplan_advance_step() called unpublished intent',
+                'ln_child_entity_id' => $recipient_en['en_id'],
+                'ln_parent_intent_id' => $in_id,
+            ));
+
+            return array(
+                'status' => 0,
+                'message' => 'Invalid #' . $in_id.' is not yet published',
+            );
+
+        }
+
+
+        /*
+         *
+         * Make sure we have full student information
+         * as it might be needed for the messages
+         * we're about to send out.
+         *
+         * */
+        if(!isset($recipient_en['en_name'])){
+            //Let's fetch full details:
+            $ens = $this->Database_model->en_fetch(array('en_id' => $recipient_en['en_id']));
+            $recipient_en = $ens[0];
+        }
+
+
+
+        /*
+         *
+         * There are different ways to complete an intent
+         * as listed under Action Plan Progression Link Types:
+         *
+         * https://mench.com/entities/6146
+         *
+         * We'll start by assuming the most basic form of
+         * completion (Action Plan Outcome Review) and
+         * build-up to more advance forms of completion
+         * as we gather more data through-out this function.
+         *
+         * */
+        $progression_type_entity_id = 6158; //Action Plan Outcome Review
+        $progression_response_required = false; //We assume no response is required
+
+
+        //Always communicate intent messages if any:
+        $intent_messages = $this->Database_model->ln_fetch(array(
+            'ln_status' => 2, //Published
+            'ln_type_entity_id' => 4231, //Intent Note Messages
+            'ln_child_intent_id' => $in_id,
+        ), array(), 0, 0, array('ln_order' => 'ASC'));
+
+        if(count($intent_messages) > 0){
+
+            //Update progression type:
+            $progression_type_entity_id = 4559; //Action Plan Messages Read
+            $progression_response_required = false; //Still no response needed
+
+            //Dispatch intent messages:
+            foreach ($intent_messages as $message_ln) {
+                $this->Communication_model->dispatch_message(
+                    $message_ln['ln_content'],
+                    $recipient_en,
+                    true,
+                    array(),
+                    array(
+                        'ln_parent_intent_id' => $in_id,
+                        'ln_parent_link_id' => $message_ln['ln_id'], //This message
+                    )
+                );
+            }
+        }
+
+
+
+        /*
+         *
+         * Now let's see the intent type (AND or OR)
+         * and also count its children to see how
+         * we would need to advance the student.
+         *
+         * */
+
+        //To be populated soon:
+        $next_step_message = null; //To be populated if there is a next step.
+        $quick_replies = array(); //To be populated with appropriate options to further progress form here...
+
+        //Fetch Children:
+        $in__children = $this->Database_model->ln_fetch(array(
+            'ln_status' => 2, //Published
+            'in_status' => 2, //Published
+            'ln_type_entity_id' => 4228, //Fixed intent links only
+            'ln_parent_intent_id' => $in_id,
+        ), array('in_child'), 0, 0, array('ln_order' => 'ASC'));
+
+
+        //Does the user have to choose an answer to move forward?
+        if ($ins[0]['in_type']==1 && count($in__children) >= 2 /* Student's have a real decision only if 2+ answers available */) {
+
+                //Yes! Set appropriate variables:
+                $progression_type_entity_id = 6157; //Action Plan Question Answered
+                $progression_response_required = true; //Student needs to answer using quick replies
+
+                //Yes, this OR branch has children, give option to add to Action Plan:
+                $key = 0;
+                foreach ($in__children as $or_child_in) {
+
+                    //Make sure not already in Action Plan:
+                    if(count($this->Database_model->ln_fetch(array(
+                            'ln_miner_entity_id' => $recipient_en['en_id'],
+                            'ln_type_entity_id IN (' . join(',', $this->config->item('en_ids_6147')) . ')' => null, //Action Plan Intentions
+                            'ln_status IN (' . join(',', $this->config->item('ln_status_incomplete')) . ')' => null, //incomplete intentions
+                            'ln_parent_intent_id' => $or_child_in['in_id'],
+                        ))) > 0){
+                        continue;
+                    }
+
+                    $key++;
+
+                    if($key==1){
+                        //Set intro message:
+                        $next_step_message = 'Select one of the following options to continue:';
+                    }
+
+                    if ($key >= 11) {
+
+                        //Log error link so we can look into it:
+                        $this->Database_model->ln_create(array(
+                            'ln_miner_entity_id' => 1, //Shervin/Developer
+                            'ln_content' => 'actionplan_advance_step() encountered intent with too many children to be listed as OR Intent options! Trim and iterate that intent tree.',
+                            'ln_type_entity_id' => 4246, //Platform Error
+                            'ln_parent_intent_id' => $in_id,
+                            'ln_child_intent_id' => $or_child_in['in_id'],
+                        ));
+
+                        //Quick reply accepts 11 options max:
+                        break;
+
+                    } else {
+
+                        $next_step_message .= "\n\n" . $key . '/ ' . echo_in_outcome($or_child_in['in_outcome'], true);
+                        array_push($quick_replies, array(
+                            'content_type' => 'text',
+                            'title' => '/' . $key,
+                            'payload' => 'CHOOSEORPATH_' . $in_id . '_' . $or_child_in['in_id'],
+                        ));
+
+                    }
+                }
+
+                //Did we find any featured intentions to offer?
+                if($key > 0){
+                    //Dispatch messages:
+                    $this->Communication_model->dispatch_message(
+                        $next_step_message,
+                        $recipient_en,
+                        true,
+                        $quick_replies,
+                        array(
+                            'ln_child_intent_id' => $in_id, //Focus Intent
+                        )
+                    );
+                } else {
+                    //Student has added all featured intentions to their Action Plan:
+                    $this->Communication_model->dispatch_message(
+                        'You have already added all featured intentions to your Action Plan and I have nothing more to offer at this time. I will keep you updated on my new featured intentions.',
+                        $recipient_en,
+                        true
+                    );
+                }
+
+        } else {
+
+            //Either an AND intent OR an OR intent with a single child...
+
+            //Assuming no completion requirement:
+            $message_in_requirements = null;
+
+            //Check if AND intent:
+            if($ins[0]['in_type']==0){
+                $message_in_requirements = $this->Platform_model->in_req_completion($ins[0], true);
+            }
+
+            if ($message_in_requirements) {
+
+                //Let the user know what they need to do:
+                $this->Communication_model->dispatch_message(
+                    $message_in_requirements,
+                    $recipient_en,
+                    true,
+                    array(),
+                    array(
+                        'ln_parent_intent_id' => $in_id, //Focus Intent
+                    )
+                );
+
+                //Nothing more to do until student submits completion requirements:
+                return array(
+                    'status' => 1,
+                    'message' => 'Student must now submit intent completion requirements',
+                );
+
+            } else {
+
+                //No completion requirement, move on:
+
+
+            }
+
+
+            /*
+             *
+             * Still here? It either does not have requirements or
+             * the requirements have been completed by the Student
+             *
+             * Let's attempt to give direction on what's next...
+             *
+             * */
+
+            //Lets fetch incomplete children of $in_id in Action Plan
+            $actionplan_child_ins = $this->Database_model->ln_fetch(array(
+                'ln_status IN (' . join(',', $this->config->item('ln_status_incomplete')) . ')' => null, //incomplete
+                'ln_type_entity_id' => 4559, //Completed Step
+                'ln_parent_link_id' => $actionplan_ln_id,
+                'ln_parent_intent_id' => $in_id,
+            ), array('in_child'));
+
+        }
+
+
+
+
+
+
+        if ($ins[0]['in_type']==1 /* OR Intent with no children */ || count($actionplan_child_ins) <= 1 /* Action Plan AND Intent with 0-1 children */) {
+
+            //No children! So there is a single path forward, the next intent in line:
+            $next_in_id = $this->Platform_model->actionplan_find_next_step($recipient_en['en_id'], false);
+
+            //Did we find the next intent in line in case we had zero?
+            if ($next_in_id > 0) {
+
+                //Give option to move on:
+                $next_step_message .= 'Ready to go to the next step to ' . $ins[0]['in_outcome'] . '?';
+                array_push($quick_replies, array(
+                    'content_type' => 'text',
+                    'title' => 'Ok Continue ▶️',
+                    'payload' => 'MARKCOMPLETE_' . $next_in_id,
+                ));
+
+            }
+
+        } else {
+
+            /*
+             *
+             * This is an AND intent within an Action Plan
+             * that has 2 or more children.
+             *
+             * */
+
+            //User needs to complete all children, and we'd recommend the first item as their next step:
+            $next_step_message .= 'Here are ' . count($actionplan_child_ins) . ' steps to ' . echo_in_outcome($ins[0]['in_outcome'], true) . ':';
+
+            foreach ($actionplan_child_ins as $key => $and_child_in) {
+
+                if ($key == 0) {
+
+                    array_push($quick_replies, array(
+                        'content_type' => 'text',
+                        'title' => 'Start Step 1 ▶️',
+                        'payload' => 'MARKCOMPLETE_' . $and_child_in['ln_id'],
+                    ));
+
+                }
+
+                //We know that the $next_step_message length cannot surpass the limit defined by fb_max_message variable!
+                //make sure message is within range:
+                if (strlen($next_step_message) < ($this->config->item('fb_max_message') - 200 /* Cushion for appendix messages */)) {
+
+                    //Add message:
+                    $next_step_message .= "\n\n" . 'Step ' . ($key + 1) . ': ' . $and_child_in['in_outcome'];
+
+                } else {
+
+                    //We cannot add any more, indicate truncating:
+                    $remainder = count($actionplan_child_ins) - $key;
+                    $next_step_message .= "\n\n" . 'And ' . $remainder . ' more step' . echo__s($remainder) . '!';
+                    break;
+
+                }
+            }
+
+
+            //Give option to skip Student Intent:
+            array_push($quick_replies, array(
+                'content_type' => 'text',
+                'title' => 'Skip',
+                'payload' => 'SKIP-ACTIONPLAN_1_' . $ins[0]['in_id'],
+            ));
+
+        }
+
+
+
+        //Dispatch instructional message:
+        $this->Communication_model->dispatch_message(
+            $next_step_message,
+            $recipient_en,
+            true,
+            $quick_replies,
+            array(
+                'ln_parent_intent_id' => $in_id, //Focus Intent
+            )
+        );
+
+        return array(
+            'status' => 1,
+            'message' => 'Success',
+        );
+
+    }
+
     function actionplan_completion_rate($in, $miner_en_id, $top_level = true)
     {
 
@@ -1836,7 +2217,7 @@ class Platform_model extends CI_Model
         }
 
         //Call facebook messenger API and get user graph profile:
-        $graph_fetch = $this->Chat_model->facebook_graph('GET', '/' . $psid, array());
+        $graph_fetch = $this->Communication_model->facebook_graph('GET', '/' . $psid, array());
         $fetched_fb_info = ($graph_fetch['status'] && isset($graph_fetch['ln_metadata']['result']['first_name']) && strlen($graph_fetch['ln_metadata']['result']['first_name']) > 0);
 
 
@@ -1928,7 +2309,7 @@ class Platform_model extends CI_Model
 
         if(!$fetched_fb_info){
             //Let them know to complete their profile:
-            $this->Chat_model->dispatch_message(
+            $this->Communication_model->dispatch_message(
                 'Hi stranger! Let\'s get started by completing your profile information by opening the My Account tab in the menu below. /link:Open 👤My Account:https://mench.com/messenger/account',
                 $added_en['en'],
                 true

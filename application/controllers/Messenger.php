@@ -183,7 +183,7 @@ class Messenger extends CI_Controller
 
                     //Digest quick reply Payload if any:
                     if ($quick_reply_payload) {
-                        $this->Chat_model->digest_quick_reply($en, $quick_reply_payload);
+                        $this->Communication_model->digest_quick_reply($en, $quick_reply_payload);
                     }
 
                     /*
@@ -285,7 +285,7 @@ class Messenger extends CI_Controller
                         $ln_data['ln_content'] = $im['message']['text']; //Quick reply always has a text
 
                         //Digest it further:
-                        $this->Chat_model->digest_quick_reply($en, $im['message']['quick_reply']['payload']);
+                        $this->Communication_model->digest_quick_reply($en, $im['message']['quick_reply']['payload']);
 
                     } elseif (isset($im['message']['text'])) {
 
@@ -303,7 +303,7 @@ class Messenger extends CI_Controller
                             $ln_data['ln_type_entity_id'] = 4547; //Text Message Received
 
                             //Digest message & try to make sense of it:
-                            $this->Chat_model->digest_message($en, $im['message']['text']);
+                            $this->Communication_model->digest_message($en, $im['message']['text']);
 
                         }
 
@@ -472,7 +472,7 @@ class Messenger extends CI_Controller
 
             //Fetch results and show:
             return echo_json(array(
-                'fb_profile' => $this->Chat_model->facebook_graph('GET', '/' . $current_us[0]['en_psid'], array()),
+                'fb_profile' => $this->Communication_model->facebook_graph('GET', '/' . $current_us[0]['en_psid'], array()),
                 'en' => $current_us[0],
             ));
 
@@ -491,7 +491,7 @@ class Messenger extends CI_Controller
 
         //Let's first give permission to our pages to do so:
         $res = array();
-        array_push($res, $this->Chat_model->facebook_graph('POST', '/me/messenger_profile', array(
+        array_push($res, $this->Communication_model->facebook_graph('POST', '/me/messenger_profile', array(
             'get_started' => array(
                 'payload' => 'GET_STARTED',
             ),
@@ -508,7 +508,7 @@ class Messenger extends CI_Controller
         $en_all_6196 = $this->config->item('en_all_6196');
 
         //Now let's update the menu:
-        array_push($res, $this->Chat_model->facebook_graph('POST', '/me/messenger_profile', array(
+        array_push($res, $this->Communication_model->facebook_graph('POST', '/me/messenger_profile', array(
             'persistent_menu' => array(
                 array(
                     'locale' => 'default',
@@ -1356,7 +1356,7 @@ class Messenger extends CI_Controller
         //Redirect back to page with success message:
         if (isset($_POST['fetch_next_step'])) {
             //Go to next item:
-            $next_in_id = $this->Platform_model->actionplan_next_step($session_en['en_id'], false);
+            $next_in_id = $this->Platform_model->actionplan_find_next_step($session_en['en_id'], false);
             if ($next_in_id > 0) {
                 //Override original item:
                 $step_url = '/messenger/actionplan/' . $next_in_id;
@@ -1397,7 +1397,7 @@ class Messenger extends CI_Controller
             $message = '<div class="alert alert-success" role="alert">Successfully skipped ' . $total_skipped . ' step' . echo__s($total_skipped) . '.</div>';
 
             //Find the next item to navigate them to:
-            $next_in_id = $this->Platform_model->actionplan_next_step($en_id, false);
+            $next_in_id = $this->Platform_model->actionplan_find_next_step($en_id, false);
             if ($next_in_id > 0) {
                 return redirect_message('/messenger/actionplan/' . $next_in_id, $message);
             } else {
@@ -1474,7 +1474,7 @@ class Messenger extends CI_Controller
                 if($_POST['parent_en_id']==4454){
                     if($_POST['selected_en_id']==4455){
                         //They just unsubscribed, send them a message before its too late (changing their status):
-                        $this->Chat_model->dispatch_message(
+                        $this->Communication_model->dispatch_message(
                             'This is a confirmation that you are now unsubscribed from Mench and I will not longer send you any messages. You can resume your subscription later by going to MY ACCOUNT > SUBSCRIPTION TYPE > Set Notification',
                             array('en_id' => $_POST['en_miner_id']),
                             true
@@ -1506,7 +1506,7 @@ class Messenger extends CI_Controller
 
         if($greet_them_back){
             //Now we can communicate with them again:
-            $this->Chat_model->dispatch_message(
+            $this->Communication_model->dispatch_message(
                 'Welcome back 🎉🎉🎉 This is a confirmation that you are now re-subscribed and I will continue to work with you on your Acion Plan intentions',
                 array('en_id' => $_POST['en_miner_id']),
                 true
@@ -1684,7 +1684,7 @@ class Messenger extends CI_Controller
             );
 
             //Attempt to sync Media to Facebook:
-            $result = $this->Chat_model->facebook_graph('POST', '/me/message_attachments', $payload);
+            $result = $this->Communication_model->facebook_graph('POST', '/me/message_attachments', $payload);
 
             if (isset($result['ln_metadata']['result']['attachment_id']) && $result['status']) {
 

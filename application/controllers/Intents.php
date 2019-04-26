@@ -835,7 +835,7 @@ class Intents extends CI_Controller
         $tip_messages = null;
         foreach ($on_start_messages as $ln) {
             //What type of message is this?
-            $tip_messages .= $this->Chat_model->dispatch_message($ln['ln_content'], $session_en, false, array(), array(
+            $tip_messages .= $this->Communication_model->dispatch_message($ln['ln_content'], $session_en, false, array(), array(
                 'ln_parent_intent_id' => $_POST['in_id'],
             ));
         }
@@ -918,7 +918,7 @@ class Intents extends CI_Controller
         }
 
         //Make sure message is all good:
-        $msg_validation = $this->Chat_model->dispatch_validate_message($_POST['ln_content'], array(), false, array(), $_POST['focus_ln_type_entity_id'], $_POST['in_id']);
+        $msg_validation = $this->Communication_model->dispatch_validate_message($_POST['ln_content'], array(), false, array(), $_POST['focus_ln_type_entity_id'], $_POST['in_id']);
 
         if (!$msg_validation['status']) {
             //There was some sort of an error:
@@ -1305,7 +1305,7 @@ class Intents extends CI_Controller
 
 
         //Validate new message:
-        $msg_validation = $this->Chat_model->dispatch_validate_message($_POST['ln_content'], array(), false, array(), $messages[0]['ln_type_entity_id'], $_POST['in_id']);
+        $msg_validation = $this->Communication_model->dispatch_validate_message($_POST['ln_content'], array(), false, array(), $messages[0]['ln_type_entity_id'], $_POST['in_id']);
         if (!$msg_validation['status']) {
             //There was some sort of an error:
             return echo_json($msg_validation);
@@ -1334,7 +1334,7 @@ class Intents extends CI_Controller
         //Print the challenge:
         return echo_json(array(
             'status' => 1,
-            'message' => $this->Chat_model->dispatch_message($msg_validation['input_message'], $session_en, false, array(), array(), $_POST['in_id']),
+            'message' => $this->Communication_model->dispatch_message($msg_validation['input_message'], $session_en, false, array(), array(), $_POST['in_id']),
             'message_new_status_icon' => '<span title="' . $fixed_fields['ln_status'][$to_update['ln_status']]['s_name'] . ': ' . $fixed_fields['ln_status'][$to_update['ln_status']]['s_desc'] . '" data-toggle="tooltip" data-placement="top">' . $fixed_fields['ln_status'][$to_update['ln_status']]['s_icon'] . '</span>', //This might have changed
             'success_icon' => '<span><i class="fas fa-check"></i> Saved</span>',
         ));
