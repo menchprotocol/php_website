@@ -597,12 +597,12 @@ function echo_tr_row($ln, $is_inner = false)
 
 
 
-function echo_in_actionplan_or_choose($parent_in_id, $actionplan_ln_id, $in)
+function echo_in_actionplan_answer($en_id, $parent_in_id, $answer_in)
 {
 
     $CI =& get_instance();
 
-    $ui = '<a href="/messenger/actionplan_choose_step/'.$actionplan_ln_id.'/' . $parent_in_id . '/' . $in['in_id'] . '/' . md5($CI->config->item('actionplan_salt') . $in['in_id'] . $parent_in_id . $actionplan_ln_id) . '" class="list-group-item">';
+    $ui = '<a href="/messenger/actionplan_answer_question/' . $en_id . '/' . $parent_in_id . '/' . $answer_in['in_id'] . '/' . md5($CI->config->item('actionplan_salt') . $answer_in['in_id'] . $parent_in_id . $en_id) . '" class="list-group-item">';
 
     //Different pointer position based on direction:
     $ui .= '<span class="pull-right">';
@@ -611,7 +611,7 @@ function echo_in_actionplan_or_choose($parent_in_id, $actionplan_ln_id, $in)
 
     //OR Option with Radio button UI:
     $ui .= '<span class="status-label" style="padding-bottom:1px;"><i class="fal fa-circle"></i></span> ';
-    $ui .= echo_in_outcome($in['in_outcome'], true);
+    $ui .= echo_in_outcome($answer_in['in_outcome'], true);
 
     $ui .= '</a>';
 

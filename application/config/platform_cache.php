@@ -5,13 +5,30 @@ defined('BASEPATH') OR exit('No direct script access allowed');
  * Keep a cache of certain parts of the Intent tree for faster processing
  * So we don't have to make DB calls to figure them out every time!
  * See here for all entities cached: https://mench.com/entities/4527
- * use-case format: $this->config->item('en_all_6196')
+ * use-case format: $this->config->item('en_ids_6244')
  *
  * ATTENTION: Also search for "en_ids_" and "en_all_" when trying to manage these throughout the code base
  *
  */
 
-//Generated 2019-04-26 11:54:30 PST
+//Generated 2019-04-26 13:07:43 PST
+
+//Action Plan 2-Step Link Types:
+$config['en_ids_6244'] = array(6144, 6157);
+$config['en_all_6244'] = array(
+    6144 => array(
+        'm_icon' => '<i class="fas fa-check-square"></i>',
+        'm_name' => 'Requirement Submitted',
+        'm_desc' => '',
+        'm_parents' => array(6244, 4755, 6146, 4593),
+    ),
+    6157 => array(
+        'm_icon' => '<i class="fas fa-check-square"></i>',
+        'm_name' => 'Question Answered',
+        'm_desc' => '',
+        'm_parents' => array(6244, 6146, 4755, 4593, 4460),
+    ),
+);
 
 //Action Plan Completion Link Types:
 $config['en_ids_6150'] = array(6154, 6155);
@@ -321,31 +338,31 @@ $config['en_all_6146'] = array(
     4559 => array(
         'm_icon' => '<i class="fas fa-check-square"></i>',
         'm_name' => 'Messages Read',
-        'm_desc' => '',
+        'm_desc' => 'Completed when students read the messages of an intent that does not have a completion requirement',
         'm_parents' => array(4755, 6146, 4593),
     ),
     6143 => array(
         'm_icon' => '<i class="far fa-minus-square"></i>',
         'm_name' => 'Skipped Step',
-        'm_desc' => '',
+        'm_desc' => 'Completed when students skip an intention and all its child intentions from their Action Plan',
         'm_parents' => array(6146, 4755, 4593),
     ),
     6144 => array(
         'm_icon' => '<i class="fas fa-check-square"></i>',
         'm_name' => 'Requirement Submitted',
-        'm_desc' => '',
-        'm_parents' => array(4755, 6146, 4593),
+        'm_desc' => 'Completed when students submit the intent completion requirements (text, URL, video, etc...) set by miners',
+        'm_parents' => array(6244, 4755, 6146, 4593),
     ),
     6157 => array(
         'm_icon' => '<i class="fas fa-check-square"></i>',
         'm_name' => 'Question Answered',
-        'm_desc' => '',
-        'm_parents' => array(6146, 4755, 4593, 4460),
+        'm_desc' => 'Completed after the student answers the question to the OR intent',
+        'm_parents' => array(6244, 6146, 4755, 4593, 4460),
     ),
     6158 => array(
         'm_icon' => '<i class="fas fa-check-square"></i>',
         'm_name' => 'Outcome Review',
-        'm_desc' => '',
+        'm_desc' => 'Completed when students read the messages of an intent that does not have any messages or a completion requirement',
         'm_parents' => array(4593, 4755, 6146),
     ),
 );
@@ -1220,7 +1237,7 @@ $config['en_all_4755'] = array(
         'm_icon' => '<i class="fas fa-check-square"></i>',
         'm_name' => 'Action Plan Requirement Submitted',
         'm_desc' => '',
-        'm_parents' => array(4755, 6146, 4593),
+        'm_parents' => array(6244, 4755, 6146, 4593),
     ),
     6149 => array(
         'm_icon' => '<i class="fas fa-search-plus"></i>',
@@ -1244,7 +1261,7 @@ $config['en_all_4755'] = array(
         'm_icon' => '<i class="fas fa-check-square"></i>',
         'm_name' => 'Action Plan Question Answered',
         'm_desc' => '',
-        'm_parents' => array(6146, 4755, 4593, 4460),
+        'm_parents' => array(6244, 6146, 4755, 4593, 4460),
     ),
     6158 => array(
         'm_icon' => '<i class="fas fa-check-square"></i>',
@@ -1853,7 +1870,7 @@ $config['en_all_4593'] = array(
         'm_icon' => '<i class="fas fa-check-square"></i>',
         'm_name' => 'Action Plan Requirement Submitted',
         'm_desc' => 'Logged when a student submits the requirements (text, video, etc...) of an AND intent which could not be completed by simply receiving messages.',
-        'm_parents' => array(4755, 6146, 4593),
+        'm_parents' => array(6244, 4755, 6146, 4593),
     ),
     6149 => array(
         'm_icon' => '<i class="fas fa-search-plus"></i>',
@@ -1877,7 +1894,7 @@ $config['en_all_4593'] = array(
         'm_icon' => '<i class="fas fa-check-square"></i>',
         'm_name' => 'Action Plan Question Answered',
         'm_desc' => 'Logged when students choose their path by selecting an OR intent answer.',
-        'm_parents' => array(6146, 4755, 4593, 4460),
+        'm_parents' => array(6244, 6146, 4755, 4593, 4460),
     ),
     6158 => array(
         'm_icon' => '<i class="fas fa-check-square"></i>',

@@ -191,7 +191,7 @@ if ($show_children) {
                 'ln_type_entity_id' => 4228, //Fixed intent links only
                 'ln_parent_intent_id' => $in['in_id'],
             ), array('in_child'), 0, 0, array('ln_order' => 'ASC')) as $ln) {
-                echo echo_in_actionplan_or_choose($in['in_id'], $actionplan['ln_parent_link_id'], $ln);
+                echo echo_in_actionplan_answer($session_en['en_id'], $in['in_id'], $ln);
             }
 
         }

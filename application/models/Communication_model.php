@@ -1199,7 +1199,7 @@ class Communication_model extends CI_Model
                 array_push($quick_replies, array(
                     'content_type' => 'text',
                     'title' => '/' . $key,
-                    'payload' => 'CHOOSEORPATH_' . $in_id . '_' . $or_child_in['in_id'],
+                    'payload' => 'ANSWERQUESTION_' . $in_id . '_' . $or_child_in['in_id'],
                 ));
 
 
@@ -1779,73 +1779,43 @@ class Communication_model extends CI_Model
 
             }
 
-        } elseif (substr_count($quick_reply_payload, 'MARKCOMPLETE_') == 1) {
+        } elseif (substr_count($quick_reply_payload, 'GOTOSTEP_') == 1) {
 
             //Student consumed AND tree content, and is ready to move on to next intent...
-            $ln_id = intval(one_two_explode('MARKCOMPLETE_', '', $quick_reply_payload));
+            $in_id = intval(one_two_explode('GOTOSTEP_', '', $quick_reply_payload));
 
-            if ($ln_id > 0) {
-                //Fetch Student Intent with its Student:
-                $actionplans = $this->Database_model->ln_fetch(array(
-                    'ln_id' => $ln_id,
-                    'ln_type_entity_id' => 4559, //Completed Step
-                    'ln_parent_entity_id' => $en['en_id'], //Belongs to this Student
-                ), array('in_child', 'en_parent'));
-            }
+            //Advance student to next step:
+            $this->Platform_model->actionplan_advance_step($en, $in_id);
 
-
-            if($ln_id < 0 || count($actionplans) < 1){
-
-                //Invalid Student Intent ID!
-                $this->Database_model->ln_create(array(
-                    'ln_content' => 'digest_quick_reply() failed to fetch proper data for intent completion request with reference value [' . $quick_reply_payload . ']',
-                    'ln_type_entity_id' => 4246, //Platform Error
-                    'ln_parent_link_id' => $ln_id,
-                    'ln_miner_entity_id' => $en['en_id'], //Belongs to this Student
-                ));
-
-                //Inform Student:
-                $this->Communication_model->dispatch_message(
-                    'I was unable to process your completion request',
-                    $en,
-                    true
-                );
-
-                return false;
-            }
-
-            //Set Action Plan ID:
-            $actionplan_ln_id = $actionplans[0]['ln_parent_link_id'];
-
-            //TODO Log appropriate Action Plan Progression link type
-
-            //Find/communicate the next step:
-            $this->Platform_model->actionplan_find_next_step($en['en_id'], true);
-
-        } elseif (substr_count($quick_reply_payload, 'CHOOSEORPATH_') == 1) {
+        } elseif (substr_count($quick_reply_payload, 'ANSWERQUESTION_') == 1) {
 
             /*
              *
-             * When the student answers a quick reply
-             * within one of their existing intentions.
+             * When the student answers a quick reply question.
              *
              * */
 
-            $quickreply_parts = explode('_', one_two_explode('CHOOSEORPATH_', '', $quick_reply_payload));
+            //Extract variables:
+            $quickreply_parts = explode('_', one_two_explode('ANSWERQUESTION_', '', $quick_reply_payload));
+            $parent_in_id = intval($quickreply_parts[0]);
+            $answer_in_id = intval($quickreply_parts[1]);
 
-            //Validate quick reply intents to both be published:
-            if(count($this->Database_model->in_fetch(array(
-                    'in_status' => 2, //Published
-                    'in_id IN ('.intval($quickreply_parts[1]).','.intval($quickreply_parts[2]).')' => null,
-                )))==2){
+            //We should already have a link for this, so let's find and update it:
+            $pending_answer_links = $this->Database_model->ln_fetch(array(
+                'ln_miner_entity_id' => $en['en_id'],
+                'ln_type_entity_id' => 6157, //Action Plan Question Answered
+                'ln_parent_intent_id' => $parent_in_id,
+                'ln_status IN (' . join(',', $this->config->item('ln_status_incomplete')) . ')' => null, //incomplete intentions
+            ));
 
-                //All good, save chosen OR path
-                $this->Database_model->ln_create(array(
-                    'ln_miner_entity_id' => $en['en_id'],
-                    'ln_type_entity_id' => 6157, //Action Plan OR Path Chosen
-                    'ln_parent_intent_id' => intval($quickreply_parts[1]),
-                    'ln_child_intent_id' => intval($quickreply_parts[2]),
-                ));
+            if(count($pending_answer_links) > 0){
+
+                foreach($pending_answer_links as $ln){
+                    $this->Database_model->ln_update(intval($_POST['ln_id']), array(
+                        'ln_child_intent_id' => $answer_in_id, //Save answer
+                        'ln_status' => 2, //Publish answer
+                    ), $en['en_id']);
+                }
 
                 //Affirm answer received answer:
                 $this->Communication_model->dispatch_rotating_message($en, 'affirm_progress');
@@ -1855,26 +1825,29 @@ class Communication_model extends CI_Model
 
             } else {
 
-                //Oooooopsi, there was some sort of an error:
                 $this->Database_model->ln_create(array(
-                    'ln_content' => 'digest_quick_reply() failed to validate two published intents in the Quick Reply Payload ['.$quick_reply_payload.']',
+                    'ln_content' => 'ANSWERQUESTION_ was unable to locate/save student answer',
                     'ln_type_entity_id' => 4246, //Platform Error
-                    'ln_parent_intent_id' => intval($quickreply_parts[1]),
-                    'ln_child_intent_id' => intval($quickreply_parts[2]),
-                    'ln_miner_entity_id' => $en['en_id'], //Belongs to this Student
+                    'ln_miner_entity_id' => 1, //Shervin/Developer
+                    'ln_parent_intent_id' => $parent_in_id,
+                    'ln_child_intent_id' => $answer_in_id,
+                    'ln_parent_entity_id' => $en['en_id'],
                 ));
 
-                //Inform Student:
+                //Ooops, we could not find their answer:
                 $this->Communication_model->dispatch_message(
-                    'I was unable to save your answer as one or more of the steps was not yet published.',
+                    'I was unable to save your answer and have reported this issue to our moderation team.',
                     $en,
-                    true
+                    true,
+                    array(),
+                    array(
+                        'ln_parent_intent_id' => $parent_in_id,
+                        'ln_child_intent_id' => $answer_in_id,
+                    )
                 );
 
-                //Find/communicate the next step:
-                $this->Platform_model->actionplan_find_next_step($en['en_id'], true);
-
             }
+
         }
     }
 

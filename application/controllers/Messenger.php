@@ -1292,14 +1292,6 @@ class Messenger extends CI_Controller
             return redirect_message('/messenger/actionplan', '<div class="alert alert-danger" role="alert">Error: Missing Core Data.</div>');
         }
 
-        //Fetch/validate Completed Step:
-        $actionplan_steps = $this->Database_model->ln_fetch(array(
-            'ln_id' => $_POST['ln_id'],
-            'ln_type_entity_id' => 4559, //Completed Step
-        ), array('in_child'));
-        if (count($actionplan_steps) < 1) {
-            return redirect_message('/messenger/actionplan', '<div class="alert alert-danger" role="alert">Error: Completed Step not found.</div>');
-        }
 
         //Set some variables:
         $session_en = $this->session->userdata('user');
@@ -1584,51 +1576,23 @@ class Messenger extends CI_Controller
         ));
     }
 
-    function actionplan_choose_step($actionplan_ln_id, $actionplan_in_id, $in_append_id, $w_key)
+    function actionplan_answer_question($en_id, $parent_in_id, $answer_in_id, $w_key)
     {
 
-        if ($w_key != md5($this->config->item('actionplan_salt') . $in_append_id . $actionplan_in_id . $actionplan_ln_id)) {
-            return redirect_message('/messenger/actionplan/' . $actionplan_in_id, '<div class="alert alert-danger" role="alert">Invalid Secret Key</div>');
+        if ($w_key != md5($this->config->item('actionplan_salt') . $answer_in_id . $parent_in_id . $en_id)) {
+            return redirect_message('/messenger/actionplan/' . $parent_in_id, '<div class="alert alert-danger" role="alert">Invalid Authentication Key</div>');
         }
-
-        //Validate Action Plan:
-        $actionplan_steps = $this->Database_model->ln_fetch(array(
-            'ln_parent_link_id' => $actionplan_ln_id,
-            'ln_child_intent_id' => $actionplan_in_id,
-            'ln_type_entity_id' => 4559, //Completed Step
-            'ln_status >=' => 0, //New+
-        ));
-        if (count($actionplan_steps) < 1) {
-            return redirect_message('/messenger/actionplan/' . $actionplan_in_id, '<div class="alert alert-danger" role="alert">Step Not Found</div>');
-        }
-
-
-        //Make sure both intents are published:
-        if(count($this->Database_model->in_fetch(array(
-                'in_status' => 2, //Published
-                'in_id IN ('.$actionplan_in_id.','.$in_append_id.')' => null,
-            )))!=2){
-            $this->Database_model->ln_create(array(
-                'ln_content' => 'actionplan_choose_step() failed to validate two published intents',
-                'ln_type_entity_id' => 4246, //Platform Error
-                'ln_parent_intent_id' => $actionplan_in_id,
-                'ln_child_intent_id' => $in_append_id,
-                'ln_miner_entity_id' => $actionplan_steps[0]['ln_miner_entity_id'],
-            ));
-
-            return redirect_message('/messenger/actionplan/' . $actionplan_in_id, '<div class="alert alert-danger" role="alert">I was unable to save your answer as one or more of the steps was not yet published.</div>');
-        }
-
 
         //All good, save chosen OR path
         $this->Database_model->ln_create(array(
-            'ln_miner_entity_id' => $actionplan_steps[0]['ln_miner_entity_id'],
-            'ln_type_entity_id' => 6157, //Action Plan OR Path Chosen
-            'ln_parent_intent_id' => $actionplan_in_id,
-            'ln_child_intent_id' => $in_append_id,
+            'ln_miner_entity_id' => $en_id,
+            'ln_type_entity_id' => 6157, //Action Plan Question Answered
+            'ln_parent_intent_id' => $parent_in_id,
+            'ln_child_intent_id' => $answer_in_id,
+            'ln_status' => 2, //Published since they just answered
         ));
 
-        return redirect_message('/messenger/actionplan/' . $in_append_id, '<div class="alert alert-success" role="alert">Your answer was saved.</div>');
+        return redirect_message('/messenger/actionplan/' . $answer_in_id, '<div class="alert alert-success" role="alert">Your answer was saved.</div>');
 
     }
 
