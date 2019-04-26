@@ -48,7 +48,7 @@ class Messenger extends CI_Controller
          *
          * */
 
-        echo $challenge;
+        echo 'hiii';
         return false;
 
         //Facebook Webhook Authentication:
