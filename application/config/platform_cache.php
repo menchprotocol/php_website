@@ -11,7 +11,7 @@ defined('BASEPATH') OR exit('No direct script access allowed');
  *
  */
 
-//Generated 2019-04-26 11:53:13 PST
+//Generated 2019-04-26 11:54:30 PST
 
 //Action Plan Completion Link Types:
 $config['en_ids_6150'] = array(6154, 6155);
@@ -65,7 +65,7 @@ $config['en_all_4986'] = array(
     ),
     6242 => array(
         'm_icon' => '<i class="far fa-check-square"></i>',
-        'm_name' => 'Noted Intent On-Complete Tips',
+        'm_name' => 'Noted Intent On-Complete Tip',
         'm_desc' => '',
         'm_parents' => array(4603, 4595, 4593, 4986, 5005, 4485),
     ),
@@ -748,7 +748,7 @@ $config['en_all_5005'] = array(
     ),
     6242 => array(
         'm_icon' => '<i class="far fa-check-square"></i>',
-        'm_name' => 'Noted Intent On-Complete Tips',
+        'm_name' => 'Noted Intent On-Complete Tip',
         'm_desc' => '',
         'm_parents' => array(4603, 4595, 4593, 4986, 5005, 4485),
     ),
@@ -1403,7 +1403,7 @@ $config['en_all_4595'] = array(
     ),
     6242 => array(
         'm_icon' => '<i class="far fa-check-square"></i>',
-        'm_name' => 'Noted Intent On-Complete Tips',
+        'm_name' => 'Noted Intent On-Complete Tip',
         'm_desc' => '100',
         'm_parents' => array(4603, 4595, 4593, 4986, 5005, 4485),
     ),
@@ -1899,7 +1899,7 @@ $config['en_all_4593'] = array(
     ),
     6242 => array(
         'm_icon' => '<i class="far fa-check-square"></i>',
-        'm_name' => 'Noted Intent On-Complete Tips',
+        'm_name' => 'Noted Intent On-Complete Tip',
         'm_desc' => '',
         'm_parents' => array(4603, 4595, 4593, 4986, 5005, 4485),
     ),
@@ -2098,7 +2098,7 @@ $config['en_all_4485'] = array(
     ),
     6242 => array(
         'm_icon' => '<i class="far fa-check-square"></i>',
-        'm_name' => 'On-Complete Tips',
+        'm_name' => 'On-Complete Tip',
         'm_desc' => 'Message delivered to students when they complete an intention.',
         'm_parents' => array(4603, 4595, 4593, 4986, 5005, 4485),
     ),
