@@ -68,7 +68,7 @@ class Messenger extends CI_Controller
         //Do some basic checks:
         if (!isset($ln_metadata['object']) || !isset($ln_metadata['entry'])) {
             //Likely loaded the URL in browser:
-            return false;
+            return echo_json(array('error' => 1));
         } elseif ($ln_metadata['object'] != 'page') {
             $this->Database_model->ln_create(array(
                 'ln_content' => 'facebook_webhook() Function call object value is not equal to [page], which is what was expected.',
@@ -76,7 +76,7 @@ class Messenger extends CI_Controller
                 'ln_type_entity_id' => 4246, //Platform Error
                 'ln_miner_entity_id' => 1, //Shervin/Developer
             ));
-            return false;
+            return echo_json(array('error' => 1));
         }
 
 
@@ -442,6 +442,10 @@ class Messenger extends CI_Controller
                 }
             }
         }
+
+        //Show something on page:
+        return echo_json(array('success' => 1));
+
     }
 
     function api_fetch_profile($en_id)
