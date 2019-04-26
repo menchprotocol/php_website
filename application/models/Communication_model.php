@@ -1195,15 +1195,20 @@ class Communication_model extends CI_Model
                 }
 
 
-                $message .= "\n\n" . $key . '/ ' . echo_in_outcome($or_child_in['in_outcome'], true);
+                $message .= "\n\n" . ( $count+1 ) . '/ ' . echo_in_outcome($in['in_outcome'], true);
                 array_push($quick_replies, array(
                     'content_type' => 'text',
-                    'title' => '/' . $key,
-                    'payload' => 'ANSWERQUESTION_' . $in_id . '_' . $or_child_in['in_id'],
+                    'title' => '/' . ( $count+1 ),
+                    'payload' => 'SUBSCRIBE-INITIATE_' . $in['in_id'],
                 ));
 
-
             }
+
+            array_push($quick_replies, array(
+                'content_type' => 'text',
+                'title' => 'None of the Above',
+                'payload' => 'NOTINTERESTED',
+            ));
 
 
         } else {
@@ -1532,6 +1537,16 @@ class Communication_model extends CI_Model
                 );
 
             }
+
+
+        } elseif ($quick_reply_payload=='NOTINTERESTED') {
+
+            //Student not interested in any of the featured intentions...
+            $this->Communication_model->dispatch_message(
+                'Got it! So let me know how can I help you advance your tech career? Start your sentence with "I want to", for example "I want to create a resume" or "I want to get hired"',
+                $en,
+                true
+            );
 
         } elseif (substr_count($quick_reply_payload, 'SUBSCRIBE-INITIATE_') == 1) {
 
