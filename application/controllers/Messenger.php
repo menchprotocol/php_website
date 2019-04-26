@@ -48,9 +48,6 @@ class Messenger extends CI_Controller
          *
          * */
 
-        echo 'hiii';
-        return false;
-
         //Facebook Webhook Authentication:
         $challenge = (isset($_GET['hub_challenge']) ? $_GET['hub_challenge'] : null);
         $verify_token = (isset($_GET['hub_verify_token']) ? $_GET['hub_verify_token'] : null);
@@ -59,6 +56,7 @@ class Messenger extends CI_Controller
         //We need this only for the first time to authenticate that we own the server:
         if ($verify_token == '722bb4e2bac428aa697cc97a605b2c5a') {
             echo $challenge;
+            return false;
         }
 
         //Fetch input data:
@@ -71,7 +69,8 @@ class Messenger extends CI_Controller
         //Do some basic checks:
         if (!isset($ln_metadata['object']) || !isset($ln_metadata['entry'])) {
             //Likely loaded the URL in browser:
-            return echo_json(array('error' => 1));
+            echo $challenge;
+            return false;
         } elseif ($ln_metadata['object'] != 'page') {
             $this->Database_model->ln_create(array(
                 'ln_content' => 'facebook_webhook() Function call object value is not equal to [page], which is what was expected.',
@@ -79,7 +78,8 @@ class Messenger extends CI_Controller
                 'ln_type_entity_id' => 4246, //Platform Error
                 'ln_miner_entity_id' => 1, //Shervin/Developer
             ));
-            return echo_json(array('error' => 1));
+            echo $challenge;
+            return false;
         }
 
 
@@ -251,7 +251,8 @@ class Messenger extends CI_Controller
                     if (isset($im['message']['metadata']) && $im['message']['metadata'] == 'system_logged') {
 
                         //This is already logged! No need to take further action!
-                        return echo_json(array('is_logged_already' => 1));
+                        echo $challenge;
+                        return false;
 
                     }
 
@@ -446,8 +447,8 @@ class Messenger extends CI_Controller
             }
         }
 
-        //Show something on page:
-        return echo_json(array('success' => 1));
+        echo $challenge;
+        return false;
 
     }
 
