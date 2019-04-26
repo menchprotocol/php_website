@@ -852,7 +852,7 @@ function echo_tree_references($in, $fb_messenger_format = false, $expand_mode = 
     $pitch = 'Action Plan references ';
     if($source_count > 0){
         $pitch_title .= $source_count . ' Source'. echo__s($source_count);
-        $pitch .= $source_info;
+        $pitch .= trim($source_info);
     }
     if($expert_count > 0){
         if($source_count > 0){
@@ -1080,9 +1080,9 @@ function echo_tree_costs($in, $fb_messenger_format = 0, $expand_mode = false)
 
     //As messenger default format and HTML extra notes:
     $pitch  = 'Action Plan estimates ';
-    $pitch .= ( $has_time_estimate ? strtolower(echo_time_range($in)).'' : '' );
+    $pitch .= ( $has_time_estimate ? strtolower(echo_time_range($in)) : '' ).' to complete';
     $pitch .= ( $has_cost_estimate ? ( $has_time_estimate ? ' and may cost '.( $cost_range ? 'between ' : '' ) : '' ) . $price_range : '' );
-    $pitch .= ( $cost_range || $time_range ? ' depending on your answers to Mench questions' : ' to '.$in['in_outcome'] );
+    $pitch .= ( $cost_range || $time_range ? ' depending on the verified 3rd-party products you choose to purchase' : ' to '.$in['in_outcome'] );
 
     if ($fb_messenger_format) {
         return '⏰ ' . $pitch . "\n";
