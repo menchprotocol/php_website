@@ -102,7 +102,7 @@ $(document).ready(function () {
     }]);
 
     //Keep an eye for icon change:
-    $('#en_icon').change(function() {
+    $('#en_icon').keyup(function() {
         update_demo_icon();
     });
 
