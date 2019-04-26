@@ -1668,7 +1668,7 @@ class Communication_model extends CI_Model
                 );
 
                 //Initiate first message for action plan tree:
-                $this->Platform_model->actionplan_advance_step($en, $ins[0]['in_id']);
+                $this->Platform_model->actionplan_advance_step($en, $ins[0]['in_id'], true);
 
             }
 
@@ -1764,6 +1764,14 @@ class Communication_model extends CI_Model
 
                 //They have either confirmed or cancelled the skip:
                 if ($ln_status == -1) {
+
+                    //Debugging:
+                    $this->Database_model->ln_create(array(
+                        'ln_content' => 'Debug ['.$quick_reply_payload.']',
+                        'ln_type_entity_id' => 4246, //Platform Error
+                        'ln_miner_entity_id' => 1, //Shervin/Developer
+                        'ln_parent_entity_id' => $en['en_id'], //Belongs to this Student
+                    ));
 
                     //user changed their mind and does not want to skip anymore
                     $message = 'I\'m glad you changed your mind! Let\'s continue...';

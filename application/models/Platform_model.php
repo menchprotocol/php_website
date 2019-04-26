@@ -1391,7 +1391,7 @@ class Platform_model extends CI_Model
 
     }
 
-    function actionplan_advance_step($recipient_en, $in_id)
+    function actionplan_advance_step($recipient_en, $in_id, $skip_messages = false)
     {
 
         /*
@@ -1524,18 +1524,20 @@ class Platform_model extends CI_Model
             //Update progression type:
             $progression_type_entity_id = 4559; //Action Plan Messages Read
 
-            //Dispatch intent messages:
-            foreach ($in__messages as $message_ln) {
-                $this->Communication_model->dispatch_message(
-                    $message_ln['ln_content'],
-                    $recipient_en,
-                    true,
-                    array(),
-                    array(
-                        'ln_parent_intent_id' => $in_id,
-                        'ln_parent_link_id' => $message_ln['ln_id'], //This message
-                    )
-                );
+            //Dispatch intent messages if not skipped:
+            if(!$skip_messages){
+                foreach ($in__messages as $message_ln) {
+                    $this->Communication_model->dispatch_message(
+                        $message_ln['ln_content'],
+                        $recipient_en,
+                        true,
+                        array(),
+                        array(
+                            'ln_parent_intent_id' => $in_id,
+                            'ln_parent_link_id' => $message_ln['ln_id'], //This message
+                        )
+                    );
+                }
             }
         }
 
@@ -1640,7 +1642,7 @@ class Platform_model extends CI_Model
                     }
 
                     //Add message:
-                    $next_step_message .= "\n\n" . ($key + 1) . '/ ' . echo_in_outcome($ins[0]['in_outcome'], true);
+                    $next_step_message .= "\n\n" . ($key + 1) . '/ ' . echo_in_outcome($child_in['in_outcome'], true);
                 }
 
             }
