@@ -48,6 +48,9 @@ class Messenger extends CI_Controller
          *
          * */
 
+        echo 'hiii';
+        return false;
+
         //Facebook Webhook Authentication:
         $challenge = (isset($_GET['hub_challenge']) ? $_GET['hub_challenge'] : null);
         $verify_token = (isset($_GET['hub_verify_token']) ? $_GET['hub_verify_token'] : null);
