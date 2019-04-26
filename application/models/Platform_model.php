@@ -1493,6 +1493,7 @@ class Platform_model extends CI_Model
         $progression_response_required = false; //We assume no response is required
 
 
+
         //Always communicate intent messages if any:
         $intent_messages = $this->Database_model->ln_fetch(array(
             'ln_status' => 2, //Published
@@ -1534,6 +1535,8 @@ class Platform_model extends CI_Model
         //To be populated soon:
         $next_step_message = null; //To be populated if there is a next step.
         $quick_replies = array(); //To be populated with appropriate options to further progress form here...
+        $message_in_requirements = $this->Platform_model->in_req_completion($ins[0], true); //See if we have intent requirements
+
 
         //Fetch Children:
         $in__children = $this->Database_model->ln_fetch(array(
@@ -1544,8 +1547,25 @@ class Platform_model extends CI_Model
         ), array('in_child'), 0, 0, array('ln_order' => 'ASC'));
 
 
+        //Do we have any requirements?
+        if ($ins[0]['in_type']==0 /* AND intent */ && $message_in_requirements) {
+
+            //Yes! Set appropriate variables:
+            $progression_type_entity_id = 6144; //Action Plan Requirement Submitted
+            $progression_response_required = true; //Student needs to submit completion requirements
+            $next_step_message = $message_in_requirements;
+
+        } elseif(count($in__children) > 0){
+
+
+
+        }
+
+
+
+
         //Does the user have to choose an answer to move forward?
-        if ($ins[0]['in_type']==1 && count($in__children) >= 2 /* Student's have a real decision only if 2+ answers available */) {
+        if ($ins[0]['in_type']==1) {
 
                 //Yes! Set appropriate variables:
                 $progression_type_entity_id = 6157; //Action Plan Question Answered
@@ -1620,42 +1640,6 @@ class Platform_model extends CI_Model
                 }
 
         } else {
-
-            //Either an AND intent OR an OR intent with a single child...
-
-            //Assuming no completion requirement:
-            $message_in_requirements = null;
-
-            //Check if AND intent:
-            if($ins[0]['in_type']==0){
-                $message_in_requirements = $this->Platform_model->in_req_completion($ins[0], true);
-            }
-
-            if ($message_in_requirements) {
-
-                //Let the user know what they need to do:
-                $this->Communication_model->dispatch_message(
-                    $message_in_requirements,
-                    $recipient_en,
-                    true,
-                    array(),
-                    array(
-                        'ln_parent_intent_id' => $in_id, //Focus Intent
-                    )
-                );
-
-                //Nothing more to do until student submits completion requirements:
-                return array(
-                    'status' => 1,
-                    'message' => 'Student must now submit intent completion requirements',
-                );
-
-            } else {
-
-                //No completion requirement, move on:
-
-
-            }
 
 
             /*

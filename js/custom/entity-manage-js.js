@@ -101,7 +101,10 @@ $(document).ready(function () {
         }
     }]);
 
-
+    //Keep an eye for icon change:
+    $('#en_icon').change(function() {
+        update_demo_icon();
+    });
 
     //Lookout for intent link related changes:
     $('#ln_status').change(function () {
@@ -420,6 +423,10 @@ function en_ln_type_preview() {
 }
 
 
+function update_demo_icon(){
+    //Update demo icon based on icon input value:
+    $('.icon-demo').html(($('#en_icon').val().length > 0 ? $('#en_icon').val() : '<i class="fas fa-at grey-at"></i>' ));
+}
 
 function en_modify_load(en_id, ln_id) {
 
@@ -448,15 +455,14 @@ function en_modify_load(en_id, ln_id) {
 
 
     if (parseInt($('.en__icon_' + en_id).attr('en-is-set')) > 0) {
-        $('.icon-demo').html($('.en__icon_' + en_id).html());
         $('#en_icon').val($('.en__icon_' + en_id).html());
     } else {
         //Clear out input:
-        $('.icon-demo').html('<i class="fas fa-at grey-at"></i>');
         $('#en_icon').val('');
     }
 
     en_name_word_count();
+    update_demo_icon();
 
     //Only show unlink button if not level 1
     if (parseInt(ln_id) > 0) {
@@ -690,7 +696,6 @@ function en_modify_save() {
                     modify_data['en_icon'] = '<i class="fas fa-at grey-at"></i>';
                 }
                 $('.en__icon_' + modify_data['en_id']).attr('en-is-set' , icon_is_set );
-                $('.icon-demo').html(modify_data['en_icon']);
                 $('.en_ui_icon_' + modify_data['en_id']).html(modify_data['en_icon']);
                 $('.en_child_icon_' + modify_data['en_id']).html(modify_data['en_icon']);
 
