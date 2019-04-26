@@ -1653,7 +1653,7 @@ class Communication_model extends CI_Model
                 );
 
                 //Initiate first message for action plan tree:
-                $this->Platform_model->actionplan_advance_step($en $ins[0]['in_id']);
+                $this->Platform_model->actionplan_advance_step($en, $ins[0]['in_id']);
 
             }
 
