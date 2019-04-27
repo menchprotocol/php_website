@@ -61,8 +61,13 @@ if (!$hide_subscribe) {
         //Show when was added:
         echo '<p>You added to Action Plan on '.date("Y-m-d H:i:s").'</p>';
     } else {
+
         //Give option to add:
         echo '<a class="btn btn-primary" href="https://m.me/askmench?ref='.$in['in_id'].'" style="display: inline-block; padding:12px 36px;">Get Started &nbsp;&nbsp;&nbsp;<i class="fas fa-angle-double-right"></i></a>';
+
+        //Build trust:
+        echo '<p style="font-size:1em !important;">Mench is non-profit, open-source & free.</p>';
+
     }
 
 } else {
