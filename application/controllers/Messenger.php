@@ -48,22 +48,15 @@ class Messenger extends CI_Controller
          *
          * */
 
-        echo 'hiii';
-        return false;
-
-        //Facebook Webhook Authentication:
-        $challenge = (isset($_GET['hub_challenge']) ? $_GET['hub_challenge'] : null);
-        $verify_token = (isset($_GET['hub_verify_token']) ? $_GET['hub_verify_token'] : null);
-        $fb_settings = $this->config->item('fb_settings');
 
         //We need this only for the first time to authenticate that we own the server:
-        if ($verify_token == '722bb4e2bac428aa697cc97a605b2c5a') {
-            echo $challenge;
-            return false;
+        if (isset($_GET['hub_challenge']) && isset($_GET['hub_verify_token']) && $_GET['hub_verify_token'] == '722bb4e2bac428aa697cc97a605b2c5a') {
+            return print_r($_GET['hub_challenge']);
         }
 
         //Fetch input data:
         $ln_metadata = json_decode(file_get_contents('php://input'), true);
+        $fb_settings = $this->config->item('fb_settings');
 
         //This is for local testing only:
         //$ln_metadata = objectToArray(json_decode('{"object":"page","entry":[{"id":"381488558920384","time":1505007977668,"messaging":[{"sender":{"id":"1443101719058431"},"recipient":{"id":"381488558920384"},"timestamp":1505007977521,"message":{"mid":"mid.$cAAFa9hmVoehkmryMMVeaXdGIY9x5","seq":19898,"text":"Yes"}}]}]}'));
@@ -72,8 +65,7 @@ class Messenger extends CI_Controller
         //Do some basic checks:
         if (!isset($ln_metadata['object']) || !isset($ln_metadata['entry'])) {
             //Likely loaded the URL in browser:
-            echo $challenge;
-            return false;
+            return print_r('complete');
         } elseif ($ln_metadata['object'] != 'page') {
             $this->Database_model->ln_create(array(
                 'ln_content' => 'facebook_webhook() Function call object value is not equal to [page], which is what was expected.',
@@ -81,8 +73,7 @@ class Messenger extends CI_Controller
                 'ln_type_entity_id' => 4246, //Platform Error
                 'ln_miner_entity_id' => 1, //Shervin/Developer
             ));
-            echo $challenge;
-            return false;
+            return print_r('complete');
         }
 
 
@@ -254,8 +245,7 @@ class Messenger extends CI_Controller
                     if (isset($im['message']['metadata']) && $im['message']['metadata'] == 'system_logged') {
 
                         //This is already logged! No need to take further action!
-                        echo $challenge;
-                        return false;
+                        return print_r('complete');
 
                     }
 
@@ -450,9 +440,7 @@ class Messenger extends CI_Controller
             }
         }
 
-        echo $challenge;
-        return false;
-
+        return print_r('complete');
     }
 
     function api_fetch_profile($en_id)
