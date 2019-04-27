@@ -10,7 +10,7 @@ function actionplan_sort_save() {
     var sort_rank = 0;
     var new_actionplan_order = [];
     $("#actionplan_intents .actionplan_sort").each(function () {
-        var link_id = parseInt($(this).attr('link-id'));
+        var link_id = parseInt($(this).attr('sort-link-id'));
         if(link_id > 0){
             sort_rank++;
             new_actionplan_order[sort_rank] = link_id;
@@ -32,8 +32,12 @@ function actionplan_sort_save() {
 //Watch for Action Plan removal click:
 $('.actionplan_remove').on('click', function(e) {
 
+    //Update modal title:
+    $('.stop-title').text($('.in-title-' + $(this).attr('in-id')).text());
+
     //Open Modal, confirm the removal and ask why they are removing?
-    alert('ok');
+    $('#markCompleteModal').modal('show');
+
     return false;
 
 });
