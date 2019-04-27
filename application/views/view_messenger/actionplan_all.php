@@ -37,7 +37,7 @@ if(count($student_intents) > 0){
         $completion_rate = $this->Platform_model->actionplan_completion_rate($ln, $session_en['en_id']);
 
         echo '<span class="actionplan-title">' . $ln['in_outcome'] . '</span>';
-        echo '<div class="actionplan-overview"><span class="results-ln-'.$ln['ln_id'].'">'.echo_ordinal_number(($priority+1)).'</span> Priority, '.( $time_estimate ? $time_estimate.', ' : '').$completion_rate['completion_rate'].'% Complete</div>';
+        echo '<div class="actionplan-overview"><span class="results-ln-'.$ln['ln_id'].'">'.echo_ordinal_number(($priority+1)).'</span> Priority, '.( $time_estimate ? $time_estimate.', ' : '').$completion_rate['completion_percentage'].'% Complete</div>';
         echo '</a>';
 
     }

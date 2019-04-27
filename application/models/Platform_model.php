@@ -1784,7 +1784,7 @@ class Platform_model extends CI_Model
 
         if($top_level){
             //Calculate completion rate based on estimated time cost:
-            $metadata_this['completion_rate'] = ( $metadata_this['seconds_completed'] / $metadata_this['seconds_total'] );
+            $metadata_this['completion_percentage'] = round( $metadata_this['seconds_completed'] / $metadata_this['seconds_total'] * 100 );
         }
 
         //Return results:

@@ -1961,6 +1961,11 @@ class Communication_model extends CI_Model
             //Likely an OR response with a specific number in mind...
             //TODO Implement...
 
+        } elseif (includes_any($fb_received_message, array('next', 'continue'))) {
+
+            //Give them the next step of their Action Plan:
+            $this->Platform_model->actionplan_find_next_step($en['en_id'], true);
+
         } elseif (includes_any($fb_received_message, array('unsubscribe', 'stop'))) {
 
             //List their Action Plan intentions and let student choose which one to unsubscribe:
