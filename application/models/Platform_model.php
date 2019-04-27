@@ -1391,6 +1391,50 @@ class Platform_model extends CI_Model
 
     }
 
+
+    function actionplan_add($en_id, $in_id){
+
+        //Validate Intent ID and ensure it's published:
+        $ins = $this->Database_model->in_fetch(array(
+            'in_id' => $in_id,
+            'in_status' => 2, //Published
+        ));
+
+        if (count($ins) != 1) {
+            return false;
+        }
+
+        //Add intent to Student's Action Plan:
+        $actionplan = $this->Database_model->ln_create(array(
+            'ln_type_entity_id' => 4235, //Student Intent
+            'ln_status' => 1, //Drafting
+            'ln_miner_entity_id' => $en_id, //Belongs to this Student
+            'ln_parent_intent_id' => $ins[0]['in_id'], //The Intent they are adding
+            'ln_order' => 1 + $this->Database_model->ln_max_order(array( //Place this intent at the end of all intents the Student is drafting...
+                    'ln_type_entity_id IN (' . join(',', $this->config->item('en_ids_6147')) . ')' => null, //Action Plan Intentions
+                    'ln_status IN (' . join(',', $this->config->item('ln_status_incomplete')) . ')' => null, //incomplete intentions
+                    'ln_miner_entity_id' => $en_id, //Belongs to this Student
+                )),
+        ));
+
+        //Confirm with them that we're now ready:
+        $this->Communication_model->dispatch_message(
+            'Success! I added the intention to ' . $ins[0]['in_outcome'] . ' to your Action Plan 🙌 /link:Open 🚩Action Plan:https://mench.com/messenger/actionplan/' . $ins[0]['in_id'],
+            array('en_id' => $en_id),
+            true,
+            array(),
+            array(
+                'ln_parent_intent_id' => $ins[0]['in_id'],
+            )
+        );
+
+        //Initiate first message for action plan tree:
+        $this->Platform_model->actionplan_advance_step(array('en_id' => $en_id), $ins[0]['in_id'], true);
+
+        return true;
+
+    }
+
     function actionplan_advance_step($recipient_en, $in_id, $skip_messages = false)
     {
 

@@ -1,15 +1,5 @@
-<script>
-    function confirm_child_go(in_id) {
-        $('.alink-' + in_id).attr('href', 'javascript:void(0);');
-        var in_outcome_parent = $('#title-parent').text();
-        var in_outcome_child = $('#title-' + in_id).text();
-        var r = confirm("Press OK to ONLY " + in_outcome_child + "\nPress CANCEL to " + in_outcome_parent);
-        if (r == true) {
-            //Go to target intent:
-            window.location = "/" + in_id;
-        }
-    }
-</script>
+<script src="/js/custom/landing-page-js.js?v=v<?= $this->config->item('app_version') ?>"
+        type="text/javascript"></script>
 
 <?php
 //Prepare some handy variables:
@@ -43,7 +33,7 @@ if (!$hide_subscribe) {
     $cost_info = echo_tree_costs($in, false);
 
     if($step_info || $source_info || $cost_info){
-        echo '<h3 style="margin-bottom:5px; margin-top:0px !important;">Overview:</h3>';
+        echo '<h3 style="margin-bottom:5px; margin-top:15px !important;">Overview:</h3>';
         echo '<div style="margin:5px 0 25px 5px;" class="maxout">';
         echo $source_info;
         echo $step_info;
@@ -52,14 +42,27 @@ if (!$hide_subscribe) {
     }
 
     //Check to see if added to Action Plan for logged-in students:
-    $already_inactionplan = false;
     if(isset($session_en['en_id'])){
 
-    }
+        $en_all_6196 = $this->config->item('en_all_6196');
 
-    if($already_inactionplan){
-        //Show when was added:
-        echo '<p>You added to Action Plan on '.date("Y-m-d H:i:s").'</p>';
+        if(count($this->Database_model->ln_fetch(array(
+                'ln_miner_entity_id' => $session_en['en_id'],
+                'ln_type_entity_id IN (' . join(',', $this->config->item('en_ids_6147')) . ')' => null, //Action Plan Intentions
+                'ln_status IN (' . join(',', $this->config->item('ln_status_incomplete')) . ')' => null, //incomplete intentions
+                'ln_parent_intent_id' => $in['in_id'],
+            ))) > 0){
+
+            //Show when was added:
+            echo '<p>Intention is already added to your <a href="/messenger/actionplan">'.$en_all_6196[6138]['m_icon'].' '.$en_all_6196[6138]['m_name'].'</a>.</p>';
+
+        } else {
+
+            //Give option to add:
+            echo '<div id="added_to_actionplan"><a class="btn btn-primary" href="javascript:void(0);" onclick="add_to_actionplan('.$in['in_id'].')" style="display: inline-block; padding:12px 36px;">Add to '.$en_all_6196[6138]['m_icon'].' '.$en_all_6196[6138]['m_name'].'</a></div>';
+
+        }
+
     } else {
 
         //Give option to add:

@@ -1165,6 +1165,45 @@ class Messenger extends CI_Controller
 
     }
 
+    function actionplan_add(){
+
+        /*
+         *
+         * The Ajax function to add an intention to the Action Plan from the landing page.
+         *
+         * */
+
+        //Validate input:
+        $session_en = en_auth();
+        if (!$session_en) {
+            return echo_json(array(
+                'status' => 0,
+                'message' => 'Invalid Session. Refresh the Page to Continue',
+            ));
+        } elseif (!isset($_POST['in_id']) || intval($_POST['in_id']) < 1) {
+            return echo_json(array(
+                'status' => 0,
+                'message' => 'Missing Intent ID',
+            ));
+        }
+
+        //Attempt to add intent to Action Plan:
+        if($this->Platform_model->actionplan_add($session_en['en_id'], $_POST['in_id'])){
+            //All good:
+            $en_all_6196 = $this->config->item('en_all_6196');
+            return echo_json(array(
+                'status' => 1,
+                'message' => '<i class="far fa-check-circle"></i> Successfully added to your <a href="/messenger/actionplan">'.$en_all_6196[6138]['m_icon'].' '.$en_all_6196[6138]['m_name'].'</a>',
+            ));
+        } else {
+            //There was some error:
+            return echo_json(array(
+                'status' => 0,
+                'message' => 'Unable to add to Action Plan',
+            ));
+        }
+
+    }
 
     function actionplan($in_id = 0)
     {
@@ -1369,6 +1408,61 @@ class Messenger extends CI_Controller
          * */
 
 
+        if (!isset($_POST['en_miner_id']) || intval($_POST['en_miner_id']) < 1) {
+            return echo_json(array(
+                'status' => 0,
+                'message' => 'Invalid miner ID',
+            ));
+        } elseif (!isset($_POST['in_id']) || intval($_POST['in_id']) < 1) {
+            return echo_json(array(
+                'status' => 0,
+                'message' => 'Missing intent ID',
+            ));
+        } elseif (!isset($_POST['stop_method_id']) || intval($_POST['stop_method_id']) < 1) {
+            return echo_json(array(
+                'status' => 0,
+                'message' => 'Missing stop method',
+            ));
+        } elseif (!isset($_POST['stop_feedback'])) {
+            return echo_json(array(
+                'status' => 0,
+                'message' => 'Missing feedback input',
+            ));
+        }
+
+        //Go ahead and remove from Action Plan:
+        $student_intents = $this->Database_model->ln_fetch(array(
+            'ln_miner_entity_id' => $_POST['en_miner_id'],
+            'ln_type_entity_id IN (' . join(',', $this->config->item('en_ids_6147')) . ')' => null, //Action Plan Intentions
+            'ln_status IN (' . join(',', $this->config->item('ln_status_incomplete')) . ')' => null, //incomplete intentions
+            'ln_parent_intent_id' => $_POST['in_id'],
+        ));
+        if(count($student_intents) < 1){
+            //Give error:
+            return echo_json(array(
+                'status' => 0,
+                'message' => 'Could not locate Action Plan',
+            ));
+        }
+
+        //Adjust Action Plan status:
+        foreach($student_intents as $ln){
+            $this->Database_model->ln_update($ln['ln_id'], array(
+                'ln_status' => ( $_POST['stop_method_id']==6154 ? 2 : -1 ), //This is a nasty HACK!
+            ), $_POST['en_miner_id']);
+        }
+
+        //Log related link:
+        $this->Database_model->ln_create(array(
+            'ln_content' => $_POST['stop_feedback'],
+            'ln_miner_entity_id' => $_POST['en_miner_id'],
+            'ln_type_entity_id' => $_POST['stop_method_id'],
+            'ln_parent_intent_id' => $_POST['in_id'],
+        ));
+
+        return echo_json(array(
+            'status' => 1,
+        ));
 
     }
 

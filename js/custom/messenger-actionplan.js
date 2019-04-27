@@ -19,14 +19,15 @@ function actionplan_sort_save() {
     });
 
     //Update Action Plan order:
-    $.post("/messenger/actionplan_sort_save", {en_miner_id: en_miner_id, new_actionplan_order: new_actionplan_order}, function (data) {
-        //Update UI to confirm with user:
-        if (!data.status) {
-            //There was some sort of an error returned!
-            alert('ERROR: ' + data.message);
-        }
-    });
-
+    if(sort_rank > 0){
+        $.post("/messenger/actionplan_sort_save", {en_miner_id: en_miner_id, new_actionplan_order: new_actionplan_order}, function (data) {
+            //Update UI to confirm with user:
+            if (!data.status) {
+                //There was some sort of an error returned!
+                alert('ERROR: ' + data.message);
+            }
+        });
+    }
 }
 
 //Watch for Action Plan removal click:
@@ -58,6 +59,7 @@ function apply_stop(){
 
     //Check stop method:
     var stop_method_id = parseInt($("input[name='stop_type']:checked").val());
+    var stop_feedback = $("#stop_feedback").val();
 
     if(!in_id || in_id < 1){
         //Should not happen!
@@ -72,12 +74,15 @@ function apply_stop(){
     $('#markCompleteModal').modal('hide');
 
     //Save changes:
-    $.post("/messenger/actionplan_completion_save", {en_miner_id: en_miner_id, in_id: in_id, stop_method_id:stop_method_id}, function (data) {
+    $.post("/messenger/actionplan_completion_save", {en_miner_id: en_miner_id, in_id: in_id, stop_method_id:stop_method_id, stop_feedback:stop_feedback}, function (data) {
         //Update UI to confirm with user:
         if (!data.status) {
+
             //There was some sort of an error returned!
             alert('ERROR: ' + data.message);
+
         } else {
+
             //Remove intent from UI:
             $('#ap_in_'+in_id).fadeOut();
 

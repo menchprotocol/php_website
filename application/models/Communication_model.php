@@ -538,18 +538,13 @@ class Communication_model extends CI_Model
         if (in_array('/link', $msg_references['ref_commands'])) {
 
             //Validate /link format:
-            $link_anchor = one_two_explode('/link:', ':http', $output_body_message);
+            $link_anchor = trim(one_two_explode('/link:', ':http', $output_body_message));
             $link_url = 'http' . one_two_explode(':http', ' ', $output_body_message);
 
             if (strlen($link_anchor) < 1 || !filter_var($link_url, FILTER_VALIDATE_URL)) {
                 return array(
                     'status' => 0,
                     'message' => 'Invalid /link command! Proper format is: /link:ANCHOR:URL for example: /link:Open Google:https://google.com',
-                );
-            } elseif (strlen($link_anchor) > 20) {
-                return array(
-                    'status' => 0,
-                    'message' => '/link anchor text cannot be longer than 20 characters',
                 );
             }
 
@@ -1635,42 +1630,8 @@ class Communication_model extends CI_Model
             //Student has requested to add this intention to their Action Plan:
             $in_id = intval(one_two_explode('SUBSCRIBE-CONFIRM_', '', $quick_reply_payload));
 
-            //Validate Intent ID and ensure it's published:
-            $ins = $this->Database_model->in_fetch(array(
-                'in_id' => $in_id,
-                'in_status' => 2, //Published
-            ));
-
-            if (count($ins) == 1) {
-
-                //Add intent to Student's Action Plan:
-                $actionplan = $this->Database_model->ln_create(array(
-                    'ln_type_entity_id' => 4235, //Student Intent
-                    'ln_status' => 1, //Drafting
-                    'ln_miner_entity_id' => $en['en_id'], //Belongs to this Student
-                    'ln_parent_intent_id' => $ins[0]['in_id'], //The Intent they are adding
-                    'ln_order' => 1 + $this->Database_model->ln_max_order(array( //Place this intent at the end of all intents the Student is drafting...
-                        'ln_type_entity_id IN (' . join(',', $this->config->item('en_ids_6147')) . ')' => null, //Action Plan Intentions
-                        'ln_status IN (' . join(',', $this->config->item('ln_status_incomplete')) . ')' => null, //incomplete intentions
-                        'ln_miner_entity_id' => $en['en_id'], //Belongs to this Student
-                    )),
-                ));
-
-                //Confirm with them that we're now ready:
-                $this->Communication_model->dispatch_message(
-                    'Success! I added the intention to ' . $ins[0]['in_outcome'] . ' to your Action Plan 🙌 /link:Open 🚩Action Plan:https://mench.com/messenger/actionplan/' . $ins[0]['in_id'],
-                    $en,
-                    true,
-                    array(),
-                    array(
-                        'ln_parent_intent_id' => $ins[0]['in_id'],
-                    )
-                );
-
-                //Initiate first message for action plan tree:
-                $this->Platform_model->actionplan_advance_step($en, $ins[0]['in_id'], true);
-
-            }
+            //Add to Action Plan:
+            $this->Platform_model->actionplan_add($en['en_id'], $in_id);
 
         } elseif (substr_count($quick_reply_payload, 'SKIP-ACTIONPLAN_') == 1) {
 

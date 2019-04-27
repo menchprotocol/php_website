@@ -13,8 +13,6 @@ $metadata = unserialize($in['in_metadata']);
         type="text/javascript"></script>
 
 
-
-
 <div class="row">
     <div class="col-xs-7 cols">
 
