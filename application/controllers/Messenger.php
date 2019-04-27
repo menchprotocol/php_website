@@ -1357,6 +1357,20 @@ class Messenger extends CI_Controller
         return redirect_message($step_url, '<div class="alert alert-success" role="alert"><i class="fal fa-check-circle"></i> Successfully Saved</div>');
     }
 
+    function actionplan_completion_save(){
+
+        /*
+         *
+         * When students indicate they want to stop
+         * an intention this function saves the changes
+         * necessary and remove the intention from their
+         * Action Plan.
+         *
+         * */
+
+
+
+    }
 
     function actionplan_skip_step($en_id, $in_id, $apply_skip)
     {

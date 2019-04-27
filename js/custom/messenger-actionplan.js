@@ -68,9 +68,31 @@ function apply_stop(){
         return alert('Select a stop reason to continue');
     }
 
-    //Save changes:
-    alert('done'+stop_method_id);
+    //All good! Close Modal box:
+    $('#markCompleteModal').modal('hide');
 
+    //Save changes:
+    $.post("/messenger/actionplan_completion_save", {en_miner_id: en_miner_id, in_id: in_id, stop_method_id:stop_method_id}, function (data) {
+        //Update UI to confirm with user:
+        if (!data.status) {
+            //There was some sort of an error returned!
+            alert('ERROR: ' + data.message);
+        } else {
+            //Remove intent from UI:
+            $('#ap_in_'+in_id).fadeOut();
+
+            setTimeout(function () {
+                //Remove from body:
+                $('#ap_in_'+in_id).remove();
+
+                //Re-sort:
+                setTimeout(function () {
+                    actionplan_sort_save();
+                }, 89);
+
+            }, 233);
+        }
+    });
 
 }
 

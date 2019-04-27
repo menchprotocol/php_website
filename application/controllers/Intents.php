@@ -31,11 +31,6 @@ class Intents extends CI_Controller
             //Go to mench.com for now:
             return redirect_message('https://mench.com');
 
-        } elseif (isset($session_en['en__parents'][0]) && filter_array($session_en['en__parents'], 'en_id', 1308)) {
-
-            //Lead miner and above, go to platform:
-            redirect_message('/platform');
-
         } else {
 
             //Fetch home page intent:

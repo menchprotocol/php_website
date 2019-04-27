@@ -150,7 +150,7 @@ body.grey-bg {
 
 .panel .panel-heading {
     background-color: transparent;
-    border-bottom: 1px solid #ddd;
+    border-bottom: 0px solid #ddd;
     padding: 0px 10px 0px 0px;
     font-size: 0.9em;
 }

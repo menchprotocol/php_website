@@ -1,7 +1,11 @@
 
+<script>
+    //Set global variables:
+    var en_miner_id = <?= $session_en['en_id'] ?>;
+</script>
 <script src="/js/custom/messenger-myaccount.js?v=v<?= $this->config->item('app_version') ?>" type="text/javascript"></script>
-<input type="hidden" id="en_id" value="<?= $session_en['en_id'] ?>" />
-    <div class="panel-group" id="accordion" role="tablist" aria-multiselectable="true">
+
+<div class="panel-group" id="accordion" role="tablist" aria-multiselectable="true">
 
     <?php
     //Display account fields ordered with their entity links:

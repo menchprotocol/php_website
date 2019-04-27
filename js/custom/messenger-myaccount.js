@@ -34,7 +34,7 @@ function radio_update(parent_en_id, selected_en_id, enable_mulitiselect){
     }
 
     $.post("/messenger/myaccount_radio_update", {
-        en_miner_id: parseInt($('#en_id').val()),
+        en_miner_id: en_miner_id,
         parent_en_id: parent_en_id,
         selected_en_id: selected_en_id,
         enable_mulitiselect: enable_mulitiselect,
@@ -69,7 +69,7 @@ function save_full_name(){
 
     //Save the rest of the content:
     $.post("/messenger/myaccount_save_full_name", {
-        en_id: parseInt($('#en_id').val()),
+        en_id: en_miner_id,
         en_name: $('#en_name').val(),
     }, function (data) {
 
@@ -100,7 +100,7 @@ function save_phone(){
 
     //Save the rest of the content:
     $.post("/messenger/myaccount_save_phone", {
-        en_id: parseInt($('#en_id').val()),
+        en_id: en_miner_id,
         en_phone: $('#en_phone').val(),
     }, function (data) {
 
@@ -131,7 +131,7 @@ function save_email(){
 
     //Save the rest of the content:
     $.post("/messenger/myaccount_save_email", {
-        en_id: parseInt($('#en_id').val()),
+        en_id: en_miner_id,
         en_email: $('#en_email').val(),
     }, function (data) {
 
@@ -163,7 +163,7 @@ function save_password(){
 
     //Save the rest of the content:
     $.post("/messenger/myaccount_save_password", {
-        en_id: parseInt($('#en_id').val()),
+        en_id: en_miner_id,
         en_password: $('#en_password').val(),
     }, function (data) {
 
@@ -203,7 +203,7 @@ function save_social_profiles(){
 
     //Save the rest of the content:
     $.post("/messenger/myaccount_save_social_profiles", {
-        en_id: parseInt($('#en_id').val()),
+        en_id: en_miner_id,
         social_profiles: social_profiles,
     }, function (data) {
 
