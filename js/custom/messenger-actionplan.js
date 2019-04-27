@@ -32,8 +32,17 @@ function actionplan_sort_save() {
 //Watch for Action Plan removal click:
 $('.actionplan_remove').on('click', function(e) {
 
+    //Uncheck all buttons:
+    $("input[name='stop_type']").prop("checked", false);
+
+    //Find intent ID:
+    var in_id = $(this).attr('in-id');
+
+    //Set intent ID:
+    $('#stop_in_id').val(in_id);
+
     //Update modal title:
-    $('.stop-title').text($('.in-title-' + $(this).attr('in-id')).text());
+    $('.stop-title').text($('.in-title-' + in_id).text());
 
     //Open Modal, confirm the removal and ask why they are removing?
     $('#markCompleteModal').modal('show');
@@ -41,6 +50,29 @@ $('.actionplan_remove').on('click', function(e) {
     return false;
 
 });
+
+function apply_stop(){
+
+    //Check intent ID:
+    var in_id = parseInt($('#stop_in_id').val());
+
+    //Check stop method:
+    var stop_method_id = parseInt($("input[name='stop_type']:checked").val());
+
+    if(!in_id || in_id < 1){
+        //Should not happen!
+        return alert('Unknown intent');
+    }
+
+    if(!stop_method_id || stop_method_id < 1){
+        return alert('Select a stop reason to continue');
+    }
+
+    //Save changes:
+    alert('done'+stop_method_id);
+
+
+}
 
 
 //Load sorter:

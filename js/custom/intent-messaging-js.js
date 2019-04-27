@@ -251,7 +251,7 @@ function messages_sort_load() {
             var ln_id = $(evt.item).attr('tr-id');
             if ($('#ul-nav-' + ln_id).find('.video-sorting').length !== 0) {
                 inner_content = $('#msgbody_' + ln_id).html();
-                $('#msgbody_' + ln_id).css('height', $('#msgbody_' + ln_id).height()).html('<i class="fas fa-bars"></i> Drag up/down to sort video');
+                $('#msgbody_' + ln_id).css('height', $('#msgbody_' + ln_id).height()).html('<i class="fas fa-sort"></i> Drag up/down to sort video');
             } else {
                 inner_content = null;
             }

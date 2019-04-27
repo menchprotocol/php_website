@@ -202,7 +202,7 @@ body.grey-bg {
     color: #FFF;
 }
 
-.actionplan-sort .fa-bars {
+.actionplan-sort .fa-sort {
     padding: 0 5px;
     cursor: move; /* fallback if grab cursor is unsupported */
     cursor: grab;
@@ -2708,7 +2708,7 @@ a.badge:focus, a.badge:hover {
     color: #bbb;
 }
 
-.is_level3_sortable .fa-bars {
+.is_level3_sortable .fa-sort {
     margin: -10px -7px -10px -7px;
 }
 
@@ -3693,7 +3693,7 @@ h4 .tip-badge {
     text-align: center;
 }
 
-.list-group-item .fa-bars {
+.list-group-item .fa-sort {
     cursor: move; /* fallback if grab cursor is unsupported */
     cursor: grab;
     cursor: -moz-grab;
@@ -3829,6 +3829,21 @@ h4 .tip-badge {
 .edit-header {
     max-width: 90%;
     overflow: hidden;
+}
+
+.left-sorting{
+    width: 24px;
+    text-align: center;
+    height: 38px;
+    margin-bottom: -40px;
+    font-size: 0.9em;
+    cursor: move; /* fallback if grab cursor is unsupported */
+    cursor: grab;
+    cursor: -moz-grab;
+    cursor: -webkit-grab;
+}
+.left-sorting .fa-sort{
+    padding-top:18px;
 }
 
 .profile-icon-mini {
@@ -4193,10 +4208,10 @@ h4 .tip-badge {
 
 
 .actionplan-sort .actionplan-title{
-    margin-left: 24px;
+    margin-left: 28px;
 }
 .actionplan-sort .actionplan-overview{
-    margin-left: 24px;
+    margin-left: 28px;
 }
 
 

@@ -263,7 +263,7 @@ function echo_in_message_manage($ln)
     $ui .= '<li class="edit-off message_status" style="margin:0 8px 0 0;"><span title="' . $fixed_fields['ln_status'][$ln['ln_status']]['s_name'] . ': ' . $fixed_fields['ln_status'][$ln['ln_status']]['s_desc'] . '" data-toggle="tooltip" data-placement="top">' . $fixed_fields['ln_status'][$ln['ln_status']]['s_icon'] . '</span></li>';
 
     //Sort:
-    $ui .= '<li class="edit-off"><span title="Drag up/down to sort" data-toggle="tooltip" data-placement="top"><i class="fas fa-bars '.( in_array(4603, $en_all_4485[$ln['ln_type_entity_id']]['m_parents']) ? 'message-sorting' : '' ).'"></i></span></li>';
+    $ui .= '<li class="edit-off"><span title="Drag up/down to sort" data-toggle="tooltip" data-placement="top"><i class="fas fa-sort '.( in_array(4603, $en_all_4485[$ln['ln_type_entity_id']]['m_parents']) ? 'message-sorting' : '' ).'"></i></span></li>';
 
 
 

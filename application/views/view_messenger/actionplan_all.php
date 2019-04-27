@@ -22,21 +22,18 @@ if(count($student_intents) > 0){
         //Display row:
         echo '<a href="/messenger/actionplan/' . $ln['in_id'] . '" sort-link-id="'.$ln['ln_id'].'" class="list-group-item actionplan_sort">';
 
-        //Right:
-        echo '<span class="pull-right">';
-        echo '<span class="actionplan_remove" in-id="'.$ln['in_id'].'" style="margin:0 5px 0 0;"><i class="fas fa-hand-paper"></i> Stop</span>';
-        echo '</span>';
 
-
-        //Left:
         if($has_multiple_intentions){
-            echo '<i class="fas fa-bars"></i>'; //For sorting Action Plan
+            echo '<div class="left-sorting">';
+            echo '<span class="results-ln-'.$ln['ln_id'].'">'.echo_ordinal_number(($priority+1)).'</span>';
+            echo '<i class="fas fa-sort"></i>'; //For sorting Action Plan
+            echo '</div>';
         }
 
         $completion_rate = $this->Platform_model->actionplan_completion_rate($ln, $session_en['en_id']);
 
         echo '<span class="actionplan-title in-title-'.$ln['in_id'].'">' . $ln['in_outcome'] . '</span>';
-        echo '<div class="actionplan-overview"><span class="results-ln-'.$ln['ln_id'].'">'.echo_ordinal_number(($priority+1)).'</span> Priority, '.( $time_estimate ? $time_estimate.', ' : '').$completion_rate['completion_percentage'].'% Complete</div>';
+        echo '<div class="actionplan-overview">'.( $time_estimate ? $time_estimate.', ' : '').$completion_rate['completion_percentage'].'% Complete [<span class="actionplan_remove" in-id="'.$ln['in_id'].'"><i class="fas fa-hand-paper"></i> Stop</span>]</div>';
         echo '</a>';
 
     }
