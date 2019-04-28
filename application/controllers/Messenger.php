@@ -1694,6 +1694,18 @@ class Messenger extends CI_Controller
         ));
 
 
+        //Fetch top intention that being workined on now:
+        $top_priority = $this->Platform_model->actionplan_top_priority($_POST['en_miner_id']);
+
+
+        //Communicate top-priority with student:
+        $this->Communication_model->dispatch_message(
+            'I have successfully sorted your Action Plan priorities. Your top active priority is to '.$top_priority['in']['in_outcome'].' which you have made '.$top_priority['completion_rate']['completion_percentage'].'% progress.',
+            array('en_id' => $_POST['en_miner_id']),
+            true
+        );
+
+
         //All good:
         return echo_json(array(
             'status' => 1,

@@ -1392,6 +1392,43 @@ class Platform_model extends CI_Model
     }
 
 
+    function actionplan_top_priority($en_id){
+
+        /*
+         *
+         * A function that goes through the Action Plan
+         * and finds the top-priority that the student
+         * is currently working on.
+         *
+         * */
+
+        $top_priority_in = false;
+        foreach($this->Database_model->ln_fetch(array(
+            'ln_miner_entity_id' => $en_id,
+            'ln_type_entity_id IN (' . join(',', $this->config->item('en_ids_6147')) . ')' => null, //Action Plan Intentions
+            'ln_status IN (' . join(',', $this->config->item('ln_status_incomplete')) . ')' => null, //incomplete intentions
+            'in_status' => 2, //Published
+        ), array('in_parent'), 0, 0, array('ln_order' => 'ASC')) as $actionplan_in){
+
+            //See progress rate so far:
+            $completion_rate = $this->Platform_model->actionplan_completion_rate($actionplan_in, $en_id);
+
+            if($completion_rate['completion_percentage'] < 100){
+                //This is the top priority now:
+                $top_priority_in = $actionplan_in;
+                break;
+            }
+
+        }
+
+        //Return what's found:
+        return array(
+            'in' => $top_priority_in,
+            'completion_rate' => $completion_rate,
+        );
+
+    }
+
     function actionplan_add($en_id, $in_id){
 
         //Validate Intent ID and ensure it's published:
@@ -1438,24 +1475,7 @@ class Platform_model extends CI_Model
          * */
 
         //Fetch top intention that being workined on now:
-        $top_priority_in = false;
-        foreach($this->Database_model->ln_fetch(array(
-            'ln_miner_entity_id' => $en_id,
-            'ln_type_entity_id IN (' . join(',', $this->config->item('en_ids_6147')) . ')' => null, //Action Plan Intentions
-            'ln_status IN (' . join(',', $this->config->item('ln_status_incomplete')) . ')' => null, //incomplete intentions
-            'in_status' => 2, //Published
-        ), array('in_parent'), 0, 0, array('ln_order' => 'ASC')) as $actionplan_in){
-
-            //See progress rate so far:
-            $completion_rate = $this->Platform_model->actionplan_completion_rate($actionplan_in, $en_id);
-
-            if($completion_rate['completion_percentage'] < 100){
-                //This is the top priority now:
-                $top_priority_in = $actionplan_in;
-                break;
-            }
-
-        }
+        $top_priority = $this->Platform_model->actionplan_top_priority($en_id);
 
         /*
          *
@@ -1466,7 +1486,7 @@ class Platform_model extends CI_Model
          *
          * */
 
-        if($top_priority_in['in_id']==$ins[0]['in_id']){
+        if($top_priority['in']['in_id']==$ins[0]['in_id']){
 
             //The newly added intent is the top priority, so let's initiate first message for action plan tree:
             $this->Platform_model->actionplan_advance_step(array('en_id' => $en_id), $ins[0]['in_id'], true);
@@ -1475,7 +1495,7 @@ class Platform_model extends CI_Model
 
             //A previously added intent is top-priority, so let them know:
             $this->Communication_model->dispatch_message(
-                'But we will work on this intention later because based on your Action Plan\'s priorities, your current focus is to '.$top_priority_in['in_outcome'].' which you have made '.$completion_rate['completion_percentage'].'% progress. Alternatively, you can sort your Action Plan\'s priorities. /link:Sort 🚩Action Plan:https://mench.com/messenger/actionplan',
+                'But we will work on this intention later because based on your Action Plan\'s priorities, your current focus is to '.$top_priority['in']['in_outcome'].' which you have made '.$top_priority['completion_rate']['completion_percentage'].'% progress. Alternatively, you can sort your Action Plan\'s priorities. /link:Sort 🚩Action Plan:https://mench.com/messenger/actionplan',
                 array('en_id' => $en_id),
                 true
             );
