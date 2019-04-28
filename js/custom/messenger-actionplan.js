@@ -67,14 +67,14 @@ function apply_stop(){
     }
 
     if(!stop_method_id || stop_method_id < 1){
-        return alert('Select a stop reason to continue');
+        return alert('Error: Choose a reason to continue...');
     }
 
     //All good! Close Modal box:
     $('#markCompleteModal').modal('hide');
 
     //Save changes:
-    $.post("/messenger/actionplan_completion_save", {en_miner_id: en_miner_id, in_id: in_id, stop_method_id:stop_method_id, stop_feedback:stop_feedback}, function (data) {
+    $.post("/messenger/actionplan_stop_save", {en_miner_id: en_miner_id, in_id: in_id, stop_method_id:stop_method_id, stop_feedback:stop_feedback}, function (data) {
         //Update UI to confirm with user:
         if (!data.status) {
 

@@ -1466,7 +1466,7 @@ class Platform_model extends CI_Model
          *
          * */
 
-        if($completion_rate['in_id']==$ins[0]['in_id']){
+        if($top_priority_in['in_id']==$ins[0]['in_id']){
 
             //The newly added intent is the top priority, so let's initiate first message for action plan tree:
             $this->Platform_model->actionplan_advance_step(array('en_id' => $en_id), $ins[0]['in_id'], true);

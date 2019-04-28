@@ -1396,7 +1396,7 @@ class Messenger extends CI_Controller
         return redirect_message($step_url, '<div class="alert alert-success" role="alert"><i class="fal fa-check-circle"></i> Successfully Saved</div>');
     }
 
-    function actionplan_completion_save(){
+    function actionplan_stop_save(){
 
         /*
          *
@@ -1430,6 +1430,17 @@ class Messenger extends CI_Controller
             ));
         }
 
+        //Validate intention to be removed:
+        $ins = $this->Database_model->in_fetch(array(
+            'in_id' => $_POST['in_id'],
+        ));
+        if (count($ins) < 1) {
+            return echo_json(array(
+                'status' => 0,
+                'message' => 'Invalid intention',
+            ));
+        }
+
         //Go ahead and remove from Action Plan:
         $student_intents = $this->Database_model->ln_fetch(array(
             'ln_miner_entity_id' => $_POST['en_miner_id'],
@@ -1459,6 +1470,13 @@ class Messenger extends CI_Controller
             'ln_type_entity_id' => $_POST['stop_method_id'],
             'ln_parent_intent_id' => $_POST['in_id'],
         ));
+
+        //Communicate with student:
+        $this->Communication_model->dispatch_message(
+            'I have successfully removed the intention to '.$ins[0]['in_outcome'].' from your Action Plan.',
+            array('en_id' => $_POST['en_miner_id']),
+            true
+        );
 
         return echo_json(array(
             'status' => 1,
