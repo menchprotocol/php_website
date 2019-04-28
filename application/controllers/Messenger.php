@@ -1473,7 +1473,7 @@ class Messenger extends CI_Controller
 
         //Communicate with student:
         $this->Communication_model->dispatch_message(
-            'I have successfully removed the intention to '.$ins[0]['in_outcome'].' from your Action Plan.',
+            'I have successfully removed the intention to '.$ins[0]['in_outcome'].' from your Action Plan. You can add it back to your Action Plan at any time by visiting: https://mench.com/'.$ins[0]['in_id'],
             array('en_id' => $_POST['en_miner_id']),
             true
         );
