@@ -1421,6 +1421,10 @@ class Platform_model extends CI_Model
 
         }
 
+        if(!$top_priority_in){
+            return false;
+        }
+
         //Return what's found:
         return array(
             'in' => $top_priority_in,
@@ -1477,29 +1481,22 @@ class Platform_model extends CI_Model
         //Fetch top intention that being workined on now:
         $top_priority = $this->Platform_model->actionplan_top_priority($en_id);
 
-        /*
-         *
-         * By now we must have found $top_priority_in,
-         * Unless student had all their Action Plans
-         * completed and just added another previously
-         * completed intention to their Action Plan.
-         *
-         * */
+        if($top_priority){
+            if($top_priority['in']['in_id']==$ins[0]['in_id']){
 
-        if($top_priority['in']['in_id']==$ins[0]['in_id']){
+                //The newly added intent is the top priority, so let's initiate first message for action plan tree:
+                $this->Platform_model->actionplan_advance_step(array('en_id' => $en_id), $ins[0]['in_id'], true);
 
-            //The newly added intent is the top priority, so let's initiate first message for action plan tree:
-            $this->Platform_model->actionplan_advance_step(array('en_id' => $en_id), $ins[0]['in_id'], true);
+            } else {
 
-        } else {
+                //A previously added intent is top-priority, so let them know:
+                $this->Communication_model->dispatch_message(
+                    'But we will work on this intention later because based on your Action Plan\'s priorities, your current focus is to '.$top_priority['in']['in_outcome'].' which you have made '.$top_priority['completion_rate']['completion_percentage'].'% progress so far. Alternatively, you can sort your Action Plan\'s priorities. /link:Sort 🚩Action Plan:https://mench.com/messenger/actionplan',
+                    array('en_id' => $en_id),
+                    true
+                );
 
-            //A previously added intent is top-priority, so let them know:
-            $this->Communication_model->dispatch_message(
-                'But we will work on this intention later because based on your Action Plan\'s priorities, your current focus is to '.$top_priority['in']['in_outcome'].' which you have made '.$top_priority['completion_rate']['completion_percentage'].'% progress. Alternatively, you can sort your Action Plan\'s priorities. /link:Sort 🚩Action Plan:https://mench.com/messenger/actionplan',
-                array('en_id' => $en_id),
-                true
-            );
-
+            }
         }
 
         return true;
