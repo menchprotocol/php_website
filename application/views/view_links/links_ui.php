@@ -191,18 +191,10 @@ $all_engs = $this->Database_model->ln_fetch($ini_filter, array('en_type'), 0, 0,
 //Make sure its a valid type considering other filters:
 if(isset($_GET['ln_type_entity_id'])){
 
-    $found = false;
-    foreach ($all_engs as $ln) {
-        if($_GET['ln_type_entity_id'] == $ln['ln_type_entity_id']){
-            $found = true;
-            break;
-        }
-    }
-
-    if(!$found){
-        unset($_GET['ln_type_entity_id']);
-    } else {
-        //Assign filter:
+    if (substr_count($_GET['ln_type_entity_id'], ',') > 0) {
+        //This is multiple IDs:
+        $filters['ln_type_entity_id IN (' . $_GET['ln_type_entity_id'] . ')'] = null;
+    } elseif (intval($_GET['ln_type_entity_id']) > 0) {
         $filters['ln_type_entity_id'] = intval($_GET['ln_type_entity_id']);
     }
 
@@ -394,15 +386,15 @@ echo '<table class="table table-condensed maxout"><tr>';
 
 //ANY Link
 echo '<td><div style="padding-right:5px;">';
-echo '<span class="mini-header">Any Trans. IDs:</span>';
+echo '<span class="mini-header">Any Link IDs:</span>';
 echo '<input type="text" name="any_ln_id" value="' . ((isset($_GET['any_ln_id'])) ? $_GET['any_ln_id'] : '') . '" class="form-control border">';
 echo '</div></td>';
 
-echo '<td><span class="mini-header">Trans. IDs:</span><input type="text" name="ln_id" value="' . ((isset($_GET['ln_id'])) ? $_GET['ln_id'] : '') . '" class="form-control border"></td>';
+echo '<td><span class="mini-header">Link IDs:</span><input type="text" name="ln_id" value="' . ((isset($_GET['ln_id'])) ? $_GET['ln_id'] : '') . '" class="form-control border"></td>';
 
-echo '<td><span class="mini-header">Parent Trans. IDs:</span><input type="text" name="ln_parent_link_id" value="' . ((isset($_GET['ln_parent_link_id'])) ? $_GET['ln_parent_link_id'] : '') . '" class="form-control border"></td>';
+echo '<td><span class="mini-header">Parent Link IDs:</span><input type="text" name="ln_parent_link_id" value="' . ((isset($_GET['ln_parent_link_id'])) ? $_GET['ln_parent_link_id'] : '') . '" class="form-control border"></td>';
 
-echo '<td><span class="mini-header">Trans. Status:</span><input type="text" name="ln_status" value="' . ((isset($_GET['ln_status'])) ? $_GET['ln_status'] : '') . '" class="form-control border"></td>';
+echo '<td><span class="mini-header">Link Status:</span><input type="text" name="ln_status" value="' . ((isset($_GET['ln_status'])) ? $_GET['ln_status'] : '') . '" class="form-control border"></td>';
 
 echo '</tr></table>';
 

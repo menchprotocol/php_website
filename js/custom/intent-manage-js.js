@@ -189,8 +189,6 @@ $(document).ready(function () {
                 in_messages_iframe(hash_parts[1]);
             } else if (hash_parts[0] == 'loadmodify') {
                 in_modify_load(hash_parts[1], hash_parts[2]);
-            } else if (hash_parts[0] == 'loadinactionplans') {
-                in_actionplans(hash_parts[1]);
             }
         }
     }
@@ -198,13 +196,6 @@ $(document).ready(function () {
 
 });
 
-
-function in_actionplans(in_id){
-    if(parseInt($('.actionplans_in_'+in_id).attr('ap-count')) < 1){
-        alert('Intent not added to any Action Plans yet');
-        return false;
-    }
-}
 
 
 function in_adjust_isany_ui() {

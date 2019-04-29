@@ -215,8 +215,6 @@ $(document).ready(function () {
                 en_load_messages( hash_parts[1]);
             } else if (hash_parts[0] == 'loadmodify') {
                 en_modify_load(hash_parts[1], hash_parts[2]);
-            } else if (hash_parts[0] == 'loadenactionplans') {
-                en_actionplans(hash_parts[1]);
             } else if (hash_parts[0] == 'status') {
                 //Update status:
                 en_filter_status(hash_parts[1]);
@@ -255,15 +253,6 @@ $(document).ready(function () {
 
 });
 
-
-function en_actionplans(en_id){
-
-    if(parseInt($('.actionplans_en_'+en_id).attr('ap-count')) < 1){
-        alert('Entity not added any intents to their Action Plan yet');
-        return false;
-    }
-
-}
 
 
 //Adds OR links entities to entities

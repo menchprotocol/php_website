@@ -1676,10 +1676,16 @@ function echo_in($in, $level, $in_parent_id = 0, $is_parent = false)
     $ui .= '<span style="display: inline-block; float: right;">'; //Start of 5x Action Buttons
 
 
-    //Action Plan:
-    //TODO Count links and Implement later...
-    $ui .= '<a href="#loadinactionplans-' . $in['in_id'] . '" onclick="'.( $level==0 ? 'alert(\'Cannot manage here. Go to the intent to manage.\')' : 'in_actionplans(' . $in['in_id'] . ')' ).'" class="badge badge-primary ' . echo_advance() . ' white-primary actionplans_in_'.$in['in_id'].'" ap-count="'.(0).'" style="margin:-2px -3px 0 5px; width:40px;" data-toggle="tooltip" data-placement="top" title="Intent Action Plans"><span class="btn-counter">'.echo_number(0).'</span><i class="far fa-flag" style="width:28px; padding-right:7px; text-align:center;"></i></a>';
 
+    //Action Plan:
+    $actionplan_steps = $CI->Database_model->ln_fetch(array(
+        'ln_type_entity_id IN (' . join(',', $CI->config->item('en_ids_6146')) . ')' => null, //Action Plan Progression Link Types
+        'ln_parent_intent_id' => $in['in_id'],
+        'ln_status' => 2, //Published
+    ), array(), 0, 0, array(), 'COUNT(ln_id) as total_steps');
+    if($actionplan_steps[0]['total_steps'] > 0) {
+        $ui .= '<a href="/links?ln_status=2&ln_type_entity_id=' . join(',', $CI->config->item('en_ids_6146')) . '&ln_parent_intent_id=' . $in['in_id'] . '" class="badge badge-primary ' . echo_advance() . '" style="width:40px; margin:-3px -2px 0 4px; border:2px solid #ffe027 !important;" data-toggle="tooltip" data-placement="top" title="Go to Published Action Plan Progression Links @6146"><span class="btn-counter">' . echo_number($actionplan_steps[0]['total_steps']) . '</span>🚩</a>';
+    }
 
 
     //Intent Notes:
@@ -1695,6 +1701,10 @@ function echo_in($in, $level, $in_parent_id = 0, $is_parent = false)
     //Intent modify:
     $in__metadata_max_seconds = (isset($in_metadata['in__metadata_max_seconds']) ? $in_metadata['in__metadata_max_seconds'] : 0);
     $ui .= '<a class="badge badge-primary white-primary is_not_bg '.( $level==0 ? '' . echo_advance() . '' : '' ).'" onclick="'.( $level==0 ? 'alert(\'Cannot manage here. Go to the intent to manage.\')' : 'in_modify_load(' . $in['in_id'] . ',' . $ln_id . ')' ).'" style="margin:-2px -8px 0 0; width:40px;" href="#loadmodify-' . $in['in_id'] . '-' . $ln_id . '" data-toggle="tooltip" title="Intent completion cost. Click to modify intent'.( $level>1 ? ' and link' : '' ).'" data-placement="top"><span class="btn-counter slim-time t_estimate_' . $in['in_id'] . '" intent-usd="'.$in['in_dollar_cost'].'" tree-max-seconds="' . $in__metadata_max_seconds . '" intent-seconds="' . $in['in_seconds_cost'] . '">'.( $in__metadata_max_seconds > 0 ? echo_time_hours($in__metadata_max_seconds , true) : 0 ).'</span><i class="fas fa-cog"></i></a> &nbsp;';
+
+
+
+
 
 
     //Intent Links:
@@ -1934,9 +1944,18 @@ function echo_en($en, $level, $is_parent = false)
 
 
 
+
+
     //Action Plan:
-    //TODO Count links and Implement later...
-    $ui .= '<a href="#loadenactionplans-' . $en['en_id'] . '" onclick="'.( $level==0 ? 'alert(\'Cannot manage here. Go to the entity to manage.\')' : 'en_actionplans(' . $en['en_id'] . ')' ).'" class="badge badge-secondary ' . echo_advance() . ' white-secondary actionplans_en_'.$en['en_id'].'" ap-count="'.(0).'" style="margin:-2px -3px 0 5px;; width:40px;" data-toggle="tooltip" data-placement="top" title="Entity Action Plans"><span class="btn-counter">'.echo_number(0).'</span><i class="far fa-flag" style="width:28px; padding-right:7px; text-align:center;"></i></a>';
+    $actionplan_steps = $CI->Database_model->ln_fetch(array(
+        'ln_type_entity_id IN (' . join(',', $CI->config->item('en_ids_6146')) . ')' => null, //Action Plan Progression Link Types
+        'ln_miner_entity_id' => $en['en_id'],
+        'ln_status' => 2, //Published
+    ), array(), 0, 0, array(), 'COUNT(ln_id) as total_steps');
+    if($actionplan_steps[0]['total_steps'] > 0){
+        $ui .= '<a href="/links?ln_status=2&ln_type_entity_id=' . join(',', $CI->config->item('en_ids_6146')) . '&ln_miner_entity_id=' . $en['en_id'] . '" class="badge badge-secondary ' . echo_advance() . '" style="width:40px; margin:-3px -2px 0 6px; border:2px solid #0084ff !important;" data-toggle="tooltip" data-placement="top" title="Go to Published Action Plan Progression Links @6146"><span class="btn-counter">'.echo_number($actionplan_steps[0]['total_steps']).'</span>🚩</a>';
+    }
+
 
 
 
@@ -1954,6 +1973,8 @@ function echo_en($en, $level, $is_parent = false)
 
     //Modify Entity:
     $ui .= '<a href="#loadmodify-' . $en['en_id'] . '-' . $ln_id . '" onclick="'.( $level==0 ? 'alert(\'Cannot manage here. Go to the entity to manage.\')' : 'en_modify_load(' . $en['en_id'] . ',' . $ln_id . ')' ).'" class="badge badge-secondary white-secondary '.( $level==0 ? '' . echo_advance() . '' : '' ).'" style="margin:-2px -6px 0 2px; width:40px;" data-toggle="tooltip" data-placement="top" title="Entity trust score. Click to modify entity'.( $level>1 ? ' and link' : '' ).'"><span class="btn-counter ' . echo_advance() . '">'.echo_number($en['en_trust_score']).'</span><i class="fas fa-cog" style="width:28px; padding-right:7px; text-align:center;"></i></a> &nbsp;';
+
+
 
 
 
