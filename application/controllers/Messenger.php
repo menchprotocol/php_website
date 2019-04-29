@@ -251,10 +251,10 @@ class Messenger extends CI_Controller
 
 
                     //Set variables:
-                    unset($ln_data); //Reset everything in case its set from the previous loop!
                     $sent_by_mench = (isset($im['message']['is_echo'])); //Indicates the message sent from the page itself
                     $en = $this->Platform_model->en_authenticate_psid(($sent_by_mench ? $im['recipient']['id'] : $im['sender']['id']));
 
+                    unset($ln_data); //Reset everything in case its set from the previous loop!
                     $ln_data = array(
                         'ln_miner_entity_id' => $en['en_id'],
                         'ln_timestamp' => ($sent_by_mench ? null : echo_time_milliseconds($im['timestamp'])), //Facebook time if received from Student
@@ -292,12 +292,11 @@ class Messenger extends CI_Controller
                         //Who sent this?
                         if ($sent_by_mench) {
 
-                            //Text Message Sent By Mench Admin via Facebook Inbox UI
-                            $ln_data['ln_type_entity_id'] = 4552; //Text Message Sent
+                            $ln_data['ln_type_entity_id'] = 4552; //Student Received Text Message
 
                         } else {
 
-                            $ln_data['ln_type_entity_id'] = 4547; //Text Message Received
+                            $ln_data['ln_type_entity_id'] = 4547; //Student Sent Text Message
 
                             //Digest message & try to make sense of it:
                             $this->Communication_model->digest_message($en, $im['message']['text']);
@@ -1301,13 +1300,6 @@ class Messenger extends CI_Controller
                 'session_en' => $session_en,
                 'student_intents' => $student_intents,
                 'in' => $ins[0], //Currently focused intention:
-                'in_is_actionplan_intention' => ( count($student_intents) > 0 && filter_array($student_intents, 'in_id', $in_id) ? 1 : 0 ),
-                'in_published_children' => $this->Database_model->ln_fetch(array(
-                    'ln_status' => 2, //Published
-                    'in_status' => 2, //Published
-                    'ln_type_entity_id' => 4228, //Fixed Intent Links
-                    'ln_parent_intent_id' => $in_id,
-                ), array('in_child'), 0, 0, array('ln_order' => 'ASC')),
             ));
 
         }

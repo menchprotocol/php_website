@@ -1854,9 +1854,9 @@ class Communication_model extends CI_Model
 
         //First check if this Student is unsubscribed:
         if (count($this->Database_model->ln_fetch(array(
-                'ln_child_entity_id' => $en['en_id'],
                 'ln_parent_entity_id' => 4455, //Unsubscribed
                 'ln_type_entity_id IN (' . join(',', $this->config->item('en_ids_4592')) . ')' => null, //Entity Link Connectors
+                'ln_child_entity_id' => $en['en_id'],
                 'ln_status' => 2, //Published
             ))) > 0) {
 
