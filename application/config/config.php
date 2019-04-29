@@ -15,7 +15,7 @@ date_default_timezone_set('America/Los_Angeles');
 
 //App Functionality:
 $config['app_version']              = '0.8394'; //Cache buster for static JS/CSS files, so needs to be updated if you update static files
-$config['app_enable_algolia']       = true; //May need to turn off if/when we reach free monthly quota of 50k calls
+$config['app_enable_algolia']       = true; //May need to turn off if/when we reach monthly quota of 50k calls
 $config['items_per_page']           = 100; //The limit of how many items should be loaded per page/section
 
 
