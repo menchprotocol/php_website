@@ -38,7 +38,6 @@ class Platform_model extends CI_Model
                 'ln_miner_entity_id' => $en_id, //Belongs to this Student
                 'ln_parent_intent_id' => $common_step_in_id,
                 'ln_status >=' => 0, //New+
-                'in_status' => 2, //Published
             ), ( $is_expansion ? array('in_child') : array() ));
 
             //Have they completed this?
