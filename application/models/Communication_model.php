@@ -1893,8 +1893,12 @@ class Communication_model extends CI_Model
 
         $fb_received_message = strtolower($fb_received_message);
 
+        if (includes_any($fb_received_message, array('next', 'continue'))) {
 
-        if (in_array($fb_received_message, array('yes', 'yeah', 'ya', 'ok', 'continue', 'ok continue', 'ok continue ▶️', '▶️', 'ok continue', 'go', 'yass', 'yas', 'yea', 'yup', 'next', 'yes, learn more'))) {
+            //Give them the next step of their Action Plan:
+            $this->Platform_model->actionplan_find_next_step($en['en_id'], true);
+
+        } elseif (in_array($fb_received_message, array('yes', 'yeah', 'ya', 'ok', '▶️', 'ok continue', 'go', 'yass', 'yas', 'yea', 'yup', 'yes, learn more'))) {
 
             //TODO Implement...
 
@@ -1921,18 +1925,6 @@ class Communication_model extends CI_Model
 
             //Likely an OR response with a specific number in mind...
             //TODO Implement...
-
-        } elseif (includes_any($fb_received_message, array('next', 'continue'))) {
-
-            //Give them the next step of their Action Plan:
-            $next_step = $this->Platform_model->actionplan_find_next_step($en['en_id'], true);
-
-            $this->Database_model->ln_create(array(
-                'ln_type_entity_id' => 4246, //Platform Error
-                'ln_miner_entity_id' => 1, //Shervin/Developer
-                'ln_parent_entity_id' => $en['en_id'],
-                'ln_content' => 'NEXT STEP ['.$next_step.']',
-            ));
 
         } elseif (includes_any($fb_received_message, array('unsubscribe', 'stop'))) {
 
