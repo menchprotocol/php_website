@@ -1965,14 +1965,15 @@ function echo_en($en, $level, $is_parent = false)
         'ln_type_entity_id IN (' . join(',', $CI->config->item('en_ids_4485')) . ')' => null, //All Intent Notes
         'ln_parent_entity_id' => $en['en_id'], //Entity Referenced in message content
     ), array(), 0, 0, array(), 'COUNT(ln_id) AS total_messages');
-
-    //Only show in non-advance mode if we have messages:
-    $ui .= '<a class="badge badge-secondary white-secondary '.( $level==0 || $messages[0]['total_messages'] == 0 ? echo_advance() : '' ) . '" href="#entityreferences-' . $en['en_id'] . '" onclick="' . ( $messages[0]['total_messages'] == 0 ? 'alert(\'No Intent Notes found that reference this entity\')' : ( $level==0 ? 'alert(\'Cannot manage here. Go to the entity to manage.\')' : 'en_load_messages('.$en['en_id'].')' ) ) . '" style="width:40px; margin-left:5px;" data-toggle="tooltip" data-placement="top" title="Entity References within Intent Notes"><span class="btn-counter">' . echo_number($messages[0]['total_messages']) . '</span><i class="fas fa-comment-plus"></i></a>';
+    if($messages[0]['total_messages'] > 0){
+        //Only show in non-advance mode if we have messages:
+        $ui .= '<a class="badge badge-secondary white-secondary '.( $level==0 || $messages[0]['total_messages'] == 0 ? echo_advance() : '' ) . '" href="#entityreferences-' . $en['en_id'] . '" onclick="' . ( $messages[0]['total_messages'] == 0 ? 'alert(\'No Intent Notes found that reference this entity\')' : ( $level==0 ? 'alert(\'Cannot manage here. Go to the entity to manage.\')' : 'en_load_messages('.$en['en_id'].')' ) ) . '" style="width:40px; margin-left:5px; margin-right: -3px;" data-toggle="tooltip" data-placement="top" title="Entity References within Intent Notes"><span class="btn-counter">' . echo_number($messages[0]['total_messages']) . '</span><i class="fas fa-comment-plus"></i></a>';
+    }
 
 
 
     //Modify Entity:
-    $ui .= '<a href="#loadmodify-' . $en['en_id'] . '-' . $ln_id . '" onclick="'.( $level==0 ? 'alert(\'Cannot manage here. Go to the entity to manage.\')' : 'en_modify_load(' . $en['en_id'] . ',' . $ln_id . ')' ).'" class="badge badge-secondary white-secondary '.( $level==0 ? '' . echo_advance() . '' : '' ).'" style="margin:-2px -6px 0 2px; width:40px;" data-toggle="tooltip" data-placement="top" title="Entity trust score. Click to modify entity'.( $level>1 ? ' and link' : '' ).'"><span class="btn-counter ' . echo_advance() . '">'.echo_number($en['en_trust_score']).'</span><i class="fas fa-cog" style="width:28px; padding-right:7px; text-align:center;"></i></a> &nbsp;';
+    $ui .= '<a href="#loadmodify-' . $en['en_id'] . '-' . $ln_id . '" onclick="'.( $level==0 ? 'alert(\'Cannot manage here. Go to the entity to manage.\')' : 'en_modify_load(' . $en['en_id'] . ',' . $ln_id . ')' ).'" class="badge badge-secondary white-secondary '.( $level==0 ? '' . echo_advance() . '' : '' ).'" style="margin:-2px -6px 0 5px; width:40px;" data-toggle="tooltip" data-placement="top" title="Entity trust score. Click to modify entity'.( $level>1 ? ' and link' : '' ).'"><span class="btn-counter ' . echo_advance() . '">'.echo_number($en['en_trust_score']).'</span><i class="fas fa-cog" style="width:28px; padding-right:7px; text-align:center;"></i></a> &nbsp;';
 
 
 

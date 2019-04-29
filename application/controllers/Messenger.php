@@ -1193,7 +1193,7 @@ class Messenger extends CI_Controller
             $en_all_6196 = $this->config->item('en_all_6196');
             return echo_json(array(
                 'status' => 1,
-                'message' => '<i class="far fa-check-circle"></i> Successfully added to your <a href="/messenger/actionplan">'.$en_all_6196[6138]['m_icon'].' '.$en_all_6196[6138]['m_name'].'</a>',
+                'message' => '<i class="far fa-check-circle"></i> Successfully added to your <b><a href="/messenger/actionplan">'.$en_all_6196[6138]['m_icon'].' '.$en_all_6196[6138]['m_name'].'</a></b>',
             ));
         } else {
             //There was some error:

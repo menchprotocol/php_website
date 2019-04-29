@@ -116,7 +116,7 @@ foreach (echo_fixed_fields() as $object_id => $statuses) {
         //Report types:
         echo '<select id="in_group_by" class="form-control border stats-select">';
         echo '<option value="by_in_status">Group By: 4 Statuses</option>';
-        echo '<option value="by_in_verb">Group By: '.count($in_verbs).' Starting Verbs</option>';
+        echo '<option value="by_in_verb">Group By: '.count($in_verbs).' Verbs</option>';
         echo '<option value="by_in_types">Group By: 2 Intent Types</option>';
         echo '<option value="by_in_completion">Group By: '.count($this->config->item('en_all_4331')).' Completion Methods</option>';
         echo '</select>';

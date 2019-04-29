@@ -301,7 +301,7 @@
                             <div class="inline-box">
 
                                 <div class="en-no-tr hidden">
-                                    <p>No link available as your viewing the entity itself.</p>
+                                    <p>Not applicable because you are viewing the entity itself.</p>
                                 </div>
 
                                 <div class="en-has-tr">

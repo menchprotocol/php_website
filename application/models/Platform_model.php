@@ -2059,7 +2059,7 @@ class Platform_model extends CI_Model
         //Run some checks on the intent outcome:
         if(count($outcome_words) < 3) {
 
-            //The /force is a word, so starting verb is too short:
+            //The /force is a word, so Verb is too short:
             return array(
                 'status' => 0,
                 'message' => 'Outcome must have at-least two words',
@@ -2075,7 +2075,7 @@ class Platform_model extends CI_Model
 
         } elseif(!en_auth(array(1281))){
 
-            //Not a acceptable starting verb:
+            //Not a acceptable Verb:
             return array(
                 'status' => 0,
                 'message' => '/force command is only available to moderators',
@@ -2083,18 +2083,18 @@ class Platform_model extends CI_Model
 
         } elseif(strlen($starting_verb) < 2) {
 
-            //Starting verb is too short:
+            //Verb is too short:
             return array(
                 'status' => 0,
-                'message' => 'Starting verb must be at-least 2 characters long',
+                'message' => 'Verb must be at-least 2 characters long',
             );
 
         } elseif(!ctype_alpha($starting_verb)){
 
-            //Not a acceptable starting verb:
+            //Not a acceptable Verb:
             return array(
                 'status' => 0,
-                'message' => 'Starting verb should only consist of letters A-Z',
+                'message' => 'Verb should only consist of letters A-Z',
             );
 
         }
@@ -2168,10 +2168,10 @@ class Platform_model extends CI_Model
 
         } elseif(!$in_verb_entity_id) {
 
-            //Not a acceptable starting verb:
+            //Not a acceptable Verb:
             return array(
                 'status' => 0,
-                'message' => 'Starting verb is not yet supported. Manage supported verbs via entity @5008'.( en_auth(array(1281)) ? ' or use the /force command to add this verb to the supported list.' : '' ),
+                'message' => 'Verb is not yet supported. Manage supported verbs via entity @5008'.( en_auth(array(1281)) ? ' or use the /force command to add this verb to the supported list.' : '' ),
             );
 
         }

@@ -238,7 +238,7 @@ $metadata = unserialize($in['in_metadata']);
                         <div class="inline-box" style="margin-bottom:0px;">
 
                             <div class="in-no-tr hidden">
-                                <p>No link available as your viewing the intent itself.</p>
+                                <p>Not applicable because you are viewing the intent itself.</p>
                             </div>
 
                             <div class="in-has-tr">

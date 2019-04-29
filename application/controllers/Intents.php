@@ -491,7 +491,7 @@ class Intents extends CI_Controller
                         //Not a acceptable starting word:
                         return echo_json(array(
                             'status' => 0,
-                            'message' => 'Starting verb is not yet supported. Manage supported verbs via entity @5008'.( en_auth(array(1281)) ? ' or use the /force command to add this verb to the supported list.' : '' ),
+                            'message' => 'Verb is not yet supported. Manage supported verbs via entity @5008'.( en_auth(array(1281)) ? ' or use the /force command to add this verb to the supported list.' : '' ),
                         ));
 
                     }
