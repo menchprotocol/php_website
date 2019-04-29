@@ -1896,7 +1896,14 @@ class Communication_model extends CI_Model
         if (in_array($fb_received_message, array('next', 'continue'))) {
 
             //Give them the next step of their Action Plan:
-            $this->Platform_model->actionplan_find_next_step($en['en_id'], true);
+            $step = $this->Platform_model->actionplan_find_next_step($en['en_id'], true);
+
+            $this->Database_model->ln_create(array(
+                'ln_content' => 'DEBUG: '.$fb_received_message.' ['.$step.']',
+                'ln_type_entity_id' => 4246, //Platform Error
+                'ln_miner_entity_id' => 1, //Shervin/Developer
+                'ln_parent_entity_id' => $en['en_id'],
+            ));
 
         } elseif (in_array($fb_received_message, array('yes', 'yeah', 'ya', 'ok', '▶️', 'ok continue', 'go', 'yass', 'yas', 'yea', 'yup', 'yes, learn more'))) {
 

@@ -126,7 +126,7 @@ class Platform_model extends CI_Model
 
                 //Inform user that they are now complete with all steps:
                 $this->Communication_model->dispatch_message(
-                    'You completed all your Action Plan steps to 🙌 I will keep you updated on new steps as they become available and you can at any time stop these updates by saying "stop".',
+                    'You have no pending steps in your Action Plan 🙌 I will keep you updated on new steps as they become available. You may also stop receiving updates by saying "stop".',
                     array('en_id' => $en_id),
                     true
                 );
