@@ -1808,15 +1808,30 @@ class Platform_model extends CI_Model
 
         }
 
-
-        //Log the progression link:
-        $this->Database_model->ln_create(array(
+        //Log the progression link if not logged before:
+        $new_progression_link = $this->Database_model->ln_create(array(
             'ln_type_entity_id' => $progression_type_entity_id,
             'ln_miner_entity_id' => $recipient_en['en_id'],
             'ln_parent_intent_id' => $in_id,
             'ln_status' => ( in_array($progression_type_entity_id , $this->config->item('en_ids_6244')) ? 1 : 2 ),
         ));
 
+        //Archive previous progression links, if any:
+        foreach( $this->Database_model->ln_fetch(array(
+                'ln_type_entity_id IN (' . join(',', $this->config->item('en_ids_6146')) . ')' => null, //Action Plan Progression Link Types
+                'ln_miner_entity_id' => $recipient_en['en_id'],
+                'ln_parent_intent_id' => $in_id,
+                'ln_status >=' => 0, //New+
+                'ln_id !=' => $new_progression_link['ln_id'], //Not the currently inserted one...
+            )) as $deprectaed_progression_link){
+
+            //Archive and reference new link:
+            $this->Database_model->ln_update($deprectaed_progression_link['ln_id'], array(
+                'ln_parent_link_id' => $new_progression_link['ln_id'],
+                'ln_status' => -1,
+            ), $recipient_en['en_id']);
+
+        }
 
         return array(
             'status' => 1,
