@@ -1891,9 +1891,9 @@ class Communication_model extends CI_Model
          *
          * */
 
-        $fb_received_message = strtolower($fb_received_message);
+        $fb_received_message = trim(strtolower($fb_received_message));
 
-        if (includes_any($fb_received_message, array('next', 'continue'))) {
+        if (in_array($fb_received_message, array('next', 'continue'))) {
 
             //Give them the next step of their Action Plan:
             $this->Platform_model->actionplan_find_next_step($en['en_id'], true);
