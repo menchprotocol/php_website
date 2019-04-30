@@ -1288,13 +1288,6 @@ class Messenger extends CI_Controller
                 die('<div class="alert alert-danger" role="alert">Intent is not yet published.</div>');
             }
 
-            //Log Action Plan View:
-            $this->Database_model->ln_create(array(
-                'ln_type_entity_id' => 4283, //Opened Action Plan
-                'ln_miner_entity_id' => $session_en['en_id'],
-                'ln_child_intent_id' => $in_id,
-            ));
-
             //Load Action Plan UI with relevant variables:
             $this->load->view('view_messenger/actionplan_intent', array(
                 'session_en' => $session_en,

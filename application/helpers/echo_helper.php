@@ -597,34 +597,14 @@ function echo_tr_row($ln, $is_inner = false)
 
 
 
-function echo_in_actionplan_answer($en_id, $parent_in_id, $answer_in)
-{
 
-    $CI =& get_instance();
-
-    $ui = '<a href="/messenger/actionplan_answer_question/' . $en_id . '/' . $parent_in_id . '/' . $answer_in['in_id'] . '/' . md5($CI->config->item('actionplan_salt') . $answer_in['in_id'] . $parent_in_id . $en_id) . '" class="list-group-item">';
-
-    //Different pointer position based on direction:
-    $ui .= '<span class="pull-right">';
-    $ui .= '<span class="badge badge-primary fr-bgd">Select <i class="fas fa-check-circle"></i></span>';
-    $ui .= '</span>';
-
-    //OR Option with Radio button UI:
-    $ui .= '<span class="status-label" style="padding-bottom:1px;"><i class="fal fa-circle"></i></span> ';
-    $ui .= echo_in_outcome($answer_in['in_outcome'], true);
-
-    $ui .= '</a>';
-
-    return $ui;
-}
-
-function echo_in_actionplan_step($ln, $is_parent, $incomplete_step)
+function echo_in_actionplan_step($in, $is_parent, $step_ln_status)
 {
 
     $CI =& get_instance();
 
 
-    $ui = ( $incomplete_step<=1 ? '<a href="/messenger/actionplan/' . $ln['in_id'] . '" class="list-group-item">' : '<span class="list-group-item">' );
+    $ui = '<a href="/messenger/actionplan/' . $in['in_id'] . '" class="list-group-item">';
 
     //Different pointer position based on direction:
     if ($is_parent) {
@@ -636,36 +616,23 @@ function echo_in_actionplan_step($ln, $is_parent, $incomplete_step)
     } else {
 
         $ui .= '<span class="pull-right">';
-        $time_estimate = echo_time_range($ln, true);
+        $time_estimate = echo_time_range($in, true);
         if ($time_estimate) {
             $ui .= $time_estimate . ' <i class="fal fa-alarm-clock"></i> ';
         }
-        if($incomplete_step<=1){
-            $ui .= '<span class="badge badge-primary fr-bgd"><i class="fas fa-angle-right"></i></span>';
-        }
+        $ui .= '<span class="badge badge-primary fr-bgd"><i class="fas fa-angle-right"></i></span>';
         $ui .= '</span>';
 
-        //For children show icon:
-        if ($incomplete_step<=1) {
-            //Completed Step Status:
-            $ui .= echo_fixed_fields('ln_student_status', $ln['ln_status'], 1, 'right');
-        } else {
-            //Item is locked:
-            $ui .= '<span class="status-label" style="padding-bottom:1px;"><i class="fas fa-lock"></i></span>';
-        }
-
     }
 
-    $ui .= ' <span '.( $incomplete_step<=1 ? '' : 'style="color:#AAA;"' ).'>' . echo_in_outcome($ln['in_outcome'], true).'</span>';
+    //Completed Step Status:
+    $ui .= echo_fixed_fields('ln_student_status', $step_ln_status, 1, 'right');
 
-    //Show completion requirements if not OR branch (We do not want to influence the student's response)
-    if($ln['in_requirement_entity_id'] != 6087){
-        $en_all_4331 = $CI->config->item('en_all_4331');
-        //This has a completion requirement, show it:
-        $ui .= '&nbsp;&nbsp;<span>'.$en_all_4331[$ln['in_requirement_entity_id']]['m_icon'].' '.$en_all_4331[$ln['in_requirement_entity_id']]['m_name'].' Response</span>';
-    }
+    $ui .= ' <span>' . echo_in_outcome($in['in_outcome'], true).'</span>';
 
-    $ui .= ( $incomplete_step<=1 ? '</a>' : '</span>' );
+
+
+    $ui .= '</a>';
 
     return $ui;
 }

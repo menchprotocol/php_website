@@ -12,12 +12,11 @@ class Intents extends CI_Controller
     }
 
     function test($in_id){
-
-        $ins = $this->Database_model->in_fetch(array(
-            'in_id' => $in_id,
+        $all = $this->Platform_model->in_fetch_recursive_parents($in_id, 0);
+        echo_json(array(
+            'flatter' => array_flatten($all),
+            'all' => $all,
         ));
-        $tree = $this->Platform_model->in_metadata_common_base($ins[0]);
-        echo_json($tree);
     }
 
     //Loaded as default function of the default controller:

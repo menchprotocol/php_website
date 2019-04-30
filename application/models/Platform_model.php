@@ -34,7 +34,7 @@ class Platform_model extends CI_Model
             $is_expansion = (isset($in_metadata['in__metadata_expansion_steps'][$common_step_in_id]));
 
             $completed_steps = $this->Database_model->ln_fetch(array(
-                'ln_type_entity_id IN (' . join(',', ( $is_expansion ? array(6157) /* Question Answered */ : $this->config->item('en_ids_6146') )) . ')' => null,
+                'ln_type_entity_id IN (' . ( $is_expansion ? 6157 /* Question Answered */ : join(',',$this->config->item('en_ids_6146')) ) . ')' => null,
                 'ln_miner_entity_id' => $en_id, //Belongs to this Student
                 'ln_parent_intent_id' => $common_step_in_id,
                 'ln_status >=' => 0, //New+
@@ -1048,27 +1048,38 @@ class Platform_model extends CI_Model
 
     }
 
-    function in_fetch_recursive_parents($in_id){
+    function in_fetch_recursive_parents($in_id, $min_level, $first_level = true){
 
-        $in_parent_ids = array();
+        $grand_parents = array();
 
         //Fetch parents:
         foreach($this->Database_model->ln_fetch(array(
-            'in_status >=' => 0, //New+
-            'ln_status >=' => 0, //New+
+            'in_status >=' => $min_level,
+            'ln_status >=' => $min_level,
             'ln_type_entity_id IN (' . join(',', $this->config->item('en_ids_4486')) . ')' => null, //Intent Link Connectors
             'ln_child_intent_id' => $in_id,
         ), array('in_parent')) as $in_parent){
-            //Add parent to array:
-            array_push($in_parent_ids, $in_parent['in_id']);
+
+            //Prep ID:
+            $p_id = intval($in_parent['in_id']);
+
+            //Add to appropriate array:
+            if(!$first_level){
+                array_push($grand_parents, $p_id);
+            }
+
             //Fetch parents of parents:
-            $recursive_parents = $this->Platform_model->in_fetch_recursive_parents($in_parent['in_id']);
-            if(count($recursive_parents) > 0){
-                $in_parent_ids = array_merge($in_parent_ids, $recursive_parents);
+            $recursive_parents = $this->Platform_model->in_fetch_recursive_parents($p_id, $min_level, false);
+
+            if($first_level){
+                array_push($recursive_parents, $p_id);
+                $grand_parents[$p_id] = $recursive_parents;
+            } elseif(!$first_level && count($recursive_parents) > 0){
+                $grand_parents = array_merge($grand_parents, $recursive_parents);
             }
         }
 
-        return $in_parent_ids;
+        return $grand_parents;
     }
 
 
@@ -1502,7 +1513,7 @@ class Platform_model extends CI_Model
 
     }
 
-    function actionplan_advance_step($recipient_en, $in_id, $skip_messages = false)
+    function actionplan_advance_step($recipient_en, $in_id, $skip_messages = false, $fb_messenger_format = true)
     {
 
         /*
@@ -1611,6 +1622,7 @@ class Platform_model extends CI_Model
          * */
 
         //Set variables:
+        $progression_messages = ''; //To be populated for webview
         $progression_type_entity_id = 6158; //Action Plan Outcome Review (Most basic completion method)
         $next_step_message = null; //To be populated if there is a next step.
         $next_step_quick_replies = array(); //To be populated with appropriate options to further progress form here...
@@ -1626,7 +1638,13 @@ class Platform_model extends CI_Model
             'ln_type_entity_id' => 4228, //Fixed intent links only
             'ln_parent_intent_id' => $in_id,
         ), array('in_child'), 0, 0, array('ln_order' => 'ASC'));
-
+        $current_progression_links = $this->Database_model->ln_fetch(array(
+            'ln_type_entity_id IN (' . join(',', $this->config->item('en_ids_6146')) . ')' => null, //Action Plan Progression Link Types
+            'ln_miner_entity_id' => $recipient_en['en_id'],
+            'ln_parent_intent_id' => $in_id,
+            'ln_status >=' => 0, //New+
+        ));
+        $has_published_progression = ( count($current_progression_links) > 0 && $current_progression_links[0]['ln_status']==2 );
 
 
         //Always communicate intent messages if any:
@@ -1638,16 +1656,22 @@ class Platform_model extends CI_Model
             //Dispatch intent messages if not skipped:
             if(!$skip_messages){
                 foreach ($in__messages as $message_ln) {
-                    $this->Communication_model->dispatch_message(
+                    if(!$fb_messenger_format){
+                        $progression_messages .= '<div class="tip_bubble">';
+                    }
+                    $progression_messages .= $this->Communication_model->dispatch_message(
                         $message_ln['ln_content'],
                         $recipient_en,
-                        true,
+                        $fb_messenger_format,
                         array(),
                         array(
                             'ln_parent_intent_id' => $in_id,
                             'ln_parent_link_id' => $message_ln['ln_id'], //This message
                         )
                     );
+                    if(!$fb_messenger_format){
+                        $progression_messages .= '</div>';
+                    }
                 }
             }
         }
@@ -1699,12 +1723,36 @@ class Platform_model extends CI_Model
 
                     //Add to answer list:
                     $next_step_message .= "\n\n" . ($key+1) . '/ ' . echo_in_outcome($child_in['in_outcome'], true);
-                    array_push($next_step_quick_replies, array(
-                        'content_type' => 'text',
-                        'title' => '/' . ($key+1),
-                        'payload' => 'ANSWERQUESTION_' . $in_id . '_' . $child_in['in_id'],
-                    ));
 
+                    if($fb_messenger_format){
+
+                        //For messenger only:
+                        array_push($next_step_quick_replies, array(
+                            'content_type' => 'text',
+                            'title' => '/' . ($key+1),
+                            'payload' => 'ANSWERQUESTION_' . $in_id . '_' . $child_in['in_id'],
+                        ));
+
+                    } else {
+
+                        //Is this selected?
+                        $was_selected = ( $has_published_progression && $current_progression_links[0]['ln_child_intent_id']==$child_in['in_id'] );
+
+                        //Fetch history if selected:
+                        if($was_selected){
+                            $child_progression_steps = $this->Database_model->ln_fetch(array(
+                                'ln_type_entity_id IN (' . join(',', $this->config->item('en_ids_6146')) . ')' => null, //Action Plan Progression Link Types
+                                'ln_miner_entity_id' => $recipient_en['en_id'],
+                                'ln_parent_intent_id' => $current_progression_links[0]['ln_child_intent_id'],
+                                'ln_status >=' => 0,
+                            ));
+                        }
+
+
+                        //Append link:
+                        $next_step_message .= ' <a href="'.( $has_published_progression ? '/messenger/actionplan/'.$child_in['in_id'] : '/messenger/actionplan_answer_question/' . $recipient_en['en_id'] . '/' . $in_id . '/' . $child_in['in_id'] . '/' . md5($this->config->item('actionplan_salt') . $child_in['in_id'] . $in_id . $recipient_en['en_id']) ). '" class="badge badge-primary">'.( $has_published_progression ? ( $was_selected ? echo_fixed_fields('ln_student_status', (count($child_progression_steps) > 0 ? $child_progression_steps[0]['ln_status'] : 0), 1, 'right') . ' Selected' : 'Not Selected' ) : 'Select' ).'</a>';
+
+                    }
                 }
 
             } else {
@@ -1719,13 +1767,6 @@ class Platform_model extends CI_Model
                     $next_step_message = 'Here are the ' . count($in__children) . ' steps to ' . echo_in_outcome($ins[0]['in_outcome'], true) . ':';
                 }
 
-
-                //Student must always start at the first step:
-                array_push($next_step_quick_replies, array(
-                    'content_type' => 'text',
-                    'title' => 'Start Step 1 ▶️',
-                    'payload' => 'GOTOSTEP_' . $in__children[0]['in_id'],
-                ));
 
 
                 //List children:
@@ -1754,6 +1795,31 @@ class Platform_model extends CI_Model
 
                     //Add message:
                     $next_step_message .= "\n\n" . ($key + 1) . '/ ' . echo_in_outcome($child_in['in_outcome'], true);
+
+                    if(!$fb_messenger_format){
+
+                        //Fetch progression data:
+                        $child_progression_steps = $this->Database_model->ln_fetch(array(
+                            'ln_type_entity_id IN (' . join(',', $this->config->item('en_ids_6146')) . ')' => null, //Action Plan Progression Link Types
+                            'ln_miner_entity_id' => $recipient_en['en_id'],
+                            'ln_parent_intent_id' => $child_in['in_id'],
+                            'ln_status >=' => 0,
+                        ));
+
+                        //Append link:
+                        $next_step_message .= ' <a href="/messenger/actionplan/'.$child_in['in_id']. '" class="badge badge-primary">'.echo_fixed_fields('ln_student_status', (count($child_progression_steps) > 0 ? $child_progression_steps[0]['ln_status'] : 0), 1, 'right').' <i class="fas fa-angle-right"></i></a>';
+
+
+                    } elseif($key==0) {
+
+                        //Show only the first step forward for Messenger view:
+                        array_push($next_step_quick_replies, array(
+                            'content_type' => 'text',
+                            'title' => 'Start Step 1 ▶️',
+                            'payload' => 'GOTOSTEP_' . $in__children[0]['in_id'],
+                        ));
+
+                    }
                 }
 
             }
@@ -1762,6 +1828,7 @@ class Platform_model extends CI_Model
 
             //Intent without children and without a completion requirement, so we'd need to find the next step and offer that to them:
             $next_in_id = $this->Platform_model->actionplan_find_next_step($recipient_en['en_id'], false);
+
             if($next_in_id > 0){
 
                 //Yes, we do have a next step, fetch it and give student more details:
@@ -1781,20 +1848,40 @@ class Platform_model extends CI_Model
                     ));
 
                 }
+
             }
+        }
+
+        if(!$next_step_message){
+
+            //No next step found! This seems to be the end:
+            $next_step_message = 'This is your final step 🎉🎉🎉';
+
+        } else {
+
+            //Give option to skip:
+            if($fb_messenger_format){
+
+                //Give option to skip Student Intent:
+                array_push($next_step_quick_replies, array(
+                    'content_type' => 'text',
+                    'title' => 'Skip',
+                    'payload' => 'SKIP-ACTIONPLAN_1_' . $ins[0]['in_id'],
+                ));
+
+            } else {
+
+                $next_step_message .= "\n\n" . ' You can also <a href="javascript:void(0);" onclick="confirm_skip(' . $in_id . ', ' . $recipient_en['en_id'] . ')">skip this step</a>.';
+
+            }
+
         }
 
 
         //Dispatch instructional message if any:
-        if($next_step_message){
+        if($fb_messenger_format) {
 
-            //Five option to skip Student Intent:
-            array_push($next_step_quick_replies, array(
-                'content_type' => 'text',
-                'title' => 'Skip',
-                'payload' => 'SKIP-ACTIONPLAN_1_' . $ins[0]['in_id'],
-            ));
-
+            //Send messages over Messenger:
             $this->Communication_model->dispatch_message(
                 $next_step_message,
                 $recipient_en,
@@ -1805,36 +1892,53 @@ class Platform_model extends CI_Model
                 )
             );
 
+        } else {
+
+            //Format for HTML:
+            $progression_messages .= nl2br($next_step_message);
+
         }
+
+
+        /*
+         *
+         * Log progression link
+         *
+         * */
+
+        //Is this a 2-step Link type where we insert a pending link and later update it when requirements submitted?
+        $is_two_step = in_array($progression_type_entity_id , $this->config->item('en_ids_6244'));
 
         //Log the progression link if not logged before:
-        $new_progression_link = $this->Database_model->ln_create(array(
-            'ln_type_entity_id' => $progression_type_entity_id,
-            'ln_miner_entity_id' => $recipient_en['en_id'],
-            'ln_parent_intent_id' => $in_id,
-            'ln_status' => ( in_array($progression_type_entity_id , $this->config->item('en_ids_6244')) ? 1 : 2 ),
-        ));
+        if(!$is_two_step || count($current_progression_links)==0){
 
-        //Archive previous progression links, if any:
-        foreach( $this->Database_model->ln_fetch(array(
-                'ln_type_entity_id IN (' . join(',', $this->config->item('en_ids_6146')) . ')' => null, //Action Plan Progression Link Types
+            //Log new link:
+            $new_progression_link = $this->Database_model->ln_create(array(
+                'ln_type_entity_id' => $progression_type_entity_id,
                 'ln_miner_entity_id' => $recipient_en['en_id'],
                 'ln_parent_intent_id' => $in_id,
-                'ln_status >=' => 0, //New+
-                'ln_id !=' => $new_progression_link['ln_id'], //Not the currently inserted one...
-            )) as $deprectaed_progression_link){
+                'ln_status' => ( $is_two_step ? 1 : 2 ),
+            ));
 
-            //Archive and reference new link:
-            $this->Database_model->ln_update($deprectaed_progression_link['ln_id'], array(
-                'ln_parent_link_id' => $new_progression_link['ln_id'],
-                'ln_status' => -1,
-            ), $recipient_en['en_id']);
+            //Since we logged a new progression, let's remove the old ones if any:
+            if(!$is_two_step && count($current_progression_links) > 0){
 
+                //Archive previous progression links since new one was logged:
+                foreach($current_progression_links as $ln){
+                    $this->Database_model->ln_update($ln['ln_id'], array(
+                        'ln_parent_link_id' => $new_progression_link['ln_id'],
+                        'ln_status' => -1,
+                    ), $recipient_en['en_id']);
+                }
+                
+            }
         }
 
+
+        //Return data:
         return array(
             'status' => 1,
-            'message' => 'Success',
+            'message' => $next_step_message, //Used for HTML webview
         );
 
     }
@@ -2453,7 +2557,7 @@ class Platform_model extends CI_Model
             $intent_new = $ins[0];
 
             //check all parents as this intent cannot be duplicated with any of its parents as it created an infinity loop:
-            if (in_array($intent_new['in_id'], $this->Platform_model->in_fetch_recursive_parents($actionplan_in_id))) {
+            if (in_array($intent_new['in_id'], array_flatten($this->Platform_model->in_fetch_recursive_parents($actionplan_in_id, 0)))) {
                 return array(
                     'status' => 0,
                     'message' => 'You cannot link to "' . $intent_new['in_outcome'] . '" as it already belongs to the parent/grandparent tree.',
