@@ -96,6 +96,9 @@ function parse_signed_request($signed_request)
 }
 
 function array_flatten($hierarchical_array){
+    if(!$hierarchical_array){
+        return array();
+    }
     $result = array();
     array_walk_recursive($hierarchical_array, function ($v, $k) use (&$result) {
         $result[] = $v;

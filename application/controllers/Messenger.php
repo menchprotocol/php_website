@@ -1292,6 +1292,7 @@ class Messenger extends CI_Controller
             $this->load->view('view_messenger/actionplan_intent', array(
                 'session_en' => $session_en,
                 'student_intents' => $student_intents,
+                'advance_step' => $this->Platform_model->actionplan_advance_step($session_en, $in_id, false, false),
                 'in' => $ins[0], //Currently focused intention:
             ));
 
@@ -1705,14 +1706,30 @@ class Messenger extends CI_Controller
             return redirect_message('/messenger/actionplan/' . $parent_in_id, '<div class="alert alert-danger" role="alert">Invalid Authentication Key</div>');
         }
 
+        //Fetch current progression links, if any:
+        $current_progression_links = $this->Database_model->ln_fetch(array(
+            'ln_type_entity_id IN (' . join(',', $this->config->item('en_ids_6146')) . ')' => null, //Action Plan Progression Link Types
+            'ln_miner_entity_id' => $en_id,
+            'ln_parent_intent_id' => $parent_in_id,
+            'ln_status >=' => 0, //New+
+        ));
+
         //All good, save chosen OR path
-        $this->Database_model->ln_create(array(
+        $new_progression_link = $this->Database_model->ln_create(array(
             'ln_miner_entity_id' => $en_id,
             'ln_type_entity_id' => 6157, //Action Plan Question Answered
             'ln_parent_intent_id' => $parent_in_id,
             'ln_child_intent_id' => $answer_in_id,
             'ln_status' => 2, //Published since they just answered
         ));
+
+        //Archive current progression links:
+        foreach($current_progression_links as $ln){
+            $this->Database_model->ln_update($ln['ln_id'], array(
+                'ln_parent_link_id' => $new_progression_link['ln_id'],
+                'ln_status' => -1,
+            ), $en_id);
+        }
 
         return redirect_message('/messenger/actionplan/' . $answer_in_id, '<div class="alert alert-success" role="alert">Your answer was saved.</div>');
 
