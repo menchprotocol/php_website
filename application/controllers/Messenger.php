@@ -122,6 +122,281 @@ class Messenger extends CI_Controller
                         ));
                     }
 
+                } elseif (isset($im['message'])) {
+
+                    /*
+                     *
+                     * Triggered for all incoming messages and also for
+                     * outgoing messages sent using the Facebook Inbox UI.
+                     *
+                     * */
+
+                    //Is this a non loggable message? If so, this has already been logged by Mench:
+                    if (isset($im['message']['metadata']) && $im['message']['metadata'] == 'system_logged') {
+
+                        //This is already logged! No need to take further action!
+                        return print_r('complete');
+
+                    }
+
+
+                    //Set variables:
+                    $sent_by_mench = (isset($im['message']['is_echo'])); //Indicates the message sent from the page itself
+                    $en = $this->Platform_model->en_authenticate_psid(($sent_by_mench ? $im['recipient']['id'] : $im['sender']['id']));
+                    $in_requirements_search = 0; //If >0, we will try to see if this message is to submit a requirement for an intent
+
+                    unset($ln_data); //Reset everything in case its set from the previous loop!
+                    $ln_data = array(
+                        'ln_miner_entity_id' => $en['en_id'],
+                        'ln_timestamp' => ($sent_by_mench ? null : echo_time_milliseconds($im['timestamp'])), //Facebook time if received from Student
+                        'ln_metadata' => $ln_metadata, //Entire JSON object received by Facebook API
+                        'ln_order' => ($sent_by_mench ? 1 : 0), //A HACK to identify messages sent from us via Facebook Page Inbox
+                    );
+
+                    /*
+                     *
+                     * Now complete the link data based on message type.
+                     * We will generally receive 3 types of Facebook Messages:
+                     *
+                     * - Quick Replies
+                     * - Text Messages
+                     * - Attachments
+                     *
+                     * And we will deal with each group, and their sub-group
+                     * appropriately based on who sent the message (Mench/Student)
+                     *
+                     * */
+
+                    if (isset($im['message']['quick_reply']['payload'])) {
+
+                        //Quick Reply Answer Received:
+                        $ln_data['ln_type_entity_id'] = 4460;
+                        $ln_data['ln_content'] = $im['message']['text']; //Quick reply always has a text
+
+                        //Digest it further:
+                        $this->Communication_model->digest_quick_reply($en, $im['message']['quick_reply']['payload']);
+
+                    } elseif (isset($im['message']['text'])) {
+
+                        //Set message content:
+                        $ln_data['ln_content'] = $im['message']['text'];
+
+                        //Who sent this?
+                        if ($sent_by_mench) {
+
+                            $ln_data['ln_type_entity_id'] = 4552; //Student Received Text Message
+
+                        } else {
+
+                            //Could be either text or URL:
+                            $in_requirements_search = ( filter_var($im['message']['text'], FILTER_VALIDATE_URL) ? 4256 /* URL */ : 4255 /* Text */ );
+
+                            $ln_data['ln_type_entity_id'] = 4547; //Student Sent Text Message
+
+                            //Digest message & try to make sense of it:
+                            $this->Communication_model->digest_message($en, $im['message']['text']);
+
+                        }
+
+                    } elseif (isset($im['message']['attachments'])) {
+
+                        //We have some attachments, lets loops through them:
+                        foreach ($im['message']['attachments'] as $att) {
+
+
+                            //Define 4 main Attachment Message Types:
+                            $att_media_types = array( //Converts video, audio, image and file messages
+                                'video' => array(
+                                    'sent' => 4553,     //Link type for when sent to Students via Messenger
+                                    'received' => 4548, //Link type for when received from Students via Messenger
+                                    'requirement' => 4258,
+                                ),
+                                'audio' => array(
+                                    'sent' => 4554,
+                                    'received' => 4549,
+                                    'requirement' => 4259,
+                                ),
+                                'image' => array(
+                                    'sent' => 4555,
+                                    'received' => 4550,
+                                    'requirement' => 4260,
+                                ),
+                                'file' => array(
+                                    'sent' => 4556,
+                                    'received' => 4551,
+                                    'requirement' => 4261,
+                                ),
+                            );
+
+                            if (array_key_exists($att['type'], $att_media_types)) {
+
+                                /*
+                                 *
+                                 * This is a media attachment.
+                                 *
+                                 * We cannot save this Media on-demand because it takes
+                                 * a few seconds depending on the file size which would
+                                 * delay our response long-enough that Facebook thinks
+                                 * our server is none-responsive which would cause
+                                 * Facebook to resent this Attachment!
+                                 *
+                                 * The solution is to create a @4299 link to save
+                                 * this attachment using a cron job later on.
+                                 *
+                                 * */
+
+                                $ln_data['ln_type_entity_id'] = $att_media_types[$att['type']][($sent_by_mench ? 'sent' : 'received')];
+                                $ln_data['ln_content'] = $att['payload']['url']; //Media Attachment Temporary Facebook URL
+                                $ln_data['ln_status'] = 0; //drafting, since URL needs to be uploaded to Mench CDN via cron__save_chat_media()
+                                if(!$sent_by_mench){
+                                    $in_requirements_search = $att_media_types[$att['type']]['requirement'];
+                                }
+
+                            } elseif ($att['type'] == 'location') {
+
+                                //Location Message Received:
+                                $ln_data['ln_type_entity_id'] = 4557;
+
+                                /*
+                                 *
+                                 * We do not have the ability to send this
+                                 * type of message at this time and we will
+                                 * only receive it if the Student decides to
+                                 * send us their location for some reason.
+                                 *
+                                 * Message with location attachment which
+                                 * could have up to 4 main elements:
+                                 *
+                                 * */
+
+                                //Generate a URL from this location data:
+                                if (isset($att['url']) && strlen($att['url']) > 0) {
+                                    //Sometimes Facebook Might provide a full URL:
+                                    $ln_data['ln_content'] = $att['url'];
+                                } else {
+                                    //If not, we can generate our own URL using the Lat/Lng that will always be provided:
+                                    $ln_data['ln_content'] = 'https://www.google.com/maps?q=' . $att['payload']['coordinates']['lat'] . '+' . $att['payload']['coordinates']['long'];
+                                }
+
+                            } elseif ($att['type'] == 'template') {
+
+                                /*
+                                 *
+                                 * Message with template attachment, like a
+                                 * button or something...
+                                 *
+                                 * Will have value $att['payload']['template_type'];
+                                 *
+                                 * TODO implement later on maybe? Not sure how this is useful...
+                                 *
+                                 * */
+
+                            } elseif ($att['type'] == 'fallback') {
+
+                                /*
+                                 *
+                                 * A fallback attachment is any attachment
+                                 * not currently recognized or supported
+                                 * by the Message Echo feature.
+                                 *
+                                 * We can ignore them for now :)
+                                 * TODO implement later on maybe? Not sure how this is useful...
+                                 *
+                                 * */
+
+                            }
+                        }
+                    }
+
+
+                    //So did we recognized the
+                    if (isset($ln_data['ln_type_entity_id']) && isset($ln_data['ln_miner_entity_id'])) {
+
+                        //We're all good, log this message:
+                        $new_message = $this->Database_model->ln_create($ln_data);
+
+                        //Did we have a potential response?
+                        if(isset($new_message['ln_id']) && $in_requirements_search > 0){
+
+                            //Load requirement names:
+                            $en_all_4592 = $this->config->item('en_all_4592');
+
+                            //Yes, see if we have a pending requirement submission:
+                            $pending_in_requirements = $this->Database_model->ln_fetch(array(
+                                'ln_type_entity_id' => 6144, //Action Plan Submit Requirements
+                                'ln_miner_entity_id' => $ln_data['ln_miner_entity_id'], //for this student
+                                'ln_status IN (' . join(',', $this->config->item('ln_status_incomplete')) . ')' => null, //incomplete
+                                'in_status' => 2, //Published
+                                'in_requirement_entity_id' => $in_requirements_search,
+                            ), array('in_parent'), 0);
+
+                            if(count($pending_in_requirements) == 0){
+
+                                /*
+                                 *
+                                 * If not a text message (which is very very common),
+                                 * Inform student that no intention was found to
+                                 * accept this message.
+                                 *
+                                 * */
+
+                                if($in_requirements_search!=4255){
+
+                                    //Not a text, so let's inform them:
+                                    $this->Communication_model->dispatch_message(
+                                        'I\'m facing an issue: I could not locate any intentions in your Action Plan that are pending a '.$en_all_4592[$in_requirements_search]['m_name'].' message response, so I am not sure what to do with your message!',
+                                        $en,
+                                        true
+                                    );
+
+                                }
+
+                            } else {
+
+                                $next_step_message = 'I found '.count($pending_in_requirements).' intention'.echo__s(count($pending_in_requirements)).' that arepending a '.$en_all_4592[$in_requirements_search]['m_name'].' message to be marked as complete. Which of the following intentions should I append this '.$en_all_4592[$in_requirements_search]['m_name'].' message to?';
+                                $next_step_quick_replies = array();
+
+                                //Append all options:
+                                foreach($pending_in_requirements as $count => $requirement_in_ln){
+                                    $next_step_message .= "\n\n" . '/'.($count+1) .' '.echo_in_outcome($requirement_in_ln['in_outcome'] , true);
+                                    array_push($next_step_quick_replies, array(
+                                        'content_type' => 'text',
+                                        'title' => '/' . ($count+1),
+                                        'payload' => 'APPENDRESPONSE_' . $new_message['ln_id'] . '_' . $requirement_in_ln['ln_id'],
+                                    ));
+                                }
+
+                                //Give option to skip:
+                                array_push($next_step_quick_replies, array(
+                                    'content_type' => 'text',
+                                    'title' => 'Cancel',
+                                    'payload' => 'APPENDRESPONSE_CANCEL',
+                                ));
+
+                                //We did find a pending submission requirement, confirm with student:
+                                $this->Communication_model->dispatch_message(
+                                    $next_step_message,
+                                    $en,
+                                    true,
+                                    $next_step_quick_replies
+                                );
+
+                            }
+
+                        }
+
+                    } else {
+
+                        //Ooooopsi, this seems to be an unknown message type:
+                        $this->Database_model->ln_create(array(
+                            'ln_type_entity_id' => 4246, //Platform Error
+                            'ln_miner_entity_id' => 1, //Shervin/Developer
+                            'ln_content' => 'facebook_webhook() Received unknown message type! Analyze metadata for more details',
+                            'ln_metadata' => $ln_metadata,
+                        ));
+
+                    }
+
                 } elseif (isset($im['referral']) || isset($im['postback'])) {
 
                     /*
@@ -231,200 +506,6 @@ class Messenger extends CI_Controller
                         'ln_miner_entity_id' => $en['en_id'],
                         'ln_timestamp' => echo_time_milliseconds($im['timestamp']), //The Facebook time
                     ));
-
-                } elseif (isset($im['message'])) {
-
-                    /*
-                     *
-                     * Triggered for all incoming messages and also for
-                     * outgoing messages sent using the Facebook Inbox UI.
-                     *
-                     * */
-
-                    //Is this a non loggable message? If so, this has already been logged by Mench:
-                    if (isset($im['message']['metadata']) && $im['message']['metadata'] == 'system_logged') {
-
-                        //This is already logged! No need to take further action!
-                        return print_r('complete');
-
-                    }
-
-
-                    //Set variables:
-                    $sent_by_mench = (isset($im['message']['is_echo'])); //Indicates the message sent from the page itself
-                    $en = $this->Platform_model->en_authenticate_psid(($sent_by_mench ? $im['recipient']['id'] : $im['sender']['id']));
-
-                    unset($ln_data); //Reset everything in case its set from the previous loop!
-                    $ln_data = array(
-                        'ln_miner_entity_id' => $en['en_id'],
-                        'ln_timestamp' => ($sent_by_mench ? null : echo_time_milliseconds($im['timestamp'])), //Facebook time if received from Student
-                        'ln_metadata' => $ln_metadata, //Entire JSON object received by Facebook API
-                        'ln_order' => ($sent_by_mench ? 1 : 0), //A HACK to identify messages sent from us via Facebook Page Inbox
-                    );
-
-                    /*
-                     *
-                     * Now complete the link data based on message type.
-                     * We will generally receive 3 types of Facebook Messages:
-                     *
-                     * - Quick Replies
-                     * - Text Messages
-                     * - Attachments
-                     *
-                     * And we will deal with each group, and their sub-group
-                     * appropriately based on who sent the message (Mench/Student)
-                     *
-                     * */
-
-                    if (isset($im['message']['quick_reply']['payload'])) {
-
-                        //Quick Reply Answer Received:
-                        $ln_data['ln_type_entity_id'] = 4460;
-                        $ln_data['ln_content'] = $im['message']['text']; //Quick reply always has a text
-
-                        //Digest it further:
-                        $this->Communication_model->digest_quick_reply($en, $im['message']['quick_reply']['payload']);
-
-                    } elseif (isset($im['message']['text'])) {
-
-                        //Set message content:
-                        $ln_data['ln_content'] = $im['message']['text'];
-
-                        //Who sent this?
-                        if ($sent_by_mench) {
-
-                            $ln_data['ln_type_entity_id'] = 4552; //Student Received Text Message
-
-                        } else {
-
-                            $ln_data['ln_type_entity_id'] = 4547; //Student Sent Text Message
-
-                            //Digest message & try to make sense of it:
-                            $this->Communication_model->digest_message($en, $im['message']['text']);
-
-                        }
-
-                    } elseif (isset($im['message']['attachments'])) {
-
-                        //We have some attachments, lets loops through them:
-                        foreach ($im['message']['attachments'] as $att) {
-
-                            //Define 4 main Attachment Message Types:
-                            $att_media_types = array( //Converts video, audio, image and file messages
-                                'video' => array(
-                                    'sent' => 4553,     //Link type for when sent to Students via Messenger
-                                    'received' => 4548, //Link type for when received from Students via Messenger
-                                ),
-                                'audio' => array(
-                                    'sent' => 4554,
-                                    'received' => 4549,
-                                ),
-                                'image' => array(
-                                    'sent' => 4555,
-                                    'received' => 4550,
-                                ),
-                                'file' => array(
-                                    'sent' => 4556,
-                                    'received' => 4551,
-                                ),
-                            );
-
-
-                            if (array_key_exists($att['type'], $att_media_types)) {
-
-                                /*
-                                 *
-                                 * This is a media attachment.
-                                 *
-                                 * We cannot save this Media on-demand because it takes
-                                 * a few seconds depending on the file size which would
-                                 * delay our response long-enough that Facebook thinks
-                                 * our server is none-responsive which would cause
-                                 * Facebook to resent this Attachment!
-                                 *
-                                 * The solution is to create a @4299 link to save
-                                 * this attachment using a cron job later on.
-                                 *
-                                 * */
-
-                                $ln_data['ln_type_entity_id'] = $att_media_types[$att['type']][($sent_by_mench ? 'sent' : 'received')];
-                                $ln_data['ln_content'] = $att['payload']['url']; //Media Attachment Temporary Facebook URL
-                                $ln_data['ln_status'] = 0; //drafting, since URL needs to be uploaded to Mench CDN via cron__save_chat_media()
-
-                            } elseif ($att['type'] == 'location') {
-
-                                //Location Message Received:
-                                $ln_data['ln_type_entity_id'] = 4557;
-
-                                /*
-                                 *
-                                 * We do not have the ability to send this
-                                 * type of message at this time and we will
-                                 * only receive it if the Student decides to
-                                 * send us their location for some reason.
-                                 *
-                                 * Message with location attachment which
-                                 * could have up to 4 main elements:
-                                 *
-                                 * */
-
-                                //Generate a URL from this location data:
-                                if (isset($att['url']) && strlen($att['url']) > 0) {
-                                    //Sometimes Facebook Might provide a full URL:
-                                    $ln_data['ln_content'] = $att['url'];
-                                } else {
-                                    //If not, we can generate our own URL using the Lat/Lng that will always be provided:
-                                    $ln_data['ln_content'] = 'https://www.google.com/maps?q=' . $att['payload']['coordinates']['lat'] . '+' . $att['payload']['coordinates']['long'];
-                                }
-
-                            } elseif ($att['type'] == 'template') {
-
-                                /*
-                                 *
-                                 * Message with template attachment, like a
-                                 * button or something...
-                                 *
-                                 * Will have value $att['payload']['template_type'];
-                                 *
-                                 * TODO implement later on maybe? Not sure how this is useful...
-                                 *
-                                 * */
-
-                            } elseif ($att['type'] == 'fallback') {
-
-                                /*
-                                 *
-                                 * A fallback attachment is any attachment
-                                 * not currently recognized or supported
-                                 * by the Message Echo feature.
-                                 *
-                                 * We can ignore them for now :)
-                                 * TODO implement later on maybe? Not sure how this is useful...
-                                 *
-                                 * */
-
-                            }
-                        }
-                    }
-
-
-                    //So did we recognized the
-                    if (isset($ln_data['ln_type_entity_id']) && isset($ln_data['ln_miner_entity_id'])) {
-
-                        //We're all good, log this message:
-                        $this->Database_model->ln_create($ln_data);
-
-                    } else {
-
-                        //Ooooopsi, this seems to be an unknown message type:
-                        $this->Database_model->ln_create(array(
-                            'ln_type_entity_id' => 4246, //Platform Error
-                            'ln_miner_entity_id' => 1, //Shervin/Developer
-                            'ln_content' => 'facebook_webhook() Received unknown message type! Analyze metadata for more details',
-                            'ln_metadata' => $ln_metadata,
-                        ));
-
-                    }
 
                 } else {
 

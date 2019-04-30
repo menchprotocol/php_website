@@ -52,34 +52,55 @@ foreach ($this->Platform_model->in_fetch_recursive_parents($in['in_id'], 2) as $
 echo '</div>';
 
 
+
+
 //Show title
 echo '<h3 class="master-h3 primary-title">' . echo_in_outcome($in['in_outcome'] , true). '</h3>';
 echo '<div class="sub_title">';
 
-//Show all statuses:
+//Progression link:
+$en_all_4331 = $this->config->item('en_all_4331');
 $en_all_6146 = $this->config->item('en_all_6146');
 $fixed_fields = $this->config->item('fixed_fields');
+$submission_messages = null;
 foreach($advance_step['progression_links'] as $pl){
-    echo '<span style="padding-right:10px;">'.$fixed_fields['ln_student_status'][$pl['ln_status']]['s_icon'].' '.$en_all_6146[$pl['ln_type_entity_id']]['m_name'].' '.echo_time_difference(strtotime($pl['ln_timestamp'])).' ago</span>';
-}
-//Show completion progress for the single parent intent:
 
-if($time_estimate){
-    echo '<span style="padding-right:10px;" class="status-label underdot" data-toggle="tooltip" data-placement="top" title="The estimated time to complete"><i class="fas fa-alarm-clock"></i> ' . $time_estimate.'</span>';
+    echo '<span style="margin-right:10px;" class="status-label underdot" data-toggle="tooltip" data-placement="top" title="Status is '.$fixed_fields['ln_student_status'][$pl['ln_status']]['s_name'].': '.$fixed_fields['ln_student_status'][$pl['ln_status']]['s_desc'].'">'.$fixed_fields['ln_student_status'][$pl['ln_status']]['s_icon'].' '.$en_all_6146[$pl['ln_type_entity_id']]['m_name'].'</span>';
+
+    if(strlen($pl['ln_content']) > 0){
+        //Student seems to have submitted messages for this:
+        $submission_messages .= $en_all_4331[$in['in_requirement_entity_id']]['m_icon'].' '.$en_all_4331[$in['in_requirement_entity_id']]['m_name'].' message added '.echo_time_difference(strtotime($pl['ln_timestamp'])).' ago: ';
+        $submission_messages .= $this->Communication_model->dispatch_message($pl['ln_content'], $session_en);
+    }
+
 }
 
-//Show completion requirements if not OR branch (We do not want to influence the student's response)
-if($in['in_requirement_entity_id'] != 6087){
-    $en_all_4331 = $this->config->item('en_all_4331');
+//Completion Requirements if any:
+if($in['in_type']==0 && $in['in_requirement_entity_id'] != 6087){
     //This has a completion requirement, show it:
-    echo '<span class="status-label underdot" style="padding-right:10px;">'.$en_all_4331[$in['in_requirement_entity_id']]['m_icon'].' '.$en_all_4331[$in['in_requirement_entity_id']]['m_name'].' Response</span>';
+    echo '<span class="status-label" style="margin-right:10px;">'.$en_all_4331[$in['in_requirement_entity_id']]['m_icon'].' '.$en_all_4331[$in['in_requirement_entity_id']]['m_name'].' Message Required</span>';
 }
 
+//Completion time cost:
+if($time_estimate){
+    echo '<span style="margin-right:10px;" class="status-label underdot" data-toggle="tooltip" data-placement="top" title="The estimated time to complete"><i class="fas fa-alarm-clock"></i>' . $time_estimate.'</span>';
+}
+
+//Completion dollar cost:
+if($in['in_dollar_cost'] > 0){
+    echo '<span style="margin-right:10px;" class="status-label underdot" data-toggle="tooltip" data-placement="top" title="The estimated USD cost to purchase verified 3rd party products"><i class="fas fa-usd-circle"></i>' . number_format($in['in_dollar_cost'], 2).'</span>';
+}
 
 echo '</div>';
 
 
-//Show main messages:
+
+//Show possible submission messages:
+echo $submission_messages;
+
+
+
+//Show messages:
 if($advance_step['status']){
     //All good, show messages:
     echo $advance_step['message'];
@@ -87,6 +108,8 @@ if($advance_step['status']){
     //Ooooops, show error:
     echo '<div class="alert alert-danger"><i class="fas fa-exclamation-triangle"></i> Error: '.$advance_step['message'].'</div>';
 }
+
+
 
 
 /*

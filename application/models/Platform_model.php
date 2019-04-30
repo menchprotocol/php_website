@@ -846,7 +846,7 @@ class Platform_model extends CI_Model
     }
 
 
-    function in_req_completion($in, $offer_instructions = false)
+    function in_req_completion($in, $fb_messenger_format = false)
     {
 
         /*
@@ -875,8 +875,10 @@ class Platform_model extends CI_Model
         $message = 'Marking as complete requires a ' . $en_all_4331[$in['in_requirement_entity_id']]['m_name'].' Message';
 
         //Give clear directions to complete if Action Plan ID is provided...
-        if ($offer_instructions) {
-            $message .= ', which you can submit using your Action Plan. /link:See in 🚩Action Plan:https://mench.com/messenger/actionplan/' . $in['in_id'];
+        if ($fb_messenger_format) {
+            $message .= ' which you can send me right here on Messenger.';
+        } else {
+            $message .= ' which you can send me on Messenger chat.';
         }
 
         //Return Student-friendly message for completion requirements:
@@ -1657,7 +1659,7 @@ class Platform_model extends CI_Model
         $progression_type_entity_id = 6158; //Action Plan Outcome Review (Most basic completion method)
         $next_step_message = null; //To be populated if there is a next step.
         $next_step_quick_replies = array(); //To be populated with appropriate options to further progress form here...
-        $message_in_requirements = $this->Platform_model->in_req_completion($ins[0], true); //See if we have intent requirements
+        $message_in_requirements = $this->Platform_model->in_req_completion($ins[0], $fb_messenger_format); //See if we have intent requirements
         $in__messages = $this->Database_model->ln_fetch(array(
             'ln_status' => 2, //Published
             'ln_type_entity_id' => 4231, //Intent Note Messages
@@ -2055,7 +2057,7 @@ class Platform_model extends CI_Model
 
             } else {
 
-                $next_step_message .= '<div style="font-size: 0.7em;">Or <a href="javascript:void(0);" onclick="confirm_skip(' . $recipient_en['en_id'] . ', ' . $in_id . ')"><u>skip it</u></a>.</div>';
+                $next_step_message .= '<div style="font-size: 0.7em; margin-top: 10px;">Or <a href="javascript:void(0);" onclick="confirm_skip(' . $recipient_en['en_id'] . ', ' . $in_id . ')"><u>skip it</u></a>.</div>';
 
             }
 

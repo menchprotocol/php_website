@@ -623,6 +623,8 @@ class Communication_model extends CI_Model
 
         //Where is this request being made from? Public landing pages will have some restrictions on what they displat:
         $is_landing_page = is_numeric($this->uri->segment(1));
+        $is_action_plan = ($this->uri->segment(1)=='messenger');
+        $hide_entity_links = ($is_landing_page || $is_action_plan);
 
         if (count($msg_references['ref_entities']) > 0) {
 
@@ -784,7 +786,7 @@ class Communication_model extends CI_Model
                  *
                  * */
 
-                if($is_landing_page){
+                if($hide_entity_links){
 
                     //Do not include a link because we don't want to distract the student from the call to Action to get started...
                     $output_body_message = str_replace('@' . $msg_references['ref_entities'][0], '<span class="entity-name">'.$ens[0]['en_name'].'</span>'.( $entity_appendix ? '<b>*</b>' : ''), $output_body_message);
@@ -1093,9 +1095,9 @@ class Communication_model extends CI_Model
                 '👍',
             ),
             'one_way_only' => array(
-                'I am not designed to respond to custom text messages. I can understand you only when you choose one of the multiple-choice options I provide.',
-                'What was that? I would only understand if you choose one of the multiple-choice options I provide.',
-                'I did not get that as I cannot respond to your text messages. Select multiple-choice option to continue...',
+                'I am not designed to respond to custom messages. I can understand you only when you choose one of the options that I recommend to you.',
+                'I cannot understand if you send me an out-of-context message. I would only understand if you choose one of the options that I recommend to you.',
+                'I cannot respond to your custom messages and can only understand if you select one of the options that I recommend to you.',
             ),
         );
 
@@ -1355,6 +1357,87 @@ class Communication_model extends CI_Model
 
             //Should never happen!
             return false;
+
+
+
+        } elseif (substr_count($quick_reply_payload, 'APPENDRESPONSE_') == 1) {
+
+            $action_append = one_two_explode('APPENDRESPONSE_', '', $quick_reply_payload);
+
+            if($action_append=='CANCEL'){
+
+                //They selected none of the options:
+                $this->Communication_model->dispatch_message(
+                    'ok got it 🙌 I will not append this message to any of your Action Plan intentions.',
+                    $en,
+                    true
+                );
+
+            } else {
+
+                //Should be a specific append command:
+                $append_link_ids = explode('_',$action_append);
+                $message_ln_id = intval($append_link_ids[0]);
+                $ap_step_ln_id = intval($append_link_ids[1]);
+
+                if($message_ln_id>0 && $ap_step_ln_id>0){
+
+                    //Validate message:
+                    $new_message_links = $this->Database_model->ln_fetch(array(
+                        'ln_id' => $message_ln_id,
+                    ));
+
+                    //Validate Action Plan step:
+                    $pending_in_requirements = $this->Database_model->ln_fetch(array(
+                        'ln_id' => $ap_step_ln_id,
+                        //Also validate other requirements:
+                        'ln_type_entity_id' => 6144, //Action Plan Submit Requirements
+                        'ln_miner_entity_id' => $en['en_id'], //for this student
+                        'ln_status IN (' . join(',', $this->config->item('ln_status_incomplete')) . ')' => null, //incomplete
+                        'in_status' => 2, //Published
+                    ), array('in_parent'));
+
+                }
+
+                if(!isset($pending_in_requirements[0]) || !isset($new_message_links[0])){
+
+                    $this->Communication_model->dispatch_message(
+                        'Invalid command. Mench admins have been notified.',
+                        $en,
+                        true
+                    );
+
+                    $this->Database_model->ln_create(array(
+                        'ln_type_entity_id' => 4246, //Platform Error
+                        'ln_miner_entity_id' => 1, //Shervin/Developer
+                        'ln_content' => 'digest_quick_reply() failed to validate needed variables from ['.$quick_reply_payload.'] input.',
+                        'ln_child_entity_id' => $en['en_id'],
+                    ));
+
+                    return false;
+
+                } else {
+
+                    //All good!
+                    $en_all_4592 = $this->config->item('en_all_4592');
+
+
+                    //Make changes:
+                    $this->Database_model->ln_update($pending_in_requirements[0]['ln_id'], array(
+                        'ln_content' => $new_message_links[0]['ln_content'],
+                        'ln_status' => 2,
+                        'ln_parent_link_id' => $new_message_links[0]['ln_id'],
+                    ), $en['en_id']);
+
+                    //Inform student:
+                    $this->Communication_model->dispatch_rotating_message($en, 'affirm_progress');
+                    $this->Communication_model->dispatch_message(
+                        'I added your '.$en_all_4592[$pending_in_requirements[0]['in_requirement_entity_id']]['m_name'].' message to '.$pending_in_requirements[0]['in_outcome'].'. /link:See in 🚩Action Plan:https://mench.com/messenger/actionplan/' . $pending_in_requirements[0]['in_id'],
+                        $en,
+                        true
+                    );
+                }
+            }
 
         } elseif (substr_count($quick_reply_payload, 'UNSUBSCRIBE_') == 1) {
 
@@ -1934,6 +2017,7 @@ class Communication_model extends CI_Model
 
             //Ask the user if they like to be connected to a human
             //IF yes, create a ATTENTION NEEDED link that would notify admin so admin can start a manual conversation
+            //TODO Implement...
             $this->Communication_model->dispatch_message(
                 'I am not yet trained to provide help.',
                 $en,
@@ -1943,6 +2027,7 @@ class Communication_model extends CI_Model
         } elseif (in_array($fb_received_message, array('no', 'nope', 'nah', 'cancel'))) {
 
             //Rejecting an offer...
+            //TODO Implement...
             $this->Communication_model->dispatch_message(
                 'I am not yet trained to accept your rejection.',
                 $en,
@@ -1952,11 +2037,8 @@ class Communication_model extends CI_Model
         } elseif (substr($fb_received_message, 0, 1) == '/' || is_numeric($fb_received_message)) {
 
             //Likely an OR response with a specific number in mind...
-            $this->Communication_model->dispatch_message(
-                'Currently I am not trained to accept your written response. To help me understand, select one of the options form my Quick Replies.',
-                $en,
-                true
-            );
+            $this->Communication_model->dispatch_rotating_message($en, 'one_way_only');
+            //TODO Implement...
 
         } elseif (includes_any($fb_received_message, array('unsubscribe', 'stop'))) {
 
