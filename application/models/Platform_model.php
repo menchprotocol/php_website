@@ -872,13 +872,13 @@ class Platform_model extends CI_Model
         $en_all_4331 = $this->config->item('en_all_4331'); //Intent Completion Requirements
 
         //Single option:
-        $message = 'Marking as complete requires a ' . $en_all_4331[$in['in_requirement_entity_id']]['m_name'].' Message';
+        $message = 'Marking as complete requires a ' . $en_all_4331[$in['in_requirement_entity_id']]['m_name'].' message which you can send me ';
 
         //Give clear directions to complete if Action Plan ID is provided...
         if ($fb_messenger_format) {
-            $message .= ' which you can send me right here on Messenger.';
+            $message .= 'right here using Messenger.';
         } else {
-            $message .= ' which you can send me on Messenger chat.';
+            $message .= 'on Messenger.';
         }
 
         //Return Student-friendly message for completion requirements:
