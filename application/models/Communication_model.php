@@ -1134,13 +1134,7 @@ class Communication_model extends CI_Model
          *
          * */
 
-        //Fetch featured intentions not yet taken by student:
-        $featured_filters = array(
-            'ln_status' => 2, //Published
-            'in_status' => 2, //Published
-            'ln_type_entity_id' => 4228, //Fixed Links
-            'ln_parent_intent_id' => $this->config->item('in_featured'),
-        );
+
 
         //Fetch student's Action Plan Intents:
         $student_intents = $this->Database_model->ln_fetch(array(
@@ -1155,13 +1149,22 @@ class Communication_model extends CI_Model
             array_push($student_ins_ids, $student_in['in_id']);
         }
 
+
+
+        //Fetch featured intentions not yet taken by student:
+        $featured_filters = array(
+            'ln_status' => 2, //Published
+            'in_status' => 2, //Published
+            'ln_type_entity_id' => 4228, //Fixed Links
+            'ln_parent_intent_id' => $this->config->item('in_featured'),
+        );
         if(count($student_ins_ids) > 0){
             //Remove as its already added to student Action Plan:
             $featured_filters['ln_child_intent_id NOT IN ('.join(',', $student_ins_ids).')'] = null;
         }
-
-        //Fetch featured intentions:
         $featured_intentions = $this->Database_model->ln_fetch($featured_filters, array('in_child'), 0, 0, array('ln_order' => 'ASC'));
+
+
 
         //What did we find?
         if(count($featured_intentions) > 0){
@@ -1205,6 +1208,16 @@ class Communication_model extends CI_Model
                 'payload' => 'NOTINTERESTED',
             ));
 
+            //Inform user that they are now complete with all steps:
+            $this->Communication_model->dispatch_message(
+                $message,
+                array('en_id' => $en_id),
+                true,
+                $quick_replies,
+                array(
+                    'ln_parent_intent_id' => $this->config->item('in_featured'),
+                )
+            );
 
         } else {
 
