@@ -58,21 +58,21 @@ echo '<div class="sub_title">';
 
 //Show all statuses:
 $en_all_6146 = $this->config->item('en_all_6146');
+$fixed_fields = $this->config->item('fixed_fields');
 foreach($advance_step['progression_links'] as $pl){
-    echo echo_fixed_fields('ln_student_status', $pl['ln_status'], false, null).': '.$en_all_6146[$pl['ln_type_entity_id']]['m_name'];
+    echo '<span style="padding-right:10px;">'.$fixed_fields['ln_student_status'][$pl['ln_status']]['s_icon'].' '.$en_all_6146[$pl['ln_type_entity_id']]['m_name'].' '.echo_time_difference(strtotime($pl['ln_timestamp'])).' ago</span>';
 }
 //Show completion progress for the single parent intent:
 
 if($time_estimate){
-    echo ' &nbsp;&nbsp;<span class="status-label underdot" data-toggle="tooltip" data-placement="top" title="The estimated time to complete"><i class="fas fa-alarm-clock"></i> ' . $time_estimate.'</span>';
+    echo '<span style="padding-right:10px;" class="status-label underdot" data-toggle="tooltip" data-placement="top" title="The estimated time to complete"><i class="fas fa-alarm-clock"></i> ' . $time_estimate.'</span>';
 }
-
 
 //Show completion requirements if not OR branch (We do not want to influence the student's response)
 if($in['in_requirement_entity_id'] != 6087){
     $en_all_4331 = $this->config->item('en_all_4331');
     //This has a completion requirement, show it:
-    echo '&nbsp;&nbsp;<span class="status-label underdot">'.$en_all_4331[$in['in_requirement_entity_id']]['m_icon'].' '.$en_all_4331[$in['in_requirement_entity_id']]['m_name'].' Response</span>';
+    echo '<span class="status-label underdot" style="padding-right:10px;">'.$en_all_4331[$in['in_requirement_entity_id']]['m_icon'].' '.$en_all_4331[$in['in_requirement_entity_id']]['m_name'].' Response</span>';
 }
 
 

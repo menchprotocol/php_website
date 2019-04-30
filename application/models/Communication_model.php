@@ -1171,7 +1171,7 @@ class Communication_model extends CI_Model
             //Yes, we have something to offer:
 
 
-            $message = 'Here are the intentions that I have been trained on so-far:';
+            $message = 'Here are my recommended intentions that you can add to your Action Plan:';
             $quick_replies = array();
 
             foreach($featured_intentions as $count => $in){
@@ -1915,30 +1915,48 @@ class Communication_model extends CI_Model
         } elseif (in_array($fb_received_message, array('yes', 'yeah', 'ya', 'ok', '▶️', 'ok continue', 'go', 'yass', 'yas', 'yea', 'yup', 'yes, learn more'))) {
 
             //TODO Implement...
+            $this->Communication_model->dispatch_message(
+                'I am not yet trained to accept your affirmation.',
+                $en,
+                true
+            );
 
         } elseif (in_array($fb_received_message, array('skip', 'skip it'))) {
 
             //TODO Implement...
+            $this->Communication_model->dispatch_message(
+                'I am not yet trained to skip it from here. You can skip via the Action Plan.',
+                $en,
+                true
+            );
 
         } elseif (in_array($fb_received_message, array('help', 'support', 'f1', 'sos'))) {
 
             //Ask the user if they like to be connected to a human
             //IF yes, create a ATTENTION NEEDED link that would notify admin so admin can start a manual conversation
-            //TODO Implement...
-
-        } elseif (in_array($fb_received_message, array('learn', 'learn more', 'explain', 'explain more'))) {
-
-            //TODO Implement...
+            $this->Communication_model->dispatch_message(
+                'I am not yet trained to provide help.',
+                $en,
+                true
+            );
 
         } elseif (in_array($fb_received_message, array('no', 'nope', 'nah', 'cancel'))) {
 
             //Rejecting an offer...
-            //TODO Implement...
+            $this->Communication_model->dispatch_message(
+                'I am not yet trained to accept your rejection.',
+                $en,
+                true
+            );
 
-        } elseif (substr($fb_received_message, 0, 1) == '/' || is_int($fb_received_message)) {
+        } elseif (substr($fb_received_message, 0, 1) == '/' || is_numeric($fb_received_message)) {
 
             //Likely an OR response with a specific number in mind...
-            //TODO Implement...
+            $this->Communication_model->dispatch_message(
+                'Currently I am not trained to accept your written response. To help me understand, select one of the options form my Quick Replies.',
+                $en,
+                true
+            );
 
         } elseif (includes_any($fb_received_message, array('unsubscribe', 'stop'))) {
 
@@ -2092,6 +2110,7 @@ class Communication_model extends CI_Model
                     'title' => $new_intent_count . '/',
                     'payload' => 'SUBSCRIBE-INITIATE_' . $ins[0]['in_id'],
                 ));
+
             }
 
 
@@ -2143,31 +2162,34 @@ class Communication_model extends CI_Model
 
             //First, let's check to see if a Mench admin has not started a manual conversation with them via Facebook Inbox Chat:
             $admin_conversations = $this->Database_model->ln_fetch(array(
+                'ln_order' => 1, //A HACK to identify messages sent from us via Facebook Page Inbox
                 'ln_miner_entity_id' => $en['en_id'],
                 'ln_type_entity_id IN (' . join(',', $this->config->item('en_ids_4280')) . ')' => null, //Student/Miner Received Message Links
                 'ln_timestamp >=' => date("Y-m-d H:i:s", (time() - (1800))), //Messages sent from us less than 30 minutes ago
             ), array(), 1);
             if (count($admin_conversations) > 0) {
+
                 //Yes, this user is talking to an admin so do not interrupt their conversation:
                 return false;
+
+            } else {
+
+                //Inform Student of Mench's one-way communication limitation & that Mench did not understand their message:
+                $this->Communication_model->dispatch_rotating_message($en, 'one_way_only');
+
+
+                //Log link:
+                $this->Database_model->ln_create(array(
+                    'ln_miner_entity_id' => $en['en_id'], //User who initiated this message
+                    'ln_content' => $fb_received_message,
+                    'ln_type_entity_id' => 4287, //Log Unrecognizable Message Received
+                ));
+
+
+                //Find/communicate the next step:
+                $this->Platform_model->actionplan_find_next_step($en['en_id'], true);
+
             }
-
-
-            //Inform Student of Mench's one-way communication limitation & that Mench did not understand their message:
-            $this->Communication_model->dispatch_rotating_message($en, 'one_way_only');
-
-
-            //Log link:
-            $this->Database_model->ln_create(array(
-                'ln_miner_entity_id' => $en['en_id'], //User who initiated this message
-                'ln_content' => $fb_received_message,
-                'ln_type_entity_id' => 4287, //Log Unrecognizable Message Received
-            ));
-
-
-            //Find/communicate the next step:
-            $this->Platform_model->actionplan_find_next_step($en['en_id'], true);
-
         }
     }
 

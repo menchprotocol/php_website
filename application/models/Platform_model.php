@@ -86,7 +86,7 @@ class Platform_model extends CI_Model
             //Log error:
             $this->Database_model->ln_create(array(
                 'ln_parent_entity_id' => $en_id,
-                'ln_content' => 'actionplan_find_next_step() failed to locate any student Action Plans',
+                'ln_content' => 'actionplan_find_next_step() failed to locate student Action Plan intentions',
                 'ln_type_entity_id' => 4246, //Platform Error
                 'ln_miner_entity_id' => 1, //Shervin/Developer
             ));
@@ -910,7 +910,7 @@ class Platform_model extends CI_Model
         //Try matching Facebook PSID to existing Students:
         $ens = $this->Database_model->en_fetch(array(
             'en_status >=' => 0, //New+
-            'en_psid' => intval($psid),
+            'en_psid' => $psid,
         ), array('skip_en__parents'));
 
         //So, did we find them?
@@ -2163,8 +2163,27 @@ class Platform_model extends CI_Model
         }
 
         if($top_level){
+
+            /*
+             *
+             * Completing an Action Plan depends on two factors:
+             *
+             * 1) number of steps (some may have 0 time estimate)
+             * 2) estimated seconds (usually accurate)
+             *
+             * To increase the accurate of our completion % function,
+             * We would also assign a default time to the average step
+             * so we can calculate more accurately even if none of the
+             * steps have an estimated time.
+             *
+             * */
+
+            //Set default seconds per step:
+            $step_default_seconds = 60;
+
             //Calculate completion rate based on estimated time cost:
-            $metadata_this['completion_percentage'] = round( $metadata_this['seconds_completed'] / $metadata_this['seconds_total'] * 100 );
+            $metadata_this['completion_percentage'] = floor( ($metadata_this['seconds_completed']+($step_default_seconds*$metadata_this['steps_completed'])) / ($metadata_this['seconds_total']+($step_default_seconds*$metadata_this['steps_total'])) * 100 );
+
         }
 
         //Return results:
@@ -2273,6 +2292,10 @@ class Platform_model extends CI_Model
     function en_search_match($en_parent_id, $value)
     {
 
+        if($en_parent_id<1 || strlen(trim($value))<1){
+            return 0;
+        }
+
         //Is this a timezone? We need to adjust the timezone according to our limited timezone entities
         if ($en_parent_id == 3289) {
             $valid_halfs = array(-4, -3, 3, 4, 9); //These are timezones with half values so far
@@ -2292,7 +2315,7 @@ class Platform_model extends CI_Model
         $matching_entities = $this->Database_model->ln_fetch(array(
             'ln_parent_entity_id' => $en_parent_id,
             'ln_type_entity_id IN (' . join(',', $this->config->item('en_ids_4592')) . ')' => null, //Entity Link Connectors
-            'ln_content' => $value,
+            'ln_content' => trim($value),
             'ln_status >=' => 0, //Pending or Active
         ), array(), 0);
 

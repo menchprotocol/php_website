@@ -259,6 +259,7 @@ class Messenger extends CI_Controller
                         'ln_miner_entity_id' => $en['en_id'],
                         'ln_timestamp' => ($sent_by_mench ? null : echo_time_milliseconds($im['timestamp'])), //Facebook time if received from Student
                         'ln_metadata' => $ln_metadata, //Entire JSON object received by Facebook API
+                        'ln_order' => ($sent_by_mench ? 1 : 0), //A HACK to identify messages sent from us via Facebook Page Inbox
                     );
 
                     /*
