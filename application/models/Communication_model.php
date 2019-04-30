@@ -1172,6 +1172,7 @@ class Communication_model extends CI_Model
 
 
             $message = 'Here are the intentions that I have been trained on so-far:';
+            $quick_replies = array();
 
             foreach($featured_intentions as $count => $in){
 

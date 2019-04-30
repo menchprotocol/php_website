@@ -16,6 +16,7 @@ foreach ($this->Database_model->ln_fetch(array(
 }
 echo '</div>';
 
+
 //Featured intents:
 echo '<div class="list-group actionplan_list grey_list maxout" style="margin-top:20px;">';
 foreach ($featured_ins as $featured_in) {
