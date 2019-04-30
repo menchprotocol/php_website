@@ -133,19 +133,27 @@ function extract_message_references($ln_content)
 
     //See what we can find:
     foreach ($parts as $part) {
-        if (filter_var($part, FILTER_VALIDATE_URL)) {
-            array_push($msg_references['ref_urls'], $part);
-        } elseif (substr($part, 0, 1) == '@' && is_numeric(substr($part, 1))) {
-            array_push($msg_references['ref_entities'], intval(substr($part, 1)));
-        } elseif (substr($part, 0, 1) == '#' && is_numeric(substr($part, 1))) {
-            array_push($msg_references['ref_intents'], intval(substr($part, 1)));
-        } elseif(substr($part, 0, 1) == '/') {
+
+        if(substr($part, 0, 1) == '/') {
+
             //Check maybe it's a command?
             $command = includes_any($part, array('/firstname', '/slice', '/link'));
             if ($command) {
                 //Yes!
                 array_push($msg_references['ref_commands'], $command);
+
+                //Take more specific action:
+                if($command=='/link'){
+                    break; //Will not search for any more referencing after a /link command...
+                }
             }
+
+        } elseif (filter_var($part, FILTER_VALIDATE_URL)) {
+            array_push($msg_references['ref_urls'], $part);
+        } elseif (substr($part, 0, 1) == '@' && is_numeric(substr($part, 1))) {
+            array_push($msg_references['ref_entities'], intval(substr($part, 1)));
+        } elseif (substr($part, 0, 1) == '#' && is_numeric(substr($part, 1))) {
+            array_push($msg_references['ref_intents'], intval(substr($part, 1)));
         }
     }
     return $msg_references;

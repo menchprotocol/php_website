@@ -1368,7 +1368,7 @@ class Communication_model extends CI_Model
 
                 //They selected none of the options:
                 $this->Communication_model->dispatch_message(
-                    'ok got it 🙌 I will not append this message to any of your Action Plan intentions.',
+                    'ok got it 🙌 I will not append this message to any of your Action Plan steps.',
                     $en,
                     true
                 );
@@ -1420,7 +1420,6 @@ class Communication_model extends CI_Model
 
                     //All good!
                     $en_all_4592 = $this->config->item('en_all_4592');
-
 
                     //Make changes:
                     $this->Database_model->ln_update($pending_in_requirements[0]['ln_id'], array(

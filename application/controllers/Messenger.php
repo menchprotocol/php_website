@@ -193,9 +193,6 @@ class Messenger extends CI_Controller
 
                             $ln_data['ln_type_entity_id'] = 4547; //Student Sent Text Message
 
-                            //Digest message & try to make sense of it:
-                            $this->Communication_model->digest_message($en, $im['message']['text']);
-
                         }
 
                     } elseif (isset($im['message']['attachments'])) {
@@ -353,7 +350,7 @@ class Messenger extends CI_Controller
 
                             } else {
 
-                                $next_step_message = 'I found '.count($pending_in_requirements).' intention'.echo__s(count($pending_in_requirements)).' that arepending a '.$en_all_4592[$in_requirements_search]['m_name'].' message to be marked as complete. Which of the following intentions should I append this '.$en_all_4592[$in_requirements_search]['m_name'].' message to?';
+                                $next_step_message = 'You can complete'.( count($pending_in_requirements) > 1 ? ' one of' : '' ).' these '.count($pending_in_requirements).' Action Plan step'.echo__s(count($pending_in_requirements)).' by appending your '.$en_all_4592[$in_requirements_search]['m_name'].' message:';
                                 $next_step_quick_replies = array();
 
                                 //Append all options:
@@ -382,6 +379,14 @@ class Messenger extends CI_Controller
                                 );
 
                             }
+
+
+                            //
+                            if($ln_data['ln_type_entity_id']==4547){ //Student Sent Text Message
+                                //Digest message & try to make sense of it:
+                                $this->Communication_model->digest_message($en, $im['message']['text']);
+                            }
+
 
                         }
 
