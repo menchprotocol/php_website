@@ -127,6 +127,17 @@ class Platform_model extends CI_Model
             //Did we find a next step?
             if($next_in_id > 0){
 
+                //Fetch intent details:
+                $ins = $this->Database_model->in_fetch(array(
+                    'in_id' => $next_in_id,
+                ));
+
+                $this->Communication_model->dispatch_message(
+                    'Your next step is to '.$ins[0]['in_outcome'].'.',
+                    array('en_id' => $en_id),
+                    true
+                );
+
                 //Yes, communicate it:
                 $this->Platform_model->actionplan_advance_step(array('en_id' => $en_id), $next_in_id);
 
