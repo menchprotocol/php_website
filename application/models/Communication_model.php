@@ -1908,7 +1908,7 @@ class Communication_model extends CI_Model
 
                 //Ooops, we could not find their answer:
                 $this->Communication_model->dispatch_message(
-                    'I was unable to save your answer and have reported this issue to our moderation team.',
+                    'I faced an error and was unable to save your answer. It could be because you have already answered this question using the Action Plan.',
                     $en,
                     true,
                     array(),

@@ -2103,10 +2103,12 @@ class Platform_model extends CI_Model
         }
 
 
+        $trigger_recommendations = false;
         if(!$next_step_message){
 
             //No next step found! This seems to be the end:
-            $next_step_message = 'This is your final step 🎉🎉🎉';
+            $next_step_message = 'This was your final step 🎉🎉🎉';
+            $trigger_recommendations = true;
 
         } elseif(!$has_published_progression) {
 
@@ -2143,6 +2145,11 @@ class Platform_model extends CI_Model
                     'ln_parent_intent_id' => $in_id, //Focus Intent
                 )
             );
+
+            if($trigger_recommendations){
+                //List featured intents and let them choose:
+                $this->Communication_model->suggest_featured_intents($recipient_en['en_id']);
+            }
 
         } else {
 
