@@ -1993,7 +1993,7 @@ class Communication_model extends CI_Model
         if (in_array($fb_received_message, array('next', 'continue'))) {
 
             //Give them the next step of their Action Plan:
-            $step = $this->Platform_model->actionplan_find_next_step($en['en_id'], true);
+            $step = $this->Platform_model->actionplan_find_next_step($en['en_id'], true, true);
 
         } elseif (in_array($fb_received_message, array('yes', 'yeah', 'ya', 'ok', '▶️', 'ok continue', 'go', 'yass', 'yas', 'yea', 'yup', 'yes, learn more'))) {
 

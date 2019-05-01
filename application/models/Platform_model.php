@@ -64,7 +64,7 @@ class Platform_model extends CI_Model
 
     }
 
-    function actionplan_find_next_step($en_id, $advance_step)
+    function actionplan_find_next_step($en_id, $advance_step, $communicate_is_next = false)
     {
 
         /*
@@ -127,16 +127,18 @@ class Platform_model extends CI_Model
             //Did we find a next step?
             if($next_in_id > 0){
 
-                //Fetch intent details:
-                $ins = $this->Database_model->in_fetch(array(
-                    'in_id' => $next_in_id,
-                ));
+                if($communicate_is_next){
+                    //Fetch intent details:
+                    $ins = $this->Database_model->in_fetch(array(
+                        'in_id' => $next_in_id,
+                    ));
 
-                $this->Communication_model->dispatch_message(
-                    'Your next step is to '.echo_in_outcome($ins[0]['in_outcome'] , true).'.',
-                    array('en_id' => $en_id),
-                    true
-                );
+                    $this->Communication_model->dispatch_message(
+                        'Your next step is to '.echo_in_outcome($ins[0]['in_outcome'] , true).'.',
+                        array('en_id' => $en_id),
+                        true
+                    );
+                }
 
                 //Yes, communicate it:
                 $this->Platform_model->actionplan_advance_step(array('en_id' => $en_id), $next_in_id);
@@ -2083,6 +2085,7 @@ class Platform_model extends CI_Model
 
 
         if($check_next_step){
+
             //Intent without children and without a completion requirement, so we'd need to find the next step and offer that to them:
             $next_in_id = $this->Platform_model->actionplan_find_next_step($recipient_en['en_id'], false);
 
