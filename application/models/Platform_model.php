@@ -1737,7 +1737,13 @@ class Platform_model extends CI_Model
             'ln_parent_intent_id' => $in_id,
             'ln_status >=' => 0, //New+
         ));
-        $has_published_progression = ( count($current_progression_links) > 0 && $current_progression_links[0]['ln_status']==2 );
+        $has_published_progression = false;
+        foreach($current_progression_links as $current_progression_link){
+            if($current_progression_link['ln_status']==2){
+                $has_published_progression = true;
+                break;
+            }
+        }
 
 
         //Always communicate intent messages if any:
@@ -1835,6 +1841,13 @@ class Platform_model extends CI_Model
 
                         if($was_selected){
                             $next_step_message .= '[Selected] ';
+                        } elseif(!$has_published_progression) {
+                            //For messenger only:
+                            array_push($next_step_quick_replies, array(
+                                'content_type' => 'text',
+                                'title' => '/' . ($key+1),
+                                'payload' => 'ANSWERQUESTION_' . $in_id . '_' . $child_in['in_id'],
+                            ));
                         }
 
                     } else {
@@ -1870,16 +1883,8 @@ class Platform_model extends CI_Model
                     $next_step_message .= echo_in_outcome($child_in['in_outcome'], true);
 
 
-                    if($fb_messenger_format){
-
-                        //For messenger only:
-                        array_push($next_step_quick_replies, array(
-                            'content_type' => 'text',
-                            'title' => '/' . ($key+1),
-                            'payload' => 'ANSWERQUESTION_' . $in_id . '_' . $child_in['in_id'],
-                        ));
-
-                    } else {
+                    //HTML?
+                    if(!$fb_messenger_format){
 
                         if($was_selected) {
                             //Status Icon:

@@ -11,9 +11,9 @@ defined('BASEPATH') OR exit('No direct script access allowed');
  *
  */
 
-//Generated 2019-04-30 19:04:21 PST
+//Generated 2019-04-30 19:05:10 PST
 
-//Action Plan Trigger On-Complete Tips:
+//Trigger On-Complete Tips:
 $config['en_ids_6255'] = array(4559, 6144, 6157, 6158);
 $config['en_all_6255'] = array(
     4559 => array(
@@ -1951,7 +1951,7 @@ $config['en_all_4593'] = array(
     ),
     6255 => array(
         'm_icon' => '<i class="far fa-calendar-check"></i>',
-        'm_name' => 'Action Plan Trigger On-Complete Tips',
+        'm_name' => 'Trigger On-Complete Tips',
         'm_desc' => '',
         'm_parents' => array(4506, 4593, 6242, 4527),
     ),
