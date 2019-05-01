@@ -11,7 +11,7 @@ defined('BASEPATH') OR exit('No direct script access allowed');
  *
  */
 
-//Generated 2019-04-30 19:05:10 PST
+//Generated 2019-04-30 19:34:23 PST
 
 //Trigger On-Complete Tips:
 $config['en_ids_6255'] = array(4559, 6144, 6157, 6158);
@@ -66,13 +66,13 @@ $config['en_all_6150'] = array(
         'm_icon' => '<i class="far fa-badge-check"></i>',
         'm_name' => 'Mark Intention Complete',
         'm_desc' => 'You successfully accomplished your intention so you no longer want to receive future updates',
-        'm_parents' => array(4506, 6150, 4755, 4593),
+        'm_parents' => array(5966, 4506, 6150, 4755, 4593),
     ),
     6155 => array(
         'm_icon' => '<i class="far fa-stop-circle"></i>',
         'm_name' => 'Terminate Intention',
         'm_desc' => 'You did NOT accomplish the intention and you want to stop all future updates on this intention',
-        'm_parents' => array(4506, 6150, 4593, 4755),
+        'm_parents' => array(5966, 4506, 6150, 4593, 4755),
     ),
 );
 
@@ -684,13 +684,25 @@ $config['en_all_5969'] = array(
 );
 
 //Link Type Email Subscription:
-$config['en_ids_5966'] = array(4246);
+$config['en_ids_5966'] = array(4246, 6154, 6155);
 $config['en_all_5966'] = array(
     4246 => array(
         'm_icon' => '<i class="fal fa-bug"></i>',
         'm_name' => 'Reported Bug',
         'm_desc' => '&var_en_subscriber_ids=1',
         'm_parents' => array(5966, 4593),
+    ),
+    6154 => array(
+        'm_icon' => '<i class="far fa-badge-check"></i>',
+        'm_name' => 'Action Plan Mark Intention Complete',
+        'm_desc' => '&var_en_subscriber_ids=1,2',
+        'm_parents' => array(5966, 4506, 6150, 4755, 4593),
+    ),
+    6155 => array(
+        'm_icon' => '<i class="far fa-stop-circle"></i>',
+        'm_name' => 'Action Plan Terminate Intention',
+        'm_desc' => '&var_en_subscriber_ids=1,2',
+        'm_parents' => array(5966, 4506, 6150, 4593, 4755),
     ),
 );
 
@@ -1278,13 +1290,13 @@ $config['en_all_4755'] = array(
         'm_icon' => '<i class="far fa-badge-check"></i>',
         'm_name' => 'Action Plan Mark Intention Complete',
         'm_desc' => '',
-        'm_parents' => array(4506, 6150, 4755, 4593),
+        'm_parents' => array(5966, 4506, 6150, 4755, 4593),
     ),
     6155 => array(
         'm_icon' => '<i class="far fa-stop-circle"></i>',
         'm_name' => 'Action Plan Terminate Intention',
         'm_desc' => '',
-        'm_parents' => array(4506, 6150, 4593, 4755),
+        'm_parents' => array(5966, 4506, 6150, 4593, 4755),
     ),
     6157 => array(
         'm_icon' => '<i class="fas fa-check-square"></i>',
@@ -1911,13 +1923,13 @@ $config['en_all_4593'] = array(
         'm_icon' => '<i class="far fa-badge-check"></i>',
         'm_name' => 'Action Plan Mark Intention Complete',
         'm_desc' => 'Student accomplished their intention 🎉🎉🎉',
-        'm_parents' => array(4506, 6150, 4755, 4593),
+        'm_parents' => array(5966, 4506, 6150, 4755, 4593),
     ),
     6155 => array(
         'm_icon' => '<i class="far fa-stop-circle"></i>',
         'm_name' => 'Action Plan Terminate Intention',
         'm_desc' => 'Student prematurely removed an intention from their Action Plan without accomplishing it.',
-        'm_parents' => array(4506, 6150, 4593, 4755),
+        'm_parents' => array(5966, 4506, 6150, 4593, 4755),
     ),
     6157 => array(
         'm_icon' => '<i class="fas fa-check-square"></i>',
