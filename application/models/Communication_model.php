@@ -1880,10 +1880,10 @@ class Communication_model extends CI_Model
                 'ln_status IN (' . join(',', $this->config->item('ln_status_incomplete')) . ')' => null, //incomplete intentions
             ));
 
-            if(count($pending_answer_links) > 0){
+            if(count($pending_answer_links) > 0 && $answer_in_id > 0){
 
                 foreach($pending_answer_links as $ln){
-                    $this->Database_model->ln_update(intval($_POST['ln_id']), array(
+                    $this->Database_model->ln_update($ln['ln_id'], array(
                         'ln_child_intent_id' => $answer_in_id, //Save answer
                         'ln_status' => 2, //Publish answer
                     ), $en['en_id']);
