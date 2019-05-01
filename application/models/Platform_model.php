@@ -1546,6 +1546,38 @@ class Platform_model extends CI_Model
 
     }
 
+
+    function crud_automate($input_obj_type = null, $insert_columns, $ln_miner_entity_id = 0){
+
+        /*
+         *
+         * An underlying function integrated into the Database Model
+         * that would listen to certain data creations and trigger
+         * automated actions based on them.
+         *
+         * */
+
+        if($input_obj_type=='ln'){
+            //Check to see if completion notes needs to be sent:
+            if($ln_miner_entity_id > 0 && trigger_on_complete($insert_columns)){
+                //Dispatch all on-complete notes:
+                foreach($this->Database_model->ln_fetch(array(
+                    'ln_status' => 2, //Published
+                    'ln_type_entity_id' => 6242, //On-Complete Tips
+                    'ln_child_intent_id' => $insert_columns['ln_parent_intent_id'],
+                ), array(), 0, 0, array('ln_order' => 'ASC')) as $complete_note){
+                    //Send to student:
+                    $this->Communication_model->dispatch_message(
+                        $complete_note['ln_content'],
+                        array('en_id' => $ln_miner_entity_id),
+                        true
+                    );
+
+                }
+            }
+        }
+    }
+
     function actionplan_advance_step($recipient_en, $in_id, $skip_messages = false, $fb_messenger_format = true)
     {
 

@@ -264,6 +264,8 @@ class Database_model extends CI_Model
 
         }
 
+        //Check for automation:
+        $this->Platform_model->crud_automate('ln', $insert_columns, $insert_columns['ln_miner_entity_id']);
 
         //Sync algolia?
         if ($external_sync) {
@@ -765,39 +767,48 @@ class Database_model extends CI_Model
         $affected_rows = $this->db->affected_rows();
 
         //Log changes if successful:
-        if ($affected_rows > 0 && $ln_miner_entity_id > 0) {
 
-            $fixed_fields = $this->config->item('fixed_fields');
+        if ($affected_rows > 0) {
 
-            //Log modification link for every field changed:
-            foreach ($update_columns as $key => $value) {
 
-                //Has this value changed compared to what we initially had in DB?
-                if ( !($before_data[0][$key] == $value) && in_array($key, array('ln_status', 'ln_content', 'ln_order', 'ln_parent_entity_id', 'ln_child_entity_id', 'ln_parent_intent_id', 'ln_child_intent_id', 'ln_metadata', 'ln_type_entity_id'))) {
+            //Check for automation:
+            $this->Platform_model->crud_automate('ln', $update_columns, $ln_miner_entity_id);
 
-                    //Value has changed, log link:
-                    $this->Database_model->ln_create(array(
-                        'ln_parent_link_id' => $id, //Link Reference
-                        'ln_miner_entity_id' => $ln_miner_entity_id,
-                        'ln_type_entity_id' => 4242, //Link Attribute Modified
-                        'ln_content' => echo_clean_db_name($key) . ' changed from "' . ( $key=='ln_status' ? $fixed_fields['ln_status'][$before_data[0][$key]]['s_name']  : $before_data[0][$key] ) . '" to "' . ( $key=='ln_status' ? $fixed_fields['ln_status'][$value]['s_name']  : $value ) . '"',
-                        'ln_metadata' => array(
-                            'ln_id' => $id,
-                            'field' => $key,
-                            'before' => $before_data[0][$key],
-                            'after' => $value,
-                        ),
-                        //Copy old values for parent/child intent/entity links:
-                        'ln_parent_entity_id' => $before_data[0]['ln_parent_entity_id'],
-                        'ln_child_entity_id'  => $before_data[0]['ln_child_entity_id'],
-                        'ln_parent_intent_id' => $before_data[0]['ln_parent_intent_id'],
-                        'ln_child_intent_id'  => $before_data[0]['ln_child_intent_id'],
-                    ));
 
+            if($ln_miner_entity_id > 0){
+
+                $fixed_fields = $this->config->item('fixed_fields');
+
+                //Log modification link for every field changed:
+                foreach ($update_columns as $key => $value) {
+
+                    //Has this value changed compared to what we initially had in DB?
+                    if ( !($before_data[0][$key] == $value) && in_array($key, array('ln_status', 'ln_content', 'ln_order', 'ln_parent_entity_id', 'ln_child_entity_id', 'ln_parent_intent_id', 'ln_child_intent_id', 'ln_metadata', 'ln_type_entity_id'))) {
+
+                        //Value has changed, log link:
+                        $this->Database_model->ln_create(array(
+                            'ln_parent_link_id' => $id, //Link Reference
+                            'ln_miner_entity_id' => $ln_miner_entity_id,
+                            'ln_type_entity_id' => 4242, //Link Attribute Modified
+                            'ln_content' => echo_clean_db_name($key) . ' changed from "' . ( $key=='ln_status' ? $fixed_fields['ln_status'][$before_data[0][$key]]['s_name']  : $before_data[0][$key] ) . '" to "' . ( $key=='ln_status' ? $fixed_fields['ln_status'][$value]['s_name']  : $value ) . '"',
+                            'ln_metadata' => array(
+                                'ln_id' => $id,
+                                'field' => $key,
+                                'before' => $before_data[0][$key],
+                                'after' => $value,
+                            ),
+                            //Copy old values for parent/child intent/entity links:
+                            'ln_parent_entity_id' => $before_data[0]['ln_parent_entity_id'],
+                            'ln_child_entity_id'  => $before_data[0]['ln_child_entity_id'],
+                            'ln_parent_intent_id' => $before_data[0]['ln_parent_intent_id'],
+                            'ln_child_intent_id'  => $before_data[0]['ln_child_intent_id'],
+                        ));
+
+                    }
                 }
             }
 
-        } elseif($affected_rows < 1){
+        } else {
 
             //This should not happen:
             $this->Database_model->ln_create(array(
@@ -811,7 +822,6 @@ class Database_model extends CI_Model
             ));
 
         }
-
         return $affected_rows;
     }
 

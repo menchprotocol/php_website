@@ -63,9 +63,14 @@ $en_all_4331 = $this->config->item('en_all_4331');
 $en_all_6146 = $this->config->item('en_all_6146');
 $fixed_fields = $this->config->item('fixed_fields');
 $submission_messages = null;
+$trigger_on_complete = false;
 foreach($advance_step['progression_links'] as $pl){
 
     echo '<span style="margin-right:10px;" class="status-label underdot" data-toggle="tooltip" data-placement="top" title="Status is '.$fixed_fields['ln_student_status'][$pl['ln_status']]['s_name'].': '.$fixed_fields['ln_student_status'][$pl['ln_status']]['s_desc'].'">'.$fixed_fields['ln_student_status'][$pl['ln_status']]['s_icon'].' '.$en_all_6146[$pl['ln_type_entity_id']]['m_name'].'</span>';
+
+    if(trigger_on_complete($pl)){
+        $trigger_on_complete = true;
+    }
 
     if(strlen($pl['ln_content']) > 0){
         //Student seems to have submitted messages for this:
@@ -101,10 +106,14 @@ echo $submission_messages;
 
 
 
+
+
 //Show messages:
 if($advance_step['status']){
+
     //All good, show messages:
     echo $advance_step['message'];
+
 } else {
     //Ooooops, show error:
     echo '<div class="alert alert-danger"><i class="fas fa-exclamation-triangle"></i> Error: '.$advance_step['message'].'</div>';
@@ -112,62 +121,31 @@ if($advance_step['status']){
 
 
 
+//Show on-complete tips?
+if($trigger_on_complete){
 
-/*
+    $on_complete_messages = $this->Database_model->ln_fetch(array(
+        'ln_status' => 2, //Published
+        'ln_type_entity_id' => 6242, //On-Complete Tips
+        'ln_child_intent_id' => $in['in_id'],
+    ), array(), 0, 0, array('ln_order' => 'ASC'));
 
+    if(count($on_complete_messages) > 0){
 
+        echo '<h4>On-Complete Tips</h4>';
 
-//Set variables:
-$is_or_branch = ( $in['in_type']==1 );
+        //Dispatch all on-complete notes:
+        foreach($on_complete_messages as $complete_note){
+            //Send to student:
+            echo $this->Communication_model->dispatch_message(
+                $complete_note['ln_content'],
+                $session_en,
+                false
+            );
 
-
-$message_in_requirements = $this->Platform_model->in_req_completion($in);
-
-//Submission button visible after first button was clicked:
-$show_written_input = ($message_in_requirements && $is_incomplete);
-
-
-
-
-
-
-//TODO Fetch/show Student responses?
-
-
-
-
-//Show completion options below messages:
-if (!$show_written_input && !$is_incomplete) {
-    //Show button to make text visible:
-    echo '<div class="left-grey"><a href="javascript:void(0);" onclick="$(\'.toggle_text\').toggle();" class="toggle_text btn btn-xs btn-black"><i class="fas fa-edit"></i> ' . ($is_incomplete ? 'Add Written Answer' : 'Modify Answer') . '</a></div>';
+        }
+    }
 }
 
-echo '<div class="left-grey">';
-echo '<form method="POST" action="/messenger/actionplan_update_step">';
 
-
-//echo '<input type="hidden" name="ln_id"  value="' . 0 . '" />';
-
-echo '<div class="toggle_text" style="' . ($show_written_input ? '' : 'display:none; ') . '">';
-if ($message_in_requirements) {
-    echo '<div style="color:#2b2b2b; font-size:0.7em; margin:0 !important; padding:0;"><i class="fas fa-exclamation-triangle"></i> ' . $message_in_requirements . '</div>';
-}
-//echo '<textarea name="ln_content" class="form-control maxout" style="padding:5px !important; margin:0 !important;">' . 0 . '</textarea>';
-echo '</div>';
-
-
-if (!$show_children) {
-    echo '<button type="submit" class="btn btn-primary"><i class="fas fa-check-square"></i> Got It, Continue <i class="fas fa-angle-right"></i></button>';
-} elseif ($is_incomplete) {
-    echo '<button type="submit" name="fetch_next_step" value="1" class="btn btn-primary"><i class="fas fa-check-square"></i> Mark Complete & Go Next <i class="fas fa-angle-right"></i></button>';
-} elseif (!$show_written_input) {
-    echo '<button type="submit" class="btn btn-primary toggle_text" style="display:none;"><i class="fas fa-edit"></i> Update Answer</button>';
-} else {
-    echo '<button type="submit" class="btn btn-primary"><i class="fas fa-edit"></i> Update Answer</button>';
-}
-
-echo '</form>';
-echo '</div>';
-
-*/
 ?>

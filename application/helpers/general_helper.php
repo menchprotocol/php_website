@@ -159,6 +159,10 @@ function extract_message_references($ln_content)
     return $msg_references;
 }
 
+function trigger_on_complete($insert_columns){
+    $CI =& get_instance();
+    return ( $insert_columns['ln_status']==2 && in_array($insert_columns['ln_type_entity_id'], $CI->config->item('en_ids_6255')) && $insert_columns['ln_parent_intent_id'] > 0 );
+}
 
 function is_valid_date($string)
 {
