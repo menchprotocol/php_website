@@ -252,21 +252,21 @@ class Communication_model extends CI_Model
                 'message' => 'Message can include a maximum of 1 entity reference',
             );
 
-        } elseif (count($msg_references['ref_intents']) > 1) {
+        } elseif (!$fb_messenger_format && count($msg_references['ref_intents']) > 1) {
 
             return array(
                 'status' => 0,
                 'message' => 'Message can include a maximum of 1 intent reference',
             );
 
-        } elseif (count($msg_references['ref_intents']) > 0 && count($msg_references['ref_entities']) != 1)  {
+        } elseif (!$fb_messenger_format && count($msg_references['ref_intents']) > 0 && count($msg_references['ref_entities']) != 1)  {
 
             return array(
                 'status' => 0,
                 'message' => 'Intent referencing requires an entity reference',
             );
 
-        } elseif (count($msg_references['ref_entities']) > 0 && count($msg_references['ref_urls']) > 0) {
+        } elseif (!$fb_messenger_format && count($msg_references['ref_entities']) > 0 && count($msg_references['ref_urls']) > 0) {
 
             return array(
                 'status' => 0,
