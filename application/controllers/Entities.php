@@ -1002,7 +1002,7 @@ class Entities extends CI_Controller
 
             } else {
 
-                return redirect_message('/login', '<div class="alert alert-danger" role="alert">Error: Sign In Denied. Mench Platform v' . $this->config->item('app_version') . ' supports <a href="https://www.google.com/chrome/browser/" target="_blank"><u>Google Chrome</u></a> only.</div>');
+                return redirect_message('/login', '<div class="alert alert-danger" role="alert">Error: Sign In Denied. Mench v' . $this->config->item('app_version') . ' supports <a href="https://www.google.com/chrome/browser/" target="_blank"><u>Google Chrome</u></a> only.</div>');
 
             }
 

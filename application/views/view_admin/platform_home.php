@@ -29,7 +29,7 @@
 <?php
 
 //Fetch & Display Intent Note Messages to explain links:
-echo '<h1 style="text-align: center; margin-top: 50px;">Mench Platform</h1>';
+echo '<h1 style="text-align: center; margin-top: 50px;">Mench</h1>';
 echo '<p style="text-align: center; margin-top: 20px; font-size:1.5em !important;">A personal assistant that gets you hired at your dream job ✨</p>';
 
 //Load core Mench Objects:

@@ -37,7 +37,7 @@ class Admin extends CI_Controller
     {
         $session_en = en_auth(array(1308)); //Just be logged in to browse
         $this->load->view(($session_en ? 'view_shared/platform_header' : 'view_shared/public_header'), array(
-            'title' => 'Mench Platform',
+            'title' => 'Land Your Dream Job',
         ));
         $this->load->view('view_admin/platform_home');
         $this->load->view(($session_en ? 'view_shared/platform_footer' : 'view_shared/public_footer'));
