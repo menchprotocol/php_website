@@ -11,7 +11,7 @@ defined('BASEPATH') OR exit('No direct script access allowed');
  *
  */
 
-//Generated 2019-04-30 10:01:06 PST
+//Generated 2019-04-30 17:20:22 PST
 
 //Action Plan 2-Step Link Types:
 $config['en_ids_6244'] = array(6144, 6157);
@@ -372,7 +372,7 @@ $config['en_ids_4321'] = array(4488, 6196);
 $config['en_all_4321'] = array(
     4488 => array(
         'm_icon' => '<img src="https://mench.com/img/mench_white.png">',
-        'm_name' => 'Mench Platform',
+        'm_name' => 'Personal Assistant',
         'm_desc' => 'A web platform for Miners to build consensus by adding intents, entities, and links.',
         'm_parents' => array(4523, 3326, 3324, 3325, 3323, 4463, 4321),
     ),
