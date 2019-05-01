@@ -189,6 +189,7 @@ class Communication_model extends CI_Model
          * */
 
         $is_being_modified = ( $message_type_en_id > 0 ); //IF $message_type_en_id > 0 means we're adding/editing and need to do extra checks
+        $allowed_length = ( $fb_messenger_format ? $this->config->item('fb_max_message') : $this->config->item('ln_content_max_length')  );
 
         //Start with basic input validation:
         if (strlen($input_message) < 1) {
@@ -196,10 +197,10 @@ class Communication_model extends CI_Model
                 'status' => 0,
                 'message' => 'Missing Message Content',
             );
-        } elseif (strlen($input_message) > $this->config->item('ln_content_max_length')) {
+        } elseif (strlen($input_message) > $allowed_length) {
             return array(
                 'status' => 0,
-                'message' => 'Message is longer than the allowed ' . $this->config->item('ln_content_max_length') . ' characters',
+                'message' => 'Message is longer than the allowed ' . $allowed_length . ' characters',
             );
         } elseif ($input_message != strip_tags($input_message)) {
             return array(
