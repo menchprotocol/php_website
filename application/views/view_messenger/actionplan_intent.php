@@ -81,6 +81,13 @@ foreach($advance_step['progression_links'] as $pl){
 
 }
 
+
+//Completion Percentage so far:
+$completion_rate = $this->Platform_model->actionplan_completion_rate($ln, $session_en['en_id']);
+echo '<div class="actionplan-overview">'.( $time_estimate ? $time_estimate.', ' : '').'<span title="'.$completion_rate['steps_completed'].'/'.$completion_rate['steps_total'].' Steps Completed">'.$completion_rate['completion_percentage'].'% Complete</span> [<span class="actionplan_remove" in-id="'.$ln['in_id'].'"><i class="fas fa-hand-paper"></i> Stop</span>]</div>';
+
+
+
 //Completion Requirements if any:
 if($in['in_type']==0 && $in['in_requirement_entity_id'] != 6087){
     //This has a completion requirement, show it:
