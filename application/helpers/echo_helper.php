@@ -525,7 +525,7 @@ function echo_tr_row($ln, $is_inner = false)
 
             //Show Miner:
             $ui .= '<span class="icon-main">'.( strlen($miner_ens[0]['en_icon']) > 0 ? $miner_ens[0]['en_icon'] : '<i class="fas fa-at grey-at"></i>' ).' </span>';
-            $ui .= '<a href="/entities/'.$miner_ens[0]['en_id'].'" data-toggle="tooltip" data-placement="top" title="View miner profile"><b>' . $miner_ens[0]['en_name'] . '</b></a>';
+            $ui .= '<a href="/entities/'.$miner_ens[0]['en_id'].'" data-toggle="tooltip" data-placement="top" title="View miner profile"><b>' . one_two_explode('',' ',$miner_ens[0]['en_name']) . '</b></a>';
         }
 
         //Link Type:
