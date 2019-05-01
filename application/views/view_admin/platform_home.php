@@ -30,7 +30,7 @@
 
 //Fetch & Display Intent Note Messages to explain links:
 echo '<h1 style="text-align: center; margin-top: 50px;">Mench Platform</h1>';
-echo '<p style="text-align: center; margin-top: 20px; font-size:1.5em !important;">On a mission to build & share consensus.</p>';
+echo '<p style="text-align: center; margin-top: 20px; font-size:1.5em !important;">A personal assistant that gets you hired at your dream job ✨</p>';
 
 //Load core Mench Objects:
 $en_all_4534 = $this->config->item('en_all_4534');
