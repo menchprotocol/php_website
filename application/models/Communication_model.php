@@ -1787,7 +1787,7 @@ class Communication_model extends CI_Model
                     );
 
                     //Find/communicate the next step:
-                    $this->Platform_model->actionplan_find_next_step($en['en_id'], true);
+                    $this->Platform_model->actionplan_find_next_step($en['en_id'], true, true);
 
                     return false;
 
@@ -1848,7 +1848,7 @@ class Communication_model extends CI_Model
                 );
 
                 //Find/communicate the next step:
-                $this->Platform_model->actionplan_find_next_step($en['en_id'], true);
+                $this->Platform_model->actionplan_find_next_step($en['en_id'], true, true);
 
             }
 
@@ -1894,7 +1894,7 @@ class Communication_model extends CI_Model
                 $this->Communication_model->dispatch_rotating_message($en, 'affirm_progress');
 
                 //Find/communicate the next step:
-                $this->Platform_model->actionplan_find_next_step($en['en_id'], true);
+                $this->Platform_model->actionplan_find_next_step($en['en_id'], true, true);
 
             } else {
 
@@ -2269,7 +2269,7 @@ class Communication_model extends CI_Model
 
 
                 //Find/communicate the next step:
-                $this->Platform_model->actionplan_find_next_step($en['en_id'], true);
+                $this->Platform_model->actionplan_find_next_step($en['en_id'], true, true);
 
             }
         }
