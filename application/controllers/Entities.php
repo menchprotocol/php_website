@@ -888,7 +888,7 @@ class Entities extends CI_Controller
         $session_en = $this->session->userdata('user');
         if (isset($session_en['en__parents'][0]) && filter_array($session_en['en__parents'], 'en_id', 1308)) {
             //Lead miner and above, go to console:
-            return redirect_message('/intents/' . $this->config->item('in_miner_start'));
+            return redirect_message('/platform');
         }
 
         $this->load->view('view_shared/public_header', array(

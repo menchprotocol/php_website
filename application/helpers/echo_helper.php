@@ -483,8 +483,7 @@ function echo_tr_row($ln, $is_inner = false)
 
     //Link ID Row of data:
     $ui .= '<div style="padding: 0px 0 8px 12px; font-size: 0.9em;">';
-    $ui .= '<span data-toggle="tooltip" data-placement="top" title="Link ID" style="min-width:80px; display: inline-block;"><i class="fas fa-link rotate90"></i> '.$ln['ln_id'].'</span>';
-    $ui .= ' &nbsp;<span data-toggle="tooltip" data-placement="top" title="'.$fixed_fields['ln_status'][$ln['ln_status']]['s_desc'].'" style="min-width:82px; display: inline-block;">'.$fixed_fields['ln_status'][$ln['ln_status']]['s_icon'].' '.$fixed_fields['ln_status'][$ln['ln_status']]['s_name'].'</span>';
+    $ui .= '<span data-toggle="tooltip" data-placement="top" title="Status is '.$fixed_fields['ln_status'][$ln['ln_status']]['s_name'].': '.$fixed_fields['ln_status'][$ln['ln_status']]['s_desc'].'" style="min-width:80px; display: inline-block;">'.$fixed_fields['ln_status'][$ln['ln_status']]['s_icon'].' '.$ln['ln_id'].'</span>';
     $ui .= ' &nbsp;<span data-toggle="tooltip" data-placement="top" title="Link Creation Timestamp: ' . $ln['ln_timestamp'] . ' PST" style="min-width:120px; display: inline-block;"><i class="fal fa-clock"></i> ' . echo_time_difference(strtotime($ln['ln_timestamp'])) . ' ago</span>';
     $ui .= ' &nbsp;<span data-toggle="tooltip" data-placement="top" title="Mined Points" style="min-width:47px; display: inline-block;"><i class="fas fa-award"></i> <b>'. $ln['ln_points'] .'</b></span>';
 
