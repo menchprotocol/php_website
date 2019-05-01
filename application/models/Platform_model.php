@@ -1560,19 +1560,47 @@ class Platform_model extends CI_Model
         if($input_obj_type=='ln'){
             //Check to see if completion notes needs to be sent:
             if($ln_miner_entity_id > 0 && trigger_on_complete($insert_columns)){
-                //Dispatch all on-complete notes:
-                foreach($this->Database_model->ln_fetch(array(
+
+                //Fetch on-complete messages:
+                $on_complete_messages = $this->Database_model->ln_fetch(array(
                     'ln_status' => 2, //Published
                     'ln_type_entity_id' => 6242, //On-Complete Tips
                     'ln_child_intent_id' => $insert_columns['ln_parent_intent_id'],
-                ), array(), 0, 0, array('ln_order' => 'ASC')) as $complete_note){
-                    //Send to student:
-                    $this->Communication_model->dispatch_message(
-                        $complete_note['ln_content'],
-                        array('en_id' => $ln_miner_entity_id),
-                        true
+                ), array(), 0, 0, array('ln_order' => 'ASC'));
+
+
+                //Make sure we have messages to send:
+                if(count($on_complete_messages) > 0){
+
+                    //Prep filter for search & insert:
+                    $filter = array(
+                        'ln_status' => 2,
+                        'ln_miner_entity_id' => $ln_miner_entity_id,
+                        'ln_type_entity_id' => 6255, //Action Plan Trigger On-Complete Tips
+                        'ln_parent_intent_id' => $insert_columns['ln_parent_intent_id'], //First Action
                     );
 
+                    //Make sure we have not sent this before:
+                    if( count($this->Database_model->ln_fetch($filter))==0 ){
+
+                        //Never sent before, so let's log a new link:
+                        $link_log = $this->Database_model->ln_create($filter);
+
+                        //Dispatch all on-complete notes:
+                        foreach($on_complete_messages as $complete_note){
+
+                            //Send to student:
+                            $this->Communication_model->dispatch_message(
+                                $complete_note['ln_content'],
+                                array('en_id' => $ln_miner_entity_id),
+                                true,
+                                array(),
+                                array(
+                                    'ln_parent_link_id' => $link_log['ln_id']
+                                )
+                            );
+                        }
+                    }
                 }
             }
         }
