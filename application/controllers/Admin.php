@@ -23,7 +23,7 @@ class Admin extends CI_Controller
         $this->load->view('view_shared/platform_header', array(
             'title' => 'Moderation Tools',
         ));
-        $this->load->view('view_admin/moderator_tools' , array(
+        $this->load->view('view_admin/admin_tools' , array(
             'action' => $action,
             'command1' => $command1,
             'command2' => $command2,

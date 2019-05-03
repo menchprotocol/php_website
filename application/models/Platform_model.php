@@ -1258,6 +1258,9 @@ class Platform_model extends CI_Model
             //Required cost range to complete tree:
             '__in__metadata_min_cost' => $common_base_resources['cost'],
             '__in__metadata_max_cost' => $common_base_resources['cost'],
+            //Assessment mark ranges (Always zero for common base):
+            '__in__metadata_min_mark' => 0,
+            '__in__metadata_max_mark' => 0,
             //Entity references within intent notes:
             '__in__metadata_experts' => array(),
             '__in__metadata_sources' => array(),
@@ -1810,7 +1813,7 @@ class Platform_model extends CI_Model
                 //OR Intent
 
                 $progression_type_entity_id = 6157; //Action Plan Question Answered
-                $next_step_message = 'Select one of the following options to continue:';
+                $next_step_message = ''; //Select one of the following options to continue:
 
                 if(!$fb_messenger_format){
                     $next_step_message .= '<div class="list-group" style="margin-top:10px;">';

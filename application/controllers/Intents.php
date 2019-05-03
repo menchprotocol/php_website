@@ -619,9 +619,9 @@ class Intents extends CI_Controller
                 $ln_update['ln_order'] = 9999; //Place at the bottom of this new list
                 $remove_from_ui = 1;
                 //Did we move it on another intent on the same page? If so reload to show accurate info:
-                if(in_array($ln_in_link_id, $_POST['tr_in_focus_ids'])){
+                if(in_array($ln_in_link_id, $_POST['top_level_ins'])){
                     //Yes, refresh the page:
-                    $remove_redirect_url = '/intents/' . $_POST['tr_in_focus_ids'][0]; //First item is the main intent
+                    $remove_redirect_url = '/intents/' . $_POST['top_level_ins'][0]; //First item is the main intent
                 }
             } elseif(strlen($_POST['tr_in_link_update']) > 0 && !($_POST['tr_in_link_update']==$lns[0]['in_outcome'])){
                 //The value changed in an unknown way...

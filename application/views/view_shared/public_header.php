@@ -42,7 +42,9 @@ $url_part_1 = $this->uri->segment(1);
                     //Is this user a Miner?
                     if(en_auth(array(1308))){
                         $en_all_4321 = $this->config->item('en_all_4321');
-                        echo '<li><a href="' . ( isset($in['in_id']) ? '/intents/'.$in['in_id'] : '/platform') . '" class="parent-icon">'.$en_all_4321[4488]['m_icon'].' '.$en_all_4321[4488]['m_name'].'</a></li>';
+
+                        //TODO This is a hack! Need to define this in entities:
+                        echo '<li><a href="' . ( isset($in['in_id']) ? '/intents/'.$in['in_id'] : '/platform') . '" class="parent-icon">Miner Portal</a></li>';
                     }
 
                     $en_all_6196 = $this->config->item('en_all_6196');

@@ -4,6 +4,7 @@
 $fixed_fields = $this->config->item('fixed_fields');
 
 $moderation_tools = array(
+    '/admin/tools/moderate_intent_notes' => 'Moderate Intent Notes',
     '/admin/tools/identical_intent_outcomes' => 'Identical Intent Outcomes',
     '/admin/tools/identical_entity_names' => 'Identical Entity Names',
     '/admin/tools/orphan_intents' => 'Orphan Intents',
@@ -82,7 +83,28 @@ if(!$action) {
     //Show back button:
     echo '<ul class="breadcrumb maxout" style="margin-bottom: 10px;"><li><a href="/admin">Admin Tools</a></li></ul>';
 
-    if($action=='orphan_intents') {
+    if($action=='moderate_intent_notes'){
+
+        echo '<h1>'.$moderation_tools['/admin/tools/moderate_intent_notes'].'</h1>';
+
+        //List intents and allow to modify and manage intent notes:
+        echo '<div class="row">';
+        echo '<div class="col-xs-7 cols">';
+        foreach($this->Database_model->ln_fetch(array(
+            'ln_status IN (' . join(',', $this->config->item('ln_status_incomplete')) . ')' => null, //incomplete
+            'ln_type_entity_id IN (' . join(',', $this->config->item('en_ids_4485')) . ')' => null, //All Intent Notes
+        ), array('in_child'), $this->config->item('items_per_page'), 0, array('ln_id' => 'ASC')) as $pendin_in_note){
+            echo echo_in($pendin_in_note, 0);
+        }
+        echo '</div>';
+        echo '<div class="col-xs-5 cols">';
+        $this->load->view('view_intents/in_right_column');
+        echo '</div>';
+        echo '</div>';
+
+
+
+    } elseif($action=='orphan_intents') {
 
         echo '<h1>'.$moderation_tools['/admin/tools/orphan_intents'].'</h1>';
 
@@ -305,7 +327,7 @@ if(!$action) {
                 ));
 
 
-                //Update Assessment Marks if outside of range (Handy if in_mark_options values change)
+                //Update Assessment Marks if outside of range (Handy if in_mark_options values are reduced)
                 /*
                 if($tr__assessment_points > 1){
                     //Set to 1:
