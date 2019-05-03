@@ -153,13 +153,13 @@ class Entities extends CI_Controller
         if (!$detected_ln_type['status'] && isset($detected_ln_type['url_already_existed']) && $detected_ln_type['url_already_existed']) {
 
             //See if this is duplicate to either link:
-            $en_trs = $this->Database_model->ln_fetch(array(
+            $en_lns = $this->Database_model->ln_fetch(array(
                 'ln_id' => $_POST['ln_id'],
                 'ln_type_entity_id IN (' . join(',', $this->config->item('en_ids_4537')) . ')' => null, //Entity URL Links
             ));
 
             //Are they both different?
-            if (count($en_trs) < 1 || ($en_trs[0]['ln_parent_entity_id'] != $detected_ln_type['en_url']['en_id'] && $en_trs[0]['ln_child_entity_id'] != $detected_ln_type['en_url']['en_id'])) {
+            if (count($en_lns) < 1 || ($en_lns[0]['ln_parent_entity_id'] != $detected_ln_type['en_url']['en_id'] && $en_lns[0]['ln_child_entity_id'] != $detected_ln_type['en_url']['en_id'])) {
                 //return error:
                 return echo_json($detected_ln_type);
             }
@@ -696,23 +696,23 @@ class Entities extends CI_Controller
         if (intval($_POST['ln_id']) > 0) { //DO we have a link to update?
 
             //Yes, first validate entity link:
-            $en_trs = $this->Database_model->ln_fetch(array(
+            $en_lns = $this->Database_model->ln_fetch(array(
                 'ln_id' => $_POST['ln_id'],
                 'ln_status >=' => 0, //New+
             ));
 
-            if (count($en_trs) < 1) {
+            if (count($en_lns) < 1) {
                 return echo_json(array(
                     'status' => 0,
                     'message' => 'Invalid Entity Link ID',
                 ));
             }
 
-            if ($en_trs[0]['ln_content'] == $_POST['ln_content']) {
+            if ($en_lns[0]['ln_content'] == $_POST['ln_content']) {
 
                 //Link content has not changed:
-                $js_ln_type_entity_id = $en_trs[0]['ln_type_entity_id'];
-                $ln_content = $en_trs[0]['ln_content'];
+                $js_ln_type_entity_id = $en_lns[0]['ln_type_entity_id'];
+                $ln_content = $en_lns[0]['ln_content'];
 
             } else {
 
@@ -729,7 +729,7 @@ class Entities extends CI_Controller
 
                     if ($detected_ln_type['url_is_root']) {
 
-                        if ($en_trs[0]['ln_parent_entity_id'] == 1326) {
+                        if ($en_lns[0]['ln_parent_entity_id'] == 1326) {
 
                             //Override with the clean domain for consistency:
                             $_POST['ln_content'] = $detected_ln_type['url_clean_domain'];
@@ -746,7 +746,7 @@ class Entities extends CI_Controller
 
                     } else {
 
-                        if ($en_trs[0]['ln_parent_entity_id'] == 1326) {
+                        if ($en_lns[0]['ln_parent_entity_id'] == 1326) {
 
                             return echo_json(array(
                                 'status' => 0,
@@ -755,7 +755,7 @@ class Entities extends CI_Controller
 
                         } elseif ($detected_ln_type['en_domain']) {
                             //We do have the domain mapped! Is this connected to the domain entity as its parent?
-                            if ($detected_ln_type['en_domain']['en_id'] != $en_trs[0]['ln_parent_entity_id']) {
+                            if ($detected_ln_type['en_domain']['en_id'] != $en_lns[0]['ln_parent_entity_id']) {
                                 return echo_json(array(
                                     'status' => 0,
                                     'message' => 'Must link to <b>@' . $detected_ln_type['en_domain']['en_id'] . ' ' . $detected_ln_type['en_domain']['en_name'] . '</b> as their parent entity',
@@ -780,7 +780,7 @@ class Entities extends CI_Controller
 
 
             //Has the link content changes?
-            if (!($en_trs[0]['ln_content'] == $_POST['ln_content']) || !($en_trs[0]['ln_status'] == $_POST['ln_status'])) {
+            if (!($en_lns[0]['ln_content'] == $_POST['ln_content']) || !($en_lns[0]['ln_status'] == $_POST['ln_status'])) {
 
                 if ($_POST['ln_status'] < 0) {
                     $remove_from_ui = 1;
@@ -1518,10 +1518,10 @@ class Entities extends CI_Controller
             $score += $en_children[0]['totals'] * $score_weights['score_children'];
 
             //Links:
-            $en_trs = $this->Database_model->ln_fetch(array(
+            $en_lns = $this->Database_model->ln_fetch(array(
                 '(ln_parent_entity_id='.$en['en_id'].' OR ln_child_entity_id='.$en['en_id'].')' => null,
             ), array(), 0, 0, array(), 'COUNT(ln_id) as totals');
-            $score += $en_trs[0]['totals'] * $score_weights['score_link'];
+            $score += $en_lns[0]['totals'] * $score_weights['score_link'];
 
             //Mining points:
             $en_miner_points = $this->Database_model->ln_fetch(array(

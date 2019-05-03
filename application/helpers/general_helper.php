@@ -161,6 +161,16 @@ function extract_message_references($ln_content)
 
 function trigger_on_complete($insert_columns){
     $CI =& get_instance();
+    if(isset($insert_columns['ln_id']) && (!isset($insert_columns['ln_status']) || !isset($insert_columns['ln_type_entity_id']))){
+        //Missing some data, let's fetch it:
+        $lns = $CI->Database_model->ln_fetch(array(
+            'ln_id' => $insert_columns['ln_id'],
+        ));
+        if(count($lns) > 0){
+            $insert_columns = $lns[0];
+        }
+
+    }
     return ( $insert_columns['ln_status']==2 && in_array($insert_columns['ln_type_entity_id'], $CI->config->item('en_ids_6255')) && $insert_columns['ln_parent_intent_id'] > 0 );
 }
 
