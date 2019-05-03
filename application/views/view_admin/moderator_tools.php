@@ -304,7 +304,9 @@ if(!$action) {
                     'in_id' => $in_ln['ln_parent_intent_id'],
                 ));
 
-                //Update Assessment Marks if outside of range:
+
+                //Update Assessment Marks if outside of range (Handy if in_mark_options values change)
+                /*
                 if($tr__assessment_points > 1){
                     //Set to 1:
                     $this->Platform_model->metadata_update('ln', $in_ln['ln_id'], array(
@@ -315,6 +317,8 @@ if(!$action) {
                         'tr__assessment_points' => 0,
                     ));
                 }
+                */
+
 
                 $counter++;
                 echo '<tr>';
