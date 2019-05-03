@@ -232,14 +232,11 @@ if(!$action) {
 
         echo '<h1>'.$moderation_tools['/admin/tools/assessment_marks_list_all'].'</h1>';
 
-        echo '<p>Below are all the conditional intent links that have a routing logic:</p>';
+        echo '<p>Below are all the conditional intent links that have assessment marks or routing logic:</p>';
         echo '<table class="table table-condensed table-striped maxout" style="text-align: left;">';
 
         echo '<tr style="font-weight: bold;">';
-        echo '<td>&nbsp;</td>';
-        echo '<td>Mark</td>';
-        echo '<td>&nbsp;</td>';
-        echo '<td style="text-align: left;">Fixed Intent Links</td>';
+        echo '<td colspan="4" style="text-align: left;">Routing Logic</td>';
         echo '</tr>';
         $counter = 0;
         foreach ($this->Database_model->ln_fetch(array(
@@ -287,10 +284,7 @@ if(!$action) {
         echo '<table class="table table-condensed table-striped maxout" style="text-align: left;">';
 
         echo '<tr style="font-weight: bold;">';
-        echo '<td>&nbsp;</td>';
-        echo '<td>Mark</td>';
-        echo '<td>&nbsp;</td>';
-        echo '<td style="text-align: left;">Fixed Intent Links</td>';
+        echo '<td colspan="4" style="text-align: left;">Assessment Marks</td>';
         echo '</tr>';
 
         $counter = 0;
@@ -309,6 +303,18 @@ if(!$action) {
                 $parent_ins = $this->Database_model->in_fetch(array(
                     'in_id' => $in_ln['ln_parent_intent_id'],
                 ));
+
+                //Update Assessment Marks if outside of range:
+                if($tr__assessment_points > 1){
+                    //Set to 1:
+                    $this->Platform_model->metadata_update('ln', $in_ln['ln_id'], array(
+                        'tr__assessment_points' => 1,
+                    ));
+                } elseif($tr__assessment_points < 0){
+                    $this->Platform_model->metadata_update('ln', $in_ln['ln_id'], array(
+                        'tr__assessment_points' => 0,
+                    ));
+                }
 
                 $counter++;
                 echo '<tr>';

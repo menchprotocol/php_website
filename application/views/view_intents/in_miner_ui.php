@@ -267,7 +267,7 @@ $metadata = unserialize($in['in_metadata']);
                                 </div>
 
                                 <div class="score_range_box hidden">
-                                    <span class="mini-header">Assessment Mark:</span>
+                                    <span class="mini-header">Routing Logic:</span>
                                     <div class="form-group label-floating is-empty"
                                          style="max-width:230px; margin:1px 0 10px;" data-toggle="tooltip" title="Min/Max assessment marks scored between 0-100%" data-placement="top">
                                         <div class="input-group border">
@@ -285,11 +285,11 @@ $metadata = unserialize($in['in_metadata']);
                                 </div>
 
                                 <div class="score_points hidden">
-                                    <span class="mini-header">Assessment Mark:</span>
-                                    <select class="form-control border" id="tr__assessment_points" data-toggle="tooltip" title="Points awarded to the student IF they choose this answer to the parent OR intent" data-placement="top" style="margin-bottom:12px;">
+                                    <span class="mini-header">Assessment Marks:</span>
+                                    <select class="form-control border" id="tr__assessment_points" data-toggle="tooltip" title="Marks awarded to students for providing the right answer to a question" data-placement="top" style="margin-bottom:12px;">
                                         <?php
-                                        foreach (array(-233, -144, -89, -55, -34, -21, -13, -8, -5, -3, -2, -1, 0, 1, 2, 3, 5, 8, 13, 21, 34, 55, 89, 144, 233) as $point) {
-                                            echo '<option value="' . $point . '">' . ($point == 0 ? 'Don\'t Score' : ( $point>0 ? '+' : '-' ). abs($point) . ' Score' . echo__s(abs($point))) . '</option>';
+                                        foreach ($this->config->item('in_mark_options') as $mark) {
+                                            echo '<option value="' . $mark . '">' . abs($mark) . ' Mark' . echo__s(abs($mark)) . '</option>';
                                         }
                                         ?>
                                     </select>
