@@ -340,22 +340,10 @@ class Intents extends CI_Controller
                 'status' => 0,
                 'message' => 'Invalid level',
             ));
-
-            //Warning: Intent Outcome Validation Logic is Duplicated! Search for "ZEEBRA" to find other instance...
-        } elseif (!isset($_POST['in_outcome']) || strlen($_POST['in_outcome']) < 1) {
+        } elseif (!isset($_POST['in_outcome'])) {
             return echo_json(array(
                 'status' => 0,
                 'message' => 'Missing Outcome',
-            ));
-        } elseif (substr_count($_POST['in_outcome'] , '  ') > 0) {
-            return echo_json(array(
-                'status' => 0,
-                'message' => 'Outcome cannot include double spaces',
-            ));
-        } elseif (strlen($_POST['in_outcome']) > $this->config->item('in_outcome_max')) {
-            return echo_json(array(
-                'status' => 0,
-                'message' => 'Intent outcome cannot be longer than '.$this->config->item('in_outcome_max').' characters',
             ));
         } elseif (!isset($_POST['in_seconds_cost']) || intval($_POST['in_seconds_cost']) < 0) {
             return echo_json(array(
@@ -424,17 +412,13 @@ class Intents extends CI_Controller
 
 
 
-
-        //calculate Verb ID:
-        $_POST['in_verb_entity_id'] = detect_starting_verb_id($_POST['in_outcome']);
-
         //Prep new variables:
         $in_update = array(
             'in_status' => intval($_POST['in_status']),
             'in_outcome' => trim($_POST['in_outcome']),
             'in_seconds_cost' => intval($_POST['in_seconds_cost']),
             'in_requirement_entity_id' => intval($_POST['in_requirement_entity_id']),
-            'in_verb_entity_id' => $_POST['in_verb_entity_id'],
+            'in_verb_entity_id' => $ins[0]['in_verb_entity_id'], //We assume no change, and will update if we detected change...
             'in_dollar_cost' => doubleval($_POST['in_dollar_cost']),
             'in_type' => intval($_POST['in_type']),
         );
@@ -462,34 +446,16 @@ class Intents extends CI_Controller
 
                 if ($key == 'in_outcome') {
 
-                    //Check to make sure starts with a verb:
-                    if($in_update['in_verb_entity_id'] < 1){
-
-                        //Not a acceptable starting word:
-                        return echo_json(array(
-                            'status' => 0,
-                            'message' => 'Verb is not yet supported. Manage supported verbs via entity @5008'.( en_auth(array(1281)) ? ' or use the /force command to add this verb to the supported list.' : '' ),
-                        ));
-
+                    //Validate Intent Outcome:
+                    $in_outcome_validation = $this->Platform_model->in_validate_outcome($_POST['in_outcome'], $session_en['en_id'], $ins[0]['in_id']);
+                    if(!$in_outcome_validation['status']){
+                        //We had an error, return it:
+                        return echo_json($in_outcome_validation);
                     }
 
-                    //Check to make sure it's not a duplicate outcome:
-                    $duplicate_outcome_ins = $this->Database_model->in_fetch(array(
-                        'in_id !=' => $ins[0]['in_id'],
-                        'in_status >=' => 0, //New+
-                        'LOWER(in_outcome)' => strtolower($value),
-                    ));
-
-                    if(count($duplicate_outcome_ins) > 0){
-                        //This is a duplicate, disallow:
-                        return echo_json(array(
-                            'status' => 0,
-                            'message' => 'Outcome ['.$value.'] already in use by intent #'.$duplicate_outcome_ins[0]['in_id'],
-                        ));
-                    } else {
-                        //Cleanup outcome before saving:
-                        $_POST[$key] = trim($_POST[$key]);
-                    }
+                    //Update the outcome:
+                    $in_update['in_outcome'] = $in_outcome_validation['in_cleaned_outcome'];
+                    $in_update['in_verb_entity_id'] = $in_outcome_validation['detected_verb_entity_id'];
 
                 } elseif ($key == 'in_status') {
 

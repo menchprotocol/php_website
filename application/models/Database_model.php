@@ -104,7 +104,7 @@ class Database_model extends CI_Model
     {
 
         //What is required to create a new intent?
-        if (detect_missing_columns($insert_columns, array('in_status', 'in_outcome', 'in_verb_entity_id'))) {
+        if (detect_missing_columns($insert_columns, array('in_outcome', 'in_verb_entity_id'))) {
             return false;
         }
 
@@ -116,6 +116,10 @@ class Database_model extends CI_Model
 
         if (!isset($insert_columns['in_requirement_entity_id'])) {
             $insert_columns['in_requirement_entity_id'] = 6087; //No Response Required
+        }
+
+        if (!isset($insert_columns['in_status'])) {
+            $insert_columns['in_status'] = 0; //New Intent
         }
 
         //Lets now add:

@@ -118,17 +118,23 @@ class Links extends CI_Controller
                 ));
             }
 
-            //Create Intent:
-            $added_in = $this->Platform_model->in_verify_create($in_outcome, $session_en['en_id']);
-            if(!$added_in['status']){
+            //Validate Intent Outcome:
+            $in_outcome_validation = $this->Platform_model->in_validate_outcome($in_outcome, $session_en['en_id']);
+            if(!$in_outcome_validation['status']){
                 //We had an error, return it:
-                return echo_json($added_in);
-            } else {
-                return echo_json(array(
-                    'status' => 1,
-                    'new_item_url' => '/intents/' . $added_in['in']['in_id'],
-                ));
+                return echo_json($in_outcome_validation);
             }
+
+            //All good, let's create the intent:
+            $intent_new = $this->Database_model->in_create(array(
+                'in_outcome' => $in_outcome_validation['in_cleaned_outcome'],
+                'in_verb_entity_id' => $in_outcome_validation['detected_verb_entity_id'],
+            ), true, $session_en['en_id']);
+
+            return echo_json(array(
+                'status' => 1,
+                'new_item_url' => '/intents/' . $intent_new['in_id'],
+            ));
 
         } elseif(substr($_POST['raw_string'], 0, 1)=='@'){
 

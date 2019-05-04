@@ -2537,13 +2537,12 @@ class Platform_model extends CI_Model
     }
 
 
-    function in_verify_create($in_outcome, $ln_miner_entity_id = 0, $in_status = 0){
+    function in_validate_outcome($in_outcome, $ln_miner_entity_id = 0, $skip_in_id = 0){
 
         //Assign verb variables:
         $in_verb_entity_id = detect_starting_verb_id($in_outcome);
 
-        //Warning: Intent Outcome Validation Logic is Duplicated! Search for "ZEEBRA" to find other instance...
-
+        //Validate outcome:
         if(substr_count($in_outcome , ' ') < 1){
 
             return array(
@@ -2593,35 +2592,42 @@ class Platform_model extends CI_Model
 
         }
 
+        //Check length now that potential /force command is removed:
+        if (strlen($in_outcome) > $this->config->item('in_outcome_max')) {
+
+            return array(
+                'status' => 0,
+                'message' => 'Intent outcome cannot be longer than '.$this->config->item('in_outcome_max').' characters',
+            );
+
+        }
 
         //Check to make sure it's not a duplicate outcome:
-        $duplicate_outcome_ins = $this->Database_model->in_fetch(array(
+        $in_dup_search_filters = array(
             'in_status >=' => 0, //New+
             'LOWER(in_outcome)' => strtolower(trim($in_outcome)),
-        ));
-        if(count($duplicate_outcome_ins) > 0){
+        );
+        if($skip_in_id > 0){
+            $in_dup_search_filters['in_id !='] = $skip_in_id;
+        }
+        foreach($this->Database_model->in_fetch($in_dup_search_filters) as $dup_in){
             //This is a duplicate, disallow:
             $fixed_fields = $this->config->item('fixed_fields');
             return array(
                 'status' => 0,
-                'message' => 'Outcome ['.$in_outcome.'] already in use by intent #'.$duplicate_outcome_ins[0]['in_id'].' with status ['.$fixed_fields['in_status'][$duplicate_outcome_ins[0]['in_status']]['s_name'].']',
+                'message' => 'Outcome ['.$in_outcome.'] already in-use by intent #'.$dup_in['in_id'].' with status ['.$fixed_fields['in_status'][$dup_in['in_status']]['s_name'].']',
             );
         }
 
-        //Create child intent:
-        $intent_new = $this->Database_model->in_create(array(
-            'in_status' => $in_status,
-            'in_outcome' => trim($in_outcome),
-            'in_verb_entity_id' => $in_verb_entity_id,
-        ), true, $ln_miner_entity_id);
-
-        //Return success:
+        //All good, return success:
         return array(
             'status' => 1,
-            'in' => $intent_new,
+            'in_cleaned_outcome' => trim($in_outcome),
+            'detected_verb_entity_id' => $in_verb_entity_id,
         );
 
     }
+
 
     function en_verify_create($en_name, $ln_miner_entity_id = 0, $force_creation = false, $en_status = 0, $en_icon = null, $en_psid = null){
 
@@ -2911,14 +2917,18 @@ class Platform_model extends CI_Model
 
             }
 
-            $added_in = $this->Platform_model->in_verify_create($in_outcome, $ln_miner_entity_id);
-            if(!$added_in['status']){
+            //Validate Intent Outcome:
+            $in_outcome_validation = $this->Platform_model->in_validate_outcome($in_outcome, $ln_miner_entity_id);
+            if(!$in_outcome_validation['status']){
                 //We had an error, return it:
-                return $added_in;
-            } else {
-                //Passon variables:
-                $intent_new = $added_in['in'];
+                return $in_outcome_validation;
             }
+
+            //All good, let's create the intent:
+            $intent_new = $this->Database_model->in_create(array(
+                'in_outcome' => $in_outcome_validation['in_cleaned_outcome'],
+                'in_verb_entity_id' => $in_outcome_validation['detected_verb_entity_id'],
+            ), true, $ln_miner_entity_id);
 
         }
 
