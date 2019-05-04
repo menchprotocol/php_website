@@ -1800,30 +1800,6 @@ class Platform_model extends CI_Model
         }
 
 
-        //Always communicate intent messages if any:
-        if(count($in__messages) > 0){
-
-            //Update progression type:
-            $progression_type_entity_id = 4559; //Action Plan Messages Read
-
-            //Dispatch intent messages if not skipped:
-            if(!$skip_messages){
-                foreach ($in__messages as $message_ln) {
-                    $progression_messages .= $this->Communication_model->dispatch_message(
-                        $message_ln['ln_content'],
-                        $recipient_en,
-                        $fb_messenger_format,
-                        array(),
-                        array(
-                            'ln_parent_intent_id' => $in_id,
-                            'ln_parent_link_id' => $message_ln['ln_id'], //This message
-                        )
-                    );
-                }
-            }
-        }
-
-
 
         /*
          *
@@ -2073,25 +2049,47 @@ class Platform_model extends CI_Model
         } else {
 
             //Intent has no requirements and no children, so give call to Action:
-            if($fb_messenger_format){
-
-                $next_step_message = 'Say "Next" to continue...';
-
-                //Give option to skip Student Intent:
-                array_push($next_step_quick_replies, array(
-                    'content_type' => 'text',
-                    'title' => 'Next',
-                    'payload' => 'GONEXT',
-                ));
-
-            } else {
-
+            if(!$fb_messenger_format){
                 //Show button for next step:
                 $next_step_message .= '<div style="margin: 15px 0 0;"><a href="/messenger/actionplan/' . $next_in_id . '" class="btn btn-md btn-primary">Next Step <i class="fas fa-angle-right"></i></a></div>';
-
             }
 
         }
+
+
+
+
+
+        //Always communicate intent messages if any:
+        if(count($in__messages) > 0){
+
+            //Update progression type if its still basic:
+            if($progression_type_entity_id==6158){
+                $progression_type_entity_id = 4559; //Action Plan Messages Read
+            }
+
+            //Dispatch intent messages if not skipped:
+            if(!$skip_messages){
+                foreach ($in__messages as $count => $message_ln) {
+                    $progression_messages .= $this->Communication_model->dispatch_message(
+                        $message_ln['ln_content'],
+                        $recipient_en,
+                        $fb_messenger_format,
+                        //This is when we have messages and need to append the "Next" Quick Reply to the last message:
+                        ( $fb_messenger_format && !$next_step_message && ($count+1)==count($in__messages) ? array(array(
+                            'content_type' => 'text',
+                            'title' => 'Next',
+                            'payload' => 'GONEXT',
+                        )) : array() ),
+                        array(
+                            'ln_parent_intent_id' => $in_id,
+                            'ln_parent_link_id' => $message_ln['ln_id'], //This message
+                        )
+                    );
+                }
+            }
+        }
+
 
 
 

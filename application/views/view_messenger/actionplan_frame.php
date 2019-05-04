@@ -17,7 +17,7 @@ if (isset($session_en['en_id'])) {
     //Fetch page instantly as we know who this is:
     ?>
     <script>
-        $.post("/messenger/actionplan_load/0/<?= ( isset($in_id) && is_numeric($in_id) ? $in_id : 0) ?>", {}, function (data) {
+        $.post("/messenger/actionplan_load/0/<?= ( isset($in_id) ? $in_id : 0) ?>", {}, function (data) {
             $("#page_content").html(data);
             //Load tooldip:
             $('[data-toggle="tooltip"]').tooltip();
@@ -52,7 +52,7 @@ if (isset($session_en['en_id'])) {
                     var psid = thread_context.psid;
                     var signed_request = thread_context.signed_request;
                     //Fetch Page:
-                    $.post("/messenger/actionplan_load/" + psid + "/<?= (isset($in_id) ? intval($in_id) : 0) ?>?sr=" + signed_request, {}, function (data) {
+                    $.post("/messenger/actionplan_load/" + psid + "/<?= (isset($in_id) ? $in_id : 0) ?>?sr=" + signed_request, {}, function (data) {
 
                         //Update UI to confirm with user:
                         $("#page_content").html(data);

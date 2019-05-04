@@ -1348,7 +1348,7 @@ class Messenger extends CI_Controller
 
     }
 
-    function actionplan_load($psid, $in_id = 0)
+    function actionplan_load($psid, $in_id)
     {
 
         /*
@@ -1373,6 +1373,15 @@ class Messenger extends CI_Controller
                 die('<div class="alert alert-danger" role="alert">Credentials could not be validated</div>');
             }
         }
+
+
+        //This is a special command to find the next intent:
+        if($in_id=='next'){
+            //Find the next item to navigate them to:
+            $next_in_id = $this->Platform_model->actionplan_find_next_step($session_en['en_id'], false);
+            $in_id = ( $next_in_id > 0 ? $next_in_id : 0 );
+        }
+
 
         //Fetch student's intentions as we'd need to know their top-level goals:
         $student_intents = $this->Database_model->ln_fetch(array(
@@ -1738,6 +1747,7 @@ class Messenger extends CI_Controller
             'message' => count($_POST['new_actionplan_order']).' Intents Sorted',
         ));
     }
+
 
     function actionplan_answer_question($en_id, $parent_in_id, $answer_in_id, $w_key)
     {
