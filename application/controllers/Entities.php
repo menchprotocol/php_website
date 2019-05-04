@@ -1061,6 +1061,18 @@ class Entities extends CI_Controller
         }
     }
 
+    function en_review_metadata($en_id){
+        //Fetch Intent:
+        $ens = $this->Database_model->en_fetch(array(
+            'en_id' => $en_id,
+        ));
+        if(count($ens) > 0){
+            echo_json(unserialize($ens[0]['en_metadata']));
+        } else {
+            echo 'Entity @'.$en_id.' not found!';
+        }
+    }
+
     function logout()
     {
         //Destroys Session

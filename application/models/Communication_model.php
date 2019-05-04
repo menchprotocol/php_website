@@ -1063,63 +1063,6 @@ class Communication_model extends CI_Model
     }
 
 
-
-    function dispatch_rotating_message($recipient_en, $message_key){
-
-        /*
-         *
-         * To make Mench personal assistant feel more natural,
-         * this function sends varying messages to communicate
-         * specific things about Mench or about the student's
-         * progress towards their Action Plan.
-         *
-         * */
-
-        $rotation_index = array(
-            'affirm_progress' => array(
-                'Got it 👍',
-                'Noted',
-                'Ok sweet',
-                'Nice answer',
-                'Nice 👍',
-                'Gotcha 🙌',
-                'Fabulous',
-                'Confirmed',
-                '👌',
-                '👍',
-            ),
-            'one_way_only' => array(
-                'I am not designed to respond to custom messages. I can understand you only when you choose one of the options that I recommend to you.',
-                'I cannot understand if you send me an out-of-context message. I would only understand if you choose one of the options that I recommend to you.',
-                'I cannot respond to your custom messages and can only understand if you select one of the options that I recommend to you.',
-            ),
-        );
-
-        if(!array_key_exists($message_key, $rotation_index)){
-            //Oooopsi, this should never happen:
-            $this->Database_model->ln_create(array(
-                'ln_parent_entity_id' => $recipient_en['en_id'],
-                'ln_content' => 'dispatch_rotating_message() failed to locate message type',
-                'ln_type_entity_id' => 4246, //Platform Error
-                'ln_miner_entity_id' => 1, //Shervin/Developer
-            ));
-            return false;
-        }
-
-        //Dispatch a random message:
-        $this->Communication_model->dispatch_message(
-            $rotation_index[$message_key][rand(0, (count($rotation_index[$message_key]) - 1))],
-            $recipient_en,
-            true
-        );
-
-    }
-
-
-
-
-
-
     function suggest_featured_intents($en_id){
 
 
@@ -1422,8 +1365,12 @@ class Communication_model extends CI_Model
                         'ln_parent_link_id' => $new_message_links[0]['ln_id'],
                     ), $en['en_id']);
 
-                    //Inform student:
-                    $this->Communication_model->dispatch_rotating_message($en, 'affirm_progress');
+                    //Confirm with student:
+                    $this->Communication_model->dispatch_message(
+                        echo_random_message('affirm_progress'),
+                        $en,
+                        true
+                    );
                     $this->Communication_model->dispatch_message(
                         'I added your '.$en_all_4592[$pending_in_requirements[0]['in_requirement_entity_id']]['m_name'].' message to '.$pending_in_requirements[0]['in_outcome'].'. /link:See in 🚩Action Plan:https://mench.com/messenger/actionplan/' . $pending_in_requirements[0]['in_id'],
                         $en,
@@ -1773,14 +1720,17 @@ class Communication_model extends CI_Model
                         'I did not find anything to skip!',
                         $en,
                         true,
-                        array(),
+                        array(
+                            //Give option to go next:
+                            array(
+                                'content_type' => 'text',
+                                'title' => 'Next',
+                            )
+                        ),
                         array(
                             'ln_parent_intent_id' => $in_id,
                         )
                     );
-
-                    //Find/communicate the next step:
-                    $this->Platform_model->actionplan_find_next_step($en['en_id'], true);
 
                     return false;
 
@@ -1834,14 +1784,16 @@ class Communication_model extends CI_Model
                     $message,
                     $en,
                     true,
-                    array(),
+                    array(
+                        array(
+                            'content_type' => 'text',
+                            'title' => 'Next',
+                        )
+                    ),
                     array(
                         'ln_parent_intent_id' => $in_id,
                     )
                 );
-
-                //Find/communicate the next step:
-                $this->Platform_model->actionplan_find_next_step($en['en_id'], true);
 
             }
 
@@ -1884,10 +1836,14 @@ class Communication_model extends CI_Model
                 }
 
                 //Affirm answer received answer:
-                $this->Communication_model->dispatch_rotating_message($en, 'affirm_progress');
+                $this->Communication_model->dispatch_message(
+                    echo_random_message('affirm_progress'),
+                    $en,
+                    true
+                );
 
                 //Find/communicate the next step:
-                $this->Platform_model->actionplan_find_next_step($en['en_id'], true);
+                $this->Platform_model->actionplan_find_next_step($en['en_id'], true, true);
 
             } else {
 
@@ -1957,52 +1913,81 @@ class Communication_model extends CI_Model
         if (in_array($fb_received_message, array('next', 'continue'))) {
 
             //Give them the next step of their Action Plan:
-            $step = $this->Platform_model->actionplan_find_next_step($en['en_id'], true);
+            $step = $this->Platform_model->actionplan_find_next_step($en['en_id'], true, true);
 
         } elseif (in_array($fb_received_message, array('yes', 'yeah', 'ya', 'ok', '▶️', 'ok continue', 'go', 'yass', 'yas', 'yea', 'yup', 'yes, learn more'))) {
 
-            //TODO Implement...
             $this->Communication_model->dispatch_message(
                 'I am not yet trained to accept your affirmation.',
                 $en,
-                true
+                true,
+                array(
+                    array(
+                        'content_type' => 'text',
+                        'title' => 'Next',
+                    )
+                )
             );
 
         } elseif (in_array($fb_received_message, array('skip', 'skip it'))) {
 
-            //TODO Implement...
             $this->Communication_model->dispatch_message(
                 'I am not yet trained to skip it from here. You can skip via the Action Plan.',
                 $en,
-                true
+                true,
+                array(
+                    array(
+                        'content_type' => 'text',
+                        'title' => 'Next',
+                    )
+                )
             );
 
         } elseif (in_array($fb_received_message, array('help', 'support', 'f1', 'sos'))) {
 
             //Ask the user if they like to be connected to a human
             //IF yes, create a ATTENTION NEEDED link that would notify admin so admin can start a manual conversation
-            //TODO Implement...
             $this->Communication_model->dispatch_message(
                 'I am not yet trained to provide help.',
                 $en,
-                true
+                true,
+                array(
+                    array(
+                        'content_type' => 'text',
+                        'title' => 'Next',
+                    )
+                )
             );
 
         } elseif (in_array($fb_received_message, array('no', 'nope', 'nah', 'cancel'))) {
 
             //Rejecting an offer...
-            //TODO Implement...
             $this->Communication_model->dispatch_message(
                 'I am not yet trained to accept your rejection.',
                 $en,
-                true
+                true,
+                array(
+                    array(
+                        'content_type' => 'text',
+                        'title' => 'Next',
+                    )
+                )
             );
 
         } elseif (substr($fb_received_message, 0, 1) == '/' || is_numeric($fb_received_message)) {
 
             //Likely an OR response with a specific number in mind...
-            $this->Communication_model->dispatch_rotating_message($en, 'one_way_only');
-            //TODO Implement...
+            $this->Communication_model->dispatch_message(
+                echo_random_message('one_way_only'),
+                $en,
+                true,
+                array(
+                    array(
+                        'content_type' => 'text',
+                        'title' => 'Next',
+                    )
+                )
+            );
 
         } elseif (includes_any($fb_received_message, array('unsubscribe', 'stop'))) {
 
@@ -2221,8 +2206,17 @@ class Communication_model extends CI_Model
             } else {
 
                 //Inform Student of Mench's one-way communication limitation & that Mench did not understand their message:
-                $this->Communication_model->dispatch_rotating_message($en, 'one_way_only');
-
+                $this->Communication_model->dispatch_message(
+                    echo_random_message('one_way_only'),
+                    $en,
+                    true,
+                    array(
+                        array(
+                            'content_type' => 'text',
+                            'title' => 'Next',
+                        )
+                    )
+                );
 
                 //Log link:
                 $this->Database_model->ln_create(array(
@@ -2230,10 +2224,6 @@ class Communication_model extends CI_Model
                     'ln_content' => $fb_received_message,
                     'ln_type_entity_id' => 4287, //Log Unrecognizable Message Received
                 ));
-
-
-                //Find/communicate the next step:
-                $this->Platform_model->actionplan_find_next_step($en['en_id'], true);
 
             }
         }

@@ -33,6 +33,10 @@
 
         //Focused/current entity:
         echo '<h5 class="badge badge-h indent1">Entity @'.$entity['en_id'].'</h5>';
+
+        //Hidden link to Metadata:
+        echo '<a class="secret" href="/entities/en_review_metadata/' . $entity['en_id'] . '" style="margin-left: 5px;" target="_blank" data-toggle="tooltip" title="Review Entity Metadata" data-placement="top"><i class="fas fa-function"></i></a>';
+
         echo '<div id="entity-box" class="list-group indent1">';
         echo echo_en($entity, 1);
         echo '</div>';

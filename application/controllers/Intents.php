@@ -722,6 +722,17 @@ class Intents extends CI_Controller
 
     }
 
+    function in_review_metadata($in_id){
+        //Fetch Intent:
+        $ins = $this->Database_model->in_fetch(array(
+            'in_id' => $in_id,
+        ));
+        if(count($ins) > 0){
+            echo_json(unserialize($ins[0]['in_metadata']));
+        } else {
+            echo 'Intent #'.$in_id.' not found!';
+        }
+    }
 
     function in_sort_save()
     {

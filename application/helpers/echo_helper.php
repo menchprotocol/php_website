@@ -637,7 +637,56 @@ function echo_in_actionplan_step($in, $is_parent, $step_ln_status)
 }
 
 
+function echo_random_message($message_key){
 
+    /*
+     *
+     * To make Mench personal assistant feel more natural,
+     * this function sends varying messages to communicate
+     * specific things about Mench or about the student's
+     * progress towards their Action Plan.
+     *
+     * */
+
+    $rotation_index = array(
+        'affirm_progress' => array(
+            'Got it 👍',
+            'Noted',
+            'Ok sweet',
+            'Nice answer',
+            'Nice 👍',
+            'Gotcha 🙌',
+            'Fabulous',
+            'Confirmed',
+            '👌',
+            '👍',
+        ),
+        'one_way_only' => array(
+            'I am not designed to respond to custom messages. I can understand you only when you choose one of the options that I recommend to you.',
+            'I cannot understand if you send me an out-of-context message. I would only understand if you choose one of the options that I recommend to you.',
+            'I cannot respond to your custom messages and can only understand if you select one of the options that I recommend to you.',
+        ),
+    );
+
+    if(!array_key_exists($message_key, $rotation_index)){
+
+        //Oooopsi, this should never happen:
+        $CI =& get_instance();
+        $CI->Database_model->ln_create(array(
+            'ln_content' => 'echo_random_message() failed to locate message type ['.$message_key.']',
+            'ln_type_entity_id' => 4246, //Platform Error
+            'ln_miner_entity_id' => 1, //Shervin/Developer
+        ));
+        return false;
+
+    } else {
+
+        //Return a random message:
+        return $rotation_index[$message_key][rand(0, (count($rotation_index[$message_key]) - 1))];
+
+    }
+
+}
 
 function echo_url_clean($url)
 {
