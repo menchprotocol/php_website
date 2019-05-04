@@ -1791,17 +1791,14 @@ class Communication_model extends CI_Model
                     $message,
                     $en,
                     true,
-                    array(
-                        array(
-                            'content_type' => 'text',
-                            'title' => 'Next',
-                            'payload' => 'GONEXT',
-                        )
-                    ),
+                    array(),
                     array(
                         'ln_parent_intent_id' => $in_id,
                     )
                 );
+
+                //Communicate next step:
+                $this->Platform_model->actionplan_find_next_step($en['en_id'], true, true);
 
             }
 
