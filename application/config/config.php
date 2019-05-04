@@ -28,7 +28,7 @@ $config['in_featured']              = 8469; //Child intents of this are featured
 $config['in_status_locked']         = array(8493, 8438, 8469, 7766); //Once set to published, their status will be locked by system
 $config['in_seconds_cost_max']      = 28800; //The maximum seconds allowed per intent. If larger, the miner is asked to break it down into smaller intents
 $config['in_outcome_max']           = 89; //Max number of characters allowed for intent outcomes
-$config['in_mark_options']          = array(0, 1); //Defines how many marks can be assigned to OR intent children
+$config['in_mark_options']          = array(0, 1, 2, 3, 5, 8, 13, 21); //Defines how many marks can be assigned to OR intent children
 
 
 //Entities:

@@ -1853,7 +1853,7 @@ class Platform_model extends CI_Model
 
                     if($fb_messenger_format){
 
-                        $next_step_message .= "\n\n" . ($key+1).'/ ';
+                        $next_step_message .= "\n\n" . ($key+1).') ';
 
                         if($was_selected){
                             $next_step_message .= '[Selected] ';
@@ -1861,7 +1861,7 @@ class Platform_model extends CI_Model
                             //For messenger only:
                             array_push($next_step_quick_replies, array(
                                 'content_type' => 'text',
-                                'title' => '/' . ($key+1),
+                                'title' => ($key+1),
                                 'payload' => 'ANSWERQUESTION_' . $in_id . '_' . $child_in['in_id'],
                             ));
                         }
@@ -1996,7 +1996,7 @@ class Platform_model extends CI_Model
                     } else {
 
                         //Add message:
-                        $next_step_message .= "\n\n" . ($key + 1) . '/ ';
+                        $next_step_message .= "\n\n" . ($key + 1) . ') ';
 
                         if($key==0){
                             //Show only the first step forward for Messenger view:

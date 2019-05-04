@@ -1197,10 +1197,10 @@ class Communication_model extends CI_Model
                 }
 
 
-                $message .= "\n\n" . ( $count+1 ) . '/ ' . echo_in_outcome($in['in_outcome'], true);
+                $message .= "\n\n" . ( $count+1 ) . ') ' . echo_in_outcome($in['in_outcome'], true);
                 array_push($quick_replies, array(
                     'content_type' => 'text',
-                    'title' => '/' . ( $count+1 ),
+                    'title' => ( $count+1 ),
                     'payload' => 'SUBSCRIBE-INITIATE_' . $in['in_id'],
                 ));
 
@@ -2060,10 +2060,10 @@ class Communication_model extends CI_Model
 
                 foreach ($student_intents as $counter => $in) {
                     //Construct unsubscribe confirmation body:
-                    $message .= "\n\n" . '/' . ($counter + $increment) . ' Stop ' . $in['in_outcome'];
+                    $message .= "\n\n" . ($counter + $increment) . ') Stop ' . $in['in_outcome'];
                     array_push($quick_replies, array(
                         'content_type' => 'text',
-                        'title' => '/' . ($counter + $increment),
+                        'title' => ($counter + $increment),
                         'payload' => 'UNSUBSCRIBE_' . $in['in_id'],
                     ));
                 }
@@ -2071,20 +2071,20 @@ class Communication_model extends CI_Model
                 if (count($student_intents) >= 2) {
                     //Give option to skip all and unsubscribe:
                     $increment++;
-                    $message .= "\n\n" . '/' . ($counter + $increment) . ' Stop all intentions and unsubscribe';
+                    $message .= "\n\n" . ($counter + $increment) . ') Stop all intentions and unsubscribe';
                     array_push($quick_replies, array(
                         'content_type' => 'text',
-                        'title' => '/' . ($counter + $increment),
+                        'title' => ($counter + $increment),
                         'payload' => 'UNSUBSCRIBE_ALL',
                     ));
                 }
 
                 //Alwyas give none option:
                 $increment++;
-                $message .= "\n\n" . '/' . ($counter + $increment) . ' Cancel & keep all intentions';
+                $message .= "\n\n" . ($counter + $increment) . ') Cancel & keep all intentions';
                 array_push($quick_replies, array(
                     'content_type' => 'text',
-                    'title' => '/' . ($counter + $increment),
+                    'title' => ($counter + $increment),
                     'payload' => 'UNSUBSCRIBE_CANCEL',
                 ));
 
@@ -2186,10 +2186,10 @@ class Communication_model extends CI_Model
                 ));
 
                 //Show Message:
-                $message .= "\n\n" . $new_intent_count . '/ ' . $ins[0]['in_outcome'] . ' in ' . strip_tags(echo_time_range($ins[0]));
+                $message .= "\n\n" . $new_intent_count . ') ' . $ins[0]['in_outcome'] . ' in ' . strip_tags(echo_time_range($ins[0]));
                 array_push($quick_replies, array(
                     'content_type' => 'text',
-                    'title' => $new_intent_count . '/',
+                    'title' => $new_intent_count,
                     'payload' => 'SUBSCRIBE-INITIATE_' . $ins[0]['in_id'],
                 ));
 
@@ -2201,10 +2201,10 @@ class Communication_model extends CI_Model
                 $new_intent_count++;
 
                 //Give them a "None of the above" option:
-                $message .= "\n\n" . $new_intent_count . '/ None of the above';
+                $message .= "\n\n" . $new_intent_count . ') None of the above';
                 array_push($quick_replies, array(
                     'content_type' => 'text',
-                    'title' => $new_intent_count . '/',
+                    'title' => $new_intent_count,
                     'payload' => 'SUBSCRIBE-REJECT',
                 ));
 

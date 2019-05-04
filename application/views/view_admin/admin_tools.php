@@ -80,17 +80,24 @@ if(!$action) {
 
 } elseif($action=='moderate_intent_notes'){
 
+    //Fetch pending notes:
+    $pendin_in_notes = $this->Database_model->ln_fetch(array(
+        'ln_status IN (' . join(',', $this->config->item('ln_status_incomplete')) . ')' => null, //incomplete
+        'ln_type_entity_id IN (' . join(',', $this->config->item('en_ids_4485')) . ')' => null, //All Intent Notes
+    ), array('in_child'), $this->config->item('items_per_page'), 0, array('ln_id' => 'ASC'));
 
     echo '<div class="row">';
     echo '<div class="col-xs-7 cols">';
     echo '<ul class="breadcrumb"><li><a href="/admin">Admin Tools</a></li><li><b>'.$moderation_tools['/admin/tools/'.$action].'</b></li></ul>';
     //List intents and allow to modify and manage intent notes:
-    foreach($this->Database_model->ln_fetch(array(
-        'ln_status IN (' . join(',', $this->config->item('ln_status_incomplete')) . ')' => null, //incomplete
-        'ln_type_entity_id IN (' . join(',', $this->config->item('en_ids_4485')) . ')' => null, //All Intent Notes
-    ), array('in_child'), $this->config->item('items_per_page'), 0, array('ln_id' => 'ASC')) as $pendin_in_note){
-        echo echo_in($pendin_in_note, 0);
+    if(count($pendin_in_notes) > 0){
+        foreach($pendin_in_notes as $pendin_in_note){
+            echo echo_in($pendin_in_note, 0);
+        }
+    } else {
+        echo '<div class="alert alert-success"><i class="fas fa-check-circle"></i> No Pending Intent Notes at this time</div>';
     }
+
     echo '</div>';
     echo '<div class="col-xs-5 cols">';
     $this->load->view('view_intents/in_right_column');
