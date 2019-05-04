@@ -422,7 +422,7 @@ class Communication_model extends CI_Model
                 4456 => 'REGULAR',
                 4457 => 'SILENT_PUSH',
                 4458 => 'NO_PUSH',
-                //@4455 => Unsubscribe NOT listed here since in that case all communication is blocked!
+                4455 => 'NO_PUSH', //Unsubscribed users only get messages if they messages us first
             );
 
             //Fetch recipient notification type:
@@ -447,13 +447,6 @@ class Communication_model extends CI_Model
                 return array(
                     'status' => 0,
                     'message' => 'Student has more than 1 Notification Level parent entity relation',
-                );
-
-            } elseif ($lns_comm_level[0]['ln_parent_entity_id'] == 4455) {
-
-                return array(
-                    'status' => 0,
-                    'message' => 'Student is unsubscribed',
                 );
 
             } elseif (!array_key_exists($lns_comm_level[0]['ln_parent_entity_id'], $fb_convert_4454)) {
