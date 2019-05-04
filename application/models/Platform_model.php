@@ -1831,8 +1831,6 @@ class Platform_model extends CI_Model
          *
          * */
 
-        $check_next_step = false;
-
         //Do we have any requirements?
         if ($ins[0]['in_type']==0 /* AND intent */ && $message_in_requirements) {
 
@@ -2072,7 +2070,22 @@ class Platform_model extends CI_Model
 
         } else {
 
-            $check_next_step = true;
+            //Intent has no requirements and no children, so give call to Action:
+            if($fb_messenger_format){
+
+                //Give option to skip Student Intent:
+                array_push($next_step_quick_replies, array(
+                    'content_type' => 'text',
+                    'title' => 'Next',
+                    'payload' => 'GONEXT',
+                ));
+
+            } else {
+
+                //Show button for next step:
+                $next_step_message .= '<div style="margin: 15px 0 0;"><a href="/messenger/actionplan/' . $next_in_id . '" class="btn btn-md btn-primary">Next Step <i class="fas fa-angle-right"></i></a></div>';
+
+            }
 
         }
 
@@ -2129,26 +2142,6 @@ class Platform_model extends CI_Model
 
 
 
-        if($check_next_step){
-            //Give call to Action:
-            if($fb_messenger_format){
-
-                //Give option to skip Student Intent:
-                array_push($next_step_quick_replies, array(
-                    'content_type' => 'text',
-                    'title' => 'Next',
-                    'payload' => 'GONEXT',
-                ));
-
-            } else {
-
-                //Show button for next step:
-                $next_step_message .= '<div style="margin: 15px 0 0;"><a href="/messenger/actionplan/' . $next_in_id . '" class="btn btn-md btn-primary">Next Step <i class="fas fa-angle-right"></i></a></div>';
-
-            }
-        }
-
-
         $trigger_recommendations = false;
         if(!$next_step_message){
 
@@ -2181,22 +2174,20 @@ class Platform_model extends CI_Model
         //Dispatch instructional message if any:
         if($fb_messenger_format) {
 
-            if(!$check_next_step){
-                //Send messages over Messenger:
-                $this->Communication_model->dispatch_message(
-                    $next_step_message,
-                    $recipient_en,
-                    true,
-                    $next_step_quick_replies,
-                    array(
-                        'ln_parent_intent_id' => $in_id, //Focus Intent
-                    )
-                );
+            //Send messages over Messenger:
+            $this->Communication_model->dispatch_message(
+                $next_step_message,
+                $recipient_en,
+                true,
+                $next_step_quick_replies,
+                array(
+                    'ln_parent_intent_id' => $in_id, //Focus Intent
+                )
+            );
 
-                if($trigger_recommendations){
-                    //List featured intents and let them choose:
-                    $this->Communication_model->suggest_featured_intents($recipient_en['en_id']);
-                }
+            if($trigger_recommendations){
+                //List featured intents and let them choose:
+                $this->Communication_model->suggest_featured_intents($recipient_en['en_id']);
             }
 
         } else {
