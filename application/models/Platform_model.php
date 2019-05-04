@@ -1999,7 +1999,7 @@ class Platform_model extends CI_Model
                             array_push($next_step_quick_replies, array(
                                 'content_type' => 'text',
                                 'title' => 'Next',
-                                'payload' => 'GOTOSTEP_' . $in__children[0]['in_id'],
+                                'payload' => 'GONEXT',
                             ));
                             //Give option to skip:
                             array_push($next_step_quick_replies, array(
@@ -2097,17 +2097,7 @@ class Platform_model extends CI_Model
             if($next_in_id > 0){
 
                 //Give call to Action:
-                if($fb_messenger_format){
-
-                    /*
-                    array_push($next_step_quick_replies, array(
-                        'content_type' => 'text',
-                        'title' => 'Next',
-                        'payload' => 'GOTOSTEP_' . $next_in_id,
-                    ));
-                    */
-
-                } else {
+                if(!$fb_messenger_format){
 
                     //Show button for next step:
                     $next_step_message .= '<div style="margin: 15px 0 0;"><a href="/messenger/actionplan/' . $next_in_id . '" class="btn btn-md btn-primary">Next Step <i class="fas fa-angle-right"></i></a></div>';

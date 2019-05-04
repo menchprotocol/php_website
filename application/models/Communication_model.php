@@ -1805,14 +1805,6 @@ class Communication_model extends CI_Model
 
             }
 
-        } elseif (substr_count($quick_reply_payload, 'GOTOSTEP_') == 1) {
-
-            //Student consumed AND tree content, and is ready to move on to next intent...
-            $in_id = intval(one_two_explode('GOTOSTEP_', '', $quick_reply_payload));
-
-            //Advance student to next step:
-            $this->Platform_model->actionplan_advance_step($en, $in_id);
-
         } elseif (substr_count($quick_reply_payload, 'ANSWERQUESTION_') == 1) {
 
             /*
