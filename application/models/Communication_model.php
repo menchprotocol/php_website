@@ -1987,7 +1987,7 @@ class Communication_model extends CI_Model
                 )
             );
 
-        } elseif (substr($fb_received_message, 0, 1) == '/' || is_numeric($fb_received_message)) {
+        } elseif (is_numeric($fb_received_message)) {
 
             //Likely an OR response with a specific number in mind...
             $this->Communication_model->dispatch_message(
@@ -2223,14 +2223,7 @@ class Communication_model extends CI_Model
                 $this->Communication_model->dispatch_message(
                     echo_random_message('one_way_only'),
                     $en,
-                    true,
-                    array(
-                        array(
-                            'content_type' => 'text',
-                            'title' => 'Next',
-                            'payload' => 'GONEXT',
-                        )
-                    )
+                    true
                 );
 
                 //Log link:
@@ -2240,6 +2233,31 @@ class Communication_model extends CI_Model
                     'ln_type_entity_id' => 4287, //Log Unrecognizable Message Received
                 ));
 
+                //Call to Action: Does this student have any Action Plans?
+                $next_in_id = $this->Platform_model->actionplan_find_next_step($en['en_id'], false);
+
+                if($next_in_id > 0){
+
+                    //Inform Student of Mench's one-way communication limitation & that Mench did not understand their message:
+                    $this->Communication_model->dispatch_message(
+                        'You can continue with your Action Plan by saying "Next"',
+                        $en,
+                        true,
+                        array(
+                            array(
+                                'content_type' => 'text',
+                                'title' => 'Next',
+                                'payload' => 'GONEXT',
+                            )
+                        )
+                    );
+
+                } else {
+
+                    //Recommend to join:
+                    $this->Communication_model->suggest_featured_intents($en['en_id']);
+
+                }
             }
         }
     }
