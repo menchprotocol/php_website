@@ -202,11 +202,6 @@ class Communication_model extends CI_Model
                 'status' => 0,
                 'message' => 'Message is longer than the allowed ' . $allowed_length . ' characters',
             );
-        } elseif ($input_message != strip_tags($input_message)) {
-            return array(
-                'status' => 0,
-                'message' => 'HTML Code is not allowed',
-            );
         } elseif (!preg_match('//u', $input_message)) {
             return array(
                 'status' => 0,
@@ -1595,7 +1590,7 @@ class Communication_model extends CI_Model
 
             //Student not interested in any of the featured intentions...
             $this->Communication_model->dispatch_message(
-                'Got it! So let me know how can I help you advance your tech career? Start your sentence with "I want to", for example "I want to create a resume" or "I want to get hired"',
+                'Got it! So let me know how can I help you get hired at your dream programming job? Start your sentence with "I want to", for example "I want to create a resume", "I want to do better at interviews" or simply "I want to get hired"',
                 $en,
                 true
             );

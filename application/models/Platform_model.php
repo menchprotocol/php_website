@@ -1771,6 +1771,7 @@ class Platform_model extends CI_Model
         //Set variables:
         $progression_messages = ''; //To be populated for webview
         $progression_type_entity_id = 6158; //Action Plan Outcome Review
+        $next_in_id = 0; //If we don't have any children or requirements we will attempt to find the next intent to take appropriate Action
         $next_step_message = null; //To be populated if there is a next step.
         $next_step_quick_replies = array(); //To be populated with appropriate options to further progress form here...
         $message_in_requirements = $this->Platform_model->in_req_completion($ins[0], $fb_messenger_format); //See if we have intent requirements
@@ -2065,10 +2066,13 @@ class Platform_model extends CI_Model
 
         } else {
 
+            //No requirements OR children... So let's see if we have a next step:
+            $next_in_id = $this->Platform_model->actionplan_find_next_step($recipient_en['en_id'], false);
+
             //Intent has no requirements and no children, so give call to Action:
-            if(!$fb_messenger_format){
+            if($next_in_id > 0 && !$fb_messenger_format){
                 //Show button for next step:
-                $next_step_message .= '<div style="margin: 15px 0 0;"><a href="/messenger/actionplan/' . $next_in_id . '" class="btn btn-md btn-primary">Next Step <i class="fas fa-angle-right"></i></a></div>';
+                $next_step_message .= '<div style="margin: 15px 0 0;"><a href="/messenger/actionplan/next" class="btn btn-md btn-primary">Next Step <i class="fas fa-angle-right"></i></a></div>';
             }
 
         }
@@ -2093,7 +2097,7 @@ class Platform_model extends CI_Model
                         $recipient_en,
                         $fb_messenger_format,
                         //This is when we have messages and need to append the "Next" Quick Reply to the last message:
-                        ( $fb_messenger_format && !$next_step_message && ($count+1)==count($in__messages) ? array(array(
+                        ( $next_in_id > 0 && $fb_messenger_format && !$next_step_message && ($count+1)==count($in__messages) ? array(array(
                             'content_type' => 'text',
                             'title' => 'Next',
                             'payload' => 'GONEXT',
@@ -2164,9 +2168,13 @@ class Platform_model extends CI_Model
         $trigger_recommendations = false;
         if(!$next_step_message){
 
-            //No next step found! This seems to be the end:
-            $next_step_message = 'This was your final step 🎉🎉🎉';
-            $trigger_recommendations = true;
+            if($next_in_id < 1){
+                //No next step found! This seems to be the end:
+                $next_step_message = 'This was your final step 🎉🎉🎉';
+                $trigger_recommendations = true;
+            } else {
+                //Maybe do something here?
+            }
 
         } elseif(!$has_published_progression) {
 

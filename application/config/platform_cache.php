@@ -11,7 +11,7 @@ defined('BASEPATH') OR exit('No direct script access allowed');
  *
  */
 
-//Generated 2019-05-04 10:30:36 PST
+//Generated 2019-05-04 15:27:22 PST
 
 //Trigger On-Complete Tips:
 $config['en_ids_6255'] = array(4559, 6144, 6157, 6158);
@@ -836,7 +836,7 @@ $config['en_all_4997'] = array(
 );
 
 //Intent Notes Public Entity References:
-$config['en_ids_4990'] = array(1326, 2793, 2997, 2998, 2999, 3005, 3084, 3147, 3192, 3300, 3301, 3302, 3303, 3308, 3314, 3320, 4257, 4258, 4259, 4260, 4399, 4446, 4763, 4883, 5948);
+$config['en_ids_4990'] = array(1326, 2793, 2997, 2998, 2999, 3005, 3084, 3147, 3192, 3300, 3301, 3302, 3303, 3308, 3314, 3320, 4257, 4258, 4259, 4260, 4395, 4399, 4446, 4763, 4883, 5948);
 $config['en_all_4990'] = array(
     1326 => array(
         'm_icon' => '<i class="fal fa-bookmark"></i>',
@@ -957,6 +957,12 @@ $config['en_all_4990'] = array(
         'm_name' => 'Linked Entities Image',
         'm_desc' => '',
         'm_parents' => array(6203, 4990, 4593, 4592, 4537, 4595, 4331),
+    ),
+    4395 => array(
+        'm_icon' => '',
+        'm_name' => 'Calendly',
+        'm_desc' => '',
+        'm_parents' => array(4990, 2750, 1326),
     ),
     4399 => array(
         'm_icon' => '<i class="fab fa-angellist"></i>',

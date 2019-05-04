@@ -218,7 +218,11 @@ function echo_in_outcome($in_outcome, $fb_messenger_format = false, $reference_a
 
     //See if outcome has a double column:
     if(substr_count($in_outcome , '::') != 1){
-        return $in_outcome;
+        if($fb_messenger_format){
+            return $in_outcome;
+        } else {
+            return htmlentities($in_outcome);
+        }
     }
 
     //We have it, let's apply it:
@@ -228,7 +232,7 @@ function echo_in_outcome($in_outcome, $fb_messenger_format = false, $reference_a
         return trim($in_outcome_parts[1]);
     } else {
         //Miner view:
-        return '<span class="double-column-omit click_expand" data-toggle="tooltip" data-placement="top" title="Not shown to students">'.$in_outcome_parts[0].'::</span><b class="click_expand">'.$in_outcome_parts[1].'</b>';
+        return '<span class="double-column-omit click_expand" data-toggle="tooltip" data-placement="top" title="Not shown to students">'.$in_outcome_parts[0].'::</span><b class="click_expand">'.htmlentities($in_outcome_parts[1]).'</b>';
     }
 }
 
