@@ -64,7 +64,7 @@ class Platform_model extends CI_Model
 
     }
 
-    function actionplan_find_next_step($en_id, $advance_step, $communicate_next_step = false)
+    function actionplan_find_next_step($en_id, $advance_step)
     {
 
         /*
@@ -119,32 +119,8 @@ class Platform_model extends CI_Model
             //Did we find a next step?
             if($next_in_id > 0){
 
-                if($communicate_next_step){
-
-                    //Fetch intent details:
-                    $ins = $this->Database_model->in_fetch(array(
-                        'in_id' => $next_in_id,
-                    ));
-
-                    $this->Communication_model->dispatch_message(
-                        'Your next step is to '.echo_in_outcome($ins[0]['in_outcome'] , true).'.',
-                        array('en_id' => $en_id),
-                        true,
-                        array(
-                            array(
-                                'content_type' => 'text',
-                                'title' => 'Next',
-                                'payload' => 'GOTOSTEP_' . $ins[0]['in_id'],
-                            )
-                        )
-                    );
-
-                } else {
-
-                    //Yes, communicate it:
-                    $this->Platform_model->actionplan_advance_step(array('en_id' => $en_id), $next_in_id);
-
-                }
+                //Yes, communicate it:
+                $this->Platform_model->actionplan_advance_step(array('en_id' => $en_id), $next_in_id);
 
             } else {
 
@@ -2099,29 +2075,28 @@ class Platform_model extends CI_Model
         if($check_next_step){
 
             //Intent without children and without a completion requirement, so we'd need to find the next step and offer that to them:
-            $next_in_id = $this->Platform_model->actionplan_find_next_step($recipient_en['en_id'], $fb_messenger_format, $fb_messenger_format);
+            $next_in_id = $this->Platform_model->actionplan_find_next_step($recipient_en['en_id'], $fb_messenger_format);
 
             if($next_in_id > 0){
 
+                //Yes, we do have a next step, fetch it and give student more details:
+                $next_step_ins = $this->Database_model->in_fetch(array(
+                    'in_id' => $next_in_id,
+                ));
+
+                //Give directions on the next step:
+                $next_step_message = 'The next step is to '. echo_in_outcome($next_step_ins[0]['in_outcome'], true) .'.';
+
+                //Give call to Action:
                 if($fb_messenger_format){
 
-                    /*
                     array_push($next_step_quick_replies, array(
                         'content_type' => 'text',
-                        'title' => 'Next Step ▶️',
-                        'payload' => 'GOTOSTEP_' . $next_in_id,
+                        'title' => 'Next',
+                        'payload' => 'GOTOSTEP_' . $next_step_ins[0]['in_id'],
                     ));
-                    */
 
                 } else {
-
-                    //Yes, we do have a next step, fetch it and give student more details:
-                    $next_step_ins = $this->Database_model->in_fetch(array(
-                        'in_id' => $next_in_id,
-                    ));
-
-                    //Give directions on the next step:
-                    $next_step_message = 'The next step is to '. echo_in_outcome($next_step_ins[0]['in_outcome'], true) .'.';
 
                     //Show button for next step:
                     $next_step_message .= '<div style="margin: 15px 0 0;"><a href="/messenger/actionplan/' . $next_in_id . '" class="btn btn-md btn-primary">Next Step <i class="fas fa-angle-right"></i></a></div>';

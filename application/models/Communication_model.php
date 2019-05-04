@@ -1780,7 +1780,7 @@ class Communication_model extends CI_Model
                     );
 
                     //Find/communicate the next step:
-                    $this->Platform_model->actionplan_find_next_step($en['en_id'], true, true);
+                    $this->Platform_model->actionplan_find_next_step($en['en_id'], true);
 
                     return false;
 
@@ -1841,7 +1841,7 @@ class Communication_model extends CI_Model
                 );
 
                 //Find/communicate the next step:
-                $this->Platform_model->actionplan_find_next_step($en['en_id'], true, true);
+                $this->Platform_model->actionplan_find_next_step($en['en_id'], true);
 
             }
 
@@ -1887,7 +1887,7 @@ class Communication_model extends CI_Model
                 $this->Communication_model->dispatch_rotating_message($en, 'affirm_progress');
 
                 //Find/communicate the next step:
-                $this->Platform_model->actionplan_find_next_step($en['en_id'], true, false);
+                $this->Platform_model->actionplan_find_next_step($en['en_id'], true);
 
             } else {
 
@@ -1957,7 +1957,7 @@ class Communication_model extends CI_Model
         if (in_array($fb_received_message, array('next', 'continue'))) {
 
             //Give them the next step of their Action Plan:
-            $step = $this->Platform_model->actionplan_find_next_step($en['en_id'], true, true);
+            $step = $this->Platform_model->actionplan_find_next_step($en['en_id'], true);
 
         } elseif (in_array($fb_received_message, array('yes', 'yeah', 'ya', 'ok', '▶️', 'ok continue', 'go', 'yass', 'yas', 'yea', 'yup', 'yes, learn more'))) {
 
@@ -2233,7 +2233,7 @@ class Communication_model extends CI_Model
 
 
                 //Find/communicate the next step:
-                $this->Platform_model->actionplan_find_next_step($en['en_id'], true, true);
+                $this->Platform_model->actionplan_find_next_step($en['en_id'], true);
 
             }
         }
