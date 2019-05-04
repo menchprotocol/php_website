@@ -362,65 +362,55 @@ class Messenger extends CI_Controller
 
 
                     //Did we have a potential response?
-                    if(isset($new_message['ln_id'])){
+                    if(isset($new_message['ln_id']) && $in_requirements_search > 0){
 
-                        //We might eventually need to let them know that we could not understand them!
-                        $send_unknown_reply = true;
+                        //Yes, see if we have a pending requirement submission:
+                        $pending_in_requirements = $this->Database_model->ln_fetch(array(
+                            'ln_type_entity_id' => 6144, //Action Plan Submit Requirements
+                            'ln_miner_entity_id' => $ln_data['ln_miner_entity_id'], //for this student
+                            'ln_status IN (' . join(',', $this->config->item('ln_status_incomplete')) . ')' => null, //incomplete
+                            'in_status' => 2, //Published
+                            'in_requirement_entity_id' => $in_requirements_search,
+                        ), array('in_parent'), 0);
 
-                        //Should we look for pending requirement submissions?
-                        if($in_requirements_search > 0){
-                            //Yes, see if we have a pending requirement submission:
-                            $pending_in_requirements = $this->Database_model->ln_fetch(array(
-                                'ln_type_entity_id' => 6144, //Action Plan Submit Requirements
-                                'ln_miner_entity_id' => $ln_data['ln_miner_entity_id'], //for this student
-                                'ln_status IN (' . join(',', $this->config->item('ln_status_incomplete')) . ')' => null, //incomplete
-                                'in_status' => 2, //Published
-                                'in_requirement_entity_id' => $in_requirements_search,
-                            ), array('in_parent'), 0);
+                        if(count($pending_in_requirements) > 0){
 
-                            if(count($pending_in_requirements) > 0){
+                            //Load requirement names:
+                            $en_all_4592 = $this->config->item('en_all_4592');
+                            $next_step_quick_replies = array();
+                            $next_step_message = 'I can append your '.$en_all_4592[$in_requirements_search]['m_name'].' message to '.( count($pending_in_requirements) > 1 ? ' one of' : '' ).' the following:';
 
-                                //Load requirement names:
-                                $en_all_4592 = $this->config->item('en_all_4592');
-                                $send_unknown_reply = false;
-                                $next_step_quick_replies = array();
-                                $next_step_message = 'I can append your '.$en_all_4592[$in_requirements_search]['m_name'].' message to '.( count($pending_in_requirements) > 1 ? ' one of' : '' ).' the following:';
-
-                                //Append all options:
-                                foreach($pending_in_requirements as $count => $requirement_in_ln){
-                                    $next_step_message .= "\n\n" . ($count+1) .'. '.echo_in_outcome($requirement_in_ln['in_outcome'] , true);
-                                    array_push($next_step_quick_replies, array(
-                                        'content_type' => 'text',
-                                        'title' => ($count+1),
-                                        'payload' => 'APPENDRESPONSE_' . $new_message['ln_id'] . '_' . $requirement_in_ln['ln_id'],
-                                    ));
-                                }
-
-                                //Give option to cancel:
+                            //Append all options:
+                            foreach($pending_in_requirements as $count => $requirement_in_ln){
+                                $next_step_message .= "\n\n" . ($count+1) .'. '.echo_in_outcome($requirement_in_ln['in_outcome'] , true);
                                 array_push($next_step_quick_replies, array(
                                     'content_type' => 'text',
-                                    'title' => 'Cancel',
-                                    'payload' => 'APPENDRESPONSE_CANCEL',
+                                    'title' => ($count+1),
+                                    'payload' => 'APPENDRESPONSE_' . $new_message['ln_id'] . '_' . $requirement_in_ln['ln_id'],
                                 ));
-
-                                //We did find a pending submission requirement, confirm with student:
-                                $this->Communication_model->dispatch_message(
-                                    $next_step_message,
-                                    $en,
-                                    true,
-                                    $next_step_quick_replies
-                                );
-
-                            } elseif($ln_data['ln_type_entity_id']==4547){
-
-                                //Digest text message & try to make sense of it:
-                                $this->Communication_model->digest_text_message($en, $im['message']['text']);
-                                $send_unknown_reply = false;
-
                             }
-                        }
 
-                        if($send_unknown_reply){
+                            //Give option to cancel:
+                            array_push($next_step_quick_replies, array(
+                                'content_type' => 'text',
+                                'title' => 'Cancel',
+                                'payload' => 'APPENDRESPONSE_CANCEL',
+                            ));
+
+                            //We did find a pending submission requirement, confirm with student:
+                            $this->Communication_model->dispatch_message(
+                                $next_step_message,
+                                $en,
+                                true,
+                                $next_step_quick_replies
+                            );
+
+                        } elseif($ln_data['ln_type_entity_id']==4547){
+
+                            //Digest text message & try to make sense of it:
+                            $this->Communication_model->digest_text_message($en, $im['message']['text']);
+
+                        } else {
                             //Let them know that we did not understand them:
                             $this->Communication_model->dispatch_message(
                                 echo_random_message('one_way_only'),
