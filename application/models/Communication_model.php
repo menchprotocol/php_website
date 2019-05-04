@@ -751,7 +751,7 @@ class Communication_model extends CI_Model
 
                     }
 
-                } else {
+                } elseif(!$fb_messenger_format){
 
                     //HTML Format, append content to current output message:
                     $entity_appendix .= '<div class="entity-appendix"><b>*</b> ' . $parent_en['en_icon'] . ' '. $parent_en['en_name'] . (strlen($parent_en['ln_content']) > 0 ? ': '. $parent_en['ln_content'] : '') . '</div>';
