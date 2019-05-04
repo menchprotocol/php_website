@@ -1461,9 +1461,16 @@ class Communication_model extends CI_Model
 
                     //Show success message to user:
                     $this->Communication_model->dispatch_message(
-                        'I have successfully removed the intention to ' . $student_intents[0]['in_outcome'] . ' from your Action Plan. Say "stop" again if you wish to stop all future communications.',
+                        'I have successfully removed the intention to ' . $student_intents[0]['in_outcome'] . ' from your Action Plan.',
                         $en,
-                        true
+                        true,
+                        array(
+                            array(
+                                'content_type' => 'text',
+                                'title' => 'Next',
+                                'payload' => 'GONEXT',
+                            )
+                        )
                     );
 
                 } else {
@@ -1759,7 +1766,7 @@ class Communication_model extends CI_Model
                     //We did find some steps to skip...
                     //Send student a message and confirm that they want to skip:
                     $this->Communication_model->dispatch_message(
-                        'You are about to skip ' . $would_be_skipped_count . ' step' . echo__s($would_be_skipped_count) . '. In general I would not recommend skipping steps unless you feel confident about taking these steps on your own.',
+                        'You are about to skip ' . $would_be_skipped_count . ' step' . echo__s($would_be_skipped_count) . '. In general I don\'t recommend skipping steps to maximize your chance to succeed.',
                         $en,
                         true,
                         array(

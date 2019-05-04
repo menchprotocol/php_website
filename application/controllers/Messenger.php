@@ -1510,7 +1510,14 @@ class Messenger extends CI_Controller
         $this->Communication_model->dispatch_message(
             'I have successfully removed the intention to '.$ins[0]['in_outcome'].' from your Action Plan. You can add it back to your Action Plan at any time by visiting: https://mench.com/'.$ins[0]['in_id'],
             array('en_id' => $_POST['en_miner_id']),
-            true
+            true,
+            array(
+                array(
+                    'content_type' => 'text',
+                    'title' => 'Next',
+                    'payload' => 'GONEXT',
+                )
+            )
         );
 
         return echo_json(array(
@@ -1736,7 +1743,14 @@ class Messenger extends CI_Controller
             $this->Communication_model->dispatch_message(
                 'I have successfully sorted your Action Plan priorities. Your top active priority is to '.$top_priority['in']['in_outcome'].' which you have made '.$top_priority['completion_rate']['completion_percentage'].'% progress so far.',
                 array('en_id' => $_POST['en_miner_id']),
-                true
+                true,
+                array(
+                    array(
+                        'content_type' => 'text',
+                        'title' => 'Next',
+                        'payload' => 'GONEXT',
+                    )
+                )
             );
         }
 

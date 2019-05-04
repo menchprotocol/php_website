@@ -1987,11 +1987,27 @@ class Platform_model extends CI_Model
                         $next_step_message .= '<a href="/messenger/actionplan/'.$child_in['in_id']. '" class="list-group-item">';
 
                         //Simple right icon
-                        $next_step_message .= '<span class="pull-right">';
+                        $next_step_message .= '<span class="pull-right" style="margin-top: -6px;">';
                         $next_step_message .= '<span class="badge badge-primary"><i class="fas fa-angle-right"></i></span>';
                         $next_step_message .= '</span>';
 
-                        $next_step_message .= echo_fixed_fields('ln_student_status', (count($child_progression_steps) > 0 ? $child_progression_steps[0]['ln_status'] : 0), true, null).'&nbsp;';
+                        //Determine what icon to show:
+                        if(count($child_progression_steps) > 0){
+                            //We do have a progression link...
+                            if($child_progression_steps[0]['ln_status']==2){
+                                //Status is complete, show the progression type icon:
+                                $en_all_6146 = $this->config->item('en_all_6146');
+                                $next_step_message .= $en_all_6146[$child_progression_steps[0]['ln_type_entity_id']]['m_icon'];
+                            } else {
+                                //Status is not yet complete, so show the status icon:
+                                $next_step_message .= echo_fixed_fields('ln_student_status', $child_progression_steps[0]['ln_status'], true, null);
+                            }
+                        } else {
+                            //No progression, so show a new icon:
+                            $next_step_message .= echo_fixed_fields('ln_student_status', 0, true, null);
+                        }
+
+                        $next_step_message .= '&nbsp;';
 
                     } else {
 
