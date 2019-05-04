@@ -1828,7 +1828,7 @@ class Communication_model extends CI_Model
 
                 //User has indicated they want to skip this tree and move on to the next item in-line:
                 //Lets confirm the implications of this SKIP to ensure they are aware:
-                $this->Platform_model->initiate_skip_request($en, $in_id);
+                $this->Communication_model->initiate_skip_request($en, $in_id);
 
             } else {
 
@@ -2005,7 +2005,7 @@ class Communication_model extends CI_Model
 
             if($next_in_id > 0){
                 //Initiate skip request:
-                $this->Platform_model->initiate_skip_request($en, $next_in_id);
+                $this->Communication_model->initiate_skip_request($en, $next_in_id);
             } else {
                 $this->Communication_model->dispatch_message(
                     'I could not find any Action Plan steps to skip.',
