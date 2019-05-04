@@ -1941,7 +1941,7 @@ class Communication_model extends CI_Model
         }
     }
 
-    function digest_message($en, $fb_received_message)
+    function digest_text_message($en, $fb_received_message)
     {
 
         /*

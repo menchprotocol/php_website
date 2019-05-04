@@ -342,17 +342,33 @@ class Messenger extends CI_Controller
 
 
                     //So did we recognized the
-                    if (isset($ln_data['ln_type_entity_id']) && isset($ln_data['ln_miner_entity_id'])) {
+                    if (!isset($ln_data['ln_type_entity_id']) || !isset($ln_data['ln_miner_entity_id'])) {
 
-                        //We're all good, log this message:
-                        $new_message = $this->Database_model->ln_create($ln_data);
+                        //Ooooopsi, this seems to be an unknown message type:
+                        $this->Database_model->ln_create(array(
+                            'ln_type_entity_id' => 4246, //Platform Error
+                            'ln_miner_entity_id' => 1, //Shervin/Developer
+                            'ln_content' => 'facebook_webhook() Received unknown message type! Analyze metadata for more details',
+                            'ln_metadata' => $ln_metadata,
+                        ));
 
-                        //Did we have a potential response?
-                        if(isset($new_message['ln_id']) && $in_requirements_search > 0){
+                        //Terminate:
+                        return print_r('complete');
+                    }
 
-                            //Load requirement names:
-                            $en_all_4592 = $this->config->item('en_all_4592');
 
+                    //We're all good, log this message:
+                    $new_message = $this->Database_model->ln_create($ln_data);
+
+
+                    //Did we have a potential response?
+                    if(isset($new_message['ln_id'])){
+
+                        //We might eventually need to let them know that we could not understand them!
+                        $send_unknown_reply = true;
+
+                        //Should we look for pending requirement submissions?
+                        if($in_requirements_search > 0){
                             //Yes, see if we have a pending requirement submission:
                             $pending_in_requirements = $this->Database_model->ln_fetch(array(
                                 'ln_type_entity_id' => 6144, //Action Plan Submit Requirements
@@ -362,31 +378,13 @@ class Messenger extends CI_Controller
                                 'in_requirement_entity_id' => $in_requirements_search,
                             ), array('in_parent'), 0);
 
-                            if(count($pending_in_requirements) == 0){
+                            if(count($pending_in_requirements) > 0){
 
-                                /*
-                                 *
-                                 * If not a text message (which is very very common),
-                                 * Inform student that no intention was found to
-                                 * accept this message.
-                                 *
-                                 * */
-
-                                if($in_requirements_search!=4255){
-
-                                    //Not a text, so let's inform them:
-                                    $this->Communication_model->dispatch_message(
-                                        'I\'m facing an issue: I could not locate any intentions in your Action Plan that are pending a '.$en_all_4592[$in_requirements_search]['m_name'].' message response, so I am not sure what to do with your message!',
-                                        $en,
-                                        true
-                                    );
-
-                                }
-
-                            } else {
-
-                                $next_step_message = 'You can complete'.( count($pending_in_requirements) > 1 ? ' one of' : '' ).' these '.count($pending_in_requirements).' Action Plan step'.echo__s(count($pending_in_requirements)).' by appending your '.$en_all_4592[$in_requirements_search]['m_name'].' message:';
+                                //Load requirement names:
+                                $en_all_4592 = $this->config->item('en_all_4592');
+                                $send_unknown_reply = false;
                                 $next_step_quick_replies = array();
+                                $next_step_message = 'I can append your '.$en_all_4592[$in_requirements_search]['m_name'].' message to '.( count($pending_in_requirements) > 1 ? ' one of' : '' ).' the following:';
 
                                 //Append all options:
                                 foreach($pending_in_requirements as $count => $requirement_in_ln){
@@ -398,7 +396,7 @@ class Messenger extends CI_Controller
                                     ));
                                 }
 
-                                //Give option to skip:
+                                //Give option to cancel:
                                 array_push($next_step_quick_replies, array(
                                     'content_type' => 'text',
                                     'title' => 'Cancel',
@@ -413,29 +411,32 @@ class Messenger extends CI_Controller
                                     $next_step_quick_replies
                                 );
 
+                            } elseif($ln_data['ln_type_entity_id']==4547){
+
+                                //Digest text message & try to make sense of it:
+                                $this->Communication_model->digest_text_message($en, $im['message']['text']);
+                                $send_unknown_reply = false;
+
                             }
-
-
-                            //
-                            if($ln_data['ln_type_entity_id']==4547){ //Student Sent Text Message
-                                //Digest message & try to make sense of it:
-                                $this->Communication_model->digest_message($en, $im['message']['text']);
-                            }
-
-
                         }
 
-                    } else {
-
-                        //Ooooopsi, this seems to be an unknown message type:
-                        $this->Database_model->ln_create(array(
-                            'ln_type_entity_id' => 4246, //Platform Error
-                            'ln_miner_entity_id' => 1, //Shervin/Developer
-                            'ln_content' => 'facebook_webhook() Received unknown message type! Analyze metadata for more details',
-                            'ln_metadata' => $ln_metadata,
-                        ));
-
+                        if($send_unknown_reply){
+                            //Let them know that we did not understand them:
+                            $this->Communication_model->dispatch_message(
+                                echo_random_message('one_way_only'),
+                                $en,
+                                true,
+                                array(
+                                    array(
+                                        'content_type' => 'text',
+                                        'title' => 'Next',
+                                        'payload' => 'GONEXT',
+                                    )
+                                )
+                            );
+                        }
                     }
+
 
                 } elseif (isset($im['referral']) || isset($im['postback'])) {
 
