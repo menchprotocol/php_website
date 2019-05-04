@@ -83,14 +83,6 @@ class Platform_model extends CI_Model
 
         if(count($student_intents) == 0){
 
-            //Log error:
-            $this->Database_model->ln_create(array(
-                'ln_parent_entity_id' => $en_id,
-                'ln_content' => 'actionplan_find_next_step() failed to locate student Action Plan intentions',
-                'ln_type_entity_id' => 4246, //Platform Error
-                'ln_miner_entity_id' => 1, //Shervin/Developer
-            ));
-
             if($advance_step){
 
                 $this->Communication_model->dispatch_message(

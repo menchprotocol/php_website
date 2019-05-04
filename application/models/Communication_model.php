@@ -1537,7 +1537,7 @@ class Communication_model extends CI_Model
 
                 //Inform them:
                 $this->Communication_model->dispatch_message(
-                    'Sweet, you account is now activated but you are not subscribed to any intents yet.',
+                    'Sweet, your account is now activated but you don\'t have any intentions added to your Action Plan yet.',
                     $en,
                     true
                 );
