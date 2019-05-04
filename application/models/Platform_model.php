@@ -1951,7 +1951,7 @@ class Platform_model extends CI_Model
                     $next_step_message = 'Here is the next step to ' . echo_in_outcome($ins[0]['in_outcome'], true) . ':';
                 } else {
                     //Multiple next steps:
-                    $next_step_message = 'Here are the ' . count($in__children) . ' steps to ' . echo_in_outcome($ins[0]['in_outcome'], true) . ':';
+                    $next_step_message = 'Here are the ' . count($in__children) . ' steps to ' . echo_in_outcome($ins[0]['in_outcome'], true, true) . ':';
                 }
 
 

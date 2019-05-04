@@ -181,7 +181,7 @@ function echo_url_embed($url, $full_message = null, $return_array = false, $star
     }
 }
 
-function echo_in_outcome($in_outcome, $hide = false, $append_class = ''){
+function echo_in_outcome($in_outcome, $hide = false, $reference_attribution = false){
 
     /*
      * This function applies the double column
@@ -189,6 +189,32 @@ function echo_in_outcome($in_outcome, $hide = false, $append_class = ''){
      * outcome part before ::
      *
      * */
+
+    if($reference_attribution){
+
+        $CI =& get_instance();
+        $attribution_in_id = intval(one_two_explode(' #',' ',$in_outcome));
+        if($attribution_in_id > 0){
+            //Fetch attribution intent:
+            $ins = $CI->Database_model->in_fetch(array(
+                'in_id' => $attribution_in_id,
+            ));
+        }
+
+        if(!isset($ins[0])){
+            //Report error:
+            $CI->Database_model->ln_create(array(
+                'ln_content' => 'echo_in_outcome() found intent outcome ['.$in_outcome.'] that has colon but not a valid intent reference',
+                'ln_type_entity_id' => 4246, //Platform Error
+                'ln_miner_entity_id' => 1, //Shervin/Developer
+            ));
+        } else {
+            //All good, replace title:
+            $in_outcome = $ins[0]['in_outcome'];
+        }
+
+    }
+
 
     //See if outcome has a double column:
     if(substr_count($in_outcome , '::') != 1){
@@ -201,7 +227,8 @@ function echo_in_outcome($in_outcome, $hide = false, $append_class = ''){
     if($hide){
         return trim($in_outcome_parts[1]);
     } else {
-        return '<span class="double-column-omit '.$append_class.'" data-toggle="tooltip" data-placement="top" title="Not shown to students">'.$in_outcome_parts[0].'::</span><b class="'.$append_class.'">'.$in_outcome_parts[1].'</b>';
+        //Miner view:
+        return '<span class="double-column-omit click_expand" data-toggle="tooltip" data-placement="top" title="Not shown to students">'.$in_outcome_parts[0].'::</span><b class="click_expand">'.$in_outcome_parts[1].'</b>';
     }
 }
 
@@ -1635,7 +1662,7 @@ function echo_in($in, $level, $in_parent_id = 0, $is_parent = false)
 
     } elseif ($level == 2) {
 
-        $ui .= '<span>&nbsp;<i id="handle-' . $ln_id . '" class="fal click_expand fa-plus-circle"></i> <span id="title_' . $ln_id . '" style="font-weight: 500;" class="cdr_crnt click_expand tree_title in_outcome_' . $in['in_id'] . '">' . echo_in_outcome($in['in_outcome'], false, 'click_expand') . '</span></span>';
+        $ui .= '<span>&nbsp;<i id="handle-' . $ln_id . '" class="fal click_expand fa-plus-circle"></i> <span id="title_' . $ln_id . '" style="font-weight: 500;" class="cdr_crnt click_expand tree_title in_outcome_' . $in['in_id'] . '">' . echo_in_outcome($in['in_outcome'], false) . '</span></span>';
 
     } elseif ($level == 3) {
 
