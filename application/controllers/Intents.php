@@ -340,10 +340,17 @@ class Intents extends CI_Controller
                 'status' => 0,
                 'message' => 'Invalid level',
             ));
+
+            //Warning: Intent Outcome Validation Logic is Duplicated! Search for "ZEEBRA" to find other instance...
         } elseif (!isset($_POST['in_outcome']) || strlen($_POST['in_outcome']) < 1) {
             return echo_json(array(
                 'status' => 0,
                 'message' => 'Missing Outcome',
+            ));
+        } elseif (substr_count($_POST['in_outcome'] , '  ') > 0) {
+            return echo_json(array(
+                'status' => 0,
+                'message' => 'Outcome cannot include double spaces',
             ));
         } elseif (strlen($_POST['in_outcome']) > $this->config->item('in_outcome_max')) {
             return echo_json(array(

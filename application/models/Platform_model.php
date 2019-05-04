@@ -2542,11 +2542,20 @@ class Platform_model extends CI_Model
         //Assign verb variables:
         $in_verb_entity_id = detect_starting_verb_id($in_outcome);
 
+        //Warning: Intent Outcome Validation Logic is Duplicated! Search for "ZEEBRA" to find other instance...
+
         if(substr_count($in_outcome , ' ') < 1){
 
             return array(
                 'status' => 0,
                 'message' => 'Outcome must have at-least two words',
+            );
+
+        } elseif(substr_count($in_outcome , '  ') > 0){
+
+            return array(
+                'status' => 0,
+                'message' => 'Outcome cannot include double spaces',
             );
 
         } elseif(strlen($in_outcome) < 5){
