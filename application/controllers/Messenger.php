@@ -143,10 +143,10 @@ class Messenger extends CI_Controller
                     //Set variables:
                     $sent_by_mench = (isset($im['message']['is_echo'])); //Indicates the message sent from the page itself
                     $en = $this->Platform_model->en_authenticate_psid(($sent_by_mench ? $im['recipient']['id'] : $im['sender']['id']));
-
+                    $is_quick_reply = (isset($im['message']['quick_reply']['payload']));
 
                     //Check if this Student is unsubscribed:
-                    if (count($this->Database_model->ln_fetch(array(
+                    if (!$is_quick_reply && count($this->Database_model->ln_fetch(array(
                             'ln_parent_entity_id' => 4455, //Unsubscribed
                             'ln_type_entity_id IN (' . join(',', $this->config->item('en_ids_4592')) . ')' => null, //Entity Link Connectors
                             'ln_child_entity_id' => $en['en_id'],
@@ -202,7 +202,7 @@ class Messenger extends CI_Controller
                      *
                      * */
 
-                    if (isset($im['message']['quick_reply']['payload'])) {
+                    if ($is_quick_reply) {
 
                         //Quick Reply Answer Received:
                         $ln_data['ln_type_entity_id'] = 4460;
