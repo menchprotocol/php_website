@@ -1948,19 +1948,33 @@ class Platform_model extends CI_Model
 
                 if(count($in__children) == 1){
                     //A single next step:
-                    $next_step_message = 'Here is the next step to ' . echo_in_outcome($ins[0]['in_outcome'], true, true) . ':';
+                    $next_step_message = 'There is a single step to ' . echo_in_outcome($ins[0]['in_outcome'], true, true);
                 } else {
                     //Multiple next steps:
-                    $next_step_message = 'There are ' . count($in__children) . ' steps to ' . echo_in_outcome($ins[0]['in_outcome'], true, true) . ':';
+                    $next_step_message = 'There are ' . count($in__children) . ' steps to ' . echo_in_outcome($ins[0]['in_outcome'], true, true);
                 }
 
 
-                if(!$fb_messenger_format){
-                    $next_step_message .= '<div class="list-group" style="margin-top:10px;">';
-                }
+
 
                 //List children:
-                foreach ($in__children as $key => $child_in) {
+                $key = 0;
+                foreach ($in__children as $child_in) {
+
+                    //Make sure this AND child has a "useful" outcome by NOT referencing it's ID in its outcome:
+                    if(substr_count($child_in['in_outcome'], '#'.$child_in['in_id']) > 0){
+                        //This is likely a "useless" outcome like "Answer question #8704" which should not be listed...
+                        continue;
+                    }
+
+                    if($key==0){
+
+                        $next_step_message .= ':';
+
+                        if(!$fb_messenger_format){
+                            $next_step_message .= '<div class="list-group" style="margin-top:10px;">';
+                        }
+                    }
 
                     //We know that the $next_step_message length cannot surpass the limit defined by fb_max_message variable!
                     //make sure message is within range:
@@ -2014,21 +2028,6 @@ class Platform_model extends CI_Model
                         //Add message:
                         $next_step_message .= "\n\n" . ($key + 1) . '. ';
 
-                        if($key==0){
-                            //Show only the first step forward for Messenger view:
-                            array_push($next_step_quick_replies, array(
-                                'content_type' => 'text',
-                                'title' => 'Next',
-                                'payload' => 'GONEXT',
-                            ));
-                            //Give option to skip:
-                            array_push($next_step_quick_replies, array(
-                                'content_type' => 'text',
-                                'title' => 'Skip',
-                                'payload' => 'SKIP-ACTIONPLAN_1_' . $in__children[0]['in_id'],
-                            ));
-                        }
-
                     }
 
 
@@ -2040,12 +2039,26 @@ class Platform_model extends CI_Model
 
                     }
 
-
-
+                    $key++;
                 }
 
-                if(!$fb_messenger_format){
-                    $next_step_message .= '</div>';
+                if($fb_messenger_format){
+                    //Show only the first step forward for Messenger view:
+                    array_push($next_step_quick_replies, array(
+                        'content_type' => 'text',
+                        'title' => 'Next',
+                        'payload' => 'GONEXT',
+                    ));
+                    //Give option to skip:
+                    array_push($next_step_quick_replies, array(
+                        'content_type' => 'text',
+                        'title' => 'Skip',
+                        'payload' => 'SKIP-ACTIONPLAN_1_' . $in__children[0]['in_id'],
+                    ));
+                } else {
+                    if($key > 0){
+                        $next_step_message .= '</div>';
+                    }
                 }
 
             }

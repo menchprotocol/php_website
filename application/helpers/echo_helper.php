@@ -181,7 +181,7 @@ function echo_url_embed($url, $full_message = null, $return_array = false, $star
     }
 }
 
-function echo_in_outcome($in_outcome, $hide = false, $reference_attribution = false){
+function echo_in_outcome($in_outcome, $fb_messenger_format = false, $reference_attribution = false){
 
     /*
      * This function applies the double column
@@ -224,7 +224,7 @@ function echo_in_outcome($in_outcome, $hide = false, $reference_attribution = fa
     //We have it, let's apply it:
     $in_outcome_parts = explode('::',$in_outcome,2);
 
-    if($hide){
+    if($fb_messenger_format){
         return trim($in_outcome_parts[1]);
     } else {
         //Miner view:
