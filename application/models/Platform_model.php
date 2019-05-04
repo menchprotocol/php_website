@@ -2181,6 +2181,15 @@ class Platform_model extends CI_Model
             //Give option to skip:
             if($fb_messenger_format){
 
+                //Give an option to confirm IF has submission requirements:
+                if($progression_type_entity_id==6144){
+                    array_push($next_step_quick_replies, array(
+                        'content_type' => 'text',
+                        'title' => 'OK',
+                        'payload' => 'INFORMREQUIREMENT_' . $ins[0]['in_id'],
+                    ));
+                }
+
                 //Give option to skip Student Intent:
                 array_push($next_step_quick_replies, array(
                     'content_type' => 'text',

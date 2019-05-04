@@ -1053,7 +1053,7 @@ class Communication_model extends CI_Model
             //Always returns a single (sometimes long) HTML message:
             array_push($output_messages, array(
                 'message_type' => 4570, //HTML Message Sent
-                'message_body' => '<div class="i_content"><div class="msg">' . nl2br($output_body_message) . '</div></div>',
+                'message_body' => '<div class="i_content"><div class="msg">' . nl2br(htmlentities($output_body_message)) . '</div></div>',
             ));
 
         }
@@ -1181,6 +1181,70 @@ class Communication_model extends CI_Model
 
     }
 
+
+    function initiate_skip_request($en, $in_id){
+
+        //See how many children would be skipped if they decide to do so:
+        $would_be_skipped_count = $this->Platform_model->actionplan_skip_recursive_down($en['en_id'], $in_id, false);
+
+        if ($would_be_skipped_count == 0) {
+
+            //Inform user:
+            $this->Communication_model->dispatch_message(
+                'I did not find anything to skip!',
+                $en,
+                true,
+                array(
+                    //Give option to go next:
+                    array(
+                        'content_type' => 'text',
+                        'title' => 'Next',
+                        'payload' => 'GONEXT',
+                    )
+                ),
+                array(
+                    'ln_parent_intent_id' => $in_id,
+                )
+            );
+
+            return false;
+
+        } else {
+
+            //Fetch this intent:
+            $ins = $this->Database_model->in_fetch(array(
+                'in_id' => $in_id,
+            ));
+            if(count($ins) < 1){
+                return false;
+            }
+
+            //We did find some steps to skip...
+            //Send student a message and confirm that they want to skip:
+            $this->Communication_model->dispatch_message(
+                'You are about to skip ' . $would_be_skipped_count . ' step' . echo__s($would_be_skipped_count) . '. In general I don\'t recommend skipping steps to maximize your chance to '.echo_in_outcome($ins[0]['in_outcome'], true, true),
+                $en,
+                true,
+                array(
+                    array(
+                        'content_type' => 'text',
+                        'title' => 'Skip ' . $would_be_skipped_count . ' Step' . echo__s($would_be_skipped_count) . ' 🚫',
+                        'payload' => 'SKIP-ACTIONPLAN_2_'.$in_id, //Confirm and skip
+                    ),
+                    array(
+                        'content_type' => 'text',
+                        'title' => 'Continue ▶️',
+                        'payload' => 'SKIP-ACTIONPLAN_-1_'.$in_id, //Cancel skipping
+                    ),
+                ),
+                array(
+                    'ln_parent_intent_id' => $in_id,
+                )
+            );
+
+        }
+
+    }
 
 
     function facebook_graph($action, $graph_url, $payload = array())
@@ -1521,7 +1585,7 @@ class Communication_model extends CI_Model
 
             //They rejected the offer... Acknowledge and give response:
             $this->Communication_model->dispatch_message(
-                'Ok, so how can I help you with your tech career?',
+                'Ok, so how can I help you land your dream programming job?',
                 $en,
                 true
             );
@@ -1648,13 +1712,19 @@ class Communication_model extends CI_Model
                         );
                     }
 
+                    //See if we have an overview:
+                    $overview_message = '';
+                    $source_info = echo_tree_references($ins[0], true);
+                    $step_info = echo_tree_steps($ins[0], true);
+                    $cost_info = echo_tree_costs($ins[0], true);
+
+                    if($source_info || $step_info || $cost_info){
+                        $overview_message = 'Here is an overview:' . "\n\n" . $source_info . $step_info . $cost_info . "\n";
+                    }
+
                     //Send message for final confirmation with the overview of how long/difficult it would be to accomplish this intention:
                     $this->Communication_model->dispatch_message(
-                        'Here is an overview:' . "\n\n" .
-                        echo_tree_references($ins[0], true) .
-                        echo_tree_steps($ins[0], true) .
-                        echo_tree_costs($ins[0], true) .
-                        "\n" . 'Should I add the intention to ' . $ins[0]['in_outcome'] . ' to your Action Plan?',
+                        $overview_message . 'Should I add the intention to ' . $ins[0]['in_outcome'] . ' to your Action Plan?',
                         $en,
                         true,
                         array(
@@ -1690,6 +1760,34 @@ class Communication_model extends CI_Model
 
             //Add to Action Plan:
             $this->Platform_model->actionplan_add($en['en_id'], $in_id);
+
+        } elseif (substr_count($quick_reply_payload, 'INFORMREQUIREMENT_') == 1) {
+
+            //Educate students on how to submit the intent completion requirement:
+            $in_id = intval(one_two_explode('INFORMREQUIREMENT_', '', $quick_reply_payload));
+
+            //Fetch intent details:
+            $req_ins = $this->Database_model->in_fetch(array(
+                'in_id' => $in_id,
+                'in_status' => 2, //Published
+            ));
+
+            if(count($req_ins) > 0){
+
+                $en_all_4331 = $this->config->item('en_all_4331');
+
+                //Inform Student:
+                $this->Communication_model->dispatch_message(
+                    'Ok! Simply send me a '.$en_all_4331[$req_ins[0]['in_requirement_entity_id']]['m_name'].' message to complete the intention to '.echo_in_outcome($req_ins[0]['in_outcome'], true),
+                    $en,
+                    true,
+                    array(),
+                    array(
+                        'ln_parent_intent_id' => $in_id,
+                    )
+                );
+
+            }
 
         } elseif (substr_count($quick_reply_payload, 'SKIP-ACTIONPLAN_') == 1) {
 
@@ -1730,58 +1828,7 @@ class Communication_model extends CI_Model
 
                 //User has indicated they want to skip this tree and move on to the next item in-line:
                 //Lets confirm the implications of this SKIP to ensure they are aware:
-
-                //See how many children would be skipped if they decide to do so:
-                $would_be_skipped_count = $this->Platform_model->actionplan_skip_recursive_down($en['en_id'], $in_id, false);
-
-                if ($would_be_skipped_count == 0) {
-
-                    //Inform user:
-                    $this->Communication_model->dispatch_message(
-                        'I did not find anything to skip!',
-                        $en,
-                        true,
-                        array(
-                            //Give option to go next:
-                            array(
-                                'content_type' => 'text',
-                                'title' => 'Next',
-                                'payload' => 'GONEXT',
-                            )
-                        ),
-                        array(
-                            'ln_parent_intent_id' => $in_id,
-                        )
-                    );
-
-                    return false;
-
-                } else {
-
-                    //We did find some steps to skip...
-                    //Send student a message and confirm that they want to skip:
-                    $this->Communication_model->dispatch_message(
-                        'You are about to skip ' . $would_be_skipped_count . ' step' . echo__s($would_be_skipped_count) . '. In general I don\'t recommend skipping steps to maximize your chance to succeed.',
-                        $en,
-                        true,
-                        array(
-                            array(
-                                'content_type' => 'text',
-                                'title' => 'Skip ' . $would_be_skipped_count . ' Step' . echo__s($would_be_skipped_count) . ' 🚫',
-                                'payload' => 'SKIP-ACTIONPLAN_2_'.$in_id, //Confirm and skip
-                            ),
-                            array(
-                                'content_type' => 'text',
-                                'title' => 'Continue ▶️',
-                                'payload' => 'SKIP-ACTIONPLAN_-1_'.$in_id, //Cancel skipping
-                            ),
-                        ),
-                        array(
-                            'ln_parent_intent_id' => $in_id,
-                        )
-                    );
-
-                }
+                $this->Platform_model->initiate_skip_request($en, $in_id);
 
             } else {
 
@@ -1951,20 +1998,28 @@ class Communication_model extends CI_Model
                 )
             );
 
-        } elseif (in_array($fb_received_message, array('skip', 'skip it'))) {
+        } elseif ($fb_received_message == 'skip') {
 
-            $this->Communication_model->dispatch_message(
-                'I am not yet trained to skip it from here. You can skip via the Action Plan.',
-                $en,
-                true,
-                array(
+            //Find the next intent in the Action Plan to skip:
+            $next_in_id = $this->Platform_model->actionplan_find_next_step($en['en_id'], false);
+
+            if($next_in_id > 0){
+                //Initiate skip request:
+                $this->Platform_model->initiate_skip_request($en, $next_in_id);
+            } else {
+                $this->Communication_model->dispatch_message(
+                    'I could not find any Action Plan steps to skip.',
+                    $en,
+                    true,
                     array(
-                        'content_type' => 'text',
-                        'title' => 'Next',
-                        'payload' => 'GONEXT',
+                        array(
+                            'content_type' => 'text',
+                            'title' => 'Next',
+                            'payload' => 'GONEXT',
+                        )
                     )
-                )
-            );
+                );
+            }
 
         } elseif (in_array($fb_received_message, array('help', 'support', 'f1', 'sos'))) {
 
