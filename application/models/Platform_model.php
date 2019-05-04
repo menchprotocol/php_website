@@ -128,11 +128,13 @@ class Platform_model extends CI_Model
                         'in_id' => $next_in_id,
                     ));
 
-                    $this->Communication_model->dispatch_message(
-                        'Let\'s '. $next_step_ins[0]['in_outcome'],
-                        array('en_id' => $en_id),
-                        true
-                    );
+                    if(substr_count($next_step_ins[0]['in_outcome'], '::')==0){
+                        $this->Communication_model->dispatch_message(
+                            'Let\'s '. $next_step_ins[0]['in_outcome'],
+                            array('en_id' => $en_id),
+                            true
+                        );
+                    }
 
                 }
 
