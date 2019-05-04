@@ -2073,6 +2073,8 @@ class Platform_model extends CI_Model
             //Intent has no requirements and no children, so give call to Action:
             if($fb_messenger_format){
 
+                $next_step_message = 'Say "Next" to continue...';
+
                 //Give option to skip Student Intent:
                 array_push($next_step_quick_replies, array(
                     'content_type' => 'text',
