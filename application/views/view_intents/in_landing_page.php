@@ -34,7 +34,7 @@ if (!$hide_subscribe) {
 
     if($step_info || $source_info || $cost_info){
         echo '<h3 style="margin-bottom:5px; margin-top:15px !important;">Overview:</h3>';
-        echo '<div style="margin:5px 0 25px 5px;" class="maxout">';
+        echo '<div style="margin:5px 0 25px 0;" class="maxout">';
         echo $source_info;
         echo $step_info;
         echo $cost_info;

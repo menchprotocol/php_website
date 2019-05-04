@@ -1633,7 +1633,7 @@ class Platform_model extends CI_Model
 
         $no_message = (count($this->Database_model->ln_fetch(array(
                 'ln_status' => 2, //Published
-                'ln_type_entity_id IN (' . join(',', $this->config->item('en_ids_6264')) . ')' => null, //Communicable Intent Notes
+                'ln_type_entity_id' => 4231, //Intent Note Messages
                 'ln_child_intent_id' => $in['in_id'],
             )))==0);
 

@@ -11,36 +11,7 @@ defined('BASEPATH') OR exit('No direct script access allowed');
  *
  */
 
-//Generated 2019-05-03 21:32:28 PST
-
-//Communicable Intent Notes:
-$config['en_ids_6264'] = array(4231, 4232, 4602, 6242);
-$config['en_all_6264'] = array(
-    4231 => array(
-        'm_icon' => '<i class="fal fa-comment"></i>',
-        'm_name' => 'Intent Note Message',
-        'm_desc' => '',
-        'm_parents' => array(6264, 4986, 4603, 4593, 4485, 4595),
-    ),
-    4232 => array(
-        'm_icon' => '<i class="fal fa-medal"></i>',
-        'm_name' => 'Intent Note Bonus Tip',
-        'm_desc' => '',
-        'm_parents' => array(6264, 5005, 4986, 4603, 4593, 4485, 4595),
-    ),
-    4602 => array(
-        'm_icon' => '<i class="fal fa-cloud-upload"></i>',
-        'm_name' => 'Intent Note Webhook',
-        'm_desc' => '',
-        'm_parents' => array(6264, 5005, 4986, 4256, 4595, 4485, 4593),
-    ),
-    6242 => array(
-        'm_icon' => '<i class="far fa-check-square"></i>',
-        'm_name' => 'Intent Note On-Complete Tip',
-        'm_desc' => '',
-        'm_parents' => array(6264, 4603, 4595, 4593, 4986, 5005, 4485),
-    ),
-);
+//Generated 2019-05-04 10:30:36 PST
 
 //Trigger On-Complete Tips:
 $config['en_ids_6255'] = array(4559, 6144, 6157, 6158);
@@ -112,19 +83,19 @@ $config['en_all_4986'] = array(
         'm_icon' => '<i class="fal fa-comment"></i>',
         'm_name' => 'Intent Note Message',
         'm_desc' => '',
-        'm_parents' => array(6264, 4986, 4603, 4593, 4485, 4595),
+        'm_parents' => array(4986, 4603, 4593, 4485, 4595),
     ),
     4232 => array(
         'm_icon' => '<i class="fal fa-medal"></i>',
         'm_name' => 'Intent Note Bonus Tip',
         'm_desc' => '',
-        'm_parents' => array(6264, 5005, 4986, 4603, 4593, 4485, 4595),
+        'm_parents' => array(5005, 4986, 4603, 4593, 4485, 4595),
     ),
     4602 => array(
         'm_icon' => '<i class="fal fa-cloud-upload"></i>',
         'm_name' => 'Intent Note Webhook',
         'm_desc' => '',
-        'm_parents' => array(6264, 5005, 4986, 4256, 4595, 4485, 4593),
+        'm_parents' => array(5005, 4986, 4256, 4595, 4485, 4593),
     ),
     4983 => array(
         'm_icon' => '<i class="fal fa-thumbs-up"></i>',
@@ -142,7 +113,7 @@ $config['en_all_4986'] = array(
         'm_icon' => '<i class="far fa-check-square"></i>',
         'm_name' => 'Intent Note On-Complete Tip',
         'm_desc' => '',
-        'm_parents' => array(6264, 4603, 4595, 4593, 4986, 5005, 4485),
+        'm_parents' => array(4603, 4595, 4593, 4986, 5005, 4485),
     ),
 );
 
@@ -183,25 +154,25 @@ $config['en_all_6225'] = array(
         'm_icon' => '<i class="fal fa-transgender"></i>',
         'm_name' => 'Genders',
         'm_desc' => 'Choose one of the following:',
-        'm_parents' => array(6225, 6204, 4432),
+        'm_parents' => array(6225, 6204),
     ),
     3287 => array(
         'm_icon' => '<i class="fal fa-language"></i>',
         'm_name' => 'Languages',
         'm_desc' => 'Choose all the languages you speak fluently:',
-        'm_parents' => array(6225, 4432, 6122, 4603),
+        'm_parents' => array(6225, 6122, 4603),
     ),
     3089 => array(
         'm_icon' => '<i class="fal fa-globe"></i>',
         'm_name' => 'Countries',
         'm_desc' => 'Choose your current country of residence:',
-        'm_parents' => array(6225, 6204, 4432),
+        'm_parents' => array(6225, 6204),
     ),
     3289 => array(
         'm_icon' => '<i class="fal fa-map"></i>',
         'm_name' => 'Timezones',
         'm_desc' => 'Choose your current timezone:',
-        'm_parents' => array(6225, 6204, 4432),
+        'm_parents' => array(6225, 6204),
     ),
     6123 => array(
         'm_icon' => '<i class="fal fa-share-alt-square"></i>',
@@ -631,7 +602,7 @@ $config['en_all_4280'] = array(
 );
 
 //Human Groups:
-$config['en_ids_4432'] = array(1281, 1308, 2750, 3084, 3089, 3287, 3289, 3290, 4430, 4433, 4600);
+$config['en_ids_4432'] = array(1281, 1308, 3084, 4430, 4433);
 $config['en_all_4432'] = array(
     1281 => array(
         'm_icon' => '🛡️',
@@ -641,45 +612,15 @@ $config['en_all_4432'] = array(
     ),
     1308 => array(
         'm_icon' => '⛏️',
-        'm_name' => 'Mench Certified Miners',
+        'm_name' => 'Mench Miners',
         'm_desc' => '',
         'm_parents' => array(4463, 4432, 4426),
-    ),
-    2750 => array(
-        'm_icon' => '🏢',
-        'm_name' => 'Organizations',
-        'm_desc' => '',
-        'm_parents' => array(4432, 4600),
     ),
     3084 => array(
         'm_icon' => '⭐',
         'm_name' => 'Industry Experts',
         'm_desc' => '',
         'm_parents' => array(4990, 4432, 4255, 4463),
-    ),
-    3089 => array(
-        'm_icon' => '<i class="fal fa-globe"></i>',
-        'm_name' => 'Countries',
-        'm_desc' => '',
-        'm_parents' => array(6225, 6204, 4432),
-    ),
-    3287 => array(
-        'm_icon' => '<i class="fal fa-language"></i>',
-        'm_name' => 'Languages',
-        'm_desc' => '',
-        'm_parents' => array(6225, 4432, 6122, 4603),
-    ),
-    3289 => array(
-        'm_icon' => '<i class="fal fa-map"></i>',
-        'm_name' => 'Timezones',
-        'm_desc' => '',
-        'm_parents' => array(6225, 6204, 4432),
-    ),
-    3290 => array(
-        'm_icon' => '<i class="fal fa-transgender"></i>',
-        'm_name' => 'Genders',
-        'm_desc' => '',
-        'm_parents' => array(6225, 6204, 4432),
     ),
     4430 => array(
         'm_icon' => '🎓',
@@ -689,15 +630,9 @@ $config['en_all_4432'] = array(
     ),
     4433 => array(
         'm_icon' => '⌨️',
-        'm_name' => 'Mench Open-Source Developers',
+        'm_name' => 'Mench Developers',
         'm_desc' => '',
         'm_parents' => array(4463, 4432, 4426),
-    ),
-    4600 => array(
-        'm_icon' => '<i class="fal fa-badge-check"></i>',
-        'm_name' => 'Account Holders',
-        'm_desc' => '',
-        'm_parents' => array(4432, 4527),
     ),
 );
 
@@ -807,7 +742,7 @@ $config['en_all_5005'] = array(
         'm_icon' => '<i class="fal fa-medal"></i>',
         'm_name' => 'Intent Note Bonus Tip',
         'm_desc' => '',
-        'm_parents' => array(6264, 5005, 4986, 4603, 4593, 4485, 4595),
+        'm_parents' => array(5005, 4986, 4603, 4593, 4485, 4595),
     ),
     4331 => array(
         'm_icon' => '<i class="fal fa-comment-check"></i>',
@@ -819,7 +754,7 @@ $config['en_all_5005'] = array(
         'm_icon' => '<i class="fal fa-cloud-upload"></i>',
         'm_name' => 'Intent Note Webhook',
         'm_desc' => '',
-        'm_parents' => array(6264, 5005, 4986, 4256, 4595, 4485, 4593),
+        'm_parents' => array(5005, 4986, 4256, 4595, 4485, 4593),
     ),
     4997 => array(
         'm_icon' => '<i class="fal fa-list-alt"></i>',
@@ -837,7 +772,7 @@ $config['en_all_5005'] = array(
         'm_icon' => '<i class="far fa-check-square"></i>',
         'm_name' => 'Intent Note On-Complete Tip',
         'm_desc' => '',
-        'm_parents' => array(6264, 4603, 4595, 4593, 4986, 5005, 4485),
+        'm_parents' => array(4603, 4595, 4593, 4986, 5005, 4485),
     ),
 );
 
@@ -1060,7 +995,7 @@ $config['en_ids_4426'] = array(1308, 3288, 4426, 4430, 4433, 4595, 4755, 4997, 5
 $config['en_all_4426'] = array(
     1308 => array(
         'm_icon' => '⛏️',
-        'm_name' => 'Mench Certified Miners',
+        'm_name' => 'Mench Miners',
         'm_desc' => 'Requires admin review and approval',
         'm_parents' => array(4463, 4432, 4426),
     ),
@@ -1084,7 +1019,7 @@ $config['en_all_4426'] = array(
     ),
     4433 => array(
         'm_icon' => '⌨️',
-        'm_name' => 'Mench Open-Source Developers',
+        'm_name' => 'Mench Developers',
         'm_desc' => 'Requires admin review and approval',
         'm_parents' => array(4463, 4432, 4426),
     ),
@@ -1372,13 +1307,13 @@ $config['en_all_4595'] = array(
         'm_icon' => '<i class="fal fa-comment"></i>',
         'm_name' => 'Intent Note Message',
         'm_desc' => '100',
-        'm_parents' => array(6264, 4986, 4603, 4593, 4485, 4595),
+        'm_parents' => array(4986, 4603, 4593, 4485, 4595),
     ),
     4232 => array(
         'm_icon' => '<i class="fal fa-medal"></i>',
         'm_name' => 'Intent Note Bonus Tip',
         'm_desc' => '100',
-        'm_parents' => array(6264, 5005, 4986, 4603, 4593, 4485, 4595),
+        'm_parents' => array(5005, 4986, 4603, 4593, 4485, 4595),
     ),
     4242 => array(
         'm_icon' => '<i class="fal fa-sync"></i>',
@@ -1474,7 +1409,7 @@ $config['en_all_4595'] = array(
         'm_icon' => '<i class="fal fa-cloud-upload"></i>',
         'm_name' => 'Intent Note Webhook',
         'm_desc' => '100',
-        'm_parents' => array(6264, 5005, 4986, 4256, 4595, 4485, 4593),
+        'm_parents' => array(5005, 4986, 4256, 4595, 4485, 4593),
     ),
     4983 => array(
         'm_icon' => '<i class="fal fa-thumbs-up"></i>',
@@ -1492,7 +1427,7 @@ $config['en_all_4595'] = array(
         'm_icon' => '<i class="far fa-check-square"></i>',
         'm_name' => 'Intent Note On-Complete Tip',
         'm_desc' => '100',
-        'm_parents' => array(6264, 4603, 4595, 4593, 4986, 5005, 4485),
+        'm_parents' => array(4603, 4595, 4593, 4986, 5005, 4485),
     ),
 );
 
@@ -1509,7 +1444,7 @@ $config['en_all_4600'] = array(
         'm_icon' => '🏢',
         'm_name' => 'Organizations',
         'm_desc' => '',
-        'm_parents' => array(4432, 4600),
+        'm_parents' => array(4600),
     ),
 );
 
@@ -1538,13 +1473,13 @@ $config['en_all_4593'] = array(
         'm_icon' => '<i class="fal fa-comment"></i>',
         'm_name' => 'Intent Note Message',
         'm_desc' => '',
-        'm_parents' => array(6264, 4986, 4603, 4593, 4485, 4595),
+        'm_parents' => array(4986, 4603, 4593, 4485, 4595),
     ),
     4232 => array(
         'm_icon' => '<i class="fal fa-medal"></i>',
         'm_name' => 'Intent Note Bonus Tip',
         'm_desc' => '',
-        'm_parents' => array(6264, 5005, 4986, 4603, 4593, 4485, 4595),
+        'm_parents' => array(5005, 4986, 4603, 4593, 4485, 4595),
     ),
     4235 => array(
         'm_icon' => '<i class="fas fa-bullseye-arrow"></i>',
@@ -1820,7 +1755,7 @@ $config['en_all_4593'] = array(
         'm_icon' => '<i class="fal fa-cloud-upload"></i>',
         'm_name' => 'Intent Note Webhook',
         'm_desc' => '',
-        'm_parents' => array(6264, 5005, 4986, 4256, 4595, 4485, 4593),
+        'm_parents' => array(5005, 4986, 4256, 4595, 4485, 4593),
     ),
     4983 => array(
         'm_icon' => '<i class="fal fa-thumbs-up"></i>',
@@ -1988,7 +1923,7 @@ $config['en_all_4593'] = array(
         'm_icon' => '<i class="far fa-check-square"></i>',
         'm_name' => 'Intent Note On-Complete Tip',
         'm_desc' => '',
-        'm_parents' => array(6264, 4603, 4595, 4593, 4986, 5005, 4485),
+        'm_parents' => array(4603, 4595, 4593, 4986, 5005, 4485),
     ),
     6255 => array(
         'm_icon' => '<i class="far fa-calendar-check"></i>',
@@ -2169,7 +2104,7 @@ $config['en_all_4485'] = array(
         'm_icon' => '<i class="fal fa-comment"></i>',
         'm_name' => 'Message',
         'm_desc' => 'Delivered in-order when student initially starts this intent. Goal is to give key insights that streamline the execution of the intention.',
-        'm_parents' => array(6264, 4986, 4603, 4593, 4485, 4595),
+        'm_parents' => array(4986, 4603, 4593, 4485, 4595),
     ),
     4983 => array(
         'm_icon' => '<i class="fal fa-thumbs-up"></i>',
@@ -2187,19 +2122,19 @@ $config['en_all_4485'] = array(
         'm_icon' => '<i class="fal fa-medal"></i>',
         'm_name' => 'Bonus Tip',
         'm_desc' => 'Delivered in-order and one-by-one (drip-format) either during or after the intent completion. Goal is to re-iterate key insights to help students retain learnings over time.',
-        'm_parents' => array(6264, 5005, 4986, 4603, 4593, 4485, 4595),
+        'm_parents' => array(5005, 4986, 4603, 4593, 4485, 4595),
     ),
     6242 => array(
         'm_icon' => '<i class="far fa-check-square"></i>',
         'm_name' => 'On-Complete Tip',
         'm_desc' => 'Message delivered to students when they complete an intention.',
-        'm_parents' => array(6264, 4603, 4595, 4593, 4986, 5005, 4485),
+        'm_parents' => array(4603, 4595, 4593, 4986, 5005, 4485),
     ),
     4602 => array(
         'm_icon' => '<i class="fal fa-cloud-upload"></i>',
         'm_name' => 'Webhook',
         'm_desc' => 'All URLs called along with POST variables that pass intent and completion details. Goal is to enable additional workflows like issuing a completion certificate.',
-        'm_parents' => array(6264, 5005, 4986, 4256, 4595, 4485, 4593),
+        'm_parents' => array(5005, 4986, 4256, 4595, 4485, 4593),
     ),
     6093 => array(
         'm_icon' => '<i class="fal fa-megaphone"></i>',

@@ -242,7 +242,7 @@ echo '<div class="row">';
 
         echo '<h1><i class="fas fa-link rotate90"></i> Links</h1>';
 
-        echo '<div><a href="javascript:void();" onclick="$(\'.show-filter\').toggleClass(\'hidden\');">'.( $has_filters && 0 ? '<i class="fal fa-minus-circle show-filter"></i><i class="fal fa-plus-circle show-filter hidden"></i>' : '<i class="fal fa-plus-circle show-filter"></i><i class="fal fa-minus-circle show-filter hidden"></i>').' Toggle Filters</a></div>';
+        echo '<div><a href="javascript:void();" onclick="$(\'.show-filter\').toggleClass(\'hidden\');"><i class="far fa-filter"></i> Toggle Filters</a></div>';
 
 
         echo '<div class="inline-box show-filter '.( $has_filters && 0 ? '' : 'hidden' ).'">';

@@ -32,41 +32,12 @@ class Intents extends CI_Controller
 
         } else {
 
-            //Fetch home page intent:
-            $home_ins = $this->Database_model->in_fetch(array(
-                'in_id' => $this->config->item('in_home_page'),
+            //Show index page:
+            $this->load->view('view_shared/public_header', array(
+                'title' => 'Land Your Dream Programming Job',
             ));
-
-            //How many featured intents do we have?
-            $featured_ins = $this->Database_model->ln_fetch(array(
-                'ln_status' => 2, //Published
-                'in_status' => 2, //Published
-                'ln_type_entity_id' => 4228, //Fixed Intent Links
-                'ln_parent_intent_id' => $this->config->item('in_featured'), //Feature Mench Intentions
-            ), array('in_child'), 0, 0, array('ln_order' => 'ASC'));
-
-            if(count($home_ins)<1 && count($featured_ins) > 0){
-
-                //Go to the first featured intent:
-                redirect_message('/'.$featured_ins[0]['ln_child_intent_id']);
-
-            } elseif(count($home_ins) > 0){
-
-                //Show index page:
-                $this->load->view('view_shared/public_header', array(
-                    'title' => echo_in_outcome($home_ins[0]['in_outcome'], true),
-                ));
-                $this->load->view('view_intents/in_home_featured_ui', array(
-                    'in' => $home_ins[0],
-                    'featured_ins' => $featured_ins,
-                ));
-                $this->load->view('view_shared/public_footer');
-
-            } else {
-
-                //Oooopsi, unable to load the home page intent
-
-            }
+            $this->load->view('view_intents/mench_home');
+            $this->load->view('view_shared/public_footer');
         }
     }
 

@@ -91,7 +91,9 @@ foreach (echo_fixed_fields() as $object_id => $statuses) {
         $this_ui .= '</tr>';
 
         //Increase total counter:
-        $this_totals += $count;
+        if($status_num >= 0){
+            $this_totals += $count;
+        }
     }
 
 
@@ -115,15 +117,15 @@ foreach (echo_fixed_fields() as $object_id => $statuses) {
 
         //Report types:
         echo '<select id="in_group_by" class="form-control border stats-select">';
-        echo '<option value="by_in_status">Group By: 4 Statuses</option>';
-        echo '<option value="by_in_verb">Group By: '.count($in_verbs).' Verbs</option>';
-        echo '<option value="by_in_types">Group By: 2 Intent Types</option>';
-        echo '<option value="by_in_completion">Group By: '.count($this->config->item('en_all_4331')).' Completion Methods</option>';
+        echo '<option value="by_in_types">2 Intent Types</option>';
+        echo '<option value="by_in_verb">'.count($in_verbs).' Verbs</option>';
+        echo '<option value="by_in_completion">'.count($this->config->item('en_all_4331')).' Completion Methods</option>';
+        echo '<option value="by_in_status">4 Statuses</option>';
         echo '</select>';
 
 
         //Intent Statuses:
-        echo '<table class="table table-condensed table-striped stats-table mini-stats-table in_group_by by_in_status">';
+        echo '<table class="table table-condensed table-striped stats-table mini-stats-table in_group_by by_in_status hidden">';
         echo $this_ui;
         echo '</table>';
 
@@ -140,8 +142,8 @@ foreach (echo_fixed_fields() as $object_id => $statuses) {
 
 
         //Intent Types:
-        echo '<table class="table table-condensed table-striped stats-table mini-stats-table in_group_by by_in_types hidden">';
-        foreach($this->config->item('en_all_4530') as $in_type_id => $in_type){
+        echo '<table class="table table-condensed table-striped stats-table mini-stats-table in_group_by by_in_types">';
+        foreach(echo_fixed_fields('in_type') as $in_type_id => $in_type){
 
             //Count this type:
             $in_types = $this->Database_model->in_fetch(array(
@@ -150,7 +152,7 @@ foreach (echo_fixed_fields() as $object_id => $statuses) {
             ), array(), 0, 0, array(), 'COUNT(in_id) as totals');
 
             echo '<tr>';
-            echo '<td style="text-align: left;"><span style="width:29px; display: inline-block; text-align: center;">'.$in_type['m_icon'].'</span><span class="underdot" data-toggle="tooltip" title="'.$in_type['m_desc'].'" data-placement="top">'.$in_type['m_name'].'</span></td>';
+            echo '<td style="text-align: left;"><span style="width:29px; display: inline-block; text-align: center;">'.$in_type['s_icon'].'</span><span class="underdot" data-toggle="tooltip" title="'.$in_type['s_desc'].'" data-placement="top">'.$in_type['s_name'].'</span></td>';
             echo '<td style="text-align: right;">'.number_format($in_types[0]['totals'],0).' <i class="fas fa-hashtag"></i></td>';
             echo '</tr>';
         }
@@ -212,13 +214,13 @@ foreach (echo_fixed_fields() as $object_id => $statuses) {
 
             //Echo stats:
             $expert_sources .= '<tr>';
-            $expert_sources .= '<td style="text-align: left;"><span style="width: 26px; display: inline-block; text-align: center;">'.( strlen($source_en['en_icon']) > 0 ? $source_en['en_icon'] : '<i class="fas fa-at grey-at"></i>' ).'</span>'.$source_en['en_name'].'<span data-toggle="tooltip" title="'.number_format($mined_source_count,0).'/'.number_format($source_count,0).' '.$source_en['en_name'].' have been fully mined" data-placement="top" class="underdot" style="font-size:0.7em; margin-left:5px;">'.number_format(($mined_source_count/$source_count*100), 1).'%</span></td>';
+            $expert_sources .= '<td style="text-align: left;"><span style="width: 26px; display: inline-block; text-align: center;">'.( strlen($source_en['en_icon']) > 0 ? $source_en['en_icon'] : '<i class="fas fa-at grey-at"></i>' ).'</span>'.$source_en['en_name'].'<span data-toggle="tooltip" title="'.number_format($mined_source_count,0).'/'.number_format($source_count,0).' '.$source_en['en_name'].' have been mined completely" data-placement="top" class="underdot" style="font-size:0.7em; margin-left:5px;">'.number_format(($mined_source_count/$source_count*100), 1).'%</span></td>';
             $expert_sources .= '<td style="text-align: right;"><a href="/entities/'.$source_en['en_id'].'" data-toggle="tooltip" title="View all '.$source_count.' '.strtolower($source_en['en_name']).'" data-placement="top">'.number_format($source_count, 0).'</a> <i class="fas fa-at"></i></td>';
             $expert_sources .= '</tr>';
 
         }
         $expert_sources .= '<tr style="font-weight: bold;">';
-        $expert_sources .= '<td style="text-align:left;"><span style="width: 26px; display: inline-block; text-align: center;"><i class="fas fa-asterisk"></i></span>All '.$ie_ens[0]['en_name'].'<span data-toggle="tooltip" title="'.number_format($all_mined_source_count_weigh,0).'/'.number_format($all_source_count_weight,0).' expert sources have been fully mined" data-placement="top" class="underdot" style="font-size:0.7em; margin-left:5px;">'.($all_source_count_weight > 0 ? number_format(($all_mined_source_count_weigh/$all_source_count_weight*100), 1) : 0).'%</span>&nbsp;</td>';
+        $expert_sources .= '<td style="text-align:left;"><span style="width: 26px; display: inline-block; text-align: center;"><i class="fas fa-asterisk"></i></span>All '.$ie_ens[0]['en_name'].'<span data-toggle="tooltip" title="'.number_format($all_mined_source_count_weigh,0).'/'.number_format($all_source_count_weight,0).' expert sources have been mined completely" data-placement="top" class="underdot" style="font-size:0.7em; margin-left:5px;">'.($all_source_count_weight > 0 ? number_format(($all_mined_source_count_weigh/$all_source_count_weight*100), 1) : 0).'%</span>&nbsp;</td>';
         $expert_sources .= '<td style="text-align: right;"><a href="/entities/3000">'.number_format($all_source_count, 0).'</a> <i class="fas fa-at"></i></td>';
         $expert_sources .= '</tr>';
 
@@ -241,7 +243,7 @@ foreach (echo_fixed_fields() as $object_id => $statuses) {
 
             $people_group_ui .= '<tr>';
             $people_group_ui .= '<td style="text-align: left;"><span style="width: 26px; display: inline-block; text-align: center;">'.$people_group['m_icon'].'</span>'.$people_group['m_name'].'</td>';
-            $people_group_ui .= '<td style="text-align: right;"><a href="/entities/'.$source_en['en_id'].'" data-toggle="tooltip" title="View all '.$child_trs[0]['en__child_count'].' members" data-placement="top">'.number_format($child_trs[0]['en__child_count'], 0).'</a> <i class="fas fa-at"></i></td>';
+            $people_group_ui .= '<td style="text-align: right;"><a href="/entities/'.$group_en_id.'" data-toggle="tooltip" title="View all '.$child_trs[0]['en__child_count'].' members" data-placement="top">'.number_format($child_trs[0]['en__child_count'], 0).'</a> <i class="fas fa-at"></i></td>';
             $people_group_ui .= '</tr>';
         }
 
@@ -256,20 +258,20 @@ foreach (echo_fixed_fields() as $object_id => $statuses) {
 
         //Report types:
         echo '<select id="en_group_by" class="form-control border stats-select">';
-        echo '<option value="by_en_status">Group By: 4 Statuses</option>';
-        echo '<option value="by_en_people_groups">List Subset: '.echo_number($all_people).' People</option>';
-        echo '<option value="by_en_experts">List Subset: '.echo_number($all_source_count).' Expert Sources</option>';
+        echo '<option value="by_en_experts">'.echo_number($all_source_count).' Expert Sources</option>';
+        echo '<option value="by_en_people_groups">'.echo_number($all_people).' People</option>';
+        echo '<option value="by_en_status">4 Statuses</option>';
         echo '</select>';
 
 
         //Entity Status:
-        echo '<table class="table table-condensed table-striped stats-table mini-stats-table en_group_by by_en_status">';
+        echo '<table class="table table-condensed table-striped stats-table mini-stats-table en_group_by by_en_status hidden">';
         echo $this_ui;
         echo '</table>';
 
 
         //Expert Sources:
-        echo '<table class="table table-condensed table-striped stats-table en_group_by by_en_experts hidden">';
+        echo '<table class="table table-condensed table-striped stats-table en_group_by by_en_experts">';
         echo $expert_sources;
         echo '</table>';
 
@@ -351,7 +353,7 @@ foreach (echo_fixed_fields() as $object_id => $statuses) {
 
             //Echo stats:
             $point_ln_types .= '<tr>';
-            $point_ln_types .= '<td style="text-align: left;"><span style="width: 26px; display: inline-block; text-align: center;">'.( strlen($ln['en_icon']) > 0 ? $ln['en_icon'] : '<i class="fas fa-at grey-at"></i>' ).'</span><a href="/entities/'.$ln['ln_type_entity_id'].'">'.$ln['en_name'].'</a>'.( count($rate_trs) > 0 ? '<span class="underdot" data-toggle="tooltip" title="Each link currently issues '.$rate_trs[0]['ln_content'].' points" data-placement="top" style="font-size:0.7em; margin-left:5px;">'.number_format($rate_trs[0]['ln_content'],0).'<i class="fas fa-award" style="margin-left: 2px;"></i></span>' : '' ).'</td>';
+            $point_ln_types .= '<td style="text-align: left;"><span style="width: 26px; display: inline-block; text-align: center;">'.( strlen($ln['en_icon']) > 0 ? $ln['en_icon'] : '<i class="fas fa-at grey-at"></i>' ).'</span><a href="/entities/'.$ln['ln_type_entity_id'].'">'.$ln['en_name'].'</a>'.( count($rate_trs) > 0 ? '<span class="underdot" data-toggle="tooltip" title="Miners earn '.$rate_trs[0]['ln_content'].' points per each '.$ln['en_name'].' link" data-placement="top" style="font-size:0.7em; margin-left:5px;">'.number_format($rate_trs[0]['ln_content'],0).'<i class="fas fa-award" style="margin-left: 2px;"></i></span>' : '' ).'</td>';
             $point_ln_types .= '<td style="text-align: right;"><a href="/links?ln_type_entity_id='.$ln['ln_type_entity_id'].'"  data-toggle="tooltip" title="View all '.number_format($ln['trs_count'],0).' links" data-placement="top">'.number_format($ln['points_sum'], 0).'</a> <i class="fas fa-award"></i></td>';
             $point_ln_types .= '</tr>';
 
@@ -367,14 +369,14 @@ foreach (echo_fixed_fields() as $object_id => $statuses) {
 
         //Report types:
         echo '<select id="tr_group_by" class="form-control border stats-select">';
-        echo '<option value="by_ln_status">Group By: 4 Statuses</option>';
-        echo '<option value="by_ln_type">Group By: '.count($all_eng_types).' Link Types</option>';
-        echo '<option value="by_tr_point_types">List Subset: '.echo_number($all_point_payouts).' Link Points</option>';
-        echo '<option value="by_tr_top_miners">List Subset: '.$top.' Top Miners</option>';
+        echo '<option value="by_tr_top_miners">Top '.$top.' Miners</option>';
+        echo '<option value="by_tr_point_types">'.echo_number($all_point_payouts).' Points</option>';
+        echo '<option value="by_ln_type">'.count($all_eng_types).' Link Types</option>';
+        echo '<option value="by_ln_status">4 Statuses</option>';
         echo '</select>';
 
         //Link Status:
-        echo '<table class="table table-condensed table-striped stats-table mini-stats-table tr_group_by by_ln_status">';
+        echo '<table class="table table-condensed table-striped stats-table mini-stats-table tr_group_by by_ln_status hidden">';
         echo $this_ui;
         echo '</table>';
 
@@ -384,7 +386,7 @@ foreach (echo_fixed_fields() as $object_id => $statuses) {
         echo '</table>';
 
         //Point Top Miners:
-        echo '<table class="table table-condensed table-striped stats-table tr_group_by by_tr_top_miners hidden">';
+        echo '<table class="table table-condensed table-striped stats-table tr_group_by by_tr_top_miners">';
         echo $top_miners;
         echo '</table>';
 
