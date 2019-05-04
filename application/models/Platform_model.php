@@ -1865,7 +1865,7 @@ class Platform_model extends CI_Model
 
                     if($fb_messenger_format){
 
-                        $next_step_message .= "\n\n" . ($key+1).') ';
+                        $next_step_message .= "\n\n" . ($key+1).'. ';
 
                         if($was_selected){
                             $next_step_message .= '[Selected] ';
@@ -1951,7 +1951,7 @@ class Platform_model extends CI_Model
                     $next_step_message = 'Here is the next step to ' . echo_in_outcome($ins[0]['in_outcome'], true, true) . ':';
                 } else {
                     //Multiple next steps:
-                    $next_step_message = 'Here is an overview of the ' . count($in__children) . ' steps to ' . echo_in_outcome($ins[0]['in_outcome'], true, true) . ':';
+                    $next_step_message = 'There are ' . count($in__children) . ' steps to ' . echo_in_outcome($ins[0]['in_outcome'], true, true) . ':';
                 }
 
 

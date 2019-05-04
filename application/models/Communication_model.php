@@ -2052,12 +2052,10 @@ class Communication_model extends CI_Model
                     ));
                 }
 
-                //Alwyas give none option:
-                $increment++;
-                $message .= "\n\n" . ($counter + $increment) . '. Cancel & keep all intentions';
+                //Alwyas give cancel option:
                 array_push($quick_replies, array(
                     'content_type' => 'text',
-                    'title' => ($counter + $increment),
+                    'title' => 'Cancel',
                     'payload' => 'UNSUBSCRIBE_CANCEL',
                 ));
 
