@@ -810,7 +810,9 @@ class Database_model extends CI_Model
 
         } else {
 
-            //This should not happen:
+            //This should not happen BUT was happening ALOT!
+            //TODO Re-enable later and see why it keeps happening...
+            /*
             $this->Database_model->ln_create(array(
                 'ln_parent_link_id' => $id, //Link Reference
                 'ln_type_entity_id' => 4246, //Platform Error
@@ -820,6 +822,7 @@ class Database_model extends CI_Model
                     'input' => $update_columns,
                 ),
             ));
+            */
 
         }
         return $affected_rows;

@@ -3791,6 +3791,10 @@ h4 .tip-badge {
     line-height: 110%;
 }
 
+.breadcrumb {
+    margin-bottom: 4px;
+}
+
 .platform-logo {
     color: #FFF;
     font-size: 1.8em;

@@ -659,7 +659,7 @@ function echo_time_hours($seconds, $micro = false)
 
     if ($seconds < 30) {
         //Under 30 seconds would not round up to even 1 minute, so don't show:
-        return false;
+        return 0;
     } elseif ($seconds <= 5400) {
         return round($seconds / 60) . ($micro ? 'm' : ' Minutes');
     } else {
@@ -1660,13 +1660,13 @@ function echo_in($in, $level, $in_parent_id = 0, $is_parent = false)
         'ln_type_entity_id IN (' . join(',', $CI->config->item('en_ids_4485')) . ')' => null, //All Intent Notes
         'ln_child_intent_id' => $in['in_id'],
     ), array(), 0, 0, array(), 'COUNT(ln_id) as totals');
-    $ui .= '<a href="#intentnotes-' . $in['in_id'] . '" onclick="'.( $level==0 ? 'alert(\'Cannot manage here. Go to the intent to manage.\')' : 'in_messages_iframe('.$in['in_id'].')' ).'" class="msg-badge-' . $in['in_id'] . ' badge badge-primary white-primary is_not_bg '.( $level==0 ? '' . echo_advance() . '' : '' ).'" style="width:40px; margin-right:2px; margin-left:5px;" data-toggle="tooltip" title="Intent Notes" data-placement="top"><span class="btn-counter messages-counter-' . $in['in_id'] . '">' . $count_in_metadata[0]['totals'] . '</span><i class="fas fa-comment-plus"></i></a>';
+    $ui .= '<a href="#intentnotes-' . $in['in_id'] . '" onclick="in_messages_iframe('.$in['in_id'].')" class="msg-badge-' . $in['in_id'] . ' badge badge-primary white-primary is_not_bg '.( $level==0 ? '' . echo_advance() . '' : '' ).'" style="width:40px; margin-right:2px; margin-left:5px;" data-toggle="tooltip" title="Intent Notes" data-placement="top"><span class="btn-counter messages-counter-' . $in['in_id'] . '">' . $count_in_metadata[0]['totals'] . '</span><i class="fas fa-comment-plus"></i></a>';
 
 
 
     //Intent modify:
     $in__metadata_max_seconds = (isset($in_metadata['in__metadata_max_seconds']) ? $in_metadata['in__metadata_max_seconds'] : 0);
-    $ui .= '<a class="badge badge-primary white-primary is_not_bg '.( $level==0 ? '' . echo_advance() . '' : '' ).'" onclick="'.( $level==0 ? 'alert(\'Cannot manage here. Go to the intent to manage.\')' : 'in_modify_load(' . $in['in_id'] . ',' . $ln_id . ')' ).'" style="margin:-2px -8px 0 0; width:40px;" href="#loadmodify-' . $in['in_id'] . '-' . $ln_id . '" data-toggle="tooltip" title="Intent completion cost. Click to modify intent'.( $level>1 ? ' and link' : '' ).'" data-placement="top"><span class="btn-counter slim-time t_estimate_' . $in['in_id'] . '" intent-usd="'.$in['in_dollar_cost'].'" tree-max-seconds="' . $in__metadata_max_seconds . '" intent-seconds="' . $in['in_seconds_cost'] . '">'.( $in__metadata_max_seconds > 0 ? echo_time_hours($in__metadata_max_seconds , true) : 0 ).'</span><i class="fas fa-cog"></i></a> &nbsp;';
+    $ui .= '<a class="badge badge-primary white-primary is_not_bg '.( $level==0 ? '' . echo_advance() . '' : '' ).'" onclick="in_modify_load(' . $in['in_id'] . ',' . $ln_id . ')" style="margin:-2px -8px 0 0; width:40px;" href="#loadmodify-' . $in['in_id'] . '-' . $ln_id . '" data-toggle="tooltip" title="Intent completion cost. Click to modify intent'.( $level>1 ? ' and link' : '' ).'" data-placement="top"><span class="btn-counter slim-time t_estimate_' . $in['in_id'] . '" intent-usd="'.$in['in_dollar_cost'].'" tree-max-seconds="' . $in__metadata_max_seconds . '" intent-seconds="' . $in['in_seconds_cost'] . '">'.( $in__metadata_max_seconds > 0 ? echo_time_hours($in__metadata_max_seconds , true) : 0 ).'</span><i class="fas fa-cog"></i></a> &nbsp;';
 
 
 
