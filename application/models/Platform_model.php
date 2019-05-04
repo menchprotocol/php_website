@@ -2944,7 +2944,7 @@ class Platform_model extends CI_Model
 
                 //Apply shortcut and update the intent outcome:
                 $parent_in_outcome_words = explode(' ', $parent_ins[0]['in_outcome']);
-                $in_outcome = $parent_in_outcome_words[0].' #'.$parent_ins[0]['in_id'].' with :: '.trim(substr($in_outcome, 2));
+                $in_outcome = $parent_in_outcome_words[0].' #'.$parent_ins[0]['in_id'].' :: '.trim(substr($in_outcome, 2));
 
             }
 

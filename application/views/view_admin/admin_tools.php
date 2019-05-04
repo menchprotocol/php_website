@@ -12,7 +12,6 @@ $moderation_tools = array(
     '/admin/tools/assessment_marks_list_all' => 'Assessment Marks List All',
     '/admin/tools/assessment_marks_birds_eye' => 'Assessment Marks Birds Eye View',
     '/admin/tools/compose_test_message' => 'Compose Test Message',
-    '/admin/tools/clean_intent_outcomes' => 'Clean Intent Outcomes',
 );
 
 $cron_jobs = array(
@@ -78,22 +77,6 @@ if(!$action) {
 
     }
     echo '</div>';
-
-} elseif($action=='clean_intent_outcomes'){
-
-    echo '<ul class="breadcrumb"><li><a href="/admin">Admin Tools</a></li><li><b>'.$moderation_tools['/admin/tools/'.$action].'</b></li></ul>';
-
-    //Run through all intents and clean their titles:
-    $messy_ins = $this->Database_model->in_fetch(array(
-        'in_outcome LIKE \'% with ::%\'' => null, //Search for double space
-    ));
-
-    foreach($messy_ins as $count => $in){
-        echo ($count+1).') '.$in['in_outcome'].'<br />';
-        $this->Database_model->in_update($in['in_id'], array(
-            'in_outcome' => str_replace(' with ::',' ::', $in['in_outcome']),
-        ), true, $session_en['en_id']);
-    }
 
 } elseif($action=='moderate_intent_notes'){
 
