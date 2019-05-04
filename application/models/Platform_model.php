@@ -2543,7 +2543,14 @@ class Platform_model extends CI_Model
         $in_verb_entity_id = detect_starting_verb_id($in_outcome);
 
         //Validate outcome:
-        if(substr_count($in_outcome , ' ') < 1){
+        if(strlen($in_outcome) < 5){
+
+            return array(
+                'status' => 0,
+                'message' => 'Outcome must be at-least 5 characters long',
+            );
+
+        } elseif(substr_count($in_outcome , ' ') < 1){
 
             return array(
                 'status' => 0,
