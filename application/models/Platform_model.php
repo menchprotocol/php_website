@@ -1992,7 +1992,7 @@ class Platform_model extends CI_Model
                     } else {
 
                         //Add message:
-                        $next_step_message .= "\n\n" . ($key + 1) . ') ';
+                        $next_step_message .= "\n\n" . ($key + 1) . '. ';
 
                         if($key==0){
                             //Show only the first step forward for Messenger view:

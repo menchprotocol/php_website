@@ -390,7 +390,7 @@ class Messenger extends CI_Controller
 
                                 //Append all options:
                                 foreach($pending_in_requirements as $count => $requirement_in_ln){
-                                    $next_step_message .= "\n\n" . ($count+1) .') '.echo_in_outcome($requirement_in_ln['in_outcome'] , true);
+                                    $next_step_message .= "\n\n" . ($count+1) .'. '.echo_in_outcome($requirement_in_ln['in_outcome'] , true);
                                     array_push($next_step_quick_replies, array(
                                         'content_type' => 'text',
                                         'title' => ($count+1),
