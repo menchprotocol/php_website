@@ -64,7 +64,7 @@ class Platform_model extends CI_Model
 
     }
 
-    function actionplan_find_next_step($en_id, $advance_step, $communicate_is_next = false)
+    function actionplan_find_next_step($en_id, $advance_step, $communicate_next_step = false)
     {
 
         /*
@@ -119,7 +119,8 @@ class Platform_model extends CI_Model
             //Did we find a next step?
             if($next_in_id > 0){
 
-                if($communicate_is_next){
+                if($communicate_next_step){
+
                     //Fetch intent details:
                     $ins = $this->Database_model->in_fetch(array(
                         'in_id' => $next_in_id,
@@ -128,12 +129,22 @@ class Platform_model extends CI_Model
                     $this->Communication_model->dispatch_message(
                         'Your next step is to '.echo_in_outcome($ins[0]['in_outcome'] , true).'.',
                         array('en_id' => $en_id),
-                        true
+                        true,
+                        array(
+                            array(
+                                'content_type' => 'text',
+                                'title' => 'Next',
+                                'payload' => 'GOTOSTEP_' . $ins[0]['in_id'],
+                            )
+                        )
                     );
-                }
 
-                //Yes, communicate it:
-                $this->Platform_model->actionplan_advance_step(array('en_id' => $en_id), $next_in_id);
+                } else {
+
+                    //Yes, communicate it:
+                    $this->Platform_model->actionplan_advance_step(array('en_id' => $en_id), $next_in_id);
+
+                }
 
             } else {
 
@@ -1994,7 +2005,7 @@ class Platform_model extends CI_Model
                             //Show only the first step forward for Messenger view:
                             array_push($next_step_quick_replies, array(
                                 'content_type' => 'text',
-                                'title' => 'Start Step 1 ▶️',
+                                'title' => 'Next',
                                 'payload' => 'GOTOSTEP_' . $in__children[0]['in_id'],
                             ));
                             //Give option to skip:
