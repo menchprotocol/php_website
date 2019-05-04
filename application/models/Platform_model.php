@@ -1948,10 +1948,10 @@ class Platform_model extends CI_Model
 
                 if(count($in__children) == 1){
                     //A single next step:
-                    $next_step_message = 'Here is the next step to ' . echo_in_outcome($ins[0]['in_outcome'], true) . ':';
+                    $next_step_message = 'Here is the next step to ' . echo_in_outcome($ins[0]['in_outcome'], true, true) . ':';
                 } else {
                     //Multiple next steps:
-                    $next_step_message = 'Here are the ' . count($in__children) . ' steps to ' . echo_in_outcome($ins[0]['in_outcome'], true, true) . ':';
+                    $next_step_message = 'Here is an overview of the ' . count($in__children) . ' steps to ' . echo_in_outcome($ins[0]['in_outcome'], true, true) . ':';
                 }
 
 
@@ -1964,23 +1964,11 @@ class Platform_model extends CI_Model
 
                     //We know that the $next_step_message length cannot surpass the limit defined by fb_max_message variable!
                     //make sure message is within range:
-                    if ($fb_messenger_format && strlen($next_step_message) > ($this->config->item('fb_max_message') - 150)) {
-
-                        //Log error link so we can look into it:
-                        $this->Database_model->ln_create(array(
-                            'ln_miner_entity_id' => 1, //Shervin/Developer
-                            'ln_content' => 'actionplan_advance_step() encountered intent with too many children to be listed as AND Intent options! Trim and iterate that intent tree.',
-                            'ln_type_entity_id' => 4246, //Platform Error
-                            'ln_parent_intent_id' => $in_id,
-                            'ln_child_intent_id' => $child_in['in_id'],
-                            'ln_child_entity_id' => $recipient_en['en_id'],
-                        ));
-
+                    if ($fb_messenger_format && ($key >= 7 || strlen($next_step_message) > ($this->config->item('fb_max_message') - 150))) {
                         //We cannot add any more, indicate truncating:
                         $remainder = count($in__children) - $key;
                         $next_step_message .= "\n\n" . 'Plus ' . $remainder . ' more step' . echo__s($remainder) . '.';
                         break;
-
                     }
 
 
