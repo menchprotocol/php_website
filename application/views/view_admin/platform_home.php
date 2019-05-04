@@ -29,8 +29,8 @@
 <?php
 
 //Fetch & Display Intent Note Messages to explain links:
-echo '<h1 style="text-align: center; margin-top: 50px;">Mench Personal Assistant</h1>';
-echo '<p style="text-align: center; margin-top: 20px; font-size:1.5em !important;">Get hired at your dream programming job ✨</p>';
+echo '<h1 style="text-align: center; margin-top: 50px;">Mench Mining Platform</h1>';
+echo '<p style="text-align: center; margin-top: 20px; font-size:1.5em !important;">On a mission to build and share consensus 🤝</p>';
 
 //Load core Mench Objects:
 $en_all_4534 = $this->config->item('en_all_4534');
