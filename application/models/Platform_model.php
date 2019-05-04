@@ -2130,19 +2130,21 @@ class Platform_model extends CI_Model
 
 
         if($check_next_step){
+            //Give call to Action:
+            if($fb_messenger_format){
 
-            //Intent without children and without a completion requirement, so we'd need to find the next step and offer that to them:
-            $next_in_id = $this->Platform_model->actionplan_find_next_step($recipient_en['en_id'], $fb_messenger_format, $fb_messenger_format);
+                //Give option to skip Student Intent:
+                array_push($next_step_quick_replies, array(
+                    'content_type' => 'text',
+                    'title' => 'Next',
+                    'payload' => 'GONEXT',
+                ));
 
-            if($next_in_id > 0){
+            } else {
 
-                //Give call to Action:
-                if(!$fb_messenger_format){
+                //Show button for next step:
+                $next_step_message .= '<div style="margin: 15px 0 0;"><a href="/messenger/actionplan/' . $next_in_id . '" class="btn btn-md btn-primary">Next Step <i class="fas fa-angle-right"></i></a></div>';
 
-                    //Show button for next step:
-                    $next_step_message .= '<div style="margin: 15px 0 0;"><a href="/messenger/actionplan/' . $next_in_id . '" class="btn btn-md btn-primary">Next Step <i class="fas fa-angle-right"></i></a></div>';
-
-                }
             }
         }
 
