@@ -273,12 +273,25 @@ class Communication_model extends CI_Model
                 'message' => 'You can either reference 1 entity OR 1 URL (As the URL will be transformed into an entity)',
             );
 
-        } elseif (count($msg_references['ref_commands']) > 0 && count($msg_references['ref_commands']) !== count(array_unique($msg_references['ref_commands']))) {
+        } elseif (count($msg_references['ref_commands']) > 0) {
 
-            return array(
-                'status' => 0,
-                'message' => 'Each /command can only be used once per message',
-            );
+            if(count($msg_references['ref_commands']) != count(array_unique($msg_references['ref_commands']))){
+
+                return array(
+                    'status' => 0,
+                    'message' => 'Each /command can only be used once per message',
+                );
+
+            } elseif(in_array('/link',$msg_references['ref_commands']) && count($quick_replies) > 0){
+
+                return array(
+                    'status' => 0,
+                    'message' => 'You cannot combine the /link command with quick replies',
+                );
+
+            }
+
+
 
         }
 

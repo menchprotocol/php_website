@@ -129,7 +129,7 @@ class Platform_model extends CI_Model
                     ));
 
                     $this->Communication_model->dispatch_message(
-                        'Your next step is to '. $next_step_ins[0]['in_outcome'] .'.',
+                        'Let\'s '. $next_step_ins[0]['in_outcome'],
                         array('en_id' => $en_id),
                         true
                     );
