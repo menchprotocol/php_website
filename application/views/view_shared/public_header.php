@@ -44,7 +44,7 @@ $url_part_1 = $this->uri->segment(1);
                         $en_all_4321 = $this->config->item('en_all_4321');
 
                         //TODO This is a hack! Need to define this in entities:
-                        echo '<li><a href="' . ( isset($in['in_id']) ? '/intents/'.$in['in_id'] : '/platform') . '" class="parent-icon">Miner Portal</a></li>';
+                        echo '<li><a href="' . ( isset($in['in_id']) ? '/intents/'.$in['in_id'] : '/platform') . '" class="parent-icon">'.$en_all_4321[4488]['m_icon'].' Miner Portal</a></li>';
                     }
 
                     $en_all_6196 = $this->config->item('en_all_6196');
@@ -55,6 +55,8 @@ $url_part_1 = $this->uri->segment(1);
 
                 } else {
                     echo '<li><a href="/7436"><i class="fal fa-info-circle"></i> About Us</a></li>';
+
+
                     echo '<li><a href="/login'. ( isset($in['in_id']) ? '?url=%2Fintents%2F'.$in['in_id'] : '' ) .'"><i class="fas fa-sign-in"></i> Sign In</a></li>';
                 }
                 ?>
