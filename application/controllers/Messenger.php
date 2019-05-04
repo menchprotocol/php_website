@@ -143,6 +143,41 @@ class Messenger extends CI_Controller
                     //Set variables:
                     $sent_by_mench = (isset($im['message']['is_echo'])); //Indicates the message sent from the page itself
                     $en = $this->Platform_model->en_authenticate_psid(($sent_by_mench ? $im['recipient']['id'] : $im['sender']['id']));
+
+
+                    //Check if this Student is unsubscribed:
+                    if (count($this->Database_model->ln_fetch(array(
+                            'ln_parent_entity_id' => 4455, //Unsubscribed
+                            'ln_type_entity_id IN (' . join(',', $this->config->item('en_ids_4592')) . ')' => null, //Entity Link Connectors
+                            'ln_child_entity_id' => $en['en_id'],
+                            'ln_status' => 2, //Published
+                        ))) > 0) {
+
+                        //Yes, this Student is Unsubscribed! Give them an option to re-activate their Mench account:
+                        $this->Communication_model->dispatch_message(
+                            'You are currently unsubscribed. Would you like me to re-activate your account?',
+                            $en,
+                            true,
+                            array(
+                                array(
+                                    'content_type' => 'text',
+                                    'title' => 'Yes, Re-Activate',
+                                    'payload' => 'RESUBSCRIBE_YES',
+                                ),
+                                array(
+                                    'content_type' => 'text',
+                                    'title' => 'Stay Unsubscribed',
+                                    'payload' => 'RESUBSCRIBE_NO',
+                                ),
+                            )
+                        );
+
+                        //Terminate:
+                        return print_r('complete');
+                    }
+
+
+                    //Set more variables:
                     $in_requirements_search = 0; //If >0, we will try to see if this message is to submit a requirement for an intent
 
                     unset($ln_data); //Reset everything in case its set from the previous loop!

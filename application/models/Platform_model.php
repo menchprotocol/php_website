@@ -931,7 +931,7 @@ class Platform_model extends CI_Model
         //So, did we find them?
         if (count($ens) > 0) {
 
-            //Student found:
+            //Student found...
             return $ens[0];
 
         } else {

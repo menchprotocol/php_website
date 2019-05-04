@@ -1469,7 +1469,7 @@ class Communication_model extends CI_Model
 
                 //Let them know about these changes:
                 $this->Communication_model->dispatch_message(
-                    'Confirmed, I removed ' . $removed_intents . ' intention' . echo__s($removed_intents) . ' from your Action Plan. This is the final message you will receive from me unless you message me again. I hope you take good care of your self 😘',
+                    'Confirmed, I removed ' . $removed_intents . ' intention' . echo__s($removed_intents) . ' from your Action Plan. This is the final message you will receive from me unless you message me again. I hope you take good care of yourself 😘',
                     $en,
                     true
                 );
@@ -1946,35 +1946,6 @@ class Communication_model extends CI_Model
 
         if (!$fb_received_message) {
             return false;
-        }
-
-
-        //First check if this Student is unsubscribed:
-        if (count($this->Database_model->ln_fetch(array(
-                'ln_parent_entity_id' => 4455, //Unsubscribed
-                'ln_type_entity_id IN (' . join(',', $this->config->item('en_ids_4592')) . ')' => null, //Entity Link Connectors
-                'ln_child_entity_id' => $en['en_id'],
-                'ln_status' => 2, //Published
-            ))) > 0) {
-
-            //Yes, this Student is Unsubscribed! Give them an option to re-activate their Mench account:
-            $this->Communication_model->dispatch_message(
-                'You are currently unsubscribed. Would you like me to re-activate your account?',
-                $en,
-                true,
-                array(
-                    array(
-                        'content_type' => 'text',
-                        'title' => 'Yes, Re-Activate',
-                        'payload' => 'RESUBSCRIBE_YES',
-                    ),
-                    array(
-                        'content_type' => 'text',
-                        'title' => 'Stay Unsubscribed',
-                        'payload' => 'RESUBSCRIBE_NO',
-                    ),
-                )
-            );
         }
 
 
