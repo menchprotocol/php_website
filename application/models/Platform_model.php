@@ -1997,6 +1997,12 @@ class Platform_model extends CI_Model
                                 'title' => 'Start Step 1 ▶️',
                                 'payload' => 'GOTOSTEP_' . $in__children[0]['in_id'],
                             ));
+                            //Give option to skip:
+                            array_push($next_step_quick_replies, array(
+                                'content_type' => 'text',
+                                'title' => 'Skip',
+                                'payload' => 'SKIP-ACTIONPLAN_1_' . $in__children[0]['in_id'],
+                            ));
                         }
 
                     }
