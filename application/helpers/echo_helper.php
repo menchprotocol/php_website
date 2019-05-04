@@ -190,7 +190,7 @@ function echo_in_outcome($in_outcome, $hide = false, $reference_attribution = fa
      *
      * */
 
-    if($reference_attribution){
+    if($reference_attribution && substr_count($in_outcome , '::') > 0){
 
         $CI =& get_instance();
         $attribution_in_id = intval(one_two_explode(' #',' ',$in_outcome));

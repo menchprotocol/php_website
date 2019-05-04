@@ -1157,7 +1157,7 @@ class Communication_model extends CI_Model
 
             array_push($quick_replies, array(
                 'content_type' => 'text',
-                'title' => 'None of the Above',
+                'title' => 'Cancel',
                 'payload' => 'NOTINTERESTED',
             ));
 
@@ -2171,13 +2171,10 @@ class Communication_model extends CI_Model
 
             if($new_intent_count > 0){
 
-                $new_intent_count++;
-
                 //Give them a "None of the above" option:
-                $message .= "\n\n" . $new_intent_count . '. None of the above';
                 array_push($quick_replies, array(
                     'content_type' => 'text',
-                    'title' => $new_intent_count,
+                    'title' => 'Cancel',
                     'payload' => 'SUBSCRIBE-REJECT',
                 ));
 
