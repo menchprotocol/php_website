@@ -1818,6 +1818,12 @@ class Communication_model extends CI_Model
             $parent_in_id = intval($quickreply_parts[0]);
             $answer_in_id = intval($quickreply_parts[1]);
 
+            //Validate Answer Intent:
+            $answer_ins = $this->Database_model->in_fetch(array(
+                'in_id' => $answer_in_id,
+                'in_status' => 2, //Published
+            ));
+
             //We should already have a link for this, so let's find and update it:
             $pending_answer_links = $this->Database_model->ln_fetch(array(
                 'ln_miner_entity_id' => $en['en_id'],
@@ -1826,7 +1832,7 @@ class Communication_model extends CI_Model
                 'ln_status IN (' . join(',', $this->config->item('ln_status_incomplete')) . ')' => null, //incomplete intentions
             ));
 
-            if(count($pending_answer_links) > 0 && $answer_in_id > 0){
+            if(count($answer_ins) > 0 && count($pending_answer_links) > 0 && $answer_in_id > 0){
 
                 foreach($pending_answer_links as $ln){
                     $this->Database_model->ln_update($ln['ln_id'], array(
@@ -1834,6 +1840,9 @@ class Communication_model extends CI_Model
                         'ln_status' => 2, //Publish answer
                     ), $en['en_id']);
                 }
+
+                //See if we also need to mark the child as complete:
+                $this->Platform_model->complete_if_empty($en['en_id'], $answer_ins[0]);
 
                 //Affirm answer received answer:
                 $this->Communication_model->dispatch_message(

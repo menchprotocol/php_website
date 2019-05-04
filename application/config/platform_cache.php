@@ -11,7 +11,36 @@ defined('BASEPATH') OR exit('No direct script access allowed');
  *
  */
 
-//Generated 2019-04-30 19:34:23 PST
+//Generated 2019-05-03 21:32:28 PST
+
+//Communicable Intent Notes:
+$config['en_ids_6264'] = array(4231, 4232, 4602, 6242);
+$config['en_all_6264'] = array(
+    4231 => array(
+        'm_icon' => '<i class="fal fa-comment"></i>',
+        'm_name' => 'Intent Note Message',
+        'm_desc' => '',
+        'm_parents' => array(6264, 4986, 4603, 4593, 4485, 4595),
+    ),
+    4232 => array(
+        'm_icon' => '<i class="fal fa-medal"></i>',
+        'm_name' => 'Intent Note Bonus Tip',
+        'm_desc' => '',
+        'm_parents' => array(6264, 5005, 4986, 4603, 4593, 4485, 4595),
+    ),
+    4602 => array(
+        'm_icon' => '<i class="fal fa-cloud-upload"></i>',
+        'm_name' => 'Intent Note Webhook',
+        'm_desc' => '',
+        'm_parents' => array(6264, 5005, 4986, 4256, 4595, 4485, 4593),
+    ),
+    6242 => array(
+        'm_icon' => '<i class="far fa-check-square"></i>',
+        'm_name' => 'Intent Note On-Complete Tip',
+        'm_desc' => '',
+        'm_parents' => array(6264, 4603, 4595, 4593, 4986, 5005, 4485),
+    ),
+);
 
 //Trigger On-Complete Tips:
 $config['en_ids_6255'] = array(4559, 6144, 6157, 6158);
@@ -81,39 +110,39 @@ $config['en_ids_4986'] = array(4231, 4232, 4602, 4983, 6093, 6242);
 $config['en_all_4986'] = array(
     4231 => array(
         'm_icon' => '<i class="fal fa-comment"></i>',
-        'm_name' => 'Noted Intent Message',
+        'm_name' => 'Intent Note Message',
         'm_desc' => '',
-        'm_parents' => array(4986, 4603, 4593, 4485, 4595),
+        'm_parents' => array(6264, 4986, 4603, 4593, 4485, 4595),
     ),
     4232 => array(
         'm_icon' => '<i class="fal fa-medal"></i>',
-        'm_name' => 'Noted Intent Bonus Tip',
+        'm_name' => 'Intent Note Bonus Tip',
         'm_desc' => '',
-        'm_parents' => array(5005, 4986, 4603, 4593, 4485, 4595),
+        'm_parents' => array(6264, 5005, 4986, 4603, 4593, 4485, 4595),
     ),
     4602 => array(
         'm_icon' => '<i class="fal fa-cloud-upload"></i>',
-        'm_name' => 'Noted Intent Webhook',
+        'm_name' => 'Intent Note Webhook',
         'm_desc' => '',
-        'm_parents' => array(5005, 4986, 4256, 4595, 4485, 4593),
+        'm_parents' => array(6264, 5005, 4986, 4256, 4595, 4485, 4593),
     ),
     4983 => array(
         'm_icon' => '<i class="fal fa-thumbs-up"></i>',
-        'm_name' => 'Noted Intent Up-Vote',
+        'm_name' => 'Intent Note Up-Vote',
         'm_desc' => '',
         'm_parents' => array(4986, 4985, 4595, 4593, 4485),
     ),
     6093 => array(
         'm_icon' => '<i class="fal fa-megaphone"></i>',
-        'm_name' => 'Noted Intent Changelog',
+        'm_name' => 'Intent Note Changelog',
         'm_desc' => '',
         'm_parents' => array(4595, 4593, 4986, 5005, 4485),
     ),
     6242 => array(
         'm_icon' => '<i class="far fa-check-square"></i>',
-        'm_name' => 'Noted Intent On-Complete Tip',
+        'm_name' => 'Intent Note On-Complete Tip',
         'm_desc' => '',
-        'm_parents' => array(4603, 4595, 4593, 4986, 5005, 4485),
+        'm_parents' => array(6264, 4603, 4595, 4593, 4986, 5005, 4485),
     ),
 );
 
@@ -385,7 +414,7 @@ $config['en_all_6146'] = array(
     6157 => array(
         'm_icon' => '<i class="fas fa-check-square"></i>',
         'm_name' => 'Answer Question',
-        'm_desc' => 'Completed after the student answers the question to the OR intent',
+        'm_desc' => 'Completed after the student answers the question to the OR intent.',
         'm_parents' => array(6255, 6244, 6146, 4755, 4593, 4460),
     ),
     6158 => array(
@@ -747,7 +776,7 @@ $config['en_all_4255'] = array(
     ),
     4601 => array(
         'm_icon' => '<i class="fal fa-tags"></i>',
-        'm_name' => 'Noted Intent Keyword',
+        'm_name' => 'Intent Note Keyword',
         'm_desc' => 'Trigger statements can only contain text to enable Mench to detect alternatives forms a person might reference an intent',
         'm_parents' => array(4255, 4593, 4595, 4485),
     ),
@@ -776,9 +805,9 @@ $config['en_ids_5005'] = array(4232, 4331, 4602, 4997, 6093, 6242);
 $config['en_all_5005'] = array(
     4232 => array(
         'm_icon' => '<i class="fal fa-medal"></i>',
-        'm_name' => 'Noted Intent Bonus Tip',
+        'm_name' => 'Intent Note Bonus Tip',
         'm_desc' => '',
-        'm_parents' => array(5005, 4986, 4603, 4593, 4485, 4595),
+        'm_parents' => array(6264, 5005, 4986, 4603, 4593, 4485, 4595),
     ),
     4331 => array(
         'm_icon' => '<i class="fal fa-comment-check"></i>',
@@ -788,9 +817,9 @@ $config['en_all_5005'] = array(
     ),
     4602 => array(
         'm_icon' => '<i class="fal fa-cloud-upload"></i>',
-        'm_name' => 'Noted Intent Webhook',
+        'm_name' => 'Intent Note Webhook',
         'm_desc' => '',
-        'm_parents' => array(5005, 4986, 4256, 4595, 4485, 4593),
+        'm_parents' => array(6264, 5005, 4986, 4256, 4595, 4485, 4593),
     ),
     4997 => array(
         'm_icon' => '<i class="fal fa-list-alt"></i>',
@@ -800,15 +829,15 @@ $config['en_all_5005'] = array(
     ),
     6093 => array(
         'm_icon' => '<i class="fal fa-megaphone"></i>',
-        'm_name' => 'Noted Intent Changelog',
+        'm_name' => 'Intent Note Changelog',
         'm_desc' => '',
         'm_parents' => array(4595, 4593, 4986, 5005, 4485),
     ),
     6242 => array(
         'm_icon' => '<i class="far fa-check-square"></i>',
-        'm_name' => 'Noted Intent On-Complete Tip',
+        'm_name' => 'Intent Note On-Complete Tip',
         'm_desc' => '',
-        'm_parents' => array(4603, 4595, 4593, 4986, 5005, 4485),
+        'm_parents' => array(6264, 4603, 4595, 4593, 4986, 5005, 4485),
     ),
 );
 
@@ -1341,15 +1370,15 @@ $config['en_all_4595'] = array(
     ),
     4231 => array(
         'm_icon' => '<i class="fal fa-comment"></i>',
-        'm_name' => 'Noted Intent Message',
+        'm_name' => 'Intent Note Message',
         'm_desc' => '100',
-        'm_parents' => array(4986, 4603, 4593, 4485, 4595),
+        'm_parents' => array(6264, 4986, 4603, 4593, 4485, 4595),
     ),
     4232 => array(
         'm_icon' => '<i class="fal fa-medal"></i>',
-        'm_name' => 'Noted Intent Bonus Tip',
+        'm_name' => 'Intent Note Bonus Tip',
         'm_desc' => '100',
-        'm_parents' => array(5005, 4986, 4603, 4593, 4485, 4595),
+        'm_parents' => array(6264, 5005, 4986, 4603, 4593, 4485, 4595),
     ),
     4242 => array(
         'm_icon' => '<i class="fal fa-sync"></i>',
@@ -1437,33 +1466,33 @@ $config['en_all_4595'] = array(
     ),
     4601 => array(
         'm_icon' => '<i class="fal fa-tags"></i>',
-        'm_name' => 'Noted Intent Keyword',
+        'm_name' => 'Intent Note Keyword',
         'm_desc' => '50',
         'm_parents' => array(4255, 4593, 4595, 4485),
     ),
     4602 => array(
         'm_icon' => '<i class="fal fa-cloud-upload"></i>',
-        'm_name' => 'Noted Intent Webhook',
+        'm_name' => 'Intent Note Webhook',
         'm_desc' => '100',
-        'm_parents' => array(5005, 4986, 4256, 4595, 4485, 4593),
+        'm_parents' => array(6264, 5005, 4986, 4256, 4595, 4485, 4593),
     ),
     4983 => array(
         'm_icon' => '<i class="fal fa-thumbs-up"></i>',
-        'm_name' => 'Noted Intent Up-Vote',
+        'm_name' => 'Intent Note Up-Vote',
         'm_desc' => '100',
         'm_parents' => array(4986, 4985, 4595, 4593, 4485),
     ),
     6093 => array(
         'm_icon' => '<i class="fal fa-megaphone"></i>',
-        'm_name' => 'Noted Intent Changelog',
+        'm_name' => 'Intent Note Changelog',
         'm_desc' => '100',
         'm_parents' => array(4595, 4593, 4986, 5005, 4485),
     ),
     6242 => array(
         'm_icon' => '<i class="far fa-check-square"></i>',
-        'm_name' => 'Noted Intent On-Complete Tip',
+        'm_name' => 'Intent Note On-Complete Tip',
         'm_desc' => '100',
-        'm_parents' => array(4603, 4595, 4593, 4986, 5005, 4485),
+        'm_parents' => array(6264, 4603, 4595, 4593, 4986, 5005, 4485),
     ),
 );
 
@@ -1507,15 +1536,15 @@ $config['en_all_4593'] = array(
     ),
     4231 => array(
         'm_icon' => '<i class="fal fa-comment"></i>',
-        'm_name' => 'Noted Intent Message',
+        'm_name' => 'Intent Note Message',
         'm_desc' => '',
-        'm_parents' => array(4986, 4603, 4593, 4485, 4595),
+        'm_parents' => array(6264, 4986, 4603, 4593, 4485, 4595),
     ),
     4232 => array(
         'm_icon' => '<i class="fal fa-medal"></i>',
-        'm_name' => 'Noted Intent Bonus Tip',
+        'm_name' => 'Intent Note Bonus Tip',
         'm_desc' => '',
-        'm_parents' => array(5005, 4986, 4603, 4593, 4485, 4595),
+        'm_parents' => array(6264, 5005, 4986, 4603, 4593, 4485, 4595),
     ),
     4235 => array(
         'm_icon' => '<i class="fas fa-bullseye-arrow"></i>',
@@ -1783,19 +1812,19 @@ $config['en_all_4593'] = array(
     ),
     4601 => array(
         'm_icon' => '<i class="fal fa-tags"></i>',
-        'm_name' => 'Noted Intent Keyword',
+        'm_name' => 'Intent Note Keyword',
         'm_desc' => '',
         'm_parents' => array(4255, 4593, 4595, 4485),
     ),
     4602 => array(
         'm_icon' => '<i class="fal fa-cloud-upload"></i>',
-        'm_name' => 'Noted Intent Webhook',
+        'm_name' => 'Intent Note Webhook',
         'm_desc' => '',
-        'm_parents' => array(5005, 4986, 4256, 4595, 4485, 4593),
+        'm_parents' => array(6264, 5005, 4986, 4256, 4595, 4485, 4593),
     ),
     4983 => array(
         'm_icon' => '<i class="fal fa-thumbs-up"></i>',
-        'm_name' => 'Noted Intent Up-Vote',
+        'm_name' => 'Intent Note Up-Vote',
         'm_desc' => 'Up-votes track intent correlations referenced within expert sources, and represent a core building block of intelligence. Up-votes are among the most precious transaction types because they indicate that IF you do A, you will likely accomplish B. As miners mine content from more experts, certain intent correlations will receive more Up-vites than others, thus gaining more credibility.',
         'm_parents' => array(4986, 4985, 4595, 4593, 4485),
     ),
@@ -1885,7 +1914,7 @@ $config['en_all_4593'] = array(
     ),
     6093 => array(
         'm_icon' => '<i class="fal fa-megaphone"></i>',
-        'm_name' => 'Noted Intent Changelog',
+        'm_name' => 'Intent Note Changelog',
         'm_desc' => '',
         'm_parents' => array(4595, 4593, 4986, 5005, 4485),
     ),
@@ -1934,7 +1963,7 @@ $config['en_all_4593'] = array(
     6157 => array(
         'm_icon' => '<i class="fas fa-check-square"></i>',
         'm_name' => 'Action Plan Answer Question',
-        'm_desc' => 'Logged when students choose their path by selecting an OR intent answer.',
+        'm_desc' => '',
         'm_parents' => array(6255, 6244, 6146, 4755, 4593, 4460),
     ),
     6158 => array(
@@ -1957,9 +1986,9 @@ $config['en_all_4593'] = array(
     ),
     6242 => array(
         'm_icon' => '<i class="far fa-check-square"></i>',
-        'm_name' => 'Noted Intent On-Complete Tip',
+        'm_name' => 'Intent Note On-Complete Tip',
         'm_desc' => '',
-        'm_parents' => array(4603, 4595, 4593, 4986, 5005, 4485),
+        'm_parents' => array(6264, 4603, 4595, 4593, 4986, 5005, 4485),
     ),
     6255 => array(
         'm_icon' => '<i class="far fa-calendar-check"></i>',
@@ -2133,14 +2162,14 @@ $config['en_all_4454'] = array(
     ),
 );
 
-//Intent Notes Link Types:
+//Intent Notes:
 $config['en_ids_4485'] = array(4231, 4983, 4601, 4232, 6242, 4602, 6093);
 $config['en_all_4485'] = array(
     4231 => array(
         'm_icon' => '<i class="fal fa-comment"></i>',
         'm_name' => 'Message',
         'm_desc' => 'Delivered in-order when student initially starts this intent. Goal is to give key insights that streamline the execution of the intention.',
-        'm_parents' => array(4986, 4603, 4593, 4485, 4595),
+        'm_parents' => array(6264, 4986, 4603, 4593, 4485, 4595),
     ),
     4983 => array(
         'm_icon' => '<i class="fal fa-thumbs-up"></i>',
@@ -2158,19 +2187,19 @@ $config['en_all_4485'] = array(
         'm_icon' => '<i class="fal fa-medal"></i>',
         'm_name' => 'Bonus Tip',
         'm_desc' => 'Delivered in-order and one-by-one (drip-format) either during or after the intent completion. Goal is to re-iterate key insights to help students retain learnings over time.',
-        'm_parents' => array(5005, 4986, 4603, 4593, 4485, 4595),
+        'm_parents' => array(6264, 5005, 4986, 4603, 4593, 4485, 4595),
     ),
     6242 => array(
         'm_icon' => '<i class="far fa-check-square"></i>',
         'm_name' => 'On-Complete Tip',
         'm_desc' => 'Message delivered to students when they complete an intention.',
-        'm_parents' => array(4603, 4595, 4593, 4986, 5005, 4485),
+        'm_parents' => array(6264, 4603, 4595, 4593, 4986, 5005, 4485),
     ),
     4602 => array(
         'm_icon' => '<i class="fal fa-cloud-upload"></i>',
         'm_name' => 'Webhook',
         'm_desc' => 'All URLs called along with POST variables that pass intent and completion details. Goal is to enable additional workflows like issuing a completion certificate.',
-        'm_parents' => array(5005, 4986, 4256, 4595, 4485, 4593),
+        'm_parents' => array(6264, 5005, 4986, 4256, 4595, 4485, 4593),
     ),
     6093 => array(
         'm_icon' => '<i class="fal fa-megaphone"></i>',

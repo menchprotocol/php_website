@@ -1746,6 +1746,15 @@ class Messenger extends CI_Controller
             return redirect_message('/messenger/actionplan/' . $parent_in_id, '<div class="alert alert-danger" role="alert">Invalid Authentication Key</div>');
         }
 
+        //Validate Answer Intent:
+        $answer_ins = $this->Database_model->in_fetch(array(
+            'in_id' => $answer_in_id,
+            'in_status' => 2, //Published
+        ));
+        if (count($answer_ins) < 1) {
+            return redirect_message('/messenger/actionplan/' . $parent_in_id, '<div class="alert alert-danger" role="alert">Invalid Answer</div>');
+        }
+
         //Fetch current progression links, if any:
         $current_progression_links = $this->Database_model->ln_fetch(array(
             'ln_type_entity_id IN (' . join(',', $this->config->item('en_ids_6146')) . ')' => null, //Action Plan Progression Link Types
@@ -1762,6 +1771,9 @@ class Messenger extends CI_Controller
             'ln_child_intent_id' => $answer_in_id,
             'ln_status' => 2, //Published since they just answered
         ));
+
+        //See if we also need to mark the child as complete:
+        $this->Platform_model->complete_if_empty($en_id, $answer_ins[0]);
 
         //Archive current progression links:
         foreach($current_progression_links as $ln){

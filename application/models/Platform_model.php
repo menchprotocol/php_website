@@ -129,7 +129,7 @@ class Platform_model extends CI_Model
                     ));
 
                     $this->Communication_model->dispatch_message(
-                        'Your next step is to '. echo_in_outcome($next_step_ins[0]['in_outcome'], true) .'.',
+                        'Your next step is to '. $next_step_ins[0]['in_outcome'] .'.',
                         array('en_id' => $en_id),
                         true
                     );
@@ -1618,6 +1618,46 @@ class Platform_model extends CI_Model
         }
     }
 
+
+    function complete_if_empty($en_id, $in){
+
+        /*
+         *
+         * A function that marks an intent as complete IF
+         * the intent has nothing of substance to be
+         * further communicated.
+         *
+         * */
+
+        $no_message = (count($this->Database_model->ln_fetch(array(
+                'ln_status' => 2, //Published
+                'ln_type_entity_id IN (' . join(',', $this->config->item('en_ids_6264')) . ')' => null, //Communicable Intent Notes
+                'ln_child_intent_id' => $in['in_id'],
+            )))==0);
+
+        $no_children = (count($this->Database_model->ln_fetch(array(
+                'ln_status' => 2, //Published
+                'in_status' => 2, //Published
+                'ln_type_entity_id' => 4228, //Fixed intent links only
+                'ln_parent_intent_id' => $in['in_id'],
+            ), array('in_child')))==0);
+
+        $no_requirements = ($in['in_requirement_entity_id']==6087);
+
+
+        if($no_message && $no_children && $no_requirements){
+
+            //It should be auto completed:
+            $new_progression_link = $this->Database_model->ln_create(array(
+                'ln_type_entity_id' => 6158, //Action Plan Outcome Review
+                'ln_miner_entity_id' => $en_id,
+                'ln_parent_intent_id' => $in['in_id'],
+                'ln_status' => 2, //Published
+            ));
+
+        }
+    }
+
     function actionplan_advance_step($recipient_en, $in_id, $skip_messages = false, $fb_messenger_format = true)
     {
 
@@ -1728,7 +1768,7 @@ class Platform_model extends CI_Model
 
         //Set variables:
         $progression_messages = ''; //To be populated for webview
-        $progression_type_entity_id = 6158; //Action Plan Outcome Review (Most basic completion method)
+        $progression_type_entity_id = 6158; //Action Plan Outcome Review
         $next_step_message = null; //To be populated if there is a next step.
         $next_step_quick_replies = array(); //To be populated with appropriate options to further progress form here...
         $message_in_requirements = $this->Platform_model->in_req_completion($ins[0], $fb_messenger_format); //See if we have intent requirements
