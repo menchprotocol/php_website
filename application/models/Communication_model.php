@@ -1652,16 +1652,9 @@ class Communication_model extends CI_Model
 
         } elseif ($quick_reply_payload=='NOTINTERESTED') {
 
-            //Affirm:
+            //Affirm and educate:
             $this->Communication_model->dispatch_message(
-                echo_random_message('affirm_progress'),
-                $en,
-                true
-            );
-
-            //Educate:
-            $this->Communication_model->dispatch_message(
-                echo_random_message('command_me'),
+                'Got it. '.echo_random_message('command_me'),
                 $en,
                 true
             );
