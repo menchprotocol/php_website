@@ -2195,7 +2195,7 @@ class Platform_model extends CI_Model
 
 
         $trigger_recommendations = false;
-        if(!$next_step_message){
+        if(!$next_step_message && count($next_step_quick_replies)==0){
 
             if($next_in_id < 1){
                 //No next step found! This seems to be the end:
