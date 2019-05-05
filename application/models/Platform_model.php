@@ -2193,10 +2193,10 @@ class Platform_model extends CI_Model
                 //Maybe do something here?
             }
 
-        } elseif(!$has_published_progression) {
+        } else {
 
             //Give option to skip:
-            if($fb_messenger_format){
+            if($fb_messenger_format && !$has_published_progression){
 
                 //Give an option to confirm IF has submission requirements:
                 if($progression_type_entity_id==6144){
@@ -2216,7 +2216,7 @@ class Platform_model extends CI_Model
 
             } else {
 
-                $next_step_message .= '<div style="font-size: 0.7em; margin-top: 10px;">Or <a href="javascript:void(0);" onclick="actionplan_skip_steps(' . $recipient_en['en_id'] . ', ' . $in_id . ')"><u>skip it</u></a>.</div>';
+                $next_step_message .= '<div style="font-size: 0.7em; margin-top: 10px;">Or <a href="javascript:void(0);" onclick="actionplan_skip_steps(' . $recipient_en['en_id'] . ', ' . $in_id . ')"><u>Skip</u></a>.</div>';
 
             }
 

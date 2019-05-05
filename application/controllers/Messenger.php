@@ -1534,7 +1534,7 @@ class Messenger extends CI_Controller
 
         //Just give them an overview of what they are about to skip:
         return echo_json(array(
-            'skip_step_preview' => $this->Communication_model->initiate_skip_request(array('en_id' => $en_id), $in_id, false).'. Are you sure you want to skip?',
+            'skip_step_preview' => 'WARNING: '.$this->Communication_model->initiate_skip_request(array('en_id' => $en_id), $in_id, false).' Are you sure you want to skip?',
         ));
 
     }
