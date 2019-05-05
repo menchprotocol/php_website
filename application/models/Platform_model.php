@@ -1554,6 +1554,18 @@ class Platform_model extends CI_Model
                 );
 
             }
+        } else {
+
+            //It seems the student already have this intention as completed:
+            $this->Communication_model->dispatch_message(
+                'You seem to have completed this intention before, so there is nothing else to do now.',
+                array('en_id' => $en_id),
+                true
+            );
+
+            //List featured intents and let them choose:
+            $this->Communication_model->suggest_featured_intents($en_id);
+
         }
 
         return true;
