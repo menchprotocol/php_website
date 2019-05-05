@@ -1703,23 +1703,6 @@ class Communication_model extends CI_Model
 
                     //Do final confirmation by giving Student more context on this intention before adding to their Action Plan...
 
-                    //Send all Intent Note Messages for this intention so they can review it:
-                    foreach ($this->Database_model->ln_fetch(array(
-                        'ln_status' => 2, //Published
-                        'ln_type_entity_id' => 4231, //Intent Note Messages
-                        'ln_child_intent_id' => $ins[0]['in_id'],
-                    ), array(), 0, 0, array('ln_order' => 'ASC')) as $ln) {
-                        $this->Communication_model->dispatch_message(
-                            $ln['ln_content'],
-                            $en,
-                            true,
-                            array(),
-                            array(
-                                'ln_parent_intent_id' => $ins[0]['in_id'],
-                            )
-                        );
-                    }
-
                     //See if we have an overview:
                     $overview_message = '';
                     $source_info = echo_tree_references($ins[0], true);

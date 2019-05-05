@@ -1542,7 +1542,7 @@ class Platform_model extends CI_Model
             if($top_priority['in']['in_id']==$ins[0]['in_id']){
 
                 //The newly added intent is the top priority, so let's initiate first message for action plan tree:
-                $this->Platform_model->actionplan_advance_step(array('en_id' => $en_id), $ins[0]['in_id'], true);
+                $this->Platform_model->actionplan_advance_step(array('en_id' => $en_id), $ins[0]['in_id']);
 
             } else {
 
@@ -1678,7 +1678,7 @@ class Platform_model extends CI_Model
         }
     }
 
-    function actionplan_advance_step($recipient_en, $in_id, $skip_messages = false, $fb_messenger_format = true)
+    function actionplan_advance_step($recipient_en, $in_id, $fb_messenger_format = true)
     {
 
         /*
@@ -2125,28 +2125,26 @@ class Platform_model extends CI_Model
             }
 
             //Dispatch intent messages if not skipped:
-            if(!$skip_messages){
-                foreach ($in__messages as $count => $message_ln) {
-                    $progression_messages .= $this->Communication_model->dispatch_message(
-                        $message_ln['ln_content'],
-                        $recipient_en,
-                        $fb_messenger_format,
-                        //This is when we have messages and need to append the "Next" Quick Reply to the last message:
-                        ( $next_in_id > 0 && $fb_messenger_format && !$next_step_message && count($next_step_quick_replies)==0 && ($count+1)==count($in__messages) ? array(array(
-                            'content_type' => 'text',
-                            'title' => 'Next',
-                            'payload' => 'GONEXT',
-                        )) : ( count($next_step_quick_replies) > 0 && ($count+1)==count($in__messages) && $fb_messenger_format && !$next_step_message ? array_merge($next_step_quick_replies, array(array(
-                            'content_type' => 'text',
-                            'title' => 'Skip',
-                            'payload' => 'SKIP-ACTIONPLAN_1_' . $ins[0]['in_id'],
-                        ))) : array() ) ),
-                        array(
-                            'ln_parent_intent_id' => $in_id,
-                            'ln_parent_link_id' => $message_ln['ln_id'], //This message
-                        )
-                    );
-                }
+            foreach ($in__messages as $count => $message_ln) {
+                $progression_messages .= $this->Communication_model->dispatch_message(
+                    $message_ln['ln_content'],
+                    $recipient_en,
+                    $fb_messenger_format,
+                    //This is when we have messages and need to append the "Next" Quick Reply to the last message:
+                    ( $next_in_id > 0 && $fb_messenger_format && !$next_step_message && count($next_step_quick_replies)==0 && ($count+1)==count($in__messages) ? array(array(
+                        'content_type' => 'text',
+                        'title' => 'Next',
+                        'payload' => 'GONEXT',
+                    )) : ( count($next_step_quick_replies) > 0 && ($count+1)==count($in__messages) && $fb_messenger_format && !$next_step_message ? array_merge($next_step_quick_replies, array(array(
+                        'content_type' => 'text',
+                        'title' => 'Skip',
+                        'payload' => 'SKIP-ACTIONPLAN_1_' . $ins[0]['in_id'],
+                    ))) : array() ) ),
+                    array(
+                        'ln_parent_intent_id' => $in_id,
+                        'ln_parent_link_id' => $message_ln['ln_id'], //This message
+                    )
+                );
             }
         }
 

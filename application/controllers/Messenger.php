@@ -1339,6 +1339,17 @@ class Messenger extends CI_Controller
 
     }
 
+    function actionplan_clear_all($en_id, $timestamp, $secret_key){
+        if($secret_key != md5($en_id . $this->config->item('actionplan_salt') . $timestamp)){
+            die('Invalid Secret Key');
+        }
+
+        $this->db->query("DELETE from table_links WHERE ln_miner_entity_id=".$en_id." AND ln_type_entity_id IN (" . join(',', array_merge($this->config->item('en_ids_6146'), $this->config->item('en_ids_6150'), $this->config->item('en_ids_6147'))) . ")");
+        $affected_rows = $this->db->affected_rows();
+        echo 'Removed '.$affected_rows.' Action Plan links.';
+
+    }
+
     function actionplan_load($psid, $in_id)
     {
 
@@ -1414,7 +1425,7 @@ class Messenger extends CI_Controller
             $this->load->view('view_messenger/actionplan_intent', array(
                 'session_en' => $session_en,
                 'student_intents' => $student_intents,
-                'advance_step' => $this->Platform_model->actionplan_advance_step($session_en, $in_id, false, false),
+                'advance_step' => $this->Platform_model->actionplan_advance_step($session_en, $in_id, false),
                 'in' => $ins[0], //Currently focused intention:
             ));
 
