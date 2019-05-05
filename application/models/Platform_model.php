@@ -1895,11 +1895,11 @@ class Platform_model extends CI_Model
                     if($fb_messenger_format){
 
                         if(!in_array(($key+1), $answer_referencing)){
-                            $next_step_message .= "\n\n" . ($key+1).'. ';
+                            $next_step_message .= "\n\n" . ($key+1).'. '.echo_in_outcome($child_in['in_outcome'], true);
                         }
 
                         if($was_selected){
-                            $next_step_message .= '[Selected] ';
+                            $next_step_message .= '['.($key+1).' Was Selected] ';
                         } elseif(!$has_published_progression) {
                             //For messenger only:
                             array_push($next_step_quick_replies, array(
@@ -1935,11 +1935,10 @@ class Platform_model extends CI_Model
 
                         }
 
+                        //Add to answer list:
+                        $next_step_message .= echo_in_outcome($child_in['in_outcome'], true);
+
                     }
-
-
-                    //Add to answer list:
-                    $next_step_message .= echo_in_outcome($child_in['in_outcome'], true);
 
 
                     //HTML?
@@ -2127,11 +2126,11 @@ class Platform_model extends CI_Model
                         $recipient_en,
                         $fb_messenger_format,
                         //This is when we have messages and need to append the "Next" Quick Reply to the last message:
-                        ( $next_in_id > 0 && $fb_messenger_format && !$next_step_message && ($count+1)==count($in__messages) ? array(array(
+                        ( $next_in_id > 0 && $fb_messenger_format && !$next_step_message && count($next_step_quick_replies)==0 && ($count+1)==count($in__messages) ? array(array(
                             'content_type' => 'text',
                             'title' => 'Next',
                             'payload' => 'GONEXT',
-                        )) : array() ),
+                        )) : ( count($next_step_quick_replies) > 0 ? $next_step_quick_replies : array() ) ),
                         array(
                             'ln_parent_intent_id' => $in_id,
                             'ln_parent_link_id' => $message_ln['ln_id'], //This message
