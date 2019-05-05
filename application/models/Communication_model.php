@@ -1652,9 +1652,16 @@ class Communication_model extends CI_Model
 
         } elseif ($quick_reply_payload=='NOTINTERESTED') {
 
-            //Student not interested in any of the featured intentions...
+            //Affirm:
             $this->Communication_model->dispatch_message(
-                'Got it! So let me know how can I help you get hired at your dream programming job? Start your sentence with "I want to", for example "I want to create a resume", "I want to do better at interviews" or simply "I want to get hired"',
+                echo_random_message('affirm_progress'),
+                $en,
+                true
+            );
+
+            //Educate:
+            $this->Communication_model->dispatch_message(
+                echo_random_message('command_me'),
                 $en,
                 true
             );

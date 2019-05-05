@@ -53,6 +53,6 @@ if(count($student_intents) > 0){
 }
 
 //Inform students how they can add new intentions:
-echo '<div class="actionplan-tip"><i class="fas fa-lightbulb"></i> TIP: You can add a new intention by sending a message starting with <span style="display:inline-block;">"<b>I want to</b>"</span> for example "I want to create a resume" or "I want to get hired".</div>';
+echo '<div class="actionplan-tip"><i class="fas fa-lightbulb"></i> TIP: '.echo_random_message('command_me').'</div>';
 
 ?>

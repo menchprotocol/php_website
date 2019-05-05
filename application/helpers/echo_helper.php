@@ -697,6 +697,9 @@ function echo_random_message($message_key){
             'I cannot understand if you send me an out-of-context message. I would only understand if you choose one of the options that I recommend to you.',
             'I cannot respond to your custom messages and can only understand if you select one of the options that I recommend to you.',
         ),
+        'command_me' => array(
+            'You can command me by sending me a message that starts with "I want to", for example "I want to assess my self" or "I want to do better at interviews"',
+        ),
     );
 
     if(!array_key_exists($message_key, $rotation_index)){
