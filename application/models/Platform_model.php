@@ -2130,7 +2130,11 @@ class Platform_model extends CI_Model
                             'content_type' => 'text',
                             'title' => 'Next',
                             'payload' => 'GONEXT',
-                        )) : ( count($next_step_quick_replies) > 0 ? $next_step_quick_replies : array() ) ),
+                        )) : ( count($next_step_quick_replies) > 0 ? array_merge($next_step_quick_replies, array(array(
+                            'content_type' => 'text',
+                            'title' => 'Skip',
+                            'payload' => 'SKIP-ACTIONPLAN_1_' . $ins[0]['in_id'],
+                        ))) : array() ) ),
                         array(
                             'ln_parent_intent_id' => $in_id,
                             'ln_parent_link_id' => $message_ln['ln_id'], //This message
