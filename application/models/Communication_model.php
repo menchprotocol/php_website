@@ -106,6 +106,14 @@ class Communication_model extends CI_Model
                 'ln_miner_entity_id' => 1, //Shervin/Developer
                 'ln_content' => 'dispatch_validate_message() returned error [' . $msg_validation['message'] . '] for input message [' . $input_message . ']',
                 'ln_child_entity_id' => (isset($recipient_en['en_id']) ? $recipient_en['en_id'] : 0),
+                'ln_metadata' => array(
+                    'input_message' => $input_message,
+                    'recipient_en' => $recipient_en,
+                    'fb_messenger_format' => $fb_messenger_format,
+                    'quick_replies' => $quick_replies,
+                    'ln_append' => $ln_append,
+                    'message_in_id' => $message_in_id
+                ),
             ), $filtered_tr_append));
 
             return false;
@@ -1222,10 +1230,10 @@ class Communication_model extends CI_Model
             //We did find some steps to skip...
             //Send student a message and confirm that they want to skip:
             $this->Communication_model->dispatch_message(
-                'You are about to skipthe intention to '.echo_in_outcome($ins[0]['in_outcome'], true, true).' and its ' . $would_be_skipped_count . ' step' . echo__s($would_be_skipped_count) . '. I encourage you to continue without skipping to have the maximum chance to succeed!',
+                'You are about to skip the intention to '.echo_in_outcome($ins[0]['in_outcome'], true, true).' and its ' . $would_be_skipped_count . ' step' . echo__s($would_be_skipped_count) . '. I encourage you to continue so you have the maximum chance for success!',
                 $en,
                 true,
-                array(//skip 104 - 1222 Steps $
+                array(
                     array(
                         'content_type' => 'text',
                         'title' => 'Skip 🚫',
