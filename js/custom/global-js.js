@@ -29,10 +29,6 @@ function turn_off() {
     $('.dash').html('<span><i class="fas fa-spinner fa-spin"></i></span> Processing...');
 }
 
-function htmlEntities(str) {
-    return String(str).replace(/&/g, '&amp;').replace(/</g, '&lt;').replace(/>/g, '&gt;').replace(/"/g, '&quot;');
-}
-
 function nl2br(str, is_xhtml) {
     if (typeof str === 'undefined' || str === null) {
         return '';

@@ -487,10 +487,10 @@ function in_modify_save() {
                 //Did the outcome change?
                 if(data.formatted_in_outcome){
                     //yes, update it:
-                    $(".in_outcome_" + modify_data['in_id']).html(htmlEntities(data.formatted_in_outcome));
+                    $(".in_outcome_" + modify_data['in_id']).html(data.formatted_in_outcome);
 
                     //Set title:
-                    $('.edit-header').html('<i class="fas fa-cog"></i> ' + htmlEntities(modify_data['in_outcome']));
+                    $('.edit-header').html('<i class="fas fa-cog"></i> ' + modify_data['in_outcome']);
 
                     //Also update possible child icons:
                     $('.in_icon_child_' + modify_data['in_id']).attr('data-original-title', modify_data['in_outcome']);

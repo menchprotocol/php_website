@@ -1222,13 +1222,13 @@ class Communication_model extends CI_Model
             //We did find some steps to skip...
             //Send student a message and confirm that they want to skip:
             $this->Communication_model->dispatch_message(
-                'You are about to skip ' . $would_be_skipped_count . ' step' . echo__s($would_be_skipped_count) . '. In general I don\'t recommend skipping steps to maximize your chance to '.echo_in_outcome($ins[0]['in_outcome'], true, true),
+                'You are about to skipthe intention to '.echo_in_outcome($ins[0]['in_outcome'], true, true).' and its ' . $would_be_skipped_count . ' step' . echo__s($would_be_skipped_count) . '. I encourage you to continue without skipping to have the maximum chance to succeed!',
                 $en,
                 true,
-                array(
+                array(//skip 104 - 1222 Steps $
                     array(
                         'content_type' => 'text',
-                        'title' => 'Skip ' . $would_be_skipped_count . ' Step' . echo__s($would_be_skipped_count) . ' 🚫',
+                        'title' => 'Skip 🚫',
                         'payload' => 'SKIP-ACTIONPLAN_2_'.$in_id, //Confirm and skip
                     ),
                     array(
