@@ -978,35 +978,33 @@ class Platform_model extends CI_Model
         //Fetch common base and expansion paths from intent metadata:
         $flat_common_steps = array_flatten($in_metadata['in__metadata_common_steps']);
 
-        if($apply_skip){
-            //Add Action Plan Skipped Step Progression Links:
-            foreach($flat_common_steps as $common_in_id){
+        //Add Action Plan Skipped Step Progression Links:
+        foreach($flat_common_steps as $common_in_id){
 
-                //Fetch current progression links, if any:
-                $current_progression_links = $this->Database_model->ln_fetch(array(
-                    'ln_type_entity_id IN (' . join(',', $this->config->item('en_ids_6146')) . ')' => null, //Action Plan Progression Link Types
-                    'ln_miner_entity_id' => $en_id,
-                    'ln_parent_intent_id' => $common_in_id,
-                    'ln_status >=' => 0, //New+
-                ));
+            //Fetch current progression links, if any:
+            $current_progression_links = $this->Database_model->ln_fetch(array(
+                'ln_type_entity_id IN (' . join(',', $this->config->item('en_ids_6146')) . ')' => null, //Action Plan Progression Link Types
+                'ln_miner_entity_id' => $en_id,
+                'ln_parent_intent_id' => $common_in_id,
+                'ln_status >=' => 0, //New+
+            ));
 
-                //Add skip link:
-                $new_progression_link = $this->Database_model->ln_create(array(
-                    'ln_type_entity_id' => 6143, //Action Plan Skipped Step
-                    'ln_miner_entity_id' => $en_id,
-                    'ln_parent_intent_id' => $common_in_id,
-                    'ln_status' => 2, //Published
-                ));
+            //Add skip link:
+            $new_progression_link = $this->Database_model->ln_create(array(
+                'ln_type_entity_id' => 6143, //Action Plan Skipped Step
+                'ln_miner_entity_id' => $en_id,
+                'ln_parent_intent_id' => $common_in_id,
+                'ln_status' => 2, //Published
+            ));
 
-                //Archive current progression links:
-                foreach($current_progression_links as $ln){
-                    $this->Database_model->ln_update($ln['ln_id'], array(
-                        'ln_parent_link_id' => $new_progression_link['ln_id'],
-                        'ln_status' => -1,
-                    ), $en_id);
-                }
-
+            //Archive current progression links:
+            foreach($current_progression_links as $ln){
+                $this->Database_model->ln_update($ln['ln_id'], array(
+                    'ln_parent_link_id' => $new_progression_link['ln_id'],
+                    'ln_status' => -1,
+                ), $en_id);
             }
+
         }
 
         //Return number of skipped steps:
