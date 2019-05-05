@@ -1840,7 +1840,23 @@ class Platform_model extends CI_Model
                 $progression_type_entity_id = 6157; //Action Plan Question Answered
                 $next_step_message = ''; //Select one of the following options to continue:
 
-                if(!$fb_messenger_format){
+                if($fb_messenger_format){
+
+                    //See if we have answer referencing in messages...
+                    $answer_referencing = array(); //Start with nothing...
+                    foreach ($in__messages as $message_ln) {
+                        //Let's see if we can find a reference:
+                        for ($num = 1; $num <= 10; $num++) {
+                            if(substr_count($message_ln['ln_content'] , $num.'. ')==1 || substr_count($message_ln['ln_content'] , $num.".\n")==1){
+                                //Make sure we have have the previous number:
+                                if($num==1 || in_array(($num-1),$answer_referencing)){
+                                    array_push($answer_referencing, $num);
+                                }
+                            }
+                        }
+                    }
+
+                } else {
                     $next_step_message .= '<div class="list-group" style="margin-top:10px;">';
                 }
 
@@ -1878,7 +1894,9 @@ class Platform_model extends CI_Model
 
                     if($fb_messenger_format){
 
-                        $next_step_message .= "\n\n" . ($key+1).'. ';
+                        if(!in_array(($key+1), $answer_referencing)){
+                            $next_step_message .= "\n\n" . ($key+1).'. ';
+                        }
 
                         if($was_selected){
                             $next_step_message .= '[Selected] ';
