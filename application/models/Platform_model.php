@@ -1992,7 +1992,7 @@ class Platform_model extends CI_Model
                 foreach ($in__children as $child_in) {
 
                     //Make sure this AND child has a "useful" outcome by NOT referencing it's ID in its outcome:
-                    if(substr_count($child_in['in_outcome'], '#'.$child_in['in_id']) > 0){
+                    if(!$fb_messenger_format && substr_count($child_in['in_outcome'], '#'.$child_in['in_id']) > 0){
                         //This is likely a "useless" outcome like "Answer question #8704" which should not be listed...
                         continue;
                     }
