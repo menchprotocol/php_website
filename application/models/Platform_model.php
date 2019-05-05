@@ -942,7 +942,7 @@ class Platform_model extends CI_Model
     }
 
 
-    function actionplan_skip_recursive_down($en_id, $in_id, $apply_skip)
+    function actionplan_skip_recursive_down($en_id, $in_id)
     {
 
         //Fetch intent common steps:

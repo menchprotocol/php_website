@@ -1820,10 +1820,10 @@ class Communication_model extends CI_Model
                 } elseif ($ln_status == 2) {
 
                     //Actually skip and see if we've finished this Action Plan:
-                    $total_skipped = $this->Platform_model->actionplan_skip_recursive_down($en['en_id'], $in_id, true);
+                    $this->Platform_model->actionplan_skip_recursive_down($en['en_id'], $in_id);
 
                     //Confirm the skip:
-                    $message = 'Confirmed, I skipped '.$total_skipped.' step'.echo__s($total_skipped).'. You can always re-visit these steps in your Action Plan and complete them at any time. /link:See in 🚩Action Plan:https://mench.com/messenger/actionplan/' . $in_id;
+                    $message = 'Got it! I successfully skipped all steps';
 
                 }
 

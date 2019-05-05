@@ -1547,7 +1547,7 @@ class Messenger extends CI_Controller
         //Assume its all good!
 
         //We actually skipped, draft message:
-        $message = '<div class="alert alert-success" role="alert">Successfully skipped all steps.</div>';
+        $message = '<div class="alert alert-success" role="alert">I successfully skipped all steps.</div>';
 
         //Find the next item to navigate them to:
         $next_in_id = $this->Platform_model->actionplan_find_next_step($en_id, false);
