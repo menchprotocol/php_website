@@ -2130,7 +2130,7 @@ class Platform_model extends CI_Model
                             'content_type' => 'text',
                             'title' => 'Next',
                             'payload' => 'GONEXT',
-                        )) : ( count($next_step_quick_replies) > 0 ? array_merge($next_step_quick_replies, array(array(
+                        )) : ( count($next_step_quick_replies) > 0 && ($count+1)==count($in__messages) && $fb_messenger_format && !$next_step_message ? array_merge($next_step_quick_replies, array(array(
                             'content_type' => 'text',
                             'title' => 'Skip',
                             'payload' => 'SKIP-ACTIONPLAN_1_' . $ins[0]['in_id'],
@@ -2243,16 +2243,18 @@ class Platform_model extends CI_Model
         //Dispatch instructional message if any:
         if($fb_messenger_format) {
 
-            //Send messages over Messenger:
-            $this->Communication_model->dispatch_message(
-                $next_step_message,
-                $recipient_en,
-                true,
-                $next_step_quick_replies,
-                array(
-                    'ln_parent_intent_id' => $in_id, //Focus Intent
-                )
-            );
+            if(strlen($next_step_message) > 0){
+                //Send messages over Messenger IF we have a message
+                $this->Communication_model->dispatch_message(
+                    $next_step_message,
+                    $recipient_en,
+                    true,
+                    $next_step_quick_replies,
+                    array(
+                        'ln_parent_intent_id' => $in_id, //Focus Intent
+                    )
+                );
+            }
 
             if($trigger_recommendations){
                 //List featured intents and let them choose:
