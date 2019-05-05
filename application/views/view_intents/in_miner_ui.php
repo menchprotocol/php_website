@@ -48,7 +48,7 @@
 
         echo '<a class="secret" href="/intents/in_review_metadata/' . $in['in_id'] . '" style="margin-left: 5px;" target="_blank" data-toggle="tooltip" title="Review Intent Metadata" data-placement="top"><i class="fas fa-function"></i></a>';
 
-        echo '<a class="secret" href="/links/cron__sync_algolia/' . $in['in_id'] . '" style="margin-left: 5px;" target="_blank" data-toggle="tooltip" title="Update Algolia Search Index" data-placement="top"><i class="fas fa-search"></i></a>';
+        echo '<a class="secret" href="/links/cron__sync_algolia/in/' . $in['in_id'] . '" style="margin-left: 5px;" target="_blank" data-toggle="tooltip" title="Update Algolia Search Index" data-placement="top"><i class="fas fa-search"></i></a>';
 
         echo '<div class="list-group indent1">';
         echo echo_in($in, 1);
