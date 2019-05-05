@@ -56,7 +56,12 @@ if(count($student_intents) > 0){
 echo '<div class="actionplan-tip"><i class="fas fa-lightbulb"></i> TIP: '.echo_random_message('command_me').'</div>';
 
 //Are they a miner? Give them option to clear everything:
-if(filter_array($session_en['en__parents'], 'en_id', 1308)){
+if(count($this->Database_model->ln_fetch(array(
+        'ln_status' => 2, //Published
+        'ln_type_entity_id IN (' . join(',', $this->config->item('en_ids_4592')) . ')' => null, //Entity Link Connectors
+        'ln_child_entity_id' => $session_en['en_id'],
+        'ln_parent_entity_id' => 1308, //Miners
+    ))) > 0){
     $timestamp = time();
     echo '<div style="text-align: right;"><a href="/messenger/actionplan_clear_all/'.$session_en['en_id'].'/'.$timestamp.'/'.md5($session_en['en_id'] . $this->config->item('actionplan_salt') . $timestamp).'" style="font-size:0.6em; color:#CCC;"><i class="fas fa-trash-alt"></i> Clear All</a></div>';
 }
