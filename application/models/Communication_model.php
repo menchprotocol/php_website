@@ -518,7 +518,7 @@ class Communication_model extends CI_Model
          * */
 
         //Start building the Output message body based on format:
-        $output_body_message = $input_message;
+        $output_body_message = ( $fb_messenger_format ? $input_message : htmlentities($input_message) );
 
         if (in_array('/firstname', $msg_references['ref_commands'])) {
 
@@ -1053,7 +1053,7 @@ class Communication_model extends CI_Model
             //Always returns a single (sometimes long) HTML message:
             array_push($output_messages, array(
                 'message_type' => 4570, //HTML Message Sent
-                'message_body' => '<div class="i_content"><div class="msg">' . nl2br(htmlentities($output_body_message)) . '</div></div>',
+                'message_body' => '<div class="i_content"><div class="msg">' . nl2br($output_body_message) . '</div></div>',
             ));
 
         }
