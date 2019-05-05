@@ -935,6 +935,26 @@ function echo_tree_references($in, $fb_messenger_format = false, $expand_mode = 
     }
 }
 
+function echo_step_range($in, $educational_mode = false){
+
+    $metadata = unserialize($in['in_metadata']);
+    if (!isset($metadata['in__metadata_min_steps']) || !isset($metadata['in__metadata_max_steps'])) {
+        return ( $educational_mode ? 'Unknown number of steps' : false );
+    }
+
+    //Is this a range or a single step value?
+    if($metadata['in__metadata_min_steps'] != $metadata['in__metadata_max_steps']){
+
+        //It's a range:
+        return ( $educational_mode ? 'between ' : '' ) . $metadata['in__metadata_min_steps'].' - '.$metadata['in__metadata_max_steps'].' Steps' . ( $educational_mode ? ' (depends on your answers my questions)' : '' );
+
+    } else {
+
+        //A single step value, nothing to educate about here:
+        return $metadata['in__metadata_max_steps']. ' Step'.echo__s($metadata['in__metadata_max_steps']);
+
+    }
+}
 
 function echo_tree_steps($in, $fb_messenger_format = 0, $expand_mode = false)
 {
@@ -947,14 +967,11 @@ function echo_tree_steps($in, $fb_messenger_format = 0, $expand_mode = false)
      * */
 
     //Do we have anything to return?
-    $metadata = unserialize($in['in_metadata']);
-    if (!isset($metadata['in__metadata_min_steps']) || !isset($metadata['in__metadata_max_steps'])) {
+    if (!echo_step_range($in)) {
         return false;
     }
 
-    $step_range = ( $metadata['in__metadata_min_steps'] != $metadata['in__metadata_max_steps'] );
-
-    $pitch = 'Action Plan contains ' . ( $step_range ? 'between '.$metadata['in__metadata_min_steps'].' - '.$metadata['in__metadata_max_steps'].' steps depending on your answers my questions' : $metadata['in__metadata_max_steps'].' steps' );
+    $pitch = 'Action Plan contains ' . echo_step_range($in, true);
 
     if ($fb_messenger_format) {
 
@@ -971,7 +988,7 @@ function echo_tree_steps($in, $fb_messenger_format = 0, $expand_mode = false)
             <div class="panel-heading" role="tab" id="heading' . $id . '">
                 <h4 class="panel-title">
                     <a role="button" data-toggle="collapse" data-parent="#open' . $id . '" href="#collapse' . $id . '" aria-expanded="' . ($expand_mode ? 'true' : 'false') . '" aria-controls="collapse' . $id . '">
-                    <i class="fas" style="transform:none !important;"><i class="fas fa-walking" style="transform:none !important;"></i></i> ' . ( $step_range ? $metadata['in__metadata_min_steps'].' - '.$metadata['in__metadata_max_steps'] : $metadata['in__metadata_max_steps'] ) . ' Steps<i class="fal fa-info-circle" style="transform:none !important; font-size:0.85em !important;"></i>
+                    <i class="fas" style="transform:none !important;"><i class="fas fa-walking" style="transform:none !important;"></i></i> ' . echo_step_range($in) . '<i class="fal fa-info-circle" style="transform:none !important; font-size:0.85em !important;"></i>
                 </a>
             </h4>
         </div>
@@ -1089,49 +1106,24 @@ function echo_public_actionplan($in, $expand_mode){
     return $return_html;
 }
 
-function echo_tree_costs($in, $fb_messenger_format = 0, $expand_mode = false)
+function echo_tree_time_estimate($in, $fb_messenger_format = 0, $expand_mode = false)
 {
 
     /*
      *
-     * An intent function to display estimated completion range
+     * An intent function to display estimated completion time range
      * for the entire intent tree stored in the metadata field.
      *
      * */
 
     //Do we have anything to return?
     $metadata = unserialize($in['in_metadata']);
-    $has_time_estimate = ( isset($metadata['in__metadata_max_seconds']) && !($metadata['in__metadata_max_seconds'] == 0) );
-    $has_cost_estimate = ( isset($metadata['in__metadata_max_cost']) && !($metadata['in__metadata_max_cost'] == 0) );
-    if (!$has_cost_estimate && !$has_time_estimate) {
+    if (!isset($metadata['in__metadata_max_seconds']) || $metadata['in__metadata_max_seconds'] == 0) {
         return false;
     }
-    $cost_range = ( $metadata['in__metadata_max_cost'] != $metadata['in__metadata_min_cost'] );
-    $time_range = ( $metadata['in__metadata_max_seconds'] != $metadata['in__metadata_min_seconds'] );
-
-
-    if($has_cost_estimate){
-        //Construct UI:
-        if ($cost_range) {
-            //Price range:
-            $price_range = '$' . round($metadata['in__metadata_min_cost']) . ' - $' . round($metadata['in__metadata_max_cost']) . ' USD';
-        } else {
-            //Single price:
-            $price_range = '$' . round($metadata['in__metadata_max_cost']) . ' USD';
-        }
-    }
-
-
-    //For HTML version only:
-    $title = '';
-    $title .= ( $has_time_estimate ? echo_time_range($in).' ' : '' );
-    $title .= ( $has_cost_estimate ? ( $has_time_estimate ? '& ' : '' ) . $price_range : '' );
 
     //As messenger default format and HTML extra notes:
-    $pitch  = 'Action Plan estimates ';
-    $pitch .= ( $has_time_estimate ? strtolower(echo_time_range($in)) : '' ).' to complete';
-    $pitch .= ( $has_cost_estimate ? ( $has_time_estimate ? ' and may cost '.( $cost_range ? 'between ' : '' ) : '' ) . $price_range : '' );
-    $pitch .= ( $cost_range ? ' depending on the verified 3rd-party products you choose to purchase' : '' );
+    $pitch  = 'I estimate it would take you '. strtolower(echo_time_range($in)) .' to complete this Action Plan';
 
     if ($fb_messenger_format) {
         return '⏰ ' . $pitch . "\n";
@@ -1142,7 +1134,7 @@ function echo_tree_costs($in, $fb_messenger_format = 0, $expand_mode = false)
             <div class="panel-heading" role="tab" id="heading' . $id . '">
                 <h4 class="panel-title">
                     <a role="button" data-toggle="collapse" data-parent="#open' . $id . '" href="#collapse' . $id . '" aria-expanded="' . ($expand_mode ? 'true' : 'false') . '" aria-controls="collapse' . $id . '">
-                        <i class="fas" style="transform:none !important;"><i class="fas fa-alarm-clock" style="transform:none !important;"></i></i> ' . $title . '<i class="fal fa-info-circle" style="transform:none !important; font-size:0.85em !important;"></i>
+                        <i class="fas" style="transform:none !important;"><i class="fas fa-alarm-clock" style="transform:none !important;"></i></i> ' . echo_time_range($in) . ' <i class="fal fa-info-circle" style="transform:none !important; font-size:0.85em !important;"></i>
                     </a>
                 </h4>
             </div>

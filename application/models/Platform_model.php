@@ -1238,12 +1238,11 @@ class Platform_model extends CI_Model
         $common_totals = $this->Database_model->in_fetch(array(
             'in_id IN ('.join(',',$flat_common_steps).')' => null,
             'in_status' => 2, //Published
-        ), array(), 0, 0, array(), 'COUNT(in_id) as total_steps, SUM(in_seconds_cost) as total_seconds, SUM(in_dollar_cost) as total_cost');
+        ), array(), 0, 0, array(), 'COUNT(in_id) as total_steps, SUM(in_seconds_cost) as total_seconds');
 
         $common_base_resources = array(
             'steps' => $common_totals[0]['total_steps'],
             'seconds' => $common_totals[0]['total_seconds'],
-            'cost' => $common_totals[0]['total_cost'],
         );
 
         $metadata_this = array(
@@ -1253,9 +1252,6 @@ class Platform_model extends CI_Model
             //Required time range to complete tree:
             '__in__metadata_min_seconds' => $common_base_resources['seconds'],
             '__in__metadata_max_seconds' => $common_base_resources['seconds'],
-            //Required cost range to complete tree:
-            '__in__metadata_min_cost' => $common_base_resources['cost'],
-            '__in__metadata_max_cost' => $common_base_resources['cost'],
             //Assessment mark ranges (Always zero for common base):
             '__in__metadata_min_mark' => 0,
             '__in__metadata_max_mark' => 0,
@@ -1334,8 +1330,6 @@ class Platform_model extends CI_Model
                 'local__in__metadata_max_steps'=> null,
                 'local__in__metadata_min_seconds'=> null,
                 'local__in__metadata_max_seconds'=> null,
-                'local__in__metadata_min_cost'=> null,
-                'local__in__metadata_max_cost'=> null,
             );
 
             foreach($or_expansion as $or_in_id){
@@ -1358,12 +1352,6 @@ class Platform_model extends CI_Model
                 }
                 if(is_null($metadata_local['local__in__metadata_max_seconds']) || $metadata_recursion['__in__metadata_max_seconds'] > $metadata_local['local__in__metadata_max_seconds']){
                     $metadata_local['local__in__metadata_max_seconds'] = $metadata_recursion['__in__metadata_max_seconds'];
-                }
-                if(is_null($metadata_local['local__in__metadata_min_cost']) || $metadata_recursion['__in__metadata_min_cost'] < $metadata_local['local__in__metadata_min_cost']){
-                    $metadata_local['local__in__metadata_min_cost'] = $metadata_recursion['__in__metadata_min_cost'];
-                }
-                if(is_null($metadata_local['local__in__metadata_max_cost']) || $metadata_recursion['__in__metadata_max_cost'] > $metadata_local['local__in__metadata_max_cost']){
-                    $metadata_local['local__in__metadata_max_cost'] = $metadata_recursion['__in__metadata_max_cost'];
                 }
 
 
@@ -1400,12 +1388,6 @@ class Platform_model extends CI_Model
             if(!is_null($metadata_local['local__in__metadata_max_seconds'])){
                 $metadata_this['__in__metadata_max_seconds'] += intval($metadata_local['local__in__metadata_max_seconds']);
             }
-            if(!is_null($metadata_local['local__in__metadata_min_cost'])){
-                $metadata_this['__in__metadata_min_cost'] += doubleval($metadata_local['local__in__metadata_min_cost']);
-            }
-            if(!is_null($metadata_local['local__in__metadata_max_cost'])){
-                $metadata_this['__in__metadata_max_cost'] += doubleval($metadata_local['local__in__metadata_max_cost']);
-            }
 
         }
 
@@ -1433,8 +1415,6 @@ class Platform_model extends CI_Model
                 'in__metadata_max_steps' => intval($metadata_this['__in__metadata_max_steps']),
                 'in__metadata_min_seconds' => intval($metadata_this['__in__metadata_min_seconds']),
                 'in__metadata_max_seconds' => intval($metadata_this['__in__metadata_max_seconds']),
-                'in__metadata_min_cost' => number_format(doubleval($metadata_this['__in__metadata_min_cost']), 2),
-                'in__metadata_max_cost' => number_format(doubleval($metadata_this['__in__metadata_max_cost']), 2),
                 'in__metadata_experts' => $metadata_this['__in__metadata_experts'],
                 'in__metadata_sources' => $metadata_this['__in__metadata_sources'],
                 'in__metadata_extra_insights_timestamp' => time(), //Use to check
@@ -2236,7 +2216,7 @@ class Platform_model extends CI_Model
 
             } else {
 
-                $next_step_message .= '<div style="font-size: 0.7em; margin-top: 10px;">Or <a href="javascript:void(0);" onclick="confirm_skip(' . $recipient_en['en_id'] . ', ' . $in_id . ')"><u>skip it</u></a>.</div>';
+                $next_step_message .= '<div style="font-size: 0.7em; margin-top: 10px;">Or <a href="javascript:void(0);" onclick="actionplan_skip_steps(' . $recipient_en['en_id'] . ', ' . $in_id . ')"><u>skip it</u></a>.</div>';
 
             }
 

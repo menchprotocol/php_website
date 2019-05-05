@@ -1528,43 +1528,35 @@ class Messenger extends CI_Controller
 
     }
 
-    function actionplan_skip_step($en_id, $in_id, $apply_skip)
+
+    function actionplan_skip_preview($en_id, $in_id)
     {
 
-        //Run skip function
-        $total_skipped = $this->Platform_model->actionplan_skip_recursive_down($en_id, $in_id, $apply_skip);
+        //Just give them an overview of what they are about to skip:
+        return echo_json(array(
+            'skip_step_preview' => $this->Communication_model->initiate_skip_request(array('en_id' => $en_id), $in_id, false).'. Are you sure you want to skip?',
+        ));
 
-        if ($total_skipped < 1) {
-            //Ooooopsi, could not find anything to skip:
-            $this->Database_model->ln_create(array(
-                'ln_parent_entity_id' => $en_id,
-                'ln_parent_intent_id' => $in_id,
-                'ln_content' => 'actionplan_skip_step() failed to locate skip intention [Apply: ' . ($apply_skip ? 'YES' : 'NO') . ']',
-                'ln_type_entity_id' => 4246, //Platform Error
-                'ln_miner_entity_id' => 1, //Shervin/Developer
-            ));
-        }
+    }
 
-        if (!$apply_skip) {
+    function actionplan_skip_apply($en_id, $in_id)
+    {
 
-            //Just give count on total steps so student can review/confirm:
-            return echo_json(array(
-                'step_count' => intval($total_skipped),
-            ));
+        //Actually go ahead and skip
+        $this->Platform_model->actionplan_skip_recursive_down($en_id, $in_id);
+        //Assume its all good!
 
+        //We actually skipped, draft message:
+        $message = '<div class="alert alert-success" role="alert">Successfully skipped all steps.</div>';
+
+        //Find the next item to navigate them to:
+        $next_in_id = $this->Platform_model->actionplan_find_next_step($en_id, false);
+        if ($next_in_id > 0) {
+            return redirect_message('/messenger/actionplan/' . $next_in_id, $message);
         } else {
-
-            //We actually skipped, draft message:
-            $message = '<div class="alert alert-success" role="alert">Successfully skipped ' . $total_skipped . ' step' . echo__s($total_skipped) . '.</div>';
-
-            //Find the next item to navigate them to:
-            $next_in_id = $this->Platform_model->actionplan_find_next_step($en_id, false);
-            if ($next_in_id > 0) {
-                return redirect_message('/messenger/actionplan/' . $next_in_id, $message);
-            } else {
-                return redirect_message('/messenger/actionplan', $message);
-            }
+            return redirect_message('/messenger/actionplan', $message);
         }
+
     }
 
     function myaccount_radio_update()

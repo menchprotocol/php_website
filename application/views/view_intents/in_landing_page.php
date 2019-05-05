@@ -30,14 +30,14 @@ if (!$hide_subscribe) {
 
     $source_info = echo_tree_references($in, false);
     $step_info = echo_tree_steps($in, false);
-    $cost_info = echo_tree_costs($in, false);
+    $time_info = echo_tree_time_estimate($in, false);
 
-    if($step_info || $source_info || $cost_info){
+    if($step_info || $source_info || $time_info){
         echo '<h3 style="margin-bottom:5px; margin-top:15px !important;">Overview:</h3>';
         echo '<div style="margin:5px 0 25px 0;" class="maxout">';
         echo $source_info;
         echo $step_info;
-        echo $cost_info;
+        echo $time_info;
         echo '</div>';
     }
 

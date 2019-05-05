@@ -1190,47 +1190,36 @@ class Communication_model extends CI_Model
     }
 
 
-    function initiate_skip_request($en, $in_id){
+    function initiate_skip_request($en, $in_id, $fb_messenger_format = true){
 
-        //See how many children would be skipped if they decide to do so:
-        $would_be_skipped_count = $this->Platform_model->actionplan_skip_recursive_down($en['en_id'], $in_id, false);
-
-        if ($would_be_skipped_count == 0) {
-
-            //Inform user:
-            $this->Communication_model->dispatch_message(
-                'I did not find anything to skip!',
-                $en,
-                true,
-                array(
-                    //Give option to go next:
-                    array(
-                        'content_type' => 'text',
-                        'title' => 'Next',
-                        'payload' => 'GONEXT',
-                    )
-                ),
-                array(
-                    'ln_parent_intent_id' => $in_id,
-                )
-            );
-
+        //Fetch this intent:
+        $ins = $this->Database_model->in_fetch(array(
+            'in_id' => $in_id,
+            'in_status' => 2,
+        ));
+        if(count($ins) < 1){
+            $this->Database_model->ln_create(array(
+                'ln_child_entity_id' => $en['en_id'],
+                'ln_child_intent_id' => $in_id,
+                'ln_content' => 'initiate_skip_request() did not locate the published intent',
+                'ln_type_entity_id' => 4246, //Platform Error
+                'ln_miner_entity_id' => 1, //Shervin/Developer
+            ));
             return false;
+        }
+
+        $skip_message = 'You are about to skip the intention to '.echo_in_outcome($ins[0]['in_outcome'], true, true).' and its ' . echo_step_range($ins[0], true) . '. I encourage you to continue so you have the maximum chance for success!';
+
+        if(!$fb_messenger_format){
+
+            //Just return the message for HTML format:
+            return $skip_message;
 
         } else {
 
-            //Fetch this intent:
-            $ins = $this->Database_model->in_fetch(array(
-                'in_id' => $in_id,
-            ));
-            if(count($ins) < 1){
-                return false;
-            }
-
-            //We did find some steps to skip...
-            //Send student a message and confirm that they want to skip:
+            //Send over messenger:
             $this->Communication_model->dispatch_message(
-                'You are about to skip the intention to '.echo_in_outcome($ins[0]['in_outcome'], true, true).' and its ' . $would_be_skipped_count . ' step' . echo__s($would_be_skipped_count) . '. I encourage you to continue so you have the maximum chance for success!',
+                $skip_message,
                 $en,
                 true,
                 array(
@@ -1251,7 +1240,6 @@ class Communication_model extends CI_Model
             );
 
         }
-
     }
 
 
@@ -1707,10 +1695,10 @@ class Communication_model extends CI_Model
                     $overview_message = '';
                     $source_info = echo_tree_references($ins[0], true);
                     $step_info = echo_tree_steps($ins[0], true);
-                    $cost_info = echo_tree_costs($ins[0], true);
+                    $time_info = echo_tree_time_estimate($ins[0], true);
 
-                    if($source_info || $step_info || $cost_info){
-                        $overview_message = 'Here is an overview:' . "\n\n" . $source_info . $step_info . $cost_info . "\n";
+                    if($source_info || $step_info || $time_info){
+                        $overview_message = 'Here is an overview:' . "\n\n" . $source_info . $step_info . $time_info . "\n";
                     }
 
                     //Send message for final confirmation with the overview of how long/difficult it would be to accomplish this intention:
