@@ -1573,7 +1573,7 @@ class Platform_model extends CI_Model
     }
 
 
-    function crud_automate($input_obj_type = null, $insert_columns, $ln_miner_entity_id = 0){
+    function crud_automate($input_obj_type = null, $insert_columns, $ln_miner_entity_id){
 
         /*
          *
@@ -1583,9 +1583,14 @@ class Platform_model extends CI_Model
          *
          * */
 
+        if($ln_miner_entity_id < 0){
+            return false;
+        }
+
         if($input_obj_type=='ln'){
+
             //Check to see if completion notes needs to be sent:
-            if($ln_miner_entity_id > 0 && trigger_on_complete($insert_columns)){
+            if(trigger_oncomplete_tips($insert_columns)){
 
                 //Fetch on-complete messages:
                 $on_complete_messages = $this->Database_model->ln_fetch(array(
@@ -1629,6 +1634,7 @@ class Platform_model extends CI_Model
                     }
                 }
             }
+
         }
     }
 

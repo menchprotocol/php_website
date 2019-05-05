@@ -58,7 +58,7 @@
         $metadata = unserialize($in['in_metadata']);
 
         echo '<div class="indent2">';
-        echo '<h5 class="badge badge-h" style="display: inline-block;"><span class="li-children-count children-counter-' . $in['in_id'] . '">' . (isset($metadata['in__metadata_max_steps']) ? intval($metadata['in__metadata_max_steps'])-1 : '') . '</span> Children</h5>';
+        echo '<h5 class="badge badge-h" style="display: inline-block;"><span class="li-children-count children-counter-' . $in['in_id'] . '">' . count($in['in__children']) . '</span> Children</h5>';
 
         echo '<div id="expand_intents" style="padding-left:8px; display: inline-block;">';
         echo '<i class="fas fa-plus-circle expand_all" style="font-size: 1.2em;"></i> &nbsp;';

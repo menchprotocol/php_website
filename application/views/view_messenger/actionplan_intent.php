@@ -63,13 +63,13 @@ $en_all_4331 = $this->config->item('en_all_4331');
 $en_all_6146 = $this->config->item('en_all_6146');
 $fixed_fields = $this->config->item('fixed_fields');
 $submission_messages = null;
-$trigger_on_complete = false;
+$trigger_oncomplete_tips = false;
 foreach($advance_step['progression_links'] as $pl){
 
     echo '<span style="margin-right:10px;" class="status-label underdot" data-toggle="tooltip" data-placement="top" title="Status is '.$fixed_fields['ln_student_status'][$pl['ln_status']]['s_name'].': '.$fixed_fields['ln_student_status'][$pl['ln_status']]['s_desc'].'">'.$fixed_fields['ln_student_status'][$pl['ln_status']]['s_icon'].' '.$en_all_6146[$pl['ln_type_entity_id']]['m_name'].'</span>';
 
-    if(trigger_on_complete($pl)){
-        $trigger_on_complete = true;
+    if(trigger_oncomplete_tips($pl)){
+        $trigger_oncomplete_tips = true;
     }
 
     if(strlen($pl['ln_content']) > 0){
@@ -129,7 +129,7 @@ if($advance_step['status']){
 
 
 //Show on-complete tips?
-if($trigger_on_complete){
+if($trigger_oncomplete_tips){
 
     $on_complete_messages = $this->Database_model->ln_fetch(array(
         'ln_status' => 2, //Published
