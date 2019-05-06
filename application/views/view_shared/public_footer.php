@@ -39,8 +39,9 @@
                        data-toggle="tooltip" title="Follow on LinkedIn" data-placement="top"><i
                                 class="fab fa-linkedin"></i></a>
 
+                    <?php $en_all_2738 = $this->config->item('en_all_2738'); ?>
                     <a href="/platform"
-                       class="social-link" data-toggle="tooltip" title="Platform Stats"
+                       class="social-link" data-toggle="tooltip" title="<?= $en_all_2738[4488]['m_name'] ?> Overview"
                        data-placement="top"><i class="fas fa-analytics"></i></a>
 
                     <a href="/login"

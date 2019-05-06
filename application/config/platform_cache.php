@@ -5,13 +5,48 @@ defined('BASEPATH') OR exit('No direct script access allowed');
  * Keep a cache of certain parts of the Intent tree for faster processing
  * So we don't have to make DB calls to figure them out every time!
  * See here for all entities cached: https://mench.com/entities/4527
- * use-case format: $this->config->item('en_all_6196')
+ * use-case format: $this->config->item('en_all_2738')
  *
  * ATTENTION: Also search for "en_ids_" and "en_all_" when trying to manage these throughout the code base
  *
  */
 
-//Generated 2019-05-06 11:22:26 PST
+//Generated 2019-05-06 14:58:23 PST
+
+//Mench:
+$config['en_ids_2738'] = array(4488, 6137, 6138, 6196, 6287);
+$config['en_all_2738'] = array(
+    4488 => array(
+        'm_icon' => '<img src="https://mench.com/img/mench_white.png">',
+        'm_name' => 'Mining Platform',
+        'm_desc' => 'A web-based tool to build and share consensus 🤝',
+        'm_parents' => array(2738, 4523, 3326, 3324, 3325, 3323, 4463),
+    ),
+    6137 => array(
+        'm_icon' => '👤',
+        'm_name' => 'My Account',
+        'm_desc' => 'A web-based portal (also accessible via Messenger) enabling students to manage their account',
+        'm_parents' => array(2738),
+    ),
+    6138 => array(
+        'm_icon' => '🚩',
+        'm_name' => 'Action Plan',
+        'm_desc' => 'A web-based portal (also accessible via Messenger) enabling students to manage their intentions',
+        'm_parents' => array(2738, 4463),
+    ),
+    6196 => array(
+        'm_icon' => '<img src="https://mench.com/img/bp_128.png">',
+        'm_name' => 'Personal Assistant',
+        'm_desc' => 'A personal assistant bot that automates the distribution of Mench\'s intent tree to students using Facebook Messenger',
+        'm_parents' => array(2738, 4527, 3320),
+    ),
+    6287 => array(
+        'm_icon' => '<i class="fas fa-tools"></i>',
+        'm_name' => 'Admin Tools',
+        'm_desc' => 'Series of tools to moderate the Mench platform',
+        'm_parents' => array(2738),
+    ),
+);
 
 //Action Plan Progression Skippable Link Types:
 $config['en_ids_6274'] = array(4559, 6158);
@@ -94,7 +129,7 @@ $config['en_all_6150'] = array(
 );
 
 //Entity Referencing in Intent Notes:
-$config['en_ids_4986'] = array(4231, 4232, 4602, 4983, 6093, 6242);
+$config['en_ids_4986'] = array(4231, 4232, 4983, 6093, 6242);
 $config['en_all_4986'] = array(
     4231 => array(
         'm_icon' => '<i class="fal fa-comment"></i>',
@@ -107,12 +142,6 @@ $config['en_all_4986'] = array(
         'm_name' => 'Intent Note Bonus Tip',
         'm_desc' => '',
         'm_parents' => array(5005, 4986, 4603, 4593, 4485, 4595),
-    ),
-    4602 => array(
-        'm_icon' => '<i class="fal fa-cloud-upload"></i>',
-        'm_name' => 'Intent Note Webhook',
-        'm_desc' => '',
-        'm_parents' => array(5005, 4986, 4256, 4595, 4485, 4593),
     ),
     4983 => array(
         'm_icon' => '<i class="fal fa-thumbs-up"></i>',
@@ -199,21 +228,9 @@ $config['en_all_6225'] = array(
     ),
 );
 
-//Messenger Personal Assistant:
-$config['en_ids_6196'] = array(6137, 6138, 6200, 6203);
+//Mench Personal Assistant:
+$config['en_ids_6196'] = array(6200, 6203);
 $config['en_all_6196'] = array(
-    6137 => array(
-        'm_icon' => '👤',
-        'm_name' => 'My Account',
-        'm_desc' => '',
-        'm_parents' => array(6196),
-    ),
-    6138 => array(
-        'm_icon' => '🚩',
-        'm_name' => 'Action Plan',
-        'm_desc' => '',
-        'm_parents' => array(6196, 4463),
-    ),
     6200 => array(
         'm_icon' => '<i class="fab fa-facebook-messenger"></i>',
         'm_name' => 'Entity PSID',
@@ -410,23 +427,6 @@ $config['en_all_6146'] = array(
         'm_name' => 'Review Outcome',
         'm_desc' => 'Completed when students read the messages of an intent that does not have any messages or a completion requirement',
         'm_parents' => array(6274, 6255, 4593, 4755, 6146),
-    ),
-);
-
-//Mench Products:
-$config['en_ids_4321'] = array(4488, 6196);
-$config['en_all_4321'] = array(
-    4488 => array(
-        'm_icon' => '<img src="https://mench.com/img/mench_white.png">',
-        'm_name' => 'Personal Assistant',
-        'm_desc' => 'A web platform for Miners to build consensus by adding intents, entities, and links.',
-        'm_parents' => array(4523, 3326, 3324, 3325, 3323, 4463, 4321),
-    ),
-    6196 => array(
-        'm_icon' => '<i class="fab fa-facebook-messenger"></i>',
-        'm_name' => 'Messenger Personal Assistant',
-        'm_desc' => 'A Facebook Messenger Bot that automates the distrbution of knowledge to Mench students based on their set intentions.',
-        'm_parents' => array(4527, 3320, 4321),
     ),
 );
 
@@ -753,7 +753,7 @@ $config['en_all_4255'] = array(
 );
 
 //Advance Mode:
-$config['en_ids_5005'] = array(4232, 4331, 4602, 4997, 6093, 6242);
+$config['en_ids_5005'] = array(4232, 4331, 4997, 6093, 6242);
 $config['en_all_5005'] = array(
     4232 => array(
         'm_icon' => '<i class="fal fa-medal"></i>',
@@ -766,12 +766,6 @@ $config['en_all_5005'] = array(
         'm_name' => 'Intent Completion Methods',
         'm_desc' => '',
         'm_parents' => array(6213, 6201, 6194, 5005, 4527),
-    ),
-    4602 => array(
-        'm_icon' => '<i class="fal fa-cloud-upload"></i>',
-        'm_name' => 'Intent Note Webhook',
-        'm_desc' => '',
-        'm_parents' => array(5005, 4986, 4256, 4595, 4485, 4593),
     ),
     4997 => array(
         'm_icon' => '<i class="fal fa-list-alt"></i>',
@@ -1269,7 +1263,7 @@ $config['en_all_4755'] = array(
     ),
     6149 => array(
         'm_icon' => '<i class="fas fa-search-plus"></i>',
-        'm_name' => 'Action Plan Review Intention',
+        'm_name' => 'Action Plan Got Started',
         'm_desc' => '',
         'm_parents' => array(4428, 6153, 4755, 4593),
     ),
@@ -1306,7 +1300,7 @@ $config['en_all_4755'] = array(
 );
 
 //Link Points:
-$config['en_ids_4595'] = array(4228, 4229, 4230, 4231, 4232, 4242, 4250, 4251, 4255, 4256, 4257, 4258, 4259, 4260, 4261, 4263, 4264, 4318, 4319, 4601, 4602, 4983, 6093, 6242);
+$config['en_ids_4595'] = array(4228, 4229, 4230, 4231, 4232, 4242, 4250, 4251, 4255, 4256, 4257, 4258, 4259, 4260, 4261, 4263, 4264, 4318, 4319, 4601, 4983, 6093, 6242);
 $config['en_all_4595'] = array(
     4228 => array(
         'm_icon' => '<i class="fal fa-check-circle"></i>',
@@ -1428,12 +1422,6 @@ $config['en_all_4595'] = array(
         'm_desc' => '50',
         'm_parents' => array(4255, 4593, 4595, 4485),
     ),
-    4602 => array(
-        'm_icon' => '<i class="fal fa-cloud-upload"></i>',
-        'm_name' => 'Intent Note Webhook',
-        'm_desc' => '100',
-        'm_parents' => array(5005, 4986, 4256, 4595, 4485, 4593),
-    ),
     4983 => array(
         'm_icon' => '<i class="fal fa-thumbs-up"></i>',
         'm_name' => 'Intent Note Up-Vote',
@@ -1472,7 +1460,7 @@ $config['en_all_4600'] = array(
 );
 
 //All Link Types:
-$config['en_ids_4593'] = array(4228, 4229, 4230, 4231, 4232, 4235, 4242, 4246, 4250, 4251, 4255, 4256, 4257, 4258, 4259, 4260, 4261, 4263, 4264, 4266, 4267, 4268, 4269, 4275, 4278, 4279, 4282, 4283, 4287, 4299, 4318, 4319, 4452, 4455, 4460, 4547, 4548, 4549, 4550, 4551, 4552, 4553, 4554, 4555, 4556, 4557, 4559, 4570, 4577, 4601, 4602, 4983, 4993, 4994, 4996, 4998, 4999, 5000, 5001, 5003, 5007, 5865, 5943, 5967, 5981, 5982, 6093, 6132, 6140, 6143, 6144, 6149, 6154, 6155, 6157, 6158, 6224, 6226, 6242, 6255, 6277, 6278);
+$config['en_ids_4593'] = array(4228, 4229, 4230, 4231, 4232, 4235, 4242, 4246, 4250, 4251, 4255, 4256, 4257, 4258, 4259, 4260, 4261, 4263, 4264, 4266, 4267, 4268, 4269, 4275, 4278, 4279, 4282, 4283, 4287, 4299, 4318, 4319, 4452, 4455, 4460, 4547, 4548, 4549, 4550, 4551, 4552, 4553, 4554, 4555, 4556, 4557, 4559, 4570, 4577, 4601, 4983, 4993, 4994, 4996, 4998, 4999, 5000, 5001, 5003, 5007, 5865, 5943, 5967, 5981, 5982, 6093, 6132, 6140, 6143, 6144, 6149, 6154, 6155, 6157, 6158, 6224, 6226, 6242, 6255, 6278);
 $config['en_all_4593'] = array(
     4228 => array(
         'm_icon' => '<i class="fal fa-check-circle"></i>',
@@ -1774,12 +1762,6 @@ $config['en_all_4593'] = array(
         'm_desc' => '',
         'm_parents' => array(4255, 4593, 4595, 4485),
     ),
-    4602 => array(
-        'm_icon' => '<i class="fal fa-cloud-upload"></i>',
-        'm_name' => 'Intent Note Webhook',
-        'm_desc' => '',
-        'm_parents' => array(5005, 4986, 4256, 4595, 4485, 4593),
-    ),
     4983 => array(
         'm_icon' => '<i class="fal fa-thumbs-up"></i>',
         'm_name' => 'Intent Note Up-Vote',
@@ -1902,7 +1884,7 @@ $config['en_all_4593'] = array(
     ),
     6149 => array(
         'm_icon' => '<i class="fas fa-search-plus"></i>',
-        'm_name' => 'Action Plan Review Intention',
+        'm_name' => 'Action Plan Got Started',
         'm_desc' => 'When a student chooses to review a given intention from the intentions they have searched or have been recommended after selecting GET STARTED from a mench.com intent landing page.',
         'm_parents' => array(4428, 6153, 4755, 4593),
     ),
@@ -1954,17 +1936,11 @@ $config['en_all_4593'] = array(
         'm_desc' => '',
         'm_parents' => array(6276, 6275, 4506, 4593, 6242, 4527),
     ),
-    6277 => array(
-        'm_icon' => '<i class="far fa-thunderstorm"></i>',
-        'm_name' => 'Action Plan Progression Trigger Webhook',
-        'm_desc' => '',
-        'm_parents' => array(4602, 4506, 4593, 6276),
-    ),
     6278 => array(
         'm_icon' => '<i class="far fa-tachometer-alt"></i>',
         'm_name' => 'Action Plan Milestone Assessed',
         'm_desc' => '',
-        'm_parents' => array(4229, 4506, 4593, 6277),
+        'm_parents' => array(4229, 4506, 4593),
     ),
 );
 
@@ -2133,7 +2109,7 @@ $config['en_all_4454'] = array(
 );
 
 //Intent Notes:
-$config['en_ids_4485'] = array(4231, 4983, 4601, 4232, 6242, 4602, 6093);
+$config['en_ids_4485'] = array(4231, 4983, 4601, 4232, 6242, 6093);
 $config['en_all_4485'] = array(
     4231 => array(
         'm_icon' => '<i class="fal fa-comment"></i>',
@@ -2164,12 +2140,6 @@ $config['en_all_4485'] = array(
         'm_name' => 'On-Complete Tip',
         'm_desc' => 'Message delivered to students when they complete an intention.',
         'm_parents' => array(4603, 4595, 4593, 4986, 5005, 4485),
-    ),
-    4602 => array(
-        'm_icon' => '<i class="fal fa-cloud-upload"></i>',
-        'm_name' => 'Webhook',
-        'm_desc' => 'All URLs called along with POST variables that pass intent and completion details. Goal is to enable additional workflows like issuing a completion certificate.',
-        'm_parents' => array(5005, 4986, 4256, 4595, 4485, 4593),
     ),
     6093 => array(
         'm_icon' => '<i class="fal fa-megaphone"></i>',

@@ -31,16 +31,16 @@ if(in_array($in['in_id'], $student_in_ids)){
 }
 
 //Go through parents and detect intersects with student intentions. WARNING: Logic duplicated. Search for "ELEPHANT" to see.
-foreach ($this->Platform_model->in_fetch_recursive_parents($in['in_id'], 2) as $parent_in_id => $grand_parent_ids) {
+foreach ($this->Intents_model->in_fetch_recursive_parents($in['in_id'], 2) as $parent_in_id => $grand_parent_ids) {
     //Does this parent and its grandparents have an intersection with the student intentions?
     if(array_intersect($grand_parent_ids, $student_in_ids)){
         //Fetch parent intent & show:
-        $parent_ins = $this->Database_model->in_fetch(array(
+        $parent_ins = $this->Intents_model->in_fetch(array(
             'in_id' => $parent_in_id,
         ));
 
         //See if parent is complete:
-        $parent_progression_steps = $this->Database_model->ln_fetch(array(
+        $parent_progression_steps = $this->Links_model->ln_fetch(array(
             'ln_type_entity_id IN (' . join(',', $this->config->item('en_ids_6146')) . ')' => null, //Action Plan Progression Link Types
             'ln_miner_entity_id' => $session_en['en_id'],
             'ln_parent_intent_id' => $parent_in_id,
@@ -85,7 +85,7 @@ foreach($advance_step['progression_links'] as $pl){
 
 
 //Completion Percentage so far:
-$completion_rate = $this->Platform_model->actionplan_completion_rate($in, $session_en['en_id']);
+$completion_rate = $this->Actionplan_model->actionplan_completion_rate($in, $session_en['en_id']);
 echo '<span class="status-label underdot" style="margin-right:10px;" data-toggle="tooltip" data-placement="top" title="'.$completion_rate['steps_completed'].'/'.$completion_rate['steps_total'].' Steps Completed">'.$completion_rate['completion_percentage'].'% Complete</span>';
 
 
@@ -133,7 +133,7 @@ if($advance_step['status']){
 //Show on-complete tips?
 if($trigger_on_complete_tips){
 
-    $on_complete_messages = $this->Database_model->ln_fetch(array(
+    $on_complete_messages = $this->Links_model->ln_fetch(array(
         'ln_status' => 2, //Published
         'ln_type_entity_id' => 6242, //On-Complete Tips
         'ln_child_intent_id' => $in['in_id'],

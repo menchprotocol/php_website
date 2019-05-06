@@ -945,10 +945,10 @@ input::-webkit-inner-spin-button {
     border-radius: 50%;
 }
 
-.micro-image {
+.micro-image, .micro-image img {
     width: 18px;
     height: 18px;
-    margin-top: -3px;
+    margin-top: -5px;
     border-radius: 50%;
 }
 

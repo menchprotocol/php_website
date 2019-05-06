@@ -101,7 +101,7 @@ class Communication_model extends CI_Model
         if (!$msg_validation['status']) {
 
             //Log Error Link:
-            $this->Database_model->ln_create(array_merge(array(
+            $this->Links_model->ln_create(array_merge(array(
                 'ln_type_entity_id' => 4246, //Platform Error
                 'ln_miner_entity_id' => 1, //Shervin/Developer
                 'ln_content' => 'dispatch_validate_message() returned error [' . $msg_validation['message'] . '] for input message [' . $input_message . ']',
@@ -135,7 +135,7 @@ class Communication_model extends CI_Model
                 if (!$fb_graph_process['status']) {
 
                     //Ooopsi, we did! Log error Transcation:
-                    $this->Database_model->ln_create(array_merge(array(
+                    $this->Links_model->ln_create(array_merge(array(
                         'ln_type_entity_id' => 4246, //Platform Error
                         'ln_miner_entity_id' => 1, //Shervin/Developer
                         'ln_content' => 'dispatch_message() failed to send message via Facebook Graph API. See Metadata log for more details.',
@@ -164,7 +164,7 @@ class Communication_model extends CI_Model
 
             //Log successful Link for message delivery (Unless Miners viewing HTML):
             if(isset($recipient_en['en_id']) && ($fb_messenger_format || isset($_GET['log_miner_messages']))){
-                $this->Database_model->ln_create(array_merge(array(
+                $this->Links_model->ln_create(array_merge(array(
                     'ln_content' => $msg_validation['input_message'],
                     'ln_type_entity_id' => $output_message['message_type'],
                     'ln_miner_entity_id' => $recipient_en['en_id'],
@@ -401,7 +401,7 @@ class Communication_model extends CI_Model
             //We have partial entity data, but we're missing some needed information...
 
             //Fetch full entity data:
-            $ens = $this->Database_model->en_fetch(array(
+            $ens = $this->Entities_model->en_fetch(array(
                 'en_id' => $recipient_en['en_id'],
                 'en_status >=' => 0, //New+
             ), array('skip_en__parents')); //Just need entity info, not its parents...
@@ -442,7 +442,7 @@ class Communication_model extends CI_Model
             );
 
             //Fetch recipient notification type:
-            $lns_comm_level = $this->Database_model->ln_fetch(array(
+            $lns_comm_level = $this->Links_model->ln_fetch(array(
                 'ln_parent_entity_id IN (' . join(',', $this->config->item('en_ids_4454')) . ')' => null,
                 'ln_type_entity_id IN (' . join(',', $this->config->item('en_ids_4592')) . ')' => null, //Entity Link Connectors
                 'ln_child_entity_id' => $recipient_en['en_id'],
@@ -499,7 +499,7 @@ class Communication_model extends CI_Model
             }
 
             //No entity linked, but we have a URL that we should turn into an entity:
-            $url_entity = $this->Platform_model->en_sync_url($msg_references['ref_urls'][0], $session_en['en_id']);
+            $url_entity = $this->Entities_model->en_sync_url($msg_references['ref_urls'][0], $session_en['en_id']);
 
             //Did we have an error?
             if (!$url_entity['status']) {
@@ -639,7 +639,7 @@ class Communication_model extends CI_Model
         if (count($msg_references['ref_entities']) > 0) {
 
             //We have a reference within this message, let's fetch it to better understand it:
-            $ens = $this->Database_model->en_fetch(array(
+            $ens = $this->Entities_model->en_fetch(array(
                 'en_id' => $msg_references['ref_entities'][0], //Note: We will only have a single reference per message
                 'en_status >=' => 0, //New+
             ));
@@ -819,7 +819,7 @@ class Communication_model extends CI_Model
         if (!$fb_messenger_format && count($msg_references['ref_intents']) > 0 && $message_in_id > 0) {
 
             //Fetch the referenced intent:
-            $upvote_child_ins = $this->Database_model->in_fetch(array(
+            $upvote_child_ins = $this->Intents_model->in_fetch(array(
                 'in_id' => $message_in_id,
                 'in_status >=' => 0, //New+
             ));
@@ -831,7 +831,7 @@ class Communication_model extends CI_Model
             }
 
 
-            $upvote_parent_ins = $this->Database_model->in_fetch(array(
+            $upvote_parent_ins = $this->Intents_model->in_fetch(array(
                 'in_id' => $msg_references['ref_intents'][0], //Note: We will only have a single reference per message
                 'in_status >=' => 0, //New+
             ));
@@ -851,7 +851,7 @@ class Communication_model extends CI_Model
                 if($msg_references['ref_entities'][0] != $session_en['en_id']){
 
                     //Reference is not the logged-in miner, let's check to make sure it's an expert source:
-                    $is_expert_sources = $this->Database_model->ln_fetch(array(
+                    $is_expert_sources = $this->Links_model->ln_fetch(array(
                         'ln_status >=' => 0,
                         'ln_child_entity_id' => $msg_references['ref_entities'][0],
                         'ln_parent_entity_id IN ('.join(',' , $this->config->item('en_ids_3000')).')' => null, //Intent Supported Verbs
@@ -1092,7 +1092,7 @@ class Communication_model extends CI_Model
 
 
         //Fetch student's Action Plan Intents:
-        $student_intents = $this->Database_model->ln_fetch(array(
+        $student_intents = $this->Links_model->ln_fetch(array(
             'ln_miner_entity_id' => $en_id,
             'ln_type_entity_id IN (' . join(',', $this->config->item('en_ids_6147')) . ')' => null, //Action Plan Intentions
             'ln_status IN (' . join(',', $this->config->item('ln_status_incomplete')) . ')' => null, //incomplete intentions
@@ -1117,7 +1117,7 @@ class Communication_model extends CI_Model
             //Remove as its already added to student Action Plan:
             $featured_filters['ln_child_intent_id NOT IN ('.join(',', $student_ins_ids).')'] = null;
         }
-        $featured_intentions = $this->Database_model->ln_fetch($featured_filters, array('in_child'), 0, 0, array('ln_order' => 'ASC'));
+        $featured_intentions = $this->Links_model->ln_fetch($featured_filters, array('in_child'), 0, 0, array('ln_order' => 'ASC'));
 
 
 
@@ -1134,7 +1134,7 @@ class Communication_model extends CI_Model
                 if ($count >= 10) {
 
                     //We can't have more than 10 intentions listed as Quick Reply supports a total of 11 only (and we need one for "None of the above" option)
-                    $this->Database_model->ln_create(array(
+                    $this->Links_model->ln_create(array(
                         'ln_miner_entity_id' => 1, //Shervin/Developer
                         'ln_content' => 'actionplan_advance_step() encountered intent with too many children to be listed as OR Intent options! Trim and iterate that intent tree.',
                         'ln_type_entity_id' => 4246, //Platform Error
@@ -1189,58 +1189,6 @@ class Communication_model extends CI_Model
 
     }
 
-
-    function initiate_skip_request($en, $in_id, $fb_messenger_format = true){
-
-        //Fetch this intent:
-        $ins = $this->Database_model->in_fetch(array(
-            'in_id' => $in_id,
-            'in_status' => 2,
-        ));
-        if(count($ins) < 1){
-            $this->Database_model->ln_create(array(
-                'ln_child_entity_id' => $en['en_id'],
-                'ln_child_intent_id' => $in_id,
-                'ln_content' => 'initiate_skip_request() did not locate the published intent',
-                'ln_type_entity_id' => 4246, //Platform Error
-                'ln_miner_entity_id' => 1, //Shervin/Developer
-            ));
-            return false;
-        }
-
-        $skip_message = 'You are about to skip the intention to '.echo_in_outcome($ins[0]['in_outcome'], true, true).' and its ' . echo_step_range($ins[0], true) . '. I encourage you to continue so you have the maximum chance for success!';
-
-        if(!$fb_messenger_format){
-
-            //Just return the message for HTML format:
-            return $skip_message;
-
-        } else {
-
-            //Send over messenger:
-            $this->Communication_model->dispatch_message(
-                $skip_message,
-                $en,
-                true,
-                array(
-                    array(
-                        'content_type' => 'text',
-                        'title' => 'Skip 🚫',
-                        'payload' => 'SKIP-ACTIONPLAN_2_'.$in_id, //Confirm and skip
-                    ),
-                    array(
-                        'content_type' => 'text',
-                        'title' => 'Continue ▶️',
-                        'payload' => 'SKIP-ACTIONPLAN_-1_'.$in_id, //Cancel skipping
-                    ),
-                ),
-                array(
-                    'ln_parent_intent_id' => $in_id,
-                )
-            );
-
-        }
-    }
 
 
     function facebook_graph($action, $graph_url, $payload = array())
@@ -1309,7 +1257,7 @@ class Communication_model extends CI_Model
 
             //Failed to fetch this profile:
             $message_error = 'Communication_model->facebook_graph() failed to ' . $action . ' ' . $graph_url;
-            $this->Database_model->ln_create(array(
+            $this->Links_model->ln_create(array(
                 'ln_content' => $message_error,
                 'ln_type_entity_id' => 4246, //Platform Error
                 'ln_miner_entity_id' => 1, //Shervin/Developer
@@ -1336,7 +1284,7 @@ class Communication_model extends CI_Model
     }
 
 
-    function digest_quick_reply($en, $quick_reply_payload, $ln_metadata_append = array())
+    function digest_quick_reply($en, $quick_reply_payload)
     {
 
         /*
@@ -1361,9 +1309,10 @@ class Communication_model extends CI_Model
         if (strlen($quick_reply_payload) < 1) {
 
             //Should never happen!
-            return false;
-
-
+            return array(
+                'status' => 0,
+                'message' => 'Missing quick reply payload',
+            );
 
         } elseif (substr_count($quick_reply_payload, 'APPENDRESPONSE_') == 1) {
 
@@ -1375,7 +1324,14 @@ class Communication_model extends CI_Model
                 $this->Communication_model->dispatch_message(
                     'ok got it 🙌 I will not append this message to any of your Action Plan steps.',
                     $en,
-                    true
+                    true,
+                    array(
+                        array(
+                            'content_type' => 'text',
+                            'title' => 'Next',
+                            'payload' => 'GONEXT',
+                        )
+                    )
                 );
 
             } else {
@@ -1388,12 +1344,12 @@ class Communication_model extends CI_Model
                 if($message_ln_id>0 && $ap_step_ln_id>0){
 
                     //Validate message:
-                    $new_message_links = $this->Database_model->ln_fetch(array(
+                    $new_message_links = $this->Links_model->ln_fetch(array(
                         'ln_id' => $message_ln_id,
                     ));
 
                     //Validate Action Plan step:
-                    $pending_in_requirements = $this->Database_model->ln_fetch(array(
+                    $pending_in_requirements = $this->Links_model->ln_fetch(array(
                         'ln_id' => $ap_step_ln_id,
                         //Also validate other requirements:
                         'ln_type_entity_id' => 6144, //Action Plan Submit Requirements
@@ -1404,47 +1360,44 @@ class Communication_model extends CI_Model
 
                 }
 
+
                 if(!isset($pending_in_requirements[0]) || !isset($new_message_links[0])){
-
-                    $this->Communication_model->dispatch_message(
-                        'Invalid command. Mench admins have been notified.',
-                        $en,
-                        true
-                    );
-
-                    $this->Database_model->ln_create(array(
-                        'ln_type_entity_id' => 4246, //Platform Error
-                        'ln_miner_entity_id' => 1, //Shervin/Developer
-                        'ln_content' => 'digest_quick_reply() failed to validate needed variables from ['.$quick_reply_payload.'] input.',
-                        'ln_child_entity_id' => $en['en_id'],
-                    ));
-
-                    return false;
-
-                } else {
-
-                    //All good!
-                    $en_all_4592 = $this->config->item('en_all_4592');
-
-                    //Make changes:
-                    $this->Database_model->ln_update($pending_in_requirements[0]['ln_id'], array(
-                        'ln_content' => $new_message_links[0]['ln_content'],
-                        'ln_status' => 2,
-                        'ln_parent_link_id' => $new_message_links[0]['ln_id'],
-                    ), $en['en_id']);
-
-                    //Confirm with student:
-                    $this->Communication_model->dispatch_message(
-                        echo_random_message('affirm_progress'),
-                        $en,
-                        true
-                    );
-                    $this->Communication_model->dispatch_message(
-                        'I added your '.$en_all_4592[$pending_in_requirements[0]['in_requirement_entity_id']]['m_name'].' message to '.$pending_in_requirements[0]['in_outcome'].'. /link:See in 🚩Action Plan:https://mench.com/messenger/actionplan/' . $pending_in_requirements[0]['in_id'],
-                        $en,
-                        true
+                    return array(
+                        'status' => 0,
+                        'message' => 'Invalid command to mark step as complete',
                     );
                 }
+
+
+                //All good!
+                $en_all_4592 = $this->config->item('en_all_4592');
+
+                //Make changes:
+                $this->Links_model->ln_update($pending_in_requirements[0]['ln_id'], array(
+                    'ln_content' => $new_message_links[0]['ln_content'],
+                    'ln_status' => 2,
+                    'ln_parent_link_id' => $new_message_links[0]['ln_id'],
+                ), $en['en_id']);
+
+                //Confirm with student:
+                $this->Communication_model->dispatch_message(
+                    echo_random_message('affirm_progress'),
+                    $en,
+                    true
+                );
+                $this->Communication_model->dispatch_message(
+                    'I added your '.$en_all_4592[$pending_in_requirements[0]['in_requirement_entity_id']]['m_name'].' message to '.$pending_in_requirements[0]['in_outcome'].'. /link:See in 🚩Action Plan:https://mench.com/messenger/actionplan/' . $pending_in_requirements[0]['in_id'],
+                    $en,
+                    true,
+                    array(
+                        array(
+                            'content_type' => 'text',
+                            'title' => 'Next',
+                            'payload' => 'GONEXT',
+                        )
+                    )
+                );
+
             }
 
         } elseif (substr_count($quick_reply_payload, 'UNSUBSCRIBE_') == 1) {
@@ -1457,23 +1410,33 @@ class Communication_model extends CI_Model
                 $this->Communication_model->dispatch_message(
                     'Awesome, I am excited to continue our work together.',
                     $en,
-                    true
+                    true,
+                    array(
+                        array(
+                            'content_type' => 'text',
+                            'title' => 'Next',
+                            'payload' => 'GONEXT',
+                        )
+                    )
                 );
 
             } elseif ($action_unsubscribe == 'ALL') {
 
                 //Student wants to completely unsubscribe from Mench:
                 $removed_intents = 0;
-                foreach ($this->Database_model->ln_fetch(array(
+                foreach ($this->Links_model->ln_fetch(array(
                     'ln_miner_entity_id' => $en['en_id'],
                     'ln_type_entity_id IN (' . join(',', $this->config->item('en_ids_6147')) . ')' => null, //Action Plan Intentions
                     'ln_status IN (' . join(',', $this->config->item('ln_status_incomplete')) . ')' => null, //incomplete intentions
                 )) as $ln) {
                     $removed_intents++;
-                    $this->Database_model->ln_update($ln['ln_id'], array(
+                    $this->Links_model->ln_update($ln['ln_id'], array(
                         'ln_status' => -1, //Removed
                     ), $en['en_id']); //Give credit to miner
                 }
+
+                //Update Student communication level to Unsubscribe:
+                $this->Entities_model->en_radio_set(4454, 4455, $en['en_id'], $en['en_id']);
 
                 //Let them know about these changes:
                 $this->Communication_model->dispatch_message(
@@ -1482,13 +1445,10 @@ class Communication_model extends CI_Model
                     true
                 );
 
-                //Update Student communication level to Unsubscribe:
-                $this->Platform_model->en_radio_set(4454, 4455, $en['en_id'], $en['en_id']);
-
             } elseif (is_numeric($action_unsubscribe)) {
 
                 //User wants to Remove a specific Action Plan, validate it:
-                $student_intents = $this->Database_model->ln_fetch(array(
+                $student_intents = $this->Links_model->ln_fetch(array(
                     'ln_miner_entity_id' => $en['en_id'],
                     'ln_type_entity_id IN (' . join(',', $this->config->item('en_ids_6147')) . ')' => null, //Action Plan Intentions
                     'ln_status IN (' . join(',', $this->config->item('ln_status_incomplete')) . ')' => null, //incomplete intentions
@@ -1496,57 +1456,42 @@ class Communication_model extends CI_Model
                 ), array('in_parent'), 0, 0, array('ln_order' => 'ASC'));
 
                 //All good?
-                if (count($student_intents) > 0) {
-
-                    //Update status for this single Action Plan:
-                    $this->Database_model->ln_update($student_intents[0]['ln_id'], array(
-                        'ln_status' => -1, //Removed
-                    ), $en['en_id']);
-
-                    //Re-sort remaining Action Plan intentions:
-                    foreach($this->Database_model->ln_fetch(array(
-                        'ln_type_entity_id IN (' . join(',', $this->config->item('en_ids_6147')) . ')' => null, //Action Plan Intentions
-                        'ln_miner_entity_id' => $en['en_id'], //Belongs to this Student
-                        'ln_status IN (' . join(',', $this->config->item('ln_status_incomplete')) . ')' => null, //incomplete intentions
-                    ), array(), 0, 0, array('ln_order' => 'ASC')) as $count => $ln){
-                        $this->Database_model->ln_update($ln['ln_id'], array(
-                            'ln_order' => ($count+1),
-                        ), $en['en_id']);
-                    }
-
-                    //Show success message to user:
-                    $this->Communication_model->dispatch_message(
-                        'I have successfully removed the intention to ' . $student_intents[0]['in_outcome'] . ' from your Action Plan.',
-                        $en,
-                        true,
-                        array(
-                            array(
-                                'content_type' => 'text',
-                                'title' => 'Next',
-                                'payload' => 'GONEXT',
-                            )
-                        )
+                if (count($student_intents) < 1) {
+                    return array(
+                        'status' => 0,
+                        'message' => 'UNSUBSCRIBE_ Failed to skip an intent from the master Action Plan',
                     );
-
-                } else {
-
-                    //Oooops, this should not happen
-                    //let them know we had error:
-                    $this->Communication_model->dispatch_message(
-                        'I was unable to process your request as I could not find your Action Plan intention. Please try again.',
-                        $en,
-                        true
-                    );
-
-                    //Log error link:
-                    $this->Database_model->ln_create(array(
-                        'ln_miner_entity_id' => $en['en_id'],
-                        'ln_content' => 'Failed to skip an intent from the master Action Plan',
-                        'ln_type_entity_id' => 4246, //Platform Error
-                        'ln_parent_intent_id' => $action_unsubscribe,
-                    ));
-
                 }
+
+                //Update status for this single Action Plan:
+                $this->Links_model->ln_update($student_intents[0]['ln_id'], array(
+                    'ln_status' => -1, //Removed
+                ), $en['en_id']);
+
+                //Re-sort remaining Action Plan intentions:
+                foreach($this->Links_model->ln_fetch(array(
+                    'ln_type_entity_id IN (' . join(',', $this->config->item('en_ids_6147')) . ')' => null, //Action Plan Intentions
+                    'ln_miner_entity_id' => $en['en_id'], //Belongs to this Student
+                    'ln_status IN (' . join(',', $this->config->item('ln_status_incomplete')) . ')' => null, //incomplete intentions
+                ), array(), 0, 0, array('ln_order' => 'ASC')) as $count => $ln){
+                    $this->Links_model->ln_update($ln['ln_id'], array(
+                        'ln_order' => ($count+1),
+                    ), $en['en_id']);
+                }
+
+                //Show success message to user:
+                $this->Communication_model->dispatch_message(
+                    'I have successfully removed the intention to ' . $student_intents[0]['in_outcome'] . ' from your Action Plan.',
+                    $en,
+                    true,
+                    array(
+                        array(
+                            'content_type' => 'text',
+                            'title' => 'Next',
+                            'payload' => 'GONEXT',
+                        )
+                    )
+                );
 
             }
 
@@ -1555,7 +1500,7 @@ class Communication_model extends CI_Model
             if ($quick_reply_payload == 'RESUBSCRIBE_YES') {
 
                 //Update User communication level to Receive Silent Push Notifications:
-                $this->Platform_model->en_radio_set(4454, 4457, $en['en_id'], $en['en_id']);
+                $this->Entities_model->en_radio_set(4454, 4457, $en['en_id'], $en['en_id']);
 
                 //Inform them:
                 $this->Communication_model->dispatch_message(
@@ -1596,25 +1541,23 @@ class Communication_model extends CI_Model
             $in_id = intval($quick_reply_payload);
 
             //Validate Intent:
-            $ins = $this->Database_model->in_fetch(array(
+            $ins = $this->Intents_model->in_fetch(array(
                 'in_id' => $in_id,
             ));
-
-            //Any issues?
             if (count($ins) < 1) {
-
-                //Ooops we could not find the intention:
-                $this->Communication_model->dispatch_message(
-                    'I was unable to locate intent #' . $in_id,
-                    $en,
-                    true
+                return array(
+                    'status' => 0,
+                    'message' => 'Failed to locate published intent to subscribe to',
                 );
+            }
 
-            } elseif ($ins[0]['in_status'] < 2) {
+
+            //Give response:
+            if ($ins[0]['in_status'] < 2) {
 
                 //Ooopsi Intention is not published:
                 $this->Communication_model->dispatch_message(
-                    'I cannot subscribe you to ' . $ins[0]['in_outcome'] . ' as its not published yet.',
+                    'I cannot subscribe you to ' . $ins[0]['in_outcome'] . ' as its currently not published.',
                     $en,
                     true
                 );
@@ -1634,7 +1577,7 @@ class Communication_model extends CI_Model
                         ),
                         array(
                             'content_type' => 'text',
-                            'title' => 'No',
+                            'title' => 'Cancel',
                             'payload' => 'SUBSCRIBE-REJECT',
                         ),
                     ),
@@ -1644,7 +1587,6 @@ class Communication_model extends CI_Model
                 );
 
             }
-
 
         } elseif ($quick_reply_payload=='NOTINTERESTED') {
 
@@ -1661,76 +1603,85 @@ class Communication_model extends CI_Model
             $in_id = intval(one_two_explode('SUBSCRIBE-INITIATE_', '', $quick_reply_payload));
 
             //Initiating an intent Action Plan:
-            $ins = $this->Database_model->in_fetch(array(
+            $ins = $this->Intents_model->in_fetch(array(
                 'in_id' => $in_id,
                 'in_status' => 2, //Published
             ));
 
-            if (count($ins) == 1) {
+            if (count($ins) != 1) {
+                return array(
+                    'status' => 0,
+                    'message' => 'SUBSCRIBE-INITIATE_ Failed to locate published intent',
+                );
+            }
 
-                //Make sure intention has not already been added to student Action Plan:
-                if (count($this->Database_model->ln_fetch(array(
-                        'ln_miner_entity_id' => $en['en_id'],
-                        'ln_type_entity_id IN (' . join(',', $this->config->item('en_ids_6147')) . ')' => null, //Action Plan Intentions
-                        'ln_status IN (' . join(',', $this->config->item('ln_status_incomplete')) . ')' => null, //incomplete intentions
-                        'ln_parent_intent_id' => $ins[0]['in_id'],
-                    ))) > 0) {
+            //Make sure intention has not already been added to student Action Plan:
+            if (count($this->Links_model->ln_fetch(array(
+                    'ln_miner_entity_id' => $en['en_id'],
+                    'ln_type_entity_id IN (' . join(',', $this->config->item('en_ids_6147')) . ')' => null, //Action Plan Intentions
+                    'ln_status IN (' . join(',', $this->config->item('ln_status_incomplete')) . ')' => null, //incomplete intentions
+                    'ln_parent_intent_id' => $ins[0]['in_id'],
+                ))) > 0) {
 
-                    //Let Student know that they have already subscribed to this intention:
-                    $this->Communication_model->dispatch_message(
-                        'The intention to ' . $ins[0]['in_outcome'] . ' has already been added to your Action Plan. /link:See in 🚩Action Plan:https://mench.com/messenger/actionplan/' . $ins[0]['in_id'],
-                        $en,
-                        true,
-                        array(),
+                //Let Student know that they have already subscribed to this intention:
+                $this->Communication_model->dispatch_message(
+                    'The intention to ' . $ins[0]['in_outcome'] . ' has already been added to your Action Plan. /link:See in 🚩Action Plan:https://mench.com/messenger/actionplan/' . $ins[0]['in_id'],
+                    $en,
+                    true,
+                    array(
                         array(
-                            'ln_parent_intent_id' => $ins[0]['in_id'],
+                            'content_type' => 'text',
+                            'title' => 'Next',
+                            'payload' => 'GONEXT',
                         )
-                    );
+                    ),
+                    array(
+                        'ln_parent_intent_id' => $ins[0]['in_id'],
+                    )
+                );
 
-                } else {
+            } else {
 
-                    //Do final confirmation by giving Student more context on this intention before adding to their Action Plan...
+                //Do final confirmation by giving Student more context on this intention before adding to their Action Plan...
 
-                    //See if we have an overview:
-                    $overview_message = '';
-                    $source_info = echo_tree_references($ins[0], true);
-                    $step_info = echo_tree_steps($ins[0], true);
-                    $time_info = echo_tree_time_estimate($ins[0], true);
+                //See if we have an overview:
+                $overview_message = '';
+                $source_info = echo_tree_references($ins[0], true);
+                $step_info = echo_tree_steps($ins[0], true);
+                $time_info = echo_tree_time_estimate($ins[0], true);
 
-                    if($source_info || $step_info || $time_info){
-                        $overview_message = 'Here is an overview:' . "\n\n" . $source_info . $step_info . $time_info . "\n";
-                    }
+                if($source_info || $step_info || $time_info){
+                    $overview_message = 'Here is an overview:' . "\n\n" . $source_info . $step_info . $time_info . "\n";
+                }
 
-                    //Send message for final confirmation with the overview of how long/difficult it would be to accomplish this intention:
-                    $this->Communication_model->dispatch_message(
-                        $overview_message . 'Should I add the intention to ' . $ins[0]['in_outcome'] . ' to your Action Plan?',
-                        $en,
-                        true,
+                //Send message for final confirmation with the overview of how long/difficult it would be to accomplish this intention:
+                $this->Communication_model->dispatch_message(
+                    $overview_message . 'Should I add the intention to ' . $ins[0]['in_outcome'] . ' to your Action Plan?',
+                    $en,
+                    true,
+                    array(
                         array(
-                            array(
-                                'content_type' => 'text',
-                                'title' => 'Add To Action Plan',
-                                'payload' => 'SUBSCRIBE-CONFIRM_' . $ins[0]['in_id'],
-                            ),
-                            array(
-                                'content_type' => 'text',
-                                'title' => 'Cancel',
-                                'payload' => 'SUBSCRIBE-REJECT',
-                            ),
+                            'content_type' => 'text',
+                            'title' => 'Add To Action Plan',
+                            'payload' => 'SUBSCRIBE-CONFIRM_' . $ins[0]['in_id'],
                         ),
                         array(
-                            'ln_parent_intent_id' => $ins[0]['in_id'],
-                        )
-                    );
+                            'content_type' => 'text',
+                            'title' => 'Cancel',
+                            'payload' => 'SUBSCRIBE-REJECT',
+                        ),
+                    ),
+                    array(
+                        'ln_parent_intent_id' => $ins[0]['in_id'],
+                    )
+                );
 
-                }
             }
 
         } elseif ($quick_reply_payload == 'GONEXT') {
 
             //Fetch and communicate next intent:
-            $this->Platform_model->actionplan_find_next_step($en['en_id'], true, true);
-
+            $this->Actionplan_model->actionplan_find_next_step($en['en_id'], true, true);
 
         } elseif (substr_count($quick_reply_payload, 'SUBSCRIBE-CONFIRM_') == 1) {
 
@@ -1738,7 +1689,7 @@ class Communication_model extends CI_Model
             $in_id = intval(one_two_explode('SUBSCRIBE-CONFIRM_', '', $quick_reply_payload));
 
             //Add to Action Plan:
-            $this->Platform_model->actionplan_add($en['en_id'], $in_id);
+            $this->Actionplan_model->actionplan_add($en['en_id'], $in_id);
 
         } elseif (substr_count($quick_reply_payload, 'INFORMREQUIREMENT_') == 1) {
 
@@ -1746,27 +1697,30 @@ class Communication_model extends CI_Model
             $in_id = intval(one_two_explode('INFORMREQUIREMENT_', '', $quick_reply_payload));
 
             //Fetch intent details:
-            $req_ins = $this->Database_model->in_fetch(array(
+            $req_ins = $this->Intents_model->in_fetch(array(
                 'in_id' => $in_id,
                 'in_status' => 2, //Published
             ));
-
-            if(count($req_ins) > 0){
-
-                $en_all_4331 = $this->config->item('en_all_4331');
-
-                //Inform Student:
-                $this->Communication_model->dispatch_message(
-                    'Ok! Simply send me a '.$en_all_4331[$req_ins[0]['in_requirement_entity_id']]['m_name'].' message to complete the intention to '.echo_in_outcome($req_ins[0]['in_outcome'], true),
-                    $en,
-                    true,
-                    array(),
-                    array(
-                        'ln_parent_intent_id' => $in_id,
-                    )
+            if(count($req_ins) < 1){
+                return array(
+                    'status' => 0,
+                    'message' => 'INFORMREQUIREMENT_ failed to locate published intent',
                 );
-
             }
+
+            //Load message types:
+            $en_all_4331 = $this->config->item('en_all_4331');
+
+            //Inform Student:
+            $this->Communication_model->dispatch_message(
+                'Ok! Simply send me a '.$en_all_4331[$req_ins[0]['in_requirement_entity_id']]['m_name'].' message to complete the intention to '.echo_in_outcome($req_ins[0]['in_outcome'], true),
+                $en,
+                true,
+                array(),
+                array(
+                    'ln_parent_intent_id' => $in_id,
+                )
+            );
 
         } elseif (substr_count($quick_reply_payload, 'SKIP-ACTIONPLAN_') == 1) {
 
@@ -1777,28 +1731,10 @@ class Communication_model extends CI_Model
 
             //Validate inputs:
             if ($in_id < 1 || !in_array($ln_status, array(-1, 1, 2))) {
-
-                //Log error:
-                $this->Database_model->ln_create(array(
-                    'ln_content' => 'digest_quick_reply() failed to fetch proper data for a skip request with reference value [' . $quick_reply_payload . ']',
-                    'ln_type_entity_id' => 4246, //Platform Error
-                    'ln_miner_entity_id' => 1, //Shervin/Developer
-                    'ln_parent_intent_id' => $in_id,
-                    'ln_parent_entity_id' => $en['en_id'], //Belongs to this Student
-                ));
-
-                //Inform Student:
-                $this->Communication_model->dispatch_message(
-                    'I was unable to process your skip request',
-                    $en,
-                    true,
-                    array(),
-                    array(
-                        'ln_parent_intent_id' => $in_id,
-                    )
+                return array(
+                    'status' => 0,
+                    'message' => 'SKIP-ACTIONPLAN_ received invalid inputs',
                 );
-
-                return false;
             }
 
 
@@ -1807,7 +1743,7 @@ class Communication_model extends CI_Model
 
                 //User has indicated they want to skip this tree and move on to the next item in-line:
                 //Lets confirm the implications of this SKIP to ensure they are aware:
-                $this->Communication_model->initiate_skip_request($en, $in_id);
+                $this->Actionplan_model->actionplan_skip_initiate($en, $in_id);
 
             } else {
 
@@ -1820,7 +1756,7 @@ class Communication_model extends CI_Model
                 } elseif ($ln_status == 2) {
 
                     //Actually skip and see if we've finished this Action Plan:
-                    $this->Platform_model->actionplan_skip_recursive_down($en['en_id'], $in_id);
+                    $this->Actionplan_model->actionplan_skip_recursive_down($en['en_id'], $in_id);
 
                     //Confirm the skip:
                     $message = 'Got it! I successfully skipped all steps';
@@ -1832,14 +1768,20 @@ class Communication_model extends CI_Model
                     $message,
                     $en,
                     true,
-                    array(),
+                    array(
+                        array(
+                            'content_type' => 'text',
+                            'title' => 'Next',
+                            'payload' => 'GONEXT',
+                        )
+                    ),
                     array(
                         'ln_parent_intent_id' => $in_id,
                     )
                 );
 
                 //Communicate next step:
-                $this->Platform_model->actionplan_find_next_step($en['en_id'], true, true);
+                $this->Actionplan_model->actionplan_find_next_step($en['en_id'], true, true);
 
             }
 
@@ -1856,49 +1798,36 @@ class Communication_model extends CI_Model
             $parent_in_id = intval($quickreply_parts[0]);
             $answer_in_id = intval($quickreply_parts[1]);
             if($parent_in_id < 1 || $answer_in_id < 1){
-                $this->Database_model->ln_create(array(
-                    'ln_content' => 'ANSWERQUESTION_ missing core variables ['.$parent_in_id.'] & ['.$answer_in_id.']',
-                    'ln_type_entity_id' => 4246, //Platform Error
-                    'ln_miner_entity_id' => 1, //Shervin/Developer
-                    'ln_parent_entity_id' => $en['en_id'],
-                ));
-                return false;
+                return array(
+                    'status' => 0,
+                    'message' => 'ANSWERQUESTION_ missing core variables ['.$parent_in_id.'] & ['.$answer_in_id.']',
+                );
             }
 
             //Validate Answer Intent:
-            $answer_ins = $this->Database_model->in_fetch(array(
+            $answer_ins = $this->Intents_model->in_fetch(array(
                 'in_id' => $answer_in_id,
                 'in_status' => 2, //Published
             ));
             if(count($answer_ins) < 1){
-                $this->Database_model->ln_create(array(
-                    'ln_content' => 'ANSWERQUESTION_ was unable to locate published answer',
-                    'ln_type_entity_id' => 4246, //Platform Error
-                    'ln_miner_entity_id' => 1, //Shervin/Developer
-                    'ln_parent_intent_id' => $parent_in_id,
-                    'ln_child_intent_id' => $answer_in_id,
-                    'ln_parent_entity_id' => $en['en_id'],
-                ));
-                return false;
+                return array(
+                    'status' => 0,
+                    'message' => 'ANSWERQUESTION_ was unable to locate published answer',
+                );
             }
 
             //We should already have a link for this, so let's find and update it:
-            $pending_answer_links = $this->Database_model->ln_fetch(array(
+            $pending_answer_links = $this->Links_model->ln_fetch(array(
                 'ln_miner_entity_id' => $en['en_id'],
                 'ln_type_entity_id' => 6157, //Action Plan Question Answered
                 'ln_parent_intent_id' => $parent_in_id,
                 'ln_status >=' => 0, //New+
             ));
             if(count($pending_answer_links) < 1){
-                $this->Database_model->ln_create(array(
-                    'ln_content' => 'ANSWERQUESTION_ was unable to locate the pending answer link.',
-                    'ln_type_entity_id' => 4246, //Platform Error
-                    'ln_miner_entity_id' => 1, //Shervin/Developer
-                    'ln_parent_intent_id' => $parent_in_id,
-                    'ln_child_intent_id' => $answer_in_id,
-                    'ln_parent_entity_id' => $en['en_id'],
-                ));
-                return false;
+                return array(
+                    'status' => 0,
+                    'message' => 'ANSWERQUESTION_ was unable to locate the pending answer link',
+                );
             }
 
 
@@ -1911,7 +1840,7 @@ class Communication_model extends CI_Model
                     $published_answer = true;
 
                     //Mark it as published while saving the answer:
-                    $this->Database_model->ln_update($ln['ln_id'], array(
+                    $this->Links_model->ln_update($ln['ln_id'], array(
                         'ln_child_intent_id' => $answer_in_id, //Save answer
                         'ln_status' => 2, //Publish answer
                     ), $en['en_id']);
@@ -1919,69 +1848,54 @@ class Communication_model extends CI_Model
                 } elseif($ln['ln_child_intent_id'] != $answer_in_id){
 
                     //This is a published & different answer!
-
-                    //Inform admin, this should not happen I guess?
-                    $this->Database_model->ln_create(array(
-                        'ln_content' => 'ANSWERQUESTION_ updated a previously answered question which should not happen!',
-                        'ln_type_entity_id' => 4246, //Platform Error
-                        'ln_miner_entity_id' => 1, //Shervin/Developer
-                        'ln_parent_intent_id' => $parent_in_id,
-                        'ln_child_intent_id' => $answer_in_id,
-                        'ln_parent_entity_id' => $en['en_id'],
-                        'ln_parent_link_id' => $ln['ln_id'],
-                    ));
-
-                    //Update answer:
-                    $this->Database_model->ln_update($ln['ln_id'], array(
-                        'ln_child_intent_id' => $answer_in_id, //Save answer
-                    ), $en['en_id']);
-
-                    //Inform student:
-                    $this->Communication_model->dispatch_message(
-                        'I have successfully updated your new answer to my question.',
-                        $en,
-                        true
+                    return array(
+                        'status' => 0,
+                        'message' => 'ANSWERQUESTION_ updated a previously answered question which should not happen!',
                     );
 
                 }
             }
 
             //Did we succeed?
-            if($published_answer){
-
-                //See if we also need to mark the child as complete:
-                $this->Platform_model->actionplan_complete_if_empty($en['en_id'], $answer_ins[0]);
-
-                //Affirm answer received answer:
-                $this->Communication_model->dispatch_message(
-                    echo_random_message('affirm_progress'),
-                    $en,
-                    true
+            if(!$published_answer){
+                return array(
+                    'status' => 0,
+                    'message' => 'ANSWERQUESTION_ failed to publish student answer',
                 );
-
-            } else {
-
-                //Inform admin, this should not happen I guess?
-                $this->Database_model->ln_create(array(
-                    'ln_content' => 'ANSWERQUESTION_ failed to publish student answer',
-                    'ln_type_entity_id' => 4246, //Platform Error
-                    'ln_miner_entity_id' => 1, //Shervin/Developer
-                    'ln_parent_intent_id' => $parent_in_id,
-                    'ln_child_intent_id' => $answer_in_id,
-                    'ln_parent_entity_id' => $en['en_id'],
-                    'ln_metadata' => array(
-                        'pending_answer_links' => $pending_answer_links,
-                        'ln_metadata_append' => json_encode($ln_metadata_append),
-                    ),
-                ));
-
             }
 
+
+            //See if we also need to mark the child as complete:
+            $this->Actionplan_model->actionplan_complete_if_empty($en['en_id'], $answer_ins[0]);
+
+            //Affirm answer received answer:
+            $this->Communication_model->dispatch_message(
+                echo_random_message('affirm_progress'),
+                $en,
+                true
+            );
+
             //Find/communicate the next step:
-            $this->Platform_model->actionplan_find_next_step($en['en_id'], true, true);
+            $this->Actionplan_model->actionplan_find_next_step($en['en_id'], true, true);
+
+        } else {
+
+            //Unknown quick reply!
+            return array(
+                'status' => 0,
+                'message' => 'Unknown quick reply command!',
+            );
 
         }
+
+        //If here it was all good, return success:
+        return array(
+            'status' => 1,
+            'message' => 'Success',
+        );
+
     }
+
 
     function digest_text_message($en, $fb_received_message)
     {
@@ -2023,7 +1937,7 @@ class Communication_model extends CI_Model
         if (in_array($fb_received_message, array('next', 'continue'))) {
 
             //Give them the next step of their Action Plan:
-            $step = $this->Platform_model->actionplan_find_next_step($en['en_id'], true, true);
+            $step = $this->Actionplan_model->actionplan_find_next_step($en['en_id'], true, true);
 
         } elseif (in_array($fb_received_message, array('yes', 'yeah', 'ya', 'ok', '▶️', 'ok continue', 'go', 'yass', 'yas', 'yea', 'yup', 'yes, learn more'))) {
 
@@ -2043,11 +1957,11 @@ class Communication_model extends CI_Model
         } elseif ($fb_received_message == 'skip') {
 
             //Find the next intent in the Action Plan to skip:
-            $next_in_id = $this->Platform_model->actionplan_find_next_step($en['en_id'], false);
+            $next_in_id = $this->Actionplan_model->actionplan_find_next_step($en['en_id'], false);
 
             if($next_in_id > 0){
                 //Initiate skip request:
-                $this->Communication_model->initiate_skip_request($en, $next_in_id);
+                $this->Actionplan_model->actionplan_skip_initiate($en, $next_in_id);
             } else {
                 $this->Communication_model->dispatch_message(
                     'I could not find any Action Plan steps to skip.',
@@ -2115,7 +2029,7 @@ class Communication_model extends CI_Model
         } elseif (includes_any($fb_received_message, array('unsubscribe', 'stop'))) {
 
             //List their Action Plan intentions and let student choose which one to unsubscribe:
-            $student_intents = $this->Database_model->ln_fetch(array(
+            $student_intents = $this->Links_model->ln_fetch(array(
                 'ln_miner_entity_id' => $en['en_id'],
                 'ln_type_entity_id IN (' . join(',', $this->config->item('en_ids_6147')) . ')' => null, //Action Plan Intentions
                 'ln_status IN (' . join(',', $this->config->item('ln_status_incomplete')) . ')' => null, //incomplete intentions
@@ -2216,7 +2130,7 @@ class Communication_model extends CI_Model
 
 
             //Log intent search:
-            $this->Database_model->ln_create(array(
+            $this->Links_model->ln_create(array(
                 'ln_content' => 'Found ' . count($search_results) . ' intent' . echo__s(count($search_results)) . ' matching "' . $master_command . '"',
                 'ln_metadata' => array(
                     'app_enable_algolia' => $this->config->item('app_enable_algolia'),
@@ -2235,7 +2149,7 @@ class Communication_model extends CI_Model
             foreach ($search_results as $alg) {
 
                 //Make sure not already in Action Plan:
-                if(count($this->Database_model->ln_fetch(array(
+                if(count($this->Links_model->ln_fetch(array(
                     'ln_miner_entity_id' => $en['en_id'],
                     'ln_type_entity_id IN (' . join(',', $this->config->item('en_ids_6147')) . ')' => null, //Action Plan Intentions
                     'ln_status IN (' . join(',', $this->config->item('ln_status_incomplete')) . ')' => null, //incomplete intentions
@@ -2251,7 +2165,7 @@ class Communication_model extends CI_Model
                 }
 
                 //Fetch metadata:
-                $ins = $this->Database_model->in_fetch(array(
+                $ins = $this->Intents_model->in_fetch(array(
                     'in_id' => $alg['alg_obj_id'],
                 ));
 
@@ -2310,7 +2224,7 @@ class Communication_model extends CI_Model
              * */
 
             //First, let's check to see if a Mench admin has not started a manual conversation with them via Facebook Inbox Chat:
-            $admin_conversations = $this->Database_model->ln_fetch(array(
+            $admin_conversations = $this->Links_model->ln_fetch(array(
                 'ln_order' => 1, //A HACK to identify messages sent from us via Facebook Page Inbox
                 'ln_miner_entity_id' => $en['en_id'],
                 'ln_type_entity_id IN (' . join(',', $this->config->item('en_ids_4280')) . ')' => null, //Student/Miner Received Message Links
@@ -2331,14 +2245,14 @@ class Communication_model extends CI_Model
                 );
 
                 //Log link:
-                $this->Database_model->ln_create(array(
+                $this->Links_model->ln_create(array(
                     'ln_miner_entity_id' => $en['en_id'], //User who initiated this message
                     'ln_content' => $fb_received_message,
                     'ln_type_entity_id' => 4287, //Log Unrecognizable Message Received
                 ));
 
                 //Call to Action: Does this student have any Action Plans?
-                $next_in_id = $this->Platform_model->actionplan_find_next_step($en['en_id'], false);
+                $next_in_id = $this->Actionplan_model->actionplan_find_next_step($en['en_id'], false);
 
                 if($next_in_id > 0){
 
@@ -2425,7 +2339,7 @@ class Communication_model extends CI_Model
         ));
 
         foreach($to_en_ids as $to_en_id){
-            $this->Database_model->ln_create(array(
+            $this->Links_model->ln_create(array(
                 'ln_type_entity_id' => 5967, //Email Sent
                 'ln_miner_entity_id' => $to_en_id,
                 'ln_content' => '<b>SUBJECT: '.$subject.'</b><hr />' . $html_message,

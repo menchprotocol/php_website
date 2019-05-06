@@ -64,7 +64,7 @@
         echo '<td style="text-align: right;"><div class="btn-group btn-group-sm ' . echo_advance() . '" style="margin-top:-5px;" role="group">';
 
         //Fetch current count for each status from DB:
-        $child_en_filters = $this->Database_model->ln_fetch(array(
+        $child_en_filters = $this->Links_model->ln_fetch(array(
             'ln_parent_entity_id' => $entity['en_id'],
             'ln_type_entity_id IN (' . join(',', $this->config->item('en_ids_4592')) . ')' => null, //Entity Link Connectors
             'ln_status >=' => 0, //New+

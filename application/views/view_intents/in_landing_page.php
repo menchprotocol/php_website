@@ -16,7 +16,7 @@ echo '<h1 style="margin-bottom:30px;" id="title-parent">' . echo_in_outcome($in[
 
 
 //Fetch & Display Intent Note Messages for this intent:
-foreach ($this->Database_model->ln_fetch(array(
+foreach ($this->Links_model->ln_fetch(array(
     'ln_status' => 2, //Published
     'ln_type_entity_id' => 4231, //Intent Note Messages
     'ln_child_intent_id' => $in['in_id'],
@@ -44,9 +44,9 @@ if (!$hide_subscribe) {
     //Check to see if added to Action Plan for logged-in students:
     if(isset($session_en['en_id'])){
 
-        $en_all_6196 = $this->config->item('en_all_6196');
+        $en_all_2738 = $this->config->item('en_all_2738');
 
-        if(count($this->Database_model->ln_fetch(array(
+        if(count($this->Links_model->ln_fetch(array(
                 'ln_miner_entity_id' => $session_en['en_id'],
                 'ln_type_entity_id IN (' . join(',', $this->config->item('en_ids_6147')) . ')' => null, //Action Plan Intentions
                 'ln_status IN (' . join(',', $this->config->item('ln_status_incomplete')) . ')' => null, //incomplete intentions
@@ -54,12 +54,12 @@ if (!$hide_subscribe) {
             ))) > 0){
 
             //Show when was added:
-            echo '<p>Intention is already added to your <a href="/messenger/actionplan">'.$en_all_6196[6138]['m_icon'].' '.$en_all_6196[6138]['m_name'].'</a>.</p>';
+            echo '<p>Intention is already added to your <a href="/messenger/actionplan">'.$en_all_2738[6138]['m_icon'].' '.$en_all_2738[6138]['m_name'].'</a>.</p>';
 
         } else {
 
             //Give option to add:
-            echo '<div id="added_to_actionplan"><a class="btn btn-primary" href="javascript:void(0);" onclick="add_to_actionplan('.$in['in_id'].')" style="display: inline-block; padding:12px 36px;">Add to '.$en_all_6196[6138]['m_icon'].' '.$en_all_6196[6138]['m_name'].'</a></div>';
+            echo '<div id="added_to_actionplan"><a class="btn btn-primary" href="javascript:void(0);" onclick="add_to_actionplan('.$in['in_id'].')" style="display: inline-block; padding:12px 36px;">Add to '.$en_all_2738[6138]['m_icon'].' '.$en_all_2738[6138]['m_name'].'</a></div>';
 
         }
 
@@ -84,6 +84,7 @@ echo '</div>';
 
 
 
+
 //Exclude certain intents form being displayed on this section:
 $exclude_array = $this->config->item('in_status_locked');
 
@@ -91,7 +92,7 @@ $exclude_array = $this->config->item('in_status_locked');
 array_push($exclude_array, $in['in_id']);
 
 //Fetch other intentions:
-$other_intentions = $this->Database_model->ln_fetch(array(
+$other_intentions = $this->Links_model->ln_fetch(array(
     'ln_status' => 2, //Published
     'in_status' => 2, //Published
     'ln_type_entity_id' => 4228, //Fixed intent links only
@@ -114,7 +115,7 @@ if(count($other_intentions) > 0){
     }
 
     //Now fetch featured intents:
-    foreach ($this->Database_model->ln_fetch(array(
+    foreach ($this->Links_model->ln_fetch(array(
         'ln_status' => 2, //Published
         'in_status' => 2, //Published
         'ln_type_entity_id' => 4228, //Fixed intent links only

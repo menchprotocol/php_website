@@ -53,8 +53,8 @@ class Links extends CI_Controller
         $message = '';
 
         //Fetch links and total link counts:
-        $lns = $this->Database_model->ln_fetch($filters, $join_by, (is_dev() ? 20 : $this->config->item('items_per_page')));
-        $lns_count = $this->Database_model->ln_fetch($filters, $join_by, 0, 0, array(), 'COUNT(ln_id) as trs_count, SUM(ln_points) as points_sum');
+        $lns = $this->Links_model->ln_fetch($filters, $join_by, (is_dev() ? 20 : $this->config->item('items_per_page')));
+        $lns_count = $this->Links_model->ln_fetch($filters, $join_by, 0, 0, array(), 'COUNT(ln_id) as trs_count, SUM(ln_points) as points_sum');
 
 
         //Display filter notes:
@@ -119,14 +119,14 @@ class Links extends CI_Controller
             }
 
             //Validate Intent Outcome:
-            $in_outcome_validation = $this->Platform_model->in_validate_outcome($in_outcome, $session_en['en_id']);
+            $in_outcome_validation = $this->Intents_model->in_validate_outcome($in_outcome, $session_en['en_id']);
             if(!$in_outcome_validation['status']){
                 //We had an error, return it:
                 return echo_json($in_outcome_validation);
             }
 
             //All good, let's create the intent:
-            $intent_new = $this->Database_model->in_create(array(
+            $intent_new = $this->Intents_model->in_create(array(
                 'in_outcome' => $in_outcome_validation['in_cleaned_outcome'],
                 'in_verb_entity_id' => $in_outcome_validation['detected_verb_entity_id'],
             ), true, $session_en['en_id']);
@@ -139,7 +139,7 @@ class Links extends CI_Controller
         } elseif(substr($_POST['raw_string'], 0, 1)=='@'){
 
             //Create entity:
-            $added_en = $this->Platform_model->en_verify_create(trim(substr($_POST['raw_string'], 1)), $session_en['en_id']);
+            $added_en = $this->Entities_model->en_verify_create(trim(substr($_POST['raw_string'], 1)), $session_en['en_id']);
             if(!$added_en['status']){
                 //We had an error, return it:
                 return echo_json($added_en);
@@ -165,7 +165,7 @@ class Links extends CI_Controller
     {
 
         //Fetch link metadata and display it:
-        $lns = $this->Database_model->ln_fetch(array(
+        $lns = $this->Links_model->ln_fetch(array(
             'ln_id' => $ln_id,
         ));
 
@@ -202,7 +202,7 @@ class Links extends CI_Controller
 
     function cron__sync_algolia($input_obj_type = null, $input_obj_id = null){
         //Call the update function and passon possible values:
-        echo_json($this->Database_model->update_algolia($input_obj_type, $input_obj_id));
+        echo_json(update_algolia($input_obj_type, $input_obj_id));
     }
 
 
@@ -211,7 +211,7 @@ class Links extends CI_Controller
         exit; //Maybe use to update all rates if needed?
 
         //Issue points for each link type:
-        $all_engs = $this->Database_model->ln_fetch(array(), array('en_type'), 0, 0, array('trs_count' => 'DESC'), 'COUNT(ln_type_entity_id) as trs_count, en_name, ln_type_entity_id', 'ln_type_entity_id, en_name');
+        $all_engs = $this->Links_model->ln_fetch(array(), array('en_type'), 0, 0, array('trs_count' => 'DESC'), 'COUNT(ln_type_entity_id) as trs_count, en_name, ln_type_entity_id', 'ln_type_entity_id, en_name');
 
         //return echo_json($all_engs);
 
@@ -219,7 +219,7 @@ class Links extends CI_Controller
         foreach ($all_engs as $ln) {
 
             //DOes it have a rate?
-            $rate_trs = $this->Database_model->ln_fetch(array(
+            $rate_trs = $this->Links_model->ln_fetch(array(
                 'ln_status' => 2, //Published
                 'en_status' => 2, //Published
                 'ln_type_entity_id' => 4319, //Number
@@ -272,7 +272,7 @@ class Links extends CI_Controller
         );
 
         //Add intents:
-        $ins = $this->Database_model->in_fetch(array('in_status >=' => 0));
+        $ins = $this->Intents_model->in_fetch(array('in_status >=' => 0));
         foreach($ins as $in){
 
             //Prep metadata:
@@ -289,7 +289,7 @@ class Links extends CI_Controller
             ));
 
             //Fetch children:
-            foreach($this->Database_model->ln_fetch(array(
+            foreach($this->Links_model->ln_fetch(array(
                 'ln_status >=' => 0, //New+
                 'in_status >=' => 0, //New+
                 'ln_type_entity_id IN (' . join(',', $this->config->item('en_ids_4486')) . ')' => null, //Intent Link Connectors
@@ -310,7 +310,7 @@ class Links extends CI_Controller
 
 
         //Add entities:
-        $ens = $this->Database_model->en_fetch(array('en_status >=' => 0));
+        $ens = $this->Entities_model->en_fetch(array('en_status >=' => 0));
         foreach($ens as $en){
 
             //Add entity node:
@@ -323,7 +323,7 @@ class Links extends CI_Controller
             ));
 
             //Fetch children:
-            foreach($this->Database_model->ln_fetch(array(
+            foreach($this->Links_model->ln_fetch(array(
                 'ln_status >=' => 0, //New+
                 'en_status >=' => 0, //New+
                 'ln_type_entity_id IN (' . join(',', $this->config->item('en_ids_4592')) . ')' => null, //Entity Link Connectors
@@ -343,7 +343,7 @@ class Links extends CI_Controller
         }
 
         //Add messages:
-        $messages = $this->Database_model->ln_fetch(array(
+        $messages = $this->Links_model->ln_fetch(array(
             'ln_status >=' => 0, //New+
             'in_status >=' => 0, //New+
             'ln_type_entity_id IN (' . join(',', $this->config->item('en_ids_4485')) . ')' => null, //All Intent Notes
@@ -409,7 +409,7 @@ class Links extends CI_Controller
             $this->session->set_userdata('advance_view_enabled', $toggled_setting);
 
             //Log Link:
-            $this->Database_model->ln_create(array(
+            $this->Links_model->ln_create(array(
                 'ln_miner_entity_id' => $session_en['en_id'],
                 'ln_type_entity_id' => 5007, //Toggled Advance Mode
                 'ln_content' => 'Toggled '.( $toggled_setting ? 'ON' : 'OFF' ), //To be used when miner logs in again

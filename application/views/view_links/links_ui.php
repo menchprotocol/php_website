@@ -183,7 +183,7 @@ foreach($filters as $key => $value){
         $ini_filter[$key] = $value;
     }
 }
-$all_engs = $this->Database_model->ln_fetch($ini_filter, array('en_type'), 0, 0, array('en_name' => 'ASC'), 'COUNT(ln_type_entity_id) as trs_count, SUM(ln_points) as points_sum, en_name, ln_type_entity_id', 'ln_type_entity_id, en_name');
+$all_engs = $this->Links_model->ln_fetch($ini_filter, array('en_type'), 0, 0, array('en_name' => 'ASC'), 'COUNT(ln_type_entity_id) as trs_count, SUM(ln_points) as points_sum, en_name, ln_type_entity_id', 'ln_type_entity_id, en_name');
 
 
 

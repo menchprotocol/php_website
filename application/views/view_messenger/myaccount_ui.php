@@ -40,7 +40,7 @@
 
         } elseif($acc_en_id==3288 /* Email */){
 
-            $student_emails = $this->Database_model->ln_fetch(array(
+            $student_emails = $this->Links_model->ln_fetch(array(
                 'ln_status' => 2, //Published
                 'ln_child_entity_id' => $session_en['en_id'],
                 'ln_type_entity_id' => 4255, //Linked Entities Text (Email is text)
@@ -53,7 +53,7 @@
 
         } elseif($acc_en_id==3286 /* Password */){
 
-            $student_passwords = $this->Database_model->ln_fetch(array(
+            $student_passwords = $this->Links_model->ln_fetch(array(
                 'ln_status' => 2, //Published
                 'ln_type_entity_id' => 4255, //Text
                 'ln_parent_entity_id' => 3286, //Password
@@ -67,7 +67,7 @@
 
         } elseif($acc_en_id==4783 /* Phone */){
 
-            $student_phones = $this->Database_model->ln_fetch(array(
+            $student_phones = $this->Links_model->ln_fetch(array(
                 'ln_status' => 2, //Published
                 'ln_child_entity_id' => $session_en['en_id'],
                 'ln_type_entity_id' => 4319, //Phone are of type number
@@ -80,7 +80,7 @@
 
         } elseif($acc_en_id==6123 /* Social Profiles */){
 
-            $student_social_profiles = $this->Database_model->ln_fetch(array(
+            $student_social_profiles = $this->Links_model->ln_fetch(array(
                 'ln_status' => 2, //Published
                 'ln_type_entity_id' => 4256, //Generic URL
                 'ln_parent_entity_id IN ('.join(',', $this->config->item('en_ids_6123')).')' => null, //Any social profile

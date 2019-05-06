@@ -12,7 +12,7 @@ class Intents extends CI_Controller
     }
 
     function test($in_id){
-        $all = $this->Platform_model->in_fetch_recursive_parents($in_id, 0);
+        $all = $this->Intents_model->in_fetch_recursive_parents($in_id, 0);
         echo_json(array(
             'flatter' => array_flatten($all),
             'all' => $all,
@@ -38,7 +38,7 @@ class Intents extends CI_Controller
         } else {
 
             //Fetch featured intentions:
-            $featurd_ins = $this->Database_model->ln_fetch(array(
+            $featurd_ins = $this->Links_model->ln_fetch(array(
                 'ln_status' => 2, //Published
                 'in_status' => 2, //Published
                 'ln_type_entity_id' => 4228, //Fixed Intent Links
@@ -81,7 +81,7 @@ class Intents extends CI_Controller
         $session_en = en_auth(array(1308));
 
         //Fetch data:
-        $ins = $this->Database_model->in_fetch(array(
+        $ins = $this->Intents_model->in_fetch(array(
             'in_id' => $in_id,
         ));
 
@@ -137,7 +137,7 @@ class Intents extends CI_Controller
         }
 
         //Fetch/Validate intent:
-        $ins = $this->Database_model->in_fetch(array(
+        $ins = $this->Intents_model->in_fetch(array(
             'in_id' => $_POST['starting_in'],
             'in_status >=' => $_POST['status_min'],
         ));
@@ -176,7 +176,7 @@ class Intents extends CI_Controller
         $session_en = en_auth(array(1308), true);
 
         //Fetch intent with 2 levels of children:
-        $ins = $this->Database_model->in_fetch(array(
+        $ins = $this->Intents_model->in_fetch(array(
             'in_id' => $in_id,
         ), array('in__parents','in__grandchildren'));
 
@@ -188,7 +188,7 @@ class Intents extends CI_Controller
         //Update session count and log link:
         $new_order = ( $this->session->userdata('miner_session_count') + 1 );
         $this->session->set_userdata('miner_session_count', $new_order);
-        $this->Database_model->ln_create(array(
+        $this->Links_model->ln_create(array(
             'ln_miner_entity_id' => $session_en['en_id'],
             'ln_type_entity_id' => 4993, //Miner Opened Intent
             'ln_child_intent_id' => $in_id,
@@ -250,7 +250,7 @@ class Intents extends CI_Controller
         }
 
         //All seems good, go ahead and try creating the intent:
-        return echo_json($this->Platform_model->in_link_or_create($_POST['in_parent_id'], intval($_POST['is_parent']), $_POST['in_outcome'], $_POST['in_link_child_id'], $_POST['next_level'], $session_en['en_id']));
+        return echo_json($this->Intents_model->in_link_or_create($_POST['in_parent_id'], intval($_POST['is_parent']), $_POST['in_outcome'], $_POST['in_link_child_id'], $_POST['next_level'], $session_en['en_id']));
 
     }
 
@@ -293,13 +293,13 @@ class Intents extends CI_Controller
 
 
         //Fetch all three intents to ensure they are all valid and use them for link logging:
-        $this_in = $this->Database_model->in_fetch(array(
+        $this_in = $this->Intents_model->in_fetch(array(
             'in_id' => intval($_POST['in_id']),
         ));
-        $from_in = $this->Database_model->in_fetch(array(
+        $from_in = $this->Intents_model->in_fetch(array(
             'in_id' => intval($_POST['from_in_id']),
         ));
-        $to_in = $this->Database_model->in_fetch(array(
+        $to_in = $this->Intents_model->in_fetch(array(
             'in_id' => intval($_POST['to_in_id']),
             'in_status >=' => 0, //New+
         ));
@@ -312,7 +312,7 @@ class Intents extends CI_Controller
         }
 
         //Make the move:
-        $this->Database_model->ln_update(intval($_POST['ln_id']), array(
+        $this->Links_model->ln_update(intval($_POST['ln_id']), array(
             'ln_parent_intent_id' => $to_in[0]['in_id'],
         ), $session_en['en_id']);
 
@@ -331,7 +331,7 @@ class Intents extends CI_Controller
         $ln_in_link_id = 0; //If >0 means linked intent is being updated...
 
         //Validate intent:
-        $ins = $this->Database_model->in_fetch(array(
+        $ins = $this->Intents_model->in_fetch(array(
             'in_id' => intval($_POST['in_id']),
         ), array('in__parents'));
 
@@ -472,7 +472,7 @@ class Intents extends CI_Controller
                 if ($key == 'in_outcome') {
 
                     //Validate Intent Outcome:
-                    $in_outcome_validation = $this->Platform_model->in_validate_outcome($_POST['in_outcome'], $session_en['en_id'], $ins[0]['in_id']);
+                    $in_outcome_validation = $this->Intents_model->in_validate_outcome($_POST['in_outcome'], $session_en['en_id'], $ins[0]['in_id']);
                     if(!$in_outcome_validation['status']){
                         //We had an error, return it:
                         return echo_json($in_outcome_validation);
@@ -502,7 +502,7 @@ class Intents extends CI_Controller
                         }
 
                         //Unlink intent links:
-                        $links_removed = $this->Platform_model->in_unlink($_POST['in_id'] , $session_en['en_id']);
+                        $links_removed = $this->Intents_model->in_unlink($_POST['in_id'] , $session_en['en_id']);
 
                         //Treat as if no link (Since it was removed):
                         $ln_id = 0;
@@ -511,7 +511,7 @@ class Intents extends CI_Controller
                     if(intval($_POST['apply_recursively'])){
 
                         //Intent status has changed and there is a recursive update request:
-                        $status_update_children = $this->Platform_model->in_recursive_update($_POST['in_id'], 'in_status', $ins[0]['in_status'], $in_update['in_status'], $session_en['en_id']);
+                        $status_update_children = $this->Intents_model->in_recursive_update($_POST['in_id'], 'in_status', $ins[0]['in_status'], $in_update['in_status'], $session_en['en_id']);
 
                         //Set message in session to inform miner:
                         $this->session->set_flashdata('flash_message', '<div class="alert alert-success" role="alert">' . 'Successfully updated '.$status_update_children.' intent'.echo__s($status_update_children).' recursively.</div>');
@@ -520,7 +520,7 @@ class Intents extends CI_Controller
                 }
 
                 //This field has been updated, update one field at a time:
-                $this->Database_model->in_update($_POST['in_id'], array( $key => $_POST[$key] ), true, $session_en['en_id']);
+                $this->Intents_model->in_update($_POST['in_id'], array( $key => $_POST[$key] ), true, $session_en['en_id']);
 
             }
         }
@@ -536,7 +536,7 @@ class Intents extends CI_Controller
         if($ln_id > 0){
 
             //Validate Link and inputs:
-            $lns = $this->Database_model->ln_fetch(array(
+            $lns = $this->Links_model->ln_fetch(array(
                 'ln_id' => $ln_id,
                 'ln_type_entity_id IN (' . join(',', $this->config->item('en_ids_4486')) . ')' => null, //Intent Link Connectors
                 'ln_status >=' => 0, //New+
@@ -573,7 +573,7 @@ class Intents extends CI_Controller
                 }
 
                 //Validate intent:
-                $linked_ins = $this->Database_model->in_fetch(array(
+                $linked_ins = $this->Intents_model->in_fetch(array(
                     'in_id' => $ln_in_link_id,
                 ));
                 if(count($linked_ins)==0){
@@ -658,7 +658,7 @@ class Intents extends CI_Controller
                 $ln_update['ln_miner_entity_id'] = $session_en['en_id'];
 
                 //Update links:
-                $this->Database_model->ln_update($ln_id, $ln_update, $session_en['en_id']);
+                $this->Links_model->ln_update($ln_id, $ln_update, $session_en['en_id']);
             }
 
         }
@@ -680,7 +680,7 @@ class Intents extends CI_Controller
         if($link_was_updated){
 
             //Fetch last intent Link:
-            $lns = $this->Database_model->ln_fetch(array(
+            $lns = $this->Links_model->ln_fetch(array(
                 'ln_id' => $ln_id,
             ), array('en_miner'));
 
@@ -693,7 +693,7 @@ class Intents extends CI_Controller
 
     function in_review_metadata($in_id){
         //Fetch Intent:
-        $ins = $this->Database_model->in_fetch(array(
+        $ins = $this->Intents_model->in_fetch(array(
             'in_id' => $in_id,
         ));
         if(count($ins) > 0){
@@ -726,7 +726,7 @@ class Intents extends CI_Controller
         } else {
 
             //Validate Parent intent:
-            $parent_ins = $this->Database_model->in_fetch(array(
+            $parent_ins = $this->Intents_model->in_fetch(array(
                 'in_id' => intval($_POST['in_id']),
             ));
             if (count($parent_ins) < 1) {
@@ -737,7 +737,7 @@ class Intents extends CI_Controller
             } else {
 
                 //Fetch for the record:
-                $children_before = $this->Database_model->ln_fetch(array(
+                $children_before = $this->Links_model->ln_fetch(array(
                     'ln_parent_intent_id' => intval($_POST['in_id']),
                     'ln_type_entity_id IN (' . join(',', $this->config->item('en_ids_4486')) . ')' => null, //Intent Link Connectors
                     'ln_status >=' => 0,
@@ -745,13 +745,13 @@ class Intents extends CI_Controller
 
                 //Update them all:
                 foreach ($_POST['new_ln_orders'] as $rank => $ln_id) {
-                    $this->Database_model->ln_update(intval($ln_id), array(
+                    $this->Links_model->ln_update(intval($ln_id), array(
                         'ln_order' => intval($rank),
                     ), $session_en['en_id']);
                 }
 
                 //Fetch again for the record:
-                $children_after = $this->Database_model->ln_fetch(array(
+                $children_after = $this->Links_model->ln_fetch(array(
                     'ln_parent_intent_id' => intval($_POST['in_id']),
                     'ln_type_entity_id IN (' . join(',', $this->config->item('en_ids_4486')) . ')' => null, //Intent Link Connectors
                     'ln_status >=' => 0,
@@ -791,7 +791,7 @@ class Intents extends CI_Controller
         }
 
         //Fetch Intent Note Messages for this intent:
-        $on_start_messages = $this->Database_model->ln_fetch(array(
+        $on_start_messages = $this->Links_model->ln_fetch(array(
             'ln_status' => 2, //Published
             'ln_type_entity_id' => 4231, //Intent Note Messages
             'ln_child_intent_id' => $_POST['in_id'],
@@ -880,7 +880,7 @@ class Intents extends CI_Controller
 
 
         //Fetch/Validate the intent:
-        $ins = $this->Database_model->in_fetch(array(
+        $ins = $this->Intents_model->in_fetch(array(
             'in_id' => intval($_POST['in_id']),
             'in_status >=' => 0, //New+
         ));
@@ -900,10 +900,10 @@ class Intents extends CI_Controller
         }
 
         //Create Message:
-        $ln = $this->Database_model->ln_create(array(
+        $ln = $this->Links_model->ln_create(array(
             'ln_status' => 0, //New
             'ln_miner_entity_id' => $session_en['en_id'],
-            'ln_order' => 1 + $this->Database_model->ln_max_order(array(
+            'ln_order' => 1 + $this->Links_model->ln_max_order(array(
                     'ln_status >=' => 0, //New+
                     'ln_type_entity_id' => intval($_POST['focus_ln_type_entity_id']),
                     'ln_child_intent_id' => intval($_POST['in_id']),
@@ -969,7 +969,7 @@ class Intents extends CI_Controller
         }
 
         //Validate Intent:
-        $ins = $this->Database_model->in_fetch(array(
+        $ins = $this->Intents_model->in_fetch(array(
             'in_id' => $_POST['in_id'],
         ));
         if(count($ins)<1){
@@ -1008,7 +1008,7 @@ class Intents extends CI_Controller
 
 
         //Save URL and connect it to the Mench CDN entity:
-        $url_entity = $this->Platform_model->en_sync_url($new_file_url, $session_en['en_id'], 4396 /* Mench CDN Entity */);
+        $url_entity = $this->Entities_model->en_sync_url($new_file_url, $session_en['en_id'], 4396 /* Mench CDN Entity */);
 
         //Did we have an error?
         if (!$url_entity['status']) {
@@ -1018,14 +1018,14 @@ class Intents extends CI_Controller
 
 
         //Create message:
-        $ln = $this->Database_model->ln_create(array(
+        $ln = $this->Links_model->ln_create(array(
             'ln_status' => 0, //New
             'ln_miner_entity_id' => $session_en['en_id'],
             'ln_type_entity_id' => $_POST['focus_ln_type_entity_id'],
             'ln_parent_entity_id' => $url_entity['en_url']['en_id'],
             'ln_child_intent_id' => intval($_POST['in_id']),
             'ln_content' => '@' . $url_entity['en_url']['en_id'], //Just place the entity reference as the entire message
-            'ln_order' => 1 + $this->Database_model->ln_max_order(array(
+            'ln_order' => 1 + $this->Links_model->ln_max_order(array(
                 'ln_type_entity_id' => $_POST['focus_ln_type_entity_id'],
                 'ln_child_intent_id' => $_POST['in_id'],
             )),
@@ -1033,7 +1033,7 @@ class Intents extends CI_Controller
 
 
         //Fetch full message for proper UI display:
-        $new_messages = $this->Database_model->ln_fetch(array(
+        $new_messages = $this->Links_model->ln_fetch(array(
             'ln_id' => $ln['ln_id'],
         ));
 
@@ -1078,7 +1078,7 @@ class Intents extends CI_Controller
         }
 
         //Fetch Intent:
-        $ins = $this->Database_model->in_fetch(array(
+        $ins = $this->Intents_model->in_fetch(array(
             'in_id' => $_POST['in_id'],
         ));
         if(count($ins) < 1){
@@ -1095,7 +1095,7 @@ class Intents extends CI_Controller
         if(intval($_POST['ln_id'])>0){
 
             //Fetch intent link:
-            $lns = $this->Database_model->ln_fetch(array(
+            $lns = $this->Links_model->ln_fetch(array(
                 'ln_id' => $_POST['ln_id'],
                 'ln_type_entity_id IN (' . join(',', $this->config->item('en_ids_4486')) . ')' => null, //Intent Link Connectors
                 'ln_status >=' => 0, //New+
@@ -1163,7 +1163,7 @@ class Intents extends CI_Controller
             if (intval($ln_id) > 0) {
                 $sort_count++;
                 //Log update and give credit to the session Miner:
-                $this->Database_model->ln_update($ln_id, array(
+                $this->Links_model->ln_update($ln_id, array(
                     'ln_order' => intval($ln_order),
                 ), $session_en['en_id']);
             }
@@ -1209,7 +1209,7 @@ class Intents extends CI_Controller
         }
 
         //Validate Intent:
-        $ins = $this->Database_model->in_fetch(array(
+        $ins = $this->Intents_model->in_fetch(array(
             'in_id' => $_POST['in_id'],
         ));
         if (count($ins) < 1) {
@@ -1220,7 +1220,7 @@ class Intents extends CI_Controller
         }
 
         //Validate Message:
-        $messages = $this->Database_model->ln_fetch(array(
+        $messages = $this->Links_model->ln_fetch(array(
             'ln_id' => intval($_POST['ln_id']),
             'ln_status >=' => 0,
         ));
@@ -1239,7 +1239,7 @@ class Intents extends CI_Controller
             if($_POST['new_message_ln_status'] == -1){
 
                 //yes, do so and return results:
-                $affected_rows = $this->Database_model->ln_update(intval($_POST['ln_id']), array( 'ln_status' => $_POST['new_message_ln_status'] ), $session_en['en_id']);
+                $affected_rows = $this->Links_model->ln_update(intval($_POST['ln_id']), array( 'ln_status' => $_POST['new_message_ln_status'] ), $session_en['en_id']);
 
                 //Return success:
                 if($affected_rows > 0){
@@ -1262,7 +1262,7 @@ class Intents extends CI_Controller
                 if (count($msg_references['ref_entities']) > 0) {
 
                     //We do have an entity reference, what's its status?
-                    $ref_ens = $this->Database_model->en_fetch(array(
+                    $ref_ens = $this->Entities_model->en_fetch(array(
                         'en_id' => $msg_references['ref_entities'][0],
                     ));
 
@@ -1296,10 +1296,10 @@ class Intents extends CI_Controller
         );
 
         //Now update the DB:
-        $this->Database_model->ln_update(intval($_POST['ln_id']), $to_update, $session_en['en_id']);
+        $this->Links_model->ln_update(intval($_POST['ln_id']), $to_update, $session_en['en_id']);
 
         //Re-fetch the message for display purposes:
-        $new_messages = $this->Database_model->ln_fetch(array(
+        $new_messages = $this->Links_model->ln_fetch(array(
             'ln_id' => intval($_POST['ln_id']),
         ));
 
@@ -1335,9 +1335,9 @@ class Intents extends CI_Controller
             $filters['in_id'] = $in_id;
         }
 
-        $published_ins = $this->Database_model->in_fetch($filters);
+        $published_ins = $this->Intents_model->in_fetch($filters);
         foreach($published_ins as $published_in){
-            $tree = $this->Platform_model->in_metadata_common_base($published_in);
+            $tree = $this->Intents_model->in_metadata_common_base($published_in);
         }
 
         $total_time = time() - $start_time;
@@ -1378,18 +1378,18 @@ class Intents extends CI_Controller
             $update_count++;
 
             //Start with common base:
-            foreach($this->Database_model->in_fetch(array('in_id' => $in_id)) as $published_in){
-                $this->Platform_model->in_metadata_common_base($published_in);
+            foreach($this->Intents_model->in_fetch(array('in_id' => $in_id)) as $published_in){
+                $this->Intents_model->in_metadata_common_base($published_in);
             }
 
             //Update extra insights:
-            $tree = $this->Platform_model->in_metadata_extra_insights($in_id);
+            $tree = $this->Intents_model->in_metadata_extra_insights($in_id);
 
         } else {
 
             //Update all featured intentions and their tree:
-            foreach ($this->Database_model->in_fetch(array('in_status' => 2)) as $published_in) {
-                $tree = $this->Platform_model->in_metadata_extra_insights($published_in['in_id']);
+            foreach ($this->Intents_model->in_fetch(array('in_status' => 2)) as $published_in) {
+                $tree = $this->Intents_model->in_metadata_extra_insights($published_in['in_id']);
                 if($tree){
                     $update_count++;
                 }

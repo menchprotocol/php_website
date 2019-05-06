@@ -81,7 +81,7 @@ if(!$action) {
 } elseif($action=='moderate_intent_notes'){
 
     //Fetch pending notes:
-    $pendin_in_notes = $this->Database_model->ln_fetch(array(
+    $pendin_in_notes = $this->Links_model->ln_fetch(array(
         'ln_status IN (' . join(',', $this->config->item('ln_status_incomplete')) . ')' => null, //incomplete
         'ln_type_entity_id IN (' . join(',', $this->config->item('en_ids_4485')) . ')' => null, //All Intent Notes
     ), array('in_child'), $this->config->item('items_per_page'), 0, array('ln_id' => 'ASC'));
@@ -109,7 +109,7 @@ if(!$action) {
 
     echo '<ul class="breadcrumb"><li><a href="/admin">Admin Tools</a></li><li><b>'.$moderation_tools['/admin/tools/'.$action].'</b></li></ul>';
 
-    $orphan_ins = $this->Database_model->in_fetch(array(
+    $orphan_ins = $this->Intents_model->in_fetch(array(
         ' NOT EXISTS (SELECT 1 FROM table_links WHERE in_id=ln_child_intent_id AND ln_type_entity_id IN (' . join(',', $this->config->item('en_ids_4486')) . ') AND ln_status>=0) ' => null,
         'in_status >=' => 0,
         'in_id !=' => $this->config->item('in_mission_id'), //Mission does not have parents
@@ -128,10 +128,10 @@ if(!$action) {
             if($command1=='remove_all'){
 
                 //Remove intent links:
-                $links_removed = $this->Platform_model->in_unlink($orphan_in['in_id'] , $session_en['en_id']);
+                $links_removed = $this->Intents_model->in_unlink($orphan_in['in_id'] , $session_en['en_id']);
 
                 //Remove intent:
-                $this->Database_model->in_update($orphan_in['in_id'], array( 'in_status' => -1 ), true, $session_en['en_id']);
+                $this->Intents_model->in_update($orphan_in['in_id'], array( 'in_status' => -1 ), true, $session_en['en_id']);
 
                 //Show confirmation:
                 echo ' [Intent + '.$links_removed.' links Removed]';
@@ -158,7 +158,7 @@ if(!$action) {
 
     echo '<ul class="breadcrumb"><li><a href="/admin">Admin Tools</a></li><li><b>'.$moderation_tools['/admin/tools/'.$action].'</b></li></ul>';
 
-    $orphan_ens = $this->Database_model->en_fetch(array(
+    $orphan_ens = $this->Entities_model->en_fetch(array(
         ' NOT EXISTS (SELECT 1 FROM table_links WHERE en_id=ln_child_entity_id AND ln_type_entity_id IN (' . join(',', $this->config->item('en_ids_4592')) . ') AND ln_status>=0) ' => null,
         'en_status >=' => 0,
         'en_id !=' => $this->config->item('en_top_focus_id'),
@@ -176,10 +176,10 @@ if(!$action) {
             if($command1=='remove_all'){
 
                 //Remove links:
-                $links_removed = $this->Platform_model->en_unlink($orphan_en['en_id'], $session_en['en_id']);
+                $links_removed = $this->Entities_model->en_unlink($orphan_en['en_id'], $session_en['en_id']);
 
                 //Remove entity:
-                $this->Database_model->en_update($orphan_en['en_id'], array( 'en_status' => -1 ), true, $session_en['en_id']);
+                $this->Entities_model->en_update($orphan_en['en_id'], array( 'en_status' => -1 ), true, $session_en['en_id']);
 
                 //Show confirmation:
                 echo ' [Entity + '.$links_removed.' links Removed]';
@@ -262,7 +262,7 @@ if(!$action) {
     echo '<td colspan="4" style="text-align: left;">Condition Range</td>';
     echo '</tr>';
     $counter = 0;
-    foreach ($this->Database_model->ln_fetch(array(
+    foreach ($this->Links_model->ln_fetch(array(
         'ln_status >=' => 0,
         'in_status >=' => 0,
         'ln_type_entity_id' => 4229,
@@ -274,7 +274,7 @@ if(!$action) {
         if($mark){
 
             //Fetch parent intent:
-            $parent_ins = $this->Database_model->in_fetch(array(
+            $parent_ins = $this->Intents_model->in_fetch(array(
                 'in_id' => $in_ln['ln_parent_intent_id'],
             ));
 
@@ -311,7 +311,7 @@ if(!$action) {
     echo '</tr>';
 
     $counter = 0;
-    foreach ($this->Database_model->ln_fetch(array(
+    foreach ($this->Links_model->ln_fetch(array(
         'ln_status >=' => 0,
         'in_status >=' => 0,
         'ln_type_entity_id' => 4228,
@@ -323,7 +323,7 @@ if(!$action) {
         if($tr__assessment_points!=0){
 
             //Fetch parent intent:
-            $parent_ins = $this->Database_model->in_fetch(array(
+            $parent_ins = $this->Intents_model->in_fetch(array(
                 'in_id' => $in_ln['ln_parent_intent_id'],
             ));
 
@@ -332,11 +332,11 @@ if(!$action) {
             /*
             if($tr__assessment_points > 1){
                 //Set to 1:
-                $this->Database_model->update_metadata('ln', $in_ln['ln_id'], array(
+                update_metadata('ln', $in_ln['ln_id'], array(
                     'tr__assessment_points' => 1,
                 ));
             } elseif($tr__assessment_points < 0){
-                $this->Database_model->update_metadata('ln', $in_ln['ln_id'], array(
+                update_metadata('ln', $in_ln['ln_id'], array(
                     'tr__assessment_points' => 0,
                 ));
             }

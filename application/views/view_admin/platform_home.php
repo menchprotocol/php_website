@@ -29,8 +29,9 @@
 <?php
 
 //Fetch & Display Intent Note Messages to explain links:
-echo '<h1 style="text-align: center; margin-top: 50px;">Mench Mining Platform</h1>';
-echo '<p style="text-align: center; margin-top: 20px; font-size:1.5em !important;">On a mission to build and share consensus 🤝</p>';
+$en_all_2738 = $this->config->item('en_all_2738');
+echo '<h1 style="text-align: center; margin-top: 50px;">Mench '.$en_all_2738[4488]['m_name'].'</h1>';
+echo '<p style="text-align: center; margin-top: 20px; font-size:1.5em !important;">'.$en_all_2738[4488]['m_desc'].'</p>';
 
 //Load core Mench Objects:
 $en_all_4534 = $this->config->item('en_all_4534');
@@ -44,7 +45,7 @@ foreach (echo_fixed_fields() as $object_id => $statuses) {
         $created_en_type_id = 4250;
         $spacing = 'bottom-spacing col-lg-offset-2';
         $css_add = 'yellow';
-        $objects_count = $this->Database_model->in_fetch(array(), array(), 0, 0, array(), 'in_status, COUNT(in_id) as totals', 'in_status');
+        $objects_count = $this->Intents_model->in_fetch(array(), array(), 0, 0, array(), 'in_status, COUNT(in_id) as totals', 'in_status');
 
     } elseif($object_id=='en_status'){
 
@@ -52,7 +53,7 @@ foreach (echo_fixed_fields() as $object_id => $statuses) {
         $created_en_type_id = 4251;
         $spacing = 'bottom-spacing';
         $css_add = 'blue';
-        $objects_count = $this->Database_model->en_fetch(array(), array('skip_en__parents'), 0, 0, array(), 'en_status, COUNT(en_id) as totals', 'en_status');
+        $objects_count = $this->Entities_model->en_fetch(array(), array('skip_en__parents'), 0, 0, array(), 'en_status, COUNT(en_id) as totals', 'en_status');
 
     } elseif($object_id=='ln_status'){
 
@@ -60,7 +61,7 @@ foreach (echo_fixed_fields() as $object_id => $statuses) {
         $created_en_type_id = 0; //No particular filters needed
         $spacing = 'col-lg-offset-4';
         $css_add = '';
-        $objects_count = $this->Database_model->ln_fetch(array(), array(), 0, 0, array(), 'ln_status, COUNT(ln_id) as totals', 'ln_status');
+        $objects_count = $this->Links_model->ln_fetch(array(), array(), 0, 0, array(), 'ln_status, COUNT(ln_id) as totals', 'ln_status');
 
     } else {
 
@@ -111,7 +112,7 @@ foreach (echo_fixed_fields() as $object_id => $statuses) {
     if($object_id=='in_status'){
 
         //Fetch all needed data:
-        $in_verbs = $this->Database_model->in_fetch(array(
+        $in_verbs = $this->Intents_model->in_fetch(array(
             'in_status >=' => 0, //New+
         ), array('in_verb_entity_id'), 0, 0, array('totals' => 'DESC'), 'COUNT(in_id) as totals, in_verb_entity_id, en_name', 'in_verb_entity_id, en_name');
 
@@ -146,7 +147,7 @@ foreach (echo_fixed_fields() as $object_id => $statuses) {
         foreach(echo_fixed_fields('in_type') as $in_type_id => $in_type){
 
             //Count this type:
-            $in_types = $this->Database_model->in_fetch(array(
+            $in_types = $this->Intents_model->in_fetch(array(
                 'in_status >=' => 0, //New+
                 'in_type' => $in_type_id,
             ), array(), 0, 0, array(), 'COUNT(in_id) as totals');
@@ -164,7 +165,7 @@ foreach (echo_fixed_fields() as $object_id => $statuses) {
         foreach($this->config->item('en_all_4331') as $completion_en_id => $completion_method){
 
             //Count this method:
-            $in_types = $this->Database_model->in_fetch(array(
+            $in_types = $this->Intents_model->in_fetch(array(
                 'in_status >=' => 0, //New+
                 'in_requirement_entity_id' => $completion_en_id,
             ), array(), 0, 0, array(), 'COUNT(in_id) as totals');
@@ -181,7 +182,7 @@ foreach (echo_fixed_fields() as $object_id => $statuses) {
 
 
         //Expert Sources:
-        $ie_ens = $this->Database_model->en_fetch(array(
+        $ie_ens = $this->Entities_model->en_fetch(array(
             'en_id' => 3000, //Industry Expert Sources
         ), array('en__children'), 0, 0, array('en_name' => 'ASC'));
 
@@ -196,7 +197,7 @@ foreach (echo_fixed_fields() as $object_id => $statuses) {
         foreach ($ie_ens[0]['en__children'] as $source_en) {
 
             //Count any/all sources (complete or incomplete):
-            $source_count = $this->Platform_model->en_child_count($source_en['en_id']);
+            $source_count = $this->Entities_model->en_child_count($source_en['en_id']);
             $weight = ( substr_count($source_en['ln_content'], '&var_weight=')==1 ? intval(one_two_explode('&var_weight=','',$source_en['ln_content'])) : 0 );
             $all_source_count += $source_count;
             $all_source_count_weight += ($source_count * $weight);
@@ -207,7 +208,7 @@ foreach (echo_fixed_fields() as $object_id => $statuses) {
             $expert_source_types++;
 
             //Count completed sources:
-            $mined_source_count = $this->Platform_model->en_child_count($source_en['en_id'], 2);
+            $mined_source_count = $this->Entities_model->en_child_count($source_en['en_id'], 2);
             $all_mined_source_count += $mined_source_count;
             $all_mined_source_count_weigh += ($mined_source_count * $weight);
 
@@ -232,7 +233,7 @@ foreach (echo_fixed_fields() as $object_id => $statuses) {
         foreach($this->config->item('en_all_4432') as $group_en_id=>$people_group){
 
             //Do a child count:
-            $child_trs = $this->Database_model->ln_fetch(array(
+            $child_trs = $this->Links_model->ln_fetch(array(
                 'ln_parent_entity_id' => $group_en_id,
                 'ln_type_entity_id IN (' . join(',', $this->config->item('en_ids_4592')) . ')' => null, //Entity Link Connectors
                 'ln_status >=' => 0, //New+
@@ -297,7 +298,7 @@ foreach (echo_fixed_fields() as $object_id => $statuses) {
             $start_date = date("Y-m-d" , (time() - ($days_ago * 24 * 3600)));
             $filters['ln_timestamp >='] = $start_date.' 00:00:00'; //From beginning of the day
         }
-        foreach ($this->Database_model->ln_fetch($filters, array('en_miner'), $top, 0, array('points_sum' => 'DESC'), 'COUNT(ln_miner_entity_id) as trs_count, SUM(ln_points) as points_sum, en_name, en_icon, ln_miner_entity_id', 'ln_miner_entity_id, en_name, en_icon') as $count=>$ln) {
+        foreach ($this->Links_model->ln_fetch($filters, array('en_miner'), $top, 0, array('points_sum' => 'DESC'), 'COUNT(ln_miner_entity_id) as trs_count, SUM(ln_points) as points_sum, en_name, en_icon, ln_miner_entity_id', 'ln_miner_entity_id, en_name, en_icon') as $count=>$ln) {
             $top_miners .= '<tr>';
             $top_miners .= '<td style="text-align: left;"><span style="width:29px; display: inline-block; text-align: center; '.( $count > 2 ? 'font-size:0.8em;' : '' ).'">'.echo_rank($count+1).'</span><span class="parent-icon" style="width: 29px; display: inline-block; text-align: center;">'.( strlen($ln['en_icon']) > 0 ? $ln['en_icon'] : '<i class="fas fa-at grey-at"></i>' ).'</span><a href="/entities/'.$ln['ln_miner_entity_id'].'">'.$ln['en_name'].'</a></td>';
             $top_miners .= '<td style="text-align: right;"><a href="/links?ln_miner_entity_id='.$ln['ln_miner_entity_id'].( is_null($days_ago) ? '' : '&start_range='.$start_date ).'"  data-toggle="tooltip" title="Mined with '.number_format($ln['trs_count'],0).' links averaging '.round(($ln['points_sum']/$ln['trs_count']),1).' points/link" data-placement="top">'.number_format($ln['points_sum'], 0).'</a> <i class="fas fa-award"></i></td>';
@@ -314,7 +315,7 @@ foreach (echo_fixed_fields() as $object_id => $statuses) {
 
 
         //All Link Types:
-        $all_eng_types = $this->Database_model->ln_fetch(array('ln_status >=' => 0), array('en_type'), 0, 0, array('en_name' => 'ASC'), 'COUNT(ln_type_entity_id) as trs_count, en_name, en_icon, ln_type_entity_id', 'ln_type_entity_id, en_name, en_icon');
+        $all_eng_types = $this->Links_model->ln_fetch(array('ln_status >=' => 0), array('en_type'), 0, 0, array('en_name' => 'ASC'), 'COUNT(ln_type_entity_id) as trs_count, en_name, en_icon, ln_type_entity_id', 'ln_type_entity_id, en_name, en_icon');
 
         $all_link_count = 0;
         $all_ln_types = '';
@@ -333,7 +334,7 @@ foreach (echo_fixed_fields() as $object_id => $statuses) {
 
 
         //Point Link Types:
-        $all_engs = $this->Database_model->ln_fetch(array(
+        $all_engs = $this->Links_model->ln_fetch(array(
             'ln_points !=' => 0,
         ), array('en_type'), 0, 0, array('en_name' => 'ASC'), 'COUNT(ln_type_entity_id) as trs_count, SUM(ln_points) as points_sum, en_name, en_icon, ln_type_entity_id', 'ln_type_entity_id, en_name, en_icon');
 
@@ -343,7 +344,7 @@ foreach (echo_fixed_fields() as $object_id => $statuses) {
 
             //DOes it have a rate?
             //TODO use PHP cache version, dont make a call
-            $rate_trs = $this->Database_model->ln_fetch(array(
+            $rate_trs = $this->Links_model->ln_fetch(array(
                 'ln_status' => 2, //Published
                 'en_status' => 2, //Published
                 'ln_parent_entity_id' => 4595, //Link Points

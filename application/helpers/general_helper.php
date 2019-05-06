@@ -41,7 +41,7 @@ function detect_missing_columns($insert_columns, $required_columns)
         if (!isset($insert_columns[$req_field]) || strlen($insert_columns[$req_field]) == 0) {
             //Ooops, we're missing this required field:
             $CI =& get_instance();
-            $CI->Database_model->ln_create(array(
+            $CI->Links_model->ln_create(array(
                 'ln_content' => 'Missing required field [' . $req_field . '] for inserting new DB row',
                 'ln_metadata' => array(
                     'insert_columns' => $insert_columns,
@@ -252,7 +252,7 @@ function detect_ln_type_entity_id($string)
 
         //It's a URL, see what type (this could fail if duplicate, etc...):
         $CI =& get_instance();
-        return $CI->Platform_model->en_sync_url($string);
+        return $CI->Entities_model->en_sync_url($string);
 
     } elseif (strlen($string) > 9 && (is_valid_date($string) || strtotime($string) > 0)) {
 
@@ -340,7 +340,7 @@ function detect_starting_verb_id($string){
     if(count($letters) >= 2){
 
         //Do a DB call to see if this verb is supported:
-        $found_verbs = $CI->Database_model->ln_fetch(array(
+        $found_verbs = $CI->Links_model->ln_fetch(array(
             'ln_status' => 2, //Published
             'en_status' => 2, //Published
             'ln_parent_entity_id' => 5008, //Intent Supported Verbs
@@ -480,7 +480,7 @@ function upload_to_cdn($file_url, $ln_metadata = null, $is_local = false)
 
         } else {
 
-            $CI->Database_model->ln_create(array(
+            $CI->Links_model->ln_create(array(
                 'ln_type_entity_id' => 4246, //Platform Error
                 'ln_miner_entity_id' => 1, //Shervin/Developer
                 'ln_content' => 'upload_to_cdn() Unable to upload file [' . $file_url . '] to Mench cloud.',
@@ -573,6 +573,432 @@ function objectToArray($object)
         $object = (array)$object;
     }
     return array_map('objectToArray', $object);
+}
+
+
+function update_algolia($input_obj_type = null, $input_obj_id = 0, $return_row_only = false)
+{
+
+    $CI =& get_instance();
+
+    /*
+     *
+     * Syncs intents/entities with Algolia Index
+     *
+     * */
+
+    $valid_objects = array('en','in');
+
+    if (!$CI->config->item('app_enable_algolia')) {
+        //Algolia is disabled, so avoid syncing:
+        return array(
+            'status' => 0,
+            'message' => 'Algolia disabled',
+        );
+    } elseif($input_obj_type && !in_array($input_obj_type , $valid_objects)){
+        return array(
+            'status' => 0,
+            'message' => 'Object type is invalid',
+        );
+    } elseif(($input_obj_type && !$input_obj_id) || ($input_obj_id && !$input_obj_type)){
+        return array(
+            'status' => 0,
+            'message' => 'Must define both object type and ID',
+        );
+    }
+
+    //Define the support objects indexed on algolia:
+    $fixed_fields = $CI->config->item('fixed_fields'); //Needed for intent Icon
+    $input_obj_id = intval($input_obj_id);
+    $limits = array();
+
+
+    if (!$return_row_only) {
+
+        if(is_dev()){
+            //Do a call on live as this does not work on local due to security limitations:
+            return json_decode(@file_get_contents("https://mench.com/links/cron__sync_algolia/" . ( $input_obj_type ? $input_obj_type . '/' . $input_obj_id : '' )));
+        }
+
+        //Load Algolia Index
+        $search_index = load_php_algolia('alg_index');
+    }
+
+
+    //Which objects are we fetching?
+    if ($input_obj_type) {
+
+        //We'll only fetch a specific type:
+        $fetch_objects = array($input_obj_type);
+
+    } else {
+
+        //Do both intents and entities:
+        $fetch_objects = $valid_objects;
+
+        if (!$return_row_only) {
+            //We need to update the entire index, so let's truncate it first:
+            $search_index->clearIndex();
+
+            //Boost processing power:
+            boost_power();
+        }
+    }
+
+
+    $all_export_rows = array();
+    $all_db_rows = array();
+    $synced_count = 0;
+    foreach($fetch_objects as $loop_obj){
+
+        //Remove any limits:
+        unset($limits);
+
+        //Fetch item(s) for updates including their parents:
+        if ($loop_obj == 'in') {
+
+            if($input_obj_id){
+                $limits['in_id'] = $input_obj_id;
+            } else {
+                $limits['in_status >='] = 0; //New+
+            }
+
+            $db_rows['in'] = $CI->Intents_model->in_fetch($limits, array('in__messages'));
+
+        } elseif ($loop_obj == 'en') {
+
+            if($input_obj_id){
+                $limits['en_id'] = $input_obj_id;
+            } else {
+                $limits['en_status >='] = 0; //New+
+            }
+
+            $db_rows['en'] = $CI->Entities_model->en_fetch($limits, array('en__parents'));
+
+        }
+
+
+
+
+        //Build the index:
+        foreach ($db_rows[$loop_obj] as $db_row) {
+
+            //Prepare variables:
+            unset($export_row);
+            $export_row = array();
+
+
+            //Attempt to fetch Algolia object ID from object Metadata:
+            if($input_obj_type){
+
+                if (strlen($db_row[$loop_obj . '_metadata']) > 0) {
+
+                    //We have a metadata, so we might have the Algolia ID stored. Let's check:
+                    $metadata = unserialize($db_row[$loop_obj . '_metadata']);
+                    if (isset($metadata[$loop_obj . '__algolia_id']) && intval($metadata[$loop_obj . '__algolia_id']) > 0) {
+                        //We found it! Let's just update existing algolia record
+                        $export_row['objectID'] = intval($metadata[$loop_obj . '__algolia_id']);
+                    }
+
+                }
+
+            } else {
+
+                //Clear possible metadata algolia ID's that have been cached:
+                update_metadata($loop_obj, $db_row[$loop_obj.'_id'], array(
+                    $loop_obj . '__algolia_id' => null, //Since all objects have been mass removed!
+                ));
+
+            }
+
+            //To hold parent intents/entities:
+            $export_row['_tags'] = array();
+
+            //Now build object-specific index:
+            if ($loop_obj == 'en') {
+
+                //Count published children:
+                $published_child_count = $CI->Links_model->ln_fetch(array(
+                    'ln_parent_entity_id' => $db_row['en_id'],
+                    'ln_type_entity_id IN (' . join(',', $CI->config->item('en_ids_4592')) . ')' => null, //Entity Link Connectors
+                    'ln_status' => 2, //Published
+                    'en_status' => 2, //Published
+                ), array('en_child'), 0, 0, array(), 'COUNT(ln_id) AS published_child_count');
+
+                $export_row['alg_obj_is_in'] = 0;
+                $export_row['alg_obj_id'] = intval($db_row['en_id']);
+                $export_row['alg_obj_weight'] = $db_row['en_trust_score'];
+                $export_row['alg_obj_published_children'] = $published_child_count[0]['published_child_count'];
+                $export_row['alg_obj_status'] = intval($db_row['en_status']);
+                $export_row['alg_obj_icon'] = ( strlen($db_row['en_icon']) > 0 ? $db_row['en_icon'] : '<i class="fas fa-at grey-at"></i>' );
+                $export_row['alg_obj_name'] = $db_row['en_name'];
+                $export_row['alg_obj_postfix'] = ''; //Entities have no post-fix at this time
+
+                //Add keywords:
+                $export_row['alg_obj_keywords'] = '';
+                foreach ($db_row['en__parents'] as $ln) {
+
+                    //Always add to tags:
+                    array_push($export_row['_tags'], 'tag_en_parent_' . $ln['en_id']);
+
+                    //Add content to keywords if any:
+                    if (strlen($ln['ln_content']) > 0) {
+                        $export_row['alg_obj_keywords'] .= $ln['ln_content'] . ' ';
+                    }
+                }
+                $export_row['alg_obj_keywords'] = trim(strip_tags($export_row['alg_obj_keywords']));
+
+            } elseif ($loop_obj == 'in') {
+
+                //See if this tree has a time-range:
+                $time_range = echo_time_range($db_row, true, true);
+                $metadata = unserialize($db_row['in_metadata']);
+
+                $export_row['alg_obj_is_in'] = 1;
+                $export_row['alg_obj_id'] = intval($db_row['in_id']);
+                $export_row['alg_obj_weight'] = ( isset($metadata['in__metadata_max_seconds']) ? $metadata['in__metadata_max_seconds'] : 0 );
+                $export_row['alg_obj_published_children'] = ( isset($metadata['in__metadata_max_steps']) ? $metadata['in__metadata_max_steps'] : 0 );
+                $export_row['alg_obj_status'] = intval($db_row['in_status']);
+                $export_row['alg_obj_icon'] = $fixed_fields['in_type'][$db_row['in_type']]['s_icon']; //Entity type icon
+                $export_row['alg_obj_name'] = $db_row['in_outcome'];
+                $export_row['alg_obj_postfix'] =  ( $time_range ? '<span class="alg-postfix"><i class="fal fa-clock"></i>' . $time_range . '</span>' : '');
+
+                //Add parent/child tags: (No use for now, so will remove this) (If wanted to include again, add "in__parents" to intent query)
+                /*
+                foreach ($db_row['in__parents'] as $ln) {
+                    //Always add to tags:
+                    array_push($export_row['_tags'], 'tag_in_parent_' . $ln['in_id']);
+                }
+                */
+
+                //Add keywords:
+                $export_row['alg_obj_keywords'] = '';
+                foreach ($db_row['in__messages'] as $ln) {
+                    $export_row['alg_obj_keywords'] .= $ln['ln_content'] . ' ';
+                }
+                $export_row['alg_obj_keywords'] = trim(strip_tags($export_row['alg_obj_keywords']));
+
+            }
+
+            //Add to main array
+            array_push($all_export_rows, $export_row);
+            array_push($all_db_rows, $db_row);
+
+        }
+    }
+
+    //Did we find anything?
+    if(count($all_export_rows) < 1){
+
+        return false;
+
+    } elseif($return_row_only){
+
+        if($input_obj_id > 0){
+            //We  have a specific item we're looking for...
+            return $all_export_rows[0];
+        } else {
+            return $all_export_rows;
+        }
+
+    }
+
+    //Now let's see what to do with the index (Update, Create or delete)
+    if ($input_obj_type) {
+
+        //We should have fetched a single item only, meaning $all_export_rows[0] is what we are focused on...
+
+        //What's the status? Is it active or should it be removed?
+        if ($all_db_rows[0][$input_obj_type . '_status'] >= 0) {
+
+            if (isset($all_export_rows[0]['objectID'])) {
+
+                //Update existing index:
+                $algolia_results = $search_index->saveObjects($all_export_rows);
+
+            } else {
+
+                //We do not have an index to an Algolia object locally, so create a new index:
+                $algolia_results = $search_index->addObjects($all_export_rows);
+
+                //Now update local database with the new objectIDs:
+                if (isset($algolia_results['objectIDs']) && count($algolia_results['objectIDs']) == 1 ) {
+                    foreach ($algolia_results['objectIDs'] as $key => $algolia_id) {
+                        update_metadata($input_obj_type, $all_db_rows[$key][$input_obj_type.'_id'], array(
+                            $input_obj_type . '__algolia_id' => $algolia_id, //The newly created algolia object
+                        ));
+                    }
+                }
+
+            }
+
+            $synced_count += 1;
+
+        } else {
+
+            if (isset($all_export_rows[0]['objectID'])) {
+
+                //Object is removed locally but still indexed remotely on Algolia, so let's remove it from Algolia:
+
+                //Remove from algolia:
+                $algolia_results = $search_index->deleteObject($all_export_rows[0]['objectID']);
+
+                //also set its algolia_id to 0 locally:
+                update_metadata($input_obj_type, $all_db_rows[0][$input_obj_type.'_id'], array(
+                    $input_obj_type . '__algolia_id' => null, //Since this item has been removed!
+                ));
+
+                $synced_count += 1;
+
+            } else {
+                //Nothing to do here since we don't have the Algolia object locally!
+            }
+
+        }
+
+    } else {
+
+
+
+        /*
+         *
+         * This is a mass update request.
+         *
+         * All remote objects have already been removed from the Algolia
+         * index & metadata algolia_ids have all been set to zero!
+         *
+         * We're ready to create new items and update local
+         *
+         * */
+
+        $algolia_results = $search_index->addObjects($all_export_rows);
+
+        //Now update database with the objectIDs:
+        if (isset($algolia_results['objectIDs']) && count($algolia_results['objectIDs']) == count($all_db_rows) ) {
+
+            foreach ($algolia_results['objectIDs'] as $key => $algolia_id) {
+
+                $this_obj = ( isset($all_db_rows[$key]['in_id']) ? 'in' : 'en');
+
+                update_metadata($this_obj, $all_db_rows[$key][$this_obj.'_id'], array(
+                    $this_obj . '__algolia_id' => intval($algolia_id),
+                ));
+            }
+
+        }
+
+        $synced_count += count($algolia_results['objectIDs']);
+
+    }
+
+
+
+
+
+    //Return results:
+    return array(
+        'status' => ( $synced_count > 0 ? 1 : 0),
+        'message' => $synced_count . ' objects sync with Algolia',
+    );
+
+}
+
+function update_metadata($obj_type, $obj_id, $new_fields)
+{
+
+    $CI =& get_instance();
+
+    /*
+     *
+     * Enables the easy manipulation of the text metadata field which holds cache data for developers
+     *
+     * $obj_type:               Either in, en or tr
+     *
+     * $obj:                    The Entity, Intent or Link itself.
+     *                          We're looking for the $obj ID and METADATA
+     *
+     * $new_fields:             The new array of metadata fields to be Set,
+     *                          Updated or Removed (If set to null)
+     *
+     * */
+
+    if (!in_array($obj_type, array('in', 'en', 'ln')) || $obj_id < 1 || count($new_fields) < 1) {
+        return false;
+    }
+
+    //Fetch metadata for this object:
+    if ($obj_type == 'in') {
+
+        $db_objects = $CI->Intents_model->in_fetch(array(
+            $obj_type . '_id' => $obj_id,
+        ));
+
+    } elseif ($obj_type == 'en') {
+
+        $db_objects = $CI->Entities_model->en_fetch(array(
+            $obj_type . '_id' => $obj_id,
+        ));
+
+    } elseif ($obj_type == 'ln') {
+
+        $db_objects = $CI->Links_model->ln_fetch(array(
+            $obj_type . '_id' => $obj_id,
+        ));
+
+    }
+
+    if (count($db_objects) < 1) {
+        return false;
+    }
+
+
+    //Prepare newly fetched metadata:
+    if (strlen($db_objects[0][$obj_type . '_metadata']) > 0) {
+        $metadata = unserialize($db_objects[0][$obj_type . '_metadata']);
+    } else {
+        $metadata = array();
+    }
+
+    //Go through all the new fields and see if they differ from current metadata fields:
+    foreach ($new_fields as $metadata_key => $metadata_value) {
+        //We are doing an absolute adjustment if needed:
+        if (is_null($metadata_value) && isset($metadata[$metadata_key])) {
+
+            //User asked to remove this value:
+            unset($metadata[$metadata_key]);
+
+        } elseif (!is_null($metadata_value) && (!isset($metadata[$metadata_key]) || $metadata[$metadata_key] != $metadata_value)) {
+
+            //Value has changed, adjust:
+            $metadata[$metadata_key] = $metadata_value;
+
+        }
+    }
+
+    //Now update DB without logging any links as this is considered a back-end update:
+    if ($obj_type == 'in') {
+
+        $affected_rows = $CI->Intents_model->in_update($obj_id, array(
+            'in_metadata' => $metadata,
+        ));
+
+    } elseif ($obj_type == 'en') {
+
+        $affected_rows = $CI->Entities_model->en_update($obj_id, array(
+            'en_metadata' => $metadata,
+        ));
+
+    } elseif ($obj_type == 'ln') {
+
+        $affected_rows = $CI->Links_model->ln_update($obj_id, array(
+            'ln_metadata' => $metadata,
+        ));
+
+    }
+
+    //Should be all good:
+    return $affected_rows;
+
 }
 
 

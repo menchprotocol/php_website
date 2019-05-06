@@ -64,7 +64,7 @@ class Admin extends CI_Controller
          * */
 
         //First first all entities that have Cache in PHP Config @4527 as their parent:
-        $config_ens = $this->Database_model->ln_fetch(array(
+        $config_ens = $this->Links_model->ln_fetch(array(
             'ln_status' => 2, //Published
             'ln_type_entity_id IN (' . join(',', $this->config->item('en_ids_4592')) . ')' => null, //Entity Link Connectors
             'ln_parent_entity_id' => 4527,
@@ -75,7 +75,7 @@ class Admin extends CI_Controller
         foreach($config_ens as $en){
 
             //Now fetch all its children:
-            $children = $this->Database_model->ln_fetch(array(
+            $children = $this->Links_model->ln_fetch(array(
                 'ln_status' => 2, //Published
                 'en_status' => 2, //Published
                 'ln_parent_entity_id' => $en['ln_child_entity_id'],
@@ -100,7 +100,7 @@ class Admin extends CI_Controller
 
                 //Fetch all parents for this child:
                 $child_parent_ids = array(); //To be populated soon
-                $child_parents = $this->Database_model->ln_fetch(array(
+                $child_parents = $this->Links_model->ln_fetch(array(
                     'ln_status' => 2, //Published
                     'en_status' => 2, //Published
                     'ln_child_entity_id' => $child['en_id'],
@@ -143,7 +143,7 @@ class Admin extends CI_Controller
 
         //Fetch all valid variable names:
         $valid_variables = array();
-        foreach($this->Database_model->ln_fetch(array(
+        foreach($this->Links_model->ln_fetch(array(
             'ln_parent_entity_id' => 6232, //Variables Names
             'ln_type_entity_id IN (' . join(',', $this->config->item('en_ids_4592')) . ')' => null, //Entity Link Connectors
             'ln_status' => 2, //Published
@@ -157,7 +157,7 @@ class Admin extends CI_Controller
         $invalid_variables = array();
 
         //Intent Metadata
-        foreach($this->Database_model->in_fetch(array()) as $in){
+        foreach($this->Intents_model->in_fetch(array()) as $in){
 
             if(strlen($in['in_metadata']) < 1){
                 continue;
@@ -166,7 +166,7 @@ class Admin extends CI_Controller
             foreach(unserialize($in['in_metadata']) as $key => $value){
                 if(!in_array($key, $valid_variables)){
                     //Remove this:
-                    $this->Database_model->update_metadata('in', $in['in_id'], array(
+                    update_metadata('in', $in['in_id'], array(
                         $key => null,
                     ));
 
@@ -180,7 +180,7 @@ class Admin extends CI_Controller
         }
 
         //Entity Metadata
-        foreach($this->Database_model->en_fetch(array()) as $en){
+        foreach($this->Entities_model->en_fetch(array()) as $en){
 
             if(strlen($en['en_metadata']) < 1){
                 continue;
@@ -189,7 +189,7 @@ class Admin extends CI_Controller
             foreach(unserialize($en['en_metadata']) as $key => $value){
                 if(!in_array($key, $valid_variables)){
                     //Remove this:
-                    $this->Database_model->update_metadata('en', $en['en_id'], array(
+                    update_metadata('en', $en['en_id'], array(
                         $key => null,
                     ));
 
@@ -209,7 +209,7 @@ class Admin extends CI_Controller
 
         if(count($invalid_variables) > 0){
             //Did we have anything to remove? Report with system bug:
-            $this->Database_model->ln_create(array(
+            $this->Links_model->ln_create(array(
                 'ln_content' => 'cron__clean_metadatas() removed '.count($invalid_variables).' unknown variables from intent/entity metadatas. To prevent this from happening, register the variables via Variables Names @6232',
                 'ln_type_entity_id' => 4246, //Platform Error
                 'ln_miner_entity_id' => 1, //Shervin/Developer

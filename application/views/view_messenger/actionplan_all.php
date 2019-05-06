@@ -30,7 +30,7 @@ if(count($student_intents) > 0){
             echo '</div>';
         }
 
-        $completion_rate = $this->Platform_model->actionplan_completion_rate($ln, $session_en['en_id']);
+        $completion_rate = $this->Actionplan_model->actionplan_completion_rate($ln, $session_en['en_id']);
 
         echo '<span class="actionplan-title in-title-'.$ln['in_id'].'">' . $ln['in_outcome'] . '</span>';
         echo '<div class="actionplan-overview">'.( $time_estimate ? $time_estimate.', ' : '').'<span title="'.$completion_rate['steps_completed'].'/'.$completion_rate['steps_total'].' Steps Completed">'.$completion_rate['completion_percentage'].'% Complete</span> [<span class="actionplan_remove" in-id="'.$ln['in_id'].'"><i class="fas fa-hand-paper"></i> Stop</span>]</div>';
@@ -56,7 +56,7 @@ if(count($student_intents) > 0){
 echo '<div class="actionplan-tip"><i class="fas fa-lightbulb"></i> TIP: '.echo_random_message('command_me').'</div>';
 
 //Are they a miner? Give them option to clear everything:
-if(count($this->Database_model->ln_fetch(array(
+if(count($this->Links_model->ln_fetch(array(
         'ln_status' => 2, //Published
         'ln_type_entity_id IN (' . join(',', $this->config->item('en_ids_4592')) . ')' => null, //Entity Link Connectors
         'ln_child_entity_id' => $session_en['en_id'],

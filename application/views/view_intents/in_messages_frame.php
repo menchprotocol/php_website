@@ -7,7 +7,7 @@ $en_ids_4485 = $this->config->item('en_ids_4485');
 $en_all_4485 = $this->config->item('en_all_4485');
 
 //Fetch all messages:
-$metadatas = $this->Database_model->ln_fetch(array(
+$metadatas = $this->Links_model->ln_fetch(array(
     'ln_status >=' => 0, //New+
     'ln_type_entity_id IN (' . join(',', $en_ids_4485) . ')' => null, //All Intent Notes
     'ln_child_intent_id' => $in_id,

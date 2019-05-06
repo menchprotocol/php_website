@@ -12,51 +12,42 @@ class Messenger extends CI_Controller
         $this->output->enable_profiler(FALSE);
     }
 
-    function test($in_id = 9944){
-        //Yes it is! Trigger Webhook recursively:
-        $this->Platform_model->actionplan_trigger_webhooks($in_id, 1);
 
-    }
-
-    function cron__issue_pending_score_cards(){
-
-    }
-
-    function actionplan_assessment_webhook(){
+    function deprecate__actionplan_assessment_webhook(){
 
         //Validate core input variables from Webhook call:
         if(!isset($_POST['en_id']) || intval($_POST['en_id']) < 1 || !isset($_POST['in_id']) || intval($_POST['in_id']) < 1){
             return echo_json(array(
                 'status' => 0,
-                'message' => 'actionplan_assessment_webhook() missing core variables',
+                'message' => 'deprecate__actionplan_assessment_webhook() missing core variables',
             ));
         }
 
 
         //Validate intent and entity:
-        $ins = $this->Database_model->in_fetch(array(
+        $ins = $this->Intents_model->in_fetch(array(
             'in_id' => $_POST['in_id'],
             'in_status' => 2, //Published
         ));
-        $ens = $this->Database_model->en_fetch(array(
+        $ens = $this->Entities_model->en_fetch(array(
             'en_id' => $_POST['en_id'],
             'en_status' => 2, //Published
         ));
         if(count($ins) < 1){
             return echo_json(array(
                 'status' => 0,
-                'message' => 'actionplan_assessment_webhook() unable to locate a published intent',
+                'message' => 'deprecate__actionplan_assessment_webhook() unable to locate a published intent',
             ));
         } elseif(count($ens) < 1){
             return echo_json(array(
                 'status' => 0,
-                'message' => 'actionplan_assessment_webhook() unable to locate a published entity',
+                'message' => 'deprecate__actionplan_assessment_webhook() unable to locate a published entity',
             ));
         } elseif(count()==0){
             //Failed validation that this miner has completed this intention in their Action Plan:
             return echo_json(array(
                 'status' => 0,
-                'message' => 'actionplan_assessment_webhook() unable to locate a student action plan progression step',
+                'message' => 'deprecate__actionplan_assessment_webhook() unable to locate a student action plan progression step',
             ));
         }
 
@@ -184,7 +175,7 @@ class Messenger extends CI_Controller
 
 
             //Log link for evaluating the Conditional Milestone Link:
-            $conditional_evaluation = $this->Database_model->ln_create(array(
+            $conditional_evaluation = $this->Links_model->ln_create(array(
                 'ln_status' => 2, //Log as a New link unless we meet the minimum student requirement to publish it instantly...
                 'ln_type_entity_id' => 6278, //Assessed Conditional Milestone Link
                 'ln_miner_entity_id' => $ens[0]['en_id'],
@@ -225,30 +216,6 @@ class Messenger extends CI_Controller
 
 
 
-    function get_stared($in_id = 0){
-        /*
-         *
-         * Trigerred when the "Get Started" button
-         * on a landing page is clicked.
-         *
-         * Logs link and redirects to Messenger.
-         *
-         *
-         * */
-
-        //Check if the user has a session active:
-        $session_en = en_auth();
-
-        //Log link:
-        $this->Database_model->ln_create(array(
-            'ln_miner_entity_id' => 1,
-            'ln_type_entity_id' => 4269, //Logged In as Miner
-            'ln_parent_entity_id' => $session_en['en_id'], //First Action
-        ));
-
-
-    }
-
     function api_webhook($test = 0)
     {
 
@@ -283,7 +250,7 @@ class Messenger extends CI_Controller
             //Likely loaded the URL in browser:
             return print_r('complete');
         } elseif ($ln_metadata['object'] != 'page') {
-            $this->Database_model->ln_create(array(
+            $this->Links_model->ln_create(array(
                 'ln_content' => 'facebook_webhook() Function call object value is not equal to [page], which is what was expected.',
                 'ln_metadata' => $ln_metadata,
                 'ln_type_entity_id' => 4246, //Platform Error
@@ -301,7 +268,7 @@ class Messenger extends CI_Controller
                 //This can happen for the older webhook that we offered to other FB pages:
                 continue;
             } elseif (!isset($entry['messaging'])) {
-                $this->Database_model->ln_create(array(
+                $this->Links_model->ln_create(array(
                     'ln_content' => 'facebook_webhook() call missing messaging Array().',
                     'ln_metadata' => $ln_metadata,
                     'ln_type_entity_id' => 4246, //Platform Error
@@ -319,10 +286,10 @@ class Messenger extends CI_Controller
                     $ln_type_entity_id = (isset($im['delivery']) ? 4279 /* Message Delivered */ : 4278 /* Message Read */);
 
                     //Authenticate Student:
-                    $en = $this->Platform_model->en_authenticate_psid($im['sender']['id']);
+                    $en = $this->Entities_model->en_authenticate_psid($im['sender']['id']);
 
                     //Log Link Only IF last delivery link was 3+ minutes ago (Since Facebook sends many of these):
-                    $last_trs_logged = $this->Database_model->ln_fetch(array(
+                    $last_trs_logged = $this->Links_model->ln_fetch(array(
                         'ln_type_entity_id' => $ln_type_entity_id,
                         'ln_miner_entity_id' => $en['en_id'],
                         'ln_timestamp >=' => date("Y-m-d H:i:s", (time() - (180))), //Links logged less than 3 minutes ago
@@ -330,7 +297,7 @@ class Messenger extends CI_Controller
 
                     if (count($last_trs_logged) == 0) {
                         //We had no recent links of this kind, so go ahead and log:
-                        $this->Database_model->ln_create(array(
+                        $this->Links_model->ln_create(array(
                             'ln_metadata' => $ln_metadata,
                             'ln_type_entity_id' => $ln_type_entity_id,
                             'ln_miner_entity_id' => $en['en_id'],
@@ -357,11 +324,11 @@ class Messenger extends CI_Controller
 
                     //Set variables:
                     $sent_by_mench = (isset($im['message']['is_echo'])); //Indicates the message sent from the page itself
-                    $en = $this->Platform_model->en_authenticate_psid(($sent_by_mench ? $im['recipient']['id'] : $im['sender']['id']));
+                    $en = $this->Entities_model->en_authenticate_psid(($sent_by_mench ? $im['recipient']['id'] : $im['sender']['id']));
                     $is_quick_reply = (isset($im['message']['quick_reply']['payload']));
 
                     //Check if this Student is unsubscribed:
-                    if (!$is_quick_reply && count($this->Database_model->ln_fetch(array(
+                    if (!$is_quick_reply && count($this->Links_model->ln_fetch(array(
                             'ln_parent_entity_id' => 4455, //Unsubscribed
                             'ln_type_entity_id IN (' . join(',', $this->config->item('en_ids_4592')) . ')' => null, //Entity Link Connectors
                             'ln_child_entity_id' => $en['en_id'],
@@ -422,8 +389,19 @@ class Messenger extends CI_Controller
                         $ln_data['ln_type_entity_id'] = 4460;
                         $ln_data['ln_content'] = $im['message']['text']; //Quick reply always has a text
 
-                        //Digest it further:
-                        $this->Communication_model->digest_quick_reply($en, $im['message']['quick_reply']['payload'], $ln_metadata);
+                        //Digest quick reply:
+                        $quick_reply_results = $this->Communication_model->digest_quick_reply($en, $im['message']['quick_reply']['payload']);
+                        if(!$quick_reply_results['status']){
+                            //There was an error, inform admin:
+                            $this->Links_model->ln_create(array(
+                                'ln_content' => 'digest_quick_reply() for message returned error ['.$quick_reply_results['message'].']',
+                                'ln_metadata' => $ln_metadata,
+                                'ln_type_entity_id' => 4246, //Platform Error
+                                'ln_miner_entity_id' => 1, //Shervin/Developer
+                                'ln_child_entity_id' => $en['en_id'],
+                            ));
+
+                        }
 
                     } elseif (isset($im['message']['text'])) {
 
@@ -559,7 +537,7 @@ class Messenger extends CI_Controller
                     if (!isset($ln_data['ln_type_entity_id']) || !isset($ln_data['ln_miner_entity_id'])) {
 
                         //Ooooopsi, this seems to be an unknown message type:
-                        $this->Database_model->ln_create(array(
+                        $this->Links_model->ln_create(array(
                             'ln_type_entity_id' => 4246, //Platform Error
                             'ln_miner_entity_id' => 1, //Shervin/Developer
                             'ln_content' => 'facebook_webhook() Received unknown message type! Analyze metadata for more details',
@@ -572,14 +550,14 @@ class Messenger extends CI_Controller
 
 
                     //We're all good, log this message:
-                    $new_message = $this->Database_model->ln_create($ln_data);
+                    $new_message = $this->Links_model->ln_create($ln_data);
 
 
                     //Did we have a potential response?
                     if(isset($new_message['ln_id']) && $in_requirements_search > 0){
 
                         //Yes, see if we have a pending requirement submission:
-                        $pending_in_requirements = $this->Database_model->ln_fetch(array(
+                        $pending_in_requirements = $this->Links_model->ln_fetch(array(
                             'ln_type_entity_id' => 6144, //Action Plan Submit Requirements
                             'ln_miner_entity_id' => $ln_data['ln_miner_entity_id'], //for this student
                             'ln_status IN (' . join(',', $this->config->item('ln_status_incomplete')) . ')' => null, //incomplete
@@ -656,7 +634,7 @@ class Messenger extends CI_Controller
                     $ln_type_entity_id = (isset($im['delivery']) ? 4267 /* Messenger Referral */ : 4268 /* Messenger Postback */);
 
                     //Authenticate Student:
-                    $en = $this->Platform_model->en_authenticate_psid($im['sender']['id']);
+                    $en = $this->Entities_model->en_authenticate_psid($im['sender']['id']);
 
                     //Extract more insights:
                     if (isset($im['postback'])) {
@@ -690,7 +668,7 @@ class Messenger extends CI_Controller
                     $quick_reply_payload = ($array_ref && isset($array_ref['ref']) && strlen($array_ref['ref']) > 0 ? $array_ref['ref'] : null);
 
                     //Log primary link:
-                    $this->Database_model->ln_create(array(
+                    $this->Links_model->ln_create(array(
                         'ln_type_entity_id' => $ln_type_entity_id,
                         'ln_metadata' => $ln_metadata,
                         'ln_content' => $quick_reply_payload,
@@ -699,7 +677,18 @@ class Messenger extends CI_Controller
 
                     //Digest quick reply Payload if any:
                     if ($quick_reply_payload) {
-                        $this->Communication_model->digest_quick_reply($en, $quick_reply_payload, $ln_metadata);
+                        $quick_reply_results = $this->Communication_model->digest_quick_reply($en, $quick_reply_payload);
+                        if(!$quick_reply_results['status']){
+                            //There was an error, inform admin:
+                            $this->Links_model->ln_create(array(
+                                'ln_content' => 'digest_quick_reply() for postback/referral returned error ['.$quick_reply_results['message'].']',
+                                'ln_metadata' => $ln_metadata,
+                                'ln_type_entity_id' => 4246, //Platform Error
+                                'ln_miner_entity_id' => 1, //Shervin/Developer
+                                'ln_child_entity_id' => $en['en_id'],
+                            ));
+
+                        }
                     }
 
                     /*
@@ -728,10 +717,10 @@ class Messenger extends CI_Controller
 
                 } elseif (isset($im['optin'])) {
 
-                    $en = $this->Platform_model->en_authenticate_psid($im['sender']['id']);
+                    $en = $this->Entities_model->en_authenticate_psid($im['sender']['id']);
 
                     //Log link:
-                    $this->Database_model->ln_create(array(
+                    $this->Links_model->ln_create(array(
                         'ln_metadata' => $ln_metadata,
                         'ln_type_entity_id' => 4266, //Messenger Optin
                         'ln_miner_entity_id' => $en['en_id'],
@@ -740,10 +729,10 @@ class Messenger extends CI_Controller
                 } elseif (isset($im['message_request']) && $im['message_request'] == 'accept') {
 
                     //This is when we message them and they accept to chat because they had Removed Messenger or something...
-                    $en = $this->Platform_model->en_authenticate_psid($im['sender']['id']);
+                    $en = $this->Entities_model->en_authenticate_psid($im['sender']['id']);
 
                     //Log link:
-                    $this->Database_model->ln_create(array(
+                    $this->Links_model->ln_create(array(
                         'ln_metadata' => $ln_metadata,
                         'ln_type_entity_id' => 4577, //Message Request Accepted
                         'ln_miner_entity_id' => $en['en_id'],
@@ -752,7 +741,7 @@ class Messenger extends CI_Controller
                 } else {
 
                     //This should really not happen!
-                    $this->Database_model->ln_create(array(
+                    $this->Links_model->ln_create(array(
                         'ln_content' => 'facebook_webhook() received unrecognized webhook call',
                         'ln_metadata' => $ln_metadata,
                         'ln_type_entity_id' => 4246, //Platform Error
@@ -771,7 +760,7 @@ class Messenger extends CI_Controller
 
         //Only moderators can do this at this time:
         $session_en = en_auth(array(1281));
-        $current_us = $this->Database_model->en_fetch(array(
+        $current_us = $this->Entities_model->en_fetch(array(
             'en_id' => $en_id,
         ));
 
@@ -827,7 +816,7 @@ class Messenger extends CI_Controller
         //Wait until Facebook pro-pagates changes of our whitelisted_domains setting:
         sleep(2);
 
-        $en_all_6196 = $this->config->item('en_all_6196');
+        $en_all_2738 = $this->config->item('en_all_2738');
 
         //Now let's update the menu:
         array_push($res, $this->Communication_model->facebook_graph('POST', '/me/messenger_profile', array(
@@ -838,7 +827,7 @@ class Messenger extends CI_Controller
                     'disabled_surfaces' => array('CUSTOMER_CHAT_PLUGIN'),
                     'call_to_actions' => array(
                         array(
-                            'title' => $en_all_6196[6138]['m_icon'].' '.$en_all_6196[6138]['m_name'],
+                            'title' => $en_all_2738[6138]['m_icon'].' '.$en_all_2738[6138]['m_name'],
                             'type' => 'web_url',
                             'url' => 'https://mench.com/messenger/actionplan',
                             'webview_height_ratio' => 'tall',
@@ -846,7 +835,7 @@ class Messenger extends CI_Controller
                             'messenger_extensions' => true,
                         ),
                         array(
-                            'title' => $en_all_6196[6137]['m_icon'].' '.$en_all_6196[6137]['m_name'],
+                            'title' => $en_all_2738[6137]['m_icon'].' '.$en_all_2738[6137]['m_name'],
                             'type' => 'web_url',
                             'url' => 'https://mench.com/messenger/myaccount',
                             'webview_height_ratio' => 'tall',
@@ -899,7 +888,7 @@ class Messenger extends CI_Controller
             die('<div class="alert alert-danger" role="alert">Failed to authenticate your origin.</div>');
         } elseif (!isset($session_en['en_id'])) {
             //Messenger Webview, authenticate PSID:
-            $session_en = $this->Platform_model->en_authenticate_psid($psid);
+            $session_en = $this->Entities_model->en_authenticate_psid($psid);
             //Make sure we found them:
             if (!$session_en) {
                 //We could not authenticate the user!
@@ -908,7 +897,7 @@ class Messenger extends CI_Controller
         }
 
         //Log My Account View:
-        $this->Database_model->ln_create(array(
+        $this->Links_model->ln_create(array(
             'ln_type_entity_id' => 4282, //Opened My Account
             'ln_miner_entity_id' => $session_en['en_id'],
         ));
@@ -940,7 +929,7 @@ class Messenger extends CI_Controller
         $_POST['en_name'] = trim($_POST['en_name']);
 
         //Check to make sure not duplicate:
-        $duplicates = $this->Database_model->en_fetch(array(
+        $duplicates = $this->Entities_model->en_fetch(array(
             'en_id !=' => $_POST['en_id'],
             'en_status >=' => 0, //New+
             'LOWER(en_name)' => strtolower($_POST['en_name']),
@@ -955,14 +944,14 @@ class Messenger extends CI_Controller
 
 
         //Update name and notify
-        $this->Database_model->en_update($_POST['en_id'], array(
+        $this->Entities_model->en_update($_POST['en_id'], array(
             'en_name' => $_POST['en_name'],
         ), true, $_POST['en_id']);
 
 
         //Log Account iteration link type:
         $_POST['account_update_function'] = 'myaccount_save_full_name'; //Add this variable to indicate which My Account function created this link
-        $this->Database_model->ln_create(array(
+        $this->Links_model->ln_create(array(
             'ln_miner_entity_id' => $_POST['en_id'],
             'ln_type_entity_id' => 6224, //My Account Iterated
             'ln_content' => 'My Account Name Updated:'.$_POST['en_name'],
@@ -1009,7 +998,7 @@ class Messenger extends CI_Controller
             }
 
             //Check to make sure not duplicate:
-            $duplicates = $this->Database_model->ln_fetch(array(
+            $duplicates = $this->Links_model->ln_fetch(array(
                 'ln_status >=' => 0, //New+
                 'ln_type_entity_id' => 4319, //Phone are of type number
                 'ln_parent_entity_id' => 4783, //Phone Number
@@ -1027,7 +1016,7 @@ class Messenger extends CI_Controller
 
 
         //Fetch existing phone:
-        $student_phones = $this->Database_model->ln_fetch(array(
+        $student_phones = $this->Links_model->ln_fetch(array(
             'ln_status' => 2, //Published
             'ln_child_entity_id' => $_POST['en_id'],
             'ln_type_entity_id' => 4319, //Phone are of type number
@@ -1038,7 +1027,7 @@ class Messenger extends CI_Controller
             if (strlen($_POST['en_phone']) == 0) {
 
                 //Remove:
-                $this->Database_model->ln_update($student_phones[0]['ln_id'], array(
+                $this->Links_model->ln_update($student_phones[0]['ln_id'], array(
                     'ln_status' => -1, //Removed
                 ), $_POST['en_id']);
 
@@ -1050,7 +1039,7 @@ class Messenger extends CI_Controller
             } elseif ($student_phones[0]['ln_content'] != $_POST['en_phone']) {
 
                 //Update if not duplicate:
-                $this->Database_model->ln_update($student_phones[0]['ln_id'], array(
+                $this->Links_model->ln_update($student_phones[0]['ln_id'], array(
                     'ln_content' => $_POST['en_phone'],
                 ), $_POST['en_id']);
 
@@ -1071,7 +1060,7 @@ class Messenger extends CI_Controller
         } elseif (strlen($_POST['en_phone']) > 0) {
 
             //Create new link:
-            $this->Database_model->ln_create(array(
+            $this->Links_model->ln_create(array(
                 'ln_status' => 2, //Published
                 'ln_miner_entity_id' => $_POST['en_id'],
                 'ln_child_entity_id' => $_POST['en_id'],
@@ -1098,7 +1087,7 @@ class Messenger extends CI_Controller
         //Log Account iteration link type:
         if($return['status']){
             $_POST['account_update_function'] = 'myaccount_save_phone'; //Add this variable to indicate which My Account function created this link
-            $this->Database_model->ln_create(array(
+            $this->Links_model->ln_create(array(
                 'ln_miner_entity_id' => $_POST['en_id'],
                 'ln_type_entity_id' => 6224, //My Account Iterated
                 'ln_content' => 'My Account '.$return['message']. ( strlen($_POST['en_phone']) > 0 ? ': '.$_POST['en_phone'] : ''),
@@ -1133,7 +1122,7 @@ class Messenger extends CI_Controller
             $_POST['en_email'] = trim(strtolower($_POST['en_email']));
 
             //Check to make sure not duplicate:
-            $duplicates = $this->Database_model->ln_fetch(array(
+            $duplicates = $this->Links_model->ln_fetch(array(
                 'ln_status >=' => 0, //New+
                 'ln_type_entity_id' => 4255, //Emails are of type Text
                 'ln_parent_entity_id' => 3288, //Email Address
@@ -1151,7 +1140,7 @@ class Messenger extends CI_Controller
 
 
         //Fetch existing email:
-        $student_emails = $this->Database_model->ln_fetch(array(
+        $student_emails = $this->Links_model->ln_fetch(array(
             'ln_status' => 2, //Published
             'ln_child_entity_id' => $_POST['en_id'],
             'ln_type_entity_id' => 4255, //Emails are of type Text
@@ -1162,7 +1151,7 @@ class Messenger extends CI_Controller
             if (strlen($_POST['en_email']) == 0) {
 
                 //Remove email:
-                $this->Database_model->ln_update($student_emails[0]['ln_id'], array(
+                $this->Links_model->ln_update($student_emails[0]['ln_id'], array(
                     'ln_status' => -1, //Removed
                 ), $_POST['en_id']);
 
@@ -1174,7 +1163,7 @@ class Messenger extends CI_Controller
             } elseif ($student_emails[0]['ln_content'] != $_POST['en_email']) {
 
                 //Update if not duplicate:
-                $this->Database_model->ln_update($student_emails[0]['ln_id'], array(
+                $this->Links_model->ln_update($student_emails[0]['ln_id'], array(
                     'ln_content' => $_POST['en_email'],
                 ), $_POST['en_id']);
 
@@ -1195,7 +1184,7 @@ class Messenger extends CI_Controller
         } elseif (strlen($_POST['en_email']) > 0) {
 
             //Create new link:
-            $this->Database_model->ln_create(array(
+            $this->Links_model->ln_create(array(
                 'ln_status' => 2, //Published
                 'ln_miner_entity_id' => $_POST['en_id'],
                 'ln_child_entity_id' => $_POST['en_id'],
@@ -1222,7 +1211,7 @@ class Messenger extends CI_Controller
         if($return['status']){
             //Log Account iteration link type:
             $_POST['account_update_function'] = 'myaccount_save_email'; //Add this variable to indicate which My Account function created this link
-            $this->Database_model->ln_create(array(
+            $this->Links_model->ln_create(array(
                 'ln_miner_entity_id' => $_POST['en_id'],
                 'ln_type_entity_id' => 6224, //My Account Iterated
                 'ln_content' => 'My Account '.$return['message']. ( strlen($_POST['en_email']) > 0 ? ': '.$_POST['en_email'] : ''),
@@ -1257,7 +1246,7 @@ class Messenger extends CI_Controller
 
 
         //Fetch existing password:
-        $student_passwords = $this->Database_model->ln_fetch(array(
+        $student_passwords = $this->Links_model->ln_fetch(array(
             'ln_status' => 2, //Published
             'ln_type_entity_id' => 4255, //Passwords are of type Text
             'ln_parent_entity_id' => 3286, //Password
@@ -1279,7 +1268,7 @@ class Messenger extends CI_Controller
             } else {
 
                 //Update password:
-                $this->Database_model->ln_update($student_passwords[0]['ln_id'], array(
+                $this->Links_model->ln_update($student_passwords[0]['ln_id'], array(
                     'ln_content' => $hashed_password,
                 ), $_POST['en_id']);
 
@@ -1293,7 +1282,7 @@ class Messenger extends CI_Controller
         } else {
 
             //Create new link:
-            $this->Database_model->ln_create(array(
+            $this->Links_model->ln_create(array(
                 'ln_status' => 2, //Published
                 'ln_type_entity_id' => 4255, //Passwords are of type Text
                 'ln_parent_entity_id' => 3286, //Password
@@ -1313,7 +1302,7 @@ class Messenger extends CI_Controller
         //Log Account iteration link type:
         if($return['status']){
             $_POST['account_update_function'] = 'myaccount_save_password'; //Add this variable to indicate which My Account function created this link
-            $this->Database_model->ln_create(array(
+            $this->Links_model->ln_create(array(
                 'ln_miner_entity_id' => $_POST['en_id'],
                 'ln_type_entity_id' => 6224, //My Account Iterated
                 'ln_content' => 'My Account '.$return['message'],
@@ -1365,7 +1354,7 @@ class Messenger extends CI_Controller
                 $is_valid_url = false;
                 if (filter_var($social_url, FILTER_VALIDATE_URL)) {
                     //Check to see if it's from the same domain and not in use:
-                    $domain_entity = $this->Platform_model->en_sync_domain($social_url);
+                    $domain_entity = $this->Entities_model->en_sync_domain($social_url);
                     if ($domain_entity['domain_already_existed'] && isset($domain_entity['en_domain']['en_id']) && $domain_entity['en_domain']['en_id'] == $social_en_id) {
                         //Seems to be a valid domain for this social profile:
                         $is_valid_url = true;
@@ -1382,7 +1371,7 @@ class Messenger extends CI_Controller
 
 
             //Does this user have a social URL already?
-            $social_url_exists = $this->Database_model->ln_fetch(array(
+            $social_url_exists = $this->Links_model->ln_fetch(array(
                 'ln_status' => 2, //Published
                 'ln_type_entity_id' => 4256, //Generic URL
                 'ln_parent_entity_id' => $social_en_id,
@@ -1403,7 +1392,7 @@ class Messenger extends CI_Controller
                 if ($profile_set && $social_url_exists[0]['ln_content'] != $social_url) {
 
                     //Check to make sure not duplicate
-                    $duplicates = $this->Database_model->ln_fetch(array(
+                    $duplicates = $this->Links_model->ln_fetch(array(
                         'ln_status' => 2, //Published
                         'ln_type_entity_id' => 4256, //Generic URL
                         'ln_parent_entity_id' => $social_en_id,
@@ -1418,7 +1407,7 @@ class Messenger extends CI_Controller
                     }
 
                     //Update profile since different:
-                    $this->Database_model->ln_update($social_url_exists[0]['ln_id'], array(
+                    $this->Links_model->ln_update($social_url_exists[0]['ln_id'], array(
                         'ln_content' => $social_url,
                     ), $_POST['en_id']);
 
@@ -1427,7 +1416,7 @@ class Messenger extends CI_Controller
                 } elseif(!$profile_set) {
 
                     //Remove profile:
-                    $this->Database_model->ln_update($social_url_exists[0]['ln_id'], array(
+                    $this->Links_model->ln_update($social_url_exists[0]['ln_id'], array(
                         'ln_status' => -1, //Removed
                     ), $_POST['en_id']);
 
@@ -1442,7 +1431,7 @@ class Messenger extends CI_Controller
             } elseif ($profile_set) {
 
                 //Create new link:
-                $this->Database_model->ln_create(array(
+                $this->Links_model->ln_create(array(
                     'ln_status' => 2, //Published
                     'ln_miner_entity_id' => $_POST['en_id'],
                     'ln_child_entity_id' => $_POST['en_id'],
@@ -1460,7 +1449,7 @@ class Messenger extends CI_Controller
 
             //Log Account iteration link type:
             $_POST['account_update_function'] = 'myaccount_save_social_profiles'; //Add this variable to indicate which My Account function created this link
-            $this->Database_model->ln_create(array(
+            $this->Links_model->ln_create(array(
                 'ln_miner_entity_id' => $_POST['en_id'],
                 'ln_type_entity_id' => 6224, //My Account Iterated
                 'ln_content' => 'My Account '.$success_messages,
@@ -1511,12 +1500,12 @@ class Messenger extends CI_Controller
         }
 
         //Attempt to add intent to Action Plan:
-        if($this->Platform_model->actionplan_add($session_en['en_id'], $_POST['in_id'])){
+        if($this->Actionplan_model->actionplan_add($session_en['en_id'], $_POST['in_id'])){
             //All good:
-            $en_all_6196 = $this->config->item('en_all_6196');
+            $en_all_2738 = $this->config->item('en_all_2738');
             return echo_json(array(
                 'status' => 1,
-                'message' => '<i class="far fa-check-circle"></i> Successfully added to your <b><a href="/messenger/actionplan">'.$en_all_6196[6138]['m_icon'].' '.$en_all_6196[6138]['m_name'].'</a></b>',
+                'message' => '<i class="far fa-check-circle"></i> Successfully added to your <b><a href="/messenger/actionplan">'.$en_all_2738[6138]['m_icon'].' '.$en_all_2738[6138]['m_name'].'</a></b>',
             ));
         } else {
             //There was some error:
@@ -1579,7 +1568,7 @@ class Messenger extends CI_Controller
             die('<div class="alert alert-danger" role="alert">Failed to authenticate your origin.</div>');
         } elseif (!isset($session_en['en_id'])) {
             //Messenger Webview, authenticate PSID:
-            $session_en = $this->Platform_model->en_authenticate_psid($psid);
+            $session_en = $this->Entities_model->en_authenticate_psid($psid);
             //Make sure we found them:
             if (!$session_en) {
                 //We could not authenticate the user!
@@ -1591,13 +1580,13 @@ class Messenger extends CI_Controller
         //This is a special command to find the next intent:
         if($in_id=='next'){
             //Find the next item to navigate them to:
-            $next_in_id = $this->Platform_model->actionplan_find_next_step($session_en['en_id'], false);
+            $next_in_id = $this->Actionplan_model->actionplan_find_next_step($session_en['en_id'], false);
             $in_id = ( $next_in_id > 0 ? $next_in_id : 0 );
         }
 
 
         //Fetch student's intentions as we'd need to know their top-level goals:
-        $student_intents = $this->Database_model->ln_fetch(array(
+        $student_intents = $this->Links_model->ln_fetch(array(
             'ln_miner_entity_id' => $session_en['en_id'],
             'ln_type_entity_id IN (' . join(',', $this->config->item('en_ids_6147')) . ')' => null, //Action Plan Intentions
             'ln_status IN (' . join(',', $this->config->item('ln_status_incomplete')) . ')' => null, //incomplete intentions
@@ -1608,7 +1597,7 @@ class Messenger extends CI_Controller
         if ($in_id < 1) {
 
             //Log Action Plan View:
-            $this->Database_model->ln_create(array(
+            $this->Links_model->ln_create(array(
                 'ln_type_entity_id' => 4283, //Opened Action Plan
                 'ln_miner_entity_id' => $session_en['en_id'],
             ));
@@ -1622,7 +1611,7 @@ class Messenger extends CI_Controller
         } else {
 
             //Fetch/validate selected intent:
-            $ins = $this->Database_model->in_fetch(array(
+            $ins = $this->Intents_model->in_fetch(array(
                 'in_id' => $in_id,
             ));
 
@@ -1636,7 +1625,7 @@ class Messenger extends CI_Controller
             $this->load->view('view_messenger/actionplan_intent', array(
                 'session_en' => $session_en,
                 'student_intents' => $student_intents,
-                'advance_step' => $this->Platform_model->actionplan_advance_step($session_en, $in_id, false),
+                'advance_step' => $this->Actionplan_model->actionplan_advance_step($session_en, $in_id, false),
                 'in' => $ins[0], //Currently focused intention:
             ));
 
@@ -1679,7 +1668,7 @@ class Messenger extends CI_Controller
         }
 
         //Validate intention to be removed:
-        $ins = $this->Database_model->in_fetch(array(
+        $ins = $this->Intents_model->in_fetch(array(
             'in_id' => $_POST['in_id'],
         ));
         if (count($ins) < 1) {
@@ -1690,7 +1679,7 @@ class Messenger extends CI_Controller
         }
 
         //Go ahead and remove from Action Plan:
-        $student_intents = $this->Database_model->ln_fetch(array(
+        $student_intents = $this->Links_model->ln_fetch(array(
             'ln_miner_entity_id' => $_POST['en_miner_id'],
             'ln_type_entity_id IN (' . join(',', $this->config->item('en_ids_6147')) . ')' => null, //Action Plan Intentions
             'ln_status IN (' . join(',', $this->config->item('ln_status_incomplete')) . ')' => null, //incomplete intentions
@@ -1706,13 +1695,13 @@ class Messenger extends CI_Controller
 
         //Adjust Action Plan status:
         foreach($student_intents as $ln){
-            $this->Database_model->ln_update($ln['ln_id'], array(
+            $this->Links_model->ln_update($ln['ln_id'], array(
                 'ln_status' => ( $_POST['stop_method_id']==6154 ? 2 : -1 ), //This is a nasty HACK!
             ), $_POST['en_miner_id']);
         }
 
         //Log related link:
-        $this->Database_model->ln_create(array(
+        $this->Links_model->ln_create(array(
             'ln_content' => $_POST['stop_feedback'],
             'ln_miner_entity_id' => $_POST['en_miner_id'],
             'ln_type_entity_id' => $_POST['stop_method_id'],
@@ -1745,7 +1734,7 @@ class Messenger extends CI_Controller
 
         //Just give them an overview of what they are about to skip:
         return echo_json(array(
-            'skip_step_preview' => 'WARNING: '.$this->Communication_model->initiate_skip_request(array('en_id' => $en_id), $in_id, false).' Are you sure you want to skip?',
+            'skip_step_preview' => 'WARNING: '.$this->Actionplan_model->actionplan_skip_initiate(array('en_id' => $en_id), $in_id, false).' Are you sure you want to skip?',
         ));
 
     }
@@ -1754,14 +1743,14 @@ class Messenger extends CI_Controller
     {
 
         //Actually go ahead and skip
-        $this->Platform_model->actionplan_skip_recursive_down($en_id, $in_id);
+        $this->Actionplan_model->actionplan_skip_recursive_down($en_id, $in_id);
         //Assume its all good!
 
         //We actually skipped, draft message:
         $message = '<div class="alert alert-success" role="alert">I successfully skipped all steps.</div>';
 
         //Find the next item to navigate them to:
-        $next_in_id = $this->Platform_model->actionplan_find_next_step($en_id, false);
+        $next_in_id = $this->Actionplan_model->actionplan_find_next_step($en_id, false);
         if ($next_in_id > 0) {
             return redirect_message('/messenger/actionplan/' . $next_in_id, $message);
         } else {
@@ -1822,12 +1811,12 @@ class Messenger extends CI_Controller
 
             //List all possible answers:
             $possible_answers = array();
-            foreach($this->Database_model->ln_fetch($filters, array('en_child'), 0, 0) as $answer_en){
+            foreach($this->Links_model->ln_fetch($filters, array('en_child'), 0, 0) as $answer_en){
                 array_push($possible_answers, $answer_en['en_id']);
             }
 
             //Remove selected options for this miner:
-            foreach($this->Database_model->ln_fetch(array(
+            foreach($this->Links_model->ln_fetch(array(
                 'ln_parent_entity_id IN (' . join(',', $possible_answers) . ')' => null,
                 'ln_child_entity_id' => $_POST['en_miner_id'],
                 'ln_type_entity_id IN (' . join(',', $this->config->item('en_ids_4592')) . ')' => null, //Entity Link Connectors
@@ -1850,7 +1839,7 @@ class Messenger extends CI_Controller
                 }
 
                 //Should usually remove a single option:
-                $this->Database_model->ln_update($remove_en['ln_id'], array(
+                $this->Links_model->ln_update($remove_en['ln_id'], array(
                     'ln_status' => -1, //Removed
                 ), $_POST['en_miner_id']);
             }
@@ -1859,7 +1848,7 @@ class Messenger extends CI_Controller
 
         //Add new option if not already there:
         if(!$_POST['enable_mulitiselect'] || !$_POST['was_already_selected']){
-            $this->Database_model->ln_create(array(
+            $this->Links_model->ln_create(array(
                 'ln_parent_entity_id' => $_POST['selected_en_id'],
                 'ln_child_entity_id' => $_POST['en_miner_id'],
                 'ln_miner_entity_id' => $_POST['en_miner_id'],
@@ -1880,7 +1869,7 @@ class Messenger extends CI_Controller
 
         //Log Account iteration link type:
         $_POST['account_update_function'] = 'myaccount_radio_update'; //Add this variable to indicate which My Account function created this link
-        $this->Database_model->ln_create(array(
+        $this->Links_model->ln_create(array(
             'ln_miner_entity_id' => $_POST['en_miner_id'],
             'ln_type_entity_id' => 6224, //My Account Iterated
             'ln_content' => 'My Account '.( $_POST['enable_mulitiselect'] ? 'Multi' : 'Single' ).'-Select Radio Field '.( $_POST['was_already_selected'] ? 'Removed' : 'Added' ),
@@ -1923,7 +1912,7 @@ class Messenger extends CI_Controller
         foreach($_POST['new_actionplan_order'] as $ln_order => $ln_id){
             if(intval($ln_id) > 0 && intval($ln_order) > 0){
                 //Update order of this link:
-                $results[$ln_order] = $this->Database_model->ln_update(intval($ln_id), array(
+                $results[$ln_order] = $this->Links_model->ln_update(intval($ln_id), array(
                     'ln_order' => $ln_order,
                 ), $_POST['en_miner_id']);
             }
@@ -1931,7 +1920,7 @@ class Messenger extends CI_Controller
 
 
         //Save sorting results:
-        $this->Database_model->ln_create(array(
+        $this->Links_model->ln_create(array(
             'ln_type_entity_id' => 6132, //Action Plan Sorted
             'ln_miner_entity_id' => $_POST['en_miner_id'],
             'ln_metadata' => array(
@@ -1942,7 +1931,7 @@ class Messenger extends CI_Controller
 
 
         //Fetch top intention that being workined on now:
-        $top_priority = $this->Platform_model->actionplan_top_priority($_POST['en_miner_id']);
+        $top_priority = $this->Actionplan_model->actionplan_top_priority($_POST['en_miner_id']);
         if($top_priority){
             //Communicate top-priority with student:
             $this->Communication_model->dispatch_message(
@@ -1976,7 +1965,7 @@ class Messenger extends CI_Controller
         }
 
         //Validate Answer Intent:
-        $answer_ins = $this->Database_model->in_fetch(array(
+        $answer_ins = $this->Intents_model->in_fetch(array(
             'in_id' => $answer_in_id,
             'in_status' => 2, //Published
         ));
@@ -1985,7 +1974,7 @@ class Messenger extends CI_Controller
         }
 
         //Fetch current progression links, if any:
-        $current_progression_links = $this->Database_model->ln_fetch(array(
+        $current_progression_links = $this->Links_model->ln_fetch(array(
             'ln_type_entity_id IN (' . join(',', $this->config->item('en_ids_6146')) . ')' => null, //Action Plan Progression Link Types
             'ln_miner_entity_id' => $en_id,
             'ln_parent_intent_id' => $parent_in_id,
@@ -1993,7 +1982,7 @@ class Messenger extends CI_Controller
         ));
 
         //All good, save chosen OR path
-        $new_progression_link = $this->Database_model->ln_create(array(
+        $new_progression_link = $this->Links_model->ln_create(array(
             'ln_miner_entity_id' => $en_id,
             'ln_type_entity_id' => 6157, //Action Plan Question Answered
             'ln_parent_intent_id' => $parent_in_id,
@@ -2002,11 +1991,11 @@ class Messenger extends CI_Controller
         ));
 
         //See if we also need to mark the child as complete:
-        $this->Platform_model->actionplan_complete_if_empty($en_id, $answer_ins[0]);
+        $this->Actionplan_model->actionplan_complete_if_empty($en_id, $answer_ins[0]);
 
         //Archive current progression links:
         foreach($current_progression_links as $ln){
-            $this->Database_model->ln_update($ln['ln_id'], array(
+            $this->Links_model->ln_update($ln['ln_id'], array(
                 'ln_parent_link_id' => $new_progression_link['ln_id'],
                 'ln_status' => -1,
             ), $en_id);
@@ -2035,7 +2024,7 @@ class Messenger extends CI_Controller
 
 
         //Let's fetch all Media files without a Facebook attachment ID:
-        $ln_pending = $this->Database_model->ln_fetch(array(
+        $ln_pending = $this->Links_model->ln_fetch(array(
             'ln_type_entity_id IN (' . join(',', array_keys($fb_convert_4537)) . ')' => null,
             'ln_status' => 2, //Published
             'ln_metadata' => null, //Missing Facebook Attachment ID [NOTE: Must make sure ln_metadata is not used for anything else for these link types]
@@ -2044,7 +2033,7 @@ class Messenger extends CI_Controller
 
         //Put something in the ln_metadata so other cron jobs do not pick  up on it:
         foreach ($ln_pending as $ln) {
-            $this->Database_model->update_metadata('ln', $ln['ln_id'], array(
+            update_metadata('ln', $ln['ln_id'], array(
                 'fb_att_id' => 0,
             ));
         }
@@ -2073,7 +2062,7 @@ class Messenger extends CI_Controller
             if (isset($result['ln_metadata']['result']['attachment_id']) && $result['status']) {
 
                 //Save Facebook Attachment ID to DB:
-                $db_result = $this->Database_model->update_metadata('ln', $ln['ln_id'], array(
+                $db_result = update_metadata('ln', $ln['ln_id'], array(
                     'fb_att_id' => intval($result['ln_metadata']['result']['attachment_id']),
                 ));
 
@@ -2087,7 +2076,7 @@ class Messenger extends CI_Controller
             } else {
 
                 //Log error:
-                $this->Database_model->ln_create(array(
+                $this->Links_model->ln_create(array(
                     'ln_type_entity_id' => 4246, //Platform Error
                     'ln_miner_entity_id' => 1, //Shervin/Developer
                     'ln_parent_link_id' => $ln['ln_id'],
@@ -2134,7 +2123,7 @@ class Messenger extends CI_Controller
          *
          * */
 
-        $ln_pending = $this->Database_model->ln_fetch(array(
+        $ln_pending = $this->Links_model->ln_fetch(array(
             'ln_status' => 0, //New
             'ln_type_entity_id IN (' . join(',', $this->config->item('en_ids_6102')) . ')' => null, //Student Sent/Received Media Links
         ), array(), 20);
@@ -2142,7 +2131,7 @@ class Messenger extends CI_Controller
         //Set link statuses to drafting so other Cron jobs don't pick them up:
         foreach ($ln_pending as $ln) {
             if($ln['ln_status'] == 0){
-                $this->Database_model->ln_update($ln['ln_id'], array(
+                $this->Links_model->ln_update($ln['ln_id'], array(
                     'ln_status' => 1, //Drafting
                 ));
             }
@@ -2157,7 +2146,7 @@ class Messenger extends CI_Controller
             if ($new_file_url && filter_var($new_file_url, FILTER_VALIDATE_URL)) {
 
                 //Update link:
-                $this->Database_model->ln_update($ln['ln_id'], array(
+                $this->Links_model->ln_update($ln['ln_id'], array(
                     'ln_content' => $new_file_url,
                     'ln_status' => 2, //Published
                 ));
@@ -2168,7 +2157,7 @@ class Messenger extends CI_Controller
             } else {
 
                 //Log error:
-                $this->Database_model->ln_create(array(
+                $this->Links_model->ln_create(array(
                     'ln_type_entity_id' => 4246, //Platform Error
                     'ln_miner_entity_id' => 1, //Shervin/Developer
                     'ln_parent_link_id' => $ln['ln_id'],
@@ -2204,7 +2193,7 @@ class Messenger extends CI_Controller
          *
          * */
 
-        $ln_pending = $this->Database_model->ln_fetch(array(
+        $ln_pending = $this->Links_model->ln_fetch(array(
             'ln_status' => 0, //New
             'ln_type_entity_id' => 4299, //Updated Profile Picture
         ), array('en_miner'), 20); //Max number of scans per run
@@ -2213,7 +2202,7 @@ class Messenger extends CI_Controller
         //Set link statuses to drafting so other Cron jobs don't pick them up:
         foreach ($ln_pending as $ln) {
             if($ln['ln_status'] == 0){
-                $this->Database_model->ln_update($ln['ln_id'], array(
+                $this->Links_model->ln_update($ln['ln_id'], array(
                     'ln_status' => 1, //Drafting
                 ));
             }
@@ -2228,7 +2217,7 @@ class Messenger extends CI_Controller
             if (!$new_file_url) {
 
                 //Ooopsi, there was an error:
-                $this->Database_model->ln_create(array(
+                $this->Links_model->ln_create(array(
                     'ln_content' => 'cron__save_profile_photo() failed to store file in CDN',
                     'ln_type_entity_id' => 4246, //Platform Error
                     'ln_miner_entity_id' => 1, //Shervin/Developer
@@ -2243,7 +2232,7 @@ class Messenger extends CI_Controller
             if (strlen($ln['en_icon']) < 1) {
 
                 //Update Cover ID:
-                $this->Database_model->en_update($ln['en_id'], array(
+                $this->Entities_model->en_update($ln['en_id'], array(
                     'en_icon' => '<img src="' . $new_file_url . '">',
                 ), true, $ln['en_id']);
 
@@ -2253,7 +2242,7 @@ class Messenger extends CI_Controller
             }
 
             //Update link:
-            $this->Database_model->ln_update($ln['ln_id'], array(
+            $this->Links_model->ln_update($ln['ln_id'], array(
                 'ln_status' => 2, //Published
                 'ln_content' => null, //Remove URL from content to indicate its done
                 'ln_child_entity_id' => $ln_child_entity_id,

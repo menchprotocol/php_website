@@ -1,7 +1,7 @@
 <?php
 //Attempt to fetch session variables:
 $session_en = $this->session->userdata('user');
-$en_all_6196 = $this->config->item('en_all_6196');
+$en_all_2738 = $this->config->item('en_all_2738');
 $uri_segment_1 = $this->uri->segment(1);
 $uri_segment_2 = $this->uri->segment(2);
 ?><!doctype html>
@@ -56,7 +56,7 @@ $uri_segment_2 = $this->uri->segment(2);
                             <table style="width: 100%; border:0; padding:0; margin:0 0 0 0;">
                                 <tr>
                                     <td style="width:40px;">
-                                        <a href="/platform"><img src="/img/mench_white.png"/></a>
+                                        <a href="/platform"><?= $en_all_2738[4488]['m_icon'] ?></a>
                                     </td>
                                     <td>
                                         <input type="text" class="algolia_search" id="platform_search" data-lpignore="true"
@@ -89,21 +89,21 @@ $uri_segment_2 = $this->uri->segment(2);
                             </li>
 
 
-                            <li class="links-inactive" data-toggle="tooltip" data-placement="left" title="<?= $en_all_6196[6138]['m_name'] ?>">
+                            <li class="links-inactive" data-toggle="tooltip" data-placement="left" title="<?= $en_all_2738[6138]['m_name'] ?>">
                                 <a href="/messenger/actionplan">
-                                    &nbsp;&nbsp;<?= $en_all_6196[6138]['m_icon'] ?>
+                                    &nbsp;&nbsp;<?= $en_all_2738[6138]['m_icon'] ?>
                                 </a>
                             </li>
 
-                            <li class="links-inactive" data-toggle="tooltip" data-placement="left" title="<?= $en_all_6196[6137]['m_name'] ?>">
+                            <li class="links-inactive" data-toggle="tooltip" data-placement="left" title="<?= $en_all_2738[6137]['m_name'] ?>">
                                 <a href="/messenger/myaccount">
-                                    <?= $en_all_6196[6137]['m_icon'] ?>
+                                    <?= $en_all_2738[6137]['m_icon'] ?>
                                 </a>
                             </li>
 
-                            <li class="<?= ($uri_segment_1 == 'admin' ? 'links-active' : 'links-inactive') ?>" data-toggle="tooltip" data-placement="left" title="Admin Tools">
+                            <li class="<?= ($uri_segment_1 == 'admin' ? 'links-active' : 'links-inactive') ?>" data-toggle="tooltip" data-placement="left" title="<?= $en_all_2738[6287]['m_name'] ?>">
                                 <a href="/admin">
-                                    <i class="fas fa-tools"></i>
+                                    <?= $en_all_2738[6287]['m_icon'] ?>
                                 </a>
                             </li>
 
