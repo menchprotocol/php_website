@@ -10,21 +10,32 @@ echo '<div class="i_content"><div class="msg">Hi, I\'m Mench, a human-trained pe
 
 echo '<div class="i_content"><div class="msg">I\'m open-source, free and on a mission to expand your potential.</div></div>';
 
-echo '<div class="i_content"><div class="msg">Let\'s get started:</div></div>';
 
-echo '</div>';
+if(count($featurd_ins) > 0){
+
+    //Add to intro:
+    echo '<div class="i_content"><div class="msg">Let\'s get started:</div></div>';
+
+    //Close intro:
+    echo '</div>';
 
 
-//Featured intents:
-echo '<div class="list-group actionplan_list grey_list maxout" style="margin-top:20px;">';
-foreach ($this->Database_model->ln_fetch(array(
-    'ln_status' => 2, //Published
-    'in_status' => 2, //Published
-    'ln_type_entity_id' => 4228, //Fixed Intent Links
-    'ln_parent_intent_id' => $this->config->item('in_featured'), //Feature Mench Intentions
-), array('in_child'), 0, 0, array('ln_order' => 'ASC')) as $featured_in) {
-    echo echo_in_featured($featured_in);
+    //List Featured intents:
+    echo '<div class="list-group actionplan_list grey_list maxout" style="margin-top:20px;">';
+    foreach ($featurd_ins as $featured_in) {
+        echo echo_in_featured($featured_in);
+    }
+    echo '</div>';
+
+} else {
+
+    //Close intro:
+    echo '</div>';
+
+    //Give call to Action for Messenger:
+    echo '<a class="btn btn-primary" href="https://m.me/askmench" style="display: inline-block; padding:12px 36px; margin-top: 30px;">Get Started &nbsp;&nbsp;&nbsp;<i class="fas fa-angle-double-right"></i></a>';
+
 }
-echo '</div>';
+
 
 ?>

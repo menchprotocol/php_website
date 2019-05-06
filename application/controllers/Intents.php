@@ -37,12 +37,32 @@ class Intents extends CI_Controller
 
         } else {
 
-            //Show index page:
-            $this->load->view('view_shared/public_header', array(
-                'title' => 'Land Your Dream Programming Job',
-            ));
-            $this->load->view('view_intents/mench_home');
-            $this->load->view('view_shared/public_footer');
+            //Fetch featured intentions:
+            $featurd_ins = $this->Database_model->ln_fetch(array(
+                'ln_status' => 2, //Published
+                'in_status' => 2, //Published
+                'ln_type_entity_id' => 4228, //Fixed Intent Links
+                'ln_parent_intent_id' => $this->config->item('in_featured'), //Feature Mench Intentions
+            ), array('in_child'), 0, 0, array('ln_order' => 'ASC'));
+
+            //Have a logic that if we have a single featured intention, redirect to it:
+            if(count($featurd_ins)==1){
+
+                //Go to our single featured intention:
+                return redirect_message('/'.$featurd_ins[0]['in_id']);
+
+            } else {
+
+                //Show index page:
+                $this->load->view('view_shared/public_header', array(
+                    'title' => 'Land Your Dream Programming Job',
+                ));
+                $this->load->view('view_intents/mench_home', array(
+                    'featurd_ins' => $featurd_ins,
+                ));
+                $this->load->view('view_shared/public_footer');
+
+            }
         }
     }
 
