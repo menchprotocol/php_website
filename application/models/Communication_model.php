@@ -1887,7 +1887,7 @@ class Communication_model extends CI_Model
                 'ln_miner_entity_id' => $en['en_id'],
                 'ln_type_entity_id' => 6157, //Action Plan Question Answered
                 'ln_parent_intent_id' => $parent_in_id,
-                'ln_status IN (' . join(',', $this->config->item('ln_status_incomplete')) . ')' => null, //incomplete intentions
+                'ln_status >=' => 0, //New+
             ));
             if(count($pending_answer_links) < 1){
                 $this->Database_model->ln_create(array(
@@ -1903,23 +1903,78 @@ class Communication_model extends CI_Model
 
 
             //All good, let's save the answer:
-
+            $published_answer = false;
             foreach($pending_answer_links as $ln){
-                $this->Database_model->ln_update($ln['ln_id'], array(
-                    'ln_child_intent_id' => $answer_in_id, //Save answer
-                    'ln_status' => 2, //Publish answer
-                ), $en['en_id']);
+                if(in_array($ln['ln_status'], $this->config->item('ln_status_incomplete'))){
+
+                    //We just found a pending answer:
+                    $published_answer = true;
+
+                    //Mark it as published while saving the answer:
+                    $this->Database_model->ln_update($ln['ln_id'], array(
+                        'ln_child_intent_id' => $answer_in_id, //Save answer
+                        'ln_status' => 2, //Publish answer
+                    ), $en['en_id']);
+
+                } elseif($ln['ln_child_intent_id'] != $answer_in_id){
+
+                    //This is a published & different answer!
+
+                    //Inform admin, this should not happen I guess?
+                    $this->Database_model->ln_create(array(
+                        'ln_content' => 'ANSWERQUESTION_ updated a previously answered question which should not happen!',
+                        'ln_type_entity_id' => 4246, //Platform Error
+                        'ln_miner_entity_id' => 1, //Shervin/Developer
+                        'ln_parent_intent_id' => $parent_in_id,
+                        'ln_child_intent_id' => $answer_in_id,
+                        'ln_parent_entity_id' => $en['en_id'],
+                        'ln_parent_link_id' => $ln['ln_id'],
+                    ));
+
+                    //Update answer:
+                    $this->Database_model->ln_update($ln['ln_id'], array(
+                        'ln_child_intent_id' => $answer_in_id, //Save answer
+                    ), $en['en_id']);
+
+                    //Inform student:
+                    $this->Communication_model->dispatch_message(
+                        'I have successfully updated your new answer to my question.',
+                        $en,
+                        true
+                    );
+
+                }
             }
 
-            //See if we also need to mark the child as complete:
-            $this->Platform_model->complete_if_empty($en['en_id'], $answer_ins[0]);
+            //Did we succeed?
+            if($published_answer){
 
-            //Affirm answer received answer:
-            $this->Communication_model->dispatch_message(
-                echo_random_message('affirm_progress'),
-                $en,
-                true
-            );
+                //See if we also need to mark the child as complete:
+                $this->Platform_model->complete_if_empty($en['en_id'], $answer_ins[0]);
+
+                //Affirm answer received answer:
+                $this->Communication_model->dispatch_message(
+                    echo_random_message('affirm_progress'),
+                    $en,
+                    true
+                );
+
+            } else {
+
+                //Inform admin, this should not happen I guess?
+                $this->Database_model->ln_create(array(
+                    'ln_content' => 'ANSWERQUESTION_ failed to publish student answer',
+                    'ln_type_entity_id' => 4246, //Platform Error
+                    'ln_miner_entity_id' => 1, //Shervin/Developer
+                    'ln_parent_intent_id' => $parent_in_id,
+                    'ln_child_intent_id' => $answer_in_id,
+                    'ln_parent_entity_id' => $en['en_id'],
+                    'ln_metadata' => array(
+                        'pending_answer_links' => $pending_answer_links,
+                    ),
+                ));
+
+            }
 
             //Find/communicate the next step:
             $this->Platform_model->actionplan_find_next_step($en['en_id'], true, true);
