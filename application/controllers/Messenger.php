@@ -250,7 +250,7 @@ class Messenger extends CI_Controller
 
     }
 
-    function api_webhook()
+    function api_webhook($test = 0)
     {
 
         /*
@@ -269,11 +269,14 @@ class Messenger extends CI_Controller
         }
 
         //Fetch input data:
-        $ln_metadata = json_decode(file_get_contents('php://input'), true);
         $fb_settings = $this->config->item('fb_settings');
 
-        //This is for local testing only:
-        //$ln_metadata = objectToArray(json_decode('{"object":"page","entry":[{"id":"381488558920384","time":1505007977668,"messaging":[{"sender":{"id":"1443101719058431"},"recipient":{"id":"381488558920384"},"timestamp":1505007977521,"message":{"mid":"mid.$cAAFa9hmVoehkmryMMVeaXdGIY9x5","seq":19898,"text":"Yes"}}]}]}'));
+        if($test){
+            $ln_metadata = objectToArray(json_decode('{"object":"page","entry":[{"id":"381488558920384","time":1557167164354,"messaging":[{"sender":{"id":"1234880879950857"},"recipient":{"id":"381488558920384"},"timestamp":1557128383000,"message":{"quick_reply":{"payload":"ANSWERQUESTION_9295_9298"},"mid":"UcT9GZXJAm9tR1pjIvXUQv2t4AOQjIajAPJbGvHuA9nVaUUam3pCO3YSEoY8Eyh2-L1XIsMtC__mrpSXIUGn2A","seq":82388,"text":"3"}}]}]}'));
+        } else {
+            //Real webhook data:
+            $ln_metadata = json_decode(file_get_contents('php://input'), true);
+        }
 
 
         //Do some basic checks:
