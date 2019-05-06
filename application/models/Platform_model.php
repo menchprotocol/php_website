@@ -2363,14 +2363,14 @@ class Platform_model extends CI_Model
     }
 
 
-    function actionplan_trigger_webhooks($in, $en_id, $student_in_ids = null){
+    function actionplan_trigger_webhooks($in_id, $en_id, $student_in_ids = null){
 
         //Search and see if this intent has any Webhooks:
         foreach($this->Database_model->ln_fetch(array(
             'in_status' => 2, //Published
             'ln_status' => 2, //Published
             'ln_type_entity_id' => 4602, //Intent Note Webhooks
-            'ln_child_intent_id' => $in['in_id'],
+            'ln_child_intent_id' => $in_id,
         ), array('in_child'), 0, 0, array('ln_order' => 'ASC')) as $webhook_entity){
 
             //Find all the URLs for this Webhook:
@@ -2385,7 +2385,7 @@ class Platform_model extends CI_Model
                     'ln_status' => 2,
                     'ln_miner_entity_id' => $en_id,
                     'ln_type_entity_id' => 6277, //Action Plan Progression Trigger Webhook
-                    'ln_parent_intent_id' => $in['in_id'],
+                    'ln_parent_intent_id' => $in_id,
                     'ln_parent_entity_id' => $webhook_entity['ln_parent_entity_id'],
                     'ln_content' => $webhook_url['ln_content'], //Same URL
                 );
@@ -2394,7 +2394,7 @@ class Platform_model extends CI_Model
                 if( count($this->Database_model->ln_fetch($filter))==0 ) {
 
                     //Never triggered before, so let's do it now:
-                    $trigger_results = webhook_curl_post($webhook_url['ln_content'], $in['in_id'], $en_id);
+                    $trigger_results = webhook_curl_post($webhook_url['ln_content'], $in_id, $en_id);
 
                     //Did we face any issues?
                     if(!isset($trigger_results['status']) || intval($trigger_results['status'])!=1){

@@ -14,12 +14,80 @@ class Messenger extends CI_Controller
 
     function test($in_id = 9944){
         //Yes it is! Trigger Webhook recursively:
-        //$this->Platform_model->actionplan_trigger_webhooks($in_id, 1);
-
-        $trigger_results = webhook_curl_post('https://mench.com/messenger/actionplan_assessment_webhook', $in_id, 1);
-        echo_json($trigger_results);
+        $this->Platform_model->actionplan_trigger_webhooks($in_id, 1);
 
     }
+
+
+    function actionplan_assessment_webhook(){
+
+        //Validate core input variables from Webhook call:
+        if(!isset($_POST['en_id']) || intval($_POST['en_id']) < 1 || !isset($_POST['in_id']) || intval($_POST['in_id']) < 1){
+            return echo_json(array(
+                'status' => 0,
+                'message' => 'actionplan_assessment_webhook() missing core variables',
+            ));
+        }
+
+
+        //Validate intent and entity:
+        $ins = $this->Database_model->in_fetch(array(
+            'in_id' => $_POST['in_id'],
+            'in_status' => 2, //Published
+        ));
+        $ens = $this->Database_model->en_fetch(array(
+            'en_id' => $_POST['en_id'],
+            'en_status' => 2, //Published
+        ));
+        if(count($ins) < 1){
+            return echo_json(array(
+                'status' => 0,
+                'message' => 'actionplan_assessment_webhook() unable to locate a published intent',
+            ));
+        } elseif(count($ens) < 1){
+            return echo_json(array(
+                'status' => 0,
+                'message' => 'actionplan_assessment_webhook() unable to locate a published entity',
+            ));
+        }
+
+
+        //Determine the minimum/maximum marks possible for this tree:
+        $in_metadata = unserialize($ins[0]['in_metadata']);
+
+
+
+        //Calculate the student's score for this tree based on their Action Plan progress:
+        $assessment_message = 'Your assessment results are ready for your intention to '.$ins[0]['in_outcome'].': You scored 82% as you got 17/21 questions right. This puts you in the t.op 20% of people who took this assessment. Based on this result we believe your level is *beginner*';
+
+
+
+        //Inform the student of their score:
+        $this->Communication_model->dispatch_message(
+            $assessment_message,
+            array('en_id' => $_POST['en_id']),
+            true,
+            array(
+                array(
+                    'content_type' => 'text',
+                    'title' => 'Next',
+                    'payload' => 'GONEXT',
+                )
+            ),
+            array(
+                'ln_parent_intent_id' => $ins[0]['in_id'],
+            )
+        );
+
+
+        //Return success:
+        return echo_json(array(
+            'status' => 1,
+            'message' => $assessment_message,
+        ));
+    }
+
+
 
     function get_stared($in_id = 0){
         /*
@@ -1534,50 +1602,6 @@ class Messenger extends CI_Controller
         return echo_json(array(
             'status' => 1,
         ));
-
-    }
-
-    function actionplan_assessment_webhook(){
-
-
-        $this->Database_model->ln_create(array(
-            'ln_type_entity_id' => 4246, //Platform Error
-            'ln_miner_entity_id' => 1, //Shervin/Developer
-            'ln_content' => 'actionplan_assessment_webhook() testing',
-            'ln_metadata' => $_POST,
-        ));
-
-        return echo_json(array(
-            'status' => 1,
-            'message' => 'testing...',
-        ));
-
-        //TODO to view the student's history and issue a certificate
-
-        //TODO Add a new link to enable the certificate to be created/issued when a min number of student's (20?) take the assessment
-
-        //Validate the inputs:
-        if(isset($_POST['recipient_en']['en_id']) && isset($_POST['actionplan_in']['in_id'])){
-
-            $this->Communication_model->dispatch_message(
-                'MENCH ASSESSMENT for intent #'.$_POST['actionplan_in']['in_id'],
-                $_POST['recipient_en'],
-                true,
-                array(),
-                array()
-            );
-
-        } else {
-
-            $this->Communication_model->dispatch_message(
-                'ERROR: MENCH ASSESSMENT missing info... '.print_r($_POST, true),
-                array('en_id' => 1),
-                true,
-                array(),
-                array()
-            );
-
-        }
 
     }
 
