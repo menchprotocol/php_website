@@ -164,7 +164,7 @@ function webhook_curl_post($curl_url, $in_id, $en_id){
     $ch = curl_init();
     curl_setopt($ch, CURLOPT_URL, $curl_url);
     curl_setopt($ch, CURLOPT_POST, 1);
-    curl_setopt($ch, CURLOPT_POSTFIELDS,"in_id=".$in_id.", en_id=".$en_id);
+    curl_setopt($ch, CURLOPT_POSTFIELDS,"in_id=".$in_id."&en_id=".$en_id);
     curl_setopt($ch, CURLOPT_RETURNTRANSFER, true);
     $server_output = curl_exec ($ch);
     curl_close ($ch);
