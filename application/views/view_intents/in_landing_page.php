@@ -106,7 +106,7 @@ if(count($other_intentions) > 0){
     echo '<div class="list-group grey_list actionplan_list maxout">';
 
     //Parent intentions:
-    foreach ( as $parent_intention) {
+    foreach ($other_intentions as $parent_intention) {
         //Add parent intention to UI:
         echo echo_in_featured($parent_intention);
         //Make sure to not load this again:
