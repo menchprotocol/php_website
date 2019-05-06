@@ -255,7 +255,7 @@ if(!$action) {
 
     echo '<ul class="breadcrumb"><li><a href="/admin">Admin Tools</a></li><li><b>'.$moderation_tools['/admin/tools/'.$action].'</b></li></ul>';
 
-    echo '<p>Below are all the Conditional Milestone Links that have marks or routing logic:</p>';
+    echo '<p>Below are all the Conditional Milestone Links:</p>';
     echo '<table class="table table-condensed table-striped maxout" style="text-align: left;">';
 
     echo '<tr style="font-weight: bold;">';

@@ -177,7 +177,7 @@
                         </div>
 
                         <div class="score_range_box hidden">
-                            <span class="mini-header">Routing Logic:</span>
+                            <span class="mini-header">Condition Range:</span>
                             <div class="form-group label-floating is-empty"
                                  style="max-width:230px; margin:1px 0 10px;" data-toggle="tooltip" title="Min/Max Milestone Marks scored between 0-100%" data-placement="top">
                                 <div class="input-group border">

@@ -10,7 +10,7 @@ echo '<div class="i_content"><div class="msg">Hi, I\'m Mench, a human-trained pe
 
 echo '<div class="i_content"><div class="msg">I\'m open-source, free and on a mission to expand your potential.</div></div>';
 
-echo '<div class="i_content"><div class="msg">Get started by choosing an intention:</div></div>';
+echo '<div class="i_content"><div class="msg">Let\'s get started:</div></div>';
 
 echo '</div>';
 

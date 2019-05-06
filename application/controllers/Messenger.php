@@ -102,7 +102,6 @@ class Messenger extends CI_Controller
 
         );
 
-        //This is the future routing logic message:
         $message = 'Congrats! You completed your intention to Assess your JQuery programming skills. Here are your results: You are a beginner jQuery developer. You score was 35% and you got 14/32 questions right.';
 
 

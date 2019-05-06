@@ -1227,18 +1227,23 @@ class Platform_model extends CI_Model
         );
 
         $metadata_this = array(
+
             //Required steps/intents range to complete tree:
             '__in__metadata_min_steps' => $common_base_resources['steps'],
             '__in__metadata_max_steps' => $common_base_resources['steps'],
+
             //Required time range to complete tree:
             '__in__metadata_min_seconds' => $common_base_resources['seconds'],
             '__in__metadata_max_seconds' => $common_base_resources['seconds'],
-            //Milestone Mark ranges (Always zero for common base):
-            '__in__metadata_min_mark' => 0,
-            '__in__metadata_max_mark' => 0,
+
+            //Milestone Mark ranges (Start at zero for common base):
+            '__in__metadata_min_milestone_marks' => 0,
+            '__in__metadata_max_milestone_marks' => 0,
+
             //Entity references within intent notes:
             '__in__metadata_experts' => array(),
             '__in__metadata_sources' => array(),
+
         );
 
 
@@ -1398,7 +1403,6 @@ class Platform_model extends CI_Model
                 'in__metadata_max_seconds' => intval($metadata_this['__in__metadata_max_seconds']),
                 'in__metadata_experts' => $metadata_this['__in__metadata_experts'],
                 'in__metadata_sources' => $metadata_this['__in__metadata_sources'],
-                'in__metadata_extra_insights_timestamp' => time(), //Use to check
             ));
 
         }
