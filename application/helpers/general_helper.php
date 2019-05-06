@@ -168,7 +168,7 @@ function webhook_curl_post($curl_url, $in_id, $en_id){
     curl_setopt($ch, CURLOPT_RETURNTRANSFER, true);
     $server_output = curl_exec ($ch);
     curl_close ($ch);
-    return json_decode($server_output);
+    return objectToArray(json_decode($server_output));
 }
 
 function trigger_oncomplete_tips($insert_columns){
