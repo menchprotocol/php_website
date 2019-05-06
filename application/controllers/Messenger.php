@@ -335,7 +335,6 @@ class Messenger extends CI_Controller
                             'ln_metadata' => $ln_metadata,
                             'ln_type_entity_id' => $ln_type_entity_id,
                             'ln_miner_entity_id' => $en['en_id'],
-                            'ln_timestamp' => echo_time_milliseconds($im['timestamp']), //The Facebook time
                         ));
                     }
 
@@ -400,7 +399,6 @@ class Messenger extends CI_Controller
                     unset($ln_data); //Reset everything in case its set from the previous loop!
                     $ln_data = array(
                         'ln_miner_entity_id' => $en['en_id'],
-                        'ln_timestamp' => ($sent_by_mench ? null : echo_time_milliseconds($im['timestamp'])), //Facebook time if received from Student
                         'ln_metadata' => $ln_metadata, //Entire JSON object received by Facebook API
                         'ln_order' => ($sent_by_mench ? 1 : 0), //A HACK to identify messages sent from us via Facebook Page Inbox
                     );
@@ -698,7 +696,6 @@ class Messenger extends CI_Controller
                         'ln_metadata' => $ln_metadata,
                         'ln_content' => $quick_reply_payload,
                         'ln_miner_entity_id' => $en['en_id'],
-                        'ln_timestamp' => echo_time_milliseconds($im['timestamp']), //The Facebook time
                     ));
 
                     //Digest quick reply Payload if any:
@@ -739,7 +736,6 @@ class Messenger extends CI_Controller
                         'ln_metadata' => $ln_metadata,
                         'ln_type_entity_id' => 4266, //Messenger Optin
                         'ln_miner_entity_id' => $en['en_id'],
-                        'ln_timestamp' => echo_time_milliseconds($im['timestamp']), //The Facebook time
                     ));
 
                 } elseif (isset($im['message_request']) && $im['message_request'] == 'accept') {
@@ -752,7 +748,6 @@ class Messenger extends CI_Controller
                         'ln_metadata' => $ln_metadata,
                         'ln_type_entity_id' => 4577, //Message Request Accepted
                         'ln_miner_entity_id' => $en['en_id'],
-                        'ln_timestamp' => echo_time_milliseconds($im['timestamp']), //The Facebook time
                     ));
 
                 } else {

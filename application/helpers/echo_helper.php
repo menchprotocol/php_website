@@ -1398,12 +1398,6 @@ function echo_in_featured($in)
     return $ui;
 }
 
-function echo_time_milliseconds($microtime)
-{
-    $time = $microtime / 1000;
-    return date("Y-m-d H:i:s", floor($time)) . '.' . one_two_explode('.', '', $time);
-}
-
 function echo_in_answer_scores($starting_in, $depth_levels, $status_min, $original_depth_levels, $parent_in_type){
 
     if($depth_levels<=0){
