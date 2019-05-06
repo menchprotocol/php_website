@@ -90,35 +90,42 @@ $exclude_array = $this->config->item('in_status_locked');
 //Also exclude this intent:
 array_push($exclude_array, $in['in_id']);
 
-echo '<h3 style="margin-bottom:5px; margin-top:22px;">Other Intentions:</h3>';
-echo '<div class="list-group grey_list actionplan_list maxout">';
-
-//Parent intentions:
-foreach ($this->Database_model->ln_fetch(array(
+//Fetch other intentions:
+$other_intentions = $this->Database_model->ln_fetch(array(
     'ln_status' => 2, //Published
     'in_status' => 2, //Published
     'ln_type_entity_id' => 4228, //Fixed intent links only
     'ln_child_intent_id' => $in['in_id'],
     'in_id NOT IN (' . join(',', $exclude_array) . ')' => null,
-), array('in_parent')) as $parent_intention) {
-    //Add parent intention to UI:
-    echo echo_in_featured($parent_intention);
-    //Make sure to not load this again:
-    array_push($exclude_array, $parent_intention['in_id']);
+), array('in_parent'));
+
+//Display if any:
+if(count($other_intentions) > 0){
+
+    echo '<h3 style="margin-bottom:5px; margin-top:22px;">Other Intentions:</h3>';
+    echo '<div class="list-group grey_list actionplan_list maxout">';
+
+    //Parent intentions:
+    foreach ( as $parent_intention) {
+        //Add parent intention to UI:
+        echo echo_in_featured($parent_intention);
+        //Make sure to not load this again:
+        array_push($exclude_array, $parent_intention['in_id']);
+    }
+
+    //Now fetch featured intents:
+    foreach ($this->Database_model->ln_fetch(array(
+        'ln_status' => 2, //Published
+        'in_status' => 2, //Published
+        'ln_type_entity_id' => 4228, //Fixed intent links only
+        'ln_parent_intent_id' => $this->config->item('in_featured'), //Feature Mench Intentions
+        'in_id NOT IN (' . join(',', $exclude_array) . ')' => null,
+    ), array('in_child'), 0, 0, array('ln_order' => 'ASC')) as $featured_intention) {
+        echo echo_in_featured($featured_intention);
+    }
+
+    echo '</div>';
+
 }
-
-//Now fetch featured intents:
-foreach ($this->Database_model->ln_fetch(array(
-    'ln_status' => 2, //Published
-    'in_status' => 2, //Published
-    'ln_type_entity_id' => 4228, //Fixed intent links only
-    'ln_parent_intent_id' => $this->config->item('in_featured'), //Feature Mench Intentions
-    'in_id NOT IN (' . join(',', $exclude_array) . ')' => null,
-), array('in_child'), 0, 0, array('ln_order' => 'ASC')) as $featured_intention) {
-    echo echo_in_featured($featured_intention);
-}
-
-echo '</div>';
-
 
 ?>
