@@ -396,7 +396,7 @@ class Intents extends CI_Controller
                 'message' => 'Intent Not Found',
             ));
         } elseif($ln_id > 0 && intval($_POST['ln_type_entity_id']) == 4229){
-            //Conditional links, we require range values:
+            //Conditional Milestone Links, we require range values:
             if(strlen($_POST['tr__conditional_score_min']) < 1 || !is_numeric($_POST['tr__conditional_score_min'])){
                 return echo_json(array(
                     'status' => 0,
@@ -528,7 +528,7 @@ class Intents extends CI_Controller
                 ));
             }
 
-            //Prep link Metadata to see if the conditional score variables have changed:
+            //Prep link Metadata to see if the Conditional Milestone Links score variables have changed:
             $ln_update = array(
                 'ln_type_entity_id'     => intval($_POST['ln_type_entity_id']),
                 'ln_status'         => intval($_POST['ln_status']),

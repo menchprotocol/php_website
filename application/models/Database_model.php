@@ -972,7 +972,7 @@ class Database_model extends CI_Model
                 } else {
 
                     //Clear possible metadata algolia ID's that have been cached:
-                    $this->Platform_model->metadata_update($loop_obj, $db_row[$loop_obj.'_id'], array(
+                    $this->Database_model->update_metadata($loop_obj, $db_row[$loop_obj.'_id'], array(
                         $loop_obj . '__algolia_id' => null, //Since all objects have been mass removed!
                     ));
 
@@ -1091,7 +1091,7 @@ class Database_model extends CI_Model
                     //Now update local database with the new objectIDs:
                     if (isset($algolia_results['objectIDs']) && count($algolia_results['objectIDs']) == 1 ) {
                         foreach ($algolia_results['objectIDs'] as $key => $algolia_id) {
-                            $this->Platform_model->metadata_update($input_obj_type, $all_db_rows[$key][$input_obj_type.'_id'], array(
+                            $this->Database_model->update_metadata($input_obj_type, $all_db_rows[$key][$input_obj_type.'_id'], array(
                                 $input_obj_type . '__algolia_id' => $algolia_id, //The newly created algolia object
                             ));
                         }
@@ -1111,7 +1111,7 @@ class Database_model extends CI_Model
                     $algolia_results = $search_index->deleteObject($all_export_rows[0]['objectID']);
 
                     //also set its algolia_id to 0 locally:
-                    $this->Platform_model->metadata_update($input_obj_type, $all_db_rows[0][$input_obj_type.'_id'], array(
+                    $this->Database_model->update_metadata($input_obj_type, $all_db_rows[0][$input_obj_type.'_id'], array(
                         $input_obj_type . '__algolia_id' => null, //Since this item has been removed!
                     ));
 
@@ -1147,7 +1147,7 @@ class Database_model extends CI_Model
 
                     $this_obj = ( isset($all_db_rows[$key]['in_id']) ? 'in' : 'en');
 
-                    $this->Platform_model->metadata_update($this_obj, $all_db_rows[$key][$this_obj.'_id'], array(
+                    $this->Database_model->update_metadata($this_obj, $all_db_rows[$key][$this_obj.'_id'], array(
                         $this_obj . '__algolia_id' => intval($algolia_id),
                     ));
                 }
@@ -1169,5 +1169,104 @@ class Database_model extends CI_Model
         );
 
     }
+
+
+
+    function update_metadata($obj_type, $obj_id, $new_fields)
+    {
+
+        /*
+         *
+         * Enables the easy manipulation of the text metadata field which holds cache data for developers
+         *
+         * $obj_type:               Either in, en or tr
+         *
+         * $obj:                    The Entity, Intent or Link itself.
+         *                          We're looking for the $obj ID and METADATA
+         *
+         * $new_fields:             The new array of metadata fields to be Set,
+         *                          Updated or Removed (If set to null)
+         *
+         * */
+
+        if (!in_array($obj_type, array('in', 'en', 'ln')) || $obj_id < 1 || count($new_fields) < 1) {
+            return false;
+        }
+
+        //Fetch metadata for this object:
+        if ($obj_type == 'in') {
+
+            $db_objects = $this->Database_model->in_fetch(array(
+                $obj_type . '_id' => $obj_id,
+            ));
+
+        } elseif ($obj_type == 'en') {
+
+            $db_objects = $this->Database_model->en_fetch(array(
+                $obj_type . '_id' => $obj_id,
+            ));
+
+        } elseif ($obj_type == 'ln') {
+
+            $db_objects = $this->Database_model->ln_fetch(array(
+                $obj_type . '_id' => $obj_id,
+            ));
+
+        }
+
+        if (count($db_objects) < 1) {
+            return false;
+        }
+
+
+        //Prepare newly fetched metadata:
+        if (strlen($db_objects[0][$obj_type . '_metadata']) > 0) {
+            $metadata = unserialize($db_objects[0][$obj_type . '_metadata']);
+        } else {
+            $metadata = array();
+        }
+
+        //Go through all the new fields and see if they differ from current metadata fields:
+        foreach ($new_fields as $metadata_key => $metadata_value) {
+            //We are doing an absolute adjustment if needed:
+            if (is_null($metadata_value) && isset($metadata[$metadata_key])) {
+
+                //User asked to remove this value:
+                unset($metadata[$metadata_key]);
+
+            } elseif (!is_null($metadata_value) && (!isset($metadata[$metadata_key]) || $metadata[$metadata_key] != $metadata_value)) {
+
+                //Value has changed, adjust:
+                $metadata[$metadata_key] = $metadata_value;
+
+            }
+        }
+
+        //Now update DB without logging any links as this is considered a back-end update:
+        if ($obj_type == 'in') {
+
+            $affected_rows = $this->Database_model->in_update($obj_id, array(
+                'in_metadata' => $metadata,
+            ));
+
+        } elseif ($obj_type == 'en') {
+
+            $affected_rows = $this->Database_model->en_update($obj_id, array(
+                'en_metadata' => $metadata,
+            ));
+
+        } elseif ($obj_type == 'ln') {
+
+            $affected_rows = $this->Database_model->ln_update($obj_id, array(
+                'ln_metadata' => $metadata,
+            ));
+
+        }
+
+        //Should be all good:
+        return $affected_rows;
+
+    }
+
 
 }

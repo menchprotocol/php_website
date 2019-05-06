@@ -11,7 +11,7 @@ defined('BASEPATH') OR exit('No direct script access allowed');
  *
  */
 
-//Generated 2019-05-05 17:24:11 PST
+//Generated 2019-05-06 11:22:26 PST
 
 //Action Plan Progression Skippable Link Types:
 $config['en_ids_6274'] = array(4559, 6158);
@@ -371,10 +371,10 @@ $config['en_all_6147'] = array(
         'm_parents' => array(6147, 4506, 4755, 4593),
     ),
     6140 => array(
-        'm_icon' => '<i class="far fa-lock-open"></i>',
-        'm_name' => 'Unlocked Intention',
+        'm_icon' => '<i class="far fa-flag"></i>',
+        'm_name' => 'Milestone Triggered',
         'm_desc' => '',
-        'm_parents' => array(4755, 6147, 4593),
+        'm_parents' => array(4229, 4755, 6147, 4593),
     ),
 );
 
@@ -953,7 +953,7 @@ $config['en_all_4990'] = array(
     ),
     4257 => array(
         'm_icon' => '<i class="fal fa-play-circle"></i>',
-        'm_name' => 'Linked Entities Embed',
+        'm_name' => 'Linked Entities Embed URL',
         'm_desc' => '',
         'm_parents' => array(4990, 4593, 4592, 4537, 4506, 4595),
     ),
@@ -1250,10 +1250,10 @@ $config['en_all_4755'] = array(
         'm_parents' => array(6153, 4506, 4755, 4593),
     ),
     6140 => array(
-        'm_icon' => '<i class="far fa-lock-open"></i>',
-        'm_name' => 'Action Plan Unlocked Intention',
+        'm_icon' => '<i class="far fa-flag"></i>',
+        'm_name' => 'Action Plan Milestone Triggered',
         'm_desc' => '',
-        'm_parents' => array(4755, 6147, 4593),
+        'm_parents' => array(4229, 4755, 6147, 4593),
     ),
     6143 => array(
         'm_icon' => '<i class="far fa-minus-square"></i>',
@@ -1310,13 +1310,13 @@ $config['en_ids_4595'] = array(4228, 4229, 4230, 4231, 4232, 4242, 4250, 4251, 4
 $config['en_all_4595'] = array(
     4228 => array(
         'm_icon' => '<i class="fal fa-check-circle"></i>',
-        'm_name' => 'Linked Intents Fixed',
+        'm_name' => 'Linked Intents Fixed Step',
         'm_desc' => '100',
         'm_parents' => array(4593, 4486, 4595),
     ),
     4229 => array(
         'm_icon' => '<i class="fas fa-spin fa-question-circle"></i>',
-        'm_name' => 'Linked Intents Conditional',
+        'm_name' => 'Linked Intents Conditional Milestone',
         'm_desc' => '100',
         'm_parents' => array(4593, 4486, 4595),
     ),
@@ -1364,13 +1364,13 @@ $config['en_all_4595'] = array(
     ),
     4256 => array(
         'm_icon' => '<i class="fal fa-browser"></i>',
-        'm_name' => 'Linked Entities URL',
+        'm_name' => 'Linked Entities Generic URL',
         'm_desc' => '50',
         'm_parents' => array(4593, 4592, 4537, 4595, 4331),
     ),
     4257 => array(
         'm_icon' => '<i class="fal fa-play-circle"></i>',
-        'm_name' => 'Linked Entities Embed',
+        'm_name' => 'Linked Entities Embed URL',
         'm_desc' => '50',
         'm_parents' => array(4990, 4593, 4592, 4537, 4506, 4595),
     ),
@@ -1472,17 +1472,17 @@ $config['en_all_4600'] = array(
 );
 
 //All Link Types:
-$config['en_ids_4593'] = array(4228, 4229, 4230, 4231, 4232, 4235, 4242, 4246, 4250, 4251, 4255, 4256, 4257, 4258, 4259, 4260, 4261, 4263, 4264, 4266, 4267, 4268, 4269, 4275, 4278, 4279, 4282, 4283, 4287, 4299, 4318, 4319, 4452, 4455, 4460, 4547, 4548, 4549, 4550, 4551, 4552, 4553, 4554, 4555, 4556, 4557, 4559, 4570, 4577, 4601, 4602, 4983, 4993, 4994, 4996, 4998, 4999, 5000, 5001, 5003, 5007, 5865, 5943, 5967, 5981, 5982, 6093, 6132, 6140, 6143, 6144, 6149, 6154, 6155, 6157, 6158, 6224, 6226, 6242, 6255, 6277);
+$config['en_ids_4593'] = array(4228, 4229, 4230, 4231, 4232, 4235, 4242, 4246, 4250, 4251, 4255, 4256, 4257, 4258, 4259, 4260, 4261, 4263, 4264, 4266, 4267, 4268, 4269, 4275, 4278, 4279, 4282, 4283, 4287, 4299, 4318, 4319, 4452, 4455, 4460, 4547, 4548, 4549, 4550, 4551, 4552, 4553, 4554, 4555, 4556, 4557, 4559, 4570, 4577, 4601, 4602, 4983, 4993, 4994, 4996, 4998, 4999, 5000, 5001, 5003, 5007, 5865, 5943, 5967, 5981, 5982, 6093, 6132, 6140, 6143, 6144, 6149, 6154, 6155, 6157, 6158, 6224, 6226, 6242, 6255, 6277, 6278);
 $config['en_all_4593'] = array(
     4228 => array(
         'm_icon' => '<i class="fal fa-check-circle"></i>',
-        'm_name' => 'Linked Intents Fixed',
+        'm_name' => 'Linked Intents Fixed Step',
         'm_desc' => '',
         'm_parents' => array(4593, 4486, 4595),
     ),
     4229 => array(
         'm_icon' => '<i class="fas fa-spin fa-question-circle"></i>',
-        'm_name' => 'Linked Intents Conditional',
+        'm_name' => 'Linked Intents Conditional Milestone',
         'm_desc' => '',
         'm_parents' => array(4593, 4486, 4595),
     ),
@@ -1542,13 +1542,13 @@ $config['en_all_4593'] = array(
     ),
     4256 => array(
         'm_icon' => '<i class="fal fa-browser"></i>',
-        'm_name' => 'Linked Entities URL',
+        'm_name' => 'Linked Entities Generic URL',
         'm_desc' => '',
         'm_parents' => array(4593, 4592, 4537, 4595, 4331),
     ),
     4257 => array(
         'm_icon' => '<i class="fal fa-play-circle"></i>',
-        'm_name' => 'Linked Entities Embed',
+        'm_name' => 'Linked Entities Embed URL',
         'm_desc' => '',
         'm_parents' => array(4990, 4593, 4592, 4537, 4506, 4595),
     ),
@@ -1883,10 +1883,10 @@ $config['en_all_4593'] = array(
         'm_parents' => array(6153, 4506, 4755, 4593),
     ),
     6140 => array(
-        'm_icon' => '<i class="far fa-lock-open"></i>',
-        'm_name' => 'Action Plan Unlocked Intention',
+        'm_icon' => '<i class="far fa-flag"></i>',
+        'm_name' => 'Action Plan Milestone Triggered',
         'm_desc' => 'Created when the student responses to OR branches meets the right % points to unlock the pathway to a conditional intent link.',
-        'm_parents' => array(4755, 6147, 4593),
+        'm_parents' => array(4229, 4755, 6147, 4593),
     ),
     6143 => array(
         'm_icon' => '<i class="far fa-minus-square"></i>',
@@ -1960,6 +1960,12 @@ $config['en_all_4593'] = array(
         'm_desc' => '',
         'm_parents' => array(4602, 4506, 4593, 6276),
     ),
+    6278 => array(
+        'm_icon' => '<i class="far fa-tachometer-alt"></i>',
+        'm_name' => 'Action Plan Milestone Assessed',
+        'm_desc' => '',
+        'm_parents' => array(4229, 4506, 4593, 6277),
+    ),
 );
 
 //Entity-to-Entity All Link Types:
@@ -1979,13 +1985,13 @@ $config['en_all_4592'] = array(
     ),
     4256 => array(
         'm_icon' => '<i class="fal fa-browser"></i>',
-        'm_name' => 'URL',
+        'm_name' => 'Generic URL',
         'm_desc' => '',
         'm_parents' => array(4593, 4592, 4537, 4595, 4331),
     ),
     4257 => array(
         'm_icon' => '<i class="fal fa-play-circle"></i>',
-        'm_name' => 'Embed',
+        'm_name' => 'Embed URL',
         'm_desc' => '',
         'm_parents' => array(4990, 4593, 4592, 4537, 4506, 4595),
     ),
@@ -2038,7 +2044,7 @@ $config['en_all_4331'] = array(
     ),
     4256 => array(
         'm_icon' => '<i class="fal fa-browser"></i>',
-        'm_name' => 'URL',
+        'm_name' => 'Generic URL',
         'm_desc' => '',
         'm_parents' => array(4593, 4592, 4537, 4595, 4331),
     ),
@@ -2178,13 +2184,13 @@ $config['en_ids_4486'] = array(4228, 4229);
 $config['en_all_4486'] = array(
     4228 => array(
         'm_icon' => '<i class="fal fa-check-circle"></i>',
-        'm_name' => 'Fixed',
+        'm_name' => 'Fixed Step',
         'm_desc' => 'Intent link published and added to user Action Plans up-front',
         'm_parents' => array(4593, 4486, 4595),
     ),
     4229 => array(
         'm_icon' => '<i class="fas fa-spin fa-question-circle"></i>',
-        'm_name' => 'Conditional',
+        'm_name' => 'Conditional Milestone',
         'm_desc' => 'Intent added to Action Plans after parent intent is complete AND the user\'s % score falls within the defined min/max range',
         'm_parents' => array(4593, 4486, 4595),
     ),
@@ -2195,13 +2201,13 @@ $config['en_ids_4537'] = array(4256, 4257, 4258, 4259, 4260, 4261);
 $config['en_all_4537'] = array(
     4256 => array(
         'm_icon' => '<i class="fal fa-browser"></i>',
-        'm_name' => 'URL',
+        'm_name' => 'Generic URL',
         'm_desc' => 'Link note contains a generic URL only.',
         'm_parents' => array(4593, 4592, 4537, 4595, 4331),
     ),
     4257 => array(
         'm_icon' => '<i class="fal fa-play-circle"></i>',
-        'm_name' => 'Embed',
+        'm_name' => 'Embed URL',
         'm_desc' => 'Link note contain a recognizable URL that offers an embed widget for a more engaging play-back experience.',
         'm_parents' => array(4990, 4593, 4592, 4537, 4506, 4595),
     ),

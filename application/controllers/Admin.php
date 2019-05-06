@@ -166,7 +166,7 @@ class Admin extends CI_Controller
             foreach(unserialize($in['in_metadata']) as $key => $value){
                 if(!in_array($key, $valid_variables)){
                     //Remove this:
-                    $this->Platform_model->metadata_update('in', $in['in_id'], array(
+                    $this->Database_model->update_metadata('in', $in['in_id'], array(
                         $key => null,
                     ));
 
@@ -189,7 +189,7 @@ class Admin extends CI_Controller
             foreach(unserialize($en['en_metadata']) as $key => $value){
                 if(!in_array($key, $valid_variables)){
                     //Remove this:
-                    $this->Platform_model->metadata_update('en', $en['en_id'], array(
+                    $this->Database_model->update_metadata('en', $en['en_id'], array(
                         $key => null,
                     ));
 

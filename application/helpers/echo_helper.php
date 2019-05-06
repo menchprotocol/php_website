@@ -1440,7 +1440,7 @@ function echo_in_answer_scores($starting_in, $depth_levels, $status_min, $origin
         $ui .= '<div class="'.( $tr__assessment_points==0 ? 'no-assessment ' : 'has-assessment' ).'">';
         $ui .= '<span style="width: 22px; display:inline-block; text-align: center;" data-toggle="tooltip" data-placement="top" title="Intent Link Type: '.$en_all_4486[$in_ln['ln_type_entity_id']]['m_name'].'">'. $en_all_4486[$in_ln['ln_type_entity_id']]['m_icon'] . '</span>';
         $ui .= '<span style="width: 22px; display:inline-block; text-align: center;" data-toggle="tooltip" data-placement="top" title="Intent Link Status: '.$fixed_fields['ln_status'][$in_ln['ln_status']]['s_name'].'">'. $fixed_fields['ln_status'][$in_ln['ln_status']]['s_icon'] . '</span>';
-        $ui .= '<span style="width: 50px; display:inline-block; text-align: left;" data-toggle="tooltip" data-placement="top" title="Assessment Mark">'.( ($in_ln['ln_type_entity_id'] == 4228 && $parent_in_type==1) || ($in_ln['ln_type_entity_id'] == 4229) ? echo_assessment_mark($in_ln) : '' ).'</span>';
+        $ui .= '<span style="width: 50px; display:inline-block; text-align: left;" data-toggle="tooltip" data-placement="top" title="Milestone Mark">'.( ($in_ln['ln_type_entity_id'] == 4228 && $parent_in_type==1) || ($in_ln['ln_type_entity_id'] == 4229) ? echo_assessment_mark($in_ln) : '' ).'</span>';
         $ui .= '<span style="width:26px; display:inline-block; text-align: center;" data-toggle="tooltip" data-placement="top" title="Intent Type: '.$fixed_fields['in_type'][$in_ln['in_type']]['s_name'].'">'. $fixed_fields['in_type'][$in_ln['in_type']]['s_icon'] . '</span>';
         $ui .= '<span style="width: 30px; display:inline-block; text-align: center;" data-toggle="tooltip" data-placement="top" title="Intent Status: '.$fixed_fields['in_status'][$in_ln['in_status']]['s_name'].'">'. $fixed_fields['in_status'][$in_ln['in_status']]['s_icon']. '</span>';
         $ui .= '<a href="/admin/tools/assessment_marks_birds_eye?starting_in='.$in_ln['in_id'].'&depth_levels='.$original_depth_levels.'&status_min='.$status_min.'" data-toggle="tooltip" data-placement="top" title="Navigate report to this intent"><u>' .  $in_ln['in_outcome'] . '</u></a>';
@@ -1621,8 +1621,8 @@ function echo_in($in, $level, $in_parent_id = 0, $is_parent = false)
 
         $ui .= '<span class="icon-top-left ' . echo_advance() . ' in_upvotes_' . $in['ln_child_intent_id'] . '_'.$in['ln_parent_intent_id'].'" data-toggle="tooltip" data-placement="right" title="Up-Votes">' . ( $ln_upvotes[0]['totals'] > 0 ? $ln_upvotes[0]['totals'] : '' ) . '</span>';
 
-        //Show Assessment Mark based on Intent Link Type:
-        $ui .= '<span class="icon-3rd in_assessment_' . $ln_id . '" data-toggle="tooltip" data-placement="right" title="Assessment Mark">'. echo_assessment_mark($in) .'</span>';
+        //Show Milestone Mark based on Intent Link Type:
+        $ui .= '<span class="icon-3rd in_assessment_' . $ln_id . '" data-toggle="tooltip" data-placement="right" title="Milestone Mark">'. echo_assessment_mark($in) .'</span>';
 
         $ui .= '</span>';
 

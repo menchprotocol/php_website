@@ -225,23 +225,6 @@ class Platform_model extends CI_Model
 
     }
 
-    function ln_set_drafting($lns){
-        /*
-         *
-         * A function that simply updates the status
-         * of input links so other cron jobs
-         * do not pick them up and re-process them.
-         *
-         * */
-
-        foreach ($lns as $ln) {
-            if($ln['ln_status'] == 0){
-                $this->Database_model->ln_update($ln['ln_id'], array(
-                    'ln_status' => 1, //Drafting
-                ));
-            }
-        }
-    }
 
     function en_unlink($en_id, $ln_miner_entity_id = 0, $merger_en_id = 0){
 
@@ -1191,7 +1174,7 @@ class Platform_model extends CI_Model
                 $metadata_this['__in__metadata_common_steps'] = array(intval($focus_in['in_id']));
             }
 
-            $this->Platform_model->metadata_update('in', $focus_in['in_id'], array(
+            $this->Database_model->update_metadata('in', $focus_in['in_id'], array(
                 'in__metadata_common_steps' => $metadata_this['__in__metadata_common_steps'],
                 'in__metadata_expansion_steps'     => $metadata_this['__in__metadata_expansion_steps'],
             ));
@@ -1250,7 +1233,7 @@ class Platform_model extends CI_Model
             //Required time range to complete tree:
             '__in__metadata_min_seconds' => $common_base_resources['seconds'],
             '__in__metadata_max_seconds' => $common_base_resources['seconds'],
-            //Assessment mark ranges (Always zero for common base):
+            //Milestone Mark ranges (Always zero for common base):
             '__in__metadata_min_mark' => 0,
             '__in__metadata_max_mark' => 0,
             //Entity references within intent notes:
@@ -1408,7 +1391,7 @@ class Platform_model extends CI_Model
              * Save to database
              *
              * */
-            $this->Platform_model->metadata_update('in', $in_id, array(
+            $this->Database_model->update_metadata('in', $in_id, array(
                 'in__metadata_min_steps' => intval($metadata_this['__in__metadata_min_steps']),
                 'in__metadata_max_steps' => intval($metadata_this['__in__metadata_max_steps']),
                 'in__metadata_min_seconds' => intval($metadata_this['__in__metadata_min_seconds']),
@@ -1551,7 +1534,7 @@ class Platform_model extends CI_Model
     }
 
 
-    function complete_if_empty($en_id, $in){
+    function actionplan_complete_if_empty($en_id, $in){
 
         /*
          *
@@ -2451,103 +2434,6 @@ class Platform_model extends CI_Model
                 }
             }
         }
-    }
-
-
-    function metadata_update($obj_type, $obj_id, $new_fields)
-    {
-
-        /*
-         *
-         * Enables the easy manipulation of the text metadata field which holds cache data for developers
-         *
-         * $obj_type:               Either in, en or tr
-         *
-         * $obj:                    The Entity, Intent or Link itself.
-         *                          We're looking for the $obj ID and METADATA
-         *
-         * $new_fields:             The new array of metadata fields to be Set,
-         *                          Updated or Removed (If set to null)
-         *
-         * */
-
-        if (!in_array($obj_type, array('in', 'en', 'ln')) || $obj_id < 1 || count($new_fields) < 1) {
-            return false;
-        }
-
-        //Fetch metadata for this object:
-        if ($obj_type == 'in') {
-
-            $db_objects = $this->Database_model->in_fetch(array(
-                $obj_type . '_id' => $obj_id,
-            ));
-
-        } elseif ($obj_type == 'en') {
-
-            $db_objects = $this->Database_model->en_fetch(array(
-                $obj_type . '_id' => $obj_id,
-            ));
-
-        } elseif ($obj_type == 'ln') {
-
-            $db_objects = $this->Database_model->ln_fetch(array(
-                $obj_type . '_id' => $obj_id,
-            ));
-
-        }
-
-        if (count($db_objects) < 1) {
-            return false;
-        }
-
-
-        //Prepare newly fetched metadata:
-        if (strlen($db_objects[0][$obj_type . '_metadata']) > 0) {
-            $metadata = unserialize($db_objects[0][$obj_type . '_metadata']);
-        } else {
-            $metadata = array();
-        }
-
-        //Go through all the new fields and see if they differ from current metadata fields:
-        foreach ($new_fields as $metadata_key => $metadata_value) {
-            //We are doing an absolute adjustment if needed:
-            if (is_null($metadata_value) && isset($metadata[$metadata_key])) {
-
-                //User asked to remove this value:
-                unset($metadata[$metadata_key]);
-
-            } elseif (!is_null($metadata_value) && (!isset($metadata[$metadata_key]) || $metadata[$metadata_key] != $metadata_value)) {
-
-                //Value has changed, adjust:
-                $metadata[$metadata_key] = $metadata_value;
-
-            }
-        }
-
-        //Now update DB without logging any links as this is considered a back-end update:
-        if ($obj_type == 'in') {
-
-            $affected_rows = $this->Database_model->in_update($obj_id, array(
-                'in_metadata' => $metadata,
-            ));
-
-        } elseif ($obj_type == 'en') {
-
-            $affected_rows = $this->Database_model->en_update($obj_id, array(
-                'en_metadata' => $metadata,
-            ));
-
-        } elseif ($obj_type == 'ln') {
-
-            $affected_rows = $this->Database_model->ln_update($obj_id, array(
-                'ln_metadata' => $metadata,
-            ));
-
-        }
-
-        //Should be all good:
-        return $affected_rows;
-
     }
 
 

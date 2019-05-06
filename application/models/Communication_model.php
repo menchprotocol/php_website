@@ -1336,7 +1336,7 @@ class Communication_model extends CI_Model
     }
 
 
-    function digest_quick_reply($en, $quick_reply_payload)
+    function digest_quick_reply($en, $quick_reply_payload, $ln_metadata_append = array())
     {
 
         /*
@@ -1950,7 +1950,7 @@ class Communication_model extends CI_Model
             if($published_answer){
 
                 //See if we also need to mark the child as complete:
-                $this->Platform_model->complete_if_empty($en['en_id'], $answer_ins[0]);
+                $this->Platform_model->actionplan_complete_if_empty($en['en_id'], $answer_ins[0]);
 
                 //Affirm answer received answer:
                 $this->Communication_model->dispatch_message(
@@ -1971,6 +1971,7 @@ class Communication_model extends CI_Model
                     'ln_parent_entity_id' => $en['en_id'],
                     'ln_metadata' => array(
                         'pending_answer_links' => $pending_answer_links,
+                        'ln_metadata_append' => $ln_metadata_append,
                     ),
                 ));
 

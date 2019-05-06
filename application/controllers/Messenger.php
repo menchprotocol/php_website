@@ -184,14 +184,13 @@ class Messenger extends CI_Controller
             );
 
 
-            //Log link for evaluating the conditional intent tree:
+            //Log link for evaluating the Conditional Milestone Link:
             $conditional_evaluation = $this->Database_model->ln_create(array(
                 'ln_status' => 2, //Log as a New link unless we meet the minimum student requirement to publish it instantly...
-                'ln_type_entity_id' => 6278, //Conditional Intent Tree Evaluated
+                'ln_type_entity_id' => 6278, //Assessed Conditional Milestone Link
                 'ln_miner_entity_id' => $ens[0]['en_id'],
                 'ln_parent_intent_id' => $ins[0]['in_id'],
             ));
-
 
         } else {
 
@@ -424,7 +423,7 @@ class Messenger extends CI_Controller
                         $ln_data['ln_content'] = $im['message']['text']; //Quick reply always has a text
 
                         //Digest it further:
-                        $this->Communication_model->digest_quick_reply($en, $im['message']['quick_reply']['payload']);
+                        $this->Communication_model->digest_quick_reply($en, $im['message']['quick_reply']['payload'], $ln_metadata);
 
                     } elseif (isset($im['message']['text'])) {
 
@@ -701,7 +700,7 @@ class Messenger extends CI_Controller
 
                     //Digest quick reply Payload if any:
                     if ($quick_reply_payload) {
-                        $this->Communication_model->digest_quick_reply($en, $quick_reply_payload);
+                        $this->Communication_model->digest_quick_reply($en, $quick_reply_payload, $ln_metadata);
                     }
 
                     /*
@@ -2006,7 +2005,7 @@ class Messenger extends CI_Controller
         ));
 
         //See if we also need to mark the child as complete:
-        $this->Platform_model->complete_if_empty($en_id, $answer_ins[0]);
+        $this->Platform_model->actionplan_complete_if_empty($en_id, $answer_ins[0]);
 
         //Archive current progression links:
         foreach($current_progression_links as $ln){
@@ -2048,7 +2047,7 @@ class Messenger extends CI_Controller
 
         //Put something in the ln_metadata so other cron jobs do not pick  up on it:
         foreach ($ln_pending as $ln) {
-            $this->Platform_model->metadata_update('ln', $ln['ln_id'], array(
+            $this->Database_model->update_metadata('ln', $ln['ln_id'], array(
                 'fb_att_id' => 0,
             ));
         }
@@ -2077,7 +2076,7 @@ class Messenger extends CI_Controller
             if (isset($result['ln_metadata']['result']['attachment_id']) && $result['status']) {
 
                 //Save Facebook Attachment ID to DB:
-                $db_result = $this->Platform_model->metadata_update('ln', $ln['ln_id'], array(
+                $db_result = $this->Database_model->update_metadata('ln', $ln['ln_id'], array(
                     'fb_att_id' => intval($result['ln_metadata']['result']['attachment_id']),
                 ));
 
@@ -2144,7 +2143,13 @@ class Messenger extends CI_Controller
         ), array(), 20);
 
         //Set link statuses to drafting so other Cron jobs don't pick them up:
-        $this->Platform_model->ln_set_drafting($ln_pending);
+        foreach ($ln_pending as $ln) {
+            if($ln['ln_status'] == 0){
+                $this->Database_model->ln_update($ln['ln_id'], array(
+                    'ln_status' => 1, //Drafting
+                ));
+            }
+        }
 
         $counter = 0;
         foreach ($ln_pending as $ln) {
@@ -2209,7 +2214,13 @@ class Messenger extends CI_Controller
 
 
         //Set link statuses to drafting so other Cron jobs don't pick them up:
-        $this->Platform_model->ln_set_drafting($ln_pending);
+        foreach ($ln_pending as $ln) {
+            if($ln['ln_status'] == 0){
+                $this->Database_model->ln_update($ln['ln_id'], array(
+                    'ln_status' => 1, //Drafting
+                ));
+            }
+        }
 
         //Now go through and upload to CDN:
         foreach ($ln_pending as $ln) {

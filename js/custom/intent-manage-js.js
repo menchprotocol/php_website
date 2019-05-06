@@ -135,7 +135,7 @@ function in_adjust_link_ui() {
 
         //What's the intent link type?
         if ($('#ln_type_entity_id_4229').is(':checked')) {
-            //Conditional link is checked:
+            //Conditional Milestone Links is checked:
             $('.score_range_box').removeClass('hidden');
             $('.score_points').addClass('hidden');
         } else {
@@ -325,7 +325,7 @@ function in_modify_load(in_id, ln_id) {
                 $('#tr_in_link_update').val(data.ln.in_outcome);
                 $('.tr_in_link_title').text(( $('.intent_line_' + in_id).hasClass('parent-intent') ? 'Child' : 'Parent' ));
 
-                //Is this a conditional link? If so, load the min/max range:
+                //Is this a Conditional Milestone Link? If so, load the min/max range:
                 if (data.ln.ln_type_entity_id == 4229) {
                     //Yes, load the data (which must be there):
                     $('#ln_type_entity_id_4229').prop("checked", true);
@@ -402,7 +402,8 @@ function in_modify_save() {
         modify_data['ln_type_entity_id'] = parseInt($('input[name=ln_type_entity_id]:checked').val());
         modify_data['tr_in_link_update'] = $('#tr_in_link_update').val();
 
-        if(modify_data['ln_type_entity_id'] == 4229){ //Conditional Intent Link
+        if(modify_data['ln_type_entity_id'] == 4229){
+            //Conditional Milestone Links
             //Condition score range:
             modify_data['tr__conditional_score_min'] = $('#tr__conditional_score_min').val();
             modify_data['tr__conditional_score_max'] = $('#tr__conditional_score_max').val();
