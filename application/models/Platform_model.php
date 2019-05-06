@@ -2387,7 +2387,7 @@ class Platform_model extends CI_Model
                     'ln_type_entity_id' => 6277, //Action Plan Progression Trigger Webhook
                     'ln_parent_intent_id' => $in_id,
                     'ln_parent_entity_id' => $webhook_entity['ln_parent_entity_id'],
-                    'ln_content' => $webhook_url['ln_content'], //Same URL
+                    'ln_parent_link_id' => $webhook_entity['ln_id'],
                 );
 
                 //Make sure we have not sent this before (they might be completing this again...)

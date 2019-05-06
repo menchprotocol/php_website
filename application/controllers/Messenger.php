@@ -18,6 +18,9 @@ class Messenger extends CI_Controller
 
     }
 
+    function cron__issue_pending_score_cards(){
+
+    }
 
     function actionplan_assessment_webhook(){
 
@@ -49,23 +52,83 @@ class Messenger extends CI_Controller
                 'status' => 0,
                 'message' => 'actionplan_assessment_webhook() unable to locate a published entity',
             ));
+        } elseif(count()==0){
+            //Failed validation that this miner has completed this intention in their Action Plan:
+            return echo_json(array(
+                'status' => 0,
+                'message' => 'actionplan_assessment_webhook() unable to locate a student action plan progression step',
+            ));
         }
 
 
-        //Determine the minimum/maximum marks possible for this tree:
-        $in_metadata = unserialize($ins[0]['in_metadata']);
+        /*
+         *
+         * Define proficiency_levels as a more user
+         * friendly way to make sense of their score...
+         * Will evolve this over time.
+         *
+         * */
 
+
+        //Define how this assessment score calculator should work:
+        $app_settings = array(
+
+            //The min students required to have completed this assessment before a relative percentile is calculated:
+            'min_student_count' => 20, //If smaller, we won't have a large enough sample size!
+
+            //The transition of the relative percentile score into a human-friendly terminology:
+            'proficiency_levels' => array(
+                1 => array(
+                    'min_relative_percentile' => 0,
+                    'max_relative_percentile' => 30,
+                    'level_name' => 'Beginner',
+                ),
+                2 => array(
+                    'min_relative_percentile' => 31,
+                    'max_relative_percentile' => 60,
+                    'level_name' => 'Intermediate',
+                ),
+                3 => array(
+                    'min_relative_percentile' => 61,
+                    'max_relative_percentile' => 90,
+                    'level_name' => 'Advanced',
+                ),
+                4 => array(
+                    'min_relative_percentile' => 91,
+                    'max_relative_percentile' => 100,
+                    'level_name' => 'Superstar',
+                ),
+            ),
+
+        );
+
+        //This is the future routing logic message:
+        $message = 'Congrats! You completed your intention to Assess your JQuery programming skills. Here are your results: You are a beginner jQuery developer. You score was 35% and you got 14/32 questions right.';
 
 
         //Calculate the student's score for this tree based on their Action Plan progress:
-        $assessment_message = 'Your assessment results are ready for your intention to '.$ins[0]['in_outcome'].': You scored 82% as you got 17/21 questions right. This puts you in the t.op 20% of people who took this assessment. Based on this result we believe your level is *beginner*';
+        $score_card = array(
+            'steps_all_counts' => 21,
+            'steps_success_counts' => 17,
+            'score_min_marks' => 12,
+            'score_max_marks' => 104,
+            'score_student_marks' => 91,
+            'score_student_all_count' => 12, //All students who have taken this assessment already
 
+            //To be calculated only if we meet the minimum students:
+            'score_student_position_count' => 0, //1 = top student, and can be as low as the total number of students taken this assessment (means you're last!)
+            'score_relative_percentile' => 0,
+            'message_relative_percentile' => '',
+            'score_proficiency_level' => 0,
+        );
 
+        $score_card['score_absolute_percentage'] = floor(($score_card['score_success_marks']-$score_card['score_min_marks']) / ($score_card['score_max_marks']-$score_card['score_min_marks']) * 100);
+        $score_card['message_absolute_percentage'] = 'Your score card is in for your intention to '.$ins[0]['in_outcome'].': '.$score_card['score_absolute_percentage'].'%! You got '.$score_card['steps_success_counts'].'/'.$score_card['steps_all_counts'].' questions right.';
 
-        //Inform the student of their score:
+        //Send them message with their absolute percentage score.
         $this->Communication_model->dispatch_message(
-            $assessment_message,
-            array('en_id' => $_POST['en_id']),
+            $score_card['message_absolute_percentage'],
+            array('en_id' => $ens[0]['en_id']),
             true,
             array(
                 array(
@@ -80,10 +143,91 @@ class Messenger extends CI_Controller
         );
 
 
+
+        if($score_card['score_student_all_count'] >= $app_settings['min_student_count']) {
+
+            //Calculate student position among all taken:
+            $score_card['score_student_position_count'] = 2;
+
+            //Based on their absolute percentage, now calculate their relative percentile:
+            $score_card['score_relative_percentile'] = floor (( ($score_card['score_student_all_count'] - $score_card['score_student_position_count']) / ($score_card['score_student_all_count']-1) ) * 100 );
+
+            $score_card['message_relative_percentile'] = ( $score_card['score_relative_percentile']>=50 ? 'top '.(101 - $score_card['score_relative_percentile']).'%' : 'bottom '.($score_card['score_relative_percentile'] + 1).'%' );
+
+
+            //We have the minimum number of students taken this assessment, issue the score board immediately:
+            $score_card['summary_message'] = 'This puts you in the top 20% of people who took this assessment. Based on this result we believe your level is *beginner*';
+
+
+            //Set link status to published:
+            $link_data['ln_status'] = 2;
+            $link_data['ln_metadata'] = array(
+                'score_sheet' => $score_card
+            );
+
+
+            //Inform the student of their score:
+            $this->Communication_model->dispatch_message(
+                'Good news: Enough students have taken this assessment which means I can inform you of where your '.$score_card['score_absolute_percentage'].'% score stands relative to your peers: You are the top 20% which means you are a *'.$app_settings['proficiency_levels'][$score_card['score_proficiency_level']]['level_name'].'* in response to your intention to '.$ins[0]['in_outcome'],
+                array('en_id' => $ens[0]['en_id']),
+                true,
+                array(
+                    array(
+                        'content_type' => 'text',
+                        'title' => 'Next',
+                        'payload' => 'GONEXT',
+                    )
+                ),
+                array(
+                    'ln_parent_intent_id' => $ins[0]['in_id'],
+                )
+            );
+
+            //Log link for the release of their score:
+            $score_link = $this->Database_model->ln_create(array(
+                'ln_status' => 2, //Log as a New link unless we meet the minimum student requirement to publish it instantly...
+                'ln_type_entity_id' => 6278, //Action Plan Assessment Score Card
+                'ln_miner_entity_id' => $ens[0]['en_id'],
+                'ln_parent_intent_id' => $ins[0]['in_id'],
+            ));
+
+        } else {
+
+            //We don't have enough student's yet! Create a pending score card so we get to update it later:
+
+            //Let them know that we can't yet give them a relative percentile:
+            $this->Communication_model->dispatch_message(
+                'As I issue score cards to more students with the same intention, I will be able to gather a large enough sample size to inform you of your relative percentile and relative proficiency level so you have a better idea of where your score of '.$score_card['score_absolute_percentage'].'% stands relative to your peers.',
+                array('en_id' => $ens[0]['en_id']),
+                true,
+                array(
+                    array(
+                        'content_type' => 'text',
+                        'title' => 'Next',
+                        'payload' => 'GONEXT',
+                    )
+                ),
+                array(
+                    'ln_parent_intent_id' => $ins[0]['in_id'],
+                )
+            );
+
+            //Log link for the score cron job to be picked-up later and inform them of their score when the minimum
+            $score_link = $this->Database_model->ln_create(array(
+                'ln_status' => 2, //Log as a New link until the intent meets the minimum student requirement to publish this score card.
+                'ln_type_entity_id' => 6278, //Action Plan Assessment Score Card
+                'ln_miner_entity_id' => $ens[0]['en_id'],
+                'ln_parent_intent_id' => $ins[0]['in_id'],
+            ));
+
+        }
+
+
         //Return success:
         return echo_json(array(
             'status' => 1,
-            'message' => $assessment_message,
+            'message' => $score_card['summary_message'],
+            'score_link' => $score_link,
         ));
     }
 
