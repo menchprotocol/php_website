@@ -12,6 +12,11 @@ class Messenger extends CI_Controller
         $this->output->enable_profiler(FALSE);
     }
 
+    function test(){
+        //Yes it is! Trigger Webhook recursively:
+        $this->Platform_model->actionplan_trigger_webhooks(9944, 1);
+    }
+
     function get_stared($in_id = 0){
         /*
          *
