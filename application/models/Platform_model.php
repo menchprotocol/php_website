@@ -2418,7 +2418,7 @@ class Platform_model extends CI_Model
 
 
         //Go through parents and detect intersects with student intentions. WARNING: Logic duplicated. Search for "ELEPHANT" to see.
-        foreach ($this->Platform_model->in_fetch_recursive_parents($in['in_id'], 2) as $parent_in_id => $grand_parent_ids) {
+        foreach ($this->Platform_model->in_fetch_recursive_parents($in_id, 2) as $parent_in_id => $grand_parent_ids) {
 
             if(!$student_in_ids){
                 //Fetch all student intention IDs:
