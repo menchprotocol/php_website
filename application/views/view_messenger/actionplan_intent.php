@@ -30,6 +30,7 @@ if(in_array($in['in_id'], $student_in_ids)){
     echo ' Back to Action Plan</a>';
 }
 
+//Go through parents and detect intersects with student intentions. WARNING: Logic duplicated. Search for "ELEPHANT" to see.
 foreach ($this->Platform_model->in_fetch_recursive_parents($in['in_id'], 2) as $parent_in_id => $grand_parent_ids) {
     //Does this parent and its grandparents have an intersection with the student intentions?
     if(array_intersect($grand_parent_ids, $student_in_ids)){
@@ -63,13 +64,14 @@ $en_all_4331 = $this->config->item('en_all_4331');
 $en_all_6146 = $this->config->item('en_all_6146');
 $fixed_fields = $this->config->item('fixed_fields');
 $submission_messages = null;
-$trigger_oncomplete_tips = false;
+$trigger_on_complete_tips = false;
 foreach($advance_step['progression_links'] as $pl){
 
     echo '<span style="margin-right:10px;" class="status-label underdot" data-toggle="tooltip" data-placement="top" title="Status is '.$fixed_fields['ln_student_status'][$pl['ln_status']]['s_name'].': '.$fixed_fields['ln_student_status'][$pl['ln_status']]['s_desc'].'">'.$fixed_fields['ln_student_status'][$pl['ln_status']]['s_icon'].' '.$en_all_6146[$pl['ln_type_entity_id']]['m_name'].'</span>';
 
-    if(trigger_oncomplete_tips($pl)){
-        $trigger_oncomplete_tips = true;
+    //Should we trigger on-complete links?
+    if($pl['ln_status']==2 && in_array($pl['ln_type_entity_id'], $this->config->item('en_ids_6255'))){
+        $trigger_on_complete_tips = true;
     }
 
     if(strlen($pl['ln_content']) > 0){
@@ -129,7 +131,7 @@ if($advance_step['status']){
 
 
 //Show on-complete tips?
-if($trigger_oncomplete_tips){
+if($trigger_on_complete_tips){
 
     $on_complete_messages = $this->Database_model->ln_fetch(array(
         'ln_status' => 2, //Published

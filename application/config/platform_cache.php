@@ -11,16 +11,33 @@ defined('BASEPATH') OR exit('No direct script access allowed');
  *
  */
 
-//Generated 2019-05-04 15:27:22 PST
+//Generated 2019-05-05 17:24:11 PST
 
-//Trigger On-Complete Tips:
+//Action Plan Progression Skippable Link Types:
+$config['en_ids_6274'] = array(4559, 6158);
+$config['en_all_6274'] = array(
+    4559 => array(
+        'm_icon' => '<i class="fas fa-check-square"></i>',
+        'm_name' => 'Action Plan Read Messages',
+        'm_desc' => '',
+        'm_parents' => array(6274, 6255, 4755, 6146, 4593),
+    ),
+    6158 => array(
+        'm_icon' => '<i class="fas fa-check-square"></i>',
+        'm_name' => 'Action Plan Review Outcome',
+        'm_desc' => '',
+        'm_parents' => array(6274, 6255, 4593, 4755, 6146),
+    ),
+);
+
+//Action Plan Progression Trigger On-Complete Tips:
 $config['en_ids_6255'] = array(4559, 6144, 6157, 6158);
 $config['en_all_6255'] = array(
     4559 => array(
         'm_icon' => '<i class="fas fa-check-square"></i>',
         'm_name' => 'Action Plan Read Messages',
         'm_desc' => '',
-        'm_parents' => array(6255, 4755, 6146, 4593),
+        'm_parents' => array(6274, 6255, 4755, 6146, 4593),
     ),
     6144 => array(
         'm_icon' => '<i class="fas fa-check-square"></i>',
@@ -38,11 +55,11 @@ $config['en_all_6255'] = array(
         'm_icon' => '<i class="fas fa-check-square"></i>',
         'm_name' => 'Action Plan Review Outcome',
         'm_desc' => '',
-        'm_parents' => array(6255, 4593, 4755, 6146),
+        'm_parents' => array(6274, 6255, 4593, 4755, 6146),
     ),
 );
 
-//Action Plan 2-Step Link Types:
+//Action Plan Progression 2-Step Link Types:
 $config['en_ids_6244'] = array(6144, 6157);
 $config['en_all_6244'] = array(
     6144 => array(
@@ -361,14 +378,14 @@ $config['en_all_6147'] = array(
     ),
 );
 
-//Action Plan Progression Link Types:
+//Action Plan Progression All Link Types:
 $config['en_ids_6146'] = array(4559, 6143, 6144, 6157, 6158);
 $config['en_all_6146'] = array(
     4559 => array(
         'm_icon' => '<i class="fas fa-check-square"></i>',
         'm_name' => 'Read Messages',
         'm_desc' => 'Completed when students read the messages of an intent that does not have a completion requirement',
-        'm_parents' => array(6255, 4755, 6146, 4593),
+        'm_parents' => array(6274, 6255, 4755, 6146, 4593),
     ),
     6143 => array(
         'm_icon' => '<i class="far fa-minus-square"></i>',
@@ -392,7 +409,7 @@ $config['en_all_6146'] = array(
         'm_icon' => '<i class="fas fa-check-square"></i>',
         'm_name' => 'Review Outcome',
         'm_desc' => 'Completed when students read the messages of an intent that does not have any messages or a completion requirement',
-        'm_parents' => array(6255, 4593, 4755, 6146),
+        'm_parents' => array(6274, 6255, 4593, 4755, 6146),
     ),
 );
 
@@ -1206,7 +1223,7 @@ $config['en_all_4755'] = array(
         'm_icon' => '<i class="fas fa-check-square"></i>',
         'm_name' => 'Action Plan Read Messages',
         'm_desc' => '',
-        'm_parents' => array(6255, 4755, 6146, 4593),
+        'm_parents' => array(6274, 6255, 4755, 6146, 4593),
     ),
     4570 => array(
         'm_icon' => '<i class="fab fa-html5"></i>',
@@ -1278,7 +1295,7 @@ $config['en_all_4755'] = array(
         'm_icon' => '<i class="fas fa-check-square"></i>',
         'm_name' => 'Action Plan Review Outcome',
         'm_desc' => '',
-        'm_parents' => array(6255, 4593, 4755, 6146),
+        'm_parents' => array(6274, 6255, 4593, 4755, 6146),
     ),
     6224 => array(
         'm_icon' => '<i class="fal fa-sync"></i>',
@@ -1455,7 +1472,7 @@ $config['en_all_4600'] = array(
 );
 
 //All Link Types:
-$config['en_ids_4593'] = array(4228, 4229, 4230, 4231, 4232, 4235, 4242, 4246, 4250, 4251, 4255, 4256, 4257, 4258, 4259, 4260, 4261, 4263, 4264, 4266, 4267, 4268, 4269, 4275, 4278, 4279, 4282, 4283, 4287, 4299, 4318, 4319, 4452, 4455, 4460, 4547, 4548, 4549, 4550, 4551, 4552, 4553, 4554, 4555, 4556, 4557, 4559, 4570, 4577, 4601, 4602, 4983, 4993, 4994, 4996, 4998, 4999, 5000, 5001, 5003, 5007, 5865, 5943, 5967, 5981, 5982, 6093, 6132, 6140, 6143, 6144, 6149, 6154, 6155, 6157, 6158, 6224, 6226, 6242, 6255);
+$config['en_ids_4593'] = array(4228, 4229, 4230, 4231, 4232, 4235, 4242, 4246, 4250, 4251, 4255, 4256, 4257, 4258, 4259, 4260, 4261, 4263, 4264, 4266, 4267, 4268, 4269, 4275, 4278, 4279, 4282, 4283, 4287, 4299, 4318, 4319, 4452, 4455, 4460, 4547, 4548, 4549, 4550, 4551, 4552, 4553, 4554, 4555, 4556, 4557, 4559, 4570, 4577, 4601, 4602, 4983, 4993, 4994, 4996, 4998, 4999, 5000, 5001, 5003, 5007, 5865, 5943, 5967, 5981, 5982, 6093, 6132, 6140, 6143, 6144, 6149, 6154, 6155, 6157, 6158, 6224, 6226, 6242, 6255, 6277);
 $config['en_all_4593'] = array(
     4228 => array(
         'm_icon' => '<i class="fal fa-check-circle"></i>',
@@ -1737,7 +1754,7 @@ $config['en_all_4593'] = array(
         'm_icon' => '<i class="fas fa-check-square"></i>',
         'm_name' => 'Action Plan Read Messages',
         'm_desc' => 'Logged when a student receives the messages of an AND intent that does not have any completion requirements.',
-        'm_parents' => array(6255, 4755, 6146, 4593),
+        'm_parents' => array(6274, 6255, 4755, 6146, 4593),
     ),
     4570 => array(
         'm_icon' => '<i class="fab fa-html5"></i>',
@@ -1911,7 +1928,7 @@ $config['en_all_4593'] = array(
         'm_icon' => '<i class="fas fa-check-square"></i>',
         'm_name' => 'Action Plan Review Outcome',
         'm_desc' => 'The most basic type of intent completion for intents that do not have any messages, completion requirements or children to choose from.',
-        'm_parents' => array(6255, 4593, 4755, 6146),
+        'm_parents' => array(6274, 6255, 4593, 4755, 6146),
     ),
     6224 => array(
         'm_icon' => '<i class="fal fa-sync"></i>',
@@ -1933,9 +1950,15 @@ $config['en_all_4593'] = array(
     ),
     6255 => array(
         'm_icon' => '<i class="far fa-calendar-check"></i>',
-        'm_name' => 'Trigger On-Complete Tips',
+        'm_name' => 'Action Plan Progression Trigger On-Complete Tips',
         'm_desc' => '',
-        'm_parents' => array(4506, 4593, 6242, 4527),
+        'm_parents' => array(6276, 6275, 4506, 4593, 6242, 4527),
+    ),
+    6277 => array(
+        'm_icon' => '<i class="far fa-thunderstorm"></i>',
+        'm_name' => 'Action Plan Progression Trigger Webhook',
+        'm_desc' => '',
+        'm_parents' => array(4602, 4506, 4593, 6276),
     ),
 );
 

@@ -30,6 +30,11 @@ class Intents extends CI_Controller
             //Go to mench.com for now:
             return redirect_message('https://mench.com');
 
+        } elseif (filter_array($session_en['en__parents'], 'en_id', 1308)) {
+
+            //Go to mench.com for now:
+            return redirect_message('/platform');
+
         } else {
 
             //Show index page:

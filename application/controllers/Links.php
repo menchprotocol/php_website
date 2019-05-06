@@ -198,37 +198,6 @@ class Links extends CI_Controller
     }
 
 
-    function process_assessment_score(){
-
-        //TODO to view the student's history and issue a certificate
-
-        //TODO Add a new link to enable the certificate to be created/issued when a min number of student's (20?) take the assessment
-
-        //Validate the inputs:
-        if(isset($_POST['recipient_en']['en_id']) && isset($_POST['actionplan_in']['in_id'])){
-
-            $this->Communication_model->dispatch_message(
-                'MENCH ASSESSMENT for intent #'.$_POST['actionplan_in']['in_id'],
-                $_POST['recipient_en'],
-                true,
-                array(),
-                array()
-            );
-
-        } else {
-
-            $this->Communication_model->dispatch_message(
-                'ERROR: MENCH ASSESSMENT missing info... '.print_r($_POST, true),
-                array('en_id' => 1),
-                true,
-                array(),
-                array()
-            );
-
-        }
-
-    }
-
 
 
     function cron__sync_algolia($input_obj_type = null, $input_obj_id = null){

@@ -159,6 +159,18 @@ function extract_message_references($ln_content)
     return $msg_references;
 }
 
+
+function webhook_curl_post($curl_url, $in_id, $en_id){
+    $ch = curl_init();
+    curl_setopt($ch, CURLOPT_URL, $curl_url);
+    curl_setopt($ch, CURLOPT_POST, 1);
+    curl_setopt($ch, CURLOPT_POSTFIELDS,"in_id=".$in_id.", en_id=".$en_id);
+    curl_setopt($ch, CURLOPT_RETURNTRANSFER, true);
+    $server_output = curl_exec ($ch);
+    curl_close ($ch);
+    return json_decode($server_output);
+}
+
 function trigger_oncomplete_tips($insert_columns){
     $CI =& get_instance();
     return ( isset($insert_columns['ln_status']) && isset($insert_columns['ln_type_entity_id']) && $insert_columns['ln_status']==2 && in_array($insert_columns['ln_type_entity_id'], $CI->config->item('en_ids_6255')) && $insert_columns['ln_parent_intent_id'] > 0 );

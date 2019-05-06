@@ -268,9 +268,6 @@ class Database_model extends CI_Model
 
         }
 
-        //Check for automation:
-        $this->Platform_model->crud_automate('ln', $insert_columns, $insert_columns['ln_miner_entity_id']);
-
         //Sync algolia?
         if ($external_sync) {
             if ($insert_columns['ln_parent_entity_id'] > 0) {
@@ -773,11 +770,6 @@ class Database_model extends CI_Model
         //Log changes if successful:
 
         if ($affected_rows > 0) {
-
-
-            //Check for automation:
-            $this->Platform_model->crud_automate('ln', $update_columns, $ln_miner_entity_id);
-
 
             if($ln_miner_entity_id > 0){
 

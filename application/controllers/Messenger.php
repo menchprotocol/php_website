@@ -1510,7 +1510,7 @@ class Messenger extends CI_Controller
 
         //Communicate with student:
         $this->Communication_model->dispatch_message(
-            'I have successfully removed the intention to '.$ins[0]['in_outcome'].' from your Action Plan. You can add it back to your Action Plan at any time by visiting: https://mench.com/'.$ins[0]['in_id'],
+            'I have successfully removed the intention to '.$ins[0]['in_outcome'].' from your Action Plan. You can add it back to your Action Plan at any time and continue from where you left off.',
             array('en_id' => $_POST['en_miner_id']),
             true,
             array(
@@ -1525,6 +1525,50 @@ class Messenger extends CI_Controller
         return echo_json(array(
             'status' => 1,
         ));
+
+    }
+
+    function actionplan_assessment_webhook(){
+
+
+        $this->Database_model->ln_create(array(
+            'ln_type_entity_id' => 4246, //Platform Error
+            'ln_miner_entity_id' => 1, //Shervin/Developer
+            'ln_content' => 'actionplan_assessment_webhook() testing',
+            'ln_metadata' => $_POST,
+        ));
+
+        return echo_json(array(
+            'status' => 1,
+            'message' => 'testing...',
+        ));
+
+        //TODO to view the student's history and issue a certificate
+
+        //TODO Add a new link to enable the certificate to be created/issued when a min number of student's (20?) take the assessment
+
+        //Validate the inputs:
+        if(isset($_POST['recipient_en']['en_id']) && isset($_POST['actionplan_in']['in_id'])){
+
+            $this->Communication_model->dispatch_message(
+                'MENCH ASSESSMENT for intent #'.$_POST['actionplan_in']['in_id'],
+                $_POST['recipient_en'],
+                true,
+                array(),
+                array()
+            );
+
+        } else {
+
+            $this->Communication_model->dispatch_message(
+                'ERROR: MENCH ASSESSMENT missing info... '.print_r($_POST, true),
+                array('en_id' => 1),
+                true,
+                array(),
+                array()
+            );
+
+        }
 
     }
 

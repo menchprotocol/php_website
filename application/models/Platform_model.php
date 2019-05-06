@@ -1551,72 +1551,6 @@ class Platform_model extends CI_Model
     }
 
 
-    function crud_automate($input_obj_type = null, $insert_columns, $ln_miner_entity_id){
-
-        /*
-         *
-         * An underlying function integrated into the Database Model
-         * that would listen to certain data creations and trigger
-         * automated actions based on them.
-         *
-         * */
-
-        if($ln_miner_entity_id < 0){
-            return false;
-        }
-
-        if($input_obj_type=='ln'){
-
-            //Check to see if completion notes needs to be sent:
-            if(trigger_oncomplete_tips($insert_columns)){
-
-                //Fetch on-complete messages:
-                $on_complete_messages = $this->Database_model->ln_fetch(array(
-                    'ln_status' => 2, //Published
-                    'ln_type_entity_id' => 6242, //On-Complete Tips
-                    'ln_child_intent_id' => $insert_columns['ln_parent_intent_id'],
-                ), array(), 0, 0, array('ln_order' => 'ASC'));
-
-
-                //Make sure we have messages to send:
-                if(count($on_complete_messages) > 0){
-
-                    //Prep filter for search & insert:
-                    $filter = array(
-                        'ln_status' => 2,
-                        'ln_miner_entity_id' => $ln_miner_entity_id,
-                        'ln_type_entity_id' => 6255, //Action Plan Trigger On-Complete Tips
-                        'ln_parent_intent_id' => $insert_columns['ln_parent_intent_id'], //First Action
-                    );
-
-                    //Make sure we have not sent this before:
-                    if( count($this->Database_model->ln_fetch($filter))==0 ){
-
-                        //Never sent before, so let's log a new link:
-                        $link_log = $this->Database_model->ln_create($filter);
-
-                        //Dispatch all on-complete notes:
-                        foreach($on_complete_messages as $complete_note){
-
-                            //Send to student:
-                            $this->Communication_model->dispatch_message(
-                                $complete_note['ln_content'],
-                                array('en_id' => $ln_miner_entity_id),
-                                true,
-                                array(),
-                                array(
-                                    'ln_parent_link_id' => $link_log['ln_id']
-                                )
-                            );
-                        }
-                    }
-                }
-            }
-
-        }
-    }
-
-
     function complete_if_empty($en_id, $in){
 
         /*
@@ -1701,12 +1635,12 @@ class Platform_model extends CI_Model
                 'ln_miner_entity_id' => 1, //Shervin/Developer
                 'ln_content' => 'actionplan_advance_step() called invalid intent',
                 'ln_child_entity_id' => $recipient_en['en_id'],
-                'ln_parent_intent_id' => $in_id,
+                'ln_parent_intent_id' => $ins[0]['in_id'],
             ));
 
             return array(
                 'status' => 0,
-                'message' => 'Invalid Intent #' . $in_id,
+                'message' => 'Invalid Intent #' . $ins[0]['in_id'],
             );
 
         } elseif ($ins[0]['in_status'] != 2) {
@@ -1716,12 +1650,12 @@ class Platform_model extends CI_Model
                 'ln_miner_entity_id' => 1, //Shervin/Developer
                 'ln_content' => 'actionplan_advance_step() called unpublished intent',
                 'ln_child_entity_id' => $recipient_en['en_id'],
-                'ln_parent_intent_id' => $in_id,
+                'ln_parent_intent_id' => $ins[0]['in_id'],
             ));
 
             return array(
                 'status' => 0,
-                'message' => 'Invalid #' . $in_id.' is not yet published',
+                'message' => 'Invalid #' . $ins[0]['in_id'].' is not yet published',
             );
 
         }
@@ -1774,25 +1708,29 @@ class Platform_model extends CI_Model
         $in__messages = $this->Database_model->ln_fetch(array(
             'ln_status' => 2, //Published
             'ln_type_entity_id' => 4231, //Intent Note Messages
-            'ln_child_intent_id' => $in_id,
+            'ln_child_intent_id' => $ins[0]['in_id'],
         ), array(), 0, 0, array('ln_order' => 'ASC'));
         $in__children = $this->Database_model->ln_fetch(array(
             'ln_status' => 2, //Published
             'in_status' => 2, //Published
             'ln_type_entity_id' => 4228, //Fixed intent links only
-            'ln_parent_intent_id' => $in_id,
+            'ln_parent_intent_id' => $ins[0]['in_id'],
         ), array('in_child'), 0, 0, array('ln_order' => 'ASC'));
         $current_progression_links = $this->Database_model->ln_fetch(array(
             'ln_type_entity_id IN (' . join(',', $this->config->item('en_ids_6146')) . ')' => null, //Action Plan Progression Link Types
             'ln_miner_entity_id' => $recipient_en['en_id'],
-            'ln_parent_intent_id' => $in_id,
+            'ln_parent_intent_id' => $ins[0]['in_id'],
             'ln_status >=' => 0, //New+
         ));
         $has_published_progression = false;
+        $has_non_skippable_proression = false; //Assume false unless proven otherwise...
         foreach($current_progression_links as $current_progression_link){
+            //Action Plan Skippable Progression Llink Types
             if($current_progression_link['ln_status']==2){
                 $has_published_progression = true;
-                break;
+            }
+            if($current_progression_link['ln_status']==2 && !in_array($current_progression_link['ln_type_entity_id'], $this->config->item('en_ids_6274'))){
+                $has_non_skippable_proression = true;
             }
         }
 
@@ -1852,7 +1790,7 @@ class Platform_model extends CI_Model
                             'ln_miner_entity_id' => 1, //Shervin/Developer
                             'ln_content' => 'actionplan_advance_step() encountered intent with too many children to be listed as OR Intent options! Trim and iterate that intent tree.',
                             'ln_type_entity_id' => 4246, //Platform Error
-                            'ln_parent_intent_id' => $in_id,
+                            'ln_parent_intent_id' => $ins[0]['in_id'],
                             'ln_child_intent_id' => $child_in['in_id'],
                             'ln_child_entity_id' => $recipient_en['en_id'],
                         ));
@@ -1889,7 +1827,7 @@ class Platform_model extends CI_Model
                             array_push($next_step_quick_replies, array(
                                 'content_type' => 'text',
                                 'title' => ($key+1),
-                                'payload' => 'ANSWERQUESTION_' . $in_id . '_' . $child_in['in_id'],
+                                'payload' => 'ANSWERQUESTION_' . $ins[0]['in_id'] . '_' . $child_in['in_id'],
                             ));
                         }
 
@@ -1897,7 +1835,7 @@ class Platform_model extends CI_Model
 
                         if(!$has_published_progression){
                             //Need to select answer:
-                            $next_step_message .= '<a href="/messenger/actionplan_answer_question/' . $recipient_en['en_id'] . '/' . $in_id . '/' . $child_in['in_id'] . '/' . md5($this->config->item('actionplan_salt') . $child_in['in_id'] . $in_id . $recipient_en['en_id']) . '" class="list-group-item">';
+                            $next_step_message .= '<a href="/messenger/actionplan_answer_question/' . $recipient_en['en_id'] . '/' . $ins[0]['in_id'] . '/' . $child_in['in_id'] . '/' . md5($this->config->item('actionplan_salt') . $child_in['in_id'] . $ins[0]['in_id'] . $recipient_en['en_id']) . '" class="list-group-item">';
                         } elseif($was_selected){
                             //This was selected:
                             $next_step_message .= '<a href="/messenger/actionplan/'.$child_in['in_id'] . '" class="list-group-item">';
@@ -1937,8 +1875,8 @@ class Platform_model extends CI_Model
                         if(!$has_published_progression || $was_selected){
 
                             //Simple right icon
-                            $next_step_message .= '<span class="pull-right">';
-                            $next_step_message .= '<span class="badge badge-primary"><i class="fas fa-angle-right"></i></span>';
+                            $next_step_message .= '<span class="pull-right" style="margin-top: -6px;">';
+                            $next_step_message .= '<span class="badge badge-primary"><i class="fas fa-angle-right"></i>&nbsp;</span>';
                             $next_step_message .= '</span>';
 
                             $next_step_message .= '</a>';
@@ -2011,12 +1949,15 @@ class Platform_model extends CI_Model
 
                     if(!$fb_messenger_format){
 
+                        //Completion Percentage so far:
+                        $completion_rate = $this->Platform_model->actionplan_completion_rate($child_in, $recipient_en['en_id']);
+
                         //Open list:
                         $next_step_message .= '<a href="/messenger/actionplan/'.$child_in['in_id']. '" class="list-group-item">';
 
                         //Simple right icon
                         $next_step_message .= '<span class="pull-right" style="margin-top: -6px;">';
-                        $next_step_message .= '<span class="badge badge-primary"><i class="fas fa-angle-right"></i></span>';
+                        $next_step_message .= '<span class="badge badge-primary"  data-toggle="tooltip" data-placement="top" title="'.$completion_rate['steps_completed'].'/'.$completion_rate['steps_total'].' Steps Completed" style="text-decoration:none;"><span style="font-size:0.7em;">'.$completion_rate['completion_percentage'].'%</span> <i class="fas fa-angle-right"></i>&nbsp;</span>';
                         $next_step_message .= '</span>';
 
                         //Determine what icon to show:
@@ -2067,7 +2008,7 @@ class Platform_model extends CI_Model
                     array_push($next_step_quick_replies, array(
                         'content_type' => 'text',
                         'title' => 'Skip',
-                        'payload' => 'SKIP-ACTIONPLAN_1_' . $in__children[0]['in_id'],
+                        'payload' => 'SKIP-ACTIONPLAN_1_' . $ins[0]['in_id'],
                     ));
                 } else {
                     if($key > 0){
@@ -2119,7 +2060,7 @@ class Platform_model extends CI_Model
                         'payload' => 'SKIP-ACTIONPLAN_1_' . $ins[0]['in_id'],
                     ))) : array() ) ),
                     array(
-                        'ln_parent_intent_id' => $in_id,
+                        'ln_parent_intent_id' => $ins[0]['in_id'],
                         'ln_parent_link_id' => $message_ln['ln_id'], //This message
                     )
                 );
@@ -2145,7 +2086,7 @@ class Platform_model extends CI_Model
             $new_progression_link = $this->Database_model->ln_create(array(
                 'ln_type_entity_id' => $progression_type_entity_id,
                 'ln_miner_entity_id' => $recipient_en['en_id'],
-                'ln_parent_intent_id' => $in_id,
+                'ln_parent_intent_id' => $ins[0]['in_id'],
                 'ln_status' => ( $is_two_step ? 1 : 2 ),
             ));
 
@@ -2174,6 +2115,70 @@ class Platform_model extends CI_Model
             //Add new progression link:
             array_push($current_progression_links, $new_progression_link);
 
+
+            /*
+             *
+             * Post-Progression Automated Actions now...
+             *
+             * */
+
+
+            //Check to see if completion notes needs to be dispatched via Messenger?
+            if($fb_messenger_format && $new_progression_link['ln_status']==2 && in_array($new_progression_link['ln_type_entity_id'], $this->config->item('en_ids_6255'))){
+
+                //Fetch on-complete messages:
+                $on_complete_messages = $this->Database_model->ln_fetch(array(
+                    'ln_status' => 2, //Published
+                    'ln_type_entity_id' => 6242, //On-Complete Tips
+                    'ln_child_intent_id' => $ins[0]['in_id'],
+                ), array(), 0, 0, array('ln_order' => 'ASC'));
+
+
+                //First let's make sure we have on-complete messages to send as most intentions do not have this (less likely to happen):
+                if(count($on_complete_messages) > 0){
+
+                    //Prep filter for search & insert:
+                    $filter = array(
+                        'ln_status' => 2,
+                        'ln_miner_entity_id' => $recipient_en['en_id'],
+                        'ln_type_entity_id' => 6255, //Action Plan Trigger On-Complete Tips
+                        'ln_parent_intent_id' => $ins[0]['in_id'], //First Action
+                    );
+
+                    //Make sure we have not sent this before (they might be completing this again...)
+                    if( count($this->Database_model->ln_fetch($filter))==0 ){
+
+                        //Never sent before, so let's log a new link:
+                        $link_log = $this->Database_model->ln_create($filter);
+
+                        //Dispatch all on-complete notes:
+                        foreach($on_complete_messages as $complete_note){
+
+                            //Send to student:
+                            $this->Communication_model->dispatch_message(
+                                $complete_note['ln_content'],
+                                $recipient_en,
+                                true,
+                                array(),
+                                array(
+                                    'ln_parent_link_id' => $link_log['ln_id'],
+                                    'ln_parent_intent_id' => $ins[0]['in_id']
+                                )
+                            );
+
+                        }
+                    }
+                }
+            }
+
+
+            //If we have no children and this link is complete, it's time to do a recursive up-wards check and see if any Web-hooks need to be trigerred...
+            if($new_progression_link['ln_status']==2 && count($in__children)==0){
+
+                //Trigger webhooks:
+                $this->Platform_model->actionplan_trigger_webhooks($ins[0]['in_id'], $recipient_en['en_id']);
+
+            }
         }
 
 
@@ -2191,10 +2196,10 @@ class Platform_model extends CI_Model
                 //Maybe do something here?
             }
 
-        } else {
+        } elseif(!$has_non_skippable_proression) {
 
             //Give option to skip:
-            if($fb_messenger_format && !$has_published_progression){
+            if($fb_messenger_format){
 
                 //Give an option to confirm IF has submission requirements:
                 if($progression_type_entity_id==6144){
@@ -2214,7 +2219,7 @@ class Platform_model extends CI_Model
 
             } else {
 
-                $next_step_message .= '<div style="font-size: 0.7em; margin-top: 10px;">Or <a href="javascript:void(0);" onclick="actionplan_skip_steps(' . $recipient_en['en_id'] . ', ' . $in_id . ')"><u>Skip</u></a>.</div>';
+                $next_step_message .= '<div style="font-size: 0.7em; margin-top: 10px;">Or <a href="javascript:void(0);" onclick="actionplan_skip_steps(' . $recipient_en['en_id'] . ', ' . $ins[0]['in_id'] . ')"><u>Skip</u></a>.</div>';
 
             }
 
@@ -2233,7 +2238,7 @@ class Platform_model extends CI_Model
                     true,
                     $next_step_quick_replies,
                     array(
-                        'ln_parent_intent_id' => $in_id, //Focus Intent
+                        'ln_parent_intent_id' => $ins[0]['in_id'], //Focus Intent
                     )
                 );
             }
@@ -2355,6 +2360,97 @@ class Platform_model extends CI_Model
         //Return results:
         return $metadata_this;
 
+    }
+
+
+    function actionplan_trigger_webhooks($in, $en_id, $student_in_ids = null){
+
+        //Search and see if this intent has any Webhooks:
+        foreach($this->Database_model->ln_fetch(array(
+            'in_status' => 2, //Published
+            'ln_status' => 2, //Published
+            'ln_type_entity_id' => 4602, //Intent Note Webhooks
+            'ln_child_intent_id' => $in['in_id'],
+        ), array('in_child'), 0, 0, array('ln_order' => 'ASC')) as $webhook_entity){
+
+            //Find all the URLs for this Webhook:
+            foreach($this->Database_model->ln_fetch(array(
+                'ln_type_entity_id' => 4256, //Linked Entities Generic URL
+                'ln_child_entity_id' => $webhook_entity['ln_parent_entity_id'], //This child entity
+                'ln_status' => 2, //Published
+            )) as $webhook_url){
+
+                //Prep filter for search/insert:
+                $filter = array(
+                    'ln_status' => 2,
+                    'ln_miner_entity_id' => $en_id,
+                    'ln_type_entity_id' => 6277, //Action Plan Progression Trigger Webhook
+                    'ln_parent_intent_id' => $in['in_id'],
+                    'ln_parent_entity_id' => $webhook_entity['ln_parent_entity_id'],
+                    'ln_content' => $webhook_url['ln_content'], //Same URL
+                );
+
+                //Make sure we have not sent this before (they might be completing this again...)
+                if( count($this->Database_model->ln_fetch($filter))==0 ) {
+
+                    //Never triggered before, so let's do it now:
+                    $trigger_results = webhook_curl_post($webhook_url['ln_content'], $in['in_id'], $en_id);
+
+                    //Did we face any issues?
+                    if(!isset($trigger_results['status']) || intval($trigger_results['status'])!=1){
+                        //It seemed that the trigger did not work properly, log an error for the admin:
+                        $this->Database_model->ln_create(array_merge($filter , array(
+                            'ln_type_entity_id' => 4246, //Platform Error
+                            'ln_miner_entity_id' => 1, //Shervin/Developer
+                            'ln_child_entity_id' => $en_id,
+                            'ln_content' => 'actionplan_trigger_webhooks() failed when calling webhook URL ['.$webhook_url['ln_content'].']',
+                            'ln_metadata' => $trigger_results,
+                        )));
+                    }
+
+                    //Log a new link while saving the trigger results:
+                    $this->Database_model->ln_create(array_merge($filter , array(
+                        'ln_metadata' => $trigger_results,
+                    )));
+                }
+            }
+        }
+
+
+        //Go through parents and detect intersects with student intentions. WARNING: Logic duplicated. Search for "ELEPHANT" to see.
+        foreach ($this->Platform_model->in_fetch_recursive_parents($in['in_id'], 2) as $parent_in_id => $grand_parent_ids) {
+
+            if(!$student_in_ids){
+                //Fetch all student intention IDs:
+                $student_in_ids = array();
+                foreach($this->Database_model->ln_fetch(array(
+                    'ln_miner_entity_id' => $en_id,
+                    'ln_type_entity_id IN (' . join(',', $this->config->item('en_ids_6147')) . ')' => null, //Action Plan Intentions
+                    'ln_status IN (' . join(',', $this->config->item('ln_status_incomplete')) . ')' => null, //incomplete intentions
+                    'in_status' => 2, //Published
+                ), array('in_parent'), 0) as $student_in){
+                    array_push($student_in_ids, $student_in['in_id']);
+                }
+            }
+
+            //Does this parent and its grandparents have an intersection with the student intentions?
+            if(array_intersect($grand_parent_ids, $student_in_ids)){
+
+                //Fetch parent intent & show:
+                $parent_ins = $this->Database_model->in_fetch(array(
+                    'in_id' => $parent_in_id,
+                ));
+
+                //See if this is complete:
+                $completion_rate = $this->Platform_model->actionplan_completion_rate($parent_ins[0], $en_id);
+                if($completion_rate['completion_percentage']==100){
+
+                    //Yes it is! Trigger Webhook recursively:
+                    $this->Platform_model->actionplan_trigger_webhooks($parent_in_id, $en_id, $student_in_ids);
+
+                }
+            }
+        }
     }
 
 
