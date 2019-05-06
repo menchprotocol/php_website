@@ -698,7 +698,7 @@ function echo_random_message($message_key){
             'I cannot respond to your custom messages and can only understand if you select one of the options that I recommend to you.',
         ),
         'command_me' => array(
-            'You can command me by sending me a message that starts with "I want to", for example "I want to assess my self" or "I want to do better at interviews"',
+            'You can add a new intention to your Action Plan by sending me a message that starts with "I want to", for example "I want to assess my self as a programmer" or "I want to get hired as a full-stack developer"',
         ),
     );
 
@@ -1758,7 +1758,7 @@ function echo_in($in, $level, $in_parent_id = 0, $is_parent = false)
     $tree_count = null;
     $tree_count_range = '0';
     if(isset($in_metadata['in__metadata_max_steps']) && isset($in_metadata['in__metadata_min_steps'])){
-        $tree_count = '<span class="btn-counter ' . echo_advance() . ' children-counter-' . $in['in_id'] . ' ' . ($is_parent && $level == 2 ? 'inb-counter' : '') . '">' . ( $in_metadata['in__metadata_min_steps']==$in_metadata['in__metadata_max_steps'] ? $in_metadata['in__metadata_max_steps'] : '~'.round(($in_metadata['in__metadata_min_steps']+$in_metadata['in__metadata_max_steps'])/2) ) . '</span>';
+        $tree_count = '<span class="btn-counter children-counter-' . $in['in_id'] . ' ' . ($is_parent && $level == 2 ? 'inb-counter' : '') . '">' . ( $in_metadata['in__metadata_min_steps']==$in_metadata['in__metadata_max_steps'] ? $in_metadata['in__metadata_max_steps'] : '~'.round(($in_metadata['in__metadata_min_steps']+$in_metadata['in__metadata_max_steps'])/2) ) . '</span>';
         $tree_count_range = ( $in_metadata['in__metadata_min_steps']==$in_metadata['in__metadata_max_steps'] ? $in_metadata['in__metadata_max_steps'] : $in_metadata['in__metadata_min_steps'].'-'.$in_metadata['in__metadata_max_steps'] );
     }
 

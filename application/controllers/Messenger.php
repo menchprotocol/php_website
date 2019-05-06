@@ -183,13 +183,15 @@ class Messenger extends CI_Controller
                 )
             );
 
-            //Log link for the release of their score:
-            $score_link = $this->Database_model->ln_create(array(
+
+            //Log link for evaluating the conditional intent tree:
+            $conditional_evaluation = $this->Database_model->ln_create(array(
                 'ln_status' => 2, //Log as a New link unless we meet the minimum student requirement to publish it instantly...
-                'ln_type_entity_id' => 6278, //Action Plan Assessment Score Card
+                'ln_type_entity_id' => 6278, //Conditional Intent Tree Evaluated
                 'ln_miner_entity_id' => $ens[0]['en_id'],
                 'ln_parent_intent_id' => $ins[0]['in_id'],
             ));
+
 
         } else {
 
@@ -211,14 +213,6 @@ class Messenger extends CI_Controller
                     'ln_parent_intent_id' => $ins[0]['in_id'],
                 )
             );
-
-            //Log link for the score cron job to be picked-up later and inform them of their score when the minimum
-            $score_link = $this->Database_model->ln_create(array(
-                'ln_status' => 2, //Log as a New link until the intent meets the minimum student requirement to publish this score card.
-                'ln_type_entity_id' => 6278, //Action Plan Assessment Score Card
-                'ln_miner_entity_id' => $ens[0]['en_id'],
-                'ln_parent_intent_id' => $ins[0]['in_id'],
-            ));
 
         }
 

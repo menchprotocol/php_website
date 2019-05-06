@@ -1855,12 +1855,32 @@ class Communication_model extends CI_Model
             $quickreply_parts = explode('_', one_two_explode('ANSWERQUESTION_', '', $quick_reply_payload));
             $parent_in_id = intval($quickreply_parts[0]);
             $answer_in_id = intval($quickreply_parts[1]);
+            if($parent_in_id < 1 || $answer_in_id < 1){
+                $this->Database_model->ln_create(array(
+                    'ln_content' => 'ANSWERQUESTION_ missing core variables ['.$parent_in_id.'] & ['.$answer_in_id.']',
+                    'ln_type_entity_id' => 4246, //Platform Error
+                    'ln_miner_entity_id' => 1, //Shervin/Developer
+                    'ln_parent_entity_id' => $en['en_id'],
+                ));
+                return false;
+            }
 
             //Validate Answer Intent:
             $answer_ins = $this->Database_model->in_fetch(array(
                 'in_id' => $answer_in_id,
                 'in_status' => 2, //Published
             ));
+            if(count($answer_ins) < 1){
+                $this->Database_model->ln_create(array(
+                    'ln_content' => 'ANSWERQUESTION_ was unable to locate published answer',
+                    'ln_type_entity_id' => 4246, //Platform Error
+                    'ln_miner_entity_id' => 1, //Shervin/Developer
+                    'ln_parent_intent_id' => $parent_in_id,
+                    'ln_child_intent_id' => $answer_in_id,
+                    'ln_parent_entity_id' => $en['en_id'],
+                ));
+                return false;
+            }
 
             //We should already have a link for this, so let's find and update it:
             $pending_answer_links = $this->Database_model->ln_fetch(array(
@@ -1869,53 +1889,40 @@ class Communication_model extends CI_Model
                 'ln_parent_intent_id' => $parent_in_id,
                 'ln_status IN (' . join(',', $this->config->item('ln_status_incomplete')) . ')' => null, //incomplete intentions
             ));
-
-            if(count($answer_ins) > 0 && count($pending_answer_links) > 0 && $answer_in_id > 0){
-
-                foreach($pending_answer_links as $ln){
-                    $this->Database_model->ln_update($ln['ln_id'], array(
-                        'ln_child_intent_id' => $answer_in_id, //Save answer
-                        'ln_status' => 2, //Publish answer
-                    ), $en['en_id']);
-                }
-
-                //See if we also need to mark the child as complete:
-                $this->Platform_model->complete_if_empty($en['en_id'], $answer_ins[0]);
-
-                //Affirm answer received answer:
-                $this->Communication_model->dispatch_message(
-                    echo_random_message('affirm_progress'),
-                    $en,
-                    true
-                );
-
-                //Find/communicate the next step:
-                $this->Platform_model->actionplan_find_next_step($en['en_id'], true, true);
-
-            } else {
-
+            if(count($pending_answer_links) < 1){
                 $this->Database_model->ln_create(array(
-                    'ln_content' => 'ANSWERQUESTION_ was unable to locate/save student answer',
+                    'ln_content' => 'ANSWERQUESTION_ was unable to locate the pending answer link.',
                     'ln_type_entity_id' => 4246, //Platform Error
                     'ln_miner_entity_id' => 1, //Shervin/Developer
                     'ln_parent_intent_id' => $parent_in_id,
                     'ln_child_intent_id' => $answer_in_id,
                     'ln_parent_entity_id' => $en['en_id'],
                 ));
-
-                //Ooops, we could not find their answer:
-                $this->Communication_model->dispatch_message(
-                    'I faced an error and was unable to save your answer. It could be because you have already answered this question using the Action Plan.',
-                    $en,
-                    true,
-                    array(),
-                    array(
-                        'ln_parent_intent_id' => $parent_in_id,
-                        'ln_child_intent_id' => $answer_in_id,
-                    )
-                );
-
+                return false;
             }
+
+
+            //All good, let's save the answer:
+
+            foreach($pending_answer_links as $ln){
+                $this->Database_model->ln_update($ln['ln_id'], array(
+                    'ln_child_intent_id' => $answer_in_id, //Save answer
+                    'ln_status' => 2, //Publish answer
+                ), $en['en_id']);
+            }
+
+            //See if we also need to mark the child as complete:
+            $this->Platform_model->complete_if_empty($en['en_id'], $answer_ins[0]);
+
+            //Affirm answer received answer:
+            $this->Communication_model->dispatch_message(
+                echo_random_message('affirm_progress'),
+                $en,
+                true
+            );
+
+            //Find/communicate the next step:
+            $this->Platform_model->actionplan_find_next_step($en['en_id'], true, true);
 
         }
     }
