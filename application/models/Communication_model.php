@@ -1971,7 +1971,7 @@ class Communication_model extends CI_Model
                     'ln_parent_entity_id' => $en['en_id'],
                     'ln_metadata' => array(
                         'pending_answer_links' => $pending_answer_links,
-                        'ln_metadata_append' => $ln_metadata_append,
+                        'ln_metadata_append' => serialize($ln_metadata_append),
                     ),
                 ));
 
