@@ -929,15 +929,13 @@ class Actionplan_model extends CI_Model
             }
 
             //See where the quick reply should be appended to:
-            if($fb_messenger_format){
+            if($fb_messenger_format && $next_in_id > 0){
 
-                if($next_in_id > 0){
-                    array_push($next_step_quick_replies, array(
-                        'content_type' => 'text',
-                        'title' => 'Next',
-                        'payload' => 'GONEXT',
-                    ));
-                }
+                array_push($next_step_quick_replies, array(
+                    'content_type' => 'text',
+                    'title' => 'Next',
+                    'payload' => 'GONEXT',
+                ));
 
                 array_push($next_step_quick_replies, array(
                     'content_type' => 'text',
