@@ -370,9 +370,9 @@ foreach (echo_fixed_fields() as $object_id => $statuses) {
 
         //Report types:
         echo '<select id="tr_group_by" class="form-control border stats-select">';
+        echo '<option value="by_ln_type">'.count($all_eng_types).' Link Types</option>';
         echo '<option value="by_tr_top_miners">Top '.$top.' Miners</option>';
         echo '<option value="by_tr_point_types">'.echo_number($all_point_payouts).' Points</option>';
-        echo '<option value="by_ln_type">'.count($all_eng_types).' Link Types</option>';
         echo '<option value="by_ln_status">4 Statuses</option>';
         echo '</select>';
 
@@ -382,12 +382,12 @@ foreach (echo_fixed_fields() as $object_id => $statuses) {
         echo '</table>';
 
         //Link Types:
-        echo '<table class="table table-condensed table-striped stats-table mini-stats-table tr_group_by by_ln_type hidden">';
+        echo '<table class="table table-condensed table-striped stats-table mini-stats-table tr_group_by by_ln_type">';
         echo $all_ln_types;
         echo '</table>';
 
         //Point Top Miners:
-        echo '<table class="table table-condensed table-striped stats-table tr_group_by by_tr_top_miners">';
+        echo '<table class="table table-condensed table-striped stats-table tr_group_by by_tr_top_miners hidden">';
         echo $top_miners;
         echo '</table>';
 
