@@ -600,7 +600,18 @@ class Actionplan_model extends CI_Model
 
             //Yes! Set appropriate variables:
             $progression_type_entity_id = 6144; //Action Plan Requirement Submitted
-            $next_step_message = $message_in_requirements;
+
+            if($has_published_progression){
+
+                //They have already completed:
+                $next_step_message = 'You have successfully completed this step.';
+
+            } else {
+
+                //They still need to complete:
+                $next_step_message = $message_in_requirements;
+
+            }
 
         } elseif(count($in__children) > 0){
 
