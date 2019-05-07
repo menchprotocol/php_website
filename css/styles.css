@@ -2515,6 +2515,14 @@ select.form-control {
     color: #999;
 }
 
+.rotate30 {
+    -webkit-transform: rotate(30deg); /* Chrome and other webkit browsers */
+    -moz-transform: rotate(30deg); /* FF */
+    -o-transform: rotate(30deg); /* Opera */
+    -ms-transform: rotate(30deg); /* IE9 */
+    transform: rotate(30deg); /* W3C compliant browsers */
+}
+
 .rotate45 {
     -webkit-transform: rotate(45deg); /* Chrome and other webkit browsers */
     -moz-transform: rotate(45deg); /* FF */

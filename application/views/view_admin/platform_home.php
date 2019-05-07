@@ -92,7 +92,7 @@ foreach (echo_fixed_fields() as $object_id => $statuses) {
         $this_ui .= '</tr>';
 
         //Increase total counter:
-        if($status_num >= 0){
+        if($status_num >= 0 || $object_id=='ln_status' /* Count all for statuses */ ){
             $this_totals += $count;
         }
     }

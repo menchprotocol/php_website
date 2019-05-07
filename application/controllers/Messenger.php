@@ -1544,7 +1544,7 @@ class Messenger extends CI_Controller
             die('Invalid Secret Key');
         }
 
-        $this->db->query("DELETE from table_links WHERE ln_miner_entity_id=".$en_id." AND ln_type_entity_id IN (" . join(',', array_merge($this->config->item('en_ids_6146'), $this->config->item('en_ids_6150'), $this->config->item('en_ids_6147'))) . ")");
+        $this->db->query("DELETE from table_links WHERE ln_miner_entity_id=".$en_id." AND ln_type_entity_id IN (" . join(',', array_merge($this->config->item('en_ids_6146'), $this->config->item('en_ids_6150'))) . ")");
         $affected_rows = $this->db->affected_rows();
         echo 'Removed '.$affected_rows.' Action Plan links.';
 
@@ -1588,7 +1588,7 @@ class Messenger extends CI_Controller
         //Fetch student's intentions as we'd need to know their top-level goals:
         $student_intents = $this->Links_model->ln_fetch(array(
             'ln_miner_entity_id' => $session_en['en_id'],
-            'ln_type_entity_id IN (' . join(',', $this->config->item('en_ids_6147')) . ')' => null, //Action Plan Intentions
+            'ln_type_entity_id' => 4235, //Action Plan Set Intention
             'ln_status IN (' . join(',', $this->config->item('ln_status_incomplete')) . ')' => null, //incomplete intentions
             'in_status' => 2, //Published
         ), array('in_parent'), 0, 0, array('ln_order' => 'ASC'));
@@ -1681,7 +1681,7 @@ class Messenger extends CI_Controller
         //Go ahead and remove from Action Plan:
         $student_intents = $this->Links_model->ln_fetch(array(
             'ln_miner_entity_id' => $_POST['en_miner_id'],
-            'ln_type_entity_id IN (' . join(',', $this->config->item('en_ids_6147')) . ')' => null, //Action Plan Intentions
+            'ln_type_entity_id' => 4235, //Action Plan Set Intention
             'ln_status IN (' . join(',', $this->config->item('ln_status_incomplete')) . ')' => null, //incomplete intentions
             'ln_parent_intent_id' => $_POST['in_id'],
         ));

@@ -11,7 +11,7 @@ defined('BASEPATH') OR exit('No direct script access allowed');
  *
  */
 
-//Generated 2019-05-06 14:58:23 PST
+//Generated 2019-05-06 18:51:39 PST
 
 //Mench:
 $config['en_ids_2738'] = array(4488, 6137, 6138, 6196, 6287);
@@ -19,7 +19,7 @@ $config['en_all_2738'] = array(
     4488 => array(
         'm_icon' => '<img src="https://mench.com/img/mench_white.png">',
         'm_name' => 'Mining Platform',
-        'm_desc' => 'A web-based tool to build and share consensus 🤝',
+        'm_desc' => 'On a mission to build and share consensus 🤝',
         'm_parents' => array(2738, 4523, 3326, 3324, 3325, 3323, 4463),
     ),
     6137 => array(
@@ -48,81 +48,99 @@ $config['en_all_2738'] = array(
     ),
 );
 
-//Action Plan Progression Skippable Link Types:
+//Action Plan Progression Automated:
 $config['en_ids_6274'] = array(4559, 6158);
 $config['en_all_6274'] = array(
     4559 => array(
-        'm_icon' => '<i class="fas fa-check-square"></i>',
+        'm_icon' => '<i class="far fa-comment-check"></i>',
         'm_name' => 'Action Plan Read Messages',
         'm_desc' => '',
         'm_parents' => array(6274, 6255, 4755, 6146, 4593),
     ),
     6158 => array(
-        'm_icon' => '<i class="fas fa-check-square"></i>',
+        'm_icon' => '<i class="far fa-check-square"></i>',
         'm_name' => 'Action Plan Review Outcome',
         'm_desc' => '',
         'm_parents' => array(6274, 6255, 4593, 4755, 6146),
     ),
 );
 
-//Action Plan Progression Trigger On-Complete Tips:
-$config['en_ids_6255'] = array(4559, 6144, 6157, 6158);
+//Action Plan Progression Completion Triggers:
+$config['en_ids_6255'] = array(4235, 4559, 6144, 6157, 6158, 6289);
 $config['en_all_6255'] = array(
+    4235 => array(
+        'm_icon' => '<i class="fas fa-bullseye-arrow"></i>',
+        'm_name' => 'Action Plan Set Intention',
+        'm_desc' => '',
+        'm_parents' => array(6255, 6146, 4506, 4755, 4593),
+    ),
     4559 => array(
-        'm_icon' => '<i class="fas fa-check-square"></i>',
+        'm_icon' => '<i class="far fa-comment-check"></i>',
         'm_name' => 'Action Plan Read Messages',
         'm_desc' => '',
         'm_parents' => array(6274, 6255, 4755, 6146, 4593),
     ),
     6144 => array(
-        'm_icon' => '<i class="fas fa-check-square"></i>',
+        'm_icon' => '<i class="fas fa-shield-check"></i>',
         'm_name' => 'Action Plan Submit Requirements',
         'm_desc' => '',
         'm_parents' => array(6255, 6244, 4755, 6146, 4593),
     ),
     6157 => array(
-        'm_icon' => '<i class="fas fa-check-square"></i>',
+        'm_icon' => '<i class="fas fa-clipboard-check"></i>',
         'm_name' => 'Action Plan Answer Question',
         'm_desc' => '',
-        'm_parents' => array(6255, 6244, 6146, 4755, 4593, 4460),
+        'm_parents' => array(6288, 6255, 6244, 6146, 4755, 4593, 4460),
     ),
     6158 => array(
-        'm_icon' => '<i class="fas fa-check-square"></i>',
+        'm_icon' => '<i class="far fa-check-square"></i>',
         'm_name' => 'Action Plan Review Outcome',
         'm_desc' => '',
         'm_parents' => array(6274, 6255, 4593, 4755, 6146),
     ),
+    6289 => array(
+        'm_icon' => '<i class="fas fa-envelope-open-dollar"></i>',
+        'm_name' => 'Action Plan 1-time PayPal Payment',
+        'm_desc' => '',
+        'm_parents' => array(6290, 6255, 4755, 4593, 6244, 6146),
+    ),
 );
 
-//Action Plan Progression 2-Step Link Types:
-$config['en_ids_6244'] = array(6144, 6157);
+//Action Plan Progression 2-Step Steps:
+$config['en_ids_6244'] = array(6144, 6157, 6289);
 $config['en_all_6244'] = array(
     6144 => array(
-        'm_icon' => '<i class="fas fa-check-square"></i>',
+        'm_icon' => '<i class="fas fa-shield-check"></i>',
         'm_name' => 'Submit Requirements',
         'm_desc' => '',
         'm_parents' => array(6255, 6244, 4755, 6146, 4593),
     ),
     6157 => array(
-        'm_icon' => '<i class="fas fa-check-square"></i>',
+        'm_icon' => '<i class="fas fa-clipboard-check"></i>',
         'm_name' => 'Answer Question',
         'm_desc' => '',
-        'm_parents' => array(6255, 6244, 6146, 4755, 4593, 4460),
+        'm_parents' => array(6288, 6255, 6244, 6146, 4755, 4593, 4460),
+    ),
+    6289 => array(
+        'm_icon' => '<i class="fas fa-envelope-open-dollar"></i>',
+        'm_name' => '1-time PayPal Payment',
+        'm_desc' => '',
+        'm_parents' => array(6290, 6255, 4755, 4593, 6244, 6146),
     ),
 );
 
-//Action Plan Completion Link Types:
+//Action Plan Completion:
 $config['en_ids_6150'] = array(6154, 6155);
 $config['en_all_6150'] = array(
     6154 => array(
         'm_icon' => '<i class="far fa-badge-check"></i>',
-        'm_name' => 'Mark Intention Complete',
+        'm_name' => 'Intention Accomplished',
         'm_desc' => 'You successfully accomplished your intention so you no longer want to receive future updates',
         'm_parents' => array(5966, 4506, 6150, 4755, 4593),
     ),
     6155 => array(
         'm_icon' => '<i class="far fa-stop-circle"></i>',
-        'm_name' => 'Terminate Intention',
+        'm_name' => 'Intention Terminated',
         'm_desc' => 'You did NOT accomplish the intention and you want to stop all future updates on this intention',
         'm_parents' => array(5966, 4506, 6150, 4593, 4755),
     ),
@@ -378,31 +396,26 @@ $config['en_all_4363'] = array(
     ),
 );
 
-//Action Plan Intention Link Types:
-$config['en_ids_6147'] = array(4235, 6140);
-$config['en_all_6147'] = array(
+//Action Plan Progression Steps:
+$config['en_ids_6146'] = array(4235, 4559, 6140, 6143, 6144, 6157, 6158, 6289);
+$config['en_all_6146'] = array(
     4235 => array(
         'm_icon' => '<i class="fas fa-bullseye-arrow"></i>',
         'm_name' => 'Set Intention',
-        'm_desc' => '',
-        'm_parents' => array(6147, 4506, 4755, 4593),
+        'm_desc' => 'The very first step of any journey is setting the intention to start the journey ✨',
+        'm_parents' => array(6255, 6146, 4506, 4755, 4593),
     ),
-    6140 => array(
-        'm_icon' => '<i class="far fa-flag"></i>',
-        'm_name' => 'Milestone Triggered',
-        'm_desc' => '',
-        'm_parents' => array(4229, 4755, 6147, 4593),
-    ),
-);
-
-//Action Plan Progression All Link Types:
-$config['en_ids_6146'] = array(4559, 6143, 6144, 6157, 6158);
-$config['en_all_6146'] = array(
     4559 => array(
-        'm_icon' => '<i class="fas fa-check-square"></i>',
+        'm_icon' => '<i class="far fa-comment-check"></i>',
         'm_name' => 'Read Messages',
         'm_desc' => 'Completed when students read the messages of an intent that does not have a completion requirement',
         'm_parents' => array(6274, 6255, 4755, 6146, 4593),
+    ),
+    6140 => array(
+        'm_icon' => '<i class="fas fa-lock-open"></i>',
+        'm_name' => 'Unlock Milestone',
+        'm_desc' => 'Expands the Action Plan when the student meets the Milestone conditions',
+        'm_parents' => array(6146, 6288, 4229, 4755, 4593),
     ),
     6143 => array(
         'm_icon' => '<i class="far fa-minus-square"></i>',
@@ -411,22 +424,28 @@ $config['en_all_6146'] = array(
         'm_parents' => array(6146, 4755, 4593),
     ),
     6144 => array(
-        'm_icon' => '<i class="fas fa-check-square"></i>',
+        'm_icon' => '<i class="fas fa-shield-check"></i>',
         'm_name' => 'Submit Requirements',
         'm_desc' => 'Completed when students submit the intent completion requirements (text, URL, video, etc...) set by miners',
         'm_parents' => array(6255, 6244, 4755, 6146, 4593),
     ),
     6157 => array(
-        'm_icon' => '<i class="fas fa-check-square"></i>',
+        'm_icon' => '<i class="fas fa-clipboard-check"></i>',
         'm_name' => 'Answer Question',
         'm_desc' => 'Completed after the student answers the question to the OR intent.',
-        'm_parents' => array(6255, 6244, 6146, 4755, 4593, 4460),
+        'm_parents' => array(6288, 6255, 6244, 6146, 4755, 4593, 4460),
     ),
     6158 => array(
-        'm_icon' => '<i class="fas fa-check-square"></i>',
+        'm_icon' => '<i class="far fa-check-square"></i>',
         'm_name' => 'Review Outcome',
         'm_desc' => 'Completed when students read the messages of an intent that does not have any messages or a completion requirement',
         'm_parents' => array(6274, 6255, 4593, 4755, 6146),
+    ),
+    6289 => array(
+        'm_icon' => '<i class="fas fa-envelope-open-dollar"></i>',
+        'm_name' => '1-time PayPal Payment',
+        'm_desc' => 'When the student is required to complete an intention with a 1-time payment set by Miners.',
+        'm_parents' => array(6290, 6255, 4755, 4593, 6244, 6146),
     ),
 );
 
@@ -675,13 +694,13 @@ $config['en_all_5966'] = array(
     ),
     6154 => array(
         'm_icon' => '<i class="far fa-badge-check"></i>',
-        'm_name' => 'Action Plan Mark Intention Complete',
+        'm_name' => 'Action Plan Intention Accomplished',
         'm_desc' => '&var_en_subscriber_ids=1,2',
         'm_parents' => array(5966, 4506, 6150, 4755, 4593),
     ),
     6155 => array(
         'm_icon' => '<i class="far fa-stop-circle"></i>',
-        'm_name' => 'Action Plan Terminate Intention',
+        'm_name' => 'Action Plan Intention Terminated',
         'm_desc' => '&var_en_subscriber_ids=1,2',
         'm_parents' => array(5966, 4506, 6150, 4593, 4755),
     ),
@@ -1067,7 +1086,7 @@ $config['en_all_4426'] = array(
 );
 
 //Link Visible to Moderators Only:
-$config['en_ids_4755'] = array(3286, 3288, 4235, 4266, 4267, 4268, 4275, 4278, 4279, 4282, 4283, 4299, 4460, 4547, 4548, 4549, 4550, 4551, 4552, 4553, 4554, 4555, 4556, 4557, 4559, 4570, 4783, 5967, 6132, 6140, 6143, 6144, 6149, 6154, 6155, 6157, 6158, 6224);
+$config['en_ids_4755'] = array(3286, 3288, 4235, 4266, 4267, 4268, 4275, 4278, 4279, 4282, 4283, 4299, 4460, 4547, 4548, 4549, 4550, 4551, 4552, 4553, 4554, 4555, 4556, 4557, 4559, 4570, 4783, 5967, 6132, 6140, 6143, 6144, 6149, 6154, 6155, 6157, 6158, 6224, 6289);
 $config['en_all_4755'] = array(
     3286 => array(
         'm_icon' => '<i class="fal fa-lock-open"></i>',
@@ -1085,7 +1104,7 @@ $config['en_all_4755'] = array(
         'm_icon' => '<i class="fas fa-bullseye-arrow"></i>',
         'm_name' => 'Action Plan Set Intention',
         'm_desc' => '',
-        'm_parents' => array(6147, 4506, 4755, 4593),
+        'm_parents' => array(6255, 6146, 4506, 4755, 4593),
     ),
     4266 => array(
         'm_icon' => '<i class="fab fa-facebook-messenger"></i>',
@@ -1131,7 +1150,7 @@ $config['en_all_4755'] = array(
     ),
     4283 => array(
         'm_icon' => '<i class="fas fa-eye"></i>',
-        'm_name' => 'Action Plan Webview Opened',
+        'm_name' => 'Action Plan List Intentions',
         'm_desc' => '',
         'm_parents' => array(6153, 4755, 4593),
     ),
@@ -1214,7 +1233,7 @@ $config['en_all_4755'] = array(
         'm_parents' => array(4755, 4593, 4277),
     ),
     4559 => array(
-        'm_icon' => '<i class="fas fa-check-square"></i>',
+        'm_icon' => '<i class="far fa-comment-check"></i>',
         'm_name' => 'Action Plan Read Messages',
         'm_desc' => '',
         'm_parents' => array(6274, 6255, 4755, 6146, 4593),
@@ -1244,10 +1263,10 @@ $config['en_all_4755'] = array(
         'm_parents' => array(6153, 4506, 4755, 4593),
     ),
     6140 => array(
-        'm_icon' => '<i class="far fa-flag"></i>',
-        'm_name' => 'Action Plan Milestone Triggered',
+        'm_icon' => '<i class="fas fa-lock-open"></i>',
+        'm_name' => 'Action Plan Unlock Milestone',
         'm_desc' => '',
-        'm_parents' => array(4229, 4755, 6147, 4593),
+        'm_parents' => array(6146, 6288, 4229, 4755, 4593),
     ),
     6143 => array(
         'm_icon' => '<i class="far fa-minus-square"></i>',
@@ -1256,37 +1275,37 @@ $config['en_all_4755'] = array(
         'm_parents' => array(6146, 4755, 4593),
     ),
     6144 => array(
-        'm_icon' => '<i class="fas fa-check-square"></i>',
+        'm_icon' => '<i class="fas fa-shield-check"></i>',
         'm_name' => 'Action Plan Submit Requirements',
         'm_desc' => '',
         'm_parents' => array(6255, 6244, 4755, 6146, 4593),
     ),
     6149 => array(
         'm_icon' => '<i class="fas fa-search-plus"></i>',
-        'm_name' => 'Action Plan Got Started',
+        'm_name' => 'Action Plan Consider Intention',
         'm_desc' => '',
         'm_parents' => array(4428, 6153, 4755, 4593),
     ),
     6154 => array(
         'm_icon' => '<i class="far fa-badge-check"></i>',
-        'm_name' => 'Action Plan Mark Intention Complete',
+        'm_name' => 'Action Plan Intention Accomplished',
         'm_desc' => '',
         'm_parents' => array(5966, 4506, 6150, 4755, 4593),
     ),
     6155 => array(
         'm_icon' => '<i class="far fa-stop-circle"></i>',
-        'm_name' => 'Action Plan Terminate Intention',
+        'm_name' => 'Action Plan Intention Terminated',
         'm_desc' => '',
         'm_parents' => array(5966, 4506, 6150, 4593, 4755),
     ),
     6157 => array(
-        'm_icon' => '<i class="fas fa-check-square"></i>',
+        'm_icon' => '<i class="fas fa-clipboard-check"></i>',
         'm_name' => 'Action Plan Answer Question',
         'm_desc' => '',
-        'm_parents' => array(6255, 6244, 6146, 4755, 4593, 4460),
+        'm_parents' => array(6288, 6255, 6244, 6146, 4755, 4593, 4460),
     ),
     6158 => array(
-        'm_icon' => '<i class="fas fa-check-square"></i>',
+        'm_icon' => '<i class="far fa-check-square"></i>',
         'm_name' => 'Action Plan Review Outcome',
         'm_desc' => '',
         'm_parents' => array(6274, 6255, 4593, 4755, 6146),
@@ -1296,6 +1315,12 @@ $config['en_all_4755'] = array(
         'm_name' => 'My Account Input Iterated',
         'm_desc' => '',
         'm_parents' => array(4755, 6222, 4593),
+    ),
+    6289 => array(
+        'm_icon' => '<i class="fas fa-envelope-open-dollar"></i>',
+        'm_name' => 'Action Plan 1-time PayPal Payment',
+        'm_desc' => '',
+        'm_parents' => array(6290, 6255, 4755, 4593, 6244, 6146),
     ),
 );
 
@@ -1460,7 +1485,7 @@ $config['en_all_4600'] = array(
 );
 
 //All Link Types:
-$config['en_ids_4593'] = array(4228, 4229, 4230, 4231, 4232, 4235, 4242, 4246, 4250, 4251, 4255, 4256, 4257, 4258, 4259, 4260, 4261, 4263, 4264, 4266, 4267, 4268, 4269, 4275, 4278, 4279, 4282, 4283, 4287, 4299, 4318, 4319, 4452, 4455, 4460, 4547, 4548, 4549, 4550, 4551, 4552, 4553, 4554, 4555, 4556, 4557, 4559, 4570, 4577, 4601, 4983, 4993, 4994, 4996, 4998, 4999, 5000, 5001, 5003, 5007, 5865, 5943, 5967, 5981, 5982, 6093, 6132, 6140, 6143, 6144, 6149, 6154, 6155, 6157, 6158, 6224, 6226, 6242, 6255, 6278);
+$config['en_ids_4593'] = array(4228, 4229, 4230, 4231, 4232, 4235, 4242, 4246, 4250, 4251, 4255, 4256, 4257, 4258, 4259, 4260, 4261, 4263, 4264, 4266, 4267, 4268, 4269, 4275, 4278, 4279, 4282, 4283, 4287, 4299, 4318, 4319, 4452, 4455, 4460, 4547, 4548, 4549, 4550, 4551, 4552, 4553, 4554, 4555, 4556, 4557, 4559, 4570, 4577, 4601, 4983, 4993, 4994, 4996, 4998, 4999, 5000, 5001, 5003, 5007, 5865, 5943, 5967, 5981, 5982, 6093, 6132, 6140, 6143, 6144, 6149, 6154, 6155, 6157, 6158, 6224, 6226, 6242, 6255, 6278, 6289);
 $config['en_all_4593'] = array(
     4228 => array(
         'm_icon' => '<i class="fal fa-check-circle"></i>',
@@ -1496,7 +1521,7 @@ $config['en_all_4593'] = array(
         'm_icon' => '<i class="fas fa-bullseye-arrow"></i>',
         'm_name' => 'Action Plan Set Intention',
         'm_desc' => 'Top-level goals set by students that enable Mench to deliver the most relevant intelligence.',
-        'm_parents' => array(6147, 4506, 4755, 4593),
+        'm_parents' => array(6255, 6146, 4506, 4755, 4593),
     ),
     4242 => array(
         'm_icon' => '<i class="fal fa-sync"></i>',
@@ -1626,7 +1651,7 @@ $config['en_all_4593'] = array(
     ),
     4283 => array(
         'm_icon' => '<i class="fas fa-eye"></i>',
-        'm_name' => 'Action Plan Webview Opened',
+        'm_name' => 'Action Plan List Intentions',
         'm_desc' => 'Once a student has added an Intention to their Action Plan, this link will be logged every time they access that Action Plan and view its intentions.',
         'm_parents' => array(6153, 4755, 4593),
     ),
@@ -1739,7 +1764,7 @@ $config['en_all_4593'] = array(
         'm_parents' => array(4755, 4593, 4277),
     ),
     4559 => array(
-        'm_icon' => '<i class="fas fa-check-square"></i>',
+        'm_icon' => '<i class="far fa-comment-check"></i>',
         'm_name' => 'Action Plan Read Messages',
         'm_desc' => 'Logged when a student receives the messages of an AND intent that does not have any completion requirements.',
         'm_parents' => array(6274, 6255, 4755, 6146, 4593),
@@ -1865,10 +1890,10 @@ $config['en_all_4593'] = array(
         'm_parents' => array(6153, 4506, 4755, 4593),
     ),
     6140 => array(
-        'm_icon' => '<i class="far fa-flag"></i>',
-        'm_name' => 'Action Plan Milestone Triggered',
+        'm_icon' => '<i class="fas fa-lock-open"></i>',
+        'm_name' => 'Action Plan Unlock Milestone',
         'm_desc' => 'Created when the student responses to OR branches meets the right % points to unlock the pathway to a conditional intent link.',
-        'm_parents' => array(4229, 4755, 6147, 4593),
+        'm_parents' => array(6146, 6288, 4229, 4755, 4593),
     ),
     6143 => array(
         'm_icon' => '<i class="far fa-minus-square"></i>',
@@ -1877,37 +1902,37 @@ $config['en_all_4593'] = array(
         'm_parents' => array(6146, 4755, 4593),
     ),
     6144 => array(
-        'm_icon' => '<i class="fas fa-check-square"></i>',
+        'm_icon' => '<i class="fas fa-shield-check"></i>',
         'm_name' => 'Action Plan Submit Requirements',
         'm_desc' => 'Logged when a student submits the requirements (text, video, etc...) of an AND intent which could not be completed by simply receiving messages.',
         'm_parents' => array(6255, 6244, 4755, 6146, 4593),
     ),
     6149 => array(
         'm_icon' => '<i class="fas fa-search-plus"></i>',
-        'm_name' => 'Action Plan Got Started',
+        'm_name' => 'Action Plan Consider Intention',
         'm_desc' => 'When a student chooses to review a given intention from the intentions they have searched or have been recommended after selecting GET STARTED from a mench.com intent landing page.',
         'm_parents' => array(4428, 6153, 4755, 4593),
     ),
     6154 => array(
         'm_icon' => '<i class="far fa-badge-check"></i>',
-        'm_name' => 'Action Plan Mark Intention Complete',
+        'm_name' => 'Action Plan Intention Accomplished',
         'm_desc' => 'Student accomplished their intention 🎉🎉🎉',
         'm_parents' => array(5966, 4506, 6150, 4755, 4593),
     ),
     6155 => array(
         'm_icon' => '<i class="far fa-stop-circle"></i>',
-        'm_name' => 'Action Plan Terminate Intention',
+        'm_name' => 'Action Plan Intention Terminated',
         'm_desc' => 'Student prematurely removed an intention from their Action Plan without accomplishing it.',
         'm_parents' => array(5966, 4506, 6150, 4593, 4755),
     ),
     6157 => array(
-        'm_icon' => '<i class="fas fa-check-square"></i>',
+        'm_icon' => '<i class="fas fa-clipboard-check"></i>',
         'm_name' => 'Action Plan Answer Question',
         'm_desc' => '',
-        'm_parents' => array(6255, 6244, 6146, 4755, 4593, 4460),
+        'm_parents' => array(6288, 6255, 6244, 6146, 4755, 4593, 4460),
     ),
     6158 => array(
-        'm_icon' => '<i class="fas fa-check-square"></i>',
+        'm_icon' => '<i class="far fa-check-square"></i>',
         'm_name' => 'Action Plan Review Outcome',
         'm_desc' => 'The most basic type of intent completion for intents that do not have any messages, completion requirements or children to choose from.',
         'm_parents' => array(6274, 6255, 4593, 4755, 6146),
@@ -1932,15 +1957,21 @@ $config['en_all_4593'] = array(
     ),
     6255 => array(
         'm_icon' => '<i class="far fa-calendar-check"></i>',
-        'm_name' => 'Action Plan Progression Trigger On-Complete Tips',
+        'm_name' => 'Action Plan Progression Completion Triggers',
         'm_desc' => '',
-        'm_parents' => array(6276, 6275, 4506, 4593, 6242, 4527),
+        'm_parents' => array(6275, 4506, 4593, 6242, 4527),
     ),
     6278 => array(
         'm_icon' => '<i class="far fa-tachometer-alt"></i>',
-        'm_name' => 'Action Plan Milestone Assessed',
+        'm_name' => 'Action Plan Evaluate Milestone',
         'm_desc' => '',
-        'm_parents' => array(4229, 4506, 4593),
+        'm_parents' => array(6153, 4229, 4506, 4593),
+    ),
+    6289 => array(
+        'm_icon' => '<i class="fas fa-envelope-open-dollar"></i>',
+        'm_name' => 'Action Plan 1-time PayPal Payment',
+        'm_desc' => '',
+        'm_parents' => array(6290, 6255, 4755, 4593, 6244, 6146),
     ),
 );
 

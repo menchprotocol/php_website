@@ -200,30 +200,6 @@ if(isset($_GET['ln_type_entity_id'])){
 
 }
 
-
-
-
-//Fetch links:
-$filter_note = '';
-if(!en_auth(array(1281))){
-    //Not a moderator:
-
-    if(count($_GET) < 1){
-        //This makes the public data focus on links with points which is a nicer initial view into links:
-        $filters['ln_points >'] = 0;
-        //Also give warning about this applied filter on the UI:
-        $filter_note = 'Showing recent link with awarded points.';
-    } else {
-        //We do have some filters passed...
-        //Make sure not to show the invisible link types:
-        $filters['ln_type_entity_id NOT IN ('.join(',' , $this->config->item('en_ids_4755')).')'] = null;
-
-        //Also give warning about this applied filter on the UI:
-        $filter_note = 'Only showing publicly visible link.';
-    }
-}
-
-
 $has_filters = ( count($_GET) > 0 );
 
 ?>
@@ -367,10 +343,6 @@ echo '<div class="row">';
         echo '</form>';
         echo '</div>';
 
-
-        if($filter_note){
-            echo '<p style="margin: 10px 0 0 0;">'.$filter_note.'</p>';
-        }
 
         //AJAX Would load content here:
         echo '<div id="link_list"></div>';

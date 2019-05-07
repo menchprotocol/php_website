@@ -48,7 +48,7 @@ if (!$hide_subscribe) {
 
         if(count($this->Links_model->ln_fetch(array(
                 'ln_miner_entity_id' => $session_en['en_id'],
-                'ln_type_entity_id IN (' . join(',', $this->config->item('en_ids_6147')) . ')' => null, //Action Plan Intentions
+                'ln_type_entity_id' => 4235, //Action Plan Set Intention
                 'ln_status IN (' . join(',', $this->config->item('ln_status_incomplete')) . ')' => null, //incomplete intentions
                 'ln_parent_intent_id' => $in['in_id'],
             ))) > 0){

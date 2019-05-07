@@ -73,7 +73,7 @@ class Actionplan_model extends CI_Model
 
         $student_intents = $this->Links_model->ln_fetch(array(
             'ln_miner_entity_id' => $en_id,
-            'ln_type_entity_id IN (' . join(',', $this->config->item('en_ids_6147')) . ')' => null, //Action Plan Intentions
+            'ln_type_entity_id' => 4235, //Action Plan Set Intention
             'ln_status IN (' . join(',', $this->config->item('ln_status_incomplete')) . ')' => null, //incomplete intentions
             'in_status' => 2, //Published
         ), array('in_parent'), 0, 0, array('ln_order' => 'ASC'));
@@ -292,7 +292,7 @@ class Actionplan_model extends CI_Model
         $top_priority_in = false;
         foreach($this->Links_model->ln_fetch(array(
             'ln_miner_entity_id' => $en_id,
-            'ln_type_entity_id IN (' . join(',', $this->config->item('en_ids_6147')) . ')' => null, //Action Plan Intentions
+            'ln_type_entity_id' => 4235, //Action Plan Set Intention
             'ln_status IN (' . join(',', $this->config->item('ln_status_incomplete')) . ')' => null, //incomplete intentions
             'in_status' => 2, //Published
         ), array('in_parent'), 0, 0, array('ln_order' => 'ASC')) as $actionplan_in){
@@ -334,12 +334,12 @@ class Actionplan_model extends CI_Model
 
         //Add intent to Student's Action Plan:
         $actionplan = $this->Links_model->ln_create(array(
-            'ln_type_entity_id' => 4235, //Student Intent
+            'ln_type_entity_id' => 4235, //Action Plan Set Intention
             'ln_status' => 1, //Drafting
             'ln_miner_entity_id' => $en_id, //Belongs to this Student
             'ln_parent_intent_id' => $ins[0]['in_id'], //The Intent they are adding
             'ln_order' => 1 + $this->Links_model->ln_max_order(array( //Place this intent at the end of all intents the Student is drafting...
-                    'ln_type_entity_id IN (' . join(',', $this->config->item('en_ids_6147')) . ')' => null, //Action Plan Intentions
+                    'ln_type_entity_id' => 4235, //Action Plan Set Intention
                     'ln_status IN (' . join(',', $this->config->item('ln_status_incomplete')) . ')' => null, //incomplete intentions
                     'ln_miner_entity_id' => $en_id, //Belongs to this Student
                 )),
@@ -1276,7 +1276,7 @@ class Actionplan_model extends CI_Model
                 $student_in_ids = array();
                 foreach($this->Links_model->ln_fetch(array(
                     'ln_miner_entity_id' => $en_id,
-                    'ln_type_entity_id IN (' . join(',', $this->config->item('en_ids_6147')) . ')' => null, //Action Plan Intentions
+                    'ln_type_entity_id' => 4235, //Action Plan Set Intention
                     'ln_status IN (' . join(',', $this->config->item('ln_status_incomplete')) . ')' => null, //incomplete intentions
                     'in_status' => 2, //Published
                 ), array('in_parent'), 0) as $student_in){

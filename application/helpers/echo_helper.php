@@ -946,7 +946,7 @@ function echo_step_range($in, $educational_mode = false){
     if($metadata['in__metadata_min_steps'] != $metadata['in__metadata_max_steps']){
 
         //It's a range:
-        return ( $educational_mode ? 'between ' : '' ) . $metadata['in__metadata_min_steps'].' - '.$metadata['in__metadata_max_steps'].' Steps' . ( $educational_mode ? ' (depends on your answers my questions)' : '' );
+        return ( $educational_mode ? 'between ' : '' ) . $metadata['in__metadata_min_steps'].' - '.$metadata['in__metadata_max_steps'].' Steps' . ( $educational_mode ? ' (depends on your answers to my questions)' : '' );
 
     } else {
 
@@ -1378,7 +1378,7 @@ function echo_in_featured($in)
     $en_all_2738 = $CI->config->item('en_all_2738');
     $already_in_actionplan = (isset($session_en['en_id']) && count($CI->Links_model->ln_fetch(array(
             'ln_miner_entity_id' => $session_en['en_id'],
-            'ln_type_entity_id IN (' . join(',', $CI->config->item('en_ids_6147')) . ')' => null, //Action Plan Intentions
+            'ln_type_entity_id' => 4235, //Action Plan Set Intention
             'ln_status IN (' . join(',', $CI->config->item('ln_status_incomplete')) . ')' => null, //incomplete intentions
             'ln_parent_intent_id' => $in['in_id'],
         ))) > 0);
