@@ -1727,7 +1727,7 @@ class Communication_model extends CI_Model
 
             //Inform Student:
             $this->Communication_model->dispatch_message(
-                'Ok! Simply send me a '.$en_all_4331[$req_ins[0]['in_requirement_entity_id']]['m_name'].' message to complete the intention to '.echo_in_outcome($req_ins[0]['in_outcome'], true),
+                'Ok! Simply send me a '.$en_all_4331[$req_ins[0]['in_requirement_entity_id']]['m_name'].' message to complete your Action PLan step to '.echo_in_outcome($req_ins[0]['in_outcome'], true),
                 $en,
                 true,
                 array(),

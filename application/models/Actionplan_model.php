@@ -550,13 +550,9 @@ class Actionplan_model extends CI_Model
          *
          * */
 
-        //Set variables:
-        $progression_messages = ''; //To be populated for webview
-        $progression_type_entity_id = 6158; //Action Plan Outcome Review
-        $next_in_id = 0; //If we don't have any children or requirements we will attempt to find the next intent to take appropriate Action
-        $next_step_message = null; //To be populated if there is a next step.
-        $next_step_quick_replies = array(); //To be populated with appropriate options to further progress form here...
-        $message_in_requirements = $this->Intents_model->in_req_completion($ins[0], $fb_messenger_format); //See if we have intent requirements
+
+        //Fetch submission requirements, messages, children and current progressions (if any):
+        $completion_req_note = $this->Intents_model->in_req_completion($ins[0], $fb_messenger_format); //See if we have intent requirements
         $in__messages = $this->Links_model->ln_fetch(array(
             'ln_status' => 2, //Published
             'ln_type_entity_id' => 4231, //Intent Note Messages
@@ -572,19 +568,124 @@ class Actionplan_model extends CI_Model
             'ln_type_entity_id IN (' . join(',', $this->config->item('en_ids_6146')) . ')' => null, //Action Plan Progression Link Types
             'ln_miner_entity_id' => $recipient_en['en_id'],
             'ln_parent_intent_id' => $ins[0]['in_id'],
-            'ln_status >=' => 0, //New+
+            'ln_status >=' => 0, //New+ [Fetch all types of progress)
         ));
-        $has_published_progression = false;
-        $has_non_skippable_proression = false; //Assume false unless proven otherwise...
+
+        //Define communication variables:
+        $next_step_message = null;
+        $next_step_quick_replies = array();
+
+        //Define step variables:
+        $has_children = (count($in__children) > 0);
+        $student_can_skip = true; //Assume TRUE unless proven otherwise...
+
+        //Let's analyse the progress made so far to better understand how to deal with this step:
+        $made_published_progress = false; //Assume FALSE, search and see...
         foreach($current_progression_links as $current_progression_link){
+
+            //Now see if we should give an option to skip
+            if($student_can_skip && !$has_children && $current_progression_link['ln_status']==2){
+                //Also make sure this was NOT an automated progression because there is no point in skipping those:
+                if(in_array($current_progression_link['ln_type_entity_id'], $this->config->item('en_ids_6274'))){
+                    $student_can_skip = false;
+                }
+            }
+
             //Action Plan Skippable Progression Llink Types
             if($current_progression_link['ln_status']==2){
-                $has_published_progression = true;
+                $made_published_progress = true;
             }
-            if($current_progression_link['ln_status']==2 && !in_array($current_progression_link['ln_type_entity_id'], $this->config->item('en_ids_6274'))){
-                $has_non_skippable_proression = true;
-            }
+
         }
+
+
+        //Let's figure out the progression method:
+        if($ins[0]['in_type']==0 /* AND */ && $completion_req_note){
+            $progression_type_entity_id = 6144; //Action Plan Requirement Submitted
+        } elseif($ins[0]['in_type']==1 /* OR */ && $has_children){
+            $progression_type_entity_id = 6157; //Action Plan Question Answered
+        } elseif(count($in__messages) > 0){
+            $progression_type_entity_id = 4559; //Action Plan Messages Read
+        } else {
+            $progression_type_entity_id = 6158; //Action Plan Outcome Review
+        }
+
+
+        //Let's learn more about the nature of this progression link:
+        $is_two_step        = in_array($progression_type_entity_id, $this->config->item('en_ids_6244')); //If TRUE, initial progression link will be logged as WORKING ON since we need student response
+        $trigger_completion = ( !$is_two_step && in_array($progression_type_entity_id, $this->config->item('en_ids_6255'))); //If TRUE AND If !$is_two_step, this would trigger the completion tips
+        $nothing_more_to_do = ( !$is_two_step && !$has_children && in_array($progression_type_entity_id, $this->config->item('en_ids_6274')) ); //If TRUE, we will auto move on to the next item
+        $recommend_featured = false; //Assume FALSE unless $nothing_more_to_do=TRUE and we do not have any next steps which means student has finished their Action Plan
+
+
+
+
+        /*
+         *
+         * Before getting started with communications,
+         * Let's see if we need to log a new progress
+         * link for this step of the Action Plan.
+         *
+         * */
+        if(count($current_progression_links)<1 || ( !$is_two_step && !$made_published_progress )){
+
+            //Log new link:
+            $new_progression_link = $this->Links_model->ln_create(array(
+                'ln_type_entity_id' => $progression_type_entity_id,
+                'ln_miner_entity_id' => $recipient_en['en_id'],
+                'ln_parent_intent_id' => $ins[0]['in_id'],
+                'ln_status' => ( $is_two_step ? 1 /* Needs more work */ : 2 /* Published */ ),
+            ));
+
+            //Since we logged a new progression, let's remove the old ones if any:
+            if(!$is_two_step && count($current_progression_links) > 0){
+                //Archive previous progression links since new one was logged:
+                foreach($current_progression_links as $key=>$ln){
+
+                    $this->Links_model->ln_update($ln['ln_id'], array(
+                        'ln_parent_link_id' => $new_progression_link['ln_id'],
+                        'ln_status' => -1,
+                    ), $recipient_en['en_id']);
+
+                    //Remove from array:
+                    unset($current_progression_links[$key]);
+                }
+            }
+
+            if(!$is_two_step){
+                $made_published_progress = true;
+            }
+
+            //Add new progression link:
+            array_push($current_progression_links, $new_progression_link);
+
+        }
+
+
+
+
+
+
+        /*
+         *
+         * Dispatch all messages, if any:
+         *
+         * */
+        $compile_html_message = null; //Will be useful only IF $fb_messenger_format=FALSE
+        foreach ($in__messages as $count => $message_ln) {
+            $compile_html_message .= $this->Communication_model->dispatch_message(
+                $message_ln['ln_content'],
+                $recipient_en,
+                $fb_messenger_format,
+                //This is when we have messages and need to append the "Next" Quick Reply to the last message:
+                array(),
+                array(
+                    'ln_parent_intent_id' => $ins[0]['in_id'],
+                    'ln_parent_link_id' => $message_ln['ln_id'], //This message
+                )
+            );
+        }
+
 
 
 
@@ -597,353 +698,273 @@ class Actionplan_model extends CI_Model
          * */
 
         //Do we have any requirements?
-        if ($ins[0]['in_type']==0 /* AND intent */ && $message_in_requirements) {
+        if ($completion_req_note && !$made_published_progress) {
 
-            //Yes! Set appropriate variables:
-            $progression_type_entity_id = 6144; //Action Plan Requirement Submitted
+            //They still need to complete:
+            $next_step_message .= $completion_req_note;
 
-            if($has_published_progression){
-
-                //They have already completed:
-                $next_step_message = 'You have successfully completed this step.';
-
-            } else {
-
-                //They still need to complete:
-                $next_step_message = $message_in_requirements;
-
+            //Give option to complete:
+            if($fb_messenger_format){
+                array_push($next_step_quick_replies, array(
+                    'content_type' => 'text',
+                    'title' => 'OK',
+                    'payload' => 'INFORMREQUIREMENT_' . $ins[0]['in_id'],
+                ));
             }
 
-        } elseif(count($in__children) > 0){
+        } elseif($has_children && $ins[0]['in_type']==1 /* OR Children */){
 
-            //We have children, now see if its AND or OR intent to act accordingly...
 
-            if ($ins[0]['in_type']==1) {
+            if($fb_messenger_format){
 
-                //OR Intent
+                /*
+                 *
+                 * Let's see if we need to cleanup the OR answer
+                 * index by merging the answer response quick replies
+                 * (See Github Issue 2234 for more details)
+                 *
+                 * */
 
-                $progression_type_entity_id = 6157; //Action Plan Question Answered
-                $next_step_message = ''; //Select one of the following options to continue:
-
-                if($fb_messenger_format){
-
-                    //See if we have answer referencing in messages...
-                    $answer_referencing = array(); //Start with nothing...
-                    foreach ($in__messages as $message_ln) {
-                        //Let's see if we can find a reference:
-                        for ($num = 1; $num <= 10; $num++) {
-                            if(substr_count($message_ln['ln_content'] , $num.'. ')==1 || substr_count($message_ln['ln_content'] , $num.".\n")==1){
-                                //Make sure we have have the previous number:
-                                if($num==1 || in_array(($num-1),$answer_referencing)){
-                                    array_push($answer_referencing, $num);
-                                }
+                $answer_referencing = array(); //Start with nothing...
+                foreach ($in__messages as $message_ln) {
+                    //Let's see if we can find a reference:
+                    for ($num = 1; $num <= 10; $num++) {
+                        if(substr_count($message_ln['ln_content'] , $num.'. ')==1 || substr_count($message_ln['ln_content'] , $num.".\n")==1){
+                            //Make sure we have have the previous number:
+                            if($num==1 || in_array(($num-1),$answer_referencing)){
+                                array_push($answer_referencing, $num);
                             }
                         }
                     }
-
-                } else {
-                    $next_step_message .= '<div class="list-group" style="margin-top:10px;">';
-                }
-
-                foreach ($in__children as $key => $child_in) {
-
-                    if ($fb_messenger_format && ($key >= 10 || strlen($next_step_message) > ($this->config->item('fb_max_message') - 150))) {
-                        //Log error link so we can look into it:
-                        $this->Links_model->ln_create(array(
-                            'ln_miner_entity_id' => 1, //Shervin/Developer
-                            'ln_content' => 'actionplan_advance_step() encountered intent with too many children to be listed as OR Intent options! Trim and iterate that intent tree.',
-                            'ln_type_entity_id' => 4246, //Platform Error
-                            'ln_parent_intent_id' => $ins[0]['in_id'],
-                            'ln_child_intent_id' => $child_in['in_id'],
-                            'ln_child_entity_id' => $recipient_en['en_id'],
-                        ));
-
-                        //Quick reply accepts 11 options max:
-                        break;
-                    }
-
-
-                    //Is this selected?
-                    $was_selected = ( $has_published_progression && $current_progression_links[0]['ln_child_intent_id']==$child_in['in_id'] );
-
-                    //Fetch history if selected:
-                    if($was_selected){
-                        $child_progression_steps = $this->Links_model->ln_fetch(array(
-                            'ln_type_entity_id IN (' . join(',', $this->config->item('en_ids_6146')) . ')' => null, //Action Plan Progression Link Types
-                            'ln_miner_entity_id' => $recipient_en['en_id'],
-                            'ln_parent_intent_id' => $current_progression_links[0]['ln_child_intent_id'],
-                            'ln_status >=' => 0,
-                        ));
-                    }
-
-
-                    if($fb_messenger_format){
-
-                        if(!in_array(($key+1), $answer_referencing)){
-                            $next_step_message .= "\n\n" . ($key+1).'. '.echo_in_outcome($child_in['in_outcome'], true);
-                        }
-
-                        if($was_selected){
-                            $next_step_message .= '['.($key+1).' Was Selected] ';
-                        } elseif(!$has_published_progression) {
-                            //For messenger only:
-                            array_push($next_step_quick_replies, array(
-                                'content_type' => 'text',
-                                'title' => ($key+1),
-                                'payload' => 'ANSWERQUESTION_' . $ins[0]['in_id'] . '_' . $child_in['in_id'],
-                            ));
-                        }
-
-                    } else {
-
-                        if(!$has_published_progression){
-                            //Need to select answer:
-                            $next_step_message .= '<a href="/messenger/actionplan_answer_question/' . $recipient_en['en_id'] . '/' . $ins[0]['in_id'] . '/' . $child_in['in_id'] . '/' . md5($this->config->item('actionplan_salt') . $child_in['in_id'] . $ins[0]['in_id'] . $recipient_en['en_id']) . '" class="list-group-item">';
-                        } elseif($was_selected){
-                            //This was selected:
-                            $next_step_message .= '<a href="/messenger/actionplan/'.$child_in['in_id'] . '" class="list-group-item">';
-                        } else {
-                            //This was NOT selected:
-                            $next_step_message .= '<span class="list-group-item" style="text-decoration: line-through;">';
-                        }
-
-
-                        if($was_selected){
-
-                            //Selected Icon:
-                            $next_step_message .= '<i class="fas fa-check-circle"></i> ';
-
-                        } else {
-
-                            //Not selected icon:
-                            $next_step_message .= '<i class="far fa-circle"></i> ';
-
-                        }
-
-                        //Add to answer list:
-                        $next_step_message .= echo_in_outcome($child_in['in_outcome'], true);
-
-                    }
-
-
-                    //HTML?
-                    if(!$fb_messenger_format){
-
-                        if($was_selected) {
-                            //Status Icon:
-                            $next_step_message .= '&nbsp;' . echo_fixed_fields('ln_student_status', (count($child_progression_steps) > 0 ? $child_progression_steps[0]['ln_status'] : 0), false, null);
-                        }
-
-                        //Close tags:
-                        if(!$has_published_progression || $was_selected){
-
-                            //Simple right icon
-                            $next_step_message .= '<span class="pull-right" style="margin-top: -6px;">';
-                            $next_step_message .= '<span class="badge badge-primary"><i class="fas fa-angle-right"></i>&nbsp;</span>';
-                            $next_step_message .= '</span>';
-
-                            $next_step_message .= '</a>';
-
-                        } else {
-
-                            $next_step_message .= '</span>';
-
-                        }
-
-                    }
-                }
-
-                if(!$fb_messenger_format){
-                    $next_step_message .= '</div>';
                 }
 
             } else {
 
-                //Simple AND intent that we'd just need to move forward:
+                $next_step_message .= '<div class="list-group" style="margin-top:10px;">';
 
-                if(count($in__children) == 1){
-                    //A single next step:
-                    $next_step_message = 'There is a single step to ' . echo_in_outcome($ins[0]['in_outcome'], true, true);
-                } else {
-                    //Multiple next steps:
-                    $next_step_message = 'There are ' . count($in__children) . ' steps to ' . echo_in_outcome($ins[0]['in_outcome'], true, true);
+            }
+
+            //List OR child answers:
+            foreach ($in__children as $key => $child_in) {
+
+                if ($fb_messenger_format && ($key >= 10 || strlen($next_step_message) > ($this->config->item('fb_max_message') - 150))) {
+                    //Log error link so we can look into it:
+                    $this->Links_model->ln_create(array(
+                        'ln_miner_entity_id' => 1, //Shervin/Developer
+                        'ln_content' => 'actionplan_advance_step() encountered intent with too many children to be listed as OR Intent options! Trim and iterate that intent tree.',
+                        'ln_type_entity_id' => 4246, //Platform Error
+                        'ln_parent_intent_id' => $ins[0]['in_id'],
+                        'ln_child_intent_id' => $child_in['in_id'],
+                        'ln_child_entity_id' => $recipient_en['en_id'],
+                    ));
+
+                    //Quick reply accepts 11 options max:
+                    break;
                 }
 
 
-                //List children:
-                $key = 0;
-                foreach ($in__children as $child_in) {
+                //Is this selected?
+                $was_selected = ( $made_published_progress && $current_progression_links[0]['ln_child_intent_id']==$child_in['in_id'] );
 
-
-                    //Make sure this AND child has a "useful" outcome by NOT referencing it's ID in its outcome:
-                    if($fb_messenger_format){
-                        $string_references = extract_references($child_in['in_outcome']);
-                        if(count($string_references['ref_intents']) > 0){
-                            //This is likely a "useless" outcome like "Answer question #8704" which should not be listed...
-                            continue;
-                        }
-                    }
-
-
-                    if($key==0){
-
-                        $next_step_message .= ':';
-
-                        if(!$fb_messenger_format){
-                            $next_step_message .= '<div class="list-group" style="margin-top:10px;">';
-                        }
-                    }
-
-                    //We know that the $next_step_message length cannot surpass the limit defined by fb_max_message variable!
-                    //make sure message is within range:
-                    if ($fb_messenger_format && ($key >= 7 || strlen($next_step_message) > ($this->config->item('fb_max_message') - 150))) {
-                        //We cannot add any more, indicate truncating:
-                        $remainder = count($in__children) - $key;
-                        $next_step_message .= "\n\n" . '... plus ' . $remainder . ' more step' . echo__s($remainder) . '.';
-                        break;
-                    }
-
-
-                    //Fetch progression data:
+                //Fetch history if selected:
+                if($was_selected){
                     $child_progression_steps = $this->Links_model->ln_fetch(array(
                         'ln_type_entity_id IN (' . join(',', $this->config->item('en_ids_6146')) . ')' => null, //Action Plan Progression Link Types
                         'ln_miner_entity_id' => $recipient_en['en_id'],
-                        'ln_parent_intent_id' => $child_in['in_id'],
+                        'ln_parent_intent_id' => $current_progression_links[0]['ln_child_intent_id'],
                         'ln_status >=' => 0,
                     ));
+                }
 
 
-                    if(!$fb_messenger_format){
+                if($fb_messenger_format){
 
-                        //Completion Percentage so far:
-                        $completion_rate = $this->Actionplan_model->actionplan_completion_rate($child_in, $recipient_en['en_id']);
+                    if(!in_array(($key+1), $answer_referencing)){
+                        $next_step_message .= "\n\n" . ($key+1).'. '.echo_in_outcome($child_in['in_outcome'], true);
+                    }
 
-                        //Open list:
-                        $next_step_message .= '<a href="/messenger/actionplan/'.$child_in['in_id']. '" class="list-group-item">';
+                    //Always add answer options to Quick Reply:
+                    array_push($next_step_quick_replies, array(
+                        'content_type' => 'text',
+                        'title' => ($key+1),
+                        'payload' => 'ANSWERQUESTION_' . $ins[0]['in_id'] . '_' . $child_in['in_id'],
+                    ));
 
-                        //Simple right icon
-                        $next_step_message .= '<span class="pull-right" style="margin-top: -6px;">';
-                        $next_step_message .= '<span class="badge badge-primary"  data-toggle="tooltip" data-placement="top" title="'.$completion_rate['steps_completed'].'/'.$completion_rate['steps_total'].' Steps Completed" style="text-decoration:none;"><span style="font-size:0.7em;">'.$completion_rate['completion_percentage'].'%</span> <i class="fas fa-angle-right"></i>&nbsp;</span>';
-                        $next_step_message .= '</span>';
+                } else {
 
-                        //Determine what icon to show:
-                        if(count($child_progression_steps) > 0){
-                            //We do have a progression link...
-                            if($child_progression_steps[0]['ln_status']==2){
-                                //Status is complete, show the progression type icon:
-                                $en_all_6146 = $this->config->item('en_all_6146');
-                                $next_step_message .= $en_all_6146[$child_progression_steps[0]['ln_type_entity_id']]['m_icon'];
-                            } else {
-                                //Status is not yet complete, so show the status icon:
-                                $next_step_message .= echo_fixed_fields('ln_student_status', $child_progression_steps[0]['ln_status'], true, null);
-                            }
-                        } else {
-                            //No progression, so show a new icon:
-                            $next_step_message .= echo_fixed_fields('ln_student_status', 0, true, null);
-                        }
+                    if(!$made_published_progress){
+                        //Need to select answer:
+                        $next_step_message .= '<a href="/messenger/actionplan_answer_question/' . $recipient_en['en_id'] . '/' . $ins[0]['in_id'] . '/' . $child_in['in_id'] . '/' . md5($this->config->item('actionplan_salt') . $child_in['in_id'] . $ins[0]['in_id'] . $recipient_en['en_id']) . '" class="list-group-item">';
+                    } elseif($was_selected){
+                        //This was selected:
+                        $next_step_message .= '<a href="/messenger/actionplan/'.$child_in['in_id'] . '" class="list-group-item">';
+                    } else {
+                        //This was NOT selected and nothing else has been selected yet:
+                        $next_step_message .= '<span class="list-group-item" style="text-decoration: line-through;">';
+                    }
 
-                        $next_step_message .= '&nbsp;';
+
+                    if($was_selected){
+
+                        //Selected Icon:
+                        $next_step_message .= '<i class="fas fa-check-circle"></i> ';
 
                     } else {
 
-                        //Add message:
-                        $next_step_message .= "\n\n" . ($key + 1) . '. ';
+                        //Not selected icon:
+                        $next_step_message .= '<i class="far fa-circle"></i> ';
 
                     }
 
-
+                    //Add to answer list:
                     $next_step_message .= echo_in_outcome($child_in['in_outcome'], true);
 
-                    if(!$fb_messenger_format){
+                }
+
+
+                //HTML?
+                if(!$fb_messenger_format){
+
+                    if($was_selected) {
+                        //Status Icon:
+                        $next_step_message .= '&nbsp;' . echo_fixed_fields('ln_student_status', (count($child_progression_steps) > 0 ? $child_progression_steps[0]['ln_status'] : 0), false, null);
+                    }
+
+                    //Close tags:
+                    if(!$made_published_progress || $was_selected){
+
+                        //Simple right icon
+                        $next_step_message .= '<span class="pull-right" style="margin-top: -6px;">';
+                        $next_step_message .= '<span class="badge badge-primary"><i class="fas fa-angle-right"></i>&nbsp;</span>';
+                        $next_step_message .= '</span>';
 
                         $next_step_message .= '</a>';
 
+                    } else {
+
+                        $next_step_message .= '</span>';
+
                     }
 
-                    $key++;
                 }
+            }
 
-                if($fb_messenger_format){
-                    //Show only the first step forward for Messenger view:
-                    array_push($next_step_quick_replies, array(
-                        'content_type' => 'text',
-                        'title' => 'Next',
-                        'payload' => 'GONEXT',
-                    ));
-                    /*
-                    //Give option to skip:
-                    array_push($next_step_quick_replies, array(
-                        'content_type' => 'text',
-                        'title' => 'Skip',
-                        'payload' => 'SKIP-ACTIONPLAN_1_' . $ins[0]['in_id'],
-                    ));
-                    */
+            if(!$fb_messenger_format){
+                $next_step_message .= '</div>';
+            }
+
+
+
+        } elseif($has_children && $ins[0]['in_type']==0 /* AND Children */){
+
+            //Give more context for Messenger only:
+            if($fb_messenger_format){
+                if(count($in__children) == 1){
+                    //A single next step:
+                    $next_step_message .= 'There is a single step to ' . echo_in_outcome($ins[0]['in_outcome'], true, true);
                 } else {
-                    if($key > 0){
-                        $next_step_message .= '</div>';
+                    //Multiple next steps:
+                    $next_step_message .= 'There are ' . count($in__children) . ' steps to ' . echo_in_outcome($ins[0]['in_outcome'], true, true);
+                }
+            }
+
+            //List AND children:
+            $key = 0;
+            foreach ($in__children as $child_in) {
+
+
+                //Make sure this AND child has a "useful" outcome by NOT referencing it's ID in its outcome:
+                if($fb_messenger_format){
+                    $string_references = extract_references($child_in['in_outcome']);
+                    if(count($string_references['ref_intents']) > 0){
+                        //This is likely a "useless" outcome like "Answer question #8704" which should not be listed...
+                        continue;
                     }
                 }
 
-            }
 
-        } else {
+                if($key==0){
+                    if($fb_messenger_format){
+                        $next_step_message .= ':';
+                    } else {
+                        $next_step_message .= '<div class="list-group" style="margin-top:10px;">';
+                    }
+                }
 
-            //No requirements OR children... So let's see if we have a next step:
-            $next_in_id = $this->Actionplan_model->actionplan_find_next_step($recipient_en['en_id'], false);
-
-            //Intent has no requirements and no children, so give call to Action:
-            if($next_in_id > 0 && !$fb_messenger_format){
-                //Show button for next step:
-                $next_step_message .= '<div style="margin: 15px 0 0;"><a href="/messenger/actionplan/next" class="btn btn-md btn-primary">Next Step <i class="fas fa-angle-right"></i></a></div>';
-            }
-
-        }
+                //We know that the $next_step_message length cannot surpass the limit defined by fb_max_message variable!
+                //make sure message is within range:
+                if ($fb_messenger_format && ($key >= 7 || strlen($next_step_message) > ($this->config->item('fb_max_message') - 150))) {
+                    //We cannot add any more, indicate truncating:
+                    $remainder = count($in__children) - $key;
+                    $next_step_message .= "\n\n" . '... plus ' . $remainder . ' more step' . echo__s($remainder) . '.';
+                    break;
+                }
 
 
-
-
-
-        //Always communicate intent messages if any:
-        if(count($in__messages) > 0){
-
-            //Update progression type if its still basic:
-            if($progression_type_entity_id==6158){
-                $progression_type_entity_id = 4559; //Action Plan Messages Read
-            }
-
-            //Dispatch intent messages if not skipped:
-            foreach ($in__messages as $count => $message_ln) {
-
-                $progression_messages .= $this->Communication_model->dispatch_message(
-                    $message_ln['ln_content'],
-                    $recipient_en,
-                    $fb_messenger_format,
-                    //This is when we have messages and need to append the "Next" Quick Reply to the last message:
-                    array(),
-                    array(
-                        'ln_parent_intent_id' => $ins[0]['in_id'],
-                        'ln_parent_link_id' => $message_ln['ln_id'], //This message
-                    )
-                );
-
-            }
-
-            //See where the quick reply should be appended to:
-            if($fb_messenger_format && $next_in_id > 0){
-
-                array_push($next_step_quick_replies, array(
-                    'content_type' => 'text',
-                    'title' => 'Next',
-                    'payload' => 'GONEXT',
+                //Fetch progression data:
+                $child_progression_steps = $this->Links_model->ln_fetch(array(
+                    'ln_type_entity_id IN (' . join(',', $this->config->item('en_ids_6146')) . ')' => null, //Action Plan Progression Link Types
+                    'ln_miner_entity_id' => $recipient_en['en_id'],
+                    'ln_parent_intent_id' => $child_in['in_id'],
+                    'ln_status >=' => 0,
                 ));
 
-                array_push($next_step_quick_replies, array(
-                    'content_type' => 'text',
-                    'title' => 'Skip',
-                    'payload' => 'SKIP-ACTIONPLAN_1_' . $ins[0]['in_id'],
-                ));
 
+                if(!$fb_messenger_format){
+
+                    //Completion Percentage so far:
+                    $completion_rate = $this->Actionplan_model->actionplan_completion_rate($child_in, $recipient_en['en_id']);
+
+                    //Open list:
+                    $next_step_message .= '<a href="/messenger/actionplan/'.$child_in['in_id']. '" class="list-group-item">';
+
+                    //Simple right icon
+                    $next_step_message .= '<span class="pull-right" style="margin-top: -6px;">';
+                    $next_step_message .= '<span class="badge badge-primary"  data-toggle="tooltip" data-placement="top" title="'.$completion_rate['steps_completed'].'/'.$completion_rate['steps_total'].' Steps Completed" style="text-decoration:none;"><span style="font-size:0.7em;">'.$completion_rate['completion_percentage'].'%</span> <i class="fas fa-angle-right"></i>&nbsp;</span>';
+                    $next_step_message .= '</span>';
+
+                    //Determine what icon to show:
+                    if(count($child_progression_steps) > 0){
+                        //We do have a progression link...
+                        if($child_progression_steps[0]['ln_status']==2){
+                            //Status is complete, show the progression type icon:
+                            $en_all_6146 = $this->config->item('en_all_6146');
+                            $next_step_message .= $en_all_6146[$child_progression_steps[0]['ln_type_entity_id']]['m_icon'];
+                        } else {
+                            //Status is not yet complete, so show the status icon:
+                            $next_step_message .= echo_fixed_fields('ln_student_status', $child_progression_steps[0]['ln_status'], true, null);
+                        }
+                    } else {
+                        //No progression, so show a new icon:
+                        $next_step_message .= echo_fixed_fields('ln_student_status', 0, true, null);
+                    }
+
+                    $next_step_message .= '&nbsp;';
+
+                } else {
+
+                    //Add message:
+                    $next_step_message .= "\n\n" . ($key + 1) . '. ';
+
+                }
+
+
+                $next_step_message .= echo_in_outcome($child_in['in_outcome'], true);
+
+                if(!$fb_messenger_format){
+
+                    $next_step_message .= '</a>';
+
+                }
+
+                $key++;
             }
+
+            if(!$fb_messenger_format && $key > 0){
+                //Close the HTML tag we opened:
+                $next_step_message .= '</div>';
+            }
+
         }
 
 
@@ -951,143 +972,50 @@ class Actionplan_model extends CI_Model
 
         /*
          *
-         * Log progression link
+         * Call to Action
+         *
+         * We've did everything we had to do for the current
+         * step, now let's see what's next and how should
+         * we move forward...
          *
          * */
 
-        //Is this a 2-step Link type where we insert a pending link and later update it when requirements submitted?
-        $is_two_step = in_array($progression_type_entity_id , $this->config->item('en_ids_6244'));
+        //NEXT? Only possible if NOT a 2-step progress OR if progress has been made:
+        if(!$is_two_step || $made_published_progress){
 
-        //Log the progression link if not logged before:
-        if(!$is_two_step || count($current_progression_links)==0){
+            $has_next_step = $has_children;
+            if(!$has_next_step){
+                //Let's see if we have a next step:
+                $next_in_id = $this->Actionplan_model->actionplan_find_next_step($recipient_en['en_id'], false);
+                $has_next_step = ( $next_in_id > 0);
+            }
 
-            //Log new link:
-            $new_progression_link = $this->Links_model->ln_create(array(
-                'ln_type_entity_id' => $progression_type_entity_id,
-                'ln_miner_entity_id' => $recipient_en['en_id'],
-                'ln_parent_intent_id' => $ins[0]['in_id'],
-                'ln_status' => ( $is_two_step ? 1 : 2 ),
-            ));
+            if($has_next_step){
+                //Option to go next:
+                if($fb_messenger_format){
 
-            //Since we logged a new progression, let's remove the old ones if any:
-            if(!$is_two_step && count($current_progression_links) > 0){
+                    array_push($next_step_quick_replies, array(
+                        'content_type' => 'text',
+                        'title' => 'Next',
+                        'payload' => 'GONEXT',
+                    ));
 
-                //Archive previous progression links since new one was logged:
-                foreach($current_progression_links as $key=>$ln){
+                } else {
 
-                    $this->Links_model->ln_update($ln['ln_id'], array(
-                        'ln_parent_link_id' => $new_progression_link['ln_id'],
-                        'ln_status' => -1,
-                    ), $recipient_en['en_id']);
-
-                    //Remove from array:
-                    unset($current_progression_links[$key]);
+                    $next_step_message .= '<div style="margin: 15px 0 0;"><a href="/messenger/actionplan/next" class="btn btn-md btn-primary">Next Step <i class="fas fa-angle-right"></i></a></div>';
 
                 }
-
-            }
-
-            if(!$is_two_step){
-                $has_published_progression = true;
-            }
-
-            //Add new progression link:
-            array_push($current_progression_links, $new_progression_link);
-
-
-            /*
-             *
-             * Post-Progression Automated Actions now...
-             *
-             * */
-
-
-            //Check to see if completion notes needs to be dispatched via Messenger?
-            if($fb_messenger_format && $new_progression_link['ln_status']==2 && in_array($new_progression_link['ln_type_entity_id'], $this->config->item('en_ids_6255'))){
-
-                //Fetch on-complete messages:
-                $on_complete_messages = $this->Links_model->ln_fetch(array(
-                    'ln_status' => 2, //Published
-                    'ln_type_entity_id' => 6242, //On-Complete Tips
-                    'ln_child_intent_id' => $ins[0]['in_id'],
-                ), array(), 0, 0, array('ln_order' => 'ASC'));
-
-
-                //First let's make sure we have on-complete messages to send as most intentions do not have this (less likely to happen):
-                if(count($on_complete_messages) > 0){
-
-                    //Prep filter for search & insert:
-                    $filter = array(
-                        'ln_status' => 2,
-                        'ln_miner_entity_id' => $recipient_en['en_id'],
-                        'ln_type_entity_id' => 6255, //Action Plan Trigger On-Complete Tips
-                        'ln_parent_intent_id' => $ins[0]['in_id'], //First Action
-                    );
-
-                    //Make sure we have not sent this before (they might be completing this again...)
-                    if( count($this->Links_model->ln_fetch($filter))==0 ){
-
-                        //Never sent before, so let's log a new link:
-                        $link_log = $this->Links_model->ln_create($filter);
-
-                        //Dispatch all on-complete notes:
-                        foreach($on_complete_messages as $complete_note){
-
-                            //Send to student:
-                            $this->Communication_model->dispatch_message(
-                                $complete_note['ln_content'],
-                                $recipient_en,
-                                true,
-                                array(),
-                                array(
-                                    'ln_parent_link_id' => $link_log['ln_id'],
-                                    'ln_parent_intent_id' => $ins[0]['in_id']
-                                )
-                            );
-
-                        }
-                    }
-                }
-            }
-
-
-            //If we have no children and this link is complete, it's time to do a recursive up-wards check and see if any Web-hooks need to be trigerred...
-            if($new_progression_link['ln_status']==2 && count($in__children)==0){
-
-                //Trigger webhooks:
-                $this->Actionplan_model->deprecate__actionplan_trigger_webhooks($ins[0]['in_id'], $recipient_en['en_id']);
-
+            } else {
+                //No next step found! This must be it...
+                $next_step_message = 'This was your final step 🎉🎉🎉';
+                $recommend_featured = true;
             }
         }
 
-
-
-
-
-        $trigger_recommendations = false;
-        if(!$next_step_message && count($next_step_quick_replies)==0){
-
-            if($next_in_id < 1){
-                //No next step found! This seems to be the end:
-                $next_step_message = 'This was your final step 🎉🎉🎉';
-                $trigger_recommendations = true;
-            } else {
-                //Maybe do something here?
-            }
-
-        } elseif(!$has_non_skippable_proression && count($in__children) > 0) {
-
+        //SKIP?
+        if($student_can_skip) {
             //Give option to skip:
             if($fb_messenger_format){
-
-                //Give an option to confirm IF has submission requirements:
-                if($progression_type_entity_id==6144){
-                    array_push($next_step_quick_replies, array(
-                        'content_type' => 'text',
-                        'title' => 'OK',
-                        'payload' => 'INFORMREQUIREMENT_' . $ins[0]['in_id'],
-                    ));
-                }
 
                 //Give option to skip Student Intent:
                 array_push($next_step_quick_replies, array(
@@ -1101,12 +1029,19 @@ class Actionplan_model extends CI_Model
                 $next_step_message .= '<div style="font-size: 0.7em; margin-top: 10px;">Or <a href="javascript:void(0);" onclick="actionplan_skip_steps(' . $recipient_en['en_id'] . ', ' . $ins[0]['in_id'] . ')"><u>Skip</u></a>.</div>';
 
             }
-
         }
 
 
 
-        //Dispatch instructional message if any:
+
+
+
+
+        /*
+         *
+         * Dispatch Messenger message
+         *
+         * */
         if($fb_messenger_format) {
 
             if(strlen($next_step_message) > 0 || count($next_step_quick_replies) > 0){
@@ -1122,23 +1057,84 @@ class Actionplan_model extends CI_Model
                 );
             }
 
-            if($trigger_recommendations){
+            if($recommend_featured){
                 //List featured intents and let them choose:
                 $this->Communication_model->suggest_featured_intents($recipient_en['en_id']);
             }
 
-        } else {
-
-            //Format for HTML:
-            $progression_messages .= '<div class="msg" style="margin-top: 15px;">'.nl2br($next_step_message).'</div>';
-
         }
+
+
+
+
+
+        /*
+         *
+         * Post-Progression Automated Actions now...
+         *
+         * */
+
+
+        //Check to see if completion notes needs to be dispatched via Messenger?
+        if($fb_messenger_format && $made_published_progress && $trigger_completion){
+
+            //Fetch on-complete messages:
+            $on_complete_messages = $this->Links_model->ln_fetch(array(
+                'ln_status' => 2, //Published
+                'ln_type_entity_id' => 6242, //On-Complete Tips
+                'ln_child_intent_id' => $ins[0]['in_id'],
+            ), array(), 0, 0, array('ln_order' => 'ASC'));
+
+
+            //First let's make sure we have on-complete messages to send as most intentions do not have this (less likely to happen):
+            if(count($on_complete_messages) > 0){
+
+                //Prep filter for search & insert:
+                $filter = array(
+                    'ln_status' => 2,
+                    'ln_miner_entity_id' => $recipient_en['en_id'],
+                    'ln_type_entity_id' => 6255, //Action Plan Trigger On-Complete Tips
+                    'ln_parent_intent_id' => $ins[0]['in_id'], //First Action
+                );
+
+                //Make sure we have not sent this before (they might be completing this again...)
+                if( count($this->Links_model->ln_fetch($filter))==0 ){
+
+                    //Never sent before, so let's log a new link:
+                    $link_log = $this->Links_model->ln_create($filter);
+
+                    //Dispatch all on-complete notes:
+                    foreach($on_complete_messages as $complete_note){
+
+                        //Send to student:
+                        $this->Communication_model->dispatch_message(
+                            $complete_note['ln_content'],
+                            $recipient_en,
+                            true,
+                            array(),
+                            array(
+                                'ln_parent_link_id' => $link_log['ln_id'],
+                                'ln_parent_intent_id' => $ins[0]['in_id']
+                            )
+                        );
+
+                    }
+                }
+            }
+        }
+
+
+
+
 
         //Return data:
         return array(
             'status' => 1,
-            'message' => $progression_messages, //Used for HTML webview
-            'progression_links' => $current_progression_links,
+            'message' => 'Success',
+
+            //Do we need to return the HTML UI?
+            'html_messages' => ( $fb_messenger_format ? null : $compile_html_message . '<div class="msg" style="margin-top: 15px;">'.nl2br($next_step_message).'</div>' ),
+            'html_progress_links' => ( $fb_messenger_format ? null : $current_progression_links ),
         );
 
     }

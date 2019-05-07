@@ -65,7 +65,7 @@ $en_all_6146 = $this->config->item('en_all_6146');
 $fixed_fields = $this->config->item('fixed_fields');
 $submission_messages = null;
 $trigger_on_complete_tips = false;
-foreach($advance_step['progression_links'] as $pl){
+foreach($advance_step['html_progress_links'] as $pl){
 
     echo '<span style="margin-right:10px;" class="status-label underdot" data-toggle="tooltip" data-placement="top" title="Status is '.$fixed_fields['ln_student_status'][$pl['ln_status']]['s_name'].': '.$fixed_fields['ln_student_status'][$pl['ln_status']]['s_desc'].'">'.( $pl['ln_status']==2 /* Published? */ ? $en_all_6146[$pl['ln_type_entity_id']]['m_icon'] /* Show Progression Type */ : $fixed_fields['ln_student_status'][$pl['ln_status']]['s_icon'] /* Show Status */ ).' '.$en_all_6146[$pl['ln_type_entity_id']]['m_name'].'</span>';
 
@@ -116,7 +116,7 @@ echo $submission_messages;
 if($advance_step['status']){
 
     //All good, show messages:
-    echo $advance_step['message'];
+    echo $advance_step['html_messages'];
 
 } else {
     //Ooooops, show error:

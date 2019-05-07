@@ -484,7 +484,7 @@ class Intents_model extends CI_Model
          *
          * */
 
-        if ($in['in_requirement_entity_id'] == 6087) {
+        if ( $in['in_type']==1 /* OR Intent */ || $in['in_requirement_entity_id'] == 6087) {
             //Does not have any requirements:
             return null;
         }
@@ -494,18 +494,8 @@ class Intents_model extends CI_Model
         //Fetch latest cache tree:
         $en_all_4331 = $this->config->item('en_all_4331'); //Intent Completion Requirements
 
-        //Single option:
-        $message = 'Marking as complete requires a ' . $en_all_4331[$in['in_requirement_entity_id']]['m_name'].' message which you can send me ';
-
-        //Give clear directions to complete if Action Plan ID is provided...
-        if ($fb_messenger_format) {
-            $message .= 'right here using Messenger.';
-        } else {
-            $message .= 'on Messenger.';
-        }
-
         //Return Student-friendly message for completion requirements:
-        return $message;
+        return 'Send me a ' . strtolower($en_all_4331[$in['in_requirement_entity_id']]['m_name']).' message'.( !$fb_messenger_format ? ' via Messenger' : '' ).' to complete this step.';
 
     }
 
