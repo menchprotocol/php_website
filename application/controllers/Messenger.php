@@ -570,7 +570,7 @@ class Messenger extends CI_Controller
                             //Load requirement names:
                             $en_all_4592 = $this->config->item('en_all_4592');
                             $next_step_quick_replies = array();
-                            $next_step_message = 'I can append your '.$en_all_4592[$in_requirements_search]['m_name'].' message to '.( count($pending_in_requirements) > 1 ? ' one of' : '' ).' the following:';
+                            $next_step_message = 'I can append your '.$en_all_4592[$in_requirements_search]['m_name'].' message to'.( count($pending_in_requirements) > 1 ? ' one of' : '' ).' the following:';
 
                             //Append all options:
                             foreach($pending_in_requirements as $count => $requirement_in_ln){

@@ -78,7 +78,7 @@ foreach($advance_step['progression_links'] as $pl){
         //Student seems to have submitted messages for this:
         $submission_messages .= '<span class="i_content"><span class="msg">'.$en_all_4331[$in['in_requirement_entity_id']]['m_icon'].' '.$en_all_4331[$in['in_requirement_entity_id']]['m_name'].' message added '.echo_time_difference(strtotime($pl['ln_timestamp'])).' ago:</span></span>';
 
-        $submission_messages .= $this->Communication_model->dispatch_message($pl['ln_content'], $session_en);
+        $submission_messages .= '<div class="white-bg">'.$this->Communication_model->dispatch_message($pl['ln_content'], $session_en).'</div>';
     }
 
 }
