@@ -553,27 +553,38 @@ class Messenger extends CI_Controller
                     $new_message = $this->Links_model->ln_create($ln_data);
 
 
-                    //Did we have a potential response?
+                    //Did we have a pending response?
                     if(isset($new_message['ln_id']) && $in_requirements_search > 0){
 
+                        $pending_matches = array();
+                        $pending_mismatches = array();
+                        $en_all_4592 = $this->config->item('en_all_4592'); //Requirement names
+
                         //Yes, see if we have a pending requirement submission:
-                        $pending_in_requirements = $this->Links_model->ln_fetch(array(
+                        foreach($this->Links_model->ln_fetch(array(
                             'ln_type_entity_id' => 6144, //Action Plan Submit Requirements
                             'ln_miner_entity_id' => $ln_data['ln_miner_entity_id'], //for this student
                             'ln_status IN (' . join(',', $this->config->item('ln_status_incomplete')) . ')' => null, //incomplete
                             'in_status' => 2, //Published
-                            'in_requirement_entity_id' => $in_requirements_search,
-                        ), array('in_parent'), 0);
+                        ), array('in_parent'), 0) as $req_sub){
+                            if($req_sub['in_requirement_entity_id']==$in_requirements_search){
+                                array_push($pending_matches, $req_sub);
+                            } else {
+                                array_push($pending_mismatches, $req_sub);
+                            }
+                        }
 
-                        if(count($pending_in_requirements) > 0){
+                        //Did we find any matching or mismatching requirement submissions?
+                        if(count($pending_matches) > 0){
 
-                            //Load requirement names:
-                            $en_all_4592 = $this->config->item('en_all_4592');
+                            //We have some matches, focus on this:
+
+                            //Yes, it's all good:
                             $next_step_quick_replies = array();
-                            $next_step_message = 'I can append your '.$en_all_4592[$in_requirements_search]['m_name'].' message to'.( count($pending_in_requirements) > 1 ? ' one of' : '' ).' the following:';
+                            $next_step_message = 'Nice! Should I add your '.$en_all_4592[$in_requirements_search]['m_name'].' message to'.( count($pending_matches) > 1 ? ' one of' : '' ).' the following Action Plan step'.echo__s(count($pending_matches)).':';
 
                             //Append all options:
-                            foreach($pending_in_requirements as $count => $requirement_in_ln){
+                            foreach($pending_matches as $count => $requirement_in_ln){
                                 $next_step_message .= "\n\n" . ($count+1) .'. '.echo_in_outcome($requirement_in_ln['in_outcome'] , true);
                                 array_push($next_step_quick_replies, array(
                                     'content_type' => 'text',
@@ -582,12 +593,13 @@ class Messenger extends CI_Controller
                                 ));
                             }
 
-                            //Give option to cancel:
+                            //Give option to skip first match only:
                             array_push($next_step_quick_replies, array(
                                 'content_type' => 'text',
-                                'title' => 'Cancel',
-                                'payload' => 'APPENDRESPONSE_CANCEL',
+                                'title' => 'Skip',
+                                'payload' => 'SKIP-ACTIONPLAN_1_' . $pending_matches[0]['in_id'],
                             ));
+
 
                             //We did find a pending submission requirement, confirm with student:
                             $this->Communication_model->dispatch_message(
@@ -597,15 +609,28 @@ class Messenger extends CI_Controller
                                 $next_step_quick_replies
                             );
 
+                        } elseif(count($pending_mismatches) > 0){
+
+                            //Only focus on the first mismatch, ignore the rest if any!
+                            $mismatch_focus = $pending_mismatches[0];
+
+                            //We did not have any matches, but has some mismatches, maybe that's what they meant?
+                            $this->Communication_model->dispatch_message(
+                                'I cannot accept your '.strtolower($en_all_4592[$in_requirements_search]['m_name']).' message as I am expecting a '.strtolower($en_all_4592[$mismatch_focus['in_requirement_entity_id']]['m_name']).' message to complete your Action Plan step to '.echo_in_outcome($mismatch_focus['in_outcome'].'. Please send me a '.strtolower($en_all_4592[$mismatch_focus['in_requirement_entity_id']]['m_name']).' message or say "skip" to continue...', true, true),
+                                $en,
+                                true
+                            );
+
                         } elseif($ln_data['ln_type_entity_id']==4547){
 
-                            //Digest text message & try to make sense of it:
+                            //No requirement submissions for this text message... Digest text message & try to make sense of it:
                             $this->Communication_model->digest_text_message($en, $im['message']['text']);
 
                         } else {
+
                             //Let them know that we did not understand them:
                             $this->Communication_model->dispatch_message(
-                                echo_random_message('one_way_only'),
+                                'I cannot make sense of your '.$en_all_4592[$in_requirements_search]['m_name'].' message! '.echo_random_message('one_way_only'),
                                 $en,
                                 true,
                                 array(
@@ -616,6 +641,7 @@ class Messenger extends CI_Controller
                                     )
                                 )
                             );
+
                         }
                     }
 

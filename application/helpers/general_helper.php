@@ -113,7 +113,7 @@ function base64_url_decode($input)
 }
 
 
-function extract_message_references($ln_content)
+function extract_references($ln_content)
 {
 
     //Analyzes a message text to extract Entity References (Like @123) and URLs
@@ -124,7 +124,7 @@ function extract_message_references($ln_content)
     $parts = preg_split('/\s+/', $ln_content);
 
     //Analyze the message to find referencing URLs and Entities in the message text:
-    $msg_references = array(
+    $string_references = array(
         'ref_urls' => array(),
         'ref_entities' => array(),
         'ref_intents' => array(),
@@ -140,7 +140,7 @@ function extract_message_references($ln_content)
             $command = includes_any($part, array('/firstname', '/slice', '/link'));
             if ($command) {
                 //Yes!
-                array_push($msg_references['ref_commands'], $command);
+                array_push($string_references['ref_commands'], $command);
 
                 //Take more specific action:
                 if($command=='/link'){
@@ -149,14 +149,14 @@ function extract_message_references($ln_content)
             }
 
         } elseif (filter_var($part, FILTER_VALIDATE_URL)) {
-            array_push($msg_references['ref_urls'], $part);
+            array_push($string_references['ref_urls'], $part);
         } elseif (substr($part, 0, 1) == '@' && is_numeric(substr($part, 1))) {
-            array_push($msg_references['ref_entities'], intval(substr($part, 1)));
+            array_push($string_references['ref_entities'], intval(substr($part, 1)));
         } elseif (substr($part, 0, 1) == '#' && is_numeric(substr($part, 1))) {
-            array_push($msg_references['ref_intents'], intval(substr($part, 1)));
+            array_push($string_references['ref_intents'], intval(substr($part, 1)));
         }
     }
-    return $msg_references;
+    return $string_references;
 }
 
 

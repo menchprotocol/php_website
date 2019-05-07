@@ -239,53 +239,53 @@ class Communication_model extends CI_Model
          * that does not consider $message_type_en_id if passed
          *
          * */
-        $msg_references = extract_message_references($input_message);
+        $string_references = extract_references($input_message);
 
-        if (count($msg_references['ref_urls']) > 1) {
+        if (count($string_references['ref_urls']) > 1) {
 
             return array(
                 'status' => 0,
                 'message' => 'You can reference a maximum of 1 URL per message',
             );
 
-        } elseif (count($msg_references['ref_entities']) > 1) {
+        } elseif (count($string_references['ref_entities']) > 1) {
 
             return array(
                 'status' => 0,
                 'message' => 'Message can include a maximum of 1 entity reference',
             );
 
-        } elseif (!$fb_messenger_format && count($msg_references['ref_intents']) > 1) {
+        } elseif (!$fb_messenger_format && count($string_references['ref_intents']) > 1) {
 
             return array(
                 'status' => 0,
                 'message' => 'Message can include a maximum of 1 intent reference',
             );
 
-        } elseif (!$fb_messenger_format && count($msg_references['ref_intents']) > 0 && count($msg_references['ref_entities']) != 1)  {
+        } elseif (!$fb_messenger_format && count($string_references['ref_intents']) > 0 && count($string_references['ref_entities']) != 1)  {
 
             return array(
                 'status' => 0,
                 'message' => 'Intent referencing requires an entity reference',
             );
 
-        } elseif (!$fb_messenger_format && count($msg_references['ref_entities']) > 0 && count($msg_references['ref_urls']) > 0) {
+        } elseif (!$fb_messenger_format && count($string_references['ref_entities']) > 0 && count($string_references['ref_urls']) > 0) {
 
             return array(
                 'status' => 0,
                 'message' => 'You can either reference 1 entity OR 1 URL (As the URL will be transformed into an entity)',
             );
 
-        } elseif (count($msg_references['ref_commands']) > 0) {
+        } elseif (count($string_references['ref_commands']) > 0) {
 
-            if(count($msg_references['ref_commands']) != count(array_unique($msg_references['ref_commands']))){
+            if(count($string_references['ref_commands']) != count(array_unique($string_references['ref_commands']))){
 
                 return array(
                     'status' => 0,
                     'message' => 'Each /command can only be used once per message',
                 );
 
-            } elseif(in_array('/link',$msg_references['ref_commands']) && count($quick_replies) > 0){
+            } elseif(in_array('/link',$string_references['ref_commands']) && count($quick_replies) > 0){
 
                 return array(
                     'status' => 0,
@@ -332,7 +332,7 @@ class Communication_model extends CI_Model
             } elseif(count($completion_requirements) == 1){
 
                 $en_id = array_shift($completion_requirements);
-                $is_url_reference = (count($msg_references['ref_entities'])>0 && $en_id==4256); //TODO Also check/require @4986 as parent entity
+                $is_url_reference = (count($string_references['ref_entities'])>0 && $en_id==4256); //TODO Also check/require @4986 as parent entity
 
                 if(!($en_id==$detected_ln_type['ln_type_entity_id']) && !$is_url_reference){
                     return array(
@@ -348,7 +348,7 @@ class Communication_model extends CI_Model
             if(in_array(4985 , $en_all_4485[$message_type_en_id]['m_parents'])){
 
                 //Is it missing its required intent reference?
-                if(count($msg_references['ref_intents']) < 1){
+                if(count($string_references['ref_intents']) < 1){
                     return array(
                         'status' => 0,
                         'message' => $en_all_4485[$message_type_en_id]['m_name'].' require an intent reference.',
@@ -360,7 +360,7 @@ class Communication_model extends CI_Model
                     );
                 }
 
-            } elseif(!in_array(4985 , $en_all_4485[$message_type_en_id]['m_parents']) && count($msg_references['ref_intents']) > 0){
+            } elseif(!in_array(4985 , $en_all_4485[$message_type_en_id]['m_parents']) && count($string_references['ref_intents']) > 0){
 
                 return array(
                     'status' => 0,
@@ -370,7 +370,7 @@ class Communication_model extends CI_Model
             }
 
             //Now check for entity referencing settings:
-            if(!in_array(4986 , $en_all_4485[$message_type_en_id]['m_parents']) && count($msg_references['ref_entities']) > 0){
+            if(!in_array(4986 , $en_all_4485[$message_type_en_id]['m_parents']) && count($string_references['ref_entities']) > 0){
 
                 return array(
                     'status' => 0,
@@ -396,7 +396,7 @@ class Communication_model extends CI_Model
          *
          * */
 
-        if (($fb_messenger_format && !isset($recipient_en['en_psid'])) || (isset($recipient_en['en_id']) && in_array('/firstname', $msg_references['ref_commands']) && !isset($recipient_en['en_name']))) {
+        if (($fb_messenger_format && !isset($recipient_en['en_psid'])) || (isset($recipient_en['en_id']) && in_array('/firstname', $string_references['ref_commands']) && !isset($recipient_en['en_name']))) {
 
             //We have partial entity data, but we're missing some needed information...
 
@@ -486,7 +486,7 @@ class Communication_model extends CI_Model
          * (turn URL into an entity reference)
          *
          * */
-        if (count($msg_references['ref_urls']) > 0) {
+        if (count($string_references['ref_urls']) > 0) {
 
             //Fetch session user:
             $session_en = $this->session->userdata('user');
@@ -499,7 +499,7 @@ class Communication_model extends CI_Model
             }
 
             //No entity linked, but we have a URL that we should turn into an entity:
-            $url_entity = $this->Entities_model->en_sync_url($msg_references['ref_urls'][0], $session_en['en_id']);
+            $url_entity = $this->Entities_model->en_sync_url($string_references['ref_urls'][0], $session_en['en_id']);
 
             //Did we have an error?
             if (!$url_entity['status']) {
@@ -507,14 +507,14 @@ class Communication_model extends CI_Model
             }
 
             //Transform this URL into an entity:
-            $msg_references['ref_entities'][0] = $url_entity['en_url']['en_id'];
+            $string_references['ref_entities'][0] = $url_entity['en_url']['en_id'];
 
             //Replace the URL with this new @entity in message.
             //This is the only valid modification we can do to $input_message before storing it in the DB:
-            $input_message = str_replace($msg_references['ref_urls'][0], '@' . $msg_references['ref_entities'][0], $input_message);
+            $input_message = str_replace($string_references['ref_urls'][0], '@' . $string_references['ref_entities'][0], $input_message);
 
             //Remove URL:
-            unset($msg_references['ref_urls'][0]);
+            unset($string_references['ref_urls'][0]);
 
         }
 
@@ -528,7 +528,7 @@ class Communication_model extends CI_Model
         //Start building the Output message body based on format:
         $output_body_message = ( $fb_messenger_format ? $input_message : htmlentities($input_message) );
 
-        if (in_array('/firstname', $msg_references['ref_commands'])) {
+        if (in_array('/firstname', $string_references['ref_commands'])) {
 
             //We sometimes may need to set a default recipient entity name IF /firstname command used without any recipient entity passed:
             if (!isset($recipient_en['en_name'])) {
@@ -545,7 +545,7 @@ class Communication_model extends CI_Model
         //Determine if we have a button link:
         $fb_button_title = null;
         $fb_button_url = null;
-        if (in_array('/link', $msg_references['ref_commands'])) {
+        if (in_array('/link', $string_references['ref_commands'])) {
 
             //Validate /link format:
             $link_anchor = trim(one_two_explode('/link:', ':http', $output_body_message));
@@ -584,7 +584,7 @@ class Communication_model extends CI_Model
         //Valid URLs that are considered slicable in-case the /slice command is used:
         $sliceable_urls = array('youtube.com');
 
-        if (in_array('/slice', $msg_references['ref_commands'])) {
+        if (in_array('/slice', $string_references['ref_commands'])) {
 
             //Validate the format of this command:
             $slice_times = explode(':', one_two_explode('/slice:', ' ', $output_body_message), 2);
@@ -601,7 +601,7 @@ class Communication_model extends CI_Model
                     'status' => 0,
                     'message' => 'Sliced clip must be at-least 3 seconds long',
                 );
-            } elseif (count($msg_references['ref_entities']) < 1) {
+            } elseif (count($string_references['ref_entities']) < 1) {
                 return array(
                     'status' => 0,
                     'message' => 'The /slice command requires the message to reference an entity that links to ' . join(' or ', $sliceable_urls),
@@ -636,18 +636,18 @@ class Communication_model extends CI_Model
         $is_action_plan = ($this->uri->segment(1)=='messenger');
         $hide_entity_links = ($is_landing_page || $is_action_plan);
 
-        if (count($msg_references['ref_entities']) > 0) {
+        if (count($string_references['ref_entities']) > 0) {
 
             //We have a reference within this message, let's fetch it to better understand it:
             $ens = $this->Entities_model->en_fetch(array(
-                'en_id' => $msg_references['ref_entities'][0], //Note: We will only have a single reference per message
+                'en_id' => $string_references['ref_entities'][0], //Note: We will only have a single reference per message
                 'en_status >=' => 0, //New+
             ));
 
             if (count($ens) < 1) {
                 return array(
                     'status' => 0,
-                    'message' => 'The referenced entity @' . $msg_references['ref_entities'][0] . ' not found',
+                    'message' => 'The referenced entity @' . $string_references['ref_entities'][0] . ' not found',
                 );
             }
 
@@ -684,7 +684,7 @@ class Communication_model extends CI_Model
 
                         //Embed URL
                         //Do we have a Slice command AND is this Embed URL Slice-able?
-                        if (in_array('/slice', $msg_references['ref_commands']) && includes_any($parent_en['ln_content'], $sliceable_urls)) {
+                        if (in_array('/slice', $string_references['ref_commands']) && includes_any($parent_en['ln_content'], $sliceable_urls)) {
 
                             //We've found a slice-able URL:
                             $found_slicable_url = true;
@@ -783,7 +783,7 @@ class Communication_model extends CI_Model
 
 
             //Determine if we have text:
-            $has_text = !(trim($output_body_message) == '@' . $msg_references['ref_entities'][0]);
+            $has_text = !(trim($output_body_message) == '@' . $string_references['ref_entities'][0]);
 
             //Adjust
             if (!$fb_messenger_format) {
@@ -799,24 +799,24 @@ class Communication_model extends CI_Model
                 if($hide_entity_links){
 
                     //Do not include a link because we don't want to distract the student from the call to Action to get started...
-                    $output_body_message = str_replace('@' . $msg_references['ref_entities'][0], '<span class="entity-name">'.$ens[0]['en_name'].'</span>'.( $entity_appendix ? '<b>*</b>' : ''), $output_body_message);
+                    $output_body_message = str_replace('@' . $string_references['ref_entities'][0], '<span class="entity-name">'.$ens[0]['en_name'].'</span>'.( $entity_appendix ? '<b>*</b>' : ''), $output_body_message);
 
                 } else {
                     //Show entity link with status:
                     $fixed_fields = $this->config->item('fixed_fields');
-                    $output_body_message = str_replace('@' . $msg_references['ref_entities'][0], $fixed_fields['en_status'][$ens[0]['en_status']]['s_icon'].' <a href="/entities/' . $ens[0]['en_id'] . '" target="_parent">' . $ens[0]['en_name'] . '</a>'.( $entity_appendix ? '<b>*</b>' : ''), $output_body_message);
+                    $output_body_message = str_replace('@' . $string_references['ref_entities'][0], $fixed_fields['en_status'][$ens[0]['en_status']]['s_icon'].' <a href="/entities/' . $ens[0]['en_id'] . '" target="_parent">' . $ens[0]['en_name'] . '</a>'.( $entity_appendix ? '<b>*</b>' : ''), $output_body_message);
                 }
 
             } else {
 
                 //Just replace with the entity name, which ensure we're always have a text in our message even if $has_text = FALSE
-                $output_body_message = str_replace('@' . $msg_references['ref_entities'][0], $ens[0]['en_name'], $output_body_message);
+                $output_body_message = str_replace('@' . $string_references['ref_entities'][0], $ens[0]['en_name'], $output_body_message);
 
             }
         }
 
         //Do we have an intent up-vote?
-        if (!$fb_messenger_format && count($msg_references['ref_intents']) > 0 && $message_in_id > 0) {
+        if (!$fb_messenger_format && count($string_references['ref_intents']) > 0 && $message_in_id > 0) {
 
             //Fetch the referenced intent:
             $upvote_child_ins = $this->Intents_model->in_fetch(array(
@@ -832,13 +832,13 @@ class Communication_model extends CI_Model
 
 
             $upvote_parent_ins = $this->Intents_model->in_fetch(array(
-                'in_id' => $msg_references['ref_intents'][0], //Note: We will only have a single reference per message
+                'in_id' => $string_references['ref_intents'][0], //Note: We will only have a single reference per message
                 'in_status >=' => 0, //New+
             ));
             if (count($upvote_parent_ins) < 1) {
                 return array(
                     'status' => 0,
-                    'message' => 'The referenced parent intent #' . $msg_references['ref_intents'][0] . ' not found',
+                    'message' => 'The referenced parent intent #' . $string_references['ref_intents'][0] . ' not found',
                 );
             }
 
@@ -848,12 +848,12 @@ class Communication_model extends CI_Model
 
                 //Entity reference must be either the miner themselves or an expert source:
                 $session_en = en_auth(array(1308)); //Is miners
-                if($msg_references['ref_entities'][0] != $session_en['en_id']){
+                if($string_references['ref_entities'][0] != $session_en['en_id']){
 
                     //Reference is not the logged-in miner, let's check to make sure it's an expert source:
                     $is_expert_sources = $this->Links_model->ln_fetch(array(
                         'ln_status >=' => 0,
-                        'ln_child_entity_id' => $msg_references['ref_entities'][0],
+                        'ln_child_entity_id' => $string_references['ref_entities'][0],
                         'ln_parent_entity_id IN ('.join(',' , $this->config->item('en_ids_3000')).')' => null, //Intent Supported Verbs
                         'ln_type_entity_id IN (' . join(',', $this->config->item('en_ids_4592')) . ')' => null, //Entity Link Connectors
                     ));
@@ -881,7 +881,7 @@ class Communication_model extends CI_Model
 
 
         //Did we meet /slice command requirements (if any) after processing the referenced entity?
-        if (in_array('/slice', $msg_references['ref_commands']) && !$found_slicable_url) {
+        if (in_array('/slice', $string_references['ref_commands']) && !$found_slicable_url) {
             return array(
                 'status' => 0,
                 'message' => '/slice command requires the message to reference an entity that links to ' . join(' or ', $sliceable_urls),
@@ -1070,8 +1070,8 @@ class Communication_model extends CI_Model
             'status' => 1,
             'input_message' => trim($input_message),
             'output_messages' => $output_messages,
-            'ln_parent_entity_id' => (count($msg_references['ref_entities']) > 0 ? $msg_references['ref_entities'][0] : 0),
-            'ln_parent_intent_id' => (count($msg_references['ref_intents']) > 0 ? $msg_references['ref_intents'][0] : 0),
+            'ln_parent_entity_id' => (count($string_references['ref_entities']) > 0 ? $string_references['ref_entities'][0] : 0),
+            'ln_parent_intent_id' => (count($string_references['ref_intents']) > 0 ? $string_references['ref_intents'][0] : 0),
         );
 
     }
@@ -1347,7 +1347,7 @@ class Communication_model extends CI_Model
                     ));
 
                     //Validate Action Plan step:
-                    $pending_in_requirements = $this->Links_model->ln_fetch(array(
+                    $pending_req_submission = $this->Links_model->ln_fetch(array(
                         'ln_id' => $ap_step_ln_id,
                         //Also validate other requirements:
                         'ln_type_entity_id' => 6144, //Action Plan Submit Requirements
@@ -1359,7 +1359,7 @@ class Communication_model extends CI_Model
                 }
 
 
-                if(!isset($pending_in_requirements[0]) || !isset($new_message_links[0])){
+                if(!isset($pending_req_submission[0]) || !isset($new_message_links[0])){
                     return array(
                         'status' => 0,
                         'message' => 'Invalid command to mark step as complete',
@@ -1371,7 +1371,7 @@ class Communication_model extends CI_Model
                 $en_all_4592 = $this->config->item('en_all_4592');
 
                 //Make changes:
-                $this->Links_model->ln_update($pending_in_requirements[0]['ln_id'], array(
+                $this->Links_model->ln_update($pending_req_submission[0]['ln_id'], array(
                     'ln_content' => $new_message_links[0]['ln_content'],
                     'ln_status' => 2,
                     'ln_parent_link_id' => $new_message_links[0]['ln_id'],
@@ -1384,7 +1384,7 @@ class Communication_model extends CI_Model
                     true
                 );
                 $this->Communication_model->dispatch_message(
-                    'I added your '.$en_all_4592[$pending_in_requirements[0]['in_requirement_entity_id']]['m_name'].' message to '.$pending_in_requirements[0]['in_outcome'].'. /link:See in 🚩Action Plan:https://mench.com/messenger/actionplan/' . $pending_in_requirements[0]['in_id'],
+                    'I added your '.$en_all_4592[$pending_req_submission[0]['in_requirement_entity_id']]['m_name'].' message to '.$pending_req_submission[0]['in_outcome'].'. /link:See in 🚩Action Plan:https://mench.com/messenger/actionplan/' . $pending_req_submission[0]['in_id'],
                     $en,
                     true
                 );

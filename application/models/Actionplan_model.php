@@ -766,21 +766,24 @@ class Actionplan_model extends CI_Model
                     $next_step_message = 'There is a single step to ' . echo_in_outcome($ins[0]['in_outcome'], true, true);
                 } else {
                     //Multiple next steps:
-                    $next_step_message = 'Here are the ' . count($in__children) . ' steps to ' . echo_in_outcome($ins[0]['in_outcome'], true, true);
+                    $next_step_message = 'There are ' . count($in__children) . ' steps to ' . echo_in_outcome($ins[0]['in_outcome'], true, true);
                 }
-
-
 
 
                 //List children:
                 $key = 0;
                 foreach ($in__children as $child_in) {
 
+
                     //Make sure this AND child has a "useful" outcome by NOT referencing it's ID in its outcome:
-                    if($fb_messenger_format && substr_count($child_in['in_outcome'], '#'.$child_in['in_id']) > 0){
-                        //This is likely a "useless" outcome like "Answer question #8704" which should not be listed...
-                        continue;
+                    if($fb_messenger_format){
+                        $string_references = extract_references($child_in['in_outcome']);
+                        if(count($string_references['ref_intents']) > 0){
+                            //This is likely a "useless" outcome like "Answer question #8704" which should not be listed...
+                            continue;
+                        }
                     }
+
 
                     if($key==0){
 

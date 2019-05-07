@@ -1240,13 +1240,13 @@ class Intents extends CI_Controller
             } elseif($_POST['new_message_ln_status'] == 2){
 
                 //We're publishing, make sure potential entity references are also published:
-                $msg_references = extract_message_references($_POST['ln_content']);
+                $string_references = extract_references($_POST['ln_content']);
 
-                if (count($msg_references['ref_entities']) > 0) {
+                if (count($string_references['ref_entities']) > 0) {
 
                     //We do have an entity reference, what's its status?
                     $ref_ens = $this->Entities_model->en_fetch(array(
-                        'en_id' => $msg_references['ref_entities'][0],
+                        'en_id' => $string_references['ref_entities'][0],
                     ));
 
                     if(count($ref_ens)>0 && $ref_ens[0]['en_status']<2){

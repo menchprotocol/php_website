@@ -1125,9 +1125,9 @@ class Intents_model extends CI_Model
         if(substr_count($in_outcome , '::') ==1){
 
             //Does the outcome have a parent intent reference?
-            $msg_references = extract_message_references($in_outcome);
+            $string_references = extract_references($in_outcome);
 
-            if(count($msg_references['ref_intents']) != 1){
+            if(count($string_references['ref_intents']) != 1){
                 return array(
                     'status' => 0,
                     'message' => 'Double colon required an intent reference (like #1234) in the outcome',
