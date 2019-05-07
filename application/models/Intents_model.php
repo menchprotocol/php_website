@@ -749,6 +749,7 @@ class Intents_model extends CI_Model
         //Fetch common base and expansion paths from intent metadata:
         $flat_common_steps = array_flatten($in_metadata['in__metadata_common_steps']);
         $expansion_steps = ( isset($in_metadata['in__metadata_expansion_steps']) && count($in_metadata['in__metadata_expansion_steps']) > 0 ? $in_metadata['in__metadata_expansion_steps'] : array() );
+        $expansion_milestones = ( isset($in_metadata['in__metadata_expansion_milestones']) && count($in_metadata['in__metadata_expansion_milestones']) > 0 ? $in_metadata['in__metadata_expansion_milestones'] : array() );
 
         //Fetch totals for published common step intents:
         $common_totals = $this->Intents_model->in_fetch(array(
@@ -843,7 +844,7 @@ class Intents_model extends CI_Model
 
 
         //Go through expansion paths, if any:
-        foreach($expansion_steps as $or_expansion){
+        foreach(array_merge($expansion_steps, $expansion_milestones) as $expansion_group){
 
             //Determine OR Answer local min/max:
             $metadata_local = array(
@@ -851,11 +852,13 @@ class Intents_model extends CI_Model
                 'local__in__metadata_max_steps'=> null,
                 'local__in__metadata_min_seconds'=> null,
                 'local__in__metadata_max_seconds'=> null,
+                'local__in__metadata_min_milestone_marks'=> null,
+                'local__in__metadata_max_milestone_marks'=> null,
             );
 
-            foreach($or_expansion as $or_in_id){
+            foreach($expansion_group as $expansion_in_id){
 
-                $metadata_recursion = $this->Intents_model->in_metadata_extra_insights($or_in_id, false);
+                $metadata_recursion = $this->Intents_model->in_metadata_extra_insights($expansion_in_id, false);
 
                 if(!$metadata_recursion){
                     continue;
@@ -873,6 +876,12 @@ class Intents_model extends CI_Model
                 }
                 if(is_null($metadata_local['local__in__metadata_max_seconds']) || $metadata_recursion['__in__metadata_max_seconds'] > $metadata_local['local__in__metadata_max_seconds']){
                     $metadata_local['local__in__metadata_max_seconds'] = $metadata_recursion['__in__metadata_max_seconds'];
+                }
+                if(is_null($metadata_local['local__in__metadata_min_milestone_marks']) || $metadata_recursion['__in__metadata_min_milestone_marks'] < $metadata_local['local__in__metadata_min_milestone_marks']){
+                    $metadata_local['local__in__metadata_min_milestone_marks'] = $metadata_recursion['__in__metadata_min_milestone_marks'];
+                }
+                if(is_null($metadata_local['local__in__metadata_max_milestone_marks']) || $metadata_recursion['__in__metadata_max_milestone_marks'] > $metadata_local['local__in__metadata_max_milestone_marks']){
+                    $metadata_local['local__in__metadata_max_milestone_marks'] = $metadata_recursion['__in__metadata_max_milestone_marks'];
                 }
 
 
@@ -909,6 +918,12 @@ class Intents_model extends CI_Model
             if(!is_null($metadata_local['local__in__metadata_max_seconds'])){
                 $metadata_this['__in__metadata_max_seconds'] += intval($metadata_local['local__in__metadata_max_seconds']);
             }
+            if(!is_null($metadata_local['local__in__metadata_min_milestone_marks'])){
+                $metadata_this['__in__metadata_min_milestone_marks'] += intval($metadata_local['local__in__metadata_min_milestone_marks']);
+            }
+            if(!is_null($metadata_local['local__in__metadata_max_milestone_marks'])){
+                $metadata_this['__in__metadata_max_milestone_marks'] += intval($metadata_local['local__in__metadata_max_milestone_marks']);
+            }
 
         }
 
@@ -936,6 +951,8 @@ class Intents_model extends CI_Model
                 'in__metadata_max_steps' => intval($metadata_this['__in__metadata_max_steps']),
                 'in__metadata_min_seconds' => intval($metadata_this['__in__metadata_min_seconds']),
                 'in__metadata_max_seconds' => intval($metadata_this['__in__metadata_max_seconds']),
+                'in__metadata_min_milestone_marks' => intval($metadata_this['__in__metadata_min_milestone_marks']),
+                'in__metadata_max_milestone_marks' => intval($metadata_this['__in__metadata_max_milestone_marks']),
                 'in__metadata_experts' => $metadata_this['__in__metadata_experts'],
                 'in__metadata_sources' => $metadata_this['__in__metadata_sources'],
             ));

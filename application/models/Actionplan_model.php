@@ -125,7 +125,8 @@ class Actionplan_model extends CI_Model
                         'in_id' => $next_in_id,
                     ));
 
-                    if(substr_count($next_step_ins[0]['in_outcome'], '::')==0){
+                    //Inform of intent title only if its a clean title:
+                    if(substr_count($next_step_ins[0]['in_outcome'], '::')==0 && substr_count($next_step_ins[0]['in_outcome'], '#')==0){
                         $this->Communication_model->dispatch_message(
                             'Let\'s '. $next_step_ins[0]['in_outcome'],
                             array('en_id' => $en_id),
