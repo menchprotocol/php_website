@@ -1078,50 +1078,24 @@ class Actionplan_model extends CI_Model
 
 
         //Check to see if completion notes needs to be dispatched via Messenger?
-        if($fb_messenger_format && $made_published_progress && $trigger_completion){
+        if($made_published_progress && $trigger_completion){
 
-            //Fetch on-complete messages:
-            $on_complete_messages = $this->Links_model->ln_fetch(array(
+            //Dispatch all on-complete notes:
+            foreach($this->Links_model->ln_fetch(array(
                 'ln_status' => 2, //Published
                 'ln_type_entity_id' => 6242, //On-Complete Tips
                 'ln_child_intent_id' => $ins[0]['in_id'],
-            ), array(), 0, 0, array('ln_order' => 'ASC'));
-
-
-            //First let's make sure we have on-complete messages to send as most intentions do not have this (less likely to happen):
-            if(count($on_complete_messages) > 0){
-
-                //Prep filter for search & insert:
-                $filter = array(
-                    'ln_status' => 2,
-                    'ln_miner_entity_id' => $recipient_en['en_id'],
-                    'ln_type_entity_id' => 6255, //Action Plan Trigger On-Complete Tips
-                    'ln_parent_intent_id' => $ins[0]['in_id'], //First Action
+            ), array(), 0, 0, array('ln_order' => 'ASC')) as $complete_note){
+                //Send to student:
+                $compile_html_message .= $this->Communication_model->dispatch_message(
+                    $complete_note['ln_content'],
+                    $recipient_en,
+                    $fb_messenger_format,
+                    array(),
+                    array(
+                        'ln_parent_intent_id' => $ins[0]['in_id']
+                    )
                 );
-
-                //Make sure we have not sent this before (they might be completing this again...)
-                if( count($this->Links_model->ln_fetch($filter))==0 ){
-
-                    //Never sent before, so let's log a new link:
-                    $link_log = $this->Links_model->ln_create($filter);
-
-                    //Dispatch all on-complete notes:
-                    foreach($on_complete_messages as $complete_note){
-
-                        //Send to student:
-                        $this->Communication_model->dispatch_message(
-                            $complete_note['ln_content'],
-                            $recipient_en,
-                            true,
-                            array(),
-                            array(
-                                'ln_parent_link_id' => $link_log['ln_id'],
-                                'ln_parent_intent_id' => $ins[0]['in_id']
-                            )
-                        );
-
-                    }
-                }
             }
         }
 

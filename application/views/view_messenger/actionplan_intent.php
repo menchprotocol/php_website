@@ -122,34 +122,4 @@ if($advance_step['status']){
     //Ooooops, show error:
     echo '<div class="alert alert-danger"><i class="fas fa-exclamation-triangle"></i> Error: '.$advance_step['message'].'</div>';
 }
-
-
-
-//Show on-complete tips?
-if($trigger_on_complete_tips){
-
-    $on_complete_messages = $this->Links_model->ln_fetch(array(
-        'ln_status' => 2, //Published
-        'ln_type_entity_id' => 6242, //On-Complete Tips
-        'ln_child_intent_id' => $in['in_id'],
-    ), array(), 0, 0, array('ln_order' => 'ASC'));
-
-    if(count($on_complete_messages) > 0){
-
-        echo '<h4>On-Complete Tips</h4>';
-
-        //Dispatch all on-complete notes:
-        foreach($on_complete_messages as $complete_note){
-            //Send to student:
-            echo $this->Communication_model->dispatch_message(
-                $complete_note['ln_content'],
-                $session_en,
-                false
-            );
-
-        }
-    }
-}
-
-
 ?>
