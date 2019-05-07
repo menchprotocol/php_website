@@ -678,6 +678,13 @@ class Intents_model extends CI_Model
                         }
                     }
                 }
+                if(count($child_recursion['__in__metadata_expansion_milestones']) > 0){
+                    foreach($child_recursion['__in__metadata_expansion_milestones'] as $key => $value){
+                        if(!array_key_exists($key, $metadata_this['__in__metadata_expansion_milestones'])){
+                            $metadata_this['__in__metadata_expansion_milestones'][$key] = $value;
+                        }
+                    }
+                }
             }
         }
 
