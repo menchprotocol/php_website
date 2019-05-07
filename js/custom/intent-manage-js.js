@@ -55,12 +55,6 @@ $(document).ready(function () {
     });
 
 
-    //Watch for completion method change to ask for Dollar amount:
-    $("#in_requirement_entity_id").change(function () {
-        load_payment_field(this.value);
-    });
-
-
     //Lookout for intent link related changes:
     $('input[type=radio][name=ln_type_entity_id], #ln_status').change(function () {
         in_adjust_link_ui();
@@ -90,14 +84,6 @@ $(document).ready(function () {
 });
 
 
-function load_payment_field(requirement_type){
-    //Should we show intent archiving warning?
-    if(parseInt(requirement_type) == 6291){
-        $('.one-time-payment').removeClass('hidden');
-    } else {
-        $('.one-time-payment').addClass('hidden');
-    }
-}
 
 //This also has an equal PHP function echo_time_hours() which we want to make sure has more/less the same logic:
 function echo_js_hours(in_seconds_cost) {
@@ -114,9 +100,6 @@ function echo_js_hours(in_seconds_cost) {
     }
 }
 
-function in_cost_overview(seconds, in_id){
-    return echo_js_hours(seconds) + ( parseFloat($('.t_estimate_' + in_id + ':first').attr('intent-usd')) > 0 ? '$' : '' );
-}
 
 function in_adjust_isany_ui() {
     if ($('#in_type_0').is(':checked')) {
@@ -183,7 +166,7 @@ function in_messages_iframe(in_id) {
     $('[data-toggle="tooltip"]').tooltip();
 }
 
-function adjust_js_ui(in_id, level, new_hours, intent_deficit_count=0, apply_to_tree=0, skip_intent_adjustments=0, usd_cost=0) {
+function adjust_js_ui(in_id, level, new_hours, intent_deficit_count, apply_to_tree, skip_intent_adjustments) {
 
     intent_deficit_count = parseInt(intent_deficit_count);
     var in_seconds_cost = parseFloat($('.t_estimate_' + in_id + ':first').attr('intent-seconds'));
@@ -195,11 +178,10 @@ function adjust_js_ui(in_id, level, new_hours, intent_deficit_count=0, apply_to_
         var in_new__metadata_seconds = in__metadata_seconds + in_deficit_seconds;
         $('.t_estimate_' + in_id)
             .attr('tree-max-seconds', in_new__metadata_seconds)
-            .attr('intent-usd', usd_cost)
-            .text(in_cost_overview(in_new__metadata_seconds, in_id));
+            .text(echo_js_hours(in_new__metadata_seconds));
 
         if (!apply_to_tree) {
-            $('.t_estimate_' + in_id).attr('intent-seconds', new_hours).text(in_cost_overview(in_new__metadata_seconds, in_id));
+            $('.t_estimate_' + in_id).attr('intent-seconds', new_hours).text(echo_js_hours(in_new__metadata_seconds));
         }
     }
 
@@ -300,10 +282,8 @@ function in_modify_load(in_id, ln_id) {
             //Load inputs:
             $('#in_outcome').val(data.in.in_outcome);
             $('#in_type_' + data.in.in_type).prop("checked", true);
-            $('#in_dollar_cost').val(data.in.in_dollar_cost);
             $('#in_seconds_cost').val(data.in.in_seconds_cost);
             $('#in_requirement_entity_id').val(data.in.in_requirement_entity_id);
-            load_payment_field(data.in.in_requirement_entity_id);
             $('.tr_in_link_title').text('');
 
             $('#in_status').val(data.in.in_status).attr('original-status', data.in.in_status); //Set the status before it gets changed by miners
@@ -397,7 +377,6 @@ function in_modify_save() {
         in_status: parseInt($('#in_status').val()),
         in_seconds_cost: ( $('#in_seconds_cost').val().length > 0 ? parseInt($('#in_seconds_cost').val()) : 0 ),
         in_requirement_entity_id: parseInt($('#in_requirement_entity_id').val()),
-        in_dollar_cost: ( $('#in_dollar_cost').val().length > 0 ? parseFloat($('#in_dollar_cost').val()) : 0 ),
         in_type: parseInt($('input[name=in_type]:checked').val()),
         apply_recursively: (document.getElementById('apply_recursively').checked ? 1 : 0),
         is_parent: ( $('.intent_line_' + in_id).hasClass('parent-intent') ? 1 : 0 ),
@@ -458,7 +437,7 @@ function in_modify_save() {
                     window.location.hash = '#';
 
                     //Adjust completion cost:
-                    adjust_js_ui(modify_data['in_id'], modify_data['level'], 0, 0, 1);
+                    adjust_js_ui(modify_data['in_id'], modify_data['level'], 0, 0, 1, 0);
 
                     //Remove from UI:
                     $('.in__tr_' + modify_data['ln_id']).html('<span style="color:#2f2739;"><i class="fas fa-trash-alt"></i> Removed</span>');
@@ -513,8 +492,6 @@ function in_modify_save() {
                     $('.in_icon_child_' + modify_data['in_id']).attr('data-original-title', modify_data['in_outcome']);
                 }
 
-
-
                 //Always update 3x Intent icons:
                 $('.in_type_' + modify_data['in_id']).html('<span class="in_type_val" data-toggle="tooltip" data-placement="right" title="'+ object_js_statuses['in_type'][modify_data['in_type']]["s_name"] + ': '+ object_js_statuses['in_type'][modify_data['in_type']]["s_desc"] + '">'+ object_js_statuses['in_type'][modify_data['in_type']]["s_icon"] +'</span>');
 
@@ -530,7 +507,7 @@ function in_modify_save() {
                 $('.save_intent_changes').html(data.message).hide().fadeIn();
 
                 //Adjust completion cost:
-                adjust_js_ui(modify_data['in_id'], modify_data['level'], modify_data['in_seconds_cost'], 0, 0, 0, modify_data['in_dollar_cost']); //intent-usd
+                adjust_js_ui(modify_data['in_id'], modify_data['level'], modify_data['in_seconds_cost'], 0, 0, 0);
 
             }
 

@@ -11,7 +11,7 @@ defined('BASEPATH') OR exit('No direct script access allowed');
  *
  */
 
-//Generated 2019-05-06 20:04:07 PST
+//Generated 2019-05-06 22:37:26 PST
 
 //Mench:
 $config['en_ids_2738'] = array(4488, 6137, 6138, 6196, 6287);
@@ -38,7 +38,7 @@ $config['en_all_2738'] = array(
         'm_icon' => '<img src="https://mench.com/img/bp_128.png">',
         'm_name' => 'Personal Assistant',
         'm_desc' => 'A personal assistant bot that automates the distribution of Mench\'s intent tree to students using Facebook Messenger',
-        'm_parents' => array(2738, 4527, 3320),
+        'm_parents' => array(4463, 2738, 4527, 3320),
     ),
     6287 => array(
         'm_icon' => '<i class="fas fa-tools"></i>',
@@ -66,7 +66,7 @@ $config['en_all_6274'] = array(
 );
 
 //Action Plan Progression Completion Triggers:
-$config['en_ids_6255'] = array(4235, 4559, 6144, 6157, 6158, 6289);
+$config['en_ids_6255'] = array(4235, 4559, 6144, 6157, 6158);
 $config['en_all_6255'] = array(
     4235 => array(
         'm_icon' => '<i class="fas fa-bullseye-arrow"></i>',
@@ -98,16 +98,10 @@ $config['en_all_6255'] = array(
         'm_desc' => '',
         'm_parents' => array(6274, 6255, 4593, 4755, 6146),
     ),
-    6289 => array(
-        'm_icon' => '<i class="fas fa-envelope-open-dollar"></i>',
-        'm_name' => 'Action Plan 1-time PayPal Payment',
-        'm_desc' => '',
-        'm_parents' => array(6291, 6290, 6255, 4755, 4593, 6244, 6146),
-    ),
 );
 
 //Action Plan Progression 2-Step Steps:
-$config['en_ids_6244'] = array(6144, 6157, 6289);
+$config['en_ids_6244'] = array(6144, 6157);
 $config['en_all_6244'] = array(
     6144 => array(
         'm_icon' => '<i class="fas fa-shield-check"></i>',
@@ -120,12 +114,6 @@ $config['en_all_6244'] = array(
         'm_name' => 'Answer Question',
         'm_desc' => '',
         'm_parents' => array(6288, 6255, 6244, 6146, 4755, 4593, 4460),
-    ),
-    6289 => array(
-        'm_icon' => '<i class="fas fa-envelope-open-dollar"></i>',
-        'm_name' => '1-time PayPal Payment',
-        'm_desc' => '',
-        'm_parents' => array(6291, 6290, 6255, 4755, 4593, 6244, 6146),
     ),
 );
 
@@ -397,7 +385,7 @@ $config['en_all_4363'] = array(
 );
 
 //Action Plan Progression Steps:
-$config['en_ids_6146'] = array(4559, 6140, 6143, 6144, 6157, 6158, 6289);
+$config['en_ids_6146'] = array(4559, 6140, 6143, 6144, 6157, 6158);
 $config['en_all_6146'] = array(
     4559 => array(
         'm_icon' => '<i class="far fa-comment-check"></i>',
@@ -434,12 +422,6 @@ $config['en_all_6146'] = array(
         'm_name' => 'Review Outcome',
         'm_desc' => 'Completed when students read the messages of an intent that does not have any messages or a completion requirement',
         'm_parents' => array(6274, 6255, 4593, 4755, 6146),
-    ),
-    6289 => array(
-        'm_icon' => '<i class="fas fa-envelope-open-dollar"></i>',
-        'm_name' => '1-time PayPal Payment',
-        'm_desc' => 'When the student is required to complete an intention with a 1-time payment set by Miners.',
-        'm_parents' => array(6291, 6290, 6255, 4755, 4593, 6244, 6146),
     ),
 );
 
@@ -1080,7 +1062,7 @@ $config['en_all_4426'] = array(
 );
 
 //Link Visible to Moderators Only:
-$config['en_ids_4755'] = array(3286, 3288, 4235, 4266, 4267, 4268, 4275, 4278, 4279, 4282, 4283, 4299, 4460, 4547, 4548, 4549, 4550, 4551, 4552, 4553, 4554, 4555, 4556, 4557, 4559, 4570, 4783, 5967, 6132, 6140, 6143, 6144, 6149, 6154, 6155, 6157, 6158, 6224, 6289);
+$config['en_ids_4755'] = array(3286, 3288, 4235, 4266, 4267, 4268, 4275, 4278, 4279, 4282, 4283, 4299, 4460, 4547, 4548, 4549, 4550, 4551, 4552, 4553, 4554, 4555, 4556, 4557, 4559, 4570, 4783, 5967, 6132, 6140, 6143, 6144, 6149, 6154, 6155, 6157, 6158, 6224);
 $config['en_all_4755'] = array(
     3286 => array(
         'm_icon' => '<i class="fal fa-lock-open"></i>',
@@ -1310,12 +1292,6 @@ $config['en_all_4755'] = array(
         'm_desc' => '',
         'm_parents' => array(4755, 6222, 4593),
     ),
-    6289 => array(
-        'm_icon' => '<i class="fas fa-envelope-open-dollar"></i>',
-        'm_name' => 'Action Plan 1-time PayPal Payment',
-        'm_desc' => '',
-        'm_parents' => array(6291, 6290, 6255, 4755, 4593, 6244, 6146),
-    ),
 );
 
 //Link Points:
@@ -1479,7 +1455,7 @@ $config['en_all_4600'] = array(
 );
 
 //All Link Types:
-$config['en_ids_4593'] = array(4228, 4229, 4230, 4231, 4232, 4235, 4242, 4246, 4250, 4251, 4255, 4256, 4257, 4258, 4259, 4260, 4261, 4263, 4264, 4266, 4267, 4268, 4269, 4275, 4278, 4279, 4282, 4283, 4287, 4299, 4318, 4319, 4452, 4455, 4460, 4547, 4548, 4549, 4550, 4551, 4552, 4553, 4554, 4555, 4556, 4557, 4559, 4570, 4577, 4601, 4983, 4993, 4994, 4996, 4998, 4999, 5000, 5001, 5003, 5007, 5865, 5943, 5967, 5981, 5982, 6093, 6132, 6140, 6143, 6144, 6149, 6154, 6155, 6157, 6158, 6224, 6226, 6242, 6255, 6278, 6289);
+$config['en_ids_4593'] = array(4228, 4229, 4230, 4231, 4232, 4235, 4242, 4246, 4250, 4251, 4255, 4256, 4257, 4258, 4259, 4260, 4261, 4263, 4264, 4266, 4267, 4268, 4269, 4275, 4278, 4279, 4282, 4283, 4287, 4299, 4318, 4319, 4452, 4455, 4460, 4547, 4548, 4549, 4550, 4551, 4552, 4553, 4554, 4555, 4556, 4557, 4559, 4570, 4577, 4601, 4983, 4993, 4994, 4996, 4998, 4999, 5000, 5001, 5003, 5007, 5865, 5943, 5967, 5981, 5982, 6093, 6132, 6140, 6143, 6144, 6149, 6154, 6155, 6157, 6158, 6224, 6226, 6242, 6255, 6278);
 $config['en_all_4593'] = array(
     4228 => array(
         'm_icon' => '<i class="fal fa-check-circle"></i>',
@@ -1961,12 +1937,6 @@ $config['en_all_4593'] = array(
         'm_desc' => '',
         'm_parents' => array(6153, 4229, 4506, 4593),
     ),
-    6289 => array(
-        'm_icon' => '<i class="fas fa-envelope-open-dollar"></i>',
-        'm_name' => 'Action Plan 1-time PayPal Payment',
-        'm_desc' => '',
-        'm_parents' => array(6291, 6290, 6255, 4755, 4593, 6244, 6146),
-    ),
 );
 
 //Entity-to-Entity All Link Types:
@@ -2035,7 +2005,7 @@ $config['en_all_4592'] = array(
 );
 
 //Intent Completion Methods:
-$config['en_ids_4331'] = array(4255, 4256, 4258, 4259, 4260, 4261, 6087, 6291);
+$config['en_ids_4331'] = array(4255, 4256, 4258, 4259, 4260, 4261, 6087);
 $config['en_all_4331'] = array(
     4255 => array(
         'm_icon' => '<i class="fal fa-align-left"></i>',
@@ -2077,12 +2047,6 @@ $config['en_all_4331'] = array(
         'm_icon' => '<i class="fal fa-check"></i>',
         'm_name' => 'No Response',
         'm_desc' => 'Student does not need to submit anything to mark intent as complete.',
-        'm_parents' => array(4331),
-    ),
-    6291 => array(
-        'm_icon' => '<i class="far fa-file-invoice-dollar"></i>',
-        'm_name' => 'Payment',
-        'm_desc' => 'The USD amount students must pay via Paypal to complete the intent and move forward in this direction. Alternatively students can skip the intention tree. ',
         'm_parents' => array(4331),
     ),
 );

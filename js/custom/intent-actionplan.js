@@ -63,7 +63,7 @@ $(document).ready(function () {
             in_sort_load(in_id, 3);
 
             //Load time:
-            $('.t_estimate_' + in_id).text(in_cost_overview($('.t_estimate_' + in_id + ':first').attr('tree-max-seconds'), in_id));
+            $('.t_estimate_' + in_id).text(echo_js_hours($('.t_estimate_' + in_id + ':first').attr('tree-max-seconds')));
 
         });
 
@@ -73,7 +73,7 @@ $(document).ready(function () {
                 var in_id = $(this).attr('intent-id');
                 if (in_id) {
                     //Load time:
-                    $('.t_estimate_' + in_id).text(in_cost_overview($('.t_estimate_' + in_id + ':first').attr('tree-max-seconds'), in_id));
+                    $('.t_estimate_' + in_id).text(echo_js_hours($('.t_estimate_' + in_id + ':first').attr('tree-max-seconds')));
                 }
             });
         }

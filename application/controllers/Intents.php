@@ -375,10 +375,10 @@ class Intents extends CI_Controller
                 'status' => 0,
                 'message' => 'Missing Time Estimate',
             ));
-        } elseif (intval($_POST['in_seconds_cost']) > $this->config->item('in_seconds_cost_max')) {
+        } elseif (intval($_POST['in_seconds_cost']) > $this->config->item('in_max_seconds')) {
             return echo_json(array(
                 'status' => 0,
-                'message' => 'Maximum estimated time is ' . round(($this->config->item('in_seconds_cost_max') / 3600), 2) . ' hours for each intent. If larger, break the intent down into smaller intents.',
+                'message' => 'Maximum estimated time is ' . round(($this->config->item('in_max_seconds') / 3600), 2) . ' hours for each intent. If larger, break the intent down into smaller intents.',
             ));
         } elseif (!isset($_POST['apply_recursively'])) {
             return echo_json(array(
@@ -390,25 +390,10 @@ class Intents extends CI_Controller
                 'status' => 0,
                 'message' => 'Missing Completion Entity ID',
             ));
-        } elseif (!isset($_POST['in_dollar_cost']) || doubleval($_POST['in_dollar_cost']) < 0) {
-            return echo_json(array(
-                'status' => 0,
-                'message' => 'Missing Cost Estimate',
-            ));
-        } elseif ($_POST['in_requirement_entity_id']==6291 && (doubleval($_POST['in_dollar_cost']) < $this->config->item('in_min_cost') || doubleval($_POST['in_dollar_cost']) > $this->config->item('in_max_cost'))) {
-            return echo_json(array(
-                'status' => 0,
-                'message' => 'You must enter a Payment amount between $'.$this->config->item('in_min_cost').' - $'.$this->config->item('in_max_cost').' USD',
-            ));
         } elseif (!isset($_POST['in_status'])) {
             return echo_json(array(
                 'status' => 0,
                 'message' => 'Missing Intent Status',
-            ));
-        } elseif (intval($_POST['in_dollar_cost']) < 0 || doubleval($_POST['in_dollar_cost']) > 300) {
-            return echo_json(array(
-                'status' => 0,
-                'message' => 'Cost estimate must be $0-5000 USD',
             ));
         } elseif (!isset($_POST['in_type'])) {
             return echo_json(array(
@@ -449,7 +434,6 @@ class Intents extends CI_Controller
             'in_seconds_cost' => intval($_POST['in_seconds_cost']),
             'in_requirement_entity_id' => intval($_POST['in_requirement_entity_id']),
             'in_verb_entity_id' => $ins[0]['in_verb_entity_id'], //We assume no change, and will update if we detected change...
-            'in_dollar_cost' => doubleval($_POST['in_dollar_cost']),
             'in_type' => intval($_POST['in_type']),
         );
 
@@ -1122,12 +1106,6 @@ class Intents extends CI_Controller
             }
 
         }
-
-
-
-
-        //Adjust formats:
-        $ins[0]['in_dollar_cost'] = number_format(doubleval($ins[0]['in_dollar_cost']), 2);
 
         //Return results:
         return echo_json(array(

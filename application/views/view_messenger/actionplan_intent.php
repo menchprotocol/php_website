@@ -101,11 +101,6 @@ if($time_estimate){
     echo '<span style="margin-right:10px;" class="status-label underdot" data-toggle="tooltip" data-placement="top" title="The estimated time to complete"><i class="fas fa-alarm-clock"></i>' . $time_estimate.'</span>';
 }
 
-//Completion dollar cost:
-if($in['in_dollar_cost'] > 0){
-    echo '<span style="margin-right:10px;" class="status-label underdot" data-toggle="tooltip" data-placement="top" title="The estimated USD cost to purchase verified 3rd party products"><i class="fas fa-usd-circle"></i>' . number_format($in['in_dollar_cost'], 2).'</span>';
-}
-
 echo '</div>';
 
 

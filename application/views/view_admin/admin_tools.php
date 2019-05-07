@@ -259,7 +259,7 @@ if(!$action) {
     echo '<table class="table table-condensed table-striped maxout" style="text-align: left;">';
 
     echo '<tr style="font-weight: bold;">';
-    echo '<td colspan="4" style="text-align: left;">Condition Range</td>';
+    echo '<td colspan="4" style="text-align: left;">Milestone Condition</td>';
     echo '</tr>';
     $counter = 0;
     foreach ($this->Links_model->ln_fetch(array(
