@@ -667,27 +667,6 @@ class Actionplan_model extends CI_Model
 
 
 
-        /*
-         *
-         * Dispatch all messages, if any:
-         *
-         * */
-        $compile_html_message = null; //Will be useful only IF $fb_messenger_format=FALSE
-        foreach ($in__messages as $count => $message_ln) {
-            $compile_html_message .= $this->Communication_model->dispatch_message(
-                $message_ln['ln_content'],
-                $recipient_en,
-                $fb_messenger_format,
-                //This is when we have messages and need to append the "Next" Quick Reply to the last message:
-                array(),
-                array(
-                    'ln_parent_intent_id' => $ins[0]['in_id'],
-                    'ln_parent_link_id' => $message_ln['ln_id'], //This message
-                )
-            );
-        }
-
-
 
 
         /*
@@ -1039,12 +1018,35 @@ class Actionplan_model extends CI_Model
 
         /*
          *
-         * Dispatch Messenger message
+         * Let's start dispatch Messenger messages
          *
          * */
+        $compile_html_message = null; //Will be useful only IF $fb_messenger_format=FALSE
+        $last_message_accepts_quick_replies = false; //Assume FALSE unless proven otherwise...
+        foreach ($in__messages as $count => $message_ln) {
+
+            //Since we can only append quick replies to text messages, let's see what is happening here:
+            $is_last_message = ( $count == (count($in__messages)-1) );
+            if($is_last_message && $message_ln['ln_parent_entity_id']==0){
+                //Since there is no entity reference we can append our message here:
+                $last_message_accepts_quick_replies = true;
+            }
+
+            $compile_html_message .= $this->Communication_model->dispatch_message(
+                $message_ln['ln_content'],
+                $recipient_en,
+                $fb_messenger_format,
+                //This is when we have messages and need to append the "Next" Quick Reply to the last message:
+                ( $last_message_accepts_quick_replies && count($next_step_quick_replies) > 0 ? $next_step_quick_replies : array() ),
+                array(
+                    'ln_parent_intent_id' => $ins[0]['in_id'],
+                    'ln_parent_link_id' => $message_ln['ln_id'], //This message
+                )
+            );
+        }
         if($fb_messenger_format) {
 
-            if(strlen($next_step_message) > 0 || count($next_step_quick_replies) > 0){
+            if(strlen($next_step_message) > 0 || (!$last_message_accepts_quick_replies && count($next_step_quick_replies) > 0)){
                 //Send messages over Messenger IF we have a message
                 $this->Communication_model->dispatch_message(
                     ( strlen($next_step_message) > 0 ? $next_step_message : echo_random_message('goto_next') ),

@@ -702,7 +702,8 @@ function echo_random_message($message_key){
         ),
         'goto_next' => array(
             'When ready, say "Next"',
-            'I am ready when you are...',
+            'I\'m ready to continue when you are...',
+            'Are you ready to move-on?',
             'Ready to move to the next step?',
             'Say next to continue',
         ),
