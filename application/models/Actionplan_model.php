@@ -176,7 +176,7 @@ class Actionplan_model extends CI_Model
             return false;
         }
 
-        $skip_message = 'You are about to skip the intention to '.echo_in_outcome($ins[0]['in_outcome'], true, true).' and its ' . echo_step_range($ins[0], true) . '. I encourage you to continue so you have the maximum chance for success!';
+        $skip_message = 'You are about to skip the intention to '.echo_in_outcome($ins[0]['in_outcome'], true, true).' which is ' . echo_step_range($ins[0], true) . '. I encourage you to continue so you have the maximum chance for success 🙏';
 
         if(!$fb_messenger_format){
 
