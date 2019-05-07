@@ -572,7 +572,7 @@ class Actionplan_model extends CI_Model
         ));
 
         //Define communication variables:
-        $next_step_message = null;
+        $next_step_message = '';
         $next_step_quick_replies = array();
 
         //Define step variables:
