@@ -1628,6 +1628,17 @@ class Communication_model extends CI_Model
                     'The intention to ' . $ins[0]['in_outcome'] . ' has already been added to your Action Plan. /link:See in 🚩Action Plan:https://mench.com/messenger/actionplan/' . $ins[0]['in_id'],
                     $en,
                     true,
+                    array(), //Cannot add Quick replies because of the /link command.
+                    array(
+                        'ln_parent_intent_id' => $ins[0]['in_id'],
+                    )
+                );
+
+                //Give them option to go next:
+                $this->Communication_model->dispatch_message(
+                    'Say "Next" to continue...',
+                    $en,
+                    true,
                     array(
                         array(
                             'content_type' => 'text',
