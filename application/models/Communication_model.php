@@ -988,23 +988,6 @@ class Communication_model extends CI_Model
                     'ln_child_intent_id' => $message_in_id,
                 ));
 
-                //We have a quick reply without a text, so append a generix text message as its required to have one:
-                array_push($output_messages, array(
-                    'message_type' => 4552, //Text Message Sent
-                    'message_body' => array(
-                        'recipient' => array(
-                            'id' => $recipient_en['en_psid'],
-                        ),
-                        'message' => array(
-                            'text' => 'Select an option to continue:', //Generic/fixed message
-                            'quick_replies' => $quick_replies,
-                            'metadata' => 'system_logged', //Prevents duplicate Link logs
-                        ),
-                        'notification_type' => $notification_type,
-                        'messaging_type' => 'NON_PROMOTIONAL_SUBSCRIPTION',
-                    ),
-                ));
-
             }
 
 

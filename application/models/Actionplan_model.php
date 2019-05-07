@@ -1107,10 +1107,10 @@ class Actionplan_model extends CI_Model
         //Dispatch instructional message if any:
         if($fb_messenger_format) {
 
-            if(strlen($next_step_message) > 0){
+            if(strlen($next_step_message) > 0 || count($next_step_quick_replies) > 0){
                 //Send messages over Messenger IF we have a message
                 $this->Communication_model->dispatch_message(
-                    $next_step_message,
+                    ( strlen($next_step_message) > 0 ? $next_step_message : 'Select an option to continue:' ),
                     $recipient_en,
                     true,
                     $next_step_quick_replies,
