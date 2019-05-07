@@ -2146,7 +2146,7 @@ class Communication_model extends CI_Model
             $search_index = load_php_algolia('alg_index');
             $res = $search_index->search($master_command, [
                 'hitsPerPage' => $result_limit,
-                'filters' => 'alg_obj_is_in=1 AND alg_obj_status=2 AND alg_obj_published_children>=7', //Search published intents with more than 7 published children
+                'filters' => 'alg_obj_is_in=1 AND alg_obj_status=2 AND alg_obj_published_children>=1', //Search published intents with more than 7 published children
             ]);
             $search_results = $res['hits'];
 
