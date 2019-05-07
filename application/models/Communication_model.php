@@ -1124,7 +1124,7 @@ class Communication_model extends CI_Model
             //Yes, we have something to offer:
 
 
-            $message = 'Here are my recommended intentions that you can add to your Action Plan:';
+            $message = 'Here are some intentions that I recommended you add to your Action Plan:';
             $quick_replies = array();
 
             foreach($featured_intentions as $count => $in){
@@ -1179,7 +1179,14 @@ class Communication_model extends CI_Model
             $this->Communication_model->dispatch_message(
                 'You have already added all featured intentions to your Action Plan and I have nothing else to recommend to you at this time.',
                 array('en_id' => $en_id),
-                true
+                true,
+                array(
+                    array(
+                        'content_type' => 'text',
+                        'title' => 'Next',
+                        'payload' => 'GONEXT',
+                    )
+                )
             );
 
 
@@ -1598,6 +1605,7 @@ class Communication_model extends CI_Model
                 'Got it. '.echo_random_message('command_me'),
                 $en,
                 true
+                //Do not give next option and listen for their intention command...
             );
 
         } elseif (substr_count($quick_reply_payload, 'SUBSCRIBE-INITIATE_') == 1) {
