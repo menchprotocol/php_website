@@ -28,17 +28,18 @@ class Actionplan_model extends CI_Model
         foreach(array_flatten($in_metadata['in__metadata_common_steps']) as $common_step_in_id){
 
             //Is this an expansion step?
-            $is_expansion = (isset($in_metadata['in__metadata_expansion_steps'][$common_step_in_id]));
+            $is_expansion = (isset($in_metadata['in__metadata_expansion_steps'][$common_step_in_id]) || isset($in_metadata['in__metadata_expansion_milestones'][$common_step_in_id]));
 
+            //Is this completed?
             $completed_steps = $this->Links_model->ln_fetch(array(
                 'ln_type_entity_id IN (' . join(',' , $this->config->item('en_ids_6146')) . ')' => null,
                 'ln_miner_entity_id' => $en_id, //Belongs to this Student
                 'ln_parent_intent_id' => $common_step_in_id,
-                'ln_status >=' => 0, //New+
+                'ln_status' => 2, //Published
             ), ( $is_expansion ? array('in_child') : array() ));
 
             //Have they completed this?
-            if(count($completed_steps) == 0 || $completed_steps[0]['ln_status'] < 2){
+            if(count($completed_steps) == 0){
 
                 //Not completed yet, this is the next step:
                 return $common_step_in_id;
@@ -83,7 +84,7 @@ class Actionplan_model extends CI_Model
             if($advance_step){
 
                 $this->Communication_model->dispatch_message(
-                    'You have no intentions in your Action Plan.',
+                    'You have no intentions added to your Action Plan yet.',
                     array('en_id' => $en_id),
                     true
                 );
