@@ -628,7 +628,7 @@ class Intents_model extends CI_Model
         $is_first_intent = ( !isset($focus_in['ln_id']) ); //First intent does not have a link, just the intent
         $has_or_parent = ( $focus_in['in_type']==1 );
         $or_children = array(); //To be populated only if $focus_in is an OR intent
-        $conditional_miestones = array(); //To be populated only for conditional milestones
+        $conditional_milestones = array(); //To be populated only for conditional milestones
         $metadata_this = array(
             '__in__metadata_common_steps' => array(), //The tree structure that would be shared with all students regardless of their quick replies (OR Intent Answers)
             '__in__metadata_expansion_steps' => array(), //Intents that may exist as a link to expand an Action Plan tree by answering OR intents
@@ -648,7 +648,7 @@ class Intents_model extends CI_Model
             if($in_child['ln_type_entity_id']==4229){
 
                 //Conditional Milestone Link:
-                array_push($or_children, intval($in_child['in_id']));
+                array_push($conditional_milestones, intval($in_child['in_id']));
 
             } elseif($has_or_parent){
 
@@ -686,6 +686,10 @@ class Intents_model extends CI_Model
             $metadata_this['__in__metadata_expansion_steps'][$focus_in['in_id']] = $or_children;
         }
 
+        if(count($conditional_milestones) > 0){
+            $metadata_this['__in__metadata_expansion_milestones'][$focus_in['in_id']] = $conditional_milestones;
+        }
+
 
         //Save common base:
         if($is_first_intent){
@@ -699,8 +703,10 @@ class Intents_model extends CI_Model
 
             update_metadata('in', $focus_in['in_id'], array(
                 'in__metadata_common_steps' => $metadata_this['__in__metadata_common_steps'],
-                'in__metadata_expansion_steps'     => $metadata_this['__in__metadata_expansion_steps'],
+                'in__metadata_expansion_steps' => $metadata_this['__in__metadata_expansion_steps'],
+                'in__metadata_expansion_milestones' => $metadata_this['__in__metadata_expansion_milestones'],
             ));
+
         }
 
         //Return results:
