@@ -2180,16 +2180,26 @@ class Communication_model extends CI_Model
                     continue;
                 }
 
+                //Fetch metadata:
+                $ins = $this->Intents_model->in_fetch(array(
+                    'in_id' => $alg['alg_obj_id'],
+                    'in_status' => 2,
+                ));
+                if(count($ins) < 1){
+                    continue;
+                }
+
+                //Make sure no dummy title:
+                if(!is_clean_outcome($ins[0])){
+                    continue;
+                }
+
+
                 $new_intent_count++;
 
                 if($new_intent_count==1){
                     $message = 'I found these intentions:';
                 }
-
-                //Fetch metadata:
-                $ins = $this->Intents_model->in_fetch(array(
-                    'in_id' => $alg['alg_obj_id'],
-                ));
 
                 //Show Message:
                 $time_range = echo_time_range($ins[0]);

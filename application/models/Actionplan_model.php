@@ -126,7 +126,7 @@ class Actionplan_model extends CI_Model
                     ));
 
                     //Inform of intent title only if its a clean title:
-                    if(substr_count($next_step_ins[0]['in_outcome'], '::')==0 && substr_count($next_step_ins[0]['in_outcome'], '#')==0){
+                    if(is_clean_outcome($next_step_ins[0])){
                         $this->Communication_model->dispatch_message(
                             'Let\'s '. $next_step_ins[0]['in_outcome'],
                             array('en_id' => $en_id),
@@ -852,16 +852,10 @@ class Actionplan_model extends CI_Model
             $key = 0;
             foreach ($in__children as $child_in) {
 
-
-                //Make sure this AND child has a "useful" outcome by NOT referencing it's ID in its outcome:
-                if($fb_messenger_format){
-                    $string_references = extract_references($child_in['in_outcome']);
-                    if(count($string_references['ref_intents']) > 0){
-                        //This is likely a "useless" outcome like "Answer question #8704" which should not be listed...
-                        continue;
-                    }
+                //We require a clean title for Messenger:
+                if($fb_messenger_format && !is_clean_outcome($child_in)){
+                    continue;
                 }
-
 
                 if($key==0){
                     if($fb_messenger_format){
