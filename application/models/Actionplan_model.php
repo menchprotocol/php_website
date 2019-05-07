@@ -1060,7 +1060,7 @@ class Actionplan_model extends CI_Model
                 //Maybe do something here?
             }
 
-        } elseif(!$has_non_skippable_proression) {
+        } elseif(!$has_non_skippable_proression && count($in__children) > 0) {
 
             //Give option to skip:
             if($fb_messenger_format){
