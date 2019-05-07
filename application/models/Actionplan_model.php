@@ -1015,6 +1015,20 @@ class Actionplan_model extends CI_Model
          * Let's start dispatch Messenger messages
          *
          * */
+        //Check to see if completion notes needs to be dispatched via Messenger?
+        if($made_published_progress && $trigger_completion){
+
+            //Add on-complete messages (if any) to the current messages:
+            $in__messages = array_merge($in__messages, $this->Links_model->ln_fetch(array(
+                'ln_status' => 2, //Published
+                'ln_type_entity_id' => 6242, //On-Complete Tips
+                'ln_child_intent_id' => $ins[0]['in_id'],
+            ), array(), 0, 0, array('ln_order' => 'ASC')));
+
+        }
+
+
+
         $compile_html_message = null; //Will be useful only IF $fb_messenger_format=FALSE
         $last_message_accepts_quick_replies = false; //Assume FALSE unless proven otherwise...
         foreach ($in__messages as $count => $message_ln) {
@@ -1071,27 +1085,7 @@ class Actionplan_model extends CI_Model
          * */
 
 
-        //Check to see if completion notes needs to be dispatched via Messenger?
-        if($made_published_progress && $trigger_completion){
 
-            //Dispatch all on-complete notes:
-            foreach($this->Links_model->ln_fetch(array(
-                'ln_status' => 2, //Published
-                'ln_type_entity_id' => 6242, //On-Complete Tips
-                'ln_child_intent_id' => $ins[0]['in_id'],
-            ), array(), 0, 0, array('ln_order' => 'ASC')) as $complete_note){
-                //Send to student:
-                $compile_html_message .= $this->Communication_model->dispatch_message(
-                    $complete_note['ln_content'],
-                    $recipient_en,
-                    $fb_messenger_format,
-                    array(),
-                    array(
-                        'ln_parent_intent_id' => $ins[0]['in_id']
-                    )
-                );
-            }
-        }
 
 
 
@@ -1104,7 +1098,7 @@ class Actionplan_model extends CI_Model
 
             //Do we need to return the HTML UI?
             'html_messages' => ( $fb_messenger_format ? null : $compile_html_message . '<div class="msg" style="margin-top: 15px;">'.nl2br($next_step_message).'</div>' ),
-            'html_progress_links' => ( $fb_messenger_format ? null : $current_progression_links ),
+            'progression_links' => ( $fb_messenger_format ? null : $current_progression_links ),
         );
 
     }
