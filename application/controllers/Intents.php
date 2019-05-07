@@ -686,12 +686,7 @@ class Intents extends CI_Controller
             'in_id' => $in_id,
         ));
         if(count($ins) > 0){
-            if(1){
-                $aa = unserialize($ins[0]['in_metadata']);
-                echo_json(array_merge($aa['in__metadata_expansion_steps'], $aa['in__metadata_expansion_milestones']));
-            } else {
-                echo_json(unserialize($ins[0]['in_metadata']));
-            }
+            echo_json(unserialize($ins[0]['in_metadata']));
         } else {
             echo 'Intent #'.$in_id.' not found!';
         }
