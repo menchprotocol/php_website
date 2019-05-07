@@ -2192,7 +2192,8 @@ class Communication_model extends CI_Model
                 ));
 
                 //Show Message:
-                $message .= "\n\n" . $new_intent_count . '. ' . $ins[0]['in_outcome'] . ' in ' . strip_tags(echo_time_range($ins[0]));
+                $time_range = echo_time_range($ins[0]);
+                $message .= "\n\n" . $new_intent_count . '. ' . $ins[0]['in_outcome'] . ( $time_range ? ' in ' . strip_tags($time_range) : '' );
                 array_push($quick_replies, array(
                     'content_type' => 'text',
                     'title' => $new_intent_count,
