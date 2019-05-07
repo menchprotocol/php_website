@@ -11,7 +11,7 @@ defined('BASEPATH') OR exit('No direct script access allowed');
  *
  */
 
-//Generated 2019-05-06 22:51:41 PST
+//Generated 2019-05-07 15:31:25 PST
 
 //Mench:
 $config['en_ids_2738'] = array(4488, 6137, 6138, 6196, 6287);
@@ -842,7 +842,7 @@ $config['en_all_4997'] = array(
 );
 
 //Intent Notes Public Entity References:
-$config['en_ids_4990'] = array(1326, 2793, 2997, 2998, 2999, 3005, 3084, 3147, 3192, 3300, 3301, 3302, 3303, 3308, 3314, 3320, 4257, 4258, 4259, 4260, 4395, 4399, 4446, 4763, 4883, 5948);
+$config['en_ids_4990'] = array(1326, 2793, 2997, 2998, 2999, 3005, 3084, 3147, 3192, 3300, 3301, 3302, 3303, 3308, 3314, 3320, 4257, 4258, 4259, 4260, 4395, 4399, 4446, 4763, 4883, 5948, 6334, 6336);
 $config['en_all_4990'] = array(
     1326 => array(
         'm_icon' => '<i class="fal fa-bookmark"></i>',
@@ -999,6 +999,18 @@ $config['en_all_4990'] = array(
         'm_name' => 'Expert Templates',
         'm_desc' => '',
         'm_parents' => array(4990, 3000),
+    ),
+    6334 => array(
+        'm_icon' => '<img src="http://paypal.com/favicon.ico">',
+        'm_name' => 'PayPal.com',
+        'm_desc' => '',
+        'm_parents' => array(4990, 1326),
+    ),
+    6336 => array(
+        'm_icon' => '<img src="http://paypal.me/favicon.ico">',
+        'm_name' => 'PayPal.me',
+        'm_desc' => '',
+        'm_parents' => array(4990, 1326),
     ),
 );
 
@@ -1353,7 +1365,7 @@ $config['en_all_4595'] = array(
     ),
     4256 => array(
         'm_icon' => '<i class="fal fa-browser"></i>',
-        'm_name' => 'Linked Entities Generic URL',
+        'm_name' => 'Linked Entities URL',
         'm_desc' => '50',
         'm_parents' => array(4593, 4592, 4537, 4595, 4331),
     ),
@@ -1525,7 +1537,7 @@ $config['en_all_4593'] = array(
     ),
     4256 => array(
         'm_icon' => '<i class="fal fa-browser"></i>',
-        'm_name' => 'Linked Entities Generic URL',
+        'm_name' => 'Linked Entities URL',
         'm_desc' => '',
         'm_parents' => array(4593, 4592, 4537, 4595, 4331),
     ),
@@ -1956,7 +1968,7 @@ $config['en_all_4592'] = array(
     ),
     4256 => array(
         'm_icon' => '<i class="fal fa-browser"></i>',
-        'm_name' => 'Generic URL',
+        'm_name' => 'URL',
         'm_desc' => '',
         'm_parents' => array(4593, 4592, 4537, 4595, 4331),
     ),
@@ -2015,7 +2027,7 @@ $config['en_all_4331'] = array(
     ),
     4256 => array(
         'm_icon' => '<i class="fal fa-browser"></i>',
-        'm_name' => 'Generic URL',
+        'm_name' => 'URL',
         'm_desc' => '',
         'm_parents' => array(4593, 4592, 4537, 4595, 4331),
     ),
@@ -2166,7 +2178,7 @@ $config['en_ids_4537'] = array(4256, 4257, 4258, 4259, 4260, 4261);
 $config['en_all_4537'] = array(
     4256 => array(
         'm_icon' => '<i class="fal fa-browser"></i>',
-        'm_name' => 'Generic URL',
+        'm_name' => 'URL',
         'm_desc' => 'Link note contains a generic URL only.',
         'm_parents' => array(4593, 4592, 4537, 4595, 4331),
     ),
