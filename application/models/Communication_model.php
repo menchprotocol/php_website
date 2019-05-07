@@ -973,6 +973,21 @@ class Communication_model extends CI_Model
 
             if (!$has_text && count($quick_replies) > 0) {
 
+                //This is an error:
+                $this->Links_model->ln_create(array(
+                    'ln_content' => 'dispatch_validate_message() was given quick replies without a text message',
+                    'ln_metadata' => array(
+                        'input_message' => $input_message,
+                        'fb_messenger_format' => $fb_messenger_format,
+                        'quick_replies' => $quick_replies,
+                    ),
+                    'ln_type_entity_id' => 4246, //Platform Error
+                    'ln_miner_entity_id' => 1, //Shervin/Developer
+                    'ln_parent_entity_id' => $message_type_en_id,
+                    'ln_child_entity_id' => $recipient_en['en_id'],
+                    'ln_child_intent_id' => $message_in_id,
+                ));
+
                 //We have a quick reply without a text, so append a generix text message as its required to have one:
                 array_push($output_messages, array(
                     'message_type' => 4552, //Text Message Sent
