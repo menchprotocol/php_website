@@ -754,7 +754,7 @@ class Actionplan_model extends CI_Model
                     $next_step_message = 'There is a single step to ' . echo_in_outcome($ins[0]['in_outcome'], true, true);
                 } else {
                     //Multiple next steps:
-                    $next_step_message = 'There are ' . count($in__children) . ' steps to ' . echo_in_outcome($ins[0]['in_outcome'], true, true);
+                    $next_step_message = 'Here are the ' . count($in__children) . ' steps to ' . echo_in_outcome($ins[0]['in_outcome'], true, true);
                 }
 
 
@@ -784,7 +784,7 @@ class Actionplan_model extends CI_Model
                     if ($fb_messenger_format && ($key >= 7 || strlen($next_step_message) > ($this->config->item('fb_max_message') - 150))) {
                         //We cannot add any more, indicate truncating:
                         $remainder = count($in__children) - $key;
-                        $next_step_message .= "\n\n" . 'Plus ' . $remainder . ' more step' . echo__s($remainder) . '.';
+                        $next_step_message .= "\n\n" . '... plus ' . $remainder . ' more step' . echo__s($remainder) . '.';
                         break;
                     }
 
@@ -855,12 +855,14 @@ class Actionplan_model extends CI_Model
                         'title' => 'Next',
                         'payload' => 'GONEXT',
                     ));
+                    /*
                     //Give option to skip:
                     array_push($next_step_quick_replies, array(
                         'content_type' => 'text',
                         'title' => 'Skip',
                         'payload' => 'SKIP-ACTIONPLAN_1_' . $ins[0]['in_id'],
                     ));
+                    */
                 } else {
                     if($key > 0){
                         $next_step_message .= '</div>';
