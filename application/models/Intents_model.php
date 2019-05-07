@@ -628,6 +628,7 @@ class Intents_model extends CI_Model
         $is_first_intent = ( !isset($focus_in['ln_id']) ); //First intent does not have a link, just the intent
         $has_or_parent = ( $focus_in['in_type']==1 );
         $or_children = array(); //To be populated only if $focus_in is an OR intent
+        $conditional_miestones = array(); //To be populated only for conditional milestones
         $metadata_this = array(
             '__in__metadata_common_steps' => array(), //The tree structure that would be shared with all students regardless of their quick replies (OR Intent Answers)
             '__in__metadata_expansion_steps' => array(), //Intents that may exist as a link to expand an Action Plan tree by answering OR intents
@@ -644,12 +645,19 @@ class Intents_model extends CI_Model
         ), array('in_child'), 0, 0, array('ln_order' => 'ASC')) as $in_child){
 
             //Determine action based on parent intent type:
-            if($has_or_parent){
+            if($in_child['ln_type_entity_id']==4229){
 
-                //OR Intent:
+                //Conditional Milestone Link:
+                array_push($or_children, intval($in_child['in_id']));
+
+            } elseif($has_or_parent){
+
+                //OR parent Intent with Fixed Step Link:
                 array_push($or_children, intval($in_child['in_id']));
 
             } else {
+
+                //AND parent Intent with Fixed Step Link:
 
                 //Add to common step:
                 array_push($metadata_this['__in__metadata_common_steps'], intval($in_child['in_id']));

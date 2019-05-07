@@ -1386,6 +1386,11 @@ class Communication_model extends CI_Model
                 $this->Communication_model->dispatch_message(
                     'I added your '.$en_all_4592[$pending_in_requirements[0]['in_requirement_entity_id']]['m_name'].' message to '.$pending_in_requirements[0]['in_outcome'].'. /link:See in 🚩Action Plan:https://mench.com/messenger/actionplan/' . $pending_in_requirements[0]['in_id'],
                     $en,
+                    true
+                );
+                $this->Communication_model->dispatch_message(
+                    'When ready, say "Next"',
+                    $en,
                     true,
                     array(
                         array(
