@@ -54,6 +54,13 @@ $(document).ready(function () {
         }
     });
 
+
+    //Watch for completion method change to ask for Dollar amount:
+    $("#in_requirement_entity_id").change(function () {
+        load_payment_field(this.value);
+    });
+
+
     //Lookout for intent link related changes:
     $('input[type=radio][name=ln_type_entity_id], #ln_status').change(function () {
         in_adjust_link_ui();
@@ -83,6 +90,14 @@ $(document).ready(function () {
 });
 
 
+function load_payment_field(requirement_type){
+    //Should we show intent archiving warning?
+    if(parseInt(requirement_type) == 6291){
+        $('.one-time-payment').removeClass('hidden');
+    } else {
+        $('.one-time-payment').addClass('hidden');
+    }
+}
 
 //This also has an equal PHP function echo_time_hours() which we want to make sure has more/less the same logic:
 function echo_js_hours(in_seconds_cost) {
@@ -288,6 +303,7 @@ function in_modify_load(in_id, ln_id) {
             $('#in_dollar_cost').val(data.in.in_dollar_cost);
             $('#in_seconds_cost').val(data.in.in_seconds_cost);
             $('#in_requirement_entity_id').val(data.in.in_requirement_entity_id);
+            load_payment_field(data.in.in_requirement_entity_id);
             $('.tr_in_link_title').text('');
 
             $('#in_status').val(data.in.in_status).attr('original-status', data.in.in_status); //Set the status before it gets changed by miners

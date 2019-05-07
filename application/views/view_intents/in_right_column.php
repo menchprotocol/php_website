@@ -96,17 +96,34 @@
                         <span class="mini-header">Completion Method:</span>
                         <select class="form-control border" id="in_requirement_entity_id" data-toggle="tooltip" title="Defines what students need to do to mark this intent as complete" data-placement="top" style="margin-bottom: 12px;">
                             <?php
-                            foreach ($this->config->item('en_all_4331') as $en_id => $m) {
+                            $en_all_4331 = $this->config->item('en_all_4331');
+                            foreach ($en_all_4331 as $en_id => $m) {
                                 echo '<option value="' . $en_id . '">' . $m['m_name'] . ' Required</option>';
                             }
                             ?>
                         </select>
 
+
+
+                        <div class="one-time-payment hidden">
+                            <span class="mini-header"><?= $en_all_4331[6291]['m_name'] ?>: <i class="fas fa-info-circle" data-toggle="tooltip" data-placement="right" title="<?= $en_all_4331[6291]['m_desc'] ?>"></i></span>
+                            <div class="form-group label-floating is-empty">
+                                <div class="input-group border" style="margin-top:1px; width: 155px;">
+                                        <span class="input-group-addon addon-lean addon-grey" style="color:#2f2739; font-weight: 300;"><?= $en_all_4331[6291]['m_icon'] ?></span>
+                                    <input style="padding-left:3px;" type="number" step="0.01" min="0" max="5000"
+                                           id="in_dollar_cost" value="" class="form-control">
+                                    <span class="input-group-addon addon-lean addon-grey"
+                                          style="color:#2f2739; font-weight: 300;">USD</span>
+                                </div>
+                            </div>
+                        </div>
+
+
                     </div>
 
 
 
-                    <span class="mini-header">Completion Cost:</span>
+                    <span class="mini-header">Time Estimate:</span>
                     <div class="form-group label-floating is-empty">
                         <div class="input-group border" style="width: 155px;">
                                         <span class="input-group-addon addon-lean addon-grey" style="color:#2f2739; font-weight: 300;"><i
@@ -117,19 +134,6 @@
                             <span class="input-group-addon addon-lean addon-grey" style="color:#2f2739; font-weight: 300;">Seconds</span>
                         </div>
                     </div>
-
-
-                    <div class="form-group label-floating is-empty">
-                        <div class="input-group border" style="margin-top:1px; width: 155px;">
-                                        <span class="input-group-addon addon-lean addon-grey" style="color:#2f2739; font-weight: 300;"><i
-                                                class="fal fa-usd-circle"></i></span>
-                            <input style="padding-left:3px;" type="number" step="0.01" min="0" max="5000"
-                                   id="in_dollar_cost" value="" class="form-control">
-                            <span class="input-group-addon addon-lean addon-grey"
-                                  style="color:#2f2739; font-weight: 300;">USD</span>
-                        </div>
-                    </div>
-
 
 
                 </div>
