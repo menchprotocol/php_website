@@ -395,6 +395,11 @@ class Intents extends CI_Controller
                 'status' => 0,
                 'message' => 'Missing Cost Estimate',
             ));
+        } elseif ($_POST['in_requirement_entity_id']==6291 && (doubleval($_POST['in_dollar_cost']) < $this->config->item('in_min_cost') || doubleval($_POST['in_dollar_cost']) > $this->config->item('in_max_cost'))) {
+            return echo_json(array(
+                'status' => 0,
+                'message' => 'You must enter a Payment amount between $'.$this->config->item('in_min_cost').' - $'.$this->config->item('in_max_cost').' USD',
+            ));
         } elseif (!isset($_POST['in_status'])) {
             return echo_json(array(
                 'status' => 0,

@@ -11,7 +11,7 @@ defined('BASEPATH') OR exit('No direct script access allowed');
  *
  */
 
-//Generated 2019-05-06 19:43:52 PST
+//Generated 2019-05-06 19:58:05 PST
 
 //Mench:
 $config['en_ids_2738'] = array(4488, 6137, 6138, 6196, 6287);
@@ -2082,7 +2082,7 @@ $config['en_all_4331'] = array(
     6291 => array(
         'm_icon' => '<i class="far fa-file-invoice-dollar"></i>',
         'm_name' => 'Payment',
-        'm_desc' => 'The USD amount students must pay via Paypal to complete the intent and move forward in this direction. Alternatively students can skip the intention tree.',
+        'm_desc' => 'The USD amount students must pay via Paypal to complete the intent and move forward in this direction. Alternatively students can skip the intention tree. ',
         'm_parents' => array(4331),
     ),
 );

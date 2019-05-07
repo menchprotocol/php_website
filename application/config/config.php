@@ -5,7 +5,7 @@ defined('BASEPATH') OR exit('No direct script access allowed');
 /*
  *
  * Global variables used throughout the platform.
- * Example: $this->config->item('in_mark_options')
+ * Example: $this->config->item('in_min_cost')
  *
  */
 
@@ -14,7 +14,7 @@ defined('BASEPATH') OR exit('No direct script access allowed');
 date_default_timezone_set('America/Los_Angeles');
 
 //App Functionality:
-$config['app_version']              = '0.851'; //Cache buster for static JS/CSS files, so needs to be updated if you update static files
+$config['app_version']              = '0.853'; //Cache buster for static JS/CSS files, so needs to be updated if you update static files
 $config['app_enable_algolia']       = true; //May need to turn off if/when we reach monthly quota of 50k calls
 $config['items_per_page']           = 100; //The limit of how many items should be loaded per page/section
 
@@ -27,6 +27,8 @@ $config['in_featured']              = 8469; //Child intents of this are featured
 $config['in_status_locked']         = array(8438, 8469, 7766); //Once set to published, their status will be locked by system
 $config['in_seconds_cost_max']      = 28800; //The maximum seconds allowed per intent. If larger, the miner is asked to break it down into smaller intents
 $config['in_outcome_max']           = 89; //Max number of characters allowed for intent outcomes
+$config['in_min_cost']              = 0.99; //The minimum amount to be charged for an intention with a Payment completion method.
+$config['in_max_cost']              = 100.00; //The maximum amount to be charged for an intention with a Payment completion method.
 $config['in_mark_options']          = array(0, 1, 2, 3, 5, 8, 13, 21); //Defines how many marks can be assigned to OR intent children
 
 
