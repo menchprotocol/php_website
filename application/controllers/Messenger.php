@@ -581,7 +581,7 @@ class Messenger extends CI_Controller
 
                             //Yes, it's all good:
                             $next_step_quick_replies = array();
-                            $next_step_message = 'Nice! Should I add your '.$en_all_4592[$in_requirements_search]['m_name'].' message to'.( count($pending_matches) > 1 ? ' one of' : '' ).' the following Action Plan step'.echo__s(count($pending_matches)).':';
+                            $next_step_message = 'Nice! Should I add your '.strtolower($en_all_4592[$in_requirements_search]['m_name']).' message to'.( count($pending_matches) > 1 ? ' one of' : '' ).' the following Action Plan step'.echo__s(count($pending_matches)).':';
 
                             //Append all options:
                             foreach($pending_matches as $count => $requirement_in_ln){

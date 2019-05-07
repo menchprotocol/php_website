@@ -607,6 +607,14 @@ class Actionplan_model extends CI_Model
          * link for this step of the Action Plan.
          *
          * */
+        $made_published_progress = false; //Assume FALSE, search and see...
+        foreach($current_progression_links as $current_progression_link){
+            if($current_progression_link['ln_status']==2){
+                $made_published_progress = true;
+                break;
+            }
+        }
+
         if(count($current_progression_links)<1 || ( !$is_two_step && !$made_published_progress )){
 
             //Log new link:
@@ -645,22 +653,14 @@ class Actionplan_model extends CI_Model
 
         //Let's analyse the progress made so far to better understand how to deal with this step:
         $student_can_skip = true; //Assume TRUE unless proven otherwise...
-        $made_published_progress = false; //Assume FALSE, search and see...
         foreach($current_progression_links as $current_progression_link){
-
-            //Now see if we should give an option to skip
             if($student_can_skip && !$has_children && $current_progression_link['ln_status']==2){
                 //Also make sure this was NOT an automated progression because there is no point in skipping those:
                 if(in_array($current_progression_link['ln_type_entity_id'], $this->config->item('en_ids_6274'))){
                     $student_can_skip = false;
+                    break;
                 }
             }
-
-            //Action Plan Skippable Progression Llink Types
-            if($current_progression_link['ln_status']==2){
-                $made_published_progress = true;
-            }
-
         }
 
 
