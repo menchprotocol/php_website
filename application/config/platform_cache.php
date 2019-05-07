@@ -11,7 +11,7 @@ defined('BASEPATH') OR exit('No direct script access allowed');
  *
  */
 
-//Generated 2019-05-06 18:51:39 PST
+//Generated 2019-05-06 19:01:14 PST
 
 //Mench:
 $config['en_ids_2738'] = array(4488, 6137, 6138, 6196, 6287);
@@ -72,7 +72,7 @@ $config['en_all_6255'] = array(
         'm_icon' => '<i class="fas fa-bullseye-arrow"></i>',
         'm_name' => 'Action Plan Set Intention',
         'm_desc' => '',
-        'm_parents' => array(6255, 6146, 4506, 4755, 4593),
+        'm_parents' => array(6153, 6255, 4506, 4755, 4593),
     ),
     4559 => array(
         'm_icon' => '<i class="far fa-comment-check"></i>',
@@ -397,14 +397,8 @@ $config['en_all_4363'] = array(
 );
 
 //Action Plan Progression Steps:
-$config['en_ids_6146'] = array(4235, 4559, 6140, 6143, 6144, 6157, 6158, 6289);
+$config['en_ids_6146'] = array(4559, 6140, 6143, 6144, 6157, 6158, 6289);
 $config['en_all_6146'] = array(
-    4235 => array(
-        'm_icon' => '<i class="fas fa-bullseye-arrow"></i>',
-        'm_name' => 'Set Intention',
-        'm_desc' => 'The very first step of any journey is setting the intention to start the journey ✨',
-        'm_parents' => array(6255, 6146, 4506, 4755, 4593),
-    ),
     4559 => array(
         'm_icon' => '<i class="far fa-comment-check"></i>',
         'm_name' => 'Read Messages',
@@ -1104,7 +1098,7 @@ $config['en_all_4755'] = array(
         'm_icon' => '<i class="fas fa-bullseye-arrow"></i>',
         'm_name' => 'Action Plan Set Intention',
         'm_desc' => '',
-        'm_parents' => array(6255, 6146, 4506, 4755, 4593),
+        'm_parents' => array(6153, 6255, 4506, 4755, 4593),
     ),
     4266 => array(
         'm_icon' => '<i class="fab fa-facebook-messenger"></i>',
@@ -1521,7 +1515,7 @@ $config['en_all_4593'] = array(
         'm_icon' => '<i class="fas fa-bullseye-arrow"></i>',
         'm_name' => 'Action Plan Set Intention',
         'm_desc' => 'Top-level goals set by students that enable Mench to deliver the most relevant intelligence.',
-        'm_parents' => array(6255, 6146, 4506, 4755, 4593),
+        'm_parents' => array(6153, 6255, 4506, 4755, 4593),
     ),
     4242 => array(
         'm_icon' => '<i class="fal fa-sync"></i>',

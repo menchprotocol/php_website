@@ -67,7 +67,7 @@ $submission_messages = null;
 $trigger_on_complete_tips = false;
 foreach($advance_step['progression_links'] as $pl){
 
-    echo '<span style="margin-right:10px;" class="status-label underdot" data-toggle="tooltip" data-placement="top" title="Status is '.$fixed_fields['ln_student_status'][$pl['ln_status']]['s_name'].': '.$fixed_fields['ln_student_status'][$pl['ln_status']]['s_desc'].'">'.$fixed_fields['ln_student_status'][$pl['ln_status']]['s_icon'].' '.$en_all_6146[$pl['ln_type_entity_id']]['m_name'].'</span>';
+    echo '<span style="margin-right:10px;" class="status-label underdot" data-toggle="tooltip" data-placement="top" title="Status is '.$fixed_fields['ln_student_status'][$pl['ln_status']]['s_name'].': '.$fixed_fields['ln_student_status'][$pl['ln_status']]['s_desc'].'">'.( $pl['ln_status']==2 /* Published? */ ? $en_all_6146[$pl['ln_type_entity_id']]['m_icon'] /* Show Progression Type */ : $fixed_fields['ln_student_status'][$pl['ln_status']]['s_icon'] /* Show Status */ ).' '.$en_all_6146[$pl['ln_type_entity_id']]['m_name'].'</span>';
 
     //Should we trigger on-complete links?
     if($pl['ln_status']==2 && in_array($pl['ln_type_entity_id'], $this->config->item('en_ids_6255'))){
@@ -86,7 +86,7 @@ foreach($advance_step['progression_links'] as $pl){
 
 //Completion Percentage so far:
 $completion_rate = $this->Actionplan_model->actionplan_completion_rate($in, $session_en['en_id']);
-echo '<span class="status-label underdot" style="margin-right:10px;" data-toggle="tooltip" data-placement="top" title="'.$completion_rate['steps_completed'].'/'.$completion_rate['steps_total'].' Steps Completed">'.$completion_rate['completion_percentage'].'% Complete</span>';
+echo '<span class="status-label underdot" style="margin-right:10px;" data-toggle="tooltip" data-placement="top" title="'.$completion_rate['steps_completed'].'/'.$completion_rate['steps_total'].' Steps Completed"><i class="fas fa-check-circle"></i> '.$completion_rate['completion_percentage'].'%</span>';
 
 
 
