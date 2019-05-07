@@ -700,6 +700,13 @@ function echo_random_message($message_key){
         'command_me' => array(
             'You can add a new intention to your Action Plan by sending me a message that starts with "I want to", for example "I want to assess my self as a programmer" or "I want to get hired as a full-stack developer"',
         ),
+        'goto_next' => array(
+            'When ready, say "Next"',
+            'I am ready when you are...',
+            'Ready to move to the next step?',
+            'Say next to continue',
+        ),
+
     );
 
     if(!array_key_exists($message_key, $rotation_index)){

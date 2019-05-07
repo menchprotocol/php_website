@@ -1047,7 +1047,7 @@ class Actionplan_model extends CI_Model
             if(strlen($next_step_message) > 0 || count($next_step_quick_replies) > 0){
                 //Send messages over Messenger IF we have a message
                 $this->Communication_model->dispatch_message(
-                    ( strlen($next_step_message) > 0 ? $next_step_message : 'SaySelect an option to continue:' ),
+                    ( strlen($next_step_message) > 0 ? $next_step_message : echo_random_message('goto_next') ),
                     $recipient_en,
                     true,
                     $next_step_quick_replies,
