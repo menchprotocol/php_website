@@ -105,12 +105,6 @@ echo '</div>';
 
 
 
-//Show possible submission messages:
-echo $submission_messages;
-
-
-
-
 
 //Show messages:
 if($advance_step['status']){
@@ -123,4 +117,9 @@ if($advance_step['status']){
     echo '<div class="alert alert-danger"><i class="fas fa-exclamation-triangle"></i> Error: '.$advance_step['message'].'</div>';
 }
 
+
+//Show possible submission messages:
+if($submission_messages){
+    echo $submission_messages;
+}
 ?>

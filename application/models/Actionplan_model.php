@@ -674,7 +674,7 @@ class Actionplan_model extends CI_Model
         foreach($current_progression_links as $current_progression_link){
             if($student_can_skip && !$has_children && $current_progression_link['ln_status']==2){
                 //Also make sure this was NOT an automated progression because there is no point in skipping those:
-                if(in_array($current_progression_link['ln_type_entity_id'], $this->config->item('en_ids_6274'))){
+                if(!in_array($current_progression_link['ln_type_entity_id'], $this->config->item('en_ids_6274'))){
                     $student_can_skip = false;
                     break;
                 }

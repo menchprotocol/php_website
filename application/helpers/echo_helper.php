@@ -568,10 +568,9 @@ function echo_tr_row($ln, $is_inner = false)
 
 
     //Do we have a content to show?
-    if(!$hide_sensitive_details){
-        $main_content = echo_tr_urls($ln['ln_content'], $ln['ln_type_entity_id']);
-        $ui .= '<div class="e-msg ' . ($main_content ? '' : 'hidden') . '">';
-        $ui .= $main_content;
+    if(!$hide_sensitive_details && strlen($ln['ln_content']) > 0){
+        $ui .= '<div class="e-msg">';
+        $ui .= $CI->Communication_model->dispatch_message($ln['ln_content']);
         $ui .= '</div>';
     }
 
