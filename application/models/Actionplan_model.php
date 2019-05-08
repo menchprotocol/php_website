@@ -334,6 +334,27 @@ class Actionplan_model extends CI_Model
             return false;
         }
 
+        //Make sure does not exist:
+        if(count($this->Links_model->ln_fetch(array(
+                'ln_miner_entity_id' => $en_id,
+                'ln_parent_intent_id' => $in_id,
+                'ln_type_entity_id' => 4235, //Action Plan Set Intention
+                'ln_status IN (' . join(',', $this->config->item('ln_status_incomplete')) . ')' => null, //incomplete intentions
+            ))) > 0){
+
+            //Oooops this already exists in the Action Plan:
+            $this->Links_model->ln_create(array(
+                'ln_child_entity_id' => $en_id,
+                'ln_parent_intent_id' => $in_id,
+                'ln_content' => 'actionplan_top_add() blocked the addition of a duplicate intention to the Action Plan',
+                'ln_type_entity_id' => 4246, //Platform Bug Reports
+                'ln_miner_entity_id' => 1, //Shervin/Developer
+            ));
+
+            return false;
+
+        }
+
         //Add intent to Student's Action Plan:
         $actionplan = $this->Links_model->ln_create(array(
             'ln_type_entity_id' => 4235, //Action Plan Set Intention
