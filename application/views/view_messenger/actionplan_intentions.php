@@ -50,7 +50,7 @@ if(count($student_intents) > 0){
 } else {
 
     //Show warning:
-    echo '<div class="alert alert-warning"><i class="fas fa-exclamation-triangle"></i> Your Action Plan has no intentions.</div>';
+    echo '<div class="alert alert-warning"><i class="fas fa-exclamation-triangle"></i> Your Action Plan has no intentions, yet.</div>';
 
 }
 
