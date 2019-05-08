@@ -578,35 +578,44 @@ class Messenger extends CI_Controller
                         if(count($pending_matches) > 0){
 
                             //We have some matches, focus on this:
+                            $first_chioce = $pending_matches[0];
 
-                            //Yes, it's all good:
-                            $next_step_quick_replies = array();
-                            $next_step_message = 'Nice! Should I add your '.strtolower($en_all_4592[$in_requirements_search]['m_name']).' message to'.( count($pending_matches) > 1 ? ' one of' : '' ).' the following Action Plan step'.echo__s(count($pending_matches)).':';
-
-                            //Append all options:
-                            foreach($pending_matches as $count => $requirement_in_ln){
-                                $next_step_message .= "\n\n" . ($count+1) .'. '.echo_in_outcome($requirement_in_ln['in_outcome'] , true);
-                                array_push($next_step_quick_replies, array(
-                                    'content_type' => 'text',
-                                    'title' => ($count+1),
-                                    'payload' => 'APPENDRESPONSE_' . $new_message['ln_id'] . '_' . $requirement_in_ln['ln_id'],
+                            //We only look at first matching case which covers most cases, but here is an error in case not:
+                            if(count($pending_matches) >= 2){
+                                $this->Links_model->ln_create(array(
+                                    'ln_content' => 'api_webhook() found multiple matching submission requirements for the same user! Time to program the view with more options.',
+                                    'ln_type_entity_id' => 4246, //Platform Bug Reports
+                                    'ln_miner_entity_id' => 1, //Shervin/Developer
+                                    'ln_metadata' => array(
+                                        'ln_data' => $ln_data,
+                                        'pending_matches' => $pending_matches,
+                                        'first_chioce' => $first_chioce,
+                                    ),
                                 ));
                             }
 
-                            //Give option to skip first match only:
-                            array_push($next_step_quick_replies, array(
-                                'content_type' => 'text',
-                                'title' => 'Skip',
-                                'payload' => 'SKIP-ACTIONPLAN_1_' . $pending_matches[0]['in_id'],
-                            ));
-
-
                             //We did find a pending submission requirement, confirm with student:
                             $this->Communication_model->dispatch_message(
-                                $next_step_message,
+                                'Got it! Please confirm your submission:',
                                 $en,
                                 true,
-                                $next_step_quick_replies
+                                array(
+                                    array(
+                                        'content_type' => 'text',
+                                        'title' => 'Confirm ✅',
+                                        'payload' => 'CONFIRMRESPONSE_' . $new_message['ln_id'] . '_' . $first_chioce['ln_id'],
+                                    ),
+                                    array(
+                                        'content_type' => 'text',
+                                        'title' => 'Try Again',
+                                        'payload' => 'TRYANOTHERRESPONSE_' . $first_chioce['in_requirement_entity_id'],
+                                    ),
+                                    array(
+                                        'content_type' => 'text',
+                                        'title' => 'Skip',
+                                        'payload' => 'SKIP-ACTIONPLAN_1_' . $first_chioce['in_id'],
+                                    )
+                                )
                             );
 
                         } elseif(count($pending_mismatches) > 0){
@@ -616,7 +625,7 @@ class Messenger extends CI_Controller
 
                             //We did not have any matches, but has some mismatches, maybe that's what they meant?
                             $this->Communication_model->dispatch_message(
-                                'I cannot accept your '.strtolower($en_all_4592[$in_requirements_search]['m_name']).' message. Please send me a '.strtolower($en_all_4592[$mismatch_focus['in_requirement_entity_id']]['m_name']).' message to continue.',
+                                'Instead of a '.strtolower($en_all_4592[$in_requirements_search]['m_name']).', please send me a '.strtolower($en_all_4592[$mismatch_focus['in_requirement_entity_id']]['m_name']).' message to continue.',
                                 $en,
                                 true,
                                 array(

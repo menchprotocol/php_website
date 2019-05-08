@@ -1316,96 +1316,85 @@ class Communication_model extends CI_Model
                 'message' => 'Missing quick reply payload',
             );
 
-        } elseif (substr_count($quick_reply_payload, 'APPENDRESPONSE_') == 1) {
+        } elseif (substr_count($quick_reply_payload, 'TRYANOTHERRESPONSE_') == 1) {
 
-            $action_append = one_two_explode('APPENDRESPONSE_', '', $quick_reply_payload);
+            //Students want to try their submission again:
+            $en_all_4592 = $this->config->item('en_all_4592'); //Requirement names
+            $this->Communication_model->dispatch_message(
+                'Ok, so try again by sending me another '.$en_all_4592[one_two_explode('TRYANOTHERRESPONSE_', '', $quick_reply_payload)]['m_name'].' message to continue.',
+                $en,
+                true
+            );
 
-            if($action_append=='CANCEL'){
+        } elseif (substr_count($quick_reply_payload, 'CONFIRMRESPONSE_') == 1) {
 
-                //They selected none of the options:
-                $this->Communication_model->dispatch_message(
-                    'ok got it 🙌 I will not append this message to any of your Action Plan steps.',
-                    $en,
-                    true,
-                    array(
-                        array(
-                            'content_type' => 'text',
-                            'title' => 'Next',
-                            'payload' => 'GONEXT',
-                        )
-                    )
-                );
+            $append_link_ids = explode('_', one_two_explode('CONFIRMRESPONSE_', '', $quick_reply_payload));
+            $message_ln_id = intval($append_link_ids[0]);
+            $ap_step_ln_id = intval($append_link_ids[1]);
 
-            } else {
+            //Validate the message
+            if($message_ln_id>0 && $ap_step_ln_id>0){
 
-                //Should be a specific append command:
-                $append_link_ids = explode('_',$action_append);
-                $message_ln_id = intval($append_link_ids[0]);
-                $ap_step_ln_id = intval($append_link_ids[1]);
+                //Validate message:
+                $new_message_links = $this->Links_model->ln_fetch(array(
+                    'ln_id' => $message_ln_id,
+                ));
 
-                if($message_ln_id>0 && $ap_step_ln_id>0){
-
-                    //Validate message:
-                    $new_message_links = $this->Links_model->ln_fetch(array(
-                        'ln_id' => $message_ln_id,
-                    ));
-
-                    //Validate Action Plan step:
-                    $pending_req_submission = $this->Links_model->ln_fetch(array(
-                        'ln_id' => $ap_step_ln_id,
-                        //Also validate other requirements:
-                        'ln_type_entity_id' => 6144, //Action Plan Submit Requirements
-                        'ln_miner_entity_id' => $en['en_id'], //for this student
-                        'ln_status IN (' . join(',', $this->config->item('ln_status_incomplete')) . ')' => null, //incomplete
-                        'in_status' => 2, //Published
-                    ), array('in_parent'));
-
-                }
-
-
-                if(!isset($pending_req_submission[0]) || !isset($new_message_links[0])){
-                    return array(
-                        'status' => 0,
-                        'message' => 'Invalid command to mark step as complete',
-                    );
-                }
-
-
-                //All good!
-                $en_all_4592 = $this->config->item('en_all_4592');
-
-                //Make changes:
-                $this->Links_model->ln_update($pending_req_submission[0]['ln_id'], array(
-                    'ln_content' => $new_message_links[0]['ln_content'],
-                    'ln_status' => 2,
-                    'ln_parent_link_id' => $new_message_links[0]['ln_id'],
-                ), $en['en_id']);
-
-                //Confirm with student:
-                $this->Communication_model->dispatch_message(
-                    echo_random_message('affirm_progress'),
-                    $en,
-                    true
-                );
-                $this->Communication_model->dispatch_message(
-                    'I added your '.$en_all_4592[$pending_req_submission[0]['in_requirement_entity_id']]['m_name'].' message to '.echo_in_outcome($pending_req_submission[0]['in_outcome'], true).'. /link:See in 🚩Action Plan:https://mench.com/messenger/actionplan/' . $pending_req_submission[0]['in_id'],
-                    $en,
-                    true
-                );
-                $this->Communication_model->dispatch_message(
-                    echo_random_message('goto_next'),
-                    $en,
-                    true,
-                    array(
-                        array(
-                            'content_type' => 'text',
-                            'title' => 'Next',
-                            'payload' => 'GONEXT',
-                        )
-                    )
-                );
+                //Validate Action Plan step:
+                $pending_req_submission = $this->Links_model->ln_fetch(array(
+                    'ln_id' => $ap_step_ln_id,
+                    //Also validate other requirements:
+                    'ln_type_entity_id' => 6144, //Action Plan Submit Requirements
+                    'ln_miner_entity_id' => $en['en_id'], //for this student
+                    'ln_status IN (' . join(',', $this->config->item('ln_status_incomplete')) . ')' => null, //incomplete
+                    'in_status' => 2, //Published
+                ), array('in_parent'));
 
             }
+
+
+            if(!isset($pending_req_submission[0]) || !isset($new_message_links[0])){
+                return array(
+                    'status' => 0,
+                    'message' => 'Invalid command to mark step as complete',
+                );
+            }
+
+
+            //All good!
+            $en_all_4592 = $this->config->item('en_all_4592');
+
+            //Make changes:
+            $this->Links_model->ln_update($pending_req_submission[0]['ln_id'], array(
+                'ln_content' => $new_message_links[0]['ln_content'],
+                'ln_status' => 2,
+                'ln_parent_link_id' => $new_message_links[0]['ln_id'],
+            ), $en['en_id']);
+
+            //Confirm with student:
+            $this->Communication_model->dispatch_message(
+                echo_random_message('affirm_progress'),
+                $en,
+                true
+            );
+            $this->Communication_model->dispatch_message(
+                'I added your '.$en_all_4592[$pending_req_submission[0]['in_requirement_entity_id']]['m_name'].' message to '.echo_in_outcome($pending_req_submission[0]['in_outcome'], true).'. /link:See in 🚩Action Plan:https://mench.com/messenger/actionplan/' . $pending_req_submission[0]['in_id'],
+                $en,
+                true
+            );
+            $this->Communication_model->dispatch_message(
+                echo_random_message('goto_next'),
+                $en,
+                true,
+                array(
+                    array(
+                        'content_type' => 'text',
+                        'title' => 'Next',
+                        'payload' => 'GONEXT',
+                    )
+                )
+            );
+
 
         } elseif (substr_count($quick_reply_payload, 'UNSUBSCRIBE_') == 1) {
 
