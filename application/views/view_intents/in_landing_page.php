@@ -39,6 +39,9 @@ if (!$hide_subscribe) {
         echo $step_info;
         echo $time_info;
         echo '</div>';
+    } else {
+        //Just give some space:
+        echo '<br />';
     }
 
     //Check to see if added to Action Plan for logged-in students:
