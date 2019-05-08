@@ -60,7 +60,7 @@ $uri_segment_2 = $this->uri->segment(2);
                                     </td>
                                     <td>
                                         <input type="text" class="algolia_search" id="platform_search" data-lpignore="true"
-                                               placeholder="#Intents @Entities URLs">
+                                               placeholder="Intents, Entities & URLs">
                                     </td>
                                 </tr>
                             </table>
