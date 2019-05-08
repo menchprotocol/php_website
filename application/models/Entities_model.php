@@ -931,15 +931,15 @@ class Entities_model extends CI_Model
         $en__child_count = 0;
 
         //Do a child count:
-        $child_trs = $this->Links_model->ln_fetch(array(
+        $child_links = $this->Links_model->ln_fetch(array(
             'ln_parent_entity_id' => $en_id,
             'ln_type_entity_id IN (' . join(',', $this->config->item('en_ids_4592')) . ')' => null, //Entity Link Connectors
             'ln_status >=' => 0, //New+
             'en_status >=' => $min_en_status,
         ), array('en_child'), 0, 0, array(), 'COUNT(en_id) as en__child_count');
 
-        if (count($child_trs) > 0) {
-            $en__child_count = intval($child_trs[0]['en__child_count']);
+        if (count($child_links) > 0) {
+            $en__child_count = intval($child_links[0]['en__child_count']);
         }
 
         return $en__child_count;

@@ -233,18 +233,18 @@ foreach (echo_fixed_fields() as $object_id => $statuses) {
         foreach($this->config->item('en_all_4432') as $group_en_id=>$people_group){
 
             //Do a child count:
-            $child_trs = $this->Links_model->ln_fetch(array(
+            $child_links = $this->Links_model->ln_fetch(array(
                 'ln_parent_entity_id' => $group_en_id,
                 'ln_type_entity_id IN (' . join(',', $this->config->item('en_ids_4592')) . ')' => null, //Entity Link Connectors
                 'ln_status >=' => 0, //New+
                 'en_status >=' => 0, //New+
             ), array('en_child'), 0, 0, array(), 'COUNT(en_id) as en__child_count');
 
-            $all_people += $child_trs[0]['en__child_count'];
+            $all_people += $child_links[0]['en__child_count'];
 
             $people_group_ui .= '<tr>';
             $people_group_ui .= '<td style="text-align: left;"><span style="width: 26px; display: inline-block; text-align: center;">'.$people_group['m_icon'].'</span>'.$people_group['m_name'].'</td>';
-            $people_group_ui .= '<td style="text-align: right;"><a href="/entities/'.$group_en_id.'" data-toggle="tooltip" title="View all '.$child_trs[0]['en__child_count'].' members" data-placement="top">'.number_format($child_trs[0]['en__child_count'], 0).'</a> <i class="fas fa-at"></i></td>';
+            $people_group_ui .= '<td style="text-align: right;"><a href="/entities/'.$group_en_id.'" data-toggle="tooltip" title="View all '.$child_links[0]['en__child_count'].' members" data-placement="top">'.number_format($child_links[0]['en__child_count'], 0).'</a> <i class="fas fa-at"></i></td>';
             $people_group_ui .= '</tr>';
         }
 

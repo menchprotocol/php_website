@@ -1757,27 +1757,53 @@ function echo_in($in, $level, $in_parent_id = 0, $is_parent = false)
     //Show link to load these links:
     $ui .= '<a href="/links?any_in_id=' . $in['in_id'] . '&ln_parent_link_id=' . $ln_id . '" class="badge badge-primary ' . echo_advance() . ' is_not_bg" style="width:40px; margin:-3px 0px 0 4px; border:2px solid #ffe027 !important;" data-toggle="tooltip" data-placement="top" title="Go to Links"><span class="btn-counter">' . echo_number($count_in_trs[0]['totals']) . '</span><i class="fas fa-link rotate90"></i></a>';
 
+
+    //Count children based on level:
     $tree_count = null;
     $tree_count_range = '0';
-    if(isset($in_metadata['in__metadata_max_steps']) && isset($in_metadata['in__metadata_min_steps'])){
-        $tree_count = '<span class="btn-counter children-counter-' . $in['in_id'] . ' ' . ($is_parent && $level == 2 ? 'inb-counter' : '') . '">' . ( $in_metadata['in__metadata_min_steps']==$in_metadata['in__metadata_max_steps'] ? $in_metadata['in__metadata_max_steps'] : '~'.round(($in_metadata['in__metadata_min_steps']+$in_metadata['in__metadata_max_steps'])/2) ) . '</span>';
-        $tree_count_range = ( $in_metadata['in__metadata_min_steps']==$in_metadata['in__metadata_max_steps'] ? $in_metadata['in__metadata_max_steps'] : $in_metadata['in__metadata_min_steps'].'-'.$in_metadata['in__metadata_max_steps'] );
+    if($level==1 || ($level==3 && $is_child_focused)){
+
+        if(isset($in_metadata['in__metadata_max_steps']) && isset($in_metadata['in__metadata_min_steps'])){
+
+            $tree_count = '<span class="btn-counter children-counter-' . $in['in_id'] . ' ' . ($is_parent && $level == 2 ? 'inb-counter' : '') . '">' . ( $in_metadata['in__metadata_min_steps']==$in_metadata['in__metadata_max_steps'] ? $in_metadata['in__metadata_max_steps'] : '~'.round(($in_metadata['in__metadata_min_steps']+$in_metadata['in__metadata_max_steps'])/2) ) . '</span>';
+
+            $tree_count_range = ( $in_metadata['in__metadata_min_steps']==$in_metadata['in__metadata_max_steps'] ? $in_metadata['in__metadata_max_steps'] : $in_metadata['in__metadata_min_steps'].'-'.$in_metadata['in__metadata_max_steps'] );
+        }
+
+    } else {
+
+        //Do a live child count:
+        $child_links = $CI->Links_model->ln_fetch(array(
+            'ln_parent_intent_id' => $in['in_id'],
+            'ln_type_entity_id IN (' . join(',', $CI->config->item('en_ids_4486')) . ')' => null, //Intent Link Connectors
+            'ln_status >=' => 0, //New+
+            'in_status >=' => 0, //New+
+        ), array('in_child'), 0, 0, array(), 'COUNT(in_id) as in__child_count');
+
+        $tree_count_range = $child_links[0]['in__child_count'];
+        if($tree_count_range > 0){
+            $tree_count = '<span class="btn-counter children-counter-' . $in['in_id'] . '">' . $tree_count_range . '</span>';
+        }
+
     }
+
+
+
 
     //Intent Link to Travel Down/UP the Tree:
     if ($level == 0) {
 
         //Show Landing Page URL:
-        $ui .= '&nbsp;<a href="/intents/' . $in['in_id'] . '" data-toggle="tooltip" title="'.$tree_count_range.' published intents in tree. Go to this intent." data-placement="top" class="badge badge-primary is_not_bg is_hard_link" style="display:inline-block; margin-right:-2px; width:40px; border:2px solid #ffe027 !important;">'.$tree_count.'<i class="fas fa-angle-right"></i></a>';
+        $ui .= '&nbsp;<a href="/intents/' . $in['in_id'] . '" data-toggle="tooltip" title="'.$tree_count_range.' child intents. Go to this intent." data-placement="top" class="badge badge-primary is_not_bg is_hard_link" style="display:inline-block; margin-right:-2px; width:40px; border:2px solid #ffe027 !important;">'.$tree_count.'<i class="fas fa-angle-right"></i></a>';
 
     } elseif ($level == 1 || $is_child_focused) {
 
         //Show Landing Page URL:
-        $ui .= '&nbsp;<a href="/' . $in['in_id'] . '" target="_blank" class="badge badge-primary is_not_bg is_hard_link" style="display:inline-block; margin-right:-2px; width:40px; border:2px solid #ffe027 !important;" data-toggle="tooltip" title="'.$tree_count_range.' published intents in tree. Open landing page in a new window." data-placement="top">'.$tree_count.'<i class="fas fa-shopping-cart" style="margin-left: -3px;"></i></a>';
+        $ui .= '&nbsp;<a '.( $in['in_status']==2 ? 'href="/' . $in['in_id'] . '" target="_blank" class="badge badge-primary is_not_bg is_hard_link" title="'.$tree_count_range.' published intents in tree. Open landing page in a new window."' : 'href="javascript:alert(\'Intent not yet published\')" class="badge badge-primary grey is_not_bg is_hard_link" title="Intent not published so landing page is not available"' ).' style="display:inline-block; margin-right:-2px; width:40px; border:2px solid #ffe027 !important;" data-toggle="tooltip" data-placement="top">'.$tree_count.'<i class="fas fa-shopping-cart" style="margin-left: -3px;"></i></a>';
 
     } else {
 
-        $ui .= '&nbsp;<a href="/intents/' . $in['in_id'] . '" class="tree-badge-' . $in['in_id'] . ' badge badge-primary is_not_bg is_hard_link" style="display:inline-block; margin-right:-2px; width:40px; border:2px solid #ffe027 !important;" data-toggle="tooltip" title="'.$tree_count_range.' published intents in tree. Go to this intent." data-placement="top">' . $tree_count . '<i class="'.( $is_parent ? ( $level==3 ? 'fas fa-angle-right' : 'fas fa-angle-up' ) : ( $level==3 ? 'fas fa-angle-double-down' : 'fas fa-angle-down' ) ).'"></i></a>';
+        $ui .= '&nbsp;<a href="/intents/' . $in['in_id'] . '" class="tree-badge-' . $in['in_id'] . ' badge badge-primary is_not_bg is_hard_link" style="display:inline-block; margin-right:-2px; width:40px; border:2px solid #ffe027 !important;" data-toggle="tooltip" title="'.$tree_count_range.' child intents. Go to this intent." data-placement="top">' . $tree_count . '<i class="'.( $is_parent ? ( $level==3 ? 'fas fa-angle-right' : 'fas fa-angle-up' ) : ( $level==3 ? 'fas fa-angle-double-down' : 'fas fa-angle-down' ) ).'"></i></a>';
 
     }
 
@@ -2042,15 +2068,15 @@ function echo_en($en, $level, $is_parent = false)
         $en['en__child_count'] = 0;
 
         //Do a child count:
-        $child_trs = $CI->Links_model->ln_fetch(array(
+        $child_links = $CI->Links_model->ln_fetch(array(
             'ln_parent_entity_id' => $en['en_id'],
             'ln_type_entity_id IN (' . join(',', $CI->config->item('en_ids_4592')) . ')' => null, //Entity Link Connectors
             'ln_status >=' => 0, //New+
             'en_status >=' => 0, //New+
         ), array('en_child'), 0, 0, array(), 'COUNT(en_id) as en__child_count');
 
-        if (count($child_trs) > 0) {
-            $en['en__child_count'] = intval($child_trs[0]['en__child_count']);
+        if (count($child_links) > 0) {
+            $en['en__child_count'] = intval($child_links[0]['en__child_count']);
         }
     }
 
