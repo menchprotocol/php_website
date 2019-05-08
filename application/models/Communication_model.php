@@ -1959,7 +1959,7 @@ class Communication_model extends CI_Model
                 foreach($student_intents as $student_intent){
                     //Completion Percentage so far:
                     $completion_rate = $this->Actionplan_model->actionplan_completion_rate($student_intent, $en['en_id']);
-                    $message = "\n\n" . $completion_rate['completion_percentage'].'% ['.$completion_rate['steps_completed'].'/'.$completion_rate['steps_total'].' step'.echo__s($completion_rate['steps_total']).'] '.echo_in_outcome($student_intent['in_outcome']);
+                    $message .= "\n\n" . $completion_rate['completion_percentage'].'% ['.$completion_rate['steps_completed'].'/'.$completion_rate['steps_total'].' step'.echo__s($completion_rate['steps_total']).'] '.echo_in_outcome($student_intent['in_outcome']);
                 }
 
                 //Dispatch Message:
