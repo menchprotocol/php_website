@@ -1054,11 +1054,13 @@ class Entities_model extends CI_Model
 
         //Call facebook messenger API and get user graph profile:
         $graph_fetch = $this->Communication_model->facebook_graph('GET', '/' . $psid, array());
-        $fetched_fb_info = ($graph_fetch['status'] && isset($graph_fetch['ln_metadata']['result']['first_name']) && strlen($graph_fetch['ln_metadata']['result']['first_name']) > 0);
+
+
+        $fetch_result = ( isset($graph_fetch['status']) && $graph_fetch['status'] && isset($graph_fetch['ln_metadata']['result']['first_name']) && strlen($graph_fetch['ln_metadata']['result']['first_name']) > 0);
 
 
         //Did we find the profile from FB?
-        if (!$fetched_fb_info) {
+        if (!$fetch_result ) {
 
             /*
              *
@@ -1071,6 +1073,17 @@ class Entities_model extends CI_Model
             //Create student entity:
             $added_en = $this->Entities_model->en_verify_create('Student '.rand(100000000, 999999999), 0, true, 2, null, $psid);
 
+            //Completely failed at fetching profile data:
+            $this->Links_model->ln_create(array(
+                'ln_type_entity_id' => 6389, //Messenger Profile Inaccessible
+                'ln_miner_entity_id' => $added_en['en']['en_id'], //Student gets credit as miner
+                'ln_content' => 'en_messenger_add() COMPLETE FAIL to fetch messenger profile',
+                'ln_metadata' => array(
+                    'psid' => $psid,
+                    'graph_fetch' => $graph_fetch,
+                )
+            ));
+
         } else {
 
             //We did find the profile, move ahead:
@@ -1079,39 +1092,61 @@ class Entities_model extends CI_Model
             //Create student entity with their Facebook Graph name:
             $added_en = $this->Entities_model->en_verify_create($fb_profile['first_name'] . ' ' . $fb_profile['last_name'], 0, true, 2, null, $psid);
 
-            //Split locale variable into language and country like "EN_GB" for English in England
-            $locale = explode('_', $fb_profile['locale'], 2);
 
-            //Try to match Facebook profile data to internal entities and create links for the ones we find:
-            foreach (array(
-                         $this->Entities_model->en_search_match(3289, $fb_profile['timezone']), //Timezone
-                         $this->Entities_model->en_search_match(3290, strtolower(substr($fb_profile['gender'], 0, 1))), //Gender either m/f
-                         $this->Entities_model->en_search_match(3287, strtolower($locale[0])), //Language
-                         $this->Entities_model->en_search_match(3089, strtolower($locale[1])), //Country
-                     ) as $ln_parent_entity_id) {
 
-                //Did we find a relation? Create the link:
-                if ($ln_parent_entity_id > 0) {
+            //See if we could fetch FULL profile data:
+            if(isset($fb_profile['locale'])){
 
-                    //Create new link:
-                    $this->Links_model->ln_create(array(
-                        'ln_type_entity_id' => 4230, //Raw link
-                        'ln_miner_entity_id' => $added_en['en']['en_id'], //Student gets credit as miner
-                        'ln_parent_entity_id' => $ln_parent_entity_id,
-                        'ln_child_entity_id' => $added_en['en']['en_id'],
-                    ));
+                //Split locale variable into language and country like "EN_GB" for English in England
+                $locale = explode('_', $fb_profile['locale'], 2);
 
+                //Try to match Facebook profile data to internal entities and create links for the ones we find:
+                foreach (array(
+                             $this->Entities_model->en_search_match(3289, $fb_profile['timezone']), //Timezone
+                             $this->Entities_model->en_search_match(3290, strtolower(substr($fb_profile['gender'], 0, 1))), //Gender either m/f
+                             $this->Entities_model->en_search_match(3287, strtolower($locale[0])), //Language
+                             $this->Entities_model->en_search_match(3089, strtolower($locale[1])), //Country
+                         ) as $ln_parent_entity_id) {
+
+                    //Did we find a relation? Create the link:
+                    if ($ln_parent_entity_id > 0) {
+
+                        //Create new link:
+                        $this->Links_model->ln_create(array(
+                            'ln_type_entity_id' => 4230, //Raw link
+                            'ln_miner_entity_id' => $added_en['en']['en_id'], //Student gets credit as miner
+                            'ln_parent_entity_id' => $ln_parent_entity_id,
+                            'ln_child_entity_id' => $added_en['en']['en_id'],
+                        ));
+
+                    }
                 }
+
+            } else {
+
+                //We failed to fetch full profile data, log details:
+                $this->Links_model->ln_create(array(
+                    'ln_type_entity_id' => 6389, //Messenger Profile Inaccessible
+                    'ln_miner_entity_id' => $added_en['en']['en_id'], //Student gets credit as miner
+                    'ln_content' => 'en_messenger_add() PARTIAL FAIL to fetch messenger profile',
+                    'ln_metadata' => array(
+                        'psid' => $psid,
+                        'graph_fetch' => $graph_fetch,
+                    )
+                ));
+
             }
 
-            //Create link to save profile picture:
-            $this->Links_model->ln_create(array(
-                'ln_status' => 0, //New
-                'ln_type_entity_id' => 4299, //Updated Profile Picture
-                'ln_miner_entity_id' => $added_en['en']['en_id'], //The Student who added this
-                'ln_content' => $fb_profile['profile_pic'], //Image to be saved to Mench CDN
-            ));
-
+            //Do we have a profile image?
+            if(isset($fb_profile['profile_pic'])){
+                //Create link to save profile picture:
+                $this->Links_model->ln_create(array(
+                    'ln_status' => 0, //New
+                    'ln_type_entity_id' => 4299, //Updated Profile Picture
+                    'ln_miner_entity_id' => $added_en['en']['en_id'], //The Student who added this
+                    'ln_content' => $fb_profile['profile_pic'], //Image to be saved to Mench CDN
+                ));
+            }
         }
 
 
@@ -1143,10 +1178,10 @@ class Entities_model extends CI_Model
         ));
 
 
-        if(!$fetched_fb_info){
+        if(!$fetch_result){
             //Let them know to complete their profile:
             $this->Communication_model->dispatch_message(
-                'Hi stranger! Let\'s get started by completing your profile information by opening the My Account tab in the menu below. /link:Update 👤My Account:https://mench.com/messenger/myaccount',
+                'Hi! You can start by completing your profile information so I know who I am speaking to 🤗 /link:Update 👤My Account:https://mench.com/messenger/myaccount',
                 $added_en['en'],
                 true
             );

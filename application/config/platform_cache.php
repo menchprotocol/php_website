@@ -11,7 +11,7 @@ defined('BASEPATH') OR exit('No direct script access allowed');
  *
  */
 
-//Generated 2019-05-08 02:54:01 PST
+//Generated 2019-05-08 13:56:06 PST
 
 //Intent Notes Deliverable:
 $config['en_ids_6345'] = array(4231, 4232, 6242);
@@ -1096,19 +1096,19 @@ $config['en_all_4755'] = array(
     ),
     4266 => array(
         'm_icon' => '<i class="fab fa-facebook-messenger"></i>',
-        'm_name' => 'Opted into Messenger',
+        'm_name' => 'Messenger Opt-in',
         'm_desc' => '',
         'm_parents' => array(4755, 4593),
     ),
     4267 => array(
         'm_icon' => '<i class="fab fa-facebook-messenger"></i>',
-        'm_name' => 'Followed Messenger Referral',
+        'm_name' => 'Messenger Referral',
         'm_desc' => '',
         'm_parents' => array(4755, 4593),
     ),
     4268 => array(
         'm_icon' => '<i class="fab fa-facebook-messenger"></i>',
-        'm_name' => 'Messenger Postback Initiated',
+        'm_name' => 'Messenger Postback',
         'm_desc' => '',
         'm_parents' => array(4755, 4593),
     ),
@@ -1467,7 +1467,7 @@ $config['en_all_4600'] = array(
 );
 
 //All Link Types:
-$config['en_ids_4593'] = array(4228, 4229, 4230, 4231, 4232, 4235, 4242, 4246, 4250, 4251, 4255, 4256, 4257, 4258, 4259, 4260, 4261, 4263, 4264, 4266, 4267, 4268, 4269, 4275, 4278, 4279, 4282, 4283, 4287, 4299, 4318, 4319, 4452, 4455, 4460, 4547, 4548, 4549, 4550, 4551, 4552, 4553, 4554, 4555, 4556, 4557, 4559, 4570, 4577, 4601, 4983, 4993, 4994, 4996, 4998, 4999, 5000, 5001, 5003, 5007, 5865, 5943, 5967, 5981, 5982, 6093, 6132, 6140, 6143, 6144, 6149, 6154, 6155, 6157, 6158, 6224, 6226, 6242);
+$config['en_ids_4593'] = array(4228, 4229, 4230, 4231, 4232, 4235, 4242, 4246, 4250, 4251, 4255, 4256, 4257, 4258, 4259, 4260, 4261, 4263, 4264, 4266, 4267, 4268, 4269, 4275, 4278, 4279, 4282, 4283, 4287, 4299, 4318, 4319, 4452, 4455, 4460, 4547, 4548, 4549, 4550, 4551, 4552, 4553, 4554, 4555, 4556, 4557, 4559, 4570, 4577, 4601, 4983, 4993, 4994, 4996, 4998, 4999, 5000, 5001, 5003, 5007, 5865, 5943, 5967, 5981, 5982, 6093, 6132, 6140, 6143, 6144, 6149, 6154, 6155, 6157, 6158, 6224, 6226, 6242, 6389);
 $config['en_all_4593'] = array(
     4228 => array(
         'm_icon' => '<i class="fal fa-check-circle"></i>',
@@ -1585,19 +1585,19 @@ $config['en_all_4593'] = array(
     ),
     4266 => array(
         'm_icon' => '<i class="fab fa-facebook-messenger"></i>',
-        'm_name' => 'Opted into Messenger',
+        'm_name' => 'Messenger Opt-in',
         'm_desc' => '',
         'm_parents' => array(4755, 4593),
     ),
     4267 => array(
         'm_icon' => '<i class="fab fa-facebook-messenger"></i>',
-        'm_name' => 'Followed Messenger Referral',
+        'm_name' => 'Messenger Referral',
         'm_desc' => '',
         'm_parents' => array(4755, 4593),
     ),
     4268 => array(
         'm_icon' => '<i class="fab fa-facebook-messenger"></i>',
-        'm_name' => 'Messenger Postback Initiated',
+        'm_name' => 'Messenger Postback',
         'm_desc' => '',
         'm_parents' => array(4755, 4593),
     ),
@@ -1759,7 +1759,7 @@ $config['en_all_4593'] = array(
     ),
     4577 => array(
         'm_icon' => '<i class="fab fa-facebook-messenger"></i>',
-        'm_name' => 'Accepted Message Request',
+        'm_name' => 'Messenger Request Accepted',
         'm_desc' => '',
         'm_parents' => array(4593),
     ),
@@ -1936,6 +1936,12 @@ $config['en_all_4593'] = array(
         'm_name' => 'Intent Note On-Complete Tip',
         'm_desc' => '',
         'm_parents' => array(5007, 6345, 4603, 4595, 4593, 4986, 4485),
+    ),
+    6389 => array(
+        'm_icon' => '<i class="fab fa-facebook-messenger"></i>',
+        'm_name' => 'Messenger Profile Inaccessible',
+        'm_desc' => 'When we cannot fetch user profile data via Messenger API, either because user has not linked their Facebook to Messenger or because they did not authorize Mench to access',
+        'm_parents' => array(4593),
     ),
 );
 
