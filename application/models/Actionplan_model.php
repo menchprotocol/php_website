@@ -414,33 +414,48 @@ class Actionplan_model extends CI_Model
          *
          * */
 
-        $no_message = (count($this->Links_model->ln_fetch(array(
-                'ln_status' => 2, //Published
-                'ln_type_entity_id' => 4231, //Intent Note Messages
-                'ln_child_intent_id' => $in['in_id'],
-            )))==0);
 
-        $no_children = (count($this->Links_model->ln_fetch(array(
-                'ln_status' => 2, //Published
-                'in_status' => 2, //Published
-                'ln_type_entity_id' => 4228, //Fixed intent links only
-                'ln_parent_intent_id' => $in['in_id'],
-            ), array('in_child')))==0);
-
-        $no_requirements = ($in['in_requirement_entity_id']==6087);
-
-
-        if($no_message && $no_children && $no_requirements){
-
-            //It should be auto completed:
-            $new_progression_link = $this->Links_model->ln_create(array(
-                'ln_type_entity_id' => 6158, //Action Plan Outcome Review
-                'ln_miner_entity_id' => $en_id,
-                'ln_parent_intent_id' => $in['in_id'],
-                'ln_status' => 2, //Published
-            ));
-
+        if($in['in_type']==0 && $in['in_requirement_entity_id']!=6087){
+            //Completion Requirements:
+            return false;
         }
+
+        //Count children:
+        $child_count = count($this->Links_model->ln_fetch(array(
+            'ln_status' => 2, //Published
+            'in_status' => 2, //Published
+            'ln_type_entity_id' => 4228, //Fixed intent links only
+            'ln_parent_intent_id' => $in['in_id'],
+        ), array('in_child')));
+
+
+        if($in['in_type']==1 && $child_count > 0){
+            //OR Branch:
+            return false;
+        } elseif($child_count > 1){
+            //AND with children:
+            return false;
+        }
+
+        if(count($this->Links_model->ln_fetch(array(
+            'ln_status' => 2, //Published
+            'ln_type_entity_id' => 4231, //Intent Note Messages
+            'ln_child_intent_id' => $in['in_id'],
+        ))) > 0){
+            //Has messages:
+            return false;
+        }
+
+        //Not much to do here...
+        //It should be auto completed:
+        $this->Links_model->ln_create(array(
+            'ln_type_entity_id' => 6158, //Action Plan Outcome Review
+            'ln_miner_entity_id' => $en_id,
+            'ln_parent_intent_id' => $in['in_id'],
+            'ln_status' => 2, //Published
+        ));
+
+        return true;
     }
 
     function actionplan_advance_step($recipient_en, $in_id, $fb_messenger_format = true)

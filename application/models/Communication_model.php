@@ -1890,6 +1890,7 @@ class Communication_model extends CI_Model
             //See if we also need to mark the child as complete:
             $this->Actionplan_model->actionplan_complete_if_empty($en['en_id'], $answer_ins[0]);
 
+
             //Affirm answer received answer:
             $this->Communication_model->dispatch_message(
                 echo_random_message('affirm_progress'),
