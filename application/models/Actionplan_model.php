@@ -818,12 +818,6 @@ class Actionplan_model extends CI_Model
             //They still need to complete:
             $next_step_message .= $completion_req_note;
 
-            //Give option to complete:
-            if($fb_messenger_format){
-                //We'll be waiting for their submission, so no skipping here:
-                $student_can_skip = false;
-            }
-
         } elseif($has_children && $ins[0]['in_type']==1 /* OR Children */){
 
 
