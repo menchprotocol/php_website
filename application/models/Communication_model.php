@@ -1380,7 +1380,7 @@ class Communication_model extends CI_Model
                 true
             );
             $this->Communication_model->dispatch_message(
-                'I added your '.$en_all_4592[$pending_req_submission[0]['in_requirement_entity_id']]['m_name'].' message to '.echo_in_outcome($pending_req_submission[0]['in_outcome'], true).'. /link:See in 🚩Action Plan:https://mench.com/messenger/actionplan/' . $pending_req_submission[0]['in_id'],
+                'I saved your submission to your Action Plan /link:See in 🚩Action Plan:https://mench.com/messenger/actionplan/' . $pending_req_submission[0]['in_id'],
                 $en,
                 true
             );
