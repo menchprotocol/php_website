@@ -459,6 +459,10 @@ function echo_number($number, $micro = true, $fb_messenger_format = false)
     }
 }
 
+function echo_a_an($string){
+    return ( in_array(strtolower(substr($string, 0,1)), array('a','e','i','o','u')) ? 'an' : 'a' );
+}
+
 function echo_tr_urls($ln_content, $ln_type_entity_id){
 
     $ln_content = htmlentities($ln_content);
