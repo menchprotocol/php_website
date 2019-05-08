@@ -11,7 +11,7 @@ defined('BASEPATH') OR exit('No direct script access allowed');
  *
  */
 
-//Generated 2019-05-08 16:26:55 PST
+//Generated 2019-05-08 16:46:18 PST
 
 //Intent Notes Deliverable:
 $config['en_ids_6345'] = array(4231, 4232, 6242);
@@ -59,7 +59,7 @@ $config['en_all_2738'] = array(
     ),
     5007 => array(
         'm_icon' => '<i class="fal fa-expand-arrows"></i>',
-        'm_name' => 'Toggle Advance Mode',
+        'm_name' => 'Miner Toggle Advance Mode',
         'm_desc' => '',
         'm_parents' => array(2738, 4757, 4593),
     ),
@@ -514,8 +514,14 @@ $config['en_all_6123'] = array(
 );
 
 //Student Sent Message Link Types:
-$config['en_ids_4277'] = array(4460, 4547, 4548, 4549, 4550, 4551, 4557);
+$config['en_ids_4277'] = array(4287, 4460, 4547, 4548, 4549, 4550, 4551, 4557);
 $config['en_all_4277'] = array(
+    4287 => array(
+        'm_icon' => '<i class="fal fa-comment-exclamation"></i>',
+        'm_name' => 'Student Sent Unrecognized Message',
+        'm_desc' => '',
+        'm_parents' => array(4277, 4593),
+    ),
     4460 => array(
         'm_icon' => '<i class="far fa-ballot-check"></i>',
         'm_name' => 'Student Sent Quick Reply',
@@ -805,7 +811,7 @@ $config['en_all_4997'] = array(
     ),
     5001 => array(
         'm_icon' => '<i class="fal fa-list-alt"></i>',
-        'm_name' => 'Link Content Replace',
+        'm_name' => 'Entity Link Content Replace',
         'm_desc' => 'Search for occurance of string in child entity link contents and if found, updates it with a replacement string',
         'm_parents' => array(4593, 4997),
     ),
@@ -817,7 +823,7 @@ $config['en_all_4997'] = array(
     ),
     5865 => array(
         'm_icon' => '<i class="fal fa-list-alt"></i>',
-        'm_name' => 'Link Status Replace',
+        'm_name' => 'Entity Link Status Replace',
         'm_desc' => 'Updates all child entity link statuses that match the initial link status condition',
         'm_parents' => array(4593, 4997),
     ),
@@ -829,13 +835,13 @@ $config['en_all_4997'] = array(
     ),
     5981 => array(
         'm_icon' => '<i class="fal fa-list-alt"></i>',
-        'm_name' => 'Parent Entity Addition',
+        'm_name' => 'Entity Parent Addition',
         'm_desc' => 'If not already done so, will add searched entity as the parent of all child entities',
         'm_parents' => array(4593, 4997),
     ),
     5982 => array(
         'm_icon' => '<i class="fal fa-list-alt"></i>',
-        'm_name' => 'Parent Entity Removal',
+        'm_name' => 'Entity Parent Removal',
         'm_desc' => 'If already added as the parent, this will remove searched entity as the parent of all child entities',
         'm_parents' => array(4593, 4997),
     ),
@@ -1096,19 +1102,19 @@ $config['en_all_4755'] = array(
     ),
     4266 => array(
         'm_icon' => '<i class="fab fa-facebook-messenger"></i>',
-        'm_name' => 'Messenger Opt-in',
+        'm_name' => 'Student Messenger Opt-in',
         'm_desc' => '',
         'm_parents' => array(4755, 4593),
     ),
     4267 => array(
         'm_icon' => '<i class="fab fa-facebook-messenger"></i>',
-        'm_name' => 'Messenger Referral',
+        'm_name' => 'Student Messenger Referral',
         'm_desc' => '',
         'm_parents' => array(4755, 4593),
     ),
     4268 => array(
         'm_icon' => '<i class="fab fa-facebook-messenger"></i>',
-        'm_name' => 'Messenger Postback',
+        'm_name' => 'Student Messenger Postback',
         'm_desc' => '',
         'm_parents' => array(4755, 4593),
     ),
@@ -1120,19 +1126,19 @@ $config['en_all_4755'] = array(
     ),
     4278 => array(
         'm_icon' => '<i class="fas fa-check-double"></i>',
-        'm_name' => 'Read Message',
+        'm_name' => 'Student Read Message',
         'm_desc' => '',
         'm_parents' => array(4755, 4593),
     ),
     4279 => array(
         'm_icon' => '<i class="fas fa-check"></i>',
-        'm_name' => 'Received Message',
+        'm_name' => 'Student Received Message',
         'm_desc' => '',
         'm_parents' => array(4755, 4593),
     ),
     4282 => array(
         'm_icon' => '<i class="fas fa-eye"></i>',
-        'm_name' => 'My Account Webview Opened',
+        'm_name' => 'Student Opened Account',
         'm_desc' => '',
         'm_parents' => array(4755, 6222, 4593),
     ),
@@ -1143,8 +1149,8 @@ $config['en_all_4755'] = array(
         'm_parents' => array(6153, 4755, 4593),
     ),
     4299 => array(
-        'm_icon' => '<i class="far fa-image"></i>',
-        'm_name' => 'Entity Picture Updated',
+        'm_icon' => '<i class="far fa-id-badge"></i>',
+        'm_name' => 'Student Set Profile Picture',
         'm_desc' => '',
         'm_parents' => array(6222, 4755, 4593),
     ),
@@ -1300,7 +1306,7 @@ $config['en_all_4755'] = array(
     ),
     6224 => array(
         'm_icon' => '<i class="fal fa-sync"></i>',
-        'm_name' => 'My Account Input Iterated',
+        'm_name' => 'Student Iterated Account',
         'm_desc' => '',
         'm_parents' => array(4755, 6222, 4593),
     ),
@@ -1341,19 +1347,19 @@ $config['en_all_4595'] = array(
     ),
     4242 => array(
         'm_icon' => '<i class="fal fa-sync"></i>',
-        'm_name' => 'Iterated Link',
+        'm_name' => 'Miner Iterated Link',
         'm_desc' => '20',
         'm_parents' => array(4593, 4595),
     ),
     4250 => array(
         'm_icon' => '<i class="fas fa-hashtag"></i>',
-        'm_name' => 'Created Intent',
+        'm_name' => 'Miner Created Intent',
         'm_desc' => '200',
         'm_parents' => array(4593, 4595),
     ),
     4251 => array(
         'm_icon' => '<i class="fas fa-at"></i>',
-        'm_name' => 'Created Entity',
+        'm_name' => 'Miner Created Entity',
         'm_desc' => '30',
         'm_parents' => array(4593, 4595),
     ),
@@ -1401,13 +1407,13 @@ $config['en_all_4595'] = array(
     ),
     4263 => array(
         'm_icon' => '<i class="fal fa-sync"></i>',
-        'm_name' => 'Iterated Entity',
+        'm_name' => 'Miner Iterated Entity',
         'm_desc' => '10',
         'm_parents' => array(4593, 4595),
     ),
     4264 => array(
         'm_icon' => '<i class="fal fa-sync"></i>',
-        'm_name' => 'Iterated Intent',
+        'm_name' => 'Miner Iterated Intent',
         'm_desc' => '40',
         'm_parents' => array(4593, 4595),
     ),
@@ -1467,7 +1473,7 @@ $config['en_all_4600'] = array(
 );
 
 //All Link Types:
-$config['en_ids_4593'] = array(4228, 4229, 4230, 4231, 4232, 4235, 4242, 4246, 4250, 4251, 4255, 4256, 4257, 4258, 4259, 4260, 4261, 4263, 4264, 4266, 4267, 4268, 4269, 4275, 4278, 4279, 4282, 4283, 4287, 4299, 4318, 4319, 4452, 4455, 4460, 4547, 4548, 4549, 4550, 4551, 4552, 4553, 4554, 4555, 4556, 4557, 4559, 4570, 4577, 4601, 4983, 4993, 4994, 4996, 4998, 4999, 5000, 5001, 5003, 5007, 5865, 5943, 5967, 5981, 5982, 6093, 6132, 6140, 6143, 6144, 6149, 6154, 6155, 6157, 6158, 6224, 6226, 6242, 6389);
+$config['en_ids_4593'] = array(4228, 4229, 4230, 4231, 4232, 4235, 4242, 4246, 4250, 4251, 4255, 4256, 4257, 4258, 4259, 4260, 4261, 4263, 4264, 4266, 4267, 4268, 4269, 4275, 4278, 4279, 4282, 4283, 4287, 4299, 4318, 4319, 4455, 4460, 4547, 4548, 4549, 4550, 4551, 4552, 4553, 4554, 4555, 4556, 4557, 4559, 4570, 4577, 4601, 4983, 4993, 4994, 4996, 4998, 4999, 5000, 5001, 5003, 5007, 5865, 5943, 5967, 5981, 5982, 6093, 6132, 6140, 6143, 6144, 6149, 6154, 6155, 6157, 6158, 6224, 6226, 6242, 6389);
 $config['en_all_4593'] = array(
     4228 => array(
         'm_icon' => '<i class="fal fa-check-circle"></i>',
@@ -1507,7 +1513,7 @@ $config['en_all_4593'] = array(
     ),
     4242 => array(
         'm_icon' => '<i class="fal fa-sync"></i>',
-        'm_name' => 'Iterated Link',
+        'm_name' => 'Miner Iterated Link',
         'm_desc' => 'Logged for each link column that is updated consciously by the user',
         'm_parents' => array(4593, 4595),
     ),
@@ -1519,13 +1525,13 @@ $config['en_all_4593'] = array(
     ),
     4250 => array(
         'm_icon' => '<i class="fas fa-hashtag"></i>',
-        'm_name' => 'Created Intent',
+        'm_name' => 'Miner Created Intent',
         'm_desc' => '',
         'm_parents' => array(4593, 4595),
     ),
     4251 => array(
         'm_icon' => '<i class="fas fa-at"></i>',
-        'm_name' => 'Created Entity',
+        'm_name' => 'Miner Created Entity',
         'm_desc' => 'Logged when a new entity is created.',
         'm_parents' => array(4593, 4595),
     ),
@@ -1573,37 +1579,37 @@ $config['en_all_4593'] = array(
     ),
     4263 => array(
         'm_icon' => '<i class="fal fa-sync"></i>',
-        'm_name' => 'Iterated Entity',
+        'm_name' => 'Miner Iterated Entity',
         'm_desc' => 'When a Miner modified an entity attribute like Name, Icon or Status.',
         'm_parents' => array(4593, 4595),
     ),
     4264 => array(
         'm_icon' => '<i class="fal fa-sync"></i>',
-        'm_name' => 'Iterated Intent',
+        'm_name' => 'Miner Iterated Intent',
         'm_desc' => 'When an intent field is updated',
         'm_parents' => array(4593, 4595),
     ),
     4266 => array(
         'm_icon' => '<i class="fab fa-facebook-messenger"></i>',
-        'm_name' => 'Messenger Opt-in',
+        'm_name' => 'Student Messenger Opt-in',
         'm_desc' => '',
         'm_parents' => array(4755, 4593),
     ),
     4267 => array(
         'm_icon' => '<i class="fab fa-facebook-messenger"></i>',
-        'm_name' => 'Messenger Referral',
+        'm_name' => 'Student Messenger Referral',
         'm_desc' => '',
         'm_parents' => array(4755, 4593),
     ),
     4268 => array(
         'm_icon' => '<i class="fab fa-facebook-messenger"></i>',
-        'm_name' => 'Messenger Postback',
+        'm_name' => 'Student Messenger Postback',
         'm_desc' => '',
         'm_parents' => array(4755, 4593),
     ),
     4269 => array(
         'm_icon' => '<i class="fas fa-sign-in"></i>',
-        'm_name' => 'Logged In as Miner',
+        'm_name' => 'Miner Login',
         'm_desc' => '',
         'm_parents' => array(4593),
     ),
@@ -1615,19 +1621,19 @@ $config['en_all_4593'] = array(
     ),
     4278 => array(
         'm_icon' => '<i class="fas fa-check-double"></i>',
-        'm_name' => 'Read Message',
+        'm_name' => 'Student Read Message',
         'm_desc' => '',
         'm_parents' => array(4755, 4593),
     ),
     4279 => array(
         'm_icon' => '<i class="fas fa-check"></i>',
-        'm_name' => 'Received Message',
+        'm_name' => 'Student Received Message',
         'm_desc' => '',
         'm_parents' => array(4755, 4593),
     ),
     4282 => array(
         'm_icon' => '<i class="fas fa-eye"></i>',
-        'm_name' => 'My Account Webview Opened',
+        'm_name' => 'Student Opened Account',
         'm_desc' => '',
         'm_parents' => array(4755, 6222, 4593),
     ),
@@ -1639,13 +1645,13 @@ $config['en_all_4593'] = array(
     ),
     4287 => array(
         'm_icon' => '<i class="fal fa-comment-exclamation"></i>',
-        'm_name' => 'Sent Unrecognized Message',
+        'm_name' => 'Student Sent Unrecognized Message',
         'm_desc' => '',
-        'm_parents' => array(4593),
+        'm_parents' => array(4277, 4593),
     ),
     4299 => array(
-        'm_icon' => '<i class="far fa-image"></i>',
-        'm_name' => 'Entity Picture Updated',
+        'm_icon' => '<i class="far fa-id-badge"></i>',
+        'm_name' => 'Student Set Profile Picture',
         'm_desc' => '',
         'm_parents' => array(6222, 4755, 4593),
     ),
@@ -1661,15 +1667,9 @@ $config['en_all_4593'] = array(
         'm_desc' => '',
         'm_parents' => array(4593, 4592, 4595),
     ),
-    4452 => array(
-        'm_icon' => '<i class="fab fa-git"></i>',
-        'm_name' => 'Pushed Code to Github',
-        'm_desc' => '',
-        'm_parents' => array(4593, 4428),
-    ),
     4455 => array(
         'm_icon' => '<i class="fas fa-ban"></i>',
-        'm_name' => 'Unsubscribed from Mench',
+        'm_name' => 'Student Unsubscribed',
         'm_desc' => 'Student requested that all communication with Mench to be stopped until further notice from the student.',
         'm_parents' => array(4593, 4454),
     ),
@@ -1777,67 +1777,67 @@ $config['en_all_4593'] = array(
     ),
     4993 => array(
         'm_icon' => '<i class="fas fa-hashtag"></i>',
-        'm_name' => 'Viewed Intent',
+        'm_name' => 'Miner Viewed Intent',
         'm_desc' => '',
         'm_parents' => array(4593),
     ),
     4994 => array(
         'm_icon' => '<i class="fas fa-at"></i>',
-        'm_name' => 'Viewed Entity',
+        'm_name' => 'Miner Viewed Entity',
         'm_desc' => '',
         'm_parents' => array(4593),
     ),
     4996 => array(
         'm_icon' => '<i class="fas fa-sign-in"></i>',
-        'm_name' => 'Logged In as Student',
+        'm_name' => 'Student Login',
         'm_desc' => '',
         'm_parents' => array(4593),
     ),
     4998 => array(
         'm_icon' => '<i class="fal fa-list-alt"></i>',
-        'm_name' => 'Mass Entity Name Prefix',
+        'm_name' => 'Entity Mass Name Prefix',
         'm_desc' => '',
         'm_parents' => array(4593, 4997),
     ),
     4999 => array(
         'm_icon' => '<i class="fal fa-list-alt"></i>',
-        'm_name' => 'Mass Entity Name Postfix',
+        'm_name' => 'Entity Mass Name Postfix',
         'm_desc' => '',
         'm_parents' => array(4593, 4997),
     ),
     5000 => array(
         'm_icon' => '<i class="fal fa-list-alt"></i>',
-        'm_name' => 'Mass Entity Name Replace',
+        'm_name' => 'Entity Mass Name Replace',
         'm_desc' => '',
         'm_parents' => array(4593, 4997),
     ),
     5001 => array(
         'm_icon' => '<i class="fal fa-list-alt"></i>',
-        'm_name' => 'Mass Link Content Replace',
+        'm_name' => 'Entity Mass Link Content Replace',
         'm_desc' => '',
         'm_parents' => array(4593, 4997),
     ),
     5003 => array(
         'm_icon' => '<i class="fal fa-list-alt"></i>',
-        'm_name' => 'Mass Entity Status Replace',
+        'm_name' => 'Entity Mass Status Replace',
         'm_desc' => '',
         'm_parents' => array(4593, 4997),
     ),
     5007 => array(
         'm_icon' => '<i class="fal fa-expand-arrows"></i>',
-        'm_name' => 'Toggle Advance Mode',
+        'm_name' => 'Miner Toggle Advance Mode',
         'm_desc' => '',
         'm_parents' => array(2738, 4757, 4593),
     ),
     5865 => array(
         'm_icon' => '<i class="fal fa-list-alt"></i>',
-        'm_name' => 'Mass Link Status Replace',
+        'm_name' => 'Entity Mass Link Status Replace',
         'm_desc' => '',
         'm_parents' => array(4593, 4997),
     ),
     5943 => array(
         'm_icon' => '<i class="fal fa-list-alt"></i>',
-        'm_name' => 'Mass Entity Icon Update',
+        'm_name' => 'Entity Mass Icon Update',
         'm_desc' => '',
         'm_parents' => array(4593, 4997),
     ),
@@ -1849,13 +1849,13 @@ $config['en_all_4593'] = array(
     ),
     5981 => array(
         'm_icon' => '<i class="fal fa-list-alt"></i>',
-        'm_name' => 'Mass Parent Entity Addition',
+        'm_name' => 'Entity Mass Parent Addition',
         'm_desc' => '',
         'm_parents' => array(4593, 4997),
     ),
     5982 => array(
         'm_icon' => '<i class="fal fa-list-alt"></i>',
-        'm_name' => 'Mass Parent Entity Removal',
+        'm_name' => 'Entity Mass Parent Removal',
         'm_desc' => '',
         'm_parents' => array(4593, 4997),
     ),
@@ -1921,13 +1921,13 @@ $config['en_all_4593'] = array(
     ),
     6224 => array(
         'm_icon' => '<i class="fal fa-sync"></i>',
-        'm_name' => 'My Account Input Iterated',
+        'm_name' => 'Student Iterated Account',
         'm_desc' => '',
         'm_parents' => array(4755, 6222, 4593),
     ),
     6226 => array(
         'm_icon' => '<i class="fal fa-sync"></i>',
-        'm_name' => 'Iterated Intent Tree',
+        'm_name' => 'Miner Mass Intent Updates',
         'm_desc' => ' When all intents within a recursive tree are updated at once.',
         'm_parents' => array(4593),
     ),
@@ -2103,7 +2103,7 @@ $config['en_all_4454'] = array(
     ),
     4455 => array(
         'm_icon' => '<i class="fas fa-ban"></i>',
-        'm_name' => 'Unsubscribed from Mench',
+        'm_name' => 'Student Unsubscribed',
         'm_desc' => 'Stop all communications until you re-subscribe',
         'm_parents' => array(4593, 4454),
     ),
