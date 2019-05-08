@@ -1858,14 +1858,14 @@ class Communication_model extends CI_Model
             foreach($pending_answer_links as $ln){
                 if(in_array($ln['ln_status'], $this->config->item('ln_status_incomplete'))){
 
-                    //We just found a pending answer:
-                    $published_answer = true;
-
-                    //Mark it as published while saving the answer:
+                    //We just found a pending answer, so mark it as published while saving the answer:
                     $this->Links_model->ln_update($ln['ln_id'], array(
                         'ln_child_intent_id' => $answer_in_id, //Save answer
                         'ln_status' => 2, //Publish answer
                     ), $en['en_id']);
+
+                    //Update status:
+                    $published_answer = true;
 
                 } elseif($ln['ln_child_intent_id'] != $answer_in_id){
 
@@ -1898,9 +1898,8 @@ class Communication_model extends CI_Model
                 true
             );
 
-
             //Find/Advance to the next step:
-            $this->Actionplan_model->actionplan_find_next_step(['en_id'], true, true);
+            $this->Actionplan_model->actionplan_find_next_step($en['en_id'], true, true);
 
         } else {
 
