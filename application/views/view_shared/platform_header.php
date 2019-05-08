@@ -72,19 +72,19 @@ $uri_segment_2 = $this->uri->segment(2);
 
                             <li class="<?= ($uri_segment_1 == 'intents' ? 'intent-active' : 'intent-inactive') ?>">
                                 <a href="/intents/<?= $this->config->item('in_miner_start') ?>">
-                                    <i class="fas fa-hashtag"></i> Intents
+                                    <?= $en_all_2738[4535]['m_name'] .' '. $en_all_2738[4535]['m_name'] ?>
                                 </a>
                             </li>
 
                             <li class="<?= ($uri_segment_1 == 'entities' ? 'entity-active' : 'entity-inactive') ?>">
                                 <a href="/entities/<?= $this->config->item('en_top_focus_id') ?>">
-                                    <i class="fas fa-at"></i> Entities
+                                    <?= $en_all_2738[4536]['m_name'] .' '. $en_all_2738[4536]['m_name'] ?>
                                 </a>
                             </li>
 
                             <li class="<?= ($uri_segment_1 == 'links' ? 'links-active' : 'links-inactive') ?>">
                                 <a href="/links">
-                                    <i class="fas fa-link rotate90"></i> Links
+                                    <?= $en_all_2738[6205]['m_name'] .' '. $en_all_2738[6205]['m_name'] ?>
                                 </a>
                             </li>
 
@@ -107,7 +107,7 @@ $uri_segment_2 = $this->uri->segment(2);
                                 </a>
                             </li>
 
-                            <li class="links-inactive" data-toggle="tooltip" data-placement="left" title="Toggle Advance Mode">
+                            <li class="links-inactive" data-toggle="tooltip" data-placement="left" title="<?= $en_all_2738[5007]['m_name'] ?>">
                                 <a href="javascript:void(0)" onclick="toggle_advance(0)">
                                     <i class="<?= ( $this->session->userdata('advance_view_enabled')==1 ? 'fas fa-expand-arrows' : 'fal fa-expand-arrows ' ) ?> advance-icon"></i>
                                 </a>

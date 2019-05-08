@@ -11,7 +11,7 @@ defined('BASEPATH') OR exit('No direct script access allowed');
  *
  */
 
-//Generated 2019-05-08 01:31:57 PST
+//Generated 2019-05-08 01:52:17 PST
 
 //Intent Notes Deliverable:
 $config['en_ids_6345'] = array(4231, 4232, 6242);
@@ -41,7 +41,7 @@ $config['en_ids_2738'] = array(4488, 4535, 4536, 5007, 6137, 6138, 6196, 6205, 6
 $config['en_all_2738'] = array(
     4488 => array(
         'm_icon' => '<img src="https://mench.com/img/mench_white.png">',
-        'm_name' => 'Platform',
+        'm_name' => 'Mench Platform',
         'm_desc' => 'On a mission to build and share consensus',
         'm_parents' => array(2738, 4523, 3326, 3324, 3325, 3323, 4463),
     ),
@@ -77,7 +77,7 @@ $config['en_all_2738'] = array(
     ),
     6196 => array(
         'm_icon' => '<img src="https://mench.com/img/bp_128.png">',
-        'm_name' => 'Personal Assistant',
+        'm_name' => 'Mench Personal Assistant',
         'm_desc' => 'A personal assistant bot that automates the distribution of Mench\'s intent tree to students using Facebook Messenger',
         'm_parents' => array(4463, 2738, 4527, 3320),
     ),
@@ -89,7 +89,7 @@ $config['en_all_2738'] = array(
     ),
     6287 => array(
         'm_icon' => '<i class="fas fa-tools"></i>',
-        'm_name' => 'Admin Tools',
+        'm_name' => 'Mench Admin Tools',
         'm_desc' => 'Series of tools to moderate the Mench platform',
         'm_parents' => array(2738),
     ),

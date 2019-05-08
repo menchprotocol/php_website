@@ -30,7 +30,7 @@
 
 //Fetch & Display Intent Note Messages to explain links:
 $en_all_2738 = $this->config->item('en_all_2738');
-echo '<h1 style="text-align: center; margin-top: 50px;">Mench '.$en_all_2738[4488]['m_name'].'</h1>';
+echo '<h1 style="text-align: center; margin-top: 50px;">'.$en_all_2738[4488]['m_name'].'</h1>';
 echo '<p style="text-align: center; margin-top: 20px; font-size:1.5em !important;">'.$en_all_2738[4488]['m_desc'].'</p>';
 
 //Load core Mench Objects:
