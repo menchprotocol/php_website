@@ -69,7 +69,7 @@ if (!$hide_subscribe) {
         echo '<a class="btn btn-primary" href="https://m.me/askmench?ref='.$in['in_id'].'" style="display: inline-block; padding:12px 36px;">Get Started &nbsp;&nbsp;&nbsp;<i class="fas fa-angle-double-right"></i></a>';
 
         //Build trust:
-        echo '<p style="font-size:1em !important;">Mench is an open-source & non-profit project.</p>';
+        echo '<p style="font-size:1em !important;">Mench is open-source and non-profit.</p>';
 
     }
 

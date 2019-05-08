@@ -11,9 +11,9 @@ defined('BASEPATH') OR exit('No direct script access allowed');
  *
  */
 
-//Generated 2019-05-08 01:09:07 PST
+//Generated 2019-05-08 01:31:57 PST
 
-//Deliverable Intent Notes:
+//Intent Notes Deliverable:
 $config['en_ids_6345'] = array(4231, 4232, 6242);
 $config['en_all_6345'] = array(
     4231 => array(
@@ -42,7 +42,7 @@ $config['en_all_2738'] = array(
     4488 => array(
         'm_icon' => '<img src="https://mench.com/img/mench_white.png">',
         'm_name' => 'Platform',
-        'm_desc' => 'On a mission to build and share consensus 🤝',
+        'm_desc' => 'On a mission to build and share consensus',
         'm_parents' => array(2738, 4523, 3326, 3324, 3325, 3323, 4463),
     ),
     4535 => array(
@@ -175,7 +175,7 @@ $config['en_all_6150'] = array(
     ),
 );
 
-//Entity Referencing in Intent Notes:
+//Intent Notes Entity Referencing:
 $config['en_ids_4986'] = array(4231, 4232, 4983, 6093, 6242);
 $config['en_all_4986'] = array(
     4231 => array(
@@ -298,7 +298,7 @@ $config['en_all_6196'] = array(
     ),
 );
 
-//Intent Types:
+//Intent Type:
 $config['en_ids_4530'] = array(6192, 6193);
 $config['en_all_4530'] = array(
     6192 => array(
@@ -344,7 +344,7 @@ $config['en_all_6187'] = array(
     ),
 );
 
-//Intent Statuses:
+//Intent Status:
 $config['en_ids_4737'] = array(6182, 6183, 6184, 6185);
 $config['en_all_4737'] = array(
     6182 => array(
@@ -2004,7 +2004,7 @@ $config['en_all_4592'] = array(
     ),
 );
 
-//Intent Completion Methods:
+//Intent Completion Requirement:
 $config['en_ids_4331'] = array(4255, 4256, 4258, 4259, 4260, 4261, 6087);
 $config['en_all_4331'] = array(
     4255 => array(
@@ -2103,7 +2103,7 @@ $config['en_all_4454'] = array(
     ),
 );
 
-//Intent Notes:
+//Intent Notes All:
 $config['en_ids_4485'] = array(4231, 4983, 4601, 4232, 6242, 6093);
 $config['en_all_4485'] = array(
     4231 => array(
@@ -2144,7 +2144,7 @@ $config['en_all_4485'] = array(
     ),
 );
 
-//Intent-to-Intent Link Types:
+//Intent Links:
 $config['en_ids_4486'] = array(4228, 4229);
 $config['en_all_4486'] = array(
     4228 => array(
