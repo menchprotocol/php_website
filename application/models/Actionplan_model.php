@@ -500,11 +500,7 @@ class Actionplan_model extends CI_Model
 
 
 
-        //Let's check if this tree has a milestone marks?
-        $in_metadata = unserialize($in['in_metadata']);
-        if(isset($in_metadata['in__metadata_max_milestone_marks']) && $in_metadata['in__metadata_max_milestone_marks'] > 0){
-            return false;
-        }
+        //Let's check if there are any conditional Milestone links here?
 
 
         if(1){

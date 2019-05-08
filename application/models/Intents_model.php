@@ -763,10 +763,6 @@ class Intents_model extends CI_Model
             '__in__metadata_min_seconds' => $common_base_resources['seconds'],
             '__in__metadata_max_seconds' => $common_base_resources['seconds'],
 
-            //Milestone Mark ranges (Start at zero for common base):
-            '__in__metadata_min_milestone_marks' => 0,
-            '__in__metadata_max_milestone_marks' => 0,
-
             //Entity references within intent notes:
             '__in__metadata_experts' => array(),
             '__in__metadata_sources' => array(),
@@ -843,8 +839,6 @@ class Intents_model extends CI_Model
                 'local__in__metadata_max_steps'=> null,
                 'local__in__metadata_min_seconds'=> null,
                 'local__in__metadata_max_seconds'=> null,
-                'local__in__metadata_min_milestone_marks'=> null,
-                'local__in__metadata_max_milestone_marks'=> null,
             );
 
             foreach($expansion_group as $expansion_in_id){
@@ -868,13 +862,6 @@ class Intents_model extends CI_Model
                 if(is_null($metadata_local['local__in__metadata_max_seconds']) || $metadata_recursion['__in__metadata_max_seconds'] > $metadata_local['local__in__metadata_max_seconds']){
                     $metadata_local['local__in__metadata_max_seconds'] = $metadata_recursion['__in__metadata_max_seconds'];
                 }
-                if(is_null($metadata_local['local__in__metadata_min_milestone_marks']) || $metadata_recursion['__in__metadata_min_milestone_marks'] < $metadata_local['local__in__metadata_min_milestone_marks']){
-                    $metadata_local['local__in__metadata_min_milestone_marks'] = $metadata_recursion['__in__metadata_min_milestone_marks'];
-                }
-                if(is_null($metadata_local['local__in__metadata_max_milestone_marks']) || $metadata_recursion['__in__metadata_max_milestone_marks'] > $metadata_local['local__in__metadata_max_milestone_marks']){
-                    $metadata_local['local__in__metadata_max_milestone_marks'] = $metadata_recursion['__in__metadata_max_milestone_marks'];
-                }
-
 
 
                 //Addup Experts:
@@ -909,12 +896,6 @@ class Intents_model extends CI_Model
             if(!is_null($metadata_local['local__in__metadata_max_seconds'])){
                 $metadata_this['__in__metadata_max_seconds'] += intval($metadata_local['local__in__metadata_max_seconds']);
             }
-            if(!is_null($metadata_local['local__in__metadata_min_milestone_marks'])){
-                $metadata_this['__in__metadata_min_milestone_marks'] += intval($metadata_local['local__in__metadata_min_milestone_marks']);
-            }
-            if(!is_null($metadata_local['local__in__metadata_max_milestone_marks'])){
-                $metadata_this['__in__metadata_max_milestone_marks'] += intval($metadata_local['local__in__metadata_max_milestone_marks']);
-            }
 
         }
 
@@ -942,8 +923,6 @@ class Intents_model extends CI_Model
                 'in__metadata_max_steps' => intval($metadata_this['__in__metadata_max_steps']),
                 'in__metadata_min_seconds' => intval($metadata_this['__in__metadata_min_seconds']),
                 'in__metadata_max_seconds' => intval($metadata_this['__in__metadata_max_seconds']),
-                'in__metadata_min_milestone_marks' => intval($metadata_this['__in__metadata_min_milestone_marks']),
-                'in__metadata_max_milestone_marks' => intval($metadata_this['__in__metadata_max_milestone_marks']),
                 'in__metadata_experts' => $metadata_this['__in__metadata_experts'],
                 'in__metadata_sources' => $metadata_this['__in__metadata_sources'],
             ));
