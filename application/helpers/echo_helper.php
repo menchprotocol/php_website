@@ -946,7 +946,7 @@ function echo_tree_references($in, $fb_messenger_format = false, $expand_mode = 
 function echo_step_range($in, $educational_mode = false){
 
     $metadata = unserialize($in['in_metadata']);
-    if (!isset($metadata['in__metadata_min_steps']) || !isset($metadata['in__metadata_max_steps'])) {
+    if (!isset($metadata['in__metadata_min_steps']) || !isset($metadata['in__metadata_max_steps']) || $metadata['in__metadata_max_steps'] <= 1) {
         return ( $educational_mode ? 'Unknown number of steps' : false );
     }
 
