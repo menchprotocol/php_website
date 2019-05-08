@@ -1928,7 +1928,57 @@ class Communication_model extends CI_Model
 
         $fb_received_message = trim(strtolower($fb_received_message));
 
-        if (in_array($fb_received_message, array('next', 'continue'))) {
+        if (in_array($fb_received_message, array('stats', 'statistics'))) {
+
+            $student_intents = $this->Links_model->ln_fetch(array(
+                'ln_miner_entity_id' => $en['en_id'],
+                'ln_type_entity_id' => 4235, //Action Plan Set Intention
+                'ln_status IN (' . join(',', $this->config->item('ln_status_incomplete')) . ')' => null, //incomplete intentions
+                'in_status' => 2, //Published
+            ), array('in_parent'), 0, 0, array('ln_order' => 'ASC'));
+
+            if(count($student_intents)==0){
+
+                //No Action Plan intentions!
+                $this->Communication_model->dispatch_message(
+                    'I can\'t show you any stats because you don\'t have any intentions added to your Action Plan yet.',
+                    $en,
+                    true
+                );
+
+                //Recommend to join:
+                $this->Communication_model->suggest_featured_intents($en['en_id']);
+
+
+            } else {
+
+                //Start composing a message for their stats:
+                $message = '🚩 Action Plan stats:';
+
+                //Show them a list of their Action Plan and completion stats:
+                foreach($student_intents as $student_intent){
+                    //Completion Percentage so far:
+                    $completion_rate = $this->Actionplan_model->actionplan_completion_rate($student_intent, $en['en_id']);
+                    $message = "\n\n" . $completion_rate['completion_percentage'].'% ['.$completion_rate['steps_completed'].'/'.$completion_rate['steps_total'].' step'.echo__s($completion_rate['steps_total']).'] '.echo_in_outcome($student_intent['in_outcome']);
+                }
+
+                //Dispatch Message:
+                $this->Communication_model->dispatch_message(
+                    $message,
+                    $en,
+                    true,
+                    array(
+                        array(
+                            'content_type' => 'text',
+                            'title' => 'Next',
+                            'payload' => 'GONEXT',
+                        )
+                    )
+                );
+
+            }
+
+        } elseif (in_array($fb_received_message, array('next', 'continue'))) {
 
             //Give them the next step of their Action Plan:
             $step = $this->Actionplan_model->actionplan_find_next_step($en['en_id'], true, true);
