@@ -487,7 +487,7 @@ class Actionplan_model extends CI_Model
                 //See if parent is complete:
                 $parent_progression_steps = $this->Links_model->ln_fetch(array(
                     'ln_type_entity_id IN (' . join(',', $this->config->item('en_ids_6146')) . ')' => null, //Action Plan Progression Link Types
-                    'ln_miner_entity_id' => $session_en['en_id'],
+                    'ln_miner_entity_id' => $en_id,
                     'ln_parent_intent_id' => $parent_in_id,
                     'ln_status >=' => 0,
                 ));
