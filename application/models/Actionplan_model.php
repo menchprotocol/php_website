@@ -138,7 +138,7 @@ class Actionplan_model extends CI_Model
                 }
 
                 //Yes, communicate it:
-                $this->Actionplan_model->actionplan_step_next_communicate(array('en_id' => $en_id), $next_in_id);
+                $this->Actionplan_model->actionplan_step_next_communicate($en_id, $next_in_id);
 
             } else {
 
@@ -395,7 +395,7 @@ class Actionplan_model extends CI_Model
             if($top_priority['in']['in_id']==$ins[0]['in_id']){
 
                 //The newly added intent is the top priority, so let's initiate first message for action plan tree:
-                $this->Actionplan_model->actionplan_step_next_communicate(array('en_id' => $en_id), $ins[0]['in_id']);
+                $this->Actionplan_model->actionplan_step_next_communicate($en_id, $ins[0]['in_id']);
 
             } else {
 

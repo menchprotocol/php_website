@@ -1651,7 +1651,7 @@ class Messenger extends CI_Controller
             $this->load->view('view_messenger/actionplan_intent', array(
                 'session_en' => $session_en,
                 'student_intents' => $student_intents,
-                'advance_step' => $this->Actionplan_model->actionplan_step_next_communicate($session_en, $in_id, false),
+                'advance_step' => $this->Actionplan_model->actionplan_step_next_communicate($session_en['en_id'], $in_id, false),
                 'in' => $ins[0], //Currently focused intention:
             ));
 
@@ -1760,7 +1760,7 @@ class Messenger extends CI_Controller
 
         //Just give them an overview of what they are about to skip:
         return echo_json(array(
-            'skip_step_preview' => 'WARNING: '.$this->Actionplan_model->actionplan_step_skip_initiate(array('en_id' => $en_id), $in_id, false).' Are you sure you want to skip?',
+            'skip_step_preview' => 'WARNING: '.$this->Actionplan_model->actionplan_step_skip_initiate($en_id, $in_id, false).' Are you sure you want to skip?',
         ));
 
     }
