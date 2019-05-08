@@ -1137,7 +1137,7 @@ class Communication_model extends CI_Model
                     //We can't have more than 10 intentions listed as Quick Reply supports a total of 11 only (and we need one for "None of the above" option)
                     $this->Links_model->ln_create(array(
                         'ln_miner_entity_id' => 1, //Shervin/Developer
-                        'ln_content' => 'actionplan_advance_step() encountered intent with too many children to be listed as OR Intent options! Trim and iterate that intent tree.',
+                        'ln_content' => 'actionplan_step_next_communicate() encountered intent with too many children to be listed as OR Intent options! Trim and iterate that intent tree.',
                         'ln_type_entity_id' => 4246, //Platform Bug Reports
                         'ln_child_entity_id' => $en_id, //Affected student
                         'ln_parent_intent_id' => $this->config->item('in_featured'), //Featured intentions has an overflow!
@@ -1389,7 +1389,7 @@ class Communication_model extends CI_Model
 
 
             //Process on-complete automations:
-            $this->Actionplan_model->actionplan_process_completion($pending_req_submission[0], $en['en_id']);
+            $this->Actionplan_model->actionplan_completion_triggers($en['en_id'], $pending_req_submission[0]);
 
             //Append the next option:
             $this->Communication_model->dispatch_message(
@@ -1699,7 +1699,7 @@ class Communication_model extends CI_Model
         } elseif ($quick_reply_payload == 'GONEXT') {
 
             //Fetch and communicate next intent:
-            $this->Actionplan_model->actionplan_find_next_step($en['en_id'], true, true);
+            $this->Actionplan_model->actionplan_step_next_go($en['en_id'], true, true);
 
         } elseif (substr_count($quick_reply_payload, 'SUBSCRIBE-CONFIRM_') == 1) {
 
@@ -1707,7 +1707,7 @@ class Communication_model extends CI_Model
             $in_id = intval(one_two_explode('SUBSCRIBE-CONFIRM_', '', $quick_reply_payload));
 
             //Add to Action Plan:
-            $this->Actionplan_model->actionplan_add($en['en_id'], $in_id);
+            $this->Actionplan_model->actionplan_top_add($en['en_id'], $in_id);
 
         } elseif (substr_count($quick_reply_payload, 'SKIP-ACTIONPLAN_') == 1) {
 
@@ -1730,7 +1730,7 @@ class Communication_model extends CI_Model
 
                 //User has indicated they want to skip this tree and move on to the next item in-line:
                 //Lets confirm the implications of this SKIP to ensure they are aware:
-                $this->Actionplan_model->actionplan_skip_initiate($en, $in_id);
+                $this->Actionplan_model->actionplan_step_skip_initiate($en, $in_id);
 
             } else {
 
@@ -1743,7 +1743,7 @@ class Communication_model extends CI_Model
                 } elseif ($ln_status == 2) {
 
                     //Actually skip and see if we've finished this Action Plan:
-                    $this->Actionplan_model->actionplan_skip_recursive_down($en['en_id'], $in_id);
+                    $this->Actionplan_model->actionplan_step_skip_down($en['en_id'], $in_id);
 
                     //Confirm the skip:
                     $message = 'Got it! I successfully skipped all steps';
@@ -1768,7 +1768,7 @@ class Communication_model extends CI_Model
                 );
 
                 //Communicate next step:
-                $this->Actionplan_model->actionplan_find_next_step($en['en_id'], true, true);
+                $this->Actionplan_model->actionplan_step_next_go($en['en_id'], true, true);
 
             }
 
@@ -1856,11 +1856,11 @@ class Communication_model extends CI_Model
             }
 
             //Process on-complete automations:
-            $this->Actionplan_model->actionplan_process_completion($question_ins[0], $en['en_id']);
+            $this->Actionplan_model->actionplan_completion_triggers($en['en_id'], $question_ins[0]);
 
 
             //See if we also need to mark the answer as complete:
-            $this->Actionplan_model->actionplan_attempt_autocomplete($en['en_id'], $answer_ins[0]);
+            $this->Actionplan_model->actionplan_completion_auto_try($en['en_id'], $answer_ins[0]);
 
 
             //Affirm answer received answer:
@@ -1871,7 +1871,7 @@ class Communication_model extends CI_Model
             );
 
             //Find/Advance to the next step:
-            $this->Actionplan_model->actionplan_find_next_step($en['en_id'], true, true);
+            $this->Actionplan_model->actionplan_step_next_go($en['en_id'], true, true);
 
         } else {
 
@@ -1959,7 +1959,7 @@ class Communication_model extends CI_Model
                 //Show them a list of their Action Plan and completion stats:
                 foreach($student_intents as $student_intent){
                     //Completion Percentage so far:
-                    $completion_rate = $this->Actionplan_model->actionplan_completion_rate($student_intent, $en['en_id']);
+                    $completion_rate = $this->Actionplan_model->actionplan_completion_calculate($en['en_id'], $student_intent);
                     $message .= "\n\n" . $completion_rate['completion_percentage'].'% ['.$completion_rate['steps_completed'].'/'.$completion_rate['steps_total'].' step'.echo__s($completion_rate['steps_total']).'] '.echo_in_outcome($student_intent['in_outcome']);
                 }
 
@@ -1982,7 +1982,7 @@ class Communication_model extends CI_Model
         } elseif (in_array($fb_received_message, array('next', 'continue'))) {
 
             //Give them the next step of their Action Plan:
-            $step = $this->Actionplan_model->actionplan_find_next_step($en['en_id'], true, true);
+            $step = $this->Actionplan_model->actionplan_step_next_go($en['en_id'], true, true);
 
         } elseif (in_array($fb_received_message, array('yes', 'yeah', 'ya', 'ok', '▶️', 'ok continue', 'go', 'yass', 'yas', 'yea', 'yup', 'yes, learn more'))) {
 
@@ -2002,11 +2002,11 @@ class Communication_model extends CI_Model
         } elseif ($fb_received_message == 'skip') {
 
             //Find the next intent in the Action Plan to skip:
-            $next_in_id = $this->Actionplan_model->actionplan_find_next_step($en['en_id'], false);
+            $next_in_id = $this->Actionplan_model->actionplan_step_next_go($en['en_id'], false);
 
             if($next_in_id > 0){
                 //Initiate skip request:
-                $this->Actionplan_model->actionplan_skip_initiate($en, $next_in_id);
+                $this->Actionplan_model->actionplan_step_skip_initiate($en, $next_in_id);
             } else {
                 $this->Communication_model->dispatch_message(
                     'I could not find any Action Plan steps to skip.',
@@ -2308,7 +2308,7 @@ class Communication_model extends CI_Model
                 ));
 
                 //Call to Action: Does this student have any Action Plans?
-                $next_in_id = $this->Actionplan_model->actionplan_find_next_step($en['en_id'], false);
+                $next_in_id = $this->Actionplan_model->actionplan_step_next_go($en['en_id'], false);
 
                 if($next_in_id > 0){
 

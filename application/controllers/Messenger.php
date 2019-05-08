@@ -1503,7 +1503,7 @@ class Messenger extends CI_Controller
 
     }
 
-    function actionplan_add(){
+    function actionplan_top_add(){
 
         /*
          *
@@ -1526,7 +1526,7 @@ class Messenger extends CI_Controller
         }
 
         //Attempt to add intent to Action Plan:
-        if($this->Actionplan_model->actionplan_add($session_en['en_id'], $_POST['in_id'])){
+        if($this->Actionplan_model->actionplan_top_add($session_en['en_id'], $_POST['in_id'])){
             //All good:
             $en_all_2738 = $this->config->item('en_all_2738');
             return echo_json(array(
@@ -1606,7 +1606,7 @@ class Messenger extends CI_Controller
         //This is a special command to find the next intent:
         if($in_id=='next'){
             //Find the next item to navigate them to:
-            $next_in_id = $this->Actionplan_model->actionplan_find_next_step($session_en['en_id'], false);
+            $next_in_id = $this->Actionplan_model->actionplan_step_next_go($session_en['en_id'], false);
             $in_id = ( $next_in_id > 0 ? $next_in_id : 0 );
         }
 
@@ -1651,7 +1651,7 @@ class Messenger extends CI_Controller
             $this->load->view('view_messenger/actionplan_intent', array(
                 'session_en' => $session_en,
                 'student_intents' => $student_intents,
-                'advance_step' => $this->Actionplan_model->actionplan_advance_step($session_en, $in_id, false),
+                'advance_step' => $this->Actionplan_model->actionplan_step_next_communicate($session_en, $in_id, false),
                 'in' => $ins[0], //Currently focused intention:
             ));
 
@@ -1760,7 +1760,7 @@ class Messenger extends CI_Controller
 
         //Just give them an overview of what they are about to skip:
         return echo_json(array(
-            'skip_step_preview' => 'WARNING: '.$this->Actionplan_model->actionplan_skip_initiate(array('en_id' => $en_id), $in_id, false).' Are you sure you want to skip?',
+            'skip_step_preview' => 'WARNING: '.$this->Actionplan_model->actionplan_step_skip_initiate(array('en_id' => $en_id), $in_id, false).' Are you sure you want to skip?',
         ));
 
     }
@@ -1769,14 +1769,14 @@ class Messenger extends CI_Controller
     {
 
         //Actually go ahead and skip
-        $this->Actionplan_model->actionplan_skip_recursive_down($en_id, $in_id);
+        $this->Actionplan_model->actionplan_step_skip_down($en_id, $in_id);
         //Assume its all good!
 
         //We actually skipped, draft message:
         $message = '<div class="alert alert-success" role="alert">I successfully skipped all steps.</div>';
 
         //Find the next item to navigate them to:
-        $next_in_id = $this->Actionplan_model->actionplan_find_next_step($en_id, false);
+        $next_in_id = $this->Actionplan_model->actionplan_step_next_go($en_id, false);
         if ($next_in_id > 0) {
             return redirect_message('/messenger/actionplan/' . $next_in_id, $message);
         } else {
@@ -2017,7 +2017,7 @@ class Messenger extends CI_Controller
         ));
 
         //See if we also need to mark the child as complete:
-        $this->Actionplan_model->actionplan_attempt_autocomplete($en_id, $answer_ins[0]);
+        $this->Actionplan_model->actionplan_completion_auto_try($en_id, $answer_ins[0]);
 
         //Archive current progression links:
         foreach($current_progression_links as $ln){

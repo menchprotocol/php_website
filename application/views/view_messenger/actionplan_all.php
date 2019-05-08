@@ -32,7 +32,7 @@ if(count($student_intents) > 0){
             echo '</div>';
         }
 
-        $completion_rate = $this->Actionplan_model->actionplan_completion_rate($ln, $session_en['en_id']);
+        $completion_rate = $this->Actionplan_model->actionplan_completion_calculate($session_en['en_id'], $ln);
 
         echo '<span class="actionplan-title in-title-'.$ln['in_id'].'">' . $ln['in_outcome'] . '</span>';
         echo '<div class="actionplan-overview">'.( $time_estimate ? $time_estimate.', ' : '').'<span title="'.$completion_rate['steps_completed'].'/'.$completion_rate['steps_total'].' Steps Completed">'.$completion_rate['completion_percentage'].'% Complete</span> [<span class="actionplan_remove" in-id="'.$ln['in_id'].'"><i class="fas fa-hand-paper"></i> Stop</span>]</div>';

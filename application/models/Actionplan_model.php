@@ -15,7 +15,7 @@ class Actionplan_model extends CI_Model
     }
 
 
-    function actionplan_recursive_next_step($en_id, $in){
+    function actionplan_step_next_find($en_id, $in){
 
         /*
          *
@@ -47,7 +47,7 @@ class Actionplan_model extends CI_Model
             } elseif($is_expansion){
 
                 //Completed step that has OR expansions, check recursively to see if next step within here:
-                $found_in_id = $this->Actionplan_model->actionplan_recursive_next_step($en_id, $completed_steps[0]);
+                $found_in_id = $this->Actionplan_model->actionplan_step_next_find($en_id, $completed_steps[0]);
 
                 if($found_in_id > 0){
                     return $found_in_id;
@@ -62,7 +62,7 @@ class Actionplan_model extends CI_Model
 
     }
 
-    function actionplan_find_next_step($en_id, $advance_step, $send_title_message = false)
+    function actionplan_step_next_go($en_id, $advance_step, $send_title_message = false)
     {
 
         /*
@@ -104,7 +104,7 @@ class Actionplan_model extends CI_Model
         foreach($student_intents as $student_intent){
 
             //Find first incomplete step for this Action Plan intention:
-            $next_in_id = $this->Actionplan_model->actionplan_recursive_next_step($en_id, $student_intent);
+            $next_in_id = $this->Actionplan_model->actionplan_step_next_find($en_id, $student_intent);
 
             if($next_in_id > 0){
                 //We found the next incomplete step, return:
@@ -138,7 +138,7 @@ class Actionplan_model extends CI_Model
                 }
 
                 //Yes, communicate it:
-                $this->Actionplan_model->actionplan_advance_step(array('en_id' => $en_id), $next_in_id);
+                $this->Actionplan_model->actionplan_step_next_communicate(array('en_id' => $en_id), $next_in_id);
 
             } else {
 
@@ -160,7 +160,7 @@ class Actionplan_model extends CI_Model
 
     }
 
-    function actionplan_skip_initiate($en, $in_id, $fb_messenger_format = true){
+    function actionplan_step_skip_initiate($en_id, $in_id, $fb_messenger_format = true){
 
         //Fetch this intent:
         $ins = $this->Intents_model->in_fetch(array(
@@ -169,9 +169,9 @@ class Actionplan_model extends CI_Model
         ));
         if(count($ins) < 1){
             $this->Links_model->ln_create(array(
-                'ln_child_entity_id' => $en['en_id'],
+                'ln_child_entity_id' => $en_id,
                 'ln_child_intent_id' => $in_id,
-                'ln_content' => 'actionplan_skip_initiate() did not locate the published intent',
+                'ln_content' => 'actionplan_step_skip_initiate() did not locate the published intent',
                 'ln_type_entity_id' => 4246, //Platform Bug Reports
                 'ln_miner_entity_id' => 1, //Shervin/Developer
             ));
@@ -190,7 +190,7 @@ class Actionplan_model extends CI_Model
             //Send over messenger:
             $this->Communication_model->dispatch_message(
                 $skip_message,
-                $en,
+                array('en_id' => $en_id),
                 true,
                 array(
                     array(
@@ -212,7 +212,7 @@ class Actionplan_model extends CI_Model
         }
     }
 
-    function actionplan_skip_recursive_down($en_id, $in_id)
+    function actionplan_step_skip_down($en_id, $in_id)
     {
 
         //Fetch intent common steps:
@@ -222,7 +222,7 @@ class Actionplan_model extends CI_Model
         ));
         if(count($ins) < 1){
             $this->Links_model->ln_create(array(
-                'ln_content' => 'actionplan_skip_recursive_down() failed to locate published intent',
+                'ln_content' => 'actionplan_step_skip_down() failed to locate published intent',
                 'ln_type_entity_id' => 4246, //Platform Bug Reports
                 'ln_miner_entity_id' => 1, //Shervin/Developer
                 'ln_parent_entity_id' => $en_id,
@@ -236,7 +236,7 @@ class Actionplan_model extends CI_Model
 
         if(!isset($in_metadata['in__metadata_common_steps'])){
             $this->Links_model->ln_create(array(
-                'ln_content' => 'actionplan_skip_recursive_down() failed to locate metadata common steps',
+                'ln_content' => 'actionplan_step_skip_down() failed to locate metadata common steps',
                 'ln_type_entity_id' => 4246, //Platform Bug Reports
                 'ln_miner_entity_id' => 1, //Shervin/Developer
                 'ln_parent_entity_id' => $en_id,
@@ -300,7 +300,7 @@ class Actionplan_model extends CI_Model
         ), array('in_parent'), 0, 0, array('ln_order' => 'ASC')) as $actionplan_in){
 
             //See progress rate so far:
-            $completion_rate = $this->Actionplan_model->actionplan_completion_rate($actionplan_in, $en_id);
+            $completion_rate = $this->Actionplan_model->actionplan_completion_calculate($en_id, $actionplan_in);
 
             if($completion_rate['completion_percentage'] < 100){
                 //This is the top priority now:
@@ -322,7 +322,7 @@ class Actionplan_model extends CI_Model
 
     }
 
-    function actionplan_add($en_id, $in_id){
+    function actionplan_top_add($en_id, $in_id){
 
         //Validate Intent ID and ensure it's published:
         $ins = $this->Intents_model->in_fetch(array(
@@ -374,7 +374,7 @@ class Actionplan_model extends CI_Model
             if($top_priority['in']['in_id']==$ins[0]['in_id']){
 
                 //The newly added intent is the top priority, so let's initiate first message for action plan tree:
-                $this->Actionplan_model->actionplan_advance_step(array('en_id' => $en_id), $ins[0]['in_id']);
+                $this->Actionplan_model->actionplan_step_next_communicate(array('en_id' => $en_id), $ins[0]['in_id']);
 
             } else {
 
@@ -404,7 +404,7 @@ class Actionplan_model extends CI_Model
 
     }
 
-    function actionplan_attempt_autocomplete($en_id, $in){
+    function actionplan_completion_auto_try($en_id, $in){
 
         /*
          *
@@ -460,11 +460,11 @@ class Actionplan_model extends CI_Model
     }
 
 
-    function actionplan_evaluate_milestone($in, $en_id){
+    function actionplan_completion_milestones($en_id, $in){
 
 
         //First let's see if this is completed:
-        $completion_rate = $this->Actionplan_model->actionplan_completion_rate($in, $en_id);
+        $completion_rate = $this->Actionplan_model->actionplan_completion_calculate($en_id, $in);
         if($completion_rate['completion_percentage'] < 100){
             //Not completed, so nothing to do here:
             return false;
@@ -472,7 +472,7 @@ class Actionplan_model extends CI_Model
 
 
         //Fetch student intentions:
-        $student_in_ids = $this->Actionplan_model->actionplan_in_ids($en_id);
+        $student_in_ids = $this->Actionplan_model->actionplan_top_ids($en_id);
 
 
         //Go through parents and detect intersects with student intentions. WARNING: Logic duplicated. Search for "ELEPHANT" to see.
@@ -524,7 +524,7 @@ class Actionplan_model extends CI_Model
 
     }
 
-    function actionplan_process_completion($in, $en_id, $send_message = true){
+    function actionplan_completion_triggers($en_id, $in, $send_message = true){
 
 
         /*
@@ -578,7 +578,7 @@ class Actionplan_model extends CI_Model
 
     }
 
-    function actionplan_advance_step($recipient_en, $in_id, $fb_messenger_format = true)
+    function actionplan_step_next_communicate($en_id, $in_id, $fb_messenger_format = true)
     {
 
         /*
@@ -587,7 +587,7 @@ class Actionplan_model extends CI_Model
          *
          * - $in_id:            The next step intent to be completed now
          *
-         * - $recipient_en:     The recipient who will receive the messages via
+         * - $en_id:            The recipient who will receive the messages via
          *                      Facebook Messenger. Note that this function does
          *                      not support an HTML format, only Messenger.
          *
@@ -601,7 +601,7 @@ class Actionplan_model extends CI_Model
                 'message' => 'Missing Intent ID',
             );
 
-        } elseif (!isset($recipient_en['en_id'])) {
+        } elseif ($en_id < 1) {
 
             return array(
                 'status' => 0,
@@ -620,8 +620,8 @@ class Actionplan_model extends CI_Model
             $this->Links_model->ln_create(array(
                 'ln_type_entity_id' => 4246, //Platform Bug Reports
                 'ln_miner_entity_id' => 1, //Shervin/Developer
-                'ln_content' => 'actionplan_advance_step() called invalid intent',
-                'ln_child_entity_id' => $recipient_en['en_id'],
+                'ln_content' => 'actionplan_step_next_communicate() called invalid intent',
+                'ln_child_entity_id' => $en_id,
                 'ln_parent_intent_id' => $ins[0]['in_id'],
             ));
 
@@ -635,8 +635,8 @@ class Actionplan_model extends CI_Model
             $this->Links_model->ln_create(array(
                 'ln_type_entity_id' => 4246, //Platform Bug Reports
                 'ln_miner_entity_id' => 1, //Shervin/Developer
-                'ln_content' => 'actionplan_advance_step() called unpublished intent',
-                'ln_child_entity_id' => $recipient_en['en_id'],
+                'ln_content' => 'actionplan_step_next_communicate() called unpublished intent',
+                'ln_child_entity_id' => $en_id,
                 'ln_parent_intent_id' => $ins[0]['in_id'],
             ));
 
@@ -646,21 +646,6 @@ class Actionplan_model extends CI_Model
             );
 
         }
-
-
-        /*
-         *
-         * Make sure we have full student information
-         * as it might be needed for the messages
-         * we're about to send out.
-         *
-         * */
-        if(!isset($recipient_en['en_name'])){
-            //Let's fetch full details:
-            $ens = $this->Entities_model->en_fetch(array('en_id' => $recipient_en['en_id']));
-            $recipient_en = $ens[0];
-        }
-
 
 
         /*
@@ -701,7 +686,7 @@ class Actionplan_model extends CI_Model
         ), array('in_child'), 0, 0, array('ln_order' => 'ASC'));
         $current_progression_links = $this->Links_model->ln_fetch(array(
             'ln_type_entity_id IN (' . join(',', $this->config->item('en_ids_6146')) . ')' => null, //Action Plan Progression Link Types
-            'ln_miner_entity_id' => $recipient_en['en_id'],
+            'ln_miner_entity_id' => $en_id,
             'ln_parent_intent_id' => $ins[0]['in_id'],
             'ln_status >=' => 0, //New+ [Fetch all types of progress)
         ));
@@ -755,7 +740,7 @@ class Actionplan_model extends CI_Model
             //Log new link:
             $new_progression_link = $this->Links_model->ln_create(array(
                 'ln_type_entity_id' => $progression_type_entity_id,
-                'ln_miner_entity_id' => $recipient_en['en_id'],
+                'ln_miner_entity_id' => $en_id,
                 'ln_parent_intent_id' => $ins[0]['in_id'],
                 'ln_status' => ( $is_two_step ? 1 /* Needs more work */ : 2 /* Published */ ),
             ));
@@ -768,7 +753,7 @@ class Actionplan_model extends CI_Model
                     $this->Links_model->ln_update($ln['ln_id'], array(
                         'ln_parent_link_id' => $new_progression_link['ln_id'],
                         'ln_status' => -1,
-                    ), $recipient_en['en_id']);
+                    ), $en_id);
 
                     //Remove from array:
                     unset($current_progression_links[$key]);
@@ -857,11 +842,11 @@ class Actionplan_model extends CI_Model
                     //Log error link so we can look into it:
                     $this->Links_model->ln_create(array(
                         'ln_miner_entity_id' => 1, //Shervin/Developer
-                        'ln_content' => 'actionplan_advance_step() encountered intent with too many children to be listed as OR Intent options! Trim and iterate that intent tree.',
+                        'ln_content' => 'actionplan_step_next_communicate() encountered intent with too many children to be listed as OR Intent options! Trim and iterate that intent tree.',
                         'ln_type_entity_id' => 4246, //Platform Bug Reports
                         'ln_parent_intent_id' => $ins[0]['in_id'],
                         'ln_child_intent_id' => $child_in['in_id'],
-                        'ln_child_entity_id' => $recipient_en['en_id'],
+                        'ln_child_entity_id' => $en_id,
                     ));
 
                     //Quick reply accepts 11 options max:
@@ -876,7 +861,7 @@ class Actionplan_model extends CI_Model
                 if($was_selected){
                     $child_progression_steps = $this->Links_model->ln_fetch(array(
                         'ln_type_entity_id IN (' . join(',', $this->config->item('en_ids_6146')) . ')' => null, //Action Plan Progression Link Types
-                        'ln_miner_entity_id' => $recipient_en['en_id'],
+                        'ln_miner_entity_id' => $en_id,
                         'ln_parent_intent_id' => $current_progression_links[0]['ln_child_intent_id'],
                         'ln_status >=' => 0,
                     ));
@@ -900,7 +885,7 @@ class Actionplan_model extends CI_Model
 
                     if(!$made_published_progress){
                         //Need to select answer:
-                        $next_step_message .= '<a href="/messenger/actionplan_answer_question/' . $recipient_en['en_id'] . '/' . $ins[0]['in_id'] . '/' . $child_in['in_id'] . '/' . md5($this->config->item('actionplan_salt') . $child_in['in_id'] . $ins[0]['in_id'] . $recipient_en['en_id']) . '" class="list-group-item">';
+                        $next_step_message .= '<a href="/messenger/actionplan_answer_question/' . $en_id . '/' . $ins[0]['in_id'] . '/' . $child_in['in_id'] . '/' . md5($this->config->item('actionplan_salt') . $child_in['in_id'] . $ins[0]['in_id'] . $en_id) . '" class="list-group-item">';
                     } elseif($was_selected){
                         //This was selected:
                         $next_step_message .= '<a href="/messenger/actionplan/'.$child_in['in_id'] . '" class="list-group-item">';
@@ -1004,7 +989,7 @@ class Actionplan_model extends CI_Model
                     //Fetch progression data:
                     $child_progression_steps = $this->Links_model->ln_fetch(array(
                         'ln_type_entity_id IN (' . join(',', $this->config->item('en_ids_6146')) . ')' => null, //Action Plan Progression Link Types
-                        'ln_miner_entity_id' => $recipient_en['en_id'],
+                        'ln_miner_entity_id' => $en_id,
                         'ln_parent_intent_id' => $child_in['in_id'],
                         'ln_status >=' => 0,
                     ));
@@ -1013,7 +998,7 @@ class Actionplan_model extends CI_Model
                     if(!$fb_messenger_format){
 
                         //Completion Percentage so far:
-                        $completion_rate = $this->Actionplan_model->actionplan_completion_rate($child_in, $recipient_en['en_id']);
+                        $completion_rate = $this->Actionplan_model->actionplan_completion_calculate($en_id, $child_in);
 
                         //Open list:
                         $next_step_message .= '<a href="/messenger/actionplan/'.$child_in['in_id']. '" class="list-group-item">';
@@ -1073,7 +1058,7 @@ class Actionplan_model extends CI_Model
             $next_in_id = 0;
             if(!$has_children){
                 //Let's see if we have a next step:
-                $next_in_id = $this->Actionplan_model->actionplan_find_next_step($recipient_en['en_id'], false);
+                $next_in_id = $this->Actionplan_model->actionplan_step_next_go($en_id, false);
             }
 
             if($has_children || $next_in_id>0){
@@ -1112,7 +1097,7 @@ class Actionplan_model extends CI_Model
 
             } else {
 
-                $next_step_message .= '<div style="font-size: 0.7em; margin-top: 10px;">Or <a href="javascript:void(0);" onclick="actionplan_skip_steps(' . $recipient_en['en_id'] . ', ' . $ins[0]['in_id'] . ')"><u>Skip</u></a>.</div>';
+                $next_step_message .= '<div style="font-size: 0.7em; margin-top: 10px;">Or <a href="javascript:void(0);" onclick="actionplan_skip_steps(' . $en_id . ', ' . $ins[0]['in_id'] . ')"><u>Skip</u></a>.</div>';
 
             }
         }
@@ -1132,7 +1117,7 @@ class Actionplan_model extends CI_Model
         if($made_published_progress && $trigger_completion){
 
             //Process on-complete automations:
-            $on_complete_messages = $this->Actionplan_model->actionplan_process_completion($ins[0], $recipient_en['en_id'], false);
+            $on_complete_messages = $this->Actionplan_model->actionplan_completion_triggers($en_id, $ins[0], false);
 
             //Add on-complete messages (if any) to the current messages:
             $in__messages = array_merge($in__messages, $on_complete_messages);
@@ -1153,7 +1138,7 @@ class Actionplan_model extends CI_Model
 
             $compile_html_message .= $this->Communication_model->dispatch_message(
                 $message_ln['ln_content'],
-                $recipient_en,
+                array('en_id' => $en_id),
                 $fb_messenger_format,
                 //This is when we have messages and need to append the "Next" Quick Reply to the last message:
                 ( $last_message_accepts_quick_replies && count($next_step_quick_replies) > 0 ? $next_step_quick_replies : array() ),
@@ -1169,7 +1154,7 @@ class Actionplan_model extends CI_Model
                 //Send messages over Messenger IF we have a message
                 $this->Communication_model->dispatch_message(
                     ( strlen($next_step_message) > 0 ? $next_step_message : echo_random_message('goto_next') ),
-                    $recipient_en,
+                    array('en_id' => $en_id),
                     true,
                     $next_step_quick_replies,
                     array(
@@ -1180,7 +1165,7 @@ class Actionplan_model extends CI_Model
 
             if($recommend_featured){
                 //List featured intents and let them choose:
-                $this->Communication_model->suggest_featured_intents($recipient_en['en_id']);
+                $this->Communication_model->suggest_featured_intents($en_id);
             }
 
         }
@@ -1214,7 +1199,7 @@ class Actionplan_model extends CI_Model
 
     }
 
-    function actionplan_completion_rate($in, $miner_en_id, $top_level = true)
+    function actionplan_completion_calculate($en_id, $in, $top_level = true)
     {
 
         //Fetch/validate Action Plan Common Steps:
@@ -1223,10 +1208,10 @@ class Actionplan_model extends CI_Model
 
             //Should not happen, log error:
             $this->Links_model->ln_create(array(
-                'ln_content' => 'actionplan_completion_rate() Detected student Action Plan without in__metadata_common_steps value!',
+                'ln_content' => 'actionplan_completion_calculate() Detected student Action Plan without in__metadata_common_steps value!',
                 'ln_type_entity_id' => 4246, //Platform Bug Reports
                 'ln_miner_entity_id' => 1, //Shervin/Developer
-                'ln_parent_entity_id' => $miner_en_id,
+                'ln_parent_entity_id' => $en_id,
                 'ln_parent_intent_id' => $in['in_id'],
             ));
 
@@ -1245,7 +1230,7 @@ class Actionplan_model extends CI_Model
         //Count completed for student:
         $common_completed = $this->Links_model->ln_fetch(array(
             'ln_type_entity_id IN (' . join(',', $this->config->item('en_ids_6146')) . ')' => null, //Action Plan Progression Link Types
-            'ln_miner_entity_id' => $miner_en_id, //Belongs to this Student
+            'ln_miner_entity_id' => $en_id, //Belongs to this Student
             'ln_parent_intent_id IN (' . join(',', $flat_common_steps ) . ')' => null,
             'ln_status' => 2, //Published
             'in_status' => 2, //Published
@@ -1264,7 +1249,7 @@ class Actionplan_model extends CI_Model
 
             foreach($this->Links_model->ln_fetch(array(
                 'ln_type_entity_id' => 6157, //Action Plan Question Answered
-                'ln_miner_entity_id' => $miner_en_id, //Belongs to this Student
+                'ln_miner_entity_id' => $en_id, //Belongs to this Student
                 'ln_parent_intent_id IN (' . join(',', $flat_common_steps ) . ')' => null,
                 'ln_child_intent_id IN (' . join(',', array_flatten($in_metadata['in__metadata_expansion_steps'])) . ')' => null,
                 'ln_status' => 2, //Published
@@ -1272,7 +1257,7 @@ class Actionplan_model extends CI_Model
             ), array('in_child')) as $expansion_in){
 
                 //Fetch recursive:
-                $recursive_stats = $this->Actionplan_model->actionplan_completion_rate($expansion_in, $miner_en_id, false);
+                $recursive_stats = $this->Actionplan_model->actionplan_completion_calculate($en_id, $expansion_in, false);
 
                 //Addup completion stats for this:
                 $metadata_this['steps_total'] += $recursive_stats['steps_total'];
@@ -1313,7 +1298,7 @@ class Actionplan_model extends CI_Model
     }
 
 
-    function actionplan_in_ids($en_id){
+    function actionplan_top_ids($en_id){
         //Simply returns all the intention IDs for a student's Action Plan:
         $student_in_ids = array();
         foreach($this->Links_model->ln_fetch(array(
