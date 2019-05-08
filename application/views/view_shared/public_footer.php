@@ -17,7 +17,7 @@
                                 class="fab fa-facebook"></i></a>
 
                     <a href="https://twitter.com/askmench" target="_blank" class="social-link" data-toggle="tooltip"
-                       title="Follow Mench on Twitter" data-placement="top"><i class="fab fa-twitter"></i></a>
+                       title="Follow on Twitter" data-placement="top"><i class="fab fa-twitter"></i></a>
 
                     <a href="https://www.youtube.com/channel/UCOH64HiAIfJlz73tTSI8n-g" target="_blank"
                        class="social-link" data-toggle="tooltip" title="Subscribe on YouTube"
@@ -37,9 +37,6 @@
                        class="social-link" data-toggle="tooltip" title="Join the Conversation on Slack"
                        data-placement="top"><i class="fab fa-slack"></i></a>
 
-                    <a href="https://angel.co/askmench/jobs" target="_blank"
-                       class="social-link" data-toggle="tooltip" title="See openings on Angel List"
-                       data-placement="top"><i class="fab fa-angellist"></i></a>
 
                     <span>|</span>
 
@@ -50,12 +47,16 @@
                        class="social-link" data-toggle="tooltip" title="<?= $en_all_2738[4488]['m_name'] ?> Stats"
                        data-placement="top"><i class="fas fa-analytics"></i></a>
 
+                    <a href="/links"
+                       class="social-link" data-toggle="tooltip" title="<?= $en_all_2738[4488]['m_name'].' '.$en_all_2738[6205]['m_name'] ?>"
+                       data-placement="top"><?= $en_all_2738[6205]['m_icon'] ?></a>
+
                     <a href="/login"
                        class="social-link" data-toggle="tooltip" title="Sign In"
                        data-placement="top"><i class="fas fa-sign-in"></i></a>
 
                     <a href="/8263?expand_mode=1&hide_subscribe=1" class="social-link" data-toggle="tooltip"
-                       title="Read terms of service and privacy policy" data-placement="top"><i
+                       title="Terms of service & privacy policy" data-placement="top"><i
                                 class="fas fa-balance-scale"></i></a>
 
                 </li>
