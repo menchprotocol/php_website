@@ -165,18 +165,24 @@ class Intents extends CI_Controller
             $in_id = $this->config->item('in_miner_start');
         }
 
-        //Authenticate Miner, redirect if failed:
-        $session_en = en_auth(array(1308), true);
 
         //Fetch intent with 2 levels of children:
         $ins = $this->Intents_model->in_fetch(array(
             'in_id' => $in_id,
         ), array('in__parents','in__grandchildren'));
-
         //Make sure we found it:
         if ( count($ins) < 1) {
             return redirect_message('/intents/' . $this->config->item('in_miner_start'), '<div class="alert alert-danger" role="alert">Intent #' . $in_id . ' not found</div>');
         }
+
+
+        //Authenticate Miner, redirect if failed:
+        $session_en = en_auth(array(1308), ( $ins[0]['in_status']!=2 )); //Force redirect if unpulished
+        if(!$session_en){
+            //Not a miner, redirect to landing page instead since it's published:
+            return redirect_message('/' . $ins[0]['in_id']);
+        }
+
 
         //Update session count and log link:
         $new_order = ( $this->session->userdata('miner_session_count') + 1 );
