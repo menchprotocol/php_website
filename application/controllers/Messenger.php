@@ -929,7 +929,7 @@ class Messenger extends CI_Controller
         ));
 
         //Load UI:
-        $this->load->view('view_messenger/myaccount_ui', array(
+        $this->load->view('view_messenger/myaccount_manage', array(
             'session_en' => $session_en,
         ));
 
@@ -1629,7 +1629,7 @@ class Messenger extends CI_Controller
             ));
 
             //List all student intentions:
-            $this->load->view('view_messenger/actionplan_all', array(
+            $this->load->view('view_messenger/actionplan_intentions', array(
                 'session_en' => $session_en,
                 'student_intents' => $student_intents,
             ));
@@ -1648,7 +1648,7 @@ class Messenger extends CI_Controller
             }
 
             //Load Action Plan UI with relevant variables:
-            $this->load->view('view_messenger/actionplan_intent', array(
+            $this->load->view('view_messenger/actionplan_step', array(
                 'session_en' => $session_en,
                 'student_intents' => $student_intents,
                 'advance_step' => $this->Actionplan_model->actionplan_step_next_communicate($session_en['en_id'], $in_id, false),

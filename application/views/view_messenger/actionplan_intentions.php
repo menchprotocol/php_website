@@ -15,7 +15,7 @@ if(count($student_intents) > 0){
     $has_multiple_intentions = ( count($student_intents) >= 2 );
 
     //Student has multiple Action Plans, so list all Action Plans to enable Student to choose:
-    echo '<div id="actionplan_intents" class="list-group '.( $has_multiple_intentions ? 'actionplan-sort' : '').'" style="margin-top: 10px;">';
+    echo '<div id="actionplan_steps" class="list-group '.( $has_multiple_intentions ? 'actionplan-sort' : '').'" style="margin-top: 10px;">';
     foreach ($student_intents as $priority => $ln) {
 
         //Calculate time:

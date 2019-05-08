@@ -3,7 +3,7 @@ function actionplan_sort_save() {
 
     var sort_rank = 0;
     var new_actionplan_order = [];
-    $("#actionplan_intents .actionplan_sort").each(function () {
+    $("#actionplan_steps .actionplan_sort").each(function () {
         var link_id = parseInt($(this).attr('sort-link-id'));
         if(link_id > 0){
             sort_rank++;
@@ -97,7 +97,7 @@ function apply_stop(){
 
 
 //Load sorter:
-var sort = Sortable.create(document.getElementById('actionplan_intents'), {
+var sort = Sortable.create(document.getElementById('actionplan_steps'), {
     animation: 150, // ms, animation speed moving items when sorting, `0` � without animation
     draggable: ".actionplan_sort", // Specifies which items inside the element should be sortable
     handle: ".actionplan_sort", // Restricts sort start click/touch to the specified element
