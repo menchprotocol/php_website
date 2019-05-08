@@ -32,11 +32,10 @@ $developer_tools = array(
 
 
 
-
-
 if(!$action) {
 
-    echo '<h1>Admin Tools</h1>';
+    $en_all_2738 = $this->config->item('en_all_2738');
+    echo '<h1>'.$en_all_2738[6287]['m_icon'].' '.$en_all_2738[6287]['m_name'].'</h1>';
 
     echo '<div class="list-group actionplan_list grey_list maxout">';
     foreach ($moderation_tools as $tool_key => $tool_name) {
