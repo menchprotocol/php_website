@@ -1364,12 +1364,14 @@ class Communication_model extends CI_Model
             //All good!
             $en_all_4592 = $this->config->item('en_all_4592');
 
+
             //Make changes:
             $this->Links_model->ln_update($pending_req_submission[0]['ln_id'], array(
                 'ln_content' => $new_message_links[0]['ln_content'],
                 'ln_status' => 2,
                 'ln_parent_link_id' => $new_message_links[0]['ln_id'],
             ), $en['en_id']);
+
 
             //Confirm with student:
             $this->Communication_model->dispatch_message(
@@ -1382,6 +1384,20 @@ class Communication_model extends CI_Model
                 $en,
                 true
             );
+
+            //Dispatch on-complete messages for the question here:
+            foreach($this->Links_model->ln_fetch(array(
+                'ln_status' => 2, //Published
+                'ln_type_entity_id' => 6242, //On-Complete Tips
+                'ln_child_intent_id' => $pending_req_submission[0]['in_id'],
+            ), array(), 0, 0, array('ln_order' => 'ASC')) as $on_complete_tip){
+                $this->Communication_model->dispatch_message(
+                    $on_complete_tip['ln_content'],
+                    $en,
+                    true
+                );
+            }
+
             $this->Communication_model->dispatch_message(
                 echo_random_message('goto_next'),
                 $en,
