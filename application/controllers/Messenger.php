@@ -616,7 +616,7 @@ class Messenger extends CI_Controller
 
                             //We did not have any matches, but has some mismatches, maybe that's what they meant?
                             $this->Communication_model->dispatch_message(
-                                'Instead of a '.$en_all_4592[$in_requirements_search]['m_name'].' message, please send me a '.$en_all_4592[$mismatch_focus['in_requirement_entity_id']]['m_name'].' message to continue.',
+                                'Instead of a '.$en_all_4592[$in_requirements_search]['m_name'].' message, please send me '.echo_a_an($en_all_4592[$mismatch_focus['in_requirement_entity_id']]['m_name']).' '.$en_all_4592[$mismatch_focus['in_requirement_entity_id']]['m_name'].' message to continue.',
                                 $en,
                                 true
                             );
