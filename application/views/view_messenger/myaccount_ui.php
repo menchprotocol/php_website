@@ -5,6 +5,8 @@
 </script>
 <script src="/js/custom/messenger-myaccount.js?v=v<?= $this->config->item('app_version') ?>" type="text/javascript"></script>
 
+<h3 class="master-h3 primary-title" style="padding:15px 0;">👤 My Account</h3>
+
 <div class="panel-group" id="accordion" role="tablist" aria-multiselectable="true">
 
     <?php
