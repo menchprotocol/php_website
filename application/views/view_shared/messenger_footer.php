@@ -1,5 +1,5 @@
 <?php $en_all_2738 = $this->config->item('en_all_2738'); ?>
-<div class="pfooter"><?= $en_all_2738[4488]['m_icon'].''.$en_all_2738[4488]['m_name'] .' v'. $this->config->item('app_version') ?></div>
+<div class="pfooter" style="padding-top:30px;"><?= $en_all_2738[4488]['m_icon'].''.$en_all_2738[4488]['m_name'] .' v'. $this->config->item('app_version') ?></div>
 </div>
 </div>
 
