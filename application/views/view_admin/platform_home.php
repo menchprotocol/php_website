@@ -118,15 +118,15 @@ foreach (echo_fixed_fields() as $object_id => $statuses) {
 
         //Report types:
         echo '<select id="in_group_by" class="form-control border stats-select">';
+        echo '<option value="by_in_status">4 Statuses</option>';
         echo '<option value="by_in_types">2 Intent Types</option>';
         echo '<option value="by_in_verb">'.count($in_verbs).' Verbs</option>';
         echo '<option value="by_in_completion">'.count($this->config->item('en_all_4331')).' Completion Methods</option>';
-        echo '<option value="by_in_status">4 Statuses</option>';
         echo '</select>';
 
 
         //Intent Statuses:
-        echo '<table class="table table-condensed table-striped stats-table mini-stats-table in_group_by by_in_status hidden">';
+        echo '<table class="table table-condensed table-striped stats-table mini-stats-table in_group_by by_in_status">';
         echo $this_ui;
         echo '</table>';
 
@@ -143,7 +143,7 @@ foreach (echo_fixed_fields() as $object_id => $statuses) {
 
 
         //Intent Types:
-        echo '<table class="table table-condensed table-striped stats-table mini-stats-table in_group_by by_in_types">';
+        echo '<table class="table table-condensed table-striped stats-table mini-stats-table in_group_by by_in_types hidden">';
         foreach(echo_fixed_fields('in_type') as $in_type_id => $in_type){
 
             //Count this type:
@@ -259,20 +259,20 @@ foreach (echo_fixed_fields() as $object_id => $statuses) {
 
         //Report types:
         echo '<select id="en_group_by" class="form-control border stats-select">';
+        echo '<option value="by_en_status">4 Statuses</option>';
         echo '<option value="by_en_experts">'.echo_number($all_source_count).' Expert Sources</option>';
         echo '<option value="by_en_people_groups">'.echo_number($all_people).' People</option>';
-        echo '<option value="by_en_status">4 Statuses</option>';
         echo '</select>';
 
 
         //Entity Status:
-        echo '<table class="table table-condensed table-striped stats-table mini-stats-table en_group_by by_en_status hidden">';
+        echo '<table class="table table-condensed table-striped stats-table mini-stats-table en_group_by by_en_status">';
         echo $this_ui;
         echo '</table>';
 
 
         //Expert Sources:
-        echo '<table class="table table-condensed table-striped stats-table en_group_by by_en_experts">';
+        echo '<table class="table table-condensed table-striped stats-table en_group_by by_en_experts hidden">';
         echo $expert_sources;
         echo '</table>';
 
@@ -370,19 +370,19 @@ foreach (echo_fixed_fields() as $object_id => $statuses) {
 
         //Report types:
         echo '<select id="tr_group_by" class="form-control border stats-select">';
+        echo '<option value="by_ln_status">4 Statuses</option>';
         echo '<option value="by_ln_type">'.count($all_eng_types).' Link Types</option>';
         echo '<option value="by_tr_top_miners">Top '.$top.' Miners</option>';
         echo '<option value="by_tr_point_types">'.echo_number($all_point_payouts).' Points</option>';
-        echo '<option value="by_ln_status">4 Statuses</option>';
         echo '</select>';
 
         //Link Status:
-        echo '<table class="table table-condensed table-striped stats-table mini-stats-table tr_group_by by_ln_status hidden">';
+        echo '<table class="table table-condensed table-striped stats-table mini-stats-table tr_group_by by_ln_status">';
         echo $this_ui;
         echo '</table>';
 
         //Link Types:
-        echo '<table class="table table-condensed table-striped stats-table mini-stats-table tr_group_by by_ln_type">';
+        echo '<table class="table table-condensed table-striped stats-table mini-stats-table tr_group_by by_ln_type hidden">';
         echo $all_ln_types;
         echo '</table>';
 
