@@ -767,14 +767,14 @@ class Communication_model extends CI_Model
                     } elseif(!$fb_messenger_format){
 
                         //HTML Format, append content to current output message:
-                        $entity_appendix .= '<div class="entity-appendix"><b>*</b> ' . echo_url_type($parent_en['ln_content'], $parent_en['ln_type_entity_id']) . '</div>';
+                        $entity_appendix .= '<div class="entity-appendix">' . echo_url_type($parent_en['ln_content'], $parent_en['ln_type_entity_id']) . '</div>';
 
                     }
 
                 } elseif(!$fb_messenger_format){
 
                     //HTML Format, append content to current output message:
-                    $entity_appendix .= '<div class="entity-appendix"><b>*</b> ' . $parent_en['en_icon'] . ' '. $parent_en['en_name'] . (strlen($parent_en['ln_content']) > 0 ? ': '. $parent_en['ln_content'] : '') . '</div>';
+                    $entity_appendix .= '<div class="entity-appendix">' . $parent_en['en_icon'] . ' '. $parent_en['en_name'] . (strlen($parent_en['ln_content']) > 0 ? ': '. $parent_en['ln_content'] : '') . '</div>';
 
                 }
 
@@ -803,12 +803,12 @@ class Communication_model extends CI_Model
                 if($hide_entity_links){
 
                     //Do not include a link because we don't want to distract the student from the call to Action to get started...
-                    $output_body_message = str_replace('@' . $string_references['ref_entities'][0], '<span class="entity-name">'.$ens[0]['en_name'].'</span>'.( $entity_appendix ? '<b>*</b>' : ''), $output_body_message);
+                    $output_body_message = str_replace('@' . $string_references['ref_entities'][0], '<span class="entity-name">'.$ens[0]['en_name'].'</span>', $output_body_message);
 
                 } else {
                     //Show entity link with status:
                     $fixed_fields = $this->config->item('fixed_fields');
-                    $output_body_message = str_replace('@' . $string_references['ref_entities'][0], $fixed_fields['en_status'][$ens[0]['en_status']]['s_icon'].' <a href="/entities/' . $ens[0]['en_id'] . '" target="_parent">' . $ens[0]['en_name'] . '</a>'.( $entity_appendix ? '<b>*</b>' : ''), $output_body_message);
+                    $output_body_message = str_replace('@' . $string_references['ref_entities'][0], $fixed_fields['en_status'][$ens[0]['en_status']]['s_icon'].' <a href="/entities/' . $ens[0]['en_id'] . '" target="_parent">' . $ens[0]['en_name'] . '</a>', $output_body_message);
                 }
 
             } else {
@@ -854,7 +854,7 @@ class Communication_model extends CI_Model
                 $session_en = en_auth(array(1308)); //Is miners
                 if($string_references['ref_entities'][0] != $session_en['en_id']){
 
-                    //Reference is not the logged-in miner, let's check to make sure it's an expert source:
+                    //Reference is not the logged-in miner, let's check to make sure it's an expert source
                     $is_expert_sources = $this->Links_model->ln_fetch(array(
                         'ln_status >=' => 0,
                         'ln_child_entity_id' => $string_references['ref_entities'][0],
