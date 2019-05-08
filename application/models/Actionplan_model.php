@@ -865,7 +865,7 @@ class Actionplan_model extends CI_Model
 
 
             //List AND children:
-            if($has_multiple_children){
+            if($has_multiple_children || !$fb_messenger_format){
                 $key = 0;
                 foreach ($in__children as $child_in) {
 
