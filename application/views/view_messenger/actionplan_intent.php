@@ -8,7 +8,6 @@
 
 //$in & $student_intents is passed for all the top-level intent...
 
-
 $time_estimate = echo_time_range($in);
 
 

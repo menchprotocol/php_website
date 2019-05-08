@@ -85,7 +85,7 @@ class Communication_model extends CI_Model
          * */
 
         //Validate message:
-        $msg_validation = $this->Communication_model->dispatch_validate_message($input_message, $recipient_en, $fb_messenger_format, $quick_replies, 0, $message_in_id);
+        $msg_dispatching = $this->Communication_model->dispatch_validate_message($input_message, $recipient_en, $fb_messenger_format, $quick_replies, 0, $message_in_id, false);
 
         //Prepare data to be appended to success/fail link:
         $allowed_tr_append = array('ln_parent_intent_id', 'ln_child_intent_id', 'ln_parent_link_id');
@@ -98,13 +98,13 @@ class Communication_model extends CI_Model
 
 
         //Did we have ane error in message validation?
-        if (!$msg_validation['status']) {
+        if (!$msg_dispatching['status']) {
 
             //Log Error Link:
             $this->Links_model->ln_create(array_merge(array(
                 'ln_type_entity_id' => 4246, //Platform Bug Reports
                 'ln_miner_entity_id' => 1, //Shervin/Developer
-                'ln_content' => 'dispatch_validate_message() returned error [' . $msg_validation['message'] . '] for input message [' . $input_message . ']',
+                'ln_content' => 'dispatch_validate_message() returned error [' . $msg_dispatching['message'] . '] for input message [' . $input_message . ']',
                 'ln_child_entity_id' => (isset($recipient_en['en_id']) ? $recipient_en['en_id'] : 0),
                 'ln_metadata' => array(
                     'input_message' => $input_message,
@@ -123,7 +123,7 @@ class Communication_model extends CI_Model
         $html_message_body = '';
 
         //Log message sent link:
-        foreach ($msg_validation['output_messages'] as $output_message) {
+        foreach ($msg_dispatching['output_messages'] as $output_message) {
 
             //Dispatch message based on format:
             if ($fb_messenger_format) {
@@ -165,10 +165,10 @@ class Communication_model extends CI_Model
             //Log successful Link for message delivery (Unless Miners viewing HTML):
             if(isset($recipient_en['en_id']) && ($fb_messenger_format || isset($_GET['log_miner_messages']))){
                 $this->Links_model->ln_create(array_merge(array(
-                    'ln_content' => $msg_validation['input_message'],
+                    'ln_content' => $msg_dispatching['input_message'],
                     'ln_type_entity_id' => $output_message['message_type'],
                     'ln_miner_entity_id' => $recipient_en['en_id'],
-                    'ln_parent_entity_id' => $msg_validation['ln_parent_entity_id'], //Might be set if message had a referenced entity
+                    'ln_parent_entity_id' => $msg_dispatching['ln_parent_entity_id'], //Might be set if message had a referenced entity
                     'ln_metadata' => array(
                         'input_message' => $input_message,
                         'output_message' => $output_message['message_body'],
@@ -185,7 +185,7 @@ class Communication_model extends CI_Model
     }
 
 
-    function dispatch_validate_message($input_message, $recipient_en = array(), $fb_messenger_format = false, $quick_replies = array(), $message_type_en_id = 0, $message_in_id = 0)
+    function dispatch_validate_message($input_message, $recipient_en = array(), $fb_messenger_format = false, $quick_replies = array(), $message_type_en_id = 0, $message_in_id = 0, $strict_validation = true)
     {
 
         /*
@@ -197,7 +197,6 @@ class Communication_model extends CI_Model
          * */
 
         $is_being_modified = ( $message_type_en_id > 0 ); //IF $message_type_en_id > 0 means we're adding/editing and need to do extra checks
-        $allowed_length = ( $fb_messenger_format ? $this->config->item('fb_max_message') : $this->config->item('ln_content_max_length')  );
 
         //Start with basic input validation:
         if (strlen($input_message) < 1) {
@@ -205,10 +204,15 @@ class Communication_model extends CI_Model
                 'status' => 0,
                 'message' => 'Missing Message Content',
             );
-        } elseif (strlen($input_message) > $allowed_length) {
+        } elseif (strlen($input_message) > $this->config->item('fb_max_message')) {
             return array(
                 'status' => 0,
-                'message' => 'Message is longer than the allowed ' . $allowed_length . ' characters',
+                'message' => 'Message is longer than the allowed ' . $this->config->item('fb_max_message') . ' characters',
+            );
+        } elseif ($strict_validation && strlen($input_message) > $this->config->item('ln_content_max_length')) {
+            return array(
+                'status' => 0,
+                'message' => 'Message is longer than the allowed ' . $this->config->item('ln_content_max_length') . ' characters',
             );
         } elseif (!preg_match('//u', $input_message)) {
             return array(
@@ -241,70 +245,73 @@ class Communication_model extends CI_Model
          * */
         $string_references = extract_references($input_message);
 
-        if (count($string_references['ref_urls']) > 1) {
-
-            return array(
-                'status' => 0,
-                'message' => 'You can reference a maximum of 1 URL per message',
-            );
-
-        } elseif (count($string_references['ref_entities']) > 1) {
-
-            return array(
-                'status' => 0,
-                'message' => 'Message can include a maximum of 1 entity reference',
-            );
-
-        } elseif (!$fb_messenger_format && count($string_references['ref_intents']) > 1) {
-
-            return array(
-                'status' => 0,
-                'message' => 'Message can include a maximum of 1 intent reference',
-            );
-
-        } elseif (!$fb_messenger_format && count($string_references['ref_intents']) > 0 && count($string_references['ref_entities']) != 1)  {
-
-            return array(
-                'status' => 0,
-                'message' => 'Intent referencing requires an entity reference',
-            );
-
-        } elseif (!$fb_messenger_format && count($string_references['ref_entities']) > 0 && count($string_references['ref_urls']) > 0) {
-
-            return array(
-                'status' => 0,
-                'message' => 'You can either reference 1 entity OR 1 URL (As the URL will be transformed into an entity)',
-            );
-
-        } elseif (count($string_references['ref_commands']) > 0) {
-
-            if(count($string_references['ref_commands']) != count(array_unique($string_references['ref_commands']))){
+        if($strict_validation){
+            //Check only in strict mode:
+            if (count($string_references['ref_urls']) > 1) {
 
                 return array(
                     'status' => 0,
-                    'message' => 'Each /command can only be used once per message',
+                    'message' => 'You can reference a maximum of 1 URL per message',
                 );
 
-            } elseif(in_array('/link',$string_references['ref_commands']) && count($quick_replies) > 0){
+            } elseif (count($string_references['ref_entities']) > 1) {
 
                 return array(
                     'status' => 0,
-                    'message' => 'You cannot combine the /link command with quick replies',
+                    'message' => 'Message can include a maximum of 1 entity reference',
                 );
+
+            } elseif (!$fb_messenger_format && count($string_references['ref_intents']) > 1) {
+
+                return array(
+                    'status' => 0,
+                    'message' => 'Message can include a maximum of 1 intent reference',
+                );
+
+            } elseif (!$fb_messenger_format && count($string_references['ref_intents']) > 0 && count($string_references['ref_entities']) != 1)  {
+
+                return array(
+                    'status' => 0,
+                    'message' => 'Intent referencing requires an entity reference',
+                );
+
+            } elseif (!$fb_messenger_format && count($string_references['ref_entities']) > 0 && count($string_references['ref_urls']) > 0) {
+
+                return array(
+                    'status' => 0,
+                    'message' => 'You can either reference 1 entity OR 1 URL (As the URL will be transformed into an entity)',
+                );
+
+            } elseif (count($string_references['ref_commands']) > 0) {
+
+                if(count($string_references['ref_commands']) != count(array_unique($string_references['ref_commands']))){
+
+                    return array(
+                        'status' => 0,
+                        'message' => 'Each /command can only be used once per message',
+                    );
+
+                } elseif(in_array('/link',$string_references['ref_commands']) && count($quick_replies) > 0){
+
+                    return array(
+                        'status' => 0,
+                        'message' => 'You cannot combine the /link command with quick replies',
+                    );
+
+                }
 
             }
-
-
-
         }
+
 
 
         /*
          *
          * $message_type_en_id Validation
+         * only in strict mode!
          *
          * */
-        if($message_type_en_id > 0){
+        if($strict_validation && $message_type_en_id > 0){
 
             //See if this message type has specific input requirements:
             $en_all_4485 = $this->config->item('en_all_4485');
@@ -1385,19 +1392,11 @@ class Communication_model extends CI_Model
                 true
             );
 
-            //Dispatch on-complete messages for the question here:
-            foreach($this->Links_model->ln_fetch(array(
-                'ln_status' => 2, //Published
-                'ln_type_entity_id' => 6242, //On-Complete Tips
-                'ln_child_intent_id' => $pending_req_submission[0]['in_id'],
-            ), array(), 0, 0, array('ln_order' => 'ASC')) as $on_complete_tip){
-                $this->Communication_model->dispatch_message(
-                    $on_complete_tip['ln_content'],
-                    $en,
-                    true
-                );
-            }
 
+            //Process on-complete automations:
+            $this->Actionplan_model->actionplan_process_completion($pending_req_submission[0], $en['en_id']);
+
+            //Append the next option:
             $this->Communication_model->dispatch_message(
                 echo_random_message('goto_next'),
                 $en,
@@ -1802,11 +1801,11 @@ class Communication_model extends CI_Model
                 'in_id' => $answer_in_id,
                 'in_status' => 2, //Published
             ));
-            $parent_ins = $this->Intents_model->in_fetch(array(
+            $question_ins = $this->Intents_model->in_fetch(array(
                 'in_id' => $question_in_id,
                 'in_status' => 2, //Published
             ));
-            if(count($answer_ins) < 1 || count($parent_ins) < 1){
+            if(count($answer_ins) < 1 || count($question_ins) < 1){
                 return array(
                     'status' => 0,
                     'message' => 'ANSWERQUESTION_ was unable to locate published question/answer',
@@ -1861,21 +1860,12 @@ class Communication_model extends CI_Model
                 );
             }
 
-            //Dispatch on-complete messages for the question here:
-            foreach($this->Links_model->ln_fetch(array(
-                'ln_status' => 2, //Published
-                'ln_type_entity_id' => 6242, //On-Complete Tips
-                'ln_child_intent_id' => $question_in_id,
-            ), array(), 0, 0, array('ln_order' => 'ASC')) as $on_complete_tip){
-                $this->Communication_model->dispatch_message(
-                    $on_complete_tip['ln_content'],
-                    $en,
-                    true
-                );
-            }
+            //Process on-complete automations:
+            $this->Actionplan_model->actionplan_process_completion($question_ins[0], $en['en_id']);
+
 
             //See if we also need to mark the answer as complete:
-            $this->Actionplan_model->actionplan_complete_if_empty($en['en_id'], $answer_ins[0]);
+            $this->Actionplan_model->actionplan_attempt_autocomplete($en['en_id'], $answer_ins[0]);
 
 
             //Affirm answer received answer:

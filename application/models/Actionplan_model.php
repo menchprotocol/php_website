@@ -404,7 +404,7 @@ class Actionplan_model extends CI_Model
 
     }
 
-    function actionplan_complete_if_empty($en_id, $in){
+    function actionplan_attempt_autocomplete($en_id, $in){
 
         /*
          *
@@ -459,6 +459,128 @@ class Actionplan_model extends CI_Model
         return true;
     }
 
+
+    function actionplan_evaluate_milestone($in, $en_id){
+
+
+        //First let's see if this is completed:
+        $completion_rate = $this->Actionplan_model->actionplan_completion_rate($in, $en_id);
+        if($completion_rate['completion_percentage'] < 100){
+            //Not completed, so nothing to do here:
+            return false;
+        }
+
+
+        //Fetch student intentions:
+        $student_in_ids = $this->Actionplan_model->actionplan_in_ids($en_id);
+
+
+        //Go through parents and detect intersects with student intentions. WARNING: Logic duplicated. Search for "ELEPHANT" to see.
+        foreach ($this->Intents_model->in_fetch_recursive_parents($in['in_id'], 2) as $parent_in_id => $grand_parent_ids) {
+            //Does this parent and its grandparents have an intersection with the student intentions?
+            if(array_intersect($grand_parent_ids, $student_in_ids)){
+                //Fetch parent intent & show:
+                $parent_ins = $this->Intents_model->in_fetch(array(
+                    'in_id' => $parent_in_id,
+                ));
+
+                //See if parent is complete:
+                $parent_progression_steps = $this->Links_model->ln_fetch(array(
+                    'ln_type_entity_id IN (' . join(',', $this->config->item('en_ids_6146')) . ')' => null, //Action Plan Progression Link Types
+                    'ln_miner_entity_id' => $session_en['en_id'],
+                    'ln_parent_intent_id' => $parent_in_id,
+                    'ln_status >=' => 0,
+                ));
+
+                echo echo_in_actionplan_step($parent_ins[0], 1, (count($parent_progression_steps) > 0 ? $parent_progression_steps[0]['ln_status'] : 0));
+            }
+        }
+
+
+
+
+
+        //Let's check if this tree has a milestone marks?
+        $in_metadata = unserialize($in['in_metadata']);
+        if(isset($in_metadata['in__metadata_max_milestone_marks']) && $in_metadata['in__metadata_max_milestone_marks'] > 0){
+            return false;
+        }
+
+
+        if(1){
+            //Yes, it's complete! See if it has any conditional Milestone links:
+
+
+            if(1){
+                //Yes, it has conditional links and it's complete!
+
+
+                //Log link for evaluating the Conditional Milestone Link:
+                $conditional_evaluation = $this->Links_model->ln_create(array(
+                    'ln_status' => 2, //Log as a New link unless we meet the minimum student requirement to publish it instantly...
+                    'ln_type_entity_id' => 6278, //Assessed Conditional Milestone Link
+                    'ln_miner_entity_id' => $ens[0]['en_id'],
+                    'ln_parent_intent_id' => $ins[0]['in_id'],
+                ));
+            }
+        }
+
+
+    }
+
+    function actionplan_process_completion($in, $en_id, $send_message = true){
+
+
+        /*
+         *
+         * There are certain processes we need to run and messages
+         * we need to compile every time an Action Plan step/intent
+         * is marked as complete. This function handles that workflow
+         * with the following inputs:
+         *
+         * - $in_id The intent that was marked as complete
+         * - $en_id The entity who marked it as complete
+         * - $send_message IF TRUE would send messages to $en_id and IF FASLE would return raw messages
+         *
+         * */
+
+
+        //Start with on-complete tips if any:
+        $on_complete_messages = $this->Links_model->ln_fetch(array(
+            'ln_status' => 2, //Published
+            'ln_type_entity_id' => 6242, //On-Complete Tips
+            'ln_child_intent_id' => $in['in_id'],
+        ), array(), 0, 0, array('ln_order' => 'ASC'));
+
+
+
+        //TODO See if there is any conditional milestones that need to be unlocked
+
+
+        //Return all the messages:
+        if($send_message){
+
+            //Send message to student:
+            foreach($on_complete_messages as $on_complete_message){
+                $this->Communication_model->dispatch_message(
+                    $on_complete_message['ln_content'],
+                    array('en_id' => $en_id),
+                    true
+                );
+            }
+
+            //Return the number of messages sent:
+            return count($on_complete_messages);
+
+        } else {
+
+            //Return messages array:
+            return $on_complete_messages;
+
+        }
+
+
+    }
 
     function actionplan_advance_step($recipient_en, $in_id, $fb_messenger_format = true)
     {
@@ -1020,12 +1142,11 @@ class Actionplan_model extends CI_Model
         //Check to see if completion notes needs to be dispatched via Messenger?
         if($made_published_progress && $trigger_completion){
 
+            //Process on-complete automations:
+            $on_complete_messages = $this->Actionplan_model->actionplan_process_completion($ins[0], $recipient_en['en_id'], false);
+
             //Add on-complete messages (if any) to the current messages:
-            $in__messages = array_merge($in__messages, $this->Links_model->ln_fetch(array(
-                'ln_status' => 2, //Published
-                'ln_type_entity_id' => 6242, //On-Complete Tips
-                'ln_child_intent_id' => $ins[0]['in_id'],
-            ), array(), 0, 0, array('ln_order' => 'ASC')));
+            $in__messages = array_merge($in__messages, $on_complete_messages);
 
         }
 
@@ -1203,94 +1324,18 @@ class Actionplan_model extends CI_Model
     }
 
 
-    function deprecate__actionplan_trigger_webhooks($in_id, $en_id, $student_in_ids = null){
-
-        //Search and see if this intent has any Webhooks:
+    function actionplan_in_ids($en_id){
+        //Simply returns all the intention IDs for a student's Action Plan:
+        $student_in_ids = array();
         foreach($this->Links_model->ln_fetch(array(
+            'ln_miner_entity_id' => $en_id,
+            'ln_type_entity_id' => 4235, //Action Plan Set Intention
+            'ln_status IN (' . join(',', $this->config->item('ln_status_incomplete')) . ')' => null, //incomplete intentions
             'in_status' => 2, //Published
-            'ln_status' => 2, //Published
-            'ln_type_entity_id' => 0, //TODO REMOVE SOON 4602! Intent Note Webhooks
-            'ln_child_intent_id' => $in_id,
-        ), array('in_child'), 0, 0, array('ln_order' => 'ASC')) as $webhook_entity){
-
-            //Find all the URLs for this Webhook:
-            foreach($this->Links_model->ln_fetch(array(
-                'ln_type_entity_id' => 4256, //Linked Entities Generic URL
-                'ln_child_entity_id' => $webhook_entity['ln_parent_entity_id'], //This child entity
-                'ln_status' => 2, //Published
-            )) as $webhook_url){
-
-                //Prep filter for search/insert:
-                $filter = array(
-                    'ln_status' => 2,
-                    'ln_miner_entity_id' => $en_id,
-                    'ln_type_entity_id' => 0, //TODO REMOVE SOON 6277! Action Plan Progression Trigger Webhook
-                    'ln_parent_intent_id' => $in_id,
-                    'ln_parent_entity_id' => $webhook_entity['ln_parent_entity_id'],
-                    'ln_parent_link_id' => $webhook_entity['ln_id'],
-                );
-
-                //Make sure we have not sent this before (they might be completing this again...)
-                if( count($this->Links_model->ln_fetch($filter))==0 ) {
-
-                    //Never triggered before, so let's do it now:
-                    $trigger_results = webhook_curl_post($webhook_url['ln_content'], $in_id, $en_id);
-
-                    //Did we face any issues?
-                    if(!isset($trigger_results['status']) || intval($trigger_results['status'])!=1){
-                        //It seemed that the trigger did not work properly, log an error for the admin:
-                        $this->Links_model->ln_create(array_merge($filter , array(
-                            'ln_type_entity_id' => 4246, //Platform Bug Reports
-                            'ln_miner_entity_id' => 1, //Shervin/Developer
-                            'ln_child_entity_id' => $en_id,
-                            'ln_content' => 'deprecate__actionplan_trigger_webhooks() failed when calling webhook URL ['.$webhook_url['ln_content'].']',
-                            'ln_metadata' => $trigger_results,
-                        )));
-                    }
-
-                    //Log a new link while saving the trigger results:
-                    $this->Links_model->ln_create(array_merge($filter , array(
-                        'ln_metadata' => $trigger_results,
-                    )));
-                }
-            }
+        ), array('in_parent'), 0) as $student_in){
+            array_push($student_in_ids, intval($student_in['in_id']));
         }
-
-
-        //Go through parents and detect intersects with student intentions. WARNING: Logic duplicated. Search for "ELEPHANT" to see.
-        foreach ($this->Intents_model->in_fetch_recursive_parents($in_id, 2) as $parent_in_id => $grand_parent_ids) {
-
-            if(!$student_in_ids){
-                //Fetch all student intention IDs:
-                $student_in_ids = array();
-                foreach($this->Links_model->ln_fetch(array(
-                    'ln_miner_entity_id' => $en_id,
-                    'ln_type_entity_id' => 4235, //Action Plan Set Intention
-                    'ln_status IN (' . join(',', $this->config->item('ln_status_incomplete')) . ')' => null, //incomplete intentions
-                    'in_status' => 2, //Published
-                ), array('in_parent'), 0) as $student_in){
-                    array_push($student_in_ids, $student_in['in_id']);
-                }
-            }
-
-            //Does this parent and its grandparents have an intersection with the student intentions?
-            if(array_intersect($grand_parent_ids, $student_in_ids)){
-
-                //Fetch parent intent & show:
-                $parent_ins = $this->Intents_model->in_fetch(array(
-                    'in_id' => $parent_in_id,
-                ));
-
-                //See if this is complete:
-                $completion_rate = $this->Actionplan_model->actionplan_completion_rate($parent_ins[0], $en_id);
-                if($completion_rate['completion_percentage']==100){
-
-                    //Yes it is! Trigger Webhook...
-
-                }
-            }
-        }
+        return $student_in_ids;
     }
-
 
 }

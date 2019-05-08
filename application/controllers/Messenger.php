@@ -173,15 +173,6 @@ class Messenger extends CI_Controller
                 )
             );
 
-
-            //Log link for evaluating the Conditional Milestone Link:
-            $conditional_evaluation = $this->Links_model->ln_create(array(
-                'ln_status' => 2, //Log as a New link unless we meet the minimum student requirement to publish it instantly...
-                'ln_type_entity_id' => 6278, //Assessed Conditional Milestone Link
-                'ln_miner_entity_id' => $ens[0]['en_id'],
-                'ln_parent_intent_id' => $ins[0]['in_id'],
-            ));
-
         } else {
 
             //We don't have enough student's yet! Create a pending score card so we get to update it later:
@@ -2026,7 +2017,7 @@ class Messenger extends CI_Controller
         ));
 
         //See if we also need to mark the child as complete:
-        $this->Actionplan_model->actionplan_complete_if_empty($en_id, $answer_ins[0]);
+        $this->Actionplan_model->actionplan_attempt_autocomplete($en_id, $answer_ins[0]);
 
         //Archive current progression links:
         foreach($current_progression_links as $ln){
