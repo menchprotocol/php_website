@@ -12,7 +12,7 @@ echo '<div class="landing-page-intro" id="in_landing_page">';
 
 
 //Intent Title:
-echo '<h1 style="margin-bottom:30px;" id="title-parent">' . echo_in_outcome($in['in_outcome'], true) . '</h1>';
+echo '<h1 style="margin-bottom:30px;" id="title-parent">' . echo_in_outcome($in['in_outcome']) . '</h1>';
 
 
 //Fetch & Display Intent Note Messages for this intent:

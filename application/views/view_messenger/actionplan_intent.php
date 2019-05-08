@@ -55,7 +55,7 @@ echo '</div>';
 
 
 //Show title
-echo '<h3 class="master-h3 primary-title">' . echo_in_outcome($in['in_outcome'] , true). '</h3>';
+echo '<h3 class="master-h3 primary-title">' . echo_in_outcome($in['in_outcome']). '</h3>';
 echo '<div class="sub_title">';
 
 //Progression link:

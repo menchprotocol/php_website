@@ -178,7 +178,7 @@ class Actionplan_model extends CI_Model
             return false;
         }
 
-        $skip_message = 'Are you sure you want to skip the '.echo_step_range($ins[0], true).' to '.echo_in_outcome($ins[0]['in_outcome'], true, true).'?';
+        $skip_message = 'Are you sure you want to skip the '.echo_step_range($ins[0], true).' to '.echo_in_outcome($ins[0]['in_outcome'], $fb_messenger_format, true).'?';
 
         if(!$fb_messenger_format){
 
@@ -929,7 +929,7 @@ class Actionplan_model extends CI_Model
                     }
 
                     //Add to answer list:
-                    $next_step_message .= echo_in_outcome($child_in['in_outcome'], true);
+                    $next_step_message .= echo_in_outcome($child_in['in_outcome']);
 
                 }
 
@@ -1042,7 +1042,7 @@ class Actionplan_model extends CI_Model
                     }
 
 
-                    $next_step_message .= echo_in_outcome($child_in['in_outcome'], true);
+                    $next_step_message .= echo_in_outcome($child_in['in_outcome'], $fb_messenger_format);
 
                     if(!$fb_messenger_format){
 
