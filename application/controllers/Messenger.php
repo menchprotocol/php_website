@@ -616,7 +616,7 @@ class Messenger extends CI_Controller
 
                             //We did not have any matches, but has some mismatches, maybe that's what they meant?
                             $this->Communication_model->dispatch_message(
-                                'I cannot accept your '.strtolower($en_all_4592[$in_requirements_search]['m_name']).' message as I am expecting a '.strtolower($en_all_4592[$mismatch_focus['in_requirement_entity_id']]['m_name']).' message to complete your Action Plan step to '.echo_in_outcome($mismatch_focus['in_outcome'].'. Please send me a '.strtolower($en_all_4592[$mismatch_focus['in_requirement_entity_id']]['m_name']).' message to continue...', true, true),
+                                'I cannot accept your '.strtolower($en_all_4592[$in_requirements_search]['m_name']).' message. Please send me a '.strtolower($en_all_4592[$mismatch_focus['in_requirement_entity_id']]['m_name']).' message to continue.',
                                 $en,
                                 true,
                                 array(
