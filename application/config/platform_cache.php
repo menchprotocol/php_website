@@ -11,7 +11,7 @@ defined('BASEPATH') OR exit('No direct script access allowed');
  *
  */
 
-//Generated 2019-05-08 01:52:17 PST
+//Generated 2019-05-08 02:54:01 PST
 
 //Intent Notes Deliverable:
 $config['en_ids_6345'] = array(4231, 4232, 6242);
@@ -717,7 +717,7 @@ $config['en_all_5966'] = array(
     ),
 );
 
-//Linked Entities Text:
+//Linked Entities Text Message:
 $config['en_ids_4255'] = array(2999, 3005, 3084, 3147, 3192, 3286, 4601, 4763, 4883, 6232);
 $config['en_all_4255'] = array(
     2999 => array(
@@ -1359,7 +1359,7 @@ $config['en_all_4595'] = array(
     ),
     4255 => array(
         'm_icon' => '<i class="fal fa-align-left"></i>',
-        'm_name' => 'Linked Entities Text',
+        'm_name' => 'Linked Entities Text Message',
         'm_desc' => '30',
         'm_parents' => array(4527, 4593, 4592, 4595, 4331),
     ),
@@ -1531,7 +1531,7 @@ $config['en_all_4593'] = array(
     ),
     4255 => array(
         'm_icon' => '<i class="fal fa-align-left"></i>',
-        'm_name' => 'Linked Entities Text',
+        'm_name' => 'Linked Entities Text Message',
         'm_desc' => '',
         'm_parents' => array(4527, 4593, 4592, 4595, 4331),
     ),
@@ -1950,7 +1950,7 @@ $config['en_all_4592'] = array(
     ),
     4255 => array(
         'm_icon' => '<i class="fal fa-align-left"></i>',
-        'm_name' => 'Text',
+        'm_name' => 'Text Message',
         'm_desc' => '',
         'm_parents' => array(4527, 4593, 4592, 4595, 4331),
     ),
@@ -2009,7 +2009,7 @@ $config['en_ids_4331'] = array(4255, 4256, 4258, 4259, 4260, 4261, 6087);
 $config['en_all_4331'] = array(
     4255 => array(
         'm_icon' => '<i class="fal fa-align-left"></i>',
-        'm_name' => 'Text',
+        'm_name' => 'Text Message',
         'm_desc' => '',
         'm_parents' => array(4527, 4593, 4592, 4595, 4331),
     ),

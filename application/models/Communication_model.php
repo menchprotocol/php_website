@@ -344,7 +344,7 @@ class Communication_model extends CI_Model
                 if(!($en_id==$detected_ln_type['ln_type_entity_id']) && !$is_url_reference){
                     return array(
                         'status' => 0,
-                        'message' => $en_all_4485[$message_type_en_id]['m_name'].' requires a ['.$en_all_4331[$en_id]['m_name'].'] message. You entered a ['.$en_all_4592[$detected_ln_type['ln_type_entity_id']]['m_name'].'] message.',
+                        'message' => $en_all_4485[$message_type_en_id]['m_name'].' requires '.echo_a_an($en_all_4331[$en_id]['m_name']).' '.$en_all_4331[$en_id]['m_name'].' but you entered '.echo_a_an($en_all_4592[$detected_ln_type['ln_type_entity_id']]['m_name']).' '.$en_all_4592[$detected_ln_type['ln_type_entity_id']]['m_name'].'.',
                     );
                 }
 
@@ -1327,7 +1327,7 @@ class Communication_model extends CI_Model
             //Students want to try their submission again:
             $en_all_4592 = $this->config->item('en_all_4592'); //Requirement names
             $this->Communication_model->dispatch_message(
-                'Ok, so try again by sending me another '.$en_all_4592[one_two_explode('TRYANOTHERRESPONSE_', '', $quick_reply_payload)]['m_name'].' message to continue.',
+                'Ok, so try again by sending me another '.$en_all_4592[one_two_explode('TRYANOTHERRESPONSE_', '', $quick_reply_payload)]['m_name'].' to continue.',
                 $en,
                 true
             );
@@ -1365,10 +1365,6 @@ class Communication_model extends CI_Model
                     'message' => 'Invalid command to mark step as complete',
                 );
             }
-
-
-            //All good!
-            $en_all_4592 = $this->config->item('en_all_4592');
 
 
             //Make changes:

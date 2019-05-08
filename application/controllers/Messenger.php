@@ -616,7 +616,7 @@ class Messenger extends CI_Controller
 
                             //We did not have any matches, but has some mismatches, maybe that's what they meant?
                             $this->Communication_model->dispatch_message(
-                                'Instead of a '.$en_all_4592[$in_requirements_search]['m_name'].' message, please send me '.echo_a_an($en_all_4592[$mismatch_focus['in_requirement_entity_id']]['m_name']).' '.$en_all_4592[$mismatch_focus['in_requirement_entity_id']]['m_name'].' message to continue.',
+                                'Instead of '.echo_a_an($en_all_4592[$in_requirements_search]['m_name']).' '.$en_all_4592[$in_requirements_search]['m_name'].', please send me '.echo_a_an($en_all_4592[$mismatch_focus['in_requirement_entity_id']]['m_name']).' '.$en_all_4592[$mismatch_focus['in_requirement_entity_id']]['m_name'].' to continue.',
                                 $en,
                                 true
                             );
@@ -630,7 +630,7 @@ class Messenger extends CI_Controller
 
                             //Let them know that we did not understand them:
                             $this->Communication_model->dispatch_message(
-                                'I cannot make sense of your '.$en_all_4592[$in_requirements_search]['m_name'].' message! '.echo_random_message('one_way_only'),
+                                'I cannot make sense of your '.$en_all_4592[$in_requirements_search]['m_name'].'! '.echo_random_message('one_way_only'),
                                 $en,
                                 true,
                                 array(
