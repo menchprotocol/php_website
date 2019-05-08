@@ -495,7 +495,7 @@ class Intents_model extends CI_Model
         $en_all_4331 = $this->config->item('en_all_4331'); //Intent Completion Requirements
 
         //Return Student-friendly message for completion requirements:
-        return 'Ok, simply send me a ' . strtolower($en_all_4331[$in['in_requirement_entity_id']]['m_name']).' message'.( !$fb_messenger_format ? ' via Messenger' : '' ).' to complete this step.';
+        return 'Ok, simply send me a ' . $en_all_4331[$in['in_requirement_entity_id']]['m_name'].' message'.( !$fb_messenger_format ? ' via Messenger' : '' ).' to complete this step.';
 
     }
 

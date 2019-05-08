@@ -625,16 +625,9 @@ class Messenger extends CI_Controller
 
                             //We did not have any matches, but has some mismatches, maybe that's what they meant?
                             $this->Communication_model->dispatch_message(
-                                'Instead of a '.strtolower($en_all_4592[$in_requirements_search]['m_name']).', please send me a '.strtolower($en_all_4592[$mismatch_focus['in_requirement_entity_id']]['m_name']).' message to continue.',
+                                'Instead of a '.$en_all_4592[$in_requirements_search]['m_name'].' message, please send me a '.$en_all_4592[$mismatch_focus['in_requirement_entity_id']]['m_name'].' message to continue.',
                                 $en,
-                                true,
-                                array(
-                                    array(
-                                        'content_type' => 'text',
-                                        'title' => 'Skip',
-                                        'payload' => 'SKIP-ACTIONPLAN_1_' . $mismatch_focus['in_id'],
-                                    )
-                                )
+                                true
                             );
 
                         } elseif($ln_data['ln_type_entity_id']==4547){

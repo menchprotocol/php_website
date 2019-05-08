@@ -178,7 +178,7 @@ class Actionplan_model extends CI_Model
             return false;
         }
 
-        $skip_message = 'You are about to skip the intention to '.echo_in_outcome($ins[0]['in_outcome'], true, true).' which is ' . echo_step_range($ins[0], true) . '. I encourage you to continue so you have the maximum chance for success 🙏';
+        $skip_message = 'Are you sure you want to skip the '.echo_step_range($ins[0], true).' to '.echo_in_outcome($ins[0]['in_outcome'], true, true).'?';
 
         if(!$fb_messenger_format){
 
@@ -458,6 +458,7 @@ class Actionplan_model extends CI_Model
 
         return true;
     }
+
 
     function actionplan_advance_step($recipient_en, $in_id, $fb_messenger_format = true)
     {
@@ -911,21 +912,8 @@ class Actionplan_model extends CI_Model
                         $next_step_message .= '<span class="badge badge-primary"  data-toggle="tooltip" data-placement="top" title="'.$completion_rate['steps_completed'].'/'.$completion_rate['steps_total'].' Steps Completed" style="text-decoration:none;"><span style="font-size:0.7em;">'.$completion_rate['completion_percentage'].'%</span> <i class="fas fa-angle-right"></i>&nbsp;</span>';
                         $next_step_message .= '</span>';
 
-                        //Determine what icon to show:
-                        if(count($child_progression_steps) > 0){
-                            //We do have a progression link...
-                            if($child_progression_steps[0]['ln_status']==2){
-                                //Status is complete, show the progression type icon:
-                                $en_all_6146 = $this->config->item('en_all_6146');
-                                $next_step_message .= $en_all_6146[$child_progression_steps[0]['ln_type_entity_id']]['m_icon'];
-                            } else {
-                                //Status is not yet complete, so show the status icon:
-                                $next_step_message .= echo_fixed_fields('ln_student_status', $child_progression_steps[0]['ln_status'], true, null);
-                            }
-                        } else {
-                            //No progression, so show a new icon:
-                            $next_step_message .= echo_fixed_fields('ln_student_status', 0, true, null);
-                        }
+                        //Show status:
+                        $next_step_message .= echo_fixed_fields('ln_student_status', (count($child_progression_steps) > 0 ? $child_progression_steps[0]['ln_status'] : 0 ), true, null);
 
                         $next_step_message .= '&nbsp;';
 
@@ -1040,7 +1028,6 @@ class Actionplan_model extends CI_Model
             ), array(), 0, 0, array('ln_order' => 'ASC')));
 
         }
-
 
 
         $compile_html_message = null; //Will be useful only IF $fb_messenger_format=FALSE
@@ -1298,8 +1285,7 @@ class Actionplan_model extends CI_Model
                 $completion_rate = $this->Actionplan_model->actionplan_completion_rate($parent_ins[0], $en_id);
                 if($completion_rate['completion_percentage']==100){
 
-                    //Yes it is! Trigger Webhook recursively:
-                    $this->Actionplan_model->deprecate__actionplan_trigger_webhooks($parent_in_id, $en_id, $student_in_ids);
+                    //Yes it is! Trigger Webhook...
 
                 }
             }

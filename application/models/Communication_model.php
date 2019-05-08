@@ -1772,12 +1772,12 @@ class Communication_model extends CI_Model
 
             //Extract variables:
             $quickreply_parts = explode('_', one_two_explode('ANSWERQUESTION_', '', $quick_reply_payload));
-            $parent_in_id = intval($quickreply_parts[0]);
+            $question_in_id = intval($quickreply_parts[0]);
             $answer_in_id = intval($quickreply_parts[1]);
-            if($parent_in_id < 1 || $answer_in_id < 1){
+            if($question_in_id < 1 || $answer_in_id < 1){
                 return array(
                     'status' => 0,
-                    'message' => 'ANSWERQUESTION_ missing core variables ['.$parent_in_id.'] & ['.$answer_in_id.']',
+                    'message' => 'ANSWERQUESTION_ missing core variables ['.$question_in_id.'] & ['.$answer_in_id.']',
                 );
             }
 
@@ -1786,10 +1786,14 @@ class Communication_model extends CI_Model
                 'in_id' => $answer_in_id,
                 'in_status' => 2, //Published
             ));
-            if(count($answer_ins) < 1){
+            $parent_ins = $this->Intents_model->in_fetch(array(
+                'in_id' => $question_in_id,
+                'in_status' => 2, //Published
+            ));
+            if(count($answer_ins) < 1 || count($parent_ins) < 1){
                 return array(
                     'status' => 0,
-                    'message' => 'ANSWERQUESTION_ was unable to locate published answer',
+                    'message' => 'ANSWERQUESTION_ was unable to locate published question/answer',
                 );
             }
 
@@ -1797,7 +1801,7 @@ class Communication_model extends CI_Model
             $pending_answer_links = $this->Links_model->ln_fetch(array(
                 'ln_miner_entity_id' => $en['en_id'],
                 'ln_type_entity_id' => 6157, //Action Plan Question Answered
-                'ln_parent_intent_id' => $parent_in_id,
+                'ln_parent_intent_id' => $question_in_id,
                 'ln_status >=' => 0, //New+
             ));
             if(count($pending_answer_links) < 1){
@@ -1841,6 +1845,18 @@ class Communication_model extends CI_Model
                 );
             }
 
+            //Dispatch on-complete messages for the question here:
+            foreach($this->Links_model->ln_fetch(array(
+                'ln_status' => 2, //Published
+                'ln_type_entity_id' => 6242, //On-Complete Tips
+                'ln_child_intent_id' => $question_in_id,
+            ), array(), 0, 0, array('ln_order' => 'ASC')) as $on_complete_tip){
+                $this->Communication_model->dispatch_message(
+                    $on_complete_tip['ln_content'],
+                    $en,
+                    true
+                );
+            }
 
             //See if we also need to mark the answer as complete:
             $this->Actionplan_model->actionplan_complete_if_empty($en['en_id'], $answer_ins[0]);
