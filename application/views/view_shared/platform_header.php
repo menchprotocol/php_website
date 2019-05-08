@@ -72,19 +72,19 @@ $uri_segment_2 = $this->uri->segment(2);
 
                             <li class="<?= ($uri_segment_1 == 'intents' ? 'intent-active' : 'intent-inactive') ?>">
                                 <a href="/intents/<?= $this->config->item('in_miner_start') ?>">
-                                    <?= $en_all_2738[4535]['m_name'] .' '. $en_all_2738[4535]['m_name'] ?>
+                                    <?= $en_all_2738[4535]['m_icon'] .' '. $en_all_2738[4535]['m_name'] ?>
                                 </a>
                             </li>
 
                             <li class="<?= ($uri_segment_1 == 'entities' ? 'entity-active' : 'entity-inactive') ?>">
                                 <a href="/entities/<?= $this->config->item('en_top_focus_id') ?>">
-                                    <?= $en_all_2738[4536]['m_name'] .' '. $en_all_2738[4536]['m_name'] ?>
+                                    <?= $en_all_2738[4536]['m_icon'] .' '. $en_all_2738[4536]['m_name'] ?>
                                 </a>
                             </li>
 
                             <li class="<?= ($uri_segment_1 == 'links' ? 'links-active' : 'links-inactive') ?>">
                                 <a href="/links">
-                                    <?= $en_all_2738[6205]['m_name'] .' '. $en_all_2738[6205]['m_name'] ?>
+                                    <?= $en_all_2738[6205]['m_icon'] .' '. $en_all_2738[6205]['m_name'] ?>
                                 </a>
                             </li>
 
