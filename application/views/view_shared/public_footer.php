@@ -12,20 +12,20 @@
                        data-toggle="tooltip" title="Follow on Instagram" data-placement="top"><i
                                 class="fab fa-instagram"></i></a>
 
-                    <a href="https://twitter.com/askmench" target="_blank" class="social-link" data-toggle="tooltip"
-                       title="Follow Mench on Twitter" data-placement="top"><i class="fab fa-twitter"></i></a>
-
                     <a href="https://www.facebook.com/askmench" target="_blank" class="social-link"
                        data-toggle="tooltip" title="Follow on Facebook" data-placement="top"><i
                                 class="fab fa-facebook"></i></a>
 
-                    <a href="https://www.linkedin.com/company/askmench/" target="_blank" class="social-link"
-                       data-toggle="tooltip" title="Follow on LinkedIn" data-placement="top"><i
-                                class="fab fa-linkedin"></i></a>
+                    <a href="https://twitter.com/askmench" target="_blank" class="social-link" data-toggle="tooltip"
+                       title="Follow Mench on Twitter" data-placement="top"><i class="fab fa-twitter"></i></a>
 
                     <a href="https://www.youtube.com/channel/UCOH64HiAIfJlz73tTSI8n-g" target="_blank"
                        class="social-link" data-toggle="tooltip" title="Subscribe on YouTube"
                        data-placement="top"><i class="fab fa-youtube"></i></a>
+
+                    <a href="https://www.linkedin.com/company/askmench/" target="_blank" class="social-link"
+                       data-toggle="tooltip" title="Follow on LinkedIn" data-placement="top"><i
+                                class="fab fa-linkedin"></i></a>
 
                     <span>|</span>
 
