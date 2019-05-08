@@ -82,7 +82,7 @@ class Links_model extends CI_Model
             /*
             $this->Links_model->ln_create(array(
                 'ln_parent_link_id' => $id, //Link Reference
-                'ln_type_entity_id' => 4246, //Platform Error
+                'ln_type_entity_id' => 4246, //Platform Bug Reports
                 'ln_miner_entity_id' => 1, //Shervin/Developer
                 'ln_content' => 'ln_update() Failed to update',
                 'ln_metadata' => array(
@@ -208,7 +208,7 @@ class Links_model extends CI_Model
 
             //This should not happen:
             $this->Links_model->ln_create(array(
-                'ln_type_entity_id' => 4246, //Platform Error
+                'ln_type_entity_id' => 4246, //Platform Bug Reports
                 'ln_miner_entity_id' => 1, //Shervin/Developer
                 'ln_content' => 'ln_create() Failed to create',
                 'ln_metadata' => array(
@@ -222,7 +222,7 @@ class Links_model extends CI_Model
 
             //This should not happen:
             $this->Links_model->ln_create(array(
-                'ln_type_entity_id' => 4246, //Platform Error
+                'ln_type_entity_id' => 4246, //Platform Bug Reports
                 'ln_miner_entity_id' => 1, //Shervin/Developer
                 'ln_content' => 'ln_create() missing miner',
                 'ln_metadata' => array(

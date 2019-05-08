@@ -5,13 +5,13 @@ defined('BASEPATH') OR exit('No direct script access allowed');
  * Keep a cache of certain parts of the Intent tree for faster processing
  * So we don't have to make DB calls to figure them out every time!
  * See here for all entities cached: https://mench.com/entities/4527
- * use-case format: $this->config->item('en_ids_6345')
+ * use-case format: $this->config->item('en_all_2738')
  *
  * ATTENTION: Also search for "en_ids_" and "en_all_" when trying to manage these throughout the code base
  *
  */
 
-//Generated 2019-05-07 17:37:41 PST
+//Generated 2019-05-07 18:40:52 PST
 
 //Deliverable Intent Notes:
 $config['en_ids_6345'] = array(4231, 4232, 6242);
@@ -141,13 +141,13 @@ $config['en_all_6150'] = array(
         'm_icon' => '<i class="far fa-badge-check"></i>',
         'm_name' => 'Intention Accomplished',
         'm_desc' => 'You successfully accomplished your intention so you no longer want to receive future updates',
-        'm_parents' => array(5966, 4506, 6150, 4755, 4593),
+        'm_parents' => array(4506, 6150, 4755, 4593),
     ),
     6155 => array(
         'm_icon' => '<i class="far fa-stop-circle"></i>',
         'm_name' => 'Intention Terminated',
         'm_desc' => 'You did NOT accomplish the intention and you want to stop all future updates on this intention',
-        'm_parents' => array(5966, 4506, 6150, 4593, 4755),
+        'm_parents' => array(4506, 6150, 4593, 4755),
     ),
 );
 
@@ -683,25 +683,13 @@ $config['en_all_5969'] = array(
 );
 
 //Link Type Email Subscription:
-$config['en_ids_5966'] = array(4246, 6154, 6155);
+$config['en_ids_5966'] = array(4246);
 $config['en_all_5966'] = array(
     4246 => array(
         'm_icon' => '<i class="fal fa-bug"></i>',
-        'm_name' => 'Reported Bug',
+        'm_name' => 'Platform Bug Reports',
         'm_desc' => '&var_en_subscriber_ids=1',
         'm_parents' => array(5966, 4593),
-    ),
-    6154 => array(
-        'm_icon' => '<i class="far fa-badge-check"></i>',
-        'm_name' => 'Action Plan Intention Accomplished',
-        'm_desc' => '&var_en_subscriber_ids=1,2',
-        'm_parents' => array(5966, 4506, 6150, 4755, 4593),
-    ),
-    6155 => array(
-        'm_icon' => '<i class="far fa-stop-circle"></i>',
-        'm_name' => 'Action Plan Intention Terminated',
-        'm_desc' => '&var_en_subscriber_ids=1,2',
-        'm_parents' => array(5966, 4506, 6150, 4593, 4755),
     ),
 );
 
@@ -1301,13 +1289,13 @@ $config['en_all_4755'] = array(
         'm_icon' => '<i class="far fa-badge-check"></i>',
         'm_name' => 'Action Plan Intention Accomplished',
         'm_desc' => '',
-        'm_parents' => array(5966, 4506, 6150, 4755, 4593),
+        'm_parents' => array(4506, 6150, 4755, 4593),
     ),
     6155 => array(
         'm_icon' => '<i class="far fa-stop-circle"></i>',
         'm_name' => 'Action Plan Intention Terminated',
         'm_desc' => '',
-        'm_parents' => array(5966, 4506, 6150, 4593, 4755),
+        'm_parents' => array(4506, 6150, 4593, 4755),
     ),
     6157 => array(
         'm_icon' => '<i class="fas fa-clipboard-check"></i>',
@@ -1536,7 +1524,7 @@ $config['en_all_4593'] = array(
     ),
     4246 => array(
         'm_icon' => '<i class="fal fa-bug"></i>',
-        'm_name' => 'Reported Bug',
+        'm_name' => 'Platform Bug Reports',
         'm_desc' => '',
         'm_parents' => array(5966, 4593),
     ),
@@ -1922,13 +1910,13 @@ $config['en_all_4593'] = array(
         'm_icon' => '<i class="far fa-badge-check"></i>',
         'm_name' => 'Action Plan Intention Accomplished',
         'm_desc' => 'Student accomplished their intention 🎉🎉🎉',
-        'm_parents' => array(5966, 4506, 6150, 4755, 4593),
+        'm_parents' => array(4506, 6150, 4755, 4593),
     ),
     6155 => array(
         'm_icon' => '<i class="far fa-stop-circle"></i>',
         'm_name' => 'Action Plan Intention Terminated',
         'm_desc' => 'Student prematurely removed an intention from their Action Plan without accomplishing it.',
-        'm_parents' => array(5966, 4506, 6150, 4593, 4755),
+        'm_parents' => array(4506, 6150, 4593, 4755),
     ),
     6157 => array(
         'm_icon' => '<i class="fas fa-clipboard-check"></i>',

@@ -172,7 +172,7 @@ class Actionplan_model extends CI_Model
                 'ln_child_entity_id' => $en['en_id'],
                 'ln_child_intent_id' => $in_id,
                 'ln_content' => 'actionplan_skip_initiate() did not locate the published intent',
-                'ln_type_entity_id' => 4246, //Platform Error
+                'ln_type_entity_id' => 4246, //Platform Bug Reports
                 'ln_miner_entity_id' => 1, //Shervin/Developer
             ));
             return false;
@@ -223,7 +223,7 @@ class Actionplan_model extends CI_Model
         if(count($ins) < 1){
             $this->Links_model->ln_create(array(
                 'ln_content' => 'actionplan_skip_recursive_down() failed to locate published intent',
-                'ln_type_entity_id' => 4246, //Platform Error
+                'ln_type_entity_id' => 4246, //Platform Bug Reports
                 'ln_miner_entity_id' => 1, //Shervin/Developer
                 'ln_parent_entity_id' => $en_id,
                 'ln_parent_intent_id' => $in_id,
@@ -237,7 +237,7 @@ class Actionplan_model extends CI_Model
         if(!isset($in_metadata['in__metadata_common_steps'])){
             $this->Links_model->ln_create(array(
                 'ln_content' => 'actionplan_skip_recursive_down() failed to locate metadata common steps',
-                'ln_type_entity_id' => 4246, //Platform Error
+                'ln_type_entity_id' => 4246, //Platform Bug Reports
                 'ln_miner_entity_id' => 1, //Shervin/Developer
                 'ln_parent_entity_id' => $en_id,
                 'ln_parent_intent_id' => $in_id,
@@ -500,7 +500,7 @@ class Actionplan_model extends CI_Model
         if (count($ins) < 1) {
 
             $this->Links_model->ln_create(array(
-                'ln_type_entity_id' => 4246, //Platform Error
+                'ln_type_entity_id' => 4246, //Platform Bug Reports
                 'ln_miner_entity_id' => 1, //Shervin/Developer
                 'ln_content' => 'actionplan_advance_step() called invalid intent',
                 'ln_child_entity_id' => $recipient_en['en_id'],
@@ -515,7 +515,7 @@ class Actionplan_model extends CI_Model
         } elseif ($ins[0]['in_status'] != 2) {
 
             $this->Links_model->ln_create(array(
-                'ln_type_entity_id' => 4246, //Platform Error
+                'ln_type_entity_id' => 4246, //Platform Bug Reports
                 'ln_miner_entity_id' => 1, //Shervin/Developer
                 'ln_content' => 'actionplan_advance_step() called unpublished intent',
                 'ln_child_entity_id' => $recipient_en['en_id'],
@@ -702,11 +702,8 @@ class Actionplan_model extends CI_Model
 
             //Give option to complete:
             if($fb_messenger_format){
-                array_push($next_step_quick_replies, array(
-                    'content_type' => 'text',
-                    'title' => 'OK',
-                    'payload' => 'INFORMREQUIREMENT_' . $ins[0]['in_id'],
-                ));
+                //We'll be waiting for their submission, so no skipping here:
+                $student_can_skip = false;
             }
 
         } elseif($has_children && $ins[0]['in_type']==1 /* OR Children */){
@@ -749,7 +746,7 @@ class Actionplan_model extends CI_Model
                     $this->Links_model->ln_create(array(
                         'ln_miner_entity_id' => 1, //Shervin/Developer
                         'ln_content' => 'actionplan_advance_step() encountered intent with too many children to be listed as OR Intent options! Trim and iterate that intent tree.',
-                        'ln_type_entity_id' => 4246, //Platform Error
+                        'ln_type_entity_id' => 4246, //Platform Bug Reports
                         'ln_parent_intent_id' => $ins[0]['in_id'],
                         'ln_child_intent_id' => $child_in['in_id'],
                         'ln_child_entity_id' => $recipient_en['en_id'],
@@ -1130,7 +1127,7 @@ class Actionplan_model extends CI_Model
             //Should not happen, log error:
             $this->Links_model->ln_create(array(
                 'ln_content' => 'actionplan_completion_rate() Detected student Action Plan without in__metadata_common_steps value!',
-                'ln_type_entity_id' => 4246, //Platform Error
+                'ln_type_entity_id' => 4246, //Platform Bug Reports
                 'ln_miner_entity_id' => 1, //Shervin/Developer
                 'ln_parent_entity_id' => $miner_en_id,
                 'ln_parent_intent_id' => $in['in_id'],
@@ -1256,7 +1253,7 @@ class Actionplan_model extends CI_Model
                     if(!isset($trigger_results['status']) || intval($trigger_results['status'])!=1){
                         //It seemed that the trigger did not work properly, log an error for the admin:
                         $this->Links_model->ln_create(array_merge($filter , array(
-                            'ln_type_entity_id' => 4246, //Platform Error
+                            'ln_type_entity_id' => 4246, //Platform Bug Reports
                             'ln_miner_entity_id' => 1, //Shervin/Developer
                             'ln_child_entity_id' => $en_id,
                             'ln_content' => 'deprecate__actionplan_trigger_webhooks() failed when calling webhook URL ['.$webhook_url['ln_content'].']',

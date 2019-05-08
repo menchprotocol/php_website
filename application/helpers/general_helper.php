@@ -47,7 +47,7 @@ function detect_missing_columns($insert_columns, $required_columns)
                     'insert_columns' => $insert_columns,
                     'required_columns' => $required_columns,
                 ),
-                'ln_type_entity_id' => 4246, //Platform Error
+                'ln_type_entity_id' => 4246, //Platform Bug Reports
                 'ln_miner_entity_id' => 1, //Shervin/Developer
             ));
 
@@ -481,7 +481,7 @@ function upload_to_cdn($file_url, $ln_metadata = null, $is_local = false)
         } else {
 
             $CI->Links_model->ln_create(array(
-                'ln_type_entity_id' => 4246, //Platform Error
+                'ln_type_entity_id' => 4246, //Platform Bug Reports
                 'ln_miner_entity_id' => 1, //Shervin/Developer
                 'ln_content' => 'upload_to_cdn() Unable to upload file [' . $file_url . '] to Mench cloud.',
                 'ln_metadata' => $ln_metadata,

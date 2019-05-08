@@ -205,7 +205,7 @@ function echo_in_outcome($in_outcome, $fb_messenger_format = false, $reference_a
             //Report error:
             $CI->Links_model->ln_create(array(
                 'ln_content' => 'echo_in_outcome() found intent outcome ['.$in_outcome.'] that has colon but not a valid intent reference',
-                'ln_type_entity_id' => 4246, //Platform Error
+                'ln_type_entity_id' => 4246, //Platform Bug Reports
                 'ln_miner_entity_id' => 1, //Shervin/Developer
             ));
         } else {
@@ -713,7 +713,7 @@ function echo_random_message($message_key){
         $CI =& get_instance();
         $CI->Links_model->ln_create(array(
             'ln_content' => 'echo_random_message() failed to locate message type ['.$message_key.']',
-            'ln_type_entity_id' => 4246, //Platform Error
+            'ln_type_entity_id' => 4246, //Platform Bug Reports
             'ln_miner_entity_id' => 1, //Shervin/Developer
         ));
         return false;

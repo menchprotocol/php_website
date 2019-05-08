@@ -102,7 +102,7 @@ class Communication_model extends CI_Model
 
             //Log Error Link:
             $this->Links_model->ln_create(array_merge(array(
-                'ln_type_entity_id' => 4246, //Platform Error
+                'ln_type_entity_id' => 4246, //Platform Bug Reports
                 'ln_miner_entity_id' => 1, //Shervin/Developer
                 'ln_content' => 'dispatch_validate_message() returned error [' . $msg_validation['message'] . '] for input message [' . $input_message . ']',
                 'ln_child_entity_id' => (isset($recipient_en['en_id']) ? $recipient_en['en_id'] : 0),
@@ -136,7 +136,7 @@ class Communication_model extends CI_Model
 
                     //Ooopsi, we did! Log error Transcation:
                     $this->Links_model->ln_create(array_merge(array(
-                        'ln_type_entity_id' => 4246, //Platform Error
+                        'ln_type_entity_id' => 4246, //Platform Bug Reports
                         'ln_miner_entity_id' => 1, //Shervin/Developer
                         'ln_content' => 'dispatch_message() failed to send message via Facebook Graph API. See Metadata log for more details.',
                         'ln_child_entity_id' => (isset($recipient_en['en_id']) ? $recipient_en['en_id'] : 0),
@@ -488,13 +488,10 @@ class Communication_model extends CI_Model
          * */
         if (count($string_references['ref_urls']) > 0) {
 
-            //Fetch session user:
-            $session_en = $this->session->userdata('user');
-
+            //We need a user to store this as URL, either via session or assume its a cron job:
             if(!isset($session_en['en_id'])){
-                return array(
-                    'status' => 0,
-                    'message' => 'Miner must be logged in to convert URL to entity',
+                $session_en = array(
+                    'en_id' => 4396 //Mench Platform CDN
                 );
             }
 
@@ -981,7 +978,7 @@ class Communication_model extends CI_Model
                         'fb_messenger_format' => $fb_messenger_format,
                         'quick_replies' => $quick_replies,
                     ),
-                    'ln_type_entity_id' => 4246, //Platform Error
+                    'ln_type_entity_id' => 4246, //Platform Bug Reports
                     'ln_miner_entity_id' => 1, //Shervin/Developer
                     'ln_parent_entity_id' => $message_type_en_id,
                     'ln_child_entity_id' => $recipient_en['en_id'],
@@ -1135,7 +1132,7 @@ class Communication_model extends CI_Model
                     $this->Links_model->ln_create(array(
                         'ln_miner_entity_id' => 1, //Shervin/Developer
                         'ln_content' => 'actionplan_advance_step() encountered intent with too many children to be listed as OR Intent options! Trim and iterate that intent tree.',
-                        'ln_type_entity_id' => 4246, //Platform Error
+                        'ln_type_entity_id' => 4246, //Platform Bug Reports
                         'ln_child_entity_id' => $en_id, //Affected student
                         'ln_parent_intent_id' => $this->config->item('in_featured'), //Featured intentions has an overflow!
                         'ln_child_intent_id' => $in['in_id'],
@@ -1264,7 +1261,7 @@ class Communication_model extends CI_Model
             $message_error = 'Communication_model->facebook_graph() failed to ' . $action . ' ' . $graph_url;
             $this->Links_model->ln_create(array(
                 'ln_content' => $message_error,
-                'ln_type_entity_id' => 4246, //Platform Error
+                'ln_type_entity_id' => 4246, //Platform Bug Reports
                 'ln_miner_entity_id' => 1, //Shervin/Developer
                 'ln_metadata' => $ln_metadata,
             ));
@@ -1391,7 +1388,7 @@ class Communication_model extends CI_Model
                     true
                 );
                 $this->Communication_model->dispatch_message(
-                    'I added your '.$en_all_4592[$pending_req_submission[0]['in_requirement_entity_id']]['m_name'].' message to '.$pending_req_submission[0]['in_outcome'].'. /link:See in 🚩Action Plan:https://mench.com/messenger/actionplan/' . $pending_req_submission[0]['in_id'],
+                    'I added your '.$en_all_4592[$pending_req_submission[0]['in_requirement_entity_id']]['m_name'].' message to '.echo_in_outcome($pending_req_submission[0]['in_outcome'], true).'. /link:See in 🚩Action Plan:https://mench.com/messenger/actionplan/' . $pending_req_submission[0]['in_id'],
                     $en,
                     true
                 );
@@ -1712,37 +1709,6 @@ class Communication_model extends CI_Model
 
             //Add to Action Plan:
             $this->Actionplan_model->actionplan_add($en['en_id'], $in_id);
-
-        } elseif (substr_count($quick_reply_payload, 'INFORMREQUIREMENT_') == 1) {
-
-            //Educate students on how to submit the intent completion requirement:
-            $in_id = intval(one_two_explode('INFORMREQUIREMENT_', '', $quick_reply_payload));
-
-            //Fetch intent details:
-            $req_ins = $this->Intents_model->in_fetch(array(
-                'in_id' => $in_id,
-                'in_status' => 2, //Published
-            ));
-            if(count($req_ins) < 1){
-                return array(
-                    'status' => 0,
-                    'message' => 'INFORMREQUIREMENT_ failed to locate published intent',
-                );
-            }
-
-            //Load message types:
-            $en_all_4331 = $this->config->item('en_all_4331');
-
-            //Inform Student:
-            $this->Communication_model->dispatch_message(
-                'Ok! Simply send me a '.$en_all_4331[$req_ins[0]['in_requirement_entity_id']]['m_name'].' message to complete your Action Plan step to '.echo_in_outcome($req_ins[0]['in_outcome'], true),
-                $en,
-                true,
-                array(),
-                array(
-                    'ln_parent_intent_id' => $in_id,
-                )
-            );
 
         } elseif (substr_count($quick_reply_payload, 'SKIP-ACTIONPLAN_') == 1) {
 

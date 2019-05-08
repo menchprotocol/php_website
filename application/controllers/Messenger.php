@@ -253,7 +253,7 @@ class Messenger extends CI_Controller
             $this->Links_model->ln_create(array(
                 'ln_content' => 'facebook_webhook() Function call object value is not equal to [page], which is what was expected.',
                 'ln_metadata' => $ln_metadata,
-                'ln_type_entity_id' => 4246, //Platform Error
+                'ln_type_entity_id' => 4246, //Platform Bug Reports
                 'ln_miner_entity_id' => 1, //Shervin/Developer
             ));
             return print_r('complete');
@@ -271,7 +271,7 @@ class Messenger extends CI_Controller
                 $this->Links_model->ln_create(array(
                     'ln_content' => 'facebook_webhook() call missing messaging Array().',
                     'ln_metadata' => $ln_metadata,
-                    'ln_type_entity_id' => 4246, //Platform Error
+                    'ln_type_entity_id' => 4246, //Platform Bug Reports
                     'ln_miner_entity_id' => 1, //Shervin/Developer
                 ));
                 continue;
@@ -396,7 +396,7 @@ class Messenger extends CI_Controller
                             $this->Links_model->ln_create(array(
                                 'ln_content' => 'digest_quick_reply() for message returned error ['.$quick_reply_results['message'].']',
                                 'ln_metadata' => $ln_metadata,
-                                'ln_type_entity_id' => 4246, //Platform Error
+                                'ln_type_entity_id' => 4246, //Platform Bug Reports
                                 'ln_miner_entity_id' => 1, //Shervin/Developer
                                 'ln_child_entity_id' => $en['en_id'],
                             ));
@@ -538,7 +538,7 @@ class Messenger extends CI_Controller
 
                         //Ooooopsi, this seems to be an unknown message type:
                         $this->Links_model->ln_create(array(
-                            'ln_type_entity_id' => 4246, //Platform Error
+                            'ln_type_entity_id' => 4246, //Platform Bug Reports
                             'ln_miner_entity_id' => 1, //Shervin/Developer
                             'ln_content' => 'facebook_webhook() Received unknown message type! Analyze metadata for more details',
                             'ln_metadata' => $ln_metadata,
@@ -716,7 +716,7 @@ class Messenger extends CI_Controller
                             $this->Links_model->ln_create(array(
                                 'ln_content' => 'digest_quick_reply() for postback/referral returned error ['.$quick_reply_results['message'].']',
                                 'ln_metadata' => $ln_metadata,
-                                'ln_type_entity_id' => 4246, //Platform Error
+                                'ln_type_entity_id' => 4246, //Platform Bug Reports
                                 'ln_miner_entity_id' => 1, //Shervin/Developer
                                 'ln_child_entity_id' => $en['en_id'],
                             ));
@@ -777,7 +777,7 @@ class Messenger extends CI_Controller
                     $this->Links_model->ln_create(array(
                         'ln_content' => 'facebook_webhook() received unrecognized webhook call',
                         'ln_metadata' => $ln_metadata,
-                        'ln_type_entity_id' => 4246, //Platform Error
+                        'ln_type_entity_id' => 4246, //Platform Bug Reports
                         'ln_miner_entity_id' => 1, //Shervin/Developer
                     ));
 
@@ -2110,7 +2110,7 @@ class Messenger extends CI_Controller
 
                 //Log error:
                 $this->Links_model->ln_create(array(
-                    'ln_type_entity_id' => 4246, //Platform Error
+                    'ln_type_entity_id' => 4246, //Platform Bug Reports
                     'ln_miner_entity_id' => 1, //Shervin/Developer
                     'ln_parent_link_id' => $ln['ln_id'],
                     'ln_content' => 'cron__sync_attachments() Failed to sync attachment to Facebook API: ' . (isset($result['ln_metadata']['result']['error']['message']) ? $result['ln_metadata']['result']['error']['message'] : 'Unknown Error'),
@@ -2191,7 +2191,7 @@ class Messenger extends CI_Controller
 
                 //Log error:
                 $this->Links_model->ln_create(array(
-                    'ln_type_entity_id' => 4246, //Platform Error
+                    'ln_type_entity_id' => 4246, //Platform Bug Reports
                     'ln_miner_entity_id' => 1, //Shervin/Developer
                     'ln_parent_link_id' => $ln['ln_id'],
                     'ln_content' => 'cron__save_chat_media() Failed to save media from Messenger',
@@ -2252,7 +2252,7 @@ class Messenger extends CI_Controller
                 //Ooopsi, there was an error:
                 $this->Links_model->ln_create(array(
                     'ln_content' => 'cron__save_profile_photo() failed to store file in CDN',
-                    'ln_type_entity_id' => 4246, //Platform Error
+                    'ln_type_entity_id' => 4246, //Platform Bug Reports
                     'ln_miner_entity_id' => 1, //Shervin/Developer
                     'ln_parent_link_id' => $ln['ln_id'],
                 ));

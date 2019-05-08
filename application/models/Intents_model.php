@@ -82,7 +82,7 @@ class Intents_model extends CI_Model
             $this->Links_model->ln_create(array(
                 'ln_parent_entity_id' => $ln_miner_entity_id,
                 'ln_content' => 'in_create() failed to create a new intent',
-                'ln_type_entity_id' => 4246, //Platform Error
+                'ln_type_entity_id' => 4246, //Platform Bug Reports
                 'ln_miner_entity_id' => 1, //Shervin/Developer
                 'ln_metadata' => $insert_columns,
             ));
@@ -235,7 +235,7 @@ class Intents_model extends CI_Model
             //This should not happen:
             $this->Links_model->ln_create(array(
                 'ln_child_intent_id' => $id,
-                'ln_type_entity_id' => 4246, //Platform Error
+                'ln_type_entity_id' => 4246, //Platform Bug Reports
                 'ln_miner_entity_id' => 1, //Shervin/Developer
                 'ln_content' => 'in_update() Failed to update',
                 'ln_metadata' => array(
@@ -495,7 +495,7 @@ class Intents_model extends CI_Model
         $en_all_4331 = $this->config->item('en_all_4331'); //Intent Completion Requirements
 
         //Return Student-friendly message for completion requirements:
-        return 'Send me a ' . strtolower($en_all_4331[$in['in_requirement_entity_id']]['m_name']).' message'.( !$fb_messenger_format ? ' via Messenger' : '' ).' to complete this step.';
+        return 'Ok, simply send me a ' . strtolower($en_all_4331[$in['in_requirement_entity_id']]['m_name']).' message'.( !$fb_messenger_format ? ' via Messenger' : '' ).' to complete this step.';
 
     }
 

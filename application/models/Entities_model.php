@@ -81,7 +81,7 @@ class Entities_model extends CI_Model
             $this->Links_model->ln_create(array(
                 'ln_parent_entity_id' => $ln_miner_entity_id,
                 'ln_content' => 'en_create() failed to create a new entity',
-                'ln_type_entity_id' => 4246, //Platform Error
+                'ln_type_entity_id' => 4246, //Platform Bug Reports
                 'ln_miner_entity_id' => 1, //Shervin/Developer
                 'ln_metadata' => $insert_columns,
             ));
@@ -232,7 +232,7 @@ class Entities_model extends CI_Model
             //This should not happen:
             $this->Links_model->ln_create(array(
                 'ln_child_entity_id' => $id,
-                'ln_type_entity_id' => 4246, //Platform Error
+                'ln_type_entity_id' => 4246, //Platform Bug Reports
                 'ln_miner_entity_id' => 1, //Shervin/Developer
                 'ln_content' => 'en_update() Failed to update',
                 'ln_metadata' => array(
@@ -734,7 +734,7 @@ class Entities_model extends CI_Model
             //Ooooopsi, this value did not exist! Notify the admin so we can look into this:
             $this->Links_model->ln_create(array(
                 'ln_content' => 'en_search_match() found [' . count($matching_entities) . '] results as the children of en_id=[' . $en_parent_id . '] that had the value of [' . $value . '].',
-                'ln_type_entity_id' => 4246, //Platform Error
+                'ln_type_entity_id' => 4246, //Platform Bug Reports
                 'ln_miner_entity_id' => 1, //Shervin/Developer
                 'ln_child_entity_id' => $en_parent_id,
             ));
@@ -961,7 +961,7 @@ class Entities_model extends CI_Model
             //Ooops, this should never happen:
             $this->Links_model->ln_create(array(
                 'ln_content' => 'en_authenticate_psid() got called without a valid Facebook $psid variable',
-                'ln_type_entity_id' => 4246, //Platform Error
+                'ln_type_entity_id' => 4246, //Platform Bug Reports
                 'ln_miner_entity_id' => 1, //Shervin/Developer
             ));
             return false;
@@ -1046,7 +1046,7 @@ class Entities_model extends CI_Model
             //Ooops, this should never happen:
             $this->Links_model->ln_create(array(
                 'ln_content' => 'en_messenger_add() got called without a valid Facebook $psid variable',
-                'ln_type_entity_id' => 4246, //Platform Error
+                'ln_type_entity_id' => 4246, //Platform Bug Reports
                 'ln_miner_entity_id' => 1, //Shervin/Developer
             ));
             return false;
