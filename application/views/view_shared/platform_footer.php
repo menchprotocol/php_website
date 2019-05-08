@@ -10,6 +10,7 @@ if (!isset($_GET['skip_header'])) {
 }
 ?>
 
+<div class="app-version hide-mini <?= echo_advance() ?>">v<?= $this->config->item('app_version') ?></div>
 
 </body>
 </html>
