@@ -838,108 +838,108 @@ class Actionplan_model extends CI_Model
 
         } elseif($has_children && $ins[0]['in_type']==0 /* AND Children */){
 
+            //Do we have 2 or more children?
+            $has_multiple_children = (count($in__children) > 1);
+
             //Give more context for Messenger only:
-            if($fb_messenger_format){
-                if(count($in__children) == 1){
-                    //A single next step:
-                    $next_step_message .= 'There is a single step to ' . echo_in_outcome($ins[0]['in_outcome'], true, true);
-                } else {
-                    //Multiple next steps:
-                    $next_step_message .= 'There are ' . count($in__children) . ' steps to ' . echo_in_outcome($ins[0]['in_outcome'], true, true);
-                }
+            if($fb_messenger_format && $has_multiple_children){
+                //Multiple next steps:
+                $next_step_message .= 'There are ' . count($in__children) . ' steps to ' . echo_in_outcome($ins[0]['in_outcome'], true, true);
             }
+
 
             //List AND children:
-            $key = 0;
-            foreach ($in__children as $child_in) {
+            if($has_multiple_children){
+                $key = 0;
+                foreach ($in__children as $child_in) {
 
-                //We require a clean title for Messenger:
-                if($fb_messenger_format && !is_clean_outcome($child_in)){
-                    continue;
-                }
-
-                if($key==0){
-                    if($fb_messenger_format){
-                        $next_step_message .= ':';
-                    } else {
-                        $next_step_message .= '<div class="list-group" style="margin-top:10px;">';
+                    //We require a clean title for Messenger:
+                    if($fb_messenger_format && !is_clean_outcome($child_in)){
+                        continue;
                     }
-                }
 
-                //We know that the $next_step_message length cannot surpass the limit defined by fb_max_message variable!
-                //make sure message is within range:
-                if ($fb_messenger_format && ($key >= 7 || strlen($next_step_message) > ($this->config->item('fb_max_message') - 150))) {
-                    //We cannot add any more, indicate truncating:
-                    $remainder = count($in__children) - $key;
-                    $next_step_message .= "\n\n" . '... plus ' . $remainder . ' more step' . echo__s($remainder) . '.';
-                    break;
-                }
-
-
-                //Fetch progression data:
-                $child_progression_steps = $this->Links_model->ln_fetch(array(
-                    'ln_type_entity_id IN (' . join(',', $this->config->item('en_ids_6146')) . ')' => null, //Action Plan Progression Link Types
-                    'ln_miner_entity_id' => $recipient_en['en_id'],
-                    'ln_parent_intent_id' => $child_in['in_id'],
-                    'ln_status >=' => 0,
-                ));
-
-
-                if(!$fb_messenger_format){
-
-                    //Completion Percentage so far:
-                    $completion_rate = $this->Actionplan_model->actionplan_completion_rate($child_in, $recipient_en['en_id']);
-
-                    //Open list:
-                    $next_step_message .= '<a href="/messenger/actionplan/'.$child_in['in_id']. '" class="list-group-item">';
-
-                    //Simple right icon
-                    $next_step_message .= '<span class="pull-right" style="margin-top: -6px;">';
-                    $next_step_message .= '<span class="badge badge-primary"  data-toggle="tooltip" data-placement="top" title="'.$completion_rate['steps_completed'].'/'.$completion_rate['steps_total'].' Steps Completed" style="text-decoration:none;"><span style="font-size:0.7em;">'.$completion_rate['completion_percentage'].'%</span> <i class="fas fa-angle-right"></i>&nbsp;</span>';
-                    $next_step_message .= '</span>';
-
-                    //Determine what icon to show:
-                    if(count($child_progression_steps) > 0){
-                        //We do have a progression link...
-                        if($child_progression_steps[0]['ln_status']==2){
-                            //Status is complete, show the progression type icon:
-                            $en_all_6146 = $this->config->item('en_all_6146');
-                            $next_step_message .= $en_all_6146[$child_progression_steps[0]['ln_type_entity_id']]['m_icon'];
+                    if($key==0){
+                        if($fb_messenger_format){
+                            $next_step_message .= ':';
                         } else {
-                            //Status is not yet complete, so show the status icon:
-                            $next_step_message .= echo_fixed_fields('ln_student_status', $child_progression_steps[0]['ln_status'], true, null);
+                            $next_step_message .= '<div class="list-group" style="margin-top:10px;">';
                         }
-                    } else {
-                        //No progression, so show a new icon:
-                        $next_step_message .= echo_fixed_fields('ln_student_status', 0, true, null);
                     }
 
-                    $next_step_message .= '&nbsp;';
+                    //We know that the $next_step_message length cannot surpass the limit defined by fb_max_message variable!
+                    //make sure message is within range:
+                    if ($fb_messenger_format && ($key >= 7 || strlen($next_step_message) > ($this->config->item('fb_max_message') - 150))) {
+                        //We cannot add any more, indicate truncating:
+                        $remainder = count($in__children) - $key;
+                        $next_step_message .= "\n\n" . '... plus ' . $remainder . ' more step' . echo__s($remainder) . '.';
+                        break;
+                    }
 
-                } else {
 
-                    //Add message:
-                    $next_step_message .= "\n\n" . ($key + 1) . '. ';
+                    //Fetch progression data:
+                    $child_progression_steps = $this->Links_model->ln_fetch(array(
+                        'ln_type_entity_id IN (' . join(',', $this->config->item('en_ids_6146')) . ')' => null, //Action Plan Progression Link Types
+                        'ln_miner_entity_id' => $recipient_en['en_id'],
+                        'ln_parent_intent_id' => $child_in['in_id'],
+                        'ln_status >=' => 0,
+                    ));
 
+
+                    if(!$fb_messenger_format){
+
+                        //Completion Percentage so far:
+                        $completion_rate = $this->Actionplan_model->actionplan_completion_rate($child_in, $recipient_en['en_id']);
+
+                        //Open list:
+                        $next_step_message .= '<a href="/messenger/actionplan/'.$child_in['in_id']. '" class="list-group-item">';
+
+                        //Simple right icon
+                        $next_step_message .= '<span class="pull-right" style="margin-top: -6px;">';
+                        $next_step_message .= '<span class="badge badge-primary"  data-toggle="tooltip" data-placement="top" title="'.$completion_rate['steps_completed'].'/'.$completion_rate['steps_total'].' Steps Completed" style="text-decoration:none;"><span style="font-size:0.7em;">'.$completion_rate['completion_percentage'].'%</span> <i class="fas fa-angle-right"></i>&nbsp;</span>';
+                        $next_step_message .= '</span>';
+
+                        //Determine what icon to show:
+                        if(count($child_progression_steps) > 0){
+                            //We do have a progression link...
+                            if($child_progression_steps[0]['ln_status']==2){
+                                //Status is complete, show the progression type icon:
+                                $en_all_6146 = $this->config->item('en_all_6146');
+                                $next_step_message .= $en_all_6146[$child_progression_steps[0]['ln_type_entity_id']]['m_icon'];
+                            } else {
+                                //Status is not yet complete, so show the status icon:
+                                $next_step_message .= echo_fixed_fields('ln_student_status', $child_progression_steps[0]['ln_status'], true, null);
+                            }
+                        } else {
+                            //No progression, so show a new icon:
+                            $next_step_message .= echo_fixed_fields('ln_student_status', 0, true, null);
+                        }
+
+                        $next_step_message .= '&nbsp;';
+
+                    } else {
+
+                        //Add message:
+                        $next_step_message .= "\n\n" . ($key + 1) . '. ';
+
+                    }
+
+
+                    $next_step_message .= echo_in_outcome($child_in['in_outcome'], true);
+
+                    if(!$fb_messenger_format){
+
+                        $next_step_message .= '</a>';
+
+                    }
+
+                    $key++;
                 }
 
-
-                $next_step_message .= echo_in_outcome($child_in['in_outcome'], true);
-
-                if(!$fb_messenger_format){
-
-                    $next_step_message .= '</a>';
-
+                if(!$fb_messenger_format && $key > 0){
+                    //Close the HTML tag we opened:
+                    $next_step_message .= '</div>';
                 }
-
-                $key++;
             }
-
-            if(!$fb_messenger_format && $key > 0){
-                //Close the HTML tag we opened:
-                $next_step_message .= '</div>';
-            }
-
         }
 
 

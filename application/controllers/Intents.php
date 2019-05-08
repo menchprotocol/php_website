@@ -11,13 +11,6 @@ class Intents extends CI_Controller
         $this->output->enable_profiler(FALSE);
     }
 
-    function test($in_id){
-        $all = $this->Intents_model->in_fetch_recursive_parents($in_id, 0);
-        echo_json(array(
-            'flatter' => array_flatten($all),
-            'all' => $all,
-        ));
-    }
 
     //Loaded as default function of the default controller:
     function index()
