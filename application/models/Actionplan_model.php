@@ -593,7 +593,6 @@ class Actionplan_model extends CI_Model
          *
          * */
 
-
         //Basic input validation:
         if ($in_id < 1) {
 
@@ -788,11 +787,11 @@ class Actionplan_model extends CI_Model
 
 
         //Let's analyse the progress made so far to better understand how to deal with this step:
-        $student_can_skip = true; //Assume TRUE unless proven otherwise...
-        foreach($current_progression_links as $current_progression_link){
-            if($student_can_skip && !$has_children && $current_progression_link['ln_status']==2){
+        $student_can_skip = ( $is_two_step || $has_children ); //Assume TRUE unless proven otherwise...
+        if($student_can_skip){
+            foreach($current_progression_links as $current_progression_link){
                 //Also make sure this was NOT an automated progression because there is no point in skipping those:
-                if(!in_array($current_progression_link['ln_type_entity_id'], $this->config->item('en_ids_6274'))){
+                if(!$has_children && $current_progression_link['ln_status']==2 && !in_array($current_progression_link['ln_type_entity_id'], $this->config->item('en_ids_6274'))){
                     $student_can_skip = false;
                     break;
                 }

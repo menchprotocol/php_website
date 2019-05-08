@@ -30,7 +30,7 @@ $url_part_1 = $this->uri->segment(1);
     <div class="container">
         <!-- Brand and toggle get grouped for better mobile display -->
         <div class="navbar-header">
-            <a class="navbar-brand" href="/"><img src="/img/bp_128.png"/><span
+            <a class="navbar-brand" href="/"><img src="/img/bp_128.png" /><span
                         style="text-transform: lowercase; color: #2f2739;">Mench</span></a>
         </div>
 

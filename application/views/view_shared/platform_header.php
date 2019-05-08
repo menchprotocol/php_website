@@ -19,7 +19,7 @@ $uri_segment_2 = $this->uri->segment(2);
 
     -->
     <meta charset="utf-8"/>
-    <link rel="icon" type="image/png" href="/img/bp_16.png">
+    <link rel="icon" type="image/png" href="/img/bp_white.png">
     <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1"/>
     <meta content='width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=0' name='viewport'/>
     <meta name="viewport" content="width=device-width"/>
