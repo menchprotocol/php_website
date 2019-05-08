@@ -1887,19 +1887,22 @@ class Communication_model extends CI_Model
             }
 
 
-            //See if we also need to mark the child as complete:
+            //See if we also need to mark the answer as complete:
             $this->Actionplan_model->actionplan_complete_if_empty($en['en_id'], $answer_ins[0]);
 
+            if(0){
+                //Affirm answer received answer:
+                $this->Communication_model->dispatch_message(
+                    echo_random_message('affirm_progress'),
+                    $en,
+                    true
+                );
 
-            //Affirm answer received answer:
-            $this->Communication_model->dispatch_message(
-                echo_random_message('affirm_progress'),
-                $en,
-                true
-            );
+                //Find/Advance to the next step:
+                $this->Actionplan_model->actionplan_find_next_step(['en_id'], true, true);
+            }
 
-            //Find/communicate the next step:
-            $this->Actionplan_model->actionplan_find_next_step($en['en_id'], true, true);
+
 
         } else {
 

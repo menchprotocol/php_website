@@ -410,7 +410,7 @@ class Actionplan_model extends CI_Model
          *
          * A function that marks an intent as complete IF
          * the intent has nothing of substance to be
-         * further communicated.
+         * further communicated/done by the student.
          *
          * */
 
@@ -437,12 +437,13 @@ class Actionplan_model extends CI_Model
             return false;
         }
 
+
         if(count($this->Links_model->ln_fetch(array(
             'ln_status' => 2, //Published
-            'ln_type_entity_id' => 4231, //Intent Note Messages
+            'ln_type_entity_id IN (' . join(',', $this->config->item('en_ids_6345')) . ')' => null, //Deliverable Intent Notes
             'ln_child_intent_id' => $in['in_id'],
         ))) > 0){
-            //Has messages:
+            //Has deliverable messages:
             return false;
         }
 

@@ -5,13 +5,36 @@ defined('BASEPATH') OR exit('No direct script access allowed');
  * Keep a cache of certain parts of the Intent tree for faster processing
  * So we don't have to make DB calls to figure them out every time!
  * See here for all entities cached: https://mench.com/entities/4527
- * use-case format: $this->config->item('en_all_2738')
+ * use-case format: $this->config->item('en_ids_6345')
  *
  * ATTENTION: Also search for "en_ids_" and "en_all_" when trying to manage these throughout the code base
  *
  */
 
-//Generated 2019-05-07 16:25:44 PST
+//Generated 2019-05-07 17:37:41 PST
+
+//Deliverable Intent Notes:
+$config['en_ids_6345'] = array(4231, 4232, 6242);
+$config['en_all_6345'] = array(
+    4231 => array(
+        'm_icon' => '<i class="fal fa-comment"></i>',
+        'm_name' => 'Intent Note Message',
+        'm_desc' => '',
+        'm_parents' => array(6345, 4986, 4603, 4593, 4485, 4595),
+    ),
+    4232 => array(
+        'm_icon' => '<i class="fal fa-medal"></i>',
+        'm_name' => 'Intent Note Bonus Tip',
+        'm_desc' => '',
+        'm_parents' => array(6345, 5005, 4986, 4603, 4593, 4485, 4595),
+    ),
+    6242 => array(
+        'm_icon' => '<i class="far fa-check-square"></i>',
+        'm_name' => 'Intent Note On-Complete Tip',
+        'm_desc' => '',
+        'm_parents' => array(6345, 4603, 4595, 4593, 4986, 5005, 4485),
+    ),
+);
 
 //Mench:
 $config['en_ids_2738'] = array(4488, 6137, 6138, 6196, 6287);
@@ -135,13 +158,13 @@ $config['en_all_4986'] = array(
         'm_icon' => '<i class="fal fa-comment"></i>',
         'm_name' => 'Intent Note Message',
         'm_desc' => '',
-        'm_parents' => array(4986, 4603, 4593, 4485, 4595),
+        'm_parents' => array(6345, 4986, 4603, 4593, 4485, 4595),
     ),
     4232 => array(
         'm_icon' => '<i class="fal fa-medal"></i>',
         'm_name' => 'Intent Note Bonus Tip',
         'm_desc' => '',
-        'm_parents' => array(5005, 4986, 4603, 4593, 4485, 4595),
+        'm_parents' => array(6345, 5005, 4986, 4603, 4593, 4485, 4595),
     ),
     4983 => array(
         'm_icon' => '<i class="fal fa-thumbs-up"></i>',
@@ -159,7 +182,7 @@ $config['en_all_4986'] = array(
         'm_icon' => '<i class="far fa-check-square"></i>',
         'm_name' => 'Intent Note On-Complete Tip',
         'm_desc' => '',
-        'm_parents' => array(4603, 4595, 4593, 4986, 5005, 4485),
+        'm_parents' => array(6345, 4603, 4595, 4593, 4986, 5005, 4485),
     ),
 );
 
@@ -229,7 +252,7 @@ $config['en_all_6225'] = array(
 );
 
 //Mench Personal Assistant:
-$config['en_ids_6196'] = array(6200, 6203);
+$config['en_ids_6196'] = array(6200, 6203, 6221);
 $config['en_all_6196'] = array(
     6200 => array(
         'm_icon' => '<i class="fab fa-facebook-messenger"></i>',
@@ -242,6 +265,12 @@ $config['en_all_6196'] = array(
         'm_name' => 'Link Metadata Facebook Attachment ID',
         'm_desc' => 'File caching offered by Facebook for media delivered over Messenger.',
         'm_parents' => array(6232, 6196, 6215, 2793, 6103),
+    ),
+    6221 => array(
+        'm_icon' => '<i class="fas fa-comment-smile"></i>',
+        'm_name' => 'Communication Link Types',
+        'm_desc' => '',
+        'm_parents' => array(6196),
     ),
 );
 
@@ -748,7 +777,7 @@ $config['en_all_5005'] = array(
         'm_icon' => '<i class="fal fa-medal"></i>',
         'm_name' => 'Intent Note Bonus Tip',
         'm_desc' => '',
-        'm_parents' => array(5005, 4986, 4603, 4593, 4485, 4595),
+        'm_parents' => array(6345, 5005, 4986, 4603, 4593, 4485, 4595),
     ),
     4331 => array(
         'm_icon' => '<i class="fal fa-comment-check"></i>',
@@ -760,7 +789,7 @@ $config['en_all_5005'] = array(
         'm_icon' => '<i class="fal fa-list-alt"></i>',
         'm_name' => 'Entity Mass Updates',
         'm_desc' => '',
-        'm_parents' => array(6220, 4506, 4426, 5005, 4527),
+        'm_parents' => array(4506, 4426, 5005, 4527),
     ),
     6093 => array(
         'm_icon' => '<i class="fal fa-megaphone"></i>',
@@ -772,7 +801,7 @@ $config['en_all_5005'] = array(
         'm_icon' => '<i class="far fa-check-square"></i>',
         'm_name' => 'Intent Note On-Complete Tip',
         'm_desc' => '',
-        'm_parents' => array(4603, 4595, 4593, 4986, 5005, 4485),
+        'm_parents' => array(6345, 4603, 4595, 4593, 4986, 5005, 4485),
     ),
 );
 
@@ -1057,7 +1086,7 @@ $config['en_all_4426'] = array(
         'm_icon' => '<i class="fal fa-list-alt"></i>',
         'm_name' => 'Entity Mass Updates',
         'm_desc' => '',
-        'm_parents' => array(6220, 4506, 4426, 5005, 4527),
+        'm_parents' => array(4506, 4426, 5005, 4527),
     ),
     5969 => array(
         'm_icon' => '<i class="fas fa-lock"></i>',
@@ -1325,13 +1354,13 @@ $config['en_all_4595'] = array(
         'm_icon' => '<i class="fal fa-comment"></i>',
         'm_name' => 'Intent Note Message',
         'm_desc' => '100',
-        'm_parents' => array(4986, 4603, 4593, 4485, 4595),
+        'm_parents' => array(6345, 4986, 4603, 4593, 4485, 4595),
     ),
     4232 => array(
         'm_icon' => '<i class="fal fa-medal"></i>',
         'm_name' => 'Intent Note Bonus Tip',
         'm_desc' => '100',
-        'm_parents' => array(5005, 4986, 4603, 4593, 4485, 4595),
+        'm_parents' => array(6345, 5005, 4986, 4603, 4593, 4485, 4595),
     ),
     4242 => array(
         'm_icon' => '<i class="fal fa-sync"></i>',
@@ -1439,7 +1468,7 @@ $config['en_all_4595'] = array(
         'm_icon' => '<i class="far fa-check-square"></i>',
         'm_name' => 'Intent Note On-Complete Tip',
         'm_desc' => '100',
-        'm_parents' => array(4603, 4595, 4593, 4986, 5005, 4485),
+        'm_parents' => array(6345, 4603, 4595, 4593, 4986, 5005, 4485),
     ),
 );
 
@@ -1485,13 +1514,13 @@ $config['en_all_4593'] = array(
         'm_icon' => '<i class="fal fa-comment"></i>',
         'm_name' => 'Intent Note Message',
         'm_desc' => '',
-        'm_parents' => array(4986, 4603, 4593, 4485, 4595),
+        'm_parents' => array(6345, 4986, 4603, 4593, 4485, 4595),
     ),
     4232 => array(
         'm_icon' => '<i class="fal fa-medal"></i>',
         'm_name' => 'Intent Note Bonus Tip',
         'm_desc' => '',
-        'm_parents' => array(5005, 4986, 4603, 4593, 4485, 4595),
+        'm_parents' => array(6345, 5005, 4986, 4603, 4593, 4485, 4595),
     ),
     4235 => array(
         'm_icon' => '<i class="fas fa-bullseye-arrow"></i>',
@@ -1929,7 +1958,7 @@ $config['en_all_4593'] = array(
         'm_icon' => '<i class="far fa-check-square"></i>',
         'm_name' => 'Intent Note On-Complete Tip',
         'm_desc' => '',
-        'm_parents' => array(4603, 4595, 4593, 4986, 5005, 4485),
+        'm_parents' => array(6345, 4603, 4595, 4593, 4986, 5005, 4485),
     ),
     6278 => array(
         'm_icon' => '<i class="far fa-tachometer-alt"></i>',
@@ -2110,7 +2139,7 @@ $config['en_all_4485'] = array(
         'm_icon' => '<i class="fal fa-comment"></i>',
         'm_name' => 'Message',
         'm_desc' => 'Delivered in-order when student initially starts this intent. Goal is to give key insights that streamline the execution of the intention.',
-        'm_parents' => array(4986, 4603, 4593, 4485, 4595),
+        'm_parents' => array(6345, 4986, 4603, 4593, 4485, 4595),
     ),
     4983 => array(
         'm_icon' => '<i class="fal fa-thumbs-up"></i>',
@@ -2128,13 +2157,13 @@ $config['en_all_4485'] = array(
         'm_icon' => '<i class="fal fa-medal"></i>',
         'm_name' => 'Bonus Tip',
         'm_desc' => 'Delivered in-order and one-by-one (drip-format) either during or after the intent completion. Goal is to re-iterate key insights to help students retain learnings over time.',
-        'm_parents' => array(5005, 4986, 4603, 4593, 4485, 4595),
+        'm_parents' => array(6345, 5005, 4986, 4603, 4593, 4485, 4595),
     ),
     6242 => array(
         'm_icon' => '<i class="far fa-check-square"></i>',
         'm_name' => 'On-Complete Tip',
         'm_desc' => 'Message delivered to students when they complete an intention.',
-        'm_parents' => array(4603, 4595, 4593, 4986, 5005, 4485),
+        'm_parents' => array(6345, 4603, 4595, 4593, 4986, 5005, 4485),
     ),
     6093 => array(
         'm_icon' => '<i class="fal fa-megaphone"></i>',
