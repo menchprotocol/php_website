@@ -630,34 +630,47 @@ function echo_tr_row($ln, $is_inner = false)
 }
 
 
+function echo_actionplan_step_child($en_id, $in, $step_ln_status, $is_unlocked_milestone = false){
 
+    $CI =& get_instance();
 
-function echo_in_actionplan_step($in, $is_parent, $step_ln_status)
+    //Completion Percentage?
+    $completion_rate = $CI->Actionplan_model->actionplan_completion_progress($en_id, $in);
+
+    //Open list:
+    $ui = '<a href="/messenger/actionplan/'.$in['in_id']. '" class="list-group-item">';
+
+    //Simple right icon
+    $ui .= '<span class="pull-right" style="margin-top: -6px;">';
+    $ui .= '<span class="badge badge-primary"  data-toggle="tooltip" data-placement="top" title="'.$completion_rate['steps_completed'].'/'.$completion_rate['steps_total'].' Steps Completed" style="text-decoration:none;"><span style="font-size:0.7em;">'.$completion_rate['completion_percentage'].'%</span> <i class="fas fa-angle-right"></i>&nbsp;</span>';
+    $ui .= '</span>';
+
+    //Show status:
+    $ui .= echo_fixed_fields('ln_student_status', $step_ln_status, true, null);
+
+    $ui .= '&nbsp;';
+    $ui .= echo_in_outcome($in['in_outcome']);
+
+    if($is_unlocked_milestone){
+        $en_all_6288 = $CI->config->item('en_all_6288');
+        $ui .= '<span class="badge badge-primary" style="font-size: 0.8em; margin:-7px 0 -7px 5px;" data-toggle="tooltip" data-placement="right" title="'.$en_all_6288[6140]['m_name'].': '.$en_all_6288[6140]['m_desc'].'">'.$en_all_6288[6140]['m_icon'].'</span>';
+    }
+
+    $ui .= '</a>';
+
+    return $ui;
+}
+
+function echo_actionplan_step_parent($in, $step_ln_status)
 {
 
     $CI =& get_instance();
 
-
     $ui = '<a href="/messenger/actionplan/' . $in['in_id'] . '" class="list-group-item">';
 
-    //Different pointer position based on direction:
-    if ($is_parent) {
-
-        $ui .= '<span class="pull-left">';
-        $ui .= '<span class="badge badge-primary fr-bgd"><i class="fas fa-angle-left"></i></span>';
-        $ui .= '</span>';
-
-    } else {
-
-        $ui .= '<span class="pull-right">';
-        $time_estimate = echo_time_range($in, true);
-        if ($time_estimate) {
-            $ui .= $time_estimate . ' <i class="fal fa-alarm-clock"></i> ';
-        }
-        $ui .= '<span class="badge badge-primary fr-bgd"><i class="fas fa-angle-right"></i></span>';
-        $ui .= '</span>';
-
-    }
+    $ui .= '<span class="pull-left">';
+    $ui .= '<span class="badge badge-primary fr-bgd"><i class="fas fa-angle-left"></i></span>';
+    $ui .= '</span>';
 
     //Completed Step Status:
     $ui .= echo_fixed_fields('ln_student_status', $step_ln_status, 1, 'right');

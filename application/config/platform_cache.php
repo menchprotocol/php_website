@@ -11,7 +11,24 @@ defined('BASEPATH') OR exit('No direct script access allowed');
  *
  */
 
-//Generated 2019-05-09 11:43:46 PST
+//Generated 2019-05-09 14:27:24 PST
+
+//Action Plan Progression Scope Expansions:
+$config['en_ids_6288'] = array(6140, 6157);
+$config['en_all_6288'] = array(
+    6140 => array(
+        'm_icon' => '<i class="fas fa-lock-open"></i>',
+        'm_name' => 'Step Unlocked',
+        'm_desc' => 'New steps added to your Action Plan because of the score generated from your answers to my questions.',
+        'm_parents' => array(6288, 4229, 4755, 4593),
+    ),
+    6157 => array(
+        'm_icon' => '<i class="fas fa-clipboard-check"></i>',
+        'm_name' => 'Question Answered',
+        'm_desc' => '',
+        'm_parents' => array(6288, 6255, 6244, 6146, 4755, 4593, 4460),
+    ),
+);
 
 //Intent Notes Deliverable:
 $config['en_ids_6345'] = array(4231, 4232, 6242);
@@ -431,7 +448,7 @@ $config['en_all_4363'] = array(
     ),
 );
 
-//Action Plan Progression Steps:
+//Action Plan Progression Fixed Steps:
 $config['en_ids_6146'] = array(4559, 6143, 6144, 6157, 6158);
 $config['en_all_6146'] = array(
     4559 => array(
@@ -1252,7 +1269,7 @@ $config['en_all_4755'] = array(
     ),
     6140 => array(
         'm_icon' => '<i class="fas fa-lock-open"></i>',
-        'm_name' => 'Action Plan Milestone Unlocked',
+        'm_name' => 'Action Plan Step Unlocked',
         'm_desc' => '',
         'm_parents' => array(6288, 4229, 4755, 4593),
     ),
@@ -1317,7 +1334,7 @@ $config['en_all_4595'] = array(
     ),
     4229 => array(
         'm_icon' => '<i class="fas fa-spin fa-question-circle"></i>',
-        'm_name' => 'Linked Intents Conditional Milestone',
+        'm_name' => 'Linked Intents Conditional Step',
         'm_desc' => '100',
         'm_parents' => array(4593, 4486, 4595),
     ),
@@ -1477,7 +1494,7 @@ $config['en_all_4593'] = array(
     ),
     4229 => array(
         'm_icon' => '<i class="fas fa-spin fa-question-circle"></i>',
-        'm_name' => 'Linked Intents Conditional Milestone',
+        'm_name' => 'Linked Intents Conditional Step',
         'm_desc' => '',
         'm_parents' => array(4593, 4486, 4595),
     ),
@@ -1867,7 +1884,7 @@ $config['en_all_4593'] = array(
     ),
     6140 => array(
         'm_icon' => '<i class="fas fa-lock-open"></i>',
-        'm_name' => 'Action Plan Milestone Unlocked',
+        'm_name' => 'Action Plan Step Unlocked',
         'm_desc' => 'Created when the student responses to OR branches meets the right % points to unlock the pathway to a conditional intent link.',
         'm_parents' => array(6288, 4229, 4755, 4593),
     ),
@@ -2155,7 +2172,7 @@ $config['en_all_4486'] = array(
     ),
     4229 => array(
         'm_icon' => '<i class="fas fa-spin fa-question-circle"></i>',
-        'm_name' => 'Conditional Milestone',
+        'm_name' => 'Conditional Step',
         'm_desc' => 'Intent added to Action Plans after parent intent is complete AND the user\'s % score falls within the defined min/max range',
         'm_parents' => array(4593, 4486, 4595),
     ),

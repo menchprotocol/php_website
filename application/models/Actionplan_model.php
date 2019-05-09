@@ -28,7 +28,7 @@ class Actionplan_model extends CI_Model
         foreach(array_flatten($in_metadata['in__metadata_common_steps']) as $common_step_in_id){
 
             //Is this an expansion step?
-            $is_expansion = (isset($in_metadata['in__metadata_expansion_steps'][$common_step_in_id]) || isset($in_metadata['in__metadata_expansion_milestones'][$common_step_in_id]));
+            $is_expansion = (isset($in_metadata['in__metadata_expansion_steps'][$common_step_in_id]) || isset($in_metadata['in__metadata_expansion_conditional'][$common_step_in_id]));
 
             //Is this completed?
             $completed_steps = $this->Links_model->ln_fetch(array(
@@ -511,11 +511,36 @@ class Actionplan_model extends CI_Model
 
         //See if this tree has any milestone expansion:
         $in_metadata = unserialize($in['in_metadata']);
-        if(isset($in_metadata['in__metadata_expansion_milestones'][$in['in_id']]) && count($in_metadata['in__metadata_expansion_milestones'][$in['in_id']]) > 0){
+        if(isset($in_metadata['in__metadata_expansion_conditional'][$in['in_id']]) && count($in_metadata['in__metadata_expansion_conditional'][$in['in_id']]) > 0){
+
+
+            //Make sure previous milestone expansion has NOT happened before:
+            $existing_expansions = $this->Links_model->ln_fetch(array(
+                'ln_status' => 2, //Published
+                'ln_type_entity_id' => 6140, //Action Plan Milestone Unlocked
+                'ln_miner_entity_id' => $en_id,
+                'ln_parent_intent_id' => $in['in_id'],
+                'ln_child_intent_id IN (' . join(',', $in_metadata['in__metadata_expansion_conditional'][$in['in_id']]) . ')' => null, //Limit to cached answers
+            ));
+            if(count($existing_expansions) > 0){
+
+                //Oh we do have an expansion that already happened! So skip this:
+                $this->Links_model->ln_create(array(
+                    'ln_child_entity_id' => $en_id,
+                    'ln_parent_intent_id' => $in['in_id'],
+                    'ln_child_intent_id' => $existing_expansions[0]['ln_child_intent_id'],
+                    'ln_content' => 'actionplan_completion_milestones() detected duplicate Milestone Expansion entries',
+                    'ln_type_entity_id' => 4246, //Platform Bug Reports
+                    'ln_miner_entity_id' => 1, //Shervin/Developer
+                ));
+
+                return false;
+            }
 
 
             //Yes, Let's calculate student's score for this tree:
             $student_marks = $this->Actionplan_model->actionplan_completion_marks($en_id, $in);
+
 
             //Fetch all milestone expansion ranges to see if they unlock any for this level:
             $found_match = 0;
@@ -524,7 +549,7 @@ class Actionplan_model extends CI_Model
                 'in_status' => 2, //Published
                 'ln_type_entity_id' => 4229,
                 'ln_parent_intent_id' => $in['in_id'],
-                'ln_child_intent_id IN (' . join(',', $in_metadata['in__metadata_expansion_milestones'][$in['in_id']]) . ')' => null, //Limit to cached answers
+                'ln_child_intent_id IN (' . join(',', $in_metadata['in__metadata_expansion_conditional'][$in['in_id']]) . ')' => null, //Limit to cached answers
             ), array('in_child'), 0, 0) as $conditional_range) {
 
                 //See if it unlocks any of these ranges defined in the metadata:
@@ -643,7 +668,7 @@ class Actionplan_model extends CI_Model
 
 
         //Did we find any milestones?
-        if(count($milestone_messages) > 0){
+        if($milestone_messages && is_array($milestone_messages) && count($milestone_messages) > 0){
             //Add to messages:
             $on_complete_messages = array_merge($on_complete_messages, $milestone_messages);
         }
@@ -785,6 +810,7 @@ class Actionplan_model extends CI_Model
             'ln_status >=' => 0, //New+ [Fetch all types of progress)
         ));
 
+
         //Define communication variables:
         $next_step_message = '';
         $next_step_quick_replies = array();
@@ -876,6 +902,47 @@ class Actionplan_model extends CI_Model
                 }
             }
         }
+
+
+
+
+
+
+
+
+
+        /*
+         *
+         * Check Conditional Milestones in HTML
+         * Action Plan Webview only
+         *
+         * */
+        if(!$fb_messenger_format){
+
+            $unlocked_milestones = $this->Links_model->ln_fetch(array(
+                'ln_status' => 2, //Published
+                'in_status' => 2, //Published
+                'ln_type_entity_id' => 6140, //Action Plan Milestone Unlocked
+                'ln_miner_entity_id' => $en_id,
+                'ln_parent_intent_id' => $ins[0]['in_id'],
+            ), array('in_child'), 0);
+
+            //Did we have any Milestones unlocked?
+            if(count($unlocked_milestones) > 0){
+                //Yes! Show them:
+                $next_step_message .= '<div class="list-group" style="margin:0 0 0 0;">';
+                foreach($unlocked_milestones as $unlocked_milestone){
+                    //Add HTML step to UI:
+                    $next_step_message .= echo_actionplan_step_child($en_id, $unlocked_milestone, $unlocked_milestone['ln_status'], true);
+                }
+                $next_step_message .= '</div>';
+            }
+
+        }
+
+
+
+
 
 
 
@@ -1091,35 +1158,13 @@ class Actionplan_model extends CI_Model
 
                     if(!$fb_messenger_format){
 
-                        //Completion Percentage so far:
-                        $completion_rate = $this->Actionplan_model->actionplan_completion_progress($en_id, $child_in);
-
-                        //Open list:
-                        $next_step_message .= '<a href="/messenger/actionplan/'.$child_in['in_id']. '" class="list-group-item">';
-
-                        //Simple right icon
-                        $next_step_message .= '<span class="pull-right" style="margin-top: -6px;">';
-                        $next_step_message .= '<span class="badge badge-primary"  data-toggle="tooltip" data-placement="top" title="'.$completion_rate['steps_completed'].'/'.$completion_rate['steps_total'].' Steps Completed" style="text-decoration:none;"><span style="font-size:0.7em;">'.$completion_rate['completion_percentage'].'%</span> <i class="fas fa-angle-right"></i>&nbsp;</span>';
-                        $next_step_message .= '</span>';
-
-                        //Show status:
-                        $next_step_message .= echo_fixed_fields('ln_student_status', (count($child_progression_steps) > 0 ? $child_progression_steps[0]['ln_status'] : 0 ), true, null);
-
-                        $next_step_message .= '&nbsp;';
+                        //Add HTML step to UI:
+                        $next_step_message .= echo_actionplan_step_child($en_id, $child_in, (count($child_progression_steps) > 0 ? $child_progression_steps[0]['ln_status'] : 0 ));
 
                     } else {
 
-                        //Add message:
-                        $next_step_message .= "\n\n" . ($key + 1) . '. ';
-
-                    }
-
-
-                    $next_step_message .= echo_in_outcome($child_in['in_outcome'], $fb_messenger_format);
-
-                    if(!$fb_messenger_format){
-
-                        $next_step_message .= '</a>';
+                        //Add simple message:
+                        $next_step_message .= "\n\n" . ($key + 1) . '. ' . echo_in_outcome($child_in['in_outcome'], $fb_messenger_format);
 
                     }
 
@@ -1132,6 +1177,11 @@ class Actionplan_model extends CI_Model
                 }
             }
         }
+
+
+
+
+
 
 
 
@@ -1195,6 +1245,9 @@ class Actionplan_model extends CI_Model
 
             }
         }
+
+
+
 
 
 
@@ -1496,14 +1549,14 @@ class Actionplan_model extends CI_Model
 
 
         //Expansion Milestones Recursive
-        if(isset($in_metadata['__in__metadata_expansion_milestones']) && count($in_metadata['__in__metadata_expansion_milestones']) > 0){
+        if(isset($in_metadata['__in__metadata_expansion_conditional']) && count($in_metadata['__in__metadata_expansion_conditional']) > 0){
 
             //Now let's check if student has unlocked any Miletones:
             foreach($this->Links_model->ln_fetch(array(
                 'ln_type_entity_id' => 6140, //Action Plan Milestone Unlocked
                 'ln_miner_entity_id' => $en_id, //Belongs to this Student
                 'ln_parent_intent_id IN (' . join(',', $flat_common_steps ) . ')' => null,
-                'ln_child_intent_id IN (' . join(',', array_flatten($in_metadata['__in__metadata_expansion_milestones'])) . ')' => null,
+                'ln_child_intent_id IN (' . join(',', array_flatten($in_metadata['__in__metadata_expansion_conditional'])) . ')' => null,
                 'ln_status' => 2, //Published
                 'in_status' => 2, //Published
             ), array('in_child')) as $expansion_in) {

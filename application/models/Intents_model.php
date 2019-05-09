@@ -623,7 +623,7 @@ class Intents_model extends CI_Model
         $metadata_this = array(
             '__in__metadata_common_steps' => array(), //The tree structure that would be shared with all students regardless of their quick replies (OR Intent Answers)
             '__in__metadata_expansion_steps' => array(), //Intents that may exist as a link to expand an Action Plan tree by answering OR intents
-            '__in__metadata_expansion_milestones' => array(), //Intents that may exist as a link to expand an Action Plan tree via Conditional Milestone links
+            '__in__metadata_expansion_conditional' => array(), //Intents that may exist as a link to expand an Action Plan tree via Conditional Milestone links
         );
 
 
@@ -668,10 +668,10 @@ class Intents_model extends CI_Model
                         }
                     }
                 }
-                if(count($child_recursion['__in__metadata_expansion_milestones']) > 0){
-                    foreach($child_recursion['__in__metadata_expansion_milestones'] as $key => $value){
-                        if(!array_key_exists($key, $metadata_this['__in__metadata_expansion_milestones'])){
-                            $metadata_this['__in__metadata_expansion_milestones'][$key] = $value;
+                if(count($child_recursion['__in__metadata_expansion_conditional']) > 0){
+                    foreach($child_recursion['__in__metadata_expansion_conditional'] as $key => $value){
+                        if(!array_key_exists($key, $metadata_this['__in__metadata_expansion_conditional'])){
+                            $metadata_this['__in__metadata_expansion_conditional'][$key] = $value;
                         }
                     }
                 }
@@ -685,7 +685,7 @@ class Intents_model extends CI_Model
         }
 
         if(count($conditional_milestones) > 0){
-            $metadata_this['__in__metadata_expansion_milestones'][$focus_in['in_id']] = $conditional_milestones;
+            $metadata_this['__in__metadata_expansion_conditional'][$focus_in['in_id']] = $conditional_milestones;
         }
 
 
@@ -702,7 +702,7 @@ class Intents_model extends CI_Model
             update_metadata('in', $focus_in['in_id'], array(
                 'in__metadata_common_steps' => $metadata_this['__in__metadata_common_steps'],
                 'in__metadata_expansion_steps' => $metadata_this['__in__metadata_expansion_steps'],
-                'in__metadata_expansion_milestones' => $metadata_this['__in__metadata_expansion_milestones'],
+                'in__metadata_expansion_conditional' => $metadata_this['__in__metadata_expansion_conditional'],
             ));
 
         }
@@ -740,7 +740,7 @@ class Intents_model extends CI_Model
         //Fetch common base and expansion paths from intent metadata:
         $flat_common_steps = array_flatten($in_metadata['in__metadata_common_steps']);
         $expansion_steps = ( isset($in_metadata['in__metadata_expansion_steps']) && count($in_metadata['in__metadata_expansion_steps']) > 0 ? $in_metadata['in__metadata_expansion_steps'] : array() );
-        $expansion_milestones = ( isset($in_metadata['in__metadata_expansion_milestones']) && count($in_metadata['in__metadata_expansion_milestones']) > 0 ? $in_metadata['in__metadata_expansion_milestones'] : array() );
+        $expansion_milestones = ( isset($in_metadata['in__metadata_expansion_conditional']) && count($in_metadata['in__metadata_expansion_conditional']) > 0 ? $in_metadata['in__metadata_expansion_conditional'] : array() );
 
         //Fetch totals for published common step intents:
         $common_totals = $this->Intents_model->in_fetch(array(

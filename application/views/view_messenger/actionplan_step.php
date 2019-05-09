@@ -46,7 +46,7 @@ foreach ($this->Intents_model->in_fetch_recursive_parents($in['in_id'], 2) as $p
             'ln_status >=' => 0,
         ));
 
-        echo echo_in_actionplan_step($parent_ins[0], 1, (count($parent_progression_steps) > 0 ? $parent_progression_steps[0]['ln_status'] : 0));
+        echo echo_actionplan_step_parent($parent_ins[0], (count($parent_progression_steps) > 0 ? $parent_progression_steps[0]['ln_status'] : 0));
     }
 }
 echo '</div>';
