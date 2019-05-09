@@ -11,28 +11,52 @@ defined('BASEPATH') OR exit('No direct script access allowed');
  *
  */
 
-//Generated 2019-05-09 14:59:50 PST
+//Generated 2019-05-09 15:51:49 PST
 
-//Linked Intents Conditional Step:
-$config['en_ids_4229'] = array(4358, 6140, 6402);
-$config['en_all_4229'] = array(
+//Action Plan Completion Unlock Milestones Function:
+$config['en_ids_6410'] = array(4228, 4229, 4358, 4735, 4739, 6140, 6402);
+$config['en_all_6410'] = array(
+    4228 => array(
+        'm_icon' => '<i class="fal fa-check-circle"></i>',
+        'm_name' => 'Linked Intents Fixed Step',
+        'm_desc' => 'Fixed steps provide the assessment marks needed to determine the outcome of conditional steps.',
+        'm_parents' => array(6410, 4593, 4486, 4595),
+    ),
+    4229 => array(
+        'm_icon' => '<i class="fas fa-spin fa-question-circle"></i>',
+        'm_name' => 'Linked Intents Conditional Step',
+        'm_desc' => 'The outcome of processing the aggregate steps if a student\'s Action Plan and unlocking a specific intent based on the percentage outcome.',
+        'm_parents' => array(6410, 6283, 4593, 4486, 4595),
+    ),
     4358 => array(
-        'm_icon' => '<i class="fal fa-tachometer-fast"></i>',
-        'm_name' => 'Step Marks',
-        'm_desc' => 'Marks awarded to students for choosing an OR path. Marks would eventually be used to calculate a fixed score, then possibly used to unlock other steps',
-        'm_parents' => array(4229, 6232, 6213, 6103, 4228),
+        'm_icon' => '<i class="far fa-lambda"></i>',
+        'm_name' => 'Step Answer Marks',
+        'm_desc' => 'Students collect, and miss marks while going through OR intents that have at-least one of their child options awarding marks. So these marks are what is used to determine the fixes score of the student for the given tree.',
+        'm_parents' => array(6410, 6232, 6213, 6103, 4228),
+    ),
+    4735 => array(
+        'm_icon' => '<i class="far fa-lambda"></i>',
+        'm_name' => 'Conditional Minimum Score',
+        'm_desc' => '',
+        'm_parents' => array(6410, 6402, 6232, 6213, 6103),
+    ),
+    4739 => array(
+        'm_icon' => '<i class="far fa-lambda"></i>',
+        'm_name' => 'Conditional Maximum Score',
+        'm_desc' => '',
+        'm_parents' => array(6410, 6402, 6232, 6213, 6103),
     ),
     6140 => array(
         'm_icon' => '<i class="fas fa-lock-open"></i>',
         'm_name' => 'Action Plan Step Unlocked',
-        'm_desc' => 'A step that has become available because of the score generated from student answers',
-        'm_parents' => array(6288, 4229, 4755, 4593),
+        'm_desc' => 'Determined by this function which step should be unlocked',
+        'm_parents' => array(6410, 6288, 4229, 4755, 4593),
     ),
     6402 => array(
         'm_icon' => '<i class="far fa-ruler"></i>',
         'm_name' => 'Conditional Score Range',
-        'm_desc' => 'Defines the minimum/maximum fixed score a student must get in order to unlock this conditional step',
-        'm_parents' => array(4229),
+        'm_desc' => '',
+        'm_parents' => array(6410, 4229),
     ),
 );
 
@@ -308,7 +332,7 @@ $config['en_all_6196'] = array(
         'm_parents' => array(6196, 6215, 6206),
     ),
     6203 => array(
-        'm_icon' => '<i class="fab fa-facebook"></i>',
+        'm_icon' => '<i class="far fa-lambda"></i>',
         'm_name' => 'Facebook Attachment ID',
         'm_desc' => 'File caching offered by Facebook for media delivered over Messenger.',
         'm_parents' => array(6232, 6196, 6215, 2793, 6103),
@@ -1277,7 +1301,7 @@ $config['en_all_4755'] = array(
         'm_icon' => '<i class="fas fa-lock-open"></i>',
         'm_name' => 'Action Plan Step Unlocked',
         'm_desc' => '',
-        'm_parents' => array(6288, 4229, 4755, 4593),
+        'm_parents' => array(6410, 6288, 4229, 4755, 4593),
     ),
     6143 => array(
         'm_icon' => '<i class="far fa-minus-square"></i>',
@@ -1336,13 +1360,13 @@ $config['en_all_4595'] = array(
         'm_icon' => '<i class="fal fa-check-circle"></i>',
         'm_name' => 'Linked Intents Fixed Step',
         'm_desc' => '100',
-        'm_parents' => array(4593, 4486, 4595),
+        'm_parents' => array(6410, 4593, 4486, 4595),
     ),
     4229 => array(
         'm_icon' => '<i class="fas fa-spin fa-question-circle"></i>',
         'm_name' => 'Linked Intents Conditional Step',
         'm_desc' => '100',
-        'm_parents' => array(4527, 6283, 4593, 4486, 4595),
+        'm_parents' => array(6410, 6283, 4593, 4486, 4595),
     ),
     4230 => array(
         'm_icon' => '<i class="fal fa-level-up rotate90"></i>',
@@ -1496,13 +1520,13 @@ $config['en_all_4593'] = array(
         'm_icon' => '<i class="fal fa-check-circle"></i>',
         'm_name' => 'Linked Intents Fixed Step',
         'm_desc' => '',
-        'm_parents' => array(4593, 4486, 4595),
+        'm_parents' => array(6410, 4593, 4486, 4595),
     ),
     4229 => array(
         'm_icon' => '<i class="fas fa-spin fa-question-circle"></i>',
         'm_name' => 'Linked Intents Conditional Step',
         'm_desc' => '',
-        'm_parents' => array(4527, 6283, 4593, 4486, 4595),
+        'm_parents' => array(6410, 6283, 4593, 4486, 4595),
     ),
     4230 => array(
         'm_icon' => '<i class="fal fa-level-up rotate90"></i>',
@@ -1892,7 +1916,7 @@ $config['en_all_4593'] = array(
         'm_icon' => '<i class="fas fa-lock-open"></i>',
         'm_name' => 'Action Plan Step Unlocked',
         'm_desc' => 'Created when the student responses to OR branches meets the right % points to unlock the pathway to a conditional intent link.',
-        'm_parents' => array(6288, 4229, 4755, 4593),
+        'm_parents' => array(6410, 6288, 4229, 4755, 4593),
     ),
     6143 => array(
         'm_icon' => '<i class="far fa-minus-square"></i>',
@@ -2174,13 +2198,13 @@ $config['en_all_4486'] = array(
         'm_icon' => '<i class="fal fa-check-circle"></i>',
         'm_name' => 'Fixed Step',
         'm_desc' => 'Intent link published and added to user Action Plans up-front',
-        'm_parents' => array(4593, 4486, 4595),
+        'm_parents' => array(6410, 4593, 4486, 4595),
     ),
     4229 => array(
         'm_icon' => '<i class="fas fa-spin fa-question-circle"></i>',
         'm_name' => 'Conditional Step',
         'm_desc' => 'Intent added to Action Plans after parent intent is complete AND the user\'s % score falls within the defined min/max range',
-        'm_parents' => array(4527, 6283, 4593, 4486, 4595),
+        'm_parents' => array(6410, 6283, 4593, 4486, 4595),
     ),
 );
 

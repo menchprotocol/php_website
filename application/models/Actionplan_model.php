@@ -487,7 +487,7 @@ class Actionplan_model extends CI_Model
 
 
 
-    function actionplan_completion_milestones($en_id, $in, $is_bottom_level = true){
+    function actionplan_completion_unlock_milestones($en_id, $in, $is_bottom_level = true){
 
 
         /*
@@ -529,7 +529,7 @@ class Actionplan_model extends CI_Model
                     'ln_child_entity_id' => $en_id,
                     'ln_parent_intent_id' => $in['in_id'],
                     'ln_child_intent_id' => $existing_expansions[0]['ln_child_intent_id'],
-                    'ln_content' => 'actionplan_completion_milestones() detected duplicate Milestone Expansion entries',
+                    'ln_content' => 'actionplan_completion_unlock_milestones() detected duplicate Milestone Expansion entries',
                     'ln_type_entity_id' => 4246, //Platform Bug Reports
                     'ln_miner_entity_id' => 1, //Shervin/Developer
                 ));
@@ -590,7 +590,7 @@ class Actionplan_model extends CI_Model
             //We must have exactly 1 match by now:
             if($found_match != 1){
                 $this->Links_model->ln_create(array(
-                    'ln_content' => 'actionplan_completion_milestones() found multiple routing logic matches!',
+                    'ln_content' => 'actionplan_completion_unlock_milestones() found multiple routing logic matches!',
                     'ln_type_entity_id' => 4246, //Platform Bug Reports
                     'ln_miner_entity_id' => 1, //Shervin/Developer
                     'ln_child_entity_id' => $en_id,
@@ -620,7 +620,7 @@ class Actionplan_model extends CI_Model
                         }
 
                         //Run for this item:
-                        $parent_milestone_messages = $this->Actionplan_model->actionplan_completion_milestones($en_id, $in, false);
+                        $parent_milestone_messages = $this->Actionplan_model->actionplan_completion_unlock_milestones($en_id, $in, false);
                         if($parent_milestone_messages && count($parent_milestone_messages) > 0){
                             $milestone_messages = array_merge($milestone_messages, $parent_milestone_messages);
                         }
@@ -664,7 +664,7 @@ class Actionplan_model extends CI_Model
 
 
         //Try to assess milestones:
-        $milestone_messages = $this->Actionplan_model->actionplan_completion_milestones($en_id, $in);
+        $milestone_messages = $this->Actionplan_model->actionplan_completion_unlock_milestones($en_id, $in);
 
 
         //Did we find any milestones?
