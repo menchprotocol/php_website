@@ -281,7 +281,7 @@ class Actionplan_model extends CI_Model
         return count($flat_common_steps);
     }
 
-    function actionplan_top_priority($en_id){
+    function actionplan_intention_focus($en_id){
 
         /*
          *
@@ -322,7 +322,7 @@ class Actionplan_model extends CI_Model
 
     }
 
-    function actionplan_top_add($en_id, $in_id){
+    function actionplan_intention_add($en_id, $in_id){
 
         //Validate Intent ID and ensure it's published:
         $ins = $this->Intents_model->in_fetch(array(
@@ -346,7 +346,7 @@ class Actionplan_model extends CI_Model
             $this->Links_model->ln_create(array(
                 'ln_child_entity_id' => $en_id,
                 'ln_parent_intent_id' => $in_id,
-                'ln_content' => 'actionplan_top_add() blocked the addition of a duplicate intention to the Action Plan',
+                'ln_content' => 'actionplan_intention_add() blocked the addition of a duplicate intention to the Action Plan',
                 'ln_type_entity_id' => 4246, //Platform Bug Reports
                 'ln_miner_entity_id' => 1, //Shervin/Developer
             ));
@@ -389,7 +389,7 @@ class Actionplan_model extends CI_Model
          * */
 
         //Fetch top intention that being workined on now:
-        $top_priority = $this->Actionplan_model->actionplan_top_priority($en_id);
+        $top_priority = $this->Actionplan_model->actionplan_intention_focus($en_id);
 
         if($top_priority){
             if($top_priority['in']['in_id']==$ins[0]['in_id']){
@@ -540,7 +540,9 @@ class Actionplan_model extends CI_Model
                         $message = 'You got '.$student_marks['milestones_answered_fixed_score'].'/'.$student_marks['milestones_marks_count'].' assessments correct and marked '.$student_marks['milestones_answered_fixed_score'].'%';
 
                         //Push to messgaes:
-                        array_push($milestone_messages , $message);
+                        array_push($milestone_messages , array(
+                            'ln_content' => $message,
+                        ));
 
                         //Unlock Action Plan:
                         $this->Links_model->ln_create(array(
@@ -577,7 +579,7 @@ class Actionplan_model extends CI_Model
         if($is_bottom_level){
 
             //Fetch student intentions:
-            $student_in_ids = $this->Actionplan_model->actionplan_top_ids($en_id);
+            $student_in_ids = $this->Actionplan_model->actionplan_intention_ids($en_id);
 
             //Go through parents and detect intersects with student intentions. WARNING: Logic duplicated. Search for "ELEPHANT" to see.
             $parents_checked = array(); //So we don't do duplicate...
@@ -1223,7 +1225,7 @@ class Actionplan_model extends CI_Model
 
             //Since we can only append quick replies to text messages, let's see what is happening here:
             $is_last_message = ( $count == (count($in__messages)-1) );
-            if($is_last_message && $message_ln['ln_parent_entity_id']==0){
+            if($is_last_message && ( !isset($message_ln['ln_parent_entity_id']) || $message_ln['ln_parent_entity_id']==0 )){
                 //Since there is no entity reference we can append our message here:
                 $last_message_accepts_quick_replies = true;
             }
@@ -1236,7 +1238,6 @@ class Actionplan_model extends CI_Model
                 ( $last_message_accepts_quick_replies && count($next_step_quick_replies) > 0 ? $next_step_quick_replies : array() ),
                 array(
                     'ln_parent_intent_id' => $ins[0]['in_id'],
-                    'ln_parent_link_id' => $message_ln['ln_id'], //This message
                 )
             );
         }
@@ -1469,7 +1470,7 @@ class Actionplan_model extends CI_Model
         );
 
 
-        //Fetch expansion steps recursively, if any:
+        //Expansion Steps Recursive
         if(isset($in_metadata['in__metadata_expansion_steps']) && count($in_metadata['in__metadata_expansion_steps']) > 0){
 
             //Now let's check student answers to see what they have done:
@@ -1490,6 +1491,32 @@ class Actionplan_model extends CI_Model
                 $metadata_this['steps_completed'] += $recursive_stats['steps_completed'];
                 $metadata_this['seconds_total'] += $recursive_stats['seconds_total'];
                 $metadata_this['seconds_completed'] += $recursive_stats['seconds_completed'];
+            }
+        }
+
+
+        //Expansion Milestones Recursive
+        if(isset($in_metadata['__in__metadata_expansion_milestones']) && count($in_metadata['__in__metadata_expansion_milestones']) > 0){
+
+            //Now let's check if student has unlocked any Miletones:
+            foreach($this->Links_model->ln_fetch(array(
+                'ln_type_entity_id' => 6140, //Action Plan Milestone Unlocked
+                'ln_miner_entity_id' => $en_id, //Belongs to this Student
+                'ln_parent_intent_id IN (' . join(',', $flat_common_steps ) . ')' => null,
+                'ln_child_intent_id IN (' . join(',', array_flatten($in_metadata['__in__metadata_expansion_milestones'])) . ')' => null,
+                'ln_status' => 2, //Published
+                'in_status' => 2, //Published
+            ), array('in_child')) as $expansion_in) {
+
+                //Fetch recursive:
+                $recursive_stats = $this->Actionplan_model->actionplan_completion_progress($en_id, $expansion_in, false);
+
+                //Addup completion stats for this:
+                $metadata_this['steps_total'] += $recursive_stats['steps_total'];
+                $metadata_this['steps_completed'] += $recursive_stats['steps_completed'];
+                $metadata_this['seconds_total'] += $recursive_stats['seconds_total'];
+                $metadata_this['seconds_completed'] += $recursive_stats['seconds_completed'];
+
             }
         }
 
@@ -1525,7 +1552,7 @@ class Actionplan_model extends CI_Model
     }
 
 
-    function actionplan_top_ids($en_id){
+    function actionplan_intention_ids($en_id){
         //Simply returns all the intention IDs for a student's Action Plan:
         $student_in_ids = array();
         foreach($this->Links_model->ln_fetch(array(

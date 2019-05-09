@@ -1707,7 +1707,7 @@ class Communication_model extends CI_Model
             $in_id = intval(one_two_explode('SUBSCRIBE-CONFIRM_', '', $quick_reply_payload));
 
             //Add to Action Plan:
-            $this->Actionplan_model->actionplan_top_add($en['en_id'], $in_id);
+            $this->Actionplan_model->actionplan_intention_add($en['en_id'], $in_id);
 
         } elseif (substr_count($quick_reply_payload, 'SKIP-ACTIONPLAN_') == 1) {
 

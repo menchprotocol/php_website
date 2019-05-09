@@ -17,11 +17,12 @@ class Messenger extends CI_Controller
             'in_id' => $in_id,
             'in_status' => 2, //Published
         ));
+
         echo_json(array(
-            'common' => $this->Intents_model->in_metadata_common_base($ins[0]),
-            'completion' => $this->Actionplan_model->actionplan_completion_progress(1, $ins[0]),
             'marks' => $this->Actionplan_model->actionplan_completion_marks(1, $ins[0]),
             'milestones' => $this->Actionplan_model->actionplan_completion_milestones(1, $ins[0]),
+            'completion' => $this->Actionplan_model->actionplan_completion_progress(1, $ins[0]),
+            'common' => $this->Intents_model->in_metadata_common_base($ins[0]),
         ));
     }
 
@@ -1515,7 +1516,7 @@ class Messenger extends CI_Controller
 
     }
 
-    function actionplan_top_add(){
+    function actionplan_intention_add(){
 
         /*
          *
@@ -1538,7 +1539,7 @@ class Messenger extends CI_Controller
         }
 
         //Attempt to add intent to Action Plan:
-        if($this->Actionplan_model->actionplan_top_add($session_en['en_id'], $_POST['in_id'])){
+        if($this->Actionplan_model->actionplan_intention_add($session_en['en_id'], $_POST['in_id'])){
             //All good:
             $en_all_2738 = $this->config->item('en_all_2738');
             return echo_json(array(
@@ -1969,7 +1970,7 @@ class Messenger extends CI_Controller
 
 
         //Fetch top intention that being workined on now:
-        $top_priority = $this->Actionplan_model->actionplan_top_priority($_POST['en_miner_id']);
+        $top_priority = $this->Actionplan_model->actionplan_intention_focus($_POST['en_miner_id']);
         if($top_priority){
             //Communicate top-priority with student:
             $this->Communication_model->dispatch_message(

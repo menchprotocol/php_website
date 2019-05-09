@@ -1968,7 +1968,8 @@ input.form-control, textarea.form-control, select {
     font-size: 0.7em;
     margin: 40px 3px 5px 5px;
     border-bottom: 2px solid #2f2739;
-    padding-left: 5px
+    padding-left: 5px;
+    font-weight: 300 !important;
 }
 
 #funnel h4 .title-sub {
