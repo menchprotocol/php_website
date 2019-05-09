@@ -1580,14 +1580,48 @@ class Messenger extends CI_Controller
 
 
     function actionplan_clear_all($en_id, $timestamp, $secret_key){
+
         if($secret_key != md5($en_id . $this->config->item('actionplan_salt') . $timestamp)){
             die('Invalid Secret Key');
         }
 
-        //Remove all links belonging to this student:
-        $this->db->query("DELETE from table_links WHERE ln_miner_entity_id=".$en_id." AND ln_type_entity_id IN (" . join(',', $this->config->item('en_ids_6415') ) . ")");
-        $affected_rows = $this->db->affected_rows();
-        echo 'Removed '.$affected_rows.' Action Plan links.';
+        //Fetch their current progress links:
+        $progress_links = $this->Links_model->ln_fetch(array(
+            'ln_status >=' => 0, //New+
+            'ln_type_entity_id IN (' . join(',', $this->config->item('en_ids_6415')) . ')' => null, //Action Plan Clear All Steps
+            'ln_miner_entity_id' => $en_id,
+        ), array(), 0);
+
+        if(count($progress_links) > 0){
+
+            //Yes they did have some:
+            $message = count($progress_links).' Action Plan progression link removed.';
+
+            //Log link:
+            $clear_all_link = $this->Links_model->ln_create(array(
+                'ln_content' => $message,
+                'ln_type_entity_id' => 6415, //Action Plan Clear All Steps
+                'ln_miner_entity_id' => $en_id,
+            ));
+
+            //Remove all progressions:
+            foreach($progress_links as $progress_link){
+                $this->Links_model->ln_update($progress_link['ln_id'], array(
+                    'ln_status' => -1, //Removed
+                    'ln_parent_link_id' => $clear_all_link['ln_id'], //To indicate when it was removed
+                ), $en_id);
+            }
+
+        } else {
+
+            //Nothing to do:
+            $message = 'Nothing to delete...';
+
+        }
+
+        //Show basic UI for now:
+        echo $message;
+        echo '<div><a href="/messenger/actionplan" style="font-weight: bold; font-size: 1.4em; margin-top: 10px;">Go Back</a></div>';
 
     }
 
