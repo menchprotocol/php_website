@@ -221,7 +221,7 @@ function echo_in_outcome($in_outcome, $fb_messenger_format = false, $reference_a
         if($fb_messenger_format){
             return $in_outcome;
         } else {
-            return htmlentities($in_outcome);
+            return htmlentities(trim($in_outcome));
         }
     }
 
@@ -233,7 +233,7 @@ function echo_in_outcome($in_outcome, $fb_messenger_format = false, $reference_a
     } else {
         //Miner view:
         //<span class="double-column-omit click_expand" data-toggle="tooltip" data-placement="top" title="Not shown to students">'.$in_outcome_parts[0].'::</span>
-        return '<span class="click_expand">'.htmlentities($in_outcome_parts[1]).'</span>';
+        return '<span class="click_expand">'.htmlentities(trim($in_outcome_parts[1])).'</span>';
     }
 }
 

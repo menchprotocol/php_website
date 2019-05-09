@@ -435,7 +435,6 @@ class Actionplan_model extends CI_Model
          *
          * */
 
-
         if($in['in_type']==0 && $in['in_requirement_entity_id']!=6087){
             //Completion Requirements:
             return false;
@@ -458,7 +457,6 @@ class Actionplan_model extends CI_Model
             return false;
         }
 
-
         if(count($this->Links_model->ln_fetch(array(
             'ln_status' => 2, //Published
             'ln_type_entity_id IN (' . join(',', $this->config->item('en_ids_6345')) . ')' => null, //Deliverable Intent Notes
@@ -468,8 +466,11 @@ class Actionplan_model extends CI_Model
             return false;
         }
 
-        //Not much to do here...
-        //It should be auto completed:
+
+
+
+
+        //Ok, now it should be auto completed:
         $this->Links_model->ln_create(array(
             'ln_type_entity_id' => 6158, //Action Plan Outcome Review
             'ln_miner_entity_id' => $en_id,
@@ -477,11 +478,15 @@ class Actionplan_model extends CI_Model
             'ln_status' => 2, //Published
         ));
 
+        //Process on-complete automations:
+        $this->Actionplan_model->actionplan_completion_checks($en_id, $in);
+
+        //All good:
         return true;
     }
 
 
-    function actionplan_completion_milestones($en_id, $in){
+    function actionplan_completion_add_milestones($en_id, $in){
 
 
         //First let's see if this is completed:
@@ -489,6 +494,20 @@ class Actionplan_model extends CI_Model
         if($completion_rate['completion_percentage'] < 100){
             //Not completed, so nothing to do here:
             return false;
+        }
+
+
+
+        //See if this tree has any milestone expansion:
+        $in_metadata = unserialize($in['in_metadata']);
+        if(isset($in_metadata['in__metadata_expansion_milestones'][$in['in_id']]) && count($in_metadata['in__metadata_expansion_milestones'][$in['in_id']]) > 0){
+            //We have some expansion milestones
+
+            //Let's calculate student's score:
+
+
+            //let's see if any of their conditions has been met:
+
         }
 
 
@@ -545,7 +564,7 @@ class Actionplan_model extends CI_Model
 
     }
 
-    function actionplan_completion_triggers($en_id, $in, $send_message = true){
+    function actionplan_completion_checks($en_id, $in, $send_message = true){
 
 
         /*
@@ -1138,7 +1157,7 @@ class Actionplan_model extends CI_Model
         if($made_published_progress && $trigger_completion){
 
             //Process on-complete automations:
-            $on_complete_messages = $this->Actionplan_model->actionplan_completion_triggers($en_id, $ins[0], false);
+            $on_complete_messages = $this->Actionplan_model->actionplan_completion_checks($en_id, $ins[0], false);
 
             //Add on-complete messages (if any) to the current messages:
             $in__messages = array_merge($in__messages, $on_complete_messages);

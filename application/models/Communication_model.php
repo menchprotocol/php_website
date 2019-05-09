@@ -1389,7 +1389,7 @@ class Communication_model extends CI_Model
 
 
             //Process on-complete automations:
-            $this->Actionplan_model->actionplan_completion_triggers($en['en_id'], $pending_req_submission[0]);
+            $this->Actionplan_model->actionplan_completion_checks($en['en_id'], $pending_req_submission[0]);
 
             //Append the next option:
             $this->Communication_model->dispatch_message(
@@ -1856,7 +1856,7 @@ class Communication_model extends CI_Model
             }
 
             //Process on-complete automations:
-            $this->Actionplan_model->actionplan_completion_triggers($en['en_id'], $question_ins[0]);
+            $this->Actionplan_model->actionplan_completion_checks($en['en_id'], $question_ins[0]);
 
 
             //See if we also need to mark the answer as complete:
