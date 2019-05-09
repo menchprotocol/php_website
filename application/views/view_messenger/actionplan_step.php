@@ -84,7 +84,7 @@ foreach($advance_step['progression_links'] as $pl){
 
 
 //Completion Percentage so far:
-$completion_rate = $this->Actionplan_model->actionplan_completion_calculate($session_en['en_id'], $in);
+$completion_rate = $this->Actionplan_model->actionplan_completion_progress($session_en['en_id'], $in);
 echo '<span class="status-label underdot" style="margin-right:10px;" data-toggle="tooltip" data-placement="top" title="'.$completion_rate['steps_completed'].'/'.$completion_rate['steps_total'].' Steps Completed"><i class="fas fa-check-circle"></i> '.$completion_rate['completion_percentage'].'%</span>';
 
 

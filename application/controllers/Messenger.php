@@ -12,6 +12,18 @@ class Messenger extends CI_Controller
         $this->output->enable_profiler(FALSE);
     }
 
+    function test($in_id = 6903){
+        $ins = $this->Intents_model->in_fetch(array(
+            'in_id' => $in_id,
+            'in_status' => 2, //Published
+        ));
+        echo_json(array(
+            'common' => $this->Intents_model->in_metadata_common_base($ins[0]),
+            'completion' => $this->Actionplan_model->actionplan_completion_progress(1, $ins[0]),
+            'marks' => $this->Actionplan_model->actionplan_completion_marks(1, $ins[0]),
+            'milestones' => $this->Actionplan_model->actionplan_completion_milestones(1, $ins[0]),
+        ));
+    }
 
     function deprecate__actionplan_assessment_webhook(){
 
@@ -2017,7 +2029,7 @@ class Messenger extends CI_Controller
         ));
 
         //See if we also need to mark the child as complete:
-        $this->Actionplan_model->actionplan_completion_auto_try($en_id, $answer_ins[0]);
+        $this->Actionplan_model->actionplan_completion_auto_apply($en_id, $answer_ins[0]);
 
         //Archive current progression links:
         foreach($current_progression_links as $ln){

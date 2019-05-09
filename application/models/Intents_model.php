@@ -5,7 +5,7 @@ class Intents_model extends CI_Model
 
     /*
      *
-     * Entity related database functions
+     * Intent related database functions
      *
      * */
 
@@ -649,12 +649,11 @@ class Intents_model extends CI_Model
             } else {
 
                 //AND parent Intent with Fixed Step Link:
-
-                //Add to common step:
                 array_push($metadata_this['__in__metadata_common_steps'], intval($in_child['in_id']));
 
-                //Run function on child:
+                //Go recursively down:
                 $child_recursion = $this->Intents_model->in_metadata_common_base($in_child);
+
 
                 //Aggregate recursion data:
                 if(count($child_recursion['__in__metadata_common_steps']) > 0){
@@ -678,6 +677,7 @@ class Intents_model extends CI_Model
                 }
             }
         }
+
 
         //Was this an OR branch that needs it's children added to the array?
         if($has_or_parent && count($or_children) > 0){
@@ -827,7 +827,6 @@ class Intents_model extends CI_Model
                 }
             }
         }
-
 
 
         //Go through expansion paths, if any:

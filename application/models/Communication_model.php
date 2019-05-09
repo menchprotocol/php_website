@@ -1860,7 +1860,7 @@ class Communication_model extends CI_Model
 
 
             //See if we also need to mark the answer as complete:
-            $this->Actionplan_model->actionplan_completion_auto_try($en['en_id'], $answer_ins[0]);
+            $this->Actionplan_model->actionplan_completion_auto_apply($en['en_id'], $answer_ins[0]);
 
 
             //Affirm answer received answer:
@@ -1959,7 +1959,7 @@ class Communication_model extends CI_Model
                 //Show them a list of their Action Plan and completion stats:
                 foreach($student_intents as $student_intent){
                     //Completion Percentage so far:
-                    $completion_rate = $this->Actionplan_model->actionplan_completion_calculate($en['en_id'], $student_intent);
+                    $completion_rate = $this->Actionplan_model->actionplan_completion_progress($en['en_id'], $student_intent);
                     $message .= "\n\n" . $completion_rate['completion_percentage'].'% ['.$completion_rate['steps_completed'].'/'.$completion_rate['steps_total'].' step'.echo__s($completion_rate['steps_total']).'] '.echo_in_outcome($student_intent['in_outcome']);
                 }
 

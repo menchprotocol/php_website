@@ -32,10 +32,14 @@ if(count($student_intents) > 0){
             echo '</div>';
         }
 
-        $completion_rate = $this->Actionplan_model->actionplan_completion_calculate($session_en['en_id'], $ln);
+        $completion_rate = $this->Actionplan_model->actionplan_completion_progress($session_en['en_id'], $ln);
 
         echo '<span class="actionplan-title in-title-'.$ln['in_id'].'">' . $ln['in_outcome'] . '</span>';
-        echo '<div class="actionplan-overview">'.( $time_estimate ? $time_estimate.', ' : '').'<span title="'.$completion_rate['steps_completed'].'/'.$completion_rate['steps_total'].' Steps Completed">'.$completion_rate['completion_percentage'].'% Complete</span> [<span class="actionplan_remove" in-id="'.$ln['in_id'].'"><i class="fas fa-hand-paper"></i> Stop</span>]</div>';
+        echo '<div class="actionplan-overview">';
+        echo ( $time_estimate ? $time_estimate.', ' : '');
+        echo '<span title="'.$completion_rate['steps_completed'].'/'.$completion_rate['steps_total'].' Steps Completed">'.$completion_rate['completion_percentage'].'% Complete</span>';
+        echo '[<span class="actionplan_remove" in-id="'.$ln['in_id'].'"><i class="fas fa-hand-paper"></i> Stop</span>]';
+        echo '</div>';
         echo '</a>';
 
     }

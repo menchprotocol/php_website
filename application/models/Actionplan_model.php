@@ -300,7 +300,7 @@ class Actionplan_model extends CI_Model
         ), array('in_parent'), 0, 0, array('ln_order' => 'ASC')) as $actionplan_in){
 
             //See progress rate so far:
-            $completion_rate = $this->Actionplan_model->actionplan_completion_calculate($en_id, $actionplan_in);
+            $completion_rate = $this->Actionplan_model->actionplan_completion_progress($en_id, $actionplan_in);
 
             if($completion_rate['completion_percentage'] < 100){
                 //This is the top priority now:
@@ -425,7 +425,7 @@ class Actionplan_model extends CI_Model
 
     }
 
-    function actionplan_completion_auto_try($en_id, $in){
+    function actionplan_completion_auto_apply($en_id, $in){
 
         /*
          *
@@ -486,82 +486,129 @@ class Actionplan_model extends CI_Model
     }
 
 
-    function actionplan_completion_add_milestones($en_id, $in){
+
+    function actionplan_completion_milestones($en_id, $in, $is_bottom_level = true){
+
+
+        /*
+         *
+         * A recursive function to check student
+         * marks and if they unlock any milestones...
+         *
+         * */
+
+        //Unlock Conditional Milestones?
+        $milestone_messages = array(); //TO be populated if we trigger 1 or more milestones:
 
 
         //First let's see if this is completed:
-        $completion_rate = $this->Actionplan_model->actionplan_completion_calculate($en_id, $in);
+        $completion_rate = $this->Actionplan_model->actionplan_completion_progress($en_id, $in);
         if($completion_rate['completion_percentage'] < 100){
             //Not completed, so nothing to do here:
             return false;
         }
 
 
-
         //See if this tree has any milestone expansion:
         $in_metadata = unserialize($in['in_metadata']);
         if(isset($in_metadata['in__metadata_expansion_milestones'][$in['in_id']]) && count($in_metadata['in__metadata_expansion_milestones'][$in['in_id']]) > 0){
-            //We have some expansion milestones
-
-            //Let's calculate student's score:
 
 
-            //let's see if any of their conditions has been met:
+            //Yes, Let's calculate student's score for this tree:
+            $student_marks = $this->Actionplan_model->actionplan_completion_marks($en_id, $in);
 
-        }
+            //Fetch all milestone expansion ranges to see if they unlock any for this level:
+            $found_match = 0;
+            foreach ($this->Links_model->ln_fetch(array(
+                'ln_status' => 2, //Published
+                'in_status' => 2, //Published
+                'ln_type_entity_id' => 4229,
+                'ln_parent_intent_id' => $in['in_id'],
+                'ln_child_intent_id IN (' . join(',', $in_metadata['in__metadata_expansion_milestones'][$in['in_id']]) . ')' => null, //Limit to cached answers
+            ), array('in_child'), 0, 0) as $conditional_range) {
 
+                //See if it unlocks any of these ranges defined in the metadata:
+                $ln_metadata = unserialize($conditional_range['ln_metadata']);
 
-        //Fetch student intentions:
-        $student_in_ids = $this->Actionplan_model->actionplan_top_ids($en_id);
+                if(isset($ln_metadata['tr__conditional_score_min']) && isset($ln_metadata['tr__conditional_score_max'])){
+                    if($student_marks['milestones_answered_fixed_score']>=$ln_metadata['tr__conditional_score_min'] && $student_marks['milestones_answered_fixed_score']<=$ln_metadata['tr__conditional_score_max']){
 
+                        //Found a match:
+                        $found_match++;
 
-        //Go through parents and detect intersects with student intentions. WARNING: Logic duplicated. Search for "ELEPHANT" to see.
-        foreach ($this->Intents_model->in_fetch_recursive_parents($in['in_id'], 2) as $parent_in_id => $grand_parent_ids) {
-            //Does this parent and its grandparents have an intersection with the student intentions?
-            if(array_intersect($grand_parent_ids, $student_in_ids)){
-                //Fetch parent intent & show:
-                $parent_ins = $this->Intents_model->in_fetch(array(
-                    'in_id' => $parent_in_id,
+                        //It did match here! Log and notify student!
+                        $message = 'You got '.$student_marks['milestones_answered_fixed_score'].'/'.$student_marks['milestones_marks_count'].' assessments correct and marked '.$student_marks['milestones_answered_fixed_score'].'%';
+
+                        //Push to messgaes:
+                        array_push($milestone_messages , $message);
+
+                        //Unlock Action Plan:
+                        $this->Links_model->ln_create(array(
+                            'ln_status' => 2,
+                            'ln_type_entity_id' => 6140, //Action Plan Milestone Unlocked
+                            'ln_miner_entity_id' => $en_id,
+                            'ln_parent_intent_id' => $in['in_id'],
+                            'ln_child_intent_id' => $conditional_range['in_id'],
+                            'ln_content' => $message,
+                            'ln_metadata' => array(
+                                'completion_rate' => $completion_rate,
+                                'student_marks' => $student_marks,
+                            ),
+                        ));
+
+                    }
+                }
+            }
+
+            //We must have exactly 1 match by now:
+            if($found_match != 1){
+                $this->Links_model->ln_create(array(
+                    'ln_content' => 'actionplan_completion_milestones() found multiple routing logic matches!',
+                    'ln_type_entity_id' => 4246, //Platform Bug Reports
+                    'ln_miner_entity_id' => 1, //Shervin/Developer
+                    'ln_child_entity_id' => $en_id,
+                    'ln_parent_intent_id' => $in['in_id'],
                 ));
-
-                //See if parent is complete:
-                $parent_progression_steps = $this->Links_model->ln_fetch(array(
-                    'ln_type_entity_id IN (' . join(',', $this->config->item('en_ids_6146')) . ')' => null, //Action Plan Progression Link Types
-                    'ln_miner_entity_id' => $en_id,
-                    'ln_parent_intent_id' => $parent_in_id,
-                    'ln_status >=' => 0,
-                ));
-
-                echo echo_in_actionplan_step($parent_ins[0], 1, (count($parent_progression_steps) > 0 ? $parent_progression_steps[0]['ln_status'] : 0));
             }
         }
 
 
+        //Now go up since we know there are more levels...
+        if($is_bottom_level){
 
+            //Fetch student intentions:
+            $student_in_ids = $this->Actionplan_model->actionplan_top_ids($en_id);
 
+            //Go through parents and detect intersects with student intentions. WARNING: Logic duplicated. Search for "ELEPHANT" to see.
+            $parents_checked = array(); //So we don't do duplicate...
+            foreach ($this->Intents_model->in_fetch_recursive_parents($in['in_id'], 2) as $parent_in_id => $grand_parent_ids) {
+                //Does this parent and its grandparents have an intersection with the student intentions?
+                if(array_intersect($grand_parent_ids, $student_in_ids)){
 
-        //Let's check if there are any conditional Milestone links here?
+                    foreach($grand_parent_ids as $p_id){
 
+                        //Make sure not duplicated:
+                        if(in_array($p_id , $parents_checked)){
+                            continue;
+                        }
 
-        if(1){
-            //Yes, it's complete! See if it has any conditional Milestone links:
+                        //Run for this item:
+                        $parent_milestone_messages = $this->Actionplan_model->actionplan_completion_milestones($en_id, $in, false);
+                        if($parent_milestone_messages && count($parent_milestone_messages) > 0){
+                            $milestone_messages = array_merge($milestone_messages, $parent_milestone_messages);
+                        }
 
-
-            if(1){
-                //Yes, it has conditional links and it's complete!
-
-
-                //Log link for evaluating the Conditional Milestone Link:
-                $conditional_evaluation = $this->Links_model->ln_create(array(
-                    'ln_status' => 2, //Log as a New link unless we meet the minimum student requirement to publish it instantly...
-                    'ln_type_entity_id' => 6278, //Assessed Conditional Milestone Link
-                    'ln_miner_entity_id' => $ens[0]['en_id'],
-                    'ln_parent_intent_id' => $ins[0]['in_id'],
-                ));
+                        //Terminate if we reached the Action Plan intention level:
+                        if(in_array($p_id , $student_in_ids)){
+                            break;
+                        }
+                    }
+                }
             }
         }
 
 
+        return $milestone_messages;
     }
 
     function actionplan_completion_checks($en_id, $in, $send_message = true){
@@ -589,8 +636,15 @@ class Actionplan_model extends CI_Model
         ), array(), 0, 0, array('ln_order' => 'ASC'));
 
 
+        //Try to assess milestones:
+        $milestone_messages = $this->Actionplan_model->actionplan_completion_milestones($en_id, $in);
 
-        //TODO See if there is any conditional milestones that need to be unlocked
+
+        //Did we find any milestones?
+        if(count($milestone_messages) > 0){
+            //Add to messages:
+            $on_complete_messages = array_merge($on_complete_messages, $milestone_messages);
+        }
 
 
         //Return all the messages:
@@ -614,8 +668,6 @@ class Actionplan_model extends CI_Model
             return $on_complete_messages;
 
         }
-
-
     }
 
     function actionplan_step_next_communicate($en_id, $in_id, $fb_messenger_format = true)
@@ -1038,7 +1090,7 @@ class Actionplan_model extends CI_Model
                     if(!$fb_messenger_format){
 
                         //Completion Percentage so far:
-                        $completion_rate = $this->Actionplan_model->actionplan_completion_calculate($en_id, $child_in);
+                        $completion_rate = $this->Actionplan_model->actionplan_completion_progress($en_id, $child_in);
 
                         //Open list:
                         $next_step_message .= '<a href="/messenger/actionplan/'.$child_in['in_id']. '" class="list-group-item">';
@@ -1239,7 +1291,7 @@ class Actionplan_model extends CI_Model
 
     }
 
-    function actionplan_completion_calculate($en_id, $in, $top_level = true)
+    function actionplan_completion_marks($en_id, $in, $top_level = true)
     {
 
         //Fetch/validate Action Plan Common Steps:
@@ -1248,7 +1300,139 @@ class Actionplan_model extends CI_Model
 
             //Should not happen, log error:
             $this->Links_model->ln_create(array(
-                'ln_content' => 'actionplan_completion_calculate() Detected student Action Plan without in__metadata_common_steps value!',
+                'ln_content' => 'actionplan_completion_marks() Detected student Action Plan without in__metadata_common_steps value!',
+                'ln_type_entity_id' => 4246, //Platform Bug Reports
+                'ln_miner_entity_id' => 1, //Shervin/Developer
+                'ln_parent_entity_id' => $en_id,
+                'ln_parent_intent_id' => $in['in_id'],
+            ));
+
+            return 0;
+        }
+
+        //Generate flat steps:
+        $flat_common_steps = array_flatten($in_metadata['in__metadata_common_steps']);
+
+        //Calculate common steps and expansion steps recursively for this student:
+        $metadata_this = array(
+            //Generic assessment marks stats:
+            'milestones_marks_count' => 0,
+            'milestones_marks_min' => 0,
+            'milestones_marks_max' => 0,
+
+            //Student answer stats:
+            'milestones_answered_count' => 0, //How many they have answered so far
+            'milestones_correct_count' => 0, //The ones they go right!
+            'milestones_correct_marks' => 0, //Indicates completion score
+
+            //Calculated at the end:
+            'milestones_answered_fixed_score' => 0, //Used to determine which milestone to be unlocked...
+        );
+
+
+        //Fetch expansion steps recursively, if any:
+        if(isset($in_metadata['in__metadata_expansion_steps']) && count($in_metadata['in__metadata_expansion_steps']) > 0){
+
+            //We need expansion steps (OR Intents) to calculate question/answers:
+            //To save all the marks for specific answers:
+            $answer_marks_index = array();
+
+            //Go through these expansion steps:
+            foreach($in_metadata['in__metadata_expansion_steps'] as $question_in_id => $answers_in_ids ){
+
+                //Calculate local min/max marks:
+                unset($local_marks); //Reset again...
+                $local_marks = array(
+                    'local_min_mark' => null,
+                    'local_max_mark' => null,
+                );
+
+                //Calculate min/max points for this based on answers:
+                foreach($this->Links_model->ln_fetch(array(
+                    'in_status' => 2, //Published
+                    'ln_status' => 2, //Published
+                    'ln_type_entity_id' => 4228, //Intent Link Fixed Steps
+                    'ln_parent_intent_id' => $question_in_id,
+                    'ln_child_intent_id IN (' . join(',', $answers_in_ids) . ')' => null, //Limit to cached answers
+                ), array('in_child')) as $in_answer){
+
+                    //Extract Link Metadata:
+                    $possible_answer_metadata = unserialize($in_answer['ln_metadata']);
+
+                    //Are there
+                    if(isset($possible_answer_metadata['tr__assessment_points'])){
+
+                        //define mark:
+                        $possible_mark = intval($possible_answer_metadata['tr__assessment_points']);
+
+                        //Assign to this question:
+                        $answer_marks_index[$in_answer['in_id']] = $possible_mark;
+
+                        //Addup local min/max marks:
+                        if(is_null($local_marks['local_min_mark']) || $possible_mark < $local_marks['local_min_mark']){
+                            $local_marks['local_min_mark'] = $possible_mark;
+                        }
+                        if(is_null($local_marks['local_max_mark']) || $possible_mark > $local_marks['local_max_mark']){
+                            $local_marks['local_max_mark'] = $possible_mark;
+                        }
+                    }
+                }
+
+                //Did we have any marks for this question?
+                if($local_marks['local_max_mark'] > 0){
+                    //Yes we have marks, let's addup to total max/minimums:
+                    $metadata_this['milestones_marks_count'] += 1;
+                    $metadata_this['milestones_marks_min'] += $local_marks['local_min_mark'];
+                    $metadata_this['milestones_marks_max'] += $local_marks['local_max_mark'];
+                }
+            }
+
+
+
+            //Now let's check student answers to see what they have done:
+            foreach($this->Links_model->ln_fetch(array(
+                'ln_type_entity_id' => 6157, //Action Plan Question Answered
+                'ln_miner_entity_id' => $en_id, //Belongs to this Student
+                'ln_parent_intent_id IN (' . join(',', $flat_common_steps ) . ')' => null,
+                'ln_child_intent_id IN (' . join(',', array_flatten($in_metadata['in__metadata_expansion_steps'])) . ')' => null,
+                'ln_status' => 2, //Published
+                'in_status' => 2, //Published
+            ), array('in_child')) as $expansion_in) {
+
+                //Fetch recursive:
+                $recursive_stats = $this->Actionplan_model->actionplan_completion_marks($en_id, $expansion_in, false);
+
+                //Addup data for this intent:
+                $this_answer_marks = ( isset($answer_marks_index[$expansion_in['in_id']]) ? $answer_marks_index[$expansion_in['in_id']] : 0 );
+                $metadata_this['milestones_answered_count'] += 1 + $recursive_stats['milestones_answered_count'];
+                $metadata_this['milestones_correct_count'] += ( $this_answer_marks > 0 ? 1 : 0 ) + $recursive_stats['milestones_correct_count'];
+                $metadata_this['milestones_correct_marks'] += $this_answer_marks + $recursive_stats['milestones_correct_marks'];
+
+            }
+        }
+
+
+        if($top_level && $metadata_this['milestones_answered_count'] > 0){
+            //See assessment summary:
+            $metadata_this['milestones_answered_fixed_score'] = floor( ($metadata_this['milestones_correct_marks'] - $metadata_this['milestones_marks_min']) / ($metadata_this['milestones_marks_max'] - $metadata_this['milestones_marks_min']) * 100 );
+        }
+
+
+        //Return results:
+        return $metadata_this;
+
+    }
+
+    function actionplan_completion_progress($en_id, $in, $top_level = true)
+    {
+
+        //Fetch/validate Action Plan Common Steps:
+        $in_metadata = unserialize($in['in_metadata']);
+        if(!isset($in_metadata['in__metadata_common_steps'])){
+
+            //Should not happen, log error:
+            $this->Links_model->ln_create(array(
+                'ln_content' => 'actionplan_completion_progress() Detected student Action Plan without in__metadata_common_steps value!',
                 'ln_type_entity_id' => 4246, //Platform Bug Reports
                 'ln_miner_entity_id' => 1, //Shervin/Developer
                 'ln_parent_entity_id' => $en_id,
@@ -1284,9 +1468,11 @@ class Actionplan_model extends CI_Model
             'seconds_completed' => intval($common_completed[0]['completed_seconds']),
         );
 
+
         //Fetch expansion steps recursively, if any:
         if(isset($in_metadata['in__metadata_expansion_steps']) && count($in_metadata['in__metadata_expansion_steps']) > 0){
 
+            //Now let's check student answers to see what they have done:
             foreach($this->Links_model->ln_fetch(array(
                 'ln_type_entity_id' => 6157, //Action Plan Question Answered
                 'ln_miner_entity_id' => $en_id, //Belongs to this Student
@@ -1294,19 +1480,19 @@ class Actionplan_model extends CI_Model
                 'ln_child_intent_id IN (' . join(',', array_flatten($in_metadata['in__metadata_expansion_steps'])) . ')' => null,
                 'ln_status' => 2, //Published
                 'in_status' => 2, //Published
-            ), array('in_child')) as $expansion_in){
+            ), array('in_child')) as $expansion_in) {
 
                 //Fetch recursive:
-                $recursive_stats = $this->Actionplan_model->actionplan_completion_calculate($en_id, $expansion_in, false);
+                $recursive_stats = $this->Actionplan_model->actionplan_completion_progress($en_id, $expansion_in, false);
 
                 //Addup completion stats for this:
                 $metadata_this['steps_total'] += $recursive_stats['steps_total'];
                 $metadata_this['steps_completed'] += $recursive_stats['steps_completed'];
                 $metadata_this['seconds_total'] += $recursive_stats['seconds_total'];
                 $metadata_this['seconds_completed'] += $recursive_stats['seconds_completed'];
-
             }
         }
+
 
         if($top_level){
 
@@ -1315,7 +1501,7 @@ class Actionplan_model extends CI_Model
              * Completing an Action Plan depends on two factors:
              *
              * 1) number of steps (some may have 0 time estimate)
-             * 2) estimated seconds (usually accurate)
+             * 2) estimated seconds (usual ly accurate)
              *
              * To increase the accurate of our completion % function,
              * We would also assign a default time to the average step
@@ -1331,6 +1517,7 @@ class Actionplan_model extends CI_Model
             $metadata_this['completion_percentage'] = floor( ($metadata_this['seconds_completed']+($step_default_seconds*$metadata_this['steps_completed'])) / ($metadata_this['seconds_total']+($step_default_seconds*$metadata_this['steps_total'])) * 100 );
 
         }
+
 
         //Return results:
         return $metadata_this;
