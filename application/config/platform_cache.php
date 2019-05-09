@@ -11,7 +11,7 @@ defined('BASEPATH') OR exit('No direct script access allowed');
  *
  */
 
-//Generated 2019-05-08 16:46:18 PST
+//Generated 2019-05-09 11:43:46 PST
 
 //Intent Notes Deliverable:
 $config['en_ids_6345'] = array(4231, 4232, 6242);
@@ -432,19 +432,13 @@ $config['en_all_4363'] = array(
 );
 
 //Action Plan Progression Steps:
-$config['en_ids_6146'] = array(4559, 6140, 6143, 6144, 6157, 6158);
+$config['en_ids_6146'] = array(4559, 6143, 6144, 6157, 6158);
 $config['en_all_6146'] = array(
     4559 => array(
         'm_icon' => '<i class="far fa-comment-check"></i>',
         'm_name' => 'Messages Read',
         'm_desc' => 'Completed when students read the messages of an intent that does not have a completion requirement',
         'm_parents' => array(6274, 6255, 4755, 6146, 4593),
-    ),
-    6140 => array(
-        'm_icon' => '<i class="fas fa-lock-open"></i>',
-        'm_name' => 'Milestone Unlocked',
-        'm_desc' => 'Expands the Action Plan when the student meets the Milestone conditions',
-        'm_parents' => array(6146, 6288, 4229, 4755, 4593),
     ),
     6143 => array(
         'm_icon' => '<i class="far fa-minus-square"></i>',
@@ -1260,7 +1254,7 @@ $config['en_all_4755'] = array(
         'm_icon' => '<i class="fas fa-lock-open"></i>',
         'm_name' => 'Action Plan Milestone Unlocked',
         'm_desc' => '',
-        'm_parents' => array(6146, 6288, 4229, 4755, 4593),
+        'm_parents' => array(6288, 4229, 4755, 4593),
     ),
     6143 => array(
         'm_icon' => '<i class="far fa-minus-square"></i>',
@@ -1875,7 +1869,7 @@ $config['en_all_4593'] = array(
         'm_icon' => '<i class="fas fa-lock-open"></i>',
         'm_name' => 'Action Plan Milestone Unlocked',
         'm_desc' => 'Created when the student responses to OR branches meets the right % points to unlock the pathway to a conditional intent link.',
-        'm_parents' => array(6146, 6288, 4229, 4755, 4593),
+        'm_parents' => array(6288, 4229, 4755, 4593),
     ),
     6143 => array(
         'm_icon' => '<i class="far fa-minus-square"></i>',
