@@ -257,8 +257,10 @@ if(!$action) {
     echo '<p>Below are all the Conditional Milestone Links:</p>';
     echo '<table class="table table-condensed table-striped maxout" style="text-align: left;">';
 
+    $en_all_4229 = $CI->config->item('en_all_4229');
+
     echo '<tr style="font-weight: bold;">';
-    echo '<td colspan="4" style="text-align: left;">Milestone Condition</td>';
+    echo '<td colspan="4" style="text-align: left;">'.$en_all_4229[6402]['m_icon'].' '.$en_all_4229[6402]['m_name'].'</td>';
     echo '</tr>';
     $counter = 0;
     foreach ($this->Links_model->ln_fetch(array(

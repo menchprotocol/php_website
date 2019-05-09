@@ -166,10 +166,12 @@
 
                         </div>
 
+
+                        <?php $en_all_4229 = $this->config->item('en_all_4229'); ?>
                         <div class="score_range_box hidden">
-                            <span class="mini-header">Milestone Condition:</span>
+                            <span class="mini-header"><?= $en_all_4229[6402]['m_name'] ?></span>
                             <div class="form-group label-floating is-empty"
-                                 style="max-width:230px; margin:1px 0 10px;" data-toggle="tooltip" title="Min/Max Milestone Marks scored between 0-100%" data-placement="top">
+                                 style="max-width:230px; margin:1px 0 10px;" data-toggle="tooltip" title="<?= $en_all_4229[6402]['m_desc'] ?>" data-placement="top">
                                 <div class="input-group border">
                                     <span class="input-group-addon addon-lean addon-grey" style="color:#2f2739; font-weight: 300;">IF Scores </span>
                                     <input style="padding-left:0; padding-right:0; text-align:right;" type="text"
@@ -185,8 +187,8 @@
                         </div>
 
                         <div class="score_points hidden">
-                            <span class="mini-header">Milestone Marks:</span>
-                            <select class="form-control border" id="tr__assessment_points" data-toggle="tooltip" title="Marks awarded to students for providing the right answer to a question" data-placement="top" style="margin-bottom:12px;">
+                            <span class="mini-header"><?= $en_all_4229[4358]['m_name'] ?></span>
+                            <select class="form-control border" id="tr__assessment_points" data-toggle="tooltip" title="<?= $en_all_4229[4358]['m_desc'] ?>" data-placement="top" style="margin-bottom:12px;">
                                 <?php
                                 foreach ($this->config->item('in_mark_options') as $mark) {
                                     echo '<option value="' . $mark . '">' . abs($mark) . ' Mark' . echo__s(abs($mark)) . '</option>';

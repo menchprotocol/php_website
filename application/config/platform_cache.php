@@ -11,22 +11,28 @@ defined('BASEPATH') OR exit('No direct script access allowed');
  *
  */
 
-//Generated 2019-05-09 14:27:24 PST
+//Generated 2019-05-09 14:59:50 PST
 
-//Action Plan Progression Scope Expansions:
-$config['en_ids_6288'] = array(6140, 6157);
-$config['en_all_6288'] = array(
+//Linked Intents Conditional Step:
+$config['en_ids_4229'] = array(4358, 6140, 6402);
+$config['en_all_4229'] = array(
+    4358 => array(
+        'm_icon' => '<i class="fal fa-tachometer-fast"></i>',
+        'm_name' => 'Step Marks',
+        'm_desc' => 'Marks awarded to students for choosing an OR path. Marks would eventually be used to calculate a fixed score, then possibly used to unlock other steps',
+        'm_parents' => array(4229, 6232, 6213, 6103, 4228),
+    ),
     6140 => array(
         'm_icon' => '<i class="fas fa-lock-open"></i>',
-        'm_name' => 'Step Unlocked',
-        'm_desc' => 'New steps added to your Action Plan because of the score generated from your answers to my questions.',
+        'm_name' => 'Action Plan Step Unlocked',
+        'm_desc' => 'A step that has become available because of the score generated from student answers',
         'm_parents' => array(6288, 4229, 4755, 4593),
     ),
-    6157 => array(
-        'm_icon' => '<i class="fas fa-clipboard-check"></i>',
-        'm_name' => 'Question Answered',
-        'm_desc' => '',
-        'm_parents' => array(6288, 6255, 6244, 6146, 4755, 4593, 4460),
+    6402 => array(
+        'm_icon' => '<i class="far fa-ruler"></i>',
+        'm_name' => 'Conditional Score Range',
+        'm_desc' => 'Defines the minimum/maximum fixed score a student must get in order to unlock this conditional step',
+        'm_parents' => array(4229),
     ),
 );
 
@@ -303,7 +309,7 @@ $config['en_all_6196'] = array(
     ),
     6203 => array(
         'm_icon' => '<i class="fab fa-facebook"></i>',
-        'm_name' => 'Link Metadata Facebook Attachment ID',
+        'm_name' => 'Facebook Attachment ID',
         'm_desc' => 'File caching offered by Facebook for media delivered over Messenger.',
         'm_parents' => array(6232, 6196, 6215, 2793, 6103),
     ),
@@ -682,7 +688,7 @@ $config['en_ids_4432'] = array(1281, 1308, 3084, 4430, 4433);
 $config['en_all_4432'] = array(
     1281 => array(
         'm_icon' => '🛡️',
-        'm_name' => 'Mench Moderators',
+        'm_name' => 'Mench Core Contributors',
         'm_desc' => '',
         'm_parents' => array(4757, 4463, 4432),
     ),
@@ -1336,7 +1342,7 @@ $config['en_all_4595'] = array(
         'm_icon' => '<i class="fas fa-spin fa-question-circle"></i>',
         'm_name' => 'Linked Intents Conditional Step',
         'm_desc' => '100',
-        'm_parents' => array(4593, 4486, 4595),
+        'm_parents' => array(4527, 6283, 4593, 4486, 4595),
     ),
     4230 => array(
         'm_icon' => '<i class="fal fa-level-up rotate90"></i>',
@@ -1496,7 +1502,7 @@ $config['en_all_4593'] = array(
         'm_icon' => '<i class="fas fa-spin fa-question-circle"></i>',
         'm_name' => 'Linked Intents Conditional Step',
         'm_desc' => '',
-        'm_parents' => array(4593, 4486, 4595),
+        'm_parents' => array(4527, 6283, 4593, 4486, 4595),
     ),
     4230 => array(
         'm_icon' => '<i class="fal fa-level-up rotate90"></i>',
@@ -2174,7 +2180,7 @@ $config['en_all_4486'] = array(
         'm_icon' => '<i class="fas fa-spin fa-question-circle"></i>',
         'm_name' => 'Conditional Step',
         'm_desc' => 'Intent added to Action Plans after parent intent is complete AND the user\'s % score falls within the defined min/max range',
-        'm_parents' => array(4593, 4486, 4595),
+        'm_parents' => array(4527, 6283, 4593, 4486, 4595),
     ),
 );
 
