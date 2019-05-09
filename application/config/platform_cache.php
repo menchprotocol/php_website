@@ -11,7 +11,7 @@ defined('BASEPATH') OR exit('No direct script access allowed');
  *
  */
 
-//Generated 2019-05-09 15:51:49 PST
+//Generated 2019-05-09 16:00:14 PST
 
 //Action Plan Completion Unlock Milestones Function:
 $config['en_ids_6410'] = array(4228, 4229, 4358, 4735, 4739, 6140, 6402);
@@ -55,7 +55,7 @@ $config['en_all_6410'] = array(
     6402 => array(
         'm_icon' => '<i class="far fa-ruler"></i>',
         'm_name' => 'Conditional Score Range',
-        'm_desc' => '',
+        'm_desc' => 'Defines the minimum/maximum fixed score a student must get in order to unlock this conditional step',
         'm_parents' => array(6410, 4229),
     ),
 );
