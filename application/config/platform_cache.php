@@ -11,7 +11,7 @@ defined('BASEPATH') OR exit('No direct script access allowed');
  *
  */
 
-//Generated 2019-05-09 20:26:43 PST
+//Generated 2019-05-09 20:47:06 PST
 
 //Action Plan Reset Progress:
 $config['en_ids_6415'] = array(4559, 6140, 6143, 6144, 6154, 6155, 6157, 6158);
@@ -26,7 +26,7 @@ $config['en_all_6415'] = array(
         'm_icon' => '<i class="fas fa-lock-open"></i>',
         'm_name' => 'Action Plan Step Unlocked',
         'm_desc' => '',
-        'm_parents' => array(6255, 6415, 6410, 6288, 4229, 4755, 4593),
+        'm_parents' => array(6415, 6410, 6288, 4229, 4755, 4593),
     ),
     6143 => array(
         'm_icon' => '<i class="far fa-minus-square"></i>',
@@ -103,7 +103,7 @@ $config['en_all_6410'] = array(
         'm_icon' => '<i class="fas fa-lock-open"></i>',
         'm_name' => 'Action Plan Step Unlocked',
         'm_desc' => 'Determined by this function which step should be unlocked',
-        'm_parents' => array(6255, 6415, 6410, 6288, 4229, 4755, 4593),
+        'm_parents' => array(6415, 6410, 6288, 4229, 4755, 4593),
     ),
     6402 => array(
         'm_icon' => '<i class="far fa-ruler"></i>',
@@ -213,19 +213,13 @@ $config['en_all_6274'] = array(
 );
 
 //Action Plan Progression Completion Triggers:
-$config['en_ids_6255'] = array(4559, 6140, 6144, 6157, 6158);
+$config['en_ids_6255'] = array(4559, 6144, 6157, 6158);
 $config['en_all_6255'] = array(
     4559 => array(
         'm_icon' => '<i class="far fa-comment-check"></i>',
         'm_name' => 'Action Plan Messages Read',
         'm_desc' => '',
         'm_parents' => array(6415, 6274, 6255, 4755, 6146, 4593),
-    ),
-    6140 => array(
-        'm_icon' => '<i class="fas fa-lock-open"></i>',
-        'm_name' => 'Action Plan Step Unlocked',
-        'm_desc' => '',
-        'm_parents' => array(6255, 6415, 6410, 6288, 4229, 4755, 4593),
     ),
     6144 => array(
         'm_icon' => '<i class="fas fa-shield-check"></i>',
@@ -1360,7 +1354,7 @@ $config['en_all_4755'] = array(
         'm_icon' => '<i class="fas fa-lock-open"></i>',
         'm_name' => 'Action Plan Step Unlocked',
         'm_desc' => '',
-        'm_parents' => array(6255, 6415, 6410, 6288, 4229, 4755, 4593),
+        'm_parents' => array(6415, 6410, 6288, 4229, 4755, 4593),
     ),
     6143 => array(
         'm_icon' => '<i class="far fa-minus-square"></i>',
@@ -1975,7 +1969,7 @@ $config['en_all_4593'] = array(
         'm_icon' => '<i class="fas fa-lock-open"></i>',
         'm_name' => 'Action Plan Step Unlocked',
         'm_desc' => 'Created when the student responses to OR branches meets the right % points to unlock the pathway to a conditional intent link.',
-        'm_parents' => array(6255, 6415, 6410, 6288, 4229, 4755, 4593),
+        'm_parents' => array(6415, 6410, 6288, 4229, 4755, 4593),
     ),
     6143 => array(
         'm_icon' => '<i class="far fa-minus-square"></i>',
