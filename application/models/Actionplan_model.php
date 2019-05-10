@@ -1311,7 +1311,8 @@ class Actionplan_model extends CI_Model
 
             //Since we can only append quick replies to text messages, let's see what is happening here:
             $is_last_message = ( $count == (count($in__messages)-1) );
-            if($is_last_message && ( !isset($message_ln['ln_parent_entity_id']) || $message_ln['ln_parent_entity_id']==0 )){
+            //No entity reference and no /link command in order to accept quick replies...
+            if($is_last_message && ( !isset($message_ln['ln_parent_entity_id']) || $message_ln['ln_parent_entity_id']==0 ) && substr_count($message_ln['ln_content'], '/link')==0){
                 //Since there is no entity reference we can append our message here:
                 $last_message_accepts_quick_replies = true;
             }
