@@ -32,7 +32,7 @@ class Actionplan_model extends CI_Model
 
             //Is this completed?
             $completed_steps = $this->Links_model->ln_fetch(array(
-                'ln_type_entity_id IN (' . join(',' , $this->config->item('en_ids_6255')) . ')' => null, //Action Plan Progression Completion Triggers
+                'ln_type_entity_id IN (' . join(',' , $this->config->item('en_ids_6429')) . ')' => null, //Action Plan Progression Completion Triggers
                 'ln_miner_entity_id' => $en_id, //Belongs to this Student
                 'ln_parent_intent_id' => $common_step_in_id,
                 'ln_status' => 2, //Published
