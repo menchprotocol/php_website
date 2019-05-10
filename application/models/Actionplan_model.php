@@ -607,6 +607,9 @@ class Actionplan_model extends CI_Model
                         ),
                     ));
 
+                    //See if we also need to mark the child as complete:
+                    $this->Actionplan_model->actionplan_completion_auto_apply($en_id, $conditional_step);
+
                 }
             }
 
