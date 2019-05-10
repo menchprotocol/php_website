@@ -502,7 +502,7 @@ class Actionplan_model extends CI_Model
 
 
         //Let's see how many steps get unlocked:
-        $recursive_steps_unlocked = 0;
+        $unlock_steps_messages = array();
 
 
         //First let's see if this is completed:
@@ -513,7 +513,7 @@ class Actionplan_model extends CI_Model
         }
 
 
-        //See if this tree has any milestone expansion:
+        //Look at Conditional Steps ONLY at this level:
         $in_metadata = unserialize($in['in_metadata']);
         if(isset($in_metadata['in__metadata_expansion_conditional'][$in['in_id']]) && count($in_metadata['in__metadata_expansion_conditional'][$in['in_id']]) > 0){
 
@@ -546,7 +546,8 @@ class Actionplan_model extends CI_Model
             $student_marks = $this->Actionplan_model->actionplan_completion_marks($en_id, $in);
 
 
-            //Fetch all milestone expansion ranges to see if they unlock any for this level:
+
+            //Detect Step to be Unlocked:
             $found_match = 0;
             foreach ($this->Links_model->ln_fetch(array(
                 'ln_status' => 2, //Published
@@ -559,51 +560,54 @@ class Actionplan_model extends CI_Model
                 //See if it unlocks any of these ranges defined in the metadata:
                 $ln_metadata = unserialize($conditional_step['ln_metadata']);
 
-                if(isset($ln_metadata['tr__conditional_score_min']) && isset($ln_metadata['tr__conditional_score_max'])){
-                    if($student_marks['milestones_answered_score']>=$ln_metadata['tr__conditional_score_min'] && $student_marks['milestones_answered_score']<=$ln_metadata['tr__conditional_score_max']){
-
-                        //Found a match:
-                        $found_match++;
-                        $recursive_steps_unlocked++;
-
-
-                        //It did match here! Log and notify student!
-                        $message = 'You completed the step to '.echo_in_outcome($in['in_outcome'], true, true).'. ';
-
-                        //Append based on title type:
-                        if(is_clean_outcome($conditional_step)){
-                            $message .= 'This unlocked a new step to '.echo_in_outcome($conditional_step['in_outcome'], true);
-                        } else {
-                            $message .= 'This means: '.echo_in_outcome($conditional_step['in_outcome'], true);
-                        }
-
-                        //Give reference in Action Plan
-                        $message .= ' /link:Open 🚩Action Plan:https://mench.com/messenger/actionplan/'.$conditional_step['in_id'];
+                //Defines ranges:
+                if(!isset($ln_metadata['tr__conditional_score_min'])){
+                    $ln_metadata['tr__conditional_score_min'] = 0;
+                }
+                if(!isset($ln_metadata['tr__conditional_score_max'])){
+                    $ln_metadata['tr__conditional_score_max'] = 0;
+                }
 
 
-                        //Communicate message to student:
-                        $this->Communication_model->dispatch_message(
-                            $message,
-                            array( 'en_id' => $en_id ),
-                            true
-                        );
+                if($student_marks['milestones_answered_score']>=$ln_metadata['tr__conditional_score_min'] && $student_marks['milestones_answered_score']<=$ln_metadata['tr__conditional_score_max']){
 
+                    //Found a match:
+                    $found_match++;
 
-                        //Unlock Action Plan:
-                        $this->Links_model->ln_create(array(
-                            'ln_status' => 2,
-                            'ln_type_entity_id' => 6140, //Action Plan Milestone Unlocked
-                            'ln_miner_entity_id' => $en_id,
-                            'ln_parent_intent_id' => $in['in_id'],
-                            'ln_child_intent_id' => $conditional_step['in_id'],
-                            'ln_content' => $message,
-                            'ln_metadata' => array(
-                                'completion_rate' => $completion_rate,
-                                'student_marks' => $student_marks,
-                            ),
-                        ));
+                    //It did match here! Log and notify student!
+                    $message = 'You completed the step to '.echo_in_outcome($in['in_outcome'], true, true).'. ';
 
+                    //Append based on title type:
+                    if(is_clean_outcome($conditional_step)){
+                        $message .= 'This unlocked a new step to '.echo_in_outcome($conditional_step['in_outcome'], true);
+                    } else {
+                        $message .= 'This means: '.echo_in_outcome($conditional_step['in_outcome'], true);
                     }
+
+                    //Give reference in Action Plan
+                    $message .= ' /link:Open 🚩Action Plan:https://mench.com/messenger/actionplan/'.$conditional_step['in_id'];
+
+
+                    //Communicate message to student:
+                    array_push($unlock_steps_messages, array(
+                        'ln_content' => $message,
+                    ));
+
+
+                    //Unlock Action Plan:
+                    $this->Links_model->ln_create(array(
+                        'ln_status' => 2,
+                        'ln_type_entity_id' => 6140, //Action Plan Milestone Unlocked
+                        'ln_miner_entity_id' => $en_id,
+                        'ln_parent_intent_id' => $in['in_id'],
+                        'ln_child_intent_id' => $conditional_step['in_id'],
+                        'ln_content' => $message,
+                        'ln_metadata' => array(
+                            'completion_rate' => $completion_rate,
+                            'student_marks' => $student_marks,
+                        ),
+                    ));
+
                 }
             }
 
@@ -655,7 +659,8 @@ class Actionplan_model extends CI_Model
 
                         //Now see if this child completion resulted in a full parent completion:
                         if(count($parent_ins) > 0){
-                            $recursive_steps_unlocked += $this->Actionplan_model->actionplan_completion_unlock_milestones($en_id, $parent_ins[0], false);
+                            $unlock_steps_messages_recursive = $this->Actionplan_model->actionplan_completion_unlock_milestones($en_id, $parent_ins[0], false);
+                            $unlock_steps_messages = array_merge($unlock_steps_messages, $unlock_steps_messages_recursive);
                         }
 
                         //Terminate if we reached the Action Plan intention level:
@@ -668,7 +673,7 @@ class Actionplan_model extends CI_Model
         }
 
 
-        return $recursive_steps_unlocked;
+        return $unlock_steps_messages;
     }
 
     function actionplan_completion_checks($en_id, $in, $send_message = true){
@@ -688,25 +693,17 @@ class Actionplan_model extends CI_Model
          * */
 
 
-        //Try to assess milestones:
-        $recursive_steps_unlocked = $this->Actionplan_model->actionplan_completion_unlock_milestones($en_id, $in);
-
-        //Inform student if they unlocked multiple:
-        if($recursive_steps_unlocked >= 2){
-            $this->Communication_model->dispatch_message(
-                'You unlocked '.$recursive_steps_unlocked.' steps',
-                array('en_id' => $en_id),
-                true
-            );
-        }
-
-
         //Start with on-complete tips if any:
         $on_complete_messages = $this->Links_model->ln_fetch(array(
             'ln_status' => 2, //Published
             'ln_type_entity_id' => 6242, //On-Complete Tips
             'ln_child_intent_id' => $in['in_id'],
         ), array(), 0, 0, array('ln_order' => 'ASC'));
+
+
+        //Try to assess milestones:
+        $unlock_steps_messages = $this->Actionplan_model->actionplan_completion_unlock_milestones($en_id, $in);
+        $on_complete_messages = array_merge($on_complete_messages, $unlock_steps_messages);
 
 
         //Return all the messages:
@@ -1295,15 +1292,17 @@ class Actionplan_model extends CI_Model
          * Let's start dispatch Messenger messages
          *
          * */
-        //Check to see if completion notes needs to be dispatched via Messenger?
-        if($made_published_progress && $trigger_completion){
+
+        //Did we JUST made progress and this would trigger completion?
+        if(isset($new_progression_link['ln_status']) && $new_progression_link['ln_status']==2){
 
             //Process on-complete automations:
             $on_complete_messages = $this->Actionplan_model->actionplan_completion_checks($en_id, $ins[0], false);
 
-            //Add on-complete messages (if any) to the current messages:
-            $in__messages = array_merge($in__messages, $on_complete_messages);
-
+            if($trigger_completion && count($on_complete_messages) > 0){
+                //Add on-complete messages (if any) to the current messages:
+                $in__messages = array_merge($in__messages, $on_complete_messages);
+            }
         }
 
 
@@ -1350,17 +1349,6 @@ class Actionplan_model extends CI_Model
             }
 
         }
-
-
-
-
-
-        /*
-         *
-         * Post-Progression Automated Actions now...
-         *
-         * */
-
 
 
 
