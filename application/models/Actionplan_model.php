@@ -25,18 +25,19 @@ class Actionplan_model extends CI_Model
          * */
 
         $in_metadata = unserialize($in['in_metadata']);
-        foreach(array_flatten(array_merge($in_metadata['in__metadata_common_steps'], $in_metadata['in__metadata_expansion_conditional'])) as $common_step_in_id){
+        foreach(array_flatten($in_metadata['in__metadata_common_steps']) as $common_step_in_id){
 
             //Is this an expansion step?
-            $is_expansion = (isset($in_metadata['in__metadata_expansion_steps'][$common_step_in_id]) || isset($in_metadata['in__metadata_expansion_conditional'][$common_step_in_id]));
+            $is_expansion = isset($in_metadata['in__metadata_expansion_steps'][$common_step_in_id]);
+            $is_condition = isset($in_metadata['in__metadata_expansion_conditional'][$common_step_in_id]);
 
             //Is this completed?
             $completed_steps = $this->Links_model->ln_fetch(array(
-                'ln_type_entity_id IN (' . join(',' , $this->config->item('en_ids_6429')) . ')' => null, //Action Plan Progression Completion Triggers
+                'ln_type_entity_id IN (' . join(',' , ( $is_condition ? array(6140) : $this->config->item('en_ids_6146') )) . ')' => null, //Action Plan Progression Steps
                 'ln_miner_entity_id' => $en_id, //Belongs to this Student
                 'ln_parent_intent_id' => $common_step_in_id,
                 'ln_status' => 2, //Published
-            ), ( $is_expansion ? array('in_child') : array() ));
+            ), ( $is_expansion || $is_condition ? array('in_child') : array() ));
 
             //Have they completed this?
             if(count($completed_steps) == 0){
@@ -44,7 +45,7 @@ class Actionplan_model extends CI_Model
                 //Not completed yet, this is the next step:
                 return $common_step_in_id;
 
-            } elseif($is_expansion){
+            } elseif($is_expansion || $is_condition){
 
                 //Completed step that has OR expansions, check recursively to see if next step within here:
                 $found_in_id = $this->Actionplan_model->actionplan_step_next_find($en_id, $completed_steps[0]);
@@ -56,6 +57,7 @@ class Actionplan_model extends CI_Model
             }
 
         }
+
 
         //Nothing found!
         return 0;
