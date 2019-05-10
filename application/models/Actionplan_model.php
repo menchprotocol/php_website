@@ -625,14 +625,21 @@ class Actionplan_model extends CI_Model
         if($is_bottom_level){
 
             //Fetch student intentions:
-            $student_in_ids = $this->Actionplan_model->actionplan_intention_ids($en_id);
+            $student_intentions_ids = $this->Actionplan_model->actionplan_intention_ids($en_id);
 
-            //Go through parents and detect intersects with student intentions. WARNING: Logic duplicated. Search for "ELEPHANT" to see.
-            $parents_checked = array(); //So we don't do duplicate...
-            foreach ($this->Intents_model->in_fetch_recursive_parents($in['in_id'], 2) as $parent_in_id => $grand_parent_ids) {
+            //Fetch all parents trees for this intent
+            $parents_trees = $this->Intents_model->in_fetch_recursive_parents($in['in_id'], 2);
+
+            //Prevent duplicate processes even if on multiple parent trees:
+            $parents_checked = array();
+
+            //Go through parents trees and detect intersects with student intentions. WARNING: Logic duplicated. Search for "ELEPHANT" to see.
+            foreach ($parents_trees as $parent_in_id => $grand_parent_ids) {
+
                 //Does this parent and its grandparents have an intersection with the student intentions?
-                if(array_intersect($grand_parent_ids, $student_in_ids)){
+                if(array_intersect($grand_parent_ids, $student_intentions_ids)){
 
+                    //Yes, let's go thtough until we hit their intersection
                     foreach($grand_parent_ids as $p_id){
 
                         //Make sure not duplicated:
@@ -640,12 +647,19 @@ class Actionplan_model extends CI_Model
                             continue;
                         }
 
-                        //Run for this level as well:
-                        $recursive_steps_unlocked += $this->Actionplan_model->actionplan_completion_unlock_milestones($en_id, $in, false);
+                        //Fetch parent intent:
+                        $parent_ins = $this->Intents_model->in_fetch(array(
+                            'in_id' => $in['in_id'],
+                            'in_status' => 2,
+                        ));
 
+                        //Now see if this child completion resulted in a full parent completion:
+                        if(count($parent_ins) > 0){
+                            $recursive_steps_unlocked += $this->Actionplan_model->actionplan_completion_unlock_milestones($en_id, $parent_ins[0], false);
+                        }
 
                         //Terminate if we reached the Action Plan intention level:
-                        if(in_array($p_id , $student_in_ids)){
+                        if(in_array($p_id , $student_intentions_ids)){
                             break;
                         }
                     }
@@ -1613,16 +1627,16 @@ class Actionplan_model extends CI_Model
 
     function actionplan_intention_ids($en_id){
         //Simply returns all the intention IDs for a student's Action Plan:
-        $student_in_ids = array();
+        $student_intentions_ids = array();
         foreach($this->Links_model->ln_fetch(array(
             'ln_miner_entity_id' => $en_id,
             'ln_type_entity_id' => 4235, //Action Plan Set Intention
             'ln_status IN (' . join(',', $this->config->item('ln_status_incomplete')) . ')' => null, //incomplete intentions
             'in_status' => 2, //Published
         ), array('in_parent'), 0) as $student_in){
-            array_push($student_in_ids, intval($student_in['in_id']));
+            array_push($student_intentions_ids, intval($student_in['in_id']));
         }
-        return $student_in_ids;
+        return $student_intentions_ids;
     }
 
 }
