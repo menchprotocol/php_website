@@ -11,9 +11,9 @@ defined('BASEPATH') OR exit('No direct script access allowed');
  *
  */
 
-//Generated 2019-05-09 16:51:46 PST
+//Generated 2019-05-09 17:00:01 PST
 
-//Action Plan Clear All Steps:
+//Action Plan Reset Progress:
 $config['en_ids_6415'] = array(4559, 6140, 6143, 6144, 6154, 6155, 6157, 6158);
 $config['en_all_6415'] = array(
     4559 => array(
@@ -875,8 +875,8 @@ $config['en_all_4255'] = array(
         'm_parents' => array(4990, 4255, 3000),
     ),
     6232 => array(
-        'm_icon' => '<i class="far fa-file-signature"></i>',
-        'm_name' => 'Variable Names',
+        'm_icon' => '<i class="far fa-lambda"></i>',
+        'm_name' => 'Variable Name',
         'm_desc' => 'Requires variable name',
         'm_parents' => array(4255, 6212),
     ),
@@ -2039,9 +2039,9 @@ $config['en_all_4593'] = array(
     ),
     6415 => array(
         'm_icon' => '<i class="far fa-function"></i>',
-        'm_name' => 'Action Plan Clear All Steps',
+        'm_name' => 'Action Plan Reset Progress',
         'm_desc' => 'Removes certain links types as defined by its children from a Student\'s Action Plan. Currently only available for Miners.',
-        'm_parents' => array(4593, 4527, 6414),
+        'm_parents' => array(6418, 4593, 4527, 6414),
     ),
 );
 

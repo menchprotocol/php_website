@@ -1579,7 +1579,7 @@ class Messenger extends CI_Controller
     }
 
 
-    function actionplan_clear_all($en_id, $timestamp, $secret_key){
+    function actionplan_reset_progress($en_id, $timestamp, $secret_key){
 
         if($secret_key != md5($en_id . $this->config->item('actionplan_salt') . $timestamp)){
             die('Invalid Secret Key');
@@ -1595,7 +1595,7 @@ class Messenger extends CI_Controller
         if(count($progress_links) > 0){
 
             //Yes they did have some:
-            $message = count($progress_links).' Action Plan progression link removed.';
+            $message = count($progress_links).' Action Plan progression link'.echo__s(count($progress_links)).' removed';
 
             //Log link:
             $clear_all_link = $this->Links_model->ln_create(array(

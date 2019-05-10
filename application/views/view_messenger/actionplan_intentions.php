@@ -69,7 +69,7 @@ if(count($this->Links_model->ln_fetch(array(
         'ln_parent_entity_id' => 1308, //Miners
     ))) > 0){
     $timestamp = time();
-    echo '<div style="text-align: right;"><a href="/messenger/actionplan_clear_all/'.$session_en['en_id'].'/'.$timestamp.'/'.md5($session_en['en_id'] . $this->config->item('actionplan_salt') . $timestamp).'" style="font-size:0.6em; color:#CCC;"><i class="fas fa-trash-alt"></i> Clear All</a></div>';
+    echo '<div style="text-align: right;"><a href="/messenger/actionplan_reset_progress/'.$session_en['en_id'].'/'.$timestamp.'/'.md5($session_en['en_id'] . $this->config->item('actionplan_salt') . $timestamp).'" style="font-size:0.6em; color:#CCC;"><i class="fas fa-trash-alt"></i> Clear All</a></div>';
 }
 
 ?>
