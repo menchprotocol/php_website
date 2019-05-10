@@ -299,8 +299,12 @@ class Actionplan_model extends CI_Model
 
         }
 
+        //Process on-complete automations:
+        $on_complete_messages = $this->Actionplan_model->actionplan_completion_checks($en_id, $ins[0], false);
+
         //Return number of skipped steps:
         return count($flat_common_steps);
+
     }
 
     function actionplan_intention_focus($en_id){
