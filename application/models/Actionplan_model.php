@@ -509,7 +509,7 @@ class Actionplan_model extends CI_Model
         $completion_rate = $this->Actionplan_model->actionplan_completion_progress($en_id, $in);
         if($completion_rate['completion_percentage'] < 100){
             //Not completed, so nothing to do here:
-            return false;
+            return array();
         }
 
 
@@ -538,7 +538,7 @@ class Actionplan_model extends CI_Model
                     'ln_miner_entity_id' => 1, //Shervin/Developer
                 ));
 
-                return false;
+                return array();
             }
 
 
@@ -592,7 +592,6 @@ class Actionplan_model extends CI_Model
                     array_push($unlock_steps_messages, array(
                         'ln_content' => $message,
                     ));
-
 
                     //Unlock Action Plan:
                     $this->Links_model->ln_create(array(

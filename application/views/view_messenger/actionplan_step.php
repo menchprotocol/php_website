@@ -15,10 +15,14 @@ foreach($student_intents as $student_in){
 
 
 //Fetch parent tree all the way to the top of Action Plan ln_child_intent_id
+$found_grandpa_intersect = false; //Makes sure user can access this step as it should related to one of their intentions...
+
+
 echo '<div class="list-group parent-actionplans" style="margin-top: 10px;">';
 
 if(in_array($in['in_id'], $student_intentions_ids)){
     //Show link back to Action Plan:
+    $found_grandpa_intersect = true;
     echo '<a href="/messenger/actionplan" class="list-group-item">';
     echo '<span class="pull-left">';
     echo '<span class="badge badge-primary fr-bgd"><i class="fas fa-angle-left"></i></span>';
@@ -28,7 +32,6 @@ if(in_array($in['in_id'], $student_intentions_ids)){
 
 
 //Go through parents and detect intersects with student intentions. WARNING: Logic duplicated. Search for "ELEPHANT" to see.
-$found_grandpa_intersect = false; //Makes sure user can access this step as it should related to one of their intentions...
 foreach ($this->Intents_model->in_fetch_recursive_parents($in['in_id'], 2) as $parent_in_id => $grand_parent_ids) {
     //Does this parent and its grandparents have an intersection with the student intentions?
     if(array_intersect($grand_parent_ids, $student_intentions_ids)){
