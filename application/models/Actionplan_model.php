@@ -529,6 +529,13 @@ class Actionplan_model extends CI_Model
             if(count($existing_expansions) > 0){
 
                 //Oh we do have an expansion that already happened! So skip this:
+                /*
+                 * This was being triggered but I am not sure if its normal or not!
+                 * For now will comment out so no errors are logged
+                 * TODO: See if you can make sense of this section. The question is
+                 * if we would ever try to process a conditional step twice? If it
+                 * happens, is it an error or not, and should simply be ignored?
+                 *
                 $this->Links_model->ln_create(array(
                     'ln_child_entity_id' => $en_id,
                     'ln_parent_intent_id' => $in['in_id'],
@@ -537,7 +544,7 @@ class Actionplan_model extends CI_Model
                     'ln_type_entity_id' => 4246, //Platform Bug Reports
                     'ln_miner_entity_id' => 1, //Shervin/Developer
                 ));
-
+                */
                 return array();
             }
 
