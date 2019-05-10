@@ -313,6 +313,8 @@ foreach (echo_fixed_fields() as $object_id => $statuses) {
 
 
 
+        //Loadup the Platform Glossary:
+        $en_all_4463 = $this->config->item('en_all_4463');
 
         //All Link Types:
         $all_eng_types = $this->Links_model->ln_fetch(array('ln_status >=' => 0), array('en_type'), 0, 0, array('en_name' => 'ASC'), 'COUNT(ln_type_entity_id) as trs_count, en_name, en_icon, ln_type_entity_id', 'ln_type_entity_id, en_name, en_icon');
@@ -323,7 +325,7 @@ foreach (echo_fixed_fields() as $object_id => $statuses) {
 
             //Echo stats:
             $all_ln_types .= '<tr>';
-            $all_ln_types .= '<td style="text-align: left;"><span style="width: 26px; display: inline-block; text-align: center;">'.( strlen($ln['en_icon']) > 0 ? $ln['en_icon'] : '<i class="fas fa-at grey-at"></i>' ).'</span><a href="/entities/'.$ln['ln_type_entity_id'].'">'.$ln['en_name'].'</a></td>';
+            $all_ln_types .= '<td style="text-align: left;"><span style="width: 26px; display: inline-block; text-align: center;">'.( strlen($ln['en_icon']) > 0 ? $ln['en_icon'] : '<i class="fas fa-at grey-at"></i>' ).'</span><a href="/entities/'.$ln['ln_type_entity_id'].'">'.$ln['en_name'].'</a>'.( in_array($ln['ln_type_entity_id'] , $this->config->item('en_ids_4755')) ? ' <span data-toggle="tooltip" title="'.$en_all_4463[4755]['m_name'].': '.$en_all_4463[4755]['m_desc'].'" data-placement="top">'.$en_all_4463[4755]['m_icon'].'</span>' : '' ).'</td>';
             $all_ln_types .= '<td style="text-align: right;"><a href="/links?ln_type_entity_id='.$ln['ln_type_entity_id'].'"  data-toggle="tooltip" title="View all '.number_format($ln['trs_count'],0).' links" data-placement="top">'.number_format($ln['trs_count'], 0).'</a> <i class="fas fa-link rotate90"></i></td>';
             $all_ln_types .= '</tr>';
 

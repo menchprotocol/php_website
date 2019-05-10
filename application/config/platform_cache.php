@@ -11,7 +11,102 @@ defined('BASEPATH') OR exit('No direct script access allowed');
  *
  */
 
-//Generated 2019-05-10 13:13:34 PST
+//Generated 2019-05-10 13:53:14 PST
+
+//Platform Glossary:
+$config['en_ids_4463'] = array(1281, 1308, 3000, 3084, 4430, 4433, 4485, 4488, 4535, 4536, 4595, 4755, 6138, 6196, 6205);
+$config['en_all_4463'] = array(
+    1281 => array(
+        'm_icon' => '🛡️',
+        'm_name' => 'Mench Core Contributors',
+        'm_desc' => 'Mench Team members who serve the community by mediating and solving issues.',
+        'm_parents' => array(4757, 4463, 4432),
+    ),
+    1308 => array(
+        'm_icon' => '⛏️',
+        'm_name' => 'Mench Miners',
+        'm_desc' => 'Everyone on Mench is mining intelligence, but this group of individuals have set their intention to become a Mench miner and have graduated from our training program on how to Mine intelligence using Mench.',
+        'm_parents' => array(4463, 4432, 4426),
+    ),
+    3000 => array(
+        'm_icon' => '<i class="fas fa-star"></i>',
+        'm_name' => 'Expert Sources',
+        'm_desc' => 'Our mining process is based on existing content produced by industry experts that will be mined from various reference types including videos, articles, books, online courses and more!',
+        'm_parents' => array(3463, 4506, 4527, 4463),
+    ),
+    3084 => array(
+        'm_icon' => '⭐',
+        'm_name' => 'Industry Experts',
+        'm_desc' => 'People with experience in their respective industry that have shown a consistent commitment to advancing their industry.',
+        'm_parents' => array(4990, 4432, 4255, 4463),
+    ),
+    4430 => array(
+        'm_icon' => '🎓',
+        'm_name' => 'Mench Students',
+        'm_desc' => 'Users connected to Mench Personal Assistant on Facebook Messenger.',
+        'm_parents' => array(4426, 4463, 4432),
+    ),
+    4433 => array(
+        'm_icon' => '⌨️',
+        'm_name' => 'Mench Developers',
+        'm_desc' => 'Developers who are contributing to the Mench open-source project on GitHub: https://github.com/askmench',
+        'm_parents' => array(4463, 4432, 4426),
+    ),
+    4485 => array(
+        'm_icon' => '<i class="fas fa-comment-plus"></i>',
+        'm_name' => 'Intent Notes All',
+        'm_desc' => 'Intent notes are various information collected around intentions that enable Mench to operate as a Personal Assistant for students looking to accomplish an intent.',
+        'm_parents' => array(6379, 4603, 4527, 4463),
+    ),
+    4488 => array(
+        'm_icon' => '<img src="https://mench.com/img/mench_white.png">',
+        'm_name' => 'Mench Platform',
+        'm_desc' => 'A web portal and GUI enabling Miners to mine intents, entities and links.',
+        'm_parents' => array(2738, 4523, 3326, 3324, 3325, 3323, 4463),
+    ),
+    4535 => array(
+        'm_icon' => '<i class="fas fa-hashtag"></i>',
+        'm_name' => 'Intents',
+        'm_desc' => 'Intents define the intention of an entity as defined similar to a SMART goal.',
+        'm_parents' => array(2738, 4534, 4463),
+    ),
+    4536 => array(
+        'm_icon' => '<i class="fas fa-at"></i>',
+        'm_name' => 'Entities',
+        'm_desc' => 'Entities represent people, objects and things.',
+        'm_parents' => array(2738, 4534, 4463),
+    ),
+    4595 => array(
+        'm_icon' => '<i class="fas fa-award"></i>',
+        'm_name' => 'Link Points',
+        'm_desc' => 'Miners are awarded with points for each transaction they log as a way to measure their contribution to Mench. Points have no monetary value and are only used to rank relative contribution.',
+        'm_parents' => array(6214, 4319, 4426, 4527, 4463, 4341),
+    ),
+    4755 => array(
+        'm_icon' => '<i class="fas fa-eye-slash"></i>',
+        'm_name' => 'Private Content',
+        'm_desc' => 'Mench is open-source but most of our student generated content is private and accessible either by the student or Mench\'s core contributors.',
+        'm_parents' => array(4463, 4426, 4527, 4757),
+    ),
+    6138 => array(
+        'm_icon' => '🚩',
+        'm_name' => 'Action Plan',
+        'm_desc' => 'Each student has a collection of Intents that they want to accomplish, known as their Action Plan which is accessible via Facebook Messenger or by login into mench.com',
+        'm_parents' => array(2738, 4463),
+    ),
+    6196 => array(
+        'm_icon' => '<img src="https://mench.com/img/bp_128.png">',
+        'm_name' => 'Mench Personal Assistant',
+        'm_desc' => '',
+        'm_parents' => array(4463, 2738, 4527, 3320),
+    ),
+    6205 => array(
+        'm_icon' => '<i class="fas fa-link"></i>',
+        'm_name' => 'Links',
+        'm_desc' => 'An electronic log book containing a list of transactions and balances typically involving financial accounts.',
+        'm_parents' => array(2738, 4463, 4534),
+    ),
+);
 
 //Action Plan Reset Progress:
 $config['en_ids_6415'] = array(4559, 6140, 6143, 6144, 6154, 6155, 6157, 6158);
@@ -1114,7 +1209,7 @@ $config['en_all_4990'] = array(
     ),
 );
 
-//Only Moderators can Modify:
+//Only Core Contributors can Modify:
 $config['en_ids_4426'] = array(1308, 3288, 4426, 4430, 4433, 4595, 4755, 4997, 5969);
 $config['en_all_4426'] = array(
     1308 => array(
@@ -1131,7 +1226,7 @@ $config['en_all_4426'] = array(
     ),
     4426 => array(
         'm_icon' => '<i class="fas fa-lock"></i>',
-        'm_name' => 'Only Moderators can Modify',
+        'm_name' => 'Only Core Contributors can Modify',
         'm_desc' => '',
         'm_parents' => array(4426, 4527, 4757, 4428),
     ),
@@ -1155,9 +1250,9 @@ $config['en_all_4426'] = array(
     ),
     4755 => array(
         'm_icon' => '<i class="fas fa-eye-slash"></i>',
-        'm_name' => 'Link Visible to Moderators Only',
+        'm_name' => 'Private Content',
         'm_desc' => '',
-        'm_parents' => array(4426, 4527, 4757),
+        'm_parents' => array(4463, 4426, 4527, 4757),
     ),
     4997 => array(
         'm_icon' => '<i class="fal fa-list-alt"></i>',
@@ -1173,7 +1268,7 @@ $config['en_all_4426'] = array(
     ),
 );
 
-//Link Visible to Moderators Only:
+//Private Content:
 $config['en_ids_4755'] = array(3286, 3288, 4235, 4242, 4266, 4267, 4268, 4275, 4278, 4279, 4282, 4283, 4299, 4460, 4547, 4548, 4549, 4550, 4551, 4552, 4553, 4554, 4555, 4556, 4557, 4559, 4570, 4783, 5967, 6132, 6140, 6143, 6144, 6149, 6154, 6155, 6157, 6158, 6224);
 $config['en_all_4755'] = array(
     3286 => array(
