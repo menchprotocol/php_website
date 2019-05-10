@@ -500,8 +500,9 @@ class Actionplan_model extends CI_Model
          *
          * */
 
-        //Unlock Conditional Milestones?
-        $milestone_messages = array(); //TO be populated if we trigger 1 or more milestones:
+
+        //Let's see how many steps get unlocked:
+        $recursive_steps_unlocked = 0;
 
 
         //First let's see if this is completed:
@@ -563,6 +564,7 @@ class Actionplan_model extends CI_Model
 
                         //Found a match:
                         $found_match++;
+                        $recursive_steps_unlocked++;
 
 
                         //It did match here! Log and notify student!
@@ -578,11 +580,13 @@ class Actionplan_model extends CI_Model
                         //Give reference in Action Plan
                         $message .= ' /link:Open 🚩Action Plan:https://mench.com/messenger/actionplan/'.$conditional_step['in_id'];
 
-                        //Push to messgaes:
-                        array_push($milestone_messages , array(
-                            'ln_content' => $message,
-                        ));
 
+                        //Communicate message to student:
+                        $this->Communication_model->dispatch_message(
+                            $message,
+                            array( 'en_id' => $en_id ),
+                            true
+                        );
 
 
                         //Unlock Action Plan:
@@ -636,11 +640,9 @@ class Actionplan_model extends CI_Model
                             continue;
                         }
 
-                        //Run for this item:
-                        $parent_milestone_messages = $this->Actionplan_model->actionplan_completion_unlock_milestones($en_id, $in, false);
-                        if($parent_milestone_messages && count($parent_milestone_messages) > 0){
-                            $milestone_messages = array_merge($milestone_messages, $parent_milestone_messages);
-                        }
+                        //Run for this level as well:
+                        $recursive_steps_unlocked += $this->Actionplan_model->actionplan_completion_unlock_milestones($en_id, $in, false);
+
 
                         //Terminate if we reached the Action Plan intention level:
                         if(in_array($p_id , $student_in_ids)){
@@ -652,7 +654,7 @@ class Actionplan_model extends CI_Model
         }
 
 
-        return $milestone_messages;
+        return $recursive_steps_unlocked;
     }
 
     function actionplan_completion_checks($en_id, $in, $send_message = true){
@@ -672,23 +674,25 @@ class Actionplan_model extends CI_Model
          * */
 
 
+        //Try to assess milestones:
+        $recursive_steps_unlocked = $this->Actionplan_model->actionplan_completion_unlock_milestones($en_id, $in);
+
+        //Inform student if they unlocked multiple:
+        if($recursive_steps_unlocked >= 2){
+            $this->Communication_model->dispatch_message(
+                'You unlocked '.$recursive_steps_unlocked.' steps',
+                array('en_id' => $en_id),
+                true
+            );
+        }
+
+
         //Start with on-complete tips if any:
         $on_complete_messages = $this->Links_model->ln_fetch(array(
             'ln_status' => 2, //Published
             'ln_type_entity_id' => 6242, //On-Complete Tips
             'ln_child_intent_id' => $in['in_id'],
         ), array(), 0, 0, array('ln_order' => 'ASC'));
-
-
-        //Try to assess milestones:
-        $milestone_messages = $this->Actionplan_model->actionplan_completion_unlock_milestones($en_id, $in);
-
-
-        //Did we find any milestones?
-        if($milestone_messages && is_array($milestone_messages) && count($milestone_messages) > 0){
-            //Add to messages:
-            $on_complete_messages = array_merge($on_complete_messages, $milestone_messages);
-        }
 
 
         //Return all the messages:
