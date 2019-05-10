@@ -1556,14 +1556,14 @@ class Actionplan_model extends CI_Model
 
 
         //Expansion Milestones Recursive
-        if(isset($in_metadata['__in__metadata_expansion_conditional']) && count($in_metadata['__in__metadata_expansion_conditional']) > 0){
+        if(isset($in_metadata['in__metadata_expansion_conditional']) && count($in_metadata['in__metadata_expansion_conditional']) > 0){
 
             //Now let's check if student has unlocked any Miletones:
             foreach($this->Links_model->ln_fetch(array(
                 'ln_type_entity_id' => 6140, //Action Plan Milestone Unlocked
                 'ln_miner_entity_id' => $en_id, //Belongs to this Student
                 'ln_parent_intent_id IN (' . join(',', $flat_common_steps ) . ')' => null,
-                'ln_child_intent_id IN (' . join(',', array_flatten($in_metadata['__in__metadata_expansion_conditional'])) . ')' => null,
+                'ln_child_intent_id IN (' . join(',', array_flatten($in_metadata['in__metadata_expansion_conditional'])) . ')' => null,
                 'ln_status' => 2, //Published
                 'in_status' => 2, //Published
             ), array('in_child')) as $expansion_in) {
