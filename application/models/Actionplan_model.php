@@ -590,7 +590,7 @@ class Actionplan_model extends CI_Model
                     if(is_clean_outcome($conditional_step)){
                         $message .= 'This unlocked a new step to '.echo_in_outcome($conditional_step['in_outcome'], true);
                     } else {
-                        $message .= 'This means: '.echo_in_outcome($conditional_step['in_outcome'], true);
+                        $message .= 'The result:' . "\n\n" . echo_in_outcome($conditional_step['in_outcome'], true);
                     }
 
                     //Give reference in Action Plan
