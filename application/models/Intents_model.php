@@ -496,7 +496,7 @@ class Intents_model extends CI_Model
 
         //Return Student-friendly message for completion requirements:
         $name = $en_all_4331[$in['in_requirement_entity_id']]['m_name'];
-        return 'Send me '.echo_a_an($name).' ' . $name .' '.( !$fb_messenger_format ? ' via Messenger' : '' ).' to complete this step.';
+        return 'Send me '.echo_a_an($name).' ' . $name . ( !$fb_messenger_format ? ' via Messenger' : '' ).' to complete this step.';
 
     }
 
