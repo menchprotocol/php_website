@@ -649,7 +649,7 @@ class Actionplan_model extends CI_Model
 
                         //Fetch parent intent:
                         $parent_ins = $this->Intents_model->in_fetch(array(
-                            'in_id' => $in['in_id'],
+                            'in_id' => $p_id,
                             'in_status' => 2,
                         ));
 
