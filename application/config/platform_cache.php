@@ -11,7 +11,7 @@ defined('BASEPATH') OR exit('No direct script access allowed');
  *
  */
 
-//Generated 2019-05-10 13:53:14 PST
+//Generated 2019-05-10 13:58:06 PST
 
 //Platform Glossary:
 $config['en_ids_4463'] = array(1281, 1308, 3000, 3084, 4430, 4433, 4485, 4488, 4535, 4536, 4595, 4755, 6138, 6196, 6205);
@@ -709,7 +709,7 @@ $config['en_all_4277'] = array(
         'm_icon' => '<i class="fal fa-comment-exclamation"></i>',
         'm_name' => 'Student Sent Unrecognized Message',
         'm_desc' => '',
-        'm_parents' => array(4277, 4593),
+        'm_parents' => array(4755, 4277, 4593),
     ),
     4460 => array(
         'm_icon' => '<i class="far fa-ballot-check"></i>',
@@ -908,7 +908,7 @@ $config['en_all_5966'] = array(
         'm_icon' => '<i class="fal fa-bug"></i>',
         'm_name' => 'Platform Bug Reports',
         'm_desc' => '&var_en_subscriber_ids=1',
-        'm_parents' => array(5966, 4593),
+        'm_parents' => array(4755, 5966, 4593),
     ),
 );
 
@@ -1269,7 +1269,7 @@ $config['en_all_4426'] = array(
 );
 
 //Private Content:
-$config['en_ids_4755'] = array(3286, 3288, 4235, 4242, 4266, 4267, 4268, 4275, 4278, 4279, 4282, 4283, 4299, 4460, 4547, 4548, 4549, 4550, 4551, 4552, 4553, 4554, 4555, 4556, 4557, 4559, 4570, 4783, 5967, 6132, 6140, 6143, 6144, 6149, 6154, 6155, 6157, 6158, 6224);
+$config['en_ids_4755'] = array(3286, 3288, 4235, 4242, 4246, 4251, 4266, 4267, 4268, 4275, 4278, 4279, 4282, 4283, 4287, 4299, 4460, 4547, 4548, 4549, 4550, 4551, 4552, 4553, 4554, 4555, 4556, 4557, 4559, 4570, 4783, 5967, 6132, 6140, 6143, 6144, 6149, 6154, 6155, 6157, 6158, 6224, 6389, 6415);
 $config['en_all_4755'] = array(
     3286 => array(
         'm_icon' => '<i class="fal fa-lock-open"></i>',
@@ -1292,6 +1292,18 @@ $config['en_all_4755'] = array(
     4242 => array(
         'm_icon' => '<i class="fal fa-sync"></i>',
         'm_name' => 'Link Updated',
+        'm_desc' => '',
+        'm_parents' => array(4755, 4593, 4595),
+    ),
+    4246 => array(
+        'm_icon' => '<i class="fal fa-bug"></i>',
+        'm_name' => 'Platform Bug Reports',
+        'm_desc' => '',
+        'm_parents' => array(4755, 5966, 4593),
+    ),
+    4251 => array(
+        'm_icon' => '<i class="fas fa-at"></i>',
+        'm_name' => 'Entity Created',
         'm_desc' => '',
         'm_parents' => array(4755, 4593, 4595),
     ),
@@ -1342,6 +1354,12 @@ $config['en_all_4755'] = array(
         'm_name' => 'Action Plan Intentions Listed',
         'm_desc' => '',
         'm_parents' => array(6153, 4755, 4593),
+    ),
+    4287 => array(
+        'm_icon' => '<i class="fal fa-comment-exclamation"></i>',
+        'm_name' => 'Student Sent Unrecognized Message',
+        'm_desc' => '',
+        'm_parents' => array(4755, 4277, 4593),
     ),
     4299 => array(
         'm_icon' => '<i class="far fa-id-badge"></i>',
@@ -1505,6 +1523,18 @@ $config['en_all_4755'] = array(
         'm_desc' => '',
         'm_parents' => array(4755, 6222, 4593),
     ),
+    6389 => array(
+        'm_icon' => '<i class="fab fa-facebook-messenger"></i>',
+        'm_name' => 'Messenger Profile Inaccessible',
+        'm_desc' => '',
+        'm_parents' => array(4755, 4593),
+    ),
+    6415 => array(
+        'm_icon' => '<i class="far fa-function"></i>',
+        'm_name' => 'Action Plan Reset Progress',
+        'm_desc' => '',
+        'm_parents' => array(4755, 6418, 4593, 4527, 6414),
+    ),
 );
 
 //Link Points:
@@ -1556,7 +1586,7 @@ $config['en_all_4595'] = array(
         'm_icon' => '<i class="fas fa-at"></i>',
         'm_name' => 'Entity Created',
         'm_desc' => '30',
-        'm_parents' => array(4593, 4595),
+        'm_parents' => array(4755, 4593, 4595),
     ),
     4255 => array(
         'm_icon' => '<i class="fal fa-align-left"></i>',
@@ -1716,7 +1746,7 @@ $config['en_all_4593'] = array(
         'm_icon' => '<i class="fal fa-bug"></i>',
         'm_name' => 'Platform Bug Reports',
         'm_desc' => '',
-        'm_parents' => array(5966, 4593),
+        'm_parents' => array(4755, 5966, 4593),
     ),
     4250 => array(
         'm_icon' => '<i class="fas fa-hashtag"></i>',
@@ -1728,7 +1758,7 @@ $config['en_all_4593'] = array(
         'm_icon' => '<i class="fas fa-at"></i>',
         'm_name' => 'Entity Created',
         'm_desc' => 'Logged when a new entity is created.',
-        'm_parents' => array(4593, 4595),
+        'm_parents' => array(4755, 4593, 4595),
     ),
     4255 => array(
         'm_icon' => '<i class="fal fa-align-left"></i>',
@@ -1842,7 +1872,7 @@ $config['en_all_4593'] = array(
         'm_icon' => '<i class="fal fa-comment-exclamation"></i>',
         'm_name' => 'Student Sent Unrecognized Message',
         'm_desc' => '',
-        'm_parents' => array(4277, 4593),
+        'm_parents' => array(4755, 4277, 4593),
     ),
     4299 => array(
         'm_icon' => '<i class="far fa-id-badge"></i>',
@@ -2136,13 +2166,13 @@ $config['en_all_4593'] = array(
         'm_icon' => '<i class="fab fa-facebook-messenger"></i>',
         'm_name' => 'Messenger Profile Inaccessible',
         'm_desc' => 'When we cannot fetch user profile data via Messenger API, either because user has not linked their Facebook to Messenger or because they did not authorize Mench to access',
-        'm_parents' => array(4593),
+        'm_parents' => array(4755, 4593),
     ),
     6415 => array(
         'm_icon' => '<i class="far fa-function"></i>',
         'm_name' => 'Action Plan Reset Progress',
         'm_desc' => 'Removes certain links types as defined by its children from a Student\'s Action Plan. Currently only available for Miners.',
-        'm_parents' => array(6418, 4593, 4527, 6414),
+        'm_parents' => array(4755, 6418, 4593, 4527, 6414),
     ),
 );
 
