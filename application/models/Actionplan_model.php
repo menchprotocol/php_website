@@ -542,7 +542,6 @@ class Actionplan_model extends CI_Model
             $student_marks = $this->Actionplan_model->actionplan_completion_marks($en_id, $in);
 
 
-
             //Fetch all milestone expansion ranges to see if they unlock any for this level:
             $found_match = 0;
             foreach ($this->Links_model->ln_fetch(array(
@@ -557,7 +556,7 @@ class Actionplan_model extends CI_Model
                 $ln_metadata = unserialize($conditional_step['ln_metadata']);
 
                 if(isset($ln_metadata['tr__conditional_score_min']) && isset($ln_metadata['tr__conditional_score_max'])){
-                    if($student_marks['milestones_answered_fixed_score']>=$ln_metadata['tr__conditional_score_min'] && $student_marks['milestones_answered_fixed_score']<=$ln_metadata['tr__conditional_score_max']){
+                    if($student_marks['milestones_answered_score']>=$ln_metadata['tr__conditional_score_min'] && $student_marks['milestones_answered_score']<=$ln_metadata['tr__conditional_score_max']){
 
                         //Found a match:
                         $found_match++;
@@ -1391,11 +1390,10 @@ class Actionplan_model extends CI_Model
 
             //Student answer stats:
             'milestones_answered_count' => 0, //How many they have answered so far
-            'milestones_correct_count' => 0, //The ones they go right!
-            'milestones_correct_marks' => 0, //Indicates completion score
+            'milestones_answered_marks' => 0, //Indicates completion score
 
             //Calculated at the end:
-            'milestones_answered_fixed_score' => 0, //Used to determine which milestone to be unlocked...
+            'milestones_answered_score' => 0, //Used to determine which milestone to be unlocked...
         );
 
 
@@ -1428,22 +1426,18 @@ class Actionplan_model extends CI_Model
                     //Extract Link Metadata:
                     $possible_answer_metadata = unserialize($in_answer['ln_metadata']);
 
-                    //Are there
-                    if(isset($possible_answer_metadata['tr__assessment_points'])){
+                    //define mark:
+                    $possible_mark = (isset($possible_answer_metadata['tr__assessment_points']) ? intval($possible_answer_metadata['tr__assessment_points']) : 0);
 
-                        //define mark:
-                        $possible_mark = intval($possible_answer_metadata['tr__assessment_points']);
+                    //Assign to this question:
+                    $answer_marks_index[$in_answer['in_id']] = $possible_mark;
 
-                        //Assign to this question:
-                        $answer_marks_index[$in_answer['in_id']] = $possible_mark;
-
-                        //Addup local min/max marks:
-                        if(is_null($local_marks['local_min_mark']) || $possible_mark < $local_marks['local_min_mark']){
-                            $local_marks['local_min_mark'] = $possible_mark;
-                        }
-                        if(is_null($local_marks['local_max_mark']) || $possible_mark > $local_marks['local_max_mark']){
-                            $local_marks['local_max_mark'] = $possible_mark;
-                        }
+                    //Addup local min/max marks:
+                    if(is_null($local_marks['local_min_mark']) || $possible_mark < $local_marks['local_min_mark']){
+                        $local_marks['local_min_mark'] = $possible_mark;
+                    }
+                    if(is_null($local_marks['local_max_mark']) || $possible_mark > $local_marks['local_max_mark']){
+                        $local_marks['local_max_mark'] = $possible_mark;
                     }
                 }
 
@@ -1474,8 +1468,7 @@ class Actionplan_model extends CI_Model
                 //Addup data for this intent:
                 $this_answer_marks = ( isset($answer_marks_index[$expansion_in['in_id']]) ? $answer_marks_index[$expansion_in['in_id']] : 0 );
                 $metadata_this['milestones_answered_count'] += 1 + $recursive_stats['milestones_answered_count'];
-                $metadata_this['milestones_correct_count'] += ( $this_answer_marks > 0 ? 1 : 0 ) + $recursive_stats['milestones_correct_count'];
-                $metadata_this['milestones_correct_marks'] += $this_answer_marks + $recursive_stats['milestones_correct_marks'];
+                $metadata_this['milestones_answered_marks'] += $this_answer_marks + $recursive_stats['milestones_answered_marks'];
 
             }
         }
@@ -1483,7 +1476,7 @@ class Actionplan_model extends CI_Model
 
         if($top_level && $metadata_this['milestones_answered_count'] > 0){
             //See assessment summary:
-            $metadata_this['milestones_answered_fixed_score'] = floor( ($metadata_this['milestones_correct_marks'] - $metadata_this['milestones_marks_min']) / ($metadata_this['milestones_marks_max'] - $metadata_this['milestones_marks_min']) * 100 );
+            $metadata_this['milestones_answered_score'] = floor( ($metadata_this['milestones_answered_marks'] - $metadata_this['milestones_marks_min']) / ($metadata_this['milestones_marks_max'] - $metadata_this['milestones_marks_min']) * 100 );
         }
 
 

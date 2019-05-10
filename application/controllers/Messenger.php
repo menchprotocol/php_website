@@ -19,10 +19,9 @@ class Messenger extends CI_Controller
         ));
 
         echo_json(array(
-            'marks' => $this->Actionplan_model->actionplan_completion_marks(1, $ins[0]),
-            'milestones' => $this->Actionplan_model->actionplan_completion_unlock_milestones(1, $ins[0]),
             'completion' => $this->Actionplan_model->actionplan_completion_progress(1, $ins[0]),
-            'common' => $this->Intents_model->in_metadata_common_base($ins[0]),
+            'marks' => $this->Actionplan_model->actionplan_completion_marks(1, $ins[0]),
+            'common_base' => $this->Intents_model->in_metadata_common_base($ins[0]),
         ));
     }
 

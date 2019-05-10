@@ -1711,6 +1711,7 @@ function echo_in($in, $level, $in_parent_id = 0, $is_parent = false)
 
     //Do we have entity parents loaded in our data-set?
     if (!isset($in['in__parents'])) {
+
         //Fetch parents at this point:
         $in['in__parents'] = $CI->Links_model->ln_fetch(array(
             'ln_status >=' => 0, //New+
