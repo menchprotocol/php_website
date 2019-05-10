@@ -638,7 +638,7 @@ class Communication_model extends CI_Model
         //Where is this request being made from? Public landing pages will have some restrictions on what they displat:
         $is_landing_page = is_numeric($this->uri->segment(1));
         $is_action_plan = ($this->uri->segment(1)=='messenger');
-        $hide_entity_links = ($is_landing_page || $is_action_plan);
+        $is_student_message = ($is_landing_page || $is_action_plan);
 
         if (count($string_references['ref_entities']) > 0) {
 
@@ -800,21 +800,24 @@ class Communication_model extends CI_Model
                  *
                  * */
 
-                if($hide_entity_links){
+                if($is_student_message){
 
-                    //Do not include a link because we don't want to distract the student from the call to Action to get started...
-                    $output_body_message = str_replace('@' . $string_references['ref_entities'][0], '<span class="entity-name">'.$ens[0]['en_name'].'</span>', $output_body_message);
+                    $entity_name_replacement = ( $has_text ? '<span class="entity-name">'.$ens[0]['en_name'].'</span>' : '' );
+                    $output_body_message = str_replace('@' . $string_references['ref_entities'][0], $entity_name_replacement, $output_body_message);
 
                 } else {
+
                     //Show entity link with status:
                     $fixed_fields = $this->config->item('fixed_fields');
                     $output_body_message = str_replace('@' . $string_references['ref_entities'][0], $fixed_fields['en_status'][$ens[0]['en_status']]['s_icon'].' <a href="/entities/' . $ens[0]['en_id'] . '" target="_parent">' . $ens[0]['en_name'] . '</a>', $output_body_message);
+
                 }
 
             } else {
 
                 //Just replace with the entity name, which ensure we're always have a text in our message even if $has_text = FALSE
-                $output_body_message = str_replace('@' . $string_references['ref_entities'][0], $ens[0]['en_name'], $output_body_message);
+                $entity_name_replacement = ( $has_text ? $ens[0]['en_name'] : '' );
+                $output_body_message = str_replace('@' . $string_references['ref_entities'][0], $entity_name_replacement, $output_body_message);
 
             }
         }
