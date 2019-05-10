@@ -549,13 +549,15 @@ class Actionplan_model extends CI_Model
 
             //Detect Step to be Unlocked:
             $found_match = 0;
-            foreach ($this->Links_model->ln_fetch(array(
+            $conditional_steps = $this->Links_model->ln_fetch(array(
                 'ln_status' => 2, //Published
                 'in_status' => 2, //Published
                 'ln_type_entity_id' => 4229,
                 'ln_parent_intent_id' => $in['in_id'],
                 'ln_child_intent_id IN (' . join(',', $in_metadata['in__metadata_expansion_conditional'][$in['in_id']]) . ')' => null, //Limit to cached answers
-            ), array('in_child'), 0, 0) as $conditional_step) {
+            ), array('in_child'), 0, 0);
+
+            foreach ($conditional_steps as $conditional_step) {
 
                 //See if it unlocks any of these ranges defined in the metadata:
                 $ln_metadata = unserialize($conditional_step['ln_metadata']);
@@ -621,6 +623,11 @@ class Actionplan_model extends CI_Model
                     'ln_miner_entity_id' => 1, //Shervin/Developer
                     'ln_child_entity_id' => $en_id,
                     'ln_parent_intent_id' => $in['in_id'],
+                    'ln_metadata' => array(
+                        'completion_rate' => $completion_rate,
+                        'student_marks' => $student_marks,
+                        'conditional_steps' => $conditional_steps,
+                    ),
                 ));
             }
 
