@@ -617,7 +617,6 @@ function echo_tr_row($ln, $is_inner = false)
 
         //Now show all links for this link:
         foreach ($CI->Links_model->ln_fetch(array(
-            'ln_status >=' => 0, //New+
             'ln_parent_link_id' => $ln['ln_id'],
         ), array(), 0, 0, array('ln_id' => 'DESC')) as $ln_child) {
             $ui .= '<div class="tr-child">' . echo_tr_row($ln_child, true) . '</div>';
