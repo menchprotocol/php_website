@@ -25,14 +25,14 @@ class Actionplan_model extends CI_Model
          * */
 
         $in_metadata = unserialize($in['in_metadata']);
-        foreach(array_flatten($in_metadata['in__metadata_common_steps']) as $common_step_in_id){
+        foreach(array_flatten(array_merge($in_metadata['in__metadata_common_steps'], $in_metadata['in__metadata_expansion_conditional'])) as $common_step_in_id){
 
             //Is this an expansion step?
             $is_expansion = (isset($in_metadata['in__metadata_expansion_steps'][$common_step_in_id]) || isset($in_metadata['in__metadata_expansion_conditional'][$common_step_in_id]));
 
             //Is this completed?
             $completed_steps = $this->Links_model->ln_fetch(array(
-                'ln_type_entity_id IN (' . join(',' , $this->config->item('en_ids_6146')) . ')' => null,
+                'ln_type_entity_id IN (' . join(',' , array_merge($this->config->item('en_ids_6146'), array(6140))) . ')' => null,
                 'ln_miner_entity_id' => $en_id, //Belongs to this Student
                 'ln_parent_intent_id' => $common_step_in_id,
                 'ln_status' => 2, //Published

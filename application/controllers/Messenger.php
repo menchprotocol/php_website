@@ -19,6 +19,7 @@ class Messenger extends CI_Controller
         ));
 
         echo_json(array(
+            'next' => $this->Actionplan_model->actionplan_step_next_find(1, $ins[0]),
             'completion' => $this->Actionplan_model->actionplan_completion_progress(1, $ins[0]),
             'marks' => $this->Actionplan_model->actionplan_completion_marks(1, $ins[0]),
             'recursive_parents' => $this->Intents_model->in_fetch_recursive_parents($ins[0]['in_id'], 2),
