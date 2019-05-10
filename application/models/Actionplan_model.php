@@ -300,7 +300,7 @@ class Actionplan_model extends CI_Model
         }
 
         //Process on-complete automations:
-        $on_complete_messages = $this->Actionplan_model->actionplan_completion_checks($en_id, $ins[0], false);
+        $this->Actionplan_model->actionplan_completion_checks($en_id, $ins[0]);
 
         //Return number of skipped steps:
         return count($flat_common_steps);
@@ -1444,7 +1444,6 @@ class Actionplan_model extends CI_Model
         $metadata_this = array(
             //Generic assessment marks stats:
             'milestones_marks_count' => 0,
-            'milestones_marks_min' => 0,
             'milestones_marks_max' => 0,
 
             //Student answer stats:
@@ -1467,11 +1466,7 @@ class Actionplan_model extends CI_Model
             foreach($in_metadata['in__metadata_expansion_steps'] as $question_in_id => $answers_in_ids ){
 
                 //Calculate local min/max marks:
-                unset($local_marks); //Reset again...
-                $local_marks = array(
-                    'local_min_mark' => null,
-                    'local_max_mark' => null,
-                );
+                $local_maximum = 0;
 
                 //Calculate min/max points for this based on answers:
                 foreach($this->Links_model->ln_fetch(array(
@@ -1492,20 +1487,16 @@ class Actionplan_model extends CI_Model
                     $answer_marks_index[$in_answer['in_id']] = $possible_mark;
 
                     //Addup local min/max marks:
-                    if(is_null($local_marks['local_min_mark']) || $possible_mark < $local_marks['local_min_mark']){
-                        $local_marks['local_min_mark'] = $possible_mark;
-                    }
-                    if(is_null($local_marks['local_max_mark']) || $possible_mark > $local_marks['local_max_mark']){
-                        $local_marks['local_max_mark'] = $possible_mark;
+                    if($possible_mark > $local_maximum){
+                        $local_maximum = $possible_mark;
                     }
                 }
 
                 //Did we have any marks for this question?
-                if($local_marks['local_max_mark'] > 0){
+                if($local_maximum > 0){
                     //Yes we have marks, let's addup to total max/minimums:
                     $metadata_this['milestones_marks_count'] += 1;
-                    $metadata_this['milestones_marks_min'] += $local_marks['local_min_mark'];
-                    $metadata_this['milestones_marks_max'] += $local_marks['local_max_mark'];
+                    $metadata_this['milestones_marks_max'] += $local_maximum;
                 }
             }
 
@@ -1535,7 +1526,7 @@ class Actionplan_model extends CI_Model
 
         if($top_level && $metadata_this['milestones_answered_count'] > 0){
             //See assessment summary:
-            $metadata_this['milestones_answered_score'] = floor( ($metadata_this['milestones_answered_marks'] - $metadata_this['milestones_marks_min']) / ($metadata_this['milestones_marks_max'] - $metadata_this['milestones_marks_min']) * 100 );
+            $metadata_this['milestones_answered_score'] = floor( $metadata_this['milestones_answered_marks'] / $metadata_this['milestones_marks_max'] * 100 );
         }
 
 
