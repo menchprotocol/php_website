@@ -1253,6 +1253,27 @@ class Actionplan_model extends CI_Model
 
 
 
+        /*
+         *
+         * Perform on-complete checks if we have
+         * JUST made progress on this step
+         *
+         * */
+        if(isset($new_progression_link['ln_status']) && $new_progression_link['ln_status']==2){
+
+            //Process on-complete automations:
+            $on_complete_messages = $this->Actionplan_model->actionplan_completion_checks($en_id, $ins[0], false);
+
+            if($trigger_completion && count($on_complete_messages) > 0){
+                //Add on-complete messages (if any) to the current messages:
+                $in__messages = array_merge($in__messages, $on_complete_messages);
+            }
+        }
+
+
+
+
+
 
 
 
@@ -1330,20 +1351,6 @@ class Actionplan_model extends CI_Model
          * Let's start dispatch Messenger messages
          *
          * */
-
-        //Did we JUST made progress and this would trigger completion?
-        if(isset($new_progression_link['ln_status']) && $new_progression_link['ln_status']==2){
-
-            //Process on-complete automations:
-            $on_complete_messages = $this->Actionplan_model->actionplan_completion_checks($en_id, $ins[0], false);
-
-            if($trigger_completion && count($on_complete_messages) > 0){
-                //Add on-complete messages (if any) to the current messages:
-                $in__messages = array_merge($in__messages, $on_complete_messages);
-            }
-        }
-
-
         $compile_html_message = null; //Will be useful only IF $fb_messenger_format=FALSE
         $last_message_accepts_quick_replies = false; //Assume FALSE unless proven otherwise...
         foreach ($in__messages as $count => $message_ln) {
