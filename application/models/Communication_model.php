@@ -781,13 +781,16 @@ class Communication_model extends CI_Model
             }
 
 
+            //Determine if we have text:
+            $has_text = !(trim($output_body_message) == '@' . $string_references['ref_entities'][0]);
+
+
+            //Append any appendix generated:
             if($entity_appendix){
                 $output_body_message .= $entity_appendix;
             }
 
 
-            //Determine if we have text:
-            $has_text = !(trim($output_body_message) == '@' . $string_references['ref_entities'][0]);
 
             //Adjust
             if (!$fb_messenger_format) {
