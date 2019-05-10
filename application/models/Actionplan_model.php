@@ -487,13 +487,16 @@ class Actionplan_model extends CI_Model
 
 
 
+
+
     function actionplan_completion_unlock_milestones($en_id, $in, $is_bottom_level = true){
 
 
         /*
          *
-         * A recursive function to check student
-         * marks and if they unlock any milestones...
+         * Function Entity:
+         *
+         * https://mench.com/entities/6410
          *
          * */
 
@@ -566,7 +569,7 @@ class Actionplan_model extends CI_Model
                         $message = 'You completed the step to '.echo_in_outcome($in['in_outcome'], true, true).'. ';
 
                         //Append based on title type:
-                        if(is_clean_outcome($conditional_step['in_outcome'])){
+                        if(is_clean_outcome($conditional_step)){
                             $message .= 'This unlocked a new step to '.echo_in_outcome($conditional_step['in_outcome'], true);
                         } else {
                             $message .= 'This means: '.echo_in_outcome($conditional_step['in_outcome'], true);
