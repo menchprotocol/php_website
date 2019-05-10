@@ -542,6 +542,7 @@ class Actionplan_model extends CI_Model
             $student_marks = $this->Actionplan_model->actionplan_completion_marks($en_id, $in);
 
 
+
             //Fetch all milestone expansion ranges to see if they unlock any for this level:
             $found_match = 0;
             foreach ($this->Links_model->ln_fetch(array(
@@ -550,10 +551,10 @@ class Actionplan_model extends CI_Model
                 'ln_type_entity_id' => 4229,
                 'ln_parent_intent_id' => $in['in_id'],
                 'ln_child_intent_id IN (' . join(',', $in_metadata['in__metadata_expansion_conditional'][$in['in_id']]) . ')' => null, //Limit to cached answers
-            ), array('in_child'), 0, 0) as $conditional_range) {
+            ), array('in_child'), 0, 0) as $conditional_step) {
 
                 //See if it unlocks any of these ranges defined in the metadata:
-                $ln_metadata = unserialize($conditional_range['ln_metadata']);
+                $ln_metadata = unserialize($conditional_step['ln_metadata']);
 
                 if(isset($ln_metadata['tr__conditional_score_min']) && isset($ln_metadata['tr__conditional_score_max'])){
                     if($student_marks['milestones_answered_fixed_score']>=$ln_metadata['tr__conditional_score_min'] && $student_marks['milestones_answered_fixed_score']<=$ln_metadata['tr__conditional_score_max']){
@@ -561,13 +562,26 @@ class Actionplan_model extends CI_Model
                         //Found a match:
                         $found_match++;
 
+
                         //It did match here! Log and notify student!
-                        $message = 'You got '.$student_marks['milestones_answered_fixed_score'].'/'.$student_marks['milestones_marks_count'].' assessments correct and marked '.$student_marks['milestones_answered_fixed_score'].'%';
+                        $message = 'You completed the step to '.echo_in_outcome($in['in_outcome'], true, true).'. ';
+
+                        //Append based on title type:
+                        if(is_clean_outcome($conditional_step['in_outcome'])){
+                            $message .= 'This unlocked a new step to '.echo_in_outcome($conditional_step['in_outcome'], true);
+                        } else {
+                            $message .= 'This means: '.echo_in_outcome($conditional_step['in_outcome'], true);
+                        }
+
+                        //Give reference in Action Plan
+                        $message .= ' /link:Open 🚩Action Plan:https://mench.com/messenger/actionplan/'.$conditional_step['in_id'];
 
                         //Push to messgaes:
                         array_push($milestone_messages , array(
                             'ln_content' => $message,
                         ));
+
+
 
                         //Unlock Action Plan:
                         $this->Links_model->ln_create(array(
@@ -575,7 +589,7 @@ class Actionplan_model extends CI_Model
                             'ln_type_entity_id' => 6140, //Action Plan Milestone Unlocked
                             'ln_miner_entity_id' => $en_id,
                             'ln_parent_intent_id' => $in['in_id'],
-                            'ln_child_intent_id' => $conditional_range['in_id'],
+                            'ln_child_intent_id' => $conditional_step['in_id'],
                             'ln_content' => $message,
                             'ln_metadata' => array(
                                 'completion_rate' => $completion_rate,
@@ -590,13 +604,14 @@ class Actionplan_model extends CI_Model
             //We must have exactly 1 match by now:
             if($found_match != 1){
                 $this->Links_model->ln_create(array(
-                    'ln_content' => 'actionplan_completion_unlock_milestones() found multiple routing logic matches!',
+                    'ln_content' => 'actionplan_completion_unlock_milestones() found ['.$found_match.'] routing logic matches!',
                     'ln_type_entity_id' => 4246, //Platform Bug Reports
                     'ln_miner_entity_id' => 1, //Shervin/Developer
                     'ln_child_entity_id' => $en_id,
                     'ln_parent_intent_id' => $in['in_id'],
                 ));
             }
+
         }
 
 
@@ -1483,17 +1498,8 @@ class Actionplan_model extends CI_Model
         //Fetch/validate Action Plan Common Steps:
         $in_metadata = unserialize($in['in_metadata']);
         if(!isset($in_metadata['in__metadata_common_steps'])){
-
-            //Should not happen, log error:
-            $this->Links_model->ln_create(array(
-                'ln_content' => 'actionplan_completion_progress() Detected student Action Plan without in__metadata_common_steps value!',
-                'ln_type_entity_id' => 4246, //Platform Bug Reports
-                'ln_miner_entity_id' => 1, //Shervin/Developer
-                'ln_parent_entity_id' => $en_id,
-                'ln_parent_intent_id' => $in['in_id'],
-            ));
-
-            return 0;
+            //Since it's not there yet we assume the intent it self only!
+            $in_metadata['in__metadata_common_steps'] = array($in['in_id']);
         }
 
         //Generate flat steps:
