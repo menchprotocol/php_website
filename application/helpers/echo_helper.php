@@ -1742,7 +1742,7 @@ function echo_in($in, $level, $in_parent_id = 0, $is_parent = false)
         'ln_status' => 2, //Published
     ), array(), 0, 0, array(), 'COUNT(ln_id) as total_steps');
     if($actionplan_steps[0]['total_steps'] > 0) {
-        $ui .= '<a href="/links?ln_status=2&ln_type_entity_id=' . join(',', $CI->config->item('en_ids_6146')) . '&ln_parent_intent_id=' . $in['in_id'] . '" class="badge badge-primary ' . echo_advance() . '" style="width:40px; margin:-3px -2px 0 4px; border:2px solid #ffe027 !important;" data-toggle="tooltip" data-placement="top" title="Go to Published Action Plan Progression Links @6146"><span class="btn-counter">' . echo_number($actionplan_steps[0]['total_steps']) . '</span>🚩</a>';
+        $ui .= '<a href="/links?ln_status=2&ln_type_entity_id=' . join(',', $CI->config->item('en_ids_6255')) . '&ln_parent_intent_id=' . $in['in_id'] . '" class="badge badge-primary ' . echo_advance() . '" style="width:40px; margin:-3px -2px 0 4px; border:2px solid #ffe027 !important;" data-toggle="tooltip" data-placement="top" title="Go to Published Action Plan Progression Links @6146"><span class="btn-counter">' . echo_number($actionplan_steps[0]['total_steps']) . '</span>🚩</a>';
     }
 
 
@@ -2037,7 +2037,7 @@ function echo_en($en, $level, $is_parent = false)
         'ln_status' => 2, //Published
     ), array(), 0, 0, array(), 'COUNT(ln_id) as total_steps');
     if($actionplan_steps[0]['total_steps'] > 0){
-        $ui .= '<a href="/links?ln_status=2&ln_type_entity_id=' . join(',', $CI->config->item('en_ids_6146')) . '&ln_miner_entity_id=' . $en['en_id'] . '" class="badge badge-secondary ' . echo_advance() . '" style="width:40px; margin:-3px -2px 0 6px; border:2px solid #0084ff !important;" data-toggle="tooltip" data-placement="top" title="Go to Published Action Plan Progression Links @6146"><span class="btn-counter">'.echo_number($actionplan_steps[0]['total_steps']).'</span>🚩</a>';
+        $ui .= '<a href="/links?ln_status=2&ln_type_entity_id=' . join(',', $CI->config->item('en_ids_6255')) . '&ln_miner_entity_id=' . $en['en_id'] . '" class="badge badge-secondary ' . echo_advance() . '" style="width:40px; margin:-3px -2px 0 6px; border:2px solid #0084ff !important;" data-toggle="tooltip" data-placement="top" title="Go to Published Action Plan Progression Links @6146"><span class="btn-counter">'.echo_number($actionplan_steps[0]['total_steps']).'</span>🚩</a>';
     }
 
 
