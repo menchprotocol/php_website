@@ -300,7 +300,7 @@ class Actionplan_model extends CI_Model
         }
 
         //Process on-complete automations:
-        $this->Actionplan_model->actionplan_completion_checks($en_id, $ins[0]);
+        $this->Actionplan_model->actionplan_completion_checks($en_id, $ins[0], true, false);
 
         //Return number of skipped steps:
         return count($flat_common_steps);
@@ -505,7 +505,7 @@ class Actionplan_model extends CI_Model
         ));
 
         //Process on-complete automations:
-        $this->Actionplan_model->actionplan_completion_checks($en_id, $in);
+        $this->Actionplan_model->actionplan_completion_checks($en_id, $in, true, true);
 
         //All good:
         return true;
@@ -720,7 +720,7 @@ class Actionplan_model extends CI_Model
         return $unlock_steps_messages;
     }
 
-    function actionplan_completion_checks($en_id, $in, $send_message = true){
+    function actionplan_completion_checks($en_id, $in, $send_message, $trigget_completion_tips){
 
 
         /*
@@ -733,20 +733,32 @@ class Actionplan_model extends CI_Model
          * - $in_id The intent that was marked as complete
          * - $en_id The entity who marked it as complete
          * - $send_message IF TRUE would send messages to $en_id and IF FASLE would return raw messages
+         * - $trigget_completion_tips WILL also trigger on-complete messages if the student actually completed
          *
          * */
 
 
         //Start with on-complete tips if any:
-        $on_complete_messages = $this->Links_model->ln_fetch(array(
-            'ln_status' => 2, //Published
-            'ln_type_entity_id' => 6242, //On-Complete Tips
-            'ln_child_intent_id' => $in['in_id'],
-        ), array(), 0, 0, array('ln_order' => 'ASC'));
+        if($trigget_completion_tips){
+
+            $on_complete_messages = $this->Links_model->ln_fetch(array(
+                'ln_status' => 2, //Published
+                'ln_type_entity_id' => 6242, //On-Complete Tips
+                'ln_child_intent_id' => $in['in_id'],
+            ), array(), 0, 0, array('ln_order' => 'ASC'));
+
+        } else {
+
+            $on_complete_messages = array();
+
+        }
 
 
         //Try to assess milestones:
         $unlock_steps_messages = $this->Actionplan_model->actionplan_completion_unlock_milestones($en_id, $in);
+
+
+        //Merge the two, if any:
         $on_complete_messages = array_merge($on_complete_messages, $unlock_steps_messages);
 
 
@@ -909,7 +921,7 @@ class Actionplan_model extends CI_Model
 
         //Let's learn more about the nature of this progression link:
         $is_two_step        = in_array($progression_type_entity_id, $this->config->item('en_ids_6244')); //If TRUE, initial progression link will be logged as WORKING ON since we need student response
-        $trigger_completion = ( !$is_two_step && in_array($progression_type_entity_id, $this->config->item('en_ids_6255'))); //If TRUE AND If !$is_two_step, this would trigger the completion tips
+        $trigget_completion_tips = ( !$is_two_step && in_array($progression_type_entity_id, $this->config->item('en_ids_6255'))); //If TRUE AND If !$is_two_step, this would trigger the completion tips
         $nothing_more_to_do = ( !$is_two_step && !$has_children && in_array($progression_type_entity_id, $this->config->item('en_ids_6274')) ); //If TRUE, we will auto move on to the next item
         $recommend_featured = false; //Assume FALSE unless $nothing_more_to_do=TRUE and we do not have any next steps which means student has finished their Action Plan
 
@@ -1268,9 +1280,9 @@ class Actionplan_model extends CI_Model
         if(isset($new_progression_link['ln_status']) && $new_progression_link['ln_status']==2){
 
             //Process on-complete automations:
-            $on_complete_messages = $this->Actionplan_model->actionplan_completion_checks($en_id, $ins[0], false);
+            $on_complete_messages = $this->Actionplan_model->actionplan_completion_checks($en_id, $ins[0], false, $trigget_completion_tips);
 
-            if($trigger_completion && count($on_complete_messages) > 0){
+            if($trigget_completion_tips && count($on_complete_messages) > 0){
                 //Add on-complete messages (if any) to the current messages:
                 $in__messages = array_merge($in__messages, $on_complete_messages);
             }
