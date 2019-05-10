@@ -11,7 +11,7 @@ defined('BASEPATH') OR exit('No direct script access allowed');
  *
  */
 
-//Generated 2019-05-09 20:47:06 PST
+//Generated 2019-05-10 13:13:34 PST
 
 //Action Plan Reset Progress:
 $config['en_ids_6415'] = array(4559, 6140, 6143, 6144, 6154, 6155, 6157, 6158);
@@ -1174,7 +1174,7 @@ $config['en_all_4426'] = array(
 );
 
 //Link Visible to Moderators Only:
-$config['en_ids_4755'] = array(3286, 3288, 4235, 4266, 4267, 4268, 4275, 4278, 4279, 4282, 4283, 4299, 4460, 4547, 4548, 4549, 4550, 4551, 4552, 4553, 4554, 4555, 4556, 4557, 4559, 4570, 4783, 5967, 6132, 6140, 6143, 6144, 6149, 6154, 6155, 6157, 6158, 6224);
+$config['en_ids_4755'] = array(3286, 3288, 4235, 4242, 4266, 4267, 4268, 4275, 4278, 4279, 4282, 4283, 4299, 4460, 4547, 4548, 4549, 4550, 4551, 4552, 4553, 4554, 4555, 4556, 4557, 4559, 4570, 4783, 5967, 6132, 6140, 6143, 6144, 6149, 6154, 6155, 6157, 6158, 6224);
 $config['en_all_4755'] = array(
     3286 => array(
         'm_icon' => '<i class="fal fa-lock-open"></i>',
@@ -1193,6 +1193,12 @@ $config['en_all_4755'] = array(
         'm_name' => 'Action Plan Intention Set',
         'm_desc' => '',
         'm_parents' => array(6153, 4506, 4755, 4593),
+    ),
+    4242 => array(
+        'm_icon' => '<i class="fal fa-sync"></i>',
+        'm_name' => 'Link Updated',
+        'm_desc' => '',
+        'm_parents' => array(4755, 4593, 4595),
     ),
     4266 => array(
         'm_icon' => '<i class="fab fa-facebook-messenger"></i>',
@@ -1400,7 +1406,7 @@ $config['en_all_4755'] = array(
     ),
     6224 => array(
         'm_icon' => '<i class="fal fa-sync"></i>',
-        'm_name' => 'Student Iterated Account',
+        'm_name' => 'Student Updated Account',
         'm_desc' => '',
         'm_parents' => array(4755, 6222, 4593),
     ),
@@ -1441,19 +1447,19 @@ $config['en_all_4595'] = array(
     ),
     4242 => array(
         'm_icon' => '<i class="fal fa-sync"></i>',
-        'm_name' => 'Miner Iterated Link',
+        'm_name' => 'Link Updated',
         'm_desc' => '20',
-        'm_parents' => array(4593, 4595),
+        'm_parents' => array(4755, 4593, 4595),
     ),
     4250 => array(
         'm_icon' => '<i class="fas fa-hashtag"></i>',
-        'm_name' => 'Miner Created Intent',
+        'm_name' => 'Intent Created',
         'm_desc' => '200',
         'm_parents' => array(4593, 4595),
     ),
     4251 => array(
         'm_icon' => '<i class="fas fa-at"></i>',
-        'm_name' => 'Miner Created Entity',
+        'm_name' => 'Entity Created',
         'm_desc' => '30',
         'm_parents' => array(4593, 4595),
     ),
@@ -1501,13 +1507,13 @@ $config['en_all_4595'] = array(
     ),
     4263 => array(
         'm_icon' => '<i class="fal fa-sync"></i>',
-        'm_name' => 'Miner Iterated Entity',
+        'm_name' => 'Entity Updated',
         'm_desc' => '10',
         'm_parents' => array(4593, 4595),
     ),
     4264 => array(
         'm_icon' => '<i class="fal fa-sync"></i>',
-        'm_name' => 'Miner Iterated Intent',
+        'm_name' => 'Intent Updated',
         'm_desc' => '40',
         'm_parents' => array(4593, 4595),
     ),
@@ -1607,9 +1613,9 @@ $config['en_all_4593'] = array(
     ),
     4242 => array(
         'm_icon' => '<i class="fal fa-sync"></i>',
-        'm_name' => 'Miner Iterated Link',
+        'm_name' => 'Link Updated',
         'm_desc' => 'Logged for each link column that is updated consciously by the user',
-        'm_parents' => array(4593, 4595),
+        'm_parents' => array(4755, 4593, 4595),
     ),
     4246 => array(
         'm_icon' => '<i class="fal fa-bug"></i>',
@@ -1619,13 +1625,13 @@ $config['en_all_4593'] = array(
     ),
     4250 => array(
         'm_icon' => '<i class="fas fa-hashtag"></i>',
-        'm_name' => 'Miner Created Intent',
+        'm_name' => 'Intent Created',
         'm_desc' => '',
         'm_parents' => array(4593, 4595),
     ),
     4251 => array(
         'm_icon' => '<i class="fas fa-at"></i>',
-        'm_name' => 'Miner Created Entity',
+        'm_name' => 'Entity Created',
         'm_desc' => 'Logged when a new entity is created.',
         'm_parents' => array(4593, 4595),
     ),
@@ -1673,13 +1679,13 @@ $config['en_all_4593'] = array(
     ),
     4263 => array(
         'm_icon' => '<i class="fal fa-sync"></i>',
-        'm_name' => 'Miner Iterated Entity',
+        'm_name' => 'Entity Updated',
         'm_desc' => 'When a Miner modified an entity attribute like Name, Icon or Status.',
         'm_parents' => array(4593, 4595),
     ),
     4264 => array(
         'm_icon' => '<i class="fal fa-sync"></i>',
-        'm_name' => 'Miner Iterated Intent',
+        'm_name' => 'Intent Updated',
         'm_desc' => 'When an intent field is updated',
         'm_parents' => array(4593, 4595),
     ),
@@ -2015,7 +2021,7 @@ $config['en_all_4593'] = array(
     ),
     6224 => array(
         'm_icon' => '<i class="fal fa-sync"></i>',
-        'm_name' => 'Student Iterated Account',
+        'm_name' => 'Student Updated Account',
         'm_desc' => '',
         'm_parents' => array(4755, 6222, 4593),
     ),
