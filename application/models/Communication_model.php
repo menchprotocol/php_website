@@ -171,7 +171,7 @@ class Communication_model extends CI_Model
                     'ln_parent_entity_id' => $msg_dispatching['ln_parent_entity_id'], //Might be set if message had a referenced entity
                     'ln_metadata' => array(
                         'input_message' => $input_message,
-                        'output_message' => $output_message['message_body'],
+                        'output_message' => $output_message,
                         'fb_graph_process' => $fb_graph_process,
                     ),
                 ), $filtered_tr_append));
@@ -966,7 +966,7 @@ class Communication_model extends CI_Model
 
                 //Add to output message:
                 array_push($output_messages, array(
-                    'message_type' => 4552, //Text Message Sent
+                    'message_type' => ( isset($fb_message['quick_replies']) && count($fb_message['quick_replies']) > 0 ? 6563 : 4552 ), //Text OR Quick Reply Message Sent
                     'message_body' => array(
                         'recipient' => array(
                             'id' => $recipient_en['en_psid'],
@@ -1946,9 +1946,12 @@ class Communication_model extends CI_Model
 
             if(count($student_intents)==0){
 
+                //Set message:
+                $message = 'I can\'t show you any stats because you don\'t have any intentions added to your Action Plan yet.';
+
                 //No Action Plan intentions!
                 $this->Communication_model->dispatch_message(
-                    'I can\'t show you any stats because you don\'t have any intentions added to your Action Plan yet.',
+                    $message,
                     $en,
                     true
                 );
@@ -1985,10 +1988,24 @@ class Communication_model extends CI_Model
 
             }
 
+            //Log command trigger:
+            $this->Links_model->ln_create(array(
+                'ln_miner_entity_id' => $en['en_id'],
+                'ln_type_entity_id' => 6556, //Student Commanded Stats
+                'ln_content' => $message,
+            ));
+
         } elseif (in_array($fb_received_message, array('next', 'continue', 'go'))) {
 
             //Give them the next step of their Action Plan:
-            $step = $this->Actionplan_model->actionplan_step_next_go($en['en_id'], true, true);
+            $next_in_id = $this->Actionplan_model->actionplan_step_next_go($en['en_id'], true, true);
+
+            //Log command trigger:
+            $this->Links_model->ln_create(array(
+                'ln_miner_entity_id' => $en['en_id'],
+                'ln_type_entity_id' => 6559, //Student Commanded Next
+                'ln_parent_intent_id' => $next_in_id,
+            ));
 
         } elseif ($fb_received_message == 'skip') {
 
@@ -1996,9 +2013,12 @@ class Communication_model extends CI_Model
             $next_in_id = $this->Actionplan_model->actionplan_step_next_go($en['en_id'], false);
 
             if($next_in_id > 0){
+
                 //Initiate skip request:
                 $this->Actionplan_model->actionplan_step_skip_initiate($en['en_id'], $next_in_id);
+
             } else {
+
                 $this->Communication_model->dispatch_message(
                     'I could not find any Action Plan steps to skip.',
                     $en,
@@ -2011,25 +2031,47 @@ class Communication_model extends CI_Model
                         )
                     )
                 );
+
             }
 
-        } elseif (is_numeric($fb_received_message)) {
+            //Log command trigger:
+            $this->Links_model->ln_create(array(
+                'ln_miner_entity_id' => $en['en_id'],
+                'ln_type_entity_id' => 6560, //Student Commanded Skip
+                'ln_parent_intent_id' => $next_in_id,
+            ));
 
-            //Likely an OR response with a specific number in mind...
-            $this->Communication_model->dispatch_message(
-                echo_random_message('one_way_only'),
-                $en,
-                true,
-                array(
-                    array(
-                        'content_type' => 'text',
-                        'title' => 'Next',
-                        'payload' => 'GONEXT',
-                    )
-                )
-            );
+        } elseif (is_numeric($fb_received_message) && intval($fb_received_message) > 0 && intval($fb_received_message) <= 11) {
 
-        } elseif (includes_any($fb_received_message, array('unsubscribe', 'stop', 'quit'))) {
+            //Try to fetch the last quick reply that the student received from us:
+            $pending_answer_links = $this->Links_model->ln_fetch(array(
+                'ln_miner_entity_id' => $en['en_id'],
+                'ln_type_entity_id' => 6563, //Student Received Quick Reply
+                'ln_status IN (' . join(',', $this->config->item('ln_status_incomplete')) . ')' => null, //incomplete intentions
+            ));
+
+            if(count($pending_answer_links) < 1){
+
+                $message = 'I assumed you are trying to answer a question with your numerical response, but I could not find a pending question waiting to be answered 🤷';
+
+            } else {
+
+                //We did find a pending question:
+                $question_in_id = $pending_answer_links[0]['ln_parent_intent_id'];
+
+                //let's analyse the numerical answer and see if it matches any of the quick replies:
+
+            }
+
+
+            //Log command trigger:
+            $this->Links_model->ln_create(array(
+                'ln_miner_entity_id' => $en['en_id'],
+                'ln_type_entity_id' => 6561, //Student Commanded Numerical Answer
+                'ln_content' => $message,
+            ));
+
+        } elseif (includes_any($fb_received_message, array('unsubscribe', 'stop', 'quit', 'resign', 'exit'))) {
 
             //List their Action Plan intentions and let student choose which one to unsubscribe:
             $student_intents = $this->Links_model->ln_fetch(array(
