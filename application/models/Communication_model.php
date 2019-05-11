@@ -2199,7 +2199,7 @@ class Communication_model extends CI_Model
                 $new_intent_count++;
 
                 if($new_intent_count==1){
-                    $message = 'I found these intentions:';
+                    $message = 'I found the following matches:';
                 }
 
                 //Show Message:

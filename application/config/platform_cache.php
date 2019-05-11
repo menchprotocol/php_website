@@ -11,7 +11,7 @@ defined('BASEPATH') OR exit('No direct script access allowed');
  *
  */
 
-//Generated 2019-05-11 11:05:34 PST
+//Generated 2019-05-11 13:19:37 PST
 
 //Platform Glossary:
 $config['en_ids_4463'] = array(1281, 1308, 3000, 3084, 4430, 4433, 4485, 4488, 4535, 4536, 4595, 4755, 6138, 6196, 6205);
@@ -703,7 +703,7 @@ $config['en_all_6123'] = array(
 );
 
 //Student Sent Message:
-$config['en_ids_4277'] = array(4287, 4460, 4547, 4548, 4549, 4550, 4551, 4557);
+$config['en_ids_4277'] = array(4287, 4460, 4547, 4548, 4549, 4550, 4551, 4557, 6561);
 $config['en_all_4277'] = array(
     4287 => array(
         'm_icon' => '<i class="fal fa-comment-exclamation"></i>',
@@ -751,6 +751,12 @@ $config['en_all_4277'] = array(
         'm_icon' => '<i class="fal fa-location-circle"></i>',
         'm_name' => 'Student Sent Location Message',
         'm_desc' => '',
+        'm_parents' => array(4755, 4593, 4277),
+    ),
+    6561 => array(
+        'm_icon' => '<i class="far fa-ballot-check"></i>',
+        'm_name' => 'Student Sent Manual Quick Reply',
+        'm_desc' => 'When students manually type in the quick reply answer and we match it to their quick reply options',
         'm_parents' => array(4755, 4593, 4277),
     ),
 );
@@ -855,7 +861,7 @@ $config['en_all_4280'] = array(
     ),
     6563 => array(
         'm_icon' => '<i class="far fa-ballot-check"></i>',
-        'm_name' => 'Student Received Quick Reply Text',
+        'm_name' => 'Student Received Quick Reply',
         'm_desc' => 'When we dispatch a quick reply to students and are waiting for their answer...',
         'm_parents' => array(4593, 4755, 4280),
     ),
@@ -1275,7 +1281,7 @@ $config['en_all_4426'] = array(
 );
 
 //Private Content:
-$config['en_ids_4755'] = array(3286, 3288, 4235, 4242, 4246, 4251, 4263, 4266, 4267, 4268, 4275, 4278, 4279, 4282, 4283, 4287, 4299, 4460, 4547, 4548, 4549, 4550, 4551, 4552, 4553, 4554, 4555, 4556, 4557, 4559, 4570, 4783, 5967, 6132, 6140, 6143, 6144, 6149, 6154, 6155, 6157, 6158, 6224, 6389, 6415, 6563);
+$config['en_ids_4755'] = array(3286, 3288, 4235, 4242, 4246, 4251, 4263, 4266, 4267, 4268, 4275, 4278, 4279, 4282, 4283, 4287, 4299, 4460, 4547, 4548, 4549, 4550, 4551, 4552, 4553, 4554, 4555, 4556, 4557, 4559, 4570, 4783, 5967, 6132, 6140, 6143, 6144, 6149, 6154, 6155, 6157, 6158, 6224, 6389, 6415, 6556, 6559, 6560, 6561, 6563, 6578);
 $config['en_all_4755'] = array(
     3286 => array(
         'm_icon' => '<i class="fal fa-lock-open"></i>',
@@ -1338,10 +1344,10 @@ $config['en_all_4755'] = array(
         'm_parents' => array(4755, 4593),
     ),
     4275 => array(
-        'm_icon' => '<i class="fas fa-search"></i>',
-        'm_name' => 'Action Plan Intention Searched',
+        'm_icon' => '<i class="fas fa-wand-magic"></i>',
+        'm_name' => 'Student Text Commanded Intention',
         'm_desc' => '',
-        'm_parents' => array(6153, 4755, 4593),
+        'm_parents' => array(6554, 4755, 4593),
     ),
     4278 => array(
         'm_icon' => '<i class="fas fa-check-double"></i>',
@@ -1547,11 +1553,41 @@ $config['en_all_4755'] = array(
         'm_desc' => '',
         'm_parents' => array(4755, 6418, 4593, 4527, 6414),
     ),
+    6556 => array(
+        'm_icon' => '<i class="fas fa-wand-magic"></i>',
+        'm_name' => 'Student Text Commanded Stats',
+        'm_desc' => '',
+        'm_parents' => array(4755, 4593, 6554),
+    ),
+    6559 => array(
+        'm_icon' => '<i class="fas fa-wand-magic"></i>',
+        'm_name' => 'Student Text Commanded Next',
+        'm_desc' => '',
+        'm_parents' => array(4755, 4593, 6554),
+    ),
+    6560 => array(
+        'm_icon' => '<i class="fas fa-wand-magic"></i>',
+        'm_name' => 'Student Text Commanded Skip',
+        'm_desc' => '',
+        'm_parents' => array(4755, 4593, 6554),
+    ),
+    6561 => array(
+        'm_icon' => '<i class="far fa-ballot-check"></i>',
+        'm_name' => 'Student Sent Manual Quick Reply',
+        'm_desc' => '',
+        'm_parents' => array(4755, 4593, 4277),
+    ),
     6563 => array(
         'm_icon' => '<i class="far fa-ballot-check"></i>',
-        'm_name' => 'Student Received Quick Reply Text',
+        'm_name' => 'Student Received Quick Reply',
         'm_desc' => '',
         'm_parents' => array(4593, 4755, 4280),
+    ),
+    6578 => array(
+        'm_icon' => '<i class="fas fa-wand-magic"></i>',
+        'm_name' => 'Student Text Commanded Stop',
+        'm_desc' => '',
+        'm_parents' => array(4755, 4593, 6554),
     ),
 );
 
@@ -1716,7 +1752,7 @@ $config['en_all_4600'] = array(
 );
 
 //Link Types:
-$config['en_ids_4593'] = array(4228, 4229, 4230, 4231, 4232, 4235, 4242, 4246, 4250, 4251, 4255, 4256, 4257, 4258, 4259, 4260, 4261, 4263, 4264, 4266, 4267, 4268, 4269, 4275, 4278, 4279, 4282, 4283, 4287, 4299, 4318, 4319, 4455, 4460, 4547, 4548, 4549, 4550, 4551, 4552, 4553, 4554, 4555, 4556, 4557, 4559, 4570, 4577, 4601, 4983, 4993, 4994, 4996, 4998, 4999, 5000, 5001, 5003, 5007, 5865, 5943, 5967, 5981, 5982, 6093, 6132, 6140, 6143, 6144, 6149, 6154, 6155, 6157, 6158, 6224, 6226, 6242, 6389, 6415, 6563);
+$config['en_ids_4593'] = array(4228, 4229, 4230, 4231, 4232, 4235, 4242, 4246, 4250, 4251, 4255, 4256, 4257, 4258, 4259, 4260, 4261, 4263, 4264, 4266, 4267, 4268, 4269, 4275, 4278, 4279, 4282, 4283, 4287, 4299, 4318, 4319, 4455, 4460, 4547, 4548, 4549, 4550, 4551, 4552, 4553, 4554, 4555, 4556, 4557, 4559, 4570, 4577, 4601, 4983, 4993, 4994, 4996, 4998, 4999, 5000, 5001, 5003, 5007, 5865, 5943, 5967, 5981, 5982, 6093, 6132, 6140, 6143, 6144, 6149, 6154, 6155, 6157, 6158, 6224, 6226, 6242, 6389, 6415, 6556, 6559, 6560, 6561, 6563, 6578);
 $config['en_all_4593'] = array(
     4228 => array(
         'm_icon' => '<i class="fal fa-check-circle"></i>',
@@ -1857,10 +1893,10 @@ $config['en_all_4593'] = array(
         'm_parents' => array(4593),
     ),
     4275 => array(
-        'm_icon' => '<i class="fas fa-search"></i>',
-        'm_name' => 'Action Plan Intention Searched',
+        'm_icon' => '<i class="fas fa-wand-magic"></i>',
+        'm_name' => 'Student Text Commanded Intention',
         'm_desc' => 'When students invokes the [I want to] command and search for a new intention that they would like to add to their Action Plan.',
-        'm_parents' => array(6153, 4755, 4593),
+        'm_parents' => array(6554, 4755, 4593),
     ),
     4278 => array(
         'm_icon' => '<i class="fas fa-check-double"></i>',
@@ -2192,11 +2228,41 @@ $config['en_all_4593'] = array(
         'm_desc' => 'Removes certain links types as defined by its children from a Student\'s Action Plan. Currently only available for Miners.',
         'm_parents' => array(4755, 6418, 4593, 4527, 6414),
     ),
+    6556 => array(
+        'm_icon' => '<i class="fas fa-wand-magic"></i>',
+        'm_name' => 'Student Text Commanded Stats',
+        'm_desc' => '',
+        'm_parents' => array(4755, 4593, 6554),
+    ),
+    6559 => array(
+        'm_icon' => '<i class="fas fa-wand-magic"></i>',
+        'm_name' => 'Student Text Commanded Next',
+        'm_desc' => '',
+        'm_parents' => array(4755, 4593, 6554),
+    ),
+    6560 => array(
+        'm_icon' => '<i class="fas fa-wand-magic"></i>',
+        'm_name' => 'Student Text Commanded Skip',
+        'm_desc' => '',
+        'm_parents' => array(4755, 4593, 6554),
+    ),
+    6561 => array(
+        'm_icon' => '<i class="far fa-ballot-check"></i>',
+        'm_name' => 'Student Sent Manual Quick Reply',
+        'm_desc' => '',
+        'm_parents' => array(4755, 4593, 4277),
+    ),
     6563 => array(
         'm_icon' => '<i class="far fa-ballot-check"></i>',
-        'm_name' => 'Student Received Quick Reply Text',
+        'm_name' => 'Student Received Quick Reply',
         'm_desc' => '',
         'm_parents' => array(4593, 4755, 4280),
+    ),
+    6578 => array(
+        'm_icon' => '<i class="fas fa-wand-magic"></i>',
+        'm_name' => 'Student Text Commanded Stop',
+        'm_desc' => '',
+        'm_parents' => array(4755, 4593, 6554),
     ),
 );
 
