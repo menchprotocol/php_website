@@ -11,7 +11,7 @@ defined('BASEPATH') OR exit('No direct script access allowed');
  *
  */
 
-//Generated 2019-05-10 13:58:06 PST
+//Generated 2019-05-11 11:05:34 PST
 
 //Platform Glossary:
 $config['en_ids_4463'] = array(1281, 1308, 3000, 3084, 4430, 4433, 4485, 4488, 4535, 4536, 4595, 4755, 6138, 6196, 6205);
@@ -155,7 +155,7 @@ $config['en_all_6415'] = array(
     ),
     6158 => array(
         'm_icon' => '<i class="far fa-check-square"></i>',
-        'm_name' => 'Action Plan Outcome Reviewed',
+        'm_name' => 'Action Plan Auto Complete',
         'm_desc' => '',
         'm_parents' => array(6415, 6274, 6255, 4593, 4755, 6146),
     ),
@@ -301,7 +301,7 @@ $config['en_all_6274'] = array(
     ),
     6158 => array(
         'm_icon' => '<i class="far fa-check-square"></i>',
-        'm_name' => 'Action Plan Outcome Reviewed',
+        'm_name' => 'Action Plan Auto Complete',
         'm_desc' => '',
         'm_parents' => array(6415, 6274, 6255, 4593, 4755, 6146),
     ),
@@ -330,7 +330,7 @@ $config['en_all_6255'] = array(
     ),
     6158 => array(
         'm_icon' => '<i class="far fa-check-square"></i>',
-        'm_name' => 'Action Plan Outcome Reviewed',
+        'm_name' => 'Action Plan Auto Complete',
         'm_desc' => '',
         'm_parents' => array(6415, 6274, 6255, 4593, 4755, 6146),
     ),
@@ -487,7 +487,7 @@ $config['en_all_6196'] = array(
     ),
     6221 => array(
         'm_icon' => '<i class="fas fa-comment-smile"></i>',
-        'm_name' => 'Communication Link Types',
+        'm_name' => 'Student Communications',
         'm_desc' => '',
         'm_parents' => array(6196),
     ),
@@ -655,7 +655,7 @@ $config['en_all_6146'] = array(
     ),
     6158 => array(
         'm_icon' => '<i class="far fa-check-square"></i>',
-        'm_name' => 'Outcome Reviewed',
+        'm_name' => 'Auto Complete',
         'm_desc' => 'Completed when students read the messages of an intent that does not have any messages or a completion requirement',
         'm_parents' => array(6415, 6274, 6255, 4593, 4755, 6146),
     ),
@@ -702,7 +702,7 @@ $config['en_all_6123'] = array(
     ),
 );
 
-//Student Sent Message Link Types:
+//Student Sent Message:
 $config['en_ids_4277'] = array(4287, 4460, 4547, 4548, 4549, 4550, 4551, 4557);
 $config['en_all_4277'] = array(
     4287 => array(
@@ -755,7 +755,7 @@ $config['en_all_4277'] = array(
     ),
 );
 
-//Student Media Communication Link Types:
+//Student Sent/Received Media Message:
 $config['en_ids_6102'] = array(4548, 4549, 4550, 4551, 4553, 4554, 4555, 4556);
 $config['en_all_6102'] = array(
     4548 => array(
@@ -808,8 +808,8 @@ $config['en_all_6102'] = array(
     ),
 );
 
-//Student Received Message Link Types:
-$config['en_ids_4280'] = array(4552, 4553, 4554, 4555, 4556, 4570, 5967);
+//Student Received Message:
+$config['en_ids_4280'] = array(4552, 4553, 4554, 4555, 4556, 4570, 5967, 6563);
 $config['en_all_4280'] = array(
     4552 => array(
         'm_icon' => '<i class="fal fa-align-left"></i>',
@@ -852,6 +852,12 @@ $config['en_all_4280'] = array(
         'm_name' => 'Student Received Email Message',
         'm_desc' => '',
         'm_parents' => array(4755, 4593, 4280),
+    ),
+    6563 => array(
+        'm_icon' => '<i class="far fa-ballot-check"></i>',
+        'm_name' => 'Student Received Quick Reply Text',
+        'm_desc' => 'When we dispatch a quick reply to students and are waiting for their answer...',
+        'm_parents' => array(4593, 4755, 4280),
     ),
 );
 
@@ -1269,7 +1275,7 @@ $config['en_all_4426'] = array(
 );
 
 //Private Content:
-$config['en_ids_4755'] = array(3286, 3288, 4235, 4242, 4246, 4251, 4266, 4267, 4268, 4275, 4278, 4279, 4282, 4283, 4287, 4299, 4460, 4547, 4548, 4549, 4550, 4551, 4552, 4553, 4554, 4555, 4556, 4557, 4559, 4570, 4783, 5967, 6132, 6140, 6143, 6144, 6149, 6154, 6155, 6157, 6158, 6224, 6389, 6415);
+$config['en_ids_4755'] = array(3286, 3288, 4235, 4242, 4246, 4251, 4263, 4266, 4267, 4268, 4275, 4278, 4279, 4282, 4283, 4287, 4299, 4460, 4547, 4548, 4549, 4550, 4551, 4552, 4553, 4554, 4555, 4556, 4557, 4559, 4570, 4783, 5967, 6132, 6140, 6143, 6144, 6149, 6154, 6155, 6157, 6158, 6224, 6389, 6415, 6563);
 $config['en_all_4755'] = array(
     3286 => array(
         'm_icon' => '<i class="fal fa-lock-open"></i>',
@@ -1307,6 +1313,12 @@ $config['en_all_4755'] = array(
         'm_desc' => '',
         'm_parents' => array(4755, 4593, 4595),
     ),
+    4263 => array(
+        'm_icon' => '<i class="fal fa-sync"></i>',
+        'm_name' => 'Entity Updated',
+        'm_desc' => '',
+        'm_parents' => array(4755, 4593, 4595),
+    ),
     4266 => array(
         'm_icon' => '<i class="fab fa-facebook-messenger"></i>',
         'm_name' => 'Student Messenger Opt-in',
@@ -1339,7 +1351,7 @@ $config['en_all_4755'] = array(
     ),
     4279 => array(
         'm_icon' => '<i class="fas fa-check"></i>',
-        'm_name' => 'Student Received Message',
+        'm_name' => 'Student Message Delivered',
         'm_desc' => '',
         'm_parents' => array(4755, 4593),
     ),
@@ -1513,7 +1525,7 @@ $config['en_all_4755'] = array(
     ),
     6158 => array(
         'm_icon' => '<i class="far fa-check-square"></i>',
-        'm_name' => 'Action Plan Outcome Reviewed',
+        'm_name' => 'Action Plan Auto Complete',
         'm_desc' => '',
         'm_parents' => array(6415, 6274, 6255, 4593, 4755, 6146),
     ),
@@ -1534,6 +1546,12 @@ $config['en_all_4755'] = array(
         'm_name' => 'Action Plan Reset Progress',
         'm_desc' => '',
         'm_parents' => array(4755, 6418, 4593, 4527, 6414),
+    ),
+    6563 => array(
+        'm_icon' => '<i class="far fa-ballot-check"></i>',
+        'm_name' => 'Student Received Quick Reply Text',
+        'm_desc' => '',
+        'm_parents' => array(4593, 4755, 4280),
     ),
 );
 
@@ -1634,7 +1652,7 @@ $config['en_all_4595'] = array(
         'm_icon' => '<i class="fal fa-sync"></i>',
         'm_name' => 'Entity Updated',
         'm_desc' => '10',
-        'm_parents' => array(4593, 4595),
+        'm_parents' => array(4755, 4593, 4595),
     ),
     4264 => array(
         'm_icon' => '<i class="fal fa-sync"></i>',
@@ -1697,8 +1715,8 @@ $config['en_all_4600'] = array(
     ),
 );
 
-//All Link Types:
-$config['en_ids_4593'] = array(4228, 4229, 4230, 4231, 4232, 4235, 4242, 4246, 4250, 4251, 4255, 4256, 4257, 4258, 4259, 4260, 4261, 4263, 4264, 4266, 4267, 4268, 4269, 4275, 4278, 4279, 4282, 4283, 4287, 4299, 4318, 4319, 4455, 4460, 4547, 4548, 4549, 4550, 4551, 4552, 4553, 4554, 4555, 4556, 4557, 4559, 4570, 4577, 4601, 4983, 4993, 4994, 4996, 4998, 4999, 5000, 5001, 5003, 5007, 5865, 5943, 5967, 5981, 5982, 6093, 6132, 6140, 6143, 6144, 6149, 6154, 6155, 6157, 6158, 6224, 6226, 6242, 6389, 6415);
+//Link Types:
+$config['en_ids_4593'] = array(4228, 4229, 4230, 4231, 4232, 4235, 4242, 4246, 4250, 4251, 4255, 4256, 4257, 4258, 4259, 4260, 4261, 4263, 4264, 4266, 4267, 4268, 4269, 4275, 4278, 4279, 4282, 4283, 4287, 4299, 4318, 4319, 4455, 4460, 4547, 4548, 4549, 4550, 4551, 4552, 4553, 4554, 4555, 4556, 4557, 4559, 4570, 4577, 4601, 4983, 4993, 4994, 4996, 4998, 4999, 5000, 5001, 5003, 5007, 5865, 5943, 5967, 5981, 5982, 6093, 6132, 6140, 6143, 6144, 6149, 6154, 6155, 6157, 6158, 6224, 6226, 6242, 6389, 6415, 6563);
 $config['en_all_4593'] = array(
     4228 => array(
         'm_icon' => '<i class="fal fa-check-circle"></i>',
@@ -1806,7 +1824,7 @@ $config['en_all_4593'] = array(
         'm_icon' => '<i class="fal fa-sync"></i>',
         'm_name' => 'Entity Updated',
         'm_desc' => 'When a Miner modified an entity attribute like Name, Icon or Status.',
-        'm_parents' => array(4593, 4595),
+        'm_parents' => array(4755, 4593, 4595),
     ),
     4264 => array(
         'm_icon' => '<i class="fal fa-sync"></i>',
@@ -1852,7 +1870,7 @@ $config['en_all_4593'] = array(
     ),
     4279 => array(
         'm_icon' => '<i class="fas fa-check"></i>',
-        'm_name' => 'Student Received Message',
+        'm_name' => 'Student Message Delivered',
         'm_desc' => '',
         'm_parents' => array(4755, 4593),
     ),
@@ -2140,7 +2158,7 @@ $config['en_all_4593'] = array(
     ),
     6158 => array(
         'm_icon' => '<i class="far fa-check-square"></i>',
-        'm_name' => 'Action Plan Outcome Reviewed',
+        'm_name' => 'Action Plan Auto Complete',
         'm_desc' => 'The most basic type of intent completion for intents that do not have any messages, completion requirements or children to choose from.',
         'm_parents' => array(6415, 6274, 6255, 4593, 4755, 6146),
     ),
@@ -2173,6 +2191,12 @@ $config['en_all_4593'] = array(
         'm_name' => 'Action Plan Reset Progress',
         'm_desc' => 'Removes certain links types as defined by its children from a Student\'s Action Plan. Currently only available for Miners.',
         'm_parents' => array(4755, 6418, 4593, 4527, 6414),
+    ),
+    6563 => array(
+        'm_icon' => '<i class="far fa-ballot-check"></i>',
+        'm_name' => 'Student Received Quick Reply Text',
+        'm_desc' => '',
+        'm_parents' => array(4593, 4755, 4280),
     ),
 );
 
