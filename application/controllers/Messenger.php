@@ -433,7 +433,6 @@ class Messenger extends CI_Controller
                         //We have some attachments, lets loops through them:
                         foreach ($im['message']['attachments'] as $att) {
 
-
                             //Define 4 main Attachment Message Types:
                             $att_media_types = array( //Converts video, audio, image and file messages
                                 'video' => array(
@@ -521,6 +520,16 @@ class Messenger extends CI_Controller
                                  *
                                  * */
 
+                                $this->Links_model->ln_create(array(
+                                    'ln_content' => 'api_webhook() received a message type that is not yet implemented: ['.$att['type'].']',
+                                    'ln_type_entity_id' => 4246, //Platform Bug Reports
+                                    'ln_miner_entity_id' => 1, //Shervin/Developer
+                                    'ln_metadata' => array(
+                                        'ln_data' => $ln_data,
+                                        'ln_metadata' => $ln_metadata,
+                                    ),
+                                ));
+
                             } elseif ($att['type'] == 'fallback') {
 
                                 /*
@@ -533,6 +542,16 @@ class Messenger extends CI_Controller
                                  * TODO implement later on maybe? Not sure how this is useful...
                                  *
                                  * */
+
+                                $this->Links_model->ln_create(array(
+                                    'ln_content' => 'api_webhook() received a message type that is not yet implemented: ['.$att['type'].']',
+                                    'ln_type_entity_id' => 4246, //Platform Bug Reports
+                                    'ln_miner_entity_id' => 1, //Shervin/Developer
+                                    'ln_metadata' => array(
+                                        'ln_data' => $ln_data,
+                                        'ln_metadata' => $ln_metadata,
+                                    ),
+                                ));
 
                             }
                         }

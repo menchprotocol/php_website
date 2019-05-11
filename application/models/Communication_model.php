@@ -2041,36 +2041,6 @@ class Communication_model extends CI_Model
                 'ln_parent_intent_id' => $next_in_id,
             ));
 
-        } elseif (is_numeric($fb_received_message) && intval($fb_received_message) > 0 && intval($fb_received_message) <= 11) {
-
-            //Try to fetch the last quick reply that the student received from us:
-            $pending_answer_links = $this->Links_model->ln_fetch(array(
-                'ln_miner_entity_id' => $en['en_id'],
-                'ln_type_entity_id' => 6563, //Student Received Quick Reply
-                'ln_status IN (' . join(',', $this->config->item('ln_status_incomplete')) . ')' => null, //incomplete intentions
-            ));
-
-            if(count($pending_answer_links) < 1){
-
-                $message = 'I assumed you are trying to answer a question with your numerical response, but I could not find a pending question waiting to be answered 🤷';
-
-            } else {
-
-                //We did find a pending question:
-                $question_in_id = $pending_answer_links[0]['ln_parent_intent_id'];
-
-                //let's analyse the numerical answer and see if it matches any of the quick replies:
-
-            }
-
-
-            //Log command trigger:
-            $this->Links_model->ln_create(array(
-                'ln_miner_entity_id' => $en['en_id'],
-                'ln_type_entity_id' => 6561, //Student Commanded Numerical Answer
-                'ln_content' => $message,
-            ));
-
         } elseif (includes_any($fb_received_message, array('unsubscribe', 'stop', 'quit', 'resign', 'exit'))) {
 
             //List their Action Plan intentions and let student choose which one to unsubscribe:
@@ -2081,11 +2051,11 @@ class Communication_model extends CI_Model
                 'in_status' => 2, //Published
             ), array('in_parent'), 10 /* Max quick replies allowed */, 0, array('ln_order' => 'ASC'));
 
+
             //Do they have anything in their Action Plan?
             if (count($student_intents) > 0) {
 
                 //Give them options to remove specific Action Plans:
-                $quick_replies = array();
                 $message = 'Choose one of the following options:';
                 $increment = 1;
 
@@ -2117,43 +2087,51 @@ class Communication_model extends CI_Model
                     'payload' => 'UNSUBSCRIBE_CANCEL',
                 ));
 
-                //Send out message and let them confirm:
-                $this->Communication_model->dispatch_message(
-                    $message,
-                    $en,
-                    true,
-                    $quick_replies
-                );
-
             } else {
 
-                //No intentions found in their Action Plan, so we assume they just want to Unsubscribe and stop all future communications:
-                $this->Communication_model->dispatch_message(
-                    'Just to confirm, do you want to unsubscribe and stop all future communications with me and unsubscribe?',
-                    $en,
-                    true,
+                $message = 'Just to confirm, do you want to unsubscribe and stop all future communications with me and unsubscribe?';
+                $quick_replies = array(
                     array(
-                        array(
-                            'content_type' => 'text',
-                            'title' => 'Yes, Unsubscribe',
-                            'payload' => 'UNSUBSCRIBE_ALL',
-                        ),
-                        array(
-                            'content_type' => 'text',
-                            'title' => 'No, Stay Friends',
-                            'payload' => 'UNSUBSCRIBE_CANCEL',
-                        ),
-                    )
+                        'content_type' => 'text',
+                        'title' => 'Yes, Unsubscribe',
+                        'payload' => 'UNSUBSCRIBE_ALL',
+                    ),
+                    array(
+                        'content_type' => 'text',
+                        'title' => 'No, Stay Friends',
+                        'payload' => 'UNSUBSCRIBE_CANCEL',
+                    ),
                 );
 
             }
 
-        } elseif (substr(strtolower(trim($fb_received_message)), 0, 9) == 'i want to') {
+            //Send out message and let them confirm:
+            $this->Communication_model->dispatch_message(
+                $message,
+                $en,
+                true,
+                $quick_replies
+            );
+
+            //Log command trigger:
+            $this->Links_model->ln_create(array(
+                'ln_miner_entity_id' => $en['en_id'],
+                'ln_type_entity_id' => 6578, //Student Text Commanded Stop
+                'ln_content' => $message,
+                'ln_metadata' => $quick_replies,
+            ));
+
+        } elseif (substr($fb_received_message, 0, 9) == 'i want to' || substr($fb_received_message, 0, 6) == 'learn ') {
 
 
-            //This looks like they are giving us a command:
-            $master_command = trim(substr(trim($fb_received_message), 9));
-            $result_limit = 6;
+            if(substr($fb_received_message, 0, 6) == 'learn '){
+                //learn
+                $master_command = trim(substr(trim($fb_received_message), 6));
+            } else {
+                //I want to
+                $master_command = trim(substr(trim($fb_received_message), 9));
+            }
+
 
             //Make sure algolia is enabled:
             if (!$this->config->item('app_enable_algolia')) {
@@ -2168,7 +2146,7 @@ class Communication_model extends CI_Model
 
             $search_index = load_php_algolia('alg_index');
             $res = $search_index->search($master_command, [
-                'hitsPerPage' => $result_limit,
+                'hitsPerPage' => 6, //Max results
                 'filters' => 'alg_obj_is_in=1 AND alg_obj_status=2 AND alg_obj_published_children>=1', //Search published intents with more than 7 published children
             ]);
             $search_results = $res['hits'];
@@ -2183,7 +2161,7 @@ class Communication_model extends CI_Model
                     'output' => $search_results,
                 ),
                 'ln_miner_entity_id' => $en['en_id'], //user who searched
-                'ln_type_entity_id' => 4275, //Search for New Intent Action Plan
+                'ln_type_entity_id' => 4275, //Student Text Command I Want To
             ));
 
 
@@ -2279,59 +2257,120 @@ class Communication_model extends CI_Model
              *
              * */
 
-            //First, let's check to see if a Mench admin has not started a manual conversation with them via Facebook Inbox Chat:
-            $admin_conversations = $this->Links_model->ln_fetch(array(
-                'ln_order' => 1, //A HACK to identify messages sent from us via Facebook Page Inbox
+
+            //Quick Reply Manual Response...
+            //We could not match the student command to any other command...
+            //Now try to fetch the last quick reply that the student received from us:
+            $last_quick_replies = $this->Links_model->ln_fetch(array(
                 'ln_miner_entity_id' => $en['en_id'],
-                'ln_type_entity_id IN (' . join(',', $this->config->item('en_ids_4280')) . ')' => null, //Student/Miner Received Message Links
-                'ln_timestamp >=' => date("Y-m-d H:i:s", (time() - (1800))), //Messages sent from us less than 30 minutes ago
+                'ln_type_entity_id' => 6563, //Student Received Quick Reply
             ), array(), 1);
-            if (count($admin_conversations) > 0) {
+
+            if(count($last_quick_replies) > 0){
+
+                //We did find a recent quick reply!
+                $ln_metadata = unserialize($last_quick_replies[0]['ln_metadata']);
+
+                if(isset($ln_metadata['output_message']['message_body']['message']['quick_replies'])){
+
+                    //Go through them:
+                    foreach($ln_metadata['output_message']['message_body']['message']['quick_replies'] as $quick_reply){
+
+                        //let's see if their text matches any of the quick reply options:
+                        if(substr($fb_received_message, 0, strlen($quick_reply['title'])) == strtolower($quick_reply['title'])){
+
+                            //Yes! We found a match, trigger the payload:
+                            $quick_reply_results = $this->Communication_model->digest_quick_reply($en, $quick_reply['payload']);
+
+                            if(!$quick_reply_results['status']){
+
+                                //There was an error, inform admin:
+                                $this->Links_model->ln_create(array(
+                                    'ln_content' => 'digest_quick_reply() for custom response ['.$fb_received_message.'] returned error ['.$quick_reply_results['message'].']',
+                                    'ln_metadata' => $ln_metadata,
+                                    'ln_type_entity_id' => 4246, //Platform Bug Reports
+                                    'ln_miner_entity_id' => 1, //Shervin/Developer
+                                    'ln_parent_link_id' => $last_quick_replies[0]['ln_id'],
+                                    'ln_child_entity_id' => $en['en_id'],
+                                ));
+
+                            } else {
+
+                                //All good, log link:
+                                $this->Links_model->ln_create(array(
+                                    'ln_miner_entity_id' => $en['en_id'],
+                                    'ln_type_entity_id' => 6561, //Student Sent Manual Quick Reply
+                                    'ln_parent_link_id' => $last_quick_replies[0]['ln_id'],
+                                    'ln_content' => $fb_received_message,
+                                ));
+
+                                //We resolved it:
+                                return true;
+
+                            }
+                        }
+                    }
+                }
+            }
+
+
+
+
+            //Let's check to see if a Mench admin has not started a manual conversation with them via Facebook Inbox Chat:
+            if (count($this->Links_model->ln_fetch(array(
+                    'ln_order' => 1, //A HACK to identify messages sent from us via Facebook Page Inbox
+                    'ln_miner_entity_id' => $en['en_id'],
+                    'ln_type_entity_id IN (' . join(',', $this->config->item('en_ids_4280')) . ')' => null, //Student/Miner Received Message Links
+                    'ln_timestamp >=' => date("Y-m-d H:i:s", (time() - (1800))), //Messages sent from us less than 30 minutes ago
+                ), array(), 1)) > 0) {
 
                 //Yes, this user is talking to an admin so do not interrupt their conversation:
                 return false;
 
-            } else {
+            }
+
+
+            //We don't know what they are talking about!
+
+
+            //Inform Student of Mench's one-way communication limitation & that Mench did not understand their message:
+            $this->Communication_model->dispatch_message(
+                echo_random_message('one_way_only'),
+                $en,
+                true
+            );
+
+            //Log link:
+            $this->Links_model->ln_create(array(
+                'ln_miner_entity_id' => $en['en_id'], //User who initiated this message
+                'ln_content' => $fb_received_message,
+                'ln_type_entity_id' => 4287, //Log Unrecognizable Message Received
+            ));
+
+            //Call to Action: Does this student have any Action Plans?
+            $next_in_id = $this->Actionplan_model->actionplan_step_next_go($en['en_id'], false);
+
+            if($next_in_id > 0){
 
                 //Inform Student of Mench's one-way communication limitation & that Mench did not understand their message:
                 $this->Communication_model->dispatch_message(
-                    echo_random_message('one_way_only'),
+                    'You can continue with your Action Plan by saying "Next"',
                     $en,
-                    true
+                    true,
+                    array(
+                        array(
+                            'content_type' => 'text',
+                            'title' => 'Next',
+                            'payload' => 'GONEXT',
+                        )
+                    )
                 );
 
-                //Log link:
-                $this->Links_model->ln_create(array(
-                    'ln_miner_entity_id' => $en['en_id'], //User who initiated this message
-                    'ln_content' => $fb_received_message,
-                    'ln_type_entity_id' => 4287, //Log Unrecognizable Message Received
-                ));
+            } else {
 
-                //Call to Action: Does this student have any Action Plans?
-                $next_in_id = $this->Actionplan_model->actionplan_step_next_go($en['en_id'], false);
+                //Recommend to join:
+                $this->Communication_model->suggest_featured_intents($en['en_id']);
 
-                if($next_in_id > 0){
-
-                    //Inform Student of Mench's one-way communication limitation & that Mench did not understand their message:
-                    $this->Communication_model->dispatch_message(
-                        'You can continue with your Action Plan by saying "Next"',
-                        $en,
-                        true,
-                        array(
-                            array(
-                                'content_type' => 'text',
-                                'title' => 'Next',
-                                'payload' => 'GONEXT',
-                            )
-                        )
-                    );
-
-                } else {
-
-                    //Recommend to join:
-                    $this->Communication_model->suggest_featured_intents($en['en_id']);
-
-                }
             }
         }
     }
