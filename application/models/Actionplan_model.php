@@ -498,7 +498,7 @@ class Actionplan_model extends CI_Model
 
         //Ok, now it should be auto completed:
         $this->Links_model->ln_create(array(
-            'ln_type_entity_id' => 6158, //Action Plan Outcome Review
+            'ln_type_entity_id' => 6158, //Action Plan Auto Complete
             'ln_miner_entity_id' => $en_id,
             'ln_parent_intent_id' => $in['in_id'],
             'ln_status' => 2, //Published
@@ -863,7 +863,7 @@ class Actionplan_model extends CI_Model
          * https://mench.com/entities/6146
          *
          * We'll start by assuming the most basic form of
-         * completion (Action Plan Outcome Review) and
+         * completion (Action Plan Auto Complete) and
          * build-up to more advance forms of completion
          * as we gather more data through-out this function.
          *
@@ -915,7 +915,7 @@ class Actionplan_model extends CI_Model
         } elseif(count($in__messages) > 0){
             $progression_type_entity_id = 4559; //Action Plan Messages Read
         } else {
-            $progression_type_entity_id = 6158; //Action Plan Outcome Review
+            $progression_type_entity_id = 6158; //Action Plan Auto Complete
         }
 
 

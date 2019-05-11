@@ -1935,7 +1935,7 @@ class Communication_model extends CI_Model
 
         $fb_received_message = trim(strtolower($fb_received_message));
 
-        if (in_array($fb_received_message, array('stats', 'statistics'))) {
+        if (in_array($fb_received_message, array('stats', 'stat', 'statistics'))) {
 
             $student_intents = $this->Links_model->ln_fetch(array(
                 'ln_miner_entity_id' => $en['en_id'],
@@ -1985,25 +1985,10 @@ class Communication_model extends CI_Model
 
             }
 
-        } elseif (in_array($fb_received_message, array('next', 'continue'))) {
+        } elseif (in_array($fb_received_message, array('next', 'continue', 'go'))) {
 
             //Give them the next step of their Action Plan:
             $step = $this->Actionplan_model->actionplan_step_next_go($en['en_id'], true, true);
-
-        } elseif (in_array($fb_received_message, array('yes', 'yeah', 'ya', 'ok', '▶️', 'ok continue', 'go', 'yass', 'yas', 'yea', 'yup', 'yes, learn more'))) {
-
-            $this->Communication_model->dispatch_message(
-                'I am not yet trained to accept your affirmation.',
-                $en,
-                true,
-                array(
-                    array(
-                        'content_type' => 'text',
-                        'title' => 'Next',
-                        'payload' => 'GONEXT',
-                    )
-                )
-            );
 
         } elseif ($fb_received_message == 'skip') {
 
@@ -2028,39 +2013,6 @@ class Communication_model extends CI_Model
                 );
             }
 
-        } elseif (in_array($fb_received_message, array('help', 'support', 'f1', 'sos'))) {
-
-            //Ask the user if they like to be connected to a human
-            //IF yes, create a ATTENTION NEEDED link that would notify admin so admin can start a manual conversation
-            $this->Communication_model->dispatch_message(
-                'I am not yet trained to provide help.',
-                $en,
-                true,
-                array(
-                    array(
-                        'content_type' => 'text',
-                        'title' => 'Next',
-                        'payload' => 'GONEXT',
-                    )
-                )
-            );
-
-        } elseif (in_array($fb_received_message, array('no', 'nope', 'nah', 'cancel'))) {
-
-            //Rejecting an offer...
-            $this->Communication_model->dispatch_message(
-                'I am not yet trained to accept your rejection.',
-                $en,
-                true,
-                array(
-                    array(
-                        'content_type' => 'text',
-                        'title' => 'Next',
-                        'payload' => 'GONEXT',
-                    )
-                )
-            );
-
         } elseif (is_numeric($fb_received_message)) {
 
             //Likely an OR response with a specific number in mind...
@@ -2077,7 +2029,7 @@ class Communication_model extends CI_Model
                 )
             );
 
-        } elseif (includes_any($fb_received_message, array('unsubscribe', 'stop'))) {
+        } elseif (includes_any($fb_received_message, array('unsubscribe', 'stop', 'quit'))) {
 
             //List their Action Plan intentions and let student choose which one to unsubscribe:
             $student_intents = $this->Links_model->ln_fetch(array(
