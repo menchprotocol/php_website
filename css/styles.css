@@ -2772,14 +2772,19 @@ a.badge:focus, a.badge:hover {
 }
 
 .large-stat {
+    font-size: 3.6em;
     padding:0;
-    font-weight:300;
-    font-size: 1.6em;
-    line-height:160%;
+    font-weight:500;
+    line-height:100%;
     text-decoration: none;
     display:block;
     margin-top: 30px;
     text-align: center;
+}
+
+.large-stat .substitle{
+    display: block;
+    font-size: 0.7em;
 }
 
 
@@ -2794,11 +2799,6 @@ a.badge:focus, a.badge:hover {
     max-width:330px;
 }
 
-.large-stat>span{
-    font-size: 2em;
-    display: block;
-    margin-left: -3px;
-}
 
 /* Search CSS */
 .add_intent {

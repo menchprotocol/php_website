@@ -142,7 +142,7 @@ class Entities_model extends CI_Model
 
 
             //Always fetch entity parents unless explicitly requested not to:
-            if (in_array('skip_en__parents', $join_objects)) {
+            if (in_array('skip_en__parents', $join_objects) || !isset($val['en_id'])) {
 
                 $res[$key]['en__parents'] = array();
 
