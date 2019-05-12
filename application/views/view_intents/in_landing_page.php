@@ -103,30 +103,37 @@ $other_intentions = $this->Links_model->ln_fetch(array(
     'in_id NOT IN (' . join(',', $exclude_array) . ')' => null,
 ), array('in_parent'));
 
+
+//Parent intentions:
+$body = '';
+foreach ($other_intentions as $parent_intention) {
+    //Add parent intention to UI:
+    $body .= echo_in_featured($parent_intention);
+    //Make sure to not load this again:
+    array_push($exclude_array, $parent_intention['in_id']);
+}
+
+$featured_intention = $this->Links_model->ln_fetch(array(
+    'ln_status' => 2, //Published
+    'in_status' => 2, //Published
+    'ln_type_entity_id' => 4228, //Fixed intent links only
+    'ln_parent_intent_id' => $this->config->item('in_featured'), //Feature Mench Intentions
+    'in_id NOT IN (' . join(',', $exclude_array) . ')' => null,
+), array('in_child'), 0, 0, array('ln_order' => 'ASC'));
+
+
 //Display if any:
-if(count($other_intentions) > 0){
+if(count($other_intentions) > 0 || count($featured_intention) > 0){
 
     echo '<h3 style="margin-bottom:5px; margin-top:55px;">Other Intentions:</h3>';
     echo '<div class="list-group grey_list actionplan_list maxout">';
 
-    //Parent intentions:
-    foreach ($other_intentions as $parent_intention) {
-        //Add parent intention to UI:
-        echo echo_in_featured($parent_intention);
-        //Make sure to not load this again:
-        array_push($exclude_array, $parent_intention['in_id']);
-    }
+        echo $body;
 
-    //Now fetch featured intents:
-    foreach ($this->Links_model->ln_fetch(array(
-        'ln_status' => 2, //Published
-        'in_status' => 2, //Published
-        'ln_type_entity_id' => 4228, //Fixed intent links only
-        'ln_parent_intent_id' => $this->config->item('in_featured'), //Feature Mench Intentions
-        'in_id NOT IN (' . join(',', $exclude_array) . ')' => null,
-    ), array('in_child'), 0, 0, array('ln_order' => 'ASC')) as $featured_intention) {
-        echo echo_in_featured($featured_intention);
-    }
+        //Now fetch featured intents:
+        foreach ($featured_intention as $featured_intention) {
+            echo echo_in_featured($featured_intention);
+        }
 
     echo '</div>';
 
