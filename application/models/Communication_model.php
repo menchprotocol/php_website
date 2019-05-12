@@ -1842,42 +1842,41 @@ class Communication_model extends CI_Model
                     //Update status:
                     $published_answer = true;
 
-                } elseif($ln['ln_child_intent_id'] != $answer_in_id){
+                } elseif($ln['ln_child_intent_id'] > 0 && $ln['ln_child_intent_id'] != $answer_in_id){
 
                     //This is a published & different answer!
                     return array(
                         'status' => 0,
-                        'message' => 'ANSWERQUESTION_ updated a previously answered question which should not happen!',
+                        'message' => 'ANSWERQUESTION_ updated a previously answered question',
                     );
 
                 }
             }
 
-            //Did we succeed?
-            if(!$published_answer){
-                return array(
-                    'status' => 0,
-                    'message' => 'ANSWERQUESTION_ failed to publish student answer',
+            //Did we publish anything?
+            if($published_answer){
+
+
+                //Process on-complete automations:
+                $this->Actionplan_model->actionplan_completion_checks($en['en_id'], $question_ins[0], true, true);
+
+
+                //See if we also need to mark the answer as complete:
+                $this->Actionplan_model->actionplan_completion_auto_apply($en['en_id'], $answer_ins[0]);
+
+
+                //Affirm answer received answer:
+                $this->Communication_model->dispatch_message(
+                    echo_random_message('affirm_progress'),
+                    $en,
+                    true
                 );
+
+
+                //Find/Advance to the next step:
+                $this->Actionplan_model->actionplan_step_next_go($en['en_id'], true, true);
+
             }
-
-            //Process on-complete automations:
-            $this->Actionplan_model->actionplan_completion_checks($en['en_id'], $question_ins[0], true, true);
-
-
-            //See if we also need to mark the answer as complete:
-            $this->Actionplan_model->actionplan_completion_auto_apply($en['en_id'], $answer_ins[0]);
-
-
-            //Affirm answer received answer:
-            $this->Communication_model->dispatch_message(
-                echo_random_message('affirm_progress'),
-                $en,
-                true
-            );
-
-            //Find/Advance to the next step:
-            $this->Actionplan_model->actionplan_step_next_go($en['en_id'], true, true);
 
         } else {
 

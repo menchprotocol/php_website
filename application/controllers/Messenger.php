@@ -298,7 +298,7 @@ class Messenger extends CI_Controller
                     $last_trs_logged = $this->Links_model->ln_fetch(array(
                         'ln_type_entity_id' => $ln_type_entity_id,
                         'ln_miner_entity_id' => $en['en_id'],
-                        'ln_timestamp >=' => date("Y-m-d H:i:s", (time() - (180))), //Links logged less than 3 minutes ago
+                        'ln_timestamp >=' => date("Y-m-d H:i:s", (time() - (60))), //Links logged less than 1 minutes ago
                     ), array(), 1);
 
                     if (count($last_trs_logged) == 0) {
