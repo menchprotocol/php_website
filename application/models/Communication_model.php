@@ -2056,6 +2056,7 @@ class Communication_model extends CI_Model
             if (count($student_intents) > 0) {
 
                 //Give them options to remove specific Action Plans:
+                $quick_replies = array();
                 $message = 'Choose one of the following options:';
                 $increment = 1;
 
