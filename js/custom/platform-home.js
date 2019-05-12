@@ -19,17 +19,17 @@ var update_basic_stats = function() {
 
         //Updated Intents?
         if(data.intents.extended_stats != $('#stats_intents_box .extended_stats').html()){
-            $('#stats_intents_box .extended_stats').html(data.intents.extended_stats).fadeOut().fadeIn();
+            $('#stats_intents_box .extended_stats').html(data.intents.extended_stats).fadeOut('fast').fadeIn('fast');
         }
 
         //Updated Entities?
         if(data.entities.extended_stats != $('#stats_entities_box .extended_stats').html()){
-            $('#stats_entities_box .extended_stats').html(data.entities.extended_stats).fadeOut().fadeIn();
+            $('#stats_entities_box .extended_stats').html(data.entities.extended_stats).fadeOut('fast').fadeIn('fast');
         }
 
         //Updated Links?
         if(data.links.extended_stats != $('#stats_links_box .extended_stats').html()){
-            $('#stats_links_box .extended_stats').html(data.links.extended_stats).fadeOut().fadeIn();
+            $('#stats_links_box .extended_stats').html(data.links.extended_stats).fadeOut('fast').fadeIn('fast');
         }
 
         //Reload Tooltip again:
