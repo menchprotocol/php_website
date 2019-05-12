@@ -107,6 +107,9 @@ $other_intentions = $this->Links_model->ln_fetch(array(
 //Parent intentions:
 $body = '';
 foreach ($other_intentions as $parent_intention) {
+    if(!is_clean_outcome($parent_intention)){
+        continue;
+    }
     //Add parent intention to UI:
     $body .= echo_in_featured($parent_intention);
     //Make sure to not load this again:
@@ -132,6 +135,9 @@ if(count($other_intentions) > 0 || count($featured_intention) > 0){
 
         //Now fetch featured intents:
         foreach ($featured_intention as $featured_intention) {
+            if(!is_clean_outcome($featured_intention)){
+                continue;
+            }
             echo echo_in_featured($featured_intention);
         }
 
