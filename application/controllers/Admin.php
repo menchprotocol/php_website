@@ -56,10 +56,9 @@ class Admin extends CI_Controller
 
     function load_basic_stats(){
 
-
         //Return stats for the platform home page:
 
-        //Count Three variables:
+        //Count three objects and return:
         $in_count = $this->Intents_model->in_fetch(array(
             'in_status >=' => 0,
         ), array(), 0, 0, array(), 'COUNT(in_id) as total_active_intents');
@@ -69,25 +68,15 @@ class Admin extends CI_Controller
         $ln_count = $this->Links_model->ln_fetch(array(
         ), array(), 0, 0, array(), 'COUNT(ln_id) as total__links');
 
-
-        $en_all_4534 = $this->config->item('en_all_4534');
-
-
         return echo_json(array(
             'intents' => array(
-                //'extended_stats1' => echo_number($in_count[0]['total_active_intents']), //TODO Enable when numbers growth is noticable...
-                'extended_stats1' => number_format($in_count[0]['total_active_intents']),
-                'extended_stats2' => number_format($in_count[0]['total_active_intents']),
+                'extended_stats' => number_format($in_count[0]['total_active_intents']),
             ),
             'entities' => array(
-                //'extended_stats1' => echo_number($en_count[0]['total_active_entities']),
-                'extended_stats1' => number_format($en_count[0]['total_active_entities']),
-                'extended_stats2' => number_format($en_count[0]['total_active_entities']),
+                'extended_stats' => number_format($en_count[0]['total_active_entities']),
             ),
             'links' => array(
-                //'extended_stats1' => echo_number($ln_count[0]['total__links']),
-                'extended_stats1' => number_format($ln_count[0]['total__links']),
-                'extended_stats2' => number_format($ln_count[0]['total__links']),
+                'extended_stats' => number_format($ln_count[0]['total__links']),
             )
         ));
 
