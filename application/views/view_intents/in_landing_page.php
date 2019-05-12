@@ -106,7 +106,7 @@ $other_intentions = $this->Links_model->ln_fetch(array(
 //Display if any:
 if(count($other_intentions) > 0){
 
-    echo '<h3 style="margin-bottom:5px; margin-top:22px;">Other Intentions:</h3>';
+    echo '<h3 style="margin-bottom:5px; margin-top:55px;">Other Intentions:</h3>';
     echo '<div class="list-group grey_list actionplan_list maxout">';
 
     //Parent intentions:
