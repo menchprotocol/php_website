@@ -59,14 +59,9 @@ class Admin extends CI_Controller
         //Return stats for the platform home page:
 
         //Count three objects and return:
-        $in_count = $this->Intents_model->in_fetch(array(
-            'in_status >=' => 0,
-        ), array(), 0, 0, array(), 'COUNT(in_id) as total_active_intents');
-        $en_count = $this->Entities_model->en_fetch(array(
-            'en_status >=' => 0,
-        ), array(), 0, 0, array(), 'COUNT(en_id) as total_active_entities');
-        $ln_count = $this->Links_model->ln_fetch(array(
-        ), array(), 0, 0, array(), 'COUNT(ln_id) as total__links');
+        $in_count = $this->Intents_model->in_fetch(array(), array(), 0, 0, array(), 'COUNT(in_id) as total_active_intents');
+        $en_count = $this->Entities_model->en_fetch(array(), array(), 0, 0, array(), 'COUNT(en_id) as total_active_entities');
+        $ln_count = $this->Links_model->ln_fetch(array(), array(), 0, 0, array(), 'COUNT(ln_id) as total__links');
 
         return echo_json(array(
             'intents' => array(
@@ -129,7 +124,7 @@ class Admin extends CI_Controller
 
 
             //Intent Types:
-            echo '<h4 class="panel-title">2 Intent Types</h4>';
+            echo '<h4 class="panel-title">2 Active Intent Types</h4>';
             echo '<table class="table table-condensed table-striped stats-table mini-stats-table ">';
             foreach(echo_fixed_fields('in_type') as $in_type_id => $in_type){
 
@@ -151,7 +146,7 @@ class Admin extends CI_Controller
 
 
             //Intent Completion Methods:
-            echo '<h4 class="panel-title">'.count($this->config->item('en_all_4331')).' Completion Methods</h4>';
+            echo '<h4 class="panel-title">'.count($this->config->item('en_all_4331')).' Active Completion Methods</h4>';
             echo '<table class="table table-condensed table-striped stats-table mini-stats-table ">';
             foreach($this->config->item('en_all_4331') as $completion_en_id => $completion_method){
 
@@ -174,7 +169,7 @@ class Admin extends CI_Controller
 
             //Intent Verbs:
             $show_max_verbs = 6;
-            echo '<h4 class="panel-title">'.count($in_verbs).' Verbs</h4>';
+            echo '<h4 class="panel-title">'.count($in_verbs).' Active Verbs</h4>';
             echo '<table class="table table-condensed table-striped stats-table mini-stats-table ">';
             foreach($in_verbs as $count => $verb){
                 echo '<tr class="'.( $count >= $show_max_verbs ? 'hiddenverbs hidden' : '' ).'">';
@@ -275,11 +270,11 @@ class Admin extends CI_Controller
             echo '<table class="table table-condensed table-striped stats-table mini-stats-table">';
             //Object Stats grouped by Status:
             $this_ui = '';
-            foreach ($fixed_fields['in_status'] as $status_num => $status) {
+            foreach ($fixed_fields['en_status'] as $status_num => $status) {
                 //Count this status:
-                $objects_count = $this->Intents_model->in_fetch(array(
-                    'in_status' => $status_num
-                ), array(), 0, 0, array(), 'COUNT(in_id) as totals');
+                $objects_count = $this->Entities_model->en_fetch(array(
+                    'en_status' => $status_num
+                ), array(), 0, 0, array(), 'COUNT(en_id) as totals');
 
                 //Display this status count:
                 $this_ui .= '<tr>';
@@ -314,7 +309,7 @@ class Admin extends CI_Controller
 
 
             //Top Miners:
-            $top = 3;
+            $top = 7;
             $days_ago = null;
             $top_point_awarded = 0;
             $top_miners = ''; //For the UI table
