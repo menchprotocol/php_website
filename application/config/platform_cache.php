@@ -11,10 +11,97 @@ defined('BASEPATH') OR exit('No direct script access allowed');
  *
  */
 
-//Generated 2019-05-11 13:19:37 PST
+//Generated 2019-05-12 23:24:47 PST
+
+//AND Intents:
+$config['en_ids_6192'] = array(6677, 6678, 6679, 6680, 6681, 6682, 6683);
+$config['en_all_6192'] = array(
+    6677 => array(
+        'm_icon' => '<i class="fal fa-check"></i>',
+        'm_name' => 'No Response Required',
+        'm_desc' => 'Students would complete the intent by simply reviewing its outcome and reading its messages if any. No inputs are required.',
+        'm_parents' => array(6192),
+    ),
+    6678 => array(
+        'm_icon' => '<i class="fal fa-image"></i>',
+        'm_name' => 'Image Required',
+        'm_desc' => 'Student must send an image to mark the intent as complete.',
+        'm_parents' => array(6192),
+    ),
+    6679 => array(
+        'm_icon' => '<i class="fal fa-video"></i>',
+        'm_name' => 'Video Required',
+        'm_desc' => 'Student must send a video to mark the intent as complete.',
+        'm_parents' => array(6192),
+    ),
+    6680 => array(
+        'm_icon' => '<i class="fal fa-microphone"></i>',
+        'm_name' => 'Voice Note Required',
+        'm_desc' => 'Student must send a voice note to mark the intent as complete.',
+        'm_parents' => array(6192),
+    ),
+    6681 => array(
+        'm_icon' => '<i class="fal fa-file-pdf"></i>',
+        'm_name' => 'File Required',
+        'm_desc' => 'Student must upload a File to mark the intent as complete.',
+        'm_parents' => array(6192),
+    ),
+    6682 => array(
+        'm_icon' => '<i class="fal fa-browser"></i>',
+        'm_name' => 'URL Required',
+        'm_desc' => 'Student must submit a URL to mark the intent as complete.',
+        'm_parents' => array(6192),
+    ),
+    6683 => array(
+        'm_icon' => '<i class="fal fa-align-left"></i>',
+        'm_name' => 'Text Required',
+        'm_desc' => 'Student must submit a text message to mark the intent as complete.',
+        'm_parents' => array(6192),
+    ),
+);
+
+//Intent Type Entity:
+$config['en_ids_6676'] = array(6192, 6193);
+$config['en_all_6676'] = array(
+    6192 => array(
+        'm_icon' => '<i class="fal fa-sitemap"></i>',
+        'm_name' => 'AND',
+        'm_desc' => 'AND Intents are completed when ALL their children are complete',
+        'm_parents' => array(4527, 6676, 4530),
+    ),
+    6193 => array(
+        'm_icon' => '<i class="fal fa-code-merge"></i>',
+        'm_name' => 'OR',
+        'm_desc' => 'OR Intents are completed when ANY of their children are complete',
+        'm_parents' => array(4527, 6676, 4530),
+    ),
+);
+
+//OR Intents:
+$config['en_ids_6193'] = array(6684, 6685, 6686);
+$config['en_all_6193'] = array(
+    6684 => array(
+        'm_icon' => '<i class="fal fa-ballot-check"></i>',
+        'm_name' => 'Normal Selection',
+        'm_desc' => 'Students can take their time and choose one of the paths of the OR intent.',
+        'm_parents' => array(6193),
+    ),
+    6685 => array(
+        'm_icon' => '<i class="fal fa-hourglass-half"></i>',
+        'm_name' => 'Timed Selection',
+        'm_desc' => 'Student must make a selection within the time limit defines by the estimated intent time before their response chance expires.',
+        'm_parents' => array(6193),
+    ),
+    6686 => array(
+        'm_icon' => '<i class="fal fa-dice"></i>',
+        'm_name' => 'Random Selection',
+        'm_desc' => 'A random selection would be made when the student reaches this intent. Good for A/B testing.',
+        'm_parents' => array(6193),
+    ),
+);
 
 //Platform Glossary:
-$config['en_ids_4463'] = array(1281, 1308, 3000, 3084, 4430, 4433, 4485, 4488, 4535, 4536, 4595, 4755, 6138, 6196, 6205);
+$config['en_ids_4463'] = array(1281, 1308, 3000, 3084, 4430, 4433, 4485, 4488, 4535, 4536, 4595, 4755, 6138, 6196, 6199, 6205, 6695);
 $config['en_all_4463'] = array(
     1281 => array(
         'm_icon' => '🛡️',
@@ -24,12 +111,12 @@ $config['en_all_4463'] = array(
     ),
     1308 => array(
         'm_icon' => '⛏️',
-        'm_name' => 'Mench Miners',
+        'm_name' => 'Mench Certified Miners',
         'm_desc' => 'Everyone on Mench is mining intelligence, but this group of individuals have set their intention to become a Mench miner and have graduated from our training program on how to Mine intelligence using Mench.',
         'm_parents' => array(4463, 4432, 4426),
     ),
     3000 => array(
-        'm_icon' => '<i class="fas fa-star"></i>',
+        'm_icon' => '⭐',
         'm_name' => 'Expert Sources',
         'm_desc' => 'Our mining process is based on existing content produced by industry experts that will be mined from various reference types including videos, articles, books, online courses and more!',
         'm_parents' => array(3463, 4506, 4527, 4463),
@@ -38,17 +125,17 @@ $config['en_all_4463'] = array(
         'm_icon' => '⭐',
         'm_name' => 'Industry Experts',
         'm_desc' => 'People with experience in their respective industry that have shown a consistent commitment to advancing their industry.',
-        'm_parents' => array(4990, 4432, 4255, 4463),
+        'm_parents' => array(3463, 4990, 4255, 4463),
     ),
     4430 => array(
-        'm_icon' => '🎓',
-        'm_name' => 'Mench Students',
+        'm_icon' => '👤',
+        'm_name' => 'Mench Users',
         'm_desc' => 'Users connected to Mench Personal Assistant on Facebook Messenger.',
         'm_parents' => array(4426, 4463, 4432),
     ),
     4433 => array(
         'm_icon' => '⌨️',
-        'm_name' => 'Mench Developers',
+        'm_name' => 'Mench Open-Source Developers',
         'm_desc' => 'Developers who are contributing to the Mench open-source project on GitHub: https://github.com/askmench',
         'm_parents' => array(4463, 4432, 4426),
     ),
@@ -83,7 +170,7 @@ $config['en_all_4463'] = array(
         'm_parents' => array(6214, 4319, 4426, 4527, 4463, 4341),
     ),
     4755 => array(
-        'm_icon' => '<i class="fas fa-eye-slash"></i>',
+        'm_icon' => '<i class="fal fa-eye-slash"></i>',
         'm_name' => 'Private Content',
         'm_desc' => 'Mench is open-source but most of our student generated content is private and accessible either by the student or Mench\'s core contributors.',
         'm_parents' => array(4463, 4426, 4527, 4757),
@@ -100,11 +187,23 @@ $config['en_all_4463'] = array(
         'm_desc' => '',
         'm_parents' => array(4463, 2738, 4527, 3320),
     ),
+    6199 => array(
+        'm_icon' => '<i class="fas fa-shield-check"></i>',
+        'm_name' => 'Entity Trust Score',
+        'm_desc' => 'Our measure of trust to the entity which ranks them among their peers',
+        'm_parents' => array(4463, 6214, 6206),
+    ),
     6205 => array(
         'm_icon' => '<i class="fas fa-link"></i>',
         'm_name' => 'Links',
         'm_desc' => 'An electronic log book containing a list of transactions and balances typically involving financial accounts.',
         'm_parents' => array(2738, 4463, 4534),
+    ),
+    6695 => array(
+        'm_icon' => '💼',
+        'm_name' => 'Mench Partner Employers',
+        'm_desc' => 'Users who can manage the accounts of organizations they belong to.',
+        'm_parents' => array(4426, 4463, 4432),
     ),
 );
 
@@ -232,8 +331,14 @@ $config['en_all_6345'] = array(
 );
 
 //Mench:
-$config['en_ids_2738'] = array(4488, 4535, 4536, 5007, 6137, 6138, 6196, 6205, 6287);
+$config['en_ids_2738'] = array(4432, 4488, 4535, 4536, 5007, 6137, 6138, 6196, 6205, 6287);
 $config['en_all_2738'] = array(
+    4432 => array(
+        'm_icon' => '👥',
+        'm_name' => 'Mench User Groups',
+        'm_desc' => 'The Mench community and its various groups',
+        'm_parents' => array(2738, 4527, 3463),
+    ),
     4488 => array(
         'm_icon' => '<img src="https://mench.com/img/mench_white.png">',
         'm_name' => 'Mench Platform',
@@ -359,7 +464,7 @@ $config['en_all_6150'] = array(
     6154 => array(
         'm_icon' => '<i class="far fa-badge-check"></i>',
         'm_name' => 'Intention Accomplished',
-        'm_desc' => 'You successfully accomplished your intention so you no longer want to receive future dates',
+        'm_desc' => 'You successfully accomplished your intention so you no longer want to receive future updates',
         'm_parents' => array(6415, 4506, 6150, 4755, 4593),
     ),
     6155 => array(
@@ -500,13 +605,13 @@ $config['en_all_4530'] = array(
         'm_icon' => '<i class="fal fa-sitemap"></i>',
         'm_name' => 'AND',
         'm_desc' => 'AND Intents are completed when ALL their children are complete',
-        'm_parents' => array(4530),
+        'm_parents' => array(4527, 6676, 4530),
     ),
     6193 => array(
         'm_icon' => '<i class="fal fa-code-merge"></i>',
         'm_name' => 'OR',
         'm_desc' => 'OR Intents are completed when ANY of their children are complete',
-        'm_parents' => array(4530),
+        'm_parents' => array(4527, 6676, 4530),
     ),
 );
 
@@ -707,55 +812,55 @@ $config['en_ids_4277'] = array(4287, 4460, 4547, 4548, 4549, 4550, 4551, 4557, 6
 $config['en_all_4277'] = array(
     4287 => array(
         'm_icon' => '<i class="fal fa-comment-exclamation"></i>',
-        'm_name' => 'Student Sent Unrecognized Message',
+        'm_name' => 'User Sent Unrecognized Message',
         'm_desc' => '',
         'm_parents' => array(4755, 4277, 4593),
     ),
     4460 => array(
         'm_icon' => '<i class="far fa-ballot-check"></i>',
-        'm_name' => 'Student Sent Quick Reply',
+        'm_name' => 'User Sent Quick Reply',
         'm_desc' => 'When students select a quick reply answer of any kind',
         'm_parents' => array(4755, 4593, 4277),
     ),
     4547 => array(
         'm_icon' => '<i class="fal fa-align-left"></i>',
-        'm_name' => 'Student Sent Text Message',
+        'm_name' => 'User Sent Text Message',
         'm_desc' => '',
         'm_parents' => array(4755, 4593, 4277),
     ),
     4548 => array(
         'm_icon' => '<i class="fal fa-video"></i>',
-        'm_name' => 'Student Sent Video Message',
+        'm_name' => 'User Sent Video Message',
         'm_desc' => '',
         'm_parents' => array(6102, 4755, 4593, 4277),
     ),
     4549 => array(
         'm_icon' => '<i class="fal fa-volume-up"></i>',
-        'm_name' => 'Student Sent Audio Message',
+        'm_name' => 'User Sent Audio Message',
         'm_desc' => '',
         'm_parents' => array(6102, 4755, 4593, 4277),
     ),
     4550 => array(
         'm_icon' => '<i class="fal fa-image"></i>',
-        'm_name' => 'Student Sent Image Message',
+        'm_name' => 'User Sent Image Message',
         'm_desc' => '',
         'm_parents' => array(6102, 4755, 4593, 4277),
     ),
     4551 => array(
         'm_icon' => '<i class="fal fa-file-pdf"></i>',
-        'm_name' => 'Student Sent File Message',
+        'm_name' => 'User Sent File Message',
         'm_desc' => '',
         'm_parents' => array(6102, 4755, 4593, 4277),
     ),
     4557 => array(
         'm_icon' => '<i class="fal fa-location-circle"></i>',
-        'm_name' => 'Student Sent Location Message',
+        'm_name' => 'User Sent Location Message',
         'm_desc' => '',
         'm_parents' => array(4755, 4593, 4277),
     ),
     6561 => array(
         'm_icon' => '<i class="far fa-ballot-check"></i>',
-        'm_name' => 'Student Sent Manual Quick Reply',
+        'm_name' => 'User Sent Manual Quick Reply',
         'm_desc' => 'When students manually type in the quick reply answer and we match it to their quick reply options',
         'm_parents' => array(4755, 4593, 4277),
     ),
@@ -766,49 +871,49 @@ $config['en_ids_6102'] = array(4548, 4549, 4550, 4551, 4553, 4554, 4555, 4556);
 $config['en_all_6102'] = array(
     4548 => array(
         'm_icon' => '<i class="fal fa-video"></i>',
-        'm_name' => 'Student Sent Video Message',
+        'm_name' => 'User Sent Video Message',
         'm_desc' => '',
         'm_parents' => array(6102, 4755, 4593, 4277),
     ),
     4549 => array(
         'm_icon' => '<i class="fal fa-volume-up"></i>',
-        'm_name' => 'Student Sent Audio Message',
+        'm_name' => 'User Sent Audio Message',
         'm_desc' => '',
         'm_parents' => array(6102, 4755, 4593, 4277),
     ),
     4550 => array(
         'm_icon' => '<i class="fal fa-image"></i>',
-        'm_name' => 'Student Sent Image Message',
+        'm_name' => 'User Sent Image Message',
         'm_desc' => '',
         'm_parents' => array(6102, 4755, 4593, 4277),
     ),
     4551 => array(
         'm_icon' => '<i class="fal fa-file-pdf"></i>',
-        'm_name' => 'Student Sent File Message',
+        'm_name' => 'User Sent File Message',
         'm_desc' => '',
         'm_parents' => array(6102, 4755, 4593, 4277),
     ),
     4553 => array(
         'm_icon' => '<i class="fal fa-video"></i>',
-        'm_name' => 'Student Received Video Message',
+        'm_name' => 'User Received Video Message',
         'm_desc' => '',
         'm_parents' => array(6102, 4755, 4593, 4280),
     ),
     4554 => array(
         'm_icon' => '<i class="fal fa-volume-up"></i>',
-        'm_name' => 'Student Received Audio Message',
+        'm_name' => 'User Received Audio Message',
         'm_desc' => '',
         'm_parents' => array(6102, 4755, 4593, 4280),
     ),
     4555 => array(
         'm_icon' => '<i class="fal fa-image"></i>',
-        'm_name' => 'Student Received Image Message',
+        'm_name' => 'User Received Image Message',
         'm_desc' => '',
         'm_parents' => array(6102, 4755, 4593, 4280),
     ),
     4556 => array(
         'm_icon' => '<i class="fal fa-file-pdf"></i>',
-        'm_name' => 'Student Received File Message',
+        'm_name' => 'User Received File Message',
         'm_desc' => '',
         'm_parents' => array(6102, 4755, 4593, 4280),
     ),
@@ -819,86 +924,86 @@ $config['en_ids_4280'] = array(4552, 4553, 4554, 4555, 4556, 4570, 5967, 6563);
 $config['en_all_4280'] = array(
     4552 => array(
         'm_icon' => '<i class="fal fa-align-left"></i>',
-        'm_name' => 'Student Received Text Message',
+        'm_name' => 'User Received Text Message',
         'm_desc' => '',
         'm_parents' => array(4755, 4593, 4280),
     ),
     4553 => array(
         'm_icon' => '<i class="fal fa-video"></i>',
-        'm_name' => 'Student Received Video Message',
+        'm_name' => 'User Received Video Message',
         'm_desc' => '',
         'm_parents' => array(6102, 4755, 4593, 4280),
     ),
     4554 => array(
         'm_icon' => '<i class="fal fa-volume-up"></i>',
-        'm_name' => 'Student Received Audio Message',
+        'm_name' => 'User Received Audio Message',
         'm_desc' => '',
         'm_parents' => array(6102, 4755, 4593, 4280),
     ),
     4555 => array(
         'm_icon' => '<i class="fal fa-image"></i>',
-        'm_name' => 'Student Received Image Message',
+        'm_name' => 'User Received Image Message',
         'm_desc' => '',
         'm_parents' => array(6102, 4755, 4593, 4280),
     ),
     4556 => array(
         'm_icon' => '<i class="fal fa-file-pdf"></i>',
-        'm_name' => 'Student Received File Message',
+        'm_name' => 'User Received File Message',
         'm_desc' => '',
         'm_parents' => array(6102, 4755, 4593, 4280),
     ),
     4570 => array(
         'm_icon' => '<i class="fab fa-html5"></i>',
-        'm_name' => 'Student Received HTML Message',
+        'm_name' => 'User Received HTML Message',
         'm_desc' => '',
         'm_parents' => array(4755, 4593, 4280),
     ),
     5967 => array(
         'm_icon' => '<i class="fal fa-envelope-open"></i>',
-        'm_name' => 'Student Received Email Message',
+        'm_name' => 'User Received Email Message',
         'm_desc' => '',
         'm_parents' => array(4755, 4593, 4280),
     ),
     6563 => array(
         'm_icon' => '<i class="far fa-ballot-check"></i>',
-        'm_name' => 'Student Received Quick Reply',
+        'm_name' => 'User Received Quick Reply',
         'm_desc' => 'When we dispatch a quick reply to students and are waiting for their answer...',
         'm_parents' => array(4593, 4755, 4280),
     ),
 );
 
-//Human Groups:
-$config['en_ids_4432'] = array(1281, 1308, 3084, 4430, 4433);
+//Mench User Groups:
+$config['en_ids_4432'] = array(1281, 1308, 4430, 4433, 6695);
 $config['en_all_4432'] = array(
     1281 => array(
         'm_icon' => '🛡️',
         'm_name' => 'Mench Core Contributors',
-        'm_desc' => '',
+        'm_desc' => 'The dedicated team that ensures the continuous operation of the Mench platform, governs its principles and empowers the rest of the community to achieve their full potential',
         'm_parents' => array(4757, 4463, 4432),
     ),
     1308 => array(
         'm_icon' => '⛏️',
-        'm_name' => 'Mench Miners',
-        'm_desc' => '',
+        'm_name' => 'Mench Certified Miners',
+        'm_desc' => 'Those who have completed the intention to become a Mench miner and have passed the assessment that validated their skills and understanding of the mining principles',
         'm_parents' => array(4463, 4432, 4426),
     ),
-    3084 => array(
-        'm_icon' => '⭐',
-        'm_name' => 'Industry Experts',
-        'm_desc' => '',
-        'm_parents' => array(4990, 4432, 4255, 4463),
-    ),
     4430 => array(
-        'm_icon' => '🎓',
-        'm_name' => 'Mench Students',
-        'm_desc' => '',
+        'm_icon' => '👤',
+        'm_name' => 'Mench Users',
+        'm_desc' => 'All Mench users share a connection to Mench personal assistant and may also belong to other user groups',
         'm_parents' => array(4426, 4463, 4432),
     ),
     4433 => array(
         'm_icon' => '⌨️',
-        'm_name' => 'Mench Developers',
-        'm_desc' => '',
+        'm_name' => 'Mench Open-Source Developers',
+        'm_desc' => 'Those contributing to our open-source code base hosted on GitHub',
         'm_parents' => array(4463, 4432, 4426),
+    ),
+    6695 => array(
+        'm_icon' => '💼',
+        'm_name' => 'Mench Partner Employers',
+        'm_desc' => 'Those who use Mench as a recruitment platform to assess their candidates and reach new candidates',
+        'm_parents' => array(4426, 4463, 4432),
     ),
 );
 
@@ -943,7 +1048,7 @@ $config['en_all_4255'] = array(
         'm_icon' => '⭐',
         'm_name' => 'Industry Experts',
         'm_desc' => 'List accomplishments supporting the expertise of this entity',
-        'm_parents' => array(4990, 4432, 4255, 4463),
+        'm_parents' => array(3463, 4990, 4255, 4463),
     ),
     3147 => array(
         'm_icon' => '<i class="fal fa-presentation"></i>',
@@ -1091,7 +1196,7 @@ $config['en_all_4990'] = array(
         'm_icon' => '⭐',
         'm_name' => 'Industry Experts',
         'm_desc' => '',
-        'm_parents' => array(4990, 4432, 4255, 4463),
+        'm_parents' => array(3463, 4990, 4255, 4463),
     ),
     3147 => array(
         'm_icon' => '<i class="fal fa-presentation"></i>',
@@ -1221,12 +1326,12 @@ $config['en_all_4990'] = array(
     ),
 );
 
-//Only Core Contributors can Modify:
-$config['en_ids_4426'] = array(1308, 3288, 4426, 4430, 4433, 4595, 4755, 4997, 5969);
+//Modification Lock:
+$config['en_ids_4426'] = array(1308, 3288, 4426, 4430, 4433, 4595, 4755, 4997, 5969, 6695);
 $config['en_all_4426'] = array(
     1308 => array(
         'm_icon' => '⛏️',
-        'm_name' => 'Mench Miners',
+        'm_name' => 'Mench Certified Miners',
         'm_desc' => 'Requires admin review and approval',
         'm_parents' => array(4463, 4432, 4426),
     ),
@@ -1238,19 +1343,19 @@ $config['en_all_4426'] = array(
     ),
     4426 => array(
         'm_icon' => '<i class="fas fa-lock"></i>',
-        'm_name' => 'Only Core Contributors can Modify',
+        'm_name' => 'Modification Lock',
         'm_desc' => '',
         'm_parents' => array(4426, 4527, 4757, 4428),
     ),
     4430 => array(
-        'm_icon' => '🎓',
-        'm_name' => 'Mench Students',
+        'm_icon' => '👤',
+        'm_name' => 'Mench Users',
         'm_desc' => '',
         'm_parents' => array(4426, 4463, 4432),
     ),
     4433 => array(
         'm_icon' => '⌨️',
-        'm_name' => 'Mench Developers',
+        'm_name' => 'Mench Open-Source Developers',
         'm_desc' => 'Requires admin review and approval',
         'm_parents' => array(4463, 4432, 4426),
     ),
@@ -1261,7 +1366,7 @@ $config['en_all_4426'] = array(
         'm_parents' => array(6214, 4319, 4426, 4527, 4463, 4341),
     ),
     4755 => array(
-        'm_icon' => '<i class="fas fa-eye-slash"></i>',
+        'm_icon' => '<i class="fal fa-eye-slash"></i>',
         'm_name' => 'Private Content',
         'm_desc' => '',
         'm_parents' => array(4463, 4426, 4527, 4757),
@@ -1277,6 +1382,12 @@ $config['en_all_4426'] = array(
         'm_name' => 'System Modification Lock',
         'm_desc' => '',
         'm_parents' => array(4426, 4527, 4757, 4428),
+    ),
+    6695 => array(
+        'm_icon' => '💼',
+        'm_name' => 'Mench Partner Employers',
+        'm_desc' => '',
+        'm_parents' => array(4426, 4463, 4432),
     ),
 );
 
@@ -1327,43 +1438,43 @@ $config['en_all_4755'] = array(
     ),
     4266 => array(
         'm_icon' => '<i class="fab fa-facebook-messenger"></i>',
-        'm_name' => 'Student Messenger Opt-in',
+        'm_name' => 'User Messenger Opt-in',
         'm_desc' => '',
         'm_parents' => array(4755, 4593),
     ),
     4267 => array(
         'm_icon' => '<i class="fab fa-facebook-messenger"></i>',
-        'm_name' => 'Student Messenger Referral',
+        'm_name' => 'User Messenger Referral',
         'm_desc' => '',
         'm_parents' => array(4755, 4593),
     ),
     4268 => array(
         'm_icon' => '<i class="fab fa-facebook-messenger"></i>',
-        'm_name' => 'Student Messenger Postback',
+        'm_name' => 'User Messenger Postback',
         'm_desc' => '',
         'm_parents' => array(4755, 4593),
     ),
     4275 => array(
         'm_icon' => '<i class="fas fa-wand-magic"></i>',
-        'm_name' => 'Student Text Commanded Intention',
+        'm_name' => 'User Text Commanded Intention',
         'm_desc' => '',
         'm_parents' => array(6554, 4755, 4593),
     ),
     4278 => array(
         'm_icon' => '<i class="fas fa-check-double"></i>',
-        'm_name' => 'Student Read Message',
+        'm_name' => 'User Message Read',
         'm_desc' => '',
         'm_parents' => array(4755, 4593),
     ),
     4279 => array(
         'm_icon' => '<i class="fas fa-check"></i>',
-        'm_name' => 'Student Message Delivered',
+        'm_name' => 'User Message Delivered',
         'm_desc' => '',
         'm_parents' => array(4755, 4593),
     ),
     4282 => array(
         'm_icon' => '<i class="fas fa-eye"></i>',
-        'm_name' => 'Student Opened Account',
+        'm_name' => 'User Account Opened',
         'm_desc' => '',
         'm_parents' => array(4755, 6222, 4593),
     ),
@@ -1375,85 +1486,85 @@ $config['en_all_4755'] = array(
     ),
     4287 => array(
         'm_icon' => '<i class="fal fa-comment-exclamation"></i>',
-        'm_name' => 'Student Sent Unrecognized Message',
+        'm_name' => 'User Sent Unrecognized Message',
         'm_desc' => '',
         'm_parents' => array(4755, 4277, 4593),
     ),
     4299 => array(
         'm_icon' => '<i class="far fa-id-badge"></i>',
-        'm_name' => 'Student Set Profile Picture',
+        'm_name' => 'User Set Profile Picture',
         'm_desc' => '',
         'm_parents' => array(6222, 4755, 4593),
     ),
     4460 => array(
         'm_icon' => '<i class="far fa-ballot-check"></i>',
-        'm_name' => 'Student Sent Quick Reply',
+        'm_name' => 'User Sent Quick Reply',
         'm_desc' => '',
         'm_parents' => array(4755, 4593, 4277),
     ),
     4547 => array(
         'm_icon' => '<i class="fal fa-align-left"></i>',
-        'm_name' => 'Student Sent Text Message',
+        'm_name' => 'User Sent Text Message',
         'm_desc' => '',
         'm_parents' => array(4755, 4593, 4277),
     ),
     4548 => array(
         'm_icon' => '<i class="fal fa-video"></i>',
-        'm_name' => 'Student Sent Video Message',
+        'm_name' => 'User Sent Video Message',
         'm_desc' => '',
         'm_parents' => array(6102, 4755, 4593, 4277),
     ),
     4549 => array(
         'm_icon' => '<i class="fal fa-volume-up"></i>',
-        'm_name' => 'Student Sent Audio Message',
+        'm_name' => 'User Sent Audio Message',
         'm_desc' => '',
         'm_parents' => array(6102, 4755, 4593, 4277),
     ),
     4550 => array(
         'm_icon' => '<i class="fal fa-image"></i>',
-        'm_name' => 'Student Sent Image Message',
+        'm_name' => 'User Sent Image Message',
         'm_desc' => '',
         'm_parents' => array(6102, 4755, 4593, 4277),
     ),
     4551 => array(
         'm_icon' => '<i class="fal fa-file-pdf"></i>',
-        'm_name' => 'Student Sent File Message',
+        'm_name' => 'User Sent File Message',
         'm_desc' => '',
         'm_parents' => array(6102, 4755, 4593, 4277),
     ),
     4552 => array(
         'm_icon' => '<i class="fal fa-align-left"></i>',
-        'm_name' => 'Student Received Text Message',
+        'm_name' => 'User Received Text Message',
         'm_desc' => '',
         'm_parents' => array(4755, 4593, 4280),
     ),
     4553 => array(
         'm_icon' => '<i class="fal fa-video"></i>',
-        'm_name' => 'Student Received Video Message',
+        'm_name' => 'User Received Video Message',
         'm_desc' => '',
         'm_parents' => array(6102, 4755, 4593, 4280),
     ),
     4554 => array(
         'm_icon' => '<i class="fal fa-volume-up"></i>',
-        'm_name' => 'Student Received Audio Message',
+        'm_name' => 'User Received Audio Message',
         'm_desc' => '',
         'm_parents' => array(6102, 4755, 4593, 4280),
     ),
     4555 => array(
         'm_icon' => '<i class="fal fa-image"></i>',
-        'm_name' => 'Student Received Image Message',
+        'm_name' => 'User Received Image Message',
         'm_desc' => '',
         'm_parents' => array(6102, 4755, 4593, 4280),
     ),
     4556 => array(
         'm_icon' => '<i class="fal fa-file-pdf"></i>',
-        'm_name' => 'Student Received File Message',
+        'm_name' => 'User Received File Message',
         'm_desc' => '',
         'm_parents' => array(6102, 4755, 4593, 4280),
     ),
     4557 => array(
         'm_icon' => '<i class="fal fa-location-circle"></i>',
-        'm_name' => 'Student Sent Location Message',
+        'm_name' => 'User Sent Location Message',
         'm_desc' => '',
         'm_parents' => array(4755, 4593, 4277),
     ),
@@ -1465,7 +1576,7 @@ $config['en_all_4755'] = array(
     ),
     4570 => array(
         'm_icon' => '<i class="fab fa-html5"></i>',
-        'm_name' => 'Student Received HTML Message',
+        'm_name' => 'User Received HTML Message',
         'm_desc' => '',
         'm_parents' => array(4755, 4593, 4280),
     ),
@@ -1477,7 +1588,7 @@ $config['en_all_4755'] = array(
     ),
     5967 => array(
         'm_icon' => '<i class="fal fa-envelope-open"></i>',
-        'm_name' => 'Student Received Email Message',
+        'm_name' => 'User Received Email Message',
         'm_desc' => '',
         'm_parents' => array(4755, 4593, 4280),
     ),
@@ -1537,13 +1648,13 @@ $config['en_all_4755'] = array(
     ),
     6224 => array(
         'm_icon' => '<i class="fal fa-sync"></i>',
-        'm_name' => 'Student Updated Account',
+        'm_name' => 'User Account Updated',
         'm_desc' => '',
         'm_parents' => array(4755, 6222, 4593),
     ),
     6389 => array(
         'm_icon' => '<i class="fab fa-facebook-messenger"></i>',
-        'm_name' => 'Messenger Profile Inaccessible',
+        'm_name' => 'User Messenger Profile Inaccessible',
         'm_desc' => '',
         'm_parents' => array(4755, 4593),
     ),
@@ -1555,37 +1666,37 @@ $config['en_all_4755'] = array(
     ),
     6556 => array(
         'm_icon' => '<i class="fas fa-wand-magic"></i>',
-        'm_name' => 'Student Text Commanded Stats',
+        'm_name' => 'User Text Commanded Stats',
         'm_desc' => '',
         'm_parents' => array(4755, 4593, 6554),
     ),
     6559 => array(
         'm_icon' => '<i class="fas fa-wand-magic"></i>',
-        'm_name' => 'Student Text Commanded Next',
+        'm_name' => 'User Text Commanded Next',
         'm_desc' => '',
         'm_parents' => array(4755, 4593, 6554),
     ),
     6560 => array(
         'm_icon' => '<i class="fas fa-wand-magic"></i>',
-        'm_name' => 'Student Text Commanded Skip',
+        'm_name' => 'User Text Commanded Skip',
         'm_desc' => '',
         'm_parents' => array(4755, 4593, 6554),
     ),
     6561 => array(
         'm_icon' => '<i class="far fa-ballot-check"></i>',
-        'm_name' => 'Student Sent Manual Quick Reply',
+        'm_name' => 'User Sent Manual Quick Reply',
         'm_desc' => '',
         'm_parents' => array(4755, 4593, 4277),
     ),
     6563 => array(
         'm_icon' => '<i class="far fa-ballot-check"></i>',
-        'm_name' => 'Student Received Quick Reply',
+        'm_name' => 'User Received Quick Reply',
         'm_desc' => '',
         'm_parents' => array(4593, 4755, 4280),
     ),
     6578 => array(
         'm_icon' => '<i class="fas fa-wand-magic"></i>',
-        'm_name' => 'Student Text Commanded Stop',
+        'm_name' => 'User Text Commanded Stop',
         'm_desc' => '',
         'm_parents' => array(4755, 4593, 6554),
     ),
@@ -1747,7 +1858,7 @@ $config['en_all_4600'] = array(
         'm_icon' => '🏢',
         'm_name' => 'Organizations',
         'm_desc' => '',
-        'm_parents' => array(4600),
+        'm_parents' => array(3463, 4600),
     ),
 );
 
@@ -1870,19 +1981,19 @@ $config['en_all_4593'] = array(
     ),
     4266 => array(
         'm_icon' => '<i class="fab fa-facebook-messenger"></i>',
-        'm_name' => 'Student Messenger Opt-in',
+        'm_name' => 'User Messenger Opt-in',
         'm_desc' => '',
         'm_parents' => array(4755, 4593),
     ),
     4267 => array(
         'm_icon' => '<i class="fab fa-facebook-messenger"></i>',
-        'm_name' => 'Student Messenger Referral',
+        'm_name' => 'User Messenger Referral',
         'm_desc' => '',
         'm_parents' => array(4755, 4593),
     ),
     4268 => array(
         'm_icon' => '<i class="fab fa-facebook-messenger"></i>',
-        'm_name' => 'Student Messenger Postback',
+        'm_name' => 'User Messenger Postback',
         'm_desc' => '',
         'm_parents' => array(4755, 4593),
     ),
@@ -1894,25 +2005,25 @@ $config['en_all_4593'] = array(
     ),
     4275 => array(
         'm_icon' => '<i class="fas fa-wand-magic"></i>',
-        'm_name' => 'Student Text Commanded Intention',
+        'm_name' => 'User Text Commanded Intention',
         'm_desc' => 'When students invokes the [I want to] command and search for a new intention that they would like to add to their Action Plan.',
         'm_parents' => array(6554, 4755, 4593),
     ),
     4278 => array(
         'm_icon' => '<i class="fas fa-check-double"></i>',
-        'm_name' => 'Student Read Message',
+        'm_name' => 'User Message Read',
         'm_desc' => '',
         'm_parents' => array(4755, 4593),
     ),
     4279 => array(
         'm_icon' => '<i class="fas fa-check"></i>',
-        'm_name' => 'Student Message Delivered',
+        'm_name' => 'User Message Delivered',
         'm_desc' => '',
         'm_parents' => array(4755, 4593),
     ),
     4282 => array(
         'm_icon' => '<i class="fas fa-eye"></i>',
-        'm_name' => 'Student Opened Account',
+        'm_name' => 'User Account Opened',
         'm_desc' => '',
         'm_parents' => array(4755, 6222, 4593),
     ),
@@ -1924,13 +2035,13 @@ $config['en_all_4593'] = array(
     ),
     4287 => array(
         'm_icon' => '<i class="fal fa-comment-exclamation"></i>',
-        'm_name' => 'Student Sent Unrecognized Message',
+        'm_name' => 'User Sent Unrecognized Message',
         'm_desc' => '',
         'm_parents' => array(4755, 4277, 4593),
     ),
     4299 => array(
         'm_icon' => '<i class="far fa-id-badge"></i>',
-        'm_name' => 'Student Set Profile Picture',
+        'm_name' => 'User Set Profile Picture',
         'm_desc' => '',
         'm_parents' => array(6222, 4755, 4593),
     ),
@@ -1948,79 +2059,79 @@ $config['en_all_4593'] = array(
     ),
     4455 => array(
         'm_icon' => '<i class="fas fa-ban"></i>',
-        'm_name' => 'Student Unsubscribed',
+        'm_name' => 'User Unsubscribed',
         'm_desc' => 'Student requested that all communication with Mench to be stopped until further notice from the student.',
         'm_parents' => array(4593, 4454),
     ),
     4460 => array(
         'm_icon' => '<i class="far fa-ballot-check"></i>',
-        'm_name' => 'Student Sent Quick Reply',
+        'm_name' => 'User Sent Quick Reply',
         'm_desc' => '',
         'm_parents' => array(4755, 4593, 4277),
     ),
     4547 => array(
         'm_icon' => '<i class="fal fa-align-left"></i>',
-        'm_name' => 'Student Sent Text Message',
+        'm_name' => 'User Sent Text Message',
         'm_desc' => '',
         'm_parents' => array(4755, 4593, 4277),
     ),
     4548 => array(
         'm_icon' => '<i class="fal fa-video"></i>',
-        'm_name' => 'Student Sent Video Message',
+        'm_name' => 'User Sent Video Message',
         'm_desc' => '',
         'm_parents' => array(6102, 4755, 4593, 4277),
     ),
     4549 => array(
         'm_icon' => '<i class="fal fa-volume-up"></i>',
-        'm_name' => 'Student Sent Audio Message',
+        'm_name' => 'User Sent Audio Message',
         'm_desc' => '',
         'm_parents' => array(6102, 4755, 4593, 4277),
     ),
     4550 => array(
         'm_icon' => '<i class="fal fa-image"></i>',
-        'm_name' => 'Student Sent Image Message',
+        'm_name' => 'User Sent Image Message',
         'm_desc' => '',
         'm_parents' => array(6102, 4755, 4593, 4277),
     ),
     4551 => array(
         'm_icon' => '<i class="fal fa-file-pdf"></i>',
-        'm_name' => 'Student Sent File Message',
+        'm_name' => 'User Sent File Message',
         'm_desc' => '',
         'm_parents' => array(6102, 4755, 4593, 4277),
     ),
     4552 => array(
         'm_icon' => '<i class="fal fa-align-left"></i>',
-        'm_name' => 'Student Received Text Message',
+        'm_name' => 'User Received Text Message',
         'm_desc' => '',
         'm_parents' => array(4755, 4593, 4280),
     ),
     4553 => array(
         'm_icon' => '<i class="fal fa-video"></i>',
-        'm_name' => 'Student Received Video Message',
+        'm_name' => 'User Received Video Message',
         'm_desc' => '',
         'm_parents' => array(6102, 4755, 4593, 4280),
     ),
     4554 => array(
         'm_icon' => '<i class="fal fa-volume-up"></i>',
-        'm_name' => 'Student Received Audio Message',
+        'm_name' => 'User Received Audio Message',
         'm_desc' => '',
         'm_parents' => array(6102, 4755, 4593, 4280),
     ),
     4555 => array(
         'm_icon' => '<i class="fal fa-image"></i>',
-        'm_name' => 'Student Received Image Message',
+        'm_name' => 'User Received Image Message',
         'm_desc' => '',
         'm_parents' => array(6102, 4755, 4593, 4280),
     ),
     4556 => array(
         'm_icon' => '<i class="fal fa-file-pdf"></i>',
-        'm_name' => 'Student Received File Message',
+        'm_name' => 'User Received File Message',
         'm_desc' => '',
         'm_parents' => array(6102, 4755, 4593, 4280),
     ),
     4557 => array(
         'm_icon' => '<i class="fal fa-location-circle"></i>',
-        'm_name' => 'Student Sent Location Message',
+        'm_name' => 'User Sent Location Message',
         'm_desc' => '',
         'm_parents' => array(4755, 4593, 4277),
     ),
@@ -2032,7 +2143,7 @@ $config['en_all_4593'] = array(
     ),
     4570 => array(
         'm_icon' => '<i class="fab fa-html5"></i>',
-        'm_name' => 'Student Received HTML Message',
+        'm_name' => 'User Received HTML Message',
         'm_desc' => '',
         'm_parents' => array(4755, 4593, 4280),
     ),
@@ -2068,7 +2179,7 @@ $config['en_all_4593'] = array(
     ),
     4996 => array(
         'm_icon' => '<i class="fas fa-sign-in"></i>',
-        'm_name' => 'Student Login',
+        'm_name' => 'User Login',
         'm_desc' => '',
         'm_parents' => array(4593),
     ),
@@ -2122,7 +2233,7 @@ $config['en_all_4593'] = array(
     ),
     5967 => array(
         'm_icon' => '<i class="fal fa-envelope-open"></i>',
-        'm_name' => 'Student Received Email Message',
+        'm_name' => 'User Received Email Message',
         'm_desc' => '',
         'm_parents' => array(4755, 4593, 4280),
     ),
@@ -2200,13 +2311,13 @@ $config['en_all_4593'] = array(
     ),
     6224 => array(
         'm_icon' => '<i class="fal fa-sync"></i>',
-        'm_name' => 'Student Updated Account',
+        'm_name' => 'User Account Updated',
         'm_desc' => '',
         'm_parents' => array(4755, 6222, 4593),
     ),
     6226 => array(
         'm_icon' => '<i class="fal fa-sync"></i>',
-        'm_name' => 'Miner Mass Intent Updates',
+        'm_name' => 'Intent Mass Status Updates',
         'm_desc' => ' When all intents within a recursive tree are updated at once.',
         'm_parents' => array(4593),
     ),
@@ -2218,7 +2329,7 @@ $config['en_all_4593'] = array(
     ),
     6389 => array(
         'm_icon' => '<i class="fab fa-facebook-messenger"></i>',
-        'm_name' => 'Messenger Profile Inaccessible',
+        'm_name' => 'User Messenger Profile Inaccessible',
         'm_desc' => 'When we cannot fetch user profile data via Messenger API, either because user has not linked their Facebook to Messenger or because they did not authorize Mench to access',
         'm_parents' => array(4755, 4593),
     ),
@@ -2230,37 +2341,37 @@ $config['en_all_4593'] = array(
     ),
     6556 => array(
         'm_icon' => '<i class="fas fa-wand-magic"></i>',
-        'm_name' => 'Student Text Commanded Stats',
+        'm_name' => 'User Text Commanded Stats',
         'm_desc' => '',
         'm_parents' => array(4755, 4593, 6554),
     ),
     6559 => array(
         'm_icon' => '<i class="fas fa-wand-magic"></i>',
-        'm_name' => 'Student Text Commanded Next',
+        'm_name' => 'User Text Commanded Next',
         'm_desc' => '',
         'm_parents' => array(4755, 4593, 6554),
     ),
     6560 => array(
         'm_icon' => '<i class="fas fa-wand-magic"></i>',
-        'm_name' => 'Student Text Commanded Skip',
+        'm_name' => 'User Text Commanded Skip',
         'm_desc' => '',
         'm_parents' => array(4755, 4593, 6554),
     ),
     6561 => array(
         'm_icon' => '<i class="far fa-ballot-check"></i>',
-        'm_name' => 'Student Sent Manual Quick Reply',
+        'm_name' => 'User Sent Manual Quick Reply',
         'm_desc' => '',
         'm_parents' => array(4755, 4593, 4277),
     ),
     6563 => array(
         'm_icon' => '<i class="far fa-ballot-check"></i>',
-        'm_name' => 'Student Received Quick Reply',
+        'm_name' => 'User Received Quick Reply',
         'm_desc' => '',
         'm_parents' => array(4593, 4755, 4280),
     ),
     6578 => array(
         'm_icon' => '<i class="fas fa-wand-magic"></i>',
-        'm_name' => 'Student Text Commanded Stop',
+        'm_name' => 'User Text Commanded Stop',
         'm_desc' => '',
         'm_parents' => array(4755, 4593, 6554),
     ),
@@ -2424,7 +2535,7 @@ $config['en_all_4454'] = array(
     ),
     4455 => array(
         'm_icon' => '<i class="fas fa-ban"></i>',
-        'm_name' => 'Student Unsubscribed',
+        'm_name' => 'User Unsubscribed',
         'm_desc' => 'Stop all communications until you re-subscribe',
         'm_parents' => array(4593, 4454),
     ),

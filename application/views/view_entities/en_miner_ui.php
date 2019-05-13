@@ -107,7 +107,7 @@
                 //Start with the input wrapper:
                 $input_options .= '<span id="mass_id_'.$action_en_id.'" class="inline-block hidden mass_action_item">';
 
-                $input_options .= '<i class="fas fa-info-circle" data-toggle="tooltip" data-placement="right" title="'.$mass_action_en['m_desc'].'"></i> ';
+                $input_options .= '<i class="fal fa-info-circle" data-toggle="tooltip" data-placement="right" title="'.$mass_action_en['m_desc'].'"></i> ';
 
                 if(in_array($action_en_id, array(5000, 5001))){
 
@@ -383,7 +383,7 @@
 
             <h5 class="badge badge-h" data-toggle="tooltip"
                 title="Message management can only be done using Intents. Entity messages are listed below for view-only"
-                data-placement="bottom"><i class="fas fa-comment-plus"></i> Entity References <i class="fas fa-lock"></i>
+                data-placement="bottom"><i class="fas fa-comment-plus"></i> Entity References within Intent Notes
             </h5>
             <div style="text-align:right; font-size: 22px; margin:-32px 3px -20px 0;">
                 <a href="javascript:void(0)" onclick="$('#message-frame').addClass('hidden');$('#loaded-messages').html('');">

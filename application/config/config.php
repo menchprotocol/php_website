@@ -77,6 +77,7 @@ $config['fixed_fields']             = array(
                                         'in_status' => array(
                                             2 => array(
                                                 's_name' => 'Published',
+                                                's_en_id' => 6185,
                                                 's_desc' => 'Intent is live and publicly accessible',
                                                 's_icon' => '<i class="fas fa-check-square"></i>',
                                             ),
@@ -84,16 +85,19 @@ $config['fixed_fields']             = array(
                                                 's_name' => 'Drafting',
                                                 's_desc' => 'Intent is being worked-on so it can be published',
                                                 's_icon' => '<i class="fas fa-spinner fa-spin"></i>',
+                                                's_en_id' => 6184,
                                             ),
                                             0 => array(
                                                 's_name' => 'New',
                                                 's_desc' => 'Intent is newly added and pending to be mined',
                                                 's_icon' => '<i class="fal fa-square"></i>',
+                                                's_en_id' => 6183,
                                             ),
                                             -1 => array(
                                                 's_name' => 'Removed',
                                                 's_desc' => 'Intent is in-active',
                                                 's_icon' => '<i class="fal fa-minus-square"></i>',
+                                                's_en_id' => 6182,
                                             ),
                                         ),
                                         'en_status' => array(
@@ -101,21 +105,25 @@ $config['fixed_fields']             = array(
                                                 's_name' => 'Published',
                                                 's_desc' => 'Entity is live and publicly accessible',
                                                 's_icon' => '<i class="fas fa-check-square"></i>',
+                                                's_en_id' => 6181,
                                             ),
                                             1 => array(
                                                 's_name' => 'Drafting',
                                                 's_desc' => 'Entity is being worked-on so it can be published',
-                                                's_icon' => '<i class="fas fa-spinner fa-spin"></i>'
+                                                's_icon' => '<i class="fas fa-spinner fa-spin"></i>',
+                                                's_en_id' => 6180,
                                             ),
                                             0 => array(
                                                 's_name' => 'New',
                                                 's_desc' => 'Entity is newly added and pending to be mined',
                                                 's_icon' => '<i class="fal fa-square"></i>',
+                                                's_en_id' => 6179,
                                             ),
                                             -1 => array(
                                                 's_name' => 'Removed',
                                                 's_desc' => 'Entity is in-active',
                                                 's_icon' => '<i class="fal fa-minus-square"></i>',
+                                                's_en_id' => 6178,
                                             ),
                                         ),
                                         'ln_status' => array(
@@ -123,21 +131,25 @@ $config['fixed_fields']             = array(
                                                 's_name' => 'Published',
                                                 's_desc' => 'Link is complete, ready and live',
                                                 's_icon' => '<i class="fas fa-check-square"></i>',
+                                                's_en_id' => 6176,
                                             ),
                                             1 => array(
                                                 's_name' => 'Drafting',
                                                 's_desc' => 'Link is being worked-on so it can be published',
                                                 's_icon' => '<i class="fas fa-spinner fa-spin"></i>',
+                                                's_en_id' => 6175,
                                             ),
                                             0 => array(
                                                 's_name' => 'New',
                                                 's_desc' => 'Link is newly added and pending to be mined',
                                                 's_icon' => '<i class="fal fa-square"></i>',
+                                                's_en_id' => 6174,
                                             ),
                                             -1 => array(
                                                 's_name' => 'Removed',
                                                 's_desc' => 'Link is in-active',
                                                 's_icon' => '<i class="fal fa-minus-square"></i>',
+                                                's_en_id' => 6173,
                                             ),
                                         ),
                                         //The same as ln_status with terminology optimized for students
@@ -146,21 +158,25 @@ $config['fixed_fields']             = array(
                                                 's_name' => 'Completed',
                                                 's_desc' => 'Marked as complete and pending new updates',
                                                 's_icon' => '<i class="fas fa-check-square"></i>',
+                                                's_en_id' => 6191,
                                             ),
                                             1 => array(
                                                 's_name' => 'Working On',
                                                 's_desc' => 'Started but not yet complete',
                                                 's_icon' => '<i class="fas fa-spinner fa-spin"></i>',
+                                                's_en_id' => 6190,
                                             ),
                                             0 => array(
                                                 's_name' => 'Not Started',
                                                 's_desc' => 'Pending completion',
                                                 's_icon' => '<i class="fal fa-square"></i>',
+                                                's_en_id' => 6189,
                                             ),
                                             -1 => array(
                                                 's_name' => 'Skipped',
                                                 's_desc' => 'Step was skipped by student',
                                                 's_icon' => '<i class="fal fa-minus-square"></i>',
+                                                's_en_id' => 6188,
                                             ),
                                         ),
                                         'in_type' => array(

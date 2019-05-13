@@ -12,6 +12,16 @@ class Intents extends CI_Controller
     }
 
 
+    function type_converter(){
+        //Convert old types to new:
+        foreach($this->Intents_model->in_fetch(array(
+            'in_id >' => 0,
+        )) as $in){
+
+        }
+    }
+
+
     //Loaded as default function of the default controller:
     function index()
     {
@@ -393,11 +403,6 @@ class Intents extends CI_Controller
             return echo_json(array(
                 'status' => 0,
                 'message' => 'Missing Intent Status',
-            ));
-        } elseif (!isset($_POST['in_type'])) {
-            return echo_json(array(
-                'status' => 0,
-                'message' => 'Missing Completion Settings',
             ));
         } elseif (count($ins) < 1) {
             return echo_json(array(

@@ -65,7 +65,6 @@
 
 
 
-
                     <span class="mini-header" style="margin-top: 20px;">Outcome: [<span
                             style="margin:0 0 10px 0;"><span
                                 id="charNameNum">0</span>/<?= $this->config->item('in_outcome_max') ?></span>][<a href="/entities/5008" data-toggle="tooltip" title="See (and manage) list of supporting verbs that intent outcomes can start with" data-placement="right" target="_blank"><b>Verbs</b></a>]</span>
@@ -89,37 +88,45 @@
                         ?>
                     </div>
 
-
-
-                    <div class="<?= echo_advance() ?>">
-
-                        <span class="mini-header">Completion Method:</span>
-                        <select class="form-control border" id="in_requirement_entity_id" data-toggle="tooltip" title="Defines what students need to do to mark this intent as complete" data-placement="top" style="margin-bottom: 12px;">
+                    <!-- AND Intents -->
+                    <div class="show-for-6192">
+                        <select class="form-control border" id="en_all_6192" data-toggle="tooltip" title="Defines what students need to do to mark this intent as complete" data-placement="top" style="margin-bottom: 12px;">
                             <?php
-                            $en_all_4331 = $this->config->item('en_all_4331');
-                            foreach ($en_all_4331 as $en_id => $m) {
-                                echo '<option value="' . $en_id . '">' . $m['m_name'] . ' Required</option>';
+                            foreach ($this->config->item('en_all_6192') as $en_id => $m) {
+                                echo '<option value="' . $en_id . '">' . $m['m_name'] . '</option>';
                             }
                             ?>
                         </select>
+                    </div>
 
-
-
+                    <!-- OR Intents -->
+                    <div class="show-for-6193 hidden">
+                        <select class="form-control border" id="en_all_6193" data-toggle="tooltip" title="Defines what students need to do to mark this intent as complete" data-placement="top" style="margin-bottom: 12px;">
+                            <?php
+                            foreach ($this->config->item('en_all_6193') as $en_id => $m) {
+                                echo '<option value="' . $en_id . '">' . $m['m_name'] . '</option>';
+                            }
+                            ?>
+                        </select>
                     </div>
 
 
 
-                    <span class="mini-header">Time Estimate:</span>
-                    <div class="form-group label-floating is-empty">
-                        <div class="input-group border" style="width: 155px;">
+
+                    <div class="time-estimate-box">
+                        <span class="mini-header" style="margin-top:20px;">Time Estimate:</span>
+                        <div class="form-group label-floating is-empty">
+                            <div class="input-group border" style="width: 155px;">
                                         <span class="input-group-addon addon-lean addon-grey" style="color:#2f2739; font-weight: 300;"><i
-                                                class="fal fa-clock"></i></span>
-                            <input style="padding-left:3px;" type="number" step="1" min="0"
-                                   max="<?= $this->config->item('in_max_seconds') ?>" id="in_seconds_cost" value=""
-                                   class="form-control">
-                            <span class="input-group-addon addon-lean addon-grey" style="color:#2f2739; font-weight: 300;">Seconds</span>
+                                                    class="fal fa-clock"></i></span>
+                                <input style="padding-left:3px;" type="number" step="1" min="0"
+                                       max="<?= $this->config->item('in_max_seconds') ?>" id="in_seconds_cost" value=""
+                                       class="form-control">
+                                <span class="input-group-addon addon-lean addon-grey" style="color:#2f2739; font-weight: 300;">Seconds</span>
+                            </div>
                         </div>
                     </div>
+
 
 
                 </div>

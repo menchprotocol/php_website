@@ -1595,7 +1595,7 @@ function echo_in($in, $level, $in_parent_id = 0, $is_parent = false)
      *
      * */
 
-    $ui .= '<span style="display:inline-block; margin-top:0px;">';
+    $ui .= '<span style="display:inline-block; margin-top:0px; padding-bottom: 5px;">';
 
 
 
@@ -1910,7 +1910,7 @@ function echo_en($en, $level, $is_parent = false)
 
 
 
-    $ui .= '<span style="display:inline-block; margin-top:0px;">';
+    $ui .= '<span style="display:inline-block; margin-top:0px; padding-bottom: 5px;">';
 
 
 
