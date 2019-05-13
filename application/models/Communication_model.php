@@ -2039,7 +2039,7 @@ class Communication_model extends CI_Model
                 'ln_parent_intent_id' => $next_in_id,
             ));
 
-        } elseif (includes_any($fb_received_message, array('unsubscribe', 'stop', 'quit', 'resign', 'exit'))) {
+        } elseif (includes_any($fb_received_message, array('unsubscribe', 'stop', 'quit', 'resign', 'exit', 'cancel', 'abort'))) {
 
             //List their Action Plan intentions and let student choose which one to unsubscribe:
             $student_intents = $this->Links_model->ln_fetch(array(

@@ -117,7 +117,7 @@ class Actionplan_model extends CI_Model
             }
 
             //No Action Plans found!
-            return false;
+            return 0;
 
         }
 
@@ -178,7 +178,7 @@ class Actionplan_model extends CI_Model
         }
 
         //Return next step intent or false:
-        return $next_in_id;
+        return intval($next_in_id);
 
     }
 
