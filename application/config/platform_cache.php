@@ -359,7 +359,7 @@ $config['en_all_6150'] = array(
     6154 => array(
         'm_icon' => '<i class="far fa-badge-check"></i>',
         'm_name' => 'Intention Accomplished',
-        'm_desc' => 'You successfully accomplished your intention so you no longer want to receive future updates',
+        'm_desc' => 'You successfully accomplished your intention so you no longer want to receive future dates',
         'm_parents' => array(6415, 4506, 6150, 4755, 4593),
     ),
     6155 => array(

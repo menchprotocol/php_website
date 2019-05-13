@@ -645,7 +645,6 @@ class Communication_model extends CI_Model
             //We have a reference within this message, let's fetch it to better understand it:
             $ens = $this->Entities_model->en_fetch(array(
                 'en_id' => $string_references['ref_entities'][0], //Note: We will only have a single reference per message
-                'en_status >=' => 0, //New+
             ));
 
             if (count($ens) < 1) {
