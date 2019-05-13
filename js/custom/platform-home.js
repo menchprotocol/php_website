@@ -4,8 +4,8 @@ $(document).ready(function () {
     //Update stats on load:
     update_basic_stats();
 
-    //Continue updating basic stats every 5 seconds:
-    setInterval(update_basic_stats, (5000));
+    //Continue updating basic stats every 1 second:
+    setInterval(update_basic_stats, (1000));
 
 });
 
