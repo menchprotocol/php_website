@@ -29,8 +29,8 @@ class Intents_model extends CI_Model
             $insert_columns['in_metadata'] = null;
         }
 
-        if (!isset($insert_columns['in_requirement_entity_id'])) {
-            $insert_columns['in_requirement_entity_id'] = 6087; //No Response Required
+        if (!isset($insert_columns['in_type_entity_id'])) {
+            $insert_columns['in_type_entity_id'] = 6677; //AND No Response Required
         }
 
         if (!isset($insert_columns['in_status'])) {
@@ -214,7 +214,7 @@ class Intents_model extends CI_Model
                         'ln_miner_entity_id' => $ln_miner_entity_id,
                         'ln_type_entity_id' => 4264, //Intent Attribute Modified
                         'ln_child_intent_id' => $id,
-                        'ln_content' => echo_clean_db_name($key) . ' changed from "' . ( in_array($key , array('in_type','in_status')) ? $fixed_fields[$key][$before_data[0][$key]]['s_name']  : $before_data[0][$key] ) . '" to "' . ( in_array($key , array('in_type','in_status')) ? $fixed_fields[$key][$value]['s_name'] : $value ) . '"',
+                        'ln_content' => echo_clean_db_name($key) . ' changed from "' . ( in_array($key , array('in_status')) ? $fixed_fields[$key][$before_data[0][$key]]['s_name']  : $before_data[0][$key] ) . '" to "' . ( in_array($key , array('in_status')) ? $fixed_fields[$key][$value]['s_name'] : $value ) . '"',
                         'ln_metadata' => array(
                             'in_id' => $id,
                             'field' => $key,
@@ -469,22 +469,22 @@ class Intents_model extends CI_Model
 
     }
 
-    function in_req_completion($in, $fb_messenger_format = false)
+    function in_manual_response_note($in, $fb_messenger_format = false)
     {
 
         /*
          *
-         * Sometimes to mark an intent as complete the Students might
+         * Sometimes to mark an intent as complete the Users might
          * need to meet certain requirements in what they submit to do so.
          * This function fetches those requirements from the Platform and
          * Provides an easy to understand message to communicate
-         * these requirements to Student.
+         * these requirements to User.
          *
          * Will return NULL if it detects no requirements...
          *
          * */
 
-        if ( $in['in_type']==1 /* OR Intent */ || $in['in_requirement_entity_id'] == 6087) {
+        if (!in_array($in['in_type_entity_id'], $this->config->item('en_ids_6794'))) {
             //Does not have any requirements:
             return null;
         }
@@ -492,11 +492,10 @@ class Intents_model extends CI_Model
         //Construct the message accordingly...
 
         //Fetch latest cache tree:
-        $en_all_4331 = $this->config->item('en_all_4331'); //Intent Completion Requirements
+        $en_all_6794 = $this->config->item('en_all_6794'); //Intent Requires Manual Response
 
-        //Return Student-friendly message for completion requirements:
-        $name = $en_all_4331[$in['in_requirement_entity_id']]['m_name'];
-        return 'Send me '.echo_a_an($name).' ' . $name . ( !$fb_messenger_format ? ' via Messenger' : '' ).' to complete this step.';
+        //Return User-friendly message for Requires Manual Response:
+        return $en_all_6794[$in['in_type_entity_id']]['m_name'] .' to complete this step.'.( !$fb_messenger_format ? ' Send it to me via Messenger.' : '' );
 
     }
 
@@ -617,11 +616,11 @@ class Intents_model extends CI_Model
 
         //Set variables:
         $is_first_intent = ( !isset($focus_in['ln_id']) ); //First intent does not have a link, just the intent
-        $has_or_parent = ( $focus_in['in_type']==1 );
+        $has_or_parent = is_or($focus_in['in_type_entity_id']);
         $or_children = array(); //To be populated only if $focus_in is an OR intent
         $conditional_milestones = array(); //To be populated only for conditional milestones
         $metadata_this = array(
-            '__in__metadata_common_steps' => array(), //The tree structure that would be shared with all students regardless of their quick replies (OR Intent Answers)
+            '__in__metadata_common_steps' => array(), //The tree structure that would be shared with all users regardless of their quick replies (OR Intent Answers)
             '__in__metadata_expansion_steps' => array(), //Intents that may exist as a link to expand an Action Plan tree by answering OR intents
             '__in__metadata_expansion_conditional' => array(), //Intents that may exist as a link to expand an Action Plan tree via Conditional Milestone links
         );
@@ -746,7 +745,7 @@ class Intents_model extends CI_Model
         $common_totals = $this->Intents_model->in_fetch(array(
             'in_id IN ('.join(',',$flat_common_steps).')' => null,
             'in_status' => 2, //Published
-        ), array(), 0, 0, array(), 'COUNT(in_id) as total_steps, SUM(in_seconds_cost) as total_seconds');
+        ), array(), 0, 0, array(), 'COUNT(in_id) as total_steps, SUM(in_completion_seconds) as total_seconds');
 
         $common_base_resources = array(
             'steps' => $common_totals[0]['total_steps'],

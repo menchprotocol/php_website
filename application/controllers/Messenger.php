@@ -62,7 +62,7 @@ class Messenger extends CI_Controller
             //Failed validation that this miner has completed this intention in their Action Plan:
             return echo_json(array(
                 'status' => 0,
-                'message' => 'deprecate__actionplan_assessment_webhook() unable to locate a student action plan progression step',
+                'message' => 'deprecate__actionplan_assessment_webhook() unable to locate a user action plan progression step',
             ));
         }
 
@@ -79,8 +79,8 @@ class Messenger extends CI_Controller
         //Define how this assessment score calculator should work:
         $app_settings = array(
 
-            //The min students required to have completed this assessment before a relative percentile is calculated:
-            'min_student_count' => 20, //If smaller, we won't have a large enough sample size!
+            //The min users required to have completed this assessment before a relative percentile is calculated:
+            'min_user_count' => 20, //If smaller, we won't have a large enough sample size!
 
             //The transition of the relative percentile score into a human-friendly terminology:
             'proficiency_levels' => array(
@@ -111,17 +111,17 @@ class Messenger extends CI_Controller
         $message = 'Congrats! You completed your intention to Assess your JQuery programming skills. Here are your results: You are a beginner jQuery developer. You score was 35% and you got 14/32 questions right.';
 
 
-        //Calculate the student's score for this tree based on their Action Plan progress:
+        //Calculate the user's score for this tree based on their Action Plan progress:
         $score_card = array(
             'steps_all_counts' => 21,
             'steps_success_counts' => 17,
             'score_min_marks' => 12,
             'score_max_marks' => 104,
-            'score_student_marks' => 91,
-            'score_student_all_count' => 12, //All students who have taken this assessment already
+            'score_user_marks' => 91,
+            'score_user_all_count' => 12, //All users who have taken this assessment already
 
-            //To be calculated only if we meet the minimum students:
-            'score_student_position_count' => 0, //1 = top student, and can be as low as the total number of students taken this assessment (means you're last!)
+            //To be calculated only if we meet the minimum users:
+            'score_user_position_count' => 0, //1 = top user, and can be as low as the total number of users taken this assessment (means you're last!)
             'score_relative_percentile' => 0,
             'message_relative_percentile' => '',
             'score_proficiency_level' => 0,
@@ -149,18 +149,18 @@ class Messenger extends CI_Controller
 
 
 
-        if($score_card['score_student_all_count'] >= $app_settings['min_student_count']) {
+        if($score_card['score_user_all_count'] >= $app_settings['min_user_count']) {
 
-            //Calculate student position among all taken:
-            $score_card['score_student_position_count'] = 2;
+            //Calculate user position among all taken:
+            $score_card['score_user_position_count'] = 2;
 
             //Based on their absolute percentage, now calculate their relative percentile:
-            $score_card['score_relative_percentile'] = floor (( ($score_card['score_student_all_count'] - $score_card['score_student_position_count']) / ($score_card['score_student_all_count']-1) ) * 100 );
+            $score_card['score_relative_percentile'] = floor (( ($score_card['score_user_all_count'] - $score_card['score_user_position_count']) / ($score_card['score_user_all_count']-1) ) * 100 );
 
             $score_card['message_relative_percentile'] = ( $score_card['score_relative_percentile']>=50 ? 'top '.(101 - $score_card['score_relative_percentile']).'%' : 'bottom '.($score_card['score_relative_percentile'] + 1).'%' );
 
 
-            //We have the minimum number of students taken this assessment, issue the score board immediately:
+            //We have the minimum number of users taken this assessment, issue the score board immediately:
             $score_card['summary_message'] = 'This puts you in the top 20% of people who took this assessment. Based on this result we believe your level is *beginner*';
 
 
@@ -171,9 +171,9 @@ class Messenger extends CI_Controller
             );
 
 
-            //Inform the student of their score:
+            //Inform the user of their score:
             $this->Communication_model->dispatch_message(
-                'Good news: Enough students have taken this assessment which means I can inform you of where your '.$score_card['score_absolute_percentage'].'% score stands relative to your peers: You are the top 20% which means you are a *'.$app_settings['proficiency_levels'][$score_card['score_proficiency_level']]['level_name'].'* in response to your intention to '.$ins[0]['in_outcome'],
+                'Good news: Enough users have taken this assessment which means I can inform you of where your '.$score_card['score_absolute_percentage'].'% score stands relative to your peers: You are the top 20% which means you are a *'.$app_settings['proficiency_levels'][$score_card['score_proficiency_level']]['level_name'].'* in response to your intention to '.$ins[0]['in_outcome'],
                 array('en_id' => $ens[0]['en_id']),
                 true,
                 array(
@@ -190,11 +190,11 @@ class Messenger extends CI_Controller
 
         } else {
 
-            //We don't have enough student's yet! Create a pending score card so we get to update it later:
+            //We don't have enough user's yet! Create a pending score card so we get to update it later:
 
             //Let them know that we can't yet give them a relative percentile:
             $this->Communication_model->dispatch_message(
-                'As I issue score cards to more students with the same intention, I will be able to gather a large enough sample size to inform you of your relative percentile and relative proficiency level so you have a better idea of where your score of '.$score_card['score_absolute_percentage'].'% stands relative to your peers.',
+                'As I issue score cards to more users with the same intention, I will be able to gather a large enough sample size to inform you of your relative percentile and relative proficiency level so you have a better idea of where your score of '.$score_card['score_absolute_percentage'].'% stands relative to your peers.',
                 array('en_id' => $ens[0]['en_id']),
                 true,
                 array(
@@ -291,7 +291,7 @@ class Messenger extends CI_Controller
                     //Message read OR delivered
                     $ln_type_entity_id = (isset($im['delivery']) ? 4279 /* Message Delivered */ : 4278 /* Message Read */);
 
-                    //Authenticate Student:
+                    //Authenticate User:
                     $en = $this->Entities_model->en_authenticate_psid($im['sender']['id']);
 
                     //Log Link Only IF last delivery link was 3+ minutes ago (Since Facebook sends many of these):
@@ -333,7 +333,7 @@ class Messenger extends CI_Controller
                     $en = $this->Entities_model->en_authenticate_psid(($sent_by_mench ? $im['recipient']['id'] : $im['sender']['id']));
                     $is_quick_reply = (isset($im['message']['quick_reply']['payload']));
 
-                    //Check if this Student is unsubscribed:
+                    //Check if this User is unsubscribed:
                     if (!$is_quick_reply && count($this->Links_model->ln_fetch(array(
                             'ln_parent_entity_id' => 4455, //Unsubscribed
                             'ln_type_entity_id IN (' . join(',', $this->config->item('en_ids_4592')) . ')' => null, //Entity Link Connectors
@@ -341,7 +341,7 @@ class Messenger extends CI_Controller
                             'ln_status' => 2, //Published
                         ))) > 0) {
 
-                        //Yes, this Student is Unsubscribed! Give them an option to re-activate their Mench account:
+                        //Yes, this User is Unsubscribed! Give them an option to re-activate their Mench account:
                         $this->Communication_model->dispatch_message(
                             'You are currently unsubscribed. Would you like me to re-activate your account?',
                             $en,
@@ -366,7 +366,7 @@ class Messenger extends CI_Controller
 
 
                     //Set more variables:
-                    $in_requirements_search = 0; //If >0, we will try to see if this message is to submit a requirement for an intent
+                    $in_type_entity_id_search = 0; //If >0, we will try to see if this message is to submit a requirement for an intent
 
                     unset($ln_data); //Reset everything in case its set from the previous loop!
                     $ln_data = array(
@@ -385,7 +385,7 @@ class Messenger extends CI_Controller
                      * - Attachments
                      *
                      * And we will deal with each group, and their sub-group
-                     * appropriately based on who sent the message (Mench/Student)
+                     * appropriately based on who sent the message (Mench/User)
                      *
                      * */
 
@@ -417,14 +417,14 @@ class Messenger extends CI_Controller
                         //Who sent this?
                         if ($sent_by_mench) {
 
-                            $ln_data['ln_type_entity_id'] = 4552; //Student Received Text Message
+                            $ln_data['ln_type_entity_id'] = 4552; //User Received Text Message
 
                         } else {
 
                             //Could be either text or URL:
-                            $in_requirements_search = ( filter_var($im['message']['text'], FILTER_VALIDATE_URL) ? 4256 /* URL */ : 4255 /* Text */ );
+                            $in_type_entity_id_search = ( filter_var($im['message']['text'], FILTER_VALIDATE_URL) ? 6682 /* URL Required */ : 6683 /* Text Required */ );
 
-                            $ln_data['ln_type_entity_id'] = 4547; //Student Sent Text Message
+                            $ln_data['ln_type_entity_id'] = 4547; //User Sent Text Message
 
                         }
 
@@ -436,24 +436,24 @@ class Messenger extends CI_Controller
                             //Define 4 main Attachment Message Types:
                             $att_media_types = array( //Converts video, audio, image and file messages
                                 'video' => array(
-                                    'sent' => 4553,     //Link type for when sent to Students via Messenger
-                                    'received' => 4548, //Link type for when received from Students via Messenger
-                                    'requirement' => 4258,
+                                    'sent' => 4553,     //Link type for when sent to Users via Messenger
+                                    'received' => 4548, //Link type for when received from Users via Messenger
+                                    'requirement' => 6679,
                                 ),
                                 'audio' => array(
                                     'sent' => 4554,
                                     'received' => 4549,
-                                    'requirement' => 4259,
+                                    'requirement' => 6680,
                                 ),
                                 'image' => array(
                                     'sent' => 4555,
                                     'received' => 4550,
-                                    'requirement' => 4260,
+                                    'requirement' => 6678,
                                 ),
                                 'file' => array(
                                     'sent' => 4556,
                                     'received' => 4551,
-                                    'requirement' => 4261,
+                                    'requirement' => 6681,
                                 ),
                             );
 
@@ -478,7 +478,7 @@ class Messenger extends CI_Controller
                                 $ln_data['ln_content'] = $att['payload']['url']; //Media Attachment Temporary Facebook URL
                                 $ln_data['ln_status'] = 0; //drafting, since URL needs to be uploaded to Mench CDN via cron__save_chat_media()
                                 if(!$sent_by_mench){
-                                    $in_requirements_search = $att_media_types[$att['type']]['requirement'];
+                                    $in_type_entity_id_search = $att_media_types[$att['type']]['requirement'];
                                 }
 
                             } elseif ($att['type'] == 'location') {
@@ -490,7 +490,7 @@ class Messenger extends CI_Controller
                                  *
                                  * We do not have the ability to send this
                                  * type of message at this time and we will
-                                 * only receive it if the Student decides to
+                                 * only receive it if the User decides to
                                  * send us their location for some reason.
                                  *
                                  * Message with location attachment which
@@ -579,20 +579,19 @@ class Messenger extends CI_Controller
 
 
                     //Did we have a pending response?
-                    if(isset($new_message['ln_id']) && $in_requirements_search > 0){
+                    if(isset($new_message['ln_id']) && $in_type_entity_id_search > 0){
 
                         $pending_matches = array();
                         $pending_mismatches = array();
-                        $en_all_4592 = $this->config->item('en_all_4592'); //Requirement names
 
                         //Yes, see if we have a pending requirement submission:
                         foreach($this->Links_model->ln_fetch(array(
                             'ln_type_entity_id' => 6144, //Action Plan Submit Requirements
-                            'ln_miner_entity_id' => $ln_data['ln_miner_entity_id'], //for this student
+                            'ln_miner_entity_id' => $ln_data['ln_miner_entity_id'], //for this user
                             'ln_status IN (' . join(',', $this->config->item('ln_status_incomplete')) . ')' => null, //incomplete
                             'in_status' => 2, //Published
                         ), array('in_parent'), 0) as $req_sub){
-                            if($req_sub['in_requirement_entity_id']==$in_requirements_search){
+                            if($req_sub['in_type_entity_id']==$in_type_entity_id_search){
                                 array_push($pending_matches, $req_sub);
                             } else {
                                 array_push($pending_mismatches, $req_sub);
@@ -619,7 +618,7 @@ class Messenger extends CI_Controller
                                 ));
                             }
 
-                            //We did find a pending submission requirement, confirm with student:
+                            //We did find a pending submission requirement, confirm with user:
                             $this->Communication_model->dispatch_message(
                                 'Got it! Please confirm your submission:',
                                 $en,
@@ -633,7 +632,7 @@ class Messenger extends CI_Controller
                                     array(
                                         'content_type' => 'text',
                                         'title' => 'Try Again',
-                                        'payload' => 'TRYANOTHERRESPONSE_' . $first_chioce['in_requirement_entity_id'],
+                                        'payload' => 'TRYANOTHERRESPONSE_' . $first_chioce['in_type_entity_id'],
                                     ),
                                     array(
                                         'content_type' => 'text',
@@ -648,9 +647,11 @@ class Messenger extends CI_Controller
                             //Only focus on the first mismatch, ignore the rest if any!
                             $mismatch_focus = $pending_mismatches[0];
 
+                            $en_all_6794 = $this->config->item('en_all_6794'); //Requirement names
+
                             //We did not have any matches, but has some mismatches, maybe that's what they meant?
                             $this->Communication_model->dispatch_message(
-                                'Instead of '.echo_a_an($en_all_4592[$in_requirements_search]['m_name']).' '.$en_all_4592[$in_requirements_search]['m_name'].', please send me '.echo_a_an($en_all_4592[$mismatch_focus['in_requirement_entity_id']]['m_name']).' '.$en_all_4592[$mismatch_focus['in_requirement_entity_id']]['m_name'].' to continue.',
+                                $en_all_6794[$mismatch_focus['in_type_entity_id']]['m_name'].' to complete this step. Please try again.',
                                 $en,
                                 true
                             );
@@ -664,7 +665,7 @@ class Messenger extends CI_Controller
 
                             //Let them know that we did not understand them:
                             $this->Communication_model->dispatch_message(
-                                'I cannot make sense of your '.$en_all_4592[$in_requirements_search]['m_name'].'! '.echo_random_message('one_way_only'),
+                                echo_random_message('one_way_only'),
                                 $en,
                                 true,
                                 array(
@@ -693,7 +694,7 @@ class Messenger extends CI_Controller
                     //Messenger Referral OR Postback
                     $ln_type_entity_id = (isset($im['delivery']) ? 4267 /* Messenger Referral */ : 4268 /* Messenger Postback */);
 
-                    //Authenticate Student:
+                    //Authenticate User:
                     $en = $this->Entities_model->en_authenticate_psid($im['sender']['id']);
 
                     //Extract more insights:
@@ -916,8 +917,8 @@ class Messenger extends CI_Controller
     {
         /*
          *
-         * Loads student my account "frame" which would
-         * then use JS/Facebook API to determine Student
+         * Loads user my account "frame" which would
+         * then use JS/Facebook API to determine User
          * PSID which then loads their Account via
          * myaccount_load() function below.
          *
@@ -1076,18 +1077,18 @@ class Messenger extends CI_Controller
 
 
         //Fetch existing phone:
-        $student_phones = $this->Links_model->ln_fetch(array(
+        $user_phones = $this->Links_model->ln_fetch(array(
             'ln_status' => 2, //Published
             'ln_child_entity_id' => $_POST['en_id'],
             'ln_type_entity_id' => 4319, //Phone are of type number
             'ln_parent_entity_id' => 4783, //Phone Number
         ));
-        if (count($student_phones) > 0) {
+        if (count($user_phones) > 0) {
 
             if (strlen($_POST['en_phone']) == 0) {
 
                 //Remove:
-                $this->Links_model->ln_update($student_phones[0]['ln_id'], array(
+                $this->Links_model->ln_update($user_phones[0]['ln_id'], array(
                     'ln_status' => -1, //Removed
                 ), $_POST['en_id']);
 
@@ -1096,10 +1097,10 @@ class Messenger extends CI_Controller
                     'message' => 'Phone Removed',
                 );
 
-            } elseif ($student_phones[0]['ln_content'] != $_POST['en_phone']) {
+            } elseif ($user_phones[0]['ln_content'] != $_POST['en_phone']) {
 
                 //Update if not duplicate:
-                $this->Links_model->ln_update($student_phones[0]['ln_id'], array(
+                $this->Links_model->ln_update($user_phones[0]['ln_id'], array(
                     'ln_content' => $_POST['en_phone'],
                 ), $_POST['en_id']);
 
@@ -1200,18 +1201,18 @@ class Messenger extends CI_Controller
 
 
         //Fetch existing email:
-        $student_emails = $this->Links_model->ln_fetch(array(
+        $user_emails = $this->Links_model->ln_fetch(array(
             'ln_status' => 2, //Published
             'ln_child_entity_id' => $_POST['en_id'],
             'ln_type_entity_id' => 4255, //Emails are of type Text
             'ln_parent_entity_id' => 3288, //Email Address
         ));
-        if (count($student_emails) > 0) {
+        if (count($user_emails) > 0) {
 
             if (strlen($_POST['en_email']) == 0) {
 
                 //Remove email:
-                $this->Links_model->ln_update($student_emails[0]['ln_id'], array(
+                $this->Links_model->ln_update($user_emails[0]['ln_id'], array(
                     'ln_status' => -1, //Removed
                 ), $_POST['en_id']);
 
@@ -1220,10 +1221,10 @@ class Messenger extends CI_Controller
                     'message' => 'Email removed',
                 );
 
-            } elseif ($student_emails[0]['ln_content'] != $_POST['en_email']) {
+            } elseif ($user_emails[0]['ln_content'] != $_POST['en_email']) {
 
                 //Update if not duplicate:
-                $this->Links_model->ln_update($student_emails[0]['ln_id'], array(
+                $this->Links_model->ln_update($user_emails[0]['ln_id'], array(
                     'ln_content' => $_POST['en_email'],
                 ), $_POST['en_id']);
 
@@ -1306,7 +1307,7 @@ class Messenger extends CI_Controller
 
 
         //Fetch existing password:
-        $student_passwords = $this->Links_model->ln_fetch(array(
+        $user_passwords = $this->Links_model->ln_fetch(array(
             'ln_status' => 2, //Published
             'ln_type_entity_id' => 4255, //Passwords are of type Text
             'ln_parent_entity_id' => 3286, //Password
@@ -1316,9 +1317,9 @@ class Messenger extends CI_Controller
         $hashed_password = strtolower(hash('sha256', $this->config->item('password_salt') . $_POST['en_password']));
 
 
-        if (count($student_passwords) > 0) {
+        if (count($user_passwords) > 0) {
 
-            if ($hashed_password == $student_passwords[0]['ln_content']) {
+            if ($hashed_password == $user_passwords[0]['ln_content']) {
 
                 $return = array(
                     'status' => 0,
@@ -1328,7 +1329,7 @@ class Messenger extends CI_Controller
             } else {
 
                 //Update password:
-                $this->Links_model->ln_update($student_passwords[0]['ln_id'], array(
+                $this->Links_model->ln_update($user_passwords[0]['ln_id'], array(
                     'ln_content' => $hashed_password,
                 ), $_POST['en_id']);
 
@@ -1582,8 +1583,8 @@ class Messenger extends CI_Controller
 
         /*
          *
-         * Loads student action plans "frame" which would
-         * then use JS/Facebook API to determine Student
+         * Loads user action plans "frame" which would
+         * then use JS/Facebook API to determine User
          * PSID which then loads the Action Plan via
          * actionplan_load() function below.
          *
@@ -1682,8 +1683,8 @@ class Messenger extends CI_Controller
         }
 
 
-        //Fetch student's intentions as we'd need to know their top-level goals:
-        $student_intents = $this->Links_model->ln_fetch(array(
+        //Fetch user's intentions as we'd need to know their top-level goals:
+        $user_intents = $this->Links_model->ln_fetch(array(
             'ln_miner_entity_id' => $session_en['en_id'],
             'ln_type_entity_id' => 4235, //Action Plan Set Intention
             'ln_status IN (' . join(',', $this->config->item('ln_status_incomplete')) . ')' => null, //incomplete intentions
@@ -1699,10 +1700,10 @@ class Messenger extends CI_Controller
                 'ln_miner_entity_id' => $session_en['en_id'],
             ));
 
-            //List all student intentions:
+            //List all user intentions:
             $this->load->view('view_messenger/actionplan_intentions', array(
                 'session_en' => $session_en,
-                'student_intents' => $student_intents,
+                'user_intents' => $user_intents,
             ));
 
         } else {
@@ -1721,7 +1722,7 @@ class Messenger extends CI_Controller
             //Load Action Plan UI with relevant variables:
             $this->load->view('view_messenger/actionplan_step', array(
                 'session_en' => $session_en,
-                'student_intents' => $student_intents,
+                'user_intents' => $user_intents,
                 'advance_step' => $this->Actionplan_model->actionplan_step_next_communicate($session_en['en_id'], $in_id, false),
                 'in' => $ins[0], //Currently focused intention:
             ));
@@ -1734,7 +1735,7 @@ class Messenger extends CI_Controller
 
         /*
          *
-         * When students indicate they want to stop
+         * When users indicate they want to stop
          * an intention this function saves the changes
          * necessary and remove the intention from their
          * Action Plan.
@@ -1776,13 +1777,13 @@ class Messenger extends CI_Controller
         }
 
         //Go ahead and remove from Action Plan:
-        $student_intents = $this->Links_model->ln_fetch(array(
+        $user_intents = $this->Links_model->ln_fetch(array(
             'ln_miner_entity_id' => $_POST['en_miner_id'],
             'ln_type_entity_id' => 4235, //Action Plan Set Intention
             'ln_status IN (' . join(',', $this->config->item('ln_status_incomplete')) . ')' => null, //incomplete intentions
             'ln_parent_intent_id' => $_POST['in_id'],
         ));
-        if(count($student_intents) < 1){
+        if(count($user_intents) < 1){
             //Give error:
             return echo_json(array(
                 'status' => 0,
@@ -1791,7 +1792,7 @@ class Messenger extends CI_Controller
         }
 
         //Adjust Action Plan status:
-        foreach($student_intents as $ln){
+        foreach($user_intents as $ln){
             $this->Links_model->ln_update($ln['ln_id'], array(
                 'ln_status' => ( $_POST['stop_method_id']==6154 ? 2 : -1 ), //This is a nasty HACK!
             ), $_POST['en_miner_id']);
@@ -1805,7 +1806,7 @@ class Messenger extends CI_Controller
             'ln_parent_intent_id' => $_POST['in_id'],
         ));
 
-        //Communicate with student:
+        //Communicate with user:
         $this->Communication_model->dispatch_message(
             'I have successfully removed the intention to '.$ins[0]['in_outcome'].' from your Action Plan. You can add it back to your Action Plan at any time and continue from where you left off.',
             array('en_id' => $_POST['en_miner_id']),
@@ -1987,7 +1988,7 @@ class Messenger extends CI_Controller
         /*
          *
          * Saves the order of Action Plan intents based on
-         * student preferences.
+         * user preferences.
          *
          * */
 
@@ -2030,7 +2031,7 @@ class Messenger extends CI_Controller
         //Fetch top intention that being workined on now:
         $top_priority = $this->Actionplan_model->actionplan_intention_focus($_POST['en_miner_id']);
         if($top_priority){
-            //Communicate top-priority with student:
+            //Communicate top-priority with user:
             $this->Communication_model->dispatch_message(
                 '🚩 Action Plan prioritised: Now our focus is to '.$top_priority['in']['in_outcome'].' ('.$top_priority['completion_rate']['completion_percentage'].'% done)',
                 array('en_id' => $_POST['en_miner_id']),
@@ -2111,7 +2112,7 @@ class Messenger extends CI_Controller
          * Messenger has a feature that allows us to cache
          * media files in their servers so we can deliver
          * them instantly without a need to re-upload them
-         * every time we want to send them to a student.
+         * every time we want to send them to a user.
          *
          */
 
@@ -2128,7 +2129,7 @@ class Messenger extends CI_Controller
         ), array(), 10, 0, array('ln_id' => 'ASC')); //Sort by oldest added first
 
 
-        //Put something in the ln_metadata so other cron jobs do not pick  up on it:
+        //Put something in the ln_metadata so other cron jobs do not pick up on it:
         foreach ($ln_pending as $ln) {
             update_metadata('ln', $ln['ln_id'], array(
                 'fb_att_id' => 0,
@@ -2212,7 +2213,7 @@ class Messenger extends CI_Controller
          *
          * Stores these media in Mench CDN:
          *
-         * 1) Media received from students
+         * 1) Media received from users
          * 2) Media sent from Mench Admins via Facebook Chat Inbox
          *
          * Note: It would not store media that is sent from intent
@@ -2222,7 +2223,7 @@ class Messenger extends CI_Controller
 
         $ln_pending = $this->Links_model->ln_fetch(array(
             'ln_status' => 0, //New
-            'ln_type_entity_id IN (' . join(',', $this->config->item('en_ids_6102')) . ')' => null, //Student Sent/Received Media Links
+            'ln_type_entity_id IN (' . join(',', $this->config->item('en_ids_6102')) . ')' => null, //User Sent/Received Media Links
         ), array(), 20);
 
         //Set link statuses to drafting so other Cron jobs don't pick them up:

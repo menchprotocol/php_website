@@ -75,7 +75,7 @@ class Intents extends CI_Controller
 
         /*
          *
-         * Loads public landing page that Students can use
+         * Loads public landing page that Users can use
          * to review intents before adding to Action Plan
          *
          * */
@@ -152,10 +152,14 @@ class Intents extends CI_Controller
         }
 
 
+        //Load AND/OR Intents:
+        $en_all_6676 = $this->config->item('en_all_6676');
+
+
         //Return report:
         return echo_json(array(
             'status' => 1,
-            'message' => '<h3>'.$fixed_fields['in_type'][$ins[0]['in_type']]['s_icon'].' '.$fixed_fields['in_status'][$ins[0]['in_status']]['s_icon'].' '.$ins[0]['in_outcome'].'</h3>'.echo_in_answer_scores($_POST['starting_in'], $_POST['depth_levels'], $_POST['status_min'], $_POST['depth_levels'], $ins[0]['in_type']),
+            'message' => '<h3>'.$en_all_6676[is_or($ins[0]['in_type_entity_id'], true)]['m_icon'].' '.$fixed_fields['in_status'][$ins[0]['in_status']]['s_icon'].' '.echo_in_outcome($ins[0]['in_outcome'], false, false, true).'</h3>'.echo_in_answer_scores($_POST['starting_in'], $_POST['depth_levels'], $_POST['status_min'], $_POST['depth_levels'], $ins[0]['in_type_entity_id']),
         ));
 
     }
@@ -369,6 +373,11 @@ class Intents extends CI_Controller
                 'status' => 0,
                 'message' => 'Missing assessment points',
             ));
+        } elseif (!isset($_POST['in_6676_type']) || !isset($_POST['in_6192_type']) || !isset($_POST['in_6193_type']) || !isset($_POST['in_'.$_POST['in_6676_type'].'_type']) || intval($_POST['in_'.$_POST['in_6676_type'].'_type']) < 1 || !in_array($_POST['in_'.$_POST['in_6676_type'].'_type'], array_merge($this->config->item('en_ids_6192'), $this->config->item('en_ids_6193')))) {
+            return echo_json(array(
+                'status' => 0,
+                'message' => 'Invalid intent type',
+            ));
         } elseif (!isset($_POST['level']) || intval($_POST['level']) < 1 || intval($_POST['level']) > 3) {
             return echo_json(array(
                 'status' => 0,
@@ -379,12 +388,12 @@ class Intents extends CI_Controller
                 'status' => 0,
                 'message' => 'Missing Outcome',
             ));
-        } elseif (!isset($_POST['in_seconds_cost']) || intval($_POST['in_seconds_cost']) < 0) {
+        } elseif (!isset($_POST['in_completion_seconds']) || intval($_POST['in_completion_seconds']) < 0) {
             return echo_json(array(
                 'status' => 0,
                 'message' => 'Missing Time Estimate',
             ));
-        } elseif (intval($_POST['in_seconds_cost']) > $this->config->item('in_max_seconds')) {
+        } elseif (intval($_POST['in_completion_seconds']) > $this->config->item('in_max_seconds')) {
             return echo_json(array(
                 'status' => 0,
                 'message' => 'Maximum estimated time is ' . round(($this->config->item('in_max_seconds') / 3600), 2) . ' hours for each intent. If larger, break the intent down into smaller intents.',
@@ -393,11 +402,6 @@ class Intents extends CI_Controller
             return echo_json(array(
                 'status' => 0,
                 'message' => 'Missing Recursive setting',
-            ));
-        } elseif (!isset($_POST['in_requirement_entity_id'])) {
-            return echo_json(array(
-                'status' => 0,
-                'message' => 'Missing Completion Entity ID',
             ));
         } elseif (!isset($_POST['in_status'])) {
             return echo_json(array(
@@ -430,16 +434,23 @@ class Intents extends CI_Controller
         }
 
 
+        //Transform intent type into standard DB field:
+        $_POST['in_type_entity_id'] = $_POST['in_'.$_POST['in_6676_type'].'_type'];
 
         //Prep new variables:
         $in_update = array(
             'in_status' => intval($_POST['in_status']),
             'in_outcome' => trim($_POST['in_outcome']),
-            'in_seconds_cost' => intval($_POST['in_seconds_cost']),
-            'in_requirement_entity_id' => intval($_POST['in_requirement_entity_id']),
+            'in_completion_seconds' => intval($_POST['in_completion_seconds']),
             'in_verb_entity_id' => $ins[0]['in_verb_entity_id'], //We assume no change, and will update if we detected change...
-            'in_type' => intval($_POST['in_type']),
+            'in_type_entity_id' => $_POST['in_type_entity_id'], //Also used when updating the field
         );
+
+
+        //Is this a Zero Time Estimate intent type?
+        if(in_array($in_update['in_type_entity_id'], $this->config->item('en_ids_6766'))){
+            $in_update['in_completion_seconds'] = 0;
+        }
 
         //Prep current intent metadata:
         $in_metadata = unserialize($ins[0]['in_metadata']);
@@ -521,9 +532,9 @@ class Intents extends CI_Controller
 
 
 
-
         //Assume link is not updated:
         $link_was_updated = false;
+
 
         //Does this request has an intent link?
         if($ln_id > 0){
@@ -662,7 +673,7 @@ class Intents extends CI_Controller
             'status' => 1,
             'message' => '<i class="fas fa-check"></i> Saved',
             'remove_from_ui' => $remove_from_ui,
-            'formatted_in_outcome' => ( isset($in_update['in_outcome']) ? echo_in_outcome($in_update['in_outcome']) : null ),
+            'formatted_in_outcome' => ( isset($in_update['in_outcome']) ? echo_in_outcome($in_update['in_outcome'], false, false, true) : null ),
             'remove_redirect_url' => $remove_redirect_url,
             'status_update_children' => $status_update_children,
             'in__metadata_max_steps' => -( isset($in_metadata['in__metadata_max_steps']) ? $in_metadata['in__metadata_max_steps'] : 0 ),
@@ -1047,7 +1058,7 @@ class Intents extends CI_Controller
          *
          * An AJAX function that is triggered every time a Miner
          * selects to modify an intent. It will check the
-         * completion requirements of an intent so it can
+         * Requires Manual Response of an intent so it can
          * check proper boxes to help Miner modify the intent.
          *
          * */

@@ -41,7 +41,9 @@
             <input type="submit" class="btn btn-primary pass btn-raised btn-round" value="Sign In">
             <a class="btn btn-primary pass btn-raised btn-round" style="display: none;"
                href="javascript:password_initiate_reset();">Request Password Reset</a>
-            <span class="pass und" style="width:278px; display:inline-block; font-size:0.9em; text-align: right;"><a
+
+            <!-- Remove hidden when forgot password is implemented again -->
+            <span class="pass und hidden" style="width:278px; display:inline-block; font-size:0.9em; text-align: right;"><a
                         href="javascript:void(0)" onclick="$('.pass').toggle()"><span class="underdot">Forgot Pass?</span></a></span>
             <span class="pass" style="font-size:0.9em; display: none;">or <a href="javascript:void(0)"
                                                                              onclick="$('.pass').toggle()"><span class="underdot">Cancel</span></a></span>

@@ -267,7 +267,7 @@ function detect_ln_type_entity_id($string)
         //Regular text link:
         return array(
             'status' => 1,
-            'ln_type_entity_id' => 4255,
+            'ln_type_entity_id' => 4255, //Text Link
         );
 
     }
@@ -423,6 +423,13 @@ function redirect_message($url, $message = null)
     }
 }
 
+
+function is_or($in_type_entity_id, $return_id = false){
+    //Determines if an intent type belongs to AND or OR intents:
+    $CI =& get_instance();
+    $is__or = intval(in_array($in_type_entity_id , $CI->config->item('en_ids_6193')));
+    return ( $return_id ? ( $is__or ? 6193 /* OR */ : 6192 /* AND */ ) : $is__or );
+}
 
 function upload_to_cdn($file_url, $ln_metadata = null, $is_local = false)
 {
@@ -627,8 +634,10 @@ function update_algolia($input_obj_type = null, $input_obj_id = 0, $return_row_o
         );
     }
 
+    //Load AND/OR Intents:
+    $en_all_6676 = $CI->config->item('en_all_6676');
+
     //Define the support objects indexed on algolia:
-    $fixed_fields = $CI->config->item('fixed_fields'); //Needed for intent Icon
     $input_obj_id = intval($input_obj_id);
     $limits = array();
 
@@ -779,7 +788,7 @@ function update_algolia($input_obj_type = null, $input_obj_id = 0, $return_row_o
                 $export_row['alg_obj_weight'] = ( isset($metadata['in__metadata_max_seconds']) ? $metadata['in__metadata_max_seconds'] : 0 );
                 $export_row['alg_obj_published_children'] = ( isset($metadata['in__metadata_max_steps']) ? $metadata['in__metadata_max_steps'] : 0 );
                 $export_row['alg_obj_status'] = intval($db_row['in_status']);
-                $export_row['alg_obj_icon'] = $fixed_fields['in_type'][$db_row['in_type']]['s_icon']; //Entity type icon
+                $export_row['alg_obj_icon'] = $en_all_6676[is_or($db_row['in_type_entity_id'], true)]['m_icon']; //Entity type icon
                 $export_row['alg_obj_name'] = $db_row['in_outcome'];
                 $export_row['alg_obj_postfix'] =  ( $time_range ? '<span class="alg-postfix"><i class="fal fa-clock"></i>' . $time_range . '</span>' : '');
 

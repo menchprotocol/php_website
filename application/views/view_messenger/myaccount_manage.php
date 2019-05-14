@@ -42,57 +42,57 @@
 
         } elseif($acc_en_id==3288 /* Email */){
 
-            $student_emails = $this->Links_model->ln_fetch(array(
+            $user_emails = $this->Links_model->ln_fetch(array(
                 'ln_status' => 2, //Published
                 'ln_child_entity_id' => $session_en['en_id'],
                 'ln_type_entity_id' => 4255, //Linked Entities Text (Email is text)
                 'ln_parent_entity_id' => 3288, //Email Address
             ));
 
-            echo '<input type="email" id="en_email" class="form-control border" value="'.( count($student_emails) > 0 ? $student_emails[0]['ln_content'] : '' ).'" placeholder="you@gmail.com" />
+            echo '<input type="email" id="en_email" class="form-control border" value="'.( count($user_emails) > 0 ? $user_emails[0]['ln_content'] : '' ).'" placeholder="you@gmail.com" />
                     <a href="javascript:void(0)" onclick="save_email()" class="btn btn-sm btn-secondary">Save</a>
                     <span class="saving-account save_email"></span>';
 
         } elseif($acc_en_id==3286 /* Password */){
 
-            $student_passwords = $this->Links_model->ln_fetch(array(
+            $user_passwords = $this->Links_model->ln_fetch(array(
                 'ln_status' => 2, //Published
                 'ln_type_entity_id' => 4255, //Text
                 'ln_parent_entity_id' => 3286, //Password
-                'ln_child_entity_id' => $session_en['en_id'], //For this student
+                'ln_child_entity_id' => $session_en['en_id'], //For this user
             ));
 
             echo '<input type="password" id="en_password" class="form-control border" placeholder="Set new password..." />
                     <a href="javascript:void(0)" onclick="save_password()" class="btn btn-sm btn-secondary">Save</a>
                     <span class="saving-account save_password"></span>
-                    <p>Note: '. ( count($student_passwords) > 0 ? 'Password updated '.echo_time_difference(strtotime($student_passwords[0]['ln_timestamp'])).' ago.' : 'You have not yet set a password.') .'</p>';
+                    <p>Note: '. ( count($user_passwords) > 0 ? 'Password updated '.echo_time_difference(strtotime($user_passwords[0]['ln_timestamp'])).' ago.' : 'You have not yet set a password.') .'</p>';
 
         } elseif($acc_en_id==4783 /* Phone */){
 
-            $student_phones = $this->Links_model->ln_fetch(array(
+            $user_phones = $this->Links_model->ln_fetch(array(
                 'ln_status' => 2, //Published
                 'ln_child_entity_id' => $session_en['en_id'],
                 'ln_type_entity_id' => 4319, //Phone are of type number
                 'ln_parent_entity_id' => 4783, //Phone Number
             ));
 
-            echo '<input type="number" id="en_phone" class="form-control border" value="'.( count($student_phones) > 0 ? $student_phones[0]['ln_content'] : '' ).'" placeholder="Set phone number..." />
+            echo '<input type="number" id="en_phone" class="form-control border" value="'.( count($user_phones) > 0 ? $user_phones[0]['ln_content'] : '' ).'" placeholder="Set phone number..." />
                     <a href="javascript:void(0)" onclick="save_phone()" class="btn btn-sm btn-secondary">Save</a>
                     <span class="saving-account save_phone"></span>';
 
         } elseif($acc_en_id==6123 /* Social Profiles */){
 
-            $student_social_profiles = $this->Links_model->ln_fetch(array(
+            $user_social_profiles = $this->Links_model->ln_fetch(array(
                 'ln_status' => 2, //Published
                 'ln_type_entity_id' => 4256, //Generic URL
                 'ln_parent_entity_id IN ('.join(',', $this->config->item('en_ids_6123')).')' => null, //Any social profile
-                'ln_child_entity_id' => $session_en['en_id'], //For this student
+                'ln_child_entity_id' => $session_en['en_id'], //For this user
             ));
 
             echo '<script> var en_ids_6123 = ' . json_encode($this->config->item('en_ids_6123')) . '; </script>'; //Used for JS variables:
             foreach($this->config->item('en_all_6123') as $acc_en_id => $acc_detail){
                 //Do we have this social profile?
-                $profile_array = filter_array($student_social_profiles, 'ln_parent_entity_id', $acc_en_id);
+                $profile_array = filter_array($user_social_profiles, 'ln_parent_entity_id', $acc_en_id);
                 echo '<div class="form-group label-floating is-empty">
                         <div class="input-group border" style="width: 155px;">
                             <span class="input-group-addon addon-lean addon-grey">'.$acc_detail['m_icon'].'</span>

@@ -14,7 +14,7 @@ defined('BASEPATH') OR exit('No direct script access allowed');
 date_default_timezone_set('America/Los_Angeles');
 
 //App Functionality:
-$config['app_version']              = '0.865'; //Cache buster for static JS/CSS files, so needs to be updated if you update static files
+$config['app_version']              = '0.860'; //Cache buster for static JS/CSS files, so needs to be updated if you update static files
 $config['app_enable_algolia']       = true; //May need to turn off if/when we reach monthly quota of 50k calls
 $config['items_per_page']           = 100; //The limit of how many items should be loaded per page/section
 
@@ -26,7 +26,7 @@ $config['in_featured']              = 8469; //Child intents of this are featured
 $config['in_status_locked']         = array(8469, 7766); //Once set to published, their status will be locked by system
 $config['in_max_seconds']           = 28800; //The maximum seconds allowed per intent. If larger, the miner is asked to break it down into smaller intents
 $config['in_outcome_max']           = 89; //Max number of characters allowed for intent outcomes
-$config['in_mark_options']          = array(0, 1, 2, 3, 5, 8, 13, 21); //Defines how many marks can be assigned to OR intent children
+$config['in_response_weights']      = array(-21, -13, -8, -5, -3, -2, -1, 0, 1, 2, 3, 5, 8, 13, 21); //Defines the weight of the users OR answer, See @4358 for more info
 
 
 //Entities:
@@ -152,8 +152,8 @@ $config['fixed_fields']             = array(
                                                 's_en_id' => 6173,
                                             ),
                                         ),
-                                        //The same as ln_status with terminology optimized for students
-                                        'ln_student_status' => array(
+                                        //The same as ln_status with terminology optimized for users
+                                        'ln_action_plan_status' => array(
                                             2 => array(
                                                 's_name' => 'Completed',
                                                 's_desc' => 'Marked as complete and pending new updates',
@@ -174,24 +174,11 @@ $config['fixed_fields']             = array(
                                             ),
                                             -1 => array(
                                                 's_name' => 'Skipped',
-                                                's_desc' => 'Step was skipped by student',
+                                                's_desc' => 'Step was skipped by user',
                                                 's_icon' => '<i class="fal fa-minus-square"></i>',
                                                 's_en_id' => 6188,
                                             ),
-                                        ),
-                                        'in_type' => array(
-                                            0 => array(
-                                                's_name' => 'AND',
-                                                's_desc' => 'AND Intents are completed when ALL their children are complete',
-                                                's_icon' => '<i class="fal fa-sitemap"></i>',
-                                            ),
-                                            1 => array(
-                                                's_name' => 'OR',
-                                                's_desc' => 'OR Intents are completed when ANY of their children are complete',
-                                                's_icon' => '<i class="fal fa-code-merge"></i>',
-                                            ),
-                                        ),
-
+                                        )
                                     );
 
 
@@ -664,7 +651,7 @@ $config['compress_output'] = FALSE;
 
 /*
 |--------------------------------------------------------------------------
-| Student Time Reference
+| User Time Reference
 |--------------------------------------------------------------------------
 |
 | Options are 'local' or any PHP supported timezone. This preference tells

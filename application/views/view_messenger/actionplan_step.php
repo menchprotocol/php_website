@@ -6,10 +6,10 @@
 <?php
 
 
-//Prep student intention ids array:
-$student_intentions_ids = array();
-foreach($student_intents as $student_in){
-    array_push($student_intentions_ids, $student_in['in_id']);
+//Prep user intention ids array:
+$user_intentions_ids = array();
+foreach($user_intents as $user_in){
+    array_push($user_intentions_ids, $user_in['in_id']);
 }
 
 
@@ -20,7 +20,7 @@ $found_grandpa_intersect = false; //Makes sure user can access this step as it s
 
 echo '<div class="list-group parent-actionplans" style="margin-top: 10px;">';
 
-if(in_array($in['in_id'], $student_intentions_ids)){
+if(in_array($in['in_id'], $user_intentions_ids)){
     //Show link back to Action Plan:
     $found_grandpa_intersect = true;
     echo '<a href="/messenger/actionplan" class="list-group-item">';
@@ -31,10 +31,10 @@ if(in_array($in['in_id'], $student_intentions_ids)){
 }
 
 
-//Go through parents and detect intersects with student intentions. WARNING: Logic duplicated. Search for "ELEPHANT" to see.
+//Go through parents and detect intersects with user intentions. WARNING: Logic duplicated. Search for "ELEPHANT" to see.
 foreach ($this->Intents_model->in_fetch_recursive_parents($in['in_id'], 2) as $parent_in_id => $grand_parent_ids) {
-    //Does this parent and its grandparents have an intersection with the student intentions?
-    if(array_intersect($grand_parent_ids, $student_intentions_ids)){
+    //Does this parent and its grandparents have an intersection with the user intentions?
+    if(array_intersect($grand_parent_ids, $user_intentions_ids)){
         //Fetch parent intent & show:
         $parent_ins = $this->Intents_model->in_fetch(array(
             'in_id' => $parent_in_id,
@@ -76,14 +76,14 @@ if(!$found_grandpa_intersect){
     echo '<div class="sub_title">';
 
     //Progression link:
-    $en_all_4331 = $this->config->item('en_all_4331');
+    $en_all_6794 = $this->config->item('en_all_6794');
     $en_all_6146 = $this->config->item('en_all_6146');
     $fixed_fields = $this->config->item('fixed_fields');
     $submission_messages = null;
     $trigger_on_complete_tips = false;
     foreach($advance_step['progression_links'] as $pl){
 
-        echo '<span style="margin-right:10px;" class="status-label underdot" data-toggle="tooltip" data-placement="top" title="Status is '.$fixed_fields['ln_student_status'][$pl['ln_status']]['s_name'].': '.$fixed_fields['ln_student_status'][$pl['ln_status']]['s_desc'].'">'.( $pl['ln_status']==2 /* Published? */ ? $en_all_6146[$pl['ln_type_entity_id']]['m_icon'] /* Show Progression Type */ : $fixed_fields['ln_student_status'][$pl['ln_status']]['s_icon'] /* Show Status */ ).' '.$en_all_6146[$pl['ln_type_entity_id']]['m_name'].'</span>';
+        echo '<span style="margin-right:10px;" class="status-label underdot" data-toggle="tooltip" data-placement="top" title="Status is '.$fixed_fields['ln_action_plan_status'][$pl['ln_status']]['s_name'].': '.$fixed_fields['ln_action_plan_status'][$pl['ln_status']]['s_desc'].'">'.( $pl['ln_status']==2 /* Published? */ ? $en_all_6146[$pl['ln_type_entity_id']]['m_icon'] /* Show Progression Type */ : $fixed_fields['ln_action_plan_status'][$pl['ln_status']]['s_icon'] /* Show Status */ ).' '.$en_all_6146[$pl['ln_type_entity_id']]['m_name'].'</span>';
 
         //Should we trigger on-complete links?
         if($pl['ln_status']==2 && in_array($pl['ln_type_entity_id'], $this->config->item('en_ids_6255'))){
@@ -91,8 +91,8 @@ if(!$found_grandpa_intersect){
         }
 
         if(strlen($pl['ln_content']) > 0){
-            //Student seems to have submitted messages for this:
-            $submission_messages .= '<span class="i_content"><span class="msg">'.$en_all_4331[$in['in_requirement_entity_id']]['m_icon'].' '.$en_all_4331[$in['in_requirement_entity_id']]['m_name'].' message added '.echo_time_difference(strtotime($pl['ln_timestamp'])).' ago:</span></span>';
+            //User seems to have submitted messages for this:
+            $submission_messages .= '<span class="i_content"><span class="msg">Message added '.echo_time_difference(strtotime($pl['ln_timestamp'])).' ago:</span></span>';
 
             $submission_messages .= '<div class="white-bg">'.$this->Communication_model->dispatch_message($pl['ln_content'], $session_en).'</div>';
         }
@@ -106,10 +106,10 @@ if(!$found_grandpa_intersect){
 
 
 
-    //Completion Requirements if any:
-    if($in['in_type']==0 && $in['in_requirement_entity_id'] != 6087){
+    //Requires Manual Response if any:
+    if(in_array($in['in_type_entity_id'], $this->config->item('en_ids_6794'))){
         //This has a completion requirement, show it:
-        echo '<span class="status-label" style="margin-right:10px;">'.$en_all_4331[$in['in_requirement_entity_id']]['m_icon'].' '.$en_all_4331[$in['in_requirement_entity_id']]['m_name'].' Message Required</span>';
+        echo '<span class="status-label" style="margin-right:10px;">'.$en_all_6794[$in['in_type_entity_id']]['m_icon'].' '.$en_all_6794[$in['in_type_entity_id']]['m_name'].'</span>';
     }
 
     //Completion time cost:

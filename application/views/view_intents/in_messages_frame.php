@@ -50,7 +50,7 @@ foreach ($metadatas as $ln) {
 <ul class="nav nav-tabs iphone-nav-tabs">
     <?php
     foreach ($en_all_4485 as $ln_type_entity_id => $m) {
-        echo '<li role="presentation" class="nav_' . $ln_type_entity_id . ' active '.( in_array(5005 , $m['m_parents']) ? ' ' . echo_advance() . '' : '' ).'">';
+        echo '<li role="presentation" class="nav_' . $ln_type_entity_id . ' active '.( in_array(5007 , $m['m_parents']) ? ' ' . echo_advance() . '' : '' ).'">';
         echo '<a href="#intentnotes-' . $in_id . '-'.$ln_type_entity_id.'"> ' . $m['m_icon'] . ' ' . $m['m_name'] . 's [<span class="mtd_count_'.$in_id.'_'.$ln_type_entity_id.'">'.( isset($counters[$ln_type_entity_id]) ? $counters[$ln_type_entity_id] : 0 ).'</span>] </a>';
         echo '</li>';
     }
@@ -86,19 +86,6 @@ foreach ($metadatas as $ln) {
         //Does it require intent voting?
         if(in_array(4985, $en_all_4485[$ln_type_entity_id]['m_parents'])){
             echo '<span class="' . echo_advance() . '"><i class="fas fa-hashtag"></i> <span data-toggle="tooltip" class="underdot" title="You can reference up to 1 parent intent using the # sign" data-placement="bottom">Intent Reference</span> &nbsp;</span>';
-        }
-
-
-        //See if this message type has specific input requirements:
-        $en_all_4485 = $this->config->item('en_all_4485');
-        $completion_requirements = array_intersect($en_all_4485[$ln_type_entity_id]['m_parents'], $this->config->item('en_ids_4331'));
-        if(count($completion_requirements) == 1){
-            $en_id = array_shift($completion_requirements);
-            $en_all_4331 = $this->config->item('en_all_4331');
-            echo '<i class="fas fa-asterisk"></i> <span data-toggle="tooltip" title="You can only add '.$en_all_4331[$en_id]['m_name'].' messages" data-placement="bottom" class="underdot">Requires '.$en_all_4331[$en_id]['m_name'].'</span>';
-        } else {
-            //No Requirements:
-            echo '<span class="' . echo_advance() . '"><i class="fas fa-asterisk"></i> <span data-toggle="tooltip" title="You can add any message type including text, URLs, videos, audios, etc..." data-placement="bottom" class="underdot">Supports all formats</span></span>';
         }
 
         echo '</div>';

@@ -389,7 +389,7 @@ function en_ln_type_preview() {
      *
      * */
 
-    $('#en_link_type_id').html('<i class="fas fa-spinner fa-spin"></i> Loading...');
+    $('#en_type_link_id').html('<i class="fas fa-spinner fa-spin"></i> Loading...');
 
 
     //Fetch Intent Data to load modify widget:
@@ -398,7 +398,7 @@ function en_ln_type_preview() {
         ln_id: parseInt($('#modifybox').attr('entity-link-id')),
     }, function (data) {
         //All good, let's load the data into the Modify Widget...
-        $('#en_link_type_id').html((data.status ? data.html_ui : 'Error: ' + data.message));
+        $('#en_type_link_id').html((data.status ? data.html_ui : 'Error: ' + data.message));
 
         if(data.status && data.en_link_preview.length > 0){
             $('#en_link_preview').html(data.en_link_preview);
@@ -675,7 +675,7 @@ function en_modify_save() {
 
                 //Entity Status:
                 $(".en___" + modify_data['en_id']).attr('en-status', modify_data['en_status']);
-                $('.en_status_' + modify_data['en_id']).html('<span data-toggle="tooltip" data-placement="right" title="' + object_js_statuses['en_status'][modify_data['en_status']]["s_name"] + ': ' + object_js_statuses['en_status'][modify_data['en_status']]["s_desc"] + '">' + object_js_statuses['en_status'][modify_data['en_status']]["s_icon"] + '</span>');
+                $('.en_status_' + modify_data['en_id']).html('<span data-toggle="tooltip" data-placement="right" title="' + js_fixed_fields['en_status'][modify_data['en_status']]["s_name"] + ': ' + js_fixed_fields['en_status'][modify_data['en_status']]["s_desc"] + '">' + js_fixed_fields['en_status'][modify_data['en_status']]["s_icon"] + '</span>');
 
 
                 //Entity Icon:
@@ -707,7 +707,7 @@ function en_modify_save() {
 
                     //Link Status:
                     $(".en___" + modify_data['en_id']).attr('ln-status', modify_data['ln_status'])
-                    $('.ln_status_' + modify_data['ln_id']).html('<span class="ln_status_val" data-toggle="tooltip" data-placement="right" title="' + object_js_statuses['ln_status'][modify_data['ln_status']]["s_name"] + ': ' + object_js_statuses['ln_status'][modify_data['ln_status']]["s_desc"] + '">' + object_js_statuses['ln_status'][modify_data['ln_status']]["s_icon"] + '</span>');
+                    $('.ln_status_' + modify_data['ln_id']).html('<span class="ln_status_val" data-toggle="tooltip" data-placement="right" title="' + js_fixed_fields['ln_status'][modify_data['ln_status']]["s_name"] + ': ' + js_fixed_fields['ln_status'][modify_data['ln_status']]["s_desc"] + '">' + js_fixed_fields['ln_status'][modify_data['ln_status']]["s_icon"] + '</span>');
 
                 }
 

@@ -247,7 +247,7 @@
 
                             <!-- Entity Status -->
                             <span class="mini-header">Entity Status:</span>
-                            <select class="form-control border" id="en_status" data-toggle="tooltip" title="Entity Status" data-placement="top">
+                            <select class="form-control border" id="en_status">
                                 <?php
                                 foreach (echo_fixed_fields('en_status') as $status_id => $status) {
                                     echo '<option value="' . $status_id . '" title="' . $status['s_desc'] . '">' . $status['s_name'] . '</option>';
@@ -284,7 +284,7 @@
                             <span class="mini-header">Entity Icon: <a href="https://fontawesome.com/icons" target="_blank" data-toggle="tooltip" title="<?= is_valid_icon(null, true) ?> Click to see Font-Awesome Icons in a new window." data-placement="top"><i class="fal fa-info-circle"></i></a></span>
                             <div class="form-group label-floating is-empty"
                                  style="margin:1px 0 10px;">
-                                <div class="input-group border" data-toggle="tooltip" title="Entity Icon" data-placement="top">
+                                <div class="input-group border">
                                     <span class="input-group-addon addon-lean addon-grey icon-demo" style="color:#2f2739; font-weight: 300; padding-left:7px !important; padding-right:6px !important;"><i class="fas fa-at grey-at"></i></span>
                                     <input type="text" id="en_icon" value=""
                                            maxlength="<?= $this->config->item('en_name_max_length') ?>" data-lpignore="true" placeholder=""
@@ -333,12 +333,12 @@
 
 
                                     <span class="mini-header">Link Type:</span>
-                                    <span id="en_link_type_id"></span>
+                                    <span id="en_type_link_id"></span>
                                     <p id="en_link_preview"></p>
 
 
                                     <span class="mini-header">Link Status:</span>
-                                    <select class="form-control border" id="ln_status" data-toggle="tooltip" title="Link Status" data-placement="top">
+                                    <select class="form-control border" id="ln_status">
                                         <?php
                                         foreach (echo_fixed_fields('ln_status') as $status_id => $status) {
                                             if($status_id < 3){ //No need to verify entity links!

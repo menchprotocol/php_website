@@ -55,16 +55,21 @@ $(document).ready(function () {
     });
 
 
-    //Lookout for intent link related changes:
+    //Lookout for intent link type changes:
     $('input[type=radio][name=ln_type_entity_id], #ln_status').change(function () {
         in_adjust_link_ui();
     });
 
-    //Look for AND/OR changes:
-    $('input[type=radio][name=in_type]').change(function () {
-        in_adjust_isany_ui();
+
+    //Lookout for intent type changes
+    $('input[type=radio][name=in_6676_type]').change(function () {
+        in_load_type(this.value);
     });
 
+    //Lookout for intent SUB-type changes
+    $('.intent-sub-type').change(function () {
+        in_toggle_time_estimate(this.value);
+    });
 
 
     //Do we need to auto load anything?
@@ -86,31 +91,38 @@ $(document).ready(function () {
 
 
 //This also has an equal PHP function echo_time_hours() which we want to make sure has more/less the same logic:
-function echo_js_hours(in_seconds_cost) {
+function echo_js_hours(in_completion_seconds) {
 
-    in_seconds_cost = parseInt(in_seconds_cost);
-    if (in_seconds_cost < 1) {
+    in_completion_seconds = parseInt(in_completion_seconds);
+    if (in_completion_seconds < 1) {
         return '0';
-    } else if (in_seconds_cost < 3600) {
+    } else if (in_completion_seconds < 3600) {
         //Show this in minutes:
-        return Math.round((in_seconds_cost / 60)) + "m";
+        return Math.round((in_completion_seconds / 60)) + "m";
     } else {
         //Show in rounded hours:
-        return Math.round((in_seconds_cost / 3600)) + "h";
+        return Math.round((in_completion_seconds / 3600)) + "h";
     }
 }
 
 
-function in_adjust_isany_ui() {
-    if ($('#in_type_0').is(':checked')) {
-        //Unlock settings:
-        $('#in_requirement_entity_id').prop('disabled', false);
+function in_toggle_time_estimate(in_type_entity_id){
+    //Maybe we need to hide the time estimate?
+    if(en_ids_6766.indexOf(parseInt(in_type_entity_id)) === -1){
+        //Show input:
+        $('.time-estimate-box').removeClass('hidden');
     } else {
-        //Any is selected, lock the completion settings as its not allowed for ANY Branches:
-        $('#in_requirement_entity_id').val(6087).prop('disabled', 'disabled');
+        //It is zero estimate, hide the input:
+        $('.time-estimate-box').addClass('hidden');
     }
 }
 
+function in_load_type(in_6676_type) {
+    $('.show-all-types').addClass('hidden');
+    $('.show-for-'+in_6676_type).removeClass('hidden');
+    //Also update inner trigger:
+    in_toggle_time_estimate(parseInt($('#in_'+in_6676_type+'_type').val()));
+}
 
 function in_adjust_link_ui() {
 
@@ -169,9 +181,9 @@ function in_messages_iframe(in_id) {
 function adjust_js_ui(in_id, level, new_hours, intent_deficit_count, apply_to_tree, skip_intent_adjustments) {
 
     intent_deficit_count = parseInt(intent_deficit_count);
-    var in_seconds_cost = parseFloat($('.t_estimate_' + in_id + ':first').attr('intent-seconds'));
+    var in_completion_seconds = parseFloat($('.t_estimate_' + in_id + ':first').attr('intent-seconds'));
     var in__metadata_seconds = parseFloat($('.t_estimate_' + in_id + ':first').attr('tree-max-seconds'));
-    var in_deficit_seconds = new_hours - (skip_intent_adjustments ? 0 : (apply_to_tree ? in__metadata_seconds : in_seconds_cost));
+    var in_deficit_seconds = new_hours - (skip_intent_adjustments ? 0 : (apply_to_tree ? in__metadata_seconds : in_completion_seconds));
 
     //Adjust same level hours:
     if (!skip_intent_adjustments) {
@@ -281,9 +293,7 @@ function in_modify_load(in_id, ln_id) {
 
             //Load inputs:
             $('#in_outcome').val(data.in.in_outcome);
-            $('#in_type_' + data.in.in_type).prop("checked", true);
-            $('#in_seconds_cost').val(data.in.in_seconds_cost);
-            $('#in_requirement_entity_id').val(data.in.in_requirement_entity_id);
+            $('#in_completion_seconds').val(data.in.in_completion_seconds);
             $('.tr_in_link_title').text('');
 
             $('#in_status').val(data.in.in_status).attr('original-status', data.in.in_status); //Set the status before it gets changed by miners
@@ -338,8 +348,13 @@ function in_modify_load(in_id, ln_id) {
 
             //Run UI Updating functions after we've removed the hidden class from #modifybox:
             in_outcome_counter();
-            in_adjust_isany_ui();
             in_adjust_link_ui();
+
+            var in_6676_type = js_is_or(data.in.in_type_entity_id, true);
+            $('#in_'+in_6676_type+'_type').val(data.in.in_type_entity_id); //Set drop down to intent sub-type
+            $('input[type=radio][name=in_6676_type]').prop('checked', false);
+            $('#parent__type_'+in_6676_type).prop('checked', true);
+            in_load_type(in_6676_type);
 
             //Reload Tooltip again:
             $('[data-toggle="tooltip"]').tooltip();
@@ -369,17 +384,30 @@ function in_modify_save() {
         top_level_ins.push(parseInt($(this).attr('intent-id')));
     });
 
+
+    //Remove time if necessary:
+    var in_6676_type = parseInt($('input[name=in_6676_type]:checked').val());
+    if(!(en_ids_6766.indexOf(parseInt($('#in_'+in_6676_type+'_type').val())) === -1)){
+        //Update the input field:
+        $('#in_completion_seconds').val('0');
+    }
+
+
     //Prepare data to be modified for this intent:
     var modify_data = {
         in_id: in_id,
         level: parseInt($('#modifybox').attr('level')),
         in_outcome: $('#in_outcome').val(),
         in_status: parseInt($('#in_status').val()),
-        in_seconds_cost: ( $('#in_seconds_cost').val().length > 0 ? parseInt($('#in_seconds_cost').val()) : 0 ),
-        in_requirement_entity_id: parseInt($('#in_requirement_entity_id').val()),
-        in_type: parseInt($('input[name=in_type]:checked').val()),
+        in_completion_seconds: ( $('#in_completion_seconds').val().length > 0 ? parseInt($('#in_completion_seconds').val()) : 0 ),
         apply_recursively: (document.getElementById('apply_recursively').checked ? 1 : 0),
         is_parent: ( $('.intent_line_' + in_id).hasClass('parent-intent') ? 1 : 0 ),
+
+        //Intent Types:
+        in_6676_type:in_6676_type, //Main AND/OR Type
+        in_6192_type:parseInt($('#in_6192_type').val()), //AND Types IF AND was selected
+        in_6193_type:parseInt($('#in_6193_type').val()), //OR Types IF OR was selected
+
         //Link variables:
         ln_id: parseInt($('#modifybox').attr('intent-tr-id')), //Will be zero for Level 1 intent!
         top_level_ins: top_level_ins,
@@ -389,6 +417,7 @@ function in_modify_save() {
         tr__conditional_score_max: null,
         tr__assessment_points: null,
     };
+
 
     //Do we have the intent Link?
     if (modify_data['ln_id'] > 0) {
@@ -470,7 +499,7 @@ function in_modify_save() {
 
                     $('.ln_type_' + modify_data['ln_id']).html('<span data-toggle="tooltip" data-placement="right" title="'+ en_all_4486[modify_data['ln_type_entity_id']]["m_name"] + ': '+ en_all_4486[modify_data['ln_type_entity_id']]["m_desc"] + '">'+ en_all_4486[modify_data['ln_type_entity_id']]["m_icon"] +'</span>');
 
-                    $('.ln_status_' + modify_data['ln_id']).html('<span class="ln_status_val" data-toggle="tooltip" data-placement="right" title="'+ object_js_statuses['ln_status'][modify_data['ln_status']]["s_name"] + ': '+ object_js_statuses['ln_status'][modify_data['ln_status']]["s_desc"] + '">'+ object_js_statuses['ln_status'][modify_data['ln_status']]["s_icon"] +'</span>');
+                    $('.ln_status_' + modify_data['ln_id']).html('<span class="ln_status_val" data-toggle="tooltip" data-placement="right" title="'+ js_fixed_fields['ln_status'][modify_data['ln_status']]["s_name"] + ': '+ js_fixed_fields['ln_status'][modify_data['ln_status']]["s_desc"] + '">'+ js_fixed_fields['ln_status'][modify_data['ln_status']]["s_icon"] +'</span>');
 
                     //Update Assessment
                     $(".in_assessment_" + modify_data['ln_id']).html(( modify_data['ln_type_entity_id']==4228 ? ( modify_data['tr__assessment_points'] != 0 ? ( modify_data['tr__assessment_points'] > 0 ? '+' : '' ) + modify_data['tr__assessment_points'] : '' ) : modify_data['tr__conditional_score_min'] + ( modify_data['tr__conditional_score_min']==modify_data['tr__conditional_score_max'] ? '' : '-' + modify_data['tr__conditional_score_max'] ) + '%' ));
@@ -492,22 +521,30 @@ function in_modify_save() {
                     $('.in_icon_child_' + modify_data['in_id']).attr('data-original-title', modify_data['in_outcome']);
                 }
 
-                //Always update 3x Intent icons:
-                $('.in_type_' + modify_data['in_id']).html('<span class="in_type_val" data-toggle="tooltip" data-placement="right" title="'+ object_js_statuses['in_type'][modify_data['in_type']]["s_name"] + ': '+ object_js_statuses['in_type'][modify_data['in_type']]["s_desc"] + '">'+ object_js_statuses['in_type'][modify_data['in_type']]["s_icon"] +'</span>');
+
+                //Always update 3x Intent icons...
+
+                //AND/OR Icon which is the main type:
+                $('.in_parent_type_' + modify_data['in_id']).html('<span data-toggle="tooltip" data-placement="right" title="'+ en_all_6676[modify_data['in_6676_type']]["m_name"] + ': '+ en_all_6676[modify_data['in_6676_type']]["m_desc"] + '">'+ en_all_6676[modify_data['in_6676_type']]["m_icon"] +'</span>');
+
+
+                //Also update secondary intent icon:
+                var in__type = ( modify_data['in_6676_type']==6193 ? en_all_6193 : en_all_6192 ); //Not sure how to do variable in variable for Javascript, so here we are...
+                var in__slct = ( modify_data['in_6676_type']==6193 ? modify_data['in_6193_type'] : modify_data['in_6192_type'] );
+                $('.in_type_entity_id_' + modify_data['in_id']).html('<span data-toggle="tooltip" data-placement="right" title="'+ in__type[in__slct]["m_name"] + ': '+ in__type[in__slct]["m_desc"] + '">'+ in__type[in__slct]["m_icon"] +'</span>');
+
 
                 //Also update possible child icons:
-                $('.in_icon_child_' + modify_data['in_id']).html(object_js_statuses['in_type'][modify_data['in_type']]["s_icon"]);
+                $('.in_icon_child_' + modify_data['in_id']).html(en_all_6676[modify_data['in_6676_type']]["m_icon"]);
 
 
-                $('.in_status_' + modify_data['in_id']).html('<span data-toggle="tooltip" data-placement="right" title="'+ object_js_statuses['in_status'][modify_data['in_status']]["s_name"] + ': '+ object_js_statuses['in_status'][modify_data['in_status']]["s_desc"] + '">'+ object_js_statuses['in_status'][modify_data['in_status']]["s_icon"] +'</span>');
-
-                $('.in_completion_' + modify_data['in_id']).html(( modify_data['in_requirement_entity_id'] == 6087 ? '' : en_all_4331[modify_data['in_requirement_entity_id']]["m_name"] ));
+                $('.in_status_' + modify_data['in_id']).html('<span data-toggle="tooltip" data-placement="right" title="'+ js_fixed_fields['in_status'][modify_data['in_status']]["s_name"] + ': '+ js_fixed_fields['in_status'][modify_data['in_status']]["s_desc"] + '">'+ js_fixed_fields['in_status'][modify_data['in_status']]["s_icon"] +'</span>');
 
                 //Update UI to confirm with user:
                 $('.save_intent_changes').html(data.message).hide().fadeIn();
 
                 //Adjust completion cost:
-                adjust_js_ui(modify_data['in_id'], modify_data['level'], modify_data['in_seconds_cost'], 0, 0, 0);
+                adjust_js_ui(modify_data['in_id'], modify_data['level'], modify_data['in_completion_seconds'], 0, 0, 0);
 
             }
 
@@ -520,7 +557,7 @@ function in_modify_save() {
                     //Refresh page soon to show new status for children:
                     window.location = "/intents/" + in_id;
                 } else {
-                    $('.save_intent_changes').html(' ');
+                    $('.save_intent_changes').html(' '); //Clear-out
                 }
             }, 1597);
 

@@ -3,7 +3,10 @@
     //Define some global variables:
     var in_status_locked = <?= json_encode($this->config->item('in_status_locked')) ?>;
     var en_all_4486 = <?= json_encode($this->config->item('en_all_4486')) ?>;
-    var en_all_4331 = <?= json_encode($this->config->item('en_all_4331')) ?>;
+    var en_all_6676 = <?= json_encode($this->config->item('en_all_6676')) ?>; //AND/OR Branch
+    var en_all_6192 = <?= json_encode($this->config->item('en_all_6192')) ?>; //AND Children
+    var en_all_6193 = <?= json_encode($this->config->item('en_all_6193')) ?>; //OR Children
+    var en_ids_6766 = <?= json_encode($this->config->item('en_ids_6766')) ?>; //Zero Time Estimate (Intent Types)
 </script>
 <script src="/js/custom/intent-manage-js.js?v=v<?= $this->config->item('app_version') ?>"
         type="text/javascript"></script>
@@ -40,7 +43,7 @@
 
 
                     <span class="mini-header">Intent Status:</span>
-                    <select class="form-control border" id="in_status" original-status="" data-toggle="tooltip" title="Intent Status" data-placement="top" style="display: inline-block !important;">
+                    <select class="form-control border" id="in_status" style="display: inline-block !important;">
                         <?php
                         foreach (echo_fixed_fields('in_status') as $status_id => $status) {
                             echo '<option value="' . $status_id . '" title="' . $status['s_desc'] . '">' . $status['s_name'] . '</option>';
@@ -75,13 +78,14 @@
 
 
                     <span class="mini-header" style="margin-top: 20px;">Intent Type:</span>
-                    <div class="form-group label-floating is-empty" style="margin-bottom: 0; padding-bottom: 0; display:block !important;">
+                    <div class="form-group label-floating is-empty" style="margin-bottom:-5px; padding-bottom: 0; display:block !important;">
                         <?php
-                        foreach (echo_fixed_fields('in_type') as $in_val => $intent_type) {
-                            echo '<span class="radio" style="display:inline-block; margin-top: 0 !important;" data-toggle="tooltip" title="' . $intent_type['s_desc'] . '" data-placement="top">
-                                        <label class="underdot" style="display:inline-block;">
-                                            <input type="radio" id="in_type_' . $in_val . '" name="in_type" value="' . $in_val . '" />
-                                            ' . $intent_type['s_icon'] . ' ' . $intent_type['s_name'] . '
+                        //Either 6192 AND or 6193 OR:
+                        foreach ($this->config->item('en_all_6676') as $en_id => $m) {
+                            echo '<span class="radio" style="display:inline-block; margin-right: 7px; margin-top: 0 !important;">
+                                        <label style="display:inline-block;">
+                                            <input type="radio" name="in_6676_type" id="parent__type_'.$en_id.'" value="' . $en_id . '" />
+                                            ' . $m['m_icon'] . ' ' . $m['m_name'] . '
                                         </label>
                                     </span>';
                         }
@@ -89,8 +93,8 @@
                     </div>
 
                     <!-- AND Intents -->
-                    <div class="show-for-6192">
-                        <select class="form-control border" id="en_all_6192" data-toggle="tooltip" title="Defines what students need to do to mark this intent as complete" data-placement="top" style="margin-bottom: 12px;">
+                    <div class="show-all-types show-for-6192">
+                        <select class="form-control border intent-sub-type" id="in_6192_type" style="margin-bottom: 12px;">
                             <?php
                             foreach ($this->config->item('en_all_6192') as $en_id => $m) {
                                 echo '<option value="' . $en_id . '">' . $m['m_name'] . '</option>';
@@ -100,8 +104,8 @@
                     </div>
 
                     <!-- OR Intents -->
-                    <div class="show-for-6193 hidden">
-                        <select class="form-control border" id="en_all_6193" data-toggle="tooltip" title="Defines what students need to do to mark this intent as complete" data-placement="top" style="margin-bottom: 12px;">
+                    <div class="show-all-types show-for-6193 hidden">
+                        <select class="form-control border intent-sub-type" id="in_6193_type" style="margin-bottom: 12px;">
                             <?php
                             foreach ($this->config->item('en_all_6193') as $en_id => $m) {
                                 echo '<option value="' . $en_id . '">' . $m['m_name'] . '</option>';
@@ -114,13 +118,13 @@
 
 
                     <div class="time-estimate-box">
-                        <span class="mini-header" style="margin-top:20px;">Time Estimate:</span>
+                        <span class="mini-header" style="margin-top:20px;">Completion Time:</span>
                         <div class="form-group label-floating is-empty">
                             <div class="input-group border" style="width: 155px;">
                                         <span class="input-group-addon addon-lean addon-grey" style="color:#2f2739; font-weight: 300;"><i
                                                     class="fal fa-clock"></i></span>
                                 <input style="padding-left:3px;" type="number" step="1" min="0"
-                                       max="<?= $this->config->item('in_max_seconds') ?>" id="in_seconds_cost" value=""
+                                       max="<?= $this->config->item('in_max_seconds') ?>" id="in_completion_seconds" value=""
                                        class="form-control">
                                 <span class="input-group-addon addon-lean addon-grey" style="color:#2f2739; font-weight: 300;">Seconds</span>
                             </div>
@@ -162,8 +166,8 @@
 
                             <?php
                             foreach ($this->config->item('en_all_4486') as $en_id => $m) {
-                                echo '<span class="radio" style="display:inline-block; margin-top: 0 !important;" data-toggle="tooltip" title="' . $m['m_desc'] . '" data-placement="top">
-                                            <label class="underdot">
+                                echo '<span class="radio" style="display:inline-block; margin-top: 0 !important;">
+                                            <label>
                                                 <input type="radio" id="ln_type_entity_id_' . $en_id . '" name="ln_type_entity_id" value="' . $en_id . '" />
                                                 '.$m['m_icon'].' ' . $m['m_name'] . '
                                             </label>
@@ -176,9 +180,9 @@
 
                         <?php $en_all_6410 = $this->config->item('en_all_6410'); ?>
                         <div class="score_range_box hidden">
-                            <span class="mini-header"><?= $en_all_6410[6402]['m_name'] ?></span>
+                            <span class="mini-header"><?= $en_all_6410[6402]['m_name'] ?>:</span>
                             <div class="form-group label-floating is-empty"
-                                 style="max-width:230px; margin:1px 0 10px;" data-toggle="tooltip" title="<?= $en_all_6410[6402]['m_desc'] ?>" data-placement="top">
+                                 style="max-width:230px; margin:1px 0 10px;">
                                 <div class="input-group border">
                                     <span class="input-group-addon addon-lean addon-grey" style="color:#2f2739; font-weight: 300;">IF Scores </span>
                                     <input style="padding-left:0; padding-right:0; text-align:right;" type="text"
@@ -194,19 +198,19 @@
                         </div>
 
                         <div class="score_points hidden">
-                            <span class="mini-header"><?= $en_all_6410[4358]['m_name'] ?></span>
-                            <select class="form-control border" id="tr__assessment_points" data-toggle="tooltip" title="<?= $en_all_6410[4358]['m_desc'] ?>" data-placement="top" style="margin-bottom:12px;">
+                            <span class="mini-header"><?= $en_all_6410[4358]['m_name'] ?>:</span>
+                            <select class="form-control border" id="tr__assessment_points" style="margin-bottom:12px;">
                                 <?php
-                                foreach ($this->config->item('in_mark_options') as $mark) {
-                                    echo '<option value="' . $mark . '">' . abs($mark) . ' Mark' . echo__s(abs($mark)) . '</option>';
+                                foreach ($this->config->item('in_response_weights') as $mark) {
+                                    echo '<option value="' . $mark . '">' . $mark . '</option>';
                                 }
                                 ?>
                             </select>
                         </div>
 
 
-                        <span class="mini-header">Link Status:</span>
-                        <select class="form-control border" data-toggle="tooltip" title="Link Status" data-placement="top" id="ln_status" style="display: inline-block !important;">
+                        <span class="mini-header" style="margin-top: 20px;">Link Status:</span>
+                        <select class="form-control border" id="ln_status" style="display: inline-block !important;">
                             <?php
                             foreach (echo_fixed_fields('ln_status') as $status_id => $status) {
                                 if($status_id < 3){ //No need to verify intent links!

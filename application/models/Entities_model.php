@@ -246,17 +246,17 @@ class Entities_model extends CI_Model
     }
 
 
-    function en_radio_set($en_parent_bucket_id, $set_en_child_id = 0, $en_student_id, $ln_miner_entity_id = 0)
+    function en_radio_set($en_parent_bucket_id, $set_en_child_id = 0, $en_user_id, $ln_miner_entity_id = 0)
     {
 
         /*
          * Treats an entity child group as a drop down menu where:
          *
          *  $en_parent_bucket_id is the parent of the drop down
-         *  $en_student_id is the student entity ID that one of the children of $en_parent_bucket_id should be assigned (like a drop down)
+         *  $en_user_id is the user entity ID that one of the children of $en_parent_bucket_id should be assigned (like a drop down)
          *  $set_en_child_id is the new value to be assigned, which could also be null (meaning just remove all current values)
          *
-         * This function is helpful to manage things like Student communication levels
+         * This function is helpful to manage things like User communication levels
          *
          * */
 
@@ -275,7 +275,7 @@ class Entities_model extends CI_Model
         $already_assigned = ($set_en_child_id < 1);
         $updated_ln_id = 0;
         foreach ($this->Links_model->ln_fetch(array(
-            'ln_child_entity_id' => $en_student_id,
+            'ln_child_entity_id' => $en_user_id,
             'ln_parent_entity_id IN (' . join(',', $children) . ')' => null, //Current children
             'ln_status >=' => 0,
         ), array(), $this->config->item('items_per_page')) as $ln) {
@@ -300,7 +300,7 @@ class Entities_model extends CI_Model
             //Let's go ahead and add desired entity as parent:
             $this->Links_model->ln_create(array(
                 'ln_miner_entity_id' => $ln_miner_entity_id,
-                'ln_child_entity_id' => $en_student_id,
+                'ln_child_entity_id' => $en_user_id,
                 'ln_parent_entity_id' => $set_en_child_id,
                 'ln_type_entity_id' => 4230, //Raw link
                 'ln_parent_link_id' => $updated_ln_id,
@@ -950,9 +950,9 @@ class Entities_model extends CI_Model
 
         /*
          *
-         * Detects the Student entity ID based on the
+         * Detects the User entity ID based on the
          * PSID provided by the Facebook Webhook Call.
-         * This function returns the Student's entity object $en
+         * This function returns the User's entity object $en
          *
          */
 
@@ -967,7 +967,7 @@ class Entities_model extends CI_Model
             return false;
         }
 
-        //Try matching Facebook PSID to existing Students:
+        //Try matching Facebook PSID to existing Users:
         $ens = $this->Entities_model->en_fetch(array(
             'en_status >=' => 0, //New+
             'en_psid' => $psid,
@@ -976,12 +976,12 @@ class Entities_model extends CI_Model
         //So, did we find them?
         if (count($ens) > 0) {
 
-            //Student found...
+            //User found...
             return $ens[0];
 
         } else {
 
-            //Student not found, create new Student:
+            //User not found, create new User:
             return $this->Entities_model->en_messenger_add($psid);
 
         }
@@ -996,6 +996,23 @@ class Entities_model extends CI_Model
                 'message' => 'Entity name must be at-least 2 characters long',
             );
         }
+
+
+        //If PSID exists, make sure it's not a duplicate:
+        if($en_psid > 0){
+            $duplicate_psid_ens = $this->Entities_model->en_fetch(array(
+                'en_status >=' => 0, //New+
+                'en_psid' => $en_psid,
+            ));
+            if(count($duplicate_psid_ens) > 0){
+                //Return found:
+                return array(
+                    'status' => 1,
+                    'en' => $duplicate_psid_ens[0],
+                );
+            }
+        }
+
 
         //Check to make sure name is not duplicate:
         $duplicate_name_ens = $this->Entities_model->en_fetch(array(
@@ -1015,6 +1032,7 @@ class Entities_model extends CI_Model
                 );
             }
         }
+
 
         //Create entity
         $entity_new = $this->Entities_model->en_create(array(
@@ -1037,7 +1055,7 @@ class Entities_model extends CI_Model
 
         /*
          *
-         * This function will attempt to create a new Student Entity
+         * This function will attempt to create a new User Entity
          * Using the PSID provided by Facebook Graph API
          *
          * */
@@ -1070,13 +1088,13 @@ class Entities_model extends CI_Model
              *
              * */
 
-            //Create student entity:
-            $added_en = $this->Entities_model->en_verify_create('Student '.rand(100000000, 999999999), 0, true, 2, null, $psid);
+            //Create user entity:
+            $added_en = $this->Entities_model->en_verify_create('User '.rand(100000000, 999999999), 0, true, 2, null, $psid);
 
             //Completely failed at fetching profile data:
             $this->Links_model->ln_create(array(
                 'ln_type_entity_id' => 6389, //Messenger Profile Inaccessible
-                'ln_miner_entity_id' => $added_en['en']['en_id'], //Student gets credit as miner
+                'ln_miner_entity_id' => $added_en['en']['en_id'], //User gets credit as miner
                 'ln_content' => 'en_messenger_add() COMPLETE FAIL to fetch messenger profile',
                 'ln_metadata' => array(
                     'psid' => $psid,
@@ -1089,7 +1107,7 @@ class Entities_model extends CI_Model
             //We did find the profile, move ahead:
             $fb_profile = $graph_fetch['ln_metadata']['result'];
 
-            //Create student entity with their Facebook Graph name:
+            //Create user entity with their Facebook Graph name:
             $added_en = $this->Entities_model->en_verify_create($fb_profile['first_name'] . ' ' . $fb_profile['last_name'], 0, true, 2, null, $psid);
 
 
@@ -1114,7 +1132,7 @@ class Entities_model extends CI_Model
                         //Create new link:
                         $this->Links_model->ln_create(array(
                             'ln_type_entity_id' => 4230, //Raw link
-                            'ln_miner_entity_id' => $added_en['en']['en_id'], //Student gets credit as miner
+                            'ln_miner_entity_id' => $added_en['en']['en_id'], //User gets credit as miner
                             'ln_parent_entity_id' => $ln_parent_entity_id,
                             'ln_child_entity_id' => $added_en['en']['en_id'],
                         ));
@@ -1127,7 +1145,7 @@ class Entities_model extends CI_Model
                 //We failed to fetch full profile data, log details:
                 $this->Links_model->ln_create(array(
                     'ln_type_entity_id' => 6389, //Messenger Profile Inaccessible
-                    'ln_miner_entity_id' => $added_en['en']['en_id'], //Student gets credit as miner
+                    'ln_miner_entity_id' => $added_en['en']['en_id'], //User gets credit as miner
                     'ln_content' => 'en_messenger_add() PARTIAL FAIL to fetch messenger profile',
                     'ln_metadata' => array(
                         'psid' => $psid,
@@ -1143,7 +1161,7 @@ class Entities_model extends CI_Model
                 $this->Links_model->ln_create(array(
                     'ln_status' => 0, //New
                     'ln_type_entity_id' => 4299, //Updated Profile Picture
-                    'ln_miner_entity_id' => $added_en['en']['en_id'], //The Student who added this
+                    'ln_miner_entity_id' => $added_en['en']['en_id'], //The User who added this
                     'ln_content' => $fb_profile['profile_pic'], //Image to be saved to Mench CDN
                 ));
             }
@@ -1157,15 +1175,15 @@ class Entities_model extends CI_Model
         $this->Links_model->ln_create(array(
             'ln_type_entity_id' => 4230, //Raw link
             'ln_miner_entity_id' => $added_en['en']['en_id'],
-            'ln_parent_entity_id' => 4456, //Receive Regular Notifications (Student can change later on...)
+            'ln_parent_entity_id' => 4456, //Receive Regular Notifications (User can change later on...)
             'ln_child_entity_id' => $added_en['en']['en_id'],
         ));
 
-        //Add them to Students group:
+        //Add them to Users group:
         $this->Links_model->ln_create(array(
             'ln_type_entity_id' => 4230, //Raw link
             'ln_miner_entity_id' => $added_en['en']['en_id'],
-            'ln_parent_entity_id' => 4430, //Mench Student
+            'ln_parent_entity_id' => 4430, //Mench User
             'ln_child_entity_id' => $added_en['en']['en_id'],
         ));
 

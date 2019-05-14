@@ -60,7 +60,7 @@ class Communication_model extends CI_Model
          *
          * - $quick_replies:        Only supported if $fb_messenger_format = TRUE, and
          *                          will append an array of quick replies that will give
-         *                          Students an easy way to tap and select their next step.
+         *                          Users an easy way to tap and select their next step.
          *
          *
          * - $ln_append:            Since this function logs a "message sent" engagement for
@@ -315,41 +315,6 @@ class Communication_model extends CI_Model
 
             //See if this message type has specific input requirements:
             $en_all_4485 = $this->config->item('en_all_4485');
-            $en_all_4331 = $this->config->item('en_all_4331');
-            $en_all_4592 = $this->config->item('en_all_4592');
-
-            //Find the intersection of this message type and intent completion requirements:
-            $completion_requirements = array_intersect($en_all_4485[$message_type_en_id]['m_parents'], $this->config->item('en_ids_4331'));
-
-            //See what this is:
-            $detected_ln_type = detect_ln_type_entity_id($_POST['ln_content']);
-
-            if (!$detected_ln_type['status']) {
-
-                //return error:
-                return echo_json($detected_ln_type);
-
-            } elseif(count($completion_requirements) > 1){
-
-                return array(
-                    'status' => 0,
-                    'message' => 'Admin Configuration Error: Message type ['.$en_all_4485[$message_type_en_id]['m_name'].'] has multiple completion requirements ['.join(', ',$completion_requirements).'].',
-                );
-
-            } elseif(count($completion_requirements) == 1){
-
-                $en_id = array_shift($completion_requirements);
-                $is_url_reference = (count($string_references['ref_entities'])>0 && $en_id==4256); //TODO Also check/require @4986 as parent entity
-
-                if(!($en_id==$detected_ln_type['ln_type_entity_id']) && !$is_url_reference){
-                    return array(
-                        'status' => 0,
-                        'message' => $en_all_4485[$message_type_en_id]['m_name'].' requires '.echo_a_an($en_all_4331[$en_id]['m_name']).' '.$en_all_4331[$en_id]['m_name'].' but you entered '.echo_a_an($en_all_4592[$detected_ln_type['ln_type_entity_id']]['m_name']).' '.$en_all_4592[$detected_ln_type['ln_type_entity_id']]['m_name'].'.',
-                    );
-                }
-
-            }
-
 
             //Now check for intent referencing settings:
             if(in_array(4985 , $en_all_4485[$message_type_en_id]['m_parents'])){
@@ -420,10 +385,10 @@ class Communication_model extends CI_Model
                     'message' => 'Invalid Entity ID provided',
                 );
             } elseif ($fb_messenger_format && $ens[0]['en_psid'] < 1) {
-                //This Student does not have their Messenger connected yet:
+                //This User does not have their Messenger connected yet:
                 return array(
                     'status' => 0,
-                    'message' => 'Student @' . $recipient_en['en_id'] . ' does not have Messenger connected yet',
+                    'message' => 'User @' . $recipient_en['en_id'] . ' does not have Messenger connected yet',
                 );
             } else {
                 //Assign data:
@@ -461,15 +426,15 @@ class Communication_model extends CI_Model
 
                 return array(
                     'status' => 0,
-                    'message' => 'Student is missing their Notification Level parent entity relation',
+                    'message' => 'User is missing their Notification Level parent entity relation',
                 );
 
             } elseif (count($lns_comm_level) > 1) {
 
-                //This should find exactly one result as it belongs to Student Radio Entity @6137
+                //This should find exactly one result as it belongs to User Radio Entity @6137
                 return array(
                     'status' => 0,
-                    'message' => 'Student has more than 1 Notification Level parent entity relation',
+                    'message' => 'User has more than 1 Notification Level parent entity relation',
                 );
 
             } elseif (!array_key_exists($lns_comm_level[0]['ln_parent_entity_id'], $fb_convert_4454)) {
@@ -536,8 +501,8 @@ class Communication_model extends CI_Model
 
             //We sometimes may need to set a default recipient entity name IF /firstname command used without any recipient entity passed:
             if (!isset($recipient_en['en_name'])) {
-                //This is a guest Student, so use the default:
-                $recipient_en['en_name'] = 'Student';
+                //This is a guest User, so use the default:
+                $recipient_en['en_name'] = 'User';
             }
 
             //Replace name with command:
@@ -638,7 +603,7 @@ class Communication_model extends CI_Model
         //Where is this request being made from? Public landing pages will have some restrictions on what they displat:
         $is_landing_page = is_numeric($this->uri->segment(1));
         $is_action_plan = ($this->uri->segment(1)=='messenger');
-        $is_student_message = ($is_landing_page || $is_action_plan);
+        $is_user_message = ($is_landing_page || $is_action_plan);
 
         if (count($string_references['ref_entities']) > 0) {
 
@@ -659,7 +624,7 @@ class Communication_model extends CI_Model
 
             //We send Media in their original format IF $fb_messenger_format = TRUE, which means we need to convert link types:
             if ($fb_messenger_format) {
-                //Converts Entity Link Types to their corresponding Student Message Sent Link Types:
+                //Converts Entity Link Types to their corresponding User Message Sent Link Types:
                 $master_media_sent_conv = array(
                     4258 => 4553, //video
                     4259 => 4554, //audio
@@ -802,7 +767,7 @@ class Communication_model extends CI_Model
                  *
                  * */
 
-                if($is_student_message){
+                if($is_user_message){
 
                     $entity_name_replacement = ( $has_text ? '<span class="entity-name">'.$ens[0]['en_name'].'</span>' : '' );
                     $output_body_message = str_replace('@' . $string_references['ref_entities'][0], $entity_name_replacement, $output_body_message);
@@ -883,7 +848,7 @@ class Communication_model extends CI_Model
             $output_body_message = trim(str_replace('#' . $upvote_parent_ins[0]['in_id'], '', $output_body_message));
 
             //Add Intent up-vote to beginning:
-            $output_body_message = '<div style="margin-bottom:5px; border-bottom: 1px solid #E5E5E5; padding-bottom:10px;">IF you <a href="/intents/' . $upvote_child_ins[0]['in_id'] . '" target="_parent">' . $upvote_child_ins[0]['in_outcome'] . '</a> THEN you will <a href="/intents/' . $upvote_parent_ins[0]['in_id'] . '" target="_parent">' . $upvote_parent_ins[0]['in_outcome'] . '</a></div>' . $output_body_message;
+            $output_body_message = '<div style="margin-bottom:5px; border-bottom: 1px solid #E5E5E5; padding-bottom:10px;">IF you <a href="/intents/' . $upvote_child_ins[0]['in_id'] . '" target="_parent">' . echo_in_outcome($upvote_child_ins[0]['in_outcome'], false, false, true) . '</a> THEN you will <a href="/intents/' . $upvote_parent_ins[0]['in_id'] . '" target="_parent">' . echo_in_outcome($upvote_parent_ins[0]['in_outcome'], false, false, true) . '</a></div>' . $output_body_message;
 
         }
 
@@ -1002,7 +967,7 @@ class Communication_model extends CI_Model
             if (count($fb_media_attachments) > 0) {
 
                 //We do have additional messages...
-                //TODO Maybe add another message to give Student some context on these?
+                //TODO Maybe add another message to give User some context on these?
 
                 //Append messages:
                 foreach ($fb_media_attachments as $fb_media_attachment) {
@@ -1091,37 +1056,37 @@ class Communication_model extends CI_Model
         /*
          *
          * A function that would recommend featured intentions
-         * that have not been taken by this student yet.
+         * that have not been taken by this user yet.
          *
          * */
 
 
 
-        //Fetch student's Action Plan Intents:
-        $student_intents = $this->Links_model->ln_fetch(array(
+        //Fetch user's Action Plan Intents:
+        $user_intents = $this->Links_model->ln_fetch(array(
             'ln_miner_entity_id' => $en_id,
             'ln_type_entity_id' => 4235, //Action Plan Set Intention
             'ln_status IN (' . join(',', $this->config->item('ln_status_incomplete')) . ')' => null, //incomplete intentions
             'in_status' => 2, //Published
         ), array('in_parent'), 0, 0, array('ln_order' => 'ASC'));
 
-        $student_ins_ids = array(); //To be populated:
-        foreach($student_intents as $student_in){
-            array_push($student_ins_ids, $student_in['in_id']);
+        $user_ins_ids = array(); //To be populated:
+        foreach($user_intents as $user_in){
+            array_push($user_ins_ids, $user_in['in_id']);
         }
 
 
 
-        //Fetch featured intentions not yet taken by student:
+        //Fetch featured intentions not yet taken by user:
         $featured_filters = array(
             'ln_status' => 2, //Published
             'in_status' => 2, //Published
             'ln_type_entity_id' => 4228, //Fixed Links
             'ln_parent_intent_id' => $this->config->item('in_featured'),
         );
-        if(count($student_ins_ids) > 0){
-            //Remove as its already added to student Action Plan:
-            $featured_filters['ln_child_intent_id NOT IN ('.join(',', $student_ins_ids).')'] = null;
+        if(count($user_ins_ids) > 0){
+            //Remove as its already added to user Action Plan:
+            $featured_filters['ln_child_intent_id NOT IN ('.join(',', $user_ins_ids).')'] = null;
         }
         $featured_intentions = $this->Links_model->ln_fetch($featured_filters, array('in_child'), 0, 0, array('ln_order' => 'ASC'));
 
@@ -1144,7 +1109,7 @@ class Communication_model extends CI_Model
                         'ln_miner_entity_id' => 1, //Shervin/Developer
                         'ln_content' => 'actionplan_step_next_communicate() encountered intent with too many children to be listed as OR Intent options! Trim and iterate that intent tree.',
                         'ln_type_entity_id' => 4246, //Platform Bug Reports
-                        'ln_child_entity_id' => $en_id, //Affected student
+                        'ln_child_entity_id' => $en_id, //Affected user
                         'ln_parent_intent_id' => $this->config->item('in_featured'), //Featured intentions has an overflow!
                         'ln_child_intent_id' => $in['in_id'],
                     ));
@@ -1183,7 +1148,7 @@ class Communication_model extends CI_Model
 
         } else {
 
-            //Student has already taken all featured intentions and there is nothing else to offer them:
+            //User has already taken all featured intentions and there is nothing else to offer them:
             $this->Communication_model->dispatch_message(
                 'You have already added all featured intentions to your Action Plan and I have nothing else to recommend to you at this time.',
                 array('en_id' => $en_id),
@@ -1307,11 +1272,11 @@ class Communication_model extends CI_Model
          * field other than the actual message itself (Facebook calls
          * this the Reference key or Metadata), this function will
          * process that metadata string from incoming messages sent to Mench
-         * by its Students and take appropriate action.
+         * by its Users and take appropriate action.
          *
          * Inputs:
          *
-         * - $en:                   The Student who made the request
+         * - $en:                   The User who made the request
          *
          * - $quick_reply_payload:  The payload string attached to the chat message
          *
@@ -1329,10 +1294,11 @@ class Communication_model extends CI_Model
 
         } elseif (substr_count($quick_reply_payload, 'TRYANOTHERRESPONSE_') == 1) {
 
-            //Students want to try their submission again:
-            $en_all_4592 = $this->config->item('en_all_4592'); //Requirement names
+            //Users want to try their submission again:
+            $en_all_6794 = $this->config->item('en_all_6794'); //Requirement names
+            $in_type_entity_id = one_two_explode('TRYANOTHERRESPONSE_', '', $quick_reply_payload);
             $this->Communication_model->dispatch_message(
-                'Ok, so try again by sending me another '.$en_all_4592[one_two_explode('TRYANOTHERRESPONSE_', '', $quick_reply_payload)]['m_name'].' to continue.',
+                'Ok, so try again by sending me another '.$en_all_6794[$in_type_entity_id]['m_name'].' to continue.',
                 $en,
                 true
             );
@@ -1356,7 +1322,7 @@ class Communication_model extends CI_Model
                     'ln_id' => $ap_step_ln_id,
                     //Also validate other requirements:
                     'ln_type_entity_id' => 6144, //Action Plan Submit Requirements
-                    'ln_miner_entity_id' => $en['en_id'], //for this student
+                    'ln_miner_entity_id' => $en['en_id'], //for this user
                     'ln_status IN (' . join(',', $this->config->item('ln_status_incomplete')) . ')' => null, //incomplete
                     'in_status' => 2, //Published
                 ), array('in_parent'));
@@ -1380,7 +1346,7 @@ class Communication_model extends CI_Model
             ), $en['en_id']);
 
 
-            //Confirm with student:
+            //Confirm with user:
             $this->Communication_model->dispatch_message(
                 echo_random_message('affirm_progress'),
                 $en,
@@ -1417,7 +1383,7 @@ class Communication_model extends CI_Model
 
             if ($action_unsubscribe == 'CANCEL') {
 
-                //Student seems to have changed their mind, confirm with them:
+                //User seems to have changed their mind, confirm with them:
                 $this->Communication_model->dispatch_message(
                     'Awesome, I am excited to continue our work together.',
                     $en,
@@ -1433,7 +1399,7 @@ class Communication_model extends CI_Model
 
             } elseif ($action_unsubscribe == 'ALL') {
 
-                //Student wants to completely unsubscribe from Mench:
+                //User wants to completely unsubscribe from Mench:
                 $removed_intents = 0;
                 foreach ($this->Links_model->ln_fetch(array(
                     'ln_miner_entity_id' => $en['en_id'],
@@ -1446,7 +1412,7 @@ class Communication_model extends CI_Model
                     ), $en['en_id']); //Give credit to miner
                 }
 
-                //Update Student communication level to Unsubscribe:
+                //Update User communication level to Unsubscribe:
                 $this->Entities_model->en_radio_set(4454, 4455, $en['en_id'], $en['en_id']);
 
                 //Let them know about these changes:
@@ -1459,7 +1425,7 @@ class Communication_model extends CI_Model
             } elseif (is_numeric($action_unsubscribe)) {
 
                 //User wants to Remove a specific Action Plan, validate it:
-                $student_intents = $this->Links_model->ln_fetch(array(
+                $user_intents = $this->Links_model->ln_fetch(array(
                     'ln_miner_entity_id' => $en['en_id'],
                     'ln_type_entity_id' => 4235, //Action Plan Set Intention
                     'ln_status IN (' . join(',', $this->config->item('ln_status_incomplete')) . ')' => null, //incomplete intentions
@@ -1467,7 +1433,7 @@ class Communication_model extends CI_Model
                 ), array('in_parent'), 0, 0, array('ln_order' => 'ASC'));
 
                 //All good?
-                if (count($student_intents) < 1) {
+                if (count($user_intents) < 1) {
                     return array(
                         'status' => 0,
                         'message' => 'UNSUBSCRIBE_ Failed to skip an intent from the master Action Plan',
@@ -1475,14 +1441,14 @@ class Communication_model extends CI_Model
                 }
 
                 //Update status for this single Action Plan:
-                $this->Links_model->ln_update($student_intents[0]['ln_id'], array(
+                $this->Links_model->ln_update($user_intents[0]['ln_id'], array(
                     'ln_status' => -1, //Removed
                 ), $en['en_id']);
 
                 //Re-sort remaining Action Plan intentions:
                 foreach($this->Links_model->ln_fetch(array(
                     'ln_type_entity_id' => 4235, //Action Plan Set Intention
-                    'ln_miner_entity_id' => $en['en_id'], //Belongs to this Student
+                    'ln_miner_entity_id' => $en['en_id'], //Belongs to this User
                     'ln_status IN (' . join(',', $this->config->item('ln_status_incomplete')) . ')' => null, //incomplete intentions
                 ), array(), 0, 0, array('ln_order' => 'ASC')) as $count => $ln){
                     $this->Links_model->ln_update($ln['ln_id'], array(
@@ -1492,7 +1458,7 @@ class Communication_model extends CI_Model
 
                 //Show success message to user:
                 $this->Communication_model->dispatch_message(
-                    'I have successfully removed the intention to ' . $student_intents[0]['in_outcome'] . ' from your Action Plan.',
+                    'I have successfully removed the intention to ' . $user_intents[0]['in_outcome'] . ' from your Action Plan.',
                     $en,
                     true,
                     array(
@@ -1611,7 +1577,7 @@ class Communication_model extends CI_Model
 
         } elseif (substr_count($quick_reply_payload, 'SUBSCRIBE-INITIATE_') == 1) {
 
-            //Student has confirmed their desire to subscribe to an intention:
+            //User has confirmed their desire to subscribe to an intention:
             $in_id = intval(one_two_explode('SUBSCRIBE-INITIATE_', '', $quick_reply_payload));
 
             //Initiating an intent Action Plan:
@@ -1627,7 +1593,7 @@ class Communication_model extends CI_Model
                 );
             }
 
-            //Make sure intention has not already been added to student Action Plan:
+            //Make sure intention has not already been added to user Action Plan:
             if (count($this->Links_model->ln_fetch(array(
                     'ln_miner_entity_id' => $en['en_id'],
                     'ln_type_entity_id' => 4235, //Action Plan Set Intention
@@ -1635,7 +1601,7 @@ class Communication_model extends CI_Model
                     'ln_parent_intent_id' => $ins[0]['in_id'],
                 ))) > 0) {
 
-                //Let Student know that they have already subscribed to this intention:
+                //Let User know that they have already subscribed to this intention:
                 $this->Communication_model->dispatch_message(
                     'The intention to ' . $ins[0]['in_outcome'] . ' has already been added to your Action Plan. /link:See in 🚩Action Plan:https://mench.com/messenger/actionplan/' . $ins[0]['in_id'],
                     $en,
@@ -1665,7 +1631,7 @@ class Communication_model extends CI_Model
 
             } else {
 
-                //Do final confirmation by giving Student more context on this intention before adding to their Action Plan...
+                //Do final confirmation by giving User more context on this intention before adding to their Action Plan...
 
                 //See if we have an overview:
                 $overview_message = '';
@@ -1708,7 +1674,7 @@ class Communication_model extends CI_Model
 
         } elseif (substr_count($quick_reply_payload, 'SUBSCRIBE-CONFIRM_') == 1) {
 
-            //Student has requested to add this intention to their Action Plan:
+            //User has requested to add this intention to their Action Plan:
             $in_id = intval(one_two_explode('SUBSCRIBE-CONFIRM_', '', $quick_reply_payload));
 
             //Add to Action Plan:
@@ -1755,7 +1721,7 @@ class Communication_model extends CI_Model
 
                 }
 
-                //Inform Student of Skip status:
+                //Inform User of Skip status:
                 $this->Communication_model->dispatch_message(
                     $message,
                     $en,
@@ -1781,7 +1747,7 @@ class Communication_model extends CI_Model
 
             /*
              *
-             * When the student answers a quick reply question.
+             * When the user answers a quick reply question.
              *
              * */
 
@@ -1904,10 +1870,10 @@ class Communication_model extends CI_Model
          * Will process the chat message only in the absence of a chat metadata
          * otherwise the digest_quick_reply() will process the message since we
          * know that the medata would have more precise instructions on what
-         * needs to be done for the Student response.
+         * needs to be done for the User response.
          *
          * This involves string analysis and matching terms to a intents, entities
-         * and known commands that will help us understand the Student and
+         * and known commands that will help us understand the User and
          * hopefully provide them with the information they need, right now.
          *
          * We'd eventually need to migrate the search engine to an NLP platform
@@ -1923,7 +1889,7 @@ class Communication_model extends CI_Model
 
         /*
          *
-         * Ok, now attempt to understand Student's message intention.
+         * Ok, now attempt to understand User's message intention.
          * We would do a very basic work pattern match to see what
          * we can understand from their message, and we would expand
          * upon this section as we improve our NLP technology.
@@ -1935,14 +1901,14 @@ class Communication_model extends CI_Model
 
         if (in_array($fb_received_message, array('stats', 'stat', 'statistics'))) {
 
-            $student_intents = $this->Links_model->ln_fetch(array(
+            $user_intents = $this->Links_model->ln_fetch(array(
                 'ln_miner_entity_id' => $en['en_id'],
                 'ln_type_entity_id' => 4235, //Action Plan Set Intention
                 'ln_status IN (' . join(',', $this->config->item('ln_status_incomplete')) . ')' => null, //incomplete intentions
                 'in_status' => 2, //Published
             ), array('in_parent'), 0, 0, array('ln_order' => 'ASC'));
 
-            if(count($student_intents)==0){
+            if(count($user_intents)==0){
 
                 //Set message:
                 $message = 'I can\'t show you any stats because you don\'t have any intentions added to your Action Plan yet.';
@@ -1964,10 +1930,10 @@ class Communication_model extends CI_Model
                 $message = '🚩 Action Plan stats:';
 
                 //Show them a list of their Action Plan and completion stats:
-                foreach($student_intents as $student_intent){
+                foreach($user_intents as $user_intent){
                     //Completion Percentage so far:
-                    $completion_rate = $this->Actionplan_model->actionplan_completion_progress($en['en_id'], $student_intent);
-                    $message .= "\n\n" . $completion_rate['completion_percentage'].'% ['.$completion_rate['steps_completed'].'/'.$completion_rate['steps_total'].' step'.echo__s($completion_rate['steps_total']).'] '.echo_in_outcome($student_intent['in_outcome']);
+                    $completion_rate = $this->Actionplan_model->actionplan_completion_progress($en['en_id'], $user_intent);
+                    $message .= "\n\n" . $completion_rate['completion_percentage'].'% ['.$completion_rate['steps_completed'].'/'.$completion_rate['steps_total'].' step'.echo__s($completion_rate['steps_total']).'] '.echo_in_outcome($user_intent['in_outcome']);
                 }
 
                 //Dispatch Message:
@@ -1989,7 +1955,7 @@ class Communication_model extends CI_Model
             //Log command trigger:
             $this->Links_model->ln_create(array(
                 'ln_miner_entity_id' => $en['en_id'],
-                'ln_type_entity_id' => 6556, //Student Commanded Stats
+                'ln_type_entity_id' => 6556, //User Commanded Stats
                 'ln_content' => $message,
             ));
 
@@ -2001,7 +1967,7 @@ class Communication_model extends CI_Model
             //Log command trigger:
             $this->Links_model->ln_create(array(
                 'ln_miner_entity_id' => $en['en_id'],
-                'ln_type_entity_id' => 6559, //Student Commanded Next
+                'ln_type_entity_id' => 6559, //User Commanded Next
                 'ln_parent_intent_id' => $next_in_id,
             ));
 
@@ -2035,14 +2001,14 @@ class Communication_model extends CI_Model
             //Log command trigger:
             $this->Links_model->ln_create(array(
                 'ln_miner_entity_id' => $en['en_id'],
-                'ln_type_entity_id' => 6560, //Student Commanded Skip
+                'ln_type_entity_id' => 6560, //User Commanded Skip
                 'ln_parent_intent_id' => $next_in_id,
             ));
 
         } elseif (includes_any($fb_received_message, array('unsubscribe', 'stop', 'quit', 'resign', 'exit', 'cancel', 'abort'))) {
 
-            //List their Action Plan intentions and let student choose which one to unsubscribe:
-            $student_intents = $this->Links_model->ln_fetch(array(
+            //List their Action Plan intentions and let user choose which one to unsubscribe:
+            $user_intents = $this->Links_model->ln_fetch(array(
                 'ln_miner_entity_id' => $en['en_id'],
                 'ln_type_entity_id' => 4235, //Action Plan Set Intention
                 'ln_status IN (' . join(',', $this->config->item('ln_status_incomplete')) . ')' => null, //incomplete intentions
@@ -2051,14 +2017,14 @@ class Communication_model extends CI_Model
 
 
             //Do they have anything in their Action Plan?
-            if (count($student_intents) > 0) {
+            if (count($user_intents) > 0) {
 
                 //Give them options to remove specific Action Plans:
                 $quick_replies = array();
                 $message = 'Choose one of the following options:';
                 $increment = 1;
 
-                foreach ($student_intents as $counter => $in) {
+                foreach ($user_intents as $counter => $in) {
                     //Construct unsubscribe confirmation body:
                     $message .= "\n\n" . ($counter + $increment) . '. Stop ' . $in['in_outcome'];
                     array_push($quick_replies, array(
@@ -2068,7 +2034,7 @@ class Communication_model extends CI_Model
                     ));
                 }
 
-                if (count($student_intents) >= 2) {
+                if (count($user_intents) >= 2) {
                     //Give option to skip all and unsubscribe:
                     $increment++;
                     $message .= "\n\n" . ($counter + $increment) . '. Stop all intentions and unsubscribe';
@@ -2115,7 +2081,7 @@ class Communication_model extends CI_Model
             //Log command trigger:
             $this->Links_model->ln_create(array(
                 'ln_miner_entity_id' => $en['en_id'],
-                'ln_type_entity_id' => 6578, //Student Text Commanded Stop
+                'ln_type_entity_id' => 6578, //User Text Commanded Stop
                 'ln_content' => $message,
                 'ln_metadata' => $quick_replies,
             ));
@@ -2160,11 +2126,11 @@ class Communication_model extends CI_Model
                     'output' => $search_results,
                 ),
                 'ln_miner_entity_id' => $en['en_id'], //user who searched
-                'ln_type_entity_id' => 4275, //Student Text Command I Want To
+                'ln_type_entity_id' => 4275, //User Text Command I Want To
             ));
 
 
-            //Show options for the Student to add to their Action Plan:
+            //Show options for the User to add to their Action Plan:
             $new_intent_count = 0;
             $quick_replies = array();
 
@@ -2222,7 +2188,7 @@ class Communication_model extends CI_Model
                     'payload' => 'SUBSCRIBE-REJECT',
                 ));
 
-                //return what we found to the student to decide:
+                //return what we found to the user to decide:
                 $this->Communication_model->dispatch_message(
                     $message,
                     $en,
@@ -2250,7 +2216,7 @@ class Communication_model extends CI_Model
             /*
              *
              * Ok, if we're here it means we didn't really understand what
-             * the Student's intention was within their message.
+             * the User's intention was within their message.
              * So let's run through a few more options before letting them
              * know that we did not understand them...
              *
@@ -2258,11 +2224,11 @@ class Communication_model extends CI_Model
 
 
             //Quick Reply Manual Response...
-            //We could not match the student command to any other command...
-            //Now try to fetch the last quick reply that the student received from us:
+            //We could not match the user command to any other command...
+            //Now try to fetch the last quick reply that the user received from us:
             $last_quick_replies = $this->Links_model->ln_fetch(array(
                 'ln_miner_entity_id' => $en['en_id'],
-                'ln_type_entity_id' => 6563, //Student Received Quick Reply
+                'ln_type_entity_id' => 6563, //User Received Quick Reply
             ), array(), 1);
 
             if(count($last_quick_replies) > 0){
@@ -2298,7 +2264,7 @@ class Communication_model extends CI_Model
                                 //All good, log link:
                                 $this->Links_model->ln_create(array(
                                     'ln_miner_entity_id' => $en['en_id'],
-                                    'ln_type_entity_id' => 6561, //Student Sent Manual Quick Reply
+                                    'ln_type_entity_id' => 6561, //User Sent Manual Quick Reply
                                     'ln_parent_link_id' => $last_quick_replies[0]['ln_id'],
                                     'ln_content' => $fb_received_message,
                                 ));
@@ -2319,7 +2285,7 @@ class Communication_model extends CI_Model
             if (count($this->Links_model->ln_fetch(array(
                     'ln_order' => 1, //A HACK to identify messages sent from us via Facebook Page Inbox
                     'ln_miner_entity_id' => $en['en_id'],
-                    'ln_type_entity_id IN (' . join(',', $this->config->item('en_ids_4280')) . ')' => null, //Student/Miner Received Message Links
+                    'ln_type_entity_id IN (' . join(',', $this->config->item('en_ids_4280')) . ')' => null, //User/Miner Received Message Links
                     'ln_timestamp >=' => date("Y-m-d H:i:s", (time() - (1800))), //Messages sent from us less than 30 minutes ago
                 ), array(), 1)) > 0) {
 
@@ -2332,7 +2298,7 @@ class Communication_model extends CI_Model
             //We don't know what they are talking about!
 
 
-            //Inform Student of Mench's one-way communication limitation & that Mench did not understand their message:
+            //Inform User of Mench's one-way communication limitation & that Mench did not understand their message:
             $this->Communication_model->dispatch_message(
                 echo_random_message('one_way_only'),
                 $en,
@@ -2346,12 +2312,12 @@ class Communication_model extends CI_Model
                 'ln_type_entity_id' => 4287, //Log Unrecognizable Message Received
             ));
 
-            //Call to Action: Does this student have any Action Plans?
+            //Call to Action: Does this user have any Action Plans?
             $next_in_id = $this->Actionplan_model->actionplan_step_next_go($en['en_id'], false);
 
             if($next_in_id > 0){
 
-                //Inform Student of Mench's one-way communication limitation & that Mench did not understand their message:
+                //Inform User of Mench's one-way communication limitation & that Mench did not understand their message:
                 $this->Communication_model->dispatch_message(
                     'You can continue with your Action Plan by saying "Next"',
                     $en,

@@ -1,4 +1,4 @@
-<?php $en_all_4255 = $this->config->item('en_all_4255'); ?>
+<?php $en_all_6805 = $this->config->item('en_all_6805'); ?>
 
 <script src="/js/custom/add-source-wizard.js?v=v<?= $this->config->item('app_version').time() ?>"
         type="text/javascript"></script>
@@ -105,8 +105,8 @@
                 <span><span class="en_mini_ui_icon">'.$m['m_icon'].'</span> '.$m['m_name'].'</span>
             </label>
             
-            <div class="extra_info_'.$en_id.' hidden" style="display:'.( in_array(4255 , $m['m_parents']) ? 'block' : 'none' ).';">
-                <span class="mini-header" style="margin: 0 0 2px 30px;">'.(  in_array(4255 , $m['m_parents']) ? $en_all_4255[$en_id]['m_desc'] : '' ).':</span>
+            <div class="extra_info_'.$en_id.' hidden" style="display:'.( in_array(6805 , $m['m_parents']) ? 'block' : 'none' ).';">
+                <span class="mini-header" style="margin: 0 0 2px 30px;">'.(  in_array(6805 , $m['m_parents']) ? $en_all_6805[$en_id]['m_desc'] : '' ).':</span>
                 <textarea id="en_desc_'.$en_id.'" id-postfix="'.$en_id.'" class="form-control border characterLimiter textarea_'.$en_id.'" style="height:78px; max-width: 490px; margin: 2px 0 2px 30px;" placeholder="'.str_replace('Expert ','', rtrim($m['m_name'], 's')).' overview..."></textarea>
                 <div class="below-counter">[<span id="char_count_'.$en_id.'">0</span>/'.$this->config->item('ln_content_max_length').']</div>
             </div>

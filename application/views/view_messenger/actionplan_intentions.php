@@ -9,14 +9,14 @@
 
 echo '<h3 class="master-h3 primary-title" style="padding:15px 0;">🚩 Action Plan</h3>';
 
-if(count($student_intents) > 0){
+if(count($user_intents) > 0){
 
     //See if we have 2 or more intentions:
-    $has_multiple_intentions = ( count($student_intents) >= 2 );
+    $has_multiple_intentions = ( count($user_intents) >= 2 );
 
-    //Student has multiple Action Plans, so list all Action Plans to enable Student to choose:
+    //User has multiple Action Plans, so list all Action Plans to enable User to choose:
     echo '<div id="actionplan_steps" class="list-group '.( $has_multiple_intentions ? 'actionplan-sort' : '').'" style="margin-top: 10px;">';
-    foreach ($student_intents as $priority => $ln) {
+    foreach ($user_intents as $priority => $ln) {
 
         //Calculate time:
         $time_estimate = echo_time_range($ln);
@@ -58,7 +58,7 @@ if(count($student_intents) > 0){
 
 }
 
-//Inform students how they can add new intentions:
+//Inform users how they can add new intentions:
 echo '<div class="actionplan-tip"><i class="fas fa-lightbulb"></i> TIP: '.echo_random_message('command_me').'</div>';
 
 //Are they a miner? Give them option to clear everything:

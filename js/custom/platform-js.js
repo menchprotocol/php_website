@@ -66,6 +66,11 @@ function close_tip(in_id) {
     $('#hb_' + in_id).fadeIn('slow');
 }
 
+function js_is_or(in_type_entity_id, return_id){
+    //The equivalent of the PHP function is_or()
+    var is__or = !(js_en_ids_6193.indexOf(parseInt(in_type_entity_id)) === -1);
+    return ( return_id ? ( is__or ? 6193 /* OR */ : 6192 /* AND */ ) : ( is__or ? 1 : 0 ) );
+}
 
 jQuery.fn.extend({
     insertAtCaret: function (myValue) {

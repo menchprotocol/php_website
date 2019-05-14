@@ -494,6 +494,12 @@ input::-webkit-inner-spin-button {
     font-weight: bold !important;
 }
 
+.down-border {
+    border-bottom: 2px solid #2f2739;
+    font-weight: 500 !important;
+    font-size: 1.2em !important;
+}
+
 .landing-page .navbar-brand img {
     display: inline-block;
     margin-top: -12px;
@@ -2738,11 +2744,6 @@ a.badge:focus, a.badge:hover {
     display:block; text-align: center !important; margin-top: 40px;
 }
 
-.stat-row {
-    margin-top:30px;
-    padding-top: 40px;
-}
-
 .bottom-spacing{
     margin-bottom:72px;
 }
@@ -2772,14 +2773,19 @@ a.badge:focus, a.badge:hover {
 }
 
 .large-stat {
-    font-size: 3.6em;
+    font-size: 3.2em;
     padding:0;
-    font-weight:500;
+    font-weight:bold;
     line-height:100%;
     text-decoration: none;
     display:block;
     margin-top: 30px;
     text-align: center;
+}
+
+.large-stat a {
+    text-align: center;
+    display: inline-block;
 }
 
 .large-stat .substitle{

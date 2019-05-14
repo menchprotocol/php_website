@@ -19,7 +19,7 @@ class Actionplan_model extends CI_Model
 
         /*
          *
-         * Searches within a student Action Plan to find
+         * Searches within a user Action Plan to find
          * first incomplete step.
          *
          * */
@@ -34,7 +34,7 @@ class Actionplan_model extends CI_Model
             //Is this completed?
             $completed_steps = $this->Links_model->ln_fetch(array(
                 'ln_type_entity_id IN (' . join(',' , $this->config->item('en_ids_6146')) . ')' => null, //Action Plan Progression Steps
-                'ln_miner_entity_id' => $en_id, //Belongs to this Student
+                'ln_miner_entity_id' => $en_id, //Belongs to this User
                 'ln_parent_intent_id' => $common_step_in_id,
                 'ln_status' => 2, //Published
             ), ( $is_expansion ? array('in_child') : array() ));
@@ -59,7 +59,7 @@ class Actionplan_model extends CI_Model
                 //See which path they got unlocked, if any:
                 $unlocked_conditions = $this->Links_model->ln_fetch(array(
                     'ln_type_entity_id' => 6140, //Action Plan Milestone Unlocked
-                    'ln_miner_entity_id' => $en_id, //Belongs to this Student
+                    'ln_miner_entity_id' => $en_id, //Belongs to this User
                     'ln_parent_intent_id' => $common_step_in_id,
                     'ln_child_intent_id IN (' . join(',', $in_metadata['in__metadata_expansion_conditional'][$common_step_in_id]) . ')' => null,
                     'ln_status' => 2, //Published
@@ -94,14 +94,14 @@ class Actionplan_model extends CI_Model
          *
          * */
 
-        $student_intents = $this->Links_model->ln_fetch(array(
+        $user_intents = $this->Links_model->ln_fetch(array(
             'ln_miner_entity_id' => $en_id,
             'ln_type_entity_id' => 4235, //Action Plan Set Intention
             'ln_status IN (' . join(',', $this->config->item('ln_status_incomplete')) . ')' => null, //incomplete intentions
             'in_status' => 2, //Published
         ), array('in_parent'), 0, 0, array('ln_order' => 'ASC'));
 
-        if(count($student_intents) == 0){
+        if(count($user_intents) == 0){
 
             if($advance_step){
 
@@ -123,10 +123,10 @@ class Actionplan_model extends CI_Model
 
 
         //Looop through Action Plan intentions and see what's next:
-        foreach($student_intents as $student_intent){
+        foreach($user_intents as $user_intent){
 
             //Find first incomplete step for this Action Plan intention:
-            $next_in_id = $this->Actionplan_model->actionplan_step_next_find($en_id, $student_intent);
+            $next_in_id = $this->Actionplan_model->actionplan_step_next_find($en_id, $user_intent);
 
             if($next_in_id > 0){
                 //We found the next incomplete step, return:
@@ -143,7 +143,7 @@ class Actionplan_model extends CI_Model
 
                     //Fetch and append the title to be more informative:
 
-                    //Yes, we do have a next step, fetch it and give student more details:
+                    //Yes, we do have a next step, fetch it and give user more details:
                     $next_step_ins = $this->Intents_model->in_fetch(array(
                         'in_id' => $next_in_id,
                     ));
@@ -312,7 +312,7 @@ class Actionplan_model extends CI_Model
         /*
          *
          * A function that goes through the Action Plan
-         * and finds the top-priority that the student
+         * and finds the top-priority that the user
          * is currently working on.
          *
          * */
@@ -381,16 +381,16 @@ class Actionplan_model extends CI_Model
 
         }
 
-        //Add intent to Student's Action Plan:
+        //Add intent to User's Action Plan:
         $actionplan = $this->Links_model->ln_create(array(
             'ln_type_entity_id' => 4235, //Action Plan Set Intention
             'ln_status' => 1, //Drafting
-            'ln_miner_entity_id' => $en_id, //Belongs to this Student
+            'ln_miner_entity_id' => $en_id, //Belongs to this User
             'ln_parent_intent_id' => $ins[0]['in_id'], //The Intent they are adding
-            'ln_order' => 1 + $this->Links_model->ln_max_order(array( //Place this intent at the end of all intents the Student is drafting...
+            'ln_order' => 1 + $this->Links_model->ln_max_order(array( //Place this intent at the end of all intents the User is drafting...
                     'ln_type_entity_id' => 4235, //Action Plan Set Intention
                     'ln_status IN (' . join(',', $this->config->item('ln_status_incomplete')) . ')' => null, //incomplete intentions
-                    'ln_miner_entity_id' => $en_id, //Belongs to this Student
+                    'ln_miner_entity_id' => $en_id, //Belongs to this User
                 )),
         ));
 
@@ -435,7 +435,7 @@ class Actionplan_model extends CI_Model
             }
         } else {
 
-            //It seems the student already have this intention as completed:
+            //It seems the user already have this intention as completed:
             $this->Communication_model->dispatch_message(
                 'You seem to have completed this intention before, so there is nothing else to do now.',
                 array('en_id' => $en_id),
@@ -457,12 +457,13 @@ class Actionplan_model extends CI_Model
          *
          * A function that marks an intent as complete IF
          * the intent has nothing of substance to be
-         * further communicated/done by the student.
+         * further communicated/done by the user.
          *
          * */
 
-        if($in['in_type']==0 && $in['in_requirement_entity_id']!=6087){
-            //Completion Requirements:
+
+        if(in_array($in['in_type_entity_id'], $this->config->item('en_ids_6794'))){
+            //Requires Manual Response:
             return false;
         }
 
@@ -475,7 +476,7 @@ class Actionplan_model extends CI_Model
         ), array('in_child')));
 
 
-        if($in['in_type']==1 && $child_count > 0){
+        if(is_or($in['in_type_entity_id']) && $child_count > 0){
             //OR Branch:
             return false;
         } elseif($child_count > 1){
@@ -575,8 +576,8 @@ class Actionplan_model extends CI_Model
             }
 
 
-            //Yes, Let's calculate student's score for this tree:
-            $student_marks = $this->Actionplan_model->actionplan_completion_marks($en_id, $in);
+            //Yes, Let's calculate user's score for this tree:
+            $user_marks = $this->Actionplan_model->actionplan_completion_marks($en_id, $in);
 
 
 
@@ -605,12 +606,12 @@ class Actionplan_model extends CI_Model
                 }
 
 
-                if($student_marks['milestones_answered_score']>=$ln_metadata['tr__conditional_score_min'] && $student_marks['milestones_answered_score']<=$ln_metadata['tr__conditional_score_max']){
+                if($user_marks['milestones_answered_score']>=$ln_metadata['tr__conditional_score_min'] && $user_marks['milestones_answered_score']<=$ln_metadata['tr__conditional_score_max']){
 
                     //Found a match:
                     $found_match++;
 
-                    //It did match here! Log and notify student!
+                    //It did match here! Log and notify user!
                     $message = 'You completed the step to '.echo_in_outcome($in['in_outcome'], true, true).'. ';
 
                     //Append based on title type:
@@ -624,7 +625,7 @@ class Actionplan_model extends CI_Model
                     $message .= ' /link:Open 🚩Action Plan:https://mench.com/messenger/actionplan/'.$conditional_step['in_id'];
 
 
-                    //Communicate message to student:
+                    //Communicate message to user:
                     array_push($unlock_steps_messages, array(
                         'ln_content' => $message,
                     ));
@@ -639,7 +640,7 @@ class Actionplan_model extends CI_Model
                         'ln_content' => $message,
                         'ln_metadata' => array(
                             'completion_rate' => $completion_rate,
-                            'student_marks' => $student_marks,
+                            'user_marks' => $user_marks,
                             'condition_ranges' => $condition_ranges,
                         ),
                     ));
@@ -660,7 +661,7 @@ class Actionplan_model extends CI_Model
                     'ln_parent_intent_id' => $in['in_id'],
                     'ln_metadata' => array(
                         'completion_rate' => $completion_rate,
-                        'student_marks' => $student_marks,
+                        'user_marks' => $user_marks,
                         'conditional_ranges' => $condition_ranges,
                     ),
                 ));
@@ -672,8 +673,8 @@ class Actionplan_model extends CI_Model
         //Now go up since we know there are more levels...
         if($is_bottom_level){
 
-            //Fetch student intentions:
-            $student_intentions_ids = $this->Actionplan_model->actionplan_intention_ids($en_id);
+            //Fetch user intentions:
+            $user_intentions_ids = $this->Actionplan_model->actionplan_intention_ids($en_id);
 
             //Fetch all parents trees for this intent
             $parents_trees = $this->Intents_model->in_fetch_recursive_parents($in['in_id'], 2);
@@ -681,11 +682,11 @@ class Actionplan_model extends CI_Model
             //Prevent duplicate processes even if on multiple parent trees:
             $parents_checked = array();
 
-            //Go through parents trees and detect intersects with student intentions. WARNING: Logic duplicated. Search for "ELEPHANT" to see.
+            //Go through parents trees and detect intersects with user intentions. WARNING: Logic duplicated. Search for "ELEPHANT" to see.
             foreach ($parents_trees as $parent_in_id => $grand_parent_ids) {
 
-                //Does this parent and its grandparents have an intersection with the student intentions?
-                if(array_intersect($grand_parent_ids, $student_intentions_ids)){
+                //Does this parent and its grandparents have an intersection with the user intentions?
+                if(array_intersect($grand_parent_ids, $user_intentions_ids)){
 
                     //Yes, let's go thtough until we hit their intersection
                     foreach($grand_parent_ids as $p_id){
@@ -708,7 +709,7 @@ class Actionplan_model extends CI_Model
                         }
 
                         //Terminate if we reached the Action Plan intention level:
-                        if(in_array($p_id , $student_intentions_ids)){
+                        if(in_array($p_id , $user_intentions_ids)){
                             break;
                         }
                     }
@@ -733,7 +734,7 @@ class Actionplan_model extends CI_Model
          * - $in_id The intent that was marked as complete
          * - $en_id The entity who marked it as complete
          * - $send_message IF TRUE would send messages to $en_id and IF FASLE would return raw messages
-         * - $trigget_completion_tips WILL also trigger on-complete messages if the student actually completed
+         * - $trigget_completion_tips WILL also trigger on-complete messages if the user actually completed
          *
          * */
 
@@ -765,7 +766,7 @@ class Actionplan_model extends CI_Model
         //Return all the messages:
         if($send_message){
 
-            //Send message to student:
+            //Send message to user:
             foreach($on_complete_messages as $on_complete_message){
                 $this->Communication_model->dispatch_message(
                     $on_complete_message['ln_content'],
@@ -790,7 +791,7 @@ class Actionplan_model extends CI_Model
 
         /*
          *
-         * Advance the student action plan by 1 step
+         * Advance the user action plan by 1 step
          *
          * - $in_id:            The next step intent to be completed now
          *
@@ -868,7 +869,7 @@ class Actionplan_model extends CI_Model
          * as we gather more data through-out this function.
          *
          * Also note that some progression types follow a
-         * 2-step completion method where students are
+         * 2-step completion method where users are
          * required to submit their response in order
          * to move to the next step as defined by
          * Action Plan 2-Step Link Types:
@@ -879,7 +880,7 @@ class Actionplan_model extends CI_Model
 
 
         //Fetch submission requirements, messages, children and current progressions (if any):
-        $completion_req_note = $this->Intents_model->in_req_completion($ins[0], $fb_messenger_format); //See if we have intent requirements
+        $completion_req_note = $this->Intents_model->in_manual_response_note($ins[0], $fb_messenger_format); //See if we have intent requirements
         $in__messages = $this->Links_model->ln_fetch(array(
             'ln_status' => 2, //Published
             'ln_type_entity_id' => 4231, //Intent Note Messages
@@ -905,12 +906,13 @@ class Actionplan_model extends CI_Model
 
         //Define step variables:
         $has_children = (count($in__children) > 0);
+        $is__or = is_or($ins[0]['in_type_entity_id']);
 
 
         //Let's figure out the progression method:
-        if($ins[0]['in_type']==0 /* AND */ && $completion_req_note){
+        if(!$is__or /* AND */ && $completion_req_note){
             $progression_type_entity_id = 6144; //Action Plan Requirement Submitted
-        } elseif($ins[0]['in_type']==1 /* OR */ && $has_children){
+        } elseif($is__or /* OR */ && $has_children){
             $progression_type_entity_id = 6157; //Action Plan Question Answered
         } elseif(count($in__messages) > 0){
             $progression_type_entity_id = 4559; //Action Plan Messages Read
@@ -920,10 +922,10 @@ class Actionplan_model extends CI_Model
 
 
         //Let's learn more about the nature of this progression link:
-        $is_two_step        = in_array($progression_type_entity_id, $this->config->item('en_ids_6244')); //If TRUE, initial progression link will be logged as WORKING ON since we need student response
+        $is_two_step        = in_array($progression_type_entity_id, $this->config->item('en_ids_6244')); //If TRUE, initial progression link will be logged as WORKING ON since we need user response
         $trigget_completion_tips = ( !$is_two_step && in_array($progression_type_entity_id, $this->config->item('en_ids_6255'))); //If TRUE AND If !$is_two_step, this would trigger the completion tips
         $nothing_more_to_do = ( !$is_two_step && !$has_children && in_array($progression_type_entity_id, $this->config->item('en_ids_6274')) ); //If TRUE, we will auto move on to the next item
-        $recommend_featured = false; //Assume FALSE unless $nothing_more_to_do=TRUE and we do not have any next steps which means student has finished their Action Plan
+        $recommend_featured = false; //Assume FALSE unless $nothing_more_to_do=TRUE and we do not have any next steps which means user has finished their Action Plan
 
 
 
@@ -980,12 +982,12 @@ class Actionplan_model extends CI_Model
 
 
         //Let's analyse the progress made so far to better understand how to deal with this step:
-        $student_can_skip = ( $is_two_step || $has_children ); //Assume TRUE unless proven otherwise...
-        if($student_can_skip){
+        $user_can_skip = ( $is_two_step || $has_children ); //Assume TRUE unless proven otherwise...
+        if($user_can_skip){
             foreach($current_progression_links as $current_progression_link){
                 //Also make sure this was NOT an automated progression because there is no point in skipping those:
                 if(!$has_children && $current_progression_link['ln_status']==2 && !in_array($current_progression_link['ln_type_entity_id'], $this->config->item('en_ids_6274'))){
-                    $student_can_skip = false;
+                    $user_can_skip = false;
                     break;
                 }
             }
@@ -1042,7 +1044,7 @@ class Actionplan_model extends CI_Model
          *
          * Now let's see the intent type (AND or OR)
          * and also count its children to see how
-         * we would need to advance the student.
+         * we would need to advance the user.
          *
          * */
 
@@ -1052,7 +1054,7 @@ class Actionplan_model extends CI_Model
             //They still need to complete:
             $next_step_message .= $completion_req_note;
 
-        } elseif($has_children && $ins[0]['in_type']==1 /* OR Children */){
+        } elseif($has_children && $is__or /* OR Children */){
 
 
             if($fb_messenger_format){
@@ -1167,7 +1169,7 @@ class Actionplan_model extends CI_Model
 
                     if($was_selected) {
                         //Status Icon:
-                        $next_step_message .= '&nbsp;' . echo_fixed_fields('ln_student_status', (count($child_progression_steps) > 0 ? $child_progression_steps[0]['ln_status'] : 0), false, null);
+                        $next_step_message .= '&nbsp;' . echo_fixed_fields('ln_action_plan_status', (count($child_progression_steps) > 0 ? $child_progression_steps[0]['ln_status'] : 0), false, null);
                     }
 
                     //Close tags:
@@ -1195,7 +1197,7 @@ class Actionplan_model extends CI_Model
 
 
 
-        } elseif($has_children && $ins[0]['in_type']==0 /* AND Children */){
+        } elseif($has_children && !$is__or /* AND Children */){
 
             //Do we have 2 or more children?
             $has_multiple_children = (count($in__children) > 1);
@@ -1337,11 +1339,11 @@ class Actionplan_model extends CI_Model
         }
 
         //SKIP?
-        if($student_can_skip) {
+        if($user_can_skip) {
             //Give option to skip:
             if($fb_messenger_format){
 
-                //Give option to skip Student Intent:
+                //Give option to skip User Intent:
                 array_push($next_step_quick_replies, array(
                     'content_type' => 'text',
                     'title' => 'Skip',
@@ -1441,7 +1443,7 @@ class Actionplan_model extends CI_Model
 
             //Should not happen, log error:
             $this->Links_model->ln_create(array(
-                'ln_content' => 'actionplan_completion_marks() Detected student Action Plan without in__metadata_common_steps value!',
+                'ln_content' => 'actionplan_completion_marks() Detected user Action Plan without in__metadata_common_steps value!',
                 'ln_type_entity_id' => 4246, //Platform Bug Reports
                 'ln_miner_entity_id' => 1, //Shervin/Developer
                 'ln_parent_entity_id' => $en_id,
@@ -1454,13 +1456,13 @@ class Actionplan_model extends CI_Model
         //Generate flat steps:
         $flat_common_steps = array_flatten($in_metadata['in__metadata_common_steps']);
 
-        //Calculate common steps and expansion steps recursively for this student:
+        //Calculate common steps and expansion steps recursively for this user:
         $metadata_this = array(
             //Generic assessment marks stats:
             'milestones_marks_count' => 0,
             'milestones_marks_max' => 0,
 
-            //Student answer stats:
+            //User answer stats:
             'milestones_answered_count' => 0, //How many they have answered so far
             'milestones_answered_marks' => 0, //Indicates completion score
 
@@ -1516,10 +1518,10 @@ class Actionplan_model extends CI_Model
 
 
 
-            //Now let's check student answers to see what they have done:
+            //Now let's check user answers to see what they have done:
             foreach($this->Links_model->ln_fetch(array(
                 'ln_type_entity_id' => 6157, //Action Plan Question Answered
-                'ln_miner_entity_id' => $en_id, //Belongs to this Student
+                'ln_miner_entity_id' => $en_id, //Belongs to this User
                 'ln_parent_intent_id IN (' . join(',', $flat_common_steps ) . ')' => null,
                 'ln_child_intent_id IN (' . join(',', array_flatten($in_metadata['in__metadata_expansion_steps'])) . ')' => null,
                 'ln_status' => 2, //Published
@@ -1566,18 +1568,18 @@ class Actionplan_model extends CI_Model
         $common_totals = $this->Intents_model->in_fetch(array(
             'in_id IN ('.join(',',$flat_common_steps).')' => null,
             'in_status' => 2, //Published
-        ), array(), 0, 0, array(), 'COUNT(in_id) as total_steps, SUM(in_seconds_cost) as total_seconds');
+        ), array(), 0, 0, array(), 'COUNT(in_id) as total_steps, SUM(in_completion_seconds) as total_seconds');
 
-        //Count completed for student:
+        //Count completed for user:
         $common_completed = $this->Links_model->ln_fetch(array(
             'ln_type_entity_id IN (' . join(',', $this->config->item('en_ids_6146')) . ')' => null, //Action Plan Progression Link Types
-            'ln_miner_entity_id' => $en_id, //Belongs to this Student
+            'ln_miner_entity_id' => $en_id, //Belongs to this User
             'ln_parent_intent_id IN (' . join(',', $flat_common_steps ) . ')' => null,
             'ln_status' => 2, //Published
             'in_status' => 2, //Published
-        ), array('in_parent'), 0, 0, array(), 'COUNT(in_id) as completed_steps, SUM(in_seconds_cost) as completed_seconds');
+        ), array('in_parent'), 0, 0, array(), 'COUNT(in_id) as completed_steps, SUM(in_completion_seconds) as completed_seconds');
 
-        //Calculate common steps and expansion steps recursively for this student:
+        //Calculate common steps and expansion steps recursively for this user:
         $metadata_this = array(
             'steps_total' => intval($common_totals[0]['total_steps']),
             'steps_completed' => intval($common_completed[0]['completed_steps']),
@@ -1589,10 +1591,10 @@ class Actionplan_model extends CI_Model
         //Expansion Steps Recursive
         if(isset($in_metadata['in__metadata_expansion_steps']) && count($in_metadata['in__metadata_expansion_steps']) > 0){
 
-            //Now let's check student answers to see what they have done:
+            //Now let's check user answers to see what they have done:
             foreach($this->Links_model->ln_fetch(array(
                 'ln_type_entity_id' => 6157, //Action Plan Question Answered
-                'ln_miner_entity_id' => $en_id, //Belongs to this Student
+                'ln_miner_entity_id' => $en_id, //Belongs to this User
                 'ln_parent_intent_id IN (' . join(',', $flat_common_steps ) . ')' => null,
                 'ln_child_intent_id IN (' . join(',', array_flatten($in_metadata['in__metadata_expansion_steps'])) . ')' => null,
                 'ln_status' => 2, //Published
@@ -1614,10 +1616,10 @@ class Actionplan_model extends CI_Model
         //Expansion Milestones Recursive
         if(isset($in_metadata['in__metadata_expansion_conditional']) && count($in_metadata['in__metadata_expansion_conditional']) > 0){
 
-            //Now let's check if student has unlocked any Miletones:
+            //Now let's check if user has unlocked any Miletones:
             foreach($this->Links_model->ln_fetch(array(
                 'ln_type_entity_id' => 6140, //Action Plan Milestone Unlocked
-                'ln_miner_entity_id' => $en_id, //Belongs to this Student
+                'ln_miner_entity_id' => $en_id, //Belongs to this User
                 'ln_parent_intent_id IN (' . join(',', $flat_common_steps ) . ')' => null,
                 'ln_child_intent_id IN (' . join(',', array_flatten($in_metadata['in__metadata_expansion_conditional'])) . ')' => null,
                 'ln_status' => 2, //Published
@@ -1669,17 +1671,17 @@ class Actionplan_model extends CI_Model
 
 
     function actionplan_intention_ids($en_id){
-        //Simply returns all the intention IDs for a student's Action Plan:
-        $student_intentions_ids = array();
+        //Simply returns all the intention IDs for a user's Action Plan:
+        $user_intentions_ids = array();
         foreach($this->Links_model->ln_fetch(array(
             'ln_miner_entity_id' => $en_id,
             'ln_type_entity_id' => 4235, //Action Plan Set Intention
             'ln_status IN (' . join(',', $this->config->item('ln_status_incomplete')) . ')' => null, //incomplete intentions
             'in_status' => 2, //Published
-        ), array('in_parent'), 0) as $student_in){
-            array_push($student_intentions_ids, intval($student_in['in_id']));
+        ), array('in_parent'), 0) as $user_in){
+            array_push($user_intentions_ids, intval($user_in['in_id']));
         }
-        return $student_intentions_ids;
+        return $user_intentions_ids;
     }
 
 }

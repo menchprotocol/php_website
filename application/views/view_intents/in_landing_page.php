@@ -44,7 +44,7 @@ if (!$hide_subscribe) {
         echo '<br />';
     }
 
-    //Check to see if added to Action Plan for logged-in students:
+    //Check to see if added to Action Plan for logged-in users:
     if(isset($session_en['en_id'])){
 
         $en_all_2738 = $this->config->item('en_all_2738');

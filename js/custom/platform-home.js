@@ -1,11 +1,16 @@
 
+//In milli seconds:
+var fadeout_frequency = 1000;
+var fadeout_speed = 21;
+
+
 $(document).ready(function () {
 
     //Update stats on load:
     update_basic_stats();
 
-    //Continue updating basic stats every 1 second:
-    setInterval(update_basic_stats, (1000));
+    //Continue updating basic stats:
+    setInterval(update_basic_stats, fadeout_frequency);
 
 });
 
@@ -19,17 +24,17 @@ var update_basic_stats = function() {
 
         //Updated Intents?
         if(data.intents.extended_stats != $('#stats_intents_box .extended_stats').html()){
-            $('#stats_intents_box .extended_stats').html(data.intents.extended_stats).fadeOut('fast').fadeIn('fast');
+            $('#stats_intents_box .extended_stats').html(data.intents.extended_stats).fadeOut(fadeout_speed).fadeIn(fadeout_speed);
         }
 
         //Updated Entities?
         if(data.entities.extended_stats != $('#stats_entities_box .extended_stats').html()){
-            $('#stats_entities_box .extended_stats').html(data.entities.extended_stats).fadeOut('fast').fadeIn('fast');
+            $('#stats_entities_box .extended_stats').html(data.entities.extended_stats).fadeOut(fadeout_speed).fadeIn(fadeout_speed);
         }
 
         //Updated Links?
         if(data.links.extended_stats != $('#stats_links_box .extended_stats').html()){
-            $('#stats_links_box .extended_stats').html(data.links.extended_stats).fadeOut('fast').fadeIn('fast');
+            $('#stats_links_box .extended_stats').html(data.links.extended_stats).fadeOut(fadeout_speed).fadeIn(fadeout_speed);
         }
 
         //Reload Tooltip again:

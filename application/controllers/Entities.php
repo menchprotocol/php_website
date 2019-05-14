@@ -566,7 +566,7 @@ class Entities extends CI_Controller
                 'in_verb_entity_id' => $_POST['en_id'],
             ), array(), 0, 0, array(), 'COUNT(in_id) as totals');
             $en_requirements = $this->Intents_model->in_fetch(array(
-                'in_requirement_entity_id' => $_POST['en_id'],
+                'in_type_entity_id' => $_POST['en_id'],
             ), array(), 0, 0, array(), 'COUNT(in_id) as totals');
 
             if(count($en_miners) > 0 && $en_miners[0]['totals'] > 0){
@@ -591,7 +591,7 @@ class Entities extends CI_Controller
                 //Cannot delete this entity until intent references are removed:
                 return echo_json(array(
                     'status' => 0,
-                    'message' => 'Cannot be removed because entity is a submission requirement for '.echo_number($en_requirements[0]['totals']).' intents',
+                    'message' => 'Cannot be removed because entity is an intent type for '.echo_number($en_requirements[0]['totals']).' intents',
                 ));
             }
 
@@ -932,31 +932,31 @@ class Entities extends CI_Controller
         }
 
         //Authenticate their password:
-        $student_passwords = $this->Links_model->ln_fetch(array(
+        $user_passwords = $this->Links_model->ln_fetch(array(
             'ln_status' => 2, //Published
             'ln_type_entity_id' => 4255, //Text
             'ln_parent_entity_id' => 3286, //Password
             'ln_child_entity_id' => $ens[0]['en_id'],
         ));
-        if (count($student_passwords) == 0) {
+        if (count($user_passwords) == 0) {
             //They do not have a password assigned yet!
             return redirect_message('/login', '<div class="alert alert-danger" role="alert">Error: An active login password has not been assigned to your account yet. You can assign a new password using the Forgot Password Button.</div>');
-        } elseif ($student_passwords[0]['ln_status'] < 2) {
+        } elseif ($user_passwords[0]['ln_status'] < 2) {
             //They do not have a password assigned yet!
-            return redirect_message('/login', '<div class="alert alert-danger" role="alert">Error: Password is not activated with status [' . $student_passwords[0]['ln_status'] . '].</div>');
-        } elseif ($student_passwords[0]['ln_content'] != strtolower(hash('sha256', $this->config->item('password_salt') . $_POST['en_password']))) {
+            return redirect_message('/login', '<div class="alert alert-danger" role="alert">Error: Password is not activated with status [' . $user_passwords[0]['ln_status'] . '].</div>');
+        } elseif ($user_passwords[0]['ln_content'] != strtolower(hash('sha256', $this->config->item('password_salt') . $_POST['en_password']))) {
             //Bad password
             return redirect_message('/login', '<div class="alert alert-danger" role="alert">Error: Incorrect password for [' . $_POST['input_email'] . ']</div>');
         }
 
         //Now let's do a few more checks:
 
-        //Make sure Student is connected to Mench:
+        //Make sure User is connected to Mench:
         if (!intval($ens[0]['en_psid'])) {
             return redirect_message('/login', '<div class="alert alert-danger" role="alert">Error: You are not connected to Mench on Messenger, which is required to login to the Platform.</div>');
         }
 
-        //Make sure Student is not unsubscribed:
+        //Make sure User is not unsubscribed:
         if (count($this->Links_model->ln_fetch(array(
                 'ln_child_entity_id' => $ens[0]['en_id'],
                 'ln_parent_entity_id' => 4455, //Unsubscribed
@@ -970,7 +970,7 @@ class Entities extends CI_Controller
         $session_data = array();
         $is_chrome = (strpos($_SERVER['HTTP_USER_AGENT'], 'Chrome') !== false || strpos($_SERVER['HTTP_USER_AGENT'], 'CriOS') !== false);
         $is_miner = false;
-        $is_student = false;
+        $is_user = false;
 
 
         //Are they miner? Give them Sign In access:
@@ -994,7 +994,7 @@ class Entities extends CI_Controller
         //Applicable for miners only:
         if (!$is_chrome) {
 
-            if ($is_student) {
+            if ($is_user) {
 
                 //Remove miner privileges as they cannot use the platform with non-chrome Browser:
                 $is_miner = false;
@@ -1006,9 +1006,9 @@ class Entities extends CI_Controller
 
             }
 
-        } elseif (!$is_miner && !$is_student) {
+        } elseif (!$is_miner && !$is_user) {
 
-            //We assume this is a student request:
+            //We assume this is a user request:
             return redirect_message('/login', '<div class="alert alert-danger" role="alert">Error: You have not added any intentions to your Action Plan yet.</div>');
 
         }
@@ -1037,7 +1037,7 @@ class Entities extends CI_Controller
             $this->Links_model->ln_create(array(
                 'ln_miner_entity_id' => $ens[0]['en_id'],
                 'ln_metadata' => $ens[0],
-                'ln_type_entity_id' => 4996, //Logged In as Student
+                'ln_type_entity_id' => 4996, //Logged In as User
             ));
         }
 
@@ -1055,7 +1055,7 @@ class Entities extends CI_Controller
                 //miner default:
                 header('Location: /platform');
             } else {
-                //Student default:
+                //User default:
                 header('Location: /messenger/actionplan');
             }
         }
@@ -1128,7 +1128,7 @@ class Entities extends CI_Controller
         } else {
 
             //Fetch their passwords to authenticate login:
-            $student_passwords = $this->Links_model->ln_fetch(array(
+            $user_passwords = $this->Links_model->ln_fetch(array(
                 'ln_status' => 2, //Published
                 'ln_parent_entity_id' => 3286, //Mench Sign In Password
                 'ln_child_entity_id' => $_POST['en_id'], //For this user
@@ -1136,7 +1136,7 @@ class Entities extends CI_Controller
 
             $new_password = hash('sha256', $this->config->item('password_salt') . $_POST['new_pass']);
 
-            if (count($student_passwords) > 0) {
+            if (count($user_passwords) > 0) {
 
                 $detected_ln_type = detect_ln_type_entity_id($new_password);
                 if (!$detected_ln_type['status']) {
@@ -1144,10 +1144,10 @@ class Entities extends CI_Controller
                 }
 
                 //Update existing password:
-                $this->Links_model->ln_update($student_passwords[0]['ln_id'], array(
+                $this->Links_model->ln_update($user_passwords[0]['ln_id'], array(
                     'ln_content' => $new_password,
                     'ln_type_entity_id' => $detected_ln_type['ln_type_entity_id'],
-                ), $student_passwords[0]['ln_child_entity_id']);
+                ), $user_passwords[0]['ln_child_entity_id']);
 
             } else {
                 //Create new password link:
@@ -1215,7 +1215,6 @@ class Entities extends CI_Controller
 
         //Load some config variables:
         $en_all_3000 = $this->config->item('en_all_3000');
-        $en_all_4592 = $this->config->item('en_all_4592');
 
         //Analyze domain:
         $domain_analysis = analyze_domain($_POST['source_url']);

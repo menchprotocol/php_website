@@ -9,8 +9,8 @@ $moderation_tools = array(
     '/admin/tools/identical_entity_names' => 'Identical Entity Names',
     '/admin/tools/orphan_intents' => 'Orphan Intents',
     '/admin/tools/orphan_entities' => 'Orphan Entities',
-    '/admin/tools/assessment_marks_list_all' => 'Milestone Marks List All',
-    '/admin/tools/assessment_marks_birds_eye' => 'Milestone Marks Birds Eye View',
+    '/admin/tools/assessment_marks_list_all' => 'Response Weights List All',
+    '/admin/tools/assessment_marks_birds_eye' => 'Response Weights Birds Eye View',
     '/admin/tools/compose_test_message' => 'Compose Test Message',
 );
 
@@ -304,11 +304,11 @@ if(!$action) {
 
 
 
-    echo '<p>Below are all the fixed step links that award/subtract Milestone Marks:</p>';
+    echo '<p>Below are all the fixed step links that award/subtract Response Weights:</p>';
     echo '<table class="table table-condensed table-striped maxout" style="text-align: left;">';
 
     echo '<tr style="font-weight: bold;">';
-    echo '<td colspan="4" style="text-align: left;">Milestone Marks</td>';
+    echo '<td colspan="4" style="text-align: left;">Response Weights</td>';
     echo '</tr>';
 
     $counter = 0;
@@ -329,7 +329,7 @@ if(!$action) {
             ));
 
 
-            //Update Milestone Marks if outside of range (Handy if in_mark_options values are reduced)
+            //Update Response Weights if outside of range (Handy if in_response_weights values are reduced)
             /*
             if($tr__assessment_points > 1){
                 //Set to 1:
