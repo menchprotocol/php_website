@@ -252,6 +252,8 @@ if(!$action) {
 
 } elseif($action=='reset_all_points') {
 
+    boost_power();
+
     //Hidden function to reset points:
     $all_link_types = $this->Links_model->ln_fetch(array('ln_status >=' => 0), array('en_type'), 0, 0, array('en_name' => 'ASC'), 'COUNT(ln_type_entity_id) as trs_count, en_name, en_icon, ln_type_entity_id', 'ln_type_entity_id, en_name, en_icon');
 
