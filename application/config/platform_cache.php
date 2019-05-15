@@ -11,7 +11,7 @@ defined('BASEPATH') OR exit('No direct script access allowed');
  *
  */
 
-//Generated 2019-05-14 20:12:37 PST
+//Generated 2019-05-14 22:51:34 PST
 
 //Can be Set as Action Plan Intention:
 $config['en_ids_6908'] = array(6677, 6678, 6679, 6680, 6681, 6682, 6683, 6684);
@@ -207,7 +207,7 @@ $config['en_all_6794'] = array(
 );
 
 //AND Intents:
-$config['en_ids_6192'] = array(6677, 6678, 6679, 6680, 6681, 6682, 6683);
+$config['en_ids_6192'] = array(6677, 6678, 6679, 6680, 6681, 6682, 6683, 6914);
 $config['en_all_6192'] = array(
     6677 => array(
         'm_icon' => '<i class="fas fa-check"></i>',
@@ -251,6 +251,12 @@ $config['en_all_6192'] = array(
         'm_desc' => 'Student must submit a text message to mark the intent as complete.',
         'm_parents' => array(6908, 6794, 6192),
     ),
+    6914 => array(
+        'm_icon' => '<i class="fas fa-lock"></i>',
+        'm_name' => 'Locked',
+        'm_desc' => 'Could only be accessed when all children are completed through different routes.',
+        'm_parents' => array(6192),
+    ),
 );
 
 //Intent Type Entity:
@@ -293,7 +299,7 @@ $config['en_all_6193'] = array(
     ),
     6907 => array(
         'm_icon' => '<i class="fas fa-lock"></i>',
-        'm_name' => 'Locked Selection',
+        'm_name' => 'Locked',
         'm_desc' => 'Users cannot select an answer, but they can only unlock an answer when they complete a single child through a different route',
         'm_parents' => array(6193),
     ),
