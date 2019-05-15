@@ -11,7 +11,60 @@ defined('BASEPATH') OR exit('No direct script access allowed');
  *
  */
 
-//Generated 2019-05-14 17:14:32 PST
+//Generated 2019-05-14 17:58:20 PST
+
+//Can be Set as Action Plan Intention:
+$config['en_ids_6908'] = array(6677, 6678, 6679, 6680, 6681, 6682, 6683, 6684);
+$config['en_all_6908'] = array(
+    6677 => array(
+        'm_icon' => '<i class="fas fa-check"></i>',
+        'm_name' => 'AND Intent No Response is required',
+        'm_desc' => '',
+        'm_parents' => array(6908, 6192),
+    ),
+    6678 => array(
+        'm_icon' => '<i class="fas fa-image"></i>',
+        'm_name' => 'AND Intent Image is required',
+        'm_desc' => '',
+        'm_parents' => array(6908, 6794, 6192),
+    ),
+    6679 => array(
+        'm_icon' => '<i class="fas fa-video"></i>',
+        'm_name' => 'AND Intent Video is required',
+        'm_desc' => '',
+        'm_parents' => array(6908, 6794, 6192),
+    ),
+    6680 => array(
+        'm_icon' => '<i class="fas fa-microphone"></i>',
+        'm_name' => 'AND Intent Voice Note is required',
+        'm_desc' => '',
+        'm_parents' => array(6908, 6794, 6192),
+    ),
+    6681 => array(
+        'm_icon' => '<i class="fas fa-file-pdf"></i>',
+        'm_name' => 'AND Intent File is required',
+        'm_desc' => '',
+        'm_parents' => array(6908, 6794, 6192),
+    ),
+    6682 => array(
+        'm_icon' => '<i class="fas fa-browser"></i>',
+        'm_name' => 'AND Intent URL is required',
+        'm_desc' => '',
+        'm_parents' => array(6908, 6794, 6192),
+    ),
+    6683 => array(
+        'm_icon' => '<i class="fas fa-align-left"></i>',
+        'm_name' => 'AND Intent Text is required',
+        'm_desc' => '',
+        'm_parents' => array(6908, 6794, 6192),
+    ),
+    6684 => array(
+        'm_icon' => '<i class="fas fa-question"></i>',
+        'm_name' => 'OR Intent Normal Selection',
+        'm_desc' => '',
+        'm_parents' => array(6908, 6193),
+    ),
+);
 
 //Zero Time Estimate:
 $config['en_ids_6766'] = array(6686);
@@ -130,37 +183,37 @@ $config['en_all_6794'] = array(
         'm_icon' => '<i class="fas fa-image"></i>',
         'm_name' => 'Image is required',
         'm_desc' => '',
-        'm_parents' => array(6794, 6192),
+        'm_parents' => array(6908, 6794, 6192),
     ),
     6679 => array(
         'm_icon' => '<i class="fas fa-video"></i>',
         'm_name' => 'Video is required',
         'm_desc' => '',
-        'm_parents' => array(6794, 6192),
+        'm_parents' => array(6908, 6794, 6192),
     ),
     6680 => array(
         'm_icon' => '<i class="fas fa-microphone"></i>',
         'm_name' => 'Voice Note is required',
         'm_desc' => '',
-        'm_parents' => array(6794, 6192),
+        'm_parents' => array(6908, 6794, 6192),
     ),
     6681 => array(
         'm_icon' => '<i class="fas fa-file-pdf"></i>',
         'm_name' => 'File is required',
         'm_desc' => '',
-        'm_parents' => array(6794, 6192),
+        'm_parents' => array(6908, 6794, 6192),
     ),
     6682 => array(
         'm_icon' => '<i class="fas fa-browser"></i>',
         'm_name' => 'URL is required',
         'm_desc' => '',
-        'm_parents' => array(6794, 6192),
+        'm_parents' => array(6908, 6794, 6192),
     ),
     6683 => array(
         'm_icon' => '<i class="fas fa-align-left"></i>',
         'm_name' => 'Text is required',
         'm_desc' => '',
-        'm_parents' => array(6794, 6192),
+        'm_parents' => array(6908, 6794, 6192),
     ),
 );
 
@@ -171,43 +224,43 @@ $config['en_all_6192'] = array(
         'm_icon' => '<i class="fas fa-check"></i>',
         'm_name' => 'No Response is required',
         'm_desc' => 'Students would complete the intent by simply reviewing its outcome and reading its messages if any. No inputs are required.',
-        'm_parents' => array(6192),
+        'm_parents' => array(6908, 6192),
     ),
     6678 => array(
         'm_icon' => '<i class="fas fa-image"></i>',
         'm_name' => 'Image is required',
         'm_desc' => 'Student must send an image to mark the intent as complete.',
-        'm_parents' => array(6794, 6192),
+        'm_parents' => array(6908, 6794, 6192),
     ),
     6679 => array(
         'm_icon' => '<i class="fas fa-video"></i>',
         'm_name' => 'Video is required',
         'm_desc' => 'Student must send a video to mark the intent as complete.',
-        'm_parents' => array(6794, 6192),
+        'm_parents' => array(6908, 6794, 6192),
     ),
     6680 => array(
         'm_icon' => '<i class="fas fa-microphone"></i>',
         'm_name' => 'Voice Note is required',
         'm_desc' => 'Student must send a voice note to mark the intent as complete.',
-        'm_parents' => array(6794, 6192),
+        'm_parents' => array(6908, 6794, 6192),
     ),
     6681 => array(
         'm_icon' => '<i class="fas fa-file-pdf"></i>',
         'm_name' => 'File is required',
         'm_desc' => 'Student must upload a File to mark the intent as complete.',
-        'm_parents' => array(6794, 6192),
+        'm_parents' => array(6908, 6794, 6192),
     ),
     6682 => array(
         'm_icon' => '<i class="fas fa-browser"></i>',
         'm_name' => 'URL is required',
         'm_desc' => 'Student must submit a URL to mark the intent as complete.',
-        'm_parents' => array(6794, 6192),
+        'm_parents' => array(6908, 6794, 6192),
     ),
     6683 => array(
         'm_icon' => '<i class="fas fa-align-left"></i>',
         'm_name' => 'Text is required',
         'm_desc' => 'Student must submit a text message to mark the intent as complete.',
-        'm_parents' => array(6794, 6192),
+        'm_parents' => array(6908, 6794, 6192),
     ),
 );
 
@@ -229,13 +282,13 @@ $config['en_all_6676'] = array(
 );
 
 //OR Intents:
-$config['en_ids_6193'] = array(6684, 6685, 6686);
+$config['en_ids_6193'] = array(6684, 6685, 6686, 6907);
 $config['en_all_6193'] = array(
     6684 => array(
-        'm_icon' => '<i class="fas fa-check-circle"></i>',
+        'm_icon' => '<i class="fas fa-question"></i>',
         'm_name' => 'Normal Selection',
         'm_desc' => 'Students can take their time and choose one of the paths of the OR intent.',
-        'm_parents' => array(6193),
+        'm_parents' => array(6908, 6193),
     ),
     6685 => array(
         'm_icon' => '<i class="fas fa-stopwatch"></i>',
@@ -248,6 +301,12 @@ $config['en_all_6193'] = array(
         'm_name' => 'Random Selection',
         'm_desc' => 'A random selection would be made when the student reaches this intent. Good for A/B testing.',
         'm_parents' => array(6766, 6193),
+    ),
+    6907 => array(
+        'm_icon' => '<i class="fas fa-lock"></i>',
+        'm_name' => 'Locked Selection',
+        'm_desc' => 'Users cannot select an answer, but they can only unlock an answer when they complete a single child through a different route',
+        'm_parents' => array(6193),
     ),
 );
 
