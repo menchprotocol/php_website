@@ -932,6 +932,22 @@ function update_algolia($input_obj_type = null, $input_obj_id = 0, $return_row_o
 
 }
 
+
+function fetch_points($ln_type_entity_id){
+
+    //Points for each Link Type:
+    $CI =& get_instance();
+    $en_all_4595 = $CI->config->item('en_all_4595');
+
+    //Does this link type award points?
+    if(array_key_exists($ln_type_entity_id, $en_all_4595) && intval($en_all_4595[$ln_type_entity_id]['m_desc']) > 0){
+        //Yes, issue points:
+        return intval($en_all_4595[$ln_type_entity_id]['m_desc']);
+    } else {
+        return 0;
+    }
+}
+
 function update_metadata($obj_type, $obj_id, $new_fields)
 {
 

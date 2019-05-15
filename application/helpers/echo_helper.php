@@ -1557,14 +1557,20 @@ function echo_en_stats_overview($cached_list, $report_name){
 
         $inner_ui .= '<tr>';
         $inner_ui .= '<td style="text-align: left;"><span style="width: 26px; display: inline-block; text-align: center;">' . $people_group['m_icon'] . '</span><a href="/entities/'.$group_en_id.'">' . $people_group['m_name'] . '</a> <i class="fal fa-info-circle" data-toggle="tooltip" data-placement="top" title="'.$people_group['m_desc'].'"></i></td>';
-        $inner_ui .= '<td style="text-align: right;"><a href="/links?ln_status=0,1,2&ln_type_entity_id='.join(',', $CI->config->item('en_ids_4592')).'&ln_parent_entity_id=' . $group_en_id . '">' . number_format($child_links[0]['en__child_count'], 0) . '</a> <i class="fas fa-at"></i></td>';
+        $inner_ui .= '<td style="text-align: right;"><a href="/links?ln_status=0,1,2&ln_type_entity_id='.join(',', $CI->config->item('en_ids_4592')).'&ln_parent_entity_id=' . $group_en_id . '">' . number_format($child_links[0]['en__child_count'], 0) . '</a></td>';
         $inner_ui .= '</tr>';
 
         $total_count += $child_links[0]['en__child_count'];
     }
 
-    $ui = '<h4 class="panel-title down-border">'.number_format($total_count, 0).' '.$report_name.'</h4>';
-    $ui .= '<table class="table table-condensed table-striped stats-table">';
+
+    $ui = '<table class="table table-condensed table-striped stats-table">';
+
+    $ui .= '<tr class="panel-title down-border">';
+    $ui .= '<td style="text-align: left;">'.number_format($total_count, 0).' '.$report_name.'</td>';
+    $ui .= '<td style="text-align: right;">Entities</td>';
+    $ui .= '</tr>';
+
     $ui .= $inner_ui;
     $ui .= '</table>';
 

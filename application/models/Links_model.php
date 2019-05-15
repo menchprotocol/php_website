@@ -187,15 +187,8 @@ class Links_model extends CI_Model
             }
         }
 
-
-        //Points for each Link Type:
-        $en_all_4595 = $this->config->item('en_all_4595');
-
-        //Does this link type award points?
-        if(in_array($insert_columns['ln_type_entity_id'], $en_all_4595) && doubleval($en_all_4595[$insert_columns['ln_type_entity_id']]['m_desc']) != 0){
-            //Yes, issue points:
-            $insert_columns['ln_points'] = doubleval($en_all_4595[$insert_columns['ln_type_entity_id']]['m_desc']);
-        }
+        //Set points:
+        $insert_columns['ln_points'] = fetch_points($insert_columns['ln_type_entity_id']);
 
         //Lets log:
         $this->db->insert('table_links', $insert_columns);

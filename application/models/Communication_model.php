@@ -204,11 +204,6 @@ class Communication_model extends CI_Model
                 'status' => 0,
                 'message' => 'Missing Message Content',
             );
-        } elseif (strlen($input_message) > $this->config->item('fb_max_message')) {
-            return array(
-                'status' => 0,
-                'message' => 'Message is longer than the allowed ' . $this->config->item('fb_max_message') . ' characters',
-            );
         } elseif ($strict_validation && strlen($input_message) > $this->config->item('ln_content_max_length')) {
             return array(
                 'status' => 0,
@@ -640,7 +635,7 @@ class Communication_model extends CI_Model
             foreach ($ens[0]['en__parents'] as $parent_en) {
 
                 //Define what type of entity parent link content should be displayed up-front in Messages
-                if (!in_array($parent_en['ln_parent_entity_id'], $this->config->item('en_ids_4990')) && !in_array($parent_en['ln_type_entity_id'], $this->config->item('en_ids_4990'))) {
+                if ($parent_en['ln_status'] < 2) {
                     continue;
                 }
 

@@ -500,6 +500,13 @@ input::-webkit-inner-spin-button {
     font-size: 1.2em !important;
 }
 
+.down-border h4 {
+    line-height: 100% !important;
+    margin: 0 !important;
+    padding: 0 !important;
+    font-weight: bold !important;
+}
+
 .landing-page .navbar-brand img {
     display: inline-block;
     margin-top: -12px;

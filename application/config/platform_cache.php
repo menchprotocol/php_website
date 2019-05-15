@@ -11,13 +11,13 @@ defined('BASEPATH') OR exit('No direct script access allowed');
  *
  */
 
-//Generated 2019-05-14 14:57:50 PST
+//Generated 2019-05-14 17:14:32 PST
 
 //Zero Time Estimate:
 $config['en_ids_6766'] = array(6686);
 $config['en_all_6766'] = array(
     6686 => array(
-        'm_icon' => '<i class="fal fa-dice"></i>',
+        'm_icon' => '<i class="fas fa-random"></i>',
         'm_name' => 'OR Intent Random Selection',
         'm_desc' => '',
         'm_parents' => array(6766, 6193),
@@ -63,7 +63,7 @@ $config['en_all_6827'] = array(
 $config['en_ids_3463'] = array(3000, 4432, 6827);
 $config['en_all_3463'] = array(
     3000 => array(
-        'm_icon' => '<i class="far fa-star"></i>',
+        'm_icon' => '<i class="fas fa-star"></i>',
         'm_name' => 'Expert Sources',
         'm_desc' => 'Mediums to access expert intelligence like books, videos, articles, courses, etc...',
         'm_parents' => array(3463, 4506, 4527, 4463),
@@ -86,40 +86,40 @@ $config['en_all_3463'] = array(
 $config['en_ids_6805'] = array(2999, 3005, 3147, 3192, 4763, 4883);
 $config['en_all_6805'] = array(
     2999 => array(
-        'm_icon' => '<i class="fal fa-microphone"></i>',
+        'm_icon' => '<i class="fas fa-microphone"></i>',
         'm_name' => 'Expert Podcasts',
         'm_desc' => '',
-        'm_parents' => array(6805, 4990, 3000),
+        'm_parents' => array(6805, 3000),
     ),
     3005 => array(
-        'm_icon' => '<i class="fal fa-book"></i>',
+        'm_icon' => '<i class="fas fa-book"></i>',
         'm_name' => 'Expert Books',
         'm_desc' => '',
-        'm_parents' => array(6805, 4990, 3000),
+        'm_parents' => array(6805, 3000),
     ),
     3147 => array(
-        'm_icon' => '<i class="fal fa-presentation"></i>',
+        'm_icon' => '<i class="fas fa-presentation"></i>',
         'm_name' => 'Expert Courses',
         'm_desc' => '',
-        'm_parents' => array(6805, 4990, 3000),
+        'm_parents' => array(6805, 3000),
     ),
     3192 => array(
-        'm_icon' => '<i class="fal fa-compact-disc"></i>',
+        'm_icon' => '<i class="fas fa-compact-disc"></i>',
         'm_name' => 'Expert Software',
         'm_desc' => '',
-        'm_parents' => array(6805, 4990, 3000),
+        'm_parents' => array(6805, 3000),
     ),
     4763 => array(
-        'm_icon' => '<i class="fal fa-bullhorn"></i>',
+        'm_icon' => '<i class="fas fa-bullhorn"></i>',
         'm_name' => 'Expert Marketing Channels',
         'm_desc' => '',
-        'm_parents' => array(6805, 4990, 3000),
+        'm_parents' => array(6805, 3000),
     ),
     4883 => array(
-        'm_icon' => '<i class="fal fa-concierge-bell"></i>',
+        'm_icon' => '<i class="fas fa-concierge-bell"></i>',
         'm_name' => 'Expert Services',
         'm_desc' => '',
-        'm_parents' => array(6805, 4990, 3000),
+        'm_parents' => array(6805, 3000),
     ),
 );
 
@@ -127,37 +127,37 @@ $config['en_all_6805'] = array(
 $config['en_ids_6794'] = array(6678, 6679, 6680, 6681, 6682, 6683);
 $config['en_all_6794'] = array(
     6678 => array(
-        'm_icon' => '<i class="fal fa-image"></i>',
+        'm_icon' => '<i class="fas fa-image"></i>',
         'm_name' => 'Image is required',
         'm_desc' => '',
         'm_parents' => array(6794, 6192),
     ),
     6679 => array(
-        'm_icon' => '<i class="fal fa-video"></i>',
+        'm_icon' => '<i class="fas fa-video"></i>',
         'm_name' => 'Video is required',
         'm_desc' => '',
         'm_parents' => array(6794, 6192),
     ),
     6680 => array(
-        'm_icon' => '<i class="fal fa-microphone"></i>',
+        'm_icon' => '<i class="fas fa-microphone"></i>',
         'm_name' => 'Voice Note is required',
         'm_desc' => '',
         'm_parents' => array(6794, 6192),
     ),
     6681 => array(
-        'm_icon' => '<i class="fal fa-file-pdf"></i>',
+        'm_icon' => '<i class="fas fa-file-pdf"></i>',
         'm_name' => 'File is required',
         'm_desc' => '',
         'm_parents' => array(6794, 6192),
     ),
     6682 => array(
-        'm_icon' => '<i class="fal fa-browser"></i>',
+        'm_icon' => '<i class="fas fa-browser"></i>',
         'm_name' => 'URL is required',
         'm_desc' => '',
         'm_parents' => array(6794, 6192),
     ),
     6683 => array(
-        'm_icon' => '<i class="fal fa-align-left"></i>',
+        'm_icon' => '<i class="fas fa-align-left"></i>',
         'm_name' => 'Text is required',
         'm_desc' => '',
         'm_parents' => array(6794, 6192),
@@ -168,43 +168,43 @@ $config['en_all_6794'] = array(
 $config['en_ids_6192'] = array(6677, 6678, 6679, 6680, 6681, 6682, 6683);
 $config['en_all_6192'] = array(
     6677 => array(
-        'm_icon' => '<i class="fal fa-check"></i>',
+        'm_icon' => '<i class="fas fa-check"></i>',
         'm_name' => 'No Response is required',
         'm_desc' => 'Students would complete the intent by simply reviewing its outcome and reading its messages if any. No inputs are required.',
         'm_parents' => array(6192),
     ),
     6678 => array(
-        'm_icon' => '<i class="fal fa-image"></i>',
+        'm_icon' => '<i class="fas fa-image"></i>',
         'm_name' => 'Image is required',
         'm_desc' => 'Student must send an image to mark the intent as complete.',
         'm_parents' => array(6794, 6192),
     ),
     6679 => array(
-        'm_icon' => '<i class="fal fa-video"></i>',
+        'm_icon' => '<i class="fas fa-video"></i>',
         'm_name' => 'Video is required',
         'm_desc' => 'Student must send a video to mark the intent as complete.',
         'm_parents' => array(6794, 6192),
     ),
     6680 => array(
-        'm_icon' => '<i class="fal fa-microphone"></i>',
+        'm_icon' => '<i class="fas fa-microphone"></i>',
         'm_name' => 'Voice Note is required',
         'm_desc' => 'Student must send a voice note to mark the intent as complete.',
         'm_parents' => array(6794, 6192),
     ),
     6681 => array(
-        'm_icon' => '<i class="fal fa-file-pdf"></i>',
+        'm_icon' => '<i class="fas fa-file-pdf"></i>',
         'm_name' => 'File is required',
         'm_desc' => 'Student must upload a File to mark the intent as complete.',
         'm_parents' => array(6794, 6192),
     ),
     6682 => array(
-        'm_icon' => '<i class="fal fa-browser"></i>',
+        'm_icon' => '<i class="fas fa-browser"></i>',
         'm_name' => 'URL is required',
         'm_desc' => 'Student must submit a URL to mark the intent as complete.',
         'm_parents' => array(6794, 6192),
     ),
     6683 => array(
-        'm_icon' => '<i class="fal fa-align-left"></i>',
+        'm_icon' => '<i class="fas fa-align-left"></i>',
         'm_name' => 'Text is required',
         'm_desc' => 'Student must submit a text message to mark the intent as complete.',
         'm_parents' => array(6794, 6192),
@@ -232,19 +232,19 @@ $config['en_all_6676'] = array(
 $config['en_ids_6193'] = array(6684, 6685, 6686);
 $config['en_all_6193'] = array(
     6684 => array(
-        'm_icon' => '<i class="fal fa-check-circle"></i>',
+        'm_icon' => '<i class="fas fa-check-circle"></i>',
         'm_name' => 'Normal Selection',
         'm_desc' => 'Students can take their time and choose one of the paths of the OR intent.',
         'm_parents' => array(6193),
     ),
     6685 => array(
-        'm_icon' => '<i class="fal fa-hourglass-half"></i>',
+        'm_icon' => '<i class="fas fa-stopwatch"></i>',
         'm_name' => 'Timed Selection',
         'm_desc' => 'Student must make a selection within the time limit defines by the estimated intent time before their response chance expires.',
         'm_parents' => array(6193),
     ),
     6686 => array(
-        'm_icon' => '<i class="fal fa-dice"></i>',
+        'm_icon' => '<i class="fas fa-random"></i>',
         'm_name' => 'Random Selection',
         'm_desc' => 'A random selection would be made when the student reaches this intent. Good for A/B testing.',
         'm_parents' => array(6766, 6193),
@@ -267,19 +267,19 @@ $config['en_all_4463'] = array(
         'm_parents' => array(6827, 4463, 4426),
     ),
     3000 => array(
-        'm_icon' => '<i class="far fa-star"></i>',
+        'm_icon' => '<i class="fas fa-star"></i>',
         'm_name' => 'Expert Sources',
         'm_desc' => 'Our mining process is based on existing content produced by industry experts that will be mined from various reference types including videos, articles, books, online courses and more!',
         'm_parents' => array(3463, 4506, 4527, 4463),
     ),
     3084 => array(
-        'm_icon' => '<i class="fal fa-star"></i>',
+        'm_icon' => '<i class="fas fa-star"></i>',
         'm_name' => 'Industry Experts',
         'm_desc' => 'People with experience in their respective industry that have shown a consistent commitment to advancing their industry.',
-        'm_parents' => array(4432, 4990, 4463),
+        'm_parents' => array(4432, 4463),
     ),
     4430 => array(
-        'm_icon' => '<i class="fal fa-user"></i>',
+        'm_icon' => '<i class="fas fa-user"></i>',
         'm_name' => 'Mench Users',
         'm_desc' => 'Users connected to Mench Personal Assistant on Facebook Messenger.',
         'm_parents' => array(4426, 4463, 4432),
@@ -913,37 +913,37 @@ $config['en_all_6123'] = array(
         'm_icon' => '<i class="fab fa-facebook"></i>',
         'm_name' => 'Facebook',
         'm_desc' => '',
-        'm_parents' => array(6123, 4990, 1326, 1326, 2750),
+        'm_parents' => array(6123, 1326, 1326, 2750),
     ),
     3300 => array(
         'm_icon' => '<i class="fab fa-twitter"></i>',
         'm_name' => 'Twitter',
         'm_desc' => '',
-        'm_parents' => array(6123, 4990, 2750, 1326, 3304),
+        'm_parents' => array(6123, 2750, 1326, 3304),
     ),
     3301 => array(
         'm_icon' => '<i class="fab fa-instagram"></i>',
         'm_name' => 'Instagram',
         'm_desc' => '',
-        'm_parents' => array(6123, 4990, 1326, 2750),
+        'm_parents' => array(6123, 1326, 2750),
     ),
     3302 => array(
         'm_icon' => '<i class="fab fa-linkedin"></i>',
         'm_name' => 'LinkedIn',
         'm_desc' => '',
-        'm_parents' => array(6123, 4990, 1326, 4763, 2750),
+        'm_parents' => array(6123, 1326, 4763, 2750),
     ),
     3303 => array(
         'm_icon' => '<i class="fab fa-github"></i>',
         'm_name' => 'Github',
         'm_desc' => '',
-        'm_parents' => array(6123, 4990, 4763, 1326, 2750),
+        'm_parents' => array(6123, 4763, 1326, 2750),
     ),
     3320 => array(
         'm_icon' => '<i class="fab fa-facebook-messenger"></i>',
         'm_name' => 'Facebook Messenger',
         'm_desc' => '',
-        'm_parents' => array(6123, 4990, 1326, 1326, 2750, 2793),
+        'm_parents' => array(6123, 1326, 1326, 2750, 2793),
     ),
 );
 
@@ -1116,19 +1116,19 @@ $config['en_all_4280'] = array(
 $config['en_ids_4432'] = array(2750, 3084, 4430);
 $config['en_all_4432'] = array(
     2750 => array(
-        'm_icon' => '<i class="fal fa-users"></i>',
+        'm_icon' => '<i class="fas fa-users"></i>',
         'm_name' => 'Organizations',
         'm_desc' => 'Companies, teams or groups that collaborate with a shared mission',
         'm_parents' => array(4432, 4600),
     ),
     3084 => array(
-        'm_icon' => '<i class="fal fa-star"></i>',
+        'm_icon' => '<i class="fas fa-star"></i>',
         'm_name' => 'Industry Experts',
         'm_desc' => 'Domain masters considering their tangible accomplishments',
-        'm_parents' => array(4432, 4990, 4463),
+        'm_parents' => array(4432, 4463),
     ),
     4430 => array(
-        'm_icon' => '<i class="fal fa-user"></i>',
+        'm_icon' => '<i class="fas fa-user"></i>',
         'm_name' => 'Mench Users',
         'm_desc' => 'All Mench users share a connection to Mench personal assistant and may also belong to other user groups',
         'm_parents' => array(4426, 4463, 4432),
@@ -1216,179 +1216,6 @@ $config['en_all_4997'] = array(
     ),
 );
 
-//Intent Notes Public Entity References:
-$config['en_ids_4990'] = array(1326, 2793, 2997, 2998, 2999, 3005, 3084, 3147, 3192, 3300, 3301, 3302, 3303, 3308, 3314, 3320, 4257, 4258, 4259, 4260, 4395, 4399, 4446, 4763, 4883, 5948, 6334, 6336);
-$config['en_all_4990'] = array(
-    1326 => array(
-        'm_icon' => '<i class="fal fa-bookmark"></i>',
-        'm_name' => 'Domain',
-        'm_desc' => '',
-        'm_parents' => array(4990, 4506),
-    ),
-    2793 => array(
-        'm_icon' => '<i class="fab fa-facebook"></i>',
-        'm_name' => 'Facebook',
-        'm_desc' => '',
-        'm_parents' => array(6123, 4990, 1326, 1326, 2750),
-    ),
-    2997 => array(
-        'm_icon' => '<i class="fal fa-newspaper"></i>',
-        'm_name' => 'Expert Articles',
-        'm_desc' => '',
-        'm_parents' => array(4990, 3000),
-    ),
-    2998 => array(
-        'm_icon' => '<i class="fal fa-film"></i>',
-        'm_name' => 'Expert Videos',
-        'm_desc' => '',
-        'm_parents' => array(4990, 3000),
-    ),
-    2999 => array(
-        'm_icon' => '<i class="fal fa-microphone"></i>',
-        'm_name' => 'Expert Podcasts',
-        'm_desc' => '',
-        'm_parents' => array(6805, 4990, 3000),
-    ),
-    3005 => array(
-        'm_icon' => '<i class="fal fa-book"></i>',
-        'm_name' => 'Expert Books',
-        'm_desc' => '',
-        'm_parents' => array(6805, 4990, 3000),
-    ),
-    3084 => array(
-        'm_icon' => '<i class="fal fa-star"></i>',
-        'm_name' => 'Industry Experts',
-        'm_desc' => '',
-        'm_parents' => array(4432, 4990, 4463),
-    ),
-    3147 => array(
-        'm_icon' => '<i class="fal fa-presentation"></i>',
-        'm_name' => 'Expert Courses',
-        'm_desc' => '',
-        'm_parents' => array(6805, 4990, 3000),
-    ),
-    3192 => array(
-        'm_icon' => '<i class="fal fa-compact-disc"></i>',
-        'm_name' => 'Expert Software',
-        'm_desc' => '',
-        'm_parents' => array(6805, 4990, 3000),
-    ),
-    3300 => array(
-        'm_icon' => '<i class="fab fa-twitter"></i>',
-        'm_name' => 'Twitter',
-        'm_desc' => '',
-        'm_parents' => array(6123, 4990, 2750, 1326, 3304),
-    ),
-    3301 => array(
-        'm_icon' => '<i class="fab fa-instagram"></i>',
-        'm_name' => 'Instagram',
-        'm_desc' => '',
-        'm_parents' => array(6123, 4990, 1326, 2750),
-    ),
-    3302 => array(
-        'm_icon' => '<i class="fab fa-linkedin"></i>',
-        'm_name' => 'LinkedIn',
-        'm_desc' => '',
-        'm_parents' => array(6123, 4990, 1326, 4763, 2750),
-    ),
-    3303 => array(
-        'm_icon' => '<i class="fab fa-github"></i>',
-        'm_name' => 'Github',
-        'm_desc' => '',
-        'm_parents' => array(6123, 4990, 4763, 1326, 2750),
-    ),
-    3308 => array(
-        'm_icon' => '<i class="fab fa-youtube"></i>',
-        'm_name' => 'YouTube',
-        'm_desc' => '',
-        'm_parents' => array(4990, 4763, 4257, 2750, 1326),
-    ),
-    3314 => array(
-        'm_icon' => '<i class="fab fa-slack"></i>',
-        'm_name' => 'Slack',
-        'm_desc' => '',
-        'm_parents' => array(4990, 1326, 2750),
-    ),
-    3320 => array(
-        'm_icon' => '<i class="fab fa-facebook-messenger"></i>',
-        'm_name' => 'Facebook Messenger',
-        'm_desc' => '',
-        'm_parents' => array(6123, 4990, 1326, 1326, 2750, 2793),
-    ),
-    4257 => array(
-        'm_icon' => '<i class="fal fa-play-circle"></i>',
-        'm_name' => 'Linked Entities Embed URL',
-        'm_desc' => '',
-        'm_parents' => array(4990, 4593, 4592, 4537, 4506, 4595),
-    ),
-    4258 => array(
-        'm_icon' => '<i class="fal fa-video"></i>',
-        'm_name' => 'Linked Entities Video',
-        'm_desc' => '',
-        'm_parents' => array(6203, 4990, 4593, 4592, 4537, 4595),
-    ),
-    4259 => array(
-        'm_icon' => '<i class="fal fa-volume-up"></i>',
-        'm_name' => 'Linked Entities Audio',
-        'm_desc' => '',
-        'm_parents' => array(6203, 4990, 4593, 4592, 4537, 4595),
-    ),
-    4260 => array(
-        'm_icon' => '<i class="fal fa-image"></i>',
-        'm_name' => 'Linked Entities Image',
-        'm_desc' => '',
-        'm_parents' => array(6203, 4990, 4593, 4592, 4537, 4595),
-    ),
-    4395 => array(
-        'm_icon' => '',
-        'm_name' => 'Calendly',
-        'm_desc' => '',
-        'm_parents' => array(4990, 2750, 1326),
-    ),
-    4399 => array(
-        'm_icon' => '<i class="fab fa-angellist"></i>',
-        'm_name' => 'Angel Co',
-        'm_desc' => '',
-        'm_parents' => array(4990, 4763, 2750, 1326),
-    ),
-    4446 => array(
-        'm_icon' => '<i class="fal fa-tachometer"></i>',
-        'm_name' => 'Expert Assessments',
-        'm_desc' => '',
-        'm_parents' => array(4990, 3000),
-    ),
-    4763 => array(
-        'm_icon' => '<i class="fal fa-bullhorn"></i>',
-        'm_name' => 'Expert Marketing Channels',
-        'm_desc' => '',
-        'm_parents' => array(6805, 4990, 3000),
-    ),
-    4883 => array(
-        'm_icon' => '<i class="fal fa-concierge-bell"></i>',
-        'm_name' => 'Expert Services',
-        'm_desc' => '',
-        'm_parents' => array(6805, 4990, 3000),
-    ),
-    5948 => array(
-        'm_icon' => '<i class="fal fa-file-invoice"></i>',
-        'm_name' => 'Expert Templates',
-        'm_desc' => '',
-        'm_parents' => array(4990, 3000),
-    ),
-    6334 => array(
-        'm_icon' => '<img src="http://paypal.com/favicon.ico">',
-        'm_name' => 'PayPal.com',
-        'm_desc' => '',
-        'm_parents' => array(4990, 1326),
-    ),
-    6336 => array(
-        'm_icon' => '<img src="http://paypal.me/favicon.ico">',
-        'm_name' => 'PayPal.me',
-        'm_desc' => '',
-        'm_parents' => array(4990, 1326),
-    ),
-);
-
 //Modification Lock:
 $config['en_ids_4426'] = array(1308, 3288, 4426, 4430, 4433, 4595, 4755, 4997, 5969, 6695);
 $config['en_all_4426'] = array(
@@ -1411,7 +1238,7 @@ $config['en_all_4426'] = array(
         'm_parents' => array(6771, 4426, 4527, 4757, 4428),
     ),
     4430 => array(
-        'm_icon' => '<i class="fal fa-user"></i>',
+        'm_icon' => '<i class="fas fa-user"></i>',
         'm_name' => 'Mench Users',
         'm_desc' => '',
         'm_parents' => array(4426, 4463, 4432),
@@ -1832,25 +1659,25 @@ $config['en_all_4595'] = array(
         'm_icon' => '<i class="fal fa-play-circle"></i>',
         'm_name' => 'Linked Entities Embed URL',
         'm_desc' => '50',
-        'm_parents' => array(4990, 4593, 4592, 4537, 4506, 4595),
+        'm_parents' => array(4593, 4592, 4537, 4506, 4595),
     ),
     4258 => array(
         'm_icon' => '<i class="fal fa-video"></i>',
         'm_name' => 'Linked Entities Video',
         'm_desc' => '90',
-        'm_parents' => array(6203, 4990, 4593, 4592, 4537, 4595),
+        'm_parents' => array(6203, 4593, 4592, 4537, 4595),
     ),
     4259 => array(
         'm_icon' => '<i class="fal fa-volume-up"></i>',
         'm_name' => 'Linked Entities Audio',
         'm_desc' => '50',
-        'm_parents' => array(6203, 4990, 4593, 4592, 4537, 4595),
+        'm_parents' => array(6203, 4593, 4592, 4537, 4595),
     ),
     4260 => array(
         'm_icon' => '<i class="fal fa-image"></i>',
         'm_name' => 'Linked Entities Image',
         'm_desc' => '50',
-        'm_parents' => array(6203, 4990, 4593, 4592, 4537, 4595),
+        'm_parents' => array(6203, 4593, 4592, 4537, 4595),
     ),
     4261 => array(
         'm_icon' => '<i class="fal fa-file-pdf"></i>',
@@ -1918,7 +1745,7 @@ $config['en_all_4600'] = array(
         'm_parents' => array(4600),
     ),
     2750 => array(
-        'm_icon' => '<i class="fal fa-users"></i>',
+        'm_icon' => '<i class="fas fa-users"></i>',
         'm_name' => 'Organizations',
         'm_desc' => '',
         'm_parents' => array(4432, 4600),
@@ -2004,25 +1831,25 @@ $config['en_all_4593'] = array(
         'm_icon' => '<i class="fal fa-play-circle"></i>',
         'm_name' => 'Linked Entities Embed URL',
         'm_desc' => '',
-        'm_parents' => array(4990, 4593, 4592, 4537, 4506, 4595),
+        'm_parents' => array(4593, 4592, 4537, 4506, 4595),
     ),
     4258 => array(
         'm_icon' => '<i class="fal fa-video"></i>',
         'm_name' => 'Linked Entities Video',
         'm_desc' => '',
-        'm_parents' => array(6203, 4990, 4593, 4592, 4537, 4595),
+        'm_parents' => array(6203, 4593, 4592, 4537, 4595),
     ),
     4259 => array(
         'm_icon' => '<i class="fal fa-volume-up"></i>',
         'm_name' => 'Linked Entities Audio',
         'm_desc' => '',
-        'm_parents' => array(6203, 4990, 4593, 4592, 4537, 4595),
+        'm_parents' => array(6203, 4593, 4592, 4537, 4595),
     ),
     4260 => array(
         'm_icon' => '<i class="fal fa-image"></i>',
         'm_name' => 'Linked Entities Image',
         'm_desc' => '',
-        'm_parents' => array(6203, 4990, 4593, 4592, 4537, 4595),
+        'm_parents' => array(6203, 4593, 4592, 4537, 4595),
     ),
     4261 => array(
         'm_icon' => '<i class="fal fa-file-pdf"></i>',
@@ -2465,25 +2292,25 @@ $config['en_all_4592'] = array(
         'm_icon' => '<i class="fal fa-play-circle"></i>',
         'm_name' => 'Embed URL',
         'm_desc' => '',
-        'm_parents' => array(4990, 4593, 4592, 4537, 4506, 4595),
+        'm_parents' => array(4593, 4592, 4537, 4506, 4595),
     ),
     4258 => array(
         'm_icon' => '<i class="fal fa-video"></i>',
         'm_name' => 'Video',
         'm_desc' => '',
-        'm_parents' => array(6203, 4990, 4593, 4592, 4537, 4595),
+        'm_parents' => array(6203, 4593, 4592, 4537, 4595),
     ),
     4259 => array(
         'm_icon' => '<i class="fal fa-volume-up"></i>',
         'm_name' => 'Audio',
         'm_desc' => '',
-        'm_parents' => array(6203, 4990, 4593, 4592, 4537, 4595),
+        'm_parents' => array(6203, 4593, 4592, 4537, 4595),
     ),
     4260 => array(
         'm_icon' => '<i class="fal fa-image"></i>',
         'm_name' => 'Image',
         'm_desc' => '',
-        'm_parents' => array(6203, 4990, 4593, 4592, 4537, 4595),
+        'm_parents' => array(6203, 4593, 4592, 4537, 4595),
     ),
     4261 => array(
         'm_icon' => '<i class="fal fa-file-pdf"></i>',
@@ -2628,25 +2455,25 @@ $config['en_all_4537'] = array(
         'm_icon' => '<i class="fal fa-play-circle"></i>',
         'm_name' => 'Embed URL',
         'm_desc' => 'Link note contain a recognizable URL that offers an embed widget for a more engaging play-back experience.',
-        'm_parents' => array(4990, 4593, 4592, 4537, 4506, 4595),
+        'm_parents' => array(4593, 4592, 4537, 4506, 4595),
     ),
     4258 => array(
         'm_icon' => '<i class="fal fa-video"></i>',
         'm_name' => 'Video',
         'm_desc' => 'Link notes contain a URL to a raw video file.',
-        'm_parents' => array(6203, 4990, 4593, 4592, 4537, 4595),
+        'm_parents' => array(6203, 4593, 4592, 4537, 4595),
     ),
     4259 => array(
         'm_icon' => '<i class="fal fa-volume-up"></i>',
         'm_name' => 'Audio',
         'm_desc' => 'Link notes contain a URL to a raw audio file.',
-        'm_parents' => array(6203, 4990, 4593, 4592, 4537, 4595),
+        'm_parents' => array(6203, 4593, 4592, 4537, 4595),
     ),
     4260 => array(
         'm_icon' => '<i class="fal fa-image"></i>',
         'm_name' => 'Image',
         'm_desc' => 'Link notes contain a URL to a raw image file.',
-        'm_parents' => array(6203, 4990, 4593, 4592, 4537, 4595),
+        'm_parents' => array(6203, 4593, 4592, 4537, 4595),
     ),
     4261 => array(
         'm_icon' => '<i class="fal fa-file-pdf"></i>',
@@ -2660,63 +2487,63 @@ $config['en_all_4537'] = array(
 $config['en_ids_3000'] = array(2997, 2998, 2999, 3005, 3147, 3192, 4446, 4763, 4883, 5948);
 $config['en_all_3000'] = array(
     2997 => array(
-        'm_icon' => '<i class="fal fa-newspaper"></i>',
+        'm_icon' => '<i class="fas fa-newspaper"></i>',
         'm_name' => 'Expert Articles',
         'm_desc' => '&var_weight=2',
-        'm_parents' => array(4990, 3000),
+        'm_parents' => array(3000),
     ),
     2998 => array(
-        'm_icon' => '<i class="fal fa-film"></i>',
+        'm_icon' => '<i class="fas fa-film"></i>',
         'm_name' => 'Expert Videos',
         'm_desc' => '&var_weight=5',
-        'm_parents' => array(4990, 3000),
+        'm_parents' => array(3000),
     ),
     2999 => array(
-        'm_icon' => '<i class="fal fa-microphone"></i>',
+        'm_icon' => '<i class="fas fa-microphone"></i>',
         'm_name' => 'Expert Podcasts',
         'm_desc' => '&var_weight=7',
-        'm_parents' => array(6805, 4990, 3000),
+        'm_parents' => array(6805, 3000),
     ),
     3005 => array(
-        'm_icon' => '<i class="fal fa-book"></i>',
+        'm_icon' => '<i class="fas fa-book"></i>',
         'm_name' => 'Expert Books',
         'm_desc' => '&var_weight=100',
-        'm_parents' => array(6805, 4990, 3000),
+        'm_parents' => array(6805, 3000),
     ),
     3147 => array(
-        'm_icon' => '<i class="fal fa-presentation"></i>',
+        'm_icon' => '<i class="fas fa-presentation"></i>',
         'm_name' => 'Expert Courses',
         'm_desc' => '&var_weight=50',
-        'm_parents' => array(6805, 4990, 3000),
+        'm_parents' => array(6805, 3000),
     ),
     3192 => array(
-        'm_icon' => '<i class="fal fa-compact-disc"></i>',
+        'm_icon' => '<i class="fas fa-compact-disc"></i>',
         'm_name' => 'Expert Software',
         'm_desc' => '&var_weight=1',
-        'm_parents' => array(6805, 4990, 3000),
+        'm_parents' => array(6805, 3000),
     ),
     4446 => array(
-        'm_icon' => '<i class="fal fa-tachometer"></i>',
+        'm_icon' => '<i class="fas fa-tachometer"></i>',
         'm_name' => 'Expert Assessments',
         'm_desc' => '&var_weight=10',
-        'm_parents' => array(4990, 3000),
+        'm_parents' => array(3000),
     ),
     4763 => array(
-        'm_icon' => '<i class="fal fa-bullhorn"></i>',
+        'm_icon' => '<i class="fas fa-bullhorn"></i>',
         'm_name' => 'Expert Marketing Channels',
         'm_desc' => '&var_weight=1',
-        'm_parents' => array(6805, 4990, 3000),
+        'm_parents' => array(6805, 3000),
     ),
     4883 => array(
-        'm_icon' => '<i class="fal fa-concierge-bell"></i>',
+        'm_icon' => '<i class="fas fa-concierge-bell"></i>',
         'm_name' => 'Expert Services',
         'm_desc' => '&var_weight=1',
-        'm_parents' => array(6805, 4990, 3000),
+        'm_parents' => array(6805, 3000),
     ),
     5948 => array(
-        'm_icon' => '<i class="fal fa-file-invoice"></i>',
+        'm_icon' => '<i class="fas fa-file-invoice"></i>',
         'm_name' => 'Expert Templates',
         'm_desc' => '&var_weight=1',
-        'm_parents' => array(4990, 3000),
+        'm_parents' => array(3000),
     ),
 );
