@@ -274,6 +274,11 @@ if(!$action) {
         if(isset($ln_metadata['output_message']['message']['quick_replies']) && count($ln_metadata['output_message']['message']['quick_replies']) > 0){
             $quick_reply_found++;
             $quick_reply_options += count($ln_metadata['output_message']['message']['quick_replies']);
+
+            //Update type:
+            $this->Links_model->ln_update($check['ln_id'], array(
+                'ln_type_entity_id' => 6563,
+            ));
         }
     }
 
