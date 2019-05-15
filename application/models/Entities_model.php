@@ -128,18 +128,6 @@ class Entities_model extends CI_Model
 
             }
 
-            //This will fetch Children up to a maximum of $this->config->item('items_per_page')
-            if (in_array('en__children', $join_objects)) {
-
-                $res[$key]['en__children'] = $this->Links_model->ln_fetch(array(
-                    'ln_parent_entity_id' => $val['en_id'],
-                    'ln_type_entity_id IN (' . join(',', $this->config->item('en_ids_4592')) . ')' => null, //Entity Link Connectors
-                    'ln_status >=' => 0, //New+
-                    'en_status >=' => 0, //New+
-                ), array('en_child'), $this->config->item('items_per_page'), 0, array('ln_order' => 'ASC', 'en_trust_score' => 'DESC'));
-
-            }
-
 
             //Always fetch entity parents unless explicitly requested not to:
             if (in_array('skip_en__parents', $join_objects) || !isset($val['en_id'])) {

@@ -242,7 +242,9 @@ class Admin extends CI_Controller
         $ie_ens = $this->Entities_model->en_fetch(array(
             'en_id' => 3000, //Industry Expert Sources
             'en_status >=' => 0, //New+
-        ), array('en__children'), 0, 0, array('en_name' => 'ASC'));
+        ), array(), 0, 0, array('en_name' => 'ASC'));
+
+
 
         $expert_source_types = 0;
         $all_source_count = 0;
@@ -251,7 +253,12 @@ class Admin extends CI_Controller
         $all_mined_source_count_weigh = 0;
         $expert_sources = ''; //Saved the UI for later view...
 
-        foreach ($ie_ens[0]['en__children'] as $source_en) {
+        foreach ($this->Links_model->ln_fetch(array(
+            'ln_parent_entity_id' => 3000,
+            'ln_type_entity_id IN (' . join(',', $this->config->item('en_ids_4592')) . ')' => null, //Entity Link Connectors
+            'ln_status >=' => 0, //New+
+            'en_status >=' => 0, //New+
+        ), array('en_child'), $this->config->item('items_per_page'), 0, array('en_trust_score' => 'DESC')) as $source_en) {
 
             //Count any/all sources (complete or incomplete):
             $source_count = $this->Entities_model->en_child_count($source_en['en_id']);

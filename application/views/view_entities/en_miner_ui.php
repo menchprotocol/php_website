@@ -202,12 +202,28 @@
 
 
 
+        //Private hack for now:
+        //TODO Build UI for this via Github Issue #2354
+        $set_sort = ( isset($_GET['set_sort']) ? $_GET['set_sort'] : 'none' );
+        echo '<input type="hidden" id="set_sort" value="'.$set_sort.'" />'; //For JS to pass to the next page loader...
+
+
+
+
         echo '<div id="list-children" class="list-group grey-list indent2">';
 
-        foreach ($entity['en__children'] as $en) {
+
+        $entity__children = $this->Links_model->ln_fetch(array(
+            'ln_parent_entity_id' => $entity['en_id'],
+            'ln_type_entity_id IN (' . join(',', $this->config->item('en_ids_4592')) . ')' => null, //Entity Link Connectors
+            'ln_status >=' => 0, //New+
+            'en_status >=' => 0, //New+
+        ), array('en_child'), $this->config->item('items_per_page'), 0, sort_entities($set_sort));
+
+        foreach ($entity__children as $en) {
             echo echo_en($en, 2);
         }
-        if ($entity['en__child_count'] > count($entity['en__children'])) {
+        if ($entity['en__child_count'] > count($entity__children)) {
             echo_en_load_more(1, $this->config->item('items_per_page'), $entity['en__child_count']);
         }
 

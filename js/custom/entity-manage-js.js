@@ -361,6 +361,7 @@ function en_load_next_page(page, load_new_filter = 0) {
         page: page,
         parent_en_id: en_focus_id,
         en_focus_filter: en_focus_filter,
+        set_sort: $('#set_sort').val(),
     }, function (data) {
 
         //Appending to existing content:

@@ -105,7 +105,8 @@ class Entities extends CI_Controller
         //Validate entity ID and fetch data:
         $ens = $this->Entities_model->en_fetch(array(
             'en_id' => $en_id,
-        ), array('en__child_count', 'en__children'));
+        ), array('en__child_count'));
+
         if (count($ens) < 1) {
             return redirect_message('/entities', '<div class="alert alert-danger" role="alert">Invalid Entity ID</div>');
         }
@@ -253,7 +254,7 @@ class Entities extends CI_Controller
         }
 
         //Fetch & display next batch of children, ordered by en_trust_score DESC which is aligned with other entity ordering:
-        $child_entities = $this->Links_model->ln_fetch($filters, array('en_child'), $items_per_page, ($page * $items_per_page), array('en_trust_score' => 'DESC'));
+        $child_entities = $this->Links_model->ln_fetch($filters, array('en_child'), $items_per_page, ($page * $items_per_page), sort_entities($_POST['set_sort']));
 
         foreach ($child_entities as $en) {
             echo echo_en($en, 2, false);

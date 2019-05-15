@@ -933,6 +933,23 @@ function update_algolia($input_obj_type = null, $input_obj_id = 0, $return_row_o
 }
 
 
+function sort_entities($set_sort){
+    if($set_sort=='en_name'){
+        return array('en_name' => 'ASC');
+    } elseif($set_sort=='en_status'){
+        return array('en_status' => 'ASC');
+    } elseif($set_sort=='ln_content'){
+        return array('ln_content' => 'ASC');
+    } else {
+        //Default sorting:
+        return array(
+            'ln_order' => 'ASC',
+            'en_trust_score' => 'DESC'
+        );
+    }
+}
+
+
 function fetch_points($ln_type_entity_id){
 
     //Points for each Link Type:
