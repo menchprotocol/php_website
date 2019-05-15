@@ -252,37 +252,29 @@ if(!$action) {
 
 } elseif($action=='reset_all_points') {
 
+
+
     boost_power();
 
     //Hidden function to reset points:
     $all_link_types = $this->Links_model->ln_fetch(array('ln_status >=' => 0), array('en_type'), 0, 0, array('en_name' => 'ASC'), 'COUNT(ln_type_entity_id) as trs_count, en_name, en_icon, ln_type_entity_id', 'ln_type_entity_id, en_name, en_icon');
 
 
-    //Go over text message and convert to quick reply when needed:
-    $total = 0;
-    $quick_reply_found = 0;
-    $quick_reply_options = 0;
-    foreach($this->Links_model->ln_fetch(array(
-        'ln_type_entity_id' => 4552,
-        'ln_status >=' => 0,
-    ), array(), 0) as $check){
+    $total_updated = 0;
+    foreach ($all_link_types as $count => $ln) {
 
-        $total++;
+        $points = fetch_points($ln['ln_type_entity_id']);
 
-        $ln_metadata = unserialize($check['ln_metadata']);
+        //Update all links with out-of-date points:
+        $this->db->query("UPDATE table_links SET ln_points = ".$points." WHERE ln_points != ".$points." AND ln_type_entity_id = " . $ln['ln_type_entity_id']);
 
-        if(isset($ln_metadata['output_message']['message']['quick_replies']) && count($ln_metadata['output_message']['message']['quick_replies']) > 0){
-            $quick_reply_found++;
-            $quick_reply_options += count($ln_metadata['output_message']['message']['quick_replies']);
+        //Count how many updates:
+        $total_updated += $this->db->affected_rows();
 
-            //Update type:
-            $this->Links_model->ln_update($check['ln_id'], array(
-                'ln_type_entity_id' => 6563,
-            ));
-        }
     }
 
-    echo 'From '.$total.' messages '.$quick_reply_found.' had quick replies with '.$quick_reply_options.' options';
+    echo $total_updated.' links updated with new points';
+
 
 } elseif($action=='assessment_marks_list_all') {
 

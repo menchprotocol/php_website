@@ -2,6 +2,7 @@
 //In milli seconds:
 var fadeout_frequency = 1000;
 var fadeout_speed = 21;
+var refresh_stat_counts = true;
 
 
 $(document).ready(function () {
@@ -18,6 +19,10 @@ $(document).ready(function () {
 //Update page count stats & refresh them visually once they change:
 var update_basic_stats = function() {
     //your jQuery ajax code
+
+    if(!refresh_stat_counts){
+        return false;
+    }
 
     //Fetch latest stats:
     $.post("/admin/basic_stats_all", {}, function (data) {
@@ -52,6 +57,9 @@ function load_extra_stats(object_id){
     //See state:
     var is_openning = $('#stats_' + object_id + '_box .load_stats_box').hasClass('hidden');
 
+    //Disable for now:
+    refresh_stat_counts = false;
+
     //Toggle view every time:
     $('#stats_' + object_id + '_box .extra_stat_content').toggleClass('hidden');
 
@@ -69,6 +77,9 @@ function load_extra_stats(object_id){
 
             //Reload Tooltip again:
             $('[data-toggle="tooltip"]').tooltip();
+
+            //Re-Enable again:
+            refresh_stat_counts = true;
 
         });
 
