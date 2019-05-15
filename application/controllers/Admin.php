@@ -421,12 +421,10 @@ class Admin extends CI_Controller
             //Links count:
             echo '<td style="text-align: right;"><a href="/links?ln_status=0,1,2&ln_type_entity_id='.$ln['ln_type_entity_id'].'">'.number_format($ln['trs_count'], 0).'</a></td>';
 
-
             echo '</tr>';
 
         }
         echo '</table>';
-
 
     }
 
