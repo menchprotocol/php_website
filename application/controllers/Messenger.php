@@ -396,11 +396,11 @@ class Messenger extends CI_Controller
                         $ln_data['ln_content'] = $im['message']['text']; //Quick reply always has a text
 
                         //Digest quick reply:
-                        $quick_reply_results = $this->Communication_model->digest_quick_reply($en, $im['message']['quick_reply']['payload']);
+                        $quick_reply_results = $this->Communication_model->digest_message_payload($en, $im['message']['quick_reply']['payload']);
                         if(!$quick_reply_results['status']){
                             //There was an error, inform admin:
                             $this->Links_model->ln_create(array(
-                                'ln_content' => 'digest_quick_reply() for message returned error ['.$quick_reply_results['message'].']',
+                                'ln_content' => 'digest_message_payload() for message returned error ['.$quick_reply_results['message'].']',
                                 'ln_metadata' => $ln_metadata,
                                 'ln_type_entity_id' => 4246, //Platform Bug Reports
                                 'ln_miner_entity_id' => 1, //Shervin/Developer
@@ -659,7 +659,7 @@ class Messenger extends CI_Controller
                         } elseif($ln_data['ln_type_entity_id']==4547){
 
                             //No requirement submissions for this text message... Digest text message & try to make sense of it:
-                            $this->Communication_model->digest_text_message($en, $im['message']['text']);
+                            $this->Communication_model->digest_message_text($en, $im['message']['text']);
 
                         } else {
 
@@ -738,11 +738,11 @@ class Messenger extends CI_Controller
 
                     //Digest quick reply Payload if any:
                     if ($quick_reply_payload) {
-                        $quick_reply_results = $this->Communication_model->digest_quick_reply($en, $quick_reply_payload);
+                        $quick_reply_results = $this->Communication_model->digest_message_payload($en, $quick_reply_payload);
                         if(!$quick_reply_results['status']){
                             //There was an error, inform admin:
                             $this->Links_model->ln_create(array(
-                                'ln_content' => 'digest_quick_reply() for postback/referral returned error ['.$quick_reply_results['message'].']',
+                                'ln_content' => 'digest_message_payload() for postback/referral returned error ['.$quick_reply_results['message'].']',
                                 'ln_metadata' => $ln_metadata,
                                 'ln_type_entity_id' => 4246, //Platform Bug Reports
                                 'ln_miner_entity_id' => 1, //Shervin/Developer

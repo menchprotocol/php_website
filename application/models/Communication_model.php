@@ -1257,7 +1257,7 @@ class Communication_model extends CI_Model
     }
 
 
-    function digest_quick_reply($en, $quick_reply_payload)
+    function digest_message_payload($en, $quick_reply_payload)
     {
 
         /*
@@ -1635,12 +1635,14 @@ class Communication_model extends CI_Model
                 $time_info = echo_tree_time_estimate($ins[0], true);
 
                 if($source_info || $step_info || $time_info){
-                    $overview_message = 'Here is an overview:' . "\n\n" . $source_info . $step_info . $time_info . "\n";
+                    $overview_message .= 'Here is an overview:' . "\n\n" . $source_info . $step_info . $time_info . "\n";
                 }
+
+                $overview_message .= 'Should I add the intention to ' . $ins[0]['in_outcome'] . ' to your Action Plan?';
 
                 //Send message for final confirmation with the overview of how long/difficult it would be to accomplish this intention:
                 $this->Communication_model->dispatch_message(
-                    $overview_message . 'Should I add the intention to ' . $ins[0]['in_outcome'] . ' to your Action Plan?',
+                    $overview_message,
                     $en,
                     true,
                     array(
@@ -1659,6 +1661,14 @@ class Communication_model extends CI_Model
                         'ln_parent_intent_id' => $ins[0]['in_id'],
                     )
                 );
+
+                //Log as Action Plan Considered:
+                $this->Links_model->ln_create(array(
+                    'ln_miner_entity_id' => $en['en_id'],
+                    'ln_type_entity_id' => 6149, //Action Plan Intention Considered
+                    'ln_parent_intent_id' => $ins[0]['in_id'],
+                    'ln_content' => $overview_message, //A copy of their message
+                ));
 
             }
 
@@ -1857,13 +1867,13 @@ class Communication_model extends CI_Model
     }
 
 
-    function digest_text_message($en, $fb_received_message)
+    function digest_message_text($en, $fb_received_message)
     {
 
         /*
          *
          * Will process the chat message only in the absence of a chat metadata
-         * otherwise the digest_quick_reply() will process the message since we
+         * otherwise the digest_message_payload() will process the message since we
          * know that the medata would have more precise instructions on what
          * needs to be done for the User response.
          *
@@ -2240,13 +2250,13 @@ class Communication_model extends CI_Model
                         if(substr($fb_received_message, 0, strlen($quick_reply['title'])) == strtolower($quick_reply['title'])){
 
                             //Yes! We found a match, trigger the payload:
-                            $quick_reply_results = $this->Communication_model->digest_quick_reply($en, $quick_reply['payload']);
+                            $quick_reply_results = $this->Communication_model->digest_message_payload($en, $quick_reply['payload']);
 
                             if(!$quick_reply_results['status']){
 
                                 //There was an error, inform admin:
                                 $this->Links_model->ln_create(array(
-                                    'ln_content' => 'digest_quick_reply() for custom response ['.$fb_received_message.'] returned error ['.$quick_reply_results['message'].']',
+                                    'ln_content' => 'digest_message_payload() for custom response ['.$fb_received_message.'] returned error ['.$quick_reply_results['message'].']',
                                     'ln_metadata' => $ln_metadata,
                                     'ln_type_entity_id' => 4246, //Platform Bug Reports
                                     'ln_miner_entity_id' => 1, //Shervin/Developer
