@@ -253,6 +253,7 @@ if(!$action) {
 } elseif($action=='reset_all_points') {
 
 
+    die('Locked via code base');
 
     boost_power();
 
