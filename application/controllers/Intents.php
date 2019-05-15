@@ -890,7 +890,7 @@ class Intents extends CI_Controller
         }
 
         //Make sure message is all good:
-        $msg_validation = $this->Communication_model->dispatch_validate_message($_POST['ln_content'], array(), false, array(), $_POST['focus_ln_type_entity_id'], $_POST['in_id']);
+        $msg_validation = $this->Communication_model->dispatch_validate_message($_POST['ln_content'], $session_en, false, array(), $_POST['focus_ln_type_entity_id'], $_POST['in_id']);
 
         if (!$msg_validation['status']) {
             //There was some sort of an error:
@@ -1271,7 +1271,7 @@ class Intents extends CI_Controller
 
 
         //Validate new message:
-        $msg_validation = $this->Communication_model->dispatch_validate_message($_POST['ln_content'], array(), false, array(), $messages[0]['ln_type_entity_id'], $_POST['in_id']);
+        $msg_validation = $this->Communication_model->dispatch_validate_message($_POST['ln_content'], $session_en, false, array(), $messages[0]['ln_type_entity_id'], $_POST['in_id']);
         if (!$msg_validation['status']) {
             //There was some sort of an error:
             return echo_json($msg_validation);

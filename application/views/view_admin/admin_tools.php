@@ -468,9 +468,13 @@ $.post("/intents/assessment_marks_reports", {
                 true
             );
 
+        } elseif(intval($_POST['recipient_en']) > 0) {
+
+            $msg_validation = $this->Communication_model->dispatch_validate_message($_POST['test_message'], array('en_id' => $_POST['recipient_en']), $_POST['fb_messenger_format']);
+
         } else {
 
-            $msg_validation = $this->Communication_model->dispatch_validate_message($_POST['test_message'], ( intval($_POST['recipient_en']) ? array('en_id' => $_POST['recipient_en']) : array() ), $_POST['fb_messenger_format']);
+            echo 'Missing recipient';
 
         }
 

@@ -663,104 +663,103 @@ class Communication_model extends CI_Model
                     continue;
                 }
 
-                if (in_array($parent_en['ln_type_entity_id'], $this->config->item('en_ids_4537'))) {
+                //Make sure this is a URL:
+                if(!in_array($parent_en['ln_type_entity_id'], $this->config->item('en_ids_4537'))){
+                    //Consider showing some details?
+                    //$entity_appendix .= '<div class="entity-appendix">' . $parent_en['en_icon'] . ' '. $parent_en['en_name'] . (strlen($parent_en['ln_content']) > 0 ? ': '. $parent_en['ln_content'] : '') . '</div>';
+                    continue;
+                }
 
-                    //Any Type of URL: Generic, Embed, Video, Audio, Image & File
 
-                    if ($parent_en['ln_type_entity_id'] == 4257) {
 
-                        //Embed URL
-                        //Do we have a Slice command AND is this Embed URL Slice-able?
-                        if (in_array('/slice', $string_references['ref_commands']) && includes_any($parent_en['ln_content'], $sliceable_urls)) {
+                //Any Type of URL: Generic, Embed, Video, Audio, Image & File
 
-                            //We've found a slice-able URL:
-                            $found_slicable_url = true;
+                if ($parent_en['ln_type_entity_id'] == 4257) {
 
-                            if ($fb_messenger_format) {
-                                //Show custom Start/End URL:
-                                $ln_content = 'https://www.youtube.com/embed/' . extract_youtube_id($parent_en['ln_content']) . '?start=' . $slice_times[0] . '&end=' . $slice_times[1] . '&autoplay=1';
-                            } else {
-                                //Show HTML Embed Code for slice-able:
-                                $ln_content = '<div class="entity-appendix">' . echo_url_embed($parent_en['ln_content'], $parent_en['ln_content'], false, $slice_times[0], $slice_times[1]) . '</div>';
-                            }
+                    //Embed URL
+                    //Do we have a Slice command AND is this Embed URL Slice-able?
+                    if (in_array('/slice', $string_references['ref_commands']) && includes_any($parent_en['ln_content'], $sliceable_urls)) {
 
-                        } else {
-
-                            if ($fb_messenger_format) {
-                                //Show custom Start/End URL:
-                                $ln_content = $parent_en['ln_content'];
-                            } else {
-                                //Show HTML Embed Code:
-                                $ln_content = '<div class="entity-appendix">' . echo_url_embed($parent_en['ln_content']) . '</div>';
-                            }
-
-                        }
-
+                        //We've found a slice-able URL:
+                        $found_slicable_url = true;
 
                         if ($fb_messenger_format) {
-
-                            //Generic URL:
-                            array_push($fb_media_attachments, array(
-                                'ln_type_entity_id' => 4552, //Text Message Sent
-                                'ln_content' => $ln_content,
-                                'fb_att_id' => 0,
-                                'fb_att_type' => null,
-                            ));
-
+                            //Show custom Start/End URL:
+                            $ln_content = 'https://www.youtube.com/embed/' . extract_youtube_id($parent_en['ln_content']) . '?start=' . $slice_times[0] . '&end=' . $slice_times[1] . '&autoplay=1';
                         } else {
-
-                            //HTML Format, append content to current output message:
-                            $entity_appendix .= $ln_content;
-
+                            //Show HTML Embed Code for slice-able:
+                            $ln_content = '<div class="entity-appendix">' . echo_url_embed($parent_en['ln_content'], $parent_en['ln_content'], false, $slice_times[0], $slice_times[1]) . '</div>';
                         }
 
-                    } elseif ($fb_messenger_format && array_key_exists($parent_en['ln_type_entity_id'], $fb_convert_4537)) {
+                    } else {
 
-                        //Raw media file: Audio, Video, Image OR File...
-
-                        //Search for Facebook Attachment ID IF $fb_messenger_format = TRUE
-                        $fb_att_id = 0;
-                        if ($fb_messenger_format && strlen($parent_en['ln_metadata']) > 0) {
-                            //We might have a Facebook Attachment ID saved in Metadata, check to see:
-                            $metadata = unserialize($parent_en['ln_metadata']);
-                            if (isset($metadata['fb_att_id']) && intval($metadata['fb_att_id']) > 0) {
-                                //Yes we do, use this for faster media attachments:
-                                $fb_att_id = intval($metadata['fb_att_id']);
-                            }
+                        if ($fb_messenger_format) {
+                            //Show custom Start/End URL:
+                            $ln_content = $parent_en['ln_content'];
+                        } else {
+                            //Show HTML Embed Code:
+                            $ln_content = '<div class="entity-appendix">' . echo_url_embed($parent_en['ln_content']) . '</div>';
                         }
 
-                        //Push raw file to Media Array:
-                        array_push($fb_media_attachments, array(
-                            'ln_type_entity_id' => $master_media_sent_conv[$parent_en['ln_type_entity_id']],
-                            'ln_content' => ($fb_att_id > 0 ? null : $parent_en['ln_content']),
-                            'fb_att_id' => $fb_att_id,
-                            'fb_att_type' => $fb_convert_4537[$parent_en['ln_type_entity_id']],
-                        ));
+                    }
 
-                    } elseif($fb_messenger_format && $parent_en['ln_type_entity_id'] == 4256){
+
+                    if ($fb_messenger_format) {
 
                         //Generic URL:
                         array_push($fb_media_attachments, array(
                             'ln_type_entity_id' => 4552, //Text Message Sent
-                            'ln_content' => $parent_en['ln_content'],
+                            'ln_content' => $ln_content,
                             'fb_att_id' => 0,
                             'fb_att_type' => null,
                         ));
 
-                    } elseif(!$fb_messenger_format){
+                    } else {
 
                         //HTML Format, append content to current output message:
-                        $entity_appendix .= '<div class="entity-appendix">' . echo_url_type($parent_en['ln_content'], $parent_en['ln_type_entity_id']) . '</div>';
+                        $entity_appendix .= $ln_content;
 
                     }
+
+                } elseif ($fb_messenger_format && array_key_exists($parent_en['ln_type_entity_id'], $fb_convert_4537)) {
+
+                    //Raw media file: Audio, Video, Image OR File...
+
+                    //Search for Facebook Attachment ID IF $fb_messenger_format = TRUE
+                    $fb_att_id = 0;
+                    if ($fb_messenger_format && strlen($parent_en['ln_metadata']) > 0) {
+                        //We might have a Facebook Attachment ID saved in Metadata, check to see:
+                        $metadata = unserialize($parent_en['ln_metadata']);
+                        if (isset($metadata['fb_att_id']) && intval($metadata['fb_att_id']) > 0) {
+                            //Yes we do, use this for faster media attachments:
+                            $fb_att_id = intval($metadata['fb_att_id']);
+                        }
+                    }
+
+                    //Push raw file to Media Array:
+                    array_push($fb_media_attachments, array(
+                        'ln_type_entity_id' => $master_media_sent_conv[$parent_en['ln_type_entity_id']],
+                        'ln_content' => ($fb_att_id > 0 ? null : $parent_en['ln_content']),
+                        'fb_att_id' => $fb_att_id,
+                        'fb_att_type' => $fb_convert_4537[$parent_en['ln_type_entity_id']],
+                    ));
+
+                } elseif($fb_messenger_format && $parent_en['ln_type_entity_id'] == 4256){
+
+                    //Generic URL:
+                    array_push($fb_media_attachments, array(
+                        'ln_type_entity_id' => 4552, //Text Message Sent
+                        'ln_content' => $parent_en['ln_content'],
+                        'fb_att_id' => 0,
+                        'fb_att_type' => null,
+                    ));
 
                 } elseif(!$fb_messenger_format){
 
                     //HTML Format, append content to current output message:
-                    $entity_appendix .= '<div class="entity-appendix">' . $parent_en['en_icon'] . ' '. $parent_en['en_name'] . (strlen($parent_en['ln_content']) > 0 ? ': '. $parent_en['ln_content'] : '') . '</div>';
+                    $entity_appendix .= '<div class="entity-appendix">' . echo_url_type($parent_en['ln_content'], $parent_en['ln_type_entity_id']) . '</div>';
 
                 }
-
             }
 
 
