@@ -11,7 +11,7 @@ defined('BASEPATH') OR exit('No direct script access allowed');
  *
  */
 
-//Generated 2019-05-14 17:58:20 PST
+//Generated 2019-05-14 18:03:25 PST
 
 //Can be Set as Action Plan Intention:
 $config['en_ids_6908'] = array(6677, 6678, 6679, 6680, 6681, 6682, 6683, 6684);
@@ -63,17 +63,6 @@ $config['en_all_6908'] = array(
         'm_name' => 'OR Intent Normal Selection',
         'm_desc' => '',
         'm_parents' => array(6908, 6193),
-    ),
-);
-
-//Zero Time Estimate:
-$config['en_ids_6766'] = array(6686);
-$config['en_all_6766'] = array(
-    6686 => array(
-        'm_icon' => '<i class="fas fa-random"></i>',
-        'm_name' => 'OR Intent Random Selection',
-        'm_desc' => '',
-        'm_parents' => array(6766, 6193),
     ),
 );
 
@@ -300,7 +289,7 @@ $config['en_all_6193'] = array(
         'm_icon' => '<i class="fas fa-random"></i>',
         'm_name' => 'Random Selection',
         'm_desc' => 'A random selection would be made when the student reaches this intent. Good for A/B testing.',
-        'm_parents' => array(6766, 6193),
+        'm_parents' => array(6193),
     ),
     6907 => array(
         'm_icon' => '<i class="fas fa-lock"></i>',

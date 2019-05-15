@@ -66,11 +66,6 @@ $(document).ready(function () {
         in_load_type(this.value);
     });
 
-    //Lookout for intent SUB-type changes
-    $('.intent-sub-type').change(function () {
-        in_toggle_time_estimate(this.value);
-    });
-
 
     //Do we need to auto load anything?
     if (window.location.hash) {
@@ -106,22 +101,9 @@ function echo_js_hours(in_completion_seconds) {
 }
 
 
-function in_toggle_time_estimate(in_type_entity_id){
-    //Maybe we need to hide the time estimate?
-    if(en_ids_6766.indexOf(parseInt(in_type_entity_id)) === -1){
-        //Show input:
-        $('.time-estimate-box').removeClass('hidden');
-    } else {
-        //It is zero estimate, hide the input:
-        $('.time-estimate-box').addClass('hidden');
-    }
-}
-
 function in_load_type(in_6676_type) {
     $('.show-all-types').addClass('hidden');
     $('.show-for-'+in_6676_type).removeClass('hidden');
-    //Also update inner trigger:
-    in_toggle_time_estimate(parseInt($('#in_'+in_6676_type+'_type').val()));
 }
 
 function in_adjust_link_ui() {
@@ -385,14 +367,6 @@ function in_modify_save() {
     });
 
 
-    //Remove time if necessary:
-    var in_6676_type = parseInt($('input[name=in_6676_type]:checked').val());
-    if(!(en_ids_6766.indexOf(parseInt($('#in_'+in_6676_type+'_type').val())) === -1)){
-        //Update the input field:
-        $('#in_completion_seconds').val('0');
-    }
-
-
     //Prepare data to be modified for this intent:
     var modify_data = {
         in_id: in_id,
@@ -404,7 +378,7 @@ function in_modify_save() {
         is_parent: ( $('.intent_line_' + in_id).hasClass('parent-intent') ? 1 : 0 ),
 
         //Intent Types:
-        in_6676_type:in_6676_type, //Main AND/OR Type
+        in_6676_type:parseInt($('input[name=in_6676_type]:checked').val()), //Main AND/OR Type
         in_6192_type:parseInt($('#in_6192_type').val()), //AND Types IF AND was selected
         in_6193_type:parseInt($('#in_6193_type').val()), //OR Types IF OR was selected
 

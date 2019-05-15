@@ -6,7 +6,6 @@
     var en_all_6676 = <?= json_encode($this->config->item('en_all_6676')) ?>; //AND/OR Branch
     var en_all_6192 = <?= json_encode($this->config->item('en_all_6192')) ?>; //AND Children
     var en_all_6193 = <?= json_encode($this->config->item('en_all_6193')) ?>; //OR Children
-    var en_ids_6766 = <?= json_encode($this->config->item('en_ids_6766')) ?>; //Zero Time Estimate (Intent Types)
 </script>
 <script src="/js/custom/intent-manage-js.js?v=v<?= $this->config->item('app_version') ?>"
         type="text/javascript"></script>

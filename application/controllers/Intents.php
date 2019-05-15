@@ -446,12 +446,6 @@ class Intents extends CI_Controller
             'in_type_entity_id' => $_POST['in_type_entity_id'], //Also used when updating the field
         );
 
-
-        //Is this a Zero Time Estimate intent type?
-        if(in_array($in_update['in_type_entity_id'], $this->config->item('en_ids_6766'))){
-            $in_update['in_completion_seconds'] = 0;
-        }
-
         //Prep current intent metadata:
         $in_metadata = unserialize($ins[0]['in_metadata']);
 
