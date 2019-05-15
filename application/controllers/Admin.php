@@ -163,7 +163,7 @@ class Admin extends CI_Controller
 
 
         //Intent Verbs:
-        $show_max_verbs = 10;
+        $show_max_verbs = 15;
 
         //Fetch all needed data:
         $in_verbs = $this->Intents_model->in_fetch(array(
@@ -308,12 +308,23 @@ class Admin extends CI_Controller
 
 
 
+        //Fetch top certified miners vs top users:
+        $days_ago = 7; //Both miners and users
+        $certified_miners_en_ids = array();
+        foreach($this->Links_model->ln_fetch(array(
+            'ln_parent_entity_id' => 1308, //Mench Certified Miners
+            'ln_type_entity_id IN (' . join(',', $this->config->item('en_ids_4592')) . ')' => null, //Entity Link Connectors
+            'ln_status' => 2, //Published
+        )) as $ln){
+            array_push($certified_miners_en_ids, $ln['ln_child_entity_id']);
+        }
 
-        //Top Users:
+
+        //Top Miners:
         $top = 10;
-        $days_ago = 30;
         $filters = array(
-            'ln_points !=' => 0,
+            'ln_points >' => 0,
+            'ln_miner_entity_id IN ('.join(',', $certified_miners_en_ids).')' => null,
         );
         if(!is_null($days_ago)){
             $start_date = date("Y-m-d" , (time() - ($days_ago * 24 * 3600)));
@@ -325,12 +336,11 @@ class Admin extends CI_Controller
             $top = count($top_users);
         }
 
-
         echo '<table class="table table-condensed table-striped stats-table">';
 
         echo '<tr class="panel-title down-border">';
-        echo '<td style="text-align: left;">'.( !is_null($days_ago) ? 'Last '.$days_ago.' Day'.echo__s($days_ago).' ' : '' ).'Top '.$top.' Users</td>';
-        echo '<td style="text-align: right;">Points</td>';
+        echo '<td style="text-align: left;">Top '.$top.' Miners</td>';
+        echo '<td style="text-align: right;">'.( !is_null($days_ago) ? $days_ago.'-Day ' : '' ).'Points</td>';
         echo '</tr>';
 
         foreach ($top_users as $count=>$ln) {
@@ -341,6 +351,40 @@ class Admin extends CI_Controller
         }
         echo '</table>';
 
+
+
+
+
+        //Top Users:
+        $top = 10;
+        $filters = array(
+            'ln_points >' => 0,
+            'ln_miner_entity_id NOT IN ('.join(',', $certified_miners_en_ids).')' => null,
+        );
+        if(!is_null($days_ago)){
+            $start_date = date("Y-m-d" , (time() - ($days_ago * 24 * 3600)));
+            $filters['ln_timestamp >='] = $start_date.' 00:00:00'; //From beginning of the day
+        }
+        $top_users = $this->Links_model->ln_fetch($filters, array('en_miner'), $top, 0, array('points_sum' => 'DESC'), 'COUNT(ln_miner_entity_id) as trs_count, SUM(ln_points) as points_sum, en_name, en_icon, ln_miner_entity_id', 'ln_miner_entity_id, en_name, en_icon');
+
+        if(count($top_users) < $top){
+            $top = count($top_users);
+        }
+
+        echo '<table class="table table-condensed table-striped stats-table">';
+
+        echo '<tr class="panel-title down-border">';
+        echo '<td style="text-align: left;">Top '.$top.' Users</td>';
+        echo '<td style="text-align: right;">'.( !is_null($days_ago) ? $days_ago.'-Day ' : '' ).'Points</td>';
+        echo '</tr>';
+
+        foreach ($top_users as $count=>$ln) {
+            echo '<tr>';
+            echo '<td style="text-align: left;"><span style="width:29px; display: inline-block; text-align: center; '.( $count > 2 ? 'font-size:0.8em;' : '' ).'">'.echo_rank($count+1).'</span><span class="parent-icon" style="width: 29px; display: inline-block; text-align: center;">'.( strlen($ln['en_icon']) > 0 ? $ln['en_icon'] : '<i class="fas fa-at grey-at"></i>' ).'</span><a href="/entities/'.$ln['ln_miner_entity_id'].'">'.$ln['en_name'].'</a></td>';
+            echo '<td style="text-align: right;"><a href="/links?ln_miner_entity_id='.$ln['ln_miner_entity_id'].( is_null($days_ago) ? '' : '&start_range='.$start_date ).'"  data-toggle="tooltip" title="Mined with '.number_format($ln['trs_count'],0).' links averaging '.round(($ln['points_sum']/$ln['trs_count']),1).' points/link" data-placement="top">'.number_format($ln['points_sum'], 0).'</a></td>';
+            echo '</tr>';
+        }
+        echo '</table>';
 
 
 

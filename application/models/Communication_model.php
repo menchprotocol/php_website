@@ -455,15 +455,39 @@ class Communication_model extends CI_Model
          * */
         if (count($string_references['ref_urls']) > 0) {
 
+
             //We need a user to store this as URL, either via session or assume its a cron job:
-            if(!isset($session_en['en_id'])){
-                $session_en = array(
-                    'en_id' => 4396 //Mench Platform CDN
-                );
+            if(!isset($recipient_en['en_id'])){
+                //See if we have it from the session:
+                $recipient_en = en_auth();
+                if(!isset($recipient_en['en_id'])){
+
+                    //Log bug:
+                    $this->Links_model->ln_create(array(
+                        'ln_type_entity_id' => 4246, //Platform Bug Reports
+                        'ln_miner_entity_id' => 1, //Shervin/Developer
+                        'ln_content' => 'dispatch_validate_message() Failed to locate user entity',
+                        'ln_metadata' => array(
+                            'input_message' => $input_message,
+                            'recipient_en' => $recipient_en,
+                            'fb_messenger_format' => $fb_messenger_format,
+                            'quick_replies' => $quick_replies,
+                            'message_type_en_id' => $message_type_en_id,
+                            'message_in_id' => $message_in_id,
+                            'strict_validation' => $strict_validation,
+                        ),
+                    ));
+
+                    //Assign default for now:
+                    $recipient_en = array(
+                        'en_id' => 4396 //Mench Platform CDN
+                    );
+                }
             }
 
+
             //No entity linked, but we have a URL that we should turn into an entity:
-            $url_entity = $this->Entities_model->en_sync_url($string_references['ref_urls'][0], $session_en['en_id']);
+            $url_entity = $this->Entities_model->en_sync_url($string_references['ref_urls'][0], $recipient_en['en_id']);
 
             //Did we have an error?
             if (!$url_entity['status']) {

@@ -56,9 +56,6 @@ class Entities_model extends CI_Model
                     'ln_miner_entity_id' => ($ln_miner_entity_id > 0 ? $ln_miner_entity_id : $insert_columns['en_id']),
                     'ln_child_entity_id' => $insert_columns['en_id'],
                     'ln_type_entity_id' => 4251, //New Entity Created
-                    'ln_metadata' => array(
-                        'algolia_sync' => $algolia_sync,
-                    ),
                 ));
 
                 //Fetch to return the complete entity data:
