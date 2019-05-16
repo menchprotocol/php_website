@@ -465,12 +465,12 @@ class Communication_model extends CI_Model
             $url_entity = $this->Entities_model->en_sync_url($string_references['ref_urls'][0], ( isset($recipient_en['en_id']) ? $recipient_en['en_id'] : 0 ));
 
             //Did we have an error?
-            if (!$url_entity['url_already_existed'] && !$url_entity['status']) {
+            if ((!isset($url_entity['en_url']['en_id']) || intval($url_entity['en_url']['en_id']) < 1) && !$url_entity['status']) {
                 return $url_entity;
             }
 
             //Transform this URL into an entity:
-            $string_references['ref_entities'][0] = $url_entity['en_url']['en_id'];
+            $string_references['ref_entities'][0] = intval($url_entity['en_url']['en_id']);
 
             //Replace the URL with this new @entity in message.
             //This is the only valid modification we can do to $input_message before storing it in the DB:

@@ -426,24 +426,24 @@ if(!$action) {
     echo '</form>';
 
     //Load the report via Ajax here on page load:
-    echo '<div id="assessment_marks_reports"></div>';
+    echo '<div id="in_report_conditional_milestones"></div>';
     echo '<script>
 
 $(document).ready(function () {
 //Show spinner:
-$(\'#assessment_marks_reports\').html(\'<span><i class="fas fa-spinner fa-spin"></i> Loading...</span>\').hide().fadeIn();
+$(\'#in_report_conditional_milestones\').html(\'<span><i class="fas fa-spinner fa-spin"></i> Loading...</span>\').hide().fadeIn();
 //Load report based on input fields:
-$.post("/intents/assessment_marks_reports", {
+$.post("/intents/in_report_conditional_milestones", {
     starting_in: parseInt($(\'#starting_in\').val()),
     depth_levels: parseInt($(\'#depth_levels\').val()),
     status_min: parseInt($(\'#status_min\').val()),
 }, function (data) {
     if (!data.status) {
         //Show Error:
-        $(\'#assessment_marks_reports\').html(\'<span style="color:#FF0000;">Error: \'+ data.message +\'</span>\');
+        $(\'#in_report_conditional_milestones\').html(\'<span style="color:#FF0000;">Error: \'+ data.message +\'</span>\');
     } else {
         //Load Report:
-        $(\'#assessment_marks_reports\').html(data.message);
+        $(\'#in_report_conditional_milestones\').html(data.message);
         $(\'[data-toggle="tooltip"]\').tooltip();
     }
 });

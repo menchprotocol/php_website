@@ -150,10 +150,14 @@ function extract_references($ln_content)
 
         } elseif (filter_var($part, FILTER_VALIDATE_URL)) {
             array_push($string_references['ref_urls'], $part);
-        } elseif (substr($part, 0, 1) == '@' && is_numeric(substr($part, 1))) {
+        } elseif (substr($part, 0, 1) == '@' && is_numeric(substr($part, 1)) && intval(substr($part, 1)) > 0) {
+
             array_push($string_references['ref_entities'], intval(substr($part, 1)));
-        } elseif (substr($part, 0, 1) == '#' && is_numeric(substr($part, 1))) {
+
+        } elseif (substr($part, 0, 1) == '#' && is_numeric(substr($part, 1)) && intval(substr($part, 1)) > 0) {
+
             array_push($string_references['ref_intents'], intval(substr($part, 1)));
+
         }
     }
     return $string_references;

@@ -12,15 +12,6 @@ class Intents extends CI_Controller
     }
 
 
-    function type_converter(){
-        //Convert old types to new:
-        foreach($this->Intents_model->in_fetch(array(
-            'in_id >' => 0,
-        )) as $in){
-
-        }
-    }
-
 
     //Loaded as default function of the default controller:
     function index()
@@ -111,7 +102,7 @@ class Intents extends CI_Controller
 
 
 
-    function assessment_marks_reports(){
+    function in_report_conditional_milestones(){
 
         //Authenticate Miner:
         $session_en = en_auth(array(1308));

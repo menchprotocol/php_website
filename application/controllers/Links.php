@@ -206,38 +206,6 @@ class Links extends CI_Controller
     }
 
 
-    function dev__reset_points(){
-
-        exit; //Maybe use to update all rates if needed?
-
-        //Issue points for each link type:
-        $all_engs = $this->Links_model->ln_fetch(array(), array('en_type'), 0, 0, array('trs_count' => 'DESC'), 'COUNT(ln_type_entity_id) as trs_count, en_name, ln_type_entity_id', 'ln_type_entity_id, en_name');
-
-        //return echo_json($all_engs);
-
-        //Give option to select:
-        foreach ($all_engs as $ln) {
-
-            //DOes it have a rate?
-            $rate_trs = $this->Links_model->ln_fetch(array(
-                'ln_status' => 2, //Published
-                'en_status' => 2, //Published
-                'ln_type_entity_id' => 4319, //Number
-                'ln_parent_entity_id' => 4595, //Link Points
-                'ln_child_entity_id' => $ln['ln_type_entity_id'],
-            ), array('en_child'), 1);
-
-            if(count($rate_trs) > 0){
-                //Issue points at this rate:
-                $this->db->query("UPDATE table_links SET ln_points = '".$rate_trs[0]['ln_content']."' WHERE ln_type_entity_id = " . $ln['ln_type_entity_id']);
-            }
-
-        }
-
-        echo 'done';
-
-    }
-
     function cron__sync_gephi(){
 
         /*
