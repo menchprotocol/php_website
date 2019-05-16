@@ -259,7 +259,7 @@ echo '<div class="row">';
         $select_ui = '';
         foreach ($all_engs as $ln) {
             //Echo drop down:
-            $select_ui .= '<option value="' . $ln['ln_type_entity_id'] . '" ' . ((isset($_GET['ln_type_entity_id']) && $_GET['ln_type_entity_id'] == $ln['ln_type_entity_id']) ? 'selected="selected"' : '') . '>' . $ln['en_name'] . ' ('  . echo_number($ln['trs_count']) . 'T' . ' = '.echo_number($ln['points_sum']).'C' . ')</option>';
+            $select_ui .= '<option value="' . $ln['ln_type_entity_id'] . '" ' . ((isset($_GET['ln_type_entity_id']) && $_GET['ln_type_entity_id'] == $ln['ln_type_entity_id']) ? 'selected="selected"' : '') . '>' . $ln['en_name'] . ' ('  . number_format($ln['trs_count'], 0) . ')</option>';
             $all_link_count += $ln['trs_count'];
             $all_points += $ln['points_sum'];
         }
@@ -268,7 +268,7 @@ echo '<div class="row">';
         echo '<div>';
         echo '<span class="mini-header">Link Type:</span>';
         echo '<select class="form-control border" name="ln_type_entity_id" id="ln_type_entity_id" class="border" style="width: 100% !important;">';
-        echo '<option value="0">All ('  . echo_number($all_link_count) . 'T' . ' = '.echo_number($all_points).'C' . ')</option>';
+        echo '<option value="0">All ('  . number_format($all_link_count, 0) . ')</option>';
         echo $select_ui;
         echo '</select>';
         echo '</div>';
