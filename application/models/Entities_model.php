@@ -613,7 +613,27 @@ class Entities_model extends CI_Model
                 $en_url = $url_links[0];
                 $url_already_existed = 1;
 
-            } elseif ($ln_miner_entity_id) {
+            } else {
+
+                if (!$ln_miner_entity_id){
+
+                    //This should not happen, log error:
+                    $this->Links_model->ln_create(array(
+                        'ln_type_entity_id' => 4246, //Platform Bug Reports
+                        'ln_miner_entity_id' => 1, //Shervin/Developer
+                        'ln_content' => 'en_sync_url() tried to log new entity without miner ID',
+                        'ln_metadata' => array(
+                            'url' => $url,
+                            'add_to_parent_en_id' => $add_to_parent_en_id,
+                            'add_to_child_en_id' => $add_to_child_en_id,
+                            'page_title' => $page_title,
+                        ),
+                    ));
+
+                    //Assign default for now:
+                    $ln_miner_entity_id =  4396; //Mench Platform CDN
+
+                }
 
                 //Create a new entity for this URL:
                 $added_en = $this->Entities_model->en_verify_create($page_title, $ln_miner_entity_id, true);
@@ -630,7 +650,6 @@ class Entities_model extends CI_Model
                 ));
 
             }
-
         }
 
 
