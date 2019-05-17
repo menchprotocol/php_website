@@ -482,7 +482,7 @@ class Intents extends CI_Controller
                 } elseif ($key == 'in_type_entity_id') {
 
                     //Was this used to be an Action Plan Starting Step Intention?
-                    $was_starting_step = in_array($ins[0]['in__parents'], $this->config->item('en_ids_6908'));
+                    $was_starting_step = in_array($ins[0]['in_type_entity_id'], $this->config->item('en_ids_6908'));
 
                     //If it was, has it now changed?
                     if($was_starting_step && !in_array($in_update['in_type_entity_id'], $this->config->item('en_ids_6908'))){
