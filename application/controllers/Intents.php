@@ -33,10 +33,11 @@ class Intents extends CI_Controller
 
             //Fetch featured intentions:
             $featurd_ins = $this->Links_model->ln_fetch(array(
-                'ln_status' => 2, //Published
                 'in_status' => 2, //Published
+                'in_type_entity_id IN (' . join(',', $this->config->item('en_ids_6908')) . ')' => null, //Action Plan Starting Step Intention
+                'ln_status' => 2, //Published
                 'ln_type_entity_id' => 4228, //Fixed Intent Links
-                'ln_parent_intent_id' => $this->config->item('in_featured'), //Feature Mench Intentions
+                'ln_parent_intent_id' => 8469, //Feature Mench Intentions
             ), array('in_child'), 0, 0, array('ln_order' => 'ASC'));
 
             //Have a logic that if we have a single featured intention, redirect to it:
@@ -82,8 +83,15 @@ class Intents extends CI_Controller
         //Make sure we found it:
         if ( count($ins) < 1) {
             return redirect_message('/', '<div class="alert alert-danger" role="alert">Intent #' . $in_id . ' not found</div>');
-        } elseif ( $ins[0]['in_status'] < 2) {
-            return redirect_message('/', '<div class="alert alert-danger" role="alert">Intent #' . $in_id . ' is not published yet</div>');
+        }
+
+        //Make sure intent is public:
+        $public_in = $this->Intents_model->in_is_public($ins[0]);
+
+        //Did we have any issues?
+        if(!$public_in['status']){
+            //Return error:
+            return redirect_message('/', '<div class="alert alert-danger" role="alert">'.$public_in['message'].'</div>');
         }
 
         //Load home page:
@@ -470,6 +478,31 @@ class Intents extends CI_Controller
                     //Update the outcome:
                     $in_update['in_outcome'] = $in_outcome_validation['in_cleaned_outcome'];
                     $in_update['in_verb_entity_id'] = $in_outcome_validation['detected_verb_entity_id'];
+
+                } elseif ($key == 'in_type_entity_id') {
+
+                    //Was this used to be an Action Plan Starting Step Intention?
+                    $was_starting_step = in_array($ins[0]['in__parents'], $this->config->item('en_ids_6908'));
+
+                    //If it was, has it now changed?
+                    if($was_starting_step && !in_array($in_update['in_type_entity_id'], $this->config->item('en_ids_6908'))){
+
+                        //Yes, it's no longer a starting step! Make sure it's not added to any User's Action Plan:
+                        if(count($this->Links_model->ln_fetch(array(
+                                'ln_parent_intent_id' => $_POST['in_id'],
+                                'ln_type_entity_id' => 4235, //Action Plan Set Intention
+                                'ln_status >=' => 0, //New+
+                            ), array(), 1)) > 0){
+
+                            //Oooops, we can't do this, let Miner know:
+                            return echo_json(array(
+                                'status' => 0,
+                                'message' => 'Cannot change intent type because the new type is not an Action Plan starting point and this intent has already been added to user Action Plans.',
+                            ));
+
+                        }
+
+                    }
 
                 } elseif ($key == 'in_status') {
 

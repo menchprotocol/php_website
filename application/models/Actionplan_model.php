@@ -350,17 +350,36 @@ class Actionplan_model extends CI_Model
 
     function actionplan_intention_add($en_id, $in_id){
 
-        //Validate Intent ID and ensure it's published:
+        //Validate Intent ID:
         $ins = $this->Intents_model->in_fetch(array(
             'in_id' => $in_id,
-            'in_status' => 2, //Published
         ));
 
         if (count($ins) != 1) {
             return false;
         }
 
-        //Make sure does not exist:
+
+        //Make sure intent is public:
+        $public_in = $this->Intents_model->in_is_public($ins[0]);
+
+        //Did we have any issues?
+        if(!$public_in['status']){
+
+            //Log error:
+            $this->Links_model->ln_create(array(
+                'ln_child_entity_id' => $en_id,
+                'ln_parent_intent_id' => $in_id,
+                'ln_content' => 'actionplan_intention_add() was about to add an intention that was not public',
+                'ln_type_entity_id' => 4246, //Platform Bug Reports
+                'ln_miner_entity_id' => 1, //Shervin/Developer
+            ));
+
+            return false;
+        }
+
+
+        //Make sure not already added to this Student's Action Plan:
         if(count($this->Links_model->ln_fetch(array(
                 'ln_miner_entity_id' => $en_id,
                 'ln_parent_intent_id' => $in_id,
@@ -755,7 +774,7 @@ class Actionplan_model extends CI_Model
         }
 
 
-        //Try to assess milestones:
+        //Try to unlock milestones:
         $unlock_steps_messages = $this->Actionplan_model->actionplan_completion_unlock_milestones($en_id, $in);
 
 

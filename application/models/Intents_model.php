@@ -609,6 +609,39 @@ class Intents_model extends CI_Model
         return $grand_parents;
     }
 
+
+
+    function in_is_public($in){
+
+        //Status is good?
+        if ( $in['in_status'] < 2) {
+
+            //Return error:
+            return array(
+                'status' => 0,
+                'message' => 'Intent #' . $in['in_id'] . ' is not published yet', //Don't show the intent name yet as its not published
+            );
+
+        } elseif ( !in_array($in['in_type_entity_id'], $this->config->item('en_ids_6908'))) {
+
+            //Fetch all possible intent types:
+            $in_type_group = ( in_array($in['in_type_entity_id'], $this->config->item('en_ids_6192')) ? $this->config->item('en_all_6192') : $this->config->item('en_all_6193') );
+
+            //Return error:
+            return array(
+                'status' => 0,
+                'message' => 'Intent type ['.$in_type_group[$in['in_type_entity_id']]['m_name'].'] is not a starting step @6908',
+            );
+
+        }
+
+        //All good:
+        return array(
+            'status' => 1,
+        );
+
+    }
+
     function in_metadata_common_base($focus_in){
 
         //Set variables:

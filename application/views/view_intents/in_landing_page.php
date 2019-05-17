@@ -119,8 +119,9 @@ foreach ($other_intentions as $parent_intention) {
 $featured_intention = $this->Links_model->ln_fetch(array(
     'ln_status' => 2, //Published
     'in_status' => 2, //Published
+    'in_type_entity_id IN (' . join(',', $this->config->item('en_ids_6908')) . ')' => null, //Action Plan Starting Step Intention
     'ln_type_entity_id' => 4228, //Fixed intent links only
-    'ln_parent_intent_id' => $this->config->item('in_featured'), //Feature Mench Intentions
+    'ln_parent_intent_id' => 8469, //Feature Mench Intentions
     'in_id NOT IN (' . join(',', $exclude_array) . ')' => null,
 ), array('in_child'), 0, 0, array('ln_order' => 'ASC'));
 

@@ -488,7 +488,7 @@ if ( ! is_php('5.4'))
 		}
 		else
 		{
-			show_404($RTR->directory.$class.'/'.$method);
+			show_404($RTR->directory.$class.'/'.$method, FALSE);
 		}
 	}
 

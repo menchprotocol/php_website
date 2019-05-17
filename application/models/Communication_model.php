@@ -1072,10 +1072,11 @@ class Communication_model extends CI_Model
 
         //Fetch featured intentions not yet taken by user:
         $featured_filters = array(
-            'ln_status' => 2, //Published
             'in_status' => 2, //Published
+            'in_type_entity_id IN (' . join(',', $this->config->item('en_ids_6908')) . ')' => null, //Action Plan Starting Step Intention
+            'ln_status' => 2, //Published
             'ln_type_entity_id' => 4228, //Fixed Links
-            'ln_parent_intent_id' => $this->config->item('in_featured'),
+            'ln_parent_intent_id' => 8469,
         );
         if(count($user_ins_ids) > 0){
             //Remove as its already added to user Action Plan:
@@ -1087,8 +1088,8 @@ class Communication_model extends CI_Model
 
         //What did we find?
         if(count($featured_intentions) > 0){
-            //Yes, we have something to offer:
 
+            //Yes, we have something to offer:
 
             $message = 'Here are some intentions that I recommended you add to your Action Plan:';
             $quick_replies = array();
@@ -1103,7 +1104,7 @@ class Communication_model extends CI_Model
                         'ln_content' => 'actionplan_step_next_communicate() encountered intent with too many children to be listed as OR Intent options! Trim and iterate that intent tree.',
                         'ln_type_entity_id' => 4246, //Platform Bug Reports
                         'ln_child_entity_id' => $en_id, //Affected user
-                        'ln_parent_intent_id' => $this->config->item('in_featured'), //Featured intentions has an overflow!
+                        'ln_parent_intent_id' => 8469, //Featured intentions has an overflow!
                         'ln_child_intent_id' => $in['in_id'],
                     ));
 
@@ -1113,6 +1114,7 @@ class Communication_model extends CI_Model
                 }
 
 
+                //Recommend featured intention:
                 $message .= "\n\n" . ( $count+1 ) . '. ' . echo_in_outcome($in['in_outcome'], true);
                 array_push($quick_replies, array(
                     'content_type' => 'text',
@@ -1120,22 +1122,32 @@ class Communication_model extends CI_Model
                     'payload' => 'SUBSCRIBE-INITIATE_' . $in['in_id'],
                 ));
 
+
+                //Log intent featured recommendation:
+                $this->Links_model->ln_create(array(
+                    'ln_miner_entity_id' => $en_id,
+                    'ln_parent_intent_id' => $in['in_id'],
+                    'ln_type_entity_id' => 6969, //Action Plan Intention Featured
+                ));
+
             }
 
+            //Give option to not select any:
             array_push($quick_replies, array(
                 'content_type' => 'text',
                 'title' => 'Cancel',
                 'payload' => 'NOTINTERESTED',
             ));
 
-            //Inform user that they are now complete with all steps:
+
+            //Suggest featured intentions:
             $this->Communication_model->dispatch_message(
                 $message,
                 array('en_id' => $en_id),
                 true,
                 $quick_replies,
                 array(
-                    'ln_parent_intent_id' => $this->config->item('in_featured'),
+                    'ln_parent_intent_id' => 8469,
                 )
             );
 
@@ -1824,6 +1836,12 @@ class Communication_model extends CI_Model
             //Did we publish anything?
             if($published_answer){
 
+                //Affirm answer received answer:
+                $this->Communication_model->dispatch_message(
+                    echo_random_message('affirm_progress'),
+                    $en,
+                    true
+                );
 
                 //Process on-complete automations:
                 $this->Actionplan_model->actionplan_completion_checks($en['en_id'], $question_ins[0], true, true);
@@ -1831,14 +1849,6 @@ class Communication_model extends CI_Model
 
                 //See if we also need to mark the answer as complete:
                 $this->Actionplan_model->actionplan_completion_auto_apply($en['en_id'], $answer_ins[0]);
-
-
-                //Affirm answer received answer:
-                $this->Communication_model->dispatch_message(
-                    echo_random_message('affirm_progress'),
-                    $en,
-                    true
-                );
 
 
                 //Find/Advance to the next step:
@@ -2139,16 +2149,6 @@ class Communication_model extends CI_Model
 
             foreach ($search_results as $alg) {
 
-                //Make sure not already in Action Plan:
-                if(count($this->Links_model->ln_fetch(array(
-                    'ln_miner_entity_id' => $en['en_id'],
-                    'ln_type_entity_id' => 4235, //Action Plan Set Intention
-                    'ln_status IN (' . join(',', $this->config->item('ln_status_incomplete')) . ')' => null, //incomplete intentions
-                    'ln_parent_intent_id' => $alg['alg_obj_id'],
-                ))) > 0){
-                    continue;
-                }
-
                 //Fetch metadata:
                 $ins = $this->Intents_model->in_fetch(array(
                     'in_id' => $alg['alg_obj_id'],
@@ -2163,6 +2163,23 @@ class Communication_model extends CI_Model
                     continue;
                 }
 
+                //Make sure intent is public:
+                $public_in = $this->Intents_model->in_is_public($ins[0]);
+
+                //Did we have any issues?
+                if(!$public_in['status']){
+                    continue;
+                }
+
+                //Make sure not already in Action Plan:
+                if(count($this->Links_model->ln_fetch(array(
+                        'ln_miner_entity_id' => $en['en_id'],
+                        'ln_type_entity_id' => 4235, //Action Plan Set Intention
+                        'ln_status IN (' . join(',', $this->config->item('ln_status_incomplete')) . ')' => null, //incomplete intentions
+                        'ln_parent_intent_id' => $alg['alg_obj_id'],
+                    ))) > 0){
+                    continue;
+                }
 
                 $new_intent_count++;
 
@@ -2170,7 +2187,7 @@ class Communication_model extends CI_Model
                     $message = 'I found the following matches:';
                 }
 
-                //Show Message:
+                //List Intent:
                 $time_range = echo_time_range($ins[0]);
                 $message .= "\n\n" . $new_intent_count . '. ' . $ins[0]['in_outcome'] . ( $time_range ? ' in ' . strip_tags($time_range) : '' );
                 array_push($quick_replies, array(
@@ -2178,7 +2195,6 @@ class Communication_model extends CI_Model
                     'title' => $new_intent_count,
                     'payload' => 'SUBSCRIBE-INITIATE_' . $ins[0]['in_id'],
                 ));
-
             }
 
 

@@ -22,7 +22,6 @@ $config['items_per_page']           = 100; //The limit of how many items should 
 //Intents:
 $config['in_mission_id']            = 7766; //highest-level intent which defines the mission of Mench
 $config['in_miner_start']           = 6623; //Where miners would go when click on top/right "Intents" link
-$config['in_featured']              = 8469; //Child intents of this are featured on all intent pages
 $config['in_status_locked']         = array(8469, 7766); //Once set to published, their status will be locked by system
 $config['in_max_seconds']           = 28800; //The maximum seconds allowed per intent. If larger, the miner is asked to break it down into smaller intents
 $config['in_outcome_max']           = 89; //Max number of characters allowed for intent outcomes

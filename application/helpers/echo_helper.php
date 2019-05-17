@@ -1862,8 +1862,12 @@ function echo_in($in, $level, $in_parent_id = 0, $is_parent = false)
 
     } elseif ($level == 1 || $is_child_focused) {
 
-        //Show Landing Page URL:
-        $ui .= '&nbsp;<a '.( $in['in_status']==2 ? 'href="/' . $in['in_id'] . '" target="_blank" class="badge badge-primary is_not_bg is_hard_link" title="'.$tree_count_range.' published intents in tree. Open landing page in a new window."' : 'href="javascript:alert(\'Intent not yet published\')" class="badge badge-primary grey is_not_bg is_hard_link" title="Intent not published so landing page is not available"' ).' style="display:inline-block; margin-right:-2px; width:40px; border:2px solid #ffe027 !important;" data-toggle="tooltip" data-placement="top">'.$tree_count.'<i class="fas fa-shopping-cart" style="margin-left: -3px;"></i></a>';
+        //Show Landing Page URL IF Public:
+
+        $public_in = $CI->Intents_model->in_is_public($in);
+
+
+        $ui .= '&nbsp;'.( $public_in['status'] ? '<a href="/' . $in['in_id'] . '" target="_blank" class="badge badge-primary is_not_bg is_hard_link" title="'.$tree_count_range.' published intents in tree. Open landing page in a new window."' : '<span class="badge badge-primary grey is_not_bg is_hard_link" title="'.$public_in['message'].'"' ).' style="display:inline-block; margin-right:-2px; width:40px; border:2px solid #ffe027 !important;" data-toggle="tooltip" data-placement="top">'.$tree_count.'<i class="fas fa-shopping-cart" style="margin-left: -3px;"></i></'.( $public_in['status'] ? 'a' : 'span' ).'>';
 
     } else {
 
