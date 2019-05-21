@@ -610,11 +610,13 @@ class Entities_model extends CI_Model
             //Do we need to create an entity for this URL?
             if (count($url_links) > 0) {
 
+                //Nope, entity already exists:
                 $en_url = $url_links[0];
                 $url_already_existed = 1;
 
             } else {
 
+                //URL not found, we need to create it:
                 if (!$ln_miner_entity_id){
 
                     //This should not happen, log error:

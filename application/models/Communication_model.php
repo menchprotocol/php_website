@@ -1508,7 +1508,7 @@ class Communication_model extends CI_Model
 
             //They rejected the offer... Acknowledge and give response:
             $this->Communication_model->dispatch_message(
-                'Ok, so how can I help you land your dream programming job?',
+                'Ok, so how can I help you move forward?',
                 $en,
                 true
             );
