@@ -11,7 +11,7 @@ defined('BASEPATH') OR exit('No direct script access allowed');
  *
  */
 
-//Generated 2019-05-17 11:44:07 PST
+//Generated 2019-05-21 10:52:23 PST
 
 //Action Plan Starting Step Intention:
 $config['en_ids_6908'] = array(6677, 6684);
@@ -241,7 +241,7 @@ $config['en_all_6676'] = array(
 );
 
 //OR Intents:
-$config['en_ids_6193'] = array(6684, 6685, 6686, 6907);
+$config['en_ids_6193'] = array(6684, 6685, 6907);
 $config['en_all_6193'] = array(
     6684 => array(
         'm_icon' => '<i class="fas fa-question"></i>',
@@ -253,12 +253,6 @@ $config['en_all_6193'] = array(
         'm_icon' => '<i class="fas fa-stopwatch"></i>',
         'm_name' => 'Timed Selection',
         'm_desc' => 'Student must make a selection within the time limit defines by the estimated intent time before their response chance expires.',
-        'm_parents' => array(6193),
-    ),
-    6686 => array(
-        'm_icon' => '<i class="fas fa-random"></i>',
-        'm_name' => 'Random Selection',
-        'm_desc' => 'A random selection would be made when the student reaches this intent. Good for A/B testing.',
         'm_parents' => array(6193),
     ),
     6907 => array(

@@ -1073,7 +1073,7 @@ class Actionplan_model extends CI_Model
             //They still need to complete:
             $next_step_message .= $completion_req_note;
 
-        } elseif($has_children && $is__or /* OR Children */){
+        } elseif($is__or && $has_children /* Otherwise who cares */){
 
 
             if($fb_messenger_format){
