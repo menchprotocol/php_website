@@ -58,7 +58,7 @@ class Actionplan_model extends CI_Model
 
                 //See which path they got unlocked, if any:
                 $unlocked_conditions = $this->Links_model->ln_fetch(array(
-                    'ln_type_entity_id' => 6140, //Action Plan Milestone Unlocked
+                    'ln_type_entity_id' => 6140, //Action Plan Step Unlocked
                     'ln_miner_entity_id' => $en_id, //Belongs to this User
                     'ln_parent_intent_id' => $common_step_in_id,
                     'ln_child_intent_id IN (' . join(',', $in_metadata['in__metadata_expansion_conditional'][$common_step_in_id]) . ')' => null,
@@ -535,8 +535,7 @@ class Actionplan_model extends CI_Model
 
 
 
-    function actionplan_completion_unlock_milestones($en_id, $in, $is_bottom_level = true){
-
+    function actionplan_completion_unlock_step($en_id, $in, $is_bottom_level = true){
 
         /*
          *
@@ -564,10 +563,10 @@ class Actionplan_model extends CI_Model
         if(isset($in_metadata['in__metadata_expansion_conditional'][$in['in_id']]) && count($in_metadata['in__metadata_expansion_conditional'][$in['in_id']]) > 0){
 
 
-            //Make sure previous milestone expansion has NOT happened before:
+            //Make sure previous label expansion has NOT happened before:
             $existing_expansions = $this->Links_model->ln_fetch(array(
                 'ln_status' => 2, //Published
-                'ln_type_entity_id' => 6140, //Action Plan Milestone Unlocked
+                'ln_type_entity_id' => 6140, //Action Plan Step Unlocked
                 'ln_miner_entity_id' => $en_id,
                 'ln_parent_intent_id' => $in['in_id'],
                 'ln_child_intent_id IN (' . join(',', $in_metadata['in__metadata_expansion_conditional'][$in['in_id']]) . ')' => null, //Limit to cached answers
@@ -586,7 +585,7 @@ class Actionplan_model extends CI_Model
                     'ln_child_entity_id' => $en_id,
                     'ln_parent_intent_id' => $in['in_id'],
                     'ln_child_intent_id' => $existing_expansions[0]['ln_child_intent_id'],
-                    'ln_content' => 'actionplan_completion_unlock_milestones() detected duplicate Milestone Expansion entries',
+                    'ln_content' => 'actionplan_completion_unlock_step() detected duplicate Label Expansion entries',
                     'ln_type_entity_id' => 4246, //Platform Bug Reports
                     'ln_miner_entity_id' => 1, //Shervin/Developer
                 ));
@@ -625,7 +624,7 @@ class Actionplan_model extends CI_Model
                 }
 
 
-                if($user_marks['milestones_answered_score']>=$ln_metadata['tr__conditional_score_min'] && $user_marks['milestones_answered_score']<=$ln_metadata['tr__conditional_score_max']){
+                if($user_marks['labels_answered_score']>=$ln_metadata['tr__conditional_score_min'] && $user_marks['labels_answered_score']<=$ln_metadata['tr__conditional_score_max']){
 
                     //Found a match:
                     $found_match++;
@@ -652,7 +651,7 @@ class Actionplan_model extends CI_Model
                     //Unlock Action Plan:
                     $this->Links_model->ln_create(array(
                         'ln_status' => 2,
-                        'ln_type_entity_id' => 6140, //Action Plan Milestone Unlocked
+                        'ln_type_entity_id' => 6140, //Action Plan Step Unlocked
                         'ln_miner_entity_id' => $en_id,
                         'ln_parent_intent_id' => $in['in_id'],
                         'ln_child_intent_id' => $conditional_step['in_id'],
@@ -673,7 +672,7 @@ class Actionplan_model extends CI_Model
             //We must have exactly 1 match by now:
             if($found_match != 1){
                 $this->Links_model->ln_create(array(
-                    'ln_content' => 'actionplan_completion_unlock_milestones() found ['.$found_match.'] routing logic matches!',
+                    'ln_content' => 'actionplan_completion_unlock_step() found ['.$found_match.'] routing logic matches!',
                     'ln_type_entity_id' => 4246, //Platform Bug Reports
                     'ln_miner_entity_id' => 1, //Shervin/Developer
                     'ln_child_entity_id' => $en_id,
@@ -723,7 +722,7 @@ class Actionplan_model extends CI_Model
 
                         //Now see if this child completion resulted in a full parent completion:
                         if(count($parent_ins) > 0){
-                            $unlock_steps_messages_recursive = $this->Actionplan_model->actionplan_completion_unlock_milestones($en_id, $parent_ins[0], false);
+                            $unlock_steps_messages_recursive = $this->Actionplan_model->actionplan_completion_unlock_step($en_id, $parent_ins[0], false);
                             $unlock_steps_messages = array_merge($unlock_steps_messages, $unlock_steps_messages_recursive);
                         }
 
@@ -774,8 +773,8 @@ class Actionplan_model extends CI_Model
         }
 
 
-        //Try to unlock milestones:
-        $unlock_steps_messages = $this->Actionplan_model->actionplan_completion_unlock_milestones($en_id, $in);
+        //Try to unlock labels:
+        $unlock_steps_messages = $this->Actionplan_model->actionplan_completion_unlock_step($en_id, $in);
 
 
         //Merge the two, if any:
@@ -1022,27 +1021,27 @@ class Actionplan_model extends CI_Model
 
         /*
          *
-         * Check Conditional Milestones in HTML
+         * Check Conditional Steps in HTML
          * Action Plan Webview only
          *
          * */
         if(!$fb_messenger_format){
 
-            $unlocked_milestones = $this->Links_model->ln_fetch(array(
+            $unlocked_labels = $this->Links_model->ln_fetch(array(
                 'ln_status' => 2, //Published
                 'in_status' => 2, //Published
-                'ln_type_entity_id' => 6140, //Action Plan Milestone Unlocked
+                'ln_type_entity_id' => 6140, //Action Plan Step Unlocked
                 'ln_miner_entity_id' => $en_id,
                 'ln_parent_intent_id' => $ins[0]['in_id'],
             ), array('in_child'), 0);
 
-            //Did we have any Milestones unlocked?
-            if(count($unlocked_milestones) > 0){
+            //Did we have any Labels unlocked?
+            if(count($unlocked_labels) > 0){
                 //Yes! Show them:
                 $next_step_message .= '<div class="list-group" style="margin:0 0 0 0;">';
-                foreach($unlocked_milestones as $unlocked_milestone){
+                foreach($unlocked_labels as $unlocked_label){
                     //Add HTML step to UI:
-                    $next_step_message .= echo_actionplan_step_child($en_id, $unlocked_milestone, $unlocked_milestone['ln_status'], true);
+                    $next_step_message .= echo_actionplan_step_child($en_id, $unlocked_label, $unlocked_label['ln_status'], true);
                 }
                 $next_step_message .= '</div>';
             }
@@ -1478,15 +1477,15 @@ class Actionplan_model extends CI_Model
         //Calculate common steps and expansion steps recursively for this user:
         $metadata_this = array(
             //Generic assessment marks stats:
-            'milestones_marks_count' => 0,
-            'milestones_marks_max' => 0,
+            'labels_marks_count' => 0,
+            'labels_marks_max' => 0,
 
             //User answer stats:
-            'milestones_answered_count' => 0, //How many they have answered so far
-            'milestones_answered_marks' => 0, //Indicates completion score
+            'labels_answered_count' => 0, //How many they have answered so far
+            'labels_answered_marks' => 0, //Indicates completion score
 
             //Calculated at the end:
-            'milestones_answered_score' => 0, //Used to determine which milestone to be unlocked...
+            'labels_answered_score' => 0, //Used to determine which label to be unlocked...
         );
 
 
@@ -1530,8 +1529,8 @@ class Actionplan_model extends CI_Model
                 //Did we have any marks for this question?
                 if($local_maximum > 0){
                     //Yes we have marks, let's addup to total max/minimums:
-                    $metadata_this['milestones_marks_count'] += 1;
-                    $metadata_this['milestones_marks_max'] += $local_maximum;
+                    $metadata_this['labels_marks_count'] += 1;
+                    $metadata_this['labels_marks_max'] += $local_maximum;
                 }
             }
 
@@ -1552,16 +1551,16 @@ class Actionplan_model extends CI_Model
 
                 //Addup data for this intent:
                 $this_answer_marks = ( isset($answer_marks_index[$expansion_in['in_id']]) ? $answer_marks_index[$expansion_in['in_id']] : 0 );
-                $metadata_this['milestones_answered_count'] += 1 + $recursive_stats['milestones_answered_count'];
-                $metadata_this['milestones_answered_marks'] += $this_answer_marks + $recursive_stats['milestones_answered_marks'];
+                $metadata_this['labels_answered_count'] += 1 + $recursive_stats['labels_answered_count'];
+                $metadata_this['labels_answered_marks'] += $this_answer_marks + $recursive_stats['labels_answered_marks'];
 
             }
         }
 
 
-        if($top_level && $metadata_this['milestones_answered_count'] > 0){
+        if($top_level && $metadata_this['labels_answered_count'] > 0){
             //See assessment summary:
-            $metadata_this['milestones_answered_score'] = floor( $metadata_this['milestones_answered_marks'] / $metadata_this['milestones_marks_max'] * 100 );
+            $metadata_this['labels_answered_score'] = floor( $metadata_this['labels_answered_marks'] / $metadata_this['labels_marks_max'] * 100 );
         }
 
 
@@ -1632,12 +1631,12 @@ class Actionplan_model extends CI_Model
         }
 
 
-        //Expansion Milestones Recursive
+        //Expansion Labels Recursive
         if(isset($in_metadata['in__metadata_expansion_conditional']) && count($in_metadata['in__metadata_expansion_conditional']) > 0){
 
             //Now let's check if user has unlocked any Miletones:
             foreach($this->Links_model->ln_fetch(array(
-                'ln_type_entity_id' => 6140, //Action Plan Milestone Unlocked
+                'ln_type_entity_id' => 6140, //Action Plan Step Unlocked
                 'ln_miner_entity_id' => $en_id, //Belongs to this User
                 'ln_parent_intent_id IN (' . join(',', $flat_common_steps ) . ')' => null,
                 'ln_child_intent_id IN (' . join(',', array_flatten($in_metadata['in__metadata_expansion_conditional'])) . ')' => null,

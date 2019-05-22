@@ -110,7 +110,7 @@ class Intents extends CI_Controller
 
 
 
-    function in_report_conditional_milestones(){
+    function in_report_conditional_steps(){
 
         //Authenticate Miner:
         $session_en = en_auth(array(1308));
@@ -334,6 +334,67 @@ class Intents extends CI_Controller
         ));
     }
 
+    function in_action_plan_users(){
+
+        //Authenticate User:
+        $session_en = en_auth();
+
+        if (!$session_en) {
+            return echo_json(array(
+                'status' => 0,
+                'message' => 'Session Expired',
+            ));
+        } elseif (!isset($_POST['in_id']) || intval($_POST['in_id']) < 1) {
+            return echo_json(array(
+                'status' => 0,
+                'message' => 'Invalid Intent ID',
+            ));
+        }
+
+        //Validate intent:
+        $ins = $this->Intents_model->in_fetch(array(
+            'in_id' => intval($_POST['in_id']),
+        ));
+        if(count($ins) < 1){
+            return echo_json(array(
+                'status' => 0,
+                'message' => 'Intent not found',
+            ));
+        }
+
+
+        //Fetch Action Plan users:
+        $actionplan_users = $this->Links_model->ln_fetch(array(
+            'ln_type_entity_id IN (' . join(',', $this->config->item('en_ids_6255')) . ')' => null, //Action Plan Progression Completion Triggers
+            'ln_parent_intent_id' => $ins[0]['in_id'],
+            'ln_status' => 2, //Published
+            'en_status' => 2, //Published
+        ), array('en_miner'), 500);
+        if(count($actionplan_users) < 1){
+            return echo_json(array(
+                'status' => 0,
+                'message' => 'No users found who have completed this intention',
+            ));
+        }
+
+        //Echo UI:
+        $ui = '<table class="table table-condensed table-striped">';
+        foreach($actionplan_users as $count => $apu){
+            $ui .= '<tr>';
+            $ui .= '<td>'.($count+1).'</td>';
+            $ui .= '<td style="text-align:left;"><span class="icon-block en-icon">'.echo_icon($apu).'</span> <a href="/entities/'.$apu['en_id'].'">'.$apu['en_name'].'</a></td>';
+            $ui .= '<td style="text-align:left;"><i class="far fa-clock"></i> '.echo_time_difference(strtotime($apu['ln_timestamp'])).'</td>';
+            $ui .= '</tr>';
+        }
+        $ui .= '</table>';
+
+
+        echo_json(array(
+            'status' => 1,
+            'message' => $ui,
+        ));
+    }
+
     function in_modify_save()
     {
 
@@ -413,7 +474,7 @@ class Intents extends CI_Controller
                 'message' => 'Intent Not Found',
             ));
         } elseif($ln_id > 0 && intval($_POST['ln_type_entity_id']) == 4229){
-            //Conditional Milestone Links, we require range values:
+            //Conditional Step Links, we require range values:
             if(strlen($_POST['tr__conditional_score_min']) < 1 || !is_numeric($_POST['tr__conditional_score_min'])){
                 return echo_json(array(
                     'status' => 0,
@@ -570,7 +631,7 @@ class Intents extends CI_Controller
                 ));
             }
 
-            //Prep link Metadata to see if the Conditional Milestone Links score variables have changed:
+            //Prep link Metadata to see if the Conditional Step Links score variables have changed:
             $ln_update = array(
                 'ln_type_entity_id'     => intval($_POST['ln_type_entity_id']),
                 'ln_status'         => intval($_POST['ln_status']),

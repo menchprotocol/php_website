@@ -11,7 +11,7 @@ $(document).ready(function() {
         //Update the contributor metadata:
         search_contributor($(this).attr('contributor-box'));
 
-    }).autocomplete({hint: false, minLength: 3, keyboardShortcuts: ['a']}, [{
+    }).autocomplete({hint: false, minLength: 2, keyboardShortcuts: ['a']}, [{
 
         source: function (q, cb) {
             algolia_index.search(q, {

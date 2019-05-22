@@ -200,7 +200,7 @@ $(document).ready(function () {
             window.location = "/entities/" + suggestion.alg_obj_id;
         }
 
-    }).autocomplete({hint: false, minLength: 3, autoselect: true, keyboardShortcuts: ['s']}, [
+    }).autocomplete({hint: false, minLength: 2, autoselect: true, keyboardShortcuts: ['s']}, [
         {
             source: function (q, cb) {
 
@@ -267,7 +267,7 @@ $(document).ready(function () {
 
         $(this).val('#'+suggestion.alg_obj_id+' '+suggestion.alg_obj_name);
 
-    }).autocomplete({hint: false, minLength: 3, keyboardShortcuts: ['a']}, [{
+    }).autocomplete({hint: false, minLength: 2, keyboardShortcuts: ['a']}, [{
 
         source: function (q, cb) {
             algolia_index.search(q, {

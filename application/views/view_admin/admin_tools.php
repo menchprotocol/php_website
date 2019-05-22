@@ -282,10 +282,10 @@ if(!$action) {
 
     echo '<ul class="breadcrumb"><li><a href="/admin">Admin Tools</a></li><li><b>'.$moderation_tools['/admin/tools/'.$action].'</b></li></ul>';
 
-    echo '<p>Below are all the Conditional Milestone Links:</p>';
+    echo '<p>Below are all the Conditional Step Links:</p>';
     echo '<table class="table table-condensed table-striped maxout" style="text-align: left;">';
 
-    $en_all_6410 = $CI->config->item('en_all_6410');
+    $en_all_6410 = $this->config->item('en_all_6410');
 
     echo '<tr style="font-weight: bold;">';
     echo '<td colspan="4" style="text-align: left;">'.$en_all_6410[6402]['m_icon'].' '.$en_all_6410[6402]['m_name'].'</td>';
@@ -322,8 +322,10 @@ if(!$action) {
             echo '<span style="width:25px; display:inline-block; text-align:center;">'.$fixed_fields['in_status'][$in_ln['in_status']]['s_icon'].'</span>';
             echo '<a href="/intents/'.$in_ln['in_id'].'">'.$in_ln['in_outcome'].'</a>';
             echo '</div>';
+
             echo '</td>';
             echo '</tr>';
+
 
         }
     }
@@ -426,24 +428,24 @@ if(!$action) {
     echo '</form>';
 
     //Load the report via Ajax here on page load:
-    echo '<div id="in_report_conditional_milestones"></div>';
+    echo '<div id="in_report_conditional_steps"></div>';
     echo '<script>
 
 $(document).ready(function () {
 //Show spinner:
-$(\'#in_report_conditional_milestones\').html(\'<span><i class="fas fa-spinner fa-spin"></i> Loading...</span>\').hide().fadeIn();
+$(\'#in_report_conditional_steps\').html(\'<span><i class="fas fa-spinner fa-spin"></i> Loading...</span>\').hide().fadeIn();
 //Load report based on input fields:
-$.post("/intents/in_report_conditional_milestones", {
+$.post("/intents/in_report_conditional_steps", {
     starting_in: parseInt($(\'#starting_in\').val()),
     depth_levels: parseInt($(\'#depth_levels\').val()),
     status_min: parseInt($(\'#status_min\').val()),
 }, function (data) {
     if (!data.status) {
         //Show Error:
-        $(\'#in_report_conditional_milestones\').html(\'<span style="color:#FF0000;">Error: \'+ data.message +\'</span>\');
+        $(\'#in_report_conditional_steps\').html(\'<span style="color:#FF0000;">Error: \'+ data.message +\'</span>\');
     } else {
         //Load Report:
-        $(\'#in_report_conditional_milestones\').html(data.message);
+        $(\'#in_report_conditional_steps\').html(data.message);
         $(\'[data-toggle="tooltip"]\').tooltip();
     }
 });

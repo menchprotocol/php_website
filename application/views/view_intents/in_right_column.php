@@ -7,7 +7,7 @@
     var en_all_6192 = <?= json_encode($this->config->item('en_all_6192')) ?>; //AND Children
     var en_all_6193 = <?= json_encode($this->config->item('en_all_6193')) ?>; //OR Children
 </script>
-<script src="/js/custom/intent-manage-js.js?v=v<?= $this->config->item('app_version') ?>"
+<script src="/js/custom/intent-right-column.js?v=v<?= $this->config->item('app_version') ?>"
         type="text/javascript"></script>
 
 
@@ -251,11 +251,28 @@
 
 
 <div id="load_messaging_frame" class="fixed-box hidden">
-    <h5 class="badge badge-h badge-h-max" id="tr_title"></h5>
+    <h5 class="badge badge-h badge-h-max"></h5>
     <div style="text-align:right; font-size: 22px; margin:-32px 3px -20px 0;">
         <a href="javascript:void(0)" onclick="$('#load_messaging_frame').addClass('hidden');"><i class="fas fa-times-circle"></i></a>
     </div>
-    <div class="grey-box grey-box-messages" style="padding-bottom: 10px;">
+    <div class="grey-box" style="padding-bottom: 10px;">
         <iframe class="ajax-frame hidden" id="ajax_messaging_iframe" src=""></iframe>
         <span class="frame-loader hidden"><i class="fas fa-spinner fa-spin"></i> Loading Messages...</span></div>
+</div>
+
+
+
+<div id="load_action_plan_frame" class="fixed-box hidden">
+
+    <h5 class="badge badge-h badge-h-max"></h5>
+
+    <div style="text-align:right; font-size: 22px; margin:-32px 3px -20px 0;">
+        <a href="javascript:void(0)" onclick="$('#load_action_plan_frame').addClass('hidden');"><i class="fas fa-times-circle"></i></a>
+    </div>
+
+    <div class="grey-box" style="padding-bottom: 10px;">
+        <div id="ap_matching_users"></div>
+    </div>
+
+
 </div>

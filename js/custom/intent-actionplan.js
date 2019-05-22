@@ -122,7 +122,7 @@ function in_load_search(focus_element, is_in_parent, next_in_level) {
 
         in_link_or_create($(this).attr('intent-id'), is_in_parent, next_in_level, suggestion.alg_obj_id);
 
-    }).autocomplete({hint: false, minLength: 3, keyboardShortcuts: ['a']}, [{
+    }).autocomplete({hint: false, minLength: 2, keyboardShortcuts: ['a']}, [{
 
         source: function (q, cb) {
             algolia_index.search(q, {

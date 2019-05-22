@@ -9,7 +9,7 @@ function en_load_search(focus_element, is_en_parent) {
 
         en_add_or_link(suggestion.alg_obj_id, is_en_parent);
 
-    }).autocomplete({hint: false, minLength: 3, keyboardShortcuts: ['a']}, [{
+    }).autocomplete({hint: false, minLength: 2, keyboardShortcuts: ['a']}, [{
 
         source: function (q, cb) {
             algolia_index.search(q, {
@@ -74,7 +74,7 @@ $(document).ready(function () {
 
         $(this).val('@' + suggestion.alg_obj_id + ' ' + suggestion.alg_obj_name);
 
-    }).autocomplete({hint: false, minLength: 3, keyboardShortcuts: ['a']}, [{
+    }).autocomplete({hint: false, minLength: 2, keyboardShortcuts: ['a']}, [{
 
         source: function (q, cb) {
             algolia_index.search(q, {

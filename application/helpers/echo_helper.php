@@ -565,7 +565,7 @@ function echo_tr_row($ln, $is_inner = false)
         } else {
 
             //Show Miner:
-            $ui .= '<span class="icon-main">'.( strlen($miner_ens[0]['en_icon']) > 0 ? $miner_ens[0]['en_icon'] : '<i class="fas fa-at grey-at"></i>' ).' </span>';
+            $ui .= '<span class="icon-main">'.echo_icon($miner_ens[0]).' </span>';
             $ui .= '<a href="/entities/'.$miner_ens[0]['en_id'].'" data-toggle="tooltip" data-placement="top" title="View User Entity"><b>' . one_two_explode('',' ',$miner_ens[0]['en_name']) . '</b></a>';
         }
 
@@ -634,7 +634,7 @@ function echo_tr_row($ln, $is_inner = false)
 }
 
 
-function echo_actionplan_step_child($en_id, $in, $step_ln_status, $is_unlocked_milestone = false){
+function echo_actionplan_step_child($en_id, $in, $step_ln_status, $is_unlocked_label = false){
 
     $CI =& get_instance();
 
@@ -655,7 +655,7 @@ function echo_actionplan_step_child($en_id, $in, $step_ln_status, $is_unlocked_m
     $ui .= '&nbsp;';
     $ui .= echo_in_outcome($in['in_outcome']);
 
-    if($is_unlocked_milestone){
+    if($is_unlocked_label){
         $en_all_6410 = $CI->config->item('en_all_6410');
         $ui .= '<span class="badge badge-primary" style="font-size: 0.8em; margin:-7px 0 -7px 5px;" data-toggle="tooltip" data-placement="right" title="'.$en_all_6410[6140]['m_name'].': '.$en_all_6410[6140]['m_desc'].'">'.$en_all_6410[6140]['m_icon'].'</span>';
     }
@@ -1556,7 +1556,7 @@ function echo_en_stats_overview($cached_list, $report_name){
         ), array('en_child'), 0, 0, array(), 'COUNT(en_id) as en__child_count');
 
         $inner_ui .= '<tr>';
-        $inner_ui .= '<td style="text-align: left;"><span style="width: 26px; display: inline-block; text-align: center;">' . $people_group['m_icon'] . '</span><a href="/entities/'.$group_en_id.'">' . $people_group['m_name'] . '</a> <i class="fal fa-info-circle" data-toggle="tooltip" data-placement="top" title="'.$people_group['m_desc'].'"></i></td>';
+        $inner_ui .= '<td style="text-align: left;"><span class="icon-block">' . $people_group['m_icon'] . '</span><a href="/entities/'.$group_en_id.'">' . $people_group['m_name'] . '</a> <i class="fal fa-info-circle" data-toggle="tooltip" data-placement="top" title="'.$people_group['m_desc'].'"></i></td>';
         $inner_ui .= '<td style="text-align: right;"><a href="/links?ln_status=0,1,2&ln_type_entity_id='.join(',', $CI->config->item('en_ids_4592')).'&ln_parent_entity_id=' . $group_en_id . '">' . number_format($child_links[0]['en__child_count'], 0) . '</a></td>';
         $inner_ui .= '</tr>';
 
@@ -1682,7 +1682,8 @@ function echo_in($in, $level, $in_parent_id = 0, $is_parent = false)
             'ln_status >=' => 0, //New+
         ), array(), 0, 0, array(), 'COUNT(ln_id) as totals');
 
-        $ui .= '<span class="icon-top-left ' . echo_advance() . ' in_upvotes_' . $in['ln_child_intent_id'] . '_'.$in['ln_parent_intent_id'].'" data-toggle="tooltip" data-placement="right" title="Up-Votes">' . ( $ln_upvotes[0]['totals'] > 0 ? $ln_upvotes[0]['totals'] : '' ) . '</span>';
+        //TODO Maybe show later? Seemed like too much info...
+        //$ui .= '<span class="icon-top-left ' . echo_advance() . ' in_upvotes_' . $in['ln_child_intent_id'] . '_'.$in['ln_parent_intent_id'].'" data-toggle="tooltip" data-placement="right" title="Up-Votes">' . ( $ln_upvotes[0]['totals'] > 0 ? $ln_upvotes[0]['totals'] : '' ) . '</span>';
 
         //Show Response Weight based on Intent Link Type:
         $ui .= '<span class="icon-3rd in_assessment_' . $ln_id . '" data-toggle="tooltip" data-placement="right" title="Response Weight">'. echo_assessment_mark($in) .'</span>';
@@ -1783,15 +1784,14 @@ function echo_in($in, $level, $in_parent_id = 0, $is_parent = false)
     $ui .= '<span style="display: inline-block; float: right;">'; //Start of 5x Action Buttons
 
 
-
     //Action Plan:
-    $actionplan_steps = $CI->Links_model->ln_fetch(array(
+    $actionplan_users = $CI->Links_model->ln_fetch(array(
         'ln_type_entity_id IN (' . join(',', $CI->config->item('en_ids_6255')) . ')' => null, //Action Plan Progression Completion Triggers
         'ln_parent_intent_id' => $in['in_id'],
         'ln_status' => 2, //Published
     ), array(), 0, 0, array(), 'COUNT(ln_id) as total_steps');
-    if($actionplan_steps[0]['total_steps'] > 0) {
-        $ui .= '<a href="/links?ln_status=2&ln_type_entity_id=' . join(',', $CI->config->item('en_ids_6255')) . '&ln_parent_intent_id=' . $in['in_id'] . '" class="badge badge-primary ' . echo_advance() . '" style="width:40px; margin:-3px -2px 0 4px; border:2px solid #ffe027 !important;" data-toggle="tooltip" data-placement="top" title="Go to Published Action Plan Progression Links @6146"><span class="btn-counter">' . echo_number($actionplan_steps[0]['total_steps']) . '</span>🚩</a>';
+    if($actionplan_users[0]['total_steps'] > 0) {
+        $ui .= '<a id="match_list_'.$in['in_id'].'" full-match-count="'.number_format($actionplan_users[0]['total_steps'], 0).'" full-url="/links?ln_status=2&ln_type_entity_id=' . join(',', $CI->config->item('en_ids_6255')) . '&ln_parent_intent_id='.$in['in_id'].'" href="#actionplanusers-'.$in['in_id'].'" onclick="in_action_plan_users('.$in['in_id'].')" class="badge badge-primary white-primary is_not_bg ' . echo_advance() . '" style="width:40px; margin:-3px -3px 0 4px;" data-toggle="tooltip" data-placement="top" title="View Matching Users"><span class="btn-counter">' . echo_number($actionplan_users[0]['total_steps']) . '</span>🚩</a>';
     }
 
 
@@ -2070,7 +2070,7 @@ function echo_en($en, $level, $is_parent = false)
     //Loop through parents and only show those that have en_icon set:
     $ui .= '<span class="' . echo_advance() . '">';
     foreach ($en['en__parents'] as $en_parent) {
-        $ui .= ' &nbsp;<a href="/entities/' . $en_parent['en_id'] . '" data-toggle="tooltip" title="' . $en_parent['en_name'] . (strlen($en_parent['ln_content']) > 0 ? ' = ' . $en_parent['ln_content'] : '') . '" data-placement="top" class="parent-icon en_child_icon_' . $en_parent['en_id'] . '">' . (strlen($en_parent['en_icon']) > 0 ? $en_parent['en_icon'] : '<i class="fas fa-at grey-at"></i>' ) . '</a>';
+        $ui .= ' &nbsp;<a href="/entities/' . $en_parent['en_id'] . '" data-toggle="tooltip" title="' . $en_parent['en_name'] . (strlen($en_parent['ln_content']) > 0 ? ' = ' . $en_parent['ln_content'] : '') . '" data-placement="top" class="parent-icon en_child_icon_' . $en_parent['en_id'] . '">' . echo_icon($en_parent) . '</a>';
     }
     $ui .= '</span>';
 
@@ -2084,13 +2084,13 @@ function echo_en($en, $level, $is_parent = false)
 
 
     //Action Plan:
-    $actionplan_steps = $CI->Links_model->ln_fetch(array(
+    $actionplan_users = $CI->Links_model->ln_fetch(array(
         'ln_type_entity_id IN (' . join(',', $CI->config->item('en_ids_6255')) . ')' => null, //Action Plan Progression Completion Triggers
         'ln_miner_entity_id' => $en['en_id'],
         'ln_status' => 2, //Published
     ), array(), 0, 0, array(), 'COUNT(ln_id) as total_steps');
-    if($actionplan_steps[0]['total_steps'] > 0){
-        $ui .= '<a href="/links?ln_status=2&ln_type_entity_id=' . join(',', $CI->config->item('en_ids_6255')) . '&ln_miner_entity_id=' . $en['en_id'] . '" class="badge badge-secondary ' . echo_advance() . '" style="width:40px; margin:-3px -2px 0 6px; border:2px solid #0084ff !important;" data-toggle="tooltip" data-placement="top" title="Go to Published Action Plan Progression Links @6146"><span class="btn-counter">'.echo_number($actionplan_steps[0]['total_steps']).'</span>🚩</a>';
+    if($actionplan_users[0]['total_steps'] > 0){
+        $ui .= '<a href="/links?ln_status=2&ln_type_entity_id=' . join(',', $CI->config->item('en_ids_6255')) . '&ln_miner_entity_id=' . $en['en_id'] . '" class="badge badge-secondary ' . echo_advance() . '" style="width:40px; margin:-3px -2px 0 6px; border:2px solid #0084ff !important;" data-toggle="tooltip" data-placement="top" title="Go to Published Action Plan Progression Links @6146"><span class="btn-counter">'.echo_number($actionplan_users[0]['total_steps']).'</span>🚩</a>';
     }
 
 

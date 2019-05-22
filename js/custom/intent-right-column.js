@@ -5,6 +5,8 @@
 *
 * */
 
+var match_search_loaded = 0; //Keeps track of when we load the match search
+
 $(document).ready(function () {
 
     if (is_compact) {
@@ -28,7 +30,7 @@ $(document).ready(function () {
             var top_position = $(this).scrollTop();
             clearTimeout($.data(this, 'scrollTimer'));
             $.data(this, 'scrollTimer', setTimeout(function () {
-                $("#modifybox, #load_messaging_frame").css('top', (top_position - 0)); //PX also set in style.css for initial load
+                $("#modifybox, #load_messaging_frame, #load_action_plan_frame").css('top', (top_position - 0)); //PX also set in style.css for initial load
             }, 34));
         });
 
@@ -77,12 +79,15 @@ $(document).ready(function () {
                 in_messages_iframe(hash_parts[1]);
             } else if (hash_parts[0] == 'loadmodify') {
                 in_modify_load(hash_parts[1], hash_parts[2]);
+            } else if (hash_parts[0] == 'actionplanusers') {
+                in_action_plan_users(hash_parts[1]);
             }
         }
     }
 
-});
 
+
+});
 
 
 //This also has an equal PHP function echo_time_hours() which we want to make sure has more/less the same logic:
@@ -127,7 +132,7 @@ function in_adjust_link_ui() {
 
         //What's the intent link type?
         if ($('#ln_type_entity_id_4229').is(':checked')) {
-            //Conditional Milestone Links is checked:
+            //Conditional Step Links is checked:
             $('.score_range_box').removeClass('hidden');
             $('.score_points').addClass('hidden');
         } else {
@@ -151,7 +156,7 @@ function in_messages_iframe(in_id) {
     $('.frame-loader').addClass('hidden');
     $('#load_messaging_frame').removeClass('hidden').hide().fadeIn();
     //Set title:
-    $('#tr_title').html('<i class="fas fa-comment-plus"></i> ' + $('.in_outcome_' + in_id + ':first').text());
+    $('#load_messaging_frame .badge-h-max').html('<i class="fas fa-comment-plus"></i> ' + $('.in_outcome_' + in_id + ':first').text());
 
     //Load content via a URL:
     $('.ajax-frame').attr('src', '/intents/in_messages_iframe/' + in_id).removeClass('hidden').css('margin-top', '0');
@@ -159,6 +164,45 @@ function in_messages_iframe(in_id) {
     //Tooltips:
     $('[data-toggle="tooltip"]').tooltip();
 }
+
+
+function in_action_plan_users(in_id) {
+
+    //Start loading:
+    $('.fixed-box').addClass('hidden');
+    $('#load_action_plan_frame').removeClass('hidden').hide().fadeIn();
+
+    //Set title:
+    $('#load_action_plan_frame .badge-h-max').html('🚩 ' + $('.in_outcome_' + in_id + ':first').text() + '<a href="'+$('#match_list_'+in_id).attr('full-url')+'" style="color: #FFF; text-decoration: underline; margin-left:10px;" target="_blank">'+ $('#match_list_'+in_id).attr('full-match-count') +' Links</a> <i class="fas fa-external-link"></i>');
+
+    //Show Loading Icon:
+    $('#ap_matching_users').html('<span><i class="fas fa-spinner fa-spin"></i> Loading...</span>').hide().fadeIn();
+
+    //Load Matching Users:
+    $.post("/intents/in_action_plan_users", {
+        in_id: in_id
+    }, function (data) {
+        if (!data.status) {
+
+            //Hide Box:
+            $('.fixed-box').addClass('hidden');
+
+            //Opppsi, show the error:
+            alert('Error: ' + data.message);
+
+        } else {
+
+            //Load content:
+            $('#ap_matching_users').html(data.message).hide().fadeIn();
+
+            //Tooltips:
+            $('[data-toggle="tooltip"]').tooltip();
+
+        }
+    });
+
+}
+
 
 function adjust_js_ui(in_id, level, new_hours, intent_deficit_count, apply_to_tree, skip_intent_adjustments) {
 
@@ -313,7 +357,7 @@ function in_modify_load(in_id, ln_id) {
                 $('#tr_in_link_update').val(data.ln.in_outcome);
                 $('.tr_in_link_title').text(( $('.intent_line_' + in_id).hasClass('parent-intent') ? 'Child' : 'Parent' ));
 
-                //Is this a Conditional Milestone Link? If so, load the min/max range:
+                //Is this a Conditional Step Link? If so, load the min/max range:
                 if (data.ln.ln_type_entity_id == 4229) {
                     //Yes, load the data (which must be there):
                     $('#ln_type_entity_id_4229').prop("checked", true);
@@ -401,7 +445,7 @@ function in_modify_save() {
         modify_data['tr_in_link_update'] = $('#tr_in_link_update').val();
 
         if(modify_data['ln_type_entity_id'] == 4229){
-            //Conditional Milestone Links
+            //Conditional Step Links
             //Condition score range:
             modify_data['tr__conditional_score_min'] = $('#tr__conditional_score_min').val();
             modify_data['tr__conditional_score_max'] = $('#tr__conditional_score_max').val();
