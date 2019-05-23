@@ -5,7 +5,35 @@
 *
 * */
 
-function prep_expansion(in_id){
+function prep_search_pad(){
+
+    //Activate expansion for intent level 2 items that are not already expanded
+    $('.is_level2_sortable').each(function () {
+
+        if(!$(this).hasClass('is_expanded')){
+
+            $(this).addClass('is_expanded').on('click', function(e) {
+
+                if (e.target !== this){
+                    if(jQuery.inArray("click_expand", e.target.classList) == -1){
+                        return;
+                    }
+                }
+
+                //Expand children:
+                ms_toggle(parseInt($(this).attr('in-link-id')), -1);
+            });
+
+        }
+
+        //Expand level 3 results:
+        $('.new-in3-input .algolia_search').focus(function() {
+            $('.in_pad_' + $(this).attr('intent-id') ).removeClass('hidden');
+        }).focusout(function() {
+            $('.in_pad_' + $(this).attr('intent-id') ).addClass('hidden');
+        });
+
+    });
 
     //All level 2s:
     $('.intentadder-level-2-top').focus(function() {
@@ -20,26 +48,16 @@ function prep_expansion(in_id){
         $('.in_pad_bottom' ).addClass('hidden');
     });
 
-    //Expand level 3 search results:
-    $('.new-in3-input .algolia_search').focus(function() {
-        $('.in_pad_' + in_id ).removeClass('hidden');
-    }).focusout(function() {
-        $('.in_pad_' + in_id ).addClass('hidden');
-    });
-
 }
 
 $(document).ready(function () {
-
-    //Activate expansion:
-    activate_expansion();
 
     //Load top/bottom intent searches:
     in_load_search(".intentadder-level-2-top",    1, 2);
     in_load_search(".intentadder-level-2-bottom", 0, 2);
 
     //Expand selections:
-    prep_expansion($(this).attr('intent-id'));
+    prep_search_pad();
 
     //Load Sortable for level 2:
     in_sort_load(in_focus_id, 2);
@@ -47,12 +65,12 @@ $(document).ready(function () {
     //Watch the expand/close all buttons:
     $('#expand_intents .expand_all').click(function (e) {
         $(".list-is-children .is_level2_sortable").each(function () {
-            ms_toggle($(this).attr('in-tr-id'), 1);
+            ms_toggle($(this).attr('in-link-id'), 1);
         });
     });
     $('#expand_intents .close_all').click(function (e) {
         $(".list-is-children .is_level2_sortable").each(function () {
-            ms_toggle($(this).attr('in-tr-id'), 0);
+            ms_toggle($(this).attr('in-link-id'), 0);
         });
     });
 
@@ -89,26 +107,6 @@ $(document).ready(function () {
 });
 
 
-function activate_expansion(){
-    //Activate expansion for intent level 2 items that are not already expanded
-    $('.is_level2_sortable').each(function () {
-        if(!$(this).hasClass('is_expanded')){
-
-            $(this).addClass('is_expanded').on('click', function(e) {
-
-                if (e.target !== this){
-                    if(jQuery.inArray("click_expand", e.target.classList) == -1){
-                        return;
-                    }
-                }
-
-                //Expand children:
-                ms_toggle(parseInt($(this).attr('in-tr-id')), -1);
-            });
-
-        }
-    });
-}
 
 
 
@@ -172,7 +170,7 @@ function in_sort_save(in_id, level) {
         var s_element = "list-in-" + in_focus_id + '-0';
         var s_draggable = ".is_level2_sortable";
     } else if (level == 3) {
-        var s_element = "list-cr-" + $('.intent_line_' + in_id).attr('in-tr-id');
+        var s_element = "list-cr-" + $('.intent_line_' + in_id).attr('in-link-id');
         var s_draggable = ".is_level3_sortable";
     } else {
         //Should not happen!
@@ -189,7 +187,7 @@ function in_sort_save(in_id, level) {
 
             //Fetch variables for this intent:
             var in_id = parseInt($(this).attr('intent-id'));
-            var ln_id = parseInt($(this).attr('in-tr-id'));
+            var ln_id = parseInt($(this).attr('in-link-id'));
 
             sort_rank++;
 
@@ -221,7 +219,7 @@ function in_sort_load(in_id, level) {
         var s_draggable = ".is_level2_sortable";
     } else if (level == 3) {
         var element_key = '.intent_line_' + in_id;
-        var s_element = "list-cr-" + $(element_key).attr('in-tr-id');
+        var s_element = "list-cr-" + $(element_key).attr('in-link-id');
         var s_draggable = ".is_level3_sortable";
     } else {
         //Invalid level, should not happen!
@@ -263,7 +261,7 @@ function in_sort_load(in_id, level) {
 
             //Define variables:
             var inputs = {
-                ln_id: parseInt(evt.item.attributes['in-tr-id'].nodeValue),
+                ln_id: parseInt(evt.item.attributes['in-link-id'].nodeValue),
                 in_id: parseInt(evt.item.attributes['intent-id'].nodeValue),
                 from_in_id: parseInt(evt.from.attributes['intent-id'].value),
                 to_in_id: parseInt(evt.to.attributes['intent-id'].value),
@@ -330,7 +328,7 @@ function in_link_or_create(in_parent_id, is_parent, next_level, in_link_child_id
         var input_field = $('#addintent-c-' + in_parent_id + '-' + is_parent);
     } else if (next_level == 3) {
         var sort_handler = ".is_level3_sortable";
-        var sort_list_id = "list-cr-" + $('.intent_line_' + in_parent_id).attr('in-tr-id');
+        var sort_list_id = "list-cr-" + $('.intent_line_' + in_parent_id).attr('in-link-id');
         var input_field = $('.intentadder-id-' + in_parent_id);
     } else {
         //This should not happen:
@@ -371,8 +369,8 @@ function in_link_or_create(in_parent_id, is_parent, next_level, in_link_child_id
             //Reload sorting to enable sorting for the newly added intent:
             in_sort_load(in_parent_id, next_level);
 
-            //Activate expansion:
-            activate_expansion();
+            //Expand selections:
+            prep_search_pad();
 
             if (next_level == 2) {
 
@@ -386,9 +384,6 @@ function in_link_or_create(in_parent_id, is_parent, next_level, in_link_child_id
 
                 //Load search again:
                 in_load_search(".intentadder-id-"+data.in_child_id, 0, 3);
-
-                //Expand selections:
-                prep_expansion(data.in_child_id);
 
             } else if(!is_parent) {
 
