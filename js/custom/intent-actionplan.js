@@ -5,23 +5,9 @@
 *
 * */
 
-$(document).ready(function () {
+function prep_expansion(in_id){
 
-    //Activate expansion:
-    activate_expansion();
-
-    //Load top/bottom intent searches:
-    in_load_search(".intentadder-level-2-top",    1, 2);
-    in_load_search(".intentadder-level-2-bottom", 0, 2);
-
-
-    //Expand level 3 search results:
-    $('.new-in3-input .algolia_search').focus(function() {
-        $('.in_pad_' + $(this).attr('intent-id') ).removeClass('hidden');
-    }).focusout(function() {
-        $('.in_pad_' + $(this).attr('intent-id') ).addClass('hidden');
-    });
-
+    //All level 2s:
     $('.intentadder-level-2-top').focus(function() {
         $('.in_pad_top' ).removeClass('hidden');
     }).focusout(function() {
@@ -34,6 +20,29 @@ $(document).ready(function () {
         $('.in_pad_bottom' ).addClass('hidden');
     });
 
+    //Expand level 3 search results:
+    $('.new-in3-input .algolia_search').focus(function() {
+        $('.in_pad_' + in_id ).removeClass('hidden');
+    }).focusout(function() {
+        $('.in_pad_' + in_id ).addClass('hidden');
+    });
+
+}
+
+$(document).ready(function () {
+
+    //Activate expansion:
+    activate_expansion();
+
+    //Load top/bottom intent searches:
+    in_load_search(".intentadder-level-2-top",    1, 2);
+    in_load_search(".intentadder-level-2-bottom", 0, 2);
+
+    //Expand selections:
+    prep_expansion($(this).attr('intent-id'));
+
+    //Load Sortable for level 2:
+    in_sort_load(in_focus_id, 2);
 
     //Watch the expand/close all buttons:
     $('#expand_intents .expand_all').click(function (e) {
@@ -46,11 +55,6 @@ $(document).ready(function () {
             ms_toggle($(this).attr('in-tr-id'), 0);
         });
     });
-
-    //Load Sortable for level 2:
-    in_sort_load(in_focus_id, 2);
-
-
 
     //Activate sorting for level 3 intents:
     if ($('.step-group').length) {
@@ -367,6 +371,9 @@ function in_link_or_create(in_parent_id, is_parent, next_level, in_link_child_id
             //Reload sorting to enable sorting for the newly added intent:
             in_sort_load(in_parent_id, next_level);
 
+            //Activate expansion:
+            activate_expansion();
+
             if (next_level == 2) {
 
                 if(!is_parent){
@@ -380,15 +387,15 @@ function in_link_or_create(in_parent_id, is_parent, next_level, in_link_child_id
                 //Load search again:
                 in_load_search(".intentadder-id-"+data.in_child_id, 0, 3);
 
+                //Expand selections:
+                prep_expansion(data.in_child_id);
+
             } else if(!is_parent) {
 
                 //Adjust Intent Level 3 sorting:
                 in_sort_save(in_parent_id, next_level);
 
             }
-
-            //Activate expansion:
-            activate_expansion();
 
             //Tooltips:
             $('[data-toggle="tooltip"]').tooltip();

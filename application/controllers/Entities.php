@@ -194,10 +194,10 @@ class Entities extends CI_Controller
                 'status' => 0,
                 'message' => 'Unknown error while trying to save file.',
             ));
-        } elseif ($_FILES[$_POST['upload_type']]['size'] > ($this->config->item('en_file_max_size') * 1024 * 1024)) {
+        } elseif ($_FILES[$_POST['upload_type']]['size'] > ($this->config->item('max_file_mb_size') * 1024 * 1024)) {
             return echo_json(array(
                 'status' => 0,
-                'message' => 'File is larger than ' . $this->config->item('en_file_max_size') . ' MB.',
+                'message' => 'File is larger than ' . $this->config->item('max_file_mb_size') . ' MB.',
             ));
         }
 

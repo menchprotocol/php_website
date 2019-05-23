@@ -13,9 +13,11 @@ defined('BASEPATH') OR exit('No direct script access allowed');
 //Settime zone to PST:
 date_default_timezone_set('America/Los_Angeles');
 
+
 //App Functionality:
-$config['app_version']              = '0.873'; //Cache buster for static JS/CSS files, so needs to be updated if you update static files
+$config['app_version']              = '0.874'; //Cache buster for static JS/CSS files, so needs to be updated if you update static files
 $config['app_enable_algolia']       = true; //May need to turn off if/when we reach monthly quota of 50k calls
+$config['max_file_mb_size']         = 25; //Server setting is 32MB
 $config['items_per_page']           = 100; //The limit of how many items should be loaded per page/section
 
 
@@ -31,7 +33,6 @@ $config['in_response_weights']      = array(-21, -13, -8, -5, -3, -2, -1, 0, 1, 
 //Entities:
 $config['en_top_focus_id']          = 3463; //The default platform entity that is loaded when Entities is clicked
 $config['en_name_max_length']       = 250; //Max number of characters allowed in the title of intents
-$config['en_file_max_size']         = 25; //Server setting is 32MB
 
 
 //Links:
