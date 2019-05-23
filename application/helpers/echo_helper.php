@@ -997,7 +997,7 @@ function echo_tree_steps($in, $fb_messenger_format = 0, $expand_mode = false)
         return false;
     }
 
-    $pitch = 'Action Plan contains ' . echo_step_range($in, true);
+    $pitch = 'I estimate it would take you ' . echo_step_range($in, true).' to '.echo_in_outcome($in['in_outcome']);
 
     if ($fb_messenger_format) {
 
@@ -1149,7 +1149,7 @@ function echo_tree_time_estimate($in, $fb_messenger_format = 0, $expand_mode = f
     }
 
     //As messenger default format and HTML extra notes:
-    $pitch  = 'I estimate it would take you '. strtolower(echo_time_range($in)) .' to complete this Action Plan';
+    $pitch  = 'I estimate it would take you '. strtolower(echo_time_range($in)) .' to '.echo_in_outcome($in['in_outcome']);
 
     if ($fb_messenger_format) {
         return '⏰ ' . $pitch . "\n";

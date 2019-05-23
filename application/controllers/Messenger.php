@@ -806,7 +806,7 @@ class Messenger extends CI_Controller
             //This is a duplicate, disallow:
             return echo_json(array(
                 'status' => 0,
-                'message' => 'Name already in-use. Add a post-fix to make it unique.',
+                'message' => 'Name already in-use. Add a pre-fix or post-fix to make it unique.',
             ));
         }
 

@@ -379,12 +379,31 @@ class Intents extends CI_Controller
 
         //Echo UI:
         $ui = '<table class="table table-condensed table-striped">';
+
+        $ui .= '<tr style="font-weight: bold;">';
+        $ui .= '<td>#</td>';
+        $ui .= '<td style="text-align:left;">User</td>';
+        $ui .= '<td style="text-align:left;">Messages</td>';
+        $ui .= '<td style="text-align:left;">Completion</td>';
+        $ui .= '</tr>';
+
         foreach($actionplan_users as $count => $apu){
+
+            //Count user messages:
+            $count_messages = $this->Links_model->ln_fetch(array(
+                'ln_miner_entity_id' => $apu['en_id'],
+                'ln_type_entity_id IN (' . join(',', array_merge($this->config->item('en_ids_4277'), $this->config->item('en_ids_4280'))) . ')' => null, //User Sent/Received Messages
+            ), array(), 0, 0, array(), 'COUNT(ln_id) as totals');
+
             $ui .= '<tr>';
             $ui .= '<td>'.($count+1).'</td>';
-            $ui .= '<td style="text-align:left;"><span class="icon-block en-icon">'.echo_icon($apu).'</span> <a href="/entities/'.$apu['en_id'].'">'.$apu['en_name'].'</a></td>';
-            $ui .= '<td style="text-align:left;"><i class="far fa-clock"></i> '.echo_time_difference(strtotime($apu['ln_timestamp'])).'</td>';
+            $ui .= '<td style="text-align:left;"><span class="icon-block en-icon">'.echo_icon($apu).'</span> <a href="/entities/'.$apu['en_id'].'">'.$apu['en_name'].'</a>'.( strlen($apu['ln_content']) > 0 ? '<div class="user-comment">'.$this->Communication_model->dispatch_message($apu['ln_content']).'</div>' : '' ).'</td>';
+            $ui .= '<td style="text-align:left;"><i class="far fa-comments"></i> '.echo_number($count_messages[0]['totals']).'</td>';
+            $ui .= '<td style="text-align:left;"><i class="far fa-clock"></i> '.echo_time_difference(strtotime($apu['ln_timestamp'])).' ago</td>';
             $ui .= '</tr>';
+
+
+
         }
         $ui .= '</table>';
 
@@ -600,6 +619,7 @@ class Intents extends CI_Controller
                         $this->session->set_flashdata('flash_message', '<div class="alert alert-success" role="alert">' . 'Successfully updated '.$status_update_children.' intent'.echo__s($status_update_children).' recursively.</div>');
 
                     }
+
                 }
 
                 //This field has been updated, update one field at a time:

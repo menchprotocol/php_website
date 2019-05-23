@@ -206,7 +206,7 @@ if(!$action) {
     echo '<ul class="breadcrumb"><li><a href="/admin">Admin Tools</a></li><li><b>'.$moderation_tools['/admin/tools/'.$action].'</b></li></ul>';
 
     //Do a query to detect intents with the exact same title:
-    $q = $this->db->query('select in1.* from table_intents in1 where (select count(*) from table_intents in2 where in2.in_outcome = in1.in_outcome) > 1 ORDER BY in1.in_outcome ASC');
+    $q = $this->db->query('select in1.* from table_intents in1 where (select count(*) from table_intents in2 where in2.in_outcome = in1.in_outcome AND in2.in_status >= 0) > 1 AND in1.in_status >= 0 ORDER BY in1.in_outcome ASC');
     $duplicates = $q->result_array();
 
     if(count($duplicates) > 0){
@@ -229,7 +229,7 @@ if(!$action) {
 
     echo '<ul class="breadcrumb"><li><a href="/admin">Admin Tools</a></li><li><b>'.$moderation_tools['/admin/tools/'.$action].'</b></li></ul>';
 
-    $q = $this->db->query('select en1.* from table_entities en1 where (select count(*) from table_entities en2 where en2.en_name = en1.en_name) > 1 ORDER BY en1.en_name ASC');
+    $q = $this->db->query('select en1.* from table_entities en1 where (select count(*) from table_entities en2 where en2.en_name = en1.en_name AND en2.en_status >= 0) > 1 AND en1.en_status >= 0 ORDER BY en1.en_name ASC');
     $duplicates = $q->result_array();
 
     if(count($duplicates) > 0){

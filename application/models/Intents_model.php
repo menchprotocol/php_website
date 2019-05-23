@@ -610,6 +610,44 @@ class Intents_model extends CI_Model
     }
 
 
+    function in_fetch_recursive_children($in_id, $first_level = true){
+
+        //TODO build
+        exit;
+
+        $grand_parents = array();
+
+        //Fetch parents:
+        foreach($this->Links_model->ln_fetch(array(
+            'in_status >=' => 0,
+            'ln_status >=' => 0,
+            'ln_type_entity_id IN (' . join(',', $this->config->item('en_ids_4486')) . ')' => null, //Intent Link Connectors
+            'ln_child_intent_id' => $in_id,
+        ), array('in_parent')) as $in_parent){
+
+            //Prep ID:
+            $p_id = intval($in_parent['in_id']);
+
+            //Add to appropriate array:
+            if(!$first_level){
+                array_push($grand_parents, $p_id);
+            }
+
+            //Fetch parents of parents:
+            $recursive_parents = $this->Intents_model->in_fetch_recursive_parents($p_id, $min_level, false);
+
+            if($first_level){
+                array_push($recursive_parents, $p_id);
+                $grand_parents[$p_id] = $recursive_parents;
+            } elseif(!$first_level && count($recursive_parents) > 0){
+                $grand_parents = array_merge($grand_parents, $recursive_parents);
+            }
+        }
+
+        return $grand_parents;
+    }
+
+
 
     function in_is_public($in){
 

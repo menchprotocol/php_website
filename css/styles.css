@@ -1650,6 +1650,11 @@ h5, .h5 {
     margin: 0;
 }
 
+.msg img {
+    max-width:480px;
+    max-height:480px;
+}
+
 .msg a span {
     text-decoration: underline;
     overflow: hidden;
@@ -4128,7 +4133,9 @@ h4 .tip-badge {
 }
 
 
-
+.user-comment{
+    border:1px solid #2b2b2b; border-radius: 5px; padding:3px 3px 0 5px; margin:3px 5px 3px 29px; font-size: 0.9em;
+}
 
 .landing-page-intro .msg, .landing-page-intro li, p, .landing-page-intro a {
     font-size: 1.2em !important;
