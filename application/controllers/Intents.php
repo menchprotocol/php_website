@@ -582,22 +582,55 @@ class Intents extends CI_Controller
 
                 } elseif ($key == 'in_status') {
 
+                    $links_removed = 0;
 
                     //Is this a recursive removal?
-                    if(intval($_POST['apply_recursively'])){
-
-                        //Fetch all children:
+                    if(intval($_POST['apply_recursively'])) {
+                        //Fetch all children before removal:
                         $all_child_ids = $this->Intents_model->in_recursive_child_ids($_POST['in_id']);
-                        if(count($all_child_ids) < 1){
+                        if (count($all_child_ids) < 1) {
                             //Inform them that no children exist here:
                             return echo_json(array(
                                 'status' => 0,
                                 'message' => 'Cannot apply recursively as this intent has no children. Uncheck recursive box to continue.',
                             ));
                         }
+                    }
+
+
+                    //Has intent been removed?
+                    if($value < 0){
+
+                        //Intent has been removed:
+                        $remove_from_ui = 1;
+
+                        //Did we remove the main intent?
+                        if($_POST['level']==1){
+                            //Yes, redirect to a parent intent if we have any:
+                            if(count($ins[0]['in__parents']) > 0){
+                                $remove_redirect_url = '/intents/' . $ins[0]['in__parents'][0]['in_id'];
+                            } else {
+                                //No parents, redirect to default intent:
+                                $remove_redirect_url = '/intents/' . $this->config->item('in_miner_start');
+                            }
+                        }
+
+                        //Unlink intent links:
+                        $links_removed += $this->Intents_model->in_unlink($_POST['in_id'] , $session_en['en_id']);
+
+                        //Will be removed soon:
+                        $recursive_update_count++;
+
+                        //Treat as if no link (Since it was removed):
+                        $ln_id = 0;
+
+                    }
+
+
+
+                    if(intval($_POST['apply_recursively'])){
 
                         //Now see which children match the current status:
-                        $links_removed = 0;
                         $matching_child_ids = array();
                         foreach($this->Intents_model->in_fetch(array(
                             'in_id IN (' . join(',', $all_child_ids) . ')' => null, //All child intents
@@ -614,6 +647,7 @@ class Intents extends CI_Controller
 
                             //Add to matchind children array:
                             array_push($matching_child_ids, intval($recursive_in['in_id']));
+
                         }
 
                         //Success message:
@@ -636,32 +670,6 @@ class Intents extends CI_Controller
 
                         //Set message in session to inform miner:
                         $this->session->set_flashdata('flash_message', '<div class="alert alert-success" role="alert">'.$update_message.'</div>');
-
-                    }
-
-
-                    //Has intent been removed?
-                    if($value < 0){
-
-                        //Intent has been removed:
-                        $remove_from_ui = 1;
-
-                        //Did we remove the main intent?
-                        if($_POST['level']==1){
-                            //Yes, redirect to a parent intent if we have any:
-                            if(count($ins[0]['in__parents']) > 0){
-                                $remove_redirect_url = '/intents/' . $ins[0]['in__parents'][0]['in_id'];
-                            } else {
-                                //No parents, redirect to default intent:
-                                $remove_redirect_url = '/intents/' . $this->config->item('in_miner_start');
-                            }
-                        }
-
-                        //Unlink intent links:
-                        $links_removed = $this->Intents_model->in_unlink($_POST['in_id'] , $session_en['en_id']);
-
-                        //Treat as if no link (Since it was removed):
-                        $ln_id = 0;
 
                     }
                 }
