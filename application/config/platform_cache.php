@@ -11,7 +11,7 @@ defined('BASEPATH') OR exit('No direct script access allowed');
  *
  */
 
-//Generated 2019-05-22 12:34:00 PST
+//Generated 2019-05-23 08:10:05 PST
 
 //Deduced Completion:
 $config['en_ids_7089'] = array(6907, 6914);
@@ -766,7 +766,7 @@ $config['en_all_6196'] = array(
     ),
     6221 => array(
         'm_icon' => '<i class="fas fa-comment-smile"></i>',
-        'm_name' => 'Student Communications',
+        'm_name' => 'User Communications',
         'm_desc' => '',
         'm_parents' => array(6196),
     ),
@@ -964,7 +964,7 @@ $config['en_all_6123'] = array(
     ),
 );
 
-//Student Sent Message:
+//User Sent Message:
 $config['en_ids_4277'] = array(4287, 4460, 4547, 4548, 4549, 4550, 4551, 4557, 6561);
 $config['en_all_4277'] = array(
     4287 => array(
@@ -1023,7 +1023,7 @@ $config['en_all_4277'] = array(
     ),
 );
 
-//Student Sent/Received Media Message:
+//User Sent/Received Media Message:
 $config['en_ids_6102'] = array(4548, 4549, 4550, 4551, 4553, 4554, 4555, 4556);
 $config['en_all_6102'] = array(
     4548 => array(
@@ -1076,7 +1076,7 @@ $config['en_all_6102'] = array(
     ),
 );
 
-//Student Received Message:
+//User Received Message:
 $config['en_ids_4280'] = array(4552, 4553, 4554, 4555, 4556, 4570, 5967, 6563);
 $config['en_all_4280'] = array(
     4552 => array(
@@ -2064,7 +2064,7 @@ $config['en_all_4595'] = array(
     ),
     6226 => array(
         'm_icon' => '<i class="fal fa-sync"></i>',
-        'm_name' => 'Intent Mass Status Updates',
+        'm_name' => 'Intents Recursively Updated',
         'm_desc' => '500',
         'm_parents' => array(4595, 4593),
     ),
@@ -2596,7 +2596,7 @@ $config['en_all_4593'] = array(
     ),
     6226 => array(
         'm_icon' => '<i class="fal fa-sync"></i>',
-        'm_name' => 'Intent Mass Status Updates',
+        'm_name' => 'Intents Recursively Updated',
         'm_desc' => ' When all intents within a recursive tree are updated at once.',
         'm_parents' => array(4595, 4593),
     ),

@@ -173,7 +173,7 @@ function in_action_plan_users(in_id) {
     $('#load_action_plan_frame').removeClass('hidden').hide().fadeIn();
 
     //Set title:
-    $('#load_action_plan_frame .badge-h-max').html('🚩 ' + $('.in_outcome_' + in_id + ':first').text() + '<a href="'+$('#match_list_'+in_id).attr('full-url')+'" style="color: #FFF; text-decoration: underline; margin-left:10px;" target="_blank">'+ $('#match_list_'+in_id).attr('full-match-count') +' Links</a> <i class="fas fa-external-link"></i>');
+    $('#load_action_plan_frame .badge-h-max').html('🚩 ' + $('.in_outcome_' + in_id + ':first').text());
 
     //Show Loading Icon:
     $('#ap_matching_users').html('<span><i class="fas fa-spinner fa-spin"></i> Loading...</span>').hide().fadeIn();
@@ -571,7 +571,7 @@ function in_modify_save() {
 
             //What's the final action?
             setTimeout(function () {
-                if (modify_data['apply_recursively'] && data.status_update_children > 0) {
+                if (modify_data['apply_recursively'] && data.recursive_update_count > 0) {
                     //Refresh page soon to show new status for children:
                     window.location = "/intents/" + in_id;
                 } else {

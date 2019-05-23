@@ -248,7 +248,7 @@ class Intents_model extends CI_Model
     function in_unlink($in_id, $ln_miner_entity_id = 0){
 
         //Remove intent relations:
-        $adjust_trs = array_merge(
+        $intent_remove_links = array_merge(
             $this->Links_model->ln_fetch(array( //Intent Links
                 'ln_status >=' => 0, //New+
                 'ln_type_entity_id IN (' . join(',', $this->config->item('en_ids_4486')) . ')' => null, //Intent Link Connectors
@@ -261,14 +261,16 @@ class Intents_model extends CI_Model
             ), array(), 0)
         );
 
-        foreach($adjust_trs as $adjust_tr){
+        $links_removed = 0;
+        foreach($intent_remove_links as $ln){
             //Remove this link:
-            $this->Links_model->ln_update($adjust_tr['ln_id'], array(
+            $links_removed += $this->Links_model->ln_update($ln['ln_id'], array(
                 'ln_status' => -1, //Removed
             ), $ln_miner_entity_id);
         }
 
-        return count($adjust_trs);
+        //Return links removed:
+        return $links_removed;
     }
 
     function in_link_or_create($actionplan_in_id, $is_parent, $in_outcome, $link_in_id, $next_level, $ln_miner_entity_id)
@@ -496,84 +498,6 @@ class Intents_model extends CI_Model
 
     }
 
-    function in_recursive_update($in_id = 0, $in_field, $match_value, $replace_value, $ln_miner_entity_id, $filters = null, $recursive_in = null)
-    {
-        /*
-         *
-         * Updates a matching variable within an intent tree
-         *
-         * */
-
-        $update_count = 0;
-        if(!$filters || !is_array($filters)){
-            //Set default filters:
-            $filters = array(
-                'ln_status >=' => 0, //New+
-                'in_status >=' => 0, //New+
-                'ln_type_entity_id IN (' . join(',', $this->config->item('en_ids_4486')) . ')' => null, //Intent Link Connectors
-            );
-        }
-
-        if($match_value==$replace_value){
-
-            //Nothing to do here...
-            return 0;
-
-        } elseif($in_id > 0){
-
-            //This is the first round of the recursive function:
-            $ins = $this->Intents_model->in_fetch(array(
-                'in_id' => $in_id,
-            ));
-
-            if(count($ins) < 1){
-                return false;
-            }
-
-            $recursive_in = $ins[0];
-
-        } elseif(!$recursive_in){
-
-            return 0;
-
-        }
-
-        //Go through Children FIRST:
-        foreach($this->Links_model->ln_fetch(array_merge($filters , array(
-            'ln_parent_intent_id' => $recursive_in['in_id'],
-        )), array('in_child'), 0, 0, array('ln_order' => 'ASC')) as $in_child){
-
-            //Run function on child:
-            $update_count += $this->Intents_model->in_recursive_update(0, $in_field, $match_value, $replace_value, $ln_miner_entity_id, $filters, $in_child);
-
-        }
-
-        //See if we need to update this intent:
-        if(isset($recursive_in[$in_field]) && $recursive_in[$in_field]==$match_value){
-            //Matched! Update the filed:
-            $this->Intents_model->in_update($recursive_in['in_id'], array( $in_field => $replace_value ), true, $ln_miner_entity_id);
-            $update_count++;
-        }
-
-        //Log Link for recursive Intent Update:
-        if($in_id > 0 && $update_count > 0){
-            $this->Links_model->ln_create(array(
-                'ln_miner_entity_id' => $ln_miner_entity_id,
-                'ln_type_entity_id' => 6226, //Intent Tree Iterated
-                'ln_parent_intent_id' => $in_id,
-                'ln_content' => 'Successfully updated '.$update_count.' '.echo_clean_db_name($in_field).' from ['.$match_value.'] to ['.$replace_value.']',
-                'ln_metadata' => array(
-                    'filters' => $filters,
-                    'in_field' => $in_field,
-                    'match_value' => $match_value,
-                    'replace_value' => $replace_value,
-                ),
-            ));
-        }
-
-        return $update_count;
-
-    }
 
     function in_fetch_recursive_parents($in_id, $min_level, $first_level = true){
 
@@ -610,41 +534,34 @@ class Intents_model extends CI_Model
     }
 
 
-    function in_fetch_recursive_children($in_id, $first_level = true){
+    function in_recursive_child_ids($in_id, $first_level = true){
 
-        //TODO build
-        exit;
-
-        $grand_parents = array();
+        $child_ids = array();
 
         //Fetch parents:
         foreach($this->Links_model->ln_fetch(array(
             'in_status >=' => 0,
             'ln_status >=' => 0,
             'ln_type_entity_id IN (' . join(',', $this->config->item('en_ids_4486')) . ')' => null, //Intent Link Connectors
-            'ln_child_intent_id' => $in_id,
-        ), array('in_parent')) as $in_parent){
+            'ln_parent_intent_id' => $in_id,
+        ), array('in_child')) as $in_child){
 
-            //Prep ID:
-            $p_id = intval($in_parent['in_id']);
-
-            //Add to appropriate array:
-            if(!$first_level){
-                array_push($grand_parents, $p_id);
-            }
+            array_push($child_ids, intval($in_child['in_id']));
 
             //Fetch parents of parents:
-            $recursive_parents = $this->Intents_model->in_fetch_recursive_parents($p_id, $min_level, false);
+            $recursive_children = $this->Intents_model->in_recursive_child_ids($in_child['in_id'], false);
 
-            if($first_level){
-                array_push($recursive_parents, $p_id);
-                $grand_parents[$p_id] = $recursive_parents;
-            } elseif(!$first_level && count($recursive_parents) > 0){
-                $grand_parents = array_merge($grand_parents, $recursive_parents);
+            //Add to current array if we found anything:
+            if(count($recursive_children) > 0){
+                $child_ids = array_merge($child_ids, $recursive_children);
             }
         }
 
-        return $grand_parents;
+        if($first_level){
+            return array_unique($child_ids);
+        } else {
+            return $child_ids;
+        }
     }
 
 

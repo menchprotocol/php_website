@@ -1791,7 +1791,7 @@ function echo_in($in, $level, $in_parent_id = 0, $is_parent = false)
         'ln_status' => 2, //Published
     ), array(), 0, 0, array(), 'COUNT(ln_id) as total_steps');
     if($actionplan_users[0]['total_steps'] > 0) {
-        $ui .= '<a id="match_list_'.$in['in_id'].'" full-match-count="'.number_format($actionplan_users[0]['total_steps'], 0).'" full-url="/links?ln_status=2&ln_type_entity_id=' . join(',', $CI->config->item('en_ids_6255')) . '&ln_parent_intent_id='.$in['in_id'].'" href="#actionplanusers-'.$in['in_id'].'" onclick="in_action_plan_users('.$in['in_id'].')" class="badge badge-primary white-primary is_not_bg ' . echo_advance() . '" style="width:40px; margin:-3px -3px 0 4px;" data-toggle="tooltip" data-placement="top" title="View Matching Users"><span class="btn-counter">' . echo_number($actionplan_users[0]['total_steps']) . '</span>🚩</a>';
+        $ui .= '<a id="match_list_'.$in['in_id'].'" href="#actionplanusers-'.$in['in_id'].'" onclick="in_action_plan_users('.$in['in_id'].')" class="badge badge-primary white-primary is_not_bg ' . echo_advance() . '" style="width:40px; margin:-3px -3px 0 4px;" data-toggle="tooltip" data-placement="top" title="View Matching Users"><span class="btn-counter">' . echo_number($actionplan_users[0]['total_steps']) . '</span>🚩</a>';
     }
 
 

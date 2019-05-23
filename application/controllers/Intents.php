@@ -381,14 +381,13 @@ class Intents extends CI_Controller
         $ui = '<table class="table table-condensed table-striped">';
 
         $ui .= '<tr style="font-weight: bold;">';
-        $ui .= '<td>#</td>';
+        $ui .= '<td><a href="/links?ln_status=2&ln_type_entity_id=' . join(',', $this->config->item('en_ids_6255')) . '&ln_parent_intent_id='.$ins[0]['in_id'].'" target="_blank" style="text-decoration:none;">#</a></td>';
         $ui .= '<td style="text-align:left;">User</td>';
         $ui .= '<td style="text-align:left;">Messages</td>';
         $ui .= '<td style="text-align:left;">Completion</td>';
         $ui .= '</tr>';
 
         foreach($actionplan_users as $count => $apu){
-
             //Count user messages:
             $count_messages = $this->Links_model->ln_fetch(array(
                 'ln_miner_entity_id' => $apu['en_id'],
@@ -401,12 +400,9 @@ class Intents extends CI_Controller
             $ui .= '<td style="text-align:left;"><i class="far fa-comments"></i> '.echo_number($count_messages[0]['totals']).'</td>';
             $ui .= '<td style="text-align:left;"><i class="far fa-clock"></i> '.echo_time_difference(strtotime($apu['ln_timestamp'])).' ago</td>';
             $ui .= '</tr>';
-
-
-
         }
-        $ui .= '</table>';
 
+        $ui .= '</table>';
 
         echo_json(array(
             'status' => 1,
@@ -533,7 +529,7 @@ class Intents extends CI_Controller
         $remove_redirect_url = null;
 
         //Did anything change?
-        $status_update_children = 0;
+        $recursive_update_count = 0;
 
         //Check to see which variables actually changed:
         foreach ($in_update as $key => $value) {
@@ -586,6 +582,64 @@ class Intents extends CI_Controller
 
                 } elseif ($key == 'in_status') {
 
+
+                    //Is this a recursive removal?
+                    if(intval($_POST['apply_recursively'])){
+
+                        //Fetch all children:
+                        $all_child_ids = $this->Intents_model->in_recursive_child_ids($_POST['in_id']);
+                        if(count($all_child_ids) < 1){
+                            //Inform them that no children exist here:
+                            return echo_json(array(
+                                'status' => 0,
+                                'message' => 'Cannot apply recursively as this intent has no children. Uncheck recursive box to continue.',
+                            ));
+                        }
+
+                        //Now see which children match the current status:
+                        $links_removed = 0;
+                        $matching_child_ids = array();
+                        foreach($this->Intents_model->in_fetch(array(
+                            'in_id IN (' . join(',', $all_child_ids) . ')' => null, //All child intents
+                            'in_status' => $ins[0]['in_status'],
+                        )) as $recursive_in){
+
+                            //Do we also need to unlink?
+                            if($value < 0){
+                                $links_removed += $this->Intents_model->in_unlink($recursive_in['in_id'] , $session_en['en_id']);
+                            }
+
+                            //We're updating the status:
+                            $recursive_update_count += $this->Intents_model->in_update($recursive_in['in_id'], array( $key => $value ), true, $session_en['en_id']);
+
+                            //Add to matchind children array:
+                            array_push($matching_child_ids, intval($recursive_in['in_id']));
+                        }
+
+                        //Success message:
+                        $update_message = 'Successfully updated '.$recursive_update_count.' '.echo_clean_db_name($key).' from ['.$ins[0]['in_status'].'] to ['.$value.']'.( $links_removed>0 ? ' and removed ['.$links_removed.'] intent links' : '' );
+
+                        //Log recursive update:
+                        $this->Links_model->ln_create(array(
+                            'ln_miner_entity_id' => $session_en['en_id'],
+                            'ln_type_entity_id' => 6226, //Intents Recursively Updated
+                            'ln_parent_intent_id' => $_POST['in_id'],
+                            'ln_content' => $update_message,
+                            'ln_metadata' => array(
+                                'in_field' => $key,
+                                'match_value' => $ins[0]['in_status'],
+                                'replace_value' => $value,
+                                'matching_children' => $matching_child_ids,
+                                'all_children' => $all_child_ids,
+                            ),
+                        ));
+
+                        //Set message in session to inform miner:
+                        $this->session->set_flashdata('flash_message', '<div class="alert alert-success" role="alert">'.$update_message.'</div>');
+
+                    }
+
+
                     //Has intent been removed?
                     if($value < 0){
 
@@ -608,18 +662,8 @@ class Intents extends CI_Controller
 
                         //Treat as if no link (Since it was removed):
                         $ln_id = 0;
-                    }
-
-                    if(intval($_POST['apply_recursively'])){
-
-                        //Intent status has changed and there is a recursive update request:
-                        $status_update_children = $this->Intents_model->in_recursive_update($_POST['in_id'], 'in_status', $ins[0]['in_status'], $in_update['in_status'], $session_en['en_id']);
-
-                        //Set message in session to inform miner:
-                        $this->session->set_flashdata('flash_message', '<div class="alert alert-success" role="alert">' . 'Successfully updated '.$status_update_children.' intent'.echo__s($status_update_children).' recursively.</div>');
 
                     }
-
                 }
 
                 //This field has been updated, update one field at a time:
@@ -774,7 +818,7 @@ class Intents extends CI_Controller
             'remove_from_ui' => $remove_from_ui,
             'formatted_in_outcome' => ( isset($in_update['in_outcome']) ? echo_in_outcome($in_update['in_outcome'], false, false, true) : null ),
             'remove_redirect_url' => $remove_redirect_url,
-            'status_update_children' => $status_update_children,
+            'recursive_update_count' => $recursive_update_count,
             'in__metadata_max_steps' => -( isset($in_metadata['in__metadata_max_steps']) ? $in_metadata['in__metadata_max_steps'] : 0 ),
         );
 
