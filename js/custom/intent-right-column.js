@@ -569,16 +569,17 @@ function in_modify_save() {
             //Reload Tooltip again:
             $('[data-toggle="tooltip"]').tooltip();
 
-            //What's the final action?
-            setTimeout(function () {
-                if (modify_data['apply_recursively'] && data.recursive_update_count > 0) {
-                    //Refresh page soon to show new status for children:
-                    window.location = "/intents/" + in_id;
-                } else {
-                    $('.save_intent_changes').html(' '); //Clear-out
-                }
-            }, 1597);
 
+            //What's the final action?
+            if (modify_data['apply_recursively'] && data.recursive_update_count > 0) {
+                //Refresh page soon to show new status for children:
+                window.location = "/intents/" + in_focus_id;
+            } else {
+                //Clear times:
+                setTimeout(function () {
+                    $('.save_intent_changes').html(' ');
+                }, 1597);
+            }
         }
     });
 
