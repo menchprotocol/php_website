@@ -607,6 +607,43 @@ function objectToArray($object)
 }
 
 
+function in_get_filters(){
+
+    $in_filters = array(
+        'get_filter_user' => 0,
+        'get_filter_start' => 0,
+        'get_filter_end' => 0,
+        'get_filter_query' => array(),
+    );
+
+    //Intent User Action Plan Filter:
+    if(isset($_GET['filter_user'])){
+        $filter_en_id = intval(one_two_explode('@',' ', urldecode($_GET['filter_user'])));
+        if($filter_en_id > 0){
+            //All good, apply filter:
+            $in_filters['get_filter_user'] = $filter_en_id;
+            $in_filters['get_filter_query']['ln_miner_entity_id'] = $in_filters['get_filter_user'];
+        }
+    }
+
+    //Intent Time Range Filter:
+    if(isset($_GET['filter_time'])){
+        $time_parts = explode('-', urldecode($_GET['filter_time']), 2);
+        if(intval($time_parts[0]) > 0){
+            $in_filters['get_filter_start'] = intval($time_parts[0]);
+            $in_filters['get_filter_query']['ln_timestamp >='] = date("Y-m-d H:i:s", $in_filters['get_filter_start']);
+        }
+        if(intval($time_parts[1]) > 0){
+            $in_filters['get_filter_end'] = intval($time_parts[1]);
+            $in_filters['get_filter_query']['ln_timestamp <='] = date("Y-m-d H:i:s", $in_filters['get_filter_end']);
+        }
+    }
+
+
+
+    return $in_filters;
+}
+
 function update_algolia($input_obj_type = null, $input_obj_id = 0, $return_row_only = false)
 {
 

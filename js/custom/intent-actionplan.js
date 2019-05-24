@@ -50,6 +50,52 @@ function prep_search_pad(){
 
 }
 
+var filters_loaded = false;
+
+function load_filters(){
+
+    //Do not load twice:
+    if(filters_loaded){
+        return false;
+    }
+
+
+    filters_loaded = true;
+
+    //Load entity search for mass update function:
+    $('#filter_user').on('autocomplete:selected', function (event, suggestion, dataset) {
+
+        $(this).val('@' + suggestion.alg_obj_id + ' ' + suggestion.alg_obj_name);
+
+    }).autocomplete({hint: false, minLength: 2, keyboardShortcuts: ['a']}, [{
+
+        source: function (q, cb) {
+            algolia_index.search(q, {
+                filters: 'tag_en_parent_4430', //Entities belonging to Mench Users
+                hitsPerPage: 7,
+            }, function (error, content) {
+                if (error) {
+                    cb([]);
+                    return;
+                }
+                cb(content.hits, content);
+            });
+        },
+        displayKey: function (suggestion) {
+            return '@' + suggestion.alg_obj_id + ' ' + suggestion.alg_obj_name;
+        },
+        templates: {
+            suggestion: function (suggestion) {
+                return echo_js_suggestion(suggestion, 0);
+            },
+            empty: function (data) {
+                return '<div class="not-found"><i class="fas fa-exclamation-triangle"></i> No users found</div>';
+            },
+        }
+    }]);
+
+}
+
 $(document).ready(function () {
 
     //Load top/bottom intent searches:
@@ -72,6 +118,13 @@ $(document).ready(function () {
         $(".list-is-children .is_level2_sortable").each(function () {
             ms_toggle($(this).attr('in-link-id'), 0);
         });
+    });
+    $('#expand_intents .toggle_filters').click(function (e) {
+        $(".in__filters").toggleClass('hidden');
+    });
+
+    $('#filter_user').focus(function (e) {
+        load_filters();
     });
 
     //Activate sorting for level 3 intents:

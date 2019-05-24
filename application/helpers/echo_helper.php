@@ -1610,6 +1610,7 @@ function echo_in($in, $level, $in_parent_id = 0, $is_parent = false)
     $session_en = $CI->session->userdata('user');
     $fixed_fields = $CI->config->item('fixed_fields');
     $is_child_focused = ($level == 3 && $is_parent && $CI->uri->segment(2)==$in['in_id']);
+    $in_filters = in_get_filters(); //If we have any intent filters applied
 
     //Prepare Intent Metadata:
     $in_metadata = unserialize($in['in_metadata']);
@@ -1632,7 +1633,6 @@ function echo_in($in, $level, $in_parent_id = 0, $is_parent = false)
         $ui = '<div in-link-id="' . $ln_id . '" in-tr-type="' . $in['ln_type_entity_id'] . '" intent-id="' . $in['in_id'] . '" parent-intent-id="' . $in_parent_id . '" intent-level="' . $level . '" class="list-group-item ' . ($level == 3 || ($level == 2 && !$is_parent) ? ' enable-sorting ' : '') . ($level == 3 ? 'is_level3_sortable' : 'is_level2_sortable level2_in') . ' intent_line_' . $in['in_id'] . ( $is_parent && $level!=3 ? ' parent-intent ' : '' ) . ' in__tr_'.$ln_id.'">';
 
     }
-
 
 
 
@@ -1673,17 +1673,6 @@ function echo_in($in, $level, $in_parent_id = 0, $is_parent = false)
 
         //Show smaller link status icon:
         $ui .= '<span class="icon-top-right ln_status_' . $ln_id . '"><span data-toggle="tooltip" data-placement="right" title="'.$fixed_fields['ln_status'][$in['ln_status']]['s_name'].' ['.$in['ln_status'].']: '.$fixed_fields['ln_status'][$in['ln_status']]['s_desc'].'">' . $fixed_fields['ln_status'][$in['ln_status']]['s_icon'] . '</span></span>';
-
-        //Count and show total up-votes for this intent correlation (not necessarily this exact link, but the parent/child intent relation)
-        $ln_upvotes = $CI->Links_model->ln_fetch(array(
-            'ln_parent_intent_id' => $in['ln_parent_intent_id'],
-            'ln_child_intent_id' => $in['ln_child_intent_id'],
-            'ln_type_entity_id' => 4983, //Up-votes
-            'ln_status >=' => 0, //New+
-        ), array(), 0, 0, array(), 'COUNT(ln_id) as totals');
-
-        //TODO Maybe show later? Seemed like too much info...
-        //$ui .= '<span class="icon-top-left ' . echo_advance() . ' in_upvotes_' . $in['ln_child_intent_id'] . '_'.$in['ln_parent_intent_id'].'" data-toggle="tooltip" data-placement="right" title="Up-Votes">' . ( $ln_upvotes[0]['totals'] > 0 ? $ln_upvotes[0]['totals'] : '' ) . '</span>';
 
         //Show Response Weight based on Intent Link Type:
         $ui .= '<span class="icon-3rd in_assessment_' . $ln_id . '" data-toggle="tooltip" data-placement="right" title="Response Weight">'. echo_assessment_mark($in) .'</span>';
@@ -1759,7 +1748,7 @@ function echo_in($in, $level, $in_parent_id = 0, $is_parent = false)
 
 
 
-    //Do we have entity parents loaded in our data-set?
+    //Do we have intent parents loaded in our data-set?
     if (!isset($in['in__parents'])) {
 
         //Fetch parents at this point:
@@ -1785,22 +1774,22 @@ function echo_in($in, $level, $in_parent_id = 0, $is_parent = false)
 
 
     //Action Plan:
-    $actionplan_users = $CI->Links_model->ln_fetch(array(
+    $actionplan_users = $CI->Links_model->ln_fetch(array_merge($in_filters['get_filter_query'], array(
         'ln_type_entity_id IN (' . join(',', $CI->config->item('en_ids_6255')) . ')' => null, //Action Plan Progression Completion Triggers
         'ln_parent_intent_id' => $in['in_id'],
         'ln_status' => 2, //Published
-    ), array(), 0, 0, array(), 'COUNT(ln_id) as total_steps');
+    )), array(), 0, 0, array(), 'COUNT(ln_id) as total_steps');
     if($actionplan_users[0]['total_steps'] > 0) {
         $ui .= '<a id="match_list_'.$in['in_id'].'" href="#actionplanusers-'.$in['in_id'].'" onclick="in_action_plan_users('.$in['in_id'].')" class="badge badge-primary white-primary is_not_bg ' . echo_advance() . '" style="width:40px; margin:-3px -3px 0 4px;" data-toggle="tooltip" data-placement="top" title="View Matching Users"><span class="btn-counter">' . echo_number($actionplan_users[0]['total_steps']) . '</span>🚩</a>';
     }
 
 
     //Intent Notes:
-    $count_in_metadata = $CI->Links_model->ln_fetch(array(
+    $count_in_metadata = $CI->Links_model->ln_fetch(array_merge($in_filters['get_filter_query'], array(
         'ln_status >=' => 0, //New+
         'ln_type_entity_id IN (' . join(',', $CI->config->item('en_ids_4485')) . ')' => null, //All Intent Notes
         'ln_child_intent_id' => $in['in_id'],
-    ), array(), 0, 0, array(), 'COUNT(ln_id) as totals');
+    )), array(), 0, 0, array(), 'COUNT(ln_id) as totals');
     $ui .= '<a href="#intentnotes-' . $in['in_id'] . '" onclick="in_messages_iframe('.$in['in_id'].')" class="msg-badge-' . $in['in_id'] . ' badge badge-primary white-primary is_not_bg '.( $level==0 ? '' . echo_advance() . '' : '' ).'" style="width:40px; margin-right:2px; margin-left:5px;" data-toggle="tooltip" title="Intent Notes" data-placement="top"><span class="btn-counter messages-counter-' . $in['in_id'] . '">' . $count_in_metadata[0]['totals'] . '</span><i class="fas fa-comment-plus"></i></a>';
 
 
@@ -1815,9 +1804,9 @@ function echo_in($in, $level, $in_parent_id = 0, $is_parent = false)
 
 
     //Intent Links:
-    $count_in_trs = $CI->Links_model->ln_fetch(array(
+    $count_in_trs = $CI->Links_model->ln_fetch(array_merge($in_filters['get_filter_query'], array(
         '(ln_parent_intent_id=' . $in['in_id'] . ' OR ln_child_intent_id=' . $in['in_id'] . ($ln_id > 0 ? ' OR ln_parent_link_id=' . $ln_id : '') . ')' => null,
-    ), array(), 0, 0, array(), 'COUNT(ln_id) as totals');
+    )), array(), 0, 0, array(), 'COUNT(ln_id) as totals');
     //Show link to load these links:
     $ui .= '<a href="/links?any_in_id=' . $in['in_id'] . '&ln_parent_link_id=' . $ln_id . '" class="badge badge-primary ' . echo_advance() . ' is_not_bg" style="width:40px; margin:-3px 0px 0 4px; border:2px solid #ffe027 !important;" data-toggle="tooltip" data-placement="top" title="Go to Links"><span class="btn-counter">' . echo_number($count_in_trs[0]['totals']) . '</span><i class="fas fa-link rotate90"></i></a>';
 
@@ -1850,7 +1839,6 @@ function echo_in($in, $level, $in_parent_id = 0, $is_parent = false)
         }
 
     }
-
 
 
 
