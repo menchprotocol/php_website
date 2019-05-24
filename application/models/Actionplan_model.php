@@ -160,7 +160,7 @@ class Actionplan_model extends CI_Model
                 }
 
                 //Yes, communicate it:
-                $this->Actionplan_model->actionplan_step_next_communicate($en_id, $next_in_id);
+                $this->Actionplan_model->actionplan_step_next_echo($en_id, $next_in_id);
 
             } else {
 
@@ -234,7 +234,7 @@ class Actionplan_model extends CI_Model
         }
     }
 
-    function actionplan_step_skip_down($en_id, $in_id)
+    function actionplan_step_skip_apply($en_id, $in_id)
     {
 
         //Fetch intent common steps:
@@ -244,7 +244,7 @@ class Actionplan_model extends CI_Model
         ));
         if(count($ins) < 1){
             $this->Links_model->ln_create(array(
-                'ln_content' => 'actionplan_step_skip_down() failed to locate published intent',
+                'ln_content' => 'actionplan_step_skip_apply() failed to locate published intent',
                 'ln_type_entity_id' => 4246, //Platform Bug Reports
                 'ln_miner_entity_id' => 1, //Shervin/Developer
                 'ln_parent_entity_id' => $en_id,
@@ -258,7 +258,7 @@ class Actionplan_model extends CI_Model
 
         if(!isset($in_metadata['in__metadata_common_steps'])){
             $this->Links_model->ln_create(array(
-                'ln_content' => 'actionplan_step_skip_down() failed to locate metadata common steps',
+                'ln_content' => 'actionplan_step_skip_apply() failed to locate metadata common steps',
                 'ln_type_entity_id' => 4246, //Platform Bug Reports
                 'ln_miner_entity_id' => 1, //Shervin/Developer
                 'ln_parent_entity_id' => $en_id,
@@ -440,7 +440,7 @@ class Actionplan_model extends CI_Model
             if($top_priority['in']['in_id']==$ins[0]['in_id']){
 
                 //The newly added intent is the top priority, so let's initiate first message for action plan tree:
-                $this->Actionplan_model->actionplan_step_next_communicate($en_id, $ins[0]['in_id']);
+                $this->Actionplan_model->actionplan_step_next_echo($en_id, $ins[0]['in_id']);
 
             } else {
 
@@ -535,7 +535,7 @@ class Actionplan_model extends CI_Model
 
 
 
-    function actionplan_completion_unlock_step($en_id, $in, $is_bottom_level = true){
+    function actionplan_completion_recursive_up($en_id, $in, $is_bottom_level = true){
 
         /*
          *
@@ -550,10 +550,10 @@ class Actionplan_model extends CI_Model
         $unlock_steps_messages = array();
 
 
-        //First let's see if this is completed:
+        //First let's make sure this entire intent tree completed by the user:
         $completion_rate = $this->Actionplan_model->actionplan_completion_progress($en_id, $in);
         if($completion_rate['completion_percentage'] < 100){
-            //Not completed, so nothing to do here:
+            //Not completed, so can't go further up:
             return array();
         }
 
@@ -563,7 +563,7 @@ class Actionplan_model extends CI_Model
         if(isset($in_metadata['in__metadata_expansion_conditional'][$in['in_id']]) && count($in_metadata['in__metadata_expansion_conditional'][$in['in_id']]) > 0){
 
 
-            //Make sure previous label expansion has NOT happened before:
+            //Make sure previous step expansion has NOT happened before:
             $existing_expansions = $this->Links_model->ln_fetch(array(
                 'ln_status' => 2, //Published
                 'ln_type_entity_id' => 6140, //Action Plan Step Unlocked
@@ -585,12 +585,14 @@ class Actionplan_model extends CI_Model
                     'ln_child_entity_id' => $en_id,
                     'ln_parent_intent_id' => $in['in_id'],
                     'ln_child_intent_id' => $existing_expansions[0]['ln_child_intent_id'],
-                    'ln_content' => 'actionplan_completion_unlock_step() detected duplicate Label Expansion entries',
+                    'ln_content' => 'actionplan_completion_recursive_up() detected duplicate Label Expansion entries',
                     'ln_type_entity_id' => 4246, //Platform Bug Reports
                     'ln_miner_entity_id' => 1, //Shervin/Developer
                 ));
                 */
+
                 return array();
+
             }
 
 
@@ -599,7 +601,7 @@ class Actionplan_model extends CI_Model
 
 
 
-            //Detect Step to be Unlocked:
+            //Detect potential conditional steps to be Unlocked:
             $found_match = 0;
             $condition_ranges = $this->Links_model->ln_fetch(array(
                 'ln_status' => 2, //Published
@@ -624,7 +626,7 @@ class Actionplan_model extends CI_Model
                 }
 
 
-                if($user_marks['labels_answered_score']>=$ln_metadata['tr__conditional_score_min'] && $user_marks['labels_answered_score']<=$ln_metadata['tr__conditional_score_max']){
+                if($user_marks['steps_answered_score']>=$ln_metadata['tr__conditional_score_min'] && $user_marks['steps_answered_score']<=$ln_metadata['tr__conditional_score_max']){
 
                     //Found a match:
                     $found_match++;
@@ -672,7 +674,7 @@ class Actionplan_model extends CI_Model
             //We must have exactly 1 match by now:
             if($found_match != 1){
                 $this->Links_model->ln_create(array(
-                    'ln_content' => 'actionplan_completion_unlock_step() found ['.$found_match.'] routing logic matches!',
+                    'ln_content' => 'actionplan_completion_recursive_up() found ['.$found_match.'] routing logic matches!',
                     'ln_type_entity_id' => 4246, //Platform Bug Reports
                     'ln_miner_entity_id' => 1, //Shervin/Developer
                     'ln_child_entity_id' => $en_id,
@@ -706,7 +708,7 @@ class Actionplan_model extends CI_Model
                 //Does this parent and its grandparents have an intersection with the user intentions?
                 if(array_intersect($grand_parent_ids, $user_intentions_ids)){
 
-                    //Yes, let's go thtough until we hit their intersection
+                    //Yes, let's go through until we hit their intersection
                     foreach($grand_parent_ids as $p_id){
 
                         //Make sure not duplicated:
@@ -722,7 +724,7 @@ class Actionplan_model extends CI_Model
 
                         //Now see if this child completion resulted in a full parent completion:
                         if(count($parent_ins) > 0){
-                            $unlock_steps_messages_recursive = $this->Actionplan_model->actionplan_completion_unlock_step($en_id, $parent_ins[0], false);
+                            $unlock_steps_messages_recursive = $this->Actionplan_model->actionplan_completion_recursive_up($en_id, $parent_ins[0], false);
                             $unlock_steps_messages = array_merge($unlock_steps_messages, $unlock_steps_messages_recursive);
                         }
 
@@ -773,8 +775,8 @@ class Actionplan_model extends CI_Model
         }
 
 
-        //Try to unlock labels:
-        $unlock_steps_messages = $this->Actionplan_model->actionplan_completion_unlock_step($en_id, $in);
+        //Try to unlock steps:
+        $unlock_steps_messages = $this->Actionplan_model->actionplan_completion_recursive_up($en_id, $in);
 
 
         //Merge the two, if any:
@@ -804,7 +806,7 @@ class Actionplan_model extends CI_Model
         }
     }
 
-    function actionplan_step_next_communicate($en_id, $in_id, $fb_messenger_format = true)
+    function actionplan_step_next_echo($en_id, $in_id, $fb_messenger_format = true)
     {
 
         /*
@@ -846,7 +848,7 @@ class Actionplan_model extends CI_Model
             $this->Links_model->ln_create(array(
                 'ln_type_entity_id' => 4246, //Platform Bug Reports
                 'ln_miner_entity_id' => 1, //Shervin/Developer
-                'ln_content' => 'actionplan_step_next_communicate() called invalid intent',
+                'ln_content' => 'actionplan_step_next_echo() called invalid intent',
                 'ln_child_entity_id' => $en_id,
                 'ln_parent_intent_id' => $ins[0]['in_id'],
             ));
@@ -861,7 +863,7 @@ class Actionplan_model extends CI_Model
             $this->Links_model->ln_create(array(
                 'ln_type_entity_id' => 4246, //Platform Bug Reports
                 'ln_miner_entity_id' => 1, //Shervin/Developer
-                'ln_content' => 'actionplan_step_next_communicate() called unpublished intent',
+                'ln_content' => 'actionplan_step_next_echo() called unpublished intent',
                 'ln_child_entity_id' => $en_id,
                 'ln_parent_intent_id' => $ins[0]['in_id'],
             ));
@@ -1027,7 +1029,7 @@ class Actionplan_model extends CI_Model
          * */
         if(!$fb_messenger_format){
 
-            $unlocked_labels = $this->Links_model->ln_fetch(array(
+            $unlocked_steps = $this->Links_model->ln_fetch(array(
                 'ln_status' => 2, //Published
                 'in_status' => 2, //Published
                 'ln_type_entity_id' => 6140, //Action Plan Step Unlocked
@@ -1035,13 +1037,13 @@ class Actionplan_model extends CI_Model
                 'ln_parent_intent_id' => $ins[0]['in_id'],
             ), array('in_child'), 0);
 
-            //Did we have any Labels unlocked?
-            if(count($unlocked_labels) > 0){
+            //Did we have any steps unlocked?
+            if(count($unlocked_steps) > 0){
                 //Yes! Show them:
                 $next_step_message .= '<div class="list-group" style="margin:0 0 0 0;">';
-                foreach($unlocked_labels as $unlocked_label){
+                foreach($unlocked_steps as $unlocked_step){
                     //Add HTML step to UI:
-                    $next_step_message .= echo_actionplan_step_child($en_id, $unlocked_label, $unlocked_label['ln_status'], true);
+                    $next_step_message .= echo_actionplan_step_child($en_id, $unlocked_step, $unlocked_step['ln_status'], true);
                 }
                 $next_step_message .= '</div>';
             }
@@ -1111,7 +1113,7 @@ class Actionplan_model extends CI_Model
                     //Log error link so we can look into it:
                     $this->Links_model->ln_create(array(
                         'ln_miner_entity_id' => 1, //Shervin/Developer
-                        'ln_content' => 'actionplan_step_next_communicate() encountered intent with too many children to be listed as OR Intent options! Trim and iterate that intent tree.',
+                        'ln_content' => 'actionplan_step_next_echo() encountered intent with too many children to be listed as OR Intent options! Trim and iterate that intent tree.',
                         'ln_type_entity_id' => 4246, //Platform Bug Reports
                         'ln_parent_intent_id' => $ins[0]['in_id'],
                         'ln_child_intent_id' => $child_in['in_id'],
@@ -1477,15 +1479,15 @@ class Actionplan_model extends CI_Model
         //Calculate common steps and expansion steps recursively for this user:
         $metadata_this = array(
             //Generic assessment marks stats:
-            'labels_marks_count' => 0,
-            'labels_marks_max' => 0,
+            'steps_marks_count' => 0,
+            'steps_marks_max' => 0,
 
             //User answer stats:
-            'labels_answered_count' => 0, //How many they have answered so far
-            'labels_answered_marks' => 0, //Indicates completion score
+            'steps_answered_count' => 0, //How many they have answered so far
+            'steps_answered_marks' => 0, //Indicates completion score
 
             //Calculated at the end:
-            'labels_answered_score' => 0, //Used to determine which label to be unlocked...
+            'steps_answered_score' => 0, //Used to determine which label to be unlocked...
         );
 
 
@@ -1529,8 +1531,8 @@ class Actionplan_model extends CI_Model
                 //Did we have any marks for this question?
                 if($local_maximum > 0){
                     //Yes we have marks, let's addup to total max/minimums:
-                    $metadata_this['labels_marks_count'] += 1;
-                    $metadata_this['labels_marks_max'] += $local_maximum;
+                    $metadata_this['steps_marks_count'] += 1;
+                    $metadata_this['steps_marks_max'] += $local_maximum;
                 }
             }
 
@@ -1551,16 +1553,16 @@ class Actionplan_model extends CI_Model
 
                 //Addup data for this intent:
                 $this_answer_marks = ( isset($answer_marks_index[$expansion_in['in_id']]) ? $answer_marks_index[$expansion_in['in_id']] : 0 );
-                $metadata_this['labels_answered_count'] += 1 + $recursive_stats['labels_answered_count'];
-                $metadata_this['labels_answered_marks'] += $this_answer_marks + $recursive_stats['labels_answered_marks'];
+                $metadata_this['steps_answered_count'] += 1 + $recursive_stats['steps_answered_count'];
+                $metadata_this['steps_answered_marks'] += $this_answer_marks + $recursive_stats['steps_answered_marks'];
 
             }
         }
 
 
-        if($top_level && $metadata_this['labels_answered_count'] > 0){
+        if($top_level && $metadata_this['steps_answered_count'] > 0){
             //See assessment summary:
-            $metadata_this['labels_answered_score'] = floor( $metadata_this['labels_answered_marks'] / $metadata_this['labels_marks_max'] * 100 );
+            $metadata_this['steps_answered_score'] = floor( $metadata_this['steps_answered_marks'] / $metadata_this['steps_marks_max'] * 100 );
         }
 
 
@@ -1631,7 +1633,7 @@ class Actionplan_model extends CI_Model
         }
 
 
-        //Expansion Labels Recursive
+        //Expansion steps Recursive
         if(isset($in_metadata['in__metadata_expansion_conditional']) && count($in_metadata['in__metadata_expansion_conditional']) > 0){
 
             //Now let's check if user has unlocked any Miletones:

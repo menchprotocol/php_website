@@ -25,17 +25,6 @@ function echo_js_suggestion(alg_obj, is_top){
 }
 
 
-function echo_js_label(alg_obj){
-    var label_icon = '<i class="far fa-tag"></i> ';
-    if(alg_obj.alg_obj_name.includes("::")){
-        var res = alg_obj.alg_obj_name.split("::");
-        return label_icon + res[1].trim();
-    } else {
-        return label_icon + alg_obj.alg_obj_name;
-    }
-}
-
-
 function turn_off() {
     $('.dash').html('<span><i class="fas fa-spinner fa-spin"></i></span> Processing...');
 }

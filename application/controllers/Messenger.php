@@ -1530,7 +1530,7 @@ class Messenger extends CI_Controller
             $this->load->view('view_messenger/actionplan_step', array(
                 'session_en' => $session_en,
                 'user_intents' => $user_intents,
-                'advance_step' => $this->Actionplan_model->actionplan_step_next_communicate($session_en['en_id'], $in_id, false),
+                'advance_step' => $this->Actionplan_model->actionplan_step_next_echo($session_en['en_id'], $in_id, false),
                 'in' => $ins[0], //Currently focused intention:
             ));
 
@@ -1648,7 +1648,7 @@ class Messenger extends CI_Controller
     {
 
         //Actually go ahead and skip
-        $this->Actionplan_model->actionplan_step_skip_down($en_id, $in_id);
+        $this->Actionplan_model->actionplan_step_skip_apply($en_id, $in_id);
         //Assume its all good!
 
         //We actually skipped, draft message:

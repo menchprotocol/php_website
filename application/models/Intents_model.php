@@ -603,7 +603,7 @@ class Intents_model extends CI_Model
         $is_first_intent = ( !isset($focus_in['ln_id']) ); //First intent does not have a link, just the intent
         $has_or_parent = is_or($focus_in['in_type_entity_id']);
         $or_children = array(); //To be populated only if $focus_in is an OR intent
-        $conditional_labels = array(); //To be populated only for Conditional Steps
+        $conditional_steps = array(); //To be populated only for Conditional Steps
         $metadata_this = array(
             '__in__metadata_common_steps' => array(), //The tree structure that would be shared with all users regardless of their quick replies (OR Intent Answers)
             '__in__metadata_expansion_steps' => array(), //Intents that may exist as a link to expand an Action Plan tree by answering OR intents
@@ -623,7 +623,7 @@ class Intents_model extends CI_Model
             if($in_child['ln_type_entity_id']==4229){
 
                 //Conditional Step Link:
-                array_push($conditional_labels, intval($in_child['in_id']));
+                array_push($conditional_steps, intval($in_child['in_id']));
 
             } elseif($has_or_parent){
 
@@ -668,8 +668,8 @@ class Intents_model extends CI_Model
             $metadata_this['__in__metadata_expansion_steps'][$focus_in['in_id']] = $or_children;
         }
 
-        if(count($conditional_labels) > 0){
-            $metadata_this['__in__metadata_expansion_conditional'][$focus_in['in_id']] = $conditional_labels;
+        if(count($conditional_steps) > 0){
+            $metadata_this['__in__metadata_expansion_conditional'][$focus_in['in_id']] = $conditional_steps;
         }
 
 
@@ -724,7 +724,7 @@ class Intents_model extends CI_Model
         //Fetch common base and expansion paths from intent metadata:
         $flat_common_steps = array_flatten($in_metadata['in__metadata_common_steps']);
         $expansion_steps = ( isset($in_metadata['in__metadata_expansion_steps']) && count($in_metadata['in__metadata_expansion_steps']) > 0 ? $in_metadata['in__metadata_expansion_steps'] : array() );
-        $expansion_labels = ( isset($in_metadata['in__metadata_expansion_conditional']) && count($in_metadata['in__metadata_expansion_conditional']) > 0 ? $in_metadata['in__metadata_expansion_conditional'] : array() );
+        $expansion_steps = ( isset($in_metadata['in__metadata_expansion_conditional']) && count($in_metadata['in__metadata_expansion_conditional']) > 0 ? $in_metadata['in__metadata_expansion_conditional'] : array() );
 
         //Fetch totals for published common step intents:
         $common_totals = $this->Intents_model->in_fetch(array(
@@ -814,7 +814,7 @@ class Intents_model extends CI_Model
 
 
         //Go through expansion paths, if any:
-        foreach(array_merge($expansion_steps, $expansion_labels) as $expansion_group){
+        foreach(array_merge($expansion_steps, $expansion_steps) as $expansion_group){
 
             //Determine OR Answer local min/max:
             $metadata_local = array(
