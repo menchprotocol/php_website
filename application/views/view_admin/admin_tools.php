@@ -17,10 +17,10 @@ $moderation_tools = array(
 $cron_jobs = array(
     '/intents/cron__sync_common_base' => 'Sync Common Base Metadata',
     '/intents/cron__sync_extra_insights' => 'Sync Extra Insights Metadata',
-    '/intents/cron__clean_metadatas' => 'Clean Unused Metadata Variables',
     '/entities/cron__update_trust_score' => 'Update All Entity Trust Scores',
     '/links/cron__sync_algolia' => 'Sync Algolia Index [Limited calls!]',
     '/links/cron__sync_gephi' => 'Sync Gephi Graph Index',
+    '/links/cron__clean_metadatas' => 'Clean Unused Metadata Variables',
 );
 
 
