@@ -395,10 +395,10 @@ class Intents extends CI_Controller
             ), array(), 0, 0, array(), 'COUNT(ln_id) as totals');
 
             $ui .= '<tr>';
-            $ui .= '<td>'.($count+1).'</td>';
+            $ui .= '<td valign="top">'.($count+1).'</td>';
             $ui .= '<td style="text-align:left;"><span class="icon-block en-icon">'.echo_icon($apu).'</span> <a href="/entities/'.$apu['en_id'].'">'.$apu['en_name'].'</a>'.( strlen($apu['ln_content']) > 0 ? '<div class="user-comment">'.$this->Communication_model->dispatch_message($apu['ln_content']).'</div>' : '' ).'</td>';
             $ui .= '<td style="text-align:left;"><i class="far fa-comments"></i> '.echo_number($count_messages[0]['totals']).'</td>';
-            $ui .= '<td style="text-align:left;"><i class="far fa-clock"></i> '.echo_time_difference(strtotime($apu['ln_timestamp'])).' ago</td>';
+            $ui .= '<td style="text-align:left;"><i class="far fa-clock"></i> '.echo_time_difference(strtotime($apu['ln_timestamp'])).'</td>';
             $ui .= '</tr>';
         }
 

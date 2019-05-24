@@ -11,7 +11,7 @@ defined('BASEPATH') OR exit('No direct script access allowed');
  *
  */
 
-//Generated 2019-05-23 19:26:59 PST
+//Generated 2019-05-24 11:54:41 PST
 
 //Deduced Completion:
 $config['en_ids_7089'] = array(6907, 6914);
@@ -398,7 +398,7 @@ $config['en_all_6415'] = array(
     ),
     6140 => array(
         'm_icon' => '<i class="far fa-lock-open"></i>',
-        'm_name' => 'Action Plan Step Unlocked',
+        'm_name' => 'Action Plan Conditional Step Unlocked',
         'm_desc' => '',
         'm_parents' => array(4595, 6415, 6410, 6288, 4229, 4755, 4593),
     ),
@@ -463,7 +463,7 @@ $config['en_all_6410'] = array(
     ),
     6140 => array(
         'm_icon' => '<i class="far fa-lock-open"></i>',
-        'm_name' => 'Action Plan Step Unlocked',
+        'm_name' => 'Action Plan Conditional Step Unlocked',
         'm_desc' => 'Determined by this function which step should be unlocked',
         'm_parents' => array(4595, 6415, 6410, 6288, 4229, 4755, 4593),
     ),
@@ -1507,7 +1507,7 @@ $config['en_all_4755'] = array(
     ),
     6140 => array(
         'm_icon' => '<i class="far fa-lock-open"></i>',
-        'm_name' => 'Action Plan Step Unlocked',
+        'm_name' => 'Action Plan Conditional Step Unlocked',
         'm_desc' => '',
         'm_parents' => array(4595, 6415, 6410, 6288, 4229, 4755, 4593),
     ),
@@ -2010,7 +2010,7 @@ $config['en_all_4595'] = array(
     ),
     6140 => array(
         'm_icon' => '<i class="far fa-lock-open"></i>',
-        'm_name' => 'Action Plan Step Unlocked',
+        'm_name' => 'Action Plan Conditional Step Unlocked',
         'm_desc' => '25',
         'm_parents' => array(4595, 6415, 6410, 6288, 4229, 4755, 4593),
     ),
@@ -2542,7 +2542,7 @@ $config['en_all_4593'] = array(
     ),
     6140 => array(
         'm_icon' => '<i class="far fa-lock-open"></i>',
-        'm_name' => 'Action Plan Step Unlocked',
+        'm_name' => 'Action Plan Conditional Step Unlocked',
         'm_desc' => 'Created when the student responses to OR branches meets the right % points to unlock the pathway to a conditional intent link.',
         'm_parents' => array(4595, 6415, 6410, 6288, 4229, 4755, 4593),
     ),

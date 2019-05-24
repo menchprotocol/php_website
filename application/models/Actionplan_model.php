@@ -58,7 +58,7 @@ class Actionplan_model extends CI_Model
 
                 //See which path they got unlocked, if any:
                 $unlocked_conditions = $this->Links_model->ln_fetch(array(
-                    'ln_type_entity_id' => 6140, //Action Plan Step Unlocked
+                    'ln_type_entity_id' => 6140, //Action Plan Conditional Step Unlocked
                     'ln_miner_entity_id' => $en_id, //Belongs to this User
                     'ln_parent_intent_id' => $common_step_in_id,
                     'ln_child_intent_id IN (' . join(',', $in_metadata['in__metadata_expansion_conditional'][$common_step_in_id]) . ')' => null,
@@ -566,7 +566,7 @@ class Actionplan_model extends CI_Model
             //Make sure previous step expansion has NOT happened before:
             $existing_expansions = $this->Links_model->ln_fetch(array(
                 'ln_status' => 2, //Published
-                'ln_type_entity_id' => 6140, //Action Plan Step Unlocked
+                'ln_type_entity_id' => 6140, //Action Plan Conditional Step Unlocked
                 'ln_miner_entity_id' => $en_id,
                 'ln_parent_intent_id' => $in['in_id'],
                 'ln_child_intent_id IN (' . join(',', $in_metadata['in__metadata_expansion_conditional'][$in['in_id']]) . ')' => null, //Limit to cached answers
@@ -653,7 +653,7 @@ class Actionplan_model extends CI_Model
                     //Unlock Action Plan:
                     $this->Links_model->ln_create(array(
                         'ln_status' => 2,
-                        'ln_type_entity_id' => 6140, //Action Plan Step Unlocked
+                        'ln_type_entity_id' => 6140, //Action Plan Conditional Step Unlocked
                         'ln_miner_entity_id' => $en_id,
                         'ln_parent_intent_id' => $in['in_id'],
                         'ln_child_intent_id' => $conditional_step['in_id'],
@@ -1032,7 +1032,7 @@ class Actionplan_model extends CI_Model
             $unlocked_steps = $this->Links_model->ln_fetch(array(
                 'ln_status' => 2, //Published
                 'in_status' => 2, //Published
-                'ln_type_entity_id' => 6140, //Action Plan Step Unlocked
+                'ln_type_entity_id' => 6140, //Action Plan Conditional Step Unlocked
                 'ln_miner_entity_id' => $en_id,
                 'ln_parent_intent_id' => $ins[0]['in_id'],
             ), array('in_child'), 0);
@@ -1480,6 +1480,7 @@ class Actionplan_model extends CI_Model
         $metadata_this = array(
             //Generic assessment marks stats:
             'steps_marks_count' => 0,
+            'steps_marks_min' => 0,
             'steps_marks_max' => 0,
 
             //User answer stats:
@@ -1638,7 +1639,7 @@ class Actionplan_model extends CI_Model
 
             //Now let's check if user has unlocked any Miletones:
             foreach($this->Links_model->ln_fetch(array(
-                'ln_type_entity_id' => 6140, //Action Plan Step Unlocked
+                'ln_type_entity_id' => 6140, //Action Plan Conditional Step Unlocked
                 'ln_miner_entity_id' => $en_id, //Belongs to this User
                 'ln_parent_intent_id IN (' . join(',', $flat_common_steps ) . ')' => null,
                 'ln_child_intent_id IN (' . join(',', array_flatten($in_metadata['in__metadata_expansion_conditional'])) . ')' => null,
