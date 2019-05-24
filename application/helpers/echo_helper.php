@@ -1658,7 +1658,7 @@ function echo_in($in, $level, $in_parent_id = 0, $is_parent = false)
     if ($level == 1) {
 
         //Show Blank box:
-        $ui .= '<span class="double-icon" style="margin: 0 2px 0 -4px;"><span class="icon-main"><i class="fas fa-map-pin" data-toggle="tooltip" data-placement="right" title="You are Here"></i></span><span class="icon-top-right">&nbsp;</span></span>';
+        $ui .= '<span class="double-icon" style="margin: 0 2px 0 -4px;"><span class="icon-main"><i class="fas fa-map-marker-alt" data-toggle="tooltip" data-placement="right" title="You\'re Here"></i></span><span class="icon-top-right">&nbsp;</span></span>';
 
     } elseif($level > 1) {
 
@@ -1735,7 +1735,7 @@ function echo_in($in, $level, $in_parent_id = 0, $is_parent = false)
 
         //Is this the focused item in the parent sibling dropdown?
         if($is_child_focused){
-            $ui .= '<span class="badge badge-primary" style="font-size: 0.8em;"><i class="fas fa-map-pin"></i> You\'re Here</span> ';
+            $ui .= '<span class="badge badge-primary" style="font-size: 0.8em;"><i class="fas fa-map-marker-alt"></i> You\'re Here</span> ';
         }
 
     }
@@ -1992,7 +1992,7 @@ function echo_en($en, $level, $is_parent = false)
     } elseif( $level > 0 ) {
 
         //Show Blank box:
-        $ui .= '<span class="double-icon" style="margin:0 3px;"><span class="icon-main"><i class="fas fa-map-pin" data-toggle="tooltip" data-placement="right" title="You are Here"></i></span><span class="icon-top-right">&nbsp;</span></span>';
+        $ui .= '<span class="double-icon" style="margin:0 3px;"><span class="icon-main"><i class="fas fa-map-marker-alt" data-toggle="tooltip" data-placement="right" title="You\'re Here"></i></span><span class="icon-top-right">&nbsp;</span></span>';
 
     }
 
