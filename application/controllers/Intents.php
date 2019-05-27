@@ -338,6 +338,11 @@ class Intents extends CI_Controller
                 'status' => 0,
                 'message' => 'Session Expired',
             ));
+        } elseif (!isset($_POST['in_filters'])) {
+            return echo_json(array(
+                'status' => 0,
+                'message' => 'Missing filter settings',
+            ));
         } elseif (!isset($_POST['in_focus_id']) || intval($_POST['in_focus_id']) < 1) {
             return echo_json(array(
                 'status' => 0,
@@ -376,35 +381,115 @@ class Intents extends CI_Controller
             ));
         }
 
-        //Echo UI:
-        $ui = '<table class="table table-condensed table-striped">';
 
-        $ui .= '<tr style="font-weight: bold;">';
-        $ui .= '<td><a href="/links?ln_status=2&ln_type_entity_id=' . join(',', $this->config->item('en_ids_6255')) . '&ln_parent_intent_id='.$ins[0]['in_id'].'" target="_blank" style="text-decoration:none;">#</a></td>';
-        $ui .= '<td style="text-align:left;">User</td>';
-        $ui .= '<td style="text-align:left;"><i class="far fa-comments" data-toggle="tooltip" data-placement="top" title="Messages send/received"></i></td>';
-        $ui .= '<td style="text-align:left;"><i class="far fa-clock" data-toggle="tooltip" data-placement="top" title="Intent completion time"></i></td>';
-        $ui .= '<td style="text-align:left;">Actions</td>';
-        $ui .= '</tr>';
+        //Get filters from variables:
+        $in_filters = $_POST['in_filters'];
+        $filter_applied = ( isset($in_filters['get_filter_query']) && count($in_filters['get_filter_query']) > 0 );
 
-        $in_filters = in_get_filters(); //If we have any intent filters applied
+        //Go through match list:
+        $filters_list_counter = 0;
+        $regular_list_counter = 0;
+        $filters_list_ui = '';
+        $regular_list_ui = '';
+        foreach($actionplan_users as $apu){
 
-        foreach($actionplan_users as $count => $apu){
             //Count user messages:
             $count_messages = $this->Links_model->ln_fetch(array(
                 'ln_miner_entity_id' => $apu['en_id'],
                 'ln_type_entity_id IN (' . join(',', array_merge($this->config->item('en_ids_4277'), $this->config->item('en_ids_4280'))) . ')' => null, //User Sent/Received Messages
             ), array(), 0, 0, array(), 'COUNT(ln_id) as totals');
 
-            $ui .= '<tr>';
-            $ui .= '<td valign="top">'.($count+1).'</td>';
-            $ui .= '<td style="text-align:left;"><span class="icon-block en-icon">'.echo_icon($apu).'</span> <a href="/entities/'.$apu['en_id'].'">'.$apu['en_name'].'</a>'.( strlen($apu['ln_content']) > 0 ? '<div class="user-comment">'.$this->Communication_model->dispatch_message($apu['ln_content']).'</div>' : '' ).'</td>';
-            $ui .= '<td style="text-align:left;">'.echo_number($count_messages[0]['totals']).'</td>';
-            $ui .= '<td style="text-align:left;">'.echo_time_difference(strtotime($apu['ln_timestamp'])).'</td>';
-            $ui .= '<td style="text-align:left;"><a href="/intents/'.$_POST['in_focus_id'].'?filter_user='.urlencode('@'.$apu['en_id'].' '.$apu['en_name']).'#actionplanusers-'.$_POST['in_id'].'" data-toggle="tooltip" data-placement="top" title="Filter by this user"><i class="far fa-filter"></i></a> &nbsp;<a href="/entities/'.$_POST['in_focus_id'].'" data-toggle="tooltip" data-placement="top" title="View user profile"><i class="far fa-user-circle"></i></a></td>';
-            $ui .= '</tr>';
+
+            //Count user Action Plan Progression Completed:
+            $count_progression = $this->Links_model->ln_fetch(array(
+                'ln_miner_entity_id' => $apu['en_id'],
+                'ln_type_entity_id IN (' . join(',', $this->config->item('en_ids_6255')) . ')' => null, //Action Plan Progression Completed
+            ), array(), 0, 0, array(), 'COUNT(ln_id) as totals');
+
+
+            if($filter_applied){
+
+                //Search "ZEEBRA" to find dependant code
+
+                //See if this user matches the applied filters:
+                if($in_filters['get_filter_user'] > 0 && $in_filters['get_filter_user'] != $apu['ln_miner_entity_id']){
+                    $is_a_match = false;
+                } elseif($in_filters['get_filter_start'] > 0 && strtotime($apu['ln_timestamp']) < $in_filters['get_filter_start']){
+                    $is_a_match = false;
+                } elseif($in_filters['get_filter_end'] > 0 && strtotime($apu['ln_timestamp']) > $in_filters['get_filter_end']){
+                    $is_a_match = false;
+                } else {
+                    $is_a_match = true; //It passed all filter requirements!
+                }
+            }
+
+
+            if($filter_applied && $is_a_match){
+                $filters_list_counter++;
+                $current_count = $filters_list_counter;
+            } else {
+                $regular_list_counter++;
+                $current_count = $regular_list_counter;
+            }
+
+
+            //Create the UI for this user:
+            $item_ui = '<tr>';
+            $item_ui .= '<td valign="top">'.$current_count.'</td>';
+            $item_ui .= '<td style="text-align:left;">';
+            $item_ui .= '<span class="icon-block en-icon">'.echo_icon($apu).'</span> '.$apu['en_name'];
+            $item_ui .= ( strlen($apu['ln_content']) > 0 ? '<div class="user-comment">'.$this->Communication_model->dispatch_message($apu['ln_content']).'</div>' : '' );
+            $item_ui .= '</td>';
+            $item_ui .= '<td style="text-align:left;">'.echo_number($count_messages[0]['totals']).'</td>';
+            $item_ui .= '<td style="text-align:left;">'.echo_number($count_progression[0]['totals']).'</td>';
+            $item_ui .= '<td style="text-align:left;">'.echo_time_difference(strtotime($apu['ln_timestamp'])).'</td>';
+            $item_ui .= '<td style="text-align:left;"><a href="/intents/'.$_POST['in_focus_id'].'?filter_user='.urlencode('@'.$apu['en_id'].' '.$apu['en_name']).'#actionplanusers-'.$_POST['in_id'].'" data-toggle="tooltip" data-placement="top" title="Filter by this user"><i class="far fa-filter"></i></a> &nbsp;<a href="/entities/'.$_POST['in_focus_id'].'" data-toggle="tooltip" data-placement="top" title="View user profile"><i class="far fa-user-circle"></i></a></td>';
+            $item_ui .= '</tr>';
+
+
+            //Decide which list it should go to:
+            if($filter_applied && $is_a_match){
+                $filters_list_ui .= $item_ui;
+            } else {
+                $regular_list_ui .= $item_ui;
+            }
         }
 
+
+
+        //Filtered list if any:
+        $ui = '<table class="table table-condensed table-striped">';
+
+
+        if($filter_applied){
+
+            $ui .= '<tr style="font-weight: bold;">';
+            $ui .= '<td><a href="/links?ln_status=2&ln_type_entity_id=' . join(',', $this->config->item('en_ids_6255')) . '&ln_parent_intent_id='.$ins[0]['in_id'].'" target="_blank" style="text-decoration:none;">#</a></td>';
+            $ui .= '<td style="text-align:left;">'.$filters_list_counter.' Matching User'.echo__s($filters_list_counter).'</td>';
+            $ui .= '<td style="text-align:left;"><i class="far fa-comments" data-toggle="tooltip" data-placement="top" title="Messages send/received"></i></td>';
+            $ui .= '<td style="text-align:left;"><i class="fas fa-check-square" data-toggle="tooltip" data-placement="top" title="Steps Completed"></i></td>';
+            $ui .= '<td style="text-align:left;"><i class="far fa-clock" data-toggle="tooltip" data-placement="top" title="Completion time"></i></td>';
+            $ui .= '<td style="text-align:left;">Actions</td>';
+            $ui .= '</tr>';
+
+            $ui .= $filters_list_ui;
+
+            //Add two space blocks:
+            $ui .= '<tr><td colspan="6">&nbsp;</td></tr>';
+            $ui .= '<tr><td colspan="6">&nbsp;</td></tr>';
+
+        }
+
+        //Regular list:
+        $ui .= '<tr style="font-weight: bold;">';
+        $ui .= '<td><a href="/links?ln_status=2&ln_type_entity_id=' . join(',', $this->config->item('en_ids_6255')) . '&ln_parent_intent_id='.$ins[0]['in_id'].'" target="_blank" style="text-decoration:none;">#</a></td>';
+        $ui .= '<td style="text-align:left;">' . $regular_list_counter . ( $filter_applied ? ' Other' : '' ) .' User'.echo__s($regular_list_counter).'</td>';
+        $ui .= '<td style="text-align:left;"><i class="far fa-comments" data-toggle="tooltip" data-placement="top" title="Messages send/received"></i></td>';
+        $ui .= '<td style="text-align:left;"><i class="fas fa-check-square" data-toggle="tooltip" data-placement="top" title="Steps Completed"></i></td>';
+        $ui .= '<td style="text-align:left;"><i class="far fa-clock" data-toggle="tooltip" data-placement="top" title="Completion time"></i></td>';
+        $ui .= '<td style="text-align:left;">Actions</td>';
+        $ui .= '</tr>';
+        $ui .= $regular_list_ui;
         $ui .= '</table>';
 
         echo_json(array(

@@ -1,6 +1,10 @@
+<?php
+$in_filters = in_get_filters(true);
+?>
 <script>
     //Define some global variables:
     var in_focus_id = <?= $in['in_id'] ?>;
+    var js_in_filters = <?= json_encode($in_filters) ?>; //Passon current filters to user match list
 </script>
 <script src="/js/custom/intent-actionplan.js?v=v<?= $this->config->item('app_version') ?>"
         type="text/javascript"></script>
@@ -38,8 +42,6 @@
 
 
 
-
-
         //Focus intent:
         echo '<h5 class="badge badge-h indent1" style="display: inline-block;">Intent #'.$in['in_id'].'</h5>';
 
@@ -65,71 +67,29 @@
         echo '<div id="expand_intents" style="padding-left:8px; display: inline-block;">';
         echo '<i class="far fa-plus-circle expand_all" style="font-size: 1.2em;" data-toggle="tooltip" title="Expand Grandchildren" data-placement="top"></i> &nbsp;';
         echo '<i class="far fa-minus-circle close_all" style="font-size: 1.2em;" data-toggle="tooltip" title="Contact Grandchildren" data-placement="top"></i>';
-        echo '<i class="far fa-filter toggle_filters" style="font-size: 1.2em; margin-left: 6px;" data-toggle="tooltip" title="Filters applied to intent stats" data-placement="top"></i>';
+        echo '<i class="far fa-filter toggle_filters" style="font-size: 1.2em; margin-left: 6px;" data-toggle="tooltip" title="Apply Intent Filters" data-placement="top"></i>';
         echo '</div>';
 
 
         echo '<div class="inline-box in__filters '.( isset($_GET['filter_user']) || isset($_GET['filter_time']) ? '' : 'hidden' ).'">';
         echo '<form method="GET" action="" style="width: 100% !important;">';
+
         echo '<table><tr>';
 
         //Date Ranges:
-        echo '<td style="padding-right: 10px;"><select name="filter_time" data-toggle="tooltip" title="Time Range" data-placement="top" class="form-control border">';
-        foreach(array(
-                    array(
-                        'range_name' => 'All-Time',
-                        'range_start' => 0, //Beginning of time
-                        'range_end' => 0, //Now
-                    ),
-                    array(
-                        'range_name' => 'Today',
-                        'range_start' => mktime(0, 0, 0, date("n"), date("j"), date("Y")),
-                        'range_end' => 0,
-                    ),
-                    array(
-                        'range_name' => 'Yesterday',
-                        'range_start' => mktime(0, 0, 0, date("n"), (date("j")-1), date("Y")),
-                        'range_end' => mktime(0, 0, 0, date("n"), date("j"), date("Y")),
-                    ),
-                    array(
-                        'range_name' => 'Last 3 Days',
-                        'range_start' => mktime(0, 0, 0, date("n"), (date("j")-3), date("Y")),
-                        'range_end' => 0,
-                    ),
-                    array(
-                        'range_name' => 'Last 7 Days',
-                        'range_start' => mktime(0, 0, 0, date("n"), (date("j")-7), date("Y")),
-                        'range_end' => 0,
-                    ),
-                    array(
-                        'range_name' => 'Last 14 Days',
-                        'range_start' => mktime(0, 0, 0, date("n"), (date("j")-14), date("Y")),
-                        'range_end' => 0,
-                    ),
-                    array(
-                        'range_name' => 'Last 30 Days',
-                        'range_start' => mktime(0, 0, 0, date("n"), (date("j")-30), date("Y")),
-                        'range_end' => 0,
-                    ),
-                    array(
-                        'range_name' => 'Last 90 Days',
-                        'range_start' => mktime(0, 0, 0, date("n"), (date("j")-90), date("Y")),
-                        'range_end' => 0,
-                    ),
-                ) as $time_range){
-
-            echo '<option value="'.$time_range['range_start'].'-'.$time_range['range_end'].'" '.( isset($_GET['filter_time']) && $_GET['filter_time']==$time_range['range_start'].'-'.$time_range['range_end'] ? 'selected="selected"' : '' ).'>'.$time_range['range_name'].'</option>';
-
+        echo '<td style="padding-right: 10px;"><span class="mini-header">Filter Time</span><select name="filter_time" data-toggle="tooltip" title="Time Range" data-placement="top" class="form-control border">';
+        foreach($in_filters['get_filter_options'] as $get_filter_option){
+            echo '<option value="'.$get_filter_option['range_start'].'-'.$get_filter_option['range_end'].'" '.( isset($_GET['filter_time']) && $_GET['filter_time']==$get_filter_option['range_start'].'-'.$get_filter_option['range_end'] ? 'selected="selected"' : '' ).'>'.$get_filter_option['range_name'].'</option>';
         }
         echo '</select></td>';
 
 
         //Specific User:
-        echo '<td style="padding-right: 10px;"><input type="text" id="filter_user" data-toggle="tooltip" title="Filter by specific User" data-placement="top" name="filter_user" style="width:250px;" placeholder="Search Users..." class="form-control algolia_search border inline-block" value="'.( isset($_GET['filter_user']) ? $_GET['filter_user'] : '' ).'"></td>';
+        echo '<td style="padding-right: 10px;"><span class="mini-header">Filter User</span><input type="text" id="filter_user" data-toggle="tooltip" title="Filter by specific User" data-placement="top" name="filter_user" style="width:250px;" placeholder="Search Users..." class="form-control algolia_search border inline-block" value="'.( isset($_GET['filter_user']) ? $_GET['filter_user'] : '' ).'"></td>';
 
 
         //Go button:
-        echo '<td><input type="submit" value="Apply" class="btn btn-primary inline-block"></td>';
+        echo '<td><span class="mini-header">&nbsp;</span><input type="submit" value="Apply" class="btn btn-primary inline-block"></td>';
 
 
         echo '</tr></table>';

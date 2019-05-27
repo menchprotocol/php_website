@@ -766,9 +766,13 @@ function echo_time_hours($seconds, $micro = false)
      *
      * */
 
-    if ($seconds < 30) {
+    if ($seconds < 60) {
         //Under 30 seconds would not round up to even 1 minute, so don't show:
-        return 0;
+        if($micro){
+            return '<1m';
+        } else {
+            return 'Less than a Minute';
+        }
     } elseif ($seconds <= 5400) {
         return round($seconds / 60) . ($micro ? 'm' : ' Minutes');
     } else {
@@ -1774,13 +1778,21 @@ function echo_in($in, $level, $in_parent_id = 0, $is_parent = false)
 
 
     //Action Plan:
-    $actionplan_users = $CI->Links_model->ln_fetch(array_merge($in_filters['get_filter_query'], array(
+    $actionplan_users = $CI->Links_model->ln_fetch(array(
         'ln_type_entity_id IN (' . join(',', $CI->config->item('en_ids_6255')) . ')' => null, //Action Plan Progression Completion Triggers
         'ln_parent_intent_id' => $in['in_id'],
         'ln_status' => 2, //Published
-    )), array(), 0, 0, array(), 'COUNT(ln_id) as total_steps');
+    ), array(), 0, 0, array(), 'COUNT(ln_id) as total_steps');
+
+    if(count($in_filters['get_filter_query']) > 0){
+        $actionplan_users_match = $CI->Links_model->ln_fetch(array_merge($in_filters['get_filter_query'], array(
+            'ln_type_entity_id IN (' . join(',', $CI->config->item('en_ids_6255')) . ')' => null, //Action Plan Progression Completion Triggers
+            'ln_parent_intent_id' => $in['in_id'],
+            'ln_status' => 2, //Published
+        )), array(), 0, 0, array(), 'COUNT(ln_id) as total_steps');
+    }
     if($actionplan_users[0]['total_steps'] > 0) {
-        $ui .= '<a id="match_list_'.$in['in_id'].'" href="#actionplanusers-'.$in['in_id'].'" onclick="in_action_plan_users('.$in['in_id'].')" class="badge badge-primary white-primary is_not_bg ' . echo_advance() . '" style="width:40px; margin:-3px -3px 0 4px;" data-toggle="tooltip" data-placement="top" title="View Matching Users"><span class="btn-counter">' . ( strlen($in_filters['get_filter_url']) > 0 ? '<i class="fas fa-filter" style="color: #FFF !important;"></i> ' : '' ) . echo_number($actionplan_users[0]['total_steps']) . '</span>🚩</a>';
+        $ui .= '<a id="match_list_'.$in['in_id'].'" href="#actionplanusers-'.$in['in_id'].'" onclick="in_action_plan_users('.$in['in_id'].')" class="badge badge-primary white-primary is_not_bg ' . echo_advance() . '" style="width:40px; margin:-3px -3px 0 4px;" data-toggle="tooltip" data-placement="top" title="View Matching Users">'.( !count($in_filters['get_filter_query']) || $actionplan_users_match[0]['total_steps']>0 ? '<span class="btn-counter">' . ( count($in_filters['get_filter_query']) > 0 ? echo_number($actionplan_users_match[0]['total_steps']) : echo_number($actionplan_users[0]['total_steps']) ) . '</span>' : '' ).'🚩</a>';
     }
 
 
@@ -1808,7 +1820,7 @@ function echo_in($in, $level, $in_parent_id = 0, $is_parent = false)
         '(ln_parent_intent_id=' . $in['in_id'] . ' OR ln_child_intent_id=' . $in['in_id'] . ($ln_id > 0 ? ' OR ln_parent_link_id=' . $ln_id : '') . ')' => null,
     )), array(), 0, 0, array(), 'COUNT(ln_id) as totals');
     //Show link to load these links:
-    $ui .= '<a href="/links?any_in_id=' . $in['in_id'] . '&ln_parent_link_id=' . $ln_id . $in_filters['get_filter_links_url'] . '" class="badge badge-primary ' . echo_advance() . ' is_not_bg" style="width:40px; margin:-3px 0px 0 4px; border:2px solid #ffe027 !important;" data-toggle="tooltip" data-placement="top" title="Go to Links"><span class="btn-counter">' . ( strlen($in_filters['get_filter_url']) > 0 ? '<i class="fas fa-filter" style="color: #FFF !important;"></i> ' : '' ) . echo_number($count_in_trs[0]['totals']) . '</span><i class="fas fa-link rotate90"></i></a>';
+    $ui .= '<a href="/links?any_in_id=' . $in['in_id'] . '&ln_parent_link_id=' . $ln_id . $in_filters['get_filter_links_url'] . '" class="badge badge-primary ' . echo_advance() . ' is_not_bg" style="width:40px; margin:-3px 0px 0 4px; border:2px solid #ffe027 !important;" data-toggle="tooltip" data-placement="top" title="Go to Links"><span class="btn-counter">' . ( strlen($in_filters['get_filter_url']) > 0 ? '<i class="fas fa-filter mini-filter"></i> ' : '' ) . echo_number($count_in_trs[0]['totals']) . '</span><i class="fas fa-link rotate90"></i></a>';
 
 
     //Count children based on level:

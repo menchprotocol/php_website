@@ -607,7 +607,7 @@ function objectToArray($object)
 }
 
 
-function in_get_filters(){
+function in_get_filters($return_get_filter_options = false){
 
     $in_filters = array(
         'get_filter_user' => 0,
@@ -618,32 +618,89 @@ function in_get_filters(){
         'get_filter_links_url' => '',
     );
 
+    if($return_get_filter_options){
+        $in_filters['get_filter_options'] = array(
+            array(
+                'range_name' => 'All-Time',
+                'range_start' => 0, //Beginning of time
+                'range_end' => 0, //Now
+            ),
+            array(
+                'range_name' => 'Today',
+                'range_start' => mktime(0, 0, 0, date("n"), date("j"), date("Y")),
+                'range_end' => 0,
+            ),
+            array(
+                'range_name' => 'Yesterday',
+                'range_start' => mktime(0, 0, 0, date("n"), (date("j")-1), date("Y")),
+                'range_end' => mktime(0, 0, 0, date("n"), date("j"), date("Y")),
+            ),
+            array(
+                'range_name' => 'Last 3 Days',
+                'range_start' => mktime(0, 0, 0, date("n"), (date("j")-3), date("Y")),
+                'range_end' => 0,
+            ),
+            array(
+                'range_name' => 'Last 7 Days',
+                'range_start' => mktime(0, 0, 0, date("n"), (date("j")-7), date("Y")),
+                'range_end' => 0,
+            ),
+            array(
+                'range_name' => 'Last 14 Days',
+                'range_start' => mktime(0, 0, 0, date("n"), (date("j")-14), date("Y")),
+                'range_end' => 0,
+            ),
+            array(
+                'range_name' => 'Last 30 Days',
+                'range_start' => mktime(0, 0, 0, date("n"), (date("j")-30), date("Y")),
+                'range_end' => 0,
+            ),
+            array(
+                'range_name' => 'Last 90 Days',
+                'range_start' => mktime(0, 0, 0, date("n"), (date("j")-90), date("Y")),
+                'range_end' => 0,
+            ),
+        );
+    }
+
     //Intent User Action Plan Filter:
     if(isset($_GET['filter_user'])){
         $filter_en_id = intval(one_two_explode('@',' ', urldecode($_GET['filter_user'])));
         if($filter_en_id > 0){
             //All good, apply filter:
-            $in_filters['get_filter_user'] = $filter_en_id;
-            $in_filters['get_filter_query']['ln_miner_entity_id'] = $in_filters['get_filter_user'];
+            $in_filters['get_filter_user'] = $filter_en_id; //Search "ZEEBRA" to find dependant code
             $in_filters['get_filter_url'] .= '?filter_user='.$_GET['filter_user'];
             $in_filters['get_filter_links_url'] .= '&ln_miner_entity_id='.$filter_en_id;
+            $in_filters['get_filter_query']['ln_miner_entity_id'] = $in_filters['get_filter_user'];
         }
     }
 
     //Intent Time Range Filter:
     if(isset($_GET['filter_time'])){
+
         $time_parts = explode('-', urldecode($_GET['filter_time']), 2);
-        $in_filters['get_filter_url'] .= ( strlen($in_filters['get_filter_url']) > 0 ? '&' : '?' ).'filter_time='.$_GET['filter_time'];
+        $either_time_set = false;
 
         if(intval($time_parts[0]) > 0){
-            $in_filters['get_filter_start'] = intval($time_parts[0]);
-            $in_filters['get_filter_query']['ln_timestamp >='] = date("Y-m-d H:i:s", $in_filters['get_filter_start']);
+
+            $either_time_set = true;
+            $in_filters['get_filter_start'] = intval($time_parts[0]); //Search "ZEEBRA" to find dependant code
             $in_filters['get_filter_links_url'] .= '&start_range='.date("Y-m-d H:i:s", $in_filters['get_filter_start']);
+            $in_filters['get_filter_query']['ln_timestamp >='] = date("Y-m-d H:i:s", $in_filters['get_filter_start']);
+
         }
+
         if(intval($time_parts[1]) > 0){
-            $in_filters['get_filter_end'] = intval($time_parts[1]);
-            $in_filters['get_filter_query']['ln_timestamp <='] = date("Y-m-d H:i:s", $in_filters['get_filter_end']);
+
+            $either_time_set = true;
+            $in_filters['get_filter_end'] = intval($time_parts[1]); //Search "ZEEBRA" to find dependant code
             $in_filters['get_filter_links_url'] .= '&end_range='.date("Y-m-d H:i:s", $in_filters['get_filter_end']);
+            $in_filters['get_filter_query']['ln_timestamp <='] = date("Y-m-d H:i:s", $in_filters['get_filter_end']);
+
+        }
+
+        if($either_time_set){
+            $in_filters['get_filter_url'] .= ( strlen($in_filters['get_filter_url']) > 0 ? '&' : '?' ).'filter_time='.$_GET['filter_time'];
         }
     }
 

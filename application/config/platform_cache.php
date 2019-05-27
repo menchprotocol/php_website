@@ -11,22 +11,22 @@ defined('BASEPATH') OR exit('No direct script access allowed');
  *
  */
 
-//Generated 2019-05-24 11:54:41 PST
+//Generated 2019-05-26 22:19:52 PST
 
 //Deduced Completion:
 $config['en_ids_7089'] = array(6907, 6914);
 $config['en_all_7089'] = array(
     6907 => array(
         'm_icon' => '<i class="fas fa-lock"></i>',
-        'm_name' => 'OR Intent Locked',
+        'm_name' => 'OR Intent Unlock with Any Child',
         'm_desc' => '',
-        'm_parents' => array(7089, 6193),
+        'm_parents' => array(6997, 7089, 6193),
     ),
     6914 => array(
         'm_icon' => '<i class="fas fa-lock"></i>',
-        'm_name' => 'AND Intent Locked',
+        'm_name' => 'AND Intent Unlock with All Children',
         'm_desc' => '',
-        'm_parents' => array(7089, 6192),
+        'm_parents' => array(6997, 7089, 6192),
     ),
 );
 
@@ -37,13 +37,13 @@ $config['en_all_6908'] = array(
         'm_icon' => '<i class="fas fa-check"></i>',
         'm_name' => 'AND Intent No Response is required',
         'm_desc' => '',
-        'm_parents' => array(6908, 6192),
+        'm_parents' => array(6158, 4559, 6908, 6192),
     ),
     6684 => array(
         'm_icon' => '<i class="fas fa-question"></i>',
         'm_name' => 'OR Intent Normal Selection',
         'm_desc' => '',
-        'm_parents' => array(6908, 6193),
+        'm_parents' => array(6157, 6908, 6193),
     ),
 );
 
@@ -153,37 +153,37 @@ $config['en_all_6794'] = array(
         'm_icon' => '<i class="fas fa-image"></i>',
         'm_name' => 'Image is required',
         'm_desc' => '',
-        'm_parents' => array(6794, 6192),
+        'm_parents' => array(6144, 6794, 6192),
     ),
     6679 => array(
         'm_icon' => '<i class="fas fa-video"></i>',
         'm_name' => 'Video is required',
         'm_desc' => '',
-        'm_parents' => array(6794, 6192),
+        'm_parents' => array(6144, 6794, 6192),
     ),
     6680 => array(
         'm_icon' => '<i class="fas fa-microphone"></i>',
         'm_name' => 'Voice Note is required',
         'm_desc' => '',
-        'm_parents' => array(6794, 6192),
+        'm_parents' => array(6144, 6794, 6192),
     ),
     6681 => array(
         'm_icon' => '<i class="fas fa-file-pdf"></i>',
         'm_name' => 'File is required',
         'm_desc' => '',
-        'm_parents' => array(6794, 6192),
+        'm_parents' => array(6144, 6794, 6192),
     ),
     6682 => array(
         'm_icon' => '<i class="fas fa-browser"></i>',
         'm_name' => 'URL is required',
         'm_desc' => '',
-        'm_parents' => array(6794, 6192),
+        'm_parents' => array(6144, 6794, 6192),
     ),
     6683 => array(
         'm_icon' => '<i class="fas fa-align-left"></i>',
         'm_name' => 'Text is required',
         'm_desc' => '',
-        'm_parents' => array(6794, 6192),
+        'm_parents' => array(6144, 6794, 6192),
     ),
 );
 
@@ -194,49 +194,49 @@ $config['en_all_6192'] = array(
         'm_icon' => '<i class="fas fa-check"></i>',
         'm_name' => 'No Response is required',
         'm_desc' => 'Students would complete the intent by simply reviewing its outcome and reading its messages if any. No inputs are required.',
-        'm_parents' => array(6908, 6192),
+        'm_parents' => array(6158, 4559, 6908, 6192),
     ),
     6678 => array(
         'm_icon' => '<i class="fas fa-image"></i>',
         'm_name' => 'Image is required',
         'm_desc' => 'Student must send an image to mark the intent as complete.',
-        'm_parents' => array(6794, 6192),
+        'm_parents' => array(6144, 6794, 6192),
     ),
     6679 => array(
         'm_icon' => '<i class="fas fa-video"></i>',
         'm_name' => 'Video is required',
         'm_desc' => 'Student must send a video to mark the intent as complete.',
-        'm_parents' => array(6794, 6192),
+        'm_parents' => array(6144, 6794, 6192),
     ),
     6680 => array(
         'm_icon' => '<i class="fas fa-microphone"></i>',
         'm_name' => 'Voice Note is required',
         'm_desc' => 'Student must send a voice note to mark the intent as complete.',
-        'm_parents' => array(6794, 6192),
+        'm_parents' => array(6144, 6794, 6192),
     ),
     6681 => array(
         'm_icon' => '<i class="fas fa-file-pdf"></i>',
         'm_name' => 'File is required',
         'm_desc' => 'Student must upload a File to mark the intent as complete.',
-        'm_parents' => array(6794, 6192),
+        'm_parents' => array(6144, 6794, 6192),
     ),
     6682 => array(
         'm_icon' => '<i class="fas fa-browser"></i>',
         'm_name' => 'URL is required',
         'm_desc' => 'Student must submit a URL to mark the intent as complete.',
-        'm_parents' => array(6794, 6192),
+        'm_parents' => array(6144, 6794, 6192),
     ),
     6683 => array(
         'm_icon' => '<i class="fas fa-align-left"></i>',
         'm_name' => 'Text is required',
         'm_desc' => 'Student must submit a text message to mark the intent as complete.',
-        'm_parents' => array(6794, 6192),
+        'm_parents' => array(6144, 6794, 6192),
     ),
     6914 => array(
         'm_icon' => '<i class="fas fa-lock"></i>',
-        'm_name' => 'Locked',
+        'm_name' => 'Unlock with All Children',
         'm_desc' => 'Could only be accessed when all children are completed through different routes.',
-        'm_parents' => array(7089, 6192),
+        'm_parents' => array(6997, 7089, 6192),
     ),
 );
 
@@ -264,19 +264,19 @@ $config['en_all_6193'] = array(
         'm_icon' => '<i class="fas fa-question"></i>',
         'm_name' => 'Normal Selection',
         'm_desc' => 'Students can take their time and choose one of the paths of the OR intent.',
-        'm_parents' => array(6908, 6193),
+        'm_parents' => array(6157, 6908, 6193),
     ),
     6685 => array(
         'm_icon' => '<i class="fas fa-stopwatch"></i>',
         'm_name' => 'Timed Selection',
         'm_desc' => 'Student must make a selection within the time limit defines by the estimated intent time before their response chance expires.',
-        'm_parents' => array(6193),
+        'm_parents' => array(7152, 7151, 6193),
     ),
     6907 => array(
         'm_icon' => '<i class="fas fa-lock"></i>',
-        'm_name' => 'Locked',
+        'm_name' => 'Unlock with Any Child',
         'm_desc' => 'Users cannot select an answer, but they can only unlock an answer when they complete a single child through a different route',
-        'm_parents' => array(7089, 6193),
+        'm_parents' => array(6997, 7089, 6193),
     ),
 );
 
@@ -388,7 +388,7 @@ $config['en_all_4463'] = array(
 );
 
 //Action Plan Reset Progress:
-$config['en_ids_6415'] = array(4559, 6140, 6143, 6144, 6154, 6155, 6157, 6158);
+$config['en_ids_6415'] = array(4559, 6140, 6143, 6144, 6154, 6155, 6157, 6158, 6997, 7151, 7152);
 $config['en_all_6415'] = array(
     4559 => array(
         'm_icon' => '<i class="far fa-comment-check"></i>',
@@ -409,7 +409,7 @@ $config['en_all_6415'] = array(
         'm_parents' => array(4595, 6415, 6146, 4755, 4593),
     ),
     6144 => array(
-        'm_icon' => '<i class="fas fa-shield-check"></i>',
+        'm_icon' => '<i class="far fa-shield-check"></i>',
         'm_name' => 'Action Plan Requirement Submitted',
         'm_desc' => '',
         'm_parents' => array(4595, 6415, 6255, 6244, 4755, 6146, 4593),
@@ -427,7 +427,7 @@ $config['en_all_6415'] = array(
         'm_parents' => array(4595, 6415, 4506, 6150, 4593, 4755),
     ),
     6157 => array(
-        'm_icon' => '<i class="fas fa-clipboard-check"></i>',
+        'm_icon' => '<i class="far fa-clipboard-check"></i>',
         'm_name' => 'Action Plan Question Answered',
         'm_desc' => '',
         'm_parents' => array(4595, 6415, 6288, 6255, 6244, 6146, 4755, 4593, 4460),
@@ -437,6 +437,24 @@ $config['en_all_6415'] = array(
         'm_name' => 'Action Plan Auto Complete',
         'm_desc' => '',
         'm_parents' => array(4595, 6415, 6274, 6255, 4593, 4755, 6146),
+    ),
+    6997 => array(
+        'm_icon' => '<i class="far fa-lock-open"></i>',
+        'm_name' => 'Action Plan Locked Step Unlocked',
+        'm_desc' => '',
+        'm_parents' => array(6244, 6415, 6255, 4595, 4593, 4755, 6146),
+    ),
+    7151 => array(
+        'm_icon' => '<i class="far fa-stopwatch"></i>',
+        'm_name' => 'Action Plan Timed Question Answered',
+        'm_desc' => '',
+        'm_parents' => array(6255, 4460, 6244, 6288, 6415, 4755, 4595, 4593, 6146),
+    ),
+    7152 => array(
+        'm_icon' => '<i class="far fa-calendar-times"></i>',
+        'm_name' => 'Action Plan Timed Question Expired',
+        'm_desc' => '',
+        'm_parents' => array(6255, 4460, 6244, 6288, 4595, 4593, 4755, 6415, 6146),
     ),
 );
 
@@ -499,7 +517,7 @@ $config['en_all_6345'] = array(
 );
 
 //Mench:
-$config['en_ids_2738'] = array(4432, 4488, 4535, 4536, 5007, 6137, 6138, 6196, 6205, 6287, 6827);
+$config['en_ids_2738'] = array(4432, 4488, 4535, 4536, 5007, 6137, 6138, 6196, 6205, 6287, 6827, 7146);
 $config['en_all_2738'] = array(
     4432 => array(
         'm_icon' => '<i class="far fa-certificate"></i>',
@@ -567,6 +585,12 @@ $config['en_all_2738'] = array(
         'm_desc' => 'The Mench community and its various groups',
         'm_parents' => array(4527, 3463, 2738),
     ),
+    7146 => array(
+        'm_icon' => '<i class="far fa-share-alt-square"></i>',
+        'm_name' => 'Mench on Social Media',
+        'm_desc' => '',
+        'm_parents' => array(3301, 2793, 3300, 2738),
+    ),
 );
 
 //Action Plan Progression Automated:
@@ -587,7 +611,7 @@ $config['en_all_6274'] = array(
 );
 
 //Action Plan Progression Completed:
-$config['en_ids_6255'] = array(4559, 6144, 6157, 6158);
+$config['en_ids_6255'] = array(4559, 6144, 6157, 6158, 6997, 7151, 7152);
 $config['en_all_6255'] = array(
     4559 => array(
         'm_icon' => '<i class="far fa-comment-check"></i>',
@@ -596,13 +620,13 @@ $config['en_all_6255'] = array(
         'm_parents' => array(4595, 6415, 6274, 6255, 4755, 6146, 4593),
     ),
     6144 => array(
-        'm_icon' => '<i class="fas fa-shield-check"></i>',
+        'm_icon' => '<i class="far fa-shield-check"></i>',
         'm_name' => 'Action Plan Requirement Submitted',
         'm_desc' => '',
         'm_parents' => array(4595, 6415, 6255, 6244, 4755, 6146, 4593),
     ),
     6157 => array(
-        'm_icon' => '<i class="fas fa-clipboard-check"></i>',
+        'm_icon' => '<i class="far fa-clipboard-check"></i>',
         'm_name' => 'Action Plan Question Answered',
         'm_desc' => '',
         'm_parents' => array(4595, 6415, 6288, 6255, 6244, 6146, 4755, 4593, 4460),
@@ -613,22 +637,58 @@ $config['en_all_6255'] = array(
         'm_desc' => '',
         'm_parents' => array(4595, 6415, 6274, 6255, 4593, 4755, 6146),
     ),
+    6997 => array(
+        'm_icon' => '<i class="far fa-lock-open"></i>',
+        'm_name' => 'Action Plan Locked Step Unlocked',
+        'm_desc' => '',
+        'm_parents' => array(6244, 6415, 6255, 4595, 4593, 4755, 6146),
+    ),
+    7151 => array(
+        'm_icon' => '<i class="far fa-stopwatch"></i>',
+        'm_name' => 'Action Plan Timed Question Answered',
+        'm_desc' => '',
+        'm_parents' => array(6255, 4460, 6244, 6288, 6415, 4755, 4595, 4593, 6146),
+    ),
+    7152 => array(
+        'm_icon' => '<i class="far fa-calendar-times"></i>',
+        'm_name' => 'Action Plan Timed Question Expired',
+        'm_desc' => '',
+        'm_parents' => array(6255, 4460, 6244, 6288, 4595, 4593, 4755, 6415, 6146),
+    ),
 );
 
 //Action Plan Progression 2-Step Steps:
-$config['en_ids_6244'] = array(6144, 6157);
+$config['en_ids_6244'] = array(6144, 6157, 6997, 7151, 7152);
 $config['en_all_6244'] = array(
     6144 => array(
-        'm_icon' => '<i class="fas fa-shield-check"></i>',
+        'm_icon' => '<i class="far fa-shield-check"></i>',
         'm_name' => 'Requirement Submitted',
         'm_desc' => '',
         'm_parents' => array(4595, 6415, 6255, 6244, 4755, 6146, 4593),
     ),
     6157 => array(
-        'm_icon' => '<i class="fas fa-clipboard-check"></i>',
+        'm_icon' => '<i class="far fa-clipboard-check"></i>',
         'm_name' => 'Question Answered',
         'm_desc' => '',
         'm_parents' => array(4595, 6415, 6288, 6255, 6244, 6146, 4755, 4593, 4460),
+    ),
+    6997 => array(
+        'm_icon' => '<i class="far fa-lock-open"></i>',
+        'm_name' => 'Locked Step Unlocked',
+        'm_desc' => '',
+        'm_parents' => array(6244, 6415, 6255, 4595, 4593, 4755, 6146),
+    ),
+    7151 => array(
+        'm_icon' => '<i class="far fa-stopwatch"></i>',
+        'm_name' => 'Timed Question Answered',
+        'm_desc' => '',
+        'm_parents' => array(6255, 4460, 6244, 6288, 6415, 4755, 4595, 4593, 6146),
+    ),
+    7152 => array(
+        'm_icon' => '<i class="far fa-calendar-times"></i>',
+        'm_name' => 'Timed Question Expired',
+        'm_desc' => '',
+        'm_parents' => array(6255, 4460, 6244, 6288, 4595, 4593, 4755, 6415, 6146),
     ),
 );
 
@@ -889,7 +949,7 @@ $config['en_all_4363'] = array(
 );
 
 //Action Plan Progression Steps:
-$config['en_ids_6146'] = array(4559, 6143, 6144, 6157, 6158);
+$config['en_ids_6146'] = array(4559, 6143, 6144, 6157, 6158, 6997, 7151, 7152);
 $config['en_all_6146'] = array(
     4559 => array(
         'm_icon' => '<i class="far fa-comment-check"></i>',
@@ -904,13 +964,13 @@ $config['en_all_6146'] = array(
         'm_parents' => array(4595, 6415, 6146, 4755, 4593),
     ),
     6144 => array(
-        'm_icon' => '<i class="fas fa-shield-check"></i>',
+        'm_icon' => '<i class="far fa-shield-check"></i>',
         'm_name' => 'Requirement Submitted',
         'm_desc' => 'Completed when students submit the intent completion requirements (text, URL, video, etc...) set by miners',
         'm_parents' => array(4595, 6415, 6255, 6244, 4755, 6146, 4593),
     ),
     6157 => array(
-        'm_icon' => '<i class="fas fa-clipboard-check"></i>',
+        'm_icon' => '<i class="far fa-clipboard-check"></i>',
         'm_name' => 'Question Answered',
         'm_desc' => 'Completed after the student answers the question to the OR intent.',
         'm_parents' => array(4595, 6415, 6288, 6255, 6244, 6146, 4755, 4593, 4460),
@@ -920,6 +980,24 @@ $config['en_all_6146'] = array(
         'm_name' => 'Auto Complete',
         'm_desc' => 'Completed when students read the messages of an intent that does not have any messages or a completion requirement',
         'm_parents' => array(4595, 6415, 6274, 6255, 4593, 4755, 6146),
+    ),
+    6997 => array(
+        'm_icon' => '<i class="far fa-lock-open"></i>',
+        'm_name' => 'Locked Step Unlocked',
+        'm_desc' => 'When a user unlocks a Locked AND or OR intent by completing all or any of its children.',
+        'm_parents' => array(6244, 6415, 6255, 4595, 4593, 4755, 6146),
+    ),
+    7151 => array(
+        'm_icon' => '<i class="far fa-stopwatch"></i>',
+        'm_name' => 'Timed Question Answered',
+        'm_desc' => 'Students must provide a response within a pre-defined number of seconds to have their answer qualify',
+        'm_parents' => array(6255, 4460, 6244, 6288, 6415, 4755, 4595, 4593, 6146),
+    ),
+    7152 => array(
+        'm_icon' => '<i class="far fa-calendar-times"></i>',
+        'm_name' => 'Timed Question Expired',
+        'm_desc' => 'When students fail to provide an answer within the pre-defined time then their question expires',
+        'm_parents' => array(6255, 4460, 6244, 6288, 4595, 4593, 4755, 6415, 6146),
     ),
 );
 
@@ -942,7 +1020,7 @@ $config['en_all_6123'] = array(
         'm_icon' => '<i class="fab fa-instagram"></i>',
         'm_name' => 'Instagram',
         'm_desc' => '',
-        'm_parents' => array(6123, 1326, 2750),
+        'm_parents' => array(1326, 6123, 1326, 2750),
     ),
     3302 => array(
         'm_icon' => '<i class="fab fa-linkedin"></i>',
@@ -1299,7 +1377,7 @@ $config['en_all_4426'] = array(
 );
 
 //Private Content:
-$config['en_ids_4755'] = array(3286, 3288, 4235, 4242, 4246, 4251, 4263, 4266, 4267, 4268, 4275, 4278, 4279, 4282, 4283, 4287, 4299, 4460, 4547, 4548, 4549, 4550, 4551, 4552, 4553, 4554, 4555, 4556, 4557, 4559, 4570, 4783, 5967, 6132, 6140, 6143, 6144, 6149, 6154, 6155, 6157, 6158, 6224, 6389, 6415, 6556, 6559, 6560, 6561, 6563, 6578, 6969);
+$config['en_ids_4755'] = array(3286, 3288, 4235, 4242, 4246, 4251, 4263, 4266, 4267, 4268, 4275, 4278, 4279, 4282, 4283, 4287, 4299, 4460, 4547, 4548, 4549, 4550, 4551, 4552, 4553, 4554, 4555, 4556, 4557, 4559, 4570, 4783, 5967, 6132, 6140, 6143, 6144, 6149, 6154, 6155, 6157, 6158, 6224, 6389, 6415, 6556, 6559, 6560, 6561, 6563, 6578, 6969, 6997, 7151, 7152);
 $config['en_all_4755'] = array(
     3286 => array(
         'm_icon' => '<i class="fal fa-lock-open"></i>',
@@ -1518,7 +1596,7 @@ $config['en_all_4755'] = array(
         'm_parents' => array(4595, 6415, 6146, 4755, 4593),
     ),
     6144 => array(
-        'm_icon' => '<i class="fas fa-shield-check"></i>',
+        'm_icon' => '<i class="far fa-shield-check"></i>',
         'm_name' => 'Action Plan Requirement Submitted',
         'm_desc' => '',
         'm_parents' => array(4595, 6415, 6255, 6244, 4755, 6146, 4593),
@@ -1542,7 +1620,7 @@ $config['en_all_4755'] = array(
         'm_parents' => array(4595, 6415, 4506, 6150, 4593, 4755),
     ),
     6157 => array(
-        'm_icon' => '<i class="fas fa-clipboard-check"></i>',
+        'm_icon' => '<i class="far fa-clipboard-check"></i>',
         'm_name' => 'Action Plan Question Answered',
         'm_desc' => '',
         'm_parents' => array(4595, 6415, 6288, 6255, 6244, 6146, 4755, 4593, 4460),
@@ -1613,10 +1691,28 @@ $config['en_all_4755'] = array(
         'm_desc' => '',
         'm_parents' => array(4595, 4593, 4755, 6153),
     ),
+    6997 => array(
+        'm_icon' => '<i class="far fa-lock-open"></i>',
+        'm_name' => 'Action Plan Locked Step Unlocked',
+        'm_desc' => '',
+        'm_parents' => array(6244, 6415, 6255, 4595, 4593, 4755, 6146),
+    ),
+    7151 => array(
+        'm_icon' => '<i class="far fa-stopwatch"></i>',
+        'm_name' => 'Action Plan Timed Question Answered',
+        'm_desc' => '',
+        'm_parents' => array(6255, 4460, 6244, 6288, 6415, 4755, 4595, 4593, 6146),
+    ),
+    7152 => array(
+        'm_icon' => '<i class="far fa-calendar-times"></i>',
+        'm_name' => 'Action Plan Timed Question Expired',
+        'm_desc' => '',
+        'm_parents' => array(6255, 4460, 6244, 6288, 4595, 4593, 4755, 6415, 6146),
+    ),
 );
 
 //Link Points:
-$config['en_ids_4595'] = array(4228, 4229, 4230, 4231, 4232, 4235, 4242, 4246, 4250, 4251, 4255, 4256, 4257, 4258, 4259, 4260, 4261, 4263, 4264, 4266, 4267, 4268, 4269, 4275, 4278, 4279, 4282, 4283, 4287, 4299, 4318, 4319, 4460, 4547, 4548, 4549, 4550, 4551, 4552, 4553, 4554, 4555, 4556, 4557, 4559, 4570, 4577, 4601, 4983, 4993, 4994, 4996, 4998, 4999, 5000, 5001, 5003, 5007, 5865, 5943, 5967, 5981, 5982, 6093, 6132, 6140, 6143, 6144, 6149, 6154, 6155, 6157, 6158, 6224, 6226, 6242, 6389, 6415, 6556, 6559, 6560, 6561, 6563, 6578, 6969);
+$config['en_ids_4595'] = array(4228, 4229, 4230, 4231, 4232, 4235, 4242, 4246, 4250, 4251, 4255, 4256, 4257, 4258, 4259, 4260, 4261, 4263, 4264, 4266, 4267, 4268, 4269, 4275, 4278, 4279, 4282, 4283, 4287, 4299, 4318, 4319, 4460, 4547, 4548, 4549, 4550, 4551, 4552, 4553, 4554, 4555, 4556, 4557, 4559, 4570, 4577, 4601, 4983, 4993, 4994, 4996, 4998, 4999, 5000, 5001, 5003, 5007, 5865, 5943, 5967, 5981, 5982, 6093, 6132, 6140, 6143, 6144, 6149, 6154, 6155, 6157, 6158, 6224, 6226, 6242, 6389, 6415, 6556, 6559, 6560, 6561, 6563, 6578, 6969, 6997, 7151, 7152);
 $config['en_all_4595'] = array(
     4228 => array(
         'm_icon' => '<i class="fas fa-walking"></i>',
@@ -2021,7 +2117,7 @@ $config['en_all_4595'] = array(
         'm_parents' => array(4595, 6415, 6146, 4755, 4593),
     ),
     6144 => array(
-        'm_icon' => '<i class="fas fa-shield-check"></i>',
+        'm_icon' => '<i class="far fa-shield-check"></i>',
         'm_name' => 'Action Plan Requirement Submitted',
         'm_desc' => '50',
         'm_parents' => array(4595, 6415, 6255, 6244, 4755, 6146, 4593),
@@ -2045,7 +2141,7 @@ $config['en_all_4595'] = array(
         'm_parents' => array(4595, 6415, 4506, 6150, 4593, 4755),
     ),
     6157 => array(
-        'm_icon' => '<i class="fas fa-clipboard-check"></i>',
+        'm_icon' => '<i class="far fa-clipboard-check"></i>',
         'm_name' => 'Action Plan Question Answered',
         'm_desc' => '5',
         'm_parents' => array(4595, 6415, 6288, 6255, 6244, 6146, 4755, 4593, 4460),
@@ -2128,6 +2224,24 @@ $config['en_all_4595'] = array(
         'm_desc' => '2',
         'm_parents' => array(4595, 4593, 4755, 6153),
     ),
+    6997 => array(
+        'm_icon' => '<i class="far fa-lock-open"></i>',
+        'm_name' => 'Action Plan Locked Step Unlocked',
+        'm_desc' => '10',
+        'm_parents' => array(6244, 6415, 6255, 4595, 4593, 4755, 6146),
+    ),
+    7151 => array(
+        'm_icon' => '<i class="far fa-stopwatch"></i>',
+        'm_name' => 'Action Plan Timed Question Answered',
+        'm_desc' => '5',
+        'm_parents' => array(6255, 4460, 6244, 6288, 6415, 4755, 4595, 4593, 6146),
+    ),
+    7152 => array(
+        'm_icon' => '<i class="far fa-calendar-times"></i>',
+        'm_name' => 'Action Plan Timed Question Expired',
+        'm_desc' => '1',
+        'm_parents' => array(6255, 4460, 6244, 6288, 4595, 4593, 4755, 6415, 6146),
+    ),
 );
 
 //User Account Types:
@@ -2148,7 +2262,7 @@ $config['en_all_4600'] = array(
 );
 
 //Link Types:
-$config['en_ids_4593'] = array(4228, 4229, 4230, 4231, 4232, 4235, 4242, 4246, 4250, 4251, 4255, 4256, 4257, 4258, 4259, 4260, 4261, 4263, 4264, 4266, 4267, 4268, 4269, 4275, 4278, 4279, 4282, 4283, 4287, 4299, 4318, 4319, 4460, 4547, 4548, 4549, 4550, 4551, 4552, 4553, 4554, 4555, 4556, 4557, 4559, 4570, 4577, 4601, 4983, 4993, 4994, 4996, 4998, 4999, 5000, 5001, 5003, 5007, 5865, 5943, 5967, 5981, 5982, 6093, 6132, 6140, 6143, 6144, 6149, 6154, 6155, 6157, 6158, 6224, 6226, 6242, 6389, 6415, 6556, 6559, 6560, 6561, 6563, 6578, 6969);
+$config['en_ids_4593'] = array(4228, 4229, 4230, 4231, 4232, 4235, 4242, 4246, 4250, 4251, 4255, 4256, 4257, 4258, 4259, 4260, 4261, 4263, 4264, 4266, 4267, 4268, 4269, 4275, 4278, 4279, 4282, 4283, 4287, 4299, 4318, 4319, 4460, 4547, 4548, 4549, 4550, 4551, 4552, 4553, 4554, 4555, 4556, 4557, 4559, 4570, 4577, 4601, 4983, 4993, 4994, 4996, 4998, 4999, 5000, 5001, 5003, 5007, 5865, 5943, 5967, 5981, 5982, 6093, 6132, 6140, 6143, 6144, 6149, 6154, 6155, 6157, 6158, 6224, 6226, 6242, 6389, 6415, 6556, 6559, 6560, 6561, 6563, 6578, 6969, 6997, 7151, 7152);
 $config['en_all_4593'] = array(
     4228 => array(
         'm_icon' => '<i class="fas fa-walking"></i>',
@@ -2553,7 +2667,7 @@ $config['en_all_4593'] = array(
         'm_parents' => array(4595, 6415, 6146, 4755, 4593),
     ),
     6144 => array(
-        'm_icon' => '<i class="fas fa-shield-check"></i>',
+        'm_icon' => '<i class="far fa-shield-check"></i>',
         'm_name' => 'Action Plan Requirement Submitted',
         'm_desc' => 'Logged when a student submits the requirements (text, video, etc...) of an AND intent which could not be completed by simply receiving messages.',
         'm_parents' => array(4595, 6415, 6255, 6244, 4755, 6146, 4593),
@@ -2577,7 +2691,7 @@ $config['en_all_4593'] = array(
         'm_parents' => array(4595, 6415, 4506, 6150, 4593, 4755),
     ),
     6157 => array(
-        'm_icon' => '<i class="fas fa-clipboard-check"></i>',
+        'm_icon' => '<i class="far fa-clipboard-check"></i>',
         'm_name' => 'Action Plan Question Answered',
         'm_desc' => '',
         'm_parents' => array(4595, 6415, 6288, 6255, 6244, 6146, 4755, 4593, 4460),
@@ -2659,6 +2773,24 @@ $config['en_all_4593'] = array(
         'm_name' => 'Action Plan Intention Featured',
         'm_desc' => 'Logged every time an intention is recommended to a user by Mench',
         'm_parents' => array(4595, 4593, 4755, 6153),
+    ),
+    6997 => array(
+        'm_icon' => '<i class="far fa-lock-open"></i>',
+        'm_name' => 'Action Plan Locked Step Unlocked',
+        'm_desc' => '',
+        'm_parents' => array(6244, 6415, 6255, 4595, 4593, 4755, 6146),
+    ),
+    7151 => array(
+        'm_icon' => '<i class="far fa-stopwatch"></i>',
+        'm_name' => 'Action Plan Timed Question Answered',
+        'm_desc' => '',
+        'm_parents' => array(6255, 4460, 6244, 6288, 6415, 4755, 4595, 4593, 6146),
+    ),
+    7152 => array(
+        'm_icon' => '<i class="far fa-calendar-times"></i>',
+        'm_name' => 'Action Plan Timed Question Expired',
+        'm_desc' => '',
+        'm_parents' => array(6255, 4460, 6244, 6288, 4595, 4593, 4755, 6415, 6146),
     ),
 );
 
