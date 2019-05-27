@@ -667,7 +667,7 @@ class Entities_model extends CI_Model
 
             array(
                 'status' => ($url_already_existed && !$ln_miner_entity_id ? 0 : 1),
-                'message' => ($url_already_existed && !$ln_miner_entity_id ? 'URL is already linked to @' . $en_url['en_id'] . ' ' . $en_url['en_name'] : 'Success'),
+                'message' => ($url_already_existed && !$ln_miner_entity_id ? 'URL is already linked to @' . $en_url['en_id'] . ' ' . $en_url['en_name'].' [Link ID '.$en_url['ln_id'].']' : 'Success'),
                 'url_already_existed' => $url_already_existed,
                 'cleaned_url' => $url,
                 'ln_type_entity_id' => $ln_type_entity_id,
