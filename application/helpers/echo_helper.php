@@ -1860,7 +1860,7 @@ function echo_in($in, $level, $in_parent_id = 0, $is_parent = false)
         //Show Landing Page URL:
         $ui .= '&nbsp;<a href="/intents/' . $in['in_id'] . '" data-toggle="tooltip" title="'.$tree_count_range.' child intents. Go to this intent." data-placement="top" class="badge badge-primary is_not_bg is_hard_link" style="display:inline-block; margin-right:-2px; width:40px; border:2px solid #ffe027 !important;">'.$tree_count.'<i class="fas fa-angle-right"></i></a>';
 
-    } elseif ($level == 1 || $is_child_focused) {
+    } elseif ($level == 1 && !$is_child_focused) {
 
         //Show Landing Page URL IF Public:
 
