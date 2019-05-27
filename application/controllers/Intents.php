@@ -393,13 +393,6 @@ class Intents extends CI_Controller
         $regular_list_ui = '';
         foreach($actionplan_users as $apu){
 
-            //Count user messages:
-            $count_messages = $this->Links_model->ln_fetch(array(
-                'ln_miner_entity_id' => $apu['en_id'],
-                'ln_type_entity_id IN (' . join(',', array_merge($this->config->item('en_ids_4277'), $this->config->item('en_ids_4280'))) . ')' => null, //User Sent/Received Messages
-            ), array(), 0, 0, array(), 'COUNT(ln_id) as totals');
-
-
             //Count user Action Plan Progression Completed:
             $count_progression = $this->Links_model->ln_fetch(array(
                 'ln_miner_entity_id' => $apu['en_id'],
@@ -440,7 +433,6 @@ class Intents extends CI_Controller
             $item_ui .= '<span class="icon-block en-icon">'.echo_icon($apu).'</span> '.$apu['en_name'];
             $item_ui .= ( strlen($apu['ln_content']) > 0 ? '<div class="user-comment">'.$this->Communication_model->dispatch_message($apu['ln_content']).'</div>' : '' );
             $item_ui .= '</td>';
-            $item_ui .= '<td style="text-align:left;">'.echo_number($count_messages[0]['totals']).'</td>';
             $item_ui .= '<td style="text-align:left;">'.echo_number($count_progression[0]['totals']).'</td>';
             $item_ui .= '<td style="text-align:left;">'.echo_time_difference(strtotime($apu['ln_timestamp'])).'</td>';
             $item_ui .= '<td style="text-align:left;"><a href="/intents/'.$_POST['in_focus_id'].'?filter_user='.urlencode('@'.$apu['en_id'].' '.$apu['en_name']).'#actionplanusers-'.$_POST['in_id'].'" data-toggle="tooltip" data-placement="top" title="Filter by this user"><i class="far fa-filter"></i></a> &nbsp;<a href="/entities/'.$apu['en_id'].'" data-toggle="tooltip" data-placement="top" title="View user profile"><i class="far fa-user-circle"></i></a></td>';
@@ -466,7 +458,6 @@ class Intents extends CI_Controller
             $ui .= '<tr style="font-weight: bold;">';
             $ui .= '<td><a href="/links?ln_status=2&ln_type_entity_id=' . join(',', $this->config->item('en_ids_6255')) . '&ln_parent_intent_id='.$ins[0]['in_id'].'" target="_blank" style="text-decoration:none;">#</a></td>';
             $ui .= '<td style="text-align:left;">'.$filters_list_counter.' Matching User'.echo__s($filters_list_counter).'</td>';
-            $ui .= '<td style="text-align:left;"><i class="far fa-comments" data-toggle="tooltip" data-placement="top" title="Messages send/received"></i></td>';
             $ui .= '<td style="text-align:left;"><i class="far fa-check-square" data-toggle="tooltip" data-placement="top" title="Steps Completed"></i></td>';
             $ui .= '<td style="text-align:left;"><i class="far fa-clock" data-toggle="tooltip" data-placement="top" title="Completion time"></i></td>';
             $ui .= '<td style="text-align:left;">Actions</td>';
@@ -475,8 +466,8 @@ class Intents extends CI_Controller
             $ui .= $filters_list_ui;
 
             //Add two space blocks:
-            $ui .= '<tr><td colspan="6">&nbsp;</td></tr>';
-            $ui .= '<tr><td colspan="6">&nbsp;</td></tr>';
+            $ui .= '<tr><td colspan="5">&nbsp;</td></tr>';
+            $ui .= '<tr><td colspan="5">&nbsp;</td></tr>';
 
         }
 
@@ -484,7 +475,6 @@ class Intents extends CI_Controller
         $ui .= '<tr style="font-weight: bold;">';
         $ui .= '<td><a href="/links?ln_status=2&ln_type_entity_id=' . join(',', $this->config->item('en_ids_6255')) . '&ln_parent_intent_id='.$ins[0]['in_id'].'" target="_blank" style="text-decoration:none;">#</a></td>';
         $ui .= '<td style="text-align:left;">' . $regular_list_counter . ( $filter_applied ? ' Other' : '' ) .' User'.echo__s($regular_list_counter).'</td>';
-        $ui .= '<td style="text-align:left;"><i class="far fa-comments" data-toggle="tooltip" data-placement="top" title="Messages send/received"></i></td>';
         $ui .= '<td style="text-align:left;"><i class="far fa-check-square" data-toggle="tooltip" data-placement="top" title="Steps Completed"></i></td>';
         $ui .= '<td style="text-align:left;"><i class="far fa-clock" data-toggle="tooltip" data-placement="top" title="Completion time"></i></td>';
         $ui .= '<td style="text-align:left;">Actions</td>';
