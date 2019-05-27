@@ -443,7 +443,7 @@ class Intents extends CI_Controller
             $item_ui .= '<td style="text-align:left;">'.echo_number($count_messages[0]['totals']).'</td>';
             $item_ui .= '<td style="text-align:left;">'.echo_number($count_progression[0]['totals']).'</td>';
             $item_ui .= '<td style="text-align:left;">'.echo_time_difference(strtotime($apu['ln_timestamp'])).'</td>';
-            $item_ui .= '<td style="text-align:left;"><a href="/intents/'.$_POST['in_focus_id'].'?filter_user='.urlencode('@'.$apu['en_id'].' '.$apu['en_name']).'#actionplanusers-'.$_POST['in_id'].'" data-toggle="tooltip" data-placement="top" title="Filter by this user"><i class="far fa-filter"></i></a> &nbsp;<a href="/entities/'.$_POST['in_focus_id'].'" data-toggle="tooltip" data-placement="top" title="View user profile"><i class="far fa-user-circle"></i></a></td>';
+            $item_ui .= '<td style="text-align:left;"><a href="/intents/'.$_POST['in_focus_id'].'?filter_user='.urlencode('@'.$apu['en_id'].' '.$apu['en_name']).'#actionplanusers-'.$_POST['in_id'].'" data-toggle="tooltip" data-placement="top" title="Filter by this user"><i class="far fa-filter"></i></a> &nbsp;<a href="/entities/'.$apu['en_id'].'" data-toggle="tooltip" data-placement="top" title="View user profile"><i class="far fa-user-circle"></i></a></td>';
             $item_ui .= '</tr>';
 
 
