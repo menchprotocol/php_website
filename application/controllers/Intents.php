@@ -467,7 +467,7 @@ class Intents extends CI_Controller
             $ui .= '<td><a href="/links?ln_status=2&ln_type_entity_id=' . join(',', $this->config->item('en_ids_6255')) . '&ln_parent_intent_id='.$ins[0]['in_id'].'" target="_blank" style="text-decoration:none;">#</a></td>';
             $ui .= '<td style="text-align:left;">'.$filters_list_counter.' Matching User'.echo__s($filters_list_counter).'</td>';
             $ui .= '<td style="text-align:left;"><i class="far fa-comments" data-toggle="tooltip" data-placement="top" title="Messages send/received"></i></td>';
-            $ui .= '<td style="text-align:left;"><i class="fas fa-check-square" data-toggle="tooltip" data-placement="top" title="Steps Completed"></i></td>';
+            $ui .= '<td style="text-align:left;"><i class="far fa-check-square" data-toggle="tooltip" data-placement="top" title="Steps Completed"></i></td>';
             $ui .= '<td style="text-align:left;"><i class="far fa-clock" data-toggle="tooltip" data-placement="top" title="Completion time"></i></td>';
             $ui .= '<td style="text-align:left;">Actions</td>';
             $ui .= '</tr>';
@@ -485,7 +485,7 @@ class Intents extends CI_Controller
         $ui .= '<td><a href="/links?ln_status=2&ln_type_entity_id=' . join(',', $this->config->item('en_ids_6255')) . '&ln_parent_intent_id='.$ins[0]['in_id'].'" target="_blank" style="text-decoration:none;">#</a></td>';
         $ui .= '<td style="text-align:left;">' . $regular_list_counter . ( $filter_applied ? ' Other' : '' ) .' User'.echo__s($regular_list_counter).'</td>';
         $ui .= '<td style="text-align:left;"><i class="far fa-comments" data-toggle="tooltip" data-placement="top" title="Messages send/received"></i></td>';
-        $ui .= '<td style="text-align:left;"><i class="fas fa-check-square" data-toggle="tooltip" data-placement="top" title="Steps Completed"></i></td>';
+        $ui .= '<td style="text-align:left;"><i class="far fa-check-square" data-toggle="tooltip" data-placement="top" title="Steps Completed"></i></td>';
         $ui .= '<td style="text-align:left;"><i class="far fa-clock" data-toggle="tooltip" data-placement="top" title="Completion time"></i></td>';
         $ui .= '<td style="text-align:left;">Actions</td>';
         $ui .= '</tr>';
