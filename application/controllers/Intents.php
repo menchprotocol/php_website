@@ -1351,10 +1351,17 @@ class Intents extends CI_Controller
 
         }
 
+        $actionplan_users = $this->Links_model->ln_fetch(array(
+            'ln_type_entity_id IN (' . join(',', $this->config->item('en_ids_6255')) . ')' => null, //Action Plan Progression Completion Triggers
+            'ln_parent_intent_id' => $_POST['in_id'],
+            'ln_status' => 2, //Published
+        ), array(), 0, 0, array(), 'COUNT(ln_id) as total_steps');
+
         //Return results:
         return echo_json(array(
             'status' => 1,
             'in' => $ins[0],
+            'in_action_plan_count' => $actionplan_users[0]['total_steps'],
             'ln' => ( isset($lns[0]) ? $lns[0] : array() ),
         ));
 

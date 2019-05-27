@@ -184,11 +184,11 @@
                                  style="max-width:230px; margin:1px 0 10px;">
                                 <div class="input-group border">
                                     <span class="input-group-addon addon-lean addon-grey" style="color:#2f2739; font-weight: 300;">IF Scores </span>
-                                    <input style="padding-left:0; padding-right:0; text-align:right;" type="text"
+                                    <input style="padding-left:0; padding-right:0; text-align:right;" type="number" step="1" data-lpignore="true"
                                            maxlength="3" id="tr__conditional_score_min" value="" class="form-control">
                                     <span class="input-group-addon addon-lean addon-grey" style="color:#2f2739; font-weight: 300; border-left: 1px solid #ccc;"><i
                                             class="fal fa-fas fa-percentage"></i> to </span>
-                                    <input style="padding-left:3px; padding-right:0; text-align:right;" type="text"
+                                    <input style="padding-left:3px; padding-right:0; text-align:right;" type="number" step="1" data-lpignore="true"
                                            maxlength="3" id="tr__conditional_score_max" value="" class="form-control">
                                     <span class="input-group-addon addon-lean addon-grey" style="color:#2f2739; font-weight: 300; border-left: 1px solid #ccc; border-right:0px solid #FFF;"><i
                                             class="fal fa-fas fa-percentage"></i></span>

@@ -1779,10 +1779,10 @@ function echo_in($in, $level, $in_parent_id = 0, $is_parent = false)
 
     //Action Plan:
     $actionplan_users = $CI->Links_model->ln_fetch(array(
-        'ln_type_entity_id IN (' . join(',', $CI->config->item('en_ids_6255')) . ')' => null, //Action Plan Progression Completion Triggers
-        'ln_parent_intent_id' => $in['in_id'],
-        'ln_status' => 2, //Published
-    ), array(), 0, 0, array(), 'COUNT(ln_id) as total_steps');
+    'ln_type_entity_id IN (' . join(',', $CI->config->item('en_ids_6255')) . ')' => null, //Action Plan Progression Completion Triggers
+    'ln_parent_intent_id' => $in['in_id'],
+    'ln_status' => 2, //Published
+), array(), 0, 0, array(), 'COUNT(ln_id) as total_steps');
 
     if(count($in_filters['get_filter_query']) > 0){
         $actionplan_users_match = $CI->Links_model->ln_fetch(array_merge($in_filters['get_filter_query'], array(
