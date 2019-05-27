@@ -1867,7 +1867,7 @@ function echo_in($in, $level, $in_parent_id = 0, $is_parent = false)
         $public_in = $CI->Intents_model->in_is_public($in);
 
 
-        $ui .= '&nbsp;'.( $public_in['status'] ? '<a href="/' . $in['in_id'] . '" target="_blank" class="badge badge-primary is_not_bg is_hard_link" title="'.$tree_count_range.' published intents in tree. Open landing page in a new window."' : '<span class="badge badge-primary grey is_not_bg is_hard_link" title="'.$public_in['message'].'"' ).' style="display:inline-block; margin-right:-2px; width:40px; border:2px solid #ffe027 !important;" data-toggle="tooltip" data-placement="top">'.$tree_count.'<i class="fas fa-shopping-cart" style="margin-left: -3px;"></i></'.( $public_in['status'] ? 'a' : 'span' ).'>';
+        $ui .= '&nbsp;'.( $public_in['status'] ? '<a href="/' . $in['in_id'] . '" target="_blank" class="badge badge-primary is_not_bg is_hard_link" title="'.$tree_count_range.' published intents in tree. Open landing page in a new window."' : '<span class="badge badge-primary grey is_not_bg is_hard_link" title="'.$public_in['message'].'"' ).' style="display:inline-block; margin-right:-2px; width:40px; border:2px solid #ffe027 !important;" data-toggle="tooltip" data-placement="top"><i class="fas fa-shopping-cart" style="margin-left: -3px;"></i></'.( $public_in['status'] ? 'a' : 'span' ).'>';
 
     } else {
 
