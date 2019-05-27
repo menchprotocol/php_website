@@ -1768,7 +1768,7 @@ function echo_in($in, $level, $in_parent_id = 0, $is_parent = false)
     //Loop through parents:
     $ui .= '<span class="' . echo_advance() . '">';
     foreach ($in['in__parents'] as $in_parent) {
-        $ui .= ' &nbsp;<a href="/intents/' . $in_parent['in_id'] . '" data-toggle="tooltip" title="' . $in_parent['in_outcome'] . '" data-placement="top" class="in_icon_child_' . $in_parent['in_id'] . '">' . $en_all_6676[is_or($in_parent['in_type_entity_id'], true)]['m_icon'] . '</a>';
+        $ui .= ' &nbsp;<a href="/intents/' . $in_parent['in_id'] . $in_filters['get_filter_url'] . '" data-toggle="tooltip" title="' . $in_parent['in_outcome'] . '" data-placement="top" class="in_icon_child_' . $in_parent['in_id'] . '">' . $en_all_6676[is_or($in_parent['in_type_entity_id'], true)]['m_icon'] . '</a>';
     }
     $ui .= '</span>';
 
