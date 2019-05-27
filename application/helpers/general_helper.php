@@ -614,6 +614,8 @@ function in_get_filters(){
         'get_filter_start' => 0,
         'get_filter_end' => 0,
         'get_filter_query' => array(),
+        'get_filter_url' => '',
+        'get_filter_links_url' => '',
     );
 
     //Intent User Action Plan Filter:
@@ -623,19 +625,25 @@ function in_get_filters(){
             //All good, apply filter:
             $in_filters['get_filter_user'] = $filter_en_id;
             $in_filters['get_filter_query']['ln_miner_entity_id'] = $in_filters['get_filter_user'];
+            $in_filters['get_filter_url'] .= '?filter_user='.$_GET['filter_user'];
+            $in_filters['get_filter_links_url'] .= '&ln_miner_entity_id='.$filter_en_id;
         }
     }
 
     //Intent Time Range Filter:
     if(isset($_GET['filter_time'])){
         $time_parts = explode('-', urldecode($_GET['filter_time']), 2);
+        $in_filters['get_filter_url'] .= ( strlen($in_filters['get_filter_url']) > 0 ? '&' : '?' ).'filter_time='.$_GET['filter_time'];
+
         if(intval($time_parts[0]) > 0){
             $in_filters['get_filter_start'] = intval($time_parts[0]);
             $in_filters['get_filter_query']['ln_timestamp >='] = date("Y-m-d H:i:s", $in_filters['get_filter_start']);
+            $in_filters['get_filter_links_url'] .= '&start_range='.date("Y-m-d H:i:s", $in_filters['get_filter_start']);
         }
         if(intval($time_parts[1]) > 0){
             $in_filters['get_filter_end'] = intval($time_parts[1]);
             $in_filters['get_filter_query']['ln_timestamp <='] = date("Y-m-d H:i:s", $in_filters['get_filter_end']);
+            $in_filters['get_filter_links_url'] .= '&end_range='.date("Y-m-d H:i:s", $in_filters['get_filter_end']);
         }
     }
 

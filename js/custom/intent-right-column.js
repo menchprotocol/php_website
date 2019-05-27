@@ -180,6 +180,7 @@ function in_action_plan_users(in_id) {
 
     //Load Matching Users:
     $.post("/intents/in_action_plan_users", {
+        in_focus_id: in_focus_id,
         in_id: in_id
     }, function (data) {
         if (!data.status) {

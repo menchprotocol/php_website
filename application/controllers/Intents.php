@@ -178,6 +178,9 @@ class Intents extends CI_Controller
             $in_id = $this->config->item('in_miner_start');
         }
 
+        //Authenticate Miner:
+        $session_en = en_auth(array(1308), true);
+
 
         //Fetch intent with 2 levels of children:
         $ins = $this->Intents_model->in_fetch(array(
@@ -187,15 +190,6 @@ class Intents extends CI_Controller
         if ( count($ins) < 1) {
             return redirect_message('/intents/' . $this->config->item('in_miner_start'), '<div class="alert alert-danger" role="alert">Intent #' . $in_id . ' not found</div>');
         }
-
-
-        //Authenticate Miner, redirect if failed:
-        $session_en = en_auth(array(1308), ( $ins[0]['in_status']!=2 )); //Force redirect if unpulished
-        if(!$session_en){
-            //Not a miner, redirect to landing page instead since it's published:
-            return redirect_message('/' . $ins[0]['in_id']);
-        }
-
 
         //Update session count and log link:
         $new_order = ( $this->session->userdata('miner_session_count') + 1 );
@@ -344,6 +338,11 @@ class Intents extends CI_Controller
                 'status' => 0,
                 'message' => 'Session Expired',
             ));
+        } elseif (!isset($_POST['in_focus_id']) || intval($_POST['in_focus_id']) < 1) {
+            return echo_json(array(
+                'status' => 0,
+                'message' => 'Invalid Focus Intent ID',
+            ));
         } elseif (!isset($_POST['in_id']) || intval($_POST['in_id']) < 1) {
             return echo_json(array(
                 'status' => 0,
@@ -383,9 +382,12 @@ class Intents extends CI_Controller
         $ui .= '<tr style="font-weight: bold;">';
         $ui .= '<td><a href="/links?ln_status=2&ln_type_entity_id=' . join(',', $this->config->item('en_ids_6255')) . '&ln_parent_intent_id='.$ins[0]['in_id'].'" target="_blank" style="text-decoration:none;">#</a></td>';
         $ui .= '<td style="text-align:left;">User</td>';
-        $ui .= '<td style="text-align:left;">Messages</td>';
-        $ui .= '<td style="text-align:left;">Completion</td>';
+        $ui .= '<td style="text-align:left;"><i class="far fa-comments" data-toggle="tooltip" data-placement="top" title="Messages send/received"></i></td>';
+        $ui .= '<td style="text-align:left;"><i class="far fa-clock" data-toggle="tooltip" data-placement="top" title="Intent completion time"></i></td>';
+        $ui .= '<td style="text-align:left;">Actions</td>';
         $ui .= '</tr>';
+
+        $in_filters = in_get_filters(); //If we have any intent filters applied
 
         foreach($actionplan_users as $count => $apu){
             //Count user messages:
@@ -397,8 +399,9 @@ class Intents extends CI_Controller
             $ui .= '<tr>';
             $ui .= '<td valign="top">'.($count+1).'</td>';
             $ui .= '<td style="text-align:left;"><span class="icon-block en-icon">'.echo_icon($apu).'</span> <a href="/entities/'.$apu['en_id'].'">'.$apu['en_name'].'</a>'.( strlen($apu['ln_content']) > 0 ? '<div class="user-comment">'.$this->Communication_model->dispatch_message($apu['ln_content']).'</div>' : '' ).'</td>';
-            $ui .= '<td style="text-align:left;"><i class="far fa-comments"></i> '.echo_number($count_messages[0]['totals']).'</td>';
-            $ui .= '<td style="text-align:left;"><i class="far fa-clock"></i> '.echo_time_difference(strtotime($apu['ln_timestamp'])).'</td>';
+            $ui .= '<td style="text-align:left;">'.echo_number($count_messages[0]['totals']).'</td>';
+            $ui .= '<td style="text-align:left;">'.echo_time_difference(strtotime($apu['ln_timestamp'])).'</td>';
+            $ui .= '<td style="text-align:left;"><a href="/intents/'.$_POST['in_focus_id'].'?filter_user='.urlencode('@'.$apu['en_id'].' '.$apu['en_name']).'#actionplanusers-'.$_POST['in_id'].'" data-toggle="tooltip" data-placement="top" title="Filter by this user"><i class="far fa-filter"></i></a> &nbsp;<a href="/entities/'.$_POST['in_focus_id'].'" data-toggle="tooltip" data-placement="top" title="View user profile"><i class="far fa-user-circle"></i></a></td>';
             $ui .= '</tr>';
         }
 
