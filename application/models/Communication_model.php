@@ -469,15 +469,19 @@ class Communication_model extends CI_Model
                 return $url_entity;
             }
 
-            //Transform this URL into an entity:
-            $string_references['ref_entities'][0] = intval($url_entity['en_url']['en_id']);
+            //Transform this URL into an entity IF it was found/created:
+            if(intval($url_entity['en_url']['en_id']) > 0){
 
-            //Replace the URL with this new @entity in message.
-            //This is the only valid modification we can do to $input_message before storing it in the DB:
-            $input_message = str_replace($string_references['ref_urls'][0], '@' . $string_references['ref_entities'][0], $input_message);
+                $string_references['ref_entities'][0] = intval($url_entity['en_url']['en_id']);
 
-            //Remove URL:
-            unset($string_references['ref_urls'][0]);
+                //Replace the URL with this new @entity in message.
+                //This is the only valid modification we can do to $input_message before storing it in the DB:
+                $input_message = str_replace($string_references['ref_urls'][0], '@' . $string_references['ref_entities'][0], $input_message);
+
+                //Remove URL:
+                unset($string_references['ref_urls'][0]);
+
+            }
 
         }
 
