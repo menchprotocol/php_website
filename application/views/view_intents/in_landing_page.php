@@ -57,7 +57,7 @@ if (!$hide_subscribe) {
             ))) > 0){
 
             //Show when was added:
-            echo '<p>Intention is already added to your <a href="/messenger/actionplan">'.$en_all_2738[6138]['m_icon'].' '.$en_all_2738[6138]['m_name'].'</a>.</p>';
+            echo '<p>Intention is already added to your <a href="/actionplan">'.$en_all_2738[6138]['m_icon'].' '.$en_all_2738[6138]['m_name'].'</a>.</p>';
 
         } else {
 

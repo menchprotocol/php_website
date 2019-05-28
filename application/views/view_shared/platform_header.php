@@ -90,13 +90,13 @@ $uri_segment_2 = $this->uri->segment(2);
 
 
                             <li class="links-inactive" data-toggle="tooltip" data-placement="left" title="<?= $en_all_2738[6138]['m_name'] ?>">
-                                <a href="/messenger/actionplan">
+                                <a href="/actionplan">
                                     &nbsp;&nbsp;<?= $en_all_2738[6138]['m_icon'] ?>
                                 </a>
                             </li>
 
                             <li class="links-inactive" data-toggle="tooltip" data-placement="left" title="<?= $en_all_2738[6137]['m_name'] ?>">
-                                <a href="/messenger/myaccount">
+                                <a href="/myaccount">
                                     <?= $en_all_2738[6137]['m_icon'] ?>
                                 </a>
                             </li>

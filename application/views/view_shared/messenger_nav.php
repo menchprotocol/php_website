@@ -4,11 +4,11 @@
         $en_all_2738 = $this->config->item('en_all_2738');
         $navigation = array(
             array(
-                'my_url' => '/messenger/actionplan',
+                'my_url' => '/actionplan',
                 'anchor' => $en_all_2738[6138]['m_icon'].' '.$en_all_2738[6138]['m_name'],
             ),
             array(
-                'my_url' => '/messenger/myaccount',
+                'my_url' => '/myaccount',
                 'anchor' => $en_all_2738[6137]['m_icon'].' '.$en_all_2738[6137]['m_name'],
             ),
         );

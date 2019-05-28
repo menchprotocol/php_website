@@ -200,7 +200,7 @@
                             <span class="mini-header"><?= $en_all_6410[4358]['m_name'] ?>:</span>
                             <select class="form-control border" id="tr__assessment_points" style="margin-bottom:12px;">
                                 <?php
-                                foreach ($this->config->item('in_response_weights') as $mark) {
+                                foreach ($this->config->item('in_completion_marks') as $mark) {
                                     echo '<option value="' . $mark . '">' . $mark . '</option>';
                                 }
                                 ?>

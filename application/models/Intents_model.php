@@ -534,6 +534,11 @@ class Intents_model extends CI_Model
     }
 
 
+    function in_check_unlockable(){
+
+    }
+
+
     function in_recursive_child_ids($in_id, $first_level = true){
 
         $child_ids = array();

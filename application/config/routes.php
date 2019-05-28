@@ -12,13 +12,16 @@ $route['entities']              = "entities/en_miner_ui/0";
 $route['intents/(:num)']        = "intents/in_miner_ui/$1";
 $route['intents']               = "intents/in_miner_ui/0";
 
-//Public Intent Landing Page:
-$route['(:num)']                = "intents/in_landing_page/$1";
+$route['(:num)']                = "intents/in_landing_page/$1"; //Public Intent Landing Page
 
-//User login/logout:
-$route['login']                 = "entities/en_login_ui";
-$route['logout']                = "entities/logout";
+//Users:
+$route['login']                 = "messenger/user_login";
+$route['logout']                = "messenger/logout";
+$route['password_reset']        = "messenger/password_reset";
+$route['myaccount']             = "messenger/myaccount";
+$route['actionplan']            = "messenger/actionplan/0";
+$route['actionplan/(:num)']     = "messenger/actionplan/$1";
 
 //Admin:
-$route['platform']                        = "admin/platform";
-$route['admin']                        = "admin/tools";
+$route['platform']              = "admin/platform";
+$route['admin']                 = "admin/tools";

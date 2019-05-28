@@ -11,7 +11,7 @@ if (isset($session_en['en_id'])) {
 
     //Include header:
     $this->load->view('view_shared/messenger_nav', array(
-        'current' => '/messenger/actionplan',
+        'current' => '/actionplan',
     ));
 
     //Fetch page instantly as we know who this is:

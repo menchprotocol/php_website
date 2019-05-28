@@ -1362,7 +1362,7 @@ class Communication_model extends CI_Model
                 true
             );
             $this->Communication_model->dispatch_message(
-                'I saved your submission to your Action Plan /link:See in 🚩Action Plan:https://mench.com/messenger/actionplan/' . $pending_req_submission[0]['in_id'],
+                'I saved your submission to your Action Plan /link:See in 🚩Action Plan:https://mench.com/actionplan/' . $pending_req_submission[0]['in_id'],
                 $en,
                 true
             );
@@ -1612,7 +1612,7 @@ class Communication_model extends CI_Model
 
                 //Let User know that they have already subscribed to this intention:
                 $this->Communication_model->dispatch_message(
-                    'The intention to ' . $ins[0]['in_outcome'] . ' has already been added to your Action Plan. /link:See in 🚩Action Plan:https://mench.com/messenger/actionplan/' . $ins[0]['in_id'],
+                    'The intention to ' . $ins[0]['in_outcome'] . ' has already been added to your Action Plan. /link:See in 🚩Action Plan:https://mench.com/actionplan/' . $ins[0]['in_id'],
                     $en,
                     true,
                     array(), //Cannot add Quick replies because of the /link command.

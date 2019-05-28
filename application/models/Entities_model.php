@@ -1187,7 +1187,7 @@ class Entities_model extends CI_Model
         if(!$fetch_result){
             //Let them know to complete their profile:
             $this->Communication_model->dispatch_message(
-                'Hi! You can start by completing your profile information so I know who I am speaking to 🤗 /link:Update 👤My Account:https://mench.com/messenger/myaccount',
+                'Hi! You can start by completing your profile information so I know who I am speaking to 🤗 /link:Update 👤My Account:https://mench.com/myaccount',
                 $added_en['en'],
                 true
             );

@@ -22,7 +22,7 @@ if(count($user_intents) > 0){
         $time_estimate = echo_time_range($ln);
 
         //Display row:
-        echo '<a id="ap_in_'.$ln['in_id'].'" href="/messenger/actionplan/' . $ln['in_id'] . '" sort-link-id="'.$ln['ln_id'].'" class="list-group-item actionplan_sort">';
+        echo '<a id="ap_in_'.$ln['in_id'].'" href="/actionplan/' . $ln['in_id'] . '" sort-link-id="'.$ln['ln_id'].'" class="list-group-item actionplan_sort">';
 
 
         if($has_multiple_intentions){

@@ -642,7 +642,7 @@ function echo_actionplan_step_child($en_id, $in, $step_ln_status, $is_unlocked_s
     $completion_rate = $CI->Actionplan_model->actionplan_completion_progress($en_id, $in);
 
     //Open list:
-    $ui = '<a href="/messenger/actionplan/'.$in['in_id']. '" class="list-group-item">';
+    $ui = '<a href="/actionplan/'.$in['in_id']. '" class="list-group-item">';
 
     //Simple right icon
     $ui .= '<span class="pull-right" style="margin-top: -6px;">';
@@ -670,7 +670,7 @@ function echo_actionplan_step_parent($in, $step_ln_status)
 
     $CI =& get_instance();
 
-    $ui = '<a href="/messenger/actionplan/' . $in['in_id'] . '" class="list-group-item">';
+    $ui = '<a href="/actionplan/' . $in['in_id'] . '" class="list-group-item">';
 
     $ui .= '<span class="pull-left">';
     $ui .= '<span class="badge badge-primary fr-bgd"><i class="fas fa-angle-left"></i></span>';
@@ -1417,7 +1417,7 @@ function echo_in_featured($in)
         ))) > 0);
 
 
-    $ui = '<a href="' . ( $already_in_actionplan ? '/messenger/actionplan' : '' ) . '/' . $in['in_id'] . '" class="list-group-item">';
+    $ui = '<a href="' . ( $already_in_actionplan ? '/actionplan' : '' ) . '/' . $in['in_id'] . '" class="list-group-item">';
 
     $ui .= '<span class="pull-right">';
     $ui .= '<span class="badge badge-primary fr-bgd">'.( $already_in_actionplan ? $en_all_2738[6138]['m_icon'] : '<i class="fas fa-angle-right"></i>' ).'</span>';
@@ -1681,7 +1681,7 @@ function echo_in($in, $level, $in_parent_id = 0, $is_parent = false)
         $ui .= '<span class="icon-top-right ln_status_' . $ln_id . '"><span data-toggle="tooltip" data-placement="right" title="'.$fixed_fields['ln_status'][$in['ln_status']]['s_name'].' ['.$in['ln_status'].']: '.$fixed_fields['ln_status'][$in['ln_status']]['s_desc'].'">' . $fixed_fields['ln_status'][$in['ln_status']]['s_icon'] . '</span></span>';
 
         //Show Response Weight based on Intent Link Type:
-        $ui .= '<span class="icon-3rd in_assessment_' . $ln_id . '" data-toggle="tooltip" data-placement="right" title="Response Weight">'. echo_assessment_mark($in) .'</span>';
+        $ui .= '<span class="icon-3rd in_assessment_' . $ln_id . '" data-toggle="tooltip" data-placement="right" title="Completion Marks">'. echo_assessment_mark($in) .'</span>';
 
         $ui .= '</span>';
 
@@ -1869,7 +1869,7 @@ function echo_in($in, $level, $in_parent_id = 0, $is_parent = false)
         $public_in = $CI->Intents_model->in_is_public($in);
 
 
-        $ui .= '&nbsp;'.( $public_in['status'] ? '<a href="/' . $in['in_id'] . '" target="_blank" class="badge badge-primary is_not_bg is_hard_link" title="'.$tree_count_range.' published intents in tree. Open landing page in a new window."' : '<span class="badge badge-primary grey is_not_bg is_hard_link" title="'.$public_in['message'].'"' ).' style="display:inline-block; margin-right:-2px; width:40px; border:2px solid #ffe027 !important;" data-toggle="tooltip" data-placement="top"><i class="fas fa-shopping-cart" style="margin-left: -3px;"></i></'.( $public_in['status'] ? 'a' : 'span' ).'>';
+        $ui .= '&nbsp;'.( $public_in['status'] ? '<a href="/' . $in['in_id'] . '" target="_blank" class="badge badge-primary is_not_bg is_hard_link" title="'.$tree_count_range.' published intents in tree. Open landing page in a new window."' : '<span class="badge badge-primary grey is_not_bg is_hard_link" title="'.$public_in['message'].'"' ).' style="display:inline-block; margin-right:-2px; width:40px; border:2px solid #ffe027 !important;" data-toggle="tooltip" data-placement="top">'.( $public_in['status'] ? '<span class="btn-counter"><i class="fas fa-external-link" style="color:#FFF !important;"></i></span>' : '' ).'<i class="fas fa-shopping-cart" style="margin-left: -3px;"></i></'.( $public_in['status'] ? 'a' : 'span' ).'>';
 
     } else {
 

@@ -46,8 +46,8 @@ $url_part_1 = $this->uri->segment(1);
                         echo '<li><a href="' . ( isset($in['in_id']) ? '/intents/'.$in['in_id'] : '/platform') . '" class="parent-icon">'.$en_all_2738[4488]['m_icon'].' '.$en_all_2738[4488]['m_name'].'</a></li>';
                     }
 
-                    echo '<li><a href="/messenger/actionplan">'.$en_all_2738[6138]['m_icon'].' '.$en_all_2738[6138]['m_name'].'</a></li>';
-                    echo '<li><a href="/messenger/myaccount">'.$en_all_2738[6137]['m_icon'].' '.$en_all_2738[6137]['m_name'].'</a></li>';
+                    echo '<li><a href="/actionplan">'.$en_all_2738[6138]['m_icon'].' '.$en_all_2738[6138]['m_name'].'</a></li>';
+                    echo '<li><a href="/myaccount">'.$en_all_2738[6137]['m_icon'].' '.$en_all_2738[6137]['m_name'].'</a></li>';
 
                     //Enable sign-out:
                     echo '<li><a href="/logout"><i class="fas fa-power-off"></i> Logout</a></li>';

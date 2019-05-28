@@ -192,8 +192,8 @@ class Intents extends CI_Controller
         }
 
         //Update session count and log link:
-        $new_order = ( $this->session->userdata('miner_session_count') + 1 );
-        $this->session->set_userdata('miner_session_count', $new_order);
+        $new_order = ( $this->session->userdata('user_session_count') + 1 );
+        $this->session->set_userdata('user_session_count', $new_order);
         $this->Links_model->ln_create(array(
             'ln_miner_entity_id' => $session_en['en_id'],
             'ln_type_entity_id' => 4993, //Miner Opened Intent
@@ -904,6 +904,7 @@ class Intents extends CI_Controller
             'remove_redirect_url' => $remove_redirect_url,
             'recursive_update_count' => $recursive_update_count,
             'in__metadata_max_steps' => -( isset($in_metadata['in__metadata_max_steps']) ? $in_metadata['in__metadata_max_steps'] : 0 ),
+            'in_check_unlockable' => ((($in_update['in_status']==2 && in_array($in_update['in_type_entity_id'], $this->config->item('en_ids_6997'))) && ($ins[0]['in_status']!=2 || !in_array($ins[0]['in_type_entity_id'], $this->config->item('en_ids_6997')))) ? 1 : 0 ),
         );
 
 

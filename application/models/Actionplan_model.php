@@ -415,7 +415,7 @@ class Actionplan_model extends CI_Model
 
         //Confirm with them that we're now ready:
         $this->Communication_model->dispatch_message(
-            'I have successfully added the intention to ' . $ins[0]['in_outcome'] . ' to your Action Plan 🙌 /link:Open 🚩Action Plan:https://mench.com/messenger/actionplan/' . $ins[0]['in_id'],
+            'I have successfully added the intention to ' . $ins[0]['in_outcome'] . ' to your Action Plan 🙌 /link:Open 🚩Action Plan:https://mench.com/actionplan/' . $ins[0]['in_id'],
             array('en_id' => $en_id),
             true,
             array(),
@@ -446,7 +446,7 @@ class Actionplan_model extends CI_Model
 
                 //A previously added intent is top-priority, so let them know:
                 $this->Communication_model->dispatch_message(
-                    'But we will work on this intention later because based on your Action Plan\'s priorities, your current focus is to '.$top_priority['in']['in_outcome'].' which you have made '.$top_priority['completion_rate']['completion_percentage'].'% progress so far. Alternatively, you can sort your Action Plan\'s priorities. /link:Sort 🚩Action Plan:https://mench.com/messenger/actionplan',
+                    'But we will work on this intention later because based on your Action Plan\'s priorities, your current focus is to '.$top_priority['in']['in_outcome'].' which you have made '.$top_priority['completion_rate']['completion_percentage'].'% progress so far. Alternatively, you can sort your Action Plan\'s priorities. /link:Sort 🚩Action Plan:https://mench.com/actionplan',
                     array('en_id' => $en_id),
                     true
                 );
@@ -642,7 +642,7 @@ class Actionplan_model extends CI_Model
                     }
 
                     //Give reference in Action Plan
-                    $message .= ' /link:Open 🚩Action Plan:https://mench.com/messenger/actionplan/'.$conditional_step['in_id'];
+                    $message .= ' /link:Open 🚩Action Plan:https://mench.com/actionplan/'.$conditional_step['in_id'];
 
 
                     //Communicate message to user:
@@ -1159,7 +1159,7 @@ class Actionplan_model extends CI_Model
                         $next_step_message .= '<a href="/messenger/actionplan_answer_question/' . $en_id . '/' . $ins[0]['in_id'] . '/' . $child_in['in_id'] . '/' . md5($this->config->item('actionplan_salt') . $child_in['in_id'] . $ins[0]['in_id'] . $en_id) . '" class="list-group-item">';
                     } elseif($was_selected){
                         //This was selected:
-                        $next_step_message .= '<a href="/messenger/actionplan/'.$child_in['in_id'] . '" class="list-group-item">';
+                        $next_step_message .= '<a href="/actionplan/'.$child_in['in_id'] . '" class="list-group-item">';
                     } else {
                         //This was NOT selected and nothing else has been selected yet:
                         $next_step_message .= '<span class="list-group-item" style="text-decoration: line-through;">';
@@ -1348,7 +1348,7 @@ class Actionplan_model extends CI_Model
 
                 } else {
 
-                    $next_step_message .= '<div style="margin: 15px 0 0;"><a href="/messenger/actionplan/next" class="btn btn-md btn-primary">Next Step <i class="fas fa-angle-right"></i></a></div>';
+                    $next_step_message .= '<div style="margin: 15px 0 0;"><a href="/actionplan/next" class="btn btn-md btn-primary">Next Step <i class="fas fa-angle-right"></i></a></div>';
 
                 }
             } else {

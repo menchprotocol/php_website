@@ -23,7 +23,7 @@ echo '<div class="list-group parent-actionplans" style="margin-top: 10px;">';
 if(in_array($in['in_id'], $user_intentions_ids)){
     //Show link back to Action Plan:
     $found_grandpa_intersect = true;
-    echo '<a href="/messenger/actionplan" class="list-group-item">';
+    echo '<a href="/actionplan" class="list-group-item">';
     echo '<span class="pull-left">';
     echo '<span class="badge badge-primary fr-bgd"><i class="fas fa-angle-left"></i></span>';
     echo '</span>';

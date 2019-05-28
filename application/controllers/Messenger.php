@@ -697,7 +697,7 @@ class Messenger extends CI_Controller
                         array(
                             'title' => $en_all_2738[6138]['m_icon'].' '.$en_all_2738[6138]['m_name'],
                             'type' => 'web_url',
-                            'url' => 'https://mench.com/messenger/actionplan',
+                            'url' => 'https://mench.com/actionplan',
                             'webview_height_ratio' => 'tall',
                             'webview_share_button' => 'hide',
                             'messenger_extensions' => true,
@@ -705,7 +705,7 @@ class Messenger extends CI_Controller
                         array(
                             'title' => $en_all_2738[6137]['m_icon'].' '.$en_all_2738[6137]['m_name'],
                             'type' => 'web_url',
-                            'url' => 'https://mench.com/messenger/myaccount',
+                            'url' => 'https://mench.com/myaccount',
                             'webview_height_ratio' => 'tall',
                             'webview_share_button' => 'hide',
                             'messenger_extensions' => true,
@@ -776,6 +776,195 @@ class Messenger extends CI_Controller
         ));
 
     }
+
+    function password_reset()
+    {
+        $data = array(
+            'title' => 'Password Reset',
+        );
+        $this->load->view('view_shared/messenger_header', $data);
+        $this->load->view('view_messenger/password_reset');
+        $this->load->view('view_shared/messenger_footer');
+    }
+
+    function user_login()
+    {
+        //Check to see if they are already logged in?
+        $session_en = $this->session->userdata('user');
+        if (isset($session_en['en__parents'][0]) && filter_array($session_en['en__parents'], 'en_id', 1308)) {
+            //Lead miner and above, go to console:
+            return redirect_message('/platform');
+        }
+
+        $this->load->view('view_shared/public_header', array(
+            'title' => 'Sign In',
+        ));
+        $this->load->view('view_messenger/user_login');
+        $this->load->view('view_shared/public_footer');
+    }
+
+    function en_login_process()
+    {
+
+        //Setting for admin Sign Ins:
+
+        if (!isset($_POST['input_email']) || !filter_var($_POST['input_email'], FILTER_VALIDATE_EMAIL)) {
+            return redirect_message('/login', '<div class="alert alert-danger" role="alert">Error: Enter valid email to continue.</div>');
+        } elseif (!isset($_POST['en_password'])) {
+            return redirect_message('/login', '<div class="alert alert-danger" role="alert">Error: Enter valid password to continue.</div>');
+        }
+
+        //Validate user email:
+        $lns = $this->Links_model->ln_fetch(array(
+            'ln_parent_entity_id' => 3288, //Primary email
+            'LOWER(ln_content)' => strtolower($_POST['input_email']),
+        ));
+
+        if (count($lns) == 0) {
+            //Not found!
+            return redirect_message('/login', '<div class="alert alert-danger" role="alert">Error: ' . $_POST['input_email'] . ' not found.</div>');
+        }
+
+        //Fetch full entity data with their active Action Plans:
+        $ens = $this->Entities_model->en_fetch(array(
+            'en_id' => $lns[0]['ln_child_entity_id'],
+        ));
+
+        if ($ens[0]['en_status'] < 0 || $lns[0]['ln_status'] < 0) {
+
+            return redirect_message('/login', '<div class="alert alert-danger" role="alert">Error: Your account has been de-activated. Contact us to re-active your account.</div>');
+
+        }
+
+        //Authenticate their password:
+        $user_passwords = $this->Links_model->ln_fetch(array(
+            'ln_status' => 2, //Published
+            'ln_type_entity_id' => 4255, //Text
+            'ln_parent_entity_id' => 3286, //Password
+            'ln_child_entity_id' => $ens[0]['en_id'],
+        ));
+        if (count($user_passwords) == 0) {
+            //They do not have a password assigned yet!
+            return redirect_message('/login', '<div class="alert alert-danger" role="alert">Error: An active login password has not been assigned to your account yet. You can assign a new password using the Forgot Password Button.</div>');
+        } elseif ($user_passwords[0]['ln_status'] < 2) {
+            //They do not have a password assigned yet!
+            return redirect_message('/login', '<div class="alert alert-danger" role="alert">Error: Password is not activated with status [' . $user_passwords[0]['ln_status'] . '].</div>');
+        } elseif ($user_passwords[0]['ln_content'] != strtolower(hash('sha256', $this->config->item('password_salt') . $_POST['en_password']))) {
+            //Bad password
+            return redirect_message('/login', '<div class="alert alert-danger" role="alert">Error: Incorrect password for [' . $_POST['input_email'] . ']</div>');
+        }
+
+        //Now let's do a few more checks:
+
+        //Make sure User is connected to Mench:
+        if (!intval($ens[0]['en_psid'])) {
+            return redirect_message('/login', '<div class="alert alert-danger" role="alert">Error: You are not connected to Mench on Messenger, which is required to login to the Platform.</div>');
+        }
+
+        //Make sure User is not unsubscribed:
+        if (count($this->Links_model->ln_fetch(array(
+                'ln_child_entity_id' => $ens[0]['en_id'],
+                'ln_parent_entity_id' => 4455, //Unsubscribed
+                'ln_type_entity_id IN (' . join(',', $this->config->item('en_ids_4592')) . ')' => null, //Entity Link Connectors
+                'ln_status' => 2, //Published
+            ))) > 0) {
+            return redirect_message('/login', '<div class="alert alert-danger" role="alert">Error: You cannot login to the Platform because you are unsubscribed from Mench. You can re-active your account by sending a message to Mench on Messenger.</div>');
+        }
+
+
+        $session_data = array();
+        $is_chrome = (strpos($_SERVER['HTTP_USER_AGENT'], 'Chrome') !== false || strpos($_SERVER['HTTP_USER_AGENT'], 'CriOS') !== false);
+        $is_miner = false;
+        $is_user = false;
+
+
+        //Are they miner? Give them Sign In access:
+        if (filter_array($ens[0]['en__parents'], 'en_id', 1308)) {
+
+            //Check their advance mode status:
+            $last_advance_settings = $this->Links_model->ln_fetch(array(
+                'ln_miner_entity_id' => $ens[0]['en_id'],
+                'ln_type_entity_id' => 5007, //Toggled Advance Mode
+                'ln_status >=' => 0, //New+
+            ), array(), 1, 0, array('ln_id' => 'DESC'));
+
+            //They have admin rights:
+            $session_data['user'] = $ens[0];
+            $session_data['user_session_count'] = 0;
+            $session_data['advance_view_enabled'] = ( count($last_advance_settings) > 0 && substr_count($last_advance_settings[0]['ln_content'] , ' ON')==1 ? 1 : 0 );
+            $is_miner = true;
+        }
+
+
+        //Applicable for miners only:
+        if (!$is_chrome) {
+
+            if ($is_user) {
+
+                //Remove miner privileges as they cannot use the platform with non-chrome Browser:
+                $is_miner = false;
+                unset($session_data['user']);
+
+            } else {
+
+                return redirect_message('/login', '<div class="alert alert-danger" role="alert">Error: Sign In Denied. Mench v' . $this->config->item('app_version') . ' supports <a href="https://www.google.com/chrome/browser/" target="_blank"><u>Google Chrome</u></a> only.</div>');
+
+            }
+
+        } elseif (!$is_miner && !$is_user) {
+
+            //We assume this is a user request:
+            return redirect_message('/login', '<div class="alert alert-danger" role="alert">Error: You have not added any intentions to your Action Plan yet.</div>');
+
+        }
+
+
+        //Append user IP and agent information
+        if (isset($_POST['en_password'])) {
+            unset($_POST['en_password']); //Sensitive information to be removed and NOT logged
+        }
+
+        //Log additional information:
+        $ens[0]['login_ip'] = $_SERVER['REMOTE_ADDR'];
+        $ens[0]['user_agent'] = $_SERVER['HTTP_USER_AGENT'];
+        $ens[0]['input_post_data'] = $_POST;
+
+
+        //Log Sign In Link:
+        $this->Links_model->ln_create(array(
+            'ln_miner_entity_id' => $ens[0]['en_id'],
+            'ln_metadata' => $ens[0],
+            'ln_type_entity_id' => 4269, //User Login
+            'ln_order' => ( isset($session_data['user_session_count']) ? $session_data['user_session_count'] : 0 ), //First Action
+        ));
+
+        //All good to go!
+        //Load session and redirect:
+        $this->session->set_userdata($session_data);
+
+
+        if (isset($_POST['url']) && strlen($_POST['url']) > 0) {
+            header('Location: ' . $_POST['url']);
+        } else {
+            //Default:
+            if ($is_miner) {
+                //miner default:
+                header('Location: /platform');
+            } else {
+                //User default:
+                header('Location: /actionplan');
+            }
+        }
+    }
+
+
+    function logout()
+    {
+        //Destroys Session
+        $this->session->sess_destroy();
+        header('Location: /');
+    }
+
 
     function myaccount_save_full_name()
     {
@@ -1373,7 +1562,7 @@ class Messenger extends CI_Controller
             $en_all_2738 = $this->config->item('en_all_2738');
             return echo_json(array(
                 'status' => 1,
-                'message' => '<i class="far fa-check-circle"></i> Successfully added to your <b><a href="/messenger/actionplan">'.$en_all_2738[6138]['m_icon'].' '.$en_all_2738[6138]['m_name'].'</a></b>',
+                'message' => '<i class="far fa-check-circle"></i> Successfully added to your <b><a href="/actionplan">'.$en_all_2738[6138]['m_icon'].' '.$en_all_2738[6138]['m_name'].'</a></b>',
             ));
         } else {
             //There was some error:
@@ -1450,7 +1639,7 @@ class Messenger extends CI_Controller
 
         //Show basic UI for now:
         echo $message;
-        echo '<div><a href="/messenger/actionplan" style="font-weight: bold; font-size: 1.4em; margin-top: 10px;">Go Back</a></div>';
+        echo '<div><a href="/actionplan" style="font-weight: bold; font-size: 1.4em; margin-top: 10px;">Go Back</a></div>';
 
     }
 
@@ -1657,9 +1846,9 @@ class Messenger extends CI_Controller
         //Find the next item to navigate them to:
         $next_in_id = $this->Actionplan_model->actionplan_step_next_go($en_id, false);
         if ($next_in_id > 0) {
-            return redirect_message('/messenger/actionplan/' . $next_in_id, $message);
+            return redirect_message('/actionplan/' . $next_in_id, $message);
         } else {
-            return redirect_message('/messenger/actionplan', $message);
+            return redirect_message('/actionplan', $message);
         }
 
     }
@@ -1866,7 +2055,7 @@ class Messenger extends CI_Controller
     {
 
         if ($w_key != md5($this->config->item('actionplan_salt') . $answer_in_id . $parent_in_id . $en_id)) {
-            return redirect_message('/messenger/actionplan/' . $parent_in_id, '<div class="alert alert-danger" role="alert">Invalid Authentication Key</div>');
+            return redirect_message('/actionplan/' . $parent_in_id, '<div class="alert alert-danger" role="alert">Invalid Authentication Key</div>');
         }
 
         //Validate Answer Intent:
@@ -1875,7 +2064,7 @@ class Messenger extends CI_Controller
             'in_status' => 2, //Published
         ));
         if (count($answer_ins) < 1) {
-            return redirect_message('/messenger/actionplan/' . $parent_in_id, '<div class="alert alert-danger" role="alert">Invalid Answer</div>');
+            return redirect_message('/actionplan/' . $parent_in_id, '<div class="alert alert-danger" role="alert">Invalid Answer</div>');
         }
 
         //Fetch current progression links, if any:
@@ -1906,7 +2095,7 @@ class Messenger extends CI_Controller
             ), $en_id);
         }
 
-        return redirect_message('/messenger/actionplan/' . $answer_in_id, '<div class="alert alert-success" role="alert">Your answer was saved.</div>');
+        return redirect_message('/actionplan/' . $answer_in_id, '<div class="alert alert-success" role="alert">Your answer was saved.</div>');
 
     }
 
