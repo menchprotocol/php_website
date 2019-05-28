@@ -766,14 +766,16 @@ function echo_time_hours($seconds, $micro = false)
      *
      * */
 
-    if ($seconds < 60) {
+    if ($seconds < 1) {
         //Under 30 seconds would not round up to even 1 minute, so don't show:
         if($micro){
-            return '<1m';
+            return '0';
         } else {
-            return 'Less than a Minute';
+            return 'No Time';
         }
-    } elseif ($seconds <= 5400) {
+    } elseif ($seconds < 60) {
+        return $seconds . ($micro ? 's' : ' Seconds');
+    } elseif ($seconds < 3600) {
         return round($seconds / 60) . ($micro ? 'm' : ' Minutes');
     } else {
         //Roundup the hours:

@@ -96,6 +96,8 @@ function echo_js_hours(in_completion_seconds) {
     in_completion_seconds = parseInt(in_completion_seconds);
     if (in_completion_seconds < 1) {
         return '0';
+    } else if (in_completion_seconds < 60) {
+        return in_completion_seconds + "s";
     } else if (in_completion_seconds < 3600) {
         //Show this in minutes:
         return Math.round((in_completion_seconds / 60)) + "m";
