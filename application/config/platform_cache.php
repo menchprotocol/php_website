@@ -11,22 +11,22 @@ defined('BASEPATH') OR exit('No direct script access allowed');
  *
  */
 
-//Generated 2019-05-28 01:51:48 PST
+//Generated 2019-05-28 02:21:40 PST
 
-//Deduced Completion:
-$config['en_ids_7089'] = array(6907, 6914);
-$config['en_all_7089'] = array(
+//Action Plan Step Unlocked:
+$config['en_ids_6997'] = array(6907, 6914);
+$config['en_all_6997'] = array(
     6907 => array(
         'm_icon' => '<i class="far fa-lock-open"></i>',
         'm_name' => 'OR Intent Any Child Unlock',
         'm_desc' => '',
-        'm_parents' => array(6997, 7089, 6193),
+        'm_parents' => array(6997, 6193),
     ),
     6914 => array(
         'm_icon' => '<i class="fas fa-lock-open"></i>',
         'm_name' => 'AND Intent All Children Unlock',
         'm_desc' => '',
-        'm_parents' => array(6997, 7089, 6192),
+        'm_parents' => array(6997, 6192),
     ),
 );
 
@@ -236,7 +236,7 @@ $config['en_all_6192'] = array(
         'm_icon' => '<i class="fas fa-lock-open"></i>',
         'm_name' => 'All Children Unlock',
         'm_desc' => 'Completed after all children have been completed indirectly.',
-        'm_parents' => array(6997, 7089, 6192),
+        'm_parents' => array(6997, 6192),
     ),
 );
 
@@ -276,7 +276,7 @@ $config['en_all_6193'] = array(
         'm_icon' => '<i class="far fa-lock-open"></i>',
         'm_name' => 'Any Child Unlock',
         'm_desc' => 'Completed after a single child is completed indirectly.',
-        'm_parents' => array(6997, 7089, 6193),
+        'm_parents' => array(6997, 6193),
     ),
 );
 
@@ -439,10 +439,10 @@ $config['en_all_6415'] = array(
         'm_parents' => array(4595, 6415, 6274, 6255, 4593, 4755, 6146),
     ),
     6997 => array(
-        'm_icon' => '<i class="far fa-lock-open"></i>',
-        'm_name' => 'Action Plan Locked Step Unlocked',
+        'm_icon' => '<i class="far fa-unlock"></i>',
+        'm_name' => 'Action Plan Step Unlocked',
         'm_desc' => '',
-        'm_parents' => array(6244, 6415, 6255, 4595, 4593, 4755, 6146),
+        'm_parents' => array(4527, 6244, 6415, 6255, 4595, 4593, 4755, 6146),
     ),
 );
 
@@ -626,10 +626,10 @@ $config['en_all_6255'] = array(
         'm_parents' => array(4595, 6415, 6274, 6255, 4593, 4755, 6146),
     ),
     6997 => array(
-        'm_icon' => '<i class="far fa-lock-open"></i>',
-        'm_name' => 'Action Plan Locked Step Unlocked',
+        'm_icon' => '<i class="far fa-unlock"></i>',
+        'm_name' => 'Action Plan Step Unlocked',
         'm_desc' => '',
-        'm_parents' => array(6244, 6415, 6255, 4595, 4593, 4755, 6146),
+        'm_parents' => array(4527, 6244, 6415, 6255, 4595, 4593, 4755, 6146),
     ),
 );
 
@@ -649,10 +649,10 @@ $config['en_all_6244'] = array(
         'm_parents' => array(4595, 6415, 6288, 6255, 6244, 6146, 4755, 4593, 4460),
     ),
     6997 => array(
-        'm_icon' => '<i class="far fa-lock-open"></i>',
-        'm_name' => 'Locked Step Unlocked',
+        'm_icon' => '<i class="far fa-unlock"></i>',
+        'm_name' => 'Step Unlocked',
         'm_desc' => '',
-        'm_parents' => array(6244, 6415, 6255, 4595, 4593, 4755, 6146),
+        'm_parents' => array(4527, 6244, 6415, 6255, 4595, 4593, 4755, 6146),
     ),
 );
 
@@ -712,61 +712,61 @@ $config['en_all_4986'] = array(
 $config['en_ids_6225'] = array(6197, 3288, 3286, 4783, 4454, 3290, 3287, 3089, 3289, 6123);
 $config['en_all_6225'] = array(
     6197 => array(
-        'm_icon' => '<i class="fas fa-fingerprint"></i>',
+        'm_icon' => '<i class="far fa-fingerprint"></i>',
         'm_name' => 'Full Name',
         'm_desc' => 'Your first and last name:',
         'm_parents' => array(6225, 6213, 6206),
     ),
     3288 => array(
-        'm_icon' => '<i class="fal fa-envelope"></i>',
+        'm_icon' => '<i class="far fa-envelope"></i>',
         'm_name' => 'Email Address',
         'm_desc' => 'The email address used to login to your Action Plan on mench.com:',
         'm_parents' => array(6225, 4426, 4755),
     ),
     3286 => array(
-        'm_icon' => '<i class="fal fa-lock-open"></i>',
+        'm_icon' => '<i class="far fa-key"></i>',
         'm_name' => 'Mench Password',
         'm_desc' => 'The password used to login to your Action Plan on mench.com:',
         'm_parents' => array(6225, 5969, 4755),
     ),
     4783 => array(
-        'm_icon' => '<i class="fal fa-phone"></i>',
+        'm_icon' => '<i class="far fa-phone"></i>',
         'm_name' => 'Phone Number',
         'm_desc' => 'Share your current phone for coaching calls:',
         'm_parents' => array(6225, 4755, 4319),
     ),
     4454 => array(
-        'm_icon' => '<i class="fal fa-bells"></i>',
+        'm_icon' => '<i class="far fa-bells"></i>',
         'm_name' => 'Subscription Settings',
         'm_desc' => 'Choose how you like to be notified for messages I send you via Messenger:',
         'm_parents' => array(6225, 6204, 4603, 4527),
     ),
     3290 => array(
-        'm_icon' => '<i class="fal fa-transgender"></i>',
+        'm_icon' => '<i class="far fa-transgender"></i>',
         'm_name' => 'Genders',
         'm_desc' => 'Choose one of the following:',
         'm_parents' => array(6225, 6204),
     ),
     3287 => array(
-        'm_icon' => '<i class="fal fa-language"></i>',
+        'm_icon' => '<i class="far fa-language"></i>',
         'm_name' => 'Languages',
         'm_desc' => 'Choose all the languages you speak fluently:',
         'm_parents' => array(6225, 6122, 4603),
     ),
     3089 => array(
-        'm_icon' => '<i class="fal fa-globe"></i>',
+        'm_icon' => '<i class="far fa-globe"></i>',
         'm_name' => 'Countries',
         'm_desc' => 'Choose your current country of residence:',
         'm_parents' => array(6225, 6204),
     ),
     3289 => array(
-        'm_icon' => '<i class="fal fa-map"></i>',
+        'm_icon' => '<i class="far fa-map"></i>',
         'm_name' => 'Timezones',
         'm_desc' => 'Choose your current timezone:',
         'm_parents' => array(6225, 6204),
     ),
     6123 => array(
-        'm_icon' => '<i class="fal fa-share-alt-square"></i>',
+        'm_icon' => '<i class="far fa-share-alt-square"></i>',
         'm_name' => 'Social Profiles',
         'm_desc' => 'Share your social profiles with the Mench community:',
         'm_parents' => array(6225, 4527),
@@ -946,10 +946,10 @@ $config['en_all_6146'] = array(
         'm_parents' => array(4595, 6415, 6274, 6255, 4593, 4755, 6146),
     ),
     6997 => array(
-        'm_icon' => '<i class="far fa-lock-open"></i>',
-        'm_name' => 'Locked Step Unlocked',
+        'm_icon' => '<i class="far fa-unlock"></i>',
+        'm_name' => 'Step Unlocked',
         'm_desc' => 'When a user unlocks a Locked AND or OR intent by completing all or any of its children.',
-        'm_parents' => array(6244, 6415, 6255, 4595, 4593, 4755, 6146),
+        'm_parents' => array(4527, 6244, 6415, 6255, 4595, 4593, 4755, 6146),
     ),
 );
 
@@ -1186,7 +1186,7 @@ $config['en_all_4432'] = array(
 $config['en_ids_5969'] = array(3286);
 $config['en_all_5969'] = array(
     3286 => array(
-        'm_icon' => '<i class="fal fa-lock-open"></i>',
+        'm_icon' => '<i class="far fa-key"></i>',
         'm_name' => 'Mench Password',
         'm_desc' => 'Managed through the Forgot Password section in the Login page',
         'm_parents' => array(6225, 5969, 4755),
@@ -1273,7 +1273,7 @@ $config['en_all_4426'] = array(
         'm_parents' => array(6827, 4463, 4426),
     ),
     3288 => array(
-        'm_icon' => '<i class="fal fa-envelope"></i>',
+        'm_icon' => '<i class="far fa-envelope"></i>',
         'm_name' => 'Email Address',
         'm_desc' => '',
         'm_parents' => array(6225, 4426, 4755),
@@ -1332,13 +1332,13 @@ $config['en_all_4426'] = array(
 $config['en_ids_4755'] = array(3286, 3288, 4235, 4242, 4246, 4251, 4263, 4266, 4267, 4268, 4275, 4278, 4279, 4282, 4283, 4287, 4299, 4460, 4547, 4548, 4549, 4550, 4551, 4552, 4553, 4554, 4555, 4556, 4557, 4559, 4570, 4783, 5967, 6132, 6140, 6143, 6144, 6149, 6154, 6155, 6157, 6158, 6224, 6389, 6415, 6556, 6559, 6560, 6561, 6563, 6578, 6969, 6997);
 $config['en_all_4755'] = array(
     3286 => array(
-        'm_icon' => '<i class="fal fa-lock-open"></i>',
+        'm_icon' => '<i class="far fa-key"></i>',
         'm_name' => 'Mench Password',
         'm_desc' => '',
         'm_parents' => array(6225, 5969, 4755),
     ),
     3288 => array(
-        'm_icon' => '<i class="fal fa-envelope"></i>',
+        'm_icon' => '<i class="far fa-envelope"></i>',
         'm_name' => 'Email Address',
         'm_desc' => '',
         'm_parents' => array(6225, 4426, 4755),
@@ -1518,7 +1518,7 @@ $config['en_all_4755'] = array(
         'm_parents' => array(4595, 4755, 4593, 4280),
     ),
     4783 => array(
-        'm_icon' => '<i class="fal fa-phone"></i>',
+        'm_icon' => '<i class="far fa-phone"></i>',
         'm_name' => 'Phone Number',
         'm_desc' => '',
         'm_parents' => array(6225, 4755, 4319),
@@ -1644,10 +1644,10 @@ $config['en_all_4755'] = array(
         'm_parents' => array(4595, 4593, 4755, 6153),
     ),
     6997 => array(
-        'm_icon' => '<i class="far fa-lock-open"></i>',
-        'm_name' => 'Action Plan Locked Step Unlocked',
+        'm_icon' => '<i class="far fa-unlock"></i>',
+        'm_name' => 'Action Plan Step Unlocked',
         'm_desc' => '',
-        'm_parents' => array(6244, 6415, 6255, 4595, 4593, 4755, 6146),
+        'm_parents' => array(4527, 6244, 6415, 6255, 4595, 4593, 4755, 6146),
     ),
 );
 
@@ -2165,10 +2165,10 @@ $config['en_all_4595'] = array(
         'm_parents' => array(4595, 4593, 4755, 6153),
     ),
     6997 => array(
-        'm_icon' => '<i class="far fa-lock-open"></i>',
-        'm_name' => 'Action Plan Locked Step Unlocked',
+        'm_icon' => '<i class="far fa-unlock"></i>',
+        'm_name' => 'Action Plan Step Unlocked',
         'm_desc' => '10',
-        'm_parents' => array(6244, 6415, 6255, 4595, 4593, 4755, 6146),
+        'm_parents' => array(4527, 6244, 6415, 6255, 4595, 4593, 4755, 6146),
     ),
 );
 
@@ -2703,10 +2703,10 @@ $config['en_all_4593'] = array(
         'm_parents' => array(4595, 4593, 4755, 6153),
     ),
     6997 => array(
-        'm_icon' => '<i class="far fa-lock-open"></i>',
-        'm_name' => 'Action Plan Locked Step Unlocked',
+        'm_icon' => '<i class="far fa-unlock"></i>',
+        'm_name' => 'Action Plan Step Unlocked',
         'm_desc' => '',
-        'm_parents' => array(6244, 6415, 6255, 4595, 4593, 4755, 6146),
+        'm_parents' => array(4527, 6244, 6415, 6255, 4595, 4593, 4755, 6146),
     ),
 );
 
