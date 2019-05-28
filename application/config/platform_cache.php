@@ -11,7 +11,7 @@ defined('BASEPATH') OR exit('No direct script access allowed');
  *
  */
 
-//Generated 2019-05-27 23:18:00 PST
+//Generated 2019-05-28 01:51:48 PST
 
 //Deduced Completion:
 $config['en_ids_7089'] = array(6907, 6914);
@@ -35,7 +35,7 @@ $config['en_ids_6908'] = array(6677, 6684);
 $config['en_all_6908'] = array(
     6677 => array(
         'm_icon' => '<i class="fas fa-check"></i>',
-        'm_name' => 'AND Intent No Response is required',
+        'm_name' => 'AND Intent No Response required',
         'm_desc' => '',
         'm_parents' => array(6158, 4559, 6908, 6192),
     ),
@@ -134,7 +134,7 @@ $config['en_all_6805'] = array(
     ),
     4763 => array(
         'm_icon' => '<i class="fas fa-bullhorn"></i>',
-        'm_name' => 'Expert Marketing Channels',
+        'm_name' => 'Expert Channels',
         'm_desc' => '',
         'm_parents' => array(6805, 3000),
     ),
@@ -151,37 +151,37 @@ $config['en_ids_6794'] = array(6678, 6679, 6680, 6681, 6682, 6683);
 $config['en_all_6794'] = array(
     6678 => array(
         'm_icon' => '<i class="fas fa-image"></i>',
-        'm_name' => 'Image is required',
+        'm_name' => 'Image required',
         'm_desc' => '',
         'm_parents' => array(6144, 6794, 6192),
     ),
     6679 => array(
         'm_icon' => '<i class="fas fa-video"></i>',
-        'm_name' => 'Video is required',
+        'm_name' => 'Video required',
         'm_desc' => '',
         'm_parents' => array(6144, 6794, 6192),
     ),
     6680 => array(
         'm_icon' => '<i class="fas fa-microphone"></i>',
-        'm_name' => 'Voice Note is required',
+        'm_name' => 'Voice Note required',
         'm_desc' => '',
         'm_parents' => array(6144, 6794, 6192),
     ),
     6681 => array(
         'm_icon' => '<i class="fas fa-file-pdf"></i>',
-        'm_name' => 'File is required',
+        'm_name' => 'File required',
         'm_desc' => '',
         'm_parents' => array(6144, 6794, 6192),
     ),
     6682 => array(
         'm_icon' => '<i class="fas fa-browser"></i>',
-        'm_name' => 'URL is required',
+        'm_name' => 'URL required',
         'm_desc' => '',
         'm_parents' => array(6144, 6794, 6192),
     ),
     6683 => array(
         'm_icon' => '<i class="fas fa-align-left"></i>',
-        'm_name' => 'Text is required',
+        'm_name' => 'Text required',
         'm_desc' => '',
         'm_parents' => array(6144, 6794, 6192),
     ),
@@ -192,50 +192,50 @@ $config['en_ids_6192'] = array(6677, 6678, 6679, 6680, 6681, 6682, 6683, 6914);
 $config['en_all_6192'] = array(
     6677 => array(
         'm_icon' => '<i class="fas fa-check"></i>',
-        'm_name' => 'No Response is required',
+        'm_name' => 'No Response required',
         'm_desc' => 'Students would complete the intent by simply reviewing its outcome and reading its messages if any. No inputs are required.',
         'm_parents' => array(6158, 4559, 6908, 6192),
     ),
     6678 => array(
         'm_icon' => '<i class="fas fa-image"></i>',
-        'm_name' => 'Image is required',
+        'm_name' => 'Image required',
         'm_desc' => 'Student must send an image to mark the intent as complete.',
         'm_parents' => array(6144, 6794, 6192),
     ),
     6679 => array(
         'm_icon' => '<i class="fas fa-video"></i>',
-        'm_name' => 'Video is required',
+        'm_name' => 'Video required',
         'm_desc' => 'Student must send a video to mark the intent as complete.',
         'm_parents' => array(6144, 6794, 6192),
     ),
     6680 => array(
         'm_icon' => '<i class="fas fa-microphone"></i>',
-        'm_name' => 'Voice Note is required',
+        'm_name' => 'Voice Note required',
         'm_desc' => 'Student must send a voice note to mark the intent as complete.',
         'm_parents' => array(6144, 6794, 6192),
     ),
     6681 => array(
         'm_icon' => '<i class="fas fa-file-pdf"></i>',
-        'm_name' => 'File is required',
+        'm_name' => 'File required',
         'm_desc' => 'Student must upload a File to mark the intent as complete.',
         'm_parents' => array(6144, 6794, 6192),
     ),
     6682 => array(
         'm_icon' => '<i class="fas fa-browser"></i>',
-        'm_name' => 'URL is required',
+        'm_name' => 'URL required',
         'm_desc' => 'Student must submit a URL to mark the intent as complete.',
         'm_parents' => array(6144, 6794, 6192),
     ),
     6683 => array(
         'm_icon' => '<i class="fas fa-align-left"></i>',
-        'm_name' => 'Text is required',
+        'm_name' => 'Text required',
         'm_desc' => 'Student must submit a text message to mark the intent as complete.',
         'm_parents' => array(6144, 6794, 6192),
     ),
     6914 => array(
         'm_icon' => '<i class="fas fa-lock-open"></i>',
         'm_name' => 'All Children Unlock',
-        'm_desc' => 'Could only be accessed when all children are completed through different routes.',
+        'm_desc' => 'Completed after all children have been completed indirectly.',
         'm_parents' => array(6997, 7089, 6192),
     ),
 );
@@ -275,7 +275,7 @@ $config['en_all_6193'] = array(
     6907 => array(
         'm_icon' => '<i class="far fa-lock-open"></i>',
         'm_name' => 'Any Child Unlock',
-        'm_desc' => 'Users cannot select an answer, but they can only unlock an answer when they complete a single child through a different route',
+        'm_desc' => 'Completed after a single child is completed indirectly.',
         'm_parents' => array(6997, 7089, 6193),
     ),
 );
@@ -2973,7 +2973,7 @@ $config['en_all_3000'] = array(
     ),
     4763 => array(
         'm_icon' => '<i class="fas fa-bullhorn"></i>',
-        'm_name' => 'Expert Marketing Channels',
+        'm_name' => 'Expert Channels',
         'm_desc' => '&var_weight=1',
         'm_parents' => array(6805, 3000),
     ),
