@@ -803,7 +803,7 @@ class Messenger extends CI_Controller
         $this->load->view('view_shared/public_footer');
     }
 
-    function en_login_process()
+    function login_process()
     {
 
         //Setting for admin Sign Ins:

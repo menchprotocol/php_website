@@ -17,7 +17,6 @@ $route['(:num)']                = "intents/in_landing_page/$1"; //Public Intent 
 //Users:
 $route['login']                 = "messenger/user_login";
 $route['logout']                = "messenger/logout";
-$route['password_reset']        = "messenger/password_reset";
 $route['myaccount']             = "messenger/myaccount";
 $route['actionplan']            = "messenger/actionplan/0";
 $route['actionplan/(:num)']     = "messenger/actionplan/$1";
