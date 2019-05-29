@@ -78,6 +78,7 @@ class Admin extends CI_Controller
     function extra_stats_intents(){
 
         $en_all_4534 = $this->config->item('en_all_4534');
+        $en_all_7161 = $this->config->item('en_all_7161'); //Platform Dashboard
         $fixed_fields = $this->config->item('fixed_fields');
 
 
@@ -85,7 +86,7 @@ class Admin extends CI_Controller
         echo '<table class="table table-condensed table-striped stats-table mini-stats-table">';
 
         echo '<tr class="panel-title down-border">';
-        echo '<td style="text-align: left;">4 Statuses</td>';
+        echo '<td style="text-align: left;">'.count($this->config->item('en_ids_4737')).' '.$en_all_7161[4737]['m_name'].'</td>';
         echo '<td style="text-align: right;">Intents</td>';
         echo '</tr>';
 
@@ -114,7 +115,7 @@ class Admin extends CI_Controller
         echo '<table class="table table-condensed table-striped stats-table mini-stats-table ">';
 
         echo '<tr class="panel-title down-border">';
-        echo '<td style="text-align: left;">2 Types & '.count(array_merge($this->config->item('en_all_6192'), $this->config->item('en_all_6193'))).' Sub-Types</td>';
+        echo '<td style="text-align: left;">'.count(array_merge($this->config->item('en_all_6192'), $this->config->item('en_all_6193'))).' '.$en_all_7161[6676]['m_name'].'</td>';
         echo '<td style="text-align: right;">Intents</td>';
         echo '</tr>';
 
@@ -173,7 +174,7 @@ class Admin extends CI_Controller
         echo '<table class="table table-condensed table-striped stats-table mini-stats-table ">';
 
         echo '<tr class="panel-title down-border">';
-        echo '<td style="text-align: left;">'.count($in_verbs).' Verbs</td>';
+        echo '<td style="text-align: left;">'.count($in_verbs).' '.$en_all_7161[5008]['m_name'].'</td>';
         echo '<td style="text-align: right;">Intents</td>';
         echo '</tr>';
 
@@ -185,7 +186,7 @@ class Admin extends CI_Controller
         }
         echo '</table>';
         //Show expand button:
-        echo '<div style="margin:-10px 0 0 0; padding: 0;"><a href="javascript:void(0);" onclick="$(\'.hiddenverbs\').toggleClass(\'hidden\')" class="hiddenverbs"><i class="fal fa-plus-circle"></i> See All '.number_format(count($in_verbs),0).' Verbs</a></div>';
+        echo '<div style="margin:-10px 0 0 0; padding: 0;"><a href="javascript:void(0);" onclick="$(\'.hiddenverbs\').toggleClass(\'hidden\')" class="hiddenverbs"><i class="fal fa-plus-circle"></i> See All '.number_format(count($in_verbs),0).' '.$en_all_7161[5008]['m_name'].'</a></div>';
 
     }
 
@@ -193,7 +194,7 @@ class Admin extends CI_Controller
     function extra_stats_entities(){
 
         $en_all_4534 = $this->config->item('en_all_4534');
-        $en_all_3463 = $this->config->item('en_all_3463'); //Focused Entities
+        $en_all_7161 = $this->config->item('en_all_7161'); //Platform Dashboard
         $fixed_fields = $this->config->item('fixed_fields');
 
 
@@ -204,7 +205,7 @@ class Admin extends CI_Controller
         echo '<table class="table table-condensed table-striped stats-table mini-stats-table">';
 
         echo '<tr class="panel-title down-border">';
-        echo '<td style="text-align: left;">4 Statuses</td>';
+        echo '<td style="text-align: left;">'.count($this->config->item('en_ids_6177')).' '.$en_all_7161[6177]['m_name'].'</td>';
         echo '<td style="text-align: right;">Entities</td>';
         echo '</tr>';
 
@@ -229,11 +230,11 @@ class Admin extends CI_Controller
 
 
         //Mench Verified Accounts
-        echo echo_en_stats_overview($this->config->item('en_all_4432'), $en_all_3463[4432]['m_name']);
+        echo echo_en_stats_overview($this->config->item('en_all_4432'), $en_all_7161[4432]['m_name']);
 
 
         //Mench Contributors
-        //echo echo_en_stats_overview($this->config->item('en_all_6827'), $en_all_3463[6827]['m_name']);
+        //echo echo_en_stats_overview($this->config->item('en_all_6827'), $en_all_7161[6827]['m_name']);
 
 
 
@@ -290,7 +291,7 @@ class Admin extends CI_Controller
         echo '<table class="table table-condensed table-striped stats-table">';
 
         echo '<tr class="panel-title down-border">';
-        echo '<td style="text-align: left;">'.echo_number($all_source_count).' Expert Sources</td>';
+        echo '<td style="text-align: left;">'.echo_number($all_source_count).' '.$en_all_7161[3000]['m_name'].'</td>';
         echo '<td style="text-align: right;">Mined</td>';
         echo '<td style="text-align: right;">Entities</td>';
         echo '</tr>';
@@ -339,7 +340,7 @@ class Admin extends CI_Controller
         echo '<table class="table table-condensed table-striped stats-table">';
 
         echo '<tr class="panel-title down-border">';
-        echo '<td style="text-align: left;">Top '.$top.' Miners</td>';
+        echo '<td style="text-align: left;">'.$en_all_7161[7162]['m_name'].'</td>';
         echo '<td style="text-align: right;">'.( !is_null($days_ago) ? $days_ago.'-Day ' : '' ).'Points</td>';
         echo '</tr>';
 
@@ -374,7 +375,7 @@ class Admin extends CI_Controller
         echo '<table class="table table-condensed table-striped stats-table">';
 
         echo '<tr class="panel-title down-border">';
-        echo '<td style="text-align: left;">Top '.$top.' Users</td>';
+        echo '<td style="text-align: left;">'.$en_all_7161[7163]['m_name'].'</td>';
         echo '<td style="text-align: right;">'.( !is_null($days_ago) ? $days_ago.'-Day ' : '' ).'Points</td>';
         echo '</tr>';
 
@@ -396,6 +397,7 @@ class Admin extends CI_Controller
         $fixed_fields = $this->config->item('fixed_fields');
         $en_all_4463 = $this->config->item('en_all_4463'); //Platform Glossary
         $en_all_4593 = $this->config->item('en_all_4593'); //Load all link types
+        $en_all_7161 = $this->config->item('en_all_7161'); //Platform Dashboard
 
 
 
@@ -403,7 +405,7 @@ class Admin extends CI_Controller
         echo '<table class="table table-condensed table-striped stats-table mini-stats-table">';
 
         echo '<tr class="panel-title down-border">';
-        echo '<td style="text-align: left;">4 Statuses</td>';
+        echo '<td style="text-align: left;">'.count($this->config->item('en_ids_6186')).' '.$en_all_7161[6186]['m_name'].'</td>';
         echo '<td style="text-align: right;">Links</td>';
         echo '</tr>';
 
@@ -426,9 +428,8 @@ class Admin extends CI_Controller
 
 
 
-
-
-
+        //Links User Engagement Stats
+        echo echo_link_type_group_stats(7159);
 
 
         //All Link Types:
@@ -437,7 +438,7 @@ class Admin extends CI_Controller
         echo '<table class="table table-condensed table-striped stats-table mini-stats-table">';
 
         echo '<tr class="panel-title down-border">';
-        echo '<td style="text-align: left;">'.count($all_link_types).' Link Types</td>';
+        echo '<td style="text-align: left;">'.count($all_link_types).' '.$en_all_7161[4593]['m_name'].'</td>';
         echo '<td style="text-align: right;">Points</td>';
         echo '<td style="text-align: right;">Links</td>';
         echo '</tr>';

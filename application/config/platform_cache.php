@@ -5,13 +5,302 @@ defined('BASEPATH') OR exit('No direct script access allowed');
  * Keep a cache of certain parts of the Intent tree for faster processing
  * So we don't have to make DB calls to figure them out every time!
  * See here for all entities cached: https://mench.com/entities/4527
- * use-case format: $this->config->item('en_ids_6997')
+ * use-case format: $this->config->item('en_all_2738')
  *
  * ATTENTION: Also search for "en_ids_" and "en_all_" when trying to manage these throughout the code base
  *
  */
 
-//Generated 2019-05-28 02:21:40 PST
+//Generated 2019-05-28 22:24:06 PST
+
+//User Sent/Received Messages:
+$config['en_ids_7164'] = array(4287, 4460, 4547, 4548, 4549, 4550, 4551, 4552, 4553, 4554, 4555, 4556, 4557, 4570, 5967, 6561, 6563);
+$config['en_all_7164'] = array(
+    4287 => array(
+        'm_icon' => '<i class="fal fa-comment-exclamation"></i>',
+        'm_name' => 'User Sent Unrecognized Message',
+        'm_desc' => '',
+        'm_parents' => array(7164, 4595, 4755, 4277, 4593),
+    ),
+    4460 => array(
+        'm_icon' => '<i class="far fa-ballot-check"></i>',
+        'm_name' => 'User Sent Quick Reply',
+        'm_desc' => '',
+        'm_parents' => array(7164, 4595, 4755, 4593, 4277),
+    ),
+    4547 => array(
+        'm_icon' => '<i class="fal fa-align-left"></i>',
+        'm_name' => 'User Sent Text Message',
+        'm_desc' => '',
+        'm_parents' => array(7164, 4595, 4755, 4593, 4277),
+    ),
+    4548 => array(
+        'm_icon' => '<i class="fal fa-video"></i>',
+        'm_name' => 'User Sent Video Message',
+        'm_desc' => '',
+        'm_parents' => array(7164, 4595, 6102, 4755, 4593, 4277),
+    ),
+    4549 => array(
+        'm_icon' => '<i class="fal fa-volume-up"></i>',
+        'm_name' => 'User Sent Audio Message',
+        'm_desc' => '',
+        'm_parents' => array(7164, 4595, 6102, 4755, 4593, 4277),
+    ),
+    4550 => array(
+        'm_icon' => '<i class="fal fa-image"></i>',
+        'm_name' => 'User Sent Image Message',
+        'm_desc' => '',
+        'm_parents' => array(7164, 4595, 6102, 4755, 4593, 4277),
+    ),
+    4551 => array(
+        'm_icon' => '<i class="fal fa-file-pdf"></i>',
+        'm_name' => 'User Sent File Message',
+        'm_desc' => '',
+        'm_parents' => array(7164, 4595, 6102, 4755, 4593, 4277),
+    ),
+    4552 => array(
+        'm_icon' => '<i class="fal fa-align-left"></i>',
+        'm_name' => 'User Received Text Message',
+        'm_desc' => '',
+        'm_parents' => array(7164, 4595, 4755, 4593, 4280),
+    ),
+    4553 => array(
+        'm_icon' => '<i class="fal fa-video"></i>',
+        'm_name' => 'User Received Video Message',
+        'm_desc' => '',
+        'm_parents' => array(7164, 4595, 6102, 4755, 4593, 4280),
+    ),
+    4554 => array(
+        'm_icon' => '<i class="fal fa-volume-up"></i>',
+        'm_name' => 'User Received Audio Message',
+        'm_desc' => '',
+        'm_parents' => array(7164, 4595, 6102, 4755, 4593, 4280),
+    ),
+    4555 => array(
+        'm_icon' => '<i class="fal fa-image"></i>',
+        'm_name' => 'User Received Image Message',
+        'm_desc' => '',
+        'm_parents' => array(7164, 4595, 6102, 4755, 4593, 4280),
+    ),
+    4556 => array(
+        'm_icon' => '<i class="fal fa-file-pdf"></i>',
+        'm_name' => 'User Received File Message',
+        'm_desc' => '',
+        'm_parents' => array(7164, 4595, 6102, 4755, 4593, 4280),
+    ),
+    4557 => array(
+        'm_icon' => '<i class="fal fa-location-circle"></i>',
+        'm_name' => 'User Sent Location Message',
+        'm_desc' => '',
+        'm_parents' => array(7164, 4595, 4755, 4593, 4277),
+    ),
+    4570 => array(
+        'm_icon' => '<i class="fab fa-html5"></i>',
+        'm_name' => 'User Received HTML Message',
+        'm_desc' => '',
+        'm_parents' => array(7164, 4595, 4755, 4593, 4280),
+    ),
+    5967 => array(
+        'm_icon' => '<i class="fal fa-envelope-open"></i>',
+        'm_name' => 'User Received Email Message',
+        'm_desc' => '',
+        'm_parents' => array(7164, 4595, 4755, 4593, 4280),
+    ),
+    6561 => array(
+        'm_icon' => '<i class="far fa-ballot-check"></i>',
+        'm_name' => 'User Sent Manual Quick Reply',
+        'm_desc' => '',
+        'm_parents' => array(7164, 4595, 4755, 4593, 4277),
+    ),
+    6563 => array(
+        'm_icon' => '<i class="far fa-ballot-check"></i>',
+        'm_name' => 'User Received Quick Reply',
+        'm_desc' => '',
+        'm_parents' => array(7164, 4595, 4593, 4755, 4280),
+    ),
+);
+
+//Link Statuses:
+$config['en_ids_6186'] = array(6173, 6174, 6175, 6176);
+$config['en_all_6186'] = array(
+    6173 => array(
+        'm_icon' => '<i class="fal fa-minus-square"></i>',
+        'm_name' => 'Link Removed',
+        'm_desc' => 'Link is in-active',
+        'm_parents' => array(6186),
+    ),
+    6174 => array(
+        'm_icon' => '<i class="fal fa-square"></i>',
+        'm_name' => 'Link New',
+        'm_desc' => 'Link is newly added and pending to be mined',
+        'm_parents' => array(6186),
+    ),
+    6175 => array(
+        'm_icon' => '<i class="fas fa-spinner fa-spin"></i>',
+        'm_name' => 'Link Drafting',
+        'm_desc' => 'Link is being worked-on so it can be published',
+        'm_parents' => array(6186),
+    ),
+    6176 => array(
+        'm_icon' => '<i class="fas fa-check-square"></i>',
+        'm_name' => 'Link Published',
+        'm_desc' => 'Link is complete, ready and live',
+        'm_parents' => array(6186),
+    ),
+);
+
+//Platform Dashboard:
+$config['en_ids_7161'] = array(3000, 4432, 4593, 4737, 5008, 6177, 6186, 6676, 7159, 7162, 7163);
+$config['en_all_7161'] = array(
+    3000 => array(
+        'm_icon' => '<i class="fas fa-star"></i>',
+        'm_name' => 'Expert Sources',
+        'm_desc' => '',
+        'm_parents' => array(7161, 3463, 4506, 4527, 4463),
+    ),
+    4432 => array(
+        'm_icon' => '<i class="far fa-certificate"></i>',
+        'm_name' => 'Mench-Verified Accounts',
+        'm_desc' => '',
+        'm_parents' => array(7161, 2738, 4527, 3463),
+    ),
+    4593 => array(
+        'm_icon' => '<i class="fas fa-plug"></i>',
+        'm_name' => 'Link Types',
+        'm_desc' => '',
+        'm_parents' => array(7161, 6213, 6194, 4527, 4341),
+    ),
+    4737 => array(
+        'm_icon' => '<i class="fas fa-sliders-h"></i>',
+        'm_name' => 'Intent Statuses',
+        'm_desc' => '',
+        'm_parents' => array(7161, 6213, 6201, 4527),
+    ),
+    5008 => array(
+        'm_icon' => '<i class="fal fa-tools"></i>',
+        'm_name' => 'Intent Verbs',
+        'm_desc' => '',
+        'm_parents' => array(7161, 4506, 6213, 6194, 6201),
+    ),
+    6177 => array(
+        'm_icon' => '<i class="fas fa-sliders-h"></i>',
+        'm_name' => 'Entity Statuses',
+        'm_desc' => '',
+        'm_parents' => array(7161, 6213, 6206, 4527),
+    ),
+    6186 => array(
+        'm_icon' => '<i class="fas fa-sliders-h"></i>',
+        'm_name' => 'Link Statuses',
+        'm_desc' => '',
+        'm_parents' => array(4527, 7161, 6213, 4341),
+    ),
+    6676 => array(
+        'm_icon' => '<i class="fas fa-chart-network"></i>',
+        'm_name' => 'Intent Types',
+        'm_desc' => '',
+        'm_parents' => array(7161, 6194, 6213, 4527, 6201),
+    ),
+    7159 => array(
+        'm_icon' => '<i class="far fa-chart-pie"></i>',
+        'm_name' => 'User Engagements',
+        'm_desc' => '',
+        'm_parents' => array(7161, 4527),
+    ),
+    7162 => array(
+        'm_icon' => '<i class="fas fa-medal"></i>',
+        'm_name' => 'Top Miners',
+        'm_desc' => '',
+        'm_parents' => array(7161),
+    ),
+    7163 => array(
+        'm_icon' => '<i class="far fa-medal"></i>',
+        'm_name' => 'Top Users',
+        'm_desc' => '',
+        'm_parents' => array(7161),
+    ),
+);
+
+//User Engagements:
+$config['en_ids_7159'] = array(4235, 6146, 7164);
+$config['en_all_7159'] = array(
+    4235 => array(
+        'm_icon' => '<i class="far fa-bullseye-arrow"></i>',
+        'm_name' => 'Action Plan Intention Set',
+        'm_desc' => 'Intentions set by users enabling Mench to deliver relevant intelligence.',
+        'm_parents' => array(7159, 4595, 6153, 4506, 4755, 4593),
+    ),
+    6146 => array(
+        'm_icon' => '<i class="fas fa-walking"></i>',
+        'm_name' => 'Action Plan Progression Steps',
+        'm_desc' => 'Key insights or actionable tasks completed by users that gets them closer to their set intentions.',
+        'm_parents' => array(7159, 6275, 4506, 4527),
+    ),
+    7164 => array(
+        'm_icon' => '<i class="far fa-comments"></i>',
+        'm_name' => 'User Sent/Received Messages',
+        'm_desc' => 'Messages send and received by users that gets them closer to their set intentions.',
+        'm_parents' => array(7159, 4527, 6221),
+    ),
+);
+
+//Database Connector Fields:
+$config['en_ids_6194'] = array(4364, 4366, 4368, 4369, 4371, 4429, 4593, 5008, 6676);
+$config['en_all_6194'] = array(
+    4364 => array(
+        'm_icon' => '⛏️',
+        'm_name' => 'Link Miner Entity',
+        'm_desc' => 'SELECT count(ln_id) as totals FROM table_links WHERE ln_miner_entity_id=',
+        'm_parents' => array(6213, 6194, 4341),
+    ),
+    4366 => array(
+        'm_icon' => '<i class="fas fa-at"></i>',
+        'm_name' => 'Link Parent Entity',
+        'm_desc' => 'SELECT count(ln_id) as totals FROM table_links WHERE ln_parent_entity_id=',
+        'm_parents' => array(6213, 6194, 4341),
+    ),
+    4368 => array(
+        'm_icon' => '<i class="fas fa-hashtag"></i>',
+        'm_name' => 'Link Parent Intent',
+        'm_desc' => '',
+        'm_parents' => array(6213, 6194, 4341),
+    ),
+    4369 => array(
+        'm_icon' => '<i class="fas fa-hashtag"></i>',
+        'm_name' => 'Link Child Intent',
+        'm_desc' => '',
+        'm_parents' => array(6213, 6194, 4341),
+    ),
+    4371 => array(
+        'm_icon' => '<i class="fas fa-link rotate90"></i>',
+        'm_name' => 'Link Parent Link',
+        'm_desc' => '',
+        'm_parents' => array(6213, 6194, 4341),
+    ),
+    4429 => array(
+        'm_icon' => '<i class="fas fa-at"></i>',
+        'm_name' => 'Link Child Entity',
+        'm_desc' => 'SELECT count(ln_id) as totals FROM table_links WHERE ln_child_entity_id=',
+        'm_parents' => array(6213, 6194, 4341),
+    ),
+    4593 => array(
+        'm_icon' => '<i class="fas fa-plug"></i>',
+        'm_name' => 'Link Types',
+        'm_desc' => 'SELECT count(ln_id) as totals FROM table_links WHERE ln_type_entity_id=',
+        'm_parents' => array(7161, 6213, 6194, 4527, 4341),
+    ),
+    5008 => array(
+        'm_icon' => '<i class="fal fa-tools"></i>',
+        'm_name' => 'Intent Verbs',
+        'm_desc' => 'SELECT count(in_id) as totals FROM table_intents WHERE in_verb_entity_id=',
+        'm_parents' => array(7161, 4506, 6213, 6194, 6201),
+    ),
+    6676 => array(
+        'm_icon' => '<i class="fas fa-chart-network"></i>',
+        'm_name' => 'Intent Types',
+        'm_desc' => 'SELECT count(in_id) as totals FROM table_intents WHERE in_type_entity_id=',
+        'm_parents' => array(7161, 6194, 6213, 4527, 6201),
+    ),
+);
 
 //Action Plan Step Unlocked:
 $config['en_ids_6997'] = array(6907, 6914);
@@ -79,29 +368,6 @@ $config['en_all_6827'] = array(
         'm_name' => 'Career Coaches',
         'm_desc' => 'Coaches experts in the career development process that would help you land your dream job in the shortest possible time',
         'm_parents' => array(6827),
-    ),
-);
-
-//Focus Entities:
-$config['en_ids_3463'] = array(3000, 4432, 6827);
-$config['en_all_3463'] = array(
-    3000 => array(
-        'm_icon' => '<i class="fas fa-star"></i>',
-        'm_name' => 'Expert Sources',
-        'm_desc' => 'Mediums to access expert intelligence like books, videos, articles, courses, etc...',
-        'm_parents' => array(3463, 4506, 4527, 4463),
-    ),
-    4432 => array(
-        'm_icon' => '<i class="far fa-certificate"></i>',
-        'm_name' => 'Verified Accounts',
-        'm_desc' => 'Organizes humans into groups based on activity, location or other preferences.',
-        'm_parents' => array(2738, 4527, 3463),
-    ),
-    6827 => array(
-        'm_icon' => '<i class="far fa-plus-circle"></i>',
-        'm_name' => 'Contributors',
-        'm_desc' => 'Those who actively empower the Mench platform',
-        'm_parents' => array(4527, 3463, 2738),
     ),
 );
 
@@ -240,7 +506,7 @@ $config['en_all_6192'] = array(
     ),
 );
 
-//Intent Type Entity:
+//Intent Types:
 $config['en_ids_6676'] = array(6192, 6193);
 $config['en_all_6676'] = array(
     6192 => array(
@@ -299,7 +565,7 @@ $config['en_all_4463'] = array(
         'm_icon' => '<i class="fas fa-star"></i>',
         'm_name' => 'Expert Sources',
         'm_desc' => 'Our mining process is based on existing content produced by industry experts that will be mined from various reference types including videos, articles, books, online courses and more!',
-        'm_parents' => array(3463, 4506, 4527, 4463),
+        'm_parents' => array(7161, 3463, 4506, 4527, 4463),
     ),
     3084 => array(
         'm_icon' => '<i class="fas fa-star"></i>',
@@ -463,8 +729,8 @@ $config['en_all_6410'] = array(
     ),
     4358 => array(
         'm_icon' => '<i class="far fa-lambda"></i>',
-        'm_name' => 'Response Weight',
-        'm_desc' => 'With each response, users are leaning towards a high or low weight which will correlate to two directions of an assessment',
+        'm_name' => 'Completion Marks',
+        'm_desc' => 'With each response, users are leaning towards a high or low completion mark which will correlate to two directions of an assessment.',
         'm_parents' => array(6410, 6232, 6213, 6103, 4228),
     ),
     6140 => array(
@@ -509,9 +775,9 @@ $config['en_ids_2738'] = array(4432, 4488, 4535, 4536, 5007, 6137, 6138, 6196, 6
 $config['en_all_2738'] = array(
     4432 => array(
         'm_icon' => '<i class="far fa-certificate"></i>',
-        'm_name' => 'Mench Verified Accounts',
+        'm_name' => 'Mench-Verified Accounts',
         'm_desc' => '',
-        'm_parents' => array(2738, 4527, 3463),
+        'm_parents' => array(7161, 2738, 4527, 3463),
     ),
     4488 => array(
         'm_icon' => '<img src="https://mench.com/img/mench_white.png">',
@@ -796,7 +1062,7 @@ $config['en_all_6196'] = array(
     ),
 );
 
-//Link Student Statuses:
+//Link Student-Friendly Statuses:
 $config['en_ids_6187'] = array(6188, 6189, 6190, 6191);
 $config['en_all_6187'] = array(
     6188 => array(
@@ -825,7 +1091,7 @@ $config['en_all_6187'] = array(
     ),
 );
 
-//Intent Status:
+//Intent Statuses:
 $config['en_ids_4737'] = array(6182, 6183, 6184, 6185);
 $config['en_all_4737'] = array(
     6182 => array(
@@ -880,35 +1146,6 @@ $config['en_all_6177'] = array(
         'm_name' => 'Published',
         'm_desc' => 'Entity is live and publicly accessible',
         'm_parents' => array(6177),
-    ),
-);
-
-//Link Miner Statuses:
-$config['en_ids_4363'] = array(6173, 6174, 6175, 6176);
-$config['en_all_4363'] = array(
-    6173 => array(
-        'm_icon' => '<i class="fal fa-minus-square"></i>',
-        'm_name' => 'Removed',
-        'm_desc' => 'Link is in-active',
-        'm_parents' => array(4363),
-    ),
-    6174 => array(
-        'm_icon' => '<i class="fal fa-square"></i>',
-        'm_name' => 'New',
-        'm_desc' => 'Link is newly added and pending to be mined',
-        'm_parents' => array(4363),
-    ),
-    6175 => array(
-        'm_icon' => '<i class="fas fa-spinner fa-spin"></i>',
-        'm_name' => 'Drafting',
-        'm_desc' => 'Link is being worked-on so it can be published',
-        'm_parents' => array(4363),
-    ),
-    6176 => array(
-        'm_icon' => '<i class="fas fa-check-square"></i>',
-        'm_name' => 'Published',
-        'm_desc' => 'Link is complete, ready and live',
-        'm_parents' => array(4363),
     ),
 );
 
@@ -1001,55 +1238,55 @@ $config['en_all_4277'] = array(
         'm_icon' => '<i class="fal fa-comment-exclamation"></i>',
         'm_name' => 'User Sent Unrecognized Message',
         'm_desc' => '',
-        'm_parents' => array(4595, 4755, 4277, 4593),
+        'm_parents' => array(7164, 4595, 4755, 4277, 4593),
     ),
     4460 => array(
         'm_icon' => '<i class="far fa-ballot-check"></i>',
         'm_name' => 'User Sent Quick Reply',
         'm_desc' => 'When students select a quick reply answer of any kind',
-        'm_parents' => array(4595, 4755, 4593, 4277),
+        'm_parents' => array(7164, 4595, 4755, 4593, 4277),
     ),
     4547 => array(
         'm_icon' => '<i class="fal fa-align-left"></i>',
         'm_name' => 'User Sent Text Message',
         'm_desc' => '',
-        'm_parents' => array(4595, 4755, 4593, 4277),
+        'm_parents' => array(7164, 4595, 4755, 4593, 4277),
     ),
     4548 => array(
         'm_icon' => '<i class="fal fa-video"></i>',
         'm_name' => 'User Sent Video Message',
         'm_desc' => '',
-        'm_parents' => array(4595, 6102, 4755, 4593, 4277),
+        'm_parents' => array(7164, 4595, 6102, 4755, 4593, 4277),
     ),
     4549 => array(
         'm_icon' => '<i class="fal fa-volume-up"></i>',
         'm_name' => 'User Sent Audio Message',
         'm_desc' => '',
-        'm_parents' => array(4595, 6102, 4755, 4593, 4277),
+        'm_parents' => array(7164, 4595, 6102, 4755, 4593, 4277),
     ),
     4550 => array(
         'm_icon' => '<i class="fal fa-image"></i>',
         'm_name' => 'User Sent Image Message',
         'm_desc' => '',
-        'm_parents' => array(4595, 6102, 4755, 4593, 4277),
+        'm_parents' => array(7164, 4595, 6102, 4755, 4593, 4277),
     ),
     4551 => array(
         'm_icon' => '<i class="fal fa-file-pdf"></i>',
         'm_name' => 'User Sent File Message',
         'm_desc' => '',
-        'm_parents' => array(4595, 6102, 4755, 4593, 4277),
+        'm_parents' => array(7164, 4595, 6102, 4755, 4593, 4277),
     ),
     4557 => array(
         'm_icon' => '<i class="fal fa-location-circle"></i>',
         'm_name' => 'User Sent Location Message',
         'm_desc' => '',
-        'm_parents' => array(4595, 4755, 4593, 4277),
+        'm_parents' => array(7164, 4595, 4755, 4593, 4277),
     ),
     6561 => array(
         'm_icon' => '<i class="far fa-ballot-check"></i>',
         'm_name' => 'User Sent Manual Quick Reply',
         'm_desc' => 'When students manually type in the quick reply answer and we match it to their quick reply options',
-        'm_parents' => array(4595, 4755, 4593, 4277),
+        'm_parents' => array(7164, 4595, 4755, 4593, 4277),
     ),
 );
 
@@ -1060,49 +1297,49 @@ $config['en_all_6102'] = array(
         'm_icon' => '<i class="fal fa-video"></i>',
         'm_name' => 'User Sent Video Message',
         'm_desc' => '',
-        'm_parents' => array(4595, 6102, 4755, 4593, 4277),
+        'm_parents' => array(7164, 4595, 6102, 4755, 4593, 4277),
     ),
     4549 => array(
         'm_icon' => '<i class="fal fa-volume-up"></i>',
         'm_name' => 'User Sent Audio Message',
         'm_desc' => '',
-        'm_parents' => array(4595, 6102, 4755, 4593, 4277),
+        'm_parents' => array(7164, 4595, 6102, 4755, 4593, 4277),
     ),
     4550 => array(
         'm_icon' => '<i class="fal fa-image"></i>',
         'm_name' => 'User Sent Image Message',
         'm_desc' => '',
-        'm_parents' => array(4595, 6102, 4755, 4593, 4277),
+        'm_parents' => array(7164, 4595, 6102, 4755, 4593, 4277),
     ),
     4551 => array(
         'm_icon' => '<i class="fal fa-file-pdf"></i>',
         'm_name' => 'User Sent File Message',
         'm_desc' => '',
-        'm_parents' => array(4595, 6102, 4755, 4593, 4277),
+        'm_parents' => array(7164, 4595, 6102, 4755, 4593, 4277),
     ),
     4553 => array(
         'm_icon' => '<i class="fal fa-video"></i>',
         'm_name' => 'User Received Video Message',
         'm_desc' => '',
-        'm_parents' => array(4595, 6102, 4755, 4593, 4280),
+        'm_parents' => array(7164, 4595, 6102, 4755, 4593, 4280),
     ),
     4554 => array(
         'm_icon' => '<i class="fal fa-volume-up"></i>',
         'm_name' => 'User Received Audio Message',
         'm_desc' => '',
-        'm_parents' => array(4595, 6102, 4755, 4593, 4280),
+        'm_parents' => array(7164, 4595, 6102, 4755, 4593, 4280),
     ),
     4555 => array(
         'm_icon' => '<i class="fal fa-image"></i>',
         'm_name' => 'User Received Image Message',
         'm_desc' => '',
-        'm_parents' => array(4595, 6102, 4755, 4593, 4280),
+        'm_parents' => array(7164, 4595, 6102, 4755, 4593, 4280),
     ),
     4556 => array(
         'm_icon' => '<i class="fal fa-file-pdf"></i>',
         'm_name' => 'User Received File Message',
         'm_desc' => '',
-        'm_parents' => array(4595, 6102, 4755, 4593, 4280),
+        'm_parents' => array(7164, 4595, 6102, 4755, 4593, 4280),
     ),
 );
 
@@ -1113,53 +1350,53 @@ $config['en_all_4280'] = array(
         'm_icon' => '<i class="fal fa-align-left"></i>',
         'm_name' => 'User Received Text Message',
         'm_desc' => '',
-        'm_parents' => array(4595, 4755, 4593, 4280),
+        'm_parents' => array(7164, 4595, 4755, 4593, 4280),
     ),
     4553 => array(
         'm_icon' => '<i class="fal fa-video"></i>',
         'm_name' => 'User Received Video Message',
         'm_desc' => '',
-        'm_parents' => array(4595, 6102, 4755, 4593, 4280),
+        'm_parents' => array(7164, 4595, 6102, 4755, 4593, 4280),
     ),
     4554 => array(
         'm_icon' => '<i class="fal fa-volume-up"></i>',
         'm_name' => 'User Received Audio Message',
         'm_desc' => '',
-        'm_parents' => array(4595, 6102, 4755, 4593, 4280),
+        'm_parents' => array(7164, 4595, 6102, 4755, 4593, 4280),
     ),
     4555 => array(
         'm_icon' => '<i class="fal fa-image"></i>',
         'm_name' => 'User Received Image Message',
         'm_desc' => '',
-        'm_parents' => array(4595, 6102, 4755, 4593, 4280),
+        'm_parents' => array(7164, 4595, 6102, 4755, 4593, 4280),
     ),
     4556 => array(
         'm_icon' => '<i class="fal fa-file-pdf"></i>',
         'm_name' => 'User Received File Message',
         'm_desc' => '',
-        'm_parents' => array(4595, 6102, 4755, 4593, 4280),
+        'm_parents' => array(7164, 4595, 6102, 4755, 4593, 4280),
     ),
     4570 => array(
         'm_icon' => '<i class="fab fa-html5"></i>',
         'm_name' => 'User Received HTML Message',
         'm_desc' => '',
-        'm_parents' => array(4595, 4755, 4593, 4280),
+        'm_parents' => array(7164, 4595, 4755, 4593, 4280),
     ),
     5967 => array(
         'm_icon' => '<i class="fal fa-envelope-open"></i>',
         'm_name' => 'User Received Email Message',
         'm_desc' => '',
-        'm_parents' => array(4595, 4755, 4593, 4280),
+        'm_parents' => array(7164, 4595, 4755, 4593, 4280),
     ),
     6563 => array(
         'm_icon' => '<i class="far fa-ballot-check"></i>',
         'm_name' => 'User Received Quick Reply',
         'm_desc' => 'When we dispatch a quick reply to students and are waiting for their answer...',
-        'm_parents' => array(4595, 4593, 4755, 4280),
+        'm_parents' => array(7164, 4595, 4593, 4755, 4280),
     ),
 );
 
-//Mench Verified Accounts:
+//Mench-Verified Accounts:
 $config['en_ids_4432'] = array(2750, 3084, 4430);
 $config['en_all_4432'] = array(
     2750 => array(
@@ -1182,7 +1419,7 @@ $config['en_all_4432'] = array(
     ),
 );
 
-//Dead Lock:
+//System Lock:
 $config['en_ids_5969'] = array(3286);
 $config['en_all_5969'] = array(
     3286 => array(
@@ -1282,7 +1519,7 @@ $config['en_all_4426'] = array(
         'm_icon' => '<i class="far fa-lock"></i>',
         'm_name' => 'Modification Lock',
         'm_desc' => '',
-        'm_parents' => array(6771, 4426, 4527, 4757, 4428),
+        'm_parents' => array(3303, 6771, 4426, 4527, 4757, 4428),
     ),
     4430 => array(
         'm_icon' => '<i class="fas fa-user"></i>',
@@ -1316,9 +1553,9 @@ $config['en_all_4426'] = array(
     ),
     5969 => array(
         'm_icon' => '<i class="fas fa-lock"></i>',
-        'm_name' => 'Dead Lock',
+        'm_name' => 'System Lock',
         'm_desc' => '',
-        'm_parents' => array(6771, 4426, 4527, 4757, 4428),
+        'm_parents' => array(3303, 6771, 4426, 4527, 4757, 4428),
     ),
     6695 => array(
         'm_icon' => '<i class="fal fa-briefcase"></i>',
@@ -1344,10 +1581,10 @@ $config['en_all_4755'] = array(
         'm_parents' => array(6225, 4426, 4755),
     ),
     4235 => array(
-        'm_icon' => '<i class="fas fa-bullseye-arrow"></i>',
+        'm_icon' => '<i class="far fa-bullseye-arrow"></i>',
         'm_name' => 'Action Plan Intention Set',
         'm_desc' => '',
-        'm_parents' => array(4595, 6153, 4506, 4755, 4593),
+        'm_parents' => array(7159, 4595, 6153, 4506, 4755, 4593),
     ),
     4242 => array(
         'm_icon' => '<i class="fal fa-sync"></i>',
@@ -1425,7 +1662,7 @@ $config['en_all_4755'] = array(
         'm_icon' => '<i class="fal fa-comment-exclamation"></i>',
         'm_name' => 'User Sent Unrecognized Message',
         'm_desc' => '',
-        'm_parents' => array(4595, 4755, 4277, 4593),
+        'm_parents' => array(7164, 4595, 4755, 4277, 4593),
     ),
     4299 => array(
         'm_icon' => '<i class="far fa-id-badge"></i>',
@@ -1437,73 +1674,73 @@ $config['en_all_4755'] = array(
         'm_icon' => '<i class="far fa-ballot-check"></i>',
         'm_name' => 'User Sent Quick Reply',
         'm_desc' => '',
-        'm_parents' => array(4595, 4755, 4593, 4277),
+        'm_parents' => array(7164, 4595, 4755, 4593, 4277),
     ),
     4547 => array(
         'm_icon' => '<i class="fal fa-align-left"></i>',
         'm_name' => 'User Sent Text Message',
         'm_desc' => '',
-        'm_parents' => array(4595, 4755, 4593, 4277),
+        'm_parents' => array(7164, 4595, 4755, 4593, 4277),
     ),
     4548 => array(
         'm_icon' => '<i class="fal fa-video"></i>',
         'm_name' => 'User Sent Video Message',
         'm_desc' => '',
-        'm_parents' => array(4595, 6102, 4755, 4593, 4277),
+        'm_parents' => array(7164, 4595, 6102, 4755, 4593, 4277),
     ),
     4549 => array(
         'm_icon' => '<i class="fal fa-volume-up"></i>',
         'm_name' => 'User Sent Audio Message',
         'm_desc' => '',
-        'm_parents' => array(4595, 6102, 4755, 4593, 4277),
+        'm_parents' => array(7164, 4595, 6102, 4755, 4593, 4277),
     ),
     4550 => array(
         'm_icon' => '<i class="fal fa-image"></i>',
         'm_name' => 'User Sent Image Message',
         'm_desc' => '',
-        'm_parents' => array(4595, 6102, 4755, 4593, 4277),
+        'm_parents' => array(7164, 4595, 6102, 4755, 4593, 4277),
     ),
     4551 => array(
         'm_icon' => '<i class="fal fa-file-pdf"></i>',
         'm_name' => 'User Sent File Message',
         'm_desc' => '',
-        'm_parents' => array(4595, 6102, 4755, 4593, 4277),
+        'm_parents' => array(7164, 4595, 6102, 4755, 4593, 4277),
     ),
     4552 => array(
         'm_icon' => '<i class="fal fa-align-left"></i>',
         'm_name' => 'User Received Text Message',
         'm_desc' => '',
-        'm_parents' => array(4595, 4755, 4593, 4280),
+        'm_parents' => array(7164, 4595, 4755, 4593, 4280),
     ),
     4553 => array(
         'm_icon' => '<i class="fal fa-video"></i>',
         'm_name' => 'User Received Video Message',
         'm_desc' => '',
-        'm_parents' => array(4595, 6102, 4755, 4593, 4280),
+        'm_parents' => array(7164, 4595, 6102, 4755, 4593, 4280),
     ),
     4554 => array(
         'm_icon' => '<i class="fal fa-volume-up"></i>',
         'm_name' => 'User Received Audio Message',
         'm_desc' => '',
-        'm_parents' => array(4595, 6102, 4755, 4593, 4280),
+        'm_parents' => array(7164, 4595, 6102, 4755, 4593, 4280),
     ),
     4555 => array(
         'm_icon' => '<i class="fal fa-image"></i>',
         'm_name' => 'User Received Image Message',
         'm_desc' => '',
-        'm_parents' => array(4595, 6102, 4755, 4593, 4280),
+        'm_parents' => array(7164, 4595, 6102, 4755, 4593, 4280),
     ),
     4556 => array(
         'm_icon' => '<i class="fal fa-file-pdf"></i>',
         'm_name' => 'User Received File Message',
         'm_desc' => '',
-        'm_parents' => array(4595, 6102, 4755, 4593, 4280),
+        'm_parents' => array(7164, 4595, 6102, 4755, 4593, 4280),
     ),
     4557 => array(
         'm_icon' => '<i class="fal fa-location-circle"></i>',
         'm_name' => 'User Sent Location Message',
         'm_desc' => '',
-        'm_parents' => array(4595, 4755, 4593, 4277),
+        'm_parents' => array(7164, 4595, 4755, 4593, 4277),
     ),
     4559 => array(
         'm_icon' => '<i class="far fa-comment-check"></i>',
@@ -1515,7 +1752,7 @@ $config['en_all_4755'] = array(
         'm_icon' => '<i class="fab fa-html5"></i>',
         'm_name' => 'User Received HTML Message',
         'm_desc' => '',
-        'm_parents' => array(4595, 4755, 4593, 4280),
+        'm_parents' => array(7164, 4595, 4755, 4593, 4280),
     ),
     4783 => array(
         'm_icon' => '<i class="far fa-phone"></i>',
@@ -1527,7 +1764,7 @@ $config['en_all_4755'] = array(
         'm_icon' => '<i class="fal fa-envelope-open"></i>',
         'm_name' => 'User Received Email Message',
         'm_desc' => '',
-        'm_parents' => array(4595, 4755, 4593, 4280),
+        'm_parents' => array(7164, 4595, 4755, 4593, 4280),
     ),
     6132 => array(
         'm_icon' => '<i class="fas fa-exchange rotate90"></i>',
@@ -1623,13 +1860,13 @@ $config['en_all_4755'] = array(
         'm_icon' => '<i class="far fa-ballot-check"></i>',
         'm_name' => 'User Sent Manual Quick Reply',
         'm_desc' => '',
-        'm_parents' => array(4595, 4755, 4593, 4277),
+        'm_parents' => array(7164, 4595, 4755, 4593, 4277),
     ),
     6563 => array(
         'm_icon' => '<i class="far fa-ballot-check"></i>',
         'm_name' => 'User Received Quick Reply',
         'm_desc' => '',
-        'm_parents' => array(4595, 4593, 4755, 4280),
+        'm_parents' => array(7164, 4595, 4593, 4755, 4280),
     ),
     6578 => array(
         'm_icon' => '<i class="fas fa-wand-magic"></i>',
@@ -1652,7 +1889,7 @@ $config['en_all_4755'] = array(
 );
 
 //Link Points:
-$config['en_ids_4595'] = array(4228, 4229, 4230, 4231, 4232, 4235, 4242, 4246, 4250, 4251, 4255, 4256, 4257, 4258, 4259, 4260, 4261, 4263, 4264, 4266, 4267, 4268, 4269, 4275, 4278, 4279, 4282, 4283, 4287, 4299, 4318, 4319, 4460, 4547, 4548, 4549, 4550, 4551, 4552, 4553, 4554, 4555, 4556, 4557, 4559, 4570, 4577, 4601, 4983, 4993, 4994, 4996, 4998, 4999, 5000, 5001, 5003, 5007, 5865, 5943, 5967, 5981, 5982, 6093, 6132, 6140, 6143, 6144, 6149, 6154, 6155, 6157, 6158, 6224, 6226, 6242, 6389, 6415, 6556, 6559, 6560, 6561, 6563, 6578, 6969, 6997);
+$config['en_ids_4595'] = array(4228, 4229, 4230, 4231, 4232, 4235, 4242, 4246, 4250, 4251, 4255, 4256, 4257, 4258, 4259, 4260, 4261, 4263, 4264, 4266, 4267, 4268, 4269, 4275, 4278, 4279, 4282, 4283, 4287, 4299, 4318, 4319, 4460, 4547, 4548, 4549, 4550, 4551, 4552, 4553, 4554, 4555, 4556, 4557, 4559, 4570, 4577, 4601, 4983, 4993, 4994, 4998, 4999, 5000, 5001, 5003, 5007, 5865, 5943, 5967, 5981, 5982, 6093, 6132, 6140, 6143, 6144, 6149, 6154, 6155, 6157, 6158, 6224, 6226, 6242, 6389, 6415, 6556, 6559, 6560, 6561, 6563, 6578, 6969, 6997);
 $config['en_all_4595'] = array(
     4228 => array(
         'm_icon' => '<i class="fas fa-walking"></i>',
@@ -1685,10 +1922,10 @@ $config['en_all_4595'] = array(
         'm_parents' => array(5007, 6345, 4986, 4603, 4593, 4485, 4595),
     ),
     4235 => array(
-        'm_icon' => '<i class="fas fa-bullseye-arrow"></i>',
+        'm_icon' => '<i class="far fa-bullseye-arrow"></i>',
         'm_name' => 'Action Plan Intention Set',
         'm_desc' => '50',
-        'm_parents' => array(4595, 6153, 4506, 4755, 4593),
+        'm_parents' => array(7159, 4595, 6153, 4506, 4755, 4593),
     ),
     4242 => array(
         'm_icon' => '<i class="fal fa-sync"></i>',
@@ -1788,7 +2025,7 @@ $config['en_all_4595'] = array(
     ),
     4269 => array(
         'm_icon' => '<i class="fas fa-sign-in"></i>',
-        'm_name' => 'Miner Login',
+        'm_name' => 'User Login',
         'm_desc' => '10',
         'm_parents' => array(4595, 4593),
     ),
@@ -1826,7 +2063,7 @@ $config['en_all_4595'] = array(
         'm_icon' => '<i class="fal fa-comment-exclamation"></i>',
         'm_name' => 'User Sent Unrecognized Message',
         'm_desc' => '10',
-        'm_parents' => array(4595, 4755, 4277, 4593),
+        'm_parents' => array(7164, 4595, 4755, 4277, 4593),
     ),
     4299 => array(
         'm_icon' => '<i class="far fa-id-badge"></i>',
@@ -1850,73 +2087,73 @@ $config['en_all_4595'] = array(
         'm_icon' => '<i class="far fa-ballot-check"></i>',
         'm_name' => 'User Sent Quick Reply',
         'm_desc' => '5',
-        'm_parents' => array(4595, 4755, 4593, 4277),
+        'm_parents' => array(7164, 4595, 4755, 4593, 4277),
     ),
     4547 => array(
         'm_icon' => '<i class="fal fa-align-left"></i>',
         'm_name' => 'User Sent Text Message',
         'm_desc' => '10',
-        'm_parents' => array(4595, 4755, 4593, 4277),
+        'm_parents' => array(7164, 4595, 4755, 4593, 4277),
     ),
     4548 => array(
         'm_icon' => '<i class="fal fa-video"></i>',
         'm_name' => 'User Sent Video Message',
         'm_desc' => '75',
-        'm_parents' => array(4595, 6102, 4755, 4593, 4277),
+        'm_parents' => array(7164, 4595, 6102, 4755, 4593, 4277),
     ),
     4549 => array(
         'm_icon' => '<i class="fal fa-volume-up"></i>',
         'm_name' => 'User Sent Audio Message',
         'm_desc' => '50',
-        'm_parents' => array(4595, 6102, 4755, 4593, 4277),
+        'm_parents' => array(7164, 4595, 6102, 4755, 4593, 4277),
     ),
     4550 => array(
         'm_icon' => '<i class="fal fa-image"></i>',
         'm_name' => 'User Sent Image Message',
         'm_desc' => '50',
-        'm_parents' => array(4595, 6102, 4755, 4593, 4277),
+        'm_parents' => array(7164, 4595, 6102, 4755, 4593, 4277),
     ),
     4551 => array(
         'm_icon' => '<i class="fal fa-file-pdf"></i>',
         'm_name' => 'User Sent File Message',
         'm_desc' => '50',
-        'm_parents' => array(4595, 6102, 4755, 4593, 4277),
+        'm_parents' => array(7164, 4595, 6102, 4755, 4593, 4277),
     ),
     4552 => array(
         'm_icon' => '<i class="fal fa-align-left"></i>',
         'm_name' => 'User Received Text Message',
         'm_desc' => '2',
-        'm_parents' => array(4595, 4755, 4593, 4280),
+        'm_parents' => array(7164, 4595, 4755, 4593, 4280),
     ),
     4553 => array(
         'm_icon' => '<i class="fal fa-video"></i>',
         'm_name' => 'User Received Video Message',
         'm_desc' => '5',
-        'm_parents' => array(4595, 6102, 4755, 4593, 4280),
+        'm_parents' => array(7164, 4595, 6102, 4755, 4593, 4280),
     ),
     4554 => array(
         'm_icon' => '<i class="fal fa-volume-up"></i>',
         'm_name' => 'User Received Audio Message',
         'm_desc' => '4',
-        'm_parents' => array(4595, 6102, 4755, 4593, 4280),
+        'm_parents' => array(7164, 4595, 6102, 4755, 4593, 4280),
     ),
     4555 => array(
         'm_icon' => '<i class="fal fa-image"></i>',
         'm_name' => 'User Received Image Message',
         'm_desc' => '3',
-        'm_parents' => array(4595, 6102, 4755, 4593, 4280),
+        'm_parents' => array(7164, 4595, 6102, 4755, 4593, 4280),
     ),
     4556 => array(
         'm_icon' => '<i class="fal fa-file-pdf"></i>',
         'm_name' => 'User Received File Message',
         'm_desc' => '3',
-        'm_parents' => array(4595, 6102, 4755, 4593, 4280),
+        'm_parents' => array(7164, 4595, 6102, 4755, 4593, 4280),
     ),
     4557 => array(
         'm_icon' => '<i class="fal fa-location-circle"></i>',
         'm_name' => 'User Sent Location Message',
         'm_desc' => '50',
-        'm_parents' => array(4595, 4755, 4593, 4277),
+        'm_parents' => array(7164, 4595, 4755, 4593, 4277),
     ),
     4559 => array(
         'm_icon' => '<i class="far fa-comment-check"></i>',
@@ -1928,7 +2165,7 @@ $config['en_all_4595'] = array(
         'm_icon' => '<i class="fab fa-html5"></i>',
         'm_name' => 'User Received HTML Message',
         'm_desc' => '2',
-        'm_parents' => array(4595, 4755, 4593, 4280),
+        'm_parents' => array(7164, 4595, 4755, 4593, 4280),
     ),
     4577 => array(
         'm_icon' => '<i class="fab fa-facebook-messenger"></i>',
@@ -1958,12 +2195,6 @@ $config['en_all_4595'] = array(
         'm_icon' => '<i class="fas fa-at"></i>',
         'm_name' => 'Miner Viewed Entity',
         'm_desc' => '1',
-        'm_parents' => array(4595, 4593),
-    ),
-    4996 => array(
-        'm_icon' => '<i class="fas fa-sign-in"></i>',
-        'm_name' => 'User Login',
-        'm_desc' => '5',
         'm_parents' => array(4595, 4593),
     ),
     4998 => array(
@@ -2018,7 +2249,7 @@ $config['en_all_4595'] = array(
         'm_icon' => '<i class="fal fa-envelope-open"></i>',
         'm_name' => 'User Received Email Message',
         'm_desc' => '5',
-        'm_parents' => array(4595, 4755, 4593, 4280),
+        'm_parents' => array(7164, 4595, 4755, 4593, 4280),
     ),
     5981 => array(
         'm_icon' => '<i class="fal fa-list-alt"></i>',
@@ -2144,13 +2375,13 @@ $config['en_all_4595'] = array(
         'm_icon' => '<i class="far fa-ballot-check"></i>',
         'm_name' => 'User Sent Manual Quick Reply',
         'm_desc' => '5',
-        'm_parents' => array(4595, 4755, 4593, 4277),
+        'm_parents' => array(7164, 4595, 4755, 4593, 4277),
     ),
     6563 => array(
         'm_icon' => '<i class="far fa-ballot-check"></i>',
         'm_name' => 'User Received Quick Reply',
         'm_desc' => '4',
-        'm_parents' => array(4595, 4593, 4755, 4280),
+        'm_parents' => array(7164, 4595, 4593, 4755, 4280),
     ),
     6578 => array(
         'm_icon' => '<i class="fas fa-wand-magic"></i>',
@@ -2190,7 +2421,7 @@ $config['en_all_4600'] = array(
 );
 
 //Link Types:
-$config['en_ids_4593'] = array(4228, 4229, 4230, 4231, 4232, 4235, 4242, 4246, 4250, 4251, 4255, 4256, 4257, 4258, 4259, 4260, 4261, 4263, 4264, 4266, 4267, 4268, 4269, 4275, 4278, 4279, 4282, 4283, 4287, 4299, 4318, 4319, 4460, 4547, 4548, 4549, 4550, 4551, 4552, 4553, 4554, 4555, 4556, 4557, 4559, 4570, 4577, 4601, 4983, 4993, 4994, 4996, 4998, 4999, 5000, 5001, 5003, 5007, 5865, 5943, 5967, 5981, 5982, 6093, 6132, 6140, 6143, 6144, 6149, 6154, 6155, 6157, 6158, 6224, 6226, 6242, 6389, 6415, 6556, 6559, 6560, 6561, 6563, 6578, 6969, 6997);
+$config['en_ids_4593'] = array(4228, 4229, 4230, 4231, 4232, 4235, 4242, 4246, 4250, 4251, 4255, 4256, 4257, 4258, 4259, 4260, 4261, 4263, 4264, 4266, 4267, 4268, 4269, 4275, 4278, 4279, 4282, 4283, 4287, 4299, 4318, 4319, 4460, 4547, 4548, 4549, 4550, 4551, 4552, 4553, 4554, 4555, 4556, 4557, 4559, 4570, 4577, 4601, 4983, 4993, 4994, 4998, 4999, 5000, 5001, 5003, 5007, 5865, 5943, 5967, 5981, 5982, 6093, 6132, 6140, 6143, 6144, 6149, 6154, 6155, 6157, 6158, 6224, 6226, 6242, 6389, 6415, 6556, 6559, 6560, 6561, 6563, 6578, 6969, 6997);
 $config['en_all_4593'] = array(
     4228 => array(
         'm_icon' => '<i class="fas fa-walking"></i>',
@@ -2223,10 +2454,10 @@ $config['en_all_4593'] = array(
         'm_parents' => array(5007, 6345, 4986, 4603, 4593, 4485, 4595),
     ),
     4235 => array(
-        'm_icon' => '<i class="fas fa-bullseye-arrow"></i>',
+        'm_icon' => '<i class="far fa-bullseye-arrow"></i>',
         'm_name' => 'Action Plan Intention Set',
-        'm_desc' => 'Top-level goals set by students that enable Mench to deliver the most relevant intelligence.',
-        'm_parents' => array(4595, 6153, 4506, 4755, 4593),
+        'm_desc' => 'Intentions set by users enabling Mench to deliver relevant intelligence.',
+        'm_parents' => array(7159, 4595, 6153, 4506, 4755, 4593),
     ),
     4242 => array(
         'm_icon' => '<i class="fal fa-sync"></i>',
@@ -2326,7 +2557,7 @@ $config['en_all_4593'] = array(
     ),
     4269 => array(
         'm_icon' => '<i class="fas fa-sign-in"></i>',
-        'm_name' => 'Miner Login',
+        'm_name' => 'User Login',
         'm_desc' => '',
         'm_parents' => array(4595, 4593),
     ),
@@ -2364,7 +2595,7 @@ $config['en_all_4593'] = array(
         'm_icon' => '<i class="fal fa-comment-exclamation"></i>',
         'm_name' => 'User Sent Unrecognized Message',
         'm_desc' => '',
-        'm_parents' => array(4595, 4755, 4277, 4593),
+        'm_parents' => array(7164, 4595, 4755, 4277, 4593),
     ),
     4299 => array(
         'm_icon' => '<i class="far fa-id-badge"></i>',
@@ -2388,73 +2619,73 @@ $config['en_all_4593'] = array(
         'm_icon' => '<i class="far fa-ballot-check"></i>',
         'm_name' => 'User Sent Quick Reply',
         'm_desc' => '',
-        'm_parents' => array(4595, 4755, 4593, 4277),
+        'm_parents' => array(7164, 4595, 4755, 4593, 4277),
     ),
     4547 => array(
         'm_icon' => '<i class="fal fa-align-left"></i>',
         'm_name' => 'User Sent Text Message',
         'm_desc' => '',
-        'm_parents' => array(4595, 4755, 4593, 4277),
+        'm_parents' => array(7164, 4595, 4755, 4593, 4277),
     ),
     4548 => array(
         'm_icon' => '<i class="fal fa-video"></i>',
         'm_name' => 'User Sent Video Message',
         'm_desc' => '',
-        'm_parents' => array(4595, 6102, 4755, 4593, 4277),
+        'm_parents' => array(7164, 4595, 6102, 4755, 4593, 4277),
     ),
     4549 => array(
         'm_icon' => '<i class="fal fa-volume-up"></i>',
         'm_name' => 'User Sent Audio Message',
         'm_desc' => '',
-        'm_parents' => array(4595, 6102, 4755, 4593, 4277),
+        'm_parents' => array(7164, 4595, 6102, 4755, 4593, 4277),
     ),
     4550 => array(
         'm_icon' => '<i class="fal fa-image"></i>',
         'm_name' => 'User Sent Image Message',
         'm_desc' => '',
-        'm_parents' => array(4595, 6102, 4755, 4593, 4277),
+        'm_parents' => array(7164, 4595, 6102, 4755, 4593, 4277),
     ),
     4551 => array(
         'm_icon' => '<i class="fal fa-file-pdf"></i>',
         'm_name' => 'User Sent File Message',
         'm_desc' => '',
-        'm_parents' => array(4595, 6102, 4755, 4593, 4277),
+        'm_parents' => array(7164, 4595, 6102, 4755, 4593, 4277),
     ),
     4552 => array(
         'm_icon' => '<i class="fal fa-align-left"></i>',
         'm_name' => 'User Received Text Message',
         'm_desc' => '',
-        'm_parents' => array(4595, 4755, 4593, 4280),
+        'm_parents' => array(7164, 4595, 4755, 4593, 4280),
     ),
     4553 => array(
         'm_icon' => '<i class="fal fa-video"></i>',
         'm_name' => 'User Received Video Message',
         'm_desc' => '',
-        'm_parents' => array(4595, 6102, 4755, 4593, 4280),
+        'm_parents' => array(7164, 4595, 6102, 4755, 4593, 4280),
     ),
     4554 => array(
         'm_icon' => '<i class="fal fa-volume-up"></i>',
         'm_name' => 'User Received Audio Message',
         'm_desc' => '',
-        'm_parents' => array(4595, 6102, 4755, 4593, 4280),
+        'm_parents' => array(7164, 4595, 6102, 4755, 4593, 4280),
     ),
     4555 => array(
         'm_icon' => '<i class="fal fa-image"></i>',
         'm_name' => 'User Received Image Message',
         'm_desc' => '',
-        'm_parents' => array(4595, 6102, 4755, 4593, 4280),
+        'm_parents' => array(7164, 4595, 6102, 4755, 4593, 4280),
     ),
     4556 => array(
         'm_icon' => '<i class="fal fa-file-pdf"></i>',
         'm_name' => 'User Received File Message',
         'm_desc' => '',
-        'm_parents' => array(4595, 6102, 4755, 4593, 4280),
+        'm_parents' => array(7164, 4595, 6102, 4755, 4593, 4280),
     ),
     4557 => array(
         'm_icon' => '<i class="fal fa-location-circle"></i>',
         'm_name' => 'User Sent Location Message',
         'm_desc' => '',
-        'm_parents' => array(4595, 4755, 4593, 4277),
+        'm_parents' => array(7164, 4595, 4755, 4593, 4277),
     ),
     4559 => array(
         'm_icon' => '<i class="far fa-comment-check"></i>',
@@ -2466,7 +2697,7 @@ $config['en_all_4593'] = array(
         'm_icon' => '<i class="fab fa-html5"></i>',
         'm_name' => 'User Received HTML Message',
         'm_desc' => '',
-        'm_parents' => array(4595, 4755, 4593, 4280),
+        'm_parents' => array(7164, 4595, 4755, 4593, 4280),
     ),
     4577 => array(
         'm_icon' => '<i class="fab fa-facebook-messenger"></i>',
@@ -2495,12 +2726,6 @@ $config['en_all_4593'] = array(
     4994 => array(
         'm_icon' => '<i class="fas fa-at"></i>',
         'm_name' => 'Miner Viewed Entity',
-        'm_desc' => '',
-        'm_parents' => array(4595, 4593),
-    ),
-    4996 => array(
-        'm_icon' => '<i class="fas fa-sign-in"></i>',
-        'm_name' => 'User Login',
         'm_desc' => '',
         'm_parents' => array(4595, 4593),
     ),
@@ -2556,7 +2781,7 @@ $config['en_all_4593'] = array(
         'm_icon' => '<i class="fal fa-envelope-open"></i>',
         'm_name' => 'User Received Email Message',
         'm_desc' => '',
-        'm_parents' => array(4595, 4755, 4593, 4280),
+        'm_parents' => array(7164, 4595, 4755, 4593, 4280),
     ),
     5981 => array(
         'm_icon' => '<i class="fal fa-list-alt"></i>',
@@ -2682,13 +2907,13 @@ $config['en_all_4593'] = array(
         'm_icon' => '<i class="far fa-ballot-check"></i>',
         'm_name' => 'User Sent Manual Quick Reply',
         'm_desc' => '',
-        'm_parents' => array(4595, 4755, 4593, 4277),
+        'm_parents' => array(7164, 4595, 4755, 4593, 4277),
     ),
     6563 => array(
         'm_icon' => '<i class="far fa-ballot-check"></i>',
         'm_name' => 'User Received Quick Reply',
         'm_desc' => '',
-        'm_parents' => array(4595, 4593, 4755, 4280),
+        'm_parents' => array(7164, 4595, 4593, 4755, 4280),
     ),
     6578 => array(
         'm_icon' => '<i class="fas fa-wand-magic"></i>',

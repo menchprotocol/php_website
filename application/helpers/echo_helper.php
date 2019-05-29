@@ -1584,6 +1584,58 @@ function echo_en_stats_overview($cached_list, $report_name){
 
 }
 
+function echo_link_type_group_stats($group_en_id){
+
+    $CI =& get_instance();
+    $en_all_7161 = $CI->config->item('en_all_7161'); //Platform Dashboard
+
+    //Start the UI variable:
+    $ui = '<table class="table table-condensed table-striped stats-table mini-stats-table">';
+    $ui .= '<tr class="panel-title down-border">';
+    $ui .= '<td style="text-align: left;">'.$en_all_7161[$group_en_id]['m_name'].'</td>';
+    $ui .= '<td style="text-align: right;">Links</td>';
+    $ui .= '</tr>';
+
+    //Object Stats grouped by Status:
+    foreach ($CI->config->item('en_all_'.$group_en_id) as $en_id => $en_m) {
+
+
+        //Determine if this is a link type, or if we'd need to aggregate all its children:
+        if(in_array($en_id , $CI->config->item('en_ids_4593'))){
+
+            //Count this status:
+            $objects_count = $CI->Links_model->ln_fetch(array(
+                'ln_type_entity_id' => $en_id
+            ), array(), 0, 0, array(), 'COUNT(ln_id) as totals');
+            $total_counts = $objects_count[0]['totals'];
+            $ln_type_filters = $en_id;
+
+        } else {
+
+            //Aggregate group stats:
+            $objects_count = $CI->Links_model->ln_fetch(array(
+                'ln_type_entity_id IN (' . join(',', $CI->config->item('en_ids_' . $en_id)) . ')' => null,
+            ), array(), 0, 0, array(), 'COUNT(ln_id) as totals');
+            $total_counts = $objects_count[0]['totals'];
+            $ln_type_filters = join(',', $CI->config->item('en_ids_' . $en_id));
+
+        }
+
+
+        //Display this status count:
+        $ui .= '<tr>';
+        $ui .= '<td style="text-align: left;"><span style="width:29px; display: inline-block; text-align: center;">' . $en_m['m_icon'] . '</span><a href="/entities/'.$en_id.'">' . $en_m['m_name'] . '</a>'.( strlen($en_m['m_desc']) > 0 ? ' <i class="fal fa-info-circle" data-toggle="tooltip" title="' . $en_m['m_desc'] . '" data-placement="top"></i>' : '' ).'</td>';
+        $ui .= '<td style="text-align: right;">' . ( $total_counts > 0 ? '<a href="/links?ln_type_entity_id=' . $ln_type_filters . '"  data-toggle="tooltip" title="View Links" data-placement="top">' . number_format($total_counts, 0) . '</a>' : $total_counts ) . '</td>';
+        $ui .= '</tr>';
+
+    }
+    $ui .= '</table>';
+
+    return $ui;
+
+}
+
+
 function echo_assessment_mark($in_ln){
 
     //Validate core inputs:
