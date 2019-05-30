@@ -667,7 +667,7 @@ class Communication_model extends CI_Model
                             $ln_content = 'https://www.youtube.com/embed/' . extract_youtube_id($parent_en['ln_content']) . '?start=' . $slice_times[0] . '&end=' . $slice_times[1] . '&autoplay=1';
                         } else {
                             //Show HTML Embed Code for slice-able:
-                            $ln_content = '<div class="entity-appendix">' . echo_url_embed($parent_en['ln_content'], $parent_en['ln_content'], false, $slice_times[0], $slice_times[1]) . '</div>';
+                            $ln_content = '<div class="entity-appendix">' . echo_url_embed($parent_en['ln_content'], $parent_en['ln_content'], false) . '</div>';
                         }
 
                     } else {

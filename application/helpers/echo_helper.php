@@ -100,7 +100,7 @@ function echo_url_type($url, $en_type_link_id)
 
 
 
-function echo_url_embed($url, $full_message = null, $return_array = false, $start_sec = 0, $end_sec = 0)
+function echo_url_embed($url, $full_message = null, $return_array = false)
 {
 
 
@@ -123,9 +123,21 @@ function echo_url_embed($url, $full_message = null, $return_array = false, $star
     }
 
     //See if $url has a valid embed video in it, and transform it if it does:
-    if (substr_count($url, 'youtube.com/watch?v=') == 1 || substr_count($url, 'youtu.be/') == 1) {
+    $is_embed = (substr_count($url, 'youtube.com/embed/') == 1);
+    if (substr_count($url, 'youtube.com/watch?v=') == 1 || substr_count($url, 'youtu.be/') == 1 || $is_embed) {
 
+        $start_sec = 0;
+        $end_sec = 0;
         $video_id = extract_youtube_id($url);
+
+        if($is_embed){
+            if(is_numeric(one_two_explode('start=','&',$url))){
+                $start_sec = one_two_explode('start=','&',$url);
+            }
+            if(is_numeric(one_two_explode('end=','&',$url))){
+                $end_sec = one_two_explode('end=','&',$url);
+            }
+        }
 
         if ($video_id) {
 
