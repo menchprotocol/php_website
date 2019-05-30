@@ -1204,12 +1204,7 @@ function extract_youtube_id($url)
     //Attemp to extract YouTube ID from URL:
     $video_id = null;
 
-    if (substr_count($url, 'youtube.com/embed/') == 1) {
-
-        //We might have start and end here too!
-        $video_id = trim(one_two_explode('youtube.com/embed/', '?', $url));
-
-    } elseif (substr_count($url, 'youtube.com/watch?v=') == 1) {
+    if (substr_count($url, 'youtube.com/watch?v=') == 1) {
 
         $video_id = trim(one_two_explode('youtube.com/watch?v=', '&', $url));
 
