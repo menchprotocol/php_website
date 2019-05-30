@@ -874,12 +874,34 @@ class Messenger extends CI_Controller
 
         $session_data = array();
         $is_chrome = (strpos($_SERVER['HTTP_USER_AGENT'], 'Chrome') !== false || strpos($_SERVER['HTTP_USER_AGENT'], 'CriOS') !== false);
-        $is_miner = false;
-        $is_user = false;
+        $is_miner = filter_array($ens[0]['en__parents'], 'en_id', 1308);
+
+
+        //Applicable for miners only:
+        if (!$is_chrome && $is_miner) {
+
+            //Remove miner privileges as they cannot use the platform with non-chrome Browser:
+            foreach($ens[0]['en__parents'] as $key=>$value){
+                if(in_array($value['en_id'], array(1308,1281))){
+                    unset($ens[0]['en__parents'][$key]);
+                }
+            }
+
+            //Remove miner status:
+            $is_miner = false;
+
+            //Show error:
+            $this->session->set_flashdata('flash_message', '<div class="alert alert-danger" role="alert">Mining console requires <a href="https://www.google.com/chrome/browser/" target="_blank"><u>Google Chrome</u></a> to function as expected, but you can access student tools with any browser.</div>');
+
+        }
+
+
+        //Assign user details:
+        $session_data['user'] = $ens[0];
 
 
         //Are they miner? Give them Sign In access:
-        if (filter_array($ens[0]['en__parents'], 'en_id', 1308)) {
+        if ($is_miner) {
 
             //Check their advance mode status:
             $last_advance_settings = $this->Links_model->ln_fetch(array(
@@ -889,32 +911,8 @@ class Messenger extends CI_Controller
             ), array(), 1, 0, array('ln_id' => 'DESC'));
 
             //They have admin rights:
-            $session_data['user'] = $ens[0];
             $session_data['user_session_count'] = 0;
             $session_data['advance_view_enabled'] = ( count($last_advance_settings) > 0 && substr_count($last_advance_settings[0]['ln_content'] , ' ON')==1 ? 1 : 0 );
-            $is_miner = true;
-        }
-
-
-        //Applicable for miners only:
-        if (!$is_chrome) {
-
-            if ($is_user) {
-
-                //Remove miner privileges as they cannot use the platform with non-chrome Browser:
-                $is_miner = false;
-                unset($session_data['user']);
-
-            } else {
-
-                return redirect_message('/login', '<div class="alert alert-danger" role="alert">Error: Sign In Denied. Mench v' . $this->config->item('app_version') . ' supports <a href="https://www.google.com/chrome/browser/" target="_blank"><u>Google Chrome</u></a> only.</div>');
-
-            }
-
-        } elseif (!$is_miner && !$is_user) {
-
-            //We assume this is a user request:
-            return redirect_message('/login', '<div class="alert alert-danger" role="alert">Error: You have not added any intentions to your Action Plan yet.</div>');
 
         }
 
