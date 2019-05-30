@@ -696,9 +696,9 @@ class Entities_model extends CI_Model
             //Create one since we don't have one:
             $fixed += $this->Links_model->ln_create(array(
                 'ln_miner_entity_id' => $ln_miner_entity_id,
-                'ln_child_entity_id' => $en_id,
+                'ln_child_entity_id' => intval($en_id),
                 'ln_type_entity_id' => 4251, //New Intent Created
-                'ln_status' => $en_status,
+                'ln_status' => intval($en_status),
             ));
 
         } elseif($creation_lns[0]['ln_status']!=$en_status){
