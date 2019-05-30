@@ -12,6 +12,7 @@ $moderation_tools = array(
     '/admin/tools/assessment_marks_list_all' => 'Completion Marks List All',
     '/admin/tools/assessment_marks_birds_eye' => 'Completion Marks Birds Eye View',
     '/admin/tools/compose_test_message' => 'Compose Test Message',
+    '/admin/tools/sync_in_verbs' => 'Sync Intent Verbs',
     '/admin/tools/sync_in_en_creation_link_statuses' => 'Sync Intent/Entity Creation Links',
 );
 
@@ -201,6 +202,40 @@ if(!$action) {
     } else {
         echo '<div class="alert alert-success maxout"><i class="fas fa-check-circle"></i> No orphans found!</div>';
     }
+
+} elseif($action=='sync_in_verbs') {
+
+    echo '<ul class="breadcrumb"><li><a href="/admin">Admin Tools</a></li><li><b>'.$moderation_tools['/admin/tools/'.$action].'</b></li></ul>';
+
+    //Would ensure intents have synced statuses:
+    $count = 0;
+    $fixed = 0;
+    foreach($this->Intents_model->in_fetch() as $in){
+        $count++;
+
+        //Validate Intent Outcome:
+        $in_outcome_validation = $this->Intents_model->in_validate_outcome($in['in_outcome']);
+
+        if(!$in_outcome_validation['status']){
+
+            //We had an error, log it:
+            $fixed++;
+            $this->Links_model->ln_create(array(
+                'ln_type_entity_id' => 4246, //Platform Bug Reports
+                'ln_miner_entity_id' => 1, //Shervin/Developer
+                'ln_child_intent_id' => $in['in_id'],
+                'ln_content' => 'Admin tool sync_in_verbs found error with intent verb: '.$in_outcome_validation['message'],
+            ));
+
+        } elseif($in_outcome_validation['detected_verb_entity_id'] != $in['in_verb_entity_id']) {
+
+            //Not a match, fix it:
+            $fixed++;
+            $this->Intents_model->in_update($in['in_id'], array('in_verb_entity_id' => $in_outcome_validation['detected_verb_entity_id']), true, 1 /* Shervin the Developer */);
+
+        }
+    }
+    echo '<div>'.$fixed.'/'.$count.' Intent verbs fixed</div>';
 
 } elseif($action=='sync_in_en_creation_link_statuses') {
 

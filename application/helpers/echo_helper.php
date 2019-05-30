@@ -1624,7 +1624,7 @@ function echo_link_type_group_stats($group_en_id){
 
         //Display this status count:
         $ui .= '<tr>';
-        $ui .= '<td style="text-align: left;"><span style="width:29px; display: inline-block; text-align: center;">' . $en_m['m_icon'] . '</span><a href="/entities/'.$en_id.'">' . $en_m['m_name'] . '</a>'.( strlen($en_m['m_desc']) > 0 ? ' <i class="fal fa-info-circle" data-toggle="tooltip" title="' . $en_m['m_desc'] . '" data-placement="top"></i>' : '' ).$type_description.'</td>';
+        $ui .= '<td style="text-align: left;"><span style="width:29px; display: inline-block; text-align: center;">' . $en_m['m_icon'] . '</span><a href="/entities/'.$en_id.'">' . $en_m['m_name'] . '</a>'.$type_description.( strlen($en_m['m_desc']) > 0 ? ' <i class="fal fa-info-circle" data-toggle="tooltip" title="' . $en_m['m_desc'] . '" data-placement="top"></i>' : '' ).'</td>';
         $ui .= '<td style="text-align: right;">' . ( $total_counts > 0 ? '<a href="/links?ln_status=0,1,2&ln_type_entity_id=' . $ln_type_filters . '"  data-toggle="tooltip" title="View Links" data-placement="top">' . number_format($total_counts, 0) . '</a>' : $total_counts ) . '</td>';
         $ui .= '</tr>';
 
