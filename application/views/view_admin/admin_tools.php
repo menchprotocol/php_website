@@ -218,11 +218,15 @@ if(!$action) {
     $search_for_is_set = (isset($_GET['search_for']) && strlen($_GET['search_for'])>0);
     $replace_with_is_set = (isset($_GET['replace_with']) && strlen($_GET['replace_with'])>0);
     $qualifying_replacements = 0;
+    $completed_replacements = 0;
     $replace_with_is_confirmed = false;
 
     if($search_for_is_set){
 
-        $matching_ins = $this->Intents_model->in_fetch(array('in_outcome LIKE \'%'.$_GET['search_for'].'%\'' => null));
+        $matching_ins = $this->Intents_model->in_fetch(array(
+            'in_status >=' => 0,
+            'in_outcome LIKE \'%'.$_GET['search_for'].'%\'' => null,
+        ));
 
         //List the matching search:
         echo '<table class="table table-condensed table-striped stats-table mini-stats-table">';
@@ -269,6 +273,7 @@ if(!$action) {
                         'in_outcome' => $in_outcome_validation['in_cleaned_outcome'],
                         'in_verb_entity_id' => $in_outcome_validation['detected_verb_entity_id'],
                     ), true, $session_en['en_id']);
+                    $completed_replacements++;
                 }
 
                 echo '<tr class="panel-title down-border">';
@@ -285,13 +290,13 @@ if(!$action) {
     }
 
 
-    if($search_for_is_set && count($matching_ins) > 0){
+    if($search_for_is_set && count($matching_ins) > 0 && !$completed_replacements){
         //now give option to replace with:
         echo '<div class="mini-header">Replace With:</div>';
         echo '<input type="text" class="form-control border maxout" name="replace_with" value="'.@$_GET['replace_with'].'"><br />';
     }
 
-    if($replace_with_is_set){
+    if($replace_with_is_set && !$completed_replacements){
         if($qualifying_replacements==count($matching_ins) /*No Errors*/){
             //now give option to replace with:
             echo '<div class="mini-header">Confirm Replacement by Typing "'.$confirmation_keyword.'":</div>';
