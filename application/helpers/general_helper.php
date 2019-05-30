@@ -866,7 +866,7 @@ function update_algolia($input_obj_type = null, $input_obj_id = 0, $return_row_o
                 $export_row['alg_obj_weight'] = $db_row['en_trust_score'];
                 $export_row['alg_obj_published_children'] = $published_child_count[0]['published_child_count'];
                 $export_row['alg_obj_status'] = intval($db_row['en_status']);
-                $export_row['alg_obj_icon'] = echo_icon($db_row);
+                $export_row['alg_obj_icon'] = echo_en_icon($db_row);
                 $export_row['alg_obj_name'] = $db_row['en_name'];
                 $export_row['alg_obj_postfix'] = ''; //Entities have no post-fix at this time
 
