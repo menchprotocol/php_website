@@ -11,7 +11,7 @@ defined('BASEPATH') OR exit('No direct script access allowed');
  *
  */
 
-//Generated 2019-05-29 20:03:42 PST
+//Generated 2019-05-29 20:17:15 PST
 
 //Entity Mining Stats:
 $config['en_ids_7167'] = array(4251, 4592);
@@ -273,7 +273,7 @@ $config['en_all_7161'] = array(
 );
 
 //User Engagements:
-$config['en_ids_7159'] = array(4235, 6146, 7164);
+$config['en_ids_7159'] = array(4235, 6255, 7164);
 $config['en_all_7159'] = array(
     4235 => array(
         'm_icon' => '<i class="far fa-bullseye-arrow"></i>',
@@ -281,11 +281,11 @@ $config['en_all_7159'] = array(
         'm_desc' => 'Intentions set by users enabling Mench to deliver relevant intelligence.',
         'm_parents' => array(7159, 4595, 6153, 4506, 4755, 4593),
     ),
-    6146 => array(
+    6255 => array(
         'm_icon' => '<i class="fas fa-walking"></i>',
         'm_name' => 'Action Plan Progression Steps',
         'm_desc' => 'Key insights or actionable tasks completed by users that gets them closer to their set intentions.',
-        'm_parents' => array(7159, 6275, 4506, 4527),
+        'm_parents' => array(7159, 6275, 4527),
     ),
     7164 => array(
         'm_icon' => '<i class="far fa-comments"></i>',
@@ -916,7 +916,7 @@ $config['en_all_6274'] = array(
     ),
 );
 
-//Action Plan Progression Completed:
+//Action Plan Progression Steps:
 $config['en_ids_6255'] = array(4559, 6144, 6157, 6158, 6997);
 $config['en_all_6255'] = array(
     4559 => array(
@@ -951,7 +951,7 @@ $config['en_all_6255'] = array(
     ),
 );
 
-//Action Plan Progression 2-Step Steps:
+//Action Plan Progression Double-Steps:
 $config['en_ids_6244'] = array(6144, 6157, 6997);
 $config['en_all_6244'] = array(
     6144 => array(
@@ -1201,7 +1201,7 @@ $config['en_all_6177'] = array(
     ),
 );
 
-//Action Plan Progression Steps:
+//Action Plan Completion Steps:
 $config['en_ids_6146'] = array(4559, 6143, 6144, 6157, 6158, 6997);
 $config['en_all_6146'] = array(
     4559 => array(
