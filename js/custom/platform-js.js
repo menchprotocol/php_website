@@ -1,7 +1,4 @@
 
-//Define tip style:
-var tips_button = '<span class="badge tip-badge"><i class="fal fa-info-circle"></i></span>';
-
 //For the drag and drop file uploader:
 var isAdvancedUpload = function () {
     var div = document.createElement('div');
@@ -20,36 +17,6 @@ function validURL(str) {
 }
 
 
-function in_help_messages(in_id) {
-
-    //See if this tip needs to be loaded:
-    if (!$("div#content_" + in_id).html().length) {
-
-        //Show loader:
-        $("div#content_" + in_id).html('<i class="fas fa-spinner fa-spin"></i>');
-
-        //Let's check to see if this user has already seen this:
-        $.post("/intents/in_help_messages", {in_id: in_id}, function (data) {
-            //Let's see what we got:
-            if (data.status) {
-                //Load the content:
-                $("div#content_" + in_id).html('<div class="row"><div class="col-xs-6"><a href="javascript:close_tip(' + in_id + ')">' + tips_button + '</a></div><div class="col-xs-6" style="text-align:right;"><a href="javascript:close_tip(' + in_id + ')"><i class="fas fa-times"></i></a></div></div>'); //Show the same button at top for UX
-                $("div#content_" + in_id).append(data.tip_messages);
-
-                //Reload tooldip:
-                $('[data-toggle="tooltip"]').tooltip();
-            } else {
-                //Show error:
-                alert('ERROR: ' + data.message);
-            }
-        });
-    }
-
-    //Expand the tip:
-    $('#hb_' + in_id).hide();
-    $("div#content_" + in_id).fadeIn();
-}
-
 function add_to_list(sort_list_id, sort_handler, html_content) {
     //See if we already have a list in place?
     if ($("#" + sort_list_id + " " + sort_handler).length > 0) {
@@ -61,10 +28,6 @@ function add_to_list(sort_list_id, sort_handler, html_content) {
     }
 }
 
-function close_tip(in_id) {
-    $("div#content_" + in_id).hide();
-    $('#hb_' + in_id).fadeIn('slow');
-}
 
 function js_is_or(in_type_entity_id, return_id){
     //The equivalent of the PHP function is_or()
@@ -122,10 +85,6 @@ function ms_toggle(ln_id, new_state) {
     }
 }
 
-function load_help(in_id) {
-    //Loads the help button:
-    $('#hb_' + in_id).html('<a class="tipbtn" href="javascript:in_help_messages(' + in_id + ')">' + tips_button + '</a>');
-}
 
 function toggle_advance(basic_toggle){
 
@@ -260,8 +219,6 @@ $(document).ready(function () {
 
 
 
-
-
     //Load Algolia for link replacement search
     $(".in_quick_search").on('autocomplete:selected', function (event, suggestion, dataset) {
 
@@ -296,37 +253,19 @@ $(document).ready(function () {
     }]);
 
 
-    if ($("span.help_button")[0]) {
-        var loaded_messages = [];
-        var in_id = 0;
-        $("span.help_button").each(function () {
-            in_id = parseInt($(this).attr('intent-id'));
-            if (in_id > 0 && $("div#content_" + in_id)[0] && !(jQuery.inArray(in_id, loaded_messages) != -1)) {
-                //Its valid as all elements match! Let's continue:
-                loaded_messages.push(in_id);
-                //Load the Tip icon so they can access the tip if they like:
-                load_help(in_id);
-            }
-        });
-    }
-
 
     $('#topnav li a').click(function (event) {
         event.preventDefault();
         var hash = $(this).attr('href').replace('#', '');
         window.location.hash = hash;
-        adjust_hash(hash);
+
+        if (hash.length > 0 && $('#tab' + hash).length && !$('#tab' + hash).hasClass("hidden")) {
+            //Adjust Header:
+            $('#topnav>li').removeClass('active');
+            $('#nav_' + hash).addClass('active');
+            //Adjust Tab:
+            $('.tab-pane').removeClass('active');
+            $('#tab' + hash).addClass('active');
+        }
     });
-
 });
-
-function adjust_hash(hash) {
-    if (hash.length > 0 && $('#tab' + hash).length && !$('#tab' + hash).hasClass("hidden")) {
-        //Adjust Header:
-        $('#topnav>li').removeClass('active');
-        $('#nav_' + hash).addClass('active');
-        //Adjust Tab:
-        $('.tab-pane').removeClass('active');
-        $('#tab' + hash).addClass('active');
-    }
-}

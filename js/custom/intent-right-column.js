@@ -538,7 +538,32 @@ function in_modify_save() {
                 }
 
 
-                //Update UI components:
+                //Update UI components...
+
+                //Always update 3x Intent icons...
+
+                //AND/OR Icon which is the main type:
+                $('.in_parent_type_' + modify_data['in_id']).html('<span data-toggle="tooltip" data-placement="right" title="'+ en_all_6676[modify_data['in_6676_type']]["m_name"] + ': '+ en_all_6676[modify_data['in_6676_type']]["m_desc"] + '">'+ en_all_6676[modify_data['in_6676_type']]["m_icon"] +'</span>');
+
+                //Also update secondary intent icon:
+                var in__type = ( modify_data['in_6676_type']==6193 ? en_all_6193 : en_all_6192 ); //Not sure how to do variable in variable for Javascript, so here we are...
+                var in__slct = ( modify_data['in_6676_type']==6193 ? modify_data['in_6193_type'] : modify_data['in_6192_type'] );
+                $('.in_type_entity_id_' + modify_data['in_id']).html('<span data-toggle="tooltip" data-placement="right" title="'+ in__type[in__slct]["m_name"] + ': '+ in__type[in__slct]["m_desc"] + '">'+ in__type[in__slct]["m_icon"] +'</span>');
+
+
+                //Also update possible child icons:
+                $('.in_icon_child_' + modify_data['in_id']).html(en_all_6676[modify_data['in_6676_type']]["m_icon"]);
+
+                $('.in_status_' + modify_data['in_id']).html('<span data-toggle="tooltip" data-placement="right" title="'+ js_fixed_fields['in_status'][modify_data['in_status']]["s_name"] + ': '+ js_fixed_fields['in_status'][modify_data['in_status']]["s_desc"] + '">'+ js_fixed_fields['in_status'][modify_data['in_status']]["s_icon"] +'</span>');
+
+
+                //Update UI to confirm with user:
+                $('.save_intent_changes').html(data.message).hide().fadeIn();
+
+
+                //Adjust completion cost:
+                adjust_js_ui(modify_data['in_id'], modify_data['level'], modify_data['in_completion_seconds'], 0, 0, 0);
+
 
                 //Did the outcome change?
                 if(data.formatted_in_outcome){
@@ -553,29 +578,12 @@ function in_modify_save() {
                 }
 
 
-                //Always update 3x Intent icons...
-
-                //AND/OR Icon which is the main type:
-                $('.in_parent_type_' + modify_data['in_id']).html('<span data-toggle="tooltip" data-placement="right" title="'+ en_all_6676[modify_data['in_6676_type']]["m_name"] + ': '+ en_all_6676[modify_data['in_6676_type']]["m_desc"] + '">'+ en_all_6676[modify_data['in_6676_type']]["m_icon"] +'</span>');
-
-
-                //Also update secondary intent icon:
-                var in__type = ( modify_data['in_6676_type']==6193 ? en_all_6193 : en_all_6192 ); //Not sure how to do variable in variable for Javascript, so here we are...
-                var in__slct = ( modify_data['in_6676_type']==6193 ? modify_data['in_6193_type'] : modify_data['in_6192_type'] );
-                $('.in_type_entity_id_' + modify_data['in_id']).html('<span data-toggle="tooltip" data-placement="right" title="'+ in__type[in__slct]["m_name"] + ': '+ in__type[in__slct]["m_desc"] + '">'+ in__type[in__slct]["m_icon"] +'</span>');
-
-
-                //Also update possible child icons:
-                $('.in_icon_child_' + modify_data['in_id']).html(en_all_6676[modify_data['in_6676_type']]["m_icon"]);
-
-
-                $('.in_status_' + modify_data['in_id']).html('<span data-toggle="tooltip" data-placement="right" title="'+ js_fixed_fields['in_status'][modify_data['in_status']]["s_name"] + ': '+ js_fixed_fields['in_status'][modify_data['in_status']]["s_desc"] + '">'+ js_fixed_fields['in_status'][modify_data['in_status']]["s_icon"] +'</span>');
-
-                //Update UI to confirm with user:
-                $('.save_intent_changes').html(data.message).hide().fadeIn();
-
-                //Adjust completion cost:
-                adjust_js_ui(modify_data['in_id'], modify_data['level'], modify_data['in_completion_seconds'], 0, 0, 0);
+                //Should we try to check unlockable completions?
+                if(data.ins_unlocked_completions_count > 0){
+                    //We did complete/unlock some intents, inform miner and refresh:
+                    alert('Publishing this intent has just unlocked '+data.steps_unlocked_completions_count+' steps across '+data.ins_unlocked_completions_count+' intents. Will refresh page to reflect changes.');
+                    window.location = "/intents/" + in_focus_id;
+                }
 
             }
 

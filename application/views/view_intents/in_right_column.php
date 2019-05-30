@@ -15,7 +15,6 @@
 <div id="modifybox" class="fixed-box hidden" intent-id="0" intent-tr-id="0" level="0">
 
     <h5 class="badge badge-h edit-header" style="display: inline-block;"><i class="fas fa-cog"></i> Modify</h5>
-    <span id="hb_598" class="help_button bold-header" intent-id="598"></span>
     <div style="text-align:right; font-size: 22px; margin:-32px 3px -20px 0;">
         <a href="javascript:void(0)" onclick="$('#modifybox').addClass('hidden')"><i
                 class="fas fa-times-circle"></i></a>
@@ -25,10 +24,6 @@
         <div class="loadbox hidden"><i class="fas fa-spinner fa-spin"></i> Loading...</div>
 
         <div class="row loadcontent">
-
-            <div class="col-md-12">
-                <div class="help_body" id="content_598"></div>
-            </div>
 
             <div class="col-md-6 inlineform">
 

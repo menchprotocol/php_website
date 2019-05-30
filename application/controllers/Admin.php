@@ -110,6 +110,9 @@ class Admin extends CI_Controller
         echo '</table>';
 
 
+        //Entity Mining Stats
+        echo echo_link_type_group_stats(7166);
+
 
         //Intent Types:
         echo '<table class="table table-condensed table-striped stats-table mini-stats-table ">';
@@ -228,8 +231,11 @@ class Admin extends CI_Controller
 
 
 
+        //Entity Mining Stats
+        echo echo_link_type_group_stats(7167);
 
-        //Mench Verified Accounts
+
+        //Verified Accounts
         echo echo_en_stats_overview($this->config->item('en_all_4432'), $en_all_7161[4432]['m_name']);
 
 

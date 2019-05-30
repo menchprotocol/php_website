@@ -11,7 +11,47 @@ defined('BASEPATH') OR exit('No direct script access allowed');
  *
  */
 
-//Generated 2019-05-28 22:24:06 PST
+//Generated 2019-05-29 17:27:04 PST
+
+//Entity Mining Stats:
+$config['en_ids_7167'] = array(4251, 4592);
+$config['en_all_7167'] = array(
+    4251 => array(
+        'm_icon' => '<i class="fas fa-at"></i>',
+        'm_name' => 'Entity Created',
+        'm_desc' => '',
+        'm_parents' => array(7167, 4755, 4593, 4595),
+    ),
+    4592 => array(
+        'm_icon' => '<i class="fas fa-link"></i>',
+        'm_name' => 'Entity-to-Entity Links',
+        'm_desc' => '',
+        'm_parents' => array(7167, 4536, 4527),
+    ),
+);
+
+//Intent Mining Stats:
+$config['en_ids_7166'] = array(4250, 4486, 4485);
+$config['en_all_7166'] = array(
+    4250 => array(
+        'm_icon' => '<i class="fas fa-hashtag"></i>',
+        'm_name' => 'Intent Created',
+        'm_desc' => '',
+        'm_parents' => array(7166, 4593, 4595),
+    ),
+    4486 => array(
+        'm_icon' => '<i class="fas fa-link"></i>',
+        'm_name' => 'Intent-to-Intent Links',
+        'm_desc' => '',
+        'm_parents' => array(7166, 4535, 4527),
+    ),
+    4485 => array(
+        'm_icon' => '<i class="fas fa-comment-plus"></i>',
+        'm_name' => 'Intent Notes',
+        'm_desc' => '',
+        'm_parents' => array(7166, 4535, 4603, 4527, 4463),
+    ),
+);
 
 //User Sent/Received Messages:
 $config['en_ids_7164'] = array(4287, 4460, 4547, 4548, 4549, 4550, 4551, 4552, 4553, 4554, 4555, 4556, 4557, 4570, 5967, 6561, 6563);
@@ -150,7 +190,7 @@ $config['en_all_6186'] = array(
 );
 
 //Platform Dashboard:
-$config['en_ids_7161'] = array(3000, 4432, 4593, 4737, 5008, 6177, 6186, 6676, 7159, 7162, 7163);
+$config['en_ids_7161'] = array(3000, 4432, 4593, 4737, 5008, 6177, 6186, 6676, 7159, 7162, 7163, 7166, 7167);
 $config['en_all_7161'] = array(
     3000 => array(
         'm_icon' => '<i class="fas fa-star"></i>',
@@ -160,7 +200,7 @@ $config['en_all_7161'] = array(
     ),
     4432 => array(
         'm_icon' => '<i class="far fa-certificate"></i>',
-        'm_name' => 'Mench-Verified Accounts',
+        'm_name' => 'Verified Accounts',
         'm_desc' => '',
         'm_parents' => array(7161, 2738, 4527, 3463),
     ),
@@ -217,6 +257,18 @@ $config['en_all_7161'] = array(
         'm_name' => 'Top Users',
         'm_desc' => '',
         'm_parents' => array(7161),
+    ),
+    7166 => array(
+        'm_icon' => '<i class="far fa-chart-pie"></i>',
+        'm_name' => 'Intent Mining Stats',
+        'm_desc' => '',
+        'm_parents' => array(4527, 7161),
+    ),
+    7167 => array(
+        'm_icon' => '<i class="far fa-chart-pie"></i>',
+        'm_name' => 'Entity Mining Stats',
+        'm_desc' => '',
+        'm_parents' => array(4527, 7161),
     ),
 );
 
@@ -306,13 +358,13 @@ $config['en_all_6194'] = array(
 $config['en_ids_6997'] = array(6907, 6914);
 $config['en_all_6997'] = array(
     6907 => array(
-        'm_icon' => '<i class="far fa-lock-open"></i>',
+        'm_icon' => '<i class="far fa-lock"></i>',
         'm_name' => 'OR Intent Any Child Unlock',
         'm_desc' => '',
         'm_parents' => array(6997, 6193),
     ),
     6914 => array(
-        'm_icon' => '<i class="fas fa-lock-open"></i>',
+        'm_icon' => '<i class="fas fa-lock"></i>',
         'm_name' => 'AND Intent All Children Unlock',
         'm_desc' => '',
         'm_parents' => array(6997, 6192),
@@ -499,7 +551,7 @@ $config['en_all_6192'] = array(
         'm_parents' => array(6144, 6794, 6192),
     ),
     6914 => array(
-        'm_icon' => '<i class="fas fa-lock-open"></i>',
+        'm_icon' => '<i class="fas fa-lock"></i>',
         'm_name' => 'All Children Unlock',
         'm_desc' => 'Completed after all children have been completed indirectly.',
         'm_parents' => array(6997, 6192),
@@ -539,7 +591,7 @@ $config['en_all_6193'] = array(
         'm_parents' => array(6157, 6193),
     ),
     6907 => array(
-        'm_icon' => '<i class="far fa-lock-open"></i>',
+        'm_icon' => '<i class="far fa-lock"></i>',
         'm_name' => 'Any Child Unlock',
         'm_desc' => 'Completed after a single child is completed indirectly.',
         'm_parents' => array(6997, 6193),
@@ -589,7 +641,7 @@ $config['en_all_4463'] = array(
         'm_icon' => '<i class="fas fa-comment-plus"></i>',
         'm_name' => 'Intent Notes',
         'm_desc' => 'Intent notes are various information collected around intentions that enable Mench to operate as a Personal Assistant for students looking to accomplish an intent.',
-        'm_parents' => array(4535, 4603, 4527, 4463),
+        'm_parents' => array(7166, 4535, 4603, 4527, 4463),
     ),
     4488 => array(
         'm_icon' => '<img src="https://mench.com/img/mench_white.png">',
@@ -705,7 +757,7 @@ $config['en_all_6415'] = array(
         'm_parents' => array(4595, 6415, 6274, 6255, 4593, 4755, 6146),
     ),
     6997 => array(
-        'm_icon' => '<i class="far fa-unlock"></i>',
+        'm_icon' => '<i class="far fa-lock-open"></i>',
         'm_name' => 'Action Plan Step Unlocked',
         'm_desc' => '',
         'm_parents' => array(4527, 6244, 6415, 6255, 4595, 4593, 4755, 6146),
@@ -775,7 +827,7 @@ $config['en_ids_2738'] = array(4432, 4488, 4535, 4536, 5007, 6137, 6138, 6196, 6
 $config['en_all_2738'] = array(
     4432 => array(
         'm_icon' => '<i class="far fa-certificate"></i>',
-        'm_name' => 'Mench-Verified Accounts',
+        'm_name' => 'Verified Accounts',
         'm_desc' => '',
         'm_parents' => array(7161, 2738, 4527, 3463),
     ),
@@ -892,7 +944,7 @@ $config['en_all_6255'] = array(
         'm_parents' => array(4595, 6415, 6274, 6255, 4593, 4755, 6146),
     ),
     6997 => array(
-        'm_icon' => '<i class="far fa-unlock"></i>',
+        'm_icon' => '<i class="far fa-lock-open"></i>',
         'm_name' => 'Action Plan Step Unlocked',
         'm_desc' => '',
         'm_parents' => array(4527, 6244, 6415, 6255, 4595, 4593, 4755, 6146),
@@ -915,7 +967,7 @@ $config['en_all_6244'] = array(
         'm_parents' => array(4595, 6415, 6288, 6255, 6244, 6146, 4755, 4593, 4460),
     ),
     6997 => array(
-        'm_icon' => '<i class="far fa-unlock"></i>',
+        'm_icon' => '<i class="far fa-lock-open"></i>',
         'm_name' => 'Step Unlocked',
         'm_desc' => '',
         'm_parents' => array(4527, 6244, 6415, 6255, 4595, 4593, 4755, 6146),
@@ -1183,7 +1235,7 @@ $config['en_all_6146'] = array(
         'm_parents' => array(4595, 6415, 6274, 6255, 4593, 4755, 6146),
     ),
     6997 => array(
-        'm_icon' => '<i class="far fa-unlock"></i>',
+        'm_icon' => '<i class="far fa-lock-open"></i>',
         'm_name' => 'Step Unlocked',
         'm_desc' => 'When a user unlocks a Locked AND or OR intent by completing all or any of its children.',
         'm_parents' => array(4527, 6244, 6415, 6255, 4595, 4593, 4755, 6146),
@@ -1396,7 +1448,7 @@ $config['en_all_4280'] = array(
     ),
 );
 
-//Mench-Verified Accounts:
+//Verified Accounts:
 $config['en_ids_4432'] = array(2750, 3084, 4430);
 $config['en_all_4432'] = array(
     2750 => array(
@@ -1602,7 +1654,7 @@ $config['en_all_4755'] = array(
         'm_icon' => '<i class="fas fa-at"></i>',
         'm_name' => 'Entity Created',
         'm_desc' => '',
-        'm_parents' => array(4755, 4593, 4595),
+        'm_parents' => array(7167, 4755, 4593, 4595),
     ),
     4263 => array(
         'm_icon' => '<i class="fal fa-sync"></i>',
@@ -1881,7 +1933,7 @@ $config['en_all_4755'] = array(
         'm_parents' => array(4595, 4593, 4755, 6153),
     ),
     6997 => array(
-        'm_icon' => '<i class="far fa-unlock"></i>',
+        'm_icon' => '<i class="far fa-lock-open"></i>',
         'm_name' => 'Action Plan Step Unlocked',
         'm_desc' => '',
         'm_parents' => array(4527, 6244, 6415, 6255, 4595, 4593, 4755, 6146),
@@ -1943,13 +1995,13 @@ $config['en_all_4595'] = array(
         'm_icon' => '<i class="fas fa-hashtag"></i>',
         'm_name' => 'Intent Created',
         'm_desc' => '10000',
-        'm_parents' => array(4593, 4595),
+        'm_parents' => array(7166, 4593, 4595),
     ),
     4251 => array(
         'm_icon' => '<i class="fas fa-at"></i>',
         'm_name' => 'Entity Created',
         'm_desc' => '200',
-        'm_parents' => array(4755, 4593, 4595),
+        'm_parents' => array(7167, 4755, 4593, 4595),
     ),
     4255 => array(
         'm_icon' => '<i class="fal fa-align-left"></i>',
@@ -2396,7 +2448,7 @@ $config['en_all_4595'] = array(
         'm_parents' => array(4595, 4593, 4755, 6153),
     ),
     6997 => array(
-        'm_icon' => '<i class="far fa-unlock"></i>',
+        'm_icon' => '<i class="far fa-lock-open"></i>',
         'm_name' => 'Action Plan Step Unlocked',
         'm_desc' => '10',
         'm_parents' => array(4527, 6244, 6415, 6255, 4595, 4593, 4755, 6146),
@@ -2475,13 +2527,13 @@ $config['en_all_4593'] = array(
         'm_icon' => '<i class="fas fa-hashtag"></i>',
         'm_name' => 'Intent Created',
         'm_desc' => '',
-        'm_parents' => array(4593, 4595),
+        'm_parents' => array(7166, 4593, 4595),
     ),
     4251 => array(
         'm_icon' => '<i class="fas fa-at"></i>',
         'm_name' => 'Entity Created',
         'm_desc' => 'Logged when a new entity is created.',
-        'm_parents' => array(4755, 4593, 4595),
+        'm_parents' => array(7167, 4755, 4593, 4595),
     ),
     4255 => array(
         'm_icon' => '<i class="fal fa-align-left"></i>',
@@ -2928,7 +2980,7 @@ $config['en_all_4593'] = array(
         'm_parents' => array(4595, 4593, 4755, 6153),
     ),
     6997 => array(
-        'm_icon' => '<i class="far fa-unlock"></i>',
+        'm_icon' => '<i class="far fa-lock-open"></i>',
         'm_name' => 'Action Plan Step Unlocked',
         'm_desc' => '',
         'm_parents' => array(4527, 6244, 6415, 6255, 4595, 4593, 4755, 6146),

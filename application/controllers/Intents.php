@@ -210,6 +210,7 @@ class Intents extends CI_Controller
 
 
 
+
     function in_link_or_create()
     {
 
@@ -472,7 +473,7 @@ class Intents extends CI_Controller
 
         //Regular list:
         $ui .= '<tr style="font-weight: bold;">';
-        $ui .= '<td style="text-align:left; padding-left:3px;" colspan="2">' . ( $filter_applied ? ' Other' : '' ) .' User'.echo__s($regular_list_counter).' ['.$regular_list_counter.']</td>';
+        $ui .= '<td style="text-align:left; padding-left:3px;" colspan="2">' . ( $filter_applied ? 'Other ' : 'Matching ' ) . 'User' . echo__s($regular_list_counter).' ['.$regular_list_counter.']</td>';
         $ui .= '<td style="text-align:left;"><i class="far fa-check-square" data-toggle="tooltip" data-placement="top" title="Total Steps Completed"></i></td>';
         $ui .= '<td style="text-align:left;"><i class="far fa-clock" data-toggle="tooltip" data-placement="top" title="Completion time"></i></td>';
         $ui .= '<td style="text-align:left;">Actions</td>';
@@ -596,6 +597,9 @@ class Intents extends CI_Controller
             'in_verb_entity_id' => $ins[0]['in_verb_entity_id'], //We assume no change, and will update if we detected change...
             'in_type_entity_id' => $_POST['in_type_entity_id'], //Also used when updating the field
         );
+
+        //See if we should check for unlocking this intent:
+        $in_check_locked_completions = ((($in_update['in_status']==2 && in_array($in_update['in_type_entity_id'], $this->config->item('en_ids_6997'))) && ($ins[0]['in_status']!=2 || !in_array($ins[0]['in_type_entity_id'], $this->config->item('en_ids_6997')))) ? 1 : 0 );
 
         //Prep current intent metadata:
         $in_metadata = unserialize($ins[0]['in_metadata']);
@@ -895,6 +899,17 @@ class Intents extends CI_Controller
         }
 
 
+        //Let's see how many intents, if any, have unlocked completions:
+        $ins_unlocked_completions_count = 0;
+        $steps_unlocked_completions_count = 0;
+
+        if($in_check_locked_completions){
+
+            //First see if this locked intent is completed for any students:
+
+
+        }
+
 
         $return_data = array(
             'status' => 1,
@@ -904,7 +919,8 @@ class Intents extends CI_Controller
             'remove_redirect_url' => $remove_redirect_url,
             'recursive_update_count' => $recursive_update_count,
             'in__metadata_max_steps' => -( isset($in_metadata['in__metadata_max_steps']) ? $in_metadata['in__metadata_max_steps'] : 0 ),
-            'in_check_unlockable' => ((($in_update['in_status']==2 && in_array($in_update['in_type_entity_id'], $this->config->item('en_ids_6997'))) && ($ins[0]['in_status']!=2 || !in_array($ins[0]['in_type_entity_id'], $this->config->item('en_ids_6997')))) ? 1 : 0 ),
+            'ins_unlocked_completions_count' => $ins_unlocked_completions_count,
+            'steps_unlocked_completions_count' => $steps_unlocked_completions_count,
         );
 
 
@@ -996,61 +1012,6 @@ class Intents extends CI_Controller
                 ));
             }
         }
-    }
-
-    function in_help_messages()
-    {
-
-        /*
-         *
-         * A function to display Platform Tips to give Miners
-         * more information on each field and their use-case.
-         *
-         * */
-
-        //Validate Miner:
-        $session_en = en_auth(array(1308));
-        if (!$session_en) {
-            return echo_json(array(
-                'success' => 0,
-                'message' => 'Session Expired',
-            ));
-        } elseif (!isset($_POST['in_id']) || intval($_POST['in_id']) < 1) {
-            return echo_json(array(
-                'success' => 0,
-                'message' => 'Missing Intent ID',
-            ));
-        }
-
-        //Fetch Intent Note Messages for this intent:
-        $on_start_messages = $this->Links_model->ln_fetch(array(
-            'ln_status' => 2, //Published
-            'ln_type_entity_id' => 4231, //Intent Note Messages
-            'ln_child_intent_id' => $_POST['in_id'],
-        ), array(), 0, 0, array('ln_order' => 'ASC'));
-
-        if (count($on_start_messages) < 1) {
-            return echo_json(array(
-                'status' => 0,
-                'message' => 'Intent Missing Intent Note Messages',
-            ));
-        }
-
-        $_GET['log_miner_messages'] = 1; //Will log miner messages which normally do not get logged (so we prevent Intent Note editing logs)
-
-        $tip_messages = null;
-        foreach ($on_start_messages as $ln) {
-            //What type of message is this?
-            $tip_messages .= $this->Communication_model->dispatch_message($ln['ln_content'], $session_en, false, array(), array(
-                'ln_parent_intent_id' => $_POST['in_id'],
-            ));
-        }
-
-        //Return results:
-        return echo_json(array(
-            'status' => 1,
-            'tip_messages' => $tip_messages,
-        ));
     }
 
 

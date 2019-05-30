@@ -1600,32 +1600,36 @@ function echo_link_type_group_stats($group_en_id){
     foreach ($CI->config->item('en_all_'.$group_en_id) as $en_id => $en_m) {
 
 
+
         //Determine if this is a link type, or if we'd need to aggregate all its children:
         if(in_array($en_id , $CI->config->item('en_ids_4593'))){
 
             //Count this status:
             $objects_count = $CI->Links_model->ln_fetch(array(
-                'ln_type_entity_id' => $en_id
+                'ln_type_entity_id' => $en_id,
+                'ln_status >=' => 0, //New+
             ), array(), 0, 0, array(), 'COUNT(ln_id) as totals');
             $total_counts = $objects_count[0]['totals'];
             $ln_type_filters = $en_id;
+            $type_description = '';
 
         } else {
 
             //Aggregate group stats:
             $objects_count = $CI->Links_model->ln_fetch(array(
                 'ln_type_entity_id IN (' . join(',', $CI->config->item('en_ids_' . $en_id)) . ')' => null,
+                'ln_status >=' => 0, //New+
             ), array(), 0, 0, array(), 'COUNT(ln_id) as totals');
             $total_counts = $objects_count[0]['totals'];
             $ln_type_filters = join(',', $CI->config->item('en_ids_' . $en_id));
+            $type_description = '<span class="has-data">HAS '.count($CI->config->item('en_ids_' . $en_id)).' TYPES</span>';
 
         }
 
-
         //Display this status count:
         $ui .= '<tr>';
-        $ui .= '<td style="text-align: left;"><span style="width:29px; display: inline-block; text-align: center;">' . $en_m['m_icon'] . '</span><a href="/entities/'.$en_id.'">' . $en_m['m_name'] . '</a>'.( strlen($en_m['m_desc']) > 0 ? ' <i class="fal fa-info-circle" data-toggle="tooltip" title="' . $en_m['m_desc'] . '" data-placement="top"></i>' : '' ).'</td>';
-        $ui .= '<td style="text-align: right;">' . ( $total_counts > 0 ? '<a href="/links?ln_type_entity_id=' . $ln_type_filters . '"  data-toggle="tooltip" title="View Links" data-placement="top">' . number_format($total_counts, 0) . '</a>' : $total_counts ) . '</td>';
+        $ui .= '<td style="text-align: left;"><span style="width:29px; display: inline-block; text-align: center;">' . $en_m['m_icon'] . '</span><a href="/entities/'.$en_id.'">' . $en_m['m_name'] . '</a>'.( strlen($en_m['m_desc']) > 0 ? ' <i class="fal fa-info-circle" data-toggle="tooltip" title="' . $en_m['m_desc'] . '" data-placement="top"></i>' : '' ).$type_description.'</td>';
+        $ui .= '<td style="text-align: right;">' . ( $total_counts > 0 ? '<a href="/links?ln_status=0,1,2&ln_type_entity_id=' . $ln_type_filters . '"  data-toggle="tooltip" title="View Links" data-placement="top">' . number_format($total_counts, 0) . '</a>' : $total_counts ) . '</td>';
         $ui .= '</tr>';
 
     }
@@ -1788,9 +1792,7 @@ function echo_in($in, $level, $in_parent_id = 0, $is_parent = false)
     }
 
 
-
     $ui .= '</span>';
-
 
 
 

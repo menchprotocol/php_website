@@ -4249,7 +4249,13 @@ h4 .tip-badge {
     margin-left: 5px;
 }
 
-
+.has-data{
+    padding-left:10px;
+    font-size: 0.8em;
+    font-weight:500;
+    color:#2b2b2b;
+    display: inline-block;
+}
 .actionplan-sort .actionplan-title{
     margin-left: 28px;
 }
