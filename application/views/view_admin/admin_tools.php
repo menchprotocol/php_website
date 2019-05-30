@@ -215,9 +215,9 @@ if(!$action) {
         $count++;
 
         //Validate Intent Outcome:
-        $in_verb_entity_id = detect_starting_verb_id($in_outcome);
+        $in_verb_entity_id = detect_starting_verb_id($in['in_outcome']);
 
-        if($in_verb_entity_id != $in['in_verb_entity_id']) {
+        if($in_verb_entity_id > 0 && $in_verb_entity_id != $in['in_verb_entity_id']) {
 
             //Not a match, fix it:
             $fixed++;
