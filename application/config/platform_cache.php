@@ -11,7 +11,7 @@ defined('BASEPATH') OR exit('No direct script access allowed');
  *
  */
 
-//Generated 2019-05-29 17:27:04 PST
+//Generated 2019-05-29 20:03:42 PST
 
 //Entity Mining Stats:
 $config['en_ids_7167'] = array(4251, 4592);
@@ -562,13 +562,13 @@ $config['en_all_6192'] = array(
 $config['en_ids_6676'] = array(6192, 6193);
 $config['en_all_6676'] = array(
     6192 => array(
-        'm_icon' => '<i class="fal fa-sitemap"></i>',
+        'm_icon' => '<i class="far fa-sitemap"></i>',
         'm_name' => 'AND',
         'm_desc' => 'AND Intents are completed when ALL their children are complete',
         'm_parents' => array(4527, 6676),
     ),
     6193 => array(
-        'm_icon' => '<i class="fal fa-code-merge"></i>',
+        'm_icon' => '<i class="far fa-code-merge"></i>',
         'm_name' => 'OR',
         'm_desc' => 'OR Intents are completed when ANY of their children are complete',
         'm_parents' => array(4527, 6676),

@@ -110,18 +110,21 @@ class Admin extends CI_Controller
         echo '</table>';
 
 
-        //Entity Mining Stats
+
+        //Intent Mining Stats
         echo echo_link_type_group_stats(7166);
+
 
 
         //Intent Types:
         echo '<table class="table table-condensed table-striped stats-table mini-stats-table ">';
 
         echo '<tr class="panel-title down-border">';
-        echo '<td style="text-align: left;">'.count(array_merge($this->config->item('en_all_6192'), $this->config->item('en_all_6193'))).' '.$en_all_7161[6676]['m_name'].'</td>';
+        echo '<td style="text-align: left;">'.$en_all_7161[6676]['m_name'].'</td>';
         echo '<td style="text-align: right;">Intents</td>';
         echo '</tr>';
 
+        $show_sublist = false;
         $types_ui = '';
         foreach ($this->config->item('en_all_6676') as $type_en_id => $type) {
 
@@ -142,16 +145,17 @@ class Admin extends CI_Controller
                 $all_intent_types += $in_count[0]['total_active_intents'];
 
                 //Echo this as the main title:
-                $sub_types_ui .= '<tr>';
-                $sub_types_ui .= '<td style="text-align: left;"><span style="width:29px; display: inline-block; text-align: center; margin-left:23px;">'.$sub_type['m_icon'].'</span><a href="/entities/'.$sub_type_en_id.'">'.$sub_type['m_name'].'</a> <i class="fal fa-info-circle" data-toggle="tooltip" title="'.$sub_type['m_desc'].'" data-placement="top"></i></td>';
-                $sub_types_ui .= '<td style="text-align: right;"><a href="/links?ln_type_entity_id=4250&in_status=0,1,2&in_type_entity_id='.$sub_type_en_id.'">'.number_format($in_count[0]['total_active_intents'],0).'</a></td>';
-                $sub_types_ui .= '</tr>';
-
+                if($show_sublist){
+                    $sub_types_ui .= '<tr>';
+                    $sub_types_ui .= '<td style="text-align: left;"><span style="width:29px; display: inline-block; text-align: center; margin-left:23px;">'.$sub_type['m_icon'].'</span><a href="/entities/'.$sub_type_en_id.'">'.$sub_type['m_name'].'</a> <i class="fal fa-info-circle" data-toggle="tooltip" title="'.$sub_type['m_desc'].'" data-placement="top"></i></td>';
+                    $sub_types_ui .= '<td style="text-align: right;"><a href="/links?ln_type_entity_id=4250&in_status=0,1,2&in_type_entity_id='.$sub_type_en_id.'">'.number_format($in_count[0]['total_active_intents'],0).'</a></td>';
+                    $sub_types_ui .= '</tr>';
+                }
             }
 
 
             //Echo this as the main title:
-            $types_ui .= '<tr style="font-weight: bold;">';
+            $types_ui .= '<tr'.( $show_sublist ? ' style="font-weight: bold;"' : '' ).'>';
             $types_ui .= '<td style="text-align: left;"><span style="width:29px; display: inline-block; text-align: center;">'.$type['m_icon'].'</span><a href="/entities/'.$type_en_id.'">'.$type['m_name'].' Intents</a> <i class="fal fa-info-circle" data-toggle="tooltip" title="'.$type['m_desc'].'" data-placement="top"></i></td>';
             $types_ui .= '<td style="text-align: right;"><a href="/links?ln_type_entity_id=4250&in_status=0,1,2&in_type_entity_id='.join(',',$this->config->item('en_ids_'.$type_en_id)).'">'.number_format($all_intent_types,0).'</a></td>';
             $types_ui .= '</tr>';
@@ -167,7 +171,7 @@ class Admin extends CI_Controller
 
 
         //Intent Verbs:
-        $show_max_verbs = 15;
+        $show_max_verbs = 10;
 
         //Fetch all needed data:
         $in_verbs = $this->Intents_model->in_fetch(array(
@@ -313,6 +317,42 @@ class Admin extends CI_Controller
 
         echo '</table>';
 
+    }
+    function extra_stats_links(){
+
+
+        $en_all_4534 = $this->config->item('en_all_4534');
+        $fixed_fields = $this->config->item('fixed_fields');
+        $en_all_4463 = $this->config->item('en_all_4463'); //Platform Glossary
+        $en_all_4593 = $this->config->item('en_all_4593'); //Load all link types
+        $en_all_7161 = $this->config->item('en_all_7161'); //Platform Dashboard
+
+
+
+        //Link Status:
+        echo '<table class="table table-condensed table-striped stats-table mini-stats-table">';
+
+        echo '<tr class="panel-title down-border">';
+        echo '<td style="text-align: left;">'.count($this->config->item('en_ids_6186')).' '.$en_all_7161[6186]['m_name'].'</td>';
+        echo '<td style="text-align: right;">Links</td>';
+        echo '</tr>';
+
+        //Object Stats grouped by Status:
+        $objects_count = $this->Links_model->ln_fetch(array(), array(), 0, 0, array(), 'ln_status, COUNT(ln_id) as totals', 'ln_status');
+        foreach ($fixed_fields['ln_status'] as $status_num => $status) {
+            //Count this status:
+            $objects_count = $this->Links_model->ln_fetch(array(
+                'ln_status' => $status_num
+            ), array(), 0, 0, array(), 'COUNT(ln_id) as totals');
+
+            //Display this status count:
+            echo '<tr class="'.( $status_num < 0 ? 'is-removed' : '' ).'">';
+            echo '<td style="text-align: left;"><span style="width:29px; display: inline-block; text-align: center;">' . $status['s_icon'] . '</span><a href="/entities/'.$status['s_en_id'].'">' . $status['s_name'] . '</a> <i class="fal fa-info-circle" data-toggle="tooltip" title="' . $status['s_desc'] . '" data-placement="top"></i></td>';
+            echo '<td style="text-align: right;">' . ($objects_count[0]['totals'] > 0 ? '<a href="/links?ln_status=' . $status_num . '"  data-toggle="tooltip" title="View Links" data-placement="top">' . number_format($objects_count[0]['totals'], 0) . '</a>' : $objects_count[0]['totals']) . '</td>';
+            echo '</tr>';
+
+        }
+        echo '</table>';
 
 
         //Fetch top certified miners vs top users:
@@ -395,42 +435,6 @@ class Admin extends CI_Controller
 
 
 
-    }
-    function extra_stats_links(){
-
-
-        $en_all_4534 = $this->config->item('en_all_4534');
-        $fixed_fields = $this->config->item('fixed_fields');
-        $en_all_4463 = $this->config->item('en_all_4463'); //Platform Glossary
-        $en_all_4593 = $this->config->item('en_all_4593'); //Load all link types
-        $en_all_7161 = $this->config->item('en_all_7161'); //Platform Dashboard
-
-
-
-        //Link Status:
-        echo '<table class="table table-condensed table-striped stats-table mini-stats-table">';
-
-        echo '<tr class="panel-title down-border">';
-        echo '<td style="text-align: left;">'.count($this->config->item('en_ids_6186')).' '.$en_all_7161[6186]['m_name'].'</td>';
-        echo '<td style="text-align: right;">Links</td>';
-        echo '</tr>';
-
-        //Object Stats grouped by Status:
-        $objects_count = $this->Links_model->ln_fetch(array(), array(), 0, 0, array(), 'ln_status, COUNT(ln_id) as totals', 'ln_status');
-        foreach ($fixed_fields['ln_status'] as $status_num => $status) {
-            //Count this status:
-            $objects_count = $this->Links_model->ln_fetch(array(
-                'ln_status' => $status_num
-            ), array(), 0, 0, array(), 'COUNT(ln_id) as totals');
-
-            //Display this status count:
-            echo '<tr class="'.( $status_num < 0 ? 'is-removed' : '' ).'">';
-            echo '<td style="text-align: left;"><span style="width:29px; display: inline-block; text-align: center;">' . $status['s_icon'] . '</span><a href="/entities/'.$status['s_en_id'].'">' . $status['s_name'] . '</a> <i class="fal fa-info-circle" data-toggle="tooltip" title="' . $status['s_desc'] . '" data-placement="top"></i></td>';
-            echo '<td style="text-align: right;">' . ($objects_count[0]['totals'] > 0 ? '<a href="/links?ln_status=' . $status_num . '"  data-toggle="tooltip" title="View Links" data-placement="top">' . number_format($objects_count[0]['totals'], 0) . '</a>' : $objects_count[0]['totals']) . '</td>';
-            echo '</tr>';
-
-        }
-        echo '</table>';
 
 
 
