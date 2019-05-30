@@ -1008,7 +1008,7 @@ class Intents_model extends CI_Model
             'ln_child_intent_id' => $in_id,
         ));
 
-        if(count($creation_lns)<0){
+        if(count($creation_lns) < 1){
 
             //Create one since we don't have one:
             $fixed += $this->Links_model->ln_create(array(
