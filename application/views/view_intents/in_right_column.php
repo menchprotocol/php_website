@@ -135,7 +135,7 @@
 
                 <div class="title">
                     <h4>
-                        <i class="fas fa-link rotate90"></i> Link Settings
+                        <i class="fas fa-link"></i> Link Settings
                     </h4>
                 </div>
 

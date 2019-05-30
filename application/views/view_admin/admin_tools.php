@@ -211,7 +211,7 @@ if(!$action) {
     //UI to compose a test message:
     echo '<form method="GET" action="">';
 
-    echo '<div class="mini-header">Search For [Case Sensitive]:</div>';
+    echo '<div class="mini-header">Search For:</div>';
     echo '<input type="text" class="form-control border maxout" name="search_for" value="'.@$_GET['search_for'].'"><br />';
 
 
@@ -225,7 +225,7 @@ if(!$action) {
 
         $matching_ins = $this->Intents_model->in_fetch(array(
             'in_status >=' => 0,
-            'in_outcome LIKE \'%'.$_GET['search_for'].'%\'' => null,
+            'LOWER(in_outcome) LIKE \'%'.strtolower($_GET['search_for']).'%\'' => null,
         ));
 
         //List the matching search:

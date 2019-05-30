@@ -50,7 +50,7 @@ class Intents extends CI_Controller
 
                 //Show index page:
                 $this->load->view('view_shared/public_header', array(
-                    'title' => 'Land Your Dream Programming Job',
+                    'title' => 'Land Your Dream Software Engineering Job',
                 ));
                 $this->load->view('view_intents/mench_home', array(
                     'featurd_ins' => $featurd_ins,

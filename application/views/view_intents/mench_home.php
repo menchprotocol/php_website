@@ -1,12 +1,12 @@
 <?php
 
 //Header:
-echo '<h1>Land Your Dream Programming Job</h1>';
+echo '<h1>Land Your Dream Software Engineering Job</h1>';
 
 //Display intent messages:
 echo '<div class="home-page-intro">';
 
-echo '<div class="i_content"><div class="msg">Hi, I\'m Mench, a human-trained personal assistant designed to help you get hired at your dream programming job. Our community of "Miners" aggregate key ideas and actionable tasks from top industry experts, and I will communicate them to you via Messenger.</div></div>';
+echo '<div class="i_content"><div class="msg">Hi, I\'m Mench, a human-trained personal assistant designed to help you get hired at your dream software engineering job. Our community of "Miners" aggregate key ideas and actionable tasks from top industry experts, and I will communicate them to you via Messenger.</div></div>';
 
 echo '<div class="i_content"><div class="msg">I\'m open-source, free and on a mission to expand your potential.</div></div>';
 
