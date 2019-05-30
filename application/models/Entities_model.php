@@ -507,9 +507,9 @@ class Entities_model extends CI_Model
 
         }
 
-        //Only fetch URL content if not a direct file type:
+        //Only fetch URL content in certain situations:
         $url_content = null;
-        if(!array_key_exists($ln_type_entity_id, $this->config->item('fb_convert_4537'))){
+        if(!array_key_exists($ln_type_entity_id, $this->config->item('fb_convert_4537')) /* not a direct file type */ && !(substr_count($url,'youtube.com/embed/')>0 && (substr_count($url,'start=')>0 || substr_count($url,'end=')>0))){
 
             //Make CURL call:
             $url_content = @file_get_contents($url);
