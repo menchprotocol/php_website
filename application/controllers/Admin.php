@@ -256,14 +256,13 @@ class Admin extends CI_Controller
         ), array(), 0, 0, array('en_name' => 'ASC'));
 
 
+        $total_counts = array(
+            0 => 0,
+            1 => 0,
+            2 => 0,
+        );
 
-        $expert_source_types = 0;
-        $all_source_count = 0;
-        $all_source_count_weight = 0;
-        $all_mined_source_count = 0;
-        $all_mined_source_count_weigh = 0;
         $expert_sources = ''; //Saved the UI for later view...
-
         foreach ($this->Links_model->ln_fetch(array(
             'ln_parent_entity_id' => 3000,
             'ln_type_entity_id IN (' . join(',', $this->config->item('en_ids_4592')) . ')' => null, //Entity Link Connectors
@@ -271,28 +270,25 @@ class Admin extends CI_Controller
             'en_status >=' => 0, //New+
         ), array('en_child'), $this->config->item('items_per_page'), 0, array('en_trust_score' => 'DESC')) as $source_en) {
 
-            //Count any/all sources (complete or incomplete):
-            $source_count = $this->Entities_model->en_child_count($source_en['en_id']);
-            $weight = ( substr_count($source_en['ln_content'], '&var_weight=')==1 ? intval(one_two_explode('&var_weight=','',$source_en['ln_content'])) : 0 );
-            $all_source_count += $source_count;
-            $all_source_count_weight += ($source_count * $weight);
-            if($source_count < 1 || $weight < 1){
-                continue;
-            }
-
-            $expert_source_types++;
-
-            //Count completed sources:
-            $mined_source_count = $this->Entities_model->en_child_count($source_en['en_id'], 2);
-            $all_mined_source_count += $mined_source_count;
-            $all_mined_source_count_weigh += ($mined_source_count * $weight);
-
-
             //Echo stats:
             $expert_sources .= '<tr>';
             $expert_sources .= '<td style="text-align: left;"><span class="icon-block">'.echo_icon($source_en).'</span><a href="/entities/'.$source_en['en_id'].'">'.$source_en['en_name'].'</a></td>';
-            $expert_sources .= '<td style="text-align: right;"><span data-toggle="tooltip" title="'.number_format($mined_source_count,0).'/'.number_format($source_count,0).' '.$source_en['en_name'].' have been mined completely" class="underdot" data-placement="top">'.number_format(($mined_source_count/$source_count*100), 1).'%</span></td>';
-            $expert_sources .= '<td style="text-align: right;"><a href="/links?ln_status=0,1,2&ln_type_entity_id='.join(',', $this->config->item('en_ids_4592')).'&ln_parent_entity_id=' . $source_en['en_id'].'">'.number_format($source_count, 0).'</a></td>';
+
+
+            //Count totals for each status:
+            foreach ($total_counts as $status_num => $count) {
+
+                //Count this type:
+                $source_count = $this->Entities_model->en_child_count($source_en['en_id'], array($status_num)); //Count completed
+
+                //Addup count:
+                $total_counts[$status_num] += $source_count;
+
+                //Display row:
+                $expert_sources .= '<td style="text-align: right;"><a href="/links?ln_status='.$status_num.'&ln_type_entity_id='.join(',', $this->config->item('en_ids_4592')).'&ln_parent_entity_id=' . $source_en['en_id'].'">'.number_format($source_count,0).'</a></td>';
+
+            }
+
             $expert_sources .= '</tr>';
 
         }
@@ -301,17 +297,19 @@ class Admin extends CI_Controller
         echo '<table class="table table-condensed table-striped stats-table">';
 
         echo '<tr class="panel-title down-border">';
-        echo '<td style="text-align: left;">'.echo_number($all_source_count).' '.$en_all_7161[3000]['m_name'].'</td>';
-        echo '<td style="text-align: right;">Mined</td>';
-        echo '<td style="text-align: right;">Entities</td>';
+        echo '<td style="text-align: left;">'.$en_all_7161[3000]['m_name'].'</td>';
+        foreach ($total_counts as $status_num => $count) {
+            echo '<td style="text-align: right;"><span class="underdot" data-toggle="tooltip" title="' . $fixed_fields['en_status'][$status_num]['s_name'] . ': ' . $fixed_fields['en_status'][$status_num]['s_desc'] . '" data-placement="top">' . $fixed_fields['en_status'][$status_num]['s_icon'] . '</span></td>';
+        }
         echo '</tr>';
 
         echo $expert_sources;
 
         echo '<tr style="font-weight: bold;">';
         echo '<td style="text-align: left;"><span class="icon-block"><i class="fas fa-asterisk"></i></span>Totals</td>';
-        echo '<td style="text-align: right;"><span data-toggle="tooltip" title="Overall mining progress on all expert sources" data-placement="top" class="underdot">'.($all_source_count_weight > 0 ? number_format(($all_mined_source_count_weigh/$all_source_count_weight*100), 1) : 0).'%</span></td>';
-        echo '<td style="text-align: right;">'.echo_number($all_source_count).'</td>';
+        foreach ($total_counts as $status_num => $count) {
+            echo '<td style="text-align: right;">' . number_format($count, 0) . '</td>';
+        }
         echo '</tr>';
 
 

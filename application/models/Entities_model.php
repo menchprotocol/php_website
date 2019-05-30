@@ -120,8 +120,8 @@ class Entities_model extends CI_Model
             //This will Count ALL the children:
             if (in_array('en__child_count', $join_objects)) {
 
-                //ACount children:
-                $res[$key]['en__child_count'] = $this->Entities_model->en_child_count($val['en_id']);
+                //Count children:
+                $res[$key]['en__child_count'] = $this->Entities_model->en_child_count($val['en_id'], array(0,1,2));
 
             }
 
@@ -946,7 +946,7 @@ class Entities_model extends CI_Model
 
     }
 
-    function en_child_count($en_id, $min_en_status = 0)
+    function en_child_count($en_id, $statuses)
     {
 
         //Count the active children of entity:
@@ -957,7 +957,7 @@ class Entities_model extends CI_Model
             'ln_parent_entity_id' => $en_id,
             'ln_type_entity_id IN (' . join(',', $this->config->item('en_ids_4592')) . ')' => null, //Entity Link Connectors
             'ln_status >=' => 0, //New+
-            'en_status >=' => $min_en_status,
+            'en_status IN (' . join(',', $statuses) . ')' => null,
         ), array('en_child'), 0, 0, array(), 'COUNT(en_id) as en__child_count');
 
         if (count($child_links) > 0) {

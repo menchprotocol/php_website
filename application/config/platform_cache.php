@@ -11,7 +11,7 @@ defined('BASEPATH') OR exit('No direct script access allowed');
  *
  */
 
-//Generated 2019-05-29 20:17:15 PST
+//Generated 2019-05-29 21:06:12 PST
 
 //Entity Mining Stats:
 $config['en_ids_7167'] = array(4251, 4592);
@@ -3209,61 +3209,61 @@ $config['en_all_3000'] = array(
     2997 => array(
         'm_icon' => '<i class="fas fa-newspaper"></i>',
         'm_name' => 'Expert Articles',
-        'm_desc' => '&var_weight=2',
+        'm_desc' => '',
         'm_parents' => array(3000),
     ),
     2998 => array(
         'm_icon' => '<i class="fas fa-film"></i>',
         'm_name' => 'Expert Videos',
-        'm_desc' => '&var_weight=5',
+        'm_desc' => '',
         'm_parents' => array(3000),
     ),
     2999 => array(
         'm_icon' => '<i class="fas fa-microphone"></i>',
         'm_name' => 'Expert Podcasts',
-        'm_desc' => '&var_weight=7',
+        'm_desc' => '',
         'm_parents' => array(6805, 3000),
     ),
     3005 => array(
         'm_icon' => '<i class="fas fa-book"></i>',
         'm_name' => 'Expert Books',
-        'm_desc' => '&var_weight=100',
+        'm_desc' => '',
         'm_parents' => array(6805, 3000),
     ),
     3147 => array(
         'm_icon' => '<i class="fas fa-presentation"></i>',
         'm_name' => 'Expert Courses',
-        'm_desc' => '&var_weight=50',
+        'm_desc' => '',
         'm_parents' => array(6805, 3000),
     ),
     3192 => array(
         'm_icon' => '<i class="fas fa-compact-disc"></i>',
         'm_name' => 'Expert Software',
-        'm_desc' => '&var_weight=1',
+        'm_desc' => '',
         'm_parents' => array(6805, 3000),
     ),
     4446 => array(
         'm_icon' => '<i class="fas fa-tachometer"></i>',
         'm_name' => 'Expert Assessments',
-        'm_desc' => '&var_weight=10',
+        'm_desc' => '',
         'm_parents' => array(3000),
     ),
     4763 => array(
         'm_icon' => '<i class="fas fa-bullhorn"></i>',
         'm_name' => 'Expert Channels',
-        'm_desc' => '&var_weight=1',
+        'm_desc' => '',
         'm_parents' => array(6805, 3000),
     ),
     4883 => array(
         'm_icon' => '<i class="fas fa-concierge-bell"></i>',
         'm_name' => 'Expert Services',
-        'm_desc' => '&var_weight=1',
+        'm_desc' => '',
         'm_parents' => array(6805, 3000),
     ),
     5948 => array(
         'm_icon' => '<i class="fas fa-file-invoice"></i>',
         'm_name' => 'Expert Templates',
-        'm_desc' => '&var_weight=1',
+        'm_desc' => '',
         'm_parents' => array(3000),
     ),
 );
