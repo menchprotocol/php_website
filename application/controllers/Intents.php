@@ -431,7 +431,7 @@ class Intents extends CI_Controller
             $item_ui = '<tr>';
             $item_ui .= '<td valign="top">'.$current_count.'</td>';
             $item_ui .= '<td style="text-align:left;">';
-            $item_ui .= '<span class="icon-block en-icon">'.echo_icon($apu).'</span> '.$apu['en_name'];
+            $item_ui .= '<span class="icon-block en-icon">'.echo_en_icon($apu).'</span> '.$apu['en_name'];
             $item_ui .= ( strlen($apu['ln_content']) > 0 ? '<div class="user-comment">'.$this->Communication_model->dispatch_message($apu['ln_content']).'</div>' : '' );
             $item_ui .= '</td>';
             $item_ui .= '<td style="text-align:left;">'.echo_number($count_progression[0]['totals']).'</td>';

@@ -338,7 +338,7 @@ function echo_in_message_manage($ln)
 }
 
 
-function echo_icon($en)
+function echo_en_icon($en)
 {
     //TODO Use this function more often, as there are instnaces where we have this logic replicated! Search for "fas fa-at grey-at" to find...
     //A simple function to display the Entity Icon OR the default icon if not available:
@@ -565,7 +565,7 @@ function echo_tr_row($ln, $is_inner = false)
         } else {
 
             //Show Miner:
-            $ui .= '<span class="icon-main">'.echo_icon($miner_ens[0]).' </span>';
+            $ui .= '<span class="icon-main">'.echo_en_icon($miner_ens[0]).' </span>';
             $ui .= '<a href="/entities/'.$miner_ens[0]['en_id'].'" data-toggle="tooltip" data-placement="top" title="View User Entity"><b>' . one_two_explode('',' ',$miner_ens[0]['en_name']) . '</b></a>';
         }
 
@@ -1618,7 +1618,7 @@ function echo_link_type_group_stats($group_en_id){
             ), array(), 0, 0, array(), 'COUNT(ln_id) as totals');
             $total_counts = $objects_count[0]['totals'];
             $ln_type_filters = join(',', $CI->config->item('en_ids_' . $en_id));
-            $type_description = '<span class="has-data">HAS '.count($CI->config->item('en_ids_' . $en_id)).' TYPES</span>';
+            $type_description = '<span class="has-data">['.count($CI->config->item('en_ids_' . $en_id)).' TYPES]</span>';
 
         }
 
@@ -2056,7 +2056,7 @@ function echo_en($en, $level, $is_parent = false)
     $ui .= '<span class="double-icon" style="margin-right:7px;">';
 
     //Show larger custom entity icon:
-    $ui .= '<span class="icon-main en_ui_icon en_ui_icon_' . $en['en_id'] . ' en-icon en__icon_'.$en['en_id'].'" en-is-set="'.( strlen($en['en_icon']) > 0 ? 1 : 0 ).'" data-toggle="tooltip" data-placement="right" title="Entity Icon">' . echo_icon($en) . '</span>';
+    $ui .= '<span class="icon-main en_ui_icon en_ui_icon_' . $en['en_id'] . ' en-icon en__icon_'.$en['en_id'].'" en-is-set="'.( strlen($en['en_icon']) > 0 ? 1 : 0 ).'" data-toggle="tooltip" data-placement="right" title="Entity Icon">' . echo_en_icon($en) . '</span>';
 
     //Show smaller entity status:
     $ui .= '<span class="icon-top-right en_status_' . $en['en_id'] . '"><span data-toggle="tooltip" data-placement="right" title="'.$fixed_fields['en_status'][$en['en_status']]['s_name'].' ['.$en['en_status'].']: '.$fixed_fields['en_status'][$en['en_status']]['s_desc'].'">' . $fixed_fields['en_status'][$en['en_status']]['s_icon'] . '</span></span>';
@@ -2122,7 +2122,7 @@ function echo_en($en, $level, $is_parent = false)
     //Loop through parents and only show those that have en_icon set:
     $ui .= '<span class="' . echo_advance() . '">';
     foreach ($en['en__parents'] as $en_parent) {
-        $ui .= ' &nbsp;<a href="/entities/' . $en_parent['en_id'] . '" data-toggle="tooltip" title="' . $en_parent['en_name'] . (strlen($en_parent['ln_content']) > 0 ? ' = ' . $en_parent['ln_content'] : '') . '" data-placement="top" class="parent-icon en_child_icon_' . $en_parent['en_id'] . '">' . echo_icon($en_parent) . '</a>';
+        $ui .= ' &nbsp;<a href="/entities/' . $en_parent['en_id'] . '" data-toggle="tooltip" title="' . $en_parent['en_name'] . (strlen($en_parent['ln_content']) > 0 ? ' = ' . $en_parent['ln_content'] : '') . '" data-placement="top" class="parent-icon en_child_icon_' . $en_parent['en_id'] . '">' . echo_en_icon($en_parent) . '</a>';
     }
     $ui .= '</span>';
 

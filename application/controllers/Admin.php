@@ -176,7 +176,7 @@ class Admin extends CI_Controller
         //Fetch all needed data:
         $in_verbs = $this->Intents_model->in_fetch(array(
             'in_status >=' => 0, //New+
-        ), array('in_verb_entity_id'), 0, 0, array('totals' => 'DESC'), 'COUNT(in_id) as totals, in_verb_entity_id, en_name', 'in_verb_entity_id, en_name');
+        ), array('in_verb_entity_id'), 0, 0, array('totals' => 'DESC'), 'COUNT(in_id) as totals, in_verb_entity_id, en_name, en_icon', 'in_verb_entity_id, en_name, en_icon');
 
         echo '<table class="table table-condensed table-striped stats-table mini-stats-table ">';
 
@@ -187,7 +187,7 @@ class Admin extends CI_Controller
 
         foreach($in_verbs as $count => $verb){
             echo '<tr class="'.( $count >= $show_max_verbs ? 'hiddenverbs hidden' : '' ).'">';
-            echo '<td style="text-align: left;"><a href="/entities/'.$verb['in_verb_entity_id'].'">'.$verb['en_name'].'</a></td>';
+            echo '<td style="text-align: left;"><span style="width:29px; display: inline-block; text-align: center;">'.echo_en_icon($verb).'</span><a href="/entities/'.$verb['in_verb_entity_id'].'">'.$verb['en_name'].'</a></td>';
             echo '<td style="text-align: right;"><a href="/links?ln_type_entity_id=4250&in_status=0,1,2&in_verb_entity_id='.$verb['in_verb_entity_id'].'">'.number_format($verb['totals'],0).'</a></td>';
             echo '</tr>';
         }
@@ -272,7 +272,7 @@ class Admin extends CI_Controller
 
             //Echo stats:
             $expert_sources .= '<tr>';
-            $expert_sources .= '<td style="text-align: left;"><span class="icon-block">'.echo_icon($source_en).'</span><a href="/entities/'.$source_en['en_id'].'">'.$source_en['en_name'].'</a></td>';
+            $expert_sources .= '<td style="text-align: left;"><span class="icon-block">'.echo_en_icon($source_en).'</span><a href="/entities/'.$source_en['en_id'].'">'.$source_en['en_name'].'</a></td>';
 
 
             //Count totals for each status:
@@ -297,7 +297,7 @@ class Admin extends CI_Controller
         echo '<table class="table table-condensed table-striped stats-table">';
 
         echo '<tr class="panel-title down-border">';
-        echo '<td style="text-align: left;">'.$en_all_7161[3000]['m_name'].'</td>';
+        echo '<td style="text-align: left;">'.number_format($total_counts[2], 0).' '.$en_all_7161[3000]['m_name'].'</td>';
         foreach ($total_counts as $status_num => $count) {
             echo '<td style="text-align: right;"><span class="underdot" data-toggle="tooltip" title="' . $fixed_fields['en_status'][$status_num]['s_name'] . ': ' . $fixed_fields['en_status'][$status_num]['s_desc'] . '" data-placement="top">' . $fixed_fields['en_status'][$status_num]['s_icon'] . '</span></td>';
         }
@@ -384,13 +384,13 @@ class Admin extends CI_Controller
         echo '<table class="table table-condensed table-striped stats-table">';
 
         echo '<tr class="panel-title down-border">';
-        echo '<td style="text-align: left;">'.$en_all_7161[7162]['m_name'].'</td>';
-        echo '<td style="text-align: right;">'.( !is_null($days_ago) ? $days_ago.'-Day ' : '' ).'Points</td>';
+        echo '<td style="text-align: left;">'.( !is_null($days_ago) ? 'Last '.$days_ago.'-Day ' : 'All-Time ' ).$en_all_7161[7162]['m_name'].'</td>';
+        echo '<td style="text-align: right;">Points</td>';
         echo '</tr>';
 
         foreach ($top_users as $count=>$ln) {
             echo '<tr>';
-            echo '<td style="text-align: left;"><span style="width:29px; display: inline-block; text-align: center; '.( $count > 2 ? 'font-size:0.8em;' : '' ).'">'.echo_rank($count+1).'</span><span class="parent-icon" style="width: 29px; display: inline-block; text-align: center;">'.echo_icon($ln).'</span><a href="/entities/'.$ln['ln_miner_entity_id'].'">'.$ln['en_name'].'</a></td>';
+            echo '<td style="text-align: left;"><span style="width:29px; display: inline-block; text-align: center; '.( $count > 2 ? 'font-size:0.8em;' : '' ).'">'.echo_rank($count+1).'</span><span class="parent-icon" style="width: 29px; display: inline-block; text-align: center;">'.echo_en_icon($ln).'</span><a href="/entities/'.$ln['ln_miner_entity_id'].'">'.$ln['en_name'].'</a></td>';
             echo '<td style="text-align: right;"><a href="/links?ln_miner_entity_id='.$ln['ln_miner_entity_id'].( is_null($days_ago) ? '' : '&start_range='.$start_date ).'"  data-toggle="tooltip" title="Mined with '.number_format($ln['trs_count'],0).' links averaging '.round(($ln['points_sum']/$ln['trs_count']),1).' points/link" data-placement="top">'.number_format($ln['points_sum'], 0).'</a></td>';
             echo '</tr>';
         }
@@ -419,13 +419,13 @@ class Admin extends CI_Controller
         echo '<table class="table table-condensed table-striped stats-table">';
 
         echo '<tr class="panel-title down-border">';
-        echo '<td style="text-align: left;">'.$en_all_7161[7163]['m_name'].'</td>';
-        echo '<td style="text-align: right;">'.( !is_null($days_ago) ? $days_ago.'-Day ' : '' ).'Points</td>';
+        echo '<td style="text-align: left;">'.( !is_null($days_ago) ? 'Last '.$days_ago.'-Day ' : 'All-Time ' ).$en_all_7161[7163]['m_name'].'</td>';
+        echo '<td style="text-align: right;">Points</td>';
         echo '</tr>';
 
         foreach ($top_users as $count=>$ln) {
             echo '<tr>';
-            echo '<td style="text-align: left;"><span style="width:29px; display: inline-block; text-align: center; '.( $count > 2 ? 'font-size:0.8em;' : '' ).'">'.echo_rank($count+1).'</span><span class="parent-icon" style="width: 29px; display: inline-block; text-align: center;">'.echo_icon($ln).'</span><a href="/entities/'.$ln['ln_miner_entity_id'].'">'.$ln['en_name'].'</a></td>';
+            echo '<td style="text-align: left;"><span style="width:29px; display: inline-block; text-align: center; '.( $count > 2 ? 'font-size:0.8em;' : '' ).'">'.echo_rank($count+1).'</span><span class="parent-icon" style="width: 29px; display: inline-block; text-align: center;">'.echo_en_icon($ln).'</span><a href="/entities/'.$ln['ln_miner_entity_id'].'">'.$ln['en_name'].'</a></td>';
             echo '<td style="text-align: right;"><a href="/links?ln_miner_entity_id='.$ln['ln_miner_entity_id'].( is_null($days_ago) ? '' : '&start_range='.$start_date ).'"  data-toggle="tooltip" title="Mined with '.number_format($ln['trs_count'],0).' links averaging '.round(($ln['points_sum']/$ln['trs_count']),1).' points/link" data-placement="top">'.number_format($ln['points_sum'], 0).'</a></td>';
             echo '</tr>';
         }
@@ -455,7 +455,7 @@ class Admin extends CI_Controller
 
             //Echo stats:
             echo '<tr>';
-            echo '<td style="text-align: left;"><span class="icon-block">'.echo_icon($ln).'</span><a href="/entities/'.$ln['ln_type_entity_id'].'">'.$ln['en_name'].'</a>';
+            echo '<td style="text-align: left;"><span class="icon-block">'.echo_en_icon($ln).'</span><a href="/entities/'.$ln['ln_type_entity_id'].'">'.$ln['en_name'].'</a>';
 
             //Does it have a description?
             echo ( strlen($en_all_4593[$ln['ln_type_entity_id']]['m_desc']) > 0 ? ' <i class="fal fa-info-circle" data-toggle="tooltip" title="'.$en_all_4593[$ln['ln_type_entity_id']]['m_desc'].'" data-placement="top"></i>' : '' );
