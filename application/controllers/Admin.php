@@ -285,7 +285,7 @@ class Admin extends CI_Controller
                 $total_counts[$status_num] += $source_count;
 
                 //Display row:
-                $expert_sources .= '<td style="text-align: right;">'.number_format($source_count,0).'</td>';
+                $expert_sources .= '<td style="text-align: right;"><a href="/entities/' . $source_en['en_id'].'#status-'.$status_num.'">'.number_format($source_count,0).'</a></td>';
 
             }
 
