@@ -541,6 +541,11 @@ class Entities extends CI_Controller
         }
 
 
+        //Is status change happening?
+        if(!($en_update['en_status'] == $ens[0]['en_status'])){
+            $this->Entities_model->en_sync_creation_link($_POST['en_id'], $en_update['en_status'], $session_en['en_id']);
+        }
+
         //Is this being removed?
         if ($en_update['en_status'] < 0 && !($en_update['en_status'] == $ens[0]['en_status'])) {
 

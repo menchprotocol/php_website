@@ -88,7 +88,7 @@ class Intents_model extends CI_Model
         }
     }
 
-    function in_fetch($match_columns, $join_objects = array(), $limit = 0, $limit_offset = 0, $order_columns = array(), $select = '*', $group_by = null)
+    function in_fetch($match_columns = array(), $join_objects = array(), $limit = 0, $limit_offset = 0, $order_columns = array(), $select = '*', $group_by = null)
     {
 
         //The basic fetcher for intents
@@ -996,6 +996,38 @@ class Intents_model extends CI_Model
             'in_verb_entity_id' => $in_verb_entity_id,
         );
 
+    }
+
+    function in_sync_creation_link($in_id, $in_status, $ln_miner_entity_id){
+
+        $fixed = 0;
+
+        //Fetch creation link:
+        $creation_lns = $this->Links_model->ln_fetch(array(
+            'ln_type_entity_id' => 4250,
+            'ln_child_intent_id' => $in_id,
+        ));
+
+        if(count($creation_lns)<0){
+
+            //Create one since we don't have one:
+            $fixed += $this->Links_model->ln_create(array(
+                'ln_miner_entity_id' => $ln_miner_entity_id,
+                'ln_child_intent_id' => $in_id,
+                'ln_type_entity_id' => 4250, //New Intent Created
+                'ln_status' => $in_status,
+            ));
+
+        } elseif($creation_lns[0]['ln_status']!=$in_status){
+
+            //Status not sync so Sync statuses:
+            $fixed += $this->Links_model->ln_update($creation_lns[0]['ln_id'], array(
+                'ln_status' => $in_status,
+            ), $ln_miner_entity_id);
+
+        }
+
+        return $fixed;
     }
 
     function in_validate_outcome($in_outcome, $ln_miner_entity_id = 0, $skip_in_id = 0){

@@ -95,7 +95,7 @@ class Links_model extends CI_Model
         return $affected_rows;
     }
 
-    function ln_fetch($match_columns, $join_objects = array(), $limit = 100, $limit_offset = 0, $order_columns = array('ln_id' => 'DESC'), $select = '*', $group_by = null)
+    function ln_fetch($match_columns = array(), $join_objects = array(), $limit = 100, $limit_offset = 0, $order_columns = array('ln_id' => 'DESC'), $select = '*', $group_by = null)
     {
 
         $this->db->select($select);

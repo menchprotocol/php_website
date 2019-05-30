@@ -201,6 +201,27 @@ if(!$action) {
         echo '<div class="alert alert-success maxout"><i class="fas fa-check-circle"></i> No orphans found!</div>';
     }
 
+} elseif($action=='sync_in_en_creation_link_statuses') {
+
+    //Would ensure intents have synced statuses:
+    $count = 0;
+    $fixed = 0;
+    foreach($this->Intents_model->in_fetch() as $in){
+        $count++;
+        $fixed += $this->Intents_model->in_sync_creation_link($in['in_id'], $in['in_status'], 1 /* Shervin the Developer */);
+    }
+    echo '<div>Intents: '.$fixed.'/'.$count.' creation links fixed</div>';
+
+
+    //Would ensure intents have synced statuses:
+    $count = 0;
+    $fixed = 0;
+    foreach($this->Entities_model->en_fetch() as $en){
+        $count++;
+        $fixed += $this->Entities_model->en_sync_creation_link($en['en_id'], $en['en_status'], 1 /* Shervin the Developer */);
+    }
+    echo '<div>Entities: '.$fixed.'/'.$count.' creation links fixed</div>';
+
 } elseif($action=='identical_intent_outcomes') {
 
     echo '<ul class="breadcrumb"><li><a href="/admin">Admin Tools</a></li><li><b>'.$moderation_tools['/admin/tools/'.$action].'</b></li></ul>';

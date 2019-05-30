@@ -87,7 +87,7 @@ class Entities_model extends CI_Model
         }
     }
 
-    function en_fetch($match_columns, $join_objects = array(), $limit = 0, $limit_offset = 0, $order_columns = array('en_trust_score' => 'DESC'), $select = '*', $group_by = null)
+    function en_fetch($match_columns = array(), $join_objects = array(), $limit = 0, $limit_offset = 0, $order_columns = array('en_trust_score' => 'DESC'), $select = '*', $group_by = null)
     {
 
         //Fetch the target entities:
@@ -679,6 +679,38 @@ class Entities_model extends CI_Model
 
         //Return results:
         return $return_data;
+    }
+
+    function en_sync_creation_link($en_id, $en_status, $ln_miner_entity_id){
+
+        $fixed = 0; //Assume all good!
+
+        //Fetch creation link:
+        $creation_lns = $this->Links_model->ln_fetch(array(
+            'ln_type_entity_id' => 4251,
+            'ln_child_entity_id' => $en_id,
+        ));
+
+        if(count($creation_lns)<0){
+
+            //Create one since we don't have one:
+            $fixed += $this->Links_model->ln_create(array(
+                'ln_miner_entity_id' => $ln_miner_entity_id,
+                'ln_child_entity_id' => $en_id,
+                'ln_type_entity_id' => 4251, //New Intent Created
+                'ln_status' => $en_status,
+            ));
+
+        } elseif($creation_lns[0]['ln_status']!=$en_status){
+
+            //Sync statuses:
+            $fixed += $this->Links_model->ln_update($creation_lns[0]['ln_id'], array(
+                'ln_status' => $en_status,
+            ), $ln_miner_entity_id);
+
+        }
+
+        return $fixed;
     }
 
     function en_search_match($en_parent_id, $value)
