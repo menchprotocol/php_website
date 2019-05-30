@@ -214,7 +214,7 @@ if(!$action) {
         $count++;
 
         //Validate Intent Outcome:
-        $in_outcome_validation = $this->Intents_model->in_validate_outcome($in['in_outcome']);
+        $in_outcome_validation = $this->Intents_model->in_validate_outcome($in['in_outcome'], 1 /* Shervin the Developer */, $in['in_id']);
 
         if(!$in_outcome_validation['status']){
 
