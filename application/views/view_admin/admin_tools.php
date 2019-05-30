@@ -12,6 +12,7 @@ $moderation_tools = array(
     '/admin/tools/assessment_marks_list_all' => 'Completion Marks List All',
     '/admin/tools/assessment_marks_birds_eye' => 'Completion Marks Birds Eye View',
     '/admin/tools/compose_test_message' => 'Compose Test Message',
+    '/admin/tools/sync_in_en_creation_link_statuses' => 'Sync Intent/Entity Creation Links',
 );
 
 $cron_jobs = array(
@@ -202,6 +203,8 @@ if(!$action) {
     }
 
 } elseif($action=='sync_in_en_creation_link_statuses') {
+
+    echo '<ul class="breadcrumb"><li><a href="/admin">Admin Tools</a></li><li><b>'.$moderation_tools['/admin/tools/'.$action].'</b></li></ul>';
 
     //Would ensure intents have synced statuses:
     $count = 0;
