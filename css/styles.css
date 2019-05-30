@@ -4249,6 +4249,9 @@ h4 .tip-badge {
     margin-left: 5px;
 }
 
+.is-highlighted{
+    background-color:#ffe027;
+}
 .has-data{
     padding-left:5px;
     font-size: 0.8em;

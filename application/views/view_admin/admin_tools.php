@@ -4,6 +4,7 @@
 $fixed_fields = $this->config->item('fixed_fields');
 
 $moderation_tools = array(
+    '/admin/tools/in_replace_outcomes' => 'Intent Search/Replace Outcomes',
     '/admin/tools/moderate_intent_notes' => 'Moderate Intent Notes',
     '/admin/tools/identical_intent_outcomes' => 'Identical Intent Outcomes',
     '/admin/tools/identical_entity_names' => 'Identical Entity Names',
@@ -202,6 +203,108 @@ if(!$action) {
     } else {
         echo '<div class="alert alert-success maxout"><i class="fas fa-check-circle"></i> No orphans found!</div>';
     }
+
+} elseif($action=='in_replace_outcomes') {
+
+    echo '<ul class="breadcrumb"><li><a href="/admin">Admin Tools</a></li><li><b>'.$moderation_tools['/admin/tools/'.$action].'</b></li></ul>';
+
+    //UI to compose a test message:
+    echo '<form method="GET" action="">';
+
+    echo '<div class="mini-header">Search For [Case Sensitive]:</div>';
+    echo '<input type="text" class="form-control border maxout" name="search_for" value="'.@$_GET['search_for'].'"><br />';
+
+
+    $search_for_is_set = (isset($_GET['search_for']) && strlen($_GET['search_for'])>0);
+    $replace_with_is_set = (isset($_GET['replace_with']) && strlen($_GET['replace_with'])>0);
+    $qualifying_replacements = 0;
+    $replace_with_is_confirmed = false;
+
+    if($search_for_is_set){
+
+        $matching_ins = $this->Intents_model->in_fetch(array('in_outcome LIKE \'%'.$_GET['search_for'].'%\'' => null));
+
+        //List the matching search:
+        echo '<table class="table table-condensed table-striped stats-table mini-stats-table">';
+
+
+        echo '<tr class="panel-title down-border">';
+        echo '<td style="text-align: left;" colspan="4">'.count($matching_ins).' Results found</td>';
+        echo '</tr>';
+
+
+        if(count($matching_ins) < 1){
+
+            $replace_with_is_set = false;
+            unset($_GET['confirm_statement']);
+            unset($_GET['replace_with']);
+
+        } else {
+
+            $confirmation_keyword = 'Replace '.count($matching_ins);
+            $replace_with_is_confirmed = (isset($_GET['confirm_statement']) && strtolower($_GET['confirm_statement'])==strtolower($confirmation_keyword));
+
+            echo '<tr class="panel-title down-border" style="font-weight:bold !important;">';
+            echo '<td style="text-align: left;">#</td>';
+            echo '<td style="text-align: left;">Matching Search</td>';
+            echo '<td style="text-align: left;">'.( $replace_with_is_set ? 'Replacement' : '' ).'</td>';
+            echo '<td style="text-align: left;">&nbsp;</td>';
+            echo '</tr>';
+
+            foreach($matching_ins as $count=>$in){
+
+                if($replace_with_is_set){
+                    //Do replacement:
+                    $new_outcome = str_replace($_GET['search_for'],$_GET['replace_with'],$in['in_outcome']);
+                    $in_outcome_validation = $this->Intents_model->in_validate_outcome($new_outcome, $session_en['en_id'], $in['in_id']);
+
+                    if($in_outcome_validation['status']){
+                        $qualifying_replacements++;
+                    }
+                }
+
+                if($replace_with_is_confirmed && $in_outcome_validation['status']){
+                    //Update intent:
+                    $this->Intents_model->in_update($in['in_id'], array(
+                        'in_outcome' => $in_outcome_validation['in_cleaned_outcome'],
+                        'in_verb_entity_id' => $in_outcome_validation['detected_verb_entity_id'],
+                    ), true, $session_en['en_id']);
+                }
+
+                echo '<tr class="panel-title down-border">';
+                echo '<td style="text-align: left;">'.($count+1).'</td>';
+                echo '<td style="text-align: left;">'.echo_fixed_fields('in_status', $in['in_status'], 1, 'right').' <a href="/intents/'.$in['in_id'].'">'.str_replace($_GET['search_for'],'<span class="is-highlighted">'.$_GET['search_for'].'</span>',$in['in_outcome']).'</a></td>';
+                echo '<td style="text-align: left;">'.($replace_with_is_set ? str_replace($_GET['replace_with'],'<span class="is-highlighted">'.$_GET['replace_with'].'</span>',$new_outcome) : '').'</td>';
+                echo '<td style="text-align: left;">'.( $replace_with_is_set && !$in_outcome_validation['status'] ? ' <i class="fas fa-exclamation-triangle"></i> Error: '.$in_outcome_validation['message'] : ( $replace_with_is_confirmed && $in_outcome_validation['status'] ? '<i class="fas fa-check-circle"></i> Outcome Updated' : '') ).'</td>';
+                echo '</tr>';
+
+            }
+        }
+
+        echo '</table>';
+    }
+
+
+    if($search_for_is_set && count($matching_ins) > 0){
+        //now give option to replace with:
+        echo '<div class="mini-header">Replace With:</div>';
+        echo '<input type="text" class="form-control border maxout" name="replace_with" value="'.@$_GET['replace_with'].'"><br />';
+    }
+
+    if($replace_with_is_set){
+        if($qualifying_replacements==count($matching_ins) /*No Errors*/){
+            //now give option to replace with:
+            echo '<div class="mini-header">Confirm Replacement by Typing "'.$confirmation_keyword.'":</div>';
+            echo '<input type="text" class="form-control border maxout" name="confirm_statement" value="'. @$_GET['confirm_statement'] .'"><br />';
+        } else {
+            echo '<div class="alert alert-danger"><i class="fas fa-exclamation-triangle"></i> Fix errors above to then apply search/replace</div>';
+        }
+    }
+
+
+    echo '<input type="submit" class="btn btn-primary" value="Go">';
+    echo '</form>';
+
 
 } elseif($action=='sync_in_verbs') {
 
@@ -538,16 +641,16 @@ $.post("/intents/in_report_conditional_steps", {
         echo '<ul class="breadcrumb"><li><a href="/admin">Admin Tools</a></li><li><b>'.$moderation_tools['/admin/tools/'.$action].'</b></li></ul>';
 
         //UI to compose a test message:
-        echo '<form method="POST" action="">';
+        echo '<form method="POST" action="" class="maxout">';
 
         echo '<div class="mini-header">Message:</div>';
-        echo '<textarea name="test_message" style="width:400px; height: 200px;"></textarea><br />';
+        echo '<textarea name="test_message" class="form-control border" style="width:400px; height: 200px;"></textarea><br />';
 
         echo '<div class="mini-header">Recipient Entity ID:</div>';
-        echo '<input type="number" name="recipient_en" value="1"><br />';
+        echo '<input type="number" class="form-control border" name="recipient_en" value="1"><br />';
 
         echo '<div class="mini-header">Format Is Messenger:</div>';
-        echo '<input type="number" name="fb_messenger_format" value="1"><br /><br />';
+        echo '<input type="number" class="form-control border" name="fb_messenger_format" value="1"><br /><br />';
 
 
         echo '<input type="submit" class="btn btn-primary" value="Compose Test Message">';

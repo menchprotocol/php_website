@@ -868,7 +868,9 @@ class Messenger extends CI_Controller
                 'ln_type_entity_id IN (' . join(',', $this->config->item('en_ids_4592')) . ')' => null, //Entity Link Connectors
                 'ln_status' => 2, //Published
             ))) > 0) {
+
             return redirect_message('/login', '<div class="alert alert-danger" role="alert">Error: You cannot login to the Platform because you are unsubscribed from Mench. You can re-active your account by sending a message to Mench on Messenger.</div>');
+
         }
 
 
@@ -891,7 +893,7 @@ class Messenger extends CI_Controller
             $is_miner = false;
 
             //Show error:
-            $this->session->set_flashdata('flash_message', '<div class="alert alert-danger" role="alert">Mining console requires <a href="https://www.google.com/chrome/browser/" target="_blank"><u>Google Chrome</u></a> to function as expected, but you can access student tools with any browser.</div>');
+            $this->session->set_flashdata('flash_message', '<div class="alert alert-danger" role="alert">Mining console requires <a href="https://www.google.com/chrome/browser/" target="_blank"><u>Google Chrome</u></a> to properly function. Your mining permissions have been removed but you still have access to your Action Plan and Account.</div>');
 
         }
 

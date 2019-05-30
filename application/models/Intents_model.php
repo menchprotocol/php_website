@@ -1096,7 +1096,7 @@ class Intents_model extends CI_Model
             //Not a acceptable Verb:
             return array(
                 'status' => 0,
-                'message' => 'Verb is not yet supported. Manage supported verbs via entity @5008'.( en_auth(array(1281)) ? ' or use the /force command to add this verb to the supported list.' : '' ),
+                'message' => 'Verb is not yet supported. Manage via @5008',
             );
 
         }
