@@ -694,14 +694,16 @@ class Entities_model extends CI_Model
         if(count($creation_lns) < 1){
 
             //Create one since we don't have one:
-            $fixed += $this->Links_model->ln_create(array(
+            $this->Links_model->ln_create(array(
                 'ln_miner_entity_id' => $ln_miner_entity_id,
                 'ln_child_entity_id' => intval($en_id),
                 'ln_type_entity_id' => 4251, //New Intent Created
-                'ln_status' => intval($en_status),
+                'ln_status' => $en_status,
             ));
 
-        } elseif($creation_lns[0]['ln_status']!=$en_status){
+            $fixed++;
+
+        } elseif($creation_lns[0]['ln_status'] != $en_status){
 
             //Sync statuses:
             $fixed += $this->Links_model->ln_update($creation_lns[0]['ln_id'], array(
