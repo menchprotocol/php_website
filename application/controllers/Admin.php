@@ -151,7 +151,7 @@ class Admin extends CI_Controller
 
             //Echo this as the main title:
             $types_ui .= '<tr>';
-            $types_ui .= '<td style="text-align: left;"><span style="width:29px; display: inline-block; text-align: center;">'.$type['m_icon'].'</span><a href="/entities/'.$type_en_id.'">'.$type['m_name'].' Intents</a></td>';
+            $types_ui .= '<td style="text-align: left;"><span style="width:29px; display: inline-block; text-align: center;">'.$type['m_icon'].'</span><a href="/entities/'.$type_en_id.'">'.$type['m_name'].'</a></td>';
             $types_ui .= '<td style="text-align: right;"><a href="/links?ln_type_entity_id=4250&in_status=0,1,2&in_type_entity_id='.join(',',$this->config->item('en_ids_'.$type_en_id)).'">'.echo_number($all_intent_types).'</a><i class="fal fa-info-circle icon-block" data-toggle="tooltip" title="'.number_format($all_intent_types,0).' '.$type['m_desc'].'" data-placement="top"></i></td>';
             $types_ui .= '</tr>';
 
