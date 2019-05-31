@@ -2223,7 +2223,7 @@ class Communication_model extends CI_Model
                                 //All good, log link:
                                 $this->Links_model->ln_create(array(
                                     'ln_miner_entity_id' => $en['en_id'],
-                                    'ln_type_entity_id' => 6561, //User Sent Manual Quick Reply
+                                    'ln_type_entity_id' => 4460, //User Sent Answer
                                     'ln_parent_link_id' => $last_quick_replies[0]['ln_id'],
                                     'ln_content' => $fb_received_message,
                                 ));
