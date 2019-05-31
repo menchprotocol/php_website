@@ -2007,7 +2007,8 @@ function echo_rank($integer){
     } elseif($integer==3){
         return '🥉';
     } else {
-        return echo_ordinal_number($integer);
+        //return echo_ordinal_number($integer);
+        return null;
     }
 }
 
