@@ -101,8 +101,8 @@ class Admin extends CI_Controller
 
             //Display this status count:
             $this_ui .= '<tr class="'.( $status_num < 0 ? 'is-removed' : '' ).'">';
-            $this_ui .= '<td style="text-align: left;"><span style="width:29px; display: inline-block; text-align: center;">' . $status['s_icon'] . '</span><a href="/entities/'.$status['s_en_id'].'">' . $status['s_name'] . '</a> <i class="fal fa-info-circle" data-toggle="tooltip" title="' . $status['s_desc'] . '" data-placement="top"></i></td>';
-            $this_ui .= '<td style="text-align: right;">' . ($objects_count[0]['totals'] > 0 ? '<a href="/links?in_status=' . $status_num . '&ln_type_entity_id=4250"  data-toggle="tooltip" title="View Links" data-placement="top">' . number_format($objects_count[0]['totals'], 0) . '</a>' : $objects_count[0]['totals']) . '</td>';
+            $this_ui .= '<td style="text-align: left;"><span style="width:29px; display: inline-block; text-align: center;">' . $status['s_icon'] . '</span><a href="/entities/'.$status['s_en_id'].'">' . $status['s_name'] . '</a></td>';
+            $this_ui .= '<td style="text-align: right;">' . '<a href="/links?in_status=' . $status_num . '&ln_type_entity_id=4250">' . echo_number($objects_count[0]['totals']) . '</a>' . '<i class="fal fa-info-circle icon-block" data-toggle="tooltip" title="' . number_format($objects_count[0]['totals'], 0) . ' '. $status['s_desc'] . '" data-placement="top"></i>' . '</td>';
             $this_ui .= '</tr>';
 
         }
@@ -147,8 +147,8 @@ class Admin extends CI_Controller
                 //Echo this as the main title:
                 if($show_sublist){
                     $sub_types_ui .= '<tr class="' . echo_advance() . '">';
-                    $sub_types_ui .= '<td style="text-align: left;"><span style="width:29px; display: inline-block; text-align: center; margin-left:23px;">'.$sub_type['m_icon'].'</span><a href="/entities/'.$sub_type_en_id.'">'.$sub_type['m_name'].'</a> <i class="fal fa-info-circle" data-toggle="tooltip" title="'.$sub_type['m_desc'].'" data-placement="top"></i></td>';
-                    $sub_types_ui .= '<td style="text-align: right;"><a href="/links?ln_type_entity_id=4250&in_status=0,1,2&in_type_entity_id='.$sub_type_en_id.'">'.number_format($in_count[0]['total_active_intents'],0).'</a></td>';
+                    $sub_types_ui .= '<td style="text-align: left;"><span style="width:29px; display: inline-block; text-align: center; margin-left:23px;">'.$sub_type['m_icon'].'</span><a href="/entities/'.$sub_type_en_id.'">'.$sub_type['m_name'].'</a></td>';
+                    $sub_types_ui .= '<td style="text-align: right;"><a href="/links?ln_type_entity_id=4250&in_status=0,1,2&in_type_entity_id='.$sub_type_en_id.'">'.echo_number($in_count[0]['total_active_intents']).'</a><i class="fal fa-info-circle icon-block" data-toggle="tooltip" title="'.number_format($in_count[0]['total_active_intents'],0).' '.$sub_type['m_desc'].'" data-placement="top"></i></td>';
                     $sub_types_ui .= '</tr>';
                 }
             }
@@ -156,8 +156,8 @@ class Admin extends CI_Controller
 
             //Echo this as the main title:
             $types_ui .= '<tr>';
-            $types_ui .= '<td style="text-align: left;"><span style="width:29px; display: inline-block; text-align: center;">'.$type['m_icon'].'</span><a href="/entities/'.$type_en_id.'">'.$type['m_name'].' Intents</a> <i class="fal fa-info-circle" data-toggle="tooltip" title="'.$type['m_desc'].'" data-placement="top"></i></td>';
-            $types_ui .= '<td style="text-align: right;"><a href="/links?ln_type_entity_id=4250&in_status=0,1,2&in_type_entity_id='.join(',',$this->config->item('en_ids_'.$type_en_id)).'">'.number_format($all_intent_types,0).'</a></td>';
+            $types_ui .= '<td style="text-align: left;"><span style="width:29px; display: inline-block; text-align: center;">'.$type['m_icon'].'</span><a href="/entities/'.$type_en_id.'">'.$type['m_name'].' Intents</a></td>';
+            $types_ui .= '<td style="text-align: right;"><a href="/links?ln_type_entity_id=4250&in_status=0,1,2&in_type_entity_id='.join(',',$this->config->item('en_ids_'.$type_en_id)).'">'.echo_number($all_intent_types).'</a><i class="fal fa-info-circle icon-block" data-toggle="tooltip" title="'.number_format($all_intent_types,0).' '.$type['m_desc'].'" data-placement="top"></i></td>';
             $types_ui .= '</tr>';
 
             //Add sub-types:
@@ -188,7 +188,7 @@ class Admin extends CI_Controller
         foreach($in_verbs as $count => $verb){
             echo '<tr class="'.( $count >= $show_max_verbs ? 'hiddenverbs hidden' : '' ).'">';
             echo '<td style="text-align: left;"><span style="width:29px; display: inline-block; text-align: center;">'.echo_en_icon($verb).'</span><a href="/entities/'.$verb['in_verb_entity_id'].'">'.$verb['en_name'].'</a></td>';
-            echo '<td style="text-align: right;"><a href="/links?ln_type_entity_id=4250&in_status=0,1,2&in_verb_entity_id='.$verb['in_verb_entity_id'].'">'.number_format($verb['totals'],0).'</a></td>';
+            echo '<td style="text-align: right;"><a href="/links?ln_type_entity_id=4250&in_status=0,1,2&in_verb_entity_id='.$verb['in_verb_entity_id'].'">'.echo_number($verb['totals']).'</a><i class="fal fa-info-circle icon-block" data-toggle="tooltip" title="'.number_format($verb['totals'],0).' Intent'.echo__s($verb['totals']).' '.$verb['en_name'].'" data-placement="top"></i></td>';
             echo '</tr>';
         }
         echo '</table>';
@@ -226,8 +226,8 @@ class Admin extends CI_Controller
 
             //Display this status count:
             echo '<tr class="'.( $status_num < 0 ? 'is-removed' : '' ).'">';
-            echo '<td style="text-align: left;"><span style="width:29px; display: inline-block; text-align: center;">' . $status['s_icon'] . '</span><a href="/entities/'.$status['s_en_id'].'">' . $status['s_name'] . '</a> <i class="fal fa-info-circle" data-toggle="tooltip" title="' . $status['s_desc'] . '" data-placement="top"></i></td>';
-            echo '<td style="text-align: right;">' . ($objects_count[0]['totals'] > 0 ? '<a href="/links?en_status=' . $status_num . '&ln_type_entity_id=4251"  data-toggle="tooltip" title="View Links" data-placement="top">' . number_format($objects_count[0]['totals'], 0) . '</a>' : $objects_count[0]['totals']) . '</td>';
+            echo '<td style="text-align: left;"><span style="width:29px; display: inline-block; text-align: center;">' . $status['s_icon'] . '</span><a href="/entities/'.$status['s_en_id'].'">' . $status['s_name'] . '</a></td>';
+            echo '<td style="text-align: right;">' . '<a href="/links?en_status=' . $status_num . '&ln_type_entity_id=4251">' . echo_number($objects_count[0]['totals']) . '</a>' .'<i class="fal fa-info-circle icon-block" data-toggle="tooltip" title="' . number_format($objects_count[0]['totals'], 0).' '.$status['s_desc'] . '" data-placement="top"></i>' . '</td>';
             echo '</tr>';
 
         }
@@ -285,7 +285,8 @@ class Admin extends CI_Controller
                 $total_counts[$status_num] += $source_count;
 
                 //Display row:
-                $expert_sources .= '<td style="text-align: right;"'.( $status_num!=2 ? ' class="' . echo_advance() . '"' : '' ).'><a href="/entities/' . $source_en['en_id'].'#status-'.$status_num.'">'.number_format($source_count,0).'</a></td>';
+                $expert_sources .= '<td style="text-align: right;"'.( $status_num!=2 ? ' class="' . echo_advance() . '"' : '' ).'><a href="/entities/' . $source_en['en_id'].'#status-'.$status_num.'">'.number_format($source_count,0).'</a><i class="fal fa-info-circle icon-block" data-toggle="tooltip" title="'.number_format($source_count,0).' '.$source_en['en_name'].' are '. $fixed_fields['en_status'][$status_num]['s_desc'] . '" data-placement="top"></i></td>';
+
 
             }
 
@@ -299,7 +300,7 @@ class Admin extends CI_Controller
         echo '<tr class="panel-title down-border">';
         echo '<td style="text-align: left;">'.number_format($total_counts[2], 0).' '.$en_all_7161[3000]['m_name'].'</td>';
         foreach ($total_counts as $status_num => $count) {
-            echo '<td style="text-align: right;" '.( $status_num!=2 ? ' class="' . echo_advance() . '"' : '' ).'><span class="underdot" data-toggle="tooltip" title="' . $fixed_fields['en_status'][$status_num]['s_desc'] . '" data-placement="top">' . $fixed_fields['en_status'][$status_num]['s_name'] . '</span></td>';
+            echo '<td style="text-align: right;" '.( $status_num!=2 ? ' class="' . echo_advance() . '"' : '' ).'>' . $fixed_fields['en_status'][$status_num]['s_name'] . '</td>';
         }
         echo '</tr>';
 
@@ -308,7 +309,7 @@ class Admin extends CI_Controller
         echo '<tr style="font-weight: bold;">';
         echo '<td style="text-align: left;"><span class="icon-block"><i class="fas fa-asterisk"></i></span>Totals</td>';
         foreach ($total_counts as $status_num => $count) {
-            echo '<td style="text-align: right;" '.( $status_num!=2 ? ' class="' . echo_advance() . '"' : '' ).'>' . number_format($count, 0) . '</td>';
+            echo '<td style="text-align: right;" '.( $status_num!=2 ? ' class="' . echo_advance() . '"' : '' ).'>' . echo_number($count) . '<i class="fal fa-info-circle icon-block" data-toggle="tooltip" title="'.number_format($count, 0).' '.$en_all_7161[3000]['m_name'].' are '.$fixed_fields['en_status'][$status_num]['s_name'] . '" data-placement="top"></i>' . '</td>';
         }
         echo '</tr>';
 
@@ -326,7 +327,6 @@ class Admin extends CI_Controller
         $en_all_7161 = $this->config->item('en_all_7161'); //Platform Dashboard
 
 
-
         //Link Status:
         echo '<table class="table table-condensed table-striped stats-table mini-stats-table">';
 
@@ -334,6 +334,7 @@ class Admin extends CI_Controller
         echo '<td style="text-align: left;">'.count($this->config->item('en_ids_6186')).' '.$en_all_7161[6186]['m_name'].'</td>';
         echo '<td style="text-align: right;">Links</td>';
         echo '</tr>';
+
 
         //Object Stats grouped by Status:
         $objects_count = $this->Links_model->ln_fetch(array(), array(), 0, 0, array(), 'ln_status, COUNT(ln_id) as totals', 'ln_status');
@@ -345,12 +346,31 @@ class Admin extends CI_Controller
 
             //Display this status count:
             echo '<tr class="'.( $status_num < 0 ? 'is-removed' : '' ).'">';
-            echo '<td style="text-align: left;"><span style="width:29px; display: inline-block; text-align: center;">' . $status['s_icon'] . '</span><a href="/entities/'.$status['s_en_id'].'">' . $status['s_name'] . '</a> <i class="fal fa-info-circle" data-toggle="tooltip" title="' . $status['s_desc'] . '" data-placement="top"></i></td>';
-            echo '<td style="text-align: right;">' . ($objects_count[0]['totals'] > 0 ? '<a href="/links?ln_status=' . $status_num . '"  data-toggle="tooltip" title="View Links" data-placement="top">' . number_format($objects_count[0]['totals'], 0) . '</a>' : $objects_count[0]['totals']) . '</td>';
+            echo '<td style="text-align: left;"><span style="width:29px; display: inline-block; text-align: center;">' . $status['s_icon'] . '</span><a href="/entities/'.$status['s_en_id'].'">' . $status['s_name'] . '</a></td>';
+
+            echo '<td style="text-align: right;">';
+
+            echo '<a href="/links?ln_status=' . $status_num . '">' . echo_number($objects_count[0]['totals']) . '</a>';
+
+            echo '<i class="fal fa-info-circle icon-block" data-toggle="tooltip" title="' . number_format($objects_count[0]['totals'], 0).' '.$status['s_desc'] . '" data-placement="top"></i>';
+
+            echo '</td>';
+
             echo '</tr>';
 
         }
         echo '</table>';
+
+
+
+
+
+
+
+
+
+
+
 
 
         //Fetch top certified miners vs top users:
@@ -363,7 +383,6 @@ class Admin extends CI_Controller
         )) as $ln){
             array_push($certified_miners_en_ids, $ln['ln_child_entity_id']);
         }
-
 
         //Top Miners:
         $top = 10;
@@ -390,8 +409,11 @@ class Admin extends CI_Controller
 
         foreach ($top_users as $count=>$ln) {
             echo '<tr>';
-            echo '<td style="text-align: left;"><span style="width:29px; display: inline-block; text-align: center; '.( $count > 2 ? 'font-size:0.8em;' : '' ).'">'.echo_rank($count+1).'</span><span class="parent-icon" style="width: 29px; display: inline-block; text-align: center;">'.echo_en_icon($ln).'</span><a href="/entities/'.$ln['ln_miner_entity_id'].'">'.$ln['en_name'].'</a></td>';
-            echo '<td style="text-align: right;"><a href="/links?ln_miner_entity_id='.$ln['ln_miner_entity_id'].( is_null($days_ago) ? '' : '&start_range='.$start_date ).'"  data-toggle="tooltip" title="Mined with '.number_format($ln['trs_count'],0).' links averaging '.round(($ln['points_sum']/$ln['trs_count']),1).' points/link" data-placement="top">'.number_format($ln['points_sum'], 0).'</a></td>';
+
+            echo '<td style="text-align: left;"><span style="width:29px; display: inline-block; text-align: center; '.( $count > 2 ? 'font-size:0.8em;' : '' ).'">'.echo_rank($count+1).'</span><span class="parent-icon" style="width: 29px; display: inline-block; text-align: center;">'.echo_en_icon($ln).'</span><a href="/entities/'.$ln['ln_miner_entity_id'].'">'.one_two_explode('',' ', $ln['en_name']).'</a></td>';
+
+            echo '<td style="text-align: right;"><a href="/links?ln_miner_entity_id='.$ln['ln_miner_entity_id'].( is_null($days_ago) ? '' : '&start_range='.$start_date ).'">'.echo_number($ln['points_sum'], 1).'</a><i class="fal fa-info-circle icon-block" data-toggle="tooltip" title="'.$ln['en_name'].' earned '.number_format($ln['points_sum'], 0).' points with '.number_format($ln['trs_count'],0).' links, averaging '.round(($ln['points_sum']/$ln['trs_count']),1).' points/link" data-placement="top"></i></td>';
+
             echo '</tr>';
         }
         echo '</table>';
@@ -425,8 +447,8 @@ class Admin extends CI_Controller
 
         foreach ($top_users as $count=>$ln) {
             echo '<tr>';
-            echo '<td style="text-align: left;"><span style="width:29px; display: inline-block; text-align: center; '.( $count > 2 ? 'font-size:0.8em;' : '' ).'">'.echo_rank($count+1).'</span><span class="parent-icon" style="width: 29px; display: inline-block; text-align: center;">'.echo_en_icon($ln).'</span><a href="/entities/'.$ln['ln_miner_entity_id'].'">'.$ln['en_name'].'</a></td>';
-            echo '<td style="text-align: right;"><a href="/links?ln_miner_entity_id='.$ln['ln_miner_entity_id'].( is_null($days_ago) ? '' : '&start_range='.$start_date ).'"  data-toggle="tooltip" title="Mined with '.number_format($ln['trs_count'],0).' links averaging '.round(($ln['points_sum']/$ln['trs_count']),1).' points/link" data-placement="top">'.number_format($ln['points_sum'], 0).'</a></td>';
+            echo '<td style="text-align: left;"><span style="width:29px; display: inline-block; text-align: center; '.( $count > 2 ? 'font-size:0.8em;' : '' ).'">'.echo_rank($count+1).'</span><span class="parent-icon" style="width: 29px; display: inline-block; text-align: center;">'.echo_en_icon($ln).'</span><a href="/entities/'.$ln['ln_miner_entity_id'].'">'.one_two_explode('',' ',$ln['en_name']).'</a></td>';
+            echo '<td style="text-align: right;"><a href="/links?ln_miner_entity_id='.$ln['ln_miner_entity_id'].( is_null($days_ago) ? '' : '&start_range='.$start_date ).'">'.echo_number($ln['points_sum'], 1).'</a><i class="fal fa-info-circle icon-block" data-toggle="tooltip" title="'.$ln['en_name'].' earned '.number_format($ln['points_sum'], 0).' points with '.number_format($ln['trs_count'],0).' links, averaging '.round(($ln['points_sum']/$ln['trs_count']),1).' points/link" data-placement="top"></i></td>';
             echo '</tr>';
         }
         echo '</table>';
@@ -440,6 +462,10 @@ class Admin extends CI_Controller
         echo echo_link_type_group_stats(7159);
 
 
+
+
+
+
         //All Link Types:
         $all_link_types = $this->Links_model->ln_fetch(array('ln_status >=' => 0), array('en_type'), 0, 0, array('en_name' => 'ASC'), 'COUNT(ln_type_entity_id) as trs_count, en_name, en_icon, ln_type_entity_id', 'ln_type_entity_id, en_name, en_icon');
 
@@ -451,17 +477,16 @@ class Admin extends CI_Controller
         echo '<td style="text-align: right;">Links</td>';
         echo '</tr>';
 
+
         foreach ($all_link_types as $ln) {
 
             //Echo stats:
             echo '<tr>';
-            echo '<td style="text-align: left;"><span class="icon-block">'.echo_en_icon($ln).'</span><a href="/entities/'.$ln['ln_type_entity_id'].'">'.$ln['en_name'].'</a>';
+            echo '<td style="text-align: left;">';
 
-            //Does it have a description?
-            echo ( strlen($en_all_4593[$ln['ln_type_entity_id']]['m_desc']) > 0 ? ' <i class="fal fa-info-circle" data-toggle="tooltip" title="'.$en_all_4593[$ln['ln_type_entity_id']]['m_desc'].'" data-placement="top"></i>' : '' );
+                echo '<span class="icon-block">'.echo_en_icon($ln).'</span>';
 
-            //Is it a private link?
-            echo ( in_array($ln['ln_type_entity_id'] , $this->config->item('en_ids_4755')) ? ' <span data-toggle="tooltip" title="'.$en_all_4463[4755]['m_name'].': '.$en_all_4463[4755]['m_desc'].'" data-placement="top" class="' . echo_advance() . '">'.$en_all_4463[4755]['m_icon'].'</span>' : '' );
+                echo '<a href="/entities/'.$ln['ln_type_entity_id'].'">'.$ln['en_name'].'</a>';
 
             echo '</td>';
 
@@ -470,9 +495,16 @@ class Admin extends CI_Controller
             $fetch_points = fetch_points($ln['ln_type_entity_id']);
             echo '<td style="text-align: right;" class="' . echo_advance() . '">'.( $fetch_points > 0 ? '<a href="/links?ln_status=2&ln_parent_entity_id=4595&ln_type_entity_id=4319&ln_child_entity_id='.$ln['ln_type_entity_id'].'" data-toggle="tooltip" title="Points per link" data-placement="top">'.number_format($fetch_points, 0).'</a>' : '0' ).'</td>';
 
+            //<span class="icon-block"><i class="far fa-badge-check"></i></span>
 
             //Links count:
-            echo '<td style="text-align: right;"><a href="/links?ln_status=0,1,2&ln_type_entity_id='.$ln['ln_type_entity_id'].'">'.number_format($ln['trs_count'], 0).'</a></td>';
+            echo '<td style="text-align: right;"><a href="/links?ln_status=0,1,2&ln_type_entity_id='.$ln['ln_type_entity_id'].'">'.echo_number($ln['trs_count']).'</a>'
+
+                //Private Link?
+                .( in_array($ln['ln_type_entity_id'] , $this->config->item('en_ids_4755')) ? '<span data-toggle="tooltip" title="'.$en_all_4463[4755]['m_name'].': '.$en_all_4463[4755]['m_desc'].'" data-placement="top" class="icon-block ' . echo_advance() . '">'.$en_all_4463[4755]['m_icon'].'</span>' : '<span class="icon-block ' . echo_advance() . '" data-toggle="tooltip" title="Public Information" data-placement="top"><i class="far fa-eye"></i></span>' )
+
+                //Info:
+                .( strlen($en_all_4593[$ln['ln_type_entity_id']]['m_desc']) > 0 ? '<i class="fal fa-info-circle icon-block" data-toggle="tooltip" title="'.number_format($ln['trs_count'], 0).' '.$en_all_4593[$ln['ln_type_entity_id']]['m_desc'].'" data-placement="top"></i>' : '<i class="fal fa-info-circle icon-block" data-toggle="tooltip" title="'.number_format($ln['trs_count'], 0).' [No Description Available Yet]" data-placement="top" style="color: #AAA;"></i>' ).'</td>';
 
             echo '</tr>';
 

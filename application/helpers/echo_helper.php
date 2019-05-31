@@ -1570,8 +1570,8 @@ function echo_en_stats_overview($cached_list, $report_name){
         ), array('en_child'), 0, 0, array(), 'COUNT(en_id) as en__child_count');
 
         $inner_ui .= '<tr>';
-        $inner_ui .= '<td style="text-align: left;"><span class="icon-block">' . $people_group['m_icon'] . '</span><a href="/entities/'.$group_en_id.'">' . $people_group['m_name'] . '</a> <i class="fal fa-info-circle" data-toggle="tooltip" data-placement="top" title="'.$people_group['m_desc'].'"></i></td>';
-        $inner_ui .= '<td style="text-align: right;"><a href="/links?ln_status=0,1,2&ln_type_entity_id='.join(',', $CI->config->item('en_ids_4592')).'&ln_parent_entity_id=' . $group_en_id . '">' . number_format($child_links[0]['en__child_count'], 0) . '</a></td>';
+        $inner_ui .= '<td style="text-align: left;"><span class="icon-block">' . $people_group['m_icon'] . '</span><a href="/entities/'.$group_en_id.'">' . $people_group['m_name'] . '</a></td>';
+        $inner_ui .= '<td style="text-align: right;"><a href="/links?ln_status=0,1,2&ln_type_entity_id='.join(',', $CI->config->item('en_ids_4592')).'&ln_parent_entity_id=' . $group_en_id . '">' . echo_number($child_links[0]['en__child_count'], 1) . '</a><i class="fal fa-info-circle icon-block" data-toggle="tooltip" data-placement="top" title="'.number_format($child_links[0]['en__child_count'], 0).' '.$people_group['m_desc'].'"></i></td>';
         $inner_ui .= '</tr>';
 
         $total_count += $child_links[0]['en__child_count'];
@@ -1636,8 +1636,8 @@ function echo_link_type_group_stats($group_en_id){
 
         //Display this status count:
         $ui .= '<tr>';
-        $ui .= '<td style="text-align: left;"><span style="width:29px; display: inline-block; text-align: center;">' . $en_m['m_icon'] . '</span><a href="/entities/'.$en_id.'">' . $en_m['m_name'] . '</a>'.$type_description.( strlen($en_m['m_desc']) > 0 ? ' <i class="fal fa-info-circle" data-toggle="tooltip" title="' . $en_m['m_desc'] . '" data-placement="top"></i>' : '' ).'</td>';
-        $ui .= '<td style="text-align: right;">' . ( $total_counts > 0 ? '<a href="/links?ln_status=0,1,2&ln_type_entity_id=' . $ln_type_filters . '"  data-toggle="tooltip" title="View Links" data-placement="top">' . number_format($total_counts, 0) . '</a>' : $total_counts ) . '</td>';
+        $ui .= '<td style="text-align: left;"><span style="width:29px; display: inline-block; text-align: center;">' . $en_m['m_icon'] . '</span><a href="/entities/'.$en_id.'">' . $en_m['m_name'] . '</a>'.$type_description.'</td>';
+        $ui .= '<td style="text-align: right;">' . ( $total_counts > 0 ? '<a href="/links?ln_status=0,1,2&ln_type_entity_id=' . $ln_type_filters . '">' . echo_number($total_counts) . '</a>' : $total_counts ) . '<i class="fal fa-info-circle icon-block" data-toggle="tooltip" title="' .number_format($total_counts, 0) .' ' . $en_m['m_desc'] . '" data-placement="top"></i>' . '</td>';
         $ui .= '</tr>';
 
     }
