@@ -144,7 +144,7 @@ function echo_url_embed($url, $full_message = null, $return_array = false)
             //Set the Clean URL:
             $clean_url = 'https://www.youtube.com/watch?v=' . $video_id;
 
-            //Inform User that this video has been sliced:
+            //Inform User that this is a sliced video
             if ($start_sec || $end_sec) {
                 $embed_html_code .= '<div class="video-prefix"><i class="fab fa-youtube"></i> Watch ' . (($start_sec && $end_sec) ? 'this <b>' . echo_time_minutes(($end_sec - $start_sec)) . '</b> video clip' : 'from <b>' . ($start_sec ? echo_time_minutes($start_sec) : 'start') . '</b> to <b>' . ($end_sec ? echo_time_minutes($end_sec) : 'end') . '</b>') . ':</div>';
             }

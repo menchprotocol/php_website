@@ -545,42 +545,6 @@ class Communication_model extends CI_Model
         }
 
 
-        //Will include the start and end time:
-        $slice_times = array();
-
-        //Valid URLs that are considered slicable in-case the /slice command is used:
-        $sliceable_urls = array('youtube.com');
-
-        if (in_array('/slice', $string_references['ref_commands'])) {
-
-            //Validate the format of this command:
-            $slice_times = explode(':', one_two_explode('/slice:', ' ', $output_body_message), 2);
-
-            if (intval($slice_times[0]) < 1 || intval($slice_times[1]) < 1 || strlen($slice_times[0]) != strlen(intval($slice_times[0])) || strlen($slice_times[1]) != strlen(intval($slice_times[1]))) {
-                //Not valid format!
-                return array(
-                    'status' => 0,
-                    'message' => 'Invalid format for /slice command. For example, to slice first 60 seconds use: /slice:0:60',
-                );
-            } elseif ((intval($slice_times[0]) + 3) > intval($slice_times[1])) {
-                //Not valid format!
-                return array(
-                    'status' => 0,
-                    'message' => 'Sliced clip must be at-least 3 seconds long',
-                );
-            } elseif (count($string_references['ref_entities']) < 1) {
-                return array(
-                    'status' => 0,
-                    'message' => 'The /slice command requires the message to reference an entity that links to ' . join(' or ', $sliceable_urls),
-                );
-            }
-
-            //All good, Remove command from input message:
-            $output_body_message = str_replace('/slice:' . $slice_times[0] . ':' . $slice_times[1], '', $output_body_message);
-
-            //More processing will happen as we go through referenced entity which is required for the /slice command
-
-        }
 
 
         /*
@@ -591,9 +555,6 @@ class Communication_model extends CI_Model
 
         //Will contain media from referenced entity:
         $fb_media_attachments = array();
-
-        //This must eventually turn TRUE if the /slice command is used:
-        $found_slicable_url = false;
 
         //We assume this message has text, unless its only content is an entity reference like "@123"
         $has_text = true;
@@ -656,30 +617,12 @@ class Communication_model extends CI_Model
                 if ($parent_en['ln_type_entity_id'] == 4257) {
 
                     //Embed URL
-                    //Do we have a Slice command AND is this Embed URL Slice-able?
-                    if (in_array('/slice', $string_references['ref_commands']) && includes_any($parent_en['ln_content'], $sliceable_urls)) {
-
-                        //We've found a slice-able URL:
-                        $found_slicable_url = true;
-
-                        if ($fb_messenger_format) {
-                            //Show custom Start/End URL:
-                            $ln_content = 'https://www.youtube.com/embed/' . extract_youtube_id($parent_en['ln_content']) . '?start=' . $slice_times[0] . '&end=' . $slice_times[1] . '&autoplay=1';
-                        } else {
-                            //Show HTML Embed Code for slice-able:
-                            $ln_content = '<div class="entity-appendix">' . echo_url_embed($parent_en['ln_content'], $parent_en['ln_content'], false) . '</div>';
-                        }
-
+                    if ($fb_messenger_format) {
+                        //Show simple URL:
+                        $ln_content = $parent_en['ln_content'];
                     } else {
-
-                        if ($fb_messenger_format) {
-                            //Show custom Start/End URL:
-                            $ln_content = $parent_en['ln_content'];
-                        } else {
-                            //Show HTML Embed Code:
-                            $ln_content = '<div class="entity-appendix">' . echo_url_embed($parent_en['ln_content']) . '</div>';
-                        }
-
+                        //Show HTML Embed Code:
+                        $ln_content = '<div class="entity-appendix">' . echo_url_embed($parent_en['ln_content']) . '</div>';
                     }
 
 
@@ -850,13 +793,6 @@ class Communication_model extends CI_Model
         }
 
 
-        //Did we meet /slice command requirements (if any) after processing the referenced entity?
-        if (in_array('/slice', $string_references['ref_commands']) && !$found_slicable_url) {
-            return array(
-                'status' => 0,
-                'message' => '/slice command requires the message to reference an entity that links to ' . join(' or ', $sliceable_urls),
-            );
-        }
 
 
         /*

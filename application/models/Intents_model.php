@@ -807,7 +807,10 @@ class Intents_model extends CI_Model
                         }
 
                     } else {
-                        //TODO Maybe this is an expert source that is a slice of another expert source? Go another level-up and check parents...
+
+                        //TODO Maybe this is an expert source that is a child of another expert source? Go another level-up and check parents...
+                        //We might want to discourage this via mining principles... Need to think more on this.
+
                     }
                 }
             }
