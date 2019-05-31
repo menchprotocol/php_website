@@ -11,7 +11,7 @@ defined('BASEPATH') OR exit('No direct script access allowed');
  *
  */
 
-//Generated 2019-05-31 15:19:31 PST
+//Generated 2019-05-31 15:22:33 PST
 
 //Mench Platform:
 $config['en_ids_4488'] = array(4396, 4428, 4463, 4506, 4527, 4534, 4757, 6212, 6403, 6418, 7161);
@@ -124,7 +124,7 @@ $config['en_all_7166'] = array(
     ),
 );
 
-//User Sent/Received Messages:
+//User Messages:
 $config['en_ids_7164'] = array(4287, 4460, 4547, 4548, 4549, 4550, 4551, 4552, 4553, 4554, 4555, 4556, 4557, 4570, 5967, 6563);
 $config['en_all_7164'] = array(
     4287 => array(
@@ -348,13 +348,13 @@ $config['en_all_7159'] = array(
     ),
     6255 => array(
         'm_icon' => '<i class="fas fa-walking"></i>',
-        'm_name' => 'Action Plan Progression Steps',
+        'm_name' => 'Steps Taken',
         'm_desc' => 'Key insights or actionable tasks completed by users that gets them closer to their set intentions.',
         'm_parents' => array(7159, 6275, 4527),
     ),
     7164 => array(
         'm_icon' => '<i class="far fa-comments"></i>',
-        'm_name' => 'User Sent/Received Messages',
+        'm_name' => 'User Messages',
         'm_desc' => 'Messages send and received by users that gets them closer to their set intentions.',
         'm_parents' => array(7159, 4527, 6221),
     ),
@@ -981,7 +981,7 @@ $config['en_all_6274'] = array(
     ),
 );
 
-//Action Plan Progression Steps:
+//Steps Taken:
 $config['en_ids_6255'] = array(4559, 6144, 6157, 6158, 6997);
 $config['en_all_6255'] = array(
     4559 => array(
@@ -1777,7 +1777,7 @@ $config['en_all_4755'] = array(
     ),
     4299 => array(
         'm_icon' => '<i class="far fa-id-badge"></i>',
-        'm_name' => 'User Set Profile Picture',
+        'm_name' => 'User Updated Picture',
         'm_desc' => '',
         'm_parents' => array(4595, 6222, 4755, 4593),
     ),
@@ -2178,7 +2178,7 @@ $config['en_all_4595'] = array(
     ),
     4299 => array(
         'm_icon' => '<i class="far fa-id-badge"></i>',
-        'm_name' => 'User Set Profile Picture',
+        'm_name' => 'User Updated Picture',
         'm_desc' => '25',
         'm_parents' => array(4595, 6222, 4755, 4593),
     ),
@@ -2704,7 +2704,7 @@ $config['en_all_4593'] = array(
     ),
     4299 => array(
         'm_icon' => '<i class="far fa-id-badge"></i>',
-        'm_name' => 'User Set Profile Picture',
+        'm_name' => 'User Updated Picture',
         'm_desc' => '',
         'm_parents' => array(4595, 6222, 4755, 4593),
     ),
