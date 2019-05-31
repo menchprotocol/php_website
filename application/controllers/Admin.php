@@ -306,7 +306,7 @@ class Admin extends CI_Controller
 
         echo $expert_sources;
 
-        echo '<tr style="font-weight: bold;">';
+        echo '<tr style="font-weight: bold;" class="' . echo_advance() . '">';
         echo '<td style="text-align: left;"><span class="icon-block"><i class="fas fa-asterisk"></i></span>Totals</td>';
         foreach ($total_counts as $status_num => $count) {
             echo '<td style="text-align: right;" '.( $status_num!=2 ? ' class="' . echo_advance() . '"' : '' ).'>' . echo_number($count) . '<i class="fal fa-info-circle icon-block" data-toggle="tooltip" title="'.number_format($count, 0).' '.$en_all_7161[3000]['m_name'].' are '.$fixed_fields['en_status'][$status_num]['s_name'] . '" data-placement="top"></i>' . '</td>';
