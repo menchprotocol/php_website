@@ -189,7 +189,7 @@ class Admin extends CI_Controller
 
         //Show expand button:
         echo '<tr class="hiddenverbs">';
-        echo '<td style="text-align: left;" colspan="2"><span style="width:29px; display: inline-block; text-align: center;"><i class="fas fa-plus-circle"></i></span><a href="javascript:void(0);" onclick="$(\'.hiddenverbs\').toggleClass(\'hidden\')">List All '.$en_all_7161[5008]['m_name'].'</a></td>';
+        echo '<td style="text-align: left;" colspan="2"><span style="width:29px; display: inline-block; text-align: center;"><i class="fas fa-plus-circle"></i></span><a href="javascript:void(0);" onclick="$(\'.hiddenverbs\').toggleClass(\'hidden\')">List All</a></td>';
         echo '</tr>';
 
         echo '</table>';

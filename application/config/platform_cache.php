@@ -11,7 +11,7 @@ defined('BASEPATH') OR exit('No direct script access allowed');
  *
  */
 
-//Generated 2019-05-31 15:44:55 PST
+//Generated 2019-05-31 16:24:37 PST
 
 //Mench Platform:
 $config['en_ids_4488'] = array(4396, 4428, 4463, 4506, 4527, 4534, 4757, 6212, 6403, 6418, 7161);
@@ -125,13 +125,37 @@ $config['en_all_7166'] = array(
 );
 
 //User Messages:
-$config['en_ids_7164'] = array(4287, 4460, 4547, 4548, 4549, 4550, 4551, 4552, 4553, 4554, 4555, 4556, 4557, 4570, 5967, 6563);
+$config['en_ids_7164'] = array(4268, 4278, 4279, 4287, 4299, 4460, 4547, 4548, 4549, 4550, 4551, 4552, 4553, 4554, 4555, 4556, 4557, 4570, 4577, 5967, 6563);
 $config['en_all_7164'] = array(
+    4268 => array(
+        'm_icon' => '<i class="fab fa-facebook-messenger"></i>',
+        'm_name' => 'User Sent Postback',
+        'm_desc' => '',
+        'm_parents' => array(7164, 4277, 4595, 4755, 4593),
+    ),
+    4278 => array(
+        'm_icon' => '<i class="far fa-eye"></i>',
+        'm_name' => 'User Sent Affirmation',
+        'm_desc' => '',
+        'm_parents' => array(7164, 4277, 4595, 4755, 4593),
+    ),
+    4279 => array(
+        'm_icon' => '<i class="fas fa-check"></i>',
+        'm_name' => 'User Received Message',
+        'm_desc' => '',
+        'm_parents' => array(7164, 4280, 4595, 4755, 4593),
+    ),
     4287 => array(
         'm_icon' => '<i class="fal fa-comment-exclamation"></i>',
         'm_name' => 'User Sent Unknown',
         'm_desc' => '',
         'm_parents' => array(7164, 4595, 4755, 4277, 4593),
+    ),
+    4299 => array(
+        'm_icon' => '<i class="far fa-id-badge"></i>',
+        'm_name' => 'User Sent Profile Photo',
+        'm_desc' => '',
+        'm_parents' => array(7164, 4277, 4595, 6222, 4755, 4593),
     ),
     4460 => array(
         'm_icon' => '<i class="far fa-check"></i>',
@@ -210,6 +234,12 @@ $config['en_all_7164'] = array(
         'm_name' => 'User Received HTML',
         'm_desc' => '',
         'm_parents' => array(7164, 4595, 4755, 4593, 4280),
+    ),
+    4577 => array(
+        'm_icon' => '<i class="far fa-shield-check"></i>',
+        'm_name' => 'User Sent Access',
+        'm_desc' => '',
+        'm_parents' => array(7164, 4277, 4755, 4595, 4593),
     ),
     5967 => array(
         'm_icon' => '<i class="fal fa-envelope-open"></i>',
@@ -770,7 +800,7 @@ $config['en_all_4463'] = array(
     ),
 );
 
-//User Steps Reset:
+//User Step Reset:
 $config['en_ids_6415'] = array(4559, 6140, 6143, 6144, 6154, 6155, 6157, 6158, 6997);
 $config['en_all_6415'] = array(
     4559 => array(
@@ -1348,14 +1378,32 @@ $config['en_all_6123'] = array(
     ),
 );
 
-//User Sent Message:
-$config['en_ids_4277'] = array(4287, 4460, 4547, 4548, 4549, 4550, 4551, 4557);
+//User Sent Messages:
+$config['en_ids_4277'] = array(4268, 4278, 4287, 4299, 4460, 4547, 4548, 4549, 4550, 4551, 4557, 4577);
 $config['en_all_4277'] = array(
+    4268 => array(
+        'm_icon' => '<i class="fab fa-facebook-messenger"></i>',
+        'm_name' => 'User Sent Postback',
+        'm_desc' => '',
+        'm_parents' => array(7164, 4277, 4595, 4755, 4593),
+    ),
+    4278 => array(
+        'm_icon' => '<i class="far fa-eye"></i>',
+        'm_name' => 'User Sent Affirmation',
+        'm_desc' => '',
+        'm_parents' => array(7164, 4277, 4595, 4755, 4593),
+    ),
     4287 => array(
         'm_icon' => '<i class="fal fa-comment-exclamation"></i>',
         'm_name' => 'User Sent Unknown',
         'm_desc' => '',
         'm_parents' => array(7164, 4595, 4755, 4277, 4593),
+    ),
+    4299 => array(
+        'm_icon' => '<i class="far fa-id-badge"></i>',
+        'm_name' => 'User Sent Profile Photo',
+        'm_desc' => '',
+        'm_parents' => array(7164, 4277, 4595, 6222, 4755, 4593),
     ),
     4460 => array(
         'm_icon' => '<i class="far fa-check"></i>',
@@ -1399,9 +1447,15 @@ $config['en_all_4277'] = array(
         'm_desc' => '',
         'm_parents' => array(7164, 4595, 4755, 4593, 4277),
     ),
+    4577 => array(
+        'm_icon' => '<i class="far fa-shield-check"></i>',
+        'm_name' => 'User Sent Access',
+        'm_desc' => '',
+        'm_parents' => array(7164, 4277, 4755, 4595, 4593),
+    ),
 );
 
-//User Sent/Received Media Message:
+//User Media Message:
 $config['en_ids_6102'] = array(4548, 4549, 4550, 4551, 4553, 4554, 4555, 4556);
 $config['en_all_6102'] = array(
     4548 => array(
@@ -1454,9 +1508,15 @@ $config['en_all_6102'] = array(
     ),
 );
 
-//User Received Message:
-$config['en_ids_4280'] = array(4552, 4553, 4554, 4555, 4556, 4570, 5967, 6563);
+//User Received Messages:
+$config['en_ids_4280'] = array(4279, 4552, 4553, 4554, 4555, 4556, 4570, 5967, 6563);
 $config['en_all_4280'] = array(
+    4279 => array(
+        'm_icon' => '<i class="fas fa-check"></i>',
+        'm_name' => 'User Received Message',
+        'm_desc' => '',
+        'm_parents' => array(7164, 4280, 4595, 4755, 4593),
+    ),
     4552 => array(
         'm_icon' => '<i class="fal fa-align-left"></i>',
         'm_name' => 'User Received Text',
@@ -1729,9 +1789,9 @@ $config['en_all_4755'] = array(
     ),
     4268 => array(
         'm_icon' => '<i class="fab fa-facebook-messenger"></i>',
-        'm_name' => 'User Messenger Postback',
+        'm_name' => 'User Sent Postback',
         'm_desc' => '',
-        'm_parents' => array(4595, 4755, 4593),
+        'm_parents' => array(7164, 4277, 4595, 4755, 4593),
     ),
     4269 => array(
         'm_icon' => '<i class="fas fa-sign-in"></i>',
@@ -1746,16 +1806,16 @@ $config['en_all_4755'] = array(
         'm_parents' => array(4595, 6554, 4755, 4593),
     ),
     4278 => array(
-        'm_icon' => '<i class="fas fa-check-double"></i>',
-        'm_name' => 'User Message Read',
+        'm_icon' => '<i class="far fa-eye"></i>',
+        'm_name' => 'User Sent Affirmation',
         'm_desc' => '',
-        'm_parents' => array(4595, 4755, 4593),
+        'm_parents' => array(7164, 4277, 4595, 4755, 4593),
     ),
     4279 => array(
         'm_icon' => '<i class="fas fa-check"></i>',
-        'm_name' => 'User Message Delivered',
+        'm_name' => 'User Received Message',
         'm_desc' => '',
-        'm_parents' => array(4595, 4755, 4593),
+        'm_parents' => array(7164, 4280, 4595, 4755, 4593),
     ),
     4282 => array(
         'm_icon' => '<i class="fas fa-eye"></i>',
@@ -1777,9 +1837,9 @@ $config['en_all_4755'] = array(
     ),
     4299 => array(
         'm_icon' => '<i class="far fa-id-badge"></i>',
-        'm_name' => 'User Updated Picture',
+        'm_name' => 'User Sent Profile Photo',
         'm_desc' => '',
-        'm_parents' => array(4595, 6222, 4755, 4593),
+        'm_parents' => array(7164, 4277, 4595, 6222, 4755, 4593),
     ),
     4460 => array(
         'm_icon' => '<i class="far fa-check"></i>',
@@ -1866,10 +1926,10 @@ $config['en_all_4755'] = array(
         'm_parents' => array(7164, 4595, 4755, 4593, 4280),
     ),
     4577 => array(
-        'm_icon' => '<i class="far fa-check-circle"></i>',
-        'm_name' => 'User Request Accepted',
+        'm_icon' => '<i class="far fa-shield-check"></i>',
+        'm_name' => 'User Sent Access',
         'm_desc' => '',
-        'm_parents' => array(4755, 4595, 4593),
+        'm_parents' => array(7164, 4277, 4755, 4595, 4593),
     ),
     4783 => array(
         'm_icon' => '<i class="far fa-phone"></i>',
@@ -1951,7 +2011,7 @@ $config['en_all_4755'] = array(
     ),
     6415 => array(
         'm_icon' => '<i class="far fa-function"></i>',
-        'm_name' => 'User Steps Reset',
+        'm_name' => 'User Step Reset',
         'm_desc' => '',
         'm_parents' => array(4595, 4755, 6418, 4593, 4527, 6414),
     ),
@@ -2130,9 +2190,9 @@ $config['en_all_4595'] = array(
     ),
     4268 => array(
         'm_icon' => '<i class="fab fa-facebook-messenger"></i>',
-        'm_name' => 'User Messenger Postback',
+        'm_name' => 'User Sent Postback',
         'm_desc' => '50',
-        'm_parents' => array(4595, 4755, 4593),
+        'm_parents' => array(7164, 4277, 4595, 4755, 4593),
     ),
     4269 => array(
         'm_icon' => '<i class="fas fa-sign-in"></i>',
@@ -2147,16 +2207,16 @@ $config['en_all_4595'] = array(
         'm_parents' => array(4595, 6554, 4755, 4593),
     ),
     4278 => array(
-        'm_icon' => '<i class="fas fa-check-double"></i>',
-        'm_name' => 'User Message Read',
+        'm_icon' => '<i class="far fa-eye"></i>',
+        'm_name' => 'User Sent Affirmation',
         'm_desc' => '1',
-        'm_parents' => array(4595, 4755, 4593),
+        'm_parents' => array(7164, 4277, 4595, 4755, 4593),
     ),
     4279 => array(
         'm_icon' => '<i class="fas fa-check"></i>',
-        'm_name' => 'User Message Delivered',
+        'm_name' => 'User Received Message',
         'm_desc' => '1',
-        'm_parents' => array(4595, 4755, 4593),
+        'm_parents' => array(7164, 4280, 4595, 4755, 4593),
     ),
     4282 => array(
         'm_icon' => '<i class="fas fa-eye"></i>',
@@ -2178,9 +2238,9 @@ $config['en_all_4595'] = array(
     ),
     4299 => array(
         'm_icon' => '<i class="far fa-id-badge"></i>',
-        'm_name' => 'User Updated Picture',
+        'm_name' => 'User Sent Profile Photo',
         'm_desc' => '25',
-        'm_parents' => array(4595, 6222, 4755, 4593),
+        'm_parents' => array(7164, 4277, 4595, 6222, 4755, 4593),
     ),
     4318 => array(
         'm_icon' => '<i class="far fa-clock"></i>',
@@ -2279,10 +2339,10 @@ $config['en_all_4595'] = array(
         'm_parents' => array(7164, 4595, 4755, 4593, 4280),
     ),
     4577 => array(
-        'm_icon' => '<i class="far fa-check-circle"></i>',
-        'm_name' => 'User Request Accepted',
+        'm_icon' => '<i class="far fa-shield-check"></i>',
+        'm_name' => 'User Sent Access',
         'm_desc' => '50',
-        'm_parents' => array(4755, 4595, 4593),
+        'm_parents' => array(7164, 4277, 4755, 4595, 4593),
     ),
     4601 => array(
         'm_icon' => '<i class="far fa-tags"></i>',
@@ -2460,7 +2520,7 @@ $config['en_all_4595'] = array(
     ),
     6415 => array(
         'm_icon' => '<i class="far fa-function"></i>',
-        'm_name' => 'User Steps Reset',
+        'm_name' => 'User Step Reset',
         'm_desc' => '5',
         'm_parents' => array(4595, 4755, 6418, 4593, 4527, 6414),
     ),
@@ -2656,9 +2716,9 @@ $config['en_all_4593'] = array(
     ),
     4268 => array(
         'm_icon' => '<i class="fab fa-facebook-messenger"></i>',
-        'm_name' => 'User Messenger Postback',
+        'm_name' => 'User Sent Postback',
         'm_desc' => '',
-        'm_parents' => array(4595, 4755, 4593),
+        'm_parents' => array(7164, 4277, 4595, 4755, 4593),
     ),
     4269 => array(
         'm_icon' => '<i class="fas fa-sign-in"></i>',
@@ -2673,16 +2733,16 @@ $config['en_all_4593'] = array(
         'm_parents' => array(4595, 6554, 4755, 4593),
     ),
     4278 => array(
-        'm_icon' => '<i class="fas fa-check-double"></i>',
-        'm_name' => 'User Message Read',
+        'm_icon' => '<i class="far fa-eye"></i>',
+        'm_name' => 'User Sent Affirmation',
         'm_desc' => '',
-        'm_parents' => array(4595, 4755, 4593),
+        'm_parents' => array(7164, 4277, 4595, 4755, 4593),
     ),
     4279 => array(
         'm_icon' => '<i class="fas fa-check"></i>',
-        'm_name' => 'User Message Delivered',
+        'm_name' => 'User Received Message',
         'm_desc' => '',
-        'm_parents' => array(4595, 4755, 4593),
+        'm_parents' => array(7164, 4280, 4595, 4755, 4593),
     ),
     4282 => array(
         'm_icon' => '<i class="fas fa-eye"></i>',
@@ -2704,9 +2764,9 @@ $config['en_all_4593'] = array(
     ),
     4299 => array(
         'm_icon' => '<i class="far fa-id-badge"></i>',
-        'm_name' => 'User Updated Picture',
+        'm_name' => 'User Sent Profile Photo',
         'm_desc' => '',
-        'm_parents' => array(4595, 6222, 4755, 4593),
+        'm_parents' => array(7164, 4277, 4595, 6222, 4755, 4593),
     ),
     4318 => array(
         'm_icon' => '<i class="far fa-clock"></i>',
@@ -2805,10 +2865,10 @@ $config['en_all_4593'] = array(
         'm_parents' => array(7164, 4595, 4755, 4593, 4280),
     ),
     4577 => array(
-        'm_icon' => '<i class="far fa-check-circle"></i>',
-        'm_name' => 'User Request Accepted',
+        'm_icon' => '<i class="far fa-shield-check"></i>',
+        'm_name' => 'User Sent Access',
         'm_desc' => '',
-        'm_parents' => array(4755, 4595, 4593),
+        'm_parents' => array(7164, 4277, 4755, 4595, 4593),
     ),
     4601 => array(
         'm_icon' => '<i class="far fa-tags"></i>',
@@ -2986,7 +3046,7 @@ $config['en_all_4593'] = array(
     ),
     6415 => array(
         'm_icon' => '<i class="far fa-function"></i>',
-        'm_name' => 'User Steps Reset',
+        'm_name' => 'User Step Reset',
         'm_desc' => 'Removes certain links types as defined by its children from a Student\'s Action Plan. Currently only available for Miners.',
         'm_parents' => array(4595, 4755, 6418, 4593, 4527, 6414),
     ),
