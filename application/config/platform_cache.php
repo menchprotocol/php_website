@@ -11,7 +11,7 @@ defined('BASEPATH') OR exit('No direct script access allowed');
  *
  */
 
-//Generated 2019-05-31 16:24:37 PST
+//Generated 2019-05-31 16:44:25 PST
 
 //Mench Platform:
 $config['en_ids_4488'] = array(4396, 4428, 4463, 4506, 4527, 4534, 4757, 6212, 6403, 6418, 7161);
@@ -125,7 +125,7 @@ $config['en_all_7166'] = array(
 );
 
 //User Messages:
-$config['en_ids_7164'] = array(4268, 4278, 4279, 4287, 4299, 4460, 4547, 4548, 4549, 4550, 4551, 4552, 4553, 4554, 4555, 4556, 4557, 4570, 4577, 5967, 6563);
+$config['en_ids_7164'] = array(4268, 4278, 4279, 4287, 4299, 4460, 4547, 4548, 4549, 4550, 4551, 4552, 4553, 4554, 4555, 4556, 4557, 4570, 4577, 5967, 6389, 6563);
 $config['en_all_7164'] = array(
     4268 => array(
         'm_icon' => '<i class="fab fa-facebook-messenger"></i>',
@@ -246,6 +246,12 @@ $config['en_all_7164'] = array(
         'm_name' => 'User Received Email',
         'm_desc' => '',
         'm_parents' => array(7164, 4595, 4755, 4593, 4280),
+    ),
+    6389 => array(
+        'm_icon' => '<i class="far fa-minus-circle"></i>',
+        'm_name' => 'User Sent Incomplete Profile',
+        'm_desc' => '',
+        'm_parents' => array(7164, 4277, 4595, 4755, 4593),
     ),
     6563 => array(
         'm_icon' => '<i class="far fa-question"></i>',
@@ -1379,7 +1385,7 @@ $config['en_all_6123'] = array(
 );
 
 //User Sent Messages:
-$config['en_ids_4277'] = array(4268, 4278, 4287, 4299, 4460, 4547, 4548, 4549, 4550, 4551, 4557, 4577);
+$config['en_ids_4277'] = array(4268, 4278, 4287, 4299, 4460, 4547, 4548, 4549, 4550, 4551, 4557, 4577, 6389);
 $config['en_all_4277'] = array(
     4268 => array(
         'm_icon' => '<i class="fab fa-facebook-messenger"></i>',
@@ -1452,6 +1458,12 @@ $config['en_all_4277'] = array(
         'm_name' => 'User Sent Access',
         'm_desc' => '',
         'm_parents' => array(7164, 4277, 4755, 4595, 4593),
+    ),
+    6389 => array(
+        'm_icon' => '<i class="far fa-minus-circle"></i>',
+        'm_name' => 'User Sent Incomplete Profile',
+        'm_desc' => '',
+        'm_parents' => array(7164, 4277, 4595, 4755, 4593),
     ),
 );
 
@@ -2005,9 +2017,9 @@ $config['en_all_4755'] = array(
     ),
     6389 => array(
         'm_icon' => '<i class="far fa-minus-circle"></i>',
-        'm_name' => 'User Profile Unavailable',
+        'm_name' => 'User Sent Incomplete Profile',
         'm_desc' => '',
-        'm_parents' => array(4595, 4755, 4593),
+        'm_parents' => array(7164, 4277, 4595, 4755, 4593),
     ),
     6415 => array(
         'm_icon' => '<i class="far fa-function"></i>',
@@ -2514,9 +2526,9 @@ $config['en_all_4595'] = array(
     ),
     6389 => array(
         'm_icon' => '<i class="far fa-minus-circle"></i>',
-        'm_name' => 'User Profile Unavailable',
+        'm_name' => 'User Sent Incomplete Profile',
         'm_desc' => '1',
-        'm_parents' => array(4595, 4755, 4593),
+        'm_parents' => array(7164, 4277, 4595, 4755, 4593),
     ),
     6415 => array(
         'm_icon' => '<i class="far fa-function"></i>',
@@ -3040,9 +3052,9 @@ $config['en_all_4593'] = array(
     ),
     6389 => array(
         'm_icon' => '<i class="far fa-minus-circle"></i>',
-        'm_name' => 'User Profile Unavailable',
+        'm_name' => 'User Sent Incomplete Profile',
         'm_desc' => 'When we cannot fetch user profile data via Messenger API, either because user has not linked their Facebook to Messenger or because they did not authorize Mench to access',
-        'm_parents' => array(4595, 4755, 4593),
+        'm_parents' => array(7164, 4277, 4595, 4755, 4593),
     ),
     6415 => array(
         'm_icon' => '<i class="far fa-function"></i>',
