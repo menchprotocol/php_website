@@ -11,7 +11,7 @@ defined('BASEPATH') OR exit('No direct script access allowed');
  *
  */
 
-//Generated 2019-05-31 12:21:34 PST
+//Generated 2019-05-31 12:27:46 PST
 
 //Mench Platform:
 $config['en_ids_4488'] = array(4396, 4428, 4463, 4506, 4527, 4534, 4757, 6212, 6403, 6418, 7161);
@@ -78,7 +78,7 @@ $config['en_all_4488'] = array(
     ),
     7161 => array(
         'm_icon' => '<i class="far fa-tachometer-alt-fast"></i>',
-        'm_name' => 'Platform Dashboard',
+        'm_name' => 'Mench Dashboard',
         'm_desc' => 'Key metrics of Mench\'s open-source platform',
         'm_parents' => array(4527, 4488),
     ),
@@ -260,7 +260,7 @@ $config['en_all_6186'] = array(
     ),
 );
 
-//Platform Dashboard:
+//Mench Dashboard:
 $config['en_ids_7161'] = array(3000, 4432, 4593, 4737, 5008, 6177, 6186, 6676, 7159, 7162, 7163, 7166, 7167);
 $config['en_all_7161'] = array(
     3000 => array(
