@@ -11,7 +11,7 @@ defined('BASEPATH') OR exit('No direct script access allowed');
  *
  */
 
-//Generated 2019-05-29 21:06:12 PST
+//Generated 2019-05-31 10:58:24 PST
 
 //Entity Mining Stats:
 $config['en_ids_7167'] = array(4251, 4592);
@@ -242,7 +242,7 @@ $config['en_all_7161'] = array(
     ),
     7159 => array(
         'm_icon' => '<i class="far fa-chart-pie"></i>',
-        'm_name' => 'User Engagements',
+        'm_name' => 'User Engagements Stats',
         'm_desc' => '',
         'm_parents' => array(7161, 4527),
     ),
@@ -272,7 +272,7 @@ $config['en_all_7161'] = array(
     ),
 );
 
-//User Engagements:
+//User Engagements Stats:
 $config['en_ids_7159'] = array(4235, 6255, 7164);
 $config['en_all_7159'] = array(
     4235 => array(
@@ -323,7 +323,7 @@ $config['en_all_6194'] = array(
         'm_parents' => array(6213, 6194, 4341),
     ),
     4371 => array(
-        'm_icon' => '<i class="fas fa-link rotate90"></i>',
+        'm_icon' => '<i class="fas fa-link"></i>',
         'm_name' => 'Link Parent Link',
         'm_desc' => '',
         'm_parents' => array(6213, 6194, 4341),
@@ -899,7 +899,7 @@ $config['en_all_2738'] = array(
     ),
 );
 
-//Action Plan Progression Automated:
+//Action Plan Step Automated:
 $config['en_ids_6274'] = array(4559, 6158);
 $config['en_all_6274'] = array(
     4559 => array(
@@ -951,7 +951,7 @@ $config['en_all_6255'] = array(
     ),
 );
 
-//Action Plan Progression Double-Steps:
+//Action Plan Double-Steps:
 $config['en_ids_6244'] = array(6144, 6157, 6997);
 $config['en_all_6244'] = array(
     6144 => array(

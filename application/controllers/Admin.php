@@ -111,11 +111,6 @@ class Admin extends CI_Controller
 
 
 
-        //Intent Mining Stats
-        echo echo_link_type_group_stats(7166);
-
-
-
         //Intent Types:
         echo '<table class="table table-condensed table-striped stats-table mini-stats-table ">';
 
@@ -191,11 +186,24 @@ class Admin extends CI_Controller
             echo '<td style="text-align: right;"><a href="/links?ln_type_entity_id=4250&in_status=0,1,2&in_verb_entity_id='.$verb['in_verb_entity_id'].'">'.echo_number($verb['totals']).'</a><i class="fal fa-info-circle icon-block" data-toggle="tooltip" title="'.number_format($verb['totals'],0).' Intent'.echo__s($verb['totals']).' help you '.$verb['en_name'].'" data-placement="top"></i></td>';
             echo '</tr>';
         }
-        echo '</table>';
+
         //Show expand button:
-        echo '<div style="margin:-10px 0 0 0; padding: 0;"><a href="javascript:void(0);" onclick="$(\'.hiddenverbs\').toggleClass(\'hidden\')" class="hiddenverbs"><i class="fal fa-plus-circle"></i> See All '.number_format(count($in_verbs),0).' '.$en_all_7161[5008]['m_name'].'</a></div>';
+        echo '<tr class="hiddenverbs">';
+        echo '<td style="text-align: left;" colspan="2"><span style="width:29px; display: inline-block; text-align: center;"><i class="fas fa-plus-circle"></i></span><a href="javascript:void(0);" onclick="$(\'.hiddenverbs\').toggleClass(\'hidden\')">List All '.$en_all_7161[5008]['m_name'].'</a></td>';
+        echo '</tr>';
+
+        echo '</table>';
+
+
+
+
+        //Intent Mining Stats
+        echo echo_link_type_group_stats(7166);
 
     }
+
+
+
 
 
     function extra_stats_entities(){
@@ -235,8 +243,16 @@ class Admin extends CI_Controller
 
 
 
-        //Entity Mining Stats
-        echo echo_link_type_group_stats(7167);
+
+        //Verified Accounts
+        echo echo_en_stats_overview($this->config->item('en_all_4432'), $en_all_7161[4432]['m_name']);
+
+
+        //Mench Contributors
+        //echo echo_en_stats_overview($this->config->item('en_all_6827'), $en_all_7161[6827]['m_name']);
+
+
+
 
 
         //Expert Sources:
@@ -312,12 +328,9 @@ class Admin extends CI_Controller
 
 
 
-        //Verified Accounts
-        echo echo_en_stats_overview($this->config->item('en_all_4432'), $en_all_7161[4432]['m_name']);
 
-
-        //Mench Contributors
-        //echo echo_en_stats_overview($this->config->item('en_all_6827'), $en_all_7161[6827]['m_name']);
+        //Entity Mining Stats
+        echo echo_link_type_group_stats(7167);
 
     }
     function extra_stats_links(){
@@ -378,7 +391,7 @@ class Admin extends CI_Controller
 
         //Fetch top certified miners vs top users:
         $days_ago = 7; //Both miners and users
-        $days_term = ( !is_null($days_ago) ? 'Last '.$days_ago.'-Day' : 'All-Time' );
+        $days_term = ( !is_null($days_ago) ? 'Last '.$days_ago.' Days' : 'All-Time' );
         $certified_miners_en_ids = array();
         foreach($this->Links_model->ln_fetch(array(
             'ln_parent_entity_id' => 1308, //Mench Certified Miners
@@ -407,7 +420,7 @@ class Admin extends CI_Controller
         echo '<table class="table table-condensed table-striped stats-table">';
 
         echo '<tr class="panel-title down-border">';
-        echo '<td style="text-align: left;">'.$days_term.' '.$en_all_7161[7162]['m_name'].'</td>';
+        echo '<td style="text-align: left;">'.$en_all_7161[7162]['m_name'].' ['.$days_term.']</td>';
         echo '<td style="text-align: right;">Points</td>';
         echo '</tr>';
 
@@ -445,7 +458,7 @@ class Admin extends CI_Controller
         echo '<table class="table table-condensed table-striped stats-table">';
 
         echo '<tr class="panel-title down-border">';
-        echo '<td style="text-align: left;">'.( !is_null($days_ago) ? 'Last '.$days_ago.'-Day ' : 'All-Time ' ).$en_all_7161[7163]['m_name'].'</td>';
+        echo '<td style="text-align: left;">'.$en_all_7161[7163]['m_name'].' ['.$days_term.']</td>';
         echo '<td style="text-align: right;">Points</td>';
         echo '</tr>';
 
