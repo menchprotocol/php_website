@@ -11,7 +11,7 @@ defined('BASEPATH') OR exit('No direct script access allowed');
  *
  */
 
-//Generated 2019-05-31 15:38:24 PST
+//Generated 2019-05-31 15:44:55 PST
 
 //Mench Platform:
 $config['en_ids_4488'] = array(4396, 4428, 4463, 4506, 4527, 4534, 4757, 6212, 6403, 6418, 7161);
@@ -419,7 +419,7 @@ $config['en_all_6194'] = array(
     ),
 );
 
-//Step Unlocked:
+//User Step Unlocked:
 $config['en_ids_6997'] = array(6907, 6914);
 $config['en_all_6997'] = array(
     6907 => array(
@@ -770,30 +770,30 @@ $config['en_all_4463'] = array(
     ),
 );
 
-//Steps Reset:
+//User Steps Reset:
 $config['en_ids_6415'] = array(4559, 6140, 6143, 6144, 6154, 6155, 6157, 6158, 6997);
 $config['en_all_6415'] = array(
     4559 => array(
         'm_icon' => '<i class="far fa-thumbs-up"></i>',
-        'm_name' => 'Step Got Messages',
+        'm_name' => 'User Step Messages',
         'm_desc' => '',
         'm_parents' => array(4595, 6415, 6274, 6255, 4755, 6146, 4593),
     ),
     6140 => array(
         'm_icon' => '<i class="far fa-route"></i>',
-        'm_name' => 'Step Routed',
+        'm_name' => 'User Step Routed',
         'm_desc' => '',
         'm_parents' => array(4595, 6415, 6410, 6288, 4229, 4755, 4593),
     ),
     6143 => array(
         'm_icon' => '<i class="far fa-minus-square"></i>',
-        'm_name' => 'Step Skipped',
+        'm_name' => 'User Step Skipped',
         'm_desc' => '',
         'm_parents' => array(4595, 6415, 6146, 4755, 4593),
     ),
     6144 => array(
         'm_icon' => '<i class="far fa-check-square"></i>',
-        'm_name' => 'Step Completed',
+        'm_name' => 'User Step Completed',
         'm_desc' => '',
         'm_parents' => array(4595, 6415, 6255, 6244, 4755, 6146, 4593),
     ),
@@ -811,19 +811,19 @@ $config['en_all_6415'] = array(
     ),
     6157 => array(
         'm_icon' => '<i class="far fa-check"></i>',
-        'm_name' => 'Step Answered',
+        'm_name' => 'User Step Answered',
         'm_desc' => '',
         'm_parents' => array(4595, 6415, 6288, 6255, 6244, 6146, 4755, 4593, 4460),
     ),
     6158 => array(
         'm_icon' => '<i class="far fa-thumbs-up"></i>',
-        'm_name' => 'Step Got Outcome',
+        'm_name' => 'User Step Outcome',
         'm_desc' => '',
         'm_parents' => array(4595, 6415, 6274, 6255, 4593, 4755, 6146),
     ),
     6997 => array(
         'm_icon' => '<i class="far fa-lock-open"></i>',
-        'm_name' => 'Step Unlocked',
+        'm_name' => 'User Step Unlocked',
         'm_desc' => '',
         'm_parents' => array(4527, 6244, 6415, 6255, 4595, 4593, 4755, 6146),
     ),
@@ -852,7 +852,7 @@ $config['en_all_6410'] = array(
     ),
     6140 => array(
         'm_icon' => '<i class="far fa-route"></i>',
-        'm_name' => 'Step Routed',
+        'm_name' => 'User Step Routed',
         'm_desc' => 'Determined by this function which step should be unlocked',
         'm_parents' => array(4595, 6415, 6410, 6288, 4229, 4755, 4593),
     ),
@@ -969,13 +969,13 @@ $config['en_ids_6274'] = array(4559, 6158);
 $config['en_all_6274'] = array(
     4559 => array(
         'm_icon' => '<i class="far fa-thumbs-up"></i>',
-        'm_name' => 'Step Got Messages',
+        'm_name' => 'User Step Messages',
         'm_desc' => '',
         'm_parents' => array(4595, 6415, 6274, 6255, 4755, 6146, 4593),
     ),
     6158 => array(
         'm_icon' => '<i class="far fa-thumbs-up"></i>',
-        'm_name' => 'Step Got Outcome',
+        'm_name' => 'User Step Outcome',
         'm_desc' => '',
         'm_parents' => array(4595, 6415, 6274, 6255, 4593, 4755, 6146),
     ),
@@ -986,31 +986,31 @@ $config['en_ids_6255'] = array(4559, 6144, 6157, 6158, 6997);
 $config['en_all_6255'] = array(
     4559 => array(
         'm_icon' => '<i class="far fa-thumbs-up"></i>',
-        'm_name' => 'Step Got Messages',
+        'm_name' => 'User Step Messages',
         'm_desc' => '',
         'm_parents' => array(4595, 6415, 6274, 6255, 4755, 6146, 4593),
     ),
     6144 => array(
         'm_icon' => '<i class="far fa-check-square"></i>',
-        'm_name' => 'Step Completed',
+        'm_name' => 'User Step Completed',
         'm_desc' => '',
         'm_parents' => array(4595, 6415, 6255, 6244, 4755, 6146, 4593),
     ),
     6157 => array(
         'm_icon' => '<i class="far fa-check"></i>',
-        'm_name' => 'Step Answered',
+        'm_name' => 'User Step Answered',
         'm_desc' => '',
         'm_parents' => array(4595, 6415, 6288, 6255, 6244, 6146, 4755, 4593, 4460),
     ),
     6158 => array(
         'm_icon' => '<i class="far fa-thumbs-up"></i>',
-        'm_name' => 'Step Got Outcome',
+        'm_name' => 'User Step Outcome',
         'm_desc' => '',
         'm_parents' => array(4595, 6415, 6274, 6255, 4593, 4755, 6146),
     ),
     6997 => array(
         'm_icon' => '<i class="far fa-lock-open"></i>',
-        'm_name' => 'Step Unlocked',
+        'm_name' => 'User Step Unlocked',
         'm_desc' => '',
         'm_parents' => array(4527, 6244, 6415, 6255, 4595, 4593, 4755, 6146),
     ),
@@ -1021,19 +1021,19 @@ $config['en_ids_6244'] = array(6144, 6157, 6997);
 $config['en_all_6244'] = array(
     6144 => array(
         'm_icon' => '<i class="far fa-check-square"></i>',
-        'm_name' => 'Step Completed',
+        'm_name' => 'User Step Completed',
         'm_desc' => '',
         'm_parents' => array(4595, 6415, 6255, 6244, 4755, 6146, 4593),
     ),
     6157 => array(
         'm_icon' => '<i class="far fa-check"></i>',
-        'm_name' => 'Step Answered',
+        'm_name' => 'User Step Answered',
         'm_desc' => '',
         'm_parents' => array(4595, 6415, 6288, 6255, 6244, 6146, 4755, 4593, 4460),
     ),
     6997 => array(
         'm_icon' => '<i class="far fa-lock-open"></i>',
-        'm_name' => 'Step Unlocked',
+        'm_name' => 'User Step Unlocked',
         'm_desc' => '',
         'm_parents' => array(4527, 6244, 6415, 6255, 4595, 4593, 4755, 6146),
     ),
@@ -1271,37 +1271,37 @@ $config['en_ids_6146'] = array(4559, 6143, 6144, 6157, 6158, 6997);
 $config['en_all_6146'] = array(
     4559 => array(
         'm_icon' => '<i class="far fa-thumbs-up"></i>',
-        'm_name' => 'Step Got Messages',
+        'm_name' => 'User Step Messages',
         'm_desc' => 'Completed when students read the messages of an intent that does not have a completion requirement',
         'm_parents' => array(4595, 6415, 6274, 6255, 4755, 6146, 4593),
     ),
     6143 => array(
         'm_icon' => '<i class="far fa-minus-square"></i>',
-        'm_name' => 'Step Skipped',
+        'm_name' => 'User Step Skipped',
         'm_desc' => 'Completed when students skip an intention and all its child intentions from their Action Plan',
         'm_parents' => array(4595, 6415, 6146, 4755, 4593),
     ),
     6144 => array(
         'm_icon' => '<i class="far fa-check-square"></i>',
-        'm_name' => 'Step Completed',
+        'm_name' => 'User Step Completed',
         'm_desc' => 'Completed when students submit the intent completion requirements (text, URL, video, etc...) set by miners',
         'm_parents' => array(4595, 6415, 6255, 6244, 4755, 6146, 4593),
     ),
     6157 => array(
         'm_icon' => '<i class="far fa-check"></i>',
-        'm_name' => 'Step Answered',
+        'm_name' => 'User Step Answered',
         'm_desc' => 'Completed after the student answers the question to the OR intent.',
         'm_parents' => array(4595, 6415, 6288, 6255, 6244, 6146, 4755, 4593, 4460),
     ),
     6158 => array(
         'm_icon' => '<i class="far fa-thumbs-up"></i>',
-        'm_name' => 'Step Got Outcome',
+        'm_name' => 'User Step Outcome',
         'm_desc' => 'Completed when students read the messages of an intent that does not have any messages or a completion requirement',
         'm_parents' => array(4595, 6415, 6274, 6255, 4593, 4755, 6146),
     ),
     6997 => array(
         'm_icon' => '<i class="far fa-lock-open"></i>',
-        'm_name' => 'Step Unlocked',
+        'm_name' => 'User Step Unlocked',
         'm_desc' => 'When a user unlocks a Locked AND or OR intent by completing all or any of its children.',
         'm_parents' => array(4527, 6244, 6415, 6255, 4595, 4593, 4755, 6146),
     ),
@@ -1545,8 +1545,8 @@ $config['en_all_5969'] = array(
 $config['en_ids_5966'] = array(4246);
 $config['en_all_5966'] = array(
     4246 => array(
-        'm_icon' => '<i class="fal fa-bug"></i>',
-        'm_name' => 'Platform Bug Reports',
+        'm_icon' => '<i class="far fa-bug"></i>',
+        'm_name' => 'Miner Bug Reports',
         'm_desc' => '&var_en_subscriber_ids=1',
         'm_parents' => array(4595, 4755, 5966, 4593),
     ),
@@ -1698,19 +1698,19 @@ $config['en_all_4755'] = array(
         'm_parents' => array(7159, 4595, 6153, 4506, 4755, 4593),
     ),
     4242 => array(
-        'm_icon' => '<i class="fal fa-sync"></i>',
+        'm_icon' => '<i class="far fa-sync"></i>',
         'm_name' => 'Link Updated',
         'm_desc' => '',
         'm_parents' => array(4755, 4593, 4595),
     ),
     4246 => array(
-        'm_icon' => '<i class="fal fa-bug"></i>',
-        'm_name' => 'Platform Bug Reports',
+        'm_icon' => '<i class="far fa-bug"></i>',
+        'm_name' => 'Miner Bug Reports',
         'm_desc' => '',
         'm_parents' => array(4595, 4755, 5966, 4593),
     ),
     4263 => array(
-        'm_icon' => '<i class="fal fa-sync"></i>',
+        'm_icon' => '<i class="far fa-sync"></i>',
         'm_name' => 'Entity Updated',
         'm_desc' => '',
         'm_parents' => array(4755, 4593, 4595),
@@ -1855,7 +1855,7 @@ $config['en_all_4755'] = array(
     ),
     4559 => array(
         'm_icon' => '<i class="far fa-thumbs-up"></i>',
-        'm_name' => 'Step Got Messages',
+        'm_name' => 'User Step Messages',
         'm_desc' => '',
         'm_parents' => array(4595, 6415, 6274, 6255, 4755, 6146, 4593),
     ),
@@ -1891,19 +1891,19 @@ $config['en_all_4755'] = array(
     ),
     6140 => array(
         'm_icon' => '<i class="far fa-route"></i>',
-        'm_name' => 'Step Routed',
+        'm_name' => 'User Step Routed',
         'm_desc' => '',
         'm_parents' => array(4595, 6415, 6410, 6288, 4229, 4755, 4593),
     ),
     6143 => array(
         'm_icon' => '<i class="far fa-minus-square"></i>',
-        'm_name' => 'Step Skipped',
+        'm_name' => 'User Step Skipped',
         'm_desc' => '',
         'm_parents' => array(4595, 6415, 6146, 4755, 4593),
     ),
     6144 => array(
         'm_icon' => '<i class="far fa-check-square"></i>',
-        'm_name' => 'Step Completed',
+        'm_name' => 'User Step Completed',
         'm_desc' => '',
         'm_parents' => array(4595, 6415, 6255, 6244, 4755, 6146, 4593),
     ),
@@ -1927,13 +1927,13 @@ $config['en_all_4755'] = array(
     ),
     6157 => array(
         'm_icon' => '<i class="far fa-check"></i>',
-        'm_name' => 'Step Answered',
+        'm_name' => 'User Step Answered',
         'm_desc' => '',
         'm_parents' => array(4595, 6415, 6288, 6255, 6244, 6146, 4755, 4593, 4460),
     ),
     6158 => array(
         'm_icon' => '<i class="far fa-thumbs-up"></i>',
-        'm_name' => 'Step Got Outcome',
+        'm_name' => 'User Step Outcome',
         'm_desc' => '',
         'm_parents' => array(4595, 6415, 6274, 6255, 4593, 4755, 6146),
     ),
@@ -1951,7 +1951,7 @@ $config['en_all_4755'] = array(
     ),
     6415 => array(
         'm_icon' => '<i class="far fa-function"></i>',
-        'm_name' => 'Steps Reset',
+        'm_name' => 'User Steps Reset',
         'm_desc' => '',
         'm_parents' => array(4595, 4755, 6418, 4593, 4527, 6414),
     ),
@@ -1993,7 +1993,7 @@ $config['en_all_4755'] = array(
     ),
     6997 => array(
         'm_icon' => '<i class="far fa-lock-open"></i>',
-        'm_name' => 'Step Unlocked',
+        'm_name' => 'User Step Unlocked',
         'm_desc' => '',
         'm_parents' => array(4527, 6244, 6415, 6255, 4595, 4593, 4755, 6146),
     ),
@@ -2039,14 +2039,14 @@ $config['en_all_4595'] = array(
         'm_parents' => array(7159, 4595, 6153, 4506, 4755, 4593),
     ),
     4242 => array(
-        'm_icon' => '<i class="fal fa-sync"></i>',
+        'm_icon' => '<i class="far fa-sync"></i>',
         'm_name' => 'Link Updated',
         'm_desc' => '5',
         'm_parents' => array(4755, 4593, 4595),
     ),
     4246 => array(
-        'm_icon' => '<i class="fal fa-bug"></i>',
-        'm_name' => 'Platform Bug Reports',
+        'm_icon' => '<i class="far fa-bug"></i>',
+        'm_name' => 'Miner Bug Reports',
         'm_desc' => '500',
         'm_parents' => array(4595, 4755, 5966, 4593),
     ),
@@ -2105,13 +2105,13 @@ $config['en_all_4595'] = array(
         'm_parents' => array(6203, 4593, 4592, 4537, 4595),
     ),
     4263 => array(
-        'm_icon' => '<i class="fal fa-sync"></i>',
+        'm_icon' => '<i class="far fa-sync"></i>',
         'm_name' => 'Entity Updated',
         'm_desc' => '50',
         'm_parents' => array(4755, 4593, 4595),
     ),
     4264 => array(
-        'm_icon' => '<i class="fal fa-sync"></i>',
+        'm_icon' => '<i class="far fa-sync"></i>',
         'm_name' => 'Intent Updated',
         'm_desc' => '1000',
         'm_parents' => array(4593, 4595),
@@ -2268,7 +2268,7 @@ $config['en_all_4595'] = array(
     ),
     4559 => array(
         'm_icon' => '<i class="far fa-thumbs-up"></i>',
-        'm_name' => 'Step Got Messages',
+        'm_name' => 'User Step Messages',
         'm_desc' => '5',
         'm_parents' => array(4595, 6415, 6274, 6255, 4755, 6146, 4593),
     ),
@@ -2388,19 +2388,19 @@ $config['en_all_4595'] = array(
     ),
     6140 => array(
         'm_icon' => '<i class="far fa-route"></i>',
-        'm_name' => 'Step Routed',
+        'm_name' => 'User Step Routed',
         'm_desc' => '25',
         'm_parents' => array(4595, 6415, 6410, 6288, 4229, 4755, 4593),
     ),
     6143 => array(
         'm_icon' => '<i class="far fa-minus-square"></i>',
-        'm_name' => 'Step Skipped',
+        'm_name' => 'User Step Skipped',
         'm_desc' => '1',
         'm_parents' => array(4595, 6415, 6146, 4755, 4593),
     ),
     6144 => array(
         'm_icon' => '<i class="far fa-check-square"></i>',
-        'm_name' => 'Step Completed',
+        'm_name' => 'User Step Completed',
         'm_desc' => '50',
         'm_parents' => array(4595, 6415, 6255, 6244, 4755, 6146, 4593),
     ),
@@ -2424,13 +2424,13 @@ $config['en_all_4595'] = array(
     ),
     6157 => array(
         'm_icon' => '<i class="far fa-check"></i>',
-        'm_name' => 'Step Answered',
+        'm_name' => 'User Step Answered',
         'm_desc' => '5',
         'm_parents' => array(4595, 6415, 6288, 6255, 6244, 6146, 4755, 4593, 4460),
     ),
     6158 => array(
         'm_icon' => '<i class="far fa-thumbs-up"></i>',
-        'm_name' => 'Step Got Outcome',
+        'm_name' => 'User Step Outcome',
         'm_desc' => '1',
         'm_parents' => array(4595, 6415, 6274, 6255, 4593, 4755, 6146),
     ),
@@ -2441,7 +2441,7 @@ $config['en_all_4595'] = array(
         'm_parents' => array(4595, 4755, 6222, 4593),
     ),
     6226 => array(
-        'm_icon' => '<i class="fal fa-sync"></i>',
+        'm_icon' => '<i class="far fa-sync"></i>',
         'm_name' => 'Intent Mass Updates',
         'm_desc' => '500',
         'm_parents' => array(4595, 4593),
@@ -2460,7 +2460,7 @@ $config['en_all_4595'] = array(
     ),
     6415 => array(
         'm_icon' => '<i class="far fa-function"></i>',
-        'm_name' => 'Steps Reset',
+        'm_name' => 'User Steps Reset',
         'm_desc' => '5',
         'm_parents' => array(4595, 4755, 6418, 4593, 4527, 6414),
     ),
@@ -2502,7 +2502,7 @@ $config['en_all_4595'] = array(
     ),
     6997 => array(
         'm_icon' => '<i class="far fa-lock-open"></i>',
-        'm_name' => 'Step Unlocked',
+        'm_name' => 'User Step Unlocked',
         'm_desc' => '10',
         'm_parents' => array(4527, 6244, 6415, 6255, 4595, 4593, 4755, 6146),
     ),
@@ -2565,14 +2565,14 @@ $config['en_all_4593'] = array(
         'm_parents' => array(7159, 4595, 6153, 4506, 4755, 4593),
     ),
     4242 => array(
-        'm_icon' => '<i class="fal fa-sync"></i>',
+        'm_icon' => '<i class="far fa-sync"></i>',
         'm_name' => 'Link Updated',
         'm_desc' => 'Logged for each link column that is updated consciously by the user',
         'm_parents' => array(4755, 4593, 4595),
     ),
     4246 => array(
-        'm_icon' => '<i class="fal fa-bug"></i>',
-        'm_name' => 'Platform Bug Reports',
+        'm_icon' => '<i class="far fa-bug"></i>',
+        'm_name' => 'Miner Bug Reports',
         'm_desc' => '',
         'm_parents' => array(4595, 4755, 5966, 4593),
     ),
@@ -2631,13 +2631,13 @@ $config['en_all_4593'] = array(
         'm_parents' => array(6203, 4593, 4592, 4537, 4595),
     ),
     4263 => array(
-        'm_icon' => '<i class="fal fa-sync"></i>',
+        'm_icon' => '<i class="far fa-sync"></i>',
         'm_name' => 'Entity Updated',
         'm_desc' => 'When a Miner modified an entity attribute like Name, Icon or Status.',
         'm_parents' => array(4755, 4593, 4595),
     ),
     4264 => array(
-        'm_icon' => '<i class="fal fa-sync"></i>',
+        'm_icon' => '<i class="far fa-sync"></i>',
         'm_name' => 'Intent Updated',
         'm_desc' => 'When an intent field is updated',
         'm_parents' => array(4593, 4595),
@@ -2794,7 +2794,7 @@ $config['en_all_4593'] = array(
     ),
     4559 => array(
         'm_icon' => '<i class="far fa-thumbs-up"></i>',
-        'm_name' => 'Step Got Messages',
+        'm_name' => 'User Step Messages',
         'm_desc' => 'Logged when a student receives the messages of an AND intent that does not have any completion requirements.',
         'm_parents' => array(4595, 6415, 6274, 6255, 4755, 6146, 4593),
     ),
@@ -2914,19 +2914,19 @@ $config['en_all_4593'] = array(
     ),
     6140 => array(
         'm_icon' => '<i class="far fa-route"></i>',
-        'm_name' => 'Step Routed',
+        'm_name' => 'User Step Routed',
         'm_desc' => 'Created when the student responses to OR branches meets the right % points to unlock the pathway to a conditional intent link.',
         'm_parents' => array(4595, 6415, 6410, 6288, 4229, 4755, 4593),
     ),
     6143 => array(
         'm_icon' => '<i class="far fa-minus-square"></i>',
-        'm_name' => 'Step Skipped',
+        'm_name' => 'User Step Skipped',
         'm_desc' => 'Logged every time a student consciously skips an intent and it\'s recursive children.',
         'm_parents' => array(4595, 6415, 6146, 4755, 4593),
     ),
     6144 => array(
         'm_icon' => '<i class="far fa-check-square"></i>',
-        'm_name' => 'Step Completed',
+        'm_name' => 'User Step Completed',
         'm_desc' => 'Logged when a student submits the requirements (text, video, etc...) of an AND intent which could not be completed by simply receiving messages.',
         'm_parents' => array(4595, 6415, 6255, 6244, 4755, 6146, 4593),
     ),
@@ -2950,13 +2950,13 @@ $config['en_all_4593'] = array(
     ),
     6157 => array(
         'm_icon' => '<i class="far fa-check"></i>',
-        'm_name' => 'Step Answered',
+        'm_name' => 'User Step Answered',
         'm_desc' => '',
         'm_parents' => array(4595, 6415, 6288, 6255, 6244, 6146, 4755, 4593, 4460),
     ),
     6158 => array(
         'm_icon' => '<i class="far fa-thumbs-up"></i>',
-        'm_name' => 'Step Got Outcome',
+        'm_name' => 'User Step Outcome',
         'm_desc' => 'The most basic type of intent completion for intents that do not have any messages, completion requirements or children to choose from.',
         'm_parents' => array(4595, 6415, 6274, 6255, 4593, 4755, 6146),
     ),
@@ -2967,7 +2967,7 @@ $config['en_all_4593'] = array(
         'm_parents' => array(4595, 4755, 6222, 4593),
     ),
     6226 => array(
-        'm_icon' => '<i class="fal fa-sync"></i>',
+        'm_icon' => '<i class="far fa-sync"></i>',
         'm_name' => 'Intent Mass Updates',
         'm_desc' => ' When all intents within a recursive tree are updated at once.',
         'm_parents' => array(4595, 4593),
@@ -2986,7 +2986,7 @@ $config['en_all_4593'] = array(
     ),
     6415 => array(
         'm_icon' => '<i class="far fa-function"></i>',
-        'm_name' => 'Steps Reset',
+        'm_name' => 'User Steps Reset',
         'm_desc' => 'Removes certain links types as defined by its children from a Student\'s Action Plan. Currently only available for Miners.',
         'm_parents' => array(4595, 4755, 6418, 4593, 4527, 6414),
     ),
@@ -3028,7 +3028,7 @@ $config['en_all_4593'] = array(
     ),
     6997 => array(
         'm_icon' => '<i class="far fa-lock-open"></i>',
-        'm_name' => 'Step Unlocked',
+        'm_name' => 'User Step Unlocked',
         'm_desc' => '',
         'm_parents' => array(4527, 6244, 6415, 6255, 4595, 4593, 4755, 6146),
     ),
