@@ -11,7 +11,7 @@ defined('BASEPATH') OR exit('No direct script access allowed');
  *
  */
 
-//Generated 2019-05-31 15:12:32 PST
+//Generated 2019-05-31 15:19:31 PST
 
 //Mench Platform:
 $config['en_ids_4488'] = array(4396, 4428, 4463, 4506, 4527, 4534, 4757, 6212, 6403, 6418, 7161);
@@ -91,7 +91,7 @@ $config['en_all_7167'] = array(
         'm_icon' => '<i class="fas fa-at"></i>',
         'm_name' => 'Entity Created',
         'm_desc' => '',
-        'm_parents' => array(7167, 4755, 4593, 4595),
+        'm_parents' => array(7167, 4593, 4595),
     ),
     4592 => array(
         'm_icon' => '<i class="fas fa-link"></i>',
@@ -129,7 +129,7 @@ $config['en_ids_7164'] = array(4287, 4460, 4547, 4548, 4549, 4550, 4551, 4552, 4
 $config['en_all_7164'] = array(
     4287 => array(
         'm_icon' => '<i class="fal fa-comment-exclamation"></i>',
-        'm_name' => 'User Sent Unrecognized',
+        'm_name' => 'User Sent Unknown',
         'm_desc' => '',
         'm_parents' => array(7164, 4595, 4755, 4277, 4593),
     ),
@@ -1353,7 +1353,7 @@ $config['en_ids_4277'] = array(4287, 4460, 4547, 4548, 4549, 4550, 4551, 4557);
 $config['en_all_4277'] = array(
     4287 => array(
         'm_icon' => '<i class="fal fa-comment-exclamation"></i>',
-        'm_name' => 'User Sent Unrecognized',
+        'm_name' => 'User Sent Unknown',
         'm_desc' => '',
         'm_parents' => array(7164, 4595, 4755, 4277, 4593),
     ),
@@ -1677,7 +1677,7 @@ $config['en_all_4426'] = array(
 );
 
 //Private Content:
-$config['en_ids_4755'] = array(3286, 3288, 4235, 4242, 4246, 4251, 4263, 4266, 4267, 4268, 4275, 4278, 4279, 4282, 4283, 4287, 4299, 4460, 4547, 4548, 4549, 4550, 4551, 4552, 4553, 4554, 4555, 4556, 4557, 4559, 4570, 4783, 5967, 6132, 6140, 6143, 6144, 6149, 6154, 6155, 6157, 6158, 6224, 6389, 6415, 6556, 6559, 6560, 6563, 6578, 6969, 6997);
+$config['en_ids_4755'] = array(3286, 3288, 4235, 4242, 4246, 4263, 4266, 4267, 4268, 4269, 4275, 4278, 4279, 4282, 4283, 4287, 4299, 4460, 4547, 4548, 4549, 4550, 4551, 4552, 4553, 4554, 4555, 4556, 4557, 4559, 4570, 4577, 4783, 5967, 6132, 6140, 6143, 6144, 6149, 6154, 6155, 6157, 6158, 6224, 6389, 6415, 6556, 6559, 6560, 6563, 6578, 6969, 6997);
 $config['en_all_4755'] = array(
     3286 => array(
         'm_icon' => '<i class="far fa-key"></i>',
@@ -1709,12 +1709,6 @@ $config['en_all_4755'] = array(
         'm_desc' => '',
         'm_parents' => array(4595, 4755, 5966, 4593),
     ),
-    4251 => array(
-        'm_icon' => '<i class="fas fa-at"></i>',
-        'm_name' => 'Entity Created',
-        'm_desc' => '',
-        'm_parents' => array(7167, 4755, 4593, 4595),
-    ),
     4263 => array(
         'm_icon' => '<i class="fal fa-sync"></i>',
         'm_name' => 'Entity Updated',
@@ -1738,6 +1732,12 @@ $config['en_all_4755'] = array(
         'm_name' => 'User Messenger Postback',
         'm_desc' => '',
         'm_parents' => array(4595, 4755, 4593),
+    ),
+    4269 => array(
+        'm_icon' => '<i class="fas fa-sign-in"></i>',
+        'm_name' => 'User Login',
+        'm_desc' => '',
+        'm_parents' => array(4755, 4595, 4593),
     ),
     4275 => array(
         'm_icon' => '<i class="fas fa-wand-magic"></i>',
@@ -1771,7 +1771,7 @@ $config['en_all_4755'] = array(
     ),
     4287 => array(
         'm_icon' => '<i class="fal fa-comment-exclamation"></i>',
-        'm_name' => 'User Sent Unrecognized',
+        'm_name' => 'User Sent Unknown',
         'm_desc' => '',
         'm_parents' => array(7164, 4595, 4755, 4277, 4593),
     ),
@@ -1864,6 +1864,12 @@ $config['en_all_4755'] = array(
         'm_name' => 'User Received HTML',
         'm_desc' => '',
         'm_parents' => array(7164, 4595, 4755, 4593, 4280),
+    ),
+    4577 => array(
+        'm_icon' => '<i class="far fa-check-circle"></i>',
+        'm_name' => 'User Request Accepted',
+        'm_desc' => '',
+        'm_parents' => array(4755, 4595, 4593),
     ),
     4783 => array(
         'm_icon' => '<i class="far fa-phone"></i>',
@@ -2054,7 +2060,7 @@ $config['en_all_4595'] = array(
         'm_icon' => '<i class="fas fa-at"></i>',
         'm_name' => 'Entity Created',
         'm_desc' => '200',
-        'm_parents' => array(7167, 4755, 4593, 4595),
+        'm_parents' => array(7167, 4593, 4595),
     ),
     4255 => array(
         'm_icon' => '<i class="far fa-align-left"></i>',
@@ -2132,7 +2138,7 @@ $config['en_all_4595'] = array(
         'm_icon' => '<i class="fas fa-sign-in"></i>',
         'm_name' => 'User Login',
         'm_desc' => '10',
-        'm_parents' => array(4595, 4593),
+        'm_parents' => array(4755, 4595, 4593),
     ),
     4275 => array(
         'm_icon' => '<i class="fas fa-wand-magic"></i>',
@@ -2166,7 +2172,7 @@ $config['en_all_4595'] = array(
     ),
     4287 => array(
         'm_icon' => '<i class="fal fa-comment-exclamation"></i>',
-        'm_name' => 'User Sent Unrecognized',
+        'm_name' => 'User Sent Unknown',
         'm_desc' => '10',
         'm_parents' => array(7164, 4595, 4755, 4277, 4593),
     ),
@@ -2276,7 +2282,7 @@ $config['en_all_4595'] = array(
         'm_icon' => '<i class="far fa-check-circle"></i>',
         'm_name' => 'User Request Accepted',
         'm_desc' => '50',
-        'm_parents' => array(4595, 4593),
+        'm_parents' => array(4755, 4595, 4593),
     ),
     4601 => array(
         'm_icon' => '<i class="far fa-tags"></i>',
@@ -2436,7 +2442,7 @@ $config['en_all_4595'] = array(
     ),
     6226 => array(
         'm_icon' => '<i class="fal fa-sync"></i>',
-        'm_name' => 'Intents Recursively Updated',
+        'm_name' => 'Intents Updated',
         'm_desc' => '500',
         'm_parents' => array(4595, 4593),
     ),
@@ -2580,7 +2586,7 @@ $config['en_all_4593'] = array(
         'm_icon' => '<i class="fas fa-at"></i>',
         'm_name' => 'Entity Created',
         'm_desc' => 'Logged when a new entity is created.',
-        'm_parents' => array(7167, 4755, 4593, 4595),
+        'm_parents' => array(7167, 4593, 4595),
     ),
     4255 => array(
         'm_icon' => '<i class="far fa-align-left"></i>',
@@ -2658,7 +2664,7 @@ $config['en_all_4593'] = array(
         'm_icon' => '<i class="fas fa-sign-in"></i>',
         'm_name' => 'User Login',
         'm_desc' => '',
-        'm_parents' => array(4595, 4593),
+        'm_parents' => array(4755, 4595, 4593),
     ),
     4275 => array(
         'm_icon' => '<i class="fas fa-wand-magic"></i>',
@@ -2692,7 +2698,7 @@ $config['en_all_4593'] = array(
     ),
     4287 => array(
         'm_icon' => '<i class="fal fa-comment-exclamation"></i>',
-        'm_name' => 'User Sent Unrecognized',
+        'm_name' => 'User Sent Unknown',
         'm_desc' => '',
         'm_parents' => array(7164, 4595, 4755, 4277, 4593),
     ),
@@ -2802,7 +2808,7 @@ $config['en_all_4593'] = array(
         'm_icon' => '<i class="far fa-check-circle"></i>',
         'm_name' => 'User Request Accepted',
         'm_desc' => '',
-        'm_parents' => array(4595, 4593),
+        'm_parents' => array(4755, 4595, 4593),
     ),
     4601 => array(
         'm_icon' => '<i class="far fa-tags"></i>',
@@ -2962,7 +2968,7 @@ $config['en_all_4593'] = array(
     ),
     6226 => array(
         'm_icon' => '<i class="fal fa-sync"></i>',
-        'm_name' => 'Intents Recursively Updated',
+        'm_name' => 'Intents Updated',
         'm_desc' => ' When all intents within a recursive tree are updated at once.',
         'm_parents' => array(4595, 4593),
     ),
