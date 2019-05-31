@@ -259,7 +259,7 @@ if(!$action) {
 
                 if($replace_with_is_set){
                     //Do replacement:
-                    $new_outcome = str_ireplace($_GET['search_for'],$_GET['replace_with'],$in['in_outcome']);
+                    $new_outcome = str_replace($_GET['search_for'],$_GET['replace_with'],$in['in_outcome']);
                     $in_outcome_validation = $this->Intents_model->in_validate_outcome($new_outcome, $session_en['en_id'], $in['in_id']);
 
                     if($in_outcome_validation['status']){
@@ -278,7 +278,7 @@ if(!$action) {
 
                 echo '<tr class="panel-title down-border">';
                 echo '<td style="text-align: left;">'.($count+1).'</td>';
-                echo '<td style="text-align: left;">'.echo_fixed_fields('in_status', $in['in_status'], 1, 'right').' <a href="/intents/'.$in['in_id'].'">'.str_ireplace($_GET['search_for'],'<span class="is-highlighted">'.$_GET['search_for'].'</span>',$in['in_outcome']).'</a></td>';
+                echo '<td style="text-align: left;">'.echo_fixed_fields('in_status', $in['in_status'], 1, 'right').' <a href="/intents/'.$in['in_id'].'">'.str_replace($_GET['search_for'],'<span class="is-highlighted">'.$_GET['search_for'].'</span>',$in['in_outcome']).'</a></td>';
                 echo '<td style="text-align: left;">'.($replace_with_is_set ? str_replace($_GET['replace_with'],'<span class="is-highlighted">'.$_GET['replace_with'].'</span>',$new_outcome) : '').'</td>';
                 echo '<td style="text-align: left;">'.( $replace_with_is_set && !$in_outcome_validation['status'] ? ' <i class="fas fa-exclamation-triangle"></i> Error: '.$in_outcome_validation['message'] : ( $replace_with_is_confirmed && $in_outcome_validation['status'] ? '<i class="fas fa-check-circle"></i> Outcome Updated' : '') ).'</td>';
                 echo '</tr>';
