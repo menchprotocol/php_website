@@ -77,7 +77,7 @@ $config['fixed_fields']             = array(
                                             2 => array(
                                                 's_name' => 'Published',
                                                 's_en_id' => 6185,
-                                                's_desc' => 'live, can be added to user Action Plans',
+                                                's_desc' => 'live and ready for users to add to Action Plans',
                                                 's_icon' => '<i class="fas fa-check-square"></i>',
                                             ),
                                             1 => array(

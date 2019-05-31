@@ -259,7 +259,7 @@ if(!$action) {
 
                 if($replace_with_is_set){
                     //Do replacement:
-                    $new_outcome = str_replace($_GET['search_for'],$_GET['replace_with'],$in['in_outcome']);
+                    $new_outcome = str_ireplace($_GET['search_for'],$_GET['replace_with'],$in['in_outcome']);
                     $in_outcome_validation = $this->Intents_model->in_validate_outcome($new_outcome, $session_en['en_id'], $in['in_id']);
 
                     if($in_outcome_validation['status']){
