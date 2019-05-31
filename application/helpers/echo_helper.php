@@ -1581,7 +1581,7 @@ function echo_en_stats_overview($cached_list, $report_name){
     $ui = '<table class="table table-condensed table-striped stats-table">';
 
     $ui .= '<tr class="panel-title down-border">';
-    $ui .= '<td style="text-align: left;">'.number_format($total_count, 0).' '.$report_name.'</td>';
+    $ui .= '<td style="text-align: left;">'.echo_number($total_count).' '.$report_name.'</td>';
     $ui .= '<td style="text-align: right;">Entities</td>';
     $ui .= '</tr>';
 

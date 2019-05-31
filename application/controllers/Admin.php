@@ -86,7 +86,7 @@ class Admin extends CI_Controller
         echo '<table class="table table-condensed table-striped stats-table mini-stats-table">';
 
         echo '<tr class="panel-title down-border">';
-        echo '<td style="text-align: left;">'.count($this->config->item('en_ids_4737')).' '.$en_all_7161[4737]['m_name'].'</td>';
+        echo '<td style="text-align: left;">'.$en_all_7161[4737]['m_name'].'</td>';
         echo '<td style="text-align: right;">Intents</td>';
         echo '</tr>';
 
@@ -181,7 +181,7 @@ class Admin extends CI_Controller
         echo '<table class="table table-condensed table-striped stats-table mini-stats-table ">';
 
         echo '<tr class="panel-title down-border">';
-        echo '<td style="text-align: left;">'.count($in_verbs).' '.$en_all_7161[5008]['m_name'].'</td>';
+        echo '<td style="text-align: left;">'.echo_number(count($in_verbs)).' '.$en_all_7161[5008]['m_name'].'</td>';
         echo '<td style="text-align: right;">Intents</td>';
         echo '</tr>';
 
@@ -212,7 +212,7 @@ class Admin extends CI_Controller
         echo '<table class="table table-condensed table-striped stats-table mini-stats-table">';
 
         echo '<tr class="panel-title down-border">';
-        echo '<td style="text-align: left;">'.count($this->config->item('en_ids_6177')).' '.$en_all_7161[6177]['m_name'].'</td>';
+        echo '<td style="text-align: left;">'.$en_all_7161[6177]['m_name'].'</td>';
         echo '<td style="text-align: right;">Entities</td>';
         echo '</tr>';
 
@@ -237,16 +237,6 @@ class Admin extends CI_Controller
 
         //Entity Mining Stats
         echo echo_link_type_group_stats(7167);
-
-
-        //Verified Accounts
-        echo echo_en_stats_overview($this->config->item('en_all_4432'), $en_all_7161[4432]['m_name']);
-
-
-        //Mench Contributors
-        //echo echo_en_stats_overview($this->config->item('en_all_6827'), $en_all_7161[6827]['m_name']);
-
-
 
 
         //Expert Sources:
@@ -298,13 +288,15 @@ class Admin extends CI_Controller
         echo '<table class="table table-condensed table-striped stats-table">';
 
         echo '<tr class="panel-title down-border">';
-        echo '<td style="text-align: left;">'.number_format($total_counts[2], 0).' '.$en_all_7161[3000]['m_name'].'</td>';
+        echo '<td style="text-align: left;">'.echo_number($total_counts[2]).' '.$en_all_7161[3000]['m_name'].'</td>';
         foreach ($total_counts as $status_num => $count) {
             echo '<td style="text-align: right;" '.( $status_num!=2 ? ' class="' . echo_advance() . '"' : '' ).'>' . $fixed_fields['en_status'][$status_num]['s_name'] . '</td>';
         }
         echo '</tr>';
 
+
         echo $expert_sources;
+
 
         echo '<tr style="font-weight: bold;" class="' . echo_advance() . '">';
         echo '<td style="text-align: left;"><span class="icon-block"><i class="fas fa-asterisk"></i></span>Totals</td>';
@@ -315,6 +307,17 @@ class Admin extends CI_Controller
 
 
         echo '</table>';
+
+
+
+
+
+        //Verified Accounts
+        echo echo_en_stats_overview($this->config->item('en_all_4432'), $en_all_7161[4432]['m_name']);
+
+
+        //Mench Contributors
+        //echo echo_en_stats_overview($this->config->item('en_all_6827'), $en_all_7161[6827]['m_name']);
 
     }
     function extra_stats_links(){
@@ -331,7 +334,7 @@ class Admin extends CI_Controller
         echo '<table class="table table-condensed table-striped stats-table mini-stats-table">';
 
         echo '<tr class="panel-title down-border">';
-        echo '<td style="text-align: left;">'.count($this->config->item('en_ids_6186')).' '.$en_all_7161[6186]['m_name'].'</td>';
+        echo '<td style="text-align: left;">'.$en_all_7161[6186]['m_name'].'</td>';
         echo '<td style="text-align: right;">Links</td>';
         echo '</tr>';
 
@@ -473,7 +476,7 @@ class Admin extends CI_Controller
         echo '<table class="table table-condensed table-striped stats-table mini-stats-table">';
 
         echo '<tr class="panel-title down-border">';
-        echo '<td style="text-align: left;">'.count($all_link_types).' '.$en_all_7161[4593]['m_name'].'</td>';
+        echo '<td style="text-align: left;">'.echo_number(count($all_link_types)).' '.$en_all_7161[4593]['m_name'].'</td>';
         echo '<td style="text-align: right;" class="' . echo_advance() . '">Points</td>';
         echo '<td style="text-align: right;">Links</td>';
         echo '</tr>';
@@ -505,7 +508,7 @@ class Admin extends CI_Controller
                 .( in_array($ln['ln_type_entity_id'] , $this->config->item('en_ids_4755')) ? '<span data-toggle="tooltip" title="'.$en_all_4463[4755]['m_name'].': '.$en_all_4463[4755]['m_desc'].'" data-placement="top" class="icon-block ' . echo_advance() . '">'.$en_all_4463[4755]['m_icon'].'</span>' : '<span class="icon-block ' . echo_advance() . '" data-toggle="tooltip" title="Public Information" data-placement="top"><i class="far fa-eye"></i></span>' )
 
                 //Info:
-                .( strlen($en_all_4593[$ln['ln_type_entity_id']]['m_desc']) > 0 ? '<i class="fal fa-info-circle icon-block" data-toggle="tooltip" title="'.number_format($ln['trs_count'], 0).' '.$en_all_4593[$ln['ln_type_entity_id']]['m_desc'].'" data-placement="top"></i>' : '<i class="fal fa-info-circle icon-block" data-toggle="tooltip" title="'.number_format($ln['trs_count'], 0).' [No Description Available Yet]" data-placement="top" style="color: #AAA;"></i>' ).'</td>';
+                .( strlen($en_all_4593[$ln['ln_type_entity_id']]['m_desc']) > 0 ? '<i class="fal fa-info-circle icon-block" data-toggle="tooltip" title="'.number_format($ln['trs_count'], 0).' '.$en_all_4593[$ln['ln_type_entity_id']]['m_desc'].'" data-placement="top"></i>' : '<i class="fal fa-info-circle icon-block" data-toggle="tooltip" title="'.number_format($ln['trs_count'], 0).' Links" data-placement="top" style="color: #AAA;"></i>' ).'</td>';
 
             echo '</tr>';
 
