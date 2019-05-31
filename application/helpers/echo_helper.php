@@ -441,14 +441,14 @@ function echo_number($number, $micro = true, $fb_messenger_format = false)
             $formatting = array(
                 'multiplier' => (1 / 1000),
                 'decimals' => 0,
-                'micro_1' => 'k',
+                'micro_1' => 'K',
                 'micro_0' => ' Thousand',
             );
         } elseif ($number >= 950) {
             $formatting = array(
                 'multiplier' => (1 / 1000),
                 'decimals' => 1,
-                'micro_1' => 'k',
+                'micro_1' => 'K',
                 'micro_0' => ' Thousand',
             );
         }
