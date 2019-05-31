@@ -15,7 +15,7 @@ date_default_timezone_set('America/Los_Angeles');
 
 
 //App Functionality:
-$config['app_version']              = '0.888'; //Cache buster for static JS/CSS files, so needs to be updated if you update static files
+$config['app_version']              = '0.889'; //Cache buster for static JS/CSS files, so needs to be updated if you update static files
 $config['app_enable_algolia']       = true; //May need to turn off if/when we reach monthly quota of 50k calls
 $config['max_file_mb_size']         = 25; //Server setting is 32MB
 $config['items_per_page']           = 100; //The limit of how many items should be loaded per page/section
@@ -77,24 +77,24 @@ $config['fixed_fields']             = array(
                                             2 => array(
                                                 's_name' => 'Published',
                                                 's_en_id' => 6185,
-                                                's_desc' => 'Intent is live and publicly accessible',
+                                                's_desc' => 'live, can be added to user Action Plans',
                                                 's_icon' => '<i class="fas fa-check-square"></i>',
                                             ),
                                             1 => array(
                                                 's_name' => 'Drafting',
-                                                's_desc' => 'Intent is being worked-on so it can be published',
+                                                's_desc' => 'being mined, to be published soon',
                                                 's_icon' => '<i class="fas fa-spinner fa-spin"></i>',
                                                 's_en_id' => 6184,
                                             ),
                                             0 => array(
                                                 's_name' => 'New',
-                                                's_desc' => 'Intent is newly added and pending to be mined',
+                                                's_desc' => 'newly added, pending review',
                                                 's_icon' => '<i class="fal fa-square"></i>',
                                                 's_en_id' => 6183,
                                             ),
                                             -1 => array(
                                                 's_name' => 'Removed',
-                                                's_desc' => 'Intent is in-active',
+                                                's_desc' => 'archived',
                                                 's_icon' => '<i class="fal fa-minus-square"></i>',
                                                 's_en_id' => 6182,
                                             ),
@@ -102,25 +102,25 @@ $config['fixed_fields']             = array(
                                         'en_status' => array(
                                             2 => array(
                                                 's_name' => 'Published',
-                                                's_desc' => 'Entity is live and publicly accessible',
+                                                's_desc' => 'live, verified and mined',
                                                 's_icon' => '<i class="fas fa-check-square"></i>',
                                                 's_en_id' => 6181,
                                             ),
                                             1 => array(
                                                 's_name' => 'Drafting',
-                                                's_desc' => 'Entity is being worked-on so it can be published',
+                                                's_desc' => 'being mined, to be published soon',
                                                 's_icon' => '<i class="fas fa-spinner fa-spin"></i>',
                                                 's_en_id' => 6180,
                                             ),
                                             0 => array(
                                                 's_name' => 'New',
-                                                's_desc' => 'Entity is newly added and pending to be mined',
+                                                's_desc' => 'newly added, pending review',
                                                 's_icon' => '<i class="fal fa-square"></i>',
                                                 's_en_id' => 6179,
                                             ),
                                             -1 => array(
                                                 's_name' => 'Removed',
-                                                's_desc' => 'Entity is in-active',
+                                                's_desc' => 'archived',
                                                 's_icon' => '<i class="fal fa-minus-square"></i>',
                                                 's_en_id' => 6178,
                                             ),
@@ -128,25 +128,25 @@ $config['fixed_fields']             = array(
                                         'ln_status' => array(
                                             2 => array(
                                                 's_name' => 'Published',
-                                                's_desc' => 'Link is complete, ready and live',
+                                                's_desc' => 'live',
                                                 's_icon' => '<i class="fas fa-check-square"></i>',
                                                 's_en_id' => 6176,
                                             ),
                                             1 => array(
                                                 's_name' => 'Drafting',
-                                                's_desc' => 'Link is being worked-on so it can be published',
+                                                's_desc' => 'being worked on',
                                                 's_icon' => '<i class="fas fa-spinner fa-spin"></i>',
                                                 's_en_id' => 6175,
                                             ),
                                             0 => array(
                                                 's_name' => 'New',
-                                                's_desc' => 'Link is newly added and pending to be mined',
+                                                's_desc' => 'require review',
                                                 's_icon' => '<i class="fal fa-square"></i>',
                                                 's_en_id' => 6174,
                                             ),
                                             -1 => array(
                                                 's_name' => 'Removed',
-                                                's_desc' => 'Link is in-active',
+                                                's_desc' => 'archived',
                                                 's_icon' => '<i class="fal fa-minus-square"></i>',
                                                 's_en_id' => 6173,
                                             ),
