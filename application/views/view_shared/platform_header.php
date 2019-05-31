@@ -2,6 +2,7 @@
 //Attempt to fetch session variables:
 $session_en = $this->session->userdata('user');
 $en_all_2738 = $this->config->item('en_all_2738');
+$en_all_4488 = $this->config->item('en_all_4488');
 $uri_segment_1 = $this->uri->segment(1);
 $uri_segment_2 = $this->uri->segment(2);
 ?><!doctype html>
@@ -55,7 +56,7 @@ $uri_segment_2 = $this->uri->segment(2);
                         <span class="navbar-brand dashboard-logo">
                             <table style="width: 100%; border:0; padding:0; margin:0 0 0 0;">
                                 <tr>
-                                    <td style="width:40px;">
+                                    <td style="width:40px;" data-toggle="tooltip" data-placement="bottom" title="<?= $en_all_4488[7161]['m_name'] .': '. $en_all_4488[7161]['m_desc'] ?>">
                                         <a href="/platform"><?= $en_all_2738[4488]['m_icon'] ?></a>
                                     </td>
                                     <td>

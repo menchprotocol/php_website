@@ -11,7 +11,78 @@ defined('BASEPATH') OR exit('No direct script access allowed');
  *
  */
 
-//Generated 2019-05-31 10:58:24 PST
+//Generated 2019-05-31 12:21:34 PST
+
+//Mench Platform:
+$config['en_ids_4488'] = array(4396, 4428, 4463, 4506, 4527, 4534, 4757, 6212, 6403, 6418, 7161);
+$config['en_all_4488'] = array(
+    4396 => array(
+        'm_icon' => '<i class="fas fa-cloud"></i>',
+        'm_name' => 'Mench Platform CDN',
+        'm_desc' => 'Our Content Delviery Network hosted on Amazon AWS S3 that stores all community generated data',
+        'm_parents' => array(4488),
+    ),
+    4428 => array(
+        'm_icon' => '<i class="fas fa-exclamation-triangle"></i>',
+        'm_name' => 'Platform Pending Coding',
+        'm_desc' => 'Entities that require coding implementation in order to function as expected',
+        'm_parents' => array(4488),
+    ),
+    4463 => array(
+        'm_icon' => '<i class="fas fa-font"></i>',
+        'm_name' => 'Platform Glossary',
+        'm_desc' => 'The terminologies used to describe various elements of Mench, kind of like a terminology index.',
+        'm_parents' => array(4527, 4488),
+    ),
+    4506 => array(
+        'm_icon' => '<i class="fas fa-info-circle"></i>',
+        'm_name' => 'How it Works Notes',
+        'm_desc' => 'Explains how various entities have been integrated in the platform',
+        'm_parents' => array(4506, 4488),
+    ),
+    4527 => array(
+        'm_icon' => '<i class="fas fa-hdd"></i>',
+        'm_name' => 'Platform Integration',
+        'm_desc' => 'Makes entity trees instantly available in Mench\'s code base for logical analysis',
+        'm_parents' => array(4488, 4506),
+    ),
+    4534 => array(
+        'm_icon' => '<i class="fas fa-cubes"></i>',
+        'm_name' => 'Platform Objects',
+        'm_desc' => 'The 3 main objects that fuel the Mench brain.',
+        'm_parents' => array(4488, 4527),
+    ),
+    4757 => array(
+        'm_icon' => '<i class="fas fa-id-card-alt"></i>',
+        'm_name' => 'Platform Access Protocols',
+        'm_desc' => '',
+        'm_parents' => array(4488),
+    ),
+    6212 => array(
+        'm_icon' => '<i class="fas fa-subscript"></i>',
+        'm_name' => 'Platform Variables',
+        'm_desc' => '',
+        'm_parents' => array(4488),
+    ),
+    6403 => array(
+        'm_icon' => '<i class="far fa-code"></i>',
+        'm_name' => 'Platform PHP Application',
+        'm_desc' => '',
+        'm_parents' => array(3326, 4488),
+    ),
+    6418 => array(
+        'm_icon' => '<i class="far fa-function"></i>',
+        'm_name' => 'Platform Functions',
+        'm_desc' => '',
+        'm_parents' => array(4488),
+    ),
+    7161 => array(
+        'm_icon' => '<i class="far fa-tachometer-alt-fast"></i>',
+        'm_name' => 'Platform Dashboard',
+        'm_desc' => 'Key metrics of Mench\'s open-source platform',
+        'm_parents' => array(4527, 4488),
+    ),
+);
 
 //Entity Mining Stats:
 $config['en_ids_7167'] = array(4251, 4592);
@@ -647,7 +718,7 @@ $config['en_all_4463'] = array(
         'm_icon' => '<img src="https://mench.com/img/mench_white.png">',
         'm_name' => 'Mench Platform',
         'm_desc' => 'A web portal and GUI enabling Miners to mine intents, entities and links.',
-        'm_parents' => array(2738, 4523, 3326, 3324, 3325, 3323, 4463),
+        'm_parents' => array(4527, 2738, 4523, 3326, 3324, 3325, 3323, 4463),
     ),
     4535 => array(
         'm_icon' => '<i class="fas fa-hashtag"></i>',
@@ -834,8 +905,8 @@ $config['en_all_2738'] = array(
     4488 => array(
         'm_icon' => '<img src="https://mench.com/img/mench_white.png">',
         'm_name' => 'Mench Platform',
-        'm_desc' => 'On a mission to build and share consensus',
-        'm_parents' => array(2738, 4523, 3326, 3324, 3325, 3323, 4463),
+        'm_desc' => 'We\'re on a mission to build and share consensus',
+        'm_parents' => array(4527, 2738, 4523, 3326, 3324, 3325, 3323, 4463),
     ),
     4535 => array(
         'm_icon' => '<i class="fas fa-hashtag"></i>',

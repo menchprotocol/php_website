@@ -1,3 +1,7 @@
+<?php $en_all_4488 = $this->config->item('en_all_4488'); ?>
+<?php $en_all_2738 = $this->config->item('en_all_2738'); ?>
+
+
 </div>
 </div>
 
@@ -42,14 +46,9 @@
 
 
 
-                    <?php $en_all_2738 = $this->config->item('en_all_2738'); ?>
                     <a href="/platform"
-                       class="social-link" data-toggle="tooltip" title="<?= $en_all_2738[4488]['m_name'] ?> Stats"
-                       data-placement="top"><i class="fas fa-analytics"></i></a>
-
-                    <a href="/links"
-                       class="social-link" data-toggle="tooltip" title="<?= $en_all_2738[4488]['m_name'].' '.$en_all_2738[6205]['m_name'] ?>"
-                       data-placement="top"><?= $en_all_2738[6205]['m_icon'] ?></a>
+                       class="social-link" data-toggle="tooltip" title="<?= $en_all_4488[7161]['m_name'].': '. $en_all_4488[7161]['m_desc'] ?>"
+                       data-placement="top"><?= $en_all_4488[7161]['m_icon'] ?></a>
 
                     <a href="/login"
                        class="social-link" data-toggle="tooltip" title="Sign In"
@@ -64,7 +63,6 @@
         </nav>
 
         <div class="pfooter" style="font-size:0.8em;"><?= $en_all_2738[4488]['m_icon'].''.$en_all_2738[4488]['m_name'] .' v'. $this->config->item('app_version') ?></div>
-
 
     </div>
 </footer>
