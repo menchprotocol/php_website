@@ -142,8 +142,8 @@ class Admin extends CI_Controller
                 //Echo this as the main title:
                 if($show_sublist){
                     $sub_types_ui .= '<tr class="' . echo_advance() . '">';
-                    $sub_types_ui .= '<td style="text-align: left;"><span style="width:29px; display: inline-block; text-align: center; margin-left:23px;">'.$sub_type['m_icon'].'</span><a href="/entities/'.$sub_type_en_id.'">'.$sub_type['m_name'].'</a></td>';
-                    $sub_types_ui .= '<td style="text-align: right;"><a href="/links?ln_type_entity_id=4250&in_status=0,1,2&in_type_entity_id='.$sub_type_en_id.'">'.echo_number($in_count[0]['total_active_intents']).'</a><i class="fal fa-info-circle icon-block" data-toggle="tooltip" title="'.number_format($in_count[0]['total_active_intents'],0).' '.$sub_type['m_desc'].'" data-placement="top"></i></td>';
+                    $sub_types_ui .= '<td style="text-align: left;"><span class="icon-block"></span><span class="icon-block">'.$sub_type['m_icon'].'</span><a href="/entities/'.$sub_type_en_id.'">'.$sub_type['m_name'].'</a></td>';
+                    $sub_types_ui .= '<td style="text-align: right;"><a href="/links?ln_type_entity_id=4250&in_status=0,1,2&in_type_entity_id='.$sub_type_en_id.'">'.echo_number($in_count[0]['total_active_intents']).'</a><i class="fal fa-info-circle icon-block" data-toggle="tooltip" title="'.number_format($in_count[0]['total_active_intents'],0).' '.$sub_type['m_desc'].'" data-placement="top"></i><span class="icon-block"></span></td>';
                     $sub_types_ui .= '</tr>';
                 }
             }

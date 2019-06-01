@@ -11,7 +11,7 @@ defined('BASEPATH') OR exit('No direct script access allowed');
  *
  */
 
-//Generated 2019-05-31 16:44:25 PST
+//Generated 2019-05-31 17:22:42 PST
 
 //Mench Platform:
 $config['en_ids_4488'] = array(4396, 4428, 4463, 4506, 4527, 4534, 4757, 6212, 6403, 6418, 7161);
@@ -248,8 +248,8 @@ $config['en_all_7164'] = array(
         'm_parents' => array(7164, 4595, 4755, 4593, 4280),
     ),
     6389 => array(
-        'm_icon' => '<i class="far fa-minus-circle"></i>',
-        'm_name' => 'User Sent Incomplete Profile',
+        'm_icon' => '<i class="far fa-exclamation-triangle"></i>',
+        'm_name' => 'User Sent Missing Profile',
         'm_desc' => '',
         'm_parents' => array(7164, 4277, 4595, 4755, 4593),
     ),
@@ -1460,8 +1460,8 @@ $config['en_all_4277'] = array(
         'm_parents' => array(7164, 4277, 4755, 4595, 4593),
     ),
     6389 => array(
-        'm_icon' => '<i class="far fa-minus-circle"></i>',
-        'm_name' => 'User Sent Incomplete Profile',
+        'm_icon' => '<i class="far fa-exclamation-triangle"></i>',
+        'm_name' => 'User Sent Missing Profile',
         'm_desc' => '',
         'm_parents' => array(7164, 4277, 4595, 4755, 4593),
     ),
@@ -2016,8 +2016,8 @@ $config['en_all_4755'] = array(
         'm_parents' => array(4595, 4755, 6222, 4593),
     ),
     6389 => array(
-        'm_icon' => '<i class="far fa-minus-circle"></i>',
-        'm_name' => 'User Sent Incomplete Profile',
+        'm_icon' => '<i class="far fa-exclamation-triangle"></i>',
+        'm_name' => 'User Sent Missing Profile',
         'm_desc' => '',
         'm_parents' => array(7164, 4277, 4595, 4755, 4593),
     ),
@@ -2525,8 +2525,8 @@ $config['en_all_4595'] = array(
         'm_parents' => array(5007, 6345, 4603, 4595, 4593, 4986, 4485),
     ),
     6389 => array(
-        'm_icon' => '<i class="far fa-minus-circle"></i>',
-        'm_name' => 'User Sent Incomplete Profile',
+        'm_icon' => '<i class="far fa-exclamation-triangle"></i>',
+        'm_name' => 'User Sent Missing Profile',
         'm_desc' => '1',
         'm_parents' => array(7164, 4277, 4595, 4755, 4593),
     ),
@@ -3051,8 +3051,8 @@ $config['en_all_4593'] = array(
         'm_parents' => array(5007, 6345, 4603, 4595, 4593, 4986, 4485),
     ),
     6389 => array(
-        'm_icon' => '<i class="far fa-minus-circle"></i>',
-        'm_name' => 'User Sent Incomplete Profile',
+        'm_icon' => '<i class="far fa-exclamation-triangle"></i>',
+        'm_name' => 'User Sent Missing Profile',
         'm_desc' => 'When we cannot fetch user profile data via Messenger API, either because user has not linked their Facebook to Messenger or because they did not authorize Mench to access',
         'm_parents' => array(7164, 4277, 4595, 4755, 4593),
     ),
