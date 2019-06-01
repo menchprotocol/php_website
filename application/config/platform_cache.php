@@ -11,7 +11,7 @@ defined('BASEPATH') OR exit('No direct script access allowed');
  *
  */
 
-//Generated 2019-05-31 17:22:42 PST
+//Generated 2019-05-31 17:45:54 PST
 
 //Mench Platform:
 $config['en_ids_4488'] = array(4396, 4428, 4463, 4506, 4527, 4534, 4757, 6212, 6403, 6418, 7161);
@@ -917,7 +917,7 @@ $config['en_all_6345'] = array(
     ),
     6242 => array(
         'm_icon' => '<i class="far fa-check-square"></i>',
-        'm_name' => 'Intent Note On-Complete',
+        'm_name' => 'Intent Note Completion',
         'm_desc' => '',
         'm_parents' => array(5007, 6345, 4603, 4595, 4593, 4986, 4485),
     ),
@@ -1108,8 +1108,8 @@ $config['en_all_4986'] = array(
         'm_parents' => array(5007, 6345, 4986, 4603, 4593, 4485, 4595),
     ),
     4983 => array(
-        'm_icon' => '<i class="far fa-file-certificate"></i>',
-        'm_name' => 'Intent Note Up-Vote',
+        'm_icon' => '<i class="far fa-quote-right"></i>',
+        'm_name' => 'Intent Note Quote',
         'm_desc' => '',
         'm_parents' => array(4986, 4985, 4595, 4593, 4485),
     ),
@@ -1121,7 +1121,7 @@ $config['en_all_4986'] = array(
     ),
     6242 => array(
         'm_icon' => '<i class="far fa-check-square"></i>',
-        'm_name' => 'Intent Note On-Complete',
+        'm_name' => 'Intent Note Completion',
         'm_desc' => '',
         'm_parents' => array(5007, 6345, 4603, 4595, 4593, 4986, 4485),
     ),
@@ -2363,8 +2363,8 @@ $config['en_all_4595'] = array(
         'm_parents' => array(4593, 4595, 4485),
     ),
     4983 => array(
-        'm_icon' => '<i class="far fa-file-certificate"></i>',
-        'm_name' => 'Intent Note Up-Vote',
+        'm_icon' => '<i class="far fa-quote-right"></i>',
+        'm_name' => 'Intent Note Quote',
         'm_desc' => '750',
         'm_parents' => array(4986, 4985, 4595, 4593, 4485),
     ),
@@ -2520,7 +2520,7 @@ $config['en_all_4595'] = array(
     ),
     6242 => array(
         'm_icon' => '<i class="far fa-check-square"></i>',
-        'm_name' => 'Intent Note On-Complete',
+        'm_name' => 'Intent Note Completion',
         'm_desc' => '2000',
         'm_parents' => array(5007, 6345, 4603, 4595, 4593, 4986, 4485),
     ),
@@ -2889,8 +2889,8 @@ $config['en_all_4593'] = array(
         'm_parents' => array(4593, 4595, 4485),
     ),
     4983 => array(
-        'm_icon' => '<i class="far fa-file-certificate"></i>',
-        'm_name' => 'Intent Note Up-Vote',
+        'm_icon' => '<i class="far fa-quote-right"></i>',
+        'm_name' => 'Intent Note Quote',
         'm_desc' => 'Up-votes track intent correlations referenced within expert sources, and represent a core building block of intelligence. Up-votes are among the most precious transaction types because they indicate that IF you do A, you will likely accomplish B. As miners mine content from more experts, certain intent correlations will receive more Up-vites than others, thus gaining more credibility.',
         'm_parents' => array(4986, 4985, 4595, 4593, 4485),
     ),
@@ -3046,7 +3046,7 @@ $config['en_all_4593'] = array(
     ),
     6242 => array(
         'm_icon' => '<i class="far fa-check-square"></i>',
-        'm_name' => 'Intent Note On-Complete',
+        'm_name' => 'Intent Note Completion',
         'm_desc' => '',
         'm_parents' => array(5007, 6345, 4603, 4595, 4593, 4986, 4485),
     ),
@@ -3233,8 +3233,8 @@ $config['en_all_4485'] = array(
         'm_parents' => array(6345, 4986, 4603, 4593, 4485, 4595),
     ),
     4983 => array(
-        'm_icon' => '<i class="far fa-file-certificate"></i>',
-        'm_name' => 'Up-Vote',
+        'm_icon' => '<i class="far fa-quote-right"></i>',
+        'm_name' => 'Quote',
         'm_desc' => 'Tracks intent correlations mined from expert sources and miner perspectives. Up-votes give crediblity to intent correlations. Never communicated with Students and only used for weighting purposes, like how Google uses link correlations for its pagerank algorithm.',
         'm_parents' => array(4986, 4985, 4595, 4593, 4485),
     ),
@@ -3252,7 +3252,7 @@ $config['en_all_4485'] = array(
     ),
     6242 => array(
         'm_icon' => '<i class="far fa-check-square"></i>',
-        'm_name' => 'On-Complete',
+        'm_name' => 'Completion',
         'm_desc' => 'Message delivered to students when they complete an intention.',
         'm_parents' => array(5007, 6345, 4603, 4595, 4593, 4986, 4485),
     ),
