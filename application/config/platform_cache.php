@@ -11,7 +11,36 @@ defined('BASEPATH') OR exit('No direct script access allowed');
  *
  */
 
-//Generated 2019-05-31 17:45:54 PST
+//Generated 2019-06-02 03:38:26 PST
+
+//Weekly Leaderboard Message:
+$config['en_ids_7203'] = array(4250, 4486, 6255, 7164);
+$config['en_all_7203'] = array(
+    4250 => array(
+        'm_icon' => '<i class="fas fa-hashtag"></i>',
+        'm_name' => 'Intent Created',
+        'm_desc' => '',
+        'm_parents' => array(7203, 7166, 4593, 4595),
+    ),
+    4486 => array(
+        'm_icon' => '<i class="fas fa-link"></i>',
+        'm_name' => 'Intent Links',
+        'm_desc' => '',
+        'm_parents' => array(7203, 7166, 4535, 4527),
+    ),
+    6255 => array(
+        'm_icon' => '<i class="fas fa-walking"></i>',
+        'm_name' => 'User Steps Progressed',
+        'm_desc' => '',
+        'm_parents' => array(7203, 7159, 6275, 4527),
+    ),
+    7164 => array(
+        'm_icon' => '<i class="far fa-comments"></i>',
+        'm_name' => 'User Messages',
+        'm_desc' => '',
+        'm_parents' => array(7203, 7159, 4527, 6221),
+    ),
+);
 
 //Mench Platform:
 $config['en_ids_4488'] = array(4396, 4428, 4463, 4506, 4527, 4534, 4757, 6212, 6403, 6418, 7161);
@@ -108,13 +137,13 @@ $config['en_all_7166'] = array(
         'm_icon' => '<i class="fas fa-hashtag"></i>',
         'm_name' => 'Intent Created',
         'm_desc' => '',
-        'm_parents' => array(7166, 4593, 4595),
+        'm_parents' => array(7203, 7166, 4593, 4595),
     ),
     4486 => array(
         'm_icon' => '<i class="fas fa-link"></i>',
         'm_name' => 'Intent Links',
         'm_desc' => '',
-        'm_parents' => array(7166, 4535, 4527),
+        'm_parents' => array(7203, 7166, 4535, 4527),
     ),
     4485 => array(
         'm_icon' => '<i class="fas fa-comment-plus"></i>',
@@ -378,21 +407,21 @@ $config['en_ids_7159'] = array(4235, 6255, 7164);
 $config['en_all_7159'] = array(
     4235 => array(
         'm_icon' => '<i class="far fa-bullseye-arrow"></i>',
-        'm_name' => 'Intent Set',
+        'm_name' => 'User Intent Set',
         'm_desc' => 'Intentions set by users enabling Mench to deliver relevant intelligence.',
         'm_parents' => array(7159, 4595, 6153, 4506, 4755, 4593),
     ),
     6255 => array(
         'm_icon' => '<i class="fas fa-walking"></i>',
-        'm_name' => 'Steps Taken',
+        'm_name' => 'User Steps Progressed',
         'm_desc' => 'Key insights or actionable tasks completed by users that gets them closer to their set intentions.',
-        'm_parents' => array(7159, 6275, 4527),
+        'm_parents' => array(7203, 7159, 6275, 4527),
     ),
     7164 => array(
         'm_icon' => '<i class="far fa-comments"></i>',
         'm_name' => 'User Messages',
         'm_desc' => 'Messages send and received by users that gets them closer to their set intentions.',
-        'm_parents' => array(7159, 4527, 6221),
+        'm_parents' => array(7203, 7159, 4527, 6221),
     ),
 );
 
@@ -811,7 +840,7 @@ $config['en_ids_6415'] = array(4559, 6140, 6143, 6144, 6154, 6155, 6157, 6158, 6
 $config['en_all_6415'] = array(
     4559 => array(
         'm_icon' => '<i class="far fa-thumbs-up"></i>',
-        'm_name' => 'User Step Messages',
+        'm_name' => 'User Step Got Messages',
         'm_desc' => '',
         'm_parents' => array(4595, 6415, 6274, 6255, 4755, 6146, 4593),
     ),
@@ -835,13 +864,13 @@ $config['en_all_6415'] = array(
     ),
     6154 => array(
         'm_icon' => '<i class="far fa-mountain"></i>',
-        'm_name' => 'Intent Accomplished',
+        'm_name' => 'User Intent Accomplished',
         'm_desc' => '',
         'm_parents' => array(4595, 6415, 4506, 6150, 4755, 4593),
     ),
     6155 => array(
         'm_icon' => '<i class="far fa-stop-circle"></i>',
-        'm_name' => 'Intent Cancelled',
+        'm_name' => 'User Intent Cancelled',
         'm_desc' => '',
         'm_parents' => array(4595, 6415, 4506, 6150, 4593, 4755),
     ),
@@ -853,7 +882,7 @@ $config['en_all_6415'] = array(
     ),
     6158 => array(
         'm_icon' => '<i class="far fa-thumbs-up"></i>',
-        'm_name' => 'User Step Outcome',
+        'm_name' => 'User Step Got Outcome',
         'm_desc' => '',
         'm_parents' => array(4595, 6415, 6274, 6255, 4593, 4755, 6146),
     ),
@@ -1000,29 +1029,29 @@ $config['en_all_2738'] = array(
     ),
 );
 
-//Action Plan Step Automated:
+//Auto Steps:
 $config['en_ids_6274'] = array(4559, 6158);
 $config['en_all_6274'] = array(
     4559 => array(
         'm_icon' => '<i class="far fa-thumbs-up"></i>',
-        'm_name' => 'User Step Messages',
+        'm_name' => 'User Step Got Messages',
         'm_desc' => '',
         'm_parents' => array(4595, 6415, 6274, 6255, 4755, 6146, 4593),
     ),
     6158 => array(
         'm_icon' => '<i class="far fa-thumbs-up"></i>',
-        'm_name' => 'User Step Outcome',
+        'm_name' => 'User Step Got Outcome',
         'm_desc' => '',
         'm_parents' => array(4595, 6415, 6274, 6255, 4593, 4755, 6146),
     ),
 );
 
-//Steps Taken:
+//User Steps Progressed:
 $config['en_ids_6255'] = array(4559, 6144, 6157, 6158, 6997);
 $config['en_all_6255'] = array(
     4559 => array(
         'm_icon' => '<i class="far fa-thumbs-up"></i>',
-        'm_name' => 'User Step Messages',
+        'm_name' => 'User Step Got Messages',
         'm_desc' => '',
         'm_parents' => array(4595, 6415, 6274, 6255, 4755, 6146, 4593),
     ),
@@ -1040,7 +1069,7 @@ $config['en_all_6255'] = array(
     ),
     6158 => array(
         'm_icon' => '<i class="far fa-thumbs-up"></i>',
-        'm_name' => 'User Step Outcome',
+        'm_name' => 'User Step Got Outcome',
         'm_desc' => '',
         'm_parents' => array(4595, 6415, 6274, 6255, 4593, 4755, 6146),
     ),
@@ -1052,7 +1081,7 @@ $config['en_all_6255'] = array(
     ),
 );
 
-//Action Plan Double-Steps:
+//Double-Steps:
 $config['en_ids_6244'] = array(6144, 6157, 6997);
 $config['en_all_6244'] = array(
     6144 => array(
@@ -1080,13 +1109,13 @@ $config['en_ids_6150'] = array(6154, 6155);
 $config['en_all_6150'] = array(
     6154 => array(
         'm_icon' => '<i class="far fa-mountain"></i>',
-        'm_name' => 'Intent Accomplished',
+        'm_name' => 'User Intent Accomplished',
         'm_desc' => 'You successfully accomplished your intention so you no longer want to receive future updates',
         'm_parents' => array(4595, 6415, 4506, 6150, 4755, 4593),
     ),
     6155 => array(
         'm_icon' => '<i class="far fa-stop-circle"></i>',
-        'm_name' => 'Intent Cancelled',
+        'm_name' => 'User Intent Cancelled',
         'm_desc' => 'You did NOT accomplish the intention and you want to stop all future updates on this intention',
         'm_parents' => array(4595, 6415, 4506, 6150, 4593, 4755),
     ),
@@ -1302,12 +1331,12 @@ $config['en_all_6177'] = array(
     ),
 );
 
-//Action Plan Completion Steps:
+//User Steps Completed:
 $config['en_ids_6146'] = array(4559, 6143, 6144, 6157, 6158, 6997);
 $config['en_all_6146'] = array(
     4559 => array(
         'm_icon' => '<i class="far fa-thumbs-up"></i>',
-        'm_name' => 'User Step Messages',
+        'm_name' => 'User Step Got Messages',
         'm_desc' => 'Completed when students read the messages of an intent that does not have a completion requirement',
         'm_parents' => array(4595, 6415, 6274, 6255, 4755, 6146, 4593),
     ),
@@ -1331,7 +1360,7 @@ $config['en_all_6146'] = array(
     ),
     6158 => array(
         'm_icon' => '<i class="far fa-thumbs-up"></i>',
-        'm_name' => 'User Step Outcome',
+        'm_name' => 'User Step Got Outcome',
         'm_desc' => 'Completed when students read the messages of an intent that does not have any messages or a completion requirement',
         'm_parents' => array(4595, 6415, 6274, 6255, 4593, 4755, 6146),
     ),
@@ -1765,7 +1794,7 @@ $config['en_all_4755'] = array(
     ),
     4235 => array(
         'm_icon' => '<i class="far fa-bullseye-arrow"></i>',
-        'm_name' => 'Intent Set',
+        'm_name' => 'User Intent Set',
         'm_desc' => '',
         'm_parents' => array(7159, 4595, 6153, 4506, 4755, 4593),
     ),
@@ -1837,7 +1866,7 @@ $config['en_all_4755'] = array(
     ),
     4283 => array(
         'm_icon' => '<i class="fas fa-eye"></i>',
-        'm_name' => 'Intent Listed',
+        'm_name' => 'User Intent Listed',
         'm_desc' => '',
         'm_parents' => array(4595, 6153, 4755, 4593),
     ),
@@ -1927,7 +1956,7 @@ $config['en_all_4755'] = array(
     ),
     4559 => array(
         'm_icon' => '<i class="far fa-thumbs-up"></i>',
-        'm_name' => 'User Step Messages',
+        'm_name' => 'User Step Got Messages',
         'm_desc' => '',
         'm_parents' => array(4595, 6415, 6274, 6255, 4755, 6146, 4593),
     ),
@@ -1957,7 +1986,7 @@ $config['en_all_4755'] = array(
     ),
     6132 => array(
         'm_icon' => '<i class="fas fa-exchange rotate90"></i>',
-        'm_name' => 'Intent Sorted',
+        'm_name' => 'User Intent Prioritized',
         'm_desc' => '',
         'm_parents' => array(4595, 6153, 4506, 4755, 4593),
     ),
@@ -1981,19 +2010,19 @@ $config['en_all_4755'] = array(
     ),
     6149 => array(
         'm_icon' => '<i class="fas fa-search-plus"></i>',
-        'm_name' => 'Intent Considered',
+        'm_name' => 'User Intent Considered',
         'm_desc' => '',
         'm_parents' => array(4595, 6153, 4755, 4593),
     ),
     6154 => array(
         'm_icon' => '<i class="far fa-mountain"></i>',
-        'm_name' => 'Intent Accomplished',
+        'm_name' => 'User Intent Accomplished',
         'm_desc' => '',
         'm_parents' => array(4595, 6415, 4506, 6150, 4755, 4593),
     ),
     6155 => array(
         'm_icon' => '<i class="far fa-stop-circle"></i>',
-        'm_name' => 'Intent Cancelled',
+        'm_name' => 'User Intent Cancelled',
         'm_desc' => '',
         'm_parents' => array(4595, 6415, 4506, 6150, 4593, 4755),
     ),
@@ -2005,7 +2034,7 @@ $config['en_all_4755'] = array(
     ),
     6158 => array(
         'm_icon' => '<i class="far fa-thumbs-up"></i>',
-        'm_name' => 'User Step Outcome',
+        'm_name' => 'User Step Got Outcome',
         'm_desc' => '',
         'm_parents' => array(4595, 6415, 6274, 6255, 4593, 4755, 6146),
     ),
@@ -2059,7 +2088,7 @@ $config['en_all_4755'] = array(
     ),
     6969 => array(
         'm_icon' => '<i class="fas fa-megaphone"></i>',
-        'm_name' => 'Intent Featured',
+        'm_name' => 'User Intent Featured',
         'm_desc' => '',
         'm_parents' => array(4595, 4593, 4755, 6153),
     ),
@@ -2106,7 +2135,7 @@ $config['en_all_4595'] = array(
     ),
     4235 => array(
         'm_icon' => '<i class="far fa-bullseye-arrow"></i>',
-        'm_name' => 'Intent Set',
+        'm_name' => 'User Intent Set',
         'm_desc' => '50',
         'm_parents' => array(7159, 4595, 6153, 4506, 4755, 4593),
     ),
@@ -2126,7 +2155,7 @@ $config['en_all_4595'] = array(
         'm_icon' => '<i class="fas fa-hashtag"></i>',
         'm_name' => 'Intent Created',
         'm_desc' => '10000',
-        'm_parents' => array(7166, 4593, 4595),
+        'm_parents' => array(7203, 7166, 4593, 4595),
     ),
     4251 => array(
         'm_icon' => '<i class="fas fa-at"></i>',
@@ -2238,7 +2267,7 @@ $config['en_all_4595'] = array(
     ),
     4283 => array(
         'm_icon' => '<i class="fas fa-eye"></i>',
-        'm_name' => 'Intent Listed',
+        'm_name' => 'User Intent Listed',
         'm_desc' => '2',
         'm_parents' => array(4595, 6153, 4755, 4593),
     ),
@@ -2340,7 +2369,7 @@ $config['en_all_4595'] = array(
     ),
     4559 => array(
         'm_icon' => '<i class="far fa-thumbs-up"></i>',
-        'm_name' => 'User Step Messages',
+        'm_name' => 'User Step Got Messages',
         'm_desc' => '5',
         'm_parents' => array(4595, 6415, 6274, 6255, 4755, 6146, 4593),
     ),
@@ -2454,7 +2483,7 @@ $config['en_all_4595'] = array(
     ),
     6132 => array(
         'm_icon' => '<i class="fas fa-exchange rotate90"></i>',
-        'm_name' => 'Intent Sorted',
+        'm_name' => 'User Intent Prioritized',
         'm_desc' => '25',
         'm_parents' => array(4595, 6153, 4506, 4755, 4593),
     ),
@@ -2478,19 +2507,19 @@ $config['en_all_4595'] = array(
     ),
     6149 => array(
         'm_icon' => '<i class="fas fa-search-plus"></i>',
-        'm_name' => 'Intent Considered',
+        'm_name' => 'User Intent Considered',
         'm_desc' => '5',
         'm_parents' => array(4595, 6153, 4755, 4593),
     ),
     6154 => array(
         'm_icon' => '<i class="far fa-mountain"></i>',
-        'm_name' => 'Intent Accomplished',
+        'm_name' => 'User Intent Accomplished',
         'm_desc' => '10',
         'm_parents' => array(4595, 6415, 4506, 6150, 4755, 4593),
     ),
     6155 => array(
         'm_icon' => '<i class="far fa-stop-circle"></i>',
-        'm_name' => 'Intent Cancelled',
+        'm_name' => 'User Intent Cancelled',
         'm_desc' => '10',
         'm_parents' => array(4595, 6415, 4506, 6150, 4593, 4755),
     ),
@@ -2502,7 +2531,7 @@ $config['en_all_4595'] = array(
     ),
     6158 => array(
         'm_icon' => '<i class="far fa-thumbs-up"></i>',
-        'm_name' => 'User Step Outcome',
+        'm_name' => 'User Step Got Outcome',
         'm_desc' => '1',
         'm_parents' => array(4595, 6415, 6274, 6255, 4593, 4755, 6146),
     ),
@@ -2568,7 +2597,7 @@ $config['en_all_4595'] = array(
     ),
     6969 => array(
         'm_icon' => '<i class="fas fa-megaphone"></i>',
-        'm_name' => 'Intent Featured',
+        'm_name' => 'User Intent Featured',
         'm_desc' => '2',
         'm_parents' => array(4595, 4593, 4755, 6153),
     ),
@@ -2632,7 +2661,7 @@ $config['en_all_4593'] = array(
     ),
     4235 => array(
         'm_icon' => '<i class="far fa-bullseye-arrow"></i>',
-        'm_name' => 'Intent Set',
+        'm_name' => 'User Intent Set',
         'm_desc' => 'Intentions set by users enabling Mench to deliver relevant intelligence.',
         'm_parents' => array(7159, 4595, 6153, 4506, 4755, 4593),
     ),
@@ -2652,7 +2681,7 @@ $config['en_all_4593'] = array(
         'm_icon' => '<i class="fas fa-hashtag"></i>',
         'm_name' => 'Intent Created',
         'm_desc' => '',
-        'm_parents' => array(7166, 4593, 4595),
+        'm_parents' => array(7203, 7166, 4593, 4595),
     ),
     4251 => array(
         'm_icon' => '<i class="fas fa-at"></i>',
@@ -2764,7 +2793,7 @@ $config['en_all_4593'] = array(
     ),
     4283 => array(
         'm_icon' => '<i class="fas fa-eye"></i>',
-        'm_name' => 'Intent Listed',
+        'm_name' => 'User Intent Listed',
         'm_desc' => 'Once a student has added an Intention to their Action Plan, this link will be logged every time they access that Action Plan and view its intentions.',
         'm_parents' => array(4595, 6153, 4755, 4593),
     ),
@@ -2866,7 +2895,7 @@ $config['en_all_4593'] = array(
     ),
     4559 => array(
         'm_icon' => '<i class="far fa-thumbs-up"></i>',
-        'm_name' => 'User Step Messages',
+        'm_name' => 'User Step Got Messages',
         'm_desc' => 'Logged when a student receives the messages of an AND intent that does not have any completion requirements.',
         'm_parents' => array(4595, 6415, 6274, 6255, 4755, 6146, 4593),
     ),
@@ -2980,7 +3009,7 @@ $config['en_all_4593'] = array(
     ),
     6132 => array(
         'm_icon' => '<i class="fas fa-exchange rotate90"></i>',
-        'm_name' => 'Intent Sorted',
+        'm_name' => 'User Intent Prioritized',
         'm_desc' => 'Student re-prioritized their top-level intentions to focus on intentions that currently matter the most.',
         'm_parents' => array(4595, 6153, 4506, 4755, 4593),
     ),
@@ -3004,19 +3033,19 @@ $config['en_all_4593'] = array(
     ),
     6149 => array(
         'm_icon' => '<i class="fas fa-search-plus"></i>',
-        'm_name' => 'Intent Considered',
+        'm_name' => 'User Intent Considered',
         'm_desc' => 'When a student chooses to review a given intention from the intentions they have searched or have been recommended after selecting GET STARTED from a mench.com intent landing page.',
         'm_parents' => array(4595, 6153, 4755, 4593),
     ),
     6154 => array(
         'm_icon' => '<i class="far fa-mountain"></i>',
-        'm_name' => 'Intent Accomplished',
+        'm_name' => 'User Intent Accomplished',
         'm_desc' => 'Student accomplished their intention 🎉🎉🎉',
         'm_parents' => array(4595, 6415, 4506, 6150, 4755, 4593),
     ),
     6155 => array(
         'm_icon' => '<i class="far fa-stop-circle"></i>',
-        'm_name' => 'Intent Cancelled',
+        'm_name' => 'User Intent Cancelled',
         'm_desc' => 'Student prematurely removed an intention from their Action Plan without accomplishing it.',
         'm_parents' => array(4595, 6415, 4506, 6150, 4593, 4755),
     ),
@@ -3028,7 +3057,7 @@ $config['en_all_4593'] = array(
     ),
     6158 => array(
         'm_icon' => '<i class="far fa-thumbs-up"></i>',
-        'm_name' => 'User Step Outcome',
+        'm_name' => 'User Step Got Outcome',
         'm_desc' => 'The most basic type of intent completion for intents that do not have any messages, completion requirements or children to choose from.',
         'm_parents' => array(4595, 6415, 6274, 6255, 4593, 4755, 6146),
     ),
@@ -3094,7 +3123,7 @@ $config['en_all_4593'] = array(
     ),
     6969 => array(
         'm_icon' => '<i class="fas fa-megaphone"></i>',
-        'm_name' => 'Intent Featured',
+        'm_name' => 'User Intent Featured',
         'm_desc' => 'Logged every time an intention is recommended to a user by Mench',
         'm_parents' => array(4595, 4593, 4755, 6153),
     ),
