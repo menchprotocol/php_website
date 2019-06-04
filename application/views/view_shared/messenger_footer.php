@@ -6,7 +6,7 @@
 <?php $this->load->view('view_shared/messenger_web_chat'); ?>
 <?php
 //Load modal only if in Action Plan:
-if($this->uri->segment(2)=='actionplan'){
+if($this->uri->segment(1)=='actionplan'){
     ?>
     <div class="modal fade" id="markCompleteModal" tabindex="-1" role="dialog" aria-labelledby="markCompleteModalLabel">
         <div class="modal-dialog" role="document">
