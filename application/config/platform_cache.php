@@ -11,7 +11,7 @@ defined('BASEPATH') OR exit('No direct script access allowed');
  *
  */
 
-//Generated 2019-06-03 23:31:00 PST
+//Generated 2019-06-04 13:31:38 PST
 
 //Weekly Leaderboard Message:
 $config['en_ids_7203'] = array(4250, 4486, 6255, 7164);
@@ -36,7 +36,7 @@ $config['en_all_7203'] = array(
     ),
     7164 => array(
         'm_icon' => '<i class="far fa-comments"></i>',
-        'm_name' => 'User Messages',
+        'm_name' => 'User Messages Communicated',
         'm_desc' => '',
         'm_parents' => array(7203, 7159, 4527, 6221),
     ),
@@ -153,7 +153,7 @@ $config['en_all_7166'] = array(
     ),
 );
 
-//User Messages:
+//User Messages Communicated:
 $config['en_ids_7164'] = array(4268, 4278, 4279, 4287, 4299, 4460, 4547, 4548, 4549, 4550, 4551, 4552, 4553, 4554, 4555, 4556, 4557, 4570, 4577, 5967, 6563);
 $config['en_all_7164'] = array(
     4268 => array(
@@ -413,7 +413,7 @@ $config['en_all_7159'] = array(
     ),
     7164 => array(
         'm_icon' => '<i class="far fa-comments"></i>',
-        'm_name' => 'Messages',
+        'm_name' => 'Messages Communicated',
         'm_desc' => 'Messages send and received by users that gets them closer to their set intentions.',
         'm_parents' => array(7203, 7159, 4527, 6221),
     ),
@@ -1131,8 +1131,8 @@ $config['en_all_4986'] = array(
         'm_parents' => array(5007, 6345, 4986, 4603, 4593, 4485, 4595),
     ),
     4983 => array(
-        'm_icon' => '<i class="far fa-quote-right"></i>',
-        'm_name' => 'Intent Note Quote',
+        'm_icon' => '<i class="far fa-bookmark"></i>',
+        'm_name' => 'Intent Note Reference',
         'm_desc' => '',
         'm_parents' => array(4986, 4985, 4595, 4593, 4485),
     ),
@@ -2374,8 +2374,8 @@ $config['en_all_4595'] = array(
         'm_parents' => array(4593, 4595, 4485),
     ),
     4983 => array(
-        'm_icon' => '<i class="far fa-quote-right"></i>',
-        'm_name' => 'Intent Note Quote',
+        'm_icon' => '<i class="far fa-bookmark"></i>',
+        'm_name' => 'Intent Note Reference',
         'm_desc' => '750',
         'm_parents' => array(4986, 4985, 4595, 4593, 4485),
     ),
@@ -2894,9 +2894,9 @@ $config['en_all_4593'] = array(
         'm_parents' => array(4593, 4595, 4485),
     ),
     4983 => array(
-        'm_icon' => '<i class="far fa-quote-right"></i>',
-        'm_name' => 'Intent Note Quote',
-        'm_desc' => 'Up-votes track intent correlations referenced within expert sources, and represent a core building block of intelligence. Up-votes are among the most precious transaction types because they indicate that IF you do A, you will likely accomplish B. As miners mine content from more experts, certain intent correlations will receive more Up-vites than others, thus gaining more credibility.',
+        'm_icon' => '<i class="far fa-bookmark"></i>',
+        'm_name' => 'Intent Note Reference',
+        'm_desc' => 'References track intent correlations referenced within expert sources, and represent a core building block of intelligence. References are among the most precious transaction types because they indicate that IF you do A, you will likely accomplish B. As miners mine content from more experts, certain intent correlations will receive more references than others, thus gaining more credibility.',
         'm_parents' => array(4986, 4985, 4595, 4593, 4485),
     ),
     4993 => array(
@@ -3232,9 +3232,9 @@ $config['en_all_4485'] = array(
         'm_parents' => array(6345, 4986, 4603, 4593, 4485, 4595),
     ),
     4983 => array(
-        'm_icon' => '<i class="far fa-quote-right"></i>',
-        'm_name' => 'Quote',
-        'm_desc' => 'Tracks intent correlations mined from expert sources and miner perspectives. Up-votes give crediblity to intent correlations. Never communicated with Students and only used for weighting purposes, like how Google uses link correlations for its pagerank algorithm.',
+        'm_icon' => '<i class="far fa-bookmark"></i>',
+        'm_name' => 'Reference',
+        'm_desc' => 'Tracks intent correlations mined from expert sources and miner perspectives. References give credibility to intent correlations. Never communicated with Students and only used for weighting purposes, like how Google uses link correlations for its PageRank algorithm.',
         'm_parents' => array(4986, 4985, 4595, 4593, 4485),
     ),
     4601 => array(
