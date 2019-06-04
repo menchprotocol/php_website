@@ -11,7 +11,7 @@ defined('BASEPATH') OR exit('No direct script access allowed');
  *
  */
 
-//Generated 2019-06-03 21:00:57 PST
+//Generated 2019-06-03 21:04:32 PST
 
 //Weekly Leaderboard Message:
 $config['en_ids_7203'] = array(4250, 4486, 6255, 7164);
@@ -154,7 +154,7 @@ $config['en_all_7166'] = array(
 );
 
 //User Messages:
-$config['en_ids_7164'] = array(4268, 4278, 4279, 4287, 4299, 4460, 4547, 4548, 4549, 4550, 4551, 4552, 4553, 4554, 4555, 4556, 4557, 4570, 4577, 5967, 6389, 6563);
+$config['en_ids_7164'] = array(4268, 4278, 4279, 4287, 4299, 4460, 4547, 4548, 4549, 4550, 4551, 4552, 4553, 4554, 4555, 4556, 4557, 4570, 4577, 5967, 6563);
 $config['en_all_7164'] = array(
     4268 => array(
         'm_icon' => '<i class="fab fa-facebook-messenger"></i>',
@@ -164,7 +164,7 @@ $config['en_all_7164'] = array(
     ),
     4278 => array(
         'm_icon' => '<i class="far fa-eye"></i>',
-        'm_name' => 'User Sent Affirmation',
+        'm_name' => 'User Sent Read',
         'm_desc' => '',
         'm_parents' => array(7164, 4277, 4595, 4755, 4593),
     ),
@@ -275,12 +275,6 @@ $config['en_all_7164'] = array(
         'm_name' => 'User Received Email',
         'm_desc' => '',
         'm_parents' => array(7164, 4595, 4755, 4593, 4280),
-    ),
-    6389 => array(
-        'm_icon' => '<i class="far fa-exclamation-triangle"></i>',
-        'm_name' => 'User Sent Missing Profile',
-        'm_desc' => '',
-        'm_parents' => array(7164, 4277, 4595, 4755, 4593),
     ),
     6563 => array(
         'm_icon' => '<i class="far fa-question"></i>',
@@ -1414,7 +1408,7 @@ $config['en_all_6123'] = array(
 );
 
 //User Sent Messages:
-$config['en_ids_4277'] = array(4268, 4278, 4287, 4299, 4460, 4547, 4548, 4549, 4550, 4551, 4557, 4577, 6389);
+$config['en_ids_4277'] = array(4268, 4278, 4287, 4299, 4460, 4547, 4548, 4549, 4550, 4551, 4557, 4577);
 $config['en_all_4277'] = array(
     4268 => array(
         'm_icon' => '<i class="fab fa-facebook-messenger"></i>',
@@ -1424,7 +1418,7 @@ $config['en_all_4277'] = array(
     ),
     4278 => array(
         'm_icon' => '<i class="far fa-eye"></i>',
-        'm_name' => 'User Sent Affirmation',
+        'm_name' => 'User Sent Read',
         'm_desc' => '',
         'm_parents' => array(7164, 4277, 4595, 4755, 4593),
     ),
@@ -1487,12 +1481,6 @@ $config['en_all_4277'] = array(
         'm_name' => 'User Sent Access',
         'm_desc' => '',
         'm_parents' => array(7164, 4277, 4755, 4595, 4593),
-    ),
-    6389 => array(
-        'm_icon' => '<i class="far fa-exclamation-triangle"></i>',
-        'm_name' => 'User Sent Missing Profile',
-        'm_desc' => '',
-        'm_parents' => array(7164, 4277, 4595, 4755, 4593),
     ),
 );
 
@@ -1778,7 +1766,7 @@ $config['en_all_4426'] = array(
 );
 
 //Private Content:
-$config['en_ids_4755'] = array(3286, 3288, 4235, 4242, 4246, 4263, 4266, 4267, 4268, 4269, 4275, 4278, 4279, 4282, 4283, 4287, 4299, 4460, 4547, 4548, 4549, 4550, 4551, 4552, 4553, 4554, 4555, 4556, 4557, 4559, 4570, 4577, 4783, 5967, 6132, 6140, 6143, 6144, 6149, 6154, 6155, 6157, 6158, 6224, 6389, 6415, 6556, 6559, 6560, 6563, 6578, 6969, 6997);
+$config['en_ids_4755'] = array(3286, 3288, 4235, 4242, 4246, 4263, 4266, 4267, 4268, 4269, 4275, 4278, 4279, 4282, 4283, 4287, 4299, 4460, 4547, 4548, 4549, 4550, 4551, 4552, 4553, 4554, 4555, 4556, 4557, 4559, 4570, 4577, 4783, 5967, 6132, 6140, 6143, 6144, 6149, 6154, 6155, 6157, 6158, 6224, 6415, 6556, 6559, 6560, 6563, 6578, 6969, 6997);
 $config['en_all_4755'] = array(
     3286 => array(
         'm_icon' => '<i class="far fa-key"></i>',
@@ -1848,7 +1836,7 @@ $config['en_all_4755'] = array(
     ),
     4278 => array(
         'm_icon' => '<i class="far fa-eye"></i>',
-        'm_name' => 'User Sent Affirmation',
+        'm_name' => 'User Sent Read',
         'm_desc' => '',
         'm_parents' => array(7164, 4277, 4595, 4755, 4593),
     ),
@@ -2044,12 +2032,6 @@ $config['en_all_4755'] = array(
         'm_desc' => '',
         'm_parents' => array(4595, 4755, 6222, 4593),
     ),
-    6389 => array(
-        'm_icon' => '<i class="far fa-exclamation-triangle"></i>',
-        'm_name' => 'User Sent Missing Profile',
-        'm_desc' => '',
-        'm_parents' => array(7164, 4277, 4595, 4755, 4593),
-    ),
     6415 => array(
         'm_icon' => '<i class="far fa-function"></i>',
         'm_name' => 'User Step Reset',
@@ -2101,7 +2083,7 @@ $config['en_all_4755'] = array(
 );
 
 //Link Points:
-$config['en_ids_4595'] = array(4228, 4229, 4230, 4231, 4232, 4235, 4242, 4246, 4250, 4251, 4255, 4256, 4257, 4258, 4259, 4260, 4261, 4263, 4264, 4266, 4267, 4268, 4269, 4275, 4278, 4279, 4282, 4283, 4287, 4299, 4318, 4319, 4460, 4547, 4548, 4549, 4550, 4551, 4552, 4553, 4554, 4555, 4556, 4557, 4559, 4570, 4577, 4601, 4983, 4993, 4994, 4998, 4999, 5000, 5001, 5003, 5007, 5865, 5943, 5967, 5981, 5982, 6093, 6132, 6140, 6143, 6144, 6149, 6154, 6155, 6157, 6158, 6224, 6226, 6242, 6389, 6415, 6556, 6559, 6560, 6563, 6578, 6969, 6997);
+$config['en_ids_4595'] = array(4228, 4229, 4230, 4231, 4232, 4235, 4242, 4246, 4250, 4251, 4255, 4256, 4257, 4258, 4259, 4260, 4261, 4263, 4264, 4266, 4267, 4268, 4269, 4275, 4278, 4279, 4282, 4283, 4287, 4299, 4318, 4319, 4460, 4547, 4548, 4549, 4550, 4551, 4552, 4553, 4554, 4555, 4556, 4557, 4559, 4570, 4577, 4601, 4983, 4993, 4994, 4998, 4999, 5000, 5001, 5003, 5007, 5865, 5943, 5967, 5981, 5982, 6093, 6132, 6140, 6143, 6144, 6149, 6154, 6155, 6157, 6158, 6224, 6226, 6242, 6415, 6556, 6559, 6560, 6563, 6578, 6969, 6997);
 $config['en_all_4595'] = array(
     4228 => array(
         'm_icon' => '<i class="fas fa-walking"></i>',
@@ -2249,7 +2231,7 @@ $config['en_all_4595'] = array(
     ),
     4278 => array(
         'm_icon' => '<i class="far fa-eye"></i>',
-        'm_name' => 'User Sent Affirmation',
+        'm_name' => 'User Sent Read',
         'm_desc' => '1',
         'm_parents' => array(7164, 4277, 4595, 4755, 4593),
     ),
@@ -2553,12 +2535,6 @@ $config['en_all_4595'] = array(
         'm_desc' => '2000',
         'm_parents' => array(5007, 6345, 4603, 4595, 4593, 4986, 4485),
     ),
-    6389 => array(
-        'm_icon' => '<i class="far fa-exclamation-triangle"></i>',
-        'm_name' => 'User Sent Missing Profile',
-        'm_desc' => '1',
-        'm_parents' => array(7164, 4277, 4595, 4755, 4593),
-    ),
     6415 => array(
         'm_icon' => '<i class="far fa-function"></i>',
         'm_name' => 'User Step Reset',
@@ -2627,7 +2603,7 @@ $config['en_all_4600'] = array(
 );
 
 //Link Types:
-$config['en_ids_4593'] = array(4228, 4229, 4230, 4231, 4232, 4235, 4242, 4246, 4250, 4251, 4255, 4256, 4257, 4258, 4259, 4260, 4261, 4263, 4264, 4266, 4267, 4268, 4269, 4275, 4278, 4279, 4282, 4283, 4287, 4299, 4318, 4319, 4460, 4547, 4548, 4549, 4550, 4551, 4552, 4553, 4554, 4555, 4556, 4557, 4559, 4570, 4577, 4601, 4983, 4993, 4994, 4998, 4999, 5000, 5001, 5003, 5007, 5865, 5943, 5967, 5981, 5982, 6093, 6132, 6140, 6143, 6144, 6149, 6154, 6155, 6157, 6158, 6224, 6226, 6242, 6389, 6415, 6556, 6559, 6560, 6563, 6578, 6969, 6997);
+$config['en_ids_4593'] = array(4228, 4229, 4230, 4231, 4232, 4235, 4242, 4246, 4250, 4251, 4255, 4256, 4257, 4258, 4259, 4260, 4261, 4263, 4264, 4266, 4267, 4268, 4269, 4275, 4278, 4279, 4282, 4283, 4287, 4299, 4318, 4319, 4460, 4547, 4548, 4549, 4550, 4551, 4552, 4553, 4554, 4555, 4556, 4557, 4559, 4570, 4577, 4601, 4983, 4993, 4994, 4998, 4999, 5000, 5001, 5003, 5007, 5865, 5943, 5967, 5981, 5982, 6093, 6132, 6140, 6143, 6144, 6149, 6154, 6155, 6157, 6158, 6224, 6226, 6242, 6415, 6556, 6559, 6560, 6563, 6578, 6969, 6997);
 $config['en_all_4593'] = array(
     4228 => array(
         'm_icon' => '<i class="fas fa-walking"></i>',
@@ -2775,7 +2751,7 @@ $config['en_all_4593'] = array(
     ),
     4278 => array(
         'm_icon' => '<i class="far fa-eye"></i>',
-        'm_name' => 'User Sent Affirmation',
+        'm_name' => 'User Sent Read',
         'm_desc' => '',
         'm_parents' => array(7164, 4277, 4595, 4755, 4593),
     ),
@@ -3078,12 +3054,6 @@ $config['en_all_4593'] = array(
         'm_name' => 'Intent Note Completion',
         'm_desc' => '',
         'm_parents' => array(5007, 6345, 4603, 4595, 4593, 4986, 4485),
-    ),
-    6389 => array(
-        'm_icon' => '<i class="far fa-exclamation-triangle"></i>',
-        'm_name' => 'User Sent Missing Profile',
-        'm_desc' => 'When we cannot fetch user profile data via Messenger API, either because user has not linked their Facebook to Messenger or because they did not authorize Mench to access',
-        'm_parents' => array(7164, 4277, 4595, 4755, 4593),
     ),
     6415 => array(
         'm_icon' => '<i class="far fa-function"></i>',
