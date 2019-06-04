@@ -11,7 +11,7 @@ defined('BASEPATH') OR exit('No direct script access allowed');
  *
  */
 
-//Generated 2019-06-04 13:35:47 PST
+//Generated 2019-06-04 16:25:45 PST
 
 //Weekly Leaderboard Message:
 $config['en_ids_7203'] = array(4250, 4486, 6255, 7164);
@@ -478,7 +478,7 @@ $config['en_all_6194'] = array(
     ),
 );
 
-//User Step Unlocked:
+//User Step Intent Unlocked:
 $config['en_ids_6997'] = array(6907, 6914);
 $config['en_all_6997'] = array(
     6907 => array(
@@ -535,7 +535,7 @@ $config['en_all_6827'] = array(
     ),
     6695 => array(
         'm_icon' => '<i class="fal fa-briefcase"></i>',
-        'm_name' => 'Partner Employers',
+        'm_name' => 'Partner Companies',
         'm_desc' => 'Those who use Mench as a recruitment platform to assess their candidates and reach new candidates',
         'm_parents' => array(6827, 4426, 4463),
     ),
@@ -823,7 +823,7 @@ $config['en_all_4463'] = array(
     ),
     6695 => array(
         'm_icon' => '<i class="fal fa-briefcase"></i>',
-        'm_name' => 'Mench Partner Employers',
+        'm_name' => 'Mench Partner Companies',
         'm_desc' => 'Users who can manage the accounts of organizations they belong to.',
         'm_parents' => array(6827, 4426, 4463),
     ),
@@ -839,8 +839,8 @@ $config['en_all_6415'] = array(
         'm_parents' => array(4595, 6415, 6274, 6255, 4755, 6146, 4593),
     ),
     6140 => array(
-        'm_icon' => '<i class="far fa-route"></i>',
-        'm_name' => 'User Step Routed',
+        'm_icon' => '<i class="far fa-lock-open"></i>',
+        'm_name' => 'User Step Link Unlocked',
         'm_desc' => '',
         'm_parents' => array(4595, 6415, 6410, 6288, 4229, 4755, 4593),
     ),
@@ -882,24 +882,24 @@ $config['en_all_6415'] = array(
     ),
     6997 => array(
         'm_icon' => '<i class="far fa-lock-open"></i>',
-        'm_name' => 'User Step Unlocked',
+        'm_name' => 'User Step Intent Unlocked',
         'm_desc' => '',
         'm_parents' => array(4527, 6244, 6415, 6255, 4595, 4593, 4755, 6146),
     ),
 );
 
-//Action Plan Completion Unlock Step:
+//Action Plan Completion Recursive Up:
 $config['en_ids_6410'] = array(4228, 4229, 4358, 6140, 6402);
 $config['en_all_6410'] = array(
     4228 => array(
         'm_icon' => '<i class="fas fa-walking"></i>',
-        'm_name' => 'Intent Link Step',
+        'm_name' => 'Intent Link Open',
         'm_desc' => 'Fixed steps provide the assessment marks needed to determine the outcome of conditional steps.',
         'm_parents' => array(6410, 4593, 4486, 4595),
     ),
     4229 => array(
-        'm_icon' => '<i class="far fa-route"></i>',
-        'm_name' => 'Intent Link Router',
+        'm_icon' => '<i class="fas fa-lock"></i>',
+        'm_name' => 'Intent Link Locked',
         'm_desc' => 'The outcome of processing the aggregate steps if a student\'s Action Plan and unlocking a specific intent based on the percentage outcome.',
         'm_parents' => array(6410, 6283, 4593, 4486, 4595),
     ),
@@ -910,14 +910,14 @@ $config['en_all_6410'] = array(
         'm_parents' => array(6410, 6232, 6213, 6103, 4228),
     ),
     6140 => array(
-        'm_icon' => '<i class="far fa-route"></i>',
-        'm_name' => 'User Step Routed',
+        'm_icon' => '<i class="far fa-lock-open"></i>',
+        'm_name' => 'User Step Link Unlocked',
         'm_desc' => '',
         'm_parents' => array(4595, 6415, 6410, 6288, 4229, 4755, 4593),
     ),
     6402 => array(
-        'm_icon' => '<i class="far fa-route"></i>',
-        'm_name' => 'Routing Score Range',
+        'm_icon' => '<i class="far fa-lock-open"></i>',
+        'm_name' => 'Unlock Score Range',
         'm_desc' => 'Defines the minimum/maximum fixed score a student must get in order to unlock this conditional step',
         'm_parents' => array(6410, 4229),
     ),
@@ -1069,7 +1069,7 @@ $config['en_all_6255'] = array(
     ),
     6997 => array(
         'm_icon' => '<i class="far fa-lock-open"></i>',
-        'm_name' => 'User Step Unlocked',
+        'm_name' => 'User Step Intent Unlocked',
         'm_desc' => '',
         'm_parents' => array(4527, 6244, 6415, 6255, 4595, 4593, 4755, 6146),
     ),
@@ -1092,7 +1092,7 @@ $config['en_all_6244'] = array(
     ),
     6997 => array(
         'm_icon' => '<i class="far fa-lock-open"></i>',
-        'm_name' => 'User Step Unlocked',
+        'm_name' => 'User Step Intent Unlocked',
         'm_desc' => '',
         'm_parents' => array(4527, 6244, 6415, 6255, 4595, 4593, 4755, 6146),
     ),
@@ -1360,7 +1360,7 @@ $config['en_all_6146'] = array(
     ),
     6997 => array(
         'm_icon' => '<i class="far fa-lock-open"></i>',
-        'm_name' => 'Unlocked',
+        'm_name' => 'Intent Unlocked',
         'm_desc' => 'When a user unlocks a Locked AND or OR intent by completing all or any of its children.',
         'm_parents' => array(4527, 6244, 6415, 6255, 4595, 4593, 4755, 6146),
     ),
@@ -1759,7 +1759,7 @@ $config['en_all_4426'] = array(
     ),
     6695 => array(
         'm_icon' => '<i class="fal fa-briefcase"></i>',
-        'm_name' => 'Mench Partner Employers',
+        'm_name' => 'Mench Partner Companies',
         'm_desc' => '',
         'm_parents' => array(6827, 4426, 4463),
     ),
@@ -1979,8 +1979,8 @@ $config['en_all_4755'] = array(
         'm_parents' => array(4595, 6153, 4506, 4755, 4593),
     ),
     6140 => array(
-        'm_icon' => '<i class="far fa-route"></i>',
-        'm_name' => 'User Step Routed',
+        'm_icon' => '<i class="far fa-lock-open"></i>',
+        'm_name' => 'User Step Link Unlocked',
         'm_desc' => '',
         'm_parents' => array(4595, 6415, 6410, 6288, 4229, 4755, 4593),
     ),
@@ -2076,7 +2076,7 @@ $config['en_all_4755'] = array(
     ),
     6997 => array(
         'm_icon' => '<i class="far fa-lock-open"></i>',
-        'm_name' => 'User Step Unlocked',
+        'm_name' => 'User Step Intent Unlocked',
         'm_desc' => '',
         'm_parents' => array(4527, 6244, 6415, 6255, 4595, 4593, 4755, 6146),
     ),
@@ -2087,13 +2087,13 @@ $config['en_ids_4595'] = array(4228, 4229, 4230, 4231, 4232, 4235, 4242, 4246, 4
 $config['en_all_4595'] = array(
     4228 => array(
         'm_icon' => '<i class="fas fa-walking"></i>',
-        'm_name' => 'Intent Link Step',
+        'm_name' => 'Intent Link Open',
         'm_desc' => '2000',
         'm_parents' => array(6410, 4593, 4486, 4595),
     ),
     4229 => array(
-        'm_icon' => '<i class="far fa-route"></i>',
-        'm_name' => 'Intent Link Router',
+        'm_icon' => '<i class="fas fa-lock"></i>',
+        'm_name' => 'Intent Link Locked',
         'm_desc' => '2000',
         'm_parents' => array(6410, 6283, 4593, 4486, 4595),
     ),
@@ -2470,8 +2470,8 @@ $config['en_all_4595'] = array(
         'm_parents' => array(4595, 6153, 4506, 4755, 4593),
     ),
     6140 => array(
-        'm_icon' => '<i class="far fa-route"></i>',
-        'm_name' => 'User Step Routed',
+        'm_icon' => '<i class="far fa-lock-open"></i>',
+        'm_name' => 'User Step Link Unlocked',
         'm_desc' => '25',
         'm_parents' => array(4595, 6415, 6410, 6288, 4229, 4755, 4593),
     ),
@@ -2579,7 +2579,7 @@ $config['en_all_4595'] = array(
     ),
     6997 => array(
         'm_icon' => '<i class="far fa-lock-open"></i>',
-        'm_name' => 'User Step Unlocked',
+        'm_name' => 'User Step Intent Unlocked',
         'm_desc' => '10',
         'm_parents' => array(4527, 6244, 6415, 6255, 4595, 4593, 4755, 6146),
     ),
@@ -2607,13 +2607,13 @@ $config['en_ids_4593'] = array(4228, 4229, 4230, 4231, 4232, 4235, 4242, 4246, 4
 $config['en_all_4593'] = array(
     4228 => array(
         'm_icon' => '<i class="fas fa-walking"></i>',
-        'm_name' => 'Intent Link Step',
+        'm_name' => 'Intent Link Open',
         'm_desc' => '',
         'm_parents' => array(6410, 4593, 4486, 4595),
     ),
     4229 => array(
-        'm_icon' => '<i class="far fa-route"></i>',
-        'm_name' => 'Intent Link Router',
+        'm_icon' => '<i class="fas fa-lock"></i>',
+        'm_name' => 'Intent Link Locked',
         'm_desc' => '',
         'm_parents' => array(6410, 6283, 4593, 4486, 4595),
     ),
@@ -2990,8 +2990,8 @@ $config['en_all_4593'] = array(
         'm_parents' => array(4595, 6153, 4506, 4755, 4593),
     ),
     6140 => array(
-        'm_icon' => '<i class="far fa-route"></i>',
-        'm_name' => 'User Step Routed',
+        'm_icon' => '<i class="far fa-lock-open"></i>',
+        'm_name' => 'User Step Link Unlocked',
         'm_desc' => 'Created when the student responses to OR branches meets the right % points to unlock the pathway to a conditional intent link.',
         'm_parents' => array(4595, 6415, 6410, 6288, 4229, 4755, 4593),
     ),
@@ -3099,7 +3099,7 @@ $config['en_all_4593'] = array(
     ),
     6997 => array(
         'm_icon' => '<i class="far fa-lock-open"></i>',
-        'm_name' => 'User Step Unlocked',
+        'm_name' => 'User Step Intent Unlocked',
         'm_desc' => '',
         'm_parents' => array(4527, 6244, 6415, 6255, 4595, 4593, 4755, 6146),
     ),
@@ -3268,13 +3268,13 @@ $config['en_ids_4486'] = array(4228, 4229);
 $config['en_all_4486'] = array(
     4228 => array(
         'm_icon' => '<i class="fas fa-walking"></i>',
-        'm_name' => 'Step',
+        'm_name' => 'Open',
         'm_desc' => 'Intent link published and added to user Action Plans up-front',
         'm_parents' => array(6410, 4593, 4486, 4595),
     ),
     4229 => array(
-        'm_icon' => '<i class="far fa-route"></i>',
-        'm_name' => 'Router',
+        'm_icon' => '<i class="fas fa-lock"></i>',
+        'm_name' => 'Locked',
         'm_desc' => 'Intent added to Action Plans after parent intent is complete AND the user\'s % score falls within the defined min/max range',
         'm_parents' => array(6410, 6283, 4593, 4486, 4595),
     ),
