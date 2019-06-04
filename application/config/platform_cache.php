@@ -11,7 +11,7 @@ defined('BASEPATH') OR exit('No direct script access allowed');
  *
  */
 
-//Generated 2019-06-03 22:06:48 PST
+//Generated 2019-06-03 23:31:00 PST
 
 //Weekly Leaderboard Message:
 $config['en_ids_7203'] = array(4250, 4486, 6255, 7164);
@@ -401,19 +401,19 @@ $config['en_ids_7159'] = array(4235, 6255, 7164);
 $config['en_all_7159'] = array(
     4235 => array(
         'm_icon' => '<i class="far fa-bullseye-arrow"></i>',
-        'm_name' => 'User Intent Set',
+        'm_name' => 'Intent Set',
         'm_desc' => 'Intentions set by users enabling Mench to deliver relevant intelligence.',
         'm_parents' => array(7159, 4595, 6153, 4506, 4755, 4593),
     ),
     6255 => array(
         'm_icon' => '<i class="fas fa-walking"></i>',
-        'm_name' => 'User Steps Progressed',
+        'm_name' => 'Steps Progressed',
         'm_desc' => 'Key insights or actionable tasks completed by users that gets them closer to their set intentions.',
         'm_parents' => array(7203, 7159, 6275, 4527),
     ),
     7164 => array(
         'm_icon' => '<i class="far fa-comments"></i>',
-        'm_name' => 'User Messages',
+        'm_name' => 'Messages',
         'm_desc' => 'Messages send and received by users that gets them closer to their set intentions.',
         'm_parents' => array(7203, 7159, 4527, 6221),
     ),

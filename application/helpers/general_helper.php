@@ -864,7 +864,6 @@ function update_algolia($input_obj_type = null, $input_obj_id = 0, $return_row_o
                 $export_row['alg_obj_is_in'] = 0;
                 $export_row['alg_obj_id'] = intval($db_row['en_id']);
                 $export_row['alg_obj_weight'] = $db_row['en_trust_score'];
-                $export_row['alg_obj_published_children'] = $published_child_count[0]['published_child_count'];
                 $export_row['alg_obj_status'] = intval($db_row['en_status']);
                 $export_row['alg_obj_icon'] = echo_en_icon($db_row);
                 $export_row['alg_obj_name'] = $db_row['en_name'];
@@ -893,7 +892,6 @@ function update_algolia($input_obj_type = null, $input_obj_id = 0, $return_row_o
                 $export_row['alg_obj_is_in'] = 1; //This is an intent
                 $export_row['alg_obj_id'] = intval($db_row['in_id']);
                 $export_row['alg_obj_weight'] = ( isset($metadata['in__metadata_max_seconds']) ? $metadata['in__metadata_max_seconds'] : 0 );
-                $export_row['alg_obj_published_children'] = ( isset($metadata['in__metadata_max_steps']) ? $metadata['in__metadata_max_steps'] : 0 );
                 $export_row['alg_obj_status'] = intval($db_row['in_status']);
                 $export_row['alg_obj_icon'] = $en_all_6676[is_or($db_row['in_type_entity_id'], true)]['m_icon']; //Entity type icon
                 $export_row['alg_obj_name'] = $db_row['in_outcome'];
