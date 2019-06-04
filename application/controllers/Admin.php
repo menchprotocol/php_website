@@ -36,8 +36,9 @@ class Admin extends CI_Controller
     function platform()
     {
         $session_en = en_auth(array(1308)); //Just be logged in to browse
+        $en_all_4488 = $this->config->item('en_all_4488');
         $this->load->view(($session_en ? 'view_shared/platform_header' : 'view_shared/public_header'), array(
-            'title' => 'Mench Personal Assistant',
+            'title' => $en_all_4488[7161]['m_name'],
         ));
         $this->load->view('view_admin/platform_home');
         $this->load->view(($session_en ? 'view_shared/platform_footer' : 'view_shared/public_footer'));
