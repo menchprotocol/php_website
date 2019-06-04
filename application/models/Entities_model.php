@@ -1113,17 +1113,6 @@ class Entities_model extends CI_Model
             //Create user entity:
             $added_en = $this->Entities_model->en_verify_create('User '.rand(100000000, 999999999), 0, true, 2, null, $psid);
 
-            //Completely failed at fetching profile data:
-            $this->Links_model->ln_create(array(
-                'ln_type_entity_id' => 6389, //Messenger Profile Inaccessible
-                'ln_miner_entity_id' => $added_en['en']['en_id'], //User gets credit as miner
-                'ln_content' => 'en_messenger_add() COMPLETE FAIL to fetch messenger profile',
-                'ln_metadata' => array(
-                    'psid' => $psid,
-                    'graph_fetch' => $graph_fetch,
-                )
-            ));
-
         } else {
 
             //We did find the profile, move ahead:
@@ -1161,20 +1150,6 @@ class Entities_model extends CI_Model
 
                     }
                 }
-
-            } else {
-
-                //We failed to fetch full profile data, log details:
-                $this->Links_model->ln_create(array(
-                    'ln_type_entity_id' => 6389, //Messenger Profile Inaccessible
-                    'ln_miner_entity_id' => $added_en['en']['en_id'], //User gets credit as miner
-                    'ln_content' => 'en_messenger_add() PARTIAL FAIL to fetch messenger profile',
-                    'ln_metadata' => array(
-                        'psid' => $psid,
-                        'graph_fetch' => $graph_fetch,
-                    )
-                ));
-
             }
 
             //Do we have a profile image?

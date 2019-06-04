@@ -11,7 +11,7 @@ defined('BASEPATH') OR exit('No direct script access allowed');
  *
  */
 
-//Generated 2019-06-03 20:56:56 PST
+//Generated 2019-06-03 21:00:57 PST
 
 //Weekly Leaderboard Message:
 $config['en_ids_7203'] = array(4250, 4486, 6255, 7164);
@@ -30,7 +30,7 @@ $config['en_all_7203'] = array(
     ),
     6255 => array(
         'm_icon' => '<i class="fas fa-walking"></i>',
-        'm_name' => 'User Steps Taken',
+        'm_name' => 'User Steps Progressed',
         'm_desc' => '',
         'm_parents' => array(7203, 7159, 6275, 4527),
     ),
@@ -413,7 +413,7 @@ $config['en_all_7159'] = array(
     ),
     6255 => array(
         'm_icon' => '<i class="fas fa-walking"></i>',
-        'm_name' => 'User Steps Taken',
+        'm_name' => 'User Steps Progressed',
         'm_desc' => 'Key insights or actionable tasks completed by users that gets them closer to their set intentions.',
         'm_parents' => array(7203, 7159, 6275, 4527),
     ),
@@ -489,7 +489,7 @@ $config['en_ids_6997'] = array(6907, 6914);
 $config['en_all_6997'] = array(
     6907 => array(
         'm_icon' => '<i class="fas fa-lock"></i>',
-        'm_name' => 'OR Intent Or Lock',
+        'm_name' => 'OR Intent OR Lock',
         'm_desc' => '',
         'm_parents' => array(6997, 6193),
     ),
@@ -722,7 +722,7 @@ $config['en_all_6193'] = array(
     ),
     6907 => array(
         'm_icon' => '<i class="fas fa-lock"></i>',
-        'm_name' => 'Or Lock',
+        'm_name' => 'OR Lock',
         'm_desc' => 'Completed after a single child is completed indirectly.',
         'm_parents' => array(6997, 6193),
     ),
@@ -1046,7 +1046,7 @@ $config['en_all_6274'] = array(
     ),
 );
 
-//User Steps Taken:
+//User Steps Progressed:
 $config['en_ids_6255'] = array(4559, 6144, 6157, 6158, 6997);
 $config['en_all_6255'] = array(
     4559 => array(
