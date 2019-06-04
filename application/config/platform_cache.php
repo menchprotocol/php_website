@@ -11,7 +11,7 @@ defined('BASEPATH') OR exit('No direct script access allowed');
  *
  */
 
-//Generated 2019-06-03 21:36:51 PST
+//Generated 2019-06-03 22:06:48 PST
 
 //Weekly Leaderboard Message:
 $config['en_ids_7203'] = array(4250, 4486, 6255, 7164);
@@ -912,7 +912,7 @@ $config['en_all_6410'] = array(
     6140 => array(
         'm_icon' => '<i class="far fa-route"></i>',
         'm_name' => 'User Step Routed',
-        'm_desc' => 'Determined by this function which step should be unlocked',
+        'm_desc' => '',
         'm_parents' => array(4595, 6415, 6410, 6288, 4229, 4755, 4593),
     ),
     6402 => array(

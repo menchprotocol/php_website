@@ -9,7 +9,7 @@ $en_all_4534 = $this->config->item('en_all_4534');
 $en_all_4488 = $this->config->item('en_all_4488');
 ?>
 <h1 style="text-align: center; margin-top: 50px;"><?= $en_all_4488[7161]['m_name']; ?></h1>
-<p style="text-align: center; margin-top: 20px; padding-bottom:0; font-size:1.5em !important;"><?= $en_all_2738[4488]['m_desc'] ?> <a href="/7436"><i class="fal fa-info-circle"></i></a></p>
+<p style="text-align: center; margin-top: 20px; padding-bottom:0; font-size:1.5em !important;"><?= $en_all_2738[4488]['m_desc'] ?> <a href="/7436" data-toggle="tooltip" data-placement="top" title="Learn more about Mench"><i class="fal fa-info-circle"></i></a></p>
 <p style="text-align: center; margin-top: 20px; padding-bottom:40px; font-size:1.1em !important;"></p>
 
 

@@ -436,7 +436,7 @@ class Intents extends CI_Controller
             $item_ui .= '</td>';
             $item_ui .= '<td style="text-align:left;">'.echo_number($count_progression[0]['totals']).'</td>';
             $item_ui .= '<td style="text-align:left;">'.echo_time_difference(strtotime($apu['ln_timestamp'])).'</td>';
-            $item_ui .= '<td style="text-align:left;"><a href="/intents/'.$_POST['in_focus_id'].'?filter_user='.urlencode('@'.$apu['en_id'].' '.$apu['en_name']).'#actionplanusers-'.$_POST['in_id'].'" data-toggle="tooltip" data-placement="top" title="Filter by this user"><i class="far fa-filter"></i></a> &nbsp;<a href="/entities/'.$apu['en_id'].'" data-toggle="tooltip" data-placement="top" title="View user profile"><i class="far fa-user-circle"></i></a></td>';
+            $item_ui .= '<td style="text-align:left;"><a href="/intents/'.$_POST['in_focus_id'].'?filter_user='.urlencode('@'.$apu['en_id'].' '.$apu['en_name']).'#actionplanusers-'.$_POST['in_id'].'" data-toggle="tooltip" data-placement="top" title="Filter by this user"><i class="far fa-filter"></i></a> &nbsp;<a href="/entities/'.$apu['en_id'].'" data-toggle="tooltip" data-placement="top" title="View user entity"><i class="far fa-user-circle"></i></a></td>';
             $item_ui .= '</tr>';
 
 
@@ -458,7 +458,7 @@ class Intents extends CI_Controller
 
             $ui .= '<tr style="font-weight: bold;">';
             $ui .= '<td style="text-align:left; padding-left:3px;" colspan="2">Matching User'.echo__s($filters_list_counter).' ['.$filters_list_counter.']</td>';
-            $ui .= '<td style="text-align:left;"><i class="fas fa-walking" data-toggle="tooltip" data-placement="top" title="Progression Steps Completed"></i></td>';
+            $ui .= '<td style="text-align:left;"><i class="fas fa-walking" data-toggle="tooltip" data-placement="top" title="User Steps Progressed"></i></td>';
             $ui .= '<td style="text-align:left;"><i class="far fa-clock" data-toggle="tooltip" data-placement="top" title="Completion time"></i></td>';
             $ui .= '<td style="text-align:left;">Actions</td>';
             $ui .= '</tr>';
@@ -474,7 +474,7 @@ class Intents extends CI_Controller
         //Regular list:
         $ui .= '<tr style="font-weight: bold;">';
         $ui .= '<td style="text-align:left; padding-left:3px;" colspan="2">' . ( $filter_applied ? 'Other ' : 'Completed ' ) . 'User' . echo__s($regular_list_counter).' ['.$regular_list_counter.']</td>';
-        $ui .= '<td style="text-align:left;"><i class="fas fa-walking" data-toggle="tooltip" data-placement="top" title="Progression Steps Completed"></i></td>';
+        $ui .= '<td style="text-align:left;"><i class="fas fa-walking" data-toggle="tooltip" data-placement="top" title="User Steps Progressed"></i></td>';
         $ui .= '<td style="text-align:left;"><i class="far fa-clock" data-toggle="tooltip" data-placement="top" title="Completion time"></i></td>';
         $ui .= '<td style="text-align:left;">Actions</td>';
         $ui .= '</tr>';
