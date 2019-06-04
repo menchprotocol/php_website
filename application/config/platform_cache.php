@@ -11,7 +11,7 @@ defined('BASEPATH') OR exit('No direct script access allowed');
  *
  */
 
-//Generated 2019-06-04 13:31:38 PST
+//Generated 2019-06-04 13:35:00 PST
 
 //Weekly Leaderboard Message:
 $config['en_ids_7203'] = array(4250, 4486, 6255, 7164);
@@ -934,13 +934,13 @@ $config['en_all_6345'] = array(
     ),
     4232 => array(
         'm_icon' => '<i class="far fa-tint"></i>',
-        'm_name' => 'Intent Note Drip',
+        'm_name' => 'Intent Note Drip Messages',
         'm_desc' => '',
         'm_parents' => array(5007, 6345, 4986, 4603, 4593, 4485, 4595),
     ),
     6242 => array(
         'm_icon' => '<i class="far fa-check-square"></i>',
-        'm_name' => 'Intent Note Completion',
+        'm_name' => 'Intent Note On-Complete Messages',
         'm_desc' => '',
         'm_parents' => array(5007, 6345, 4603, 4595, 4593, 4986, 4485),
     ),
@@ -1126,7 +1126,7 @@ $config['en_all_4986'] = array(
     ),
     4232 => array(
         'm_icon' => '<i class="far fa-tint"></i>',
-        'm_name' => 'Intent Note Drip',
+        'm_name' => 'Intent Note Drip Messages',
         'm_desc' => '',
         'm_parents' => array(5007, 6345, 4986, 4603, 4593, 4485, 4595),
     ),
@@ -1144,7 +1144,7 @@ $config['en_all_4986'] = array(
     ),
     6242 => array(
         'm_icon' => '<i class="far fa-check-square"></i>',
-        'm_name' => 'Intent Note Completion',
+        'm_name' => 'Intent Note On-Complete Messages',
         'm_desc' => '',
         'm_parents' => array(5007, 6345, 4603, 4595, 4593, 4986, 4485),
     ),
@@ -2111,7 +2111,7 @@ $config['en_all_4595'] = array(
     ),
     4232 => array(
         'm_icon' => '<i class="far fa-tint"></i>',
-        'm_name' => 'Intent Note Drip',
+        'm_name' => 'Intent Note Drip Messages',
         'm_desc' => '2000',
         'm_parents' => array(5007, 6345, 4986, 4603, 4593, 4485, 4595),
     ),
@@ -2531,7 +2531,7 @@ $config['en_all_4595'] = array(
     ),
     6242 => array(
         'm_icon' => '<i class="far fa-check-square"></i>',
-        'm_name' => 'Intent Note Completion',
+        'm_name' => 'Intent Note On-Complete Messages',
         'm_desc' => '2000',
         'm_parents' => array(5007, 6345, 4603, 4595, 4593, 4986, 4485),
     ),
@@ -2631,7 +2631,7 @@ $config['en_all_4593'] = array(
     ),
     4232 => array(
         'm_icon' => '<i class="far fa-tint"></i>',
-        'm_name' => 'Intent Note Drip',
+        'm_name' => 'Intent Note Drip Messages',
         'm_desc' => '',
         'm_parents' => array(5007, 6345, 4986, 4603, 4593, 4485, 4595),
     ),
@@ -3051,7 +3051,7 @@ $config['en_all_4593'] = array(
     ),
     6242 => array(
         'm_icon' => '<i class="far fa-check-square"></i>',
-        'm_name' => 'Intent Note Completion',
+        'm_name' => 'Intent Note On-Complete Messages',
         'm_desc' => '',
         'm_parents' => array(5007, 6345, 4603, 4595, 4593, 4986, 4485),
     ),
@@ -3245,13 +3245,13 @@ $config['en_all_4485'] = array(
     ),
     4232 => array(
         'm_icon' => '<i class="far fa-tint"></i>',
-        'm_name' => 'Drip',
+        'm_name' => 'Drip Messages',
         'm_desc' => 'Delivered in-order and one-by-one (drip-format) either during or after the intent completion. Goal is to re-iterate key insights to help students retain learnings over time.',
         'm_parents' => array(5007, 6345, 4986, 4603, 4593, 4485, 4595),
     ),
     6242 => array(
         'm_icon' => '<i class="far fa-check-square"></i>',
-        'm_name' => 'Completion',
+        'm_name' => 'On-Complete Messages',
         'm_desc' => 'Message delivered to students when they complete an intention.',
         'm_parents' => array(5007, 6345, 4603, 4595, 4593, 4986, 4485),
     ),
