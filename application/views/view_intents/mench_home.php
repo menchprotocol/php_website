@@ -20,10 +20,10 @@ if(count($featurd_ins) > 0){
     echo '</div>';
 
 
-    //List Featured intents:
+    //List Recommended Intents:
     echo '<div class="list-group actionplan_list grey_list maxout" style="margin-top:20px;">';
-    foreach ($featurd_ins as $featured_in) {
-        echo echo_in_featured($featured_in);
+    foreach ($featurd_ins as $recommend_in) {
+        echo echo_in_recommend($recommend_in);
     }
     echo '</div>';
 

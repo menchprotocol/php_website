@@ -983,12 +983,12 @@ class Communication_model extends CI_Model
     }
 
 
-    function suggest_featured_intents($en_id){
+    function recommend_intents($en_id){
 
 
         /*
          *
-         * A function that would recommend featured intentions
+         * A function that would communicate Recommended Intentions
          * that have not been taken by this user yet.
          *
          * */
@@ -1010,8 +1010,8 @@ class Communication_model extends CI_Model
 
 
 
-        //Fetch featured intentions not yet taken by user:
-        $featured_filters = array(
+        //Fetch Recommended Intentions not yet taken by user:
+        $recommend_filters = array(
             'in_status' => 2, //Published
             'in_type_entity_id IN (' . join(',', $this->config->item('en_ids_6908')) . ')' => null, //Action Plan Starting Step Intention
             'ln_status' => 2, //Published
@@ -1020,21 +1020,21 @@ class Communication_model extends CI_Model
         );
         if(count($user_ins_ids) > 0){
             //Remove as its already added to user Action Plan:
-            $featured_filters['ln_child_intent_id NOT IN ('.join(',', $user_ins_ids).')'] = null;
+            $recommend_filters['ln_child_intent_id NOT IN ('.join(',', $user_ins_ids).')'] = null;
         }
-        $featured_intentions = $this->Links_model->ln_fetch($featured_filters, array('in_child'), 0, 0, array('ln_order' => 'ASC'));
+        $recommend_intentions = $this->Links_model->ln_fetch($recommend_filters, array('in_child'), 0, 0, array('ln_order' => 'ASC'));
 
 
 
         //What did we find?
-        if(count($featured_intentions) > 0){
+        if(count($recommend_intentions) > 0){
 
             //Yes, we have something to offer:
 
             $message = 'Here are some intentions that I recommended you add to your Action Plan:';
             $quick_replies = array();
 
-            foreach($featured_intentions as $count => $in){
+            foreach($recommend_intentions as $count => $in){
 
                 if ($count >= 10) {
 
@@ -1044,7 +1044,7 @@ class Communication_model extends CI_Model
                         'ln_content' => 'actionplan_step_next_echo() encountered intent with too many children to be listed as OR Intent options! Trim and iterate that intent tree.',
                         'ln_type_entity_id' => 4246, //Platform Bug Reports
                         'ln_child_entity_id' => $en_id, //Affected user
-                        'ln_parent_intent_id' => 8469, //Featured intentions has an overflow!
+                        'ln_parent_intent_id' => 8469, //Recommended Intentions has an overflow!
                         'ln_child_intent_id' => $in['in_id'],
                     ));
 
@@ -1054,7 +1054,7 @@ class Communication_model extends CI_Model
                 }
 
 
-                //Recommend featured intention:
+                //Recommend Recommended Intention:
                 $message .= "\n\n" . ( $count+1 ) . '. ' . echo_in_outcome($in['in_outcome'], true);
                 array_push($quick_replies, array(
                     'content_type' => 'text',
@@ -1063,11 +1063,11 @@ class Communication_model extends CI_Model
                 ));
 
 
-                //Log intent featured recommendation:
+                //Log intent recommend recommendation:
                 $this->Links_model->ln_create(array(
                     'ln_miner_entity_id' => $en_id,
                     'ln_parent_intent_id' => $in['in_id'],
-                    'ln_type_entity_id' => 6969, //Action Plan Intention Featured
+                    'ln_type_entity_id' => 6969, //Action Plan Intention recommend
                 ));
 
             }
@@ -1080,7 +1080,7 @@ class Communication_model extends CI_Model
             ));
 
 
-            //Suggest featured intentions:
+            //Suggest Recommended Intentions:
             $this->Communication_model->dispatch_message(
                 $message,
                 array('en_id' => $en_id),
@@ -1093,9 +1093,9 @@ class Communication_model extends CI_Model
 
         } else {
 
-            //User has already taken all featured intentions and there is nothing else to offer them:
+            //User has already taken all Recommended Intentions and there is nothing else to offer them:
             $this->Communication_model->dispatch_message(
-                'You have already added all featured intentions to your Action Plan and I have nothing else to recommend to you at this time.',
+                'You have already added all Recommended Intentions to your Action Plan and I have nothing else to recommend to you at this time.',
                 array('en_id' => $en_id),
                 true,
                 array(
@@ -1431,8 +1431,8 @@ class Communication_model extends CI_Model
                     true
                 );
 
-                //List featured intents and let them choose:
-                $this->Communication_model->suggest_featured_intents($en['en_id']);
+                //List Recommended Intents and let them choose:
+                $this->Communication_model->recommend_intents($en['en_id']);
 
             } elseif ($quick_reply_payload == 'RESUBSCRIBE_NO') {
 
@@ -1453,8 +1453,8 @@ class Communication_model extends CI_Model
                 true
             );
 
-            //List featured intents and let them choose:
-            $this->Communication_model->suggest_featured_intents($en['en_id']);
+            //List Recommended Intents and let them choose:
+            $this->Communication_model->recommend_intents($en['en_id']);
 
         } elseif (is_numeric($quick_reply_payload)) {
 
@@ -1874,7 +1874,7 @@ class Communication_model extends CI_Model
                 );
 
                 //Recommend to join:
-                $this->Communication_model->suggest_featured_intents($en['en_id']);
+                $this->Communication_model->recommend_intents($en['en_id']);
 
 
             } else {
@@ -2164,8 +2164,8 @@ class Communication_model extends CI_Model
                     true
                 );
 
-                //List featured intents and let them choose:
-                $this->Communication_model->suggest_featured_intents($en['en_id']);
+                //List Recommended Intents and let them choose:
+                $this->Communication_model->recommend_intents($en['en_id']);
 
             }
 
@@ -2293,7 +2293,7 @@ class Communication_model extends CI_Model
             } else {
 
                 //Recommend to join:
-                $this->Communication_model->suggest_featured_intents($en['en_id']);
+                $this->Communication_model->recommend_intents($en['en_id']);
 
             }
         }

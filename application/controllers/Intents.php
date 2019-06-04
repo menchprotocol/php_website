@@ -31,19 +31,19 @@ class Intents extends CI_Controller
 
         } else {
 
-            //Fetch featured intentions:
+            //Fetch Recommended Intentions:
             $featurd_ins = $this->Links_model->ln_fetch(array(
                 'in_status' => 2, //Published
                 'in_type_entity_id IN (' . join(',', $this->config->item('en_ids_6908')) . ')' => null, //Action Plan Starting Step Intention
                 'ln_status' => 2, //Published
                 'ln_type_entity_id' => 4228, //Fixed Intent Links
-                'ln_parent_intent_id' => 8469, //Feature Mench Intentions
+                'ln_parent_intent_id' => 8469, //Recommend Mench Intentions
             ), array('in_child'), 0, 0, array('ln_order' => 'ASC'));
 
-            //Have a logic that if we have a single featured intention, redirect to it:
+            //Have a logic that if we have a single Recommended Intention, redirect to it:
             if(count($featurd_ins)==1){
 
-                //Go to our single featured intention:
+                //Go to our single Recommended Intention:
                 return redirect_message('/'.$featurd_ins[0]['in_id']);
 
             } else {
@@ -1585,7 +1585,7 @@ class Intents extends CI_Controller
 
         } else {
 
-            //Update all featured intentions and their tree:
+            //Update all Recommended Intentions and their tree:
             foreach ($this->Intents_model->in_fetch(array('in_status' => 2)) as $published_in) {
                 $tree = $this->Intents_model->in_metadata_extra_insights($published_in['in_id']);
                 if($tree){

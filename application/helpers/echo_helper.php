@@ -1410,7 +1410,7 @@ function echo_fixed_fields($obj_type = null, $status = null, $micro_status = fal
 }
 
 
-function echo_in_featured($in)
+function echo_in_recommend($in)
 {
 
     //See if user is logged-in:

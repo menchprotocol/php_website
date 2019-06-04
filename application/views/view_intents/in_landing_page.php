@@ -111,35 +111,35 @@ foreach ($other_intentions as $parent_intention) {
         continue;
     }
     //Add parent intention to UI:
-    $body .= echo_in_featured($parent_intention);
+    $body .= echo_in_recommend($parent_intention);
     //Make sure to not load this again:
     array_push($exclude_array, $parent_intention['in_id']);
 }
 
-$featured_intention = $this->Links_model->ln_fetch(array(
+$recommend_intention = $this->Links_model->ln_fetch(array(
     'ln_status' => 2, //Published
     'in_status' => 2, //Published
     'in_type_entity_id IN (' . join(',', $this->config->item('en_ids_6908')) . ')' => null, //Action Plan Starting Step Intention
     'ln_type_entity_id' => 4228, //Fixed intent links only
-    'ln_parent_intent_id' => 8469, //Feature Mench Intentions
+    'ln_parent_intent_id' => 8469, //Recommend Mench Intentions
     'in_id NOT IN (' . join(',', $exclude_array) . ')' => null,
 ), array('in_child'), 0, 0, array('ln_order' => 'ASC'));
 
 
 //Display if any:
-if(count($other_intentions) > 0 || count($featured_intention) > 0){
+if(count($other_intentions) > 0 || count($recommend_intention) > 0){
 
     echo '<h3 style="margin-bottom:5px; margin-top:55px;">Other Intentions:</h3>';
     echo '<div class="list-group grey_list actionplan_list maxout">';
 
         echo $body;
 
-        //Now fetch featured intents:
-        foreach ($featured_intention as $featured_intention) {
-            if(!is_clean_outcome($featured_intention)){
+        //Now fetch Recommended Intents:
+        foreach ($recommend_intention as $recommend_intention) {
+            if(!is_clean_outcome($recommend_intention)){
                 continue;
             }
-            echo echo_in_featured($featured_intention);
+            echo echo_in_recommend($recommend_intention);
         }
 
     echo '</div>';

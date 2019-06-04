@@ -111,8 +111,8 @@ class Actionplan_model extends CI_Model
                     true
                 );
 
-                //List featured intents and let them choose:
-                $this->Communication_model->suggest_featured_intents($en_id);
+                //List Recommended Intents and let them choose:
+                $this->Communication_model->recommend_intents($en_id);
 
             }
 
@@ -171,8 +171,8 @@ class Actionplan_model extends CI_Model
                     true
                 );
 
-                //List featured intents and let them choose:
-                $this->Communication_model->suggest_featured_intents($en_id);
+                //List Recommended Intents and let them choose:
+                $this->Communication_model->recommend_intents($en_id);
 
             }
         }
@@ -461,8 +461,8 @@ class Actionplan_model extends CI_Model
                 true
             );
 
-            //List featured intents and let them choose:
-            $this->Communication_model->suggest_featured_intents($en_id);
+            //List Recommended Intents and let them choose:
+            $this->Communication_model->recommend_intents($en_id);
 
         }
 
@@ -945,7 +945,7 @@ class Actionplan_model extends CI_Model
         $is_two_step        = in_array($progression_type_entity_id, $this->config->item('en_ids_6244')); //If TRUE, initial progression link will be logged as WORKING ON since we need user response
         $trigget_completion_tips = ( !$is_two_step && in_array($progression_type_entity_id, $this->config->item('en_ids_6255'))); //If TRUE AND If !$is_two_step, this would trigger the completion tips
         $nothing_more_to_do = ( !$is_two_step && !$has_children && in_array($progression_type_entity_id, $this->config->item('en_ids_6274')) ); //If TRUE, we will auto move on to the next item
-        $recommend_featured = false; //Assume FALSE unless $nothing_more_to_do=TRUE and we do not have any next steps which means user has finished their Action Plan
+        $recommend_recommend = false; //Assume FALSE unless $nothing_more_to_do=TRUE and we do not have any next steps which means user has finished their Action Plan
 
 
 
@@ -1354,7 +1354,7 @@ class Actionplan_model extends CI_Model
             } else {
                 //No next step found! This must be it...
                 $next_step_message = 'This was your final step 🎉🎉🎉';
-                $recommend_featured = true;
+                $recommend_recommend = true;
             }
         }
 
@@ -1429,9 +1429,9 @@ class Actionplan_model extends CI_Model
                 );
             }
 
-            if($recommend_featured){
-                //List featured intents and let them choose:
-                $this->Communication_model->suggest_featured_intents($en_id);
+            if($recommend_recommend){
+                //List Recommended Intents and let them choose:
+                $this->Communication_model->recommend_intents($en_id);
             }
 
         }
