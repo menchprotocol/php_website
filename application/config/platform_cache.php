@@ -11,7 +11,7 @@ defined('BASEPATH') OR exit('No direct script access allowed');
  *
  */
 
-//Generated 2019-06-03 21:04:32 PST
+//Generated 2019-06-03 21:36:51 PST
 
 //Weekly Leaderboard Message:
 $config['en_ids_7203'] = array(4250, 4486, 6255, 7164);
@@ -1103,13 +1103,13 @@ $config['en_ids_6150'] = array(6154, 6155);
 $config['en_all_6150'] = array(
     6154 => array(
         'm_icon' => '<i class="far fa-mountain"></i>',
-        'm_name' => 'User Intent Accomplished',
+        'm_name' => 'Accomplished',
         'm_desc' => 'You successfully accomplished your intention so you no longer want to receive future updates',
         'm_parents' => array(4595, 6415, 4506, 6150, 4755, 4593),
     ),
     6155 => array(
         'm_icon' => '<i class="far fa-stop-circle"></i>',
-        'm_name' => 'User Intent Cancelled',
+        'm_name' => 'Cancelled',
         'm_desc' => 'You did NOT accomplish the intention and you want to stop all future updates on this intention',
         'm_parents' => array(4595, 6415, 4506, 6150, 4593, 4755),
     ),
@@ -1330,37 +1330,37 @@ $config['en_ids_6146'] = array(4559, 6143, 6144, 6157, 6158, 6997);
 $config['en_all_6146'] = array(
     4559 => array(
         'm_icon' => '<i class="far fa-thumbs-up"></i>',
-        'm_name' => 'User Step Got Messages',
+        'm_name' => 'Got Messages',
         'm_desc' => 'Completed when students read the messages of an intent that does not have a completion requirement',
         'm_parents' => array(4595, 6415, 6274, 6255, 4755, 6146, 4593),
     ),
     6143 => array(
         'm_icon' => '<i class="far fa-minus-square"></i>',
-        'm_name' => 'User Step Skipped',
+        'm_name' => 'Skipped',
         'm_desc' => 'Completed when students skip an intention and all its child intentions from their Action Plan',
         'm_parents' => array(4595, 6415, 6146, 4755, 4593),
     ),
     6144 => array(
         'm_icon' => '<i class="far fa-check-square"></i>',
-        'm_name' => 'User Step Completed',
+        'm_name' => 'Completed',
         'm_desc' => 'Completed when students submit the intent completion requirements (text, URL, video, etc...) set by miners',
         'm_parents' => array(4595, 6415, 6255, 6244, 4755, 6146, 4593),
     ),
     6157 => array(
         'm_icon' => '<i class="far fa-check"></i>',
-        'm_name' => 'User Step Answered',
+        'm_name' => 'Answered',
         'm_desc' => 'Completed after the student answers the question to the OR intent.',
         'm_parents' => array(4595, 6415, 6288, 6255, 6244, 6146, 4755, 4593, 4460),
     ),
     6158 => array(
         'm_icon' => '<i class="far fa-thumbs-up"></i>',
-        'm_name' => 'User Step Got Outcome',
+        'm_name' => 'Got Outcome',
         'm_desc' => 'Completed when students read the messages of an intent that does not have any messages or a completion requirement',
         'm_parents' => array(4595, 6415, 6274, 6255, 4593, 4755, 6146),
     ),
     6997 => array(
         'm_icon' => '<i class="far fa-lock-open"></i>',
-        'm_name' => 'User Step Unlocked',
+        'm_name' => 'Unlocked',
         'm_desc' => 'When a user unlocks a Locked AND or OR intent by completing all or any of its children.',
         'm_parents' => array(4527, 6244, 6415, 6255, 4595, 4593, 4755, 6146),
     ),
@@ -1646,55 +1646,55 @@ $config['en_ids_4997'] = array(4998, 4999, 5000, 5001, 5003, 5865, 5943, 5981, 5
 $config['en_all_4997'] = array(
     4998 => array(
         'm_icon' => '<i class="fal fa-list-alt"></i>',
-        'm_name' => 'Entities Name Prefix',
+        'm_name' => 'Name Prefix',
         'm_desc' => 'Adds string to the beginning of all child entities. Make sure to include a space for it to look good',
         'm_parents' => array(4595, 4593, 4997),
     ),
     4999 => array(
         'm_icon' => '<i class="fal fa-list-alt"></i>',
-        'm_name' => 'Entities Name Postfix',
+        'm_name' => 'Name Postfix',
         'm_desc' => 'Adds string to the end of all child entities',
         'm_parents' => array(4595, 4593, 4997),
     ),
     5000 => array(
         'm_icon' => '<i class="fal fa-list-alt"></i>',
-        'm_name' => 'Entities Name Replace',
+        'm_name' => 'Name Replace',
         'm_desc' => 'Search for occurance of string in child entity names and if found, updates it with a replacement string',
         'm_parents' => array(4595, 4593, 4997),
     ),
     5001 => array(
         'm_icon' => '<i class="fal fa-list-alt"></i>',
-        'm_name' => 'Entities Link Contents',
+        'm_name' => 'Link Contents',
         'm_desc' => 'Search for occurance of string in child entity link contents and if found, updates it with a replacement string',
         'm_parents' => array(4595, 4593, 4997),
     ),
     5003 => array(
         'm_icon' => '<i class="fal fa-list-alt"></i>',
-        'm_name' => 'Entities Status Replace',
+        'm_name' => 'Status Replace',
         'm_desc' => 'Updates all child entity statuses that match the initial entity status condition',
         'm_parents' => array(4595, 4593, 4997),
     ),
     5865 => array(
         'm_icon' => '<i class="fal fa-list-alt"></i>',
-        'm_name' => 'Entities Link Status',
+        'm_name' => 'Link Status',
         'm_desc' => 'Updates all child entity link statuses that match the initial link status condition',
         'm_parents' => array(4595, 4593, 4997),
     ),
     5943 => array(
         'm_icon' => '<i class="fal fa-list-alt"></i>',
-        'm_name' => 'Entities Icon Replace',
+        'm_name' => 'Icon Replace',
         'm_desc' => 'Updates all child entity icons with string which needs to be a valid icon',
         'm_parents' => array(4595, 4593, 4997),
     ),
     5981 => array(
         'm_icon' => '<i class="fal fa-list-alt"></i>',
-        'm_name' => 'Entities Parent Add',
+        'm_name' => 'Parent Add',
         'm_desc' => 'If not already done so, will add searched entity as the parent of all child entities',
         'm_parents' => array(4595, 4593, 4997),
     ),
     5982 => array(
         'm_icon' => '<i class="fal fa-list-alt"></i>',
-        'm_name' => 'Entities Parent Remove',
+        'm_name' => 'Parent Remove',
         'm_desc' => 'If already added as the parent, this will remove searched entity as the parent of all child entities',
         'm_parents' => array(4595, 4593, 4997),
     ),
@@ -2368,8 +2368,8 @@ $config['en_all_4595'] = array(
         'm_parents' => array(7164, 4277, 4755, 4595, 4593),
     ),
     4601 => array(
-        'm_icon' => '<i class="far fa-tags"></i>',
-        'm_name' => 'Intent Note Keyword',
+        'm_icon' => '<i class="far fa-bolt"></i>',
+        'm_name' => 'Intent Note Triggers',
         'm_desc' => '500',
         'm_parents' => array(4593, 4595, 4485),
     ),
@@ -2888,8 +2888,8 @@ $config['en_all_4593'] = array(
         'm_parents' => array(7164, 4277, 4755, 4595, 4593),
     ),
     4601 => array(
-        'm_icon' => '<i class="far fa-tags"></i>',
-        'm_name' => 'Intent Note Keyword',
+        'm_icon' => '<i class="far fa-bolt"></i>',
+        'm_name' => 'Intent Note Triggers',
         'm_desc' => '',
         'm_parents' => array(4593, 4595, 4485),
     ),
@@ -3238,8 +3238,8 @@ $config['en_all_4485'] = array(
         'm_parents' => array(4986, 4985, 4595, 4593, 4485),
     ),
     4601 => array(
-        'm_icon' => '<i class="far fa-tags"></i>',
-        'm_name' => 'Keyword',
+        'm_icon' => '<i class="far fa-bolt"></i>',
+        'm_name' => 'Triggers',
         'm_desc' => 'Never delivered to students, instead, it maps alternative ways an intent could be named so we can better understand student commands.',
         'm_parents' => array(4593, 4595, 4485),
     ),
@@ -3285,37 +3285,37 @@ $config['en_ids_4537'] = array(4256, 4257, 4258, 4259, 4260, 4261);
 $config['en_all_4537'] = array(
     4256 => array(
         'm_icon' => '<i class="far fa-browser"></i>',
-        'm_name' => 'Entity Link URL',
+        'm_name' => 'URL',
         'm_desc' => 'Link note contains a generic URL only.',
         'm_parents' => array(4593, 4592, 4537, 4595),
     ),
     4257 => array(
         'm_icon' => '<i class="far fa-play-circle"></i>',
-        'm_name' => 'Entity Link Embed',
+        'm_name' => 'Embed',
         'm_desc' => 'Link note contain a recognizable URL that offers an embed widget for a more engaging play-back experience.',
         'm_parents' => array(4593, 4592, 4537, 4506, 4595),
     ),
     4258 => array(
         'm_icon' => '<i class="far fa-video"></i>',
-        'm_name' => 'Entity Link Video',
+        'm_name' => 'Video',
         'm_desc' => 'Link notes contain a URL to a raw video file.',
         'm_parents' => array(6203, 4593, 4592, 4537, 4595),
     ),
     4259 => array(
         'm_icon' => '<i class="far fa-volume-up"></i>',
-        'm_name' => 'Entity Link Audio',
+        'm_name' => 'Audio',
         'm_desc' => 'Link notes contain a URL to a raw audio file.',
         'm_parents' => array(6203, 4593, 4592, 4537, 4595),
     ),
     4260 => array(
         'm_icon' => '<i class="far fa-image"></i>',
-        'm_name' => 'Entity Link Image',
+        'm_name' => 'Image',
         'm_desc' => 'Link notes contain a URL to a raw image file.',
         'm_parents' => array(6203, 4593, 4592, 4537, 4595),
     ),
     4261 => array(
         'm_icon' => '<i class="far fa-file-pdf"></i>',
-        'm_name' => 'Entity Link File',
+        'm_name' => 'File',
         'm_desc' => 'Link notes contain a URL to a raw file.',
         'm_parents' => array(6203, 4593, 4592, 4537, 4595),
     ),
