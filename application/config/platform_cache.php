@@ -11,7 +11,7 @@ defined('BASEPATH') OR exit('No direct script access allowed');
  *
  */
 
-//Generated 2019-06-04 16:25:45 PST
+//Generated 2019-06-04 19:22:04 PST
 
 //Weekly Leaderboard Message:
 $config['en_ids_7203'] = array(4250, 4486, 6255, 7164);
@@ -496,7 +496,7 @@ $config['en_all_6997'] = array(
 );
 
 //Action Plan Starting Step Intention:
-$config['en_ids_6908'] = array(6677, 6684);
+$config['en_ids_6908'] = array(6677, 6684, 7231);
 $config['en_all_6908'] = array(
     6677 => array(
         'm_icon' => '<i class="far fa-thumbs-up"></i>',
@@ -506,9 +506,15 @@ $config['en_all_6908'] = array(
     ),
     6684 => array(
         'm_icon' => '<i class="fas fa-check"></i>',
-        'm_name' => 'OR Intent Answer',
+        'm_name' => 'OR Intent Single Answer',
         'm_desc' => '',
         'm_parents' => array(6157, 6908, 6193),
+    ),
+    7231 => array(
+        'm_icon' => '<i class="fas fa-check-double"></i>',
+        'm_name' => 'OR Intent Multiple Answers',
+        'm_desc' => '',
+        'm_parents' => array(6908, 6157, 6193),
     ),
 );
 
@@ -700,11 +706,23 @@ $config['en_all_6676'] = array(
 );
 
 //OR Intents:
-$config['en_ids_6193'] = array(6684, 6685, 6907);
+$config['en_ids_6193'] = array(7230, 7231, 6684, 6685, 6907);
 $config['en_all_6193'] = array(
+    7230 => array(
+        'm_icon' => '<i class="fas fa-random"></i>',
+        'm_name' => 'Random Path',
+        'm_desc' => 'A path would be randomly chosen by Mench as way to A/B test two paths',
+        'm_parents' => array(6193),
+    ),
+    7231 => array(
+        'm_icon' => '<i class="fas fa-check-double"></i>',
+        'm_name' => 'Multiple Answers',
+        'm_desc' => 'Allows the user to choose multiple answers from the list of children',
+        'm_parents' => array(6908, 6157, 6193),
+    ),
     6684 => array(
         'm_icon' => '<i class="fas fa-check"></i>',
-        'm_name' => 'Answer',
+        'm_name' => 'Single Answer',
         'm_desc' => 'Students can take their time and choose one of the paths of the OR intent.',
         'm_parents' => array(6157, 6908, 6193),
     ),
