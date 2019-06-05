@@ -335,14 +335,6 @@ class Intents_model extends CI_Model
             //All good so far, continue with linking:
             $intent_new = $ins[0];
 
-            //check all parents as this intent cannot be duplicated with any of its parents as it created an infinity loop:
-            if (in_array($intent_new['in_id'], array_flatten($this->Intents_model->in_fetch_recursive_parents($actionplan_in_id, 0)))) {
-                return array(
-                    'status' => 0,
-                    'message' => 'You cannot link to "' . $intent_new['in_outcome'] . '" as it already belongs to the parent/grandparent tree.',
-                );
-            }
-
             //Make sure this is not a duplicate intent for its parent:
             $dup_links = $this->Links_model->ln_fetch(array(
                 ( $is_parent ? 'ln_child_intent_id' : 'ln_parent_intent_id' ) => $actionplan_in_id,
