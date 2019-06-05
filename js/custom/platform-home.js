@@ -3,6 +3,7 @@
 var fadeout_frequency = 1000;
 var fadeout_speed = 21;
 var refresh_stat_counts = true;
+var updating_basic_stats = false;
 
 
 $(document).ready(function () {
@@ -20,9 +21,12 @@ $(document).ready(function () {
 var update_basic_stats = function() {
     //your jQuery ajax code
 
-    if(!refresh_stat_counts){
+    if(!refresh_stat_counts || updating_basic_stats){
         return false;
     }
+
+    //Now we're updating:
+    updating_basic_stats = true;
 
     //Fetch latest stats:
     $.post("/admin/basic_stats_all", {}, function (data) {
@@ -44,6 +48,9 @@ var update_basic_stats = function() {
 
         //Reload Tooltip again:
         $('[data-toggle="tooltip"]').tooltip();
+
+        //We're done updating:
+        updating_basic_stats = false;
 
     });
 
