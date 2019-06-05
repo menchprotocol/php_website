@@ -98,8 +98,6 @@ $in_filters = in_get_filters(true);
 
         echo '</div>';
 
-        //Show potential errors detected in the Action Plan via our JS functions:
-        echo '<div id="in_children_errors indent2"></div>';
 
         //List child intents:
         echo '<div id="list-in-' . $in['in_id'] . '-0" class="list-group list-is-children list-level-2 indent2">';

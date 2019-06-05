@@ -282,16 +282,8 @@ function in_sort_load(in_id, level) {
     var theobject = document.getElementById(s_element);
 
     if (!theobject) {
-        //Likely due to duplicate intents belonging in this tree!
-
-        //Show general error:
-        $('#in_children_errors').html("<div class=\"alert alert-danger\"><i class=\"fas fa-exclamation-triangle\"></i> Error: Detected duplicate intents! Fix & refresh.</div>");
-
-        //Show specific error:
-        if (element_key) {
-            $("<div class=\"act-error\"><i class=\"fas fa-exclamation-triangle\"></i> Note: Duplicate intent detected</div>").prependTo(element_key);
-        }
-
+        //due to duplicate intents belonging in this tree:
+        //TODO Fix later to support duplicate intents
         return false;
     }
 
