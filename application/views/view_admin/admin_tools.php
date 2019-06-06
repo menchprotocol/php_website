@@ -5,6 +5,7 @@ $fixed_fields = $this->config->item('fixed_fields');
 
 $moderation_tools = array(
     '/admin/tools/in_replace_outcomes' => 'Intent Search/Replace Outcomes',
+    '/admin/tools/en_icon_search' => 'Entity Icon Search',
     '/admin/tools/moderate_intent_notes' => 'Moderate Intent Notes',
     '/admin/tools/identical_intent_outcomes' => 'Identical Intent Outcomes',
     '/admin/tools/identical_entity_names' => 'Identical Entity Names',
@@ -203,6 +204,58 @@ if(!$action) {
     } else {
         echo '<div class="alert alert-success maxout"><i class="fas fa-check-circle"></i> No orphans found!</div>';
     }
+    
+
+} elseif($action=='en_icon_search') {
+
+    echo '<ul class="breadcrumb"><li><a href="/admin">Admin Tools</a></li><li><b>'.$moderation_tools['/admin/tools/'.$action].'</b></li></ul>';
+
+    //UI to compose a test message:
+    echo '<form method="GET" action="">';
+
+    echo '<div class="mini-header">Search For:</div>';
+    echo '<input type="text" class="form-control border maxout" name="search_for" value="'.@$_GET['search_for'].'"><br />';
+
+
+    if(isset($_GET['search_for']) && strlen($_GET['search_for'])>0){
+
+        $matching_results = $this->Entities_model->en_fetch(array(
+            'en_status >=' => 0,
+            'LOWER(en_icon) LIKE \'%'.strtolower($_GET['search_for']).'%\'' => null,
+        ));
+
+        //List the matching search:
+        echo '<table class="table table-condensed table-striped stats-table mini-stats-table">';
+
+
+        echo '<tr class="panel-title down-border">';
+        echo '<td style="text-align: left;" colspan="2">'.count($matching_results).' Results found</td>';
+        echo '</tr>';
+
+
+        if(count($matching_results) > 0){
+
+            echo '<tr class="panel-title down-border" style="font-weight:bold !important;">';
+            echo '<td style="text-align: left;">#</td>';
+            echo '<td style="text-align: left;">Matching Search</td>';
+            echo '</tr>';
+
+            foreach($matching_results as $count=>$en){
+
+                echo '<tr class="panel-title down-border">';
+                echo '<td style="text-align: left;">'.($count+1).'</td>';
+                echo '<td style="text-align: left;">'.echo_fixed_fields('en_status', $en['en_status'], 1, 'right').' <span class="icon-block">'.echo_en_icon($en).'</span><a href="/entities/'.$en['en_id'].'">'.$en['en_name'].'</a></td>';
+                echo '</tr>';
+
+            }
+        }
+
+        echo '</table>';
+    }
+
+
+    echo '<input type="submit" class="btn btn-primary" value="Search">';
+    echo '</form>';
 
 } elseif($action=='in_replace_outcomes') {
 
@@ -223,7 +276,7 @@ if(!$action) {
 
     if($search_for_is_set){
 
-        $matching_ins = $this->Intents_model->in_fetch(array(
+        $matching_results = $this->Intents_model->in_fetch(array(
             'in_status >=' => 0,
             'LOWER(in_outcome) LIKE \'%'.strtolower($_GET['search_for']).'%\'' => null,
         ));
@@ -233,11 +286,11 @@ if(!$action) {
 
 
         echo '<tr class="panel-title down-border">';
-        echo '<td style="text-align: left;" colspan="4">'.count($matching_ins).' Results found</td>';
+        echo '<td style="text-align: left;" colspan="4">'.count($matching_results).' Results found</td>';
         echo '</tr>';
 
 
-        if(count($matching_ins) < 1){
+        if(count($matching_results) < 1){
 
             $replace_with_is_set = false;
             unset($_GET['confirm_statement']);
@@ -245,7 +298,7 @@ if(!$action) {
 
         } else {
 
-            $confirmation_keyword = 'Replace '.count($matching_ins);
+            $confirmation_keyword = 'Replace '.count($matching_results);
             $replace_with_is_confirmed = (isset($_GET['confirm_statement']) && strtolower($_GET['confirm_statement'])==strtolower($confirmation_keyword));
 
             echo '<tr class="panel-title down-border" style="font-weight:bold !important;">';
@@ -255,7 +308,7 @@ if(!$action) {
             echo '<td style="text-align: left;">&nbsp;</td>';
             echo '</tr>';
 
-            foreach($matching_ins as $count=>$in){
+            foreach($matching_results as $count=>$in){
 
                 if($replace_with_is_set){
                     //Do replacement:
@@ -290,14 +343,14 @@ if(!$action) {
     }
 
 
-    if($search_for_is_set && count($matching_ins) > 0 && !$completed_replacements){
+    if($search_for_is_set && count($matching_results) > 0 && !$completed_replacements){
         //now give option to replace with:
         echo '<div class="mini-header">Replace With:</div>';
         echo '<input type="text" class="form-control border maxout" name="replace_with" value="'.@$_GET['replace_with'].'"><br />';
     }
 
     if($replace_with_is_set && !$completed_replacements){
-        if($qualifying_replacements==count($matching_ins) /*No Errors*/){
+        if($qualifying_replacements==count($matching_results) /*No Errors*/){
             //now give option to replace with:
             echo '<div class="mini-header">Confirm Replacement by Typing "'.$confirmation_keyword.'":</div>';
             echo '<input type="text" class="form-control border maxout" name="confirm_statement" value="'. @$_GET['confirm_statement'] .'"><br />';

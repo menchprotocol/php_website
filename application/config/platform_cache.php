@@ -11,7 +11,7 @@ defined('BASEPATH') OR exit('No direct script access allowed');
  *
  */
 
-//Generated 2019-06-04 19:22:04 PST
+//Generated 2019-06-05 18:52:46 PST
 
 //Weekly Leaderboard Message:
 $config['en_ids_7203'] = array(4250, 4486, 6255, 7164);
@@ -36,7 +36,7 @@ $config['en_all_7203'] = array(
     ),
     7164 => array(
         'm_icon' => '<i class="far fa-comments"></i>',
-        'm_name' => 'User Messages Communicated',
+        'm_name' => 'User Messages Exchanged',
         'm_desc' => '',
         'm_parents' => array(7203, 7159, 4527, 6221),
     ),
@@ -153,7 +153,7 @@ $config['en_all_7166'] = array(
     ),
 );
 
-//User Messages Communicated:
+//User Messages Exchanged:
 $config['en_ids_7164'] = array(4268, 4278, 4279, 4287, 4299, 4460, 4547, 4548, 4549, 4550, 4551, 4552, 4553, 4554, 4555, 4556, 4557, 4570, 4577, 5967, 6563);
 $config['en_all_7164'] = array(
     4268 => array(
@@ -413,7 +413,7 @@ $config['en_all_7159'] = array(
     ),
     7164 => array(
         'm_icon' => '<i class="far fa-comments"></i>',
-        'm_name' => 'Messages Communicated',
+        'm_name' => 'Messages Exchanged',
         'm_desc' => 'Messages send and received by users that gets them closer to their set intentions.',
         'm_parents' => array(7203, 7159, 4527, 6221),
     ),
@@ -599,37 +599,37 @@ $config['en_ids_6794'] = array(6678, 6679, 6680, 6681, 6682, 6683);
 $config['en_all_6794'] = array(
     6678 => array(
         'm_icon' => '<i class="fas fa-image"></i>',
-        'm_name' => 'Image',
+        'm_name' => 'Image Response',
         'm_desc' => '',
         'm_parents' => array(6144, 6794, 6192),
     ),
     6679 => array(
         'm_icon' => '<i class="fas fa-video"></i>',
-        'm_name' => 'Video',
+        'm_name' => 'Video Response',
         'm_desc' => '',
         'm_parents' => array(6144, 6794, 6192),
     ),
     6680 => array(
         'm_icon' => '<i class="fas fa-microphone"></i>',
-        'm_name' => 'Voice Note',
+        'm_name' => 'Audio Response',
         'm_desc' => '',
         'm_parents' => array(6144, 6794, 6192),
     ),
     6681 => array(
         'm_icon' => '<i class="fas fa-file-pdf"></i>',
-        'm_name' => 'File',
+        'm_name' => 'File Response',
         'm_desc' => '',
         'm_parents' => array(6144, 6794, 6192),
     ),
     6682 => array(
         'm_icon' => '<i class="fas fa-browser"></i>',
-        'm_name' => 'URL',
+        'm_name' => 'URL Response',
         'm_desc' => '',
         'm_parents' => array(6144, 6794, 6192),
     ),
     6683 => array(
         'm_icon' => '<i class="fas fa-align-left"></i>',
-        'm_name' => 'Text',
+        'm_name' => 'Text Response',
         'm_desc' => '',
         'm_parents' => array(6144, 6794, 6192),
     ),
@@ -646,37 +646,37 @@ $config['en_all_6192'] = array(
     ),
     6683 => array(
         'm_icon' => '<i class="fas fa-align-left"></i>',
-        'm_name' => 'Text',
+        'm_name' => 'Text Response',
         'm_desc' => 'Student must submit a text message to mark the intent as complete.',
         'm_parents' => array(6144, 6794, 6192),
     ),
     6682 => array(
         'm_icon' => '<i class="fas fa-browser"></i>',
-        'm_name' => 'URL',
+        'm_name' => 'URL Response',
         'm_desc' => 'Student must submit a URL to mark the intent as complete.',
         'm_parents' => array(6144, 6794, 6192),
     ),
     6679 => array(
         'm_icon' => '<i class="fas fa-video"></i>',
-        'm_name' => 'Video',
+        'm_name' => 'Video Response',
         'm_desc' => 'Student must send a video to mark the intent as complete.',
         'm_parents' => array(6144, 6794, 6192),
     ),
     6680 => array(
         'm_icon' => '<i class="fas fa-microphone"></i>',
-        'm_name' => 'Voice Note',
+        'm_name' => 'Audio Response',
         'm_desc' => 'Student must send a voice note to mark the intent as complete.',
         'm_parents' => array(6144, 6794, 6192),
     ),
     6678 => array(
         'm_icon' => '<i class="fas fa-image"></i>',
-        'm_name' => 'Image',
+        'm_name' => 'Image Response',
         'm_desc' => 'Student must send an image to mark the intent as complete.',
         'm_parents' => array(6144, 6794, 6192),
     ),
     6681 => array(
         'm_icon' => '<i class="fas fa-file-pdf"></i>',
-        'm_name' => 'File',
+        'm_name' => 'File Response',
         'm_desc' => 'Student must upload a File to mark the intent as complete.',
         'm_parents' => array(6144, 6794, 6192),
     ),
@@ -958,7 +958,7 @@ $config['en_all_6345'] = array(
     ),
     6242 => array(
         'm_icon' => '<i class="far fa-check-square"></i>',
-        'm_name' => 'Intent Note On-Complete Message',
+        'm_name' => 'Intent Note Final Message',
         'm_desc' => '',
         'm_parents' => array(5007, 6345, 4603, 4595, 4593, 4986, 4485),
     ),
@@ -1162,7 +1162,7 @@ $config['en_all_4986'] = array(
     ),
     6242 => array(
         'm_icon' => '<i class="far fa-check-square"></i>',
-        'm_name' => 'Intent Note On-Complete Message',
+        'm_name' => 'Intent Note Final Message',
         'm_desc' => '',
         'm_parents' => array(5007, 6345, 4603, 4595, 4593, 4986, 4485),
     ),
@@ -2549,7 +2549,7 @@ $config['en_all_4595'] = array(
     ),
     6242 => array(
         'm_icon' => '<i class="far fa-check-square"></i>',
-        'm_name' => 'Intent Note On-Complete Message',
+        'm_name' => 'Intent Note Final Message',
         'm_desc' => '2000',
         'm_parents' => array(5007, 6345, 4603, 4595, 4593, 4986, 4485),
     ),
@@ -3069,7 +3069,7 @@ $config['en_all_4593'] = array(
     ),
     6242 => array(
         'm_icon' => '<i class="far fa-check-square"></i>',
-        'm_name' => 'Intent Note On-Complete Message',
+        'm_name' => 'Intent Note Final Message',
         'm_desc' => '',
         'm_parents' => array(5007, 6345, 4603, 4595, 4593, 4986, 4485),
     ),
@@ -3269,7 +3269,7 @@ $config['en_all_4485'] = array(
     ),
     6242 => array(
         'm_icon' => '<i class="far fa-check-square"></i>',
-        'm_name' => 'On-Complete Message',
+        'm_name' => 'Final Message',
         'm_desc' => 'Message delivered to students when they complete an intention.',
         'm_parents' => array(5007, 6345, 4603, 4595, 4593, 4986, 4485),
     ),
