@@ -251,65 +251,6 @@ echo '<div class="row">';
         echo '<form action="" method="GET">';
 
 
-        //Filters UI:
-        echo '<table class="table table-condensed maxout"><tr>';
-
-        echo '<td valign="top" style="vertical-align: top;"><div style="padding-right:5px;">';
-        echo '<span class="mini-header">Start Date:</span>';
-        echo '<input type="date" class="form-control border" name="start_range" value="'.( isset($_GET['start_range']) ? $_GET['start_range'] : '' ).'">';
-        echo '</div></td>';
-
-        echo '<td valign="top" style="vertical-align: top;"><div style="padding-right:5px;">';
-        echo '<span class="mini-header">End Date:</span>';
-        echo '<input type="date" class="form-control border" name="end_range" value="'.( isset($_GET['end_range']) ? $_GET['end_range'] : '' ).'">';
-        echo '</div></td>';
-
-
-
-        echo '<td>';
-        echo '<div>';
-        echo '<span class="mini-header">Link Type:</span>';
-
-        if(isset($_GET['ln_type_entity_id']) && substr_count($_GET['ln_type_entity_id'], ',')>0){
-
-            //We have multiple predefined link types, so we must use a text input:
-            echo '<input type="text" name="ln_type_entity_id" value="' . $_GET['ln_type_entity_id'] . '" class="form-control border">';
-
-        } else {
-            //Link Type:
-            $all_link_count = 0;
-            $all_points = 0;
-            $select_ui = '';
-            foreach ($all_engs as $ln) {
-                //Echo drop down:
-                $select_ui .= '<option value="' . $ln['ln_type_entity_id'] . '" ' . ((isset($_GET['ln_type_entity_id']) && $_GET['ln_type_entity_id'] == $ln['ln_type_entity_id']) ? 'selected="selected"' : '') . '>' . $ln['en_name'] . ' ('  . number_format($ln['trs_count'], 0) . ')</option>';
-                $all_link_count += $ln['trs_count'];
-                $all_points += $ln['points_sum'];
-            }
-
-            echo '<select class="form-control border" name="ln_type_entity_id" id="ln_type_entity_id" class="border" style="width: 100% !important;">';
-            echo '<option value="0">All ('  . number_format($all_link_count, 0) . ')</option>';
-            echo $select_ui;
-            echo '</select>';
-        }
-
-        echo '</div>';
-
-        //Optional Intent/Entity status filter ONLY IF Link Type = Create New Intent/Entity
-
-        echo '<div class="filter-statuses filter-in-status hidden"><span class="mini-header">Intent Status:</span><input type="text" name="in_status" value="' . ((isset($_GET['in_status'])) ? $_GET['in_status'] : '') . '" class="form-control border"></div>';
-
-echo '<div class="filter-statuses filter-in-status hidden"><span class="mini-header">Intent Type Entity IDS:</span><input type="text" name="in_type_entity_id" value="' . ((isset($_GET['in_type_entity_id'])) ? $_GET['in_type_entity_id'] : '') . '" class="form-control border"></div>';
-
-echo '<div class="filter-statuses filter-in-status hidden"><span class="mini-header">Intent Verb Entity IDS:</span><input type="text" name="in_verb_entity_id" value="' . ((isset($_GET['in_verb_entity_id'])) ? $_GET['in_verb_entity_id'] : '') . '" class="form-control border"></div>';
-
-        echo '<div class="filter-statuses filter-en-status hidden"><span class="mini-header">Entity Status:</span><input type="text" name="en_status" value="' . ((isset($_GET['en_status'])) ? $_GET['en_status'] : '') . '" class="form-control border"></div>';
-
-        echo '</td>';
-
-        echo '</tr></table>';
-
-
 
 
 
@@ -397,6 +338,68 @@ echo '<div class="filter-statuses filter-in-status hidden"><span class="mini-hea
         }
         echo '</select>';
         echo '</div></td>';
+
+
+
+
+//Filters UI:
+echo '<table class="table table-condensed maxout"><tr>';
+
+echo '<td valign="top" style="vertical-align: top;"><div style="padding-right:5px;">';
+echo '<span class="mini-header">Start Date:</span>';
+echo '<input type="date" class="form-control border" name="start_range" value="'.( isset($_GET['start_range']) ? $_GET['start_range'] : '' ).'">';
+echo '</div></td>';
+
+echo '<td valign="top" style="vertical-align: top;"><div style="padding-right:5px;">';
+echo '<span class="mini-header">End Date:</span>';
+echo '<input type="date" class="form-control border" name="end_range" value="'.( isset($_GET['end_range']) ? $_GET['end_range'] : '' ).'">';
+echo '</div></td>';
+
+
+
+        echo '<td>';
+        echo '<div>';
+        echo '<span class="mini-header">Link Type:</span>';
+
+        if(isset($_GET['ln_type_entity_id']) && substr_count($_GET['ln_type_entity_id'], ',')>0){
+
+            //We have multiple predefined link types, so we must use a text input:
+            echo '<input type="text" name="ln_type_entity_id" value="' . $_GET['ln_type_entity_id'] . '" class="form-control border">';
+
+        } else {
+            //Link Type:
+            $all_link_count = 0;
+            $all_points = 0;
+            $select_ui = '';
+            foreach ($all_engs as $ln) {
+                //Echo drop down:
+                $select_ui .= '<option value="' . $ln['ln_type_entity_id'] . '" ' . ((isset($_GET['ln_type_entity_id']) && $_GET['ln_type_entity_id'] == $ln['ln_type_entity_id']) ? 'selected="selected"' : '') . '>' . $ln['en_name'] . ' ('  . number_format($ln['trs_count'], 0) . ')</option>';
+                $all_link_count += $ln['trs_count'];
+                $all_points += $ln['points_sum'];
+            }
+
+            echo '<select class="form-control border" name="ln_type_entity_id" id="ln_type_entity_id" class="border" style="width: 100% !important;">';
+            echo '<option value="0">All ('  . number_format($all_link_count, 0) . ')</option>';
+            echo $select_ui;
+            echo '</select>';
+        }
+
+        echo '</div>';
+
+        //Optional Intent/Entity status filter ONLY IF Link Type = Create New Intent/Entity
+
+        echo '<div class="filter-statuses filter-in-status hidden"><span class="mini-header">Intent Status:</span><input type="text" name="in_status" value="' . ((isset($_GET['in_status'])) ? $_GET['in_status'] : '') . '" class="form-control border"></div>';
+
+        echo '<div class="filter-statuses filter-in-status hidden"><span class="mini-header">Intent Type Entity IDS:</span><input type="text" name="in_type_entity_id" value="' . ((isset($_GET['in_type_entity_id'])) ? $_GET['in_type_entity_id'] : '') . '" class="form-control border"></div>';
+
+        echo '<div class="filter-statuses filter-in-status hidden"><span class="mini-header">Intent Verb Entity IDS:</span><input type="text" name="in_verb_entity_id" value="' . ((isset($_GET['in_verb_entity_id'])) ? $_GET['in_verb_entity_id'] : '') . '" class="form-control border"></div>';
+
+        echo '<div class="filter-statuses filter-en-status hidden"><span class="mini-header">Entity Status:</span><input type="text" name="en_status" value="' . ((isset($_GET['en_status'])) ? $_GET['en_status'] : '') . '" class="form-control border"></div>';
+
+        echo '</td>';
+
+        echo '</tr></table>';
+
 
 
 
