@@ -11,7 +11,42 @@ defined('BASEPATH') OR exit('No direct script access allowed');
  *
  */
 
-//Generated 2019-06-05 18:55:24 PST
+//Generated 2019-06-05 19:51:18 PST
+
+//Link Type Filter Groups:
+$config['en_ids_7233'] = array(4277, 4280, 4485, 4592, 7164);
+$config['en_all_7233'] = array(
+    4277 => array(
+        'm_icon' => '<i class="far fa-ear"></i>',
+        'm_name' => 'User Sent Messages',
+        'm_desc' => '',
+        'm_parents' => array(7233, 6221, 4527),
+    ),
+    4280 => array(
+        'm_icon' => '<i class="far fa-paper-plane"></i>',
+        'm_name' => 'User Received Messages',
+        'm_desc' => '',
+        'm_parents' => array(7233, 6221, 4527),
+    ),
+    4485 => array(
+        'm_icon' => '<i class="fas fa-comment-plus"></i>',
+        'm_name' => 'Intent Notes',
+        'm_desc' => '',
+        'm_parents' => array(7233, 7166, 4535, 4603, 4527, 4463),
+    ),
+    4592 => array(
+        'm_icon' => '<i class="fas fa-link"></i>',
+        'm_name' => 'Entity Links',
+        'm_desc' => '',
+        'm_parents' => array(7233, 7167, 4536, 4527),
+    ),
+    7164 => array(
+        'm_icon' => '<i class="far fa-comments"></i>',
+        'm_name' => 'User Messages Exchanged',
+        'm_desc' => '',
+        'm_parents' => array(7233, 7203, 7159, 4527, 6221),
+    ),
+);
 
 //Weekly Leaderboard Message:
 $config['en_ids_7203'] = array(4250, 4486, 6255, 7164);
@@ -38,7 +73,7 @@ $config['en_all_7203'] = array(
         'm_icon' => '<i class="far fa-comments"></i>',
         'm_name' => 'User Messages Exchanged',
         'm_desc' => '',
-        'm_parents' => array(7203, 7159, 4527, 6221),
+        'm_parents' => array(7233, 7203, 7159, 4527, 6221),
     ),
 );
 
@@ -126,7 +161,7 @@ $config['en_all_7167'] = array(
         'm_icon' => '<i class="fas fa-link"></i>',
         'm_name' => 'Entity Links',
         'm_desc' => '',
-        'm_parents' => array(7167, 4536, 4527),
+        'm_parents' => array(7233, 7167, 4536, 4527),
     ),
 );
 
@@ -149,7 +184,7 @@ $config['en_all_7166'] = array(
         'm_icon' => '<i class="fas fa-comment-plus"></i>',
         'm_name' => 'Intent Notes',
         'm_desc' => '',
-        'm_parents' => array(7166, 4535, 4603, 4527, 4463),
+        'm_parents' => array(7233, 7166, 4535, 4603, 4527, 4463),
     ),
 );
 
@@ -415,7 +450,7 @@ $config['en_all_7159'] = array(
         'm_icon' => '<i class="far fa-comments"></i>',
         'm_name' => 'Messages Exchanged',
         'm_desc' => 'Messages send and received by users that gets them closer to their set intentions.',
-        'm_parents' => array(7203, 7159, 4527, 6221),
+        'm_parents' => array(7233, 7203, 7159, 4527, 6221),
     ),
 );
 
@@ -783,7 +818,7 @@ $config['en_all_4463'] = array(
         'm_icon' => '<i class="fas fa-comment-plus"></i>',
         'm_name' => 'Intent Notes',
         'm_desc' => 'Intent notes are various information collected around intentions that enable Mench to operate as a Personal Assistant for students looking to accomplish an intent.',
-        'm_parents' => array(7166, 4535, 4603, 4527, 4463),
+        'm_parents' => array(7233, 7166, 4535, 4603, 4527, 4463),
     ),
     4488 => array(
         'm_icon' => '<img src="https://mench.com/img/mench_white.png">',

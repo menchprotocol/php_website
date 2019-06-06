@@ -1607,8 +1607,6 @@ function echo_link_type_group_stats($group_en_id){
     //Object Stats grouped by Status:
     foreach ($CI->config->item('en_all_'.$group_en_id) as $en_id => $en_m) {
 
-
-
         //Determine if this is a link type, or if we'd need to aggregate all its children:
         if(in_array($en_id , $CI->config->item('en_ids_4593'))){
 

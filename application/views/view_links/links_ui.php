@@ -9,6 +9,12 @@ $any_in_en_set = ( ( isset($_GET['any_en_id']) && $_GET['any_en_id'] > 0 ) || ( 
 $parent_tr_filter = ( isset($_GET['ln_parent_link_id']) && $_GET['ln_parent_link_id'] > 0 ? ' OR ln_parent_link_id = '.$_GET['ln_parent_link_id'].' ' : false );
 
 
+//Override if group entity set:
+if(isset($_GET['ln_type_entity_id_group']) && strlen($_GET['ln_type_entity_id_group']) > 0){
+    $_GET['ln_type_entity_id'] = $_GET['ln_type_entity_id_group'];
+}
+
+
 //Apply filters:
 if(isset($_GET['in_status']) && strlen($_GET['in_status']) > 0){
     if(isset($_GET['ln_type_entity_id']) && $_GET['ln_type_entity_id']==4250){ //Intent created
@@ -176,6 +182,11 @@ if(isset($_GET['any_ln_id']) && strlen($_GET['any_ln_id']) > 0){
     }
 }
 
+if(isset($_GET['ln_content_search']) && strlen($_GET['ln_content_search']) > 0){
+    $filters['LOWER(ln_content) LIKE'] = '%'.$_GET['ln_content_search'].'%';
+}
+
+
 if(isset($_GET['start_range']) && is_valid_date($_GET['start_range'])){
     $filters['ln_timestamp >='] = $_GET['start_range'].' 00:00:00';
 }
@@ -253,24 +264,35 @@ echo '<div class="row">';
         echo '<input type="date" class="form-control border" name="end_range" value="'.( isset($_GET['end_range']) ? $_GET['end_range'] : '' ).'">';
         echo '</div></td>';
 
-        //Link Type:
-        $all_link_count = 0;
-        $all_points = 0;
-        $select_ui = '';
-        foreach ($all_engs as $ln) {
-            //Echo drop down:
-            $select_ui .= '<option value="' . $ln['ln_type_entity_id'] . '" ' . ((isset($_GET['ln_type_entity_id']) && $_GET['ln_type_entity_id'] == $ln['ln_type_entity_id']) ? 'selected="selected"' : '') . '>' . $ln['en_name'] . ' ('  . number_format($ln['trs_count'], 0) . ')</option>';
-            $all_link_count += $ln['trs_count'];
-            $all_points += $ln['points_sum'];
-        }
+
 
         echo '<td>';
         echo '<div>';
         echo '<span class="mini-header">Link Type:</span>';
-        echo '<select class="form-control border" name="ln_type_entity_id" id="ln_type_entity_id" class="border" style="width: 100% !important;">';
-        echo '<option value="0">All ('  . number_format($all_link_count, 0) . ')</option>';
-        echo $select_ui;
-        echo '</select>';
+
+        if(isset($_GET['ln_type_entity_id']) && substr_count($_GET['ln_type_entity_id'], ',')>0){
+
+            //We have multiple predefined link types, so we must use a text input:
+            echo '<input type="text" name="ln_type_entity_id" value="' . $_GET['ln_type_entity_id'] . '" class="form-control border">';
+
+        } else {
+            //Link Type:
+            $all_link_count = 0;
+            $all_points = 0;
+            $select_ui = '';
+            foreach ($all_engs as $ln) {
+                //Echo drop down:
+                $select_ui .= '<option value="' . $ln['ln_type_entity_id'] . '" ' . ((isset($_GET['ln_type_entity_id']) && $_GET['ln_type_entity_id'] == $ln['ln_type_entity_id']) ? 'selected="selected"' : '') . '>' . $ln['en_name'] . ' ('  . number_format($ln['trs_count'], 0) . ')</option>';
+                $all_link_count += $ln['trs_count'];
+                $all_points += $ln['points_sum'];
+            }
+
+            echo '<select class="form-control border" name="ln_type_entity_id" id="ln_type_entity_id" class="border" style="width: 100% !important;">';
+            echo '<option value="0">All ('  . number_format($all_link_count, 0) . ')</option>';
+            echo $select_ui;
+            echo '</select>';
+        }
+
         echo '</div>';
 
         //Optional Intent/Entity status filter ONLY IF Link Type = Create New Intent/Entity
@@ -346,6 +368,37 @@ echo '<div class="filter-statuses filter-in-status hidden"><span class="mini-hea
         echo '<td><span class="mini-header">Parent Link IDs:</span><input type="text" name="ln_parent_link_id" value="' . ((isset($_GET['ln_parent_link_id'])) ? $_GET['ln_parent_link_id'] : '') . '" class="form-control border"></td>';
 
         echo '<td><span class="mini-header">Link Status:</span><input type="text" name="ln_status" value="' . ((isset($_GET['ln_status'])) ? $_GET['ln_status'] : '') . '" class="form-control border"></td>';
+
+        echo '</tr></table>';
+
+
+
+
+
+
+        echo '<table class="table table-condensed maxout"><tr>';
+
+        //Search
+        echo '<td><div style="padding-right:5px;">';
+        echo '<span class="mini-header">Link Content Search:</span>';
+        echo '<input type="text" name="ln_content_search" value="' . ((isset($_GET['ln_content_search'])) ? $_GET['ln_content_search'] : '') . '" class="form-control border">';
+        echo '</div></td>';
+
+
+        //Link Type Filter Groups
+        echo '<td><div style="padding-right:5px;">';
+        echo '<span class="mini-header">Link Type Filter Groups:</span>';
+        echo '<select class="form-control border" name="ln_type_entity_id_group" id="ln_type_entity_id_group" class="border" style="width: 100% !important;">';
+        echo '<option value="">Choose Link Type Groups...</option>';
+        foreach ($this->config->item('en_all_7233') as $en_id => $m) {
+            if(is_array($this->config->item('en_ids_'.$en_id))){
+                echo '<option value="' . join(',',$this->config->item('en_ids_'.$en_id)) . '" ' . ((isset($_GET['ln_type_entity_id_group']) && urldecode($_GET['ln_type_entity_id_group']) == join(',',$this->config->item('en_ids_'.$en_id))) ? 'selected="selected"' : '') . '>' . $m['m_name'] . '</option>';
+            }
+        }
+        echo '</select>';
+        echo '</div></td>';
+
+
 
         echo '</tr></table>';
 
