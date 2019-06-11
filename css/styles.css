@@ -3821,6 +3821,7 @@ h4 .tip-badge {
 .tree_title {
     margin: 2px 0 0 0;
     display: inline-block;
+    font-weight: bold !important;
 }
 
 .saving-account{

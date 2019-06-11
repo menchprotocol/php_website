@@ -201,12 +201,18 @@ class Links extends CI_Controller
 
 
     function cron__sync_algolia($input_obj_type = null, $input_obj_id = null){
+
+        if($input_obj_type == 'consider_run'){
+            //Gateway URL to give option to run...
+            die('<a href="/links/cron__sync_algolia">Click here</a> to start running this function.');
+        }
+
         //Call the update function and passon possible values:
         echo_json(update_algolia($input_obj_type, $input_obj_id));
     }
 
 
-    function cron__sync_gephi(){
+    function cron__sync_gephi($affirmation = null){
 
         /*
          *
@@ -215,6 +221,10 @@ class Links extends CI_Controller
          *
          * */
 
+        if($affirmation == 'consider_run'){
+            //Gateway URL to give option to run...
+            die('<a href="/links/cron__sync_gephi">Click here</a> to start running this function.');
+        }
 
         //Boost processing power:
         boost_power();
@@ -364,7 +374,7 @@ class Links extends CI_Controller
 
 
 
-    function cron__clean_metadatas(){
+    function cron__clean_metadatas($affirmation = null){
 
         /*
          *
@@ -377,6 +387,11 @@ class Links extends CI_Controller
          *
          *
          * */
+
+        if($affirmation == 'consider_run'){
+            //Gateway URL to give option to run...
+            die('<a href="/links/cron__clean_metadatas">Click here</a> to start running this function.');
+        }
 
         boost_power();
 

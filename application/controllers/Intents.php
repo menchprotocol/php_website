@@ -58,6 +58,7 @@ class Intents extends CI_Controller
                 $this->load->view('view_shared/public_footer');
 
             }
+
         }
     }
 
@@ -1524,6 +1525,11 @@ class Intents extends CI_Controller
          *
          * */
 
+        if($in_id == 'consider_run'){
+            //Gateway URL to give option to run...
+            die('<a href="/intents/cron__sync_common_base">Click here</a> to start running this function.');
+        }
+
         boost_power();
         $start_time = time();
         $filters = array(
@@ -1565,6 +1571,12 @@ class Intents extends CI_Controller
          * based on its common and expansion tree.
          *
          * */
+
+
+        if($in_id == 'consider_run'){
+            //Gateway URL to give option to run...
+            die('<a href="/intents/cron__sync_extra_insights">Click here</a> to start running this function.');
+        }
 
         boost_power();
         $start_time = time();

@@ -1703,7 +1703,8 @@ function echo_in($in, $level, $in_parent_id = 0, $is_parent = false)
     }
 
 
-
+    //Start opacity wrapper:
+    $ui .= '<div class="intent_fadeout click_expand skip_fadeout_'.$in['in_id'].'">';
 
     /*
      *
@@ -1947,6 +1948,9 @@ function echo_in($in, $level, $in_parent_id = 0, $is_parent = false)
     //To clear right float:
     $ui .= '<div style="clear: both; margin: 0; padding: 0;"></div>';
 
+    //End opacity wrapper:
+    $ui .= '</div>';
+
     /*
      *
      * Child Intents
@@ -1977,11 +1981,11 @@ function echo_in($in, $level, $in_parent_id = 0, $is_parent = false)
         }
 
 
-        $ui .= '<div class="list-group-item list_input new-in3-input cr-class-' . $ln_id . ' hidden">
+        $ui .= '<div class="list-group-item intent_fadeout list_input new-in3-input cr-class-' . $ln_id . ' hidden">
                 <div class="form-group is-empty"  style="margin: 0; padding: 0;"><form action="#" onsubmit="in_link_or_create(' . $in['in_id'] . ',3);" intent-id="' . $in['in_id'] . '"><input type="text" class="form-control autosearch intentadder-id-'.$in['in_id'].' algolia_search" maxlength="' . $CI->config->item('in_outcome_max') . '" id="addintent-cr-' . $ln_id . '" intent-id="' . $in['in_id'] . '" placeholder="Add #Intent"></form></div>
         </div>';
 
-        $ui .= '<div class="algolia_search_pad in_pad_'.$in['in_id'].' hidden"><span>Search existing intents or create a new one...</span></div>';
+        $ui .= '<div class="algolia_search_pad in_pad_'.$in['in_id'].' hidden intent_fadeout"><span>Search existing intents or create a new one...</span></div>';
 
         //Load JS search for this input:
         $ui .= '<script> $(document).ready(function () { in_load_search(".intentadder-id-'.$in['in_id'].'", 0, 3); }); </script>';

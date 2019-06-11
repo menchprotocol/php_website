@@ -16,7 +16,7 @@
 
     <h5 class="badge badge-h edit-header" style="display: inline-block;"><i class="fas fa-cog"></i> Modify</h5>
     <div style="text-align:right; font-size: 22px; margin:-32px 3px -20px 0;">
-        <a href="javascript:void(0)" onclick="$('#modifybox').addClass('hidden')"><i
+        <a href="javascript:void(0)" onclick="close_modify()"><i
                 class="fas fa-times-circle"></i></a>
     </div>
     <div class="grey-box">

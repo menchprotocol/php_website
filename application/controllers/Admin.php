@@ -78,7 +78,7 @@ class Admin extends CI_Controller
 
     function extra_stats_intents(){
 
-        $en_all_4534 = $this->config->item('en_all_4534');
+        $en_all_4488 = $this->config->item('en_all_4488');
         $en_all_7161 = $this->config->item('en_all_7161'); //Platform Dashboard
         $fixed_fields = $this->config->item('fixed_fields');
 
@@ -209,7 +209,7 @@ class Admin extends CI_Controller
 
     function extra_stats_entities(){
 
-        $en_all_4534 = $this->config->item('en_all_4534');
+        $en_all_4488 = $this->config->item('en_all_4488');
         $en_all_7161 = $this->config->item('en_all_7161'); //Platform Dashboard
         $fixed_fields = $this->config->item('fixed_fields');
 
@@ -337,7 +337,7 @@ class Admin extends CI_Controller
     function extra_stats_links(){
 
 
-        $en_all_4534 = $this->config->item('en_all_4534');
+        $en_all_4488 = $this->config->item('en_all_4488');
         $fixed_fields = $this->config->item('fixed_fields');
         $en_all_4463 = $this->config->item('en_all_4463'); //Platform Glossary
         $en_all_4593 = $this->config->item('en_all_4593'); //Load all link types

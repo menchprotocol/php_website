@@ -1,5 +1,4 @@
 <?php $en_all_4488 = $this->config->item('en_all_4488'); ?>
-<?php $en_all_2738 = $this->config->item('en_all_2738'); ?>
 
 
 </div>
@@ -62,7 +61,7 @@
             </ul>
         </nav>
 
-        <div class="pfooter" style="font-size:0.8em;"><?= $en_all_2738[4488]['m_icon'].''.$en_all_2738[4488]['m_name'] .' v'. $this->config->item('app_version') ?></div>
+        <div class="pfooter" style="font-size:0.8em;"><?= 'Mench v'. $this->config->item('app_version') ?></div>
 
     </div>
 </footer>

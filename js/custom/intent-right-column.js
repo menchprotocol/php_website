@@ -281,6 +281,15 @@ function in_outcome_counter() {
     }
 }
 
+function in_reset_opacity(){
+    $('.intent_fadeout').css('opacity', '1');
+}
+
+function close_modify(){
+    $('#modifybox').addClass('hidden');
+    in_reset_opacity();
+}
+
 
 function in_modify_load(in_id, ln_id) {
 
@@ -312,6 +321,12 @@ function in_modify_load(in_id, ln_id) {
             alert('Error Loading Intent: ' + data.message);
 
         } else {
+
+            //Reset opacity and then fadeout non-selected:
+            in_reset_opacity();
+
+            //Set new opacity:
+            $('.intent_fadeout').not(".skip_fadeout_"+in_id).css('opacity', '0.1'); //Reduce to 10% opacity
 
             //All good, let's load the data into the Modify Widget...
 

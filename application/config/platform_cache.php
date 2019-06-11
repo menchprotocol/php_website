@@ -78,8 +78,8 @@ $config['en_all_7203'] = array(
 );
 
 //Mench Platform:
-$config['en_ids_4488'] = array(4396,4428,4463,4506,4527,4534,4757,6212,6403,6418,7161);
-$config['en_all_4488'] = array(
+$config['en_ids_7254'] = array(4396,4428,4463,4506,4527,4534,4757,6212,6403,6418,7161);
+$config['en_all_7254'] = array(
     4396 => array(
         'm_icon' => '<i class="fas fa-cloud"></i>',
         'm_name' => 'Mench Platform CDN',

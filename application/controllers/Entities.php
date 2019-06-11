@@ -1301,6 +1301,11 @@ class Entities extends CI_Controller
          *
          * */
 
+        if($en_id == 'consider_run'){
+            //Gateway URL to give option to run...
+            die('<a href="/entities/cron__update_trust_score">Click here</a> to start running this function.');
+        }
+
         //Algorithm Weights:
         $score_weights = array(
             'score_parent' => 5, //Score per each parent entity
