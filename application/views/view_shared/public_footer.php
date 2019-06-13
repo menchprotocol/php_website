@@ -1,6 +1,5 @@
 <?php $en_all_4488 = $this->config->item('en_all_4488'); ?>
 
-
 </div>
 </div>
 
@@ -46,7 +45,7 @@
 
 
                     <a href="/platform"
-                       class="social-link" data-toggle="tooltip" title="<?= $en_all_4488[7161]['m_name'].': '. $en_all_4488[7161]['m_desc'] ?>"
+                       class="social-link" data-toggle="tooltip" title="<?= $en_all_4488[7161]['m_name'] ?>"
                        data-placement="top"><?= $en_all_4488[7161]['m_icon'] ?></a>
 
                     <a href="/login"
@@ -61,7 +60,7 @@
             </ul>
         </nav>
 
-        <div class="pfooter" style="font-size:0.8em;"><?= 'Mench v'. $this->config->item('app_version') ?></div>
+        <div class="pfooter" style="font-size:0.8em;"><?= '<img src="/img/mench_white.png" />Mench v'. $this->config->item('app_version') ?></div>
 
     </div>
 </footer>

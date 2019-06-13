@@ -1583,9 +1583,10 @@ class Communication_model extends CI_Model
                 $source_info = echo_tree_references($ins[0], true);
                 $step_info = echo_tree_steps($ins[0], true);
                 $time_info = echo_tree_time_estimate($ins[0], true);
+                $user_info = echo_tree_users($ins[0], true);
 
                 if($source_info || $step_info || $time_info){
-                    $overview_message .= 'Here is an overview:' . "\n\n" . $source_info . $step_info . $time_info . "\n";
+                    $overview_message .= 'Here is an overview:' . "\n\n" . $source_info . $step_info . $time_info . $user_info . "\n";
                 }
 
                 $overview_message .= 'Should I add the intention to ' . $ins[0]['in_outcome'] . ' to your Action Plan?';

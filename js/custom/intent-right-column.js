@@ -157,8 +157,13 @@ function in_messages_iframe(in_id) {
     $('.fixed-box').addClass('hidden');
     $('.frame-loader').addClass('hidden');
     $('#load_messaging_frame').removeClass('hidden').hide().fadeIn();
+
     //Set title:
     $('#load_messaging_frame .badge-h-max').html('<i class="fas fa-comment-plus"></i> ' + $('.in_outcome_' + in_id + ':first').text());
+
+    //Set opacity:
+    reset_opacity();
+    $('.opacity_fadeout').not(".skip_fadeout_in_"+in_id).css('opacity', blur_opacity);
 
     //Load content via a URL:
     $('.ajax-frame').attr('src', '/intents/in_messages_iframe/' + in_id).removeClass('hidden').css('margin-top', '0');
@@ -176,6 +181,10 @@ function in_action_plan_users(in_id) {
 
     //Set title:
     $('#load_action_plan_frame .badge-h-max').html('🚩 ' + $('.in_outcome_' + in_id + ':first').text());
+
+    //Set opacity:
+    reset_opacity();
+    $('.opacity_fadeout').not(".skip_fadeout_in_"+in_id).css('opacity', blur_opacity);
 
     //Show Loading Icon:
     $('#ap_matching_users').html('<span><i class="fas fa-spinner fa-spin"></i> Loading...</span>').hide().fadeIn();
@@ -281,14 +290,6 @@ function in_outcome_counter() {
     }
 }
 
-function in_reset_opacity(){
-    $('.intent_fadeout').css('opacity', '1');
-}
-
-function close_modify(){
-    $('#modifybox').addClass('hidden');
-    in_reset_opacity();
-}
 
 
 function in_modify_load(in_id, ln_id) {
@@ -302,6 +303,10 @@ function in_modify_load(in_id, ln_id) {
     $('.apply-recursive').addClass('hidden');
     $('#apply_recursively').prop('checked', false);
     $('.save_intent_changes').html(' ');
+
+    //Reset & set new opacity:
+    reset_opacity();
+    $('.opacity_fadeout').not(".skip_fadeout_in_"+in_id).css('opacity', blur_opacity);
 
     //Reset parent editing button:
     $('.modify_parent_in').addClass('hidden');
@@ -321,12 +326,6 @@ function in_modify_load(in_id, ln_id) {
             alert('Error Loading Intent: ' + data.message);
 
         } else {
-
-            //Reset opacity and then fadeout non-selected:
-            in_reset_opacity();
-
-            //Set new opacity:
-            $('.intent_fadeout').not(".skip_fadeout_"+in_id).css('opacity', '0.1'); //Reduce to 10% opacity
 
             //All good, let's load the data into the Modify Widget...
 

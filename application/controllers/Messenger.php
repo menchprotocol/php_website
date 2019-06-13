@@ -684,7 +684,7 @@ class Messenger extends CI_Controller
         //Wait until Facebook pro-pagates changes of our whitelisted_domains setting:
         sleep(2);
 
-        $en_all_2738 = $this->config->item('en_all_2738');
+        $en_all_4488 = $this->config->item('en_all_4488');
 
         //Now let's update the menu:
         array_push($res, $this->Communication_model->facebook_graph('POST', '/me/messenger_profile', array(
@@ -695,7 +695,7 @@ class Messenger extends CI_Controller
                     'disabled_surfaces' => array('CUSTOMER_CHAT_PLUGIN'),
                     'call_to_actions' => array(
                         array(
-                            'title' => $en_all_2738[6138]['m_icon'].' '.$en_all_2738[6138]['m_name'],
+                            'title' => $en_all_4488[6138]['m_icon'].' '.$en_all_4488[6138]['m_name'],
                             'type' => 'web_url',
                             'url' => 'https://mench.com/actionplan',
                             'webview_height_ratio' => 'tall',
@@ -703,7 +703,7 @@ class Messenger extends CI_Controller
                             'messenger_extensions' => true,
                         ),
                         array(
-                            'title' => $en_all_2738[6137]['m_icon'].' '.$en_all_2738[6137]['m_name'],
+                            'title' => $en_all_4488[6137]['m_icon'].' '.$en_all_4488[6137]['m_name'],
                             'type' => 'web_url',
                             'url' => 'https://mench.com/myaccount',
                             'webview_height_ratio' => 'tall',
@@ -1559,10 +1559,10 @@ class Messenger extends CI_Controller
         //Attempt to add intent to Action Plan:
         if($this->Actionplan_model->actionplan_intention_add($session_en['en_id'], $_POST['in_id'])){
             //All good:
-            $en_all_2738 = $this->config->item('en_all_2738');
+            $en_all_4488 = $this->config->item('en_all_4488');
             return echo_json(array(
                 'status' => 1,
-                'message' => '<i class="far fa-check-circle"></i> Successfully added to your <b><a href="/actionplan">'.$en_all_2738[6138]['m_icon'].' '.$en_all_2738[6138]['m_name'].'</a></b>',
+                'message' => '<i class="far fa-check-circle"></i> Successfully added to your <b><a href="/actionplan">'.$en_all_4488[6138]['m_icon'].' '.$en_all_4488[6138]['m_name'].'</a></b>',
             ));
         } else {
             //There was some error:

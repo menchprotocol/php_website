@@ -5,6 +5,12 @@ var isAdvancedUpload = function () {
     return (('draggable' in div) || ('ondragstart' in div && 'ondrop' in div)) && 'FormData' in window && 'FileReader' in window;
 }();
 
+var blur_opacity = '0.21';
+
+
+function reset_opacity(){
+    $('.opacity_fadeout').css('opacity', '1');
+}
 
 function validURL(str) {
     var pattern = new RegExp('^(https?:\\/\\/)?'+ // protocol

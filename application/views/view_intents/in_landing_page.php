@@ -31,6 +31,7 @@ if (!$hide_subscribe) {
     $source_info = echo_tree_references($in, false);
     $step_info = echo_tree_steps($in, false);
     $time_info = echo_tree_time_estimate($in, false);
+    $user_info = echo_tree_users($in, false);
 
     if($step_info || $source_info || $time_info){
         echo '<h3 style="margin-bottom:5px; margin-top:15px !important;">Overview:</h3>';
@@ -38,6 +39,7 @@ if (!$hide_subscribe) {
         echo $source_info;
         echo $step_info;
         echo $time_info;
+        echo $user_info;
         echo '</div>';
     } else {
         //Just give some space:
@@ -47,7 +49,7 @@ if (!$hide_subscribe) {
     //Check to see if added to Action Plan for logged-in users:
     if(isset($session_en['en_id'])){
 
-        $en_all_2738 = $this->config->item('en_all_2738');
+        $en_all_4488 = $this->config->item('en_all_4488');
 
         if(count($this->Links_model->ln_fetch(array(
                 'ln_miner_entity_id' => $session_en['en_id'],
@@ -57,12 +59,12 @@ if (!$hide_subscribe) {
             ))) > 0){
 
             //Show when was added:
-            echo '<p>Intention is already added to your <a href="/actionplan">'.$en_all_2738[6138]['m_icon'].' '.$en_all_2738[6138]['m_name'].'</a>.</p>';
+            echo '<p>Intention is already added to your <a href="/actionplan">'.$en_all_4488[6138]['m_icon'].' '.$en_all_4488[6138]['m_name'].'</a>.</p>';
 
         } else {
 
             //Give option to add:
-            echo '<div id="added_to_actionplan"><a class="btn btn-primary" href="javascript:void(0);" onclick="add_to_actionplan('.$in['in_id'].')" style="display: inline-block; padding:12px 36px;">Add to '.$en_all_2738[6138]['m_icon'].' '.$en_all_2738[6138]['m_name'].'</a></div>';
+            echo '<div id="added_to_actionplan"><a class="btn btn-primary" href="javascript:void(0);" onclick="add_to_actionplan('.$in['in_id'].')" style="display: inline-block; padding:12px 36px;">Add to '.$en_all_4488[6138]['m_icon'].' '.$en_all_4488[6138]['m_name'].'</a></div>';
 
         }
 

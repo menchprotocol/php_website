@@ -39,15 +39,23 @@ $url_part_1 = $this->uri->segment(1);
                 <?php
                 if (isset($session_en['en_id'])) {
 
-                    $en_all_2738 = $this->config->item('en_all_2738');
+                    $en_all_4488 = $this->config->item('en_all_4488');
 
                     //Is this user a Miner?
                     if(en_auth(array(1308))){
-                        echo '<li><a href="' . ( isset($in['in_id']) ? '/intents/'.$in['in_id'] : '/platform') . '" class="parent-icon">'.$en_all_2738[4488]['m_icon'].' '.$en_all_2738[4488]['m_name'].'</a></li>';
+
+                        if(isset($in['in_id'])){
+                            //Go to specific intent:
+                            echo '<li><a href="/intents/'.$in['in_id'].'" class="parent-icon">'.$en_all_4488[4535]['m_icon'].' '.$en_all_4488[4535]['m_name'].'</a></li>';
+                        }
+
+                        //Go to dashboard:
+                        echo '<li><a href="/platform" class="parent-icon">'.$en_all_4488[7161]['m_icon'].' '.$en_all_4488[7161]['m_name'].'</a></li>';
+
                     }
 
-                    echo '<li><a href="/actionplan">'.$en_all_2738[6138]['m_icon'].' '.$en_all_2738[6138]['m_name'].'</a></li>';
-                    echo '<li><a href="/myaccount">'.$en_all_2738[6137]['m_icon'].' '.$en_all_2738[6137]['m_name'].'</a></li>';
+                    echo '<li><a href="/actionplan">'.$en_all_4488[6138]['m_icon'].' '.$en_all_4488[6138]['m_name'].'</a></li>';
+                    echo '<li><a href="/myaccount">'.$en_all_4488[6137]['m_icon'].' '.$en_all_4488[6137]['m_name'].'</a></li>';
 
                     //Enable sign-out:
                     echo '<li><a href="/logout"><i class="fas fa-power-off"></i> Logout</a></li>';

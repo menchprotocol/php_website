@@ -7,7 +7,7 @@ function echo_en_load_more($page, $limit, $en__child_count)
      * Gives an option to "Load More" entities when we have too many to show in one go
      * */
 
-    echo '<a class="load-more list-group-item" href="javascript:void(0);" onclick="en_load_next_page(' . $page . ')">';
+    echo '<a class="load-more list-group-item opacity_fadeout" href="javascript:void(0);" onclick="en_load_next_page(' . $page . ')">';
 
     //Right content:
     echo '<span class="pull-right" style="margin-right: 6px;"><span class="badge badge-secondary"><i class="fas fa-search-plus"></i></span></span>';
@@ -792,6 +792,25 @@ function echo_time_hours($seconds, $micro = false)
     }
 }
 
+function echo_tree_users($in, $fb_messenger_format = false, $expand_mode = false){
+
+    $CI =& get_instance();
+
+    $actionplan_users = $CI->Links_model->ln_fetch(array(
+        'ln_type_entity_id IN (' . join(',', $CI->config->item('en_ids_6255')) . ')' => null, //Action Plan Progression Completion Triggers
+        'ln_parent_intent_id' => $in['in_id'],
+        'ln_status' => 2, //Published
+    ), array(), 0, 0, array(), 'COUNT(ln_id) as total_steps');
+
+    if($actionplan_users[0]['total_steps'] < 1){
+        //Nothing here...
+        return false;
+    }
+
+    return false;
+
+
+}
 
 function echo_tree_references($in, $fb_messenger_format = false, $expand_mode = false)
 {
@@ -1416,7 +1435,7 @@ function echo_in_recommend($in)
     //See if user is logged-in:
     $CI =& get_instance();
     $session_en = en_auth();
-    $en_all_2738 = $CI->config->item('en_all_2738');
+    $en_all_4488 = $CI->config->item('en_all_4488');
     $already_in_actionplan = (isset($session_en['en_id']) && count($CI->Links_model->ln_fetch(array(
             'ln_miner_entity_id' => $session_en['en_id'],
             'ln_type_entity_id' => 4235, //Action Plan Set Intention
@@ -1428,7 +1447,7 @@ function echo_in_recommend($in)
     $ui = '<a href="' . ( $already_in_actionplan ? '/actionplan' : '' ) . '/' . $in['in_id'] . '" class="list-group-item">';
 
     $ui .= '<span class="pull-right">';
-    $ui .= '<span class="badge badge-primary fr-bgd">'.( $already_in_actionplan ? $en_all_2738[6138]['m_icon'] : '<i class="fas fa-angle-right"></i>' ).'</span>';
+    $ui .= '<span class="badge badge-primary fr-bgd">'.( $already_in_actionplan ? $en_all_4488[6138]['m_icon'] : '<i class="fas fa-angle-right"></i>' ).'</span>';
     $ui .= '</span>';
 
     $ui .= '<span style="color:#222; font-weight:500; font-size:1.2em;">'.echo_in_outcome($in['in_outcome']).'</span>';
@@ -1592,20 +1611,19 @@ function echo_en_stats_overview($cached_list, $report_name){
 
 }
 
-function echo_link_type_group_stats($group_en_id){
+function echo_link_type_group_stats($parent_stats, $child_stats_en_id){
 
     $CI =& get_instance();
-    $en_all_7161 = $CI->config->item('en_all_7161'); //Platform Dashboard
 
     //Start the UI variable:
     $ui = '<table class="table table-condensed table-striped stats-table mini-stats-table">';
     $ui .= '<tr class="panel-title down-border">';
-    $ui .= '<td style="text-align: left;">'.$en_all_7161[$group_en_id]['m_name'].'</td>';
+    $ui .= '<td style="text-align: left;">'.$parent_stats[$child_stats_en_id]['m_name'].'</td>';
     $ui .= '<td style="text-align: right;">Links</td>';
     $ui .= '</tr>';
 
     //Object Stats grouped by Status:
-    foreach ($CI->config->item('en_all_'.$group_en_id) as $en_id => $en_m) {
+    foreach ($CI->config->item('en_all_'.$child_stats_en_id) as $en_id => $en_m) {
 
         //Determine if this is a link type, or if we'd need to aggregate all its children:
         if(in_array($en_id , $CI->config->item('en_ids_4593'))){
@@ -1704,7 +1722,7 @@ function echo_in($in, $level, $in_parent_id = 0, $is_parent = false)
 
 
     //Start opacity wrapper:
-    $ui .= '<div class="intent_fadeout click_expand skip_fadeout_'.$in['in_id'].'">';
+    $ui .= '<div class="opacity_fadeout click_expand skip_fadeout_in_'.$in['in_id'].'">';
 
     /*
      *
@@ -1981,11 +1999,11 @@ function echo_in($in, $level, $in_parent_id = 0, $is_parent = false)
         }
 
 
-        $ui .= '<div class="list-group-item intent_fadeout list_input new-in3-input cr-class-' . $ln_id . ' hidden">
+        $ui .= '<div class="list-group-item opacity_fadeout list_input new-in3-input cr-class-' . $ln_id . ' hidden">
                 <div class="form-group is-empty"  style="margin: 0; padding: 0;"><form action="#" onsubmit="in_link_or_create(' . $in['in_id'] . ',3);" intent-id="' . $in['in_id'] . '"><input type="text" class="form-control autosearch intentadder-id-'.$in['in_id'].' algolia_search" maxlength="' . $CI->config->item('in_outcome_max') . '" id="addintent-cr-' . $ln_id . '" intent-id="' . $in['in_id'] . '" placeholder="Add #Intent"></form></div>
         </div>';
 
-        $ui .= '<div class="algolia_search_pad in_pad_'.$in['in_id'].' hidden intent_fadeout"><span>Search existing intents or create a new one...</span></div>';
+        $ui .= '<div class="algolia_search_pad in_pad_'.$in['in_id'].' hidden opacity_fadeout"><span>Search existing intents or create a new one...</span></div>';
 
         //Load JS search for this input:
         $ui .= '<script> $(document).ready(function () { in_load_search(".intentadder-id-'.$in['in_id'].'", 0, 3); }); </script>';
@@ -2025,7 +2043,7 @@ function echo_en($en, $level, $is_parent = false)
     $ui = null;
 
 
-    $ui .= '<div entity-id="' . $en['en_id'] . '" en-status="' . $en['en_status'] . '" tr-id="'.$ln_id.'" ln-status="'.( $ln_id > 0 ? $en['ln_status'] : 0 ).'" is-parent="' . ($is_parent ? 1 : 0) . '" class="list-group-item en-item en___' . $en['en_id'] . ' ' . ($level <= 1 ? 'top_entity' : 'tr_' . $en['ln_id']) . ( $is_parent ? ' parent-entity ' : '' ) . '">';
+    $ui .= '<div entity-id="' . $en['en_id'] . '" en-status="' . $en['en_status'] . '" tr-id="'.$ln_id.'" ln-status="'.( $ln_id > 0 ? $en['ln_status'] : 0 ).'" is-parent="' . ($is_parent ? 1 : 0) . '" class="list-group-item opacity_fadeout skip_fadeout_en_'.$en['en_id'].' en-item en___' . $en['en_id'] . ' ' . ($level <= 1 ? 'top_entity' : 'tr_' . $en['ln_id']) . ( $is_parent ? ' parent-entity ' : '' ) . '">';
 
 
 

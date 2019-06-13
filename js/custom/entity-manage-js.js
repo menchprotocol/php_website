@@ -433,6 +433,10 @@ function en_modify_load(en_id, ln_id) {
     //Cannot be removed OR unlinked as this would not load, so remove them:
     $('.notify_en_remove, .notify_unlink_en').addClass('hidden');
 
+    //Set opacity:
+    reset_opacity();
+    $('.opacity_fadeout').not(".skip_fadeout_en_"+en_id).css('opacity', blur_opacity);
+
 
     var en_full_name = $(".en_name_" + en_id + ":first").text();
     $('#en_name').val(en_full_name);
@@ -737,6 +741,10 @@ function en_load_messages(en_id) {
     $('.fixed-box').addClass('hidden');
     $("#message-frame").removeClass('hidden').hide().fadeIn().attr('entity-id', en_id);
     $("#message-frame h4").text($(".en_name_" + en_id + ":first").text());
+
+    //Set opacity:
+    reset_opacity();
+    $('.opacity_fadeout').not(".skip_fadeout_en_"+en_id).css('opacity', blur_opacity);
 
     var handler = $("#loaded-messages");
 
