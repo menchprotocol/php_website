@@ -655,6 +655,9 @@ function en_modify_save() {
                     //Remove Hash:
                     window.location.hash = '#';
 
+                    //Reset opacity:
+                    reset_opacity();
+
                     //Remove from UI:
                     $('.tr_' + modify_data['ln_id']).html('<span style="color:#2f2739;"><i class="fas fa-trash-alt"></i> Removed</span>').fadeOut();
 

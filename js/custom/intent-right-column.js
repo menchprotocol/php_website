@@ -510,6 +510,9 @@ function in_modify_save() {
                     //Remove Hash:
                     window.location.hash = '#';
 
+                    //Reset opacity:
+                    reset_opacity();
+
                     //Adjust completion cost:
                     adjust_js_ui(modify_data['in_id'], modify_data['level'], 0, 0, 1, 0);
 
