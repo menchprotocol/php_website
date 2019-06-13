@@ -11,7 +11,7 @@ defined('BASEPATH') OR exit('No direct script access allowed');
  *
  */
 
-//Generated 2019-06-12 17:26:58 PST
+//Generated 2019-06-12 18:07:48 PST
 
 //Platform User Tools:
 $config['en_ids_7292'] = array(6137,6138,7291);
@@ -37,7 +37,7 @@ $config['en_all_7292'] = array(
 );
 
 //Mench Platform:
-$config['en_ids_4488'] = array(4535,4536,5007,6137,6138,6196,6205,6287,7161,7254,7256,7291,7305);
+$config['en_ids_4488'] = array(4535,4536,5007,6137,6138,6196,6205,6287,7161,7254,7256,7291);
 $config['en_all_4488'] = array(
     4535 => array(
         'm_icon' => '<i class="fas fa-hashtag"></i>',
@@ -110,12 +110,6 @@ $config['en_all_4488'] = array(
         'm_name' => 'Logout',
         'm_desc' => '',
         'm_parents' => array(7292,4488),
-    ),
-    7305 => array(
-        'm_icon' => '<i class="far fa-browser"></i>',
-        'm_name' => 'Mench Website',
-        'm_desc' => '',
-        'm_parents' => array(4488,1326),
     ),
 );
 
@@ -246,7 +240,7 @@ $config['en_ids_7233'] = array(4277,4280,4485,4592,7164);
 $config['en_all_7233'] = array(
     4277 => array(
         'm_icon' => '<i class="far fa-ear"></i>',
-        'm_name' => 'User Sent Messages',
+        'm_name' => 'User Sent Manual Messages',
         'm_desc' => '',
         'm_parents' => array(7233,6221,4527),
     ),
@@ -349,34 +343,34 @@ $config['en_all_7166'] = array(
 $config['en_ids_7164'] = array(4268,4278,4279,4287,4299,4460,4547,4548,4549,4550,4551,4552,4553,4554,4555,4556,4557,4570,4577,5967,6563);
 $config['en_all_7164'] = array(
     4268 => array(
-        'm_icon' => '<i class="fab fa-facebook-messenger"></i>',
+        'm_icon' => '<i class="far fa-user-tag"></i>',
         'm_name' => 'User Sent Postback',
         'm_desc' => '',
-        'm_parents' => array(7164,4277,4595,4755,4593),
+        'm_parents' => array(7307,7164,4595,4755,4593),
     ),
     4278 => array(
         'm_icon' => '<i class="far fa-eye"></i>',
         'm_name' => 'User Sent Read',
         'm_desc' => '',
-        'm_parents' => array(7164,4277,4595,4755,4593),
+        'm_parents' => array(7307,7164,4595,4755,4593),
     ),
     4279 => array(
-        'm_icon' => '<i class="fas fa-check"></i>',
-        'm_name' => 'User Received Message',
+        'm_icon' => '<i class="far fa-cloud-download"></i>',
+        'm_name' => 'User Sent Received',
         'm_desc' => '',
-        'm_parents' => array(7164,4280,4595,4755,4593),
+        'm_parents' => array(7307,7164,4595,4755,4593),
     ),
     4287 => array(
-        'm_icon' => '<i class="fal fa-comment-exclamation"></i>',
-        'm_name' => 'User Sent Unknown',
+        'm_icon' => '<i class="far fa-comment-exclamation"></i>',
+        'm_name' => 'User Sent Unknown Message',
         'm_desc' => '',
-        'm_parents' => array(7164,4595,4755,4277,4593),
+        'm_parents' => array(7307,7164,4595,4755,4593),
     ),
     4299 => array(
         'm_icon' => '<i class="far fa-id-badge"></i>',
         'm_name' => 'User Sent Profile Photo',
         'm_desc' => '',
-        'm_parents' => array(7164,4277,4595,6222,4755,4593),
+        'm_parents' => array(7307,7164,4595,6222,4755,4593),
     ),
     4460 => array(
         'm_icon' => '<i class="far fa-check"></i>',
@@ -385,67 +379,67 @@ $config['en_all_7164'] = array(
         'm_parents' => array(7164,4595,4755,4593,4277),
     ),
     4547 => array(
-        'm_icon' => '<i class="fal fa-align-left"></i>',
+        'm_icon' => '<i class="far fa-align-left"></i>',
         'm_name' => 'User Sent Text',
         'm_desc' => '',
         'm_parents' => array(7164,4595,4755,4593,4277),
     ),
     4548 => array(
-        'm_icon' => '<i class="fal fa-video"></i>',
+        'm_icon' => '<i class="far fa-video"></i>',
         'm_name' => 'User Sent Video',
         'm_desc' => '',
         'm_parents' => array(7164,4595,6102,4755,4593,4277),
     ),
     4549 => array(
-        'm_icon' => '<i class="fal fa-volume-up"></i>',
+        'm_icon' => '<i class="far fa-volume-up"></i>',
         'm_name' => 'User Sent Audio',
         'm_desc' => '',
         'm_parents' => array(7164,4595,6102,4755,4593,4277),
     ),
     4550 => array(
-        'm_icon' => '<i class="fal fa-image"></i>',
+        'm_icon' => '<i class="far fa-image"></i>',
         'm_name' => 'User Sent Image',
         'm_desc' => '',
         'm_parents' => array(7164,4595,6102,4755,4593,4277),
     ),
     4551 => array(
-        'm_icon' => '<i class="fal fa-file-pdf"></i>',
+        'm_icon' => '<i class="far fa-file-pdf"></i>',
         'm_name' => 'User Sent File',
         'm_desc' => '',
         'm_parents' => array(7164,4595,6102,4755,4593,4277),
     ),
     4552 => array(
-        'm_icon' => '<i class="fal fa-align-left"></i>',
+        'm_icon' => '<i class="far fa-align-left"></i>',
         'm_name' => 'User Received Text',
         'm_desc' => '',
         'm_parents' => array(7164,4595,4755,4593,4280),
     ),
     4553 => array(
-        'm_icon' => '<i class="fal fa-video"></i>',
+        'm_icon' => '<i class="far fa-video"></i>',
         'm_name' => 'User Received Video',
         'm_desc' => '',
         'm_parents' => array(7164,4595,6102,4755,4593,4280),
     ),
     4554 => array(
-        'm_icon' => '<i class="fal fa-volume-up"></i>',
+        'm_icon' => '<i class="far fa-volume-up"></i>',
         'm_name' => 'User Received Audio',
         'm_desc' => '',
         'm_parents' => array(7164,4595,6102,4755,4593,4280),
     ),
     4555 => array(
-        'm_icon' => '<i class="fal fa-image"></i>',
+        'm_icon' => '<i class="far fa-image"></i>',
         'm_name' => 'User Received Image',
         'm_desc' => '',
         'm_parents' => array(7164,4595,6102,4755,4593,4280),
     ),
     4556 => array(
-        'm_icon' => '<i class="fal fa-file-pdf"></i>',
+        'm_icon' => '<i class="far fa-file-pdf"></i>',
         'm_name' => 'User Received File',
         'm_desc' => '',
         'm_parents' => array(7164,4595,6102,4755,4593,4280),
     ),
     4557 => array(
-        'm_icon' => '<i class="fal fa-location-circle"></i>',
+        'm_icon' => '<i class="far fa-location-circle"></i>',
         'm_name' => 'User Sent Location',
         'm_desc' => '',
         'm_parents' => array(7164,4595,4755,4593,4277),
@@ -457,13 +451,13 @@ $config['en_all_7164'] = array(
         'm_parents' => array(7164,4595,4755,4593,4280),
     ),
     4577 => array(
-        'm_icon' => '<i class="far fa-shield-check"></i>',
+        'm_icon' => '<i class="far fa-user-plus"></i>',
         'm_name' => 'User Sent Access',
         'm_desc' => '',
-        'm_parents' => array(7164,4277,4755,4595,4593),
+        'm_parents' => array(7307,7164,4755,4595,4593),
     ),
     5967 => array(
-        'm_icon' => '<i class="fal fa-envelope-open"></i>',
+        'm_icon' => '<i class="far fa-envelope-open"></i>',
         'm_name' => 'User Received Email',
         'm_desc' => '',
         'm_parents' => array(7164,4595,4755,4593,4280),
@@ -1458,33 +1452,9 @@ $config['en_all_6123'] = array(
     ),
 );
 
-//User Sent Messages:
-$config['en_ids_4277'] = array(4268,4278,4287,4299,4460,4547,4548,4549,4550,4551,4557,4577);
+//User Sent Manual Messages:
+$config['en_ids_4277'] = array(4460,4547,4548,4549,4550,4551,4557);
 $config['en_all_4277'] = array(
-    4268 => array(
-        'm_icon' => '<i class="fab fa-facebook-messenger"></i>',
-        'm_name' => 'User Sent Postback',
-        'm_desc' => '',
-        'm_parents' => array(7164,4277,4595,4755,4593),
-    ),
-    4278 => array(
-        'm_icon' => '<i class="far fa-eye"></i>',
-        'm_name' => 'User Sent Read',
-        'm_desc' => '',
-        'm_parents' => array(7164,4277,4595,4755,4593),
-    ),
-    4287 => array(
-        'm_icon' => '<i class="fal fa-comment-exclamation"></i>',
-        'm_name' => 'User Sent Unknown',
-        'm_desc' => '',
-        'm_parents' => array(7164,4595,4755,4277,4593),
-    ),
-    4299 => array(
-        'm_icon' => '<i class="far fa-id-badge"></i>',
-        'm_name' => 'User Sent Profile Photo',
-        'm_desc' => '',
-        'm_parents' => array(7164,4277,4595,6222,4755,4593),
-    ),
     4460 => array(
         'm_icon' => '<i class="far fa-check"></i>',
         'm_name' => 'User Sent Quick Reply',
@@ -1492,96 +1462,90 @@ $config['en_all_4277'] = array(
         'm_parents' => array(7164,4595,4755,4593,4277),
     ),
     4547 => array(
-        'm_icon' => '<i class="fal fa-align-left"></i>',
+        'm_icon' => '<i class="far fa-align-left"></i>',
         'm_name' => 'User Sent Text',
         'm_desc' => '',
         'm_parents' => array(7164,4595,4755,4593,4277),
     ),
     4548 => array(
-        'm_icon' => '<i class="fal fa-video"></i>',
+        'm_icon' => '<i class="far fa-video"></i>',
         'm_name' => 'User Sent Video',
         'm_desc' => '',
         'm_parents' => array(7164,4595,6102,4755,4593,4277),
     ),
     4549 => array(
-        'm_icon' => '<i class="fal fa-volume-up"></i>',
+        'm_icon' => '<i class="far fa-volume-up"></i>',
         'm_name' => 'User Sent Audio',
         'm_desc' => '',
         'm_parents' => array(7164,4595,6102,4755,4593,4277),
     ),
     4550 => array(
-        'm_icon' => '<i class="fal fa-image"></i>',
+        'm_icon' => '<i class="far fa-image"></i>',
         'm_name' => 'User Sent Image',
         'm_desc' => '',
         'm_parents' => array(7164,4595,6102,4755,4593,4277),
     ),
     4551 => array(
-        'm_icon' => '<i class="fal fa-file-pdf"></i>',
+        'm_icon' => '<i class="far fa-file-pdf"></i>',
         'm_name' => 'User Sent File',
         'm_desc' => '',
         'm_parents' => array(7164,4595,6102,4755,4593,4277),
     ),
     4557 => array(
-        'm_icon' => '<i class="fal fa-location-circle"></i>',
+        'm_icon' => '<i class="far fa-location-circle"></i>',
         'm_name' => 'User Sent Location',
         'm_desc' => '',
         'm_parents' => array(7164,4595,4755,4593,4277),
     ),
-    4577 => array(
-        'm_icon' => '<i class="far fa-shield-check"></i>',
-        'm_name' => 'User Sent Access',
-        'm_desc' => '',
-        'm_parents' => array(7164,4277,4755,4595,4593),
-    ),
 );
 
-//User Media Message:
+//User Media Exchanged:
 $config['en_ids_6102'] = array(4548,4549,4550,4551,4553,4554,4555,4556);
 $config['en_all_6102'] = array(
     4548 => array(
-        'm_icon' => '<i class="fal fa-video"></i>',
+        'm_icon' => '<i class="far fa-video"></i>',
         'm_name' => 'User Sent Video',
         'm_desc' => '',
         'm_parents' => array(7164,4595,6102,4755,4593,4277),
     ),
     4549 => array(
-        'm_icon' => '<i class="fal fa-volume-up"></i>',
+        'm_icon' => '<i class="far fa-volume-up"></i>',
         'm_name' => 'User Sent Audio',
         'm_desc' => '',
         'm_parents' => array(7164,4595,6102,4755,4593,4277),
     ),
     4550 => array(
-        'm_icon' => '<i class="fal fa-image"></i>',
+        'm_icon' => '<i class="far fa-image"></i>',
         'm_name' => 'User Sent Image',
         'm_desc' => '',
         'm_parents' => array(7164,4595,6102,4755,4593,4277),
     ),
     4551 => array(
-        'm_icon' => '<i class="fal fa-file-pdf"></i>',
+        'm_icon' => '<i class="far fa-file-pdf"></i>',
         'm_name' => 'User Sent File',
         'm_desc' => '',
         'm_parents' => array(7164,4595,6102,4755,4593,4277),
     ),
     4553 => array(
-        'm_icon' => '<i class="fal fa-video"></i>',
+        'm_icon' => '<i class="far fa-video"></i>',
         'm_name' => 'User Received Video',
         'm_desc' => '',
         'm_parents' => array(7164,4595,6102,4755,4593,4280),
     ),
     4554 => array(
-        'm_icon' => '<i class="fal fa-volume-up"></i>',
+        'm_icon' => '<i class="far fa-volume-up"></i>',
         'm_name' => 'User Received Audio',
         'm_desc' => '',
         'm_parents' => array(7164,4595,6102,4755,4593,4280),
     ),
     4555 => array(
-        'm_icon' => '<i class="fal fa-image"></i>',
+        'm_icon' => '<i class="far fa-image"></i>',
         'm_name' => 'User Received Image',
         'm_desc' => '',
         'm_parents' => array(7164,4595,6102,4755,4593,4280),
     ),
     4556 => array(
-        'm_icon' => '<i class="fal fa-file-pdf"></i>',
+        'm_icon' => '<i class="far fa-file-pdf"></i>',
         'm_name' => 'User Received File',
         'm_desc' => '',
         'm_parents' => array(7164,4595,6102,4755,4593,4280),
@@ -1589,40 +1553,34 @@ $config['en_all_6102'] = array(
 );
 
 //User Received Messages:
-$config['en_ids_4280'] = array(4279,4552,4553,4554,4555,4556,4570,5967,6563);
+$config['en_ids_4280'] = array(4552,4553,4554,4555,4556,4570,5967,6563);
 $config['en_all_4280'] = array(
-    4279 => array(
-        'm_icon' => '<i class="fas fa-check"></i>',
-        'm_name' => 'User Received Message',
-        'm_desc' => '',
-        'm_parents' => array(7164,4280,4595,4755,4593),
-    ),
     4552 => array(
-        'm_icon' => '<i class="fal fa-align-left"></i>',
+        'm_icon' => '<i class="far fa-align-left"></i>',
         'm_name' => 'User Received Text',
         'm_desc' => '',
         'm_parents' => array(7164,4595,4755,4593,4280),
     ),
     4553 => array(
-        'm_icon' => '<i class="fal fa-video"></i>',
+        'm_icon' => '<i class="far fa-video"></i>',
         'm_name' => 'User Received Video',
         'm_desc' => '',
         'm_parents' => array(7164,4595,6102,4755,4593,4280),
     ),
     4554 => array(
-        'm_icon' => '<i class="fal fa-volume-up"></i>',
+        'm_icon' => '<i class="far fa-volume-up"></i>',
         'm_name' => 'User Received Audio',
         'm_desc' => '',
         'm_parents' => array(7164,4595,6102,4755,4593,4280),
     ),
     4555 => array(
-        'm_icon' => '<i class="fal fa-image"></i>',
+        'm_icon' => '<i class="far fa-image"></i>',
         'm_name' => 'User Received Image',
         'm_desc' => '',
         'm_parents' => array(7164,4595,6102,4755,4593,4280),
     ),
     4556 => array(
-        'm_icon' => '<i class="fal fa-file-pdf"></i>',
+        'm_icon' => '<i class="far fa-file-pdf"></i>',
         'm_name' => 'User Received File',
         'm_desc' => '',
         'm_parents' => array(7164,4595,6102,4755,4593,4280),
@@ -1634,7 +1592,7 @@ $config['en_all_4280'] = array(
         'm_parents' => array(7164,4595,4755,4593,4280),
     ),
     5967 => array(
-        'm_icon' => '<i class="fal fa-envelope-open"></i>',
+        'm_icon' => '<i class="far fa-envelope-open"></i>',
         'm_name' => 'User Received Email',
         'm_desc' => '',
         'm_parents' => array(7164,4595,4755,4593,4280),
@@ -1868,10 +1826,10 @@ $config['en_all_4755'] = array(
         'm_parents' => array(4595,4755,4593),
     ),
     4268 => array(
-        'm_icon' => '<i class="fab fa-facebook-messenger"></i>',
+        'm_icon' => '<i class="far fa-user-tag"></i>',
         'm_name' => 'User Sent Postback',
         'm_desc' => '',
-        'm_parents' => array(7164,4277,4595,4755,4593),
+        'm_parents' => array(7307,7164,4595,4755,4593),
     ),
     4269 => array(
         'm_icon' => '<i class="fas fa-sign-in"></i>',
@@ -1889,13 +1847,13 @@ $config['en_all_4755'] = array(
         'm_icon' => '<i class="far fa-eye"></i>',
         'm_name' => 'User Sent Read',
         'm_desc' => '',
-        'm_parents' => array(7164,4277,4595,4755,4593),
+        'm_parents' => array(7307,7164,4595,4755,4593),
     ),
     4279 => array(
-        'm_icon' => '<i class="fas fa-check"></i>',
-        'm_name' => 'User Received Message',
+        'm_icon' => '<i class="far fa-cloud-download"></i>',
+        'm_name' => 'User Sent Received',
         'm_desc' => '',
-        'm_parents' => array(7164,4280,4595,4755,4593),
+        'm_parents' => array(7307,7164,4595,4755,4593),
     ),
     4282 => array(
         'm_icon' => '<i class="far fa-eye"></i>',
@@ -1910,16 +1868,16 @@ $config['en_all_4755'] = array(
         'm_parents' => array(4595,6153,4755,4593),
     ),
     4287 => array(
-        'm_icon' => '<i class="fal fa-comment-exclamation"></i>',
-        'm_name' => 'User Sent Unknown',
+        'm_icon' => '<i class="far fa-comment-exclamation"></i>',
+        'm_name' => 'User Sent Unknown Message',
         'm_desc' => '',
-        'm_parents' => array(7164,4595,4755,4277,4593),
+        'm_parents' => array(7307,7164,4595,4755,4593),
     ),
     4299 => array(
         'm_icon' => '<i class="far fa-id-badge"></i>',
         'm_name' => 'User Sent Profile Photo',
         'm_desc' => '',
-        'm_parents' => array(7164,4277,4595,6222,4755,4593),
+        'm_parents' => array(7307,7164,4595,6222,4755,4593),
     ),
     4460 => array(
         'm_icon' => '<i class="far fa-check"></i>',
@@ -1928,67 +1886,67 @@ $config['en_all_4755'] = array(
         'm_parents' => array(7164,4595,4755,4593,4277),
     ),
     4547 => array(
-        'm_icon' => '<i class="fal fa-align-left"></i>',
+        'm_icon' => '<i class="far fa-align-left"></i>',
         'm_name' => 'User Sent Text',
         'm_desc' => '',
         'm_parents' => array(7164,4595,4755,4593,4277),
     ),
     4548 => array(
-        'm_icon' => '<i class="fal fa-video"></i>',
+        'm_icon' => '<i class="far fa-video"></i>',
         'm_name' => 'User Sent Video',
         'm_desc' => '',
         'm_parents' => array(7164,4595,6102,4755,4593,4277),
     ),
     4549 => array(
-        'm_icon' => '<i class="fal fa-volume-up"></i>',
+        'm_icon' => '<i class="far fa-volume-up"></i>',
         'm_name' => 'User Sent Audio',
         'm_desc' => '',
         'm_parents' => array(7164,4595,6102,4755,4593,4277),
     ),
     4550 => array(
-        'm_icon' => '<i class="fal fa-image"></i>',
+        'm_icon' => '<i class="far fa-image"></i>',
         'm_name' => 'User Sent Image',
         'm_desc' => '',
         'm_parents' => array(7164,4595,6102,4755,4593,4277),
     ),
     4551 => array(
-        'm_icon' => '<i class="fal fa-file-pdf"></i>',
+        'm_icon' => '<i class="far fa-file-pdf"></i>',
         'm_name' => 'User Sent File',
         'm_desc' => '',
         'm_parents' => array(7164,4595,6102,4755,4593,4277),
     ),
     4552 => array(
-        'm_icon' => '<i class="fal fa-align-left"></i>',
+        'm_icon' => '<i class="far fa-align-left"></i>',
         'm_name' => 'User Received Text',
         'm_desc' => '',
         'm_parents' => array(7164,4595,4755,4593,4280),
     ),
     4553 => array(
-        'm_icon' => '<i class="fal fa-video"></i>',
+        'm_icon' => '<i class="far fa-video"></i>',
         'm_name' => 'User Received Video',
         'm_desc' => '',
         'm_parents' => array(7164,4595,6102,4755,4593,4280),
     ),
     4554 => array(
-        'm_icon' => '<i class="fal fa-volume-up"></i>',
+        'm_icon' => '<i class="far fa-volume-up"></i>',
         'm_name' => 'User Received Audio',
         'm_desc' => '',
         'm_parents' => array(7164,4595,6102,4755,4593,4280),
     ),
     4555 => array(
-        'm_icon' => '<i class="fal fa-image"></i>',
+        'm_icon' => '<i class="far fa-image"></i>',
         'm_name' => 'User Received Image',
         'm_desc' => '',
         'm_parents' => array(7164,4595,6102,4755,4593,4280),
     ),
     4556 => array(
-        'm_icon' => '<i class="fal fa-file-pdf"></i>',
+        'm_icon' => '<i class="far fa-file-pdf"></i>',
         'm_name' => 'User Received File',
         'm_desc' => '',
         'm_parents' => array(7164,4595,6102,4755,4593,4280),
     ),
     4557 => array(
-        'm_icon' => '<i class="fal fa-location-circle"></i>',
+        'm_icon' => '<i class="far fa-location-circle"></i>',
         'm_name' => 'User Sent Location',
         'm_desc' => '',
         'm_parents' => array(7164,4595,4755,4593,4277),
@@ -2006,10 +1964,10 @@ $config['en_all_4755'] = array(
         'm_parents' => array(7164,4595,4755,4593,4280),
     ),
     4577 => array(
-        'm_icon' => '<i class="far fa-shield-check"></i>',
+        'm_icon' => '<i class="far fa-user-plus"></i>',
         'm_name' => 'User Sent Access',
         'm_desc' => '',
-        'm_parents' => array(7164,4277,4755,4595,4593),
+        'm_parents' => array(7307,7164,4755,4595,4593),
     ),
     4783 => array(
         'm_icon' => '<i class="far fa-phone"></i>',
@@ -2018,7 +1976,7 @@ $config['en_all_4755'] = array(
         'm_parents' => array(6225,4755,4319),
     ),
     5967 => array(
-        'm_icon' => '<i class="fal fa-envelope-open"></i>',
+        'm_icon' => '<i class="far fa-envelope-open"></i>',
         'm_name' => 'User Received Email',
         'm_desc' => '',
         'm_parents' => array(7164,4595,4755,4593,4280),
@@ -2263,10 +2221,10 @@ $config['en_all_4595'] = array(
         'm_parents' => array(4595,4755,4593),
     ),
     4268 => array(
-        'm_icon' => '<i class="fab fa-facebook-messenger"></i>',
+        'm_icon' => '<i class="far fa-user-tag"></i>',
         'm_name' => 'User Sent Postback',
         'm_desc' => '50',
-        'm_parents' => array(7164,4277,4595,4755,4593),
+        'm_parents' => array(7307,7164,4595,4755,4593),
     ),
     4269 => array(
         'm_icon' => '<i class="fas fa-sign-in"></i>',
@@ -2284,13 +2242,13 @@ $config['en_all_4595'] = array(
         'm_icon' => '<i class="far fa-eye"></i>',
         'm_name' => 'User Sent Read',
         'm_desc' => '1',
-        'm_parents' => array(7164,4277,4595,4755,4593),
+        'm_parents' => array(7307,7164,4595,4755,4593),
     ),
     4279 => array(
-        'm_icon' => '<i class="fas fa-check"></i>',
-        'm_name' => 'User Received Message',
+        'm_icon' => '<i class="far fa-cloud-download"></i>',
+        'm_name' => 'User Sent Received',
         'm_desc' => '1',
-        'm_parents' => array(7164,4280,4595,4755,4593),
+        'm_parents' => array(7307,7164,4595,4755,4593),
     ),
     4282 => array(
         'm_icon' => '<i class="far fa-eye"></i>',
@@ -2305,16 +2263,16 @@ $config['en_all_4595'] = array(
         'm_parents' => array(4595,6153,4755,4593),
     ),
     4287 => array(
-        'm_icon' => '<i class="fal fa-comment-exclamation"></i>',
-        'm_name' => 'User Sent Unknown',
+        'm_icon' => '<i class="far fa-comment-exclamation"></i>',
+        'm_name' => 'User Sent Unknown Message',
         'm_desc' => '10',
-        'm_parents' => array(7164,4595,4755,4277,4593),
+        'm_parents' => array(7307,7164,4595,4755,4593),
     ),
     4299 => array(
         'm_icon' => '<i class="far fa-id-badge"></i>',
         'm_name' => 'User Sent Profile Photo',
         'm_desc' => '25',
-        'm_parents' => array(7164,4277,4595,6222,4755,4593),
+        'm_parents' => array(7307,7164,4595,6222,4755,4593),
     ),
     4318 => array(
         'm_icon' => '<i class="far fa-clock"></i>',
@@ -2335,67 +2293,67 @@ $config['en_all_4595'] = array(
         'm_parents' => array(7164,4595,4755,4593,4277),
     ),
     4547 => array(
-        'm_icon' => '<i class="fal fa-align-left"></i>',
+        'm_icon' => '<i class="far fa-align-left"></i>',
         'm_name' => 'User Sent Text',
         'm_desc' => '10',
         'm_parents' => array(7164,4595,4755,4593,4277),
     ),
     4548 => array(
-        'm_icon' => '<i class="fal fa-video"></i>',
+        'm_icon' => '<i class="far fa-video"></i>',
         'm_name' => 'User Sent Video',
         'm_desc' => '75',
         'm_parents' => array(7164,4595,6102,4755,4593,4277),
     ),
     4549 => array(
-        'm_icon' => '<i class="fal fa-volume-up"></i>',
+        'm_icon' => '<i class="far fa-volume-up"></i>',
         'm_name' => 'User Sent Audio',
         'm_desc' => '50',
         'm_parents' => array(7164,4595,6102,4755,4593,4277),
     ),
     4550 => array(
-        'm_icon' => '<i class="fal fa-image"></i>',
+        'm_icon' => '<i class="far fa-image"></i>',
         'm_name' => 'User Sent Image',
         'm_desc' => '50',
         'm_parents' => array(7164,4595,6102,4755,4593,4277),
     ),
     4551 => array(
-        'm_icon' => '<i class="fal fa-file-pdf"></i>',
+        'm_icon' => '<i class="far fa-file-pdf"></i>',
         'm_name' => 'User Sent File',
         'm_desc' => '50',
         'm_parents' => array(7164,4595,6102,4755,4593,4277),
     ),
     4552 => array(
-        'm_icon' => '<i class="fal fa-align-left"></i>',
+        'm_icon' => '<i class="far fa-align-left"></i>',
         'm_name' => 'User Received Text',
         'm_desc' => '2',
         'm_parents' => array(7164,4595,4755,4593,4280),
     ),
     4553 => array(
-        'm_icon' => '<i class="fal fa-video"></i>',
+        'm_icon' => '<i class="far fa-video"></i>',
         'm_name' => 'User Received Video',
         'm_desc' => '5',
         'm_parents' => array(7164,4595,6102,4755,4593,4280),
     ),
     4554 => array(
-        'm_icon' => '<i class="fal fa-volume-up"></i>',
+        'm_icon' => '<i class="far fa-volume-up"></i>',
         'm_name' => 'User Received Audio',
         'm_desc' => '4',
         'm_parents' => array(7164,4595,6102,4755,4593,4280),
     ),
     4555 => array(
-        'm_icon' => '<i class="fal fa-image"></i>',
+        'm_icon' => '<i class="far fa-image"></i>',
         'm_name' => 'User Received Image',
         'm_desc' => '3',
         'm_parents' => array(7164,4595,6102,4755,4593,4280),
     ),
     4556 => array(
-        'm_icon' => '<i class="fal fa-file-pdf"></i>',
+        'm_icon' => '<i class="far fa-file-pdf"></i>',
         'm_name' => 'User Received File',
         'm_desc' => '3',
         'm_parents' => array(7164,4595,6102,4755,4593,4280),
     ),
     4557 => array(
-        'm_icon' => '<i class="fal fa-location-circle"></i>',
+        'm_icon' => '<i class="far fa-location-circle"></i>',
         'm_name' => 'User Sent Location',
         'm_desc' => '50',
         'm_parents' => array(7164,4595,4755,4593,4277),
@@ -2413,10 +2371,10 @@ $config['en_all_4595'] = array(
         'm_parents' => array(7164,4595,4755,4593,4280),
     ),
     4577 => array(
-        'm_icon' => '<i class="far fa-shield-check"></i>',
+        'm_icon' => '<i class="far fa-user-plus"></i>',
         'm_name' => 'User Sent Access',
         'm_desc' => '50',
-        'm_parents' => array(7164,4277,4755,4595,4593),
+        'm_parents' => array(7307,7164,4755,4595,4593),
     ),
     4601 => array(
         'm_icon' => '<i class="far fa-bolt"></i>',
@@ -2491,7 +2449,7 @@ $config['en_all_4595'] = array(
         'm_parents' => array(4595,4593,4997),
     ),
     5967 => array(
-        'm_icon' => '<i class="fal fa-envelope-open"></i>',
+        'm_icon' => '<i class="far fa-envelope-open"></i>',
         'm_name' => 'User Received Email',
         'm_desc' => '5',
         'm_parents' => array(7164,4595,4755,4593,4280),
@@ -2783,10 +2741,10 @@ $config['en_all_4593'] = array(
         'm_parents' => array(4595,4755,4593),
     ),
     4268 => array(
-        'm_icon' => '<i class="fab fa-facebook-messenger"></i>',
+        'm_icon' => '<i class="far fa-user-tag"></i>',
         'm_name' => 'User Sent Postback',
         'm_desc' => '',
-        'm_parents' => array(7164,4277,4595,4755,4593),
+        'm_parents' => array(7307,7164,4595,4755,4593),
     ),
     4269 => array(
         'm_icon' => '<i class="fas fa-sign-in"></i>',
@@ -2804,13 +2762,13 @@ $config['en_all_4593'] = array(
         'm_icon' => '<i class="far fa-eye"></i>',
         'm_name' => 'User Sent Read',
         'm_desc' => '',
-        'm_parents' => array(7164,4277,4595,4755,4593),
+        'm_parents' => array(7307,7164,4595,4755,4593),
     ),
     4279 => array(
-        'm_icon' => '<i class="fas fa-check"></i>',
-        'm_name' => 'User Received Message',
+        'm_icon' => '<i class="far fa-cloud-download"></i>',
+        'm_name' => 'User Sent Received',
         'm_desc' => '',
-        'm_parents' => array(7164,4280,4595,4755,4593),
+        'm_parents' => array(7307,7164,4595,4755,4593),
     ),
     4282 => array(
         'm_icon' => '<i class="far fa-eye"></i>',
@@ -2825,16 +2783,16 @@ $config['en_all_4593'] = array(
         'm_parents' => array(4595,6153,4755,4593),
     ),
     4287 => array(
-        'm_icon' => '<i class="fal fa-comment-exclamation"></i>',
-        'm_name' => 'User Sent Unknown',
+        'm_icon' => '<i class="far fa-comment-exclamation"></i>',
+        'm_name' => 'User Sent Unknown Message',
         'm_desc' => '',
-        'm_parents' => array(7164,4595,4755,4277,4593),
+        'm_parents' => array(7307,7164,4595,4755,4593),
     ),
     4299 => array(
         'm_icon' => '<i class="far fa-id-badge"></i>',
         'm_name' => 'User Sent Profile Photo',
         'm_desc' => '',
-        'm_parents' => array(7164,4277,4595,6222,4755,4593),
+        'm_parents' => array(7307,7164,4595,6222,4755,4593),
     ),
     4318 => array(
         'm_icon' => '<i class="far fa-clock"></i>',
@@ -2855,67 +2813,67 @@ $config['en_all_4593'] = array(
         'm_parents' => array(7164,4595,4755,4593,4277),
     ),
     4547 => array(
-        'm_icon' => '<i class="fal fa-align-left"></i>',
+        'm_icon' => '<i class="far fa-align-left"></i>',
         'm_name' => 'User Sent Text',
         'm_desc' => '',
         'm_parents' => array(7164,4595,4755,4593,4277),
     ),
     4548 => array(
-        'm_icon' => '<i class="fal fa-video"></i>',
+        'm_icon' => '<i class="far fa-video"></i>',
         'm_name' => 'User Sent Video',
         'm_desc' => '',
         'm_parents' => array(7164,4595,6102,4755,4593,4277),
     ),
     4549 => array(
-        'm_icon' => '<i class="fal fa-volume-up"></i>',
+        'm_icon' => '<i class="far fa-volume-up"></i>',
         'm_name' => 'User Sent Audio',
         'm_desc' => '',
         'm_parents' => array(7164,4595,6102,4755,4593,4277),
     ),
     4550 => array(
-        'm_icon' => '<i class="fal fa-image"></i>',
+        'm_icon' => '<i class="far fa-image"></i>',
         'm_name' => 'User Sent Image',
         'm_desc' => '',
         'm_parents' => array(7164,4595,6102,4755,4593,4277),
     ),
     4551 => array(
-        'm_icon' => '<i class="fal fa-file-pdf"></i>',
+        'm_icon' => '<i class="far fa-file-pdf"></i>',
         'm_name' => 'User Sent File',
         'm_desc' => '',
         'm_parents' => array(7164,4595,6102,4755,4593,4277),
     ),
     4552 => array(
-        'm_icon' => '<i class="fal fa-align-left"></i>',
+        'm_icon' => '<i class="far fa-align-left"></i>',
         'm_name' => 'User Received Text',
         'm_desc' => '',
         'm_parents' => array(7164,4595,4755,4593,4280),
     ),
     4553 => array(
-        'm_icon' => '<i class="fal fa-video"></i>',
+        'm_icon' => '<i class="far fa-video"></i>',
         'm_name' => 'User Received Video',
         'm_desc' => '',
         'm_parents' => array(7164,4595,6102,4755,4593,4280),
     ),
     4554 => array(
-        'm_icon' => '<i class="fal fa-volume-up"></i>',
+        'm_icon' => '<i class="far fa-volume-up"></i>',
         'm_name' => 'User Received Audio',
         'm_desc' => '',
         'm_parents' => array(7164,4595,6102,4755,4593,4280),
     ),
     4555 => array(
-        'm_icon' => '<i class="fal fa-image"></i>',
+        'm_icon' => '<i class="far fa-image"></i>',
         'm_name' => 'User Received Image',
         'm_desc' => '',
         'm_parents' => array(7164,4595,6102,4755,4593,4280),
     ),
     4556 => array(
-        'm_icon' => '<i class="fal fa-file-pdf"></i>',
+        'm_icon' => '<i class="far fa-file-pdf"></i>',
         'm_name' => 'User Received File',
         'm_desc' => '',
         'm_parents' => array(7164,4595,6102,4755,4593,4280),
     ),
     4557 => array(
-        'm_icon' => '<i class="fal fa-location-circle"></i>',
+        'm_icon' => '<i class="far fa-location-circle"></i>',
         'm_name' => 'User Sent Location',
         'm_desc' => '',
         'm_parents' => array(7164,4595,4755,4593,4277),
@@ -2933,10 +2891,10 @@ $config['en_all_4593'] = array(
         'm_parents' => array(7164,4595,4755,4593,4280),
     ),
     4577 => array(
-        'm_icon' => '<i class="far fa-shield-check"></i>',
+        'm_icon' => '<i class="far fa-user-plus"></i>',
         'm_name' => 'User Sent Access',
         'm_desc' => '',
-        'm_parents' => array(7164,4277,4755,4595,4593),
+        'm_parents' => array(7307,7164,4755,4595,4593),
     ),
     4601 => array(
         'm_icon' => '<i class="far fa-bolt"></i>',
@@ -3011,7 +2969,7 @@ $config['en_all_4593'] = array(
         'm_parents' => array(4595,4593,4997),
     ),
     5967 => array(
-        'm_icon' => '<i class="fal fa-envelope-open"></i>',
+        'm_icon' => '<i class="far fa-envelope-open"></i>',
         'm_name' => 'User Received Email',
         'm_desc' => '',
         'm_parents' => array(7164,4595,4755,4593,4280),
