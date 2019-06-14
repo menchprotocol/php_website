@@ -11,7 +11,7 @@ defined('BASEPATH') OR exit('No direct script access allowed');
  *
  */
 
-//Generated 2019-06-12 18:07:48 PST
+//Generated 2019-06-14 01:59:57 PST
 
 //Platform User Tools:
 $config['en_ids_7292'] = array(6137,6138,7291);
@@ -588,13 +588,13 @@ $config['en_all_6997'] = array(
         'm_icon' => '<i class="fas fa-lock"></i>',
         'm_name' => 'OR Intent OR Lock',
         'm_desc' => '',
-        'm_parents' => array(6997,6193),
+        'm_parents' => array(7309,6997,6193),
     ),
     6914 => array(
         'm_icon' => '<i class="fas fa-lock"></i>',
         'm_name' => 'AND Intent AND Lock',
         'm_desc' => '',
-        'm_parents' => array(6997,6192),
+        'm_parents' => array(7309,6997,6192),
     ),
 );
 
@@ -739,20 +739,8 @@ $config['en_all_6794'] = array(
 );
 
 //AND Intents:
-$config['en_ids_6192'] = array(7297,7300,6677,6683,6682,6679,6680,6678,6681,6914);
+$config['en_ids_6192'] = array(6677,6683,6682,6679,6680,6678,6681,6914);
 $config['en_all_6192'] = array(
-    7297 => array(
-        'm_icon' => '<i class="fas fa-filter"></i>',
-        'm_name' => 'Funnel Manager',
-        'm_desc' => 'Users are held at this intent until a miner advances them through each child intent using the funnel manager.',
-        'm_parents' => array(6192),
-    ),
-    7300 => array(
-        'm_icon' => '<i class="fas fa-ball-pile"></i>',
-        'm_name' => 'Batch Selection',
-        'm_desc' => 'A miner-defined maximum number of child intents are randomly selected and completed.',
-        'm_parents' => array(6192),
-    ),
     6677 => array(
         'm_icon' => '<i class="far fa-thumbs-up"></i>',
         'm_name' => 'Got It',
@@ -799,7 +787,7 @@ $config['en_all_6192'] = array(
         'm_icon' => '<i class="fas fa-lock"></i>',
         'm_name' => 'AND Lock',
         'm_desc' => 'Completed after all children have been completed indirectly.',
-        'm_parents' => array(6997,6192),
+        'm_parents' => array(7309,6997,6192),
     ),
 );
 
@@ -851,7 +839,7 @@ $config['en_all_6193'] = array(
         'm_icon' => '<i class="fas fa-lock"></i>',
         'm_name' => 'OR Lock',
         'm_desc' => 'Completed after a single child is completed indirectly.',
-        'm_parents' => array(6997,6193),
+        'm_parents' => array(7309,6997,6193),
     ),
 );
 
@@ -1097,7 +1085,7 @@ $config['en_all_6274'] = array(
 );
 
 //User Steps Progressed:
-$config['en_ids_6255'] = array(4559,6144,6157,6158,6997,7298,7299);
+$config['en_ids_6255'] = array(4559,6144,6157,6158,6997);
 $config['en_all_6255'] = array(
     4559 => array(
         'm_icon' => '<i class="far fa-thumbs-up"></i>',
@@ -1128,18 +1116,6 @@ $config['en_all_6255'] = array(
         'm_name' => 'User Step Intent Unlocked',
         'm_desc' => '',
         'm_parents' => array(4527,6244,6415,6255,4595,4593,4755,6146),
-    ),
-    7298 => array(
-        'm_icon' => '<i class="fas fa-filter"></i>',
-        'm_name' => 'User Step Funnel Advanced',
-        'm_desc' => '',
-        'm_parents' => array(6255),
-    ),
-    7299 => array(
-        'm_icon' => '<i class="fas fa-ball-pile"></i>',
-        'm_name' => 'User Step Batch Selected',
-        'm_desc' => '',
-        'm_parents' => array(6255),
     ),
 );
 
