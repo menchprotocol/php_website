@@ -841,6 +841,9 @@ function echo_tree_users($in, $fb_messenger_format = false, $expand_mode = false
         'ln_parent_intent_id' => end($array_flatten),
         'ln_status' => 2, //Completed
     ), array(), 0, 0, array(), 'COUNT(ln_id) as totals');
+    if($completed_users_count[0]['totals'] > $enrolled_users_count[0]['totals']){
+        $completed_users_count[0]['totals'] = $enrolled_users_count[0]['totals'];
+    }
     $completion_percentage = round($completed_users_count[0]['totals'] / $enrolled_users_count[0]['totals'] * 100).'%';
 
     //As messenger default format and HTML extra notes:
