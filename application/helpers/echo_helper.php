@@ -855,7 +855,7 @@ function echo_tree_users($in, $fb_messenger_format = false, $expand_mode = false
     }
 }
 
-function echo_tree_references($in, $fb_messenger_format = false, $expand_mode = false)
+function echo_tree_experts($in, $fb_messenger_format = false, $expand_mode = false)
 {
 
     /*
@@ -1013,7 +1013,6 @@ function echo_tree_references($in, $fb_messenger_format = false, $expand_mode = 
         $pitch_title .= $expert_count . ' Expert'. echo__s($expert_count);
         $pitch_body .= $expert_count . ' industry expert'. echo__s($expert_count) . ($expert_count == 1 ? ':' : ' including') . $expert_info;
     }
-    $pitch_body .= '.';
 
     if ($fb_messenger_format) {
         return '⭐ ' . $pitch_body . "\n";

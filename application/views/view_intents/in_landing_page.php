@@ -28,7 +28,7 @@ foreach ($this->Links_model->ln_fetch(array(
 //Overview:
 if (!$hide_subscribe) {
 
-    $source_info = echo_tree_references($in, false);
+    $source_info = echo_tree_experts($in, false);
     $step_info = echo_tree_steps($in, false);
     $time_info = echo_tree_completion_time($in, false);
     $user_info = echo_tree_users($in, false);

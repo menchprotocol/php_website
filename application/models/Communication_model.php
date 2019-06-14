@@ -1580,7 +1580,7 @@ class Communication_model extends CI_Model
 
                 //See if we have an overview:
                 $overview_message = '';
-                $source_info = echo_tree_references($ins[0], true);
+                $source_info = echo_tree_experts($ins[0], true);
                 $step_info = echo_tree_steps($ins[0], true);
                 $time_info = echo_tree_completion_time($ins[0], true);
                 $user_info = echo_tree_users($ins[0], true);
