@@ -717,7 +717,7 @@ class Intents_model extends CI_Model
         //Fetch common base and expansion paths from intent metadata:
         $flat_common_steps = array_flatten($in_metadata['in__metadata_common_steps']);
         $expansion_steps = ( isset($in_metadata['in__metadata_expansion_steps']) && count($in_metadata['in__metadata_expansion_steps']) > 0 ? $in_metadata['in__metadata_expansion_steps'] : array() );
-        $expansion_steps = ( isset($in_metadata['in__metadata_expansion_conditional']) && count($in_metadata['in__metadata_expansion_conditional']) > 0 ? $in_metadata['in__metadata_expansion_conditional'] : array() );
+        $locked_steps = ( isset($in_metadata['in__metadata_expansion_conditional']) && count($in_metadata['in__metadata_expansion_conditional']) > 0 ? $in_metadata['in__metadata_expansion_conditional'] : array() );
 
         //Fetch totals for published common step intents:
         $common_totals = $this->Intents_model->in_fetch(array(
@@ -810,7 +810,7 @@ class Intents_model extends CI_Model
 
 
         //Go through expansion paths, if any:
-        foreach(array_merge($expansion_steps, $expansion_steps) as $expansion_group){
+        foreach(array_merge($expansion_steps, $locked_steps) as $expansion_group){
 
             //Determine OR Answer local min/max:
             $metadata_local = array(
