@@ -792,24 +792,67 @@ function echo_time_hours($seconds, $micro = false)
     }
 }
 
+function echo_tree_html_body($id, $pitch_title, $pitch_body, $expand_mode){
+    //The body of the tree expansion HTML panel:
+    return '<div class="panel-group" id="open' . $id . '" role="tablist" aria-multiselectable="true"><div class="panel panel-primary">
+            <div class="panel-heading" role="tab" id="heading' . $id . '">
+                <h4 class="panel-title">
+                    <a role="button" data-toggle="collapse" data-parent="#open' . $id . '" href="#collapse' . $id . '" aria-expanded="' . ($expand_mode ? 'true' : 'false') . '" aria-controls="collapse' . $id . '">' . $pitch_title . ' <i class="fal fa-info-circle" style="font-size:0.85em !important;"></i>
+                    </a>
+                </h4>
+            </div>
+            <div id="collapse' . $id . '" class="panel-collapse collapse ' . ($expand_mode ? 'in' : 'out') . '" role="tabpanel" aria-labelledby="heading' . $id . '">
+                <div class="panel-body overview-pitch">' . $pitch_body . '</div>
+            </div>
+        </div></div>';
+}
+
 function echo_tree_users($in, $fb_messenger_format = false, $expand_mode = false){
 
+    /*
+     *
+     * An intent function to display current users for this intent
+     * and the percentage of them that have completed it...
+     *
+     * */
+
+
+    //Count total users:
     $CI =& get_instance();
 
-    $actionplan_users = $CI->Links_model->ln_fetch(array(
+
+    //Count users who have completed this intent:
+    $enrolled_users_count = $CI->Links_model->ln_fetch(array(
         'ln_type_entity_id IN (' . join(',', $CI->config->item('en_ids_6255')) . ')' => null, //Action Plan Progression Completion Triggers
         'ln_parent_intent_id' => $in['in_id'],
-        'ln_status' => 2, //Published
-    ), array(), 0, 0, array(), 'COUNT(ln_id) as total_steps');
+        'ln_status' => 2, //Completed
+    ), array(), 0, 0, array(), 'COUNT(ln_id) as totals');
 
-    if($actionplan_users[0]['total_steps'] < 1){
-        //Nothing here...
+    if($enrolled_users_count[0]['totals'] < 1){
+        //No one has added this intention to their Action Plan yet:
         return false;
     }
 
-    return false;
+    //Count users who have completed the common base:
+    $in_metadata = unserialize($in['in_metadata']);
+    $array_flatten = array_flatten($in_metadata['in__metadata_common_steps']);
+    $completed_users_count = $CI->Links_model->ln_fetch(array(
+        'ln_type_entity_id IN (' . join(',', $CI->config->item('en_ids_6255')) . ')' => null, //Action Plan Progression Completion Triggers
+        'ln_parent_intent_id' => end($array_flatten),
+        'ln_status' => 2, //Completed
+    ), array(), 0, 0, array(), 'COUNT(ln_id) as totals');
+    $completion_percentage = round($completed_users_count[0]['totals'] / $enrolled_users_count[0]['totals'] * 100).'%';
 
+    //As messenger default format and HTML extra notes:
+    $pitch_body  = number_format($enrolled_users_count[0]['totals'], 0) .' User'. echo__s($enrolled_users_count[0]['totals']) .' have enrolled and '.$completion_percentage.' of them have completed this intention so far.';
 
+    if ($fb_messenger_format) {
+        return '👤 ' . $pitch_body . "\n";
+    } else {
+        //HTML format
+        $pitch_title = '<i class="fas fa-user"></i> '. echo_number($enrolled_users_count[0]['totals']) .' Enrolled Users';
+        return echo_tree_html_body('CompletedUsers', $pitch_title, $pitch_body, $expand_mode);
+    }
 }
 
 function echo_tree_references($in, $fb_messenger_format = false, $expand_mode = false)
@@ -956,41 +999,27 @@ function echo_tree_references($in, $fb_messenger_format = false, $expand_mode = 
 
 
 
-    $pitch_title = '';
-    $pitch = 'Action Plan references ';
+    $pitch_title = '<i class="fas fa-star"></i> ';
+    $pitch_body = 'Action Plan references ';
     if($source_count > 0){
         $pitch_title .= $source_count . ' Source'. echo__s($source_count);
-        $pitch .= trim($source_info);
+        $pitch_body .= trim($source_info);
     }
     if($expert_count > 0){
         if($source_count > 0){
             $pitch_title .= ' by ';
-            $pitch .= ' by ';
+            $pitch_body .= ' by ';
         }
         $pitch_title .= $expert_count . ' Expert'. echo__s($expert_count);
-        $pitch .= $expert_count . ' industry expert'. echo__s($expert_count) . ($expert_count == 1 ? ':' : ' including') . $expert_info;
+        $pitch_body .= $expert_count . ' industry expert'. echo__s($expert_count) . ($expert_count == 1 ? ':' : ' including') . $expert_info;
     }
-
+    $pitch_body .= '.';
 
     if ($fb_messenger_format) {
-        return '⭐ ' . $pitch . "\n";
+        return '⭐ ' . $pitch_body . "\n";
     } else {
         //HTML format
-        $id = 'IndustryExperts';
-        return '<div class="panel-group" id="open' . $id . '" role="tablist" aria-multiselectable="true"><div class="panel panel-primary">
-            <div class="panel-heading" role="tab" id="heading' . $id . '">
-                <h4 class="panel-title">
-                    <a role="button" data-toggle="collapse" data-parent="#open' . $id . '" href="#collapse' . $id . '" aria-expanded="' . ($expand_mode ? 'true' : 'false') . '" aria-controls="collapse' . $id . '">
-                        <i class="fas" style="transform:none !important;"><i class="fas fa-star" style="transform:none !important;"></i></i> ' . $pitch_title . '<i class="fal fa-info-circle" style="transform:none !important; font-size:0.85em !important;"></i>
-                    </a>
-                </h4>
-            </div>
-            <div id="collapse' . $id . '" class="panel-collapse collapse ' . ($expand_mode ? 'in' : 'out') . '" role="tabpanel" aria-labelledby="heading' . $id . '">
-                <div class="panel-body overview-pitch">
-                    ' . $pitch . '
-                </div>
-            </div>
-        </div></div>';
+        return echo_tree_html_body('ExpertReferences', $pitch_title, $pitch_body, $expand_mode);
     }
 }
 
@@ -1030,45 +1059,27 @@ function echo_tree_steps($in, $fb_messenger_format = 0, $expand_mode = false)
         return false;
     }
 
-    $pitch = 'I estimate it would take you ' . echo_step_range($in, true).' to '.echo_in_outcome($in['in_outcome']);
+    $pitch_body = 'I estimate it would take you ' . strtolower(echo_step_range($in, true)).' to '.echo_in_outcome($in['in_outcome']);
 
     if ($fb_messenger_format) {
 
-        return '🚶 ' . $pitch . "\n";
+        $pitch_body .= '.';
+        return '🚶 ' . $pitch_body . "\n";
 
     } else {
 
         //HTML format
-        $id = 'IntentOverview';
-        $return_html = '';
+        $pitch_title = '<i class="fas fa-walking"></i> '.echo_step_range($in);
 
-        //Section header:
-        $return_html .= '<div class="panel-group" id="open' . $id . '" role="tablist" aria-multiselectable="true"><div class="panel panel-primary">
-            <div class="panel-heading" role="tab" id="heading' . $id . '">
-                <h4 class="panel-title">
-                    <a role="button" data-toggle="collapse" data-parent="#open' . $id . '" href="#collapse' . $id . '" aria-expanded="' . ($expand_mode ? 'true' : 'false') . '" aria-controls="collapse' . $id . '">
-                    <i class="fas" style="transform:none !important;"><i class="fas fa-walking" style="transform:none !important;"></i></i> ' . echo_step_range($in) . '<i class="fal fa-info-circle" style="transform:none !important; font-size:0.85em !important;"></i>
-                </a>
-            </h4>
-        </div>
-        <div id="collapse' . $id . '" class="panel-collapse collapse ' . ($expand_mode ? 'in' : 'out') . '" role="tabpanel" aria-labelledby="heading' . $id . '">
-            <div class="panel-body overview-pitch">';
+        //Expand body to include Action Plan overview:
+        $pitch_body .= ':';
+        $pitch_body .= '<div class="inner_actionplan">';
+        $pitch_body .= echo_public_actionplan($in, false);
+        $pitch_body .= '</div>';
 
-        //TODO Add note for step range to inform users it depends on their chosen answers:
-        $return_html .= $pitch.':';
-
-        //Action Plan:
-        $return_html .= '<div class="inner_actionplan">';
-        $return_html .= echo_public_actionplan($in, false);
-        $return_html .= '</div>';
-
-        //Close the section:
-        $return_html .= '</div></div></div></div>';
-
-        return $return_html;
+        return echo_tree_html_body('StepsOverview', $pitch_title, $pitch_body, $expand_mode);
 
     }
-
 }
 
 function echo_public_actionplan($in, $expand_mode){
@@ -1165,7 +1176,7 @@ function echo_public_actionplan($in, $expand_mode){
     return $return_html;
 }
 
-function echo_tree_time_estimate($in, $fb_messenger_format = 0, $expand_mode = false)
+function echo_tree_completion_time($in, $fb_messenger_format = 0, $expand_mode = false)
 {
 
     /*
@@ -1182,25 +1193,14 @@ function echo_tree_time_estimate($in, $fb_messenger_format = 0, $expand_mode = f
     }
 
     //As messenger default format and HTML extra notes:
-    $pitch  = 'I estimate it would take you '. strtolower(echo_time_range($in)) .' to '.echo_in_outcome($in['in_outcome']);
+    $pitch_body  = 'I estimate it would take you '. strtolower(echo_time_range($in)) .' to '.echo_in_outcome($in['in_outcome']).'.';
 
     if ($fb_messenger_format) {
-        return '⏰ ' . $pitch . "\n";
+        return '⏰ ' . $pitch_body . "\n";
     } else {
         //HTML format
-        $id = 'EstimatedTime';
-        return '<div class="panel-group" id="open' . $id . '" role="tablist" aria-multiselectable="true"><div class="panel panel-primary">
-            <div class="panel-heading" role="tab" id="heading' . $id . '">
-                <h4 class="panel-title">
-                    <a role="button" data-toggle="collapse" data-parent="#open' . $id . '" href="#collapse' . $id . '" aria-expanded="' . ($expand_mode ? 'true' : 'false') . '" aria-controls="collapse' . $id . '">
-                        <i class="fas" style="transform:none !important;"><i class="fas fa-alarm-clock" style="transform:none !important;"></i></i> ' . echo_time_range($in) . ' <i class="fal fa-info-circle" style="transform:none !important; font-size:0.85em !important;"></i>
-                    </a>
-                </h4>
-            </div>
-            <div id="collapse' . $id . '" class="panel-collapse collapse ' . ($expand_mode ? 'in' : 'out') . '" role="tabpanel" aria-labelledby="heading' . $id . '">
-                <div class="panel-body overview-pitch">' . $pitch . '.</div>
-            </div>
-        </div></div>';
+        $pitch_title = '<i class="fas fa-alarm-clock"></i> '.echo_time_range($in);
+        return echo_tree_html_body('CompletionTime', $pitch_title, $pitch_body, $expand_mode);
     }
 }
 

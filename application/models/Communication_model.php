@@ -1582,7 +1582,7 @@ class Communication_model extends CI_Model
                 $overview_message = '';
                 $source_info = echo_tree_references($ins[0], true);
                 $step_info = echo_tree_steps($ins[0], true);
-                $time_info = echo_tree_time_estimate($ins[0], true);
+                $time_info = echo_tree_completion_time($ins[0], true);
                 $user_info = echo_tree_users($ins[0], true);
 
                 if($source_info || $step_info || $time_info){

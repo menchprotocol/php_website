@@ -30,7 +30,7 @@ if (!$hide_subscribe) {
 
     $source_info = echo_tree_references($in, false);
     $step_info = echo_tree_steps($in, false);
-    $time_info = echo_tree_time_estimate($in, false);
+    $time_info = echo_tree_completion_time($in, false);
     $user_info = echo_tree_users($in, false);
 
     if($step_info || $source_info || $time_info){
