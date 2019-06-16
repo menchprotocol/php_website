@@ -338,10 +338,8 @@ function in_modify_load(in_id, ln_id) {
             $('#modifybox').attr('level', level);
 
             //Load inputs:
-            $('#in_outcome').val(data.in.in_outcome);
             $('#in_completion_seconds').val(data.in.in_completion_seconds);
             $('.tr_in_link_title').text('');
-
             $('#in_status').val(data.in.in_status).attr('original-status', data.in.in_status); //Set the status before it gets changed by miners
 
             //Status locked intent?
@@ -352,7 +350,6 @@ function in_modify_load(in_id, ln_id) {
 
                 //Show publish lock:
                 $('.in_status_lock').removeClass('hidden');
-
 
             } else {
 
@@ -410,6 +407,9 @@ function in_modify_load(in_id, ln_id) {
                 //No Progression made, so we can keep it unlocked:
                 $('input[type=radio][name=in_6676_type], input[type=radio][name=ln_type_entity_id], #in_6192_type').attr('disabled', false);
             }
+
+            //Update intent outcome and set focus:
+            $('#in_outcome').val(data.in.in_outcome).focus();
 
             //Reload Tooltip again:
             $('[data-toggle="tooltip"]').tooltip();

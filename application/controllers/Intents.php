@@ -588,6 +588,7 @@ class Intents extends CI_Controller
 
 
         //Transform intent type into standard DB field:
+        $in_current = $ins[0];
         $_POST['in_type_entity_id'] = $_POST['in_'.$_POST['in_6676_type'].'_type'];
 
         //Prep new variables:
@@ -595,15 +596,14 @@ class Intents extends CI_Controller
             'in_status' => intval($_POST['in_status']),
             'in_outcome' => trim($_POST['in_outcome']),
             'in_completion_seconds' => intval($_POST['in_completion_seconds']),
-            'in_verb_entity_id' => $ins[0]['in_verb_entity_id'], //We assume no change, and will update if we detected change...
+            'in_verb_entity_id' => $in_current['in_verb_entity_id'], //We assume no change, and will update if we detected change...
             'in_type_entity_id' => $_POST['in_type_entity_id'], //Also used when updating the field
         );
 
-        //See if we should check for unlocking this intent:
-        $in_check_locked_completions = ((($in_update['in_status']==2 && in_array($in_update['in_type_entity_id'], $this->config->item('en_ids_6997'))) && ($ins[0]['in_status']!=2 || !in_array($ins[0]['in_type_entity_id'], $this->config->item('en_ids_6997')))) ? 1 : 0 );
+
 
         //Prep current intent metadata:
-        $in_metadata = unserialize($ins[0]['in_metadata']);
+        $in_metadata = unserialize($in_current['in_metadata']);
 
         //Determines if Intent has been removed OR unlinked:
         $remove_from_ui = 0; //Assume not
@@ -616,7 +616,7 @@ class Intents extends CI_Controller
         foreach ($in_update as $key => $value) {
 
             //Did this value change?
-            if ($value == $ins[0][$key]) {
+            if ($value == $in_current[$key]) {
 
                 //No it did not! Remove it!
                 unset($in_update[$key]);
@@ -626,7 +626,7 @@ class Intents extends CI_Controller
                 if ($key == 'in_outcome') {
 
                     //Validate Intent Outcome:
-                    $in_outcome_validation = $this->Intents_model->in_validate_outcome($_POST['in_outcome'], $session_en['en_id'], $ins[0]['in_id']);
+                    $in_outcome_validation = $this->Intents_model->in_validate_outcome($_POST['in_outcome'], $session_en['en_id'], $in_current['in_id']);
                     if(!$in_outcome_validation['status']){
                         //We had an error, return it:
                         return echo_json($in_outcome_validation);
@@ -639,7 +639,7 @@ class Intents extends CI_Controller
                 } elseif ($key == 'in_type_entity_id') {
 
                     //Was this used to be an Action Plan Starting Step Intention?
-                    $was_starting_step = in_array($ins[0]['in_type_entity_id'], $this->config->item('en_ids_6908'));
+                    $was_starting_step = in_array($in_current['in_type_entity_id'], $this->config->item('en_ids_6908'));
 
                     //If it was, has it now changed?
                     if($was_starting_step && !in_array($in_update['in_type_entity_id'], $this->config->item('en_ids_6908'))){
@@ -692,8 +692,8 @@ class Intents extends CI_Controller
                         //Did we remove the main intent?
                         if($_POST['level']==1){
                             //Yes, redirect to a parent intent if we have any:
-                            if(count($ins[0]['in__parents']) > 0){
-                                $remove_redirect_url = '/intents/' . $ins[0]['in__parents'][0]['in_id'];
+                            if(count($in_current['in__parents']) > 0){
+                                $remove_redirect_url = '/intents/' . $in_current['in__parents'][0]['in_id'];
                             } else {
                                 //No parents, redirect to default intent:
                                 $remove_redirect_url = '/intents/' . $this->config->item('in_miner_start');
@@ -719,7 +719,7 @@ class Intents extends CI_Controller
                         $matching_child_ids = array();
                         foreach($this->Intents_model->in_fetch(array(
                             'in_id IN (' . join(',', $all_child_ids) . ')' => null, //All child intents
-                            'in_status' => $ins[0]['in_status'],
+                            'in_status' => $in_current['in_status'],
                         )) as $recursive_in){
 
                             //Do we also need to unlink?
@@ -736,7 +736,7 @@ class Intents extends CI_Controller
                         }
 
                         //Success message:
-                        $update_message = 'Successfully updated '.$recursive_update_count.' '.echo_clean_db_name($key).' from ['.$ins[0]['in_status'].'] to ['.$value.']'.( $links_removed>0 ? ' and removed ['.$links_removed.'] intent links' : '' );
+                        $update_message = 'Successfully updated '.$recursive_update_count.' '.echo_clean_db_name($key).' from ['.$in_current['in_status'].'] to ['.$value.']'.( $links_removed>0 ? ' and removed ['.$links_removed.'] intent links' : '' );
 
                         //Log recursive update:
                         $this->Links_model->ln_create(array(
@@ -746,7 +746,7 @@ class Intents extends CI_Controller
                             'ln_content' => $update_message,
                             'ln_metadata' => array(
                                 'in_field' => $key,
-                                'match_value' => $ins[0]['in_status'],
+                                'match_value' => $in_current['in_status'],
                                 'replace_value' => $value,
                                 'matching_children' => $matching_child_ids,
                                 'all_children' => $all_child_ids,
@@ -905,12 +905,18 @@ class Intents extends CI_Controller
 
 
         //Let's see how many intents, if any, have unlocked completions:
+        //See if we should check for unlocking this intent:
+        $meets_unlock_requirements_now = ($_POST['in_status']==2 && in_array($_POST['in_type_entity_id'], $this->config->item('en_ids_6997')));
+        $meets_unlock_requirements_before = ($in_current['in_status']==2 && in_array($in_current['in_type_entity_id'], $this->config->item('en_ids_6997')));
+        $in_check_locked_completions = ( $meets_unlock_requirements_now && !$meets_unlock_requirements_before ? 1 : 0 );
         $ins_unlocked_completions_count = 0;
         $steps_unlocked_completions_count = 0;
 
+        //Should we check for new unlocks?
         if($in_check_locked_completions){
 
-            //First see if this locked intent is completed for any students:
+            //First see if this locked intent is completed for any users:
+            $step_completed_users = array();
 
 
         }

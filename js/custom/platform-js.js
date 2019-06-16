@@ -11,6 +11,7 @@ var blur_opacity = '0.21';
 function modify_cancel(){
     $('.fixed-box').addClass('hidden');
     reset_opacity();
+    $("input").blur();
     if(history.pushState) {
         history.pushState(null, null, '#');
     } else {
