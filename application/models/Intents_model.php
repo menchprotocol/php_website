@@ -1104,22 +1104,36 @@ class Intents_model extends CI_Model
             );
         }
 
-        //Do we have a double colon command? If so, make sure we also have an intent reference:
+        //Do we have a double colon command?
         if(substr_count($in_outcome , '::') ==1){
 
             //Does the outcome have a parent intent reference?
             $string_references = extract_references($in_outcome);
 
+            /*
             if(count($string_references['ref_intents']) != 1){
                 return array(
                     'status' => 0,
                     'message' => 'Double colon required an intent reference (like #1234) in the outcome',
                 );
-            } elseif(strpos($in_outcome,'#') > strpos($in_outcome,'::')){
+            } else
+            */
+
+
+            if(count($string_references['ref_intents'])>0 && strpos($in_outcome,'#') > strpos($in_outcome,'::')){
+
                 return array(
                     'status' => 0,
                     'message' => 'Intent reference must appear before double colon',
                 );
+
+            } else if(count($string_references['ref_intents'])>1){
+
+                return array(
+                    'status' => 0,
+                    'message' => 'Intent outcome can reference a maximum of 1 intent',
+                );
+
             }
         }
 

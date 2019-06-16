@@ -231,23 +231,32 @@ function echo_in_outcome($in_outcome, $fb_messenger_format = false, $reference_a
     //See if outcome has a double column:
     if(substr_count($in_outcome , '::') != 1){
         if($fb_messenger_format){
+
             return $in_outcome;
+
         } else {
+
             return htmlentities(trim($in_outcome));
+
         }
-    }
 
-    //We have it, let's apply it:
-    $in_outcome_parts = explode('::',$in_outcome,2);
-
-    if($fb_messenger_format){
-        return ( $show_entire_outcome ? $in_outcome : trim($in_outcome_parts[1]) );
     } else {
-        //Miner view:
-        if($show_entire_outcome){
-            return '<span class="double-column-omit click_expand" data-toggle="tooltip" data-placement="top" title="Not shown to users">'.htmlentities($in_outcome_parts[0]).'::</span><span class="click_expand">'.htmlentities($in_outcome_parts[1]).'</span>';
+
+        //We have it, let's apply it:
+        $in_outcome_parts = explode('::',$in_outcome,2);
+
+        if($fb_messenger_format){
+
+            return ( $show_entire_outcome ? $in_outcome : trim($in_outcome_parts[1]) );
+
         } else {
-            return '<span class="click_expand">'.htmlentities(trim($in_outcome_parts[1])).'</span>';
+
+            //Miner view:
+            if($show_entire_outcome){
+                return '<span class="double-column-omit click_expand" data-toggle="tooltip" data-placement="top" title="Not shown to users">'.htmlentities($in_outcome_parts[0]).'::</span><span class="click_expand">'.htmlentities($in_outcome_parts[1]).'</span>';
+            } else {
+                return '<span class="click_expand">'.htmlentities(trim($in_outcome_parts[1])).'</span>';
+            }
         }
     }
 }
