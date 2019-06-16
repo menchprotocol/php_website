@@ -918,7 +918,6 @@ class Intents extends CI_Controller
             //First see if this locked intent is completed for any users:
             $step_completed_users = array();
 
-
         }
 
 

@@ -170,7 +170,7 @@ function in_messages_iframe(in_id) {
     $('.ajax-frame').attr('src', '/intents/in_messages_iframe/' + in_id).css('margin-top', '0');
     $('.ajax-frame').on("load", function () {
         $('.frame-loader').addClass('hidden');
-        $('.ajax-frame').removeClass('hidden');
+        $('.ajax-frame').removeClass('hidden').contents().find('#ln_content' + in_id).focus();
         $('[data-toggle="tooltip"]').tooltip();
     });
 }
