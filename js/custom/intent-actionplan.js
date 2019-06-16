@@ -348,7 +348,6 @@ function in_sort_load(in_id, level) {
 
                 }
             });
-
         };
     }
 

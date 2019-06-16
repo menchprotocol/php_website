@@ -1989,7 +1989,7 @@ function echo_in($in, $level, $in_parent_id = 0, $is_parent = false)
         }
 
 
-        $ui .= '<div id="list-cr-' . $ln_id . '" class="list-group step-group cr-class-' . $ln_id . ' hidden" intent-id="' . $in['in_id'] . '">';
+        $ui .= '<div id="list-cr-' . $ln_id . '" class="list-group step-group link-class--' . $ln_id . ' hidden" intent-id="' . $in['in_id'] . '">';
         //This line enables the in-between list moves to happen for empty lists:
         $ui .= '<div class="is_level3_sortable dropin-box" style="height:1px;">&nbsp;</div>';
 
@@ -2001,7 +2001,7 @@ function echo_in($in, $level, $in_parent_id = 0, $is_parent = false)
         }
 
 
-        $ui .= '<div class="list-group-item opacity_fadeout list_input new-in3-input cr-class-' . $ln_id . ' hidden">
+        $ui .= '<div class="list-group-item opacity_fadeout list_input new-in3-input link-class--' . $ln_id . ' hidden">
                 <div class="form-group is-empty"  style="margin: 0; padding: 0;"><form action="#" onsubmit="in_link_or_create(' . $in['in_id'] . ',3);" intent-id="' . $in['in_id'] . '"><input type="text" class="form-control autosearch intentadder-id-'.$in['in_id'].' algolia_search" maxlength="' . $CI->config->item('in_outcome_max') . '" id="addintent-cr-' . $ln_id . '" intent-id="' . $in['in_id'] . '" placeholder="Add #Intent"></form></div>
         </div>';
 

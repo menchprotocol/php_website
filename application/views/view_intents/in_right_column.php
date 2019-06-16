@@ -16,7 +16,7 @@
 
     <h5 class="badge badge-h edit-header" style="display: inline-block;"><i class="fas fa-cog"></i> Modify</h5>
     <div style="text-align:right; font-size: 22px; margin:-32px 3px -20px 0;">
-        <a href="javascript:void(0)" onclick="$('#modifybox').addClass('hidden');reset_opacity();"><i
+        <a href="#" onclick="$('#modifybox').addClass('hidden');reset_opacity();"><i
                 class="fas fa-times-circle"></i></a>
     </div>
     <div class="grey-box">
@@ -248,7 +248,7 @@
 <div id="load_messaging_frame" class="fixed-box hidden">
     <h5 class="badge badge-h badge-h-max"></h5>
     <div style="text-align:right; font-size: 22px; margin:-32px 3px -20px 0;">
-        <a href="javascript:void(0)" onclick="$('#load_messaging_frame').addClass('hidden');reset_opacity();"><i class="fas fa-times-circle"></i></a>
+        <a href="#" onclick="$('#load_messaging_frame').addClass('hidden');reset_opacity();"><i class="fas fa-times-circle"></i></a>
     </div>
     <div class="grey-box" style="padding-bottom: 10px;">
         <iframe class="ajax-frame hidden" id="ajax_messaging_iframe" src=""></iframe>
@@ -262,7 +262,7 @@
     <h5 class="badge badge-h badge-h-max"></h5>
 
     <div style="text-align:right; font-size: 22px; margin:-32px 3px -20px 0;">
-        <a href="javascript:void(0)" onclick="$('#load_action_plan_frame').addClass('hidden');reset_opacity();"><i class="fas fa-times-circle"></i></a>
+        <a href="#" onclick="$('#load_action_plan_frame').addClass('hidden');reset_opacity();"><i class="fas fa-times-circle"></i></a>
     </div>
 
     <div class="grey-box" style="padding-bottom: 10px;">

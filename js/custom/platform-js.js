@@ -77,16 +77,16 @@ function ms_toggle(ln_id, new_state) {
 
     if (new_state < 0) {
         //Detect new state:
-        new_state = ($('.cr-class-' + ln_id).hasClass('hidden') ? 1 : 0);
+        new_state = ($('.link-class--' + ln_id).hasClass('hidden') ? 1 : 0);
     }
 
     if (new_state) {
         //open:
-        $('.cr-class-' + ln_id).removeClass('hidden');
+        $('.link-class--' + ln_id).removeClass('hidden');
         $('#handle-' + ln_id).removeClass('fa-plus-circle').addClass('fa-minus-circle');
     } else {
         //Close:
-        $('.cr-class-' + ln_id).addClass('hidden');
+        $('.link-class--' + ln_id).addClass('hidden');
         $('#handle-' + ln_id).removeClass('fa-minus-circle').addClass('fa-plus-circle');
     }
 }
