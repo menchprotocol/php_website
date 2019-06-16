@@ -246,11 +246,9 @@
 
             <h5 class="badge badge-h edit-header"><i class="fas fa-cog"></i> Modify</h5>
             <div style="text-align:right; font-size: 22px; margin:-32px 3px -20px 0;">
-                <a href="#" onclick="$('#modifybox').addClass('hidden');reset_opacity();"><i
-                            class="fas fa-times-circle"></i></a>
+                <a href="#" onclick="modify_cancel()"><i class="fas fa-times-circle"></i></a>
             </div>
             <div class="grey-box">
-
 
                 <div class="row">
                     <div class="col-md-6">
@@ -411,9 +409,7 @@
                 data-placement="bottom"><i class="fas fa-comment-plus"></i> Entity References within Intent Notes
             </h5>
             <div style="text-align:right; font-size: 22px; margin:-32px 3px -20px 0;">
-                <a href="#" onclick="$('#message-frame').addClass('hidden');$('#loaded-messages').html('');reset_opacity();">
-                    <i class="fas fa-times-circle"></i>
-                </a>
+                <a href="#" onclick="modify_cancel()"><i class="fas fa-times-circle"></i></a>
             </div>
             <div class="grey-box">
                 <div id="loaded-messages"></div>

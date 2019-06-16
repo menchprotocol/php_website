@@ -133,6 +133,14 @@ function initiate_search() {
     ]);
 }
 
+//Watch typing:
+$(document).keyup(function (e) {
+    //Watch for action keys:
+    if (e.keyCode === 27) {
+        parent.modify_cancel();
+    }
+});
+
 
 $(document).ready(function () {
 
@@ -286,8 +294,6 @@ function message_modify_start(ln_id, initial_ln_type_entity_id) {
         //Watch for action keys:
         if (e.ctrlKey && e.keyCode === 13) {
             in_message_modify(ln_id, initial_ln_type_entity_id);
-        } else if (e.keyCode === 27) {
-            message_modify_cancel(ln_id);
         }
     });
 }

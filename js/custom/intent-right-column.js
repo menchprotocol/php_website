@@ -154,8 +154,9 @@ function in_adjust_link_ui() {
 function in_messages_iframe(in_id) {
 
     //Start loading:
-    $('.fixed-box').addClass('hidden');
-    $('.frame-loader').addClass('hidden');
+
+    $('.frame-loader').removeClass('hidden');
+    $('.fixed-box, .ajax-frame').addClass('hidden');
     $('#load_messaging_frame').removeClass('hidden').hide().fadeIn();
 
     //Set title:
@@ -166,12 +167,13 @@ function in_messages_iframe(in_id) {
     $('.opacity_fadeout').not(".skip_fadeout_in_"+in_id).css('opacity', blur_opacity);
 
     //Load content via a URL:
-    $('.ajax-frame').attr('src', '/intents/in_messages_iframe/' + in_id).removeClass('hidden').css('margin-top', '0');
-
-    //Tooltips:
-    $('[data-toggle="tooltip"]').tooltip();
+    $('.ajax-frame').attr('src', '/intents/in_messages_iframe/' + in_id).css('margin-top', '0');
+    $('.ajax-frame').on("load", function () {
+        $('.frame-loader').addClass('hidden');
+        $('.ajax-frame').removeClass('hidden');
+        $('[data-toggle="tooltip"]').tooltip();
+    });
 }
-
 
 function in_action_plan_users(in_id) {
 

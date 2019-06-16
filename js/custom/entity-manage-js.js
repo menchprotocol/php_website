@@ -741,6 +741,7 @@ function en_modify_save() {
 function en_load_messages(en_id) {
 
     //Make the frame visible:
+    $('#loaded-messages').html(''); //Reset messages
     $('.fixed-box').addClass('hidden');
     $("#message-frame").removeClass('hidden').hide().fadeIn().attr('entity-id', en_id);
     $("#message-frame h4").text($(".en_name_" + en_id + ":first").text());
@@ -752,7 +753,7 @@ function en_load_messages(en_id) {
     var handler = $("#loaded-messages");
 
     //Show tem loader:
-    handler.html('<div style="text-align:center; padding:10px 0 50px;"><i class="fas fa-spinner fa-spin"></i></div>');
+    handler.html('<div style="text-align:left; padding-bottom:50px;"><i class="fas fa-spinner fa-spin"></i> Loading...</div>');
 
     //We might need to scroll:
     if (is_compact) {
