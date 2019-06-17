@@ -109,7 +109,7 @@ $other_intentions = $this->Links_model->ln_fetch(array(
 //Parent intentions:
 $body = '';
 foreach ($other_intentions as $parent_intention) {
-    if(!is_clean_outcome($parent_intention)){
+    if(!in_is_clean_outcome($parent_intention)){
         continue;
     }
     //Add parent intention to UI:
@@ -138,7 +138,7 @@ if(count($other_intentions) > 0 || count($recommend_intention) > 0){
 
         //Now fetch Recommended Intents:
         foreach ($recommend_intention as $recommend_intention) {
-            if(!is_clean_outcome($recommend_intention)){
+            if(!in_is_clean_outcome($recommend_intention)){
                 continue;
             }
             echo echo_in_recommend($recommend_intention);

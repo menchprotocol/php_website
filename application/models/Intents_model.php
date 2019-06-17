@@ -594,7 +594,7 @@ class Intents_model extends CI_Model
 
         //Set variables:
         $is_first_intent = ( !isset($focus_in['ln_id']) ); //First intent does not have a link, just the intent
-        $has_or_parent = is_or($focus_in['in_type_entity_id']);
+        $has_or_parent = in_is_or($focus_in['in_type_entity_id']);
         $or_children = array(); //To be populated only if $focus_in is an OR intent
         $conditional_steps = array(); //To be populated only for Conditional Steps
         $metadata_this = array(
@@ -886,9 +886,9 @@ class Intents_model extends CI_Model
              * Sort Miners, Experts & Sources by trust score
              *
              * */
-            usort($metadata_this['__in__metadata_experts'], 'sort_by_en_trust_score');
+            usort($metadata_this['__in__metadata_experts'], 'en_trust_score_sort');
             foreach ($metadata_this['__in__metadata_sources'] as $type_en_id => $current_us) {
-                usort($metadata_this['__in__metadata_sources'][$type_en_id], 'sort_by_en_trust_score');
+                usort($metadata_this['__in__metadata_sources'][$type_en_id], 'en_trust_score_sort');
             }
 
 
@@ -919,7 +919,7 @@ class Intents_model extends CI_Model
         //Fetch related variables:
         $outcome_words = explode(' ', $in_outcome);
         $starting_verb = trim($outcome_words[0]);
-        $in_verb_entity_id = detect_starting_verb_id($in_outcome);
+        $in_verb_entity_id = in_outcome_verb_id($in_outcome);
 
         //Run some checks on the intent outcome:
         if(count($outcome_words) < 3) {
@@ -1030,7 +1030,7 @@ class Intents_model extends CI_Model
     function in_validate_outcome($in_outcome, $ln_miner_entity_id = 0, $skip_in_id = 0){
 
         //Assign verb variables:
-        $in_verb_entity_id = detect_starting_verb_id($in_outcome);
+        $in_verb_entity_id = in_outcome_verb_id($in_outcome);
 
         //Validate outcome:
         if(strlen($in_outcome) < 5){

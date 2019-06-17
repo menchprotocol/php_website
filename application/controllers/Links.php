@@ -53,7 +53,7 @@ class Links extends CI_Controller
         $message = '';
 
         //Fetch links and total link counts:
-        $lns = $this->Links_model->ln_fetch($filters, $join_by, (is_dev() ? 20 : $this->config->item('items_per_page')));
+        $lns = $this->Links_model->ln_fetch($filters, $join_by, (is_dev_environment() ? 20 : $this->config->item('items_per_page')));
         $lns_count = $this->Links_model->ln_fetch($filters, $join_by, 0, 0, array(), 'COUNT(ln_id) as trs_count, SUM(ln_points) as points_sum');
 
 

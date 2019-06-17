@@ -149,7 +149,7 @@ class Actionplan_model extends CI_Model
                     ));
 
                     //Inform of intent title only if its a clean title:
-                    if(is_clean_outcome($next_step_ins[0])){
+                    if(in_is_clean_outcome($next_step_ins[0])){
                         $this->Communication_model->dispatch_message(
                             'Let\'s '. $next_step_ins[0]['in_outcome'],
                             array('en_id' => $en_id),
@@ -495,7 +495,7 @@ class Actionplan_model extends CI_Model
         ), array('in_child')));
 
 
-        if(is_or($in['in_type_entity_id']) && $child_count > 0){
+        if(in_is_or($in['in_type_entity_id']) && $child_count > 0){
             //OR Branch:
             return false;
         } elseif($child_count > 1){
@@ -635,7 +635,7 @@ class Actionplan_model extends CI_Model
                     $message = 'You completed the step to '.echo_in_outcome($in['in_outcome'], true, true).'. ';
 
                     //Append based on title type:
-                    if(is_clean_outcome($conditional_step)){
+                    if(in_is_clean_outcome($conditional_step)){
                         $message .= 'This unlocked a new step to '.echo_in_outcome($conditional_step['in_outcome'], true);
                     } else {
                         $message .= 'The result:' . "\n\n" . echo_in_outcome($conditional_step['in_outcome'], true);
@@ -926,7 +926,7 @@ class Actionplan_model extends CI_Model
 
         //Define step variables:
         $has_children = (count($in__children) > 0);
-        $is__or = is_or($ins[0]['in_type_entity_id']);
+        $is__or = in_is_or($ins[0]['in_type_entity_id']);
 
 
         //Let's figure out the progression method:
@@ -1235,7 +1235,7 @@ class Actionplan_model extends CI_Model
                 foreach ($in__children as $child_in) {
 
                     //We require a clean title for Messenger:
-                    if($fb_messenger_format && !is_clean_outcome($child_in)){
+                    if($fb_messenger_format && !in_is_clean_outcome($child_in)){
                         continue;
                     }
 

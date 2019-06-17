@@ -448,6 +448,11 @@ class Entities_model extends CI_Model
         //Analyze domain:
         $domain_analysis = analyze_domain($url);
 
+        if ($domain_analysis['url_is_root']) {
+            //Update URL to keep synced:
+            $url = $domain_analysis['url_clean_domain'];
+        }
+
         //Initially assume Generic URL unless we can prove otherwise:
         $ln_type_entity_id = 4256; //Generic URL
 

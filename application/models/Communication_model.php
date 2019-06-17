@@ -2063,7 +2063,7 @@ class Communication_model extends CI_Model
             }
 
 
-            $search_index = load_php_algolia('alg_index');
+            $search_index = load_algolia('alg_index');
             $res = $search_index->search($master_command, [
                 'hitsPerPage' => 6, //Max results
                 'filters' => 'alg_obj_is_in=1 AND alg_obj_status=2', //Search published intents
@@ -2100,7 +2100,7 @@ class Communication_model extends CI_Model
                 }
 
                 //Make sure no dummy title:
-                if(!is_clean_outcome($ins[0])){
+                if(!in_is_clean_outcome($ins[0])){
                     continue;
                 }
 
@@ -2311,7 +2311,7 @@ class Communication_model extends CI_Model
          *
          * */
 
-        if (is_dev()) {
+        if (is_dev_environment()) {
             return false; //We cannot send emails on Dev server
         }
 

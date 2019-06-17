@@ -375,7 +375,7 @@ function in_modify_load(in_id, ln_id) {
             in_outcome_counter();
             in_adjust_link_ui();
 
-            var in_6676_type = js_is_or(data.in.in_type_entity_id, true);
+            var in_6676_type = js_in_is_or(data.in.in_type_entity_id, true);
             $('#in_'+in_6676_type+'_type').val(data.in.in_type_entity_id); //Set drop down to intent sub-type
             $('input[type=radio][name=in_6676_type]').prop('checked', false);
             $('#parent__type_'+in_6676_type).prop('checked', true);

@@ -180,8 +180,8 @@ function add_to_list(sort_list_id, sort_handler, html_content) {
 }
 
 
-function js_is_or(in_type_entity_id, return_id){
-    //The equivalent of the PHP function is_or()
+function js_in_is_or(in_type_entity_id, return_id){
+    //The equivalent of the PHP function in_is_or()
     var is__or = !(js_en_ids_6193.indexOf(parseInt(in_type_entity_id)) === -1);
     return ( return_id ? ( is__or ? 6193 /* OR */ : 6192 /* AND */ ) : ( is__or ? 1 : 0 ) );
 }

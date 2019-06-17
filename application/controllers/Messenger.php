@@ -752,7 +752,7 @@ class Messenger extends CI_Controller
         $session_en = $this->session->userdata('user');
         if (!$psid && !isset($session_en['en_id'])) {
             die('<div class="alert alert-danger" role="alert">Invalid Credentials</div>');
-        } elseif (!is_dev() && isset($_GET['sr']) && !parse_signed_request($_GET['sr'])) {
+        } elseif (!is_dev_environment() && isset($_GET['sr']) && !parse_signed_request($_GET['sr'])) {
             die('<div class="alert alert-danger" role="alert">Failed to authenticate your origin.</div>');
         } elseif (!isset($session_en['en_id'])) {
             //Messenger Webview, authenticate PSID:
@@ -1658,7 +1658,7 @@ class Messenger extends CI_Controller
         $session_en = $this->session->userdata('user');
         if (!$psid && !isset($session_en['en_id'])) {
             die('<div class="alert alert-danger" role="alert">Invalid Credentials</div>');
-        } elseif (!is_dev() && isset($_GET['sr']) && !parse_signed_request($_GET['sr'])) {
+        } elseif (!is_dev_environment() && isset($_GET['sr']) && !parse_signed_request($_GET['sr'])) {
             die('<div class="alert alert-danger" role="alert">Failed to authenticate your origin.</div>');
         } elseif (!isset($session_en['en_id'])) {
             //Messenger Webview, authenticate PSID:

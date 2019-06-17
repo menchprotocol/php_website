@@ -1,6 +1,6 @@
 <?php
 
-function is_dev()
+function is_dev_environment()
 {
     //Determines if our development environment is development or not
     return (isset($_SERVER['SERVER_NAME']) && $_SERVER['SERVER_NAME'] == 'local.mench.co');
@@ -17,13 +17,13 @@ function includes_any($string, $items)
     return false;
 }
 
-function sort_by_en_trust_score($a, $b)
+function en_trust_score_sort($a, $b)
 {
     //An array sorting function for entities based on their trust score:
     return intval($b['en_trust_score']) - intval($a['en_trust_score']);
 }
 
-function load_php_algolia($index_name)
+function load_algolia($index_name)
 {
     //Loads up algolia search engine functions
     $CI =& get_instance();
@@ -176,10 +176,6 @@ function webhook_curl_post($curl_url, $in_id, $en_id){
     return objectToArray(json_decode($server_output));
 }
 
-function trigger_oncomplete_tips($insert_columns){
-    $CI =& get_instance();
-    return ( isset($insert_columns['ln_status']) && isset($insert_columns['ln_type_entity_id']) && $insert_columns['ln_status']==2 && in_array($insert_columns['ln_type_entity_id'], $CI->config->item('en_ids_6255')) && $insert_columns['ln_parent_intent_id'] > 0 );
-}
 
 function is_valid_date($string)
 {
@@ -221,7 +217,7 @@ function detect_fav_icon($url_clean_domain, $return_icon = false){
     }
 }
 
-function detect_ln_type_entity_id($string)
+function ln_detect_type($string)
 {
 
     /*
@@ -335,7 +331,7 @@ function is_valid_icon($string, $only_return_requirements = false){
 }
 
 
-function detect_starting_verb_id($string){
+function in_outcome_verb_id($string){
 
     //Prep variables:
     $CI =& get_instance();
@@ -429,7 +425,7 @@ function redirect_message($url, $message = null)
 }
 
 
-function is_or($in_type_entity_id, $return_id = false){
+function in_is_or($in_type_entity_id, $return_id = false){
     //Determines if an intent type belongs to AND or OR intents:
     $CI =& get_instance();
     $is__or = intval(in_array($in_type_entity_id , $CI->config->item('en_ids_6193')));
@@ -574,7 +570,7 @@ function boost_power()
     ini_set('max_execution_time', 0);
 }
 
-function is_clean_outcome($in){
+function in_is_clean_outcome($in){
 
     /*
      *
@@ -751,13 +747,13 @@ function update_algolia($input_obj_type = null, $input_obj_id = 0, $return_row_o
 
     if (!$return_row_only) {
 
-        if(is_dev()){
+        if(is_dev_environment()){
             //Do a call on live as this does not work on local due to security limitations:
             return json_decode(@file_get_contents("https://mench.com/links/cron__sync_algolia/" . ( $input_obj_type ? $input_obj_type . '/' . $input_obj_id : '' )));
         }
 
         //Load Algolia Index
-        $search_index = load_php_algolia('alg_index');
+        $search_index = load_algolia('alg_index');
     }
 
 
@@ -893,7 +889,7 @@ function update_algolia($input_obj_type = null, $input_obj_id = 0, $return_row_o
                 $export_row['alg_obj_id'] = intval($db_row['in_id']);
                 $export_row['alg_obj_weight'] = ( isset($metadata['in__metadata_max_seconds']) ? $metadata['in__metadata_max_seconds'] : 0 );
                 $export_row['alg_obj_status'] = intval($db_row['in_status']);
-                $export_row['alg_obj_icon'] = $en_all_6676[is_or($db_row['in_type_entity_id'], true)]['m_icon']; //Entity type icon
+                $export_row['alg_obj_icon'] = $en_all_6676[in_is_or($db_row['in_type_entity_id'], true)]['m_icon']; //Entity type icon
                 $export_row['alg_obj_name'] = $db_row['in_outcome'];
                 $export_row['alg_obj_postfix'] =  ( $time_range ? '<span class="alg-postfix"><i class="fal fa-clock"></i>' . $time_range . '</span>' : '');
 

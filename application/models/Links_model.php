@@ -249,7 +249,7 @@ class Links_model extends CI_Model
 
 
         //See if this link type has any subscribers:
-        if(in_array($insert_columns['ln_type_entity_id'] , $this->config->item('en_ids_5966')) && $insert_columns['ln_type_entity_id']!=5967 /* Email Sent causes endless loop */ && !is_dev()){
+        if(in_array($insert_columns['ln_type_entity_id'] , $this->config->item('en_ids_5966')) && $insert_columns['ln_type_entity_id']!=5967 /* Email Sent causes endless loop */ && !is_dev_environment()){
 
             //Try to fetch subscribers:
             $en_all_5966 = $this->config->item('en_all_5966'); //Include subscription details

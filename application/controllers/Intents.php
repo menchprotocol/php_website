@@ -159,7 +159,7 @@ class Intents extends CI_Controller
         //Return report:
         return echo_json(array(
             'status' => 1,
-            'message' => '<h3>'.$en_all_6676[is_or($ins[0]['in_type_entity_id'], true)]['m_icon'].' '.$fixed_fields['in_status'][$ins[0]['in_status']]['s_icon'].' '.echo_in_outcome($ins[0]['in_outcome'], false, false, true).'</h3>'.echo_in_answer_scores($_POST['starting_in'], $_POST['depth_levels'], $_POST['status_min'], $_POST['depth_levels'], $ins[0]['in_type_entity_id']),
+            'message' => '<h3>'.$en_all_6676[in_is_or($ins[0]['in_type_entity_id'], true)]['m_icon'].' '.$fixed_fields['in_status'][$ins[0]['in_status']]['s_icon'].' '.echo_in_outcome($ins[0]['in_outcome'], false, false, true).'</h3>'.echo_in_answer_scores($_POST['starting_in'], $_POST['depth_levels'], $_POST['status_min'], $_POST['depth_levels'], $ins[0]['in_type_entity_id']),
         ));
 
     }

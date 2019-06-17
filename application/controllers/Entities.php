@@ -138,7 +138,7 @@ class Entities extends CI_Controller
         $en_all_4592 = $this->config->item('en_all_4592');
 
         //See what this is:
-        $detected_ln_type = detect_ln_type_entity_id($_POST['ln_content']);
+        $detected_ln_type = ln_detect_type($_POST['ln_content']);
 
         if (!$detected_ln_type['status'] && isset($detected_ln_type['url_already_existed']) && $detected_ln_type['url_already_existed']) {
 
@@ -347,6 +347,9 @@ class Entities extends CI_Controller
 
                     //Link to domains parent:
                     $entity_new = array('en_id' => 1326);
+
+                    //Update domain to stay synced:
+                    $_POST['en_new_string'] = $url_entity['url_clean_domain'];
 
                 } else {
 
@@ -712,7 +715,7 @@ class Entities extends CI_Controller
             } else {
 
                 //Link content has changed:
-                $detected_ln_type = detect_ln_type_entity_id($_POST['ln_content']);
+                $detected_ln_type = ln_detect_type($_POST['ln_content']);
 
                 if (!$detected_ln_type['status']) {
 
@@ -935,7 +938,7 @@ class Entities extends CI_Controller
 
             if (count($user_passwords) > 0) {
 
-                $detected_ln_type = detect_ln_type_entity_id($new_password);
+                $detected_ln_type = ln_detect_type($new_password);
                 if (!$detected_ln_type['status']) {
                     echo '<div class="alert alert-danger"><i class="fas fa-exclamation-triangle"></i> Error: ' . $detected_ln_type['message'] . '</div>';
                 }
@@ -1058,7 +1061,7 @@ class Entities extends CI_Controller
         //Validate Parent descriptions:
         foreach ($_POST['source_parent_ens'] as $this_parent_en) {
 
-            $detected_ln_type = detect_ln_type_entity_id($this_parent_en['this_parent_en_desc']);
+            $detected_ln_type = ln_detect_type($this_parent_en['this_parent_en_desc']);
 
             if (!$detected_ln_type['status']) {
 
@@ -1096,7 +1099,7 @@ class Entities extends CI_Controller
             }
 
             //Validate role information:
-            $detected_role_ln_type = detect_ln_type_entity_id($_POST['auth_role_' . $contributor_num]);
+            $detected_role_ln_type = ln_detect_type($_POST['auth_role_' . $contributor_num]);
 
             if (!$detected_role_ln_type['status']) {
 
@@ -1188,7 +1191,7 @@ class Entities extends CI_Controller
                 }
 
                 //Validate Expert summary notes:
-                $detected_ln_type = detect_ln_type_entity_id($_POST['why_expert_' . $contributor_num]);
+                $detected_ln_type = ln_detect_type($_POST['why_expert_' . $contributor_num]);
 
                 if (!$detected_ln_type['status']) {
 
