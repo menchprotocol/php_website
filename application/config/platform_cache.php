@@ -11,7 +11,7 @@ defined('BASEPATH') OR exit('No direct script access allowed');
  *
  */
 
-//Generated 2019-06-16 23:01:11 PST
+//Generated 2019-06-16 23:06:03 PST
 
 //Platform User Tools:
 $config['en_ids_7292'] = array(6137,6138,7291);
@@ -739,14 +739,8 @@ $config['en_all_6794'] = array(
 );
 
 //AND Intents:
-$config['en_ids_6192'] = array(7297,6677,6683,6682,6679,6680,6678,6681,6914);
+$config['en_ids_6192'] = array(6677,6683,6682,6679,6680,6678,6681,7297,6914);
 $config['en_all_6192'] = array(
-    7297 => array(
-        'm_icon' => '<i class="fas fa-filter"></i>',
-        'm_name' => 'Funnel Manager',
-        'm_desc' => 'Users are held at this intent until a miner advances them through each child intent using the funnel manager.',
-        'm_parents' => array(4428,3303,3303,7298,7309,6192),
-    ),
     6677 => array(
         'm_icon' => '<i class="far fa-thumbs-up"></i>',
         'm_name' => 'Got It',
@@ -788,6 +782,12 @@ $config['en_all_6192'] = array(
         'm_name' => 'File Response',
         'm_desc' => 'Student must upload a File to mark the intent as complete.',
         'm_parents' => array(6144,6794,6192),
+    ),
+    7297 => array(
+        'm_icon' => '<i class="fas fa-filter"></i>',
+        'm_name' => 'Funnel Manager',
+        'm_desc' => 'Users are held at this intent until a miner advances them through each child intent using the funnel manager.',
+        'm_parents' => array(4428,3303,3303,7298,7309,6192),
     ),
     6914 => array(
         'm_icon' => '<i class="fas fa-lock"></i>',
