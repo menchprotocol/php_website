@@ -176,7 +176,7 @@ class Intents extends CI_Controller
 
         if($in_id == 0){
             //Set to default:
-            $in_id = $this->config->item('in_miner_start');
+            $in_id = $this->config->item('in_top_focus_id');
         }
 
         //Authenticate Miner:
@@ -189,7 +189,7 @@ class Intents extends CI_Controller
         ), array('in__parents','in__grandchildren'));
         //Make sure we found it:
         if ( count($ins) < 1) {
-            return redirect_message('/intents/' . $this->config->item('in_miner_start'), '<div class="alert alert-danger" role="alert">Intent #' . $in_id . ' not found</div>');
+            return redirect_message('/intents/' . $this->config->item('in_top_focus_id'), '<div class="alert alert-danger" role="alert">Intent #' . $in_id . ' not found</div>');
         }
 
         //Update session count and log link:
@@ -696,7 +696,7 @@ class Intents extends CI_Controller
                                 $remove_redirect_url = '/intents/' . $in_current['in__parents'][0]['in_id'];
                             } else {
                                 //No parents, redirect to default intent:
-                                $remove_redirect_url = '/intents/' . $this->config->item('in_miner_start');
+                                $remove_redirect_url = '/intents/' . $this->config->item('in_top_focus_id');
                             }
                         }
 
@@ -908,15 +908,16 @@ class Intents extends CI_Controller
         //See if we should check for unlocking this intent:
         $meets_unlock_requirements_now = ($_POST['in_status']==2 && in_array($_POST['in_type_entity_id'], $this->config->item('en_ids_6997')));
         $meets_unlock_requirements_before = ($in_current['in_status']==2 && in_array($in_current['in_type_entity_id'], $this->config->item('en_ids_6997')));
-        $in_check_locked_completions = ( $meets_unlock_requirements_now && !$meets_unlock_requirements_before ? 1 : 0 );
+        //Keep track of stats for reporting:
         $ins_unlocked_completions_count = 0;
         $steps_unlocked_completions_count = 0;
 
         //Should we check for new unlocks?
-        if($in_check_locked_completions){
+        if($meets_unlock_requirements_now && !$meets_unlock_requirements_before){
 
             //First see if this locked intent is completed for any users:
             $step_completed_users = array();
+
 
         }
 
@@ -929,6 +930,7 @@ class Intents extends CI_Controller
             'remove_redirect_url' => $remove_redirect_url,
             'recursive_update_count' => $recursive_update_count,
             'in__metadata_max_steps' => -( isset($in_metadata['in__metadata_max_steps']) ? $in_metadata['in__metadata_max_steps'] : 0 ),
+            //Passon unlock data, if any:
             'ins_unlocked_completions_count' => $ins_unlocked_completions_count,
             'steps_unlocked_completions_count' => $steps_unlocked_completions_count,
         );

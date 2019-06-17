@@ -116,7 +116,7 @@ if(!$action) {
         ' NOT EXISTS (SELECT 1 FROM table_links WHERE in_id=ln_child_intent_id AND ln_type_entity_id IN (' . join(',', $this->config->item('en_ids_4486')) . ') AND ln_status>=0) ' => null,
         'in_status >=' => 0,
         'in_id !=' => $this->config->item('in_mission_id'), //Mission does not have parents
-        'in_id NOT IN (' . join(',', $this->config->item('in_status_locked')) . ')' => null,
+        'in_id NOT IN (' . join(',', $this->config->item('in_system_lock')) . ')' => null,
     ));
 
     if(count($orphan_ins) > 0){
@@ -612,7 +612,7 @@ if(!$action) {
 } elseif($action=='assessment_marks_birds_eye') {
 
     //Give an overview of the point links in a hierchial format to enable moderators to overview:
-    $_GET['starting_in']    = ( isset($_GET['starting_in']) && intval($_GET['starting_in']) > 0 ? $_GET['starting_in'] : $this->config->item('in_miner_start') );
+    $_GET['starting_in']    = ( isset($_GET['starting_in']) && intval($_GET['starting_in']) > 0 ? $_GET['starting_in'] : $this->config->item('in_top_focus_id') );
     $_GET['depth_levels']   = ( isset($_GET['depth_levels']) && intval($_GET['depth_levels']) > 0 ? $_GET['depth_levels'] : 3 );
     $_GET['status_min']     = ( isset($_GET['status_min']) && intval($_GET['status_min']) > 0 ? $_GET['status_min'] : 0 );
 

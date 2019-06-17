@@ -11,7 +11,7 @@ defined('BASEPATH') OR exit('No direct script access allowed');
  *
  */
 
-//Generated 2019-06-14 01:59:57 PST
+//Generated 2019-06-16 23:01:11 PST
 
 //Platform User Tools:
 $config['en_ids_7292'] = array(6137,6138,7291);
@@ -89,7 +89,7 @@ $config['en_all_4488'] = array(
     ),
     7161 => array(
         'm_icon' => '<i class="far fa-tachometer-alt-fast"></i>',
-        'm_name' => 'Mench Dashboard',
+        'm_name' => 'Mining Dashboard',
         'm_desc' => 'We\'re on a mission to build and share consensus',
         'm_parents' => array(7305,4488),
     ),
@@ -152,7 +152,7 @@ $config['en_all_7303'] = array(
         'm_parents' => array(7303,3463,4506,4527,4463),
     ),
     4432 => array(
-        'm_icon' => '<i class="far fa-certificate"></i>',
+        'm_icon' => '<i class="far fa-badge-check"></i>',
         'm_name' => 'Mench Verified Accounts',
         'm_desc' => '',
         'm_parents' => array(2738,7303,4527,3463),
@@ -739,8 +739,14 @@ $config['en_all_6794'] = array(
 );
 
 //AND Intents:
-$config['en_ids_6192'] = array(6677,6683,6682,6679,6680,6678,6681,6914);
+$config['en_ids_6192'] = array(7297,6677,6683,6682,6679,6680,6678,6681,6914);
 $config['en_all_6192'] = array(
+    7297 => array(
+        'm_icon' => '<i class="fas fa-filter"></i>',
+        'm_name' => 'Funnel Manager',
+        'm_desc' => 'Users are held at this intent until a miner advances them through each child intent using the funnel manager.',
+        'm_parents' => array(4428,3303,3303,7298,7309,6192),
+    ),
     6677 => array(
         'm_icon' => '<i class="far fa-thumbs-up"></i>',
         'm_name' => 'Got It',
@@ -809,20 +815,8 @@ $config['en_all_6676'] = array(
 );
 
 //OR Intents:
-$config['en_ids_6193'] = array(7230,7231,6684,6685,6907);
+$config['en_ids_6193'] = array(6684,6685,7231,7230,6907);
 $config['en_all_6193'] = array(
-    7230 => array(
-        'm_icon' => '<i class="fas fa-random"></i>',
-        'm_name' => 'Random Path',
-        'm_desc' => 'A path would be randomly chosen by Mench as way to A/B test two paths',
-        'm_parents' => array(6193),
-    ),
-    7231 => array(
-        'm_icon' => '<i class="fas fa-check-double"></i>',
-        'm_name' => 'Multiple Answers',
-        'm_desc' => 'Allows the user to choose multiple answers from the list of children',
-        'm_parents' => array(6908,6157,6193),
-    ),
     6684 => array(
         'm_icon' => '<i class="fas fa-check"></i>',
         'm_name' => 'Single Answer',
@@ -834,6 +828,18 @@ $config['en_all_6193'] = array(
         'm_name' => 'Timed Answer',
         'm_desc' => 'Student must make a selection within the time limit defines by the estimated intent time before their response chance expires.',
         'm_parents' => array(6157,6193),
+    ),
+    7231 => array(
+        'm_icon' => '<i class="fas fa-check-double"></i>',
+        'm_name' => 'Multiple Answers',
+        'm_desc' => 'Allows the user to choose multiple answers from the list of children',
+        'm_parents' => array(6908,6157,6193),
+    ),
+    7230 => array(
+        'm_icon' => '<i class="fas fa-random"></i>',
+        'm_name' => 'Random Path',
+        'm_desc' => 'A path would be randomly chosen by Mench as way to A/B test two paths',
+        'm_parents' => array(6193),
     ),
     6907 => array(
         'm_icon' => '<i class="fas fa-lock"></i>',
@@ -892,7 +898,7 @@ $config['en_all_4463'] = array(
         'm_icon' => '<img src="https://mench.com/img/mench_white.png">',
         'm_name' => 'Mench Platform',
         'm_desc' => 'A web portal and GUI enabling Miners to mine intents, entities and links.',
-        'm_parents' => array(4527,3463,2738,4523,3326,3324,3325,3323,4463),
+        'm_parents' => array(4527,3463,2738,4463),
     ),
     4535 => array(
         'm_icon' => '<i class="fas fa-hashtag"></i>',
@@ -1085,7 +1091,7 @@ $config['en_all_6274'] = array(
 );
 
 //User Steps Progressed:
-$config['en_ids_6255'] = array(4559,6144,6157,6158,6997);
+$config['en_ids_6255'] = array(4559,6144,6157,6158,6997,7298);
 $config['en_all_6255'] = array(
     4559 => array(
         'm_icon' => '<i class="far fa-thumbs-up"></i>',
@@ -1116,6 +1122,12 @@ $config['en_all_6255'] = array(
         'm_name' => 'User Step Intent Unlocked',
         'm_desc' => '',
         'm_parents' => array(4527,6244,6415,6255,4595,4593,4755,6146),
+    ),
+    7298 => array(
+        'm_icon' => '<i class="fas fa-filter"></i>',
+        'm_name' => 'User Step Funnel Advanced',
+        'm_desc' => '',
+        'm_parents' => array(6255),
     ),
 );
 

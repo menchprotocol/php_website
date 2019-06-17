@@ -342,24 +342,6 @@ function in_modify_load(in_id, ln_id) {
             $('.tr_in_link_title').text('');
             $('#in_status').val(data.in.in_status).attr('original-status', data.in.in_status); //Set the status before it gets changed by miners
 
-            //Status locked intent?
-            if(jQuery.inArray(in_id, in_status_locked) !== -1){
-
-                //Yes, lock status:
-                $('#in_status').prop('disabled', true);
-
-                //Show publish lock:
-                $('.in_status_lock').removeClass('hidden');
-
-            } else {
-
-                //Nope, unlock status:
-                $('#in_status').prop('disabled', false);
-
-                //Hide publish lock:
-                $('.in_status_lock').addClass('hidden');
-
-            }
 
             //Load intent link data if available:
             if (ln_id > 0) {
@@ -399,20 +381,33 @@ function in_modify_load(in_id, ln_id) {
             $('#parent__type_'+in_6676_type).prop('checked', true);
             in_load_type(in_6676_type);
 
-            //See if we need to lock the intent type editor:
-            if(data.in_action_plan_count > 0){
-                //Yes, we should lock it:
-                $('input[type=radio][name=in_6676_type], input[type=radio][name=ln_type_entity_id], #in_6192_type').attr('disabled', true);
-            } else {
-                //No Progression made, so we can keep it unlocked:
-                $('input[type=radio][name=in_6676_type], input[type=radio][name=ln_type_entity_id], #in_6192_type').attr('disabled', false);
-            }
-
             //Update intent outcome and set focus:
             $('#in_outcome').val(data.in.in_outcome).focus();
 
             //Reload Tooltip again:
             $('[data-toggle="tooltip"]').tooltip();
+
+
+
+            var in_is_system_locked = ( in_system_lock.indexOf(parseInt(data.in.in_id)) !== -1);
+
+            //Status locked intent?
+            if(in_is_system_locked){
+                $('#in_status').prop('disabled', true);
+                $('.in_status_lock').removeClass('hidden');
+            } else {
+                $('#in_status').prop('disabled', false);
+                $('.in_status_lock').addClass('hidden');
+            }
+
+            //See if we need to lock the intent type editor:
+            if(data.in_action_plan_count > 0 || in_is_system_locked){
+                //Yes, we should lock it:
+                $('input[type=radio][name=in_6676_type], input[type=radio][name=ln_type_entity_id], #in_6192_type, #in_6193_type').attr('disabled', true);
+            } else {
+                //No Progression made, so we can keep it unlocked:
+                $('input[type=radio][name=in_6676_type], input[type=radio][name=ln_type_entity_id], #in_6192_type, #in_6193_type').attr('disabled', false);
+            }
 
             //We might need to scroll if mobile:
             if (is_compact) {
@@ -600,7 +595,7 @@ function in_modify_save() {
                 //Should we try to check unlockable completions?
                 if(data.ins_unlocked_completions_count > 0){
                     //We did complete/unlock some intents, inform miner and refresh:
-                    alert('Publishing this intent has just unlocked '+data.steps_unlocked_completions_count+' steps across '+data.ins_unlocked_completions_count+' intents. Will refresh page to reflect changes.');
+                    alert('Publishing this intent has just unlocked '+data.steps_unlocked_completions_count+' steps across '+data.ins_unlocked_completions_count+' intents. Page will be refreshed to reflect changes.');
                     window.location = "/intents/" + in_focus_id;
                 }
 

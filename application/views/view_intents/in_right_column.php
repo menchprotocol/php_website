@@ -1,7 +1,7 @@
 
 <script>
     //Define some global variables:
-    var in_status_locked = <?= json_encode($this->config->item('in_status_locked')) ?>;
+    var in_system_lock = <?= json_encode($this->config->item('in_system_lock')) ?>;
     var en_all_4486 = <?= json_encode($this->config->item('en_all_4486')) ?>;
     var en_all_6676 = <?= json_encode($this->config->item('en_all_6676')) ?>; //AND/OR Branch
     var en_all_6192 = <?= json_encode($this->config->item('en_all_6192')) ?>; //AND Children
@@ -35,6 +35,10 @@
                 <div class="inline-box" style="margin-bottom: 15px;">
 
 
+                    <div class="in_status_lock hidden">
+                        <b data-toggle="tooltip" title="Intent locked because its hard-coded in the Mench code base" data-placement="top" class="underdot" style="font-size: 0.85em; color: #FF0000;"><i class="fas fa-lock"></i> SYSTEM LOCK</b>
+                    </div>
+
                     <span class="mini-header">Intent Status:</span>
                     <select class="form-control border" id="in_status" style="display: inline-block !important;">
                         <?php
@@ -42,7 +46,7 @@
                             echo '<option value="' . $status_id . '" title="' . $status['s_desc'] . '">' . $status['s_name'] . '</option>';
                         }
                         ?>
-                    </select> <i class="fas fa-lock in_status_lock hidden" data-toggle="tooltip" title="Intent status locked by system" data-placement="top"></i>
+                    </select>
                     <span class="checkbox apply-recursive inline-block hidden">
                                 <label style="display:inline-block !important; font-size: 0.9em !important; margin-left:5px;">
                                     <input type="checkbox" id="apply_recursively"/>

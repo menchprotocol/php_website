@@ -71,7 +71,7 @@ $uri_segment_2 = $this->uri->segment(2);
                         <ul class="nav navbar-nav navbar-main navbar-right">
 
                             <li class="<?= ($uri_segment_1 == 'intents' ? 'intent-active' : 'intent-inactive') ?>">
-                                <a href="/intents/<?= $this->config->item('in_miner_start') ?>">
+                                <a href="/intents/<?= $this->config->item('in_top_focus_id') ?>">
                                     <?= $en_all_4488[4535]['m_icon'] .' '. $en_all_4488[4535]['m_name'] ?>
                                 </a>
                             </li>

@@ -91,7 +91,7 @@ echo '</div>';
 
 
 //Exclude certain intents form being displayed on this section:
-$exclude_array = $this->config->item('in_status_locked');
+$exclude_array = $this->config->item('in_system_lock');
 
 //Also exclude this intent:
 array_push($exclude_array, $in['in_id']);
