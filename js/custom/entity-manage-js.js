@@ -426,6 +426,10 @@ function en_modify_load(en_id, ln_id) {
         return false;
     }
 
+    //Make the frame visible:
+    $('.fixed-box').addClass('hidden');
+    $("#modifybox").removeClass('hidden').hide().fadeIn();
+
     //Update variables:
     $('#modifybox').attr('entity-link-id', ln_id);
     $('#modifybox').attr('entity-id', en_id);
@@ -439,14 +443,13 @@ function en_modify_load(en_id, ln_id) {
 
 
     var en_full_name = $(".en_name_" + en_id + ":first").text();
-    $('#en_name').val(en_full_name);
+    $('#en_name').val(en_full_name).focus();
     $('.edit-header').html('<i class="fas fa-cog"></i> ' + en_full_name);
     $('#en_status').val($(".en___" + en_id + ":first").attr('en-status'));
     $('#ln_status').val($(".en___" + en_id + ":first").attr('ln-status'));
     $('.save_entity_changes').html('');
     $('.entity_remove_stats').html('');
     $('#en_link_count').val('0');
-
 
     if (parseInt($('.en__icon_' + en_id).attr('en-is-set')) > 0) {
         $('#en_icon').val($('.en__icon_' + en_id).html());
@@ -481,9 +484,6 @@ function en_modify_load(en_id, ln_id) {
 
     }
 
-    //Make the frame visible:
-    $('.fixed-box').addClass('hidden');
-    $("#modifybox").removeClass('hidden').hide().fadeIn();
 
     //We might need to scroll:
     if (is_compact) {
