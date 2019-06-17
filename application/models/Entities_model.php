@@ -520,7 +520,7 @@ class Entities_model extends CI_Model
             $url_content = @file_get_contents($url);
 
             //See if we have a canonical metadata on page?
-            if(substr_count($url_content,'rel="canonical"') > 0){
+            if(!$domain_analysis['url_is_root'] && substr_count($url_content,'rel="canonical"') > 0){
                 //We seem to have it:
                 $page_parts = explode('rel="canonical"',$url_content,2);
                 $canonical_url = one_two_explode('href="', '"', $page_parts[1]);
@@ -528,9 +528,7 @@ class Entities_model extends CI_Model
                     //Replace this with the input URL:
                     $url = $canonical_url;
                 }
-
             }
-
         }
 
 
