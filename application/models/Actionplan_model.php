@@ -379,7 +379,7 @@ class Actionplan_model extends CI_Model
         }
 
 
-        //Make sure not already added to this Student's Action Plan:
+        //Make sure not already added to this User's Action Plan:
         if(count($this->Links_model->ln_fetch(array(
                 'ln_miner_entity_id' => $en_id,
                 'ln_parent_intent_id' => $in_id,

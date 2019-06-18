@@ -2175,16 +2175,15 @@ function echo_en($en, $level, $is_parent = false)
 
 
 
-
-    //User Intent Set
+    //Action Plan Set Intentions by Users and Companies:
     $user_intentions = $CI->Links_model->ln_fetch(array(
-        'ln_type_entity_id' => 4235, //User Intent Set
+        'ln_type_entity_id IN (' . join(',', $CI->config->item('en_ids_7347')) . ')' => null, //Action Plan Set Intentions
         'ln_miner_entity_id' => $en['en_id'],
         'ln_status >=' => 0, //New+
     ), array(), 0, 0, array(), 'COUNT(ln_id) as total_steps');
 
     if($user_intentions[0]['total_steps'] > 0){
-        $ui .= '<a href="/links?ln_status=0,1,2&ln_type_entity_id=4235&ln_miner_entity_id=' . $en['en_id'] . '" class="badge badge-secondary white-secondary ' . echo_advance() . '" style="width:40px; margin-left:5px; margin-right: -3px;" data-toggle="tooltip" data-placement="top" title="Manage entity intentions"><span class="btn-counter">'.echo_number($user_intentions[0]['total_steps']).'</span><i class="far fa-bullseye-arrow"></i></a>';
+        $ui .= '<a href="/links?ln_status=0,1,2&ln_type_entity_id='.join(',', $CI->config->item('en_ids_7347')).'&ln_miner_entity_id=' . $en['en_id'] . '" class="badge badge-secondary white-secondary ' . echo_advance() . '" style="width:40px; margin-left:5px; margin-right: -3px;" data-toggle="tooltip" data-placement="top" title="Manage entity intentions"><span class="btn-counter">'.echo_number($user_intentions[0]['total_steps']).'</span><i class="far fa-bullseye-arrow"></i></a>';
     }
 
 
