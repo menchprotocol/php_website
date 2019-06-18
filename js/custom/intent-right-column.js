@@ -182,7 +182,7 @@ function in_action_plan_users(in_id) {
     $('#load_action_plan_frame').removeClass('hidden').hide().fadeIn();
 
     //Set title:
-    $('#load_action_plan_frame .badge-h-max').html('🚩 ' + $('.in_outcome_' + in_id + ':first').text());
+    $('#load_action_plan_frame .badge-h-max').html('<i class="fas fa-walking"></i> ' + $('.in_outcome_' + in_id + ':first').text());
 
     //Set opacity:
     reset_opacity();

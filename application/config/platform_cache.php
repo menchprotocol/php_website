@@ -11,7 +11,7 @@ defined('BASEPATH') OR exit('No direct script access allowed');
  *
  */
 
-//Generated 2019-06-17 17:55:05 PST
+//Generated 2019-06-17 18:37:14 PST
 
 //Action Plan Set Intentions:
 $config['en_ids_7347'] = array(4235,7348);
@@ -24,7 +24,7 @@ $config['en_all_7347'] = array(
     ),
     7348 => array(
         'm_icon' => '<i class="far fa-bullseye-arrow"></i>',
-        'm_name' => 'Company Intent Set',
+        'm_name' => 'Company Intent Manage',
         'm_desc' => '',
         'm_parents' => array(4755,4593,4595,7347),
     ),
@@ -2096,7 +2096,7 @@ $config['en_all_4755'] = array(
     ),
     7348 => array(
         'm_icon' => '<i class="far fa-bullseye-arrow"></i>',
-        'm_name' => 'Company Intent Set',
+        'm_name' => 'Company Intent Manage',
         'm_desc' => '',
         'm_parents' => array(4755,4593,4595,7347),
     ),
@@ -2605,7 +2605,7 @@ $config['en_all_4595'] = array(
     ),
     7348 => array(
         'm_icon' => '<i class="far fa-bullseye-arrow"></i>',
-        'm_name' => 'Company Intent Set',
+        'm_name' => 'Company Intent Manage',
         'm_desc' => '1000',
         'm_parents' => array(4755,4593,4595,7347),
     ),
@@ -3131,7 +3131,7 @@ $config['en_all_4593'] = array(
     ),
     7348 => array(
         'm_icon' => '<i class="far fa-bullseye-arrow"></i>',
-        'm_name' => 'Company Intent Set',
+        'm_name' => 'Company Intent Manage',
         'm_desc' => 'Intentions set and managed by partner companies using the funnel manager',
         'm_parents' => array(4755,4593,4595,7347),
     ),
