@@ -11,7 +11,24 @@ defined('BASEPATH') OR exit('No direct script access allowed');
  *
  */
 
-//Generated 2019-06-16 23:06:03 PST
+//Generated 2019-06-17 17:23:29 PST
+
+//Action Plan Set Intentions:
+$config['en_ids_7347'] = array(4235,7348);
+$config['en_all_7347'] = array(
+    4235 => array(
+        'm_icon' => '<i class="far fa-bullseye-arrow"></i>',
+        'm_name' => 'User Intent Set',
+        'm_desc' => '',
+        'm_parents' => array(7347,4595,4755,4593),
+    ),
+    7348 => array(
+        'm_icon' => '<i class="far fa-bullseye-arrow"></i>',
+        'm_name' => 'Company Intent Set',
+        'm_desc' => '',
+        'm_parents' => array(4755,4593,4595,7347),
+    ),
+);
 
 //Platform User Tools:
 $config['en_ids_7292'] = array(6137,6138,7291);
@@ -264,7 +281,7 @@ $config['en_all_7233'] = array(
     ),
     7164 => array(
         'm_icon' => '<i class="far fa-comments"></i>',
-        'm_name' => 'User Messages Exchanged',
+        'm_name' => 'Action Plan Messages Exchanged',
         'm_desc' => '',
         'm_parents' => array(7233,7203,7159,4527,6221),
     ),
@@ -287,13 +304,13 @@ $config['en_all_7203'] = array(
     ),
     6255 => array(
         'm_icon' => '<i class="fas fa-walking"></i>',
-        'm_name' => 'User Steps Progressed',
+        'm_name' => 'Action Plan Steps Progressed',
         'm_desc' => '',
         'm_parents' => array(7203,7159,6275,4527),
     ),
     7164 => array(
         'm_icon' => '<i class="far fa-comments"></i>',
-        'm_name' => 'User Messages Exchanged',
+        'm_name' => 'Action Plan Messages Exchanged',
         'm_desc' => '',
         'm_parents' => array(7233,7203,7159,4527,6221),
     ),
@@ -339,7 +356,7 @@ $config['en_all_7166'] = array(
     ),
 );
 
-//User Messages Exchanged:
+//Action Plan Messages Exchanged:
 $config['en_ids_7164'] = array(4268,4278,4279,4287,4299,4460,4547,4548,4549,4550,4551,4552,4553,4554,4555,4556,4557,4570,4577,5967,6563);
 $config['en_all_7164'] = array(
     4268 => array(
@@ -500,13 +517,13 @@ $config['en_all_6186'] = array(
 );
 
 //User Engagements Stats:
-$config['en_ids_7159'] = array(4235,6255,7164);
+$config['en_ids_7159'] = array(7347,6255,7164);
 $config['en_all_7159'] = array(
-    4235 => array(
+    7347 => array(
         'm_icon' => '<i class="far fa-bullseye-arrow"></i>',
-        'm_name' => 'Intent Set',
+        'm_name' => 'Set Intentions',
         'm_desc' => 'Intentions set by users enabling Mench to deliver relevant intelligence.',
-        'm_parents' => array(7159,4595,6153,4506,4755,4593),
+        'm_parents' => array(7159,4527,6219),
     ),
     6255 => array(
         'm_icon' => '<i class="fas fa-walking"></i>',
@@ -1090,7 +1107,7 @@ $config['en_all_6274'] = array(
     ),
 );
 
-//User Steps Progressed:
+//Action Plan Steps Progressed:
 $config['en_ids_6255'] = array(4559,6144,6157,6158,6997,7298);
 $config['en_all_6255'] = array(
     4559 => array(
@@ -1154,7 +1171,7 @@ $config['en_all_6244'] = array(
     ),
 );
 
-//Action Plan Completion:
+//Action Plan Intent Completion:
 $config['en_ids_6150'] = array(6154,6155);
 $config['en_all_6150'] = array(
     6154 => array(
@@ -1604,7 +1621,7 @@ $config['en_all_4432'] = array(
     ),
     2750 => array(
         'm_icon' => '<i class="fas fa-users"></i>',
-        'm_name' => 'Organizations',
+        'm_name' => 'Companies',
         'm_desc' => 'Companies, teams or groups that collaborate with a shared mission',
         'm_parents' => array(4432,4600),
     ),
@@ -1763,7 +1780,7 @@ $config['en_all_4426'] = array(
 );
 
 //Private Content:
-$config['en_ids_4755'] = array(3286,3288,4235,4242,4246,4263,4266,4267,4268,4269,4275,4278,4279,4282,4283,4287,4299,4460,4547,4548,4549,4550,4551,4552,4553,4554,4555,4556,4557,4559,4570,4577,4783,5967,6132,6140,6143,6144,6149,6154,6155,6157,6158,6224,6415,6556,6559,6560,6563,6578,6969,6997);
+$config['en_ids_4755'] = array(3286,3288,4235,4242,4246,4263,4266,4267,4268,4269,4275,4278,4279,4282,4283,4287,4299,4460,4547,4548,4549,4550,4551,4552,4553,4554,4555,4556,4557,4559,4570,4577,4783,5967,6132,6140,6143,6144,6149,6154,6155,6157,6158,6224,6415,6556,6559,6560,6563,6578,6969,6997,7348);
 $config['en_all_4755'] = array(
     3286 => array(
         'm_icon' => '<i class="far fa-key"></i>',
@@ -1781,7 +1798,7 @@ $config['en_all_4755'] = array(
         'm_icon' => '<i class="far fa-bullseye-arrow"></i>',
         'm_name' => 'User Intent Set',
         'm_desc' => '',
-        'm_parents' => array(7159,4595,6153,4506,4755,4593),
+        'm_parents' => array(7347,4595,4755,4593),
     ),
     4242 => array(
         'm_icon' => '<i class="far fa-sync"></i>',
@@ -2077,10 +2094,16 @@ $config['en_all_4755'] = array(
         'm_desc' => '',
         'm_parents' => array(4527,6244,6415,6255,4595,4593,4755,6146),
     ),
+    7348 => array(
+        'm_icon' => '<i class="far fa-bullseye-arrow"></i>',
+        'm_name' => 'Company Intent Set',
+        'm_desc' => '',
+        'm_parents' => array(4755,4593,4595,7347),
+    ),
 );
 
 //Link Points:
-$config['en_ids_4595'] = array(4228,4229,4230,4231,4232,4235,4242,4246,4250,4251,4255,4256,4257,4258,4259,4260,4261,4263,4264,4266,4267,4268,4269,4275,4278,4279,4282,4283,4287,4299,4318,4319,4460,4547,4548,4549,4550,4551,4552,4553,4554,4555,4556,4557,4559,4570,4577,4601,4983,4993,4994,4998,4999,5000,5001,5003,5007,5865,5943,5967,5981,5982,6093,6132,6140,6143,6144,6149,6154,6155,6157,6158,6224,6226,6242,6415,6556,6559,6560,6563,6578,6969,6997);
+$config['en_ids_4595'] = array(4228,4229,4230,4231,4232,4235,4242,4246,4250,4251,4255,4256,4257,4258,4259,4260,4261,4263,4264,4266,4267,4268,4269,4275,4278,4279,4282,4283,4287,4299,4318,4319,4460,4547,4548,4549,4550,4551,4552,4553,4554,4555,4556,4557,4559,4570,4577,4601,4983,4993,4994,4998,4999,5000,5001,5003,5007,5865,5943,5967,5981,5982,6093,6132,6140,6143,6144,6149,6154,6155,6157,6158,6224,6226,6242,6415,6556,6559,6560,6563,6578,6969,6997,7348);
 $config['en_all_4595'] = array(
     4228 => array(
         'm_icon' => '<i class="fas fa-walking"></i>',
@@ -2116,7 +2139,7 @@ $config['en_all_4595'] = array(
         'm_icon' => '<i class="far fa-bullseye-arrow"></i>',
         'm_name' => 'User Intent Set',
         'm_desc' => '50',
-        'm_parents' => array(7159,4595,6153,4506,4755,4593),
+        'm_parents' => array(7347,4595,4755,4593),
     ),
     4242 => array(
         'm_icon' => '<i class="far fa-sync"></i>',
@@ -2580,6 +2603,12 @@ $config['en_all_4595'] = array(
         'm_desc' => '10',
         'm_parents' => array(4527,6244,6415,6255,4595,4593,4755,6146),
     ),
+    7348 => array(
+        'm_icon' => '<i class="far fa-bullseye-arrow"></i>',
+        'm_name' => 'Company Intent Set',
+        'm_desc' => '50',
+        'm_parents' => array(4755,4593,4595,7347),
+    ),
 );
 
 //User Account Types:
@@ -2593,14 +2622,14 @@ $config['en_all_4600'] = array(
     ),
     2750 => array(
         'm_icon' => '<i class="fas fa-users"></i>',
-        'm_name' => 'Organizations',
+        'm_name' => 'Companies',
         'm_desc' => '',
         'm_parents' => array(4432,4600),
     ),
 );
 
 //Link Types:
-$config['en_ids_4593'] = array(4228,4229,4230,4231,4232,4235,4242,4246,4250,4251,4255,4256,4257,4258,4259,4260,4261,4263,4264,4266,4267,4268,4269,4275,4278,4279,4282,4283,4287,4299,4318,4319,4460,4547,4548,4549,4550,4551,4552,4553,4554,4555,4556,4557,4559,4570,4577,4601,4983,4993,4994,4998,4999,5000,5001,5003,5007,5865,5943,5967,5981,5982,6093,6132,6140,6143,6144,6149,6154,6155,6157,6158,6224,6226,6242,6415,6556,6559,6560,6563,6578,6969,6997);
+$config['en_ids_4593'] = array(4228,4229,4230,4231,4232,4235,4242,4246,4250,4251,4255,4256,4257,4258,4259,4260,4261,4263,4264,4266,4267,4268,4269,4275,4278,4279,4282,4283,4287,4299,4318,4319,4460,4547,4548,4549,4550,4551,4552,4553,4554,4555,4556,4557,4559,4570,4577,4601,4983,4993,4994,4998,4999,5000,5001,5003,5007,5865,5943,5967,5981,5982,6093,6132,6140,6143,6144,6149,6154,6155,6157,6158,6224,6226,6242,6415,6556,6559,6560,6563,6578,6969,6997,7348);
 $config['en_all_4593'] = array(
     4228 => array(
         'm_icon' => '<i class="fas fa-walking"></i>',
@@ -2635,8 +2664,8 @@ $config['en_all_4593'] = array(
     4235 => array(
         'm_icon' => '<i class="far fa-bullseye-arrow"></i>',
         'm_name' => 'User Intent Set',
-        'm_desc' => 'Intentions set by users enabling Mench to deliver relevant intelligence.',
-        'm_parents' => array(7159,4595,6153,4506,4755,4593),
+        'm_desc' => 'Intentions set by users which will be completed by taking steps using the Action Plan',
+        'm_parents' => array(7347,4595,4755,4593),
     ),
     4242 => array(
         'm_icon' => '<i class="far fa-sync"></i>',
@@ -3099,6 +3128,12 @@ $config['en_all_4593'] = array(
         'm_name' => 'User Step Intent Unlocked',
         'm_desc' => '',
         'm_parents' => array(4527,6244,6415,6255,4595,4593,4755,6146),
+    ),
+    7348 => array(
+        'm_icon' => '<i class="far fa-bullseye-arrow"></i>',
+        'm_name' => 'Company Intent Set',
+        'm_desc' => 'Intentions set and managed by partner companies using the funnel manager',
+        'm_parents' => array(4755,4593,4595,7347),
     ),
 );
 

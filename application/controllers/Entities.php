@@ -861,7 +861,7 @@ class Entities extends CI_Controller
             'ln_status >=' => 0, //New+
             'ln_type_entity_id IN (' . join(',', $this->config->item('en_ids_4485')) . ')' => null, //All Intent Notes
             'ln_parent_entity_id' => $en_id,
-        ), array('in_child'), 0, 0, array('ln_order' => 'ASC'));
+        ), array('in_child'));
 
 
         //Always skip header:

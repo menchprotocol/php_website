@@ -1884,7 +1884,7 @@ function echo_in($in, $level, $in_parent_id = 0, $is_parent = false)
         )), array(), 0, 0, array(), 'COUNT(ln_id) as total_steps');
     }
     if($actionplan_users[0]['total_steps'] > 0) {
-        $ui .= '<a id="match_list_'.$in['in_id'].'" href="#actionplanusers-'.$in['in_id'].'" onclick="in_action_plan_users('.$in['in_id'].')" class="badge badge-primary white-primary is_not_bg ' . echo_advance() . '" style="width:40px; margin:-3px -3px 0 4px;" data-toggle="tooltip" data-placement="top" title="View Matching Users">'.( !count($in_filters['get_filter_query']) || $actionplan_users_match[0]['total_steps']>0 ? '<span class="btn-counter">' . ( count($in_filters['get_filter_query']) > 0 ? '<i class="fas fa-filter mini-filter"></i> '.echo_number($actionplan_users_match[0]['total_steps']) : echo_number($actionplan_users[0]['total_steps']) ) . '</span>' : '' ).'🚩</a>';
+        $ui .= '<a id="match_list_'.$in['in_id'].'" href="#actionplanusers-'.$in['in_id'].'" onclick="in_action_plan_users('.$in['in_id'].')" class="badge badge-primary white-primary is_not_bg ' . echo_advance() . '" style="width:40px; margin:-3px -3px 0 4px;" data-toggle="tooltip" data-placement="top" title="View Matching Users">'.( !count($in_filters['get_filter_query']) || $actionplan_users_match[0]['total_steps']>0 ? '<span class="btn-counter">' . ( count($in_filters['get_filter_query']) > 0 ? '<i class="fas fa-filter mini-filter"></i> '.echo_number($actionplan_users_match[0]['total_steps']) : echo_number($actionplan_users[0]['total_steps']) ) . '</span>' : '' ).'<i class="fas fa-walking"></i></a>';
     }
 
 
@@ -1901,9 +1901,6 @@ function echo_in($in, $level, $in_parent_id = 0, $is_parent = false)
     //Intent modify:
     $in__metadata_max_seconds = (isset($in_metadata['in__metadata_max_seconds']) ? $in_metadata['in__metadata_max_seconds'] : 0);
     $ui .= '<a class="badge badge-primary white-primary is_not_bg '.( $level==0 ? '' . echo_advance() . '' : '' ).'" onclick="in_modify_load(' . $in['in_id'] . ',' . $ln_id . ')" style="margin:-2px -8px 0 0; width:40px;" href="#loadmodify-' . $in['in_id'] . '-' . $ln_id . '" data-toggle="tooltip" title="Intent completion cost. Click to modify intent'.( $level>1 ? ' and link' : '' ).'" data-placement="top"><span class="btn-counter slim-time t_estimate_' . $in['in_id'] . '" tree-max-seconds="' . $in__metadata_max_seconds . '" intent-seconds="' . $in['in_completion_seconds'] . '">'.( $in__metadata_max_seconds > 0 ? echo_time_hours($in__metadata_max_seconds , true) : 0 ).'</span><i class="fas fa-cog"></i></a> &nbsp;';
-
-
-
 
 
 
@@ -2179,14 +2176,15 @@ function echo_en($en, $level, $is_parent = false)
 
 
 
-    //Action Plan:
-    $actionplan_users = $CI->Links_model->ln_fetch(array(
-        'ln_type_entity_id IN (' . join(',', $CI->config->item('en_ids_6255')) . ')' => null, //Action Plan Progression Completion Triggers
+    //User Intent Set
+    $user_intentions = $CI->Links_model->ln_fetch(array(
+        'ln_type_entity_id' => 4235, //User Intent Set
         'ln_miner_entity_id' => $en['en_id'],
-        'ln_status' => 2, //Published
+        'ln_status >=' => 0, //New+
     ), array(), 0, 0, array(), 'COUNT(ln_id) as total_steps');
-    if($actionplan_users[0]['total_steps'] > 0){
-        $ui .= '<a href="/links?ln_status=2&ln_type_entity_id=' . join(',', $CI->config->item('en_ids_6255')) . '&ln_miner_entity_id=' . $en['en_id'] . '" class="badge badge-secondary ' . echo_advance() . '" style="width:40px; margin:-3px -2px 0 6px; border:2px solid #0084ff !important;" data-toggle="tooltip" data-placement="top" title="Go to Published Action Plan Progression Links @6146"><span class="btn-counter">'.echo_number($actionplan_users[0]['total_steps']).'</span>🚩</a>';
+
+    if($user_intentions[0]['total_steps'] > 0){
+        $ui .= '<a href="/links?ln_status=0,1,2&ln_type_entity_id=4235&ln_miner_entity_id=' . $en['en_id'] . '" class="badge badge-secondary white-secondary ' . echo_advance() . '" style="width:40px; margin-left:5px; margin-right: -3px;" data-toggle="tooltip" data-placement="top" title="Manage entity intentions"><span class="btn-counter">'.echo_number($user_intentions[0]['total_steps']).'</span><i class="far fa-bullseye-arrow"></i></a>';
     }
 
 

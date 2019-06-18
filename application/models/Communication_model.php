@@ -562,6 +562,7 @@ class Communication_model extends CI_Model
         //Where is this request being made from? Public landing pages will have some restrictions on what they displat:
         $is_landing_page = is_numeric($this->uri->segment(1));
         $is_action_plan = ($this->uri->segment(1)=='messenger');
+        $is_entity = ($this->uri->segment(1)=='entities');
         $is_user_message = ($is_landing_page || $is_action_plan);
 
         if (count($string_references['ref_entities']) > 0) {
@@ -596,94 +597,95 @@ class Communication_model extends CI_Model
             $entity_appendix = null;
 
             //Determine what type of Media this reference has:
-            foreach ($ens[0]['en__parents'] as $parent_en) {
+            if(!$is_entity){
+                foreach ($ens[0]['en__parents'] as $parent_en) {
 
-                //Define what type of entity parent link content should be displayed up-front in Messages
-                if ($parent_en['ln_status'] < 2) {
-                    continue;
-                }
+                    //Define what type of entity parent link content should be displayed up-front in Messages
+                    if ($parent_en['ln_status'] < 2) {
+                        continue;
+                    }
 
-                //Make sure this is a URL:
-                if(!in_array($parent_en['ln_type_entity_id'], $this->config->item('en_ids_4537'))){
-                    //Consider showing some details?
-                    //$entity_appendix .= '<div class="entity-appendix">' . $parent_en['en_icon'] . ' '. $parent_en['en_name'] . (strlen($parent_en['ln_content']) > 0 ? ': '. $parent_en['ln_content'] : '') . '</div>';
-                    continue;
-                }
-
-
-
-                //Any Type of URL: Generic, Embed, Video, Audio, Image & File
-
-                if ($parent_en['ln_type_entity_id'] == 4257) {
-
-                    //Embed URL
-                    if ($fb_messenger_format) {
-                        //Show simple URL:
-                        $ln_content = $parent_en['ln_content'];
-                    } else {
-                        //Show HTML Embed Code:
-                        $ln_content = '<div class="entity-appendix">' . echo_url_embed($parent_en['ln_content']) . '</div>';
+                    //Make sure this is a URL:
+                    if(!in_array($parent_en['ln_type_entity_id'], $this->config->item('en_ids_4537'))){
+                        //Consider showing some details?
+                        //$entity_appendix .= '<div class="entity-appendix">' . $parent_en['en_icon'] . ' '. $parent_en['en_name'] . (strlen($parent_en['ln_content']) > 0 ? ': '. $parent_en['ln_content'] : '') . '</div>';
+                        continue;
                     }
 
 
-                    if ($fb_messenger_format) {
+
+                    //Any Type of URL: Generic, Embed, Video, Audio, Image & File
+
+                    if ($parent_en['ln_type_entity_id'] == 4257) {
+
+                        //Embed URL
+                        if ($fb_messenger_format) {
+                            //Show simple URL:
+                            $ln_content = $parent_en['ln_content'];
+                        } else {
+                            //Show HTML Embed Code:
+                            $ln_content = '<div class="entity-appendix">' . echo_url_embed($parent_en['ln_content']) . '</div>';
+                        }
+
+
+                        if ($fb_messenger_format) {
+
+                            //Generic URL:
+                            array_push($fb_media_attachments, array(
+                                'ln_type_entity_id' => 4552, //Text Message Sent
+                                'ln_content' => $ln_content,
+                                'fb_att_id' => 0,
+                                'fb_att_type' => null,
+                            ));
+
+                        } else {
+
+                            //HTML Format, append content to current output message:
+                            $entity_appendix .= $ln_content;
+
+                        }
+
+                    } elseif ($fb_messenger_format && array_key_exists($parent_en['ln_type_entity_id'], $fb_convert_4537)) {
+
+                        //Raw media file: Audio, Video, Image OR File...
+
+                        //Search for Facebook Attachment ID IF $fb_messenger_format = TRUE
+                        $fb_att_id = 0;
+                        if ($fb_messenger_format && strlen($parent_en['ln_metadata']) > 0) {
+                            //We might have a Facebook Attachment ID saved in Metadata, check to see:
+                            $metadata = unserialize($parent_en['ln_metadata']);
+                            if (isset($metadata['fb_att_id']) && intval($metadata['fb_att_id']) > 0) {
+                                //Yes we do, use this for faster media attachments:
+                                $fb_att_id = intval($metadata['fb_att_id']);
+                            }
+                        }
+
+                        //Push raw file to Media Array:
+                        array_push($fb_media_attachments, array(
+                            'ln_type_entity_id' => $master_media_sent_conv[$parent_en['ln_type_entity_id']],
+                            'ln_content' => ($fb_att_id > 0 ? null : $parent_en['ln_content']),
+                            'fb_att_id' => $fb_att_id,
+                            'fb_att_type' => $fb_convert_4537[$parent_en['ln_type_entity_id']],
+                        ));
+
+                    } elseif($fb_messenger_format && $parent_en['ln_type_entity_id'] == 4256){
 
                         //Generic URL:
                         array_push($fb_media_attachments, array(
                             'ln_type_entity_id' => 4552, //Text Message Sent
-                            'ln_content' => $ln_content,
+                            'ln_content' => $parent_en['ln_content'],
                             'fb_att_id' => 0,
                             'fb_att_type' => null,
                         ));
 
-                    } else {
+                    } elseif(!$fb_messenger_format){
 
                         //HTML Format, append content to current output message:
-                        $entity_appendix .= $ln_content;
+                        $entity_appendix .= '<div class="entity-appendix">' . echo_url_type($parent_en['ln_content'], $parent_en['ln_type_entity_id']) . '</div>';
 
                     }
-
-                } elseif ($fb_messenger_format && array_key_exists($parent_en['ln_type_entity_id'], $fb_convert_4537)) {
-
-                    //Raw media file: Audio, Video, Image OR File...
-
-                    //Search for Facebook Attachment ID IF $fb_messenger_format = TRUE
-                    $fb_att_id = 0;
-                    if ($fb_messenger_format && strlen($parent_en['ln_metadata']) > 0) {
-                        //We might have a Facebook Attachment ID saved in Metadata, check to see:
-                        $metadata = unserialize($parent_en['ln_metadata']);
-                        if (isset($metadata['fb_att_id']) && intval($metadata['fb_att_id']) > 0) {
-                            //Yes we do, use this for faster media attachments:
-                            $fb_att_id = intval($metadata['fb_att_id']);
-                        }
-                    }
-
-                    //Push raw file to Media Array:
-                    array_push($fb_media_attachments, array(
-                        'ln_type_entity_id' => $master_media_sent_conv[$parent_en['ln_type_entity_id']],
-                        'ln_content' => ($fb_att_id > 0 ? null : $parent_en['ln_content']),
-                        'fb_att_id' => $fb_att_id,
-                        'fb_att_type' => $fb_convert_4537[$parent_en['ln_type_entity_id']],
-                    ));
-
-                } elseif($fb_messenger_format && $parent_en['ln_type_entity_id'] == 4256){
-
-                    //Generic URL:
-                    array_push($fb_media_attachments, array(
-                        'ln_type_entity_id' => 4552, //Text Message Sent
-                        'ln_content' => $parent_en['ln_content'],
-                        'fb_att_id' => 0,
-                        'fb_att_type' => null,
-                    ));
-
-                } elseif(!$fb_messenger_format){
-
-                    //HTML Format, append content to current output message:
-                    $entity_appendix .= '<div class="entity-appendix">' . echo_url_type($parent_en['ln_content'], $parent_en['ln_type_entity_id']) . '</div>';
-
                 }
             }
-
 
             //Determine if we have text:
             $has_text = !(trim($output_body_message) == '@' . $string_references['ref_entities'][0]);
