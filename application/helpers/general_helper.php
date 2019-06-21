@@ -931,7 +931,27 @@ function update_algolia($input_obj_type = null, $input_obj_id = 0, $return_row_o
         //We should have fetched a single item only, meaning $all_export_rows[0] is what we are focused on...
 
         //What's the status? Is it active or should it be removed?
-        if (!in_array($all_db_rows[0][$input_obj_type . '_status_entity_id'], array(6178 /* Entity Removed */, 6182 /* Intent Removed */))) {
+        if (in_array($all_db_rows[0][$input_obj_type . '_status_entity_id'], array(6178 /* Entity Removed */, 6182 /* Intent Removed */))) {
+
+            if (isset($all_export_rows[0]['objectID'])) {
+
+                //Object is removed locally but still indexed remotely on Algolia, so let's remove it from Algolia:
+
+                //Remove from algolia:
+                $algolia_results = $search_index->deleteObject($all_export_rows[0]['objectID']);
+
+                //also set its algolia_id to 0 locally:
+                update_metadata($input_obj_type, $all_db_rows[0][$input_obj_type.'_id'], array(
+                    $input_obj_type . '__algolia_id' => null, //Since this item has been removed!
+                ));
+
+                $synced_count += 1;
+
+            } else {
+                //Nothing to do here since we don't have the Algolia object locally!
+            }
+
+        } else {
 
             if (isset($all_export_rows[0]['objectID'])) {
 
@@ -955,27 +975,6 @@ function update_algolia($input_obj_type = null, $input_obj_id = 0, $return_row_o
             }
 
             $synced_count += 1;
-
-        } else {
-
-            if (isset($all_export_rows[0]['objectID'])) {
-
-                //Object is removed locally but still indexed remotely on Algolia, so let's remove it from Algolia:
-
-                //Remove from algolia:
-                $algolia_results = $search_index->deleteObject($all_export_rows[0]['objectID']);
-
-                //also set its algolia_id to 0 locally:
-                update_metadata($input_obj_type, $all_db_rows[0][$input_obj_type.'_id'], array(
-                    $input_obj_type . '__algolia_id' => null, //Since this item has been removed!
-                ));
-
-                $synced_count += 1;
-
-            } else {
-                //Nothing to do here since we don't have the Algolia object locally!
-            }
-
         }
 
     } else {
