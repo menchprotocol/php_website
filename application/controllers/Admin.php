@@ -283,7 +283,7 @@ class Admin extends CI_Controller
         echo '<table class="table table-condensed table-striped stats-table">';
 
         echo '<tr class="panel-title down-border">';
-        echo '<td style="text-align: left;">'.echo_number($total_counts[2]).' '.$en_all_7303[3000]['m_name'].'</td>';
+        echo '<td style="text-align: left;">'.echo_number($total_counts[7352]).' '.$en_all_7303[3000]['m_name'].'</td>';
         foreach($this->config->item('en_all_7358') /* Entity Active Statuses */ as $en_status_entity_id => $m_status){
             echo '<td style="text-align: right;" '.( $en_status_entity_id != 7352 /* Entity Featured */ ? ' class="' . echo_advance() . '"' : '' ).'>' . $en_all_6177[$en_status_entity_id]['m_name'] . '</td>';
         }
