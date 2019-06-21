@@ -931,7 +931,7 @@ function update_algolia($input_obj_type = null, $input_obj_id = 0, $return_row_o
         //We should have fetched a single item only, meaning $all_export_rows[0] is what we are focused on...
 
         //What's the status? Is it active or should it be removed?
-        if ($all_db_rows[0][$input_obj_type . '_status'] >= 0) {
+        if (!in_array($all_db_rows[0][$input_obj_type . '_status_entity_id'], array(6178 /* Entity Removed */, 6182 /* Intent Removed */))) {
 
             if (isset($all_export_rows[0]['objectID'])) {
 
