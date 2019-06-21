@@ -17,7 +17,7 @@ echo '<h1 style="margin-bottom:30px;" id="title-parent">' . echo_in_outcome($in[
 
 //Fetch & Display Intent Note Messages for this intent:
 foreach ($this->Links_model->ln_fetch(array(
-    'ln_status' => 2, //Published
+    'ln_status_entity_id IN (' . join(',', $this->config->item('en_ids_7359')) . ')' => null, //Link Statuses Public
     'ln_type_entity_id' => 4231, //Intent Note Messages
     'ln_child_intent_id' => $in['in_id'],
 ), array(), 0, 0, array('ln_order' => 'ASC')) as $ln) {
@@ -54,7 +54,7 @@ if (!$hide_subscribe) {
         if(count($this->Links_model->ln_fetch(array(
                 'ln_miner_entity_id' => $session_en['en_id'],
                 'ln_type_entity_id' => 4235, //Action Plan Set Intention
-                'ln_status IN (' . join(',', $this->config->item('ln_status_incomplete')) . ')' => null, //incomplete intentions
+                'ln_status_entity_id IN (' . join(',', $this->config->item('en_ids_7364')) . ')' => null, //Link Statuses Incomplete
                 'ln_parent_intent_id' => $in['in_id'],
             ))) > 0){
 
@@ -76,7 +76,7 @@ if (!$hide_subscribe) {
     }
 
     //Build trust:
-    echo '<p style="font-size:1em !important;">Mench is open-source and non-profit.</p>';
+    echo '<p style="font-size:1em !important;">Mench is an open-source project. <a href="/'.$this->config->item('in_learn_mench_id').'">Learn more</a>.</p>';
 
 } else {
 
@@ -98,8 +98,8 @@ array_push($exclude_array, $in['in_id']);
 
 //Fetch other intentions:
 $other_intentions = $this->Links_model->ln_fetch(array(
-    'ln_status' => 2, //Published
-    'in_status' => 2, //Published
+    'ln_status_entity_id IN (' . join(',', $this->config->item('en_ids_7359')) . ')' => null, //Link Statuses Public
+    'in_status_entity_id IN (' . join(',', $this->config->item('en_ids_7355')) . ')' => null, //Intent Statuses Public
     'ln_type_entity_id' => 4228, //Fixed intent links only
     'ln_child_intent_id' => $in['in_id'],
     'in_id NOT IN (' . join(',', $exclude_array) . ')' => null,
@@ -119,9 +119,8 @@ foreach ($other_intentions as $parent_intention) {
 }
 
 $recommend_intention = $this->Links_model->ln_fetch(array(
-    'ln_status' => 2, //Published
-    'in_status' => 2, //Published
-    'in_type_entity_id IN (' . join(',', $this->config->item('en_ids_6908')) . ')' => null, //Action Plan Starting Step Intention
+    'ln_status_entity_id IN (' . join(',', $this->config->item('en_ids_7359')) . ')' => null, //Link Statuses Public
+    'in_status_entity_id' => 7351, //Intent Featured
     'ln_type_entity_id' => 4228, //Fixed intent links only
     'ln_parent_intent_id' => 8469, //Recommend Mench Intentions
     'in_id NOT IN (' . join(',', $exclude_array) . ')' => null,

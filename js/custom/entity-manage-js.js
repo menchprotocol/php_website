@@ -107,8 +107,8 @@ $(document).ready(function () {
     });
 
     //Lookout for intent link related changes:
-    $('#ln_status').change(function () {
-        if (parseInt($('#ln_status').find(":selected").val()) < 0) {
+    $('#ln_status_entity_id').change(function () {
+        if (parseInt($('#ln_status_entity_id').find(":selected").val()) < 0) {
             //About to delete? Notify them:
             $('.notify_unlink_en').removeClass('hidden');
         } else {
@@ -120,9 +120,9 @@ $(document).ready(function () {
         mass_action_ui();
     });
 
-    $('#en_status').change(function () {
+    $('#en_status_entity_id').change(function () {
 
-        if (parseInt($('#en_status').find(":selected").val()) < 0) {
+        if (parseInt($('#en_status_entity_id').find(":selected").val()) < 0) {
 
             //Notify admin:
             $('.notify_en_remove').removeClass('hidden');
@@ -321,17 +321,12 @@ function en_add_or_link(en_existing_id, is_parent) {
 
 
 function en_filter_status(new_val) {
-    if (new_val >= -1 || new_val <= 3) {
-        //Remove active class:
-        $('.u-status-filter').removeClass('btn-secondary');
-        //We do have a filter:
-        en_focus_filter = parseInt(new_val);
-        $('.u-status-' + new_val).addClass('btn-secondary');
-        en_load_next_page(0, 1);
-    } else {
-        alert('Invalid new status');
-        return false;
-    }
+    //Remove active class:
+    $('.u-status-filter').removeClass('btn-secondary');
+    //We do have a filter:
+    en_focus_filter = parseInt(new_val);
+    $('.u-status-' + new_val).addClass('btn-secondary');
+    en_load_next_page(0, 1);
 }
 
 function en_name_word_count() {
@@ -445,8 +440,8 @@ function en_modify_load(en_id, ln_id) {
     var en_full_name = $(".en_name_" + en_id + ":first").text();
     $('#en_name').val(en_full_name).focus();
     $('.edit-header').html('<i class="fas fa-cog"></i> ' + en_full_name);
-    $('#en_status').val($(".en___" + en_id + ":first").attr('en-status'));
-    $('#ln_status').val($(".en___" + en_id + ":first").attr('ln-status'));
+    $('#en_status_entity_id').val($(".en___" + en_id + ":first").attr('en-status'));
+    $('#ln_status_entity_id').val($(".en___" + en_id + ":first").attr('ln-status'));
     $('.save_entity_changes').html('');
     $('.entity_remove_stats').html('');
     $('#en_link_count').val('0');
@@ -625,12 +620,12 @@ function en_modify_save() {
         en_id: parseInt($('#modifybox').attr('entity-id')),
         en_name: $('#en_name').val(),
         en_icon: $('#en_icon').val(),
-        en_status: $('#en_status').val(), //The new status (might not have changed too)
+        en_status_entity_id: $('#en_status_entity_id').val(), //The new status (might not have changed too)
         en_merge: $('#en_merge').val(),
         //Link data:
         ln_id: parseInt($('#modifybox').attr('entity-link-id')),
         ln_content: $('#ln_content').val(),
-        ln_status: $('#ln_status').val(),
+        ln_status_entity_id: $('#ln_status_entity_id').val(),
     };
 
     //Show spinner:
@@ -682,8 +677,8 @@ function en_modify_save() {
 
 
                 //Entity Status:
-                $(".en___" + modify_data['en_id']).attr('en-status', modify_data['en_status']);
-                $('.en_status_' + modify_data['en_id']).html('<span data-toggle="tooltip" data-placement="right" title="' + js_fixed_fields['en_status'][modify_data['en_status']]["s_name"] + ': ' + js_fixed_fields['en_status'][modify_data['en_status']]["s_desc"] + '">' + js_fixed_fields['en_status'][modify_data['en_status']]["s_icon"] + '</span>');
+                $(".en___" + modify_data['en_id']).attr('en-status', modify_data['en_status_entity_id']);
+                $('.en_status_entity_id_' + modify_data['en_id']).html('<span data-toggle="tooltip" data-placement="right" title="' + js_en_all_6177[modify_data['en_status_entity_id']]["m_name"] + ': ' + js_en_all_6177[modify_data['en_status_entity_id']]["m_desc"] + '">' + js_en_all_6177[modify_data['en_status_entity_id']]["m_icon"] + '</span>');
 
 
                 //Entity Icon:
@@ -714,8 +709,8 @@ function en_modify_save() {
                     $('.ln_type_' + modify_data['ln_id']).html('<span data-toggle="tooltip" data-placement="right" title="' + en_all_4592[data.js_ln_type_entity_id]["m_name"] + ': ' + en_all_4592[data.js_ln_type_entity_id]["m_desc"] + '">' + en_all_4592[data.js_ln_type_entity_id]["m_icon"] + '</span>');
 
                     //Link Status:
-                    $(".en___" + modify_data['en_id']).attr('ln-status', modify_data['ln_status'])
-                    $('.ln_status_' + modify_data['ln_id']).html('<span class="ln_status_val" data-toggle="tooltip" data-placement="right" title="' + js_fixed_fields['ln_status'][modify_data['ln_status']]["s_name"] + ': ' + js_fixed_fields['ln_status'][modify_data['ln_status']]["s_desc"] + '">' + js_fixed_fields['ln_status'][modify_data['ln_status']]["s_icon"] + '</span>');
+                    $(".en___" + modify_data['en_id']).attr('ln-status', modify_data['ln_status_entity_id'])
+                    $('.ln_status_entity_id_' + modify_data['ln_id']).html('<span data-toggle="tooltip" data-placement="right" title="' + js_en_all_6186[modify_data['ln_status_entity_id']]["m_name"] + ': ' + js_en_all_6186[modify_data['ln_status_entity_id']]["m_desc"] + '">' + js_en_all_6186[modify_data['ln_status_entity_id']]["m_icon"] + '</span>');
 
                 }
 

@@ -36,7 +36,7 @@ class Actionplan_model extends CI_Model
                 'ln_type_entity_id IN (' . join(',' , $this->config->item('en_ids_6146')) . ')' => null, //Action Plan Progression Steps
                 'ln_miner_entity_id' => $en_id, //Belongs to this User
                 'ln_parent_intent_id' => $common_step_in_id,
-                'ln_status' => 2, //Published
+                'ln_status_entity_id IN (' . join(',', $this->config->item('en_ids_7359')) . ')' => null, //Link Statuses Public
             ), ( $is_expansion ? array('in_child') : array() ));
 
             //Have they completed this?
@@ -62,7 +62,7 @@ class Actionplan_model extends CI_Model
                     'ln_miner_entity_id' => $en_id, //Belongs to this User
                     'ln_parent_intent_id' => $common_step_in_id,
                     'ln_child_intent_id IN (' . join(',', $in_metadata['in__metadata_expansion_conditional'][$common_step_in_id]) . ')' => null,
-                    'ln_status' => 2, //Published
+                    'ln_status_entity_id IN (' . join(',', $this->config->item('en_ids_7359')) . ')' => null, //Link Statuses Public
                 ), array('in_child'));
 
                 if(count($unlocked_conditions) < 1){
@@ -97,8 +97,8 @@ class Actionplan_model extends CI_Model
         $user_intents = $this->Links_model->ln_fetch(array(
             'ln_miner_entity_id' => $en_id,
             'ln_type_entity_id' => 4235, //Action Plan Set Intention
-            'ln_status IN (' . join(',', $this->config->item('ln_status_incomplete')) . ')' => null, //incomplete intentions
-            'in_status' => 2, //Published
+            'ln_status_entity_id IN (' . join(',', $this->config->item('en_ids_7364')) . ')' => null, //Link Statuses Incomplete
+            'in_status_entity_id IN (' . join(',', $this->config->item('en_ids_7355')) . ')' => null, //Intent Statuses Public
         ), array('in_parent'), 0, 0, array('ln_order' => 'ASC'));
 
         if(count($user_intents) == 0){
@@ -187,7 +187,7 @@ class Actionplan_model extends CI_Model
         //Fetch this intent:
         $ins = $this->Intents_model->in_fetch(array(
             'in_id' => $in_id,
-            'in_status' => 2,
+            'in_status_entity_id IN (' . join(',', $this->config->item('en_ids_7355')) . ')' => null, //Intent Statuses Public
         ));
         if(count($ins) < 1){
             $this->Links_model->ln_create(array(
@@ -218,12 +218,12 @@ class Actionplan_model extends CI_Model
                     array(
                         'content_type' => 'text',
                         'title' => 'Skip 🚫',
-                        'payload' => 'SKIP-ACTIONPLAN_2_'.$in_id, //Confirm and skip
+                        'payload' => 'SKIP-ACTIONPLAN_skip-confirm_'.$in_id, //Confirm and skip
                     ),
                     array(
                         'content_type' => 'text',
                         'title' => 'Continue ▶️',
-                        'payload' => 'SKIP-ACTIONPLAN_-1_'.$in_id, //Cancel skipping
+                        'payload' => 'SKIP-ACTIONPLAN_skip-cancel_'.$in_id, //Cancel skipping
                     ),
                 ),
                 array(
@@ -240,7 +240,7 @@ class Actionplan_model extends CI_Model
         //Fetch intent common steps:
         $ins = $this->Intents_model->in_fetch(array(
             'in_id' => $in_id,
-            'in_status' => 2, //Published
+            'in_status_entity_id IN (' . join(',', $this->config->item('en_ids_7355')) . ')' => null, //Intent Statuses Public
         ));
         if(count($ins) < 1){
             $this->Links_model->ln_create(array(
@@ -278,7 +278,7 @@ class Actionplan_model extends CI_Model
                 'ln_type_entity_id IN (' . join(',', $this->config->item('en_ids_6146')) . ')' => null, //Action Plan Progression Link Types
                 'ln_miner_entity_id' => $en_id,
                 'ln_parent_intent_id' => $common_in_id,
-                'ln_status >=' => 0, //New+
+                'ln_status_entity_id IN (' . join(',', $this->config->item('en_ids_7360')) . ')' => null, //Link Statuses Active
             ));
 
             //Add skip link:
@@ -286,14 +286,14 @@ class Actionplan_model extends CI_Model
                 'ln_type_entity_id' => 6143, //Action Plan Skipped Step
                 'ln_miner_entity_id' => $en_id,
                 'ln_parent_intent_id' => $common_in_id,
-                'ln_status' => 2, //Published
+                'ln_status_entity_id IN (' . join(',', $this->config->item('en_ids_7359')) . ')' => null, //Link Statuses Public
             ));
 
             //Archive current progression links:
             foreach($current_progression_links as $ln){
                 $this->Links_model->ln_update($ln['ln_id'], array(
                     'ln_parent_link_id' => $new_progression_link['ln_id'],
-                    'ln_status' => -1,
+                    'ln_status_entity_id' => 6173, //Link Removed
                 ), $en_id);
             }
 
@@ -321,8 +321,8 @@ class Actionplan_model extends CI_Model
         foreach($this->Links_model->ln_fetch(array(
             'ln_miner_entity_id' => $en_id,
             'ln_type_entity_id' => 4235, //Action Plan Set Intention
-            'ln_status IN (' . join(',', $this->config->item('ln_status_incomplete')) . ')' => null, //incomplete intentions
-            'in_status' => 2, //Published
+            'ln_status_entity_id IN (' . join(',', $this->config->item('en_ids_7364')) . ')' => null, //Link Statuses Incomplete
+            'in_status_entity_id IN (' . join(',', $this->config->item('en_ids_7355')) . ')' => null, //Intent Statuses Public
         ), array('in_parent'), 0, 0, array('ln_order' => 'ASC')) as $actionplan_in){
 
             //See progress rate so far:
@@ -361,7 +361,7 @@ class Actionplan_model extends CI_Model
 
 
         //Make sure intent is public:
-        $public_in = $this->Intents_model->in_is_public($ins[0]);
+        $public_in = $this->Intents_model->in_is_public($ins[0], true);
 
         //Did we have any issues?
         if(!$public_in['status']){
@@ -384,7 +384,7 @@ class Actionplan_model extends CI_Model
                 'ln_miner_entity_id' => $en_id,
                 'ln_parent_intent_id' => $in_id,
                 'ln_type_entity_id' => 4235, //Action Plan Set Intention
-                'ln_status IN (' . join(',', $this->config->item('ln_status_incomplete')) . ')' => null, //incomplete intentions
+                'ln_status_entity_id IN (' . join(',', $this->config->item('en_ids_7364')) . ')' => null, //Link Statuses Incomplete
             ))) > 0){
 
             //Oooops this already exists in the Action Plan:
@@ -403,12 +403,12 @@ class Actionplan_model extends CI_Model
         //Add intent to User's Action Plan:
         $actionplan = $this->Links_model->ln_create(array(
             'ln_type_entity_id' => 4235, //Action Plan Set Intention
-            'ln_status' => 1, //Drafting
+            'ln_status_entity_id' => 6175, //Link Drafting
             'ln_miner_entity_id' => $en_id, //Belongs to this User
             'ln_parent_intent_id' => $ins[0]['in_id'], //The Intent they are adding
             'ln_order' => 1 + $this->Links_model->ln_max_order(array( //Place this intent at the end of all intents the User is drafting...
                     'ln_type_entity_id' => 4235, //Action Plan Set Intention
-                    'ln_status IN (' . join(',', $this->config->item('ln_status_incomplete')) . ')' => null, //incomplete intentions
+                    'ln_status_entity_id IN (' . join(',', $this->config->item('en_ids_7364')) . ')' => null, //Link Statuses Incomplete
                     'ln_miner_entity_id' => $en_id, //Belongs to this User
                 )),
         ));
@@ -488,8 +488,8 @@ class Actionplan_model extends CI_Model
 
         //Count children:
         $child_count = count($this->Links_model->ln_fetch(array(
-            'ln_status' => 2, //Published
-            'in_status' => 2, //Published
+            'ln_status_entity_id IN (' . join(',', $this->config->item('en_ids_7359')) . ')' => null, //Link Statuses Public
+            'in_status_entity_id IN (' . join(',', $this->config->item('en_ids_7355')) . ')' => null, //Intent Statuses Public
             'ln_type_entity_id' => 4228, //Fixed intent links only
             'ln_parent_intent_id' => $in['in_id'],
         ), array('in_child')));
@@ -504,7 +504,7 @@ class Actionplan_model extends CI_Model
         }
 
         if(count($this->Links_model->ln_fetch(array(
-            'ln_status' => 2, //Published
+            'ln_status_entity_id IN (' . join(',', $this->config->item('en_ids_7359')) . ')' => null, //Link Statuses Public
             'ln_type_entity_id IN (' . join(',', $this->config->item('en_ids_6345')) . ')' => null, //Deliverable Intent Notes
             'ln_child_intent_id' => $in['in_id'],
         ))) > 0){
@@ -521,7 +521,7 @@ class Actionplan_model extends CI_Model
             'ln_type_entity_id' => 6158, //Action Plan Auto Complete
             'ln_miner_entity_id' => $en_id,
             'ln_parent_intent_id' => $in['in_id'],
-            'ln_status' => 2, //Published
+            'ln_status_entity_id IN (' . join(',', $this->config->item('en_ids_7359')) . ')' => null, //Link Statuses Public
         ));
 
         //Process on-complete automations:
@@ -565,7 +565,7 @@ class Actionplan_model extends CI_Model
 
             //Make sure previous step expansion has NOT happened before:
             $existing_expansions = $this->Links_model->ln_fetch(array(
-                'ln_status' => 2, //Published
+                'ln_status_entity_id IN (' . join(',', $this->config->item('en_ids_7359')) . ')' => null, //Link Statuses Public
                 'ln_type_entity_id' => 6140, //Action Plan Conditional Step Unlocked
                 'ln_miner_entity_id' => $en_id,
                 'ln_parent_intent_id' => $in['in_id'],
@@ -604,8 +604,8 @@ class Actionplan_model extends CI_Model
             //Detect potential conditional steps to be Unlocked:
             $found_match = 0;
             $condition_ranges = $this->Links_model->ln_fetch(array(
-                'ln_status' => 2, //Published
-                'in_status' => 2, //Published
+                'ln_status_entity_id IN (' . join(',', $this->config->item('en_ids_7359')) . ')' => null, //Link Statuses Public
+                'in_status_entity_id IN (' . join(',', $this->config->item('en_ids_7355')) . ')' => null, //Intent Statuses Public
                 'ln_type_entity_id' => 4229,
                 'ln_parent_intent_id' => $in['in_id'],
                 'ln_child_intent_id IN (' . join(',', $in_metadata['in__metadata_expansion_conditional'][$in['in_id']]) . ')' => null, //Limit to cached answers
@@ -652,7 +652,7 @@ class Actionplan_model extends CI_Model
 
                     //Unlock Action Plan:
                     $this->Links_model->ln_create(array(
-                        'ln_status' => 2,
+                        'ln_status_entity_id IN (' . join(',', $this->config->item('en_ids_7359')) . ')' => null, //Link Statuses Public
                         'ln_type_entity_id' => 6140, //Action Plan Conditional Step Unlocked
                         'ln_miner_entity_id' => $en_id,
                         'ln_parent_intent_id' => $in['in_id'],
@@ -697,7 +697,7 @@ class Actionplan_model extends CI_Model
             $user_intentions_ids = $this->Actionplan_model->actionplan_intention_ids($en_id);
 
             //Fetch all parents trees for this intent
-            $parents_trees = $this->Intents_model->in_fetch_recursive_parents($in['in_id'], 2);
+            $parents_trees = $this->Intents_model->in_fetch_recursive_public_parents($in['in_id']);
 
             //Prevent duplicate processes even if on multiple parent trees:
             $parents_checked = array();
@@ -719,7 +719,7 @@ class Actionplan_model extends CI_Model
                         //Fetch parent intent:
                         $parent_ins = $this->Intents_model->in_fetch(array(
                             'in_id' => $p_id,
-                            'in_status' => 2,
+                            'in_status_entity_id IN (' . join(',', $this->config->item('en_ids_7355')) . ')' => null, //Intent Statuses Public
                         ));
 
                         //Now see if this child completion resulted in a full parent completion:
@@ -763,7 +763,7 @@ class Actionplan_model extends CI_Model
         if($trigget_completion_tips){
 
             $on_complete_messages = $this->Links_model->ln_fetch(array(
-                'ln_status' => 2, //Published
+                'ln_status_entity_id IN (' . join(',', $this->config->item('en_ids_7359')) . ')' => null, //Link Statuses Public
                 'ln_type_entity_id' => 6242, //On-Complete Tips
                 'ln_child_intent_id' => $in['in_id'],
             ), array(), 0, 0, array('ln_order' => 'ASC'));
@@ -858,12 +858,12 @@ class Actionplan_model extends CI_Model
                 'message' => 'Invalid Intent #' . $ins[0]['in_id'],
             );
 
-        } elseif ($ins[0]['in_status'] != 2) {
+        } elseif (!in_array($ins[0]['in_status_entity_id'], $this->config->item('en_ids_7355') /* Intent Statuses Public */)) {
 
             $this->Links_model->ln_create(array(
                 'ln_type_entity_id' => 4246, //Platform Bug Reports
                 'ln_miner_entity_id' => 1, //Shervin/Developer
-                'ln_content' => 'actionplan_step_next_echo() called unpublished intent',
+                'ln_content' => 'actionplan_step_next_echo() called intent that is not yet public',
                 'ln_child_entity_id' => $en_id,
                 'ln_parent_intent_id' => $ins[0]['in_id'],
             ));
@@ -902,13 +902,13 @@ class Actionplan_model extends CI_Model
         //Fetch submission requirements, messages, children and current progressions (if any):
         $completion_req_note = $this->Intents_model->in_manual_response_note($ins[0], $fb_messenger_format); //See if we have intent requirements
         $in__messages = $this->Links_model->ln_fetch(array(
-            'ln_status' => 2, //Published
+            'ln_status_entity_id IN (' . join(',', $this->config->item('en_ids_7359')) . ')' => null, //Link Statuses Public
             'ln_type_entity_id' => 4231, //Intent Note Messages
             'ln_child_intent_id' => $ins[0]['in_id'],
         ), array(), 0, 0, array('ln_order' => 'ASC'));
         $in__children = $this->Links_model->ln_fetch(array(
-            'ln_status' => 2, //Published
-            'in_status' => 2, //Published
+            'ln_status_entity_id IN (' . join(',', $this->config->item('en_ids_7359')) . ')' => null, //Link Statuses Public
+            'in_status_entity_id IN (' . join(',', $this->config->item('en_ids_7355')) . ')' => null, //Intent Statuses Public
             'ln_type_entity_id' => 4228, //Fixed intent links only
             'ln_parent_intent_id' => $ins[0]['in_id'],
         ), array('in_child'), 0, 0, array('ln_order' => 'ASC'));
@@ -916,7 +916,7 @@ class Actionplan_model extends CI_Model
             'ln_type_entity_id IN (' . join(',', $this->config->item('en_ids_6146')) . ')' => null, //Action Plan Progression Link Types
             'ln_miner_entity_id' => $en_id,
             'ln_parent_intent_id' => $ins[0]['in_id'],
-            'ln_status >=' => 0, //New+ [Fetch all types of progress)
+            'ln_status_entity_id IN (' . join(',', $this->config->item('en_ids_7360')) . ')' => null, //Link Statuses Active
         ));
 
 
@@ -959,7 +959,7 @@ class Actionplan_model extends CI_Model
          * */
         $made_published_progress = false; //Assume FALSE, search and see...
         foreach($current_progression_links as $current_progression_link){
-            if($current_progression_link['ln_status']==2){
+            if(in_array($current_progression_link['ln_status_entity_id'], $this->config->item('en_ids_7359')/* Link Statuses Public */)){
                 $made_published_progress = true;
                 break;
             }
@@ -972,7 +972,7 @@ class Actionplan_model extends CI_Model
                 'ln_type_entity_id' => $progression_type_entity_id,
                 'ln_miner_entity_id' => $en_id,
                 'ln_parent_intent_id' => $ins[0]['in_id'],
-                'ln_status' => ( $is_two_step ? 1 /* Needs more work */ : 2 /* Published */ ),
+                'ln_status_entity_id' => ( $is_two_step ? 6175 /* Link Drafting */ : 6176 /* Link Published */ ),
             ));
 
             //Since we logged a new progression, let's remove the old ones if any:
@@ -982,7 +982,7 @@ class Actionplan_model extends CI_Model
 
                     $this->Links_model->ln_update($ln['ln_id'], array(
                         'ln_parent_link_id' => $new_progression_link['ln_id'],
-                        'ln_status' => -1,
+                        'ln_status_entity_id' => 6173, //Link Removed
                     ), $en_id);
 
                     //Remove from array:
@@ -1006,7 +1006,7 @@ class Actionplan_model extends CI_Model
         if($user_can_skip){
             foreach($current_progression_links as $current_progression_link){
                 //Also make sure this was NOT an automated progression because there is no point in skipping those:
-                if(!$has_children && $current_progression_link['ln_status']==2 && !in_array($current_progression_link['ln_type_entity_id'], $this->config->item('en_ids_6274'))){
+                if(!$has_children && in_array($current_progression_link['ln_status_entity_id'], $this->config->item('en_ids_7359') /* Link Statuses Public */) && !in_array($current_progression_link['ln_type_entity_id'], $this->config->item('en_ids_6274'))){
                     $user_can_skip = false;
                     break;
                 }
@@ -1030,8 +1030,8 @@ class Actionplan_model extends CI_Model
         if(!$fb_messenger_format){
 
             $unlocked_steps = $this->Links_model->ln_fetch(array(
-                'ln_status' => 2, //Published
-                'in_status' => 2, //Published
+                'ln_status_entity_id IN (' . join(',', $this->config->item('en_ids_7359')) . ')' => null, //Link Statuses Public
+                'in_status_entity_id IN (' . join(',', $this->config->item('en_ids_7355')) . ')' => null, //Intent Statuses Public
                 'ln_type_entity_id' => 6140, //Action Plan Conditional Step Unlocked
                 'ln_miner_entity_id' => $en_id,
                 'ln_parent_intent_id' => $ins[0]['in_id'],
@@ -1043,7 +1043,7 @@ class Actionplan_model extends CI_Model
                 $next_step_message .= '<div class="list-group" style="margin:0 0 0 0;">';
                 foreach($unlocked_steps as $unlocked_step){
                     //Add HTML step to UI:
-                    $next_step_message .= echo_actionplan_step_child($en_id, $unlocked_step, $unlocked_step['ln_status'], true);
+                    $next_step_message .= echo_actionplan_step_child($en_id, $unlocked_step, $unlocked_step['ln_status_entity_id'], true);
                 }
                 $next_step_message .= '</div>';
             }
@@ -1134,7 +1134,7 @@ class Actionplan_model extends CI_Model
                         'ln_type_entity_id IN (' . join(',', $this->config->item('en_ids_6146')) . ')' => null, //Action Plan Progression Link Types
                         'ln_miner_entity_id' => $en_id,
                         'ln_parent_intent_id' => $current_progression_links[0]['ln_child_intent_id'],
-                        'ln_status >=' => 0,
+                        'ln_status_entity_id IN (' . join(',', $this->config->item('en_ids_7360')) . ')' => null, //Link Statuses Active
                     ));
                 }
 
@@ -1189,7 +1189,7 @@ class Actionplan_model extends CI_Model
 
                     if($was_selected) {
                         //Status Icon:
-                        $next_step_message .= '&nbsp;' . echo_fixed_fields('ln_action_plan_status', (count($child_progression_steps) > 0 ? $child_progression_steps[0]['ln_status'] : 0), false, null);
+                        $next_step_message .= '&nbsp;' . echo_en_cache('en_all_6186' /* Link Statuses */, (count($child_progression_steps) > 0 ? $child_progression_steps[0]['ln_status_entity_id'] : 6174 /* Link New */), false, null);
                     }
 
                     //Close tags:
@@ -1262,14 +1262,14 @@ class Actionplan_model extends CI_Model
                         'ln_type_entity_id IN (' . join(',', $this->config->item('en_ids_6146')) . ')' => null, //Action Plan Progression Link Types
                         'ln_miner_entity_id' => $en_id,
                         'ln_parent_intent_id' => $child_in['in_id'],
-                        'ln_status >=' => 0,
+                        'ln_status_entity_id IN (' . join(',', $this->config->item('en_ids_7360')) . ')' => null, //Link Statuses Active
                     ));
 
 
                     if(!$fb_messenger_format){
 
                         //Add HTML step to UI:
-                        $next_step_message .= echo_actionplan_step_child($en_id, $child_in, (count($child_progression_steps) > 0 ? $child_progression_steps[0]['ln_status'] : 0 ));
+                        $next_step_message .= echo_actionplan_step_child($en_id, $child_in, (count($child_progression_steps) > 0 ? $child_progression_steps[0]['ln_status_entity_id'] : 0 ));
 
                     } else {
 
@@ -1299,7 +1299,7 @@ class Actionplan_model extends CI_Model
          * JUST made progress on this step
          *
          * */
-        if(isset($new_progression_link['ln_status']) && $new_progression_link['ln_status']==2){
+        if(isset($new_progression_link['ln_status_entity_id']) && in_array($new_progression_link['ln_status_entity_id'], $this->config->item('en_ids_7359') /* Link Statuses Public */)){
 
             //Process on-complete automations:
             $on_complete_messages = $this->Actionplan_model->actionplan_completion_checks($en_id, $ins[0], false, $trigget_completion_tips);
@@ -1367,7 +1367,7 @@ class Actionplan_model extends CI_Model
                 array_push($next_step_quick_replies, array(
                     'content_type' => 'text',
                     'title' => 'Skip',
-                    'payload' => 'SKIP-ACTIONPLAN_1_' . $ins[0]['in_id'],
+                    'payload' => 'SKIP-ACTIONPLAN_skip-initiate_' . $ins[0]['in_id'],
                 ));
 
             } else {
@@ -1507,8 +1507,8 @@ class Actionplan_model extends CI_Model
 
                 //Calculate min/max points for this based on answers:
                 foreach($this->Links_model->ln_fetch(array(
-                    'in_status' => 2, //Published
-                    'ln_status' => 2, //Published
+                    'in_status_entity_id IN (' . join(',', $this->config->item('en_ids_7355')) . ')' => null, //Intent Statuses Public
+                    'ln_status_entity_id IN (' . join(',', $this->config->item('en_ids_7359')) . ')' => null, //Link Statuses Public
                     'ln_type_entity_id' => 4228, //Intent Link Fixed Steps
                     'ln_parent_intent_id' => $question_in_id,
                     'ln_child_intent_id IN (' . join(',', $answers_in_ids) . ')' => null, //Limit to cached answers
@@ -1545,8 +1545,8 @@ class Actionplan_model extends CI_Model
                 'ln_miner_entity_id' => $en_id, //Belongs to this User
                 'ln_parent_intent_id IN (' . join(',', $flat_common_steps ) . ')' => null,
                 'ln_child_intent_id IN (' . join(',', array_flatten($in_metadata['in__metadata_expansion_steps'])) . ')' => null,
-                'ln_status' => 2, //Published
-                'in_status' => 2, //Published
+                'ln_status_entity_id IN (' . join(',', $this->config->item('en_ids_7359')) . ')' => null, //Link Statuses Public
+                'in_status_entity_id IN (' . join(',', $this->config->item('en_ids_7355')) . ')' => null, //Intent Statuses Public
             ), array('in_child')) as $expansion_in) {
 
                 //Fetch recursive:
@@ -1588,7 +1588,7 @@ class Actionplan_model extends CI_Model
         //Count totals:
         $common_totals = $this->Intents_model->in_fetch(array(
             'in_id IN ('.join(',',$flat_common_steps).')' => null,
-            'in_status' => 2, //Published
+            'in_status_entity_id IN (' . join(',', $this->config->item('en_ids_7355')) . ')' => null, //Intent Statuses Public
         ), array(), 0, 0, array(), 'COUNT(in_id) as total_steps, SUM(in_completion_seconds) as total_seconds');
 
         //Count completed for user:
@@ -1596,8 +1596,8 @@ class Actionplan_model extends CI_Model
             'ln_type_entity_id IN (' . join(',', $this->config->item('en_ids_6146')) . ')' => null, //Action Plan Progression Link Types
             'ln_miner_entity_id' => $en_id, //Belongs to this User
             'ln_parent_intent_id IN (' . join(',', $flat_common_steps ) . ')' => null,
-            'ln_status' => 2, //Published
-            'in_status' => 2, //Published
+            'ln_status_entity_id IN (' . join(',', $this->config->item('en_ids_7359')) . ')' => null, //Link Statuses Public
+            'in_status_entity_id IN (' . join(',', $this->config->item('en_ids_7355')) . ')' => null, //Intent Statuses Public
         ), array('in_parent'), 0, 0, array(), 'COUNT(in_id) as completed_steps, SUM(in_completion_seconds) as completed_seconds');
 
         //Calculate common steps and expansion steps recursively for this user:
@@ -1618,8 +1618,8 @@ class Actionplan_model extends CI_Model
                 'ln_miner_entity_id' => $en_id, //Belongs to this User
                 'ln_parent_intent_id IN (' . join(',', $flat_common_steps ) . ')' => null,
                 'ln_child_intent_id IN (' . join(',', array_flatten($in_metadata['in__metadata_expansion_steps'])) . ')' => null,
-                'ln_status' => 2, //Published
-                'in_status' => 2, //Published
+                'ln_status_entity_id IN (' . join(',', $this->config->item('en_ids_7359')) . ')' => null, //Link Statuses Public
+                'in_status_entity_id IN (' . join(',', $this->config->item('en_ids_7355')) . ')' => null, //Intent Statuses Public
             ), array('in_child')) as $expansion_in) {
 
                 //Fetch recursive:
@@ -1643,8 +1643,8 @@ class Actionplan_model extends CI_Model
                 'ln_miner_entity_id' => $en_id, //Belongs to this User
                 'ln_parent_intent_id IN (' . join(',', $flat_common_steps ) . ')' => null,
                 'ln_child_intent_id IN (' . join(',', array_flatten($in_metadata['in__metadata_expansion_conditional'])) . ')' => null,
-                'ln_status' => 2, //Published
-                'in_status' => 2, //Published
+                'ln_status_entity_id IN (' . join(',', $this->config->item('en_ids_7359')) . ')' => null, //Link Statuses Public
+                'in_status_entity_id IN (' . join(',', $this->config->item('en_ids_7355')) . ')' => null, //Intent Statuses Public
             ), array('in_child')) as $expansion_in) {
 
                 //Fetch recursive:
@@ -1697,8 +1697,8 @@ class Actionplan_model extends CI_Model
         foreach($this->Links_model->ln_fetch(array(
             'ln_miner_entity_id' => $en_id,
             'ln_type_entity_id' => 4235, //Action Plan Set Intention
-            'ln_status IN (' . join(',', $this->config->item('ln_status_incomplete')) . ')' => null, //incomplete intentions
-            'in_status' => 2, //Published
+            'ln_status_entity_id IN (' . join(',', $this->config->item('en_ids_7364')) . ')' => null, //Link Statuses Incomplete
+            'in_status_entity_id IN (' . join(',', $this->config->item('en_ids_7355')) . ')' => null, //Intent Statuses Public
         ), array('in_parent'), 0) as $user_in){
             array_push($user_intentions_ids, intval($user_in['in_id']));
         }

@@ -63,7 +63,7 @@ echo '<div class="actionplan-tip"><i class="fas fa-lightbulb"></i> TIP: '.echo_r
 
 //Are they a miner? Give them option to clear everything:
 if(count($this->Links_model->ln_fetch(array(
-        'ln_status' => 2, //Published
+        'ln_status_entity_id IN (' . join(',', $this->config->item('en_ids_7359')) . ')' => null, //Link Statuses Public
         'ln_type_entity_id IN (' . join(',', $this->config->item('en_ids_4592')) . ')' => null, //Entity Link Connectors
         'ln_child_entity_id' => $session_en['en_id'],
         'ln_parent_entity_id' => 1308, //Miners

@@ -16,19 +16,19 @@ if(isset($_GET['ln_type_entity_id_group']) && strlen($_GET['ln_type_entity_id_gr
 
 
 //Apply filters:
-if(isset($_GET['in_status']) && strlen($_GET['in_status']) > 0){
+if(isset($_GET['in_status_entity_id']) && strlen($_GET['in_status_entity_id']) > 0){
     if(isset($_GET['ln_type_entity_id']) && $_GET['ln_type_entity_id']==4250){ //Intent created
         //Filter intent status based on
         $join_by = array('in_child');
 
-        if (substr_count($_GET['in_status'], ',') > 0) {
+        if (substr_count($_GET['in_status_entity_id'], ',') > 0) {
             //This is multiple IDs:
-            $filters['( in_status IN (' . $_GET['in_status'] . '))'] = null;
+            $filters['( in_status_entity_id IN (' . $_GET['in_status_entity_id'] . '))'] = null;
         } else {
-            $filters['in_status'] = intval($_GET['in_status']);
+            $filters['in_status_entity_id'] = intval($_GET['in_status_entity_id']);
         }
     } else {
-        unset($_GET['in_status']);
+        unset($_GET['in_status_entity_id']);
     }
 }
 
@@ -62,29 +62,29 @@ if(isset($_GET['in_type_entity_id']) && strlen($_GET['in_type_entity_id']) > 0){
     }
 }
 
-if(isset($_GET['en_status']) && strlen($_GET['en_status']) > 0){
+if(isset($_GET['en_status_entity_id']) && strlen($_GET['en_status_entity_id']) > 0){
     if(isset($_GET['ln_type_entity_id']) && $_GET['ln_type_entity_id']==4251){ //Entity Created
 
         //Filter intent status based on
         $join_by = array('en_child');
 
-        if (substr_count($_GET['en_status'], ',') > 0) {
+        if (substr_count($_GET['en_status_entity_id'], ',') > 0) {
             //This is multiple IDs:
-            $filters['( en_status IN (' . $_GET['en_status'] . '))'] = null;
+            $filters['( en_status_entity_id IN (' . $_GET['en_status_entity_id'] . '))'] = null;
         } else {
-            $filters['en_status'] = intval($_GET['en_status']);
+            $filters['en_status_entity_id'] = intval($_GET['en_status_entity_id']);
         }
     } else {
-        unset($_GET['en_status']);
+        unset($_GET['en_status_entity_id']);
     }
 }
 
-if(isset($_GET['ln_status']) && strlen($_GET['ln_status']) > 0){
-    if (substr_count($_GET['ln_status'], ',') > 0) {
+if(isset($_GET['ln_status_entity_id']) && strlen($_GET['ln_status_entity_id']) > 0){
+    if (substr_count($_GET['ln_status_entity_id'], ',') > 0) {
         //This is multiple IDs:
-        $filters['( ln_status IN (' . $_GET['ln_status'] . '))'] = null;
+        $filters['( ln_status_entity_id IN (' . $_GET['ln_status_entity_id'] . '))'] = null;
     } else {
-        $filters['ln_status'] = intval($_GET['ln_status']);
+        $filters['ln_status_entity_id'] = intval($_GET['ln_status_entity_id']);
     }
 }
 
@@ -205,7 +205,7 @@ if(isset($_GET['end_range']) && is_valid_date($_GET['end_range'])){
 //Fetch unique link types recorded so far:
 $ini_filter = array();
 foreach($filters as $key => $value){
-    if(!includes_any($key, array('in_status', 'in_verb_entity_id', 'in_type_entity_id', 'en_status'))){
+    if(!includes_any($key, array('in_status_entity_id', 'in_verb_entity_id', 'in_type_entity_id', 'en_status_entity_id'))){
         $ini_filter[$key] = $value;
     }
 }
@@ -308,7 +308,7 @@ echo '<div class="row">';
 
         echo '<td><span class="mini-header">Parent Link IDs:</span><input type="text" name="ln_parent_link_id" value="' . ((isset($_GET['ln_parent_link_id'])) ? $_GET['ln_parent_link_id'] : '') . '" class="form-control border"></td>';
 
-        echo '<td><span class="mini-header">Link Status:</span><input type="text" name="ln_status" value="' . ((isset($_GET['ln_status'])) ? $_GET['ln_status'] : '') . '" class="form-control border"></td>';
+        echo '<td><span class="mini-header">Link Status:</span><input type="text" name="ln_status_entity_id" value="' . ((isset($_GET['ln_status_entity_id'])) ? $_GET['ln_status_entity_id'] : '') . '" class="form-control border"></td>';
 
         echo '</tr></table>';
 
@@ -388,13 +388,13 @@ echo '</div></td>';
 
         //Optional Intent/Entity status filter ONLY IF Link Type = Create New Intent/Entity
 
-        echo '<div class="filter-statuses filter-in-status hidden"><span class="mini-header">Intent Status:</span><input type="text" name="in_status" value="' . ((isset($_GET['in_status'])) ? $_GET['in_status'] : '') . '" class="form-control border"></div>';
+        echo '<div class="filter-statuses filter-in-status hidden"><span class="mini-header">Intent Status:</span><input type="text" name="in_status_entity_id" value="' . ((isset($_GET['in_status_entity_id'])) ? $_GET['in_status_entity_id'] : '') . '" class="form-control border"></div>';
 
         echo '<div class="filter-statuses filter-in-status hidden"><span class="mini-header">Intent Type Entity IDS:</span><input type="text" name="in_type_entity_id" value="' . ((isset($_GET['in_type_entity_id'])) ? $_GET['in_type_entity_id'] : '') . '" class="form-control border"></div>';
 
         echo '<div class="filter-statuses filter-in-status hidden"><span class="mini-header">Intent Verb Entity IDS:</span><input type="text" name="in_verb_entity_id" value="' . ((isset($_GET['in_verb_entity_id'])) ? $_GET['in_verb_entity_id'] : '') . '" class="form-control border"></div>';
 
-        echo '<div class="filter-statuses filter-en-status hidden"><span class="mini-header">Entity Status:</span><input type="text" name="en_status" value="' . ((isset($_GET['en_status'])) ? $_GET['en_status'] : '') . '" class="form-control border"></div>';
+        echo '<div class="filter-statuses filter-en-status hidden"><span class="mini-header">Entity Status:</span><input type="text" name="en_status_entity_id" value="' . ((isset($_GET['en_status_entity_id'])) ? $_GET['en_status_entity_id'] : '') . '" class="form-control border"></div>';
 
         echo '</td>';
 

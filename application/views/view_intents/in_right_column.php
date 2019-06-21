@@ -35,15 +35,15 @@
                 <div class="inline-box" style="margin-bottom: 15px;">
 
 
-                    <div class="in_status_lock hidden">
+                    <div class="in_status_entity_id_lock hidden">
                         <b data-toggle="tooltip" title="Intent locked because its hard-coded in the Mench code base" data-placement="top" class="underdot" style="font-size: 0.85em; color: #FF0000;"><i class="fas fa-lock"></i> SYSTEM LOCK</b>
                     </div>
 
                     <span class="mini-header">Intent Status:</span>
-                    <select class="form-control border" id="in_status" style="display: inline-block !important;">
+                    <select class="form-control border" id="in_status_entity_id" style="display: inline-block !important;">
                         <?php
-                        foreach (echo_fixed_fields('in_status') as $status_id => $status) {
-                            echo '<option value="' . $status_id . '" title="' . $status['s_desc'] . '">' . $status['s_name'] . '</option>';
+                        foreach($this->config->item('en_all_4737') /* Intent Statuses */ as $en_id => $m){
+                            echo '<option value="' . $en_id . '" title="' . $m['m_desc'] . '">' . $m['m_name'] . '</option>';
                         }
                         ?>
                     </select>
@@ -207,12 +207,10 @@
 
 
                         <span class="mini-header" style="margin-top: 20px;">Link Status:</span>
-                        <select class="form-control border" id="ln_status" style="display: inline-block !important;">
+                        <select class="form-control border" id="ln_status_entity_id" style="display: inline-block !important;">
                             <?php
-                            foreach (echo_fixed_fields('ln_status') as $status_id => $status) {
-                                if($status_id < 3){ //No need to verify intent links!
-                                    echo '<option value="' . $status_id . '" title="' . $status['s_desc'] . '">' . $status['s_name'] . '</option>';
-                                }
+                            foreach($this->config->item('en_all_6186') /* Link Statuses */ as $en_id => $m){
+                                echo '<option value="' . $en_id . '" title="' . $m['m_desc'] . '">' . $m['m_name'] . '</option>';
                             }
                             ?>
                         </select>

@@ -250,7 +250,9 @@ class Links extends CI_Controller
         );
 
         //Add intents:
-        $ins = $this->Intents_model->in_fetch(array('in_status >=' => 0));
+        $ins = $this->Intents_model->in_fetch(array(
+            'in_status_entity_id IN (' . join(',', $this->config->item('en_ids_7356')) . ')' => null, //Intent Statuses Active
+        ));
         foreach($ins as $in){
 
             //Prep metadata:
@@ -263,13 +265,13 @@ class Links extends CI_Controller
                 //'size' => ( isset($in_metadata['in__metadata_max_seconds']) ? round(($in_metadata['in__metadata_max_seconds']/3600),0) : 0 ), //Max time
                 'size' => $node_size['in'],
                 'node_type' => 1, //Intent
-                'node_status' => $in['in_status'],
+                'node_status' => $in['in_status_entity_id'],
             ));
 
             //Fetch children:
             foreach($this->Links_model->ln_fetch(array(
-                'ln_status >=' => 0, //New+
-                'in_status >=' => 0, //New+
+                'ln_status_entity_id IN (' . join(',', $this->config->item('en_ids_7360')) . ')' => null, //Link Statuses Active
+                'in_status_entity_id IN (' . join(',', $this->config->item('en_ids_7356')) . ')' => null, //Intent Statuses Active
                 'ln_type_entity_id IN (' . join(',', $this->config->item('en_ids_4486')) . ')' => null, //Intent Link Connectors
                 'ln_parent_intent_id' => $in['in_id'],
             ), array('in_child'), 0, 0) as $in_child){
@@ -280,7 +282,7 @@ class Links extends CI_Controller
                     'label' => $en_all_4593[$in_child['ln_type_entity_id']]['m_name'], //TODO maybe give visibility to points/condition here?
                     'weight' => 1, //TODO Maybe update later?
                     'edge_type_en_id' => $in_child['ln_type_entity_id'],
-                    'edge_status' => $in_child['ln_status'],
+                    'edge_status' => $in_child['ln_status_entity_id'],
                 ));
 
             }
@@ -288,22 +290,24 @@ class Links extends CI_Controller
 
 
         //Add entities:
-        $ens = $this->Entities_model->en_fetch(array('en_status >=' => 0));
+        $ens = $this->Entities_model->en_fetch(array(
+            'en_status_entity_id IN (' . join(',', $this->config->item('en_ids_7358')) . ')' => null, //Entity Statuses Active
+        ));
         foreach($ens as $en){
 
             //Add entity node:
             $this->db->insert('gephi_nodes', array(
                 'id' => $id_prefix['en'].$en['en_id'],
                 'label' => $en['en_name'],
-                'size' => ( $en['en_id']==$this->config->item('en_top_focus_id') ? 3 * $node_size['en'] : $node_size['en'] ),
+                'size' => ( $en['en_id']==$this->config->item('en_focus_id') ? 3 * $node_size['en'] : $node_size['en'] ),
                 'node_type' => 2, //Entity
-                'node_status' => $en['en_status'],
+                'node_status' => $en['en_status_entity_id'],
             ));
 
             //Fetch children:
             foreach($this->Links_model->ln_fetch(array(
-                'ln_status >=' => 0, //New+
-                'en_status >=' => 0, //New+
+                'ln_status_entity_id IN (' . join(',', $this->config->item('en_ids_7360')) . ')' => null, //Link Statuses Active
+                'en_status_entity_id IN (' . join(',', $this->config->item('en_ids_7358')) . ')' => null, //Entity Statuses Active
                 'ln_type_entity_id IN (' . join(',', $this->config->item('en_ids_4592')) . ')' => null, //Entity Link Connectors
                 'ln_parent_entity_id' => $en['en_id'],
             ), array('en_child'), 0, 0) as $en_child){
@@ -314,7 +318,7 @@ class Links extends CI_Controller
                     'label' => $en_all_4593[$en_child['ln_type_entity_id']]['m_name'].': '.$en_child['ln_content'],
                     'weight' => 1, //TODO Maybe update later?
                     'edge_type_en_id' => $en_child['ln_type_entity_id'],
-                    'edge_status' => $en_child['ln_status'],
+                    'edge_status' => $en_child['ln_status_entity_id'],
                 ));
 
             }
@@ -322,8 +326,8 @@ class Links extends CI_Controller
 
         //Add messages:
         $messages = $this->Links_model->ln_fetch(array(
-            'ln_status >=' => 0, //New+
-            'in_status >=' => 0, //New+
+            'ln_status_entity_id IN (' . join(',', $this->config->item('en_ids_7360')) . ')' => null, //Link Statuses Active
+            'in_status_entity_id IN (' . join(',', $this->config->item('en_ids_7356')) . ')' => null, //Intent Statuses Active
             'ln_type_entity_id IN (' . join(',', $this->config->item('en_ids_4485')) . ')' => null, //All Intent Notes
             //'ln_type_entity_id' => 4231, //Intent Messages only
         ), array('in_child'), 0, 0);
@@ -335,7 +339,7 @@ class Links extends CI_Controller
                 'label' => $en_all_4593[$message['ln_type_entity_id']]['m_name'] . ': ' . $message['ln_content'],
                 'size' => $node_size['msg'],
                 'node_type' => $message['ln_type_entity_id'], //Message type
-                'node_status' => $message['ln_status'],
+                'node_status' => $message['ln_status_entity_id'],
             ));
 
             //Add child intent link:
@@ -400,8 +404,8 @@ class Links extends CI_Controller
         foreach($this->Links_model->ln_fetch(array(
             'ln_parent_entity_id' => 6232, //Variables Names
             'ln_type_entity_id IN (' . join(',', $this->config->item('en_ids_4592')) . ')' => null, //Entity Link Connectors
-            'ln_status' => 2, //Published
-            'en_status' => 2, //Published
+            'ln_status_entity_id IN (' . join(',', $this->config->item('en_ids_7359')) . ')' => null, //Link Statuses Public
+            'en_status_entity_id IN (' . join(',', $this->config->item('en_ids_7357')) . ')' => null, //Entity Statuses Public
             'LENGTH(ln_content) > 0' => null,
         ), array('en_child'), 0) as $var_name){
             array_push($valid_variables, $var_name['ln_content']);

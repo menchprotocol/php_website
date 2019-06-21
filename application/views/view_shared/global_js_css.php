@@ -33,9 +33,15 @@
     <?php
     //Translate key variables into JS variables to have them available throughout all JS functions:
     echo ' var is_compact = (is_mobile() || $(window).width() < 767); '; //Manages UI view based on browse width (For example removed fixed right column for mobile)
-    echo ' var js_fixed_fields = ' . json_encode($this->config->item('fixed_fields')) . '; ';
+
+    //Passon object status Fields:
+    echo ' var js_en_all_4737 = ' . json_encode($this->config->item('en_all_4737')) . '; '; // Intent Statuses
+    echo ' var js_en_all_6177 = ' . json_encode($this->config->item('en_all_6177')) . '; '; // Entity Statuses
+    echo ' var js_en_all_6186 = ' . json_encode($this->config->item('en_all_6186')) . '; '; // Link Statuses
+
+
     echo ' var in_outcome_max = ' . $this->config->item('in_outcome_max') . '; ';
-    echo ' var ln_content_max_length = ' . $this->config->item('ln_content_max_length') . '; ';
+    echo ' var messages_max_length = ' . $this->config->item('messages_max_length') . '; ';
     echo ' var en_name_max_length = ' . $this->config->item('en_name_max_length') . '; ';
     echo ' var js_en_ids_6193 = ' . json_encode($this->config->item('en_ids_6193')) . '; '; //Defines OR intents
     ?>

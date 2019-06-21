@@ -32,7 +32,7 @@ if(in_array($in['in_id'], $user_intentions_ids)){
 
 
 //Go through parents and detect intersects with user intentions. WARNING: Logic duplicated. Search for "ELEPHANT" to see.
-foreach ($this->Intents_model->in_fetch_recursive_parents($in['in_id'], 2) as $parent_in_id => $grand_parent_ids) {
+foreach ($this->Intents_model->in_fetch_recursive_public_parents($in['in_id']) as $parent_in_id => $grand_parent_ids) {
     //Does this parent and its grandparents have an intersection with the user intentions?
     if(array_intersect($grand_parent_ids, $user_intentions_ids)){
         //Fetch parent intent & show:
@@ -45,10 +45,10 @@ foreach ($this->Intents_model->in_fetch_recursive_parents($in['in_id'], 2) as $p
             'ln_type_entity_id IN (' . join(',', $this->config->item('en_ids_6146')) . ')' => null, //Action Plan Progression Link Types
             'ln_miner_entity_id' => $session_en['en_id'],
             'ln_parent_intent_id' => $parent_in_id,
-            'ln_status >=' => 0,
+            'ln_status_entity_id IN (' . join(',', $this->config->item('en_ids_7360')) . ')' => null, //Link Statuses Active
         ));
 
-        echo echo_actionplan_step_parent($parent_ins[0], (count($parent_progression_steps) > 0 ? $parent_progression_steps[0]['ln_status'] : 0));
+        echo echo_actionplan_step_parent($parent_ins[0], (count($parent_progression_steps) > 0 ? $parent_progression_steps[0]['ln_status_entity_id'] : 6174 /* Link New */));
 
         //We found an intersect:
         $found_grandpa_intersect = true;
@@ -78,15 +78,15 @@ if(!$found_grandpa_intersect){
     //Progression link:
     $en_all_6794 = $this->config->item('en_all_6794');
     $en_all_6146 = $this->config->item('en_all_6146');
-    $fixed_fields = $this->config->item('fixed_fields');
+    $en_all_6186 = $this->config->item('en_all_6186'); //Link Statuses
     $submission_messages = null;
     $trigger_on_complete_tips = false;
     foreach($advance_step['progression_links'] as $pl){
 
-        echo '<span style="margin-right:10px;" class="status-label underdot" data-toggle="tooltip" data-placement="top" title="Status is '.$fixed_fields['ln_action_plan_status'][$pl['ln_status']]['s_name'].': '.$fixed_fields['ln_action_plan_status'][$pl['ln_status']]['s_desc'].'">'.( $pl['ln_status']==2 /* Published? */ ? $en_all_6146[$pl['ln_type_entity_id']]['m_icon'] /* Show Progression Type */ : $fixed_fields['ln_action_plan_status'][$pl['ln_status']]['s_icon'] /* Show Status */ ).' '.$en_all_6146[$pl['ln_type_entity_id']]['m_name'].'</span>';
+        echo '<span style="margin-right:10px;" class="status-label underdot" data-toggle="tooltip" data-placement="top" title="Status is '.$en_all_6186[$pl['ln_status_entity_id']]['m_name'].': '.$en_all_6186[$pl['ln_status_entity_id']]['m_desc'].'">'.( $pl['ln_status_entity_id'] == 6176 /* Link Published */ ? $en_all_6146[$pl['ln_type_entity_id']]['m_icon'] /* Show Progression Type */ : $en_all_6186[$pl['ln_status_entity_id']]['m_icon'] /* Show Status */ ).' '.$en_all_6146[$pl['ln_type_entity_id']]['m_name'].'</span>';
 
         //Should we trigger on-complete links?
-        if($pl['ln_status']==2 && in_array($pl['ln_type_entity_id'], $this->config->item('en_ids_6255'))){
+        if(in_array($pl['ln_status_entity_id'], $this->config->item('en_ids_7359') /* Link Statuses Public */) && in_array($pl['ln_type_entity_id'], $this->config->item('en_ids_6255'))){
             $trigger_on_complete_tips = true;
         }
 

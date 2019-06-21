@@ -76,7 +76,7 @@ class Communication_model extends CI_Model
          *
          *                          - $ln_append['ln_metadata']: Reserved for message body IF $fb_messenger_format = TRUE
          *                          - $ln_append['ln_timestamp']: Auto generated to current timestamp
-         *                          - $ln_append['ln_status']: Will always equal 2 as a completed message
+         *                          - $ln_append['ln_status_entity_id']: Will be a published message status
          *                          - $ln_append['ln_type_entity_id']: Auto calculated based on message content (or error)
          *                          - $ln_append['ln_miner_entity_id']: Mench will always get credit to miner, so this is set to zero
          *                          - $ln_append['ln_parent_entity_id']: This is auto set with an entity reference within $input_message
@@ -210,10 +210,10 @@ class Communication_model extends CI_Model
                 'status' => 0,
                 'message' => 'Missing Message Content',
             );
-        } elseif ($strict_validation && strlen($input_message) > $this->config->item('ln_content_max_length')) {
+        } elseif ($strict_validation && strlen($input_message) > $this->config->item('messages_max_length')) {
             return array(
                 'status' => 0,
-                'message' => 'Message is longer than the allowed ' . $this->config->item('ln_content_max_length') . ' characters',
+                'message' => 'Message is longer than the allowed ' . $this->config->item('messages_max_length') . ' characters',
             );
         } elseif (!preg_match('//u', $input_message)) {
             return array(
@@ -376,7 +376,7 @@ class Communication_model extends CI_Model
             //Fetch full entity data:
             $ens = $this->Entities_model->en_fetch(array(
                 'en_id' => $recipient_en['en_id'],
-                'en_status >=' => 0, //New+
+                'en_status_entity_id IN (' . join(',', $this->config->item('en_ids_7358')) . ')' => null, //Entity Statuses Active
             ), array('skip_en__parents')); //Just need entity info, not its parents...
 
             if (count($ens) < 1) {
@@ -419,7 +419,7 @@ class Communication_model extends CI_Model
                 'ln_parent_entity_id IN (' . join(',', $this->config->item('en_ids_4454')) . ')' => null,
                 'ln_type_entity_id IN (' . join(',', $this->config->item('en_ids_4592')) . ')' => null, //Entity Link Connectors
                 'ln_child_entity_id' => $recipient_en['en_id'],
-                'ln_status' => 2, //Published
+                'ln_status_entity_id IN (' . join(',', $this->config->item('en_ids_7359')) . ')' => null, //Link Statuses Public
             ));
 
             //Start validating communication settings we fetched to ensure everything is A-OK:
@@ -581,6 +581,7 @@ class Communication_model extends CI_Model
 
             //Direct Media URLs supported:
             $fb_convert_4537 = $this->config->item('fb_convert_4537');
+            $en_all_6177 = $this->config->item('en_all_6177');
 
             //We send Media in their original format IF $fb_messenger_format = TRUE, which means we need to convert link types:
             if ($fb_messenger_format) {
@@ -601,7 +602,7 @@ class Communication_model extends CI_Model
                 foreach ($ens[0]['en__parents'] as $parent_en) {
 
                     //Define what type of entity parent link content should be displayed up-front in Messages
-                    if ($parent_en['ln_status'] < 2) {
+                    if (!in_array($parent_en['ln_status_entity_id'], $this->config->item('en_ids_7359') /* Link Statuses Public */)) {
                         continue;
                     }
 
@@ -717,8 +718,7 @@ class Communication_model extends CI_Model
                 } else {
 
                     //Show entity link with status:
-                    $fixed_fields = $this->config->item('fixed_fields');
-                    $output_body_message = str_replace('@' . $string_references['ref_entities'][0], $fixed_fields['en_status'][$ens[0]['en_status']]['s_icon'].' <a href="/entities/' . $ens[0]['en_id'] . '" target="_parent">' . $ens[0]['en_name'] . '</a>', $output_body_message);
+                    $output_body_message = str_replace('@' . $string_references['ref_entities'][0], $en_all_6177[$ens[0]['en_status_entity_id']]['m_icon'].' <a href="/entities/' . $ens[0]['en_id'] . '" target="_parent">' . $ens[0]['en_name'] . '</a>', $output_body_message);
 
                 }
 
@@ -737,7 +737,7 @@ class Communication_model extends CI_Model
             //Fetch the referenced intent:
             $upvote_child_ins = $this->Intents_model->in_fetch(array(
                 'in_id' => $message_in_id,
-                'in_status >=' => 0, //New+
+                'in_status_entity_id IN (' . join(',', $this->config->item('en_ids_7356')) . ')' => null, //Intent Statuses Active
             ));
             if (count($upvote_child_ins) < 1) {
                 return array(
@@ -749,7 +749,7 @@ class Communication_model extends CI_Model
 
             $upvote_parent_ins = $this->Intents_model->in_fetch(array(
                 'in_id' => $string_references['ref_intents'][0], //Note: We will only have a single reference per message
-                'in_status >=' => 0, //New+
+                'in_status_entity_id IN (' . join(',', $this->config->item('en_ids_7356')) . ')' => null, //Intent Statuses Active
             ));
             if (count($upvote_parent_ins) < 1) {
                 return array(
@@ -768,7 +768,7 @@ class Communication_model extends CI_Model
 
                     //Reference is not the logged-in miner, let's check to make sure it's an expert source
                     $is_expert_sources = $this->Links_model->ln_fetch(array(
-                        'ln_status >=' => 0,
+                        'ln_status_entity_id IN (' . join(',', $this->config->item('en_ids_7360')) . ')' => null, //Link Statuses Active
                         'ln_child_entity_id' => $string_references['ref_entities'][0],
                         'ln_parent_entity_id IN ('.join(',' , $this->config->item('en_ids_3000')).')' => null, //Intent Supported Verbs
                         'ln_type_entity_id IN (' . join(',', $this->config->item('en_ids_4592')) . ')' => null, //Entity Link Connectors
@@ -1001,8 +1001,8 @@ class Communication_model extends CI_Model
         $user_intents = $this->Links_model->ln_fetch(array(
             'ln_miner_entity_id' => $en_id,
             'ln_type_entity_id' => 4235, //Action Plan Set Intention
-            'ln_status IN (' . join(',', $this->config->item('ln_status_incomplete')) . ')' => null, //incomplete intentions
-            'in_status' => 2, //Published
+            'ln_status_entity_id IN (' . join(',', $this->config->item('en_ids_7364')) . ')' => null, //Link Statuses Incomplete
+            'in_status_entity_id IN (' . join(',', $this->config->item('en_ids_7355')) . ')' => null, //Intent Statuses Public
         ), array('in_parent'), 0, 0, array('ln_order' => 'ASC'));
 
         $user_ins_ids = array(); //To be populated:
@@ -1014,9 +1014,8 @@ class Communication_model extends CI_Model
 
         //Fetch Recommended Intentions not yet taken by user:
         $recommend_filters = array(
-            'in_status' => 2, //Published
-            'in_type_entity_id IN (' . join(',', $this->config->item('en_ids_6908')) . ')' => null, //Action Plan Starting Step Intention
-            'ln_status' => 2, //Published
+            'in_status_entity_id' => 7351, //Intent Featured
+            'ln_status_entity_id IN (' . join(',', $this->config->item('en_ids_7359')) . ')' => null, //Link Statuses Public
             'ln_type_entity_id' => 4228, //Fixed Links
             'ln_parent_intent_id' => 8469,
         );
@@ -1270,8 +1269,8 @@ class Communication_model extends CI_Model
                     //Also validate other requirements:
                     'ln_type_entity_id' => 6144, //Action Plan Submit Requirements
                     'ln_miner_entity_id' => $en['en_id'], //for this user
-                    'ln_status IN (' . join(',', $this->config->item('ln_status_incomplete')) . ')' => null, //incomplete
-                    'in_status' => 2, //Published
+                    'ln_status_entity_id IN (' . join(',', $this->config->item('en_ids_7364')) . ')' => null, //Link Statuses Incomplete
+                    'in_status_entity_id IN (' . join(',', $this->config->item('en_ids_7355')) . ')' => null, //Intent Statuses Public
                 ), array('in_parent'));
 
             }
@@ -1288,7 +1287,7 @@ class Communication_model extends CI_Model
             //Make changes:
             $this->Links_model->ln_update($pending_req_submission[0]['ln_id'], array(
                 'ln_content' => $new_message_links[0]['ln_content'],
-                'ln_status' => 2,
+                'ln_status_entity_id IN (' . join(',', $this->config->item('en_ids_7359')) . ')' => null, //Link Statuses Public
                 'ln_parent_link_id' => $new_message_links[0]['ln_id'],
             ), $en['en_id']);
 
@@ -1351,11 +1350,11 @@ class Communication_model extends CI_Model
                 foreach ($this->Links_model->ln_fetch(array(
                     'ln_miner_entity_id' => $en['en_id'],
                     'ln_type_entity_id' => 4235, //Action Plan Set Intention
-                    'ln_status IN (' . join(',', $this->config->item('ln_status_incomplete')) . ')' => null, //incomplete intentions
+                    'ln_status_entity_id IN (' . join(',', $this->config->item('en_ids_7364')) . ')' => null, //Link Statuses Incomplete
                 )) as $ln) {
                     $removed_intents++;
                     $this->Links_model->ln_update($ln['ln_id'], array(
-                        'ln_status' => -1, //Removed
+                        'ln_status_entity_id' => 6173, //Link Removed
                     ), $en['en_id']); //Give credit to miner
                 }
 
@@ -1375,7 +1374,7 @@ class Communication_model extends CI_Model
                 $user_intents = $this->Links_model->ln_fetch(array(
                     'ln_miner_entity_id' => $en['en_id'],
                     'ln_type_entity_id' => 4235, //Action Plan Set Intention
-                    'ln_status IN (' . join(',', $this->config->item('ln_status_incomplete')) . ')' => null, //incomplete intentions
+                    'ln_status_entity_id IN (' . join(',', $this->config->item('en_ids_7364')) . ')' => null, //Link Statuses Incomplete
                     'ln_parent_intent_id' => $action_unsubscribe,
                 ), array('in_parent'), 0, 0, array('ln_order' => 'ASC'));
 
@@ -1389,14 +1388,14 @@ class Communication_model extends CI_Model
 
                 //Update status for this single Action Plan:
                 $this->Links_model->ln_update($user_intents[0]['ln_id'], array(
-                    'ln_status' => -1, //Removed
+                    'ln_status_entity_id' => 6173, //Link Removed
                 ), $en['en_id']);
 
                 //Re-sort remaining Action Plan intentions:
                 foreach($this->Links_model->ln_fetch(array(
                     'ln_type_entity_id' => 4235, //Action Plan Set Intention
                     'ln_miner_entity_id' => $en['en_id'], //Belongs to this User
-                    'ln_status IN (' . join(',', $this->config->item('ln_status_incomplete')) . ')' => null, //incomplete intentions
+                    'ln_status_entity_id IN (' . join(',', $this->config->item('en_ids_7364')) . ')' => null, //Link Statuses Incomplete
                 ), array(), 0, 0, array('ln_order' => 'ASC')) as $count => $ln){
                     $this->Links_model->ln_update($ln['ln_id'], array(
                         'ln_order' => ($count+1),
@@ -1477,11 +1476,11 @@ class Communication_model extends CI_Model
 
 
             //Give response:
-            if ($ins[0]['in_status'] < 2) {
+            if (!in_array($ins[0]['in_status_entity_id'], $this->config->item('en_ids_7355') /* Intent Statuses Public */)) {
 
                 //Ooopsi Intention is not published:
                 $this->Communication_model->dispatch_message(
-                    'I cannot subscribe you to ' . $ins[0]['in_outcome'] . ' as its currently not published.',
+                    'I cannot subscribe you to ' . $ins[0]['in_outcome'] . ' because its not public yet.',
                     $en,
                     true
                 );
@@ -1530,7 +1529,7 @@ class Communication_model extends CI_Model
             //Initiating an intent Action Plan:
             $ins = $this->Intents_model->in_fetch(array(
                 'in_id' => $in_id,
-                'in_status' => 2, //Published
+                'in_status_entity_id IN (' . join(',', $this->config->item('en_ids_7355')) . ')' => null, //Intent Statuses Public
             ));
 
             if (count($ins) != 1) {
@@ -1544,7 +1543,7 @@ class Communication_model extends CI_Model
             if (count($this->Links_model->ln_fetch(array(
                     'ln_miner_entity_id' => $en['en_id'],
                     'ln_type_entity_id' => 4235, //Action Plan Set Intention
-                    'ln_status IN (' . join(',', $this->config->item('ln_status_incomplete')) . ')' => null, //incomplete intentions
+                    'ln_status_entity_id IN (' . join(',', $this->config->item('en_ids_7364')) . ')' => null, //Link Statuses Incomplete
                     'ln_parent_intent_id' => $ins[0]['in_id'],
                 ))) > 0) {
 
@@ -1642,20 +1641,20 @@ class Communication_model extends CI_Model
 
             //Extract variables from REF:
             $input_parts = explode('_', one_two_explode('SKIP-ACTIONPLAN_', '', $quick_reply_payload));
-            $ln_status = intval($input_parts[0]); //It would be $ln_status=1 initial (drafting) and then would change to either -1 IF skip was cancelled or 2 IF skip was confirmed.
+            $skip_action = trim($input_parts[0]); //It would be initial set to DRAFTING and then would change to REMOVED if skip was cancelled, PUBLISHED if skip was confirmed.
             $in_id = intval($input_parts[1]); //Intention to Skip
 
             //Validate inputs:
-            if ($in_id < 1 || !in_array($ln_status, array(-1, 1, 2))) {
+            if ($in_id < 1) {
                 return array(
                     'status' => 0,
-                    'message' => 'SKIP-ACTIONPLAN_ received invalid inputs',
+                    'message' => 'SKIP-ACTIONPLAN_ received invalid intent ID',
                 );
             }
 
 
             //Was this initiating?
-            if ($ln_status == 1) {
+            if ($skip_action == 'skip-initiate') {
 
                 //User has indicated they want to skip this tree and move on to the next item in-line:
                 //Lets confirm the implications of this SKIP to ensure they are aware:
@@ -1664,12 +1663,12 @@ class Communication_model extends CI_Model
             } else {
 
                 //They have either confirmed or cancelled the skip:
-                if ($ln_status == -1) {
+                if ($skip_action == 'skip-cancel') {
 
                     //user changed their mind and does not want to skip anymore
                     $message = 'I\'m glad you changed your mind! Let\'s continue...';
 
-                } elseif ($ln_status == 2) {
+                } elseif ($skip_action == 'skip-confirm') {
 
                     //Actually skip and see if we've finished this Action Plan:
                     $this->Actionplan_model->actionplan_step_skip_apply($en['en_id'], $in_id);
@@ -1723,11 +1722,11 @@ class Communication_model extends CI_Model
             //Validate Answer Intent:
             $answer_ins = $this->Intents_model->in_fetch(array(
                 'in_id' => $answer_in_id,
-                'in_status' => 2, //Published
+                'in_status_entity_id IN (' . join(',', $this->config->item('en_ids_7355')) . ')' => null, //Intent Statuses Public
             ));
             $question_ins = $this->Intents_model->in_fetch(array(
                 'in_id' => $question_in_id,
-                'in_status' => 2, //Published
+                'in_status_entity_id IN (' . join(',', $this->config->item('en_ids_7355')) . ')' => null, //Intent Statuses Public
             ));
             if(count($answer_ins) < 1 || count($question_ins) < 1){
                 return array(
@@ -1741,7 +1740,7 @@ class Communication_model extends CI_Model
                 'ln_miner_entity_id' => $en['en_id'],
                 'ln_type_entity_id' => 6157, //Action Plan Question Answered
                 'ln_parent_intent_id' => $question_in_id,
-                'ln_status >=' => 0, //New+
+                'ln_status_entity_id IN (' . join(',', $this->config->item('en_ids_7360')) . ')' => null, //Link Statuses Active
             ));
             if(count($pending_answer_links) < 1){
                 return array(
@@ -1754,12 +1753,12 @@ class Communication_model extends CI_Model
             //All good, let's save the answer:
             $published_answer = false;
             foreach($pending_answer_links as $ln){
-                if(in_array($ln['ln_status'], $this->config->item('ln_status_incomplete'))){
+                if(in_array($ln['ln_status_entity_id'], $this->config->item('en_ids_7364'))){
 
                     //We just found a pending answer, so mark it as published while saving the answer:
                     $this->Links_model->ln_update($ln['ln_id'], array(
                         'ln_child_intent_id' => $answer_in_id, //Save answer
-                        'ln_status' => 2, //Publish answer
+                        'ln_status_entity_id IN (' . join(',', $this->config->item('en_ids_7359')) . ')' => null, //Link Statuses Public
                     ), $en['en_id']);
 
                     //Update status:
@@ -1860,8 +1859,8 @@ class Communication_model extends CI_Model
             $user_intents = $this->Links_model->ln_fetch(array(
                 'ln_miner_entity_id' => $en['en_id'],
                 'ln_type_entity_id' => 4235, //Action Plan Set Intention
-                'ln_status IN (' . join(',', $this->config->item('ln_status_incomplete')) . ')' => null, //incomplete intentions
-                'in_status' => 2, //Published
+                'ln_status_entity_id IN (' . join(',', $this->config->item('en_ids_7364')) . ')' => null, //Link Statuses Incomplete
+                'in_status_entity_id IN (' . join(',', $this->config->item('en_ids_7355')) . ')' => null, //Intent Statuses Public
             ), array('in_parent'), 0, 0, array('ln_order' => 'ASC'));
 
             if(count($user_intents)==0){
@@ -1967,8 +1966,8 @@ class Communication_model extends CI_Model
             $user_intents = $this->Links_model->ln_fetch(array(
                 'ln_miner_entity_id' => $en['en_id'],
                 'ln_type_entity_id' => 4235, //Action Plan Set Intention
-                'ln_status IN (' . join(',', $this->config->item('ln_status_incomplete')) . ')' => null, //incomplete intentions
-                'in_status' => 2, //Published
+                'ln_status_entity_id IN (' . join(',', $this->config->item('en_ids_7364')) . ')' => null, //Link Statuses Incomplete
+                'in_status_entity_id IN (' . join(',', $this->config->item('en_ids_7355')) . ')' => null, //Intent Statuses Public
             ), array('in_parent'), 10 /* Max quick replies allowed */, 0, array('ln_order' => 'ASC'));
 
 
@@ -2095,7 +2094,7 @@ class Communication_model extends CI_Model
                 //Fetch metadata:
                 $ins = $this->Intents_model->in_fetch(array(
                     'in_id' => $alg['alg_obj_id'],
-                    'in_status' => 2,
+                    'in_status_entity_id IN (' . join(',', $this->config->item('en_ids_7355')) . ')' => null, //Intent Statuses Public
                 ));
                 if(count($ins) < 1){
                     continue;
@@ -2107,7 +2106,7 @@ class Communication_model extends CI_Model
                 }
 
                 //Make sure intent is public:
-                $public_in = $this->Intents_model->in_is_public($ins[0]);
+                $public_in = $this->Intents_model->in_is_public($ins[0], true);
 
                 //Did we have any issues?
                 if(!$public_in['status']){
@@ -2118,7 +2117,7 @@ class Communication_model extends CI_Model
                 if(count($this->Links_model->ln_fetch(array(
                         'ln_miner_entity_id' => $en['en_id'],
                         'ln_type_entity_id' => 4235, //Action Plan Set Intention
-                        'ln_status IN (' . join(',', $this->config->item('ln_status_incomplete')) . ')' => null, //incomplete intentions
+                        'ln_status_entity_id IN (' . join(',', $this->config->item('en_ids_7364')) . ')' => null, //Link Statuses Incomplete
                         'ln_parent_intent_id' => $alg['alg_obj_id'],
                     ))) > 0){
                     continue;

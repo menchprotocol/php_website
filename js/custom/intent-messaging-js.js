@@ -16,7 +16,7 @@ function add_first_name() {
 function count_message() {
     //Update count:
     var len = $('#ln_content' + in_id).val().length;
-    if (len > ln_content_max_length) {
+    if (len > messages_max_length) {
         $('#charNum' + in_id).addClass('overload').text(len);
     } else {
         $('#charNum' + in_id).removeClass('overload').text(len);
@@ -30,7 +30,7 @@ function changeMessageEditing(ln_id) {
     }
     //Update count:
     var len = $('#message_body_' + ln_id).val().length;
-    if (len > ln_content_max_length) {
+    if (len > messages_max_length) {
         $('#charNumEditing' + ln_id).addClass('overload').text(len);
     } else {
         $('#charNumEditing' + ln_id).removeClass('overload').text(len);
@@ -315,7 +315,7 @@ function in_message_modify(ln_id, initial_ln_type_entity_id) {
     message_modify_cancel(ln_id, 1);
 
     //Detect new status, and a potential change:
-    var new_message_ln_status = $("#message_ln_status_" + ln_id).val();
+    var new_message_status = $("#message_status_" + ln_id).val();
 
     //Update message:
     $.post("/intents/in_message_modify", {
@@ -323,7 +323,7 @@ function in_message_modify(ln_id, initial_ln_type_entity_id) {
         ln_id: ln_id,
         ln_content: $("#ul-nav-" + ln_id + " textarea").val(),
         initial_ln_type_entity_id: initial_ln_type_entity_id,
-        new_message_ln_status: new_message_ln_status,
+        new_message_status: new_message_status,
         in_id: in_id,
 
     }, function (data) {
@@ -333,7 +333,7 @@ function in_message_modify(ln_id, initial_ln_type_entity_id) {
             //Saving successful...
 
             //Did we remove this message?
-            if(new_message_ln_status < 0){
+            if(new_message_status < 0){
 
                 //Yes, message was removed, adjust accordingly:
                 $("#ul-nav-" + ln_id).html('<div>' + data.message + '</div>');

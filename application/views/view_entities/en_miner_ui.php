@@ -68,24 +68,24 @@
         $child_en_filters = $this->Links_model->ln_fetch(array(
             'ln_parent_entity_id' => $entity['en_id'],
             'ln_type_entity_id IN (' . join(',', $this->config->item('en_ids_4592')) . ')' => null, //Entity Link Connectors
-            'ln_status >=' => 0, //New+
-            'en_status >=' => 0, //New+
-        ), array('en_child'), 0, 0, array('en_status' => 'ASC'), 'COUNT(en_id) as totals, en_status', 'en_status');
+            'ln_status_entity_id IN (' . join(',', $this->config->item('en_ids_7360')) . ')' => null, //Link Statuses Active
+            'en_status_entity_id IN (' . join(',', $this->config->item('en_ids_7358')) . ')' => null, //Entity Statuses Active
+        ), array('en_child'), 0, 0, array('en_status_entity_id' => 'ASC'), 'COUNT(en_id) as totals, en_status_entity_id', 'en_status_entity_id');
 
 
         //Only show filtering UI if we find child entities with different statuses (Otherwise no need to filter):
         if (count($child_en_filters) > 0 && $child_en_filters[0]['totals'] < $entity['en__child_count']) {
 
             //Load status definitions:
-            $fixed_fields = $this->config->item('fixed_fields');
+            $en_all_6177 = $this->config->item('en_all_6177'); //Entity Statuses
 
             //Show fixed All button:
             echo '<a href="#" onclick="en_filter_status(-1)" class="btn btn-default btn-secondary u-status-filter u-status--1" data-toggle="tooltip" data-placement="top" title="View all entities"><i class="fas fa-at"></i><span class="hide-small"> All</span> [<span class="li-children-count">' . $entity['en__child_count'] . '</span>]</a>';
 
             //Show each specific filter based on DB counts:
             foreach ($child_en_filters as $c_c) {
-                $st = $fixed_fields['en_status'][$c_c['en_status']];
-                echo '<a href="#status-' . $c_c['en_status'] . '" onclick="en_filter_status(' . $c_c['en_status'] . ')" class="btn btn-default u-status-filter u-status-' . $c_c['en_status'] . '" data-toggle="tooltip" data-placement="top" title="' . $st['s_desc'] . '">' . $st['s_icon'] . '<span class="hide-small"> ' . $st['s_name'] . '</span> [<span class="count-u-status-' . $c_c['en_status'] . '">' . $c_c['totals'] . '</span>]</a>';
+                $st = $en_all_6177[$c_c['en_status_entity_id']];
+                echo '<a href="#status-' . $c_c['en_status_entity_id'] . '" onclick="en_filter_status(' . $c_c['en_status_entity_id'] . ')" class="btn btn-default u-status-filter u-status-' . $c_c['en_status_entity_id'] . '" data-toggle="tooltip" data-placement="top" title="' . $st['m_desc'] . '">' . $st['m_icon'] . '<span class="hide-small"> ' . $st['m_name'] . '</span> [<span class="count-u-status-' . $c_c['en_status_entity_id'] . '">' . $c_c['totals'] . '</span>]</a>';
             }
 
         }
@@ -97,7 +97,6 @@
         echo '<form class="mass_modify indent2 hidden opacity_fadeout" method="POST" action="" style="width: 100% !important;"><div class="inline-box">';
 
 
-            $fixed_fields = $this->config->item('fixed_fields');
             $dropdown_options = '';
             $input_options = '';
             foreach ($this->config->item('en_all_4997') as $action_en_id => $mass_action_en) {
@@ -140,16 +139,16 @@
                     $input_options .= '<select name="mass_value1_'.$action_en_id.'" class="form-control border">';
                     $input_options .= '<option value="">Set Condition...</option>';
                     $input_options .= '<option value="*">Update All Statuses</option>';
-                    foreach($fixed_fields['en_status'] as $status_id => $status){
-                        $input_options .= '<option value="'.$status_id.'">Update All '.$status['s_name'].'</option>';
+                    foreach($this->config->item('en_all_6177') /* Entity Statuses */ as $en_id => $m){
+                        $input_options .= '<option value="'.$en_id.'">Update All '.$m['m_name'].'</option>';
                     }
                     $input_options .= '</select>';
 
                     //Replace:
                     $input_options .= '<select name="mass_value2_'.$action_en_id.'" class="form-control border">';
                     $input_options .= '<option value="">Set New Status...</option>';
-                    foreach($fixed_fields['en_status'] as $status_id => $status){
-                        $input_options .= '<option value="'.$status_id.'">Set to '.$status['s_name'].'</option>';
+                    foreach($this->config->item('en_all_6177') /* Entity Statuses */ as $en_id => $m){
+                        $input_options .= '<option value="'.$en_id.'">Set to '.$m['m_name'].'</option>';
                     }
                     $input_options .= '</select>';
 
@@ -162,16 +161,16 @@
                     $input_options .= '<select name="mass_value1_'.$action_en_id.'" class="form-control border">';
                     $input_options .= '<option value="">Set Condition...</option>';
                     $input_options .= '<option value="*">Update All Statuses</option>';
-                    foreach($fixed_fields['ln_status'] as $status_id => $status){
-                        $input_options .= '<option value="'.$status_id.'">Update All '.$status['s_name'].'</option>';
+                    foreach($this->config->item('en_all_6186') /* Link Statuses */ as $en_id => $m){
+                        $input_options .= '<option value="'.$en_id.'">Update All '.$m['m_name'].'</option>';
                     }
                     $input_options .= '</select>';
 
                     //Replace:
                     $input_options .= '<select name="mass_value2_'.$action_en_id.'" class="form-control border">';
                     $input_options .= '<option value="">Set New Status...</option>';
-                    foreach($fixed_fields['ln_status'] as $status_id => $status){
-                        $input_options .= '<option value="'.$status_id.'">Set to '.$status['s_name'].'</option>';
+                    foreach($this->config->item('en_all_6186') /* Link Statuses */ as $en_id => $m){
+                        $input_options .= '<option value="'.$en_id.'">Set to '.$m['m_name'].'</option>';
                     }
                     $input_options .= '</select>';
 
@@ -217,8 +216,8 @@
         $entity__children = $this->Links_model->ln_fetch(array(
             'ln_parent_entity_id' => $entity['en_id'],
             'ln_type_entity_id IN (' . join(',', $this->config->item('en_ids_4592')) . ')' => null, //Entity Link Connectors
-            'ln_status >=' => 0, //New+
-            'en_status >=' => 0, //New+
+            'ln_status_entity_id IN (' . join(',', $this->config->item('en_ids_7360')) . ')' => null, //Link Statuses Active
+            'en_status_entity_id IN (' . join(',', $this->config->item('en_ids_7358')) . ')' => null, //Entity Statuses Active
         ), array('en_child'), $this->config->item('items_per_page'), 0, sort_entities($set_sort));
 
         foreach ($entity__children as $en) {
@@ -262,10 +261,10 @@
 
                             <!-- Entity Status -->
                             <span class="mini-header">Entity Status:</span>
-                            <select class="form-control border" id="en_status">
+                            <select class="form-control border" id="en_status_entity_id">
                                 <?php
-                                foreach (echo_fixed_fields('en_status') as $status_id => $status) {
-                                    echo '<option value="' . $status_id . '" title="' . $status['s_desc'] . '">' . $status['s_name'] . '</option>';
+                                foreach($this->config->item('en_all_6177') /* Entity Statuses */ as $en_id => $m){
+                                    echo '<option value="' . $en_id . '" title="' . $m['m_desc'] . '">' . $m['m_name'] . '</option>';
                                 }
                                 ?>
                             </select>
@@ -339,11 +338,11 @@
                                     <form class="drag-box" method="post" enctype="multipart/form-data">
 
                                         <span class="mini-header">Link Content: [<span style="margin:0 0 10px 0;">
-                                    <span id="charln_contentNum">0</span>/<?= $this->config->item('ln_content_max_length') ?>
+                                    <span id="charln_contentNum">0</span>/<?= $this->config->item('messages_max_length') ?>
                                 </span>]</span>
                                         <span class="white-wrapper">
                                         <textarea class="form-control text-edit border" id="ln_content"
-                                                  maxlength="<?= $this->config->item('ln_content_max_length') ?>" data-lpignore="true"
+                                                  maxlength="<?= $this->config->item('messages_max_length') ?>" data-lpignore="true"
                                                   placeholder="Write Message, Drop a File or Paste URL"
                                                   style="height:126px; min-height:126px;">
                                         </textarea>
@@ -361,12 +360,10 @@
 
 
                                     <span class="mini-header">Link Status:</span>
-                                    <select class="form-control border" id="ln_status">
+                                    <select class="form-control border" id="ln_status_entity_id">
                                         <?php
-                                        foreach (echo_fixed_fields('ln_status') as $status_id => $status) {
-                                            if($status_id < 3){ //No need to verify entity links!
-                                                echo '<option value="' . $status_id . '" title="' . $status['s_desc'] . '">' . $status['s_name'] . '</option>';
-                                            }
+                                        foreach($this->config->item('en_all_6186') /* Link Statuses */ as $en_id => $m){
+                                            echo '<option value="' . $en_id . '" title="' . $m['m_desc'] . '">' . $m['m_name'] . '</option>';
                                         }
                                         ?>
                                     </select>

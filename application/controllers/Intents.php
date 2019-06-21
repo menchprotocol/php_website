@@ -33,9 +33,8 @@ class Intents extends CI_Controller
 
             //Fetch Recommended Intentions:
             $featurd_ins = $this->Links_model->ln_fetch(array(
-                'in_status' => 2, //Published
-                'in_type_entity_id IN (' . join(',', $this->config->item('en_ids_6908')) . ')' => null, //Action Plan Starting Step Intention
-                'ln_status' => 2, //Published
+                'in_status_entity_id' => 7351, //Intent Featured
+                'ln_status_entity_id IN (' . join(',', $this->config->item('en_ids_7359')) . ')' => null, //Link Statuses Public
                 'ln_type_entity_id' => 4228, //Fixed Intent Links
                 'ln_parent_intent_id' => 8469, //Recommend Mench Intentions
             ), array('in_child'), 0, 0, array('ln_order' => 'ASC'));
@@ -115,7 +114,6 @@ class Intents extends CI_Controller
 
         //Authenticate Miner:
         $session_en = en_auth(array(1308));
-        $fixed_fields = $this->config->item('fixed_fields');
 
         if (!$session_en) {
             return echo_json(array(
@@ -132,34 +130,30 @@ class Intents extends CI_Controller
                 'status' => 0,
                 'message' => 'Missing Depth',
             ));
-        } elseif (!isset($_POST['status_min']) || intval($_POST['status_min']) < -1 || intval($_POST['status_min']) > 2) {
-            return echo_json(array(
-                'status' => 0,
-                'message' => 'Minimum status fall between -1 and 2',
-            ));
         }
 
         //Fetch/Validate intent:
         $ins = $this->Intents_model->in_fetch(array(
             'in_id' => $_POST['starting_in'],
-            'in_status >=' => $_POST['status_min'],
+            'in_status_entity_id IN (' . join(',', $this->config->item('en_ids_7356')) . ')' => null, //Intent Statuses Active
         ));
         if(count($ins) != 1){
             return echo_json(array(
                 'status' => 0,
-                'message' => 'Could not find intent #'.$_POST['starting_in'].' with a minimum in_status='.$_POST['status_min'],
+                'message' => 'Could not find intent #'.$_POST['starting_in'],
             ));
         }
 
 
         //Load AND/OR Intents:
         $en_all_6676 = $this->config->item('en_all_6676');
+        $en_all_4737 = $this->config->item('en_all_4737'); // Intent Statuses
 
 
         //Return report:
         return echo_json(array(
             'status' => 1,
-            'message' => '<h3>'.$en_all_6676[in_is_or($ins[0]['in_type_entity_id'], true)]['m_icon'].' '.$fixed_fields['in_status'][$ins[0]['in_status']]['s_icon'].' '.echo_in_outcome($ins[0]['in_outcome'], false, false, true).'</h3>'.echo_in_answer_scores($_POST['starting_in'], $_POST['depth_levels'], $_POST['status_min'], $_POST['depth_levels'], $ins[0]['in_type_entity_id']),
+            'message' => '<h3>'.$en_all_6676[in_is_or($ins[0]['in_type_entity_id'], true)]['m_icon'].' '.$en_all_4737[$ins[0]['in_status_entity_id']]['m_icon'].' '.echo_in_outcome($ins[0]['in_outcome'], false, false, true).'</h3>'.echo_in_answer_scores($_POST['starting_in'], $_POST['depth_levels'], $_POST['depth_levels'], $ins[0]['in_type_entity_id']),
         ));
 
     }
@@ -176,7 +170,7 @@ class Intents extends CI_Controller
 
         if($in_id == 0){
             //Set to default:
-            $in_id = $this->config->item('in_top_focus_id');
+            $in_id = $this->config->item('in_focus_id');
         }
 
         //Authenticate Miner:
@@ -189,7 +183,7 @@ class Intents extends CI_Controller
         ), array('in__parents','in__grandchildren'));
         //Make sure we found it:
         if ( count($ins) < 1) {
-            return redirect_message('/intents/' . $this->config->item('in_top_focus_id'), '<div class="alert alert-danger" role="alert">Intent #' . $in_id . ' not found</div>');
+            return redirect_message('/intents/' . $this->config->item('in_focus_id'), '<div class="alert alert-danger" role="alert">Intent #' . $in_id . ' not found</div>');
         }
 
         //Update session count and log link:
@@ -255,6 +249,11 @@ class Intents extends CI_Controller
                 'status' => 0,
                 'message' => 'Intent outcome cannot be longer than '.$this->config->item('in_outcome_max').' characters',
             ));
+        } elseif(!$_POST['is_parent'] && $_POST['in_link_child_id']==$this->config->item('in_mission_id')){
+            return echo_json(array(
+                'status' => 0,
+                'message' => 'Our mission cannot be added as a child intent, as its the top intention',
+            ));
         }
 
         //All seems good, go ahead and try creating the intent:
@@ -309,7 +308,7 @@ class Intents extends CI_Controller
         ));
         $to_in = $this->Intents_model->in_fetch(array(
             'in_id' => intval($_POST['to_in_id']),
-            'in_status >=' => 0, //New+
+            'in_status_entity_id IN (' . join(',', $this->config->item('en_ids_7356')) . ')' => null, //Intent Statuses Active
         ));
 
         if (!isset($this_in[0]) || !isset($from_in[0]) || !isset($to_in[0])) {
@@ -373,8 +372,8 @@ class Intents extends CI_Controller
         $actionplan_users = $this->Links_model->ln_fetch(array(
             'ln_type_entity_id IN (' . join(',', $this->config->item('en_ids_6255')) . ')' => null, //Action Plan Progression Completion Triggers
             'ln_parent_intent_id' => $ins[0]['in_id'],
-            'ln_status' => 2, //Published
-            'en_status' => 2, //Published
+            'ln_status_entity_id IN (' . join(',', $this->config->item('en_ids_7359')) . ')' => null, //Link Statuses Public
+            'en_status_entity_id IN (' . join(',', $this->config->item('en_ids_7357')) . ')' => null, //Entity Statuses Public
         ), array('en_miner'), 500);
         if(count($actionplan_users) < 1){
             return echo_json(array(
@@ -556,7 +555,7 @@ class Intents extends CI_Controller
                 'status' => 0,
                 'message' => 'Missing Recursive setting',
             ));
-        } elseif (!isset($_POST['in_status'])) {
+        } elseif (!isset($_POST['in_status_entity_id'])) {
             return echo_json(array(
                 'status' => 0,
                 'message' => 'Missing Intent Status',
@@ -593,7 +592,7 @@ class Intents extends CI_Controller
 
         //Prep new variables:
         $in_update = array(
-            'in_status' => intval($_POST['in_status']),
+            'in_status_entity_id' => $_POST['in_status_entity_id'],
             'in_outcome' => trim($_POST['in_outcome']),
             'in_completion_seconds' => intval($_POST['in_completion_seconds']),
             'in_verb_entity_id' => $in_current['in_verb_entity_id'], //We assume no change, and will update if we detected change...
@@ -638,30 +637,21 @@ class Intents extends CI_Controller
 
                 } elseif ($key == 'in_type_entity_id') {
 
-                    //Was this used to be an Action Plan Starting Step Intention?
-                    $was_starting_step = in_array($in_current['in_type_entity_id'], $this->config->item('en_ids_6908'));
+                    //Make sure it's not added to any User's Action Plan:
+                    if(count($this->Links_model->ln_fetch(array(
+                            'ln_parent_intent_id' => $_POST['in_id'],
+                            'ln_type_entity_id' => 4235, //Action Plan Set Intention
+                            'ln_status_entity_id IN (' . join(',', $this->config->item('en_ids_7360')) . ')' => null, //Link Statuses Active
+                        ), array(), 1)) > 0){
 
-                    //If it was, has it now changed?
-                    if($was_starting_step && !in_array($in_update['in_type_entity_id'], $this->config->item('en_ids_6908'))){
-
-                        //Yes, it's no longer a starting step! Make sure it's not added to any User's Action Plan:
-                        if(count($this->Links_model->ln_fetch(array(
-                                'ln_parent_intent_id' => $_POST['in_id'],
-                                'ln_type_entity_id' => 4235, //Action Plan Set Intention
-                                'ln_status >=' => 0, //New+
-                            ), array(), 1)) > 0){
-
-                            //Oooops, we can't do this, let Miner know:
-                            return echo_json(array(
-                                'status' => 0,
-                                'message' => 'Cannot change intent type because the new type is not an Action Plan starting point and this intent has already been added to user Action Plans.',
-                            ));
-
-                        }
-
+                        //Oooops, we can't do this, let Miner know:
+                        return echo_json(array(
+                            'status' => 0,
+                            'message' => 'Cannot change intent type as intention has already been added to user Action Plans.',
+                        ));
                     }
 
-                } elseif ($key == 'in_status') {
+                } elseif ($key == 'in_status_entity_id') {
 
                     //Adjust creation link status:
                     $this->Intents_model->in_sync_creation_link($_POST['in_id'], $value, $session_en['en_id']);
@@ -684,7 +674,7 @@ class Intents extends CI_Controller
 
 
                     //Has intent been removed?
-                    if($value < 0){
+                    if(!in_array($value, $this->config->item('en_ids_7356') /* Intent Statuses Active */)){
 
                         //Intent has been removed:
                         $remove_from_ui = 1;
@@ -696,7 +686,7 @@ class Intents extends CI_Controller
                                 $remove_redirect_url = '/intents/' . $in_current['in__parents'][0]['in_id'];
                             } else {
                                 //No parents, redirect to default intent:
-                                $remove_redirect_url = '/intents/' . $this->config->item('in_top_focus_id');
+                                $remove_redirect_url = '/intents/' . $this->config->item('in_focus_id');
                             }
                         }
 
@@ -719,11 +709,11 @@ class Intents extends CI_Controller
                         $matching_child_ids = array();
                         foreach($this->Intents_model->in_fetch(array(
                             'in_id IN (' . join(',', $all_child_ids) . ')' => null, //All child intents
-                            'in_status' => $in_current['in_status'],
+                            'in_status_entity_id' => $in_current['in_status_entity_id'],
                         )) as $recursive_in){
 
                             //Do we also need to unlink?
-                            if($value < 0){
+                            if(!in_array($value, $this->config->item('en_ids_7356') /* Intent Statuses Active */)){
                                 $links_removed += $this->Intents_model->in_unlink($recursive_in['in_id'] , $session_en['en_id']);
                             }
 
@@ -736,7 +726,7 @@ class Intents extends CI_Controller
                         }
 
                         //Success message:
-                        $update_message = 'Successfully updated '.$recursive_update_count.' '.echo_clean_db_name($key).' from ['.$in_current['in_status'].'] to ['.$value.']'.( $links_removed>0 ? ' and removed ['.$links_removed.'] intent links' : '' );
+                        $update_message = 'Successfully updated '.$recursive_update_count.' '.echo_clean_db_name($key).' from ['.$in_current['in_status_entity_id'].'] to ['.$value.']'.( $links_removed>0 ? ' and removed ['.$links_removed.'] intent links' : '' );
 
                         //Log recursive update:
                         $this->Links_model->ln_create(array(
@@ -746,7 +736,7 @@ class Intents extends CI_Controller
                             'ln_content' => $update_message,
                             'ln_metadata' => array(
                                 'in_field' => $key,
-                                'match_value' => $in_current['in_status'],
+                                'match_value' => $in_current['in_status_entity_id'],
                                 'replace_value' => $value,
                                 'matching_children' => $matching_child_ids,
                                 'all_children' => $all_child_ids,
@@ -779,7 +769,7 @@ class Intents extends CI_Controller
             $lns = $this->Links_model->ln_fetch(array(
                 'ln_id' => $ln_id,
                 'ln_type_entity_id IN (' . join(',', $this->config->item('en_ids_4486')) . ')' => null, //Intent Link Connectors
-                'ln_status >=' => 0, //New+
+                'ln_status_entity_id IN (' . join(',', $this->config->item('en_ids_7360')) . ')' => null, //Link Statuses Active
             ), array(( $_POST['is_parent'] ? 'in_child' : 'in_parent')));
             if(count($lns) < 1){
                 return echo_json(array(
@@ -791,7 +781,7 @@ class Intents extends CI_Controller
             //Prep link Metadata to see if the Conditional Step Links score variables have changed:
             $ln_update = array(
                 'ln_type_entity_id'     => intval($_POST['ln_type_entity_id']),
-                'ln_status'         => intval($_POST['ln_status']),
+                'ln_status_entity_id'         => intval($_POST['ln_status_entity_id']),
             );
 
 
@@ -867,7 +857,7 @@ class Intents extends CI_Controller
 
                 } else {
 
-                    if($key=='ln_status' && $value < 0){
+                    if($key=='ln_status_entity_id' && $value == 6173 /* Link Removed */){
                         $remove_from_ui = 1;
                     }
 
@@ -885,7 +875,7 @@ class Intents extends CI_Controller
             //Did anything change?
             if( $link_was_updated ){
 
-                if($link_meta_updated && (!isset($ln_update['ln_status']) || $ln_update['ln_status'] >= 0)){
+                if($link_meta_updated && (!isset($ln_update['ln_status_entity_id']) || in_array($ln_update['ln_status_entity_id'], $this->config->item('en_ids_7360') /* Link Statuses Active */))){
                     $ln_update['ln_metadata'] = array_merge( $ln_metadata, array(
                         'tr__conditional_score_min' => doubleval($_POST['tr__conditional_score_min']),
                         'tr__conditional_score_max' => doubleval($_POST['tr__conditional_score_max']),
@@ -906,8 +896,8 @@ class Intents extends CI_Controller
 
         //Let's see how many intents, if any, have unlocked completions:
         //See if we should check for unlocking this intent:
-        $meets_unlock_requirements_now = ($_POST['in_status']==2 && in_array($_POST['in_type_entity_id'], $this->config->item('en_ids_6997')));
-        $meets_unlock_requirements_before = ($in_current['in_status']==2 && in_array($in_current['in_type_entity_id'], $this->config->item('en_ids_6997')));
+        $meets_unlock_requirements_now = (in_array($_POST['in_status_entity_id'], $this->config->item('en_ids_7355') /* Intent Statuses Public */) && in_array($_POST['in_type_entity_id'], $this->config->item('en_ids_6997')));
+        $meets_unlock_requirements_before = (in_array($in_current['in_status_entity_id'], $this->config->item('en_ids_7355') /* Intent Statuses Public */) && in_array($in_current['in_type_entity_id'], $this->config->item('en_ids_6997')));
         //Keep track of stats for reporting:
         $ins_unlocked_completions_count = 0;
         $steps_unlocked_completions_count = 0;
@@ -1000,7 +990,7 @@ class Intents extends CI_Controller
                 $children_before = $this->Links_model->ln_fetch(array(
                     'ln_parent_intent_id' => intval($_POST['in_id']),
                     'ln_type_entity_id IN (' . join(',', $this->config->item('en_ids_4486')) . ')' => null, //Intent Link Connectors
-                    'ln_status >=' => 0,
+                    'ln_status_entity_id IN (' . join(',', $this->config->item('en_ids_7360')) . ')' => null, //Link Statuses Active
                 ), array('in_child'), 0, 0, array('ln_order' => 'ASC'));
 
                 //Update them all:
@@ -1014,7 +1004,7 @@ class Intents extends CI_Controller
                 $children_after = $this->Links_model->ln_fetch(array(
                     'ln_parent_intent_id' => intval($_POST['in_id']),
                     'ln_type_entity_id IN (' . join(',', $this->config->item('en_ids_4486')) . ')' => null, //Intent Link Connectors
-                    'ln_status >=' => 0,
+                    'ln_status_entity_id IN (' . join(',', $this->config->item('en_ids_7360')) . ')' => null, //Link Statuses Active
                 ), array('in_child'), 0, 0, array('ln_order' => 'ASC'));
 
                 //Display message:
@@ -1087,7 +1077,7 @@ class Intents extends CI_Controller
         //Fetch/Validate the intent:
         $ins = $this->Intents_model->in_fetch(array(
             'in_id' => intval($_POST['in_id']),
-            'in_status >=' => 0, //New+
+            'in_status_entity_id IN (' . join(',', $this->config->item('en_ids_7356')) . ')' => null, //Intent Statuses Active
         ));
         if(count($ins)<1){
             return echo_json(array(
@@ -1106,10 +1096,10 @@ class Intents extends CI_Controller
 
         //Create Message:
         $ln = $this->Links_model->ln_create(array(
-            'ln_status' => 0, //New
+            'ln_status_entity_id' => 6174, //Link New
             'ln_miner_entity_id' => $session_en['en_id'],
             'ln_order' => 1 + $this->Links_model->ln_max_order(array(
-                    'ln_status >=' => 0, //New+
+                    'ln_status_entity_id IN (' . join(',', $this->config->item('en_ids_7360')) . ')' => null, //Link Statuses Active
                     'ln_type_entity_id' => intval($_POST['focus_ln_type_entity_id']),
                     'ln_child_intent_id' => intval($_POST['in_id']),
                 )),
@@ -1224,7 +1214,7 @@ class Intents extends CI_Controller
 
         //Create message:
         $ln = $this->Links_model->ln_create(array(
-            'ln_status' => 0, //New
+            'ln_status_entity_id' => 6174, //Link New
             'ln_miner_entity_id' => $session_en['en_id'],
             'ln_type_entity_id' => $_POST['focus_ln_type_entity_id'],
             'ln_parent_entity_id' => $url_entity['en_url']['en_id'],
@@ -1303,7 +1293,7 @@ class Intents extends CI_Controller
             $lns = $this->Links_model->ln_fetch(array(
                 'ln_id' => $_POST['ln_id'],
                 'ln_type_entity_id IN (' . join(',', $this->config->item('en_ids_4486')) . ')' => null, //Intent Link Connectors
-                'ln_status >=' => 0, //New+
+                'ln_status_entity_id IN (' . join(',', $this->config->item('en_ids_7360')) . ')' => null, //Link Statuses Active
             ), array(( $_POST['is_parent'] ? 'in_child' : 'in_parent' )));
 
             if(count($lns) < 1){
@@ -1326,7 +1316,7 @@ class Intents extends CI_Controller
         $actionplan_users = $this->Links_model->ln_fetch(array(
             'ln_type_entity_id IN (' . join(',', $this->config->item('en_ids_6255')) . ')' => null, //Action Plan Progression Completion Triggers
             'ln_parent_intent_id' => $_POST['in_id'],
-            'ln_status' => 2, //Published
+            'ln_status_entity_id IN (' . join(',', $this->config->item('en_ids_7359')) . ')' => null, //Link Statuses Public
         ), array(), 0, 0, array(), 'COUNT(ln_id) as total_steps');
 
         //Return results:
@@ -1397,7 +1387,7 @@ class Intents extends CI_Controller
                 'status' => 0,
                 'message' => 'Missing Link ID',
             ));
-        } elseif (!isset($_POST['new_message_ln_status'])) {
+        } elseif (!isset($_POST['new_message_status'])) {
             return echo_json(array(
                 'status' => 0,
                 'message' => 'Missing Message Status',
@@ -1428,7 +1418,7 @@ class Intents extends CI_Controller
         //Validate Message:
         $messages = $this->Links_model->ln_fetch(array(
             'ln_id' => intval($_POST['ln_id']),
-            'ln_status >=' => 0,
+            'ln_status_entity_id IN (' . join(',', $this->config->item('en_ids_7360')) . ')' => null, //Link Statuses Active
         ));
         if (count($messages) < 1) {
             return echo_json(array(
@@ -1439,13 +1429,13 @@ class Intents extends CI_Controller
 
 
         //Did the message status change?
-        if($messages[0]['ln_status'] != $_POST['new_message_ln_status']){
+        if($messages[0]['ln_status_entity_id'] != $_POST['new_message_status']){
 
             //Are we deleting this message?
-            if($_POST['new_message_ln_status'] == -1){
+            if($_POST['new_message_status'] == -1){
 
                 //yes, do so and return results:
-                $affected_rows = $this->Links_model->ln_update(intval($_POST['ln_id']), array( 'ln_status' => $_POST['new_message_ln_status'] ), $session_en['en_id']);
+                $affected_rows = $this->Links_model->ln_update(intval($_POST['ln_id']), array( 'ln_status_entity_id' => $_POST['new_message_status'] ), $session_en['en_id']);
 
                 //Return success:
                 if($affected_rows > 0){
@@ -1460,7 +1450,7 @@ class Intents extends CI_Controller
                     ));
                 }
 
-            } elseif($_POST['new_message_ln_status'] == 2){
+            } elseif($_POST['new_message_status'] == 2){
 
                 //We're publishing, make sure potential entity references are also published:
                 $string_references = extract_references($_POST['ln_content']);
@@ -1472,10 +1462,10 @@ class Intents extends CI_Controller
                         'en_id' => $string_references['ref_entities'][0],
                     ));
 
-                    if(count($ref_ens)>0 && $ref_ens[0]['en_status']<2){
+                    if(count($ref_ens)>0 && !in_array($ref_ens[0]['en_status_entity_id'], $this->config->item('en_ids_7357') /* Entity Statuses Public */)){
                         return echo_json(array(
                             'status' => 0,
-                            'message' => 'You cannot published this message because its referenced entity is not yet published',
+                            'message' => 'You cannot published this message because its referenced entity is not yet public',
                         ));
                     }
                 }
@@ -1495,7 +1485,7 @@ class Intents extends CI_Controller
         //All good, lets move on:
         //Define what needs to be updated:
         $to_update = array(
-            'ln_status' => $_POST['new_message_ln_status'],
+            'ln_status_entity_id' => $_POST['new_message_status'],
             'ln_content' => $msg_validation['input_message'],
             'ln_parent_entity_id' => $msg_validation['ln_parent_entity_id'],
             'ln_parent_intent_id' => $msg_validation['ln_parent_intent_id'],
@@ -1509,13 +1499,13 @@ class Intents extends CI_Controller
             'ln_id' => intval($_POST['ln_id']),
         ));
 
-        $fixed_fields = $this->config->item('fixed_fields');
+        $en_all_6186 = $this->config->item('en_all_6186');
 
         //Print the challenge:
         return echo_json(array(
             'status' => 1,
             'message' => $this->Communication_model->dispatch_message($msg_validation['input_message'], $session_en, false, array(), array(), $_POST['in_id']),
-            'message_new_status_icon' => '<span title="' . $fixed_fields['ln_status'][$to_update['ln_status']]['s_name'] . ': ' . $fixed_fields['ln_status'][$to_update['ln_status']]['s_desc'] . '" data-toggle="tooltip" data-placement="top">' . $fixed_fields['ln_status'][$to_update['ln_status']]['s_icon'] . '</span>', //This might have changed
+            'message_new_status_icon' => '<span title="' . $en_all_6186[$to_update['ln_status_entity_id']]['m_name'] . ': ' . $en_all_6186[$to_update['ln_status_entity_id']]['m_desc'] . '" data-toggle="tooltip" data-placement="top">' . $en_all_6186[$to_update['ln_status_entity_id']]['m_icon'] . '</span>', //This might have changed
             'success_icon' => '<span><i class="fas fa-check"></i> Saved</span>',
         ));
     }
@@ -1540,7 +1530,7 @@ class Intents extends CI_Controller
         boost_power();
         $start_time = time();
         $filters = array(
-            'in_status' => 2,
+            'in_status_entity_id IN (' . join(',', $this->config->item('en_ids_7355')) . ')' => null, //Intent Statuses Public
         );
         if($in_id > 0){
             $filters['in_id'] = $in_id;
@@ -1605,7 +1595,9 @@ class Intents extends CI_Controller
         } else {
 
             //Update all Recommended Intentions and their tree:
-            foreach ($this->Intents_model->in_fetch(array('in_status' => 2)) as $published_in) {
+            foreach ($this->Intents_model->in_fetch(array(
+                'in_status_entity_id IN (' . join(',', $this->config->item('en_ids_7355')) . ')' => null, //Intent Statuses Public
+            )) as $published_in) {
                 $tree = $this->Intents_model->in_metadata_extra_insights($published_in['in_id']);
                 if($tree){
                     $update_count++;

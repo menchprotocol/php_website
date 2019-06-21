@@ -43,7 +43,7 @@
         } elseif($acc_en_id==3288 /* Email */){
 
             $user_emails = $this->Links_model->ln_fetch(array(
-                'ln_status' => 2, //Published
+                'ln_status_entity_id IN (' . join(',', $this->config->item('en_ids_7359')) . ')' => null, //Link Statuses Public
                 'ln_child_entity_id' => $session_en['en_id'],
                 'ln_type_entity_id' => 4255, //Linked Entities Text (Email is text)
                 'ln_parent_entity_id' => 3288, //Email Address
@@ -56,7 +56,7 @@
         } elseif($acc_en_id==3286 /* Password */){
 
             $user_passwords = $this->Links_model->ln_fetch(array(
-                'ln_status' => 2, //Published
+                'ln_status_entity_id IN (' . join(',', $this->config->item('en_ids_7359')) . ')' => null, //Link Statuses Public
                 'ln_type_entity_id' => 4255, //Text
                 'ln_parent_entity_id' => 3286, //Password
                 'ln_child_entity_id' => $session_en['en_id'], //For this user
@@ -70,7 +70,7 @@
         } elseif($acc_en_id==4783 /* Phone */){
 
             $user_phones = $this->Links_model->ln_fetch(array(
-                'ln_status' => 2, //Published
+                'ln_status_entity_id IN (' . join(',', $this->config->item('en_ids_7359')) . ')' => null, //Link Statuses Public
                 'ln_child_entity_id' => $session_en['en_id'],
                 'ln_type_entity_id' => 4319, //Phone are of type number
                 'ln_parent_entity_id' => 4783, //Phone Number
@@ -83,7 +83,7 @@
         } elseif($acc_en_id==6123 /* Social Profiles */){
 
             $user_social_profiles = $this->Links_model->ln_fetch(array(
-                'ln_status' => 2, //Published
+                'ln_status_entity_id IN (' . join(',', $this->config->item('en_ids_7359')) . ')' => null, //Link Statuses Public
                 'ln_type_entity_id' => 4256, //Generic URL
                 'ln_parent_entity_id IN ('.join(',', $this->config->item('en_ids_6123')).')' => null, //Any social profile
                 'ln_child_entity_id' => $session_en['en_id'], //For this user

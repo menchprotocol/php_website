@@ -11,7 +11,162 @@ defined('BASEPATH') OR exit('No direct script access allowed');
  *
  */
 
-//Generated 2019-06-17 18:37:14 PST
+//Generated 2019-06-21 14:11:29 PST
+
+//Link Statuses Incomplete:
+$config['en_ids_7364'] = array(6174,6175);
+$config['en_all_7364'] = array(
+    6174 => array(
+        'm_icon' => '<i class="fal fa-square"></i>',
+        'm_name' => 'Link New',
+        'm_desc' => '',
+        'm_parents' => array(7364,7360,6186),
+    ),
+    6175 => array(
+        'm_icon' => '<i class="fas fa-spinner fa-spin"></i>',
+        'm_name' => 'Link Drafting',
+        'm_desc' => '',
+        'm_parents' => array(7364,7360,6186),
+    ),
+);
+
+//Link Statuses Active:
+$config['en_ids_7360'] = array(6174,6175,6176,7353);
+$config['en_all_7360'] = array(
+    6174 => array(
+        'm_icon' => '<i class="fal fa-square"></i>',
+        'm_name' => 'Link New',
+        'm_desc' => '',
+        'm_parents' => array(7364,7360,6186),
+    ),
+    6175 => array(
+        'm_icon' => '<i class="fas fa-spinner fa-spin"></i>',
+        'm_name' => 'Link Drafting',
+        'm_desc' => '',
+        'm_parents' => array(7364,7360,6186),
+    ),
+    6176 => array(
+        'm_icon' => '<i class="fas fa-check-square"></i>',
+        'm_name' => 'Link Published',
+        'm_desc' => '',
+        'm_parents' => array(7360,7359,6186),
+    ),
+    7353 => array(
+        'm_icon' => '<i class="fas fa-badge-check"></i>',
+        'm_name' => 'Link Verified',
+        'm_desc' => '',
+        'm_parents' => array(7360,7359,6186),
+    ),
+);
+
+//Link Statuses Public:
+$config['en_ids_7359'] = array(6176,7353);
+$config['en_all_7359'] = array(
+    6176 => array(
+        'm_icon' => '<i class="fas fa-check-square"></i>',
+        'm_name' => 'Link Published',
+        'm_desc' => '',
+        'm_parents' => array(7360,7359,6186),
+    ),
+    7353 => array(
+        'm_icon' => '<i class="fas fa-badge-check"></i>',
+        'm_name' => 'Link Verified',
+        'm_desc' => '',
+        'm_parents' => array(7360,7359,6186),
+    ),
+);
+
+//Entity Statuses Active:
+$config['en_ids_7358'] = array(6179,6180,6181,7352);
+$config['en_all_7358'] = array(
+    6179 => array(
+        'm_icon' => '<i class="fal fa-square"></i>',
+        'm_name' => 'Entity New',
+        'm_desc' => '',
+        'm_parents' => array(7358,6177),
+    ),
+    6180 => array(
+        'm_icon' => '<i class="fas fa-spinner fa-spin"></i>',
+        'm_name' => 'Entity Drafting',
+        'm_desc' => '',
+        'm_parents' => array(7358,6177),
+    ),
+    6181 => array(
+        'm_icon' => '<i class="fas fa-check-square"></i>',
+        'm_name' => 'Entity Published',
+        'm_desc' => '',
+        'm_parents' => array(7358,7357,6177),
+    ),
+    7352 => array(
+        'm_icon' => '<i class="fas fa-badge-check"></i>',
+        'm_name' => 'Entity Featured',
+        'm_desc' => '',
+        'm_parents' => array(7358,7357,6177),
+    ),
+);
+
+//Entity Statuses Public:
+$config['en_ids_7357'] = array(6181,7352);
+$config['en_all_7357'] = array(
+    6181 => array(
+        'm_icon' => '<i class="fas fa-check-square"></i>',
+        'm_name' => 'Entity Published',
+        'm_desc' => '',
+        'm_parents' => array(7358,7357,6177),
+    ),
+    7352 => array(
+        'm_icon' => '<i class="fas fa-badge-check"></i>',
+        'm_name' => 'Entity Featured',
+        'm_desc' => '',
+        'm_parents' => array(7358,7357,6177),
+    ),
+);
+
+//Intent Statuses Active:
+$config['en_ids_7356'] = array(6183,6184,6185,7351);
+$config['en_all_7356'] = array(
+    6183 => array(
+        'm_icon' => '<i class="fal fa-square"></i>',
+        'm_name' => 'Intent New',
+        'm_desc' => '',
+        'm_parents' => array(7356,4737),
+    ),
+    6184 => array(
+        'm_icon' => '<i class="fas fa-spinner fa-spin"></i>',
+        'm_name' => 'Intent Drafting',
+        'm_desc' => '',
+        'm_parents' => array(7356,4737),
+    ),
+    6185 => array(
+        'm_icon' => '<i class="fas fa-check-square"></i>',
+        'm_name' => 'Intent Published',
+        'm_desc' => '',
+        'm_parents' => array(7356,7355,4737),
+    ),
+    7351 => array(
+        'm_icon' => '<i class="fas fa-badge-check"></i>',
+        'm_name' => 'Intent Featured',
+        'm_desc' => '',
+        'm_parents' => array(7356,7355,4737),
+    ),
+);
+
+//Intent Statuses Public:
+$config['en_ids_7355'] = array(6185,7351);
+$config['en_all_7355'] = array(
+    6185 => array(
+        'm_icon' => '<i class="fas fa-check-square"></i>',
+        'm_name' => 'Intent Published',
+        'm_desc' => '',
+        'm_parents' => array(7356,7355,4737),
+    ),
+    7351 => array(
+        'm_icon' => '<i class="fas fa-badge-check"></i>',
+        'm_name' => 'Intent Featured',
+        'm_desc' => '',
+        'm_parents' => array(7356,7355,4737),
+    ),
+);
 
 //Action Plan Set Intentions:
 $config['en_ids_7347'] = array(4235,7348);
@@ -106,8 +261,8 @@ $config['en_all_4488'] = array(
     ),
     7161 => array(
         'm_icon' => '<i class="far fa-tachometer-alt-fast"></i>',
-        'm_name' => 'Mining Dashboard',
-        'm_desc' => 'We\'re on a mission to build and share consensus',
+        'm_name' => 'Mench Dashboard',
+        'm_desc' => '',
         'm_parents' => array(7305,4488),
     ),
     7254 => array(
@@ -137,7 +292,7 @@ $config['en_all_7302'] = array(
         'm_icon' => '<i class="fas fa-sliders-h"></i>',
         'm_name' => 'Intent Statuses',
         'm_desc' => '',
-        'm_parents' => array(7302,6213,6201,4527),
+        'm_parents' => array(7302,6194,6213,6201,4527),
     ),
     5008 => array(
         'm_icon' => '<i class="fal fa-tools"></i>',
@@ -178,7 +333,7 @@ $config['en_all_7303'] = array(
         'm_icon' => '<i class="fas fa-sliders-h"></i>',
         'm_name' => 'Entity Statuses',
         'm_desc' => '',
-        'm_parents' => array(7303,6213,6206,4527),
+        'm_parents' => array(7303,6194,6213,6206,4527),
     ),
     7167 => array(
         'm_icon' => '<i class="far fa-chart-pie"></i>',
@@ -201,7 +356,7 @@ $config['en_all_7304'] = array(
         'm_icon' => '<i class="fas fa-sliders-h"></i>',
         'm_name' => 'Link Statuses',
         'm_desc' => '',
-        'm_parents' => array(7304,4527,6213,4341),
+        'm_parents' => array(7304,4527,6194,6213,4341),
     ),
     7159 => array(
         'm_icon' => '<i class="far fa-chart-pie"></i>',
@@ -488,30 +643,36 @@ $config['en_all_7164'] = array(
 );
 
 //Link Statuses:
-$config['en_ids_6186'] = array(6173,6174,6175,6176);
+$config['en_ids_6186'] = array(7353,6176,6175,6174,6173);
 $config['en_all_6186'] = array(
-    6173 => array(
-        'm_icon' => '<i class="fal fa-minus-square"></i>',
-        'm_name' => 'Link Removed',
-        'm_desc' => 'Link is in-active',
-        'm_parents' => array(6186),
-    ),
-    6174 => array(
-        'm_icon' => '<i class="fal fa-square"></i>',
-        'm_name' => 'Link New',
-        'm_desc' => 'Link is newly added and pending to be mined',
-        'm_parents' => array(6186),
-    ),
-    6175 => array(
-        'm_icon' => '<i class="fas fa-spinner fa-spin"></i>',
-        'm_name' => 'Link Drafting',
-        'm_desc' => 'Link is being worked-on so it can be published',
-        'm_parents' => array(6186),
+    7353 => array(
+        'm_icon' => '<i class="fas fa-badge-check"></i>',
+        'm_name' => 'Link Verified',
+        'm_desc' => 'checked by a human moderator',
+        'm_parents' => array(7360,7359,6186),
     ),
     6176 => array(
         'm_icon' => '<i class="fas fa-check-square"></i>',
         'm_name' => 'Link Published',
-        'm_desc' => 'Link is complete, ready and live',
+        'm_desc' => 'live and ready to be shared with users',
+        'm_parents' => array(7360,7359,6186),
+    ),
+    6175 => array(
+        'm_icon' => '<i class="fas fa-spinner fa-spin"></i>',
+        'm_name' => 'Link Drafting',
+        'm_desc' => 'being mined, to be published soon',
+        'm_parents' => array(7364,7360,6186),
+    ),
+    6174 => array(
+        'm_icon' => '<i class="fal fa-square"></i>',
+        'm_name' => 'Link New',
+        'm_desc' => 'newly added, pending review',
+        'm_parents' => array(7364,7360,6186),
+    ),
+    6173 => array(
+        'm_icon' => '<i class="fal fa-minus-square"></i>',
+        'm_name' => 'Link Removed',
+        'm_desc' => 'archived',
         'm_parents' => array(6186),
     ),
 );
@@ -540,7 +701,7 @@ $config['en_all_7159'] = array(
 );
 
 //Database Connector Fields:
-$config['en_ids_6194'] = array(4364,4366,4368,4369,4371,4429,4593,5008,6676);
+$config['en_ids_6194'] = array(4364,4366,4368,4369,4371,4429,4593,4737,5008,6177,6186,6676);
 $config['en_all_6194'] = array(
     4364 => array(
         'm_icon' => '⛏️',
@@ -584,11 +745,29 @@ $config['en_all_6194'] = array(
         'm_desc' => 'SELECT count(ln_id) as totals FROM table_links WHERE ln_type_entity_id=',
         'm_parents' => array(7304,6213,6194,4527,4341),
     ),
+    4737 => array(
+        'm_icon' => '<i class="fas fa-sliders-h"></i>',
+        'm_name' => 'Intent Statuses',
+        'm_desc' => 'SELECT count(in_id) as totals FROM table_intents WHERE in_status_entity_id=',
+        'm_parents' => array(7302,6194,6213,6201,4527),
+    ),
     5008 => array(
         'm_icon' => '<i class="fal fa-tools"></i>',
         'm_name' => 'Intent Verbs',
         'm_desc' => 'SELECT count(in_id) as totals FROM table_intents WHERE in_verb_entity_id=',
         'm_parents' => array(7302,4506,6213,6194,6201),
+    ),
+    6177 => array(
+        'm_icon' => '<i class="fas fa-sliders-h"></i>',
+        'm_name' => 'Entity Statuses',
+        'm_desc' => 'SELECT count(en_id) as totals FROM table_entities WHERE en_status_entity_id=',
+        'm_parents' => array(7303,6194,6213,6206,4527),
+    ),
+    6186 => array(
+        'm_icon' => '<i class="fas fa-sliders-h"></i>',
+        'm_name' => 'Link Statuses',
+        'm_desc' => 'SELECT count(ln_id) as totals FROM table_links WHERE ln_status_entity_id=',
+        'm_parents' => array(7304,4527,6194,6213,4341),
     ),
     6676 => array(
         'm_icon' => '<i class="fas fa-chart-network"></i>',
@@ -612,29 +791,6 @@ $config['en_all_6997'] = array(
         'm_name' => 'AND Intent AND Lock',
         'm_desc' => '',
         'm_parents' => array(7309,6997,6192),
-    ),
-);
-
-//Action Plan Starting Step Intention:
-$config['en_ids_6908'] = array(6677,6684,7231);
-$config['en_all_6908'] = array(
-    6677 => array(
-        'm_icon' => '<i class="far fa-thumbs-up"></i>',
-        'm_name' => 'AND Intent Got It',
-        'm_desc' => '',
-        'm_parents' => array(6158,4559,6908,6192),
-    ),
-    6684 => array(
-        'm_icon' => '<i class="fas fa-check"></i>',
-        'm_name' => 'OR Intent Single Answer',
-        'm_desc' => '',
-        'm_parents' => array(6157,6908,6193),
-    ),
-    7231 => array(
-        'm_icon' => '<i class="fas fa-check-double"></i>',
-        'm_name' => 'OR Intent Multiple Answers',
-        'm_desc' => '',
-        'm_parents' => array(6908,6157,6193),
     ),
 );
 
@@ -762,7 +918,7 @@ $config['en_all_6192'] = array(
         'm_icon' => '<i class="far fa-thumbs-up"></i>',
         'm_name' => 'Got It',
         'm_desc' => 'Students would complete the intent by simply reviewing its outcome and reading its messages if any. No inputs are required.',
-        'm_parents' => array(6158,4559,6908,6192),
+        'm_parents' => array(6158,4559,6192),
     ),
     6683 => array(
         'm_icon' => '<i class="fas fa-align-left"></i>',
@@ -838,7 +994,7 @@ $config['en_all_6193'] = array(
         'm_icon' => '<i class="fas fa-check"></i>',
         'm_name' => 'Single Answer',
         'm_desc' => 'Students can take their time and choose one of the paths of the OR intent.',
-        'm_parents' => array(6157,6908,6193),
+        'm_parents' => array(6157,6193),
     ),
     6685 => array(
         'm_icon' => '<i class="fas fa-stopwatch"></i>',
@@ -850,7 +1006,7 @@ $config['en_all_6193'] = array(
         'm_icon' => '<i class="fas fa-check-double"></i>',
         'm_name' => 'Multiple Answers',
         'm_desc' => 'Allows the user to choose multiple answers from the list of children',
-        'm_parents' => array(6908,6157,6193),
+        'm_parents' => array(6157,6193),
     ),
     7230 => array(
         'm_icon' => '<i class="fas fa-random"></i>',
@@ -1288,89 +1444,72 @@ $config['en_all_6225'] = array(
     ),
 );
 
-//Link Student-Friendly Statuses:
-$config['en_ids_6187'] = array(6188,6189,6190,6191);
-$config['en_all_6187'] = array(
-    6188 => array(
-        'm_icon' => '<i class="fal fa-minus-square"></i>',
-        'm_name' => 'Skipped',
-        'm_desc' => 'Step was skipped by student',
-        'm_parents' => array(6187),
-    ),
-    6189 => array(
-        'm_icon' => '<i class="fal fa-square"></i>',
-        'm_name' => 'Not Started',
-        'm_desc' => 'Pending completion',
-        'm_parents' => array(6187),
-    ),
-    6190 => array(
-        'm_icon' => '<i class="fas fa-spinner fa-spin"></i>',
-        'm_name' => 'Working On',
-        'm_desc' => 'Started but not yet complete',
-        'm_parents' => array(6187),
-    ),
-    6191 => array(
-        'm_icon' => '<i class="fas fa-check-square"></i>',
-        'm_name' => 'Completed',
-        'm_desc' => 'Marked as complete and pending new updates',
-        'm_parents' => array(6187),
-    ),
-);
-
 //Intent Statuses:
-$config['en_ids_4737'] = array(6182,6183,6184,6185);
+$config['en_ids_4737'] = array(7351,6185,6184,6183,6182);
 $config['en_all_4737'] = array(
-    6182 => array(
-        'm_icon' => '<i class="fal fa-minus-square"></i>',
-        'm_name' => 'Removed',
-        'm_desc' => 'Intent is in-active',
-        'm_parents' => array(4737),
-    ),
-    6183 => array(
-        'm_icon' => '<i class="fal fa-square"></i>',
-        'm_name' => 'New',
-        'm_desc' => 'Intent is newly added and pending to be mined',
-        'm_parents' => array(4737),
-    ),
-    6184 => array(
-        'm_icon' => '<i class="fas fa-spinner fa-spin"></i>',
-        'm_name' => 'Drafting',
-        'm_desc' => 'Intent is being worked-on so it can be published',
-        'm_parents' => array(4737),
+    7351 => array(
+        'm_icon' => '<i class="fas fa-badge-check"></i>',
+        'm_name' => 'Featured',
+        'm_desc' => 'can be added as action plan intention',
+        'm_parents' => array(7356,7355,4737),
     ),
     6185 => array(
         'm_icon' => '<i class="fas fa-check-square"></i>',
         'm_name' => 'Published',
-        'm_desc' => 'Intent is live and publicly accessible',
+        'm_desc' => 'live and ready to be shared with users',
+        'm_parents' => array(7356,7355,4737),
+    ),
+    6184 => array(
+        'm_icon' => '<i class="fas fa-spinner fa-spin"></i>',
+        'm_name' => 'Drafting',
+        'm_desc' => 'being mined, to be published soon',
+        'm_parents' => array(7356,4737),
+    ),
+    6183 => array(
+        'm_icon' => '<i class="fal fa-square"></i>',
+        'm_name' => 'New',
+        'm_desc' => 'newly added, pending review',
+        'm_parents' => array(7356,4737),
+    ),
+    6182 => array(
+        'm_icon' => '<i class="fal fa-minus-square"></i>',
+        'm_name' => 'Removed',
+        'm_desc' => 'archived',
         'm_parents' => array(4737),
     ),
 );
 
 //Entity Statuses:
-$config['en_ids_6177'] = array(6178,6179,6180,6181);
+$config['en_ids_6177'] = array(7352,6181,6180,6179,6178);
 $config['en_all_6177'] = array(
-    6178 => array(
-        'm_icon' => '<i class="fal fa-minus-square"></i>',
-        'm_name' => 'Removed',
-        'm_desc' => 'Entity is in-active',
-        'm_parents' => array(6177),
-    ),
-    6179 => array(
-        'm_icon' => '<i class="fal fa-square"></i>',
-        'm_name' => 'New',
-        'm_desc' => 'Entity is newly added and pending to be mined',
-        'm_parents' => array(6177),
-    ),
-    6180 => array(
-        'm_icon' => '<i class="fas fa-spinner fa-spin"></i>',
-        'm_name' => 'Drafting',
-        'm_desc' => 'Entity is being worked-on so it can be published',
-        'm_parents' => array(6177),
+    7352 => array(
+        'm_icon' => '<i class="fas fa-badge-check"></i>',
+        'm_name' => 'Featured',
+        'm_desc' => 'have a public landing page',
+        'm_parents' => array(7358,7357,6177),
     ),
     6181 => array(
         'm_icon' => '<i class="fas fa-check-square"></i>',
         'm_name' => 'Published',
-        'm_desc' => 'Entity is live and publicly accessible',
+        'm_desc' => 'live and ready to be shared with users',
+        'm_parents' => array(7358,7357,6177),
+    ),
+    6180 => array(
+        'm_icon' => '<i class="fas fa-spinner fa-spin"></i>',
+        'm_name' => 'Drafting',
+        'm_desc' => 'being mined, to be published soon',
+        'm_parents' => array(7358,6177),
+    ),
+    6179 => array(
+        'm_icon' => '<i class="fal fa-square"></i>',
+        'm_name' => 'New',
+        'm_desc' => 'newly added, pending review',
+        'm_parents' => array(7358,6177),
+    ),
+    6178 => array(
+        'm_icon' => '<i class="fal fa-minus-square"></i>',
+        'm_name' => 'Removed',
+        'm_desc' => 'archived',
         'm_parents' => array(6177),
     ),
 );

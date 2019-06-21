@@ -228,11 +228,11 @@ function ln_detect_type($string)
     $string = trim($string);
     $CI =& get_instance();
 
-    if(strlen($string) > $CI->config->item('ln_content_max_length')){
+    if(strlen($string) > $CI->config->item('messages_max_length')){
 
         return array(
             'status' => 0,
-            'message' => 'String is ['.(strlen($string) - $CI->config->item('ln_content_max_length')).'] characters longer than the allowed length of '.$CI->config->item('ln_content_max_length').' characters.',
+            'message' => 'String is ['.(strlen($string) - $CI->config->item('messages_max_length')).'] characters longer than the allowed length of '.$CI->config->item('messages_max_length').' characters.',
         );
 
     } elseif (is_null($string) || strlen($string) == 0) {
@@ -342,8 +342,8 @@ function in_outcome_verb_id($string){
 
         //Do a DB call to see if this verb is supported:
         $found_verbs = $CI->Links_model->ln_fetch(array(
-            'ln_status' => 2, //Published
-            'en_status' => 2, //Published
+            'ln_status_entity_id IN (' . join(',', $CI->config->item('en_ids_7359')) . ')' => null, //Link Statuses Public
+            'en_status_entity_id IN (' . join(',', $CI->config->item('en_ids_7357')) . ')' => null, //Entity Statuses Public
             'ln_parent_entity_id' => 5008, //Intent Supported Verbs
             'LOWER(en_name)' => strtolower($letters[0]),
         ), array('en_child'), 1);
@@ -400,7 +400,7 @@ function en_auth($en_permission_group = null, $force_redirect = 0)
         return false;
     } else {
         //Block access:
-        return redirect_message((isset($session_en['en__parents'][0]) && filter_array($session_en['en__parents'], 'en_id', 1308) ? '/intents/' . $CI->config->item('in_top_focus_id') : '/login?url=' . urlencode($_SERVER['REQUEST_URI'])), '<div class="alert alert-danger" role="alert">Error: ' . (isset($session_en['en_id']) ? 'Access not authorized.' : 'Sign In to access.') . '</div>');
+        return redirect_message((isset($session_en['en__parents'][0]) && filter_array($session_en['en__parents'], 'en_id', 1308) ? '/intents/' . $CI->config->item('in_focus_id') : '/login?url=' . urlencode($_SERVER['REQUEST_URI'])), '<div class="alert alert-danger" role="alert">Error: ' . (isset($session_en['en_id']) ? 'Access not authorized.' : 'Sign In to access.') . '</div>');
     }
 
 }
@@ -792,7 +792,7 @@ function update_algolia($input_obj_type = null, $input_obj_id = 0, $return_row_o
             if($input_obj_id){
                 $limits['in_id'] = $input_obj_id;
             } else {
-                $limits['in_status >='] = 0; //New+
+                $limits['in_status_entity_id IN (' . join(',', $CI->config->item('en_ids_7356')) . ')'] = null; //Intent Statuses Active
             }
 
             $db_rows['in'] = $CI->Intents_model->in_fetch($limits, array('in__messages'));
@@ -802,7 +802,7 @@ function update_algolia($input_obj_type = null, $input_obj_id = 0, $return_row_o
             if($input_obj_id){
                 $limits['en_id'] = $input_obj_id;
             } else {
-                $limits['en_status >='] = 0; //New+
+                $limits['en_status_entity_id IN (' . join(',', $CI->config->item('en_ids_7358')) . ')'] = null; //Entity Statuses Active
             }
 
             $db_rows['en'] = $CI->Entities_model->en_fetch($limits, array('en__parents'));
@@ -853,14 +853,14 @@ function update_algolia($input_obj_type = null, $input_obj_id = 0, $return_row_o
                 $published_child_count = $CI->Links_model->ln_fetch(array(
                     'ln_parent_entity_id' => $db_row['en_id'],
                     'ln_type_entity_id IN (' . join(',', $CI->config->item('en_ids_4592')) . ')' => null, //Entity Link Connectors
-                    'ln_status' => 2, //Published
-                    'en_status' => 2, //Published
+                    'ln_status_entity_id IN (' . join(',', $CI->config->item('en_ids_7359')) . ')' => null, //Link Statuses Public
+                    'en_status_entity_id IN (' . join(',', $CI->config->item('en_ids_7357')) . ')' => null, //Entity Statuses Public
                 ), array('en_child'), 0, 0, array(), 'COUNT(ln_id) AS published_child_count');
 
                 $export_row['alg_obj_is_in'] = 0;
                 $export_row['alg_obj_id'] = intval($db_row['en_id']);
                 $export_row['alg_obj_weight'] = $db_row['en_trust_score'];
-                $export_row['alg_obj_status'] = intval($db_row['en_status']);
+                $export_row['alg_obj_status'] = intval($db_row['en_status_entity_id']);
                 $export_row['alg_obj_icon'] = echo_en_icon($db_row);
                 $export_row['alg_obj_name'] = $db_row['en_name'];
                 $export_row['alg_obj_postfix'] = ''; //Entities have no post-fix at this time
@@ -888,7 +888,7 @@ function update_algolia($input_obj_type = null, $input_obj_id = 0, $return_row_o
                 $export_row['alg_obj_is_in'] = 1; //This is an intent
                 $export_row['alg_obj_id'] = intval($db_row['in_id']);
                 $export_row['alg_obj_weight'] = ( isset($metadata['in__metadata_max_seconds']) ? $metadata['in__metadata_max_seconds'] : 0 );
-                $export_row['alg_obj_status'] = intval($db_row['in_status']);
+                $export_row['alg_obj_status'] = $db_row['in_status_entity_id'];
                 $export_row['alg_obj_icon'] = $en_all_6676[in_is_or($db_row['in_type_entity_id'], true)]['m_icon']; //Entity type icon
                 $export_row['alg_obj_name'] = $db_row['in_outcome'];
                 $export_row['alg_obj_postfix'] =  ( $time_range ? '<span class="alg-postfix"><i class="fal fa-clock"></i>' . $time_range . '</span>' : '');
@@ -1000,13 +1000,11 @@ function update_algolia($input_obj_type = null, $input_obj_id = 0, $return_row_o
 
             foreach ($algolia_results['objectIDs'] as $key => $algolia_id) {
 
-                $this_obj = ( isset($all_db_rows[$key]['in_id']) ? 'in' : 'en');
-
-                update_metadata($this_obj, $all_db_rows[$key][$this_obj.'_id'], array(
-                    $this_obj . '__algolia_id' => intval($algolia_id),
+                $object_this = ( isset($all_db_rows[$key]['in_id']) ? 'in' : 'en');
+                update_metadata($object_this, $all_db_rows[$key][$object_this.'_id'], array(
+                    $object_this . '__algolia_id' => intval($algolia_id),
                 ));
             }
-
         }
 
         $synced_count += count($algolia_results['objectIDs']);
@@ -1032,13 +1030,13 @@ function sort_entities($set_sort){
 
         return array('en_name' => 'ASC');
 
-    } elseif($set_sort=='en_status'){
+    } elseif($set_sort=='en_status_entity_id'){
 
-        return array('en_status' => 'ASC');
+        return array('en_status_entity_id' => 'ASC');
 
-    } elseif($set_sort=='ln_status'){
+    } elseif($set_sort=='ln_status_entity_id'){
 
-        return array('ln_status' => 'ASC');
+        return array('ln_status_entity_id' => 'ASC');
 
     } elseif($set_sort=='ln_content'){
 

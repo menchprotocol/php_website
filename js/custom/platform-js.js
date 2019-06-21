@@ -267,7 +267,7 @@ function toggle_advance(basic_toggle){
 
 function ln_content_word_count(el_textarea, el_counter) {
     var len = $(el_textarea).val().length;
-    if (len > ln_content_max_length) {
+    if (len > messages_max_length) {
         $(el_counter).addClass('overload').text(len);
     } else {
         $(el_counter).removeClass('overload').text(len);

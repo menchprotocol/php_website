@@ -2,13 +2,13 @@
 
 //Fetch Messages based on in_id:
 $session_en = $this->session->userdata('user');
-$ln_content_max_length = $this->config->item('ln_content_max_length');
+$messages_max_length = $this->config->item('messages_max_length');
 $en_ids_4485 = $this->config->item('en_ids_4485');
 $en_all_4485 = $this->config->item('en_all_4485');
 
 //Fetch all messages:
 $metadatas = $this->Links_model->ln_fetch(array(
-    'ln_status >=' => 0, //New+
+    'ln_status_entity_id IN (' . join(',', $this->config->item('en_ids_7360')) . ')' => null, //Link Statuses Active
     'ln_type_entity_id IN (' . join(',', $en_ids_4485) . ')' => null, //All Intent Notes
     'ln_child_intent_id' => $in_id,
 ), array(), 0, 0, array('ln_order' => 'ASC'));
@@ -38,7 +38,7 @@ foreach ($metadatas as $ln) {
 <script>
     //pass core variables to JS:
     var in_id = <?= $in_id ?>;
-    var ln_content_max_length = <?= $ln_content_max_length ?>;
+    var messages_max_length = <?= $messages_max_length ?>;
     var metadata_count = <?= count($metadatas) ?>;
     var focus_ln_type_entity_id = <?= $en_ids_4485[0] ?>; //The message type that is the focus on-start.
 </script>
@@ -116,7 +116,7 @@ foreach ($metadatas as $ln) {
 
     echo '<div id="ln_content_counter" style="margin:0 0 1px 0; font-size:0.8em;">';
     //File counter:
-    echo '<span id="charNum' . $in_id . '">0</span>/' . $ln_content_max_length;
+    echo '<span id="charNum' . $in_id . '">0</span>/' . $messages_max_length;
 
     ///firstname
     echo '<a href="javascript:add_first_name();" class="textarea_buttons ' . echo_advance() . ' remove_loading" style="float:right; margin-left:8px;" data-toggle="tooltip" title="Replaced with master\'s First Name for a more personal message." data-placement="left"><i class="fas fa-fingerprint"></i> /firstname</a>';

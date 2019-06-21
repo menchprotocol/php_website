@@ -71,13 +71,13 @@ $uri_segment_2 = $this->uri->segment(2);
                         <ul class="nav navbar-nav navbar-main navbar-right">
 
                             <li class="<?= ($uri_segment_1 == 'intents' ? 'intent-active' : 'intent-inactive') ?>">
-                                <a href="/intents/<?= $this->config->item('in_top_focus_id') ?>">
+                                <a href="/intents/<?= $this->config->item('in_focus_id') ?>">
                                     <?= $en_all_4488[4535]['m_icon'] .' '. $en_all_4488[4535]['m_name'] ?>
                                 </a>
                             </li>
 
                             <li class="<?= ($uri_segment_1 == 'entities' ? 'entity-active' : 'entity-inactive') ?>">
-                                <a href="/entities/<?= $this->config->item('en_top_focus_id') ?>">
+                                <a href="/entities/<?= $this->config->item('en_focus_id') ?>">
                                     <?= $en_all_4488[4536]['m_icon'] .' '. $en_all_4488[4536]['m_name'] ?>
                                 </a>
                             </li>

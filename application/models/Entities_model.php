@@ -21,7 +21,7 @@ class Entities_model extends CI_Model
     {
 
         //What is required to create a new intent?
-        if (detect_missing_columns($insert_columns, array('en_status', 'en_name'))) {
+        if (detect_missing_columns($insert_columns, array('en_status_entity_id', 'en_name'))) {
             return false;
         }
 
@@ -137,8 +137,8 @@ class Entities_model extends CI_Model
                 $res[$key]['en__parents'] = $this->Links_model->ln_fetch(array(
                     'ln_type_entity_id IN (' . join(',', $this->config->item('en_ids_4592')) . ')' => null, //Entity Link Connectors
                     'ln_child_entity_id' => $val['en_id'], //This child entity
-                    'ln_status >=' => 0, //New+
-                    'en_status >=' => 0, //New+
+                    'ln_status_entity_id IN (' . join(',', $this->config->item('en_ids_7360')) . ')' => null, //Link Statuses Active
+                    'en_status_entity_id IN (' . join(',', $this->config->item('en_ids_7358')) . ')' => null, //Entity Statuses Active
                 ), array('en_parent'), 0, 0, array('en_trust_score' => 'DESC'));
 
             }
@@ -180,7 +180,7 @@ class Entities_model extends CI_Model
         //Do we need to do any additional work?
         if ($affected_rows > 0 && $external_sync) {
 
-            $fixed_fields = $this->config->item('fixed_fields');
+            $en_all_6177 = $this->config->item('en_all_6177'); //Entity Statuses
 
             //Log modification link for every field changed:
             foreach ($update_columns as $key => $value) {
@@ -195,7 +195,7 @@ class Entities_model extends CI_Model
                         'ln_miner_entity_id' => ($ln_miner_entity_id > 0 ? $ln_miner_entity_id : $id),
                         'ln_type_entity_id' => 4263, //Entity Attribute Modified
                         'ln_child_entity_id' => $id,
-                        'ln_content' => echo_clean_db_name($key) . ' changed from "' . ( $key=='en_status' ? $fixed_fields['en_status'][$before_data[0][$key]]['s_name'] : $before_data[0][$key] ) . '" to "' . ( $key=='en_status' ? $fixed_fields['en_status'][$value]['s_name'] : $value ) . '"',
+                        'ln_content' => echo_clean_db_name($key) . ' changed from "' . ( $key=='en_status_entity_id' ? $en_all_6177[$before_data[0][$key]]['m_name'] : $before_data[0][$key] ) . '" to "' . ( $key=='en_status_entity_id' ? $en_all_6177[$value]['m_name'] : $value ) . '"',
                         'ln_metadata' => array(
                             'en_id' => $id,
                             'field' => $key,
@@ -262,7 +262,7 @@ class Entities_model extends CI_Model
         foreach ($this->Links_model->ln_fetch(array(
             'ln_child_entity_id' => $en_user_id,
             'ln_parent_entity_id IN (' . join(',', $children) . ')' => null, //Current children
-            'ln_status >=' => 0,
+            'ln_status_entity_id IN (' . join(',', $this->config->item('en_ids_7360')) . ')' => null, //Link Statuses Active
         ), array(), $this->config->item('items_per_page')) as $ln) {
 
             if (!$already_assigned && $ln['ln_parent_entity_id'] == $set_en_child_id) {
@@ -273,7 +273,7 @@ class Entities_model extends CI_Model
 
                 //Do not log update link here as we would log it further below:
                 $this->Links_model->ln_update($ln['ln_id'], array(
-                    'ln_status' => -1, //Removed
+                    'ln_status_entity_id' => 6173, //Link Removed
                 ));
             }
 
@@ -301,14 +301,14 @@ class Entities_model extends CI_Model
         foreach(array_merge(
                 //Entity references within intent notes:
                     $this->Links_model->ln_fetch(array(
-                        'ln_status >=' => 0, //New+
-                        'in_status >=' => 0, //New+
+                        'ln_status_entity_id IN (' . join(',', $this->config->item('en_ids_7360')) . ')' => null, //Link Statuses Active
+                        'in_status_entity_id IN (' . join(',', $this->config->item('en_ids_7356')) . ')' => null, //Intent Statuses Active
                         'ln_type_entity_id IN (' . join(',', $this->config->item('en_ids_4485')) . ')' => null, //All Intent Notes
                         'ln_parent_entity_id' => $en_id,
                     ), array('in_child'), 0, 0, array('ln_order' => 'ASC')),
                     //Entity links:
                     $this->Links_model->ln_fetch(array(
-                        'ln_status >=' => 0, //New+
+                        'ln_status_entity_id IN (' . join(',', $this->config->item('en_ids_7360')) . ')' => null, //Link Statuses Active
                         'ln_type_entity_id IN (' . join(',', $this->config->item('en_ids_4592')) . ')' => null, //Entity Link Connectors
                         '(ln_child_entity_id = ' . $en_id . ' OR ln_parent_entity_id = ' . $en_id . ')' => null,
                     ), array(), 0)
@@ -335,7 +335,7 @@ class Entities_model extends CI_Model
 
                 //Remove this link:
                 $adjusted_count += $this->Links_model->ln_update($adjust_tr['ln_id'], array(
-                    'ln_status' => -1, //Removed
+                    'ln_status_entity_id' => 6173, //Link Removed
                 ), $ln_miner_entity_id);
 
             }
@@ -369,8 +369,8 @@ class Entities_model extends CI_Model
 
         //Check to see if we have domain linked already:
         $domain_links = $this->Links_model->ln_fetch(array(
-            'en_status >=' => 0, //New+
-            'ln_status >=' => 0, //New+
+            'en_status_entity_id IN (' . join(',', $this->config->item('en_ids_7358')) . ')' => null, //Entity Statuses Active
+            'ln_status_entity_id IN (' . join(',', $this->config->item('en_ids_7360')) . ')' => null, //Link Statuses Active
             'ln_type_entity_id' => 4256, //Generic URL (Domain home pages should always be generic, see above for logic)
             'ln_parent_entity_id' => 1326, //Domain Entity
             'ln_content' => $domain_analysis['url_clean_domain'],
@@ -392,7 +392,7 @@ class Entities_model extends CI_Model
             //And link entity to the domains entity:
             $this->Links_model->ln_create(array(
                 'ln_miner_entity_id' => $ln_miner_entity_id,
-                'ln_status' => 2, //Published
+                'ln_status_entity_id IN (' . join(',', $this->config->item('en_ids_7359')) . ')' => null, //Link Statuses Public
                 'ln_type_entity_id' => 4256, //Generic URL (Domains are always generic)
                 'ln_parent_entity_id' => 1326, //Domain Entity
                 'ln_child_entity_id' => $en_domain['en_id'],
@@ -564,7 +564,7 @@ class Entities_model extends CI_Model
 
                 //Make sure this is not a duplicate name:
                 $dup_name_us = $this->Entities_model->en_fetch(array(
-                    'en_status >=' => 0, //New+
+                    'en_status_entity_id IN (' . join(',', $this->config->item('en_ids_7358')) . ')' => null, //Entity Statuses Active
                     'en_name' => $page_title,
                 ));
 
@@ -603,8 +603,8 @@ class Entities_model extends CI_Model
 
             //Check to see if URL already exists:
             $url_links = $this->Links_model->ln_fetch(array(
-                'en_status >=' => 0, //New+
-                'ln_status >=' => 0, //New+
+                'en_status_entity_id IN (' . join(',', $this->config->item('en_ids_7358')) . ')' => null, //Entity Statuses Active
+                'ln_status_entity_id IN (' . join(',', $this->config->item('en_ids_7360')) . ')' => null, //Link Statuses Active
                 'ln_type_entity_id IN (' . join(',', $this->config->item('en_ids_4537')) . ')' => null, //Entity URL Links
                 'ln_content' => $url,
             ), array('en_child'));
@@ -626,7 +626,7 @@ class Entities_model extends CI_Model
                 //Always link URL to its parent domain:
                 $this->Links_model->ln_create(array(
                     'ln_miner_entity_id' => $ln_miner_entity_id,
-                    'ln_status' => 2, //Published
+                    'ln_status_entity_id IN (' . join(',', $this->config->item('en_ids_7359')) . ')' => null, //Link Statuses Public
                     'ln_type_entity_id' => $ln_type_entity_id,
                     'ln_parent_entity_id' => $domain_entity['en_domain']['en_id'],
                     'ln_child_entity_id' => $en_url['en_id'],
@@ -645,7 +645,7 @@ class Entities_model extends CI_Model
             //Link URL to its parent domain:
             $this->Links_model->ln_create(array(
                 'ln_miner_entity_id' => $ln_miner_entity_id,
-                'ln_status' => 2, //Published
+                'ln_status_entity_id IN (' . join(',', $this->config->item('en_ids_7359')) . ')' => null, //Link Statuses Public
                 'ln_type_entity_id' => 4230, //Raw
                 'ln_parent_entity_id' => $add_to_parent_en_id,
                 'ln_child_entity_id' => $en_url['en_id'],
@@ -656,7 +656,7 @@ class Entities_model extends CI_Model
             //Link URL to its parent domain:
             $this->Links_model->ln_create(array(
                 'ln_miner_entity_id' => $ln_miner_entity_id,
-                'ln_status' => 2, //Published
+                'ln_status_entity_id IN (' . join(',', $this->config->item('en_ids_7359')) . ')' => null, //Link Statuses Public
                 'ln_type_entity_id' => 4230, //Raw
                 'ln_child_entity_id' => $add_to_child_en_id,
                 'ln_parent_entity_id' => $en_url['en_id'],
@@ -684,7 +684,7 @@ class Entities_model extends CI_Model
         return $return_data;
     }
 
-    function en_sync_creation_link($en_id, $en_status, $ln_miner_entity_id){
+    function en_sync_creation_link($en_id, $en_status_entity_id, $ln_miner_entity_id){
 
         $fixed = 0; //Assume all good!
 
@@ -701,16 +701,16 @@ class Entities_model extends CI_Model
                 'ln_miner_entity_id' => $ln_miner_entity_id,
                 'ln_child_entity_id' => intval($en_id),
                 'ln_type_entity_id' => 4251, //New Intent Created
-                'ln_status' => $en_status,
+                'ln_status_entity_id' => $en_status_entity_id,
             ));
 
             $fixed++;
 
-        } elseif($creation_lns[0]['ln_status'] != $en_status){
+        } elseif($creation_lns[0]['ln_status_entity_id'] != $en_status_entity_id){
 
             //Sync statuses:
             $fixed += $this->Links_model->ln_update($creation_lns[0]['ln_id'], array(
-                'ln_status' => $en_status,
+                'ln_status_entity_id' => $en_status_entity_id,
             ), $ln_miner_entity_id);
 
         }
@@ -745,7 +745,7 @@ class Entities_model extends CI_Model
             'ln_parent_entity_id' => $en_parent_id,
             'ln_type_entity_id IN (' . join(',', $this->config->item('en_ids_4592')) . ')' => null, //Entity Link Connectors
             'ln_content' => trim($value),
-            'ln_status >=' => 0, //Pending or Active
+            'ln_status_entity_id IN (' . join(',', $this->config->item('en_ids_7360')) . ')' => null, //Link Statuses Active
         ), array(), 0);
 
 
@@ -772,7 +772,6 @@ class Entities_model extends CI_Model
     {
 
         //Fetch statuses:
-        $fixed_fields = $this->config->item('fixed_fields');
         $en_all_4997 = $this->config->item('en_all_4997');
 
         if(!in_array($action_en_id, $this->config->item('en_ids_4997'))) {
@@ -815,8 +814,8 @@ class Entities_model extends CI_Model
         $children = $this->Links_model->ln_fetch(array(
             'ln_parent_entity_id' => $en_id,
             'ln_type_entity_id IN (' . join(',', $this->config->item('en_ids_4592')) . ')' => null, //Entity Link Connectors
-            'ln_status >=' => 0, //New+
-            'en_status >=' => 0, //New+
+            'ln_status_entity_id IN (' . join(',', $this->config->item('en_ids_7360')) . ')' => null, //Link Statuses Active
+            'en_status_entity_id IN (' . join(',', $this->config->item('en_ids_7358')) . ')' => null, //Entity Statuses Active
         ), array('en_child'), 0);
 
 
@@ -852,14 +851,14 @@ class Entities_model extends CI_Model
                     'ln_type_entity_id IN (' . join(',', $this->config->item('en_ids_4592')) . ')' => null, //Entity Link Connectors
                     'ln_child_entity_id' => $en['en_id'], //This child entity
                     'ln_parent_entity_id' => $parent_en_id,
-                    'ln_status >=' => 0, //New+
+                    'ln_status_entity_id IN (' . join(',', $this->config->item('en_ids_7360')) . ')' => null, //Link Statuses Active
                 ));
 
                 if($action_en_id==5981 && count($child_parent_ens)==0){ //Parent Entity Addition
 
                     //Does not exist, need to be added as parent:
                     $this->Links_model->ln_create(array(
-                        'ln_status' => 2, //Published
+                        'ln_status_entity_id IN (' . join(',', $this->config->item('en_ids_7359')) . ')' => null, //Link Statuses Public
                         'ln_miner_entity_id' => $ln_miner_entity_id,
                         'ln_type_entity_id' => 4230, //Raw
                         'ln_child_entity_id' => $en['en_id'], //This child entity
@@ -874,7 +873,7 @@ class Entities_model extends CI_Model
                     foreach($child_parent_ens as $remove_tr){
 
                         $this->Links_model->ln_update($remove_tr['ln_id'], array(
-                            'ln_status' => -1, //Removed
+                            'ln_status_entity_id' => 6173, //Link Removed
                         ), $ln_miner_entity_id);
 
                         $applied_success++;
@@ -907,18 +906,18 @@ class Entities_model extends CI_Model
 
                 $applied_success++;
 
-            } elseif ($action_en_id == 5003 && ($action_command1=='*' || $en['en_status']==$action_command1) && array_key_exists($action_command2, $fixed_fields['en_status'])) { //Update Matching Entity Status
+            } elseif ($action_en_id == 5003 && ($action_command1=='*' || $en['en_status_entity_id']==$action_command1) && in_array($action_command2, $this->config->item('en_all_6177'))) { //Update Matching Entity Status
 
                 $this->Entities_model->en_update($en['en_id'], array(
-                    'en_status' => $action_command2,
+                    'en_status_entity_id' => $action_command2,
                 ), true, $ln_miner_entity_id);
 
                 $applied_success++;
 
-            } elseif ($action_en_id == 5865 && ($action_command1=='*' || $en['ln_status']==$action_command1) && array_key_exists($action_command2, $fixed_fields['ln_status'])) { //Update Matching Link Status
+            } elseif ($action_en_id == 5865 && ($action_command1=='*' || $en['ln_status_entity_id']==$action_command1) && in_array($action_command2, $this->config->item('en_ids_6186'))) { //Update Matching Link Status
 
                 $this->Links_model->ln_update($en['ln_id'], array(
-                    'ln_status' => $action_command2,
+                    'ln_status_entity_id' => $action_command2,
                 ), $ln_miner_entity_id);
 
                 $applied_success++;
@@ -959,8 +958,8 @@ class Entities_model extends CI_Model
         $child_links = $this->Links_model->ln_fetch(array(
             'ln_parent_entity_id' => $en_id,
             'ln_type_entity_id IN (' . join(',', $this->config->item('en_ids_4592')) . ')' => null, //Entity Link Connectors
-            'ln_status >=' => 0, //New+
-            'en_status IN (' . join(',', $statuses) . ')' => null,
+            'ln_status_entity_id IN (' . join(',', $this->config->item('en_ids_7360')) . ')' => null, //Link Statuses Active
+            'en_status_entity_id IN (' . join(',', $statuses) . ')' => null,
         ), array('en_child'), 0, 0, array(), 'COUNT(en_id) as en__child_count');
 
         if (count($child_links) > 0) {
@@ -994,7 +993,7 @@ class Entities_model extends CI_Model
 
         //Try matching Facebook PSID to existing Users:
         $ens = $this->Entities_model->en_fetch(array(
-            'en_status >=' => 0, //New+
+            'en_status_entity_id IN (' . join(',', $this->config->item('en_ids_7358')) . ')' => null, //Entity Statuses Active
             'en_psid' => $psid,
         ), array('skip_en__parents'));
 
@@ -1013,7 +1012,7 @@ class Entities_model extends CI_Model
 
     }
 
-    function en_verify_create($en_name, $ln_miner_entity_id = 0, $force_creation = false, $en_status = 0, $en_icon = null, $en_psid = null){
+    function en_verify_create($en_name, $ln_miner_entity_id = 0, $force_creation = false, $en_status_entity_id = 6179 /* Entity New */, $en_icon = null, $en_psid = null){
 
         if(strlen($en_name)<2){
             return array(
@@ -1026,7 +1025,7 @@ class Entities_model extends CI_Model
         //If PSID exists, make sure it's not a duplicate:
         if($en_psid > 0){
             $duplicate_psid_ens = $this->Entities_model->en_fetch(array(
-                'en_status >=' => 0, //New+
+                'en_status_entity_id IN (' . join(',', $this->config->item('en_ids_7358')) . ')' => null, //Entity Statuses Active
                 'en_psid' => $en_psid,
             ));
             if(count($duplicate_psid_ens) > 0){
@@ -1041,7 +1040,7 @@ class Entities_model extends CI_Model
 
         //Check to make sure name is not duplicate:
         $duplicate_name_ens = $this->Entities_model->en_fetch(array(
-            'en_status >=' => 0, //New+
+            'en_status_entity_id IN (' . join(',', $this->config->item('en_ids_7358')) . ')' => null, //Entity Statuses Active
             'LOWER(en_name)' => strtolower(trim($en_name)),
         ));
         if(count($duplicate_name_ens) > 0){
@@ -1050,10 +1049,10 @@ class Entities_model extends CI_Model
                 $en_name = $en_name.' '.rand(100000000, 999999999); //Slim possibility to be duplicate...
             } else {
                 //No, return error:
-                $fixed_fields = $this->config->item('fixed_fields');
+                $en_all_6177 = $this->config->item('en_all_6177'); //Entity Statuses
                 return array(
                     'status' => 0,
-                    'message' => 'Entity name ['.$en_name.'] already in use by entity @'.$duplicate_name_ens[0]['en_id'].' with status ['.$fixed_fields['en_status'][$duplicate_name_ens[0]['en_status']]['s_name'].']',
+                    'message' => 'Entity name ['.$en_name.'] already in use by entity @'.$duplicate_name_ens[0]['en_id'].' with status ['.$en_all_6177[$duplicate_name_ens[0]['en_status_entity_id']]['m_name'].']',
                 );
             }
         }
@@ -1064,7 +1063,7 @@ class Entities_model extends CI_Model
             'en_name' => trim($en_name),
             'en_icon' => $en_icon,
             'en_psid' => $en_psid,
-            'en_status' => $en_status,
+            'en_status_entity_id' => $en_status_entity_id,
         ), true, $ln_miner_entity_id);
 
         //Return success:
@@ -1159,7 +1158,7 @@ class Entities_model extends CI_Model
             if(isset($fb_profile['profile_pic'])){
                 //Create link to save profile picture:
                 $this->Links_model->ln_create(array(
-                    'ln_status' => 0, //New
+                    'ln_status_entity_id' => 6174, //Link New
                     'ln_type_entity_id' => 4299, //Updated Profile Picture
                     'ln_miner_entity_id' => $added_en['en']['en_id'], //The User who added this
                     'ln_content' => $fb_profile['profile_pic'], //Image to be saved to Mench CDN

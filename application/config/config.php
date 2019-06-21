@@ -5,7 +5,7 @@ defined('BASEPATH') OR exit('No direct script access allowed');
 /*
  *
  * Global variables used throughout the platform.
- * Example: $this->config->item('')
+ * Example: $this->config->item('in_learn_mench_id')
  *
  */
 
@@ -15,42 +15,43 @@ date_default_timezone_set('America/Los_Angeles');
 
 
 //App Functionality:
-$config['app_version']              = '0.9091'; //Cache buster for static JS/CSS files, so needs to be updated if you update static files
+$config['app_version']              = '0.91'; //Cache buster for static JS/CSS files, so needs to be updated if you update static files
 $config['app_enable_algolia']       = true; //May need to turn off if/when we reach monthly quota of 50k calls
 $config['max_file_mb_size']         = 25; //Server setting is 32MB
 $config['items_per_page']           = 100; //The limit of how many items should be loaded per page/section
 
 
-//Intents:
+//Intent References:
 $config['in_mission_id']            = 7766; //highest-level intent which defines the mission of Mench
-$config['in_top_focus_id']          = 11762; //Where miners would go when click on top/right "Intents" link
+$config['in_focus_id']              = 11762; //Where miners would go when click on top/right "Intents" link
+$config['in_learn_mench_id']        = 7436; //The intent that explains Mench
 $config['in_system_lock']           = array(8469, 7766, 11762, 11774); //Once set to published, their status will be locked by system
+
+//Intent Settings:
 $config['in_max_seconds']           = 28800; //The maximum seconds allowed per intent. If larger, the miner is asked to break it down into smaller intents
 $config['in_outcome_max']           = 89; //Max number of characters allowed for intent outcomes
 $config['in_completion_marks']      = array(-21, -13, -8, -5, -3, -2, -1, 0, 1, 2, 3, 5, 8, 13, 21); //Marks users get when completing an intent (Learn more @4358)
 
 
 //Entities:
-$config['en_top_focus_id']          = 3463; //The default platform entity that is loaded when Entities is clicked
+$config['en_focus_id']              = 3463; //The default platform entity that is loaded when Entities is clicked
 $config['en_name_max_length']       = 250; //Max number of characters allowed in the title of intents
 
 
 //Links:
-$config['ln_content_max_length']    = 610; //Max number of characters allowed in messages. Facebook's cap is 2000 characters/message
-$config['ln_status_incomplete']     = array(0, 1); //Link statuses that are considered in-complete to determine progress and more
+$config['messages_max_length']      = 610; //Max number of characters allowed in messages. Facebook's cap is 2000 characters/message
 $config['tr_object_links']          = array( //Each link can have any of the following object links
                                         'ln_type_entity_id' => 'en',
                                         'ln_miner_entity_id' => 'en',
                                         'ln_parent_entity_id' => 'en',
-                                        'ln_child_entity_id'  => 'en',
+                                        'ln_child_entity_id' => 'en',
                                         'ln_parent_intent_id' => 'in',
-                                        'ln_child_intent_id'  => 'in',
+                                        'ln_child_intent_id' => 'in',
                                         'ln_parent_link_id' => 'ln',
                                     );
 
 //Facebook:
 $config['fb_max_message']           = 2000; //The maximum length of a Message accepted via Messenger API
-
 //Note: We have a config variable named "fb_credentials" stored in config/credentials.php
 
 $config['fb_settings']              = array(
@@ -72,114 +73,7 @@ $config['fb_convert_4537']          = array( //Dedicated media formats supported
                                     );
 
 
-//TODO: To be deprecated soon...
-$config['fixed_fields']             = array(
-                                        'in_status' => array(
-                                            2 => array(
-                                                's_name' => 'Published',
-                                                's_en_id' => 6185,
-                                                's_desc' => 'live and ready for users to add to Action Plans',
-                                                's_icon' => '<i class="fas fa-check-square"></i>',
-                                            ),
-                                            1 => array(
-                                                's_name' => 'Drafting',
-                                                's_desc' => 'being mined, to be published soon',
-                                                's_icon' => '<i class="fas fa-spinner fa-spin"></i>',
-                                                's_en_id' => 6184,
-                                            ),
-                                            0 => array(
-                                                's_name' => 'New',
-                                                's_desc' => 'newly added, pending review',
-                                                's_icon' => '<i class="fal fa-square"></i>',
-                                                's_en_id' => 6183,
-                                            ),
-                                            -1 => array(
-                                                's_name' => 'Removed',
-                                                's_desc' => 'archived',
-                                                's_icon' => '<i class="fal fa-minus-square"></i>',
-                                                's_en_id' => 6182,
-                                            ),
-                                        ),
-                                        'en_status' => array(
-                                            2 => array(
-                                                's_name' => 'Published',
-                                                's_desc' => 'live, verified and mined',
-                                                's_icon' => '<i class="fas fa-check-square"></i>',
-                                                's_en_id' => 6181,
-                                            ),
-                                            1 => array(
-                                                's_name' => 'Drafting',
-                                                's_desc' => 'being mined, to be published soon',
-                                                's_icon' => '<i class="fas fa-spinner fa-spin"></i>',
-                                                's_en_id' => 6180,
-                                            ),
-                                            0 => array(
-                                                's_name' => 'New',
-                                                's_desc' => 'newly added, pending review',
-                                                's_icon' => '<i class="fal fa-square"></i>',
-                                                's_en_id' => 6179,
-                                            ),
-                                            -1 => array(
-                                                's_name' => 'Removed',
-                                                's_desc' => 'archived',
-                                                's_icon' => '<i class="fal fa-minus-square"></i>',
-                                                's_en_id' => 6178,
-                                            ),
-                                        ),
-                                        'ln_status' => array(
-                                            2 => array(
-                                                's_name' => 'Published',
-                                                's_desc' => 'live',
-                                                's_icon' => '<i class="fas fa-check-square"></i>',
-                                                's_en_id' => 6176,
-                                            ),
-                                            1 => array(
-                                                's_name' => 'Drafting',
-                                                's_desc' => 'being worked on',
-                                                's_icon' => '<i class="fas fa-spinner fa-spin"></i>',
-                                                's_en_id' => 6175,
-                                            ),
-                                            0 => array(
-                                                's_name' => 'New',
-                                                's_desc' => 'require review',
-                                                's_icon' => '<i class="fal fa-square"></i>',
-                                                's_en_id' => 6174,
-                                            ),
-                                            -1 => array(
-                                                's_name' => 'Removed',
-                                                's_desc' => 'archived',
-                                                's_icon' => '<i class="fal fa-minus-square"></i>',
-                                                's_en_id' => 6173,
-                                            ),
-                                        ),
-                                        //The same as ln_status with terminology optimized for users
-                                        'ln_action_plan_status' => array(
-                                            2 => array(
-                                                's_name' => 'Completed',
-                                                's_desc' => 'Marked as complete and pending new updates',
-                                                's_icon' => '<i class="fas fa-check-square"></i>',
-                                                's_en_id' => 6191,
-                                            ),
-                                            1 => array(
-                                                's_name' => 'Working On',
-                                                's_desc' => 'Started but not yet complete',
-                                                's_icon' => '<i class="fas fa-spinner fa-spin"></i>',
-                                                's_en_id' => 6190,
-                                            ),
-                                            0 => array(
-                                                's_name' => 'Not Started',
-                                                's_desc' => 'Pending completion',
-                                                's_icon' => '<i class="fal fa-square"></i>',
-                                                's_en_id' => 6189,
-                                            ),
-                                            -1 => array(
-                                                's_name' => 'Skipped',
-                                                's_desc' => 'Step was skipped by user',
-                                                's_icon' => '<i class="fal fa-minus-square"></i>',
-                                                's_en_id' => 6188,
-                                            ),
-                                        )
-                                    );
+
 
 
 

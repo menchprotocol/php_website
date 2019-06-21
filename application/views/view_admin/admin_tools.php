@@ -1,7 +1,8 @@
 <?php
 
 //Define all moderation functions:
-$fixed_fields = $this->config->item('fixed_fields');
+$en_all_4737 = $this->config->item('en_all_4737'); // Intent Statuses
+$en_all_6177 = $this->config->item('en_all_6177'); //Entity Statuses
 
 $moderation_tools = array(
     '/admin/tools/in_replace_outcomes' => 'Intent Search/Replace Outcomes',
@@ -85,7 +86,7 @@ if(!$action) {
 
     //Fetch pending notes:
     $pendin_in_notes = $this->Links_model->ln_fetch(array(
-        'ln_status IN (' . join(',', $this->config->item('ln_status_incomplete')) . ')' => null, //incomplete
+        'ln_status_entity_id IN (' . join(',', $this->config->item('en_ids_7364')) . ')' => null, //Link Statuses Incomplete
         'ln_type_entity_id IN (' . join(',', $this->config->item('en_ids_4485')) . ')' => null, //All Intent Notes
     ), array('in_child'), $this->config->item('items_per_page'), 0, array('ln_id' => 'ASC'));
 
@@ -113,8 +114,8 @@ if(!$action) {
     echo '<ul class="breadcrumb"><li><a href="/admin">Admin Tools</a></li><li><b>'.$moderation_tools['/admin/tools/'.$action].'</b></li></ul>';
 
     $orphan_ins = $this->Intents_model->in_fetch(array(
-        ' NOT EXISTS (SELECT 1 FROM table_links WHERE in_id=ln_child_intent_id AND ln_type_entity_id IN (' . join(',', $this->config->item('en_ids_4486')) . ') AND ln_status>=0) ' => null,
-        'in_status >=' => 0,
+        ' NOT EXISTS (SELECT 1 FROM table_links WHERE in_id=ln_child_intent_id AND ln_type_entity_id IN (' . join(',', $this->config->item('en_ids_4486')) . ') AND ln_status_entity_id IN ('.join(',', $this->config->item('en_ids_7360')) /* Link Statuses Active */.')) ' => null,
+        'in_status_entity_id IN (' . join(',', $this->config->item('en_ids_7356')) . ')' => null, //Intent Statuses Active
         'in_id !=' => $this->config->item('in_mission_id'), //Mission does not have parents
         'in_id NOT IN (' . join(',', $this->config->item('in_system_lock')) . ')' => null,
     ));
@@ -125,7 +126,7 @@ if(!$action) {
         foreach ($orphan_ins as $count => $orphan_in) {
 
             //Show intent:
-            echo '<div>'.($count+1).') <span data-toggle="tooltip" data-placement="right" title="'.$fixed_fields['in_status'][$orphan_in['in_status']]['s_name'].': '.$fixed_fields['in_status'][$orphan_in['in_status']]['s_desc'].'">' . $fixed_fields['in_status'][$orphan_in['in_status']]['s_icon'] . '</span> <a href="/intents/'.$orphan_in['in_id'].'"><b>'.$orphan_in['in_outcome'].'</b></a>';
+            echo '<div>'.($count+1).') <span data-toggle="tooltip" data-placement="right" title="'.$en_all_4737[$orphan_in['in_status_entity_id']]['m_name'].': '.$en_all_4737[$orphan_in['in_status_entity_id']]['m_desc'].'">' . $en_all_4737[$orphan_in['in_status_entity_id']]['m_icon'] . '</span> <a href="/intents/'.$orphan_in['in_id'].'"><b>'.$orphan_in['in_outcome'].'</b></a>';
 
             //Do we need to remove?
             if($command1=='remove_all'){
@@ -134,7 +135,7 @@ if(!$action) {
                 $links_removed = $this->Intents_model->in_unlink($orphan_in['in_id'] , $session_en['en_id']);
 
                 //Remove intent:
-                $this->Intents_model->in_update($orphan_in['in_id'], array( 'in_status' => -1 ), true, $session_en['en_id']);
+                $this->Intents_model->in_update($orphan_in['in_id'], array( 'in_status_entity_id' => 6182 /* Intent Removed */ ), true, $session_en['en_id']);
 
                 //Show confirmation:
                 echo ' [Intent + '.$links_removed.' links Removed]';
@@ -162,9 +163,9 @@ if(!$action) {
     echo '<ul class="breadcrumb"><li><a href="/admin">Admin Tools</a></li><li><b>'.$moderation_tools['/admin/tools/'.$action].'</b></li></ul>';
 
     $orphan_ens = $this->Entities_model->en_fetch(array(
-        ' NOT EXISTS (SELECT 1 FROM table_links WHERE en_id=ln_child_entity_id AND ln_type_entity_id IN (' . join(',', $this->config->item('en_ids_4592')) . ') AND ln_status>=0) ' => null,
-        'en_status >=' => 0,
-        'en_id !=' => $this->config->item('en_top_focus_id'),
+        ' NOT EXISTS (SELECT 1 FROM table_links WHERE en_id=ln_child_entity_id AND ln_type_entity_id IN (' . join(',', $this->config->item('en_ids_4592')) . ') AND ln_status_entity_id IN ('.join(',', $this->config->item('en_ids_7360')) /* Link Statuses Active */.')) ' => null,
+        'en_status_entity_id IN (' . join(',', $this->config->item('en_ids_7358')) . ')' => null, //Entity Statuses Active
+        'en_id !=' => $this->config->item('en_focus_id'),
     ), array('skip_en__parents'));
 
     if(count($orphan_ens) > 0){
@@ -173,7 +174,7 @@ if(!$action) {
         foreach ($orphan_ens  as $count => $orphan_en) {
 
             //Show entity:
-            echo '<div>'.($count+1).') <span data-toggle="tooltip" data-placement="right" title="'.$fixed_fields['en_status'][$orphan_en['en_status']]['s_name'].': '.$fixed_fields['en_status'][$orphan_en['en_status']]['s_desc'].'">' . $fixed_fields['en_status'][$orphan_en['en_status']]['s_icon'] . '</span> <a href="/entities/'.$orphan_en['en_id'].'"><b>'.$orphan_en['en_name'].'</b></a>';
+            echo '<div>'.($count+1).') <span data-toggle="tooltip" data-placement="right" title="'.$en_all_6177[$orphan_en['en_status_entity_id']]['m_name'].': '.$en_all_6177[$orphan_en['en_status_entity_id']]['m_desc'].'">' . $en_all_6177[$orphan_en['en_status_entity_id']]['m_icon'] . '</span> <a href="/entities/'.$orphan_en['en_id'].'"><b>'.$orphan_en['en_name'].'</b></a>';
 
             //Do we need to remove?
             if($command1=='remove_all'){
@@ -182,7 +183,7 @@ if(!$action) {
                 $links_removed = $this->Entities_model->en_unlink($orphan_en['en_id'], $session_en['en_id']);
 
                 //Remove entity:
-                $this->Entities_model->en_update($orphan_en['en_id'], array( 'en_status' => -1 ), true, $session_en['en_id']);
+                $this->Entities_model->en_update($orphan_en['en_id'], array( 'en_status_entity_id' => 6178 /* Entity Removed */ ), true, $session_en['en_id']);
 
                 //Show confirmation:
                 echo ' [Entity + '.$links_removed.' links Removed]';
@@ -220,7 +221,7 @@ if(!$action) {
     if(isset($_GET['search_for']) && strlen($_GET['search_for'])>0){
 
         $matching_results = $this->Entities_model->en_fetch(array(
-            'en_status >=' => 0,
+            'en_status_entity_id IN (' . join(',', $this->config->item('en_ids_7358')) . ')' => null, //Entity Statuses Active
             'LOWER(en_icon) LIKE \'%'.strtolower($_GET['search_for']).'%\'' => null,
         ));
 
@@ -244,7 +245,7 @@ if(!$action) {
 
                 echo '<tr class="panel-title down-border">';
                 echo '<td style="text-align: left;">'.($count+1).'</td>';
-                echo '<td style="text-align: left;">'.echo_fixed_fields('en_status', $en['en_status'], 1, 'right').' <span class="icon-block">'.echo_en_icon($en).'</span><a href="/entities/'.$en['en_id'].'">'.$en['en_name'].'</a></td>';
+                echo '<td style="text-align: left;">'.echo_en_cache('en_all_6177' /* Entity Statuses */, $en['en_status_entity_id'], true, 'right').' <span class="icon-block">'.echo_en_icon($en).'</span><a href="/entities/'.$en['en_id'].'">'.$en['en_name'].'</a></td>';
                 echo '</tr>';
 
             }
@@ -277,7 +278,7 @@ if(!$action) {
     if($search_for_is_set){
 
         $matching_results = $this->Intents_model->in_fetch(array(
-            'in_status >=' => 0,
+            'in_status_entity_id IN (' . join(',', $this->config->item('en_ids_7356')) . ')' => null, //Intent Statuses Active
             'LOWER(in_outcome) LIKE \'%'.strtolower($_GET['search_for']).'%\'' => null,
         ));
 
@@ -331,7 +332,7 @@ if(!$action) {
 
                 echo '<tr class="panel-title down-border">';
                 echo '<td style="text-align: left;">'.($count+1).'</td>';
-                echo '<td style="text-align: left;">'.echo_fixed_fields('in_status', $in['in_status'], 1, 'right').' <a href="/intents/'.$in['in_id'].'">'.str_replace($_GET['search_for'],'<span class="is-highlighted">'.$_GET['search_for'].'</span>',$in['in_outcome']).'</a></td>';
+                echo '<td style="text-align: left;">'.echo_en_cache('en_all_4737' /* Intent Statuses */, $in['in_status_entity_id'], true, 'right').' <a href="/intents/'.$in['in_id'].'">'.str_replace($_GET['search_for'],'<span class="is-highlighted">'.$_GET['search_for'].'</span>',$in['in_outcome']).'</a></td>';
                 echo '<td style="text-align: left;">'.($replace_with_is_set ? str_replace($_GET['replace_with'],'<span class="is-highlighted">'.$_GET['replace_with'].'</span>',$new_outcome) : '').'</td>';
                 echo '<td style="text-align: left;">'.( $replace_with_is_set && !$in_outcome_validation['status'] ? ' <i class="fas fa-exclamation-triangle"></i> Error: '.$in_outcome_validation['message'] : ( $replace_with_is_confirmed && $in_outcome_validation['status'] ? '<i class="fas fa-check-circle"></i> Outcome Updated' : '') ).'</td>';
                 echo '</tr>';
@@ -398,7 +399,7 @@ if(!$action) {
     $fixed = 0;
     foreach($this->Intents_model->in_fetch() as $in){
         $count++;
-        $fixed += $this->Intents_model->in_sync_creation_link($in['in_id'], $in['in_status'], 1 /* Shervin the Developer */);
+        $fixed += $this->Intents_model->in_sync_creation_link($in['in_id'], $in['in_status_entity_id'], 1 /* Shervin the Developer */);
     }
     echo '<div>Intents: '.$fixed.'/'.$count.' creation links fixed</div>';
 
@@ -408,7 +409,7 @@ if(!$action) {
     $fixed = 0;
     foreach($this->Entities_model->en_fetch() as $en){
         $count++;
-        $fixed += $this->Entities_model->en_sync_creation_link($en['en_id'], $en['en_status'], 1 /* Shervin the Developer */);
+        $fixed += $this->Entities_model->en_sync_creation_link($en['en_id'], $en['en_status_entity_id'], 1 /* Shervin the Developer */);
     }
     echo '<div>Entities: '.$fixed.'/'.$count.' creation links fixed</div>';
 
@@ -417,7 +418,7 @@ if(!$action) {
     echo '<ul class="breadcrumb"><li><a href="/admin">Admin Tools</a></li><li><b>'.$moderation_tools['/admin/tools/'.$action].'</b></li></ul>';
 
     //Do a query to detect intents with the exact same title:
-    $q = $this->db->query('select in1.* from table_intents in1 where (select count(*) from table_intents in2 where in2.in_outcome = in1.in_outcome AND in2.in_status >= 0) > 1 AND in1.in_status >= 0 ORDER BY in1.in_outcome ASC');
+    $q = $this->db->query('select in1.* from table_intents in1 where (select count(*) from table_intents in2 where in2.in_outcome = in1.in_outcome AND in2.in_status_entity_id IN (' . join(',', $this->config->item('en_ids_7356')) . ')) > 1 AND in1.in_status_entity_id IN (' . join(',', $this->config->item('en_ids_7356')) . ') ORDER BY in1.in_outcome ASC');
     $duplicates = $q->result_array();
 
     if(count($duplicates) > 0){
@@ -429,7 +430,7 @@ if(!$action) {
                 $prev_title = $in['in_outcome'];
             }
 
-            echo '<div><span data-toggle="tooltip" data-placement="right" title="'.$fixed_fields['in_status'][$in['in_status']]['s_name'].': '.$fixed_fields['in_status'][$in['in_status']]['s_desc'].'">' . $fixed_fields['in_status'][$in['in_status']]['s_icon'] . '</span> <a href="/intents/' . $in['in_id'] . '"><b>' . $in['in_outcome'] . '</b></a> #' . $in['in_id'] . '</div>';
+            echo '<div><span data-toggle="tooltip" data-placement="right" title="'.$en_all_4737[$in['in_status_entity_id']]['m_name'].': '.$en_all_4737[$in['in_status_entity_id']]['m_desc'].'">' . $en_all_4737[$in['in_status_entity_id']]['m_icon'] . '</span> <a href="/intents/' . $in['in_id'] . '"><b>' . $in['in_outcome'] . '</b></a> #' . $in['in_id'] . '</div>';
         }
 
     } else {
@@ -440,7 +441,7 @@ if(!$action) {
 
     echo '<ul class="breadcrumb"><li><a href="/admin">Admin Tools</a></li><li><b>'.$moderation_tools['/admin/tools/'.$action].'</b></li></ul>';
 
-    $q = $this->db->query('select en1.* from table_entities en1 where (select count(*) from table_entities en2 where en2.en_name = en1.en_name AND en2.en_status >= 0) > 1 AND en1.en_status >= 0 ORDER BY en1.en_name ASC');
+    $q = $this->db->query('select en1.* from table_entities en1 where (select count(*) from table_entities en2 where en2.en_name = en1.en_name AND en2.en_status_entity_id IN (' . join(',', $this->config->item('en_ids_7358')) . ')) > 1 AND en1.en_status_entity_id IN (' . join(',', $this->config->item('en_ids_7358')) . ') ORDER BY en1.en_name ASC');
     $duplicates = $q->result_array();
 
     if(count($duplicates) > 0){
@@ -453,7 +454,7 @@ if(!$action) {
                 $prev_title = $en['en_name'];
             }
 
-            echo '<span data-toggle="tooltip" data-placement="right" title="'.$fixed_fields['en_status'][$en['en_status']]['s_name'].': '.$fixed_fields['en_status'][$en['en_status']]['s_desc'].'">' . $fixed_fields['en_status'][$en['en_status']]['s_icon'] . '</span> <a href="/entities/' . $en['en_id'] . '"><b>' . $en['en_name'] . '</b></a> @' . $en['en_id'] . '<br />';
+            echo '<span data-toggle="tooltip" data-placement="right" title="'.$en_all_6177[$en['en_status_entity_id']]['m_name'].': '.$en_all_6177[$en['en_status_entity_id']]['m_desc'].'">' . $en_all_6177[$en['en_status_entity_id']]['m_icon'] . '</span> <a href="/entities/' . $en['en_id'] . '"><b>' . $en['en_name'] . '</b></a> @' . $en['en_id'] . '<br />';
         }
 
     } else {
@@ -469,7 +470,9 @@ if(!$action) {
     boost_power();
 
     //Hidden function to reset points:
-    $all_link_types = $this->Links_model->ln_fetch(array('ln_status >=' => 0), array('en_type'), 0, 0, array('en_name' => 'ASC'), 'COUNT(ln_type_entity_id) as trs_count, en_name, en_icon, ln_type_entity_id', 'ln_type_entity_id, en_name, en_icon');
+    $all_link_types = $this->Links_model->ln_fetch(array(
+        'ln_status_entity_id IN (' . join(',', $this->config->item('en_ids_7360')) . ')' => null, //Link Statuses Active
+    ), array('en_type'), 0, 0, array('en_name' => 'ASC'), 'COUNT(ln_type_entity_id) as trs_count, en_name, en_icon, ln_type_entity_id', 'ln_type_entity_id, en_name, en_icon');
 
 
     $total_updated = 0;
@@ -497,14 +500,15 @@ if(!$action) {
     echo '<table class="table table-condensed table-striped maxout" style="text-align: left;">';
 
     $en_all_6410 = $this->config->item('en_all_6410');
+    $en_all_6186 = $this->config->item('en_all_6186'); //Link Statuses
 
     echo '<tr style="font-weight: bold;">';
     echo '<td colspan="4" style="text-align: left;">'.$en_all_6410[6402]['m_icon'].' '.$en_all_6410[6402]['m_name'].'</td>';
     echo '</tr>';
     $counter = 0;
     foreach ($this->Links_model->ln_fetch(array(
-        'ln_status >=' => 0,
-        'in_status >=' => 0,
+        'ln_status_entity_id IN (' . join(',', $this->config->item('en_ids_7360')) . ')' => null, //Link Statuses Active
+        'in_status_entity_id IN (' . join(',', $this->config->item('en_ids_7356')) . ')' => null, //Intent Statuses Active
         'ln_type_entity_id' => 4229,
         'LENGTH(ln_metadata) > 0' => null,
     ), array('in_child'), 0, 0) as $in_ln) {
@@ -522,15 +526,15 @@ if(!$action) {
             echo '<tr>';
             echo '<td style="width: 50px;">'.$counter.'</td>';
             echo '<td style="font-weight: bold; font-size: 1.3em; width: 100px;">'.echo_assessment_mark($in_ln).'</td>';
-            echo '<td>'.$fixed_fields['ln_status'][$in_ln['ln_status']]['s_icon'].'</td>';
+            echo '<td>'.$en_all_6186[$in_ln['ln_status_entity_id']]['m_icon'].'</td>';
             echo '<td style="text-align: left;">';
             echo '<div>';
-            echo '<span style="width:25px; display:inline-block; text-align:center;">'.$fixed_fields['in_status'][$parent_ins[0]['in_status']]['s_icon'].'</span>';
+            echo '<span style="width:25px; display:inline-block; text-align:center;">'.$en_all_4737[$parent_ins[0]['in_status_entity_id']]['m_icon'].'</span>';
             echo '<a href="/intents/'.$parent_ins[0]['in_id'].'">'.$parent_ins[0]['in_outcome'].'</a>';
             echo '</div>';
 
             echo '<div>';
-            echo '<span style="width:25px; display:inline-block; text-align:center;">'.$fixed_fields['in_status'][$in_ln['in_status']]['s_icon'].'</span>';
+            echo '<span style="width:25px; display:inline-block; text-align:center;">'.$en_all_4737[$in_ln['in_status_entity_id']]['m_icon'].'</span>';
             echo '<a href="/intents/'.$in_ln['in_id'].'">'.$in_ln['in_outcome'].'</a>';
             echo '</div>';
 
@@ -554,8 +558,8 @@ if(!$action) {
 
     $counter = 0;
     foreach ($this->Links_model->ln_fetch(array(
-        'ln_status >=' => 0,
-        'in_status >=' => 0,
+        'ln_status_entity_id IN (' . join(',', $this->config->item('en_ids_7360')) . ')' => null, //Link Statuses Active
+        'in_status_entity_id IN (' . join(',', $this->config->item('en_ids_7356')) . ')' => null, //Intent Statuses Active
         'ln_type_entity_id' => 4228,
         'LENGTH(ln_metadata) > 0' => null,
     ), array('in_child'), 0, 0) as $in_ln) {
@@ -589,15 +593,15 @@ if(!$action) {
             echo '<tr>';
             echo '<td style="width: 50px;">'.$counter.'</td>';
             echo '<td style="font-weight: bold; font-size: 1.3em; width: 100px;">'.echo_assessment_mark($in_ln).'</td>';
-            echo '<td>'.$fixed_fields['ln_status'][$in_ln['ln_status']]['s_icon'].'</td>';
+            echo '<td>'.$en_all_6186[$in_ln['ln_status_entity_id']]['m_icon'].'</td>';
             echo '<td style="text-align: left;">';
                 echo '<div>';
-                echo '<span style="width:25px; display:inline-block; text-align:center;">'.$fixed_fields['in_status'][$parent_ins[0]['in_status']]['s_icon'].'</span>';
+                echo '<span style="width:25px; display:inline-block; text-align:center;">'.$en_all_4737[$parent_ins[0]['in_status_entity_id']]['m_icon'].'</span>';
                 echo '<a href="/intents/'.$parent_ins[0]['in_id'].'">'.$parent_ins[0]['in_outcome'].'</a>';
                 echo '</div>';
 
                 echo '<div>';
-                echo '<span style="width:25px; display:inline-block; text-align:center;">'.$fixed_fields['in_status'][$in_ln['in_status']]['s_icon'].'</span>';
+                echo '<span style="width:25px; display:inline-block; text-align:center;">'.$en_all_4737[$in_ln['in_status_entity_id']]['m_icon'].'</span>';
                 echo '<a href="/intents/'.$in_ln['in_id'].'">'.$in_ln['in_outcome'].'</a>';
                 echo '</div>';
             echo '</td>';
@@ -612,9 +616,8 @@ if(!$action) {
 } elseif($action=='assessment_marks_birds_eye') {
 
     //Give an overview of the point links in a hierchial format to enable moderators to overview:
-    $_GET['starting_in']    = ( isset($_GET['starting_in']) && intval($_GET['starting_in']) > 0 ? $_GET['starting_in'] : $this->config->item('in_top_focus_id') );
+    $_GET['starting_in']    = ( isset($_GET['starting_in']) && intval($_GET['starting_in']) > 0 ? $_GET['starting_in'] : $this->config->item('in_focus_id') );
     $_GET['depth_levels']   = ( isset($_GET['depth_levels']) && intval($_GET['depth_levels']) > 0 ? $_GET['depth_levels'] : 3 );
-    $_GET['status_min']     = ( isset($_GET['status_min']) && intval($_GET['status_min']) > 0 ? $_GET['status_min'] : 0 );
 
     echo '<ul class="breadcrumb"><li><a href="/admin">Admin Tools</a></li><li><b>'.$moderation_tools['/admin/tools/'.$action].'</b></li></ul>';
 
@@ -629,8 +632,7 @@ if(!$action) {
                     <input style="padding-left:3px; min-width:56px;" type="number" min="1" step="1" name="starting_in" id="starting_in" value="'.$_GET['starting_in'].'" class="form-control">
                     <span class="input-group-addon addon-lean addon-grey" style="color:#2f2739; font-weight: 300; border-left: 1px solid #ccc;"> and go </span>
                     <input style="padding-left:3px; min-width:56px;" type="number" min="1" step="1" name="depth_levels" id="depth_levels" value="'.$_GET['depth_levels'].'" class="form-control">
-                    <span class="input-group-addon addon-lean addon-grey" style="color:#2f2739; font-weight: 300; border-left: 1px solid #ccc; border-right:0px solid #FFF;"> levels deep with min. status: </span>
-                    <input style="padding-left:3px; min-width:56px;" type="number" min="-1" max="2" step="1" name="status_min" id="status_min" value="'.$_GET['status_min'].'" class="form-control">
+                    <span class="input-group-addon addon-lean addon-grey" style="color:#2f2739; font-weight: 300; border-left: 1px solid #ccc; border-right:0px solid #FFF;"> levels deep.</span>
                 </div>
             </div>
             <input type="submit" class="btn btn-primary btn-sm" value="Go" style="display: inline-block; margin-top: -41px;" />
@@ -649,7 +651,6 @@ $(\'#in_report_conditional_steps\').html(\'<span><i class="fas fa-spinner fa-spi
 $.post("/intents/in_report_conditional_steps", {
     starting_in: parseInt($(\'#starting_in\').val()),
     depth_levels: parseInt($(\'#depth_levels\').val()),
-    status_min: parseInt($(\'#status_min\').val()),
 }, function (data) {
     if (!data.status) {
         //Show Error:

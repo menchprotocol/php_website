@@ -44,20 +44,20 @@ class Links_model extends CI_Model
 
             if($ln_miner_entity_id > 0){
 
-                $fixed_fields = $this->config->item('fixed_fields');
+                $en_all_6186 = $this->config->item('en_all_6186'); //Link Statuses
 
                 //Log modification link for every field changed:
                 foreach ($update_columns as $key => $value) {
 
                     //Has this value changed compared to what we initially had in DB?
-                    if ( !($before_data[0][$key] == $value) && in_array($key, array('ln_status', 'ln_content', 'ln_order', 'ln_parent_entity_id', 'ln_child_entity_id', 'ln_parent_intent_id', 'ln_child_intent_id', 'ln_metadata', 'ln_type_entity_id'))) {
+                    if ( !($before_data[0][$key] == $value) && in_array($key, array('ln_status_entity_id', 'ln_content', 'ln_order', 'ln_parent_entity_id', 'ln_child_entity_id', 'ln_parent_intent_id', 'ln_child_intent_id', 'ln_metadata', 'ln_type_entity_id'))) {
 
                         //Value has changed, log link:
                         $this->Links_model->ln_create(array(
                             'ln_parent_link_id' => $id, //Link Reference
                             'ln_miner_entity_id' => $ln_miner_entity_id,
                             'ln_type_entity_id' => 4242, //Link Attribute Modified
-                            'ln_content' => echo_clean_db_name($key) . ' changed from "' . ( $key=='ln_status' ? $fixed_fields['ln_status'][$before_data[0][$key]]['s_name']  : $before_data[0][$key] ) . '" to "' . ( $key=='ln_status' ? $fixed_fields['ln_status'][$value]['s_name']  : $value ) . '"',
+                            'ln_content' => echo_clean_db_name($key) . ' changed from "' . ( $key=='ln_status_entity_id' ? $en_all_6186[$before_data[0][$key]]['m_name']  : $before_data[0][$key] ) . '" to "' . ( $key=='ln_status_entity_id' ? $en_all_6186[$value]['m_name']  : $value ) . '"',
                             'ln_metadata' => array(
                                 'ln_id' => $id,
                                 'field' => $key,
@@ -176,8 +176,8 @@ class Links_model extends CI_Model
             $insert_columns['ln_timestamp'] = $d->format("Y-m-d H:i:s.u");
         }
 
-        if (!isset($insert_columns['ln_status'])|| is_null($insert_columns['ln_status'])) {
-            $insert_columns['ln_status'] = 2; //Published
+        if (!isset($insert_columns['ln_status_entity_id'])|| is_null($insert_columns['ln_status_entity_id'])) {
+            $insert_columns['ln_status_entity_id'] = 6176; //Link Published
         }
 
         //Set some zero defaults if not set:
@@ -262,8 +262,8 @@ class Links_model extends CI_Model
 
                     //Try fetching subscribers email:
                     foreach($this->Links_model->ln_fetch(array(
-                        'ln_status' => 2, //Published
-                        'en_status' => 2, //Published
+                        'ln_status_entity_id IN (' . join(',', $this->config->item('en_ids_7359')) . ')' => null, //Link Statuses Public
+                        'en_status_entity_id IN (' . join(',', $this->config->item('en_ids_7357')) . ')' => null, //Entity Statuses Public
                         'ln_type_entity_id' => 4255, //Linked Entities Text (Email is text)
                         'ln_parent_entity_id' => 3288, //Email Address
                         'ln_child_entity_id' => $subscriber_en_id,

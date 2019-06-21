@@ -12,11 +12,15 @@ $in_filters = in_get_filters(true);
 
 <div class="row">
     <div class="col-xs-7 cols">
-
         <?php
+        if($in['in_id'] == $this->config->item('in_mission_id')){
 
-        //Do not show parent intent section for our top intention:
-        if($in['in_id']!=7766 || count($in['in__parents']) > 0){
+            //Focus intent:
+            echo '<div>&nbsp;</div>'; //Give some top space since we don't have parents here...
+            echo '<h5 class="badge badge-h indent1 inline-block"><i class="far fa-globe"></i> Our Mission</h5>';
+
+        } else {
+
             //Parent intents:
             echo '<h5 class="badge badge-h opacity_fadeout"><span class="li-parent-count parent-counter-' . $in['in_id'] . '">' . count($in['in__parents']) . '</span> Parent' . echo__s(count($in['in__parents'])) . '</h5>';
             echo '<div id="list-in-' . $in['in_id'] . '-1" class="list-group list-level-2">';
@@ -38,10 +42,11 @@ $in_filters = in_get_filters(true);
                    <div class="algolia_search_pad in_pad_top hidden"><span>Search existing intents or create a new one...</span></div>
             </div>';
             echo '</div>';
-        }
 
-        //Focus intent:
-        echo '<h5 class="badge badge-h indent1 opacity_fadeout skip_fadeout_in_'.$in['in_id'].'" style="display: inline-block;">Intent #'.$in['in_id'].'</h5>';
+            //Focus intent:
+            echo '<h5 class="badge badge-h indent1 opacity_fadeout skip_fadeout_in_'.$in['in_id'].' inline-block">Intent #'.$in['in_id'].'</h5>';
+
+        }
 
         //Hidden Links:
         echo '<a class="secret" href="/intents/cron__sync_extra_insights/' . $in['in_id'] . '/1?redirect=/' . $in['in_id'] . '" style="margin-left: 5px;" onclick="turn_off()" data-toggle="tooltip" title="Updates intent tree cache" data-placement="top"><i class="fal fa-sync-alt"></i></a>';

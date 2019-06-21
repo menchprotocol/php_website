@@ -1,4 +1,4 @@
-function check_in_en_status(){
+function check_in_en_status_entity_id(){
     //Checks to see if the Intent/Entity status filter should be visible
     //Would only make visible if Link type is Created Intent/Entity
 
@@ -16,11 +16,11 @@ function check_in_en_status(){
 
 $(document).ready(function () {
 
-    check_in_en_status();
+    check_in_en_status_entity_id();
 
     //Watch for intent status change:
     $("#ln_type_entity_id").change(function () {
-        check_in_en_status();
+        check_in_en_status_entity_id();
     });
 
 
