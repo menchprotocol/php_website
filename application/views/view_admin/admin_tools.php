@@ -16,7 +16,6 @@ $moderation_tools = array(
     '/admin/tools/assessment_marks_birds_eye' => 'Completion Marks Birds Eye View',
     '/admin/tools/compose_test_message' => 'Compose Test Message',
     '/admin/tools/sync_in_verbs' => 'Sync Intent Verbs',
-    '/admin/tools/sync_in_en_creation_link_statuses' => 'Sync Intent/Entity Creation Links',
 );
 
 $cron_jobs = array(
@@ -389,29 +388,6 @@ if(!$action) {
     }
 
     echo '<div>'.$fixed.'/'.$count.' Intent verbs fixed</div>';
-
-} elseif($action=='sync_in_en_creation_link_statuses') {
-
-    echo '<ul class="breadcrumb"><li><a href="/admin">Admin Tools</a></li><li><b>'.$moderation_tools['/admin/tools/'.$action].'</b></li></ul>';
-
-    //Would ensure intents have synced statuses:
-    $count = 0;
-    $fixed = 0;
-    foreach($this->Intents_model->in_fetch() as $in){
-        $count++;
-        $fixed += $this->Intents_model->in_sync_creation_link($in['in_id'], $in['in_status_entity_id'], 1 /* Shervin the Developer */);
-    }
-    echo '<div>Intents: '.$fixed.'/'.$count.' creation links fixed</div>';
-
-
-    //Would ensure intents have synced statuses:
-    $count = 0;
-    $fixed = 0;
-    foreach($this->Entities_model->en_fetch() as $en){
-        $count++;
-        $fixed += $this->Entities_model->en_sync_creation_link($en['en_id'], $en['en_status_entity_id'], 1 /* Shervin the Developer */);
-    }
-    echo '<div>Entities: '.$fixed.'/'.$count.' creation links fixed</div>';
 
 } elseif($action=='identical_intent_outcomes') {
 

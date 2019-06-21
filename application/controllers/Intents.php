@@ -653,10 +653,6 @@ class Intents extends CI_Controller
 
                 } elseif ($key == 'in_status_entity_id') {
 
-                    //Adjust creation link status:
-                    $this->Intents_model->in_sync_creation_link($_POST['in_id'], $value, $session_en['en_id']);
-
-
                     $links_removed = 0;
 
                     //Is this a recursive removal?

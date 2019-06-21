@@ -543,12 +543,6 @@ class Entities extends CI_Controller
             ));
         }
 
-
-        //Is status change happening?
-        if(!($en_update['en_status_entity_id'] == $ens[0]['en_status_entity_id'])){
-            $this->Entities_model->en_sync_creation_link($_POST['en_id'], $en_update['en_status_entity_id'], $session_en['en_id']);
-        }
-
         //Is this being removed?
         if (!in_array($en_update['en_status_entity_id'], $this->config->item('en_ids_7358') /* Entity Statuses Active */) && !($en_update['en_status_entity_id'] == $ens[0]['en_status_entity_id'])) {
 

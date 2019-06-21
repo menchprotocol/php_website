@@ -683,40 +683,6 @@ class Entities_model extends CI_Model
         return $return_data;
     }
 
-    function en_sync_creation_link($en_id, $en_status_entity_id, $ln_miner_entity_id){
-
-        $fixed = 0; //Assume all good!
-
-        //Fetch creation link:
-        $creation_lns = $this->Links_model->ln_fetch(array(
-            'ln_type_entity_id' => 4251,
-            'ln_child_entity_id' => $en_id,
-        ));
-
-        if(count($creation_lns) < 1){
-
-            //Create one since we don't have one:
-            $this->Links_model->ln_create(array(
-                'ln_miner_entity_id' => $ln_miner_entity_id,
-                'ln_child_entity_id' => intval($en_id),
-                'ln_type_entity_id' => 4251, //New Intent Created
-                'ln_status_entity_id' => $en_status_entity_id,
-            ));
-
-            $fixed++;
-
-        } elseif($creation_lns[0]['ln_status_entity_id'] != $en_status_entity_id){
-
-            //Sync statuses:
-            $fixed += $this->Links_model->ln_update($creation_lns[0]['ln_id'], array(
-                'ln_status_entity_id' => $en_status_entity_id,
-            ), $ln_miner_entity_id);
-
-        }
-
-        return $fixed;
-    }
-
     function en_search_match($en_parent_id, $value)
     {
 
