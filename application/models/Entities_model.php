@@ -121,8 +121,7 @@ class Entities_model extends CI_Model
             if (in_array('en__child_count', $join_objects)) {
 
                 //Count children:
-                $res[$key]['en__child_count'] = $this->Entities_model->en_child_count($val['en_id'], $this->config->item('en_ids_7358'));
-
+                $res[$key]['en__child_count'] = $this->Entities_model->en_child_count($val['en_id'], $this->config->item('en_ids_7358') /* Entity Statuses Active */);
             }
 
 
@@ -906,7 +905,7 @@ class Entities_model extends CI_Model
 
                 $applied_success++;
 
-            } elseif ($action_en_id == 5003 && ($action_command1=='*' || $en['en_status_entity_id']==$action_command1) && in_array($action_command2, $this->config->item('en_all_6177'))) { //Update Matching Entity Status
+            } elseif ($action_en_id == 5003 && ($action_command1=='*' || $en['en_status_entity_id']==$action_command1) && in_array($action_command2, $this->config->item('en_ids_6177'))) { //Update Matching Entity Status
 
                 $this->Entities_model->en_update($en['en_id'], array(
                     'en_status_entity_id' => $action_command2,
@@ -948,7 +947,7 @@ class Entities_model extends CI_Model
 
     }
 
-    function en_child_count($en_id, $statuses)
+    function en_child_count($en_id, $en_statuses)
     {
 
         //Count the active children of entity:
@@ -959,7 +958,7 @@ class Entities_model extends CI_Model
             'ln_parent_entity_id' => $en_id,
             'ln_type_entity_id IN (' . join(',', $this->config->item('en_ids_4592')) . ')' => null, //Entity Link Connectors
             'ln_status_entity_id IN (' . join(',', $this->config->item('en_ids_7360')) . ')' => null, //Link Statuses Active
-            'en_status_entity_id IN (' . join(',', $statuses) . ')' => null,
+            'en_status_entity_id IN (' . join(',', $en_statuses) . ')' => null,
         ), array('en_child'), 0, 0, array(), 'COUNT(en_id) as en__child_count');
 
         if (count($child_links) > 0) {

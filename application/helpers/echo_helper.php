@@ -1773,7 +1773,7 @@ function echo_in($in, $level, $in_parent_id = 0, $is_parent = false)
     $ui .= '<span class="icon-main in_parent_type_' . $in['in_id'] . '"><span data-toggle="tooltip" data-placement="right" title="'.$en_all_6676[$type_parent_id]['m_name'].' @'.$type_parent_id.': '.$en_all_6676[$type_parent_id]['m_desc'].'">' . $en_all_6676[$type_parent_id]['m_icon'] . '</span></span>';
 
     //Show smaller intent status:
-    $ui .= '<span class="icon-top-right in_status_entity_id_' . $in['in_id'] . '"><span data-toggle="tooltip" data-placement="right" title="'.$en_all_4737[$in['in_status_entity_id']]['m_name'].' ['.$in['in_status_entity_id'].']: '.$en_all_4737[$in['in_status_entity_id']]['m_desc'].'">' . $en_all_4737[$in['in_status_entity_id']]['m_icon'] . '</span></span>';
+    $ui .= '<span class="icon-top-right in_status_entity_id_' . $in['in_id'] . '"><span data-toggle="tooltip" data-placement="right" title="'.$en_all_4737[$in['in_status_entity_id']]['m_name'].' @'.$in['in_status_entity_id'].': '.$en_all_4737[$in['in_status_entity_id']]['m_desc'].'">' . $en_all_4737[$in['in_status_entity_id']]['m_icon'] . '</span></span>';
 
     //Show intent type icon:
     $ui .= '<span class="icon-top-left in_type_entity_id_' . $in['in_id'] . '" data-toggle="tooltip" data-placement="right" title="'.$in__type[$in['in_type_entity_id']]['m_name'].' @'.$in['in_type_entity_id'].': '.$in__type[$in['in_type_entity_id']]['m_desc'].'">'.$in__type[$in['in_type_entity_id']]['m_icon'].'</span>';
@@ -2080,7 +2080,7 @@ function echo_en($en, $level, $is_parent = false)
     $ui .= '<span class="icon-main en_ui_icon en_ui_icon_' . $en['en_id'] . ' en-icon en__icon_'.$en['en_id'].'" en-is-set="'.( strlen($en['en_icon']) > 0 ? 1 : 0 ).'" data-toggle="tooltip" data-placement="right" title="Entity Icon">' . echo_en_icon($en) . '</span>';
 
     //Show smaller entity status:
-    $ui .= '<span class="icon-top-right en_status_entity_id_' . $en['en_id'] . '"><span data-toggle="tooltip" data-placement="right" title="'.$en_all_6177[$en['en_status_entity_id']]['m_name'].' ['.$en['en_status_entity_id'].']: '.$en_all_6177[$en['en_status_entity_id']]['m_desc'].'">' . $en_all_6177[$en['en_status_entity_id']]['m_icon'] . '</span></span>';
+    $ui .= '<span class="icon-top-right en_status_entity_id_' . $en['en_id'] . '"><span data-toggle="tooltip" data-placement="right" title="'.$en_all_6177[$en['en_status_entity_id']]['m_name'].' @'.$en['en_status_entity_id'].': '.$en_all_6177[$en['en_status_entity_id']]['m_desc'].'">' . $en_all_6177[$en['en_status_entity_id']]['m_icon'] . '</span></span>';
 
     //Status locked intent?
     if($en['en_psid'] > 0){
