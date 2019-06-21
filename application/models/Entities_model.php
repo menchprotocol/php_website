@@ -121,7 +121,7 @@ class Entities_model extends CI_Model
             if (in_array('en__child_count', $join_objects)) {
 
                 //Count children:
-                $res[$key]['en__child_count'] = $this->Entities_model->en_child_count($val['en_id'], array(0,1,2));
+                $res[$key]['en__child_count'] = $this->Entities_model->en_child_count($val['en_id'], $this->config->item('en_ids_7358'));
 
             }
 
