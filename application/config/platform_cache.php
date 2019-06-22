@@ -11,7 +11,7 @@ defined('BASEPATH') OR exit('No direct script access allowed');
  *
  */
 
-//Generated 2019-06-21 14:11:29 PST
+//Generated 2019-06-21 18:37:34 PST
 
 //Link Statuses Incomplete:
 $config['en_ids_7364'] = array(6174,6175);
@@ -31,7 +31,7 @@ $config['en_all_7364'] = array(
 );
 
 //Link Statuses Active:
-$config['en_ids_7360'] = array(6174,6175,6176,7353);
+$config['en_ids_7360'] = array(6174,6175,6176);
 $config['en_all_7360'] = array(
     6174 => array(
         'm_icon' => '<i class="fal fa-square"></i>',
@@ -51,26 +51,14 @@ $config['en_all_7360'] = array(
         'm_desc' => '',
         'm_parents' => array(7360,7359,6186),
     ),
-    7353 => array(
-        'm_icon' => '<i class="fas fa-badge-check"></i>',
-        'm_name' => 'Link Verified',
-        'm_desc' => '',
-        'm_parents' => array(7360,7359,6186),
-    ),
 );
 
 //Link Statuses Public:
-$config['en_ids_7359'] = array(6176,7353);
+$config['en_ids_7359'] = array(6176);
 $config['en_all_7359'] = array(
     6176 => array(
         'm_icon' => '<i class="fas fa-check-square"></i>',
         'm_name' => 'Link Published',
-        'm_desc' => '',
-        'm_parents' => array(7360,7359,6186),
-    ),
-    7353 => array(
-        'm_icon' => '<i class="fas fa-badge-check"></i>',
-        'm_name' => 'Link Verified',
         'm_desc' => '',
         'm_parents' => array(7360,7359,6186),
     ),
@@ -643,14 +631,8 @@ $config['en_all_7164'] = array(
 );
 
 //Link Statuses:
-$config['en_ids_6186'] = array(7353,6176,6175,6174,6173);
+$config['en_ids_6186'] = array(6176,6175,6174,6173);
 $config['en_all_6186'] = array(
-    7353 => array(
-        'm_icon' => '<i class="fas fa-badge-check"></i>',
-        'm_name' => 'Link Verified',
-        'm_desc' => 'checked by a human moderator',
-        'm_parents' => array(7360,7359,6186),
-    ),
     6176 => array(
         'm_icon' => '<i class="fas fa-check-square"></i>',
         'm_name' => 'Link Published',
