@@ -11,7 +11,7 @@ defined('BASEPATH') OR exit('No direct script access allowed');
  *
  */
 
-//Generated 2019-06-21 18:37:34 PST
+//Generated 2019-06-21 18:39:33 PST
 
 //Link Statuses Incomplete:
 $config['en_ids_7364'] = array(6174,6175);
@@ -635,25 +635,25 @@ $config['en_ids_6186'] = array(6176,6175,6174,6173);
 $config['en_all_6186'] = array(
     6176 => array(
         'm_icon' => '<i class="fas fa-check-square"></i>',
-        'm_name' => 'Link Published',
+        'm_name' => 'Published',
         'm_desc' => 'live and ready to be shared with users',
         'm_parents' => array(7360,7359,6186),
     ),
     6175 => array(
         'm_icon' => '<i class="fas fa-spinner fa-spin"></i>',
-        'm_name' => 'Link Drafting',
+        'm_name' => 'Drafting',
         'm_desc' => 'being mined, to be published soon',
         'm_parents' => array(7364,7360,6186),
     ),
     6174 => array(
         'm_icon' => '<i class="fal fa-square"></i>',
-        'm_name' => 'Link New',
+        'm_name' => 'New',
         'm_desc' => 'newly added, pending review',
         'm_parents' => array(7364,7360,6186),
     ),
     6173 => array(
         'm_icon' => '<i class="fal fa-minus-square"></i>',
-        'm_name' => 'Link Removed',
+        'm_name' => 'Removed',
         'm_desc' => 'archived',
         'm_parents' => array(6186),
     ),
