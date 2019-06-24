@@ -12,7 +12,7 @@ class Messenger extends CI_Controller
         $this->output->enable_profiler(FALSE);
     }
 
-    function test($in_id = 6903){
+    function test($in_id){
         $ins = $this->Intents_model->in_fetch(array(
             'in_id' => $in_id,
             'in_status_entity_id IN (' . join(',', $this->config->item('en_ids_7355')) . ')' => null, //Intent Statuses Public

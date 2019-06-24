@@ -1014,10 +1014,10 @@ class Communication_model extends CI_Model
 
         //Fetch Recommended Intentions not yet taken by user:
         $recommend_filters = array(
-            'in_status_entity_id' => 7351, //Intent Featured
+            'in_status_entity_id' => 7351, //Intent Starting Point
             'ln_status_entity_id IN (' . join(',', $this->config->item('en_ids_7359')) . ')' => null, //Link Statuses Public
             'ln_type_entity_id' => 4228, //Fixed Links
-            'ln_parent_intent_id' => 8469,
+            'ln_parent_intent_id' => 8469, //Recommend Mench Intentions
         );
         if(count($user_ins_ids) > 0){
             //Remove as its already added to user Action Plan:
@@ -1036,24 +1036,6 @@ class Communication_model extends CI_Model
             $quick_replies = array();
 
             foreach($recommend_intentions as $count => $in){
-
-                if ($count >= 10) {
-
-                    //We can't have more than 10 intentions listed as Quick Reply supports a total of 11 only (and we need one for "None of the above" option)
-                    $this->Links_model->ln_create(array(
-                        'ln_miner_entity_id' => 1, //Shervin/Developer
-                        'ln_content' => 'actionplan_step_next_echo() encountered intent with too many children to be listed as OR Intent options! Trim and iterate that intent tree.',
-                        'ln_type_entity_id' => 4246, //Platform Bug Reports
-                        'ln_child_entity_id' => $en_id, //Affected user
-                        'ln_parent_intent_id' => 8469, //Recommended Intentions has an overflow!
-                        'ln_child_intent_id' => $in['in_id'],
-                    ));
-
-                    //Quick reply accepts 11 options max:
-                    break;
-
-                }
-
 
                 //Recommend Recommended Intention:
                 $message .= "\n\n" . ( $count+1 ) . '. ' . echo_in_outcome($in['in_outcome'], true);
@@ -1086,10 +1068,7 @@ class Communication_model extends CI_Model
                 $message,
                 array('en_id' => $en_id),
                 true,
-                $quick_replies,
-                array(
-                    'ln_parent_intent_id' => 8469,
-                )
+                $quick_replies
             );
 
         } else {

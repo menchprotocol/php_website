@@ -15,7 +15,7 @@ date_default_timezone_set('America/Los_Angeles');
 
 
 //App Functionality:
-$config['app_version']              = '0.91'; //Cache buster for static JS/CSS files, so needs to be updated if you update static files
+$config['app_version']              = '0.911'; //Cache buster for static JS/CSS files, so needs to be updated if you update static files
 $config['app_enable_algolia']       = true; //May need to turn off if/when we reach monthly quota of 50k calls
 $config['max_file_mb_size']         = 25; //Server setting is 32MB
 $config['items_per_page']           = 100; //The limit of how many items should be loaded per page/section
@@ -23,7 +23,7 @@ $config['items_per_page']           = 100; //The limit of how many items should 
 
 //Intent References:
 $config['in_mission_id']            = 7766; //highest-level intent which defines the mission of Mench
-$config['in_focus_id']              = 11762; //Where miners would go when click on top/right "Intents" link
+$config['in_focus_id']              = 11762; //The intent that the Mench community is focused on
 $config['in_learn_mench_id']        = 7436; //The intent that explains Mench
 $config['in_system_lock']           = array(8469, 7766, 11762, 11774); //Once set to published, their status will be locked by system
 

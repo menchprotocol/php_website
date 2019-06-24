@@ -799,22 +799,22 @@ function echo_time_hours($seconds, $micro = false)
     }
 }
 
-function echo_tree_html_body($id, $pitch_title, $pitch_body, $expand_mode){
+function echo_tree_html_body($id, $pitch_title, $pitch_body, $autoexpand){
     //The body of the tree expansion HTML panel:
     return '<div class="panel-group" id="open' . $id . '" role="tablist" aria-multiselectable="true"><div class="panel panel-primary">
             <div class="panel-heading" role="tab" id="heading' . $id . '">
                 <h4 class="panel-title">
-                    <a role="button" data-toggle="collapse" data-parent="#open' . $id . '" href="#collapse' . $id . '" aria-expanded="' . ($expand_mode ? 'true' : 'false') . '" aria-controls="collapse' . $id . '">' . $pitch_title . ' <i class="fal fa-info-circle" style="font-size:0.85em !important;"></i>
+                    <a role="button" data-toggle="collapse" data-parent="#open' . $id . '" href="#collapse' . $id . '" aria-expanded="' . ($autoexpand ? 'true' : 'false') . '" aria-controls="collapse' . $id . '">' . $pitch_title . ' <i class="fal fa-info-circle" style="font-size:0.85em !important;"></i>
                     </a>
                 </h4>
             </div>
-            <div id="collapse' . $id . '" class="panel-collapse collapse ' . ($expand_mode ? 'in' : 'out') . '" role="tabpanel" aria-labelledby="heading' . $id . '">
+            <div id="collapse' . $id . '" class="panel-collapse collapse ' . ($autoexpand ? 'in' : 'out') . '" role="tabpanel" aria-labelledby="heading' . $id . '">
                 <div class="panel-body overview-pitch">' . $pitch_body . '</div>
             </div>
         </div></div>';
 }
 
-function echo_tree_users($in, $fb_messenger_format = false, $expand_mode = false){
+function echo_tree_users($in, $fb_messenger_format = false, $autoexpand = false){
 
     /*
      *
@@ -861,12 +861,12 @@ function echo_tree_users($in, $fb_messenger_format = false, $expand_mode = false
         return '👤 ' . $pitch_body . "\n";
     } else {
         //HTML format
-        $pitch_title = '<i class="fas fa-user"></i> '. echo_number($enrolled_users_count[0]['totals']) .' Enrolled Users';
-        return echo_tree_html_body('CompletedUsers', $pitch_title, $pitch_body, $expand_mode);
+        $pitch_title = '<span class="icon-block"><i class="fas fa-user"></i></span>&nbsp;'. echo_number($enrolled_users_count[0]['totals']) .' Enrolled Users';
+        return echo_tree_html_body('CompletedUsers', $pitch_title, $pitch_body, $autoexpand);
     }
 }
 
-function echo_tree_experts($in, $fb_messenger_format = false, $expand_mode = false)
+function echo_tree_experts($in, $fb_messenger_format = false, $autoexpand = false)
 {
 
     /*
@@ -1010,7 +1010,7 @@ function echo_tree_experts($in, $fb_messenger_format = false, $expand_mode = fal
 
 
 
-    $pitch_title = '<i class="fas fa-star"></i> ';
+    $pitch_title = '<span class="icon-block"><i class="fas fa-star"></i></span>&nbsp;';
     $pitch_body = 'Action Plan references ';
     if($source_count > 0){
         $pitch_title .= $source_count . ' Source'. echo__s($source_count);
@@ -1029,7 +1029,7 @@ function echo_tree_experts($in, $fb_messenger_format = false, $expand_mode = fal
         return '⭐ ' . $pitch_body . "\n";
     } else {
         //HTML format
-        return echo_tree_html_body('ExpertReferences', $pitch_title, $pitch_body, $expand_mode);
+        return echo_tree_html_body('ExpertReferences', $pitch_title, $pitch_body, $autoexpand);
     }
 }
 
@@ -1054,7 +1054,7 @@ function echo_step_range($in, $educational_mode = false){
     }
 }
 
-function echo_tree_steps($in, $fb_messenger_format = 0, $expand_mode = false)
+function echo_tree_steps($in, $fb_messenger_format = 0, $autoexpand = false)
 {
 
     /*
@@ -1079,23 +1079,32 @@ function echo_tree_steps($in, $fb_messenger_format = 0, $expand_mode = false)
     } else {
 
         //HTML format
-        $pitch_title = '<i class="fas fa-walking"></i> '.echo_step_range($in);
+        $pitch_title = '<span class="icon-block"><i class="fas fa-walking"></i></span>&nbsp;'.echo_step_range($in);
 
-        //Expand body to include Action Plan overview:
-        $pitch_body .= ':';
-        $pitch_body .= '<div class="inner_actionplan">';
-        $pitch_body .= echo_public_actionplan($in, false);
-        $pitch_body .= '</div>';
+        //If NOT private, Expand body to include Action Plan overview:
+        $CI =& get_instance();
+        if(!in_array($in['in_type_entity_id'], $CI->config->item('en_ids_7366')) || 1){
+            $pitch_body .= ':';
+            $pitch_body .= '<div class="inner_actionplan">';
+            $pitch_body .= echo_public_actionplan($in, false);
+            $pitch_body .= '</div>';
+        }
 
-        return echo_tree_html_body('StepsOverview', $pitch_title, $pitch_body, $expand_mode);
+        return echo_tree_html_body('StepsOverview', $pitch_title, $pitch_body, $autoexpand);
 
     }
 }
 
-function echo_public_actionplan($in, $expand_mode){
+function echo_public_actionplan($in, $autoexpand){
 
 
     $CI =& get_instance();
+
+    //Is this private?
+    if(in_array($in['in_type_entity_id'], $CI->config->item('en_ids_7366'))){
+        return null;
+    }
+
     $children_ins = $CI->Links_model->ln_fetch(array(
         'ln_status_entity_id IN (' . join(',', $CI->config->item('en_ids_7359')) . ')' => null, //Link Statuses Public
         'in_status_entity_id IN (' . join(',', $CI->config->item('en_ids_7355')) . ')' => null, //Intent Statuses Public
@@ -1113,25 +1122,35 @@ function echo_public_actionplan($in, $expand_mode){
 
     foreach ($children_ins as $in_level2_counter => $in_level2) {
 
-        //Level 3 intents:
-        $grandchildren_ins = $CI->Links_model->ln_fetch(array(
-            'ln_status_entity_id IN (' . join(',', $CI->config->item('en_ids_7359')) . ')' => null, //Link Statuses Public
-            'in_status_entity_id IN (' . join(',', $CI->config->item('en_ids_7355')) . ')' => null, //Intent Statuses Public
-            'ln_type_entity_id' => 4228, //Fixed intent links only
-            'ln_parent_intent_id' => $in_level2['in_id'],
-        ), array('in_child'), 0, 0, array('ln_order' => 'ASC'));
+        //Is this private?
+        $is_private = (in_array($in_level2['in_type_entity_id'], $CI->config->item('en_ids_7366')));
+        if($is_private){
 
-        //Fetch messages:
-        $in_level2_messages = $CI->Links_model->ln_fetch(array(
-            'ln_status_entity_id IN (' . join(',', $CI->config->item('en_ids_7359')) . ')' => null, //Link Statuses Public
-            'ln_type_entity_id' => 4231, //Intent Note Messages
-            'ln_child_intent_id' => $in_level2['in_id'],
-        ), array(), 0, 0, array('ln_order' => 'ASC'));
+            $has_content = false;
 
-        //Skip if intent has no message and no level 3 children:
-        if(count($grandchildren_ins) == 0 && count($in_level2_messages) == 0){
-            continue;
+        } else {
+
+            //Level 3 intents:
+            $grandchildren_ins = $CI->Links_model->ln_fetch(array(
+                'ln_status_entity_id IN (' . join(',', $CI->config->item('en_ids_7359')) . ')' => null, //Link Statuses Public
+                'in_status_entity_id IN (' . join(',', $CI->config->item('en_ids_7355')) . ')' => null, //Intent Statuses Public
+                'ln_type_entity_id' => 4228, //Fixed intent links only
+                'ln_parent_intent_id' => $in_level2['in_id'],
+            ), array('in_child'), 0, 0, array('ln_order' => 'ASC'));
+
+            //Fetch messages:
+            $in_level2_messages = $CI->Links_model->ln_fetch(array(
+                'ln_status_entity_id IN (' . join(',', $CI->config->item('en_ids_7359')) . ')' => null, //Link Statuses Public
+                'ln_type_entity_id' => 4231, //Intent Note Messages
+                'ln_child_intent_id' => $in_level2['in_id'],
+            ), array(), 0, 0, array('ln_order' => 'ASC'));
+
+            //Determine intent type/settings:
+            $has_content = (count($grandchildren_ins)>0 || count($in_level2_messages)>0);
+
         }
+
+
 
         //Level 2 title:
         $return_html .= '<div class="panel-group" id="open' . $in_level2_counter . '" role="tablist" aria-multiselectable="true">';
@@ -1139,28 +1158,48 @@ function echo_public_actionplan($in, $expand_mode){
         $return_html .= '<div class="panel-heading" role="tab" id="heading' . $in_level2_counter . '">';
 
 
-        $return_html .= '<h4 class="panel-title"><a role="button" data-toggle="collapse" data-parent="#open' . $in_level2_counter . '" href="#collapse' . $in_level2_counter . '" aria-expanded="' . ($expand_mode ? 'true' : 'false') . '" aria-controls="collapse' . $in_level2_counter . '">' . '<i class="fal fa-plus-circle" style="font-size: 1em !important; margin-left: 0; width: 21px;"></i>'. ( in_is_or($in['in_type_entity_id']) ? 'Option #'. ($in_level2_counter + 1).': ' : '') . '<span style="text-decoration:underline;" id="title-' . $in_level2['in_id'] . '">' . echo_in_outcome($in_level2['in_outcome']) . '</span>';
+        $return_html .= '<h4 class="panel-title">';
+
+        if($has_content){
+            $return_html .= '<a role="button" data-toggle="collapse" data-parent="#open' . $in_level2_counter . '" href="#collapse' . $in_level2_counter . '" aria-expanded="' . ($autoexpand ? 'true' : 'false') . '" aria-controls="collapse' . $in_level2_counter . '">';
+            $return_html .= '<span class="icon-block"><i class="fal fa-plus-circle"></i></span>';
+        } elseif($is_private) {
+            $return_html .= '<span class="icon-block"><i class="far fa-eye-slash"></i></span>';
+        } else {
+            $return_html .= '<span class="icon-block">&nbsp;</span>';
+        }
+
+
+        $return_html .= ( in_is_or($in['in_type_entity_id']) ? 'Option #'. ($in_level2_counter + 1).': ' : '');
+        $return_html .= '<span id="title-' . $in_level2['in_id'] . '">' . echo_in_outcome($in_level2['in_outcome']) . '</span>';
 
         $in_level2_time = echo_time_range($in_level2, true);
         if ($in_level2_time) {
             $return_html .= ' <span style="font-size: 0.9em; font-weight: 300;"><i class="fal fa-clock" style="width:16px; text-transform: none !important;"></i>' . $in_level2_time . '</span>';
         }
 
-        $return_html .= '</a></h4>';
+
+        if($has_content){
+            $return_html .= '</a>';
+        }
+
+        $return_html .= '</h4>';
         $return_html .= '</div>';
 
 
         //Level 2 body:
-        $return_html .= '<div id="collapse' . $in_level2_counter . '" class="panel-collapse collapse ' . ($expand_mode ? 'in' : 'out') . '" role="tabpanel" aria-labelledby="heading' . $in_level2_counter . '">';
+        $return_html .= '<div id="collapse' . $in_level2_counter . '" class="panel-collapse collapse ' . ($autoexpand ? 'in' : 'out') . '" role="tabpanel" aria-labelledby="heading' . $in_level2_counter . '">';
         $return_html .= '<div class="panel-body" style="padding:5px 0 0 25px; font-size:0.85em !important;">';
 
         //Messages:
-        foreach ($in_level2_messages as $ln) {
-            $return_html .= $CI->Communication_model->dispatch_message($ln['ln_content']);
+        if($has_content){
+            foreach ($in_level2_messages as $ln) {
+                $return_html .= $CI->Communication_model->dispatch_message($ln['ln_content']);
+            }
         }
 
 
-        if (count($grandchildren_ins) > 0) {
+        if ($has_content && count($grandchildren_ins) > 0) {
 
             //List level 3:
             $return_html .= '<ul style="list-style-type: circle; margin:10px 0 10px -15px; font-size:1em !important;">';
@@ -1186,7 +1225,7 @@ function echo_public_actionplan($in, $expand_mode){
     return $return_html;
 }
 
-function echo_tree_completion_time($in, $fb_messenger_format = 0, $expand_mode = false)
+function echo_tree_completion_time($in, $fb_messenger_format = 0, $autoexpand = false)
 {
 
     /*
@@ -1209,8 +1248,8 @@ function echo_tree_completion_time($in, $fb_messenger_format = 0, $expand_mode =
         return '⏰ ' . $pitch_body . "\n";
     } else {
         //HTML format
-        $pitch_title = '<i class="fas fa-alarm-clock"></i> '.echo_time_range($in);
-        return echo_tree_html_body('CompletionTime', $pitch_title, $pitch_body, $expand_mode);
+        $pitch_title = '<span class="icon-block"><i class="fas fa-alarm-clock"></i></span>&nbsp;'.echo_time_range($in);
+        return echo_tree_html_body('CompletionTime', $pitch_title, $pitch_body, $autoexpand);
     }
 }
 
@@ -1418,7 +1457,7 @@ function echo_en_cache($config_var_name, $en_id, $micro_status = false, $data_pl
 }
 
 
-function echo_in_recommend($in)
+function echo_in_recommend($in, $is_basic = false)
 {
 
     //See if user is logged-in:
@@ -1440,9 +1479,11 @@ function echo_in_recommend($in)
     $ui .= '</span>';
 
     $ui .= '<span style="color:#222; font-weight:500; font-size:1.2em;">'.echo_in_outcome($in['in_outcome']).'</span>';
-    $ui .= '<span style="font-size:0.8em; font-weight:300; margin-left:5px; display:inline-block;">';
-    $ui .= '<span><i class="fal fa-clock"></i>' . echo_time_range($in) . '</span>';
-    $ui .= '</span>';
+    if(!$is_basic){
+        $ui .= '<span style="font-size:0.8em; font-weight:300; margin-left:5px; display:inline-block;">';
+        $ui .= '<span><i class="fal fa-clock"></i>' . echo_time_range($in) . '</span>';
+        $ui .= '</span>';
+    }
     $ui .= '</a>';
     return $ui;
 }

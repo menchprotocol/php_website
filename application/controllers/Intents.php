@@ -27,36 +27,12 @@ class Intents extends CI_Controller
         //} elseif (filter_array($session_en['en__parents'], 'en_id', 1308)) {
 
             //Go to mench.com for now:
-            //return redirect_message('/platform');
+            //
 
         } else {
 
-            //Fetch Recommended Intentions:
-            $featurd_ins = $this->Links_model->ln_fetch(array(
-                'in_status_entity_id' => 7351, //Intent Featured
-                'ln_status_entity_id IN (' . join(',', $this->config->item('en_ids_7359')) . ')' => null, //Link Statuses Public
-                'ln_type_entity_id' => 4228, //Fixed Intent Links
-                'ln_parent_intent_id' => 8469, //Recommend Mench Intentions
-            ), array('in_child'), 0, 0, array('ln_order' => 'ASC'));
-
-            //Have a logic that if we have a single Recommended Intention, redirect to it:
-            if(count($featurd_ins)==1){
-
-                //Go to our single Recommended Intention:
-                return redirect_message('/'.$featurd_ins[0]['in_id']);
-
-            } else {
-
-                //Show index page:
-                $this->load->view('view_shared/public_header', array(
-                    'title' => 'Land Your Dream Software Engineering Job',
-                ));
-                $this->load->view('view_intents/mench_home', array(
-                    'featurd_ins' => $featurd_ins,
-                ));
-                $this->load->view('view_shared/public_footer');
-
-            }
+            //Go to focus intent
+            return redirect_message('/' . $this->config->item('in_focus_id'));
 
         }
     }
@@ -96,13 +72,15 @@ class Intents extends CI_Controller
 
         //Load home page:
         $this->load->view('view_shared/public_header', array(
+            'in' => $ins[0],
+            'session_en' => $session_en,
             'title' => $ins[0]['in_outcome'],
-            'session_en' => $session_en,
-            'in' => $ins[0],
         ));
-        $this->load->view('view_intents/in_landing_page', array(
+        //Load specific view based on intent status:
+        $this->load->view(( $ins[0]['in_status_entity_id']==7351 /* Intent Featured */ ? 'view_intents/in_starting_point' : 'view_intents/in_passing_point'  ), array(
             'in' => $ins[0],
             'session_en' => $session_en,
+            'autoexpand' => (isset($_GET['autoexpand']) && intval($_GET['autoexpand'])),
         ));
         $this->load->view('view_shared/public_footer');
 

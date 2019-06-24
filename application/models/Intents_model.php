@@ -325,7 +325,7 @@ class Intents_model extends CI_Model
                     'status' => 0,
                     'message' => 'Invalid Linked Intent ID',
                 );
-            } elseif (in_array($ins[0]['in_status_entity_id'], $this->config->item('en_ids_7356') /* Intent Statuses Active */)) {
+            } elseif (!in_array($ins[0]['in_status_entity_id'], $this->config->item('en_ids_7356') /* Intent Statuses Active */)) {
                 return array(
                     'status' => 0,
                     'message' => 'You can only link to active intents. This intent is not active.',
@@ -560,19 +560,31 @@ class Intents_model extends CI_Model
 
 
     function in_is_public($in, $force_starting_step = false){
-        //Status is good?
-        if ( in_array($in['in_status_entity_id'], $this->config->item('en_ids_7355') /* Intent Statuses Public */) ) {
-            //All good:
-            return array(
-                'status' => 1,
-            );
-        } else {
-            //Return error:
+
+        //Find reasons for it not being available...
+
+        if ( !in_array($in['in_status_entity_id'], $this->config->item('en_ids_7355') /* Intent Statuses Public */) ) {
+
+            //Don't show the intent name yet as its not published:
             return array(
                 'status' => 0,
-                'message' => 'Intent #' . $in['in_id'] . ' is not published yet', //Don't show the intent name yet as its not published
+                'message' => 'Intent #' . $in['in_id'] . ' status is not yet public',
+            );
+
+        } elseif ( in_array($in['in_type_entity_id'], $this->config->item('en_ids_7366')) ) {
+
+            //Intent type is private by nature:
+            return array(
+                'status' => 0,
+                'message' => 'Intent #' . $in['in_id'] . ' type is private',
             );
         }
+
+
+        //All good:
+        return array(
+            'status' => 1,
+        );
     }
 
     function in_metadata_common_base($focus_in){

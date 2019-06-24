@@ -11,7 +11,18 @@ defined('BASEPATH') OR exit('No direct script access allowed');
  *
  */
 
-//Generated 2019-06-21 18:39:33 PST
+//Generated 2019-06-24 14:47:00 PST
+
+//Private Intent:
+$config['en_ids_7366'] = array(6685);
+$config['en_all_7366'] = array(
+    6685 => array(
+        'm_icon' => '<i class="fas fa-stopwatch"></i>',
+        'm_name' => 'OR Intent Timed Answer',
+        'm_desc' => '',
+        'm_parents' => array(7366,6157,6193),
+    ),
+);
 
 //Link Statuses Incomplete:
 $config['en_ids_7364'] = array(6174,6175);
@@ -132,8 +143,8 @@ $config['en_all_7356'] = array(
         'm_parents' => array(7356,7355,4737),
     ),
     7351 => array(
-        'm_icon' => '<i class="fas fa-badge-check"></i>',
-        'm_name' => 'Intent Featured',
+        'm_icon' => '<i class="fas fa-flag"></i>',
+        'm_name' => 'Intent Starting Point',
         'm_desc' => '',
         'm_parents' => array(7356,7355,4737),
     ),
@@ -149,8 +160,8 @@ $config['en_all_7355'] = array(
         'm_parents' => array(7356,7355,4737),
     ),
     7351 => array(
-        'm_icon' => '<i class="fas fa-badge-check"></i>',
-        'm_name' => 'Intent Featured',
+        'm_icon' => '<i class="fas fa-flag"></i>',
+        'm_name' => 'Intent Starting Point',
         'm_desc' => '',
         'm_parents' => array(7356,7355,4737),
     ),
@@ -982,7 +993,7 @@ $config['en_all_6193'] = array(
         'm_icon' => '<i class="fas fa-stopwatch"></i>',
         'm_name' => 'Timed Answer',
         'm_desc' => 'Student must make a selection within the time limit defines by the estimated intent time before their response chance expires.',
-        'm_parents' => array(6157,6193),
+        'm_parents' => array(7366,6157,6193),
     ),
     7231 => array(
         'm_icon' => '<i class="fas fa-check-double"></i>',
@@ -1075,7 +1086,7 @@ $config['en_all_4463'] = array(
     ),
     4755 => array(
         'm_icon' => '<i class="fal fa-eye-slash"></i>',
-        'm_name' => 'Private Content',
+        'm_name' => 'Private Links',
         'm_desc' => 'Mench is open-source but most of our student generated content is private and accessible either by the student or Mench\'s core contributors.',
         'm_parents' => array(6771,4463,4426,4527,4757),
     ),
@@ -1410,13 +1421,13 @@ $config['en_all_6225'] = array(
         'm_icon' => '<i class="far fa-globe"></i>',
         'm_name' => 'Countries',
         'm_desc' => 'Choose your current country of residence:',
-        'm_parents' => array(6225,6204),
+        'm_parents' => array(6225),
     ),
     3289 => array(
         'm_icon' => '<i class="far fa-map"></i>',
         'm_name' => 'Timezones',
         'm_desc' => 'Choose your current timezone:',
-        'm_parents' => array(6225,6204),
+        'm_parents' => array(6225),
     ),
     6123 => array(
         'm_icon' => '<i class="far fa-share-alt-square"></i>',
@@ -1430,8 +1441,8 @@ $config['en_all_6225'] = array(
 $config['en_ids_4737'] = array(7351,6185,6184,6183,6182);
 $config['en_all_4737'] = array(
     7351 => array(
-        'm_icon' => '<i class="fas fa-badge-check"></i>',
-        'm_name' => 'Featured',
+        'm_icon' => '<i class="fas fa-flag"></i>',
+        'm_name' => 'Starting Point',
         'm_desc' => 'can be added as action plan intention',
         'm_parents' => array(7356,7355,4737),
     ),
@@ -1876,7 +1887,7 @@ $config['en_all_4426'] = array(
     ),
     4755 => array(
         'm_icon' => '<i class="fal fa-eye-slash"></i>',
-        'm_name' => 'Private Content',
+        'm_name' => 'Private Links',
         'm_desc' => '',
         'm_parents' => array(6771,4463,4426,4527,4757),
     ),
@@ -1900,7 +1911,7 @@ $config['en_all_4426'] = array(
     ),
 );
 
-//Private Content:
+//Private Links:
 $config['en_ids_4755'] = array(3286,3288,4235,4242,4246,4263,4266,4267,4268,4269,4275,4278,4279,4282,4283,4287,4299,4460,4547,4548,4549,4550,4551,4552,4553,4554,4555,4556,4557,4559,4570,4577,4783,5967,6132,6140,6143,6144,6149,6154,6155,6157,6158,6224,6415,6556,6559,6560,6563,6578,6969,6997,7348);
 $config['en_all_4755'] = array(
     3286 => array(

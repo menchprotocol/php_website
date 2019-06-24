@@ -173,18 +173,16 @@ body.grey-bg {
     border-top-color: #FFF !important;
 }
 
-.panel .panel-heading h4 a .fas, .panel .panel-heading h4 a .fal {
-    width: 34px;
-    display: inline-block;
-    text-align: center;
-}
-
 .panel-group {
     margin-bottom: 10px;
 }
 
 .panel .panel-heading a:hover, .panel .panel-heading a:active, .panel .panel-heading a[aria-expanded="true"] {
     color: #2f2739 !important;
+}
+
+.panel-primary>.panel-heading {
+    color: #2f2739;
 }
 
 .panel-primary > .panel-heading + .panel-collapse > .panel-body {
@@ -491,7 +489,6 @@ input::-webkit-inner-spin-button {
 
 .panel-title {
     font-size: 1.2em !important;
-    font-weight: bold !important;
 }
 
 .icon-block{
@@ -4137,8 +4134,8 @@ h4 .tip-badge {
     border:1px solid #2b2b2b; border-radius: 5px; padding:3px 3px 0 5px; margin:3px 5px 3px 29px; font-size: 0.9em;
 }
 
-.landing-page-intro .msg, .landing-page-intro li, p, .landing-page-intro a {
-    font-size: 1.2em !important;
+.landing-page-intro .msg, .landing-page-intro li, p {
+    font-size: 1.5em !important;
 }
 
 .landing-page-intro h4 {

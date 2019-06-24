@@ -870,7 +870,7 @@ class Actionplan_model extends CI_Model
 
             return array(
                 'status' => 0,
-                'message' => 'Invalid #' . $ins[0]['in_id'].' is not yet published',
+                'message' => 'Invalid #' . $ins[0]['in_id'].' is not yet public',
             );
 
         }
