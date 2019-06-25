@@ -179,7 +179,7 @@ class Admin extends CI_Controller
         echo '<table class="table table-condensed table-striped stats-table mini-stats-table ">';
 
         echo '<tr class="panel-title down-border">';
-        echo '<td style="text-align: left;">'.echo_number(count($in_verbs)).' '.$en_all_7302[5008]['m_name'].'</td>';
+        echo '<td style="text-align: left;">'.$en_all_7302[5008]['m_name'].'</td>';
         echo '<td style="text-align: right;">Intents</td>';
         echo '</tr>';
 
@@ -192,7 +192,7 @@ class Admin extends CI_Controller
 
         //Show expand button:
         echo '<tr class="hiddenverbs">';
-        echo '<td style="text-align: left;" colspan="2"><span style="width:29px; display: inline-block; text-align: center;"><i class="fas fa-plus-circle"></i></span><a href="javascript:void(0);" onclick="$(\'.hiddenverbs\').toggleClass(\'hidden\')">List All</a></td>';
+        echo '<td style="text-align: left;" colspan="2"><span style="width:29px; display: inline-block; text-align: center;"><i class="fas fa-plus-circle"></i></span><a href="javascript:void(0);" onclick="$(\'.hiddenverbs\').toggleClass(\'hidden\')">See All '.echo_number(count($in_verbs)).' '.$en_all_7302[5008]['m_name'].'</a></td>';
         echo '</tr>';
 
         echo '</table>';
@@ -283,7 +283,7 @@ class Admin extends CI_Controller
         echo '<table class="table table-condensed table-striped stats-table">';
 
         echo '<tr class="panel-title down-border">';
-        echo '<td style="text-align: left;">'.echo_number($total_counts[6181]).' '.$en_all_7303[3000]['m_name'].'</td>';
+        echo '<td style="text-align: left;">'.$en_all_7303[3000]['m_name'].'</td>';
         foreach($this->config->item('en_all_7358') /* Entity Active Statuses */ as $en_status_entity_id => $m_status){
             echo '<td style="text-align: right;" '.( $en_status_entity_id != 6181 /* Entity Featured */ ? ' class="' . echo_advance() . '"' : '' ).'>' . $en_all_6177[$en_status_entity_id]['m_name'] . '</td>';
         }
@@ -293,7 +293,7 @@ class Admin extends CI_Controller
         echo $expert_sources;
 
 
-        echo '<tr style="font-weight: bold;" class="' . echo_advance() . '">';
+        echo '<tr style="font-weight: bold;">';
         echo '<td style="text-align: left;"><span class="icon-block"><i class="fas fa-asterisk"></i></span>Totals</td>';
         foreach($this->config->item('en_all_7358') /* Entity Active Statuses */ as $en_status_entity_id => $m_status){
             echo '<td style="text-align: right;" '.( $en_status_entity_id != 6181 /* Entity Featured */ ? ' class="' . echo_advance() . '"' : '' ).'>' . echo_number($total_counts[$en_status_entity_id]) . '<i class="fal fa-info-circle icon-block" data-toggle="tooltip" title="'.number_format($total_counts[$en_status_entity_id], 0).' '.$en_all_7303[3000]['m_name'].' are '.$en_all_6177[$en_status_entity_id]['m_name'] . '" data-placement="top"></i>' . '</td>';

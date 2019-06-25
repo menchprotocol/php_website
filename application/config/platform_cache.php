@@ -11,7 +11,7 @@ defined('BASEPATH') OR exit('No direct script access allowed');
  *
  */
 
-//Generated 2019-06-25 16:41:20 PST
+//Generated 2019-06-25 16:49:07 PST
 
 //Mench Platform Products:
 $config['en_ids_7372'] = array(6196,6287,7368,7369,7370);
@@ -334,19 +334,19 @@ $config['en_ids_7302'] = array(4737,5008,6676,7166);
 $config['en_all_7302'] = array(
     4737 => array(
         'm_icon' => '<i class="fas fa-sliders-h"></i>',
-        'm_name' => 'Intent Status Entity',
+        'm_name' => 'Intent Statuses',
         'm_desc' => '',
         'm_parents' => array(6160,6232,7302,6194,6213,6201,4527),
     ),
     5008 => array(
         'm_icon' => '<i class="fal fa-tools"></i>',
-        'm_name' => 'Intent Verb Entity',
+        'm_name' => 'Intent Verbs',
         'm_desc' => '',
         'm_parents' => array(6160,6232,7302,4506,6213,6194,6201),
     ),
     6676 => array(
         'm_icon' => '<i class="fas fa-chart-network"></i>',
-        'm_name' => 'Intent Type Entity',
+        'm_name' => 'Intent Types',
         'm_desc' => '',
         'm_parents' => array(6160,6232,7302,6194,6213,4527,6201),
     ),
@@ -369,14 +369,14 @@ $config['en_all_7303'] = array(
     ),
     6177 => array(
         'm_icon' => '<i class="fas fa-sliders-h"></i>',
-        'm_name' => 'Entity Status Entity',
+        'm_name' => 'Entity Statuses',
         'm_desc' => '',
         'm_parents' => array(6160,6232,7303,6194,6213,6206,4527),
     ),
     6827 => array(
         'm_icon' => '<i class="fas fa-users"></i>',
         'm_name' => 'Mench Community',
-        'm_desc' => 'Commented out for now until our community grows larger...',
+        'm_desc' => '',
         'm_parents' => array(3303,3314,2738,7303,4527),
     ),
     7167 => array(
@@ -392,13 +392,13 @@ $config['en_ids_7304'] = array(4593,6186,7159,7162,7163);
 $config['en_all_7304'] = array(
     4593 => array(
         'm_icon' => '<i class="fas fa-plug"></i>',
-        'm_name' => 'Link Type Entity',
+        'm_name' => 'Link Types',
         'm_desc' => '',
         'm_parents' => array(6160,6232,7304,6213,6194,4527,4341),
     ),
     6186 => array(
         'm_icon' => '<i class="fas fa-sliders-h"></i>',
-        'm_name' => 'Link Status Entity',
+        'm_name' => 'Link Statuses',
         'm_desc' => '',
         'm_parents' => array(6160,6232,7304,4527,6194,6213,4341),
     ),
@@ -686,7 +686,7 @@ $config['en_all_7164'] = array(
     ),
 );
 
-//Link Status Entity:
+//Link Statuses:
 $config['en_ids_6186'] = array(6176,6175,6174,6173);
 $config['en_all_6186'] = array(
     6176 => array(
@@ -779,37 +779,37 @@ $config['en_all_6194'] = array(
     ),
     4593 => array(
         'm_icon' => '<i class="fas fa-plug"></i>',
-        'm_name' => 'Link Type Entity',
+        'm_name' => 'Link Types',
         'm_desc' => 'SELECT count(ln_id) as totals FROM table_links WHERE ln_type_entity_id=',
         'm_parents' => array(6160,6232,7304,6213,6194,4527,4341),
     ),
     4737 => array(
         'm_icon' => '<i class="fas fa-sliders-h"></i>',
-        'm_name' => 'Intent Status Entity',
+        'm_name' => 'Intent Statuses',
         'm_desc' => 'SELECT count(in_id) as totals FROM table_intents WHERE in_status_entity_id=',
         'm_parents' => array(6160,6232,7302,6194,6213,6201,4527),
     ),
     5008 => array(
         'm_icon' => '<i class="fal fa-tools"></i>',
-        'm_name' => 'Intent Verb Entity',
+        'm_name' => 'Intent Verbs',
         'm_desc' => 'SELECT count(in_id) as totals FROM table_intents WHERE in_verb_entity_id=',
         'm_parents' => array(6160,6232,7302,4506,6213,6194,6201),
     ),
     6177 => array(
         'm_icon' => '<i class="fas fa-sliders-h"></i>',
-        'm_name' => 'Entity Status Entity',
+        'm_name' => 'Entity Statuses',
         'm_desc' => 'SELECT count(en_id) as totals FROM table_entities WHERE en_status_entity_id=',
         'm_parents' => array(6160,6232,7303,6194,6213,6206,4527),
     ),
     6186 => array(
         'm_icon' => '<i class="fas fa-sliders-h"></i>',
-        'm_name' => 'Link Status Entity',
+        'm_name' => 'Link Statuses',
         'm_desc' => 'SELECT count(ln_id) as totals FROM table_links WHERE ln_status_entity_id=',
         'm_parents' => array(6160,6232,7304,4527,6194,6213,4341),
     ),
     6676 => array(
         'm_icon' => '<i class="fas fa-chart-network"></i>',
-        'm_name' => 'Intent Type Entity',
+        'm_name' => 'Intent Types',
         'm_desc' => 'SELECT count(in_id) as totals FROM table_intents WHERE in_type_entity_id=',
         'm_parents' => array(6160,6232,7302,6194,6213,4527,6201),
     ),
@@ -1020,7 +1020,7 @@ $config['en_all_6192'] = array(
     ),
 );
 
-//Intent Type Entity:
+//Intent Types:
 $config['en_ids_6676'] = array(6192,6193);
 $config['en_all_6676'] = array(
     6192 => array(
@@ -1494,7 +1494,7 @@ $config['en_all_6225'] = array(
     ),
 );
 
-//Intent Status Entity:
+//Intent Statuses:
 $config['en_ids_4737'] = array(7351,6185,6184,6183,6182);
 $config['en_all_4737'] = array(
     7351 => array(
@@ -1529,7 +1529,7 @@ $config['en_all_4737'] = array(
     ),
 );
 
-//Entity Status Entity:
+//Entity Statuses:
 $config['en_ids_6177'] = array(6181,6180,6179,6178);
 $config['en_all_6177'] = array(
     6181 => array(
@@ -2788,7 +2788,7 @@ $config['en_all_4600'] = array(
     ),
 );
 
-//Link Type Entity:
+//Link Types:
 $config['en_ids_4593'] = array(4228,4229,4230,4231,4232,4235,4242,4246,4250,4251,4255,4256,4257,4258,4259,4260,4261,4263,4264,4266,4267,4268,4269,4275,4278,4279,4282,4283,4287,4299,4318,4319,4460,4547,4548,4549,4550,4551,4552,4553,4554,4555,4556,4557,4559,4570,4577,4601,4983,4993,4994,4998,4999,5000,5001,5003,5007,5865,5943,5967,5981,5982,6093,6132,6140,6143,6144,6149,6154,6155,6157,6158,6224,6226,6242,6415,6556,6559,6560,6563,6578,6969,6997,7348);
 $config['en_all_4593'] = array(
     4228 => array(
