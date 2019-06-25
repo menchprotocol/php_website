@@ -81,22 +81,23 @@ if(!$found_grandpa_intersect){
     $en_all_6186 = $this->config->item('en_all_6186'); //Link Statuses
     $submission_messages = null;
     $trigger_on_complete_tips = false;
-    foreach($advance_step['progression_links'] as $pl){
+    if($advance_step['status']){
+        foreach($advance_step['progression_links'] as $pl){
+            echo '<span style="margin-right:10px;" class="status-label underdot" data-toggle="tooltip" data-placement="top" title="Status is '.$en_all_6186[$pl['ln_status_entity_id']]['m_name'].': '.$en_all_6186[$pl['ln_status_entity_id']]['m_desc'].'">'.( $pl['ln_status_entity_id'] == 6176 /* Link Published */ ? $en_all_6146[$pl['ln_type_entity_id']]['m_icon'] /* Show Progression Type */ : $en_all_6186[$pl['ln_status_entity_id']]['m_icon'] /* Show Status */ ).' '.$en_all_6146[$pl['ln_type_entity_id']]['m_name'].'</span>';
 
-        echo '<span style="margin-right:10px;" class="status-label underdot" data-toggle="tooltip" data-placement="top" title="Status is '.$en_all_6186[$pl['ln_status_entity_id']]['m_name'].': '.$en_all_6186[$pl['ln_status_entity_id']]['m_desc'].'">'.( $pl['ln_status_entity_id'] == 6176 /* Link Published */ ? $en_all_6146[$pl['ln_type_entity_id']]['m_icon'] /* Show Progression Type */ : $en_all_6186[$pl['ln_status_entity_id']]['m_icon'] /* Show Status */ ).' '.$en_all_6146[$pl['ln_type_entity_id']]['m_name'].'</span>';
+            //Should we trigger on-complete links?
+            if(in_array($pl['ln_status_entity_id'], $this->config->item('en_ids_7359') /* Link Statuses Public */) && in_array($pl['ln_type_entity_id'], $this->config->item('en_ids_6255'))){
+                $trigger_on_complete_tips = true;
+            }
 
-        //Should we trigger on-complete links?
-        if(in_array($pl['ln_status_entity_id'], $this->config->item('en_ids_7359') /* Link Statuses Public */) && in_array($pl['ln_type_entity_id'], $this->config->item('en_ids_6255'))){
-            $trigger_on_complete_tips = true;
+            if(strlen($pl['ln_content']) > 0){
+                //User seems to have submitted messages for this:
+                $submission_messages .= '<span class="i_content"><span class="msg">Message added '.echo_time_difference(strtotime($pl['ln_timestamp'])).' ago:</span></span>';
+
+                $submission_messages .= '<div class="white-bg">'.$this->Communication_model->dispatch_message($pl['ln_content'], $session_en).'</div>';
+            }
+
         }
-
-        if(strlen($pl['ln_content']) > 0){
-            //User seems to have submitted messages for this:
-            $submission_messages .= '<span class="i_content"><span class="msg">Message added '.echo_time_difference(strtotime($pl['ln_timestamp'])).' ago:</span></span>';
-
-            $submission_messages .= '<div class="white-bg">'.$this->Communication_model->dispatch_message($pl['ln_content'], $session_en).'</div>';
-        }
-
     }
 
 

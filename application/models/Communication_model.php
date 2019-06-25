@@ -1266,7 +1266,7 @@ class Communication_model extends CI_Model
             //Make changes:
             $this->Links_model->ln_update($pending_req_submission[0]['ln_id'], array(
                 'ln_content' => $new_message_links[0]['ln_content'],
-                'ln_status_entity_id IN (' . join(',', $this->config->item('en_ids_7359')) . ')' => null, //Link Statuses Public
+                'ln_status_entity_id' => 6176, //Link Published
                 'ln_parent_link_id' => $new_message_links[0]['ln_id'],
             ), $en['en_id']);
 
@@ -1737,7 +1737,7 @@ class Communication_model extends CI_Model
                     //We just found a pending answer, so mark it as published while saving the answer:
                     $this->Links_model->ln_update($ln['ln_id'], array(
                         'ln_child_intent_id' => $answer_in_id, //Save answer
-                        'ln_status_entity_id IN (' . join(',', $this->config->item('en_ids_7359')) . ')' => null, //Link Statuses Public
+                        'ln_status_entity_id' => 6176, //Link Published
                     ), $en['en_id']);
 
                     //Update status:

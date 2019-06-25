@@ -134,7 +134,9 @@ if(!$action) {
                 $links_removed = $this->Intents_model->in_unlink($orphan_in['in_id'] , $session_en['en_id']);
 
                 //Remove intent:
-                $this->Intents_model->in_update($orphan_in['in_id'], array( 'in_status_entity_id' => 6182 /* Intent Removed */ ), true, $session_en['en_id']);
+                $this->Intents_model->in_update($orphan_in['in_id'], array(
+                    'in_status_entity_id' => 6182, /* Intent Removed */
+                ), true, $session_en['en_id']);
 
                 //Show confirmation:
                 echo ' [Intent + '.$links_removed.' links Removed]';
@@ -382,7 +384,9 @@ if(!$action) {
 
             //Not a match, fix it:
             $fixed++;
-            $this->Intents_model->in_update($in['in_id'], array('in_verb_entity_id' => $in_verb_entity_id), true, 1 /* Shervin the Developer */);
+            $this->Intents_model->in_update($in['in_id'], array(
+                'in_verb_entity_id' => $in_verb_entity_id,
+            ), true, 1 /* Shervin the Developer */);
 
         }
     }

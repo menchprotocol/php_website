@@ -391,7 +391,7 @@ class Entities_model extends CI_Model
             //And link entity to the domains entity:
             $this->Links_model->ln_create(array(
                 'ln_miner_entity_id' => $ln_miner_entity_id,
-                'ln_status_entity_id IN (' . join(',', $this->config->item('en_ids_7359')) . ')' => null, //Link Statuses Public
+                'ln_status_entity_id' => 6176, //Link Published
                 'ln_type_entity_id' => 4256, //Generic URL (Domains are always generic)
                 'ln_parent_entity_id' => 1326, //Domain Entity
                 'ln_child_entity_id' => $en_domain['en_id'],
@@ -625,7 +625,7 @@ class Entities_model extends CI_Model
                 //Always link URL to its parent domain:
                 $this->Links_model->ln_create(array(
                     'ln_miner_entity_id' => $ln_miner_entity_id,
-                    'ln_status_entity_id IN (' . join(',', $this->config->item('en_ids_7359')) . ')' => null, //Link Statuses Public
+                    'ln_status_entity_id' => 6176, //Link Published
                     'ln_type_entity_id' => $ln_type_entity_id,
                     'ln_parent_entity_id' => $domain_entity['en_domain']['en_id'],
                     'ln_child_entity_id' => $en_url['en_id'],
@@ -644,7 +644,7 @@ class Entities_model extends CI_Model
             //Link URL to its parent domain:
             $this->Links_model->ln_create(array(
                 'ln_miner_entity_id' => $ln_miner_entity_id,
-                'ln_status_entity_id IN (' . join(',', $this->config->item('en_ids_7359')) . ')' => null, //Link Statuses Public
+                'ln_status_entity_id' => 6176, //Link Published
                 'ln_type_entity_id' => 4230, //Raw
                 'ln_parent_entity_id' => $add_to_parent_en_id,
                 'ln_child_entity_id' => $en_url['en_id'],
@@ -655,7 +655,7 @@ class Entities_model extends CI_Model
             //Link URL to its parent domain:
             $this->Links_model->ln_create(array(
                 'ln_miner_entity_id' => $ln_miner_entity_id,
-                'ln_status_entity_id IN (' . join(',', $this->config->item('en_ids_7359')) . ')' => null, //Link Statuses Public
+                'ln_status_entity_id' => 6176, //Link Published
                 'ln_type_entity_id' => 4230, //Raw
                 'ln_child_entity_id' => $add_to_child_en_id,
                 'ln_parent_entity_id' => $en_url['en_id'],
@@ -823,7 +823,7 @@ class Entities_model extends CI_Model
 
                     //Does not exist, need to be added as parent:
                     $this->Links_model->ln_create(array(
-                        'ln_status_entity_id IN (' . join(',', $this->config->item('en_ids_7359')) . ')' => null, //Link Statuses Public
+                        'ln_status_entity_id' => 6176, //Link Published
                         'ln_miner_entity_id' => $ln_miner_entity_id,
                         'ln_type_entity_id' => 4230, //Raw
                         'ln_child_entity_id' => $en['en_id'], //This child entity

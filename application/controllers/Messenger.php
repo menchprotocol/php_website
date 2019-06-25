@@ -1118,7 +1118,7 @@ class Messenger extends CI_Controller
 
             //Create new link:
             $this->Links_model->ln_create(array(
-                'ln_status_entity_id IN (' . join(',', $this->config->item('en_ids_7359')) . ')' => null, //Link Statuses Public
+                'ln_status_entity_id' => 6176, //Link Published
                 'ln_miner_entity_id' => $_POST['en_id'],
                 'ln_child_entity_id' => $_POST['en_id'],
                 'ln_type_entity_id' => 4319, //Phone are of type number
@@ -1242,7 +1242,7 @@ class Messenger extends CI_Controller
 
             //Create new link:
             $this->Links_model->ln_create(array(
-                'ln_status_entity_id IN (' . join(',', $this->config->item('en_ids_7359')) . ')' => null, //Link Statuses Public
+                'ln_status_entity_id' => 6176, //Link Published
                 'ln_miner_entity_id' => $_POST['en_id'],
                 'ln_child_entity_id' => $_POST['en_id'],
                 'ln_type_entity_id' => 4255, //Emails are of type Text
@@ -1340,7 +1340,7 @@ class Messenger extends CI_Controller
 
             //Create new link:
             $this->Links_model->ln_create(array(
-                'ln_status_entity_id IN (' . join(',', $this->config->item('en_ids_7359')) . ')' => null, //Link Statuses Public
+                'ln_status_entity_id' => 6176, //Link Published
                 'ln_type_entity_id' => 4255, //Passwords are of type Text
                 'ln_parent_entity_id' => 3286, //Password
                 'ln_miner_entity_id' => $_POST['en_id'],
@@ -1489,7 +1489,7 @@ class Messenger extends CI_Controller
 
                 //Create new link:
                 $this->Links_model->ln_create(array(
-                    'ln_status_entity_id IN (' . join(',', $this->config->item('en_ids_7359')) . ')' => null, //Link Statuses Public
+                    'ln_status_entity_id' => 6176, //Link Published
                     'ln_miner_entity_id' => $_POST['en_id'],
                     'ln_child_entity_id' => $_POST['en_id'],
                     'ln_type_entity_id' => 4256, //Generic URL
@@ -1947,7 +1947,7 @@ class Messenger extends CI_Controller
                 'ln_child_entity_id' => $_POST['en_miner_id'],
                 'ln_miner_entity_id' => $_POST['en_miner_id'],
                 'ln_type_entity_id' => 4230, //Raw
-                'ln_status_entity_id IN (' . join(',', $this->config->item('en_ids_7359')) . ')' => null, //Link Statuses Public
+                'ln_status_entity_id' => 6176, //Link Published
             ));
         }
 
@@ -2081,7 +2081,7 @@ class Messenger extends CI_Controller
             'ln_type_entity_id' => 6157, //Action Plan Question Answered
             'ln_parent_intent_id' => $parent_in_id,
             'ln_child_intent_id' => $answer_in_id,
-            'ln_status_entity_id IN (' . join(',', $this->config->item('en_ids_7359')) . ')' => null, //Link Statuses Public
+            'ln_status_entity_id' => 6176, //Link Published
         ));
 
         //See if we also need to mark the child as complete:
@@ -2242,7 +2242,7 @@ class Messenger extends CI_Controller
                 //Update link:
                 $this->Links_model->ln_update($ln['ln_id'], array(
                     'ln_content' => $new_file_url,
-                    'ln_status_entity_id IN (' . join(',', $this->config->item('en_ids_7359')) . ')' => null, //Link Statuses Public
+                    'ln_status_entity_id' => 6176, //Link Published
                 ));
 
                 //Increase counter:
@@ -2337,7 +2337,7 @@ class Messenger extends CI_Controller
 
             //Update link:
             $this->Links_model->ln_update($ln['ln_id'], array(
-                'ln_status_entity_id IN (' . join(',', $this->config->item('en_ids_7359')) . ')' => null, //Link Statuses Public
+                'ln_status_entity_id' => 6176, //Link Published
                 'ln_content' => null, //Remove URL from content to indicate its done
                 'ln_child_entity_id' => $ln_child_entity_id,
                 'ln_metadata' => array(

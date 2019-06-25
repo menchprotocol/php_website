@@ -1209,7 +1209,7 @@ class Entities extends CI_Controller
 
                 //Add contributor to People or Organizations entity:
                 $this->Links_model->ln_create(array(
-                    'ln_status_entity_id IN (' . join(',', $this->config->item('en_ids_7359')) . ')' => null, //Link Statuses Public
+                    'ln_status_entity_id' => 6176, //Link Published
                     'ln_miner_entity_id' => $session_en['en_id'],
                     'ln_type_entity_id' => 4230, //Raw
                     'ln_parent_entity_id' => $_POST['entity_parent_id_' . $contributor_num], //People or Organizations
@@ -1221,7 +1221,7 @@ class Entities extends CI_Controller
                 if (strlen($_POST['why_expert_' . $contributor_num]) > 0) {
                     //Add contributor to industry experts:
                     $this->Links_model->ln_create(array(
-                        'ln_status_entity_id IN (' . join(',', $this->config->item('en_ids_7359')) . ')' => null, //Link Statuses Public
+                        'ln_status_entity_id' => 6176, //Link Published
                         'ln_miner_entity_id' => $session_en['en_id'],
                         'ln_content' => trim($_POST['why_expert_' . $contributor_num]),
                         'ln_type_entity_id' => $detected_ln_type['ln_type_entity_id'],
@@ -1264,7 +1264,7 @@ class Entities extends CI_Controller
         foreach ($parent_ens as $this_parent_en) {
             //Insert new relation:
             $this->Links_model->ln_create(array(
-                'ln_status_entity_id IN (' . join(',', $this->config->item('en_ids_7359')) . ')' => null, //Link Statuses Public
+                'ln_status_entity_id' => 6176, //Link Published
                 'ln_miner_entity_id' => $session_en['en_id'],
                 'ln_child_entity_id' => $url_entity['en_url']['en_id'],
                 'ln_parent_entity_id' => $this_parent_en['this_parent_en_id'],

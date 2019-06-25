@@ -36,7 +36,7 @@ class Actionplan_model extends CI_Model
                 'ln_type_entity_id IN (' . join(',' , $this->config->item('en_ids_6146')) . ')' => null, //Action Plan Progression Steps
                 'ln_miner_entity_id' => $en_id, //Belongs to this User
                 'ln_parent_intent_id' => $common_step_in_id,
-                'ln_status_entity_id IN (' . join(',', $this->config->item('en_ids_7359')) . ')' => null, //Link Statuses Public
+                'ln_status_entity_id' => 6176, //Link Published
             ), ( $is_expansion ? array('in_child') : array() ));
 
             //Have they completed this?
@@ -286,7 +286,7 @@ class Actionplan_model extends CI_Model
                 'ln_type_entity_id' => 6143, //Action Plan Skipped Step
                 'ln_miner_entity_id' => $en_id,
                 'ln_parent_intent_id' => $common_in_id,
-                'ln_status_entity_id IN (' . join(',', $this->config->item('en_ids_7359')) . ')' => null, //Link Statuses Public
+                'ln_status_entity_id' => 6176, //Link Published
             ));
 
             //Archive current progression links:
@@ -521,7 +521,7 @@ class Actionplan_model extends CI_Model
             'ln_type_entity_id' => 6158, //Action Plan Auto Complete
             'ln_miner_entity_id' => $en_id,
             'ln_parent_intent_id' => $in['in_id'],
-            'ln_status_entity_id IN (' . join(',', $this->config->item('en_ids_7359')) . ')' => null, //Link Statuses Public
+            'ln_status_entity_id' => 6176, //Link Published
         ));
 
         //Process on-complete automations:
@@ -652,7 +652,7 @@ class Actionplan_model extends CI_Model
 
                     //Unlock Action Plan:
                     $this->Links_model->ln_create(array(
-                        'ln_status_entity_id IN (' . join(',', $this->config->item('en_ids_7359')) . ')' => null, //Link Statuses Public
+                        'ln_status_entity_id' => 6176, //Link Published
                         'ln_type_entity_id' => 6140, //Action Plan Conditional Step Unlocked
                         'ln_miner_entity_id' => $en_id,
                         'ln_parent_intent_id' => $in['in_id'],
@@ -871,6 +871,13 @@ class Actionplan_model extends CI_Model
             return array(
                 'status' => 0,
                 'message' => 'Invalid #' . $ins[0]['in_id'].' is not yet public',
+            );
+
+        } elseif (!$fb_messenger_format && in_array($ins[0]['in_type_entity_id'], $this->config->item('en_ids_7366') /* Private Intents */)) {
+
+            return array(
+                'status' => 0,
+                'message' => 'Invalid #' . $ins[0]['in_id'].' can only be completed using chat.',
             );
 
         }

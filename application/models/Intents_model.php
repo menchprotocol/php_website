@@ -970,7 +970,7 @@ class Intents_model extends CI_Model
             //Link to supported verbs:
             $this->Links_model->ln_create(array(
                 'ln_miner_entity_id' => $ln_miner_entity_id,
-                'ln_status_entity_id IN (' . join(',', $this->config->item('en_ids_7359')) . ')' => null, //Link Statuses Public
+                'ln_status_entity_id' => 6176, //Link Published
                 'ln_type_entity_id' => 4230, //Raw
                 'ln_parent_entity_id' => 5008, //Intent Supported Verbs
                 'ln_child_entity_id' => $added_en['en']['en_id'],
