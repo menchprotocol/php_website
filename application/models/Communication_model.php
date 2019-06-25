@@ -1719,7 +1719,7 @@ class Communication_model extends CI_Model
                 'ln_miner_entity_id' => $en['en_id'],
                 'ln_type_entity_id' => 6157, //Action Plan Question Answered
                 'ln_parent_intent_id' => $question_in_id,
-                'ln_status_entity_id IN (' . join(',', $this->config->item('en_ids_7360')) . ')' => null, //Link Statuses Active
+                'ln_status_entity_id IN (' . join(',', $this->config->item('en_ids_7364')) . ')' => null, //Link Statuses Incomplete
             ));
             if(count($pending_answer_links) < 1){
                 return array(

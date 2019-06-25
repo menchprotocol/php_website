@@ -184,7 +184,9 @@ if(!$action) {
                 $links_removed = $this->Entities_model->en_unlink($orphan_en['en_id'], $session_en['en_id']);
 
                 //Remove entity:
-                $this->Entities_model->en_update($orphan_en['en_id'], array( 'en_status_entity_id' => 6178 /* Entity Removed */ ), true, $session_en['en_id']);
+                $this->Entities_model->en_update($orphan_en['en_id'], array(
+                    'en_status_entity_id' => 6178, /* Entity Removed */
+                ), true, $session_en['en_id']);
 
                 //Show confirmation:
                 echo ' [Entity + '.$links_removed.' links Removed]';

@@ -1409,7 +1409,9 @@ class Intents extends CI_Controller
             if($_POST['new_message_status'] == -1){
 
                 //yes, do so and return results:
-                $affected_rows = $this->Links_model->ln_update(intval($_POST['ln_id']), array( 'ln_status_entity_id' => $_POST['new_message_status'] ), $session_en['en_id']);
+                $affected_rows = $this->Links_model->ln_update(intval($_POST['ln_id']), array(
+                    'ln_status_entity_id' => $_POST['new_message_status'],
+                ), $session_en['en_id']);
 
                 //Return success:
                 if($affected_rows > 0){
