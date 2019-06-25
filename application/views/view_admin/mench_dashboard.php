@@ -1,5 +1,5 @@
 
-<script src="/js/custom/platform-home.js?v=v<?= $this->config->item('app_version') ?>"
+<script src="/js/custom/mench-dashboard.js?v=v<?= $this->config->item('app_version') ?>"
         type="text/javascript"></script>
 
 <?php

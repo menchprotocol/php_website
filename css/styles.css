@@ -4134,8 +4134,13 @@ h4 .tip-badge {
     border:1px solid #2b2b2b; border-radius: 5px; padding:3px 3px 0 5px; margin:3px 5px 3px 29px; font-size: 0.9em;
 }
 
-.landing-page-intro .msg, .landing-page-intro li, p {
-    font-size: 1.5em !important;
+.landing-page-intro .msg, .landing-page-intro li, p, .landing-page-intro a, .landing-page-intro a {
+    font-size: 1.2em !important;
+}
+
+
+.landing-page-intro .msg, .landing-page-intro li, p, .landing-page-intro a {
+    font-size: 1.3em !important;
 }
 
 .landing-page-intro h4 {

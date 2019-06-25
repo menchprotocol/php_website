@@ -56,7 +56,7 @@ $uri_segment_2 = $this->uri->segment(2);
                             <table style="width: 100%; border:0; padding:0; margin:0 0 0 0;">
                                 <tr>
                                     <td style="width:40px;" data-toggle="tooltip" data-placement="bottom" title="<?= $en_all_4488[7161]['m_name'] ?>">
-                                        <a href="/platform"><img src="/img/mench_white.png" /></a>
+                                        <a href="/dashboard"><img src="/img/mench_white.png" /></a>
                                     </td>
                                     <td>
                                         <input type="text" class="algolia_search" id="platform_search" data-lpignore="true"

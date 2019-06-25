@@ -926,13 +926,13 @@ class Actionplan_model extends CI_Model
 
         //Define step variables:
         $has_children = (count($in__children) > 0);
-        $is__or = in_is_or($ins[0]['in_type_entity_id']);
+        $in_is_or = in_is_or($ins[0]['in_type_entity_id']);
 
 
         //Let's figure out the progression method:
-        if(!$is__or /* AND */ && $completion_req_note){
+        if(!$in_is_or && $completion_req_note){
             $progression_type_entity_id = 6144; //Action Plan Requirement Submitted
-        } elseif($is__or /* OR */ && $has_children){
+        } elseif($in_is_or && $has_children){
             $progression_type_entity_id = 6157; //Action Plan Question Answered
         } elseif(count($in__messages) > 0){
             $progression_type_entity_id = 4559; //Action Plan Messages Read
@@ -942,10 +942,10 @@ class Actionplan_model extends CI_Model
 
 
         //Let's learn more about the nature of this progression link:
-        $is_two_step        = in_array($progression_type_entity_id, $this->config->item('en_ids_6244')); //If TRUE, initial progression link will be logged as WORKING ON since we need user response
-        $trigget_completion_tips = ( !$is_two_step && in_array($progression_type_entity_id, $this->config->item('en_ids_6255'))); //If TRUE AND If !$is_two_step, this would trigger the completion tips
-        $nothing_more_to_do = ( !$is_two_step && !$has_children && in_array($progression_type_entity_id, $this->config->item('en_ids_6274')) ); //If TRUE, we will auto move on to the next item
-        $recommend_recommend = false; //Assume FALSE unless $nothing_more_to_do=TRUE and we do not have any next steps which means user has finished their Action Plan
+        $is_two_step                = in_array($progression_type_entity_id, $this->config->item('en_ids_6244')); //If TRUE, initial progression link will be logged as WORKING ON since we need user response
+        $trigget_completion_tips    = ( !$is_two_step && in_array($progression_type_entity_id, $this->config->item('en_ids_6255'))); //If TRUE AND If !$is_two_step, this would trigger the completion tips
+        $nothing_more_to_do         = ( !$is_two_step && !$has_children && in_array($progression_type_entity_id, $this->config->item('en_ids_6274')) ); //If TRUE, we will auto move on to the next item
+        $recommend_recommend        = false; //Assume FALSE unless $nothing_more_to_do=TRUE and we do not have any next steps which means user has finished their Action Plan
 
 
 
@@ -1074,7 +1074,11 @@ class Actionplan_model extends CI_Model
             //They still need to complete:
             $next_step_message .= $completion_req_note;
 
-        } elseif($is__or && $has_children /* Otherwise who cares */){
+        } elseif($in_is_or && $has_children /* Otherwise who cares */){
+
+
+            //Prep variables:
+            $too_many_children = ( $fb_messenger_format && count($in__children) > 10);
 
 
             if($fb_messenger_format){
@@ -1109,24 +1113,9 @@ class Actionplan_model extends CI_Model
             //List OR child answers:
             foreach ($in__children as $key => $child_in) {
 
-                if ($fb_messenger_format && ($key >= 10 || strlen($next_step_message) > ($this->config->item('fb_max_message') - 150))) {
-                    //Log error link so we can look into it:
-                    $this->Links_model->ln_create(array(
-                        'ln_miner_entity_id' => 1, //Shervin/Developer
-                        'ln_content' => 'actionplan_step_next_echo() encountered intent with too many children to be listed as OR Intent options! Trim and iterate that intent tree.',
-                        'ln_type_entity_id' => 4246, //Platform Bug Reports
-                        'ln_parent_intent_id' => $ins[0]['in_id'],
-                        'ln_child_intent_id' => $child_in['in_id'],
-                        'ln_child_entity_id' => $en_id,
-                    ));
-
-                    //Quick reply accepts 11 options max:
-                    break;
-                }
-
 
                 //Is this selected?
-                $was_selected = ( $made_published_progress && $current_progression_links[0]['ln_child_intent_id']==$child_in['in_id'] );
+                $was_selected       = ( $made_published_progress && $current_progression_links[0]['ln_child_intent_id']==$child_in['in_id'] );
 
                 //Fetch history if selected:
                 if($was_selected){
@@ -1145,24 +1134,32 @@ class Actionplan_model extends CI_Model
                         $next_step_message .= "\n\n" . ($key+1).'. '.echo_in_outcome($child_in['in_outcome'], true);
                     }
 
-                    //Always add answer options to Quick Reply:
-                    array_push($next_step_quick_replies, array(
-                        'content_type' => 'text',
-                        'title' => ($key+1),
-                        'payload' => 'ANSWERQUESTION_' . $ins[0]['in_id'] . '_' . $child_in['in_id'],
-                    ));
+                    //Add answer options to Quick Reply:
+                    if(!$too_many_children){
+                        array_push($next_step_quick_replies, array(
+                            'content_type' => 'text',
+                            'title' => ($key+1),
+                            'payload' => 'ANSWERQUESTION_' . $ins[0]['in_id'] . '_' . $child_in['in_id'],
+                        ));
+                    }
 
                 } else {
 
                     if(!$made_published_progress){
+
                         //Need to select answer:
                         $next_step_message .= '<a href="/messenger/actionplan_answer_question/' . $en_id . '/' . $ins[0]['in_id'] . '/' . $child_in['in_id'] . '/' . md5($this->config->item('actionplan_salt') . $child_in['in_id'] . $ins[0]['in_id'] . $en_id) . '" class="list-group-item">';
+
                     } elseif($was_selected){
+
                         //This was selected:
                         $next_step_message .= '<a href="/actionplan/'.$child_in['in_id'] . '" class="list-group-item">';
+
                     } else {
+
                         //This was NOT selected and nothing else has been selected yet:
                         $next_step_message .= '<span class="list-group-item" style="text-decoration: line-through;">';
+
                     }
 
 
@@ -1207,17 +1204,17 @@ class Actionplan_model extends CI_Model
                         $next_step_message .= '</span>';
 
                     }
-
                 }
             }
 
             if(!$fb_messenger_format){
                 $next_step_message .= '</div>';
+            } elseif($too_many_children){
+                //Give instructions on how to select path:
+                $next_step_message .= "\n\n" . 'Type a number between 1-'.count($in__children).' to continue.';
             }
 
-
-
-        } elseif($has_children && !$is__or /* AND Children */){
+        } elseif($has_children && !$in_is_or /* AND Children */){
 
             //Do we have 2 or more children?
             $has_multiple_children = (count($in__children) > 1);
@@ -1269,7 +1266,7 @@ class Actionplan_model extends CI_Model
                     if(!$fb_messenger_format){
 
                         //Add HTML step to UI:
-                        $next_step_message .= echo_actionplan_step_child($en_id, $child_in, (count($child_progression_steps) > 0 ? $child_progression_steps[0]['ln_status_entity_id'] : 0 ));
+                        $next_step_message .= echo_actionplan_step_child($en_id, $child_in, (count($child_progression_steps) > 0 ? $child_progression_steps[0]['ln_status_entity_id'] : 6174 /* Link New */ ));
 
                     } else {
 

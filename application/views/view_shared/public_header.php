@@ -50,7 +50,7 @@ $url_part_1 = $this->uri->segment(1);
                         }
 
                         //Go to dashboard:
-                        echo '<li><a href="/platform" class="parent-icon">'.$en_all_4488[7161]['m_icon'].' '.$en_all_4488[7161]['m_name'].'</a></li>';
+                        echo '<li><a href="/dashboard" class="parent-icon">'.$en_all_4488[7161]['m_icon'].' '.$en_all_4488[7161]['m_name'].'</a></li>';
 
                     }
 

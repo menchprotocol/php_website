@@ -428,8 +428,8 @@ function redirect_message($url, $message = null)
 function in_is_or($in_type_entity_id, $return_id = false){
     //Determines if an intent type belongs to AND or OR intents:
     $CI =& get_instance();
-    $is__or = intval(in_array($in_type_entity_id , $CI->config->item('en_ids_6193')));
-    return ( $return_id ? ( $is__or ? 6193 /* OR */ : 6192 /* AND */ ) : $is__or );
+    $in_is_or = intval(in_array($in_type_entity_id , $CI->config->item('en_ids_6193')));
+    return ( $return_id ? ( $in_is_or ? 6193 /* OR */ : 6192 /* AND */ ) : $in_is_or );
 }
 
 function upload_to_cdn($file_url, $ln_metadata = null, $is_local = false)

@@ -24,10 +24,10 @@ class Intents extends CI_Controller
             //Go to mench.com for now:
             return redirect_message('https://mench.com');
 
-        //} elseif (filter_array($session_en['en__parents'], 'en_id', 1308)) {
+        } elseif (filter_array($session_en['en__parents'], 'en_id', 1308)) {
 
-            //Go to mench.com for now:
-            //
+            //Go to the Mench dashboard:
+            return redirect_message('/dashboard');
 
         } else {
 
@@ -58,7 +58,7 @@ class Intents extends CI_Controller
 
         //Make sure we found it:
         if ( count($ins) < 1) {
-            return redirect_message('/', '<div class="alert alert-danger" role="alert">Intent #' . $in_id . ' not found</div>');
+            return redirect_message('/' . $this->config->item('in_focus_id'), '<div class="alert alert-danger" role="alert">Intent #' . $in_id . ' not found</div>');
         }
 
         //Make sure intent is public:
@@ -67,7 +67,7 @@ class Intents extends CI_Controller
         //Did we have any issues?
         if(!$public_in['status']){
             //Return error:
-            return redirect_message('/', '<div class="alert alert-danger" role="alert">'.$public_in['message'].'</div>');
+            return redirect_message('/' . $this->config->item('in_focus_id'), '<div class="alert alert-danger" role="alert">'.$public_in['message'].'</div>');
         }
 
         //Load home page:

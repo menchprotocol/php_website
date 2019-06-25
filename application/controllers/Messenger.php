@@ -793,7 +793,7 @@ class Messenger extends CI_Controller
         $session_en = $this->session->userdata('user');
         if (isset($session_en['en__parents'][0]) && filter_array($session_en['en__parents'], 'en_id', 1308)) {
             //Lead miner and above, go to console:
-            return redirect_message('/platform');
+            return redirect_message('/dashboard');
         }
 
         $this->load->view('view_shared/public_header', array(
@@ -949,7 +949,7 @@ class Messenger extends CI_Controller
             //Default:
             if ($is_miner) {
                 //miner default:
-                header('Location: /platform');
+                header('Location: /dashboard');
             } else {
                 //User default:
                 header('Location: /actionplan');

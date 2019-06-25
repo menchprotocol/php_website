@@ -22,5 +22,5 @@ $route['actionplan']            = "messenger/actionplan/0";
 $route['actionplan/(:num)']     = "messenger/actionplan/$1";
 
 //Admin:
-$route['platform']              = "admin/platform";
+$route['dashboard']             = "admin/dashboard";
 $route['admin']                 = "admin/tools";

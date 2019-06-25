@@ -67,7 +67,7 @@ if(isset($session_en['en_id'])){
 }
 
 //Build trust:
-echo '<p style="font-size:1em !important;">Mench is an open-source project. <a href="/'.$this->config->item('in_learn_mench_id').'">Learn more</a>.</p>';
+echo '<p style="font-size:1em !important;">Mench is an open-source project.</p>';
 
 
 echo '</div>';
@@ -91,17 +91,14 @@ $parent_intentions = $this->Links_model->ln_fetch(array(
 
 
 //Parent intentions:
-$body = '';
 foreach ($parent_intentions as $parent_intention) {
     if(in_is_clean_outcome($parent_intention)){
-        //Add parent intention to UI:
-        $body .= echo_in_recommend($parent_intention);
         //Make sure to not load this again:
         array_push($exclude_array, $parent_intention['in_id']);
     }
 }
 
-$recommend_intention = $this->Links_model->ln_fetch(array(
+$recommended_intention = $this->Links_model->ln_fetch(array(
     'ln_status_entity_id IN (' . join(',', $this->config->item('en_ids_7359')) . ')' => null, //Link Statuses Public
     'ln_type_entity_id' => 4228, //Fixed intent links only
     'ln_parent_intent_id' => 8469, //Recommend Mench Intentions
@@ -111,19 +108,17 @@ $recommend_intention = $this->Links_model->ln_fetch(array(
 
 
 //Display if any:
-if(count($parent_intentions) > 0 || count($recommend_intention) > 0){
+if(count($parent_intentions) > 0 || count($recommended_intention) > 0){
 
     echo '<h3 style="margin-bottom:5px; margin-top:55px;">Other Intentions:</h3>';
     echo '<div class="list-group grey_list actionplan_list maxout">';
 
-    echo $body;
-
     //Now fetch Recommended Intents:
-    foreach ($recommend_intention as $recommend_intention) {
-        if(!in_is_clean_outcome($recommend_intention)){
+    foreach (array_merge($recommended_intention, $parent_intentions) as $other_in) {
+        if(!in_is_clean_outcome($other_in)){
             continue;
         }
-        echo echo_in_recommend($recommend_intention);
+        echo echo_in_recommend($other_in);
     }
 
     echo '</div>';

@@ -44,7 +44,7 @@
 
 
 
-                    <a href="/platform"
+                    <a href="/dashboard"
                        class="social-link" data-toggle="tooltip" title="<?= $en_all_4488[7161]['m_name'] ?>"
                        data-placement="top"><?= $en_all_4488[7161]['m_icon'] ?></a>
 
