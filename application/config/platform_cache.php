@@ -11,7 +11,7 @@ defined('BASEPATH') OR exit('No direct script access allowed');
  *
  */
 
-//Generated 2019-06-25 15:26:42 PST
+//Generated 2019-06-25 15:33:27 PST
 
 //Mench Platform Products:
 $config['en_ids_7372'] = array(6196,6287,7368,7369,7370);
@@ -215,7 +215,7 @@ $config['en_all_7359'] = array(
 );
 
 //Entity Statuses Active:
-$config['en_ids_7358'] = array(6179,6180,6181,7352);
+$config['en_ids_7358'] = array(6179,6180,6181);
 $config['en_all_7358'] = array(
     6179 => array(
         'm_icon' => '<i class="fal fa-square"></i>',
@@ -235,26 +235,14 @@ $config['en_all_7358'] = array(
         'm_desc' => '',
         'm_parents' => array(7358,7357,6177),
     ),
-    7352 => array(
-        'm_icon' => '<i class="fas fa-badge-check"></i>',
-        'm_name' => 'Entity Featured',
-        'm_desc' => '',
-        'm_parents' => array(7358,7357,6177),
-    ),
 );
 
 //Entity Statuses Public:
-$config['en_ids_7357'] = array(6181,7352);
+$config['en_ids_7357'] = array(6181);
 $config['en_all_7357'] = array(
     6181 => array(
         'm_icon' => '<i class="fas fa-check-square"></i>',
         'm_name' => 'Entity Published',
-        'm_desc' => '',
-        'm_parents' => array(7358,7357,6177),
-    ),
-    7352 => array(
-        'm_icon' => '<i class="fas fa-badge-check"></i>',
-        'm_name' => 'Entity Featured',
         'm_desc' => '',
         'm_parents' => array(7358,7357,6177),
     ),
@@ -1512,14 +1500,8 @@ $config['en_all_4737'] = array(
 );
 
 //Entity Status Entity:
-$config['en_ids_6177'] = array(7352,6181,6180,6179,6178);
+$config['en_ids_6177'] = array(6181,6180,6179,6178);
 $config['en_all_6177'] = array(
-    7352 => array(
-        'm_icon' => '<i class="fas fa-badge-check"></i>',
-        'm_name' => 'Featured',
-        'm_desc' => 'have a public landing page',
-        'm_parents' => array(7358,7357,6177),
-    ),
     6181 => array(
         'm_icon' => '<i class="fas fa-check-square"></i>',
         'm_name' => 'Published',
