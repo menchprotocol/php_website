@@ -169,7 +169,7 @@ class Admin extends CI_Controller
 
 
         //Intent Verbs:
-        $show_max_verbs = 10;
+        $show_max_verbs = 13;
 
         //Fetch all needed data:
         $in_verbs = $this->Intents_model->in_fetch(array(
