@@ -1068,7 +1068,7 @@ function fetch_points($ln_type_entity_id){
     }
 }
 
-function update_metadata($obj_type, $obj_id, $new_fields)
+function update_metadata($obj_type, $obj_id, $new_fields, $ln_miner_entity_id = 0)
 {
 
     $CI =& get_instance();
@@ -1145,19 +1145,19 @@ function update_metadata($obj_type, $obj_id, $new_fields)
 
         $affected_rows = $CI->Intents_model->in_update($obj_id, array(
             'in_metadata' => $metadata,
-        ));
+        ), ( $ln_miner_entity_id > 0 ), $ln_miner_entity_id);
 
     } elseif ($obj_type == 'en') {
 
         $affected_rows = $CI->Entities_model->en_update($obj_id, array(
             'en_metadata' => $metadata,
-        ));
+        ), ( $ln_miner_entity_id > 0 ), $ln_miner_entity_id);
 
     } elseif ($obj_type == 'ln') {
 
         $affected_rows = $CI->Links_model->ln_update($obj_id, array(
             'ln_metadata' => $metadata,
-        ));
+        ), $ln_miner_entity_id);
 
     }
 

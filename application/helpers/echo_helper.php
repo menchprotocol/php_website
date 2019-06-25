@@ -1504,6 +1504,7 @@ function echo_in_answer_scores($starting_in, $depth_levels, $original_depth_leve
     $CI =& get_instance();
     $en_all_6186 = $CI->config->item('en_all_6186'); //Link Statuses
     $en_all_4486 = $CI->config->item('en_all_4486');
+    $en_all_4737 = $CI->config->item('en_all_4737'); // Intent Statuses
 
     $ui = null;
     foreach($CI->Links_model->ln_fetch(array(
@@ -1524,16 +1525,18 @@ function echo_in_answer_scores($starting_in, $depth_levels, $original_depth_leve
 
         //Display block:
         $ui .= '<div class="'.( $tr__assessment_points==0 ? 'no-assessment ' : 'has-assessment' ).'">';
-        $ui .= '<span style="width: 22px; display:inline-block; text-align: center;" data-toggle="tooltip" data-placement="top" title="Intent Link Type: '.$en_all_4486[$in_ln['ln_type_entity_id']]['m_name'].'">'. $en_all_4486[$in_ln['ln_type_entity_id']]['m_icon'] . '</span>';
-        $ui .= '<span style="width: 22px; display:inline-block; text-align: center;" data-toggle="tooltip" data-placement="top" title="Intent Link Status: '.$en_all_6186[$in_ln['ln_status_entity_id']]['m_name'].'">'. $en_all_6186[$in_ln['ln_status_entity_id']]['m_icon'] . '</span>';
-        $ui .= '<span style="width: 50px; display:inline-block; text-align: left;" data-toggle="tooltip" data-placement="top" title="Response Weight">'.( ($in_ln['ln_type_entity_id'] == 4228 && in_is_or($parent_in_type_entity_id)) || ($in_ln['ln_type_entity_id'] == 4229) ? echo_assessment_mark($in_ln) : '' ).'</span>';
+        $ui .= '<span class="icon-block" data-toggle="tooltip" data-placement="top" title="Intent Link Type: '.$en_all_4486[$in_ln['ln_type_entity_id']]['m_name'].'">'. $en_all_4486[$in_ln['ln_type_entity_id']]['m_icon'] . '</span>';
+        $ui .= '<span class="icon-block" data-toggle="tooltip" data-placement="top" title="Intent Link Status: '.$en_all_6186[$in_ln['ln_status_entity_id']]['m_name'].'">'. $en_all_6186[$in_ln['ln_status_entity_id']]['m_icon'] . '</span>';
 
         $en_all_6676 = $CI->config->item('en_all_6676');
         $in_parent_type_id = in_is_or($in_ln['in_type_entity_id'], true);
 
-        $ui .= '<span style="width:26px; display:inline-block; text-align: center;" data-toggle="tooltip" data-placement="top" title="Intent Type: '.$en_all_6676[$in_parent_type_id]['m_name'].'">'. $en_all_6676[$in_parent_type_id]['m_icon'] . '</span>';
-        $ui .= '<span style="width: 30px; display:inline-block; text-align: center;" data-toggle="tooltip" data-placement="top" title="Intent Status: '.$en_all_4737[$in_ln['in_status_entity_id']]['m_name'].'">'. $en_all_4737[$in_ln['in_status_entity_id']]['m_icon']. '</span>';
-        $ui .= '<a href="/admin/tools/assessment_marks_birds_eye?starting_in='.$in_ln['in_id'].'&depth_levels='.$original_depth_levels.'" data-toggle="tooltip" data-placement="top" title="Navigate report to this intent"><u>' .  $in_ln['in_outcome'] . '</u></a>';
+        $ui .= '<span class="icon-block" data-toggle="tooltip" data-placement="top" title="Intent Type: '.$en_all_6676[$in_parent_type_id]['m_name'].'">'. $en_all_6676[$in_parent_type_id]['m_icon'] . '</span>';
+        $ui .= '<span class="icon-block" data-toggle="tooltip" data-placement="top" title="Intent Status: '.$en_all_4737[$in_ln['in_status_entity_id']]['m_name'].'">'. $en_all_4737[$in_ln['in_status_entity_id']]['m_icon']. '</span>';
+        $ui .= '<a href="/admin/tools/assessment_marks_birds_eye?starting_in='.$in_ln['in_id'].'&depth_levels='.$original_depth_levels.'" data-toggle="tooltip" data-placement="top" title="Navigate report to this intent"><u>' .   echo_in_outcome($in_ln['in_outcome'], false, false, true) . '</u></a>';
+
+        $ui .= ' [<span data-toggle="tooltip" data-placement="top" title="Completion Marks">'.( ($in_ln['ln_type_entity_id'] == 4228 && in_is_or($parent_in_type_entity_id)) || ($in_ln['ln_type_entity_id'] == 4229) ? echo_assessment_mark($in_ln) : '' ).'</span>]';
+
         if(count($messages) > 0){
             $ui .= ' <a href="javascript:void(0);" onclick="$(\'.messages-'.$in_ln['in_id'].'\').toggleClass(\'hidden\');"><i class="fas fa-comment"></i><b>' .  count($messages) . '</b></a>';
         }
@@ -1684,7 +1687,7 @@ function echo_link_type_group_stats($parent_stats, $child_stats_en_id){
 
         //Display this status count:
         $ui .= '<tr>';
-        $ui .= '<td style="text-align: left;"><span style="width:29px; display: inline-block; text-align: center;">' . $en_m['m_icon'] . '</span><a href="/entities/'.$en_id.'">' . $en_m['m_name'] . '</a>'.$type_description.'</td>';
+        $ui .= '<td style="text-align: left;"><span class="icon-block">' . $en_m['m_icon'] . '</span><a href="/entities/'.$en_id.'">' . $en_m['m_name'] . '</a>'.$type_description.'</td>';
         $ui .= '<td style="text-align: right;">' . ( $total_counts > 0 ? '<a href="/links?ln_status_entity_id='.join(',', $CI->config->item('en_ids_7360')) /* Link Statuses Active */.'&ln_type_entity_id=' . $ln_type_filters . '">' . echo_number($total_counts) . '</a>' : $total_counts ) . '<i class="fal fa-info-circle icon-block" data-toggle="tooltip" title="' .number_format($total_counts, 0) .' ' . $en_m['m_desc'] . '" data-placement="top"></i>' . '</td>';
         $ui .= '</tr>';
 
@@ -1794,7 +1797,7 @@ function echo_in($in, $level, $in_parent_id = 0, $is_parent = false)
         //Show smaller link status icon:
         $ui .= '<span class="icon-top-right ln_status_entity_id_' . $ln_id . '"><span data-toggle="tooltip" data-placement="right" title="'.$en_all_6186[$in['ln_status_entity_id']]['m_name'].' @'.$in['ln_status_entity_id'].': '.$en_all_6186[$in['ln_status_entity_id']]['m_desc'].'">' . $en_all_6186[$in['ln_status_entity_id']]['m_icon'] . '</span></span>';
 
-        //Show Response Weight based on Intent Link Type:
+        //Show Completion Marks based on Intent Link Type:
         $ui .= '<span class="icon-3rd in_assessment_' . $ln_id . '" data-toggle="tooltip" data-placement="right" title="Completion Marks">'. echo_assessment_mark($in) .'</span>';
 
         $ui .= '</span>';

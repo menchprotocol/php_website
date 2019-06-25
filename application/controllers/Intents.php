@@ -12,6 +12,62 @@ class Intents extends CI_Controller
     }
 
 
+    function fix__completion_marks($in_id){
+
+        die('adjust variables to begin');
+
+        boost_power();
+
+        foreach($this->Links_model->ln_fetch(array(
+            'ln_status_entity_id IN (' . join(',', $this->config->item('en_ids_7359')) . ')' => null, //Link Statuses Public
+            'in_status_entity_id IN (' . join(',', $this->config->item('en_ids_7355')) . ')' => null, //Intent Statuses Public
+            'ln_type_entity_id' => 4228, //Fixed Intent Links
+            'ln_parent_intent_id' => $in_id,
+        ), array('in_child'), 0, 0, array('ln_order' => 'ASC')) as $rank => $assessment_in){
+
+            echo '<br /><b>'.($rank+1). ') '. $assessment_in['in_outcome'].'</b><br />';
+
+            //Assessments:
+            foreach($this->Links_model->ln_fetch(array(
+                'ln_status_entity_id IN (' . join(',', $this->config->item('en_ids_7359')) . ')' => null, //Link Statuses Public
+                'in_status_entity_id IN (' . join(',', $this->config->item('en_ids_7355')) . ')' => null, //Intent Statuses Public
+                'ln_type_entity_id' => 4228, //Fixed Intent Links
+                'in_type_entity_id IN (' . join(',', $this->config->item('en_ids_6193')) . ')' => null, //OR Intents
+                'ln_parent_intent_id' => $assessment_in['in_id'],
+            ), array('in_child'), 0, 0, array('ln_order' => 'ASC')) as $rank2 => $assessment2_in){
+                echo '&nbsp;&nbsp;&nbsp;&nbsp;'.($rank+1).'.'.($rank2+1). ') '. $assessment2_in['in_outcome'].'<br />';
+
+                //Questions:
+                foreach($this->Links_model->ln_fetch(array(
+                    'ln_status_entity_id IN (' . join(',', $this->config->item('en_ids_7359')) . ')' => null, //Link Statuses Public
+                    'in_status_entity_id IN (' . join(',', $this->config->item('en_ids_7355')) . ')' => null, //Intent Statuses Public
+                    'ln_type_entity_id' => 4228, //Fixed Intent Links
+                    'ln_parent_intent_id' => $assessment2_in['in_id'],
+                ), array('in_child'), 0, 0, array('ln_order' => 'ASC')) as $rank3 => $assessment3_in){
+
+                    //prep metadata:
+                    $ln_metadata = unserialize($assessment3_in['ln_metadata']);
+
+                    if(is_numeric($ln_metadata['tr__assessment_points']) && intval($ln_metadata['tr__assessment_points']) > 0){
+                        $new_value = 1;
+                    } else {
+                        $new_value = -1;
+                    }
+
+                    if($new_value != intval($ln_metadata['tr__assessment_points'])){
+                        update_metadata('ln', $assessment3_in['ln_id'], array(
+                            'tr__assessment_points' => $new_value,
+                        ), 1);
+                        echo '[UPDATED]';
+                    }
+
+
+                    echo '&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;'.($rank+1).'.'.($rank2+1). '.'.($rank3+1). ') '. htmlentities($assessment3_in['in_outcome']).' ['.$ln_metadata['tr__assessment_points'].']<br />';
+                }
+
+            }
+        }
+    }
 
     //Loaded as default function of the default controller:
     function index()

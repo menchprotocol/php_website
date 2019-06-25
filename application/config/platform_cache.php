@@ -11,7 +11,7 @@ defined('BASEPATH') OR exit('No direct script access allowed');
  *
  */
 
-//Generated 2019-06-24 14:47:00 PST
+//Generated 2019-06-25 09:36:08 PST
 
 //Private Intent:
 $config['en_ids_7366'] = array(6685);
@@ -1186,13 +1186,13 @@ $config['en_ids_6410'] = array(4228,4229,4358,6140,6402);
 $config['en_all_6410'] = array(
     4228 => array(
         'm_icon' => '<i class="fas fa-walking"></i>',
-        'm_name' => 'Intent Link Open',
+        'm_name' => 'Intent Link Open Step',
         'm_desc' => 'Fixed steps provide the assessment marks needed to determine the outcome of conditional steps.',
         'm_parents' => array(6410,4593,4486,4595),
     ),
     4229 => array(
         'm_icon' => '<i class="fas fa-lock"></i>',
-        'm_name' => 'Intent Link Locked',
+        'm_name' => 'Intent Link Locked Step',
         'm_desc' => 'The outcome of processing the aggregate steps if a student\'s Action Plan and unlocking a specific intent based on the percentage outcome.',
         'm_parents' => array(6410,6283,4593,4486,4595),
     ),
@@ -2239,13 +2239,13 @@ $config['en_ids_4595'] = array(4228,4229,4230,4231,4232,4235,4242,4246,4250,4251
 $config['en_all_4595'] = array(
     4228 => array(
         'm_icon' => '<i class="fas fa-walking"></i>',
-        'm_name' => 'Intent Link Open',
+        'm_name' => 'Intent Link Open Step',
         'm_desc' => '2000',
         'm_parents' => array(6410,4593,4486,4595),
     ),
     4229 => array(
         'm_icon' => '<i class="fas fa-lock"></i>',
-        'm_name' => 'Intent Link Locked',
+        'm_name' => 'Intent Link Locked Step',
         'm_desc' => '2000',
         'm_parents' => array(6410,6283,4593,4486,4595),
     ),
@@ -2765,13 +2765,13 @@ $config['en_ids_4593'] = array(4228,4229,4230,4231,4232,4235,4242,4246,4250,4251
 $config['en_all_4593'] = array(
     4228 => array(
         'm_icon' => '<i class="fas fa-walking"></i>',
-        'm_name' => 'Intent Link Open',
+        'm_name' => 'Intent Link Open Step',
         'm_desc' => '',
         'm_parents' => array(6410,4593,4486,4595),
     ),
     4229 => array(
         'm_icon' => '<i class="fas fa-lock"></i>',
-        'm_name' => 'Intent Link Locked',
+        'm_name' => 'Intent Link Locked Step',
         'm_desc' => '',
         'm_parents' => array(6410,6283,4593,4486,4595),
     ),
@@ -3409,13 +3409,13 @@ $config['en_ids_4486'] = array(4228,4229);
 $config['en_all_4486'] = array(
     4228 => array(
         'm_icon' => '<i class="fas fa-walking"></i>',
-        'm_name' => 'Open',
+        'm_name' => 'Open Step',
         'm_desc' => 'Intent link published and added to user Action Plans up-front',
         'm_parents' => array(6410,4593,4486,4595),
     ),
     4229 => array(
         'm_icon' => '<i class="fas fa-lock"></i>',
-        'm_name' => 'Locked',
+        'm_name' => 'Locked Step',
         'm_desc' => 'Intent added to Action Plans after parent intent is complete AND the user\'s % score falls within the defined min/max range',
         'm_parents' => array(6410,6283,4593,4486,4595),
     ),
