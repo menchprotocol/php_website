@@ -5,14 +5,8 @@
 <?php
 //Fetch & Display Intent Note Messages to explain links:
 $en_all_4488 = $this->config->item('en_all_4488');
-
-//Fetch mission statement:
-$mission_ins = $this->Intents_model->in_fetch(array(
-    'in_id' => $this->config->item('in_mission_id'),
-));
 ?>
 <h1 style="text-align: center; margin-top: 50px;"><?= $en_all_4488[7161]['m_name'] ?></h1>
-<p style="text-align: center; margin-top: 20px; padding-bottom:0; font-size:1.5em !important;">Mission: <?= $mission_ins[0]['in_outcome'] ?> <a href="/<?= $this->config->item('in_learn_mench_id') ?>"><i class="fal fa-info-circle"></i></a></p>
 <p style="text-align: center; margin-top: 20px; padding-bottom:40px; font-size:1.1em !important;"></p>
 
 

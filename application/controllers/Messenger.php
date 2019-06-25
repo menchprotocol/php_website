@@ -61,7 +61,7 @@ class Messenger extends CI_Controller
         //Do some basic checks:
         if (!isset($ln_metadata['object']) || !isset($ln_metadata['entry'])) {
             //Likely loaded the URL in browser:
-            return print_r('complete');
+            return print_r('missing');
         } elseif ($ln_metadata['object'] != 'page') {
             $this->Links_model->ln_create(array(
                 'ln_content' => 'facebook_webhook() Function call object value is not equal to [page], which is what was expected.',
@@ -69,7 +69,7 @@ class Messenger extends CI_Controller
                 'ln_type_entity_id' => 4246, //Platform Bug Reports
                 'ln_miner_entity_id' => 1, //Shervin/Developer
             ));
-            return print_r('complete');
+            return print_r('unknown page');
         }
 
 
@@ -130,7 +130,7 @@ class Messenger extends CI_Controller
                     if (isset($im['message']['metadata']) && $im['message']['metadata'] == 'system_logged') {
 
                         //This is already logged! No need to take further action!
-                        return print_r('complete');
+                        return print_r('already logged');
 
                     }
 
@@ -168,7 +168,7 @@ class Messenger extends CI_Controller
                         );
 
                         //Terminate:
-                        return print_r('complete');
+                        return print_r('re-subscribe');
                     }
 
 
@@ -377,7 +377,7 @@ class Messenger extends CI_Controller
                         ));
 
                         //Terminate:
-                        return print_r('complete');
+                        return print_r('unknown message type');
                     }
 
 
@@ -620,7 +620,7 @@ class Messenger extends CI_Controller
             }
         }
 
-        return print_r('complete');
+        return print_r('success');
     }
 
     function api_fetch_profile($en_id)

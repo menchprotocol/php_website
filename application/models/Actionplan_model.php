@@ -1500,7 +1500,8 @@ class Actionplan_model extends CI_Model
             foreach($in_metadata['in__metadata_expansion_steps'] as $question_in_id => $answers_in_ids ){
 
                 //Calculate local min/max marks:
-                $local_maximum = 0;
+                $local_min = null;
+                $local_max = null;
 
                 //Calculate min/max points for this based on answers:
                 foreach($this->Links_model->ln_fetch(array(
@@ -1514,23 +1515,29 @@ class Actionplan_model extends CI_Model
                     //Extract Link Metadata:
                     $possible_answer_metadata = unserialize($in_answer['ln_metadata']);
 
-                    //define mark:
-                    $possible_mark = (isset($possible_answer_metadata['tr__assessment_points']) ? intval($possible_answer_metadata['tr__assessment_points']) : 0);
-
                     //Assign to this question:
-                    $answer_marks_index[$in_answer['in_id']] = $possible_mark;
+                    $answer_marks_index[$in_answer['in_id']] = ( isset($possible_answer_metadata['tr__assessment_points']) ? intval($possible_answer_metadata['tr__assessment_points']) : 0 );
 
                     //Addup local min/max marks:
-                    if($possible_mark > $local_maximum){
-                        $local_maximum = $possible_mark;
+                    if(is_null($local_min) || $answer_marks_index[$in_answer['in_id']] < $local_min){
+                        $local_min = $answer_marks_index[$in_answer['in_id']];
+                    }
+                    if(is_null($local_max) || $answer_marks_index[$in_answer['in_id']] > $local_max){
+                        $local_max = $answer_marks_index[$in_answer['in_id']];
                     }
                 }
 
                 //Did we have any marks for this question?
-                if($local_maximum > 0){
-                    //Yes we have marks, let's addup to total max/minimums:
+                if(!is_null($local_max) || !is_null($local_min)){
+
                     $metadata_this['steps_marks_count'] += 1;
-                    $metadata_this['steps_marks_max'] += $local_maximum;
+
+                    if(!is_null($local_min)){
+                        $metadata_this['steps_marks_min'] += $local_min;
+                    }
+                    if(!is_null($local_max)){
+                        $metadata_this['steps_marks_max'] += $local_max;
+                    }
                 }
             }
 
@@ -1546,11 +1553,15 @@ class Actionplan_model extends CI_Model
                 'in_status_entity_id IN (' . join(',', $this->config->item('en_ids_7355')) . ')' => null, //Intent Statuses Public
             ), array('in_child')) as $expansion_in) {
 
+                if(!isset($answer_marks_index[$expansion_in['in_id']])){
+                    continue;
+                }
+
                 //Fetch recursive:
                 $recursive_stats = $this->Actionplan_model->actionplan_completion_marks($en_id, $expansion_in, false);
 
                 //Addup data for this intent:
-                $this_answer_marks = ( isset($answer_marks_index[$expansion_in['in_id']]) ? $answer_marks_index[$expansion_in['in_id']] : 0 );
+                $this_answer_marks = $answer_marks_index[$expansion_in['in_id']];
                 $metadata_this['steps_answered_count'] += 1 + $recursive_stats['steps_answered_count'];
                 $metadata_this['steps_answered_marks'] += $this_answer_marks + $recursive_stats['steps_answered_marks'];
 
@@ -1560,7 +1571,7 @@ class Actionplan_model extends CI_Model
 
         if($top_level && $metadata_this['steps_answered_count'] > 0){
             //See assessment summary:
-            $metadata_this['steps_answered_score'] = floor( $metadata_this['steps_answered_marks'] / $metadata_this['steps_marks_max'] * 100 );
+            $metadata_this['steps_answered_score'] = floor( ($metadata_this['steps_answered_marks'] - $metadata_this['steps_marks_min']) / ( $metadata_this['steps_marks_max'] - $metadata_this['steps_marks_min'] ) * 100 );
         }
 
 
