@@ -38,8 +38,8 @@ $developer_tools = array(
 
 if(!$action) {
 
-    $en_all_4488 = $this->config->item('en_all_4488');
-    echo '<h1>'.$en_all_4488[6287]['m_icon'].' '.$en_all_4488[6287]['m_name'].' <a href="/entities/6287" style="font-size: 0.5em; color: #999;" title="'.$en_all_4488[6287]['m_name'].' entity controlling this tool" data-toggle="tooltip" data-placement="right">@6287</a></h1>';
+    $en_all_7372 = $this->config->item('en_all_7372');
+    echo '<h1>'.$en_all_7372[6287]['m_icon'].' '.$en_all_7372[6287]['m_name'].' <a href="/entities/6287" style="font-size: 0.5em; color: #999;" title="'.$en_all_7372[6287]['m_name'].' entity controlling this tool" data-toggle="tooltip" data-placement="right">@6287</a></h1>';
 
     echo '<div class="list-group actionplan_list grey_list maxout">';
     foreach ($moderation_tools as $tool_key => $tool_name) {

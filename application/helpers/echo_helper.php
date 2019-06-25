@@ -847,7 +847,7 @@ function echo_tree_users($in, $fb_messenger_format = false, $autoexpand = false)
 
     //Count users who have completed this intent:
     $enrolled_users_count = $CI->Links_model->ln_fetch(array(
-        'ln_type_entity_id IN (' . join(',', $CI->config->item('en_ids_6255')) . ')' => null, //Action Plan Progression Completion Triggers
+        'ln_type_entity_id IN (' . join(',', $CI->config->item('en_ids_6255')) . ')' => null, //Action Plan Steps Progressed
         'ln_parent_intent_id' => $in['in_id'],
         'ln_status_entity_id IN (' . join(',', $CI->config->item('en_ids_7359')) . ')' => null, //Link Statuses Public
     ), array(), 0, 0, array(), 'COUNT(ln_id) as totals');
@@ -861,7 +861,7 @@ function echo_tree_users($in, $fb_messenger_format = false, $autoexpand = false)
     $in_metadata = unserialize($in['in_metadata']);
     $array_flatten = array_flatten($in_metadata['in__metadata_common_steps']);
     $completed_users_count = $CI->Links_model->ln_fetch(array(
-        'ln_type_entity_id IN (' . join(',', $CI->config->item('en_ids_6255')) . ')' => null, //Action Plan Progression Completion Triggers
+        'ln_type_entity_id IN (' . join(',', $CI->config->item('en_ids_6255')) . ')' => null, //Action Plan Steps Progressed
         'ln_parent_intent_id' => end($array_flatten),
         'ln_status_entity_id IN (' . join(',', $CI->config->item('en_ids_7359')) . ')' => null, //Link Statuses Public
     ), array(), 0, 0, array(), 'COUNT(ln_id) as totals');
@@ -1061,7 +1061,7 @@ function echo_step_range($in, $educational_mode = false){
     if($metadata['in__metadata_min_steps'] != $metadata['in__metadata_max_steps']){
 
         //It's a range:
-        return $metadata['in__metadata_min_steps'].' - '.$metadata['in__metadata_max_steps'].' Steps' . ( $educational_mode ? ' (depending on your answers to my questions)' : '' );
+        return $metadata['in__metadata_min_steps'].'-'.$metadata['in__metadata_max_steps'].' Steps' . ( $educational_mode ? ' (depending on your answers to my questions)' : '' );
 
     } else {
 
@@ -1369,7 +1369,7 @@ function echo_time_range($in, $micro = false, $hide_zero = false)
     $the_max = ($is_minutes ? $max_minutes : $max_hours );
     $ui_time = $the_min;
     if($the_min != $the_max){
-        $ui_time .= ' - ';
+        $ui_time .= '-';
         $ui_time .= $the_max;
     }
     $ui_time .= ($is_minutes ? ($micro ? 'm' : ' Minute'.echo__s($max_minutes)) : ($micro ? 'h' : ' Hour'.echo__s($max_hours)));
@@ -1465,7 +1465,7 @@ function echo_in_recommend($in, $is_basic = false)
     //See if user is logged-in:
     $CI =& get_instance();
     $session_en = en_auth();
-    $en_all_4488 = $CI->config->item('en_all_4488');
+    $en_all_7369 = $CI->config->item('en_all_7369');
     $already_in_actionplan = (isset($session_en['en_id']) && count($CI->Links_model->ln_fetch(array(
             'ln_miner_entity_id' => $session_en['en_id'],
             'ln_type_entity_id' => 4235, //Action Plan Set Intention
@@ -1477,7 +1477,7 @@ function echo_in_recommend($in, $is_basic = false)
     $ui = '<a href="' . ( $already_in_actionplan ? '/actionplan' : '' ) . '/' . $in['in_id'] . '" class="list-group-item">';
 
     $ui .= '<span class="pull-right">';
-    $ui .= '<span class="badge badge-primary fr-bgd">'.( $already_in_actionplan ? $en_all_4488[6138]['m_icon'] : '<i class="fas fa-angle-right"></i>' ).'</span>';
+    $ui .= '<span class="badge badge-primary fr-bgd">'.( $already_in_actionplan ? $en_all_7369[6138]['m_icon'] : '<i class="fas fa-angle-right"></i>' ).'</span>';
     $ui .= '</span>';
 
     $ui .= '<span style="color:#222; font-weight:500; font-size:1.2em;">'.echo_in_outcome($in['in_outcome']).'</span>';
@@ -1896,14 +1896,14 @@ function echo_in($in, $level, $in_parent_id = 0, $is_parent = false)
 
     //Action Plan:
     $actionplan_users = $CI->Links_model->ln_fetch(array(
-    'ln_type_entity_id IN (' . join(',', $CI->config->item('en_ids_6255')) . ')' => null, //Action Plan Progression Completion Triggers
+    'ln_type_entity_id IN (' . join(',', $CI->config->item('en_ids_6255')) . ')' => null, //Action Plan Steps Progressed
     'ln_parent_intent_id' => $in['in_id'],
     'ln_status_entity_id IN (' . join(',', $CI->config->item('en_ids_7359')) . ')' => null, //Link Statuses Public
 ), array(), 0, 0, array(), 'COUNT(ln_id) as total_steps');
 
     if(count($in_filters['get_filter_query']) > 0){
         $actionplan_users_match = $CI->Links_model->ln_fetch(array_merge($in_filters['get_filter_query'], array(
-            'ln_type_entity_id IN (' . join(',', $CI->config->item('en_ids_6255')) . ')' => null, //Action Plan Progression Completion Triggers
+            'ln_type_entity_id IN (' . join(',', $CI->config->item('en_ids_6255')) . ')' => null, //Action Plan Steps Progressed
             'ln_parent_intent_id' => $in['in_id'],
             'ln_status_entity_id IN (' . join(',', $CI->config->item('en_ids_7359')) . ')' => null, //Link Statuses Public
         )), array(), 0, 0, array(), 'COUNT(ln_id) as total_steps');

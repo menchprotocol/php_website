@@ -5,13 +5,152 @@ defined('BASEPATH') OR exit('No direct script access allowed');
  * Keep a cache of certain parts of the Intent tree for faster processing
  * So we don't have to make DB calls to figure them out every time!
  * See here for all entities cached: https://mench.com/entities/4527
- * use-case format: $this->config->item('en_all_4488')
+ * use-case format: $this->config->item('')
  *
  * ATTENTION: Also search for "en_ids_" and "en_all_" when trying to manage these throughout the code base
  *
  */
 
-//Generated 2019-06-25 09:36:08 PST
+//Generated 2019-06-25 15:26:42 PST
+
+//Mench Platform Products:
+$config['en_ids_7372'] = array(6196,6287,7368,7369,7370);
+$config['en_all_7372'] = array(
+    6196 => array(
+        'm_icon' => '<i class="fab fa-facebook-messenger"></i>',
+        'm_name' => 'Messenger Bot',
+        'm_desc' => '',
+        'm_parents' => array(7372,3320,4463),
+    ),
+    6287 => array(
+        'm_icon' => '<i class="fas fa-user-shield"></i>',
+        'm_name' => 'Admin App',
+        'm_desc' => 'Tools for moderating the Mench platform',
+        'm_parents' => array(7372,4527,7284),
+    ),
+    7368 => array(
+        'm_icon' => '<i class="fas fa-user-hard-hat"></i>',
+        'm_name' => 'Miner App',
+        'm_desc' => '',
+        'm_parents' => array(7372,4527),
+    ),
+    7369 => array(
+        'm_icon' => '<i class="fas fa-user-graduate"></i>',
+        'm_name' => 'User App',
+        'm_desc' => '',
+        'm_parents' => array(7372,6196,4527),
+    ),
+    7370 => array(
+        'm_icon' => '<i class="fas fa-user-tie"></i>',
+        'm_name' => 'Company App',
+        'm_desc' => '',
+        'm_parents' => array(7372,4527),
+    ),
+);
+
+//Mench Admin App:
+$config['en_ids_6287'] = array(7257,7258,7274);
+$config['en_all_6287'] = array(
+    7257 => array(
+        'm_icon' => '<i class="fab fa-app-store-ios"></i>',
+        'm_name' => 'Mench Moderation Apps',
+        'm_desc' => '',
+        'm_parents' => array(6287),
+    ),
+    7258 => array(
+        'm_icon' => '<i class="far fa-bookmark"></i>',
+        'm_name' => 'Mench Developer Bookmarks',
+        'm_desc' => '',
+        'm_parents' => array(4433,6287),
+    ),
+    7274 => array(
+        'm_icon' => '<i class="far fa-magic"></i>',
+        'm_name' => 'Platform Cron Jobs',
+        'm_desc' => '',
+        'm_parents' => array(6403,6287),
+    ),
+);
+
+//Mench User App:
+$config['en_ids_7369'] = array(6137,6138,7291);
+$config['en_all_7369'] = array(
+    6137 => array(
+        'm_icon' => '👤',
+        'm_name' => 'My Account',
+        'm_desc' => 'A web-based portal (also accessible via Messenger) enabling students to manage their account',
+        'm_parents' => array(7369),
+    ),
+    6138 => array(
+        'm_icon' => '🚩',
+        'm_name' => 'Action Plan',
+        'm_desc' => 'A web-based portal (also accessible via Messenger) enabling students to manage their intentions',
+        'm_parents' => array(7369,4463),
+    ),
+    7291 => array(
+        'm_icon' => '<i class="fas fa-power-off"></i>',
+        'm_name' => 'Logout',
+        'm_desc' => '',
+        'm_parents' => array(7370,7368,7369),
+    ),
+);
+
+//Mench Company App:
+$config['en_ids_7370'] = array(7291);
+$config['en_all_7370'] = array(
+    7291 => array(
+        'm_icon' => '<i class="fas fa-power-off"></i>',
+        'm_name' => 'Logout',
+        'm_desc' => '',
+        'm_parents' => array(7370,7368,7369),
+    ),
+);
+
+//Mench Miner App:
+$config['en_ids_7368'] = array(4535,4536,5007,6205,7161,7256,7291);
+$config['en_all_7368'] = array(
+    4535 => array(
+        'm_icon' => '<i class="fas fa-hashtag"></i>',
+        'm_name' => 'Intents',
+        'm_desc' => '',
+        'm_parents' => array(7368,4534,4463),
+    ),
+    4536 => array(
+        'm_icon' => '<i class="fas fa-at"></i>',
+        'm_name' => 'Entities',
+        'm_desc' => '',
+        'm_parents' => array(7368,4534,4463),
+    ),
+    5007 => array(
+        'm_icon' => '<i class="fas fa-expand-arrows"></i>',
+        'm_name' => 'Toggle Advance Mode',
+        'm_desc' => '',
+        'm_parents' => array(7368,4527,4595,4757,4593),
+    ),
+    6205 => array(
+        'm_icon' => '<i class="fas fa-link"></i>',
+        'm_name' => 'Links',
+        'm_desc' => '',
+        'm_parents' => array(7368,4534,4463),
+    ),
+    7161 => array(
+        'm_icon' => '<i class="far fa-tachometer-alt-fast"></i>',
+        'm_name' => 'Mench Dashboard',
+        'm_desc' => '',
+        'm_parents' => array(7368,7305),
+    ),
+    7256 => array(
+        'm_icon' => '<i class="fas fa-search"></i>',
+        'm_name' => 'Platform Search Bar',
+        'm_desc' => 'Intents, Entities & URLs',
+        'm_parents' => array(7368,3323),
+    ),
+    7291 => array(
+        'm_icon' => '<i class="fas fa-power-off"></i>',
+        'm_name' => 'Logout',
+        'm_desc' => '',
+        'm_parents' => array(7370,7368,7369),
+    ),
+);
 
 //Private Intent:
 $config['en_ids_7366'] = array(6685);
@@ -184,126 +323,26 @@ $config['en_all_7347'] = array(
     ),
 );
 
-//Platform User Tools:
-$config['en_ids_7292'] = array(6137,6138,7291);
-$config['en_all_7292'] = array(
-    6137 => array(
-        'm_icon' => '👤',
-        'm_name' => 'My Account',
-        'm_desc' => '',
-        'm_parents' => array(4488,7292),
-    ),
-    6138 => array(
-        'm_icon' => '🚩',
-        'm_name' => 'Action Plan',
-        'm_desc' => '',
-        'm_parents' => array(4488,7292,4463),
-    ),
-    7291 => array(
-        'm_icon' => '<i class="fas fa-power-off"></i>',
-        'm_name' => 'Logout',
-        'm_desc' => '',
-        'm_parents' => array(7292,4488),
-    ),
-);
-
-//Mench Platform:
-$config['en_ids_4488'] = array(4535,4536,5007,6137,6138,6196,6205,6287,7161,7254,7256,7291);
-$config['en_all_4488'] = array(
-    4535 => array(
-        'm_icon' => '<i class="fas fa-hashtag"></i>',
-        'm_name' => 'Intents',
-        'm_desc' => '',
-        'm_parents' => array(4488,4534,4463),
-    ),
-    4536 => array(
-        'm_icon' => '<i class="fas fa-at"></i>',
-        'm_name' => 'Entities',
-        'm_desc' => '',
-        'm_parents' => array(4488,4534,4463),
-    ),
-    5007 => array(
-        'm_icon' => '<i class="fas fa-expand-arrows"></i>',
-        'm_name' => 'Toggle Advance Mode',
-        'm_desc' => '',
-        'm_parents' => array(4527,4488,4595,4757,4593),
-    ),
-    6137 => array(
-        'm_icon' => '👤',
-        'm_name' => 'My Account',
-        'm_desc' => 'A web-based portal (also accessible via Messenger) enabling students to manage their account',
-        'm_parents' => array(4488,7292),
-    ),
-    6138 => array(
-        'm_icon' => '🚩',
-        'm_name' => 'Action Plan',
-        'm_desc' => 'A web-based portal (also accessible via Messenger) enabling students to manage their intentions',
-        'm_parents' => array(4488,7292,4463),
-    ),
-    6196 => array(
-        'm_icon' => '<img src="https://mench.com/img/bp_128.png">',
-        'm_name' => 'Mench Personal Assistant',
-        'm_desc' => '',
-        'm_parents' => array(3320,4488,4463),
-    ),
-    6205 => array(
-        'm_icon' => '<i class="fas fa-link"></i>',
-        'm_name' => 'Links',
-        'm_desc' => '',
-        'm_parents' => array(4488,4534,4463),
-    ),
-    6287 => array(
-        'm_icon' => '<i class="far fa-user-shield"></i>',
-        'm_name' => 'Moderation Tools',
-        'm_desc' => 'Series of tools to moderate the Mench platform',
-        'm_parents' => array(7284,4488),
-    ),
-    7161 => array(
-        'm_icon' => '<i class="far fa-tachometer-alt-fast"></i>',
-        'm_name' => 'Mench Dashboard',
-        'm_desc' => '',
-        'm_parents' => array(7305,4488),
-    ),
-    7254 => array(
-        'm_icon' => '<i class="far fa-cog"></i>',
-        'm_name' => 'Platform Settings',
-        'm_desc' => 'Entities that control how the Mench platform operates',
-        'm_parents' => array(4488),
-    ),
-    7256 => array(
-        'm_icon' => '<i class="fas fa-search"></i>',
-        'm_name' => 'Platform Search Bar',
-        'm_desc' => 'Intents, Entities & URLs',
-        'm_parents' => array(3323,4488),
-    ),
-    7291 => array(
-        'm_icon' => '<i class="fas fa-power-off"></i>',
-        'm_name' => 'Logout',
-        'm_desc' => '',
-        'm_parents' => array(7292,4488),
-    ),
-);
-
 //Intent Stats:
 $config['en_ids_7302'] = array(4737,5008,6676,7166);
 $config['en_all_7302'] = array(
     4737 => array(
         'm_icon' => '<i class="fas fa-sliders-h"></i>',
-        'm_name' => 'Intent Statuses',
+        'm_name' => 'Intent Status Entity',
         'm_desc' => '',
-        'm_parents' => array(7302,6194,6213,6201,4527),
+        'm_parents' => array(6160,6232,7302,6194,6213,6201,4527),
     ),
     5008 => array(
         'm_icon' => '<i class="fal fa-tools"></i>',
-        'm_name' => 'Intent Verbs',
+        'm_name' => 'Intent Verb Entity',
         'm_desc' => '',
-        'm_parents' => array(7302,4506,6213,6194,6201),
+        'm_parents' => array(6160,6232,7302,4506,6213,6194,6201),
     ),
     6676 => array(
         'm_icon' => '<i class="fas fa-chart-network"></i>',
-        'm_name' => 'Intent Types',
+        'm_name' => 'Intent Type Entity',
         'm_desc' => '',
-        'm_parents' => array(7302,6194,6213,4527,6201),
+        'm_parents' => array(6160,6232,7302,6194,6213,4527,6201),
     ),
     7166 => array(
         'm_icon' => '<i class="far fa-chart-pie"></i>',
@@ -330,9 +369,9 @@ $config['en_all_7303'] = array(
     ),
     6177 => array(
         'm_icon' => '<i class="fas fa-sliders-h"></i>',
-        'm_name' => 'Entity Statuses',
+        'm_name' => 'Entity Status Entity',
         'm_desc' => '',
-        'm_parents' => array(7303,6194,6213,6206,4527),
+        'm_parents' => array(6160,6232,7303,6194,6213,6206,4527),
     ),
     7167 => array(
         'm_icon' => '<i class="far fa-chart-pie"></i>',
@@ -347,15 +386,15 @@ $config['en_ids_7304'] = array(4593,6186,7159,7162,7163);
 $config['en_all_7304'] = array(
     4593 => array(
         'm_icon' => '<i class="fas fa-plug"></i>',
-        'm_name' => 'Link Types',
+        'm_name' => 'Link Type Entity',
         'm_desc' => '',
-        'm_parents' => array(7304,6213,6194,4527,4341),
+        'm_parents' => array(6160,6232,7304,6213,6194,4527,4341),
     ),
     6186 => array(
         'm_icon' => '<i class="fas fa-sliders-h"></i>',
-        'm_name' => 'Link Statuses',
+        'm_name' => 'Link Status Entity',
         'm_desc' => '',
-        'm_parents' => array(7304,4527,6194,6213,4341),
+        'm_parents' => array(6160,6232,7304,4527,6194,6213,4341),
     ),
     7159 => array(
         'm_icon' => '<i class="far fa-chart-pie"></i>',
@@ -641,7 +680,7 @@ $config['en_all_7164'] = array(
     ),
 );
 
-//Link Statuses:
+//Link Status Entity:
 $config['en_ids_6186'] = array(6176,6175,6174,6173);
 $config['en_all_6186'] = array(
     6176 => array(
@@ -700,73 +739,73 @@ $config['en_all_6194'] = array(
         'm_icon' => '⛏️',
         'm_name' => 'Link Miner Entity',
         'm_desc' => 'SELECT count(ln_id) as totals FROM table_links WHERE ln_miner_entity_id=',
-        'm_parents' => array(6213,6194,4341),
+        'm_parents' => array(6160,6232,6213,6194,4341),
     ),
     4366 => array(
         'm_icon' => '<i class="fas fa-at"></i>',
         'm_name' => 'Link Parent Entity',
         'm_desc' => 'SELECT count(ln_id) as totals FROM table_links WHERE ln_parent_entity_id=',
-        'm_parents' => array(6213,6194,4341),
+        'm_parents' => array(6160,6232,6213,6194,4341),
     ),
     4368 => array(
         'm_icon' => '<i class="fas fa-hashtag"></i>',
         'm_name' => 'Link Parent Intent',
         'm_desc' => '',
-        'm_parents' => array(6213,6194,4341),
+        'm_parents' => array(6202,6232,6213,6194,4341),
     ),
     4369 => array(
         'm_icon' => '<i class="fas fa-hashtag"></i>',
         'm_name' => 'Link Child Intent',
         'm_desc' => '',
-        'm_parents' => array(6213,6194,4341),
+        'm_parents' => array(6202,6232,6213,6194,4341),
     ),
     4371 => array(
         'm_icon' => '<i class="fas fa-link"></i>',
         'm_name' => 'Link Parent Link',
         'm_desc' => '',
-        'm_parents' => array(6213,6194,4341),
+        'm_parents' => array(4367,6232,6213,6194,4341),
     ),
     4429 => array(
         'm_icon' => '<i class="fas fa-at"></i>',
         'm_name' => 'Link Child Entity',
         'm_desc' => 'SELECT count(ln_id) as totals FROM table_links WHERE ln_child_entity_id=',
-        'm_parents' => array(6213,6194,4341),
+        'm_parents' => array(6160,6232,6213,6194,4341),
     ),
     4593 => array(
         'm_icon' => '<i class="fas fa-plug"></i>',
-        'm_name' => 'Link Types',
+        'm_name' => 'Link Type Entity',
         'm_desc' => 'SELECT count(ln_id) as totals FROM table_links WHERE ln_type_entity_id=',
-        'm_parents' => array(7304,6213,6194,4527,4341),
+        'm_parents' => array(6160,6232,7304,6213,6194,4527,4341),
     ),
     4737 => array(
         'm_icon' => '<i class="fas fa-sliders-h"></i>',
-        'm_name' => 'Intent Statuses',
+        'm_name' => 'Intent Status Entity',
         'm_desc' => 'SELECT count(in_id) as totals FROM table_intents WHERE in_status_entity_id=',
-        'm_parents' => array(7302,6194,6213,6201,4527),
+        'm_parents' => array(6160,6232,7302,6194,6213,6201,4527),
     ),
     5008 => array(
         'm_icon' => '<i class="fal fa-tools"></i>',
-        'm_name' => 'Intent Verbs',
+        'm_name' => 'Intent Verb Entity',
         'm_desc' => 'SELECT count(in_id) as totals FROM table_intents WHERE in_verb_entity_id=',
-        'm_parents' => array(7302,4506,6213,6194,6201),
+        'm_parents' => array(6160,6232,7302,4506,6213,6194,6201),
     ),
     6177 => array(
         'm_icon' => '<i class="fas fa-sliders-h"></i>',
-        'm_name' => 'Entity Statuses',
+        'm_name' => 'Entity Status Entity',
         'm_desc' => 'SELECT count(en_id) as totals FROM table_entities WHERE en_status_entity_id=',
-        'm_parents' => array(7303,6194,6213,6206,4527),
+        'm_parents' => array(6160,6232,7303,6194,6213,6206,4527),
     ),
     6186 => array(
         'm_icon' => '<i class="fas fa-sliders-h"></i>',
-        'm_name' => 'Link Statuses',
+        'm_name' => 'Link Status Entity',
         'm_desc' => 'SELECT count(ln_id) as totals FROM table_links WHERE ln_status_entity_id=',
-        'm_parents' => array(7304,4527,6194,6213,4341),
+        'm_parents' => array(6160,6232,7304,4527,6194,6213,4341),
     ),
     6676 => array(
         'm_icon' => '<i class="fas fa-chart-network"></i>',
-        'm_name' => 'Intent Types',
+        'm_name' => 'Intent Type Entity',
         'm_desc' => 'SELECT count(in_id) as totals FROM table_intents WHERE in_type_entity_id=',
-        'm_parents' => array(7302,6194,6213,4527,6201),
+        'm_parents' => array(6160,6232,7302,6194,6213,4527,6201),
     ),
 );
 
@@ -963,7 +1002,7 @@ $config['en_all_6192'] = array(
     ),
 );
 
-//Intent Types:
+//Intent Type Entity:
 $config['en_ids_6676'] = array(6192,6193);
 $config['en_all_6676'] = array(
     6192 => array(
@@ -1064,25 +1103,25 @@ $config['en_all_4463'] = array(
         'm_icon' => '<img src="https://mench.com/img/mench_white.png">',
         'm_name' => 'Mench Platform',
         'm_desc' => 'A web portal and GUI enabling Miners to mine intents, entities and links.',
-        'm_parents' => array(4527,3463,2738,4463),
+        'm_parents' => array(3463,2738,4463),
     ),
     4535 => array(
         'm_icon' => '<i class="fas fa-hashtag"></i>',
         'm_name' => 'Intents',
         'm_desc' => 'Intents define the intention of an entity as defined similar to a SMART goal.',
-        'm_parents' => array(4488,4534,4463),
+        'm_parents' => array(7368,4534,4463),
     ),
     4536 => array(
         'm_icon' => '<i class="fas fa-at"></i>',
         'm_name' => 'Entities',
         'm_desc' => 'Entities represent people, objects and things.',
-        'm_parents' => array(4488,4534,4463),
+        'm_parents' => array(7368,4534,4463),
     ),
     4595 => array(
         'm_icon' => '<i class="fas fa-award"></i>',
         'm_name' => 'Link Points',
         'm_desc' => 'Miners are awarded with points for each transaction they log as a way to measure their contribution to Mench. Points have no monetary value and are only used to rank relative contribution.',
-        'm_parents' => array(6214,4319,4426,4527,4463,4341),
+        'm_parents' => array(6232,6214,4319,4426,4527,4463,4341),
     ),
     4755 => array(
         'm_icon' => '<i class="fal fa-eye-slash"></i>',
@@ -1094,25 +1133,25 @@ $config['en_all_4463'] = array(
         'm_icon' => '🚩',
         'm_name' => 'Action Plan',
         'm_desc' => 'Each student has a collection of Intents that they want to accomplish, known as their Action Plan which is accessible via Facebook Messenger or by login into mench.com',
-        'm_parents' => array(4488,7292,4463),
+        'm_parents' => array(7369,4463),
     ),
     6196 => array(
-        'm_icon' => '<img src="https://mench.com/img/bp_128.png">',
-        'm_name' => 'Mench Personal Assistant',
+        'm_icon' => '<i class="fab fa-facebook-messenger"></i>',
+        'm_name' => 'Mench Messenger Bot',
         'm_desc' => '',
-        'm_parents' => array(3320,4488,4463),
+        'm_parents' => array(7372,3320,4463),
     ),
     6199 => array(
         'm_icon' => '<i class="fas fa-shield-check"></i>',
         'm_name' => 'Entity Trust Score',
         'm_desc' => 'Our measure of trust to the entity which ranks them among their peers',
-        'm_parents' => array(4463,6214,6206),
+        'm_parents' => array(6232,4463,6214,6206),
     ),
     6205 => array(
         'm_icon' => '<i class="fas fa-link"></i>',
         'm_name' => 'Links',
         'm_desc' => 'An electronic log book containing a list of transactions and balances typically involving financial accounts.',
-        'm_parents' => array(4488,4534,4463),
+        'm_parents' => array(7368,4534,4463),
     ),
     6695 => array(
         'm_icon' => '<i class="far fa-briefcase"></i>',
@@ -1379,7 +1418,7 @@ $config['en_all_6225'] = array(
         'm_icon' => '<i class="far fa-fingerprint"></i>',
         'm_name' => 'Full Name',
         'm_desc' => 'Your first and last name:',
-        'm_parents' => array(6225,6213,6206),
+        'm_parents' => array(6232,6225,6213,6206),
     ),
     3288 => array(
         'm_icon' => '<i class="far fa-envelope"></i>',
@@ -1437,7 +1476,7 @@ $config['en_all_6225'] = array(
     ),
 );
 
-//Intent Statuses:
+//Intent Status Entity:
 $config['en_ids_4737'] = array(7351,6185,6184,6183,6182);
 $config['en_all_4737'] = array(
     7351 => array(
@@ -1472,7 +1511,7 @@ $config['en_all_4737'] = array(
     ),
 );
 
-//Entity Statuses:
+//Entity Status Entity:
 $config['en_ids_6177'] = array(7352,6181,6180,6179,6178);
 $config['en_all_6177'] = array(
     7352 => array(
@@ -1883,7 +1922,7 @@ $config['en_all_4426'] = array(
         'm_icon' => '<i class="fas fa-award"></i>',
         'm_name' => 'Link Points',
         'm_desc' => '',
-        'm_parents' => array(6214,4319,4426,4527,4463,4341),
+        'm_parents' => array(6232,6214,4319,4426,4527,4463,4341),
     ),
     4755 => array(
         'm_icon' => '<i class="fal fa-eye-slash"></i>',
@@ -2577,7 +2616,7 @@ $config['en_all_4595'] = array(
         'm_icon' => '<i class="fas fa-expand-arrows"></i>',
         'm_name' => 'Toggle Advance Mode',
         'm_desc' => '1',
-        'm_parents' => array(4527,4488,4595,4757,4593),
+        'm_parents' => array(7368,4527,4595,4757,4593),
     ),
     5865 => array(
         'm_icon' => '<i class="fal fa-list-alt"></i>',
@@ -2760,7 +2799,7 @@ $config['en_all_4600'] = array(
     ),
 );
 
-//Link Types:
+//Link Type Entity:
 $config['en_ids_4593'] = array(4228,4229,4230,4231,4232,4235,4242,4246,4250,4251,4255,4256,4257,4258,4259,4260,4261,4263,4264,4266,4267,4268,4269,4275,4278,4279,4282,4283,4287,4299,4318,4319,4460,4547,4548,4549,4550,4551,4552,4553,4554,4555,4556,4557,4559,4570,4577,4601,4983,4993,4994,4998,4999,5000,5001,5003,5007,5865,5943,5967,5981,5982,6093,6132,6140,6143,6144,6149,6154,6155,6157,6158,6224,6226,6242,6415,6556,6559,6560,6563,6578,6969,6997,7348);
 $config['en_all_4593'] = array(
     4228 => array(
@@ -3103,7 +3142,7 @@ $config['en_all_4593'] = array(
         'm_icon' => '<i class="fas fa-expand-arrows"></i>',
         'm_name' => 'Toggle Advance Mode',
         'm_desc' => '',
-        'm_parents' => array(4527,4488,4595,4757,4593),
+        'm_parents' => array(7368,4527,4595,4757,4593),
     ),
     5865 => array(
         'm_icon' => '<i class="fal fa-list-alt"></i>',

@@ -49,9 +49,9 @@ class Intents extends CI_Controller
                     $ln_metadata = unserialize($assessment3_in['ln_metadata']);
 
                     if(is_numeric($ln_metadata['tr__assessment_points']) && intval($ln_metadata['tr__assessment_points']) > 0){
-                        $new_value = 1;
+                        $new_value = 5;
                     } else {
-                        $new_value = -1;
+                        $new_value = -2;
                     }
 
                     if($new_value != intval($ln_metadata['tr__assessment_points'])){
@@ -404,7 +404,7 @@ class Intents extends CI_Controller
 
         //Fetch Action Plan users:
         $actionplan_users = $this->Links_model->ln_fetch(array(
-            'ln_type_entity_id IN (' . join(',', $this->config->item('en_ids_6255')) . ')' => null, //Action Plan Progression Completion Triggers
+            'ln_type_entity_id IN (' . join(',', $this->config->item('en_ids_6255')) . ')' => null, //Action Plan Steps Progressed
             'ln_parent_intent_id' => $ins[0]['in_id'],
             'ln_status_entity_id IN (' . join(',', $this->config->item('en_ids_7359')) . ')' => null, //Link Statuses Public
             'en_status_entity_id IN (' . join(',', $this->config->item('en_ids_7357')) . ')' => null, //Entity Statuses Public
@@ -431,7 +431,7 @@ class Intents extends CI_Controller
             //Count user Action Plan Progression Completed:
             $count_progression = $this->Links_model->ln_fetch(array(
                 'ln_miner_entity_id' => $apu['en_id'],
-                'ln_type_entity_id IN (' . join(',', $this->config->item('en_ids_6255')) . ')' => null, //Action Plan Progression Completed
+                'ln_type_entity_id IN (' . join(',', $this->config->item('en_ids_6255')) . ')' => null, //Action Plan Steps Progressed
             ), array(), 0, 0, array(), 'COUNT(ln_id) as totals');
 
 
@@ -1344,7 +1344,7 @@ class Intents extends CI_Controller
         }
 
         $actionplan_users = $this->Links_model->ln_fetch(array(
-            'ln_type_entity_id IN (' . join(',', $this->config->item('en_ids_6255')) . ')' => null, //Action Plan Progression Completion Triggers
+            'ln_type_entity_id IN (' . join(',', $this->config->item('en_ids_6255')) . ')' => null, //Action Plan Steps Progressed
             'ln_parent_intent_id' => $_POST['in_id'],
             'ln_status_entity_id IN (' . join(',', $this->config->item('en_ids_7359')) . ')' => null, //Link Statuses Public
         ), array(), 0, 0, array(), 'COUNT(ln_id) as total_steps');

@@ -38,7 +38,7 @@ if($step_info || $source_info || $time_info){
 //Check to see if added to Action Plan for logged-in users:
 if(isset($session_en['en_id'])){
 
-    $en_all_4488 = $this->config->item('en_all_4488');
+    $en_all_7369 = $this->config->item('en_all_7369');
 
     if(count($this->Links_model->ln_fetch(array(
             'ln_miner_entity_id' => $session_en['en_id'],
@@ -48,12 +48,12 @@ if(isset($session_en['en_id'])){
         ))) > 0){
 
         //Show when was added:
-        echo '<p>Intention is already added to your <a href="/actionplan">'.$en_all_4488[6138]['m_icon'].' '.$en_all_4488[6138]['m_name'].'</a>.</p>';
+        echo '<p>Intention is already added to your <a href="/actionplan">'.$en_all_7369[6138]['m_icon'].' '.$en_all_7369[6138]['m_name'].'</a>.</p>';
 
     } else {
 
         //Give option to add:
-        echo '<div id="added_to_actionplan"><a class="btn btn-primary" href="javascript:void(0);" onclick="add_to_actionplan('.$in['in_id'].')" style="display: inline-block; padding:12px 36px;">Add to '.$en_all_4488[6138]['m_icon'].' '.$en_all_4488[6138]['m_name'].'</a></div>';
+        echo '<div id="added_to_actionplan"><a class="btn btn-primary" href="javascript:void(0);" onclick="add_to_actionplan('.$in['in_id'].')" style="display: inline-block; padding:12px 36px;">Add to '.$en_all_7369[6138]['m_icon'].' '.$en_all_7369[6138]['m_name'].'</a></div>';
 
     }
 

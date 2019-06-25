@@ -11,6 +11,17 @@ class Entities extends CI_Controller
         $this->output->enable_profiler(FALSE);
     }
 
+    function fix()
+    {
+        foreach($this->Entities_model->en_fetch(array(
+            'en_status_entity_id' => 7352,
+        )) as $en){
+            $this->Entities_model->en_update($en['en_id'], array(
+                'en_status_entity_id' => 6181,
+            ), true, 1);
+        }
+    }
+
     function add_source_wizard()
     {
         //Authenticate Miner, redirect if failed:

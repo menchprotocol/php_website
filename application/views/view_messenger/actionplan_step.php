@@ -42,7 +42,7 @@ foreach ($this->Intents_model->in_fetch_recursive_public_parents($in['in_id']) a
 
         //See if parent is complete:
         $parent_progression_steps = $this->Links_model->ln_fetch(array(
-            'ln_type_entity_id IN (' . join(',', $this->config->item('en_ids_6146')) . ')' => null, //Action Plan Progression Link Types
+            'ln_type_entity_id IN (' . join(',', $this->config->item('en_ids_6146')) . ')' => null, //User Steps Completed
             'ln_miner_entity_id' => $session_en['en_id'],
             'ln_parent_intent_id' => $parent_in_id,
             'ln_status_entity_id IN (' . join(',', $this->config->item('en_ids_7360')) . ')' => null, //Link Statuses Active
@@ -86,7 +86,7 @@ if(!$found_grandpa_intersect){
             echo '<span style="margin-right:10px;" class="status-label underdot" data-toggle="tooltip" data-placement="top" title="Status is '.$en_all_6186[$pl['ln_status_entity_id']]['m_name'].': '.$en_all_6186[$pl['ln_status_entity_id']]['m_desc'].'">'.( $pl['ln_status_entity_id'] == 6176 /* Link Published */ ? $en_all_6146[$pl['ln_type_entity_id']]['m_icon'] /* Show Progression Type */ : $en_all_6186[$pl['ln_status_entity_id']]['m_icon'] /* Show Status */ ).' '.$en_all_6146[$pl['ln_type_entity_id']]['m_name'].'</span>';
 
             //Should we trigger on-complete links?
-            if(in_array($pl['ln_status_entity_id'], $this->config->item('en_ids_7359') /* Link Statuses Public */) && in_array($pl['ln_type_entity_id'], $this->config->item('en_ids_6255'))){
+            if(in_array($pl['ln_status_entity_id'], $this->config->item('en_ids_7359') /* Link Statuses Public */) && in_array($pl['ln_type_entity_id'], $this->config->item('en_ids_6255') /* Action Plan Steps Progressed */)){
                 $trigger_on_complete_tips = true;
             }
 

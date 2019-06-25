@@ -275,7 +275,7 @@ class Actionplan_model extends CI_Model
 
             //Fetch current progression links, if any:
             $current_progression_links = $this->Links_model->ln_fetch(array(
-                'ln_type_entity_id IN (' . join(',', $this->config->item('en_ids_6146')) . ')' => null, //Action Plan Progression Link Types
+                'ln_type_entity_id IN (' . join(',', $this->config->item('en_ids_6146')) . ')' => null, //User Steps Completed
                 'ln_miner_entity_id' => $en_id,
                 'ln_parent_intent_id' => $common_in_id,
                 'ln_status_entity_id IN (' . join(',', $this->config->item('en_ids_7360')) . ')' => null, //Link Statuses Active
@@ -741,7 +741,7 @@ class Actionplan_model extends CI_Model
         return $unlock_steps_messages;
     }
 
-    function actionplan_completion_checks($en_id, $in, $send_message, $trigget_completion_tips){
+    function actionplan_completion_checks($en_id, $in, $send_message, $step_progress_made){
 
 
         /*
@@ -754,13 +754,13 @@ class Actionplan_model extends CI_Model
          * - $in_id The intent that was marked as complete
          * - $en_id The entity who marked it as complete
          * - $send_message IF TRUE would send messages to $en_id and IF FASLE would return raw messages
-         * - $trigget_completion_tips WILL also trigger on-complete messages if the user actually completed
+         * - $step_progress_made WILL also trigger on-complete messages if the user actually completed
          *
          * */
 
 
         //Start with on-complete tips if any:
-        if($trigget_completion_tips){
+        if($step_progress_made){
 
             $on_complete_messages = $this->Links_model->ln_fetch(array(
                 'ln_status_entity_id IN (' . join(',', $this->config->item('en_ids_7359')) . ')' => null, //Link Statuses Public
@@ -886,7 +886,7 @@ class Actionplan_model extends CI_Model
         /*
          *
          * There are different ways to complete an intent
-         * as listed under Action Plan Progression Link Types:
+         * as listed under User Steps Completed:
          *
          * https://mench.com/entities/6146
          *
@@ -920,7 +920,7 @@ class Actionplan_model extends CI_Model
             'ln_parent_intent_id' => $ins[0]['in_id'],
         ), array('in_child'), 0, 0, array('ln_order' => 'ASC'));
         $current_progression_links = $this->Links_model->ln_fetch(array(
-            'ln_type_entity_id IN (' . join(',', $this->config->item('en_ids_6146')) . ')' => null, //Action Plan Progression Link Types
+            'ln_type_entity_id IN (' . join(',', $this->config->item('en_ids_6146')) . ')' => null, //User Steps Completed
             'ln_miner_entity_id' => $en_id,
             'ln_parent_intent_id' => $ins[0]['in_id'],
             'ln_status_entity_id IN (' . join(',', $this->config->item('en_ids_7360')) . ')' => null, //Link Statuses Active
@@ -950,7 +950,7 @@ class Actionplan_model extends CI_Model
 
         //Let's learn more about the nature of this progression link:
         $is_two_step                = in_array($progression_type_entity_id, $this->config->item('en_ids_6244')); //If TRUE, initial progression link will be logged as WORKING ON since we need user response
-        $trigget_completion_tips    = ( !$is_two_step && in_array($progression_type_entity_id, $this->config->item('en_ids_6255'))); //If TRUE AND If !$is_two_step, this would trigger the completion tips
+        $step_progress_made    = ( !$is_two_step && in_array($progression_type_entity_id, $this->config->item('en_ids_6255'))); //Action Plan Steps Progressed
         $nothing_more_to_do         = ( !$is_two_step && !$has_children && in_array($progression_type_entity_id, $this->config->item('en_ids_6274')) ); //If TRUE, we will auto move on to the next item
         $recommend_recommend        = false; //Assume FALSE unless $nothing_more_to_do=TRUE and we do not have any next steps which means user has finished their Action Plan
 
@@ -1127,7 +1127,7 @@ class Actionplan_model extends CI_Model
                 //Fetch history if selected:
                 if($was_selected){
                     $child_progression_steps = $this->Links_model->ln_fetch(array(
-                        'ln_type_entity_id IN (' . join(',', $this->config->item('en_ids_6146')) . ')' => null, //Action Plan Progression Link Types
+                        'ln_type_entity_id IN (' . join(',', $this->config->item('en_ids_6146')) . ')' => null, //User Steps Completed
                         'ln_miner_entity_id' => $en_id,
                         'ln_parent_intent_id' => $current_progression_links[0]['ln_child_intent_id'],
                         'ln_status_entity_id IN (' . join(',', $this->config->item('en_ids_7360')) . ')' => null, //Link Statuses Active
@@ -1263,7 +1263,7 @@ class Actionplan_model extends CI_Model
 
                     //Fetch progression data:
                     $child_progression_steps = $this->Links_model->ln_fetch(array(
-                        'ln_type_entity_id IN (' . join(',', $this->config->item('en_ids_6146')) . ')' => null, //Action Plan Progression Link Types
+                        'ln_type_entity_id IN (' . join(',', $this->config->item('en_ids_6146')) . ')' => null, //User Steps Completed
                         'ln_miner_entity_id' => $en_id,
                         'ln_parent_intent_id' => $child_in['in_id'],
                         'ln_status_entity_id IN (' . join(',', $this->config->item('en_ids_7360')) . ')' => null, //Link Statuses Active
@@ -1306,9 +1306,9 @@ class Actionplan_model extends CI_Model
         if(isset($new_progression_link['ln_status_entity_id']) && in_array($new_progression_link['ln_status_entity_id'], $this->config->item('en_ids_7359') /* Link Statuses Public */)){
 
             //Process on-complete automations:
-            $on_complete_messages = $this->Actionplan_model->actionplan_completion_checks($en_id, $ins[0], false, $trigget_completion_tips);
+            $on_complete_messages = $this->Actionplan_model->actionplan_completion_checks($en_id, $ins[0], false, $step_progress_made);
 
-            if($trigget_completion_tips && count($on_complete_messages) > 0){
+            if($step_progress_made && count($on_complete_messages) > 0){
                 //Add on-complete messages (if any) to the current messages:
                 $in__messages = array_merge($in__messages, $on_complete_messages);
             }
@@ -1483,7 +1483,7 @@ class Actionplan_model extends CI_Model
         //Calculate common steps and expansion steps recursively for this user:
         $metadata_this = array(
             //Generic assessment marks stats:
-            'steps_marks_count' => 0,
+            'steps_marks_count' => 1, //The parent intent
             'steps_marks_min' => 0,
             'steps_marks_max' => 0,
 
@@ -1496,6 +1496,47 @@ class Actionplan_model extends CI_Model
         );
 
 
+        //Go through open steps first:
+        foreach($flat_common_steps as $open_in_id){
+
+            //Calculate local min/max marks:
+            $metadata_this['steps_marks_count'] += 1;
+            $local_min = null;
+            $local_max = null;
+
+            //Calculate min/max points for this based on answers:
+            foreach($this->Links_model->ln_fetch(array(
+                'in_status_entity_id IN (' . join(',', $this->config->item('en_ids_7355')) . ')' => null, //Intent Statuses Public
+                'ln_status_entity_id IN (' . join(',', $this->config->item('en_ids_7359')) . ')' => null, //Link Statuses Public
+                'ln_type_entity_id' => 4228, //Intent Link Fixed Steps
+                'ln_parent_intent_id' => $question_in_id,
+                'ln_child_intent_id IN (' . join(',', $answers_in_ids) . ')' => null, //Limit to cached answers
+            ), array('in_child')) as $in_answer){
+
+                //Extract Link Metadata:
+                $possible_answer_metadata = unserialize($in_answer['ln_metadata']);
+
+                //Assign to this question:
+                $answer_marks_index[$in_answer['in_id']] = ( isset($possible_answer_metadata['tr__assessment_points']) ? intval($possible_answer_metadata['tr__assessment_points']) : 0 );
+
+                //Addup local min/max marks:
+                if(is_null($local_min) || $answer_marks_index[$in_answer['in_id']] < $local_min){
+                    $local_min = $answer_marks_index[$in_answer['in_id']];
+                }
+                if(is_null($local_max) || $answer_marks_index[$in_answer['in_id']] > $local_max){
+                    $local_max = $answer_marks_index[$in_answer['in_id']];
+                }
+            }
+
+            //Did we have any marks for this question?
+            if(!is_null($local_min)){
+                $metadata_this['steps_marks_min'] += $local_min;
+            }
+            if(!is_null($local_max)){
+                $metadata_this['steps_marks_max'] += $local_max;
+            }
+        }
+
         //Fetch expansion steps recursively, if any:
         if(isset($in_metadata['in__metadata_expansion_steps']) && count($in_metadata['in__metadata_expansion_steps']) > 0){
 
@@ -1507,6 +1548,7 @@ class Actionplan_model extends CI_Model
             foreach($in_metadata['in__metadata_expansion_steps'] as $question_in_id => $answers_in_ids ){
 
                 //Calculate local min/max marks:
+                $metadata_this['steps_marks_count'] += 1;
                 $local_min = null;
                 $local_max = null;
 
@@ -1535,16 +1577,11 @@ class Actionplan_model extends CI_Model
                 }
 
                 //Did we have any marks for this question?
-                if(!is_null($local_max) || !is_null($local_min)){
-
-                    $metadata_this['steps_marks_count'] += 1;
-
-                    if(!is_null($local_min)){
-                        $metadata_this['steps_marks_min'] += $local_min;
-                    }
-                    if(!is_null($local_max)){
-                        $metadata_this['steps_marks_max'] += $local_max;
-                    }
+                if(!is_null($local_min)){
+                    $metadata_this['steps_marks_min'] += $local_min;
+                }
+                if(!is_null($local_max)){
+                    $metadata_this['steps_marks_max'] += $local_max;
                 }
             }
 
@@ -1552,26 +1589,33 @@ class Actionplan_model extends CI_Model
 
             //Now let's check user answers to see what they have done:
             foreach($this->Links_model->ln_fetch(array(
-                'ln_type_entity_id' => 6157, //Action Plan Question Answered
                 'ln_miner_entity_id' => $en_id, //Belongs to this User
+                'ln_type_entity_id IN (' . join(',', $this->config->item('en_ids_6146')) . ')' => null, //User Steps Completed
                 'ln_parent_intent_id IN (' . join(',', $flat_common_steps ) . ')' => null,
-                'ln_child_intent_id IN (' . join(',', array_flatten($in_metadata['in__metadata_expansion_steps'])) . ')' => null,
                 'ln_status_entity_id IN (' . join(',', $this->config->item('en_ids_7359')) . ')' => null, //Link Statuses Public
-                'in_status_entity_id IN (' . join(',', $this->config->item('en_ids_7355')) . ')' => null, //Intent Statuses Public
             ), array('in_child')) as $expansion_in) {
 
-                if(!isset($answer_marks_index[$expansion_in['in_id']])){
-                    continue;
-                }
-
-                //Fetch recursive:
-                $recursive_stats = $this->Actionplan_model->actionplan_completion_marks($en_id, $expansion_in, false);
-
                 //Addup data for this intent:
-                $this_answer_marks = $answer_marks_index[$expansion_in['in_id']];
-                $metadata_this['steps_answered_count'] += 1 + $recursive_stats['steps_answered_count'];
-                $metadata_this['steps_answered_marks'] += $this_answer_marks + $recursive_stats['steps_answered_marks'];
+                $metadata_this['steps_answered_count'] += 1;
 
+                //Calculate if answered:
+                if($expansion_in['ln_type_entity_id']==6157 /* Action Plan Question Answered */){
+
+                    //Fetch intent data:
+                    $ins = $this->Intents_model->in_fetch(array(
+                        'in_id' => $expansion_in['ln_child_intent_id'],
+                        'in_status_entity_id IN (' . join(',', $this->config->item('en_ids_7355')) . ')' => null, //Intent Statuses Public
+                    ));
+
+                    if(count($ins) > 0){
+                        //Fetch recursive:
+                        $recursive_stats = $this->Actionplan_model->actionplan_completion_marks($en_id, array_merge($expansion_in, $ins[0]), false);
+                        $metadata_this['steps_answered_count'] += $recursive_stats['steps_answered_count'];
+
+                        $this_answer_marks = $answer_marks_index[$expansion_in['ln_child_intent_id']];
+                        $metadata_this['steps_answered_marks'] += $this_answer_marks + $recursive_stats['steps_answered_marks'];
+                    }
+                }
             }
         }
 
@@ -1608,7 +1652,7 @@ class Actionplan_model extends CI_Model
 
         //Count completed for user:
         $common_completed = $this->Links_model->ln_fetch(array(
-            'ln_type_entity_id IN (' . join(',', $this->config->item('en_ids_6146')) . ')' => null, //Action Plan Progression Link Types
+            'ln_type_entity_id IN (' . join(',', $this->config->item('en_ids_6146')) . ')' => null, //User Steps Completed
             'ln_miner_entity_id' => $en_id, //Belongs to this User
             'ln_parent_intent_id IN (' . join(',', $flat_common_steps ) . ')' => null,
             'ln_status_entity_id IN (' . join(',', $this->config->item('en_ids_7359')) . ')' => null, //Link Statuses Public

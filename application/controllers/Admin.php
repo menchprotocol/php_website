@@ -36,9 +36,9 @@ class Admin extends CI_Controller
     function dashboard()
     {
         $session_en = en_auth(array(1308)); //Just be logged in to browse
-        $en_all_4488 = $this->config->item('en_all_4488');
+        $en_all_7368 = $this->config->item('en_all_7368');
         $this->load->view(($session_en ? 'view_shared/platform_header' : 'view_shared/public_header'), array(
-            'title' => $en_all_4488[7161]['m_name'],
+            'title' => $en_all_7368[7161]['m_name'],
         ));
         $this->load->view('view_admin/mench_dashboard');
         $this->load->view(($session_en ? 'view_shared/platform_footer' : 'view_shared/public_footer'));
@@ -271,7 +271,7 @@ class Admin extends CI_Controller
                 }
 
                 //Display row:
-                $expert_sources .= '<td style="text-align: right;"'.( $en_status_entity_id != 7352 /* Entity Featured */ ? ' class="' . echo_advance() . '"' : '' ).'><a href="/entities/' . $en_id .'#status-'.$en_status_entity_id.'">'.number_format($source_count,0).'</a><i class="fal fa-info-circle icon-block" data-toggle="tooltip" title="'.number_format($source_count,0).' '.$m['m_name'].' are '. $en_all_6177[$en_status_entity_id]['m_desc'] . '" data-placement="top"></i></td>';
+                $expert_sources .= '<td style="text-align: right;"'.( $en_status_entity_id != 6181 /* Entity Featured */ ? ' class="' . echo_advance() . '"' : '' ).'><a href="/entities/' . $en_id .'#status-'.$en_status_entity_id.'">'.number_format($source_count,0).'</a><i class="fal fa-info-circle icon-block" data-toggle="tooltip" title="'.number_format($source_count,0).' '.$m['m_name'].' are '. $en_all_6177[$en_status_entity_id]['m_desc'] . '" data-placement="top"></i></td>';
 
 
             }
@@ -283,9 +283,9 @@ class Admin extends CI_Controller
         echo '<table class="table table-condensed table-striped stats-table">';
 
         echo '<tr class="panel-title down-border">';
-        echo '<td style="text-align: left;">'.echo_number($total_counts[7352]).' '.$en_all_7303[3000]['m_name'].'</td>';
+        echo '<td style="text-align: left;">'.echo_number($total_counts[6181]).' '.$en_all_7303[3000]['m_name'].'</td>';
         foreach($this->config->item('en_all_7358') /* Entity Active Statuses */ as $en_status_entity_id => $m_status){
-            echo '<td style="text-align: right;" '.( $en_status_entity_id != 7352 /* Entity Featured */ ? ' class="' . echo_advance() . '"' : '' ).'>' . $en_all_6177[$en_status_entity_id]['m_name'] . '</td>';
+            echo '<td style="text-align: right;" '.( $en_status_entity_id != 6181 /* Entity Featured */ ? ' class="' . echo_advance() . '"' : '' ).'>' . $en_all_6177[$en_status_entity_id]['m_name'] . '</td>';
         }
         echo '</tr>';
 
@@ -296,7 +296,7 @@ class Admin extends CI_Controller
         echo '<tr style="font-weight: bold;" class="' . echo_advance() . '">';
         echo '<td style="text-align: left;"><span class="icon-block"><i class="fas fa-asterisk"></i></span>Totals</td>';
         foreach($this->config->item('en_all_7358') /* Entity Active Statuses */ as $en_status_entity_id => $m_status){
-            echo '<td style="text-align: right;" '.( $en_status_entity_id != 7352 /* Entity Featured */ ? ' class="' . echo_advance() . '"' : '' ).'>' . echo_number($total_counts[$en_status_entity_id]) . '<i class="fal fa-info-circle icon-block" data-toggle="tooltip" title="'.number_format($total_counts[$en_status_entity_id], 0).' '.$en_all_7303[3000]['m_name'].' are '.$en_all_6177[$en_status_entity_id]['m_name'] . '" data-placement="top"></i>' . '</td>';
+            echo '<td style="text-align: right;" '.( $en_status_entity_id != 6181 /* Entity Featured */ ? ' class="' . echo_advance() . '"' : '' ).'>' . echo_number($total_counts[$en_status_entity_id]) . '<i class="fal fa-info-circle icon-block" data-toggle="tooltip" title="'.number_format($total_counts[$en_status_entity_id], 0).' '.$en_all_7303[3000]['m_name'].' are '.$en_all_6177[$en_status_entity_id]['m_name'] . '" data-placement="top"></i>' . '</td>';
         }
         echo '</tr>';
 

@@ -1,7 +1,8 @@
 <?php
 //Attempt to fetch session variables:
 $session_en = $this->session->userdata('user');
-$en_all_4488 = $this->config->item('en_all_4488');
+$en_all_7372 = $this->config->item('en_all_7372');
+$en_all_7368 = $this->config->item('en_all_7368');
 $uri_segment_1 = $this->uri->segment(1);
 $uri_segment_2 = $this->uri->segment(2);
 ?><!doctype html>
@@ -55,12 +56,12 @@ $uri_segment_2 = $this->uri->segment(2);
                         <span class="navbar-brand dashboard-logo">
                             <table style="width: 100%; border:0; padding:0; margin:0 0 0 0;">
                                 <tr>
-                                    <td style="width:40px;" data-toggle="tooltip" data-placement="bottom" title="<?= $en_all_4488[7161]['m_name'] ?>">
+                                    <td style="width:40px;" data-toggle="tooltip" data-placement="bottom" title="<?= $en_all_7368[7161]['m_name'] ?>">
                                         <a href="/dashboard"><img src="/img/mench_white.png" /></a>
                                     </td>
                                     <td>
                                         <input type="text" class="algolia_search" id="platform_search" data-lpignore="true"
-                                               placeholder="<?= $en_all_4488[7256]['m_desc'] ?>">
+                                               placeholder="<?= $en_all_7368[7256]['m_desc'] ?>">
                                     </td>
                                 </tr>
                             </table>
@@ -70,59 +71,46 @@ $uri_segment_2 = $this->uri->segment(2);
                     <div class="collapse navbar-collapse">
                         <ul class="nav navbar-nav navbar-main navbar-right">
 
+                            <!-- Core Miner Functions -->
                             <li class="<?= ($uri_segment_1 == 'intents' ? 'intent-active' : 'intent-inactive') ?>">
                                 <a href="/intents/<?= $this->config->item('in_focus_id') ?>">
-                                    <?= $en_all_4488[4535]['m_icon'] .' '. $en_all_4488[4535]['m_name'] ?>
+                                    <?= $en_all_7368[4535]['m_icon'] .' '. $en_all_7368[4535]['m_name'] ?>
                                 </a>
                             </li>
-
                             <li class="<?= ($uri_segment_1 == 'entities' ? 'entity-active' : 'entity-inactive') ?>">
                                 <a href="/entities/<?= $this->config->item('en_focus_id') ?>">
-                                    <?= $en_all_4488[4536]['m_icon'] .' '. $en_all_4488[4536]['m_name'] ?>
+                                    <?= $en_all_7368[4536]['m_icon'] .' '. $en_all_7368[4536]['m_name'] ?>
                                 </a>
                             </li>
-
                             <li class="<?= ($uri_segment_1 == 'links' ? 'links-active' : 'links-inactive') ?>">
                                 <a href="/links">
-                                    <?= $en_all_4488[6205]['m_icon'] .' '. $en_all_4488[6205]['m_name'] ?>
+                                    <?= $en_all_7368[6205]['m_icon'] .' '. $en_all_7368[6205]['m_name'] ?>
                                 </a>
                             </li>
 
-                            <li class="links-inactive" data-toggle="tooltip" data-placement="left" title="<?= $en_all_4488[5007]['m_name'] ?>">
+
+                            <!-- List other Apps -->
+                            <li class="<?= ($uri_segment_1 == 'admin' ? 'links-active' : 'links-inactive') ?>" data-toggle="tooltip" data-placement="left" title="<?= $en_all_7372[6287]['m_name'] ?>">
+                                <a href="/admin">
+                                    <?= $en_all_7372[6287]['m_icon'] ?>
+                                </a>
+                            </li>
+                            <li class="links-inactive" data-toggle="tooltip" data-placement="left" title="<?= $en_all_7372[7369]['m_name'] ?>">
+                                <a href="/actionplan">
+                                    <?= $en_all_7372[7369]['m_icon'] ?>
+                                </a>
+                            </li>
+
+
+                            <!-- Advance Mode & Logout -->
+                            <li class="links-inactive" data-toggle="tooltip" data-placement="left" title="<?= $en_all_7368[5007]['m_name'] ?>">
                                 <a href="javascript:void(0)" onclick="toggle_advance(0)">
                                     <i class="<?= ( $this->session->userdata('advance_view_enabled')==1 ? 'fas fa-expand-arrows' : 'fal fa-expand-arrows ' ) ?> advance-icon"></i>
                                 </a>
                             </li>
-
-                            <li class="<?= ($uri_segment_1 == 'admin' ? 'links-active' : 'links-inactive') ?>" data-toggle="tooltip" data-placement="left" title="<?= $en_all_4488[6287]['m_name'] ?>">
-                                <a href="/admin">
-                                    <?= $en_all_4488[6287]['m_icon'] ?>
-                                </a>
-                            </li>
-
-                            <li class="<?= ($uri_segment_1 == 'entities' && $uri_segment_2 == 7254 ? 'entity-active' : 'entity-inactive') ?>" data-toggle="tooltip" data-placement="left" title="<?= $en_all_4488[7254]['m_name'] ?>">
-                                <a href="/entities/7254">
-                                    <?= $en_all_4488[7254]['m_icon'] ?>
-                                </a>
-                            </li>
-
-
-
-                            <li class="links-inactive" data-toggle="tooltip" data-placement="left" title="<?= $en_all_4488[6138]['m_name'] ?>">
-                                <a href="/actionplan">
-                                    &nbsp;&nbsp;<?= $en_all_4488[6138]['m_icon'] ?>
-                                </a>
-                            </li>
-
-                            <li class="links-inactive" data-toggle="tooltip" data-placement="left" title="<?= $en_all_4488[6137]['m_name'] ?>">
-                                <a href="/myaccount">
-                                    <?= $en_all_4488[6137]['m_icon'] ?>
-                                </a>
-                            </li>
-
-                            <li data-toggle="tooltip" data-placement="left" title="<?= $en_all_4488[7291]['m_name'] ?>">
+                            <li data-toggle="tooltip" data-placement="left" title="<?= $en_all_7368[7291]['m_name'] ?>">
                                 <a href="/logout">
-                                    <?= $en_all_4488[7291]['m_icon'] ?>
+                                    <?= $en_all_7368[7291]['m_icon'] ?>
                                 </a>
                             </li>
 

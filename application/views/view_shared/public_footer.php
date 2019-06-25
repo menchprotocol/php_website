@@ -1,4 +1,3 @@
-<?php $en_all_4488 = $this->config->item('en_all_4488'); ?>
 
 </div>
 </div>
@@ -44,9 +43,10 @@
 
 
 
+                    <?php $en_all_7368 = $this->config->item('en_all_7368'); ?>
                     <a href="/dashboard"
-                       class="social-link" data-toggle="tooltip" title="<?= $en_all_4488[7161]['m_name'] ?>"
-                       data-placement="top"><?= $en_all_4488[7161]['m_icon'] ?></a>
+                       class="social-link" data-toggle="tooltip" title="<?= $en_all_7368[7161]['m_name'] ?>"
+                       data-placement="top"><?= $en_all_7368[7161]['m_icon'] ?></a>
 
                     <a href="/login"
                        class="social-link" data-toggle="tooltip" title="Sign In"
