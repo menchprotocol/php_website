@@ -1061,7 +1061,7 @@ function echo_step_range($in, $educational_mode = false){
     if($metadata['in__metadata_min_steps'] != $metadata['in__metadata_max_steps']){
 
         //It's a range:
-        return ( $educational_mode ? 'between ' : '' ) . $metadata['in__metadata_min_steps'].' - '.$metadata['in__metadata_max_steps'].' Steps' . ( $educational_mode ? ' (depending on your answers to my questions)' : '' );
+        return $metadata['in__metadata_min_steps'].' - '.$metadata['in__metadata_max_steps'].' Steps' . ( $educational_mode ? ' (depending on your answers to my questions)' : '' );
 
     } else {
 
