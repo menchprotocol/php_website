@@ -195,6 +195,8 @@ class Admin extends CI_Controller
                 echo '<tr class="hiddenverbs">';
                 echo '<td style="text-align: left;" colspan="2"><span style="width:29px; display: inline-block; text-align: center;"><i class="fas fa-plus-circle"></i></span><a href="javascript:void(0);" onclick="$(\'.hiddenverbs\').toggleClass(\'hidden\')">See All '.echo_number(count($in_verbs)).' '.$en_all_7302[5008]['m_name'].'</a></td>';
                 echo '</tr>';
+                //To keep stripe color in balance
+                echo '<tr class="hidden"><td style="text-align: left;" colspan="2"></td></tr>';
             }
         }
 
