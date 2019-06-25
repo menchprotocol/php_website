@@ -1032,7 +1032,7 @@ class Communication_model extends CI_Model
 
             //Yes, we have something to offer:
 
-            $message = 'Here are some intentions that I recommended you add to your Action Plan:';
+            $message = 'Here are some recommended intentions you can add to your Action Plan:';
             $quick_replies = array();
 
             foreach($recommend_intentions as $count => $in){
@@ -1045,14 +1045,12 @@ class Communication_model extends CI_Model
                     'payload' => 'SUBSCRIBE-INITIATE_' . $in['in_id'],
                 ));
 
-
                 //Log intent recommend recommendation:
                 $this->Links_model->ln_create(array(
                     'ln_miner_entity_id' => $en_id,
                     'ln_parent_intent_id' => $in['in_id'],
                     'ln_type_entity_id' => 6969, //Action Plan Intention recommend
                 ));
-
             }
 
             //Give option to not select any:
@@ -1061,7 +1059,6 @@ class Communication_model extends CI_Model
                 'title' => 'Cancel',
                 'payload' => 'NOTINTERESTED',
             ));
-
 
             //Suggest Recommended Intentions:
             $this->Communication_model->dispatch_message(
@@ -1562,11 +1559,10 @@ class Communication_model extends CI_Model
                 $overview_message = '';
                 $source_info = echo_tree_experts($ins[0], true);
                 $step_info = echo_tree_steps($ins[0], true);
-                $time_info = echo_tree_completion_time($ins[0], true);
                 $user_info = echo_tree_users($ins[0], true);
 
                 if($source_info || $step_info || $time_info){
-                    $overview_message .= 'Here is an overview:' . "\n\n" . $source_info . "\n\n" . $step_info . "\n\n"  . $time_info . "\n\n"  . $user_info . "\n\n";
+                    $overview_message .= 'Here is an overview:' . "\n\n" . $source_info . "\n\n" . $step_info . "\n\n"  . $user_info . "\n\n";
                 }
 
                 $overview_message .= 'Should I add the intention to ' . $ins[0]['in_outcome'] . ' to your Action Plan?';

@@ -1081,12 +1081,25 @@ function echo_tree_steps($in, $fb_messenger_format = 0, $autoexpand = false)
      *
      * */
 
-    //Do we have anything to return?
     if (!echo_step_range($in)) {
+        //No steps, return null:
         return false;
     }
 
-    $pitch_body = 'I estimate it would take you ' . strtolower(echo_step_range($in, true)).' to '.echo_in_outcome($in['in_outcome']);
+    $metadata = unserialize($in['in_metadata']);
+    $has_time_estimate = ( isset($metadata['in__metadata_max_seconds']) && $metadata['in__metadata_max_seconds']>0 );
+    if ($has_time_estimate) {
+
+        //Also have time:
+        $pitch_body = 'I estimate it would take you '. strtolower(echo_time_range($in)) .' to complete the ' . strtolower(echo_step_range($in, true)).' to '.echo_in_outcome($in['in_outcome']);
+
+    } else {
+
+        //No time, just show steps:
+        $pitch_body = 'I estimate it would take you ' . strtolower(echo_step_range($in, true)).' to '.echo_in_outcome($in['in_outcome']);
+
+    }
+
 
     if ($fb_messenger_format) {
 
@@ -1096,7 +1109,7 @@ function echo_tree_steps($in, $fb_messenger_format = 0, $autoexpand = false)
     } else {
 
         //HTML format
-        $pitch_title = '<span class="icon-block"><i class="fas fa-walking"></i></span>&nbsp;'.echo_step_range($in);
+        $pitch_title = '<span class="icon-block"><i class="fas fa-walking"></i></span>&nbsp;'.echo_step_range($in).( $has_time_estimate ? ' in '.echo_time_range($in) : '' );
 
         //If NOT private, Expand body to include Action Plan overview:
         $CI =& get_instance();
@@ -1240,34 +1253,6 @@ function echo_public_actionplan($in, $autoexpand){
     $return_html .= '</div>';
 
     return $return_html;
-}
-
-function echo_tree_completion_time($in, $fb_messenger_format = 0, $autoexpand = false)
-{
-
-    /*
-     *
-     * An intent function to display estimated completion time range
-     * for the entire intent tree stored in the metadata field.
-     *
-     * */
-
-    //Do we have anything to return?
-    $metadata = unserialize($in['in_metadata']);
-    if (!isset($metadata['in__metadata_max_seconds']) || $metadata['in__metadata_max_seconds'] == 0) {
-        return false;
-    }
-
-    //As messenger default format and HTML extra notes:
-    $pitch_body  = 'I estimate it would take you '. strtolower(echo_time_range($in)) .' to '.echo_in_outcome($in['in_outcome']).'.';
-
-    if ($fb_messenger_format) {
-        return '⏰ ' . $pitch_body;
-    } else {
-        //HTML format
-        $pitch_title = '<span class="icon-block"><i class="fas fa-alarm-clock"></i></span>&nbsp;'.echo_time_range($in);
-        return echo_tree_html_body('CompletionTime', $pitch_title, $pitch_body, $autoexpand);
-    }
 }
 
 function echo_en_messages($ln){
