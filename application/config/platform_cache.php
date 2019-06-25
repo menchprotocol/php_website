@@ -11,7 +11,7 @@ defined('BASEPATH') OR exit('No direct script access allowed');
  *
  */
 
-//Generated 2019-06-25 15:33:27 PST
+//Generated 2019-06-25 16:10:50 PST
 
 //Mench Platform Products:
 $config['en_ids_7372'] = array(6196,6287,7368,7369,7370);
@@ -19,32 +19,32 @@ $config['en_all_7372'] = array(
     6196 => array(
         'm_icon' => '<i class="fab fa-facebook-messenger"></i>',
         'm_name' => 'Messenger Bot',
-        'm_desc' => '',
-        'm_parents' => array(7372,3320,4463),
+        'm_desc' => 'A personal assistant that delivers intents and entities using a friendly conversation',
+        'm_parents' => array(4430,7372,3320,4463),
     ),
     6287 => array(
         'm_icon' => '<i class="fas fa-user-shield"></i>',
         'm_name' => 'Admin App',
         'm_desc' => 'Tools for moderating the Mench platform',
-        'm_parents' => array(7372,4527,7284),
+        'm_parents' => array(1281,7372,4527,7284),
     ),
     7368 => array(
         'm_icon' => '<i class="fas fa-user-hard-hat"></i>',
         'm_name' => 'Miner App',
-        'm_desc' => '',
-        'm_parents' => array(7372,4527),
+        'm_desc' => 'Tools for miners to manage intents, entities and links',
+        'm_parents' => array(1308,7372,4527),
     ),
     7369 => array(
         'm_icon' => '<i class="fas fa-user-graduate"></i>',
         'm_name' => 'User App',
-        'm_desc' => '',
-        'm_parents' => array(7372,6196,4527),
+        'm_desc' => 'Tools for users to progress their Action Plan and manage their account',
+        'm_parents' => array(4430,7372,6196,4527),
     ),
     7370 => array(
         'm_icon' => '<i class="fas fa-user-tie"></i>',
         'm_name' => 'Company App',
-        'm_desc' => '',
-        'm_parents' => array(7372,4527),
+        'm_desc' => 'Tools for companies to manage their job postings and candidate funnel',
+        'm_parents' => array(6695,7372,4527),
     ),
 );
 
@@ -351,9 +351,9 @@ $config['en_all_7303'] = array(
     ),
     4432 => array(
         'm_icon' => '<i class="far fa-badge-check"></i>',
-        'm_name' => 'Mench Verified Accounts',
+        'm_name' => 'Verified Accounts Stats',
         'm_desc' => '',
-        'm_parents' => array(2738,7303,4527,3463),
+        'm_parents' => array(7303,4527),
     ),
     6177 => array(
         'm_icon' => '<i class="fas fa-sliders-h"></i>',
@@ -814,36 +814,42 @@ $config['en_all_6997'] = array(
     ),
 );
 
-//Mench Contributors:
-$config['en_ids_6827'] = array(1281,1308,4433,6695,6875);
+//Mench Community:
+$config['en_ids_6827'] = array(1281,1308,4430,4433,6695,6875);
 $config['en_all_6827'] = array(
     1281 => array(
-        'm_icon' => '<i class="far fa-shield"></i>',
-        'm_name' => 'Core Contributors',
+        'm_icon' => '<i class="fas fa-user-shield"></i>',
+        'm_name' => 'Admins',
         'm_desc' => 'The dedicated team that ensures the continuous operation of the Mench platform, governs its principles and empowers the rest of the community to achieve their full potential',
         'm_parents' => array(6827,4463),
     ),
     1308 => array(
-        'm_icon' => '<i class="far fa-badge-check"></i>',
-        'm_name' => 'Certified Miners',
+        'm_icon' => '<i class="fas fa-user-hard-hat"></i>',
+        'm_name' => 'Miners',
         'm_desc' => 'Those who have completed the intention to become a Mench miner and have passed the assessment that validated their skills and understanding of the mining principles',
         'm_parents' => array(6827,4463,4426),
     ),
+    4430 => array(
+        'm_icon' => '<i class="fas fa-user-graduate"></i>',
+        'm_name' => 'Users',
+        'm_desc' => 'Users who are pursuing their intentions using Mench',
+        'm_parents' => array(6827,4426,4463,4432),
+    ),
     4433 => array(
-        'm_icon' => '<i class="far fa-code"></i>',
-        'm_name' => 'Open-Source Developers',
+        'm_icon' => '<i class="fas fa-user-cog"></i>',
+        'm_name' => 'Software Engineers',
         'm_desc' => 'Those contributing to our open-source code base hosted on GitHub',
         'm_parents' => array(6827,4463,4426),
     ),
     6695 => array(
-        'm_icon' => '<i class="far fa-briefcase"></i>',
+        'm_icon' => '<i class="fas fa-user-tie"></i>',
         'm_name' => 'Partner Companies',
         'm_desc' => 'Those who use Mench as a recruitment platform to assess their candidates and reach new candidates',
         'm_parents' => array(6827,4426,4463),
     ),
     6875 => array(
-        'm_icon' => '<i class="far fa-whistle"></i>',
-        'm_name' => 'Career Coaches',
+        'm_icon' => '<i class="fas fa-user-friends"></i>',
+        'm_name' => 'Coaches',
         'm_desc' => 'Coaches experts in the career development process that would help you land your dream job in the shortest possible time',
         'm_parents' => array(6827),
     ),
@@ -1046,14 +1052,14 @@ $config['en_all_6193'] = array(
 $config['en_ids_4463'] = array(1281,1308,3000,3084,4430,4433,4485,4488,4535,4536,4595,4755,6138,6196,6199,6205,6695);
 $config['en_all_4463'] = array(
     1281 => array(
-        'm_icon' => '<i class="far fa-shield"></i>',
-        'm_name' => 'Mench Core Contributors',
+        'm_icon' => '<i class="fas fa-user-shield"></i>',
+        'm_name' => 'Mench Admins',
         'm_desc' => 'Mench Team members who serve the community by mediating and solving issues.',
         'm_parents' => array(6827,4463),
     ),
     1308 => array(
-        'm_icon' => '<i class="far fa-badge-check"></i>',
-        'm_name' => 'Mench Certified Miners',
+        'm_icon' => '<i class="fas fa-user-hard-hat"></i>',
+        'm_name' => 'Mench Miners',
         'm_desc' => 'Everyone on Mench is mining intelligence, but this group of individuals have set their intention to become a Mench miner and have graduated from our training program on how to Mine intelligence using Mench.',
         'm_parents' => array(6827,4463,4426),
     ),
@@ -1067,17 +1073,17 @@ $config['en_all_4463'] = array(
         'm_icon' => '<i class="fas fa-star"></i>',
         'm_name' => 'Industry Experts',
         'm_desc' => 'People with experience in their respective industry that have shown a consistent commitment to advancing their industry.',
-        'm_parents' => array(4432,4463),
+        'm_parents' => array(3463,4432,4463),
     ),
     4430 => array(
-        'm_icon' => '<i class="fas fa-user"></i>',
+        'm_icon' => '<i class="fas fa-user-graduate"></i>',
         'm_name' => 'Mench Users',
         'm_desc' => 'Users connected to Mench Personal Assistant on Facebook Messenger.',
-        'm_parents' => array(4426,4463,4432),
+        'm_parents' => array(6827,4426,4463,4432),
     ),
     4433 => array(
-        'm_icon' => '<i class="far fa-code"></i>',
-        'm_name' => 'Mench Open-Source Developers',
+        'm_icon' => '<i class="fas fa-user-cog"></i>',
+        'm_name' => 'Mench Software Engineers',
         'm_desc' => 'Developers who are contributing to the Mench open-source project on GitHub: https://github.com/askmench',
         'm_parents' => array(6827,4463,4426),
     ),
@@ -1091,7 +1097,7 @@ $config['en_all_4463'] = array(
         'm_icon' => '<img src="https://mench.com/img/mench_white.png">',
         'm_name' => 'Mench Platform',
         'm_desc' => 'A web portal and GUI enabling Miners to mine intents, entities and links.',
-        'm_parents' => array(3463,2738,4463),
+        'm_parents' => array(2738,4463),
     ),
     4535 => array(
         'm_icon' => '<i class="fas fa-hashtag"></i>',
@@ -1127,7 +1133,7 @@ $config['en_all_4463'] = array(
         'm_icon' => '<i class="fab fa-facebook-messenger"></i>',
         'm_name' => 'Mench Messenger Bot',
         'm_desc' => '',
-        'm_parents' => array(7372,3320,4463),
+        'm_parents' => array(4430,7372,3320,4463),
     ),
     6199 => array(
         'm_icon' => '<i class="fas fa-shield-check"></i>',
@@ -1142,7 +1148,7 @@ $config['en_all_4463'] = array(
         'm_parents' => array(7368,4534,4463),
     ),
     6695 => array(
-        'm_icon' => '<i class="far fa-briefcase"></i>',
+        'm_icon' => '<i class="fas fa-user-tie"></i>',
         'm_name' => 'Mench Partner Companies',
         'm_desc' => 'Users who can manage the accounts of organizations they belong to.',
         'm_parents' => array(6827,4426,4463),
@@ -1763,26 +1769,26 @@ $config['en_all_4280'] = array(
     ),
 );
 
-//Mench Verified Accounts:
+//Verified Accounts Stats:
 $config['en_ids_4432'] = array(3084,2750,4430);
 $config['en_all_4432'] = array(
     3084 => array(
         'm_icon' => '<i class="fas fa-star"></i>',
         'm_name' => 'Industry Experts',
         'm_desc' => 'Domain masters considering their tangible accomplishments',
-        'm_parents' => array(4432,4463),
+        'm_parents' => array(3463,4432,4463),
     ),
     2750 => array(
         'm_icon' => '<i class="fas fa-users"></i>',
         'm_name' => 'Companies',
         'm_desc' => 'Companies, teams or groups that collaborate with a shared mission',
-        'm_parents' => array(4432,4600),
+        'm_parents' => array(3463,4432,4600),
     ),
     4430 => array(
-        'm_icon' => '<i class="fas fa-user"></i>',
+        'm_icon' => '<i class="fas fa-user-graduate"></i>',
         'm_name' => 'Mench Users',
         'm_desc' => 'All Mench users share a connection to Mench personal assistant and may also belong to other user groups',
-        'm_parents' => array(4426,4463,4432),
+        'm_parents' => array(6827,4426,4463,4432),
     ),
 );
 
@@ -1871,8 +1877,8 @@ $config['en_all_4997'] = array(
 $config['en_ids_4426'] = array(1308,3288,4426,4430,4433,4595,4755,4997,5969,6695);
 $config['en_all_4426'] = array(
     1308 => array(
-        'm_icon' => '<i class="far fa-badge-check"></i>',
-        'm_name' => 'Mench Certified Miners',
+        'm_icon' => '<i class="fas fa-user-hard-hat"></i>',
+        'm_name' => 'Mench Miners',
         'm_desc' => 'Requires admin review and approval',
         'm_parents' => array(6827,4463,4426),
     ),
@@ -1889,14 +1895,14 @@ $config['en_all_4426'] = array(
         'm_parents' => array(3303,6771,4426,4527,4757,4428),
     ),
     4430 => array(
-        'm_icon' => '<i class="fas fa-user"></i>',
+        'm_icon' => '<i class="fas fa-user-graduate"></i>',
         'm_name' => 'Mench Users',
         'm_desc' => '',
-        'm_parents' => array(4426,4463,4432),
+        'm_parents' => array(6827,4426,4463,4432),
     ),
     4433 => array(
-        'm_icon' => '<i class="far fa-code"></i>',
-        'm_name' => 'Mench Open-Source Developers',
+        'm_icon' => '<i class="fas fa-user-cog"></i>',
+        'm_name' => 'Mench Software Engineers',
         'm_desc' => 'Requires admin review and approval',
         'm_parents' => array(6827,4463,4426),
     ),
@@ -1925,7 +1931,7 @@ $config['en_all_4426'] = array(
         'm_parents' => array(3303,6771,4426,4527,4757,4428),
     ),
     6695 => array(
-        'm_icon' => '<i class="far fa-briefcase"></i>',
+        'm_icon' => '<i class="fas fa-user-tie"></i>',
         'm_name' => 'Mench Partner Companies',
         'm_desc' => '',
         'm_parents' => array(6827,4426,4463),
@@ -2777,7 +2783,7 @@ $config['en_all_4600'] = array(
         'm_icon' => '<i class="fas fa-users"></i>',
         'm_name' => 'Companies',
         'm_desc' => '',
-        'm_parents' => array(4432,4600),
+        'm_parents' => array(3463,4432,4600),
     ),
 );
 
