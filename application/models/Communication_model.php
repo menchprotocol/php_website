@@ -2046,7 +2046,7 @@ class Communication_model extends CI_Model
             $search_index = load_algolia('alg_index');
             $res = $search_index->search($master_command, [
                 'hitsPerPage' => 6, //Max results
-                'filters' => 'alg_obj_is_in=1 AND alg_obj_status=2', //Search published intents
+                'filters' => 'alg_obj_is_in=1 AND alg_obj_status=7351', //Intents with status = Intent Starting Point
             ]);
             $search_results = $res['hits'];
 
