@@ -184,16 +184,19 @@ class Admin extends CI_Controller
         echo '</tr>';
 
         foreach($in_verbs as $count => $verb){
+
             echo '<tr class="'.( $count >= $show_max_verbs ? 'hiddenverbs hidden' : '' ).'">';
             echo '<td style="text-align: left;"><span style="width:29px; display: inline-block; text-align: center;">'.echo_en_icon($verb).'</span><a href="/entities/'.$verb['in_verb_entity_id'].'">'.$verb['en_name'].'</a></td>';
             echo '<td style="text-align: right;"><a href="/links?ln_type_entity_id=4250&in_status_entity_id=' . join(',', $this->config->item('en_ids_7356')) . '&in_verb_entity_id='.$verb['in_verb_entity_id'].'">'.echo_number($verb['totals']).'</a><i class="fal fa-info-circle icon-block" data-toggle="tooltip" title="'.number_format($verb['totals'],0).' Intent'.echo__s($verb['totals']).' help you '.$verb['en_name'].'" data-placement="top"></i></td>';
             echo '</tr>';
-        }
 
-        //Show expand button:
-        echo '<tr class="hiddenverbs">';
-        echo '<td style="text-align: left;" colspan="2"><span style="width:29px; display: inline-block; text-align: center;"><i class="fas fa-plus-circle"></i></span><a href="javascript:void(0);" onclick="$(\'.hiddenverbs\').toggleClass(\'hidden\')">See All '.echo_number(count($in_verbs)).' '.$en_all_7302[5008]['m_name'].'</a></td>';
-        echo '</tr>';
+            if(($count+1)==$show_max_verbs){
+                //Show expand button:
+                echo '<tr class="hiddenverbs">';
+                echo '<td style="text-align: left;" colspan="2"><span style="width:29px; display: inline-block; text-align: center;"><i class="fas fa-plus-circle"></i></span><a href="javascript:void(0);" onclick="$(\'.hiddenverbs\').toggleClass(\'hidden\')">See All '.echo_number(count($in_verbs)).' '.$en_all_7302[5008]['m_name'].'</a></td>';
+                echo '</tr>';
+            }
+        }
 
         echo '</table>';
 
