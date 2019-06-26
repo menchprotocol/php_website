@@ -1523,7 +1523,6 @@ class Intents extends CI_Controller
             'status' => 1,
             'message' => $this->Communication_model->dispatch_message($msg_validation['input_message'], $session_en, false, array(), array(), $_POST['in_id']),
             'message_new_status_icon' => '<span title="' . $en_all_6186[$to_update['ln_status_entity_id']]['m_name'] . ': ' . $en_all_6186[$to_update['ln_status_entity_id']]['m_desc'] . '" data-toggle="tooltip" data-placement="top">' . $en_all_6186[$to_update['ln_status_entity_id']]['m_icon'] . '</span>', //This might have changed
-            'remove_from_ui' => ( $_POST['message_ln_status'] == 6173 /* Link Removed */ ? 1 : 0),
             'success_icon' => '<span><i class="fas fa-check"></i> Saved</span>',
         ));
     }

@@ -314,26 +314,24 @@ function in_message_modify_save(ln_id, initial_ln_type_entity_id) {
     //Revert View:
     in_message_modify_cancel(ln_id, 1);
 
-    //Detect new status, and a potential change:
-    var message_ln_status = $("#message_status_" + ln_id).val();
+
+    var modify_data = {
+        ln_id: parseInt(ln_id),
+        initial_ln_type_entity_id: parseInt(initial_ln_type_entity_id),
+        message_ln_status: parseInt($("#message_status_" + ln_id).val()),
+        in_id: parseInt(in_id),
+        ln_content: $("#ul-nav-" + ln_id + " textarea").val(),
+    };
 
     //Update message:
-    $.post("/intents/in_message_modify_save", {
-
-        ln_id: ln_id,
-        ln_content: $("#ul-nav-" + ln_id + " textarea").val(),
-        initial_ln_type_entity_id: initial_ln_type_entity_id,
-        message_ln_status: message_ln_status,
-        in_id: in_id,
-
-    }, function (data) {
+    $.post("/intents/in_message_modify_save", modify_data, function (data) {
 
         if (data.status) {
 
             //Saving successful...
 
             //Did we remove this message?
-            if(data.remove_from_ui){
+            if(modify_data['message_ln_status'] == 6173 /* Link Removed */ /*  */){
 
                 //Yes, message was removed, adjust accordingly:
                 $("#ul-nav-" + ln_id).html('<div>' + data.message + '</div>');
@@ -360,7 +358,7 @@ function in_message_modify_save(ln_id, initial_ln_type_entity_id) {
 
             } else {
 
-                //Nope, message was not removed..
+                //Nope, message was just edited...
 
                 //Update text message:
                 $("#ul-nav-" + ln_id + " .text_message").html(data.message);
