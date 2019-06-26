@@ -2237,11 +2237,34 @@ class Messenger extends CI_Controller
             //Store to CDN:
             $new_file_url = upload_to_cdn($ln['ln_content'], $ln);
 
-            if ($new_file_url && filter_var($new_file_url, FILTER_VALIDATE_URL)) {
+            if ($new_file_url) {
+
+                //Save URL entity and link it to the Mench CDN and the uploaded user:
+                $new_entity_id = 0;
+                $url_entity = $this->Entities_model->en_sync_url($new_file_url, $ln['ln_miner_entity_id'], array(4396 /* Mench CDN Entity */, $ln['ln_miner_entity_id']));
+
+                //Did we have an error?
+                if (!$url_entity['status']) {
+                    //Log error:
+                    $this->Links_model->ln_create(array(
+                        'ln_type_entity_id' => 4246, //Platform Bug Reports
+                        'ln_miner_entity_id' => 1, //Shervin/Developer
+                        'ln_parent_link_id' => $ln['ln_id'],
+                        'ln_content' => 'cron__save_chat_media() failed to create new entity with new CDN URL',
+                        'ln_metadata' => array(
+                            'url_entity' => $url_entity,
+                            'new_file_url' => $new_file_url,
+                            'ln' => $ln,
+                        ),
+                    ));
+                } else {
+                    $new_entity_id = $url_entity['en_url']['en_id'];
+                }
 
                 //Update link:
                 $this->Links_model->ln_update($ln['ln_id'], array(
                     'ln_content' => $new_file_url,
+                    'ln_child_entity_id' => $new_entity_id,
                     'ln_status_entity_id' => 6176, //Link Published
                 ));
 

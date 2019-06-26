@@ -411,7 +411,7 @@ class Entities_model extends CI_Model
 
     }
 
-    function en_sync_url($url, $ln_miner_entity_id = 0, $add_to_parent_en_id = 0, $add_to_child_en_id = 0, $page_title = null)
+    function en_sync_url($url, $ln_miner_entity_id = 0, $link_parent_en_ids = array(), $add_to_child_en_id = 0, $page_title = null)
     {
 
         /*
@@ -421,7 +421,7 @@ class Entities_model extends CI_Model
          *
          * - $url:                  Input URL
          * - $ln_miner_entity_id:       IF > 0 will save URL (if not already there) and give credit to this entity as the miner
-         * - $add_to_parent_en_id:  IF > 0 Will also add URL to this parent if present
+         * - $link_parent_en_ids:  IF array includes entity IDs that will be added as parent entity of this URL
          * - $add_to_child_en_id:   IF > 0 Will also add URL to this child if present
          * - $page_title:           If set it would override the entity title that is auto generated (Used in Add Source Wizard to enable miners to edit auto generated title)
          *
@@ -434,10 +434,10 @@ class Entities_model extends CI_Model
                 'status' => 0,
                 'message' => 'Invalid URL',
             );
-        } elseif (($add_to_parent_en_id > 0 || $add_to_child_en_id > 0) && $ln_miner_entity_id < 1) {
+        } elseif ((count($link_parent_en_ids) > 0 || $add_to_child_en_id > 0) && $ln_miner_entity_id < 1) {
             return array(
                 'status' => 0,
-                'message' => 'Miner is required to add parent URL',
+                'message' => 'Parent entity is required to add a parent URL',
             );
         }
 
@@ -640,15 +640,17 @@ class Entities_model extends CI_Model
 
 
         //Have we been asked to also add URL to another parent or child?
-        if (!$url_already_existed && $add_to_parent_en_id) {
+        if (!$url_already_existed && count($link_parent_en_ids) > 0) {
             //Link URL to its parent domain:
-            $this->Links_model->ln_create(array(
-                'ln_miner_entity_id' => $ln_miner_entity_id,
-                'ln_status_entity_id' => 6176, //Link Published
-                'ln_type_entity_id' => 4230, //Raw
-                'ln_parent_entity_id' => $add_to_parent_en_id,
-                'ln_child_entity_id' => $en_url['en_id'],
-            ));
+            foreach($link_parent_en_ids as $p_en_id){
+                $this->Links_model->ln_create(array(
+                    'ln_miner_entity_id' => $ln_miner_entity_id,
+                    'ln_status_entity_id' => 6176, //Link Published
+                    'ln_type_entity_id' => 4230, //Raw
+                    'ln_parent_entity_id' => $p_en_id,
+                    'ln_child_entity_id' => $en_url['en_id'],
+                ));
+            }
         }
 
         if (!$url_already_existed && $add_to_child_en_id) {

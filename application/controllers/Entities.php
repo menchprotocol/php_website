@@ -204,7 +204,7 @@ class Entities extends CI_Controller
             $mime = mime_content_type($temp_local);
         }
 
-        $new_file_url = trim(upload_to_cdn($temp_local, $_FILES[$_POST['upload_type']], true));
+        $new_file_url = upload_to_cdn($temp_local, $_FILES[$_POST['upload_type']], true);
 
         //What happened?
         if (!$new_file_url) {
@@ -1204,7 +1204,7 @@ class Entities extends CI_Controller
                 }
 
                 //Add contributor with its URL:
-                $sync_contributor = $this->Entities_model->en_sync_url($_POST['ref_url_' . $contributor_num], $session_en['en_id'], 0, 0, $_POST['contributor_' . $contributor_num]);
+                $sync_contributor = $this->Entities_model->en_sync_url($_POST['ref_url_' . $contributor_num], $session_en['en_id'], array(), 0, $_POST['contributor_' . $contributor_num]);
 
 
                 //Add contributor to People or Organizations entity:
@@ -1254,7 +1254,7 @@ class Entities extends CI_Controller
 
 
         //Save URL & domain:
-        $url_entity = $this->Entities_model->en_sync_url($_POST['source_url'], $session_en['en_id'], 0, 0, $_POST['en_name']);
+        $url_entity = $this->Entities_model->en_sync_url($_POST['source_url'], $session_en['en_id'], array(), 0, $_POST['en_name']);
         if (!$url_entity['status']) {
             return echo_json($url_entity);
         }

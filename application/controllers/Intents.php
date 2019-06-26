@@ -1220,7 +1220,7 @@ class Intents extends CI_Controller
             $mime = mime_content_type($temp_local);
         }
 
-        $new_file_url = trim(upload_to_cdn($temp_local, $_FILES[$_POST['upload_type']], true));
+        $new_file_url = upload_to_cdn($temp_local, $_FILES[$_POST['upload_type']], true);
 
         //What happened?
         if (!$new_file_url) {
@@ -1232,8 +1232,8 @@ class Intents extends CI_Controller
         }
 
 
-        //Save URL and connect it to the Mench CDN entity:
-        $url_entity = $this->Entities_model->en_sync_url($new_file_url, $session_en['en_id'], 4396 /* Mench CDN Entity */);
+        //Save URL entity and link it to the Mench CDN and the uploaded user:
+        $url_entity = $this->Entities_model->en_sync_url($new_file_url, $session_en['en_id'], array(4396 /* Mench CDN Entity */, $session_en['en_id']));
 
         //Did we have an error?
         if (!$url_entity['status']) {

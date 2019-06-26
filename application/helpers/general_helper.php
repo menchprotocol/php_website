@@ -484,7 +484,7 @@ function upload_to_cdn($file_url, $ln_metadata = null, $is_local = false)
         if (isset($result['ObjectURL']) && strlen($result['ObjectURL']) > 10) {
 
             @unlink(($is_local ? $file_url : $file_path . $file_name));
-            return $result['ObjectURL'];
+            return trim($result['ObjectURL']);
 
         } else {
 

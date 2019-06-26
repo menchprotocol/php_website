@@ -1225,9 +1225,8 @@ class Actionplan_model extends CI_Model
 
         } elseif($has_children && !$in_is_or /* AND Children */){
 
-            //Do we have 2 or more children?
-            $max_and_list = 7;
-            $has_multiple_children = (count($in__children) > 1);
+            $max_and_list = 5;
+            $has_multiple_children = (count($in__children) > 1); //Do we have 2 or more children?
 
             //Give more context for Messenger only:
             if($fb_messenger_format && $has_multiple_children){
