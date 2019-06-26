@@ -535,8 +535,7 @@ class Entities_model extends CI_Model
         if (!$name_was_passed) {
 
             //Define unique URL identifier string:
-            $url_identified = substr(md5($url), 0, 8);
-
+            $url_identified = substr(md5($url), 0, 16);
 
             //Attempt to fetch from page if we have content:
             if($url_content){
