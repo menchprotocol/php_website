@@ -432,12 +432,14 @@ function in_is_or($in_type_entity_id, $return_id = false){
     return ( $return_id ? ( $in_is_or ? 6193 /* OR */ : 6192 /* AND */ ) : $in_is_or );
 }
 
-function upload_to_cdn($file_url, $ln_metadata = null, $is_local = false)
+
+function upload_to_cdn($file_url, $ln_miner_entity_id, $ln_metadata = null, $is_local = false)
 {
 
     /*
      * A function that would save a file from URL to our Amazon CDN
      * */
+
     $CI =& get_instance();
 
     $file_name = md5($file_url . 'fileSavingSa!t') . '.' . fetch_file_ext($file_url);
@@ -483,24 +485,85 @@ function upload_to_cdn($file_url, $ln_metadata = null, $is_local = false)
 
         if (isset($result['ObjectURL']) && strlen($result['ObjectURL']) > 10) {
 
+            //Remove local file:
             @unlink(($is_local ? $file_url : $file_path . $file_name));
-            return trim($result['ObjectURL']);
+
+            //Define new URL:
+            $cdn_new_url = trim($result['ObjectURL']);
+
+            //Create and link new entity to CDN and uploader:
+            $url_entity = $CI->Entities_model->en_sync_url($cdn_new_url, $ln_miner_entity_id, array(4396 /* Mench CDN Entity */, $ln_miner_entity_id));
+
+            if(isset($url_entity['en_url']['en_id']) && $url_entity['en_url']['en_id'] > 0){
+
+                //All good:
+                return array(
+                    'status' => 1,
+                    'cdn_en' => $url_entity['en_url'],
+                    'cdn_url' => $cdn_new_url,
+                );
+
+            } else {
+
+                $CI->Links_model->ln_create(array(
+                    'ln_type_entity_id' => 4246, //Platform Bug Reports
+                    'ln_miner_entity_id' => 1, //Shervin/Developer
+                    'ln_content' => 'upload_to_cdn() Failed to create new entity from CDN file',
+                    'ln_metadata' => array(
+                        'file_url' => $file_url,
+                        'ln_miner_entity_id' => $ln_miner_entity_id,
+                        'ln_metadata' => $ln_metadata,
+                        'is_local' => ( $is_local ? 1 : 0 ),
+                    ),
+                ));
+
+                return array(
+                    'status' => 0,
+                    'message' => 'Failed to create new entity from CDN file',
+                );
+            }
 
         } else {
 
             $CI->Links_model->ln_create(array(
                 'ln_type_entity_id' => 4246, //Platform Bug Reports
                 'ln_miner_entity_id' => 1, //Shervin/Developer
-                'ln_content' => 'upload_to_cdn() Unable to upload file [' . $file_url . '] to Mench cloud.',
-                'ln_metadata' => $ln_metadata,
+                'ln_content' => 'upload_to_cdn() Failed to upload file to Mench CDN',
+                'ln_metadata' => array(
+                    'file_url' => $file_url,
+                    'ln_miner_entity_id' => $ln_miner_entity_id,
+                    'ln_metadata' => $ln_metadata,
+                    'is_local' => ( $is_local ? 1 : 0 ),
+                ),
             ));
-            return false;
+
+            return array(
+                'status' => 0,
+                'message' => 'Failed to upload file to Mench CDN',
+            );
 
         }
 
     } else {
+
+        //Log error:
+        $CI->Links_model->ln_create(array(
+            'ln_type_entity_id' => 4246, //Platform Bug Reports
+            'ln_miner_entity_id' => 1, //Shervin/Developer
+            'ln_content' => 'upload_to_cdn() Failed to load AWS S3 module',
+            'ln_metadata' => array(
+                'file_url' => $file_url,
+                'ln_miner_entity_id' => $ln_miner_entity_id,
+                'ln_metadata' => $ln_metadata,
+                'is_local' => ( $is_local ? 1 : 0 ),
+            ),
+        ));
+
         //Probably local, ignore this!
-        return false;
+        return array(
+            'status' => 0,
+            'message' => 'Failed to load AWS S3 module',
+        );
     }
 }
 

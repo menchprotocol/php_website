@@ -2235,57 +2235,20 @@ class Messenger extends CI_Controller
         foreach ($ln_pending as $ln) {
 
             //Store to CDN:
-            $new_file_url = upload_to_cdn($ln['ln_content'], $ln);
-
-            if ($new_file_url) {
-
-                //Save URL entity and link it to the Mench CDN and the uploaded user:
-                $new_entity_id = 0;
-                $url_entity = $this->Entities_model->en_sync_url($new_file_url, $ln['ln_miner_entity_id'], array(4396 /* Mench CDN Entity */, $ln['ln_miner_entity_id']));
-
-                //Did we have an error?
-                if (!$url_entity['status']) {
-                    //Log error:
-                    $this->Links_model->ln_create(array(
-                        'ln_type_entity_id' => 4246, //Platform Bug Reports
-                        'ln_miner_entity_id' => 1, //Shervin/Developer
-                        'ln_parent_link_id' => $ln['ln_id'],
-                        'ln_content' => 'cron__save_chat_media() failed to create new entity with new CDN URL',
-                        'ln_metadata' => array(
-                            'url_entity' => $url_entity,
-                            'new_file_url' => $new_file_url,
-                            'ln' => $ln,
-                        ),
-                    ));
-                } else {
-                    $new_entity_id = $url_entity['en_url']['en_id'];
-                }
-
-                //Update link:
-                $this->Links_model->ln_update($ln['ln_id'], array(
-                    'ln_content' => $new_file_url,
-                    'ln_child_entity_id' => $new_entity_id,
-                    'ln_status_entity_id' => 6176, //Link Published
-                ));
-
-                //Increase counter:
-                $counter++;
-
-            } else {
-
-                //Log error:
-                $this->Links_model->ln_create(array(
-                    'ln_type_entity_id' => 4246, //Platform Bug Reports
-                    'ln_miner_entity_id' => 1, //Shervin/Developer
-                    'ln_parent_link_id' => $ln['ln_id'],
-                    'ln_content' => 'cron__save_chat_media() Failed to save media from Messenger',
-                    'ln_metadata' => array(
-                        'new_file_url' => $new_file_url,
-                        'ln' => $ln,
-                    ),
-                ));
-
+            $cdn_status = upload_to_cdn($ln['ln_content'], $ln['ln_miner_entity_id'], $ln);
+            if(!$cdn_status['status']){
+                continue;
             }
+
+            //Update link:
+            $this->Links_model->ln_update($ln['ln_id'], array(
+                'ln_content' => $cdn_status['cdn_url'], //CDN URL
+                'ln_child_entity_id' => $cdn_status['cdn_en']['en_id'], //New URL Entity
+                'ln_status_entity_id' => 6176, //Link Published
+            ));
+
+            //Increase counter:
+            $counter++;
         }
 
         //Echo message for cron job:
@@ -2325,22 +2288,18 @@ class Messenger extends CI_Controller
             }
         }
 
+
         //Now go through and upload to CDN:
         foreach ($ln_pending as $ln) {
 
-            //Save photo to S3 if content is URL
-            $new_file_url = (filter_var($ln['ln_content'], FILTER_VALIDATE_URL) ? upload_to_cdn($ln['ln_content'], $ln) : false);
+            //make sure it's a URL:
+            if(!filter_var($ln['ln_content'], FILTER_VALIDATE_URL)){
+                continue;
+            }
 
-            if (!$new_file_url) {
-
-                //Ooopsi, there was an error:
-                $this->Links_model->ln_create(array(
-                    'ln_content' => 'cron__save_profile_photo() failed to store file in CDN',
-                    'ln_type_entity_id' => 4246, //Platform Bug Reports
-                    'ln_miner_entity_id' => 1, //Shervin/Developer
-                    'ln_parent_link_id' => $ln['ln_id'],
-                ));
-
+            //Save photo to CDN:
+            $cdn_status = upload_to_cdn($ln['ln_content'], $ln['ln_miner_entity_id'], $ln);
+            if (!$cdn_status['status']) {
                 continue;
             }
 
@@ -2350,7 +2309,7 @@ class Messenger extends CI_Controller
 
                 //Update Cover ID:
                 $this->Entities_model->en_update($ln['en_id'], array(
-                    'en_icon' => '<img src="' . $new_file_url . '">',
+                    'en_icon' => '<img src="' . $cdn_status['cdn_url'] . '">',
                 ), true, $ln['en_id']);
 
                 //Link link to entity:
@@ -2365,7 +2324,7 @@ class Messenger extends CI_Controller
                 'ln_child_entity_id' => $ln_child_entity_id,
                 'ln_metadata' => array(
                     'original_url' => $ln['ln_content'],
-                    'cdn_url' => $new_file_url,
+                    'cdn_status' => $cdn_status,
                 ),
             ));
 

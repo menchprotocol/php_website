@@ -1220,25 +1220,10 @@ class Intents extends CI_Controller
             $mime = mime_content_type($temp_local);
         }
 
-        $new_file_url = upload_to_cdn($temp_local, $_FILES[$_POST['upload_type']], true);
-
-        //What happened?
-        if (!$new_file_url) {
+        $cdn_status = upload_to_cdn($temp_local, $session_en['en_id'], $_FILES[$_POST['upload_type']], true);
+        if (!$cdn_status['status']) {
             //Oops something went wrong:
-            return echo_json(array(
-                'status' => 0,
-                'message' => 'Failed to save file to Mench cloud',
-            ));
-        }
-
-
-        //Save URL entity and link it to the Mench CDN and the uploaded user:
-        $url_entity = $this->Entities_model->en_sync_url($new_file_url, $session_en['en_id'], array(4396 /* Mench CDN Entity */, $session_en['en_id']));
-
-        //Did we have an error?
-        if (!$url_entity['status']) {
-            //Oops something went wrong, return error:
-            return $url_entity;
+            return echo_json($cdn_status);
         }
 
 
@@ -1247,9 +1232,9 @@ class Intents extends CI_Controller
             'ln_status_entity_id' => 6174, //Link New
             'ln_miner_entity_id' => $session_en['en_id'],
             'ln_type_entity_id' => $_POST['focus_ln_type_entity_id'],
-            'ln_parent_entity_id' => $url_entity['en_url']['en_id'],
+            'ln_parent_entity_id' => $cdn_status['cdn_en']['en_id'],
             'ln_child_intent_id' => intval($_POST['in_id']),
-            'ln_content' => '@' . $url_entity['en_url']['en_id'], //Just place the entity reference as the entire message
+            'ln_content' => '@' . $cdn_status['cdn_en']['en_id'], //Just place the entity reference as the entire message
             'ln_order' => 1 + $this->Links_model->ln_max_order(array(
                 'ln_type_entity_id' => $_POST['focus_ln_type_entity_id'],
                 'ln_child_intent_id' => $_POST['in_id'],

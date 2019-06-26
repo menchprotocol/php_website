@@ -204,21 +204,9 @@ class Entities extends CI_Controller
             $mime = mime_content_type($temp_local);
         }
 
-        $new_file_url = upload_to_cdn($temp_local, $_FILES[$_POST['upload_type']], true);
+        //Return the CDN uploader results:
+        return echo_json(upload_to_cdn($temp_local, $session_en['en_id'], $_FILES[$_POST['upload_type']], true));
 
-        //What happened?
-        if (!$new_file_url) {
-            //Oops something went wrong:
-            return echo_json(array(
-                'status' => 0,
-                'message' => 'Failed to save file to Mench cloud',
-            ));
-        } else {
-            return echo_json(array(
-                'status' => 1,
-                'new__url' => $new_file_url,
-            ));
-        }
     }
 
 

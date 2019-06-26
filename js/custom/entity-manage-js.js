@@ -566,7 +566,7 @@ function en_save_file_upload(droppedFiles, uploadType) {
                 if(data.status){
 
                     //Add URL to input:
-                    $('#ln_content').val( data.new__url );
+                    $('#ln_content').val( data.cdn_url );
 
                     //Update count:
                     ln_content_word_count('#ln_content','#charln_contentNum');
