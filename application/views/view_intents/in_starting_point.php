@@ -23,7 +23,7 @@ $source_info = echo_tree_experts($in, false);
 $step_info = echo_tree_steps($in, false);
 $user_info = echo_tree_users($in, false);
 
-if($step_info || $source_info || $time_info){
+if($step_info || $source_info || $user_info){
     echo '<h3 style="margin-bottom:5px; margin-top:15px !important;">Overview:</h3>';
     echo '<div style="margin:5px 0 25px 0;" class="maxout">';
     echo $source_info;

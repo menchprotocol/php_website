@@ -33,7 +33,7 @@ if($this->uri->segment(1)=='actionplan'){
                 </div>
                 <div class="modal-footer">
                     <button type="button" class="btn btn-default" data-dismiss="modal">Cancel</button>
-                    <button type="button" onclick="apply_stop()" class="btn btn-primary"><i class="fas fa-hand-paper"></i> Stop</button>
+                    <button type="button" onclick="apply_stop()" class="btn btn-primary"><i class="fas fa-comment-times"></i> Stop</button>
                 </div>
             </div>
         </div>

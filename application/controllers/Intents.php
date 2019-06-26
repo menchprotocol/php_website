@@ -1554,7 +1554,7 @@ class Intents extends CI_Controller
          *
          * */
 
-        if($in_id == 'consider_run'){
+        if($in_id < 0){
             //Gateway URL to give option to run...
             die('<a href="/intents/cron__sync_common_base">Click here</a> to start running this function.');
         }
@@ -1602,7 +1602,7 @@ class Intents extends CI_Controller
          * */
 
 
-        if($in_id == 'consider_run'){
+        if($in_id < 0){
             //Gateway URL to give option to run...
             die('<a href="/intents/cron__sync_extra_insights">Click here</a> to start running this function.');
         }

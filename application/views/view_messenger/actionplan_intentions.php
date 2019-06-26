@@ -24,6 +24,10 @@ if(count($user_intents) > 0){
         //Display row:
         echo '<a id="ap_in_'.$ln['in_id'].'" href="/actionplan/' . $ln['in_id'] . '" sort-link-id="'.$ln['ln_id'].'" class="list-group-item actionplan_sort">';
 
+        echo '<span class="pull-right" style="padding-right:3px; padding-left:10px;">';
+        echo '<span class="actionplan_remove" in-id="'.$ln['in_id'].'" data-toggle="tooltip" title="Cancel this intention and stop receiving updates" data-placement="left"><i class="fas fa-comment-times" style="font-size:1.6em;"></i></span>';
+        echo '</span>';
+
 
         if($has_multiple_intentions){
             echo '<div class="left-sorting">';
@@ -38,7 +42,6 @@ if(count($user_intents) > 0){
         echo '<div class="actionplan-overview">';
         echo ( $time_estimate ? $time_estimate.', ' : '');
         echo '<span title="'.$completion_rate['steps_completed'].'/'.$completion_rate['steps_total'].' Steps Completed">'.$completion_rate['completion_percentage'].'% Complete</span>';
-        echo '[<span class="actionplan_remove" in-id="'.$ln['in_id'].'"><i class="fas fa-hand-paper"></i> Stop</span>]';
         echo '</div>';
         echo '</a>';
 

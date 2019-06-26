@@ -1216,9 +1216,11 @@ class Actionplan_model extends CI_Model
 
             if(!$fb_messenger_format){
                 $next_step_message .= '</div>';
-            } elseif($too_many_children){
-                //Give instructions on how to select path:
-                $next_step_message .= "\n\n" . 'Type a number between 1-'.count($in__children).' to continue.';
+            } else {
+                if($too_many_children) {
+                    //Give instructions on how to select path:
+                    $next_step_message .= "\n\n" . 'I recommend you to skip';
+                }
             }
 
         } elseif($has_children && !$in_is_or /* AND Children */){
@@ -1483,7 +1485,7 @@ class Actionplan_model extends CI_Model
         //Calculate common steps and expansion steps recursively for this user:
         $metadata_this = array(
             //Generic assessment marks stats:
-            'steps_marks_count' => 1, //The parent intent
+            'steps_question_count' => 0, //The parent intent
             'steps_marks_min' => 0,
             'steps_marks_max' => 0,
 
@@ -1496,59 +1498,20 @@ class Actionplan_model extends CI_Model
         );
 
 
-        //Go through open steps first:
-        foreach($flat_common_steps as $open_in_id){
-
-            //Calculate local min/max marks:
-            $metadata_this['steps_marks_count'] += 1;
-            $local_min = null;
-            $local_max = null;
-
-            //Calculate min/max points for this based on answers:
-            foreach($this->Links_model->ln_fetch(array(
-                'in_status_entity_id IN (' . join(',', $this->config->item('en_ids_7355')) . ')' => null, //Intent Statuses Public
-                'ln_status_entity_id IN (' . join(',', $this->config->item('en_ids_7359')) . ')' => null, //Link Statuses Public
-                'ln_type_entity_id' => 4228, //Intent Link Fixed Steps
-                'ln_parent_intent_id' => $question_in_id,
-                'ln_child_intent_id IN (' . join(',', $answers_in_ids) . ')' => null, //Limit to cached answers
-            ), array('in_child')) as $in_answer){
-
-                //Extract Link Metadata:
-                $possible_answer_metadata = unserialize($in_answer['ln_metadata']);
-
-                //Assign to this question:
-                $answer_marks_index[$in_answer['in_id']] = ( isset($possible_answer_metadata['tr__assessment_points']) ? intval($possible_answer_metadata['tr__assessment_points']) : 0 );
-
-                //Addup local min/max marks:
-                if(is_null($local_min) || $answer_marks_index[$in_answer['in_id']] < $local_min){
-                    $local_min = $answer_marks_index[$in_answer['in_id']];
-                }
-                if(is_null($local_max) || $answer_marks_index[$in_answer['in_id']] > $local_max){
-                    $local_max = $answer_marks_index[$in_answer['in_id']];
-                }
-            }
-
-            //Did we have any marks for this question?
-            if(!is_null($local_min)){
-                $metadata_this['steps_marks_min'] += $local_min;
-            }
-            if(!is_null($local_max)){
-                $metadata_this['steps_marks_max'] += $local_max;
-            }
-        }
-
         //Fetch expansion steps recursively, if any:
         if(isset($in_metadata['in__metadata_expansion_steps']) && count($in_metadata['in__metadata_expansion_steps']) > 0){
 
             //We need expansion steps (OR Intents) to calculate question/answers:
             //To save all the marks for specific answers:
+            $question_in_ids = array();
             $answer_marks_index = array();
 
             //Go through these expansion steps:
             foreach($in_metadata['in__metadata_expansion_steps'] as $question_in_id => $answers_in_ids ){
 
                 //Calculate local min/max marks:
-                $metadata_this['steps_marks_count'] += 1;
+                array_push($question_in_ids, $question_in_id);
+                $metadata_this['steps_question_count'] += 1;
                 $local_min = null;
                 $local_max = null;
 
@@ -1591,9 +1554,9 @@ class Actionplan_model extends CI_Model
             foreach($this->Links_model->ln_fetch(array(
                 'ln_miner_entity_id' => $en_id, //Belongs to this User
                 'ln_type_entity_id IN (' . join(',', $this->config->item('en_ids_6146')) . ')' => null, //User Steps Completed
-                'ln_parent_intent_id IN (' . join(',', $flat_common_steps ) . ')' => null,
+                'ln_parent_intent_id IN (' . join(',', $question_in_ids ) . ')' => null,
                 'ln_status_entity_id IN (' . join(',', $this->config->item('en_ids_7359')) . ')' => null, //Link Statuses Public
-            ), array('in_child')) as $expansion_in) {
+            )) as $expansion_in) {
 
                 //Addup data for this intent:
                 $metadata_this['steps_answered_count'] += 1;

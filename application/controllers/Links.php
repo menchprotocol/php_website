@@ -202,7 +202,7 @@ class Links extends CI_Controller
 
     function cron__sync_algolia($input_obj_type = null, $input_obj_id = null){
 
-        if($input_obj_type == 'consider_run'){
+        if($input_obj_type < 0){
             //Gateway URL to give option to run...
             die('<a href="/links/cron__sync_algolia">Click here</a> to start running this function.');
         }
@@ -221,7 +221,7 @@ class Links extends CI_Controller
          *
          * */
 
-        if($affirmation == 'consider_run'){
+        if($affirmation < 0){
             //Gateway URL to give option to run...
             die('<a href="/links/cron__sync_gephi">Click here</a> to start running this function.');
         }
@@ -392,7 +392,7 @@ class Links extends CI_Controller
          *
          * */
 
-        if($affirmation == 'consider_run'){
+        if($affirmation < 0){
             //Gateway URL to give option to run...
             die('<a href="/links/cron__clean_metadatas">Click here</a> to start running this function.');
         }

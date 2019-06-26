@@ -875,7 +875,7 @@ function echo_tree_users($in, $fb_messenger_format = false, $autoexpand = false)
     $pitch_body  = number_format($enrolled_users_count[0]['totals'], 0) .' User'. echo__s($enrolled_users_count[0]['totals']) .' added this intention to their Action Plan and '.( $completion_percentage_raw < 100 ? 'so far ' : '' ).$completion_percentage_fancy.' have completed it.';
 
     if ($fb_messenger_format) {
-        return '👤 ' . $pitch_body;
+        return '👤 ' . $pitch_body. "\n\n";
     } else {
         //HTML format
         $pitch_title = '<span class="icon-block"><i class="fas fa-user"></i></span>&nbsp;'. echo_number($enrolled_users_count[0]['totals']) .' Enrolled Users';
@@ -1043,7 +1043,7 @@ function echo_tree_experts($in, $fb_messenger_format = false, $autoexpand = fals
     }
 
     if ($fb_messenger_format) {
-        return '⭐ ' . $pitch_body;
+        return '⭐ ' . $pitch_body. "\n\n";
     } else {
         //HTML format
         return echo_tree_html_body('ExpertReferences', $pitch_title, $pitch_body, $autoexpand);
@@ -1104,7 +1104,7 @@ function echo_tree_steps($in, $fb_messenger_format = 0, $autoexpand = false)
     if ($fb_messenger_format) {
 
         $pitch_body .= '.';
-        return '🚶 ' . $pitch_body;
+        return '🚶 ' . $pitch_body. "\n\n";
 
     } else {
 
