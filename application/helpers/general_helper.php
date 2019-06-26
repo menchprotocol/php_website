@@ -433,7 +433,7 @@ function in_is_or($in_type_entity_id, $return_id = false){
 }
 
 
-function upload_to_cdn($file_url, $ln_miner_entity_id, $ln_metadata = null, $is_local = false)
+function upload_to_cdn($file_url, $ln_miner_entity_id = 0, $ln_metadata = null, $is_local = false)
 {
 
     /*
@@ -490,6 +490,14 @@ function upload_to_cdn($file_url, $ln_miner_entity_id, $ln_metadata = null, $is_
 
             //Define new URL:
             $cdn_new_url = trim($result['ObjectURL']);
+
+            if($ln_miner_entity_id < 1){
+                //Just return URL:
+                return array(
+                    'status' => 1,
+                    'cdn_url' => $cdn_new_url,
+                );
+            }
 
             //Create and link new entity to CDN and uploader:
             $url_entity = $CI->Entities_model->en_sync_url($cdn_new_url, $ln_miner_entity_id, array(4396 /* Mench CDN Entity */, $ln_miner_entity_id));

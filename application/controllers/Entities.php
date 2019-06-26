@@ -205,7 +205,7 @@ class Entities extends CI_Controller
         }
 
         //Return the CDN uploader results:
-        return echo_json(upload_to_cdn($temp_local, $session_en['en_id'], $_FILES[$_POST['upload_type']], true));
+        return echo_json(upload_to_cdn($temp_local, 0, $_FILES[$_POST['upload_type']], true));
 
     }
 

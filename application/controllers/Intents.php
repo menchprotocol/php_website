@@ -1387,7 +1387,7 @@ class Intents extends CI_Controller
         ));
     }
 
-    function in_message_modify()
+    function in_message_modify_save()
     {
 
         //Authenticate Miner:
@@ -1402,7 +1402,7 @@ class Intents extends CI_Controller
                 'status' => 0,
                 'message' => 'Missing Link ID',
             ));
-        } elseif (!isset($_POST['new_message_status'])) {
+        } elseif (!isset($_POST['message_ln_status'])) {
             return echo_json(array(
                 'status' => 0,
                 'message' => 'Missing Message Status',
@@ -1444,14 +1444,14 @@ class Intents extends CI_Controller
 
 
         //Did the message status change?
-        if($messages[0]['ln_status_entity_id'] != $_POST['new_message_status']){
+        if($messages[0]['ln_status_entity_id'] != $_POST['message_ln_status']){
 
             //Are we deleting this message?
-            if($_POST['new_message_status'] == -1){
+            if($_POST['message_ln_status'] == 6173 /* Link Removed*/){
 
                 //yes, do so and return results:
                 $affected_rows = $this->Links_model->ln_update(intval($_POST['ln_id']), array(
-                    'ln_status_entity_id' => $_POST['new_message_status'],
+                    'ln_status_entity_id' => $_POST['message_ln_status'],
                 ), $session_en['en_id']);
 
                 //Return success:
@@ -1467,7 +1467,7 @@ class Intents extends CI_Controller
                     ));
                 }
 
-            } elseif($_POST['new_message_status'] == 2){
+            } elseif($_POST['message_ln_status'] == 6176 /* Link Published */){
 
                 //We're publishing, make sure potential entity references are also published:
                 $string_references = extract_references($_POST['ln_content']);
@@ -1502,7 +1502,7 @@ class Intents extends CI_Controller
         //All good, lets move on:
         //Define what needs to be updated:
         $to_update = array(
-            'ln_status_entity_id' => $_POST['new_message_status'],
+            'ln_status_entity_id' => $_POST['message_ln_status'],
             'ln_content' => $msg_validation['input_message'],
             'ln_parent_entity_id' => $msg_validation['ln_parent_entity_id'],
             'ln_parent_intent_id' => $msg_validation['ln_parent_intent_id'],
@@ -1523,6 +1523,7 @@ class Intents extends CI_Controller
             'status' => 1,
             'message' => $this->Communication_model->dispatch_message($msg_validation['input_message'], $session_en, false, array(), array(), $_POST['in_id']),
             'message_new_status_icon' => '<span title="' . $en_all_6186[$to_update['ln_status_entity_id']]['m_name'] . ': ' . $en_all_6186[$to_update['ln_status_entity_id']]['m_desc'] . '" data-toggle="tooltip" data-placement="top">' . $en_all_6186[$to_update['ln_status_entity_id']]['m_icon'] . '</span>', //This might have changed
+            'remove_from_ui' => ( $_POST['message_ln_status'] == 6173 /* Link Removed */ ? 1 : 0),
             'success_icon' => '<span><i class="fas fa-check"></i> Saved</span>',
         ));
     }

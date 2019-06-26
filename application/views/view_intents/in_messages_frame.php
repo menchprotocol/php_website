@@ -112,14 +112,14 @@ foreach ($metadatas as $ln) {
     echo '<div class="add-msg add-msg' . $in_id . '">';
     echo '<form class="box box' . $in_id . '" method="post" enctype="multipart/form-data">'; //Used for dropping files
 
-    echo '<textarea onkeyup="count_message()" class="form-control msg msgin algolia_search" style="min-height:80px; box-shadow: none; resize: none; margin-bottom: 0px;" id="ln_content' . $in_id . '" placeholder="Write Message, Drop a File or Paste URL"></textarea>';
+    echo '<textarea onkeyup="in_message_char_count()" class="form-control msg msgin algolia_search" style="min-height:80px; box-shadow: none; resize: none; margin-bottom: 0px;" id="ln_content' . $in_id . '" placeholder="Write Message, Drop a File or Paste URL"></textarea>';
 
     echo '<div id="ln_content_counter" style="margin:0 0 1px 0; font-size:0.8em;">';
     //File counter:
     echo '<span id="charNum' . $in_id . '">0</span>/' . $messages_max_length;
 
     ///firstname
-    echo '<a href="javascript:add_first_name();" class="textarea_buttons ' . echo_advance() . ' remove_loading" style="float:right; margin-left:8px;" data-toggle="tooltip" title="Replaced with master\'s First Name for a more personal message." data-placement="left"><i class="fas fa-fingerprint"></i> /firstname</a>';
+    echo '<a href="javascript:in_message_add_name();" class="textarea_buttons ' . echo_advance() . ' remove_loading" style="float:right; margin-left:8px;" data-toggle="tooltip" title="Replaced with master\'s First Name for a more personal message." data-placement="left"><i class="fas fa-fingerprint"></i> /firstname</a>';
 
     //Choose a file:
     echo '<div style="float:right; display:inline-block;" class="remove_loading"><input class="box__file inputfile" type="file" name="file" id="file" /><label class="textarea_buttons" for="file" data-toggle="tooltip" title="Upload files up to ' . $this->config->item('max_file_mb_size') . ' MB" data-placement="top"><i class="fal fa-cloud-upload"></i> Upload</label></div>';
@@ -128,7 +128,7 @@ foreach ($metadatas as $ln) {
 
     //Fetch for all message types:
     foreach ($en_all_4485 as $ln_type_entity_id => $m) {
-        echo '<div class="iphone-add-btn all_msg msg_en_type_' . $ln_type_entity_id . '"><a href="javascript:message_create();" id="add_message_' . $ln_type_entity_id . '_' . $in_id . '" data-toggle="tooltip" title="or hit CTRL+ENTER ;)" data-placement="right" class="btn btn-primary">ADD '.$m['m_icon'].' ' . $m['m_name'] . '</a></div>';
+        echo '<div class="iphone-add-btn all_msg msg_en_type_' . $ln_type_entity_id . '"><a href="javascript:in_message_create();" id="add_message_' . $ln_type_entity_id . '_' . $in_id . '" data-toggle="tooltip" title="or hit CTRL+ENTER ;)" data-placement="right" class="btn btn-primary">ADD '.$m['m_icon'].' ' . $m['m_name'] . '</a></div>';
     }
 
     echo '</form>';
