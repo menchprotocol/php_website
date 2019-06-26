@@ -11,22 +11,16 @@ defined('BASEPATH') OR exit('No direct script access allowed');
  *
  */
 
-//Generated 2019-06-25 17:10:01 PST
+//Generated 2019-06-25 17:26:24 PST
 
 //Mench Platform Products:
-$config['en_ids_7372'] = array(6196,6287,7368,7369,7370);
+$config['en_ids_7372'] = array(6196,7368,7369,7370);
 $config['en_all_7372'] = array(
     6196 => array(
         'm_icon' => '<i class="fab fa-facebook-messenger"></i>',
         'm_name' => 'Chatbot',
         'm_desc' => 'A personal assistant that delivers intents and entities using a friendly conversation',
         'm_parents' => array(7372,3320,4463),
-    ),
-    6287 => array(
-        'm_icon' => '<i class="fas fa-user-shield"></i>',
-        'm_name' => 'Admin App',
-        'm_desc' => 'Tools for moderating the Mench platform',
-        'm_parents' => array(7372,4527,7284),
     ),
     7368 => array(
         'm_icon' => '<i class="fas fa-user-hard-hat"></i>',
@@ -48,7 +42,7 @@ $config['en_all_7372'] = array(
     ),
 );
 
-//Mench Admin App:
+//Mench Admin Tools:
 $config['en_ids_6287'] = array(1281,7257,7258,7274);
 $config['en_all_6287'] = array(
     1281 => array(
@@ -124,7 +118,7 @@ $config['en_all_7370'] = array(
 );
 
 //Mench Miner App:
-$config['en_ids_7368'] = array(1308,4535,4536,5007,6205,7161,7256,7291);
+$config['en_ids_7368'] = array(1308,4535,4536,5007,6205,6287,7161,7256,7291);
 $config['en_all_7368'] = array(
     1308 => array(
         'm_icon' => '<i class="fas fa-user-hard-hat"></i>',
@@ -155,6 +149,12 @@ $config['en_all_7368'] = array(
         'm_name' => 'Links',
         'm_desc' => '',
         'm_parents' => array(7368,4534,4463),
+    ),
+    6287 => array(
+        'm_icon' => '<i class="fas fa-user-shield"></i>',
+        'm_name' => 'Mench Admin Tools',
+        'm_desc' => 'Tools for moderating the Mench platform',
+        'm_parents' => array(7368,4527,7284),
     ),
     7161 => array(
         'm_icon' => '<i class="far fa-tachometer-alt-fast"></i>',

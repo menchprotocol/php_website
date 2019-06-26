@@ -90,9 +90,9 @@ $uri_segment_2 = $this->uri->segment(2);
 
 
                             <!-- List other Apps -->
-                            <li class="<?= ($uri_segment_1 == 'admin' ? 'links-active' : 'links-inactive') ?>" data-toggle="tooltip" data-placement="left" title="<?= $en_all_7372[6287]['m_name'] ?>">
+                            <li class="<?= ($uri_segment_1 == 'admin' ? 'links-active' : 'links-inactive') ?>" data-toggle="tooltip" data-placement="left" title="<?= $en_all_7368[6287]['m_name'] ?>">
                                 <a href="/admin">
-                                    <?= $en_all_7372[6287]['m_icon'] ?>
+                                    <?= $en_all_7368[6287]['m_icon'] ?>
                                 </a>
                             </li>
                             <li class="links-inactive" data-toggle="tooltip" data-placement="left" title="<?= $en_all_7372[7369]['m_name'] ?>">
