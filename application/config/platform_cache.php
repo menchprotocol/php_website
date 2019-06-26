@@ -11,7 +11,7 @@ defined('BASEPATH') OR exit('No direct script access allowed');
  *
  */
 
-//Generated 2019-06-25 19:15:57 PST
+//Generated 2019-06-25 23:38:54 PST
 
 //Mench Platform Products:
 $config['en_ids_7372'] = array(6196,7369,7370,7368);
@@ -19,7 +19,7 @@ $config['en_all_7372'] = array(
     6196 => array(
         'm_icon' => '<img src="https://mench.com/img/bp_128.png">',
         'm_name' => 'Mench Personal Assistant',
-        'm_desc' => 'A Messenger chatbot connecting software engineers to companies with a friendly conversation.',
+        'm_desc' => 'A chatbot that matches software engineers to their dream jobs a friendly conversation.',
         'm_parents' => array(7372,3320,4463),
     ),
     7369 => array(

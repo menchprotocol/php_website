@@ -61,7 +61,7 @@
     </div>
 
     <div class="col-md-8 cols" style="padding-top:40px;">
-        <p>Login to your Mench account to access:</p>
+        <p>Login to access:</p>
         <ul style="list-style: none; font-size:1.3em; margin-left:-20px;">
         <?php
         foreach($this->config->item('en_all_7372') /* Mench Platform Products */ as $en_id => $m){
