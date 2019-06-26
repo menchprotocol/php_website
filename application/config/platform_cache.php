@@ -11,33 +11,33 @@ defined('BASEPATH') OR exit('No direct script access allowed');
  *
  */
 
-//Generated 2019-06-25 17:26:24 PST
+//Generated 2019-06-25 19:15:57 PST
 
 //Mench Platform Products:
-$config['en_ids_7372'] = array(6196,7368,7369,7370);
+$config['en_ids_7372'] = array(6196,7369,7370,7368);
 $config['en_all_7372'] = array(
     6196 => array(
-        'm_icon' => '<i class="fab fa-facebook-messenger"></i>',
-        'm_name' => 'Chatbot',
-        'm_desc' => 'A personal assistant that delivers intents and entities using a friendly conversation',
+        'm_icon' => '<img src="https://mench.com/img/bp_128.png">',
+        'm_name' => 'Mench Personal Assistant',
+        'm_desc' => 'A Messenger chatbot connecting software engineers to companies with a friendly conversation.',
         'm_parents' => array(7372,3320,4463),
-    ),
-    7368 => array(
-        'm_icon' => '<i class="fas fa-user-hard-hat"></i>',
-        'm_name' => 'Miner App',
-        'm_desc' => 'Tools for miners to manage intents, entities and links',
-        'm_parents' => array(7372,4527),
     ),
     7369 => array(
         'm_icon' => '<i class="fas fa-user-graduate"></i>',
-        'm_name' => 'User App',
-        'm_desc' => 'Tools for users to progress their Action Plan and manage their account',
+        'm_name' => 'Mench User App',
+        'm_desc' => 'A web portal for software engineers to assess/improve their skills & get matched with top companies.',
         'm_parents' => array(7372,6196,4527),
     ),
     7370 => array(
         'm_icon' => '<i class="fas fa-user-tie"></i>',
-        'm_name' => 'Company App',
-        'm_desc' => 'Tools for companies to manage their job postings and candidate funnel',
+        'm_name' => 'Mench Company App',
+        'm_desc' => 'A web portal for companies to educate/evaluate software engineers and hire top talent.',
+        'm_parents' => array(7372,4527),
+    ),
+    7368 => array(
+        'm_icon' => '<i class="fas fa-user-hard-hat"></i>',
+        'm_name' => 'Mench Miner App',
+        'm_desc' => 'A web portal for industry researchers to mine expert intelligence as Mench intents/entities.',
         'm_parents' => array(7372,4527),
     ),
 );
@@ -1154,8 +1154,8 @@ $config['en_all_4463'] = array(
         'm_parents' => array(7369,4463),
     ),
     6196 => array(
-        'm_icon' => '<i class="fab fa-facebook-messenger"></i>',
-        'm_name' => 'Mench Chatbot',
+        'm_icon' => '<img src="https://mench.com/img/bp_128.png">',
+        'm_name' => 'Mench Personal Assistant',
         'm_desc' => '',
         'm_parents' => array(7372,3320,4463),
     ),

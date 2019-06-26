@@ -11,8 +11,11 @@ $(document).ready(function () {
 
     if (is_compact) {
 
-        //Adjust columns:
-        $('.cols').removeClass('col-xs-5').removeClass('col-xs-7').addClass('col-xs-12');
+        //Remove all columns
+        $('.cols').removeClass('col-xs-1').removeClass('col-xs-2').removeClass('col-xs-3').removeClass('col-xs-4').removeClass('col-xs-5').removeClass('col-xs-6').removeClass('col-xs-7').removeClass('col-xs-8').removeClass('col-xs-9').removeClass('col-xs-10').removeClass('col-xs-11');
+
+        //Add largest column:
+        $('.cols').addClass('col-xs-12');
         $('.fixed-box').addClass('release-fixture');
         $('.dash').css('margin-bottom', '0px'); //For iframe to show better
 

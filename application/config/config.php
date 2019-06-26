@@ -5,7 +5,7 @@ defined('BASEPATH') OR exit('No direct script access allowed');
 /*
  *
  * Global variables used throughout the platform.
- * Example: $this->config->item('in_learn_mench_id')
+ * Example: $this->config->item('css_column_1')
  *
  */
 
@@ -15,10 +15,12 @@ date_default_timezone_set('America/Los_Angeles');
 
 
 //App Functionality:
-$config['app_version']              = '0.912'; //Cache buster for static JS/CSS files, so needs to be updated if you update static files
+$config['app_version']              = '0.913'; //Cache buster for static JS/CSS files, so needs to be updated if you update static files
 $config['app_enable_algolia']       = true; //May need to turn off if/when we reach monthly quota of 50k calls
 $config['max_file_mb_size']         = 25; //Server setting is 32MB
 $config['items_per_page']           = 100; //The limit of how many items should be loaded per page/section
+$config['css_column_1']            = 'col-xs-7'; //Size of grid 1 (IF Change col-xs then also update on other code base
+$config['css_column_2']            = 'col-xs-5'; //Size of grid 2
 
 
 //Intent References:

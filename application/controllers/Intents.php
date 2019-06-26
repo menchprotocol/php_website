@@ -94,7 +94,7 @@ class Intents extends CI_Controller
     }
 
 
-    function in_landing_page($in_id)
+    function in_public_ui($in_id)
     {
 
         /*
@@ -130,7 +130,7 @@ class Intents extends CI_Controller
         $this->load->view('view_shared/public_header', array(
             'in' => $ins[0],
             'session_en' => $session_en,
-            'title' => $ins[0]['in_outcome'],
+            'title' => echo_in_outcome($ins[0]['in_outcome'], true),
         ));
         //Load specific view based on intent status:
         $this->load->view(( $ins[0]['in_status_entity_id']==7351 /* Intent Featured */ ? 'view_intents/in_starting_point' : 'view_intents/in_passing_point'  ), array(

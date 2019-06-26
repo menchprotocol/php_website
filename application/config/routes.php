@@ -12,7 +12,7 @@ $route['entities']              = "entities/en_miner_ui/0";
 $route['intents/(:num)']        = "intents/in_miner_ui/$1";
 $route['intents']               = "intents/in_miner_ui/0";
 
-$route['(:num)']                = "intents/in_landing_page/$1"; //Public Intent Landing Page
+$route['(:num)']                = "intents/in_public_ui/$1"; //Public Intent Landing Page
 
 //Users:
 $route['login']                 = "messenger/user_login";

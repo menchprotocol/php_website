@@ -240,7 +240,7 @@ $has_filters = ( count($_GET) > 0 );
 <?php
 
 echo '<div class="row">';
-    echo '<div class="col-xs-7">';
+    echo '<div class="'.$this->config->item('css_column_1').'">';
 
         echo '<h1><i class="fas fa-link"></i> Links</h1>';
 
@@ -426,7 +426,7 @@ echo '</div></td>';
 
     //Show left column for intent management
     //TODO support entity management later...
-    echo '<div class="col-xs-5">';
+    echo '<div class="'.$this->config->item('css_column_2').'">';
         $this->load->view('view_intents/in_right_column');
     echo '</div>';
 

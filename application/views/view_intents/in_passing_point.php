@@ -1,5 +1,5 @@
 <?php
-echo '<div class="landing-page-intro" id="in_landing_page">';
+echo '<div class="landing-page-intro" id="in_public_ui">';
 
 //Intent Title:
 echo '<h1 style="margin-bottom:30px;" id="title-parent">' . echo_in_outcome($in['in_outcome']) . '</h1>';
