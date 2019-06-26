@@ -1226,6 +1226,7 @@ class Actionplan_model extends CI_Model
         } elseif($has_children && !$in_is_or /* AND Children */){
 
             //Do we have 2 or more children?
+            $max_and_list = 7;
             $has_multiple_children = (count($in__children) > 1);
 
             //Give more context for Messenger only:
@@ -1240,11 +1241,6 @@ class Actionplan_model extends CI_Model
                 $key = 0;
                 foreach ($in__children as $child_in) {
 
-                    //We require a clean title for Messenger:
-                    if($fb_messenger_format && !in_is_clean_outcome($child_in)){
-                        continue;
-                    }
-
                     if($key==0){
                         if($fb_messenger_format){
                             $next_step_message .= ':';
@@ -1255,9 +1251,9 @@ class Actionplan_model extends CI_Model
 
                     //We know that the $next_step_message length cannot surpass the limit defined by fb_max_message variable!
                     //make sure message is within range:
-                    if ($fb_messenger_format && ($key >= 7 || strlen($next_step_message) > ($this->config->item('fb_max_message') - 150))) {
+                    if ($fb_messenger_format && ($key >= $max_and_list || strlen($next_step_message) > ($this->config->item('fb_max_message') - 150))) {
                         //We cannot add any more, indicate truncating:
-                        $remainder = count($in__children) - $key;
+                        $remainder = count($in__children) - $max_and_list;
                         $next_step_message .= "\n\n" . '... plus ' . $remainder . ' more step' . echo__s($remainder) . '.';
                         break;
                     }
