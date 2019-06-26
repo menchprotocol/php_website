@@ -11,7 +11,7 @@ defined('BASEPATH') OR exit('No direct script access allowed');
  *
  */
 
-//Generated 2019-06-25 16:49:07 PST
+//Generated 2019-06-25 17:10:01 PST
 
 //Mench Platform Products:
 $config['en_ids_7372'] = array(6196,6287,7368,7369,7370);
@@ -38,7 +38,7 @@ $config['en_all_7372'] = array(
         'm_icon' => '<i class="fas fa-user-graduate"></i>',
         'm_name' => 'User App',
         'm_desc' => 'Tools for users to progress their Action Plan and manage their account',
-        'm_parents' => array(4430,7372,6196,4527),
+        'm_parents' => array(7372,6196,4527),
     ),
     7370 => array(
         'm_icon' => '<i class="fas fa-user-tie"></i>',
@@ -78,8 +78,14 @@ $config['en_all_6287'] = array(
 );
 
 //Mench User App:
-$config['en_ids_7369'] = array(6137,6138,7291);
+$config['en_ids_7369'] = array(4430,6137,6138,7291);
 $config['en_all_7369'] = array(
+    4430 => array(
+        'm_icon' => '<i class="fas fa-user-graduate"></i>',
+        'm_name' => 'Mench Users',
+        'm_desc' => '',
+        'm_parents' => array(7369,6196,6827,4426,4463),
+    ),
     6137 => array(
         'm_icon' => '👤',
         'm_name' => 'My Account',
@@ -857,7 +863,7 @@ $config['en_all_6827'] = array(
         'm_icon' => '<i class="fas fa-user-graduate"></i>',
         'm_name' => 'Users',
         'm_desc' => 'Users who are pursuing their intentions using Mench',
-        'm_parents' => array(6196,6827,4426,4463),
+        'm_parents' => array(7369,6196,6827,4426,4463),
     ),
     4433 => array(
         'm_icon' => '<i class="fas fa-user-ninja"></i>',
@@ -1038,7 +1044,7 @@ $config['en_all_6676'] = array(
 );
 
 //OR Intents:
-$config['en_ids_6193'] = array(6684,6685,7231,7230,6907);
+$config['en_ids_6193'] = array(6684,6685,7231,6907);
 $config['en_all_6193'] = array(
     6684 => array(
         'm_icon' => '<i class="fas fa-check"></i>',
@@ -1057,12 +1063,6 @@ $config['en_all_6193'] = array(
         'm_name' => 'Multiple Answers',
         'm_desc' => 'Allows the user to choose multiple answers from the list of children',
         'm_parents' => array(6157,6193),
-    ),
-    7230 => array(
-        'm_icon' => '<i class="fas fa-random"></i>',
-        'm_name' => 'Random Path',
-        'm_desc' => 'A path would be randomly chosen by Mench as way to A/B test two paths',
-        'm_parents' => array(6193),
     ),
     6907 => array(
         'm_icon' => '<i class="fas fa-lock"></i>',
@@ -1103,7 +1103,7 @@ $config['en_all_4463'] = array(
         'm_icon' => '<i class="fas fa-user-graduate"></i>',
         'm_name' => 'Mench Users',
         'm_desc' => 'Users connected to Mench Personal Assistant on Facebook Messenger.',
-        'm_parents' => array(6196,6827,4426,4463),
+        'm_parents' => array(7369,6196,6827,4426,4463),
     ),
     4433 => array(
         'm_icon' => '<i class="fas fa-user-ninja"></i>',
@@ -1899,7 +1899,7 @@ $config['en_all_4426'] = array(
         'm_icon' => '<i class="fas fa-user-graduate"></i>',
         'm_name' => 'Mench Users',
         'm_desc' => '',
-        'm_parents' => array(6196,6827,4426,4463),
+        'm_parents' => array(7369,6196,6827,4426,4463),
     ),
     4433 => array(
         'm_icon' => '<i class="fas fa-user-ninja"></i>',
@@ -2781,7 +2781,7 @@ $config['en_all_4600'] = array(
         'm_parents' => array(4600),
     ),
     2750 => array(
-        'm_icon' => '<i class="fas fa-users"></i>',
+        'm_icon' => '<i class="fas fa-user-tie"></i>',
         'm_name' => 'Companies',
         'm_desc' => '',
         'm_parents' => array(3463,4600),
