@@ -833,6 +833,10 @@ function echo_tree_html_body($id, $pitch_title, $pitch_body, $autoexpand){
 
 function echo_tree_users($in, $fb_messenger_format = false, $autoexpand = false){
 
+
+    //TODO Consider enabling later?
+    return null; //Disable for now
+
     /*
      *
      * An intent function to display current users for this intent
