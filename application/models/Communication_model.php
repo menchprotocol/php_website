@@ -1032,7 +1032,7 @@ class Communication_model extends CI_Model
 
             //Yes, we have something to offer:
 
-            $message = 'Here are some recommended intentions you can add to your Action Plan:';
+            $message = 'What would you like to do next?';
             $quick_replies = array();
 
             foreach($recommend_intentions as $count => $in){
