@@ -60,7 +60,7 @@ if(isset($session_en['en_id'])){
 } else {
 
     //Give option to add:
-    echo '<a class="btn btn-primary get-started-click" href="https://m.me/askmench?ref='.$in['in_id'].'" style="display: inline-block; padding:12px 36px;">Get Started &nbsp;&nbsp;&nbsp;<i class="fas fa-angle-double-right"></i></a>';
+    echo '<a class="btn btn-primary tag-manager-get-started" href="https://m.me/askmench?ref='.$in['in_id'].'" style="display: inline-block; padding:12px 36px;">Get Started &nbsp;&nbsp;&nbsp;<i class="fas fa-angle-double-right"></i></a>';
 
 }
 
@@ -116,7 +116,7 @@ if(count($parent_intentions) > 0 || count($recommended_intention) > 0){
         if(!in_is_clean_outcome($other_in)){
             continue;
         }
-        echo echo_in_recommend($other_in);
+        echo echo_in_recommend($other_in, false);
     }
 
     echo '</div>';
