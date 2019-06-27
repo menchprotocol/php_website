@@ -220,6 +220,11 @@ class Communication_model extends CI_Model
                 'status' => 0,
                 'message' => 'Message must be UTF8',
             );
+        } elseif(substr_count($input_message , '  ') > 0){
+            return array(
+                'status' => 0,
+                'message' => 'Message cannot have double space',
+            );
         } elseif ($fb_messenger_format && !isset($recipient_en['en_id'])) {
             return array(
                 'status' => 0,
