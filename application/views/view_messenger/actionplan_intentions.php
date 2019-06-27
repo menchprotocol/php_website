@@ -24,22 +24,15 @@ if(count($user_intents) > 0){
         //Display row:
         echo '<a id="ap_in_'.$ln['in_id'].'" href="/actionplan/' . $ln['in_id'] . '" sort-link-id="'.$ln['ln_id'].'" class="list-group-item actionplan_sort">';
 
-        echo '<span class="pull-right" style="padding-right:3px; padding-left:10px;">';
+        echo '<span class="pull-right" style="padding-right:8px; padding-left:10px;">';
         echo '<span class="actionplan_remove" in-id="'.$ln['in_id'].'" data-toggle="tooltip" title="Cancel this intention and stop receiving updates" data-placement="left"><i class="fas fa-comment-times" style="font-size:1.6em;"></i></span>';
         echo '</span>';
-
-
-        if($has_multiple_intentions){
-            echo '<div class="left-sorting">';
-            echo '<span class="results-ln-'.$ln['ln_id'].'">'.echo_ordinal_number(($priority+1)).'</span>';
-            echo '<i class="fas fa-sort"></i>'; //For sorting Action Plan
-            echo '</div>';
-        }
 
         $completion_rate = $this->Actionplan_model->actionplan_completion_progress($session_en['en_id'], $ln);
 
         echo '<span class="actionplan-title in-title-'.$ln['in_id'].'">' . $ln['in_outcome'] . '</span>';
         echo '<div class="actionplan-overview">';
+        echo '<span class="results-ln-'.$ln['ln_id'].'">'.echo_ordinal_number(($priority+1)).'</span> Priority, ';
         echo ( $time_estimate ? $time_estimate.', ' : '');
         echo '<span title="'.$completion_rate['steps_completed'].'/'.$completion_rate['steps_total'].' Steps Completed">'.$completion_rate['completion_percentage'].'% Complete</span>';
         echo '</div>';
