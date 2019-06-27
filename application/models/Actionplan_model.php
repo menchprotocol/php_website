@@ -1225,62 +1225,79 @@ class Actionplan_model extends CI_Model
 
         } elseif($has_children && !$in_is_or /* AND Children */){
 
+
             $max_and_list = 5;
             $has_multiple_children = (count($in__children) > 1); //Do we have 2 or more children?
 
-            //Give more context for Messenger only:
-            if($fb_messenger_format && $has_multiple_children){
-                //Multiple next steps:
-                $next_step_message .= ( count($in__children) > 1 ? 'Here are the next steps' : 'Here is the next step' );
-            }
-
-
             //List AND children:
             if($has_multiple_children || !$fb_messenger_format){
-                $key = 0;
-                foreach ($in__children as $child_in) {
 
-                    if($key==0){
-                        if($fb_messenger_format){
-                            $next_step_message .= ':';
-                        } else {
-                            $next_step_message .= '<div class="list-group" style="margin-top:10px;">';
+                //Check to see if we need titles:
+                $check_clean = ($fb_messenger_format && $has_multiple_children);
+                $frist_x_all_are_dirty = true; //Assume all first X intent outcomes are non-clean unless proven otherwise
+                if($check_clean){
+                    foreach ($in__children as $count => $child_in) {
+                        if($count==$max_and_list){
+                            break;
+                        }
+                        if(in_is_clean_outcome($child_in)){
+                            $frist_x_all_are_dirty = false;
+                            break;
                         }
                     }
-
-                    //We know that the $next_step_message length cannot surpass the limit defined by fb_max_message variable!
-                    //make sure message is within range:
-                    if ($fb_messenger_format && ($key >= $max_and_list || strlen($next_step_message) > ($this->config->item('fb_max_message') - 150))) {
-                        //We cannot add any more, indicate truncating:
-                        $remainder = count($in__children) - $max_and_list;
-                        $next_step_message .= "\n\n" . '... plus ' . $remainder . ' more step' . echo__s($remainder) . '.';
-                        break;
-                    }
-
-
-                    //Fetch progression data:
-                    $child_progression_steps = $this->Links_model->ln_fetch(array(
-                        'ln_type_entity_id IN (' . join(',', $this->config->item('en_ids_6146')) . ')' => null, //User Steps Completed
-                        'ln_miner_entity_id' => $en_id,
-                        'ln_parent_intent_id' => $child_in['in_id'],
-                        'ln_status_entity_id IN (' . join(',', $this->config->item('en_ids_7360')) . ')' => null, //Link Statuses Active
-                    ));
-
-
-                    if(!$fb_messenger_format){
-
-                        //Add HTML step to UI:
-                        $next_step_message .= echo_actionplan_step_child($en_id, $child_in, (count($child_progression_steps) > 0 ? $child_progression_steps[0]['ln_status_entity_id'] : 6174 /* Link New */ ));
-
-                    } else {
-
-                        //Add simple message:
-                        $next_step_message .= "\n\n" . ($key + 1) . '. ' . echo_in_outcome($child_in['in_outcome'], $fb_messenger_format);
-
-                    }
-
-                    $key++;
                 }
+
+                //Are we still clean?
+                if(!$check_clean || !$frist_x_all_are_dirty){
+                    $key = 0;
+                    foreach ($in__children as $child_in) {
+
+                        if($key==0){
+                            if($fb_messenger_format){
+                                if($has_multiple_children){
+                                    $next_step_message .= 'Here are the next steps:';
+                                }
+                            } else {
+                                $next_step_message .= '<div class="list-group" style="margin-top:10px;">';
+                            }
+                        }
+
+                        //We know that the $next_step_message length cannot surpass the limit defined by fb_max_message variable!
+                        //make sure message is within range:
+                        if ($fb_messenger_format && ($key >= $max_and_list || strlen($next_step_message) > ($this->config->item('fb_max_message') - 150))) {
+                            //We cannot add any more, indicate truncating:
+                            $remainder = count($in__children) - $max_and_list;
+                            $next_step_message .= "\n\n" . '... plus ' . $remainder . ' more step' . echo__s($remainder) . '.';
+                            break;
+                        }
+
+
+                        //Fetch progression data:
+                        $child_progression_steps = $this->Links_model->ln_fetch(array(
+                            'ln_type_entity_id IN (' . join(',', $this->config->item('en_ids_6146')) . ')' => null, //User Steps Completed
+                            'ln_miner_entity_id' => $en_id,
+                            'ln_parent_intent_id' => $child_in['in_id'],
+                            'ln_status_entity_id IN (' . join(',', $this->config->item('en_ids_7360')) . ')' => null, //Link Statuses Active
+                        ));
+
+
+                        if(!$fb_messenger_format){
+
+                            //Add HTML step to UI:
+                            $next_step_message .= echo_actionplan_step_child($en_id, $child_in, (count($child_progression_steps) > 0 ? $child_progression_steps[0]['ln_status_entity_id'] : 6174 /* Link New */ ));
+
+                        } else {
+
+                            //Add simple message:
+                            $next_step_message .= "\n\n" . ($key + 1) . '. ' . echo_in_outcome($child_in['in_outcome'], $fb_messenger_format);
+
+                        }
+
+                        $key++;
+                    }
+                }
+
+
 
                 if(!$fb_messenger_format && $key > 0){
                     //Close the HTML tag we opened:
