@@ -1231,7 +1231,7 @@ class Actionplan_model extends CI_Model
             //Give more context for Messenger only:
             if($fb_messenger_format && $has_multiple_children){
                 //Multiple next steps:
-                $next_step_message .= 'There are ' . count($in__children) . ' steps to ' . echo_in_outcome($ins[0]['in_outcome'], true, true);
+                $next_step_message .= ( count($in__children) > 1 ? 'Here are the next steps' : 'Here is the next step' );
             }
 
 
