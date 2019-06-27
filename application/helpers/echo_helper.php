@@ -939,7 +939,7 @@ function echo_tree_experts($in, $fb_messenger_format = false, $autoexpand = fals
 
             } else {
 
-                $source_info .= ' <span class="show_type_' . $type_id . '"><a href="javascript:void(0);" onclick="$(\'.show_type_' . $type_id . '\').toggle()" style="text-decoration:underline; display:inline-block;">' . $cat_contribution . '</a></span><span class="show_type_' . $type_id . '" style="display:none;">';
+                $source_info .= ' <span class="show_type_' . $type_id . '"><a href="javascript:void(0);" onclick="$(\'.show_type_' . $type_id . '\').toggle()" style="text-decoration:underline; display:inline-block;" class="overview-link">' . $cat_contribution . '</a></span><span class="show_type_' . $type_id . '" style="display:none;">';
 
                 //We only show details on our website's HTML landing pages:
                 $count = 0;
