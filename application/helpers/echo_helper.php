@@ -821,7 +821,7 @@ function echo_tree_html_body($id, $pitch_title, $pitch_body, $autoexpand){
     return '<div class="panel-group" id="open' . $id . '" role="tablist" aria-multiselectable="true"><div class="panel panel-primary">
             <div class="panel-heading" role="tab" id="heading' . $id . '">
                 <h4 class="panel-title">
-                    <a role="button" class="overview-link" data-toggle="collapse" data-parent="#open' . $id . '" href="#collapse' . $id . '" aria-expanded="' . ($autoexpand ? 'true' : 'false') . '" aria-controls="collapse' . $id . '">' . $pitch_title . ' <i class="fal fa-info-circle" style="font-size:0.85em !important;"></i>
+                    <a role="button" class="overview-link collapsed" data-toggle="collapse" data-parent="#open' . $id . '" href="#collapse' . $id . '" aria-expanded="' . ($autoexpand ? 'true' : 'false') . '" aria-controls="collapse' . $id . '">' . $pitch_title . ' <i class="fal fa-info-circle" style="font-size:0.85em !important;"></i>
                     </a>
                 </h4>
             </div>
