@@ -2331,6 +2331,10 @@ select.form-control {
         display: none;
     }
 
+    h1, .h1, .presentation-page .brand h1 {
+        font-size: 2em;
+    }
+
     .indent1 {
         margin-left: 8px;
     }
