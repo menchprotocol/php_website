@@ -583,7 +583,12 @@ class Entities_model extends CI_Model
 
 
         //Fetch/Create domain entity:
-        $domain_entity = $this->Entities_model->en_sync_domain($url, $ln_miner_entity_id, ( $domain_analysis['url_is_root'] && $name_was_passed ? $page_title : null ));
+        $page_title = ( $domain_analysis['url_is_root'] && $name_was_passed ? $page_title : null );
+        $domain_entity = $this->Entities_model->en_sync_domain($url, $ln_miner_entity_id, $page_title);
+        if(!$domain_entity['status']){
+            //We had an issue:
+            return $domain_entity;
+        }
 
 
         //Was this not a root domain? If so, also check to see if URL exists:
