@@ -25,6 +25,7 @@ $url_part_1 = $this->uri->segment(1);
 </head>
 
 <body class="landing-page">
+<?php $this->load->view('view_shared/google_tag_manager'); ?>
 
 <nav class="navbar navbar-warning navbar-fixed-top navbar-color-on-scroll no-adj">
     <div class="container">

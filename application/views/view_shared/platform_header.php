@@ -37,6 +37,8 @@ $uri_segment_2 = $this->uri->segment(2);
 
 <body id="platform_body" class="<?= (isset($_GET['skip_header']) ? 'grey-bg' : '') ?>">
 
+    <?php $this->load->view('view_shared/google_tag_manager'); ?>
+
     <!-- Managed by JS to edit various fields -->
     <div class="edit-box hidden"></div>
 
