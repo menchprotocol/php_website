@@ -755,7 +755,7 @@ function echo_random_message($message_key){
             'I cannot respond to your custom messages and can only understand if you select one of the options that I recommend to you.',
         ),
         'command_me' => array(
-            'You can add a new intention to your Action Plan by sending me a message that starts with "I want to", for example "I want to assess my self as a programmer" or "I want to get hired as a full-stack developer"',
+            'You can add a new intention to your Action Plan by sending me a message that starts with "I want to", for example: "I want to assess my back-end skills" or "I want to assess my javascript skills"',
         ),
         'goto_next' => array(
             'Choose next to continue',
