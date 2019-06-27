@@ -14,7 +14,7 @@ function echo_en_load_more($page, $limit, $en__child_count)
     //Regular section:
     $max_entities = (($page + 1) * $limit);
     $max_entities = ($max_entities > $en__child_count ? $en__child_count : $max_entities);
-    echo 'Load ' . (($page * $limit) + 1) . '-' . $max_entities . ' from ' . $en__child_count . ' total';
+    echo 'Load ' . (($page * $limit) + 1) . ' - ' . $max_entities . ' from ' . $en__child_count . ' total';
 
     echo '</a>';
 }
@@ -1039,7 +1039,7 @@ function echo_tree_experts($in, $fb_messenger_format = false, $autoexpand = fals
             $pitch_body .= ' by ';
         }
         $pitch_title .= $expert_count . ' Expert'. echo__s($expert_count);
-        $pitch_body .= $expert_count . ' industry expert'. echo__s($expert_count) . ($expert_count == 1 ? ':' : ' including') . $expert_info;
+        $pitch_body .= $expert_count . ' industry expert'. echo__s($expert_count) . ($expert_count == 1 ? ':' : ' including') . $expert_info.'.';
     }
 
     if ($fb_messenger_format) {
@@ -1061,7 +1061,7 @@ function echo_step_range($in, $educational_mode = false){
     if($metadata['in__metadata_min_steps'] != $metadata['in__metadata_max_steps']){
 
         //It's a range:
-        return $metadata['in__metadata_min_steps'].'-'.$metadata['in__metadata_max_steps'].' Steps' . ( $educational_mode ? ' (depending on your answers to my questions)' : '' );
+        return 'Between '.$metadata['in__metadata_min_steps'].' - '.$metadata['in__metadata_max_steps'].' Steps' . ( $educational_mode ? ' (depending on your answers to my questions)' : '' );
 
     } else {
 
@@ -1088,17 +1088,7 @@ function echo_tree_steps($in, $fb_messenger_format = 0, $autoexpand = false)
 
     $metadata = unserialize($in['in_metadata']);
     $has_time_estimate = ( isset($metadata['in__metadata_max_seconds']) && $metadata['in__metadata_max_seconds']>0 );
-    if ($has_time_estimate) {
-
-        //Also have time:
-        $pitch_body = 'I estimate it would take you '. strtolower(echo_time_range($in)) .' to complete the ' . strtolower(echo_step_range($in, true)).' to '.echo_in_outcome($in['in_outcome']);
-
-    } else {
-
-        //No time, just show steps:
-        $pitch_body = 'I estimate it would take you ' . strtolower(echo_step_range($in, true)).' to '.echo_in_outcome($in['in_outcome']);
-
-    }
+    $pitch_body = 'I estimate it would take you ' . strtolower(echo_step_range($in, true)).( $has_time_estimate ? ' in ' . strtolower(echo_time_range($in)) : '' ).' to '.echo_in_outcome($in['in_outcome']);
 
 
     if ($fb_messenger_format) {
@@ -1109,12 +1099,12 @@ function echo_tree_steps($in, $fb_messenger_format = 0, $autoexpand = false)
     } else {
 
         //HTML format
-        $pitch_title = '<span class="icon-block"><i class="fas fa-walking"></i></span>&nbsp;'.echo_step_range($in).( $has_time_estimate ? ' in '.echo_time_range($in) : '' );
+        $pitch_title = '<span class="icon-block"><i class="fas fa-walking"></i></span>&nbsp;'.$metadata['in__metadata_max_steps'].' Step'.echo__s($metadata['in__metadata_max_steps']).( $has_time_estimate ? ' in '.echo_time_hours($metadata['in__metadata_max_seconds']) : '' );
 
         //If NOT private, Expand body to include Action Plan overview:
         $CI =& get_instance();
         if(!in_array($in['in_type_entity_id'], $CI->config->item('en_ids_7366')) || 1){
-            $pitch_body .= ':';
+            $pitch_body .= '. Here\'s an overview:';
             $pitch_body .= '<div class="inner_actionplan">';
             $pitch_body .= echo_public_actionplan($in, false);
             $pitch_body .= '</div>';
@@ -1369,7 +1359,7 @@ function echo_time_range($in, $micro = false, $hide_zero = false)
     $the_max = ($is_minutes ? $max_minutes : $max_hours );
     $ui_time = $the_min;
     if($the_min != $the_max){
-        $ui_time .= '-';
+        $ui_time .= ' - ';
         $ui_time .= $the_max;
     }
     $ui_time .= ($is_minutes ? ($micro ? 'm' : ' Minute'.echo__s($max_minutes)) : ($micro ? 'h' : ' Hour'.echo__s($max_hours)));
@@ -1946,7 +1936,7 @@ function echo_in($in, $level, $in_parent_id = 0, $is_parent = false)
 
             $tree_count = '<span class="btn-counter children-counter-' . $in['in_id'] . ' ' . ($is_parent && $level == 2 ? 'inb-counter' : '') . '">' . ( $in_metadata['in__metadata_min_steps']==$in_metadata['in__metadata_max_steps'] ? $in_metadata['in__metadata_max_steps'] : '~'.round(($in_metadata['in__metadata_min_steps']+$in_metadata['in__metadata_max_steps'])/2) ) . '</span>';
 
-            $tree_count_range = ( $in_metadata['in__metadata_min_steps']==$in_metadata['in__metadata_max_steps'] ? $in_metadata['in__metadata_max_steps'] : $in_metadata['in__metadata_min_steps'].'-'.$in_metadata['in__metadata_max_steps'] );
+            $tree_count_range = ( $in_metadata['in__metadata_min_steps']==$in_metadata['in__metadata_max_steps'] ? $in_metadata['in__metadata_max_steps'] : $in_metadata['in__metadata_min_steps'].' - '.$in_metadata['in__metadata_max_steps'] );
         }
 
     } else {

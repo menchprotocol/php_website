@@ -82,7 +82,7 @@ $in_filters = in_get_filters(true);
         //Date Ranges:
         echo '<td style="padding-right: 10px;"><span class="mini-header">Filter Time</span><select name="filter_time" data-toggle="tooltip" title="Time Range" data-placement="top" class="form-control border">';
         foreach($in_filters['get_filter_options'] as $get_filter_option){
-            echo '<option value="'.$get_filter_option['range_start'].'-'.$get_filter_option['range_end'].'" '.( isset($_GET['filter_time']) && $_GET['filter_time']==$get_filter_option['range_start'].'-'.$get_filter_option['range_end'] ? 'selected="selected"' : '' ).'>'.$get_filter_option['range_name'].'</option>';
+            echo '<option value="'.$get_filter_option['range_start'].' - '.$get_filter_option['range_end'].'" '.( isset($_GET['filter_time']) && $_GET['filter_time']==$get_filter_option['range_start'].'-'.$get_filter_option['range_end'] ? 'selected="selected"' : '' ).'>'.$get_filter_option['range_name'].'</option>';
         }
         echo '</select></td>';
 
