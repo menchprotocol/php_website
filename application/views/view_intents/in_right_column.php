@@ -158,7 +158,7 @@
                         </div>
 
 
-                        <span class="mini-header">Link Type: <span class="<?= echo_advance() ?>">[<a href="javscript:void(0);" onclick="$('.modify_parent_in').toggleClass('hidden')" data-toggle="tooltip" title="Modify Linked Intent" data-placement="top"><u>EDIT</u></a>]</span></span>
+                        <span class="mini-header">Link Type: <span class="<?= advance_mode() ?>">[<a href="javscript:void(0);" onclick="$('.modify_parent_in').toggleClass('hidden')" data-toggle="tooltip" title="Modify Linked Intent" data-placement="top"><u>EDIT</u></a>]</span></span>
                         <div class="form-group label-floating is-empty">
 
                             <?php

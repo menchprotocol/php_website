@@ -57,12 +57,12 @@
 
             echo '<h5 class="badge badge-h inline-block"><span class="li-children-count inline-block">' . $entity['en__child_count'] . '</span> Children</h5>';
 
-            echo '<span class="'.( !en_auth(array(1281)) ? 'hidden' : '' ).' opacity_fadeout"><a href="javascript:void(0);" onclick="$(\'.mass_modify\').toggleClass(\'hidden\');mass_action_ui();" style="text-decoration: none; margin-left: 5px;"  data-toggle="tooltip" data-placement="right" title="Mass Update Children" class="' . echo_advance() . '"><i class="fal fa-list-alt" style="font-size: 1.2em; color: #2b2b2b;"></i></a></span>';
+            echo '<span class="'.( !en_auth(array(1281)) ? 'hidden' : '' ).' opacity_fadeout"><a href="javascript:void(0);" onclick="$(\'.mass_modify\').toggleClass(\'hidden\');mass_action_ui();" style="text-decoration: none; margin-left: 5px;"  data-toggle="tooltip" data-placement="right" title="Mass Update Children" class="' . advance_mode() . '"><i class="fal fa-list-alt" style="font-size: 1.2em; color: #2b2b2b;"></i></a></span>';
 
             echo '</td>';
 
 
-        echo '<td style="text-align: right;"><div class="btn-group btn-group-sm ' . echo_advance() . '" style="margin-top:-5px;" role="group">';
+        echo '<td style="text-align: right;"><div class="btn-group btn-group-sm ' . advance_mode() . '" style="margin-top:-5px;" role="group">';
 
         //Fetch current count for each status from DB:
         $child_en_filters = $this->Links_model->ln_fetch(array(

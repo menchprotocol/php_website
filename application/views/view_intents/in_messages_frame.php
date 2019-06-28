@@ -50,7 +50,7 @@ foreach ($metadatas as $ln) {
 <ul class="nav nav-tabs iphone-nav-tabs">
     <?php
     foreach ($en_all_4485 as $ln_type_entity_id => $m) {
-        echo '<li role="presentation" class="nav_' . $ln_type_entity_id . ' active '.( in_array(5007 , $m['m_parents']) ? ' ' . echo_advance() . '' : '' ).'">';
+        echo '<li role="presentation" class="nav_' . $ln_type_entity_id . ' active '.( in_array(5007 , $m['m_parents']) ? ' ' . advance_mode() . '' : '' ).'">';
         echo '<a href="#intentnotes-' . $in_id . '-'.$ln_type_entity_id.'"> ' . $m['m_icon'] . ' ' . $m['m_name'] . 's [<span class="mtd_count_'.$in_id.'_'.$ln_type_entity_id.'">'.( isset($counters[$ln_type_entity_id]) ? $counters[$ln_type_entity_id] : 0 ).'</span>] </a>';
         echo '</li>';
     }
@@ -75,17 +75,17 @@ foreach ($metadatas as $ln) {
 
         //Does it support sorting?
         if(in_array(4603, $en_all_4485[$ln_type_entity_id]['m_parents'])){
-            echo '<span class="' . echo_advance() . '"><i class="fas fa-exchange rotate90"></i> <span data-toggle="tooltip" class="underdot" title="Messages are delivered in order so you can can sort them as needed" data-placement="bottom">Sortable</span> &nbsp;</span>';
+            echo '<span class="' . advance_mode() . '"><i class="fas fa-exchange rotate90"></i> <span data-toggle="tooltip" class="underdot" title="Messages are delivered in order so you can can sort them as needed" data-placement="bottom">Sortable</span> &nbsp;</span>';
         }
 
         //Does it support entity referencing?
         if(in_array(4986, $en_all_4485[$ln_type_entity_id]['m_parents'])){
-            echo '<span class="' . echo_advance() . '"><i class="fas fa-at"></i> <span data-toggle="tooltip" class="underdot" title="You can reference up to 1 entity using the @ sign" data-placement="bottom">Entity Reference</span> &nbsp;</span>';
+            echo '<span class="' . advance_mode() . '"><i class="fas fa-at"></i> <span data-toggle="tooltip" class="underdot" title="You can reference up to 1 entity using the @ sign" data-placement="bottom">Entity Reference</span> &nbsp;</span>';
         }
 
         //Does it require intent voting?
         if(in_array(4985, $en_all_4485[$ln_type_entity_id]['m_parents'])){
-            echo '<span class="' . echo_advance() . '"><i class="fas fa-hashtag"></i> <span data-toggle="tooltip" class="underdot" title="You can reference up to 1 parent intent using the # sign" data-placement="bottom">Intent Reference</span> &nbsp;</span>';
+            echo '<span class="' . advance_mode() . '"><i class="fas fa-hashtag"></i> <span data-toggle="tooltip" class="underdot" title="You can reference up to 1 parent intent using the # sign" data-placement="bottom">Intent Reference</span> &nbsp;</span>';
         }
 
         echo '</div>';
@@ -119,7 +119,7 @@ foreach ($metadatas as $ln) {
     echo '<span id="charNum' . $in_id . '">0</span>/' . $messages_max_length;
 
     ///firstname
-    echo '<a href="javascript:in_message_add_name();" class="textarea_buttons ' . echo_advance() . ' remove_loading" style="float:right; margin-left:8px;" data-toggle="tooltip" title="Replaced with master\'s First Name for a more personal message." data-placement="left"><i class="fas fa-fingerprint"></i> /firstname</a>';
+    echo '<a href="javascript:in_message_add_name();" class="textarea_buttons ' . advance_mode() . ' remove_loading" style="float:right; margin-left:8px;" data-toggle="tooltip" title="Replaced with master\'s First Name for a more personal message." data-placement="left"><i class="fas fa-fingerprint"></i> /firstname</a>';
 
     //Choose a file:
     echo '<div style="float:right; display:inline-block;" class="remove_loading"><input class="box__file inputfile" type="file" name="file" id="file" /><label class="textarea_buttons" for="file" data-toggle="tooltip" title="Upload files up to ' . $this->config->item('max_file_mb_size') . ' MB" data-placement="top"><i class="fal fa-cloud-upload"></i> Upload</label></div>';

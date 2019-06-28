@@ -139,7 +139,7 @@ class Admin extends CI_Controller
                 $all_intent_types += $in_count[0]['total_active_intents'];
 
                 //Echo this as the main title:
-                $sub_types_ui .= '<tr class="' . echo_advance() . '">';
+                $sub_types_ui .= '<tr class="' . advance_mode() . '">';
                 $sub_types_ui .= '<td style="text-align: left;"><span class="icon-block"></span><span class="icon-block">'.$sub_type['m_icon'].'</span><a href="/entities/'.$sub_type_en_id.'">'.$sub_type['m_name'].'</a></td>';
                 $sub_types_ui .= '<td style="text-align: right;"><a href="/links?ln_type_entity_id=4250&in_status_entity_id=' . join(',', $this->config->item('en_ids_7356')) . '&in_type_entity_id='.$sub_type_en_id.'">'.echo_number($in_count[0]['total_active_intents']).'</a><i class="fal fa-info-circle icon-block" data-toggle="tooltip" title="'.number_format($in_count[0]['total_active_intents'],0).' '.$sub_type['m_desc'].'" data-placement="top"></i><span class="icon-block"></span></td>';
                 $sub_types_ui .= '</tr>';
@@ -148,7 +148,7 @@ class Admin extends CI_Controller
             //Make sure we have an even number of child cells to keep colors in check:
             if($type_en_id==6192 && fmod(count($this->config->item('en_all_'.$type_en_id)), 2)==1){
                 //Add blank row:
-                $sub_types_ui .= '<tr class="' . echo_advance() . '"><td colspan="2">&nbsp;</td></tr>';
+                $sub_types_ui .= '<tr class="' . advance_mode() . '"><td colspan="2">&nbsp;</td></tr>';
             }
 
 
@@ -206,7 +206,7 @@ class Admin extends CI_Controller
 
 
         //Intent Mining Stats
-        echo echo_link_type_group_stats($this->config->item('en_all_7302'),7166);
+        echo echo_ln_type_group_stats($this->config->item('en_all_7302'),7166);
 
     }
 
@@ -276,7 +276,7 @@ class Admin extends CI_Controller
                 }
 
                 //Display row:
-                $expert_sources .= '<td style="text-align: right;"'.( $en_status_entity_id != 6181 /* Entity Featured */ ? ' class="' . echo_advance() . '"' : '' ).'><a href="/entities/' . $en_id .'#status-'.$en_status_entity_id.'">'.number_format($source_count,0).'</a><i class="fal fa-info-circle icon-block" data-toggle="tooltip" title="'.number_format($source_count,0).' '.$m['m_name'].' are '. $en_all_6177[$en_status_entity_id]['m_desc'] . '" data-placement="top"></i></td>';
+                $expert_sources .= '<td style="text-align: right;"'.( $en_status_entity_id != 6181 /* Entity Featured */ ? ' class="' . advance_mode() . '"' : '' ).'><a href="/entities/' . $en_id .'#status-'.$en_status_entity_id.'">'.number_format($source_count,0).'</a><i class="fal fa-info-circle icon-block" data-toggle="tooltip" title="'.number_format($source_count,0).' '.$m['m_name'].' are '. $en_all_6177[$en_status_entity_id]['m_desc'] . '" data-placement="top"></i></td>';
 
 
             }
@@ -290,7 +290,7 @@ class Admin extends CI_Controller
         echo '<tr class="panel-title down-border">';
         echo '<td style="text-align: left;">'.$en_all_7303[3000]['m_name'].'</td>';
         foreach($this->config->item('en_all_7358') /* Entity Active Statuses */ as $en_status_entity_id => $m_status){
-            echo '<td style="text-align: right;" '.( $en_status_entity_id != 6181 /* Entity Featured */ ? ' class="' . echo_advance() . '"' : '' ).'>' . $en_all_6177[$en_status_entity_id]['m_name'] . '</td>';
+            echo '<td style="text-align: right;" '.( $en_status_entity_id != 6181 /* Entity Featured */ ? ' class="' . advance_mode() . '"' : '' ).'>' . $en_all_6177[$en_status_entity_id]['m_name'] . '</td>';
         }
         echo '</tr>';
 
@@ -301,7 +301,7 @@ class Admin extends CI_Controller
         echo '<tr style="font-weight: bold;">';
         echo '<td style="text-align: left;"><span class="icon-block"><i class="fas fa-asterisk"></i></span>Totals</td>';
         foreach($this->config->item('en_all_7358') /* Entity Active Statuses */ as $en_status_entity_id => $m_status){
-            echo '<td style="text-align: right;" '.( $en_status_entity_id != 6181 /* Entity Featured */ ? ' class="' . echo_advance() . '"' : '' ).'>' . echo_number($total_counts[$en_status_entity_id]) . '<i class="fal fa-info-circle icon-block" data-toggle="tooltip" title="'.number_format($total_counts[$en_status_entity_id], 0).' '.$en_all_7303[3000]['m_name'].' are '.$en_all_6177[$en_status_entity_id]['m_name'] . '" data-placement="top"></i>' . '</td>';
+            echo '<td style="text-align: right;" '.( $en_status_entity_id != 6181 /* Entity Featured */ ? ' class="' . advance_mode() . '"' : '' ).'>' . echo_number($total_counts[$en_status_entity_id]) . '<i class="fal fa-info-circle icon-block" data-toggle="tooltip" title="'.number_format($total_counts[$en_status_entity_id], 0).' '.$en_all_7303[3000]['m_name'].' are '.$en_all_6177[$en_status_entity_id]['m_name'] . '" data-placement="top"></i>' . '</td>';
         }
         echo '</tr>';
 
@@ -314,7 +314,7 @@ class Admin extends CI_Controller
 
 
         //Entity Mining Stats
-        echo echo_link_type_group_stats($this->config->item('en_all_7303'), 7167);
+        echo echo_ln_type_group_stats($this->config->item('en_all_7303'), 7167);
 
     }
     function extra_stats_links(){
@@ -448,7 +448,7 @@ class Admin extends CI_Controller
 
 
         //Links User Engagement Stats
-        echo echo_link_type_group_stats($this->config->item('en_all_7304'), 7159);
+        echo echo_ln_type_group_stats($this->config->item('en_all_7304'), 7159);
 
 
 
@@ -464,7 +464,7 @@ class Admin extends CI_Controller
 
         echo '<tr class="panel-title down-border">';
         echo '<td style="text-align: left;">'.echo_number(count($all_link_types)).' '.$en_all_7304[4593]['m_name'].'</td>';
-        echo '<td style="text-align: right;" class="' . echo_advance() . '">Points</td>';
+        echo '<td style="text-align: right;" class="' . advance_mode() . '">Points</td>';
         echo '<td style="text-align: right;">Links</td>';
         echo '</tr>';
 
@@ -484,7 +484,7 @@ class Admin extends CI_Controller
 
             //Current Points Rate
             $fetch_points = fetch_points($ln['ln_type_entity_id']);
-            echo '<td style="text-align: right;" class="' . echo_advance() . '">'.( $fetch_points > 0 ? '<a href="/links?ln_status_entity_id='.join(',', $this->config->item('en_ids_7359')) /* Link Statuses Public */.'&ln_parent_entity_id=4595&ln_type_entity_id=4319&ln_child_entity_id='.$ln['ln_type_entity_id'].'" data-toggle="tooltip" title="Points per link" data-placement="top">'.number_format($fetch_points, 0).'</a>' : '0' ).'</td>';
+            echo '<td style="text-align: right;" class="' . advance_mode() . '">'.( $fetch_points > 0 ? '<a href="/links?ln_status_entity_id='.join(',', $this->config->item('en_ids_7359')) /* Link Statuses Public */.'&ln_parent_entity_id=4595&ln_type_entity_id=4319&ln_child_entity_id='.$ln['ln_type_entity_id'].'" data-toggle="tooltip" title="Points per link" data-placement="top">'.number_format($fetch_points, 0).'</a>' : '0' ).'</td>';
 
             //<span class="icon-block"><i class="far fa-badge-check"></i></span>
 
@@ -492,7 +492,7 @@ class Admin extends CI_Controller
             echo '<td style="text-align: right;"><a href="/links?ln_status_entity_id='.join(',', $this->config->item('en_ids_7360')) /* Link Statuses Active */.'&ln_type_entity_id='.$ln['ln_type_entity_id'].'">'.echo_number($ln['trs_count']).'</a>'
 
                 //Private Link?
-                .( in_array($ln['ln_type_entity_id'] , $this->config->item('en_ids_4755')) ? '<span data-toggle="tooltip" title="'.$en_all_4463[4755]['m_name'].': '.$en_all_4463[4755]['m_desc'].'" data-placement="top" class="icon-block ' . echo_advance() . '">'.$en_all_4463[4755]['m_icon'].'</span>' : '<span class="icon-block ' . echo_advance() . '" data-toggle="tooltip" title="Public Information" data-placement="top"><i class="far fa-eye"></i></span>' )
+                .( in_array($ln['ln_type_entity_id'] , $this->config->item('en_ids_4755')) ? '<span data-toggle="tooltip" title="'.$en_all_4463[4755]['m_name'].': '.$en_all_4463[4755]['m_desc'].'" data-placement="top" class="icon-block ' . advance_mode() . '">'.$en_all_4463[4755]['m_icon'].'</span>' : '<span class="icon-block ' . advance_mode() . '" data-toggle="tooltip" title="Public Information" data-placement="top"><i class="far fa-eye"></i></span>' )
 
                 //Info:
                 .( strlen($en_all_4593[$ln['ln_type_entity_id']]['m_desc']) > 0 ? '<i class="fal fa-info-circle icon-block" data-toggle="tooltip" title="'.number_format($ln['trs_count'], 0).' '.$en_all_4593[$ln['ln_type_entity_id']]['m_desc'].'" data-placement="top"></i>' : '<i class="fal fa-info-circle icon-block" data-toggle="tooltip" title="'.number_format($ln['trs_count'], 0).' Links" data-placement="top" style="color: #AAA;"></i>' ).'</td>';

@@ -819,7 +819,7 @@ class Entities extends CI_Controller
             ), array('en_miner'));
 
             //Prep last updated:
-            $return_array['ln_content'] = echo_tr_urls($ln_content, $js_ln_type_entity_id);
+            $return_array['ln_content'] = echo_ln_urls($ln_content, $js_ln_type_entity_id);
             $return_array['ln_content_final'] = $ln_content; //In case content was updated
 
         }

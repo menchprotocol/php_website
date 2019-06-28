@@ -432,6 +432,10 @@ function in_is_or($in_type_entity_id, $return_id = false){
     return ( $return_id ? ( $in_is_or ? 6193 /* OR */ : 6192 /* AND */ ) : $in_is_or );
 }
 
+function advance_mode(){
+    $CI =& get_instance();
+    return ' advance-ui '.( $CI->session->userdata('advance_view_enabled')==1 ? '' : 'hidden ' );
+}
 
 function upload_to_cdn($file_url, $ln_miner_entity_id = 0, $ln_metadata = null, $is_local = false)
 {

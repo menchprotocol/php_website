@@ -65,7 +65,7 @@ class Links extends CI_Controller
 
             $message .= '<div class="list-group list-grey">';
             foreach ($lns as $ln) {
-                $message .= echo_tr_row($ln);
+                $message .= echo_ln($ln);
             }
             $message .= '</div>';
 
@@ -211,6 +211,50 @@ class Links extends CI_Controller
         echo_json(update_algolia($input_obj_type, $input_obj_id));
     }
 
+    function link_connections(){
+
+
+        //Authenticate Miner:
+        if (!isset($_POST['ln_id']) || intval($_POST['ln_id']) < 1) {
+            return echo_json(array(
+                'status' => 0,
+                'message' => 'Missing Link ID',
+            ));
+        } elseif (!isset($_POST['load_main'])) {
+            return echo_json(array(
+                'status' => 0,
+                'message' => 'Missing loading preference',
+            ));
+        }
+
+        //Fetch and validate link:
+        $lns = $this->Links_model->ln_fetch(array(
+            'ln_id' => $_POST['ln_id'],
+        ));
+        if (count($lns) < 1) {
+            return echo_json(array(
+                'status' => 0,
+                'message' => 'Invalid Link ID',
+            ));
+        }
+
+        //Show Links:
+        $ln_connections_ui = ( intval($_POST['load_main']) ? '' : echo_ln_connections($lns[0]) );
+
+        //Now show all links for this link:
+        foreach ($this->Links_model->ln_fetch(array(
+            'ln_parent_link_id' => $_POST['ln_id'],
+        ), array(), 0, 0, array('ln_id' => 'DESC')) as $ln_child) {
+            $ln_connections_ui .= '<div class="tr-child">' . echo_ln($ln_child, true) . '</div>';
+        }
+
+        //Return UI:
+        return echo_json(array(
+            'status' => 1,
+            'ln_connections_ui' => $ln_connections_ui,
+        ));
+
+    }
 
     function cron__sync_gephi($affirmation = null){
 

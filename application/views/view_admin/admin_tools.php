@@ -496,7 +496,7 @@ if(!$action) {
     ), array('in_child'), 0, 0) as $in_ln) {
         //Echo HTML format of this message:
         $metadata = unserialize($in_ln['ln_metadata']);
-        $mark = echo_assessment_mark($in_ln);
+        $mark = echo_in_assessment_mark($in_ln);
         if($mark){
 
             //Fetch parent intent:
@@ -507,7 +507,7 @@ if(!$action) {
             $counter++;
             echo '<tr>';
             echo '<td style="width: 50px;">'.$counter.'</td>';
-            echo '<td style="font-weight: bold; font-size: 1.3em; width: 100px;">'.echo_assessment_mark($in_ln).'</td>';
+            echo '<td style="font-weight: bold; font-size: 1.3em; width: 100px;">'.echo_in_assessment_mark($in_ln).'</td>';
             echo '<td>'.$en_all_6186[$in_ln['ln_status_entity_id']]['m_icon'].'</td>';
             echo '<td style="text-align: left;">';
             echo '<div>';
@@ -574,7 +574,7 @@ if(!$action) {
             $counter++;
             echo '<tr>';
             echo '<td style="width: 50px;">'.$counter.'</td>';
-            echo '<td style="font-weight: bold; font-size: 1.3em; width: 100px;">'.echo_assessment_mark($in_ln).'</td>';
+            echo '<td style="font-weight: bold; font-size: 1.3em; width: 100px;">'.echo_in_assessment_mark($in_ln).'</td>';
             echo '<td>'.$en_all_6186[$in_ln['ln_status_entity_id']]['m_icon'].'</td>';
             echo '<td style="text-align: left;">';
                 echo '<div>';
