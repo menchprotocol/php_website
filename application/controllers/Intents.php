@@ -12,6 +12,33 @@ class Intents extends CI_Controller
     }
 
 
+    function g(){
+
+        foreach($this->Links_model->ln_fetch(array(
+            'ln_id >=' => 1900387,
+            'ln_id <=' => 1900401,
+            'ln_type_entity_id' => 4264,
+            'ln_miner_entity_id' => 1,
+        ), array('in_child'), 0) as $in_to_drafting){
+            $this->Intents_model->in_update($in_to_drafting['in_id'], array(
+                'in_status_entity_id' => 6184,
+            ), true, 1);
+        }
+
+        echo '<hr />';
+
+        foreach($this->Links_model->ln_fetch(array(
+            'ln_id >=' => 1900404,
+            'ln_type_entity_id' => 4264,
+            'ln_miner_entity_id' => 1,
+        ), array('in_child'), 0) as $in_to_drafting){
+            $this->Intents_model->in_update($in_to_drafting['in_id'], array(
+                'in_status_entity_id' => 6183,
+            ), true, 1);
+        }
+
+    }
+
     function fix__completion_marks($in_id){
 
         die('adjust variables to begin');
