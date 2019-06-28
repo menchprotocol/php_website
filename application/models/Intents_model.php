@@ -511,14 +511,15 @@ class Intents_model extends CI_Model
                 array_push($grand_parents, $p_id);
             }
 
+
             //Fetch parents of parents:
             $recursive_parents = $this->Intents_model->in_fetch_recursive_public_parents($p_id, false);
-
-            if($first_level){
-                array_push($recursive_parents, $p_id);
-                $grand_parents[$p_id] = $recursive_parents;
-            } elseif(!$first_level && count($recursive_parents) > 0){
-                $grand_parents = array_merge($grand_parents, $recursive_parents);
+            if(count($recursive_parents) > 0){
+                if($first_level){
+                    array_push($grand_parents, array_merge(array($p_id), $recursive_parents));
+                } else {
+                    $grand_parents = array_merge($grand_parents, $recursive_parents);
+                }
             }
         }
 

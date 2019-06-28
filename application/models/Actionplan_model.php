@@ -708,13 +708,13 @@ class Actionplan_model extends CI_Model
             $user_intentions_ids = $this->Actionplan_model->actionplan_intention_ids($en_id);
 
             //Fetch all parents trees for this intent
-            $parents_trees = $this->Intents_model->in_fetch_recursive_public_parents($in['in_id']);
+            $recursive_parents = $this->Intents_model->in_fetch_recursive_public_parents($in['in_id']);
 
             //Prevent duplicate processes even if on multiple parent trees:
             $parents_checked = array();
 
             //Go through parents trees and detect intersects with user intentions. WARNING: Logic duplicated. Search for "ELEPHANT" to see.
-            foreach ($parents_trees as $parent_in_id => $grand_parent_ids) {
+            foreach ($recursive_parents as $grand_parent_ids) {
 
                 //Does this parent and its grandparents have an intersection with the user intentions?
                 if(array_intersect($grand_parent_ids, $user_intentions_ids)){

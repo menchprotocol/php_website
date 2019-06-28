@@ -32,19 +32,21 @@ if(in_array($in['in_id'], $user_intentions_ids)){
 
 
 //Go through parents and detect intersects with user intentions. WARNING: Logic duplicated. Search for "ELEPHANT" to see.
-foreach ($this->Intents_model->in_fetch_recursive_public_parents($in['in_id']) as $parent_in_id => $grand_parent_ids) {
+$recursive_parents = $this->Intents_model->in_fetch_recursive_public_parents($in['in_id']);
+
+foreach ($recursive_parents as $grand_parent_ids) {
     //Does this parent and its grandparents have an intersection with the user intentions?
     if(array_intersect($grand_parent_ids, $user_intentions_ids)){
         //Fetch parent intent & show:
         $parent_ins = $this->Intents_model->in_fetch(array(
-            'in_id' => $parent_in_id,
+            'in_id' => $grand_parent_ids[0],
         ));
 
         //See if parent is complete:
         $parent_progression_steps = $this->Links_model->ln_fetch(array(
             'ln_type_entity_id IN (' . join(',', $this->config->item('en_ids_6146')) . ')' => null, //User Steps Completed
             'ln_miner_entity_id' => $session_en['en_id'],
-            'ln_parent_intent_id' => $parent_in_id,
+            'ln_parent_intent_id' => $grand_parent_ids[0],
             'ln_status_entity_id IN (' . join(',', $this->config->item('en_ids_7360')) . ')' => null, //Link Statuses Active
         ));
 
