@@ -11,7 +11,7 @@ defined('BASEPATH') OR exit('No direct script access allowed');
  *
  */
 
-//Generated 2019-06-28 12:23:34 PST
+//Generated 2019-06-28 12:28:05 PST
 
 //Mench Platform Products:
 $config['en_ids_7372'] = array(6196,7369,7370,7368);
@@ -1242,7 +1242,7 @@ $config['en_all_6415'] = array(
 $config['en_ids_6410'] = array(4228,4229,4358,6140,6402);
 $config['en_all_6410'] = array(
     4228 => array(
-        'm_icon' => '<i class="far fa-check-square"></i>',
+        'm_icon' => '<i class="far fa-clipboard-check"></i>',
         'm_name' => 'Intent Link Regular Step',
         'm_desc' => 'Fixed steps provide the assessment marks needed to determine the outcome of conditional steps.',
         'm_parents' => array(6410,4593,4486,4595),
@@ -2266,7 +2266,7 @@ $config['en_all_4755'] = array(
 $config['en_ids_4595'] = array(4228,4229,4230,4231,4232,4235,4242,4246,4250,4251,4255,4256,4257,4258,4259,4260,4261,4263,4264,4266,4267,4268,4269,4275,4278,4279,4282,4283,4287,4299,4318,4319,4460,4547,4548,4549,4550,4551,4552,4553,4554,4555,4556,4557,4559,4570,4577,4601,4983,4993,4994,4998,4999,5000,5001,5003,5007,5865,5943,5967,5981,5982,6093,6132,6140,6143,6144,6149,6154,6155,6157,6158,6224,6226,6242,6415,6556,6559,6560,6563,6578,6969,6997,7348);
 $config['en_all_4595'] = array(
     4228 => array(
-        'm_icon' => '<i class="far fa-check-square"></i>',
+        'm_icon' => '<i class="far fa-clipboard-check"></i>',
         'm_name' => 'Intent Link Regular Step',
         'm_desc' => '2000',
         'm_parents' => array(6410,4593,4486,4595),
@@ -2792,7 +2792,7 @@ $config['en_all_4600'] = array(
 $config['en_ids_4593'] = array(4228,4229,4230,4231,4232,4235,4242,4246,4250,4251,4255,4256,4257,4258,4259,4260,4261,4263,4264,4266,4267,4268,4269,4275,4278,4279,4282,4283,4287,4299,4318,4319,4460,4547,4548,4549,4550,4551,4552,4553,4554,4555,4556,4557,4559,4570,4577,4601,4983,4993,4994,4998,4999,5000,5001,5003,5007,5865,5943,5967,5981,5982,6093,6132,6140,6143,6144,6149,6154,6155,6157,6158,6224,6226,6242,6415,6556,6559,6560,6563,6578,6969,6997,7348);
 $config['en_all_4593'] = array(
     4228 => array(
-        'm_icon' => '<i class="far fa-check-square"></i>',
+        'm_icon' => '<i class="far fa-clipboard-check"></i>',
         'm_name' => 'Intent Link Regular Step',
         'm_desc' => '',
         'm_parents' => array(6410,4593,4486,4595),
@@ -3436,7 +3436,7 @@ $config['en_all_4485'] = array(
 $config['en_ids_4486'] = array(4228,4229);
 $config['en_all_4486'] = array(
     4228 => array(
-        'm_icon' => '<i class="far fa-check-square"></i>',
+        'm_icon' => '<i class="far fa-clipboard-check"></i>',
         'm_name' => 'Regular Step',
         'm_desc' => 'Intent link published and added to user Action Plans up-front',
         'm_parents' => array(6410,4593,4486,4595),
