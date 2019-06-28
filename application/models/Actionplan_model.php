@@ -570,19 +570,11 @@ class Actionplan_model extends CI_Model
             return array();
         }
 
-        if($en_id==1){
-            $this->Communication_model->dispatch_message(
-                '⚠️⚠️⚠️Passed completion marks',
-                array('en_id' => $en_id),
-                true
-            );
-        }
-
 
         //Look at Conditional Steps ONLY at this level:
         if($has_expansion_conditional){
 
-            //Make sure previous step expansion has NOT happened before:
+            //Make sure previous link unlocks have NOT happened before:
             $existing_expansions = $this->Links_model->ln_fetch(array(
                 'ln_status_entity_id IN (' . join(',', $this->config->item('en_ids_7359')) . ')' => null, //Link Statuses Public
                 'ln_type_entity_id' => 6140, //Action Plan Conditional Step Unlocked
@@ -744,6 +736,10 @@ class Actionplan_model extends CI_Model
                         //Now see if this child completion resulted in a full parent completion:
                         if(count($parent_ins) > 0){
                             $unlock_steps_messages_recursive = $this->Actionplan_model->actionplan_completion_recursive_up($en_id, $parent_ins[0], false);
+                            if(count($unlock_steps_messages_recursive) < 1){
+                                //Nothing found in the recursive up, so there is no point to try to go further up:
+                                break;
+                            }
                             $unlock_steps_messages = array_merge($unlock_steps_messages, $unlock_steps_messages_recursive);
                         }
 
