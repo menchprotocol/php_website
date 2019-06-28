@@ -555,11 +555,15 @@ class Actionplan_model extends CI_Model
         $in_metadata = unserialize($in['in_metadata']);
         $has_expansion_conditional = (isset($in_metadata['in__metadata_expansion_conditional'][$in['in_id']]) && count($in_metadata['in__metadata_expansion_conditional'][$in['in_id']]) > 0);
 
-        $this->Communication_model->dispatch_message(
-            $completion_rate['completion_percentage'].'% of '.$in['in_outcome'].' is complete ('.( $has_expansion_conditional ? 'HAS Expansion' : '' ).')!',
-            array('en_id' => $en_id),
-            true
-        );
+
+        if($en_id==1){
+            $this->Communication_model->dispatch_message(
+                '⚠️⚠️⚠️'.$completion_rate['completion_percentage'].'% of '.$in['in_outcome'].' is complete ('.( $has_expansion_conditional ? 'HAS Locks' : '' ).') '.print_r($completion_rate, true),
+                array('en_id' => $en_id),
+                true
+            );
+        }
+
 
         if($completion_rate['completion_percentage'] < 100){
             //Not completed, so can't go further up:
@@ -1328,14 +1332,6 @@ class Actionplan_model extends CI_Model
 
             //Process on-complete automations:
             $on_complete_messages = $this->Actionplan_model->actionplan_completion_checks($en_id, $ins[0], false, $step_progress_made);
-
-            if($step_progress_made){
-                $this->Communication_model->dispatch_message(
-                    'Made progress with '.count($on_complete_messages).' messages',
-                    array('en_id' => $en_id),
-                    true
-                );
-            }
 
             if($step_progress_made && count($on_complete_messages) > 0){
                 //Add on-complete messages (if any) to the current messages:
