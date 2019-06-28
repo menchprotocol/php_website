@@ -112,7 +112,7 @@ class Actionplan_model extends CI_Model
                 );
 
                 //List Recommended Intents and let them choose:
-                $this->Communication_model->recommend_intents($en_id);
+                $this->Communication_model->dispatch_recommendations($en_id);
 
             }
 
@@ -172,7 +172,7 @@ class Actionplan_model extends CI_Model
                 );
 
                 //List Recommended Intents and let them choose:
-                $this->Communication_model->recommend_intents($en_id);
+                $this->Communication_model->dispatch_recommendations($en_id);
 
             }
         }
@@ -462,7 +462,7 @@ class Actionplan_model extends CI_Model
             );
 
             //List Recommended Intents and let them choose:
-            $this->Communication_model->recommend_intents($en_id);
+            $this->Communication_model->dispatch_recommendations($en_id);
 
         }
 
@@ -1452,7 +1452,7 @@ class Actionplan_model extends CI_Model
 
             if($recommend_recommend){
                 //List Recommended Intents and let them choose:
-                $this->Communication_model->recommend_intents($en_id);
+                $this->Communication_model->dispatch_recommendations($en_id);
             }
 
         }

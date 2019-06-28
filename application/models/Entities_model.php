@@ -996,14 +996,6 @@ class Entities_model extends CI_Model
 
     function en_verify_create($en_name, $ln_miner_entity_id = 0, $force_creation = false, $en_status_entity_id = 6179 /* Entity New */, $en_icon = null, $en_psid = null){
 
-        if(strlen($en_name)<2){
-            return array(
-                'status' => 0,
-                'message' => 'Entity name must be at-least 2 characters long',
-            );
-        }
-
-
         //If PSID exists, make sure it's not a duplicate:
         if($en_psid > 0){
             $duplicate_psid_ens = $this->Entities_model->en_fetch(array(
@@ -1019,6 +1011,13 @@ class Entities_model extends CI_Model
             }
         }
 
+        //Not found, so we need to create, and need a name by now:
+        if(strlen($en_name)<2){
+            return array(
+                'status' => 0,
+                'message' => 'Entity name must be at-least 2 characters long',
+            );
+        }
 
         //Check to make sure name is not duplicate:
         $duplicate_name_ens = $this->Entities_model->en_fetch(array(

@@ -461,6 +461,7 @@ class Communication_model extends CI_Model
         if (count($string_references['ref_urls']) > 0) {
 
 
+            //BUGGY
             //No entity linked, but we have a URL that we should turn into an entity if not already:
             $url_entity = $this->Entities_model->en_sync_url($string_references['ref_urls'][0], ( isset($recipient_en['en_id']) ? $recipient_en['en_id'] : 0 ));
 
@@ -985,7 +986,7 @@ class Communication_model extends CI_Model
     }
 
 
-    function recommend_intents($en_id){
+    function dispatch_recommendations($en_id){
 
 
         /*
@@ -1410,7 +1411,7 @@ class Communication_model extends CI_Model
                 );
 
                 //List Recommended Intents and let them choose:
-                $this->Communication_model->recommend_intents($en['en_id']);
+                $this->Communication_model->dispatch_recommendations($en['en_id']);
 
             } elseif ($quick_reply_payload == 'RESUBSCRIBE_NO') {
 
@@ -1432,7 +1433,7 @@ class Communication_model extends CI_Model
             );
 
             //List Recommended Intents and let them choose:
-            $this->Communication_model->recommend_intents($en['en_id']);
+            $this->Communication_model->dispatch_recommendations($en['en_id']);
 
         } elseif (is_numeric($quick_reply_payload)) {
 
@@ -1854,7 +1855,7 @@ class Communication_model extends CI_Model
                 );
 
                 //Recommend to join:
-                $this->Communication_model->recommend_intents($en['en_id']);
+                $this->Communication_model->dispatch_recommendations($en['en_id']);
 
 
             } else {
@@ -2145,7 +2146,7 @@ class Communication_model extends CI_Model
                 );
 
                 //List Recommended Intents and let them choose:
-                $this->Communication_model->recommend_intents($en['en_id']);
+                $this->Communication_model->dispatch_recommendations($en['en_id']);
 
             }
 
@@ -2273,7 +2274,7 @@ class Communication_model extends CI_Model
             } else {
 
                 //Recommend to join:
-                $this->Communication_model->recommend_intents($en['en_id']);
+                $this->Communication_model->dispatch_recommendations($en['en_id']);
 
             }
         }
