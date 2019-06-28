@@ -52,7 +52,7 @@ class Links extends CI_Controller
         $join_by = unserialize($_POST['link_join_by']);
         $page_num = ( isset($_POST['page_num']) && intval($_POST['page_num'])>=2 ? intval($_POST['page_num']) : 1 );
         $next_page = ($page_num+1);
-        $item_per_page = (is_dev_environment() ? 20 : $this->config->item('items_per_page'));
+        $item_per_page = (is_dev_environment() ? 100 : $this->config->item('items_per_page'));
         $query_offset = (($page_num-1)*$item_per_page);
 
         $message = '';
@@ -65,7 +65,7 @@ class Links extends CI_Controller
 
 
         //Display filter notes:
-        $message .= '<p style="margin: 10px 0 0 0;">'.( $has_more_links ? ( $query_offset==0 ? 'First ' : ($query_offset+1).' - ') : '' ). $total_items_loaded . ' of '. number_format($lns_count[0]['trs_count'] , 0) .' Links:</p>';
+        $message .= '<p style="margin: 10px 0 0 0;">'.( $has_more_links && $query_offset==0  ? 'First ' : ($query_offset+1).' - '). $total_items_loaded . ' of '. number_format($lns_count[0]['trs_count'] , 0) .' Links:</p>';
         // with '.number_format($lns_count[0]['points_sum'], 0).' awarded points
 
 
@@ -81,6 +81,9 @@ class Links extends CI_Controller
             if($has_more_links){
                 $message .= '<div id="link_page_'.$next_page.'"><a href="javascript:void(0);" style="margin:10px 0 72px 0;" class="btn btn-primary grey" onclick="load_link_list(link_filters, link_join_by, '.$next_page.');"><i class="fas fa-plus-circle"></i> Page '.$next_page.'</a></div>';
                 $message .= '';
+            } else {
+                $message .= '<div style="margin:10px 0 72px 0;"><i class="far fa-check-circle"></i> Load all '.$lns_count[0]['trs_count'].' link'.echo__s($lns_count[0]['trs_count']).'</div>';
+
             }
 
         } else {
