@@ -30,11 +30,11 @@ function en_load_search(focus_element, is_en_parent) {
             },
             header: function (data) {
                 if (!data.isEmpty) {
-                    return '<a href="javascript:en_add_or_link(0,'+is_en_parent+')" class="suggestion"><span><i class="fal fa-plus-circle add-plus"></i></span> <b>' + data.query + '</b></a>';
+                    return '<a href="javascript:en_add_or_link(0,'+is_en_parent+')" class="suggestion"><span><i class="fas fa-plus-circle add-plus"></i></span> <b>' + data.query + '</b></a>';
                 }
             },
             empty: function (data) {
-                return '<a href="javascript:en_add_or_link(0,'+is_en_parent+')" class="suggestion"><span><i class="fal fa-plus-circle add-plus"></i></span> <b>' + data.query + '</b></a>';
+                return '<a href="javascript:en_add_or_link(0,'+is_en_parent+')" class="suggestion"><span><i class="fas fa-plus-circle add-plus"></i></span> <b>' + data.query + '</b></a>';
             },
         }
     }]).keypress(function (e) {

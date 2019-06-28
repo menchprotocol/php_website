@@ -68,8 +68,8 @@ $in_filters = in_get_filters(true);
         echo '<h5 class="badge badge-h opacity_fadeout" style="display: inline-block;"><span class="li-children-count children-counter-' . $in['in_id'] . '">' . count($in['in__children']) . '</span> Children</h5>';
 
         echo '<div id="expand_intents" style="padding-left:8px; display: inline-block;">';
-        echo '<i class="far fa-plus-circle expand_all" style="font-size: 1.2em;" data-toggle="tooltip" title="Expand Grandchildren" data-placement="top"></i> &nbsp;';
-        echo '<i class="far fa-minus-circle close_all" style="font-size: 1.2em;" data-toggle="tooltip" title="Contact Grandchildren" data-placement="top"></i>';
+        echo '<i class="fas fa-plus-circle expand_all" style="font-size: 1.2em;" data-toggle="tooltip" title="Expand Grandchildren" data-placement="top"></i> &nbsp;';
+        echo '<i class="fas fa-minus-circle close_all" style="font-size: 1.2em;" data-toggle="tooltip" title="Contact Grandchildren" data-placement="top"></i>';
         echo '<i class="far fa-filter toggle_filters" style="font-size: 1.2em; margin-left: 6px;" data-toggle="tooltip" title="Apply Intent Filters" data-placement="top"></i>';
         echo '</div>';
 

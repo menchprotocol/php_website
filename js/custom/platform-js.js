@@ -66,7 +66,7 @@ $(document).ready(function () {
                 },
                 header: function (data) {
                     if($("#platform_search").val().charAt(0)=='#' || $("#platform_search").val().charAt(0)=='@'){
-                        return '<a href="javascript:add_search_item()" class="suggestion"><i class="fal fa-plus-circle" style="margin: 0 5px;"></i> Create ' + data.query + '</a>';
+                        return '<a href="javascript:add_search_item()" class="suggestion"><i class="fas fa-plus-circle" style="margin: 0 5px;"></i> Create ' + data.query + '</a>';
                     }
                 },
                 empty: function (data) {
@@ -84,7 +84,7 @@ $(document).ready(function () {
                         });
 
                         //We did not find the URL, offer them option to add it:
-                        return '<a href="/entities/add_source_wizard?url='+ encodeURI(data.query) +'" class="suggestion add-source-suggest"><i class="fal fa-plus-circle" style="margin: 0 5px;"></i> Add Source Wizard</a>'
+                        return '<a href="/entities/add_source_wizard?url='+ encodeURI(data.query) +'" class="suggestion add-source-suggest"><i class="fas fa-plus-circle" style="margin: 0 5px;"></i> Add Source Wizard</a>'
                             + '<div class="not-found"><i class="fas fa-exclamation-triangle"></i> URL not found</div>';
 
                     } else if($("#platform_search").val().charAt(0)=='#'){

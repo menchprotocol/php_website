@@ -200,11 +200,11 @@ function in_load_search(focus_element, is_in_parent, next_in_level) {
             },
             header: function (data) {
                 if (!data.isEmpty) {
-                    return '<a href="javascript:in_link_or_create(' + parseInt($(focus_element).attr('intent-id')) + ','+is_in_parent+','+next_in_level+')" class="suggestion"><span><i class="fal fa-plus-circle add-plus"></i></span> <b>' + data.query + '</b></a>';
+                    return '<a href="javascript:in_link_or_create(' + parseInt($(focus_element).attr('intent-id')) + ','+is_in_parent+','+next_in_level+')" class="suggestion"><span><i class="fas fa-plus-circle add-plus"></i></span> <b>' + data.query + '</b></a>';
                 }
             },
             empty: function (data) {
-                return '<a href="javascript:in_link_or_create(' + parseInt($(focus_element).attr('intent-id')) + ','+is_in_parent+','+next_in_level+')" class="suggestion"><span><i class="fal fa-plus-circle add-plus"></i></span> <b>' + data.query + '</b></a>';
+                return '<a href="javascript:in_link_or_create(' + parseInt($(focus_element).attr('intent-id')) + ','+is_in_parent+','+next_in_level+')" class="suggestion"><span><i class="fas fa-plus-circle add-plus"></i></span> <b>' + data.query + '</b></a>';
             },
         }
     }]).keypress(function (e) {

@@ -1234,7 +1234,7 @@ function echo_public_actionplan($in, $autoexpand){
 
         if($has_content){
             $return_html .= '<a role="button" data-toggle="collapse" data-parent="#open' . $in_level2_counter . '" href="#collapse' . $in_level2_counter . '" aria-expanded="' . ($autoexpand ? 'true' : 'false') . '" aria-controls="collapse' . $in_level2_counter . '">';
-            $return_html .= '<span class="icon-block"><i class="fal fa-plus-circle"></i></span>';
+            $return_html .= '<span class="icon-block"><i class="fas fa-plus-circle"></i></span>';
         } elseif($is_private) {
             $return_html .= '<span class="icon-block"><i class="far fa-eye-slash"></i></span>';
         } else {
@@ -1244,11 +1244,6 @@ function echo_public_actionplan($in, $autoexpand){
 
         $return_html .= ( in_is_or($in['in_type_entity_id']) ? 'Option #'. ($in_level2_counter + 1).': ' : '');
         $return_html .= '<span id="title-' . $in_level2['in_id'] . '">' . echo_in_outcome($in_level2['in_outcome']) . '</span>';
-
-        $in_level2_time = echo_time_range($in_level2, true);
-        if ($in_level2_time) {
-            $return_html .= ' <span style="font-size: 0.9em; font-weight: 300;"><i class="fal fa-clock" style="width:16px; text-transform: none !important;"></i>' . $in_level2_time . '</span>';
-        }
 
 
         if($has_content){
@@ -1262,6 +1257,13 @@ function echo_public_actionplan($in, $autoexpand){
         //Level 2 body:
         $return_html .= '<div id="collapse' . $in_level2_counter . '" class="panel-collapse collapse ' . ($autoexpand ? 'in' : 'out') . '" role="tabpanel" aria-labelledby="heading' . $in_level2_counter . '">';
         $return_html .= '<div class="panel-body" style="padding:5px 0 0 25px; font-size:0.85em !important;">';
+
+
+        //Time Estimate:
+        $in_level2_time = echo_time_range($in_level2, false);
+        if ($in_level2_time) {
+            $return_html .= ' <span style="font-size: 0.9em; font-weight: 300;"><i class="fal fa-clock" style="width:16px; text-transform: none !important;"></i>' . $in_level2_time . ' to Complete</span>';
+        }
 
         //Messages:
         if($has_content){
@@ -1641,7 +1643,7 @@ function echo_radio_entities($parent_en_id, $child_en_id, $enable_mulitiselect){
     //Did we have too many items?
     if($count>=$show_max){
         //Show "Show more" button
-        $ui .= '<a href="javascript:void(0);" class="list-group-item extra-items-'.$parent_en_id.'" onclick="$(\'.extra-items-'.$parent_en_id.'\').toggleClass(\'hidden\')"><i class="fal fa-plus-circle"></i> Show '.($count-$show_max).' more</a>';
+        $ui .= '<a href="javascript:void(0);" class="list-group-item extra-items-'.$parent_en_id.'" onclick="$(\'.extra-items-'.$parent_en_id.'\').toggleClass(\'hidden\')"><i class="fas fa-plus-circle"></i> Show '.($count-$show_max).' more</a>';
     }
 
     $ui .= '</div>';
