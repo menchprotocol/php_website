@@ -1718,56 +1718,61 @@ class Communication_model extends CI_Model
                 'ln_parent_intent_id' => $question_in_id,
                 'ln_status_entity_id IN (' . join(',', $this->config->item('en_ids_7364')) . ')' => null, //Link Statuses Incomplete
             ));
-            if(count($pending_answer_links) < 1){
+            if(count($pending_answer_links) > 0){
+
+                //All good, let's save the answer:
+                $published_answer = false;
+                foreach($pending_answer_links as $ln){
+                    if(in_array($ln['ln_status_entity_id'], $this->config->item('en_ids_7364'))){
+
+                        //We just found a pending answer, so mark it as published while saving the answer:
+                        $this->Links_model->ln_update($ln['ln_id'], array(
+                            'ln_child_intent_id' => $answer_in_id, //Save answer
+                            'ln_status_entity_id' => 6176, //Link Published
+                        ), $en['en_id']);
+
+                        //Update status:
+                        $published_answer = true;
+
+                    } elseif($ln['ln_child_intent_id'] > 0 && $ln['ln_child_intent_id'] != $answer_in_id){
+
+                        //This is a published & different answer!
+                        return array(
+                            'status' => 0,
+                            'message' => 'ANSWERQUESTION_ updated a previously answered question',
+                        );
+
+                    }
+                }
+
+                //Did we publish anything?
+                if($published_answer){
+
+                    //Affirm answer received answer:
+                    $this->Communication_model->dispatch_message(
+                        echo_random_message('affirm_progress'),
+                        $en,
+                        true
+                    );
+
+
+                    //See if we also need to mark the answer as complete:
+                    $this->Actionplan_model->actionplan_completion_auto_apply($en['en_id'], $answer_ins[0]);
+
+
+                    //Find/Advance to the next step:
+                    $this->Actionplan_model->actionplan_step_next_go($en['en_id'], true, true);
+
+                }
+
+            } else {
+
+                /*
                 return array(
                     'status' => 0,
                     'message' => 'ANSWERQUESTION_ was unable to locate the pending answer link',
                 );
-            }
-
-
-            //All good, let's save the answer:
-            $published_answer = false;
-            foreach($pending_answer_links as $ln){
-                if(in_array($ln['ln_status_entity_id'], $this->config->item('en_ids_7364'))){
-
-                    //We just found a pending answer, so mark it as published while saving the answer:
-                    $this->Links_model->ln_update($ln['ln_id'], array(
-                        'ln_child_intent_id' => $answer_in_id, //Save answer
-                        'ln_status_entity_id' => 6176, //Link Published
-                    ), $en['en_id']);
-
-                    //Update status:
-                    $published_answer = true;
-
-                } elseif($ln['ln_child_intent_id'] > 0 && $ln['ln_child_intent_id'] != $answer_in_id){
-
-                    //This is a published & different answer!
-                    return array(
-                        'status' => 0,
-                        'message' => 'ANSWERQUESTION_ updated a previously answered question',
-                    );
-
-                }
-            }
-
-            //Did we publish anything?
-            if($published_answer){
-
-                //Affirm answer received answer:
-                $this->Communication_model->dispatch_message(
-                    echo_random_message('affirm_progress'),
-                    $en,
-                    true
-                );
-
-
-                //See if we also need to mark the answer as complete:
-                $this->Actionplan_model->actionplan_completion_auto_apply($en['en_id'], $answer_ins[0]);
-
-
-                //Find/Advance to the next step:
-                $this->Actionplan_model->actionplan_step_next_go($en['en_id'], true, true);
+                */
 
             }
 
