@@ -1761,9 +1761,6 @@ class Communication_model extends CI_Model
                     true
                 );
 
-                //Process on-complete automations:
-                //$this->Actionplan_model->actionplan_completion_checks($en['en_id'], $question_ins[0], true, true);
-
 
                 //See if we also need to mark the answer as complete:
                 $this->Actionplan_model->actionplan_completion_auto_apply($en['en_id'], $answer_ins[0]);

@@ -570,6 +570,14 @@ class Actionplan_model extends CI_Model
             return array();
         }
 
+        if($en_id==1){
+            $this->Communication_model->dispatch_message(
+                '⚠️⚠️⚠️Passed completion marks',
+                array('en_id' => $en_id),
+                true
+            );
+        }
+
 
         //Look at Conditional Steps ONLY at this level:
         if($has_expansion_conditional){
