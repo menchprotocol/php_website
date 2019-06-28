@@ -1324,7 +1324,7 @@ class Actionplan_model extends CI_Model
 
             if($step_progress_made){
                 $this->Communication_model->dispatch_message(
-                    'Made progress',
+                    'Made progress with '.count($on_complete_messages).' messages',
                     array('en_id' => $en_id),
                     true
                 );
