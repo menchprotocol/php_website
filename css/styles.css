@@ -1097,7 +1097,9 @@ p a, td a {
 
 .grey_list .list-group-item {
     background-color: #EFEFEF;
-    margin-bottom: 3px;
+    margin-bottom:5px;
+    padding: 12px 10px;
+    font-size: 1.1em !important;
 }
 
 .grey_list .list-group-item:hover {

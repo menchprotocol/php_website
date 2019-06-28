@@ -1521,7 +1521,7 @@ function echo_in_recommend($in, $is_passthrough)
     $ui = '<a href="' . ( $already_in_actionplan ? '/actionplan' : '' ) . '/' . $in['in_id'] . '" class="list-group-item '.( $is_passthrough ? 'tag-manager-intent-passthrough' : 'tag-manager-intent-recommend' ).'">';
 
     $ui .= '<span class="pull-right">';
-    $ui .= '<span class="badge badge-primary fr-bgd">'.( $already_in_actionplan ? $en_all_7369[6138]['m_icon'] : '<i class="fas fa-angle-right"></i>' ).'</span>';
+    $ui .= '<span class="badge badge-primary fr-bgd" style="margin-top: -4px;">'.( $already_in_actionplan ? $en_all_7369[6138]['m_icon'] : '<i class="fas fa-angle-right"></i>' ).'</span>';
     $ui .= '</span>';
 
     $ui .= '<span style="color:#222; font-weight:500; font-size:1.2em;">'.echo_in_outcome($in['in_outcome']).'</span>';
