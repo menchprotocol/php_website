@@ -659,7 +659,7 @@ function echo_ln($ln, $is_inner = false)
             'ln_parent_link_id' => $ln['ln_id'],
         ), array(), 0, 0, array(), 'COUNT(ln_id) as total_child_links');
 
-        $load_main = ( $child_links[0]['total_child_links']==0 && $link_connections_count <= $auto_load_max_connections ? 1 : 0 ); //Decide if we should auto-load the main connections for this link
+        $load_main = ( $link_connections_count <= $auto_load_max_connections ? 1 : 0 ); //Decide if we should auto-load the main connections for this link
 
         if($link_connections_count>0 && $link_connections_count <= $auto_load_max_connections){
             //Since it would be auto loaded, remove from UI link:
