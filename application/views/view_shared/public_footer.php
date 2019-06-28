@@ -9,6 +9,18 @@
 
                 <li class="social-li">
 
+                    <a href="https://github.com/askmench" target="_blank"
+                       class="social-link tag-manager-social-profile" data-toggle="tooltip" title="Mench is open-source. contribute on GitHub"
+                       data-placement="top"><i class="fab fa-github"></i></a>
+
+                    <a href="https://askmench.slack.com" target="_blank"
+                       class="social-link tag-manager-social-profile" data-toggle="tooltip" title="Join the Conversation on Slack"
+                       data-placement="top"><i class="fab fa-slack"></i></a>
+
+
+                    <span>|</span>
+
+
                     <a href="https://www.instagram.com/askmench/" target="_blank" class="social-link tag-manager-social-profile"
                        data-toggle="tooltip" title="Follow on Instagram" data-placement="top"><i
                                 class="fab fa-instagram"></i></a>
@@ -27,17 +39,6 @@
                     <a href="https://www.linkedin.com/company/askmench/" target="_blank" class="social-link tag-manager-social-profile"
                        data-toggle="tooltip" title="Follow on LinkedIn" data-placement="top"><i
                                 class="fab fa-linkedin"></i></a>
-
-                    <span>|</span>
-
-                    <a href="https://github.com/askmench" target="_blank"
-                       class="social-link tag-manager-social-profile" data-toggle="tooltip" title="Mench is open-source. contribute on GitHub"
-                       data-placement="top"><i class="fab fa-github"></i></a>
-
-                    <a href="https://askmench.slack.com" target="_blank"
-                       class="social-link tag-manager-social-profile" data-toggle="tooltip" title="Join the Conversation on Slack"
-                       data-placement="top"><i class="fab fa-slack"></i></a>
-
 
                     <span>|</span>
 
