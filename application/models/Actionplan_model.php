@@ -1322,6 +1322,14 @@ class Actionplan_model extends CI_Model
             //Process on-complete automations:
             $on_complete_messages = $this->Actionplan_model->actionplan_completion_checks($en_id, $ins[0], false, $step_progress_made);
 
+            if($step_progress_made){
+                $this->Communication_model->dispatch_message(
+                    'Made progress',
+                    array('en_id' => $en_id),
+                    true
+                );
+            }
+
             if($step_progress_made && count($on_complete_messages) > 0){
                 //Add on-complete messages (if any) to the current messages:
                 $in__messages = array_merge($in__messages, $on_complete_messages);
