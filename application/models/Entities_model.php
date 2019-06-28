@@ -624,17 +624,28 @@ class Entities_model extends CI_Model
 
                 //Create a new entity for this URL ONLY If miner entity is provided...
                 $added_en = $this->Entities_model->en_verify_create($page_title, $ln_miner_entity_id, true);
-                $en_url = $added_en['en'];
+                if($added_en['status']){
+                    //All good:
+                    $en_url = $added_en['en'];
 
-                //Always link URL to its parent domain:
-                $this->Links_model->ln_create(array(
-                    'ln_miner_entity_id' => $ln_miner_entity_id,
-                    'ln_status_entity_id' => 6176, //Link Published
-                    'ln_type_entity_id' => $ln_type_entity_id,
-                    'ln_parent_entity_id' => $domain_entity['en_domain']['en_id'],
-                    'ln_child_entity_id' => $en_url['en_id'],
-                    'ln_content' => $url,
-                ));
+                    //Always link URL to its parent domain:
+                    $this->Links_model->ln_create(array(
+                        'ln_miner_entity_id' => $ln_miner_entity_id,
+                        'ln_status_entity_id' => 6176, //Link Published
+                        'ln_type_entity_id' => $ln_type_entity_id,
+                        'ln_parent_entity_id' => $domain_entity['en_domain']['en_id'],
+                        'ln_child_entity_id' => $en_url['en_id'],
+                        'ln_content' => $url,
+                    ));
+                } else {
+                    //Log error:
+                    $this->Links_model->ln_create(array(
+                        'ln_content' => 'en_sync_url['.$url.'] FAILED to en_verify_create['.$page_title.'] with error: '.$added_en['message'],
+                        'ln_type_entity_id' => 4246, //Platform Bug Reports
+                        'ln_miner_entity_id' => 1, //Shervin/Developer
+                        'ln_parent_entity_id' => $domain_entity['en_domain']['en_id'],
+                    ));
+                }
 
             } else {
                 //URL not found and no miner entity provided to create the URL:
