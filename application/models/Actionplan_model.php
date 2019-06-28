@@ -552,6 +552,15 @@ class Actionplan_model extends CI_Model
 
         //First let's make sure this entire intent tree completed by the user:
         $completion_rate = $this->Actionplan_model->actionplan_completion_progress($en_id, $in);
+        $in_metadata = unserialize($in['in_metadata']);
+        $has_expansion_conditional = (isset($in_metadata['in__metadata_expansion_conditional'][$in['in_id']]) && count($in_metadata['in__metadata_expansion_conditional'][$in['in_id']]) > 0);
+
+        $this->Communication_model->dispatch_message(
+            $completion_rate['completion_percentage'].'% of '.$in['in_outcome'].' is complete ('.( $has_expansion_conditional ? 'HAS Expansion' : '' ).')!',
+            array('en_id' => $en_id),
+            true
+        );
+
         if($completion_rate['completion_percentage'] < 100){
             //Not completed, so can't go further up:
             return array();
@@ -559,9 +568,7 @@ class Actionplan_model extends CI_Model
 
 
         //Look at Conditional Steps ONLY at this level:
-        $in_metadata = unserialize($in['in_metadata']);
-        if(isset($in_metadata['in__metadata_expansion_conditional'][$in['in_id']]) && count($in_metadata['in__metadata_expansion_conditional'][$in['in_id']]) > 0){
-
+        if($has_expansion_conditional){
 
             //Make sure previous step expansion has NOT happened before:
             $existing_expansions = $this->Links_model->ln_fetch(array(
