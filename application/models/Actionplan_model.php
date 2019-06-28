@@ -562,7 +562,6 @@ class Actionplan_model extends CI_Model
                 array('en_id' => $en_id),
                 true
             );
-            return array();
         }
 
 
@@ -1726,7 +1725,7 @@ class Actionplan_model extends CI_Model
             $step_default_seconds = 60;
 
             //Calculate completion rate based on estimated time cost:
-            $metadata_this['completion_percentage'] = floor( ($metadata_this['seconds_completed']+($step_default_seconds*$metadata_this['steps_completed'])) / ($metadata_this['seconds_total']+($step_default_seconds*$metadata_this['steps_total'])) * 100 );
+            $metadata_this['completion_percentage'] = intval(floor( ($metadata_this['seconds_completed']+($step_default_seconds*$metadata_this['steps_completed'])) / ($metadata_this['seconds_total']+($step_default_seconds*$metadata_this['steps_total'])) * 100 ));
 
         }
 
