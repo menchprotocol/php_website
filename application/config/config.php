@@ -19,8 +19,8 @@ $config['app_version']              = '0.928'; //Cache buster for static JS/CSS 
 $config['app_enable_algolia']       = true; //May need to turn off if/when we reach monthly quota of 50k calls
 $config['max_file_mb_size']         = 25; //Server setting is 32MB
 $config['items_per_page']           = 100; //The limit of how many items should be loaded per page/section
-$config['css_column_1']            = 'col-xs-7'; //Size of grid 1 (IF Change col-xs then also update on other code base
-$config['css_column_2']            = 'col-xs-5'; //Size of grid 2
+$config['css_column_1']            = 'col-xs-7 cols'; //Size of grid 1 (IF Change col-xs then also update on other code base
+$config['css_column_2']            = 'col-xs-5 cols'; //Size of grid 2
 
 
 //Intent References:

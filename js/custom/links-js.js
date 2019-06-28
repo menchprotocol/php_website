@@ -1,3 +1,21 @@
+
+
+
+$(document).ready(function () {
+
+    check_in_en_status_entity_id();
+
+    //Watch for intent status change:
+    $("#ln_type_entity_id").change(function () {
+        check_in_en_status_entity_id();
+    });
+
+    //Load first page of links:
+    load_link_list(link_filters, link_join_by, 1);
+
+});
+
+
 function check_in_en_status_entity_id(){
     //Checks to see if the Intent/Entity status filter should be visible
     //Would only make visible if Link type is Created Intent/Entity
@@ -15,8 +33,29 @@ function check_in_en_status_entity_id(){
 
 
 
+function load_link_list(link_filters, link_join_by, page_num){
+    //Show spinner:
+    $('#link_page_'+page_num).html('<div style="margin:20px 0 100px 0;"><i class="fas fa-spinner fa-spin"></i> Loading...</div>').hide().fadeIn();
 
-function link_connections(ln_id,load_main) {
+    //Load report based on input fields:
+    $.post("/links/load_link_list", {
+        link_filters: link_filters,
+        link_join_by: link_join_by,
+        page_num: page_num,
+    }, function (data) {
+        if (!data.status) {
+            //Show Error:
+            $('#link_page_'+page_num).html('<span style="color:#FF0000;">Error: '+ data.message +'</span>');
+        } else {
+            //Load Report:
+            $('#link_page_'+page_num).html(data.message);
+            $('[data-toggle="tooltip"]').tooltip();
+        }
+    });
+}
+
+
+function load_link_connections(ln_id,load_main) {
 
     //Show loading instead of button:
     $('.link_connections_link_'+ln_id).html('<span><i class="fas fa-spinner fa-spin"></i> Loading...</span>').hide().fadeIn();
@@ -46,35 +85,3 @@ function link_connections(ln_id,load_main) {
         }
     });
 }
-
-
-$(document).ready(function () {
-
-    check_in_en_status_entity_id();
-
-    //Watch for intent status change:
-    $("#ln_type_entity_id").change(function () {
-        check_in_en_status_entity_id();
-    });
-
-
-    //Show spinner:
-    $('#link_list').html('<span><i class="fas fa-spinner fa-spin"></i> Loading...</span>').hide().fadeIn();
-
-    //Load report based on input fields:
-    $.post("/links/load_link_list", {
-        link_filters: link_filters,
-        link_join_by: link_join_by
-    }, function (data) {
-        if (!data.status) {
-            //Show Error:
-            $('#link_list').html('<span style="color:#FF0000;">Error: '+ data.message +'</span>');
-        } else {
-            //Load Report:
-            $('#link_list').html(data.message);
-            $('[data-toggle="tooltip"]').tooltip();
-        }
-    });
-
-
-});

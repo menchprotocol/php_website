@@ -11,7 +11,7 @@ $in_filters = in_get_filters(true);
 
 
 <div class="row">
-    <div class="<?= $this->config->item('css_column_1') ?> cols">
+    <div class="<?= $this->config->item('css_column_1') ?>">
         <?php
         if($in['in_id'] == $this->config->item('in_mission_id')){
 
@@ -129,7 +129,7 @@ $in_filters = in_get_filters(true);
     </div>
 
 
-    <div class="<?= $this->config->item('css_column_2') ?> cols">
+    <div class="<?= $this->config->item('css_column_2') ?>">
         <?php $this->load->view('view_intents/in_right_column'); ?>
     </div>
 </div>

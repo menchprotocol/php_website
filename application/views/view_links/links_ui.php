@@ -419,7 +419,7 @@ echo '</div></td>';
 
 
         //AJAX Would load content here:
-        echo '<div id="link_list"></div>';
+        echo '<div id="link_page_1"></div>';
     echo '</div>';
 
 

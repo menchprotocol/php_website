@@ -90,7 +90,7 @@ if(!$action) {
     ), array('in_child'), $this->config->item('items_per_page'), 0, array('ln_id' => 'ASC'));
 
     echo '<div class="row">';
-    echo '<div class="'.$this->config->item('css_column_1').' cols">';
+    echo '<div class="'.$this->config->item('css_column_1').'">';
     echo '<ul class="breadcrumb"><li><a href="/admin">Admin Tools</a></li><li><b>'.$moderation_tools['/admin/tools/'.$action].'</b></li></ul>';
     //List intents and allow to modify and manage intent notes:
     if(count($pendin_in_notes) > 0){
@@ -102,7 +102,7 @@ if(!$action) {
     }
 
     echo '</div>';
-    echo '<div class="'.$this->config->item('css_column_2').' cols">';
+    echo '<div class="'.$this->config->item('css_column_2').'">';
     $this->load->view('view_intents/in_right_column');
     echo '</div>';
     echo '</div>';

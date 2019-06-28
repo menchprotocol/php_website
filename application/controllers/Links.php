@@ -50,15 +50,23 @@ class Links extends CI_Controller
 
         $filters = unserialize($_POST['link_filters']);
         $join_by = unserialize($_POST['link_join_by']);
+        $page_num = ( isset($_POST['page_num']) && intval($_POST['page_num'])>=2 ? intval($_POST['page_num']) : 1 );
+        $next_page = ($page_num+1);
+        $item_per_page = (is_dev_environment() ? 20 : $this->config->item('items_per_page'));
+        $query_offset = (($page_num-1)*$item_per_page);
+
         $message = '';
 
         //Fetch links and total link counts:
-        $lns = $this->Links_model->ln_fetch($filters, $join_by, (is_dev_environment() ? 20 : $this->config->item('items_per_page')));
+        $lns = $this->Links_model->ln_fetch($filters, $join_by, $item_per_page, $query_offset);
         $lns_count = $this->Links_model->ln_fetch($filters, $join_by, 0, 0, array(), 'COUNT(ln_id) as trs_count, SUM(ln_points) as points_sum');
+        $total_items_loaded = ($query_offset+count($lns));
+        $has_more_links = ($lns_count[0]['trs_count'] > 0 && $total_items_loaded < $lns_count[0]['trs_count']);
 
 
         //Display filter notes:
-        $message .= '<p style="margin: 10px 0 0 0;">Showing '.count($lns) . ( $lns_count[0]['trs_count'] > count($lns) ? ' of '. number_format($lns_count[0]['trs_count'] , 0) : '' ) .' links with '.number_format($lns_count[0]['points_sum'], 0).' awarded points:</p>';
+        $message .= '<p style="margin: 10px 0 0 0;">'.( $has_more_links ? ( $query_offset==0 ? 'First ' : ($query_offset+1).' - ') : '' ). $total_items_loaded . ' of '. number_format($lns_count[0]['trs_count'] , 0) .' Links:</p>';
+        // with '.number_format($lns_count[0]['points_sum'], 0).' awarded points
 
 
         if(count($lns)>0){
@@ -68,6 +76,12 @@ class Links extends CI_Controller
                 $message .= echo_ln($ln);
             }
             $message .= '</div>';
+
+            //Do we have more to show?
+            if($has_more_links){
+                $message .= '<div id="link_page_'.$next_page.'"><a href="javascript:void(0);" style="margin:10px 0 72px 0;" class="btn btn-primary grey" onclick="load_link_list(link_filters, link_join_by, '.$next_page.');"><i class="fas fa-plus-circle"></i> Page '.$next_page.'</a></div>';
+                $message .= '';
+            }
 
         } else {
 
@@ -211,7 +225,7 @@ class Links extends CI_Controller
         echo_json(update_algolia($input_obj_type, $input_obj_id));
     }
 
-    function link_connections(){
+    function load_link_connections(){
 
 
         //Authenticate Miner:

@@ -9,7 +9,7 @@
         type="text/javascript"></script>
 
 <div class="row">
-    <div class="<?= $this->config->item('css_column_1') ?> cols">
+    <div class="<?= $this->config->item('css_column_1') ?>">
 
         <?php
 
@@ -238,7 +238,7 @@
         ?>
     </div>
 
-    <div class="<?= $this->config->item('css_column_2') ?> cols">
+    <div class="<?= $this->config->item('css_column_2') ?>">
 
 
         <div id="modifybox" class="fixed-box hidden" entity-id="0" entity-link-id="0">

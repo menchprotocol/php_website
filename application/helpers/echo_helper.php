@@ -679,7 +679,7 @@ function echo_ln($ln, $is_inner = false)
     if(!$is_inner && (strlen($link_connections_clean_name) > 0 || $load_main)){
 
         if(!$load_main || $child_links[0]['total_child_links'] > 0){
-            $ui .= '<div class="link_connections_link_'.$ln['ln_id'].' link-connection-a"><a href="#linkconnection-'.$ln['ln_id'].'" onclick="link_connections('.$ln['ln_id'].','.$load_main.')"><i class="fas fa-project-diagram"></i> '.$link_connections_clean_name.'</a></div>';
+            $ui .= '<div class="link_connections_link_'.$ln['ln_id'].' link-connection-a"><a href="#linkconnection-'.$ln['ln_id'].'" onclick="load_link_connections('.$ln['ln_id'].','.$load_main.')"><i class="fas fa-project-diagram"></i> '.$link_connections_clean_name.'</a></div>';
         }
 
         $ui .= '</div>'; //Close main link box
