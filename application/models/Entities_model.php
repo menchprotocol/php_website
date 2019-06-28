@@ -620,8 +620,6 @@ class Entities_model extends CI_Model
 
             } elseif($ln_miner_entity_id) {
 
-                die($this->db->last_query());
-
                 //Create a new entity for this URL ONLY If miner entity is provided...
                 $added_en = $this->Entities_model->en_verify_create($page_title, $ln_miner_entity_id, true);
                 if($added_en['status']){
