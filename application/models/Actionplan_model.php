@@ -562,6 +562,7 @@ class Actionplan_model extends CI_Model
                 array('en_id' => $en_id),
                 true
             );
+            return array();
         }
 
 
