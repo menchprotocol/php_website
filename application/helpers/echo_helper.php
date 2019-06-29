@@ -316,7 +316,7 @@ function echo_in_message_manage($ln)
     $ui .= '<li class="edit-off message_status" style="margin:0 8px 0 0;"><span title="' . $en_all_6186[$ln['ln_status_entity_id']]['m_name'] . ': ' . $en_all_6186[$ln['ln_status_entity_id']]['m_desc'] . '" data-toggle="tooltip" data-placement="top">' . $en_all_6186[$ln['ln_status_entity_id']]['m_icon'] . '</span></li>';
 
     //Sort:
-    $ui .= '<li class="edit-off"><span title="Drag up/down to sort" data-toggle="tooltip" data-placement="top"><i class="fas fa-sort '.( in_array(4603, $en_all_4485[$ln['ln_type_entity_id']]['m_parents']) ? 'message-sorting' : '' ).'"></i></span></li>';
+    $ui .= '<li class="edit-off"><span title="Drag up/down to sort" data-toggle="tooltip" data-placement="top"><i class="fas fa-sort fa-special-sort '.( in_array(4603, $en_all_4485[$ln['ln_type_entity_id']]['m_parents']) ? 'message-sorting' : '' ).'"></i></span></li>';
 
 
 
@@ -549,6 +549,8 @@ function echo_ln($ln, $is_inner = false)
 
     $CI =& get_instance();
     $en_all_4593 = $CI->config->item('en_all_4593');
+    $en_all_4463 = $CI->config->item('en_all_4463'); //Platform Glossary
+
 
     if(!isset($en_all_4593[$ln['ln_type_entity_id']])){
         //We've probably have not yet updated php cache, set error:
@@ -577,31 +579,12 @@ function echo_ln($ln, $is_inner = false)
 
     //Link ID Row of data:
     $ui .= '<div style="padding: 0px 0 8px 12px; font-size: 0.9em;">';
-    $ui .= '<span data-toggle="tooltip" data-placement="top" title="Status is '.$en_all_6186[$ln['ln_status_entity_id']]['m_name'].': '.$en_all_6186[$ln['ln_status_entity_id']]['m_desc'].'" style="min-width:80px; display: inline-block;">'.$en_all_6186[$ln['ln_status_entity_id']]['m_icon'].' '.$ln['ln_id'].'</span>';
-    $ui .= ' &nbsp;<span data-toggle="tooltip" data-placement="top" title="Link Creation Timestamp: ' . $ln['ln_timestamp'] . ' PST" style="min-width:120px; display: inline-block;"><i class="fal fa-clock"></i> ' . echo_time_difference(strtotime($ln['ln_timestamp'])) . ' ago</span>';
-    $ui .= ' &nbsp;<span data-toggle="tooltip" data-placement="top" title="Mined Points" style="min-width:47px; display: inline-block;"><i class="fas fa-award"></i> <b>'. $ln['ln_points'] .'</b></span>';
 
+    $ui .= '<span data-toggle="tooltip" data-placement="top" title="Link ID"><i class="fas fa-link"></i>'.$ln['ln_id'].'</span>';
 
+    $ui .= ' &nbsp;&nbsp;<span data-toggle="tooltip" data-placement="top" title="Link is '.$en_all_6186[$ln['ln_status_entity_id']]['m_desc'].'">'.$en_all_6186[$ln['ln_status_entity_id']]['m_icon'].$en_all_6186[$ln['ln_status_entity_id']]['m_name'].'</span>';
 
-    if($ln['ln_order'] != 0){
-        $ui .= ' &nbsp;<span data-toggle="tooltip" data-placement="top" title="Link ordered '.echo_ordinal_number($ln['ln_order']).' relative to its siblings" style="min-width:30px; display: inline-block;" class="' . advance_mode() . '">'.echo_ordinal_number($ln['ln_order']).'</span>';
-    } else {
-        $ui .= ' &nbsp;<span data-toggle="tooltip" data-placement="top" title="Link is not ordered" style="min-width:30px; display: inline-block;" class="' . advance_mode() . '"><i class="fas fa-sort" style="color: #AAA;"></i></span>';
-    }
-
-
-    if(!$hide_sensitive_details && strlen($ln['ln_content']) < 1){
-        $ui .= ' &nbsp;<span data-toggle="tooltip" data-placement="top" title="Link has no content" class="' . advance_mode() . '"><i class="fal fa-comment-slash" style="color: #AAA;"></i></span>';
-    }
-
-    //Is this a miner? Show them metadata status:
-    if(!$hide_sensitive_details && en_auth(array(1308))){
-        if(strlen($ln['ln_metadata']) > 0){
-            $ui .= ' &nbsp;<a href="/links/link_json/' . $ln['ln_id'] . '" target="_blank" data-toggle="tooltip" data-placement="top" title="Open link metadata json object (in new window)" style="min-width:26px; display: inline-block;" class="' . advance_mode() . '"><i class="fas fa-search-plus"></i></a>';
-        } else {
-            $ui .= ' &nbsp;<span data-toggle="tooltip" data-placement="top" title="No Metadata" style="min-width:26px; display: inline-block;" class="' . advance_mode() . '"><i class="fal fa-search-minus" style="color: #AAA;"></i></span>';
-        }
-    }
+    $ui .= ' &nbsp;&nbsp;<span data-toggle="tooltip" data-placement="top" title="Link Creation Timestamp: ' . $ln['ln_timestamp'] . ' PST"><i class="fas fa-clock"></i>' . echo_time_difference(strtotime($ln['ln_timestamp'])) . ' ago</span>';
 
     $ui .= '</div>';
 
@@ -675,11 +658,28 @@ function echo_ln($ln, $is_inner = false)
     }
 
 
+
+
+    if($ln['ln_points'] > 0){
+        $ui .= '<span class="link-connection-a"><span data-toggle="tooltip" data-placement="top" title="'.$en_all_4463[4595]['m_name'].': '.$en_all_4463[4595]['m_desc'].'" style="min-width:30px; display: inline-block;" class="' . advance_mode() . '">'.$en_all_4463[4595]['m_icon']. ' '. number_format($ln['ln_points'], 0) .'</span></span> &nbsp;';
+    }
+
+    if($ln['ln_order'] > 0){
+        $ui .= '<span class="link-connection-a"><span data-toggle="tooltip" data-placement="top" title="Link ordered '.echo_ordinal_number($ln['ln_order']).' relative to its siblings" style="min-width:30px; display: inline-block;" class="' . advance_mode() . '"><i class="fas fa-sort"></i>'.echo_ordinal_number($ln['ln_order']).' Order</span></span> &nbsp;';
+    }
+
+    //Is this a miner? Show them metadata status:
+    if(!$hide_sensitive_details && en_auth(array(1308))){
+        if(strlen($ln['ln_metadata']) > 0){
+            $ui .= '<span class="link-connection-a"><a href="/links/link_json/' . $ln['ln_id'] . '" target="_blank" data-toggle="tooltip" data-placement="top" title="View link metadata (in new window)" style="min-width:26px; display: inline-block;" class="' . advance_mode() . '"><i class="far fa-lambda"></i>Metadata</a></span> &nbsp;';
+        }
+    }
+
     //Give option to load if it has connections:
     if(!$is_inner && (strlen($link_connections_clean_name) > 0 || $load_main)){
 
         if(!$load_main || $child_links[0]['total_child_links'] > 0){
-            $ui .= '<div class="link_connections_link_'.$ln['ln_id'].' link-connection-a"><a href="#linkconnection-'.$ln['ln_id'].'" onclick="load_link_connections('.$ln['ln_id'].','.$load_main.')"><i class="fas fa-project-diagram"></i> '.$link_connections_clean_name.'</a></div>';
+            $ui .= '<span class="link_connections_link_'.$ln['ln_id'].' link-connection-a"><a href="#linkconnection-'.$ln['ln_id'].'" onclick="load_link_connections('.$ln['ln_id'].','.$load_main.')"  data-toggle="tooltip" data-placement="top" title="Append Link Connections"><i class="fas fa-project-diagram"></i> '.$link_connections_clean_name.'</a></span>';
         }
 
         $ui .= '</div>'; //Close main link box

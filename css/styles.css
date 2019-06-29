@@ -3734,7 +3734,7 @@ h4 .tip-badge {
     text-align: center;
 }
 
-.list-group-item .fa-sort {
+.fa-special-sort {
     cursor: move; /* fallback if grab cursor is unsupported */
     cursor: grab;
     cursor: -moz-grab;
