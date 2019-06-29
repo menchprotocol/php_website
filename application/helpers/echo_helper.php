@@ -1282,11 +1282,14 @@ function echo_public_actionplan($in, $autoexpand){
 
         if ($has_content && count($grandchildren_ins) > 0) {
 
+            //See if they have a common base:
+            $common_prefix_granchild = common_prefix($grandchildren_ins);
+
             //List level 3:
             $return_html .= '<ul style="list-style-type: circle; margin:10px 0 10px -15px; font-size:1em !important;">';
             foreach ($grandchildren_ins as $in_level3_counter => $in_level3) {
 
-                $return_html .= '<li>' . ( in_is_or($in_level2['in_type_entity_id']) ? 'Option #' . ($in_level3_counter + 1) . ': ' : '') . echo_in_outcome($in_level3['in_outcome']);
+                $return_html .= '<li>' . ( in_is_or($in_level2['in_type_entity_id']) ? 'Option #' . ($in_level3_counter + 1) . ': ' : '') . echo_in_outcome($in_level3['in_outcome'], false, false, false, $common_prefix_granchild);
                 $in_level3_time = echo_time_range($in_level3, true);
                 if ($in_level3_time) {
                     $return_html .= ' <span style="font-size: 0.9em; font-weight: 300;"><i class="fal fa-clock"></i>' . $in_level3_time . '</span>';
