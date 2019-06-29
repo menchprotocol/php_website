@@ -2169,7 +2169,7 @@ function echo_en($en, $level, $is_parent = false)
     $ui .= '<span class="double-icon" style="margin-right:7px;">';
 
     //Show larger custom entity icon:
-    $ui .= '<span class="icon-main en_ui_icon en_ui_icon_' . $en['en_id'] . ' en-icon en__icon_'.$en['en_id'].'" en-is-set="'.( strlen($en['en_icon']) > 0 ? 1 : 0 ).'" data-toggle="tooltip" data-placement="right" title="Entity Icon">' . echo_en_icon($en) . '</span>';
+    $ui .= '<span class="icon-main en_ui_icon en_ui_icon_' . $en['en_id'] . ' en-icon en__icon_'.$en['en_id'].'" en-is-set="'.( strlen($en['en_icon']) > 0 ? 1 : 0 ).'">' . echo_en_icon($en) . '</span>';
 
     //Show smaller entity status:
     $ui .= '<span class="icon-top-right en_status_entity_id_' . $en['en_id'] . '"><span data-toggle="tooltip" data-placement="right" title="'.$en_all_6177[$en['en_status_entity_id']]['m_name'].' @'.$en['en_status_entity_id'].': '.$en_all_6177[$en['en_status_entity_id']]['m_desc'].'">' . $en_all_6177[$en['en_status_entity_id']]['m_icon'] . '</span></span>';
