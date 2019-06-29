@@ -18,7 +18,7 @@
                 <div class="panel-heading" role="tab" id="openEn'.$acc_en_id.'">
                     <h4 class="panel-title">
                         <a role="button" data-toggle="collapse" data-parent="#accordion" href="#collapse'.$acc_en_id.'" aria-expanded="true" aria-controls="collapse'.$acc_en_id.'">
-                            '.$acc_detail['m_icon'].' '.$acc_detail['m_name'].'
+                            <span class="icon-block" style="width:38px;">'.$acc_detail['m_icon'].'</span>'.$acc_detail['m_name'].'
                         </a>
                     </h4>
                 </div>

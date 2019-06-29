@@ -188,7 +188,7 @@ function echo_url_embed($url, $full_message = null, $return_array = false)
     }
 }
 
-function echo_in_outcome($in_outcome, $fb_messenger_format = false, $reference_attribution = false, $show_entire_outcome = false){
+function echo_in_outcome($in_outcome, $fb_messenger_format = false, $reference_attribution = false, $show_entire_outcome = false, $common_prefix = null){
 
     /*
      * This function applies the double column
@@ -225,6 +225,11 @@ function echo_in_outcome($in_outcome, $fb_messenger_format = false, $reference_a
 
     //See if outcome has a double column:
     if(substr_count($in_outcome , '::') != 1){
+
+        if(strlen($common_prefix) > 0){
+            $in_outcome = trim(str_replace($common_prefix, '', $in_outcome));
+        }
+
         if($fb_messenger_format){
 
             return $in_outcome;
@@ -703,7 +708,7 @@ function echo_ln($ln, $is_inner = false)
 }
 
 
-function echo_actionplan_step_child($en_id, $in, $link_status, $is_unlocked_step = false){
+function echo_actionplan_step_child($en_id, $in, $link_status, $is_unlocked_step = false, $common_prefix = null){
 
     $CI =& get_instance();
 
@@ -736,7 +741,7 @@ function echo_actionplan_step_child($en_id, $in, $link_status, $is_unlocked_step
         $ui .= echo_en_cache('en_all_6186' /* Link Statuses */, $link_status, true, null);
 
         $ui .= '&nbsp;';
-        $ui .= echo_in_outcome($in['in_outcome']);
+        $ui .= echo_in_outcome($in['in_outcome'], false, false, false, $common_prefix);
 
         if($is_unlocked_step){
             $en_all_6410 = $CI->config->item('en_all_6410');
@@ -1190,7 +1195,7 @@ function echo_public_actionplan($in, $autoexpand){
         return null;
     }
 
-
+    $common_prefix = common_prefix($children_ins);
     $return_html = '';
     $return_html .= '<div class="list-group grey_list actionplan_list maxout public_ap">';
 
@@ -1245,7 +1250,7 @@ function echo_public_actionplan($in, $autoexpand){
 
 
         $return_html .= ( in_is_or($in['in_type_entity_id']) ? 'Option #'. ($in_level2_counter + 1).': ' : '');
-        $return_html .= '<span id="title-' . $in_level2['in_id'] . '">' . echo_in_outcome($in_level2['in_outcome']) . '</span>';
+        $return_html .= '&nbsp; <span id="title-' . $in_level2['in_id'] . '">' . echo_in_outcome($in_level2['in_outcome'], false, false, false, $common_prefix) . '</span>';
 
 
         if($has_content){

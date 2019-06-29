@@ -1250,8 +1250,13 @@ class Actionplan_model extends CI_Model
                     }
                 }
 
+
                 //Are we still clean?
                 if(!$check_clean || !$frist_x_all_are_dirty){
+
+                    //If we need title, check to see if we have a common denominator that we can remove:
+                    $common_prefix = common_prefix($in__children, ( $fb_messenger_format ? $max_and_list : 0 ));
+
                     $key = 0;
                     foreach ($in__children as $child_in) {
 
@@ -1287,12 +1292,12 @@ class Actionplan_model extends CI_Model
                         if(!$fb_messenger_format){
 
                             //Add HTML step to UI:
-                            $next_step_message .= echo_actionplan_step_child($en_id, $child_in, (count($child_progression_steps) > 0 ? $child_progression_steps[0]['ln_status_entity_id'] : 6174 /* Link New */ ));
+                            $next_step_message .= echo_actionplan_step_child($en_id, $child_in, (count($child_progression_steps) > 0 ? $child_progression_steps[0]['ln_status_entity_id'] : 6174 /* Link New */ ), false, $common_prefix);
 
                         } else {
 
                             //Add simple message:
-                            $next_step_message .= "\n\n" . ($key + 1) . '. ' . echo_in_outcome($child_in['in_outcome'], $fb_messenger_format);
+                            $next_step_message .= "\n\n" . ($key + 1) . '. ' . echo_in_outcome($child_in['in_outcome'], $fb_messenger_format, false, false, $common_prefix);
 
                         }
 

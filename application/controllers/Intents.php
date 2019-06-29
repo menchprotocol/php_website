@@ -11,6 +11,17 @@ class Intents extends CI_Controller
         $this->output->enable_profiler(FALSE);
     }
 
+    function gg(){
+
+        $ins = $this->Links_model->ln_fetch(array(
+            'ln_status_entity_id IN (' . join(',', $this->config->item('en_ids_7360')) . ')' => null, //Link Statuses Active
+            'in_status_entity_id IN (' . join(',', $this->config->item('en_ids_7356')) . ')' => null, //Intent Statuses Active
+            'ln_type_entity_id IN (' . join(',', $this->config->item('en_ids_4486')) . ')' => null, //Intent Link Connectors
+            'ln_parent_intent_id' => 8263,
+        ), array('in_child'), 0, 0, array('ln_order' => 'ASC')); //Child intents must be ordered
+
+        echo common_prefix($ins);
+    }
 
     function fix__completion_marks($in_id){
 
@@ -932,11 +943,13 @@ class Intents extends CI_Controller
         $ins_unlocked_completions_count = 0;
         $steps_unlocked_completions_count = 0;
 
+
         //Should we check for new unlocks?
         if($meets_unlock_requirements_now && !$meets_unlock_requirements_before){
 
             //First see if this locked intent is completed for any users:
             $step_completed_users = array();
+
 
 
         }

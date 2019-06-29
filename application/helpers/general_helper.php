@@ -437,6 +437,49 @@ function advance_mode(){
     return ' advance-ui '.( $CI->session->userdata('advance_view_enabled')==1 ? '' : 'hidden ' );
 }
 
+function common_prefix($in__children, $max_look = 0){
+    if(count($in__children) < 2){
+        //Cannot do this for less than 2 intents:
+        return null;
+    }
+
+    $common_string = null; //Start with nothing
+    foreach($in__children as $max_count=>$in){
+
+        if($max_count==0){
+            $common_string = $in['in_outcome'];
+            continue;
+        } elseif($max_look > 0 && $max_count==$max_look){
+            break;
+        } elseif(substr_count($in['in_outcome'] , '::') > 0){
+            return null;
+        }
+
+        //Let's see what matches:
+        $outcome_words = explode(' ', $in['in_outcome']);
+
+        foreach(explode(' ', $common_string) as $word_count=>$common_word){
+            if(!isset($outcome_words[$word_count]) || $common_word != $outcome_words[$word_count]){
+                //No longer the same:
+                if($word_count==0){
+                    //The first word is different, nothing else to do:
+                    return null;
+                } else {
+                    //Adjust:
+                    $common_string = '';
+                    for ($i=0;$i<$word_count;$i++){
+                        $common_string .= $outcome_words[$i].' ';
+                    }
+
+                    $common_string = trim($common_string);
+                }
+            }
+        }
+    }
+
+    return $common_string;
+}
+
 function upload_to_cdn($file_url, $ln_miner_entity_id = 0, $ln_metadata = null, $is_local = false)
 {
 

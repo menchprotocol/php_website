@@ -52,7 +52,7 @@
                        class="social-link tag-manager-sign-in" data-toggle="tooltip" title="Sign In"
                        data-placement="top"><i class="fas fa-sign-in"></i></a>
 
-                    <a href="/8263?autoexpand=1" class="social-link tag-manager-social-profile" data-toggle="tooltip"
+                    <a href="/8263" class="social-link tag-manager-social-profile" data-toggle="tooltip"
                        title="Terms of service & privacy policy" data-placement="top"><i
                                 class="fas fa-balance-scale"></i></a>
 
