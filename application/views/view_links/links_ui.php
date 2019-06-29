@@ -209,7 +209,7 @@ foreach($filters as $key => $value){
         $ini_filter[$key] = $value;
     }
 }
-$all_engs = $this->Links_model->ln_fetch($ini_filter, array('en_type'), 0, 0, array('en_name' => 'ASC'), 'COUNT(ln_type_entity_id) as trs_count, SUM(ln_points) as points_sum, en_name, ln_type_entity_id', 'ln_type_entity_id, en_name');
+$all_engs = $this->Links_model->ln_fetch($ini_filter, array('en_type'), 0, 0, array('en_name' => 'ASC'), 'COUNT(ln_type_entity_id) as trs_count, SUM(ln_credits) as credits_sum, en_name, ln_type_entity_id', 'ln_type_entity_id, en_name');
 
 
 
@@ -369,13 +369,11 @@ echo '</div></td>';
         } else {
             //Link Type:
             $all_link_count = 0;
-            $all_points = 0;
             $select_ui = '';
             foreach ($all_engs as $ln) {
                 //Echo drop down:
                 $select_ui .= '<option value="' . $ln['ln_type_entity_id'] . '" ' . ((isset($_GET['ln_type_entity_id']) && $_GET['ln_type_entity_id'] == $ln['ln_type_entity_id']) ? 'selected="selected"' : '') . '>' . $ln['en_name'] . ' ('  . number_format($ln['trs_count'], 0) . ')</option>';
                 $all_link_count += $ln['trs_count'];
-                $all_points += $ln['points_sum'];
             }
 
             echo '<select class="form-control border" name="ln_type_entity_id" id="ln_type_entity_id" class="border" style="width: 100% !important;">';

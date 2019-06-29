@@ -376,14 +376,14 @@ class Admin extends CI_Controller
         //Top Miners:
         $top = 10;
         $filters = array(
-            'ln_points >' => 0,
+            'ln_credits >' => 0,
             'ln_miner_entity_id IN ('.join(',', $certified_miners_en_ids).')' => null,
         );
         if(!is_null($days_ago)){
             $start_date = date("Y-m-d" , (time() - ($days_ago * 24 * 3600)));
             $filters['ln_timestamp >='] = $start_date.' 00:00:00'; //From beginning of the day
         }
-        $top_users = $this->Links_model->ln_fetch($filters, array('en_miner'), $top, 0, array('points_sum' => 'DESC'), 'COUNT(ln_miner_entity_id) as trs_count, SUM(ln_points) as points_sum, en_name, en_icon, ln_miner_entity_id', 'ln_miner_entity_id, en_name, en_icon');
+        $top_users = $this->Links_model->ln_fetch($filters, array('en_miner'), $top, 0, array('credits_sum' => 'DESC'), 'COUNT(ln_miner_entity_id) as trs_count, SUM(ln_credits) as credits_sum, en_name, en_icon, ln_miner_entity_id', 'ln_miner_entity_id, en_name, en_icon');
 
         if(count($top_users) < $top){
             $top = count($top_users);
@@ -393,7 +393,7 @@ class Admin extends CI_Controller
 
         echo '<tr class="panel-title down-border">';
         echo '<td style="text-align: left;">'.$en_all_7304[7162]['m_name'].' ['.$days_term.']</td>';
-        echo '<td style="text-align: right;">Points</td>';
+        echo '<td style="text-align: right;">Credits</td>';
         echo '</tr>';
 
         foreach ($top_users as $count=>$ln) {
@@ -401,7 +401,7 @@ class Admin extends CI_Controller
 
             echo '<td style="text-align: left;"><span class="parent-icon" style="width: 29px; display: inline-block; text-align: center;">'.echo_en_icon($ln).'</span><a href="/entities/'.$ln['ln_miner_entity_id'].'">'.one_two_explode('',' ', $ln['en_name']).'</a> '.echo_rank($count+1).'</td>';
 
-            echo '<td style="text-align: right;"><a href="/links?ln_miner_entity_id='.$ln['ln_miner_entity_id'].( is_null($days_ago) ? '' : '&start_range='.$start_date ).'">'.echo_number($ln['points_sum'], 1).'</a><i class="fal fa-info-circle icon-block" data-toggle="tooltip" title="'.$ln['en_name'].' earned '.number_format($ln['points_sum'], 0).' points with '.number_format($ln['trs_count'],0).' links ['.$days_term.'] averaging '.round(($ln['points_sum']/$ln['trs_count']),1).' points/link" data-placement="top"></i></td>';
+            echo '<td style="text-align: right;"><a href="/links?ln_miner_entity_id='.$ln['ln_miner_entity_id'].( is_null($days_ago) ? '' : '&start_range='.$start_date ).'">'.echo_number($ln['credits_sum'], 1).'</a><i class="fal fa-info-circle icon-block" data-toggle="tooltip" title="'.$ln['en_name'].' earned '.number_format($ln['credits_sum'], 0).' credits with '.number_format($ln['trs_count'],0).' links ['.$days_term.'] averaging '.round(($ln['credits_sum']/$ln['trs_count']),1).' credits/link" data-placement="top"></i></td>';
 
             echo '</tr>';
         }
@@ -414,14 +414,14 @@ class Admin extends CI_Controller
         //Top Users:
         $top = 10;
         $filters = array(
-            'ln_points >' => 0,
+            'ln_credits >' => 0,
             'ln_miner_entity_id NOT IN ('.join(',', $certified_miners_en_ids).')' => null,
         );
         if(!is_null($days_ago)){
             $start_date = date("Y-m-d" , (time() - ($days_ago * 24 * 3600)));
             $filters['ln_timestamp >='] = $start_date.' 00:00:00'; //From beginning of the day
         }
-        $top_users = $this->Links_model->ln_fetch($filters, array('en_miner'), $top, 0, array('points_sum' => 'DESC'), 'COUNT(ln_miner_entity_id) as trs_count, SUM(ln_points) as points_sum, en_name, en_icon, ln_miner_entity_id', 'ln_miner_entity_id, en_name, en_icon');
+        $top_users = $this->Links_model->ln_fetch($filters, array('en_miner'), $top, 0, array('credits_sum' => 'DESC'), 'COUNT(ln_miner_entity_id) as trs_count, SUM(ln_credits) as credits_sum, en_name, en_icon, ln_miner_entity_id', 'ln_miner_entity_id, en_name, en_icon');
 
         if(count($top_users) < $top){
             $top = count($top_users);
@@ -431,13 +431,13 @@ class Admin extends CI_Controller
 
         echo '<tr class="panel-title down-border">';
         echo '<td style="text-align: left;">'.$en_all_7304[7163]['m_name'].' ['.$days_term.']</td>';
-        echo '<td style="text-align: right;">Points</td>';
+        echo '<td style="text-align: right;">Credits</td>';
         echo '</tr>';
 
         foreach ($top_users as $count=>$ln) {
             echo '<tr>';
             echo '<td style="text-align: left;"><span class="parent-icon icon-block">'.echo_en_icon($ln).'</span><a href="/entities/'.$ln['ln_miner_entity_id'].'">'.one_two_explode('',' ',$ln['en_name']).'</a> '.echo_rank($count+1).'</td>';
-            echo '<td style="text-align: right;"><a href="/links?ln_miner_entity_id='.$ln['ln_miner_entity_id'].( is_null($days_ago) ? '' : '&start_range='.$start_date ).'">'.echo_number($ln['points_sum'], 1).'</a><i class="fal fa-info-circle icon-block" data-toggle="tooltip" title="'.$ln['en_name'].' earned '.number_format($ln['points_sum'], 0).' points with '.number_format($ln['trs_count'],0).' links ['.$days_term.'] averaging '.round(($ln['points_sum']/$ln['trs_count']),1).' points/link" data-placement="top"></i></td>';
+            echo '<td style="text-align: right;"><a href="/links?ln_miner_entity_id='.$ln['ln_miner_entity_id'].( is_null($days_ago) ? '' : '&start_range='.$start_date ).'">'.echo_number($ln['credits_sum'], 1).'</a><i class="fal fa-info-circle icon-block" data-toggle="tooltip" title="'.$ln['en_name'].' earned '.number_format($ln['credits_sum'], 0).' credits with '.number_format($ln['trs_count'],0).' links ['.$days_term.'] averaging '.round(($ln['credits_sum']/$ln['trs_count']),1).' credits/link" data-placement="top"></i></td>';
             echo '</tr>';
         }
         echo '</table>';
@@ -464,7 +464,7 @@ class Admin extends CI_Controller
 
         echo '<tr class="panel-title down-border">';
         echo '<td style="text-align: left;">'.echo_number(count($all_link_types)).' '.$en_all_7304[4593]['m_name'].'</td>';
-        echo '<td style="text-align: right;" class="' . advance_mode() . '">Points</td>';
+        echo '<td style="text-align: right;" class="' . advance_mode() . '">Credits</td>';
         echo '<td style="text-align: right;">Links</td>';
         echo '</tr>';
 
@@ -482,9 +482,9 @@ class Admin extends CI_Controller
             echo '</td>';
 
 
-            //Current Points Rate
-            $fetch_points = fetch_points($ln['ln_type_entity_id']);
-            echo '<td style="text-align: right;" class="' . advance_mode() . '">'.( $fetch_points > 0 ? '<a href="/links?ln_status_entity_id='.join(',', $this->config->item('en_ids_7359')) /* Link Statuses Public */.'&ln_parent_entity_id=4595&ln_type_entity_id=4319&ln_child_entity_id='.$ln['ln_type_entity_id'].'" data-toggle="tooltip" title="Points per link" data-placement="top">'.number_format($fetch_points, 0).'</a>' : '0' ).'</td>';
+            //Current Credits Rate
+            $fetch_credits = fetch_credits($ln['ln_type_entity_id']);
+            echo '<td style="text-align: right;" class="' . advance_mode() . '">'.( $fetch_credits > 0 ? '<a href="/links?ln_status_entity_id='.join(',', $this->config->item('en_ids_7359')) /* Link Statuses Public */.'&ln_parent_entity_id=4595&ln_type_entity_id=4319&ln_child_entity_id='.$ln['ln_type_entity_id'].'" data-toggle="tooltip" title="Credits per link" data-placement="top">'.number_format($fetch_credits, 0).'</a>' : '0' ).'</td>';
 
             //<span class="icon-block"><i class="far fa-badge-check"></i></span>
 

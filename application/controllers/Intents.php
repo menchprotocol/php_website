@@ -557,7 +557,7 @@ class Intents extends CI_Controller
         } elseif (!isset($_POST['tr__assessment_points'])) {
             return echo_json(array(
                 'status' => 0,
-                'message' => 'Missing assessment points',
+                'message' => 'Missing completion marks',
             ));
         } elseif (!isset($_POST['in_6676_type']) || !isset($_POST['in_6192_type']) || !isset($_POST['in_6193_type']) || !isset($_POST['in_'.$_POST['in_6676_type'].'_type']) || intval($_POST['in_'.$_POST['in_6676_type'].'_type']) < 1 || !in_array($_POST['in_'.$_POST['in_6676_type'].'_type'], array_merge($this->config->item('en_ids_6192'), $this->config->item('en_ids_6193')))) {
             return echo_json(array(
@@ -1321,7 +1321,7 @@ class Intents extends CI_Controller
             //Add link connector:
             $lns[0]['ln_metadata'] = ( strlen($lns[0]['ln_metadata']) > 0 ? unserialize($lns[0]['ln_metadata']) : array());
 
-            //Make sure points are set:
+            //Make sure marks are set:
             if(!isset($lns[0]['ln_metadata']['tr__assessment_points'])){
                 $lns[0]['ln_metadata']['tr__assessment_points'] = 0;
             }

@@ -384,7 +384,7 @@ function echo_number($number, $micro = true, $fb_messenger_format = false)
 
         $original_format = $number; //Keep as is
 
-        //Decimal number, format based on decimal points:
+        //Format Decimal number:
         if ($number < 0.000001) {
             $formatting = array(
                 'multiplier' => 1000000000,
@@ -660,8 +660,8 @@ function echo_ln($ln, $is_inner = false)
 
 
 
-    if($ln['ln_points'] > 0){
-        $ui .= '<span class="link-connection-a"><span data-toggle="tooltip" data-placement="top" title="'.$en_all_4463[4595]['m_name'].': '.$en_all_4463[4595]['m_desc'].'" style="min-width:30px; display: inline-block;" class="' . advance_mode() . '">'.$en_all_4463[4595]['m_icon']. ' '. number_format($ln['ln_points'], 0) .'</span></span> &nbsp;';
+    if($ln['ln_credits'] > 0){
+        $ui .= '<span class="link-connection-a"><span data-toggle="tooltip" data-placement="top" title="'.$en_all_4463[4595]['m_name'].': '.$en_all_4463[4595]['m_desc'].'" style="min-width:30px; display: inline-block;" class="' . advance_mode() . '">'.$en_all_4463[4595]['m_icon']. ' '. number_format($ln['ln_credits'], 0) .'</span></span> &nbsp;';
     }
 
     if($ln['ln_order'] > 0){

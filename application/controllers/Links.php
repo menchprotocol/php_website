@@ -59,14 +59,14 @@ class Links extends CI_Controller
 
         //Fetch links and total link counts:
         $lns = $this->Links_model->ln_fetch($filters, $join_by, $item_per_page, $query_offset);
-        $lns_count = $this->Links_model->ln_fetch($filters, $join_by, 0, 0, array(), 'COUNT(ln_id) as trs_count, SUM(ln_points) as points_sum');
+        $lns_count = $this->Links_model->ln_fetch($filters, $join_by, 0, 0, array(), 'COUNT(ln_id) as trs_count, SUM(ln_credits) as credits_sum');
         $total_items_loaded = ($query_offset+count($lns));
         $has_more_links = ($lns_count[0]['trs_count'] > 0 && $total_items_loaded < $lns_count[0]['trs_count']);
 
 
         //Display filter notes:
         $message .= '<p style="margin: 10px 0 0 0;">'.( $has_more_links && $query_offset==0  ? 'First ' : ($query_offset+1).' - '). $total_items_loaded . ' of '. number_format($lns_count[0]['trs_count'] , 0) .' Links:</p>';
-        // with '.number_format($lns_count[0]['points_sum'], 0).' awarded points
+        // with '.number_format($lns_count[0]['credits_sum'], 0).' awarded credits
 
 
         if(count($lns)>0){
@@ -340,7 +340,7 @@ class Links extends CI_Controller
                 $this->db->insert('gephi_edges', array(
                     'source' => $id_prefix['in'].$in_child['ln_parent_intent_id'],
                     'target' => $id_prefix['in'].$in_child['ln_child_intent_id'],
-                    'label' => $en_all_4593[$in_child['ln_type_entity_id']]['m_name'], //TODO maybe give visibility to points/condition here?
+                    'label' => $en_all_4593[$in_child['ln_type_entity_id']]['m_name'], //TODO maybe give visibility to condition here?
                     'weight' => 1, //TODO Maybe update later?
                     'edge_type_en_id' => $in_child['ln_type_entity_id'],
                     'edge_status' => $in_child['ln_status_entity_id'],

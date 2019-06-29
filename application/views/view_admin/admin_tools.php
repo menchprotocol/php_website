@@ -444,7 +444,7 @@ if(!$action) {
     }
 
 
-} elseif($action=='reset_all_points') {
+} elseif($action=='reset_all_credits') {
 
 
     die('Locked via code base');
@@ -460,17 +460,17 @@ if(!$action) {
     $total_updated = 0;
     foreach ($all_link_types as $count => $ln) {
 
-        $points = fetch_points($ln['ln_type_entity_id']);
+        $credits = fetch_credits($ln['ln_type_entity_id']);
 
         //Update all links with out-of-date points:
-        $this->db->query("UPDATE table_links SET ln_points = ".$points." WHERE ln_points != ".$points." AND ln_type_entity_id = " . $ln['ln_type_entity_id']);
+        $this->db->query("UPDATE table_links SET ln_credits = ".$credits." WHERE ln_credits != ".$credits." AND ln_type_entity_id = " . $ln['ln_type_entity_id']);
 
         //Count how many updates:
         $total_updated += $this->db->affected_rows();
 
     }
 
-    echo $total_updated.' links updated with new points';
+    echo $total_updated.' links updated with new credit rates';
 
 
 } elseif($action=='assessment_marks_list_all') {

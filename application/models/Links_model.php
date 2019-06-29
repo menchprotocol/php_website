@@ -152,8 +152,8 @@ class Links_model extends CI_Model
         }
 
         //Unset un-allowed columns to be manually added:
-        if (isset($insert_columns['ln_points'])) {
-            unset($insert_columns['ln_points']);
+        if (isset($insert_columns['ln_credits'])) {
+            unset($insert_columns['ln_credits']);
         }
 
         //Clean metadata is provided:
@@ -187,8 +187,8 @@ class Links_model extends CI_Model
             }
         }
 
-        //Set points:
-        $insert_columns['ln_points'] = fetch_points($insert_columns['ln_type_entity_id']);
+        //Set credits:
+        $insert_columns['ln_credits'] = fetch_credits($insert_columns['ln_type_entity_id']);
 
         //Lets log:
         $this->db->insert('table_links', $insert_columns);

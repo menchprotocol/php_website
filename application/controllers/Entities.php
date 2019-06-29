@@ -1296,7 +1296,7 @@ class Entities extends CI_Controller
             'score_parent' => 5, //Score per each parent entity
             'score_children' => 2, //Score per each child entity
             'score_link' => 0.25, //Score per each link of any type and any status
-            'score_miner_points' => 0.10, // This is X where: 1 miner points = X score
+            'score_miner_credits' => 0.10, // This is X where: 1 miner credits = X score
         );
 
         //Fetch entities with/without filter:
@@ -1332,12 +1332,12 @@ class Entities extends CI_Controller
             ), array(), 0, 0, array(), 'COUNT(ln_id) as totals');
             $score += $en_lns[0]['totals'] * $score_weights['score_link'];
 
-            //Mining points:
-            $en_miner_points = $this->Links_model->ln_fetch(array(
+            //Mining credits:
+            $en_miner_credits = $this->Links_model->ln_fetch(array(
                 'ln_miner_entity_id' => $en['en_id'],
                 'ln_status_entity_id IN (' . join(',', $this->config->item('en_ids_7360')) . ')' => null, //Link Statuses Active
-            ), array(), 0, 0, array(), 'SUM(ln_points) as total_points');
-            $score += $en_miner_points[0]['total_points'] * $score_weights['score_miner_points'];
+            ), array(), 0, 0, array(), 'SUM(ln_credits) as total_credits');
+            $score += $en_miner_credits[0]['total_credits'] * $score_weights['score_miner_credits'];
 
             //Do we need to update?
             if($en['en_trust_score'] != $score){
