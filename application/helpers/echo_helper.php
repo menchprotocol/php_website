@@ -580,11 +580,11 @@ function echo_ln($ln, $is_inner = false)
     //Link ID Row of data:
     $ui .= '<div style="padding: 0px 0 8px 12px; font-size: 0.9em;">';
 
-    $ui .= '<span data-toggle="tooltip" data-placement="top" title="Link ID"><i class="fas fa-link"></i>'.$ln['ln_id'].'</span>';
+    $ui .= '<span data-toggle="tooltip" data-placement="top" title="Link ID"><i class="fas fa-link"></i> '.$ln['ln_id'].'</span>';
 
-    $ui .= ' &nbsp;&nbsp;<span data-toggle="tooltip" data-placement="top" title="Link is '.$en_all_6186[$ln['ln_status_entity_id']]['m_desc'].'">'.$en_all_6186[$ln['ln_status_entity_id']]['m_icon'].$en_all_6186[$ln['ln_status_entity_id']]['m_name'].'</span>';
+    $ui .= ' &nbsp;&nbsp;<span data-toggle="tooltip" data-placement="top" title="Link is '.$en_all_6186[$ln['ln_status_entity_id']]['m_desc'].'">'.$en_all_6186[$ln['ln_status_entity_id']]['m_icon'].' '.$en_all_6186[$ln['ln_status_entity_id']]['m_name'].'</span>';
 
-    $ui .= ' &nbsp;&nbsp;<span data-toggle="tooltip" data-placement="top" title="Link Creation Timestamp: ' . $ln['ln_timestamp'] . ' PST"><i class="fas fa-clock"></i>' . echo_time_difference(strtotime($ln['ln_timestamp'])) . ' ago</span>';
+    $ui .= ' &nbsp;&nbsp;<span data-toggle="tooltip" data-placement="top" title="Link Creation Timestamp: ' . $ln['ln_timestamp'] . ' PST"><i class="fas fa-clock"></i> ' . echo_time_difference(strtotime($ln['ln_timestamp'])) . ' ago</span>';
 
     $ui .= '</div>';
 
@@ -665,13 +665,13 @@ function echo_ln($ln, $is_inner = false)
     }
 
     if($ln['ln_order'] > 0){
-        $ui .= '<span class="link-connection-a"><span data-toggle="tooltip" data-placement="top" title="Link ordered '.echo_ordinal_number($ln['ln_order']).' relative to its siblings" style="min-width:30px; display: inline-block;" class="' . advance_mode() . '"><i class="fas fa-sort"></i>'.echo_ordinal_number($ln['ln_order']).' Order</span></span> &nbsp;';
+        $ui .= '<span class="link-connection-a"><span data-toggle="tooltip" data-placement="top" title="Link ordered '.echo_ordinal_number($ln['ln_order']).' relative to its siblings" style="min-width:30px; display: inline-block;" class="' . advance_mode() . '"><i class="fas fa-sort"></i> '.echo_ordinal_number($ln['ln_order']).' Order</span></span> &nbsp;';
     }
 
     //Is this a miner? Show them metadata status:
     if(!$hide_sensitive_details && en_auth(array(1308))){
         if(strlen($ln['ln_metadata']) > 0){
-            $ui .= '<span class="link-connection-a"><a href="/links/link_json/' . $ln['ln_id'] . '" target="_blank" data-toggle="tooltip" data-placement="top" title="View link metadata (in new window)" style="min-width:26px; display: inline-block;" class="' . advance_mode() . '"><i class="far fa-lambda"></i>Metadata</a></span> &nbsp;';
+            $ui .= '<span class="link-connection-a"><a href="/links/link_json/' . $ln['ln_id'] . '" target="_blank" data-toggle="tooltip" data-placement="top" title="View link metadata (in new window)" style="min-width:26px; display: inline-block;" class="' . advance_mode() . '"><i class="far fa-lambda"></i> Metadata</a></span> &nbsp;';
         }
     }
 
