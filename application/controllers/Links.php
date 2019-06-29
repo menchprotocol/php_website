@@ -52,7 +52,7 @@ class Links extends CI_Controller
         $join_by = unserialize($_POST['link_join_by']);
         $page_num = ( isset($_POST['page_num']) && intval($_POST['page_num'])>=2 ? intval($_POST['page_num']) : 1 );
         $next_page = ($page_num+1);
-        $item_per_page = (is_dev_environment() ? 100 : $this->config->item('items_per_page'));
+        $item_per_page = (is_dev_environment() ? 20 : $this->config->item('items_per_page'));
         $query_offset = (($page_num-1)*$item_per_page);
 
         $message = '';

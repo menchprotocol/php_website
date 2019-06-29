@@ -580,7 +580,7 @@ function echo_ln($ln, $is_inner = false)
     //Link ID Row of data:
     $ui .= '<div style="padding: 0px 0 8px 12px; font-size: 0.9em;">';
 
-    $ui .= '<span data-toggle="tooltip" data-placement="top" title="Link ID"><i class="fas fa-link"></i> '.$ln['ln_id'].'</span>';
+    $ui .= '<span data-toggle="tooltip" data-placement="top" title="Link ID"><a href="/links?ln_id='.$ln['ln_id'].'"><i class="fas fa-link"></i> '.$ln['ln_id'].'</a></span>';
 
     $ui .= ' &nbsp;&nbsp;<span data-toggle="tooltip" data-placement="top" title="Link is '.$en_all_6186[$ln['ln_status_entity_id']]['m_desc'].'">'.$en_all_6186[$ln['ln_status_entity_id']]['m_icon'].' '.$en_all_6186[$ln['ln_status_entity_id']]['m_name'].'</span>';
 
@@ -601,12 +601,12 @@ function echo_ln($ln, $is_inner = false)
         } else {
 
             //Show Miner:
-            $ui .= '<span class="icon-main">'.echo_en_icon($miner_ens[0]).' </span>';
-            $ui .= '<a href="/entities/'.$miner_ens[0]['en_id'].'" data-toggle="tooltip" data-placement="top" title="View User Entity"><b>' . one_two_explode('',' ',$miner_ens[0]['en_name']) . '</b></a>';
+            $ui .= '<span class="icon-main">'.echo_en_icon($miner_ens[0]).'</span>';
+            $ui .= '<a href="/entities/'.$miner_ens[0]['en_id'].'" data-toggle="tooltip" data-placement="top" title="Link Miner Entity"> <b>' . one_two_explode('',' ',$miner_ens[0]['en_name']) . '</b></a>';
         }
 
         //Link Type:
-        $ui .= '<a href="/entities/'.$ln['ln_type_entity_id'].'" data-toggle="tooltip" data-placement="top" title="View link type entity"><b style="padding-left:5px;">'. ( strlen($en_all_4593[$ln['ln_type_entity_id']]['m_icon']) > 0 ? '&nbsp;'.$en_all_4593[$ln['ln_type_entity_id']]['m_icon'] : '' ) .'&nbsp;'. $en_all_4593[$ln['ln_type_entity_id']]['m_name'] . '</b></a>';
+        $ui .= '<a href="/entities/'.$ln['ln_type_entity_id'].'" data-toggle="tooltip" data-placement="top" title="Link Type Entity"><b style="padding-left:5px;">'. ( strlen($en_all_4593[$ln['ln_type_entity_id']]['m_icon']) > 0 ? '&nbsp;'.$en_all_4593[$ln['ln_type_entity_id']]['m_icon'] : '' ) .'&nbsp;'. $en_all_4593[$ln['ln_type_entity_id']]['m_name'] . '</b></a>';
 
     $ui .= '</div>';
 
@@ -665,7 +665,7 @@ function echo_ln($ln, $is_inner = false)
     }
 
     if($ln['ln_order'] > 0){
-        $ui .= '<span class="link-connection-a"><span data-toggle="tooltip" data-placement="top" title="Link ordered '.echo_ordinal_number($ln['ln_order']).' relative to its siblings" style="min-width:30px; display: inline-block;" class="' . advance_mode() . '"><i class="fas fa-sort"></i> '.echo_ordinal_number($ln['ln_order']).' Order</span></span> &nbsp;';
+        $ui .= '<span class="link-connection-a"><span data-toggle="tooltip" data-placement="top" title="Link ordered '.echo_ordinal_number($ln['ln_order']).'" style="min-width:30px; display: inline-block;" class="' . advance_mode() . '"><i class="fas fa-sort"></i> '.echo_ordinal_number($ln['ln_order']).' Order</span></span> &nbsp;';
     }
 
     //Is this a miner? Show them metadata status:
@@ -1332,7 +1332,7 @@ function echo_en_messages($ln){
     $ui .= '<li class="' . advance_mode() . '" style="margin: 0 3px 0 0;"><span title="'.$en_all_6186[$ln['ln_status_entity_id']]['m_name'].': '.$en_all_6186[$ln['ln_status_entity_id']]['m_desc'].'" data-toggle="tooltip" data-placement="top">'.$en_all_6186[$ln['ln_status_entity_id']]['m_icon'].'</span></li>';
 
     //Order:
-    $ui .= '<li class="' . advance_mode() . '" style="margin: 0 3px 0 0;"><span title="Message order relative to siblings" data-toggle="tooltip" data-placement="top"><i class="fas fa-sort"></i>' . echo_ordinal_number($ln['ln_order']) . '</span></li>';
+    $ui .= '<li class="' . advance_mode() . '" style="margin: 0 3px 0 0;"><span title="Order messages" data-toggle="tooltip" data-placement="top"><i class="fas fa-sort"></i>' . echo_ordinal_number($ln['ln_order']) . '</span></li>';
 
     $ui .= '<li style="clear: both;">&nbsp;</li>';
 
