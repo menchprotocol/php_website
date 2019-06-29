@@ -11,7 +11,7 @@ defined('BASEPATH') OR exit('No direct script access allowed');
  *
  */
 
-//Generated 2019-06-28 12:31:58 PST
+//Generated 2019-06-28 18:23:27 PST
 
 //Mench Platform Products:
 $config['en_ids_7372'] = array(6196,7369,7370,7368);
@@ -843,43 +843,43 @@ $config['en_ids_6827'] = array(1281,1308,3084,4430,4433,6695,6875);
 $config['en_all_6827'] = array(
     1281 => array(
         'm_icon' => '<i class="fas fa-user-shield"></i>',
-        'm_name' => 'Admins',
+        'm_name' => 'Mench Admins',
         'm_desc' => 'The dedicated team that ensures the continuous operation of the Mench platform, governs its principles and empowers the rest of the community to achieve their full potential',
         'm_parents' => array(6287,6827,4463),
     ),
     1308 => array(
         'm_icon' => '<i class="fas fa-user-hard-hat"></i>',
-        'm_name' => 'Miners',
+        'm_name' => 'Mench Miners',
         'm_desc' => 'Those who have completed the intention to become a Mench miner and have passed the assessment that validated their skills and understanding of the mining principles',
         'm_parents' => array(7368,6827,4463,4426),
     ),
     3084 => array(
         'm_icon' => '<i class="fas fa-user-astronaut"></i>',
-        'm_name' => 'Industry Experts',
+        'm_name' => 'Mench Industry Experts',
         'm_desc' => 'Experienced in their respective industry with a track record of advancing their field of knowldge.',
         'm_parents' => array(6827,4463),
     ),
     4430 => array(
         'm_icon' => '<i class="fas fa-user-graduate"></i>',
-        'm_name' => 'Users',
+        'm_name' => 'Mench Users',
         'm_desc' => 'Users who are pursuing their intentions using Mench',
         'm_parents' => array(7369,6196,6827,4426,4463),
     ),
     4433 => array(
         'm_icon' => '<i class="fas fa-user-ninja"></i>',
-        'm_name' => 'Software Engineers',
+        'm_name' => 'Mench Open-Source Developers',
         'm_desc' => 'Those contributing to our open-source code base hosted on GitHub',
         'm_parents' => array(6827,4463,4426),
     ),
     6695 => array(
         'm_icon' => '<i class="fas fa-user-tie"></i>',
-        'm_name' => 'Partner Companies',
+        'm_name' => 'Mench Partner Companies',
         'm_desc' => 'Those who use Mench as a recruitment platform to assess their candidates and reach new candidates',
         'm_parents' => array(7370,6827,4426,4463),
     ),
     6875 => array(
         'm_icon' => '<i class="fas fa-user-friends"></i>',
-        'm_name' => 'Career Coaches',
+        'm_name' => 'Mench Career Coaches',
         'm_desc' => 'Coaches experts in the career development process that would help you land your dream job in the shortest possible time',
         'm_parents' => array(6827),
     ),
@@ -1107,7 +1107,7 @@ $config['en_all_4463'] = array(
     ),
     4433 => array(
         'm_icon' => '<i class="fas fa-user-ninja"></i>',
-        'm_name' => 'Mench Software Engineers',
+        'm_name' => 'Mench Open-Source Developers',
         'm_desc' => 'Developers who are contributing to the Mench open-source project on GitHub: https://github.com/askmench',
         'm_parents' => array(6827,4463,4426),
     ),
@@ -1137,8 +1137,8 @@ $config['en_all_4463'] = array(
     ),
     4595 => array(
         'm_icon' => '<i class="fas fa-award"></i>',
-        'm_name' => 'Link Points',
-        'm_desc' => 'Miners are awarded with points for each transaction they log as a way to measure their contribution to Mench. Points have no monetary value and are only used to rank relative contribution.',
+        'm_name' => 'Link Credits',
+        'm_desc' => 'Contribution credits awarded to link creator, also known as the miner.',
         'm_parents' => array(6232,6214,4319,4426,4527,4463,4341),
     ),
     4755 => array(
@@ -1903,13 +1903,13 @@ $config['en_all_4426'] = array(
     ),
     4433 => array(
         'm_icon' => '<i class="fas fa-user-ninja"></i>',
-        'm_name' => 'Mench Software Engineers',
+        'm_name' => 'Mench Open-Source Developers',
         'm_desc' => 'Requires admin review and approval',
         'm_parents' => array(6827,4463,4426),
     ),
     4595 => array(
         'm_icon' => '<i class="fas fa-award"></i>',
-        'm_name' => 'Link Points',
+        'm_name' => 'Link Credits',
         'm_desc' => '',
         'm_parents' => array(6232,6214,4319,4426,4527,4463,4341),
     ),
@@ -2262,7 +2262,7 @@ $config['en_all_4755'] = array(
     ),
 );
 
-//Link Points:
+//Link Credits:
 $config['en_ids_4595'] = array(4228,4229,4230,4231,4232,4235,4242,4246,4250,4251,4255,4256,4257,4258,4259,4260,4261,4263,4264,4266,4267,4268,4269,4275,4278,4279,4282,4283,4287,4299,4318,4319,4460,4547,4548,4549,4550,4551,4552,4553,4554,4555,4556,4557,4559,4570,4577,4601,4983,4993,4994,4998,4999,5000,5001,5003,5007,5865,5943,5967,5981,5982,6093,6132,6140,6143,6144,6149,6154,6155,6157,6158,6224,6226,6242,6415,6556,6559,6560,6563,6578,6969,6997,7348);
 $config['en_all_4595'] = array(
     4228 => array(
