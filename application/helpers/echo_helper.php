@@ -592,21 +592,23 @@ function echo_ln($ln, $is_inner = false)
     //Miner and Link Type row:
     $ui .= '<div style="padding:0 10px 12px;">';
 
-        if($hide_sensitive_details){
+    if($hide_sensitive_details){
 
-            //Hide Miner:
-            $ui .= '<span class="icon-main"><i class="fal fa-eye-slash"></i></span>';
-            $ui .= '<b data-toggle="tooltip" data-placement="top" title="Sign in as a Mench moderator to unlock private information about this link">&nbsp;Private Entity</b>';
+        //Hide Miner identity:
+        $first_name = 'Miner';
+        $ui .= '<span class="icon-main"><i class="fal fa-eye-slash"></i></span>';
+        $ui .= '<b data-toggle="tooltip" data-placement="top" title="Sign in as a Mench moderator to unlock private information about this link">&nbsp;Private Entity</b>';
 
-        } else {
+    } else {
 
-            //Show Miner:
-            $ui .= '<span class="icon-main">'.echo_en_icon($miner_ens[0]).'</span>';
-            $ui .= '<a href="/entities/'.$miner_ens[0]['en_id'].'" data-toggle="tooltip" data-placement="top" title="Link Miner Entity"> <b>' . one_two_explode('',' ',$miner_ens[0]['en_name']) . '</b></a>';
-        }
+        //Show Miner:
+        $first_name =  one_two_explode('',' ',$miner_ens[0]['en_name']);
+        $ui .= '<span class="icon-main">'.echo_en_icon($miner_ens[0]).'</span>';
+        $ui .= '<a href="/entities/'.$miner_ens[0]['en_id'].'" data-toggle="tooltip" data-placement="top" title="Link Miner Entity"> <b>' . $first_name . '</b></a>';
+    }
 
-        //Link Type:
-        $ui .= '<a href="/entities/'.$ln['ln_type_entity_id'].'" data-toggle="tooltip" data-placement="top" title="Link Type Entity"><b style="padding-left:5px;">'. ( strlen($en_all_4593[$ln['ln_type_entity_id']]['m_icon']) > 0 ? '&nbsp;'.$en_all_4593[$ln['ln_type_entity_id']]['m_icon'] : '' ) .'&nbsp;'. $en_all_4593[$ln['ln_type_entity_id']]['m_name'] . '</b></a>';
+    //Link Type:
+    $ui .= '<a href="/entities/'.$ln['ln_type_entity_id'].'" data-toggle="tooltip" data-placement="top" title="Link Type Entity"><b style="padding-left:5px;">'. ( strlen($en_all_4593[$ln['ln_type_entity_id']]['m_icon']) > 0 ? '&nbsp;'.$en_all_4593[$ln['ln_type_entity_id']]['m_icon'] : '' ) .'&nbsp;'. $en_all_4593[$ln['ln_type_entity_id']]['m_name'] . '</b></a>';
 
     $ui .= '</div>';
 
@@ -661,7 +663,7 @@ function echo_ln($ln, $is_inner = false)
 
 
     if($ln['ln_credits'] > 0){
-        $ui .= '<span class="link-connection-a"><span data-toggle="tooltip" data-placement="top" title="'.$en_all_4463[4595]['m_name'].': '.$en_all_4463[4595]['m_desc'].'" style="min-width:30px; display: inline-block;" class="' . advance_mode() . '">'.$en_all_4463[4595]['m_icon']. ' '. number_format($ln['ln_credits'], 0) .'</span></span> &nbsp;';
+        $ui .= '<span class="link-connection-a"><span data-toggle="tooltip" data-placement="top" title="'.$en_all_4463[4595]['m_name'].' awarded to '.$first_name.'" style="min-width:30px; display: inline-block;" class="' . advance_mode() . '">'.$en_all_4463[4595]['m_icon']. ' '. number_format($ln['ln_credits'], 0) .'</span></span> &nbsp;';
     }
 
     if($ln['ln_order'] > 0){
