@@ -11,7 +11,7 @@ defined('BASEPATH') OR exit('No direct script access allowed');
  *
  */
 
-//Generated 2019-06-29 18:58:56 PST
+//Generated 2019-06-29 19:06:50 PST
 
 //Mench Platform Products:
 $config['en_ids_7372'] = array(6196,7369,7370,7368);
@@ -200,7 +200,7 @@ $config['en_all_7364'] = array(
         'm_icon' => '<i class="fas fa-spinner fa-spin"></i>',
         'm_name' => 'Link Drafting',
         'm_desc' => '',
-        'm_parents' => array(7364,7360,6186),
+        'm_parents' => array(7359,7364,7360,6186),
     ),
 );
 
@@ -217,7 +217,7 @@ $config['en_all_7360'] = array(
         'm_icon' => '<i class="fas fa-spinner fa-spin"></i>',
         'm_name' => 'Link Drafting',
         'm_desc' => '',
-        'm_parents' => array(7364,7360,6186),
+        'm_parents' => array(7359,7364,7360,6186),
     ),
     6176 => array(
         'm_icon' => '<i class="fas fa-check-square"></i>',
@@ -228,8 +228,14 @@ $config['en_all_7360'] = array(
 );
 
 //Link Statuses Public:
-$config['en_ids_7359'] = array(6176);
+$config['en_ids_7359'] = array(6175,6176);
 $config['en_all_7359'] = array(
+    6175 => array(
+        'm_icon' => '<i class="fas fa-spinner fa-spin"></i>',
+        'm_name' => 'Link Drafting',
+        'm_desc' => '',
+        'm_parents' => array(7359,7364,7360,6186),
+    ),
     6176 => array(
         'm_icon' => '<i class="fas fa-check-square"></i>',
         'm_name' => 'Link Published',
@@ -251,7 +257,7 @@ $config['en_all_7358'] = array(
         'm_icon' => '<i class="fas fa-spinner fa-spin"></i>',
         'm_name' => 'Entity Drafting',
         'm_desc' => '',
-        'm_parents' => array(7358,6177),
+        'm_parents' => array(7357,7358,6177),
     ),
     6181 => array(
         'm_icon' => '<i class="fas fa-check-square"></i>',
@@ -262,8 +268,14 @@ $config['en_all_7358'] = array(
 );
 
 //Entity Statuses Public:
-$config['en_ids_7357'] = array(6181);
+$config['en_ids_7357'] = array(6180,6181);
 $config['en_all_7357'] = array(
+    6180 => array(
+        'm_icon' => '<i class="fas fa-spinner fa-spin"></i>',
+        'm_name' => 'Entity Drafting',
+        'm_desc' => '',
+        'm_parents' => array(7357,7358,6177),
+    ),
     6181 => array(
         'm_icon' => '<i class="fas fa-check-square"></i>',
         'm_name' => 'Entity Published',
@@ -285,7 +297,7 @@ $config['en_all_7356'] = array(
         'm_icon' => '<i class="fas fa-spinner fa-spin"></i>',
         'm_name' => 'Intent Drafting',
         'm_desc' => '',
-        'm_parents' => array(7356,4737),
+        'm_parents' => array(7355,7356,4737),
     ),
     6185 => array(
         'm_icon' => '<i class="fas fa-check-square"></i>',
@@ -302,8 +314,14 @@ $config['en_all_7356'] = array(
 );
 
 //Intent Statuses Public:
-$config['en_ids_7355'] = array(6185,7351);
+$config['en_ids_7355'] = array(6184,6185,7351);
 $config['en_all_7355'] = array(
+    6184 => array(
+        'm_icon' => '<i class="fas fa-spinner fa-spin"></i>',
+        'm_name' => 'Intent Drafting',
+        'm_desc' => '',
+        'm_parents' => array(7355,7356,4737),
+    ),
     6185 => array(
         'm_icon' => '<i class="fas fa-check-square"></i>',
         'm_name' => 'Intent Published',
@@ -705,7 +723,7 @@ $config['en_all_6186'] = array(
         'm_icon' => '<i class="fas fa-spinner fa-spin"></i>',
         'm_name' => 'Drafting',
         'm_desc' => 'being mined, to be published soon',
-        'm_parents' => array(7364,7360,6186),
+        'm_parents' => array(7359,7364,7360,6186),
     ),
     6174 => array(
         'm_icon' => '<i class="fal fa-square"></i>',
@@ -1513,7 +1531,7 @@ $config['en_all_4737'] = array(
         'm_icon' => '<i class="fas fa-spinner fa-spin"></i>',
         'm_name' => 'Drafting',
         'm_desc' => 'being mined, to be published soon',
-        'm_parents' => array(7356,4737),
+        'm_parents' => array(7355,7356,4737),
     ),
     6183 => array(
         'm_icon' => '<i class="fal fa-square"></i>',
@@ -1542,7 +1560,7 @@ $config['en_all_6177'] = array(
         'm_icon' => '<i class="fas fa-spinner fa-spin"></i>',
         'm_name' => 'Drafting',
         'm_desc' => 'being mined, to be published soon',
-        'm_parents' => array(7358,6177),
+        'm_parents' => array(7357,7358,6177),
     ),
     6179 => array(
         'm_icon' => '<i class="fal fa-square"></i>',
