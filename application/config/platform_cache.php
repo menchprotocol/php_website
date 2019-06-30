@@ -11,7 +11,7 @@ defined('BASEPATH') OR exit('No direct script access allowed');
  *
  */
 
-//Generated 2019-06-29 19:06:50 PST
+//Generated 2019-06-29 19:16:56 PST
 
 //Mench Platform Products:
 $config['en_ids_7372'] = array(6196,7369,7370,7368);
@@ -200,7 +200,7 @@ $config['en_all_7364'] = array(
         'm_icon' => '<i class="fas fa-spinner fa-spin"></i>',
         'm_name' => 'Link Drafting',
         'm_desc' => '',
-        'm_parents' => array(7359,7364,7360,6186),
+        'm_parents' => array(7364,7360,6186),
     ),
 );
 
@@ -217,7 +217,7 @@ $config['en_all_7360'] = array(
         'm_icon' => '<i class="fas fa-spinner fa-spin"></i>',
         'm_name' => 'Link Drafting',
         'm_desc' => '',
-        'm_parents' => array(7359,7364,7360,6186),
+        'm_parents' => array(7364,7360,6186),
     ),
     6176 => array(
         'm_icon' => '<i class="fas fa-check-square"></i>',
@@ -228,14 +228,8 @@ $config['en_all_7360'] = array(
 );
 
 //Link Statuses Public:
-$config['en_ids_7359'] = array(6175,6176);
+$config['en_ids_7359'] = array(6176);
 $config['en_all_7359'] = array(
-    6175 => array(
-        'm_icon' => '<i class="fas fa-spinner fa-spin"></i>',
-        'm_name' => 'Link Drafting',
-        'm_desc' => '',
-        'm_parents' => array(7359,7364,7360,6186),
-    ),
     6176 => array(
         'm_icon' => '<i class="fas fa-check-square"></i>',
         'm_name' => 'Link Published',
@@ -297,7 +291,7 @@ $config['en_all_7356'] = array(
         'm_icon' => '<i class="fas fa-spinner fa-spin"></i>',
         'm_name' => 'Intent Drafting',
         'm_desc' => '',
-        'm_parents' => array(7355,7356,4737),
+        'm_parents' => array(7356,4737),
     ),
     6185 => array(
         'm_icon' => '<i class="fas fa-check-square"></i>',
@@ -314,14 +308,8 @@ $config['en_all_7356'] = array(
 );
 
 //Intent Statuses Public:
-$config['en_ids_7355'] = array(6184,6185,7351);
+$config['en_ids_7355'] = array(6185,7351);
 $config['en_all_7355'] = array(
-    6184 => array(
-        'm_icon' => '<i class="fas fa-spinner fa-spin"></i>',
-        'm_name' => 'Intent Drafting',
-        'm_desc' => '',
-        'm_parents' => array(7355,7356,4737),
-    ),
     6185 => array(
         'm_icon' => '<i class="fas fa-check-square"></i>',
         'm_name' => 'Intent Published',
@@ -723,7 +711,7 @@ $config['en_all_6186'] = array(
         'm_icon' => '<i class="fas fa-spinner fa-spin"></i>',
         'm_name' => 'Drafting',
         'm_desc' => 'being mined, to be published soon',
-        'm_parents' => array(7359,7364,7360,6186),
+        'm_parents' => array(7364,7360,6186),
     ),
     6174 => array(
         'm_icon' => '<i class="fal fa-square"></i>',
@@ -1062,7 +1050,7 @@ $config['en_all_6676'] = array(
 );
 
 //OR Intents:
-$config['en_ids_6193'] = array(6684,6685,7231,6907);
+$config['en_ids_6193'] = array(6684,6685,7231,7230,6907);
 $config['en_all_6193'] = array(
     6684 => array(
         'm_icon' => '<i class="fas fa-check"></i>',
@@ -1081,6 +1069,12 @@ $config['en_all_6193'] = array(
         'm_name' => 'Multiple Answers',
         'm_desc' => 'Allows the user to choose multiple answers from the list of children',
         'm_parents' => array(6157,6193),
+    ),
+    7230 => array(
+        'm_icon' => '<i class="fas fa-random"></i>',
+        'm_name' => 'Random Path',
+        'm_desc' => 'A path would be randomly chosen by Mench as way to A/B test two paths',
+        'm_parents' => array(6193),
     ),
     6907 => array(
         'm_icon' => '<i class="fas fa-lock"></i>',
@@ -1531,7 +1525,7 @@ $config['en_all_4737'] = array(
         'm_icon' => '<i class="fas fa-spinner fa-spin"></i>',
         'm_name' => 'Drafting',
         'm_desc' => 'being mined, to be published soon',
-        'm_parents' => array(7355,7356,4737),
+        'm_parents' => array(7356,4737),
     ),
     6183 => array(
         'm_icon' => '<i class="fal fa-square"></i>',
