@@ -72,52 +72,72 @@ echo '</div>';
 
 
 
-//Exclude certain intents form being displayed on this section:
-$exclude_array = $this->config->item('in_system_lock');
+//Start generating relevant intentions we can recommend as other intentions:
 
-//Also exclude this intent:
-array_push($exclude_array, $in['in_id']);
+//Recommended intentions:
+$in__recommended = $this->Links_model->ln_fetch(array(
+    'ln_status_entity_id IN (' . join(',', $this->config->item('en_ids_7359')) . ')' => null, //Link Statuses Public
+    'ln_type_entity_id' => 4228, //Fixed intent links only
+    'ln_parent_intent_id' => 8469, //Recommend Mench Intentions
+    'in_status_entity_id' => 7351, //Intent Starting Point
+    'in_id !=' => $in['in_id'], //Not the current intent
+), array('in_child'), 0, 0, array('ln_order' => 'ASC'));
 
-//Fetch other intentions:
-$parent_intentions = $this->Links_model->ln_fetch(array(
+
+//Child intentions:
+$in__children = $this->Links_model->ln_fetch(array(
+    'ln_status_entity_id IN (' . join(',', $this->config->item('en_ids_7359')) . ')' => null, //Link Statuses Public
+    'in_status_entity_id' => 7351, //Intent Starting Point
+    'ln_type_entity_id' => 4228, //Fixed intent links only
+    'ln_parent_intent_id' => $in['in_id'],
+    'in_id !=' => $in['in_id'], //Not the current intent
+), array('in_child'));
+
+//Parent intentions:
+$in__parents = $this->Links_model->ln_fetch(array(
     'ln_status_entity_id IN (' . join(',', $this->config->item('en_ids_7359')) . ')' => null, //Link Statuses Public
     'in_status_entity_id' => 7351, //Intent Starting Point
     'ln_type_entity_id' => 4228, //Fixed intent links only
     'ln_child_intent_id' => $in['in_id'],
-    'in_id NOT IN (' . join(',', $exclude_array) . ')' => null,
 ), array('in_parent'));
 
-
-//Parent intentions:
-foreach ($parent_intentions as $parent_intention) {
-    if(in_is_clean_outcome($parent_intention)){
-        //Make sure to not load this again:
-        array_push($exclude_array, $parent_intention['in_id']);
-    }
+//Sibling intentions:
+$in__siblings = array();
+foreach ($this->Links_model->ln_fetch(array(
+    'ln_status_entity_id IN (' . join(',', $this->config->item('en_ids_7359')) . ')' => null, //Link Statuses Public
+    'in_status_entity_id IN (' . join(',', $this->config->item('en_ids_7355')) . ')' => null, //Intent Statuses Public
+    'ln_type_entity_id' => 4228, //Fixed intent links only
+    'ln_child_intent_id' => $in['in_id'],
+), array('in_parent')) as $parent_in) {
+    $in__siblings = array_merge($in__siblings, $this->Links_model->ln_fetch(array(
+        'ln_status_entity_id IN (' . join(',', $this->config->item('en_ids_7359')) . ')' => null, //Link Statuses Public
+        'in_status_entity_id' => 7351, //Intent Starting Point
+        'ln_type_entity_id' => 4228, //Fixed intent links only
+        'ln_parent_intent_id' => $parent_in['in_id'],
+        'in_id !=' => $in['in_id'], //Not the current intent
+    ), array('in_child')));
 }
 
-$recommended_intention = $this->Links_model->ln_fetch(array(
-    'ln_status_entity_id IN (' . join(',', $this->config->item('en_ids_7359')) . ')' => null, //Link Statuses Public
-    'ln_type_entity_id' => 4228, //Fixed intent links only
-    'ln_parent_intent_id' => 8469, //Recommend Mench Intentions
-    'in_id NOT IN (' . join(',', $exclude_array) . ')' => null,
-    'in_status_entity_id' => 7351, //Intent Starting Point
-), array('in_child'), 0, 0, array('ln_order' => 'ASC'));
+$in__other = array_merge($in__recommended, $in__children, $in__parents, $in__siblings);
 
 
 //Display if any:
-if(count($parent_intentions) > 0 || count($recommended_intention) > 0){
+if(count($in__other) > 0){
 
     echo '<h3 style="margin-bottom:5px; margin-top:55px;">Other Intentions:</h3>';
     echo '<div class="list-group grey_list actionplan_list maxout">';
 
     //Now fetch Recommended Intents:
-    $in__other = array_merge($recommended_intention, $parent_intentions);
+    $already_printed = array(); //Make sure we don't show anything twice
     $common_prefix = common_prefix($in__other);
     foreach ($in__other as $other_in) {
         if(!in_is_clean_outcome($other_in)){
             continue;
         }
+        if(in_array($other_in['in_id'], $already_printed)){
+            continue; //Already printed!
+        }
+        array_push($already_printed, $other_in['in_id']); //Keep track to make sure its printed only once
         echo echo_in_recommend($other_in, false, $common_prefix);
     }
 
