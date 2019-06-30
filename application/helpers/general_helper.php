@@ -468,6 +468,9 @@ function common_prefix($in__children, $max_look = 0){
                     //Adjust:
                     $common_string = '';
                     for ($i=0;$i<$word_count;$i++){
+                        if(!isset($outcome_words[$i])){
+                            return null;
+                        }
                         $common_string .= $outcome_words[$i].' ';
                     }
 

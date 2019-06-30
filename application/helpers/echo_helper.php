@@ -1535,9 +1535,11 @@ function echo_in_recommend($in, $is_passthrough, $common_prefix = null)
     $ui .= '</span>';
 
     $ui .= '<span style="color:#222; font-weight:500; font-size:1.2em;">'.echo_in_outcome($in['in_outcome'], false, false, false, $common_prefix).'</span>';
-    if(!$is_passthrough){
+
+    $metadata = unserialize($in['in_metadata']);
+    if(!$is_passthrough && isset($metadata['in__metadata_max_seconds']) && $metadata['in__metadata_max_seconds'] > 0){
         $ui .= '<span style="font-size:0.8em; font-weight:300; margin-left:5px; display:inline-block;">';
-        $ui .= '<span><i class="fal fa-clock"></i>' . echo_time_range($in) . '</span>';
+        $ui .= '<span><i class="fal fa-clock"></i>' . echo_time_hours($metadata['in__metadata_max_seconds'], false) . '</span>';
         $ui .= '</span>';
     }
     $ui .= '</a>';
