@@ -1246,7 +1246,7 @@ function echo_public_actionplan($in, $autoexpand){
         }
 
 
-        $return_html .= ( in_is_or($in['in_type_entity_id']) ? 'Option #'. ($in_level2_counter + 1).': ' : '');
+        //$return_html .= ( in_is_or($in['in_type_entity_id']) ? 'Option #'. ($in_level2_counter + 1).': ' : ''); //Hide for now to simplify UI
         $return_html .= '&nbsp;<span id="title-' . $in_level2['in_id'] . '">' . echo_in_outcome($in_level2['in_outcome'], false, false, false, $common_prefix) . '</span>';
 
 
