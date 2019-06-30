@@ -813,8 +813,7 @@ function echo_random_message($message_key){
             'You can add a new intention to your Action Plan by sending me a message that starts with "I want to", for example: "I want to assess my back-end skills" or "I want to assess my javascript skills"',
         ),
         'goto_next' => array(
-            'Choose next to continue',
-            'Select next to continue',
+            'Say next to continue',
         ),
 
     );

@@ -486,7 +486,7 @@ class Intents_model extends CI_Model
         $en_all_6794 = $this->config->item('en_all_6794'); //Intent Requires Manual Response
 
         //Return User-friendly message for Requires Manual Response:
-        return $en_all_6794[$in['in_type_entity_id']]['m_name'] .' to complete this step.'.( !$fb_messenger_format ? ' Send it to me via Messenger.' : '' );
+        return 'Send a '.$en_all_6794[$in['in_type_entity_id']]['m_name'] .' to complete this step.'.( !$fb_messenger_format ? ' Send it to me via Messenger.' : '' );
 
     }
 
