@@ -112,11 +112,13 @@ if(count($parent_intentions) > 0 || count($recommended_intention) > 0){
     echo '<div class="list-group grey_list actionplan_list maxout">';
 
     //Now fetch Recommended Intents:
-    foreach (array_merge($recommended_intention, $parent_intentions) as $other_in) {
+    $in__other = array_merge($recommended_intention, $parent_intentions);
+    $common_prefix = common_prefix($in__other);
+    foreach ($in__other as $other_in) {
         if(!in_is_clean_outcome($other_in)){
             continue;
         }
-        echo echo_in_recommend($other_in, false);
+        echo echo_in_recommend($other_in, false, $common_prefix);
     }
 
     echo '</div>';

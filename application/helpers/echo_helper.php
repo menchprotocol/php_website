@@ -720,7 +720,7 @@ function echo_actionplan_step_child($en_id, $in, $link_status, $is_unlocked_step
         //Open list:
         $ui = '<span class="list-group-item">';
         $ui .= '<i class="far fa-eye-slash"></i>&nbsp;';
-        $ui .= echo_in_outcome($in['in_outcome']);
+        $ui .= echo_in_outcome($in['in_outcome'], false, false, false, $common_prefix);
         $ui .= ' [Answer by chat only]';
         $ui .= '</span>';
 
@@ -1184,22 +1184,22 @@ function echo_public_actionplan($in, $autoexpand){
         return null;
     }
 
-    $children_ins = $CI->Links_model->ln_fetch(array(
+    $in__children = $CI->Links_model->ln_fetch(array(
         'ln_status_entity_id IN (' . join(',', $CI->config->item('en_ids_7359')) . ')' => null, //Link Statuses Public
         'in_status_entity_id IN (' . join(',', $CI->config->item('en_ids_7355')) . ')' => null, //Intent Statuses Public
         'ln_type_entity_id' => 4228, //Fixed intent links only
         'ln_parent_intent_id' => $in['in_id'],
     ), array('in_child'), 0, 0, array('ln_order' => 'ASC'));
 
-    if(count($children_ins) < 1){
+    if(count($in__children) < 1){
         return null;
     }
 
-    $common_prefix = common_prefix($children_ins);
+    $common_prefix = common_prefix($in__children);
     $return_html = '';
     $return_html .= '<div class="list-group grey_list actionplan_list maxout public_ap">';
 
-    foreach ($children_ins as $in_level2_counter => $in_level2) {
+    foreach ($in__children as $in_level2_counter => $in_level2) {
 
         //Is this private?
         $is_private = (in_array($in_level2['in_type_entity_id'], $CI->config->item('en_ids_7366')));
@@ -1513,7 +1513,7 @@ function echo_en_cache($config_var_name, $en_id, $micro_status = false, $data_pl
 }
 
 
-function echo_in_recommend($in, $is_passthrough)
+function echo_in_recommend($in, $is_passthrough, $common_prefix = null)
 {
 
     //See if user is logged-in:
@@ -1534,7 +1534,7 @@ function echo_in_recommend($in, $is_passthrough)
     $ui .= '<span class="badge badge-primary fr-bgd" style="margin-top: -4px;">'.( $already_in_actionplan ? $en_all_7369[6138]['m_icon'] : '<i class="fas fa-angle-right"></i>' ).'</span>';
     $ui .= '</span>';
 
-    $ui .= '<span style="color:#222; font-weight:500; font-size:1.2em;">'.echo_in_outcome($in['in_outcome']).'</span>';
+    $ui .= '<span style="color:#222; font-weight:500; font-size:1.2em;">'.echo_in_outcome($in['in_outcome'], false, false, false, $common_prefix).'</span>';
     if(!$is_passthrough){
         $ui .= '<span style="font-size:0.8em; font-weight:300; margin-left:5px; display:inline-block;">';
         $ui .= '<span><i class="fal fa-clock"></i>' . echo_time_range($in) . '</span>';

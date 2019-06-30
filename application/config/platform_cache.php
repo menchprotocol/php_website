@@ -11,7 +11,7 @@ defined('BASEPATH') OR exit('No direct script access allowed');
  *
  */
 
-//Generated 2019-06-29 19:16:56 PST
+//Generated 2019-06-29 20:53:01 PST
 
 //Mench Platform Products:
 $config['en_ids_7372'] = array(6196,7369,7370,7368);
@@ -1490,7 +1490,7 @@ $config['en_all_6225'] = array(
         'm_icon' => '<i class="far fa-globe"></i>',
         'm_name' => 'Countries',
         'm_desc' => 'Choose your current country of residence:',
-        'm_parents' => array(6122,6225),
+        'm_parents' => array(6204,6225),
     ),
     3289 => array(
         'm_icon' => '<i class="far fa-map"></i>',
