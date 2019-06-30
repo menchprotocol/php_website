@@ -6,11 +6,9 @@ var isAdvancedUpload = function () {
 }();
 
 
-var blur_opacity = '0.21';
-
 function modify_cancel(){
     $('.fixed-box').addClass('hidden');
-    reset_opacity();
+    remove_all_highlights();
     $("input").blur();
     if(history.pushState) {
         history.pushState(null, null, '#');
@@ -153,8 +151,8 @@ $(document).ready(function () {
 });
 
 
-function reset_opacity(){
-    $('.opacity_fadeout').css('opacity', '1');
+function remove_all_highlights(){
+    $('.object_highlight').removeClass('in_highlight').removeClass('en_highlight');
 }
 
 function validURL(str) {

@@ -14,13 +14,13 @@
         <?php
 
         //Parents
-        echo '<h5 class="opacity_fadeout"><span class="badge badge-h"><span class="li-parent-count">' . count($entity['en__parents']) . '</span> Parent' . echo__s(count($entity['en__parents'])) . '</span></h5>';
+        echo '<h5><span class="badge badge-h"><span class="li-parent-count">' . count($entity['en__parents']) . '</span> Parent' . echo__s(count($entity['en__parents'])) . '</span></h5>';
         echo '<div id="list-parent" class="list-group  grey-list">';
         foreach ($entity['en__parents'] as $en) {
             echo echo_en($en, 2, true);
         }
         //Input to add new parents:
-        echo '<div id="new-parent" class="list-group-item list_input grey-input opacity_fadeout">
+        echo '<div id="new-parent" class="list-group-item list_input grey-input">
                     <div class="form-group is-empty"><input type="text" class="form-control new-input algolia_search" data-lpignore="true" placeholder="Add @Entity or Paste URL"></div>
                     <div class="algolia_search_pad hidden"><span>Search existing entities, create a new entity or paste a URL...</span></div>
             </div>';
@@ -32,7 +32,7 @@
 
 
         //Focused/current entity:
-        echo '<h5 class="badge badge-h indent1 opacity_fadeout skip_fadeout_en_'.$entity['en_id'].'">Entity @'.$entity['en_id'].'</h5>';
+        echo '<h5 class="badge badge-h indent1">Entity @'.$entity['en_id'].'</h5>';
 
         //Hidden link to Metadata:
         echo '<a class="secret" href="/entities/en_review_metadata/' . $entity['en_id'] . '" style="margin-left: 5px;" target="_blank" data-toggle="tooltip" title="Review Entity Metadata" data-placement="top"><i class="fas fa-function"></i></a>';
@@ -51,13 +51,13 @@
 
         //Children:
         echo '<div class="indent2">';
-        echo '<table width="100%" style="margin-top:10px;" class="opacity_fadeout"><tr>';
+        echo '<table width="100%" style="margin-top:10px;"><tr>';
         echo '<td style="width:170px;">';
 
 
             echo '<h5 class="badge badge-h inline-block"><span class="li-children-count inline-block">' . $entity['en__child_count'] . '</span> Children</h5>';
 
-            echo '<span class="'.( !en_auth(array(1281)) ? 'hidden' : '' ).' opacity_fadeout"><a href="javascript:void(0);" onclick="$(\'.mass_modify\').toggleClass(\'hidden\');mass_action_ui();" style="text-decoration: none; margin-left: 5px;"  data-toggle="tooltip" data-placement="right" title="Mass Update Children" class="' . advance_mode() . '"><i class="fal fa-list-alt" style="font-size: 1.2em; color: #2b2b2b;"></i></a></span>';
+            echo '<span class="'.( !en_auth(array(1281)) ? 'hidden' : '' ).'"><a href="javascript:void(0);" onclick="$(\'.mass_modify\').toggleClass(\'hidden\');mass_action_ui();" style="text-decoration: none; margin-left: 5px;"  data-toggle="tooltip" data-placement="right" title="Mass Update Children" class="' . advance_mode() . '"><i class="fal fa-list-alt" style="font-size: 1.2em; color: #2b2b2b;"></i></a></span>';
 
             echo '</td>';
 
@@ -94,7 +94,7 @@
         echo '</tr></table></div>';
 
 
-        echo '<form class="mass_modify indent2 hidden opacity_fadeout" method="POST" action="" style="width: 100% !important;"><div class="inline-box">';
+        echo '<form class="mass_modify indent2 hidden" method="POST" action="" style="width: 100% !important;"><div class="inline-box">';
 
 
             $dropdown_options = '';
@@ -229,7 +229,7 @@
 
 
         //Input to add new parents:
-        echo '<div id="new-children" class="list-group-item list_input grey-input opacity_fadeout">
+        echo '<div id="new-children" class="list-group-item list_input grey-input">
             <div class="form-group is-empty"><input type="text" class="form-control new-input algolia_search" data-lpignore="true" placeholder="Add @Entity or Paste URL"></div>
             <div class="algolia_search_pad hidden"><span>Search existing entities, create a new entity or paste a URL...</span></div>
     </div>';

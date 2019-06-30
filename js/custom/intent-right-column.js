@@ -156,18 +156,17 @@ function in_adjust_link_ui() {
 
 function in_messages_iframe(in_id) {
 
-    //Start loading:
+    //Set opacity:
+    remove_all_highlights();
+    $(".highlight_in_"+in_id).addClass('in_highlight');
 
+    //Start loading:
     $('.frame-loader').removeClass('hidden');
     $('.fixed-box, .ajax-frame').addClass('hidden');
     $('#load_messaging_frame').removeClass('hidden').hide().fadeIn();
 
     //Set title:
     $('#load_messaging_frame .badge-h-max').html('<i class="fas fa-comment-plus"></i> ' + $('.in_outcome_' + in_id + ':first').text());
-
-    //Set opacity:
-    reset_opacity();
-    $('.opacity_fadeout').not(".skip_fadeout_in_"+in_id).css('opacity', blur_opacity);
 
     //Load content via a URL:
     $('.ajax-frame').attr('src', '/intents/in_messages_iframe/' + in_id).css('margin-top', '0');
@@ -188,8 +187,8 @@ function in_action_plan_users(in_id) {
     $('#load_action_plan_frame .badge-h-max').html('<i class="fas fa-walking"></i> ' + $('.in_outcome_' + in_id + ':first').text());
 
     //Set opacity:
-    reset_opacity();
-    $('.opacity_fadeout').not(".skip_fadeout_in_"+in_id).css('opacity', blur_opacity);
+    remove_all_highlights();
+    $(".highlight_in_"+in_id).addClass('in_highlight');
 
     //Show Loading Icon:
     $('#ap_matching_users').html('<span><i class="fas fa-spinner fa-spin"></i> Loading...</span>').hide().fadeIn();
@@ -310,8 +309,8 @@ function in_modify_load(in_id, ln_id) {
     $('.save_intent_changes').html(' ');
 
     //Reset & set new opacity:
-    reset_opacity();
-    $('.opacity_fadeout').not(".skip_fadeout_in_"+in_id).css('opacity', blur_opacity);
+    remove_all_highlights();
+    $(".highlight_in_"+in_id).addClass('in_highlight');
 
     //Reset parent editing button:
     $('.modify_parent_in').addClass('hidden');
@@ -511,7 +510,7 @@ function in_modify_save() {
                     window.location.hash = '#';
 
                     //Reset opacity:
-                    reset_opacity();
+                    remove_all_highlights();
 
                     //Adjust completion cost:
                     adjust_js_ui(modify_data['in_id'], modify_data['level'], 0, 0, 1, 0);

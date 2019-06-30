@@ -22,7 +22,7 @@ $in_filters = in_get_filters(true);
         } else {
 
             //Parent intents:
-            echo '<h5 class="badge badge-h opacity_fadeout"><span class="li-parent-count parent-counter-' . $in['in_id'] . '">' . count($in['in__parents']) . '</span> Parent' . echo__s(count($in['in__parents'])) . '</h5>';
+            echo '<h5 class="badge badge-h"><span class="li-parent-count parent-counter-' . $in['in_id'] . '">' . count($in['in__parents']) . '</span> Parent' . echo__s(count($in['in__parents'])) . '</h5>';
             echo '<div id="list-in-' . $in['in_id'] . '-1" class="list-group list-level-2">';
 
             //List current parent intents:
@@ -31,7 +31,7 @@ $in_filters = in_get_filters(true);
             }
 
             //Add parent intent:
-            echo '<div class="list-group-item list_input grey-block opacity_fadeout">
+            echo '<div class="list-group-item list_input grey-block">
                     <div class="form-group is-empty" style="margin: 0; padding: 0;">
                         <input type="text"
                                class="form-control intentadder-level-2-top algolia_search"
@@ -44,7 +44,7 @@ $in_filters = in_get_filters(true);
             echo '</div>';
 
             //Focus intent:
-            echo '<h5 class="badge badge-h indent1 opacity_fadeout skip_fadeout_in_'.$in['in_id'].' inline-block">Intent #'.$in['in_id'].'</h5>';
+            echo '<h5 class="badge badge-h indent1 inline-block">Intent #'.$in['in_id'].'</h5>';
 
         }
 
@@ -64,8 +64,8 @@ $in_filters = in_get_filters(true);
         //Expand/Contract All buttons:
         $metadata = unserialize($in['in_metadata']);
 
-        echo '<div class="indent2 opacity_fadeout">';
-        echo '<h5 class="badge badge-h opacity_fadeout" style="display: inline-block;"><span class="li-children-count children-counter-' . $in['in_id'] . '">' . count($in['in__children']) . '</span> Children</h5>';
+        echo '<div class="indent2">';
+        echo '<h5 class="badge badge-h" style="display: inline-block;"><span class="li-children-count children-counter-' . $in['in_id'] . '">' . count($in['in__children']) . '</span> Children</h5>';
 
         echo '<div id="expand_intents" style="padding-left:8px; display: inline-block;">';
         echo '<i class="fas fa-plus-circle expand_all" style="font-size: 1.2em;" data-toggle="tooltip" title="Expand Grandchildren" data-placement="top"></i> &nbsp;';
@@ -74,7 +74,7 @@ $in_filters = in_get_filters(true);
         echo '</div>';
 
 
-        echo '<div class="inline-box opacity_fadeout in__filters '.( isset($_GET['filter_user']) || isset($_GET['filter_time']) ? '' : 'hidden' ).'">';
+        echo '<div class="inline-box in__filters '.( isset($_GET['filter_user']) || isset($_GET['filter_time']) ? '' : 'hidden' ).'">';
         echo '<form method="GET" action="" style="width: 100% !important;">';
 
         echo '<table><tr>';
@@ -111,7 +111,7 @@ $in_filters = in_get_filters(true);
         }
 
         //Add child intent:
-        echo '<div class="list-group-item list_input grey-block opacity_fadeout">
+        echo '<div class="list-group-item list_input grey-block">
                     <div class="form-group is-empty" style="margin: 0; padding: 0;">
                         <input type="text"
                                class="form-control intentadder-level-2-bottom algolia_search"

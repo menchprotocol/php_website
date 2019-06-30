@@ -6,7 +6,7 @@ function echo_en_load_more($page, $limit, $en__child_count)
      * Gives an option to "Load More" entities when we have too many to show in one go
      * */
 
-    echo '<a class="load-more list-group-item opacity_fadeout" href="javascript:void(0);" onclick="en_load_next_page(' . $page . ')">';
+    echo '<a class="load-more list-group-item" href="javascript:void(0);" onclick="en_load_next_page(' . $page . ')">';
 
     //Right content:
     echo '<span class="pull-right" style="margin-right: 6px;"><span class="badge badge-secondary"><i class="fas fa-search-plus"></i></span></span>';
@@ -1798,7 +1798,7 @@ function echo_in($in, $level, $in_parent_id = 0, $is_parent = false)
         $ln_id = 0;
         $ln_metadata = array();
 
-        $ui = '<div class="list-group-item top_intent">';
+        $ui = '<div class="list-group-item top_intent object_highlight highlight_in_'.$in['in_id'].'">';
 
     } else {
 
@@ -1806,13 +1806,9 @@ function echo_in($in, $level, $in_parent_id = 0, $is_parent = false)
         $ln_id = $in['ln_id'];
         $ln_metadata = unserialize($in['ln_metadata']);
 
-        $ui = '<div in-link-id="' . $ln_id . '" in-tr-type="' . $in['ln_type_entity_id'] . '" intent-id="' . $in['in_id'] . '" parent-intent-id="' . $in_parent_id . '" intent-level="' . $level . '" class="list-group-item ' . ($level == 3 || ($level == 2 && !$is_parent) ? ' enable-sorting ' : '') . ($level == 3 ? 'is_level3_sortable' : 'is_level2_sortable level2_in') . ' intent_line_' . $in['in_id'] . ( $is_parent && $level!=3 ? ' parent-intent ' : '' ) . ' in__tr_'.$ln_id.'">';
+        $ui = '<div in-link-id="' . $ln_id . '" in-tr-type="' . $in['ln_type_entity_id'] . '" intent-id="' . $in['in_id'] . '" parent-intent-id="' . $in_parent_id . '" intent-level="' . $level . '" class="list-group-item object_highlight highlight_in_'.$in['in_id'].' ' . ($level == 3 || ($level == 2 && !$is_parent) ? ' enable-sorting ' : '') . ($level == 3 ? 'is_level3_sortable' : 'is_level2_sortable level2_in')  . ' intent_line_' . $in['in_id'] . ( $is_parent && $level!=3 ? ' parent-intent ' : '' ) . ' in__tr_'.$ln_id.'">';
 
     }
-
-
-    //Start opacity wrapper:
-    $ui .= '<div class="opacity_fadeout click_expand skip_fadeout_in_'.$in['in_id'].'">';
 
     /*
      *
@@ -1821,9 +1817,6 @@ function echo_in($in, $level, $in_parent_id = 0, $is_parent = false)
      * */
 
     $ui .= '<span style="display:inline-block; margin-top:0px; padding-bottom: 5px;">';
-
-
-
 
 
 
@@ -2053,8 +2046,6 @@ function echo_in($in, $level, $in_parent_id = 0, $is_parent = false)
     //To clear right float:
     $ui .= '<div style="clear: both; margin: 0; padding: 0;"></div>';
 
-    //End opacity wrapper:
-    $ui .= '</div>';
 
     /*
      *
@@ -2086,11 +2077,11 @@ function echo_in($in, $level, $in_parent_id = 0, $is_parent = false)
         }
 
 
-        $ui .= '<div class="list-group-item opacity_fadeout list_input new-in3-input link-class--' . $ln_id . ' hidden">
+        $ui .= '<div class="list-group-item list_input new-in3-input link-class--' . $ln_id . ' hidden">
                 <div class="form-group is-empty"  style="margin: 0; padding: 0;"><form action="#" onsubmit="in_link_or_create(' . $in['in_id'] . ',3);" intent-id="' . $in['in_id'] . '"><input type="text" class="form-control autosearch intentadder-id-'.$in['in_id'].' algolia_search" maxlength="' . $CI->config->item('in_outcome_max') . '" id="addintent-cr-' . $ln_id . '" intent-id="' . $in['in_id'] . '" placeholder="Add #Intent"></form></div>
         </div>';
 
-        $ui .= '<div class="algolia_search_pad in_pad_'.$in['in_id'].' hidden opacity_fadeout"><span>Search existing intents or create a new one...</span></div>';
+        $ui .= '<div class="algolia_search_pad in_pad_'.$in['in_id'].' hidden"><span>Search existing intents or create a new one...</span></div>';
 
         //Load JS search for this input:
         $ui .= '<script> $(document).ready(function () { in_load_search(".intentadder-id-'.$in['in_id'].'", 0, 3); }); </script>';
@@ -2130,15 +2121,11 @@ function echo_en($en, $level, $is_parent = false)
     $ui = null;
 
 
-    $ui .= '<div entity-id="' . $en['en_id'] . '" en-status="' . $en['en_status_entity_id'] . '" tr-id="'.$ln_id.'" ln-status="'.( $ln_id > 0 ? $en['ln_status_entity_id'] : 0 ).'" is-parent="' . ($is_parent ? 1 : 0) . '" class="list-group-item opacity_fadeout skip_fadeout_en_'.$en['en_id'].' en-item en___' . $en['en_id'] . ' ' . ($level <= 1 ? 'top_entity' : 'tr_' . $en['ln_id']) . ( $is_parent ? ' parent-entity ' : '' ) . '">';
-
-
+    $ui .= '<div entity-id="' . $en['en_id'] . '" en-status="' . $en['en_status_entity_id'] . '" tr-id="'.$ln_id.'" ln-status="'.( $ln_id > 0 ? $en['ln_status_entity_id'] : 0 ).'" is-parent="' . ($is_parent ? 1 : 0) . '" class="list-group-item object_highlight highlight_en_'.$en['en_id'].' en-item en___' . $en['en_id'] . ' ' . ($level <= 1 ? 'top_entity' : 'tr_' . $en['ln_id']) . ( $is_parent ? ' parent-entity ' : '' ) . '">';
 
 
 
     $ui .= '<span style="display:inline-block; margin-top:0px; padding-bottom: 5px;">';
-
-
 
 
 

@@ -433,8 +433,8 @@ function en_modify_load(en_id, ln_id) {
     $('.notify_en_remove, .notify_unlink_en').addClass('hidden');
 
     //Set opacity:
-    reset_opacity();
-    $('.opacity_fadeout').not(".skip_fadeout_en_"+en_id).css('opacity', blur_opacity);
+    remove_all_highlights();
+    $(".highlight_en_"+en_id).addClass('en_highlight');
 
 
     var en_full_name = $(".en_name_" + en_id + ":first").text();
@@ -651,7 +651,7 @@ function en_modify_save() {
                     window.location.hash = '#';
 
                     //Reset opacity:
-                    reset_opacity();
+                    remove_all_highlights();
 
                     //Remove from UI:
                     $('.tr_' + modify_data['ln_id']).html('<span style="color:#2f2739;"><i class="fas fa-trash-alt"></i> Removed</span>').fadeOut();
@@ -742,8 +742,8 @@ function en_load_messages(en_id) {
     $("#message-frame h4").text($(".en_name_" + en_id + ":first").text());
 
     //Set opacity:
-    reset_opacity();
-    $('.opacity_fadeout').not(".skip_fadeout_en_"+en_id).css('opacity', blur_opacity);
+    remove_all_highlights();
+    $(".highlight_en_"+en_id).addClass('en_highlight');
 
     var handler = $("#loaded-messages");
 
