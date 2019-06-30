@@ -1245,7 +1245,7 @@ function echo_public_actionplan($in, $autoexpand){
         } elseif($is_private) {
             $return_html .= '<span class="icon-block"><i class="far fa-eye-slash"></i></span>';
         } else {
-            $return_html .= '<span class="icon-block">&nbsp;</span>';
+            $return_html .= '<span class="icon-block"><i class="fas fa-check-circle"></i></span>';
         }
 
 
