@@ -1510,7 +1510,7 @@ function echo_en_cache($config_var_name, $en_id, $micro_status = false, $data_pl
 }
 
 
-function echo_in_recommend($in, $is_passthrough, $common_prefix = null)
+function echo_in_recommend($in, $is_passthrough, $common_prefix = null, $hide_class = null)
 {
 
     //See if user is logged-in:
@@ -1525,7 +1525,7 @@ function echo_in_recommend($in, $is_passthrough, $common_prefix = null)
         ))) > 0);
 
 
-    $ui = '<a href="' . ( $already_in_actionplan ? '/actionplan' : '' ) . '/' . $in['in_id'] . '" class="list-group-item '.( $is_passthrough ? 'tag-manager-intent-passthrough' : 'tag-manager-intent-recommend' ).'">';
+    $ui = '<a href="' . ( $already_in_actionplan ? '/actionplan' : '' ) . '/' . $in['in_id'] . '" class="list-group-item '.$hide_class .' '.( $is_passthrough ? 'tag-manager-intent-passthrough' : 'tag-manager-intent-recommend' ).'">';
 
     $ui .= '<span class="pull-right">';
     $ui .= '<span class="badge badge-primary fr-bgd" style="margin-top: -4px;">'.( $already_in_actionplan ? $en_all_7369[6138]['m_icon'] : '<i class="fas fa-angle-right"></i>' ).'</span>';

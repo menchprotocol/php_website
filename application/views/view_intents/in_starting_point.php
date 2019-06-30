@@ -90,7 +90,6 @@ $in__children = $this->Links_model->ln_fetch(array(
     'in_status_entity_id' => 7351, //Intent Starting Point
     'ln_type_entity_id' => 4228, //Fixed intent links only
     'ln_parent_intent_id' => $in['in_id'],
-    'in_id !=' => $in['in_id'], //Not the current intent
 ), array('in_child'));
 
 //Parent intentions:
@@ -118,7 +117,24 @@ foreach ($this->Links_model->ln_fetch(array(
     ), array('in_child')));
 }
 
-$in__other = array_merge($in__recommended, $in__children, $in__parents, $in__siblings);
+//Granchildren intentions:
+$in__granchildren = array();
+foreach ($this->Links_model->ln_fetch(array(
+    'ln_status_entity_id IN (' . join(',', $this->config->item('en_ids_7359')) . ')' => null, //Link Statuses Public
+    'in_status_entity_id IN (' . join(',', $this->config->item('en_ids_7355')) . ')' => null, //Intent Statuses Public
+    'ln_type_entity_id' => 4228, //Fixed intent links only
+    'ln_parent_intent_id' => $in['in_id'],
+), array('in_child')) as $child_in) {
+    $in__granchildren = array_merge($in__granchildren, $this->Links_model->ln_fetch(array(
+        'ln_status_entity_id IN (' . join(',', $this->config->item('en_ids_7359')) . ')' => null, //Link Statuses Public
+        'in_status_entity_id' => 7351, //Intent Starting Point
+        'ln_type_entity_id' => 4228, //Fixed intent links only
+        'ln_parent_intent_id' => $child_in['in_id'],
+        'in_id !=' => $in['in_id'], //Not the current intent
+    ), array('in_child')));
+}
+
+$in__other = array_merge($in__recommended, $in__parents, $in__siblings, $in__children, $in__granchildren);
 
 
 //Display if any:
@@ -126,6 +142,7 @@ if(count($in__other) > 0){
 
     echo '<h3 style="margin-bottom:5px; margin-top:55px;">Other Intentions:</h3>';
     echo '<div class="list-group grey_list actionplan_list maxout">';
+    $max_visible = 7;
 
     //Now fetch Recommended Intents:
     $already_printed = array(); //Make sure we don't show anything twice
@@ -137,8 +154,14 @@ if(count($in__other) > 0){
         if(in_array($other_in['in_id'], $already_printed)){
             continue; //Already printed!
         }
+
+        echo echo_in_recommend($other_in, false, $common_prefix, ( count($already_printed) >= $max_visible ? 'extra-recommendations hidden' : null ));
         array_push($already_printed, $other_in['in_id']); //Keep track to make sure its printed only once
-        echo echo_in_recommend($other_in, false, $common_prefix);
+    }
+
+    if(count($already_printed) > $max_visible){
+        //Show show more button:
+        echo '<a href="javascript:void(0);" onclick="$(\'.extra-recommendations\').toggleClass(\'hidden\');" class="list-group-item extra-recommendations"><i class="fas fa-plus-circle"></i> <b style="font-weight: 500;">'.(count($already_printed)-$max_visible).' More Recommendations</b></a>';
     }
 
     echo '</div>';
