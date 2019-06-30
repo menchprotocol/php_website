@@ -622,6 +622,12 @@ class Entities_model extends CI_Model
 
             } elseif($ln_miner_entity_id) {
 
+                if(!$page_title){
+                    //Assign a generic entity name:
+                    $en_all_4592 = $this->config->item('en_all_4592');
+                    $page_title = $en_all_4592[$ln_type_entity_id]['m_name'].' '.substr(md5($url), 0, 16);
+                }
+
                 //Create a new entity for this URL ONLY If miner entity is provided...
                 $added_en = $this->Entities_model->en_verify_create($page_title, $ln_miner_entity_id, true);
                 if($added_en['status']){

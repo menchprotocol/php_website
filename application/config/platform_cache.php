@@ -11,7 +11,7 @@ defined('BASEPATH') OR exit('No direct script access allowed');
  *
  */
 
-//Generated 2019-06-28 19:13:54 PST
+//Generated 2019-06-29 18:58:56 PST
 
 //Mench Platform Products:
 $config['en_ids_7372'] = array(6196,7369,7370,7368);
@@ -2339,7 +2339,7 @@ $config['en_all_4595'] = array(
     ),
     4257 => array(
         'm_icon' => '<i class="far fa-play-circle"></i>',
-        'm_name' => 'Entity Link Embed',
+        'm_name' => 'Entity Link Embed Player',
         'm_desc' => '200',
         'm_parents' => array(4593,4592,4537,4506,4595),
     ),
@@ -2865,7 +2865,7 @@ $config['en_all_4593'] = array(
     ),
     4257 => array(
         'm_icon' => '<i class="far fa-play-circle"></i>',
-        'm_name' => 'Entity Link Embed',
+        'm_name' => 'Entity Link Embed Player',
         'm_desc' => '',
         'm_parents' => array(4593,4592,4537,4506,4595),
     ),
@@ -3320,7 +3320,7 @@ $config['en_all_4592'] = array(
     ),
     4257 => array(
         'm_icon' => '<i class="far fa-play-circle"></i>',
-        'm_name' => 'Embed',
+        'm_name' => 'Embed Player',
         'm_desc' => '',
         'm_parents' => array(4593,4592,4537,4506,4595),
     ),
@@ -3460,7 +3460,7 @@ $config['en_all_4537'] = array(
     ),
     4257 => array(
         'm_icon' => '<i class="far fa-play-circle"></i>',
-        'm_name' => 'Embed',
+        'm_name' => 'Embed Player',
         'm_desc' => 'Link note contain a recognizable URL that offers an embed widget for a more engaging play-back experience.',
         'm_parents' => array(4593,4592,4537,4506,4595),
     ),
