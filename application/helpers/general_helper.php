@@ -480,7 +480,7 @@ function common_prefix($in__children, $max_look = 0){
     return $common_string;
 }
 
-function upload_to_cdn($file_url, $ln_miner_entity_id = 0, $ln_metadata = null, $is_local = false)
+function upload_to_cdn($file_url, $ln_miner_entity_id = 0, $ln_metadata = null, $is_local = false, $page_title = null)
 {
 
     /*
@@ -547,7 +547,7 @@ function upload_to_cdn($file_url, $ln_miner_entity_id = 0, $ln_metadata = null, 
             }
 
             //Create and link new entity to CDN and uploader:
-            $url_entity = $CI->Entities_model->en_sync_url($cdn_new_url, $ln_miner_entity_id, array(4396 /* Mench CDN Entity */, $ln_miner_entity_id));
+            $url_entity = $CI->Entities_model->en_sync_url($cdn_new_url, $ln_miner_entity_id, array(4396 /* Mench CDN Entity */, $ln_miner_entity_id), 0, $page_title);
 
             if(isset($url_entity['en_url']['en_id']) && $url_entity['en_url']['en_id'] > 0){
 

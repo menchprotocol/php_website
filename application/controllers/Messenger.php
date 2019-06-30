@@ -99,7 +99,7 @@ class Messenger extends CI_Controller
                     $ln_type_entity_id = (isset($im['delivery']) ? 4279 /* Message Delivered */ : 4278 /* Message Read */);
 
                     //Authenticate User:
-                    $en = $this->Entities_model->en_authenticate_psid($im['sender']['id']);
+                    $en = $this->Entities_model->en_psid_check($im['sender']['id']);
 
                     //Log Link Only IF last delivery link was 3+ minutes ago (Since Facebook sends many of these):
                     $last_trs_logged = $this->Links_model->ln_fetch(array(
@@ -137,7 +137,7 @@ class Messenger extends CI_Controller
 
                     //Set variables:
                     $sent_by_mench = (isset($im['message']['is_echo'])); //Indicates the message sent from the page itself
-                    $en = $this->Entities_model->en_authenticate_psid(($sent_by_mench ? $im['recipient']['id'] : $im['sender']['id']));
+                    $en = $this->Entities_model->en_psid_check(($sent_by_mench ? $im['recipient']['id'] : $im['sender']['id']));
                     $is_quick_reply = (isset($im['message']['quick_reply']['payload']));
 
                     //Check if this User is unsubscribed:
@@ -502,7 +502,7 @@ class Messenger extends CI_Controller
                     $ln_type_entity_id = (isset($im['delivery']) ? 4267 /* Messenger Referral */ : 4268 /* Messenger Postback */);
 
                     //Authenticate User:
-                    $en = $this->Entities_model->en_authenticate_psid($im['sender']['id']);
+                    $en = $this->Entities_model->en_psid_check($im['sender']['id']);
 
                     //Extract more insights:
                     if (isset($im['postback'])) {
@@ -585,7 +585,7 @@ class Messenger extends CI_Controller
 
                 } elseif (isset($im['optin'])) {
 
-                    $en = $this->Entities_model->en_authenticate_psid($im['sender']['id']);
+                    $en = $this->Entities_model->en_psid_check($im['sender']['id']);
 
                     //Log link:
                     $this->Links_model->ln_create(array(
@@ -597,7 +597,7 @@ class Messenger extends CI_Controller
                 } elseif (isset($im['message_request']) && $im['message_request'] == 'accept') {
 
                     //This is when we message them and they accept to chat because they had Removed Messenger or something...
-                    $en = $this->Entities_model->en_authenticate_psid($im['sender']['id']);
+                    $en = $this->Entities_model->en_psid_check($im['sender']['id']);
 
                     //Log link:
                     $this->Links_model->ln_create(array(
@@ -756,7 +756,7 @@ class Messenger extends CI_Controller
             die('<div class="alert alert-danger" role="alert">Failed to authenticate your origin.</div>');
         } elseif (!isset($session_en['en_id'])) {
             //Messenger Webview, authenticate PSID:
-            $session_en = $this->Entities_model->en_authenticate_psid($psid);
+            $session_en = $this->Entities_model->en_psid_check($psid);
             //Make sure we found them:
             if (!$session_en) {
                 //We could not authenticate the user!
@@ -1662,7 +1662,7 @@ class Messenger extends CI_Controller
             die('<div class="alert alert-danger" role="alert">Failed to authenticate your origin.</div>');
         } elseif (!isset($session_en['en_id'])) {
             //Messenger Webview, authenticate PSID:
-            $session_en = $this->Entities_model->en_authenticate_psid($psid);
+            $session_en = $this->Entities_model->en_psid_check($psid);
             //Make sure we found them:
             if (!$session_en) {
                 //We could not authenticate the user!
@@ -2283,7 +2283,7 @@ class Messenger extends CI_Controller
         foreach ($ln_pending as $ln) {
             if($ln['ln_status_entity_id'] == 6174 /* Link New */){
                 $this->Links_model->ln_update($ln['ln_id'], array(
-                    'ln_status_entity_id' => 6175, //Link Drafting
+                    'ln_status_entity_id' => 6175, /* Link Drafting */
                 ));
             }
         }
@@ -2298,7 +2298,7 @@ class Messenger extends CI_Controller
             }
 
             //Save photo to CDN:
-            $cdn_status = upload_to_cdn($ln['ln_content'], $ln['ln_miner_entity_id'], $ln);
+            $cdn_status = upload_to_cdn($ln['ln_content'], $ln['ln_miner_entity_id'], $ln, false, $ln['en_name'].' Profile Photo');
             if (!$cdn_status['status']) {
                 continue;
             }

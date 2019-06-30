@@ -385,7 +385,7 @@ class Entities_model extends CI_Model
         } elseif ($ln_miner_entity_id) {
 
             //Yes, let's add a new entity:
-            $added_en = $this->Entities_model->en_verify_create(( $page_title ? $page_title : $domain_analysis['url_domain_name'] ), $ln_miner_entity_id, true, 2, detect_fav_icon($domain_analysis['url_clean_domain']));
+            $added_en = $this->Entities_model->en_verify_create(( $page_title ? $page_title : $domain_analysis['url_domain_name'] ), $ln_miner_entity_id, true, 6181, detect_fav_icon($domain_analysis['url_clean_domain']));
             $en_domain = $added_en['en'];
 
             //And link entity to the domains entity:
@@ -625,6 +625,7 @@ class Entities_model extends CI_Model
                 //Create a new entity for this URL ONLY If miner entity is provided...
                 $added_en = $this->Entities_model->en_verify_create($page_title, $ln_miner_entity_id, true);
                 if($added_en['status']){
+
                     //All good:
                     $en_url = $added_en['en'];
 
@@ -637,6 +638,7 @@ class Entities_model extends CI_Model
                         'ln_child_entity_id' => $en_url['en_id'],
                         'ln_content' => $url,
                     ));
+
                 } else {
                     //Log error:
                     $this->Links_model->ln_create(array(
@@ -644,6 +646,13 @@ class Entities_model extends CI_Model
                         'ln_type_entity_id' => 4246, //Platform Bug Reports
                         'ln_miner_entity_id' => 1, //Shervin/Developer
                         'ln_parent_entity_id' => $domain_entity['en_domain']['en_id'],
+                        'ln_metadata' => array(
+                            'url' => $url,
+                            'ln_miner_entity_id' => $ln_miner_entity_id,
+                            'link_parent_en_ids' => $link_parent_en_ids,
+                            'add_to_child_en_id' => $add_to_child_en_id,
+                            'page_title' => $page_title,
+                        ),
                     ));
                 }
 
@@ -951,7 +960,7 @@ class Entities_model extends CI_Model
         return $en__child_count;
     }
 
-    function en_authenticate_psid($psid)
+    function en_psid_check($psid)
     {
 
         /*
@@ -966,7 +975,7 @@ class Entities_model extends CI_Model
         if ($psid < 1) {
             //Ooops, this should never happen:
             $this->Links_model->ln_create(array(
-                'ln_content' => 'en_authenticate_psid() got called without a valid Facebook $psid variable',
+                'ln_content' => 'en_psid_check() got called without a valid Facebook $psid variable',
                 'ln_type_entity_id' => 4246, //Platform Bug Reports
                 'ln_miner_entity_id' => 1, //Shervin/Developer
             ));
@@ -988,7 +997,7 @@ class Entities_model extends CI_Model
         } else {
 
             //User not found, create new User:
-            return $this->Entities_model->en_messenger_add($psid);
+            return $this->Entities_model->en_psid_add($psid);
 
         }
 
@@ -997,7 +1006,13 @@ class Entities_model extends CI_Model
     function en_verify_create($en_name, $ln_miner_entity_id = 0, $force_creation = false, $en_status_entity_id = 6179 /* Entity New */, $en_icon = null, $en_psid = null){
 
         //If PSID exists, make sure it's not a duplicate:
-        if($en_psid > 0){
+        if(!in_array($en_status_entity_id, $this->config->item('en_ids_6177'))){
+            //Invalid Status ID
+            return array(
+                'status' => 0,
+                'message' => 'Invalid Entity Status',
+            );
+        } elseif($en_psid > 0){
             $duplicate_psid_ens = $this->Entities_model->en_fetch(array(
                 'en_status_entity_id IN (' . join(',', $this->config->item('en_ids_7358')) . ')' => null, //Entity Statuses Active
                 'en_psid' => $en_psid,
@@ -1055,7 +1070,7 @@ class Entities_model extends CI_Model
 
     }
 
-    function en_messenger_add($psid)
+    function en_psid_add($psid)
     {
 
         /*
@@ -1068,7 +1083,7 @@ class Entities_model extends CI_Model
         if ($psid < 1) {
             //Ooops, this should never happen:
             $this->Links_model->ln_create(array(
-                'ln_content' => 'en_messenger_add() got called without a valid Facebook $psid variable',
+                'ln_content' => 'en_psid_add() got called without a valid Facebook $psid variable',
                 'ln_type_entity_id' => 4246, //Platform Bug Reports
                 'ln_miner_entity_id' => 1, //Shervin/Developer
             ));
@@ -1094,7 +1109,7 @@ class Entities_model extends CI_Model
              * */
 
             //Create user entity:
-            $added_en = $this->Entities_model->en_verify_create('User '.rand(100000000, 999999999), 0, true, 2, null, $psid);
+            $added_en = $this->Entities_model->en_verify_create('User '.rand(100000000, 999999999), 0, true, 6181, null, $psid);
 
         } else {
 
@@ -1102,7 +1117,7 @@ class Entities_model extends CI_Model
             $fb_profile = $graph_fetch['ln_metadata']['result'];
 
             //Create user entity with their Facebook Graph name:
-            $added_en = $this->Entities_model->en_verify_create($fb_profile['first_name'] . ' ' . $fb_profile['last_name'], 0, true, 2, null, $psid);
+            $added_en = $this->Entities_model->en_verify_create($fb_profile['first_name'] . ' ' . $fb_profile['last_name'], 0, true, 6181, null, $psid);
 
 
 

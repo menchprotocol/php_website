@@ -227,7 +227,7 @@ function echo_in_outcome($in_outcome, $fb_messenger_format = false, $reference_a
     if(substr_count($in_outcome , '::') != 1){
 
         if(strlen($common_prefix) > 0){
-            $in_outcome = trim(str_replace($common_prefix, '', $in_outcome));
+            $in_outcome = trim(substr($in_outcome, strlen($common_prefix)));
         }
 
         if($fb_messenger_format){
