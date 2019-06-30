@@ -1242,7 +1242,7 @@ function echo_public_actionplan($in, $autoexpand){
             $return_html .= '<a role="button" data-toggle="collapse" data-parent="#open' . $in_level2_counter . '" href="#collapse' . $in_level2_counter . '" aria-expanded="' . ($autoexpand ? 'true' : 'false') . '" aria-controls="collapse' . $in_level2_counter . '">';
             $return_html .= '<span class="icon-block"><i class="fas fa-plus-circle"></i></span>';
         } else {
-            $return_html .= '<span class="icon-block"><i class="fas fa-check-circle"></i></span>';
+            $return_html .= '<span class="icon-block"><i class="far fa-check-circle"></i></span>';
         }
 
 
