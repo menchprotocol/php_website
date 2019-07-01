@@ -293,7 +293,7 @@ function echo_in_message_manage($ln)
     $ui .= '<div class="edit-off text_message" id="msgbody_' . $ln['ln_id'] . '" style="margin:2px 0 0 0;">';
 
     //Now get the message snippet:
-    $ui .= $CI->Communication_model->dispatch_message($ln['ln_content'], $session_en, false, array(), array(), $ln['ln_child_intent_id']);
+    $ui .= $CI->Communication_model->dispatch_message($ln['ln_content'], $session_en, false, array(), $ln['ln_child_intent_id']);
 
     $ui .= '</div>';
 

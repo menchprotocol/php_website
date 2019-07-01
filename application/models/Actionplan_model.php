@@ -225,9 +225,6 @@ class Actionplan_model extends CI_Model
                         'title' => 'Continue ▶️',
                         'payload' => 'SKIP-ACTIONPLAN_skip-cancel_'.$in_id, //Cancel skipping
                     ),
-                ),
-                array(
-                    'ln_parent_intent_id' => $in_id,
                 )
             );
 
@@ -417,11 +414,7 @@ class Actionplan_model extends CI_Model
         $this->Communication_model->dispatch_message(
             'I have successfully added the intention to ' . $ins[0]['in_outcome'] . ' to your Action Plan 🙌 /link:Open 🚩Action Plan:https://mench.com/actionplan/' . $ins[0]['in_id'],
             array('en_id' => $en_id),
-            true,
-            array(),
-            array(
-                'ln_parent_intent_id' => $ins[0]['in_id'],
-            )
+            true
         );
 
         /*
@@ -1441,10 +1434,7 @@ class Actionplan_model extends CI_Model
                 array('en_id' => $en_id),
                 $fb_messenger_format,
                 //This is when we have messages and need to append the "Next" Quick Reply to the last message:
-                ( $last_message_accepts_quick_replies && count($next_step_quick_replies) > 0 ? $next_step_quick_replies : array() ),
-                array(
-                    'ln_parent_intent_id' => $ins[0]['in_id'],
-                )
+                ( $last_message_accepts_quick_replies && count($next_step_quick_replies) > 0 ? $next_step_quick_replies : array() )
             );
         }
         if($fb_messenger_format) {
@@ -1455,10 +1445,7 @@ class Actionplan_model extends CI_Model
                     ( strlen($next_step_message) > 0 ? $next_step_message : echo_random_message('goto_next') ),
                     array('en_id' => $en_id),
                     true,
-                    $next_step_quick_replies,
-                    array(
-                        'ln_parent_intent_id' => $ins[0]['in_id'], //Focus Intent
-                    )
+                    $next_step_quick_replies
                 );
             }
 

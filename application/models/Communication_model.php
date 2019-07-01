@@ -22,7 +22,7 @@ class Communication_model extends CI_Model
     }
 
 
-    function dispatch_message($input_message, $recipient_en = array(), $fb_messenger_format = false, $quick_replies = array(), $ln_append = array(), $message_in_id = 0)
+    function dispatch_message($input_message, $recipient_en = array(), $fb_messenger_format = false, $quick_replies = array(), $message_in_id = 0)
     {
 
         /*
@@ -62,46 +62,17 @@ class Communication_model extends CI_Model
          *                          will append an array of quick replies that will give
          *                          Users an easy way to tap and select their next step.
          *
-         *
-         * - $ln_append:            Since this function logs a "message sent" engagement for
-         *                          every message it processes, the $ln_append will append
-         *                          additional data to capture more context for this message.
-         *                          Supported fields only include:
-         *
-         *                          - $ln_append['ln_parent_intent_id']
-         *                          - $ln_append['ln_child_intent_id']
-         *                          - $ln_append['ln_parent_link_id']
-         *
-         *                          Following fields are not allowed, because:
-         *
-         *                          - $ln_append['ln_metadata']: Reserved for message body IF $fb_messenger_format = TRUE
-         *                          - $ln_append['ln_timestamp']: Auto generated to current timestamp
-         *                          - $ln_append['ln_status_entity_id']: Will be a published message status
-         *                          - $ln_append['ln_type_entity_id']: Auto calculated based on message content (or error)
-         *                          - $ln_append['ln_miner_entity_id']: Mench will always get credit to miner, so this is set to zero
-         *                          - $ln_append['ln_parent_entity_id']: This is auto set with an entity reference within $input_message
-         *                          - $ln_append['ln_child_entity_id']: This will be equal to $recipient_en['en_id']
-         *
          * */
 
         //Validate message:
         $msg_dispatching = $this->Communication_model->dispatch_validate_message($input_message, $recipient_en, $fb_messenger_format, $quick_replies, 0, $message_in_id, false);
-
-        //Prepare data to be appended to success/fail link:
-        $allowed_tr_append = array('ln_parent_intent_id', 'ln_child_intent_id', 'ln_parent_link_id');
-        $filtered_tr_append = array();
-        foreach ($ln_append as $key => $value) {
-            if (in_array($key, $allowed_tr_append)) {
-                $filtered_tr_append[$key] = $value;
-            }
-        }
 
 
         //Did we have ane error in message validation?
         if (!$msg_dispatching['status']) {
 
             //Log Error Link:
-            $this->Links_model->ln_create(array_merge(array(
+            $this->Links_model->ln_create(array(
                 'ln_type_entity_id' => 4246, //Platform Bug Reports
                 'ln_miner_entity_id' => 1, //Shervin/Developer
                 'ln_content' => 'dispatch_validate_message() returned error [' . $msg_dispatching['message'] . '] for input message [' . $input_message . ']',
@@ -111,10 +82,9 @@ class Communication_model extends CI_Model
                     'recipient_en' => $recipient_en,
                     'fb_messenger_format' => $fb_messenger_format,
                     'quick_replies' => $quick_replies,
-                    'ln_append' => $ln_append,
                     'message_in_id' => $message_in_id
                 ),
-            ), $filtered_tr_append));
+            ));
 
             return false;
         }
@@ -135,7 +105,7 @@ class Communication_model extends CI_Model
                 if (!$fb_graph_process['status']) {
 
                     //Ooopsi, we did! Log error Transcation:
-                    $this->Links_model->ln_create(array_merge(array(
+                    $this->Links_model->ln_create(array(
                         'ln_type_entity_id' => 4246, //Platform Bug Reports
                         'ln_miner_entity_id' => 1, //Shervin/Developer
                         'ln_content' => 'dispatch_message() failed to send message via Facebook Graph API. See Metadata log for more details.',
@@ -145,7 +115,7 @@ class Communication_model extends CI_Model
                             'output_message' => $output_message['message_body'],
                             'fb_graph_process' => $fb_graph_process,
                         ),
-                    ), $filtered_tr_append));
+                    ));
 
                     //Terminate function:
                     return false;
@@ -164,7 +134,7 @@ class Communication_model extends CI_Model
 
             //Log successful Link for message delivery (Unless Miners viewing HTML):
             if(isset($recipient_en['en_id']) && ($fb_messenger_format || isset($_GET['log_miner_messages']))){
-                $this->Links_model->ln_create(array_merge(array(
+                $this->Links_model->ln_create(array(
                     'ln_content' => $msg_dispatching['input_message'],
                     'ln_type_entity_id' => $output_message['message_type'],
                     'ln_miner_entity_id' => $recipient_en['en_id'],
@@ -174,7 +144,7 @@ class Communication_model extends CI_Model
                         'output_message' => $output_message,
                         'fb_graph_process' => $fb_graph_process,
                     ),
-                ), $filtered_tr_append));
+                ));
             }
 
         }
@@ -1479,6 +1449,21 @@ class Communication_model extends CI_Model
                 'in_status_entity_id' => 7351, //Intent Starting Point
             ));
             if (count($ins) < 1) {
+
+                //Confirm if they are interested to subscribe to this intention:
+                $this->Communication_model->dispatch_message(
+                    '❌ Error: I cannot add the intention to ' . $ins[0]['in_outcome'] . ' to your Action Plan because its not a starting-point intent.',
+                    $en,
+                    true,
+                    array(
+                        array(
+                            'content_type' => 'text',
+                            'title' => 'Next',
+                            'payload' => 'GONEXT',
+                        ),
+                    )
+                );
+
                 return array(
                     'status' => 0,
                     'message' => 'Failed to validate starting-point intent',
@@ -1547,11 +1532,7 @@ class Communication_model extends CI_Model
                 $this->Communication_model->dispatch_message(
                     'The intention to ' . $ins[0]['in_outcome'] . ' has already been added to your Action Plan. /link:See in 🚩Action Plan:https://mench.com/actionplan/' . $ins[0]['in_id'],
                     $en,
-                    true,
-                    array(), //Cannot add Quick replies because of the /link command.
-                    array(
-                        'ln_parent_intent_id' => $ins[0]['in_id'],
-                    )
+                    true
                 );
 
                 //Give them option to go next:
@@ -1565,9 +1546,6 @@ class Communication_model extends CI_Model
                             'title' => 'Next',
                             'payload' => 'GONEXT',
                         )
-                    ),
-                    array(
-                        'ln_parent_intent_id' => $ins[0]['in_id'],
                     )
                 );
 
@@ -1603,9 +1581,6 @@ class Communication_model extends CI_Model
                             'title' => 'Cancel',
                             'payload' => 'SUBSCRIBE-REJECT',
                         ),
-                    ),
-                    array(
-                        'ln_parent_intent_id' => $ins[0]['in_id'],
                     )
                 );
 
@@ -1684,9 +1659,6 @@ class Communication_model extends CI_Model
                             'title' => 'Next',
                             'payload' => 'GONEXT',
                         )
-                    ),
-                    array(
-                        'ln_parent_intent_id' => $in_id,
                     )
                 );
 
