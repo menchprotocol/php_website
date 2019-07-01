@@ -36,7 +36,7 @@ if($step_info || $source_info || $user_info){
 }
 
 //Check to see if added to Action Plan for logged-in users:
-if(isset($session_en['en_id'])){
+if(isset($session_en['en_id']) && count($referrer_en) == 0){
 
     $en_all_7369 = $this->config->item('en_all_7369');
 
