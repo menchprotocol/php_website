@@ -2361,7 +2361,7 @@ select.form-control {
         display: none;
     }
 
-    h1, .h1, .presentation-page .brand h1 {
+    h1, .h1, .presentation-page .brand h1, .white-label .white-label-container .wl-frame h1 {
         font-size: 2em;
     }
 
