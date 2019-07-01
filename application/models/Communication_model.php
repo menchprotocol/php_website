@@ -561,7 +561,7 @@ class Communication_model extends CI_Model
         $has_text = true;
 
         //Where is this request being made from? Public landing pages will have some restrictions on what they displat:
-        $is_landing_page = is_numeric($this->uri->segment(1));
+        $is_landing_page = is_numeric(str_replace('_','', $this->uri->segment(1)));
         $is_action_plan = ($this->uri->segment(1)=='messenger');
         $is_entity = ($this->uri->segment(1)=='entities');
         $is_user_message = ($is_landing_page || $is_action_plan);
@@ -1435,59 +1435,77 @@ class Communication_model extends CI_Model
             //List Recommended Intents and let them choose:
             $this->Communication_model->dispatch_recommendations($en['en_id']);
 
-        } elseif (is_numeric($quick_reply_payload)) {
+        } elseif (substr_count($quick_reply_payload, 'GETSTARTED_') == 1) {
 
-            //This is the Intent ID that they are interested to Subscribe to.
+            $append_link_ids = explode('_', one_two_explode('GETSTARTED_', '', $quick_reply_payload));
+            $referrer_en_id = intval($append_link_ids[0]);
+            $in_id = intval($append_link_ids[1]);
 
-            $in_id = intval($quick_reply_payload);
 
-            //Validate Intent:
+            //Validate intent:
             $ins = $this->Intents_model->in_fetch(array(
                 'in_id' => $in_id,
+                'in_status_entity_id' => 7351, //Intent Starting Point
             ));
             if (count($ins) < 1) {
                 return array(
                     'status' => 0,
-                    'message' => 'Failed to locate published intent to subscribe to',
+                    'message' => 'Failed to validate starting-point intent',
                 );
             }
 
 
-            //Give response:
-            if (!in_array($ins[0]['in_status_entity_id'], $this->config->item('en_ids_7355') /* Intent Statuses Public */)) {
-
-                //Ooopsi Intention is not published:
-                $this->Communication_model->dispatch_message(
-                    'I cannot subscribe you to ' . $ins[0]['in_outcome'] . ' because its not public yet.',
-                    $en,
-                    true
+            //Fetch and validate entity referrer:
+            $referrer_ens = $this->Entities_model->en_fetch(array(
+                'en_id' => $referrer_en_id,
+                'en_status_entity_id IN (' . join(',', $this->config->item('en_ids_7357')) . ')' => null, //Entity Statuses Public
+            ));
+            if(count($referrer_ens) < 1){
+                return array(
+                    'status' => 0,
+                    'message' => 'Invalid referrer entity ID',
                 );
+            }
 
-            } else {
+            //Add to Action Plan:
+            $this->Actionplan_model->actionplan_intention_add($en['en_id'], $in_id);
 
-                //Confirm if they are interested to subscribe to this intention:
-                $this->Communication_model->dispatch_message(
-                    'Hello hello 👋 are you interested to ' . $ins[0]['in_outcome'] . '?',
-                    $en,
-                    true,
+        } elseif (is_numeric($quick_reply_payload)) {
+
+            //Validate Intent:
+            $in_id = intval($quick_reply_payload);
+            $ins = $this->Intents_model->in_fetch(array(
+                'in_id' => $in_id,
+                'in_status_entity_id' => 7351, //Intent Starting Point
+            ));
+            if (count($ins) < 1) {
+                return array(
+                    'status' => 0,
+                    'message' => 'Failed to validate starting-point intent',
+                );
+            }
+
+            //Confirm if they are interested to subscribe to this intention:
+            $this->Communication_model->dispatch_message(
+                'Hello hello 👋 are you interested to ' . $ins[0]['in_outcome'] . '?',
+                $en,
+                true,
+                array(
                     array(
-                        array(
-                            'content_type' => 'text',
-                            'title' => 'Yes, Learn More',
-                            'payload' => 'SUBSCRIBE-INITIATE_' . $ins[0]['in_id'],
-                        ),
-                        array(
-                            'content_type' => 'text',
-                            'title' => 'Cancel',
-                            'payload' => 'SUBSCRIBE-REJECT',
-                        ),
+                        'content_type' => 'text',
+                        'title' => 'Yes, Learn More',
+                        'payload' => 'SUBSCRIBE-INITIATE_' . $ins[0]['in_id'],
                     ),
                     array(
-                        'ln_child_intent_id' => $ins[0]['in_id'],
-                    )
-                );
-
-            }
+                        'content_type' => 'text',
+                        'title' => 'Cancel',
+                        'payload' => 'SUBSCRIBE-REJECT',
+                    ),
+                ),
+                array(
+                    'ln_child_intent_id' => $ins[0]['in_id'],
+                )
+            );
 
         } elseif ($quick_reply_payload=='NOTINTERESTED') {
 

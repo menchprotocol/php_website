@@ -1010,11 +1010,11 @@ function echo_tree_experts($in, $fb_messenger_format = false, $autoexpand = fals
                     $source_info .= ' ';
 
                     //Show link to platform:
-                    $source_info .= '<a href="/entities/' . $en['en_id'] . '">';
-
+                    //$source_info .= '<a href="/entities/' . $en['en_id'] . '">';
+                    $source_info .= '<span class="underdot" title="'.$en_all_3000[$type_id]['m_name'].'" data-toggle="tooltip" data-placement="top">';
                     $source_info .= $en['en_name'];
-
-                    $source_info .= '</a>';
+                    $source_info .= '</span>';
+                    //$source_info .= '</a>';
 
                     $count++;
                 }
@@ -1059,12 +1059,11 @@ function echo_tree_experts($in, $fb_messenger_format = false, $autoexpand = fals
             } else {
 
                 //HTML Format:
-                $expert_info .= '<a href="/entities/' . $en['en_id'] . '">';
-
-
+                //$expert_info .= '<a href="/entities/' . $en['en_id'] . '">';
+                $expert_info .= '<span class="underdot" title="Industry Expert" data-toggle="tooltip" data-placement="top">';
                 $expert_info .= $en['en_name'];
-
-                $expert_info .= '</a>';
+                $expert_info .= '</span>';
+                //$expert_info .= '</a>';
 
                 if (($count + 1) == $visible_html && ($expert_count - $visible_html) > 0) {
                     $expert_info .= '<span class="show_more_' . $in['in_id'] . '"> & <a href="javascript:void(0);" onclick="$(\'.show_more_' . $in['in_id'] . '\').toggle()" style="text-decoration:underline;">' . ($expert_count - $visible_html) . ' more</a>.</span><span class="show_more_' . $in['in_id'] . '" style="display:none;">';
@@ -1097,14 +1096,14 @@ function echo_tree_experts($in, $fb_messenger_format = false, $autoexpand = fals
             $pitch_body .= ' by ';
         }
         $pitch_title .= $expert_count . ' Expert'. echo__s($expert_count);
-        $pitch_body .= $expert_count . ' industry expert'. echo__s($expert_count) . ($expert_count == 1 ? ':' : ' including') . $expert_info.'.';
+        $pitch_body .= $expert_count . ' industry expert'. echo__s($expert_count) . ($expert_count == 1 ? ':' : ' including') . $expert_info;
     }
 
     if ($fb_messenger_format) {
         return '⭐ ' . $pitch_body. "\n\n";
     } else {
         //HTML format
-        return echo_tree_html_body('ExpertReferences', $pitch_title, $pitch_body, $autoexpand);
+        return echo_tree_html_body('ExpertReferences', $pitch_title, $pitch_body.'.', $autoexpand);
     }
 }
 
@@ -1510,7 +1509,7 @@ function echo_en_cache($config_var_name, $en_id, $micro_status = false, $data_pl
 }
 
 
-function echo_in_recommend($in, $is_passthrough, $common_prefix = null, $hide_class = null)
+function echo_in_recommend($in, $is_passthrough, $common_prefix = null, $hide_class = null, $referrer_en_id = 0)
 {
 
     //See if user is logged-in:
@@ -1524,8 +1523,7 @@ function echo_in_recommend($in, $is_passthrough, $common_prefix = null, $hide_cl
             'ln_parent_intent_id' => $in['in_id'],
         ))) > 0);
 
-
-    $ui = '<a href="' . ( $already_in_actionplan ? '/actionplan' : '' ) . '/' . $in['in_id'] . '" class="list-group-item '.$hide_class .' '.( $is_passthrough ? 'tag-manager-intent-passthrough' : 'tag-manager-intent-recommend' ).'">';
+    $ui = '<a href="' . ( $already_in_actionplan ? '/actionplan/'.$in['in_id'] : ( $referrer_en_id > 0 ? '/'.$referrer_en_id.'_'.$in['in_id'] : '/'.$in['in_id'] )) . '" class="list-group-item '.$hide_class .' '.( $is_passthrough ? 'tag-manager-intent-passthrough' : 'tag-manager-intent-recommend' ).'">';
 
     $ui .= '<span class="pull-right">';
     $ui .= '<span class="badge badge-primary fr-bgd" style="margin-top: -4px;">'.( $already_in_actionplan ? $en_all_7369[6138]['m_icon'] : '<i class="fas fa-angle-right"></i>' ).'</span>';

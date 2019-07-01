@@ -501,9 +501,6 @@ class Messenger extends CI_Controller
                     //Messenger Referral OR Postback
                     $ln_type_entity_id = (isset($im['delivery']) ? 4267 /* Messenger Referral */ : 4268 /* Messenger Postback */);
 
-                    //Authenticate User:
-                    $en = $this->Entities_model->en_psid_check($im['sender']['id']);
-
                     //Extract more insights:
                     if (isset($im['postback'])) {
 
@@ -534,6 +531,10 @@ class Messenger extends CI_Controller
 
                     //Did we have a ref from Messenger?
                     $quick_reply_payload = ($array_ref && isset($array_ref['ref']) && strlen($array_ref['ref']) > 0 ? $array_ref['ref'] : null);
+                    $referrer_en_id = ( substr_count($quick_reply_payload, 'GETSTARTED_') == 1 ? intval(one_two_explode('GETSTARTED_', '_', $quick_reply_payload)) : 0 );
+
+                    //Authenticate User:
+                    $en = $this->Entities_model->en_psid_check($im['sender']['id'], $referrer_en_id);
 
                     //Log primary link:
                     $this->Links_model->ln_create(array(

@@ -164,11 +164,6 @@ body.grey-bg {
     border-top-right-radius: 1.3em;
 }
 
-.panel-primary > .panel-heading {
-    background-color: #fff;
-    border-color: #fff;
-}
-
 .panel-primary > .panel-heading + .panel-collapse > .panel-body {
     border-top-color: #FFF !important;
 }
@@ -494,6 +489,7 @@ input::-webkit-inner-spin-button {
 .icon-block{
     width: 26px; display: inline-block; text-align: center;
 }
+
 
 .down-border {
     border-bottom: 2px solid #2f2739;
@@ -1351,6 +1347,38 @@ h5, .h5 {
 
 .body-container {
     width: 95%;
+}
+
+.white-label {
+    background-color: #efefef !important;
+}
+
+.white-label .wl-author {
+    margin: 30px 10px 10px;
+    font-size:1.4em;
+    font-weight: 500;
+}
+
+.white-label .white-label-container {
+    max-width: 767px !important;
+    margin: 0 auto !important;
+}
+
+.white-label .white-label-container .wl-frame {
+    margin: 0 5px;
+    background-color: #FFF;
+    border-radius: 10px;
+    border: 1px solid #999;
+    padding: 5px 10px;
+}
+
+.white-label .list-group {
+    margin-bottom:0px;
+}
+
+.white-label .white-label-container .wl-frame h1 {
+    margin: 0 !important;
+    font-size: 2.7em;
 }
 
 .sorting-enabled{
@@ -3784,12 +3812,18 @@ h4 .tip-badge {
     margin: -8px -1px -3px -1px !important;
     border: 1px solid #FFF !important;
 }
+.en-lg-icon img{
+    width: 32px;
+    margin: -13px 0 -8px -2px !important;
+    height: 32px !important;
+    border-radius: 50% !important;
+}
 
 .en-icon img {
     width: 24px !important;
-    margin: -13px 0 -8px -2px !important;;
-    height: 24px !important;;
-    border-radius: 50% !important;;
+    margin: -13px 0 -8px -2px !important;
+    height: 24px !important;
+    border-radius: 50% !important;
 }
 
 .badge-secondary i {

@@ -95,7 +95,7 @@ class Intents extends CI_Controller
     }
 
 
-    function in_public_ui($in_id)
+    function in_public_ui($in_id, $referrer_en_id = 0)
     {
 
         /*
@@ -128,19 +128,50 @@ class Intents extends CI_Controller
         }
 
         //Load home page:
-        $this->load->view('view_shared/public_header', array(
-            'in' => $ins[0],
-            'session_en' => $session_en,
-            'title' => echo_in_outcome($ins[0]['in_outcome'], true),
-        ));
+        if($referrer_en_id > 0){
+
+            //Fetch and validate entity referrer:
+            $referrer_ens = $this->Entities_model->en_fetch(array(
+                'en_id' => $referrer_en_id,
+                'en_status_entity_id IN (' . join(',', $this->config->item('en_ids_7357')) . ')' => null, //Entity Statuses Public
+            ));
+
+            if(count($referrer_ens) < 1){
+                //Could not find/validate this referrer:
+                return redirect_message('/' . $in_id, '<div class="alert alert-danger" role="alert">Referrer @'.$referrer_en_id.' not found</div>');
+            }
+
+            //Show white-label header:
+            $this->load->view('view_shared/white_label_header', array(
+                'in' => $ins[0],
+                'referrer_en' => $referrer_ens[0],
+                'session_en' => $session_en,
+                'title' => echo_in_outcome($ins[0]['in_outcome'], true),
+            ));
+        } else {
+            //Mench header:
+            $this->load->view('view_shared/public_header', array(
+                'in' => $ins[0],
+                'session_en' => $session_en,
+                'title' => echo_in_outcome($ins[0]['in_outcome'], true),
+            ));
+        }
+
         //Load specific view based on intent status:
         $this->load->view(( $ins[0]['in_status_entity_id']==7351 /* Intent Featured */ ? 'view_intents/in_starting_point' : 'view_intents/in_passing_point'  ), array(
             'in' => $ins[0],
+            'referrer_en' => ( $referrer_en_id > 0 ? $referrer_ens[0] : array() ),
             'session_en' => $session_en,
             'autoexpand' => (isset($_GET['autoexpand']) && intval($_GET['autoexpand'])),
         ));
-        $this->load->view('view_shared/public_footer');
 
+        if($referrer_en_id > 0){
+            //Show white-label footer:
+            $this->load->view('view_shared/white_label_footer');
+        } else {
+            //Mench footer:
+            $this->load->view('view_shared/public_footer');
+        }
     }
 
 

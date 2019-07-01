@@ -966,7 +966,7 @@ class Entities_model extends CI_Model
         return $en__child_count;
     }
 
-    function en_psid_check($psid)
+    function en_psid_check($psid, $referrer_en_id = 0)
     {
 
         /*
@@ -1003,7 +1003,7 @@ class Entities_model extends CI_Model
         } else {
 
             //User not found, create new User:
-            return $this->Entities_model->en_psid_add($psid);
+            return $this->Entities_model->en_psid_add($psid, $referrer_en_id);
 
         }
 
@@ -1076,7 +1076,7 @@ class Entities_model extends CI_Model
 
     }
 
-    function en_psid_add($psid)
+    function en_psid_add($psid, $referrer_en_id = 0)
     {
 
         /*
@@ -1124,7 +1124,6 @@ class Entities_model extends CI_Model
 
             //Create user entity with their Facebook Graph name:
             $added_en = $this->Entities_model->en_verify_create($fb_profile['first_name'] . ' ' . $fb_profile['last_name'], 0, true, 6181, null, $psid);
-
 
 
             //See if we could fetch FULL profile data:
@@ -1195,6 +1194,27 @@ class Entities_model extends CI_Model
             'ln_parent_entity_id' => 1278, //People
             'ln_child_entity_id' => $added_en['en']['en_id'],
         ));
+
+        //Have they been referred by someone?
+        if($referrer_en_id > 0){
+            //Validate referer:
+            //Fetch and validate entity referrer:
+            $referrer_ens = $this->Entities_model->en_fetch(array(
+                'en_id' => $referrer_en_id,
+                'en_status_entity_id IN (' . join(',', $this->config->item('en_ids_7357')) . ')' => null, //Entity Statuses Public
+            ));
+
+            if(count($referrer_ens) > 0){
+                //Add them as the child of the referer:
+                $this->Links_model->ln_create(array(
+                    'ln_type_entity_id' => 4255, //Text link
+                    'ln_content' => 'Referrer',
+                    'ln_miner_entity_id' => $referrer_en_id,
+                    'ln_parent_entity_id' => $referrer_en_id,
+                    'ln_child_entity_id' => $added_en['en']['en_id'],
+                ));
+            }
+        }
 
 
         if(!$fetch_result){

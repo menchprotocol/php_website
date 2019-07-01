@@ -60,12 +60,15 @@ if(isset($session_en['en_id'])){
 } else {
 
     //Give option to add:
-    echo '<a class="btn btn-primary tag-manager-get-started" href="https://m.me/askmench?ref='.$in['in_id'].'" style="display: inline-block; padding:12px 36px;">Get Started &nbsp;&nbsp;&nbsp;<i class="fas fa-angle-double-right"></i></a>';
+    echo '<a class="btn btn-primary '.( count($referrer_en) > 0 ? 'grey' : '' ).' tag-manager-get-started" href="https://m.me/askmench?ref='.( count($referrer_en) > 0 ? 'GETSTARTED_'.$referrer_en['en_id'].'_'.$in['in_id'] : $in['in_id'] ).'" style="display: inline-block; padding:12px 36px;">Get Started&nbsp;&nbsp;&nbsp;<i class="fas fa-angle-double-right"></i></a>';
 
 }
 
-//Build trust:
-echo '<p style="font-size:1em !important;">Mench is an open-source project.</p>';
+
+if(count($referrer_en) == 0){
+    //Build trust:
+    echo '<p style="font-size:1em !important;">Mench is an open-source project.</p>';
+}
 
 
 echo '</div>';
@@ -73,16 +76,6 @@ echo '</div>';
 
 
 //Start generating relevant intentions we can recommend as other intentions:
-
-//Recommended intentions:
-$in__recommended = $this->Links_model->ln_fetch(array(
-    'ln_status_entity_id IN (' . join(',', $this->config->item('en_ids_7359')) . ')' => null, //Link Statuses Public
-    'ln_type_entity_id' => 4228, //Fixed intent links only
-    'ln_parent_intent_id' => 8469, //Recommend Mench Intentions
-    'in_status_entity_id' => 7351, //Intent Starting Point
-    'in_id !=' => $in['in_id'], //Not the current intent
-), array('in_child'), 0, 0, array('ln_order' => 'ASC'));
-
 
 //Child intentions:
 $in__children = $this->Links_model->ln_fetch(array(
@@ -100,41 +93,60 @@ $in__parents = $this->Links_model->ln_fetch(array(
     'ln_child_intent_id' => $in['in_id'],
 ), array('in_parent'));
 
-//Sibling intentions:
-$in__siblings = array();
-foreach ($this->Links_model->ln_fetch(array(
-    'ln_status_entity_id IN (' . join(',', $this->config->item('en_ids_7359')) . ')' => null, //Link Statuses Public
-    'in_status_entity_id IN (' . join(',', $this->config->item('en_ids_7355')) . ')' => null, //Intent Statuses Public
-    'ln_type_entity_id' => 4228, //Fixed intent links only
-    'ln_child_intent_id' => $in['in_id'],
-), array('in_parent')) as $parent_in) {
-    $in__siblings = array_merge($in__siblings, $this->Links_model->ln_fetch(array(
+if(count($referrer_en) > 0){
+    //Only show children as other intents:
+    $in__other = array_merge($in__children, $in__parents);
+} else {
+
+
+    //Recommended intentions:
+    $in__recommended = $this->Links_model->ln_fetch(array(
         'ln_status_entity_id IN (' . join(',', $this->config->item('en_ids_7359')) . ')' => null, //Link Statuses Public
-        'in_status_entity_id' => 7351, //Intent Starting Point
         'ln_type_entity_id' => 4228, //Fixed intent links only
-        'ln_parent_intent_id' => $parent_in['in_id'],
+        'ln_parent_intent_id' => 8469, //Recommend Mench Intentions
+        'in_status_entity_id' => 7351, //Intent Starting Point
         'in_id !=' => $in['in_id'], //Not the current intent
-    ), array('in_child')));
+    ), array('in_child'), 0, 0, array('ln_order' => 'ASC'));
+
+    //Sibling intentions:
+    $in__siblings = array();
+    foreach ($this->Links_model->ln_fetch(array(
+        'ln_status_entity_id IN (' . join(',', $this->config->item('en_ids_7359')) . ')' => null, //Link Statuses Public
+        'in_status_entity_id IN (' . join(',', $this->config->item('en_ids_7355')) . ')' => null, //Intent Statuses Public
+        'ln_type_entity_id' => 4228, //Fixed intent links only
+        'ln_child_intent_id' => $in['in_id'],
+    ), array('in_parent')) as $parent_in) {
+        $in__siblings = array_merge($in__siblings, $this->Links_model->ln_fetch(array(
+            'ln_status_entity_id IN (' . join(',', $this->config->item('en_ids_7359')) . ')' => null, //Link Statuses Public
+            'in_status_entity_id' => 7351, //Intent Starting Point
+            'ln_type_entity_id' => 4228, //Fixed intent links only
+            'ln_parent_intent_id' => $parent_in['in_id'],
+            'in_id !=' => $in['in_id'], //Not the current intent
+        ), array('in_child')));
+    }
+
+    //Granchildren intentions:
+    $in__granchildren = array();
+    foreach ($this->Links_model->ln_fetch(array(
+        'ln_status_entity_id IN (' . join(',', $this->config->item('en_ids_7359')) . ')' => null, //Link Statuses Public
+        'in_status_entity_id IN (' . join(',', $this->config->item('en_ids_7355')) . ')' => null, //Intent Statuses Public
+        'ln_type_entity_id' => 4228, //Fixed intent links only
+        'ln_parent_intent_id' => $in['in_id'],
+    ), array('in_child')) as $child_in) {
+        $in__granchildren = array_merge($in__granchildren, $this->Links_model->ln_fetch(array(
+            'ln_status_entity_id IN (' . join(',', $this->config->item('en_ids_7359')) . ')' => null, //Link Statuses Public
+            'in_status_entity_id' => 7351, //Intent Starting Point
+            'ln_type_entity_id' => 4228, //Fixed intent links only
+            'ln_parent_intent_id' => $child_in['in_id'],
+            'in_id !=' => $in['in_id'], //Not the current intent
+        ), array('in_child')));
+    }
+
+    //Merge all intents:
+    $in__other = array_merge($in__recommended, $in__parents, $in__siblings, $in__children, $in__granchildren);
+
 }
 
-//Granchildren intentions:
-$in__granchildren = array();
-foreach ($this->Links_model->ln_fetch(array(
-    'ln_status_entity_id IN (' . join(',', $this->config->item('en_ids_7359')) . ')' => null, //Link Statuses Public
-    'in_status_entity_id IN (' . join(',', $this->config->item('en_ids_7355')) . ')' => null, //Intent Statuses Public
-    'ln_type_entity_id' => 4228, //Fixed intent links only
-    'ln_parent_intent_id' => $in['in_id'],
-), array('in_child')) as $child_in) {
-    $in__granchildren = array_merge($in__granchildren, $this->Links_model->ln_fetch(array(
-        'ln_status_entity_id IN (' . join(',', $this->config->item('en_ids_7359')) . ')' => null, //Link Statuses Public
-        'in_status_entity_id' => 7351, //Intent Starting Point
-        'ln_type_entity_id' => 4228, //Fixed intent links only
-        'ln_parent_intent_id' => $child_in['in_id'],
-        'in_id !=' => $in['in_id'], //Not the current intent
-    ), array('in_child')));
-}
-
-$in__other = array_merge($in__recommended, $in__parents, $in__siblings, $in__children, $in__granchildren);
 
 
 //Display if any:
@@ -155,7 +167,7 @@ if(count($in__other) > 0){
             continue; //Already printed!
         }
 
-        echo echo_in_recommend($other_in, false, $common_prefix, ( count($already_printed) >= $max_visible ? 'extra-recommendations hidden' : null ));
+        echo echo_in_recommend($other_in, false, $common_prefix, ( count($already_printed) >= $max_visible ? 'extra-recommendations hidden' : null ), ( count($referrer_en) > 0 ? $referrer_en['en_id'] : 0 ));
         array_push($already_printed, $other_in['in_id']); //Keep track to make sure its printed only once
     }
 
