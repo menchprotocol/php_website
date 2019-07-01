@@ -1185,7 +1185,7 @@ function echo_public_actionplan($in, $autoexpand){
     $in__children = $CI->Links_model->ln_fetch(array(
         'ln_status_entity_id IN (' . join(',', $CI->config->item('en_ids_7359')) . ')' => null, //Link Statuses Public
         'in_status_entity_id IN (' . join(',', $CI->config->item('en_ids_7355')) . ')' => null, //Intent Statuses Public
-        'ln_type_entity_id' => 4228, //Fixed intent links only
+        'ln_type_entity_id' => 4228, //Intent Link Regular Step
         'ln_parent_intent_id' => $in['in_id'],
     ), array('in_child'), 0, 0, array('ln_order' => 'ASC'));
 
@@ -1211,7 +1211,7 @@ function echo_public_actionplan($in, $autoexpand){
             $grandchildren_ins = $CI->Links_model->ln_fetch(array(
                 'ln_status_entity_id IN (' . join(',', $CI->config->item('en_ids_7359')) . ')' => null, //Link Statuses Public
                 'in_status_entity_id IN (' . join(',', $CI->config->item('en_ids_7355')) . ')' => null, //Intent Statuses Public
-                'ln_type_entity_id' => 4228, //Fixed intent links only
+                'ln_type_entity_id' => 4228, //Intent Link Regular Step
                 'ln_parent_intent_id' => $in_level2['in_id'],
             ), array('in_child'), 0, 0, array('ln_order' => 'ASC'));
 
@@ -1765,7 +1765,7 @@ function echo_in_assessment_mark($in_ln){
 
 }
 
-function echo_in($in, $level, $in_parent_id = 0, $is_parent = false)
+function echo_in($in, $level, $in_linked_id = 0, $is_parent = false)
 {
 
     /*
@@ -1803,7 +1803,7 @@ function echo_in($in, $level, $in_parent_id = 0, $is_parent = false)
         $ln_id = $in['ln_id'];
         $ln_metadata = unserialize($in['ln_metadata']);
 
-        $ui = '<div in-link-id="' . $ln_id . '" in-tr-type="' . $in['ln_type_entity_id'] . '" intent-id="' . $in['in_id'] . '" parent-intent-id="' . $in_parent_id . '" intent-level="' . $level . '" class="list-group-item object_highlight highlight_in_'.$in['in_id'].' ' . ($level == 3 || ($level == 2 && !$is_parent) ? ' enable-sorting ' : '') . ($level == 3 ? 'is_level3_sortable' : 'is_level2_sortable level2_in')  . ' intent_line_' . $in['in_id'] . ( $is_parent && $level!=3 ? ' parent-intent ' : '' ) . ' in__tr_'.$ln_id.'">';
+        $ui = '<div in-link-id="' . $ln_id . '" in-tr-type="' . $in['ln_type_entity_id'] . '" intent-id="' . $in['in_id'] . '" parent-intent-id="' . $in_linked_id . '" intent-level="' . $level . '" class="list-group-item object_highlight highlight_in_'.$in['in_id'].' ' . ($level == 3 || ($level == 2 && !$is_parent) ? ' enable-sorting ' : '') . ($level == 3 ? 'is_level3_sortable' : 'is_level2_sortable level2_in')  . ' intent_line_' . $in['in_id'] . ( $is_parent && $level!=3 ? ' parent-intent ' : '' ) . ' in__tr_'.$ln_id.'">';
 
     }
 

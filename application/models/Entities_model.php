@@ -1224,7 +1224,7 @@ class Entities_model extends CI_Model
 
                 //Log referrer link type:
                 $this->Links_model->ln_create(array(
-                    'ln_type_entity_id' => 7484, //Company Link Types
+                    'ln_type_entity_id' => 7484, //User Referred User
                     'ln_miner_entity_id' => $referrer_en_id,
                     'ln_child_entity_id' => $added_en['en']['en_id'],
                     'ln_child_intent_id' => $in_id,

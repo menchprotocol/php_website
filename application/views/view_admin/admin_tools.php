@@ -488,10 +488,11 @@ if(!$action) {
     echo '<td colspan="4" style="text-align: left;">'.$en_all_6410[6402]['m_icon'].' '.$en_all_6410[6402]['m_name'].'</td>';
     echo '</tr>';
     $counter = 0;
+    $total_count = 0;
     foreach ($this->Links_model->ln_fetch(array(
         'ln_status_entity_id IN (' . join(',', $this->config->item('en_ids_7360')) . ')' => null, //Link Statuses Active
         'in_status_entity_id IN (' . join(',', $this->config->item('en_ids_7356')) . ')' => null, //Intent Statuses Active
-        'ln_type_entity_id' => 4229,
+        'ln_type_entity_id' => 4229, //Intent Link Locked Step
         'LENGTH(ln_metadata) > 0' => null,
     ), array('in_child'), 0, 0) as $in_ln) {
         //Echo HTML format of this message:
@@ -510,6 +511,7 @@ if(!$action) {
             echo '<td style="font-weight: bold; font-size: 1.3em; width: 100px;">'.echo_in_assessment_mark($in_ln).'</td>';
             echo '<td>'.$en_all_6186[$in_ln['ln_status_entity_id']]['m_icon'].'</td>';
             echo '<td style="text-align: left;">';
+
             echo '<div>';
             echo '<span style="width:25px; display:inline-block; text-align:center;">'.$en_all_4737[$parent_ins[0]['in_status_entity_id']]['m_icon'].'</span>';
             echo '<a href="/intents/'.$parent_ins[0]['in_id'].'">'.$parent_ins[0]['in_outcome'].'</a>';
@@ -520,63 +522,90 @@ if(!$action) {
             echo '<a href="/intents/'.$in_ln['in_id'].'">'.$in_ln['in_outcome'].'</a>';
             echo '</div>';
 
+            if(count($this->Links_model->ln_fetch(array(
+                    'ln_status_entity_id IN (' . join(',', $this->config->item('en_ids_7360')) . ')' => null, //Link Statuses Active
+                    'in_status_entity_id IN (' . join(',', $this->config->item('en_ids_7356')) . ')' => null, //Intent Statuses Active
+                    'in_type_entity_id NOT IN (6907,6914)' => null, //NOT AND/OR Lock
+                    'ln_type_entity_id IN (' . join(',', $this->config->item('en_ids_4486')) . ')' => null, //Intent Link Connectors
+                    'ln_child_intent_id' => $in_ln['in_id'],
+                ), array('in_parent'))) > 1 || $in_ln['in_type_entity_id'] != 6677){
+                echo '<div>';
+                echo 'NOT COOL';
+                echo '</div>';
+            } else {
+                //Update to AND Lock:
+
+
+                //Update user progression link type:
+                $enrolled_users_count = $this->Links_model->ln_fetch(array(
+                    'ln_type_entity_id IN (' . join(',', $this->config->item('en_ids_6255')) . ')' => null, //Action Plan Steps Progressed
+                    'ln_parent_intent_id' => $in_ln['in_id'],
+                    'ln_status_entity_id IN (' . join(',', $this->config->item('en_ids_7359')) . ')' => null, //Link Statuses Public
+                ), array(), 0, 0, array(), 'COUNT(ln_id) as totals');
+
+                echo '<div>COUNT: '.$enrolled_users_count[0]['totals'].'</div>';
+
+                $total_count += $enrolled_users_count[0]['totals'];
+
+            }
+
             echo '</td>';
             echo '</tr>';
-
 
         }
     }
 
     echo '</table>';
 
+    echo 'TOTALS: '.$total_count;
 
+    if(0){
+        echo '<p>Below are all the fixed step links that award/subtract Completion Marks:</p>';
+        echo '<table class="table table-condensed table-striped maxout" style="text-align: left;">';
 
-    echo '<p>Below are all the fixed step links that award/subtract Completion Marks:</p>';
-    echo '<table class="table table-condensed table-striped maxout" style="text-align: left;">';
+        echo '<tr style="font-weight: bold;">';
+        echo '<td colspan="4" style="text-align: left;">Completion Marks</td>';
+        echo '</tr>';
 
-    echo '<tr style="font-weight: bold;">';
-    echo '<td colspan="4" style="text-align: left;">Completion Marks</td>';
-    echo '</tr>';
+        $counter = 0;
+        foreach ($this->Links_model->ln_fetch(array(
+            'ln_status_entity_id IN (' . join(',', $this->config->item('en_ids_7360')) . ')' => null, //Link Statuses Active
+            'in_status_entity_id IN (' . join(',', $this->config->item('en_ids_7356')) . ')' => null, //Intent Statuses Active
+            'ln_type_entity_id' => 4228, //Intent Link Regular Step
+            'LENGTH(ln_metadata) > 0' => null,
+        ), array('in_child'), 0, 0) as $in_ln) {
+            //Echo HTML format of this message:
+            $metadata = unserialize($in_ln['ln_metadata']);
+            $tr__assessment_points = ( isset($metadata['tr__assessment_points']) ? $metadata['tr__assessment_points'] : 0 );
+            if($tr__assessment_points!=0){
 
-    $counter = 0;
-    foreach ($this->Links_model->ln_fetch(array(
-        'ln_status_entity_id IN (' . join(',', $this->config->item('en_ids_7360')) . ')' => null, //Link Statuses Active
-        'in_status_entity_id IN (' . join(',', $this->config->item('en_ids_7356')) . ')' => null, //Intent Statuses Active
-        'ln_type_entity_id' => 4228,
-        'LENGTH(ln_metadata) > 0' => null,
-    ), array('in_child'), 0, 0) as $in_ln) {
-        //Echo HTML format of this message:
-        $metadata = unserialize($in_ln['ln_metadata']);
-        $tr__assessment_points = ( isset($metadata['tr__assessment_points']) ? $metadata['tr__assessment_points'] : 0 );
-        if($tr__assessment_points!=0){
-
-            //Fetch parent intent:
-            $parent_ins = $this->Intents_model->in_fetch(array(
-                'in_id' => $in_ln['ln_parent_intent_id'],
-            ));
-
-
-            //Update Completion Marks if outside of range (Handy if in_completion_marks values are reduced)
-            /*
-            if($tr__assessment_points > 1){
-                //Set to 1:
-                update_metadata('ln', $in_ln['ln_id'], array(
-                    'tr__assessment_points' => 1,
+                //Fetch parent intent:
+                $parent_ins = $this->Intents_model->in_fetch(array(
+                    'in_id' => $in_ln['ln_parent_intent_id'],
                 ));
-            } elseif($tr__assessment_points < 0){
-                update_metadata('ln', $in_ln['ln_id'], array(
-                    'tr__assessment_points' => 0,
-                ));
-            }
-            */
 
 
-            $counter++;
-            echo '<tr>';
-            echo '<td style="width: 50px;">'.$counter.'</td>';
-            echo '<td style="font-weight: bold; font-size: 1.3em; width: 100px;">'.echo_in_assessment_mark($in_ln).'</td>';
-            echo '<td>'.$en_all_6186[$in_ln['ln_status_entity_id']]['m_icon'].'</td>';
-            echo '<td style="text-align: left;">';
+                //Update Completion Marks if outside of range (Handy if in_completion_marks values are reduced)
+                /*
+                if($tr__assessment_points > 1){
+                    //Set to 1:
+                    update_metadata('ln', $in_ln['ln_id'], array(
+                        'tr__assessment_points' => 1,
+                    ));
+                } elseif($tr__assessment_points < 0){
+                    update_metadata('ln', $in_ln['ln_id'], array(
+                        'tr__assessment_points' => 0,
+                    ));
+                }
+                */
+
+
+                $counter++;
+                echo '<tr>';
+                echo '<td style="width: 50px;">'.$counter.'</td>';
+                echo '<td style="font-weight: bold; font-size: 1.3em; width: 100px;">'.echo_in_assessment_mark($in_ln).'</td>';
+                echo '<td>'.$en_all_6186[$in_ln['ln_status_entity_id']]['m_icon'].'</td>';
+                echo '<td style="text-align: left;">';
                 echo '<div>';
                 echo '<span style="width:25px; display:inline-block; text-align:center;">'.$en_all_4737[$parent_ins[0]['in_status_entity_id']]['m_icon'].'</span>';
                 echo '<a href="/intents/'.$parent_ins[0]['in_id'].'">'.$parent_ins[0]['in_outcome'].'</a>';
@@ -586,14 +615,14 @@ if(!$action) {
                 echo '<span style="width:25px; display:inline-block; text-align:center;">'.$en_all_4737[$in_ln['in_status_entity_id']]['m_icon'].'</span>';
                 echo '<a href="/intents/'.$in_ln['in_id'].'">'.$in_ln['in_outcome'].'</a>';
                 echo '</div>';
-            echo '</td>';
-            echo '</tr>';
+                echo '</td>';
+                echo '</tr>';
 
+            }
         }
+
+        echo '</table>';
     }
-
-    echo '</table>';
-
 
 } elseif($action=='assessment_marks_birds_eye') {
 

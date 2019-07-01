@@ -22,7 +22,7 @@ class Intents extends CI_Controller
         foreach($this->Links_model->ln_fetch(array(
             'ln_status_entity_id IN (' . join(',', $this->config->item('en_ids_7359')) . ')' => null, //Link Statuses Public
             'in_status_entity_id IN (' . join(',', $this->config->item('en_ids_7355')) . ')' => null, //Intent Statuses Public
-            'ln_type_entity_id' => 4228, //Fixed Intent Links
+            'ln_type_entity_id' => 4228, //Intent Link Regular Step
             'ln_parent_intent_id' => $in_id,
         ), array('in_child'), 0, 0, array('ln_order' => 'ASC')) as $rank => $assessment_in){
 
@@ -32,7 +32,7 @@ class Intents extends CI_Controller
             foreach($this->Links_model->ln_fetch(array(
                 'ln_status_entity_id IN (' . join(',', $this->config->item('en_ids_7359')) . ')' => null, //Link Statuses Public
                 'in_status_entity_id IN (' . join(',', $this->config->item('en_ids_7355')) . ')' => null, //Intent Statuses Public
-                'ln_type_entity_id' => 4228, //Fixed Intent Links
+                'ln_type_entity_id' => 4228, //Intent Link Regular Step
                 'in_type_entity_id IN (' . join(',', $this->config->item('en_ids_6193')) . ')' => null, //OR Intents
                 'ln_parent_intent_id' => $assessment_in['in_id'],
             ), array('in_child'), 0, 0, array('ln_order' => 'ASC')) as $rank2 => $assessment2_in){
@@ -42,7 +42,7 @@ class Intents extends CI_Controller
                 foreach($this->Links_model->ln_fetch(array(
                     'ln_status_entity_id IN (' . join(',', $this->config->item('en_ids_7359')) . ')' => null, //Link Statuses Public
                     'in_status_entity_id IN (' . join(',', $this->config->item('en_ids_7355')) . ')' => null, //Intent Statuses Public
-                    'ln_type_entity_id' => 4228, //Fixed Intent Links
+                    'ln_type_entity_id' => 4228, //Intent Link Regular Step
                     'ln_parent_intent_id' => $assessment2_in['in_id'],
                 ), array('in_child'), 0, 0, array('ln_order' => 'ASC')) as $rank3 => $assessment3_in){
 
@@ -277,9 +277,9 @@ class Intents extends CI_Controller
 
         /*
          *
-         * Either creates an intent link between in_parent_id & in_link_child_id
+         * Either creates an intent link between in_linked_id & in_link_child_id
          * OR will create a new intent with outcome in_outcome and then link it
-         * to in_parent_id (In this case in_link_child_id=0)
+         * to in_linked_id (In this case in_link_child_id=0)
          *
          * */
 
@@ -290,7 +290,7 @@ class Intents extends CI_Controller
                 'status' => 0,
                 'message' => 'Invalid Session. Refresh the Page to Continue',
             ));
-        } elseif (!isset($_POST['in_parent_id']) || intval($_POST['in_parent_id']) < 1) {
+        } elseif (!isset($_POST['in_linked_id']) || intval($_POST['in_linked_id']) < 1) {
             return echo_json(array(
                 'status' => 0,
                 'message' => 'Missing Parent Intent ID',
@@ -323,7 +323,7 @@ class Intents extends CI_Controller
         }
 
         //All seems good, go ahead and try creating the intent:
-        return echo_json($this->Intents_model->in_link_or_create($_POST['in_parent_id'], intval($_POST['is_parent']), $_POST['in_outcome'], $_POST['in_link_child_id'], $_POST['next_level'], $session_en['en_id']));
+        return echo_json($this->Intents_model->in_link_or_create($_POST['in_linked_id'], intval($_POST['is_parent']), $_POST['in_outcome'], $_POST['in_link_child_id'], $_POST['next_level'], $session_en['en_id']));
 
     }
 
@@ -717,6 +717,24 @@ class Intents extends CI_Controller
                         ));
                     }
 
+                    //If it was locked and not being changed to a non-locked type, make sure no Lock Link Parents exist:
+                    if(!in_array($value, $this->config->item('en_ids_7309') /* Action Plan Step Locked */)){
+
+                        //Previously locked but now being changed to a non-locked intent type, let's see if none of the the parent links are link lock:
+                        if(count($this->Links_model->ln_fetch(array(
+                                'ln_status_entity_id IN (' . join(',', $this->config->item('en_ids_7360')) . ')' => null, //Link Statuses Active
+                                'in_status_entity_id IN (' . join(',', $this->config->item('en_ids_7356')) . ')' => null, //Intent Statuses Active
+                                'ln_type_entity_id' => 4229, //Intent Link Locked Step
+                                'ln_child_intent_id' => $_POST['in_id'],
+                            ), array('in_parent'))) > 0){
+                            return echo_json(array(
+                                'status' => 0,
+                                'message' => 'Cannot change to non-locked intent type because there are parent intent locked steps that require this intent to be locked',
+                            ));
+                        }
+
+                    }
+
                 } elseif ($key == 'in_status_entity_id') {
 
                     $links_removed = 0;
@@ -919,13 +937,35 @@ class Intents extends CI_Controller
 
                 } else {
 
-                    if($key=='ln_status_entity_id' && $value == 6173 /* Link Removed */){
-                        $remove_from_ui = 1;
+                    if($key=='ln_status_entity_id'){
+
+                        if($value == 6173 /* Link Removed */){
+                            $remove_from_ui = 1;
+                        }
+
+                    } elseif($key=='ln_type_entity_id'){
+
+                        if($value == 4229 /* Intent Link Locked Step */){
+
+                            //Intent Link Locked Step requires the child intent to be locked:
+
+                            //Fetch child intent (we might not have it):
+                            $child_ins = $this->Intents_model->in_fetch(array(
+                                'in_id' => $lns[0]['ln_child_intent_id'],
+                            ));
+
+                            //Ensure child is locked:
+                            if(!in_array($child_ins[0]['in_type_entity_id'], $this->config->item('en_ids_7309') /* Action Plan Step Locked */)){
+                                return echo_json(array(
+                                    'status' => 0,
+                                    'message' => 'Setting link type to Locked Step requires the child intent to be of a locked AND/OR type.',
+                                ));
+                            }
+                        }
                     }
-
                 }
-
             }
+
 
             //Was anything updated?
             if(count($ln_update) > 0 || $link_meta_updated){
@@ -958,8 +998,8 @@ class Intents extends CI_Controller
 
         //Let's see how many intents, if any, have unlocked completions:
         //See if we should check for unlocking this intent:
-        $meets_unlock_requirements_now = (in_array($_POST['in_status_entity_id'], $this->config->item('en_ids_7355') /* Intent Statuses Public */) && in_array($_POST['in_type_entity_id'], $this->config->item('en_ids_6997')));
-        $meets_unlock_requirements_before = (in_array($in_current['in_status_entity_id'], $this->config->item('en_ids_7355') /* Intent Statuses Public */) && in_array($in_current['in_type_entity_id'], $this->config->item('en_ids_6997')));
+        $meets_unlock_requirements_now = (in_array($_POST['in_status_entity_id'], $this->config->item('en_ids_7355') /* Intent Statuses Public */) && in_array($_POST['in_type_entity_id'], $this->config->item('en_ids_7309') /* Action Plan Step Locked */));
+        $meets_unlock_requirements_before = (in_array($in_current['in_status_entity_id'], $this->config->item('en_ids_7355') /* Intent Statuses Public */) && in_array($in_current['in_type_entity_id'], $this->config->item('en_ids_7309') /* Action Plan Step Locked */));
         //Keep track of stats for reporting:
         $ins_unlocked_completions_count = 0;
         $steps_unlocked_completions_count = 0;

@@ -23,7 +23,7 @@ if(in_is_or($in['in_type_entity_id'])){
     $in__children = $this->Links_model->ln_fetch(array(
         'ln_status_entity_id IN (' . join(',', $this->config->item('en_ids_7360')) . ')' => null, //Link Statuses Active
         'in_status_entity_id IN (' . join(',', $this->config->item('en_ids_7355')) . ')' => null, //Intent Statuses Public
-        'ln_type_entity_id' => 4228, //Fixed Intent Links
+        'ln_type_entity_id' => 4228, //Intent Link Regular Step
         'ln_parent_intent_id' => $in['in_id'],
     ), array('in_child'), 0, 0, array('ln_order' => 'ASC'));
     $common_prefix = common_prefix($in__children);

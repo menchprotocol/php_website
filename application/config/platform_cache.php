@@ -11,7 +11,47 @@ defined('BASEPATH') OR exit('No direct script access allowed');
  *
  */
 
-//Generated 2019-06-30 20:46:52 PST
+//Generated 2019-07-01 11:35:06 PST
+
+//AND Intent AND Lock:
+$config['en_ids_6914'] = array(6684,6685,7231);
+$config['en_all_6914'] = array(
+    6684 => array(
+        'm_icon' => '<i class="fas fa-check"></i>',
+        'm_name' => 'OR Intent Single Answer',
+        'm_desc' => 'For Single Answer the default newly created child intent type is AND Lock',
+        'm_parents' => array(6914,6157,6193),
+    ),
+    6685 => array(
+        'm_icon' => '<i class="fas fa-stopwatch"></i>',
+        'm_name' => 'OR Intent Timed Answer',
+        'm_desc' => 'For Timed Answer the default newly created child intent type is AND Lock',
+        'm_parents' => array(6914,7366,6157,6193),
+    ),
+    7231 => array(
+        'm_icon' => '<i class="fas fa-check-double"></i>',
+        'm_name' => 'OR Intent Multiple Answers',
+        'm_desc' => 'For Multiple Answer the default newly created child intent type is AND Lock',
+        'm_parents' => array(6914,6157,6193),
+    ),
+);
+
+//Action Plan Step Locked:
+$config['en_ids_7309'] = array(6907,6914);
+$config['en_all_7309'] = array(
+    6907 => array(
+        'm_icon' => '<i class="fas fa-lock"></i>',
+        'm_name' => 'OR Intent OR Lock',
+        'm_desc' => '',
+        'm_parents' => array(7486,7485,7309,6997,6193),
+    ),
+    6914 => array(
+        'm_icon' => '<i class="fas fa-lock"></i>',
+        'm_name' => 'AND Intent AND Lock',
+        'm_desc' => '',
+        'm_parents' => array(4527,7486,7485,7309,6997,6192),
+    ),
+);
 
 //Mench Platform Products:
 $config['en_ids_7372'] = array(6196,7369,7370,7368);
@@ -515,7 +555,7 @@ $config['en_all_7203'] = array(
     ),
     6255 => array(
         'm_icon' => '<i class="fas fa-walking"></i>',
-        'm_name' => 'Action Plan Steps Progressed',
+        'm_name' => 'User Steps Progressed',
         'm_desc' => '',
         'm_parents' => array(7203,7159,6275,4527),
     ),
@@ -738,7 +778,7 @@ $config['en_all_7159'] = array(
     ),
     6255 => array(
         'm_icon' => '<i class="fas fa-walking"></i>',
-        'm_name' => 'Steps Progressed',
+        'm_name' => 'User Steps Progressed',
         'm_desc' => 'Key insights or actionable tasks completed by users that gets them closer to their set intentions.',
         'm_parents' => array(7203,7159,6275,4527),
     ),
@@ -824,23 +864,6 @@ $config['en_all_6194'] = array(
         'm_name' => 'Intent Types',
         'm_desc' => 'SELECT count(in_id) as totals FROM table_intents WHERE in_type_entity_id=',
         'm_parents' => array(6160,6232,7302,6194,6213,4527,6201),
-    ),
-);
-
-//User Step Intent Unlocked:
-$config['en_ids_6997'] = array(6907,6914);
-$config['en_all_6997'] = array(
-    6907 => array(
-        'm_icon' => '<i class="fas fa-lock"></i>',
-        'm_name' => 'OR Intent OR Lock',
-        'm_desc' => '',
-        'm_parents' => array(7309,6997,6193),
-    ),
-    6914 => array(
-        'm_icon' => '<i class="fas fa-lock"></i>',
-        'm_name' => 'AND Intent AND Lock',
-        'm_desc' => '',
-        'm_parents' => array(7309,6997,6192),
     ),
 );
 
@@ -1022,13 +1045,13 @@ $config['en_all_6192'] = array(
         'm_icon' => '<i class="fas fa-filter"></i>',
         'm_name' => 'Funnel Manager',
         'm_desc' => 'Users are held at this intent until a miner advances them through each child intent using the funnel manager.',
-        'm_parents' => array(4428,3303,3303,7298,7309,6192),
+        'm_parents' => array(4428,3303,3303,7298,6192),
     ),
     6914 => array(
         'm_icon' => '<i class="fas fa-lock"></i>',
         'm_name' => 'AND Lock',
         'm_desc' => 'Completed after all children have been completed indirectly.',
-        'm_parents' => array(7309,6997,6192),
+        'm_parents' => array(4527,7486,7485,7309,6997,6192),
     ),
 );
 
@@ -1068,7 +1091,7 @@ $config['en_all_6193'] = array(
         'm_icon' => '<i class="fas fa-check-double"></i>',
         'm_name' => 'Multiple Answers',
         'm_desc' => 'Allows the user to choose multiple answers from the list of children',
-        'm_parents' => array(6157,6193),
+        'm_parents' => array(6914,6157,6193),
     ),
     7230 => array(
         'm_icon' => '<i class="fas fa-random"></i>',
@@ -1080,7 +1103,7 @@ $config['en_all_6193'] = array(
         'm_icon' => '<i class="fas fa-lock"></i>',
         'm_name' => 'OR Lock',
         'm_desc' => 'Completed after a single child is completed indirectly.',
-        'm_parents' => array(7309,6997,6193),
+        'm_parents' => array(7486,7485,7309,6997,6193),
     ),
 );
 
@@ -1192,7 +1215,7 @@ $config['en_all_4463'] = array(
 );
 
 //User Step Reset:
-$config['en_ids_6415'] = array(4559,6140,6143,6144,6154,6155,6157,6158,6997);
+$config['en_ids_6415'] = array(4559,6140,6143,6144,6154,6155,6157,6158,6997,7485,7486);
 $config['en_all_6415'] = array(
     4559 => array(
         'm_icon' => '<i class="far fa-thumbs-up"></i>',
@@ -1214,7 +1237,7 @@ $config['en_all_6415'] = array(
     ),
     6144 => array(
         'm_icon' => '<i class="far fa-check-square"></i>',
-        'm_name' => 'User Step Completed',
+        'm_name' => 'User Step Responded',
         'm_desc' => '',
         'm_parents' => array(4595,6415,6255,6244,4755,6146,4593),
     ),
@@ -1244,9 +1267,21 @@ $config['en_all_6415'] = array(
     ),
     6997 => array(
         'm_icon' => '<i class="fas fa-lock-open"></i>',
-        'm_name' => 'User Step Intent Unlocked',
+        'm_name' => 'User Step Score Unlock',
         'm_desc' => '',
-        'm_parents' => array(4527,6244,6415,6255,4595,4593,4755,6146),
+        'm_parents' => array(6274,4229,6415,6255,4595,4593,4755,6146),
+    ),
+    7485 => array(
+        'm_icon' => '<i class="fas fa-lock-open"></i>',
+        'm_name' => 'User Step Answer Unlock',
+        'm_desc' => '',
+        'm_parents' => array(6274,6685,7231,6684,4595,4593,4755,6415,6146,6255),
+    ),
+    7486 => array(
+        'm_icon' => '<i class="fas fa-lock-open"></i>',
+        'm_name' => 'User Step Children Unlock',
+        'm_desc' => '',
+        'm_parents' => array(6244,6415,6146,4755,4593,4595,6255),
     ),
 );
 
@@ -1308,8 +1343,8 @@ $config['en_all_6345'] = array(
     ),
 );
 
-//Auto Steps:
-$config['en_ids_6274'] = array(4559,6158);
+//User Steps Automated:
+$config['en_ids_6274'] = array(4559,6158,6997,7485);
 $config['en_all_6274'] = array(
     4559 => array(
         'm_icon' => '<i class="far fa-thumbs-up"></i>',
@@ -1323,10 +1358,22 @@ $config['en_all_6274'] = array(
         'm_desc' => '',
         'm_parents' => array(4595,6415,6274,6255,4593,4755,6146),
     ),
+    6997 => array(
+        'm_icon' => '<i class="fas fa-lock-open"></i>',
+        'm_name' => 'User Step Score Unlock',
+        'm_desc' => '',
+        'm_parents' => array(6274,4229,6415,6255,4595,4593,4755,6146),
+    ),
+    7485 => array(
+        'm_icon' => '<i class="fas fa-lock-open"></i>',
+        'm_name' => 'User Step Answer Unlock',
+        'm_desc' => '',
+        'm_parents' => array(6274,6685,7231,6684,4595,4593,4755,6415,6146,6255),
+    ),
 );
 
-//Action Plan Steps Progressed:
-$config['en_ids_6255'] = array(4559,6144,6157,6158,6997,7298);
+//User Steps Progressed:
+$config['en_ids_6255'] = array(4559,6144,6157,6158,6997,7298,7485,7486);
 $config['en_all_6255'] = array(
     4559 => array(
         'm_icon' => '<i class="far fa-thumbs-up"></i>',
@@ -1336,7 +1383,7 @@ $config['en_all_6255'] = array(
     ),
     6144 => array(
         'm_icon' => '<i class="far fa-check-square"></i>',
-        'm_name' => 'User Step Completed',
+        'm_name' => 'User Step Responded',
         'm_desc' => '',
         'm_parents' => array(4595,6415,6255,6244,4755,6146,4593),
     ),
@@ -1354,24 +1401,36 @@ $config['en_all_6255'] = array(
     ),
     6997 => array(
         'm_icon' => '<i class="fas fa-lock-open"></i>',
-        'm_name' => 'User Step Intent Unlocked',
+        'm_name' => 'User Step Score Unlock',
         'm_desc' => '',
-        'm_parents' => array(4527,6244,6415,6255,4595,4593,4755,6146),
+        'm_parents' => array(6274,4229,6415,6255,4595,4593,4755,6146),
     ),
     7298 => array(
         'm_icon' => '<i class="fas fa-filter"></i>',
         'm_name' => 'User Step Funnel Advanced',
         'm_desc' => '',
-        'm_parents' => array(6255),
+        'm_parents' => array(1,6146,6255),
+    ),
+    7485 => array(
+        'm_icon' => '<i class="fas fa-lock-open"></i>',
+        'm_name' => 'User Step Answer Unlock',
+        'm_desc' => '',
+        'm_parents' => array(6274,6685,7231,6684,4595,4593,4755,6415,6146,6255),
+    ),
+    7486 => array(
+        'm_icon' => '<i class="fas fa-lock-open"></i>',
+        'm_name' => 'User Step Children Unlock',
+        'm_desc' => '',
+        'm_parents' => array(6244,6415,6146,4755,4593,4595,6255),
     ),
 );
 
-//Double-Steps:
-$config['en_ids_6244'] = array(6144,6157,6997);
+//User Steps Double:
+$config['en_ids_6244'] = array(6144,6157,7486);
 $config['en_all_6244'] = array(
     6144 => array(
         'm_icon' => '<i class="far fa-check-square"></i>',
-        'm_name' => 'User Step Completed',
+        'm_name' => 'User Step Responded',
         'm_desc' => '',
         'm_parents' => array(4595,6415,6255,6244,4755,6146,4593),
     ),
@@ -1381,11 +1440,11 @@ $config['en_all_6244'] = array(
         'm_desc' => '',
         'm_parents' => array(4595,6415,6288,6255,6244,6146,4755,4593,4460),
     ),
-    6997 => array(
+    7486 => array(
         'm_icon' => '<i class="fas fa-lock-open"></i>',
-        'm_name' => 'User Step Intent Unlocked',
+        'm_name' => 'User Step Children Unlock',
         'm_desc' => '',
-        'm_parents' => array(4527,6244,6415,6255,4595,4593,4755,6146),
+        'm_parents' => array(6244,6415,6146,4755,4593,4595,6255),
     ),
 );
 
@@ -1571,7 +1630,7 @@ $config['en_all_6177'] = array(
 );
 
 //User Steps Completed:
-$config['en_ids_6146'] = array(4559,6143,6144,6157,6158,6997);
+$config['en_ids_6146'] = array(4559,6143,6144,6157,6158,6997,7298,7485,7486);
 $config['en_all_6146'] = array(
     4559 => array(
         'm_icon' => '<i class="far fa-thumbs-up"></i>',
@@ -1587,7 +1646,7 @@ $config['en_all_6146'] = array(
     ),
     6144 => array(
         'm_icon' => '<i class="far fa-check-square"></i>',
-        'm_name' => 'Completed',
+        'm_name' => 'Responded',
         'm_desc' => 'Completed when students submit the intent completion requirements (text, URL, video, etc...) set by miners',
         'm_parents' => array(4595,6415,6255,6244,4755,6146,4593),
     ),
@@ -1605,9 +1664,27 @@ $config['en_all_6146'] = array(
     ),
     6997 => array(
         'm_icon' => '<i class="fas fa-lock-open"></i>',
-        'm_name' => 'Intent Unlocked',
-        'm_desc' => 'When a user unlocks a Locked AND or OR intent by completing all or any of its children.',
-        'm_parents' => array(4527,6244,6415,6255,4595,4593,4755,6146),
+        'm_name' => 'Score Unlock',
+        'm_desc' => 'When users unlock locked AND or OR intents by scoring within the range of a conditional intent link',
+        'm_parents' => array(6274,4229,6415,6255,4595,4593,4755,6146),
+    ),
+    7298 => array(
+        'm_icon' => '<i class="fas fa-filter"></i>',
+        'm_name' => 'Funnel Advanced',
+        'm_desc' => '',
+        'm_parents' => array(1,6146,6255),
+    ),
+    7485 => array(
+        'm_icon' => '<i class="fas fa-lock-open"></i>',
+        'm_name' => 'Answer Unlock',
+        'm_desc' => 'When users unlock locked AND or OR intents by simply answering an open OR question',
+        'm_parents' => array(6274,6685,7231,6684,4595,4593,4755,6415,6146,6255),
+    ),
+    7486 => array(
+        'm_icon' => '<i class="fas fa-lock-open"></i>',
+        'm_name' => 'Children Unlock',
+        'm_desc' => 'When users unlock locked AND or OR intents by completing ALL or ANY of their children',
+        'm_parents' => array(6244,6415,6146,4755,4593,4595,6255),
     ),
 );
 
@@ -1952,7 +2029,7 @@ $config['en_all_4426'] = array(
 );
 
 //Private Links:
-$config['en_ids_4755'] = array(3286,3288,4235,4242,4246,4263,4266,4267,4268,4269,4275,4278,4279,4282,4283,4287,4299,4460,4547,4548,4549,4550,4551,4552,4553,4554,4555,4556,4557,4559,4570,4577,4783,5967,6132,6140,6143,6144,6149,6154,6155,6157,6158,6224,6415,6556,6559,6560,6563,6578,6969,6997,7348,7484);
+$config['en_ids_4755'] = array(3286,3288,4235,4242,4246,4263,4266,4267,4268,4269,4275,4278,4279,4282,4283,4287,4299,4460,4547,4548,4549,4550,4551,4552,4553,4554,4555,4556,4557,4559,4570,4577,4783,5967,6132,6140,6143,6144,6149,6154,6155,6157,6158,6224,6415,6556,6559,6560,6563,6578,6969,6997,7348,7484,7485,7486);
 $config['en_all_4755'] = array(
     3286 => array(
         'm_icon' => '<i class="far fa-key"></i>',
@@ -2178,7 +2255,7 @@ $config['en_all_4755'] = array(
     ),
     6144 => array(
         'm_icon' => '<i class="far fa-check-square"></i>',
-        'm_name' => 'User Step Completed',
+        'm_name' => 'User Step Responded',
         'm_desc' => '',
         'm_parents' => array(4595,6415,6255,6244,4755,6146,4593),
     ),
@@ -2262,9 +2339,9 @@ $config['en_all_4755'] = array(
     ),
     6997 => array(
         'm_icon' => '<i class="fas fa-lock-open"></i>',
-        'm_name' => 'User Step Intent Unlocked',
+        'm_name' => 'User Step Score Unlock',
         'm_desc' => '',
-        'm_parents' => array(4527,6244,6415,6255,4595,4593,4755,6146),
+        'm_parents' => array(6274,4229,6415,6255,4595,4593,4755,6146),
     ),
     7348 => array(
         'm_icon' => '<i class="far fa-bullseye-arrow"></i>',
@@ -2278,10 +2355,22 @@ $config['en_all_4755'] = array(
         'm_desc' => '',
         'm_parents' => array(4755,4595,4593,7483),
     ),
+    7485 => array(
+        'm_icon' => '<i class="fas fa-lock-open"></i>',
+        'm_name' => 'User Step Answer Unlock',
+        'm_desc' => '',
+        'm_parents' => array(6274,6685,7231,6684,4595,4593,4755,6415,6146,6255),
+    ),
+    7486 => array(
+        'm_icon' => '<i class="fas fa-lock-open"></i>',
+        'm_name' => 'User Step Children Unlock',
+        'm_desc' => '',
+        'm_parents' => array(6244,6415,6146,4755,4593,4595,6255),
+    ),
 );
 
 //Link Credits:
-$config['en_ids_4595'] = array(4228,4229,4230,4231,4232,4235,4242,4246,4250,4251,4255,4256,4257,4258,4259,4260,4261,4263,4264,4266,4267,4268,4269,4275,4278,4279,4282,4283,4287,4299,4318,4319,4460,4547,4548,4549,4550,4551,4552,4553,4554,4555,4556,4557,4559,4570,4577,4601,4983,4993,4994,4998,4999,5000,5001,5003,5007,5865,5943,5967,5981,5982,6093,6132,6140,6143,6144,6149,6154,6155,6157,6158,6224,6226,6242,6415,6556,6559,6560,6563,6578,6969,6997,7348,7484);
+$config['en_ids_4595'] = array(4228,4229,4230,4231,4232,4235,4242,4246,4250,4251,4255,4256,4257,4258,4259,4260,4261,4263,4264,4266,4267,4268,4269,4275,4278,4279,4282,4283,4287,4299,4318,4319,4460,4547,4548,4549,4550,4551,4552,4553,4554,4555,4556,4557,4559,4570,4577,4601,4983,4993,4994,4998,4999,5000,5001,5003,5007,5865,5943,5967,5981,5982,6093,6132,6140,6143,6144,6149,6154,6155,6157,6158,6224,6226,6242,6415,6556,6559,6560,6563,6578,6969,6997,7348,7484,7485,7486);
 $config['en_all_4595'] = array(
     4228 => array(
         'm_icon' => '<i class="fas fa-walking"></i>',
@@ -2681,7 +2770,7 @@ $config['en_all_4595'] = array(
     ),
     6144 => array(
         'm_icon' => '<i class="far fa-check-square"></i>',
-        'm_name' => 'User Step Completed',
+        'm_name' => 'User Step Responded',
         'm_desc' => '50',
         'm_parents' => array(4595,6415,6255,6244,4755,6146,4593),
     ),
@@ -2777,9 +2866,9 @@ $config['en_all_4595'] = array(
     ),
     6997 => array(
         'm_icon' => '<i class="fas fa-lock-open"></i>',
-        'm_name' => 'User Step Intent Unlocked',
+        'm_name' => 'User Step Score Unlock',
         'm_desc' => '10',
-        'm_parents' => array(4527,6244,6415,6255,4595,4593,4755,6146),
+        'm_parents' => array(6274,4229,6415,6255,4595,4593,4755,6146),
     ),
     7348 => array(
         'm_icon' => '<i class="far fa-bullseye-arrow"></i>',
@@ -2792,6 +2881,18 @@ $config['en_all_4595'] = array(
         'm_name' => 'User Referred User',
         'm_desc' => '500',
         'm_parents' => array(4755,4595,4593,7483),
+    ),
+    7485 => array(
+        'm_icon' => '<i class="fas fa-lock-open"></i>',
+        'm_name' => 'User Step Answer Unlock',
+        'm_desc' => '10',
+        'm_parents' => array(6274,6685,7231,6684,4595,4593,4755,6415,6146,6255),
+    ),
+    7486 => array(
+        'm_icon' => '<i class="fas fa-lock-open"></i>',
+        'm_name' => 'User Step Children Unlock',
+        'm_desc' => '10',
+        'm_parents' => array(6244,6415,6146,4755,4593,4595,6255),
     ),
 );
 
@@ -2813,7 +2914,7 @@ $config['en_all_4600'] = array(
 );
 
 //Link Types:
-$config['en_ids_4593'] = array(4228,4229,4230,4231,4232,4235,4242,4246,4250,4251,4255,4256,4257,4258,4259,4260,4261,4263,4264,4266,4267,4268,4269,4275,4278,4279,4282,4283,4287,4299,4318,4319,4460,4547,4548,4549,4550,4551,4552,4553,4554,4555,4556,4557,4559,4570,4577,4601,4983,4993,4994,4998,4999,5000,5001,5003,5007,5865,5943,5967,5981,5982,6093,6132,6140,6143,6144,6149,6154,6155,6157,6158,6224,6226,6242,6415,6556,6559,6560,6563,6578,6969,6997,7348,7484);
+$config['en_ids_4593'] = array(4228,4229,4230,4231,4232,4235,4242,4246,4250,4251,4255,4256,4257,4258,4259,4260,4261,4263,4264,4266,4267,4268,4269,4275,4278,4279,4282,4283,4287,4299,4318,4319,4460,4547,4548,4549,4550,4551,4552,4553,4554,4555,4556,4557,4559,4570,4577,4601,4983,4993,4994,4998,4999,5000,5001,5003,5007,5865,5943,5967,5981,5982,6093,6132,6140,6143,6144,6149,6154,6155,6157,6158,6224,6226,6242,6415,6556,6559,6560,6563,6578,6969,6997,7348,7484,7485,7486);
 $config['en_all_4593'] = array(
     4228 => array(
         'm_icon' => '<i class="fas fa-walking"></i>',
@@ -3213,7 +3314,7 @@ $config['en_all_4593'] = array(
     ),
     6144 => array(
         'm_icon' => '<i class="far fa-check-square"></i>',
-        'm_name' => 'User Step Completed',
+        'm_name' => 'User Step Responded',
         'm_desc' => 'Logged when a student submits the requirements (text, video, etc...) of an AND intent which could not be completed by simply receiving messages.',
         'm_parents' => array(4595,6415,6255,6244,4755,6146,4593),
     ),
@@ -3309,9 +3410,9 @@ $config['en_all_4593'] = array(
     ),
     6997 => array(
         'm_icon' => '<i class="fas fa-lock-open"></i>',
-        'm_name' => 'User Step Intent Unlocked',
+        'm_name' => 'User Step Score Unlock',
         'm_desc' => '',
-        'm_parents' => array(4527,6244,6415,6255,4595,4593,4755,6146),
+        'm_parents' => array(6274,4229,6415,6255,4595,4593,4755,6146),
     ),
     7348 => array(
         'm_icon' => '<i class="far fa-bullseye-arrow"></i>',
@@ -3324,6 +3425,18 @@ $config['en_all_4593'] = array(
         'm_name' => 'User Referred User',
         'm_desc' => 'When a company refers a new user to Mench using their intent referral URL',
         'm_parents' => array(4755,4595,4593,7483),
+    ),
+    7485 => array(
+        'm_icon' => '<i class="fas fa-lock-open"></i>',
+        'm_name' => 'User Step Answer Unlock',
+        'm_desc' => '',
+        'm_parents' => array(6274,6685,7231,6684,4595,4593,4755,6415,6146,6255),
+    ),
+    7486 => array(
+        'm_icon' => '<i class="fas fa-lock-open"></i>',
+        'm_name' => 'User Step Children Unlock',
+        'm_desc' => '',
+        'm_parents' => array(6244,6415,6146,4755,4593,4595,6255),
     ),
 );
 

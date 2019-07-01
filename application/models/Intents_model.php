@@ -19,22 +19,8 @@ class Intents_model extends CI_Model
     {
 
         //What is required to create a new intent?
-        if (detect_missing_columns($insert_columns, array('in_outcome', 'in_verb_entity_id'))) {
+        if (detect_missing_columns($insert_columns, array('in_outcome', 'in_type_entity_id', 'in_status_entity_id', 'in_verb_entity_id'))) {
             return false;
-        }
-
-        if (isset($insert_columns['in_metadata']) && count($insert_columns['in_metadata']) > 0) {
-            $insert_columns['in_metadata'] = serialize($insert_columns['in_metadata']);
-        } else {
-            $insert_columns['in_metadata'] = null;
-        }
-
-        if (!isset($insert_columns['in_type_entity_id'])) {
-            $insert_columns['in_type_entity_id'] = 6677; //AND No Response Required
-        }
-
-        if (!isset($insert_columns['in_status_entity_id'])) {
-            $insert_columns['in_status_entity_id'] = 6183; //Intent New
         }
 
         //Lets now add:
@@ -273,7 +259,7 @@ class Intents_model extends CI_Model
         return $links_removed;
     }
 
-    function in_link_or_create($actionplan_in_id, $is_parent, $in_outcome, $link_in_id, $next_level, $ln_miner_entity_id)
+    function in_link_or_create($in_linked_id, $is_parent, $in_outcome, $link_in_id, $next_level, $ln_miner_entity_id)
     {
 
         /*
@@ -281,20 +267,20 @@ class Intents_model extends CI_Model
          * The main intent creation function that would create
          * appropriate links and return the intent view.
          *
-         * Either creates an intent link between $actionplan_in_id & $link_in_id
+         * Either creates an intent link between $in_linked_id & $link_in_id
          * (IF $link_in_id>0) OR will create a new intent with outcome $in_outcome
-         * and link it to $actionplan_in_id (In this case $link_in_id will be 0)
+         * and link it to $in_linked_id (In this case $link_in_id will be 0)
          *
          * p.s. Inputs have already been validated via intents/in_link_or_create() function
          *
          * */
 
         //Validate Original intent:
-        $parent_ins = $this->Intents_model->in_fetch(array(
-            'in_id' => intval($actionplan_in_id),
+        $linked_ins = $this->Intents_model->in_fetch(array(
+            'in_id' => intval($in_linked_id),
         ));
 
-        if (count($parent_ins) < 1) {
+        if (count($linked_ins) < 1) {
             return array(
                 'status' => 0,
                 'message' => 'Invalid Intent ID',
@@ -304,7 +290,7 @@ class Intents_model extends CI_Model
                 'status' => 0,
                 'message' => 'Intent level must be either 2 or 3.',
             );
-        } elseif (!in_array($parent_ins[0]['in_status_entity_id'], $this->config->item('en_ids_7356')) /* Intent Statuses Active */) {
+        } elseif (!in_array($linked_ins[0]['in_status_entity_id'], $this->config->item('en_ids_7356')) /* Intent Statuses Active */) {
             return array(
                 'status' => 0,
                 'message' => 'You can only link to active intents. This intent is not active.',
@@ -337,7 +323,7 @@ class Intents_model extends CI_Model
 
             //Make sure this is not a duplicate intent for its parent:
             $dup_links = $this->Links_model->ln_fetch(array(
-                ( $is_parent ? 'ln_child_intent_id' : 'ln_parent_intent_id' ) => $actionplan_in_id,
+                ( $is_parent ? 'ln_child_intent_id' : 'ln_parent_intent_id' ) => $in_linked_id,
                 ( $is_parent ? 'ln_parent_intent_id' : 'ln_child_intent_id' ) => $link_in_id,
                 'ln_type_entity_id IN (' . join(',', $this->config->item('en_ids_4486')) . ')' => null, //Intent Link Connectors
                 'ln_status_entity_id IN (' . join(',', $this->config->item('en_ids_7360')) . ')' => null, //Link Statuses Active
@@ -352,7 +338,7 @@ class Intents_model extends CI_Model
                     'message' => '[' . $intent_new['in_outcome'] . '] is already linked here.',
                 );
 
-            } elseif ($link_in_id == $actionplan_in_id) {
+            } elseif ($link_in_id == $in_linked_id) {
 
                 //Make sure none of the parents are the same:
                 return array(
@@ -378,8 +364,8 @@ class Intents_model extends CI_Model
                 }
 
                 //Apply shortcut and update the intent outcome:
-                $parent_in_outcome_words = explode(' ', $parent_ins[0]['in_outcome']);
-                $in_outcome = $parent_in_outcome_words[0].' #'.$parent_ins[0]['in_id'].' :: '.trim(substr($in_outcome, 2));
+                $parent_in_outcome_words = explode(' ', $linked_ins[0]['in_outcome']);
+                $in_outcome = $parent_in_outcome_words[0].' #'.$linked_ins[0]['in_id'].' :: '.trim(substr($in_outcome, 2));
 
             }
 
@@ -390,10 +376,13 @@ class Intents_model extends CI_Model
                 return $in_outcome_validation;
             }
 
-            //All good, let's create the intent:
+
+            //Create new intent:
             $intent_new = $this->Intents_model->in_create(array(
                 'in_outcome' => $in_outcome_validation['in_cleaned_outcome'],
                 'in_verb_entity_id' => $in_outcome_validation['detected_verb_entity_id'],
+                'in_type_entity_id' => ( !$is_parent && in_array($linked_ins[0]['in_type_entity_id'], $this->config->item('en_ids_6914')) ? 6914 /* AND Lock */ : 6677 /* AND Got It */ ), //This is a Hack! See https://mench.com/entities/6914
+                'in_status_entity_id' => 6183, //Intent New
             ), true, $ln_miner_entity_id);
 
         }
@@ -402,13 +391,13 @@ class Intents_model extends CI_Model
         //Create Intent Link:
         $relation = $this->Links_model->ln_create(array(
             'ln_miner_entity_id' => $ln_miner_entity_id,
-            'ln_type_entity_id' => 4228,
-            ( $is_parent ? 'ln_child_intent_id' : 'ln_parent_intent_id' ) => $actionplan_in_id,
+            'ln_type_entity_id' => 4228, //Intent Link Regular Step
+            ( $is_parent ? 'ln_child_intent_id' : 'ln_parent_intent_id' ) => $in_linked_id,
             ( $is_parent ? 'ln_parent_intent_id' : 'ln_child_intent_id' ) => $intent_new['in_id'],
             'ln_order' => 1 + $this->Links_model->ln_max_order(array(
                     'ln_status_entity_id IN (' . join(',', $this->config->item('en_ids_7360')) . ')' => null, //Link Statuses Active
                     'ln_type_entity_id IN (' . join(',', $this->config->item('en_ids_4486')) . ')' => null, //Intent Link Connectors
-                    'ln_parent_intent_id' => ( $is_parent ? $intent_new['in_id'] : $actionplan_in_id ),
+                    'ln_parent_intent_id' => ( $is_parent ? $intent_new['in_id'] : $in_linked_id ),
                 )),
         ), true);
 
@@ -418,7 +407,7 @@ class Intents_model extends CI_Model
         if($ln_miner_entity_id > 0){
 
             $ln_miner_upvotes = $this->Links_model->ln_fetch(array(
-                ( $is_parent ? 'ln_child_intent_id' : 'ln_parent_intent_id' ) => $actionplan_in_id,
+                ( $is_parent ? 'ln_child_intent_id' : 'ln_parent_intent_id' ) => $in_linked_id,
                 ( $is_parent ? 'ln_parent_intent_id' : 'ln_child_intent_id' ) => $intent_new['in_id'],
                 'ln_parent_entity_id' => $ln_miner_entity_id,
                 'ln_type_entity_id' => 4983, //Up-votes
@@ -432,8 +421,8 @@ class Intents_model extends CI_Model
                     'ln_miner_entity_id' => $ln_miner_entity_id,
                     'ln_parent_entity_id' => $ln_miner_entity_id,
                     'ln_type_entity_id' => 4983, //Up-votes
-                    'ln_content' => '@'.$ln_miner_entity_id.' #'.( $is_parent ? $intent_new['in_id'] : $actionplan_in_id ), //Message content
-                    ( $is_parent ? 'ln_child_intent_id' : 'ln_parent_intent_id' ) => $actionplan_in_id,
+                    'ln_content' => '@'.$ln_miner_entity_id.' #'.( $is_parent ? $intent_new['in_id'] : $in_linked_id ), //Message content
+                    ( $is_parent ? 'ln_child_intent_id' : 'ln_parent_intent_id' ) => $in_linked_id,
                     ( $is_parent ? 'ln_parent_intent_id' : 'ln_child_intent_id' ) => $intent_new['in_id'],
                 ));
             }
@@ -443,7 +432,7 @@ class Intents_model extends CI_Model
 
         //Fetch and return full data to be properly shown on the UI using the echo_in() function
         $new_ins = $this->Links_model->ln_fetch(array(
-            ( $is_parent ? 'ln_child_intent_id' : 'ln_parent_intent_id' ) => $actionplan_in_id,
+            ( $is_parent ? 'ln_child_intent_id' : 'ln_parent_intent_id' ) => $in_linked_id,
             ( $is_parent ? 'ln_parent_intent_id' : 'ln_child_intent_id' ) => $intent_new['in_id'],
             'ln_type_entity_id IN (' . join(',', $this->config->item('en_ids_4486')) . ')' => null, //Intent Link Connectors
             'ln_status_entity_id IN (' . join(',', $this->config->item('en_ids_7360')) . ')' => null, //Link Statuses Active
@@ -455,7 +444,7 @@ class Intents_model extends CI_Model
         return array(
             'status' => 1,
             'in_child_id' => $intent_new['in_id'],
-            'in_child_html' => echo_in($new_ins[0], $next_level, $actionplan_in_id, $is_parent),
+            'in_child_html' => echo_in($new_ins[0], $next_level, $in_linked_id, $is_parent),
         );
 
     }

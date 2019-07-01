@@ -252,23 +252,23 @@ function adjust_js_ui(in_id, level, new_hours, intent_deficit_count, apply_to_tr
     if (level >= 2) {
 
         //Adjust the parent level hours:
-        var in_parent_id = parseInt($('.intent_line_' + in_id).attr('parent-intent-id'));
-        var in_parent__metadata_seconds = parseFloat($('.t_estimate_' + in_parent_id + ':first').attr('tree-max-seconds'));
+        var in_linked_id = parseInt($('.intent_line_' + in_id).attr('parent-intent-id'));
+        var in_parent__metadata_seconds = parseFloat($('.t_estimate_' + in_linked_id + ':first').attr('tree-max-seconds'));
         var in_new_parent__metadata_seconds = in_parent__metadata_seconds + in_deficit_seconds;
 
         if (!(intent_deficit_count == 0)) {
-            $('.children-counter-' + in_parent_id).text(parseInt($('.children-counter-' + in_parent_id + ':first').text()) + intent_deficit_count);
+            $('.children-counter-' + in_linked_id).text(parseInt($('.children-counter-' + in_linked_id + ':first').text()) + intent_deficit_count);
         }
 
         //Update Hours (Either level 1 or 2):
-        $('.t_estimate_' + in_parent_id)
+        $('.t_estimate_' + in_linked_id)
             .attr('tree-max-seconds', in_new_parent__metadata_seconds)
             .text(echo_js_hours(in_new_parent__metadata_seconds));
 
 
         if (level == 3) {
             //Adjust top level intent as well:
-            var in_top_level = parseInt($('.intent_line_' + in_parent_id).attr('parent-intent-id'));
+            var in_top_level = parseInt($('.intent_line_' + in_linked_id).attr('parent-intent-id'));
             var in_primary__metadata_seconds = parseFloat($('.t_estimate_' + in_top_level + ':first').attr('tree-max-seconds'));
             var in_new__metadata_seconds = in_primary__metadata_seconds + in_deficit_seconds;
 

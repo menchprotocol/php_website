@@ -356,24 +356,24 @@ function in_sort_load(in_id, level) {
 
 
 
-function in_link_or_create(in_parent_id, is_parent, next_level, in_link_child_id=0) {
+function in_link_or_create(in_linked_id, is_parent, next_level, in_link_child_id=0) {
 
     /*
      *
-     * Either creates an intent link between in_parent_id & in_link_child_id
+     * Either creates an intent link between in_linked_id & in_link_child_id
      * OR will create a new intent based on input text and then link it
-     * to in_parent_id (In this case in_link_child_id=0)
+     * to in_linked_id (In this case in_link_child_id=0)
      *
      * */
 
     if (next_level == 2) {
         var sort_handler = ".is_level2_sortable";
         var sort_list_id = "list-in-" + in_focus_id + '-' + is_parent;
-        var input_field = $('#addintent-c-' + in_parent_id + '-' + is_parent);
+        var input_field = $('#addintent-c-' + in_linked_id + '-' + is_parent);
     } else if (next_level == 3) {
         var sort_handler = ".is_level3_sortable";
-        var sort_list_id = "list-cr-" + $('.intent_line_' + in_parent_id).attr('in-link-id');
-        var input_field = $('.intentadder-id-' + in_parent_id);
+        var sort_list_id = "list-cr-" + $('.intent_line_' + in_linked_id).attr('in-link-id');
+        var input_field = $('.intentadder-id-' + in_linked_id);
     } else {
         //This should not happen:
         alert('Invalid next_level value [' + next_level + ']');
@@ -385,7 +385,7 @@ function in_link_or_create(in_parent_id, is_parent, next_level, in_link_child_id
 
     //We either need the intent name (to create a new intent) or the in_link_child_id>0 to create an intent link:
     if (!in_link_child_id && intent_name.length < 1) {
-        alert('Error: Missing Intent for level ['+next_level+']. Try Again...' + '.intentadder-id-' + in_parent_id);
+        alert('Error: Missing Intent for level ['+next_level+']. Try Again...' + '.intentadder-id-' + in_linked_id);
         input_field.focus();
         return false;
     }
@@ -395,7 +395,7 @@ function in_link_or_create(in_parent_id, is_parent, next_level, in_link_child_id
 
     //Update backend:
     $.post("/intents/in_link_or_create", {
-        in_parent_id: in_parent_id,
+        in_linked_id: in_linked_id,
         is_parent:is_parent,
         in_outcome: intent_name,
         next_level: next_level,
@@ -411,7 +411,7 @@ function in_link_or_create(in_parent_id, is_parent, next_level, in_link_child_id
             add_to_list(sort_list_id, sort_handler, data.in_child_html);
 
             //Reload sorting to enable sorting for the newly added intent:
-            in_sort_load(in_parent_id, next_level);
+            in_sort_load(in_linked_id, next_level);
 
             //Expand selections:
             prep_search_pad();
@@ -432,7 +432,7 @@ function in_link_or_create(in_parent_id, is_parent, next_level, in_link_child_id
             } else if(!is_parent) {
 
                 //Adjust Intent Level 3 sorting:
-                in_sort_save(in_parent_id, next_level);
+                in_sort_save(in_linked_id, next_level);
 
             }
 

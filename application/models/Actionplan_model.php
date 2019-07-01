@@ -470,7 +470,7 @@ class Actionplan_model extends CI_Model
 
     }
 
-    function actionplan_completion_auto_apply($en_id, $in){
+    function actionplan_completion_auto_unlock($en_id, $in, $ln_type_entity_id){
 
         /*
          *
@@ -478,19 +478,25 @@ class Actionplan_model extends CI_Model
          * the intent has nothing of substance to be
          * further communicated/done by the user.
          *
+         * $ln_type_entity_id Indicates the type of Unlocking that is about to happen
+         *
          * */
+
+        // 'in_type_entity_id IN (' . join(',', $this->config->item('en_ids_7309')) . ')' => null, //Action Plan Step Locked
 
 
         if(in_array($in['in_type_entity_id'], $this->config->item('en_ids_6794'))){
-            //Requires Manual Response:
+            //Requires Manual Response so we cannot auto complete:
             return false;
+        } elseif(in_array($in['in_type_entity_id'], $this->config->item('en_ids_7309') /* Action Plan Step Locked */)){
+            //Since this is a locked intent we need to mark it as complete since the
         }
 
         //Count children:
         $child_count = count($this->Links_model->ln_fetch(array(
             'ln_status_entity_id IN (' . join(',', $this->config->item('en_ids_7359')) . ')' => null, //Link Statuses Public
             'in_status_entity_id IN (' . join(',', $this->config->item('en_ids_7355')) . ')' => null, //Intent Statuses Public
-            'ln_type_entity_id' => 4228, //Fixed intent links only
+            'ln_type_entity_id' => 4228, //Intent Link Regular Step
             'ln_parent_intent_id' => $in['in_id'],
         ), array('in_child')));
 
@@ -603,9 +609,10 @@ class Actionplan_model extends CI_Model
             //Detect potential conditional steps to be Unlocked:
             $found_match = 0;
             $condition_ranges = $this->Links_model->ln_fetch(array(
-                'ln_status_entity_id IN (' . join(',', $this->config->item('en_ids_7359')) . ')' => null, //Link Statuses Public
+                'in_type_entity_id IN (' . join(',', $this->config->item('en_ids_7309')) . ')' => null, //Action Plan Step Locked
                 'in_status_entity_id IN (' . join(',', $this->config->item('en_ids_7355')) . ')' => null, //Intent Statuses Public
-                'ln_type_entity_id' => 4229,
+                'ln_status_entity_id IN (' . join(',', $this->config->item('en_ids_7359')) . ')' => null, //Link Statuses Public
+                'ln_type_entity_id' => 4229, //Intent Link Locked Step
                 'ln_parent_intent_id' => $in['in_id'],
                 'ln_child_intent_id IN (' . join(',', $in_metadata['in__metadata_expansion_conditional'][$in['in_id']]) . ')' => null, //Limit to cached answers
             ), array('in_child'), 0, 0);
@@ -665,7 +672,7 @@ class Actionplan_model extends CI_Model
                     ));
 
                     //See if we also need to mark the child as complete:
-                    $this->Actionplan_model->actionplan_completion_auto_apply($en_id, $conditional_step);
+                    $this->Actionplan_model->actionplan_completion_auto_unlock($en_id, $conditional_step, 6997);
 
                 }
             }
@@ -919,7 +926,7 @@ class Actionplan_model extends CI_Model
         $in__children = $this->Links_model->ln_fetch(array(
             'ln_status_entity_id IN (' . join(',', $this->config->item('en_ids_7359')) . ')' => null, //Link Statuses Public
             'in_status_entity_id IN (' . join(',', $this->config->item('en_ids_7355')) . ')' => null, //Intent Statuses Public
-            'ln_type_entity_id' => 4228, //Fixed intent links only
+            'ln_type_entity_id' => 4228, //Intent Link Regular Step
             'ln_parent_intent_id' => $ins[0]['in_id'],
         ), array('in_child'), 0, 0, array('ln_order' => 'ASC'));
         $current_progression_links = $this->Links_model->ln_fetch(array(
@@ -1539,7 +1546,7 @@ class Actionplan_model extends CI_Model
                 foreach($this->Links_model->ln_fetch(array(
                     'in_status_entity_id IN (' . join(',', $this->config->item('en_ids_7355')) . ')' => null, //Intent Statuses Public
                     'ln_status_entity_id IN (' . join(',', $this->config->item('en_ids_7359')) . ')' => null, //Link Statuses Public
-                    'ln_type_entity_id' => 4228, //Intent Link Fixed Steps
+                    'ln_type_entity_id' => 4228, //Intent Link Regular Step
                     'ln_parent_intent_id' => $question_in_id,
                     'ln_child_intent_id IN (' . join(',', $answers_in_ids) . ')' => null, //Limit to cached answers
                 ), array('in_child')) as $in_answer){

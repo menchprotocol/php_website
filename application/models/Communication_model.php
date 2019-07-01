@@ -1017,7 +1017,7 @@ class Communication_model extends CI_Model
         $recommend_filters = array(
             'in_status_entity_id' => 7351, //Intent Starting Point
             'ln_status_entity_id IN (' . join(',', $this->config->item('en_ids_7359')) . ')' => null, //Link Statuses Public
-            'ln_type_entity_id' => 4228, //Fixed Links
+            'ln_type_entity_id' => 4228, //Intent Link Regular Step
             'ln_parent_intent_id' => 8469, //Recommend Mench Intentions
         );
         if(count($user_ins_ids) > 0){
@@ -1776,7 +1776,7 @@ class Communication_model extends CI_Model
 
 
                     //See if we also need to mark the answer as complete:
-                    $this->Actionplan_model->actionplan_completion_auto_apply($en['en_id'], $answer_ins[0]);
+                    $this->Actionplan_model->actionplan_completion_auto_unlock($en['en_id'], $answer_ins[0], 7485);
 
 
                     //Find/Advance to the next step:

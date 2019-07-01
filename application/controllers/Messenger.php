@@ -2085,7 +2085,7 @@ class Messenger extends CI_Controller
         ));
 
         //See if we also need to mark the child as complete:
-        $this->Actionplan_model->actionplan_completion_auto_apply($en_id, $answer_ins[0]);
+        $this->Actionplan_model->actionplan_completion_auto_unlock($en_id, $answer_ins[0], 7485);
 
         //Archive current progression links:
         foreach($current_progression_links as $ln){
