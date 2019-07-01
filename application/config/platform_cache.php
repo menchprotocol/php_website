@@ -11,7 +11,7 @@ defined('BASEPATH') OR exit('No direct script access allowed');
  *
  */
 
-//Generated 2019-06-29 20:53:01 PST
+//Generated 2019-06-30 20:46:52 PST
 
 //Mench Platform Products:
 $config['en_ids_7372'] = array(6196,7369,7370,7368);
@@ -183,7 +183,7 @@ $config['en_all_7366'] = array(
         'm_icon' => '<i class="fas fa-stopwatch"></i>',
         'm_name' => 'OR Intent Timed Answer',
         'm_desc' => '',
-        'm_parents' => array(7366,6157,6193),
+        'm_parents' => array(6914,7366,6157,6193),
     ),
 );
 
@@ -337,7 +337,7 @@ $config['en_all_7347'] = array(
         'm_icon' => '<i class="far fa-bullseye-arrow"></i>',
         'm_name' => 'Company Intent Manage',
         'm_desc' => '',
-        'm_parents' => array(4755,4593,4595,7347),
+        'm_parents' => array(7483,4755,4593,4595,7347),
     ),
 );
 
@@ -979,43 +979,43 @@ $config['en_all_6192'] = array(
     6677 => array(
         'm_icon' => '<i class="far fa-thumbs-up"></i>',
         'm_name' => 'Got It',
-        'm_desc' => 'Students would complete the intent by simply reviewing its outcome and reading its messages if any. No inputs are required.',
+        'm_desc' => 'Users would complete the intent by simply reviewing its outcome and reading its messages if any. No inputs are required.',
         'm_parents' => array(6158,4559,6192),
     ),
     6683 => array(
         'm_icon' => '<i class="fas fa-align-left"></i>',
         'm_name' => 'Text Response',
-        'm_desc' => 'Student must submit a text message to mark the intent as complete.',
+        'm_desc' => 'User must submit a text message to mark the intent as complete.',
         'm_parents' => array(6144,6794,6192),
     ),
     6682 => array(
         'm_icon' => '<i class="fas fa-browser"></i>',
         'm_name' => 'URL Response',
-        'm_desc' => 'Student must submit a URL to mark the intent as complete.',
+        'm_desc' => 'User must submit a URL to mark the intent as complete.',
         'm_parents' => array(6144,6794,6192),
     ),
     6679 => array(
         'm_icon' => '<i class="fas fa-video"></i>',
         'm_name' => 'Video Response',
-        'm_desc' => 'Student must send a video to mark the intent as complete.',
+        'm_desc' => 'User must send a video to mark the intent as complete.',
         'm_parents' => array(6144,6794,6192),
     ),
     6680 => array(
         'm_icon' => '<i class="fas fa-microphone"></i>',
         'm_name' => 'Audio Response',
-        'm_desc' => 'Student must send a voice note to mark the intent as complete.',
+        'm_desc' => 'User must send a voice note to mark the intent as complete.',
         'm_parents' => array(6144,6794,6192),
     ),
     6678 => array(
         'm_icon' => '<i class="fas fa-image"></i>',
         'm_name' => 'Image Response',
-        'm_desc' => 'Student must send an image to mark the intent as complete.',
+        'm_desc' => 'User must send an image to mark the intent as complete.',
         'm_parents' => array(6144,6794,6192),
     ),
     6681 => array(
         'm_icon' => '<i class="fas fa-file-pdf"></i>',
         'm_name' => 'File Response',
-        'm_desc' => 'Student must upload a File to mark the intent as complete.',
+        'm_desc' => 'User must upload a File to mark the intent as complete.',
         'm_parents' => array(6144,6794,6192),
     ),
     7297 => array(
@@ -1056,13 +1056,13 @@ $config['en_all_6193'] = array(
         'm_icon' => '<i class="fas fa-check"></i>',
         'm_name' => 'Single Answer',
         'm_desc' => 'Students can take their time and choose one of the paths of the OR intent.',
-        'm_parents' => array(6157,6193),
+        'm_parents' => array(6914,6157,6193),
     ),
     6685 => array(
         'm_icon' => '<i class="fas fa-stopwatch"></i>',
         'm_name' => 'Timed Answer',
         'm_desc' => 'Student must make a selection within the time limit defines by the estimated intent time before their response chance expires.',
-        'm_parents' => array(7366,6157,6193),
+        'm_parents' => array(6914,7366,6157,6193),
     ),
     7231 => array(
         'm_icon' => '<i class="fas fa-check-double"></i>',
@@ -1952,7 +1952,7 @@ $config['en_all_4426'] = array(
 );
 
 //Private Links:
-$config['en_ids_4755'] = array(3286,3288,4235,4242,4246,4263,4266,4267,4268,4269,4275,4278,4279,4282,4283,4287,4299,4460,4547,4548,4549,4550,4551,4552,4553,4554,4555,4556,4557,4559,4570,4577,4783,5967,6132,6140,6143,6144,6149,6154,6155,6157,6158,6224,6415,6556,6559,6560,6563,6578,6969,6997,7348);
+$config['en_ids_4755'] = array(3286,3288,4235,4242,4246,4263,4266,4267,4268,4269,4275,4278,4279,4282,4283,4287,4299,4460,4547,4548,4549,4550,4551,4552,4553,4554,4555,4556,4557,4559,4570,4577,4783,5967,6132,6140,6143,6144,6149,6154,6155,6157,6158,6224,6415,6556,6559,6560,6563,6578,6969,6997,7348,7484);
 $config['en_all_4755'] = array(
     3286 => array(
         'm_icon' => '<i class="far fa-key"></i>',
@@ -2270,12 +2270,18 @@ $config['en_all_4755'] = array(
         'm_icon' => '<i class="far fa-bullseye-arrow"></i>',
         'm_name' => 'Company Intent Manage',
         'm_desc' => '',
-        'm_parents' => array(4755,4593,4595,7347),
+        'm_parents' => array(7483,4755,4593,4595,7347),
+    ),
+    7484 => array(
+        'm_icon' => '<i class="far fa-user-plus"></i>',
+        'm_name' => 'User Referred User',
+        'm_desc' => '',
+        'm_parents' => array(4755,4595,4593,7483),
     ),
 );
 
 //Link Credits:
-$config['en_ids_4595'] = array(4228,4229,4230,4231,4232,4235,4242,4246,4250,4251,4255,4256,4257,4258,4259,4260,4261,4263,4264,4266,4267,4268,4269,4275,4278,4279,4282,4283,4287,4299,4318,4319,4460,4547,4548,4549,4550,4551,4552,4553,4554,4555,4556,4557,4559,4570,4577,4601,4983,4993,4994,4998,4999,5000,5001,5003,5007,5865,5943,5967,5981,5982,6093,6132,6140,6143,6144,6149,6154,6155,6157,6158,6224,6226,6242,6415,6556,6559,6560,6563,6578,6969,6997,7348);
+$config['en_ids_4595'] = array(4228,4229,4230,4231,4232,4235,4242,4246,4250,4251,4255,4256,4257,4258,4259,4260,4261,4263,4264,4266,4267,4268,4269,4275,4278,4279,4282,4283,4287,4299,4318,4319,4460,4547,4548,4549,4550,4551,4552,4553,4554,4555,4556,4557,4559,4570,4577,4601,4983,4993,4994,4998,4999,5000,5001,5003,5007,5865,5943,5967,5981,5982,6093,6132,6140,6143,6144,6149,6154,6155,6157,6158,6224,6226,6242,6415,6556,6559,6560,6563,6578,6969,6997,7348,7484);
 $config['en_all_4595'] = array(
     4228 => array(
         'm_icon' => '<i class="fas fa-walking"></i>',
@@ -2779,7 +2785,13 @@ $config['en_all_4595'] = array(
         'm_icon' => '<i class="far fa-bullseye-arrow"></i>',
         'm_name' => 'Company Intent Manage',
         'm_desc' => '1000',
-        'm_parents' => array(4755,4593,4595,7347),
+        'm_parents' => array(7483,4755,4593,4595,7347),
+    ),
+    7484 => array(
+        'm_icon' => '<i class="far fa-user-plus"></i>',
+        'm_name' => 'User Referred User',
+        'm_desc' => '500',
+        'm_parents' => array(4755,4595,4593,7483),
     ),
 );
 
@@ -2801,7 +2813,7 @@ $config['en_all_4600'] = array(
 );
 
 //Link Types:
-$config['en_ids_4593'] = array(4228,4229,4230,4231,4232,4235,4242,4246,4250,4251,4255,4256,4257,4258,4259,4260,4261,4263,4264,4266,4267,4268,4269,4275,4278,4279,4282,4283,4287,4299,4318,4319,4460,4547,4548,4549,4550,4551,4552,4553,4554,4555,4556,4557,4559,4570,4577,4601,4983,4993,4994,4998,4999,5000,5001,5003,5007,5865,5943,5967,5981,5982,6093,6132,6140,6143,6144,6149,6154,6155,6157,6158,6224,6226,6242,6415,6556,6559,6560,6563,6578,6969,6997,7348);
+$config['en_ids_4593'] = array(4228,4229,4230,4231,4232,4235,4242,4246,4250,4251,4255,4256,4257,4258,4259,4260,4261,4263,4264,4266,4267,4268,4269,4275,4278,4279,4282,4283,4287,4299,4318,4319,4460,4547,4548,4549,4550,4551,4552,4553,4554,4555,4556,4557,4559,4570,4577,4601,4983,4993,4994,4998,4999,5000,5001,5003,5007,5865,5943,5967,5981,5982,6093,6132,6140,6143,6144,6149,6154,6155,6157,6158,6224,6226,6242,6415,6556,6559,6560,6563,6578,6969,6997,7348,7484);
 $config['en_all_4593'] = array(
     4228 => array(
         'm_icon' => '<i class="fas fa-walking"></i>',
@@ -3305,7 +3317,13 @@ $config['en_all_4593'] = array(
         'm_icon' => '<i class="far fa-bullseye-arrow"></i>',
         'm_name' => 'Company Intent Manage',
         'm_desc' => 'Intentions set and managed by partner companies using the funnel manager',
-        'm_parents' => array(4755,4593,4595,7347),
+        'm_parents' => array(7483,4755,4593,4595,7347),
+    ),
+    7484 => array(
+        'm_icon' => '<i class="far fa-user-plus"></i>',
+        'm_name' => 'User Referred User',
+        'm_desc' => 'When a company refers a new user to Mench using their intent referral URL',
+        'm_parents' => array(4755,4595,4593,7483),
     ),
 );
 

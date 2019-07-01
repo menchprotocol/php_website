@@ -966,7 +966,7 @@ class Entities_model extends CI_Model
         return $en__child_count;
     }
 
-    function en_psid_check($psid, $referrer_en_id = 0)
+    function en_psid_check($psid, $quick_reply_payload = null)
     {
 
         /*
@@ -1003,7 +1003,7 @@ class Entities_model extends CI_Model
         } else {
 
             //User not found, create new User:
-            return $this->Entities_model->en_psid_add($psid, $referrer_en_id);
+            return $this->Entities_model->en_psid_add($psid, $quick_reply_payload);
 
         }
 
@@ -1076,7 +1076,7 @@ class Entities_model extends CI_Model
 
     }
 
-    function en_psid_add($psid, $referrer_en_id = 0)
+    function en_psid_add($psid, $quick_reply_payload = null)
     {
 
         /*
@@ -1196,7 +1196,14 @@ class Entities_model extends CI_Model
         ));
 
         //Have they been referred by someone?
-        if($referrer_en_id > 0){
+        if(substr_count($quick_reply_payload, 'GETSTARTED_') == 1){
+
+            //See what the payload is:
+            $append_link_ids = explode('_', one_two_explode('GETSTARTED_', '', $quick_reply_payload));
+            $referrer_en_id = intval($append_link_ids[0]);
+            $in_id = intval($append_link_ids[1]);
+
+
             //Validate referer:
             //Fetch and validate entity referrer:
             $referrer_ens = $this->Entities_model->en_fetch(array(
@@ -1205,6 +1212,7 @@ class Entities_model extends CI_Model
             ));
 
             if(count($referrer_ens) > 0){
+
                 //Add them as the child of the referer:
                 $this->Links_model->ln_create(array(
                     'ln_type_entity_id' => 4255, //Text link
@@ -1213,6 +1221,15 @@ class Entities_model extends CI_Model
                     'ln_parent_entity_id' => $referrer_en_id,
                     'ln_child_entity_id' => $added_en['en']['en_id'],
                 ));
+
+                //Log referrer link type:
+                $this->Links_model->ln_create(array(
+                    'ln_type_entity_id' => 7484, //Company Link Types
+                    'ln_miner_entity_id' => $referrer_en_id,
+                    'ln_child_entity_id' => $added_en['en']['en_id'],
+                    'ln_child_intent_id' => $in_id,
+                ));
+
             }
         }
 
