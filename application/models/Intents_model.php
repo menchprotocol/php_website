@@ -33,10 +33,12 @@ class Intents_model extends CI_Model
 
         if ($insert_columns['in_id'] > 0) {
 
-            if ($external_sync) {
+            if ($ln_miner_entity_id > 0) {
 
-                //Update Algolia:
-                $algolia_sync = update_algolia('in', $insert_columns['in_id']);
+                if($external_sync){
+                    //Update Algolia:
+                    $algolia_sync = update_algolia('in', $insert_columns['in_id']);
+                }
 
                 //Log link new entity:
                 $this->Links_model->ln_create(array(
@@ -166,7 +168,7 @@ class Intents_model extends CI_Model
         }
 
         //Fetch current intent filed values so we can compare later on after we've updated it:
-        if($external_sync){
+        if($ln_miner_entity_id > 0){
             $before_data = $this->Intents_model->in_fetch(array('in_id' => $id));
         }
 
@@ -181,7 +183,7 @@ class Intents_model extends CI_Model
         $affected_rows = $this->db->affected_rows();
 
         //Do we need to do any additional work?
-        if ($affected_rows > 0 && $external_sync) {
+        if ($affected_rows > 0 && $ln_miner_entity_id > 0) {
 
             //Note that unlike entity modification, we require a miner entity ID to log the modification link:
             //Log modification link for every field changed:
@@ -210,8 +212,10 @@ class Intents_model extends CI_Model
 
             }
 
-            //Sync algolia:
-            update_algolia('in', $id);
+            if($external_sync){
+                //Sync algolia:
+                update_algolia('in', $id);
+            }
 
         } elseif($affected_rows < 1){
 
