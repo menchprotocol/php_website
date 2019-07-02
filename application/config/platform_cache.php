@@ -11,7 +11,7 @@ defined('BASEPATH') OR exit('No direct script access allowed');
  *
  */
 
-//Generated 2019-07-01 11:35:06 PST
+//Generated 2019-07-01 13:14:01 PST
 
 //AND Intent AND Lock:
 $config['en_ids_6914'] = array(6684,6685,7231);
@@ -868,7 +868,7 @@ $config['en_all_6194'] = array(
 );
 
 //Mench Community:
-$config['en_ids_6827'] = array(1281,1308,3084,4430,4433,6695,6875);
+$config['en_ids_6827'] = array(1281,1308,3084,4430,4433,6695);
 $config['en_all_6827'] = array(
     1281 => array(
         'm_icon' => '<i class="fas fa-user-shield"></i>',
@@ -905,12 +905,6 @@ $config['en_all_6827'] = array(
         'm_name' => 'Mench Partner Companies',
         'm_desc' => 'Those who use Mench as a recruitment platform to assess their candidates and reach new candidates',
         'm_parents' => array(7370,6827,4426,4463),
-    ),
-    6875 => array(
-        'm_icon' => '<i class="fas fa-user-friends"></i>',
-        'm_name' => 'Mench Career Coaches',
-        'm_desc' => 'Coaches experts in the career development process that would help you land your dream job in the shortest possible time',
-        'm_parents' => array(6827),
     ),
 );
 

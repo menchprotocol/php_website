@@ -1418,6 +1418,20 @@ class Communication_model extends CI_Model
                 'in_status_entity_id' => 7351, //Intent Starting Point
             ));
             if (count($ins) < 1) {
+
+                $this->Communication_model->dispatch_message(
+                    '❌ Error: I cannot add this intention to your Action Plan because its not a starting-point intent.',
+                    $en,
+                    true,
+                    array(
+                        array(
+                            'content_type' => 'text',
+                            'title' => 'Next',
+                            'payload' => 'GONEXT',
+                        ),
+                    )
+                );
+
                 return array(
                     'status' => 0,
                     'message' => 'Failed to validate starting-point intent',
@@ -1452,7 +1466,7 @@ class Communication_model extends CI_Model
 
                 //Confirm if they are interested to subscribe to this intention:
                 $this->Communication_model->dispatch_message(
-                    '❌ Error: I cannot add the intention to ' . $ins[0]['in_outcome'] . ' to your Action Plan because its not a starting-point intent.',
+                    '❌ Error: I cannot add this intention to your Action Plan because its not a starting-point intent.',
                     $en,
                     true,
                     array(
