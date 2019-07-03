@@ -19,7 +19,7 @@ foreach ($this->Links_model->ln_fetch(array(
 if(in_is_or($in['in_type_entity_id'])){
 
     //Give option to choose a child path:
-    echo '<div class="list-group actionplan_list grey_list maxout" style="margin-top:20px;">';
+    echo '<div class="list-group actionplan_list grey_list" style="margin-top:40px;">';
     $in__children = $this->Links_model->ln_fetch(array(
         'ln_status_entity_id IN (' . join(',', $this->config->item('en_ids_7360')) . ')' => null, //Link Statuses Active
         'in_status_entity_id IN (' . join(',', $this->config->item('en_ids_7355')) . ')' => null, //Intent Statuses Public
@@ -29,7 +29,7 @@ if(in_is_or($in['in_type_entity_id'])){
     $common_prefix = common_prefix($in__children);
 
     foreach ($in__children as $child_in) {
-        echo echo_in_recommend($child_in, true, $common_prefix, null, ( count($referrer_en) > 0 ? $referrer_en['en_id'] : 0 ));
+        echo echo_in_recommend($child_in, $common_prefix, null, ( count($referrer_en) > 0 ? $referrer_en['en_id'] : 0 ));
     }
     echo '</div>';
 

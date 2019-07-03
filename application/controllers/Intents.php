@@ -12,6 +12,15 @@ class Intents extends CI_Controller
     }
 
 
+    function test($in_id){
+
+        $ins = $this->Intents_model->in_fetch(array(
+            'in_id' => $in_id,
+        ));
+
+        echo_json($this->Intents_model->in_unlock_paths($ins[0]));
+
+    }
 
     function fix__completion_marks($in_id){
 

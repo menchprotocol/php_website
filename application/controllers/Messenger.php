@@ -1606,7 +1606,7 @@ class Messenger extends CI_Controller
         //Fetch their current progress links:
         $progress_links = $this->Links_model->ln_fetch(array(
             'ln_status_entity_id IN (' . join(',', $this->config->item('en_ids_7360')) . ')' => null, //Link Statuses Active
-            'ln_type_entity_id IN (' . join(',', $this->config->item('en_ids_6415')) . ')' => null, //Action Plan Clear All Steps
+            'ln_type_entity_id IN (' . join(',', $this->config->item('en_ids_6146')) . ')' => null, //User Steps Completed
             'ln_miner_entity_id' => $en_id,
         ), array(), 0);
 
@@ -1618,7 +1618,7 @@ class Messenger extends CI_Controller
             //Log link:
             $clear_all_link = $this->Links_model->ln_create(array(
                 'ln_content' => $message,
-                'ln_type_entity_id' => 6415, //Action Plan Clear All Steps
+                'ln_type_entity_id' => 6415, //Action Plan Reset Steps
                 'ln_miner_entity_id' => $en_id,
             ));
 

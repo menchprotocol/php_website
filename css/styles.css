@@ -16,6 +16,12 @@ body.grey-bg {
     background-color: #EFEFEF !important;
 }
 
+
+h1, .h1 {
+    font-size: 2.5em;
+    line-height: 1.15em;
+}
+
 .main-raised {
     box-shadow: none;
 }
@@ -181,9 +187,12 @@ body.grey-bg {
 }
 
 .panel-primary > .panel-heading + .panel-collapse > .panel-body {
-    border-top-color: #337ab7;
+    border-left: 3px solid #222;
+    margin-left: 12px;
+    font-size: 1.2em !important;
+    padding-left: 16px !important;
     margin-bottom: 20px;
-    font-size: 1.1em !important;
+    padding-bottom: 10px !important;
 }
 
 .skippable a {
@@ -1360,7 +1369,7 @@ h5, .h5 {
 }
 
 .white-label .white-label-container {
-    max-width: 767px !important;
+    max-width: 675px !important;
     margin: 0 auto !important;
 }
 
@@ -1377,8 +1386,8 @@ h5, .h5 {
 }
 
 .white-label .white-label-container .wl-frame h1 {
-    margin: 0 !important;
-    font-size: 2.7em;
+    margin: 5px 0 0 0 !important;
+    font-size: 2.4em;
 }
 
 .sorting-enabled{
@@ -2917,13 +2926,6 @@ a.badge:focus, a.badge:hover {
     font-style: normal;
 }
 
-.login-content {
-    max-width: 600px;
-}
-
-.login-content input {
-    max-width: 380px;
-}
 
 .login-content .input-group-addon {
     padding: 0 5px 0 15px;
@@ -3072,6 +3074,7 @@ a .badge {
     padding-left: 8px;
     text-align: left;
 }
+
 
 .is_public .not_published {
     display: none;
@@ -4173,13 +4176,18 @@ h4 .tip-badge {
     max-width: 368px;
 }
 
-.maxout, .home-page-intro .msg .entity-appendix, .landing-page-intro .msg .entity-appendix {
-    max-width: 767px !important;
+.maxout, .home-page-intro .msg .entity-appendix, .landing-page-intro, .login-content {
+    max-width: 610px !important;
+}
+
+.landing-page-intro {
+    margin:0 auto;
 }
 
 .user-comment{
     border:1px solid #2b2b2b; border-radius: 5px; padding:3px 3px 0 5px; margin:3px 5px 3px 29px; font-size: 0.9em;
 }
+
 
 .landing-page-intro .msg, .landing-page-intro li, p, .landing-page-intro a, .landing-page-intro a {
     font-size: 1.2em !important;
@@ -4187,17 +4195,41 @@ h4 .tip-badge {
 
 
 .landing-page-intro .msg, .landing-page-intro li, p, .landing-page-intro a {
-    font-size: 1.3em !important;
+    font-size: 1.4em !important;
 }
 
 .landing-page-intro h4 {
+    line-height: 130% !important;
     font-size: 1.1em !important;
+    font-weight: 300 !important;
+    margin: 12px 0 5px !important;
 }
 
 .landing-page-intro .msg {
-    margin-top: 10px !important;
+    margin-top: 25px !important;
     font-weight: 300 !important;
     line-height: 120% !important;
+}
+
+.panel-body .msg {
+    font-size: 1.1em !important;
+    margin-top: 10px !important;
+}
+
+.action-plan-sub-list{
+    list-style-type: none;
+    margin:10px 0 10px -40px;
+}
+
+.action-plan-time{
+    font-size:1.1em;
+    font-weight: 300;
+    margin-top:10px;
+    color: #777;
+}
+
+.action-plan-sub-list li {
+    font-size: 1.1em !important;
 }
 
 .landing-page-intro .msg a {
@@ -4243,8 +4275,9 @@ h4 .tip-badge {
 }
 
 .inner_actionplan .panel-title a {
-    font-weight: 500 !important;
+    font-weight: 300 !important;
     text-decoration: none !important;
+    line-height: 110% !important;
 }
 
 .inner_actionplan .panel-body{

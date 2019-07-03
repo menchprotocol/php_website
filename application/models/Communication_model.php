@@ -471,7 +471,7 @@ class Communication_model extends CI_Model
             //We sometimes may need to set a default recipient entity name IF /firstname command used without any recipient entity passed:
             if (!isset($recipient_en['en_name'])) {
                 //This is a guest User, so use the default:
-                $recipient_en['en_name'] = 'Dear User';
+                $recipient_en['en_name'] = 'Stranger';
             }
 
             //Replace name with command:

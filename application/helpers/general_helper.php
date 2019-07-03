@@ -438,49 +438,43 @@ function advance_mode(){
 }
 
 function common_prefix($in__children, $max_look = 0){
+
+
     if(count($in__children) < 2){
-        //Cannot do this for less than 2 intents:
-        return null;
+        return null; //Cannot do this for less than 2 intents
     }
 
-    $common_string = null; //Start with nothing
-    foreach($in__children as $max_count=>$in){
+    $exclusion_words = array('a','for');
 
-        if($max_count==0){
-            $common_string = $in['in_outcome'];
-            continue;
-        } elseif($max_look > 0 && $max_count==$max_look){
+    //Go through each child one by one and see if each word exists in all:
+    $common_base = '';
+    foreach(explode(' ', $in__children[0]['in_outcome']) as $word_pos=>$word){
+
+        if(in_array(strtolower($word), $exclusion_words)){
             break;
-        } elseif(substr_count($in['in_outcome'] , '::') > 0){
-            return null;
+        } elseif($max_look > 0 && $word_pos == $max_look){
+            break; //Look no more...
         }
 
-        //Let's see what matches:
-        $outcome_words = explode(' ', $in['in_outcome']);
-
-        foreach(explode(' ', $common_string) as $word_count=>$common_word){
-            if(!isset($outcome_words[$word_count]) || $common_word != $outcome_words[$word_count]){
-                //No longer the same:
-                if($word_count==0){
-                    //The first word is different, nothing else to do:
-                    return null;
-                } else {
-                    //Adjust:
-                    $common_string = '';
-                    for ($i=0;$i<$word_count;$i++){
-                        if(!isset($outcome_words[$i])){
-                            return null;
-                        }
-                        $common_string .= $outcome_words[$i].' ';
-                    }
-
-                    $common_string = trim($common_string);
-                }
+        //Make sure this is the same word across all intents:
+        $all_the_same = true;
+        foreach($in__children as $in){
+            $in_words = explode(' ', $in['in_outcome']);
+            if(!isset($in_words[$word_pos]) || $in_words[$word_pos]!=$word){
+                //Not the same:
+                $all_the_same = false;
+                break;
             }
         }
+
+        if($all_the_same){
+            $common_base .= $word.' ';
+        } else {
+            break;
+        }
     }
 
-    return $common_string;
+    return trim($common_base);
 }
 
 function upload_to_cdn($file_url, $ln_miner_entity_id = 0, $ln_metadata = null, $is_local = false, $page_title = null)

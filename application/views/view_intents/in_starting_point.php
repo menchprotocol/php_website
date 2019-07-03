@@ -24,8 +24,8 @@ $step_info = echo_tree_steps($in, false);
 $user_info = echo_tree_users($in, false);
 
 if($step_info || $source_info || $user_info){
-    echo '<h3 style="margin-bottom:5px; margin-top:15px !important;">Overview:</h3>';
-    echo '<div style="margin:5px 0 25px 0;" class="maxout">';
+    echo '<p style="margin:30px 0 10px;">Here is an overview:</p>';
+    echo '<div style="margin:5px 0 35px 0;" class="maxout">';
     echo $source_info;
     echo $step_info;
     echo $user_info;
@@ -60,18 +60,17 @@ if(isset($session_en['en_id']) && count($referrer_en) == 0){
 } else {
 
     //Give option to add:
-    echo '<a class="btn btn-primary '.( count($referrer_en) > 0 ? 'grey' : '' ).' tag-manager-get-started" href="https://m.me/askmench?ref='.( count($referrer_en) > 0 ? 'GETSTARTED_'.$referrer_en['en_id'].'_'.$in['in_id'] : $in['in_id'] ).'" style="display: inline-block; padding:12px 36px;">Get Started&nbsp;&nbsp;&nbsp;<i class="fas fa-angle-double-right"></i></a>';
+    echo '<a class="btn btn-primary tag-manager-get-started" href="https://m.me/askmench?ref='.( count($referrer_en) > 0 ? 'GETSTARTED_'.$referrer_en['en_id'].'_'.$in['in_id'] : $in['in_id'] ).'" style="display: inline-block; padding:12px 36px;">Get Started&nbsp;&nbsp;&nbsp;<i class="fas fa-angle-double-right"></i></a>';
 
 }
 
 
 if(count($referrer_en) == 0){
     //Build trust:
-    echo '<p style="font-size:1em !important;">Mench is an open-source project.</p>';
+    //echo '<p style="font-size:1em !important;">Mench is an open-source project.</p>';
 }
 
 
-echo '</div>';
 
 
 
@@ -152,7 +151,8 @@ if(count($referrer_en) > 0){
 //Display if any:
 if(count($in__other) > 0){
 
-    echo '<h3 style="margin-bottom:5px; margin-top:55px;">Other Intentions:</h3>';
+    //echo '<h3 style="margin-bottom:5px; margin-top:55px;">Other Intentions:</h3>';
+    echo '<p style="margin:40px 0 15px;">I can also help you:</p>';
     echo '<div class="list-group grey_list actionplan_list maxout">';
     $max_visible = 7;
 
@@ -167,7 +167,7 @@ if(count($in__other) > 0){
             continue; //Already printed!
         }
 
-        echo echo_in_recommend($other_in, false, $common_prefix, ( count($already_printed) >= $max_visible ? 'extra-recommendations hidden' : null ), ( count($referrer_en) > 0 ? $referrer_en['en_id'] : 0 ));
+        echo echo_in_recommend($other_in, $common_prefix, ( count($already_printed) >= $max_visible ? 'extra-recommendations hidden' : null ), ( count($referrer_en) > 0 ? $referrer_en['en_id'] : 0 ));
         array_push($already_printed, $other_in['in_id']); //Keep track to make sure its printed only once
     }
 
@@ -179,4 +179,9 @@ if(count($in__other) > 0){
     echo '</div>';
 
 }
+
+
+
+
+echo '</div>';
 ?>

@@ -463,7 +463,7 @@ class Actionplan_model extends CI_Model
 
     }
 
-    function actionplan_completion_auto_unlock($en_id, $in, $ln_type_entity_id){
+    function actionplan_completion_auto_unlock($en_id, $in, $unlock_link_type_en_id){
 
         /*
          *
@@ -471,7 +471,7 @@ class Actionplan_model extends CI_Model
          * the intent has nothing of substance to be
          * further communicated/done by the user.
          *
-         * $ln_type_entity_id Indicates the type of Unlocking that is about to happen
+         * $unlock_link_type_en_id Indicates the type of Unlocking that is about to happen
          *
          * */
 
@@ -480,6 +480,9 @@ class Actionplan_model extends CI_Model
 
         if(in_array($in['in_type_entity_id'], $this->config->item('en_ids_6794'))){
             //Requires Manual Response so we cannot auto complete:
+            return false;
+        } elseif(!in_array($unlock_link_type_en_id, $this->config->item('en_ids_7494'))){
+            //Not a valid unlock step type:
             return false;
         } elseif(in_array($in['in_type_entity_id'], $this->config->item('en_ids_7309') /* Action Plan Step Locked */)){
             //Since this is a locked intent we need to mark it as complete since the
@@ -514,10 +517,9 @@ class Actionplan_model extends CI_Model
 
 
 
-
         //Ok, now it should be auto completed:
         $this->Links_model->ln_create(array(
-            'ln_type_entity_id' => 6158, //Action Plan Auto Complete
+            'ln_type_entity_id' => $unlock_link_type_en_id,
             'ln_miner_entity_id' => $en_id,
             'ln_parent_intent_id' => $in['in_id'],
             'ln_status_entity_id' => 6176, //Link Published
@@ -809,6 +811,8 @@ class Actionplan_model extends CI_Model
         }
     }
 
+
+
     function actionplan_step_next_echo($en_id, $in_id, $fb_messenger_format = true)
     {
 
@@ -929,6 +933,14 @@ class Actionplan_model extends CI_Model
             'ln_status_entity_id IN (' . join(',', $this->config->item('en_ids_7360')) . ')' => null, //Link Statuses Active
         ));
 
+        $progress_completed = false; //Assume FALSE, search and see...
+        foreach($current_progression_links as $current_progression_link){
+            if(in_array($current_progression_link['ln_status_entity_id'], $this->config->item('en_ids_7359')/* Link Statuses Public */)){
+                $progress_completed = true;
+                break;
+            }
+        }
+
 
         //Define communication variables:
         $next_step_message = '';
@@ -936,18 +948,49 @@ class Actionplan_model extends CI_Model
 
         //Define step variables:
         $has_children = (count($in__children) > 0);
+        $in_is_locked = in_array($ins[0]['in_type_entity_id'], $this->config->item('en_ids_7309') /* Action Plan Step Locked */);
         $in_is_or = in_is_or($ins[0]['in_type_entity_id']);
 
 
         //Let's figure out the progression method:
-        if(!$in_is_or && $completion_req_note){
-            $progression_type_entity_id = 6144; //Action Plan Requirement Submitted
+        if($in_is_locked){
+
+            if(count($current_progression_links) > 0){
+
+                //Load the list of intents to complete:
+
+            } else {
+
+                $progression_type_entity_id = 7486; //User Step Children Unlock
+                //Generate list of intents to complete:
+
+            }
+
+        } elseif(!$in_is_or && $completion_req_note){
+
+            $progression_type_entity_id = 6144; //User Step Requirement Sent
+
         } elseif($in_is_or && $has_children){
-            $progression_type_entity_id = 6157; //Action Plan Question Answered
-        } elseif(count($in__messages) > 0){
-            $progression_type_entity_id = 4559; //Action Plan Messages Read
+
+            //Depends on OR type:
+            if($ins[0]['in_type_entity_id']==6684 /* OR Intent Single Answer */){
+
+                $progression_type_entity_id = 6157; //User Step Answered
+
+            } elseif($ins[0]['in_type_entity_id']==6685 /* OR Intent Timed Answer */){
+
+                $progression_type_entity_id = 7487; //User Step Answered Timely
+
+            } elseif($ins[0]['in_type_entity_id']==7231 /* OR Intent Multiple Answers */){
+
+                $progression_type_entity_id = 7489; //User Step Selected
+
+            }
+
         } else {
-            $progression_type_entity_id = 6158; //Action Plan Auto Complete
+
+            $progression_type_entity_id = 4559; //User Step Got It
+
         }
 
 
@@ -960,22 +1003,9 @@ class Actionplan_model extends CI_Model
 
 
 
-        /*
-         *
-         * Before getting started with communications,
-         * Let's see if we need to log a new progress
-         * link for this step of the Action Plan.
-         *
-         * */
-        $made_published_progress = false; //Assume FALSE, search and see...
-        foreach($current_progression_links as $current_progression_link){
-            if(in_array($current_progression_link['ln_status_entity_id'], $this->config->item('en_ids_7359')/* Link Statuses Public */)){
-                $made_published_progress = true;
-                break;
-            }
-        }
 
-        if(count($current_progression_links)<1 || ( !$is_two_step && !$made_published_progress )){
+
+        if(count($current_progression_links)<1 || ( !$is_two_step && !$progress_completed )){
 
             //Log new link:
             $new_progression_link = $this->Links_model->ln_create(array(
@@ -1001,7 +1031,7 @@ class Actionplan_model extends CI_Model
             }
 
             if(!$is_two_step){
-                $made_published_progress = true;
+                $progress_completed = true;
             }
 
             //Add new progression link:
@@ -1042,7 +1072,7 @@ class Actionplan_model extends CI_Model
             $unlocked_steps = $this->Links_model->ln_fetch(array(
                 'ln_status_entity_id IN (' . join(',', $this->config->item('en_ids_7359')) . ')' => null, //Link Statuses Public
                 'in_status_entity_id IN (' . join(',', $this->config->item('en_ids_7355')) . ')' => null, //Intent Statuses Public
-                'ln_type_entity_id' => 6140, //Action Plan Conditional Step Unlocked
+                'ln_type_entity_id' => 6140, //User Step Link Unlocked
                 'ln_miner_entity_id' => $en_id,
                 'ln_parent_intent_id' => $ins[0]['in_id'],
             ), array('in_child'), 0);
@@ -1079,7 +1109,7 @@ class Actionplan_model extends CI_Model
          * */
 
         //Do we have any requirements?
-        if ($completion_req_note && !$made_published_progress) {
+        if ($completion_req_note && !$progress_completed) {
 
             //They still need to complete:
             $next_step_message .= $completion_req_note;
@@ -1125,7 +1155,7 @@ class Actionplan_model extends CI_Model
 
 
                 //Is this selected?
-                $was_selected       = ( $made_published_progress && $current_progression_links[0]['ln_child_intent_id']==$child_in['in_id'] );
+                $was_selected       = ( $progress_completed && $current_progression_links[0]['ln_child_intent_id']==$child_in['in_id'] );
 
                 //Fetch history if selected:
                 if($was_selected){
@@ -1155,7 +1185,7 @@ class Actionplan_model extends CI_Model
 
                 } else {
 
-                    if(!$made_published_progress){
+                    if(!$progress_completed){
 
                         //Need to select answer:
                         $next_step_message .= '<a href="/messenger/actionplan_answer_question/' . $en_id . '/' . $ins[0]['in_id'] . '/' . $child_in['in_id'] . '/' . md5($this->config->item('actionplan_salt') . $child_in['in_id'] . $ins[0]['in_id'] . $en_id) . '" class="list-group-item">';
@@ -1200,7 +1230,7 @@ class Actionplan_model extends CI_Model
                     }
 
                     //Close tags:
-                    if(!$made_published_progress || $was_selected){
+                    if(!$progress_completed || $was_selected){
 
                         //Simple right icon
                         $next_step_message .= '<span class="pull-right" style="margin-top: -6px;">';
@@ -1354,7 +1384,7 @@ class Actionplan_model extends CI_Model
          * */
 
         //NEXT? Only possible if NOT a 2-step progress OR if progress has been made:
-        if(!$is_two_step || $made_published_progress){
+        if(!$is_two_step || $progress_completed){
 
             $next_in_id = 0;
             if(!$has_children){

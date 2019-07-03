@@ -10,6 +10,7 @@ $moderation_tools = array(
     '/admin/tools/moderate_intent_notes' => 'Moderate Intent Notes',
     '/admin/tools/identical_intent_outcomes' => 'Identical Intent Outcomes',
     '/admin/tools/identical_entity_names' => 'Identical Entity Names',
+    '/admin/tools/or__children' => 'List OR Intents + Answers',
     '/admin/tools/orphan_intents' => 'Orphan Intents',
     '/admin/tools/orphan_entities' => 'Orphan Entities',
     '/admin/tools/assessment_marks_list_all' => 'Completion Marks List All',
@@ -473,6 +474,81 @@ if(!$action) {
     echo $total_updated.' links updated with new credit rates';
 
 
+} elseif($action=='or__children') {
+
+    $filter_ors = array(6685, 6684);
+
+    echo '<br /><p>Active OR intents of type '.join(',', $filter_ors).'</p><br />';
+
+    $all_steps = 0;
+    $all_children = 0;
+    $updated = 0;
+    $mass_update = ( isset($_GET['mass_update']) && intval($_GET['mass_update']) );
+    $new_ln_type_entity_id = 7485; //User Step Answer Unlock
+
+    foreach ($this->Intents_model->in_fetch(array(
+        'in_status_entity_id IN (' . join(',', $this->config->item('en_ids_7356')) . ')' => null, //Intent Statuses Active
+        'in_type_entity_id IN (' . join(',', $filter_ors) . ')' => null,
+    ), array(), 0, 0, array('in_id' => 'DESC')) as $count => $in) {
+
+        echo '<div>'.($count+1).') '.echo_en_cache('en_all_4737' /* Intent Statuses */, $in['in_status_entity_id']).' '.echo_en_cache('en_all_6193' /* OR Intents */, $in['in_type_entity_id']).' <b><a href="https://mench.com/intents/'.$in['in_id'].'">'.echo_in_outcome($in['in_outcome']).'</a></b></div>';
+
+        echo '<ul>';
+        //Fetch all children for this OR:
+        foreach($this->Links_model->ln_fetch(array(
+            'ln_status_entity_id IN (' . join(',', $this->config->item('en_ids_7360')) . ')' => null, //Link Statuses Active
+            'in_status_entity_id IN (' . join(',', $this->config->item('en_ids_7356')) . ')' => null, //Intent Statuses Active
+            'ln_type_entity_id' => 4228, //Intent Link Regular Step
+            'ln_parent_intent_id' => $in['in_id'],
+        ), array('in_child'), 0, 0, array('ln_order' => 'ASC')) as $child_or){
+
+            $qualified_update = ( $child_or['in_type_entity_id']==6677 /* AND GOT IT */ && $child_or['in_status_entity_id']!=7351 /* Starting Point Intent */ );
+
+            //Count completions:
+            if($qualified_update){
+
+                $user_steps = $this->Links_model->ln_fetch(array(
+                    'ln_type_entity_id IN (' . join(',', $this->config->item('en_ids_6255')) . ')' => null, //Action Plan Steps Progressed
+                    'ln_parent_intent_id' => $child_or['in_id'],
+                    'ln_status_entity_id IN (' . join(',', $this->config->item('en_ids_7359')) . ')' => null, //Link Statuses Public
+                ), array(), 0);
+                $all_steps += count($user_steps);
+
+                if($mass_update){
+
+                    //Update intent:
+                    $this->Intents_model->in_update($in['in_id'], array(
+                        'in_type_entity_id' => 6914, //AND Lock
+                    ), true, $session_en['en_id']);
+
+                    //Update all progression steps:
+                    foreach($user_steps as $user_step){
+
+                        if($user_step['ln_type_entity_id']!=$new_ln_type_entity_id){
+
+                            //Update action plan progression type:
+                            $this->Links_model->ln_update($user_step['ln_id'], array(
+                                'ln_type_entity_id' => $new_ln_type_entity_id,
+                            ), $session_en['en_id']);
+
+                            $updated++;
+                        }
+                    }
+                }
+
+            } else {
+                $user_steps = array();
+            }
+
+            $all_children++;
+            echo '<li>'.echo_en_cache('en_all_6186' /* Link Statuses */, $child_or['ln_status_entity_id']).' '.echo_en_cache('en_all_4737' /* Intent Statuses */, $child_or['in_status_entity_id']).' '.echo_en_cache(( in_is_or($child_or['in_type_entity_id']) ? 'en_all_6193' /* OR Intents */ : 'en_all_6192' /* AND Intents */ ), $child_or['in_type_entity_id']).' <a href="https://mench.com/intents/'.$child_or['in_id'].'" '.( $qualified_update ? '' : 'style="color:#FF0000;"' ).'>'.echo_in_outcome($child_or['in_outcome']).'</a>'.( count($user_steps) > 0 ? ' / Steps: '.count($user_steps) : '' ).'</li>';
+        }
+        echo '</ul>';
+        echo '<hr />';
+    }
+
+    echo 'All Steps Taken: '.$all_steps.( $updated > 0 ? ' ('.$updated.' updated)' : '' ).' across '.$all_children.' answers';
+
 } elseif($action=='assessment_marks_list_all') {
 
 
@@ -520,7 +596,7 @@ if(!$action) {
 
             echo '<div>';
             echo '<span style="width:25px; display:inline-block; text-align:center;">'.$en_all_4737[$in_ln['in_status_entity_id']]['m_icon'].'</span>';
-            echo '<a href="/intents/'.$in_ln['in_id'].'">'.$in_ln['in_outcome'].'</a>';
+            echo '<a href="/intents/'.$in_ln['in_id'].'">'.$in_ln['in_outcome'].' [child]</a>';
             echo '</div>';
 
             if(count($this->Links_model->ln_fetch(array(
@@ -556,7 +632,6 @@ if(!$action) {
                     $new_ln_type_entity_id = 6997; //User Step Score Unlock
                     foreach($user_steps as $user_step){
                         if($user_step['ln_type_entity_id']!=$new_ln_type_entity_id){
-
                             //Update action plan progression type:
                             $this->Links_model->ln_update($user_step['ln_id'], array(
                                 'ln_type_entity_id' => $new_ln_type_entity_id,

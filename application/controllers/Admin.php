@@ -16,6 +16,8 @@ class Admin extends CI_Controller
     function tools($action = null, $command1 = null, $command2 = null)
     {
 
+        boost_power();
+
         //Validate moderator:
         $session_en = en_auth(array(1281), true);
 

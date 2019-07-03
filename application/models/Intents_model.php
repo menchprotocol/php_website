@@ -905,6 +905,71 @@ class Intents_model extends CI_Model
 
     }
 
+
+    function in_unlock_paths($in)
+    {
+        /*
+         *
+         * Finds the pathways, if any, on how to unlock an given intent
+         *
+         * */
+
+        //Validate that this is a locked intent:
+        if(!in_array($in['in_type_entity_id'], $this->config->item('en_ids_7309') /* Action Plan Step Locked */)){
+            return array();
+        } elseif(!in_array($in['in_status_entity_id'], $this->config->item('en_ids_7355') /* Intent Statuses Public */)){
+            return array();
+        }
+
+        //Step 1: Is there an OR parent that we can simply answer and unlock?
+        $in_or_parents = $this->Links_model->ln_fetch(array(
+            'ln_status_entity_id IN (' . join(',', $this->config->item('en_ids_7359')) . ')' => null, //Link Statuses Public
+            'in_status_entity_id IN (' . join(',', $this->config->item('en_ids_7355')) . ')' => null, //Intent Statuses Public
+            'ln_type_entity_id' => 4228, //Intent Link Regular Step
+            'ln_child_intent_id' => $in['in_id'],
+            'in_type_entity_id IN (' . join(',', $this->config->item('en_ids_6157')) . ')' => null, //User Step Answered
+        ), array('in_parent'), 0);
+        if(count($in_or_parents) > 0){
+            //Return OR parents for unlocking this intent:
+            return $in_or_parents;
+        }
+
+        //Step 2: We don't have any OR parents, let's see how we can complete all children to meet the requirements:
+        $in__children = $this->Links_model->ln_fetch(array(
+            'ln_status_entity_id IN (' . join(',', $this->config->item('en_ids_7359')) . ')' => null, //Link Statuses Public
+            'in_status_entity_id IN (' . join(',', $this->config->item('en_ids_7355')) . ')' => null, //Intent Statuses Public
+            'ln_type_entity_id' => 4228, //Intent Link Regular Step
+            'ln_parent_intent_id' => $in['in_id'],
+        ), array('in_child'), 0, 0, array('ln_order' => 'ASC'));
+        if(count($in__children) < 1){
+            //No children, no path:
+            return array();
+        }
+
+        //Go through children to see if any/all can be completed:
+        $child_unlock_paths = array();
+        foreach($in__children as $in_child){
+            if(in_array($in_child['in_type_entity_id'], $this->config->item('en_ids_7309') /* Action Plan Step Locked */)){
+
+                //Need to check recursively:
+                $locked_paths =  $this->Intents_model->in_unlock_paths($in_child);
+                foreach($locked_paths as $locked_path){
+                    if(count($child_unlock_paths)==0 || !filter_array($child_unlock_paths, 'in_id', $locked_path['in_id'])) {
+                        $child_unlock_paths = array_merge($child_unlock_paths, $locked_paths);
+                    }
+                }
+
+            } elseif(!filter_array($child_unlock_paths, 'in_id', $in_child['in_id'])) {
+
+                //Not locked, so this can be completed:
+                array_push($child_unlock_paths, $in_child);
+
+            }
+        }
+        return $child_unlock_paths;
+
+    }
+
     function in_force_verb_creation($in_outcome, $ln_miner_entity_id = 0){
 
         //Fetch related variables:

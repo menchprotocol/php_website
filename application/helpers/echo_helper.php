@@ -228,6 +228,9 @@ function echo_in_outcome($in_outcome, $fb_messenger_format = false, $reference_a
 
         if(strlen($common_prefix) > 0){
             $in_outcome = trim(substr($in_outcome, strlen($common_prefix)));
+            if(preg_match("/^[a-z]+$/", substr($in_outcome, 0, 1))){
+                $in_outcome = strtoupper(substr($in_outcome, 0, 1)).substr($in_outcome, 1);
+            }
         }
 
         if($fb_messenger_format){
@@ -889,7 +892,7 @@ function echo_tree_users($in, $fb_messenger_format = false, $autoexpand = false)
 
 
     //TODO Consider enabling later?
-    return null; //Disable for now
+    //return null; //Disable for now
 
     /*
      *
@@ -936,7 +939,7 @@ function echo_tree_users($in, $fb_messenger_format = false, $autoexpand = false)
         return '👤 ' . $pitch_body. "\n\n";
     } else {
         //HTML format
-        $pitch_title = '<span class="icon-block"><i class="fas fa-user"></i></span>&nbsp;'. echo_number($enrolled_users_count[0]['totals']) .' Enrolled Users';
+        $pitch_title = '<span class="icon-block"><i class="fas fa-user"></i></span>&nbsp;I have helped '. echo_number($enrolled_users_count[0]['totals']) .' others with this intention so far';
         return echo_tree_html_body('CompletedUsers', $pitch_title, $pitch_body, $autoexpand);
     }
 }
@@ -1011,7 +1014,7 @@ function echo_tree_experts($in, $fb_messenger_format = false, $autoexpand = fals
 
                     //Show link to platform:
                     //$source_info .= '<a href="/entities/' . $en['en_id'] . '">';
-                    $source_info .= '<span class="underdot" title="'.$en_all_3000[$type_id]['m_name'].'" data-toggle="tooltip" data-placement="top">';
+                    $source_info .= '<span>';
                     $source_info .= $en['en_name'];
                     $source_info .= '</span>';
                     //$source_info .= '</a>';
@@ -1060,7 +1063,7 @@ function echo_tree_experts($in, $fb_messenger_format = false, $autoexpand = fals
 
                 //HTML Format:
                 //$expert_info .= '<a href="/entities/' . $en['en_id'] . '">';
-                $expert_info .= '<span class="underdot" title="Industry Expert" data-toggle="tooltip" data-placement="top">';
+                $expert_info .= '<span>';
                 $expert_info .= $en['en_name'];
                 $expert_info .= '</span>';
                 //$expert_info .= '</a>';
@@ -1084,18 +1087,18 @@ function echo_tree_experts($in, $fb_messenger_format = false, $autoexpand = fals
 
 
 
-    $pitch_title = '<span class="icon-block"><i class="fas fa-star"></i></span>&nbsp;';
+    $pitch_title = '<span class="icon-block"><i class="fas fa-shield-check"></i></span>&nbsp;';
     $pitch_body = 'Action Plan references ';
     if($source_count > 0){
-        $pitch_title .= $source_count . ' Source'. echo__s($source_count);
+        $pitch_title .= 'I reference ' . $source_count . ' source' . echo__s($source_count);
         $pitch_body .= trim($source_info);
     }
     if($expert_count > 0){
         if($source_count > 0){
-            $pitch_title .= ' by ';
-            $pitch_body .= ' by ';
+            $pitch_title .= ' from ';
+            $pitch_body .= ' from ';
         }
-        $pitch_title .= $expert_count . ' Expert'. echo__s($expert_count);
+        $pitch_title .= $expert_count . ' industry expert'. echo__s($expert_count);
         $pitch_body .= $expert_count . ' industry expert'. echo__s($expert_count) . ($expert_count == 1 ? ':' : ' including') . $expert_info;
     }
 
@@ -1151,12 +1154,12 @@ function echo_tree_steps($in, $fb_messenger_format = 0, $autoexpand = false)
     if ($fb_messenger_format) {
 
         $pitch_body .= '.';
-        return '🚶 ' . $pitch_body. "\n\n";
+        return '🚩 ' . $pitch_body. "\n\n";
 
     } else {
 
         //HTML format
-        $pitch_title = '<span class="icon-block"><i class="fas fa-walking"></i></span>&nbsp;'.$metadata['in__metadata_max_steps'].' Step'.echo__s($metadata['in__metadata_max_steps']).( $has_time_estimate ? ' in '.echo_time_hours($metadata['in__metadata_max_seconds']) : '' );
+        $pitch_title = '<span class="icon-block"><i class="fas fa-flag"></i></span>&nbsp;I estimate up to '.$metadata['in__metadata_max_steps'].' step'.echo__s($metadata['in__metadata_max_steps']).( $has_time_estimate ? ' in '.strtolower(echo_time_hours($metadata['in__metadata_max_seconds'])) : '' ).' to complete';
 
         //If NOT private, Expand body to include Action Plan overview:
         $CI =& get_instance();
@@ -1239,7 +1242,7 @@ function echo_public_actionplan($in, $autoexpand){
 
         if($has_content){
             $return_html .= '<a role="button" data-toggle="collapse" data-parent="#open' . $in_level2_counter . '" href="#collapse' . $in_level2_counter . '" aria-expanded="' . ($autoexpand ? 'true' : 'false') . '" aria-controls="collapse' . $in_level2_counter . '">';
-            $return_html .= '<span class="icon-block"><i class="fas fa-plus-circle"></i></span>';
+            $return_html .= '<span class="icon-block"><i class="fas fa-flag"></i></span>';
         } else {
             $return_html .= '<span class="icon-block"><i class="far fa-check-circle"></i></span>';
         }
@@ -1265,7 +1268,7 @@ function echo_public_actionplan($in, $autoexpand){
         //Time Estimate:
         $in_level2_time = echo_time_range($in_level2, false);
         if ($in_level2_time) {
-            $return_html .= ' <span style="font-size: 0.9em; font-weight: 300;"><i class="fal fa-clock" style="width:16px; text-transform: none !important;"></i>' . $in_level2_time . ' to Complete</span>';
+            $return_html .= ' <div class="action-plan-time"><i class="fas fa-clock" style="width:16px; text-transform: none !important;"></i>&nbsp;' . $in_level2_time . ' to Complete</div>';
         }
 
         //Messages:
@@ -1282,10 +1285,10 @@ function echo_public_actionplan($in, $autoexpand){
             $common_prefix_granchild = common_prefix($grandchildren_ins);
 
             //List level 3:
-            $return_html .= '<ul style="list-style-type: circle; margin:10px 0 10px -15px; font-size:1em !important;">';
+            $return_html .= '<ul class="action-plan-sub-list">';
             foreach ($grandchildren_ins as $in_level3_counter => $in_level3) {
 
-                $return_html .= '<li>' . ( in_is_or($in_level2['in_type_entity_id']) ? 'Option #' . ($in_level3_counter + 1) . ': ' : '') . echo_in_outcome($in_level3['in_outcome'], false, false, false, $common_prefix_granchild);
+                $return_html .= '<li><span class="icon-block"><i class="fas fa-flag"></i></span>' . ( in_is_or($in_level2['in_type_entity_id']) ? 'Option #' . ($in_level3_counter + 1) . ': ' : '') . echo_in_outcome($in_level3['in_outcome'], false, false, false, $common_prefix_granchild);
                 $in_level3_time = echo_time_range($in_level3, true);
                 if ($in_level3_time) {
                     $return_html .= ' <span style="font-size: 0.9em; font-weight: 300;"><i class="fal fa-clock"></i>' . $in_level3_time . '</span>';
@@ -1478,7 +1481,7 @@ function echo_time_date($t, $date_only = false)
 }
 
 
-function echo_en_cache($config_var_name, $en_id, $micro_status = false, $data_placement = 'bottom')
+function echo_en_cache($config_var_name, $en_id, $micro_status = true, $data_placement = 'top')
 {
 
     /*
@@ -1509,12 +1512,13 @@ function echo_en_cache($config_var_name, $en_id, $micro_status = false, $data_pl
 }
 
 
-function echo_in_recommend($in, $is_passthrough, $common_prefix = null, $hide_class = null, $referrer_en_id = 0)
+function echo_in_recommend($in, $common_prefix = null, $hide_class = null, $referrer_en_id = 0)
 {
 
     //See if user is logged-in:
     $CI =& get_instance();
     $session_en = en_auth();
+    $is_starting = ($in['in_status_entity_id']==7351 /* Starting Point Intent */);
     $en_all_7369 = $CI->config->item('en_all_7369');
     $already_in_actionplan = (isset($session_en['en_id']) && count($CI->Links_model->ln_fetch(array(
             'ln_miner_entity_id' => $session_en['en_id'],
@@ -1523,7 +1527,7 @@ function echo_in_recommend($in, $is_passthrough, $common_prefix = null, $hide_cl
             'ln_parent_intent_id' => $in['in_id'],
         ))) > 0);
 
-    $ui = '<a href="' . ( $already_in_actionplan ? '/actionplan/'.$in['in_id'] : ( $referrer_en_id > 0 ? '/'.$referrer_en_id.'_'.$in['in_id'] : '/'.$in['in_id'] )) . '" class="list-group-item '.$hide_class .' '.( $is_passthrough ? 'tag-manager-intent-passthrough' : 'tag-manager-intent-recommend' ).'">';
+    $ui = '<a href="' . ( $already_in_actionplan ? '/actionplan/'.$in['in_id'] : ( $referrer_en_id > 0 ? '/'.$referrer_en_id.'_'.$in['in_id'] : '/'.$in['in_id'] )) . '" class="list-group-item '.$hide_class .' '.( $is_starting ? 'tag-manager-intent-passthrough' : 'tag-manager-intent-recommend' ).'">';
 
     $ui .= '<span class="pull-right">';
     $ui .= '<span class="badge badge-primary fr-bgd" style="margin-top: -4px;">'.( $already_in_actionplan ? $en_all_7369[6138]['m_icon'] : '<i class="fas fa-angle-right"></i>' ).'</span>';
@@ -1531,12 +1535,16 @@ function echo_in_recommend($in, $is_passthrough, $common_prefix = null, $hide_cl
 
     $ui .= '<span style="color:#222; font-weight:500; font-size:1.2em;">'.echo_in_outcome($in['in_outcome'], false, false, false, $common_prefix).'</span>';
 
-    $metadata = unserialize($in['in_metadata']);
-    if(!$is_passthrough && isset($metadata['in__metadata_max_seconds']) && $metadata['in__metadata_max_seconds'] > 0){
-        $ui .= '<span style="font-size:0.8em; font-weight:300; margin-left:5px; display:inline-block;">';
-        $ui .= '<span><i class="fal fa-clock"></i>' . echo_time_hours($metadata['in__metadata_max_seconds'], false) . '</span>';
-        $ui .= '</span>';
+    //Show time estimate only if starting-point intent:
+    if($is_starting){
+        $metadata = unserialize($in['in_metadata']);
+        if(isset($metadata['in__metadata_max_seconds']) && $metadata['in__metadata_max_seconds'] > 0){
+            $ui .= '<span style="font-size:0.8em; font-weight:300; margin-left:5px; display:inline-block;">';
+            $ui .= '<span><i class="fal fa-clock"></i>' . echo_time_hours($metadata['in__metadata_max_seconds'], false) . '</span>';
+            $ui .= '</span>';
+        }
     }
+
     $ui .= '</a>';
     return $ui;
 }

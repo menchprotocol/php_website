@@ -55,9 +55,6 @@ $url_part_1 = $this->uri->segment(1);
 
                 } else {
 
-                    //Give a link to the about us intent:
-                    echo '<li><a href="/'.$this->config->item('in_learn_mench_id').'" class="tag-manager-about-us"><i class="fal fa-info-circle"></i> About Us</a></li>';
-
                     //Allow to sign-in:
                     echo '<li><a href="/login'. ( isset($in['in_id']) ? '?url=%2Fintents%2F'.$in['in_id'] : '' ) .'" class="tag-manager-sign-in"><i class="fas fa-sign-in"></i> Sign In</a></li>';
 
