@@ -904,7 +904,7 @@ function echo_tree_users($in, $fb_messenger_format = false, $autoexpand = false)
 
     //Count total users:
     $CI =& get_instance();
-
+    $min_user_show = 100; //Set to 1 as the lowest
 
     //Count users who have completed this intent:
     $enrolled_users_count = $CI->Links_model->ln_fetch(array(
@@ -913,7 +913,7 @@ function echo_tree_users($in, $fb_messenger_format = false, $autoexpand = false)
         'ln_status_entity_id IN (' . join(',', $CI->config->item('en_ids_7359')) . ')' => null, //Link Statuses Public
     ), array(), 0, 0, array(), 'COUNT(ln_id) as totals');
 
-    if($enrolled_users_count[0]['totals'] < 1){
+    if($enrolled_users_count[0]['totals'] < $min_user_show){
         //No one has added this intention to their Action Plan yet:
         return false;
     }
