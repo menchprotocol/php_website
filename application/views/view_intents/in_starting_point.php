@@ -42,7 +42,7 @@ if(isset($session_en['en_id']) && count($referrer_en) == 0){
 
     if(count($this->Links_model->ln_fetch(array(
             'ln_miner_entity_id' => $session_en['en_id'],
-            'ln_type_entity_id' => 4235, //Action Plan Set Intention
+            'ln_type_entity_id IN (' . join(',', $this->config->item('en_ids_7347')) . ')' => null, //Action Plan Intention Set
             'ln_status_entity_id IN (' . join(',', $this->config->item('en_ids_7364')) . ')' => null, //Link Statuses Incomplete
             'ln_parent_intent_id' => $in['in_id'],
         ))) > 0){

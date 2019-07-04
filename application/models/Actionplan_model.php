@@ -15,6 +15,67 @@ class Actionplan_model extends CI_Model
     }
 
 
+    function actionplan_completion_auto_unlock($en_id, $in, $unlock_link_type_en_id){
+
+        /*
+         *
+         * A function that marks an intent as complete IF
+         * the intent has nothing of substance to be
+         * further communicated/done by the user.
+         *
+         * $unlock_link_type_en_id Indicates the type of Unlocking that is about to happen
+         *
+         * */
+
+
+        // 'in_type_entity_id IN (' . join(',', $this->config->item('en_ids_7309')) . ')' => null, //Action Plan Step Locked
+        if(in_array($in['in_type_entity_id'], $this->config->item('en_ids_6794'))){
+            //Requires Manual Response so we cannot auto complete:
+            return false;
+        } elseif(!in_array($unlock_link_type_en_id, $this->config->item('en_ids_7494'))){
+            //Not a valid unlock step type:
+            return false;
+        }
+
+
+        //Send messages:
+        foreach ($this->Links_model->ln_fetch(array(
+            'ln_status_entity_id IN (' . join(',', $this->config->item('en_ids_7359')) . ')' => null, //Link Statuses Public
+            'ln_type_entity_id' => 4231, //Intent Note Messages
+            'ln_child_intent_id' => $in['in_id'],
+        ), array(), 0, 0, array('ln_order' => 'ASC')) as $message_ln) {
+            $this->Communication_model->dispatch_message(
+                $message_ln['ln_content'],
+                array('en_id' => $en_id),
+                true
+            );
+        }
+
+
+        //If this is NOT a locked type, changed unlock link type:
+        if(!in_array($in['in_type_entity_id'], $this->config->item('en_ids_7309') /* Locked Intents */)){
+            $unlock_link_type_en_id = 4559; //User Step Got It
+        }
+
+
+        //Ok, now we can mark it as complete:
+        $this->Links_model->ln_create(array(
+            'ln_type_entity_id' => $unlock_link_type_en_id,
+            'ln_miner_entity_id' => $en_id,
+            'ln_parent_intent_id' => $in['in_id'],
+            'ln_status_entity_id' => 6176, //Link Published
+        ));
+
+
+        //Process on-complete automations:
+        $this->Actionplan_model->actionplan_completion_checks($en_id, $in, true, true);
+
+
+        //All good:
+        return true;
+    }
+
+
     function actionplan_step_next_find($en_id, $in){
 
         /*
@@ -96,7 +157,7 @@ class Actionplan_model extends CI_Model
 
         $user_intents = $this->Links_model->ln_fetch(array(
             'ln_miner_entity_id' => $en_id,
-            'ln_type_entity_id' => 4235, //Action Plan Set Intention
+            'ln_type_entity_id IN (' . join(',', $this->config->item('en_ids_7347')) . ')' => null, //Action Plan Intention Set
             'ln_status_entity_id IN (' . join(',', $this->config->item('en_ids_7364')) . ')' => null, //Link Statuses Incomplete
             'in_status_entity_id IN (' . join(',', $this->config->item('en_ids_7355')) . ')' => null, //Intent Statuses Public
         ), array('in_parent'), 0, 0, array('ln_order' => 'ASC'));
@@ -317,7 +378,7 @@ class Actionplan_model extends CI_Model
         $top_priority_in = false;
         foreach($this->Links_model->ln_fetch(array(
             'ln_miner_entity_id' => $en_id,
-            'ln_type_entity_id' => 4235, //Action Plan Set Intention
+            'ln_type_entity_id IN (' . join(',', $this->config->item('en_ids_7347')) . ')' => null, //Action Plan Intention Set
             'ln_status_entity_id IN (' . join(',', $this->config->item('en_ids_7364')) . ')' => null, //Link Statuses Incomplete
             'in_status_entity_id IN (' . join(',', $this->config->item('en_ids_7355')) . ')' => null, //Intent Statuses Public
         ), array('in_parent'), 0, 0, array('ln_order' => 'ASC')) as $actionplan_in){
@@ -345,7 +406,7 @@ class Actionplan_model extends CI_Model
 
     }
 
-    function actionplan_intention_add($en_id, $in_id, $add_to_top = false){
+    function actionplan_intention_add($en_id, $in_id, $is_recommended = false){
 
         //Validate Intent ID:
         $ins = $this->Intents_model->in_fetch(array(
@@ -380,7 +441,7 @@ class Actionplan_model extends CI_Model
         if(count($this->Links_model->ln_fetch(array(
                 'ln_miner_entity_id' => $en_id,
                 'ln_parent_intent_id' => $in_id,
-                'ln_type_entity_id' => 4235, //Action Plan Set Intention
+                'ln_type_entity_id IN (' . join(',', $this->config->item('en_ids_7347')) . ')' => null, //Action Plan Intention Set
                 'ln_status_entity_id IN (' . join(',', $this->config->item('en_ids_7364')) . ')' => null, //Link Statuses Incomplete
             ))) > 0){
 
@@ -397,15 +458,16 @@ class Actionplan_model extends CI_Model
 
         }
 
-        $new_intent_order = 1 + ( $add_to_top ? 0 : $this->Links_model->ln_max_order(array( //Place this intent at the end of all intents the User is drafting...
-                'ln_type_entity_id' => 4235, //Action Plan Set Intention
+        $new_intent_order = 1 + ( $is_recommended ? 0 : $this->Links_model->ln_max_order(array( //Place this intent at the end of all intents the User is drafting...
+                'ln_type_entity_id IN (' . join(',', $this->config->item('en_ids_7347')) . ')' => null, //Action Plan Intention Set
                 'ln_status_entity_id IN (' . join(',', $this->config->item('en_ids_7364')) . ')' => null, //Link Statuses Incomplete
                 'ln_miner_entity_id' => $en_id, //Belongs to this User
             )));
 
+
         //Add intent to User's Action Plan:
         $actionplan = $this->Links_model->ln_create(array(
-            'ln_type_entity_id' => 4235, //Action Plan Set Intention
+            'ln_type_entity_id' => ( $is_recommended ? 7495 /* User Intent Recommended */ : 4235 /* User Intent Set */ ),
             'ln_status_entity_id' => 6175, //Link Drafting
             'ln_miner_entity_id' => $en_id, //Belongs to this User
             'ln_parent_intent_id' => $ins[0]['in_id'], //The Intent they are adding
@@ -413,13 +475,12 @@ class Actionplan_model extends CI_Model
         ));
 
 
-
         //If the top intention, move all other intentions down by one step:
-        if($add_to_top){
+        if($is_recommended){
 
             foreach($this->Links_model->ln_fetch(array(
                 'ln_id !=' => $actionplan['ln_id'], //Not the newly added intention
-                'ln_type_entity_id' => 4235, //Action Plan Set Intention
+                'ln_type_entity_id IN (' . join(',', $this->config->item('en_ids_7347')) . ')' => null, //Action Plan Intention Set
                 'ln_status_entity_id' => 6175, //Link Drafting
                 'ln_miner_entity_id' => $en_id, //Belongs to this User
             )) as $current_intentions){
@@ -461,7 +522,7 @@ class Actionplan_model extends CI_Model
         $top_priority = $this->Actionplan_model->actionplan_intention_focus($en_id);
 
         if($top_priority){
-            if($add_to_top || $top_priority['in']['in_id']==$ins[0]['in_id']){
+            if($is_recommended || $top_priority['in']['in_id']==$ins[0]['in_id']){
 
                 //The newly added intent is the top priority, so let's initiate first message for action plan tree:
                 $this->Actionplan_model->actionplan_step_next_echo($en_id, $ins[0]['in_id']);
@@ -627,7 +688,7 @@ class Actionplan_model extends CI_Model
                     ));
 
                     //See if we also need to mark the child as complete:
-                    $this->Actionplan_model->actionplan_step_next_echo($en_id, $conditional_step['in_id'], true, 6997);
+                    $this->Actionplan_model->actionplan_completion_auto_unlock($en_id, $conditional_step, 6997 /* User Step Score Unlock */);
 
                 }
             }
@@ -773,7 +834,7 @@ class Actionplan_model extends CI_Model
 
 
 
-    function actionplan_step_next_echo($en_id, $in_id, $fb_messenger_format = true, $unlock_link_type_en_id = 0)
+    function actionplan_step_next_echo($en_id, $in_id, $fb_messenger_format = true)
     {
 
         /*
@@ -802,20 +863,6 @@ class Actionplan_model extends CI_Model
                 'status' => 0,
                 'message' => 'Missing recipient entity ID',
             );
-
-        } elseif ($unlock_link_type_en_id > 0) {
-
-            if(!in_array($unlock_link_type_en_id, $this->config->item('en_ids_7494'))){
-                return array(
-                    'status' => 0,
-                    'message' => 'Progression link type not of type unlock',
-                );
-            } elseif(in_array($unlock_link_type_en_id, $this->config->item('en_ids_6244'))) {
-                return array(
-                    'status' => 0,
-                    'message' => 'Progression link type cannot be a two-step link type',
-                );
-            }
 
         }
 
@@ -929,66 +976,58 @@ class Actionplan_model extends CI_Model
 
 
         //Determine progression type
-        if($unlock_link_type_en_id > 0){
+        //Let's figure out the progression method:
+        if($in_is_locked){
 
-            //This is how we should unlock this:
-            $progression_type_entity_id = $unlock_link_type_en_id;
+            if($progress_completed){
 
-        } else {
-
-            //Let's figure out the progression method:
-            if($in_is_locked){
-
-                if($progress_completed){
-
-                    $progression_type_entity_id = $current_progression_links[0]['ln_status_entity_id'];
-
-                } else {
-
-                    //Find the paths to unlock:
-                    $unlock_paths = $this->Intents_model->in_unlock_paths($ins[0]);
-
-                    //Set completion method:
-                    if(count($unlock_paths) > 0){
-
-                        //Yes we have a path:
-                        $progression_type_entity_id = 7486; //User Step Children Unlock
-
-                    } else {
-
-                        //No path found:
-                        $progression_type_entity_id = 7492; //User Step Dead End
-
-                    }
-                }
-
-
-            } elseif(!$in_is_or && $completion_req_note){
-
-                $progression_type_entity_id = 6144; //User Step Requirement Sent
-
-            } elseif($in_is_or && $has_children){
-
-                //Depends on OR type:
-                if($ins[0]['in_type_entity_id']==6684 /* OR Intent Single Answer */){
-
-                    $progression_type_entity_id = 6157; //User Step Answered
-
-                } elseif($ins[0]['in_type_entity_id']==6685 /* OR Intent Timed Answer */){
-
-                    $progression_type_entity_id = 7487; //User Step Answered Timely
-
-                } elseif($ins[0]['in_type_entity_id']==7231 /* OR Intent Multiple Answers */){
-
-                    $progression_type_entity_id = 7489; //User Step Selected
-
-                }
+                $progression_type_entity_id = $current_progression_links[0]['ln_status_entity_id'];
 
             } else {
 
-                $progression_type_entity_id = 4559; //User Step Got It
+                //Find the paths to unlock:
+                $unlock_paths = $this->Intents_model->in_unlock_paths($ins[0]);
+
+                //Set completion method:
+                if(count($unlock_paths) > 0){
+
+                    //Yes we have a path:
+                    $progression_type_entity_id = 7486; //User Step Children Unlock
+
+                } else {
+
+                    //No path found:
+                    $progression_type_entity_id = 7492; //User Step Dead End
+
+                }
+            }
+
+
+        } elseif(!$in_is_or && $completion_req_note){
+
+            $progression_type_entity_id = 6144; //User Step Requirement Sent
+
+        } elseif($in_is_or && $has_children){
+
+            //Depends on OR type:
+            if($ins[0]['in_type_entity_id']==6684 /* OR Intent Single Answer */){
+
+                $progression_type_entity_id = 6157; //User Step Answered
+
+            } elseif($ins[0]['in_type_entity_id']==6685 /* OR Intent Timed Answer */){
+
+                $progression_type_entity_id = 7487; //User Step Answered Timely
+
+            } elseif($ins[0]['in_type_entity_id']==7231 /* OR Intent Multiple Answers */){
+
+                $progression_type_entity_id = 7489; //User Step Selected
 
             }
+
+        } else {
+
+            $progression_type_entity_id = 4559; //User Step Got It
+
         }
 
 
@@ -1116,7 +1155,7 @@ class Actionplan_model extends CI_Model
 
 
             if($fb_messenger_format){
-                $next_step_message .= 'Here are the next steps:';
+                $next_step_message .= 'Here are the intentions I recommend adding to your Action Plan to move forward:';
             } else {
                 $next_step_message .= '<div class="list-group" style="margin-top:10px;">';
             }
@@ -1144,7 +1183,6 @@ class Actionplan_model extends CI_Model
                     //Add simple message:
                     $next_step_message .= "\n\n" . ($key + 1) . '. ' . echo_in_outcome($child_in['in_outcome'], $fb_messenger_format);
                     $next_step_message .= ( $is_completed ? ' [COMPLETED]' : '' );
-                    $next_step_message .= ( $is_next ? ' [NEXT]' : '' );
 
                 }
 
@@ -1813,7 +1851,7 @@ class Actionplan_model extends CI_Model
         $user_intentions_ids = array();
         foreach($this->Links_model->ln_fetch(array(
             'ln_miner_entity_id' => $en_id,
-            'ln_type_entity_id' => 4235, //Action Plan Set Intention
+            'ln_type_entity_id IN (' . join(',', $this->config->item('en_ids_7347')) . ')' => null, //Action Plan Intention Set
             'ln_status_entity_id IN (' . join(',', $this->config->item('en_ids_7364')) . ')' => null, //Link Statuses Incomplete
             'in_status_entity_id IN (' . join(',', $this->config->item('en_ids_7355')) . ')' => null, //Intent Statuses Public
         ), array('in_parent'), 0) as $user_in){

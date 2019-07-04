@@ -48,7 +48,7 @@
                 <span class="pass" style="font-size:0.9em; display: none;">or <a href="javascript:void(0)"
                                                                                  onclick="$('.pass').toggle()"><span class="underdot">Cancel</span></a></span>
 
-                <div style="margin: 15px 0 7px; font-size:1.3em;">Or <a href="https://m.me/askmench" class="underdot">Sign Up on Messenger <i class="fas fa-arrow-right"></i></a></div>
+                <div style="margin: 15px 0 7px; font-size:1.1em !important;">Or <a href="https://m.me/askmench" class="underdot" style="font-size:1em !important;">Sign Up on Messenger <i class="fas fa-arrow-right"></i></a></div>
 
             </div>
         </form>

@@ -1522,7 +1522,7 @@ function echo_in_recommend($in, $common_prefix = null, $hide_class = null, $refe
     $en_all_7369 = $CI->config->item('en_all_7369');
     $already_in_actionplan = (isset($session_en['en_id']) && count($CI->Links_model->ln_fetch(array(
             'ln_miner_entity_id' => $session_en['en_id'],
-            'ln_type_entity_id' => 4235, //Action Plan Set Intention
+            'ln_type_entity_id IN (' . join(',', $CI->config->item('en_ids_7347')) . ')' => null, //Action Plan Intention Set
             'ln_status_entity_id IN (' . join(',', $CI->config->item('en_ids_7364')) . ')' => null, //incomplete intentions
             'ln_parent_intent_id' => $in['in_id'],
         ))) > 0);

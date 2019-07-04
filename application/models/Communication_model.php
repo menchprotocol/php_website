@@ -971,7 +971,7 @@ class Communication_model extends CI_Model
         //Fetch user's Action Plan Intents:
         $user_intents = $this->Links_model->ln_fetch(array(
             'ln_miner_entity_id' => $en_id,
-            'ln_type_entity_id' => 4235, //Action Plan Set Intention
+            'ln_type_entity_id IN (' . join(',', $this->config->item('en_ids_7347')) . ')' => null, //Action Plan Intention Set
             'ln_status_entity_id IN (' . join(',', $this->config->item('en_ids_7364')) . ')' => null, //Link Statuses Incomplete
             'in_status_entity_id IN (' . join(',', $this->config->item('en_ids_7355')) . ')' => null, //Intent Statuses Public
         ), array('in_parent'), 0, 0, array('ln_order' => 'ASC'));
@@ -1288,7 +1288,7 @@ class Communication_model extends CI_Model
                 $removed_intents = 0;
                 foreach ($this->Links_model->ln_fetch(array(
                     'ln_miner_entity_id' => $en['en_id'],
-                    'ln_type_entity_id' => 4235, //Action Plan Set Intention
+                    'ln_type_entity_id IN (' . join(',', $this->config->item('en_ids_7347')) . ')' => null, //Action Plan Intention Set
                     'ln_status_entity_id IN (' . join(',', $this->config->item('en_ids_7364')) . ')' => null, //Link Statuses Incomplete
                 )) as $ln) {
                     $removed_intents++;
@@ -1312,7 +1312,7 @@ class Communication_model extends CI_Model
                 //User wants to Remove a specific Action Plan, validate it:
                 $user_intents = $this->Links_model->ln_fetch(array(
                     'ln_miner_entity_id' => $en['en_id'],
-                    'ln_type_entity_id' => 4235, //Action Plan Set Intention
+                    'ln_type_entity_id IN (' . join(',', $this->config->item('en_ids_7347')) . ')' => null, //Action Plan Intention Set
                     'ln_status_entity_id IN (' . join(',', $this->config->item('en_ids_7364')) . ')' => null, //Link Statuses Incomplete
                     'ln_parent_intent_id' => $action_unsubscribe,
                 ), array('in_parent'), 0, 0, array('ln_order' => 'ASC'));
@@ -1332,7 +1332,7 @@ class Communication_model extends CI_Model
 
                 //Re-sort remaining Action Plan intentions:
                 foreach($this->Links_model->ln_fetch(array(
-                    'ln_type_entity_id' => 4235, //Action Plan Set Intention
+                    'ln_type_entity_id IN (' . join(',', $this->config->item('en_ids_7347')) . ')' => null, //Action Plan Intention Set
                     'ln_miner_entity_id' => $en['en_id'], //Belongs to this User
                     'ln_status_entity_id IN (' . join(',', $this->config->item('en_ids_7364')) . ')' => null, //Link Statuses Incomplete
                 ), array(), 0, 0, array('ln_order' => 'ASC')) as $count => $ln){
@@ -1528,7 +1528,7 @@ class Communication_model extends CI_Model
             //Make sure intention has not already been added to user Action Plan:
             if (count($this->Links_model->ln_fetch(array(
                     'ln_miner_entity_id' => $en['en_id'],
-                    'ln_type_entity_id' => 4235, //Action Plan Set Intention
+                    'ln_type_entity_id IN (' . join(',', $this->config->item('en_ids_7347')) . ')' => null, //Action Plan Intention Set
                     'ln_status_entity_id IN (' . join(',', $this->config->item('en_ids_7364')) . ')' => null, //Link Statuses Incomplete
                     'ln_parent_intent_id' => $ins[0]['in_id'],
                 ))) > 0) {
@@ -1760,7 +1760,7 @@ class Communication_model extends CI_Model
 
 
                     //See if we also need to mark the answer as complete:
-                    $this->Actionplan_model->actionplan_step_next_echo($en['en_id'], $answer_ins[0]['in_id'], true, 7485);
+                    $this->Actionplan_model->actionplan_completion_auto_unlock($en['en_id'], $answer_ins[0], 7485 /* User Step Answer Unlock */);
 
 
                     //Find/Advance to the next step:
@@ -1839,7 +1839,7 @@ class Communication_model extends CI_Model
 
             $user_intents = $this->Links_model->ln_fetch(array(
                 'ln_miner_entity_id' => $en['en_id'],
-                'ln_type_entity_id' => 4235, //Action Plan Set Intention
+                'ln_type_entity_id IN (' . join(',', $this->config->item('en_ids_7347')) . ')' => null, //Action Plan Intention Set
                 'ln_status_entity_id IN (' . join(',', $this->config->item('en_ids_7364')) . ')' => null, //Link Statuses Incomplete
                 'in_status_entity_id IN (' . join(',', $this->config->item('en_ids_7355')) . ')' => null, //Intent Statuses Public
             ), array('in_parent'), 0, 0, array('ln_order' => 'ASC'));
@@ -1946,7 +1946,7 @@ class Communication_model extends CI_Model
             //List their Action Plan intentions and let user choose which one to unsubscribe:
             $user_intents = $this->Links_model->ln_fetch(array(
                 'ln_miner_entity_id' => $en['en_id'],
-                'ln_type_entity_id' => 4235, //Action Plan Set Intention
+                'ln_type_entity_id IN (' . join(',', $this->config->item('en_ids_7347')) . ')' => null, //Action Plan Intention Set
                 'ln_status_entity_id IN (' . join(',', $this->config->item('en_ids_7364')) . ')' => null, //Link Statuses Incomplete
                 'in_status_entity_id IN (' . join(',', $this->config->item('en_ids_7355')) . ')' => null, //Intent Statuses Public
             ), array('in_parent'), 10 /* Max quick replies allowed */, 0, array('ln_order' => 'ASC'));
@@ -2097,7 +2097,7 @@ class Communication_model extends CI_Model
                 //Make sure not already in Action Plan:
                 if(count($this->Links_model->ln_fetch(array(
                         'ln_miner_entity_id' => $en['en_id'],
-                        'ln_type_entity_id' => 4235, //Action Plan Set Intention
+                        'ln_type_entity_id IN (' . join(',', $this->config->item('en_ids_7347')) . ')' => null, //Action Plan Intention Set
                         'ln_status_entity_id IN (' . join(',', $this->config->item('en_ids_7364')) . ')' => null, //Link Statuses Incomplete
                         'ln_parent_intent_id' => $alg['alg_obj_id'],
                     ))) > 0){

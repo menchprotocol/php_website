@@ -11,7 +11,7 @@ defined('BASEPATH') OR exit('No direct script access allowed');
  *
  */
 
-//Generated 2019-07-03 19:57:05 PST
+//Generated 2019-07-04 08:31:44 PST
 
 //User Step Answered:
 $config['en_ids_6157'] = array(6684,6685,7231);
@@ -423,7 +423,7 @@ $config['en_all_7355'] = array(
 );
 
 //Action Plan Intention Set:
-$config['en_ids_7347'] = array(4235,7348);
+$config['en_ids_7347'] = array(4235,7495);
 $config['en_all_7347'] = array(
     4235 => array(
         'm_icon' => '<i class="far fa-bullseye-arrow"></i>',
@@ -431,11 +431,11 @@ $config['en_all_7347'] = array(
         'm_desc' => '',
         'm_parents' => array(7347,4595,4755,4593),
     ),
-    7348 => array(
+    7495 => array(
         'm_icon' => '<i class="far fa-bullseye-arrow"></i>',
-        'm_name' => 'Company Intent Manage',
+        'm_name' => 'User Intent Recommended',
         'm_desc' => '',
-        'm_parents' => array(7483,4755,4593,4595,7347),
+        'm_parents' => array(4755,4595,4593,7347),
     ),
 );
 
@@ -539,7 +539,7 @@ $config['en_all_5007'] = array(
         'm_icon' => '<i class="far fa-tint"></i>',
         'm_name' => 'Intent Note Drip Message',
         'm_desc' => '',
-        'm_parents' => array(5007,6345,4986,4603,4593,4485,4595),
+        'm_parents' => array(5007,4986,4603,4593,4485,4595),
     ),
     4997 => array(
         'm_icon' => '<i class="fal fa-list-alt"></i>',
@@ -555,7 +555,7 @@ $config['en_all_5007'] = array(
     ),
     6242 => array(
         'm_icon' => '<i class="far fa-check-square"></i>',
-        'm_name' => 'Intent Note Final Message',
+        'm_name' => 'Intent Note On-Complete Message',
         'm_desc' => '',
         'm_parents' => array(5007,6345,4603,4595,4593,4986,4485),
     ),
@@ -1067,7 +1067,7 @@ $config['en_all_6192'] = array(
         'm_icon' => '<i class="far fa-thumbs-up"></i>',
         'm_name' => 'Got It',
         'm_desc' => 'Users would complete the intent by simply reviewing its outcome and reading its messages if any. No inputs are required.',
-        'm_parents' => array(6158,4559,6192),
+        'm_parents' => array(4559,6192),
     ),
     6683 => array(
         'm_icon' => '<i class="fas fa-align-left"></i>',
@@ -1314,7 +1314,7 @@ $config['en_all_6410'] = array(
 );
 
 //Intent Notes Deliverable:
-$config['en_ids_6345'] = array(4231,4232,6242);
+$config['en_ids_6345'] = array(4231,6242);
 $config['en_all_6345'] = array(
     4231 => array(
         'm_icon' => '<i class="far fa-comment"></i>',
@@ -1322,22 +1322,16 @@ $config['en_all_6345'] = array(
         'm_desc' => '',
         'm_parents' => array(6345,4986,4603,4593,4485,4595),
     ),
-    4232 => array(
-        'm_icon' => '<i class="far fa-tint"></i>',
-        'm_name' => 'Intent Note Drip Message',
-        'm_desc' => '',
-        'm_parents' => array(5007,6345,4986,4603,4593,4485,4595),
-    ),
     6242 => array(
         'm_icon' => '<i class="far fa-check-square"></i>',
-        'm_name' => 'Intent Note Final Message',
+        'm_name' => 'Intent Note On-Complete Message',
         'm_desc' => '',
         'm_parents' => array(5007,6345,4603,4595,4593,4986,4485),
     ),
 );
 
 //User Steps Skippable:
-$config['en_ids_6274'] = array(4559,6158);
+$config['en_ids_6274'] = array(4559);
 $config['en_all_6274'] = array(
     4559 => array(
         'm_icon' => '<i class="far fa-thumbs-up"></i>',
@@ -1345,16 +1339,10 @@ $config['en_all_6274'] = array(
         'm_desc' => '',
         'm_parents' => array(4595,6274,6255,4755,6146,4593),
     ),
-    6158 => array(
-        'm_icon' => '<i class="far fa-thumbs-up"></i>',
-        'm_name' => 'User Step Got Outcome',
-        'm_desc' => '',
-        'm_parents' => array(4595,6274,6255,4593,4755,6146),
-    ),
 );
 
 //User Steps Progressed:
-$config['en_ids_6255'] = array(4559,6144,6157,6158,6997,7298,7485,7486,7487,7489);
+$config['en_ids_6255'] = array(4559,6144,6157,6997,7298,7485,7486,7487,7489);
 $config['en_all_6255'] = array(
     4559 => array(
         'm_icon' => '<i class="far fa-thumbs-up"></i>',
@@ -1373,12 +1361,6 @@ $config['en_all_6255'] = array(
         'm_name' => 'User Step Answered',
         'm_desc' => '',
         'm_parents' => array(4527,4595,6255,6244,6146,4755,4593),
-    ),
-    6158 => array(
-        'm_icon' => '<i class="far fa-thumbs-up"></i>',
-        'm_name' => 'User Step Got Outcome',
-        'm_desc' => '',
-        'm_parents' => array(4595,6274,6255,4593,4755,6146),
     ),
     6997 => array(
         'm_icon' => '<i class="fas fa-lock-open"></i>',
@@ -1477,7 +1459,7 @@ $config['en_all_4986'] = array(
         'm_icon' => '<i class="far fa-tint"></i>',
         'm_name' => 'Intent Note Drip Message',
         'm_desc' => '',
-        'm_parents' => array(5007,6345,4986,4603,4593,4485,4595),
+        'm_parents' => array(5007,4986,4603,4593,4485,4595),
     ),
     4983 => array(
         'm_icon' => '<i class="far fa-bookmark"></i>',
@@ -1493,7 +1475,7 @@ $config['en_all_4986'] = array(
     ),
     6242 => array(
         'm_icon' => '<i class="far fa-check-square"></i>',
-        'm_name' => 'Intent Note Final Message',
+        'm_name' => 'Intent Note On-Complete Message',
         'm_desc' => '',
         'm_parents' => array(5007,6345,4603,4595,4593,4986,4485),
     ),
@@ -1629,7 +1611,7 @@ $config['en_all_6177'] = array(
 );
 
 //User Steps Taken:
-$config['en_ids_6146'] = array(4559,6143,6144,6157,6158,6997,7298,7485,7486,7487,7488,7489,7492);
+$config['en_ids_6146'] = array(4559,6143,6144,6157,6997,7298,7485,7486,7487,7488,7489,7492);
 $config['en_all_6146'] = array(
     4559 => array(
         'm_icon' => '<i class="far fa-thumbs-up"></i>',
@@ -1654,12 +1636,6 @@ $config['en_all_6146'] = array(
         'm_name' => 'Answered',
         'm_desc' => 'Completed after the student answers the question to the OR intent.',
         'm_parents' => array(4527,4595,6255,6244,6146,4755,4593),
-    ),
-    6158 => array(
-        'm_icon' => '<i class="far fa-thumbs-up"></i>',
-        'm_name' => 'Got Outcome',
-        'm_desc' => 'Completed when students read the messages of an intent that does not have any messages or a completion requirement',
-        'm_parents' => array(4595,6274,6255,4593,4755,6146),
     ),
     6997 => array(
         'm_icon' => '<i class="fas fa-lock-open"></i>',
@@ -2052,7 +2028,7 @@ $config['en_all_4426'] = array(
 );
 
 //Private Links:
-$config['en_ids_4755'] = array(3286,3288,4235,4242,4246,4263,4266,4267,4268,4269,4275,4278,4279,4282,4283,4287,4299,4460,4547,4548,4549,4550,4551,4552,4553,4554,4555,4556,4557,4559,4570,4577,4783,5967,6132,6140,6143,6144,6149,6154,6155,6157,6158,6224,6415,6556,6559,6560,6563,6578,6969,6997,7348,7484,7485,7486,7487,7488,7489,7492);
+$config['en_ids_4755'] = array(3286,3288,4235,4242,4246,4263,4266,4267,4268,4269,4275,4278,4279,4282,4283,4287,4299,4460,4547,4548,4549,4550,4551,4552,4553,4554,4555,4556,4557,4559,4570,4577,4783,5967,6132,6140,6143,6144,6149,6154,6155,6157,6224,6415,6556,6559,6560,6563,6578,6969,6997,7484,7485,7486,7487,7488,7489,7492,7495);
 $config['en_all_4755'] = array(
     3286 => array(
         'm_icon' => '<i class="far fa-key"></i>',
@@ -2306,12 +2282,6 @@ $config['en_all_4755'] = array(
         'm_desc' => '',
         'm_parents' => array(4527,4595,6255,6244,6146,4755,4593),
     ),
-    6158 => array(
-        'm_icon' => '<i class="far fa-thumbs-up"></i>',
-        'm_name' => 'User Step Got Outcome',
-        'm_desc' => '',
-        'm_parents' => array(4595,6274,6255,4593,4755,6146),
-    ),
     6224 => array(
         'm_icon' => '<i class="far fa-sync"></i>',
         'm_name' => 'User Account Updated',
@@ -2366,12 +2336,6 @@ $config['en_all_4755'] = array(
         'm_desc' => '',
         'm_parents' => array(7494,4229,6255,4595,4593,4755,6146),
     ),
-    7348 => array(
-        'm_icon' => '<i class="far fa-bullseye-arrow"></i>',
-        'm_name' => 'Company Intent Manage',
-        'm_desc' => '',
-        'm_parents' => array(7483,4755,4593,4595,7347),
-    ),
     7484 => array(
         'm_icon' => '<i class="far fa-user-plus"></i>',
         'm_name' => 'User Referred User',
@@ -2414,10 +2378,16 @@ $config['en_all_4755'] = array(
         'm_desc' => '',
         'm_parents' => array(4755,4593,4595,6146),
     ),
+    7495 => array(
+        'm_icon' => '<i class="far fa-bullseye-arrow"></i>',
+        'm_name' => 'User Intent Recommended',
+        'm_desc' => '',
+        'm_parents' => array(4755,4595,4593,7347),
+    ),
 );
 
 //Link Credits:
-$config['en_ids_4595'] = array(4228,4229,4230,4231,4232,4235,4242,4246,4250,4251,4255,4256,4257,4258,4259,4260,4261,4263,4264,4266,4267,4268,4269,4275,4278,4279,4282,4283,4287,4299,4318,4319,4460,4547,4548,4549,4550,4551,4552,4553,4554,4555,4556,4557,4559,4570,4577,4601,4983,4993,4994,4998,4999,5000,5001,5003,5007,5865,5943,5967,5981,5982,6093,6132,6140,6143,6144,6149,6154,6155,6157,6158,6224,6226,6242,6415,6556,6559,6560,6563,6578,6969,6997,7348,7484,7485,7486,7487,7488,7489,7492);
+$config['en_ids_4595'] = array(4228,4229,4230,4231,4232,4235,4242,4246,4250,4251,4255,4256,4257,4258,4259,4260,4261,4263,4264,4266,4267,4268,4269,4275,4278,4279,4282,4283,4287,4299,4318,4319,4460,4547,4548,4549,4550,4551,4552,4553,4554,4555,4556,4557,4559,4570,4577,4601,4983,4993,4994,4998,4999,5000,5001,5003,5007,5865,5943,5967,5981,5982,6093,6132,6140,6143,6144,6149,6154,6155,6157,6224,6226,6242,6415,6556,6559,6560,6563,6578,6969,6997,7484,7485,7486,7487,7488,7489,7492,7495);
 $config['en_all_4595'] = array(
     4228 => array(
         'm_icon' => '<i class="fas fa-walking"></i>',
@@ -2447,7 +2417,7 @@ $config['en_all_4595'] = array(
         'm_icon' => '<i class="far fa-tint"></i>',
         'm_name' => 'Intent Note Drip Message',
         'm_desc' => '2000',
-        'm_parents' => array(5007,6345,4986,4603,4593,4485,4595),
+        'm_parents' => array(5007,4986,4603,4593,4485,4595),
     ),
     4235 => array(
         'm_icon' => '<i class="far fa-bullseye-arrow"></i>',
@@ -2845,12 +2815,6 @@ $config['en_all_4595'] = array(
         'm_desc' => '5',
         'm_parents' => array(4527,4595,6255,6244,6146,4755,4593),
     ),
-    6158 => array(
-        'm_icon' => '<i class="far fa-thumbs-up"></i>',
-        'm_name' => 'User Step Got Outcome',
-        'm_desc' => '1',
-        'm_parents' => array(4595,6274,6255,4593,4755,6146),
-    ),
     6224 => array(
         'm_icon' => '<i class="far fa-sync"></i>',
         'm_name' => 'User Account Updated',
@@ -2865,7 +2829,7 @@ $config['en_all_4595'] = array(
     ),
     6242 => array(
         'm_icon' => '<i class="far fa-check-square"></i>',
-        'm_name' => 'Intent Note Final Message',
+        'm_name' => 'Intent Note On-Complete Message',
         'm_desc' => '2000',
         'm_parents' => array(5007,6345,4603,4595,4593,4986,4485),
     ),
@@ -2917,12 +2881,6 @@ $config['en_all_4595'] = array(
         'm_desc' => '10',
         'm_parents' => array(7494,4229,6255,4595,4593,4755,6146),
     ),
-    7348 => array(
-        'm_icon' => '<i class="far fa-bullseye-arrow"></i>',
-        'm_name' => 'Company Intent Manage',
-        'm_desc' => '1000',
-        'm_parents' => array(7483,4755,4593,4595,7347),
-    ),
     7484 => array(
         'm_icon' => '<i class="far fa-user-plus"></i>',
         'm_name' => 'User Referred User',
@@ -2965,6 +2923,12 @@ $config['en_all_4595'] = array(
         'm_desc' => '1',
         'm_parents' => array(4755,4593,4595,6146),
     ),
+    7495 => array(
+        'm_icon' => '<i class="far fa-bullseye-arrow"></i>',
+        'm_name' => 'User Intent Recommended',
+        'm_desc' => '10',
+        'm_parents' => array(4755,4595,4593,7347),
+    ),
 );
 
 //User Account Types:
@@ -2985,7 +2949,7 @@ $config['en_all_4600'] = array(
 );
 
 //Link Types:
-$config['en_ids_4593'] = array(4228,4229,4230,4231,4232,4235,4242,4246,4250,4251,4255,4256,4257,4258,4259,4260,4261,4263,4264,4266,4267,4268,4269,4275,4278,4279,4282,4283,4287,4299,4318,4319,4460,4547,4548,4549,4550,4551,4552,4553,4554,4555,4556,4557,4559,4570,4577,4601,4983,4993,4994,4998,4999,5000,5001,5003,5007,5865,5943,5967,5981,5982,6093,6132,6140,6143,6144,6149,6154,6155,6157,6158,6224,6226,6242,6415,6556,6559,6560,6563,6578,6969,6997,7348,7484,7485,7486,7487,7488,7489,7492);
+$config['en_ids_4593'] = array(4228,4229,4230,4231,4232,4235,4242,4246,4250,4251,4255,4256,4257,4258,4259,4260,4261,4263,4264,4266,4267,4268,4269,4275,4278,4279,4282,4283,4287,4299,4318,4319,4460,4547,4548,4549,4550,4551,4552,4553,4554,4555,4556,4557,4559,4570,4577,4601,4983,4993,4994,4998,4999,5000,5001,5003,5007,5865,5943,5967,5981,5982,6093,6132,6140,6143,6144,6149,6154,6155,6157,6224,6226,6242,6415,6556,6559,6560,6563,6578,6969,6997,7484,7485,7486,7487,7488,7489,7492,7495);
 $config['en_all_4593'] = array(
     4228 => array(
         'm_icon' => '<i class="fas fa-walking"></i>',
@@ -3015,7 +2979,7 @@ $config['en_all_4593'] = array(
         'm_icon' => '<i class="far fa-tint"></i>',
         'm_name' => 'Intent Note Drip Message',
         'm_desc' => '',
-        'm_parents' => array(5007,6345,4986,4603,4593,4485,4595),
+        'm_parents' => array(5007,4986,4603,4593,4485,4595),
     ),
     4235 => array(
         'm_icon' => '<i class="far fa-bullseye-arrow"></i>',
@@ -3413,12 +3377,6 @@ $config['en_all_4593'] = array(
         'm_desc' => '',
         'm_parents' => array(4527,4595,6255,6244,6146,4755,4593),
     ),
-    6158 => array(
-        'm_icon' => '<i class="far fa-thumbs-up"></i>',
-        'm_name' => 'User Step Got Outcome',
-        'm_desc' => 'The most basic type of intent completion for intents that do not have any messages, completion requirements or children to choose from.',
-        'm_parents' => array(4595,6274,6255,4593,4755,6146),
-    ),
     6224 => array(
         'm_icon' => '<i class="far fa-sync"></i>',
         'm_name' => 'User Account Updated',
@@ -3433,7 +3391,7 @@ $config['en_all_4593'] = array(
     ),
     6242 => array(
         'm_icon' => '<i class="far fa-check-square"></i>',
-        'm_name' => 'Intent Note Final Message',
+        'm_name' => 'Intent Note On-Complete Message',
         'm_desc' => '',
         'm_parents' => array(5007,6345,4603,4595,4593,4986,4485),
     ),
@@ -3485,12 +3443,6 @@ $config['en_all_4593'] = array(
         'm_desc' => '',
         'm_parents' => array(7494,4229,6255,4595,4593,4755,6146),
     ),
-    7348 => array(
-        'm_icon' => '<i class="far fa-bullseye-arrow"></i>',
-        'm_name' => 'Company Intent Manage',
-        'm_desc' => 'Intentions set and managed by partner companies using the funnel manager',
-        'm_parents' => array(7483,4755,4593,4595,7347),
-    ),
     7484 => array(
         'm_icon' => '<i class="far fa-user-plus"></i>',
         'm_name' => 'User Referred User',
@@ -3532,6 +3484,12 @@ $config['en_all_4593'] = array(
         'm_name' => 'User Step Dead End',
         'm_desc' => '',
         'm_parents' => array(4755,4593,4595,6146),
+    ),
+    7495 => array(
+        'm_icon' => '<i class="far fa-bullseye-arrow"></i>',
+        'm_name' => 'User Intent Recommended',
+        'm_desc' => 'Intention recommended by Mench and added to Action Plan to enable the user to complete their intention',
+        'm_parents' => array(4755,4595,4593,7347),
     ),
 );
 
@@ -3654,11 +3612,11 @@ $config['en_all_4485'] = array(
         'm_icon' => '<i class="far fa-tint"></i>',
         'm_name' => 'Drip Message',
         'm_desc' => 'Delivered in-order and one-by-one (drip-format) either during or after the intent completion. Goal is to re-iterate key insights to help students retain learnings over time.',
-        'm_parents' => array(5007,6345,4986,4603,4593,4485,4595),
+        'm_parents' => array(5007,4986,4603,4593,4485,4595),
     ),
     6242 => array(
         'm_icon' => '<i class="far fa-check-square"></i>',
-        'm_name' => 'Final Message',
+        'm_name' => 'On-Complete Message',
         'm_desc' => 'Message delivered to students when they complete an intention.',
         'm_parents' => array(5007,6345,4603,4595,4593,4986,4485),
     ),

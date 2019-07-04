@@ -1682,7 +1682,7 @@ class Messenger extends CI_Controller
         //Fetch user's intentions as we'd need to know their top-level goals:
         $user_intents = $this->Links_model->ln_fetch(array(
             'ln_miner_entity_id' => $session_en['en_id'],
-            'ln_type_entity_id' => 4235, //Action Plan Set Intention
+            'ln_type_entity_id IN (' . join(',', $this->config->item('en_ids_7347')) . ')' => null, //Action Plan Intention Set
             'ln_status_entity_id IN (' . join(',', $this->config->item('en_ids_7364')) . ')' => null, //Link Statuses Incomplete
             'in_status_entity_id IN (' . join(',', $this->config->item('en_ids_7355')) . ')' => null, //Intent Statuses Public
         ), array('in_parent'), 0, 0, array('ln_order' => 'ASC'));
@@ -1775,7 +1775,7 @@ class Messenger extends CI_Controller
         //Go ahead and remove from Action Plan:
         $user_intents = $this->Links_model->ln_fetch(array(
             'ln_miner_entity_id' => $_POST['en_miner_id'],
-            'ln_type_entity_id' => 4235, //Action Plan Set Intention
+            'ln_type_entity_id IN (' . join(',', $this->config->item('en_ids_7347')) . ')' => null, //Action Plan Intention Set
             'ln_status_entity_id IN (' . join(',', $this->config->item('en_ids_7364')) . ')' => null, //Link Statuses Incomplete
             'ln_parent_intent_id' => $_POST['in_id'],
         ));
@@ -2085,7 +2085,7 @@ class Messenger extends CI_Controller
         ));
 
         //See if we also need to mark the child as complete:
-        $this->Actionplan_model->actionplan_step_next_echo($en_id, $answer_ins[0]['in_id'], true, 7485);
+        $this->Actionplan_model->actionplan_completion_auto_unlock($en_id, $answer_ins[0], 7485 /* User Step Answer Unlock */);
 
         //Archive current progression links:
         foreach($current_progression_links as $ln){
