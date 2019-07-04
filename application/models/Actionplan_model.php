@@ -422,7 +422,6 @@ class Actionplan_model extends CI_Model
                 'ln_type_entity_id' => 4235, //Action Plan Set Intention
                 'ln_status_entity_id' => 6175, //Link Drafting
                 'ln_miner_entity_id' => $en_id, //Belongs to this User
-                'ln_parent_intent_id' => $ins[0]['in_id'], //The Intent they are adding
             )) as $current_intentions){
                 //Update order:
                 $this->Links_model->ln_update($current_intentions['ln_id'], array(
@@ -462,7 +461,7 @@ class Actionplan_model extends CI_Model
         $top_priority = $this->Actionplan_model->actionplan_intention_focus($en_id);
 
         if($top_priority){
-            if($top_priority['in']['in_id']==$ins[0]['in_id']){
+            if($add_to_top || $top_priority['in']['in_id']==$ins[0]['in_id']){
 
                 //The newly added intent is the top priority, so let's initiate first message for action plan tree:
                 $this->Actionplan_model->actionplan_step_next_echo($en_id, $ins[0]['in_id']);
