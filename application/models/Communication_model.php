@@ -436,7 +436,7 @@ class Communication_model extends CI_Model
             $url_entity = $this->Entities_model->en_sync_url($string_references['ref_urls'][0], ( isset($recipient_en['en_id']) ? $recipient_en['en_id'] : 0 ));
 
             //Did we have an error?
-            if (!$url_entity['status'] && (!isset($url_entity['en_url']['en_id']) || intval($url_entity['en_url']['en_id']) < 1)) {
+            if (!$url_entity['status'] || !isset($url_entity['en_url']['en_id']) || intval($url_entity['en_url']['en_id']) < 1) {
                 return $url_entity;
             }
 
