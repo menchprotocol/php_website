@@ -1246,29 +1246,20 @@ class Communication_model extends CI_Model
                 $en,
                 true
             );
+
+            /*
             $this->Communication_model->dispatch_message(
                 'I saved your submission to your Action Plan /link:See in 🚩Action Plan:https://mench.com/actionplan/' . $pending_req_submission[0]['in_id'],
                 $en,
                 true
             );
-
+            */
 
             //Process on-complete automations:
             $this->Actionplan_model->actionplan_completion_checks($en['en_id'], $pending_req_submission[0], true, true);
 
-            //Append the next option:
-            $this->Communication_model->dispatch_message(
-                echo_random_message('goto_next'),
-                $en,
-                true,
-                array(
-                    array(
-                        'content_type' => 'text',
-                        'title' => 'Next',
-                        'payload' => 'GONEXT',
-                    )
-                )
-            );
+            //Load next option:
+            $this->Actionplan_model->actionplan_step_next_go($en['en_id'], true, true);
 
 
         } elseif (substr_count($quick_reply_payload, 'UNSUBSCRIBE_') == 1) {
