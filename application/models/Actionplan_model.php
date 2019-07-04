@@ -986,23 +986,30 @@ class Actionplan_model extends CI_Model
 
 
         //Let's figure out the progression method:
-        if($in_is_locked && !$progress_completed){
+        if($in_is_locked){
 
-            //Find the paths to unlock:
-            $unlock_paths = $this->Intents_model->in_unlock_paths($ins[0]);
+            if($progress_completed){
 
-            //Set completion method:
-            if(count($unlock_paths) > 0){
-
-                //Yes we have a path:
-                $progression_type_entity_id = 7486; //User Step Children Unlock
+                $progression_type_entity_id = $current_progression_links[0]['ln_status_entity_id'];
 
             } else {
+                //Find the paths to unlock:
+                $unlock_paths = $this->Intents_model->in_unlock_paths($ins[0]);
 
-                //No path found:
-                $progression_type_entity_id = 7492; //User Step Dead End
+                //Set completion method:
+                if(count($unlock_paths) > 0){
 
+                    //Yes we have a path:
+                    $progression_type_entity_id = 7486; //User Step Children Unlock
+
+                } else {
+
+                    //No path found:
+                    $progression_type_entity_id = 7492; //User Step Dead End
+
+                }
             }
+
 
         } elseif(!$in_is_or && $completion_req_note){
 
