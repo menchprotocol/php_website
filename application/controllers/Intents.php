@@ -12,6 +12,32 @@ class Intents extends CI_Controller
     }
 
 
+    function fix(){
+
+        $fixed = 0;
+        $fixing = $this->Links_model->ln_fetch(array(
+            'ln_id >=' => 1908572,
+            'ln_type_entity_id' => 4264,
+            'ln_miner_entity_id' => 1,
+        ), array('en_child'), 0);
+
+        foreach($fixing as $fix){
+
+            $old_type = intval(one_two_explode('Intent Type Entity changed from "','"', $fix['ln_content']));
+
+            if($old_type > 0){
+                $fixed++;
+                $this->Intents_model->in_update($fix['in_id'], array(
+                    'in_type_entity_id' => $old_type,
+                ), true, 1);
+            }
+
+        }
+
+        echo $fixed.'/'.count($fixing);
+
+    }
+
     function test($in_id){
 
         $ins = $this->Intents_model->in_fetch(array(
@@ -467,14 +493,14 @@ class Intents extends CI_Controller
         $regular_list_counter = 0;
         $filters_list_ui = '';
         $regular_list_ui = '';
+
         foreach($actionplan_users as $apu){
 
             //Count user Action Plan Progression Completed:
             $count_progression = $this->Links_model->ln_fetch(array(
                 'ln_miner_entity_id' => $apu['en_id'],
-                'ln_type_entity_id IN (' . join(',', $this->config->item('en_ids_6255')) . ')' => null, //Action Plan Steps Progressed
+                'ln_type_entity_id IN (' . join(',', $this->config->item('en_ids_6255')) . ')' => null, //User Steps Progress
             ), array(), 0, 0, array(), 'COUNT(ln_id) as totals');
-
 
             if($filter_applied){
 
@@ -511,7 +537,11 @@ class Intents extends CI_Controller
             $item_ui .= '</td>';
             $item_ui .= '<td style="text-align:left;">'.echo_number($count_progression[0]['totals']).'</td>';
             $item_ui .= '<td style="text-align:left;">'.echo_time_difference(strtotime($apu['ln_timestamp'])).'</td>';
-            $item_ui .= '<td style="text-align:left;"><a href="/intents/'.$_POST['in_focus_id'].'?filter_user='.urlencode('@'.$apu['en_id'].' '.$apu['en_name']).'#actionplanusers-'.$_POST['in_id'].'" data-toggle="tooltip" data-placement="top" title="Filter by this user"><i class="far fa-filter"></i></a> &nbsp;<a href="/entities/'.$apu['en_id'].'" data-toggle="tooltip" data-placement="top" title="Link Miner Entity"><i class="far fa-user-circle"></i></a></td>';
+            $item_ui .= '<td style="text-align:left;">';
+
+            $item_ui .= '<a href="/links?ln_id='.$apu['ln_id'].'" target="_blank">'.echo_en_cache('en_all_6255' /* User Steps Progress */, $apu['ln_type_entity_id']).'</a>';
+            $item_ui .= '&nbsp;<a href="/intents/'.$_POST['in_focus_id'].'?filter_user='.urlencode('@'.$apu['en_id'].' '.$apu['en_name']).'#actionplanusers-'.$_POST['in_id'].'" data-toggle="tooltip" data-placement="top" title="Filter by this user"><i class="far fa-filter"></i></a>';
+            $item_ui .= '&nbsp;<a href="/entities/'.$apu['en_id'].'" data-toggle="tooltip" data-placement="top" title="Link Miner Entity"><i class="far fa-user-circle"></i></a></td>';
             $item_ui .= '</tr>';
 
 
@@ -535,7 +565,7 @@ class Intents extends CI_Controller
             $ui .= '<td style="text-align:left; padding-left:3px;" colspan="2">Matching User'.echo__s($filters_list_counter).' ['.$filters_list_counter.']</td>';
             $ui .= '<td style="text-align:left;"><i class="fas fa-walking" data-toggle="tooltip" data-placement="top" title="User Steps Progressed"></i></td>';
             $ui .= '<td style="text-align:left;"><i class="far fa-clock" data-toggle="tooltip" data-placement="top" title="Completion time"></i></td>';
-            $ui .= '<td style="text-align:left;">Actions</td>';
+            $ui .= '<td style="text-align:left;">&nbsp;</td>';
             $ui .= '</tr>';
 
             $ui .= $filters_list_ui;
@@ -551,7 +581,7 @@ class Intents extends CI_Controller
         $ui .= '<td style="text-align:left; padding-left:3px;" colspan="2">' . ( $filter_applied ? 'Other ' : 'Completed ' ) . 'User' . echo__s($regular_list_counter).' ['.$regular_list_counter.']</td>';
         $ui .= '<td style="text-align:left;"><i class="fas fa-walking" data-toggle="tooltip" data-placement="top" title="User Steps Progressed"></i></td>';
         $ui .= '<td style="text-align:left;"><i class="far fa-clock" data-toggle="tooltip" data-placement="top" title="Completion time"></i></td>';
-        $ui .= '<td style="text-align:left;">Actions</td>';
+        $ui .= '<td style="text-align:left;">&nbsp;</td>';
         $ui .= '</tr>';
         $ui .= $regular_list_ui;
         $ui .= '</table>';

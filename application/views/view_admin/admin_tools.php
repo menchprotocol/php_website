@@ -517,9 +517,11 @@ if(!$action) {
                 if($mass_update){
 
                     //Update intent:
-                    $this->Intents_model->in_update($in['in_id'], array(
+                    $this->Intents_model->in_update($child_or['in_id'], array(
                         'in_type_entity_id' => 6914, //AND Lock
                     ), true, $session_en['en_id']);
+
+                    /*
 
                     //Update all progression steps:
                     foreach($user_steps as $user_step){
@@ -534,6 +536,8 @@ if(!$action) {
                             $updated++;
                         }
                     }
+
+                    */
                 }
 
             } else {
