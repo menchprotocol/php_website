@@ -993,6 +993,7 @@ class Actionplan_model extends CI_Model
                 $progression_type_entity_id = $current_progression_links[0]['ln_status_entity_id'];
 
             } else {
+
                 //Find the paths to unlock:
                 $unlock_paths = $this->Intents_model->in_unlock_paths($ins[0]);
 

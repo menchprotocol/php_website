@@ -1613,7 +1613,7 @@ class Communication_model extends CI_Model
             //Fetch and communicate next intent:
             $this->Actionplan_model->actionplan_step_next_go($en['en_id'], true, true);
 
-        } elseif ($quick_reply_payload == 'ADDTOPACTIONPLAN_') {
+        } elseif (substr_count($quick_reply_payload, 'ADDTOPACTIONPLAN_') == 1) {
 
             $in_id =  intval(one_two_explode('ADDTOPACTIONPLAN_', '', $quick_reply_payload));
 
