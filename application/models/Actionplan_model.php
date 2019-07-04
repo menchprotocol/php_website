@@ -430,7 +430,7 @@ class Actionplan_model extends CI_Model
             }
 
             $this->Communication_model->dispatch_message(
-                'I added the intention to ' . $ins[0]['in_outcome'] . ' as your Action Plan\'s first priority',
+                'Ok let\'s ' . $ins[0]['in_outcome'],
                 array('en_id' => $en_id),
                 true
             );
