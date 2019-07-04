@@ -152,7 +152,7 @@ if(count($referrer_en) > 0){
 if(count($in__other) > 0){
 
     //echo '<h3 style="margin-bottom:5px; margin-top:55px;">Other Intentions:</h3>';
-    echo '<p style="margin:40px 0 15px;">I can also help you:</p>';
+    echo '<p style="margin:40px 0 15px;">Some other intentions I can help you with:</p>';
     echo '<div class="list-group grey_list actionplan_list maxout">';
     $max_visible = 7;
 
