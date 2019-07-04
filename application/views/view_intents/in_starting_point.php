@@ -158,7 +158,6 @@ if(count($in__other) > 0){
 
     //Now fetch Recommended Intents:
     $already_printed = array(); //Make sure we don't show anything twice
-    $common_prefix = common_prefix($in__other);
     foreach ($in__other as $other_in) {
         if(!in_is_clean_outcome($other_in)){
             continue;
@@ -167,7 +166,7 @@ if(count($in__other) > 0){
             continue; //Already printed!
         }
 
-        echo echo_in_recommend($other_in, $common_prefix, ( count($already_printed) >= $max_visible ? 'extra-recommendations hidden' : null ), ( count($referrer_en) > 0 ? $referrer_en['en_id'] : 0 ));
+        echo echo_in_recommend($other_in, null, ( count($already_printed) >= $max_visible ? 'extra-recommendations hidden' : null ), ( count($referrer_en) > 0 ? $referrer_en['en_id'] : 0 ));
         array_push($already_printed, $other_in['in_id']); //Keep track to make sure its printed only once
     }
 

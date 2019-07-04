@@ -483,7 +483,6 @@ if(!$action) {
     $all_steps = 0;
     $all_children = 0;
     $updated = 0;
-    $mass_update = ( isset($_GET['mass_update']) && intval($_GET['mass_update']) );
     $new_ln_type_entity_id = 7485; //User Step Answer Unlock
 
     foreach ($this->Intents_model->in_fetch(array(
@@ -514,32 +513,6 @@ if(!$action) {
                 ), array(), 0);
                 $all_steps += count($user_steps);
 
-                if($mass_update){
-
-                    //Update intent:
-                    $this->Intents_model->in_update($child_or['in_id'], array(
-                        'in_type_entity_id' => 6914, //AND Lock
-                    ), true, $session_en['en_id']);
-
-                    /*
-
-                    //Update all progression steps:
-                    foreach($user_steps as $user_step){
-
-                        if($user_step['ln_type_entity_id']!=$new_ln_type_entity_id){
-
-                            //Update action plan progression type:
-                            $this->Links_model->ln_update($user_step['ln_id'], array(
-                                'ln_type_entity_id' => $new_ln_type_entity_id,
-                            ), $session_en['en_id']);
-
-                            $updated++;
-                        }
-                    }
-
-                    */
-                }
-
             } else {
                 $user_steps = array();
             }
@@ -563,7 +536,6 @@ if(!$action) {
 
     $en_all_6410 = $this->config->item('en_all_6410');
     $en_all_6186 = $this->config->item('en_all_6186'); //Link Statuses
-    $mass_update = ( isset($_GET['mass_update']) && intval($_GET['mass_update']) );
 
     echo '<tr style="font-weight: bold;">';
     echo '<td colspan="4" style="text-align: left;">'.$en_all_6410[6402]['m_icon'].' '.$en_all_6410[6402]['m_name'].'</td>';
@@ -625,28 +597,8 @@ if(!$action) {
                 ), array(), 0);
 
                 $updated = 0;
-                if($mass_update){
 
-                    //Update intent type:
-                    $this->Intents_model->in_update($in_ln['in_id'], array(
-                        'in_type_entity_id' => 6914, //AND Intent AND Lock
-                    ), false, $session_en['en_id']);
-
-                    //Update all progress types:
-                    $new_ln_type_entity_id = 6997; //User Step Score Unlock
-                    foreach($user_steps as $user_step){
-                        if($user_step['ln_type_entity_id']!=$new_ln_type_entity_id){
-                            //Update action plan progression type:
-                            $this->Links_model->ln_update($user_step['ln_id'], array(
-                                'ln_type_entity_id' => $new_ln_type_entity_id,
-                            ), $session_en['en_id']);
-
-                            $updated++;
-                        }
-                    }
-                }
-
-                echo '<div>Total Steps: '.( $mass_update ? $updated.'/'.count($user_steps).' UPDATED' : count($user_steps) ).'</div>';
+                echo '<div>Total Steps: '.count($user_steps).'</div>';
                 $total_count += count($user_steps);
 
             }
@@ -661,7 +613,7 @@ if(!$action) {
 
     echo 'TOTALS: '.$total_count;
 
-    if(!$mass_update){
+    if(1){
         echo '<p>Below are all the fixed step links that award/subtract Completion Marks:</p>';
         echo '<table class="table table-condensed table-striped maxout" style="text-align: left;">';
 

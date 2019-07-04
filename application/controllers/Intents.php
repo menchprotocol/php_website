@@ -12,32 +12,6 @@ class Intents extends CI_Controller
     }
 
 
-    function fix(){
-
-        $fixed = 0;
-        $fixing = $this->Links_model->ln_fetch(array(
-            'ln_id >=' => 1908572,
-            'ln_type_entity_id' => 4264,
-            'ln_miner_entity_id' => 1,
-        ), array('in_child'), 0);
-
-        foreach($fixing as $fix){
-
-            $old_type = intval(one_two_explode('Intent Type Entity changed from "','"', $fix['ln_content']));
-
-            if($old_type > 0){
-                $fixed++;
-                $this->Intents_model->in_update($fix['in_id'], array(
-                    'in_type_entity_id' => $old_type,
-                ), true, 1);
-            }
-
-        }
-
-        echo $fixed.'/'.count($fixing);
-
-    }
-
     function test($in_id){
 
         $ins = $this->Intents_model->in_fetch(array(
