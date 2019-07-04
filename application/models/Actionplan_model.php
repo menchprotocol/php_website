@@ -698,7 +698,7 @@ class Actionplan_model extends CI_Model
                     ));
 
                     //See if we also need to mark the child as complete:
-                    $this->Actionplan_model->actionplan_completion_auto_unlock($en_id, $conditional_step, 6997);
+                    $this->Actionplan_model->actionplan_step_next_echo($en_id, $conditional_step['in_id'], true, 6997);
 
                 }
             }
@@ -844,7 +844,7 @@ class Actionplan_model extends CI_Model
 
 
 
-    function actionplan_step_next_echo($en_id, $in_id, $fb_messenger_format = true)
+    function actionplan_step_next_echo($en_id, $in_id, $fb_messenger_format = true, $unlock_link_type_en_id = 0)
     {
 
         /*
@@ -873,6 +873,20 @@ class Actionplan_model extends CI_Model
                 'status' => 0,
                 'message' => 'Missing recipient entity ID',
             );
+
+        } elseif ($unlock_link_type_en_id > 0) {
+
+            if(!in_array($unlock_link_type_en_id, $this->config->item('en_ids_7494'))){
+                return array(
+                    'status' => 0,
+                    'message' => 'Progression link type not of type unlock',
+                );
+            } elseif(in_array($unlock_link_type_en_id, $this->config->item('en_ids_6244'))) {
+                return array(
+                    'status' => 0,
+                    'message' => 'Progression link type cannot be a two-step link type',
+                );
+            }
 
         }
 
@@ -984,69 +998,84 @@ class Actionplan_model extends CI_Model
         $unlock_paths = array();
 
 
-        //Let's figure out the progression method:
-        if($in_is_locked){
 
-            if($progress_completed){
+        //Determine progression type
+        if($unlock_link_type_en_id > 0){
 
-                $progression_type_entity_id = $current_progression_links[0]['ln_status_entity_id'];
-
-            } else {
-
-                //Find the paths to unlock:
-                $unlock_paths = $this->Intents_model->in_unlock_paths($ins[0]);
-
-                //Set completion method:
-                if(count($unlock_paths) > 0){
-
-                    //Yes we have a path:
-                    $progression_type_entity_id = 7486; //User Step Children Unlock
-
-                } else {
-
-                    //No path found:
-                    $progression_type_entity_id = 7492; //User Step Dead End
-
-                }
-            }
-
-
-        } elseif(!$in_is_or && $completion_req_note){
-
-            $progression_type_entity_id = 6144; //User Step Requirement Sent
-
-        } elseif($in_is_or && $has_children){
-
-            //Depends on OR type:
-            if($ins[0]['in_type_entity_id']==6684 /* OR Intent Single Answer */){
-
-                $progression_type_entity_id = 6157; //User Step Answered
-
-            } elseif($ins[0]['in_type_entity_id']==6685 /* OR Intent Timed Answer */){
-
-                $progression_type_entity_id = 7487; //User Step Answered Timely
-
-            } elseif($ins[0]['in_type_entity_id']==7231 /* OR Intent Multiple Answers */){
-
-                $progression_type_entity_id = 7489; //User Step Selected
-
-            }
+            //This is how we should unlock this:
+            $progression_type_entity_id = $unlock_link_type_en_id;
 
         } else {
 
-            $progression_type_entity_id = 4559; //User Step Got It
+            //Let's figure out the progression method:
+            if($in_is_locked){
 
+                if($progress_completed){
+
+                    $progression_type_entity_id = $current_progression_links[0]['ln_status_entity_id'];
+
+                } else {
+
+                    //Find the paths to unlock:
+                    $unlock_paths = $this->Intents_model->in_unlock_paths($ins[0]);
+
+                    //Set completion method:
+                    if(count($unlock_paths) > 0){
+
+                        //Yes we have a path:
+                        $progression_type_entity_id = 7486; //User Step Children Unlock
+
+                    } else {
+
+                        //No path found:
+                        $progression_type_entity_id = 7492; //User Step Dead End
+
+                    }
+                }
+
+
+            } elseif(!$in_is_or && $completion_req_note){
+
+                $progression_type_entity_id = 6144; //User Step Requirement Sent
+
+            } elseif($in_is_or && $has_children){
+
+                //Depends on OR type:
+                if($ins[0]['in_type_entity_id']==6684 /* OR Intent Single Answer */){
+
+                    $progression_type_entity_id = 6157; //User Step Answered
+
+                } elseif($ins[0]['in_type_entity_id']==6685 /* OR Intent Timed Answer */){
+
+                    $progression_type_entity_id = 7487; //User Step Answered Timely
+
+                } elseif($ins[0]['in_type_entity_id']==7231 /* OR Intent Multiple Answers */){
+
+                    $progression_type_entity_id = 7489; //User Step Selected
+
+                }
+
+            } else {
+
+                $progression_type_entity_id = 4559; //User Step Got It
+
+            }
         }
 
 
         //Let's learn more about the nature of this progression link:
-        $is_two_step                = in_array($progression_type_entity_id, $this->config->item('en_ids_6244')); //If TRUE, initial progression link will be logged as WORKING ON since we need user response
-        $step_progress_made    = ( !$is_two_step && in_array($progression_type_entity_id, $this->config->item('en_ids_6255'))); //Action Plan Steps Progressed
-        $nothing_more_to_do         = ( !$is_two_step && !$has_children && in_array($progression_type_entity_id, $this->config->item('en_ids_6274')) ); //If TRUE, we will auto move on to the next item
-        $recommend_recommend        = false; //Assume FALSE unless $nothing_more_to_do=TRUE and we do not have any next steps which means user has finished their Action Plan
 
+        //If TRUE, initial progression link will be logged as WORKING ON since we need user response:
+        $is_two_step = in_array($progression_type_entity_id, $this->config->item('en_ids_6244'));
 
+        //Action Plan Steps Progressed:
+        $step_progress_made = ( !$is_two_step && in_array($progression_type_entity_id, $this->config->item('en_ids_6255')));
 
+        //If TRUE, we will auto move on to the next item:
+        $nothing_more_to_do = ( !$is_two_step && !$has_children && in_array($progression_type_entity_id, $this->config->item('en_ids_6274')) );
+
+        //Assume FALSE unless $nothing_more_to_do=TRUE and we do not have any next steps which means user has finished their Action Plan:
+        $recommend_recommend = false;
 
 
 

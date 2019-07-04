@@ -1769,7 +1769,7 @@ class Communication_model extends CI_Model
 
 
                     //See if we also need to mark the answer as complete:
-                    $this->Actionplan_model->actionplan_completion_auto_unlock($en['en_id'], $answer_ins[0], 7485);
+                    $this->Actionplan_model->actionplan_step_next_echo($en['en_id'], $answer_ins[0]['in_id'], true, 7485);
 
 
                     //Find/Advance to the next step:
