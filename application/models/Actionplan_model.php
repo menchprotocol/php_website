@@ -345,7 +345,7 @@ class Actionplan_model extends CI_Model
 
     }
 
-    function actionplan_intention_add($en_id, $in_id){
+    function actionplan_intention_add($en_id, $in_id, $add_to_top = false){
 
         //Validate Intent ID:
         $ins = $this->Intents_model->in_fetch(array(
@@ -397,25 +397,57 @@ class Actionplan_model extends CI_Model
 
         }
 
+        $new_intent_order = 1 + ( $add_to_top ? 0 : $this->Links_model->ln_max_order(array( //Place this intent at the end of all intents the User is drafting...
+                'ln_type_entity_id' => 4235, //Action Plan Set Intention
+                'ln_status_entity_id IN (' . join(',', $this->config->item('en_ids_7364')) . ')' => null, //Link Statuses Incomplete
+                'ln_miner_entity_id' => $en_id, //Belongs to this User
+            )));
+
         //Add intent to User's Action Plan:
         $actionplan = $this->Links_model->ln_create(array(
             'ln_type_entity_id' => 4235, //Action Plan Set Intention
             'ln_status_entity_id' => 6175, //Link Drafting
             'ln_miner_entity_id' => $en_id, //Belongs to this User
             'ln_parent_intent_id' => $ins[0]['in_id'], //The Intent they are adding
-            'ln_order' => 1 + $this->Links_model->ln_max_order(array( //Place this intent at the end of all intents the User is drafting...
-                    'ln_type_entity_id' => 4235, //Action Plan Set Intention
-                    'ln_status_entity_id IN (' . join(',', $this->config->item('en_ids_7364')) . ')' => null, //Link Statuses Incomplete
-                    'ln_miner_entity_id' => $en_id, //Belongs to this User
-                )),
+            'ln_order' => $new_intent_order,
         ));
 
-        //Confirm with them that we're now ready:
-        $this->Communication_model->dispatch_message(
-            'I have successfully added the intention to ' . $ins[0]['in_outcome'] . ' to your Action Plan 🙌 /link:Open 🚩Action Plan:https://mench.com/actionplan/' . $ins[0]['in_id'],
-            array('en_id' => $en_id),
-            true
-        );
+
+
+        //If the top intention, move all other intentions down by one step:
+        if($add_to_top){
+
+            foreach($this->Links_model->ln_fetch(array(
+                'ln_id !=' => $actionplan['ln_id'], //Not the newly added intention
+                'ln_type_entity_id' => 4235, //Action Plan Set Intention
+                'ln_status_entity_id' => 6175, //Link Drafting
+                'ln_miner_entity_id' => $en_id, //Belongs to this User
+                'ln_parent_intent_id' => $ins[0]['in_id'], //The Intent they are adding
+            )) as $current_intentions){
+                //Update order:
+                $this->Links_model->ln_update($current_intentions['ln_id'], array(
+                    'ln_order' => ($current_intentions['ln_order'] + 1),
+                ));
+            }
+
+            $this->Communication_model->dispatch_message(
+                'I added the intention to ' . $ins[0]['in_outcome'] . ' as your Action Plan\'s first priority',
+                array('en_id' => $en_id),
+                true
+            );
+
+        } else {
+
+            $this->Communication_model->dispatch_message(
+                'I added the intention to ' . $ins[0]['in_outcome'] . ' to your Action Plan 🙌 /link:Open 🚩Action Plan:https://mench.com/actionplan/' . $ins[0]['in_id'],
+                array('en_id' => $en_id),
+                true
+            );
+
+        }
+
+
+
 
         /*
          *
@@ -950,6 +982,7 @@ class Actionplan_model extends CI_Model
         $has_children = (count($in__children) > 0);
         $in_is_locked = in_array($ins[0]['in_type_entity_id'], $this->config->item('en_ids_7309') /* Action Plan Step Locked */);
         $in_is_or = in_is_or($ins[0]['in_type_entity_id']);
+        $unlock_paths = array();
 
 
         //Let's figure out the progression method:
@@ -963,10 +996,6 @@ class Actionplan_model extends CI_Model
 
                 //Yes we have a path:
                 $progression_type_entity_id = 7486; //User Step Children Unlock
-
-                //Set all unlock paths as AND Children so we list them:
-                $in__children = $unlock_paths;
-                $has_children = true;
 
             } else {
 
@@ -1118,12 +1147,62 @@ class Actionplan_model extends CI_Model
          * */
 
         //Do we have any requirements?
-        if (!$in_is_locked && $completion_req_note && !$progress_completed) {
+        if(count($unlock_paths) > 0){
+
+
+            if($fb_messenger_format){
+                $next_step_message .= 'Here are the next steps:';
+            } else {
+                $next_step_message .= '<div class="list-group" style="margin-top:10px;">';
+            }
+
+            //List Unlock paths:
+            foreach ($unlock_paths as $key => $child_in) {
+
+                $child_progression_steps = $this->Links_model->ln_fetch(array(
+                    'ln_type_entity_id IN (' . join(',', $this->config->item('en_ids_6146')) . ')' => null, //User Steps Completed
+                    'ln_miner_entity_id' => $en_id,
+                    'ln_parent_intent_id' => $child_in['in_id'],
+                    'ln_status_entity_id IN (' . join(',', $this->config->item('en_ids_7359')) . ')' => null, //Link Statuses Public
+                ));
+
+                $is_completed = ( count($child_progression_steps) > 0 && in_array($child_progression_steps[0]['ln_status_entity_id'], $this->config->item('en_ids_7359')));
+                $is_next = ( count($next_step_quick_replies)==0 && !$is_completed );
+
+                if(!$fb_messenger_format){
+
+                    //Add HTML step to UI:
+                    $next_step_message .= echo_actionplan_step_child($en_id, $child_in, (count($child_progression_steps) > 0 ? $child_progression_steps[0]['ln_status_entity_id'] : 6174 /* Link New */ ));
+
+                } else {
+
+                    //Add simple message:
+                    $next_step_message .= "\n\n" . ($key + 1) . '. ' . echo_in_outcome($child_in['in_outcome'], $fb_messenger_format);
+                    $next_step_message .= ( $is_completed ? ' [COMPLETED]' : '' );
+                    $next_step_message .= ( $is_next ? ' [NEXT]' : '' );
+
+                }
+
+                //Add Call to Action:
+                if($is_next){
+                    //This is the next step:
+                    array_push($next_step_quick_replies, array(
+                        'content_type' => 'text',
+                        'title' => 'Next',
+                        'payload' => 'ADDTOPACTIONPLAN_' . $child_in['in_id'],
+                    ));
+                }
+
+            }
+
+            $next_step_message .= '</div>';
+
+        } elseif ($completion_req_note && !$progress_completed) {
 
             //They still need to complete:
             $next_step_message .= $completion_req_note;
 
-        } elseif(!$in_is_locked && $in_is_or && $has_children /* Otherwise who cares */){
+        } elseif($in_is_or && $has_children /* Otherwise who cares */){
 
 
             //Prep variables:
@@ -1265,7 +1344,7 @@ class Actionplan_model extends CI_Model
                 }
             }
 
-        } elseif($has_children && (!$in_is_or /* AND Children */ || $in_is_locked)){
+        } elseif($has_children && !$in_is_or /* AND Children */){
 
             $max_and_list = 5;
             $has_multiple_children = (count($in__children) > 1); //Do we have 2 or more children?

@@ -1613,6 +1613,16 @@ class Communication_model extends CI_Model
             //Fetch and communicate next intent:
             $this->Actionplan_model->actionplan_step_next_go($en['en_id'], true, true);
 
+        } elseif ($quick_reply_payload == 'ADDTOPACTIONPLAN_') {
+
+            $in_id =  intval(one_two_explode('ADDTOPACTIONPLAN_', '', $quick_reply_payload));
+
+            //Add this item to the tio of the Action Plan:
+            $this->Actionplan_model->actionplan_intention_add($en['en_id'], $in_id, true);
+
+            //Fetch and communicate next intent:
+            $this->Actionplan_model->actionplan_step_next_go($en['en_id'], true, true);
+
         } elseif (substr_count($quick_reply_payload, 'SUBSCRIBE-CONFIRM_') == 1) {
 
             //User has requested to add this intention to their Action Plan:
