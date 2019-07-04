@@ -37,6 +37,7 @@ $recursive_parents = $this->Intents_model->in_fetch_recursive_public_parents($in
 foreach ($recursive_parents as $grand_parent_ids) {
     //Does this parent and its grandparents have an intersection with the user intentions?
     if(array_intersect($grand_parent_ids, $user_intentions_ids)){
+
         //Fetch parent intent & show:
         $parent_ins = $this->Intents_model->in_fetch(array(
             'in_id' => $grand_parent_ids[0],
@@ -54,6 +55,7 @@ foreach ($recursive_parents as $grand_parent_ids) {
 
         //We found an intersect:
         $found_grandpa_intersect = true;
+
     }
 }
 echo '</div>';
@@ -65,7 +67,7 @@ echo '</div>';
 if(!$found_grandpa_intersect){
 
     //Terminate access:
-    echo '<div class="alert alert-danger" role="alert">Error: This step does not belong to any of your intentions.</div>';
+    echo '<div class="alert alert-danger" role="alert">Error: This step does not belong to any of your intentions ('.join(',',$user_intentions_ids).').</div>';
 
 } else {
 

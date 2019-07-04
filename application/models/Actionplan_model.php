@@ -1195,7 +1195,9 @@ class Actionplan_model extends CI_Model
 
             }
 
-            $next_step_message .= '</div>';
+            if(!$fb_messenger_format){
+                $next_step_message .= '</div>';
+            }
 
         } elseif ($completion_req_note && !$progress_completed) {
 
