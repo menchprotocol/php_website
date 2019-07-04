@@ -11,7 +11,7 @@ defined('BASEPATH') OR exit('No direct script access allowed');
  *
  */
 
-//Generated 2019-07-03 16:24:57 PST
+//Generated 2019-07-03 19:57:05 PST
 
 //User Step Answered:
 $config['en_ids_6157'] = array(6684,6685,7231);
@@ -562,7 +562,7 @@ $config['en_all_5007'] = array(
 );
 
 //Link Type Filter Groups:
-$config['en_ids_7233'] = array(4277,4280,4485,4592,7164);
+$config['en_ids_7233'] = array(4277,4280,4485,4592,6146,6255,7164);
 $config['en_all_7233'] = array(
     4277 => array(
         'm_icon' => '<i class="far fa-ear"></i>',
@@ -587,6 +587,18 @@ $config['en_all_7233'] = array(
         'm_name' => 'Entity Links',
         'm_desc' => '',
         'm_parents' => array(7233,7167,4536,4527),
+    ),
+    6146 => array(
+        'm_icon' => '<i class="far fa-check-square"></i>',
+        'm_name' => 'User Steps Taken',
+        'm_desc' => '',
+        'm_parents' => array(7233,6219,4527),
+    ),
+    6255 => array(
+        'm_icon' => '<i class="fas fa-walking"></i>',
+        'm_name' => 'User Steps Progressed',
+        'm_desc' => '',
+        'm_parents' => array(7233,7493,7203,7159,4527),
     ),
     7164 => array(
         'm_icon' => '<i class="far fa-comments"></i>',
@@ -613,9 +625,9 @@ $config['en_all_7203'] = array(
     ),
     6255 => array(
         'm_icon' => '<i class="fas fa-walking"></i>',
-        'm_name' => 'User Steps Progress',
+        'm_name' => 'User Steps Progressed',
         'm_desc' => '',
-        'm_parents' => array(7493,7203,7159,4527),
+        'm_parents' => array(7233,7493,7203,7159,4527),
     ),
     7164 => array(
         'm_icon' => '<i class="far fa-comments"></i>',
@@ -836,9 +848,9 @@ $config['en_all_7159'] = array(
     ),
     6255 => array(
         'm_icon' => '<i class="fas fa-walking"></i>',
-        'm_name' => 'User Steps Progress',
+        'm_name' => 'User Steps Progressed',
         'm_desc' => 'Key insights or actionable tasks completed by users that gets them closer to their set intentions.',
-        'm_parents' => array(7493,7203,7159,4527),
+        'm_parents' => array(7233,7493,7203,7159,4527),
     ),
     7164 => array(
         'm_icon' => '<i class="far fa-comments"></i>',
@@ -1289,7 +1301,7 @@ $config['en_all_6410'] = array(
     ),
     6140 => array(
         'm_icon' => '<i class="fas fa-lock-open"></i>',
-        'm_name' => 'User Step Link Unlocked',
+        'm_name' => 'User Step Link Unlock',
         'm_desc' => '',
         'm_parents' => array(4595,6410,4229,4755,4593),
     ),
@@ -1341,7 +1353,7 @@ $config['en_all_6274'] = array(
     ),
 );
 
-//User Steps Progress:
+//User Steps Progressed:
 $config['en_ids_6255'] = array(4559,6144,6157,6158,6997,7298,7485,7486,7487,7489);
 $config['en_all_6255'] = array(
     4559 => array(
@@ -1616,7 +1628,7 @@ $config['en_all_6177'] = array(
     ),
 );
 
-//Action Plan Steps Taken:
+//User Steps Taken:
 $config['en_ids_6146'] = array(4559,6143,6144,6157,6158,6997,7298,7485,7486,7487,7488,7489,7492);
 $config['en_all_6146'] = array(
     4559 => array(
@@ -2254,7 +2266,7 @@ $config['en_all_4755'] = array(
     ),
     6140 => array(
         'm_icon' => '<i class="fas fa-lock-open"></i>',
-        'm_name' => 'User Step Link Unlocked',
+        'm_name' => 'User Step Link Unlock',
         'm_desc' => '',
         'm_parents' => array(4595,6410,4229,4755,4593),
     ),
@@ -2793,7 +2805,7 @@ $config['en_all_4595'] = array(
     ),
     6140 => array(
         'm_icon' => '<i class="fas fa-lock-open"></i>',
-        'm_name' => 'User Step Link Unlocked',
+        'm_name' => 'User Step Link Unlock',
         'm_desc' => '25',
         'm_parents' => array(4595,6410,4229,4755,4593),
     ),
@@ -3361,7 +3373,7 @@ $config['en_all_4593'] = array(
     ),
     6140 => array(
         'm_icon' => '<i class="fas fa-lock-open"></i>',
-        'm_name' => 'User Step Link Unlocked',
+        'm_name' => 'User Step Link Unlock',
         'm_desc' => 'Created when the student responses to OR branches meets the right % points to unlock the pathway to a conditional intent link.',
         'm_parents' => array(4595,6410,4229,4755,4593),
     ),
