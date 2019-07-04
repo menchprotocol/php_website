@@ -67,7 +67,7 @@ echo '</div>';
 if(!$found_grandpa_intersect){
 
     //Terminate access:
-    echo '<div class="alert alert-danger" role="alert">Error: This step does not belong to any of your intentions ('.join(',',$user_intentions_ids).').</div>';
+    echo '<div class="alert alert-danger" role="alert">Error: This step does not belong to any of your intentions.</div>';
 
 } else {
 
