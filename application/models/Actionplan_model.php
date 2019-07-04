@@ -494,77 +494,6 @@ class Actionplan_model extends CI_Model
 
     }
 
-    function actionplan_completion_auto_unlock($en_id, $in, $unlock_link_type_en_id){
-
-        /*
-         *
-         * A function that marks an intent as complete IF
-         * the intent has nothing of substance to be
-         * further communicated/done by the user.
-         *
-         * $unlock_link_type_en_id Indicates the type of Unlocking that is about to happen
-         *
-         * */
-
-        // 'in_type_entity_id IN (' . join(',', $this->config->item('en_ids_7309')) . ')' => null, //Action Plan Step Locked
-
-
-        if(in_array($in['in_type_entity_id'], $this->config->item('en_ids_6794'))){
-            //Requires Manual Response so we cannot auto complete:
-            return false;
-        } elseif(!in_array($unlock_link_type_en_id, $this->config->item('en_ids_7494'))){
-            //Not a valid unlock step type:
-            return false;
-        } elseif(in_array($in['in_type_entity_id'], $this->config->item('en_ids_7309') /* Action Plan Step Locked */)){
-            //Since this is a locked intent we need to mark it as complete since the
-        }
-
-        //Count children:
-        $child_count = count($this->Links_model->ln_fetch(array(
-            'ln_status_entity_id IN (' . join(',', $this->config->item('en_ids_7359')) . ')' => null, //Link Statuses Public
-            'in_status_entity_id IN (' . join(',', $this->config->item('en_ids_7355')) . ')' => null, //Intent Statuses Public
-            'ln_type_entity_id' => 4228, //Intent Link Regular Step
-            'ln_parent_intent_id' => $in['in_id'],
-        ), array('in_child')));
-
-
-        if(in_is_or($in['in_type_entity_id']) && $child_count > 0){
-            //OR Branch:
-            return false;
-        } elseif($child_count > 1){
-            //AND with children:
-            return false;
-        }
-
-        if(count($this->Links_model->ln_fetch(array(
-            'ln_status_entity_id IN (' . join(',', $this->config->item('en_ids_7359')) . ')' => null, //Link Statuses Public
-            'ln_type_entity_id IN (' . join(',', $this->config->item('en_ids_6345')) . ')' => null, //Deliverable Intent Notes
-            'ln_child_intent_id' => $in['in_id'],
-        ))) > 0){
-            //Has deliverable messages:
-            return false;
-        }
-
-
-
-
-        //Ok, now it should be auto completed:
-        $this->Links_model->ln_create(array(
-            'ln_type_entity_id' => $unlock_link_type_en_id,
-            'ln_miner_entity_id' => $en_id,
-            'ln_parent_intent_id' => $in['in_id'],
-            'ln_status_entity_id' => 6176, //Link Published
-        ));
-
-        //Process on-complete automations:
-        $this->Actionplan_model->actionplan_completion_checks($en_id, $in, true, true);
-
-        //All good:
-        return true;
-    }
-
-
-
 
 
     function actionplan_completion_recursive_up($en_id, $in, $is_bottom_level = true){
@@ -1409,9 +1338,6 @@ class Actionplan_model extends CI_Model
                 //Are we still clean?
                 if(!$check_clean || !$frist_x_all_are_dirty){
 
-                    //If we need title, check to see if we have a common denominator that we can remove:
-                    $common_prefix = common_prefix($in__children, ( $fb_messenger_format ? $max_and_list : 0 ));
-
                     $key = 0;
                     foreach ($in__children as $child_in) {
 
@@ -1447,12 +1373,12 @@ class Actionplan_model extends CI_Model
                         if(!$fb_messenger_format){
 
                             //Add HTML step to UI:
-                            $next_step_message .= echo_actionplan_step_child($en_id, $child_in, (count($child_progression_steps) > 0 ? $child_progression_steps[0]['ln_status_entity_id'] : 6174 /* Link New */ ), false, $common_prefix);
+                            $next_step_message .= echo_actionplan_step_child($en_id, $child_in, (count($child_progression_steps) > 0 ? $child_progression_steps[0]['ln_status_entity_id'] : 6174 /* Link New */ ), false);
 
                         } else {
 
                             //Add simple message:
-                            $next_step_message .= "\n\n" . ($key + 1) . '. ' . echo_in_outcome($child_in['in_outcome'], $fb_messenger_format, false, false, $common_prefix);
+                            $next_step_message .= "\n\n" . ($key + 1) . '. ' . echo_in_outcome($child_in['in_outcome'], $fb_messenger_format, false, false);
 
                         }
 
