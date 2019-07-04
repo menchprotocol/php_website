@@ -19,7 +19,7 @@ class Intents extends CI_Controller
             'ln_id >=' => 1908572,
             'ln_type_entity_id' => 4264,
             'ln_miner_entity_id' => 1,
-        ), array('en_child'), 0);
+        ), array('in_child'), 0);
 
         foreach($fixing as $fix){
 
