@@ -953,16 +953,25 @@ class Actionplan_model extends CI_Model
 
 
         //Let's figure out the progression method:
-        if($in_is_locked){
+        if($in_is_locked && !$progress_completed){
 
-            if(count($current_progression_links) > 0){
+            //Find the paths to unlock:
+            $unlock_paths = $this->Intents_model->in_unlock_paths($ins[0]);
 
-                //Load the list of intents to complete:
+            //Set completion method:
+            if(count($unlock_paths) > 0){
+
+                //Yes we have a path:
+                $progression_type_entity_id = 7486; //User Step Children Unlock
+
+                //Set all unlock paths as AND Children so we list them:
+                $in__children = $unlock_paths;
+                $has_children = true;
 
             } else {
 
-                $progression_type_entity_id = 7486; //User Step Children Unlock
-                //Generate list of intents to complete:
+                //No path found:
+                $progression_type_entity_id = 7492; //User Step Dead End
 
             }
 
@@ -1109,12 +1118,12 @@ class Actionplan_model extends CI_Model
          * */
 
         //Do we have any requirements?
-        if ($completion_req_note && !$progress_completed) {
+        if (!$in_is_locked && $completion_req_note && !$progress_completed) {
 
             //They still need to complete:
             $next_step_message .= $completion_req_note;
 
-        } elseif($in_is_or && $has_children /* Otherwise who cares */){
+        } elseif(!$in_is_locked && $in_is_or && $has_children /* Otherwise who cares */){
 
 
             //Prep variables:
@@ -1256,8 +1265,7 @@ class Actionplan_model extends CI_Model
                 }
             }
 
-        } elseif($has_children && !$in_is_or /* AND Children */){
-
+        } elseif($has_children && (!$in_is_or /* AND Children */ || $in_is_locked)){
 
             $max_and_list = 5;
             $has_multiple_children = (count($in__children) > 1); //Do we have 2 or more children?
@@ -1496,10 +1504,10 @@ class Actionplan_model extends CI_Model
         return array(
             'status' => 1,
             'message' => 'Success',
+            'current_progression_links' => $current_progression_links,
 
             //Do we need to return the HTML UI?
             'html_messages' => ( $fb_messenger_format ? null : $compile_html_message . '<div class="msg" style="margin-top: 15px;">'.nl2br($next_step_message).'</div>' ),
-            'progression_links' => ( $fb_messenger_format ? null : $current_progression_links ),
         );
 
     }

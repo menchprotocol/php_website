@@ -921,20 +921,51 @@ class Intents_model extends CI_Model
             return array();
         }
 
+        $child_unlock_paths = array();
+
+
         //Step 1: Is there an OR parent that we can simply answer and unlock?
-        $in_or_parents = $this->Links_model->ln_fetch(array(
+        foreach($this->Links_model->ln_fetch(array(
             'ln_status_entity_id IN (' . join(',', $this->config->item('en_ids_7359')) . ')' => null, //Link Statuses Public
             'in_status_entity_id IN (' . join(',', $this->config->item('en_ids_7355')) . ')' => null, //Intent Statuses Public
             'ln_type_entity_id' => 4228, //Intent Link Regular Step
             'ln_child_intent_id' => $in['in_id'],
             'in_type_entity_id IN (' . join(',', $this->config->item('en_ids_6157')) . ')' => null, //User Step Answered
-        ), array('in_parent'), 0);
-        if(count($in_or_parents) > 0){
-            //Return OR parents for unlocking this intent:
-            return $in_or_parents;
+        ), array('in_parent'), 0) as $in_or_parent){
+            if(count($child_unlock_paths)==0 || !filter_array($child_unlock_paths, 'in_id', $in_or_parent['in_id'])) {
+                array_push($child_unlock_paths, $in_or_parent);
+            }
         }
 
-        //Step 2: We don't have any OR parents, let's see how we can complete all children to meet the requirements:
+
+        //Step 2: Are there any locked link parents that the user might be able to unlock?
+        foreach($this->Links_model->ln_fetch(array(
+            'ln_status_entity_id IN (' . join(',', $this->config->item('en_ids_7359')) . ')' => null, //Link Statuses Public
+            'in_status_entity_id IN (' . join(',', $this->config->item('en_ids_7355')) . ')' => null, //Intent Statuses Public
+            'ln_type_entity_id' => 4229, //Intent Link Locked Step
+            'ln_child_intent_id' => $in['in_id'],
+        ), array('in_parent'), 0) as $in_locked_parent){
+            if(in_array($in_locked_parent['in_type_entity_id'], $this->config->item('en_ids_7309') /* Action Plan Step Locked */)){
+                //Need to check recursively:
+                foreach($this->Intents_model->in_unlock_paths($in_locked_parent) as $locked_path){
+                    if(count($child_unlock_paths)==0 || !filter_array($child_unlock_paths, 'in_id', $locked_path['in_id'])) {
+                        array_push($child_unlock_paths, $locked_path);
+                    }
+                }
+            } elseif(count($child_unlock_paths)==0 || !filter_array($child_unlock_paths, 'in_id', $in_locked_parent['in_id'])) {
+                array_push($child_unlock_paths, $in_locked_parent);
+            }
+        }
+
+
+        //Return if we have options for step 1 OR step 2:
+        if(count($child_unlock_paths) > 0){
+            //Return OR parents for unlocking this intent:
+            return $child_unlock_paths;
+        }
+
+
+        //Step 3: We don't have any OR parents, let's see how we can complete all children to meet the requirements:
         $in__children = $this->Links_model->ln_fetch(array(
             'ln_status_entity_id IN (' . join(',', $this->config->item('en_ids_7359')) . ')' => null, //Link Statuses Public
             'in_status_entity_id IN (' . join(',', $this->config->item('en_ids_7355')) . ')' => null, //Intent Statuses Public
@@ -947,19 +978,17 @@ class Intents_model extends CI_Model
         }
 
         //Go through children to see if any/all can be completed:
-        $child_unlock_paths = array();
         foreach($in__children as $in_child){
             if(in_array($in_child['in_type_entity_id'], $this->config->item('en_ids_7309') /* Action Plan Step Locked */)){
 
                 //Need to check recursively:
-                $locked_paths =  $this->Intents_model->in_unlock_paths($in_child);
-                foreach($locked_paths as $locked_path){
+                foreach($this->Intents_model->in_unlock_paths($in_child) as $locked_path){
                     if(count($child_unlock_paths)==0 || !filter_array($child_unlock_paths, 'in_id', $locked_path['in_id'])) {
-                        $child_unlock_paths = array_merge($child_unlock_paths, $locked_paths);
+                        array_push($child_unlock_paths, $locked_path);
                     }
                 }
 
-            } elseif(!filter_array($child_unlock_paths, 'in_id', $in_child['in_id'])) {
+            } elseif(count($child_unlock_paths)==0 || !filter_array($child_unlock_paths, 'in_id', $in_child['in_id'])) {
 
                 //Not locked, so this can be completed:
                 array_push($child_unlock_paths, $in_child);

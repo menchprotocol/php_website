@@ -84,7 +84,7 @@ if(!$found_grandpa_intersect){
     $submission_messages = null;
     $trigger_on_complete_tips = false;
     if($advance_step['status']){
-        foreach($advance_step['progression_links'] as $pl){
+        foreach($advance_step['current_progression_links'] as $pl){
             echo '<span style="margin-right:10px;" class="status-label underdot" data-toggle="tooltip" data-placement="top" title="Status is '.$en_all_6186[$pl['ln_status_entity_id']]['m_name'].': '.$en_all_6186[$pl['ln_status_entity_id']]['m_desc'].'">'.( $pl['ln_status_entity_id'] == 6176 /* Link Published */ ? $en_all_6146[$pl['ln_type_entity_id']]['m_icon'] /* Show Progression Type */ : $en_all_6186[$pl['ln_status_entity_id']]['m_icon'] /* Show Status */ ).' '.$en_all_6146[$pl['ln_type_entity_id']]['m_name'].'</span>';
 
             //Should we trigger on-complete links?
