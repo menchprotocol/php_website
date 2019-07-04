@@ -514,7 +514,7 @@ class Intents_model extends CI_Model
                     $grand_parents = array_merge($grand_parents, $recursive_parents);
                 }
             } elseif($first_level){
-                array_push($grand_parents, $p_id);
+                array_push($grand_parents, array($p_id));
             }
         }
 
