@@ -939,7 +939,7 @@ function echo_tree_users($in, $fb_messenger_format = false, $autoexpand = false)
         return '👤 ' . $pitch_body. "\n\n";
     } else {
         //HTML format
-        $pitch_title = '<span class="icon-block"><i class="fas fa-user"></i></span>&nbsp;I have helped '. echo_number($enrolled_users_count[0]['totals']) .' others with this intention so far';
+        $pitch_title = '<span class="icon-block"><i class="fas fa-user"></i></span>&nbsp;'. echo_number($enrolled_users_count[0]['totals']) .' users enrolled so far';
         return echo_tree_html_body('CompletedUsers', $pitch_title, $pitch_body, $autoexpand);
     }
 }
@@ -1090,7 +1090,7 @@ function echo_tree_experts($in, $fb_messenger_format = false, $autoexpand = fals
     $pitch_title = '<span class="icon-block"><i class="fas fa-shield-check"></i></span>&nbsp;';
     $pitch_body = 'Action Plan references ';
     if($source_count > 0){
-        $pitch_title .= 'I reference ' . $source_count . ' source' . echo__s($source_count);
+        $pitch_title .= $source_count . ' source' . echo__s($source_count);
         $pitch_body .= trim($source_info);
     }
     if($expert_count > 0){
@@ -1098,7 +1098,7 @@ function echo_tree_experts($in, $fb_messenger_format = false, $autoexpand = fals
             $pitch_title .= ' from ';
             $pitch_body .= ' from ';
         }
-        $pitch_title .= $expert_count . ' industry expert'. echo__s($expert_count);
+        $pitch_title .= $expert_count . ' expert'. echo__s($expert_count);
         $pitch_body .= $expert_count . ' industry expert'. echo__s($expert_count) . ($expert_count == 1 ? ':' : ' including') . $expert_info;
     }
 
@@ -1159,7 +1159,7 @@ function echo_tree_steps($in, $fb_messenger_format = 0, $autoexpand = false)
     } else {
 
         //HTML format
-        $pitch_title = '<span class="icon-block"><i class="fas fa-flag"></i></span>&nbsp;I estimate up to '.$metadata['in__metadata_max_steps'].' step'.echo__s($metadata['in__metadata_max_steps']).( $has_time_estimate ? ' in '.strtolower(echo_time_hours($metadata['in__metadata_max_seconds'])) : '' ).' to complete';
+        $pitch_title = '<span class="icon-block"><i class="fas fa-flag"></i></span>&nbsp;'.$metadata['in__metadata_max_steps'].' step'.echo__s($metadata['in__metadata_max_steps']).( $has_time_estimate ? ' in '.strtolower(echo_time_hours($metadata['in__metadata_max_seconds'])) : '' );
 
         //If NOT private, Expand body to include Action Plan overview:
         $CI =& get_instance();
