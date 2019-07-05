@@ -60,7 +60,7 @@ if(isset($session_en['en_id']) && count($referrer_en) == 0){
 } else {
 
     //Give option to add:
-    echo '<a class="btn btn-primary tag-manager-get-started" href="https://m.me/askmench?ref='.( count($referrer_en) > 0 ? 'GETSTARTED_'.$referrer_en['en_id'].'_'.$in['in_id'] : $in['in_id'] ).'" style="display: inline-block; padding:12px 36px;">Get Started&nbsp;&nbsp;&nbsp;<i class="fas fa-angle-double-right"></i></a>';
+    echo '<a class="btn btn-primary tag-manager-get-started" href="https://m.me/askmench?ref='.( count($referrer_en) > 0 ? 'GETSTARTED_'.$referrer_en['en_id'].'_'.$in['in_id'] : $in['in_id'] ).'" style="display: inline-block; padding:12px 36px; font-size: 1.3em;">Get Started&nbsp;&nbsp;&nbsp;<i class="fas fa-angle-double-right"></i></a>';
 
 }
 

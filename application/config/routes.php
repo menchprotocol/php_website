@@ -2,7 +2,7 @@
 defined('BASEPATH') OR exit('No direct script access allowed');
 
 //General:
-$route['404_override']          = 'other/404_page_not_found';
+$route['404_override']          = 'admin/page_not_found';
 $route['translate_uri_dashes']  = FALSE;
 $route['default_controller']    = "intents";
 

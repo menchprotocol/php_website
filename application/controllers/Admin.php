@@ -13,6 +13,15 @@ class Admin extends CI_Controller
     }
 
 
+    function page_not_found(){
+        $this->load->view('view_shared/public_header', array(
+            'session_en' => $this->session->userdata('user'),
+            'title' => 'Page not found',
+        ));
+        $this->load->view('view_admin/page_not_found');
+        $this->load->view('view_shared/public_footer');
+    }
+
     function tools($action = null, $command1 = null, $command2 = null)
     {
 
