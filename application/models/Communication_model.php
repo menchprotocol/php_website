@@ -69,7 +69,7 @@ class Communication_model extends CI_Model
 
 
         //Did we have ane error in message validation?
-        if (!$msg_dispatching['status']) {
+        if (!$msg_dispatching['status'] || !isset($msg_dispatching['output_messages'])) {
 
             //Log Error Link:
             $this->Links_model->ln_create(array(
