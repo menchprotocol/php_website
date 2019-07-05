@@ -692,7 +692,8 @@ class Entities_model extends CI_Model
         }
 
 
-        $return_data = array_merge(
+        //Return results:
+        return array_merge(
 
             $domain_analysis, //Make domain analysis data available as well...
 
@@ -707,9 +708,6 @@ class Entities_model extends CI_Model
                 'en_url' => $en_url,
             )
         );
-
-        //Return results:
-        return $return_data;
     }
 
     function en_search_match($en_parent_id, $value)

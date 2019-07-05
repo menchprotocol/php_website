@@ -499,7 +499,7 @@ class Actionplan_model extends CI_Model
         } else {
 
             $this->Communication_model->dispatch_message(
-                'I added the intention to ' . $ins[0]['in_outcome'] . ' to your Action Plan 🙌 /link:Open 🚩Action Plan:https://mench.com/actionplan/' . $ins[0]['in_id'],
+                'Ok I added this intention to your Action Plan 🙌 /link:Open 🚩Action Plan:https://mench.com/actionplan/' . $ins[0]['in_id'],
                 array('en_id' => $en_id),
                 true
             );

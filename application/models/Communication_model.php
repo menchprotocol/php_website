@@ -428,7 +428,7 @@ class Communication_model extends CI_Model
          * Transform URLs into Entity + Links
          *
          * */
-        if (count($string_references['ref_urls']) > 0) {
+        if ($strict_validation && count($string_references['ref_urls']) > 0) {
 
 
             //BUGGY

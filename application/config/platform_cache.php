@@ -11,7 +11,7 @@ defined('BASEPATH') OR exit('No direct script access allowed');
  *
  */
 
-//Generated 2019-07-04 08:31:44 PST
+//Generated 2019-07-04 11:17:00 PST
 
 //User Step Answered:
 $config['en_ids_6157'] = array(6684,6685,7231);
@@ -1137,7 +1137,7 @@ $config['en_all_6676'] = array(
 );
 
 //OR Intents:
-$config['en_ids_6193'] = array(6684,6685,7231,7230,6907);
+$config['en_ids_6193'] = array(6684,6685,7231,6907);
 $config['en_all_6193'] = array(
     6684 => array(
         'm_icon' => '<i class="fas fa-check"></i>',
@@ -1156,12 +1156,6 @@ $config['en_all_6193'] = array(
         'm_name' => 'Multiple Answers',
         'm_desc' => 'Allows the user to choose multiple answers from the list of children',
         'm_parents' => array(6914,6157,6193),
-    ),
-    7230 => array(
-        'm_icon' => '<i class="fas fa-random"></i>',
-        'm_name' => 'Random Path',
-        'm_desc' => 'A path would be randomly chosen by Mench as way to A/B test two paths',
-        'm_parents' => array(6193),
     ),
     6907 => array(
         'm_icon' => '<i class="fas fa-lock"></i>',
