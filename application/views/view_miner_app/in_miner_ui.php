@@ -130,6 +130,6 @@ $in_filters = in_get_filters(true);
 
 
     <div class="<?= $this->config->item('css_column_2') ?>">
-        <?php $this->load->view('view_intents/in_right_column'); ?>
+        <?php $this->load->view('view_miner_app/in_right_column'); ?>
     </div>
 </div>

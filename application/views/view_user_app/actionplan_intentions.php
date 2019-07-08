@@ -28,7 +28,7 @@ if(count($user_intents) > 0){
         echo '<span class="actionplan_remove" in-id="'.$ln['in_id'].'" data-toggle="tooltip" title="Cancel this intention and stop receiving updates" data-placement="left"><i class="fas fa-comment-times" style="font-size:1.6em;"></i></span>';
         echo '</span>';
 
-        $completion_rate = $this->Actionplan_model->actionplan_completion_progress($session_en['en_id'], $ln);
+        $completion_rate = $this->User_app_model->actionplan_completion_progress($session_en['en_id'], $ln);
 
         echo '<span class="actionplan-title in-title-'.$ln['in_id'].'">' . $ln['in_outcome'] . '</span>';
         echo '<div class="actionplan-overview">';
@@ -65,7 +65,7 @@ if(count($this->Links_model->ln_fetch(array(
         'ln_parent_entity_id' => 1308, //Miners
     ))) > 0){
     $timestamp = time();
-    echo '<div style="text-align: right;"><a href="/messenger/actionplan_reset_progress/'.$session_en['en_id'].'/'.$timestamp.'/'.md5($session_en['en_id'] . $this->config->item('actionplan_salt') . $timestamp).'" style="font-size:0.6em; color:#CCC;"><i class="fas fa-trash-alt"></i> Clear All</a></div>';
+    echo '<div style="text-align: right;"><a href="/user_app/actionplan_reset_progress/'.$session_en['en_id'].'/'.$timestamp.'/'.md5($session_en['en_id'] . $this->config->item('actionplan_salt') . $timestamp).'" style="font-size:0.6em; color:#CCC;"><i class="fas fa-trash-alt"></i> Clear All</a></div>';
 }
 
 ?>

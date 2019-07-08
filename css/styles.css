@@ -186,13 +186,39 @@ h1, .h1 {
     color: #2f2739;
 }
 
+.second-level-link {
+    text-decoration: none !important;
+}
+
+.second-level-body{
+    padding:0 0 7px 10px !important;
+    border-left: 1px solid #555 !important;
+    margin:0 0 10px 11px;
+}
+
 .panel-primary > .panel-heading + .panel-collapse > .panel-body {
-    border-left: 3px solid #222;
-    margin-left: 12px;
+    border-left: 1px solid #555;
+    margin-left: 15px;
     font-size: 1.2em !important;
     padding-left: 16px !important;
     margin-bottom: 20px;
     padding-bottom: 10px !important;
+}
+
+.company-signup{
+    background-color: #EFEFEF;
+    border-radius: 5px;
+    padding: 10px;
+}
+
+.company-signup .mini-header{
+    font-size: 0.8em;
+    font-weight: 500 !important;
+    margin-top:12px;
+}
+
+.company-signup .white-wrapper{
+    margin-bottom:15px;
 }
 
 .skippable a {
@@ -497,6 +523,10 @@ input::-webkit-inner-spin-button {
 
 .icon-block{
     width: 26px; display: inline-block; text-align: center;
+}
+
+.icon-block-lg{
+    width: 34px; display: inline-block; text-align: center;
 }
 
 
@@ -4253,7 +4283,7 @@ h4 .tip-badge {
 
 .panel-body a {
     font-size: 1em !important;
-    font-weight: 500 !important;
+    font-weight: 300 !important;
     text-decoration: underline;
 }
 
@@ -4263,7 +4293,7 @@ h4 .tip-badge {
 
 
 .public_ap {
-    margin:5px 0 0 5px;
+    margin:5px 0 0 0;
 }
 
 .inner_actionplan{

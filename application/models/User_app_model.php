@@ -1,6 +1,6 @@
 <?php if (!defined('BASEPATH')) exit('No direct script access allowed');
 
-class Actionplan_model extends CI_Model
+class User_app_model extends CI_Model
 {
 
     /*
@@ -68,7 +68,7 @@ class Actionplan_model extends CI_Model
 
 
         //Process on-complete automations:
-        $this->Actionplan_model->actionplan_completion_checks($en_id, $in, true, true);
+        $this->User_app_model->actionplan_completion_checks($en_id, $in, true, true);
 
 
         //All good:
@@ -109,7 +109,7 @@ class Actionplan_model extends CI_Model
             } elseif($is_expansion){
 
                 //Completed step that has OR expansions, check recursively to see if next step within here:
-                $found_in_id = $this->Actionplan_model->actionplan_step_next_find($en_id, $completed_steps[0]);
+                $found_in_id = $this->User_app_model->actionplan_step_next_find($en_id, $completed_steps[0]);
 
                 if($found_in_id > 0){
                     return $found_in_id;
@@ -131,7 +131,7 @@ class Actionplan_model extends CI_Model
                 }
 
                 //Completed step that has OR expansions, check recursively to see if next step within here:
-                $found_in_id = $this->Actionplan_model->actionplan_step_next_find($en_id, $unlocked_conditions[0]);
+                $found_in_id = $this->User_app_model->actionplan_step_next_find($en_id, $unlocked_conditions[0]);
 
                 if($found_in_id > 0){
                     return $found_in_id;
@@ -187,7 +187,7 @@ class Actionplan_model extends CI_Model
         foreach($user_intents as $user_intent){
 
             //Find first incomplete step for this Action Plan intention:
-            $next_in_id = $this->Actionplan_model->actionplan_step_next_find($en_id, $user_intent);
+            $next_in_id = $this->User_app_model->actionplan_step_next_find($en_id, $user_intent);
 
             if($next_in_id > 0){
                 //We found the next incomplete step, return:
@@ -221,7 +221,7 @@ class Actionplan_model extends CI_Model
                 }
 
                 //Yes, communicate it:
-                $this->Actionplan_model->actionplan_step_next_echo($en_id, $next_in_id);
+                $this->User_app_model->actionplan_step_next_echo($en_id, $next_in_id);
 
             } else {
 
@@ -358,7 +358,7 @@ class Actionplan_model extends CI_Model
         }
 
         //Process on-complete automations:
-        $this->Actionplan_model->actionplan_completion_checks($en_id, $ins[0], true, false);
+        $this->User_app_model->actionplan_completion_checks($en_id, $ins[0], true, false);
 
         //Return number of skipped steps:
         return count($flat_common_steps);
@@ -384,7 +384,7 @@ class Actionplan_model extends CI_Model
         ), array('in_parent'), 0, 0, array('ln_order' => 'ASC')) as $actionplan_in){
 
             //See progress rate so far:
-            $completion_rate = $this->Actionplan_model->actionplan_completion_progress($en_id, $actionplan_in);
+            $completion_rate = $this->User_app_model->actionplan_completion_progress($en_id, $actionplan_in);
 
             if($completion_rate['completion_percentage'] < 100){
                 //This is the top priority now:
@@ -519,13 +519,13 @@ class Actionplan_model extends CI_Model
          * */
 
         //Fetch top intention that being workined on now:
-        $top_priority = $this->Actionplan_model->actionplan_intention_focus($en_id);
+        $top_priority = $this->User_app_model->actionplan_intention_focus($en_id);
 
         if($top_priority){
             if($is_recommended || $top_priority['in']['in_id']==$ins[0]['in_id']){
 
                 //The newly added intent is the top priority, so let's initiate first message for action plan tree:
-                $this->Actionplan_model->actionplan_step_next_echo($en_id, $ins[0]['in_id']);
+                $this->User_app_model->actionplan_step_next_echo($en_id, $ins[0]['in_id']);
 
             } else {
 
@@ -573,7 +573,7 @@ class Actionplan_model extends CI_Model
 
 
         //First let's make sure this entire intent tree completed by the user:
-        $completion_rate = $this->Actionplan_model->actionplan_completion_progress($en_id, $in);
+        $completion_rate = $this->User_app_model->actionplan_completion_progress($en_id, $in);
         if($completion_rate['completion_percentage'] < 100){
             //Not completed, so can't go further up:
             return array();
@@ -618,7 +618,7 @@ class Actionplan_model extends CI_Model
 
 
             //Yes, Let's calculate user's score for this tree:
-            $user_marks = $this->Actionplan_model->actionplan_completion_marks($en_id, $in);
+            $user_marks = $this->User_app_model->actionplan_completion_marks($en_id, $in);
 
 
 
@@ -688,7 +688,7 @@ class Actionplan_model extends CI_Model
                     ));
 
                     //See if we also need to mark the child as complete:
-                    $this->Actionplan_model->actionplan_completion_auto_unlock($en_id, $conditional_step, 6997 /* User Step Score Unlock */);
+                    $this->User_app_model->actionplan_completion_auto_unlock($en_id, $conditional_step, 6997 /* User Step Score Unlock */);
 
                 }
             }
@@ -716,7 +716,7 @@ class Actionplan_model extends CI_Model
         if($is_bottom_level){
 
             //Fetch user intentions:
-            $user_intentions_ids = $this->Actionplan_model->actionplan_intention_ids($en_id);
+            $user_intentions_ids = $this->User_app_model->actionplan_intention_ids($en_id);
 
             //Fetch all parents trees for this intent
             $recursive_parents = $this->Intents_model->in_fetch_recursive_public_parents($in['in_id']);
@@ -746,7 +746,7 @@ class Actionplan_model extends CI_Model
 
                         //Now see if this child completion resulted in a full parent completion:
                         if(count($parent_ins) > 0){
-                            $unlock_steps_messages_recursive = $this->Actionplan_model->actionplan_completion_recursive_up($en_id, $parent_ins[0], false);
+                            $unlock_steps_messages_recursive = $this->User_app_model->actionplan_completion_recursive_up($en_id, $parent_ins[0], false);
                             if(count($unlock_steps_messages_recursive) < 1){
                                 //Nothing found in the recursive up, so there is no point to try to go further up:
                                 break;
@@ -802,7 +802,7 @@ class Actionplan_model extends CI_Model
 
 
         //Try to unlock steps:
-        $unlock_steps_messages = $this->Actionplan_model->actionplan_completion_recursive_up($en_id, $in);
+        $unlock_steps_messages = $this->User_app_model->actionplan_completion_recursive_up($en_id, $in);
 
 
         //Merge the two, if any:
@@ -1281,7 +1281,7 @@ class Actionplan_model extends CI_Model
                     if(!$progress_completed){
 
                         //Need to select answer:
-                        $next_step_message .= '<a href="/messenger/actionplan_answer_question/' . $en_id . '/' . $ins[0]['in_id'] . '/' . $child_in['in_id'] . '/' . md5($this->config->item('actionplan_salt') . $child_in['in_id'] . $ins[0]['in_id'] . $en_id) . '" class="list-group-item">';
+                        $next_step_message .= '<a href="/user_app/actionplan_answer_question/' . $en_id . '/' . $ins[0]['in_id'] . '/' . $child_in['in_id'] . '/' . md5($this->config->item('actionplan_salt') . $child_in['in_id'] . $ins[0]['in_id'] . $en_id) . '" class="list-group-item">';
 
                     } elseif($was_selected){
 
@@ -1447,7 +1447,7 @@ class Actionplan_model extends CI_Model
         if(isset($new_progression_link['ln_status_entity_id']) && in_array($new_progression_link['ln_status_entity_id'], $this->config->item('en_ids_7359') /* Link Statuses Public */)){
 
             //Process on-complete automations:
-            $on_complete_messages = $this->Actionplan_model->actionplan_completion_checks($en_id, $ins[0], false, $step_progress_made);
+            $on_complete_messages = $this->User_app_model->actionplan_completion_checks($en_id, $ins[0], false, $step_progress_made);
 
             if($step_progress_made && count($on_complete_messages) > 0){
                 //Add on-complete messages (if any) to the current messages:
@@ -1478,7 +1478,7 @@ class Actionplan_model extends CI_Model
             $next_in_id = 0;
             if(!$has_children){
                 //Let's see if we have a next step:
-                $next_in_id = $this->Actionplan_model->actionplan_step_next_go($en_id, false);
+                $next_in_id = $this->User_app_model->actionplan_step_next_go($en_id, false);
             }
 
             if($has_children || $next_in_id>0){
@@ -1493,7 +1493,7 @@ class Actionplan_model extends CI_Model
 
                 } else {
 
-                    $next_step_message .= '<div style="margin: 15px 0 0;"><a href="/messenger/actionplan/next" class="btn btn-md btn-primary">Next Step <i class="fas fa-angle-right"></i></a></div>';
+                    $next_step_message .= '<div style="margin: 15px 0 0;"><a href="/user_app/actionplan/next" class="btn btn-md btn-primary">Next Step <i class="fas fa-angle-right"></i></a></div>';
 
                 }
             } else {
@@ -1705,7 +1705,7 @@ class Actionplan_model extends CI_Model
 
                     if(count($ins) > 0){
                         //Fetch recursive:
-                        $recursive_stats = $this->Actionplan_model->actionplan_completion_marks($en_id, array_merge($expansion_in, $ins[0]), false);
+                        $recursive_stats = $this->User_app_model->actionplan_completion_marks($en_id, array_merge($expansion_in, $ins[0]), false);
                         $metadata_this['steps_answered_count'] += $recursive_stats['steps_answered_count'];
 
                         $this_answer_marks = $answer_marks_index[$expansion_in['ln_child_intent_id']];
@@ -1778,7 +1778,7 @@ class Actionplan_model extends CI_Model
             ), array('in_child')) as $expansion_in) {
 
                 //Fetch recursive:
-                $recursive_stats = $this->Actionplan_model->actionplan_completion_progress($en_id, $expansion_in, false);
+                $recursive_stats = $this->User_app_model->actionplan_completion_progress($en_id, $expansion_in, false);
 
                 //Addup completion stats for this:
                 $metadata_this['steps_total'] += $recursive_stats['steps_total'];
@@ -1803,7 +1803,7 @@ class Actionplan_model extends CI_Model
             ), array('in_child')) as $expansion_in) {
 
                 //Fetch recursive:
-                $recursive_stats = $this->Actionplan_model->actionplan_completion_progress($en_id, $expansion_in, false);
+                $recursive_stats = $this->User_app_model->actionplan_completion_progress($en_id, $expansion_in, false);
 
                 //Addup completion stats for this:
                 $metadata_this['steps_total'] += $recursive_stats['steps_total'];

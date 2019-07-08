@@ -117,6 +117,7 @@ class Intents extends CI_Controller
         //Fetch user session:
         $session_en = en_auth(array(1308));
 
+
         //Fetch data:
         $ins = $this->Intents_model->in_fetch(array(
             'in_id' => $in_id,
@@ -151,7 +152,7 @@ class Intents extends CI_Controller
             }
 
             //Show white-label header:
-            $this->load->view('view_shared/white_label_header', array(
+            $this->load->view('view_user_app/white_label_header', array(
                 'in' => $ins[0],
                 'referrer_en' => $referrer_ens[0],
                 'session_en' => $session_en,
@@ -159,7 +160,7 @@ class Intents extends CI_Controller
             ));
         } else {
             //Mench header:
-            $this->load->view('view_shared/public_header', array(
+            $this->load->view('view_user_app/public_header', array(
                 'in' => $ins[0],
                 'session_en' => $session_en,
                 'title' => echo_in_outcome($ins[0]['in_outcome'], true),
@@ -167,7 +168,7 @@ class Intents extends CI_Controller
         }
 
         //Load specific view based on intent status:
-        $this->load->view(( $ins[0]['in_status_entity_id']==7351 /* Intent Featured */ ? 'view_intents/in_starting_point' : 'view_intents/in_passing_point'  ), array(
+        $this->load->view(( $ins[0]['in_status_entity_id']==7351 /* Intent Featured */ ? 'view_user_app/in_starting_point' : 'view_user_app/in_passing_point'  ), array(
             'in' => $ins[0],
             'referrer_en' => ( $referrer_en_id > 0 ? $referrer_ens[0] : array() ),
             'session_en' => $session_en,
@@ -176,10 +177,10 @@ class Intents extends CI_Controller
 
         if($referrer_en_id > 0){
             //Show white-label footer:
-            $this->load->view('view_shared/white_label_footer');
+            $this->load->view('view_user_app/white_label_footer');
         } else {
             //Mench footer:
-            $this->load->view('view_shared/public_footer');
+            $this->load->view('view_user_app/public_footer');
         }
     }
 
@@ -272,9 +273,9 @@ class Intents extends CI_Controller
         ));
 
         //Load views:
-        $this->load->view('view_shared/platform_header', array( 'title' => $ins[0]['in_outcome'].' | Intents' ));
-        $this->load->view('view_intents/in_miner_ui', array( 'in' => $ins[0] ));
-        $this->load->view('view_shared/platform_footer');
+        $this->load->view('view_miner_app/miner_app_header', array( 'title' => $ins[0]['in_outcome'].' | Intents' ));
+        $this->load->view('view_miner_app/in_miner_ui', array( 'in' => $ins[0] ));
+        $this->load->view('view_miner_app/miner_app_footer');
 
     }
 
@@ -1150,13 +1151,13 @@ class Intents extends CI_Controller
         $_GET['skip_header'] = 1;
 
         //Load view:
-        $this->load->view('view_shared/platform_header', array(
+        $this->load->view('view_miner_app/miner_app_header', array(
             'title' => 'Intent #' . $in_id . ' Messages',
         ));
-        $this->load->view('view_intents/in_messages_frame', array(
+        $this->load->view('view_miner_app/in_messages_frame', array(
             'in_id' => $in_id,
         ));
-        $this->load->view('view_shared/platform_footer');
+        $this->load->view('view_miner_app/miner_app_footer');
 
     }
 

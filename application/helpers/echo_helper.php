@@ -729,7 +729,7 @@ function echo_actionplan_step_child($en_id, $in, $link_status, $is_unlocked_step
 
     } else {
 
-        $completion_rate = $CI->Actionplan_model->actionplan_completion_progress($en_id, $in);
+        $completion_rate = $CI->User_app_model->actionplan_completion_progress($en_id, $in);
 
 
         //Open list:
@@ -1206,12 +1206,12 @@ function echo_public_actionplan($in, $autoexpand){
         $is_private = (in_array($in_level2['in_type_entity_id'], $CI->config->item('en_ids_7366')));
         if($is_private){
 
-            $has_content = false;
+            $has_level2_content = false;
 
         } else {
 
             //Level 3 intents:
-            $grandchildren_ins = $CI->Links_model->ln_fetch(array(
+            $in_level2_children = $CI->Links_model->ln_fetch(array(
                 'ln_status_entity_id IN (' . join(',', $CI->config->item('en_ids_7359')) . ')' => null, //Link Statuses Public
                 'in_status_entity_id IN (' . join(',', $CI->config->item('en_ids_7355')) . ')' => null, //Intent Statuses Public
                 'ln_type_entity_id' => 4228, //Intent Link Regular Step
@@ -1226,7 +1226,7 @@ function echo_public_actionplan($in, $autoexpand){
             ), array(), 0, 0, array('ln_order' => 'ASC'));
 
             //Determine intent type/settings:
-            $has_content = (count($grandchildren_ins)>0 || count($in_level2_messages)>0);
+            $has_level2_content = (count($in_level2_children)>0 || count($in_level2_messages)>0);
 
         }
 
@@ -1240,19 +1240,18 @@ function echo_public_actionplan($in, $autoexpand){
 
         $return_html .= '<h4 class="panel-title">';
 
-        if($has_content){
+        if($has_level2_content){
             $return_html .= '<a role="button" data-toggle="collapse" data-parent="#open' . $in_level2_counter . '" href="#collapse' . $in_level2_counter . '" aria-expanded="' . ($autoexpand ? 'true' : 'false') . '" aria-controls="collapse' . $in_level2_counter . '">';
-            $return_html .= '<span class="icon-block"><i class="fas fa-flag"></i></span>';
+            $return_html .= '<span class="icon-block-lg"><i class="fal fa-plus-circle"></i></span>';
         } else {
-            $return_html .= '<span class="icon-block"><i class="far fa-check-circle"></i></span>';
+            $return_html .= '<span class="icon-block-lg"><i class="fal` fa-check-circle"></i></span>';
         }
 
 
-        //$return_html .= ( in_is_or($in['in_type_entity_id']) ? 'Option #'. ($in_level2_counter + 1).': ' : ''); //Hide for now to simplify UI
-        $return_html .= '&nbsp;<span id="title-' . $in_level2['in_id'] . '">' . echo_in_outcome($in_level2['in_outcome'], false, false, false, $common_prefix) . '</span>';
+        $return_html .= '<span id="title-' . $in_level2['in_id'] . '">' . echo_in_outcome($in_level2['in_outcome'], false, false, false, $common_prefix) . '</span>';
 
 
-        if($has_content){
+        if($has_level2_content){
             $return_html .= '</a>';
         }
 
@@ -1260,47 +1259,84 @@ function echo_public_actionplan($in, $autoexpand){
         $return_html .= '</div>';
 
 
-        //Level 2 body:
-        $return_html .= '<div id="collapse' . $in_level2_counter . '" class="panel-collapse collapse ' . ($autoexpand ? 'in' : 'out') . '" role="tabpanel" aria-labelledby="heading' . $in_level2_counter . '">';
-        $return_html .= '<div class="panel-body" style="padding:5px 0 0 25px; font-size:0.85em !important;">';
-
-
-        //Time Estimate:
-        $in_level2_time = echo_time_range($in_level2, false);
-        if ($in_level2_time) {
-            $return_html .= ' <div class="action-plan-time"><i class="fas fa-clock" style="width:16px; text-transform: none !important;"></i>&nbsp;' . $in_level2_time . ' to Complete</div>';
-        }
 
         //Messages:
-        if($has_content){
+        if($has_level2_content){
+
+            //Level 2 body:
+            $return_html .= '<div id="collapse' . $in_level2_counter . '" class="panel-collapse collapse ' . ($autoexpand ? 'in' : 'out') . '" role="tabpanel" aria-labelledby="heading' . $in_level2_counter . '">';
+            $return_html .= '<div class="panel-body" style="padding:5px 0 0 25px; font-size:0.85em !important;">';
+
+
             foreach ($in_level2_messages as $ln) {
                 $return_html .= $CI->Communication_model->dispatch_message($ln['ln_content']);
             }
-        }
+
+            if (count($in_level2_children) > 0) {
+
+                //See if they have a common base:
+                $common_prefix_granchild = common_prefix($in_level2_children);
+
+                //List level 3:
+                $return_html .= '<ul class="action-plan-sub-list">';
+                foreach ($in_level2_children as $in_level3_counter => $in_level3) {
+
+                    //Is this private?
+                    $is_private = (in_array($in_level3['in_type_entity_id'], $CI->config->item('en_ids_7366')));
+                    if($is_private){
+
+                        $in_level3_messages = array();
+
+                    } else {
+
+                        //Fetch messages:
+                        $in_level3_messages = $CI->Links_model->ln_fetch(array(
+                            'ln_status_entity_id IN (' . join(',', $CI->config->item('en_ids_7359')) . ')' => null, //Link Statuses Public
+                            'ln_type_entity_id' => 4231, //Intent Note Messages
+                            'ln_child_intent_id' => $in_level3['in_id'],
+                        ), array(), 0, 0, array('ln_order' => 'ASC'));
+
+                    }
 
 
-        if ($has_content && count($grandchildren_ins) > 0) {
+                    $return_html .= '<li>';
 
-            //See if they have a common base:
-            $common_prefix_granchild = common_prefix($grandchildren_ins);
 
-            //List level 3:
-            $return_html .= '<ul class="action-plan-sub-list">';
-            foreach ($grandchildren_ins as $in_level3_counter => $in_level3) {
+                    if(count($in_level3_messages) > 0){
+                        $return_html .= '<a role="button" data-toggle="collapse" class="second-level-link" data-parent="#open' . $in_level2_counter . '-'.$in_level3_counter.'" href="#collapse' . $in_level2_counter . '-'.$in_level3_counter.'" aria-expanded="' . ($autoexpand ? 'true' : 'false') . '" aria-controls="collapse' . $in_level2_counter . '">';
+                        $return_html .= '<span class="icon-block"><i class="fal fa-plus-circle"></i></span>';
+                    } else {
+                        $return_html .= '<span class="icon-block"><i class="fal fa-check-circle"></i></span>';
+                    }
 
-                $return_html .= '<li><span class="icon-block"><i class="fas fa-flag"></i></span>' . ( in_is_or($in_level2['in_type_entity_id']) ? 'Option #' . ($in_level3_counter + 1) . ': ' : '') . echo_in_outcome($in_level3['in_outcome'], false, false, false, $common_prefix_granchild);
-                $in_level3_time = echo_time_range($in_level3, true);
-                if ($in_level3_time) {
-                    $return_html .= ' <span style="font-size: 0.9em; font-weight: 300;"><i class="fal fa-clock"></i>' . $in_level3_time . '</span>';
+                    $return_html .= echo_in_outcome($in_level3['in_outcome'], false, false, false, $common_prefix_granchild);
+
+                    if(count($in_level3_messages) > 0){
+                        $return_html .= '</a>';
+                    }
+
+                    $return_html .= '</li>';
+
+
+                    if(count($in_level3_messages) > 0){
+                        //Level 2 body:
+                        $return_html .= '<div id="collapse' . $in_level2_counter . '-'.$in_level3_counter.'" class="panel-collapse collapse ' . ($autoexpand ? 'in' : 'out') . '" role="tabpanel" aria-labelledby="heading' . $in_level2_counter . '-'.$in_level3_counter.'">';
+                        $return_html .= '<div class="panel-body second-level-body">';
+                        foreach ($in_level3_messages as $ln) {
+                            $return_html .= $CI->Communication_model->dispatch_message($ln['ln_content']);
+                        }
+                        $return_html .= '</div></div>';
+                    }
                 }
-                $return_html .= '</li>';
+                $return_html .= '</ul>';
 
             }
-            $return_html .= '</ul>';
+
+            $return_html .= '</div></div>';
 
         }
 
-        $return_html .= '</div></div></div></div>';
+        $return_html .= '</div></div>';
 
     }
     $return_html .= '</div>';
@@ -2179,7 +2215,7 @@ function echo_en($en, $level, $is_parent = false)
         $ui .= '<span class="icon-top-left" data-toggle="tooltip" data-placement="right" title="User connected to Mench on Messenger">';
         if(en_auth(array(1281))){
             //Give Facebook profile ping option to Moderators:
-            $ui .= '<a href="/messenger/api_fetch_profile/'.$en['en_id'].'" target="_blank"><i class="fas fa-badge-check blue" style="font-size: 1.1em;"></i></a>';
+            $ui .= '<a href="/user_app/api_fetch_profile/'.$en['en_id'].'" target="_blank"><i class="fas fa-badge-check blue" style="font-size: 1.1em;"></i></a>';
         } else {
             $ui .= '<i class="fas fa-badge-check blue" style="font-size: 1.1em;"></i>';
         }

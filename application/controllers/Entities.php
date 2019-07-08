@@ -17,11 +17,11 @@ class Entities extends CI_Controller
         $session_en = en_auth(array(1308), true);
 
         //Show frame to be loaded in modal:
-        $this->load->view('view_shared/platform_header', array(
+        $this->load->view('view_miner_app/miner_app_header', array(
             'title' => 'Add Source Wizard',
         ));
-        $this->load->view('view_entities/add_source_frame');
-        $this->load->view('view_shared/platform_footer');
+        $this->load->view('view_miner_app/en_add_source_wizard');
+        $this->load->view('view_miner_app/miner_app_footer');
     }
 
 
@@ -112,14 +112,14 @@ class Entities extends CI_Controller
         }
 
         //Load views:
-        $this->load->view('view_shared/platform_header', array(
+        $this->load->view('view_miner_app/miner_app_header', array(
             'title' => $ens[0]['en_name'] . ' | Entities',
             'message' => $message, //Possible mass-action message for UI:
         ));
-        $this->load->view('view_entities/en_miner_ui', array(
+        $this->load->view('view_miner_app/en_miner_ui', array(
             'entity' => $ens[0],
         ));
-        $this->load->view('view_shared/platform_footer');
+        $this->load->view('view_miner_app/miner_app_footer');
 
     }
 
@@ -850,7 +850,7 @@ class Entities extends CI_Controller
         $_GET['skip_header'] = 1;
 
         //Show frame to be loaded in modal:
-        $this->load->view('view_shared/platform_header', array(
+        $this->load->view('view_miner_app/miner_app_header', array(
             'title' => 'Managed Intent Notes',
         ));
         echo '<div id="list-messages" class="list-group grey-list">';
@@ -858,7 +858,7 @@ class Entities extends CI_Controller
             echo echo_en_messages($ln);
         }
         echo '</div>';
-        $this->load->view('view_shared/platform_footer');
+        $this->load->view('view_miner_app/miner_app_footer');
     }
 
 
@@ -884,7 +884,7 @@ class Entities extends CI_Controller
 
             //Dispatch the password reset Intent:
             $this->Communication_model->dispatch_message(
-                'Hi /firstname 👋​ You can reset your Mench password here: /link:🔑 Reset Password:https://mench.com/messenger/password_reset?en_id=' . $matching_users[0]['en_id'] . '&timestamp=' . $timestamp . '&p_hash=' . md5($matching_users[0]['en_id'] . $this->config->item('password_salt') . $timestamp) . ' (Link active for 24 hours)',
+                'Hi /firstname 👋​ You can reset your Mench password here: /link:🔑 Reset Password:https://mench.com/user_app/password_reset?en_id=' . $matching_users[0]['en_id'] . '&timestamp=' . $timestamp . '&p_hash=' . md5($matching_users[0]['en_id'] . $this->config->item('password_salt') . $timestamp) . ' (Link active for 24 hours)',
                 $matching_users[0],
                 true
             );

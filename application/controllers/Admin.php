@@ -13,14 +13,7 @@ class Admin extends CI_Controller
     }
 
 
-    function page_not_found(){
-        $this->load->view('view_shared/public_header', array(
-            'session_en' => $this->session->userdata('user'),
-            'title' => 'Page not found',
-        ));
-        $this->load->view('view_admin/page_not_found');
-        $this->load->view('view_shared/public_footer');
-    }
+
 
     function tools($action = null, $command1 = null, $command2 = null)
     {
@@ -31,16 +24,16 @@ class Admin extends CI_Controller
         $session_en = en_auth(array(1281), true);
 
         //Load tools:
-        $this->load->view('view_shared/platform_header', array(
+        $this->load->view('view_miner_app/miner_app_header', array(
             'title' => 'Moderation Tools',
         ));
-        $this->load->view('view_admin/admin_tools' , array(
+        $this->load->view('view_admin_app/admin_tools' , array(
             'action' => $action,
             'command1' => $command1,
             'command2' => $command2,
             'session_en' => $session_en,
         ));
-        $this->load->view('view_shared/platform_footer');
+        $this->load->view('view_miner_app/miner_app_footer');
     }
 
 
@@ -48,11 +41,11 @@ class Admin extends CI_Controller
     {
         $session_en = en_auth(array(1308)); //Just be logged in to browse
         $en_all_7368 = $this->config->item('en_all_7368');
-        $this->load->view(($session_en ? 'view_shared/platform_header' : 'view_shared/public_header'), array(
+        $this->load->view(($session_en ? 'view_miner_app/miner_app_header' : 'view_user_app/public_header'), array(
             'title' => $en_all_7368[7161]['m_name'],
         ));
-        $this->load->view('view_admin/mench_dashboard');
-        $this->load->view(($session_en ? 'view_shared/platform_footer' : 'view_shared/public_footer'));
+        $this->load->view('view_miner_app/mench_dashboard');
+        $this->load->view(($session_en ? 'view_miner_app/miner_app_footer' : 'view_user_app/public_footer'));
     }
 
 

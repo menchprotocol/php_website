@@ -14,7 +14,7 @@ function actionplan_sort_save() {
 
     //Update Action Plan order:
     if(sort_rank > 0){
-        $.post("/messenger/actionplan_sort_save", {en_miner_id: en_miner_id, new_actionplan_order: new_actionplan_order}, function (data) {
+        $.post("/user_app/actionplan_sort_save", {en_miner_id: en_miner_id, new_actionplan_order: new_actionplan_order}, function (data) {
             //Update UI to confirm with user:
             if (!data.status) {
                 //There was some sort of an error returned!
@@ -68,7 +68,7 @@ function apply_stop(){
     $('#markCompleteModal').modal('hide');
 
     //Save changes:
-    $.post("/messenger/actionplan_stop_save", {en_miner_id: en_miner_id, in_id: in_id, stop_method_id:stop_method_id, stop_feedback:stop_feedback}, function (data) {
+    $.post("/user_app/actionplan_stop_save", {en_miner_id: en_miner_id, in_id: in_id, stop_method_id:stop_method_id, stop_feedback:stop_feedback}, function (data) {
         //Update UI to confirm with user:
         if (!data.status) {
 

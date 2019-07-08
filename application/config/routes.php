@@ -2,7 +2,7 @@
 defined('BASEPATH') OR exit('No direct script access allowed');
 
 //General:
-$route['404_override']          = 'admin/page_not_found';
+$route['404_override']          = 'user_app/page_not_found';
 $route['translate_uri_dashes']  = FALSE;
 $route['default_controller']    = "intents";
 
@@ -16,11 +16,11 @@ $route['(:num)_(:num)']         = "intents/in_public_ui/$2/$1"; //Public Intent 
 $route['(:num)']                = "intents/in_public_ui/$1"; //Public Intent Landing Page
 
 //Users:
-$route['login']                 = "messenger/user_login";
-$route['logout']                = "messenger/logout";
-$route['myaccount']             = "messenger/myaccount";
-$route['actionplan']            = "messenger/actionplan/0";
-$route['actionplan/(:num)']     = "messenger/actionplan/$1";
+$route['login']                 = "user_app/user_login";
+$route['logout']                = "user_app/logout";
+$route['myaccount']             = "user_app/myaccount";
+$route['actionplan']            = "user_app/actionplan/0";
+$route['actionplan/(:num)']     = "user_app/actionplan/$1";
 
 //Admin:
 $route['dashboard']             = "admin/dashboard";

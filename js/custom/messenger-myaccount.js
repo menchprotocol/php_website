@@ -33,7 +33,7 @@ function radio_update(parent_en_id, selected_en_id, enable_mulitiselect){
         $('.radio-'+parent_en_id+' .item-'+selected_en_id).addClass('active');
     }
 
-    $.post("/messenger/myaccount_radio_update", {
+    $.post("/user_app/myaccount_radio_update", {
         en_miner_id: en_miner_id,
         parent_en_id: parent_en_id,
         selected_en_id: selected_en_id,
@@ -68,7 +68,7 @@ function save_full_name(){
     $('.save_full_name').html('<span><i class="fas fa-spinner fa-spin"></i> Saving...</span>').hide().fadeIn();
 
     //Save the rest of the content:
-    $.post("/messenger/myaccount_save_full_name", {
+    $.post("/user_app/myaccount_save_full_name", {
         en_id: en_miner_id,
         en_name: $('#en_name').val(),
     }, function (data) {
@@ -99,7 +99,7 @@ function save_phone(){
     $('.save_phone').html('<span><i class="fas fa-spinner fa-spin"></i> Saving...</span>').hide().fadeIn();
 
     //Save the rest of the content:
-    $.post("/messenger/myaccount_save_phone", {
+    $.post("/user_app/myaccount_save_phone", {
         en_id: en_miner_id,
         en_phone: $('#en_phone').val(),
     }, function (data) {
@@ -130,7 +130,7 @@ function save_email(){
     $('.save_email').html('<span><i class="fas fa-spinner fa-spin"></i> Saving...</span>').hide().fadeIn();
 
     //Save the rest of the content:
-    $.post("/messenger/myaccount_save_email", {
+    $.post("/user_app/myaccount_save_email", {
         en_id: en_miner_id,
         en_email: $('#en_email').val(),
     }, function (data) {
@@ -162,7 +162,7 @@ function save_password(){
     $('.save_password').html('<span><i class="fas fa-spinner fa-spin"></i> Saving...</span>').hide().fadeIn();
 
     //Save the rest of the content:
-    $.post("/messenger/myaccount_save_password", {
+    $.post("/user_app/myaccount_save_password", {
         en_id: en_miner_id,
         en_password: $('#en_password').val(),
     }, function (data) {
@@ -202,7 +202,7 @@ function save_social_profiles(){
     });
 
     //Save the rest of the content:
-    $.post("/messenger/myaccount_save_social_profiles", {
+    $.post("/user_app/myaccount_save_social_profiles", {
         en_id: en_miner_id,
         social_profiles: social_profiles,
     }, function (data) {

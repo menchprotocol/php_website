@@ -1,7 +1,7 @@
 <?php
 defined('BASEPATH') OR exit('No direct script access allowed');
 
-class Messenger extends CI_Controller
+class User_app extends CI_Controller
 {
 
     function __construct()
@@ -19,15 +19,24 @@ class Messenger extends CI_Controller
         ));
 
         echo_json(array(
-            'next' => $this->Actionplan_model->actionplan_step_next_find(1, $ins[0]),
-            'completion' => $this->Actionplan_model->actionplan_completion_progress(1, $ins[0]),
-            'marks' => $this->Actionplan_model->actionplan_completion_marks(1, $ins[0]),
+            'next' => $this->User_app_model->actionplan_step_next_find(1, $ins[0]),
+            'completion' => $this->User_app_model->actionplan_completion_progress(1, $ins[0]),
+            'marks' => $this->User_app_model->actionplan_completion_marks(1, $ins[0]),
             'recursive_parents' => $this->Intents_model->in_fetch_recursive_public_parents($ins[0]['in_id']),
             'common_base' => $this->Intents_model->in_metadata_common_base($ins[0]),
 
         ));
     }
 
+
+    function page_not_found(){
+        $this->load->view('view_user_app/public_header', array(
+            'session_en' => $this->session->userdata('user'),
+            'title' => 'Page not found',
+        ));
+        $this->load->view('view_user_app/page_not_found');
+        $this->load->view('view_user_app/public_footer');
+    }
 
     function api_webhook($test = 0)
     {
@@ -731,11 +740,11 @@ class Messenger extends CI_Controller
          *
          * */
 
-        $this->load->view('view_shared/messenger_header', array(
+        $this->load->view('view_user_app/user_app_header', array(
             'title' => '👤 My Account',
         ));
-        $this->load->view('view_messenger/myaccount_frame');
-        $this->load->view('view_shared/messenger_footer');
+        $this->load->view('view_user_app/myaccount_frame');
+        $this->load->view('view_user_app/user_app_footer');
     }
 
     function myaccount_load($psid)
@@ -771,7 +780,7 @@ class Messenger extends CI_Controller
         ));
 
         //Load UI:
-        $this->load->view('view_messenger/myaccount_manage', array(
+        $this->load->view('view_user_app/myaccount_manage', array(
             'session_en' => $session_en,
         ));
 
@@ -782,9 +791,9 @@ class Messenger extends CI_Controller
         $data = array(
             'title' => 'Password Reset',
         );
-        $this->load->view('view_shared/messenger_header', $data);
-        $this->load->view('view_messenger/password_reset');
-        $this->load->view('view_shared/messenger_footer');
+        $this->load->view('view_user_app/user_app_header', $data);
+        $this->load->view('view_user_app/password_reset');
+        $this->load->view('view_user_app/user_app_footer');
     }
 
     function user_login()
@@ -796,11 +805,11 @@ class Messenger extends CI_Controller
             return redirect_message('/dashboard');
         }
 
-        $this->load->view('view_shared/public_header', array(
+        $this->load->view('view_user_app/public_header', array(
             'title' => 'Sign In',
         ));
-        $this->load->view('view_messenger/user_login');
-        $this->load->view('view_shared/public_footer');
+        $this->load->view('view_user_app/user_login');
+        $this->load->view('view_user_app/public_footer');
     }
 
     function login_process()
@@ -1557,7 +1566,7 @@ class Messenger extends CI_Controller
         }
 
         //Attempt to add intent to Action Plan:
-        if($this->Actionplan_model->actionplan_intention_add($session_en['en_id'], $_POST['in_id'])){
+        if($this->User_app_model->actionplan_intention_add($session_en['en_id'], $_POST['in_id'])){
             //All good:
             $en_all_7369 = $this->config->item('en_all_7369');
             return echo_json(array(
@@ -1586,13 +1595,13 @@ class Messenger extends CI_Controller
          *
          * */
 
-        $this->load->view('view_shared/messenger_header', array(
+        $this->load->view('view_user_app/user_app_header', array(
             'title' => '🚩 Action Plan',
         ));
-        $this->load->view('view_messenger/actionplan_frame', array(
+        $this->load->view('view_user_app/actionplan_frame', array(
             'in_id' => $in_id,
         ));
-        $this->load->view('view_shared/messenger_footer');
+        $this->load->view('view_user_app/user_app_footer');
 
     }
 
@@ -1674,7 +1683,7 @@ class Messenger extends CI_Controller
         //This is a special command to find the next intent:
         if($in_id=='next'){
             //Find the next item to navigate them to:
-            $next_in_id = $this->Actionplan_model->actionplan_step_next_go($session_en['en_id'], false);
+            $next_in_id = $this->User_app_model->actionplan_step_next_go($session_en['en_id'], false);
             $in_id = ( $next_in_id > 0 ? $next_in_id : 0 );
         }
 
@@ -1697,7 +1706,7 @@ class Messenger extends CI_Controller
             ));
 
             //List all user intentions:
-            $this->load->view('view_messenger/actionplan_intentions', array(
+            $this->load->view('view_user_app/actionplan_intentions', array(
                 'session_en' => $session_en,
                 'user_intents' => $user_intents,
             ));
@@ -1716,10 +1725,10 @@ class Messenger extends CI_Controller
             }
 
             //Load Action Plan UI with relevant variables:
-            $this->load->view('view_messenger/actionplan_step', array(
+            $this->load->view('view_user_app/actionplan_step', array(
                 'session_en' => $session_en,
                 'user_intents' => $user_intents,
-                'advance_step' => $this->Actionplan_model->actionplan_step_next_echo($session_en['en_id'], $in_id, false),
+                'advance_step' => $this->User_app_model->actionplan_step_next_echo($session_en['en_id'], $in_id, false),
                 'in' => $ins[0], //Currently focused intention:
             ));
 
@@ -1828,7 +1837,7 @@ class Messenger extends CI_Controller
 
         //Just give them an overview of what they are about to skip:
         return echo_json(array(
-            'skip_step_preview' => 'WARNING: '.$this->Actionplan_model->actionplan_step_skip_initiate($en_id, $in_id, false).' Are you sure you want to skip?',
+            'skip_step_preview' => 'WARNING: '.$this->User_app_model->actionplan_step_skip_initiate($en_id, $in_id, false).' Are you sure you want to skip?',
         ));
 
     }
@@ -1837,14 +1846,14 @@ class Messenger extends CI_Controller
     {
 
         //Actually go ahead and skip
-        $this->Actionplan_model->actionplan_step_skip_apply($en_id, $in_id);
+        $this->User_app_model->actionplan_step_skip_apply($en_id, $in_id);
         //Assume its all good!
 
         //We actually skipped, draft message:
         $message = '<div class="alert alert-success" role="alert">I successfully skipped all steps.</div>';
 
         //Find the next item to navigate them to:
-        $next_in_id = $this->Actionplan_model->actionplan_step_next_go($en_id, false);
+        $next_in_id = $this->User_app_model->actionplan_step_next_go($en_id, false);
         if ($next_in_id > 0) {
             return redirect_message('/actionplan/' . $next_in_id, $message);
         } else {
@@ -2025,7 +2034,7 @@ class Messenger extends CI_Controller
 
 
         //Fetch top intention that being workined on now:
-        $top_priority = $this->Actionplan_model->actionplan_intention_focus($_POST['en_miner_id']);
+        $top_priority = $this->User_app_model->actionplan_intention_focus($_POST['en_miner_id']);
         if($top_priority){
             //Communicate top-priority with user:
             $this->Communication_model->dispatch_message(
@@ -2085,7 +2094,7 @@ class Messenger extends CI_Controller
         ));
 
         //See if we also need to mark the child as complete:
-        $this->Actionplan_model->actionplan_completion_auto_unlock($en_id, $answer_ins[0], 7485 /* User Step Answer Unlock */);
+        $this->User_app_model->actionplan_completion_auto_unlock($en_id, $answer_ins[0], 7485 /* User Step Answer Unlock */);
 
         //Archive current progression links:
         foreach($current_progression_links as $ln){

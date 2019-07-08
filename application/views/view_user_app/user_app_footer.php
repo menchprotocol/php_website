@@ -1,4 +1,4 @@
-<div class="pfooter" style="padding-top:30px;"><?= '<img src="/img/mench_white.png" />Mench v'. $this->config->item('app_version') ?></div>
+<div class="pfooter" style="padding-top:30px;"><?= '<img src="/img/mench_white.png" />Mench v' . $this->config->item('app_version') ?></div>
 </div>
 </div>
 

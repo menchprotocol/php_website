@@ -16,7 +16,7 @@
             }
         </script>
 
-        <form method="post" action="/messenger/login_process">
+        <form method="post" action="/user_app/login_process">
             <input type="hidden" name="url" value="<?= @$_GET['url'] ?>"/>
             <div class="input-group pass_success" style="margin-bottom: 5px;">
     <span class="input-group-addon" style="font-size: 1.2em; padding: 0 6px 0 0; color: #2b2b2b; text-align: center;">

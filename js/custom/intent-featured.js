@@ -2,7 +2,7 @@
 
 function add_to_actionplan(in_id){
     $('#added_to_actionplan').html('<span><i class="fas fa-spinner fa-spin"></i></span> Adding...');
-    $.post("/messenger/actionplan_intention_add", {in_id: in_id}, function (data) {
+    $.post("/user_app/actionplan_intention_add", {in_id: in_id}, function (data) {
         $('#added_to_actionplan').html(data.message);
     });
 }

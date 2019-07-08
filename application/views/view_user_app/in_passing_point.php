@@ -40,5 +40,38 @@ if(in_is_or($in['in_type_entity_id'])){
 
 }
 
+
+
+//Company signup form:
+if($in['in_id']==10430){
+    ?>
+
+    <h3 style="margin-top:30px;">Sign Up</h3>
+    <div class="company-signup">
+        <form autocomplete="off">
+            <b class="mini-header">Your Full Name</b>
+            <span class="white-wrapper"><input type="text" id="user_full_name" class="form-control" autocomplete="off" data-lpignore="true"></span>
+
+            <b class="mini-header">Your Work Email</b>
+            <span class="white-wrapper"><input type="email" id="user_email" class="form-control" autocomplete="off" data-lpignore="true"></span>
+
+            <b class="mini-header">Your Company Name</b>
+            <span class="white-wrapper"><input type="text" id="company_name" class="form-control" autocomplete="off" data-lpignore="true"></span>
+
+            <b class="mini-header">Your Password</b>
+            <span class="white-wrapper"><input type="password" id="your_password" class="form-control" autocomplete="off" autocomplete="new-password" data-lpignore="true"></span>
+
+            <b class="mini-header">Repeat Password</b>
+            <span class="white-wrapper"><input type="password" id="repeat_password" class="form-control" autocomplete="off" autocomplete="new-password" data-lpignore="true"></span>
+
+            <a class="btn btn-primary tag-manager-get-started" href="javascript:void(0);" style="display: inline-block; font-size: 1em;">Get Started&nbsp;&nbsp;&nbsp;<i class="fas fa-angle-double-right"></i></a>
+        </form>
+    </div>
+
+<?php
+
+}
+
+
 echo '</div>';
 ?>

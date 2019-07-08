@@ -7,17 +7,17 @@ $fb_settings = $this->config->item('fb_settings');
 //Are they logged in via the browser?
 if (isset($session_en['en_id'])) {
 
-    //User is accessing their account from their browser
+    //User is accessing the Action Plan from their browser
 
     //Include header:
-    $this->load->view('view_shared/messenger_nav', array(
-        'current' => '/myaccount',
+    $this->load->view('view_user_app/user_app_nav', array(
+        'current' => '/actionplan',
     ));
 
     //Fetch page instantly as we know who this is:
     ?>
     <script>
-        $.post("/messenger/myaccount_load/0", {}, function (data) {
+        $.post("/user_app/actionplan_load/0/<?= ( isset($in_id) ? $in_id : 0) ?>", {}, function (data) {
             $("#page_content").html(data);
             //Load tooldip:
             $('[data-toggle="tooltip"]').tooltip();
@@ -30,6 +30,7 @@ if (isset($session_en['en_id'])) {
     //Use Facebook to see if we can find this user's identity:
     ?>
     <script>
+
         (function (d, s, id) {
             var js, fjs = d.getElementsByTagName(s)[0];
             if (d.getElementById(id)) {
@@ -51,15 +52,17 @@ if (isset($session_en['en_id'])) {
                     var psid = thread_context.psid;
                     var signed_request = thread_context.signed_request;
                     //Fetch Page:
-                    $.post("/messenger/myaccount_load/" + psid + "?sr=" + signed_request, {}, function (data) {
+                    $.post("/user_app/actionplan_load/" + psid + "/<?= (isset($in_id) ? $in_id : 0) ?>?sr=" + signed_request, {}, function (data) {
+
                         //Update UI to confirm with user:
                         $("#page_content").html(data);
+
                     });
                 },
                 function error(err) {
 
                     //Give them instructions on how to access via mench.co:
-                    $("#page_content").html('<div class="alert alert-info" role="alert" style="line-height:110%;"><i class="fas fa-exclamation-triangle"></i> To access your Account you need to <a href="https://mench.com/login?url=<?= urlencode($_SERVER['REQUEST_URI']) ?>" style="font-weight:bold;">Sign In</a>. Use [Forgot Password] if you never signed in before.</div>');
+                    $("#page_content").html('<div class="alert alert-info" role="alert" style="line-height:110%;"><i class="fas fa-exclamation-triangle"></i> To access your Action Plan you need to <a href="https://mench.com/login?url=<?= urlencode($_SERVER['REQUEST_URI']) ?>" style="font-weight:bold;">Sign In</a>. Use [Forgot Password] if you never signed in before.</div>');
 
                 }
             );
