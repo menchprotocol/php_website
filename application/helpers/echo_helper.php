@@ -1242,7 +1242,7 @@ function echo_public_actionplan($in, $autoexpand){
 
         if($has_level2_content){
             $return_html .= '<a role="button" data-toggle="collapse" data-parent="#open' . $in_level2_counter . '" href="#collapse' . $in_level2_counter . '" aria-expanded="' . ($autoexpand ? 'true' : 'false') . '" aria-controls="collapse' . $in_level2_counter . '">';
-            $return_html .= '<span class="icon-block-lg"><i class="fal fa-plus-circle"></i></span>';
+            $return_html .= '<span class="icon-block-lg"><i class="fas fa-plus-circle"></i></span>';
         } else {
             $return_html .= '<span class="icon-block-lg"><i class="fal` fa-check-circle"></i></span>';
         }
@@ -1304,7 +1304,7 @@ function echo_public_actionplan($in, $autoexpand){
 
                     if(count($in_level3_messages) > 0){
                         $return_html .= '<a role="button" data-toggle="collapse" class="second-level-link" data-parent="#open' . $in_level2_counter . '-'.$in_level3_counter.'" href="#collapse' . $in_level2_counter . '-'.$in_level3_counter.'" aria-expanded="' . ($autoexpand ? 'true' : 'false') . '" aria-controls="collapse' . $in_level2_counter . '">';
-                        $return_html .= '<span class="icon-block"><i class="fal fa-plus-circle"></i></span>';
+                        $return_html .= '<span class="icon-block"><i class="fas fa-plus-circle"></i></span>';
                     } else {
                         $return_html .= '<span class="icon-block"><i class="fal fa-check-circle"></i></span>';
                     }
