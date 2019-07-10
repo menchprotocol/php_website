@@ -1060,7 +1060,7 @@ class Entities extends CI_Controller
             'ln_parent_entity_id' => 3286, //Mench Password
             'ln_type_entity_id' => 4255, //Text link
             'ln_miner_entity_id' => $user_en['en']['en_id'],
-            'ln_content' => strtolower(hash('sha256', $this->config->item('password_salt') . $_POST['your_password'] . $user_en['en_id'])),
+            'ln_content' => strtolower(hash('sha256', $this->config->item('password_salt') . $_POST['your_password'] . $user_en['en']['en_id'])),
             'ln_child_entity_id' => $user_en['en']['en_id'],
         ));
 
