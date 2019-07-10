@@ -1012,10 +1012,18 @@ class Entities extends CI_Controller
 
 
         //Create default company intent:
-        $company_intent = $this->Intents_model->in_link_or_create(11902 /* Get Hired at a Mench Partner Company */, 0, 'Get Hired at '.$company_en['en']['en_name'], $user_en['en']['en_id'], 7351 /* Intent Starting Point */, 6684 /* OR Intent Single Answer */);
+        $company_intent = $this->Intents_model->in_link_or_create(11902 /* Get Hired at a Mench Partner Company */, 0, 'Get Hired at '.$company_en['en']['en_name'], $user_en['en']['en_id'], 6185 /* Intent Published */, 6684 /* OR Intent Single Answer */);
         if(!$company_intent['status']){
             //We had an error, return it:
             return echo_json($company_intent);
+        }
+
+
+        //Create default company learning intent:
+        $company_learn_intent = $this->Intents_model->in_link_or_create(11907 /* Learn more about a Mench partner company */, 0, 'Learn more about '.$company_en['en']['en_name'], $user_en['en']['en_id'], 6185 /* Intent Published */, 6677 /* AND Intent Got It */);
+        if(!$company_learn_intent['status']){
+            //We had an error, return it:
+            return echo_json($company_learn_intent);
         }
 
 
@@ -1023,10 +1031,17 @@ class Entities extends CI_Controller
         $this->Links_model->ln_create(array(
             'ln_type_entity_id' => 7511, //Company Intent Set
             'ln_status_entity_id' => 6176, //Link Published
-            'ln_miner_entity_id' => $user_en['en']['en_id'],
-            'ln_child_entity_id' => $company_en['en']['en_id'],
+            'ln_miner_entity_id' => $company_en['en']['en_id'],
             'ln_parent_intent_id' => $company_intent['new_in_id'], //Newly created parent intent for company
             'ln_order' => 1,
+        ));
+
+        $this->Links_model->ln_create(array(
+            'ln_type_entity_id' => 7511, //Company Intent Set
+            'ln_status_entity_id' => 6176, //Link Published
+            'ln_miner_entity_id' => $company_en['en']['en_id'],
+            'ln_parent_intent_id' => $company_learn_intent['new_in_id'], //Newly created parent intent for company
+            'ln_order' => 2,
         ));
 
 
