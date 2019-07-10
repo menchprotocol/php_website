@@ -11,7 +11,7 @@ defined('BASEPATH') OR exit('No direct script access allowed');
  *
  */
 
-//Generated 2019-07-10 10:57:12 PST
+//Generated 2019-07-10 15:34:29 PST
 
 //User Step Answered:
 $config['en_ids_6157'] = array(6684,6685,7231);
@@ -112,7 +112,7 @@ $config['en_all_7309'] = array(
 );
 
 //Mench Platform Products:
-$config['en_ids_7372'] = array(6196,7369,7370,7368);
+$config['en_ids_7372'] = array(6196,7369,7368);
 $config['en_all_7372'] = array(
     6196 => array(
         'm_icon' => '<img src="https://mench.com/img/bp_128.png">',
@@ -125,12 +125,6 @@ $config['en_all_7372'] = array(
         'm_name' => 'Mench User App',
         'm_desc' => 'A web portal for software engineers to assess/improve their skills & get matched with top companies.',
         'm_parents' => array(7372,6196,4527),
-    ),
-    7370 => array(
-        'm_icon' => '<i class="fas fa-user-tie"></i>',
-        'm_name' => 'Mench Company App',
-        'm_desc' => 'A web portal for companies to educate/evaluate software engineers and hire top talent.',
-        'm_parents' => array(7372,4527),
     ),
     7368 => array(
         'm_icon' => '<i class="fas fa-user-hard-hat"></i>',
@@ -194,24 +188,7 @@ $config['en_all_7369'] = array(
         'm_icon' => '<i class="fas fa-power-off"></i>',
         'm_name' => 'Logout',
         'm_desc' => '',
-        'm_parents' => array(7370,7368,7369),
-    ),
-);
-
-//Mench Company App:
-$config['en_ids_7370'] = array(6695,7291);
-$config['en_all_7370'] = array(
-    6695 => array(
-        'm_icon' => '<i class="fas fa-user-tie"></i>',
-        'm_name' => 'Mench Partner Companies',
-        'm_desc' => '',
-        'm_parents' => array(7370,6827,4426,4463),
-    ),
-    7291 => array(
-        'm_icon' => '<i class="fas fa-power-off"></i>',
-        'm_name' => 'Logout',
-        'm_desc' => '',
-        'm_parents' => array(7370,7368,7369),
+        'm_parents' => array(7368,7369),
     ),
 );
 
@@ -270,7 +247,7 @@ $config['en_all_7368'] = array(
         'm_icon' => '<i class="fas fa-power-off"></i>',
         'm_name' => 'Logout',
         'm_desc' => '',
-        'm_parents' => array(7370,7368,7369),
+        'm_parents' => array(7368,7369),
     ),
 );
 
@@ -423,7 +400,7 @@ $config['en_all_7355'] = array(
 );
 
 //Action Plan Intention Set:
-$config['en_ids_7347'] = array(4235,7495);
+$config['en_ids_7347'] = array(4235,7495,7511);
 $config['en_all_7347'] = array(
     4235 => array(
         'm_icon' => '<i class="far fa-bullseye-arrow"></i>',
@@ -436,6 +413,12 @@ $config['en_all_7347'] = array(
         'm_name' => 'User Intent Recommended',
         'm_desc' => '',
         'm_parents' => array(4755,4595,4593,7347),
+    ),
+    7511 => array(
+        'm_icon' => '<i class="far fa-bullseye-arrow"></i>',
+        'm_name' => 'Company Intent Set',
+        'm_desc' => '',
+        'm_parents' => array(4755,4595,4593,7483,7347),
     ),
 );
 
@@ -938,7 +921,7 @@ $config['en_all_6194'] = array(
 );
 
 //Mench Community:
-$config['en_ids_6827'] = array(1281,1308,3084,4430,4433,6695);
+$config['en_ids_6827'] = array(1281,1308,3084,4430,4433,6695,7512);
 $config['en_all_6827'] = array(
     1281 => array(
         'm_icon' => '<i class="fas fa-user-shield"></i>',
@@ -974,7 +957,13 @@ $config['en_all_6827'] = array(
         'm_icon' => '<i class="fas fa-user-tie"></i>',
         'm_name' => 'Mench Partner Companies',
         'm_desc' => 'Those who use Mench as a recruitment platform to assess their candidates and reach new candidates',
-        'm_parents' => array(7370,6827,4426,4463),
+        'm_parents' => array(6827,4426,4463),
+    ),
+    7512 => array(
+        'm_icon' => '<i class="fas fa-user-tie"></i>',
+        'm_name' => 'Mench Partner Employees',
+        'm_desc' => 'Company staff who manage job postings',
+        'm_parents' => array(6827),
     ),
 );
 
@@ -1268,7 +1257,7 @@ $config['en_all_4463'] = array(
         'm_icon' => '<i class="fas fa-user-tie"></i>',
         'm_name' => 'Mench Partner Companies',
         'm_desc' => 'Users who can manage the accounts of organizations they belong to.',
-        'm_parents' => array(7370,6827,4426,4463),
+        'm_parents' => array(6827,4426,4463),
     ),
 );
 
@@ -1887,7 +1876,7 @@ $config['en_all_5969'] = array(
 );
 
 //Link Email Subscriptions:
-$config['en_ids_5966'] = array(4246,7504);
+$config['en_ids_5966'] = array(4246,7504,7505);
 $config['en_all_5966'] = array(
     4246 => array(
         'm_icon' => '<i class="far fa-bug"></i>',
@@ -1900,6 +1889,12 @@ $config['en_all_5966'] = array(
         'm_name' => 'Admin Review Required',
         'm_desc' => '&var_en_subscriber_ids=1,2',
         'm_parents' => array(5966,4755,4595,4593),
+    ),
+    7505 => array(
+        'm_icon' => '<i class="far fa-user-plus"></i>',
+        'm_name' => 'Company Joined Mench',
+        'm_desc' => '&var_en_subscriber_ids=1,2',
+        'm_parents' => array(7483,4755,4595,4593,5966),
     ),
 );
 
@@ -2023,12 +2018,12 @@ $config['en_all_4426'] = array(
         'm_icon' => '<i class="fas fa-user-tie"></i>',
         'm_name' => 'Mench Partner Companies',
         'm_desc' => '',
-        'm_parents' => array(7370,6827,4426,4463),
+        'm_parents' => array(6827,4426,4463),
     ),
 );
 
 //Private Links:
-$config['en_ids_4755'] = array(3286,3288,4235,4242,4246,4263,4266,4267,4268,4269,4275,4278,4279,4282,4283,4287,4299,4460,4547,4548,4549,4550,4551,4552,4553,4554,4555,4556,4557,4559,4570,4577,4783,5967,6132,6140,6143,6144,6149,6154,6155,6157,6224,6415,6556,6559,6560,6563,6578,6969,6997,7484,7485,7486,7487,7488,7489,7492,7495,7504);
+$config['en_ids_4755'] = array(3286,3288,4235,4242,4246,4263,4266,4267,4268,4269,4275,4278,4279,4282,4283,4287,4299,4460,4547,4548,4549,4550,4551,4552,4553,4554,4555,4556,4557,4559,4570,4577,4783,5967,6132,6140,6143,6144,6149,6154,6155,6157,6224,6415,6556,6559,6560,6563,6578,6969,6997,7484,7485,7486,7487,7488,7489,7492,7495,7504,7505,7506,7508,7509,7511);
 $config['en_all_4755'] = array(
     3286 => array(
         'm_icon' => '<i class="far fa-key"></i>',
@@ -2338,7 +2333,7 @@ $config['en_all_4755'] = array(
     ),
     7484 => array(
         'm_icon' => '<i class="far fa-user-plus"></i>',
-        'm_name' => 'User Referred User',
+        'm_name' => 'Company Referred User',
         'm_desc' => '',
         'm_parents' => array(4755,4595,4593,7483),
     ),
@@ -2390,10 +2385,40 @@ $config['en_all_4755'] = array(
         'm_desc' => '',
         'm_parents' => array(5966,4755,4595,4593),
     ),
+    7505 => array(
+        'm_icon' => '<i class="far fa-user-plus"></i>',
+        'm_name' => 'Company Joined Mench',
+        'm_desc' => '',
+        'm_parents' => array(7483,4755,4595,4593,5966),
+    ),
+    7506 => array(
+        'm_icon' => '<i class="fas fa-hashtag"></i>',
+        'm_name' => 'Company Intent created',
+        'm_desc' => '',
+        'm_parents' => array(4755,4595,4593,7483),
+    ),
+    7508 => array(
+        'm_icon' => '<i class="far fa-comment"></i>',
+        'm_name' => 'Company Message Created',
+        'm_desc' => '',
+        'm_parents' => array(4755,4593,4595,7483),
+    ),
+    7509 => array(
+        'm_icon' => '<i class="far fa-comment-edit"></i>',
+        'm_name' => 'Company Message Modified',
+        'm_desc' => '',
+        'm_parents' => array(4755,4595,4593,7483),
+    ),
+    7511 => array(
+        'm_icon' => '<i class="far fa-bullseye-arrow"></i>',
+        'm_name' => 'Company Intent Set',
+        'm_desc' => '',
+        'm_parents' => array(4755,4595,4593,7483,7347),
+    ),
 );
 
 //Link Credits:
-$config['en_ids_4595'] = array(4228,4229,4230,4231,4232,4235,4242,4246,4250,4251,4255,4256,4257,4258,4259,4260,4261,4263,4264,4266,4267,4268,4269,4275,4278,4279,4282,4283,4287,4299,4318,4319,4460,4547,4548,4549,4550,4551,4552,4553,4554,4555,4556,4557,4559,4570,4577,4601,4983,4993,4994,4998,4999,5000,5001,5003,5007,5865,5943,5967,5981,5982,6093,6132,6140,6143,6144,6149,6154,6155,6157,6224,6226,6242,6415,6556,6559,6560,6563,6578,6969,6997,7484,7485,7486,7487,7488,7489,7492,7495,7504);
+$config['en_ids_4595'] = array(4228,4229,4230,4231,4232,4235,4242,4246,4250,4251,4255,4256,4257,4258,4259,4260,4261,4263,4264,4266,4267,4268,4269,4275,4278,4279,4282,4283,4287,4299,4318,4319,4460,4547,4548,4549,4550,4551,4552,4553,4554,4555,4556,4557,4559,4570,4577,4601,4983,4993,4994,4998,4999,5000,5001,5003,5007,5865,5943,5967,5981,5982,6093,6132,6140,6143,6144,6149,6154,6155,6157,6224,6226,6242,6415,6556,6559,6560,6563,6578,6969,6997,7484,7485,7486,7487,7488,7489,7492,7495,7504,7505,7506,7508,7509,7511);
 $config['en_all_4595'] = array(
     4228 => array(
         'm_icon' => '<i class="fas fa-walking"></i>',
@@ -2889,8 +2914,8 @@ $config['en_all_4595'] = array(
     ),
     7484 => array(
         'm_icon' => '<i class="far fa-user-plus"></i>',
-        'm_name' => 'User Referred User',
-        'm_desc' => '500',
+        'm_name' => 'Company Referred User',
+        'm_desc' => '2000',
         'm_parents' => array(4755,4595,4593,7483),
     ),
     7485 => array(
@@ -2941,6 +2966,36 @@ $config['en_all_4595'] = array(
         'm_desc' => '100',
         'm_parents' => array(5966,4755,4595,4593),
     ),
+    7505 => array(
+        'm_icon' => '<i class="far fa-user-plus"></i>',
+        'm_name' => 'Company Joined Mench',
+        'm_desc' => '10000',
+        'm_parents' => array(7483,4755,4595,4593,5966),
+    ),
+    7506 => array(
+        'm_icon' => '<i class="fas fa-hashtag"></i>',
+        'm_name' => 'Company Intent created',
+        'm_desc' => '250',
+        'm_parents' => array(4755,4595,4593,7483),
+    ),
+    7508 => array(
+        'm_icon' => '<i class="far fa-comment"></i>',
+        'm_name' => 'Company Message Created',
+        'm_desc' => '50',
+        'm_parents' => array(4755,4593,4595,7483),
+    ),
+    7509 => array(
+        'm_icon' => '<i class="far fa-comment-edit"></i>',
+        'm_name' => 'Company Message Modified',
+        'm_desc' => '25',
+        'm_parents' => array(4755,4595,4593,7483),
+    ),
+    7511 => array(
+        'm_icon' => '<i class="far fa-bullseye-arrow"></i>',
+        'm_name' => 'Company Intent Set',
+        'm_desc' => '100',
+        'm_parents' => array(4755,4595,4593,7483,7347),
+    ),
 );
 
 //User Account Types:
@@ -2961,7 +3016,7 @@ $config['en_all_4600'] = array(
 );
 
 //Link Types:
-$config['en_ids_4593'] = array(4228,4229,4230,4231,4232,4235,4242,4246,4250,4251,4255,4256,4257,4258,4259,4260,4261,4263,4264,4266,4267,4268,4269,4275,4278,4279,4282,4283,4287,4299,4318,4319,4460,4547,4548,4549,4550,4551,4552,4553,4554,4555,4556,4557,4559,4570,4577,4601,4983,4993,4994,4998,4999,5000,5001,5003,5007,5865,5943,5967,5981,5982,6093,6132,6140,6143,6144,6149,6154,6155,6157,6224,6226,6242,6415,6556,6559,6560,6563,6578,6969,6997,7484,7485,7486,7487,7488,7489,7492,7495,7504);
+$config['en_ids_4593'] = array(4228,4229,4230,4231,4232,4235,4242,4246,4250,4251,4255,4256,4257,4258,4259,4260,4261,4263,4264,4266,4267,4268,4269,4275,4278,4279,4282,4283,4287,4299,4318,4319,4460,4547,4548,4549,4550,4551,4552,4553,4554,4555,4556,4557,4559,4570,4577,4601,4983,4993,4994,4998,4999,5000,5001,5003,5007,5865,5943,5967,5981,5982,6093,6132,6140,6143,6144,6149,6154,6155,6157,6224,6226,6242,6415,6556,6559,6560,6563,6578,6969,6997,7484,7485,7486,7487,7488,7489,7492,7495,7504,7505,7506,7508,7509,7511);
 $config['en_all_4593'] = array(
     4228 => array(
         'm_icon' => '<i class="fas fa-walking"></i>',
@@ -3457,7 +3512,7 @@ $config['en_all_4593'] = array(
     ),
     7484 => array(
         'm_icon' => '<i class="far fa-user-plus"></i>',
-        'm_name' => 'User Referred User',
+        'm_name' => 'Company Referred User',
         'm_desc' => 'When a company refers a new user to Mench using their intent referral URL',
         'm_parents' => array(4755,4595,4593,7483),
     ),
@@ -3508,6 +3563,36 @@ $config['en_all_4593'] = array(
         'm_name' => 'Admin Review Required',
         'm_desc' => 'Certain links that match an unknown behavior would require an admin to review and ensure it\'s all good',
         'm_parents' => array(5966,4755,4595,4593),
+    ),
+    7505 => array(
+        'm_icon' => '<i class="far fa-user-plus"></i>',
+        'm_name' => 'Company Joined Mench',
+        'm_desc' => 'When a new company joins the Mench platform to automate their recruiting process',
+        'm_parents' => array(7483,4755,4595,4593,5966),
+    ),
+    7506 => array(
+        'm_icon' => '<i class="fas fa-hashtag"></i>',
+        'm_name' => 'Company Intent created',
+        'm_desc' => 'An intent created by the company team',
+        'm_parents' => array(4755,4595,4593,7483),
+    ),
+    7508 => array(
+        'm_icon' => '<i class="far fa-comment"></i>',
+        'm_name' => 'Company Message Created',
+        'm_desc' => '',
+        'm_parents' => array(4755,4593,4595,7483),
+    ),
+    7509 => array(
+        'm_icon' => '<i class="far fa-comment-edit"></i>',
+        'm_name' => 'Company Message Modified',
+        'm_desc' => '',
+        'm_parents' => array(4755,4595,4593,7483),
+    ),
+    7511 => array(
+        'm_icon' => '<i class="far fa-bullseye-arrow"></i>',
+        'm_name' => 'Company Intent Set',
+        'm_desc' => '',
+        'm_parents' => array(4755,4595,4593,7483,7347),
     ),
 );
 

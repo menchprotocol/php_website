@@ -263,7 +263,7 @@ class Intents_model extends CI_Model
         return $links_removed;
     }
 
-    function in_link_or_create($in_linked_id, $is_parent, $in_outcome, $link_in_id, $next_level, $ln_miner_entity_id)
+    function in_link_or_create($in_linked_id, $is_parent, $in_outcome, $ln_miner_entity_id, $new_in_status = 6183 /* Intent New */, $in_type_entity_id = 6677 /* AND Got It */, $link_in_id = 0, $next_level = 0)
     {
 
         /*
@@ -288,11 +288,6 @@ class Intents_model extends CI_Model
             return array(
                 'status' => 0,
                 'message' => 'Invalid Intent ID',
-            );
-        } elseif (!in_array($next_level, array(2,3))) {
-            return array(
-                'status' => 0,
-                'message' => 'Intent level must be either 2 or 3.',
             );
         } elseif (!in_array($linked_ins[0]['in_status_entity_id'], $this->config->item('en_ids_7356')) /* Intent Statuses Active */) {
             return array(
@@ -370,8 +365,8 @@ class Intents_model extends CI_Model
                 //Apply shortcut and update the intent outcome:
                 $parent_in_outcome_words = explode(' ', $linked_ins[0]['in_outcome']);
                 $in_outcome = $parent_in_outcome_words[0].' #'.$linked_ins[0]['in_id'].' :: '.trim(substr($in_outcome, 2));
-
             }
+
 
             //Validate Intent Outcome:
             $in_outcome_validation = $this->Intents_model->in_validate_outcome($in_outcome, $ln_miner_entity_id);
@@ -385,8 +380,8 @@ class Intents_model extends CI_Model
             $intent_new = $this->Intents_model->in_create(array(
                 'in_outcome' => $in_outcome_validation['in_cleaned_outcome'],
                 'in_verb_entity_id' => $in_outcome_validation['detected_verb_entity_id'],
-                'in_type_entity_id' => ( !$is_parent && in_array($linked_ins[0]['in_type_entity_id'], $this->config->item('en_ids_6914')) ? 6914 /* AND Lock */ : 6677 /* AND Got It */ ), //This is a Hack! See https://mench.com/entities/6914
-                'in_status_entity_id' => 6183, //Intent New
+                'in_type_entity_id' => $in_type_entity_id,
+                'in_status_entity_id' => $new_in_status,
             ), true, $ln_miner_entity_id);
 
         }
@@ -447,8 +442,8 @@ class Intents_model extends CI_Model
         //Return result:
         return array(
             'status' => 1,
-            'in_child_id' => $intent_new['in_id'],
-            'in_child_html' => echo_in($new_ins[0], $next_level, $in_linked_id, $is_parent),
+            'new_in_id' => $intent_new['in_id'],
+            'in_child_html' => ( in_array($next_level, array(2,3)) ? echo_in($new_ins[0], $next_level, $in_linked_id, $is_parent) : null ),
         );
 
     }

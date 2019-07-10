@@ -424,10 +424,10 @@ function in_link_or_create(in_linked_id, is_parent, next_level, in_link_child_id
                 }
 
                 //Reload sorting to enable sorting for the newly added intent:
-                in_sort_load(data.in_child_id, 3);
+                in_sort_load(data.new_in_id, 3);
 
                 //Load search again:
-                in_load_search(".intentadder-id-"+data.in_child_id, 0, 3);
+                in_load_search(".intentadder-id-"+data.new_in_id, 0, 3);
 
             } else if(!is_parent) {
 
@@ -440,7 +440,7 @@ function in_link_or_create(in_linked_id, is_parent, next_level, in_link_child_id
             $('[data-toggle="tooltip"]').tooltip();
 
             //Adjust time:
-            adjust_js_ui(data.in_child_id, next_level, 0, 0, 0, 1);
+            adjust_js_ui(data.new_in_id, next_level, 0, 0, 0, 1);
 
         } else {
             //Show errors:

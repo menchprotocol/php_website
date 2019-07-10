@@ -98,8 +98,8 @@ $uri_segment_2 = $this->uri->segment(2);
                                     <?= $en_all_7368[7161]['m_icon'] ?>
                                 </a>
                             </li>
-                            <li class="<?= advance_mode().($uri_segment_1 == 'admin' ? 'links-active' : 'links-inactive') ?>" data-toggle="tooltip" data-placement="left" title="<?= $en_all_7368[6287]['m_name'] ?>">
-                                <a href="/admin">
+                            <li class="<?= advance_mode().($uri_segment_1 == 'Minerapp' ? 'links-active' : 'links-inactive') ?>" data-toggle="tooltip" data-placement="left" title="<?= $en_all_7368[6287]['m_name'] ?>">
+                                <a href="/miner_app/admin_tools">
                                     <?= $en_all_7368[6287]['m_icon'] ?>
                                 </a>
                             </li>

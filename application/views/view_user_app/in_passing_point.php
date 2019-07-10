@@ -74,17 +74,13 @@ if($in['in_id']==10430){
 
     <script>
 
-        $(document).ready(function () {
-            $('#user_full_name').focus();
-        });
-
         function add_company_account(){
 
             $("#company-add-results").html('<div><i class="fas fa-spinner fa-spin"></i></div>');
             $("#AddCompanyForm :input").prop("disabled", true).css('background-color', '#F9F9F9');
 
             //Update message:
-            $.post("/company_app/add_company", {
+            $.post("/entities/add_company", {
                 user_full_name: $('#user_full_name').val(),
                 user_email: $('#user_email').val(),
                 company_name: $('#company_name').val(),

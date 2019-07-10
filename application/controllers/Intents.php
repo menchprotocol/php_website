@@ -118,8 +118,8 @@ class Intents extends CI_Controller
         $session_en = en_auth(array(1308));
 
         //This is here to redirect from /start to /10430 so everything works fine...
-        if($this->uri->segment(1) != $in_id){
-            return redirect_message('/'.($referrer_en_id > 0 ? $referrer_en_id.'_' : '').$in_id);
+        if($referrer_en_id==0 && $this->uri->segment(1) != $in_id){
+            return redirect_message('/'.$in_id);
         }
 
         //Fetch data:
@@ -156,7 +156,7 @@ class Intents extends CI_Controller
             }
 
             //Show white-label header:
-            $this->load->view('view_user_app/white_label_header', array(
+            $this->load->view('view_miner_app/white_label_header', array(
                 'in' => $ins[0],
                 'referrer_en' => $referrer_ens[0],
                 'session_en' => $session_en,
@@ -181,7 +181,7 @@ class Intents extends CI_Controller
 
         if($referrer_en_id > 0){
             //Show white-label footer:
-            $this->load->view('view_user_app/white_label_footer');
+            $this->load->view('view_miner_app/white_label_footer');
         } else {
             //Mench footer:
             $this->load->view('view_user_app/public_footer');
@@ -336,8 +336,13 @@ class Intents extends CI_Controller
             ));
         }
 
+        //Fetch link intent to determine intent type:
+        $linked_ins = $this->Intents_model->in_fetch(array(
+            'in_id' => intval($_POST['in_linked_id']),
+        ));
+
         //All seems good, go ahead and try creating the intent:
-        return echo_json($this->Intents_model->in_link_or_create($_POST['in_linked_id'], intval($_POST['is_parent']), $_POST['in_outcome'], $_POST['in_link_child_id'], $_POST['next_level'], $session_en['en_id']));
+        return echo_json($this->Intents_model->in_link_or_create($_POST['in_linked_id'], intval($_POST['is_parent']), $_POST['in_outcome'], $session_en['en_id'], 6183 /* Intent New */, ( !intval($_POST['is_parent']) && in_array($linked_ins[0]['in_type_entity_id'], $this->config->item('en_ids_6914')) ? 6914 /* AND Lock */ : 6677 /* AND Got It */ ), $_POST['in_link_child_id'], $_POST['next_level']));
 
     }
 

@@ -29,7 +29,7 @@ var update_basic_stats = function() {
     updating_basic_stats = true;
 
     //Fetch latest stats:
-    $.post("/admin/basic_stats_all", {}, function (data) {
+    $.post("/miner_app/basic_stats_all", {}, function (data) {
 
         //Updated Intents?
         if(data.intents.extended_stats != $('#stats_intents_box .extended_stats').html()){
@@ -77,7 +77,7 @@ function load_extra_stats(object_id){
         $('#stats_' + object_id + '_box .load_stats_box').removeClass('hidden').html('<div style="text-align: center;"><i class="fas fa-spinner fa-spin"></i> Loading...</div>');
 
         //Save the rest of the content:
-        $.post("/admin/extra_stats_" + object_id, {}, function (data) {
+        $.post("/miner_app/extra_stats_" + object_id, {}, function (data) {
 
             //Load data:
             $('#stats_' + object_id + '_box .load_stats_box').html(data);

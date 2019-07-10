@@ -23,6 +23,4 @@ $route['myaccount']             = "user_app/myaccount";
 $route['actionplan']            = "user_app/actionplan/0";
 $route['actionplan/(:num)']     = "user_app/actionplan/$1";
 
-//Admin:
-$route['dashboard']             = "admin/dashboard";
-$route['admin']                 = "admin/tools";
+$route['dashboard']             = "miner_app/dashboard";

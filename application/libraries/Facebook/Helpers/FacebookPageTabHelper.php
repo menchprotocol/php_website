@@ -80,7 +80,7 @@ class FacebookPageTabHelper extends FacebookCanvasHelper
      */
     public function isAdmin()
     {
-        return $this->getPageData('admin') === true;
+        return $this->getPageData('Minerapp') === true;
     }
 
     /**
