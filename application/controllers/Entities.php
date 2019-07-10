@@ -916,7 +916,7 @@ class Entities extends CI_Controller
                 'ln_child_entity_id' => $_POST['en_id'], //For this user
             ));
 
-            $new_password = hash('sha256', $this->config->item('password_salt') . $_POST['new_pass']);
+            $new_password = hash('sha256', $this->config->item('password_salt') . $_POST['new_pass']. $_POST['en_id']);
 
             if (count($user_passwords) > 0) {
 

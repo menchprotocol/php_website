@@ -331,7 +331,7 @@ function in_message_modify_save(ln_id, initial_ln_type_entity_id) {
             //Saving successful...
 
             //Did we remove this message?
-            if(modify_data['message_ln_status'] == 6173 /* Link Removed */ /*  */){
+            if(modify_data['message_ln_status'] == 6173 /* Link Removed */){
 
                 //Yes, message was removed, adjust accordingly:
                 $("#ul-nav-" + ln_id).html('<div>' + data.message + '</div>');

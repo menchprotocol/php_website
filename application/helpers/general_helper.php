@@ -434,7 +434,7 @@ function in_is_or($in_type_entity_id, $return_id = false){
 
 function advance_mode(){
     $CI =& get_instance();
-    return ' advance-ui '.( $CI->session->userdata('advance_view_enabled')==1 ? '' : 'hidden ' );
+    return ' advance-ui '.( $CI->session->userdata('advance_view_enabled')==1 ? '' : ' hidden ' );
 }
 
 function common_prefix($in__children, $max_look = 0){

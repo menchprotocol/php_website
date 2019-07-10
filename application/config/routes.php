@@ -14,6 +14,7 @@ $route['intents']               = "intents/in_miner_ui/0";
 
 $route['(:num)_(:num)']         = "intents/in_public_ui/$2/$1"; //Public Intent Landing Page
 $route['(:num)']                = "intents/in_public_ui/$1"; //Public Intent Landing Page
+$route['start']                 = "intents/in_public_ui/10430"; //For companies to get started
 
 //Users:
 $route['login']                 = "user_app/user_login";

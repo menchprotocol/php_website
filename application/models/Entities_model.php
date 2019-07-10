@@ -46,33 +46,24 @@ class Entities_model extends CI_Model
 
         if ($insert_columns['en_id'] > 0) {
 
-            if ($ln_miner_entity_id > 0) {
-
-                if($external_sync){
-                    //Update Algolia:
-                    $algolia_sync = update_algolia('en', $insert_columns['en_id']);
-                }
-
-                //Log link new entity:
-                $this->Links_model->ln_create(array(
-                    'ln_miner_entity_id' => ($ln_miner_entity_id > 0 ? $ln_miner_entity_id : $insert_columns['en_id']),
-                    'ln_child_entity_id' => $insert_columns['en_id'],
-                    'ln_type_entity_id' => 4251, //New Entity Created
-                ));
-
-                //Fetch to return the complete entity data:
-                $ens = $this->Entities_model->en_fetch(array(
-                    'en_id' => $insert_columns['en_id'],
-                ));
-
-                return $ens[0];
-
-            } else {
-
-                //Return provided inputs plus the new entity ID:
-                return $insert_columns;
-
+            if($external_sync){
+                //Update Algolia:
+                $algolia_sync = update_algolia('en', $insert_columns['en_id']);
             }
+
+            //Log link new entity:
+            $this->Links_model->ln_create(array(
+                'ln_miner_entity_id' => ($ln_miner_entity_id > 0 ? $ln_miner_entity_id : $insert_columns['en_id']),
+                'ln_child_entity_id' => $insert_columns['en_id'],
+                'ln_type_entity_id' => 4251, //New Entity Created
+            ));
+
+            //Fetch to return the complete entity data:
+            $ens = $this->Entities_model->en_fetch(array(
+                'en_id' => $insert_columns['en_id'],
+            ));
+
+            return $ens[0];
 
         } else {
 
@@ -382,7 +373,7 @@ class Entities_model extends CI_Model
         } elseif ($ln_miner_entity_id) {
 
             //Yes, let's add a new entity:
-            $added_en = $this->Entities_model->en_verify_create(( $page_title ? $page_title : $domain_analysis['url_domain_name'] ), $ln_miner_entity_id, true, 6181, detect_fav_icon($domain_analysis['url_clean_domain']));
+            $added_en = $this->Entities_model->en_verify_create(( $page_title ? $page_title : $domain_analysis['url_domain_name'] ), $ln_miner_entity_id, false, 6181, detect_fav_icon($domain_analysis['url_clean_domain']));
             $en_domain = $added_en['en'];
 
             //And link entity to the domains entity:
@@ -626,7 +617,7 @@ class Entities_model extends CI_Model
                 }
 
                 //Create a new entity for this URL ONLY If miner entity is provided...
-                $added_en = $this->Entities_model->en_verify_create($page_title, $ln_miner_entity_id, true);
+                $added_en = $this->Entities_model->en_verify_create($page_title, $ln_miner_entity_id);
                 if($added_en['status']){
 
                     //All good:
@@ -1004,7 +995,7 @@ class Entities_model extends CI_Model
 
     }
 
-    function en_verify_create($en_name, $ln_miner_entity_id = 0, $force_creation = false, $en_status_entity_id = 6179 /* Entity New */, $en_icon = null, $en_psid = null){
+    function en_verify_create($en_name, $ln_miner_entity_id = 0, $force_unique = false, $en_status_entity_id = 6179 /* Entity New */, $en_icon = null, $en_psid = null){
 
         //If PSID exists, make sure it's not a duplicate:
         if(!in_array($en_status_entity_id, $this->config->item('en_ids_6177'))){
@@ -1035,23 +1026,15 @@ class Entities_model extends CI_Model
             );
         }
 
+
         //Check to make sure name is not duplicate:
-        $duplicate_name_ens = $this->Entities_model->en_fetch(array(
+        $duplicate_ens = $this->Entities_model->en_fetch(array(
             'en_status_entity_id IN (' . join(',', $this->config->item('en_ids_7358')) . ')' => null, //Entity Statuses Active
             'LOWER(en_name)' => strtolower(trim($en_name)),
         ));
-        if(count($duplicate_name_ens) > 0){
-            if($force_creation){
-                //We're forcing a creation so append a postfix to name to make it unique:
-                $en_name = $en_name.' '.rand(100000000, 999999999); //Slim possibility to be duplicate...
-            } else {
-                //No, return error:
-                $en_all_6177 = $this->config->item('en_all_6177'); //Entity Statuses
-                return array(
-                    'status' => 0,
-                    'message' => 'Entity name ['.$en_name.'] already in use by entity @'.$duplicate_name_ens[0]['en_id'].' with status ['.$en_all_6177[$duplicate_name_ens[0]['en_status_entity_id']]['m_name'].']',
-                );
-            }
+        if($force_unique && count($duplicate_ens) > 0){
+            //We're forcing a creation so append a postfix to name to make it unique:
+            $en_name = $en_name.' '.rand(100000000, 999999999); //Slim possibility to be duplicate...
         }
 
 
@@ -1062,6 +1045,18 @@ class Entities_model extends CI_Model
             'en_psid' => $en_psid,
             'en_status_entity_id' => $en_status_entity_id,
         ), true, $ln_miner_entity_id);
+
+
+        if(!$force_unique && count($duplicate_ens) > 0){
+            //Log a link to inform admin of this:
+            $this->Links_model->ln_create(array(
+                'ln_content' => 'Duplicate entity names detected for ['.$duplicate_ens[0]['en_name'].']',
+                'ln_type_entity_id' => 7504, //Admin Review Required
+                'ln_child_entity_id' => $entity_new['en_id'],
+                'ln_parent_entity_id' => $duplicate_ens[0]['en_id'],
+                'ln_miner_entity_id' => 1, //Shervin/Developer
+            ));
+        }
 
         //Return success:
         return array(
@@ -1110,7 +1105,7 @@ class Entities_model extends CI_Model
              * */
 
             //Create user entity:
-            $added_en = $this->Entities_model->en_verify_create('User '.rand(100000000, 999999999), 0, true, 6181, null, $psid);
+            $added_en = $this->Entities_model->en_verify_create('User '.rand(100000000, 999999999), 0, false, 6181, null, $psid);
 
         } else {
 
@@ -1118,7 +1113,7 @@ class Entities_model extends CI_Model
             $fb_profile = $graph_fetch['ln_metadata']['result'];
 
             //Create user entity with their Facebook Graph name:
-            $added_en = $this->Entities_model->en_verify_create($fb_profile['first_name'] . ' ' . $fb_profile['last_name'], 0, true, 6181, null, $psid);
+            $added_en = $this->Entities_model->en_verify_create($fb_profile['first_name'] . ' ' . $fb_profile['last_name'], 0, false, 6181, null, $psid);
 
 
             //See if we could fetch FULL profile data:

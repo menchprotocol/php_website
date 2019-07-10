@@ -858,7 +858,7 @@ class User_app extends CI_Controller
         } elseif (!in_array($user_passwords[0]['ln_status_entity_id'], $this->config->item('en_ids_7359') /* Link Statuses Public */)) {
             //They do not have a password assigned yet!
             return redirect_message('/login', '<div class="alert alert-danger" role="alert">Error: Password link is not public. Contact us to adjust your account.</div>');
-        } elseif ($user_passwords[0]['ln_content'] != strtolower(hash('sha256', $this->config->item('password_salt') . $_POST['en_password']))) {
+        } elseif ($user_passwords[0]['ln_content'] != strtolower(hash('sha256', $this->config->item('password_salt') . $_POST['en_password'] . $ens[0]['en_id']))) {
             //Bad password
             return redirect_message('/login', '<div class="alert alert-danger" role="alert">Error: Incorrect password for [' . $_POST['input_email'] . ']</div>');
         }
@@ -1319,7 +1319,7 @@ class User_app extends CI_Controller
             'ln_child_entity_id' => $_POST['en_id'],
         ));
 
-        $hashed_password = strtolower(hash('sha256', $this->config->item('password_salt') . $_POST['en_password']));
+        $hashed_password = strtolower(hash('sha256', $this->config->item('password_salt') . $_POST['en_password'] . $_POST['en_id']));
 
 
         if (count($user_passwords) > 0) {

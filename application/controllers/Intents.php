@@ -117,6 +117,10 @@ class Intents extends CI_Controller
         //Fetch user session:
         $session_en = en_auth(array(1308));
 
+        //This is here to redirect from /start to /10430 so everything works fine...
+        if($this->uri->segment(1) != $in_id){
+            return redirect_message('/'.($referrer_en_id > 0 ? $referrer_en_id.'_' : '').$in_id);
+        }
 
         //Fetch data:
         $ins = $this->Intents_model->in_fetch(array(
