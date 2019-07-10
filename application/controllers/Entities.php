@@ -1032,6 +1032,12 @@ class Entities extends CI_Controller
 
         //Create user links:
         $this->Links_model->ln_create(array(
+            'ln_parent_entity_id' => 7512, //Mench Partner Employees
+            'ln_type_entity_id' => 4230, //Raw link
+            'ln_miner_entity_id' => $user_en['en']['en_id'],
+            'ln_child_entity_id' => $user_en['en']['en_id'],
+        ));
+        $this->Links_model->ln_create(array(
             'ln_parent_entity_id' => 1278, //People
             'ln_type_entity_id' => 4230, //Raw link
             'ln_miner_entity_id' => $user_en['en']['en_id'],
@@ -1057,12 +1063,6 @@ class Entities extends CI_Controller
             'ln_content' => strtolower(hash('sha256', $this->config->item('password_salt') . $_POST['your_password'] . $user_en['en_id'])),
             'ln_child_entity_id' => $user_en['en']['en_id'],
         ));
-        $this->Links_model->ln_create(array(
-            'ln_parent_entity_id' => 7512, //Mench Partner Employees
-            'ln_type_entity_id' => 4230, //Raw link
-            'ln_miner_entity_id' => $user_en['en']['en_id'],
-            'ln_child_entity_id' => $user_en['en']['en_id'],
-        ));
 
 
         //Link this user to the company
@@ -1072,6 +1072,13 @@ class Entities extends CI_Controller
             'ln_parent_entity_id' => $user_en['en']['en_id'],
             'ln_content' => 'Initiator',
             'ln_child_entity_id' => $company_en['en']['en_id'],
+        ));
+
+        //new company joined:
+        $this->Links_model->ln_create(array(
+            'ln_type_entity_id' => 7505, //Company Joined Mench
+            'ln_miner_entity_id' => $user_en['en']['en_id'],
+            'ln_parent_entity_id' => $company_en['en']['en_id'],
         ));
 
 
