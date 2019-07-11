@@ -865,44 +865,27 @@ class User_app extends CI_Controller
 
         //Now let's do a few more checks:
 
-        //Make sure User is connected to Mench:
-        if (!intval($ens[0]['en_psid'])) {
-            return redirect_message('/login', '<div class="alert alert-danger" role="alert">Error: You are not connected to Mench on Messenger, which is required to login to the Platform.</div>');
-        }
-
-        //Make sure User is not unsubscribed:
-        if (count($this->Links_model->ln_fetch(array(
-                'ln_child_entity_id' => $ens[0]['en_id'],
-                'ln_parent_entity_id' => 4455, //Unsubscribed
-                'ln_type_entity_id IN (' . join(',', $this->config->item('en_ids_4592')) . ')' => null, //Entity Link Connectors
-                'ln_status_entity_id IN (' . join(',', $this->config->item('en_ids_7359')) . ')' => null, //Link Statuses Public
-            ))) > 0) {
-
-            return redirect_message('/login', '<div class="alert alert-danger" role="alert">Error: You cannot login to the Platform because you are unsubscribed from Mench. You can re-active your account by sending a message to Mench on Messenger.</div>');
-
-        }
-
 
         $session_data = array();
         $is_chrome = (strpos($_SERVER['HTTP_USER_AGENT'], 'Chrome') !== false || strpos($_SERVER['HTTP_USER_AGENT'], 'CriOS') !== false);
-        $is_miner = filter_array($ens[0]['en__parents'], 'en_id', 1308);
 
 
-        //Applicable for miners only:
-        if (!$is_chrome && $is_miner) {
+        $is_user = filter_array($ens[0]['en__parents'], 'en_id', 4430); //Mench Users
+        $is_miner = filter_array($ens[0]['en__parents'], 'en_id', 1308); //Mench Miners
+        $is_partner_employee = filter_array($ens[0]['en__parents'], 'en_id', 7512); //Mench Partner Employees
 
-            //Remove miner privileges as they cannot use the platform with non-chrome Browser:
-            foreach($ens[0]['en__parents'] as $key=>$value){
-                if(in_array($value['en_id'], array(1308,1281))){
-                    unset($ens[0]['en__parents'][$key]);
-                }
-            }
 
-            //Remove miner status:
-            $is_miner = false;
+        //Applicable for anyone using the Mench mining app:
+        if (!$is_chrome && ($is_miner || $is_partner_employee)) {
 
-            //Show error:
-            $this->session->set_flashdata('flash_message', '<div class="alert alert-danger" role="alert">Mining console requires <a href="https://www.google.com/chrome/browser/" target="_blank"><u>Google Chrome</u></a> to properly function. Your mining permissions have been removed but you still have access to your Action Plan and Account.</div>');
+            $this->Links_model->ln_create(array(
+                'ln_content' => 'User failed to login using non-Chrome browser',
+                'ln_type_entity_id' => 7504, //Admin Review Required
+                'ln_child_entity_id' => $ens[0]['en_id'],
+                'ln_miner_entity_id' => 1, //Shervin/Developer
+            ));
+
+            return redirect_message('/login', '<div class="alert alert-danger" role="alert">Mining console requires <a href="https://www.google.com/chrome/browser/" target="_blank"><u>Google Chrome</u></a> to properly function. Your mining permissions have been removed but you still have access to your Action Plan and Account.</div>');
 
         }
 
@@ -922,8 +905,62 @@ class User_app extends CI_Controller
             ), array(), 1, 0, array('ln_id' => 'DESC'));
 
             //They have admin rights:
+            $session_data['user_default_intent'] = $this->config->item('in_focus_id');
             $session_data['user_session_count'] = 0;
             $session_data['advance_view_enabled'] = ( count($last_advance_settings) > 0 && substr_count($last_advance_settings[0]['ln_content'] , ' ON')==1 ? 1 : 0 );
+
+        } elseif($is_partner_employee){
+
+            //Determine their company:
+            $session_data['user_default_intent'] = 0; //TBD
+
+            foreach($this->Links_model->ln_fetch(array(
+                'ln_parent_entity_id' => $ens[0]['en_id'],
+                'ln_type_entity_id IN (' . join(',', $this->config->item('en_ids_4592')) . ')' => null, //Entity Link Connectors
+                'ln_status_entity_id IN (' . join(',', $this->config->item('en_ids_7359')) . ')' => null, //Link Statuses Public
+                'en_status_entity_id IN (' . join(',', $this->config->item('en_ids_7357')) . ')' => null, //Entity Statuses Public
+            ), array('en_child'), 0) as $employee_child){
+
+                //Is this child a Partner Mench Company?
+                if(count($this->Links_model->ln_fetch(array(
+                        'ln_child_entity_id' => $employee_child['en_id'],
+                        'ln_parent_entity_id' => 6695, //Mench Partner Companies
+                        'ln_type_entity_id IN (' . join(',', $this->config->item('en_ids_4592')) . ')' => null, //Entity Link Connectors
+                        'ln_status_entity_id IN (' . join(',', $this->config->item('en_ids_7359')) . ')' => null, //Link Statuses Public
+                    ))) > 0){
+
+                    //This is it, find the top intention and terminate loop:
+                    $company_intentions = $this->Links_model->ln_fetch(array(
+                        'ln_miner_entity_id' => $employee_child['en_id'],
+                        'ln_type_entity_id IN (' . join(',', $this->config->item('en_ids_7347')) . ')' => null, //Action Plan Intention Set
+                        'ln_status_entity_id IN (' . join(',', $this->config->item('en_ids_7364')) . ')' => null, //Link Statuses Incomplete
+                    ), array(), 0, 0, array('ln_order' => 'ASC'));
+
+                    if(count($company_intentions) > 0){
+                        //The first intent is the default one:
+                        $session_data['user_default_intent'] = intval($company_intentions[0]['ln_parent_intent_id']);
+                        break;
+                    }
+                }
+            }
+
+            //Make sure we found companies top intent:
+            if($session_data['user_default_intent'] == 0){
+
+                $this->Links_model->ln_create(array(
+                    'ln_content' => 'Unable to locate your companies intention. Make sure user logged in with Chrome or get back to them',
+                    'ln_type_entity_id' => 7504, //Admin Review Required
+                    'ln_child_entity_id' => $ens[0]['en_id'],
+                    'ln_miner_entity_id' => 1, //Shervin/Developer
+                ));
+
+                return redirect_message('/login', '<div class="alert alert-danger" role="alert">Error: Unable to locate your companies intention</div>');
+            }
+
+
+            //They have admin rights:
+            $session_data['user_session_count'] = 0;
+            $session_data['advance_view_enabled'] = 0;
 
         }
 
@@ -944,7 +981,6 @@ class User_app extends CI_Controller
             'ln_miner_entity_id' => $ens[0]['en_id'],
             'ln_metadata' => $ens[0],
             'ln_type_entity_id' => 4269, //User Login
-            'ln_order' => ( isset($session_data['user_session_count']) ? $session_data['user_session_count'] : 0 ), //First Action
         ));
 
         //All good to go!
@@ -957,10 +993,13 @@ class User_app extends CI_Controller
         } else {
             //Default:
             if ($is_miner) {
-                //miner default:
+                //Go to Mench dashboard:
                 header('Location: /dashboard');
-            } else {
-                //User default:
+            } elseif ($is_partner_employee) {
+                //Go to their default intent:
+                header('Location: /intents/' . $session_data['user_default_intent']);
+            } elseif ($is_user) {
+                //Go to user Action Plan:
                 header('Location: /actionplan');
             }
         }

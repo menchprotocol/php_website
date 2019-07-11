@@ -213,17 +213,17 @@
         echo '<div id="list-children" class="list-group grey-list indent2">';
 
 
-        $entity__children = $this->Links_model->ln_fetch(array(
+        $en__children = $this->Links_model->ln_fetch(array(
             'ln_parent_entity_id' => $entity['en_id'],
             'ln_type_entity_id IN (' . join(',', $this->config->item('en_ids_4592')) . ')' => null, //Entity Link Connectors
             'ln_status_entity_id IN (' . join(',', $this->config->item('en_ids_7360')) . ')' => null, //Link Statuses Active
             'en_status_entity_id IN (' . join(',', $this->config->item('en_ids_7358')) . ')' => null, //Entity Statuses Active
         ), array('en_child'), $this->config->item('items_per_page'), 0, sort_entities($set_sort));
 
-        foreach ($entity__children as $en) {
+        foreach ($en__children as $en) {
             echo echo_en($en, 2);
         }
-        if ($entity['en__child_count'] > count($entity__children)) {
+        if ($entity['en__child_count'] > count($en__children)) {
             echo_en_load_more(1, $this->config->item('items_per_page'), $entity['en__child_count']);
         }
 
@@ -317,7 +317,7 @@
                         </div>
 
                     </div>
-                    <div class="col-md-6">
+                    <div class="col-md-6 <?= advance_mode() ?>">
 
                         <div>
 
@@ -387,10 +387,10 @@
 
                 </div>
 
-                <table class="save-btn-box">
+                <table>
                     <tr>
-                        <td class="save-result-td"><span class="save_entity_changes"></span></td>
                         <td class="save-td"><a href="javascript:en_modify_save();" class="btn btn-secondary btn-save">Save</a></td>
+                        <td class="save-result-td"><span class="save_entity_changes"></span></td>
                     </tr>
                 </table>
 

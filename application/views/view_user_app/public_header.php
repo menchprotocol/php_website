@@ -56,7 +56,7 @@ $url_part_1 = $this->uri->segment(1);
                 } else {
 
                     //Allow to sign-in:
-                    echo '<li><a href="/login'. ( isset($in['in_id']) ? '?url=%2Fintents%2F'.$in['in_id'] : '' ) .'" class="tag-manager-sign-in"><i class="fas fa-sign-in"></i> Sign In</a></li>';
+                    echo '<li><a href="/login'. ( isset($in['in_id']) && $in['in_id'] != $this->config->item('in_focus_id') ? '?url=%2Fintents%2F'.$in['in_id'] : '' ) .'" class="tag-manager-sign-in"><i class="fas fa-sign-in"></i> Sign In</a></li>';
 
                 }
                 ?>

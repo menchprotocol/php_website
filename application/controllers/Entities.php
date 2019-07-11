@@ -1030,17 +1030,17 @@ class Entities extends CI_Controller
         //Set intent as default intent for company:
         $this->Links_model->ln_create(array(
             'ln_type_entity_id' => 7511, //Company Intent Set
-            'ln_status_entity_id' => 6176, //Link Published
+            'ln_status_entity_id' => 6175, //Link Drafting
             'ln_miner_entity_id' => $company_en['en']['en_id'],
-            'ln_parent_intent_id' => $company_intent['new_in_id'], //Newly created parent intent for company
+            'ln_parent_intent_id' => $company_intent['new_in_id'],
             'ln_order' => 1,
         ));
 
         $this->Links_model->ln_create(array(
             'ln_type_entity_id' => 7511, //Company Intent Set
-            'ln_status_entity_id' => 6176, //Link Published
+            'ln_status_entity_id' => 6175, //Link Drafting
             'ln_miner_entity_id' => $company_en['en']['en_id'],
-            'ln_parent_intent_id' => $company_learn_intent['new_in_id'], //Newly created parent intent for company
+            'ln_parent_intent_id' => $company_learn_intent['new_in_id'],
             'ln_order' => 2,
         ));
 

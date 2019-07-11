@@ -76,7 +76,7 @@ $uri_segment_2 = $this->uri->segment(2);
 
                             <!-- Core Miner Functions -->
                             <li class="<?= ($uri_segment_1 == 'intents' ? 'intent-active' : 'intent-inactive') ?>">
-                                <a href="/intents/<?= $this->config->item('in_focus_id') ?>">
+                                <a href="/intents/<?= $this->session->userdata('user_default_intent') ?>">
                                     <?= $en_all_7368[4535]['m_icon'] .' '. $en_all_7368[4535]['m_name'] ?>
                                 </a>
                             </li>
@@ -111,7 +111,7 @@ $uri_segment_2 = $this->uri->segment(2);
 
 
                             <!-- Advance Mode & Logout -->
-                            <li class="links-inactive" data-toggle="tooltip" data-placement="left" title="<?= $en_all_7368[5007]['m_name'] ?>">
+                            <li class="links-inactive <?= ( en_auth(array(1308)) ? '' : ' hidden ' ) ?>" data-toggle="tooltip" data-placement="left" title="<?= $en_all_7368[5007]['m_name'] ?>">
                                 <a href="javascript:void(0)" onclick="toggle_advance(0)">
                                     <i class="<?= ( $this->session->userdata('advance_view_enabled')==1 ? 'fas fa-expand-arrows' : 'fal fa-expand-arrows ' ) ?> advance-icon"></i>
                                 </a>

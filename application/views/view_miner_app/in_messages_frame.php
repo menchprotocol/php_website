@@ -7,7 +7,7 @@ $en_ids_4485 = $this->config->item('en_ids_4485');
 $en_all_4485 = $this->config->item('en_all_4485');
 
 //Fetch all messages:
-$metadatas = $this->Links_model->ln_fetch(array(
+$in_notes = $this->Links_model->ln_fetch(array(
     'ln_status_entity_id IN (' . join(',', $this->config->item('en_ids_7360')) . ')' => null, //Link Statuses Active
     'ln_type_entity_id IN (' . join(',', $en_ids_4485) . ')' => null, //All Intent Notes
     'ln_child_intent_id' => $in_id,
@@ -17,17 +17,22 @@ $metadatas = $this->Links_model->ln_fetch(array(
 //To be populated:
 $counters = array();
 $metadata_body_ui = '';
-foreach ($metadatas as $ln) {
+$in_note_messages_count = 0;
+foreach ($in_notes as $in_note) {
 
-    $metadata_body_ui .= echo_in_message_manage(array_merge($ln, array(
+    $metadata_body_ui .= echo_in_message_manage(array_merge($in_note, array(
         'ln_child_entity_id' => $session_en['en_id'],
     )));
 
     //Increase counter:
-    if (isset($counters[$ln['ln_type_entity_id']])) {
-        $counters[$ln['ln_type_entity_id']]++;
+    if (isset($counters[$in_note['ln_type_entity_id']])) {
+        $counters[$in_note['ln_type_entity_id']]++;
     } else {
-        $counters[$ln['ln_type_entity_id']] = 1;
+        $counters[$in_note['ln_type_entity_id']] = 1;
+    }
+
+    if($in_note['ln_type_entity_id']==4231){
+        $in_note_messages_count++;
     }
 
 }
@@ -39,7 +44,7 @@ foreach ($metadatas as $ln) {
     //pass core variables to JS:
     var in_id = <?= $in_id ?>;
     var messages_max_length = <?= $messages_max_length ?>;
-    var metadata_count = <?= count($metadatas) ?>;
+    var in_note_messages_count = <?= $in_note_messages_count ?>;
     var focus_ln_type_entity_id = <?= $en_ids_4485[0] ?>; //The message type that is the focus on-start.
 </script>
 <script src="/js/custom/intent-messaging-js.js?v=v<?= $this->config->item('app_version') ?>" type="text/javascript"></script>
@@ -47,7 +52,7 @@ foreach ($metadatas as $ln) {
 
 
 <!-- Message types navigation menu -->
-<ul class="nav nav-tabs iphone-nav-tabs">
+<ul class="nav nav-tabs iphone-nav-tabs <?= advance_mode() ?>">
     <?php
     foreach ($en_all_4485 as $ln_type_entity_id => $m) {
         echo '<li role="presentation" class="nav_' . $ln_type_entity_id . ' active '.( in_array(5007 , $m['m_parents']) ? ' ' . advance_mode() . '' : '' ).'">';
@@ -63,6 +68,7 @@ foreach ($metadatas as $ln) {
     <?php
 
     //Show no-Message notifications for each message type:
+    echo '<div class="message-info-box '.advance_mode().'">';
     foreach ($en_all_4485 as $ln_type_entity_id => $m) {
 
 
@@ -95,6 +101,9 @@ foreach ($metadatas as $ln) {
             echo '<div class="ix-tip no-messages' . $in_id . '_' . $ln_type_entity_id . ' all_msg msg_en_type_' . $ln_type_entity_id . '"><i class="fas fa-exclamation-triangle"></i> No ' . strtolower($m['m_name']) . ' added yet</div>';
         }
     }
+    echo '</div>';
+
+
 
     //Count each message type:
     echo '<div id="message-sorting" class="list-group list-messages">';

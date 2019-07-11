@@ -134,7 +134,7 @@
 
             </div>
 
-            <div class="col-md-6">
+            <div class="col-md-6 <?= advance_mode() ?>">
 
                 <div class="title">
                     <h4>
@@ -234,10 +234,10 @@
             </div>
         </div>
 
-        <table class="save-btn-box loadcontent">
+        <table class="loadcontent">
             <tr>
-                <td class="save-result-td"><span class="save_intent_changes"></span></td>
                 <td class="save-td"><a href="javascript:in_modify_save();" class="btn btn-primary">Save</a></td>
+                <td class="save-result-td"><span class="save_intent_changes"></span></td>
             </tr>
         </table>
 
