@@ -2167,12 +2167,12 @@ select.form-control {
     padding-left: 39px;
 }
 
-.indent1 {
+.indent1_retire {
     margin-left: 0px;
     margin-left: 15px;
 }
 
-.indent2 {
+.indent2_retire {
     margin-left: 0;
     margin-left: 30px;
 }
@@ -2405,11 +2405,12 @@ select.form-control {
         font-size: 2em;
     }
 
-    .indent1 {
+    .indent1_retire {
         margin-left: 8px;
     }
 
-    .indent2 {
+    .indent2_retire {
+
         margin-left: 16px;
     }
 

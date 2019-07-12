@@ -1140,7 +1140,7 @@ class Intents_model extends CI_Model
             //Not a acceptable Verb:
             return array(
                 'status' => 0,
-                'message' => 'Verb is not yet supported. Manage via @5008',
+                'message' => 'Intent must start with a supporting verb',
             );
 
         }
