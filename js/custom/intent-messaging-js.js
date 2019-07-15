@@ -316,7 +316,7 @@ function in_message_modify_save(ln_id, initial_ln_type_entity_id) {
     var modify_data = {
         ln_id: parseInt(ln_id),
         initial_ln_type_entity_id: parseInt(initial_ln_type_entity_id),
-        message_ln_status: parseInt($("#message_status_" + ln_id).val()),
+        message_ln_status_entity_id: parseInt($("#message_status_" + ln_id).val()),
         in_id: parseInt(in_id),
         ln_content: $("#ul-nav-" + ln_id + " textarea").val(),
     };
@@ -329,7 +329,7 @@ function in_message_modify_save(ln_id, initial_ln_type_entity_id) {
             //Saving successful...
 
             //Did we remove this message?
-            if(modify_data['message_ln_status'] == 6173 /* Link Removed */){
+            if(modify_data['message_ln_status_entity_id'] == 6173 /* Link Removed */){
 
                 //Yes, message was removed, adjust accordingly:
                 $("#ul-nav-" + ln_id).html('<div>' + data.message + '</div>');

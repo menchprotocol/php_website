@@ -256,7 +256,7 @@ function echo_in_outcome($in_outcome, $fb_messenger_format = false, $reference_a
 
             //Miner view:
             if($show_entire_outcome){
-                return '<span class="double-column-omit click_expand" data-toggle="tooltip" data-placement="top" title="Not shown to users">'.htmlentities($in_outcome_parts[0]).'::</span><span class="click_expand">'.htmlentities($in_outcome_parts[1]).'</span>';
+                return '<span class="double-column-omit click_expand '.advance_mode().'" data-toggle="tooltip" data-placement="top" title="Not shown to users">'.htmlentities($in_outcome_parts[0]).'::</span><span class="click_expand">'.htmlentities($in_outcome_parts[1]).'</span>';
             } else {
                 return '<span class="click_expand">'.htmlentities(trim($in_outcome_parts[1])).'</span>';
             }
@@ -1897,7 +1897,7 @@ function echo_in($in, $level, $in_linked_id = 0, $is_parent = false)
 
 
     //Always Show Intent Icon (AND or OR)
-    $ui .= '<span class="double-icon" style="margin-right:5px;">';
+    $ui .= '<span class="double-icon '.advance_mode().'" style="margin-right:5px;">';
 
     //Load AND/OR Intents:
     $en_all_6676 = $CI->config->item('en_all_6676');
@@ -1932,7 +1932,7 @@ function echo_in($in, $level, $in_linked_id = 0, $is_parent = false)
 
     } elseif ($level == 3) {
 
-        $ui .= '<span id="title_' . $ln_id . '" class="tree_title in_outcome_' . $in['in_id'] . '" style="padding-left:23px;">' .echo_in_outcome($in['in_outcome'], false, false, true) . '</span> ';
+        $ui .= '<span id="title_' . $ln_id . '" class="tree_title in_outcome_' . $in['in_id'] . '" style="padding-left:25px;">' .echo_in_outcome($in['in_outcome'], false, false, true) . '</span> ';
 
         //Is this the focused item in the parent sibling dropdown?
         if($is_child_focused){
@@ -1986,7 +1986,7 @@ function echo_in($in, $level, $in_linked_id = 0, $is_parent = false)
 
     //Intent modify:
     $in__metadata_max_seconds = (isset($in_metadata['in__metadata_max_seconds']) ? $in_metadata['in__metadata_max_seconds'] : 0);
-    $ui .= '<a class="badge badge-primary white-primary is_not_bg '.( $level==0 ? '' . advance_mode() . '' : '' ).'" onclick="in_modify_load(' . $in['in_id'] . ',' . $ln_id . ')" style="margin:-2px -8px 0 0; width:40px;" href="#loadmodify-' . $in['in_id'] . '-' . $ln_id . '" data-toggle="tooltip" title="Intent completion cost. Click to modify intent'.( $level>1 ? ' and link' : '' ).'" data-placement="bottom"><span class="btn-counter slim-time t_estimate_' . $in['in_id'] . advance_mode() . '" tree-max-seconds="' . $in__metadata_max_seconds . '" intent-seconds="' . $in['in_completion_seconds'] . '">'.( $in__metadata_max_seconds > 0 ? echo_time_hours($in__metadata_max_seconds , true) : 0 ).'</span><i class="fas fa-cog"></i></a> &nbsp;';
+    $ui .= '<a class="badge badge-primary white-primary is_not_bg '.advance_mode().'" onclick="in_modify_load(' . $in['in_id'] . ',' . $ln_id . ')" style="margin:-2px -8px 0 0; width:40px;" href="#loadmodify-' . $in['in_id'] . '-' . $ln_id . '" data-toggle="tooltip" title="Intent completion cost. Click to modify intent'.( $level>1 ? ' and link' : '' ).'" data-placement="bottom"><span class="btn-counter slim-time t_estimate_' . $in['in_id'] . advance_mode() . '" tree-max-seconds="' . $in__metadata_max_seconds . '" intent-seconds="' . $in['in_completion_seconds'] . '">'.( $in__metadata_max_seconds > 0 ? echo_time_hours($in__metadata_max_seconds , true) : 0 ).'</span><i class="fas fa-cog"></i></a> &nbsp;';
 
 
 
@@ -2130,11 +2130,13 @@ function echo_in($in, $level, $in_linked_id = 0, $is_parent = false)
         }
 
 
+        $ui .= '<div class="'.advance_mode().'">';
         $ui .= '<div class="list-group-item list_input new-in3-input link-class--' . $ln_id . ' hidden">
                 <div class="form-group is-empty"  style="margin: 0; padding: 0;"><form action="#" onsubmit="in_link_or_create(' . $in['in_id'] . ',3);" intent-id="' . $in['in_id'] . '"><input type="text" class="form-control autosearch intentadder-id-'.$in['in_id'].' algolia_search" maxlength="' . $CI->config->item('in_outcome_max') . '" id="addintent-cr-' . $ln_id . '" intent-id="' . $in['in_id'] . '" placeholder="Add #Intent"></form></div>
         </div>';
 
         $ui .= '<div class="algolia_search_pad in_pad_'.$in['in_id'].' hidden"><span>Search existing intents or create a new one...</span></div>';
+        $ui .= '</div>';
 
         //Load JS search for this input:
         $ui .= '<script> $(document).ready(function () { in_load_search(".intentadder-id-'.$in['in_id'].'", 0, 3); }); </script>';
@@ -2227,7 +2229,7 @@ function echo_en($en, $level, $is_parent = false)
         $ui .= '<span class="icon-top-left" data-toggle="tooltip" data-placement="right" title="User connected to Mench on Messenger">';
         if(en_auth(array(1281))){
             //Give Facebook profile ping option to Moderators:
-            $ui .= '<a href="/user_app/api_fetch_profile/'.$en['en_id'].'" target="_blank"><i class="fas fa-badge-check blue" style="font-size: 1.1em;"></i></a>';
+            $ui .= '<a href="/user_app/messenger_fetch_profile/'.$en['en_id'].'" target="_blank"><i class="fas fa-badge-check blue" style="font-size: 1.1em;"></i></a>';
         } else {
             $ui .= '<i class="fas fa-badge-check blue" style="font-size: 1.1em;"></i>';
         }

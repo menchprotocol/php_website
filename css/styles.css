@@ -2160,11 +2160,11 @@ select.form-control {
 }
 
 .top_entity, .top_intent {
-    padding-left: 25px;
+    padding-left: 11px;
 }
 
 .parent-intent, .parent-entity {
-    padding-left: 39px;
+    padding-left: 10px;
 }
 
 .indent1_retire {

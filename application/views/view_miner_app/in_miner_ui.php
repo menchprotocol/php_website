@@ -122,8 +122,9 @@ $in_filters = in_get_filters(true);
             echo echo_in($child_in, 2, $in['in_id']);
         }
 
+
         //Add child intent:
-        echo '<div class="list-group-item list_input grey-block">
+        echo '<div class="list-group-item list_input grey-block '.advance_mode().'">
                     <div class="form-group is-empty" style="margin: 0; padding: 0;">
                         <input type="text"
                                class="form-control intentadder-level-2-bottom algolia_search"
