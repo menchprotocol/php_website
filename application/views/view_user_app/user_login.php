@@ -1,4 +1,4 @@
-<div class="landing-page-intro">
+<div class="landing-page-intro sign-in-page">
     <h1>Sign In</h1>
     <div class="login-content" style="margin-top:50px;">
         <script>

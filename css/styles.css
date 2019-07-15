@@ -4019,6 +4019,10 @@ h4 .tip-badge {
     max-width: 610px !important;
 }
 
+.sign-in-page{
+    max-width: 380px !important;
+}
+
 .landing-page-intro {
     margin:0 auto;
 }
