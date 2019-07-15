@@ -4114,7 +4114,7 @@ h4 .tip-badge {
 }
 
 .inner_actionplan .panel-title a {
-    font-weight: 300 !important;
+    font-weight: 500 !important;
     text-decoration: none !important;
     line-height: 110% !important;
 }
@@ -4304,7 +4304,16 @@ h4 .tip-badge {
     }
 
     .panel-body .msg {
-        font-size: 1.3em !important;
+        font-size: 1.2em !important;
+    }
+
+    .panel-body a {
+        font-size: 1.2em !important;
+    }
+
+    .inner_actionplan .panel-title a {
+        font-weight: 500 !important;
+        font-size: 0.8em !important;
     }
 
     .landing-page .page-header {
