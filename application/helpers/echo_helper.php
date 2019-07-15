@@ -939,7 +939,7 @@ function echo_tree_users($in, $fb_messenger_format = false, $autoexpand = false)
         return '👤 ' . $pitch_body. "\n\n";
     } else {
         //HTML format
-        $pitch_title = '<span class="icon-block"><i class="fas fa-user"></i></span>&nbsp;'. echo_number($enrolled_users_count[0]['totals']) .' users enrolled so far';
+        $pitch_title = '<span class="icon-block"><i class="fas fa-user"></i></span>&nbsp;'. echo_number($enrolled_users_count[0]['totals']) .' enrolled users';
         return echo_tree_html_body('CompletedUsers', $pitch_title, $pitch_body, $autoexpand);
     }
 }
