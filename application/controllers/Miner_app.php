@@ -41,11 +41,11 @@ class Miner_app extends CI_Controller
     {
         $session_en = en_auth(array(1308)); //Just be logged in to browse
         $en_all_7368 = $this->config->item('en_all_7368');
-        $this->load->view(($session_en ? 'view_miner_app/miner_app_header' : 'view_user_app/public_header'), array(
+        $this->load->view(($session_en ? 'view_miner_app/miner_app_header' : 'view_user_app/user_app_header'), array(
             'title' => $en_all_7368[7161]['m_name'],
         ));
         $this->load->view('view_miner_app/mench_dashboard');
-        $this->load->view(($session_en ? 'view_miner_app/miner_app_footer' : 'view_user_app/public_footer'));
+        $this->load->view(($session_en ? 'view_miner_app/miner_app_footer' : 'view_user_app/user_app_footer'));
     }
 
 

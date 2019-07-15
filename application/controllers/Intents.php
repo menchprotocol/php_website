@@ -164,7 +164,7 @@ class Intents extends CI_Controller
             ));
         } else {
             //Mench header:
-            $this->load->view('view_user_app/public_header', array(
+            $this->load->view('view_user_app/user_app_header', array(
                 'in' => $ins[0],
                 'session_en' => $session_en,
                 'title' => echo_in_outcome($ins[0]['in_outcome'], true),
@@ -184,7 +184,7 @@ class Intents extends CI_Controller
             $this->load->view('view_miner_app/white_label_footer');
         } else {
             //Mench footer:
-            $this->load->view('view_user_app/public_footer');
+            $this->load->view('view_user_app/user_app_footer');
         }
     }
 

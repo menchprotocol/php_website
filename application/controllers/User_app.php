@@ -30,14 +30,39 @@ class User_app extends CI_Controller
 
 
     function page_not_found(){
-        $this->load->view('view_user_app/public_header', array(
+        $this->load->view('view_user_app/user_app_header', array(
             'session_en' => $this->session->userdata('user'),
             'title' => 'Page not found',
         ));
         $this->load->view('view_user_app/page_not_found');
-        $this->load->view('view_user_app/public_footer');
+        $this->load->view('view_user_app/user_app_footer');
     }
 
+
+
+    function actionplan($in_id = 0)
+    {
+
+        /*
+         *
+         * Loads user action plans "frame" which would
+         * then use JS/Facebook API to determine User
+         * PSID which then loads the Action Plan via
+         * actionplan_load() function below.
+         *
+         * */
+
+        $this->load->view('view_user_app/user_app_header', array(
+            'title' => '🚩 Action Plan',
+        ));
+        $this->load->view('view_user_app/actionplan_frame', array(
+            'in_id' => $in_id,
+        ));
+        $this->load->view('view_user_app/user_app_footer', array(
+            'hide_social' => 1,
+        ));
+
+    }
 
 
     function myaccount()
@@ -55,7 +80,22 @@ class User_app extends CI_Controller
             'title' => '👤 My Account',
         ));
         $this->load->view('view_user_app/myaccount_frame');
-        $this->load->view('view_user_app/user_app_footer');
+        $this->load->view('view_user_app/user_app_footer', array(
+            'hide_social' => 1,
+        ));
+    }
+
+
+    function password_reset()
+    {
+        $data = array(
+            'title' => 'Password Reset',
+        );
+        $this->load->view('view_user_app/user_app_header', $data);
+        $this->load->view('view_user_app/password_reset');
+        $this->load->view('view_user_app/user_app_footer', array(
+            'hide_social' => 1,
+        ));
     }
 
     function myaccount_load($psid)
@@ -97,16 +137,6 @@ class User_app extends CI_Controller
 
     }
 
-    function password_reset()
-    {
-        $data = array(
-            'title' => 'Password Reset',
-        );
-        $this->load->view('view_user_app/user_app_header', $data);
-        $this->load->view('view_user_app/password_reset');
-        $this->load->view('view_user_app/user_app_footer');
-    }
-
     function user_login()
     {
         //Check to see if they are already logged in?
@@ -116,11 +146,11 @@ class User_app extends CI_Controller
             return redirect_message('/dashboard');
         }
 
-        $this->load->view('view_user_app/public_header', array(
+        $this->load->view('view_user_app/user_app_header', array(
             'title' => 'Sign In',
         ));
         $this->load->view('view_user_app/user_login');
-        $this->load->view('view_user_app/public_footer');
+        $this->load->view('view_user_app/user_app_footer');
     }
 
     function login_process()
@@ -933,27 +963,7 @@ class User_app extends CI_Controller
 
     }
 
-    function actionplan($in_id = 0)
-    {
 
-        /*
-         *
-         * Loads user action plans "frame" which would
-         * then use JS/Facebook API to determine User
-         * PSID which then loads the Action Plan via
-         * actionplan_load() function below.
-         *
-         * */
-
-        $this->load->view('view_user_app/user_app_header', array(
-            'title' => '🚩 Action Plan',
-        ));
-        $this->load->view('view_user_app/actionplan_frame', array(
-            'in_id' => $in_id,
-        ));
-        $this->load->view('view_user_app/user_app_footer');
-
-    }
 
 
     function actionplan_reset_progress($en_id, $timestamp, $secret_key){

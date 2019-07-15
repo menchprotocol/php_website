@@ -76,7 +76,7 @@ if(!$found_grandpa_intersect){
 
 
     //Show title
-    echo '<h3 class="master-h3 primary-title">' . echo_in_outcome($in['in_outcome']). '</h3>';
+    echo '<h1>' . echo_in_outcome($in['in_outcome']). '</h1>';
     echo '<div class="sub_title">';
 
     //Progression link:

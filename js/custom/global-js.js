@@ -18,6 +18,13 @@ ga('create', 'UA-92774608-1', 'auto');
 ga('send', 'pageview');
 
 
+function remove_user_app_header(){
+    //Remove top menu and make adjustments:
+    $('.navbar-fixed-top').remove();
+    $('.main-raised').css('padding-top','0');
+    $('.main-plain .container').css('padding','0');
+}
+
 // Google Tag Manager
 (function(w,d,s,l,i){w[l]=w[l]||[];w[l].push({'gtm.start':
         new Date().getTime(),event:'gtm.js'});var f=d.getElementsByTagName(s)[0],

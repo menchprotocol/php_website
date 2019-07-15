@@ -5,7 +5,7 @@
 </script>
 <script src="/js/custom/messenger-myaccount.js?v=v<?= $this->config->item('app_version') ?>" type="text/javascript"></script>
 
-<h3 class="master-h3 primary-title" style="padding:15px 0;">👤 My Account</h3>
+<h1>My Account</h1>
 
 <div class="panel-group" id="accordion" role="tablist" aria-multiselectable="true">
 
@@ -37,7 +37,7 @@
         } elseif($acc_en_id==6197 /* Full Name */){
 
             echo '<input type="text" id="en_name" class="form-control border" value="'.$session_en['en_name'].'" />
-                    <a href="javascript:void(0)" onclick="save_full_name()" class="btn btn-sm btn-secondary">Save</a>
+                    <a href="javascript:void(0)" onclick="save_full_name()" class="btn btn-sm btn-primary">Save</a>
                     <span class="saving-account save_full_name"></span>';
 
         } elseif($acc_en_id==3288 /* Email */){
@@ -50,7 +50,7 @@
             ));
 
             echo '<input type="email" id="en_email" class="form-control border" value="'.( count($user_emails) > 0 ? $user_emails[0]['ln_content'] : '' ).'" placeholder="you@gmail.com" />
-                    <a href="javascript:void(0)" onclick="save_email()" class="btn btn-sm btn-secondary">Save</a>
+                    <a href="javascript:void(0)" onclick="save_email()" class="btn btn-sm btn-primary">Save</a>
                     <span class="saving-account save_email"></span>';
 
         } elseif($acc_en_id==3286 /* Password */){
@@ -63,7 +63,7 @@
             ));
 
             echo '<input type="password" id="en_password" class="form-control border" placeholder="Set new password..." />
-                    <a href="javascript:void(0)" onclick="save_password()" class="btn btn-sm btn-secondary">Save</a>
+                    <a href="javascript:void(0)" onclick="save_password()" class="btn btn-sm btn-primary">Save</a>
                     <span class="saving-account save_password"></span>
                     <p>Note: '. ( count($user_passwords) > 0 ? 'Password updated '.echo_time_difference(strtotime($user_passwords[0]['ln_timestamp'])).' ago.' : 'You have not yet set a password.') .'</p>';
 
@@ -77,7 +77,7 @@
             ));
 
             echo '<input type="number" id="en_phone" class="form-control border" value="'.( count($user_phones) > 0 ? $user_phones[0]['ln_content'] : '' ).'" placeholder="Set phone number..." />
-                    <a href="javascript:void(0)" onclick="save_phone()" class="btn btn-sm btn-secondary">Save</a>
+                    <a href="javascript:void(0)" onclick="save_phone()" class="btn btn-sm btn-primary">Save</a>
                     <span class="saving-account save_phone"></span>';
 
         } elseif($acc_en_id==6123 /* Social Profiles */){
@@ -100,7 +100,7 @@
                         </div>
                     </div>';
             }
-            echo '<a href="javascript:void(0)" onclick="save_social_profiles()" class="btn btn-sm btn-secondary">Save</a>
+            echo '<a href="javascript:void(0)" onclick="save_social_profiles()" class="btn btn-sm btn-primary">Save</a>
                                 <span class="saving-account save_social_profiles"></span>';
 
         }

@@ -11,7 +11,36 @@ defined('BASEPATH') OR exit('No direct script access allowed');
  *
  */
 
-//Generated 2019-07-10 18:01:28 PST
+//Generated 2019-07-15 12:45:32 PST
+
+//Mench Platform Wizards:
+$config['en_ids_7529'] = array(7530,7531,7532,7533);
+$config['en_all_7529'] = array(
+    7530 => array(
+        'm_icon' => '<i class="fas fa-sign-in"></i>',
+        'm_name' => 'Sign In / Sign Up',
+        'm_desc' => '',
+        'm_parents' => array(7529),
+    ),
+    7531 => array(
+        'm_icon' => '<i class="fas fa-file-plus"></i>',
+        'm_name' => 'Add New Source',
+        'm_desc' => '',
+        'm_parents' => array(7529),
+    ),
+    7532 => array(
+        'm_icon' => '<i class="fas fa-user-tie"></i>',
+        'm_name' => 'Partner Employer Signup',
+        'm_desc' => '',
+        'm_parents' => array(7529),
+    ),
+    7533 => array(
+        'm_icon' => '<i class="fas fa-briefcase"></i>',
+        'm_name' => 'Add Job Posting',
+        'm_desc' => '',
+        'm_parents' => array(7529),
+    ),
+);
 
 //User Step Answered:
 $config['en_ids_6157'] = array(6684,6685,7231);
@@ -2285,7 +2314,7 @@ $config['en_all_4755'] = array(
     ),
     6415 => array(
         'm_icon' => '<i class="far fa-function"></i>',
-        'm_name' => 'User Steps Reset',
+        'm_name' => 'User Progress Reset',
         'm_desc' => '',
         'm_parents' => array(4595,4755,6418,4593,6414),
     ),
@@ -2866,7 +2895,7 @@ $config['en_all_4595'] = array(
     ),
     6415 => array(
         'm_icon' => '<i class="far fa-function"></i>',
-        'm_name' => 'User Steps Reset',
+        'm_name' => 'User Progress Reset',
         'm_desc' => '5',
         'm_parents' => array(4595,4755,6418,4593,6414),
     ),
@@ -3464,7 +3493,7 @@ $config['en_all_4593'] = array(
     ),
     6415 => array(
         'm_icon' => '<i class="far fa-function"></i>',
-        'm_name' => 'User Steps Reset',
+        'm_name' => 'User Progress Reset',
         'm_desc' => 'Removes certain links types as defined by its children from a Student\'s Action Plan. Currently only available for Miners.',
         'm_parents' => array(4595,4755,6418,4593,6414),
     ),

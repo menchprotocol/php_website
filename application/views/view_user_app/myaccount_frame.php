@@ -8,12 +8,6 @@ $fb_settings = $this->config->item('fb_settings');
 if (isset($session_en['en_id'])) {
 
     //User is accessing their account from their browser
-
-    //Include header:
-    $this->load->view('view_user_app/user_app_nav', array(
-        'current' => '/myaccount',
-    ));
-
     //Fetch page instantly as we know who this is:
     ?>
     <script>
@@ -30,6 +24,9 @@ if (isset($session_en['en_id'])) {
     //Use Facebook to see if we can find this user's identity:
     ?>
     <script>
+
+        remove_user_app_header();
+
         (function (d, s, id) {
             var js, fjs = d.getElementsByTagName(s)[0];
             if (d.getElementById(id)) {
