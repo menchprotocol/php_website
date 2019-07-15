@@ -4307,14 +4307,6 @@ h4 .tip-badge {
         font-size: 1.3em !important;
     }
 
-    .panel-body a {
-        font-size: 1.2em !important;
-    }
-
-    .second-level-link {
-        text-decoration: none !important;
-    }
-
     .landing-page .page-header {
         min-height: 90vh;
     }
