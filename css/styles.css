@@ -198,7 +198,7 @@ h1, .h1 {
 .panel-primary > .panel-heading + .panel-collapse > .panel-body {
     margin-left: 0px;
     font-size: 1.3em !important;
-    margin:0 0 20px 40px;
+    margin:0 0 0 40px;
     padding:0 10px !important;
 }
 
@@ -210,7 +210,7 @@ h1, .h1 {
 
 .panel-body .panel-body {
     padding:5px 0 0 25px;
-    font-size:0.85em !important;
+    font-size:0.9em !important;
     margin: 0 0 0 17px !important;
     border: none !important;
 }
@@ -230,7 +230,7 @@ h1, .h1 {
 
 .panel-body .panel-heading .panel-title a {
     padding: 5px 0 !important;
-    font-size: 0.85em !important;
+    font-size: 0.9em !important;
 }
 
 .company-signup{
@@ -1401,8 +1401,8 @@ h5, .h5 {
     display: block;
     background-color: #EFEFEF;
     margin:0 0 5px 0;
-    padding: 12px 10px;
-    font-size: 1em !important;
+    padding:8px;
+    font-size:0.9em !important;
     border-radius: 5px;
 }
 
@@ -4397,10 +4397,6 @@ h4 .tip-badge {
 
     .panel-body .msg {
         font-size: 1em !important;
-    }
-
-    .panel-body a {
-        font-size: 1.2em !important;
     }
 
     .inner_actionplan .panel-title a {
