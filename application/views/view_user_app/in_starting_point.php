@@ -24,8 +24,7 @@ $step_info = echo_tree_steps($in, false);
 $user_info = echo_tree_users($in, false);
 
 if($step_info || $source_info || $user_info){
-    echo '<p style="margin:30px 0 10px;">Here is an overview:</p>';
-    echo '<div style="margin:5px 0 35px 0;" class="maxout">';
+    echo '<div style="margin:25px 0;" class="maxout">';
     echo $source_info;
     echo $step_info;
     echo $user_info;

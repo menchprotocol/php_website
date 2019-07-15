@@ -36,7 +36,7 @@
 
         } elseif($acc_en_id==6197 /* Full Name */){
 
-            echo '<input type="text" id="en_name" class="form-control border" value="'.$session_en['en_name'].'" />
+            echo '<span class="white-wrapper"><input type="text" id="en_name" class="form-control border" value="'.$session_en['en_name'].'" /></span>
                     <a href="javascript:void(0)" onclick="save_full_name()" class="btn btn-sm btn-primary">Save</a>
                     <span class="saving-account save_full_name"></span>';
 
@@ -49,7 +49,7 @@
                 'ln_parent_entity_id' => 3288, //Email Address
             ));
 
-            echo '<input type="email" id="en_email" class="form-control border" value="'.( count($user_emails) > 0 ? $user_emails[0]['ln_content'] : '' ).'" placeholder="you@gmail.com" />
+            echo '<span class="white-wrapper"><input type="email" id="en_email" class="form-control border" value="'.( count($user_emails) > 0 ? $user_emails[0]['ln_content'] : '' ).'" placeholder="you@gmail.com" /></span>
                     <a href="javascript:void(0)" onclick="save_email()" class="btn btn-sm btn-primary">Save</a>
                     <span class="saving-account save_email"></span>';
 
@@ -62,7 +62,7 @@
                 'ln_child_entity_id' => $session_en['en_id'], //For this user
             ));
 
-            echo '<input type="password" id="en_password" class="form-control border" placeholder="Set new password..." />
+            echo '<span class="white-wrapper"><input type="password" id="en_password" class="form-control border" placeholder="Set new password..." /></span>
                     <a href="javascript:void(0)" onclick="save_password()" class="btn btn-sm btn-primary">Save</a>
                     <span class="saving-account save_password"></span>
                     <p>Note: '. ( count($user_passwords) > 0 ? 'Password updated '.echo_time_difference(strtotime($user_passwords[0]['ln_timestamp'])).' ago.' : 'You have not yet set a password.') .'</p>';
@@ -76,7 +76,7 @@
                 'ln_parent_entity_id' => 4783, //Phone Number
             ));
 
-            echo '<input type="number" id="en_phone" class="form-control border" value="'.( count($user_phones) > 0 ? $user_phones[0]['ln_content'] : '' ).'" placeholder="Set phone number..." />
+            echo '<span class="white-wrapper"><input type="number" id="en_phone" class="form-control border" value="'.( count($user_phones) > 0 ? $user_phones[0]['ln_content'] : '' ).'" placeholder="Set phone number..." /></span>
                     <a href="javascript:void(0)" onclick="save_phone()" class="btn btn-sm btn-primary">Save</a>
                     <span class="saving-account save_phone"></span>';
 
@@ -90,16 +90,18 @@
             ));
 
             echo '<script> var en_ids_6123 = ' . json_encode($this->config->item('en_ids_6123')) . '; </script>'; //Used for JS variables:
+
+            echo '<table style="width: 100%;">';
             foreach($this->config->item('en_all_6123') as $acc_en_id => $acc_detail){
                 //Do we have this social profile?
                 $profile_array = filter_array($user_social_profiles, 'ln_parent_entity_id', $acc_en_id);
-                echo '<div class="form-group label-floating is-empty">
-                        <div class="input-group border" style="width: 155px;">
-                            <span class="input-group-addon addon-lean addon-grey">'.$acc_detail['m_icon'].'</span>
-                            <input type="url" value="'.( $profile_array ? $profile_array['ln_content'] : '' ).'" parent-en-id="'.$acc_en_id.'" class="form-control border social_profile_url" placeholder="'.$acc_detail['m_name'].' Profile URL" style="display: inline-block;" />
-                        </div>
-                    </div>';
+                echo '<tr>';
+                echo '<td style="padding:0 5px 2px 0 !important; width: 26px; font-size: 1.2em !important;">'.$acc_detail['m_icon'].'</td>';
+                echo '<td style="width: 100%; padding-bottom:5px;"><span class="white-wrapper"><input type="url" value="'.( $profile_array ? $profile_array['ln_content'] : '' ).'" parent-en-id="'.$acc_en_id.'" class="form-control border social_profile_url" placeholder="'.$acc_detail['m_name'].' Profile URL" style="display: inline-block;" /></span></td>';
+                echo '</tr>';
             }
+            echo '</table>';
+
             echo '<a href="javascript:void(0)" onclick="save_social_profiles()" class="btn btn-sm btn-primary">Save</a>
                                 <span class="saving-account save_social_profiles"></span>';
 

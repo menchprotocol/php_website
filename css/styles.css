@@ -175,7 +175,7 @@ h1, .h1 {
 }
 
 .panel-group {
-    margin-bottom: 10px;
+    margin-bottom:5px;
 }
 
 .panel .panel-heading a:hover, .panel .panel-heading a:active, .panel .panel-heading a[aria-expanded="true"] {
@@ -192,17 +192,41 @@ h1, .h1 {
 
 .second-level-body{
     padding:0 0 7px 17px !important;
-    border-left: 1px solid #555 !important;
     margin:0 0 10px 8px;
 }
 
 .panel-primary > .panel-heading + .panel-collapse > .panel-body {
-    border-left: 1px solid #555;
-    margin-left: 12px;
+    margin-left: 0px;
     font-size: 1.3em !important;
-    padding-left: 19px !important;
-    margin-bottom: 20px;
-    padding-bottom: 10px !important;
+    margin:0 0 20px 40px;
+    padding:12px 10px !important;
+}
+
+.panel-primary > .panel-heading + .panel-collapse > .panel-body > .panel-body {
+    font-size: 1em !important;
+    margin: 0 0 10px 20px;
+    padding:6px 5px !important;
+}
+
+.panel-body .panel-body {
+    padding:5px 0 0 25px;
+    font-size:0.85em !important;
+    margin: 0 0 0 20px !important;
+    border: none !important;
+}
+
+.panel-body .panel-body .msg {
+    font-size:0.6em !important;
+    margin-left: 0px;
+}
+
+.panel-body .panel-body .action-plan-sub-list li {
+    font-size:0.5em !important;
+}
+
+.panel-body .panel-heading .panel-title a {
+    padding: 5px 0 !important;
+    font-size: 0.9em !important;
 }
 
 .company-signup{
@@ -1365,6 +1389,40 @@ h5, .h5 {
     color: #2f2739 !important;
 }
 
+.panel-heading {
+    padding:0 !important;
+}
+
+.panel-heading .panel-title a{
+    display: block;
+    background-color: #EFEFEF;
+    margin:0 0 5px 0;
+    padding: 12px 10px;
+    font-size: 1em !important;
+    border-radius: 5px;
+}
+
+.list-group {
+    margin-bottom: 0;
+}
+
+.list-group .list-group-item {
+    margin-bottom:5px !important;
+}
+
+
+.panel-body{
+    display: block;
+    background-color: #EFEFEF;
+    margin: 0 0 5px 18px;
+    padding: 12px 10px !important;
+    border-radius: 5px;
+}
+
+.panel-body p{
+    font-size: 1em !important;
+}
+
 .main-plain .container {
     padding:30px 0;
 }
@@ -2298,6 +2356,15 @@ select.form-control {
     height: 11px;
     overflow: hidden;
     text-align: center;
+}
+
+
+.input-group {
+    width: 100%;
+}
+
+.input-group>.white-wrapper {
+    width:80% !important;
 }
 
 
@@ -4048,7 +4115,7 @@ h4 .tip-badge {
     line-height: 130% !important;
     font-size: 24px !important;
     font-weight: 500 !important;
-    margin: 12px 0 5px !important;
+    margin:0 0 5px 0 !important;
 }
 
 .landing-page-intro .msg {
@@ -4058,13 +4125,14 @@ h4 .tip-badge {
 }
 
 .panel-body .msg {
-    font-size: 1.1em !important;
+    font-size: 1.2em !important;
     margin-top: 10px !important;
 }
 
 .action-plan-sub-list{
     list-style-type: none;
     margin:10px 0 10px -40px;
+    font-size: 1.2em;
 }
 
 .action-plan-time{
@@ -4076,6 +4144,8 @@ h4 .tip-badge {
 
 .action-plan-sub-list li {
     font-size: 1.1em !important;
+    padding:5px 0;
+    margin:0;
 }
 
 .landing-page-intro .msg a {
@@ -4116,6 +4186,13 @@ h4 .tip-badge {
     margin-top: 10px;
 }
 
+.actionplan-sort a {
+    background-color: #EFEFEF;
+    margin-bottom: 5px;
+    padding: 12px 10px 5px;
+    border-radius: 5px;
+}
+
 .inner_actionplan .panel-body{
     font-size: 0.8em;
 }
@@ -4132,11 +4209,11 @@ h4 .tip-badge {
 }
 
 .actionplan-tip{
-    font-size: 0.8em;
-    color: #777;
+    font-size: 0.9em;
+    color: #2f2739;
     line-height: 110%;
     font-weight: 500;
-    margin: -7px 5px 10px;
+    margin:15px 5px 10px;
 }
 
 .inner_actionplan .panel-group{
@@ -4165,17 +4242,20 @@ h4 .tip-badge {
     font-size: 30px !important;
 }
 
+.form-control {
+    margin-bottom: 0;
+}
+
 .actionplan-title{
     font-weight: bold;
     font-size: 18px !important;
     color: #222;
     display: block;
     line-height:100%;
-    margin-left: 5px;
 }
 .actionplan-overview{
-    margin-top: 5px;
-    margin-left: 5px;
+    margin-top: 0;
+    font-size: 0.9em;
 }
 
 .is-highlighted{

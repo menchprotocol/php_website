@@ -11,7 +11,7 @@ defined('BASEPATH') OR exit('No direct script access allowed');
  *
  */
 
-//Generated 2019-07-15 12:45:32 PST
+//Generated 2019-07-15 14:01:55 PST
 
 //Mench Platform Wizards:
 $config['en_ids_7529'] = array(7530,7531,7532,7533);
@@ -1446,13 +1446,13 @@ $config['en_ids_6150'] = array(6154,6155);
 $config['en_all_6150'] = array(
     6154 => array(
         'm_icon' => '<i class="far fa-mountain"></i>',
-        'm_name' => 'Accomplished',
+        'm_name' => 'Intent Accomplished',
         'm_desc' => 'You successfully accomplished your intention so you no longer want to receive future updates',
         'm_parents' => array(4595,4506,6150,4755,4593),
     ),
     6155 => array(
         'm_icon' => '<i class="far fa-stop-circle"></i>',
-        'm_name' => 'Cancelled',
+        'm_name' => 'Intent Cancelled',
         'm_desc' => 'You did NOT accomplish the intention and you want to stop all future updates on this intention',
         'm_parents' => array(4595,4506,6150,4593,4755),
     ),
@@ -1494,7 +1494,7 @@ $config['en_all_4986'] = array(
 );
 
 //My Account Inputs:
-$config['en_ids_6225'] = array(6197,3288,3286,4783,4454,3290,3287,3089,3289,6123);
+$config['en_ids_6225'] = array(6197,3288,3286,4783,3290,3287,3089,3289,6123,4454);
 $config['en_all_6225'] = array(
     6197 => array(
         'm_icon' => '<i class="far fa-fingerprint"></i>',
@@ -1505,26 +1505,20 @@ $config['en_all_6225'] = array(
     3288 => array(
         'm_icon' => '<i class="far fa-envelope"></i>',
         'm_name' => 'Email Address',
-        'm_desc' => 'The email address used to login to your Action Plan on mench.com:',
+        'm_desc' => 'Your email address is also used to login to Mench:',
         'm_parents' => array(6225,4426,4755),
     ),
     3286 => array(
         'm_icon' => '<i class="far fa-key"></i>',
         'm_name' => 'Mench Password',
-        'm_desc' => 'The password used to login to your Action Plan on mench.com:',
+        'm_desc' => 'The password used to login to Mench:',
         'm_parents' => array(6225,5969,4755),
     ),
     4783 => array(
         'm_icon' => '<i class="far fa-phone"></i>',
         'm_name' => 'Phone Number',
-        'm_desc' => 'Share your current phone for coaching calls:',
+        'm_desc' => 'Your number for potential employers to call you at:',
         'm_parents' => array(6225,4755,4319),
-    ),
-    4454 => array(
-        'm_icon' => '<i class="far fa-bells"></i>',
-        'm_name' => 'Subscription Settings',
-        'm_desc' => 'Choose how you like to be notified for messages I send you via Messenger:',
-        'm_parents' => array(6225,6204,4603,4527),
     ),
     3290 => array(
         'm_icon' => '<i class="far fa-transgender"></i>',
@@ -1553,8 +1547,14 @@ $config['en_all_6225'] = array(
     6123 => array(
         'm_icon' => '<i class="far fa-share-alt-square"></i>',
         'm_name' => 'Social Profiles',
-        'm_desc' => 'Share your social profiles with the Mench community:',
+        'm_desc' => 'Social profiles you\'d like to share with potential employers:',
         'm_parents' => array(6225,4527),
+    ),
+    4454 => array(
+        'm_icon' => '<i class="far fa-bells"></i>',
+        'm_name' => 'Subscription Settings',
+        'm_desc' => 'Choose how you like to be notified for messages I send you via Messenger:',
+        'm_parents' => array(6225,6204,4603,4527),
     ),
 );
 
@@ -1700,25 +1700,13 @@ $config['en_all_6146'] = array(
 );
 
 //Social Profiles:
-$config['en_ids_6123'] = array(2793,3300,3301,3302,3303,3320);
+$config['en_ids_6123'] = array(3300,3302,3303);
 $config['en_all_6123'] = array(
-    2793 => array(
-        'm_icon' => '<i class="fab fa-facebook"></i>',
-        'm_name' => 'Facebook',
-        'm_desc' => '',
-        'm_parents' => array(6123,1326,1326,2750),
-    ),
     3300 => array(
         'm_icon' => '<i class="fab fa-twitter"></i>',
         'm_name' => 'Twitter',
         'm_desc' => '',
         'm_parents' => array(6123,2750,1326,3304),
-    ),
-    3301 => array(
-        'm_icon' => '<i class="fab fa-instagram"></i>',
-        'm_name' => 'Instagram',
-        'm_desc' => '',
-        'm_parents' => array(1326,6123,1326,2750),
     ),
     3302 => array(
         'm_icon' => '<i class="fab fa-linkedin"></i>',
@@ -1731,12 +1719,6 @@ $config['en_all_6123'] = array(
         'm_name' => 'Github',
         'm_desc' => '',
         'm_parents' => array(6123,4763,1326,2750),
-    ),
-    3320 => array(
-        'm_icon' => '<i class="fab fa-facebook-messenger"></i>',
-        'm_name' => 'Facebook Messenger',
-        'm_desc' => '',
-        'm_parents' => array(6123,1326,1326,2750,2793),
     ),
 );
 

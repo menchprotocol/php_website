@@ -18,23 +18,20 @@ if(count($user_intents) > 0){
     echo '<div id="actionplan_steps" class="list-group '.( $has_multiple_intentions ? 'actionplan-sort' : '').'" style="margin-top:15px;">';
     foreach ($user_intents as $priority => $ln) {
 
-        //Calculate time:
-        $time_estimate = echo_time_range($ln);
-
         //Display row:
         echo '<a id="ap_in_'.$ln['in_id'].'" href="/actionplan/' . $ln['in_id'] . '" sort-link-id="'.$ln['ln_id'].'" class="list-group-item actionplan_sort">';
 
         echo '<span class="pull-right" style="padding-right:8px; padding-left:10px;">';
-        echo '<span class="actionplan_remove" in-id="'.$ln['in_id'].'" data-toggle="tooltip" title="Cancel this intention and stop receiving updates" data-placement="left"><i class="fas fa-comment-times" style="font-size:1.6em;"></i></span>';
+        echo '<span class="actionplan_remove" in-id="'.$ln['in_id'].'" data-toggle="tooltip" title="Remove from your Action Plan" data-placement="left"><i class="fas fa-comment-times" style="font-size:1.6em;"></i></span>';
         echo '</span>';
 
         $completion_rate = $this->User_app_model->actionplan_completion_progress($session_en['en_id'], $ln);
 
         echo '<span class="actionplan-title in-title-'.$ln['in_id'].'">' . $ln['in_outcome'] . '</span>';
         echo '<div class="actionplan-overview">';
-        echo '<span class="results-ln-'.$ln['ln_id'].'">'.echo_ordinal_number(($priority+1)).'</span> Priority, ';
-        echo ( $time_estimate ? $time_estimate.', ' : '');
-        echo '<span title="'.$completion_rate['steps_completed'].'/'.$completion_rate['steps_total'].' Steps Completed">'.$completion_rate['completion_percentage'].'% Complete</span>';
+
+        echo '<span title="'.$completion_rate['steps_completed'].'/'.$completion_rate['steps_total'].' Steps Completed">'.echo_en_cache('en_all_6186', ( $completion_rate['completion_percentage']==100 ? 6176 /* Link Published */ : 6175 /* Link Drafting */ ), true, null).$completion_rate['completion_percentage'].'% Complete</span>';
+        echo ', <span class="results-ln-'.$ln['ln_id'].'">'.echo_ordinal_number(($priority+1)).'</span> Priority';
         echo '</div>';
         echo '</a>';
 
