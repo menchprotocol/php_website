@@ -191,16 +191,16 @@ h1, .h1 {
 }
 
 .second-level-body{
-    padding:0 0 7px 10px !important;
+    padding:0 0 7px 17px !important;
     border-left: 1px solid #555 !important;
-    margin:0 0 10px 11px;
+    margin:0 0 10px 8px;
 }
 
 .panel-primary > .panel-heading + .panel-collapse > .panel-body {
     border-left: 1px solid #555;
-    margin-left: 15px;
-    font-size: 1.2em !important;
-    padding-left: 16px !important;
+    margin-left: 12px;
+    font-size: 1.3em !important;
+    padding-left: 19px !important;
     margin-bottom: 20px;
     padding-bottom: 10px !important;
 }
@@ -1244,7 +1244,7 @@ h5, .h5 {
 }
 
 .actionplan_list .fas, .actionplan_list .fal {
-    margin: 0 4px 0 2px;
+    margin: 0 8px 0 0;
     color: #2f2739;
 }
 
@@ -2392,199 +2392,6 @@ select.form-control {
     .main-raised {
         margin-left: 15px !important;
         margin-right: 15px !important;
-    }
-}
-
-@media (max-width: 767px) {
-
-    .hide-mini {
-        display: none;
-    }
-
-    h1, .h1, .presentation-page .brand h1, .white-label .white-label-container .wl-frame h1 {
-        font-size: 2em;
-    }
-
-    .indent1_retire {
-        margin-left: 8px;
-    }
-
-    .indent2_retire {
-
-        margin-left: 16px;
-    }
-
-    .btn.btn-sm, .btn-group-sm .btn, .navbar .navbar-nav > li > a.btn.btn-sm, .btn-group-sm .navbar .navbar-nav > li > a.btn {
-        padding: 5px;
-    }
-
-    .grey-box {
-        margin-top: 30px;
-    }
-
-    .class_nav {
-        width: 220px;
-    }
-
-    #funnel .main {
-        margin-top: 5px !important;
-    }
-
-    #funnel .body-container {
-        font-size: 20px;
-        line-height: 30px;
-    }
-
-    .nav-pills > li > a {
-        padding: 0 8px;
-        line-height: 22px;
-    }
-
-    .container {
-        padding-right: 0;
-        padding-left: 0;
-    }
-
-    .navbar-header {
-        padding-right: 10px !important;
-        padding-left: 10px !important;
-    }
-
-    .dashboard-logo img {
-        margin-left: 8px !important;
-    }
-
-    #platform .navbar-header {
-        min-width: auto;
-    }
-
-    .dash {
-        border-radius: 0 !important;
-        margin-right: 0 !important;
-    }
-
-    body {
-        font-size: 15px;
-    }
-
-    .main-plain {
-        margin-top: 70px;
-    }
-
-    .main-plain .container {
-        padding: 15px;
-    }
-
-    .page-header .container {
-        padding-top: 70px;
-        padding-left: 15px;
-    }
-
-    .landing-page .page-header {
-        min-height: 90vh;
-    }
-
-    .listtabs li {
-        display: block;
-        float: none;
-        text-align: left;
-    }
-
-    .contactleft {
-        padding-top: 70px;
-    }
-
-    .home-p {
-        max-width: 320px;
-    }
-
-    #platform .navbar-brand img {
-        width: 38px !important;
-        margin: -5px 0 -3px -1px !important;
-    }
-
-    .navbar-brand span {
-        font-size: 28px;
-    }
-
-    .navbar .navbar-brand {
-        padding: 15px 10px 7px 12px;
-    }
-
-    .btn.btn-lg, .btn-group-lg .btn,
-    .navbar .navbar-nav > li > a.btn.btn-lg, .btn-group-lg
-    .navbar .navbar-nav > li > a.btn {
-        font-size: 16px;
-        padding: 9px 14px;
-    }
-
-    .navbar.navbar-transparent {
-        padding: 0;
-    }
-
-    .landing-page .navbar-nav {
-        padding-top: 20px;
-    }
-
-    .navbar {
-        padding: 0;
-    }
-
-    .landing-page .navbar-header {
-        padding: 0;
-    }
-
-    .container-fluid {
-        padding-right: 10px;
-        padding-left: 10px;
-    }
-
-    .typicalform {
-        max-width: 100%;
-    }
-
-    .nav-pills:not(.nav-pills-icons) > li > a {
-        font-size: 0.8em;
-    }
-
-    .list-messages > div > div {
-        max-width: 100%;
-    }
-
-    .card .card-content {
-        padding: 5px 15px 15px;
-    }
-
-    .footer .pull-right, .footer .pull-left {
-        float: none !important;
-        margin: 0 auto;
-    }
-
-    .main-raised {
-        margin-left: 5px !important;
-        margin-right: 5px !important;
-    }
-
-    .addon-lean {
-        padding-left: 10px !important;
-    }
-
-    .profile-pic {
-        width: 40px;
-        height: 40px;
-        margin: 8px 0 0 5px;
-    }
-
-    .save-td {
-        width: 80px;
-    }
-
-    .loader {
-        height: 30px;
-    }
-
-    .list-group .loader {
-        height: 18px;
     }
 }
 
@@ -4233,7 +4040,7 @@ h4 .tip-badge {
 .landing-page-intro h4 {
     line-height: 130% !important;
     font-size: 24px !important;
-    font-weight: 300 !important;
+    font-weight: 500 !important;
     margin: 12px 0 5px !important;
 }
 
@@ -4285,7 +4092,7 @@ h4 .tip-badge {
 
 .panel-body a {
     font-size: 1em !important;
-    font-weight: 300 !important;
+    font-weight: 500 !important;
     text-decoration: underline;
 }
 
@@ -4407,4 +4214,211 @@ h4 .tip-badge {
 .mini-filter.fas {
     color: #FFF !important;
     font-size:0.7em !important;
+}
+
+
+
+@media (max-width: 767px) {
+
+    .hide-mini {
+        display: none;
+    }
+
+    h1, .h1, .presentation-page .brand h1, .white-label .white-label-container .wl-frame h1 {
+        font-size: 2em;
+    }
+
+    .indent1_retire {
+        margin-left: 8px;
+    }
+
+    .indent2_retire {
+
+        margin-left: 16px;
+    }
+
+    .btn.btn-sm, .btn-group-sm .btn, .navbar .navbar-nav > li > a.btn.btn-sm, .btn-group-sm .navbar .navbar-nav > li > a.btn {
+        padding: 5px;
+    }
+
+    .grey-box {
+        margin-top: 30px;
+    }
+
+    .class_nav {
+        width: 220px;
+    }
+
+    #funnel .main {
+        margin-top: 5px !important;
+    }
+
+    #funnel .body-container {
+        font-size: 20px;
+        line-height: 30px;
+    }
+
+    .nav-pills > li > a {
+        padding: 0 8px;
+        line-height: 22px;
+    }
+
+    .container {
+        padding-right: 0;
+        padding-left: 0;
+    }
+
+    .navbar-header {
+        padding-right: 10px !important;
+        padding-left: 10px !important;
+    }
+
+    .dashboard-logo img {
+        margin-left: 8px !important;
+    }
+
+    #platform .navbar-header {
+        min-width: auto;
+    }
+
+    .dash {
+        border-radius: 0 !important;
+        margin-right: 0 !important;
+    }
+
+    body {
+        font-size: 15px;
+    }
+
+    .main-plain {
+        margin-top: 70px;
+    }
+
+    .main-plain .container {
+        padding: 15px 5px;
+    }
+
+    .page-header .container {
+        padding-top: 70px;
+        padding-left: 15px;
+    }
+
+    .panel-body .msg {
+        font-size: 1.3em !important;
+    }
+
+    .panel-body a {
+        font-size: 1.2em !important;
+    }
+
+    .second-level-link {
+        text-decoration: none !important;
+    }
+
+    .landing-page .page-header {
+        min-height: 90vh;
+    }
+
+    .listtabs li {
+        display: block;
+        float: none;
+        text-align: left;
+    }
+
+    .contactleft {
+        padding-top: 70px;
+    }
+
+    .home-p {
+        max-width: 320px;
+    }
+
+    #platform .navbar-brand img {
+        width: 38px !important;
+        margin: -5px 0 -3px -1px !important;
+    }
+
+    .navbar-brand span {
+        font-size: 28px;
+    }
+
+    .navbar .navbar-brand {
+        padding: 15px 10px 7px 12px;
+    }
+
+    .btn.btn-lg, .btn-group-lg .btn,
+    .navbar .navbar-nav > li > a.btn.btn-lg, .btn-group-lg
+    .navbar .navbar-nav > li > a.btn {
+        font-size: 16px;
+        padding: 9px 14px;
+    }
+
+    .navbar.navbar-transparent {
+        padding: 0;
+    }
+
+    .landing-page .navbar-nav {
+        padding-top: 20px;
+    }
+
+    .navbar {
+        padding: 0;
+    }
+
+    .landing-page .navbar-header {
+        padding: 0;
+    }
+
+    .container-fluid {
+        padding-right: 10px;
+        padding-left: 10px;
+    }
+
+    .typicalform {
+        max-width: 100%;
+    }
+
+    .nav-pills:not(.nav-pills-icons) > li > a {
+        font-size: 0.8em;
+    }
+
+    .list-messages > div > div {
+        max-width: 100%;
+    }
+
+    .card .card-content {
+        padding: 5px 15px 15px;
+    }
+
+    .footer .pull-right, .footer .pull-left {
+        float: none !important;
+        margin: 0 auto;
+    }
+
+    .main-raised {
+        margin-left: 5px !important;
+        margin-right: 5px !important;
+    }
+
+    .addon-lean {
+        padding-left: 10px !important;
+    }
+
+    .profile-pic {
+        width: 40px;
+        height: 40px;
+        margin: 8px 0 0 5px;
+    }
+
+    .save-td {
+        width: 80px;
+    }
+
+    .loader {
+        height: 30px;
+    }
+
+    .list-group .loader {
+        height: 18px;
+    }
 }

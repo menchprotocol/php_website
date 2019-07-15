@@ -934,7 +934,7 @@ function echo_tree_users($in, $fb_messenger_format = false, $autoexpand = false)
     $completion_percentage_fancy = ( $completion_percentage_raw == 0 ? 'none' : ( $completion_percentage_raw==100 ? 'all' : $completion_percentage_raw.'%' ) );
 
     //As messenger default format and HTML extra notes:
-    $pitch_body  = number_format($enrolled_users_count[0]['totals'], 0) .' User'. echo__s($enrolled_users_count[0]['totals']) .' added this intention to their Action Plan and '.( $completion_percentage_raw < 100 ? 'so far ' : '' ).$completion_percentage_fancy.' have completed it.';
+    $pitch_body  = 'So far '.$completion_percentage_fancy.' of '.number_format($enrolled_users_count[0]['totals'], 0) .' user'. echo__s($enrolled_users_count[0]['totals']) .' have completed this intention.';
 
     if ($fb_messenger_format) {
         return '👤 ' . $pitch_body. "\n\n";
