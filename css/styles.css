@@ -211,13 +211,17 @@ h1, .h1 {
 .panel-body .panel-body {
     padding:5px 0 0 25px;
     font-size:0.85em !important;
-    margin: 0 0 0 20px !important;
+    margin: 0 0 0 17px !important;
     border: none !important;
 }
 
 .panel-body .panel-body .msg {
-    font-size:0.75em !important;
+    font-size:0.85em !important;
     margin:5px 0px !important;
+}
+
+.panel-body .msg {
+    font-size:0.80em !important;
 }
 
 .panel-body .panel-body .action-plan-sub-list li {
@@ -226,7 +230,7 @@ h1, .h1 {
 
 .panel-body .panel-heading .panel-title a {
     padding: 5px 0 !important;
-    font-size: 0.9em !important;
+    font-size: 0.85em !important;
 }
 
 .company-signup{
@@ -4149,7 +4153,7 @@ h4 .tip-badge {
 }
 
 .panel-body .action-plan-sub-list li {
-    font-size: 0.8em !important;
+    font-size: 0.75em !important;
     padding:5px 0;
     margin: 0;
 }
@@ -4175,7 +4179,7 @@ h4 .tip-badge {
 
 .panel-body a {
     font-size: 1em !important;
-    font-weight: 500 !important;
+    font-weight: 300 !important;
     text-decoration: underline;
 }
 
@@ -4400,8 +4404,8 @@ h4 .tip-badge {
     }
 
     .inner_actionplan .panel-title a {
-        font-weight: 500 !important;
-        font-size: 0.8em !important;
+        font-weight: 300 !important;
+        font-size: 0.75em !important;
     }
 
     .landing-page .page-header {
