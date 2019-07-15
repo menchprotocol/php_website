@@ -216,8 +216,8 @@ h1, .h1 {
 }
 
 .panel-body .panel-body .msg {
-    font-size:0.85em !important;
-    margin:5px 0px !important;
+    font-size:0.8em !important;
+    margin:5px 0px 5px 3px !important;
 }
 
 .panel-body .msg {
@@ -4396,7 +4396,7 @@ h4 .tip-badge {
     }
 
     .panel-body .msg {
-        font-size: 1.2em !important;
+        font-size: 1em !important;
     }
 
     .panel-body a {
