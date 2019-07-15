@@ -4089,10 +4089,6 @@ h4 .tip-badge {
     display: none;
 }
 
-.msg .entity-appendix {
-    max-width: 368px;
-}
-
 .maxout, .home-page-intro .msg .entity-appendix, .landing-page-intro, .login-content, .body-container {
     max-width: 610px !important;
 }
