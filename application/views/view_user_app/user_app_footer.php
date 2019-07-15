@@ -5,7 +5,7 @@
 
 <?php if(!isset($hide_social) || !$hide_social){ ?>
 
-    <footer class="footer" style="margin:0 0 50px 0;">
+    <footer class="footer" style="margin:30px 0 50px 0;">
         <div class="container">
             <nav>
                 <ul class="footer-a">

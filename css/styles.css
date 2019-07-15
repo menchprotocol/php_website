@@ -1428,7 +1428,7 @@ h5, .h5 {
 }
 
 .main-plain .container {
-    padding:30px 0;
+    padding:30px 0 0;
 }
 
 .landing-page .page-header {
@@ -1438,6 +1438,10 @@ h5, .h5 {
 .page-header .container {
     padding-top: 90px;
     padding-left: 40px;
+}
+
+footer {
+    padding: 0;
 }
 
 .home-p {

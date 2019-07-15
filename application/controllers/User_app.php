@@ -150,7 +150,9 @@ class User_app extends CI_Controller
             'title' => 'Sign In',
         ));
         $this->load->view('view_user_app/user_login');
-        $this->load->view('view_user_app/user_app_footer');
+        $this->load->view('view_user_app/user_app_footer', array(
+            'hide_social' => 1,
+        ));
     }
 
     function login_process()
