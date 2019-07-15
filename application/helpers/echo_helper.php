@@ -883,7 +883,7 @@ function echo_tree_html_body($id, $pitch_title, $pitch_body, $autoexpand){
                 </h4>
             </div>
             <div id="collapse' . $id . '" class="panel-collapse collapse ' . ($autoexpand ? 'in' : 'out') . '" role="tabpanel" aria-labelledby="heading' . $id . '">
-                <div class="panel-body overview-pitch">' . $pitch_body . '</div>
+                <div class="panel-body overview-pitch"><div style="padding:10px 5px !important;">' . $pitch_body . '</div></div>
             </div>
         </div></div>';
 }
