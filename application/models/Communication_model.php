@@ -239,13 +239,6 @@ class Communication_model extends CI_Model
                     'message' => 'Message can include a maximum of 1 intent reference',
                 );
 
-            } elseif (!$fb_messenger_format && count($string_references['ref_intents']) > 0 && count($string_references['ref_entities']) != 1)  {
-
-                return array(
-                    'status' => 0,
-                    'message' => 'Intent referencing requires an entity reference',
-                );
-
             } elseif (!$fb_messenger_format && count($string_references['ref_entities']) > 0 && count($string_references['ref_urls']) > 0) {
 
                 return array(

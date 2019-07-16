@@ -11,7 +11,7 @@ defined('BASEPATH') OR exit('No direct script access allowed');
  *
  */
 
-//Generated 2019-07-15 14:01:55 PST
+//Generated 2019-07-16 12:13:14 PST
 
 //Mench Platform Wizards:
 $config['en_ids_7529'] = array(7530,7531,7532,7533);
@@ -429,7 +429,7 @@ $config['en_all_7355'] = array(
 );
 
 //Action Plan Intention Set:
-$config['en_ids_7347'] = array(4235,7495,7511);
+$config['en_ids_7347'] = array(4235,7495,7511,7542);
 $config['en_all_7347'] = array(
     4235 => array(
         'm_icon' => '<i class="far fa-bullseye-arrow"></i>',
@@ -448,6 +448,12 @@ $config['en_all_7347'] = array(
         'm_name' => 'Company Intent Set',
         'm_desc' => '',
         'm_parents' => array(4755,4595,4593,7483,7347),
+    ),
+    7542 => array(
+        'm_icon' => '<i class="far fa-bullseye-arrow"></i>',
+        'm_name' => 'User Intent Required',
+        'm_desc' => '',
+        'm_parents' => array(7347),
     ),
 );
 
@@ -545,7 +551,7 @@ $config['en_all_7304'] = array(
 );
 
 //Toggle Advance Mode:
-$config['en_ids_5007'] = array(4232,4997,6093,6242);
+$config['en_ids_5007'] = array(4232,4997,6093,6242,7545,7547);
 $config['en_all_5007'] = array(
     4232 => array(
         'm_icon' => '<i class="far fa-tint"></i>',
@@ -570,6 +576,18 @@ $config['en_all_5007'] = array(
         'm_name' => 'Intent Note On-Complete Message',
         'm_desc' => '',
         'm_parents' => array(5007,6345,4603,4595,4593,4986,4485),
+    ),
+    7545 => array(
+        'm_icon' => '<i class="fas fa-at"></i>',
+        'm_name' => 'Intent Note Entity Map',
+        'm_desc' => '',
+        'm_parents' => array(4595,4593,5007,4986,4485),
+    ),
+    7547 => array(
+        'm_icon' => '<i class="fas fa-hashtag"></i>',
+        'm_name' => 'Intent Note Limit Child Intent',
+        'm_desc' => '',
+        'm_parents' => array(5007,4603,4985,4593,4595,4485),
     ),
 );
 
@@ -1459,7 +1477,7 @@ $config['en_all_6150'] = array(
 );
 
 //Intent Notes Entity Referencing:
-$config['en_ids_4986'] = array(4231,4232,4983,6093,6242);
+$config['en_ids_4986'] = array(4231,4232,4983,6093,6242,7545);
 $config['en_all_4986'] = array(
     4231 => array(
         'm_icon' => '<i class="far fa-comment"></i>',
@@ -1490,6 +1508,12 @@ $config['en_all_4986'] = array(
         'm_name' => 'Intent Note On-Complete Message',
         'm_desc' => '',
         'm_parents' => array(5007,6345,4603,4595,4593,4986,4485),
+    ),
+    7545 => array(
+        'm_icon' => '<i class="fas fa-at"></i>',
+        'm_name' => 'Intent Note Entity Map',
+        'm_desc' => '',
+        'm_parents' => array(4595,4593,5007,4986,4485),
     ),
 );
 
@@ -2429,7 +2453,7 @@ $config['en_all_4755'] = array(
 );
 
 //Link Credits:
-$config['en_ids_4595'] = array(4228,4229,4230,4231,4232,4235,4242,4246,4250,4251,4255,4256,4257,4258,4259,4260,4261,4263,4264,4266,4267,4268,4269,4275,4278,4279,4282,4283,4287,4299,4318,4319,4460,4547,4548,4549,4550,4551,4552,4553,4554,4555,4556,4557,4559,4570,4577,4601,4983,4993,4994,4998,4999,5000,5001,5003,5007,5865,5943,5967,5981,5982,6093,6132,6140,6143,6144,6149,6154,6155,6157,6224,6226,6242,6415,6556,6559,6560,6563,6578,6969,6997,7484,7485,7486,7487,7488,7489,7492,7495,7504,7505,7506,7508,7509,7511);
+$config['en_ids_4595'] = array(4228,4229,4230,4231,4232,4235,4242,4246,4250,4251,4255,4256,4257,4258,4259,4260,4261,4263,4264,4266,4267,4268,4269,4275,4278,4279,4282,4283,4287,4299,4318,4319,4460,4547,4548,4549,4550,4551,4552,4553,4554,4555,4556,4557,4559,4570,4577,4601,4983,4993,4994,4998,4999,5000,5001,5003,5007,5865,5943,5967,5981,5982,6093,6132,6140,6143,6144,6149,6154,6155,6157,6224,6226,6242,6415,6556,6559,6560,6563,6578,6969,6997,7484,7485,7486,7487,7488,7489,7492,7495,7504,7505,7506,7508,7509,7511,7545,7547);
 $config['en_all_4595'] = array(
     4228 => array(
         'm_icon' => '<i class="fas fa-walking"></i>',
@@ -3007,6 +3031,18 @@ $config['en_all_4595'] = array(
         'm_desc' => '100',
         'm_parents' => array(4755,4595,4593,7483,7347),
     ),
+    7545 => array(
+        'm_icon' => '<i class="fas fa-at"></i>',
+        'm_name' => 'Intent Note Entity Map',
+        'm_desc' => '500',
+        'm_parents' => array(4595,4593,5007,4986,4485),
+    ),
+    7547 => array(
+        'm_icon' => '<i class="fas fa-hashtag"></i>',
+        'm_name' => 'Intent Note Limit Child Intent',
+        'm_desc' => '200',
+        'm_parents' => array(5007,4603,4985,4593,4595,4485),
+    ),
 );
 
 //User Account Types:
@@ -3027,7 +3063,7 @@ $config['en_all_4600'] = array(
 );
 
 //Link Types:
-$config['en_ids_4593'] = array(4228,4229,4230,4231,4232,4235,4242,4246,4250,4251,4255,4256,4257,4258,4259,4260,4261,4263,4264,4266,4267,4268,4269,4275,4278,4279,4282,4283,4287,4299,4318,4319,4460,4547,4548,4549,4550,4551,4552,4553,4554,4555,4556,4557,4559,4570,4577,4601,4983,4993,4994,4998,4999,5000,5001,5003,5007,5865,5943,5967,5981,5982,6093,6132,6140,6143,6144,6149,6154,6155,6157,6224,6226,6242,6415,6556,6559,6560,6563,6578,6969,6997,7484,7485,7486,7487,7488,7489,7492,7495,7504,7505,7506,7508,7509,7511);
+$config['en_ids_4593'] = array(4228,4229,4230,4231,4232,4235,4242,4246,4250,4251,4255,4256,4257,4258,4259,4260,4261,4263,4264,4266,4267,4268,4269,4275,4278,4279,4282,4283,4287,4299,4318,4319,4460,4547,4548,4549,4550,4551,4552,4553,4554,4555,4556,4557,4559,4570,4577,4601,4983,4993,4994,4998,4999,5000,5001,5003,5007,5865,5943,5967,5981,5982,6093,6132,6140,6143,6144,6149,6154,6155,6157,6224,6226,6242,6415,6556,6559,6560,6563,6578,6969,6997,7484,7485,7486,7487,7488,7489,7492,7495,7504,7505,7506,7508,7509,7511,7545,7547);
 $config['en_all_4593'] = array(
     4228 => array(
         'm_icon' => '<i class="fas fa-walking"></i>',
@@ -3605,6 +3641,18 @@ $config['en_all_4593'] = array(
         'm_desc' => '',
         'm_parents' => array(4755,4595,4593,7483,7347),
     ),
+    7545 => array(
+        'm_icon' => '<i class="fas fa-at"></i>',
+        'm_name' => 'Intent Note Entity Map',
+        'm_desc' => '',
+        'm_parents' => array(4595,4593,5007,4986,4485),
+    ),
+    7547 => array(
+        'm_icon' => '<i class="fas fa-hashtag"></i>',
+        'm_name' => 'Intent Note Limit Child Intent',
+        'm_desc' => '',
+        'm_parents' => array(5007,4603,4985,4593,4595,4485),
+    ),
 );
 
 //Entity Links:
@@ -3702,7 +3750,7 @@ $config['en_all_4454'] = array(
 );
 
 //Intent Notes:
-$config['en_ids_4485'] = array(4231,4983,4601,4232,6242,6093);
+$config['en_ids_4485'] = array(4231,4983,4601,4232,6242,7545,7547,6093);
 $config['en_all_4485'] = array(
     4231 => array(
         'm_icon' => '<i class="far fa-comment"></i>',
@@ -3733,6 +3781,18 @@ $config['en_all_4485'] = array(
         'm_name' => 'On-Complete Message',
         'm_desc' => 'Message delivered to students when they complete an intention.',
         'm_parents' => array(5007,6345,4603,4595,4593,4986,4485),
+    ),
+    7545 => array(
+        'm_icon' => '<i class="fas fa-at"></i>',
+        'm_name' => 'Entity Map',
+        'm_desc' => 'When completed by the user, adds the user as the child of these entities, and stores potential user response as link content.',
+        'm_parents' => array(4595,4593,5007,4986,4485),
+    ),
+    7547 => array(
+        'm_icon' => '<i class="fas fa-hashtag"></i>',
+        'm_name' => 'Limit Child Intent',
+        'm_desc' => 'If intents are set, this would limit the child intent to be selected from these intents only.',
+        'm_parents' => array(5007,4603,4985,4593,4595,4485),
     ),
     6093 => array(
         'm_icon' => '<i class="far fa-comments"></i>',
