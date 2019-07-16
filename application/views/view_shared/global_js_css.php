@@ -8,8 +8,8 @@
 <link href="/css/lib/fa/light.css?v=5.8.1" rel="stylesheet"/>
 
 <!-- CSS -->
-<link href="/css/lib/bootstrap.min.css" rel="stylesheet"/>
-<link href="/css/lib/jquery-ui.min.css" rel="stylesheet"/>
+<link href="/css/lib/bootstrap.min.css?v=1" rel="stylesheet"/>
+<link href="/css/lib/jquery-ui.min.css?v=1" rel="stylesheet"/>
 <link href="/css/lib/simplebar.css" rel="stylesheet"/>
 <link href="/css/lib/material-dashboard.css" rel="stylesheet"/>
 <link href="/css/lib/material-kit.css" rel="stylesheet"/>
