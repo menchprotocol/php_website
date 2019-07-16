@@ -15,7 +15,7 @@ if(count($user_intents) > 0){
     $has_multiple_intentions = ( count($user_intents) >= 2 );
 
     //User has multiple Action Plans, so list all Action Plans to enable User to choose:
-    echo '<div id="actionplan_steps" class="list-group '.( $has_multiple_intentions ? 'actionplan-sort' : '').'" style="margin-top:15px;">';
+    echo '<div id="actionplan_steps" class="list-group actionplan-list '.( $has_multiple_intentions ? 'actionplan-sort' : '').'" style="margin-top:15px;">';
     foreach ($user_intents as $priority => $ln) {
 
         //Display row:
