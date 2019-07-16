@@ -11,7 +11,7 @@ defined('BASEPATH') OR exit('No direct script access allowed');
  *
  */
 
-//Generated 2019-07-16 13:13:10 PST
+//Generated 2019-07-16 13:36:27 PST
 
 //Mench Platform Wizards:
 $config['en_ids_7529'] = array(7530,7531,7532,7533);
@@ -855,7 +855,7 @@ $config['en_all_6186'] = array(
     ),
     6173 => array(
         'm_icon' => '<i class="fal fa-minus-square"></i>',
-        'm_name' => 'Removed',
+        'm_name' => 'Unlinked',
         'm_desc' => 'archived',
         'm_parents' => array(6186),
     ),
@@ -1605,7 +1605,7 @@ $config['en_all_4737'] = array(
     ),
     6182 => array(
         'm_icon' => '<i class="fal fa-minus-square"></i>',
-        'm_name' => 'Removed',
+        'm_name' => 'Deleted',
         'm_desc' => 'archived',
         'm_parents' => array(4737),
     ),
@@ -1634,7 +1634,7 @@ $config['en_all_6177'] = array(
     ),
     6178 => array(
         'm_icon' => '<i class="fal fa-minus-square"></i>',
-        'm_name' => 'Removed',
+        'm_name' => 'Deleted',
         'm_desc' => 'archived',
         'm_parents' => array(6177),
     ),
