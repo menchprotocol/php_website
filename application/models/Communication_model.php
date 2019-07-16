@@ -724,7 +724,7 @@ class Communication_model extends CI_Model
 
 
             //Check up-voting restrictions:
-            if($is_being_modified){
+            if($is_being_modified && isset($string_references['ref_entities'][0])){
 
                 //Entity reference must be either the miner themselves or an expert source:
                 $session_en = en_auth(array(1308)); //Is miners
