@@ -146,3 +146,5 @@ $in_filters = in_get_filters(true);
         <?php $this->load->view('view_miner_app/in_right_column'); ?>
     </div>
 </div>
+
+<div style="height: 50px;">&nbsp;</div>
