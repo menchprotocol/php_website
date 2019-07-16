@@ -170,10 +170,6 @@ h1, .h1 {
     border-top-right-radius: 1.3em;
 }
 
-.panel-primary > .panel-heading + .panel-collapse > .panel-body {
-    border-top-color: #FFF !important;
-}
-
 .panel-group {
     margin-bottom:5px;
 }
@@ -196,10 +192,10 @@ h1, .h1 {
 }
 
 .panel-primary > .panel-heading + .panel-collapse > .panel-body {
-    margin-left: 0px;
-    font-size: 1.3em !important;
-    margin:0 0 0 40px;
-    padding:0 10px !important;
+    font-size: 1.2em !important;
+    margin: -5px 0 10px 5px;
+    padding: 0 10px !important;
+    border-left: 3px solid #EFEFEF;
 }
 
 .panel-primary > .panel-heading + .panel-collapse > .panel-body > .panel-body {
@@ -1406,6 +1402,10 @@ h5, .h5 {
     border-radius: 5px;
 }
 
+.panel-body .panel-heading .panel-title a{
+    background-color: #FFF;
+}
+
 .list-group {
     margin-bottom: 0;
 }
@@ -1426,10 +1426,10 @@ h5, .h5 {
 
 .panel-body{
     display: block;
-    background-color: #EFEFEF;
+    background-color: #FFF;
     margin: 0 0 5px 18px;
     padding:0 10px !important;
-    border-radius: 5px;
+    border-radius: 0;
 }
 
 .panel-body p{
