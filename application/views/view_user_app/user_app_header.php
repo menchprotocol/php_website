@@ -87,7 +87,7 @@ $url_part_1 = $this->uri->segment(1);
 
 
 <div class="main main-raised main-plain">
-    <div class="container body-container">
+    <div class="container <?= ( $url_part_1=='links' ? 'links-container' : 'body-container' ) ?>">
 
 <?php
 //Show possible flash message:

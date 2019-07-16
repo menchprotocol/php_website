@@ -4093,6 +4093,11 @@ h4 .tip-badge {
     max-width: 610px !important;
 }
 
+.links-container {
+    max-width: 100%;
+    padding: 10px !important;
+}
+
 .sign-in-page{
     max-width: 380px !important;
 }
