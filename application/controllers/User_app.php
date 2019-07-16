@@ -60,6 +60,7 @@ class User_app extends CI_Controller
         ));
         $this->load->view('view_user_app/user_app_footer', array(
             'hide_social' => 1,
+            'show_chat' => 1,
         ));
 
     }
@@ -82,6 +83,7 @@ class User_app extends CI_Controller
         $this->load->view('view_user_app/myaccount_frame');
         $this->load->view('view_user_app/user_app_footer', array(
             'hide_social' => 1,
+            'show_chat' => 1,
         ));
     }
 
