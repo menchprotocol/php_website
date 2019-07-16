@@ -108,7 +108,7 @@ $(document).ready(function () {
 
     //Lookout for intent link related changes:
     $('#ln_status_entity_id').change(function () {
-        if (parseInt($('#ln_status_entity_id').find(":selected").val()) < 0) {
+        if (parseInt($('#ln_status_entity_id').find(":selected").val()) == 6173 /* Link Removed */ ) {
             //About to delete? Notify them:
             $('.notify_unlink_en').removeClass('hidden');
         } else {
@@ -122,7 +122,7 @@ $(document).ready(function () {
 
     $('#en_status_entity_id').change(function () {
 
-        if (parseInt($('#en_status_entity_id').find(":selected").val()) < 0) {
+        if (parseInt($('#en_status_entity_id').find(":selected").val()) == 6178 /* Entity Removed */) {
 
             //Notify admin:
             $('.notify_en_remove').removeClass('hidden');

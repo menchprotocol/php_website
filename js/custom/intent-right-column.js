@@ -52,7 +52,7 @@ $(document).ready(function () {
         }
 
         //Should we show intent archiving warning?
-        if(parseInt(this.value) < 0){
+        if(parseInt(this.value) == 6182 /* Intent Removed */){
             $('.notify_in_remove').removeClass('hidden');
         } else {
             $('.notify_in_remove').addClass('hidden');
@@ -128,7 +128,7 @@ function in_adjust_link_ui() {
         $('.in-no-tr').addClass('hidden');
 
         //What's the selected intent status?
-        if (parseInt($('#ln_status_entity_id').find(":selected").val()) < 0) {
+        if (parseInt($('#ln_status_entity_id').find(":selected").val()) == 6173 /* Link Removed */) {
             //About to delete? Notify them:
             $('.notify_unlink_in').removeClass('hidden');
         } else {

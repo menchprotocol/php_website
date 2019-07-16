@@ -1415,6 +1415,15 @@ h5, .h5 {
 }
 
 
+.list-is-children .list-group-item {
+    margin-bottom:3px !important;
+}
+.step-group .list-group-item {
+    margin-bottom:0px !important;
+    margin-top:1px !important;
+}
+
+
 .panel-body{
     display: block;
     background-color: #EFEFEF;
