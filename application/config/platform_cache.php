@@ -11,7 +11,7 @@ defined('BASEPATH') OR exit('No direct script access allowed');
  *
  */
 
-//Generated 2019-07-16 12:46:29 PST
+//Generated 2019-07-16 13:13:10 PST
 
 //Mench Platform Wizards:
 $config['en_ids_7529'] = array(7530,7531,7532,7533);
@@ -578,8 +578,8 @@ $config['en_all_5007'] = array(
         'm_parents' => array(5007,6345,4603,4595,4593,4986,4485),
     ),
     7545 => array(
-        'm_icon' => '<i class="fas fa-at"></i>',
-        'm_name' => 'Intent Note Entity Map',
+        'm_icon' => '<i class="far fa-tag"></i>',
+        'm_name' => 'Intent Note Entity Tag',
         'm_desc' => '',
         'm_parents' => array(4595,4593,5007,4986,4485),
     ),
@@ -1504,8 +1504,8 @@ $config['en_all_4986'] = array(
         'm_parents' => array(5007,6345,4603,4595,4593,4986,4485),
     ),
     7545 => array(
-        'm_icon' => '<i class="fas fa-at"></i>',
-        'm_name' => 'Intent Note Entity Map',
+        'm_icon' => '<i class="far fa-tag"></i>',
+        'm_name' => 'Intent Note Entity Tag',
         'm_desc' => '',
         'm_parents' => array(4595,4593,5007,4986,4485),
     ),
@@ -3026,8 +3026,8 @@ $config['en_all_4595'] = array(
         'm_parents' => array(4755,4595,4593,7483,7347),
     ),
     7545 => array(
-        'm_icon' => '<i class="fas fa-at"></i>',
-        'm_name' => 'Intent Note Entity Map',
+        'm_icon' => '<i class="far fa-tag"></i>',
+        'm_name' => 'Intent Note Entity Tag',
         'm_desc' => '500',
         'm_parents' => array(4595,4593,5007,4986,4485),
     ),
@@ -3630,8 +3630,8 @@ $config['en_all_4593'] = array(
         'm_parents' => array(4755,4595,4593,7483,7347),
     ),
     7545 => array(
-        'm_icon' => '<i class="fas fa-at"></i>',
-        'm_name' => 'Intent Note Entity Map',
+        'm_icon' => '<i class="far fa-tag"></i>',
+        'm_name' => 'Intent Note Entity Tag',
         'm_desc' => '',
         'm_parents' => array(4595,4593,5007,4986,4485),
     ),
@@ -3765,8 +3765,8 @@ $config['en_all_4485'] = array(
         'm_parents' => array(5007,6345,4603,4595,4593,4986,4485),
     ),
     7545 => array(
-        'm_icon' => '<i class="fas fa-at"></i>',
-        'm_name' => 'Entity Map',
+        'm_icon' => '<i class="far fa-tag"></i>',
+        'm_name' => 'Entity Tag',
         'm_desc' => 'When completed by the user, adds the user as the child of these entities, and stores potential user response as link content.',
         'm_parents' => array(4595,4593,5007,4986,4485),
     ),
