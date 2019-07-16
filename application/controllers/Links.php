@@ -13,39 +13,6 @@ class Links extends CI_Controller
     }
 
 
-    function recovery(){
-
-        //Let's recover some incorrectly removed links:
-        $links = $this->Links_model->ln_fetch(array(
-            'ln_id >=' => 1963661, //After this was acceidental deletion
-            'ln_type_entity_id' => 4242, //Link updates
-            'ln_parent_entity_id' => 4769, //Old Amazon AWS
-            'ln_parent_link_id >' => 0, //Not needed as it should always be true
-        ), array(), 0);
-
-        echo count($links).' Links:<hr />';
-
-        foreach($links as $ln){
-
-            //Fetch parent link that was removed:
-            $parent_links = $this->Links_model->ln_fetch(array(
-                'ln_id' => $ln['ln_parent_link_id'],
-            ), array(), 0);
-
-            //Create link:
-            $new_link = $this->Links_model->ln_create(array(
-                'ln_parent_entity_id' => 7524, //New Amazon AWS
-                'ln_child_entity_id' => $parent_links[0]['ln_child_entity_id'],
-                'ln_type_entity_id' => $parent_links[0]['ln_type_entity_id'],
-                'ln_miner_entity_id' => 1, //Shervin/Developer
-                'ln_content' => $parent_links[0]['ln_content'],
-            ));
-
-            //Show line:
-            echo $parent_links[0]['ln_content'].' - '.$parent_links[0]['ln_child_entity_id'].' <a href="/links?ln_id='.$parent_links[0]['ln_id'].'">'.$parent_links[0]['ln_id'].'</a> <a href="/links?ln_id='.$new_link['ln_id'].'">NEW '.$new_link['ln_id'].'</a><hr />';
-
-        }
-    }
 
     function index()
     {
