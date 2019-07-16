@@ -698,24 +698,11 @@ class Communication_model extends CI_Model
         //Do we have an intent up-vote?
         if (!$fb_messenger_format && count($string_references['ref_intents']) > 0 && $message_in_id > 0) {
 
-            //Fetch the referenced intent:
-            $upvote_child_ins = $this->Intents_model->in_fetch(array(
-                'in_id' => $message_in_id,
-                'in_status_entity_id IN (' . join(',', $this->config->item('en_ids_7356')) . ')' => null, //Intent Statuses Active
-            ));
-            if (count($upvote_child_ins) < 1) {
-                return array(
-                    'status' => 0,
-                    'message' => 'The referenced child intent #' . $message_in_id . ' not found',
-                );
-            }
-
-
-            $upvote_parent_ins = $this->Intents_model->in_fetch(array(
+            $referenced_ins = $this->Intents_model->in_fetch(array(
                 'in_id' => $string_references['ref_intents'][0], //Note: We will only have a single reference per message
                 'in_status_entity_id IN (' . join(',', $this->config->item('en_ids_7356')) . ')' => null, //Intent Statuses Active
             ));
-            if (count($upvote_parent_ins) < 1) {
+            if (count($referenced_ins) < 1) {
                 return array(
                     'status' => 0,
                     'message' => 'The referenced parent intent #' . $string_references['ref_intents'][0] . ' not found',
@@ -723,38 +710,68 @@ class Communication_model extends CI_Model
             }
 
 
-            //Check up-voting restrictions:
-            if($is_being_modified && isset($string_references['ref_entities'][0])){
+            if(isset($string_references['ref_entities'][0])){
 
-                //Entity reference must be either the miner themselves or an expert source:
-                $session_en = en_auth(array(1308)); //Is miners
-                if($string_references['ref_entities'][0] != $session_en['en_id']){
+                //Fetch the referenced intent:
+                $upvote_child_ins = $this->Intents_model->in_fetch(array(
+                    'in_id' => $message_in_id,
+                    'in_status_entity_id IN (' . join(',', $this->config->item('en_ids_7356')) . ')' => null, //Intent Statuses Active
+                ));
+                if (count($upvote_child_ins) < 1) {
+                    return array(
+                        'status' => 0,
+                        'message' => 'The referenced child intent #' . $message_in_id . ' not found',
+                    );
+                }
 
-                    //Reference is not the logged-in miner, let's check to make sure it's an expert source
-                    $is_expert_sources = $this->Links_model->ln_fetch(array(
-                        'ln_status_entity_id IN (' . join(',', $this->config->item('en_ids_7360')) . ')' => null, //Link Statuses Active
-                        'ln_child_entity_id' => $string_references['ref_entities'][0],
-                        'ln_parent_entity_id IN ('.join(',' , $this->config->item('en_ids_3000')).')' => null, //Intent Supported Verbs
-                        'ln_type_entity_id IN (' . join(',', $this->config->item('en_ids_4592')) . ')' => null, //Entity Link Connectors
-                    ));
+                //Check up-voting restrictions:
+                if($is_being_modified){
 
-                    if(count($is_expert_sources) < 1){
-                        return array(
-                            'status' => 0,
-                            'message' => 'Voter entity must be either you OR an expert source entity belonging to @3000',
-                        );
+                    //Entity reference must be either the miner themselves or an expert source:
+                    $session_en = en_auth(array(1308)); //Is miners
+                    if($string_references['ref_entities'][0] != $session_en['en_id']){
+
+                        //Reference is not the logged-in miner, let's check to make sure it's an expert source
+                        $is_expert_sources = $this->Links_model->ln_fetch(array(
+                            'ln_status_entity_id IN (' . join(',', $this->config->item('en_ids_7360')) . ')' => null, //Link Statuses Active
+                            'ln_child_entity_id' => $string_references['ref_entities'][0],
+                            'ln_parent_entity_id IN ('.join(',' , $this->config->item('en_ids_3000')).')' => null, //Intent Supported Verbs
+                            'ln_type_entity_id IN (' . join(',', $this->config->item('en_ids_4592')) . ')' => null, //Entity Link Connectors
+                        ));
+
+                        if(count($is_expert_sources) < 1){
+                            return array(
+                                'status' => 0,
+                                'message' => 'Voter entity must be either you OR an expert source entity belonging to @3000',
+                            );
+                        }
                     }
                 }
+
+
+                //Note that currently intent references are not displayed on the landing page (Only Messages are) OR messenger format
+
+                //Remove intent reference from anywhere in the message:
+                $output_body_message = trim(str_replace('#' . $referenced_ins[0]['in_id'], '', $output_body_message));
+
+
+                //Add Intent up-vote to beginning:
+                $output_body_message = '<div style="margin-bottom:5px; border-bottom: 1px solid #E5E5E5; padding-bottom:10px;">IF you <a href="/intents/' . $upvote_child_ins[0]['in_id'] . '" target="_parent">' . echo_in_outcome($upvote_child_ins[0]['in_outcome'], false, false, true) . '</a> THEN you will <a href="/intents/' . $referenced_ins[0]['in_id'] . '" target="_parent">' . echo_in_outcome($referenced_ins[0]['in_outcome'], false, false, true) . '</a></div>' . $output_body_message;
+            } else {
+
+                //Intent referencing without an entity referencing, show simply the intent:
+
+                //Remove intent reference from anywhere in the message:
+                $output_body_message = trim(str_replace('#' . $referenced_ins[0]['in_id'], '', $output_body_message));
+
+                //Add Intent up-vote to beginning:
+                $output_body_message = '<div style="margin-bottom:5px; border-bottom: 1px solid #E5E5E5; padding-bottom:10px;"><a href="/intents/' . $referenced_ins[0]['in_id'] . '" target="_parent">' . echo_in_outcome($referenced_ins[0]['in_outcome'], false, false, true) . '</a></div>' . $output_body_message;
+
             }
 
 
-            //Note that currently intent references are not displayed on the landing page (Only Messages are) OR messenger format
 
-            //Remove intent reference from anywhere in the message:
-            $output_body_message = trim(str_replace('#' . $upvote_parent_ins[0]['in_id'], '', $output_body_message));
 
-            //Add Intent up-vote to beginning:
-            $output_body_message = '<div style="margin-bottom:5px; border-bottom: 1px solid #E5E5E5; padding-bottom:10px;">IF you <a href="/intents/' . $upvote_child_ins[0]['in_id'] . '" target="_parent">' . echo_in_outcome($upvote_child_ins[0]['in_outcome'], false, false, true) . '</a> THEN you will <a href="/intents/' . $upvote_parent_ins[0]['in_id'] . '" target="_parent">' . echo_in_outcome($upvote_parent_ins[0]['in_outcome'], false, false, true) . '</a></div>' . $output_body_message;
 
         }
 
