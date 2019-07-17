@@ -36,7 +36,7 @@
 
 
                     <div class="in_status_entity_id_lock hidden">
-                        <b data-toggle="tooltip" title="Intent locked because its hard-coded in the Mench code base" data-placement="top" class="underdot" style="font-size: 0.85em; color: #FF0000;"><i class="fas fa-lock"></i> SYSTEM LOCK</b>
+                        <b data-toggle="tooltip" title="Intent locked because its hard-coded in the Mench code base" data-placement="right" class="underdot" style="font-size: 0.85em; color: #FF0000;"><i class="fas fa-lock"></i> SYSTEM LOCK</b>
                     </div>
 
                     <span class="mini-header">Intent Status:</span>

@@ -1458,7 +1458,7 @@ class User_app extends CI_Controller
         ));
 
         //See if we also need to mark the child as complete:
-        $this->User_app_model->actionplan_completion_auto_unlock($en_id, $answer_ins[0], 7485 /* User Step Answer Unlock */);
+        $this->User_app_model->actionplan_completion_auto_complete($en_id, $answer_ins[0], 7485 /* User Step Answer Unlock */);
 
         //Archive current progression links:
         foreach($current_progression_links as $ln){

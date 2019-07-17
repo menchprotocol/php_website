@@ -506,6 +506,7 @@ function in_modify_save() {
 
                 } else {
 
+                    //Fetch parent intent before removing element from DOM:
                     var parent_in_id = parseInt($('.intent_line_' + modify_data['in_id']).attr('parent-intent-id'));
 
                     //Remove Hash:

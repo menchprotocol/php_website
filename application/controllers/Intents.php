@@ -1021,20 +1021,15 @@ class Intents extends CI_Controller
 
         //Let's see how many intents, if any, have unlocked completions:
         //See if we should check for unlocking this intent:
-        $meets_unlock_requirements_now = (in_array($_POST['in_status_entity_id'], $this->config->item('en_ids_7355') /* Intent Statuses Public */) && in_array($_POST['in_type_entity_id'], $this->config->item('en_ids_7309') /* Action Plan Step Locked */));
-        $meets_unlock_requirements_before = (in_array($in_current['in_status_entity_id'], $this->config->item('en_ids_7355') /* Intent Statuses Public */) && in_array($in_current['in_type_entity_id'], $this->config->item('en_ids_7309') /* Action Plan Step Locked */));
         //Keep track of stats for reporting:
         $ins_unlocked_completions_count = 0;
         $steps_unlocked_completions_count = 0;
 
-
         //Should we check for new unlocks?
-        if($meets_unlock_requirements_now && !$meets_unlock_requirements_before){
+        if(!in_is_unlockable($in_current) /* Old Settings */ && in_is_unlockable($_POST) /* New Settings */){
 
             //First see if this locked intent is completed for any users:
             $step_completed_users = array();
-
-
 
         }
 

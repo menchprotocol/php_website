@@ -15,7 +15,7 @@ class User_app_model extends CI_Model
     }
 
 
-    function actionplan_completion_auto_unlock($en_id, $in, $unlock_link_type_en_id){
+    function actionplan_completion_auto_complete($en_id, $in, $unlock_link_type_en_id){
 
         /*
          *
@@ -406,7 +406,7 @@ class User_app_model extends CI_Model
 
     }
 
-    function actionplan_intention_add($en_id, $in_id, $is_recommended = false){
+    function actionplan_intention_add($en_id, $in_id, $recommender_in_id = 0){
 
         //Validate Intent ID:
         $ins = $this->Intents_model->in_fetch(array(
@@ -458,7 +458,7 @@ class User_app_model extends CI_Model
 
         }
 
-        $new_intent_order = 1 + ( $is_recommended ? 0 : $this->Links_model->ln_max_order(array( //Place this intent at the end of all intents the User is drafting...
+        $new_intent_order = 1 + ( $recommender_in_id > 0 ? 0 : $this->Links_model->ln_max_order(array( //Place this intent at the end of all intents the User is drafting...
                 'ln_type_entity_id IN (' . join(',', $this->config->item('en_ids_7347')) . ')' => null, //Action Plan Intention Set
                 'ln_status_entity_id IN (' . join(',', $this->config->item('en_ids_7364')) . ')' => null, //Link Statuses Incomplete
                 'ln_miner_entity_id' => $en_id, //Belongs to this User
@@ -467,16 +467,17 @@ class User_app_model extends CI_Model
 
         //Add intent to User's Action Plan:
         $actionplan = $this->Links_model->ln_create(array(
-            'ln_type_entity_id' => ( $is_recommended ? 7495 /* User Intent Recommended */ : 4235 /* User Intent Set */ ),
+            'ln_type_entity_id' => ( $recommender_in_id > 0 ? 7495 /* User Intent Recommended */ : 4235 /* User Intent Set */ ),
             'ln_status_entity_id' => 6175, //Link Drafting
             'ln_miner_entity_id' => $en_id, //Belongs to this User
             'ln_parent_intent_id' => $ins[0]['in_id'], //The Intent they are adding
+            'ln_child_intent_id' => $recommender_in_id, //Store the recommended intention
             'ln_order' => $new_intent_order,
         ));
 
 
         //If the top intention, move all other intentions down by one step:
-        if($is_recommended){
+        if($recommended_in_id > 0){
 
             foreach($this->Links_model->ln_fetch(array(
                 'ln_id !=' => $actionplan['ln_id'], //Not the newly added intention
@@ -522,7 +523,7 @@ class User_app_model extends CI_Model
         $top_priority = $this->User_app_model->actionplan_intention_focus($en_id);
 
         if($top_priority){
-            if($is_recommended || $top_priority['in']['in_id']==$ins[0]['in_id']){
+            if($recommended_in_id > 0 || $top_priority['in']['in_id']==$ins[0]['in_id']){
 
                 //The newly added intent is the top priority, so let's initiate first message for action plan tree:
                 $this->User_app_model->actionplan_step_next_echo($en_id, $ins[0]['in_id']);
@@ -688,7 +689,7 @@ class User_app_model extends CI_Model
                     ));
 
                     //See if we also need to mark the child as complete:
-                    $this->User_app_model->actionplan_completion_auto_unlock($en_id, $conditional_step, 6997 /* User Step Score Unlock */);
+                    $this->User_app_model->actionplan_completion_auto_complete($en_id, $conditional_step, 6997 /* User Step Score Unlock */);
 
                 }
             }
@@ -1192,7 +1193,7 @@ class User_app_model extends CI_Model
                     array_push($next_step_quick_replies, array(
                         'content_type' => 'text',
                         'title' => 'Next',
-                        'payload' => 'ADDTOPACTIONPLAN_' . $child_in['in_id'],
+                        'payload' => 'ADD_RECOMMENDED_' . $ins[0]['in_id']. '_' . $child_in['in_id'],
                     ));
                 }
 

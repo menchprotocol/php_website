@@ -1621,12 +1621,14 @@ class Communication_model extends CI_Model
             //Fetch and communicate next intent:
             $this->User_app_model->actionplan_step_next_go($en['en_id'], true, true);
 
-        } elseif (substr_count($quick_reply_payload, 'ADDTOPACTIONPLAN_') == 1) {
+        } elseif (substr_count($quick_reply_payload, 'ADD_RECOMMENDED_') == 1) {
 
-            $in_id =  intval(one_two_explode('ADDTOPACTIONPLAN_', '', $quick_reply_payload));
+            $in_ids = explode('_', one_two_explode('ADD_RECOMMENDED_', '', $quick_reply_payload));
+            $recommender_in_id = $in_ids[0];
+            $recommended_in_id = $in_ids[1];
 
             //Add this item to the tio of the Action Plan:
-            $this->User_app_model->actionplan_intention_add($en['en_id'], $in_id, true);
+            $this->User_app_model->actionplan_intention_add($en['en_id'], $recommended_in_id, $recommender_in_id);
 
         } elseif (substr_count($quick_reply_payload, 'SUBSCRIBE-CONFIRM_') == 1) {
 
@@ -1777,7 +1779,7 @@ class Communication_model extends CI_Model
 
 
                     //See if we also need to mark the answer as complete:
-                    $this->User_app_model->actionplan_completion_auto_unlock($en['en_id'], $answer_ins[0], 7485 /* User Step Answer Unlock */);
+                    $this->User_app_model->actionplan_completion_auto_complete($en['en_id'], $answer_ins[0], 7485 /* User Step Answer Unlock */);
 
 
                     //Find/Advance to the next step:
