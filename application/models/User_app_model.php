@@ -1378,9 +1378,12 @@ class User_app_model extends CI_Model
                 if(!$check_clean || !$frist_x_all_are_dirty){
 
                     $key = 0;
+                    $common_prefix = common_prefix($in__children, $max_and_list); //Look only up to the max number of listed intents
+
                     foreach ($in__children as $child_in) {
 
                         if($key==0){
+
                             if($fb_messenger_format){
                                 if($has_multiple_children){
                                     $next_step_message .= 'Here are the next steps:';
@@ -1417,7 +1420,7 @@ class User_app_model extends CI_Model
                         } else {
 
                             //Add simple message:
-                            $next_step_message .= "\n\n" . ($key + 1) . '. ' . echo_in_outcome($child_in['in_outcome'], $fb_messenger_format, false, false);
+                            $next_step_message .= "\n\n" . ($key + 1) . '. ' . echo_in_outcome($child_in['in_outcome'], $fb_messenger_format, false, false, $common_prefix);
 
                         }
 
