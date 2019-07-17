@@ -375,8 +375,9 @@ function filter_array($array, $match_key, $match_value)
 }
 
 function in_is_unlockable($in){
-    $in_is_public = in_array($in['in_status_entity_id'], $this->config->item('en_ids_7355') /* Intent Statuses Public */);
-    $in_is_locked = in_array($in['in_type_entity_id'],   $this->config->item('en_ids_7309') /* Action Plan Step Locked */);
+    $CI =& get_instance();
+    $in_is_public = in_array($in['in_status_entity_id'], $CI->config->item('en_ids_7355') /* Intent Statuses Public */);
+    $in_is_locked = in_array($in['in_type_entity_id'],   $CI->config->item('en_ids_7309') /* Action Plan Step Locked */);
     return ($in_is_public && $in_is_locked);
 }
 
