@@ -6,19 +6,17 @@ $messages_max_length = $this->config->item('messages_max_length');
 $en_ids_4485 = $this->config->item('en_ids_4485');
 $en_all_4485 = $this->config->item('en_all_4485');
 
-//Fetch all messages:
-$in_notes = $this->Links_model->ln_fetch(array(
-    'ln_status_entity_id IN (' . join(',', $this->config->item('en_ids_7360')) . ')' => null, //Link Statuses Active
-    'ln_type_entity_id IN (' . join(',', $en_ids_4485) . ')' => null, //All Intent Notes
-    'ln_child_intent_id' => $in_id,
-), array(), 0, 0, array('ln_order' => 'ASC'));
-
-
 //To be populated:
 $counters = array();
 $metadata_body_ui = '';
 $in_note_messages_count = 0;
-foreach ($in_notes as $in_note) {
+
+//Fetch all intent notes:
+foreach ($this->Links_model->ln_fetch(array(
+    'ln_status_entity_id IN (' . join(',', $this->config->item('en_ids_7360')) . ')' => null, //Link Statuses Active
+    'ln_type_entity_id IN (' . join(',', $en_ids_4485) . ')' => null, //All Intent Notes
+    'ln_child_intent_id' => $in_id,
+), array(), 0, 0, array('ln_order' => 'ASC')) as $in_note) {
 
     $metadata_body_ui .= echo_in_message_manage(array_merge($in_note, array(
         'ln_child_entity_id' => $session_en['en_id'],
@@ -36,7 +34,6 @@ foreach ($in_notes as $in_note) {
     }
 
 }
-
 ?>
 
 
@@ -68,10 +65,11 @@ foreach ($in_notes as $in_note) {
     <?php
 
     //Show no-Message notifications for each message type:
-    echo '<div class="message-info-box '.advance_mode().'">';
+    echo '<div class="message-info-box">';
     foreach ($en_all_4485 as $ln_type_entity_id => $m) {
 
 
+        echo '<div class="'.advance_mode().'">';
         echo '<div class="all_msg msg_en_type_' . $ln_type_entity_id . ' sorting-enabled">';
 
 
@@ -81,30 +79,37 @@ foreach ($in_notes as $in_note) {
 
         //Does it support sorting?
         if(in_array(4603, $en_all_4485[$ln_type_entity_id]['m_parents'])){
-            echo '<span class="' . advance_mode() . '"><i class="fas fa-exchange rotate90"></i> <span data-toggle="tooltip" class="underdot" title="Messages are delivered in order so you can can sort them as needed" data-placement="bottom">Sortable</span> &nbsp;</span>';
+            echo '<span><i class="fas fa-exchange rotate90"></i> <span data-toggle="tooltip" class="underdot" title="Messages are delivered in order so you can can sort them as needed" data-placement="bottom">Sortable</span> &nbsp;</span>';
         }
 
         //Intent Notes Entity Referencing Optional
         if(in_array(4986, $en_all_4485[$ln_type_entity_id]['m_parents'])){
-            echo '<span class="' . advance_mode() . '"><i class="fas fa-at"></i> <span data-toggle="tooltip" class="underdot" title="You may reference up to 1 entity using the @ sign" data-placement="bottom">Entity Supported</span> &nbsp;</span>';
+            echo '<span><i class="fas fa-at"></i> <span data-toggle="tooltip" class="underdot" title="You may reference up to 1 entity using the @ sign" data-placement="bottom">Entity Supported</span> &nbsp;</span>';
         }
 
         //Intent Notes Entity Referencing Required
         if(in_array(7551, $en_all_4485[$ln_type_entity_id]['m_parents'])){
-            echo '<span class="' . advance_mode() . '"><i class="fas fa-at"></i> <span data-toggle="tooltip" class="underdot" title="You must reference 1 entity using the @ sign" data-placement="bottom">Entity Required</span> &nbsp;</span>';
+            echo '<span><i class="fas fa-at"></i> <span data-toggle="tooltip" class="underdot" title="You must reference 1 entity using the @ sign" data-placement="bottom">Entity Required</span> &nbsp;</span>';
         }
 
         //Does it require intent voting?
         if(in_array(4985, $en_all_4485[$ln_type_entity_id]['m_parents'])){
-            echo '<span class="' . advance_mode() . '"><i class="fas fa-hashtag"></i> <span data-toggle="tooltip" class="underdot" title="You can reference up to 1 parent intent using the # sign" data-placement="bottom">Intent Required</span> &nbsp;</span>';
+            echo '<span><i class="fas fa-hashtag"></i> <span data-toggle="tooltip" class="underdot" title="You can reference up to 1 parent intent using the # sign" data-placement="bottom">Intent Required</span> &nbsp;</span>';
         }
 
+        //Does it require intent voting?
+        if(in_array(6345, $en_all_4485[$ln_type_entity_id]['m_parents'])){
+            echo '<span><i class="fas fa-comment-check"></i> <span data-toggle="tooltip" class="underdot" title="A message that is communicated to users" data-placement="bottom">User Deliverable</span> &nbsp;</span>';
+        }
+
+        echo '</div>';
         echo '</div>';
 
 
         if (!isset($counters[$ln_type_entity_id])) {
             echo '<div class="ix-tip no-messages' . $in_id . '_' . $ln_type_entity_id . ' all_msg msg_en_type_' . $ln_type_entity_id . '"><i class="fas fa-exclamation-triangle"></i> No ' . strtolower($m['m_name']) . 's are added yet</div>';
         }
+
     }
     echo '</div>';
 

@@ -283,6 +283,7 @@ function echo_in_message_manage($ln)
     //Intent Notes types:
     $en_all_4485 = $CI->config->item('en_all_4485');
 
+
     //Link Statuses
     $en_all_6186 = $CI->config->item('en_all_6186');
 
@@ -324,7 +325,9 @@ function echo_in_message_manage($ln)
     $ui .= '<li class="edit-off message_status" style="margin:0 8px 0 0;"><span title="' . $en_all_6186[$ln['ln_status_entity_id']]['m_name'] . ': ' . $en_all_6186[$ln['ln_status_entity_id']]['m_desc'] . '" data-toggle="tooltip" data-placement="top">' . $en_all_6186[$ln['ln_status_entity_id']]['m_icon'] . '</span></li>';
 
     //Sort:
-    $ui .= '<li class="edit-off"><span title="Drag up/down to sort" data-toggle="tooltip" data-placement="top"><i class="fas fa-sort fa-special-sort '.( in_array(4603, $en_all_4485[$ln['ln_type_entity_id']]['m_parents']) ? 'message-sorting' : '' ).'"></i></span></li>';
+    if(in_array(4603, $en_all_4485[$ln['ln_type_entity_id']]['m_parents'])){
+        $ui .= '<li class="edit-off"><span title="Drag up/down to sort" data-toggle="tooltip" data-placement="top"><i class="fas fa-sort fa-special-sort '.( in_array(4603, $en_all_4485[$ln['ln_type_entity_id']]['m_parents']) ? 'message-sorting' : '' ).'"></i></span></li>';
+    }
 
 
 

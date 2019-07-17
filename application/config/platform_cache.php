@@ -11,7 +11,7 @@ defined('BASEPATH') OR exit('No direct script access allowed');
  *
  */
 
-//Generated 2019-07-17 10:25:47 PST
+//Generated 2019-07-17 10:51:27 PST
 
 //Intent Notes Entity Referencing Required:
 $config['en_ids_7551'] = array(4983,7545);
@@ -615,7 +615,7 @@ $config['en_all_7233'] = array(
         'm_icon' => '<i class="fas fa-comment-plus"></i>',
         'm_name' => 'Intent Notes',
         'm_desc' => '',
-        'm_parents' => array(7233,7166,4535,4603,4527,4463),
+        'm_parents' => array(7552,7233,7166,4535,4527,4463),
     ),
     4592 => array(
         'm_icon' => '<i class="fas fa-link"></i>',
@@ -708,7 +708,7 @@ $config['en_all_7166'] = array(
         'm_icon' => '<i class="fas fa-comment-plus"></i>',
         'm_name' => 'Intent Notes',
         'm_desc' => '',
-        'm_parents' => array(7233,7166,4535,4603,4527,4463),
+        'm_parents' => array(7552,7233,7166,4535,4527,4463),
     ),
 );
 
@@ -1249,7 +1249,7 @@ $config['en_all_4463'] = array(
         'm_icon' => '<i class="fas fa-comment-plus"></i>',
         'm_name' => 'Intent Notes',
         'm_desc' => 'Intent notes are various information collected around intentions that enable Mench to operate as a Personal Assistant for students looking to accomplish an intent.',
-        'm_parents' => array(7233,7166,4535,4603,4527,4463),
+        'm_parents' => array(7552,7233,7166,4535,4527,4463),
     ),
     4488 => array(
         'm_icon' => '<img src="https://mench.com/img/mench_white.png">',
@@ -1348,7 +1348,7 @@ $config['en_all_6410'] = array(
     ),
 );
 
-//Intent Notes Deliverable:
+//Intent Note Deliverable Message:
 $config['en_ids_6345'] = array(4231,6242);
 $config['en_all_6345'] = array(
     4231 => array(
@@ -1541,7 +1541,7 @@ $config['en_all_6225'] = array(
         'm_icon' => '<i class="far fa-language"></i>',
         'm_name' => 'Languages',
         'm_desc' => 'Choose all the languages you speak fluently:',
-        'm_parents' => array(6225,6122,4603),
+        'm_parents' => array(7552,6225,6122),
     ),
     3089 => array(
         'm_icon' => '<i class="far fa-globe"></i>',
@@ -1565,7 +1565,7 @@ $config['en_all_6225'] = array(
         'm_icon' => '<i class="far fa-bells"></i>',
         'm_name' => 'Subscription Settings',
         'm_desc' => 'Choose how you like to be notified for messages I send you via Messenger:',
-        'm_parents' => array(6225,6204,4603,4527),
+        'm_parents' => array(7552,6225,6204,4527),
     ),
 );
 
