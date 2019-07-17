@@ -5,7 +5,7 @@ defined('BASEPATH') OR exit('No direct script access allowed');
 /*
  *
  * Global variables used throughout the platform.
- * Example: $this->config->item('css_column_1')
+ * Example: $this->config->item('in_intro_id')
  *
  */
 
@@ -26,7 +26,8 @@ $config['css_column_2']            = 'col-xs-5 cols'; //Size of grid 2
 //Intent References:
 $config['in_mission_id']            = 7766; //highest-level intent which defines the mission of Mench
 $config['in_focus_id']              = 11762; //The intent that the Mench community is focused on
-$config['in_system_lock']           = array(8469, 7766, 11762, 10430); //Once set to published, their status will be locked by system
+$config['in_intro_id']              = 11665; //The intent tree that all users must complete first before starting on their intention
+$config['in_system_lock']           = array(8469, 7766, 11762, 10430, 11665); //Once set to published, their status will be locked by system
 
 //Intent Settings:
 $config['in_max_seconds']           = 28800; //The maximum seconds allowed per intent. If larger, the miner is asked to break it down into smaller intents

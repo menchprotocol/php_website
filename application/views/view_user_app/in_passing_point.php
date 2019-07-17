@@ -36,7 +36,7 @@ if(in_is_or($in['in_type_entity_id'])){
 } else {
 
     //Just show the Action Plan:
-    echo '<br />'.echo_public_actionplan($in, $autoexpand);
+    echo '<br />'.echo_tree_actionplan($in, $autoexpand);
 
 }
 

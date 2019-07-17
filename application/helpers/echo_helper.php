@@ -1146,7 +1146,12 @@ function echo_tree_steps($in, $fb_messenger_format = 0, $autoexpand = false)
         return false;
     }
 
+    //Fetch on-start intents:
+    $CI =& get_instance();
+
     $metadata = unserialize($in['in_metadata']);
+
+    //Now do measurements:
     $has_time_estimate = ( isset($metadata['in__metadata_max_seconds']) && $metadata['in__metadata_max_seconds']>0 );
     $pitch_body = 'I estimate it would take you ' . strtolower(echo_step_range($in, true)).( $has_time_estimate ? ' in ' . strtolower(echo_time_range($in)) : '' ).' to '.echo_in_outcome($in['in_outcome']);
 
@@ -1162,11 +1167,11 @@ function echo_tree_steps($in, $fb_messenger_format = 0, $autoexpand = false)
         $pitch_title = '<span class="icon-block"><i class="fas fa-flag"></i></span>&nbsp;'.$metadata['in__metadata_max_steps'].' step'.echo__s($metadata['in__metadata_max_steps']).( $has_time_estimate ? ' in '.strtolower(echo_time_hours($metadata['in__metadata_max_seconds'])) : '' );
 
         //If NOT private, Expand body to include Action Plan overview:
-        $CI =& get_instance();
-        if(!in_array($in['in_type_entity_id'], $CI->config->item('en_ids_7366')) || 1){
+        if(!in_array($in['in_type_entity_id'], $CI->config->item('en_ids_7366'))){
+
             $pitch_body .= '. Here\'s an overview:';
             $pitch_body .= '<div class="inner_actionplan">';
-            $pitch_body .= echo_public_actionplan($in, false);
+            $pitch_body .= echo_tree_actionplan($in, false);
             $pitch_body .= '</div>';
         }
 
@@ -1175,7 +1180,7 @@ function echo_tree_steps($in, $fb_messenger_format = 0, $autoexpand = false)
     }
 }
 
-function echo_public_actionplan($in, $autoexpand){
+function echo_tree_actionplan($in, $autoexpand){
 
 
     $CI =& get_instance();
@@ -1185,6 +1190,7 @@ function echo_public_actionplan($in, $autoexpand){
         return null;
     }
 
+    //Fetch actual children:
     $in__children = $CI->Links_model->ln_fetch(array(
         'ln_status_entity_id IN (' . join(',', $CI->config->item('en_ids_7359')) . ')' => null, //Link Statuses Public
         'in_status_entity_id IN (' . join(',', $CI->config->item('en_ids_7355')) . ')' => null, //Intent Statuses Public
@@ -1195,6 +1201,7 @@ function echo_public_actionplan($in, $autoexpand){
     if(count($in__children) < 1){
         return null;
     }
+
 
     $common_prefix = common_prefix($in__children);
     $return_html = '';

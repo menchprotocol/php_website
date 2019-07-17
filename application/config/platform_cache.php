@@ -11,7 +11,24 @@ defined('BASEPATH') OR exit('No direct script access allowed');
  *
  */
 
-//Generated 2019-07-16 13:36:27 PST
+//Generated 2019-07-17 10:25:47 PST
+
+//Intent Notes Entity Referencing Required:
+$config['en_ids_7551'] = array(4983,7545);
+$config['en_all_7551'] = array(
+    4983 => array(
+        'm_icon' => '<i class="far fa-bookmark"></i>',
+        'm_name' => 'Intent Note Reference',
+        'm_desc' => '',
+        'm_parents' => array(7551,4985,4595,4593,4485),
+    ),
+    7545 => array(
+        'm_icon' => '<i class="far fa-tag"></i>',
+        'm_name' => 'Intent Note Entity Tag',
+        'm_desc' => '',
+        'm_parents' => array(7551,4595,4593,5007,4485),
+    ),
+);
 
 //Mench Platform Wizards:
 $config['en_ids_7529'] = array(7530,7531,7532,7533);
@@ -551,14 +568,8 @@ $config['en_all_7304'] = array(
 );
 
 //Toggle Advance Mode:
-$config['en_ids_5007'] = array(4232,4997,6093,6242,7545);
+$config['en_ids_5007'] = array(4997,6093,6242,7545);
 $config['en_all_5007'] = array(
-    4232 => array(
-        'm_icon' => '<i class="far fa-tint"></i>',
-        'm_name' => 'Intent Note Drip Message',
-        'm_desc' => '',
-        'm_parents' => array(5007,4986,4603,4593,4485,4595),
-    ),
     4997 => array(
         'm_icon' => '<i class="fal fa-list-alt"></i>',
         'm_name' => 'Entity Mass Updates',
@@ -581,7 +592,7 @@ $config['en_all_5007'] = array(
         'm_icon' => '<i class="far fa-tag"></i>',
         'm_name' => 'Intent Note Entity Tag',
         'm_desc' => '',
-        'm_parents' => array(4595,4593,5007,4986,4485),
+        'm_parents' => array(7551,4595,4593,5007,4485),
     ),
 );
 
@@ -1470,26 +1481,14 @@ $config['en_all_6150'] = array(
     ),
 );
 
-//Intent Notes Entity Referencing:
-$config['en_ids_4986'] = array(4231,4232,4983,6093,6242,7545);
+//Intent Notes Entity Referencing Optional:
+$config['en_ids_4986'] = array(4231,6093,6242);
 $config['en_all_4986'] = array(
     4231 => array(
         'm_icon' => '<i class="far fa-comment"></i>',
         'm_name' => 'Intent Note Message',
         'm_desc' => '',
         'm_parents' => array(6345,4986,4603,4593,4485,4595),
-    ),
-    4232 => array(
-        'm_icon' => '<i class="far fa-tint"></i>',
-        'm_name' => 'Intent Note Drip Message',
-        'm_desc' => '',
-        'm_parents' => array(5007,4986,4603,4593,4485,4595),
-    ),
-    4983 => array(
-        'm_icon' => '<i class="far fa-bookmark"></i>',
-        'm_name' => 'Intent Note Reference',
-        'm_desc' => '',
-        'm_parents' => array(4986,4985,4595,4593,4485),
     ),
     6093 => array(
         'm_icon' => '<i class="far fa-comments"></i>',
@@ -1502,12 +1501,6 @@ $config['en_all_4986'] = array(
         'm_name' => 'Intent Note On-Complete Message',
         'm_desc' => '',
         'm_parents' => array(5007,6345,4603,4595,4593,4986,4485),
-    ),
-    7545 => array(
-        'm_icon' => '<i class="far fa-tag"></i>',
-        'm_name' => 'Intent Note Entity Tag',
-        'm_desc' => '',
-        'm_parents' => array(4595,4593,5007,4986,4485),
     ),
 );
 
@@ -2447,7 +2440,7 @@ $config['en_all_4755'] = array(
 );
 
 //Link Credits:
-$config['en_ids_4595'] = array(4228,4229,4230,4231,4232,4235,4242,4246,4250,4251,4255,4256,4257,4258,4259,4260,4261,4263,4264,4266,4267,4268,4269,4275,4278,4279,4282,4283,4287,4299,4318,4319,4460,4547,4548,4549,4550,4551,4552,4553,4554,4555,4556,4557,4559,4570,4577,4601,4983,4993,4994,4998,4999,5000,5001,5003,5007,5865,5943,5967,5981,5982,6093,6132,6140,6143,6144,6149,6154,6155,6157,6224,6226,6242,6415,6556,6559,6560,6563,6578,6969,6997,7484,7485,7486,7487,7488,7489,7492,7495,7504,7505,7506,7508,7509,7511,7545);
+$config['en_ids_4595'] = array(4228,4229,4230,4231,4235,4242,4246,4250,4251,4255,4256,4257,4258,4259,4260,4261,4263,4264,4266,4267,4268,4269,4275,4278,4279,4282,4283,4287,4299,4318,4319,4460,4547,4548,4549,4550,4551,4552,4553,4554,4555,4556,4557,4559,4570,4577,4601,4983,4993,4994,4998,4999,5000,5001,5003,5007,5865,5943,5967,5981,5982,6093,6132,6140,6143,6144,6149,6154,6155,6157,6224,6226,6242,6415,6556,6559,6560,6563,6578,6969,6997,7484,7485,7486,7487,7488,7489,7492,7495,7504,7505,7506,7508,7509,7511,7545);
 $config['en_all_4595'] = array(
     4228 => array(
         'm_icon' => '<i class="fas fa-walking"></i>',
@@ -2472,12 +2465,6 @@ $config['en_all_4595'] = array(
         'm_name' => 'Intent Note Message',
         'm_desc' => '2000',
         'm_parents' => array(6345,4986,4603,4593,4485,4595),
-    ),
-    4232 => array(
-        'm_icon' => '<i class="far fa-tint"></i>',
-        'm_name' => 'Intent Note Drip Message',
-        'm_desc' => '2000',
-        'm_parents' => array(5007,4986,4603,4593,4485,4595),
     ),
     4235 => array(
         'm_icon' => '<i class="far fa-bullseye-arrow"></i>',
@@ -2741,7 +2728,7 @@ $config['en_all_4595'] = array(
         'm_icon' => '<i class="far fa-bookmark"></i>',
         'm_name' => 'Intent Note Reference',
         'm_desc' => '750',
-        'm_parents' => array(4986,4985,4595,4593,4485),
+        'm_parents' => array(7551,4985,4595,4593,4485),
     ),
     4993 => array(
         'm_icon' => '<i class="fas fa-hashtag"></i>',
@@ -3029,7 +3016,7 @@ $config['en_all_4595'] = array(
         'm_icon' => '<i class="far fa-tag"></i>',
         'm_name' => 'Intent Note Entity Tag',
         'm_desc' => '500',
-        'm_parents' => array(4595,4593,5007,4986,4485),
+        'm_parents' => array(7551,4595,4593,5007,4485),
     ),
 );
 
@@ -3051,7 +3038,7 @@ $config['en_all_4600'] = array(
 );
 
 //Link Types:
-$config['en_ids_4593'] = array(4228,4229,4230,4231,4232,4235,4242,4246,4250,4251,4255,4256,4257,4258,4259,4260,4261,4263,4264,4266,4267,4268,4269,4275,4278,4279,4282,4283,4287,4299,4318,4319,4460,4547,4548,4549,4550,4551,4552,4553,4554,4555,4556,4557,4559,4570,4577,4601,4983,4993,4994,4998,4999,5000,5001,5003,5007,5865,5943,5967,5981,5982,6093,6132,6140,6143,6144,6149,6154,6155,6157,6224,6226,6242,6415,6556,6559,6560,6563,6578,6969,6997,7484,7485,7486,7487,7488,7489,7492,7495,7504,7505,7506,7508,7509,7511,7545);
+$config['en_ids_4593'] = array(4228,4229,4230,4231,4235,4242,4246,4250,4251,4255,4256,4257,4258,4259,4260,4261,4263,4264,4266,4267,4268,4269,4275,4278,4279,4282,4283,4287,4299,4318,4319,4460,4547,4548,4549,4550,4551,4552,4553,4554,4555,4556,4557,4559,4570,4577,4601,4983,4993,4994,4998,4999,5000,5001,5003,5007,5865,5943,5967,5981,5982,6093,6132,6140,6143,6144,6149,6154,6155,6157,6224,6226,6242,6415,6556,6559,6560,6563,6578,6969,6997,7484,7485,7486,7487,7488,7489,7492,7495,7504,7505,7506,7508,7509,7511,7545);
 $config['en_all_4593'] = array(
     4228 => array(
         'm_icon' => '<i class="fas fa-walking"></i>',
@@ -3076,12 +3063,6 @@ $config['en_all_4593'] = array(
         'm_name' => 'Intent Note Message',
         'm_desc' => '',
         'm_parents' => array(6345,4986,4603,4593,4485,4595),
-    ),
-    4232 => array(
-        'm_icon' => '<i class="far fa-tint"></i>',
-        'm_name' => 'Intent Note Drip Message',
-        'm_desc' => '',
-        'm_parents' => array(5007,4986,4603,4593,4485,4595),
     ),
     4235 => array(
         'm_icon' => '<i class="far fa-bullseye-arrow"></i>',
@@ -3345,7 +3326,7 @@ $config['en_all_4593'] = array(
         'm_icon' => '<i class="far fa-bookmark"></i>',
         'm_name' => 'Intent Note Reference',
         'm_desc' => 'References track intent correlations referenced within expert sources, and represent a core building block of intelligence. References are among the most precious transaction types because they indicate that IF you do A, you will likely accomplish B. As miners mine content from more experts, certain intent correlations will receive more references than others, thus gaining more credibility.',
-        'm_parents' => array(4986,4985,4595,4593,4485),
+        'm_parents' => array(7551,4985,4595,4593,4485),
     ),
     4993 => array(
         'm_icon' => '<i class="fas fa-hashtag"></i>',
@@ -3633,7 +3614,7 @@ $config['en_all_4593'] = array(
         'm_icon' => '<i class="far fa-tag"></i>',
         'm_name' => 'Intent Note Entity Tag',
         'm_desc' => '',
-        'm_parents' => array(4595,4593,5007,4986,4485),
+        'm_parents' => array(7551,4595,4593,5007,4485),
     ),
 );
 
@@ -3732,7 +3713,7 @@ $config['en_all_4454'] = array(
 );
 
 //Intent Notes:
-$config['en_ids_4485'] = array(4231,4983,4601,4232,6242,7545,6093);
+$config['en_ids_4485'] = array(4231,4983,4601,6242,7545,6093);
 $config['en_all_4485'] = array(
     4231 => array(
         'm_icon' => '<i class="far fa-comment"></i>',
@@ -3744,19 +3725,13 @@ $config['en_all_4485'] = array(
         'm_icon' => '<i class="far fa-bookmark"></i>',
         'm_name' => 'Reference',
         'm_desc' => 'Tracks intent correlations mined from expert sources and miner perspectives. References give credibility to intent correlations. Never communicated with Students and only used for weighting purposes, like how Google uses link correlations for its PageRank algorithm.',
-        'm_parents' => array(4986,4985,4595,4593,4485),
+        'm_parents' => array(7551,4985,4595,4593,4485),
     ),
     4601 => array(
         'm_icon' => '<i class="far fa-bolt"></i>',
         'm_name' => 'Trigger',
         'm_desc' => 'Never delivered to students, instead, it maps alternative ways an intent could be named so we can better understand student commands.',
         'm_parents' => array(4593,4595,4485),
-    ),
-    4232 => array(
-        'm_icon' => '<i class="far fa-tint"></i>',
-        'm_name' => 'Drip Message',
-        'm_desc' => 'Delivered in-order and one-by-one (drip-format) either during or after the intent completion. Goal is to re-iterate key insights to help students retain learnings over time.',
-        'm_parents' => array(5007,4986,4603,4593,4485,4595),
     ),
     6242 => array(
         'm_icon' => '<i class="far fa-check-square"></i>',
@@ -3768,7 +3743,7 @@ $config['en_all_4485'] = array(
         'm_icon' => '<i class="far fa-tag"></i>',
         'm_name' => 'Entity Tag',
         'm_desc' => 'When completed by the user, adds the user as the child of these entities, and stores potential user response as link content.',
-        'm_parents' => array(4595,4593,5007,4986,4485),
+        'm_parents' => array(7551,4595,4593,5007,4485),
     ),
     6093 => array(
         'm_icon' => '<i class="far fa-comments"></i>',

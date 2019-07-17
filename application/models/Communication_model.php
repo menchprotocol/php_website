@@ -284,7 +284,7 @@ class Communication_model extends CI_Model
             if(in_array(4985 , $en_all_4485[$message_type_en_id]['m_parents'])){
 
                 //Is it missing its required intent reference?
-                if(count($string_references['ref_intents']) < 1){
+                if(count($string_references['ref_intents']) != 1){
                     return array(
                         'status' => 0,
                         'message' => $en_all_4485[$message_type_en_id]['m_name'].' require an intent reference.',
@@ -311,6 +311,13 @@ class Communication_model extends CI_Model
                 return array(
                     'status' => 0,
                     'message' => $en_all_4485[$message_type_en_id]['m_name'].' do not support entity referencing.',
+                );
+
+            } elseif(in_array(7551 , $en_all_4485[$message_type_en_id]['m_parents']) && count($string_references['ref_entities']) != 1){
+
+                return array(
+                    'status' => 0,
+                    'message' => $en_all_4485[$message_type_en_id]['m_name'].' requires an entity reference.',
                 );
 
             }

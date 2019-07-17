@@ -84,14 +84,19 @@ foreach ($in_notes as $in_note) {
             echo '<span class="' . advance_mode() . '"><i class="fas fa-exchange rotate90"></i> <span data-toggle="tooltip" class="underdot" title="Messages are delivered in order so you can can sort them as needed" data-placement="bottom">Sortable</span> &nbsp;</span>';
         }
 
-        //Does it support entity referencing?
+        //Intent Notes Entity Referencing Optional
         if(in_array(4986, $en_all_4485[$ln_type_entity_id]['m_parents'])){
-            echo '<span class="' . advance_mode() . '"><i class="fas fa-at"></i> <span data-toggle="tooltip" class="underdot" title="You can reference up to 1 entity using the @ sign" data-placement="bottom">Entity Reference</span> &nbsp;</span>';
+            echo '<span class="' . advance_mode() . '"><i class="fas fa-at"></i> <span data-toggle="tooltip" class="underdot" title="You may reference up to 1 entity using the @ sign" data-placement="bottom">Entity Supported</span> &nbsp;</span>';
+        }
+
+        //Intent Notes Entity Referencing Required
+        if(in_array(7551, $en_all_4485[$ln_type_entity_id]['m_parents'])){
+            echo '<span class="' . advance_mode() . '"><i class="fas fa-at"></i> <span data-toggle="tooltip" class="underdot" title="You must reference 1 entity using the @ sign" data-placement="bottom">Entity Required</span> &nbsp;</span>';
         }
 
         //Does it require intent voting?
         if(in_array(4985, $en_all_4485[$ln_type_entity_id]['m_parents'])){
-            echo '<span class="' . advance_mode() . '"><i class="fas fa-hashtag"></i> <span data-toggle="tooltip" class="underdot" title="You can reference up to 1 parent intent using the # sign" data-placement="bottom">Intent Reference</span> &nbsp;</span>';
+            echo '<span class="' . advance_mode() . '"><i class="fas fa-hashtag"></i> <span data-toggle="tooltip" class="underdot" title="You can reference up to 1 parent intent using the # sign" data-placement="bottom">Intent Required</span> &nbsp;</span>';
         }
 
         echo '</div>';
