@@ -506,6 +506,8 @@ function in_modify_save() {
 
                 } else {
 
+                    var parent_in_id = parseInt($('.intent_line_' + modify_data['in_id']).attr('parent-intent-id'));
+
                     //Remove Hash:
                     window.location.hash = '#';
 
@@ -530,8 +532,8 @@ function in_modify_save() {
                         //Hide editing box:
                         $('#modifybox').addClass('hidden');
 
-                        //Resort all Steps to illustrate changes on UI:
-                        in_sort_save(parseInt($('.intent_line_' + modify_data['in_id']).attr('parent-intent-id')), modify_data['level']);
+                        //Re-sort sibling intents:
+                        in_sort_save(parent_in_id, modify_data['level']);
 
                     }, 610);
 
