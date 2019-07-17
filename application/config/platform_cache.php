@@ -11,7 +11,7 @@ defined('BASEPATH') OR exit('No direct script access allowed');
  *
  */
 
-//Generated 2019-07-17 10:51:27 PST
+//Generated 2019-07-17 10:54:14 PST
 
 //Intent Notes Entity Referencing Required:
 $config['en_ids_7551'] = array(4983,7545);
@@ -584,7 +584,7 @@ $config['en_all_5007'] = array(
     ),
     6242 => array(
         'm_icon' => '<i class="far fa-check-square"></i>',
-        'm_name' => 'Intent Note On-Complete Message',
+        'm_name' => 'Intent Note On-Complete',
         'm_desc' => '',
         'm_parents' => array(5007,6345,4603,4595,4593,4986,4485),
     ),
@@ -1359,7 +1359,7 @@ $config['en_all_6345'] = array(
     ),
     6242 => array(
         'm_icon' => '<i class="far fa-check-square"></i>',
-        'm_name' => 'Intent Note On-Complete Message',
+        'm_name' => 'Intent Note On-Complete',
         'm_desc' => '',
         'm_parents' => array(5007,6345,4603,4595,4593,4986,4485),
     ),
@@ -1498,7 +1498,7 @@ $config['en_all_4986'] = array(
     ),
     6242 => array(
         'm_icon' => '<i class="far fa-check-square"></i>',
-        'm_name' => 'Intent Note On-Complete Message',
+        'm_name' => 'Intent Note On-Complete',
         'm_desc' => '',
         'm_parents' => array(5007,6345,4603,4595,4593,4986,4485),
     ),
@@ -2876,7 +2876,7 @@ $config['en_all_4595'] = array(
     ),
     6242 => array(
         'm_icon' => '<i class="far fa-check-square"></i>',
-        'm_name' => 'Intent Note On-Complete Message',
+        'm_name' => 'Intent Note On-Complete',
         'm_desc' => '2000',
         'm_parents' => array(5007,6345,4603,4595,4593,4986,4485),
     ),
@@ -3474,7 +3474,7 @@ $config['en_all_4593'] = array(
     ),
     6242 => array(
         'm_icon' => '<i class="far fa-check-square"></i>',
-        'm_name' => 'Intent Note On-Complete Message',
+        'm_name' => 'Intent Note On-Complete',
         'm_desc' => '',
         'm_parents' => array(5007,6345,4603,4595,4593,4986,4485),
     ),
@@ -3735,7 +3735,7 @@ $config['en_all_4485'] = array(
     ),
     6242 => array(
         'm_icon' => '<i class="far fa-check-square"></i>',
-        'm_name' => 'On-Complete Message',
+        'm_name' => 'On-Complete',
         'm_desc' => 'Message delivered to students when they complete an intention.',
         'm_parents' => array(5007,6345,4603,4595,4593,4986,4485),
     ),
