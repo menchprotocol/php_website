@@ -52,7 +52,8 @@ if(isset($session_en['en_id']) && count($referrer_en) == 0){
     } else {
 
         //Give option to add:
-        echo '<div id="added_to_actionplan"><a class="btn btn-primary" href="javascript:void(0);" onclick="add_to_actionplan('.$in['in_id'].')" style="display: inline-block; padding:12px 36px;">Add to '.$en_all_7369[6138]['m_icon'].' '.$en_all_7369[6138]['m_name'].'</a></div>';
+        echo '<div id="added_to_actionplan"><a class="btn btn-primary tag-manager-get-started" href="javascript:void(0);" onclick="add_to_actionplan('.$in['in_id'].')" style="display: inline-block; padding:12px 36px; font-size: 1.3em;">Get Started&nbsp;&nbsp;&nbsp;<i class="fas fa-angle-double-right"></i></a></div>';
+
 
     }
 
