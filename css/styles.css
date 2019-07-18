@@ -129,7 +129,7 @@ h1, .h1 {
     position: relative;
 }
 
-.badge-primary {
+.badge-primary, .panel-primary>.panel-heading .badge-primary {
     background-color: #ffe027;
     color: #2f2739;
 }

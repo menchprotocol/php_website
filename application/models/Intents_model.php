@@ -280,6 +280,7 @@ class Intents_model extends CI_Model
          * */
 
         //Validate Original intent:
+        $linking_to_existing = (intval($link_in_id) > 0);
         $linked_ins = $this->Intents_model->in_fetch(array(
             'in_id' => intval($in_linked_id),
         ));
@@ -296,7 +297,7 @@ class Intents_model extends CI_Model
             );
         }
 
-        if (intval($link_in_id) > 0) {
+        if ($linking_to_existing) {
 
             //We are linking to $link_in_id, We are NOT creating any new intents...
 
@@ -304,6 +305,10 @@ class Intents_model extends CI_Model
             $ins = $this->Intents_model->in_fetch(array(
                 'in_id' => $link_in_id,
             ));
+
+            //Determine which is parent intent, and which is child
+            $parent_in = ( $is_parent ? $ins[0] : $linked_ins[0] );
+            $child_in = ( !$is_parent ? $ins[0] : $linked_ins[0] );
 
             if (count($ins) < 1) {
                 return array(
@@ -322,8 +327,8 @@ class Intents_model extends CI_Model
 
             //Make sure this is not a duplicate intent for its parent:
             $dup_links = $this->Links_model->ln_fetch(array(
-                ( $is_parent ? 'ln_child_intent_id' : 'ln_parent_intent_id' ) => $in_linked_id,
-                ( $is_parent ? 'ln_parent_intent_id' : 'ln_child_intent_id' ) => $link_in_id,
+                'ln_parent_intent_id' => $parent_in['in_id'],
+                'ln_child_intent_id' => $child_in['in_id'],
                 'ln_type_entity_id IN (' . join(',', $this->config->item('en_ids_4486')) . ')' => null, //Intent Link Connectors
                 'ln_status_entity_id IN (' . join(',', $this->config->item('en_ids_7360')) . ')' => null, //Link Statuses Active
             ));
@@ -401,6 +406,11 @@ class Intents_model extends CI_Model
         ), true);
 
 
+        //See if parent intent is locked:
+        if($linking_to_existing && in_is_unlockable($parent_in)){
+            //Yes, we need to check to see if this change triggers new completions:
+
+        }
 
         //Add Up-Vote if not yet added for this miner:
         if($ln_miner_entity_id > 0){
@@ -906,14 +916,13 @@ class Intents_model extends CI_Model
     {
         /*
          *
-         * Finds the pathways, if any, on how to unlock an given intent
+         * Finds the pathways, if any, on how to unlock $in
          *
          * */
 
-        //Validate that this is a locked intent:
-        if(!in_array($in['in_type_entity_id'], $this->config->item('en_ids_7309') /* Action Plan Step Locked */)){
-            return array();
-        } elseif(!in_array($in['in_status_entity_id'], $this->config->item('en_ids_7355') /* Intent Statuses Public */)){
+
+        //Validate this locked intent:
+        if(!in_is_unlockable($in)){
             return array();
         }
 
@@ -941,7 +950,7 @@ class Intents_model extends CI_Model
             'ln_type_entity_id' => 4229, //Intent Link Locked Step
             'ln_child_intent_id' => $in['in_id'],
         ), array('in_parent'), 0) as $in_locked_parent){
-            if(in_array($in_locked_parent['in_type_entity_id'], $this->config->item('en_ids_7309') /* Action Plan Step Locked */)){
+            if(in_is_unlockable($in_locked_parent)){
                 //Need to check recursively:
                 foreach($this->Intents_model->in_unlock_paths($in_locked_parent) as $locked_path){
                     if(count($child_unlock_paths)==0 || !filter_array($child_unlock_paths, 'in_id', $locked_path['in_id'])) {
@@ -975,7 +984,7 @@ class Intents_model extends CI_Model
 
         //Go through children to see if any/all can be completed:
         foreach($in__children as $in_child){
-            if(in_array($in_child['in_type_entity_id'], $this->config->item('en_ids_7309') /* Action Plan Step Locked */)){
+            if(in_is_unlockable($in_child)){
 
                 //Need to check recursively:
                 foreach($this->Intents_model->in_unlock_paths($in_child) as $locked_path){

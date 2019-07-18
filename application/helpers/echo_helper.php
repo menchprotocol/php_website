@@ -882,7 +882,11 @@ function echo_tree_html_body($id, $pitch_title, $pitch_body, $autoexpand){
     return '<div class="panel-group" id="open' . $id . '" role="tablist" aria-multiselectable="true"><div class="panel panel-primary">
             <div class="panel-heading" role="tab" id="heading' . $id . '">
                 <h4 class="panel-title">
-                    <a role="button" class="tag-manager-overview-link collapsed" data-toggle="collapse" data-parent="#open' . $id . '" href="#collapse' . $id . '" aria-expanded="' . ($autoexpand ? 'true' : 'false') . '" aria-controls="collapse' . $id . '">' . $pitch_title . '</a>
+                    <a role="button" class="tag-manager-overview-link collapsed" data-toggle="collapse" data-parent="#open' . $id . '" href="#collapse' . $id . '" aria-expanded="' . ($autoexpand ? 'true' : 'false') . '" aria-controls="collapse' . $id . '">' . $pitch_title . '
+                    
+                    <span class="pull-right" style="padding: 1px 11px 0 0;"><i class="fas fa-angle-down"></i></span>
+                    
+                    </a>
                 </h4>
             </div>
             <div id="collapse' . $id . '" class="panel-collapse collapse ' . ($autoexpand ? 'in' : 'out') . '" role="tabpanel" aria-labelledby="heading' . $id . '">
@@ -1109,7 +1113,7 @@ function echo_tree_experts($in, $fb_messenger_format = false, $autoexpand = fals
         return '⭐ ' . $pitch_body. "\n\n";
     } else {
         //HTML format
-        return echo_tree_html_body('ExpertReferences', $pitch_title, $pitch_body.'.', $autoexpand);
+        return echo_tree_html_body('ExpertReferences', $pitch_title, $pitch_body, $autoexpand);
     }
 }
 
@@ -1580,16 +1584,6 @@ function echo_in_recommend($in, $common_prefix = null, $hide_class = null, $refe
     $ui .= '</span>';
 
     $ui .= '<span style="color:#222; font-weight:500; font-size:1.2em;">'.echo_in_outcome($in['in_outcome'], false, false, false, $common_prefix).'</span>';
-
-    //Show time estimate only if starting-point intent:
-    if($is_starting){
-        $metadata = unserialize($in['in_metadata']);
-        if(isset($metadata['in__metadata_max_seconds']) && $metadata['in__metadata_max_seconds'] > 0){
-            $ui .= '<span style="font-size:0.8em; font-weight:300; margin-left:5px; display:inline-block;">';
-            $ui .= '<span><i class="fal fa-clock"></i>' . echo_time_hours($metadata['in__metadata_max_seconds'], false) . '</span>';
-            $ui .= '</span>';
-        }
-    }
 
     $ui .= '</a>';
     return $ui;

@@ -28,7 +28,6 @@ class User_app_model extends CI_Model
          * */
 
 
-        // 'in_type_entity_id IN (' . join(',', $this->config->item('en_ids_7309')) . ')' => null, //Action Plan Step Locked
         if(in_array($in['in_type_entity_id'], $this->config->item('en_ids_6794'))){
             //Requires Manual Response so we cannot auto complete:
             return false;
@@ -53,7 +52,7 @@ class User_app_model extends CI_Model
 
 
         //If this is NOT a locked type, changed unlock link type:
-        if(!in_array($in['in_type_entity_id'], $this->config->item('en_ids_7309') /* Locked Intents */)){
+        if(!in_is_unlockable($in)){
             $unlock_link_type_en_id = 4559; //User Step Got It
         }
 
@@ -558,6 +557,7 @@ class User_app_model extends CI_Model
 
 
 
+
     function actionplan_completion_recursive_up($en_id, $in, $is_bottom_level = true){
 
         /*
@@ -834,6 +834,123 @@ class User_app_model extends CI_Model
     }
 
 
+    function actionplan_unlock_recursive_up($in_id, $is_bottom_level = true)
+    {
+        /*
+         *
+         * Checks the completed users at each step that's recursively up
+         *
+         * */
+
+        foreach($this->Links_model->ln_fetch(array(
+            'in_type_entity_id IN (' . join(',', $this->config->item('en_ids_7309')) . ')' => null, //Action Plan Step Locked
+            'in_status_entity_id IN (' . join(',', $this->config->item('en_ids_7355')) . ')' => null, //Intent Statuses Public
+
+            'ln_status_entity_id IN (' . join(',', $this->config->item('en_ids_7359')) . ')' => null, //Link Statuses Public
+            'ln_type_entity_id' => 4228, //Intent Link Regular Step
+            'ln_child_intent_id' => $in_id,
+        ), array('in_parent')) as $in_locked_parent){
+
+        }
+    }
+
+    function actionplan_unlock_locked_step($en_id, $in){
+
+        /*
+         * A function that starts from a locked intent and checks:
+         *
+         * 1. List users who have completed ALL/ANY (Depending on AND/OR Lock) of its children
+         * 2. If > 0, then goes up recursively to see if these completions unlock other completions
+         *
+         * */
+
+        if(!in_is_unlockable($in)){
+            return array(
+                'status' => 0,
+                'message' => 'Not a valid locked intent type and status',
+            );
+        }
+
+
+        $in__children = $this->Links_model->ln_fetch(array(
+            'ln_status_entity_id IN (' . join(',', $this->config->item('en_ids_7359')) . ')' => null, //Link Statuses Public
+            'in_status_entity_id IN (' . join(',', $this->config->item('en_ids_7355')) . ')' => null, //Intent Statuses Public
+            'ln_type_entity_id' => 4228, //Intent Link Regular Step
+            'ln_parent_intent_id' => $in['in_id'],
+        ), array('in_child'), 0, 0, array('ln_order' => 'ASC'));
+        if(count($in__children) < 1){
+            return array(
+                'status' => 0,
+                'message' => 'Intent has no child intents',
+            );
+        }
+
+
+
+        /*
+         *
+         * Now we need to determine intent completion method.
+         *
+         * It's one of these two cases:
+         *
+         * AND Intents are completed when all their children are completed
+         *
+         * OR Intents are completed when a single child is completed
+         *
+         * */
+        $requires_all_children = ( $in['in_type_entity_id'] == 6914 /*AND Lock, meaning all children are needed */ );
+
+        //Generate list of users who have completed it:
+        $qualified_completed_users = array();
+
+        //Go through children and see how many completed:
+        foreach($in__children as $count => $child_in){
+
+            //Fetch users who completed this:
+            if($count==0){
+
+                //Always add all the first users to the full list:
+                $qualified_completed_users = $this->Links_model->ln_fetch(array(
+                    'ln_status_entity_id IN (' . join(',', $this->config->item('en_ids_7359')) . ')' => null, //Link Statuses Public
+                    'ln_type_entity_id IN (' . join(',', $this->config->item('en_ids_6255')) . ')' => null, //Action Plan Steps Progressed
+                    'ln_parent_intent_id' => $child_in['in_id'],
+                ), array(), 0, 0, array(), 'COUNT(ln_id) as totals');
+
+                if($requires_all_children && count($qualified_completed_users)==0){
+                    //No users found that would meet all children requirements:
+                    break;
+                }
+
+            } else {
+
+                //2nd iteration onwards, by now we must have a base:
+                if($requires_all_children){
+
+                    //Update list of qualified users:
+                    $qualified_completed_users = $this->Links_model->ln_fetch(array(
+                        'ln_status_entity_id IN (' . join(',', $this->config->item('en_ids_7359')) . ')' => null, //Link Statuses Public
+                        'ln_type_entity_id IN (' . join(',', $this->config->item('en_ids_6255')) . ')' => null, //Action Plan Steps Progressed
+                        'ln_parent_intent_id' => $child_in['in_id'],
+                    ), array(), 0, 0, array(), 'COUNT(ln_id) as totals');
+
+                }
+
+            }
+        }
+
+        if(count($qualified_completed_users) > 0){
+            return array(
+                'status' => 0,
+                'message' => 'No users found to have completed',
+            );
+        }
+
+
+
+
+
+    }
+
 
     function actionplan_step_next_echo($en_id, $in_id, $fb_messenger_format = true)
     {
@@ -970,7 +1087,6 @@ class User_app_model extends CI_Model
 
         //Define step variables:
         $has_children = (count($in__children) > 0);
-        $in_is_locked = in_array($ins[0]['in_type_entity_id'], $this->config->item('en_ids_7309') /* Action Plan Step Locked */);
         $in_is_or = in_is_or($ins[0]['in_type_entity_id']);
         $unlock_paths = array();
 
@@ -978,7 +1094,7 @@ class User_app_model extends CI_Model
 
         //Determine progression type
         //Let's figure out the progression method:
-        if($in_is_locked){
+        if(in_is_unlockable($ins[0])){
 
             if($progress_completed){
 

@@ -981,7 +981,7 @@ class Intents extends CI_Controller
                             if(!in_array($child_ins[0]['in_type_entity_id'], $this->config->item('en_ids_7309') /* Action Plan Step Locked */)){
                                 return echo_json(array(
                                     'status' => 0,
-                                    'message' => 'Setting link type to Locked Step requires the child intent to be of a locked AND/OR type.',
+                                    'message' => 'Locked Step requires a locked child intent (AND Lock or Or Lock)',
                                 ));
                             }
                         }
