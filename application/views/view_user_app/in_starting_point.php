@@ -47,7 +47,9 @@ if(isset($session_en['en_id']) && count($referrer_en) == 0){
         ))) > 0){
 
         //Show when was added:
-        echo '<p>Intention is already added to your <a href="/actionplan">'.$en_all_7369[6138]['m_icon'].' '.$en_all_7369[6138]['m_name'].'</a>.</p>';
+        echo '<p>Intention is already added to your '.$en_all_7369[6138]['m_icon'].' '.$en_all_7369[6138]['m_name'].'.</p>';
+
+        echo '<a class="btn btn-primary tag-manager-get-started" href="/actionplan" style="display: inline-block; padding:12px 36px; font-size: 1.3em;">Resume&nbsp;&nbsp;&nbsp;<i class="fas fa-angle-double-right"></i></a>';
 
     } else {
 
