@@ -476,7 +476,7 @@ class User_app_model extends CI_Model
 
 
         //If the top intention, move all other intentions down by one step:
-        if($recommended_in_id > 0){
+        if($recommender_in_id > 0){
 
             foreach($this->Links_model->ln_fetch(array(
                 'ln_id !=' => $actionplan['ln_id'], //Not the newly added intention
@@ -522,7 +522,7 @@ class User_app_model extends CI_Model
         $top_priority = $this->User_app_model->actionplan_intention_focus($en_id);
 
         if($top_priority){
-            if($recommended_in_id > 0 || $top_priority['in']['in_id']==$ins[0]['in_id']){
+            if($recommender_in_id > 0 || $top_priority['in']['in_id']==$ins[0]['in_id']){
 
                 //The newly added intent is the top priority, so let's initiate first message for action plan tree:
                 $this->User_app_model->actionplan_step_next_echo($en_id, $ins[0]['in_id']);
