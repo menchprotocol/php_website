@@ -1,6 +1,6 @@
 <?php
 $en_all_7369 = $this->config->item('en_all_7369');
-$en_all_4269 = $this->config->item('en_all_4269');
+$en_all_6225 = $this->config->item('en_all_6225');
 $this_attempt = array(
     'ln_type_entity_id' => ( $referrer_in_id > 0 ? 7560 /* User Signin Intent Channel Choose */ : 7561 /* User Signin on Website */ ),
     'ln_miner_entity_id' => 1, //Shervin/Developer
@@ -86,12 +86,10 @@ if(count($current_sign_in_attempt) == 0){
         }
     } elseif(isset($_GET['url']) && strlen($_GET['url']) > 0){
         echo '<p>To access <u>'.urldecode($_GET['url']).'</u></p>';
-    } else {
-        echo '<p>Or go back to <a href="/">mench.com</a></p>';
     }
     ?>
 
-    <div class="login-content" style="margin-top:35px;">
+    <div class="login-content" style="margin-top:50px;">
 
         <!-- Step 1: Choose Channel -->
         <div id="step1" class="signup-steps hidden">
@@ -115,7 +113,7 @@ if(count($current_sign_in_attempt) == 0){
 
         <!-- Step 2: Enter Email -->
         <div id="step2" class="signup-steps hidden">
-            <span class="medium-header"><?= $en_all_4269[3288]['m_icon'].' '.$en_all_4269[3288]['m_name'] ?></span>
+            <span class="medium-header"><?= $en_all_6225[3288]['m_icon'].' '.$en_all_6225[3288]['m_name'] ?></span>
             <div class="form-group is-empty"><input type="email" id="input_email" class="form-control border"></div>
             <div id="email_errors" class="signin-error-box"></div>
             <span id="step2buttons">
@@ -132,7 +130,7 @@ if(count($current_sign_in_attempt) == 0){
             <!-- To be updated to >0 IF email was found -->
             <input type="hidden" id="login_en_id" value="0" />
 
-            <span class="medium-header"><?= $en_all_4269[3286]['m_icon'].' '.$en_all_4269[3286]['m_name'] ?> for <span class="focus_email"></span></span>
+            <span class="medium-header"><?= $en_all_6225[3286]['m_icon'].' '.$en_all_6225[3286]['m_name'] ?> for <span class="focus_email"></span></span>
             <div class="form-group is-empty"><input type="password" id="input_password" class="form-control border"></div>
             <div id="password_errors" class="signin-error-box"></div>
             <span id="step3buttons">
@@ -148,7 +146,7 @@ if(count($current_sign_in_attempt) == 0){
         <!-- Step 3: Check your email -->
         <div id="step4" class="signup-steps hidden">
             <p style="padding-top: 20px;">We emailed you instructions to sign-in to your Mench account.</p>
-            <span class="medium-header" style="padding-top: 20px;"><?= $en_all_4269[3288]['m_icon'].' Check your email <span class="focus_email"></span> to continue' ?></span>
+            <span class="medium-header" style="padding-top: 20px;"><?= $en_all_6225[3288]['m_icon'].' Check your email <span class="focus_email"></span> to continue' ?></span>
             <p style="padding-top: 20px;">You may close this window now.</p>
         </div>
 

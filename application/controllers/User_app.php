@@ -41,286 +41,10 @@ class User_app extends CI_Controller
 
     }
 
+
+
+
     function singin_check_password(){
-
-        return echo_json(array(
-            'status' => 0,
-            'message' => 'Invalid password',
-        ));
-
-    }
-
-    function singin_search_email(){
-
-        if (!isset($_POST['input_email']) || !filter_var($_POST['input_email'], FILTER_VALIDATE_EMAIL)) {
-            return echo_json(array(
-                'status' => 0,
-                'message' => 'Invalid email address',
-            ));
-        } elseif (!isset($_POST['referrer_url']) || !isset($_POST['referrer_in_id']) || !isset($_POST['referrer_en_id']) || !isset($_POST['password_reset'])) {
-            return echo_json(array(
-                'status' => 0,
-                'message' => 'Missing core data',
-            ));
-        }
-
-
-        //Cleanup input email:
-        $_POST['input_email'] =  trim(strtolower($_POST['input_email']));
-
-
-        if(intval($_POST['referrer_in_id']) > 0){
-            //Fetch the intent:
-            $referrer_ins = $this->Intents_model->in_fetch(array(
-                'in_status_entity_id IN (' . join(',', $this->config->item('en_ids_7355')) . ')' => null, //Intent Statuses Public
-                'in_id' => $_POST['referrer_in_id'],
-            ));
-        } else {
-            $referrer_ins = array();
-        }
-
-
-        //Search for email to see if it exists...
-        $user_emails = $this->Links_model->ln_fetch(array(
-            'ln_status_entity_id IN (' . join(',', $this->config->item('en_ids_7359')) . ')' => null, //Link Statuses Public
-            'ln_content' => $_POST['input_email'],
-            'ln_type_entity_id' => 4255, //Linked Entities Text (Email is text)
-            'ln_parent_entity_id' => 3288, //Email Address
-        ), array('en_child'));
-
-        if(count($user_emails) > 0){
-
-            if($_POST['password_reset']){
-
-                //Log email search attempt:
-                $reset_link = $this->Links_model->ln_create(array(
-                    'ln_type_entity_id' => 7563, //User Signin on Website Forgot Password
-                    'ln_content' => $_POST['input_email'],
-                    'ln_miner_entity_id' => $user_emails[0]['en_id'], //User making request
-                    'ln_parent_intent_id' => intval($_POST['referrer_in_id']),
-                    'ln_parent_entity_id' => intval($_POST['referrer_en_id']),
-                ));
-
-                //This is a new email, send invitation to join:
-                $setpassword_url = 'https://mench.com/resetpassword/' . $reset_link['ln_id'] . '?email='.$_POST['input_email'];
-
-                ##Email Subject
-                $subject = 'Reset your Mench Password';
-
-                ##Email Body
-                $html_message = '<div>Hi '.one_two_explode('',' ',$user_emails[0]['en_name']).' :) </div><br />';
-                $html_message .= '<div>You can reset your Mench password using this link:</div><br />';
-                $html_message .= '<div><a href="'.$setpassword_url.'" target="_blank">' . $setpassword_url . '</a></div>';
-                $html_message .= '<br />';
-                $html_message .= '<div>If you did not make this request you can ignore this email.</div><br />';
-                $html_message .= '<br />';
-                $html_message .= '<div>Cheers,</div><br />';
-                $html_message .= '<div>Team Mench</div>';
-                $html_message .= '<div><a href="https://mench.com?utm_source=mench&utm_medium=email&utm_campaign=resetpass" target="_blank">mench.com</a></div>';
-
-                //Send email:
-                $this->Communication_model->dispatch_email(array($_POST['input_email']), array(), $subject, $html_message);
-            }
-
-            return echo_json(array(
-                'status' => 1,
-                'email_existed_already' => 1,
-                'login_en_id' => 0,
-                'clean_input_email' => $_POST['input_email'],
-            ));
-
-        } else {
-
-            //Log email search attempt:
-            $invite_link = $this->Links_model->ln_create(array(
-                'ln_type_entity_id' => 7562, //User Signin on Website New Email
-                'ln_content' => $_POST['input_email'],
-                'ln_miner_entity_id' => 1, //Shervin/Developer
-                'ln_parent_intent_id' => intval($_POST['referrer_in_id']),
-                'ln_parent_entity_id' => intval($_POST['referrer_en_id']),
-            ));
-
-            //This is a new email, send invitation to join:
-            $setpassword_url = 'https://mench.com/newaccount/' . $invite_link['ln_id'] . '?email='.$_POST['input_email'];
-            $preset_intention = ( count($referrer_ins) > 0 ? ' to '.echo_in_outcome($referrer_ins[0]['in_outcome'], true) : '' );
-
-            ##Email Subject
-            $subject = 'Join Mench' . $preset_intention;
-
-            ##Email Body
-            $html_message = '<div>Welcome :) </div><br />';
-            $html_message .= '<div>I\'m Mench, an open-source personal assistant focused on connecting top talent to their dream jobs.</div><br />';
-            $html_message .= '<div>Complete your registration'.$preset_intention.' using this link:</div><br />';
-            $html_message .= '<div><a href="'.$setpassword_url.'" target="_blank">' . $setpassword_url . '</a></div>';
-            $html_message .= '<br />';
-            $html_message .= '<div>If you did not make this request you can ignore this email.</div><br />';
-            $html_message .= '<br />';
-            $html_message .= '<div>Cheers,</div><br />';
-            $html_message .= '<div>Team Mench</div>';
-            $html_message .= '<div><a href="https://mench.com?utm_source=mench&utm_medium=email&utm_campaign=signup" target="_blank">mench.com</a></div>';
-
-            //Send email:
-            $this->Communication_model->dispatch_email(array($_POST['input_email']), array(), $subject, $html_message);
-
-
-            return echo_json(array(
-                'status' => 1,
-                'email_existed_already' => 0,
-                'login_en_id' => 0,
-                'clean_input_email' => $_POST['input_email'],
-            ));
-
-
-        }
-    }
-
-    function test($in_id){
-        $ins = $this->Intents_model->in_fetch(array(
-            'in_id' => $in_id,
-            'in_status_entity_id IN (' . join(',', $this->config->item('en_ids_7355')) . ')' => null, //Intent Statuses Public
-        ));
-
-        echo_json(array(
-            'next' => $this->User_app_model->actionplan_step_next_find(1, $ins[0]),
-            'completion' => $this->User_app_model->actionplan_completion_progress(1, $ins[0]),
-            'marks' => $this->User_app_model->actionplan_completion_marks(1, $ins[0]),
-            'recursive_parents' => $this->Intents_model->in_fetch_recursive_public_parents($ins[0]['in_id']),
-            'common_base' => $this->Intents_model->in_metadata_common_base($ins[0]),
-
-        ));
-    }
-
-
-    function page_not_found(){
-        $this->load->view('view_user_app/user_app_header', array(
-            'session_en' => $this->session->userdata('user'),
-            'title' => 'Page not found',
-        ));
-        $this->load->view('view_user_app/page_not_found');
-        $this->load->view('view_user_app/user_app_footer');
-    }
-
-
-
-    function actionplan($in_id = 0)
-    {
-
-        /*
-         *
-         * Loads user action plans "frame" which would
-         * then use JS/Facebook API to determine User
-         * PSID which then loads the Action Plan via
-         * actionplan_load() function below.
-         *
-         * */
-
-        $this->load->view('view_user_app/user_app_header', array(
-            'title' => '🚩 Action Plan',
-        ));
-        $this->load->view('view_user_app/actionplan_frame', array(
-            'in_id' => $in_id,
-        ));
-        $this->load->view('view_user_app/user_app_footer', array(
-            'hide_social' => 1,
-            'show_chat' => 1,
-        ));
-
-    }
-
-
-    function myaccount()
-    {
-        /*
-         *
-         * Loads user my account "frame" which would
-         * then use JS/Facebook API to determine User
-         * PSID which then loads their Account via
-         * myaccount_load() function below.
-         *
-         * */
-
-        $this->load->view('view_user_app/user_app_header', array(
-            'title' => '👤 My Account',
-        ));
-        $this->load->view('view_user_app/myaccount_frame');
-        $this->load->view('view_user_app/user_app_footer', array(
-            'hide_social' => 1,
-            'show_chat' => 1,
-        ));
-    }
-
-
-    function password_reset()
-    {
-        $data = array(
-            'title' => 'Password Reset',
-        );
-        $this->load->view('view_user_app/user_app_header', $data);
-        $this->load->view('view_user_app/password_reset');
-        $this->load->view('view_user_app/user_app_footer', array(
-            'hide_social' => 1,
-        ));
-    }
-
-    function myaccount_load($psid)
-    {
-
-        /*
-         *
-         * My Account Web UI used for both Messenger
-         * Webview and web-browser login
-         *
-         * */
-
-        //Authenticate user:
-        $session_en = $this->session->userdata('user');
-        if (!$psid && !isset($session_en['en_id'])) {
-            die('<div class="alert alert-danger" role="alert">Invalid Credentials</div>');
-        } elseif (!is_dev_environment() && isset($_GET['sr']) && !parse_signed_request($_GET['sr'])) {
-            die('<div class="alert alert-danger" role="alert">Failed to authenticate your origin.</div>');
-        } elseif (!isset($session_en['en_id'])) {
-            //Messenger Webview, authenticate PSID:
-            $session_en = $this->Entities_model->en_psid_check($psid);
-            //Make sure we found them:
-            if (!$session_en) {
-                //We could not authenticate the user!
-                die('<div class="alert alert-danger" role="alert">Credentials could not be validated</div>');
-            }
-        }
-
-        //Log My Account View:
-        $this->Links_model->ln_create(array(
-            'ln_type_entity_id' => 4282, //Opened My Account
-            'ln_miner_entity_id' => $session_en['en_id'],
-        ));
-
-        //Load UI:
-        $this->load->view('view_user_app/myaccount_manage', array(
-            'session_en' => $session_en,
-        ));
-
-    }
-
-    function user_login()
-    {
-        //Check to see if they are already logged in?
-        $session_en = $this->session->userdata('user');
-        if (isset($session_en['en__parents'][0]) && filter_array($session_en['en__parents'], 'en_id', 1308)) {
-            //Lead miner and above, go to console:
-            return redirect_message('/dashboard');
-        }
-
-        $this->load->view('view_user_app/user_app_header', array(
-            'title' => 'Sign In',
-        ));
-        $this->load->view('view_user_app/user_login');
-        $this->load->view('view_user_app/user_app_footer', array(
-            'hide_social' => 1,
-        ));
-    }
-
-    function login_process()
-    {
 
         //Setting for admin Sign Ins:
 
@@ -510,10 +234,349 @@ class User_app extends CI_Controller
                 header('Location: /actionplan');
             }
         }
+
+    }
+
+    function signin_reset_password($ln_id){
+
+        //Make sure email input is provided:
+        if(!isset($_GET['email']) || !filter_var($_GET['email'], FILTER_VALIDATE_EMAIL)){
+            //Missing email input:
+            return redirect_message('/signin', '<div class="alert alert-danger" role="alert">Missing email address</div>');
+        }
+
+        //Validate link ID and matching email:
+        $validate_links = $this->Links_model->ln_fetch(array(
+            'ln_id' => $ln_id,
+            'ln_content' => $_GET['email'],
+            'ln_type_entity_id' => 7563, //User Signin on Website Forgot Password
+        ), array('en_miner')); //The user making the request
+
+        if(count($validate_links) < 1){
+            //Probably already completed the reset password:
+            return redirect_message('/signin', '<div class="alert alert-danger" role="alert">Reset password link not found</div>');
+        } elseif($validate_links[0]['ln_status_entity_id'] != 6175 /* Link Drafting */){
+            //Probably already completed the reset password:
+            return redirect_message('/'.( $validate_links[0]['ln_parent_intent_id'] > 0 ? $validate_links[0]['ln_parent_intent_id'].'/' : '' ).'signin', '<div class="alert alert-danger" role="alert">You have already completed this password reset request</div>');
+        }
+
+        $this->load->view('view_user_app/user_app_header', array(
+            'hide_header' => 1,
+            'title' => 'Reset Password',
+        ));
+        $this->load->view('view_user_app/password_reset', array(
+            'validate_link' => $validate_links[0],
+        ));
+        $this->load->view('view_user_app/user_app_footer', array(
+            'hide_footer' => 1,
+        ));
+
     }
 
 
-    function logout()
+
+    function signin_reset_password_apply()
+    {
+        //This function updates the user's new password as requested via a password reset:
+        if (!isset($_POST['en_id']) || intval($_POST['en_id']) < 1 || !isset($_POST['timestamp']) || intval($_POST['timestamp']) < 1 || !isset($_POST['p_hash']) || strlen($_POST['p_hash']) < 10) {
+            echo '<div class="alert alert-danger"><i class="fas fa-exclamation-triangle"></i> Error: Missing Core Variables.</div>';
+        } elseif (!($_POST['p_hash'] == md5($_POST['en_id'] . $this->config->item('password_salt') . $_POST['timestamp']))) {
+            echo '<div class="alert alert-danger"><i class="fas fa-exclamation-triangle"></i> Error: Invalid hash key.</div>';
+        } elseif (!isset($_POST['new_pass']) || strlen($_POST['new_pass']) < 6) {
+            echo '<div class="alert alert-danger"><i class="fas fa-exclamation-triangle"></i> Error: New password must be longer than 6 characters. Try again.</div>';
+        } else {
+
+            //Fetch their passwords to authenticate login:
+            $user_passwords = $this->Links_model->ln_fetch(array(
+                'ln_status_entity_id IN (' . join(',', $this->config->item('en_ids_7359')) . ')' => null, //Link Statuses Public
+                'ln_parent_entity_id' => 3286, //Mench Sign In Password
+                'ln_child_entity_id' => $_POST['en_id'], //For this user
+            ));
+
+            $new_password = hash('sha256', $this->config->item('password_salt') . $_POST['new_pass']. $_POST['en_id']);
+
+            if (count($user_passwords) > 0) {
+
+                $detected_ln_type = ln_detect_type($new_password);
+                if (!$detected_ln_type['status']) {
+                    echo '<div class="alert alert-danger"><i class="fas fa-exclamation-triangle"></i> Error: ' . $detected_ln_type['message'] . '</div>';
+                }
+
+                //Update existing password:
+                $this->Links_model->ln_update($user_passwords[0]['ln_id'], array(
+                    'ln_content' => $new_password,
+                    'ln_type_entity_id' => $detected_ln_type['ln_type_entity_id'],
+                ), $user_passwords[0]['ln_child_entity_id']);
+
+            } else {
+                //Create new password link:
+
+            }
+
+
+            //Log all sessions out:
+            $this->session->sess_destroy();
+
+            //Show message:
+            echo '<div class="alert alert-success">Passsword reset successful. You can <a href="/signin"><u>Sign in here</u></a>.</div>';
+            echo '<script> $(document).ready(function() { $(".pass_success").hide(); }); </script>';
+        }
+    }
+
+
+
+    function signin_create_account($ln_id){
+
+    }
+
+
+    function signin_create_account_apply(){
+
+    }
+
+
+    function singin_check_email(){
+
+        if (!isset($_POST['input_email']) || !filter_var($_POST['input_email'], FILTER_VALIDATE_EMAIL)) {
+            return echo_json(array(
+                'status' => 0,
+                'message' => 'Invalid email address',
+            ));
+        } elseif (!isset($_POST['referrer_url']) || !isset($_POST['referrer_in_id']) || !isset($_POST['referrer_en_id']) || !isset($_POST['password_reset'])) {
+            return echo_json(array(
+                'status' => 0,
+                'message' => 'Missing core data',
+            ));
+        }
+
+
+        //Cleanup input email:
+        $_POST['input_email'] =  trim(strtolower($_POST['input_email']));
+
+
+        if(intval($_POST['referrer_in_id']) > 0){
+            //Fetch the intent:
+            $referrer_ins = $this->Intents_model->in_fetch(array(
+                'in_status_entity_id IN (' . join(',', $this->config->item('en_ids_7355')) . ')' => null, //Intent Statuses Public
+                'in_id' => $_POST['referrer_in_id'],
+            ));
+        } else {
+            $referrer_ins = array();
+        }
+
+
+        //Search for email to see if it exists...
+        $user_emails = $this->Links_model->ln_fetch(array(
+            'ln_status_entity_id IN (' . join(',', $this->config->item('en_ids_7359')) . ')' => null, //Link Statuses Public
+            'ln_content' => $_POST['input_email'],
+            'ln_type_entity_id' => 4255, //Linked Entities Text (Email is text)
+            'ln_parent_entity_id' => 3288, //Email Address
+        ), array('en_child'));
+
+        if(count($user_emails) > 0){
+
+            if($_POST['password_reset']){
+
+                //Log email search attempt:
+                $reset_link = $this->Links_model->ln_create(array(
+                    'ln_type_entity_id' => 7563, //User Signin on Website Forgot Password
+                    'ln_status_entity_id' => 6175, //Link Drafting
+                    'ln_content' => $_POST['input_email'],
+                    'ln_miner_entity_id' => $user_emails[0]['en_id'], //User making request
+                    'ln_parent_intent_id' => intval($_POST['referrer_in_id']),
+                    'ln_parent_entity_id' => intval($_POST['referrer_en_id']),
+                ));
+
+                //This is a new email, send invitation to join:
+                $setpassword_url = 'https://mench.com/resetpassword/' . $reset_link['ln_id'] . '?email='.$_POST['input_email'];
+
+                ##Email Subject
+                $subject = 'Reset your Mench Password';
+
+                ##Email Body
+                $html_message = '<div>Hi '.one_two_explode('',' ',$user_emails[0]['en_name']).' :) </div><br />';
+                $html_message .= '<div>You can reset your Mench password using this link:</div><br />';
+                $html_message .= '<div><a href="'.$setpassword_url.'" target="_blank">' . $setpassword_url . '</a></div>';
+                $html_message .= '<br />';
+                $html_message .= '<div>If you did not make this request you can ignore this email.</div><br />';
+                $html_message .= '<br />';
+                $html_message .= '<div>Cheers,</div><br />';
+                $html_message .= '<div>Team Mench</div>';
+                $html_message .= '<div><a href="https://mench.com?utm_source=mench&utm_medium=email&utm_campaign=resetpass" target="_blank">mench.com</a></div>';
+
+                //Send email:
+                $this->Communication_model->dispatch_email(array($_POST['input_email']), $subject, $html_message);
+            }
+
+            return echo_json(array(
+                'status' => 1,
+                'email_existed_already' => 1,
+                'login_en_id' => 0,
+                'clean_input_email' => $_POST['input_email'],
+            ));
+
+        } else {
+
+            //Log email search attempt:
+            $invite_link = $this->Links_model->ln_create(array(
+                'ln_type_entity_id' => 7562, //User Signin on Website New Email
+                'ln_content' => $_POST['input_email'],
+                'ln_miner_entity_id' => 1, //Shervin/Developer
+                'ln_parent_intent_id' => intval($_POST['referrer_in_id']),
+                'ln_parent_entity_id' => intval($_POST['referrer_en_id']),
+            ));
+
+            //This is a new email, send invitation to join:
+            $setpassword_url = 'https://mench.com/newaccount/' . $invite_link['ln_id'] . '?email='.$_POST['input_email'];
+            $preset_intention = ( count($referrer_ins) > 0 ? ' to '.echo_in_outcome($referrer_ins[0]['in_outcome'], true) : '' );
+
+            ##Email Subject
+            $subject = 'Join Mench' . $preset_intention;
+
+            ##Email Body
+            $html_message = '<div>Welcome :) </div><br />';
+            $html_message .= '<div>I\'m Mench, an open-source personal assistant focused on connecting top talent to their dream jobs.</div><br />';
+            $html_message .= '<div>You can complete your registration'.$preset_intention.' using this link:</div><br />';
+            $html_message .= '<div><a href="'.$setpassword_url.'" target="_blank">' . $setpassword_url . '</a></div>';
+            $html_message .= '<br />';
+            $html_message .= '<div>If you did not make this request you can ignore this email.</div><br />';
+            $html_message .= '<br />';
+            $html_message .= '<div>Cheers,</div><br />';
+            $html_message .= '<div>Team Mench</div>';
+            $html_message .= '<div><a href="https://mench.com?utm_source=mench&utm_medium=email&utm_campaign=signup" target="_blank">mench.com</a></div>';
+
+            //Send email:
+            $this->Communication_model->dispatch_email(array($_POST['input_email']), $subject, $html_message);
+
+
+            return echo_json(array(
+                'status' => 1,
+                'email_existed_already' => 0,
+                'login_en_id' => 0,
+                'clean_input_email' => $_POST['input_email'],
+            ));
+
+
+        }
+    }
+
+    function test($in_id){
+        $ins = $this->Intents_model->in_fetch(array(
+            'in_id' => $in_id,
+            'in_status_entity_id IN (' . join(',', $this->config->item('en_ids_7355')) . ')' => null, //Intent Statuses Public
+        ));
+
+        echo_json(array(
+            'next' => $this->User_app_model->actionplan_step_next_find(1, $ins[0]),
+            'completion' => $this->User_app_model->actionplan_completion_progress(1, $ins[0]),
+            'marks' => $this->User_app_model->actionplan_completion_marks(1, $ins[0]),
+            'recursive_parents' => $this->Intents_model->in_fetch_recursive_public_parents($ins[0]['in_id']),
+            'common_base' => $this->Intents_model->in_metadata_common_base($ins[0]),
+
+        ));
+    }
+
+
+    function page_not_found(){
+        $this->load->view('view_user_app/user_app_header', array(
+            'session_en' => $this->session->userdata('user'),
+            'title' => 'Page not found',
+        ));
+        $this->load->view('view_user_app/page_not_found');
+        $this->load->view('view_user_app/user_app_footer');
+    }
+
+
+
+    function actionplan($in_id = 0)
+    {
+
+        /*
+         *
+         * Loads user action plans "frame" which would
+         * then use JS/Facebook API to determine User
+         * PSID which then loads the Action Plan via
+         * actionplan_load() function below.
+         *
+         * */
+
+        $this->load->view('view_user_app/user_app_header', array(
+            'title' => '🚩 Action Plan',
+        ));
+        $this->load->view('view_user_app/actionplan_frame', array(
+            'in_id' => $in_id,
+        ));
+        $this->load->view('view_user_app/user_app_footer', array(
+            'hide_social' => 1,
+            'show_chat' => 1,
+        ));
+
+    }
+
+
+    function myaccount()
+    {
+        /*
+         *
+         * Loads user my account "frame" which would
+         * then use JS/Facebook API to determine User
+         * PSID which then loads their Account via
+         * myaccount_load() function below.
+         *
+         * */
+
+        $this->load->view('view_user_app/user_app_header', array(
+            'title' => '👤 My Account',
+        ));
+        $this->load->view('view_user_app/myaccount_frame');
+        $this->load->view('view_user_app/user_app_footer', array(
+            'hide_social' => 1,
+            'show_chat' => 1,
+        ));
+    }
+
+
+    function myaccount_load($psid)
+    {
+
+        /*
+         *
+         * My Account Web UI used for both Messenger
+         * Webview and web-browser login
+         *
+         * */
+
+        //Authenticate user:
+        $session_en = $this->session->userdata('user');
+        if (!$psid && !isset($session_en['en_id'])) {
+            die('<div class="alert alert-danger" role="alert">Invalid Credentials</div>');
+        } elseif (!is_dev_environment() && isset($_GET['sr']) && !parse_signed_request($_GET['sr'])) {
+            die('<div class="alert alert-danger" role="alert">Failed to authenticate your origin.</div>');
+        } elseif (!isset($session_en['en_id'])) {
+            //Messenger Webview, authenticate PSID:
+            $session_en = $this->Entities_model->en_psid_check($psid);
+            //Make sure we found them:
+            if (!$session_en) {
+                //We could not authenticate the user!
+                die('<div class="alert alert-danger" role="alert">Credentials could not be validated</div>');
+            }
+        }
+
+        //Log My Account View:
+        $this->Links_model->ln_create(array(
+            'ln_type_entity_id' => 4282, //Opened My Account
+            'ln_miner_entity_id' => $session_en['en_id'],
+        ));
+
+        //Load UI:
+        $this->load->view('view_user_app/myaccount_manage', array(
+            'session_en' => $session_en,
+        ));
+
+    }
+
+
+    function signout()
     {
         //Destroys Session
         $this->session->sess_destroy();

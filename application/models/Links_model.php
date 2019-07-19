@@ -249,13 +249,13 @@ class Links_model extends CI_Model
 
 
         //See if this link type has any subscribers:
-        if(in_array($insert_columns['ln_type_entity_id'] , $this->config->item('en_ids_5966')) && $insert_columns['ln_type_entity_id']!=5967 /* Email Sent causes endless loop */ && !is_dev_environment()){
+        if(in_array($insert_columns['ln_type_entity_id'] , $this->config->item('en_ids_5967')) && $insert_columns['ln_type_entity_id']!=5967 /* Email Sent causes endless loop */ && !is_dev_environment()){
 
             //Try to fetch subscribers:
-            $en_all_5966 = $this->config->item('en_all_5966'); //Include subscription details
+            $en_all_5967 = $this->config->item('en_all_5967'); //Include subscription details
             $sub_emails = array();
             $sub_en_ids = array();
-            foreach(explode(',', one_two_explode('&var_en_subscriber_ids=','', $en_all_5966[$insert_columns['ln_type_entity_id']]['m_desc'])) as $subscriber_en_id){
+            foreach(explode(',', one_two_explode('&var_en_subscriber_ids=','', $en_all_5967[$insert_columns['ln_type_entity_id']]['m_desc'])) as $subscriber_en_id){
 
                 //Do not email the miner themselves, as already they know:
                 if($insert_columns['ln_type_entity_id']==4246 /* Always report bugs */ || $subscriber_en_id != $insert_columns['ln_miner_entity_id']){
@@ -289,7 +289,7 @@ class Links_model extends CI_Model
                 ));
 
                 //Email Subject:
-                $subject = 'Notification: '  . $miner_ens[0]['en_name'] . ' ' . $en_all_5966[$insert_columns['ln_type_entity_id']]['m_name'];
+                $subject = 'Notification: '  . $miner_ens[0]['en_name'] . ' ' . $en_all_5967[$insert_columns['ln_type_entity_id']]['m_name'];
 
                 //Compose email body, start with link content:
                 $html_message = '<div>' . ( strlen($insert_columns['ln_content']) > 0 ? $insert_columns['ln_content'] : '<i>No link content</i>') . '</div><br />';
@@ -330,7 +330,23 @@ class Links_model extends CI_Model
                 $html_message .= '<div style="color: #AAAAAA; font-size:0.9em; margin-top:20px;">Manage your email notifications via <a href="https://mench.com/entities/5966" target="_blank">@5966</a></div>';
 
                 //Send email:
-                $this->Communication_model->dispatch_email($sub_emails, $sub_en_ids, $subject, $html_message);
+                $dispatched_email = $this->Communication_model->dispatch_email($sub_emails, $subject, $html_message);
+
+                //Log emails sent:
+                foreach($sub_en_ids as $to_en_id){
+                    $this->Links_model->ln_create(array(
+                        'ln_type_entity_id' => 5967, //Link Carbon Copy Email
+                        'ln_miner_entity_id' => $to_en_id, //Sent to this user
+                        'ln_metadata' => $dispatched_email, //Save a copy of email
+                        'ln_parent_link_id' => $insert_columns['ln_id'], //Save link
+
+                        //Import potential intent/entity connections from link:
+                        'ln_child_intent_id' => $insert_columns['ln_child_intent_id'],
+                        'ln_parent_intent_id' => $insert_columns['ln_parent_intent_id'],
+                        'ln_child_entity_id' => $insert_columns['ln_child_entity_id'],
+                        'ln_parent_entity_id' => $insert_columns['ln_parent_entity_id'],
+                    ));
+                }
 
             }
 

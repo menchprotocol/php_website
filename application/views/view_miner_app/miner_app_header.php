@@ -110,14 +110,14 @@ $uri_segment_2 = $this->uri->segment(2);
                             </li>
 
 
-                            <!-- Advance Mode & Logout -->
+                            <!-- Advance Mode & signout -->
                             <li class="links-inactive <?= ( en_auth(array(1308)) ? '' : ' hidden ' ) ?>" data-toggle="tooltip" data-placement="left" title="<?= $en_all_7368[5007]['m_name'] ?>">
                                 <a href="javascript:void(0)" onclick="toggle_advance(0)">
                                     <i class="<?= ( $this->session->userdata('advance_view_enabled')==1 ? 'fas fa-expand-arrows' : 'fal fa-expand-arrows ' ) ?> advance-icon"></i>
                                 </a>
                             </li>
                             <li data-toggle="tooltip" data-placement="left" title="<?= $en_all_7368[7291]['m_name'] ?>">
-                                <a href="/logout">
+                                <a href="/signout">
                                     <?= $en_all_7368[7291]['m_icon'] ?>
                                 </a>
                             </li>

@@ -63,9 +63,9 @@ $url_part_1 = $this->uri->segment(1);
                         ));
                     }
 
-                    //Add logout:
+                    //Add signout:
                     array_push($navigation, array(
-                        'uri_segment_1' => 'logout',
+                        'uri_segment_1' => 'signout',
                         'anchor' => $en_all_7369[7291]['m_icon'].' '.$en_all_7369[7291]['m_name'],
                     ));
 

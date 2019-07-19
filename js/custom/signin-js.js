@@ -57,7 +57,7 @@ function search_email(){
     $('#password_errors').html('&nbsp;');
 
     //Check email and validate:
-    $.post("/user_app/singin_search_email", {
+    $.post("/user_app/singin_check_email", {
 
         input_email: $('#input_email').val(),
         referrer_url: referrer_url,
@@ -139,7 +139,7 @@ function email_forgot_password(){
     var r = confirm("I will email you a link to reset your password");
     if (r == true) {
         //Check email and validate:
-        $.post("/user_app/singin_search_email", {
+        $.post("/user_app/singin_check_email", {
             input_email: $('#input_email').val(),
             referrer_url: referrer_url,
             referrer_in_id: referrer_in_id,

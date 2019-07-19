@@ -2303,7 +2303,7 @@ class Communication_model extends CI_Model
 
 
 
-    function dispatch_email($to_array, $to_en_ids = array(), $subject, $html_message)
+    function dispatch_email($to_array, $subject, $html_message)
     {
 
         /*
@@ -2324,7 +2324,7 @@ class Communication_model extends CI_Model
             'credentials' => $this->config->item('aws_credentials'),
         ]);
 
-        $result = $this->CLIENT->sendEmail(array(
+        return $this->CLIENT->sendEmail(array(
             // Source is required
             'Source' => 'support@mench.com',
             // Destination is required
@@ -2358,23 +2358,5 @@ class Communication_model extends CI_Model
             'ReplyToAddresses' => array('support@mench.com'),
             'ReturnPath' => 'support@mench.com',
         ));
-
-        foreach($to_en_ids as $to_en_id){
-            $this->Links_model->ln_create(array(
-                'ln_type_entity_id' => 5967, //Email Sent
-                'ln_miner_entity_id' => $to_en_id,
-                'ln_content' => '<b>SUBJECT: '.$subject.'</b><hr />' . $html_message,
-                'ln_metadata' => array(
-                    'to_array' => $to_array,
-                    'subject' => $subject,
-                    'html_message' => $html_message,
-                    'result' => $result,
-                ),
-            ));
-        }
-
-        return $result;
-
     }
-
 }
