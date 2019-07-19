@@ -1002,7 +1002,7 @@ class Communication_model extends CI_Model
 
         //Fetch Recommended Intentions not yet taken by user:
         $recommend_filters = array(
-            'in_status_entity_id' => 7351, //Intent Starting Point
+            'in_status_entity_id IN (' . join(',', $this->config->item('en_ids_7582')) . ')' => null, //Intent Statuses Starting Step
             'ln_status_entity_id IN (' . join(',', $this->config->item('en_ids_7359')) . ')' => null, //Link Statuses Public
             'ln_type_entity_id' => 4228, //Intent Link Regular Step
             'ln_parent_intent_id' => 8469, //Recommend Mench Intentions
@@ -1423,7 +1423,7 @@ class Communication_model extends CI_Model
             //Validate intent:
             $ins = $this->Intents_model->in_fetch(array(
                 'in_id' => $in_id,
-                'in_status_entity_id' => 7351, //Intent Starting Point
+                'in_status_entity_id IN (' . join(',', $this->config->item('en_ids_7582')) . ')' => null, //Intent Statuses Starting Step
             ));
             if (count($ins) < 1) {
 
@@ -1468,7 +1468,7 @@ class Communication_model extends CI_Model
             $in_id = intval($quick_reply_payload);
             $ins = $this->Intents_model->in_fetch(array(
                 'in_id' => $in_id,
-                'in_status_entity_id' => 7351, //Intent Starting Point
+                'in_status_entity_id IN (' . join(',', $this->config->item('en_ids_7582')) . ')' => null, //Intent Statuses Starting Step
             ));
             if (count($ins) < 1) {
 
@@ -2067,7 +2067,7 @@ class Communication_model extends CI_Model
             $search_index = load_algolia('alg_index');
             $res = $search_index->search($master_command, [
                 'hitsPerPage' => 6, //Max results
-                'filters' => 'alg_obj_is_in=1 AND alg_obj_status=7351', //Intents with status = Intent Starting Point
+                'filters' => 'alg_obj_is_in=1 AND (alg_obj_status = '.join(' OR alg_obj_status = ', $this->config->item('en_ids_7582')).')',
             ]);
             $search_results = $res['hits'];
 

@@ -501,7 +501,7 @@ if(!$action) {
             'ln_parent_intent_id' => $in['in_id'],
         ), array('in_child'), 0, 0, array('ln_order' => 'ASC')) as $child_or){
 
-            $qualified_update = ( $child_or['in_type_entity_id']==6677 /* AND GOT IT */ && $child_or['in_status_entity_id']!=7351 /* Starting Point Intent */ );
+            $qualified_update = ( $child_or['in_type_entity_id']==6677 /* AND GOT IT */ && in_array($child_or['in_status_entity_id'], $this->config->item('en_ids_7582')) /* Intent Statuses Starting Step */ );
 
             //Count completions:
             if($qualified_update){

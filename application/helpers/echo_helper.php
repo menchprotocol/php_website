@@ -1568,7 +1568,7 @@ function echo_in_recommend($in, $common_prefix = null, $hide_class = null, $refe
     //See if user is logged-in:
     $CI =& get_instance();
     $session_en = en_auth();
-    $is_starting = ($in['in_status_entity_id']==7351 /* Starting Point Intent */);
+    $is_starting = ( in_array($in['in_status_entity_id'], $CI->config->item('en_ids_7582')) /* Intent Statuses Starting Step */);
     $en_all_7369 = $CI->config->item('en_all_7369');
     $already_in_actionplan = (isset($session_en['en_id']) && count($CI->Links_model->ln_fetch(array(
             'ln_miner_entity_id' => $session_en['en_id'],

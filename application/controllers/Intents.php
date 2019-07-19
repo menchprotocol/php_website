@@ -150,7 +150,7 @@ class Intents extends CI_Controller
         ));
 
         //Load specific view based on intent status:
-        $this->load->view(( $ins[0]['in_status_entity_id']==7351 /* Intent Featured */ ? 'view_user_app/in_starting_point' : 'view_user_app/in_passing_point'  ), array(
+        $this->load->view(( in_array($ins[0]['in_status_entity_id'], $this->config->item('en_ids_7582')) /* Intent Statuses Starting Step */ ? 'view_user_app/in_starting_point' : 'view_user_app/in_passing_point'  ), array(
             'in' => $ins[0],
             'referrer_en_id' => $referrer_en_id,
             'session_en' => $session_en,
