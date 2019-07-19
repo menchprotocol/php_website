@@ -2,7 +2,9 @@
 
 <h1>Create Account</h1>
 
-<div class="company-signup">
+<p>Your account is now created. We will email  your further instructions once we have verified your account.</p>
+
+<div class="company-signup hidden">
     <form autocomplete="off" id="AddCompanyForm">
         <b class="mini-header">Your Full Name</b>
         <span class="white-wrapper"><input type="text" id="user_full_name" class="form-control" autocomplete="off" data-lpignore="true"></span>

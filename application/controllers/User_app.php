@@ -333,6 +333,14 @@ class User_app extends CI_Controller
 
     function signin_create_account($ln_id){
 
+        $this->load->view('view_user_app/user_app_header', array(
+            'hide_header' => 1,
+            'title' => 'Create Account',
+        ));
+        $this->load->view('view_user_app/create_account');
+        $this->load->view('view_user_app/user_app_footer', array(
+            'hide_footer' => 1,
+        ));
     }
 
 
