@@ -62,7 +62,7 @@
                 'ln_child_entity_id' => $session_en['en_id'], //For this user
             ));
 
-            echo '<span class="white-wrapper"><input type="password" id="en_password" class="form-control border" placeholder="Set new password..." /></span>
+            echo '<span class="white-wrapper"><input type="password" id="input_password" class="form-control border" placeholder="Set new password..." /></span>
                     <a href="javascript:void(0)" onclick="save_password()" class="btn btn-sm btn-primary">Save</a>
                     <span class="saving-account save_password"></span>
                     <p>Note: '. ( count($user_passwords) > 0 ? 'Password updated '.echo_time_difference(strtotime($user_passwords[0]['ln_timestamp'])).' ago.' : 'You have not yet set a password.') .'</p>';

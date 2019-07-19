@@ -29,7 +29,7 @@ if (!isset($_GET['en_id']) || intval($_GET['en_id']) < 1 || !isset($_GET['timest
             en_id:<?= $_GET['en_id'] ?>,
             timestamp:<?= $_GET['timestamp'] ?>,
             p_hash: "<?= $_GET['p_hash'] ?>",
-            new_pass: $('#en_password').val(),
+            new_pass: $('#input_password').val(),
         }, function (data) {
             //Show success:
             $('#pass_reset').html(data);
@@ -44,7 +44,7 @@ if (!isset($_GET['en_id']) || intval($_GET['en_id']) < 1 || !isset($_GET['timest
     <i class="fas fa-lock"></i>
 </span>
     <div class="form-group is-empty">
-        <input type="password" autocomplete="false" id="en_password" placeholder="New Password" class="form-control">
+        <input type="password" autocomplete="false" id="input_password" placeholder="New Password" class="form-control">
     </div>
 </div>
 

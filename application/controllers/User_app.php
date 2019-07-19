@@ -46,37 +46,31 @@ class User_app extends CI_Controller
 
     function singin_check_password(){
 
-        //Setting for admin Sign Ins:
-
-        if (!isset($_POST['input_email']) || !filter_var($_POST['input_email'], FILTER_VALIDATE_EMAIL)) {
-            return redirect_message('/login', '<div class="alert alert-danger" role="alert">Error: Enter valid email to continue.</div>');
-        } elseif (!isset($_POST['en_password'])) {
-            return redirect_message('/login', '<div class="alert alert-danger" role="alert">Error: Enter valid password to continue.</div>');
-        }
-
-        //Validate user email:
-        $lns = $this->Links_model->ln_fetch(array(
-            'ln_parent_entity_id' => 3288, //Primary email
-            'LOWER(ln_content)' => strtolower($_POST['input_email']),
-        ));
-
-        if (count($lns) == 0) {
-            //Not found!
-            return redirect_message('/login', '<div class="alert alert-danger" role="alert">Error: ' . $_POST['input_email'] . ' not found.</div>');
-        } elseif (!in_array($lns[0]['ln_status_entity_id'], $this->config->item('en_ids_7359') /* Link Statuses Public */)) {
-            return redirect_message('/login', '<div class="alert alert-danger" role="alert">Error: Your email link is not public. Contact us to adjust your account.</div>');
+        if (!isset($_POST['login_en_id']) || intval($_POST['login_en_id'])<1) {
+            return echo_json(array(
+                'status' => 0,
+                'message' => 'Missing user ID',
+            ));
+        } elseif (!isset($_POST['input_password']) || strlen($_POST['input_password'])<4) {
+            return echo_json(array(
+                'status' => 0,
+                'message' => 'Missing password',
+            ));
         }
 
 
-        //Fetch full entity data with their active Action Plans:
+        //Validaye user ID
         $ens = $this->Entities_model->en_fetch(array(
-            'en_id' => $lns[0]['ln_child_entity_id'],
+            'en_id' => $_POST['login_en_id'],
         ));
         if (!in_array($ens[0]['en_status_entity_id'], $this->config->item('en_ids_7357') /* Entity Statuses Public */)) {
-            return redirect_message('/login', '<div class="alert alert-danger" role="alert">Error: Your account entity is not public. Contact us to adjust your account.</div>');
+            return echo_json(array(
+                'status' => 0,
+                'message' => 'Your account entity is not public. Contact us to adjust your account.',
+            ));
         }
 
-        //Authenticate their password:
+        //Authenticate password:
         $user_passwords = $this->Links_model->ln_fetch(array(
             'ln_status_entity_id IN (' . join(',', $this->config->item('en_ids_7359')) . ')' => null, //Link Statuses Public
             'ln_type_entity_id' => 4255, //Text
@@ -85,13 +79,22 @@ class User_app extends CI_Controller
         ));
         if (count($user_passwords) == 0) {
             //They do not have a password assigned yet!
-            return redirect_message('/login', '<div class="alert alert-danger" role="alert">Error: An active login password has not been assigned to your account yet. You can assign a new password using the Forgot Password Button.</div>');
+            return echo_json(array(
+                'status' => 0,
+                'message' => 'An active login password has not been assigned to your account yet. You can assign a new password using the Forgot Password Button.',
+            ));
         } elseif (!in_array($user_passwords[0]['ln_status_entity_id'], $this->config->item('en_ids_7359') /* Link Statuses Public */)) {
             //They do not have a password assigned yet!
-            return redirect_message('/login', '<div class="alert alert-danger" role="alert">Error: Password link is not public. Contact us to adjust your account.</div>');
-        } elseif ($user_passwords[0]['ln_content'] != strtolower(hash('sha256', $this->config->item('password_salt') . $_POST['en_password'] . $ens[0]['en_id']))) {
+            return echo_json(array(
+                'status' => 0,
+                'message' => 'Password link is not public. Contact us to adjust your account.',
+            ));
+        } elseif ($user_passwords[0]['ln_content'] != strtolower(hash('sha256', $this->config->item('password_salt') . $_POST['input_password'] . $ens[0]['en_id']))) {
             //Bad password
-            return redirect_message('/login', '<div class="alert alert-danger" role="alert">Error: Incorrect password for [' . $_POST['input_email'] . ']</div>');
+            return echo_json(array(
+                'status' => 0,
+                'message' => 'Incorrect password',
+            ));
         }
 
         //Now let's do a few more checks:
@@ -116,7 +119,10 @@ class User_app extends CI_Controller
                 'ln_miner_entity_id' => 1, //Shervin/Developer
             ));
 
-            return redirect_message('/login', '<div class="alert alert-danger" role="alert">Mining console requires <a href="https://www.google.com/chrome/browser/" target="_blank"><u>Google Chrome</u></a> to properly function. Your mining permissions have been removed but you still have access to your Action Plan and Account.</div>');
+            return echo_json(array(
+                'status' => 0,
+                'message' => 'Mining console only support Google Chrome web browser.',
+            ));
 
         }
 
@@ -185,7 +191,10 @@ class User_app extends CI_Controller
                     'ln_miner_entity_id' => 1, //Shervin/Developer
                 ));
 
-                return redirect_message('/login', '<div class="alert alert-danger" role="alert">Error: Unable to locate your companies intention</div>');
+                return echo_json(array(
+                    'status' => 0,
+                    'message' => 'Unable to locate your companies intention',
+                ));
             }
 
 
@@ -197,15 +206,14 @@ class User_app extends CI_Controller
 
 
         //Append user IP and agent information
-        if (isset($_POST['en_password'])) {
-            unset($_POST['en_password']); //Sensitive information to be removed and NOT logged
+        if (isset($_POST['input_password'])) {
+            unset($_POST['input_password']); //Sensitive information to be removed and NOT logged
         }
 
         //Log additional information:
         $ens[0]['login_ip'] = $_SERVER['REMOTE_ADDR'];
         $ens[0]['user_agent'] = $_SERVER['HTTP_USER_AGENT'];
         $ens[0]['input_post_data'] = $_POST;
-
 
         //Log Sign In Link:
         $this->Links_model->ln_create(array(
@@ -219,20 +227,19 @@ class User_app extends CI_Controller
         $this->session->set_userdata($session_data);
 
         if (isset($_POST['url']) && strlen($_POST['url']) > 0) {
-            header('Location: ' . $_POST['url']);
+            $login_url = urldecode($_POST['url']);
+        } else if ($is_miner) {
+            $login_url = '/dashboard';
+        } elseif ($is_partner_employee) {
+            $login_url = '/intents/'.$session_data['user_default_intent'];
         } else {
-            //Default:
-            if ($is_miner) {
-                //Go to Mench dashboard:
-                header('Location: /dashboard');
-            } elseif ($is_partner_employee) {
-                //Go to their default intent:
-                header('Location: /intents/' . $session_data['user_default_intent']);
-            } elseif ($is_user) {
-                //Go to user Action Plan:
-                header('Location: /actionplan');
-            }
+            $login_url = '/actionplan';
         }
+
+        return echo_json(array(
+            'status' => 1,
+            'login_url' => $login_url,
+        ));
 
     }
 
@@ -405,12 +412,13 @@ class User_app extends CI_Controller
 
                 //Send email:
                 $this->Communication_model->user_received_emails(array($_POST['input_email']), $subject, $html_message);
+
             }
 
             return echo_json(array(
                 'status' => 1,
                 'email_existed_already' => 1,
-                'login_en_id' => 0,
+                'login_en_id' => $user_emails[0]['en_id'],
                 'clean_input_email' => $_POST['input_email'],
             ));
 
@@ -911,7 +919,7 @@ class User_app extends CI_Controller
                 'status' => 0,
                 'message' => 'Missing entity ID',
             ));
-        } elseif (!isset($_POST['en_password']) || strlen($_POST['en_password']) < 4) {
+        } elseif (!isset($_POST['input_password']) || strlen($_POST['input_password']) < 4) {
             return echo_json(array(
                 'status' => 0,
                 'message' => 'New password must be 4 characters or more',
@@ -927,7 +935,7 @@ class User_app extends CI_Controller
             'ln_child_entity_id' => $_POST['en_id'],
         ));
 
-        $hashed_password = strtolower(hash('sha256', $this->config->item('password_salt') . $_POST['en_password'] . $_POST['en_id']));
+        $hashed_password = strtolower(hash('sha256', $this->config->item('password_salt') . $_POST['input_password'] . $_POST['en_id']));
 
 
         if (count($user_passwords) > 0) {

@@ -164,7 +164,7 @@ function save_password(){
     //Save the rest of the content:
     $.post("/user_app/myaccount_save_password", {
         en_id: en_miner_id,
-        en_password: $('#en_password').val(),
+        input_password: $('#input_password').val(),
     }, function (data) {
 
         if (!data.status) {
