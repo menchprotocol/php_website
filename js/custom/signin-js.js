@@ -1,5 +1,10 @@
 
 
+
+var logged_messenger = false;
+var logged_website = false;
+
+
 $(document).ready(function () {
     goto_step(( referrer_in_id > 0 ? 1 : 2 ));
 });
@@ -9,8 +14,31 @@ function goto_step(step_count){
     $('#step'+step_count).removeClass('hidden');
 }
 
-var logged_messenger = false;
-var logged_website = false;
+function confirm_signin_on_messenger(){
+
+    var r = confirm("You will now be redirected to Mench on Facebook Messenger");
+    if (r == true) {
+        //Go to target intent:
+        $('#messenger_signin').html('Redirecting...');
+
+        signin_on_messenger();
+    }
+}
+
+function signin_on_messenger(){
+
+    if(!logged_messenger){
+        js_ln_create(channel_choice_messenger);
+        logged_messenger = true;
+    }
+
+    //Redirect to Messenger with a bit of delay to log the link above:
+    setTimeout(function () {
+        window.location = 'https://m.me/askmench' + ( referrer_in_id > 0 ? '?ref=' + ( referrer_en_id > 0 ? 'REFERUSER_'+referrer_en_id+'_' : '' ) + referrer_in_id : '' );
+    }, 250);
+
+}
+
 function choose_channel(){
 
 
@@ -20,15 +48,7 @@ function choose_channel(){
         $('#step1button').html('<div style="font-size: 1.2em; padding-top:10px;"><i class="fas fa-spinner fa-spin"></i> Taking you to Messenger...</div>');
 
         //Log link:
-        if(!logged_messenger){
-            js_ln_create(channel_choice_messenger);
-            logged_messenger = true;
-        }
-
-        //Redirect to Messenger with a bit of delay to log the link above:
-        setTimeout(function () {
-            window.location = 'https://m.me/askmench' + ( referrer_in_id > 0 ? '?ref=' + ( referrer_en_id > 0 ? 'REFERUSER_'+referrer_en_id+'_' : '' ) + referrer_in_id : '' );
-        }, 250);
+        signin_on_messenger();
 
     } else {
 
@@ -136,7 +156,7 @@ function check_password(){
 }
 
 function email_forgot_password(){
-    var r = confirm("I will email you a link to reset your password");
+    var r = confirm("I will email you a link to reset your password.");
     if (r == true) {
         //Check email and validate:
         $.post("/user_app/singin_check_email", {

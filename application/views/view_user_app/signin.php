@@ -120,7 +120,7 @@ if(count($current_sign_in_attempt) == 0){
                 <a href="javascript:void(0)" onclick="goto_step(1)" class="btn btn-primary transparent pass btn-raised btn-round <?= ( $referrer_in_id > 0 ? '' : ' hidden ' ) ?>"><i class="fas fa-arrow-left"></i></a>
                 <a href="javascript:void(0)" onclick="search_email()" id="email_check_next" class="btn btn-primary pass btn-raised btn-round btn-next">Next <i class="fas fa-arrow-right"></i></a>
             </span>
-            <span style="padding-left:5px; font-size:1em !important;" class="<?= ( $referrer_in_id > 0 ? ' hidden ' : '' ) ?>">Or <a href="https://m.me/askmench" class="underdot" style="font-size:1em !important;">Signin on Messenger <i class="fas fa-arrow-right"></i></a></span>
+            <span id="messenger_signin" style="padding-left:5px; font-size:1em !important;" class="<?= ( $referrer_in_id > 0 ? ' hidden ' : '' ) ?>">Or <a href="javascript:void(0)" onclick="confirm_signin_on_messenger()" class="underdot" style="font-size:1em !important;">Signin on Messenger <i class="fas fa-arrow-right"></i></a></span>
         </div>
 
 
@@ -134,7 +134,7 @@ if(count($current_sign_in_attempt) == 0){
             <div class="form-group is-empty"><input type="password" id="input_password" class="form-control border"></div>
             <div id="password_errors" class="signin-error-box"></div>
             <span id="step3buttons">
-                <a href="javascript:void(0)" data-toggle="tooltip" data-placement="bottom" title="Go Back" onclick="goto_step(2)" class="btn btn-primary transparent pass btn-raised btn-round <?= ( $referrer_in_id > 0 ? '' : ' hidden ' ) ?>"><i class="fas fa-arrow-left"></i></a>
+                <a href="javascript:void(0)" data-toggle="tooltip" data-placement="bottom" title="Go Back" onclick="goto_step(2)" class="btn btn-primary transparent pass btn-raised btn-round"><i class="fas fa-arrow-left"></i></a>
                 <a href="javascript:void(0)" onclick="check_password()" id="password_check_next" class="btn btn-primary pass btn-raised btn-round btn-next">Sign In <i class="fas fa-arrow-right"></i></a>
             </span>
 
@@ -145,7 +145,7 @@ if(count($current_sign_in_attempt) == 0){
 
         <!-- Step 3: Check your email -->
         <div id="step4" class="signup-steps hidden">
-            <p style="padding-top: 20px;">We emailed you instructions to sign-in to your Mench account.</p>
+            <p style="padding-top: 20px;">I emailed you instructions to sign-in to your Mench account.</p>
             <span class="medium-header" style="padding-top: 20px;"><?= $en_all_6225[3288]['m_icon'].' Check your email <span class="focus_email"></span> to continue' ?></span>
             <p style="padding-top: 20px;">You may close this window now.</p>
         </div>
