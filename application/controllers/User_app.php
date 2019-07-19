@@ -108,12 +108,12 @@ class User_app extends CI_Controller
                 $subject = 'Reset your Mench Password';
 
                 ##Email Body
-                $html_message = '<div>Hi '.$user_emails[0]['en_name'].' :) </div><br />';
+                $html_message = '<div>Hi '.one_two_explode('',' ',$user_emails[0]['en_name']).' :) </div><br />';
                 $html_message .= '<div>You can reset your Mench password using this link:</div><br />';
                 $html_message .= '<div><a href="'.$setpassword_url.'" target="_blank">' . $setpassword_url . '</a></div>';
                 $html_message .= '<br />';
                 $html_message .= '<div>If you did not make this request you can ignore this email.</div><br />';
-                $html_message .= '<br /><br />';
+                $html_message .= '<br />';
                 $html_message .= '<div>Cheers,</div><br />';
                 $html_message .= '<div>Team Mench</div>';
                 $html_message .= '<div><a href="https://mench.com?utm_source=mench&utm_medium=email&utm_campaign=resetpass" target="_blank">mench.com</a></div>';
@@ -141,7 +141,7 @@ class User_app extends CI_Controller
             ));
 
             //This is a new email, send invitation to join:
-            $setpassword_url = 'https://mench.com/setpassword/' . $invite_link['ln_id'] . '?email='.$_POST['input_email'];
+            $setpassword_url = 'https://mench.com/newaccount/' . $invite_link['ln_id'] . '?email='.$_POST['input_email'];
             $preset_intention = ( count($referrer_ins) > 0 ? ' to '.echo_in_outcome($referrer_ins[0]['in_outcome'], true) : '' );
 
             ##Email Subject
@@ -154,7 +154,7 @@ class User_app extends CI_Controller
             $html_message .= '<div><a href="'.$setpassword_url.'" target="_blank">' . $setpassword_url . '</a></div>';
             $html_message .= '<br />';
             $html_message .= '<div>If you did not make this request you can ignore this email.</div><br />';
-            $html_message .= '<br /><br />';
+            $html_message .= '<br />';
             $html_message .= '<div>Cheers,</div><br />';
             $html_message .= '<div>Team Mench</div>';
             $html_message .= '<div><a href="https://mench.com?utm_source=mench&utm_medium=email&utm_campaign=signup" target="_blank">mench.com</a></div>';

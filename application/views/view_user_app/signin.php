@@ -147,7 +147,7 @@ if(count($current_sign_in_attempt) == 0){
 
         <!-- Step 3: Check your email -->
         <div id="step4" class="signup-steps hidden">
-            <p style="padding-top: 20px;">We emailed you instructions to sign-in with your new Mench account.</p>
+            <p style="padding-top: 20px;">We emailed you instructions to sign-in to your Mench account.</p>
             <span class="medium-header" style="padding-top: 20px;"><?= $en_all_4269[3288]['m_icon'].' Check your email <span class="focus_email"></span> to continue' ?></span>
             <p style="padding-top: 20px;">You may close this window now.</p>
         </div>
