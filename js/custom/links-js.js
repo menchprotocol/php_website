@@ -61,7 +61,7 @@ function load_link_connections(ln_id,load_main) {
     $('.link_connections_link_'+ln_id).html('<span><i class="fas fa-spinner fa-spin"></i> Loading...</span>').hide().fadeIn();
 
     //Fetch Connections UI
-    $.post("/links/link_connections", {
+    $.post("/links/load_link_connections", {
         ln_id: ln_id,
         load_main:load_main,
     }, function (data) {
@@ -72,7 +72,7 @@ function load_link_connections(ln_id,load_main) {
         if (!data.status) {
 
             //Opppsi, show the error:
-            alert('Error Loading Intent: ' + data.message);
+            alert('Error Loading Links: ' + data.message);
 
         } else {
 
