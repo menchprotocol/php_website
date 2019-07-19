@@ -11,7 +11,7 @@ defined('BASEPATH') OR exit('No direct script access allowed');
  *
  */
 
-//Generated 2019-07-19 15:22:38 PST
+//Generated 2019-07-19 15:40:09 PST
 
 //Link Carbon Copy Email:
 $config['en_ids_5967'] = array(4246,7504,7505);
@@ -446,7 +446,7 @@ $config['en_all_7357'] = array(
 );
 
 //Intent Statuses Active:
-$config['en_ids_7356'] = array(6183,6184,7351);
+$config['en_ids_7356'] = array(6183,6184,7351,7581);
 $config['en_all_7356'] = array(
     6183 => array(
         'm_icon' => '<i class="fas fa-spinner fa-spin"></i>',
@@ -466,10 +466,16 @@ $config['en_all_7356'] = array(
         'm_desc' => '',
         'm_parents' => array(7356,7355,4737),
     ),
+    7581 => array(
+        'm_icon' => '<i class="far fa-megaphone"></i>',
+        'm_name' => 'Intent Featured Private',
+        'm_desc' => '',
+        'm_parents' => array(7355,7356,4737),
+    ),
 );
 
 //Intent Statuses Public:
-$config['en_ids_7355'] = array(6184,7351);
+$config['en_ids_7355'] = array(6184,7351,7581);
 $config['en_all_7355'] = array(
     6184 => array(
         'm_icon' => '<i class="fas fa-check-square"></i>',
@@ -482,6 +488,12 @@ $config['en_all_7355'] = array(
         'm_name' => 'Intent Featured Public',
         'm_desc' => '',
         'm_parents' => array(7356,7355,4737),
+    ),
+    7581 => array(
+        'm_icon' => '<i class="far fa-megaphone"></i>',
+        'm_name' => 'Intent Featured Private',
+        'm_desc' => '',
+        'm_parents' => array(7355,7356,4737),
     ),
 );
 
@@ -1616,7 +1628,7 @@ $config['en_all_4737'] = array(
         'm_icon' => '<i class="far fa-megaphone"></i>',
         'm_name' => 'Featured Private',
         'm_desc' => 'can be added as action plan intention',
-        'm_parents' => array(4737),
+        'm_parents' => array(7355,7356,4737),
     ),
     6184 => array(
         'm_icon' => '<i class="fas fa-check-square"></i>',
