@@ -492,7 +492,7 @@ class Communication_model extends CI_Model
             if (strlen($link_anchor) < 1 || !filter_var($link_url, FILTER_VALIDATE_URL)) {
                 return array(
                     'status' => 0,
-                    'message' => 'Invalid /link command! Proper format is: /link:ANCHOR:URL for example: /link:Open Google:https://google.com',
+                    'message' => 'Invalid link command',
                 );
             }
 
