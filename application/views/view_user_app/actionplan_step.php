@@ -51,7 +51,7 @@ foreach ($recursive_parents as $grand_parent_ids) {
             'ln_status_entity_id IN (' . join(',', $this->config->item('en_ids_7360')) . ')' => null, //Link Statuses Active
         ));
 
-        echo echo_actionplan_step_parent($parent_ins[0], (count($parent_progression_steps) > 0 ? $parent_progression_steps[0]['ln_status_entity_id'] : 6174 /* Link New */));
+        echo echo_actionplan_step_parent($parent_ins[0], (count($parent_progression_steps) > 0 ? $parent_progression_steps[0]['ln_status_entity_id'] : 6175 /* Link Drafting */));
 
         //We found an intersect:
         $found_grandpa_intersect = true;

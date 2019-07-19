@@ -1293,7 +1293,7 @@ class User_app_model extends CI_Model
                 if(!$fb_messenger_format){
 
                     //Add HTML step to UI:
-                    $next_step_message .= echo_actionplan_step_child($en_id, $child_in, (count($child_progression_steps) > 0 ? $child_progression_steps[0]['ln_status_entity_id'] : 6174 /* Link New */ ));
+                    $next_step_message .= echo_actionplan_step_child($en_id, $child_in, (count($child_progression_steps) > 0 ? $child_progression_steps[0]['ln_status_entity_id'] : 6175 /* Link Drafting */ ));
 
                 } else {
 
@@ -1436,7 +1436,7 @@ class User_app_model extends CI_Model
 
                     if($was_selected) {
                         //Status Icon:
-                        $next_step_message .= '&nbsp;' . echo_en_cache('en_all_6186' /* Link Statuses */, (count($child_progression_steps) > 0 ? $child_progression_steps[0]['ln_status_entity_id'] : 6174 /* Link New */), false, null);
+                        $next_step_message .= '&nbsp;' . echo_en_cache('en_all_6186' /* Link Statuses */, (count($child_progression_steps) > 0 ? $child_progression_steps[0]['ln_status_entity_id'] : 6175 /* Link Drafting */), false, null);
                     }
 
                     //Close tags:
@@ -1531,7 +1531,7 @@ class User_app_model extends CI_Model
                         if(!$fb_messenger_format){
 
                             //Add HTML step to UI:
-                            $next_step_message .= echo_actionplan_step_child($en_id, $child_in, (count($child_progression_steps) > 0 ? $child_progression_steps[0]['ln_status_entity_id'] : 6174 /* Link New */ ), false);
+                            $next_step_message .= echo_actionplan_step_child($en_id, $child_in, (count($child_progression_steps) > 0 ? $child_progression_steps[0]['ln_status_entity_id'] : 6175 /* Link Drafting */ ), false);
 
                         } else {
 

@@ -929,7 +929,7 @@ class Entities extends CI_Controller
 
 
         //Create default company intent:
-        $company_intent = $this->Intents_model->in_link_or_create(11902 /* Get hired at a Mench partner company */, 0, 'Get hired at '.$company_en['en']['en_name'], $user_en['en']['en_id'], 6185 /* Intent Published */, 6684 /* OR Intent Single Answer */);
+        $company_intent = $this->Intents_model->in_link_or_create(11902 /* Get hired at a Mench partner company */, 0, 'Get hired at '.$company_en['en']['en_name'], $user_en['en']['en_id'], 6184 /* Intent Published */, 6684 /* OR Intent Single Answer */);
         if(!$company_intent['status']){
             //We had an error, return it:
             return echo_json($company_intent);
@@ -937,7 +937,7 @@ class Entities extends CI_Controller
 
 
         //Create default company learning intent:
-        $company_learn_intent = $this->Intents_model->in_link_or_create(11907 /* Learn more about a Mench partner company */, 0, 'Learn more about '.$company_en['en']['en_name'], $user_en['en']['en_id'], 6185 /* Intent Published */, 6677 /* AND Intent Got It */);
+        $company_learn_intent = $this->Intents_model->in_link_or_create(11907 /* Learn more about a Mench partner company */, 0, 'Learn more about '.$company_en['en']['en_name'], $user_en['en']['en_id'], 6184 /* Intent Published */, 6677 /* AND Intent Got It */);
         if(!$company_learn_intent['status']){
             //We had an error, return it:
             return echo_json($company_learn_intent);

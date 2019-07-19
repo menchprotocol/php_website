@@ -995,7 +995,7 @@ class Entities_model extends CI_Model
 
     }
 
-    function en_verify_create($en_name, $ln_miner_entity_id = 0, $force_unique = false, $en_status_entity_id = 6179 /* Entity New */, $en_icon = null, $en_psid = null){
+    function en_verify_create($en_name, $ln_miner_entity_id = 0, $force_unique = false, $en_status_entity_id = 6180 /* Entity Drafting */, $en_icon = null, $en_psid = null){
 
         //If PSID exists, make sure it's not a duplicate:
         if(!in_array($en_status_entity_id, $this->config->item('en_ids_6177'))){
@@ -1149,7 +1149,7 @@ class Entities_model extends CI_Model
             if(isset($fb_profile['profile_pic'])){
                 //Create link to save profile picture:
                 $this->Links_model->ln_create(array(
-                    'ln_status_entity_id' => 6174, //Link New
+                    'ln_status_entity_id' => 6175, //Link Drafting
                     'ln_type_entity_id' => 4299, //Updated Profile Picture
                     'ln_miner_entity_id' => $added_en['en']['en_id'], //The User who added this
                     'ln_content' => $fb_profile['profile_pic'], //Image to be saved to Mench CDN

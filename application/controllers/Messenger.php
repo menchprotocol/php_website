@@ -368,7 +368,7 @@ class Messenger extends CI_Controller
 
                                 $ln_data['ln_type_entity_id'] = $att_media_types[$att['type']][($sent_by_mench ? 'sent' : 'received')];
                                 $ln_data['ln_content'] = $att['payload']['url']; //Media Attachment Temporary Facebook URL
-                                $ln_data['ln_status_entity_id'] = 6174; //Link New, since URL needs to be uploaded to Mench CDN via cron__save_chat_media()
+                                $ln_data['ln_status_entity_id'] = 6175; //Link Drafting, since URL needs to be uploaded to Mench CDN via cron__save_chat_media()
                                 if(!$sent_by_mench){
                                     $in_type_entity_id_search = $att_media_types[$att['type']]['requirement'];
                                 }
@@ -728,13 +728,13 @@ class Messenger extends CI_Controller
          * */
 
         $ln_pending = $this->Links_model->ln_fetch(array(
-            'ln_status_entity_id' => 6174, //Link New
+            'ln_status_entity_id' => 6175, //Link Drafting
             'ln_type_entity_id IN (' . join(',', $this->config->item('en_ids_6102')) . ')' => null, //User Sent/Received Media Links
         ), array(), 20);
 
         //Set link statuses to drafting so other Cron jobs don't pick them up:
         foreach ($ln_pending as $ln) {
-            if($ln['ln_status_entity_id'] == 6174 /* Link New */){
+            if($ln['ln_status_entity_id'] == 6175 /* Link Drafting */){
                 $this->Links_model->ln_update($ln['ln_id'], array(
                     'ln_status_entity_id' => 6175, //Link Drafting
                 ));
@@ -784,14 +784,14 @@ class Messenger extends CI_Controller
          * */
 
         $ln_pending = $this->Links_model->ln_fetch(array(
-            'ln_status_entity_id' => 6174, //Link New
+            'ln_status_entity_id' => 6175, //Link Drafting
             'ln_type_entity_id' => 4299, //Updated Profile Picture
         ), array('en_miner'), 20); //Max number of scans per run
 
 
         //Set link statuses to drafting so other Cron jobs don't pick them up:
         foreach ($ln_pending as $ln) {
-            if($ln['ln_status_entity_id'] == 6174 /* Link New */){
+            if($ln['ln_status_entity_id'] == 6175 /* Link Drafting */){
                 $this->Links_model->ln_update($ln['ln_id'], array(
                     'ln_status_entity_id' => 6175, /* Link Drafting */
                 ));

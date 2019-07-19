@@ -11,7 +11,7 @@ defined('BASEPATH') OR exit('No direct script access allowed');
  *
  */
 
-//Generated 2019-07-19 14:47:03 PST
+//Generated 2019-07-19 15:14:01 PST
 
 //Link Carbon Copy Email:
 $config['en_ids_5967'] = array(4246,7504,7505);
@@ -373,14 +373,8 @@ $config['en_all_7366'] = array(
 );
 
 //Link Statuses Incomplete:
-$config['en_ids_7364'] = array(6174,6175);
+$config['en_ids_7364'] = array(6175);
 $config['en_all_7364'] = array(
-    6174 => array(
-        'm_icon' => '<i class="fal fa-square"></i>',
-        'm_name' => 'Link New',
-        'm_desc' => '',
-        'm_parents' => array(7364,7360,6186),
-    ),
     6175 => array(
         'm_icon' => '<i class="fas fa-spinner fa-spin"></i>',
         'm_name' => 'Link Drafting',
@@ -390,14 +384,8 @@ $config['en_all_7364'] = array(
 );
 
 //Link Statuses Active:
-$config['en_ids_7360'] = array(6174,6175,6176);
+$config['en_ids_7360'] = array(6175,6176);
 $config['en_all_7360'] = array(
-    6174 => array(
-        'm_icon' => '<i class="fal fa-square"></i>',
-        'm_name' => 'Link New',
-        'm_desc' => '',
-        'm_parents' => array(7364,7360,6186),
-    ),
     6175 => array(
         'm_icon' => '<i class="fas fa-spinner fa-spin"></i>',
         'm_name' => 'Link Drafting',
@@ -424,14 +412,8 @@ $config['en_all_7359'] = array(
 );
 
 //Entity Statuses Active:
-$config['en_ids_7358'] = array(6179,6180,6181);
+$config['en_ids_7358'] = array(6180,6181);
 $config['en_all_7358'] = array(
-    6179 => array(
-        'm_icon' => '<i class="fal fa-square"></i>',
-        'm_name' => 'Entity New',
-        'm_desc' => '',
-        'm_parents' => array(7358,6177),
-    ),
     6180 => array(
         'm_icon' => '<i class="fas fa-spinner fa-spin"></i>',
         'm_name' => 'Entity Drafting',
@@ -464,66 +446,42 @@ $config['en_all_7357'] = array(
 );
 
 //Intent Statuses Active:
-$config['en_ids_7356'] = array(6183,6184,6185,7351,7579);
+$config['en_ids_7356'] = array(6183,6184,7351);
 $config['en_all_7356'] = array(
     6183 => array(
-        'm_icon' => '<i class="far fa-square"></i>',
-        'm_name' => 'Intent New',
+        'm_icon' => '<i class="fas fa-spinner fa-spin"></i>',
+        'm_name' => 'Intent Drafting',
         'm_desc' => '',
         'm_parents' => array(7356,4737),
     ),
     6184 => array(
-        'm_icon' => '<i class="far fa-check-square"></i>',
-        'm_name' => 'Intent Published Draft',
+        'm_icon' => '<i class="fas fa-check-square"></i>',
+        'm_name' => 'Intent Published',
         'm_desc' => '',
         'm_parents' => array(7355,7356,4737),
-    ),
-    6185 => array(
-        'm_icon' => '<i class="fas fa-check-square"></i>',
-        'm_name' => 'Intent Published Verified',
-        'm_desc' => '',
-        'm_parents' => array(7356,7355,4737),
     ),
     7351 => array(
-        'm_icon' => '<i class="fas fa-eye"></i>',
-        'm_name' => 'Intent Start Marketplace',
+        'm_icon' => '<i class="fas fa-megaphone"></i>',
+        'm_name' => 'Intent Featured',
         'm_desc' => '',
         'm_parents' => array(7356,7355,4737),
-    ),
-    7579 => array(
-        'm_icon' => '<i class="fas fa-eye-slash"></i>',
-        'm_name' => 'Intent Start Private URL',
-        'm_desc' => '',
-        'm_parents' => array(7355,7356,4737),
     ),
 );
 
 //Intent Statuses Public:
-$config['en_ids_7355'] = array(6184,6185,7351,7579);
+$config['en_ids_7355'] = array(6184,7351);
 $config['en_all_7355'] = array(
     6184 => array(
-        'm_icon' => '<i class="far fa-check-square"></i>',
-        'm_name' => 'Intent Published Draft',
+        'm_icon' => '<i class="fas fa-check-square"></i>',
+        'm_name' => 'Intent Published',
         'm_desc' => '',
         'm_parents' => array(7355,7356,4737),
-    ),
-    6185 => array(
-        'm_icon' => '<i class="fas fa-check-square"></i>',
-        'm_name' => 'Intent Published Verified',
-        'm_desc' => '',
-        'm_parents' => array(7356,7355,4737),
     ),
     7351 => array(
-        'm_icon' => '<i class="fas fa-eye"></i>',
-        'm_name' => 'Intent Start Marketplace',
+        'm_icon' => '<i class="fas fa-megaphone"></i>',
+        'm_name' => 'Intent Featured',
         'm_desc' => '',
         'm_parents' => array(7356,7355,4737),
-    ),
-    7579 => array(
-        'm_icon' => '<i class="fas fa-eye-slash"></i>',
-        'm_name' => 'Intent Start Private URL',
-        'm_desc' => '',
-        'm_parents' => array(7355,7356,4737),
     ),
 );
 
@@ -920,7 +878,7 @@ $config['en_all_7164'] = array(
 );
 
 //Link Statuses:
-$config['en_ids_6186'] = array(6176,6175,6174,6173);
+$config['en_ids_6186'] = array(6176,6175,6173);
 $config['en_all_6186'] = array(
     6176 => array(
         'm_icon' => '<i class="fas fa-check-square"></i>',
@@ -932,12 +890,6 @@ $config['en_all_6186'] = array(
         'm_icon' => '<i class="fas fa-spinner fa-spin"></i>',
         'm_name' => 'Drafting',
         'm_desc' => 'being mined, to be published soon',
-        'm_parents' => array(7364,7360,6186),
-    ),
-    6174 => array(
-        'm_icon' => '<i class="fal fa-square"></i>',
-        'm_name' => 'New',
-        'm_desc' => 'newly added, pending review',
         'm_parents' => array(7364,7360,6186),
     ),
     6173 => array(
@@ -1652,35 +1604,23 @@ $config['en_all_6225'] = array(
 );
 
 //Intent Statuses:
-$config['en_ids_4737'] = array(7351,7579,6185,6184,6183,6182);
+$config['en_ids_4737'] = array(7351,6184,6183,6182);
 $config['en_all_4737'] = array(
     7351 => array(
-        'm_icon' => '<i class="fas fa-eye"></i>',
-        'm_name' => 'Start Marketplace',
+        'm_icon' => '<i class="fas fa-megaphone"></i>',
+        'm_name' => 'Featured',
         'm_desc' => 'can be publicly searched for and added as action plan intention',
         'm_parents' => array(7356,7355,4737),
     ),
-    7579 => array(
-        'm_icon' => '<i class="fas fa-eye-slash"></i>',
-        'm_name' => 'Start Private URL',
-        'm_desc' => 'can be accessed with URL only and added as action plan intention',
-        'm_parents' => array(7355,7356,4737),
-    ),
-    6185 => array(
-        'm_icon' => '<i class="fas fa-check-square"></i>',
-        'm_name' => 'Published Verified',
-        'm_desc' => 'live and ready to be shared with users',
-        'm_parents' => array(7356,7355,4737),
-    ),
     6184 => array(
-        'm_icon' => '<i class="far fa-check-square"></i>',
-        'm_name' => 'Published Draft',
+        'm_icon' => '<i class="fas fa-check-square"></i>',
+        'm_name' => 'Published',
         'm_desc' => 'newly added by miner but not yet checked by moderator',
         'm_parents' => array(7355,7356,4737),
     ),
     6183 => array(
-        'm_icon' => '<i class="far fa-square"></i>',
-        'm_name' => 'New',
+        'm_icon' => '<i class="fas fa-spinner fa-spin"></i>',
+        'm_name' => 'Drafting',
         'm_desc' => 'newly added, pending review',
         'm_parents' => array(7356,4737),
     ),
@@ -1693,7 +1633,7 @@ $config['en_all_4737'] = array(
 );
 
 //Entity Statuses:
-$config['en_ids_6177'] = array(6181,6180,6179,6178);
+$config['en_ids_6177'] = array(6181,6180,6178);
 $config['en_all_6177'] = array(
     6181 => array(
         'm_icon' => '<i class="fas fa-check-square"></i>',
@@ -1707,14 +1647,8 @@ $config['en_all_6177'] = array(
         'm_desc' => 'being mined, to be published soon',
         'm_parents' => array(7357,7358,6177),
     ),
-    6179 => array(
-        'm_icon' => '<i class="fal fa-square"></i>',
-        'm_name' => 'New',
-        'm_desc' => 'newly added, pending review',
-        'm_parents' => array(7358,6177),
-    ),
     6178 => array(
-        'm_icon' => '<i class="fal fa-minus-square"></i>',
+        'm_icon' => '<i class="far fa-minus-square"></i>',
         'm_name' => 'Deleted',
         'm_desc' => 'archived',
         'm_parents' => array(6177),
