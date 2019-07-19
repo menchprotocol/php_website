@@ -1186,10 +1186,10 @@ class Entities_model extends CI_Model
         ));
 
         //Have they been referred by someone?
-        if(substr_count($quick_reply_payload, 'GETSTARTED_') == 1){
+        if(substr_count($quick_reply_payload, 'REFERUSER_') == 1){
 
             //See what the payload is:
-            $append_link_ids = explode('_', one_two_explode('GETSTARTED_', '', $quick_reply_payload));
+            $append_link_ids = explode('_', one_two_explode('REFERUSER_', '', $quick_reply_payload));
             $referrer_en_id = intval($append_link_ids[0]);
             $in_id = intval($append_link_ids[1]);
 

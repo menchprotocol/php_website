@@ -40,6 +40,11 @@ class Links extends CI_Controller
     }
 
 
+    function js_ln_create(){
+        //Log link from JS source:
+        echo_json($this->Links_model->ln_create($_POST));
+    }
+
 
     function load_link_list(){
 

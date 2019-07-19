@@ -3,6 +3,7 @@
 </div>
 
 
+<?php if(!isset($hide_footer) || !$hide_footer){ ?>
 <?php if(!isset($hide_social) || !$hide_social){ ?>
 
     <footer class="footer" style="margin:30px 0 50px 0;">
@@ -46,18 +47,17 @@
                         <span>|</span>
 
 
-                        <?php $en_all_7368 = $this->config->item('en_all_7368'); ?>
+                        <?php $en_all_7369 = $this->config->item('en_all_7369'); /* Mench User App */ ?>
                         <a href="/dashboard"
-                           class="social-link tag-manager-footer-dashboard" data-toggle="tooltip" title="<?= $en_all_7368[7161]['m_name'] ?>"
-                           data-placement="top"><?= $en_all_7368[7161]['m_icon'] ?></a>
+                           class="social-link tag-manager-footer-dashboard" data-toggle="tooltip" title="<?= $en_all_7369[7161]['m_name'] ?>"
+                           data-placement="top"><?= $en_all_7369[7161]['m_icon'] ?></a>
 
-                        <a href="/login"
-                           class="social-link tag-manager-sign-in" data-toggle="tooltip" title="Sign In"
-                           data-placement="top"><i class="fas fa-sign-in"></i></a>
+                        <a href="/signin"
+                           class="social-link tag-manager-sign-in" data-toggle="tooltip" title="<?= $en_all_7369[4269]['m_name'] ?>"
+                           data-placement="top"><?= $en_all_7369[4269]['m_icon'] ?></a>
 
                         <a href="/8263" class="social-link tag-manager-social-profile" data-toggle="tooltip"
-                           title="Terms of service & privacy policy" data-placement="top"><i
-                                    class="fas fa-balance-scale"></i></a>
+                           title="<?= $en_all_7369[7540]['m_name'] ?>" data-placement="top"><?= $en_all_7369[7540]['m_icon'] ?></a>
 
                     </li>
                 </ul>
@@ -123,6 +123,7 @@ if($this->uri->segment(1)=='actionplan'){
 }
 ?>
 
+<?php } ?>
 
 </body>
 </html>

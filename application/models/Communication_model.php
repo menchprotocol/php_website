@@ -1413,9 +1413,9 @@ class Communication_model extends CI_Model
             //List Recommended Intents and let them choose:
             $this->Communication_model->dispatch_recommendations($en['en_id']);
 
-        } elseif (substr_count($quick_reply_payload, 'GETSTARTED_') == 1) {
+        } elseif (substr_count($quick_reply_payload, 'REFERUSER_') == 1) {
 
-            $append_link_ids = explode('_', one_two_explode('GETSTARTED_', '', $quick_reply_payload));
+            $append_link_ids = explode('_', one_two_explode('REFERUSER_', '', $quick_reply_payload));
             $referrer_en_id = intval($append_link_ids[0]);
             $in_id = intval($append_link_ids[1]);
 
@@ -2303,7 +2303,7 @@ class Communication_model extends CI_Model
 
 
 
-    function dispatch_email($to_array, $to_en_ids, $subject, $html_message)
+    function dispatch_email($to_array, $to_en_ids = array(), $subject, $html_message)
     {
 
         /*

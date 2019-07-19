@@ -35,7 +35,7 @@ if($step_info || $source_info || $user_info){
 }
 
 //Check to see if added to Action Plan for logged-in users:
-if(isset($session_en['en_id']) && count($referrer_en) == 0){
+if(isset($session_en['en_id']) && $referrer_en_id == 0){
 
     $en_all_7369 = $this->config->item('en_all_7369');
 
@@ -62,14 +62,8 @@ if(isset($session_en['en_id']) && count($referrer_en) == 0){
 } else {
 
     //Give option to add:
-    echo '<a class="btn btn-primary tag-manager-get-started" href="https://m.me/askmench?ref='.( count($referrer_en) > 0 ? 'GETSTARTED_'.$referrer_en['en_id'].'_'.$in['in_id'] : $in['in_id'] ).'" style="display: inline-block; padding:12px 36px; font-size: 1.3em;">Get Started&nbsp;&nbsp;&nbsp;<i class="fas fa-angle-double-right"></i></a>';
+    echo '<a class="btn btn-primary tag-manager-get-started" href="'.( $referrer_en_id > 0 ? $referrer_en_id.'_' : '' ).$in['in_id'].'/signin" style="display: inline-block; padding:12px 36px; font-size: 1.3em;">Get Started&nbsp;&nbsp;&nbsp;<i class="fas fa-angle-double-right"></i></a>';
 
-}
-
-
-if(count($referrer_en) == 0){
-    //Build trust:
-    //echo '<p style="font-size:1em !important;">Mench is an open-source project.</p>';
 }
 
 
@@ -94,7 +88,7 @@ $in__parents = $this->Links_model->ln_fetch(array(
     'ln_child_intent_id' => $in['in_id'],
 ), array('in_parent'));
 
-if(count($referrer_en) > 0){
+if($referrer_en_id > 0){
     //Only show children as other intents:
     $in__other = array_merge($in__children, $in__parents);
 } else {
@@ -168,7 +162,7 @@ if(count($in__other) > 0){
             continue; //Already printed!
         }
 
-        echo echo_in_recommend($other_in, null, ( count($already_printed) >= $max_visible ? 'extra-recommendations hidden' : null ), ( count($referrer_en) > 0 ? $referrer_en['en_id'] : 0 ));
+        echo echo_in_recommend($other_in, null, ( count($already_printed) >= $max_visible ? 'extra-recommendations hidden' : null ), $referrer_en_id);
         array_push($already_printed, $other_in['in_id']); //Keep track to make sure its printed only once
     }
 

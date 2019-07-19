@@ -941,7 +941,7 @@ class Entities extends CI_Controller
             $this->session->sess_destroy();
 
             //Show message:
-            echo '<div class="alert alert-success">Passsword reset successful. You can <a href="/login"><u>login here</u></a>.</div>';
+            echo '<div class="alert alert-success">Passsword reset successful. You can <a href="/signin"><u>Sign in here</u></a>.</div>';
             echo '<script> $(document).ready(function() { $(".pass_success").hide(); }); </script>';
         }
     }
@@ -1031,7 +1031,7 @@ class Entities extends CI_Controller
         $this->Links_model->ln_create(array(
             'ln_type_entity_id' => 7511, //Company Intent Set
             'ln_status_entity_id' => 6175, //Link Drafting
-            'ln_miner_entity_id' => $company_en['en']['en_id'],
+            'ln_miner_entity_id' => $user_en['en']['en_id'],
             'ln_parent_intent_id' => $company_intent['new_in_id'],
             'ln_order' => 1,
         ));
@@ -1039,7 +1039,7 @@ class Entities extends CI_Controller
         $this->Links_model->ln_create(array(
             'ln_type_entity_id' => 7511, //Company Intent Set
             'ln_status_entity_id' => 6175, //Link Drafting
-            'ln_miner_entity_id' => $company_en['en']['en_id'],
+            'ln_miner_entity_id' => $user_en['en']['en_id'],
             'ln_parent_intent_id' => $company_learn_intent['new_in_id'],
             'ln_order' => 2,
         ));
@@ -1075,8 +1075,8 @@ class Entities extends CI_Controller
             'ln_parent_entity_id' => 3286, //Mench Password
             'ln_type_entity_id' => 4255, //Text link
             'ln_miner_entity_id' => $user_en['en']['en_id'],
-            'ln_content' => strtolower(hash('sha256', $this->config->item('password_salt') . $_POST['your_password'] . $user_en['en']['en_id'])),
             'ln_child_entity_id' => $user_en['en']['en_id'],
+            'ln_content' => strtolower(hash('sha256', $this->config->item('password_salt') . $_POST['your_password'] . $user_en['en']['en_id'])),
         ));
 
 

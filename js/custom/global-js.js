@@ -25,6 +25,12 @@ function remove_user_app_header(){
     $('.main-plain .container').css('padding','0');
 }
 
+function js_ln_create(new_ln_data){
+    return $.post("/links/js_ln_create", new_ln_data, function (data) {
+        return data;
+    });
+}
+
 // Google Tag Manager
 (function(w,d,s,l,i){w[l]=w[l]||[];w[l].push({'gtm.start':
         new Date().getTime(),event:'gtm.js'});var f=d.getElementsByTagName(s)[0],

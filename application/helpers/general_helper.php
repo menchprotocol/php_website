@@ -138,7 +138,7 @@ function extract_references($ln_content)
         if(substr($part, 0, 1) == '/') {
 
             //Check maybe it's a command?
-            $command = includes_any($part, array('/firstname', '/link'));
+            $command = includes_any($part, array('/firstname', '/link', '/setyourpassword'));
             if ($command) {
                 //Yes!
                 array_push($string_references['ref_commands'], $command);
@@ -407,7 +407,7 @@ function en_auth($en_permission_group = null, $force_redirect = 0)
         return false;
     } else {
         //Block access:
-        return redirect_message((isset($session_en['en__parents'][0]) && filter_array($session_en['en__parents'], 'en_id', 1308) ? '/intents/' . $CI->config->item('in_focus_id') : '/login?url=' . urlencode($_SERVER['REQUEST_URI'])), '<div class="alert alert-danger" role="alert">Error: ' . (isset($session_en['en_id']) ? 'Access not authorized.' : 'You must sign-in to access this page.') . '</div>');
+        return redirect_message((isset($session_en['en__parents'][0]) && filter_array($session_en['en__parents'], 'en_id', 1308) ? '/intents/' . $CI->config->item('in_focus_id') : '/signin?url=' . urlencode($_SERVER['REQUEST_URI'])), '<div class="alert alert-danger" role="alert">Error: ' . (isset($session_en['en_id']) ? 'Access not authorized.' : 'You must sign-in to access this page.') . '</div>');
     }
 
 }

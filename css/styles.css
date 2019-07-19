@@ -3916,10 +3916,21 @@ h4 .tip-badge {
 .grey-at{
     color: #AAA !important;
 }
+.btn-next{
+    min-width: 100px;
+    text-align: center;
+}
 
 .transparent{
     background-color: transparent !important;
     border-color:transparent !important;
+    box-shadow:none !important;
+    transition: none !important;
+}
+
+.signin-error-box{
+    padding: 7px 0;
+    color:#FF0000 !important;
 }
 
 .white-secondary{
@@ -3979,6 +3990,18 @@ h4 .tip-badge {
     line-height: 100%;
     padding: 0;
     margin:12px 0 2px 0;
+    display: block;
+    text-align: left;
+}
+
+.medium-header{
+    font-size: 1.2em;
+    font-weight: 500;
+    color: #000;
+    text-transform: uppercase;
+    line-height: 100%;
+    padding: 0;
+    margin:12px 0 4px 0;
     display: block;
     text-align: left;
 }
@@ -4107,8 +4130,16 @@ h4 .tip-badge {
     padding: 10px !important;
 }
 
+.signin-logo img {
+    width: 80px;
+}
 .sign-in-page{
-    max-width: 380px !important;
+    max-width:372px !important;
+    text-align: center !important;
+}
+
+.login-content{
+    text-align: left !important;
 }
 
 .landing-page-intro {

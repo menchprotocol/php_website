@@ -29,7 +29,7 @@ if(in_is_or($in['in_type_entity_id'])){
     $common_prefix = common_prefix($in__children);
 
     foreach ($in__children as $child_in) {
-        echo echo_in_recommend($child_in, $common_prefix, null, ( count($referrer_en) > 0 ? $referrer_en['en_id'] : 0 ));
+        echo echo_in_recommend($child_in, $common_prefix, null, $referrer_en_id);
     }
     echo '</div>';
 

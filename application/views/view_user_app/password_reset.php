@@ -13,7 +13,7 @@ if (!isset($_GET['en_id']) || intval($_GET['en_id']) < 1 || !isset($_GET['timest
 
 } elseif (($_GET['timestamp'] + (24 * 3600)) < time()) {
 
-    die('<div class="alert alert-danger"><i class="fas fa-exclamation-triangle"></i> Error: Password reset link has expired. You can request another one <a href="/login">here</a>.</div>');
+    die('<div class="alert alert-danger"><i class="fas fa-exclamation-triangle"></i> Error: Password reset link has expired. You can request another one <a href="/signin">here</a>.</div>');
 
 }
 

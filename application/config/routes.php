@@ -17,6 +17,9 @@ $route['(:num)']                = "intents/in_public_ui/$1"; //Public Intent Lan
 $route['start']                 = "intents/in_public_ui/10430"; //For companies to get started
 
 //Users:
+$route['signin']                = "user_app/signin";
+$route['(:num)_(:num)/signin']  = "user_app/signin/$2/$1";
+$route['(:num)/signin']         = "user_app/signin/$1";
 $route['login']                 = "user_app/user_login";
 $route['logout']                = "user_app/logout";
 $route['myaccount']             = "user_app/myaccount";

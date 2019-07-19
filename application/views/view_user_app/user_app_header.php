@@ -1,6 +1,7 @@
 <?php
 //Attempt to fetch session variables:
 $session_en = $this->session->userdata('user');
+$en_all_7369 = $this->config->item('en_all_7369');
 $url_part_1 = $this->uri->segment(1);
 ?><!doctype html>
 <html lang="en">
@@ -27,6 +28,7 @@ $url_part_1 = $this->uri->segment(1);
 <body class="landing-page">
 <?php $this->load->view('view_shared/google_tag_manager'); ?>
 
+<?php if(!isset($hide_header) || !$hide_header){ ?>
 <nav class="navbar navbar-warning navbar-fixed-top navbar-color-on-scroll no-adj">
     <div class="container">
         <!-- Brand and toggle get grouped for better mobile display -->
@@ -41,7 +43,6 @@ $url_part_1 = $this->uri->segment(1);
                 if (isset($session_en['en_id'])) {
 
 
-                    $en_all_7369 = $this->config->item('en_all_7369');
                     $navigation = array(
                         array(
                             'uri_segment_1' => 'actionplan',
@@ -76,7 +77,7 @@ $url_part_1 = $this->uri->segment(1);
                 } else {
 
                     //Give option to sign-in:
-                    echo '<li><a href="/login'. ( isset($in['in_id']) && $in['in_id'] != $this->config->item('in_focus_id') ? '?url=%2Fintents%2F'.$in['in_id'] : '' ) .'" class="tag-manager-sign-in"><i class="fas fa-sign-in"></i> Sign In</a></li>';
+                    echo '<li><a href="/signin'.( isset($in['in_id']) && $in['in_id'] != $this->config->item('in_focus_id') ? '?url=%2Fintents%2F'.$in['in_id'] : '' ).'" class="tag-manager-sign-in">'.$en_all_7369[4269]['m_icon'].' '.$en_all_7369[4269]['m_name'].'</a></li>';
 
                 }
                 ?>
@@ -84,10 +85,10 @@ $url_part_1 = $this->uri->segment(1);
         </div>
     </div>
 </nav>
-
+<?php } ?>
 
 <div class="main main-raised main-plain">
-    <div class="container <?= ( $url_part_1=='links' ? 'links-container' : 'body-container' ) ?>">
+    <div class="container <?= ( in_array($url_part_1, array('links', 'dashboard') /* Need 100% Width */) ? 'links-container' : 'body-container' ) ?>">
 
 <?php
 //Show possible flash message:
