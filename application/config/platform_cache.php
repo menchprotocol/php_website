@@ -11,7 +11,7 @@ defined('BASEPATH') OR exit('No direct script access allowed');
  *
  */
 
-//Generated 2019-07-19 13:10:46 PST
+//Generated 2019-07-19 14:47:03 PST
 
 //Link Carbon Copy Email:
 $config['en_ids_5967'] = array(4246,7504,7505);
@@ -464,48 +464,66 @@ $config['en_all_7357'] = array(
 );
 
 //Intent Statuses Active:
-$config['en_ids_7356'] = array(6183,6184,6185,7351);
+$config['en_ids_7356'] = array(6183,6184,6185,7351,7579);
 $config['en_all_7356'] = array(
     6183 => array(
-        'm_icon' => '<i class="fal fa-square"></i>',
+        'm_icon' => '<i class="far fa-square"></i>',
         'm_name' => 'Intent New',
         'm_desc' => '',
         'm_parents' => array(7356,4737),
     ),
     6184 => array(
-        'm_icon' => '<i class="fas fa-spinner fa-spin"></i>',
-        'm_name' => 'Intent Drafting',
+        'm_icon' => '<i class="far fa-check-square"></i>',
+        'm_name' => 'Intent Published Draft',
         'm_desc' => '',
-        'm_parents' => array(7356,4737),
+        'm_parents' => array(7355,7356,4737),
     ),
     6185 => array(
         'm_icon' => '<i class="fas fa-check-square"></i>',
-        'm_name' => 'Intent Published',
+        'm_name' => 'Intent Published Verified',
         'm_desc' => '',
         'm_parents' => array(7356,7355,4737),
     ),
     7351 => array(
-        'm_icon' => '<i class="fas fa-flag"></i>',
-        'm_name' => 'Intent Starting Point',
+        'm_icon' => '<i class="fas fa-eye"></i>',
+        'm_name' => 'Intent Start Marketplace',
         'm_desc' => '',
         'm_parents' => array(7356,7355,4737),
+    ),
+    7579 => array(
+        'm_icon' => '<i class="fas fa-eye-slash"></i>',
+        'm_name' => 'Intent Start Private URL',
+        'm_desc' => '',
+        'm_parents' => array(7355,7356,4737),
     ),
 );
 
 //Intent Statuses Public:
-$config['en_ids_7355'] = array(6185,7351);
+$config['en_ids_7355'] = array(6184,6185,7351,7579);
 $config['en_all_7355'] = array(
+    6184 => array(
+        'm_icon' => '<i class="far fa-check-square"></i>',
+        'm_name' => 'Intent Published Draft',
+        'm_desc' => '',
+        'm_parents' => array(7355,7356,4737),
+    ),
     6185 => array(
         'm_icon' => '<i class="fas fa-check-square"></i>',
-        'm_name' => 'Intent Published',
+        'm_name' => 'Intent Published Verified',
         'm_desc' => '',
         'm_parents' => array(7356,7355,4737),
     ),
     7351 => array(
-        'm_icon' => '<i class="fas fa-flag"></i>',
-        'm_name' => 'Intent Starting Point',
+        'm_icon' => '<i class="fas fa-eye"></i>',
+        'm_name' => 'Intent Start Marketplace',
         'm_desc' => '',
         'm_parents' => array(7356,7355,4737),
+    ),
+    7579 => array(
+        'm_icon' => '<i class="fas fa-eye-slash"></i>',
+        'm_name' => 'Intent Start Private URL',
+        'm_desc' => '',
+        'm_parents' => array(7355,7356,4737),
     ),
 );
 
@@ -1634,34 +1652,40 @@ $config['en_all_6225'] = array(
 );
 
 //Intent Statuses:
-$config['en_ids_4737'] = array(7351,6185,6184,6183,6182);
+$config['en_ids_4737'] = array(7351,7579,6185,6184,6183,6182);
 $config['en_all_4737'] = array(
     7351 => array(
-        'm_icon' => '<i class="fas fa-flag"></i>',
-        'm_name' => 'Starting Point',
-        'm_desc' => 'can be added as action plan intention',
+        'm_icon' => '<i class="fas fa-eye"></i>',
+        'm_name' => 'Start Marketplace',
+        'm_desc' => 'can be publicly searched for and added as action plan intention',
         'm_parents' => array(7356,7355,4737),
+    ),
+    7579 => array(
+        'm_icon' => '<i class="fas fa-eye-slash"></i>',
+        'm_name' => 'Start Private URL',
+        'm_desc' => 'can be accessed with URL only and added as action plan intention',
+        'm_parents' => array(7355,7356,4737),
     ),
     6185 => array(
         'm_icon' => '<i class="fas fa-check-square"></i>',
-        'm_name' => 'Published',
+        'm_name' => 'Published Verified',
         'm_desc' => 'live and ready to be shared with users',
         'm_parents' => array(7356,7355,4737),
     ),
     6184 => array(
-        'm_icon' => '<i class="fas fa-spinner fa-spin"></i>',
-        'm_name' => 'Drafting',
-        'm_desc' => 'being mined, to be published soon',
-        'm_parents' => array(7356,4737),
+        'm_icon' => '<i class="far fa-check-square"></i>',
+        'm_name' => 'Published Draft',
+        'm_desc' => 'newly added by miner but not yet checked by moderator',
+        'm_parents' => array(7355,7356,4737),
     ),
     6183 => array(
-        'm_icon' => '<i class="fal fa-square"></i>',
+        'm_icon' => '<i class="far fa-square"></i>',
         'm_name' => 'New',
         'm_desc' => 'newly added, pending review',
         'm_parents' => array(7356,4737),
     ),
     6182 => array(
-        'm_icon' => '<i class="fal fa-minus-square"></i>',
+        'm_icon' => '<i class="far fa-minus-square"></i>',
         'm_name' => 'Deleted',
         'm_desc' => 'archived',
         'm_parents' => array(4737),
@@ -2080,7 +2104,7 @@ $config['en_all_4426'] = array(
 );
 
 //Private Links:
-$config['en_ids_4755'] = array(3286,3288,4235,4242,4246,4263,4266,4267,4268,4275,4278,4279,4282,4283,4287,4299,4460,4547,4548,4549,4550,4551,4552,4553,4554,4555,4556,4557,4559,4570,4577,4783,5967,6132,6140,6143,6144,6149,6154,6155,6157,6224,6415,6556,6559,6560,6563,6578,6969,6997,7484,7485,7486,7487,7488,7489,7492,7495,7504,7505,7506,7508,7509,7511,7562,7563);
+$config['en_ids_4755'] = array(3286,3288,4235,4242,4246,4263,4266,4267,4268,4275,4278,4279,4282,4283,4287,4299,4460,4547,4548,4549,4550,4551,4552,4553,4554,4555,4556,4557,4559,4570,4577,4783,5967,6132,6140,6143,6144,6149,6154,6155,6157,6224,6415,6556,6559,6560,6563,6578,6969,6997,7484,7485,7486,7487,7488,7489,7492,7495,7504,7505,7506,7508,7509,7511,7558,7559,7560,7561,7562,7563,7564,7577,7578);
 $config['en_all_4755'] = array(
     3286 => array(
         'm_icon' => '<i class="far fa-key"></i>',
@@ -2466,6 +2490,30 @@ $config['en_all_4755'] = array(
         'm_desc' => '',
         'm_parents' => array(4755,4595,4593,7483,7347),
     ),
+    7558 => array(
+        'm_icon' => '<i class="fab fa-facebook-messenger"></i>',
+        'm_name' => 'User Signin Chose Messenger',
+        'm_desc' => '',
+        'm_parents' => array(4755,4269,4595,4593),
+    ),
+    7559 => array(
+        'm_icon' => '<i class="fab fa-chrome"></i>',
+        'm_name' => 'User Signin Chose Website',
+        'm_desc' => '',
+        'm_parents' => array(4755,4269,4595,4593),
+    ),
+    7560 => array(
+        'm_icon' => '<i class="fas fa-sign-in"></i>',
+        'm_name' => 'User Signin Intent Choose Channel',
+        'm_desc' => '',
+        'm_parents' => array(4755,4269,4595,4593),
+    ),
+    7561 => array(
+        'm_icon' => '<i class="fas fa-sign-in"></i>',
+        'm_name' => 'User Signin Website Attempt',
+        'm_desc' => '',
+        'm_parents' => array(4755,4269,4595,4593),
+    ),
     7562 => array(
         'm_icon' => '<i class="fas fa-user-plus"></i>',
         'm_name' => 'User Signin Registration Email',
@@ -2474,14 +2522,32 @@ $config['en_all_4755'] = array(
     ),
     7563 => array(
         'm_icon' => '<i class="fas fa-user-lock"></i>',
-        'm_name' => 'User Signin Forgot Password Email',
+        'm_name' => 'User Signin Password Reset Email',
         'm_desc' => '',
         'm_parents' => array(4755,7569,4269,4595,4593),
+    ),
+    7564 => array(
+        'm_icon' => '<i class="fas fa-sign-in"></i>',
+        'm_name' => 'User Signin Website Success',
+        'm_desc' => '',
+        'm_parents' => array(4755,4269,4595,4593),
+    ),
+    7577 => array(
+        'm_icon' => '<i class="fas fa-user-plus"></i>',
+        'm_name' => 'User Signin Registration Complete',
+        'm_desc' => '',
+        'm_parents' => array(4595,4755,4593,4269),
+    ),
+    7578 => array(
+        'm_icon' => '<i class="fas fa-user-lock"></i>',
+        'm_name' => 'User Signin Password Reset Complete',
+        'm_desc' => '',
+        'm_parents' => array(4595,4755,4593,4269),
     ),
 );
 
 //Link Credits:
-$config['en_ids_4595'] = array(4228,4229,4230,4231,4235,4242,4246,4250,4251,4255,4256,4257,4258,4259,4260,4261,4263,4264,4266,4267,4268,4275,4278,4279,4282,4283,4287,4299,4318,4319,4460,4547,4548,4549,4550,4551,4552,4553,4554,4555,4556,4557,4559,4570,4577,4601,4983,4993,4994,4998,4999,5000,5001,5003,5007,5865,5943,5967,5981,5982,6093,6132,6140,6143,6144,6149,6154,6155,6157,6224,6226,6242,6415,6556,6559,6560,6563,6578,6969,6997,7484,7485,7486,7487,7488,7489,7492,7495,7504,7505,7506,7508,7509,7511,7545,7558,7559,7560,7561,7562,7563,7564);
+$config['en_ids_4595'] = array(4228,4229,4230,4231,4235,4242,4246,4250,4251,4255,4256,4257,4258,4259,4260,4261,4263,4264,4266,4267,4268,4275,4278,4279,4282,4283,4287,4299,4318,4319,4460,4547,4548,4549,4550,4551,4552,4553,4554,4555,4556,4557,4559,4570,4577,4601,4983,4993,4994,4998,4999,5000,5001,5003,5007,5865,5943,5967,5981,5982,6093,6132,6140,6143,6144,6149,6154,6155,6157,6224,6226,6242,6415,6556,6559,6560,6563,6578,6969,6997,7484,7485,7486,7487,7488,7489,7492,7495,7504,7505,7506,7508,7509,7511,7545,7558,7559,7560,7561,7562,7563,7564,7577,7578);
 $config['en_all_4595'] = array(
     4228 => array(
         'm_icon' => '<i class="fas fa-walking"></i>',
@@ -3057,25 +3123,25 @@ $config['en_all_4595'] = array(
         'm_icon' => '<i class="fab fa-facebook-messenger"></i>',
         'm_name' => 'User Signin Chose Messenger',
         'm_desc' => '1',
-        'm_parents' => array(4269,4595,4593),
+        'm_parents' => array(4755,4269,4595,4593),
     ),
     7559 => array(
         'm_icon' => '<i class="fab fa-chrome"></i>',
         'm_name' => 'User Signin Chose Website',
         'm_desc' => '1',
-        'm_parents' => array(4269,4595,4593),
+        'm_parents' => array(4755,4269,4595,4593),
     ),
     7560 => array(
         'm_icon' => '<i class="fas fa-sign-in"></i>',
-        'm_name' => 'User Signin Intent / Choose Channel',
+        'm_name' => 'User Signin Intent Choose Channel',
         'm_desc' => '1',
-        'm_parents' => array(4269,4595,4593),
+        'm_parents' => array(4755,4269,4595,4593),
     ),
     7561 => array(
         'm_icon' => '<i class="fas fa-sign-in"></i>',
-        'm_name' => 'User Signin on Website',
+        'm_name' => 'User Signin Website Attempt',
         'm_desc' => '1',
-        'm_parents' => array(4269,4595,4593),
+        'm_parents' => array(4755,4269,4595,4593),
     ),
     7562 => array(
         'm_icon' => '<i class="fas fa-user-plus"></i>',
@@ -3085,15 +3151,27 @@ $config['en_all_4595'] = array(
     ),
     7563 => array(
         'm_icon' => '<i class="fas fa-user-lock"></i>',
-        'm_name' => 'User Signin Forgot Password Email',
+        'm_name' => 'User Signin Password Reset Email',
         'm_desc' => '1',
         'm_parents' => array(4755,7569,4269,4595,4593),
     ),
     7564 => array(
         'm_icon' => '<i class="fas fa-sign-in"></i>',
-        'm_name' => 'User Signin on Website Success',
+        'm_name' => 'User Signin Website Success',
         'm_desc' => '1',
-        'm_parents' => array(4269,4595,4593),
+        'm_parents' => array(4755,4269,4595,4593),
+    ),
+    7577 => array(
+        'm_icon' => '<i class="fas fa-user-plus"></i>',
+        'm_name' => 'User Signin Registration Complete',
+        'm_desc' => '1',
+        'm_parents' => array(4595,4755,4593,4269),
+    ),
+    7578 => array(
+        'm_icon' => '<i class="fas fa-user-lock"></i>',
+        'm_name' => 'User Signin Password Reset Complete',
+        'm_desc' => '1',
+        'm_parents' => array(4595,4755,4593,4269),
     ),
 );
 
@@ -3115,7 +3193,7 @@ $config['en_all_4600'] = array(
 );
 
 //Link Types:
-$config['en_ids_4593'] = array(4228,4229,4230,4231,4235,4242,4246,4250,4251,4255,4256,4257,4258,4259,4260,4261,4263,4264,4266,4267,4268,4275,4278,4279,4282,4283,4287,4299,4318,4319,4460,4547,4548,4549,4550,4551,4552,4553,4554,4555,4556,4557,4559,4570,4577,4601,4983,4993,4994,4998,4999,5000,5001,5003,5007,5865,5943,5967,5981,5982,6093,6132,6140,6143,6144,6149,6154,6155,6157,6224,6226,6242,6415,6556,6559,6560,6563,6578,6969,6997,7484,7485,7486,7487,7488,7489,7492,7495,7504,7505,7506,7508,7509,7511,7545,7558,7559,7560,7561,7562,7563,7564);
+$config['en_ids_4593'] = array(4228,4229,4230,4231,4235,4242,4246,4250,4251,4255,4256,4257,4258,4259,4260,4261,4263,4264,4266,4267,4268,4275,4278,4279,4282,4283,4287,4299,4318,4319,4460,4547,4548,4549,4550,4551,4552,4553,4554,4555,4556,4557,4559,4570,4577,4601,4983,4993,4994,4998,4999,5000,5001,5003,5007,5865,5943,5967,5981,5982,6093,6132,6140,6143,6144,6149,6154,6155,6157,6224,6226,6242,6415,6556,6559,6560,6563,6578,6969,6997,7484,7485,7486,7487,7488,7489,7492,7495,7504,7505,7506,7508,7509,7511,7545,7558,7559,7560,7561,7562,7563,7564,7577,7578);
 $config['en_all_4593'] = array(
     4228 => array(
         'm_icon' => '<i class="fas fa-walking"></i>',
@@ -3691,25 +3769,25 @@ $config['en_all_4593'] = array(
         'm_icon' => '<i class="fab fa-facebook-messenger"></i>',
         'm_name' => 'User Signin Chose Messenger',
         'm_desc' => '',
-        'm_parents' => array(4269,4595,4593),
+        'm_parents' => array(4755,4269,4595,4593),
     ),
     7559 => array(
         'm_icon' => '<i class="fab fa-chrome"></i>',
         'm_name' => 'User Signin Chose Website',
         'm_desc' => '',
-        'm_parents' => array(4269,4595,4593),
+        'm_parents' => array(4755,4269,4595,4593),
     ),
     7560 => array(
         'm_icon' => '<i class="fas fa-sign-in"></i>',
-        'm_name' => 'User Signin Intent / Choose Channel',
+        'm_name' => 'User Signin Intent Choose Channel',
         'm_desc' => '',
-        'm_parents' => array(4269,4595,4593),
+        'm_parents' => array(4755,4269,4595,4593),
     ),
     7561 => array(
         'm_icon' => '<i class="fas fa-sign-in"></i>',
-        'm_name' => 'User Signin on Website',
+        'm_name' => 'User Signin Website Attempt',
         'm_desc' => '',
-        'm_parents' => array(4269,4595,4593),
+        'm_parents' => array(4755,4269,4595,4593),
     ),
     7562 => array(
         'm_icon' => '<i class="fas fa-user-plus"></i>',
@@ -3719,15 +3797,27 @@ $config['en_all_4593'] = array(
     ),
     7563 => array(
         'm_icon' => '<i class="fas fa-user-lock"></i>',
-        'm_name' => 'User Signin Forgot Password Email',
+        'm_name' => 'User Signin Password Reset Email',
         'm_desc' => '',
         'm_parents' => array(4755,7569,4269,4595,4593),
     ),
     7564 => array(
         'm_icon' => '<i class="fas fa-sign-in"></i>',
-        'm_name' => 'User Signin on Website Success',
+        'm_name' => 'User Signin Website Success',
         'm_desc' => '',
-        'm_parents' => array(4269,4595,4593),
+        'm_parents' => array(4755,4269,4595,4593),
+    ),
+    7577 => array(
+        'm_icon' => '<i class="fas fa-user-plus"></i>',
+        'm_name' => 'User Signin Registration Complete',
+        'm_desc' => '',
+        'm_parents' => array(4595,4755,4593,4269),
+    ),
+    7578 => array(
+        'm_icon' => '<i class="fas fa-user-lock"></i>',
+        'm_name' => 'User Signin Password Reset Complete',
+        'm_desc' => '',
+        'm_parents' => array(4595,4755,4593,4269),
     ),
 );
 

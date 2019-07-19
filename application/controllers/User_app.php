@@ -218,7 +218,6 @@ class User_app extends CI_Controller
         //Load session and redirect:
         $this->session->set_userdata($session_data);
 
-
         if (isset($_POST['url']) && strlen($_POST['url']) > 0) {
             header('Location: ' . $_POST['url']);
         } else {
