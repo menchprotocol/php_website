@@ -2303,7 +2303,7 @@ class Communication_model extends CI_Model
 
 
 
-    function dispatch_email($to_array, $subject, $html_message)
+    function user_received_emails($to_array, $subject, $html_message)
     {
 
         /*

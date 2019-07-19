@@ -211,7 +211,7 @@ class User_app extends CI_Controller
         $this->Links_model->ln_create(array(
             'ln_miner_entity_id' => $ens[0]['en_id'],
             'ln_metadata' => $ens[0],
-            'ln_type_entity_id' => 4269, //User Login
+            'ln_type_entity_id' => 7564, //User Signin on Website Success
         ));
 
         //All good to go!
@@ -405,7 +405,7 @@ class User_app extends CI_Controller
                 $html_message .= '<div><a href="https://mench.com?utm_source=mench&utm_medium=email&utm_campaign=resetpass" target="_blank">mench.com</a></div>';
 
                 //Send email:
-                $this->Communication_model->dispatch_email(array($_POST['input_email']), $subject, $html_message);
+                $this->Communication_model->user_received_emails(array($_POST['input_email']), $subject, $html_message);
             }
 
             return echo_json(array(
@@ -446,7 +446,7 @@ class User_app extends CI_Controller
             $html_message .= '<div><a href="https://mench.com?utm_source=mench&utm_medium=email&utm_campaign=signup" target="_blank">mench.com</a></div>';
 
             //Send email:
-            $this->Communication_model->dispatch_email(array($_POST['input_email']), $subject, $html_message);
+            $this->Communication_model->user_received_emails(array($_POST['input_email']), $subject, $html_message);
 
 
             return echo_json(array(
