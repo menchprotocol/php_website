@@ -11,7 +11,7 @@ defined('BASEPATH') OR exit('No direct script access allowed');
  *
  */
 
-//Generated 2019-07-21 09:48:17 PST
+//Generated 2019-07-21 10:14:34 PST
 
 //Intent Select Publicly:
 $config['en_ids_7588'] = array(6684,7231);
@@ -106,7 +106,7 @@ $config['en_all_7585'] = array(
     ),
     6682 => array(
         'm_icon' => '<i class="far fa-link"></i>',
-        'm_name' => 'Website',
+        'm_name' => 'URL',
         'm_desc' => 'User will complete by sending a URL message',
         'm_parents' => array(7585,6144,6794,6192),
     ),
@@ -1257,7 +1257,7 @@ $config['en_all_6794'] = array(
     ),
     6682 => array(
         'm_icon' => '<i class="far fa-link"></i>',
-        'm_name' => 'Intent Website',
+        'm_name' => 'Intent URL',
         'm_desc' => '',
         'm_parents' => array(7585,6144,6794,6192),
     ),
