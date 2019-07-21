@@ -1087,7 +1087,6 @@ class User_app_model extends CI_Model
 
         //Define step variables:
         $has_children = (count($in__children) > 0);
-        $in_is_or = in_is_or($ins[0]['in_type_entity_id']);
         $unlock_paths = array();
 
 
@@ -1120,26 +1119,21 @@ class User_app_model extends CI_Model
             }
 
 
-        } elseif(!$in_is_or && $completion_req_note){
+        } elseif($completion_req_note){
 
             $progression_type_entity_id = 6144; //User Step Requirement Sent
 
-        } elseif($in_is_or && $has_children){
+        } elseif($has_children && $ins[0]['in_type_entity_id']==6684 /* OR Intent Single Answer */){
 
-            //Depends on OR type:
-            if($ins[0]['in_type_entity_id']==6684 /* OR Intent Single Answer */){
+            $progression_type_entity_id = 6157; //User Step Answered
 
-                $progression_type_entity_id = 6157; //User Step Answered
+        } elseif($has_children && $ins[0]['in_type_entity_id']==6685 /* OR Intent Timed Answer */){
 
-            } elseif($ins[0]['in_type_entity_id']==6685 /* OR Intent Timed Answer */){
+            $progression_type_entity_id = 7487; //User Step Answered Timely
 
-                $progression_type_entity_id = 7487; //User Step Answered Timely
+        } elseif($has_children && $ins[0]['in_type_entity_id']==7231 /* OR Intent Multiple Answers */){
 
-            } elseif($ins[0]['in_type_entity_id']==7231 /* OR Intent Multiple Answers */){
-
-                $progression_type_entity_id = 7489; //User Step Selected
-
-            }
+            $progression_type_entity_id = 7489; //User Step Selected
 
         } else {
 
@@ -1324,7 +1318,7 @@ class User_app_model extends CI_Model
             //They still need to complete:
             $next_step_message .= $completion_req_note;
 
-        } elseif($in_is_or && $has_children /* Otherwise who cares */){
+        } elseif($has_children && in_array($ins[0]['in_type_entity_id'] , $this->config->item('en_ids_6193') /* OR Intents */ )){
 
 
             //Prep variables:
@@ -1462,12 +1456,13 @@ class User_app_model extends CI_Model
             } else {
                 if($too_many_children) {
                     //Give instructions on how to select path:
-                    $next_step_message .= "\n\n" . 'I recommend you to skip';
+                    //$next_step_message .= "\n\n" . 'Choose your answers by replying a number 1-12';
                 }
             }
 
-        } elseif($has_children && !$in_is_or /* AND Children */){
+        } elseif($has_children){
 
+            //AND Children
             $max_and_list = 5;
             $has_multiple_children = (count($in__children) > 1); //Do we have 2 or more children?
 

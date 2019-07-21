@@ -592,7 +592,7 @@ class Intents_model extends CI_Model
 
         //Set variables:
         $is_first_intent = ( !isset($focus_in['ln_id']) ); //First intent does not have a link, just the intent
-        $has_or_parent = in_is_or($focus_in['in_type_entity_id']);
+        $has_or_parent = in_array($focus_in['in_type_entity_id'] , $this->config->item('en_ids_6193') /* OR Intents */ );
         $or_children = array(); //To be populated only if $focus_in is an OR intent
         $conditional_steps = array(); //To be populated only for Conditional Steps
         $metadata_this = array(

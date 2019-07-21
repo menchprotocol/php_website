@@ -518,7 +518,7 @@ if(!$action) {
             }
 
             $all_children++;
-            echo '<li>'.echo_en_cache('en_all_6186' /* Link Statuses */, $child_or['ln_status_entity_id']).' '.echo_en_cache('en_all_4737' /* Intent Statuses */, $child_or['in_status_entity_id']).' '.echo_en_cache(( in_is_or($child_or['in_type_entity_id']) ? 'en_all_6193' /* OR Intents */ : 'en_all_6192' /* AND Intents */ ), $child_or['in_type_entity_id']).' <a href="https://mench.com/intents/'.$child_or['in_id'].'" '.( $qualified_update ? '' : 'style="color:#FF0000;"' ).'>'.echo_in_outcome($child_or['in_outcome']).'</a>'.( count($user_steps) > 0 ? ' / Steps: '.count($user_steps) : '' ).'</li>';
+            echo '<li>'.echo_en_cache('en_all_6186' /* Link Statuses */, $child_or['ln_status_entity_id']).' '.echo_en_cache('en_all_4737' /* Intent Statuses */, $child_or['in_status_entity_id']).' '.echo_en_cache('en_all_7585', $child_or['in_type_entity_id']).' <a href="https://mench.com/intents/'.$child_or['in_id'].'" '.( $qualified_update ? '' : 'style="color:#FF0000;"' ).'>'.echo_in_outcome($child_or['in_outcome']).'</a>'.( count($user_steps) > 0 ? ' / Steps: '.count($user_steps) : '' ).'</li>';
         }
         echo '</ul>';
         echo '<hr />';

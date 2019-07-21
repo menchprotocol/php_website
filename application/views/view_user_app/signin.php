@@ -96,7 +96,6 @@ if(count($current_sign_in_attempt) == 0){
             <p style="padding-bottom:20px;">How would you like to connect to your Mench personal assistant?</p>
             <div class="form-group label-floating is-empty">
                 <?php
-                //Either 6192 AND or 6193 OR:
                 foreach ($this->config->item('en_all_7555') as $en_id => $m) {
                     echo '<span class="radio" style="margin-right: 7px; margin-top: 0 !important;">
                         <label style="display: block; line-height: 120%; font-size: 1.3em; font-weight: 300;">

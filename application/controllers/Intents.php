@@ -199,14 +199,14 @@ class Intents extends CI_Controller
 
 
         //Load AND/OR Intents:
-        $en_all_6676 = $this->config->item('en_all_6676');
+        $en_all_7585 = $this->config->item('en_all_7585'); // Intent Types
         $en_all_4737 = $this->config->item('en_all_4737'); // Intent Statuses
 
 
         //Return report:
         return echo_json(array(
             'status' => 1,
-            'message' => '<h3>'.$en_all_6676[in_is_or($ins[0]['in_type_entity_id'], true)]['m_icon'].' '.$en_all_4737[$ins[0]['in_status_entity_id']]['m_icon'].' '.echo_in_outcome($ins[0]['in_outcome'], false, false, true).'</h3>'.echo_in_answer_scores($_POST['starting_in'], $_POST['depth_levels'], $_POST['depth_levels'], $ins[0]['in_type_entity_id']),
+            'message' => '<h3>'.$en_all_7585[$ins[0]['in_type_entity_id']]['m_icon'].' '.$en_all_4737[$ins[0]['in_status_entity_id']]['m_icon'].' '.echo_in_outcome($ins[0]['in_outcome'], false, false, true).'</h3>'.echo_in_answer_scores($_POST['starting_in'], $_POST['depth_levels'], $_POST['depth_levels'], $ins[0]['in_type_entity_id']),
         ));
 
     }
@@ -587,7 +587,7 @@ class Intents extends CI_Controller
                 'status' => 0,
                 'message' => 'Missing completion marks',
             ));
-        } elseif (!isset($_POST['in_6676_type']) || !isset($_POST['in_6192_type']) || !isset($_POST['in_6193_type']) || !isset($_POST['in_'.$_POST['in_6676_type'].'_type']) || intval($_POST['in_'.$_POST['in_6676_type'].'_type']) < 1 || !in_array($_POST['in_'.$_POST['in_6676_type'].'_type'], array_merge($this->config->item('en_ids_6192'), $this->config->item('en_ids_6193')))) {
+        } elseif (!isset($_POST['in_type_entity_id'])) {
             return echo_json(array(
                 'status' => 0,
                 'message' => 'Invalid intent type',
@@ -650,17 +650,16 @@ class Intents extends CI_Controller
 
         //Transform intent type into standard DB field:
         $in_current = $ins[0];
-        $_POST['in_type_entity_id'] = $_POST['in_'.$_POST['in_6676_type'].'_type'];
+
 
         //Prep new variables:
         $in_update = array(
+            'in_type_entity_id' => $_POST['in_type_entity_id'],
             'in_status_entity_id' => $_POST['in_status_entity_id'],
             'in_outcome' => trim($_POST['in_outcome']),
             'in_completion_seconds' => intval($_POST['in_completion_seconds']),
-            'in_verb_entity_id' => $in_current['in_verb_entity_id'], //We assume no change, and will update if we detected change...
-            'in_type_entity_id' => $_POST['in_type_entity_id'], //Also used when updating the field
+            'in_verb_entity_id' => $in_current['in_verb_entity_id'], //We assume no change, and will update if we detected change in outcome...
         );
-
 
 
         //Prep current intent metadata:

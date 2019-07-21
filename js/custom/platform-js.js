@@ -177,13 +177,6 @@ function add_to_list(sort_list_id, sort_handler, html_content) {
     }
 }
 
-
-function js_in_is_or(in_type_entity_id, return_id){
-    //The equivalent of the PHP function in_is_or()
-    var in_is_or = !(js_en_ids_6193.indexOf(parseInt(in_type_entity_id)) === -1);
-    return ( return_id ? ( in_is_or ? 6193 /* OR */ : 6192 /* AND */ ) : ( in_is_or ? 1 : 0 ) );
-}
-
 jQuery.fn.extend({
     insertAtCaret: function (myValue) {
         return this.each(function (i) {

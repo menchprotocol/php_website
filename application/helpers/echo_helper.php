@@ -1375,8 +1375,8 @@ function echo_en_messages($ln){
 
 
     //Referenced Intent:
-    $en_all_6676 = $CI->config->item('en_all_6676');
-    $ui .= '<li><a class="btn btn-primary button-max" style="border:2px solid #ffe027 !important;" href="/intents/' . $ln['ln_child_intent_id'] . '" target="_parent" title="Message Intent: '.$ln['in_outcome'].'" data-toggle="tooltip" data-placement="top">'.$en_all_4737[$ln['in_status_entity_id']]['m_icon'].'&nbsp; '.$en_all_6676[in_is_or($ln['in_type_entity_id'], true)]['m_icon'].' '.$ln['in_outcome'].'</a></li>';
+    $en_all_7585 = $CI->config->item('en_all_7585'); // Intent Types
+    $ui .= '<li><a class="btn btn-primary button-max" style="border:2px solid #ffe027 !important;" href="/intents/' . $ln['ln_child_intent_id'] . '" target="_parent" title="Message Intent: '.$ln['in_outcome'].'" data-toggle="tooltip" data-placement="top">'.$en_all_4737[$ln['in_status_entity_id']]['m_icon'].'&nbsp; '.$en_all_7585[$ln['in_type_entity_id']]['m_icon'].' '.$ln['in_outcome'].'</a></li>';
 
     //Links:
     $count_msg_trs = $CI->Links_model->ln_fetch(array(
@@ -1604,6 +1604,7 @@ function echo_in_answer_scores($starting_in, $depth_levels, $original_depth_leve
     $en_all_6186 = $CI->config->item('en_all_6186'); //Link Statuses
     $en_all_4486 = $CI->config->item('en_all_4486');
     $en_all_4737 = $CI->config->item('en_all_4737'); // Intent Statuses
+    $en_all_7585 = $CI->config->item('en_all_7585'); // Intent Types
 
     $ui = null;
     foreach($CI->Links_model->ln_fetch(array(
@@ -1627,14 +1628,11 @@ function echo_in_answer_scores($starting_in, $depth_levels, $original_depth_leve
         $ui .= '<span class="icon-block" data-toggle="tooltip" data-placement="top" title="Intent Link Type: '.$en_all_4486[$in_ln['ln_type_entity_id']]['m_name'].'">'. $en_all_4486[$in_ln['ln_type_entity_id']]['m_icon'] . '</span>';
         $ui .= '<span class="icon-block" data-toggle="tooltip" data-placement="top" title="Intent Link Status: '.$en_all_6186[$in_ln['ln_status_entity_id']]['m_name'].'">'. $en_all_6186[$in_ln['ln_status_entity_id']]['m_icon'] . '</span>';
 
-        $en_all_6676 = $CI->config->item('en_all_6676');
-        $in_parent_type_id = in_is_or($in_ln['in_type_entity_id'], true);
-
-        $ui .= '<span class="icon-block" data-toggle="tooltip" data-placement="top" title="Intent Type: '.$en_all_6676[$in_parent_type_id]['m_name'].'">'. $en_all_6676[$in_parent_type_id]['m_icon'] . '</span>';
+        $ui .= '<span class="icon-block" data-toggle="tooltip" data-placement="top" title="Intent Type: '.$en_all_7585[$in_ln['in_type_entity_id']]['m_name'].'">'. $en_all_7585[$in_ln['in_type_entity_id']]['m_icon'] . '</span>';
         $ui .= '<span class="icon-block" data-toggle="tooltip" data-placement="top" title="Intent Status: '.$en_all_4737[$in_ln['in_status_entity_id']]['m_name'].'">'. $en_all_4737[$in_ln['in_status_entity_id']]['m_icon']. '</span>';
         $ui .= '<a href="/miner_app/admin_tools/assessment_marks_birds_eye?starting_in='.$in_ln['in_id'].'&depth_levels='.$original_depth_levels.'" data-toggle="tooltip" data-placement="top" title="Navigate report to this intent"><u>' .   echo_in_outcome($in_ln['in_outcome'], false, false, true) . '</u></a>';
 
-        $ui .= ' [<span data-toggle="tooltip" data-placement="top" title="Completion Marks">'.( ($in_ln['ln_type_entity_id'] == 4228 && in_is_or($parent_in_type_entity_id)) || ($in_ln['ln_type_entity_id'] == 4229) ? echo_in_assessment_mark($in_ln) : '' ).'</span>]';
+        $ui .= ' [<span data-toggle="tooltip" data-placement="top" title="Completion Marks">'.( ($in_ln['ln_type_entity_id'] == 4228 && in_array($parent_in_type_entity_id , $CI->config->item('en_ids_6193') /* OR Intents */ )) || ($in_ln['ln_type_entity_id'] == 4229) ? echo_in_assessment_mark($in_ln) : '' ).'</span>]';
 
         if(count($messages) > 0){
             $ui .= ' <a href="javascript:void(0);" onclick="$(\'.messages-'.$in_ln['in_id'].'\').toggleClass(\'hidden\');"><i class="fas fa-comment"></i><b>' .  count($messages) . '</b></a>';
@@ -1829,6 +1827,7 @@ function echo_in($in, $level, $in_linked_id = 0, $is_parent = false)
     $CI =& get_instance();
     $session_en = $CI->session->userdata('user');
     $en_all_4737 = $CI->config->item('en_all_4737'); // Intent Statuses
+    $en_all_7585 = $CI->config->item('en_all_7585'); // Intent Types
     $en_all_6186 = $CI->config->item('en_all_6186');
     $is_child_focused = ($level == 3 && $is_parent && $CI->uri->segment(2)==$in['in_id']);
     $in_filters = in_get_filters(); //If we have any intent filters applied
@@ -1899,22 +1898,15 @@ function echo_in($in, $level, $in_linked_id = 0, $is_parent = false)
 
 
 
-    //Always Show Intent Icon (AND or OR)
-    $ui .= '<span class="double-icon '.advance_mode().'" style="margin-right:5px;">';
+    //Always Show Intent Icon
+    $ui .= '<span class="double-icon" style="margin-right:5px;">';
 
-    //Load AND/OR Intents:
-    $en_all_6676 = $CI->config->item('en_all_6676');
-    $type_parent_id = in_is_or($in['in_type_entity_id'], true);
-    $in__type = $CI->config->item('en_all_'.$type_parent_id); //Loads either AND/OR Icons...
 
-    //Show larger intent icon (AND or OR):
-    $ui .= '<span class="icon-main in_parent_type_' . $in['in_id'] . '"><span data-toggle="tooltip" data-placement="right" title="'.$en_all_6676[$type_parent_id]['m_name'].' @'.$type_parent_id.': '.$en_all_6676[$type_parent_id]['m_desc'].'">' . $en_all_6676[$type_parent_id]['m_icon'] . '</span></span>';
+    //Show larger intent type icon:
+    $ui .= '<span class="icon-main in_parent_type_' . $in['in_id'] . '"><span data-toggle="tooltip" data-placement="right" title="'.$en_all_7585[$in['in_type_entity_id']]['m_name'].': '.$en_all_7585[$in['in_type_entity_id']]['m_desc'].'">' . $en_all_7585[$in['in_type_entity_id']]['m_icon'] . '</span></span>';
 
     //Show smaller intent status:
     $ui .= '<span class="icon-top-right in_status_entity_id_' . $in['in_id'] . '"><span data-toggle="tooltip" data-placement="right" title="'.$en_all_4737[$in['in_status_entity_id']]['m_name'].' @'.$in['in_status_entity_id'].': '.$en_all_4737[$in['in_status_entity_id']]['m_desc'].'">' . $en_all_4737[$in['in_status_entity_id']]['m_icon'] . '</span></span>';
-
-    //Show intent type icon:
-    $ui .= '<span class="icon-top-left in_type_entity_id_' . $in['in_id'] . '" data-toggle="tooltip" data-placement="right" title="'.$in__type[$in['in_type_entity_id']]['m_name'].' @'.$in['in_type_entity_id'].': '.$in__type[$in['in_type_entity_id']]['m_desc'].'">'.$in__type[$in['in_type_entity_id']]['m_icon'].'</span>';
 
 
     $ui .= '</span>';
@@ -1977,7 +1969,7 @@ function echo_in($in, $level, $in_linked_id = 0, $is_parent = false)
     //Loop through parents:
     $ui .= '<span class="' . advance_mode() . '">';
     foreach ($in['in__parents'] as $in_parent) {
-        $ui .= ' &nbsp;<a href="/intents/' . $in_parent['in_id'] . $in_filters['get_filter_url'] . '" data-toggle="tooltip" title="' . $in_parent['in_outcome'] . '" data-placement="bottom" class="in_icon_child_' . $in_parent['in_id'] . '">' . $en_all_6676[in_is_or($in_parent['in_type_entity_id'], true)]['m_icon'] . '</a>';
+        $ui .= ' &nbsp;<a href="/intents/' . $in_parent['in_id'] . $in_filters['get_filter_url'] . '" data-toggle="tooltip" title="' . $in_parent['in_outcome'] . '" data-placement="bottom" class="in_icon_child_' . $in_parent['in_id'] . '">' . $en_all_7585[$in_parent['in_type_entity_id']]['m_icon'] . '</a>';
     }
     $ui .= '</span>';
 
@@ -1986,10 +1978,6 @@ function echo_in($in, $level, $in_linked_id = 0, $is_parent = false)
     $ui .= '<span style="display: inline-block; float: right;">'; //Start of 5x Action Buttons
 
 
-
-    //Intent modify:
-    $in__metadata_max_seconds = (isset($in_metadata['in__metadata_max_seconds']) ? $in_metadata['in__metadata_max_seconds'] : 0);
-    $ui .= '<a class="badge badge-primary white-primary is_not_bg '.advance_mode().'" onclick="in_modify_load(' . $in['in_id'] . ',' . $ln_id . ')" style="margin:-2px -8px 0 5px; width:40px;" href="#loadmodify-' . $in['in_id'] . '-' . $ln_id . '" data-toggle="tooltip" title="Intent completion cost. Click to modify intent'.( $level>1 ? ' and link' : '' ).'" data-placement="bottom"><span class="btn-counter slim-time t_estimate_' . $in['in_id'] . advance_mode() . '" tree-max-seconds="' . $in__metadata_max_seconds . '" intent-seconds="' . $in['in_completion_seconds'] . '">'.( $in__metadata_max_seconds > 0 ? echo_time_hours($in__metadata_max_seconds , true) : 0 ).'</span><i class="fas fa-cog"></i></a> &nbsp;';
 
 
 
@@ -2012,6 +2000,7 @@ function echo_in($in, $level, $in_linked_id = 0, $is_parent = false)
     }
 
 
+
     //Intent Notes:
     $count_in_notes = $CI->Links_model->ln_fetch(array(
         'ln_status_entity_id IN (' . join(',', $CI->config->item('en_ids_7360')) . ')' => null, //Link Statuses Active
@@ -2030,6 +2019,11 @@ function echo_in($in, $level, $in_linked_id = 0, $is_parent = false)
 
     $ui .= '<a href="#intentnotes-' . $in['in_id'] . '" onclick="in_messages_iframe('.$in['in_id'].')" class="msg-badge-' . $in['in_id'] . ' badge badge-primary white-primary is_not_bg '.( $level==0 ? '' . advance_mode() . '' : '' ).'" style="width:40px; margin-right:2px; margin-left:5px;" data-toggle="tooltip" title="Intent Notes" data-placement="bottom"><span class="btn-counter"><span class="in-notes-messages-' . $in['in_id'] . '">' . $count_in_messages[0]['totals'] .'</span>' . ( $non_message_notes > 0 ? '<span class="extra-note-counts '.advance_mode().'">+<span class="in-notes-non-messages-">'.$non_message_notes.'</span></span>' : '' ) . '</span><i class="fas fa-comment-plus"></i></a>';
 
+
+
+    //Intent modify:
+    $in__metadata_max_seconds = (isset($in_metadata['in__metadata_max_seconds']) ? $in_metadata['in__metadata_max_seconds'] : 0);
+    $ui .= '<a class="badge badge-primary white-primary is_not_bg" onclick="in_modify_load(' . $in['in_id'] . ',' . $ln_id . ')" style="margin:-2px -8px 0 0; width:40px;" href="#loadmodify-' . $in['in_id'] . '-' . $ln_id . '" data-toggle="tooltip" title="Intent completion cost. Click to modify intent'.( $level>1 ? ' and link' : '' ).'" data-placement="bottom"><span class="btn-counter slim-time t_estimate_' . $in['in_id'] . advance_mode() . '" tree-max-seconds="' . $in__metadata_max_seconds . '" intent-seconds="' . $in['in_completion_seconds'] . '">'.( $in__metadata_max_seconds > 0 ? echo_time_hours($in__metadata_max_seconds , true) : 0 ).'</span><i class="fas fa-cog"></i></a> &nbsp;';
 
 
     //Intent Links:

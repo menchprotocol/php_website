@@ -39,11 +39,10 @@
     echo ' var js_en_all_6177 = ' . json_encode($this->config->item('en_all_6177')) . '; '; // Entity Statuses
     echo ' var js_en_all_6186 = ' . json_encode($this->config->item('en_all_6186')) . '; '; // Link Statuses
 
-
+    //Input Limitations:
     echo ' var in_outcome_max = ' . $this->config->item('in_outcome_max') . '; ';
     echo ' var messages_max_length = ' . $this->config->item('messages_max_length') . '; ';
     echo ' var en_name_max_length = ' . $this->config->item('en_name_max_length') . '; ';
-    echo ' var js_en_ids_6193 = ' . json_encode($this->config->item('en_ids_6193')) . '; '; //Defines OR intents
     ?>
 </script>
 <!-- END GLOBAL STATIC RESOURCES -->

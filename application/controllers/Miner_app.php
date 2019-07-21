@@ -119,61 +119,33 @@ class Miner_app extends CI_Controller
         echo '<table class="table table-condensed table-striped stats-table mini-stats-table ">';
 
         echo '<tr class="panel-title down-border">';
-        echo '<td style="text-align: left;">'.$en_all_7302[6676]['m_name'].'</td>';
+        echo '<td style="text-align: left;">'.$en_all_7302[7585]['m_name'].'</td>';
         echo '<td style="text-align: right;">Intents</td>';
         echo '</tr>';
 
-        $types_ui = '';
-        foreach ($this->config->item('en_all_6676') as $type_en_id => $type) {
+        foreach ($this->config->item('en_all_7585') as $type_en_id => $in_type) {
 
-            //Count totals:
-            $all_intent_types = 0;
-            $sub_types_ui = '';
-
-
-            //Now list all Children:
-            foreach ($this->config->item('en_all_'.$type_en_id) as $sub_type_en_id => $sub_type) {
-
-                //Count this sub-type from the database:
-                $in_count = $this->Intents_model->in_fetch(array(
-                    'in_type_entity_id' => $sub_type_en_id,
-                    'in_status_entity_id IN (' . join(',', $this->config->item('en_ids_7356')) . ')' => null, //Intent Statuses Active
-                ), array(), 0, 0, array(), 'COUNT(in_id) as total_active_intents');
-
-                $all_intent_types += $in_count[0]['total_active_intents'];
-
-                //Echo this as the main title:
-                $sub_types_ui .= '<tr class="' . advance_mode() . '">';
-                $sub_types_ui .= '<td style="text-align: left;"><span class="icon-block"></span><span class="icon-block">'.$sub_type['m_icon'].'</span><a href="/entities/'.$sub_type_en_id.'">'.$sub_type['m_name'].'</a></td>';
-                $sub_types_ui .= '<td style="text-align: right;"><a href="/links?ln_type_entity_id=4250&in_status_entity_id=' . join(',', $this->config->item('en_ids_7356')) . '&in_type_entity_id='.$sub_type_en_id.'">'.echo_number($in_count[0]['total_active_intents']).'</a><i class="fal fa-info-circle icon-block" data-toggle="tooltip" title="'.number_format($in_count[0]['total_active_intents'],0).' '.$sub_type['m_desc'].'" data-placement="top"></i><span class="icon-block"></span></td>';
-                $sub_types_ui .= '</tr>';
-            }
-
-            //Make sure we have an even number of child cells to keep colors in check:
-            if($type_en_id==6192 && fmod(count($this->config->item('en_all_'.$type_en_id)), 2)==1){
-                //Add blank row:
-                $sub_types_ui .= '<tr class="' . advance_mode() . '"><td colspan="2">&nbsp;</td></tr>';
-            }
-
+            //Count this sub-type from the database:
+            $in_count = $this->Intents_model->in_fetch(array(
+                'in_type_entity_id' => $type_en_id,
+                'in_status_entity_id IN (' . join(',', $this->config->item('en_ids_7356')) . ')' => null, //Intent Statuses Active
+            ), array(), 0, 0, array(), 'COUNT(in_id) as total_active_intents');
 
             //Echo this as the main title:
-            $types_ui .= '<tr>';
-            $types_ui .= '<td style="text-align: left;"><span style="width:29px; display: inline-block; text-align: center;">'.$type['m_icon'].'</span><a href="/entities/'.$type_en_id.'">'.$type['m_name'].'</a></td>';
-            $types_ui .= '<td style="text-align: right;"><a href="/links?ln_type_entity_id=4250&in_status_entity_id=' . join(',', $this->config->item('en_ids_7356')) . '&in_type_entity_id='.join(',',$this->config->item('en_ids_'.$type_en_id)).'">'.echo_number($all_intent_types).'</a><i class="fal fa-info-circle icon-block" data-toggle="tooltip" title="'.number_format($all_intent_types,0).' '.$type['m_desc'].'" data-placement="top"></i></td>';
-            $types_ui .= '</tr>';
+            echo '<tr>';
+            echo '<td style="text-align: left;"><span class="icon-block">'.$in_type['m_icon'].'</span><a href="/entities/'.$type_en_id.'">'.$in_type['m_name'].'</a></td>';
+            echo '<td style="text-align: right;"><a href="/links?ln_type_entity_id=4250&in_status_entity_id=' . join(',', $this->config->item('en_ids_7356')) . '&in_type_entity_id='.$type_en_id.'">'.echo_number($in_count[0]['total_active_intents']).'</a><i class="fal fa-info-circle icon-block" data-toggle="tooltip" title="'.number_format($in_count[0]['total_active_intents'],0).' '.$in_type['m_desc'].'" data-placement="top"></i></td>';
+            echo '</tr>';
 
-            //Add sub-types:
-            $types_ui .= $sub_types_ui;
         }
 
-        echo $types_ui;
         echo '</table>';
 
 
 
 
         //Intent Verbs:
-        $show_max_verbs = 13;
+        $show_max_verbs = 5;
 
         //Fetch all needed data:
         $in_verbs = $this->Intents_model->in_fetch(array(

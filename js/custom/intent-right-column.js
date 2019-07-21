@@ -66,10 +66,6 @@ $(document).ready(function () {
     });
 
 
-    //Lookout for intent type changes
-    $('input[type=radio][name=in_6676_type]').change(function () {
-        in_load_type(this.value);
-    });
 
 
     //Do we need to auto load anything?
@@ -110,11 +106,6 @@ function echo_js_hours(in_completion_seconds) {
     }
 }
 
-
-function in_load_type(in_6676_type) {
-    $('.show-all-types').addClass('hidden');
-    $('.show-for-'+in_6676_type).removeClass('hidden');
-}
 
 function in_adjust_link_ui() {
 
@@ -377,11 +368,7 @@ function in_modify_load(in_id, ln_id) {
             in_outcome_counter();
             in_adjust_link_ui();
 
-            var in_6676_type = js_in_is_or(data.in.in_type_entity_id, true);
-            $('#in_'+in_6676_type+'_type').val(data.in.in_type_entity_id); //Set drop down to intent sub-type
-            $('input[type=radio][name=in_6676_type]').prop('checked', false);
-            $('#parent__type_'+in_6676_type).prop('checked', true);
-            in_load_type(in_6676_type);
+            $('#in_type_entity_id').val(data.in.in_type_entity_id); //Set intent type
 
             //Update intent outcome and set focus:
             $('#in_outcome').val(data.in.in_outcome).focus();
@@ -390,8 +377,7 @@ function in_modify_load(in_id, ln_id) {
             $('[data-toggle="tooltip"]').tooltip();
 
 
-
-            var in_is_system_locked = ( in_system_lock.indexOf(parseInt(data.in.in_id)) !== -1);
+            var in_is_system_locked = ( in_system_lock.indexOf(parseInt(data.in.in_id)) !== -1 );
 
             //Status locked intent?
             if(in_is_system_locked){
@@ -403,13 +389,7 @@ function in_modify_load(in_id, ln_id) {
             }
 
             //See if we need to lock the intent type editor:
-            if(data.in_action_plan_count > 0 || in_is_system_locked){
-                //Yes, we should lock it:
-                $('input[type=radio][name=in_6676_type], input[type=radio][name=ln_type_entity_id], #in_6192_type, #in_6193_type').attr('disabled', true);
-            } else {
-                //No Progression made, so we can keep it unlocked:
-                $('input[type=radio][name=in_6676_type], input[type=radio][name=ln_type_entity_id], #in_6192_type, #in_6193_type').attr('disabled', false);
-            }
+            $('#in_type_entity_id').attr('disabled', (data.in_action_plan_count > 0 || in_is_system_locked));
 
             //We might need to scroll if mobile:
             if (is_compact) {
@@ -443,14 +423,10 @@ function in_modify_save() {
         level: parseInt($('#modifybox').attr('level')),
         in_outcome: $('#in_outcome').val(),
         in_status_entity_id: parseInt($('#in_status_entity_id').val()),
+        in_type_entity_id: parseInt($('#in_type_entity_id').val()),
         in_completion_seconds: ( $('#in_completion_seconds').val().length > 0 ? parseInt($('#in_completion_seconds').val()) : 0 ),
         apply_recursively: (document.getElementById('apply_recursively').checked ? 1 : 0),
         is_parent: ( $('.intent_line_' + in_id).hasClass('parent-intent') ? 1 : 0 ),
-
-        //Intent Types:
-        in_6676_type:parseInt($('input[name=in_6676_type]:checked').val()), //Main AND/OR Type
-        in_6192_type:parseInt($('#in_6192_type').val()), //AND Types IF AND was selected
-        in_6193_type:parseInt($('#in_6193_type').val()), //OR Types IF OR was selected
 
         //Link variables:
         ln_id: parseInt($('#modifybox').attr('intent-tr-id')), //Will be zero for Level 1 intent!
@@ -547,9 +523,9 @@ function in_modify_save() {
                 //Did the Link update?
                 if (modify_data['ln_id'] > 0) {
 
-                    $('.ln_type_' + modify_data['ln_id']).html('<span data-toggle="tooltip" data-placement="right" title="'+ en_all_4486[modify_data['ln_type_entity_id']]["m_name"] + ': '+ en_all_4486[modify_data['ln_type_entity_id']]["m_desc"] + '">'+ en_all_4486[modify_data['ln_type_entity_id']]["m_icon"] +'</span>');
+                    $('.ln_type_' + modify_data['ln_id']).html('<span data-toggle="tooltip" data-placement="right" title="'+ en_all_4486[modify_data['ln_type_entity_id']]['m_name'] + ': '+ en_all_4486[modify_data['ln_type_entity_id']]['m_desc'] + '">'+ en_all_4486[modify_data['ln_type_entity_id']]['m_icon'] +'</span>');
 
-                    $('.ln_status_entity_id_' + modify_data['ln_id']).html('<span data-toggle="tooltip" data-placement="right" title="'+ js_en_all_6186[modify_data['ln_status_entity_id']]["m_name"] + ': '+ js_en_all_6186[modify_data['ln_status_entity_id']]["m_desc"] + '">'+ js_en_all_6186[modify_data['ln_status_entity_id']]["m_icon"] +'</span>');
+                    $('.ln_status_entity_id_' + modify_data['ln_id']).html('<span data-toggle="tooltip" data-placement="right" title="'+ js_en_all_6186[modify_data['ln_status_entity_id']]['m_name'] + ': '+ js_en_all_6186[modify_data['ln_status_entity_id']]['m_desc'] + '">'+ js_en_all_6186[modify_data['ln_status_entity_id']]['m_icon'] +'</span>');
 
                     //Update Assessment
                     $(".in_assessment_" + modify_data['ln_id']).html(( modify_data['ln_type_entity_id']==4228 ? ( modify_data['tr__assessment_points'] != 0 ? ( modify_data['tr__assessment_points'] > 0 ? '+' : '' ) + modify_data['tr__assessment_points'] : '' ) : modify_data['tr__conditional_score_min'] + ( modify_data['tr__conditional_score_min']==modify_data['tr__conditional_score_max'] ? '' : '-' + modify_data['tr__conditional_score_max'] ) + '%' ));
@@ -561,19 +537,13 @@ function in_modify_save() {
 
                 //Always update 3x Intent icons...
 
-                //AND/OR Icon which is the main type:
-                $('.in_parent_type_' + modify_data['in_id']).html('<span data-toggle="tooltip" data-placement="right" title="'+ en_all_6676[modify_data['in_6676_type']]["m_name"] + ': '+ en_all_6676[modify_data['in_6676_type']]["m_desc"] + '">'+ en_all_6676[modify_data['in_6676_type']]["m_icon"] +'</span>');
-
-                //Also update secondary intent icon:
-                var in__type = ( modify_data['in_6676_type']==6193 ? en_all_6193 : en_all_6192 ); //Not sure how to do variable in variable for Javascript, so here we are...
-                var in__slct = ( modify_data['in_6676_type']==6193 ? modify_data['in_6193_type'] : modify_data['in_6192_type'] );
-                $('.in_type_entity_id_' + modify_data['in_id']).html('<span data-toggle="tooltip" data-placement="right" title="'+ in__type[in__slct]["m_name"] + ': '+ in__type[in__slct]["m_desc"] + '">'+ in__type[in__slct]["m_icon"] +'</span>');
-
+                $('.in_parent_type_' + modify_data['in_id']).html('<span data-toggle="tooltip" data-placement="right" title="'+ en_all_7585[modify_data['in_type_entity_id']]['m_name'] + ': '+ en_all_7585[modify_data['in_type_entity_id']]['m_desc'] + '">'+ en_all_7585[modify_data['in_type_entity_id']]['m_icon'] +'</span>');
 
                 //Also update possible child icons:
-                $('.in_icon_child_' + modify_data['in_id']).html(en_all_6676[modify_data['in_6676_type']]["m_icon"]);
+                $('.in_icon_child_' + modify_data['in_id']).html(en_all_7585[modify_data['in_type_entity_id']]['m_icon']);
 
-                $('.in_status_entity_id_' + modify_data['in_id']).html('<span data-toggle="tooltip" data-placement="right" title="'+ js_en_all_4737[modify_data['in_status_entity_id']]["m_name"] + ': '+ js_en_all_4737[modify_data['in_status_entity_id']]["m_desc"] + '">'+ js_en_all_4737[modify_data['in_status_entity_id']]["m_icon"] +'</span>');
+
+                $('.in_status_entity_id_' + modify_data['in_id']).html('<span data-toggle="tooltip" data-placement="right" title="'+ js_en_all_4737[modify_data['in_status_entity_id']]['m_name'] + ': '+ js_en_all_4737[modify_data['in_status_entity_id']]['m_desc'] + '">'+ js_en_all_4737[modify_data['in_status_entity_id']]['m_icon'] +'</span>');
 
 
                 //Update UI to confirm with user:

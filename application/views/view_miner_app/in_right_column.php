@@ -3,9 +3,7 @@
     //Define some global variables:
     var in_system_lock = <?= json_encode($this->config->item('in_system_lock')) ?>;
     var en_all_4486 = <?= json_encode($this->config->item('en_all_4486')) ?>;
-    var en_all_6676 = <?= json_encode($this->config->item('en_all_6676')) ?>; //AND/OR Branch
-    var en_all_6192 = <?= json_encode($this->config->item('en_all_6192')) ?>; //AND Children
-    var en_all_6193 = <?= json_encode($this->config->item('en_all_6193')) ?>; //OR Children
+    var en_all_7585 = <?= json_encode($this->config->item('en_all_7585')) ?>; //Intent Types
 </script>
 <script src="/js/custom/intent-right-column.js?v=v<?= $this->config->item('app_version') ?>"
         type="text/javascript"></script>
@@ -39,7 +37,7 @@
                         <b data-toggle="tooltip" title="Intent locked because its hard-coded in the Mench code base" data-placement="right" class="underdot" style="font-size: 0.85em; color: #FF0000;"><i class="fas fa-lock"></i> SYSTEM LOCK</b>
                     </div>
 
-                    <span class="mini-header">Intent Status:</span>
+                    <span class="mini-header">Status:</span>
                     <select class="form-control border" id="in_status_entity_id" style="display: inline-block !important;">
                         <?php
                         foreach($this->config->item('en_all_4737') /* Intent Statuses */ as $en_id => $m){
@@ -65,6 +63,20 @@
 
 
 
+
+
+                    <span class="mini-header" style="margin-top: 20px;">Type:</span>
+                    <select class="form-control border" id="in_type_entity_id" style="margin-bottom: 12px;">
+                        <?php
+                        foreach ($this->config->item('en_all_7585') as $en_id => $m) {
+                            echo '<option value="' . $en_id . '">' . $m['m_name'] . '</option>';
+                        }
+                        ?>
+                    </select>
+
+
+
+
                     <span class="mini-header" style="margin-top: 20px;">Outcome: [<span
                             style="margin:0 0 10px 0;"><span
                                 id="charNameNum">0</span>/<?= $this->config->item('in_outcome_max') ?></span>][<a href="/entities/5008" data-toggle="tooltip" title="See (and manage) list of supporting verbs that intent outcomes can start with" data-placement="right" target="_blank"><b>Verbs</b></a>]</span>
@@ -74,42 +86,6 @@
 
 
 
-                    <span class="mini-header" style="margin-top: 20px;">Intent Type:</span>
-                    <div class="form-group label-floating is-empty" style="margin-bottom:-5px; padding-bottom: 0; display:block !important;">
-                        <?php
-                        //Either 6192 AND or 6193 OR:
-                        foreach ($this->config->item('en_all_6676') as $en_id => $m) {
-                            echo '<span class="radio" style="display:inline-block; margin-right: 7px; margin-top: 0 !important;">
-                                        <label style="display:inline-block;">
-                                            <input type="radio" name="in_6676_type" id="parent__type_'.$en_id.'" value="' . $en_id . '" />
-                                            ' . $m['m_icon'] . ' ' . $m['m_name'] . '
-                                        </label>
-                                    </span>';
-                        }
-                        ?>
-                    </div>
-
-                    <!-- AND Intents -->
-                    <div class="show-all-types show-for-6192">
-                        <select class="form-control border intent-sub-type" id="in_6192_type" style="margin-bottom: 12px;">
-                            <?php
-                            foreach ($this->config->item('en_all_6192') as $en_id => $m) {
-                                echo '<option value="' . $en_id . '">' . $m['m_name'] . '</option>';
-                            }
-                            ?>
-                        </select>
-                    </div>
-
-                    <!-- OR Intents -->
-                    <div class="show-all-types show-for-6193 hidden">
-                        <select class="form-control border intent-sub-type" id="in_6193_type" style="margin-bottom: 12px;">
-                            <?php
-                            foreach ($this->config->item('en_all_6193') as $en_id => $m) {
-                                echo '<option value="' . $en_id . '">' . $m['m_name'] . '</option>';
-                            }
-                            ?>
-                        </select>
-                    </div>
 
 
 
@@ -158,7 +134,7 @@
                         </div>
 
 
-                        <span class="mini-header">Link Type: <span class="<?= advance_mode() ?>">[<a href="javscript:void(0);" onclick="$('.modify_parent_in').toggleClass('hidden')" data-toggle="tooltip" title="Modify Linked Intent" data-placement="top"><u>EDIT</u></a>]</span></span>
+                        <span class="mini-header">Type: <span class="<?= advance_mode() ?>">[<a href="javscript:void(0);" onclick="$('.modify_parent_in').toggleClass('hidden')" data-toggle="tooltip" title="Modify Linked Intent" data-placement="top"><u>EDIT</u></a>]</span></span>
                         <div class="form-group label-floating is-empty">
 
                             <?php
@@ -206,7 +182,7 @@
                         </div>
 
 
-                        <span class="mini-header" style="margin-top: 20px;">Link Status:</span>
+                        <span class="mini-header" style="margin-top: 20px;">Status:</span>
                         <select class="form-control border" id="ln_status_entity_id" style="display: inline-block !important;">
                             <?php
                             foreach($this->config->item('en_all_6186') /* Link Statuses */ as $en_id => $m){

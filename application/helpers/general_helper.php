@@ -432,13 +432,6 @@ function redirect_message($url, $message = null)
 }
 
 
-function in_is_or($in_type_entity_id, $return_id = false){
-    //Determines if an intent type belongs to AND or OR intents:
-    $CI =& get_instance();
-    $in_is_or = intval(in_array($in_type_entity_id , $CI->config->item('en_ids_6193')));
-    return ( $return_id ? ( $in_is_or ? 6193 /* OR */ : 6192 /* AND */ ) : $in_is_or );
-}
-
 function advance_mode(){
     $CI =& get_instance();
     return ' advance-ui '.( $CI->session->userdata('advance_view_enabled')==1 ? '' : ' hidden ' );
@@ -859,8 +852,7 @@ function update_algolia($input_obj_type = null, $input_obj_id = 0, $return_row_o
         );
     }
 
-    //Load AND/OR Intents:
-    $en_all_6676 = $CI->config->item('en_all_6676');
+    $en_all_7585 = $CI->config->item('en_all_7585'); // Intent Types
 
     //Define the support objects indexed on algolia:
     $input_obj_id = intval($input_obj_id);
@@ -1011,7 +1003,7 @@ function update_algolia($input_obj_type = null, $input_obj_id = 0, $return_row_o
                 $export_row['alg_obj_id'] = intval($db_row['in_id']);
                 $export_row['alg_obj_weight'] = ( isset($metadata['in__metadata_max_seconds']) ? intval($metadata['in__metadata_max_seconds']) : 0 );
                 $export_row['alg_obj_status'] = intval($db_row['in_status_entity_id']);
-                $export_row['alg_obj_icon'] = $en_all_6676[in_is_or($db_row['in_type_entity_id'], true)]['m_icon']; //Entity type icon
+                $export_row['alg_obj_icon'] = $en_all_7585[$db_row['in_type_entity_id']]['m_icon']; //Entity type icon
                 $export_row['alg_obj_name'] = $db_row['in_outcome'];
                 $export_row['alg_obj_postfix'] =  ( $time_range ? '<span class="alg-postfix"><i class="fal fa-clock"></i>' . $time_range . '</span>' : '');
 
