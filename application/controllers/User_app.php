@@ -1216,10 +1216,17 @@ class User_app extends CI_Controller
             die('Invalid Secret Key');
         }
 
+
+        //Define what needs to be cleared:
+        $clear_links = array_merge(
+            $this->config->item('en_ids_6146'), //User Steps Completed
+            $this->config->item('en_ids_4229') //Intent Link Locked Step
+        );
+
         //Fetch their current progress links:
         $progress_links = $this->Links_model->ln_fetch(array(
             'ln_status_entity_id IN (' . join(',', $this->config->item('en_ids_7360')) . ')' => null, //Link Statuses Active
-            'ln_type_entity_id IN (' . join(',', $this->config->item('en_ids_6146')) . ')' => null, //User Steps Completed
+            'ln_type_entity_id IN (' . join(',', $clear_links) . ')' => null,
             'ln_miner_entity_id' => $en_id,
         ), array(), 0);
 

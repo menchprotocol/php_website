@@ -11,7 +11,30 @@ defined('BASEPATH') OR exit('No direct script access allowed');
  *
  */
 
-//Generated 2019-07-21 10:14:34 PST
+//Generated 2019-07-25 00:03:55 PST
+
+//Intent Link Locked Step:
+$config['en_ids_4229'] = array(6140,6402,6997);
+$config['en_all_4229'] = array(
+    6140 => array(
+        'm_icon' => '<i class="fas fa-lock-open"></i>',
+        'm_name' => 'User Step Link Unlock',
+        'm_desc' => 'A step that has become available because of the score generated from student answers',
+        'm_parents' => array(4595,6410,4229,4755,4593),
+    ),
+    6402 => array(
+        'm_icon' => '<i class="fas fa-lock-open"></i>',
+        'm_name' => 'Unlock Score Range',
+        'm_desc' => '',
+        'm_parents' => array(6410,4229),
+    ),
+    6997 => array(
+        'm_icon' => '<i class="fas fa-lock-open"></i>',
+        'm_name' => 'User Step Score Unlock',
+        'm_desc' => '',
+        'm_parents' => array(7494,4229,6255,4595,4593,4755,6146),
+    ),
+);
 
 //Intent Select Publicly:
 $config['en_ids_7588'] = array(6684,7231);
@@ -269,19 +292,13 @@ $config['en_all_6157'] = array(
 );
 
 //User Steps Unlock:
-$config['en_ids_7494'] = array(6997,7298,7485,7486);
+$config['en_ids_7494'] = array(6997,7485,7486);
 $config['en_all_7494'] = array(
     6997 => array(
         'm_icon' => '<i class="fas fa-lock-open"></i>',
         'm_name' => 'User Step Score Unlock',
         'm_desc' => '',
         'm_parents' => array(7494,4229,6255,4595,4593,4755,6146),
-    ),
-    7298 => array(
-        'm_icon' => '<i class="fas fa-lock-open"></i>',
-        'm_name' => 'User Step Funnel Unlock',
-        'm_desc' => '',
-        'm_parents' => array(7494,1,6146,6255),
     ),
     7485 => array(
         'm_icon' => '<i class="fas fa-lock-open"></i>',
@@ -1389,7 +1406,7 @@ $config['en_all_6410'] = array(
         'm_icon' => '<i class="fas fa-lock"></i>',
         'm_name' => 'Intent Link Locked Step',
         'm_desc' => 'The outcome of processing the aggregate steps if a student\'s Action Plan and unlocking a specific intent based on the percentage outcome.',
-        'm_parents' => array(6410,6283,4593,4486,4595),
+        'm_parents' => array(4527,6410,6283,4593,4486,4595),
     ),
     4358 => array(
         'm_icon' => '<i class="far fa-lambda"></i>',
@@ -1440,7 +1457,7 @@ $config['en_all_6274'] = array(
 );
 
 //User Steps Progressed:
-$config['en_ids_6255'] = array(4559,6144,6157,6997,7298,7485,7486,7487,7489,7492);
+$config['en_ids_6255'] = array(4559,6144,6157,6997,7485,7486,7487,7489,7492);
 $config['en_all_6255'] = array(
     4559 => array(
         'm_icon' => '<i class="far fa-comments"></i>',
@@ -1465,12 +1482,6 @@ $config['en_all_6255'] = array(
         'm_name' => 'User Step Score Unlock',
         'm_desc' => '',
         'm_parents' => array(7494,4229,6255,4595,4593,4755,6146),
-    ),
-    7298 => array(
-        'm_icon' => '<i class="fas fa-lock-open"></i>',
-        'm_name' => 'User Step Funnel Unlock',
-        'm_desc' => '',
-        'm_parents' => array(7494,1,6146,6255),
     ),
     7485 => array(
         'm_icon' => '<i class="fas fa-lock-open"></i>',
@@ -1697,7 +1708,7 @@ $config['en_all_6177'] = array(
 );
 
 //User Steps Taken:
-$config['en_ids_6146'] = array(4559,6143,6144,6157,6997,7298,7485,7486,7487,7488,7489,7492);
+$config['en_ids_6146'] = array(4559,6143,6144,6157,6997,7485,7486,7487,7488,7489,7492);
 $config['en_all_6146'] = array(
     4559 => array(
         'm_icon' => '<i class="far fa-comments"></i>',
@@ -1728,12 +1739,6 @@ $config['en_all_6146'] = array(
         'm_name' => 'Score Unlock',
         'm_desc' => 'When users unlock locked AND or OR intents by scoring within the range of a conditional intent link',
         'm_parents' => array(7494,4229,6255,4595,4593,4755,6146),
-    ),
-    7298 => array(
-        'm_icon' => '<i class="fas fa-lock-open"></i>',
-        'm_name' => 'Funnel Unlock',
-        'm_desc' => 'When users unlock a locked intent by a miner that moved them to that intention',
-        'm_parents' => array(7494,1,6146,6255),
     ),
     7485 => array(
         'm_icon' => '<i class="fas fa-lock-open"></i>',
@@ -2534,7 +2539,7 @@ $config['en_all_4595'] = array(
         'm_icon' => '<i class="fas fa-lock"></i>',
         'm_name' => 'Intent Link Locked Step',
         'm_desc' => '2000',
-        'm_parents' => array(6410,6283,4593,4486,4595),
+        'm_parents' => array(4527,6410,6283,4593,4486,4595),
     ),
     4230 => array(
         'm_icon' => '<i class="far fa-level-up rotate90"></i>',
@@ -3180,7 +3185,7 @@ $config['en_all_4593'] = array(
         'm_icon' => '<i class="fas fa-lock"></i>',
         'm_name' => 'Intent Link Locked Step',
         'm_desc' => '',
-        'm_parents' => array(6410,6283,4593,4486,4595),
+        'm_parents' => array(4527,6410,6283,4593,4486,4595),
     ),
     4230 => array(
         'm_icon' => '<i class="far fa-level-up rotate90"></i>',
@@ -3944,7 +3949,7 @@ $config['en_all_4486'] = array(
         'm_icon' => '<i class="fas fa-lock"></i>',
         'm_name' => 'Locked Step',
         'm_desc' => 'Intent added to Action Plans after parent intent is complete AND the user\'s % score falls within the defined min/max range',
-        'm_parents' => array(6410,6283,4593,4486,4595),
+        'm_parents' => array(4527,6410,6283,4593,4486,4595),
     ),
 );
 
