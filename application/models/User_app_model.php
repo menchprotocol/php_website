@@ -569,16 +569,6 @@ class User_app_model extends CI_Model
 
         //First let's make sure this entire intent tree completed by the user:
         $completion_rate = $this->User_app_model->actionplan_completion_progress($en_id, $in);
-
-        //For debugging
-        if($en_id==1){
-            $this->Communication_model->dispatch_message(
-                '== '.$in['in_outcome'].' == '.$completion_rate['completion_percentage'],
-                array('en_id' => $en_id),
-                true
-            );
-        }
-
         if($completion_rate['completion_percentage'] < 100){
             //Not completed, so can't go further up:
             return array();
@@ -749,6 +739,15 @@ class User_app_model extends CI_Model
 
             //Prevent duplicate processes even if on multiple parent trees:
             $parents_checked = array();
+
+            //For debugging
+            if($en_id==1){
+                $this->Communication_model->dispatch_message(
+                    '== '.print_r($user_intentions_ids, true).' == '.print_r($recursive_parents, true),
+                    array('en_id' => $en_id),
+                    true
+                );
+            }
 
             //Go through parents trees and detect intersects with user intentions. WARNING: Logic duplicated. Search for "ELEPHANT" to see.
             foreach ($recursive_parents as $grand_parent_ids) {
