@@ -37,7 +37,7 @@ class User_app_model extends CI_Model
         }
 
 
-        //Send messages:
+        //Send messages, if any:
         foreach ($this->Links_model->ln_fetch(array(
             'ln_status_entity_id IN (' . join(',', $this->config->item('en_ids_7359')) . ')' => null, //Link Statuses Public
             'ln_type_entity_id' => 4231, //Intent Note Messages
@@ -51,15 +51,9 @@ class User_app_model extends CI_Model
         }
 
 
-        //If this is NOT a locked type, changed unlock link type:
-        if(!in_is_unlockable($in)){
-            $unlock_link_type_en_id = 4559; //User Step Got It
-        }
-
-
         //Ok, now we can mark it as complete:
         $this->Links_model->ln_create(array(
-            'ln_type_entity_id' => $unlock_link_type_en_id,
+            'ln_type_entity_id' => ( in_is_unlockable($in) ? $unlock_link_type_en_id : 4559 /* User Step Read Messages */ ),
             'ln_miner_entity_id' => $en_id,
             'ln_parent_intent_id' => $in['in_id'],
             'ln_status_entity_id' => 6176, //Link Published
@@ -575,17 +569,17 @@ class User_app_model extends CI_Model
 
         //First let's make sure this entire intent tree completed by the user:
         $completion_rate = $this->User_app_model->actionplan_completion_progress($en_id, $in);
+
+        //For debugging
+        if($en_id==1){
+            $this->Communication_model->dispatch_message(
+                '== '.$in['in_outcome'].' == '.$completion_rate['completion_percentage'],
+                array('en_id' => $en_id),
+                true
+            );
+        }
+
         if($completion_rate['completion_percentage'] < 100){
-
-            //For debugging
-            if($en_id==1){
-                $this->Communication_model->dispatch_message(
-                    $in['in_outcome'].' is not complete: '.$completion_rate['completion_percentage'],
-                    array('en_id' => $en_id),
-                    true
-                );
-            }
-
             //Not completed, so can't go further up:
             return array();
         }
@@ -1168,7 +1162,7 @@ class User_app_model extends CI_Model
 
         } else {
 
-            $progression_type_entity_id = 4559; //User Step Got It
+            $progression_type_entity_id = 4559; //User Step Read Messages
 
         }
 
@@ -1643,9 +1637,11 @@ class User_app_model extends CI_Model
 
                 }
             } else {
-                //No next step found! This must be it...
-                $next_step_message = 'This was your final step 🎉🎉🎉';
-                $recommend_recommend = true;
+
+                //This will happen for all intents viewed via HTML if all Action Plan steps are completed
+                //No next step found! Recommend if messenger
+                $recommend_recommend = $fb_messenger_format;
+
             }
         }
 
