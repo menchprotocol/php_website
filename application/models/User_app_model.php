@@ -797,6 +797,15 @@ class User_app_model extends CI_Model
                     }
                 }
             }
+
+            //For debugging
+            if($en_id==1){
+                $this->Communication_model->dispatch_message(
+                    'CHECKED: '.print_r($parents_checked, true),
+                    array('en_id' => $en_id),
+                    true
+                );
+            }
         }
 
 
