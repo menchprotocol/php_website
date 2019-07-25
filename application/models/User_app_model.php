@@ -783,11 +783,20 @@ class User_app_model extends CI_Model
                         $unlock_steps_messages_recursive = $this->User_app_model->actionplan_completion_recursive_up($en_id, $parent_ins[0], false);
 
                         //What did we find?
-                        if(count($unlock_steps_messages_recursive) < 1){
-                            //Nothing found in the recursive up, so there is no point to try to go further up:
-                            break;
-                        } else {
+                        if(count($unlock_steps_messages_recursive) > 0){
                             $unlock_steps_messages = array_merge($unlock_steps_messages, $unlock_steps_messages_recursive);
+                        } else {
+                            //Nothing found in the recursive up, so there is no point to try to go further up:
+                            //break;
+                        }
+                    } else {
+                        //For debugging
+                        if($en_id==1){
+                            $this->Communication_model->dispatch_message(
+                                'NOT PUBLIC: '.$p_id,
+                                array('en_id' => $en_id),
+                                true
+                            );
                         }
                     }
 
