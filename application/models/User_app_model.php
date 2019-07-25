@@ -570,15 +570,6 @@ class User_app_model extends CI_Model
         //First let's make sure this entire intent tree completed by the user:
         $completion_rate = $this->User_app_model->actionplan_completion_progress($en_id, $in);
 
-        //For debugging
-        if($en_id==1){
-            $this->Communication_model->dispatch_message(
-                '== '.$in['in_id'].' == '.$completion_rate['completion_percentage'],
-                array('en_id' => $en_id),
-                true
-            );
-        }
-
 
         if($completion_rate['completion_percentage'] < 100){
             //Not completed, so can't go further up:
@@ -640,16 +631,6 @@ class User_app_model extends CI_Model
                 'ln_parent_intent_id' => $in['in_id'],
                 'ln_child_intent_id IN (' . join(',', $in_metadata['in__metadata_expansion_conditional'][$in['in_id']]) . ')' => null, //Limit to cached answers
             ), array('in_child'), 0, 0);
-
-
-            //For debugging
-            if($en_id==1){
-                $this->Communication_model->dispatch_message(
-                    $in['in_outcome'].' = '.$user_marks['steps_answered_score'].' with '.count($locked_links).' Locked links',
-                    array('en_id' => $en_id),
-                    true
-                );
-            }
 
 
             foreach ($locked_links as $locked_link) {
@@ -742,15 +723,6 @@ class User_app_model extends CI_Model
             //Prevent duplicate processes even if on multiple parent trees:
             $parents_checked = array();
 
-            //For debugging
-            if($en_id==1){
-                $this->Communication_model->dispatch_message(
-                    '== '.print_r($user_intentions_ids, true).' == '.print_r($recursive_parents, true),
-                    array('en_id' => $en_id),
-                    true
-                );
-            }
-
             //Go through parents trees and detect intersects with user intentions. WARNING: Logic duplicated. Search for "ELEPHANT" to see.
             foreach ($recursive_parents as $grand_parent_ids) {
 
@@ -785,18 +757,6 @@ class User_app_model extends CI_Model
                         //What did we find?
                         if(count($unlock_steps_messages_recursive) > 0){
                             $unlock_steps_messages = array_merge($unlock_steps_messages, $unlock_steps_messages_recursive);
-                        } else {
-                            //Nothing found in the recursive up, so there is no point to try to go further up:
-                            //break;
-                        }
-                    } else {
-                        //For debugging
-                        if($en_id==1){
-                            $this->Communication_model->dispatch_message(
-                                'NOT PUBLIC: '.$p_id,
-                                array('en_id' => $en_id),
-                                true
-                            );
                         }
                     }
 
@@ -805,15 +765,6 @@ class User_app_model extends CI_Model
                         break;
                     }
                 }
-            }
-
-            //For debugging
-            if($en_id==1){
-                $this->Communication_model->dispatch_message(
-                    'CHECKED: '.print_r($parents_checked, true),
-                    array('en_id' => $en_id),
-                    true
-                );
             }
         }
 
