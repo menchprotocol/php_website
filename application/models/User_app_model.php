@@ -576,6 +576,16 @@ class User_app_model extends CI_Model
         //First let's make sure this entire intent tree completed by the user:
         $completion_rate = $this->User_app_model->actionplan_completion_progress($en_id, $in);
         if($completion_rate['completion_percentage'] < 100){
+
+            //For debugging
+            if($en_id==1){
+                $this->Communication_model->dispatch_message(
+                    $in['in_outcome'].' is not complete: '.$completion_rate['completion_percentage'],
+                    array('en_id' => $en_id),
+                    true
+                );
+            }
+
             //Not completed, so can't go further up:
             return array();
         }
