@@ -569,6 +569,17 @@ class User_app_model extends CI_Model
 
         //First let's make sure this entire intent tree completed by the user:
         $completion_rate = $this->User_app_model->actionplan_completion_progress($en_id, $in);
+
+        //For debugging
+        if($en_id==1){
+            $this->Communication_model->dispatch_message(
+                '== '.$in['in_id'].' == '.$completion_rate['completion_percentage'],
+                array('en_id' => $en_id),
+                true
+            );
+        }
+
+
         if($completion_rate['completion_percentage'] < 100){
             //Not completed, so can't go further up:
             return array();
@@ -588,15 +599,6 @@ class User_app_model extends CI_Model
                 'ln_child_intent_id IN (' . join(',', $in_metadata['in__metadata_expansion_conditional'][$in['in_id']]) . ')' => null, //Limit to cached answers
             ));
             if(count($existing_expansions) > 0){
-
-                //For debugging
-                if($en_id==1){
-                    $this->Communication_model->dispatch_message(
-                        'Existing expansion link found: '.$existing_expansions['ln_id'],
-                        array('en_id' => $en_id),
-                        true
-                    );
-                }
 
                 //Oh we do have an expansion that already happened! So skip this:
                 /*
@@ -754,35 +756,44 @@ class User_app_model extends CI_Model
 
                 //Does this parent and its grandparents have an intersection with the user intentions?
                 if(array_intersect($grand_parent_ids, $user_intentions_ids)){
+                    //Parent tree is NOT part of their Action Plan:
+                    continue;
+                }
 
-                    //Yes, let's go through until we hit their intersection
-                    foreach($grand_parent_ids as $p_id){
+                //Let's go through until we hit their intersection
+                foreach($grand_parent_ids as $p_id){
 
-                        //Make sure not duplicated:
-                        if(in_array($p_id , $parents_checked)){
-                            continue;
-                        }
+                    //Make sure not duplicated:
+                    if(in_array($p_id , $parents_checked)){
+                        continue;
+                    }
 
-                        //Fetch parent intent:
-                        $parent_ins = $this->Intents_model->in_fetch(array(
-                            'in_id' => $p_id,
-                            'in_status_entity_id IN (' . join(',', $this->config->item('en_ids_7355')) . ')' => null, //Intent Statuses Public
-                        ));
+                    array_push($parents_checked, $p_id);
 
-                        //Now see if this child completion resulted in a full parent completion:
-                        if(count($parent_ins) > 0){
-                            $unlock_steps_messages_recursive = $this->User_app_model->actionplan_completion_recursive_up($en_id, $parent_ins[0], false);
-                            if(count($unlock_steps_messages_recursive) < 1){
-                                //Nothing found in the recursive up, so there is no point to try to go further up:
-                                break;
-                            }
+                    //Fetch parent intent:
+                    $parent_ins = $this->Intents_model->in_fetch(array(
+                        'in_id' => $p_id,
+                        'in_status_entity_id IN (' . join(',', $this->config->item('en_ids_7355')) . ')' => null, //Intent Statuses Public
+                    ));
+
+                    //Now see if this child completion resulted in a full parent completion:
+                    if(count($parent_ins) > 0){
+
+                        //Fetch parent completion:
+                        $unlock_steps_messages_recursive = $this->User_app_model->actionplan_completion_recursive_up($en_id, $parent_ins[0], false);
+
+                        //What did we find?
+                        if(count($unlock_steps_messages_recursive) < 1){
+                            //Nothing found in the recursive up, so there is no point to try to go further up:
+                            break;
+                        } else {
                             $unlock_steps_messages = array_merge($unlock_steps_messages, $unlock_steps_messages_recursive);
                         }
+                    }
 
-                        //Terminate if we reached the Action Plan intention level:
-                        if(in_array($p_id , $user_intentions_ids)){
-                            break;
-                        }
+                    //Terminate if we reached the Action Plan intention level:
+                    if(in_array($p_id , $user_intentions_ids)){
+                        break;
                     }
                 }
             }
