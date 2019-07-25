@@ -755,7 +755,7 @@ class User_app_model extends CI_Model
             foreach ($recursive_parents as $grand_parent_ids) {
 
                 //Does this parent and its grandparents have an intersection with the user intentions?
-                if(array_intersect($grand_parent_ids, $user_intentions_ids)){
+                if(!array_intersect($grand_parent_ids, $user_intentions_ids)){
                     //Parent tree is NOT part of their Action Plan:
                     continue;
                 }
