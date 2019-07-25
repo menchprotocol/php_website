@@ -226,7 +226,7 @@ class User_app_model extends CI_Model
 
                 //Inform user that they are now complete with all steps:
                 $this->Communication_model->dispatch_message(
-                    'You have no pending steps in your Action Plan 🙌 I will keep you updated on new steps as they become available. You may also stop receiving updates by saying "stop".',
+                    'You just completed everything in your Action Plan 🙌',
                     array('en_id' => $en_id),
                     true
                 );
@@ -595,6 +595,15 @@ class User_app_model extends CI_Model
             ));
             if(count($existing_expansions) > 0){
 
+                //For debugging
+                if($en_id==1){
+                    $this->Communication_model->dispatch_message(
+                        'Existing expansion link found: '.$existing_expansions['ln_id'],
+                        array('en_id' => $en_id),
+                        true
+                    );
+                }
+
                 //Oh we do have an expansion that already happened! So skip this:
                 /*
                  * This was being triggered but I am not sure if its normal or not!
@@ -623,9 +632,11 @@ class User_app_model extends CI_Model
 
 
 
+
+
             //Detect potential conditional steps to be Unlocked:
             $found_match = 0;
-            $condition_ranges = $this->Links_model->ln_fetch(array(
+            $locked_links = $this->Links_model->ln_fetch(array(
                 'in_type_entity_id IN (' . join(',', $this->config->item('en_ids_7309')) . ')' => null, //Action Plan Step Locked
                 'in_status_entity_id IN (' . join(',', $this->config->item('en_ids_7355')) . ')' => null, //Intent Statuses Public
                 'ln_status_entity_id IN (' . join(',', $this->config->item('en_ids_7359')) . ')' => null, //Link Statuses Public
@@ -635,10 +646,20 @@ class User_app_model extends CI_Model
             ), array('in_child'), 0, 0);
 
 
-            foreach ($condition_ranges as $conditional_step) {
+            //For debugging
+            if($en_id==1){
+                $this->Communication_model->dispatch_message(
+                    $in['in_outcome'].' = '.$user_marks['steps_answered_score'].' with '.count($locked_links).' Locked links',
+                    array('en_id' => $en_id),
+                    true
+                );
+            }
+
+
+            foreach ($locked_links as $locked_link) {
 
                 //See if it unlocks any of these ranges defined in the metadata:
-                $ln_metadata = unserialize($conditional_step['ln_metadata']);
+                $ln_metadata = unserialize($locked_link['ln_metadata']);
 
                 //Defines ranges:
                 if(!isset($ln_metadata['tr__conditional_score_min'])){
@@ -658,14 +679,14 @@ class User_app_model extends CI_Model
                     $message = 'You completed the step to '.echo_in_outcome($in['in_outcome'], true, true).'. ';
 
                     //Append based on title type:
-                    if(in_is_clean_outcome($conditional_step)){
-                        $message .= 'This unlocked a new step to '.echo_in_outcome($conditional_step['in_outcome'], true);
+                    if(in_is_clean_outcome($locked_link)){
+                        $message .= 'This unlocked a new step to '.echo_in_outcome($locked_link['in_outcome'], true);
                     } else {
-                        $message .= 'The result:' . "\n\n" . echo_in_outcome($conditional_step['in_outcome'], true);
+                        $message .= 'The result:' . "\n\n" . echo_in_outcome($locked_link['in_outcome'], true);
                     }
 
                     //Give reference in Action Plan
-                    $message .= ' /link:Open 🚩Action Plan:https://mench.com/actionplan/'.$conditional_step['in_id'];
+                    $message .= ' /link:Open 🚩Action Plan:https://mench.com/actionplan/'.$locked_link['in_id'];
 
 
                     //Communicate message to user:
@@ -679,17 +700,17 @@ class User_app_model extends CI_Model
                         'ln_type_entity_id' => 6140, //Action Plan Conditional Step Unlocked
                         'ln_miner_entity_id' => $en_id,
                         'ln_parent_intent_id' => $in['in_id'],
-                        'ln_child_intent_id' => $conditional_step['in_id'],
+                        'ln_child_intent_id' => $locked_link['in_id'],
                         'ln_content' => $message,
                         'ln_metadata' => array(
                             'completion_rate' => $completion_rate,
                             'user_marks' => $user_marks,
-                            'condition_ranges' => $condition_ranges,
+                            'condition_ranges' => $locked_links,
                         ),
                     ));
 
                     //See if we also need to mark the child as complete:
-                    $this->User_app_model->actionplan_completion_auto_complete($en_id, $conditional_step, 6997 /* User Step Score Unlock */);
+                    $this->User_app_model->actionplan_completion_auto_complete($en_id, $locked_link, 6997 /* User Step Score Unlock */);
 
                 }
             }
@@ -705,7 +726,7 @@ class User_app_model extends CI_Model
                     'ln_metadata' => array(
                         'completion_rate' => $completion_rate,
                         'user_marks' => $user_marks,
-                        'conditional_ranges' => $condition_ranges,
+                        'conditional_ranges' => $locked_links,
                     ),
                 ));
             }

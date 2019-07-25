@@ -64,6 +64,11 @@ class Communication_model extends CI_Model
          *
          * */
 
+        //This could happen with random messages
+        if(is_null($input_message)){
+            return false;
+        }
+
         //Validate message:
         $msg_dispatching = $this->Communication_model->dispatch_validate_message($input_message, $recipient_en, $fb_messenger_format, $quick_replies, 0, $message_in_id, false);
 

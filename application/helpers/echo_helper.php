@@ -802,14 +802,15 @@ function echo_random_message($message_key){
         'affirm_progress' => array(
             'Got it 👍',
             'Noted',
+            'Ok noted',
             'Ok sweet',
-            'Nice answer',
-            'Nice 👍',
-            'Gotcha 🙌',
-            'Fabulous',
             'Confirmed',
             '👌',
             '👍',
+            null,
+            null,
+            null,
+            null,
         ),
         'one_way_only' => array(
             'I am not designed to respond to custom messages. I can understand you only when you choose one of the options that I recommend to you.',
@@ -817,7 +818,7 @@ function echo_random_message($message_key){
             'I cannot respond to your custom messages and can only understand if you select one of the options that I recommend to you.',
         ),
         'command_me' => array(
-            'You can add a new intention to your Action Plan by sending me a message that starts with "I want to", for example: "I want to assess my back-end skills" or "I want to assess my javascript skills"',
+            'You can add a new intention to your Action Plan by sending me a message that starts with "I want to", for example: "I want to assess my back-end skills" or "I want to recruit top talent"',
         ),
         'goto_next' => array(
             'Say next to continue',
