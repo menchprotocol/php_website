@@ -11,7 +11,24 @@ defined('BASEPATH') OR exit('No direct script access allowed');
  *
  */
 
-//Generated 2019-07-25 00:03:55 PST
+//Generated 2019-07-30 13:21:44 PST
+
+//Company Get Started:
+$config['en_ids_7593'] = array(7591,7592);
+$config['en_all_7593'] = array(
+    7591 => array(
+        'm_icon' => '',
+        'm_name' => 'Pricing',
+        'm_desc' => '11882',
+        'm_parents' => array(7593,7369),
+    ),
+    7592 => array(
+        'm_icon' => '',
+        'm_name' => 'Features',
+        'm_desc' => '11884',
+        'm_parents' => array(7593,7369),
+    ),
+);
 
 //Intent Link Locked Step:
 $config['en_ids_4229'] = array(6140,6402,6997);
@@ -238,7 +255,7 @@ $config['en_ids_7529'] = array(4269,7531,7533,7567,7568);
 $config['en_all_7529'] = array(
     4269 => array(
         'm_icon' => '<i class="fas fa-sign-in"></i>',
-        'm_name' => 'Sign In / Sign Up',
+        'm_name' => 'Sign In/Up',
         'm_desc' => '',
         'm_parents' => array(7369,7529),
     ),
@@ -407,11 +424,11 @@ $config['en_all_6287'] = array(
 );
 
 //Mench User App:
-$config['en_ids_7369'] = array(4269,4430,6137,6138,7161,7291,7540);
+$config['en_ids_7369'] = array(4269,4430,6137,6138,7161,7291,7540,7591,7592);
 $config['en_all_7369'] = array(
     4269 => array(
         'm_icon' => '<i class="fas fa-sign-in"></i>',
-        'm_name' => 'Sign In / Sign Up',
+        'm_name' => 'Sign In/Up',
         'm_desc' => '',
         'm_parents' => array(7369,7529),
     ),
@@ -450,6 +467,18 @@ $config['en_all_7369'] = array(
         'm_name' => 'Mench\'s terms of service & privacy policy',
         'm_desc' => '',
         'm_parents' => array(7369,7305),
+    ),
+    7591 => array(
+        'm_icon' => '',
+        'm_name' => 'Pricing',
+        'm_desc' => '',
+        'm_parents' => array(7593,7369),
+    ),
+    7592 => array(
+        'm_icon' => '',
+        'm_name' => 'Features',
+        'm_desc' => '',
+        'm_parents' => array(7593,7369),
     ),
 );
 

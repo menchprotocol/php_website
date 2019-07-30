@@ -70,111 +70,113 @@ if(isset($session_en['en_id']) && $referrer_en_id == 0){
 
 
 
-//Start generating relevant intentions we can recommend as other intentions:
+if( $in['in_id'] != 10430){
 
-//Child intentions:
-$in__children = $this->Links_model->ln_fetch(array(
-    'ln_status_entity_id IN (' . join(',', $this->config->item('en_ids_7359')) . ')' => null, //Link Statuses Public
-    'in_status_entity_id IN (' . join(',', $this->config->item('en_ids_7582')) . ')' => null, //Intent Statuses Starting Step
-    'ln_type_entity_id' => 4228, //Intent Link Regular Step
-    'ln_parent_intent_id' => $in['in_id'],
-), array('in_child'));
+    //Start generating relevant intentions we can recommend as other intentions:
 
-//Parent intentions:
-$in__parents = $this->Links_model->ln_fetch(array(
-    'ln_status_entity_id IN (' . join(',', $this->config->item('en_ids_7359')) . ')' => null, //Link Statuses Public
-    'in_status_entity_id IN (' . join(',', $this->config->item('en_ids_7582')) . ')' => null, //Intent Statuses Starting Step
-    'ln_type_entity_id' => 4228, //Intent Link Regular Step
-    'ln_child_intent_id' => $in['in_id'],
-), array('in_parent'));
-
-if($referrer_en_id > 0){
-    //Only show children as other intents:
-    $in__other = array_merge($in__children, $in__parents);
-} else {
-
-
-    //Recommended intentions:
-    $in__recommended = $this->Links_model->ln_fetch(array(
+    //Child intentions:
+    $in__children = $this->Links_model->ln_fetch(array(
         'ln_status_entity_id IN (' . join(',', $this->config->item('en_ids_7359')) . ')' => null, //Link Statuses Public
-        'ln_type_entity_id' => 4228, //Intent Link Regular Step
-        'ln_parent_intent_id' => 8469, //Recommend Mench Intentions
         'in_status_entity_id IN (' . join(',', $this->config->item('en_ids_7582')) . ')' => null, //Intent Statuses Starting Step
-        'in_id !=' => $in['in_id'], //Not the current intent
-    ), array('in_child'), 0, 0, array('ln_order' => 'ASC'));
-
-    //Sibling intentions:
-    $in__siblings = array();
-    foreach ($this->Links_model->ln_fetch(array(
-        'ln_status_entity_id IN (' . join(',', $this->config->item('en_ids_7359')) . ')' => null, //Link Statuses Public
-        'in_status_entity_id IN (' . join(',', $this->config->item('en_ids_7355')) . ')' => null, //Intent Statuses Public
-        'ln_type_entity_id' => 4228, //Intent Link Regular Step
-        'ln_child_intent_id' => $in['in_id'],
-    ), array('in_parent')) as $parent_in) {
-        $in__siblings = array_merge($in__siblings, $this->Links_model->ln_fetch(array(
-            'ln_status_entity_id IN (' . join(',', $this->config->item('en_ids_7359')) . ')' => null, //Link Statuses Public
-            'in_status_entity_id IN (' . join(',', $this->config->item('en_ids_7582')) . ')' => null, //Intent Statuses Starting Step
-            'ln_type_entity_id' => 4228, //Intent Link Regular Step
-            'ln_parent_intent_id' => $parent_in['in_id'],
-            'in_id !=' => $in['in_id'], //Not the current intent
-        ), array('in_child')));
-    }
-
-    //Granchildren intentions:
-    $in__granchildren = array();
-    foreach ($this->Links_model->ln_fetch(array(
-        'ln_status_entity_id IN (' . join(',', $this->config->item('en_ids_7359')) . ')' => null, //Link Statuses Public
-        'in_status_entity_id IN (' . join(',', $this->config->item('en_ids_7355')) . ')' => null, //Intent Statuses Public
         'ln_type_entity_id' => 4228, //Intent Link Regular Step
         'ln_parent_intent_id' => $in['in_id'],
-    ), array('in_child')) as $child_in) {
-        $in__granchildren = array_merge($in__granchildren, $this->Links_model->ln_fetch(array(
+    ), array('in_child'));
+
+    //Parent intentions:
+    $in__parents = $this->Links_model->ln_fetch(array(
+        'ln_status_entity_id IN (' . join(',', $this->config->item('en_ids_7359')) . ')' => null, //Link Statuses Public
+        'in_status_entity_id IN (' . join(',', $this->config->item('en_ids_7582')) . ')' => null, //Intent Statuses Starting Step
+        'ln_type_entity_id' => 4228, //Intent Link Regular Step
+        'ln_child_intent_id' => $in['in_id'],
+    ), array('in_parent'));
+
+    if($referrer_en_id > 0){
+        //Only show children as other intents:
+        $in__other = array_merge($in__children, $in__parents);
+    } else {
+
+
+        //Recommended intentions:
+        $in__recommended = $this->Links_model->ln_fetch(array(
             'ln_status_entity_id IN (' . join(',', $this->config->item('en_ids_7359')) . ')' => null, //Link Statuses Public
-            'in_status_entity_id IN (' . join(',', $this->config->item('en_ids_7582')) . ')' => null, //Intent Statuses Starting Step
             'ln_type_entity_id' => 4228, //Intent Link Regular Step
-            'ln_parent_intent_id' => $child_in['in_id'],
+            'ln_parent_intent_id' => 8469, //Recommend Mench Intentions
+            'in_status_entity_id IN (' . join(',', $this->config->item('en_ids_7582')) . ')' => null, //Intent Statuses Starting Step
             'in_id !=' => $in['in_id'], //Not the current intent
-        ), array('in_child')));
-    }
+        ), array('in_child'), 0, 0, array('ln_order' => 'ASC'));
 
-    //Merge all intents:
-    $in__other = array_merge($in__recommended, $in__parents, $in__siblings, $in__children, $in__granchildren);
-
-}
-
-
-
-//Display if any:
-if(count($in__other) > 0){
-
-    //echo '<h3 style="margin-bottom:5px; margin-top:55px;">Other Intentions:</h3>';
-    echo '<p style="margin:40px 0 15px;">Other intention'.echo__s(count($in__other)).' I can help you with:</p>';
-    echo '<div class="list-group grey_list actionplan_list maxout">';
-    $max_visible = 7;
-
-    //Now fetch Recommended Intents:
-    $already_printed = array(); //Make sure we don't show anything twice
-    foreach ($in__other as $other_in) {
-        if(!in_is_clean_outcome($other_in)){
-            continue;
-        }
-        if(in_array($other_in['in_id'], $already_printed)){
-            continue; //Already printed!
+        //Sibling intentions:
+        $in__siblings = array();
+        foreach ($this->Links_model->ln_fetch(array(
+            'ln_status_entity_id IN (' . join(',', $this->config->item('en_ids_7359')) . ')' => null, //Link Statuses Public
+            'in_status_entity_id IN (' . join(',', $this->config->item('en_ids_7355')) . ')' => null, //Intent Statuses Public
+            'ln_type_entity_id' => 4228, //Intent Link Regular Step
+            'ln_child_intent_id' => $in['in_id'],
+        ), array('in_parent')) as $parent_in) {
+            $in__siblings = array_merge($in__siblings, $this->Links_model->ln_fetch(array(
+                'ln_status_entity_id IN (' . join(',', $this->config->item('en_ids_7359')) . ')' => null, //Link Statuses Public
+                'in_status_entity_id IN (' . join(',', $this->config->item('en_ids_7582')) . ')' => null, //Intent Statuses Starting Step
+                'ln_type_entity_id' => 4228, //Intent Link Regular Step
+                'ln_parent_intent_id' => $parent_in['in_id'],
+                'in_id !=' => $in['in_id'], //Not the current intent
+            ), array('in_child')));
         }
 
-        echo echo_in_recommend($other_in, null, ( count($already_printed) >= $max_visible ? 'extra-recommendations hidden' : null ), $referrer_en_id);
-        array_push($already_printed, $other_in['in_id']); //Keep track to make sure its printed only once
+        //Granchildren intentions:
+        $in__granchildren = array();
+        foreach ($this->Links_model->ln_fetch(array(
+            'ln_status_entity_id IN (' . join(',', $this->config->item('en_ids_7359')) . ')' => null, //Link Statuses Public
+            'in_status_entity_id IN (' . join(',', $this->config->item('en_ids_7355')) . ')' => null, //Intent Statuses Public
+            'ln_type_entity_id' => 4228, //Intent Link Regular Step
+            'ln_parent_intent_id' => $in['in_id'],
+        ), array('in_child')) as $child_in) {
+            $in__granchildren = array_merge($in__granchildren, $this->Links_model->ln_fetch(array(
+                'ln_status_entity_id IN (' . join(',', $this->config->item('en_ids_7359')) . ')' => null, //Link Statuses Public
+                'in_status_entity_id IN (' . join(',', $this->config->item('en_ids_7582')) . ')' => null, //Intent Statuses Starting Step
+                'ln_type_entity_id' => 4228, //Intent Link Regular Step
+                'ln_parent_intent_id' => $child_in['in_id'],
+                'in_id !=' => $in['in_id'], //Not the current intent
+            ), array('in_child')));
+        }
+
+        //Merge all intents:
+        $in__other = array_merge($in__recommended, $in__parents, $in__siblings, $in__children, $in__granchildren);
+
     }
 
-    if(count($already_printed) > $max_visible){
-        //Show show more button:
-        echo '<a href="javascript:void(0);" onclick="$(\'.extra-recommendations\').toggleClass(\'hidden\');" class="list-group-item extra-recommendations"><i class="fas fa-plus-circle"></i> <b style="font-weight: 500;">'.(count($already_printed)-$max_visible).' More Recommendations</b></a>';
+
+
+    //Display if any:
+    if(count($in__other) > 0){
+
+        //echo '<h3 style="margin-bottom:5px; margin-top:55px;">Other Intentions:</h3>';
+        echo '<p style="margin:40px 0 15px;">Other intentions I can help you with:</p>';
+        echo '<div class="list-group grey_list actionplan_list maxout">';
+        $max_visible = 7;
+
+        //Now fetch Recommended Intents:
+        $already_printed = array(); //Make sure we don't show anything twice
+        foreach ($in__other as $other_in) {
+            if(!in_is_clean_outcome($other_in)){
+                continue;
+            }
+            if(in_array($other_in['in_id'], $already_printed)){
+                continue; //Already printed!
+            }
+
+            echo echo_in_recommend($other_in, null, ( count($already_printed) >= $max_visible ? 'extra-recommendations hidden' : null ), $referrer_en_id);
+            array_push($already_printed, $other_in['in_id']); //Keep track to make sure its printed only once
+        }
+
+        if(count($already_printed) > $max_visible){
+            //Show show more button:
+            echo '<a href="javascript:void(0);" onclick="$(\'.extra-recommendations\').toggleClass(\'hidden\');" class="list-group-item extra-recommendations"><i class="fas fa-plus-circle"></i> <b style="font-weight: 500;">'.(count($already_printed)-$max_visible).' More Recommendations</b></a>';
+        }
+
+        echo '</div>';
+
     }
-
-    echo '</div>';
-
 }
-
 
 
 echo '</div>';

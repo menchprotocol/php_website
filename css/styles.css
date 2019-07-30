@@ -3921,6 +3921,7 @@ h4 .tip-badge {
     text-align: center;
 }
 
+
 .transparent{
     background-color: transparent !important;
     border-color:transparent !important;
@@ -4555,4 +4556,12 @@ h4 .tip-badge {
     .list-group .loader {
         height: 18px;
     }
+}
+
+
+
+
+.front-active a, .nav > .front-active > a:focus, .nav > .front-active > a:hover {
+    background-color: #222222 !important;
+    color: #FFFFFF !important;
 }
