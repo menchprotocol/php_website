@@ -82,7 +82,7 @@ $url_part_1 = $this->uri->segment(1);
                     echo '<li class="'.( $url_part_1==$en_all_7593[7591]['m_desc'] ? ' front-active ' : '' ).'"><a href="/'.$en_all_7593[7591]['m_desc'].'">'.$en_all_7593[7591]['m_name'].'</a></li>';
 
                     //Give option to sign-in:
-                    echo '<li><a href="/signin'.( isset($in['in_id']) && $in['in_id'] != $this->config->item('in_focus_id') ? '?url=%2Fintents%2F'.$in['in_id'] : '' ).'" class="tag-manager-sign-in">'.$en_all_7369[4269]['m_icon'].' '.$en_all_7369[4269]['m_name'].'</a></li>';
+                    echo '<li><a href="/signin'.( isset($in['in_id']) && !in_array($in['in_id'], array($this->config->item('in_focus_id'), $en_all_7593[7592]['m_desc'], $en_all_7593[7591]['m_desc'])) ? '?url=%2Fintents%2F'.$in['in_id'] : '' ).'" class="tag-manager-sign-in">'.$en_all_7369[4269]['m_icon'].' '.$en_all_7369[4269]['m_name'].'</a></li>';
 
                 }
                 ?>
