@@ -56,7 +56,13 @@ class User_app extends CI_Controller
                 'status' => 0,
                 'message' => 'Missing password',
             ));
+        } elseif (!isset($_POST['referrer_url'])) {
+            return echo_json(array(
+                'status' => 0,
+                'message' => 'Missing referrer URL',
+            ));
         }
+
 
 
         //Validaye user ID
@@ -226,8 +232,8 @@ class User_app extends CI_Controller
         //Load session and redirect:
         $this->session->set_userdata($session_data);
 
-        if (isset($_POST['url']) && strlen($_POST['url']) > 0) {
-            $login_url = urldecode($_POST['url']);
+        if (isset($_POST['referrer_url']) && strlen($_POST['referrer_url']) > 0) {
+            $login_url = urldecode($_POST['referrer_url']);
         } else if ($is_miner) {
             $login_url = '/dashboard';
         } elseif ($is_partner_employee) {
@@ -356,7 +362,7 @@ class User_app extends CI_Controller
                 'status' => 0,
                 'message' => 'Invalid email address',
             ));
-        } elseif (!isset($_POST['referrer_url']) || !isset($_POST['referrer_in_id']) || !isset($_POST['referrer_en_id']) || !isset($_POST['password_reset'])) {
+        } elseif (!isset($_POST['referrer_in_id']) || !isset($_POST['referrer_en_id']) || !isset($_POST['password_reset'])) {
             return echo_json(array(
                 'status' => 0,
                 'message' => 'Missing core data',

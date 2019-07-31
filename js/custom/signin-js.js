@@ -80,7 +80,6 @@ function search_email(){
     $.post("/user_app/singin_check_email", {
 
         input_email: $('#input_email').val(),
-        referrer_url: referrer_url,
         referrer_in_id: referrer_in_id,
         referrer_en_id: referrer_en_id,
         password_reset: 0,
@@ -129,6 +128,7 @@ function check_password(){
     $.post("/user_app/singin_check_password", {
         login_en_id: $('#login_en_id').val(),
         input_password: $('#input_password').val(),
+        referrer_url: referrer_url,
     }, function (data) {
 
         if (data.status) {
@@ -161,7 +161,6 @@ function email_forgot_password(){
         //Check email and validate:
         $.post("/user_app/singin_check_email", {
             input_email: $('#input_email').val(),
-            referrer_url: referrer_url,
             referrer_in_id: referrer_in_id,
             referrer_en_id: referrer_en_id,
             password_reset: 1,
