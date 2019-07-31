@@ -2,7 +2,6 @@
 //Attempt to fetch session variables:
 $session_en = $this->session->userdata('user');
 $en_all_7369 = $this->config->item('en_all_7369');
-$en_all_7593 = $this->config->item('en_all_7593');
 $url_part_1 = $this->uri->segment(1);
 ?><!doctype html>
 <html lang="en">
@@ -78,11 +77,22 @@ $url_part_1 = $this->uri->segment(1);
                 } else {
 
                     //Show details for companies:
-                    echo '<li class="'.( $url_part_1==$en_all_7593[7592]['m_desc'] ? ' front-active ' : '' ).'"><a href="/'.$en_all_7593[7592]['m_desc'].'">'.$en_all_7593[7592]['m_name'].'</a></li>';
-                    echo '<li class="'.( $url_part_1==$en_all_7593[7591]['m_desc'] ? ' front-active ' : '' ).'"><a href="/'.$en_all_7593[7591]['m_desc'].'">'.$en_all_7593[7591]['m_name'].'</a></li>';
+                    $company_information_intents = array();
+
+                    foreach($this->config->item('en_all_7593') as $en_id => $m) {
+
+                        //Echo header:
+                        echo '<li class="'.( $url_part_1==$m['m_desc'] ? ' front-active ' : '' ).'"><a href="/'.$m['m_desc'].'">'.( strlen($m['m_icon'])>0 ? '<span class="icon-block en-icon">'.$m['m_icon'].'</span>' : '' ).$m['m_name'].'</a></li>';
+
+                        //Gather intents:
+                        array_push($company_information_intents, intval($m['m_desc']));
+                    }
+
+                    $is_company_primary = (isset($in['in_id']) && $in['in_id']==$this->config->item('in_focus_id'));
+                    $is_company_featured = (isset($in['in_id']) && in_array($in['in_id'], $company_information_intents));
 
                     //Give option to sign-in:
-                    echo '<li><a href="/signin'.( isset($in['in_id']) && !in_array($in['in_id'], array($this->config->item('in_focus_id'), $en_all_7593[7592]['m_desc'], $en_all_7593[7591]['m_desc'])) ? '?url=%2Fintents%2F'.$in['in_id'] : '' ).'" class="tag-manager-sign-in">'.$en_all_7369[4269]['m_icon'].' '.$en_all_7369[4269]['m_name'].'</a></li>';
+                    echo '<li><a href="'.( $is_company_featured ? '/10430' : '' ).'/signin'.( !$is_company_featured && !$is_company_primary ? '?url=%2Fintents%2F'.$in['in_id'] : '' ).'" class="tag-manager-sign-in">'.$en_all_7369[4269]['m_icon'].' '.$en_all_7369[4269]['m_name'].'</a></li>';
 
                 }
                 ?>

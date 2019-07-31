@@ -11,21 +11,27 @@ defined('BASEPATH') OR exit('No direct script access allowed');
  *
  */
 
-//Generated 2019-07-30 13:21:44 PST
+//Generated 2019-07-30 19:43:26 PST
 
 //Company Get Started:
-$config['en_ids_7593'] = array(7591,7592);
+$config['en_ids_7593'] = array(7594,7592,7591);
 $config['en_all_7593'] = array(
-    7591 => array(
+    7594 => array(
         'm_icon' => '',
-        'm_name' => 'Pricing',
-        'm_desc' => '11882',
-        'm_parents' => array(7593,7369),
+        'm_name' => 'Benefits',
+        'm_desc' => '10438',
+        'm_parents' => array(7593),
     ),
     7592 => array(
         'm_icon' => '',
         'm_name' => 'Features',
         'm_desc' => '11884',
+        'm_parents' => array(7593,7369),
+    ),
+    7591 => array(
+        'm_icon' => '',
+        'm_name' => 'Pricing',
+        'm_desc' => '11882',
         'm_parents' => array(7593,7369),
     ),
 );
@@ -1479,7 +1485,7 @@ $config['en_ids_6274'] = array(4559);
 $config['en_all_6274'] = array(
     4559 => array(
         'm_icon' => '<i class="far fa-comments"></i>',
-        'm_name' => 'User Step Read Messages',
+        'm_name' => 'User Step Messages Only',
         'm_desc' => '',
         'm_parents' => array(4595,6274,6255,4755,6146,4593),
     ),
@@ -1490,7 +1496,7 @@ $config['en_ids_6255'] = array(4559,6144,6157,6997,7485,7486,7487,7489,7492);
 $config['en_all_6255'] = array(
     4559 => array(
         'm_icon' => '<i class="far fa-comments"></i>',
-        'm_name' => 'User Step Read Messages',
+        'm_name' => 'User Step Messages Only',
         'm_desc' => '',
         'm_parents' => array(4595,6274,6255,4755,6146,4593),
     ),
@@ -1741,7 +1747,7 @@ $config['en_ids_6146'] = array(4559,6143,6144,6157,6997,7485,7486,7487,7488,7489
 $config['en_all_6146'] = array(
     4559 => array(
         'm_icon' => '<i class="far fa-comments"></i>',
-        'm_name' => 'Read Messages',
+        'm_name' => 'Messages Only',
         'm_desc' => 'Completed when students complete a basic AND intent without any submission requirements',
         'm_parents' => array(4595,6274,6255,4755,6146,4593),
     ),
@@ -2285,7 +2291,7 @@ $config['en_all_4755'] = array(
     ),
     4559 => array(
         'm_icon' => '<i class="far fa-comments"></i>',
-        'm_name' => 'User Step Read Messages',
+        'm_name' => 'User Step Messages Only',
         'm_desc' => '',
         'm_parents' => array(4595,6274,6255,4755,6146,4593),
     ),
@@ -2812,7 +2818,7 @@ $config['en_all_4595'] = array(
     ),
     4559 => array(
         'm_icon' => '<i class="far fa-comments"></i>',
-        'm_name' => 'User Step Read Messages',
+        'm_name' => 'User Step Messages Only',
         'm_desc' => '5',
         'm_parents' => array(4595,6274,6255,4755,6146,4593),
     ),
@@ -3458,7 +3464,7 @@ $config['en_all_4593'] = array(
     ),
     4559 => array(
         'm_icon' => '<i class="far fa-comments"></i>',
-        'm_name' => 'User Step Read Messages',
+        'm_name' => 'User Step Messages Only',
         'm_desc' => 'Logged when a student receives the messages of an AND intent that does not have any completion requirements.',
         'm_parents' => array(4595,6274,6255,4755,6146,4593),
     ),
