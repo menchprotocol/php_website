@@ -92,7 +92,7 @@ $url_part_1 = $this->uri->segment(1);
                     $is_company_featured = (isset($in['in_id']) && in_array($in['in_id'], $company_information_intents));
 
                     //Give option to sign-in:
-                    echo '<li><a href="'.( $is_company_featured ? '/10430' : '' ).'/signin'.( !$is_company_featured && !$is_company_primary ? '?url=%2Fintents%2F'.$in['in_id'] : '' ).'" class="tag-manager-sign-in">'.$en_all_7369[4269]['m_icon'].' '.$en_all_7369[4269]['m_name'].'</a></li>';
+                    echo '<li><a href="'.( $is_company_featured ? '/10430' : '' ).'/signin'.( isset($in['in_id']) && !$is_company_featured && !$is_company_primary ? '?url=%2Fintents%2F'.$in['in_id'] : '' ).'" class="tag-manager-sign-in">'.$en_all_7369[4269]['m_icon'].' '.$en_all_7369[4269]['m_name'].'</a></li>';
 
                 }
                 ?>
