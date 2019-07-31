@@ -1393,7 +1393,7 @@ h5, .h5 {
     padding:0 !important;
 }
 
-.panel-heading .panel-title a{
+.panel-heading .panel-title a, .empty-block{
     display: block;
     background-color: #EFEFEF;
     margin:0 0 5px 0;

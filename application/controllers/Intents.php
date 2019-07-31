@@ -1190,7 +1190,7 @@ class Intents extends CI_Controller
 
         //Create Message:
         $ln = $this->Links_model->ln_create(array(
-            'ln_status_entity_id' => 6175, //Link Drafting
+            'ln_status_entity_id' => 6176, //Link Published
             'ln_miner_entity_id' => $session_en['en_id'],
             'ln_order' => 1 + $this->Links_model->ln_max_order(array(
                     'ln_status_entity_id IN (' . join(',', $this->config->item('en_ids_7360')) . ')' => null, //Link Statuses Active
@@ -1293,7 +1293,7 @@ class Intents extends CI_Controller
 
         //Create message:
         $ln = $this->Links_model->ln_create(array(
-            'ln_status_entity_id' => 6175, //Link Drafting
+            'ln_status_entity_id' => 6176, //Link Published
             'ln_miner_entity_id' => $session_en['en_id'],
             'ln_type_entity_id' => $_POST['focus_ln_type_entity_id'],
             'ln_parent_entity_id' => $cdn_status['cdn_en']['en_id'],
