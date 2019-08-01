@@ -4576,8 +4576,6 @@ h4 .tip-badge {
 
 
 .front-active a, .nav > .front-active > a:focus, .nav > .front-active > a:hover {
-    border: 3px solid #222222 !important;
-    padding-top: 13px !important;
-    padding-bottom: 12px !important;
-    background-color: transparent !important;
+    background-color: #222 !important;
+    color: #FFF !important;
 }
