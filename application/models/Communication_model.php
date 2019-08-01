@@ -311,7 +311,7 @@ class Communication_model extends CI_Model
             }
 
             //Now check for entity referencing settings:
-            if(!in_array(4986 , $en_all_4485[$message_type_en_id]['m_parents']) && count($string_references['ref_entities']) > 0){
+            if(!in_array(4986 , $en_all_4485[$message_type_en_id]['m_parents']) && !in_array(7551 , $en_all_4485[$message_type_en_id]['m_parents']) && count($string_references['ref_entities']) > 0){
 
                 return array(
                     'status' => 0,
