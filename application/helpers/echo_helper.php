@@ -1139,7 +1139,7 @@ function echo_step_range($in, $educational_mode = false){
     }
 }
 
-function echo_tree_steps($in, $fb_messenger_format = 0, $autoexpand = true)
+function echo_tree_steps($in, $fb_messenger_format = 0, $autoexpand = false)
 {
 
     /*
