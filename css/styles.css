@@ -22,6 +22,15 @@ h1, .h1 {
     line-height: 1.15em;
 }
 
+.featured-nav a{
+    background: #222 !important;
+    color: #FFF !important;
+}
+
+.navbar .navbar-nav > li > a {
+    border-radius: 5px;
+}
+
 .main-raised {
     box-shadow: none;
 }
