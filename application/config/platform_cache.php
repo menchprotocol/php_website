@@ -11,10 +11,33 @@ defined('BASEPATH') OR exit('No direct script access allowed');
  *
  */
 
-//Generated 2019-07-30 19:43:26 PST
+//Generated 2019-07-31 22:24:38 PST
+
+//Intent Subscription Setting:
+$config['en_ids_7596'] = array(7597,7598,7599);
+$config['en_all_7596'] = array(
+    7597 => array(
+        'm_icon' => '',
+        'm_name' => 'No Subscriptions',
+        'm_desc' => '',
+        'm_parents' => array(),
+    ),
+    7598 => array(
+        'm_icon' => '',
+        'm_name' => 'Mench Marketplace',
+        'm_desc' => '',
+        'm_parents' => array(),
+    ),
+    7599 => array(
+        'm_icon' => '',
+        'm_name' => 'Private URL',
+        'm_desc' => '',
+        'm_parents' => array(),
+    ),
+);
 
 //Company Get Started:
-$config['en_ids_7593'] = array(7594,7592,7591);
+$config['en_ids_7593'] = array(7594,7592,7601,7591);
 $config['en_all_7593'] = array(
     7594 => array(
         'm_icon' => '',
@@ -27,6 +50,12 @@ $config['en_all_7593'] = array(
         'm_name' => 'Features',
         'm_desc' => '11884',
         'm_parents' => array(7593,7369),
+    ),
+    7601 => array(
+        'm_icon' => '',
+        'm_name' => 'How I Work',
+        'm_desc' => '10432',
+        'm_parents' => array(7593),
     ),
     7591 => array(
         'm_icon' => '',
