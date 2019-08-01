@@ -1498,23 +1498,22 @@ class User_app_model extends CI_Model
                     foreach ($in__children as $child_in) {
 
                         if($key==0){
-
-                            if($fb_messenger_format){
-                                if($has_multiple_children){
-                                    $next_step_message .= 'Here are the next steps:';
-                                }
-                            } else {
+                            if(!$fb_messenger_format){
                                 $next_step_message .= '<div class="list-group" style="margin-top:10px;">';
                             }
-                        }
+                        } else {
+                            if($fb_messenger_format){
 
-                        //We know that the $next_step_message length cannot surpass the limit defined by fb_max_message variable!
-                        //make sure message is within range:
-                        if ($fb_messenger_format && ($key >= $max_and_list || strlen($next_step_message) > ($this->config->item('fb_max_message') - 150))) {
-                            //We cannot add any more, indicate truncating:
-                            $remainder = count($in__children) - $max_and_list;
-                            $next_step_message .= "\n\n" . '... plus ' . $remainder . ' more step' . echo__s($remainder) . '.';
-                            break;
+                                $next_step_message .= "\n\n";
+
+                                //We know that the $next_step_message length cannot surpass the limit defined by fb_max_message variable!
+                                if (($key >= $max_and_list || strlen($next_step_message) > ($this->config->item('fb_max_message') - 150))) {
+                                    //We cannot add any more, indicate truncating:
+                                    $remainder = count($in__children) - $max_and_list;
+                                    $next_step_message .= '... plus ' . $remainder . ' more step' . echo__s($remainder) . '.';
+                                    break;
+                                }
+                            }
                         }
 
 
@@ -1535,7 +1534,7 @@ class User_app_model extends CI_Model
                         } else {
 
                             //Add simple message:
-                            $next_step_message .= "\n\n" . ($key + 1) . '. ' . echo_in_outcome($child_in['in_outcome'], $fb_messenger_format, false, false, $common_prefix);
+                            $next_step_message .= ($key + 1) . '. ' . echo_in_outcome($child_in['in_outcome'], $fb_messenger_format, false, false, $common_prefix);
 
                         }
 

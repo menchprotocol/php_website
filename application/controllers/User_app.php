@@ -456,7 +456,7 @@ class User_app extends CI_Controller
 
             ##Email Body
             $html_message = '<div>Welcome :) </div><br />';
-            $html_message .= '<div>I\'m Mench, an open-source personal assistant focused on connecting top talent to their dream jobs.</div><br />';
+            $html_message .= '<div>I\'m Mench, a personal assistant focused on connecting top talent to their dream jobs.</div><br />';
             $html_message .= '<div>You can complete your registration'.$preset_intention.' using this link:</div><br />';
             $html_message .= '<div><a href="'.$setpassword_url.'" target="_blank">' . $setpassword_url . '</a></div>';
             $html_message .= '<br />';

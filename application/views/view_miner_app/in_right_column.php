@@ -65,17 +65,6 @@
 
 
 
-                    <span class="mini-header" style="margin-top: 20px;">Type:</span>
-                    <select class="form-control border" id="in_type_entity_id" style="margin-bottom: 12px;">
-                        <?php
-                        foreach ($this->config->item('en_all_7585') as $en_id => $m) {
-                            echo '<option value="' . $en_id . '">' . $m['m_name'] . '</option>';
-                        }
-                        ?>
-                    </select>
-
-
-
 
                     <span class="mini-header" style="margin-top: 20px;">Outcome: [<span
                             style="margin:0 0 10px 0;"><span
@@ -87,6 +76,14 @@
 
 
 
+                    <span class="mini-header" style="margin-top: 20px;">Type:</span>
+                    <select class="form-control border" id="in_type_entity_id" style="margin-bottom: 12px;">
+                        <?php
+                        foreach ($this->config->item('en_all_7585') as $en_id => $m) {
+                            echo '<option value="' . $en_id . '">' . $m['m_name'] . '</option>';
+                        }
+                        ?>
+                    </select>
 
 
 

@@ -447,10 +447,11 @@ function common_prefix($in__children, $max_look = 0){
     $exclusion_words = array('a','for');
 
     //Go through each child one by one and see if each word exists in all:
-    $common_base = '';
+    $common_prefix = '';
     foreach(explode(' ', $in__children[0]['in_outcome']) as $word_pos=>$word){
 
         if(in_array(strtolower($word), $exclusion_words)){
+            //Reset the index as it no longer matches:
             break;
         } elseif($max_look > 0 && $word_pos == $max_look){
             break; //Look no more...
@@ -468,13 +469,13 @@ function common_prefix($in__children, $max_look = 0){
         }
 
         if($all_the_same){
-            $common_base .= $word.' ';
+            $common_prefix .= $word.' ';
         } else {
             break;
         }
     }
 
-    return trim($common_base);
+    return trim($common_prefix);
 }
 
 function upload_to_cdn($file_url, $ln_miner_entity_id = 0, $ln_metadata = null, $is_local = false, $page_title = null)

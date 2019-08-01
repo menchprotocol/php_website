@@ -19,14 +19,14 @@ foreach ($this->Links_model->ln_fetch(array(
 
 
 //Action Plan Overview:
-$source_info = echo_tree_experts($in, false);
 $step_info = echo_tree_steps($in, false);
+$source_info = echo_tree_experts($in, false);
 $user_info = echo_tree_users($in, false);
 
 if($step_info || $source_info || $user_info){
     echo '<div style="margin:25px 0;" class="maxout">';
-    echo $source_info;
     echo $step_info;
+    echo $source_info;
     echo $user_info;
     echo '</div>';
 } else {

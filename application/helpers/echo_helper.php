@@ -1139,7 +1139,7 @@ function echo_step_range($in, $educational_mode = false){
     }
 }
 
-function echo_tree_steps($in, $fb_messenger_format = 0, $autoexpand = false)
+function echo_tree_steps($in, $fb_messenger_format = 0, $autoexpand = true)
 {
 
     /*
@@ -1172,11 +1172,10 @@ function echo_tree_steps($in, $fb_messenger_format = 0, $autoexpand = false)
     } else {
 
         //HTML format
-        $pitch_title = '<span class="icon-block"><i class="fas fa-flag"></i></span>&nbsp;'.$metadata['in__metadata_max_steps'].' step'.echo__s($metadata['in__metadata_max_steps']).( $has_time_estimate ? ' in '.strtolower(echo_time_hours($metadata['in__metadata_max_seconds'])) : '' );
+        $pitch_title = '<span class="icon-block"><i class="fas fa-flag"></i></span>&nbsp;'.$metadata['in__metadata_max_steps'].' step'.echo__s($metadata['in__metadata_max_steps']).' to complete';
 
         //If NOT private, Expand body to include Action Plan overview:
         if(!in_array($in['in_type_entity_id'], $CI->config->item('en_ids_7366'))){
-
             $pitch_body .= '. Here\'s an overview:';
             $pitch_body .= '<div class="inner_actionplan">';
             $pitch_body .= echo_tree_actionplan($in, false);
