@@ -11,7 +11,7 @@ defined('BASEPATH') OR exit('No direct script access allowed');
  *
  */
 
-//Generated 2019-08-01 00:53:56 PST
+//Generated 2019-08-01 01:36:35 PST
 
 //Intent Subscription Setting:
 $config['en_ids_7596'] = array(7597,7598,7599);
@@ -290,7 +290,7 @@ $config['en_ids_7529'] = array(4269,7531,7533,7567,7568);
 $config['en_all_7529'] = array(
     4269 => array(
         'm_icon' => '<i class="fas fa-sign-in"></i>',
-        'm_name' => 'Sign In/Up',
+        'm_name' => 'Sign In',
         'm_desc' => '',
         'm_parents' => array(7369,7529),
     ),
@@ -463,7 +463,7 @@ $config['en_ids_7369'] = array(4269,4430,6137,6138,7161,7291,7540,7591,7592);
 $config['en_all_7369'] = array(
     4269 => array(
         'm_icon' => '<i class="fas fa-sign-in"></i>',
-        'm_name' => 'Sign In/Up',
+        'm_name' => 'Sign In',
         'm_desc' => '',
         'm_parents' => array(7369,7529),
     ),

@@ -22,9 +22,14 @@ h1, .h1 {
     line-height: 1.15em;
 }
 
-.featured-nav a{
+.featured-nav a {
     background: #222 !important;
     color: #FFF !important;
+}
+
+.featured-nav a:hover{
+    background: #FFF !important;
+    color: #222 !important;
 }
 
 .navbar .navbar-nav > li > a {
@@ -4571,6 +4576,8 @@ h4 .tip-badge {
 
 
 .front-active a, .nav > .front-active > a:focus, .nav > .front-active > a:hover {
-    background-color: #222222 !important;
-    color: #FFFFFF !important;
+    border: 3px solid #222222 !important;
+    padding-top: 13px !important;
+    padding-bottom: 12px !important;
+    background-color: transparent !important;
 }
