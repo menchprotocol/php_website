@@ -995,7 +995,7 @@ class Entities_model extends CI_Model
 
     }
 
-    function en_verify_create($en_name, $ln_miner_entity_id = 0, $force_unique = false, $en_status_entity_id = 6180 /* Entity Drafting */, $en_icon = null, $en_psid = null){
+    function en_verify_create($en_name, $ln_miner_entity_id = 0, $force_unique = false, $en_status_entity_id = 6181 /* Entity Published */, $en_icon = null, $en_psid = null){
 
         //If PSID exists, make sure it's not a duplicate:
         if(!in_array($en_status_entity_id, $this->config->item('en_ids_6177'))){

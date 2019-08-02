@@ -1005,7 +1005,7 @@ function echo_tree_experts($in, $fb_messenger_format = false, $autoexpand = fals
 
             } else {
 
-                $source_info .= ' <span class="show_type_' . $type_id . '"><a href="javascript:void(0);" onclick="$(\'.show_type_' . $type_id . '\').toggle()" style="text-decoration:underline; display:inline-block;">' . $cat_contribution . '</a></span><span class="show_type_' . $type_id . '" style="display:none;">';
+                $source_info .= ' <span class="show_type_' . $type_id . '"><a href="javascript:void(0);" class="tag-manager-expert-sources" source-type-en-id="'.$type_id.'" onclick="$(\'.show_type_' . $type_id . '\').toggle()" style="text-decoration:underline; display:inline-block;">' . $cat_contribution . '</a></span><span class="show_type_' . $type_id . '" style="display:none;">';
 
                 //We only show details on our website's HTML landing pages:
                 $count = 0;
@@ -1078,7 +1078,7 @@ function echo_tree_experts($in, $fb_messenger_format = false, $autoexpand = fals
                 //$expert_info .= '</a>';
 
                 if (($count + 1) == $visible_html && ($expert_count - $visible_html) > 0) {
-                    $expert_info .= '<span class="show_more_' . $in['in_id'] . '"> & <a href="javascript:void(0);" onclick="$(\'.show_more_' . $in['in_id'] . '\').toggle()" style="text-decoration:underline;">' . ($expert_count - $visible_html) . ' more</a>.</span><span class="show_more_' . $in['in_id'] . '" style="display:none;">';
+                    $expert_info .= '<span class="show_more_' . $in['in_id'] . '"> & <a href="javascript:void(0);" class="tag-manager-expert-full-list" onclick="$(\'.show_more_' . $in['in_id'] . '\').toggle()" style="text-decoration:underline;">' . ($expert_count - $visible_html) . ' more</a>.</span><span class="show_more_' . $in['in_id'] . '" style="display:none;">';
                 }
             }
         }
