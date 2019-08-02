@@ -1256,7 +1256,7 @@ function echo_tree_actionplan($in, $autoexpand){
         $return_html .= '<h4 class="panel-title">';
 
         if($has_level2_content){
-            $return_html .= '<a role="button" data-toggle="collapse" data-parent="#open' . $in_level2_counter . '" href="#collapse' . $in_level2_counter . '" aria-expanded="' . ($autoexpand ? 'true' : 'false') . '" aria-controls="collapse' . $in_level2_counter . '">';
+            $return_html .= '<a class="tag-manager-steps-review" intent-id="'.$in_level2['in_id'].'" role="button" data-toggle="collapse" data-parent="#open' . $in_level2_counter . '" href="#collapse' . $in_level2_counter . '" aria-expanded="' . ($autoexpand ? 'true' : 'false') . '" aria-controls="collapse' . $in_level2_counter . '">';
             $return_html .= '<span class="icon-block-lg"><i class="fas fa-plus-circle"></i></span>';
         } else {
             $return_html .= '<span class="empty-block">';
@@ -1321,7 +1321,7 @@ function echo_tree_actionplan($in, $autoexpand){
 
 
                     if(count($in_level3_messages) > 0){
-                        $return_html .= '<a role="button" data-toggle="collapse" class="second-level-link" data-parent="#open' . $in_level2_counter . '-'.$in_level3_counter.'" href="#collapse' . $in_level2_counter . '-'.$in_level3_counter.'" aria-expanded="' . ($autoexpand ? 'true' : 'false') . '" aria-controls="collapse' . $in_level2_counter . '">';
+                        $return_html .= '<a role="button" data-toggle="collapse" class="second-level-link tag-manager-steps-review" intent-id="'.$in_level3['in_id'].'" data-parent="#open' . $in_level2_counter . '-'.$in_level3_counter.'" href="#collapse' . $in_level2_counter . '-'.$in_level3_counter.'" aria-expanded="' . ($autoexpand ? 'true' : 'false') . '" aria-controls="collapse' . $in_level2_counter . '">';
                         $return_html .= '<span class="icon-block"><i class="fas fa-plus-circle"></i></span>';
                     } else {
                         $return_html .= '<span class="icon-block"><i class="fal fa-check-circle"></i></span>';
