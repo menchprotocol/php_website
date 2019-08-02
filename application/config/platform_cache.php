@@ -11,7 +11,7 @@ defined('BASEPATH') OR exit('No direct script access allowed');
  *
  */
 
-//Generated 2019-08-02 15:13:54 PST
+//Generated 2019-08-02 16:04:00 PST
 
 //Intent Subscription Setting:
 $config['en_ids_7596'] = array(7597,7598,7599);
@@ -256,14 +256,14 @@ $config['en_ids_7555'] = array(6196,7305);
 $config['en_all_7555'] = array(
     6196 => array(
         'm_icon' => '<i class="fab fa-facebook-messenger"></i>',
-        'm_name' => 'Facebook Messenger',
-        'm_desc' => 'The recommended way to connect with Mench on your smartphone or computer.',
+        'm_name' => 'Messenger',
+        'm_desc' => 'btn btn-secondary',
         'm_parents' => array(7555,7372,3320,4463),
     ),
     7305 => array(
         'm_icon' => '<i class="fab fa-chrome"></i>',
-        'm_name' => 'Website',
-        'm_desc' => 'If you don\'t use Facebook Messenger you can connect with Mench on your web browser.',
+        'm_name' => 'Chrome',
+        'm_desc' => 'btn btn-primary',
         'm_parents' => array(7555,7254,1326),
     ),
 );
@@ -423,7 +423,7 @@ $config['en_ids_7372'] = array(6196,7369,7368);
 $config['en_all_7372'] = array(
     6196 => array(
         'm_icon' => '<i class="fab fa-facebook-messenger"></i>',
-        'm_name' => 'Mench Facebook Messenger',
+        'm_name' => 'Mench Messenger',
         'm_desc' => 'A chatbot that matches software engineers to their dream jobs.',
         'm_parents' => array(7555,7372,3320,4463),
     ),
@@ -1439,7 +1439,7 @@ $config['en_all_4463'] = array(
     ),
     6196 => array(
         'm_icon' => '<i class="fab fa-facebook-messenger"></i>',
-        'm_name' => 'Mench Facebook Messenger',
+        'm_name' => 'Mench Messenger',
         'm_desc' => '',
         'm_parents' => array(7555,7372,3320,4463),
     ),

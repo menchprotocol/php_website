@@ -39,10 +39,10 @@ function signin_on_messenger(){
 
 }
 
-function choose_channel(){
+function choose_channel(pathway_chosen){
 
 
-    if(parseInt($('input:radio[name=platform_channels]:checked').val()) == 6196 /* Mench on Messenger */ ){
+    if(parseInt(pathway_chosen) == 6196 /* Mench on Messenger */ ){
 
         //Remove button:
         $('#step1button').html('<div style="font-size: 1.2em; padding-top:10px;"><i class="fas fa-spinner fa-spin"></i> Taking you to Messenger...</div>');

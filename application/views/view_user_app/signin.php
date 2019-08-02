@@ -93,20 +93,18 @@ if(count($current_sign_in_attempt) == 0){
 
         <!-- Step 1: Choose Channel -->
         <div id="step1" class="signup-steps hidden">
-            <p style="padding-bottom:20px;">How would you like to connect to your Mench personal assistant?</p>
-            <div class="form-group label-floating is-empty">
+            <p style="padding-bottom:20px;">Choose an option to continue:</p>
+            <div class="row">
                 <?php
                 foreach ($this->config->item('en_all_7555') as $en_id => $m) {
-                    echo '<span class="radio" style="margin-right: 7px; margin-top: 0 !important;">
-                        <label style="display: block; line-height: 120%; font-size: 1.3em; font-weight: 300;">
-                            <input type="radio" name="platform_channels" value="' . $en_id . '" '.( $en_id==6196 /* Mench on Messenger */ ? ' checked="checked" ' : '' ).' />
-                            <div style="display: block; line-height: 120%;"><b>' . $m['m_icon'] . ' ' . $m['m_name'] . '</b> '.$m['m_desc'].'</div>
-                        </label>
-                    </span>';
+                    echo '<div class="col-xs-6"><a class="'.$m['m_desc'].'" href="javascript:void(0);" onclick="choose_channel('.$en_id.')">' . $m['m_icon'] . ' ' . $m['m_name'] . ' &nbsp;&nbsp;<i class="fas fa-arrow-right"></i></a></div>';
                 }
                 ?>
             </div>
-            <div id="step1button" style="height:60px;"><a href="javascript:void(0)" onclick="choose_channel()" class="btn btn-primary pass btn-raised btn-round btn-next">Next <i class="fas fa-arrow-right"></i></a></div>
+
+            <div class="form-group label-floating is-empty">
+
+            </div>
         </div>
 
 
