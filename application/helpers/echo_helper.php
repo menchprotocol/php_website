@@ -615,14 +615,16 @@ function echo_ln($ln, $is_inner = false)
             $miner_ens = $CI->Entities_model->en_fetch(array(
                 'en_id' => $ln['ln_miner_entity_id'],
             ));
+            $full_name = $miner_ens[0]['en_name'];
 
             $ui .= '<span class="icon-main">'.echo_en_icon($miner_ens[0]).'</span>';
-            $ui .= '<a href="/entities/'.$miner_ens[0]['en_id'].'" data-toggle="tooltip" data-placement="top" title="Link Miner Entity"> <b>' . $miner_ens[0]['en_name'] . '</b></a>';
+            $ui .= '<a href="/entities/'.$miner_ens[0]['en_id'].'" data-toggle="tooltip" data-placement="top" title="Link Miner Entity"> <b>' . $full_name . '</b></a>';
 
         } else {
 
+            $full_name = $this->config->item('system_name');
             $ui .= '<span class="icon-main">'.$this->config->item('system_icon').'</span>';
-            $ui .= ' <b>' . $this->config->item('system_name') . '</b>';
+            $ui .= ' <b>' . $full_name . '</b>';
 
         }
     }
