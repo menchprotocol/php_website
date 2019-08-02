@@ -622,8 +622,8 @@ function echo_ln($ln, $is_inner = false)
 
         } else {
 
-            $full_name = $this->config->item('system_name');
-            $ui .= '<span class="icon-main">'.$this->config->item('system_icon').'</span>';
+            $full_name = $CI->config->item('system_name');
+            $ui .= '<span class="icon-main">'.$CI->config->item('system_icon').'</span>';
             $ui .= ' <b>' . $full_name . '</b>';
 
         }
