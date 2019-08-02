@@ -19,7 +19,7 @@ class Intents_model extends CI_Model
     {
 
         //What is required to create a new intent?
-        if (detect_missing_columns($insert_columns, array('in_outcome', 'in_type_entity_id', 'in_status_entity_id', 'in_verb_entity_id'))) {
+        if (detect_missing_columns($insert_columns, array('in_outcome', 'in_type_entity_id', 'in_status_entity_id', 'in_verb_entity_id'), $ln_miner_entity_id)) {
             return false;
         }
 
@@ -65,10 +65,9 @@ class Intents_model extends CI_Model
 
             //Ooopsi, something went wrong!
             $this->Links_model->ln_create(array(
-                'ln_parent_entity_id' => $ln_miner_entity_id,
                 'ln_content' => 'in_create() failed to create a new intent',
                 'ln_type_entity_id' => 4246, //Platform Bug Reports
-                'ln_miner_entity_id' => 1, //Shervin/Developer
+                'ln_miner_entity_id' => $ln_miner_entity_id,
                 'ln_metadata' => $insert_columns,
             ));
             return false;
@@ -223,7 +222,7 @@ class Intents_model extends CI_Model
             $this->Links_model->ln_create(array(
                 'ln_child_intent_id' => $id,
                 'ln_type_entity_id' => 4246, //Platform Bug Reports
-                'ln_miner_entity_id' => 1, //Shervin/Developer
+                'ln_miner_entity_id' => $ln_miner_entity_id,
                 'ln_content' => 'in_update() Failed to update',
                 'ln_metadata' => array(
                     'input' => $update_columns,

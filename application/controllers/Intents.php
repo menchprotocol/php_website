@@ -145,8 +145,7 @@ class Intents extends CI_Controller
 
         //Log Intent Viewed by User:
         $this->Links_model->ln_create(array(
-            'ln_miner_entity_id' => 1, //Shervin is always miner as Developer since Miner is required
-            'ln_parent_entity_id' => $session_en['en_id'], //if user was available, they are logged as parent entity
+            'ln_miner_entity_id' => ( isset($session_en['en_id']) ? intval($session_en['en_id']) : 0 ), //if user was available, they are logged as parent entity
             'ln_type_entity_id' => 7610, //Intent Viewed by User
             'ln_parent_intent_id' => $in_id,
             'ln_order' => fetch_cookie_order('7610_'.$in_id),

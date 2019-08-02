@@ -83,7 +83,6 @@ class Links_model extends CI_Model
             $this->Links_model->ln_create(array(
                 'ln_parent_link_id' => $id, //Link Reference
                 'ln_type_entity_id' => 4246, //Platform Bug Reports
-                'ln_miner_entity_id' => 1, //Shervin/Developer
                 'ln_content' => 'ln_update() Failed to update',
                 'ln_metadata' => array(
                     'input' => $update_columns,
@@ -145,9 +144,13 @@ class Links_model extends CI_Model
     function ln_create($insert_columns, $external_sync = false)
     {
 
-        if (detect_missing_columns($insert_columns, array('ln_type_entity_id', 'ln_miner_entity_id'))) {
-            return false;
-        } elseif(intval($insert_columns['ln_miner_entity_id']) < 1){
+        //Set some defaults:
+        if (!isset($insert_columns['ln_miner_entity_id']) || intval($insert_columns['ln_miner_entity_id']) < 1) {
+            $insert_columns['ln_miner_entity_id'] = 0;
+        }
+
+        //Only require link type:
+        if (detect_missing_columns($insert_columns, array('ln_type_entity_id'), $insert_columns['ln_miner_entity_id'])) {
             return false;
         }
 
@@ -188,7 +191,7 @@ class Links_model extends CI_Model
         }
 
         //Set credits:
-        $insert_columns['ln_credits'] = fetch_credits($insert_columns['ln_type_entity_id']);
+        $insert_columns['ln_credits'] = ( $insert_columns['ln_miner_entity_id'] > 0 ? fetch_credits($insert_columns['ln_type_entity_id']) : 0 );
 
         //Lets log:
         $this->db->insert('table_links', $insert_columns);
@@ -202,22 +205,8 @@ class Links_model extends CI_Model
             //This should not happen:
             $this->Links_model->ln_create(array(
                 'ln_type_entity_id' => 4246, //Platform Bug Reports
-                'ln_miner_entity_id' => 1, //Shervin/Developer
+                'ln_miner_entity_id' => $insert_columns['ln_miner_entity_id'],
                 'ln_content' => 'ln_create() Failed to create',
-                'ln_metadata' => array(
-                    'input' => $insert_columns,
-                ),
-            ));
-
-            return false;
-
-        } elseif($insert_columns['ln_miner_entity_id'] < 1){
-
-            //This should not happen:
-            $this->Links_model->ln_create(array(
-                'ln_type_entity_id' => 4246, //Platform Bug Reports
-                'ln_miner_entity_id' => 1, //Shervin/Developer
-                'ln_content' => 'ln_create() missing miner',
                 'ln_metadata' => array(
                     'input' => $insert_columns,
                 ),
@@ -257,7 +246,7 @@ class Links_model extends CI_Model
             $sub_en_ids = array();
             foreach(explode(',', one_two_explode('&var_en_subscriber_ids=','', $en_all_5967[$insert_columns['ln_type_entity_id']]['m_desc'])) as $subscriber_en_id){
 
-                //Do not email the miner themselves, as already they know:
+                //Do not email the miner themselves, as already they know about their own engagement:
                 if($insert_columns['ln_type_entity_id']==4246 /* Always report bugs */ || $subscriber_en_id != $insert_columns['ln_miner_entity_id']){
 
                     //Try fetching subscribers email:
@@ -283,13 +272,25 @@ class Links_model extends CI_Model
 
                 //yes, start drafting email to be sent to them...
 
-                //Fetch miner details:
-                $miner_ens = $this->Entities_model->en_fetch(array(
-                    'en_id' => $insert_columns['ln_miner_entity_id'],
-                ));
+                if($insert_columns['ln_miner_entity_id'] > 0){
+
+                    //Fetch miner details:
+                    $miner_ens = $this->Entities_model->en_fetch(array(
+                        'en_id' => $insert_columns['ln_miner_entity_id'],
+                    ));
+
+                    $miner_name = $miner_ens[0]['en_name'];
+
+                } else {
+
+                    //No miner:
+                    $miner_name = $this->config->item('system_name');
+
+                }
+
 
                 //Email Subject:
-                $subject = 'Notification: '  . $miner_ens[0]['en_name'] . ' ' . $en_all_5967[$insert_columns['ln_type_entity_id']]['m_name'];
+                $subject = 'Notification: '  . $miner_name . ' ' . $en_all_5967[$insert_columns['ln_type_entity_id']]['m_name'];
 
                 //Compose email body, start with link content:
                 $html_message = '<div>' . ( strlen($insert_columns['ln_content']) > 0 ? $insert_columns['ln_content'] : '<i>No link content</i>') . '</div><br />';

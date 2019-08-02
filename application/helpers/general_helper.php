@@ -35,7 +35,7 @@ function load_algolia($index_name)
     }
 }
 
-function detect_missing_columns($insert_columns, $required_columns)
+function detect_missing_columns($insert_columns, $required_columns, $ln_miner_entity_id)
 {
     //A function used to review and require certain fields when inserting new rows in DB
     foreach ($required_columns as $req_field) {
@@ -49,7 +49,7 @@ function detect_missing_columns($insert_columns, $required_columns)
                     'required_columns' => $required_columns,
                 ),
                 'ln_type_entity_id' => 4246, //Platform Bug Reports
-                'ln_miner_entity_id' => 1, //Shervin/Developer
+                'ln_miner_entity_id' => $ln_miner_entity_id,
             ));
 
             return true; //We have an issue
@@ -580,11 +580,10 @@ function upload_to_cdn($file_url, $ln_miner_entity_id = 0, $ln_metadata = null, 
 
                 $CI->Links_model->ln_create(array(
                     'ln_type_entity_id' => 4246, //Platform Bug Reports
-                    'ln_miner_entity_id' => 1, //Shervin/Developer
+                    'ln_miner_entity_id' => $ln_miner_entity_id,
                     'ln_content' => 'upload_to_cdn() Failed to create new entity from CDN file',
                     'ln_metadata' => array(
                         'file_url' => $file_url,
-                        'ln_miner_entity_id' => $ln_miner_entity_id,
                         'ln_metadata' => $ln_metadata,
                         'is_local' => ( $is_local ? 1 : 0 ),
                     ),
@@ -600,11 +599,10 @@ function upload_to_cdn($file_url, $ln_miner_entity_id = 0, $ln_metadata = null, 
 
             $CI->Links_model->ln_create(array(
                 'ln_type_entity_id' => 4246, //Platform Bug Reports
-                'ln_miner_entity_id' => 1, //Shervin/Developer
+                'ln_miner_entity_id' => $ln_miner_entity_id,
                 'ln_content' => 'upload_to_cdn() Failed to upload file to Mench CDN',
                 'ln_metadata' => array(
                     'file_url' => $file_url,
-                    'ln_miner_entity_id' => $ln_miner_entity_id,
                     'ln_metadata' => $ln_metadata,
                     'is_local' => ( $is_local ? 1 : 0 ),
                 ),
@@ -622,11 +620,10 @@ function upload_to_cdn($file_url, $ln_miner_entity_id = 0, $ln_metadata = null, 
         //Log error:
         $CI->Links_model->ln_create(array(
             'ln_type_entity_id' => 4246, //Platform Bug Reports
-            'ln_miner_entity_id' => 1, //Shervin/Developer
+            'ln_miner_entity_id' => $ln_miner_entity_id,
             'ln_content' => 'upload_to_cdn() Failed to load AWS S3 module',
             'ln_metadata' => array(
                 'file_url' => $file_url,
-                'ln_miner_entity_id' => $ln_miner_entity_id,
                 'ln_metadata' => $ln_metadata,
                 'is_local' => ( $is_local ? 1 : 0 ),
             ),

@@ -20,7 +20,7 @@ $url_part_1 = $this->uri->segment(1);
     <meta charset="utf-8"/>
     <link rel="icon" type="image/png" href="/img/bp_16.png">
     <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1"/>
-    <title><?= (isset($title) ? $title . ' | ' : '') . 'Mench' ?></title>
+    <title><?= (isset($title) ? $title . ' | ' : '') . $this->config->item('system_name') ?></title>
     <meta content='width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=0' name='viewport'/>
     <?php $this->load->view('view_shared/global_js_css'); ?>
 </head>
@@ -34,7 +34,7 @@ $url_part_1 = $this->uri->segment(1);
         <!-- Brand and toggle get grouped for better mobile display -->
         <div class="navbar-header">
             <a class="navbar-brand tag-manager-home-link" href="/"><img src="/img/bp_128.png" /><span
-                        style="text-transform: lowercase; color: #2f2739;">Mench</span></a>
+                        style="text-transform: lowercase; color: #2f2739;"><?= $this->config->item('system_name') ?></span></a>
         </div>
 
         <div class="collapse navbar-collapse">

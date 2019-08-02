@@ -34,6 +34,7 @@ class User_app extends CI_Controller
         $this->load->view('view_user_app/signin', array(
             'referrer_in_id' => intval($in_id),
             'referrer_en_id' => intval($referrer_en_id),
+            'session_en' => $this->session->userdata('user'),
         ));
         $this->load->view('view_user_app/user_app_footer', array(
             'hide_footer' => 1,
@@ -121,8 +122,7 @@ class User_app extends CI_Controller
             $this->Links_model->ln_create(array(
                 'ln_content' => 'User failed to login using non-Chrome browser',
                 'ln_type_entity_id' => 7504, //Admin Review Required
-                'ln_child_entity_id' => $ens[0]['en_id'],
-                'ln_miner_entity_id' => 1, //Shervin/Developer
+                'ln_miner_entity_id' => $ens[0]['en_id'],
             ));
 
             return echo_json(array(
@@ -193,8 +193,7 @@ class User_app extends CI_Controller
                 $this->Links_model->ln_create(array(
                     'ln_content' => 'Unable to locate your companies intention. Make sure user logged in with Chrome or get back to them',
                     'ln_type_entity_id' => 7504, //Admin Review Required
-                    'ln_child_entity_id' => $ens[0]['en_id'],
-                    'ln_miner_entity_id' => 1, //Shervin/Developer
+                    'ln_miner_entity_id' => $ens[0]['en_id'],
                 ));
 
                 return echo_json(array(
@@ -354,6 +353,76 @@ class User_app extends CI_Controller
 
     }
 
+    function signin_new_account_from_name(){
+
+        if (!isset($_POST['referrer_in_id']) || !isset($_POST['referrer_en_id'])) {
+            return echo_json(array(
+                'status' => 0,
+                'message' => 'Missing core data',
+            ));
+        } elseif (!isset($_POST['input_email']) || !filter_var($_POST['input_email'], FILTER_VALIDATE_EMAIL)) {
+            return echo_json(array(
+                'status' => 0,
+                'message' => 'Invalid email address',
+            ));
+        } elseif (!isset($_POST['en_name']) || strlen($_POST['en_name'])<1) {
+            return echo_json(array(
+                'status' => 0,
+                'message' => 'Missing name',
+            ));
+        }
+
+        //Prep inputs & validate further:
+        $_POST['input_email'] =  trim(strtolower($_POST['input_email']));
+        $_POST['en_name'] = trim($_POST['en_name']);
+        $name_parts = explode(' ', trim($_POST['en_name']));
+        if (strlen($_POST['en_name'])<5) {
+            return echo_json(array(
+                'status' => 0,
+                'message' => 'Full name must longer than 5 characters',
+            ));
+        } elseif (strlen($name_parts[0])<2 || !isset($name_parts[1]) || strlen($name_parts[1])<2) {
+            return echo_json(array(
+                'status' => 0,
+                'message' => 'Full name must have a space between your first name and last name which are each more than 2 characters',
+            ));
+        } elseif (strlen($_POST['en_name'])>$this->config->item('en_name_max_length')) {
+            return echo_json(array(
+                'status' => 0,
+                'message' => 'Your full must be less than '.$this->config->item('en_name_max_length').' characters.',
+            ));
+        }
+
+        //All good, create their account:
+
+
+        //This is a new account, send email to complete profile:
+        $setpassword_url = 'https://mench.com/newaccount/' . $invite_link['ln_id'] . '?email='.$_POST['input_email'];
+        $preset_intention = ( count($referrer_ins) > 0 ? ' to '.echo_in_outcome($referrer_ins[0]['in_outcome'], true) : '' );
+
+
+
+        ##Email Subject
+        $subject = 'Join ' . $this->config->item('system_name') . $preset_intention;
+
+        ##Email Body
+        $html_message = '<div>Hi '.$name_parts[0].' 👋</div><br />';
+        $html_message .= '<div>I\'m Mench, a personal assistant on a mission to connect top talent to their dream jobs.</div><br />';
+        $html_message .= '<div>You can complete your registration'.$preset_intention.' using this link:</div><br />';
+        $html_message .= '<div><a href="'.$setpassword_url.'" target="_blank">' . $setpassword_url . '</a></div>';
+        $html_message .= '<br />';
+        $html_message .= '<div>If you did not make this request you can ignore this email.</div><br />';
+        $html_message .= '<br />';
+        $html_message .= '<div>Cheers,</div><br />';
+        $html_message .= '<div>Team Mench</div>';
+        $html_message .= '<div><a href="https://mench.com?utm_source=mench&utm_medium=email&utm_campaign=signup" target="_blank">mench.com</a></div>';
+
+        //Send email:
+        $this->Communication_model->user_received_emails(array($_POST['input_email']), $subject, $html_message);
+
+
+
+    }
 
     function singin_check_email(){
 
@@ -411,7 +480,7 @@ class User_app extends CI_Controller
                 $setpassword_url = 'https://mench.com/resetpassword/' . $reset_link['ln_id'] . '?email='.$_POST['input_email'];
 
                 ##Email Subject
-                $subject = 'Reset your Mench Password';
+                $subject = 'Reset your '.$this->config->item('system_name').' Password';
 
                 ##Email Body
                 $html_message = '<div>Hi '.one_two_explode('',' ',$user_emails[0]['en_name']).' :) </div><br />';
@@ -442,33 +511,9 @@ class User_app extends CI_Controller
             $invite_link = $this->Links_model->ln_create(array(
                 'ln_type_entity_id' => 7562, //User Signin on Website New Email
                 'ln_content' => $_POST['input_email'],
-                'ln_miner_entity_id' => 1, //Shervin/Developer
                 'ln_parent_intent_id' => intval($_POST['referrer_in_id']),
                 'ln_parent_entity_id' => intval($_POST['referrer_en_id']),
             ));
-
-            //This is a new email, send invitation to join:
-            $setpassword_url = 'https://mench.com/newaccount/' . $invite_link['ln_id'] . '?email='.$_POST['input_email'];
-            $preset_intention = ( count($referrer_ins) > 0 ? ' to '.echo_in_outcome($referrer_ins[0]['in_outcome'], true) : '' );
-
-            ##Email Subject
-            $subject = 'Join Mench' . $preset_intention;
-
-            ##Email Body
-            $html_message = '<div>Welcome :) </div><br />';
-            $html_message .= '<div>I\'m Mench, a personal assistant focused on connecting top talent to their dream jobs.</div><br />';
-            $html_message .= '<div>You can complete your registration'.$preset_intention.' using this link:</div><br />';
-            $html_message .= '<div><a href="'.$setpassword_url.'" target="_blank">' . $setpassword_url . '</a></div>';
-            $html_message .= '<br />';
-            $html_message .= '<div>If you did not make this request you can ignore this email.</div><br />';
-            $html_message .= '<br />';
-            $html_message .= '<div>Cheers,</div><br />';
-            $html_message .= '<div>Team Mench</div>';
-            $html_message .= '<div><a href="https://mench.com?utm_source=mench&utm_medium=email&utm_campaign=signup" target="_blank">mench.com</a></div>';
-
-            //Send email:
-            $this->Communication_model->user_received_emails(array($_POST['input_email']), $subject, $html_message);
-
 
             return echo_json(array(
                 'status' => 1,
@@ -476,7 +521,6 @@ class User_app extends CI_Controller
                 'login_en_id' => 0,
                 'clean_input_email' => $_POST['input_email'],
             ));
-
 
         }
     }

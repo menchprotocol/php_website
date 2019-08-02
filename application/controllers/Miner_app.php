@@ -353,6 +353,7 @@ class Miner_app extends CI_Controller
         $top = 10;
         $filters = array(
             'ln_credits >' => 0,
+            'ln_miner_entity_id >' => 0, //Must have a miner
             'ln_miner_entity_id IN ('.join(',', $certified_miners_en_ids).')' => null,
         );
         if(!is_null($days_ago)){
@@ -391,6 +392,7 @@ class Miner_app extends CI_Controller
         $top = 10;
         $filters = array(
             'ln_credits >' => 0,
+            'ln_miner_entity_id >' => 0, //Must have a miner
             'ln_miner_entity_id NOT IN ('.join(',', $certified_miners_en_ids).')' => null,
         );
         if(!is_null($days_ago)){

@@ -389,7 +389,7 @@ if(!$action) {
             $fixed++;
             $this->Intents_model->in_update($in['in_id'], array(
                 'in_verb_entity_id' => $in_verb_entity_id,
-            ), true, 1 /* Shervin the Developer */);
+            ), true, $session_en['en_id']);
 
         }
     }

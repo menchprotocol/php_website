@@ -546,7 +546,6 @@ class Links extends CI_Controller
             $this->Links_model->ln_create(array(
                 'ln_content' => 'cron__clean_metadatas() removed '.count($invalid_variables).' unknown variables from intent/entity metadatas. To prevent this from happening, register the variables via Variables Names @6232',
                 'ln_type_entity_id' => 4246, //Platform Bug Reports
-                'ln_miner_entity_id' => 1, //Shervin/Developer
                 'ln_parent_entity_id' => 6232, //Variables Names
                 'ln_metadata' => $ln_metadata,
             ));

@@ -3,7 +3,6 @@ $en_all_7369 = $this->config->item('en_all_7369');
 $en_all_6225 = $this->config->item('en_all_6225');
 $this_attempt = array(
     'ln_type_entity_id' => ( $referrer_in_id > 0 ? 7560 /* User Signin Intent Channel Choose */ : 7561 /* User Signin on Website */ ),
-    'ln_miner_entity_id' => 1, //Shervin/Developer
     'ln_parent_intent_id' => $referrer_in_id,
     'ln_parent_entity_id' => $referrer_en_id,
 );
@@ -49,17 +48,18 @@ if(count($current_sign_in_attempt) == 0){
 <script>
     var referrer_in_id = <?= intval($referrer_in_id) ?>;
     var referrer_en_id = <?= intval($referrer_en_id) ?>;
+    var session_en_id = <?= ( isset($session_en['en_id']) ? intval($session_en['en_id']) : 0 ) ?>;
     var referrer_url = '<?= @$_GET['url'] ?>';
     var channel_choice_messenger = {
         ln_type_entity_id: 7558, //User Signin with Messenger Choice
-        ln_miner_entity_id: 1, //Shervin/Developer
+        ln_miner_entity_id: session_en_id,
         ln_parent_intent_id: <?= intval($referrer_in_id) ?>,
         ln_parent_entity_id: <?= intval($referrer_en_id) ?>,
         ln_parent_link_id: <?= $current_sign_in_attempt['ln_id'] ?>,
     };
     var channel_choice_website = {
         ln_type_entity_id: 7559, //User Signin with Website Choice
-        ln_miner_entity_id: 1, //Shervin/Developer
+        ln_miner_entity_id: session_en_id,
         ln_parent_intent_id: <?= intval($referrer_in_id) ?>,
         ln_parent_entity_id: <?= intval($referrer_en_id) ?>,
         ln_parent_link_id: <?= $current_sign_in_attempt['ln_id'] ?>,

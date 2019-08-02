@@ -11,7 +11,7 @@ defined('BASEPATH') OR exit('No direct script access allowed');
  *
  */
 
-//Generated 2019-08-02 09:24:25 PST
+//Generated 2019-08-02 11:53:05 PST
 
 //Intent Subscription Setting:
 $config['en_ids_7596'] = array(7597,7598,7599);
@@ -1287,37 +1287,37 @@ $config['en_all_6805'] = array(
         'm_icon' => '<i class="fas fa-microphone"></i>',
         'm_name' => 'Expert Podcasts',
         'm_desc' => '',
-        'm_parents' => array(6805,3000),
+        'm_parents' => array(7614,6805,3000),
     ),
     3005 => array(
         'm_icon' => '<i class="fas fa-book"></i>',
         'm_name' => 'Expert Books',
         'm_desc' => '',
-        'm_parents' => array(6805,3000),
+        'm_parents' => array(7614,6805,3000),
     ),
     3147 => array(
         'm_icon' => '<i class="fas fa-presentation"></i>',
         'm_name' => 'Expert Courses',
         'm_desc' => '',
-        'm_parents' => array(6805,3000),
+        'm_parents' => array(7614,6805,3000),
     ),
     3192 => array(
         'm_icon' => '<i class="fas fa-compact-disc"></i>',
         'm_name' => 'Expert Software',
         'm_desc' => '',
-        'm_parents' => array(6805,3000),
+        'm_parents' => array(7614,6805,3000),
     ),
     4763 => array(
         'm_icon' => '<i class="fas fa-bullhorn"></i>',
         'm_name' => 'Expert Channels',
         'm_desc' => '',
-        'm_parents' => array(6805,3000),
+        'm_parents' => array(7614,6805,3000),
     ),
     4883 => array(
         'm_icon' => '<i class="fas fa-concierge-bell"></i>',
         'm_name' => 'Expert Services',
         'm_desc' => '',
-        'm_parents' => array(6805,3000),
+        'm_parents' => array(7614,6805,3000),
     ),
 );
 
@@ -1326,37 +1326,37 @@ $config['en_ids_6794'] = array(6678,6679,6680,6681,6682,6683);
 $config['en_all_6794'] = array(
     6678 => array(
         'm_icon' => '<i class="far fa-image"></i>',
-        'm_name' => 'Intent Image',
+        'm_name' => 'Image',
         'm_desc' => '',
         'm_parents' => array(7585,6144,6794,6192),
     ),
     6679 => array(
         'm_icon' => '<i class="far fa-video"></i>',
-        'm_name' => 'Intent Video',
+        'm_name' => 'Video',
         'm_desc' => '',
         'm_parents' => array(7585,6144,6794,6192),
     ),
     6680 => array(
         'm_icon' => '<i class="far fa-microphone"></i>',
-        'm_name' => 'Intent Audio',
+        'm_name' => 'Audio',
         'm_desc' => '',
         'm_parents' => array(7585,6144,6794,6192),
     ),
     6681 => array(
         'm_icon' => '<i class="far fa-paperclip"></i>',
-        'm_name' => 'Intent File',
+        'm_name' => 'File',
         'm_desc' => '',
         'm_parents' => array(7585,6144,6794,6192),
     ),
     6682 => array(
         'm_icon' => '<i class="far fa-link"></i>',
-        'm_name' => 'Intent URL',
+        'm_name' => 'URL',
         'm_desc' => '',
         'm_parents' => array(7585,6144,6794,6192),
     ),
     6683 => array(
         'm_icon' => '<i class="far fa-keyboard"></i>',
-        'm_name' => 'Intent Text',
+        'm_name' => 'Text',
         'm_desc' => '',
         'm_parents' => array(7585,6144,6794,6192),
     ),
@@ -4113,60 +4113,60 @@ $config['en_all_3000'] = array(
         'm_icon' => '<i class="fas fa-newspaper"></i>',
         'm_name' => 'Expert Articles',
         'm_desc' => '',
-        'm_parents' => array(3000),
+        'm_parents' => array(7614,3000),
     ),
     2998 => array(
         'm_icon' => '<i class="fas fa-film"></i>',
         'm_name' => 'Expert Videos',
         'm_desc' => '',
-        'm_parents' => array(3000),
+        'm_parents' => array(7614,3000),
     ),
     2999 => array(
         'm_icon' => '<i class="fas fa-microphone"></i>',
         'm_name' => 'Expert Podcasts',
         'm_desc' => '',
-        'm_parents' => array(6805,3000),
+        'm_parents' => array(7614,6805,3000),
     ),
     3005 => array(
         'm_icon' => '<i class="fas fa-book"></i>',
         'm_name' => 'Expert Books',
         'm_desc' => '',
-        'm_parents' => array(6805,3000),
+        'm_parents' => array(7614,6805,3000),
     ),
     3147 => array(
         'm_icon' => '<i class="fas fa-presentation"></i>',
         'm_name' => 'Expert Courses',
         'm_desc' => '',
-        'm_parents' => array(6805,3000),
+        'm_parents' => array(7614,6805,3000),
     ),
     3192 => array(
         'm_icon' => '<i class="fas fa-compact-disc"></i>',
         'm_name' => 'Expert Software',
         'm_desc' => '',
-        'm_parents' => array(6805,3000),
+        'm_parents' => array(7614,6805,3000),
     ),
     4446 => array(
         'm_icon' => '<i class="fas fa-tachometer"></i>',
         'm_name' => 'Expert Assessments',
         'm_desc' => '',
-        'm_parents' => array(3000),
+        'm_parents' => array(7614,3000),
     ),
     4763 => array(
         'm_icon' => '<i class="fas fa-bullhorn"></i>',
         'm_name' => 'Expert Channels',
         'm_desc' => '',
-        'm_parents' => array(6805,3000),
+        'm_parents' => array(7614,6805,3000),
     ),
     4883 => array(
         'm_icon' => '<i class="fas fa-concierge-bell"></i>',
         'm_name' => 'Expert Services',
         'm_desc' => '',
-        'm_parents' => array(6805,3000),
+        'm_parents' => array(7614,6805,3000),
     ),
     5948 => array(
         'm_icon' => '<i class="fas fa-file-invoice"></i>',
         'm_name' => 'Expert Templates',
         'm_desc' => '',
-        'm_parents' => array(3000),
+        'm_parents' => array(7614,3000),
     ),
 );

@@ -63,7 +63,7 @@
                 </ul>
             </nav>
 
-            <div class="pfooter" style="font-size:0.8em;"><?= '<img src="/img/mench_white.png" />Mench v' . $this->config->item('app_version') ?></div>
+            <div class="pfooter" style="font-size:0.8em;"><?= $this->config->item('system_icon').$this->config->item('system_name').' v' . $this->config->item('app_version') ?></div>
 
         </div>
     </footer>
@@ -73,7 +73,7 @@
     <footer class="footer" style="margin:0 0 50px 0;">
         <div class="container">
             <div class="pfooter"
-                 style="font-size:0.8em;"><?= '<img src="/img/mench_white.png" />Mench v' . $this->config->item('app_version') ?></div>
+                 style="font-size:0.8em;"><?= $this->config->item('system_icon').$this->config->item('system_name').' v' . $this->config->item('app_version') ?></div>
         </div>
     </footer>
 

@@ -79,9 +79,8 @@ class Communication_model extends CI_Model
             //Log Error Link:
             $this->Links_model->ln_create(array(
                 'ln_type_entity_id' => 4246, //Platform Bug Reports
-                'ln_miner_entity_id' => 1, //Shervin/Developer
+                'ln_miner_entity_id' => (isset($recipient_en['en_id']) ? $recipient_en['en_id'] : 0),
                 'ln_content' => 'dispatch_validate_message() returned error [' . $msg_dispatching['message'] . '] for input message [' . $input_message . ']',
-                'ln_child_entity_id' => (isset($recipient_en['en_id']) ? $recipient_en['en_id'] : 0),
                 'ln_metadata' => array(
                     'input_message' => $input_message,
                     'recipient_en' => $recipient_en,
@@ -112,9 +111,8 @@ class Communication_model extends CI_Model
                     //Ooopsi, we did! Log error Transcation:
                     $this->Links_model->ln_create(array(
                         'ln_type_entity_id' => 4246, //Platform Bug Reports
-                        'ln_miner_entity_id' => 1, //Shervin/Developer
+                        'ln_miner_entity_id' => (isset($recipient_en['en_id']) ? $recipient_en['en_id'] : 0),
                         'ln_content' => 'dispatch_message() failed to send message via Facebook Graph API. See Metadata log for more details.',
-                        'ln_child_entity_id' => (isset($recipient_en['en_id']) ? $recipient_en['en_id'] : 0),
                         'ln_metadata' => array(
                             'input_message' => $input_message,
                             'output_message' => $output_message['message_body'],
@@ -883,9 +881,8 @@ class Communication_model extends CI_Model
                         'quick_replies' => $quick_replies,
                     ),
                     'ln_type_entity_id' => 4246, //Platform Bug Reports
-                    'ln_miner_entity_id' => 1, //Shervin/Developer
+                    'ln_miner_entity_id' => $recipient_en['en_id'],
                     'ln_parent_entity_id' => $message_type_en_id,
-                    'ln_child_entity_id' => $recipient_en['en_id'],
                     'ln_child_intent_id' => $message_in_id,
                 ));
 
@@ -1154,7 +1151,6 @@ class Communication_model extends CI_Model
             $this->Links_model->ln_create(array(
                 'ln_content' => $message_error,
                 'ln_type_entity_id' => 4246, //Platform Bug Reports
-                'ln_miner_entity_id' => 1, //Shervin/Developer
                 'ln_metadata' => $ln_metadata,
             ));
 
@@ -2220,9 +2216,8 @@ class Communication_model extends CI_Model
                                     'ln_content' => 'digest_message_payload() for custom response ['.$fb_received_message.'] returned error ['.$quick_reply_results['message'].']',
                                     'ln_metadata' => $ln_metadata,
                                     'ln_type_entity_id' => 4246, //Platform Bug Reports
-                                    'ln_miner_entity_id' => 1, //Shervin/Developer
+                                    'ln_miner_entity_id' => $en['en_id'],
                                     'ln_parent_link_id' => $last_quick_replies[0]['ln_id'],
-                                    'ln_child_entity_id' => $en['en_id'],
                                 ));
 
                             } else {

@@ -20,10 +20,9 @@ $(document).ready(function () {
 
             //Log this section:
             js_ln_create({
-                ln_miner_entity_id: 1, //Shervin/Developer
-                ln_parent_entity_id: session_en_id, //If we have a user we log here
+                ln_miner_entity_id: session_en_id, //If we have a user we log here
                 ln_type_entity_id: 7611, //Intent User Engage
-                ln_child_entity_id: section_en_id, //The section this user engaged with
+                ln_parent_entity_id: section_en_id, //The section this user engaged with
                 ln_parent_intent_id: in_focus_id,
                 ln_child_intent_id: 0, //Since they just opened the heading, not a sub-section of Steps Overview
                 ln_order: '7611_' + section_en_id + '_' + in_focus_id, //The section for this intent
@@ -41,10 +40,9 @@ $(document).ready(function () {
 
             //Log this section:
             js_ln_create({
-                ln_miner_entity_id: 1, //Shervin/Developer
-                ln_parent_entity_id: session_en_id, //If we have a user we log here
+                ln_miner_entity_id: session_en_id, //If we have a user we log here
                 ln_type_entity_id: 7611, //Intent User Engage
-                ln_child_entity_id: section_en_id, //The section this user engaged with
+                ln_parent_entity_id: section_en_id, //The section this user engaged with
                 ln_parent_intent_id: in_focus_id,
                 ln_child_intent_id: child_in_id,
                 ln_order: section_en_id + '_' + child_in_id + '__' + in_focus_id,
@@ -58,9 +56,9 @@ $(document).ready(function () {
 
         //Log this section:
         js_ln_create({
-            ln_miner_entity_id: 1, //Shervin/Developer
-            ln_parent_entity_id: session_en_id, //If we have a user we log here
+            ln_miner_entity_id: session_en_id, //If we have a user we log here
             ln_type_entity_id: 7611, //Intent User Engage
+            ln_parent_entity_id: 7614, //Expert Overview
             ln_child_entity_id: section_en_id, //The section this user engaged with
             ln_parent_intent_id: in_focus_id,
             ln_order: section_en_id + '__' + in_focus_id,
@@ -74,9 +72,9 @@ $(document).ready(function () {
 
         //Log this section:
         js_ln_create({
-            ln_miner_entity_id: 1, //Shervin/Developer
-            ln_parent_entity_id: session_en_id, //If we have a user we log here
+            ln_miner_entity_id: session_en_id, //If we have a user we log here
             ln_type_entity_id: 7611, //Intent User Engage
+            ln_parent_entity_id: 7614, //Expert Overview
             ln_child_entity_id: section_en_id, //The section this user engaged with
             ln_parent_intent_id: in_focus_id,
             ln_order: section_en_id + '__' + in_focus_id,

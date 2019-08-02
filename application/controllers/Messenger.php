@@ -152,7 +152,6 @@ class Messenger extends CI_Controller
                 'ln_content' => 'facebook_webhook() Function call object value is not equal to [page], which is what was expected.',
                 'ln_metadata' => $ln_metadata,
                 'ln_type_entity_id' => 4246, //Platform Bug Reports
-                'ln_miner_entity_id' => 1, //Shervin/Developer
             ));
             return print_r('unknown page');
         }
@@ -170,7 +169,6 @@ class Messenger extends CI_Controller
                     'ln_content' => 'facebook_webhook() call missing messaging Array().',
                     'ln_metadata' => $ln_metadata,
                     'ln_type_entity_id' => 4246, //Platform Bug Reports
-                    'ln_miner_entity_id' => 1, //Shervin/Developer
                 ));
                 continue;
             }
@@ -289,14 +287,14 @@ class Messenger extends CI_Controller
 
                         //Digest quick reply:
                         $quick_reply_results = $this->Communication_model->digest_message_payload($en, $im['message']['quick_reply']['payload']);
+
                         if(!$quick_reply_results['status']){
                             //There was an error, inform admin:
                             $this->Links_model->ln_create(array(
                                 'ln_content' => 'digest_message_payload() for message returned error ['.$quick_reply_results['message'].']',
                                 'ln_metadata' => $ln_metadata,
                                 'ln_type_entity_id' => 4246, //Platform Bug Reports
-                                'ln_miner_entity_id' => 1, //Shervin/Developer
-                                'ln_child_entity_id' => $en['en_id'],
+                                'ln_miner_entity_id' => $en['en_id'],
                             ));
 
                         }
@@ -415,7 +413,7 @@ class Messenger extends CI_Controller
                                 $this->Links_model->ln_create(array(
                                     'ln_content' => 'api_webhook() received a message type that is not yet implemented: ['.$att['type'].']',
                                     'ln_type_entity_id' => 4246, //Platform Bug Reports
-                                    'ln_miner_entity_id' => 1, //Shervin/Developer
+                                    'ln_miner_entity_id' => $en['en_id'],
                                     'ln_metadata' => array(
                                         'ln_data' => $ln_data,
                                         'ln_metadata' => $ln_metadata,
@@ -438,7 +436,7 @@ class Messenger extends CI_Controller
                                 $this->Links_model->ln_create(array(
                                     'ln_content' => 'api_webhook() received a message type that is not yet implemented: ['.$att['type'].']',
                                     'ln_type_entity_id' => 4246, //Platform Bug Reports
-                                    'ln_miner_entity_id' => 1, //Shervin/Developer
+                                    'ln_miner_entity_id' => $en['en_id'],
                                     'ln_metadata' => array(
                                         'ln_data' => $ln_data,
                                         'ln_metadata' => $ln_metadata,
@@ -456,7 +454,7 @@ class Messenger extends CI_Controller
                         //Ooooopsi, this seems to be an unknown message type:
                         $this->Links_model->ln_create(array(
                             'ln_type_entity_id' => 4246, //Platform Bug Reports
-                            'ln_miner_entity_id' => 1, //Shervin/Developer
+                            'ln_miner_entity_id' => $en['en_id'],
                             'ln_content' => 'facebook_webhook() Received unknown message type! Analyze metadata for more details',
                             'ln_metadata' => $ln_metadata,
                         ));
@@ -501,7 +499,7 @@ class Messenger extends CI_Controller
                                 $this->Links_model->ln_create(array(
                                     'ln_content' => 'api_webhook() found multiple matching submission requirements for the same user! Time to program the view with more options.',
                                     'ln_type_entity_id' => 4246, //Platform Bug Reports
-                                    'ln_miner_entity_id' => 1, //Shervin/Developer
+                                    'ln_miner_entity_id' => $en['en_id'],
                                     'ln_metadata' => array(
                                         'ln_data' => $ln_data,
                                         'pending_matches' => $pending_matches,
@@ -637,8 +635,7 @@ class Messenger extends CI_Controller
                                 'ln_content' => 'digest_message_payload() for postback/referral returned error ['.$quick_reply_results['message'].']',
                                 'ln_metadata' => $ln_metadata,
                                 'ln_type_entity_id' => 4246, //Platform Bug Reports
-                                'ln_miner_entity_id' => 1, //Shervin/Developer
-                                'ln_child_entity_id' => $en['en_id'],
+                                'ln_miner_entity_id' => $en['en_id'],
                             ));
 
                         }
@@ -698,7 +695,6 @@ class Messenger extends CI_Controller
                         'ln_content' => 'facebook_webhook() received unrecognized webhook call',
                         'ln_metadata' => $ln_metadata,
                         'ln_type_entity_id' => 4246, //Platform Bug Reports
-                        'ln_miner_entity_id' => 1, //Shervin/Developer
                     ));
 
                 }
@@ -917,7 +913,6 @@ class Messenger extends CI_Controller
                 //Log error:
                 $this->Links_model->ln_create(array(
                     'ln_type_entity_id' => 4246, //Platform Bug Reports
-                    'ln_miner_entity_id' => 1, //Shervin/Developer
                     'ln_parent_link_id' => $ln['ln_id'],
                     'ln_content' => 'cron__sync_attachments() Failed to sync attachment to Facebook API: ' . (isset($result['ln_metadata']['result']['error']['message']) ? $result['ln_metadata']['result']['error']['message'] : 'Unknown Error'),
                     'ln_metadata' => array(

@@ -5,7 +5,7 @@ defined('BASEPATH') OR exit('No direct script access allowed');
 /*
  *
  * Global variables used throughout the platform.
- * Example: $this->config->item('')
+ * Example: $this->config->item('system_icon')
  *
  */
 
@@ -15,7 +15,9 @@ date_default_timezone_set('America/Los_Angeles');
 
 
 //App Functionality:
-$config['app_version']              = '0.9791'; //Cache buster for static JS/CSS files, so needs to be updated if you update static files
+$config['app_version']              = '0.9792'; //Cache buster for static JS/CSS files, so needs to be updated if you update static files
+$config['system_name']              = 'Mench'; //Used for example when a link has no miner
+$config['system_icon']              = '<img src="/img/mench_white.png" />'; //Used for example when a link has no miner
 $config['app_enable_algolia']       = true; //May need to turn off if/when we reach monthly quota of 50k calls
 $config['max_file_mb_size']         = 25; //Server setting is 32MB
 $config['items_per_page']           = 100; //The limit of how many items should be loaded per page/section

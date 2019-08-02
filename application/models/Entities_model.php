@@ -21,7 +21,7 @@ class Entities_model extends CI_Model
     {
 
         //What is required to create a new intent?
-        if (detect_missing_columns($insert_columns, array('en_status_entity_id', 'en_name'))) {
+        if (detect_missing_columns($insert_columns, array('en_status_entity_id', 'en_name'), $ln_miner_entity_id)) {
             return false;
         }
 
@@ -72,7 +72,7 @@ class Entities_model extends CI_Model
                 'ln_parent_entity_id' => $ln_miner_entity_id,
                 'ln_content' => 'en_create() failed to create a new entity',
                 'ln_type_entity_id' => 4246, //Platform Bug Reports
-                'ln_miner_entity_id' => 1, //Shervin/Developer
+                'ln_miner_entity_id' => $ln_miner_entity_id,
                 'ln_metadata' => $insert_columns,
             ));
             return false;
@@ -205,7 +205,7 @@ class Entities_model extends CI_Model
             $this->Links_model->ln_create(array(
                 'ln_child_entity_id' => $id,
                 'ln_type_entity_id' => 4246, //Platform Bug Reports
-                'ln_miner_entity_id' => 1, //Shervin/Developer
+                'ln_miner_entity_id' => $ln_miner_entity_id,
                 'ln_content' => 'en_update() Failed to update',
                 'ln_metadata' => array(
                     'input' => $update_columns,
@@ -638,7 +638,7 @@ class Entities_model extends CI_Model
                     $this->Links_model->ln_create(array(
                         'ln_content' => 'en_sync_url['.$url.'] FAILED to en_verify_create['.$page_title.'] with error: '.$added_en['message'],
                         'ln_type_entity_id' => 4246, //Platform Bug Reports
-                        'ln_miner_entity_id' => 1, //Shervin/Developer
+                        'ln_miner_entity_id' => $ln_miner_entity_id,
                         'ln_parent_entity_id' => $domain_entity['en_domain']['en_id'],
                         'ln_metadata' => array(
                             'url' => $url,
@@ -743,7 +743,6 @@ class Entities_model extends CI_Model
             $this->Links_model->ln_create(array(
                 'ln_content' => 'en_search_match() found [' . count($matching_entities) . '] results as the children of en_id=[' . $en_parent_id . '] that had the value of [' . $value . '].',
                 'ln_type_entity_id' => 4246, //Platform Bug Reports
-                'ln_miner_entity_id' => 1, //Shervin/Developer
                 'ln_child_entity_id' => $en_parent_id,
             ));
 
@@ -969,7 +968,6 @@ class Entities_model extends CI_Model
             $this->Links_model->ln_create(array(
                 'ln_content' => 'en_psid_check() got called without a valid Facebook $psid variable',
                 'ln_type_entity_id' => 4246, //Platform Bug Reports
-                'ln_miner_entity_id' => 1, //Shervin/Developer
             ));
             return false;
         }
@@ -1054,7 +1052,7 @@ class Entities_model extends CI_Model
                 'ln_type_entity_id' => 7504, //Admin Review Required
                 'ln_child_entity_id' => $entity_new['en_id'],
                 'ln_parent_entity_id' => $duplicate_ens[0]['en_id'],
-                'ln_miner_entity_id' => 1, //Shervin/Developer
+                'ln_miner_entity_id' => $ln_miner_entity_id,
             ));
         }
 
@@ -1081,7 +1079,6 @@ class Entities_model extends CI_Model
             $this->Links_model->ln_create(array(
                 'ln_content' => 'en_psid_add() got called without a valid Facebook $psid variable',
                 'ln_type_entity_id' => 4246, //Platform Bug Reports
-                'ln_miner_entity_id' => 1, //Shervin/Developer
             ));
             return false;
         }

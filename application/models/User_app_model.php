@@ -245,11 +245,10 @@ class User_app_model extends CI_Model
         ));
         if(count($ins) < 1){
             $this->Links_model->ln_create(array(
-                'ln_child_entity_id' => $en_id,
                 'ln_child_intent_id' => $in_id,
                 'ln_content' => 'actionplan_step_skip_initiate() did not locate the published intent',
                 'ln_type_entity_id' => 4246, //Platform Bug Reports
-                'ln_miner_entity_id' => 1, //Shervin/Developer
+                'ln_miner_entity_id' => $en_id,
             ));
             return false;
         }
@@ -297,8 +296,7 @@ class User_app_model extends CI_Model
             $this->Links_model->ln_create(array(
                 'ln_content' => 'actionplan_step_skip_apply() failed to locate published intent',
                 'ln_type_entity_id' => 4246, //Platform Bug Reports
-                'ln_miner_entity_id' => 1, //Shervin/Developer
-                'ln_parent_entity_id' => $en_id,
+                'ln_miner_entity_id' => $en_id,
                 'ln_parent_intent_id' => $in_id,
             ));
             return 0;
@@ -311,8 +309,7 @@ class User_app_model extends CI_Model
             $this->Links_model->ln_create(array(
                 'ln_content' => 'actionplan_step_skip_apply() failed to locate metadata common steps',
                 'ln_type_entity_id' => 4246, //Platform Bug Reports
-                'ln_miner_entity_id' => 1, //Shervin/Developer
-                'ln_parent_entity_id' => $en_id,
+                'ln_miner_entity_id' => $en_id,
                 'ln_parent_intent_id' => $in_id,
             ));
             return 0;
@@ -419,11 +416,10 @@ class User_app_model extends CI_Model
 
             //Log error:
             $this->Links_model->ln_create(array(
-                'ln_child_entity_id' => $en_id,
                 'ln_parent_intent_id' => $in_id,
                 'ln_content' => 'actionplan_intention_add() was about to add an intention that was not public',
                 'ln_type_entity_id' => 4246, //Platform Bug Reports
-                'ln_miner_entity_id' => 1, //Shervin/Developer
+                'ln_miner_entity_id' => $en_id,
             ));
 
             return false;
@@ -440,11 +436,10 @@ class User_app_model extends CI_Model
 
             //Oooops this already exists in the Action Plan:
             $this->Links_model->ln_create(array(
-                'ln_child_entity_id' => $en_id,
                 'ln_parent_intent_id' => $in_id,
                 'ln_content' => 'actionplan_intention_add() blocked the addition of a duplicate intention to the Action Plan',
                 'ln_type_entity_id' => 4246, //Platform Bug Reports
-                'ln_miner_entity_id' => 1, //Shervin/Developer
+                'ln_miner_entity_id' => $en_id,
             ));
 
             return false;
@@ -600,12 +595,11 @@ class User_app_model extends CI_Model
                  * happens, is it an error or not, and should simply be ignored?
                  *
                 $this->Links_model->ln_create(array(
-                    'ln_child_entity_id' => $en_id,
                     'ln_parent_intent_id' => $in['in_id'],
                     'ln_child_intent_id' => $existing_expansions[0]['ln_child_intent_id'],
                     'ln_content' => 'actionplan_completion_recursive_up() detected duplicate Label Expansion entries',
                     'ln_type_entity_id' => 4246, //Platform Bug Reports
-                    'ln_miner_entity_id' => 1, //Shervin/Developer
+                    'ln_miner_entity_id' => $en_id,
                 ));
                 */
 
@@ -697,8 +691,7 @@ class User_app_model extends CI_Model
                 $this->Links_model->ln_create(array(
                     'ln_content' => 'actionplan_completion_recursive_up() found ['.$found_match.'] routing logic matches!',
                     'ln_type_entity_id' => 4246, //Platform Bug Reports
-                    'ln_miner_entity_id' => 1, //Shervin/Developer
-                    'ln_child_entity_id' => $en_id,
+                    'ln_miner_entity_id' => $en_id,
                     'ln_parent_intent_id' => $in['in_id'],
                     'ln_metadata' => array(
                         'completion_rate' => $completion_rate,
@@ -997,9 +990,8 @@ class User_app_model extends CI_Model
 
             $this->Links_model->ln_create(array(
                 'ln_type_entity_id' => 4246, //Platform Bug Reports
-                'ln_miner_entity_id' => 1, //Shervin/Developer
+                'ln_miner_entity_id' => $en_id,
                 'ln_content' => 'actionplan_step_next_echo() called invalid intent',
-                'ln_child_entity_id' => $en_id,
                 'ln_parent_intent_id' => $ins[0]['in_id'],
             ));
 
@@ -1012,9 +1004,8 @@ class User_app_model extends CI_Model
 
             $this->Links_model->ln_create(array(
                 'ln_type_entity_id' => 4246, //Platform Bug Reports
-                'ln_miner_entity_id' => 1, //Shervin/Developer
+                'ln_miner_entity_id' => $en_id,
                 'ln_content' => 'actionplan_step_next_echo() called intent that is not yet public',
-                'ln_child_entity_id' => $en_id,
                 'ln_parent_intent_id' => $ins[0]['in_id'],
             ));
 
@@ -1726,8 +1717,7 @@ class User_app_model extends CI_Model
             $this->Links_model->ln_create(array(
                 'ln_content' => 'actionplan_completion_marks() Detected user Action Plan without in__metadata_common_steps value!',
                 'ln_type_entity_id' => 4246, //Platform Bug Reports
-                'ln_miner_entity_id' => 1, //Shervin/Developer
-                'ln_parent_entity_id' => $en_id,
+                'ln_miner_entity_id' => $en_id,
                 'ln_parent_intent_id' => $in['in_id'],
             ));
 

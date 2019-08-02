@@ -24,7 +24,7 @@ $uri_segment_2 = $this->uri->segment(2);
     <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1"/>
     <meta content='width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=0' name='viewport'/>
     <meta name="viewport" content="width=device-width"/>
-    <title><?= (isset($title) ? $title . ' | ' : '') ?>Mench</title>
+    <title><?= (isset($title) ? $title . ' | ' : '') . $this->config->item('system_name') ?></title>
 
 
     <link href="/css/lib/devices.min.css" rel="stylesheet"/>
@@ -59,7 +59,7 @@ $uri_segment_2 = $this->uri->segment(2);
                             <table style="width: 100%; border:0; padding:0; margin:0 0 0 0;">
                                 <tr>
                                     <td style="width:40px;">
-                                        <img src="/img/mench_white.png" />
+                                        <?= $this->config->item('system_icon') ?>
                                     </td>
                                     <td class="<?= advance_mode() ?>">
                                         <input type="text" class="algolia_search" id="platform_search" data-lpignore="true"

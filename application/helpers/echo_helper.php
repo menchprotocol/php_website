@@ -213,7 +213,6 @@ function echo_in_outcome($in_outcome, $fb_messenger_format = false, $reference_a
             $CI->Links_model->ln_create(array(
                 'ln_content' => 'echo_in_outcome() found intent outcome ['.$in_outcome.'] that has colon but not a valid intent reference',
                 'ln_type_entity_id' => 4246, //Platform Bug Reports
-                'ln_miner_entity_id' => 1, //Shervin/Developer
             ));
         } else {
             //All good, replace title:
@@ -575,10 +574,7 @@ function echo_ln($ln, $is_inner = false)
 
     $hide_sensitive_details = (in_array($ln['ln_type_entity_id'] , $CI->config->item('en_ids_4755')) /* Link Type is locked */ && !en_auth(array(1281)) /* Viewer NOT a moderator */);
 
-    //Fetch Miner Entity:
-    $miner_ens = $CI->Entities_model->en_fetch(array(
-        'en_id' => $ln['ln_miner_entity_id'],
-    ));
+
 
     //Display the item
     $ui = '<div class="list-group-item tr-box">';
@@ -613,10 +609,22 @@ function echo_ln($ln, $is_inner = false)
     } else {
 
         //Show Miner:
-        $full_name = $miner_ens[0]['en_name'];
-        $ui .= '<span class="icon-main">'.echo_en_icon($miner_ens[0]).'</span>';
-        $ui .= '<a href="/entities/'.$miner_ens[0]['en_id'].'" data-toggle="tooltip" data-placement="top" title="Link Miner Entity"> <b>' . $full_name . '</b></a>';
+        //Fetch Miner Entity:
+        if($ln['ln_miner_entity_id'] > 0){
 
+            $miner_ens = $CI->Entities_model->en_fetch(array(
+                'en_id' => $ln['ln_miner_entity_id'],
+            ));
+
+            $ui .= '<span class="icon-main">'.echo_en_icon($miner_ens[0]).'</span>';
+            $ui .= '<a href="/entities/'.$miner_ens[0]['en_id'].'" data-toggle="tooltip" data-placement="top" title="Link Miner Entity"> <b>' . $miner_ens[0]['en_name'] . '</b></a>';
+
+        } else {
+
+            $ui .= '<span class="icon-main">'.$this->config->item('system_icon').'</span>';
+            $ui .= ' <b>' . $this->config->item('system_name') . '</b>';
+
+        }
     }
 
     //Link Type:
@@ -833,7 +841,6 @@ function echo_random_message($message_key){
         $CI->Links_model->ln_create(array(
             'ln_content' => 'echo_random_message() failed to locate message type ['.$message_key.']',
             'ln_type_entity_id' => 4246, //Platform Bug Reports
-            'ln_miner_entity_id' => 1, //Shervin/Developer
         ));
         return false;
 

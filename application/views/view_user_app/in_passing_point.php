@@ -48,11 +48,10 @@ if(in_array($in['in_type_entity_id'], $this->config->item('en_ids_7588'))){
 
 }
 
-
 //Check to see if this intent is part of the company training entities:
 foreach($this->config->item('en_all_7593') as $company_intro){
     if($company_intro['m_desc']==$in['in_id']){
-        echo '<a class="btn btn-primary tag-manager-get-started" href="/10430/signin" style="display: inline-block; padding:12px 36px; font-size: 1.3em; margin-top: 35px;">Get Started&nbsp;&nbsp;&nbsp;<i class="fas fa-angle-double-right"></i></a>';
+        echo '<a class="btn btn-primary tag-manager-get-started" href="/12037/signin" style="display: inline-block; padding:12px 36px; font-size: 1.3em; margin-top: 35px;">Get Started&nbsp;&nbsp;&nbsp;<i class="fas fa-angle-double-right"></i></a>';
         break;
     }
 }
