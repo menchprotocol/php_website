@@ -1500,6 +1500,8 @@ class User_app_model extends CI_Model
                         if($key==0){
                             if(!$fb_messenger_format){
                                 $next_step_message .= '<div class="list-group" style="margin-top:10px;">';
+                            } else {
+                                $next_step_message .= "Here are the next steps:";
                             }
                         } else {
                             if($fb_messenger_format){
