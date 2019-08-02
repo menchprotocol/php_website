@@ -437,6 +437,26 @@ function advance_mode(){
     return ' advance-ui '.( $CI->session->userdata('advance_view_enabled')==1 ? '' : ' hidden ' );
 }
 
+
+function fetch_cookie_order($cookie_name){
+
+    $CI =& get_instance();
+    $current_cookie = get_cookie($cookie_name);
+    $new_order_value = (is_null($current_cookie) ? 0 : intval($current_cookie)+1 );
+
+    //Set or update the cookie:
+    $CI->input->set_cookie(array(
+        'name'   => $cookie_name,
+        'value'  => $new_order_value."", //Cast to string
+        'domain' => '.mench.com',
+        'expire' => '2592000', //1 Week
+        'secure' => FALSE,
+    ));
+
+    return $new_order_value;
+}
+
+
 function common_prefix($in__children, $max_look = 0){
 
 

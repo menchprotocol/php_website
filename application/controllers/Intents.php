@@ -115,7 +115,7 @@ class Intents extends CI_Controller
          * */
 
         //Fetch user session:
-        $session_en = en_auth(array(1308));
+        $session_en = en_auth();
 
         //This is here to redirect from /start to /10430 so everything works fine...
         if($referrer_en_id==0 && $this->uri->segment(1) != $in_id){
@@ -140,6 +140,17 @@ class Intents extends CI_Controller
             //Return error:
             return redirect_message('/' . $this->config->item('in_focus_id'), '<div class="alert alert-danger" role="alert">'.$public_in['message'].'</div>');
         }
+
+        //Fetch/Create landing page view cookie:
+
+        //Log Intent Viewed by User:
+        $this->Links_model->ln_create(array(
+            'ln_miner_entity_id' => 1, //Shervin is always miner as Developer since Miner is required
+            'ln_parent_entity_id' => $session_en['en_id'], //if user was available, they are logged as parent entity
+            'ln_type_entity_id' => 7610, //Intent Viewed by User
+            'ln_parent_intent_id' => $in_id,
+            'ln_order' => fetch_cookie_order('7610_'.$in_id),
+        ));
 
         //Load home page:
         //Mench header:

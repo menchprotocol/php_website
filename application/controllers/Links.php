@@ -41,7 +41,14 @@ class Links extends CI_Controller
 
 
     function js_ln_create(){
+
         //Log link from JS source:
+        if(isset($_POST['ln_order']) && strlen($_POST['ln_order'])>0 && !is_numeric($_POST['ln_order'])){
+            //We have an order set, but its not an integer, which means it's a cookie name that needs to be analyzed:
+            $_POST['ln_order'] = fetch_cookie_order($_POST['ln_order']);
+        }
+
+        //Log engagement:
         echo_json($this->Links_model->ln_create($_POST));
     }
 

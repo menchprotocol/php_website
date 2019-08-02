@@ -878,19 +878,20 @@ function echo_time_hours($seconds, $micro = false)
     }
 }
 
-function echo_tree_html_body($id, $pitch_title, $pitch_body, $autoexpand){
+function echo_tree_html_body($section_en_id, $pitch_title, $pitch_body, $autoexpand){
+
     //The body of the tree expansion HTML panel:
-    return '<div class="panel-group" id="open' . $id . '" role="tablist" aria-multiselectable="true"><div class="panel panel-primary">
-            <div class="panel-heading" role="tab" id="heading' . $id . '">
+    return '<div class="panel-group" id="open' . $section_en_id . '" role="tablist" aria-multiselectable="true"><div class="panel panel-primary">
+            <div class="panel-heading" role="tab" id="heading' . $section_en_id . '">
                 <h4 class="panel-title">
-                    <a role="button" class="tag-manager-overview-link collapsed" data-toggle="collapse" data-parent="#open' . $id . '" href="#collapse' . $id . '" aria-expanded="' . ($autoexpand ? 'true' : 'false') . '" aria-controls="collapse' . $id . '">' . $pitch_title . '
+                    <a role="button" class="tag-manager-overview-link collapsed" section-en-id="'.$section_en_id.'" data-toggle="collapse" data-parent="#open' . $section_en_id . '" href="#collapse' . $section_en_id . '" aria-expanded="' . ($autoexpand ? 'true' : 'false') . '" aria-controls="collapse' . $section_en_id . '">' . $pitch_title . '
                     
                     <span class="pull-right" style="padding: 1px 11px 0 0;"><i class="fas fa-angle-down"></i></span>
                     
                     </a>
                 </h4>
             </div>
-            <div id="collapse' . $id . '" class="panel-collapse collapse ' . ($autoexpand ? 'in' : 'out') . '" role="tabpanel" aria-labelledby="heading' . $id . '">
+            <div id="collapse' . $section_en_id . '" class="panel-collapse collapse ' . ($autoexpand ? 'in' : 'out') . '" role="tabpanel" aria-labelledby="heading' . $section_en_id . '">
                 <div class="panel-body overview-pitch"><div style="padding:10px 5px !important;">' . $pitch_body . '</div></div>
             </div>
         </div></div>';
@@ -948,7 +949,7 @@ function echo_tree_users($in, $fb_messenger_format = false, $autoexpand = false)
     } else {
         //HTML format
         $pitch_title = '<span class="icon-block"><i class="fas fa-user"></i></span>&nbsp;'. echo_number($enrolled_users_count[0]['totals']) .' enrolled users';
-        return echo_tree_html_body('CompletedUsers', $pitch_title, $pitch_body, $autoexpand);
+        return echo_tree_html_body(7615, $pitch_title, $pitch_body, $autoexpand);
     }
 }
 
@@ -1114,7 +1115,7 @@ function echo_tree_experts($in, $fb_messenger_format = false, $autoexpand = fals
         return '⭐ ' . $pitch_body. "\n\n";
     } else {
         //HTML format
-        return echo_tree_html_body('ExpertReferences', $pitch_title, $pitch_body, $autoexpand);
+        return echo_tree_html_body(7614, $pitch_title, $pitch_body, $autoexpand);
     }
 }
 
@@ -1182,7 +1183,7 @@ function echo_tree_steps($in, $fb_messenger_format = 0, $autoexpand = false)
             $pitch_body .= '</div>';
         }
 
-        return echo_tree_html_body('StepsOverview', $pitch_title, $pitch_body, $autoexpand);
+        return echo_tree_html_body(7613, $pitch_title, $pitch_body, $autoexpand);
 
     }
 }
