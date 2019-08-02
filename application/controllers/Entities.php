@@ -944,24 +944,6 @@ class Entities extends CI_Controller
         }
 
 
-        //Set intent as default intent for company:
-        $this->Links_model->ln_create(array(
-            'ln_type_entity_id' => 7511, //Company Intent Set
-            'ln_status_entity_id' => 6175, //Link Drafting
-            'ln_miner_entity_id' => $user_en['en']['en_id'],
-            'ln_parent_intent_id' => $company_intent['new_in_id'],
-            'ln_order' => 1,
-        ));
-
-        $this->Links_model->ln_create(array(
-            'ln_type_entity_id' => 7511, //Company Intent Set
-            'ln_status_entity_id' => 6175, //Link Drafting
-            'ln_miner_entity_id' => $user_en['en']['en_id'],
-            'ln_parent_intent_id' => $company_learn_intent['new_in_id'],
-            'ln_order' => 2,
-        ));
-
-
         //Create user links:
         $this->Links_model->ln_create(array(
             'ln_parent_entity_id' => 7512, //Mench Partner Employees
