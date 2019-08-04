@@ -389,7 +389,7 @@ function in_modify_load(in_id, ln_id) {
             }
 
             //See if we need to lock the intent type editor:
-            $('#in_type_entity_id').attr('disabled', (data.in_action_plan_count > 0 || in_is_system_locked));
+            //$('#in_type_entity_id').attr('disabled', (data.in_action_plan_count > 0 || in_is_system_locked));
 
             //We might need to scroll if mobile:
             if (is_compact) {
