@@ -48,7 +48,7 @@
 
 
                         <?php $en_all_7369 = $this->config->item('en_all_7369'); /* Mench User App */ ?>
-                        <?php $en_all_4527 = $this->config->item('en_all_4527'); /* Mench Products */ ?>
+                        <?php $en_all_7372 = $this->config->item('en_all_7372'); /* Mench Products */ ?>
 
                         <a href="/dashboard"
                            class="social-link tag-manager-footer-dashboard" data-toggle="tooltip" title="<?= $en_all_7369[7161]['m_name'] ?>"
@@ -59,7 +59,7 @@
                            data-placement="top"><?= $en_all_7369[4269]['m_icon'] ?></a>
 
                         <a href="/8263" class="social-link tag-manager-social-profile" data-toggle="tooltip"
-                           title="<?= $en_all_4527[7540]['m_name'] ?>" data-placement="top"><?= $en_all_4527[7540]['m_icon'] ?></a>
+                           title="<?= $en_all_7372[7540]['m_name'] ?>" data-placement="top"><?= $en_all_7372[7540]['m_icon'] ?></a>
 
                     </li>
                 </ul>

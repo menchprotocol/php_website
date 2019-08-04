@@ -340,11 +340,16 @@ class User_app extends CI_Controller
 
         //Fetch referranl intent, if any:
         if(intval($_POST['referrer_in_id']) > 0){
+
             //Fetch the intent:
             $referrer_ins = $this->Intents_model->in_fetch(array(
                 'in_status_entity_id IN (' . join(',', $this->config->item('en_ids_7355')) . ')' => null, //Intent Statuses Public
                 'in_id' => $_POST['referrer_in_id'],
             ));
+
+            //Add this intention to their Action Plan:
+            $this->User_app_model->actionplan_intention_add($user_en['en']['en_id'], $_POST['referrer_in_id']);
+
         } else {
             $referrer_ins = array();
         }
@@ -391,12 +396,7 @@ class User_app extends CI_Controller
         if (strlen($_POST['referrer_url']) > 0) {
             $login_url = urldecode($_POST['referrer_url']);
         } elseif(intval($_POST['referrer_in_id']) > 0) {
-
-            //Add this intention to their Action Plan:
-            $this->User_app_model->actionplan_intention_add($user_en['en']['en_id'], $_POST['referrer_in_id']);
-
             $login_url = '/actionplan/'.$_POST['referrer_in_id'];
-
         } else {
             //Go to home page and let them continue from there:
             $login_url = '/';
