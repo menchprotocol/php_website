@@ -94,7 +94,6 @@ if(count($current_sign_in_attempt) == 0){
 
         <!-- Step 1: Choose Channel -->
         <div id="step1" class="signup-steps hidden">
-            <p style="padding-bottom:20px;">Choose an option to continue:</p>
             <div class="row">
                 <?php
                 foreach ($this->config->item('en_all_7555') as $en_id => $m) {
