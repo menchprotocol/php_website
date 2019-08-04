@@ -355,13 +355,12 @@ class User_app extends CI_Controller
 
         ##Email Body
         $html_message = '<div>Hi '.$name_parts[0].' 👋</div><br />';
-        $html_message .= '<div>I\'m Mench, a personal assistant on a mission to '.( count($referrer_ins) > 0 ? echo_in_outcome($referrer_ins[0]['in_outcome'], true) : 'connect top talent to dream jobs' ).'.</div><br />';
 
-        $html_message .= '<div>Follow this link to '.( count($referrer_ins) > 0 ? echo_in_outcome($referrer_ins[0]['in_outcome'], true) : 'get started' ).' using Chrome:</div><br />';
+        $html_message .= '<div>Follow this link to '.( count($referrer_ins) > 0 ? echo_in_outcome($referrer_ins[0]['in_outcome'], true) : 'get started' ).':</div><br />';
         $actionplan_url = $this->config->item('base_url') . ( count($referrer_ins) > 0 ? 'actionplan/'.$referrer_ins[0]['in_id'] : '' );
         $html_message .= '<div><a href="'.$actionplan_url.'" target="_blank">' . $actionplan_url . '</a></div><br />';
 
-        $html_message .= '<div>Of follow this link to '.( count($referrer_ins) > 0 ? echo_in_outcome($referrer_ins[0]['in_outcome'], true) : 'get started' ).' using Messenger:</div><br />';
+        $html_message .= '<div>You can also connect to me on Messenger:</div><br />';
         $messenger_url = $this->config->item('fb_mench_url') . ( count($referrer_ins) > 0 ? '?ref=' . ( $_POST['referrer_en_id'] > 0 ? 'REFERUSER_'.$_POST['referrer_en_id'].'_' : '' ) . $referrer_ins[0]['in_id'] : '' ) ;
         $html_message .= '<div><a href="'.$messenger_url.'" target="_blank">' . $messenger_url . '</a></div>';
         $html_message .= '<br /><br />';
@@ -371,8 +370,6 @@ class User_app extends CI_Controller
 
         //Send Welcome Email:
         $email_log = $this->Communication_model->user_received_emails(array($_POST['input_email']), $subject, $html_message);
-
-
 
         //Log User Signin Joined Mench
         $invite_link = $this->Links_model->ln_create(array(
@@ -394,7 +391,12 @@ class User_app extends CI_Controller
         if (strlen($_POST['referrer_url']) > 0) {
             $login_url = urldecode($_POST['referrer_url']);
         } elseif(intval($_POST['referrer_in_id']) > 0) {
+
+            //Add this intention to their Action Plan:
+            $this->User_app_model->actionplan_intention_add($user_en['en']['en_id'], $_POST['referrer_in_id']);
+
             $login_url = '/actionplan/'.$_POST['referrer_in_id'];
+
         } else {
             //Go to home page and let them continue from there:
             $login_url = '/';

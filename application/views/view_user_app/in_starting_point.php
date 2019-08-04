@@ -76,7 +76,6 @@ if(isset($session_en['en_id']) && $referrer_en_id == 0){
 
 
 
-
 //Start generating relevant intentions we can recommend as other intentions:
 
 //Child intentions:
