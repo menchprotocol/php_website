@@ -738,7 +738,7 @@ $.post("/intents/in_report_conditional_steps", {
 
         echo '<ul class="breadcrumb"><li><a href="/miner_app/admin_tools">Admin Tools</a></li><li><a href="/miner_app/admin_tools/'.$action.'">'.$moderation_tools['/miner_app/admin_tools/'.$action].'</a></li><li><b>Review Message</b></li></ul>';
 
-        if(intval($_POST['fb_messenger_format']) && intval($_POST['recipient_en'])){
+        if(intval($_POST['push_message']) && intval($_POST['recipient_en'])){
 
             //Send to Facebook Messenger:
             $msg_validation = $this->Communication_model->dispatch_message(
@@ -749,7 +749,7 @@ $.post("/intents/in_report_conditional_steps", {
 
         } elseif(intval($_POST['recipient_en']) > 0) {
 
-            $msg_validation = $this->Communication_model->dispatch_validate_message($_POST['test_message'], array('en_id' => $_POST['recipient_en']), $_POST['fb_messenger_format']);
+            $msg_validation = $this->Communication_model->dispatch_validate_message($_POST['test_message'], array('en_id' => $_POST['recipient_en']), $_POST['push_message']);
 
         } else {
 
@@ -774,7 +774,7 @@ $.post("/intents/in_report_conditional_steps", {
         echo '<input type="number" class="form-control border" name="recipient_en" value="1"><br />';
 
         echo '<div class="mini-header">Format Is Messenger:</div>';
-        echo '<input type="number" class="form-control border" name="fb_messenger_format" value="1"><br /><br />';
+        echo '<input type="number" class="form-control border" name="push_message" value="1"><br /><br />';
 
 
         echo '<input type="submit" class="btn btn-primary" value="Compose Test Message">';

@@ -113,11 +113,10 @@ class User_app extends CI_Controller
 
         $is_user = filter_array($ens[0]['en__parents'], 'en_id', 4430); //Mench Users
         $is_miner = filter_array($ens[0]['en__parents'], 'en_id', 1308); //Mench Miners
-        $is_partner_employee = filter_array($ens[0]['en__parents'], 'en_id', 7512); //Mench Partner Employees
 
 
         //Applicable for anyone using the Mench mining app:
-        if (!$is_chrome && ($is_miner || $is_partner_employee)) {
+        if (!$is_chrome && $is_miner) {
 
             $this->Links_model->ln_create(array(
                 'ln_content' => 'User failed to login using non-Chrome browser',
@@ -133,110 +132,14 @@ class User_app extends CI_Controller
         }
 
 
-        //Assign user details:
-        $session_data['user'] = $ens[0];
+        //Assign session & log link:
+        $this->User_app_model->user_activate_session($ens[0], $is_miner);
 
-
-        //Are they miner? Give them Sign In access:
-        if ($is_miner) {
-
-            //Check their advance mode status:
-            $last_advance_settings = $this->Links_model->ln_fetch(array(
-                'ln_miner_entity_id' => $ens[0]['en_id'],
-                'ln_type_entity_id' => 5007, //Toggled Advance Mode
-                'ln_status_entity_id IN (' . join(',', $this->config->item('en_ids_7360')) . ')' => null, //Link Statuses Active
-            ), array(), 1, 0, array('ln_id' => 'DESC'));
-
-            //They have admin rights:
-            $session_data['user_default_intent'] = $this->config->item('in_focus_id');
-            $session_data['user_session_count'] = 0;
-            $session_data['advance_view_enabled'] = ( count($last_advance_settings) > 0 && substr_count($last_advance_settings[0]['ln_content'] , ' ON')==1 ? 1 : 0 );
-
-        } elseif($is_partner_employee){
-
-            //Determine their company:
-            $session_data['user_default_intent'] = 0; //TBD
-
-            foreach($this->Links_model->ln_fetch(array(
-                'ln_parent_entity_id' => $ens[0]['en_id'],
-                'ln_type_entity_id IN (' . join(',', $this->config->item('en_ids_4592')) . ')' => null, //Entity Link Connectors
-                'ln_status_entity_id IN (' . join(',', $this->config->item('en_ids_7359')) . ')' => null, //Link Statuses Public
-                'en_status_entity_id IN (' . join(',', $this->config->item('en_ids_7357')) . ')' => null, //Entity Statuses Public
-            ), array('en_child'), 0) as $employee_child){
-
-                //Is this child a Partner Mench Company?
-                if(count($this->Links_model->ln_fetch(array(
-                        'ln_child_entity_id' => $employee_child['en_id'],
-                        'ln_parent_entity_id' => 6695, //Mench Partner Companies
-                        'ln_type_entity_id IN (' . join(',', $this->config->item('en_ids_4592')) . ')' => null, //Entity Link Connectors
-                        'ln_status_entity_id IN (' . join(',', $this->config->item('en_ids_7359')) . ')' => null, //Link Statuses Public
-                    ))) > 0){
-
-                    //This is it, find the top intention and terminate loop:
-                    $company_intentions = $this->Links_model->ln_fetch(array(
-                        'ln_miner_entity_id' => $employee_child['en_id'],
-                        'ln_type_entity_id IN (' . join(',', $this->config->item('en_ids_7347')) . ')' => null, //Action Plan Intention Set
-                        'ln_status_entity_id IN (' . join(',', $this->config->item('en_ids_7364')) . ')' => null, //Link Statuses Incomplete
-                    ), array(), 0, 0, array('ln_order' => 'ASC'));
-
-                    if(count($company_intentions) > 0){
-                        //The first intent is the default one:
-                        $session_data['user_default_intent'] = intval($company_intentions[0]['ln_parent_intent_id']);
-                        break;
-                    }
-                }
-            }
-
-            //Make sure we found companies top intent:
-            if($session_data['user_default_intent'] == 0){
-
-                $this->Links_model->ln_create(array(
-                    'ln_content' => 'Unable to locate your companies intention. Make sure user logged in with Chrome or get back to them',
-                    'ln_type_entity_id' => 7504, //Admin Review Required
-                    'ln_miner_entity_id' => $ens[0]['en_id'],
-                ));
-
-                return echo_json(array(
-                    'status' => 0,
-                    'message' => 'Unable to locate your companies intention',
-                ));
-            }
-
-
-            //They have admin rights:
-            $session_data['user_session_count'] = 0;
-            $session_data['advance_view_enabled'] = 0;
-
-        }
-
-
-        //Append user IP and agent information
-        if (isset($_POST['input_password'])) {
-            unset($_POST['input_password']); //Sensitive information to be removed and NOT logged
-        }
-
-        //Log additional information:
-        $ens[0]['login_ip'] = $_SERVER['REMOTE_ADDR'];
-        $ens[0]['user_agent'] = $_SERVER['HTTP_USER_AGENT'];
-        $ens[0]['input_post_data'] = $_POST;
-
-        //Log Sign In Link:
-        $this->Links_model->ln_create(array(
-            'ln_miner_entity_id' => $ens[0]['en_id'],
-            'ln_metadata' => $ens[0],
-            'ln_type_entity_id' => 7564, //User Signin on Website Success
-        ));
-
-        //All good to go!
-        //Load session and redirect:
-        $this->session->set_userdata($session_data);
 
         if (isset($_POST['referrer_url']) && strlen($_POST['referrer_url']) > 0) {
             $login_url = urldecode($_POST['referrer_url']);
         } else if ($is_miner) {
             $login_url = '/dashboard';
-        } elseif ($is_partner_employee) {
-            $login_url = '/intents/'.$session_data['user_default_intent'];
         } else {
             $login_url = '/actionplan';
         }
@@ -335,27 +238,9 @@ class User_app extends CI_Controller
     }
 
 
+    function signin_new_account(){
 
-    function signin_create_account($ln_id){
-
-        $this->load->view('view_user_app/user_app_header', array(
-            'hide_header' => 1,
-            'title' => 'Create Account',
-        ));
-        $this->load->view('view_user_app/create_account');
-        $this->load->view('view_user_app/user_app_footer', array(
-            'hide_footer' => 1,
-        ));
-    }
-
-
-    function signin_create_account_apply(){
-
-    }
-
-    function signin_new_account_from_name(){
-
-        if (!isset($_POST['referrer_in_id']) || !isset($_POST['referrer_en_id'])) {
+        if (!isset($_POST['referrer_in_id']) || !isset($_POST['referrer_en_id']) || !isset($_POST['referrer_url'])) {
             return echo_json(array(
                 'status' => 0,
                 'message' => 'Missing core data',
@@ -365,60 +250,160 @@ class User_app extends CI_Controller
                 'status' => 0,
                 'message' => 'Invalid email address',
             ));
-        } elseif (!isset($_POST['en_name']) || strlen($_POST['en_name'])<1) {
+        } elseif (!isset($_POST['input_name']) || strlen($_POST['input_name'])<1) {
             return echo_json(array(
                 'status' => 0,
                 'message' => 'Missing name',
+            ));
+        } elseif (!isset($_POST['input_password']) || strlen($_POST['input_password'])<1) {
+            return echo_json(array(
+                'status' => 0,
+                'message' => 'Missing password',
             ));
         }
 
         //Prep inputs & validate further:
         $_POST['input_email'] =  trim(strtolower($_POST['input_email']));
-        $_POST['en_name'] = trim($_POST['en_name']);
-        $name_parts = explode(' ', trim($_POST['en_name']));
-        if (strlen($_POST['en_name'])<5) {
+        $_POST['input_name'] = trim($_POST['input_name']);
+        $name_parts = explode(' ', trim($_POST['input_name']));
+        if (strlen($_POST['input_name'])<5) {
             return echo_json(array(
                 'status' => 0,
                 'message' => 'Full name must longer than 5 characters',
             ));
-        } elseif (strlen($name_parts[0])<2 || !isset($name_parts[1]) || strlen($name_parts[1])<2) {
+        } elseif (!isset($name_parts[1])) {
             return echo_json(array(
                 'status' => 0,
-                'message' => 'Full name must have a space between your first name and last name which are each more than 2 characters',
+                'message' => 'There must be a space between your your first and last name',
             ));
-        } elseif (strlen($_POST['en_name'])>$this->config->item('en_name_max_length')) {
+        } elseif (strlen($name_parts[0])<2) {
             return echo_json(array(
                 'status' => 0,
-                'message' => 'Your full must be less than '.$this->config->item('en_name_max_length').' characters.',
+                'message' => 'First name must be 2 characters or longer',
+            ));
+        } elseif (strlen($name_parts[1])<2) {
+            return echo_json(array(
+                'status' => 0,
+                'message' => 'Last name must be 2 characters or longer',
+            ));
+        } elseif (strlen($_POST['input_name']) > $this->config->item('en_name_max_length')) {
+            return echo_json(array(
+                'status' => 0,
+                'message' => 'Full name must be less than '.$this->config->item('en_name_max_length').' characters',
+            ));
+        } elseif (strlen($_POST['input_password']) < 6) {
+            return echo_json(array(
+                'status' => 0,
+                'message' => 'Your password must be 6 characters or longer',
             ));
         }
 
-        //All good, create their account:
 
 
-        //This is a new account, send email to complete profile:
-        $setpassword_url = 'https://mench.com/newaccount/' . $invite_link['ln_id'] . '?email='.$_POST['input_email'];
-        $preset_intention = ( count($referrer_ins) > 0 ? ' to '.echo_in_outcome($referrer_ins[0]['in_outcome'], true) : '' );
+        //All good, create new entity:
+        $user_en = $this->Entities_model->en_verify_create(trim($_POST['input_name']), 0, false, 6181);
+        if(!$user_en['status']){
+            //We had an error, return it:
+            return echo_json($user_en);
+        }
 
+
+        //Create user links:
+        $this->Links_model->ln_create(array(
+            'ln_type_entity_id' => 4230, //Raw link
+            'ln_parent_entity_id' => 4430, //Mench User
+            'ln_miner_entity_id' => $user_en['en']['en_id'],
+            'ln_child_entity_id' => $user_en['en']['en_id'],
+        ));
+
+        $this->Links_model->ln_create(array(
+            'ln_type_entity_id' => 4230, //Raw link
+            'ln_parent_entity_id' => 3504, //English Language (Since everything is in English so far)
+            'ln_miner_entity_id' => $user_en['en']['en_id'],
+            'ln_child_entity_id' => $user_en['en']['en_id'],
+        ));
+        $this->Links_model->ln_create(array(
+            'ln_type_entity_id' => 4255, //Text link
+            'ln_content' => trim(strtolower($_POST['input_email'])),
+            'ln_parent_entity_id' => 3288, //Email Address
+            'ln_miner_entity_id' => $user_en['en']['en_id'],
+            'ln_child_entity_id' => $user_en['en']['en_id'],
+        ));
+        $this->Links_model->ln_create(array(
+            'ln_type_entity_id' => 4255, //Text link
+            'ln_content' => strtolower(hash('sha256', $this->config->item('password_salt') . $_POST['input_password'] . $user_en['en']['en_id'])),
+            'ln_parent_entity_id' => 3286, //Mench Password
+            'ln_miner_entity_id' => $user_en['en']['en_id'],
+            'ln_child_entity_id' => $user_en['en']['en_id'],
+        ));
+
+
+        //Fetch referranl intent, if any:
+        if(intval($_POST['referrer_in_id']) > 0){
+            //Fetch the intent:
+            $referrer_ins = $this->Intents_model->in_fetch(array(
+                'in_status_entity_id IN (' . join(',', $this->config->item('en_ids_7355')) . ')' => null, //Intent Statuses Public
+                'in_id' => $_POST['referrer_in_id'],
+            ));
+        } else {
+            $referrer_ins = array();
+        }
 
 
         ##Email Subject
-        $subject = 'Join ' . $this->config->item('system_name') . $preset_intention;
+        $subject =  ( count($referrer_ins) > 0 ? echo_in_outcome($referrer_ins[0]['in_outcome'], true).' with ' : 'Welcome to ' ) . $this->config->item('system_name');
 
         ##Email Body
         $html_message = '<div>Hi '.$name_parts[0].' 👋</div><br />';
-        $html_message .= '<div>I\'m Mench, a personal assistant on a mission to connect top talent to their dream jobs.</div><br />';
-        $html_message .= '<div>You can complete your registration'.$preset_intention.' using this link:</div><br />';
-        $html_message .= '<div><a href="'.$setpassword_url.'" target="_blank">' . $setpassword_url . '</a></div>';
-        $html_message .= '<br />';
-        $html_message .= '<div>If you did not make this request you can ignore this email.</div><br />';
-        $html_message .= '<br />';
+        $html_message .= '<div>I\'m Mench, a personal assistant on a mission to '.( count($referrer_ins) > 0 ? echo_in_outcome($referrer_ins[0]['in_outcome'], true) : 'connect top talent to dream jobs' ).'.</div><br />';
+
+        $html_message .= '<div>Follow this link to '.( count($referrer_ins) > 0 ? echo_in_outcome($referrer_ins[0]['in_outcome'], true) : 'get started' ).' using Chrome:</div><br />';
+        $actionplan_url = $this->config->item('base_url') . ( count($referrer_ins) > 0 ? 'actionplan/'.$referrer_ins[0]['in_id'] : '' );
+        $html_message .= '<div><a href="'.$actionplan_url.'" target="_blank">' . $actionplan_url . '</a></div><br />';
+
+        $html_message .= '<div>Of follow this link to '.( count($referrer_ins) > 0 ? echo_in_outcome($referrer_ins[0]['in_outcome'], true) : 'get started' ).' using Messenger:</div><br />';
+        $messenger_url = $this->config->item('fb_mench_url') . ( count($referrer_ins) > 0 ? '?ref=' . ( $_POST['referrer_en_id'] > 0 ? 'REFERUSER_'.$_POST['referrer_en_id'].'_' : '' ) . $referrer_ins[0]['in_id'] : '' ) ;
+        $html_message .= '<div><a href="'.$messenger_url.'" target="_blank">' . $messenger_url . '</a></div>';
+        $html_message .= '<br /><br />';
         $html_message .= '<div>Cheers,</div><br />';
-        $html_message .= '<div>Team Mench</div>';
+        $html_message .= '<div>Mench</div>';
         $html_message .= '<div><a href="https://mench.com?utm_source=mench&utm_medium=email&utm_campaign=signup" target="_blank">mench.com</a></div>';
 
-        //Send email:
-        $this->Communication_model->user_received_emails(array($_POST['input_email']), $subject, $html_message);
+        //Send Welcome Email:
+        $email_log = $this->Communication_model->user_received_emails(array($_POST['input_email']), $subject, $html_message);
+
+
+
+        //Log User Signin Joined Mench
+        $invite_link = $this->Links_model->ln_create(array(
+            'ln_type_entity_id' => 7562, //User Signin Joined Mench
+            'ln_miner_entity_id' => $user_en['en']['en_id'],
+            'ln_parent_intent_id' => intval($_POST['referrer_in_id']),
+            'ln_parent_entity_id' => intval($_POST['referrer_en_id']),
+            'ln_metadata' => array(
+                'email_log' => $email_log,
+            ),
+        ));
+
+
+        //Assign session & log login link:
+        $this->User_app_model->user_activate_session($user_en['en'], false);
+
+
+
+        if (strlen($_POST['referrer_url']) > 0) {
+            $login_url = urldecode($_POST['referrer_url']);
+        } elseif(intval($_POST['referrer_in_id']) > 0) {
+            $login_url = '/actionplan/'.$_POST['referrer_in_id'];
+        } else {
+            //Go to home page and let them continue from there:
+            $login_url = '/';
+        }
+
+        return echo_json(array(
+            'status' => 1,
+            'login_url' => $login_url,
+        ));
 
 
 
@@ -506,14 +491,6 @@ class User_app extends CI_Controller
             ));
 
         } else {
-
-            //Log email search attempt:
-            $invite_link = $this->Links_model->ln_create(array(
-                'ln_type_entity_id' => 7562, //User Signin on Website New Email
-                'ln_content' => $_POST['input_email'],
-                'ln_parent_intent_id' => intval($_POST['referrer_in_id']),
-                'ln_parent_entity_id' => intval($_POST['referrer_en_id']),
-            ));
 
             return echo_json(array(
                 'status' => 1,
@@ -1245,7 +1222,8 @@ class User_app extends CI_Controller
             $en_all_7369 = $this->config->item('en_all_7369');
             return echo_json(array(
                 'status' => 1,
-                'message' => '<i class="far fa-check-circle"></i> Successfully added to your <b><a href="/actionplan">'.$en_all_7369[6138]['m_icon'].' '.$en_all_7369[6138]['m_name'].'</a></b>',
+                'message' => '<i class="far fa-check-circle"></i> Added to your '.$en_all_7369[6138]['m_icon'].' '.$en_all_7369[6138]['m_name'],
+                'add_redirect' => '/actionplan/'.$_POST['in_id'],
             ));
         } else {
             //There was some error:

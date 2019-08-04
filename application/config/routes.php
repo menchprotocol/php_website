@@ -20,7 +20,6 @@ $route['start']                 = "intents/in_public_ui/10430"; //For companies 
 $route['signin']                = "user_app/signin";
 $route['(:num)_(:num)/signin']  = "user_app/signin/$2/$1";
 $route['(:num)/signin']         = "user_app/signin/$1";
-$route['newaccount/(:num)']     = "user_app/signin_create_account/$1";
 $route['resetpassword/(:num)']  = "user_app/signin_reset_password/$1";
 
 $route['signout']                = "user_app/signout";

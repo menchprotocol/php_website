@@ -188,7 +188,7 @@ function echo_url_embed($url, $full_message = null, $return_array = false)
     }
 }
 
-function echo_in_outcome($in_outcome, $fb_messenger_format = false, $reference_attribution = false, $show_entire_outcome = false, $common_prefix = null){
+function echo_in_outcome($in_outcome, $push_message = false, $reference_attribution = false, $show_entire_outcome = false, $common_prefix = null){
 
     /*
      * This function applies the double column
@@ -232,7 +232,7 @@ function echo_in_outcome($in_outcome, $fb_messenger_format = false, $reference_a
             }
         }
 
-        if($fb_messenger_format){
+        if($push_message){
 
             return $in_outcome;
 
@@ -247,7 +247,7 @@ function echo_in_outcome($in_outcome, $fb_messenger_format = false, $reference_a
         //We have it, let's apply it:
         $in_outcome_parts = explode('::',$in_outcome,2);
 
-        if($fb_messenger_format){
+        if($push_message){
 
             return ( $show_entire_outcome ? $in_outcome : trim($in_outcome_parts[1]) );
 
@@ -382,7 +382,7 @@ function echo_url($text)
 }
 
 
-function echo_number($number, $micro = true, $fb_messenger_format = false)
+function echo_number($number, $micro = true, $push_message = false)
 {
 
     //Displays number with a nice format
@@ -476,7 +476,7 @@ function echo_number($number, $micro = true, $fb_messenger_format = false)
         $rounded = round(($number * $formatting['multiplier']), $formatting['decimals']);
         $append = $formatting['micro_' . (int)$micro] . (!$micro ? echo__s($rounded) : '');
 
-        if ($fb_messenger_format) {
+        if ($push_message) {
             //Messaging format, show using plain text:
             return $rounded . $append . ' (' . $original_format . ')';
         } else {
@@ -906,7 +906,7 @@ function echo_tree_html_body($section_en_id, $pitch_title, $pitch_body, $autoexp
         </div></div>';
 }
 
-function echo_tree_users($in, $fb_messenger_format = false, $autoexpand = false){
+function echo_tree_users($in, $push_message = false, $autoexpand = false){
 
 
     //TODO Consider enabling later?
@@ -953,7 +953,7 @@ function echo_tree_users($in, $fb_messenger_format = false, $autoexpand = false)
     //As messenger default format and HTML extra notes:
     $pitch_body  = 'So far '.$completion_percentage_fancy.' of '.number_format($enrolled_users_count[0]['totals'], 0) .' user'. echo__s($enrolled_users_count[0]['totals']) .' have completed this intention.';
 
-    if ($fb_messenger_format) {
+    if ($push_message) {
         return '👤 ' . $pitch_body. "\n\n";
     } else {
         //HTML format
@@ -962,7 +962,7 @@ function echo_tree_users($in, $fb_messenger_format = false, $autoexpand = false)
     }
 }
 
-function echo_tree_experts($in, $fb_messenger_format = false, $autoexpand = false)
+function echo_tree_experts($in, $push_message = false, $autoexpand = false)
 {
 
     /*
@@ -1008,7 +1008,7 @@ function echo_tree_experts($in, $fb_messenger_format = false, $autoexpand = fals
 
             //Show category:
             $cat_contribution = count($referenced_ens) . ' ' . $en_all_3000[$type_id]['m_name'];
-            if ($fb_messenger_format) {
+            if ($push_message) {
 
                 $source_info .= ' ' . $cat_contribution;
 
@@ -1056,7 +1056,7 @@ function echo_tree_experts($in, $fb_messenger_format = false, $autoexpand = fals
     if(isset($metadata['in__metadata_experts'])){
         foreach ($metadata['in__metadata_experts'] as $count => $en) {
 
-            $is_last_fb_item = ($fb_messenger_format && $count >= $visible_bot);
+            $is_last_fb_item = ($push_message && $count >= $visible_bot);
 
             if ($count > 0) {
                 if (($count + 1) >= $expert_count || $is_last_fb_item) {
@@ -1072,7 +1072,7 @@ function echo_tree_experts($in, $fb_messenger_format = false, $autoexpand = fals
 
             $expert_info .= ' ';
 
-            if ($fb_messenger_format) {
+            if ($push_message) {
 
                 //Just the name:
                 $expert_info .= $en['en_name'];
@@ -1092,10 +1092,10 @@ function echo_tree_experts($in, $fb_messenger_format = false, $autoexpand = fals
             }
         }
 
-        if (!$fb_messenger_format && ($count + 1) >= $visible_html) {
+        if (!$push_message && ($count + 1) >= $visible_html) {
             //Close the span:
             $expert_info .= '.</span>';
-        } elseif ($fb_messenger_format && !$is_last_fb_item) {
+        } elseif ($push_message && !$is_last_fb_item) {
             //Close the span:
             $expert_info .= '.';
         }
@@ -1120,7 +1120,7 @@ function echo_tree_experts($in, $fb_messenger_format = false, $autoexpand = fals
         $pitch_body .= $expert_count . ' industry expert'. echo__s($expert_count) . ($expert_count == 1 ? ':' : ' including') . $expert_info;
     }
 
-    if ($fb_messenger_format) {
+    if ($push_message) {
         return '⭐ ' . $pitch_body. "\n\n";
     } else {
         //HTML format
@@ -1149,7 +1149,7 @@ function echo_step_range($in, $educational_mode = false){
     }
 }
 
-function echo_tree_steps($in, $fb_messenger_format = 0, $autoexpand = false)
+function echo_tree_steps($in, $push_message = 0, $autoexpand = false)
 {
 
     /*
@@ -1174,7 +1174,7 @@ function echo_tree_steps($in, $fb_messenger_format = 0, $autoexpand = false)
     $pitch_body = 'I estimate it would take you ' . strtolower(echo_step_range($in, true)).( $has_time_estimate ? ' in ' . strtolower(echo_time_range($in)) : '' ).' to '.echo_in_outcome($in['in_outcome']);
 
 
-    if ($fb_messenger_format) {
+    if ($push_message) {
 
         $pitch_body .= '.';
         return '🚩 ' . $pitch_body. "\n\n";

@@ -457,7 +457,7 @@ class Intents_model extends CI_Model
 
     }
 
-    function in_manual_response_note($in, $fb_messenger_format = false)
+    function in_manual_response_note($in, $push_message = false)
     {
 
         /*
@@ -481,9 +481,17 @@ class Intents_model extends CI_Model
 
         //Fetch latest cache tree:
         $en_all_6794 = $this->config->item('en_all_6794'); //Intent Requires Manual Response
+        $ui = '';
+
+        if($push_message){
+            $ui .= 'Send me a '. strtolower($en_all_6794[$in['in_type_entity_id']]['m_name']) .' to complete this step.';
+        } else {
+            $ui .= '<p>Submit a '.$en_all_6794[$in['in_type_entity_id']]['m_name'] .' to continue:</p>';
+            $ui .= '<textarea id="stop_feedback" class="border" placeholder="" style="height:66px; width: 100%; padding: 5px;"></textarea>';
+        }
 
         //Return User-friendly message for Requires Manual Response:
-        return 'Send a '.$en_all_6794[$in['in_type_entity_id']]['m_name'] .' to complete this step.'.( !$fb_messenger_format ? ' Send it to me via Messenger.' : '' );
+        return $ui;
 
     }
 

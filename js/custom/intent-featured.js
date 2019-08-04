@@ -3,7 +3,11 @@
 function add_to_actionplan(){
     $('#added_to_actionplan').html('<span><i class="fas fa-spinner fa-spin"></i></span> Adding...');
     $.post("/user_app/actionplan_intention_add", {in_id: in_focus_id}, function (data) {
+        //Show them success:
         $('#added_to_actionplan').html(data.message);
+
+        //Redirect them:
+        window.location = data.add_redirect;
     });
 }
 

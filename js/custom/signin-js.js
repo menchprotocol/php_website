@@ -34,7 +34,7 @@ function signin_on_messenger(){
 
     //Redirect to Messenger with a bit of delay to log the link above:
     setTimeout(function () {
-        window.location = 'https://m.me/askmench' + ( referrer_in_id > 0 ? '?ref=' + ( referrer_en_id > 0 ? 'REFERUSER_'+referrer_en_id+'_' : '' ) + referrer_in_id : '' );
+        window.location = fb_mench_url + ( referrer_in_id > 0 ? '?ref=' + ( referrer_en_id > 0 ? 'REFERUSER_'+referrer_en_id+'_' : '' ) + referrer_in_id : '' );
     }, 250);
 
 }
@@ -108,6 +108,54 @@ function search_email(){
             //Show errors:
             $('#email_errors').html('<i class="fas fa-exclamation-triangle"></i> Error: ' + data.message + '</b>').hide().fadeIn();
         }
+    });
+
+}
+
+var account_is_adding = false;
+function add_account(){
+
+    if(account_is_adding){
+        return false;
+    }
+
+    //Lock fields:
+    account_is_adding = true;
+    $('#add_acount_next').html('<i class="fas fa-spinner fa-spin"></i>');
+    $('#input_name, #input_password').prop('disabled', true).css('background-color','#EFEFEF');
+
+    //Check email and validate:
+    $.post("/user_app/signin_new_account", {
+        input_email: $('#input_email').val(),
+        input_name: $('#input_name').val(),
+        input_password: $('#input_password').val(),
+        referrer_url: referrer_url,
+        referrer_in_id: referrer_in_id,
+        referrer_en_id: referrer_en_id,
+    }, function (data) {
+
+        if (data.status) {
+
+            //Release field lock:
+            $('#add_acount_next').html('<i class="fas fa-check-circle"></i>');
+            $('#new_account_errors').html('&nbsp;');
+
+            setTimeout(function () {
+                //Redirect to next step:
+                window.location = data.login_url;
+            }, 377);
+
+        } else {
+
+            //Release field lock:
+            account_is_adding = false;
+            $('#add_acount_next').html('Create Account <i class="fas fa-arrow-right"></i>');
+            $('#input_password, #input_name').prop('disabled', false).css('background-color','#FFFFFF');
+
+            //Show errors:
+            $('#new_account_errors').html('<i class="fas fa-exclamation-triangle"></i> Error: ' + data.message + '</b>').hide().fadeIn();
+        }
+
     });
 
 }

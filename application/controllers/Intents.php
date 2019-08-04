@@ -237,7 +237,7 @@ class Intents extends CI_Controller
         }
 
         //Authenticate Miner:
-        $session_en = en_auth(array(1308,7512), true);
+        $session_en = en_auth(array(1308), true);
 
 
         //Fetch intent with 2 levels of children:

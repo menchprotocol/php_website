@@ -33,7 +33,7 @@ class Messenger extends CI_Controller
                 'status' => 0,
                 'message' => 'User not found!',
             ));
-        } elseif (strlen($current_us[0]['en_psid']) < 10) {
+        } elseif (strlen($current_us[0]['en_psid']) < 5) {
             return echo_json(array(
                 'status' => 0,
                 'message' => 'User does not seem to be connected to Mench, so profile data cannot be fetched',
@@ -286,12 +286,12 @@ class Messenger extends CI_Controller
                         $ln_data['ln_content'] = $im['message']['text']; //Quick reply always has a text
 
                         //Digest quick reply:
-                        $quick_reply_results = $this->Communication_model->digest_message_payload($en, $im['message']['quick_reply']['payload']);
+                        $quick_reply_results = $this->Communication_model->digest_received_payload($en, $im['message']['quick_reply']['payload']);
 
                         if(!$quick_reply_results['status']){
                             //There was an error, inform admin:
                             $this->Links_model->ln_create(array(
-                                'ln_content' => 'digest_message_payload() for message returned error ['.$quick_reply_results['message'].']',
+                                'ln_content' => 'digest_received_payload() for message returned error ['.$quick_reply_results['message'].']',
                                 'ln_metadata' => $ln_metadata,
                                 'ln_type_entity_id' => 4246, //Platform Bug Reports
                                 'ln_miner_entity_id' => $en['en_id'],
@@ -549,7 +549,7 @@ class Messenger extends CI_Controller
                         } elseif($ln_data['ln_type_entity_id']==4547){
 
                             //No requirement submissions for this text message... Digest text message & try to make sense of it:
-                            $this->Communication_model->digest_message_text($en, $im['message']['text']);
+                            $this->Communication_model->digest_received_text($en, $im['message']['text']);
 
                         } else {
 
@@ -628,11 +628,11 @@ class Messenger extends CI_Controller
 
                     //Digest quick reply Payload if any:
                     if ($quick_reply_payload) {
-                        $quick_reply_results = $this->Communication_model->digest_message_payload($en, $quick_reply_payload);
+                        $quick_reply_results = $this->Communication_model->digest_received_payload($en, $quick_reply_payload);
                         if(!$quick_reply_results['status']){
                             //There was an error, inform admin:
                             $this->Links_model->ln_create(array(
-                                'ln_content' => 'digest_message_payload() for postback/referral returned error ['.$quick_reply_results['message'].']',
+                                'ln_content' => 'digest_received_payload() for postback/referral returned error ['.$quick_reply_results['message'].']',
                                 'ln_metadata' => $ln_metadata,
                                 'ln_type_entity_id' => 4246, //Platform Bug Reports
                                 'ln_miner_entity_id' => $en['en_id'],

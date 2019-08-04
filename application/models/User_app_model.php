@@ -15,6 +15,51 @@ class User_app_model extends CI_Model
     }
 
 
+
+
+    function user_activate_session($en, $is_miner){
+
+        //Fetch parent data if missing:
+        if(!isset($en['en__parents']) || count($en['en__parents']) < 1){
+            //Fetch full data:
+            $ens = $this->Entities_model->en_fetch(array(
+                'en_id' => $en['en_id'],
+            ));
+            $en = $ens[0];
+        }
+
+        //Assign user details:
+        $session_data['user'] = $en;
+
+        //Are they miner? Give them Sign In access:
+        if ($is_miner) {
+
+            //Check their advance mode status:
+            $last_advance_settings = $this->Links_model->ln_fetch(array(
+                'ln_miner_entity_id' => $en['en_id'],
+                'ln_type_entity_id' => 5007, //Toggled Advance Mode
+                'ln_status_entity_id IN (' . join(',', $this->config->item('en_ids_7360')) . ')' => null, //Link Statuses Active
+            ), array(), 1, 0, array('ln_id' => 'DESC'));
+
+            //They have admin rights:
+            $session_data['user_default_intent'] = $this->config->item('in_focus_id');
+            $session_data['user_session_count'] = 0;
+            $session_data['advance_view_enabled'] = ( count($last_advance_settings) > 0 && substr_count($last_advance_settings[0]['ln_content'] , ' ON')==1 ? 1 : 0 );
+
+        }
+
+        //Log Sign In Link:
+        $this->Links_model->ln_create(array(
+            'ln_miner_entity_id' => $en['en_id'],
+            'ln_type_entity_id' => 7564, //User Signin on Website Success
+        ));
+
+        //All good to go!
+        //Load session and redirect:
+        return $this->session->set_userdata($session_data);
+
+    }
+
     function actionplan_completion_auto_complete($en_id, $in, $unlock_link_type_en_id){
 
         /*
@@ -236,7 +281,7 @@ class User_app_model extends CI_Model
 
     }
 
-    function actionplan_step_skip_initiate($en_id, $in_id, $fb_messenger_format = true){
+    function actionplan_step_skip_initiate($en_id, $in_id, $push_message = true){
 
         //Fetch this intent:
         $ins = $this->Intents_model->in_fetch(array(
@@ -253,9 +298,9 @@ class User_app_model extends CI_Model
             return false;
         }
 
-        $skip_message = 'Are you sure you want to skip the '.echo_step_range($ins[0], true).' to '.echo_in_outcome($ins[0]['in_outcome'], $fb_messenger_format, true).'?';
+        $skip_message = 'Are you sure you want to skip the '.echo_step_range($ins[0], true).' to '.echo_in_outcome($ins[0]['in_outcome'], $push_message, true).'?';
 
-        if(!$fb_messenger_format){
+        if(!$push_message){
 
             //Just return the message for HTML format:
             return $skip_message;
@@ -949,7 +994,7 @@ class User_app_model extends CI_Model
     }
 
 
-    function actionplan_step_next_echo($en_id, $in_id, $fb_messenger_format = true)
+    function actionplan_step_next_echo($en_id, $in_id, $push_message = true)
     {
 
         /*
@@ -1014,7 +1059,7 @@ class User_app_model extends CI_Model
                 'message' => 'Invalid #' . $ins[0]['in_id'].' is not yet public',
             );
 
-        } elseif (!$fb_messenger_format && in_array($ins[0]['in_type_entity_id'], $this->config->item('en_ids_7366') /* Private Intents */)) {
+        } elseif (!$push_message && in_array($ins[0]['in_type_entity_id'], $this->config->item('en_ids_7366') /* Private Intents */)) {
 
             return array(
                 'status' => 0,
@@ -1048,7 +1093,7 @@ class User_app_model extends CI_Model
 
 
         //Fetch submission requirements, messages, children and current progressions (if any):
-        $completion_req_note = $this->Intents_model->in_manual_response_note($ins[0], $fb_messenger_format); //See if we have intent requirements
+        $completion_req_note = $this->Intents_model->in_manual_response_note($ins[0], $push_message); //See if we have intent requirements
         $in__messages = $this->Links_model->ln_fetch(array(
             'ln_status_entity_id IN (' . join(',', $this->config->item('en_ids_7359')) . ')' => null, //Link Statuses Public
             'ln_type_entity_id' => 4231, //Intent Note Messages
@@ -1215,7 +1260,7 @@ class User_app_model extends CI_Model
          * Action Plan Webview only
          *
          * */
-        if(!$fb_messenger_format){
+        if(!$push_message){
 
             $unlocked_steps = $this->Links_model->ln_fetch(array(
                 'ln_status_entity_id IN (' . join(',', $this->config->item('en_ids_7359')) . ')' => null, //Link Statuses Public
@@ -1260,7 +1305,7 @@ class User_app_model extends CI_Model
         if(count($unlock_paths) > 0){
 
 
-            if($fb_messenger_format){
+            if($push_message){
                 $next_step_message .= 'Here are the intentions I recommend adding to your Action Plan to move forward:';
             } else {
                 $next_step_message .= '<div class="list-group" style="margin-top:10px;">';
@@ -1279,7 +1324,7 @@ class User_app_model extends CI_Model
                 $is_completed = ( count($child_progression_steps) > 0 && in_array($child_progression_steps[0]['ln_status_entity_id'], $this->config->item('en_ids_7359')));
                 $is_next = ( count($next_step_quick_replies)==0 && !$is_completed );
 
-                if(!$fb_messenger_format){
+                if(!$push_message){
 
                     //Add HTML step to UI:
                     $next_step_message .= echo_actionplan_step_child($en_id, $child_in, (count($child_progression_steps) > 0 ? $child_progression_steps[0]['ln_status_entity_id'] : 6175 /* Link Drafting */ ));
@@ -1287,7 +1332,7 @@ class User_app_model extends CI_Model
                 } else {
 
                     //Add simple message:
-                    $next_step_message .= "\n\n" . ($key + 1) . '. ' . echo_in_outcome($child_in['in_outcome'], $fb_messenger_format);
+                    $next_step_message .= "\n\n" . ($key + 1) . '. ' . echo_in_outcome($child_in['in_outcome'], $push_message);
                     $next_step_message .= ( $is_completed ? ' [COMPLETED]' : '' );
 
                 }
@@ -1304,7 +1349,7 @@ class User_app_model extends CI_Model
 
             }
 
-            if(!$fb_messenger_format){
+            if(!$push_message){
                 $next_step_message .= '</div>';
             }
 
@@ -1317,10 +1362,10 @@ class User_app_model extends CI_Model
 
 
             //Prep variables:
-            $too_many_children = ( $fb_messenger_format && count($in__children) > 10);
+            $too_many_children = ( $push_message && count($in__children) > 10);
 
 
-            if($fb_messenger_format){
+            if($push_message){
 
                 /*
                  *
@@ -1367,7 +1412,7 @@ class User_app_model extends CI_Model
                 }
 
 
-                if($fb_messenger_format){
+                if($push_message){
 
                     if(!in_array(($key+1), $answer_referencing)){
                         $next_step_message .= "\n\n" . ($key+1).'. '.echo_in_outcome($child_in['in_outcome'], true);
@@ -1421,7 +1466,7 @@ class User_app_model extends CI_Model
 
 
                 //HTML?
-                if(!$fb_messenger_format){
+                if(!$push_message){
 
                     if($was_selected) {
                         //Status Icon:
@@ -1446,7 +1491,7 @@ class User_app_model extends CI_Model
                 }
             }
 
-            if(!$fb_messenger_format){
+            if(!$push_message){
                 $next_step_message .= '</div>';
             } else {
                 if($too_many_children) {
@@ -1462,10 +1507,10 @@ class User_app_model extends CI_Model
             $has_multiple_children = (count($in__children) > 1); //Do we have 2 or more children?
 
             //List AND children:
-            if($has_multiple_children || !$fb_messenger_format){
+            if($has_multiple_children || !$push_message){
 
                 //Check to see if we need titles:
-                $check_clean = ($fb_messenger_format && $has_multiple_children);
+                $check_clean = ($push_message && $has_multiple_children);
                 $frist_x_all_are_dirty = true; //Assume all first X intent outcomes are non-clean unless proven otherwise
                 if($check_clean){
                     foreach ($in__children as $count => $child_in) {
@@ -1489,13 +1534,13 @@ class User_app_model extends CI_Model
                     foreach ($in__children as $child_in) {
 
                         if($key==0){
-                            if(!$fb_messenger_format){
+                            if(!$push_message){
                                 $next_step_message .= '<div class="list-group" style="margin-top:10px;">';
                             } else {
                                 $next_step_message .= "Here are the next steps:"."\n\n";
                             }
                         } else {
-                            if($fb_messenger_format){
+                            if($push_message){
 
                                 $next_step_message .= "\n\n";
 
@@ -1519,7 +1564,7 @@ class User_app_model extends CI_Model
                         ));
 
 
-                        if(!$fb_messenger_format){
+                        if(!$push_message){
 
                             //Add HTML step to UI:
                             $next_step_message .= echo_actionplan_step_child($en_id, $child_in, (count($child_progression_steps) > 0 ? $child_progression_steps[0]['ln_status_entity_id'] : 6175 /* Link Drafting */ ), false);
@@ -1527,7 +1572,7 @@ class User_app_model extends CI_Model
                         } else {
 
                             //Add simple message:
-                            $next_step_message .= ($key + 1) . '. ' . echo_in_outcome($child_in['in_outcome'], $fb_messenger_format, false, false, $common_prefix);
+                            $next_step_message .= ($key + 1) . '. ' . echo_in_outcome($child_in['in_outcome'], $push_message, false, false, $common_prefix);
 
                         }
 
@@ -1537,7 +1582,7 @@ class User_app_model extends CI_Model
 
 
 
-                if(!$fb_messenger_format && $key > 0){
+                if(!$push_message && $key > 0){
                     //Close the HTML tag we opened:
                     $next_step_message .= '</div>';
                 }
@@ -1594,7 +1639,7 @@ class User_app_model extends CI_Model
 
             if($has_children || $next_in_id>0){
                 //Option to go next:
-                if($fb_messenger_format){
+                if($push_message){
 
                     array_push($next_step_quick_replies, array(
                         'content_type' => 'text',
@@ -1611,7 +1656,7 @@ class User_app_model extends CI_Model
 
                 //This will happen for all intents viewed via HTML if all Action Plan steps are completed
                 //No next step found! Recommend if messenger
-                $recommend_recommend = $fb_messenger_format;
+                $recommend_recommend = $push_message;
 
             }
         }
@@ -1619,7 +1664,7 @@ class User_app_model extends CI_Model
         //SKIP?
         if($user_can_skip) {
             //Give option to skip:
-            if($fb_messenger_format){
+            if($push_message){
 
                 //Give option to skip User Intent:
                 array_push($next_step_quick_replies, array(
@@ -1649,7 +1694,7 @@ class User_app_model extends CI_Model
          * Let's start dispatch Messenger messages
          *
          * */
-        $compile_html_message = null; //Will be useful only IF $fb_messenger_format=FALSE
+        $compile_html_message = null; //Will be useful only IF $push_message=FALSE
         $last_message_accepts_quick_replies = false; //Assume FALSE unless proven otherwise...
         foreach ($in__messages as $count => $message_ln) {
 
@@ -1664,12 +1709,12 @@ class User_app_model extends CI_Model
             $compile_html_message .= $this->Communication_model->dispatch_message(
                 $message_ln['ln_content'],
                 array('en_id' => $en_id),
-                $fb_messenger_format,
+                $push_message,
                 //This is when we have messages and need to append the "Next" Quick Reply to the last message:
                 ( $last_message_accepts_quick_replies && count($next_step_quick_replies) > 0 ? $next_step_quick_replies : array() )
             );
         }
-        if($fb_messenger_format) {
+        if($push_message) {
 
             if(strlen($next_step_message) > 0 || (!$last_message_accepts_quick_replies && count($next_step_quick_replies) > 0)){
                 //Send messages over Messenger IF we have a message
@@ -1701,7 +1746,7 @@ class User_app_model extends CI_Model
             'current_progression_links' => $current_progression_links,
 
             //Do we need to return the HTML UI?
-            'html_messages' => ( $fb_messenger_format ? null : $compile_html_message . '<div class="msg" style="margin-top: 15px;">'.nl2br($next_step_message).'</div>' ),
+            'html_messages' => ( $push_message ? null : $compile_html_message . '<div class="msg" style="margin-top: 15px;">'.nl2br($next_step_message).'</div>' ),
         );
 
     }

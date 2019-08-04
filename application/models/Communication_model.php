@@ -22,7 +22,7 @@ class Communication_model extends CI_Model
     }
 
 
-    function dispatch_message($input_message, $recipient_en = array(), $fb_messenger_format = false, $quick_replies = array(), $message_in_id = 0)
+    function dispatch_message($input_message, $recipient_en = array(), $push_message = false, $quick_replies = array(), $message_in_id = 0)
     {
 
         /*
@@ -48,17 +48,17 @@ class Communication_model extends CI_Model
          *
          *                          - $recipient_en['en_id'] - As who to send to
          *                          - $recipient_en['en_name'] - To replace with /firstname
-         *                          - $recipient_en['en_psid'] - Needed if $fb_messenger_format = TRUE
+         *                          - $recipient_en['en_psid'] OR Email Link is needed if $push_message = TRUE
          *
          *
-         * - $fb_messenger_format:  If True this function will prepare a message to be
-         *                          delivered via Facebook Messenger, and if False, it
-         *                          would prepare a message for HTML view. The HTML
+         * - $push_message:         If TRUE this function will prepare a message to be
+         *                          delivered to use using either Messenger or Chrome. If FALSE, it
+         *                          would prepare a message for immediate HTML view. The HTML
          *                          format will consider if a Miner is logged in or not,
          *                          which will alter the HTML format.
          *
          *
-         * - $quick_replies:        Only supported if $fb_messenger_format = TRUE, and
+         * - $quick_replies:        Only supported if $push_message = TRUE, and
          *                          will append an array of quick replies that will give
          *                          Users an easy way to tap and select their next step.
          *
@@ -70,7 +70,7 @@ class Communication_model extends CI_Model
         }
 
         //Validate message:
-        $msg_dispatching = $this->Communication_model->dispatch_validate_message($input_message, $recipient_en, $fb_messenger_format, $quick_replies, 0, $message_in_id, false);
+        $msg_dispatching = $this->Communication_model->dispatch_validate_message($input_message, $recipient_en, $push_message, $quick_replies, 0, $message_in_id, false);
 
 
         //Did we have ane error in message validation?
@@ -84,7 +84,7 @@ class Communication_model extends CI_Model
                 'ln_metadata' => array(
                     'input_message' => $input_message,
                     'recipient_en' => $recipient_en,
-                    'fb_messenger_format' => $fb_messenger_format,
+                    'push_message' => $push_message,
                     'quick_replies' => $quick_replies,
                     'message_in_id' => $message_in_id
                 ),
@@ -100,7 +100,7 @@ class Communication_model extends CI_Model
         foreach ($msg_dispatching['output_messages'] as $output_message) {
 
             //Dispatch message based on format:
-            if ($fb_messenger_format) {
+            if ($push_message) {
 
                 //Attempt to dispatch message via Facebook Graph API:
                 $fb_graph_process = $this->Communication_model->facebook_graph('POST', '/me/messages', $output_message['message_body']);
@@ -136,10 +136,10 @@ class Communication_model extends CI_Model
             }
 
             //Log successful Link for message delivery (Unless Miners viewing HTML):
-            if(isset($recipient_en['en_id']) && ($fb_messenger_format || isset($_GET['log_miner_messages']))){
+            if(isset($recipient_en['en_id']) && $push_message){
                 $this->Links_model->ln_create(array(
                     'ln_content' => $msg_dispatching['input_message'],
-                    'ln_type_entity_id' => $output_message['message_type'],
+                    'ln_type_entity_id' => $output_message['message_type_en_id'],
                     'ln_miner_entity_id' => $recipient_en['en_id'],
                     'ln_parent_entity_id' => $msg_dispatching['ln_parent_entity_id'], //Might be set if message had a referenced entity
                     'ln_metadata' => array(
@@ -153,12 +153,12 @@ class Communication_model extends CI_Model
         }
 
         //If we're here it's all good:
-        return ( $fb_messenger_format ? true : $html_message_body );
+        return ( $push_message ? true : $html_message_body );
 
     }
 
 
-    function dispatch_validate_message($input_message, $recipient_en = array(), $fb_messenger_format = false, $quick_replies = array(), $message_type_en_id = 0, $message_in_id = 0, $strict_validation = true)
+    function dispatch_validate_message($input_message, $recipient_en = array(), $push_message = false, $quick_replies = array(), $message_type_en_id = 0, $message_in_id = 0, $strict_validation = true)
     {
 
         /*
@@ -193,15 +193,15 @@ class Communication_model extends CI_Model
                 'status' => 0,
                 'message' => 'Message must be UTF8',
             );
-        } elseif ($fb_messenger_format && !isset($recipient_en['en_id'])) {
+        } elseif ($push_message && !isset($recipient_en['en_id'])) {
             return array(
                 'status' => 0,
                 'message' => 'Facebook Messenger Format requires a recipient entity ID to construct a message',
             );
-        } elseif (count($quick_replies) > 0 && !$fb_messenger_format) {
+        } elseif (count($quick_replies) > 0 && !$push_message) {
             return array(
                 'status' => 0,
-                'message' => 'Quick Replies are only supported for messages Formatted for Facebook Messenger',
+                'message' => 'Quick Replies are only supported for PUSH messages',
             );
         } elseif ($message_type_en_id > 0 && !in_array($message_type_en_id, $this->config->item('en_ids_4485'))) {
             return array(
@@ -235,18 +235,18 @@ class Communication_model extends CI_Model
                     'message' => 'Message can include a maximum of 1 entity reference',
                 );
 
-            } elseif (!$fb_messenger_format && count($string_references['ref_intents']) > 1) {
+            } elseif (!$push_message && count($string_references['ref_intents']) > 1) {
 
                 return array(
                     'status' => 0,
                     'message' => 'Message can include a maximum of 1 intent reference',
                 );
 
-            } elseif (!$fb_messenger_format && count($string_references['ref_entities']) > 0 && count($string_references['ref_urls']) > 0) {
+            } elseif (!$push_message && count($string_references['ref_entities']) > 0 && count($string_references['ref_urls']) > 0) {
 
                 return array(
                     'status' => 0,
-                    'message' => 'You can either reference 1 entity OR 1 URL (As the URL will be transformed into an entity)',
+                    'message' => 'You can either reference an entity OR a URL, as URLs are transformed to entities',
                 );
 
             } elseif (count($string_references['ref_commands']) > 0) {
@@ -337,12 +337,12 @@ class Communication_model extends CI_Model
          *
          * Fetch more details on recipient entity if needed:
          *
-         * - IF $fb_messenger_format = TRUE AND We're missing en_psid
+         * - IF $push_message = TRUE AND We're missing en_psid
          * - IF /firstname command is used AND en_id is set AND We're missing en_name
          *
          * */
 
-        if (($fb_messenger_format && !isset($recipient_en['en_psid'])) || (isset($recipient_en['en_id']) && in_array('/firstname', $string_references['ref_commands']) && !isset($recipient_en['en_name']))) {
+        if (($push_message && !isset($recipient_en['en_psid'])) || (isset($recipient_en['en_id']) && in_array('/firstname', $string_references['ref_commands']) && !isset($recipient_en['en_name']))) {
 
             //We have partial entity data, but we're missing some needed information...
 
@@ -358,12 +358,14 @@ class Communication_model extends CI_Model
                     'status' => 0,
                     'message' => 'Invalid Entity ID provided',
                 );
-            } elseif ($fb_messenger_format && $ens[0]['en_psid'] < 1) {
+            } elseif ($push_message && $ens[0]['en_psid'] < 1) {
+
                 //This User does not have their Messenger connected yet:
                 return array(
                     'status' => 0,
                     'message' => 'User @' . $recipient_en['en_id'] . ' does not have Messenger connected yet',
                 );
+
             } else {
                 //Assign data:
                 $recipient_en = $ens[0];
@@ -373,11 +375,11 @@ class Communication_model extends CI_Model
 
         /*
          *
-         * Fetch notification level IF $fb_messenger_format = TRUE
+         * Fetch notification level IF $push_message = TRUE
          *
          * */
 
-        if ($fb_messenger_format) {
+        if ($push_message) {
 
             //Translates our settings to Facebook Notification Settings:
             $fb_convert_4454 = array( //Facebook Messenger Notification Levels - This is a manual converter of our internal entities to Facebook API
@@ -467,7 +469,7 @@ class Communication_model extends CI_Model
          * */
 
         //Start building the Output message body based on format:
-        $output_body_message = ( $fb_messenger_format ? $input_message : htmlentities($input_message) );
+        $output_body_message = ( $push_message ? $input_message : htmlentities($input_message) );
 
         if (in_array('/firstname', $string_references['ref_commands'])) {
 
@@ -500,7 +502,7 @@ class Communication_model extends CI_Model
             }
 
             //Make adjustments:
-            if ($fb_messenger_format) {
+            if ($push_message) {
 
                 //Update variables to later include in message:
                 $fb_button_title = $link_anchor;
@@ -557,8 +559,8 @@ class Communication_model extends CI_Model
             $fb_convert_4537 = $this->config->item('fb_convert_4537');
             $en_all_6177 = $this->config->item('en_all_6177');
 
-            //We send Media in their original format IF $fb_messenger_format = TRUE, which means we need to convert link types:
-            if ($fb_messenger_format) {
+            //We send Media in their original format IF $push_message = TRUE, which means we need to convert link types:
+            if ($push_message) {
                 //Converts Entity Link Types to their corresponding User Message Sent Link Types:
                 $master_media_sent_conv = array(
                     4258 => 4553, //video
@@ -594,7 +596,7 @@ class Communication_model extends CI_Model
                     if ($parent_en['ln_type_entity_id'] == 4257) {
 
                         //Embed URL
-                        if ($fb_messenger_format) {
+                        if ($push_message) {
                             //Show simple URL:
                             $ln_content = $parent_en['ln_content'];
                         } else {
@@ -602,8 +604,7 @@ class Communication_model extends CI_Model
                             $ln_content = '<div class="entity-appendix">' . echo_url_embed($parent_en['ln_content']) . '</div>';
                         }
 
-
-                        if ($fb_messenger_format) {
+                        if ($push_message) {
 
                             //Generic URL:
                             array_push($fb_media_attachments, array(
@@ -620,13 +621,13 @@ class Communication_model extends CI_Model
 
                         }
 
-                    } elseif ($fb_messenger_format && array_key_exists($parent_en['ln_type_entity_id'], $fb_convert_4537)) {
+                    } elseif ($push_message && array_key_exists($parent_en['ln_type_entity_id'], $fb_convert_4537)) {
 
                         //Raw media file: Audio, Video, Image OR File...
 
-                        //Search for Facebook Attachment ID IF $fb_messenger_format = TRUE
+                        //Search for Facebook Attachment ID IF $push_message = TRUE
                         $fb_att_id = 0;
-                        if ($fb_messenger_format && strlen($parent_en['ln_metadata']) > 0) {
+                        if ($push_message && strlen($parent_en['ln_metadata']) > 0) {
                             //We might have a Facebook Attachment ID saved in Metadata, check to see:
                             $metadata = unserialize($parent_en['ln_metadata']);
                             if (isset($metadata['fb_att_id']) && intval($metadata['fb_att_id']) > 0) {
@@ -643,7 +644,7 @@ class Communication_model extends CI_Model
                             'fb_att_type' => $fb_convert_4537[$parent_en['ln_type_entity_id']],
                         ));
 
-                    } elseif($fb_messenger_format && $parent_en['ln_type_entity_id'] == 4256){
+                    } elseif($push_message && $parent_en['ln_type_entity_id'] == 4256){
 
                         //Generic URL:
                         array_push($fb_media_attachments, array(
@@ -653,7 +654,7 @@ class Communication_model extends CI_Model
                             'fb_att_type' => null,
                         ));
 
-                    } elseif(!$fb_messenger_format){
+                    } elseif(!$push_message){
 
                         //HTML Format, append content to current output message:
                         $entity_appendix .= '<div class="entity-appendix">' . echo_url_type($parent_en['ln_content'], $parent_en['ln_type_entity_id']) . '</div>';
@@ -674,7 +675,7 @@ class Communication_model extends CI_Model
 
 
             //Adjust
-            if (!$fb_messenger_format) {
+            if (!$push_message) {
 
                 /*
                  *
@@ -706,7 +707,7 @@ class Communication_model extends CI_Model
         }
 
         //Do we have an intent up-vote?
-        if (!$fb_messenger_format && count($string_references['ref_intents']) > 0 && $message_in_id > 0) {
+        if (!$push_message && count($string_references['ref_intents']) > 0 && $message_in_id > 0) {
 
             $referenced_ins = $this->Intents_model->in_fetch(array(
                 'in_id' => $string_references['ref_intents'][0], //Note: We will only have a single reference per message
@@ -794,7 +795,7 @@ class Communication_model extends CI_Model
          *
          * $output_messages will determines the type & content of the
          * message(s) that will to be sent. We might need to send
-         * multiple messages IF $fb_messenger_format = TRUE and the
+         * multiple messages IF $push_message = TRUE and the
          * text message has a referenced entity with a one or more
          * media file (Like video, image, file or audio).
          *
@@ -806,7 +807,7 @@ class Communication_model extends CI_Model
          * */
         $output_messages = array();
 
-        if ($fb_messenger_format) {
+        if ($push_message) {
 
 
             if(count($quick_replies) > 0){
@@ -856,7 +857,7 @@ class Communication_model extends CI_Model
 
                 //Add to output message:
                 array_push($output_messages, array(
-                    'message_type' => ( isset($fb_message['quick_replies']) && count($fb_message['quick_replies']) > 0 ? 6563 : 4552 ), //Text OR Quick Reply Message Sent
+                    'message_type_en_id' => ( isset($fb_message['quick_replies']) && count($fb_message['quick_replies']) > 0 ? 6563 : 4552 ), //Text OR Quick Reply Message Sent
                     'message_body' => array(
                         'recipient' => array(
                             'id' => $recipient_en['en_psid'],
@@ -877,7 +878,7 @@ class Communication_model extends CI_Model
                     'ln_content' => 'dispatch_validate_message() was given quick replies without a text message',
                     'ln_metadata' => array(
                         'input_message' => $input_message,
-                        'fb_messenger_format' => $fb_messenger_format,
+                        'push_message' => $push_message,
                         'quick_replies' => $quick_replies,
                     ),
                     'ln_type_entity_id' => 4246, //Platform Bug Reports
@@ -937,7 +938,7 @@ class Communication_model extends CI_Model
 
                     //Add to output message:
                     array_push($output_messages, array(
-                        'message_type' => $fb_media_attachment['ln_type_entity_id'],
+                        'message_type_en_id' => $fb_media_attachment['ln_type_entity_id'],
                         'message_body' => array(
                             'recipient' => array(
                                 'id' => $recipient_en['en_psid'],
@@ -956,7 +957,7 @@ class Communication_model extends CI_Model
 
             //Always returns a single (sometimes long) HTML message:
             array_push($output_messages, array(
-                'message_type' => 4570, //HTML Message Sent
+                'message_type_en_id' => 4570, //HTML Message Sent
                 'message_body' => '<div class="i_content"><div class="msg">' . nl2br($output_body_message) . '</div></div>',
             ));
 
@@ -1174,7 +1175,7 @@ class Communication_model extends CI_Model
     }
 
 
-    function digest_message_payload($en, $quick_reply_payload)
+    function digest_received_payload($en, $quick_reply_payload)
     {
 
         /*
@@ -1818,13 +1819,13 @@ class Communication_model extends CI_Model
     }
 
 
-    function digest_message_text($en, $fb_received_message)
+    function digest_received_text($en, $fb_received_message)
     {
 
         /*
          *
          * Will process the chat message only in the absence of a chat metadata
-         * otherwise the digest_message_payload() will process the message since we
+         * otherwise the digest_received_payload() will process the message since we
          * know that the medata would have more precise instructions on what
          * needs to be done for the User response.
          *
@@ -2207,13 +2208,13 @@ class Communication_model extends CI_Model
                         if(substr($fb_received_message, 0, strlen($quick_reply['title'])) == strtolower($quick_reply['title'])){
 
                             //Yes! We found a match, trigger the payload:
-                            $quick_reply_results = $this->Communication_model->digest_message_payload($en, $quick_reply['payload']);
+                            $quick_reply_results = $this->Communication_model->digest_received_payload($en, $quick_reply['payload']);
 
                             if(!$quick_reply_results['status']){
 
                                 //There was an error, inform admin:
                                 $this->Links_model->ln_create(array(
-                                    'ln_content' => 'digest_message_payload() for custom response ['.$fb_received_message.'] returned error ['.$quick_reply_results['message'].']',
+                                    'ln_content' => 'digest_received_payload() for custom response ['.$fb_received_message.'] returned error ['.$quick_reply_results['message'].']',
                                     'ln_metadata' => $ln_metadata,
                                     'ln_type_entity_id' => 4246, //Platform Bug Reports
                                     'ln_miner_entity_id' => $en['en_id'],
@@ -2246,7 +2247,7 @@ class Communication_model extends CI_Model
             if (count($this->Links_model->ln_fetch(array(
                     'ln_order' => 1, //A HACK to identify messages sent from us via Facebook Page Inbox
                     'ln_miner_entity_id' => $en['en_id'],
-                    'ln_type_entity_id IN (' . join(',', $this->config->item('en_ids_4280')) . ')' => null, //User/Miner Received Message Links
+                    'ln_type_entity_id IN (' . join(',', $this->config->item('en_ids_4280')) . ')' => null, //User Received Messages with Messenger
                     'ln_timestamp >=' => date("Y-m-d H:i:s", (time() - (1800))), //Messages sent from us less than 30 minutes ago
                 ), array(), 1)) > 0) {
 

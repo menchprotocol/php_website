@@ -993,7 +993,7 @@ class Entities_model extends CI_Model
 
     }
 
-    function en_verify_create($en_name, $ln_miner_entity_id = 0, $force_unique = false, $en_status_entity_id = 6181 /* Entity Published */, $en_icon = null, $en_psid = null){
+    function en_verify_create($en_name, $ln_miner_entity_id = 0, $force_unique = false, $en_status_entity_id = 6180 /* Entity Drafting */, $en_icon = null, $en_psid = null){
 
         //If PSID exists, make sure it's not a duplicate:
         if(!in_array($en_status_entity_id, $this->config->item('en_ids_6177'))){
@@ -1158,14 +1158,6 @@ class Entities_model extends CI_Model
         //Note that new entity link is already logged in the entity creation function
         //Now create more relevant links:
 
-        //Add default Notification Level:
-        $this->Links_model->ln_create(array(
-            'ln_type_entity_id' => 4230, //Raw link
-            'ln_miner_entity_id' => $added_en['en']['en_id'],
-            'ln_parent_entity_id' => 4456, //Receive Regular Notifications (User can change later on...)
-            'ln_child_entity_id' => $added_en['en']['en_id'],
-        ));
-
         //Add them to Users group:
         $this->Links_model->ln_create(array(
             'ln_type_entity_id' => 4230, //Raw link
@@ -1174,11 +1166,11 @@ class Entities_model extends CI_Model
             'ln_child_entity_id' => $added_en['en']['en_id'],
         ));
 
-        //Add them to People entity:
+        //Add default Notification Level:
         $this->Links_model->ln_create(array(
             'ln_type_entity_id' => 4230, //Raw link
             'ln_miner_entity_id' => $added_en['en']['en_id'],
-            'ln_parent_entity_id' => 1278, //People
+            'ln_parent_entity_id' => 4456, //Receive Regular Notifications (User can change later on...)
             'ln_child_entity_id' => $added_en['en']['en_id'],
         ));
 
