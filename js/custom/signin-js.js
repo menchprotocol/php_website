@@ -10,7 +10,6 @@ $(document).ready(function () {
 });
 
 function goto_step(step_count){
-    $('#custom_message').html('');
     $('.signup-steps').addClass('hidden');
     $('#step'+step_count).removeClass('hidden');
 }
@@ -76,6 +75,7 @@ function search_email(){
     $('#email_check_next').html('<i class="fas fa-spinner fa-spin"></i>');
     $('#input_email').prop('disabled', true).css('background-color','#EFEFEF');
     $('#password_errors').html('&nbsp;');
+    $('#custom_message').html(''); //Remove previous errors, if any
 
     //Check email and validate:
     $.post("/user_app/singin_check_email", {
