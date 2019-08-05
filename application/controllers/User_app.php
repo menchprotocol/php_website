@@ -475,7 +475,7 @@ class User_app extends CI_Controller
         //This is a new email, send invitation to join:
 
         ##Email Subject
-        $subject = '1-Click Mench Login';
+        $subject = 'Mench Login Magic Link';
 
         ##Email Body
         $html_message = '<div>Hi '.one_two_explode('',' ',$user_emails[0]['en_name']).' 👋</div><br />';
