@@ -478,18 +478,17 @@ class User_app extends CI_Controller
         $subject = 'Mench Login Magic Link';
 
         ##Email Body
-        $html_message = '<div>Hi '.one_two_explode('',' ',$user_emails[0]['en_name']).' 👋</div><br />';
+        $html_message = '<div>Hi '.one_two_explode('',' ',$user_emails[0]['en_name']).' 👋</div><br /><br />';
 
         $html_message .= '<div>Login to Mench:</div>';
         $magiclogin_url = 'https://mench.com/magiclogin/' . $reset_link['ln_id'] . '?email='.$_POST['input_email'];
         $html_message .= '<div><a href="'.$magiclogin_url.'" target="_blank">' . $magiclogin_url . '</a></div>';
 
-        $html_message .= '<div>Or reset your password:</div>';
+        $html_message .= '<br /><br /><div>Or reset your password:</div>';
         $setpassword_url = 'https://mench.com/resetpassword/' . $reset_link['ln_id'] . '?email='.$_POST['input_email'];
         $html_message .= '<div><a href="'.$setpassword_url.'" target="_blank">' . $setpassword_url . '</a> (Active for 24 hours)</div>';
 
-        $html_message .= '<br />';
-        $html_message .= '<div>Cheers,</div><br />';
+        $html_message .= '<br /><br />';
         $html_message .= '<div>Team Mench</div>';
         $html_message .= '<div><a href="https://mench.com?utm_source=mench&utm_medium=email&utm_campaign=resetpass" target="_blank">mench.com</a></div>';
 
