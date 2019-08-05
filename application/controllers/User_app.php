@@ -515,10 +515,10 @@ class User_app extends CI_Controller
         )); //The user making the request
         if(count($validate_links) < 1){
             //Probably already completed the reset password:
-            return redirect_message('/signin', '<div class="alert alert-danger" role="alert">Invalid data source</div>');
+            return redirect_message('/signin?input_email='.$_GET['email'], '<div class="alert alert-danger" role="alert">Invalid data source</div>');
         } elseif(strtotime($validate_links[0]['ln_timestamp']) + $this->config->item('magic_link_expiry') < time()){
             //Probably already completed the reset password:
-            return redirect_message('/signin', '<div class="alert alert-danger" role="alert">Magic link has expired. Try again.</div>');
+            return redirect_message('/signin?input_email='.$_GET['email'], '<div class="alert alert-danger" role="alert">Magic link has expired. Try again.</div>');
         }
 
         //Fetch entity:
@@ -526,7 +526,7 @@ class User_app extends CI_Controller
             'en_id' => $validate_links[0]['ln_miner_entity_id'],
         ));
         if(count($ens) < 1){
-            return redirect_message('/signin', '<div class="alert alert-danger" role="alert">User not found</div>');
+            return redirect_message('/signin?input_email='.$_GET['email'], '<div class="alert alert-danger" role="alert">User not found</div>');
         }
 
         //Log them in:

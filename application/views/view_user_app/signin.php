@@ -111,7 +111,7 @@ if(count($current_sign_in_attempt) == 0){
         <!-- Step 2: Enter Email -->
         <div id="step2" class="signup-steps hidden">
             <span class="medium-header"><?= $en_all_6225[3288]['m_icon'].' '.$en_all_6225[3288]['m_name'] ?></span>
-            <div class="form-group is-empty"><input type="email" id="input_email" class="form-control border"></div>
+            <div class="form-group is-empty"><input type="email" id="input_email" <?= isset($_GET['input_email']) ? ' value="'.$_GET['input_email'].'" ' : '' ?> class="form-control border"></div>
             <div id="email_errors" class="signin-error-box"></div>
             <span id="step2buttons">
                 <a href="javascript:void(0)" onclick="goto_step(1)" class="btn btn-primary transparent pass btn-raised btn-round <?= ( $referrer_in_id > 0 ? '' : ' hidden ' ) ?>"><i class="fas fa-arrow-left"></i></a>
