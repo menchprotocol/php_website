@@ -20,8 +20,8 @@ $route['start']                 = "intents/in_public_ui/10430"; //For companies 
 $route['signin']                = "user_app/signin";
 $route['(:num)_(:num)/signin']  = "user_app/signin/$2/$1";
 $route['(:num)/signin']         = "user_app/signin/$1";
-$route['resetpassword/(:num)']  = "user_app/signin_reset_password/$1";
-$route['magiclogin/(:num)']     = "user_app/signin_magiclogin/$1";
+$route['resetpassword/(:num)']  = "user_app/signin_reset_password_ui/$1";
+$route['magiclogin/(:num)']     = "user_app/singin_magic_link_login/$1";
 
 $route['signout']                = "user_app/signout";
 $route['myaccount']             = "user_app/myaccount";

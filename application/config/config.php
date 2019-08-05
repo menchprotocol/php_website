@@ -5,7 +5,7 @@ defined('BASEPATH') OR exit('No direct script access allowed');
 /*
  *
  * Global variables used throughout the platform.
- * Example: $this->config->item('base_url')
+ * Example: $this->config->item('magic_link_expiry')
  *
  */
 
@@ -16,15 +16,17 @@ date_default_timezone_set('America/Los_Angeles');
 
 //App Functionality:
 $config['base_url']                 = 'https://mench.com/';
-$config['app_version']              = '0.98'; //Cache buster for static JS/CSS files, so needs to be updated if you update static files
+$config['app_version']              = '0.981'; //Cache buster for static JS/CSS files, so needs to be updated if you update static files
 $config['system_name']              = 'Mench'; //Used for example when a link has no miner
 $config['system_icon']              = '<img src="/img/mench_white.png" />'; //Used for example when a link has no miner
 $config['app_enable_algolia']       = true; //May need to turn off if/when we reach monthly quota of 50k calls
 $config['max_file_mb_size']         = 25; //Server setting is 32MB
 $config['items_per_page']           = 100; //The limit of how many items should be loaded per page/section
-$config['css_column_1']            = 'col-xs-7 cols'; //Size of grid 1 (IF Change col-xs then also update on other code base
-$config['css_column_2']            = 'col-xs-5 cols'; //Size of grid 2
+$config['css_column_1']             = 'col-xs-7 cols'; //Size of grid 1 (IF Change col-xs then also update on other code base
+$config['css_column_2']             = 'col-xs-5 cols'; //Size of grid 2
 $config['fb_mench_url']             = 'https://m.me/askmench'; //The URL of Mench on Messenger
+$config['magic_link_expiry']        = 3600;
+$config['password_reset_expiry']    = 86400;
 
 //Intent References:
 $config['in_mission_id']            = 7766; //highest-level intent which defines the mission of Mench

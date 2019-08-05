@@ -124,7 +124,7 @@ function add_account(){
     $('#input_name, #input_password').prop('disabled', true).css('background-color','#EFEFEF');
 
     //Check email and validate:
-    $.post("/user_app/signin_new_account", {
+    $.post("/user_app/signin_create_account", {
         input_email: $('#input_email').val(),
         input_name: $('#input_name').val(),
         input_password: $('#input_password').val(),
@@ -202,7 +202,7 @@ function check_password(){
 
 }
 
-function singin_magic_link(){
+function singin_magic_link_email(){
     var r = confirm("I will email you a link to "+$('#input_email').val()+" so you can easily login to your account.");
 
     if (r == true) {
@@ -212,7 +212,7 @@ function singin_magic_link(){
         $('.magic_result').html('<i class="fas fa-spinner fa-spin"></i> I\'m emailing you a magic link...');
 
         //Check email and validate:
-        $.post("/user_app/singin_magic_link", {
+        $.post("/user_app/singin_magic_link_email", {
             input_email: $('#input_email').val(),
             referrer_in_id: referrer_in_id,
             referrer_en_id: referrer_en_id,

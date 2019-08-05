@@ -172,7 +172,7 @@ class User_app extends CI_Controller
 
     }
 
-    function signin_reset_password($ln_id){
+    function signin_reset_password_ui($ln_id){
 
         //Make sure email input is provided:
         if(!isset($_GET['email']) || !filter_var($_GET['email'], FILTER_VALIDATE_EMAIL)){
@@ -184,15 +184,12 @@ class User_app extends CI_Controller
         $validate_links = $this->Links_model->ln_fetch(array(
             'ln_id' => $ln_id,
             'ln_content' => $_GET['email'],
-            'ln_type_entity_id' => 7563, //User Signin on Website Forgot Password
+            'ln_type_entity_id' => 7563, //User Signin Magic Link Email
         ), array('en_miner')); //The user making the request
 
         if(count($validate_links) < 1){
             //Probably already completed the reset password:
             return redirect_message('/signin', '<div class="alert alert-danger" role="alert">Reset password link not found</div>');
-        } elseif($validate_links[0]['ln_status_entity_id'] != 6175 /* Link Drafting */){
-            //Probably already completed the reset password:
-            return redirect_message('/'.( $validate_links[0]['ln_parent_intent_id'] > 0 ? $validate_links[0]['ln_parent_intent_id'].'/' : '' ).'signin', '<div class="alert alert-danger" role="alert">You have already completed this password reset request</div>');
         }
 
         $this->load->view('view_user_app/user_app_header', array(
@@ -207,6 +204,7 @@ class User_app extends CI_Controller
         ));
 
     }
+
 
 
 
@@ -259,7 +257,7 @@ class User_app extends CI_Controller
     }
 
 
-    function signin_new_account(){
+    function signin_create_account(){
 
         if (!isset($_POST['referrer_in_id']) || !isset($_POST['referrer_en_id']) || !isset($_POST['referrer_url'])) {
             return echo_json(array(
@@ -432,7 +430,7 @@ class User_app extends CI_Controller
 
     }
 
-    function singin_magic_link(){
+    function singin_magic_link_email(){
 
 
         if (!isset($_POST['input_email']) || !filter_var($_POST['input_email'], FILTER_VALIDATE_EMAIL)) {
@@ -464,8 +462,7 @@ class User_app extends CI_Controller
 
         //Log email search attempt:
         $reset_link = $this->Links_model->ln_create(array(
-            'ln_type_entity_id' => 7563, //User Signin on Website Forgot Password
-            'ln_status_entity_id' => 6175, //Link Drafting
+            'ln_type_entity_id' => 7563, //User Signin Magic Link Email
             'ln_content' => $_POST['input_email'],
             'ln_miner_entity_id' => $user_emails[0]['en_id'], //User making request
             'ln_parent_intent_id' => intval($_POST['referrer_in_id']),
@@ -480,11 +477,13 @@ class User_app extends CI_Controller
         ##Email Body
         $html_message = '<div>Hi '.one_two_explode('',' ',$user_emails[0]['en_name']).' 👋</div><br /><br />';
 
-        $html_message .= '<div>Login to Mench:</div>';
+        $magic_link_expiry_hours = ($this->config->item('magic_link_expiry')/3600);
+        $html_message .= '<div>Login within '.$magic_link_expiry_hours.'-hour'.echo__s($magic_link_expiry_hours).':</div>';
         $magiclogin_url = 'https://mench.com/magiclogin/' . $reset_link['ln_id'] . '?email='.$_POST['input_email'];
         $html_message .= '<div><a href="'.$magiclogin_url.'" target="_blank">' . $magiclogin_url . '</a></div>';
 
-        $html_message .= '<br /><br /><div>Or reset your password: (Active for 24-hours)</div>';
+        $password_reset_expiry_hours = ($this->config->item('password_reset_expiry')/3600);
+        $html_message .= '<br /><br /><div>Or reset password within '.$password_reset_expiry_hours.'-hour'.echo__s($password_reset_expiry_hours).':</div>';
         $setpassword_url = 'https://mench.com/resetpassword/' . $reset_link['ln_id'] . '?email='.$_POST['input_email'];
         $html_message .= '<div><a href="'.$setpassword_url.'" target="_blank">' . $setpassword_url . '</a></div>';
 
@@ -498,6 +497,49 @@ class User_app extends CI_Controller
         return echo_json(array(
             'status' => 1,
         ));
+    }
+
+    function singin_magic_link_login($ln_id){
+
+        //Validate email:
+        if(!isset($_GET['email']) || !filter_var($_GET['email'], FILTER_VALIDATE_EMAIL)){
+            //Missing email input:
+            return redirect_message('/signin', '<div class="alert alert-danger" role="alert">Missing email address</div>');
+        }
+
+        //Validate link ID and matching email:
+        $validate_links = $this->Links_model->ln_fetch(array(
+            'ln_id' => $ln_id,
+            'ln_content' => $_GET['email'],
+            'ln_type_entity_id' => 7563, //User Signin Magic Link Email
+        )); //The user making the request
+        if(count($validate_links) < 1){
+            //Probably already completed the reset password:
+            return redirect_message('/signin', '<div class="alert alert-danger" role="alert">Invalid data source</div>');
+        } elseif(strtotime($validate_links[0]['ln_timestamp']) + $this->config->item('magic_link_expiry') < time()){
+            //Probably already completed the reset password:
+            return redirect_message('/signin', '<div class="alert alert-danger" role="alert">Magic link has expired. Try again.</div>');
+        }
+
+        //Fetch entity:
+        $ens = $this->Entities_model->en_fetch(array(
+            'en_id' => $validate_links[0]['ln_miner_entity_id'],
+        ));
+        if(count($ens) < 1){
+            return redirect_message('/signin', '<div class="alert alert-danger" role="alert">User not found</div>');
+        }
+
+        //Log them in:
+        $is_miner = filter_array($ens[0]['en__parents'], 'en_id', 1308); //Mench Miners
+        $this->User_app_model->user_activate_session($ens[0], $is_miner);
+
+        if($is_miner){
+            //Miner dashboard:
+            return redirect_message('/dashboard');
+        } else {
+            //Their next intent in line:
+            return redirect_message('/user_app/actionplan/next');
+        }
     }
 
     function singin_check_email(){
