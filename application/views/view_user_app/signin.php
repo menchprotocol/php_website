@@ -101,10 +101,6 @@ if(count($current_sign_in_attempt) == 0){
                 }
                 ?>
             </div>
-
-            <div class="form-group label-floating is-empty">
-
-            </div>
         </div>
 
 

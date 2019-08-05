@@ -10,6 +10,7 @@ $(document).ready(function () {
 });
 
 function goto_step(step_count){
+    $('#custom_message').html('');
     $('.signup-steps').addClass('hidden');
     $('#step'+step_count).removeClass('hidden');
 }
