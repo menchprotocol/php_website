@@ -16,7 +16,7 @@ function goto_step(step_count){
 
 function confirm_signin_on_messenger(){
 
-    var r = confirm("You will now be redirected to Mench on Facebook Messenger");
+    var r = confirm("You will now be taken to Mench on Messenger");
     if (r == true) {
         //Go to target intent:
         $('#messenger_signin').html('Redirecting...');
@@ -82,7 +82,6 @@ function search_email(){
         input_email: $('#input_email').val(),
         referrer_in_id: referrer_in_id,
         referrer_en_id: referrer_en_id,
-        password_reset: 0,
 
     }, function (data) {
 
@@ -203,21 +202,27 @@ function check_password(){
 
 }
 
-function email_forgot_password(){
-    var r = confirm("I will email you a link to reset your password.");
+function singin_magic_link(){
+    var r = confirm("I will email you a link to "+$('#input_email').val()+" so you can easily login to your account.");
+
     if (r == true) {
+
+        //Update UI:
+        goto_step(5); //To check their email and create new account
+        $('.magic_result').html('<i class="fas fa-spinner fa-spin"></i> I\'m emailing you a magic link...');
+
         //Check email and validate:
-        $.post("/user_app/singin_check_email", {
+        $.post("/user_app/singin_magic_link", {
             input_email: $('#input_email').val(),
             referrer_in_id: referrer_in_id,
             referrer_en_id: referrer_en_id,
-            password_reset: 1,
         }, function (data) {
             if (data.status) {
-                goto_step(4 /* To check their email and create new account */);
+                //All good, they can close window:
+                $('.magic_result').html('<i class="fas fa-check-circle"></i> Email sent! you can close this window now.').hide().fadeIn();
             } else {
                 //Show errors:
-                $('#email_errors').html('<i class="fas fa-exclamation-triangle"></i> Error: ' + data.message + '</b>').hide().fadeIn();
+                $('.magic_result').html('<b style="color: #FF0000;"><i class="fas fa-exclamation-triangle"></i> Error: ' + data.message + '</b>').hide().fadeIn();
             }
         });
     }

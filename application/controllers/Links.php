@@ -405,7 +405,6 @@ class Links extends CI_Controller
             'ln_status_entity_id IN (' . join(',', $this->config->item('en_ids_7360')) . ')' => null, //Link Statuses Active
             'in_status_entity_id IN (' . join(',', $this->config->item('en_ids_7356')) . ')' => null, //Intent Statuses Active
             'ln_type_entity_id IN (' . join(',', $this->config->item('en_ids_4485')) . ')' => null, //All Intent Notes
-            //'ln_type_entity_id' => 4231, //Intent Messages only
         ), array('in_child'), 0, 0);
         foreach($messages as $message) {
 

@@ -102,26 +102,34 @@ class Communication_model extends CI_Model
             //Dispatch message based on format:
             if ($push_message) {
 
-                //Attempt to dispatch message via Facebook Graph API:
-                $fb_graph_process = $this->Communication_model->facebook_graph('POST', '/me/messages', $output_message['message_body']);
+                if($msg_dispatching['user_chat_channel']==6196 /* Mench on Messenger */){
 
-                //Did we have an Error from the Facebook API side?
-                if (!$fb_graph_process['status']) {
+                    //Attempt to dispatch message via Facebook Graph API:
+                    $fb_graph_process = $this->Communication_model->facebook_graph('POST', '/me/messages', $output_message['message_body']);
 
-                    //Ooopsi, we did! Log error Transcation:
-                    $this->Links_model->ln_create(array(
-                        'ln_type_entity_id' => 4246, //Platform Bug Reports
-                        'ln_miner_entity_id' => (isset($recipient_en['en_id']) ? $recipient_en['en_id'] : 0),
-                        'ln_content' => 'dispatch_message() failed to send message via Facebook Graph API. See Metadata log for more details.',
-                        'ln_metadata' => array(
-                            'input_message' => $input_message,
-                            'output_message' => $output_message['message_body'],
-                            'fb_graph_process' => $fb_graph_process,
-                        ),
-                    ));
+                    //Did we have an Error from the Facebook API side?
+                    if (!$fb_graph_process['status']) {
 
-                    //Terminate function:
-                    return false;
+                        //Ooopsi, we did! Log error Transcation:
+                        $this->Links_model->ln_create(array(
+                            'ln_type_entity_id' => 4246, //Platform Bug Reports
+                            'ln_miner_entity_id' => (isset($recipient_en['en_id']) ? $recipient_en['en_id'] : 0),
+                            'ln_content' => 'dispatch_message() failed to send message via Facebook Graph API. See Metadata log for more details.',
+                            'ln_metadata' => array(
+                                'input_message' => $input_message,
+                                'output_message' => $output_message['message_body'],
+                                'fb_graph_process' => $fb_graph_process,
+                            ),
+                        ));
+
+                        //Terminate function:
+                        return false;
+
+                    }
+
+                } else {
+
+                    $fb_graph_process = null; //No Facebook call made
 
                 }
 
@@ -130,14 +138,14 @@ class Communication_model extends CI_Model
                 //HTML Format, add to message variable that will be returned at the end:
                 $html_message_body .= $output_message['message_body'];
 
-                //NULL placeholder for the Facebook Graph Call since this is an HTML delivery:
-                $fb_graph_process = null;
+                $fb_graph_process = null; //No Facebook call made
 
             }
 
             //Log successful Link for message delivery (Unless Miners viewing HTML):
             if(isset($recipient_en['en_id']) && $push_message){
                 $this->Links_model->ln_create(array(
+                    'ln_status' => ( $msg_dispatching['user_chat_channel']==7305 /* Mench on Chrome */ ? 6175 /* Link Drafting, so we dispatch later */ : 6176 /* Link Published */ ),
                     'ln_content' => $msg_dispatching['input_message'],
                     'ln_type_entity_id' => $output_message['message_type_en_id'],
                     'ln_miner_entity_id' => $recipient_en['en_id'],
@@ -358,18 +366,53 @@ class Communication_model extends CI_Model
                     'status' => 0,
                     'message' => 'Invalid Entity ID provided',
                 );
-            } elseif ($push_message && $ens[0]['en_psid'] < 1) {
-
-                //This User does not have their Messenger connected yet:
-                return array(
-                    'status' => 0,
-                    'message' => 'User @' . $recipient_en['en_id'] . ' does not have Messenger connected yet',
-                );
 
             } else {
                 //Assign data:
                 $recipient_en = $ens[0];
             }
+        }
+
+
+
+        //See if we have a valid way to connect to them if push:
+        if ($push_message) {
+
+            //Missing Messenger connection?
+            if($ens[0]['en_psid'] > 0) {
+
+                $user_chat_channel = 6196; //Mench on Messenger
+
+            } else {
+
+                //See if they have an email:
+                $user_emails = $this->Links_model->ln_fetch(array(
+                    'ln_status_entity_id IN (' . join(',', $this->config->item('en_ids_7359')) . ')' => null, //Link Statuses Public
+                    'ln_child_entity_id' => $recipient_en['en_id'],
+                    'ln_type_entity_id' => 4255, //Linked Entities Text (Email is text)
+                    'ln_parent_entity_id' => 3288, //Email Address
+                ));
+
+                if(count($user_emails) > 0){
+
+                    $user_chat_channel = 7305; //Mench on Chrome
+
+                } else {
+
+                    //No way to communicate with user:
+                    return array(
+                        'status' => 0,
+                        'message' => 'User @' . $recipient_en['en_id'] . ' has no active communication channel',
+                    );
+
+                }
+            }
+
+        } else {
+
+            //No communication channel since the message is NOT being pushed:
+            $user_chat_channel = 0;
+
         }
 
 
@@ -969,6 +1012,7 @@ class Communication_model extends CI_Model
             'status' => 1,
             'input_message' => trim($input_message),
             'output_messages' => $output_messages,
+            'user_chat_channel' => $user_chat_channel,
             'ln_parent_entity_id' => (count($string_references['ref_entities']) > 0 ? $string_references['ref_entities'][0] : 0),
             'ln_parent_intent_id' => (count($string_references['ref_intents']) > 0 ? $string_references['ref_intents'][0] : 0),
         );

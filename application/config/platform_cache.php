@@ -11,7 +11,7 @@ defined('BASEPATH') OR exit('No direct script access allowed');
  *
  */
 
-//Generated 2019-08-03 20:34:29 PST
+//Generated 2019-08-05 15:02:18 PST
 
 //Intent Subscription Setting:
 $config['en_ids_7596'] = array(7597,7598,7599);
@@ -245,7 +245,7 @@ $config['en_all_5967'] = array(
     ),
 );
 
-//Mench Personal Assistant:
+//Mench Communication Channels:
 $config['en_ids_7555'] = array(6196,7305);
 $config['en_all_7555'] = array(
     6196 => array(
@@ -435,7 +435,7 @@ $config['en_all_7372'] = array(
     ),
     7555 => array(
         'm_icon' => '<img src="https://mench.com/img/bp_128.png">',
-        'm_name' => 'Mench Personal Assistant',
+        'm_name' => 'Mench Communication Channels',
         'm_desc' => 'The channels users can choose to connect with Mench personal assistant.',
         'm_parents' => array(7372,4527),
     ),
@@ -2524,7 +2524,7 @@ $config['en_all_4755'] = array(
     ),
     7563 => array(
         'm_icon' => '<i class="fas fa-user-lock"></i>',
-        'm_name' => 'User Signin Password Reset Email',
+        'm_name' => 'User Signin One-Click Login Email',
         'm_desc' => '',
         'm_parents' => array(4755,7569,4269,4595,4593),
     ),
@@ -3147,7 +3147,7 @@ $config['en_all_4595'] = array(
     ),
     7563 => array(
         'm_icon' => '<i class="fas fa-user-lock"></i>',
-        'm_name' => 'User Signin Password Reset Email',
+        'm_name' => 'User Signin One-Click Login Email',
         'm_desc' => '1',
         'm_parents' => array(4755,7569,4269,4595,4593),
     ),
@@ -3787,7 +3787,7 @@ $config['en_all_4593'] = array(
     ),
     7563 => array(
         'm_icon' => '<i class="fas fa-user-lock"></i>',
-        'm_name' => 'User Signin Password Reset Email',
+        'm_name' => 'User Signin One-Click Login Email',
         'm_desc' => '',
         'm_parents' => array(4755,7569,4269,4595,4593),
     ),

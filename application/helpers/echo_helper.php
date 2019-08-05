@@ -922,7 +922,7 @@ function echo_tree_users($in, $push_message = false, $autoexpand = false){
 
     //Count total users:
     $CI =& get_instance();
-    $min_user_show = 100; //Set to 1 as the lowest
+    $min_user_show = 10; //Needs this much or more users to display
 
     //Count users who have completed this intent:
     $enrolled_users_count = $CI->Links_model->ln_fetch(array(
@@ -951,13 +951,13 @@ function echo_tree_users($in, $push_message = false, $autoexpand = false){
     $completion_percentage_fancy = ( $completion_percentage_raw == 0 ? 'none' : ( $completion_percentage_raw==100 ? 'all' : $completion_percentage_raw.'%' ) );
 
     //As messenger default format and HTML extra notes:
-    $pitch_body  = 'So far '.$completion_percentage_fancy.' of '.number_format($enrolled_users_count[0]['totals'], 0) .' user'. echo__s($enrolled_users_count[0]['totals']) .' have completed this intention.';
+    $pitch_body  = number_format($enrolled_users_count[0]['totals'], 0) .' Users are talking about this. '.$completed_users_count[0]['totals'].' Users have completed it so far.';
 
     if ($push_message) {
         return '👤 ' . $pitch_body. "\n\n";
     } else {
         //HTML format
-        $pitch_title = '<span class="icon-block"><i class="fas fa-user"></i></span>&nbsp;'. echo_number($enrolled_users_count[0]['totals']) .' enrolled users';
+        $pitch_title = '<span class="icon-block"><i class="fas fa-users"></i></span>&nbsp;'. echo_number($enrolled_users_count[0]['totals']) .' users talking about this';
         return echo_tree_html_body(7615, $pitch_title, $pitch_body, $autoexpand);
     }
 }

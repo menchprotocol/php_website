@@ -117,12 +117,12 @@ if(count($current_sign_in_attempt) == 0){
                 <a href="javascript:void(0)" onclick="goto_step(1)" class="btn btn-primary transparent pass btn-raised btn-round <?= ( $referrer_in_id > 0 ? '' : ' hidden ' ) ?>"><i class="fas fa-arrow-left"></i></a>
                 <a href="javascript:void(0)" onclick="search_email()" id="email_check_next" class="btn btn-primary pass btn-raised btn-round btn-next">Next <i class="fas fa-arrow-right"></i></a>
             </span>
-            <span id="messenger_signin" style="padding-left:5px; font-size:1em !important;" class="<?= ( $referrer_in_id > 0 ? ' hidden ' : '' ) ?>">Or <a href="javascript:void(0)" onclick="confirm_signin_on_messenger()" class="underdot" style="font-size:1em !important;">Signin on Messenger <i class="fas fa-arrow-right"></i></a></span>
+            <span id="messenger_signin" style="padding-left:5px; font-size:1em !important;" class="<?= ( $referrer_in_id > 0 ? ' hidden ' : '' ) ?>">Or <a href="javascript:void(0)" onclick="confirm_signin_on_messenger()" class="underdot" style="font-size:1em !important;">Login with Messenger <i class="fab fa-facebook-messenger"></i></a></span>
         </div>
 
 
 
-        <!-- Step 3A: Create New Account -->
+        <!-- Step 4: Create New Account -->
         <?php $en_all_6225 = $this->config->item('en_all_6225'); ?>
         <div id="step4" class="signup-steps hidden">
             <span class="medium-header" style="padding-top: 20px;"><i class="fas fa-user-plus"></i> New Account for <b><span class="focus_email"></span></b></span>
@@ -145,7 +145,7 @@ if(count($current_sign_in_attempt) == 0){
         </div>
 
 
-        <!-- Step 3B: Enter Password -->
+        <!-- Step 3: Enter Password -->
         <div id="step3" class="signup-steps hidden">
 
             <!-- To be updated to >0 IF email was found -->
@@ -159,8 +159,16 @@ if(count($current_sign_in_attempt) == 0){
                 <a href="javascript:void(0)" onclick="check_password()" id="password_check_next" class="btn btn-primary pass btn-raised btn-round btn-next">Sign In <i class="fas fa-arrow-right"></i></a>
             </span>
 
-            <span style="padding-left:5px; font-size:1em !important;" class="<?= ( $referrer_in_id > 0 ? ' hidden ' : '' ) ?>">Or <a href="javascript:void(0)" onclick="email_forgot_password()" class="underdot" style="font-size:1em !important;">Forgot Password <i class="fas fa-arrow-right"></i></a></span>
+            <span style="padding-left:5px; font-size:0.9em !important;" class="<?= ( $referrer_in_id > 0 ? ' hidden ' : '' ) ?>">Or <a href="javascript:void(0)" onclick="singin_magic_link()" class="underdot" style="font-size:1em !important;">Email Magic Link <i class="fas fa-wand-magic"></i></a></span>
 
+        </div>
+
+
+        <!-- Step 5: Check your email -->
+        <div id="step5" class="signup-steps hidden">
+            <span class="medium-header"><?= $en_all_6225[3286]['m_icon'] ?> <span class="focus_email"></span></span>
+            <p>Check your email and click the magic link to login.</p>
+            <p class="magic_result"></p>
         </div>
 
 
