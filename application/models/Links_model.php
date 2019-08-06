@@ -363,10 +363,10 @@ class Links_model extends CI_Model
         //See if this is a Link Intent Subscription Types?
         $related_intents = array();
         if($insert_columns['ln_child_intent_id'] > 0){
-            array_push($related_intents, intval($insert_columns['ln_child_intent_id']));
+            array_push($related_intents, $insert_columns['ln_child_intent_id']);
         }
         if($insert_columns['ln_parent_intent_id'] > 0){
-            array_push($related_intents, intval($insert_columns['ln_parent_intent_id']));
+            array_push($related_intents, $insert_columns['ln_parent_intent_id']);
         }
         if(count($related_intents) > 0 && in_array($insert_columns['ln_type_entity_id'] , $this->config->item('en_ids_7703')) && $insert_columns['ln_type_entity_id']!=7702 /* User Intent Subscription Update */ && !is_dev_environment()){
 
@@ -384,7 +384,6 @@ class Links_model extends CI_Model
                 //Try fetching subscribers email:
                 foreach($this->Links_model->ln_fetch(array(
                     'ln_status_entity_id IN (' . join(',', $this->config->item('en_ids_7359')) . ')' => null, //Link Statuses Public
-                    'en_status_entity_id IN (' . join(',', $this->config->item('en_ids_7357')) . ')' => null, //Entity Statuses Public
                     'ln_type_entity_id' => 4255, //Linked Entities Text (Email is text)
                     'ln_parent_entity_id' => 3288, //Mench Email
                     'ln_child_entity_id' => $subscriber_en['en_id'],
