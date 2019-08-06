@@ -14,46 +14,34 @@ class Messenger extends CI_Controller
 
 
 
-    function messenger_fetch_profile($en_id)
+    function messenger_fetch_profile($psid)
     {
 
         //Only moderators can do this at this time:
         $session_en = en_auth(array(1281));
-        $current_us = $this->Entities_model->en_fetch(array(
-            'en_id' => $en_id,
-        ));
-        $user_messenger = $this->Links_model->ln_fetch(array(
-            'ln_status_entity_id IN (' . join(',', $this->config->item('en_ids_7359')) . ')' => null, //Link Statuses Public
-            'ln_type_entity_id IN (' . join(',', $this->config->item('en_ids_4592')) . ')' => null, //Entity Link Connectors
-            'ln_parent_entity_id' => 6196, //Mench Messenger
-            'ln_child_entity_id' => $en_id,
-            'ln_external_id >' => 0,
-        ), array('en_child'));
-
         if (!$session_en) {
             return echo_json(array(
                 'status' => 0,
                 'message' => 'Session Expired. Sign In as a moderator and Try again.',
             ));
-        } elseif (count($current_us) == 0) {
-            return echo_json(array(
-                'status' => 0,
-                'message' => 'User not found!',
-            ));
-        } elseif (count($user_messenger)==0) {
+        }
+
+        //Validate messenger ID:
+        $user_messenger = $this->Links_model->ln_fetch(array(
+            'ln_status_entity_id IN (' . join(',', $this->config->item('en_ids_7359')) . ')' => null, //Link Statuses Public
+            'ln_type_entity_id IN (' . join(',', $this->config->item('en_ids_4592')) . ')' => null, //Entity Link Connectors
+            'ln_parent_entity_id' => 6196, //Mench Messenger
+            'ln_external_id' => $psid,
+        ));
+        if (count($user_messenger) == 0) {
             return echo_json(array(
                 'status' => 0,
                 'message' => 'User not connected to Mench Messenger',
             ));
-        } else {
-
-            //Fetch results and show:
-            return echo_json(array(
-                'fb_profile' => $this->Communication_model->facebook_graph('GET', '/' . $user_messenger[0]['ln_external_id'], array()),
-                'en' => $current_us[0],
-            ));
-
         }
+
+        //Fetch results and show:
+        return echo_json($this->Communication_model->facebook_graph('GET', '/' . $user_messenger[0]['ln_external_id'], array()));
 
     }
 

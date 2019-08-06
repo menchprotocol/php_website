@@ -2218,7 +2218,7 @@ function echo_en($en, $level, $is_parent = false)
         if($en['ln_external_id'] > 0){
             if(en_auth(array(1281)) && $en['ln_parent_entity_id']==6196){
                 //Give Moderators the ability to ping Messenger profiles:
-                $ui .= '<span class="icon-top-left" data-toggle="tooltip" data-placement="right" title="Link External ID = '.$en['ln_external_id'].' [Messenger Profile]"><a href="/messenger/messenger_fetch_profile/'.$en['en_id'].'" target="_blank"><i class="fas fa-project-diagram"></i></a></span>';
+                $ui .= '<span class="icon-top-left" data-toggle="tooltip" data-placement="right" title="Link External ID = '.$en['ln_external_id'].' [Messenger Profile]"><a href="/messenger/messenger_fetch_profile/'.$en['ln_external_id'].'" target="_blank"><i class="fas fa-project-diagram"></i></a></span>';
             } else {
                 $ui .= '<span class="icon-top-left" data-toggle="tooltip" data-placement="right" title="Link External ID = '.$en['ln_external_id'].'"><i class="fas fa-project-diagram"></i></span>';
             }
