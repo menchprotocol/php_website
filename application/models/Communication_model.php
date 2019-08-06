@@ -422,7 +422,7 @@ class Communication_model extends CI_Model
          *
          * */
 
-        if ($push_message) {
+        if ($push_message && $user_chat_channel==6196 /* Mench on Messenger */) {
 
             //Translates our settings to Facebook Notification Settings:
             $fb_convert_4454 = array( //Facebook Messenger Notification Levels - This is a manual converter of our internal entities to Facebook API
@@ -445,7 +445,7 @@ class Communication_model extends CI_Model
 
                 return array(
                     'status' => 0,
-                    'message' => 'User is missing their Notification Level parent entity relation',
+                    'message' => 'User is missing their Messenger Notification Level',
                 );
 
             } elseif (count($lns_comm_level) > 1) {
@@ -463,11 +463,12 @@ class Communication_model extends CI_Model
                     'message' => 'Fetched unknown Notification Level [' . $lns_comm_level[0]['ln_parent_entity_id'] . ']',
                 );
 
+            } else {
+
+                //All good, Set notification type:
+                $notification_type = $fb_convert_4454[$lns_comm_level[0]['ln_parent_entity_id']];
+
             }
-
-            //All good, Set notification type:
-            $notification_type = $fb_convert_4454[$lns_comm_level[0]['ln_parent_entity_id']];
-
         }
 
 
@@ -850,12 +851,8 @@ class Communication_model extends CI_Model
          * */
         $output_messages = array();
 
-        if ($push_message) {
+        if ($push_message && $user_chat_channel==6196 /* Mench on Messenger */) {
 
-
-            if(count($quick_replies) > 0){
-                //TODO Validate $quick_replies content?
-            }
 
             //Do we have a text message?
             if ($has_text || $fb_button_title) {
@@ -995,8 +992,8 @@ class Communication_model extends CI_Model
                 }
             }
 
-
         } else {
+
 
             //Always returns a single (sometimes long) HTML message:
             array_push($output_messages, array(
