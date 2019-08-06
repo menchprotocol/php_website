@@ -12,6 +12,17 @@ $(document).ready(function () {
 function goto_step(step_count){
     $('.signup-steps').addClass('hidden');
     $('#step'+step_count).removeClass('hidden');
+    $('#step'+step_count+' input').focus().keydown(function (e) {
+        if (e.keyCode == 13) {
+            if(step_count==2){
+                search_email();
+            } else if(step_count==3){
+                singin_check_password();
+            } else if(step_count==4){
+                add_account();
+            }
+        }
+    });
 }
 
 function confirm_signin_on_messenger(){
@@ -107,6 +118,7 @@ function search_email(){
         } else {
             //Show errors:
             $('#email_errors').html('<i class="fas fa-exclamation-triangle"></i> Error: ' + data.message + '</b>').hide().fadeIn();
+            $('#input_email').focus();
         }
     });
 
@@ -146,6 +158,11 @@ function add_account(){
             }, 377);
 
         } else {
+
+            //Do we know which field to focus on?
+            if(data.focus_input_field){
+                $(data.focus_input_field).focus();
+            }
 
             //Release field lock:
             account_is_adding = false;
@@ -193,7 +210,7 @@ function singin_check_password(){
             //Release field lock:
             password_is_checking = false;
             $('#password_check_next').html('Sign In <i class="fas fa-arrow-right"></i>');
-            $('#input_password').prop('disabled', false).css('background-color','#FFFFFF');
+            $('#input_password').prop('disabled', false).css('background-color','#FFFFFF').focus();
 
             //Show errors:
             $('#password_errors').html('<i class="fas fa-exclamation-triangle"></i> Error: ' + data.message + '</b>').hide().fadeIn();

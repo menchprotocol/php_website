@@ -1,6 +1,8 @@
 <?php
 $en_all_7369 = $this->config->item('en_all_7369');
 $en_all_6225 = $this->config->item('en_all_6225');
+$en_all_7555 = $this->config->item('en_all_7555');
+
 $this_attempt = array(
     'ln_type_entity_id' => ( $referrer_in_id > 0 ? 7560 /* User Signin Intent Channel Choose */ : 7561 /* User Signin on Website */ ),
     'ln_parent_intent_id' => $referrer_in_id,
@@ -94,6 +96,7 @@ if(count($current_sign_in_attempt) == 0){
 
         <!-- Step 1: Choose Channel -->
         <div id="step1" class="signup-steps hidden">
+            <p>Choose a platform to continue:</p>
             <div class="row">
                 <?php
                 foreach ($this->config->item('en_all_7555') as $en_id => $m) {
@@ -106,7 +109,7 @@ if(count($current_sign_in_attempt) == 0){
 
         <!-- Step 2: Enter Email -->
         <div id="step2" class="signup-steps hidden">
-            <span class="medium-header"><?= $en_all_6225[3288]['m_icon'].' '.$en_all_6225[3288]['m_name'] ?></span>
+            <span class="medium-header"><?= $en_all_7555[3288]['m_icon'].' '.$en_all_7555[3288]['m_name'] ?></span>
             <div class="form-group is-empty"><input type="email" id="input_email" <?= isset($_GET['input_email']) ? ' value="'.$_GET['input_email'].'" ' : '' ?> class="form-control border"></div>
             <div id="email_errors" class="signin-error-box"></div>
             <span id="step2buttons">
@@ -119,7 +122,6 @@ if(count($current_sign_in_attempt) == 0){
 
 
         <!-- Step 4: Create New Account -->
-        <?php $en_all_6225 = $this->config->item('en_all_6225'); ?>
         <div id="step4" class="signup-steps hidden">
             <span class="medium-header" style="padding-top: 20px;"><i class="fas fa-user-plus"></i> New Account for <b><span class="focus_email"></span></b></span>
 
@@ -162,7 +164,7 @@ if(count($current_sign_in_attempt) == 0){
 
         <!-- Step 5: Check your email -->
         <div id="step5" class="signup-steps hidden">
-            <span class="medium-header"><?= $en_all_6225[3288]['m_icon'] ?> <span class="focus_email"></span></span>
+            <span class="medium-header"><?= $en_all_7555[3288]['m_icon'] ?> <span class="focus_email"></span></span>
             <span class="medium-header magic_result"></span>
         </div>
 

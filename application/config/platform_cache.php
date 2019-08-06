@@ -11,7 +11,7 @@ defined('BASEPATH') OR exit('No direct script access allowed');
  *
  */
 
-//Generated 2019-08-05 22:22:38 PST
+//Generated 2019-08-05 22:57:32 PST
 
 //Intent Subscription Setting:
 $config['en_ids_7596'] = array(7597,7598,7599);
@@ -255,7 +255,7 @@ $config['en_all_7555'] = array(
         'm_parents' => array(7555,6225,4426,4755),
     ),
     6196 => array(
-        'm_icon' => '<i class="fab fa-facebook-messenger blue"></i>',
+        'm_icon' => '<i class="fab fa-facebook-messenger"></i>',
         'm_name' => 'Messenger',
         'm_desc' => 'btn btn-secondary',
         'm_parents' => array(5969,7555,3320),
@@ -916,7 +916,7 @@ $config['en_all_7233'] = array(
     ),
     7164 => array(
         'm_icon' => '<i class="fas fa-comments"></i>',
-        'm_name' => 'User All Sent/Received Messages',
+        'm_name' => 'User Sent/Received Messages',
         'm_desc' => '',
         'm_parents' => array(7233,7203,7159,4527,6221),
     ),
@@ -945,7 +945,7 @@ $config['en_all_7203'] = array(
     ),
     7164 => array(
         'm_icon' => '<i class="fas fa-comments"></i>',
-        'm_name' => 'User All Sent/Received Messages',
+        'm_name' => 'User Sent/Received Messages',
         'm_desc' => '',
         'm_parents' => array(7233,7203,7159,4527,6221),
     ),
@@ -991,7 +991,7 @@ $config['en_all_7166'] = array(
     ),
 );
 
-//User All Sent/Received Messages:
+//User Sent/Received Messages:
 $config['en_ids_7164'] = array(4268,4278,4279,4287,4299,4460,4547,4548,4549,4550,4551,4552,4553,4554,4555,4556,4557,4570,4577,6563);
 $config['en_all_7164'] = array(
     4268 => array(
@@ -1156,7 +1156,7 @@ $config['en_all_7159'] = array(
     ),
     7164 => array(
         'm_icon' => '<i class="fas fa-comments"></i>',
-        'm_name' => 'All Sent/Received Messages',
+        'm_name' => 'Sent/Received Messages',
         'm_desc' => 'Messages send and received by users that gets them closer to their set intentions.',
         'm_parents' => array(7233,7203,7159,4527,6221),
     ),
@@ -1998,7 +1998,7 @@ $config['en_all_5969'] = array(
         'm_parents' => array(6225,5969,4755),
     ),
     6196 => array(
-        'm_icon' => '<i class="fab fa-facebook-messenger blue"></i>',
+        'm_icon' => '<i class="fab fa-facebook-messenger"></i>',
         'm_name' => 'Mench Messenger',
         'm_desc' => '',
         'm_parents' => array(5969,7555,3320),

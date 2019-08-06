@@ -351,21 +351,25 @@ class User_app extends CI_Controller
             return echo_json(array(
                 'status' => 0,
                 'message' => 'Missing core data',
+                'focus_input_field' => '',
             ));
         } elseif (!isset($_POST['input_email']) || !filter_var($_POST['input_email'], FILTER_VALIDATE_EMAIL)) {
             return echo_json(array(
                 'status' => 0,
                 'message' => 'Invalid email address',
+                'focus_input_field' => '',
             ));
         } elseif (!isset($_POST['input_name']) || strlen($_POST['input_name'])<1) {
             return echo_json(array(
                 'status' => 0,
                 'message' => 'Missing name',
+                'focus_input_field' => '#input_name',
             ));
         } elseif (!isset($_POST['new_password']) || strlen($_POST['new_password'])<1) {
             return echo_json(array(
                 'status' => 0,
                 'message' => 'Missing password',
+                'focus_input_field' => '#new_password',
             ));
         }
 
@@ -377,31 +381,37 @@ class User_app extends CI_Controller
             return echo_json(array(
                 'status' => 0,
                 'message' => 'Full name must longer than 5 characters',
+                'focus_input_field' => '#input_name',
             ));
         } elseif (!isset($name_parts[1])) {
             return echo_json(array(
                 'status' => 0,
                 'message' => 'There must be a space between your your first and last name',
+                'focus_input_field' => '#input_name',
             ));
         } elseif (strlen($name_parts[0])<2) {
             return echo_json(array(
                 'status' => 0,
                 'message' => 'First name must be 2 characters or longer',
+                'focus_input_field' => '#input_name',
             ));
         } elseif (strlen($name_parts[1])<2) {
             return echo_json(array(
                 'status' => 0,
                 'message' => 'Last name must be 2 characters or longer',
+                'focus_input_field' => '#input_name',
             ));
         } elseif (strlen($_POST['input_name']) > $this->config->item('en_name_max_length')) {
             return echo_json(array(
                 'status' => 0,
                 'message' => 'Full name must be less than '.$this->config->item('en_name_max_length').' characters',
+                'focus_input_field' => '#input_name',
             ));
         } elseif (strlen($_POST['new_password']) < $this->config->item('password_min_char')) {
             return echo_json(array(
                 'status' => 0,
                 'message' => 'New password must be '.$this->config->item('password_min_char').' characters or longer',
+                'focus_input_field' => '#new_password',
             ));
         }
 

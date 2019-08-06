@@ -290,7 +290,7 @@ function in_message_modify_start(ln_id, initial_ln_type_entity_id) {
     //Watch typing:
     $(document).keyup(function (e) {
         //Watch for action keys:
-        if (e.ctrlKey && e.keyCode === 13) {
+        if (e.ctrlKey && e.keyCode == 13) {
             in_message_modify_save(ln_id, initial_ln_type_entity_id);
         }
     });
