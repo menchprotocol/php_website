@@ -1,27 +1,7 @@
 <script>
-    //Show loading:
-    function signin_reset_password_apply() {
-        $('#pass_reset').html('<span><i class="fas fa-spinner fa-spin"></i></span>');
-        //Hide the editor & saving results:
-        $.post("/user_app/signin_reset_password_apply", {
-            en_id:<?= $_GET['en_id'] ?>,
-            timestamp:<?= $_GET['timestamp'] ?>,
-            p_hash: "<?= $_GET['p_hash'] ?>",
-            input_password: $('#input_password').val(),
-        }, function (data) {
-            //Show success:
-            $('#pass_reset').html(data);
-        });
-
-
-
-
-    }
-
-
 
     var pass_is_resetting = false;
-    function add_account(){
+    function signin_reset_password_apply(){
 
         if(pass_is_resetting){
             return false;
@@ -29,7 +9,7 @@
 
         //Lock fields:
         pass_is_resetting = true;
-        $('#reset_pass_next').html('<i class="fas fa-spinner fa-spin"></i>');
+        $('#reset_pass_next').html('<span><i class="fas fa-spinner fa-spin"></i></span>');
         $('#input_password').prop('disabled', true).css('background-color','#EFEFEF');
 
         //Check email and validate:
