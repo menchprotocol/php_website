@@ -3,16 +3,14 @@
 
 var logged_messenger = false;
 var logged_website = false;
+var step_count = 0;
 
 
 $(document).ready(function () {
     goto_step(( referrer_in_id > 0 ? 1 : 2 ));
-});
 
-function goto_step(step_count){
-    $('.signup-steps').addClass('hidden');
-    $('#step'+step_count).removeClass('hidden');
-    $('#step'+step_count+' input').focus().keydown(function (e) {
+    $(document).keyup(function (e) {
+        //Watch for action keys:
         if (e.keyCode == 13) {
             if(step_count==2){
                 search_email();
@@ -23,11 +21,21 @@ function goto_step(step_count){
             }
         }
     });
+});
+
+function goto_step(this_step_count){
+
+    //Update step count:
+    step_count = this_step_count;
+
+    $('.signup-steps').addClass('hidden');
+    $('#step'+step_count).removeClass('hidden');
+
+    $('#step'+step_count+' :input:visible:first').focus();
 }
 
 function confirm_signin_on_messenger(){
-
-    var r = confirm("You will now be taken to Mench on Messenger");
+    var r = confirm("Ok, I will take you to Messenger now...");
     if (r == true) {
         //Go to target intent:
         $('#messenger_signin').html('Redirecting...');
@@ -159,15 +167,16 @@ function add_account(){
 
         } else {
 
-            //Do we know which field to focus on?
-            if(data.focus_input_field.length>0){
-                $('#' + data.focus_input_field).focus();
-            }
 
             //Release field lock:
             account_is_adding = false;
             $('#add_acount_next').html('Create Account <i class="fas fa-arrow-right"></i>');
             $('#new_password, #input_name').prop('disabled', false).css('background-color','#FFFFFF');
+
+            //Do we know which field to focus on?
+            if(data.focus_input_field.length>0) {
+                $('#' + data.focus_input_field).focus();
+            }
 
             //Show errors:
             $('#new_account_errors').html('<i class="fas fa-exclamation-triangle"></i> Error: ' + data.message + '</b>').hide().fadeIn();

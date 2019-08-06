@@ -363,12 +363,6 @@ class User_app extends CI_Controller
                 'message' => 'Missing name',
                 'focus_input_field' => 'input_name',
             ));
-        } elseif (!isset($_POST['new_password']) || strlen($_POST['new_password'])<1) {
-            return echo_json(array(
-                'status' => 0,
-                'message' => 'Missing password',
-                'focus_input_field' => 'new_password',
-            ));
         }
 
         //Prep inputs & validate further:
@@ -404,6 +398,12 @@ class User_app extends CI_Controller
                 'status' => 0,
                 'message' => 'Full name must be less than '.$this->config->item('en_name_max_length').' characters',
                 'focus_input_field' => 'input_name',
+            ));
+        } elseif (!isset($_POST['new_password']) || strlen($_POST['new_password'])<1) {
+            return echo_json(array(
+                'status' => 0,
+                'message' => 'Missing password',
+                'focus_input_field' => 'new_password',
             ));
         } elseif (strlen($_POST['new_password']) < $this->config->item('password_min_char')) {
             return echo_json(array(
