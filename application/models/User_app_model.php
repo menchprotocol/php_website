@@ -1861,7 +1861,7 @@ class User_app_model extends CI_Model
                 $metadata_this['steps_answered_count'] += 1;
 
                 //Calculate if answered:
-                if($expansion_in['ln_type_entity_id']==6157 /* Action Plan Question Answered */){
+                if(in_array($expansion_in['ln_type_entity_id'], $this->config->item('en_ids_7704') /* User Step Answered Successfully */)){
 
                     //Fetch intent data:
                     $ins = $this->Intents_model->in_fetch(array(
@@ -1876,6 +1876,7 @@ class User_app_model extends CI_Model
 
                         $this_answer_marks = $answer_marks_index[$expansion_in['ln_child_intent_id']];
                         $metadata_this['steps_answered_marks'] += $this_answer_marks + $recursive_stats['steps_answered_marks'];
+
                     }
                 }
             }

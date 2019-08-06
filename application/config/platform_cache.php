@@ -11,7 +11,30 @@ defined('BASEPATH') OR exit('No direct script access allowed');
  *
  */
 
-//Generated 2019-08-06 14:56:53 PST
+//Generated 2019-08-06 15:39:36 PST
+
+//User Step Answered Successfully:
+$config['en_ids_7704'] = array(6157,7487,7489);
+$config['en_all_7704'] = array(
+    6157 => array(
+        'm_icon' => '<i class="fas fa-check-circle"></i>',
+        'm_name' => 'User Step Answered',
+        'm_desc' => '',
+        'm_parents' => array(7704,7703,4527,4595,6255,6244,6146,4755,4593),
+    ),
+    7487 => array(
+        'm_icon' => '<i class="fas fa-calendar-check"></i>',
+        'm_name' => 'User Step Answered Timely',
+        'm_desc' => '',
+        'm_parents' => array(7704,7703,6244,4755,6255,4593,4595,6146),
+    ),
+    7489 => array(
+        'm_icon' => '<i class="fas fa-check-square"></i>',
+        'm_name' => 'User Step Selected',
+        'm_desc' => '',
+        'm_parents' => array(7704,7703,4755,6255,4593,4595,6146),
+    ),
+);
 
 //Link Intent Subscription Types:
 $config['en_ids_7703'] = array(4228,4229,4231,4242,4264,4559,4601,4983,6093,6144,6154,6155,6157,6242,6997,7485,7486,7487,7489,7492,7545,7701);
@@ -92,7 +115,7 @@ $config['en_all_7703'] = array(
         'm_icon' => '<i class="fas fa-check-circle"></i>',
         'm_name' => 'User Step Answered',
         'm_desc' => '',
-        'm_parents' => array(7703,4527,4595,6255,6244,6146,4755,4593),
+        'm_parents' => array(7704,7703,4527,4595,6255,6244,6146,4755,4593),
     ),
     6242 => array(
         'm_icon' => '<i class="far fa-check-square"></i>',
@@ -122,13 +145,13 @@ $config['en_all_7703'] = array(
         'm_icon' => '<i class="fas fa-calendar-check"></i>',
         'm_name' => 'User Step Answered Timely',
         'm_desc' => '',
-        'm_parents' => array(7703,6244,4755,6255,4593,4595,6146),
+        'm_parents' => array(7704,7703,6244,4755,6255,4593,4595,6146),
     ),
     7489 => array(
         'm_icon' => '<i class="fas fa-check-square"></i>',
         'm_name' => 'User Step Selected',
         'm_desc' => '',
-        'm_parents' => array(7703,4755,6255,4593,4595,6146),
+        'm_parents' => array(7704,7703,4755,6255,4593,4595,6146),
     ),
     7492 => array(
         'm_icon' => '<i class="far fa-times-square"></i>',
@@ -1647,7 +1670,7 @@ $config['en_all_6255'] = array(
         'm_icon' => '<i class="fas fa-check-circle"></i>',
         'm_name' => 'User Step Answered',
         'm_desc' => '',
-        'm_parents' => array(7703,4527,4595,6255,6244,6146,4755,4593),
+        'm_parents' => array(7704,7703,4527,4595,6255,6244,6146,4755,4593),
     ),
     6997 => array(
         'm_icon' => '<i class="fas fa-lock-open"></i>',
@@ -1671,13 +1694,13 @@ $config['en_all_6255'] = array(
         'm_icon' => '<i class="fas fa-calendar-check"></i>',
         'm_name' => 'User Step Answered Timely',
         'm_desc' => '',
-        'm_parents' => array(7703,6244,4755,6255,4593,4595,6146),
+        'm_parents' => array(7704,7703,6244,4755,6255,4593,4595,6146),
     ),
     7489 => array(
         'm_icon' => '<i class="fas fa-check-square"></i>',
         'm_name' => 'User Step Selected',
         'm_desc' => '',
-        'm_parents' => array(7703,4755,6255,4593,4595,6146),
+        'm_parents' => array(7704,7703,4755,6255,4593,4595,6146),
     ),
     7492 => array(
         'm_icon' => '<i class="far fa-times-square"></i>',
@@ -1700,7 +1723,7 @@ $config['en_all_6244'] = array(
         'm_icon' => '<i class="fas fa-check-circle"></i>',
         'm_name' => 'User Step Answered',
         'm_desc' => 'Logged initially when the user arrives at a regular OR intent, and completed when they submit their answer.',
-        'm_parents' => array(7703,4527,4595,6255,6244,6146,4755,4593),
+        'm_parents' => array(7704,7703,4527,4595,6255,6244,6146,4755,4593),
     ),
     7486 => array(
         'm_icon' => '<i class="fas fa-lock-open"></i>',
@@ -1712,7 +1735,7 @@ $config['en_all_6244'] = array(
         'm_icon' => '<i class="fas fa-calendar-check"></i>',
         'm_name' => 'User Step Answered Timely',
         'm_desc' => 'Logged initially when the user starts to answer a timed OR intent, and will be published if they are successful at answering it on time. If not, will update link type to User Step Answer Timeout.',
-        'm_parents' => array(7703,6244,4755,6255,4593,4595,6146),
+        'm_parents' => array(7704,7703,6244,4755,6255,4593,4595,6146),
     ),
 );
 
@@ -1904,7 +1927,7 @@ $config['en_all_6146'] = array(
         'm_icon' => '<i class="fas fa-check-circle"></i>',
         'm_name' => 'Answered',
         'm_desc' => 'Completed after the student answers the question to the OR intent.',
-        'm_parents' => array(7703,4527,4595,6255,6244,6146,4755,4593),
+        'm_parents' => array(7704,7703,4527,4595,6255,6244,6146,4755,4593),
     ),
     6997 => array(
         'm_icon' => '<i class="fas fa-lock-open"></i>',
@@ -1928,7 +1951,7 @@ $config['en_all_6146'] = array(
         'm_icon' => '<i class="fas fa-calendar-check"></i>',
         'm_name' => 'Answered Timely',
         'm_desc' => 'When the user answers a question within the defined timeframe',
-        'm_parents' => array(7703,6244,4755,6255,4593,4595,6146),
+        'm_parents' => array(7704,7703,6244,4755,6255,4593,4595,6146),
     ),
     7488 => array(
         'm_icon' => '<i class="far fa-calendar-times"></i>',
@@ -1940,7 +1963,7 @@ $config['en_all_6146'] = array(
         'm_icon' => '<i class="fas fa-check-square"></i>',
         'm_name' => 'Selected',
         'm_desc' => 'User made a selection as part of a multiple-choice answer question',
-        'm_parents' => array(7703,4755,6255,4593,4595,6146),
+        'm_parents' => array(7704,7703,4755,6255,4593,4595,6146),
     ),
     7492 => array(
         'm_icon' => '<i class="far fa-times-square"></i>',
@@ -2478,7 +2501,7 @@ $config['en_all_4755'] = array(
         'm_icon' => '<i class="fas fa-check-circle"></i>',
         'm_name' => 'User Step Answered',
         'm_desc' => '',
-        'm_parents' => array(7703,4527,4595,6255,6244,6146,4755,4593),
+        'm_parents' => array(7704,7703,4527,4595,6255,6244,6146,4755,4593),
     ),
     6224 => array(
         'm_icon' => '<i class="far fa-sync"></i>',
@@ -2556,7 +2579,7 @@ $config['en_all_4755'] = array(
         'm_icon' => '<i class="fas fa-calendar-check"></i>',
         'm_name' => 'User Step Answered Timely',
         'm_desc' => '',
-        'm_parents' => array(7703,6244,4755,6255,4593,4595,6146),
+        'm_parents' => array(7704,7703,6244,4755,6255,4593,4595,6146),
     ),
     7488 => array(
         'm_icon' => '<i class="far fa-calendar-times"></i>',
@@ -2568,7 +2591,7 @@ $config['en_all_4755'] = array(
         'm_icon' => '<i class="fas fa-check-square"></i>',
         'm_name' => 'User Step Selected',
         'm_desc' => '',
-        'm_parents' => array(7703,4755,6255,4593,4595,6146),
+        'm_parents' => array(7704,7703,4755,6255,4593,4595,6146),
     ),
     7492 => array(
         'm_icon' => '<i class="far fa-times-square"></i>',
@@ -3095,7 +3118,7 @@ $config['en_all_4595'] = array(
         'm_icon' => '<i class="fas fa-check-circle"></i>',
         'm_name' => 'User Step Answered',
         'm_desc' => '5',
-        'm_parents' => array(7703,4527,4595,6255,6244,6146,4755,4593),
+        'm_parents' => array(7704,7703,4527,4595,6255,6244,6146,4755,4593),
     ),
     6224 => array(
         'm_icon' => '<i class="far fa-sync"></i>',
@@ -3185,7 +3208,7 @@ $config['en_all_4595'] = array(
         'm_icon' => '<i class="fas fa-calendar-check"></i>',
         'm_name' => 'User Step Answered Timely',
         'm_desc' => '20',
-        'm_parents' => array(7703,6244,4755,6255,4593,4595,6146),
+        'm_parents' => array(7704,7703,6244,4755,6255,4593,4595,6146),
     ),
     7488 => array(
         'm_icon' => '<i class="far fa-calendar-times"></i>',
@@ -3197,7 +3220,7 @@ $config['en_all_4595'] = array(
         'm_icon' => '<i class="fas fa-check-square"></i>',
         'm_name' => 'User Step Selected',
         'm_desc' => '5',
-        'm_parents' => array(7703,4755,6255,4593,4595,6146),
+        'm_parents' => array(7704,7703,4755,6255,4593,4595,6146),
     ),
     7492 => array(
         'm_icon' => '<i class="far fa-times-square"></i>',
@@ -3747,7 +3770,7 @@ $config['en_all_4593'] = array(
         'm_icon' => '<i class="fas fa-check-circle"></i>',
         'm_name' => 'User Step Answered',
         'm_desc' => '',
-        'm_parents' => array(7703,4527,4595,6255,6244,6146,4755,4593),
+        'm_parents' => array(7704,7703,4527,4595,6255,6244,6146,4755,4593),
     ),
     6224 => array(
         'm_icon' => '<i class="far fa-sync"></i>',
@@ -3837,7 +3860,7 @@ $config['en_all_4593'] = array(
         'm_icon' => '<i class="fas fa-calendar-check"></i>',
         'm_name' => 'User Step Answered Timely',
         'm_desc' => '',
-        'm_parents' => array(7703,6244,4755,6255,4593,4595,6146),
+        'm_parents' => array(7704,7703,6244,4755,6255,4593,4595,6146),
     ),
     7488 => array(
         'm_icon' => '<i class="far fa-calendar-times"></i>',
@@ -3849,7 +3872,7 @@ $config['en_all_4593'] = array(
         'm_icon' => '<i class="fas fa-check-square"></i>',
         'm_name' => 'User Step Selected',
         'm_desc' => '',
-        'm_parents' => array(7703,4755,6255,4593,4595,6146),
+        'm_parents' => array(7704,7703,4755,6255,4593,4595,6146),
     ),
     7492 => array(
         'm_icon' => '<i class="far fa-times-square"></i>',
