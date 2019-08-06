@@ -23,9 +23,10 @@ $route['(:num)/signin']         = "user_app/signin/$1";
 $route['resetpassword/(:num)']  = "user_app/signin_reset_password_ui/$1";
 $route['magiclogin/(:num)']     = "user_app/singin_magic_link_login/$1";
 
-$route['signout']                = "user_app/signout";
+$route['signout']               = "user_app/signout";
 $route['myaccount']             = "user_app/myaccount";
 $route['actionplan']            = "user_app/actionplan/0";
+$route['actionplan/next']       = "user_app/actionplan/next";
 $route['actionplan/(:num)']     = "user_app/actionplan/$1";
 
 $route['dashboard']             = "miner_app/dashboard";

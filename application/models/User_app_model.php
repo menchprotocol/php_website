@@ -1649,7 +1649,7 @@ class User_app_model extends CI_Model
 
                 } else {
 
-                    $next_step_message .= '<div style="margin: 15px 0 0;"><a href="/user_app/actionplan/next" class="btn btn-md btn-primary">Next Step <i class="fas fa-angle-right"></i></a></div>';
+                    $next_step_message .= '<div style="margin: 15px 0 0;"><a href="/actionplan/next" class="btn btn-md btn-primary">Next Step <i class="fas fa-angle-right"></i></a></div>';
 
                 }
             } else {

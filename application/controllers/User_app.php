@@ -305,7 +305,7 @@ class User_app extends CI_Controller
             //Their next intent in line:
             return echo_json(array(
                 'status' => 1,
-                'login_url' => ( $is_miner ? '/dashboard' : '/user_app/actionplan/next' ),
+                'login_url' => ( $is_miner ? '/dashboard' : '/actionplan/next' ),
             ));
 
 
@@ -561,7 +561,7 @@ class User_app extends CI_Controller
         if(en_auth(array(1308))){
             return redirect_message('/dashboard');
         } elseif(en_auth()){
-            return redirect_message('/user_app/actionplan/next');
+            return redirect_message('/actionplan/next');
         } elseif(!isset($_GET['email']) || !filter_var($_GET['email'], FILTER_VALIDATE_EMAIL)){
             //Missing email input:
             return redirect_message('/signin', '<div class="alert alert-danger" role="alert">Missing email address</div>');
@@ -594,7 +594,7 @@ class User_app extends CI_Controller
         $this->User_app_model->user_activate_session($ens[0], $is_miner);
 
         //Take them to next step:
-        return redirect_message(( $is_miner ? '/dashboard' : '/user_app/actionplan/next' ));
+        return redirect_message(( $is_miner ? '/dashboard' : '/actionplan/next' ));
     }
 
     function singin_check_email(){
