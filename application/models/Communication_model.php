@@ -402,7 +402,7 @@ class Communication_model extends CI_Model
                     //No way to communicate with user:
                     return array(
                         'status' => 0,
-                        'message' => 'User @' . $recipient_en['en_id'] . ' has no active communication channel',
+                        'message' => 'User @' . $recipient_en['en_id'] . ' has not connected to a Mench platform yet',
                     );
 
                 }

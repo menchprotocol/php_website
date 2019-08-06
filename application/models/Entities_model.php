@@ -976,7 +976,7 @@ class Entities_model extends CI_Model
             'ln_status_entity_id IN (' . join(',', $this->config->item('en_ids_7359')) . ')' => null, //Link Statuses Public
             'ln_type_entity_id IN (' . join(',', $this->config->item('en_ids_4592')) . ')' => null, //Entity Link Connectors
             'ln_parent_entity_id' => 6196, //Mench Messenger
-            'ln_external_id >' => 0,
+            'ln_external_id' => $psid,
         ), array('en_child'));
 
         //So, did we find them?
