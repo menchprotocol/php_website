@@ -160,8 +160,8 @@ function add_account(){
         } else {
 
             //Do we know which field to focus on?
-            if(data.focus_input_field){
-                $(data.focus_input_field).focus();
+            if(data.focus_input_field.length>0){
+                $('#' + data.focus_input_field).focus();
             }
 
             //Release field lock:
