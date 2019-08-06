@@ -13,38 +13,6 @@ class User_app extends CI_Controller
     }
 
 
-    function move(){
-
-        $links_added = 0;
-
-        foreach($this->Entities_model->en_fetch(array(
-            'en_status_entity_id IN (' . join(',', $this->config->item('en_ids_7358')) . ')' => null, //Entity Statuses Active
-            'en_psid >' => 0,
-        )) as $user){
-
-            if(count($this->Links_model->ln_fetch(array(
-                    'ln_status_entity_id IN (' . join(',', $this->config->item('en_ids_7359')) . ')' => null, //Link Statuses Public
-                    'ln_type_entity_id IN (' . join(',', $this->config->item('en_ids_4592')) . ')' => null, //Entity Link Connectors
-                    'ln_parent_entity_id' => 6196, //Mench Messenger
-                    'ln_child_entity_id' => $user['en_id'],
-                    'ln_external_id >' => 0,
-                )))==0){
-
-                $this->Links_model->ln_create(array(
-                    'ln_type_entity_id' => 4230, //Raw
-                    'ln_status_entity_id' => 6176, //Link Published
-                    'ln_miner_entity_id' => $user['en_id'],
-                    'ln_parent_entity_id' => 6196, //Mench Messenger
-                    'ln_child_entity_id' => $user['en_id'],
-                    'ln_external_id' => $user['en_psid'],
-                ), true);
-
-                $links_added++;
-            }
-        }
-
-        echo $links_added.' New Links Added.';
-    }
 
     function test($in_id){
         $ins = $this->Intents_model->in_fetch(array(
