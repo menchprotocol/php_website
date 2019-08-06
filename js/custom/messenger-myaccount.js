@@ -156,13 +156,13 @@ function save_email(){
 }
 
 
-function save_password(){
+function myaccount_update_password(){
 
     //Show spinner:
     $('.save_password').html('<span><i class="fas fa-spinner fa-spin"></i> Saving...</span>').hide().fadeIn();
 
     //Save the rest of the content:
-    $.post("/user_app/myaccount_save_password", {
+    $.post("/user_app/myaccount_update_password", {
         en_id: en_miner_id,
         input_password: $('#input_password').val(),
     }, function (data) {

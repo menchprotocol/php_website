@@ -73,10 +73,10 @@ class User_app extends CI_Controller
                 'status' => 0,
                 'message' => 'Missing user ID',
             ));
-        } elseif (!isset($_POST['input_password']) || strlen($_POST['input_password'])<4) {
+        } elseif (!isset($_POST['input_password']) || strlen($_POST['input_password']) < $this->config->item('password_min_char')) {
             return echo_json(array(
                 'status' => 0,
-                'message' => 'Missing password',
+                'message' => 'Password longer than '.$this->config->item('password_min_char').' characters',
             ));
         } elseif (!isset($_POST['referrer_url'])) {
             return echo_json(array(
@@ -117,7 +117,7 @@ class User_app extends CI_Controller
                 'status' => 0,
                 'message' => 'Password link is not public. Contact us to adjust your account.',
             ));
-        } elseif ($user_passwords[0]['ln_content'] != strtolower(hash('sha256', $this->config->item('password_salt') . $_POST['input_password'] . $ens[0]['en_id']))) {
+        } elseif ($user_passwords[0]['ln_content'] != hash('sha256', $this->config->item('password_salt') . $_POST['input_password'] . $ens[0]['en_id'])) {
             //Bad password
             return echo_json(array(
                 'status' => 0,
@@ -147,7 +147,7 @@ class User_app extends CI_Controller
 
             return echo_json(array(
                 'status' => 0,
-                'message' => 'Mining console only support Google Chrome web browser.',
+                'message' => 'Mench Miner App only support Google Chrome web browser.',
             ));
 
         }
@@ -155,6 +155,7 @@ class User_app extends CI_Controller
 
         //Assign session & log link:
         $this->User_app_model->user_activate_session($ens[0], $is_miner);
+
 
 
         if (isset($_POST['referrer_url']) && strlen($_POST['referrer_url']) > 0) {
@@ -329,7 +330,7 @@ class User_app extends CI_Controller
                 'status' => 0,
                 'message' => 'Missing name',
             ));
-        } elseif (!isset($_POST['input_password']) || strlen($_POST['input_password'])<1) {
+        } elseif (!isset($_POST['new_password']) || strlen($_POST['new_password'])<1) {
             return echo_json(array(
                 'status' => 0,
                 'message' => 'Missing password',
@@ -365,10 +366,10 @@ class User_app extends CI_Controller
                 'status' => 0,
                 'message' => 'Full name must be less than '.$this->config->item('en_name_max_length').' characters',
             ));
-        } elseif (strlen($_POST['input_password']) < 6) {
+        } elseif (strlen($_POST['new_password']) < $this->config->item('password_min_char')) {
             return echo_json(array(
                 'status' => 0,
-                'message' => 'Your password must be 6 characters or longer',
+                'message' => 'New password must be '.$this->config->item('password_min_char').' characters or longer',
             ));
         }
 
@@ -405,7 +406,7 @@ class User_app extends CI_Controller
         ));
         $this->Links_model->ln_create(array(
             'ln_type_entity_id' => 4255, //Text link
-            'ln_content' => strtolower(hash('sha256', $this->config->item('password_salt') . $_POST['input_password'] . $user_en['en']['en_id'])),
+            'ln_content' => strtolower(hash('sha256', $this->config->item('password_salt') . $_POST['new_password'] . $user_en['en']['en_id'])),
             'ln_parent_entity_id' => 3286, //Mench Password
             'ln_miner_entity_id' => $user_en['en']['en_id'],
             'ln_child_entity_id' => $user_en['en']['en_id'],
@@ -1081,7 +1082,7 @@ class User_app extends CI_Controller
     }
 
 
-    function myaccount_save_password()
+    function myaccount_update_password()
     {
 
 
@@ -1090,10 +1091,10 @@ class User_app extends CI_Controller
                 'status' => 0,
                 'message' => 'Missing entity ID',
             ));
-        } elseif (!isset($_POST['input_password']) || strlen($_POST['input_password']) < 4) {
+        } elseif (!isset($_POST['input_password']) || strlen($_POST['input_password']) < $this->config->item('password_min_char')) {
             return echo_json(array(
                 'status' => 0,
-                'message' => 'New password must be 4 characters or more',
+                'message' => 'New password must be '.$this->config->item('password_min_char').' characters or more',
             ));
         }
 
@@ -1154,7 +1155,7 @@ class User_app extends CI_Controller
 
         //Log Account iteration link type:
         if($return['status']){
-            $_POST['account_update_function'] = 'myaccount_save_password'; //Add this variable to indicate which My Account function created this link
+            $_POST['account_update_function'] = 'myaccount_update_password'; //Add this variable to indicate which My Account function created this link
             $this->Links_model->ln_create(array(
                 'ln_miner_entity_id' => $_POST['en_id'],
                 'ln_type_entity_id' => 6224, //My Account Iterated

@@ -122,13 +122,13 @@ function add_account(){
     //Lock fields:
     account_is_adding = true;
     $('#add_acount_next').html('<i class="fas fa-spinner fa-spin"></i>');
-    $('#input_name, #input_password').prop('disabled', true).css('background-color','#EFEFEF');
+    $('#input_name, #new_password').prop('disabled', true).css('background-color','#EFEFEF');
 
     //Check email and validate:
     $.post("/user_app/signin_create_account", {
         input_email: $('#input_email').val(),
         input_name: $('#input_name').val(),
-        input_password: $('#input_password').val(),
+        new_password: $('#new_password').val(),
         referrer_url: referrer_url,
         referrer_in_id: referrer_in_id,
         referrer_en_id: referrer_en_id,
@@ -150,7 +150,7 @@ function add_account(){
             //Release field lock:
             account_is_adding = false;
             $('#add_acount_next').html('Create Account <i class="fas fa-arrow-right"></i>');
-            $('#input_password, #input_name').prop('disabled', false).css('background-color','#FFFFFF');
+            $('#new_password, #input_name').prop('disabled', false).css('background-color','#FFFFFF');
 
             //Show errors:
             $('#new_account_errors').html('<i class="fas fa-exclamation-triangle"></i> Error: ' + data.message + '</b>').hide().fadeIn();
@@ -161,7 +161,7 @@ function add_account(){
 }
 
 var password_is_checking = false;
-function check_password(){
+function singin_check_password(){
 
     if(password_is_checking){
         return false;

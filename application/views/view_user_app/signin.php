@@ -129,7 +129,7 @@ if(count($current_sign_in_attempt) == 0){
 
             <!-- New Password -->
             <span class="medium-header" style="padding-top: 20px;"><?= $en_all_6225[3286]['m_icon'].' New '.$en_all_6225[3286]['m_name'] ?>:</span>
-            <div class="form-group is-empty"><input type="password" id="input_password" class="form-control border"></div>
+            <div class="form-group is-empty"><input type="password" id="new_password" class="form-control border"></div>
 
             <!-- Signup Buttons -->
             <div id="new_account_errors" class="signin-error-box"></div>
@@ -152,7 +152,7 @@ if(count($current_sign_in_attempt) == 0){
             <div id="password_errors" class="signin-error-box"></div>
             <span id="step3buttons">
                 <a href="javascript:void(0)" data-toggle="tooltip" data-placement="bottom" title="Go Back" onclick="goto_step(2)" class="btn btn-primary transparent pass btn-raised btn-round"><i class="fas fa-arrow-left"></i></a>
-                <a href="javascript:void(0)" onclick="check_password()" id="password_check_next" class="btn btn-primary pass btn-raised btn-round btn-next">Sign In <i class="fas fa-arrow-right"></i></a>
+                <a href="javascript:void(0)" onclick="singin_check_password()" id="password_check_next" class="btn btn-primary pass btn-raised btn-round btn-next">Sign In <i class="fas fa-arrow-right"></i></a>
             </span>
 
             <span style="padding-left:5px; font-size:0.9em !important;">Or <a href="javascript:void(0)" onclick="singin_magic_link_email()" class="underdot" style="font-size:1em !important;">Email Magic Link <i class="fas fa-wand-magic"></i></a></span>
