@@ -162,8 +162,8 @@ if(count($current_sign_in_attempt) == 0){
 
         <!-- Step 5: Check your email -->
         <div id="step5" class="signup-steps hidden">
-            <span class="medium-header"><?= $en_all_6225[3286]['m_icon'] ?> <span class="focus_email"></span></span>
-            <p class="magic_result"></p>
+            <span class="medium-header"><?= $en_all_6225[3288]['m_icon'] ?> <span class="focus_email"></span></span>
+            <span class="medium-header magic_result"></span>
         </div>
 
 
