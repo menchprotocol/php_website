@@ -205,7 +205,6 @@ function singin_check_password(){
 
 function singin_magic_link_email(){
     var r = confirm("I will email you a link to "+$('#input_email').val()+" so you can easily login to your account.");
-
     if (r == true) {
 
         //Update UI:
@@ -220,7 +219,7 @@ function singin_magic_link_email(){
         }, function (data) {
             if (data.status) {
                 //All good, they can close window:
-                $('.magic_result').html('<i class="fas fa-eye"></i> Check your email now.').hide().fadeIn();
+                $('.magic_result').html('<i class="fas fa-eye"></i> Check Your Email').hide().fadeIn();
             } else {
                 //Show errors:
                 $('.magic_result').html('<b style="color: #FF0000;"><i class="fas fa-exclamation-triangle"></i> Error: ' + data.message + '</b>').hide().fadeIn();

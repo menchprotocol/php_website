@@ -557,11 +557,12 @@ class User_app extends CI_Controller
 
     function singin_magic_link_login($ln_id){
 
-        //Log all sessions out:
-        $this->session->sess_destroy();
-
         //Validate email:
-        if(!isset($_GET['email']) || !filter_var($_GET['email'], FILTER_VALIDATE_EMAIL)){
+        if(en_auth(array(1308))){
+            return redirect_message('/dashboard');
+        } elseif(en_auth()){
+            return redirect_message('/user_app/actionplan/next');
+        } elseif(!isset($_GET['email']) || !filter_var($_GET['email'], FILTER_VALIDATE_EMAIL)){
             //Missing email input:
             return redirect_message('/signin', '<div class="alert alert-danger" role="alert">Missing email address</div>');
         }
