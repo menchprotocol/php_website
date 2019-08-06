@@ -11,7 +11,7 @@ defined('BASEPATH') OR exit('No direct script access allowed');
  *
  */
 
-//Generated 2019-08-05 15:02:18 PST
+//Generated 2019-08-05 17:16:48 PST
 
 //Intent Subscription Setting:
 $config['en_ids_7596'] = array(7597,7598,7599);
@@ -2500,7 +2500,7 @@ $config['en_all_4755'] = array(
     ),
     7559 => array(
         'm_icon' => '<i class="fab fa-chrome"></i>',
-        'm_name' => 'User Signin Chose Website',
+        'm_name' => 'User Signin Chose Chrome',
         'm_desc' => '',
         'm_parents' => array(4755,4269,4595,4593),
     ),
@@ -2512,7 +2512,7 @@ $config['en_all_4755'] = array(
     ),
     7561 => array(
         'm_icon' => '<i class="fas fa-sign-in"></i>',
-        'm_name' => 'User Signin Website Attempt',
+        'm_name' => 'User Signin Attempt',
         'm_desc' => '',
         'm_parents' => array(4755,4269,4595,4593),
     ),
@@ -2524,19 +2524,19 @@ $config['en_all_4755'] = array(
     ),
     7563 => array(
         'm_icon' => '<i class="fas fa-user-lock"></i>',
-        'm_name' => 'User Signin One-Click Login Email',
+        'm_name' => 'User Signin Magic Link Email',
         'm_desc' => '',
-        'm_parents' => array(4755,7569,4269,4595,4593),
+        'm_parents' => array(4269,4755,7569,4595,4593),
     ),
     7564 => array(
         'm_icon' => '<i class="fas fa-sign-in"></i>',
-        'm_name' => 'User Signin Website Success',
+        'm_name' => 'User Signin Success',
         'm_desc' => '',
         'm_parents' => array(4755,4269,4595,4593),
     ),
     7578 => array(
         'm_icon' => '<i class="fas fa-user-lock"></i>',
-        'm_name' => 'User Signin Password Reset Complete',
+        'm_name' => 'User Signin Password Updated',
         'm_desc' => '',
         'm_parents' => array(4595,4755,4593,4269),
     ),
@@ -3123,7 +3123,7 @@ $config['en_all_4595'] = array(
     ),
     7559 => array(
         'm_icon' => '<i class="fab fa-chrome"></i>',
-        'm_name' => 'User Signin Chose Website',
+        'm_name' => 'User Signin Chose Chrome',
         'm_desc' => '1',
         'm_parents' => array(4755,4269,4595,4593),
     ),
@@ -3135,7 +3135,7 @@ $config['en_all_4595'] = array(
     ),
     7561 => array(
         'm_icon' => '<i class="fas fa-sign-in"></i>',
-        'm_name' => 'User Signin Website Attempt',
+        'm_name' => 'User Signin Attempt',
         'm_desc' => '1',
         'm_parents' => array(4755,4269,4595,4593),
     ),
@@ -3147,19 +3147,19 @@ $config['en_all_4595'] = array(
     ),
     7563 => array(
         'm_icon' => '<i class="fas fa-user-lock"></i>',
-        'm_name' => 'User Signin One-Click Login Email',
+        'm_name' => 'User Signin Magic Link Email',
         'm_desc' => '1',
-        'm_parents' => array(4755,7569,4269,4595,4593),
+        'm_parents' => array(4269,4755,7569,4595,4593),
     ),
     7564 => array(
         'm_icon' => '<i class="fas fa-sign-in"></i>',
-        'm_name' => 'User Signin Website Success',
+        'm_name' => 'User Signin Success',
         'm_desc' => '1',
         'm_parents' => array(4755,4269,4595,4593),
     ),
     7578 => array(
         'm_icon' => '<i class="fas fa-user-lock"></i>',
-        'm_name' => 'User Signin Password Reset Complete',
+        'm_name' => 'User Signin Password Updated',
         'm_desc' => '1',
         'm_parents' => array(4595,4755,4593,4269),
     ),
@@ -3763,7 +3763,7 @@ $config['en_all_4593'] = array(
     ),
     7559 => array(
         'm_icon' => '<i class="fab fa-chrome"></i>',
-        'm_name' => 'User Signin Chose Website',
+        'm_name' => 'User Signin Chose Chrome',
         'm_desc' => '',
         'm_parents' => array(4755,4269,4595,4593),
     ),
@@ -3775,7 +3775,7 @@ $config['en_all_4593'] = array(
     ),
     7561 => array(
         'm_icon' => '<i class="fas fa-sign-in"></i>',
-        'm_name' => 'User Signin Website Attempt',
+        'm_name' => 'User Signin Attempt',
         'm_desc' => '',
         'm_parents' => array(4755,4269,4595,4593),
     ),
@@ -3787,19 +3787,19 @@ $config['en_all_4593'] = array(
     ),
     7563 => array(
         'm_icon' => '<i class="fas fa-user-lock"></i>',
-        'm_name' => 'User Signin One-Click Login Email',
+        'm_name' => 'User Signin Magic Link Email',
         'm_desc' => '',
-        'm_parents' => array(4755,7569,4269,4595,4593),
+        'm_parents' => array(4269,4755,7569,4595,4593),
     ),
     7564 => array(
         'm_icon' => '<i class="fas fa-sign-in"></i>',
-        'm_name' => 'User Signin Website Success',
+        'm_name' => 'User Signin Success',
         'm_desc' => '',
         'm_parents' => array(4755,4269,4595,4593),
     ),
     7578 => array(
         'm_icon' => '<i class="fas fa-user-lock"></i>',
-        'm_name' => 'User Signin Password Reset Complete',
+        'm_name' => 'User Signin Password Updated',
         'm_desc' => '',
         'm_parents' => array(4595,4755,4593,4269),
     ),

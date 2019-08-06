@@ -210,7 +210,7 @@ function singin_magic_link_email(){
 
         //Update UI:
         goto_step(5); //To check their email and create new account
-        $('.magic_result').html('<i class="fas fa-spinner fa-spin"></i> I\'m emailing you a magic link...');
+        $('.magic_result').html('<i class="fas fa-spinner fa-spin"></i> Emailing you a magic link...');
 
         //Check email and validate:
         $.post("/user_app/singin_magic_link_email", {
@@ -220,7 +220,7 @@ function singin_magic_link_email(){
         }, function (data) {
             if (data.status) {
                 //All good, they can close window:
-                $('.magic_result').html('<i class="fas fa-check-circle"></i> Email sent! you can close this window now.').hide().fadeIn();
+                $('.magic_result').html('<i class="fas fa-check-circle"></i> Check your email now.').hide().fadeIn();
             } else {
                 //Show errors:
                 $('.magic_result').html('<b style="color: #FF0000;"><i class="fas fa-exclamation-triangle"></i> Error: ' + data.message + '</b>').hide().fadeIn();

@@ -174,6 +174,9 @@ class User_app extends CI_Controller
 
     function signin_reset_password_ui($ln_id){
 
+        //Log all sessions out:
+        $this->session->sess_destroy();
+
         //Make sure email input is provided:
         if(!isset($_GET['email']) || !filter_var($_GET['email'], FILTER_VALIDATE_EMAIL)){
             //Missing email input:
@@ -210,49 +213,101 @@ class User_app extends CI_Controller
 
     function signin_reset_password_apply()
     {
+
         //This function updates the user's new password as requested via a password reset:
-        if (!isset($_POST['en_id']) || intval($_POST['en_id']) < 1 || !isset($_POST['timestamp']) || intval($_POST['timestamp']) < 1 || !isset($_POST['p_hash']) || strlen($_POST['p_hash']) < 10) {
-            echo '<div class="alert alert-danger"><i class="fas fa-exclamation-triangle"></i> Error: Missing Core Variables.</div>';
-        } elseif (!($_POST['p_hash'] == md5($_POST['en_id'] . $this->config->item('password_salt') . $_POST['timestamp']))) {
-            echo '<div class="alert alert-danger"><i class="fas fa-exclamation-triangle"></i> Error: Invalid hash key.</div>';
-        } elseif (!isset($_POST['new_pass']) || strlen($_POST['new_pass']) < 6) {
-            echo '<div class="alert alert-danger"><i class="fas fa-exclamation-triangle"></i> Error: New password must be longer than 6 characters. Try again.</div>';
+        if (!isset($_POST['ln_id']) || intval($_POST['ln_id']) < 1 || !isset($_POST['input_email']) || strlen($_POST['input_email']) < 1 || !isset($_POST['input_password'])) {
+            return echo_json(array(
+                'status' => 0,
+                'message' => 'Missing core data',
+            ));
+        } elseif (strlen($_POST['input_password']) < $this->config->item('password_min_char')) {
+            return echo_json(array(
+                'status' => 0,
+                'message' => 'Must be longer than '.$this->config->item('password_min_char').' characters',
+            ));
         } else {
+
+            //Validate link ID and matching email:
+            $validate_links = $this->Links_model->ln_fetch(array(
+                'ln_id' => $_POST['ln_id'],
+                'ln_content' => $_POST['input_email'],
+                'ln_type_entity_id' => 7563, //User Signin Magic Link Email
+            )); //The user making the request
+            if(count($validate_links) < 1){
+                //Probably already completed the reset password:
+                return echo_json(array(
+                    'status' => 0,
+                    'message' => 'Reset password link not found',
+                ));
+            }
+
+            //Validate user:
+            $ens = $this->Entities_model->en_fetch(array(
+                'en_id' => $validate_links[0]['ln_miner_entity_id'],
+            ));
+            if(count($ens) < 1){
+                return echo_json(array(
+                    'status' => 0,
+                    'message' => 'User not found',
+                ));
+            }
+
 
             //Fetch their passwords to authenticate login:
             $user_passwords = $this->Links_model->ln_fetch(array(
                 'ln_status_entity_id IN (' . join(',', $this->config->item('en_ids_7359')) . ')' => null, //Link Statuses Public
                 'ln_parent_entity_id' => 3286, //Mench Sign In Password
-                'ln_child_entity_id' => $_POST['en_id'], //For this user
+                'ln_child_entity_id' => $ens[0]['en_id'],
             ));
 
-            $new_password = hash('sha256', $this->config->item('password_salt') . $_POST['new_pass']. $_POST['en_id']);
+            $input_password = hash('sha256', $this->config->item('password_salt') . $_POST['input_password']. $ens[0]['en_id']);
 
             if (count($user_passwords) > 0) {
 
-                $detected_ln_type = ln_detect_type($new_password);
+                $detected_ln_type = ln_detect_type($input_password);
                 if (!$detected_ln_type['status']) {
-                    echo '<div class="alert alert-danger"><i class="fas fa-exclamation-triangle"></i> Error: ' . $detected_ln_type['message'] . '</div>';
+                    return echo_json($detected_ln_type);
                 }
 
                 //Update existing password:
                 $this->Links_model->ln_update($user_passwords[0]['ln_id'], array(
-                    'ln_content' => $new_password,
+                    'ln_content' => $input_password,
                     'ln_type_entity_id' => $detected_ln_type['ln_type_entity_id'],
-                ), $user_passwords[0]['ln_child_entity_id']);
+                ), $ens[0]['en_id']);
 
             } else {
+
                 //Create new password link:
+                $this->Links_model->ln_create(array(
+                    'ln_type_entity_id' => 4255, //Text link
+                    'ln_content' => $input_password,
+                    'ln_parent_entity_id' => 3286, //Mench Password
+                    'ln_miner_entity_id' => $ens[0]['en_id'],
+                    'ln_child_entity_id' => $ens[0]['en_id'],
+                ));
 
             }
 
 
-            //Log all sessions out:
-            $this->session->sess_destroy();
+            //Log password reset:
+            $this->Links_model->ln_create(array(
+                'ln_miner_entity_id' => $ens[0]['en_id'],
+                'ln_type_entity_id' => 7578, //User Signin Password Updated
+                'ln_content' => $input_password, //A copy of their password set at this time
+            ));
 
-            //Show message:
-            echo '<div class="alert alert-success">Passsword reset successful. You can <a href="/signin"><u>Sign in here</u></a>.</div>';
-            echo '<script> $(document).ready(function() { $(".pass_success").hide(); }); </script>';
+
+            //Log them in:
+            $is_miner = filter_array($ens[0]['en__parents'], 'en_id', 1308); //Mench Miners
+            $this->User_app_model->user_activate_session($ens[0], $is_miner);
+
+            //Their next intent in line:
+            return echo_json(array(
+                'status' => 1,
+                'login_url' => ( $is_miner ? '/dashboard' : '/user_app/actionplan/next' ),
+            ));
+
+
         }
     }
 
@@ -501,6 +556,9 @@ class User_app extends CI_Controller
 
     function singin_magic_link_login($ln_id){
 
+        //Log all sessions out:
+        $this->session->sess_destroy();
+
         //Validate email:
         if(!isset($_GET['email']) || !filter_var($_GET['email'], FILTER_VALIDATE_EMAIL)){
             //Missing email input:
@@ -533,13 +591,8 @@ class User_app extends CI_Controller
         $is_miner = filter_array($ens[0]['en__parents'], 'en_id', 1308); //Mench Miners
         $this->User_app_model->user_activate_session($ens[0], $is_miner);
 
-        if($is_miner){
-            //Miner dashboard:
-            return redirect_message('/dashboard');
-        } else {
-            //Their next intent in line:
-            return redirect_message('/user_app/actionplan/next');
-        }
+        //Take them to next step:
+        return redirect_message(( $is_miner ? '/dashboard' : '/user_app/actionplan/next' ));
     }
 
     function singin_check_email(){
