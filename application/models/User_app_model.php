@@ -441,7 +441,7 @@ class User_app_model extends CI_Model
 
     }
 
-    function actionplan_intention_add($en_id, $in_id, $recommender_in_id = 0){
+    function actionplan_intention_add($en_id, $in_id, $recommender_in_id = 0, $echo_next_step = true){
 
         //Validate Intent ID:
         $ins = $this->Intents_model->in_fetch(array(
@@ -558,8 +558,10 @@ class User_app_model extends CI_Model
         if($top_priority){
             if($recommender_in_id > 0 || $top_priority['in']['in_id']==$ins[0]['in_id']){
 
-                //The newly added intent is the top priority, so let's initiate first message for action plan tree:
-                $this->User_app_model->actionplan_step_next_echo($en_id, $ins[0]['in_id']);
+                if($echo_next_step){
+                    //The newly added intent is the top priority, so let's initiate first message for action plan tree:
+                    $this->User_app_model->actionplan_step_next_echo($en_id, $ins[0]['in_id']);
+                }
 
             } else {
 
@@ -580,8 +582,11 @@ class User_app_model extends CI_Model
                 true
             );
 
-            //List Recommended Intents and let them choose:
-            $this->Communication_model->dispatch_recommendations($en_id);
+
+            if($echo_next_step){
+                //List Recommended Intents and let them choose:
+                $this->Communication_model->dispatch_recommendations($en_id);
+            }
 
         }
 

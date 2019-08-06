@@ -685,18 +685,20 @@ function echo_ln($ln, $is_inner = false)
 
 
     if($ln['ln_credits'] > 0){
-        $ui .= '<span class="link-connection-a"><span data-toggle="tooltip" data-placement="top" title="'.$en_all_4463[4595]['m_name'].' awarded to '.$full_name.'" style="min-width:30px; display: inline-block;" class="' . advance_mode() . '">'.$en_all_4463[4595]['m_icon']. ' '. number_format($ln['ln_credits'], 0) .'</span></span> &nbsp;';
+        $ui .= '<span class="link-connection-a"><span data-toggle="tooltip" data-placement="top" title="'.$en_all_4463[4595]['m_name'].' awarded to '.$full_name.'" style="min-width:30px; display: inline-block;">'.$en_all_4463[4595]['m_icon']. ' '. number_format($ln['ln_credits'], 0) .'</span></span> &nbsp;';
     }
 
     if($ln['ln_order'] > 0){
-        $ui .= '<span class="link-connection-a"><span data-toggle="tooltip" data-placement="top" title="Link ordered '.echo_ordinal_number($ln['ln_order']).'" style="min-width:30px; display: inline-block;" class="' . advance_mode() . '"><i class="fas fa-sort"></i> '.echo_ordinal_number($ln['ln_order']).' Order</span></span> &nbsp;';
+        $ui .= '<span class="link-connection-a"><span data-toggle="tooltip" data-placement="top" title="Link ordered '.echo_ordinal_number($ln['ln_order']).'" style="min-width:30px; display: inline-block;"><i class="fas fa-sort"></i> '.echo_ordinal_number($ln['ln_order']).' Order</span></span> &nbsp;';
     }
 
     //Is this a miner? Show them metadata status:
-    if(!$hide_sensitive_details && en_auth(array(1308))){
-        if(strlen($ln['ln_metadata']) > 0){
-            $ui .= '<span class="link-connection-a"><a href="/links/link_json/' . $ln['ln_id'] . '" target="_blank" data-toggle="tooltip" data-placement="top" title="View link metadata (in new window)" style="min-width:26px; display: inline-block;" class="' . advance_mode() . '"><i class="far fa-lambda"></i> Metadata</a></span> &nbsp;';
-        }
+    if(!$hide_sensitive_details && strlen($ln['ln_metadata']) > 0){
+        $ui .= '<span class="link-connection-a"><a href="/links/link_json/' . $ln['ln_id'] . '" target="_blank" data-toggle="tooltip" data-placement="top" title="View link metadata (in new window)" style="min-width:26px; display: inline-block;"><i class="far fa-lambda"></i> Metadata</a></span> &nbsp;';
+    }
+
+    if(!$hide_sensitive_details && $ln['ln_external_id'] > 0){
+        $ui .= '<span class="link-connection-a" data-toggle="tooltip" data-placement="top" title="Link External ID"><i class="fas fa-project-diagram"></i> '.$ln['ln_external_id'].'</span> &nbsp;';
     }
 
     //Give option to load if it has connections:
@@ -2216,9 +2218,9 @@ function echo_en($en, $level, $is_parent = false)
         if($en['ln_external_id'] > 0){
             if(en_auth(array(1281)) && $en['ln_parent_entity_id']==6196){
                 //Give Moderators the ability to ping Messenger profiles:
-                $ui .= '<span class="icon-top-left" data-toggle="tooltip" data-placement="right" title="External ID = '.$en['ln_external_id'].' [Messenger Profile]"><a href="/messenger/messenger_fetch_profile/'.$en['en_id'].'" target="_blank"><i class="fas fa-project-diagram"></i></a></span>';
+                $ui .= '<span class="icon-top-left" data-toggle="tooltip" data-placement="right" title="Link External ID = '.$en['ln_external_id'].' [Messenger Profile]"><a href="/messenger/messenger_fetch_profile/'.$en['en_id'].'" target="_blank"><i class="fas fa-project-diagram"></i></a></span>';
             } else {
-                $ui .= '<span class="icon-top-left" data-toggle="tooltip" data-placement="right" title="External ID = '.$en['ln_external_id'].'"><i class="fas fa-project-diagram"></i></span>';
+                $ui .= '<span class="icon-top-left" data-toggle="tooltip" data-placement="right" title="Link External ID = '.$en['ln_external_id'].'"><i class="fas fa-project-diagram"></i></span>';
             }
         }
 

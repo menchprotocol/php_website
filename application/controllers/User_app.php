@@ -463,7 +463,7 @@ class User_app extends CI_Controller
             ));
 
             //Add this intention to their Action Plan:
-            $this->User_app_model->actionplan_intention_add($user_en['en']['en_id'], $_POST['referrer_in_id']);
+            $this->User_app_model->actionplan_intention_add($user_en['en']['en_id'], $_POST['referrer_in_id'], 0, false);
 
         } else {
             $referrer_ins = array();
@@ -476,11 +476,11 @@ class User_app extends CI_Controller
         ##Email Body
         $html_message = '<div>Hi '.$name_parts[0].' 👋</div><br />';
 
-        $html_message .= '<div>Follow this link to '.( count($referrer_ins) > 0 ? echo_in_outcome($referrer_ins[0]['in_outcome'], true) : 'get started' ).':</div><br />';
+        $html_message .= '<div>'.( count($referrer_ins) > 0 ? echo_in_outcome($referrer_ins[0]['in_outcome'], true) : 'Get started' ).':</div><br />';
         $actionplan_url = $this->config->item('base_url') . ( count($referrer_ins) > 0 ? 'actionplan/'.$referrer_ins[0]['in_id'] : '' );
-        $html_message .= '<div><a href="'.$actionplan_url.'" target="_blank">' . $actionplan_url . '</a></div><br />';
+        $html_message .= '<div><a href="'.$actionplan_url.'" target="_blank">' . $actionplan_url . '</a></div><br /><br />';
 
-        $html_message .= '<div>You can also connect to me on Messenger:</div><br />';
+        $html_message .= '<div>Connect on Messenger:</div><br />';
         $messenger_url = $this->config->item('fb_mench_url') . ( count($referrer_ins) > 0 ? '?ref=' . ( $_POST['referrer_en_id'] > 0 ? 'REFERUSER_'.$_POST['referrer_en_id'].'_' : '' ) . $referrer_ins[0]['in_id'] : '' ) ;
         $html_message .= '<div><a href="'.$messenger_url.'" target="_blank">' . $messenger_url . '</a></div>';
         $html_message .= '<br /><br />';
@@ -502,10 +502,8 @@ class User_app extends CI_Controller
             ),
         ));
 
-
         //Assign session & log login link:
         $this->User_app_model->user_activate_session($user_en['en'], false);
-
 
 
         if (strlen($_POST['referrer_url']) > 0) {
@@ -1395,7 +1393,7 @@ class User_app extends CI_Controller
         }
 
         //Attempt to add intent to Action Plan:
-        if($this->User_app_model->actionplan_intention_add($session_en['en_id'], $_POST['in_id'])){
+        if($this->User_app_model->actionplan_intention_add($session_en['en_id'], $_POST['in_id'], 0, false)){
             //All good:
             $en_all_7369 = $this->config->item('en_all_7369');
             return echo_json(array(
