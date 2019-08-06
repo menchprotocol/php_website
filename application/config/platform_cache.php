@@ -11,7 +11,30 @@ defined('BASEPATH') OR exit('No direct script access allowed');
  *
  */
 
-//Generated 2019-08-06 15:39:36 PST
+//Generated 2019-08-06 16:09:40 PST
+
+//Intent Answer Types:
+$config['en_ids_7705'] = array(6684,6685,7231);
+$config['en_all_7705'] = array(
+    6684 => array(
+        'm_icon' => '<i class="far fa-check"></i>',
+        'm_name' => 'Intent Answer',
+        'm_desc' => '',
+        'm_parents' => array(7705,7588,7585,6914,6157,6193),
+    ),
+    6685 => array(
+        'm_icon' => '<i class="far fa-stopwatch"></i>',
+        'm_name' => 'Intent Answer Timed',
+        'm_desc' => '',
+        'm_parents' => array(7705,7488,7487,7585,6914,7366,6193),
+    ),
+    7231 => array(
+        'm_icon' => '<i class="far fa-check-double"></i>',
+        'm_name' => 'Intent Answer Multiple-Choice',
+        'm_desc' => '',
+        'm_parents' => array(7705,7489,7588,7585,6914,6193),
+    ),
+);
 
 //User Step Answered Successfully:
 $config['en_ids_7704'] = array(6157,7487,7489);
@@ -20,7 +43,7 @@ $config['en_all_7704'] = array(
         'm_icon' => '<i class="fas fa-check-circle"></i>',
         'm_name' => 'User Step Answered',
         'm_desc' => '',
-        'm_parents' => array(7704,7703,4527,4595,6255,6244,6146,4755,4593),
+        'm_parents' => array(7704,7703,4595,6255,6244,6146,4755,4593),
     ),
     7487 => array(
         'm_icon' => '<i class="fas fa-calendar-check"></i>',
@@ -115,7 +138,7 @@ $config['en_all_7703'] = array(
         'm_icon' => '<i class="fas fa-check-circle"></i>',
         'm_name' => 'User Step Answered',
         'm_desc' => '',
-        'm_parents' => array(7704,7703,4527,4595,6255,6244,6146,4755,4593),
+        'm_parents' => array(7704,7703,4595,6255,6244,6146,4755,4593),
     ),
     6242 => array(
         'm_icon' => '<i class="far fa-check-square"></i>',
@@ -131,7 +154,7 @@ $config['en_all_7703'] = array(
     ),
     7485 => array(
         'm_icon' => '<i class="fas fa-lock-open"></i>',
-        'm_name' => 'User Step Answer Unlock',
+        'm_name' => 'User Step Any Answer Unlock',
         'm_desc' => '',
         'm_parents' => array(7703,7494,4595,4593,4755,6146,6255),
     ),
@@ -255,36 +278,36 @@ $config['en_all_7588'] = array(
         'm_icon' => '<i class="far fa-check"></i>',
         'm_name' => 'Intent Answer',
         'm_desc' => '',
-        'm_parents' => array(7588,7585,6914,6157,6193),
+        'm_parents' => array(7705,7588,7585,6914,6157,6193),
     ),
     7231 => array(
         'm_icon' => '<i class="far fa-check-double"></i>',
         'm_name' => 'Intent Answer Multiple-Choice',
         'm_desc' => '',
-        'm_parents' => array(7489,7588,7585,6914,6193),
+        'm_parents' => array(7705,7489,7588,7585,6914,6193),
     ),
 );
 
-//OR Intent Types:
+//Intent OR Types:
 $config['en_ids_6193'] = array(6684,6685,7231,6907);
 $config['en_all_6193'] = array(
     6684 => array(
         'm_icon' => '<i class="far fa-check"></i>',
         'm_name' => 'Intent Answer',
         'm_desc' => 'Students can take their time and choose one of the paths of the OR intent.',
-        'm_parents' => array(7588,7585,6914,6157,6193),
+        'm_parents' => array(7705,7588,7585,6914,6157,6193),
     ),
     6685 => array(
         'm_icon' => '<i class="far fa-stopwatch"></i>',
         'm_name' => 'Intent Answer Timed',
         'm_desc' => 'Student must make a selection within the time limit defines by the estimated intent time before their response chance expires.',
-        'm_parents' => array(7488,7487,7585,6914,7366,6193),
+        'm_parents' => array(7705,7488,7487,7585,6914,7366,6193),
     ),
     7231 => array(
         'm_icon' => '<i class="far fa-check-double"></i>',
         'm_name' => 'Intent Answer Multiple-Choice',
         'm_desc' => 'Allows the user to choose multiple answers from the list of children',
-        'm_parents' => array(7489,7588,7585,6914,6193),
+        'm_parents' => array(7705,7489,7588,7585,6914,6193),
     ),
     6907 => array(
         'm_icon' => '<i class="far fa-lock"></i>',
@@ -307,19 +330,19 @@ $config['en_all_7585'] = array(
         'm_icon' => '<i class="far fa-check"></i>',
         'm_name' => 'Answer',
         'm_desc' => 'User will complete by choosing a child intent as their answer',
-        'm_parents' => array(7588,7585,6914,6157,6193),
+        'm_parents' => array(7705,7588,7585,6914,6157,6193),
     ),
     6685 => array(
         'm_icon' => '<i class="far fa-stopwatch"></i>',
         'm_name' => 'Answer Timed',
         'm_desc' => 'User will complete by choosing a child intent as their answer within a time limit',
-        'm_parents' => array(7488,7487,7585,6914,7366,6193),
+        'm_parents' => array(7705,7488,7487,7585,6914,7366,6193),
     ),
     7231 => array(
         'm_icon' => '<i class="far fa-check-double"></i>',
         'm_name' => 'Answer Multiple-Choice',
         'm_desc' => 'User will complete by choosing one or more child intents as their answer',
-        'm_parents' => array(7489,7588,7585,6914,6193),
+        'm_parents' => array(7705,7489,7588,7585,6914,6193),
     ),
     6914 => array(
         'm_icon' => '<i class="fas fa-lock"></i>',
@@ -492,17 +515,6 @@ $config['en_all_7529'] = array(
     ),
 );
 
-//User Step Answered:
-$config['en_ids_6157'] = array(6684);
-$config['en_all_6157'] = array(
-    6684 => array(
-        'm_icon' => '<i class="far fa-check"></i>',
-        'm_name' => 'Intent Answer',
-        'm_desc' => '',
-        'm_parents' => array(7588,7585,6914,6157,6193),
-    ),
-);
-
 //User Steps Unlock:
 $config['en_ids_7494'] = array(6997,7485,7486);
 $config['en_all_7494'] = array(
@@ -514,7 +526,7 @@ $config['en_all_7494'] = array(
     ),
     7485 => array(
         'm_icon' => '<i class="fas fa-lock-open"></i>',
-        'm_name' => 'User Step Answer Unlock',
+        'm_name' => 'User Step Any Answer Unlock',
         'm_desc' => '',
         'm_parents' => array(7703,7494,4595,4593,4755,6146,6255),
     ),
@@ -533,19 +545,19 @@ $config['en_all_6914'] = array(
         'm_icon' => '<i class="far fa-check"></i>',
         'm_name' => 'Intent Answer',
         'm_desc' => 'For Single Answer the default newly created child intent type is AND Lock',
-        'm_parents' => array(7588,7585,6914,6157,6193),
+        'm_parents' => array(7705,7588,7585,6914,6157,6193),
     ),
     6685 => array(
         'm_icon' => '<i class="far fa-stopwatch"></i>',
         'm_name' => 'Intent Answer Timed',
         'm_desc' => 'For Timed Answer the default newly created child intent type is AND Lock',
-        'm_parents' => array(7488,7487,7585,6914,7366,6193),
+        'm_parents' => array(7705,7488,7487,7585,6914,7366,6193),
     ),
     7231 => array(
         'm_icon' => '<i class="far fa-check-double"></i>',
         'm_name' => 'Intent Answer Multiple-Choice',
         'm_desc' => 'For Multiple Answer the default newly created child intent type is AND Lock',
-        'm_parents' => array(7489,7588,7585,6914,6193),
+        'm_parents' => array(7705,7489,7588,7585,6914,6193),
     ),
 );
 
@@ -761,7 +773,7 @@ $config['en_all_7366'] = array(
         'm_icon' => '<i class="far fa-stopwatch"></i>',
         'm_name' => 'Intent Answer Timed',
         'm_desc' => '',
-        'm_parents' => array(7488,7487,7585,6914,7366,6193),
+        'm_parents' => array(7705,7488,7487,7585,6914,7366,6193),
     ),
 );
 
@@ -1670,7 +1682,7 @@ $config['en_all_6255'] = array(
         'm_icon' => '<i class="fas fa-check-circle"></i>',
         'm_name' => 'User Step Answered',
         'm_desc' => '',
-        'm_parents' => array(7704,7703,4527,4595,6255,6244,6146,4755,4593),
+        'm_parents' => array(7704,7703,4595,6255,6244,6146,4755,4593),
     ),
     6997 => array(
         'm_icon' => '<i class="fas fa-lock-open"></i>',
@@ -1680,7 +1692,7 @@ $config['en_all_6255'] = array(
     ),
     7485 => array(
         'm_icon' => '<i class="fas fa-lock-open"></i>',
-        'm_name' => 'User Step Answer Unlock',
+        'm_name' => 'User Step Any Answer Unlock',
         'm_desc' => '',
         'm_parents' => array(7703,7494,4595,4593,4755,6146,6255),
     ),
@@ -1723,7 +1735,7 @@ $config['en_all_6244'] = array(
         'm_icon' => '<i class="fas fa-check-circle"></i>',
         'm_name' => 'User Step Answered',
         'm_desc' => 'Logged initially when the user arrives at a regular OR intent, and completed when they submit their answer.',
-        'm_parents' => array(7704,7703,4527,4595,6255,6244,6146,4755,4593),
+        'm_parents' => array(7704,7703,4595,6255,6244,6146,4755,4593),
     ),
     7486 => array(
         'm_icon' => '<i class="fas fa-lock-open"></i>',
@@ -1927,7 +1939,7 @@ $config['en_all_6146'] = array(
         'm_icon' => '<i class="fas fa-check-circle"></i>',
         'm_name' => 'Answered',
         'm_desc' => 'Completed after the student answers the question to the OR intent.',
-        'm_parents' => array(7704,7703,4527,4595,6255,6244,6146,4755,4593),
+        'm_parents' => array(7704,7703,4595,6255,6244,6146,4755,4593),
     ),
     6997 => array(
         'm_icon' => '<i class="fas fa-lock-open"></i>',
@@ -1937,7 +1949,7 @@ $config['en_all_6146'] = array(
     ),
     7485 => array(
         'm_icon' => '<i class="fas fa-lock-open"></i>',
-        'm_name' => 'Answer Unlock',
+        'm_name' => 'Any Answer Unlock',
         'm_desc' => 'When users unlock locked AND or OR intents by simply answering an open OR question',
         'm_parents' => array(7703,7494,4595,4593,4755,6146,6255),
     ),
@@ -2501,7 +2513,7 @@ $config['en_all_4755'] = array(
         'm_icon' => '<i class="fas fa-check-circle"></i>',
         'm_name' => 'User Step Answered',
         'm_desc' => '',
-        'm_parents' => array(7704,7703,4527,4595,6255,6244,6146,4755,4593),
+        'm_parents' => array(7704,7703,4595,6255,6244,6146,4755,4593),
     ),
     6224 => array(
         'm_icon' => '<i class="far fa-sync"></i>',
@@ -2565,7 +2577,7 @@ $config['en_all_4755'] = array(
     ),
     7485 => array(
         'm_icon' => '<i class="fas fa-lock-open"></i>',
-        'm_name' => 'User Step Answer Unlock',
+        'm_name' => 'User Step Any Answer Unlock',
         'm_desc' => '',
         'm_parents' => array(7703,7494,4595,4593,4755,6146,6255),
     ),
@@ -3118,7 +3130,7 @@ $config['en_all_4595'] = array(
         'm_icon' => '<i class="fas fa-check-circle"></i>',
         'm_name' => 'User Step Answered',
         'm_desc' => '5',
-        'm_parents' => array(7704,7703,4527,4595,6255,6244,6146,4755,4593),
+        'm_parents' => array(7704,7703,4595,6255,6244,6146,4755,4593),
     ),
     6224 => array(
         'm_icon' => '<i class="far fa-sync"></i>',
@@ -3194,7 +3206,7 @@ $config['en_all_4595'] = array(
     ),
     7485 => array(
         'm_icon' => '<i class="fas fa-lock-open"></i>',
-        'm_name' => 'User Step Answer Unlock',
+        'm_name' => 'User Step Any Answer Unlock',
         'm_desc' => '10',
         'm_parents' => array(7703,7494,4595,4593,4755,6146,6255),
     ),
@@ -3770,7 +3782,7 @@ $config['en_all_4593'] = array(
         'm_icon' => '<i class="fas fa-check-circle"></i>',
         'm_name' => 'User Step Answered',
         'm_desc' => '',
-        'm_parents' => array(7704,7703,4527,4595,6255,6244,6146,4755,4593),
+        'm_parents' => array(7704,7703,4595,6255,6244,6146,4755,4593),
     ),
     6224 => array(
         'm_icon' => '<i class="far fa-sync"></i>',
@@ -3846,7 +3858,7 @@ $config['en_all_4593'] = array(
     ),
     7485 => array(
         'm_icon' => '<i class="fas fa-lock-open"></i>',
-        'm_name' => 'User Step Answer Unlock',
+        'm_name' => 'User Step Any Answer Unlock',
         'm_desc' => '',
         'm_parents' => array(7703,7494,4595,4593,4755,6146,6255),
     ),

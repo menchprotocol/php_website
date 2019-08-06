@@ -1843,11 +1843,13 @@ class User_app extends CI_Controller
     }
 
 
-    function actionplan_answer_question($en_id, $parent_in_id, $answer_in_id, $w_key)
+    function actionplan_answer_question($answer_type_en_id, $en_id, $parent_in_id, $answer_in_id, $w_key)
     {
 
         if ($w_key != md5($this->config->item('actionplan_salt') . $answer_in_id . $parent_in_id . $en_id)) {
             return redirect_message('/actionplan/' . $parent_in_id, '<div class="alert alert-danger" role="alert">Invalid Authentication Key</div>');
+        } elseif (!in_array($answer_type_en_id, $this->config->item('en_ids_7704'))) {
+            return redirect_message('/actionplan/' . $parent_in_id, '<div class="alert alert-danger" role="alert">Invalid answer type</div>');
         }
 
         //Validate Answer Intent:
@@ -1870,7 +1872,7 @@ class User_app extends CI_Controller
         //All good, save chosen OR path
         $new_progression_link = $this->Links_model->ln_create(array(
             'ln_miner_entity_id' => $en_id,
-            'ln_type_entity_id' => 6157, //Action Plan Question Answered
+            'ln_type_entity_id' => $answer_type_en_id,
             'ln_parent_intent_id' => $parent_in_id,
             'ln_child_intent_id' => $answer_in_id,
             'ln_status_entity_id' => 6176, //Link Published
@@ -1890,7 +1892,5 @@ class User_app extends CI_Controller
         return redirect_message('/actionplan/' . $answer_in_id, '<div class="alert alert-success" role="alert">Your answer was saved.</div>');
 
     }
-
-
 
 }

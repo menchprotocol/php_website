@@ -1142,6 +1142,7 @@ class User_app_model extends CI_Model
 
         //Determine progression type
         //Let's figure out the progression method:
+        //TODO Migrate this logic to entities and use something like array_intersect() to detect correlations
         if(in_is_unlockable($ins[0])){
 
             if($progress_completed){
@@ -1166,7 +1167,6 @@ class User_app_model extends CI_Model
 
                 }
             }
-
 
         } elseif($completion_req_note){
 
@@ -1441,7 +1441,7 @@ class User_app_model extends CI_Model
                     if(!$progress_completed){
 
                         //Need to select answer:
-                        $next_step_message .= '<a href="/user_app/actionplan_answer_question/' . $en_id . '/' . $ins[0]['in_id'] . '/' . $child_in['in_id'] . '/' . md5($this->config->item('actionplan_salt') . $child_in['in_id'] . $ins[0]['in_id'] . $en_id) . '" class="list-group-item">';
+                        $next_step_message .= '<a href="/user_app/actionplan_answer_question/6157/' . $en_id . '/' . $ins[0]['in_id'] . '/' . $child_in['in_id'] . '/' . md5($this->config->item('actionplan_salt') . $child_in['in_id'] . $ins[0]['in_id'] . $en_id) . '" class="list-group-item">';
 
                     } elseif($was_selected){
 
@@ -1936,7 +1936,7 @@ class User_app_model extends CI_Model
 
             //Now let's check user answers to see what they have done:
             foreach($this->Links_model->ln_fetch(array(
-                'ln_type_entity_id' => 6157, //Action Plan Question Answered
+                'ln_type_entity_id IN (' . join(',', $this->config->item('en_ids_7704') ) . ')' => null, //User Step Answered Successfully
                 'ln_miner_entity_id' => $en_id, //Belongs to this User
                 'ln_parent_intent_id IN (' . join(',', $flat_common_steps ) . ')' => null,
                 'ln_child_intent_id IN (' . join(',', array_flatten($in_metadata['in__metadata_expansion_steps'])) . ')' => null,
