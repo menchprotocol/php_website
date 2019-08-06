@@ -1751,14 +1751,17 @@ class Communication_model extends CI_Model
 
             //Extract variables:
             $quickreply_parts = explode('_', one_two_explode('ANSWERQUESTION_', '', $quick_reply_payload));
-            $question_in_id = intval($quickreply_parts[0]);
-            $answer_in_id = intval($quickreply_parts[1]);
-            if($question_in_id < 1 || $answer_in_id < 1){
+            $progression_type_entity_id = intval($quickreply_parts[0]);
+            $question_in_id = intval($quickreply_parts[1]);
+            $answer_in_id = intval($quickreply_parts[2]);
+
+            if($question_in_id < 1 || $answer_in_id < 1 || $progression_type_entity_id < 1){
                 return array(
                     'status' => 0,
-                    'message' => 'ANSWERQUESTION_ missing core variables ['.$question_in_id.'] & ['.$answer_in_id.']',
+                    'message' => 'ANSWERQUESTION_ missing core variables ['.$question_in_id.'] & ['.$answer_in_id.'] & ['.$progression_type_entity_id.']',
                 );
             }
+
 
             //Validate Answer Intent:
             $answer_ins = $this->Intents_model->in_fetch(array(
@@ -1776,10 +1779,11 @@ class Communication_model extends CI_Model
                 );
             }
 
-            //We should already have a link for this, so let's find and update it:
+
+            //We should already have a link for question, so let's find and update it:
             $pending_answer_links = $this->Links_model->ln_fetch(array(
                 'ln_miner_entity_id' => $en['en_id'],
-                'ln_type_entity_id' => 6157, //Action Plan Question Answered
+                'ln_type_entity_id' => $progression_type_entity_id,
                 'ln_parent_intent_id' => $question_in_id,
                 'ln_status_entity_id IN (' . join(',', $this->config->item('en_ids_7364')) . ')' => null, //Link Statuses Incomplete
             ));
@@ -1832,12 +1836,10 @@ class Communication_model extends CI_Model
 
             } else {
 
-                /*
                 return array(
                     'status' => 0,
                     'message' => 'ANSWERQUESTION_ was unable to locate the pending answer link',
                 );
-                */
 
             }
 

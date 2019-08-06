@@ -1432,7 +1432,7 @@ class User_app_model extends CI_Model
                         array_push($next_step_quick_replies, array(
                             'content_type' => 'text',
                             'title' => ($key+1),
-                            'payload' => 'ANSWERQUESTION_' . $ins[0]['in_id'] . '_' . $child_in['in_id'],
+                            'payload' => 'ANSWERQUESTION_' . $progression_type_entity_id . '_' . $ins[0]['in_id'] . '_' . $child_in['in_id'],
                         ));
                     }
 

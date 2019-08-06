@@ -171,6 +171,10 @@ class Links_model extends CI_Model
             $insert_columns['ln_content'] = null;
         }
 
+        if (!isset($insert_columns['ln_external_id'])) {
+            $insert_columns['ln_external_id'] = 0;
+        }
+
         if (!isset($insert_columns['ln_timestamp']) || is_null($insert_columns['ln_timestamp'])) {
             //Time with milliseconds:
             $t = microtime(true);

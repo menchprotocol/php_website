@@ -924,7 +924,7 @@ function echo_tree_users($in, $push_message = false, $autoexpand = false){
 
     //Count total users:
     $CI =& get_instance();
-    $min_user_show = 10; //Needs this much or more users to display
+    $min_user_show = 101; //Needs this much or more users to display
 
     //Count users who have completed this intent:
     $enrolled_users_count = $CI->Links_model->ln_fetch(array(
@@ -2215,7 +2215,7 @@ function echo_en($en, $level, $is_parent = false)
         $ui .= '<span class="icon-top-right ln_status_entity_id_' . $ln_id . '"><span data-toggle="tooltip" data-placement="right" title="'.$en_all_6186[$en['ln_status_entity_id']]['m_name'].' @'.$en['ln_status_entity_id'].': '.$en_all_6186[$en['ln_status_entity_id']]['m_desc'].'">' . $en_all_6186[$en['ln_status_entity_id']]['m_icon'] . '</span></span>';
 
         //Show link index
-        if($en['ln_external_id'] > 0){
+        if($en['l'] > 0){
             if(en_auth(array(1281)) && $en['ln_parent_entity_id']==6196){
                 //Give Moderators the ability to ping Messenger profiles:
                 $ui .= '<span class="icon-top-left" data-toggle="tooltip" data-placement="right" title="Link External ID = '.$en['ln_external_id'].' [Messenger Profile]"><a href="/messenger/messenger_fetch_profile/'.$en['ln_external_id'].'" target="_blank"><i class="fas fa-project-diagram"></i></a></span>';
