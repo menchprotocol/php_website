@@ -2115,18 +2115,6 @@ class Communication_model extends CI_Model
             $search_results = $res['hits'];
 
 
-            //Log intent search:
-            $this->Links_model->ln_create(array(
-                'ln_content' => 'Found ' . count($search_results) . ' intent' . echo__s(count($search_results)) . ' matching "' . $master_command . '"',
-                'ln_metadata' => array(
-                    'app_enable_algolia' => $this->config->item('app_enable_algolia'),
-                    'input_data' => $master_command,
-                    'output' => $search_results,
-                ),
-                'ln_miner_entity_id' => $en['en_id'], //user who searched
-                'ln_type_entity_id' => 4275, //User Text Command I Want To
-            ));
-
 
             //Show options for the User to add to their Action Plan:
             $new_intent_count = 0;
@@ -2169,7 +2157,7 @@ class Communication_model extends CI_Model
                 $new_intent_count++;
 
                 if($new_intent_count==1){
-                    $message = 'I found the following matches:';
+                    $message = 'I found these intentions for "'.$master_command.'":';
                 }
 
                 //List Intent:
@@ -2181,6 +2169,20 @@ class Communication_model extends CI_Model
                     'payload' => 'SUBSCRIBE-INITIATE_' . $ins[0]['in_id'],
                 ));
             }
+
+
+            //Log intent search:
+            $this->Links_model->ln_create(array(
+                'ln_content' => ( $new_intent_count > 0 ? $message : 'Found ' . $new_intent_count . ' intent' . echo__s($new_intent_count) . ' matching "' . $master_command . '"' ),
+                'ln_metadata' => array(
+                    'app_enable_algolia' => $this->config->item('app_enable_algolia'),
+                    'new_intent_count' => $new_intent_count,
+                    'input_data' => $master_command,
+                    'output' => $search_results,
+                ),
+                'ln_miner_entity_id' => $en['en_id'], //user who searched
+                'ln_type_entity_id' => 4275, //User Text Command I Want To
+            ));
 
 
             if($new_intent_count > 0){
