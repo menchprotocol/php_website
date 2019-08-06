@@ -117,7 +117,7 @@
                     $input_options .= '<input type="text" name="mass_value1_'.$action_en_id.'" placeholder="Search" style="width: 145px;" class="form-control border">';
 
                     //Replace:
-                    $input_options .= '<input type="text" name="mass_value2_'.$action_en_id.'" placeholder="Replace" style="width: 145px;" class="form-control border">';
+                    $input_options .= '<input type="text" name="mass_value2_'.$action_en_id.'" placeholder="Replace" stycacle="width: 145px;" class="form-control border">';
 
 
                 } elseif(in_array($action_en_id, array(5981, 5982))){
