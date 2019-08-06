@@ -40,13 +40,13 @@
                     <a href="javascript:void(0)" onclick="save_full_name()" class="btn btn-sm btn-primary">Save</a>
                     <span class="saving-account save_full_name"></span>';
 
-        } elseif($acc_en_id==3288 /* Email */){
+        } elseif($acc_en_id==3288 /* Mench Email */){
 
             $user_emails = $this->Links_model->ln_fetch(array(
                 'ln_status_entity_id IN (' . join(',', $this->config->item('en_ids_7359')) . ')' => null, //Link Statuses Public
                 'ln_child_entity_id' => $session_en['en_id'],
                 'ln_type_entity_id' => 4255, //Linked Entities Text (Email is text)
-                'ln_parent_entity_id' => 3288, //Email Address
+                'ln_parent_entity_id' => 3288, //Mench Email
             ));
 
             echo '<span class="white-wrapper"><input type="email" id="en_email" class="form-control border" value="'.( count($user_emails) > 0 ? $user_emails[0]['ln_content'] : '' ).'" placeholder="you@gmail.com" /></span>

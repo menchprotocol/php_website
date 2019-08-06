@@ -2212,6 +2212,16 @@ function echo_en($en, $level, $is_parent = false)
         //Show smaller link status icon:
         $ui .= '<span class="icon-top-right ln_status_entity_id_' . $ln_id . '"><span data-toggle="tooltip" data-placement="right" title="'.$en_all_6186[$en['ln_status_entity_id']]['m_name'].' @'.$en['ln_status_entity_id'].': '.$en_all_6186[$en['ln_status_entity_id']]['m_desc'].'">' . $en_all_6186[$en['ln_status_entity_id']]['m_icon'] . '</span></span>';
 
+        //Show link index
+        if($en['ln_external_id'] > 0){
+            if(en_auth(array(1281)) && $en['ln_parent_entity_id']==6196){
+                //Give Moderators the ability to ping Messenger profiles:
+                $ui .= '<span class="icon-top-left" data-toggle="tooltip" data-placement="right" title="External ID = '.$en['ln_external_id'].' [Messenger Profile]"><a href="/messenger/messenger_fetch_profile/'.$en['en_id'].'" target="_blank"><i class="fas fa-project-diagram"></i></a></span>';
+            } else {
+                $ui .= '<span class="icon-top-left" data-toggle="tooltip" data-placement="right" title="External ID = '.$en['ln_external_id'].'"><i class="fas fa-project-diagram"></i></span>';
+            }
+        }
+
         $ui .= '</span>';
 
     } elseif( $level > 0 ) {
@@ -2234,17 +2244,6 @@ function echo_en($en, $level, $is_parent = false)
     //Show smaller entity status:
     $ui .= '<span class="icon-top-right en_status_entity_id_' . $en['en_id'] . '"><span data-toggle="tooltip" data-placement="right" title="'.$en_all_6177[$en['en_status_entity_id']]['m_name'].' @'.$en['en_status_entity_id'].': '.$en_all_6177[$en['en_status_entity_id']]['m_desc'].'">' . $en_all_6177[$en['en_status_entity_id']]['m_icon'] . '</span></span>';
 
-    //Status locked intent?
-    if($en['en_psid'] > 0){
-        $ui .= '<span class="icon-top-left" data-toggle="tooltip" data-placement="right" title="User connected to Mench on Messenger">';
-        if(en_auth(array(1281))){
-            //Give Facebook profile ping option to Moderators:
-            $ui .= '<a href="/user_app/messenger_fetch_profile/'.$en['en_id'].'" target="_blank"><i class="fas fa-badge-check blue" style="font-size: 1.1em;"></i></a>';
-        } else {
-            $ui .= '<i class="fas fa-badge-check blue" style="font-size: 1.1em;"></i>';
-        }
-        $ui .= '</span>';
-    }
 
     $ui .= '</span>';
 

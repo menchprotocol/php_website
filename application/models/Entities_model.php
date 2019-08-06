@@ -962,7 +962,6 @@ class Entities_model extends CI_Model
          *
          */
 
-
         if ($psid < 1) {
             //Ooops, this should never happen:
             $this->Links_model->ln_create(array(

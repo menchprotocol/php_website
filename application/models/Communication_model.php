@@ -145,7 +145,7 @@ class Communication_model extends CI_Model
             //Log successful Link for message delivery (Unless Miners viewing HTML):
             if(isset($recipient_en['en_id']) && $push_message){
                 $this->Links_model->ln_create(array(
-                    'ln_status_entity_id' => ( $msg_dispatching['user_chat_channel']==7305 /* Mench on Chrome */ ? 6175 /* Link Drafting, so we dispatch later */ : 6176 /* Link Published */ ),
+                    'ln_status_entity_id' => ( $msg_dispatching['user_chat_channel']==3288 /* Mench on Chrome */ ? 6175 /* Link Drafting, so we dispatch later */ : 6176 /* Link Published */ ),
                     'ln_content' => $msg_dispatching['input_message'],
                     'ln_type_entity_id' => $output_message['message_type_en_id'],
                     'ln_miner_entity_id' => $recipient_en['en_id'],
@@ -390,12 +390,12 @@ class Communication_model extends CI_Model
                     'ln_status_entity_id IN (' . join(',', $this->config->item('en_ids_7359')) . ')' => null, //Link Statuses Public
                     'ln_child_entity_id' => $recipient_en['en_id'],
                     'ln_type_entity_id' => 4255, //Linked Entities Text (Email is text)
-                    'ln_parent_entity_id' => 3288, //Email Address
+                    'ln_parent_entity_id' => 3288, //Mench Email
                 ));
 
                 if(count($user_emails) > 0){
 
-                    $user_chat_channel = 7305; //Mench on Chrome
+                    $user_chat_channel = 3288; //Mench Email
 
                 } else {
 

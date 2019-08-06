@@ -254,7 +254,7 @@ class Links_model extends CI_Model
                         'ln_status_entity_id IN (' . join(',', $this->config->item('en_ids_7359')) . ')' => null, //Link Statuses Public
                         'en_status_entity_id IN (' . join(',', $this->config->item('en_ids_7357')) . ')' => null, //Entity Statuses Public
                         'ln_type_entity_id' => 4255, //Linked Entities Text (Email is text)
-                        'ln_parent_entity_id' => 3288, //Email Address
+                        'ln_parent_entity_id' => 3288, //Mench Email
                         'ln_child_entity_id' => $subscriber_en_id,
                     ), array('en_child')) as $en_email){
                         if(filter_var($en_email['ln_content'], FILTER_VALIDATE_EMAIL)){
