@@ -772,7 +772,7 @@ class User_app extends CI_Controller
             die('<div class="alert alert-danger" role="alert">Failed to authenticate your origin.</div>');
         } elseif (!isset($session_en['en_id'])) {
             //Messenger Webview, authenticate PSID:
-            $session_en = $this->Entities_model->en_psid_check($psid);
+            $session_en = $this->Entities_model->en_messenger_auth($psid);
             //Make sure we found them:
             if (!$session_en) {
                 //We could not authenticate the user!
@@ -1486,7 +1486,7 @@ class User_app extends CI_Controller
             die('<div class="alert alert-danger" role="alert">Failed to authenticate your origin.</div>');
         } elseif (!isset($session_en['en_id'])) {
             //Messenger Webview, authenticate PSID:
-            $session_en = $this->Entities_model->en_psid_check($psid);
+            $session_en = $this->Entities_model->en_messenger_auth($psid);
             //Make sure we found them:
             if (!$session_en) {
                 //We could not authenticate the user!

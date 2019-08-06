@@ -524,19 +524,23 @@ class User_app_model extends CI_Model
                 ));
             }
 
-            $this->Communication_model->dispatch_message(
-                'Ok let\'s ' . $ins[0]['in_outcome'],
-                array('en_id' => $en_id),
-                true
-            );
+            if($echo_next_step){
+                $this->Communication_model->dispatch_message(
+                    'Ok let\'s ' . $ins[0]['in_outcome'],
+                    array('en_id' => $en_id),
+                    true
+                );
+            }
 
         } else {
 
-            $this->Communication_model->dispatch_message(
-                'Ok I added this intention to your Action Plan 🙌 /link:Open 🚩Action Plan:https://mench.com/actionplan/' . $ins[0]['in_id'],
-                array('en_id' => $en_id),
-                true
-            );
+            if($echo_next_step){
+                $this->Communication_model->dispatch_message(
+                    'Ok I added this intention to your Action Plan 🙌 /link:Open 🚩Action Plan:https://mench.com/actionplan/' . $ins[0]['in_id'],
+                    array('en_id' => $en_id),
+                    true
+                );
+            }
 
         }
 

@@ -22,6 +22,13 @@ class Messenger extends CI_Controller
         $current_us = $this->Entities_model->en_fetch(array(
             'en_id' => $en_id,
         ));
+        $user_messenger = $this->Links_model->ln_fetch(array(
+            'ln_status_entity_id IN (' . join(',', $this->config->item('en_ids_7359')) . ')' => null, //Link Statuses Public
+            'ln_type_entity_id IN (' . join(',', $this->config->item('en_ids_4592')) . ')' => null, //Entity Link Connectors
+            'ln_parent_entity_id' => 6196, //Mench Messenger
+            'ln_child_entity_id' => $en_id,
+            'ln_external_id >' => 0,
+        ), array('en_child'));
 
         if (!$session_en) {
             return echo_json(array(
@@ -33,16 +40,16 @@ class Messenger extends CI_Controller
                 'status' => 0,
                 'message' => 'User not found!',
             ));
-        } elseif (strlen($current_us[0]['en_psid']) < 5) {
+        } elseif (count($user_messenger)==0) {
             return echo_json(array(
                 'status' => 0,
-                'message' => 'User does not seem to be connected to Mench, so profile data cannot be fetched',
+                'message' => 'User not connected to Mench Messenger',
             ));
         } else {
 
             //Fetch results and show:
             return echo_json(array(
-                'fb_profile' => $this->Communication_model->facebook_graph('GET', '/' . $current_us[0]['en_psid'], array()),
+                'fb_profile' => $this->Communication_model->facebook_graph('GET', '/' . $user_messenger[0]['ln_external_id'], array()),
                 'en' => $current_us[0],
             ));
 
@@ -182,7 +189,7 @@ class Messenger extends CI_Controller
                     $ln_type_entity_id = (isset($im['delivery']) ? 4279 /* Message Delivered */ : 4278 /* Message Read */);
 
                     //Authenticate User:
-                    $en = $this->Entities_model->en_psid_check($im['sender']['id']);
+                    $en = $this->Entities_model->en_messenger_auth($im['sender']['id']);
 
                     //Log Link Only IF last delivery link was 3+ minutes ago (Since Facebook sends many of these):
                     $last_trs_logged = $this->Links_model->ln_fetch(array(
@@ -220,7 +227,7 @@ class Messenger extends CI_Controller
 
                     //Set variables:
                     $sent_by_mench = (isset($im['message']['is_echo'])); //Indicates the message sent from the page itself
-                    $en = $this->Entities_model->en_psid_check(($sent_by_mench ? $im['recipient']['id'] : $im['sender']['id']));
+                    $en = $this->Entities_model->en_messenger_auth(($sent_by_mench ? $im['recipient']['id'] : $im['sender']['id']));
                     $is_quick_reply = (isset($im['message']['quick_reply']['payload']));
 
                     //Check if this User is unsubscribed:
@@ -616,7 +623,7 @@ class Messenger extends CI_Controller
                     $quick_reply_payload = ($array_ref && isset($array_ref['ref']) && strlen($array_ref['ref']) > 0 ? $array_ref['ref'] : null);
 
                     //Authenticate User:
-                    $en = $this->Entities_model->en_psid_check($im['sender']['id'], $quick_reply_payload);
+                    $en = $this->Entities_model->en_messenger_auth($im['sender']['id'], $quick_reply_payload);
 
                     //Log primary link:
                     $this->Links_model->ln_create(array(
@@ -667,7 +674,7 @@ class Messenger extends CI_Controller
 
                 } elseif (isset($im['optin'])) {
 
-                    $en = $this->Entities_model->en_psid_check($im['sender']['id']);
+                    $en = $this->Entities_model->en_messenger_auth($im['sender']['id']);
 
                     //Log link:
                     $this->Links_model->ln_create(array(
@@ -679,7 +686,7 @@ class Messenger extends CI_Controller
                 } elseif (isset($im['message_request']) && $im['message_request'] == 'accept') {
 
                     //This is when we message them and they accept to chat because they had Removed Messenger or something...
-                    $en = $this->Entities_model->en_psid_check($im['sender']['id']);
+                    $en = $this->Entities_model->en_messenger_auth($im['sender']['id']);
 
                     //Log link:
                     $this->Links_model->ln_create(array(

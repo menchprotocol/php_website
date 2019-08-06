@@ -951,7 +951,7 @@ class Entities_model extends CI_Model
         return $en__child_count;
     }
 
-    function en_psid_check($psid, $quick_reply_payload = null)
+    function en_messenger_auth($psid, $quick_reply_payload = null)
     {
 
         /*
@@ -965,34 +965,36 @@ class Entities_model extends CI_Model
         if ($psid < 1) {
             //Ooops, this should never happen:
             $this->Links_model->ln_create(array(
-                'ln_content' => 'en_psid_check() got called without a valid Facebook $psid variable',
+                'ln_content' => 'en_messenger_auth() got called without a valid Facebook $psid variable',
                 'ln_type_entity_id' => 4246, //Platform Bug Reports
             ));
             return false;
         }
 
         //Try matching Facebook PSID to existing Users:
-        $ens = $this->Entities_model->en_fetch(array(
-            'en_status_entity_id IN (' . join(',', $this->config->item('en_ids_7358')) . ')' => null, //Entity Statuses Active
-            'en_psid' => $psid,
-        ), array('skip_en__parents'));
+        $user_messenger = $this->Links_model->ln_fetch(array(
+            'ln_status_entity_id IN (' . join(',', $this->config->item('en_ids_7359')) . ')' => null, //Link Statuses Public
+            'ln_type_entity_id IN (' . join(',', $this->config->item('en_ids_4592')) . ')' => null, //Entity Link Connectors
+            'ln_parent_entity_id' => 6196, //Mench Messenger
+            'ln_external_id >' => 0,
+        ), array('en_child'));
 
         //So, did we find them?
-        if (count($ens) > 0) {
+        if (count($user_messenger) > 0) {
 
             //User found...
-            return $ens[0];
+            return $user_messenger[0];
 
         } else {
 
             //User not found, create new User:
-            return $this->Entities_model->en_psid_add($psid, $quick_reply_payload);
+            return $this->Entities_model->en_messenger_add($psid, $quick_reply_payload);
 
         }
 
     }
 
-    function en_verify_create($en_name, $ln_miner_entity_id = 0, $force_unique = false, $en_status_entity_id = 6180 /* Entity Drafting */, $en_icon = null, $en_psid = null){
+    function en_verify_create($en_name, $ln_miner_entity_id = 0, $force_unique = false, $en_status_entity_id = 6180 /* Entity Drafting */, $en_icon = null){
 
         //If PSID exists, make sure it's not a duplicate:
         if(!in_array($en_status_entity_id, $this->config->item('en_ids_6177'))){
@@ -1001,18 +1003,6 @@ class Entities_model extends CI_Model
                 'status' => 0,
                 'message' => 'Invalid Entity Status',
             );
-        } elseif($en_psid > 0){
-            $duplicate_psid_ens = $this->Entities_model->en_fetch(array(
-                'en_status_entity_id IN (' . join(',', $this->config->item('en_ids_7358')) . ')' => null, //Entity Statuses Active
-                'en_psid' => $en_psid,
-            ));
-            if(count($duplicate_psid_ens) > 0){
-                //Return found:
-                return array(
-                    'status' => 1,
-                    'en' => $duplicate_psid_ens[0],
-                );
-            }
         }
 
         //Not found, so we need to create, and need a name by now:
@@ -1039,7 +1029,6 @@ class Entities_model extends CI_Model
         $entity_new = $this->Entities_model->en_create(array(
             'en_name' => trim($en_name),
             'en_icon' => $en_icon,
-            'en_psid' => $en_psid,
             'en_status_entity_id' => $en_status_entity_id,
         ), true, $ln_miner_entity_id);
 
@@ -1063,7 +1052,7 @@ class Entities_model extends CI_Model
 
     }
 
-    function en_psid_add($psid, $quick_reply_payload = null)
+    function en_messenger_add($psid, $quick_reply_payload = null)
     {
 
         /*
@@ -1076,9 +1065,17 @@ class Entities_model extends CI_Model
         if ($psid < 1) {
             //Ooops, this should never happen:
             $this->Links_model->ln_create(array(
-                'ln_content' => 'en_psid_add() got called without a valid Facebook $psid variable',
+                'ln_content' => 'en_messenger_add() got called without a valid Facebook $psid variable',
                 'ln_type_entity_id' => 4246, //Platform Bug Reports
             ));
+            return false;
+        } elseif(count($this->Links_model->ln_fetch(array(
+                'ln_status_entity_id IN (' . join(',', $this->config->item('en_ids_7359')) . ')' => null, //Link Statuses Public
+                'ln_type_entity_id IN (' . join(',', $this->config->item('en_ids_4592')) . ')' => null, //Entity Link Connectors
+                'ln_parent_entity_id' => 6196, //Mench Messenger
+                'ln_external_id' => $psid,
+            )))>0){
+            //PSID Already added:
             return false;
         }
 
@@ -1101,7 +1098,7 @@ class Entities_model extends CI_Model
              * */
 
             //Create user entity:
-            $added_en = $this->Entities_model->en_verify_create('User '.rand(100000000, 999999999), 0, false, 6181, null, $psid);
+            $added_en = $this->Entities_model->en_verify_create('User '.rand(100000000, 999999999), 0, false, 6181, null);
 
         } else {
 
@@ -1109,7 +1106,7 @@ class Entities_model extends CI_Model
             $fb_profile = $graph_fetch['ln_metadata']['result'];
 
             //Create user entity with their Facebook Graph name:
-            $added_en = $this->Entities_model->en_verify_create($fb_profile['first_name'] . ' ' . $fb_profile['last_name'], 0, false, 6181, null, $psid);
+            $added_en = $this->Entities_model->en_verify_create($fb_profile['first_name'] . ' ' . $fb_profile['last_name'], 0, false, 6181, null);
 
 
             //See if we could fetch FULL profile data:
@@ -1157,19 +1154,28 @@ class Entities_model extends CI_Model
         //Note that new entity link is already logged in the entity creation function
         //Now create more relevant links:
 
-        //Add them to Users group:
+        //Activate Mench Messenger
         $this->Links_model->ln_create(array(
+            'ln_parent_entity_id' => 6196, //Mench Messenger
             'ln_type_entity_id' => 4230, //Raw link
             'ln_miner_entity_id' => $added_en['en']['en_id'],
+            'ln_child_entity_id' => $added_en['en']['en_id'],
+            'ln_external_id' => $psid,
+        ));
+
+        //Add them to Users group:
+        $this->Links_model->ln_create(array(
             'ln_parent_entity_id' => 4430, //Mench User
+            'ln_type_entity_id' => 4230, //Raw link
+            'ln_miner_entity_id' => $added_en['en']['en_id'],
             'ln_child_entity_id' => $added_en['en']['en_id'],
         ));
 
         //Add default Notification Level:
         $this->Links_model->ln_create(array(
+            'ln_parent_entity_id' => 4456, //Receive Regular Notifications (User can change later on...)
             'ln_type_entity_id' => 4230, //Raw link
             'ln_miner_entity_id' => $added_en['en']['en_id'],
-            'ln_parent_entity_id' => 4456, //Receive Regular Notifications (User can change later on...)
             'ln_child_entity_id' => $added_en['en']['en_id'],
         ));
 

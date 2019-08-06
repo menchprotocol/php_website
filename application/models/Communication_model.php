@@ -44,11 +44,6 @@ class Communication_model extends CI_Model
          *                          may only contain the entity ID, which enables this
          *                          function to fetch further information from that
          *                          entity as required based on its other parameters.
-         *                          The 3 key columns that this function uses are:
-         *
-         *                          - $recipient_en['en_id'] - As who to send to
-         *                          - $recipient_en['en_name'] - To replace with /firstname
-         *                          - $recipient_en['en_psid'] OR Email Link is needed if $push_message = TRUE
          *
          *
          * - $push_message:         If TRUE this function will prepare a message to be
@@ -343,16 +338,11 @@ class Communication_model extends CI_Model
 
         /*
          *
-         * Fetch more details on recipient entity if needed:
-         *
-         * - IF $push_message = TRUE AND We're missing en_psid
-         * - IF /firstname command is used AND en_id is set AND We're missing en_name
+         * Fetch more details on recipient entity if needed
          *
          * */
 
-        if (($push_message && !isset($recipient_en['en_psid'])) || (isset($recipient_en['en_id']) && in_array('/firstname', $string_references['ref_commands']) && !isset($recipient_en['en_name']))) {
-
-            //We have partial entity data, but we're missing some needed information...
+        if(isset($recipient_en['en_id']) && in_array('/firstname', $string_references['ref_commands']) && !isset($recipient_en['en_name'])){
 
             //Fetch full entity data:
             $ens = $this->Entities_model->en_fetch(array(
@@ -375,11 +365,21 @@ class Communication_model extends CI_Model
 
 
 
+
+
         //See if we have a valid way to connect to them if push:
         if ($push_message) {
 
-            //Missing Messenger connection?
-            if($ens[0]['en_psid'] > 0) {
+            $user_messenger = $this->Links_model->ln_fetch(array(
+                'ln_status_entity_id IN (' . join(',', $this->config->item('en_ids_7359')) . ')' => null, //Link Statuses Public
+                'ln_type_entity_id IN (' . join(',', $this->config->item('en_ids_4592')) . ')' => null, //Entity Link Connectors
+                'ln_parent_entity_id' => 6196, //Mench Messenger
+                'ln_child_entity_id' => $recipient_en['en_id'],
+                'ln_external_id >' => 0,
+            ));
+
+            //Messenger has a higher priority than email, is the user connected?
+            if(count($user_messenger) > 0) {
 
                 $user_chat_channel = 6196; //Mench on Messenger
 
@@ -900,7 +900,7 @@ class Communication_model extends CI_Model
                     'message_type_en_id' => ( isset($fb_message['quick_replies']) && count($fb_message['quick_replies']) > 0 ? 6563 : 4552 ), //Text OR Quick Reply Message Sent
                     'message_body' => array(
                         'recipient' => array(
-                            'id' => $recipient_en['en_psid'],
+                            'id' => $user_messenger[0]['ln_external_id'],
                         ),
                         'message' => $fb_message,
                         'notification_type' => $notification_type,
@@ -981,7 +981,7 @@ class Communication_model extends CI_Model
                         'message_type_en_id' => $fb_media_attachment['ln_type_entity_id'],
                         'message_body' => array(
                             'recipient' => array(
-                                'id' => $recipient_en['en_psid'],
+                                'id' => $user_messenger[0]['ln_external_id'],
                             ),
                             'message' => $fb_message,
                             'notification_type' => $notification_type,
