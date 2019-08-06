@@ -204,7 +204,7 @@ function singin_check_password(){
 }
 
 function singin_magic_link_email(){
-    var r = confirm("I will email you a link to "+$('#input_email').val()+" so you can easily login to your account.");
+    var r = confirm("I will email you a link to "+$('#input_email').val()+" so you can easily login.");
     if (r == true) {
 
         //Update UI:

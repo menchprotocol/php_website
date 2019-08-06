@@ -11,7 +11,7 @@ defined('BASEPATH') OR exit('No direct script access allowed');
  *
  */
 
-//Generated 2019-08-05 17:16:48 PST
+//Generated 2019-08-05 22:22:38 PST
 
 //Intent Subscription Setting:
 $config['en_ids_7596'] = array(7597,7598,7599);
@@ -245,20 +245,20 @@ $config['en_all_5967'] = array(
     ),
 );
 
-//Mench Communication Channels:
-$config['en_ids_7555'] = array(6196,7305);
+//Mench Platforms:
+$config['en_ids_7555'] = array(3288,6196);
 $config['en_all_7555'] = array(
+    3288 => array(
+        'm_icon' => '<i class="far fa-envelope-open"></i>',
+        'm_name' => 'Email',
+        'm_desc' => 'btn btn-primary',
+        'm_parents' => array(7555,6225,4426,4755),
+    ),
     6196 => array(
-        'm_icon' => '<i class="fab fa-facebook-messenger"></i>',
+        'm_icon' => '<i class="fab fa-facebook-messenger blue"></i>',
         'm_name' => 'Messenger',
         'm_desc' => 'btn btn-secondary',
-        'm_parents' => array(7555,3320),
-    ),
-    7305 => array(
-        'm_icon' => '<i class="fab fa-chrome"></i>',
-        'm_name' => 'Chrome',
-        'm_desc' => 'btn btn-primary',
-        'm_parents' => array(7555,7254,1326),
+        'm_parents' => array(5969,7555,3320),
     ),
 );
 
@@ -413,7 +413,7 @@ $config['en_all_7309'] = array(
 );
 
 //Mench Products:
-$config['en_ids_7372'] = array(6221,6403,7540,7555,7369,7368);
+$config['en_ids_7372'] = array(6221,6403,7305,7540,7555,7369,7368);
 $config['en_all_7372'] = array(
     6221 => array(
         'm_icon' => '<i class="fas fa-comments"></i>',
@@ -427,6 +427,12 @@ $config['en_all_7372'] = array(
         'm_desc' => 'So far all our products are built using the same PHP application',
         'm_parents' => array(7372,3324,7391,7390,4523,3325,3323,3326),
     ),
+    7305 => array(
+        'm_icon' => '<img src="https://mench.com/img/bp_128.png">',
+        'm_name' => 'Mench Website',
+        'm_desc' => '',
+        'm_parents' => array(7372,1326),
+    ),
     7540 => array(
         'm_icon' => '<i class="fas fa-balance-scale"></i>',
         'm_name' => 'Mench\'s terms & privacy policy',
@@ -434,13 +440,13 @@ $config['en_all_7372'] = array(
         'm_parents' => array(7372,7305),
     ),
     7555 => array(
-        'm_icon' => '<img src="https://mench.com/img/bp_128.png">',
-        'm_name' => 'Mench Communication Channels',
-        'm_desc' => 'The channels users can choose to connect with Mench personal assistant.',
+        'm_icon' => '<i class="fas fa-comments"></i>',
+        'm_name' => 'Mench Platforms',
+        'm_desc' => '',
         'm_parents' => array(7372,4527),
     ),
     7369 => array(
-        'm_icon' => '<i class="fas fa-user-graduate"></i>',
+        'm_icon' => '<i class="fas fa-user"></i>',
         'm_name' => 'Mench User App',
         'm_desc' => 'A web portal for software engineers to assess/improve their skills & get matched with top companies.',
         'm_parents' => array(7372,4527),
@@ -492,7 +498,7 @@ $config['en_all_7369'] = array(
         'm_parents' => array(7369,7529),
     ),
     4430 => array(
-        'm_icon' => '<i class="fas fa-user-graduate"></i>',
+        'm_icon' => '<i class="fas fa-user"></i>',
         'm_name' => 'Mench Users',
         'm_desc' => '',
         'm_parents' => array(7369,6827,4426,4463),
@@ -1091,10 +1097,10 @@ $config['en_all_7164'] = array(
         'm_parents' => array(7653,7164,4595,4755,4593),
     ),
     4570 => array(
-        'm_icon' => '<i class="fab fa-html5"></i>',
-        'm_name' => 'User Received HTML',
+        'm_icon' => '<i class="far fa-envelope-open"></i>',
+        'm_name' => 'User Received HTML/Email',
         'm_desc' => '',
-        'm_parents' => array(7652,7164,4595,4755,4593),
+        'm_parents' => array(7569,7164,4595,4755,4593),
     ),
     4577 => array(
         'm_icon' => '<i class="far fa-user-plus"></i>',
@@ -1255,7 +1261,7 @@ $config['en_all_6827'] = array(
         'm_parents' => array(6827,4463),
     ),
     4430 => array(
-        'm_icon' => '<i class="fas fa-user-graduate"></i>',
+        'm_icon' => '<i class="fas fa-user"></i>',
         'm_name' => 'Mench Users',
         'm_desc' => 'Users who are pursuing their intentions using Mench',
         'm_parents' => array(7369,6827,4426,4463),
@@ -1390,7 +1396,7 @@ $config['en_all_4463'] = array(
         'm_parents' => array(6827,4463),
     ),
     4430 => array(
-        'm_icon' => '<i class="fas fa-user-graduate"></i>',
+        'm_icon' => '<i class="fas fa-user"></i>',
         'm_name' => 'Mench Users',
         'm_desc' => 'Users connected to Mench Personal Assistant on Facebook Messenger.',
         'm_parents' => array(7369,6827,4426,4463),
@@ -1659,9 +1665,9 @@ $config['en_all_6225'] = array(
     ),
     3288 => array(
         'm_icon' => '<i class="far fa-envelope-open"></i>',
-        'm_name' => 'Email Address',
+        'm_name' => 'Mench Email',
         'm_desc' => 'Your email address is also used to login to Mench:',
-        'm_parents' => array(6225,4426,4755),
+        'm_parents' => array(7555,6225,4426,4755),
     ),
     3286 => array(
         'm_icon' => '<i class="far fa-key"></i>',
@@ -1983,13 +1989,19 @@ $config['en_all_4280'] = array(
 );
 
 //System Lock:
-$config['en_ids_5969'] = array(3286);
+$config['en_ids_5969'] = array(3286,6196);
 $config['en_all_5969'] = array(
     3286 => array(
         'm_icon' => '<i class="far fa-key"></i>',
         'm_name' => 'Mench Password',
         'm_desc' => 'Managed through the Forgot Password section in the Login page',
         'm_parents' => array(6225,5969,4755),
+    ),
+    6196 => array(
+        'm_icon' => '<i class="fab fa-facebook-messenger blue"></i>',
+        'm_name' => 'Mench Messenger',
+        'm_desc' => '',
+        'm_parents' => array(5969,7555,3320),
     ),
 );
 
@@ -2063,9 +2075,9 @@ $config['en_all_4426'] = array(
     ),
     3288 => array(
         'm_icon' => '<i class="far fa-envelope-open"></i>',
-        'm_name' => 'Email Address',
+        'm_name' => 'Mench Email',
         'm_desc' => '',
-        'm_parents' => array(6225,4426,4755),
+        'm_parents' => array(7555,6225,4426,4755),
     ),
     4426 => array(
         'm_icon' => '<i class="fas fa-lock"></i>',
@@ -2074,7 +2086,7 @@ $config['en_all_4426'] = array(
         'm_parents' => array(3303,6771,4426,4527,4757,4428),
     ),
     4430 => array(
-        'm_icon' => '<i class="fas fa-user-graduate"></i>',
+        'm_icon' => '<i class="fas fa-user"></i>',
         'm_name' => 'Mench Users',
         'm_desc' => '',
         'm_parents' => array(7369,6827,4426,4463),
@@ -2128,9 +2140,9 @@ $config['en_all_4755'] = array(
     ),
     3288 => array(
         'm_icon' => '<i class="far fa-envelope-open"></i>',
-        'm_name' => 'Email Address',
+        'm_name' => 'Mench Email',
         'm_desc' => '',
-        'm_parents' => array(6225,4426,4755),
+        'm_parents' => array(7555,6225,4426,4755),
     ),
     4235 => array(
         'm_icon' => '<i class="far fa-bullseye-arrow"></i>',
@@ -2295,10 +2307,10 @@ $config['en_all_4755'] = array(
         'm_parents' => array(4595,6274,6255,4755,6146,4593),
     ),
     4570 => array(
-        'm_icon' => '<i class="fab fa-html5"></i>',
-        'm_name' => 'User Received HTML',
+        'm_icon' => '<i class="far fa-envelope-open"></i>',
+        'm_name' => 'User Received HTML/Email',
         'm_desc' => '',
-        'm_parents' => array(7652,7164,4595,4755,4593),
+        'm_parents' => array(7569,7164,4595,4755,4593),
     ),
     4577 => array(
         'm_icon' => '<i class="far fa-user-plus"></i>',
@@ -2517,13 +2529,13 @@ $config['en_all_4755'] = array(
         'm_parents' => array(4755,4269,4595,4593),
     ),
     7562 => array(
-        'm_icon' => '<i class="fas fa-user-plus"></i>',
+        'm_icon' => '<i class="far fa-envelope-open"></i>',
         'm_name' => 'User Signin Joined Mench',
         'm_desc' => '',
         'm_parents' => array(4755,7569,4269,4595,4593),
     ),
     7563 => array(
-        'm_icon' => '<i class="fas fa-user-lock"></i>',
+        'm_icon' => '<i class="far fa-envelope-open"></i>',
         'm_name' => 'User Signin Magic Link Email',
         'm_desc' => '',
         'm_parents' => array(4269,4755,7569,4595,4593),
@@ -2816,10 +2828,10 @@ $config['en_all_4595'] = array(
         'm_parents' => array(4595,6274,6255,4755,6146,4593),
     ),
     4570 => array(
-        'm_icon' => '<i class="fab fa-html5"></i>',
-        'm_name' => 'User Received HTML',
+        'm_icon' => '<i class="far fa-envelope-open"></i>',
+        'm_name' => 'User Received HTML/Email',
         'm_desc' => '2',
-        'm_parents' => array(7652,7164,4595,4755,4593),
+        'm_parents' => array(7569,7164,4595,4755,4593),
     ),
     4577 => array(
         'm_icon' => '<i class="far fa-user-plus"></i>',
@@ -3140,13 +3152,13 @@ $config['en_all_4595'] = array(
         'm_parents' => array(4755,4269,4595,4593),
     ),
     7562 => array(
-        'm_icon' => '<i class="fas fa-user-plus"></i>',
+        'm_icon' => '<i class="far fa-envelope-open"></i>',
         'm_name' => 'User Signin Joined Mench',
         'm_desc' => '1',
         'm_parents' => array(4755,7569,4269,4595,4593),
     ),
     7563 => array(
-        'm_icon' => '<i class="fas fa-user-lock"></i>',
+        'm_icon' => '<i class="far fa-envelope-open"></i>',
         'm_name' => 'User Signin Magic Link Email',
         'm_desc' => '1',
         'm_parents' => array(4269,4755,7569,4595,4593),
@@ -3456,10 +3468,10 @@ $config['en_all_4593'] = array(
         'm_parents' => array(4595,6274,6255,4755,6146,4593),
     ),
     4570 => array(
-        'm_icon' => '<i class="fab fa-html5"></i>',
-        'm_name' => 'User Received HTML',
+        'm_icon' => '<i class="far fa-envelope-open"></i>',
+        'm_name' => 'User Received HTML/Email',
         'm_desc' => '',
-        'm_parents' => array(7652,7164,4595,4755,4593),
+        'm_parents' => array(7569,7164,4595,4755,4593),
     ),
     4577 => array(
         'm_icon' => '<i class="far fa-user-plus"></i>',
@@ -3780,13 +3792,13 @@ $config['en_all_4593'] = array(
         'm_parents' => array(4755,4269,4595,4593),
     ),
     7562 => array(
-        'm_icon' => '<i class="fas fa-user-plus"></i>',
+        'm_icon' => '<i class="far fa-envelope-open"></i>',
         'm_name' => 'User Signin Joined Mench',
         'm_desc' => '',
         'm_parents' => array(4755,7569,4269,4595,4593),
     ),
     7563 => array(
-        'm_icon' => '<i class="fas fa-user-lock"></i>',
+        'm_icon' => '<i class="far fa-envelope-open"></i>',
         'm_name' => 'User Signin Magic Link Email',
         'm_desc' => '',
         'm_parents' => array(4269,4755,7569,4595,4593),
