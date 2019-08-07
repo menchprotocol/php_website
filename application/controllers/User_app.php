@@ -1921,7 +1921,7 @@ class User_app extends CI_Controller
             ), $en_id);
         }
 
-        return redirect_message('/actionplan/' . $answer_in_id, '<div class="alert alert-success" role="alert">Your answer was saved.</div>');
+        return redirect_message('/actionplan/next', '<p><i class="far fa-check-circle"></i> I saved your answer.</p>');
 
     }
 
