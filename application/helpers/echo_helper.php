@@ -775,7 +775,7 @@ function echo_actionplan_step_child($en_id, $in, $link_status, $is_unlocked_step
     return $ui;
 }
 
-function echo_actionplan_step_parent($in, $link_status)
+function echo_actionplan_step_parent($in)
 {
 
     $CI =& get_instance();
@@ -785,9 +785,6 @@ function echo_actionplan_step_parent($in, $link_status)
     $ui .= '<span class="pull-left">';
     $ui .= '<span class="badge badge-primary fr-bgd"><i class="fas fa-angle-left"></i></span>';
     $ui .= '</span>';
-
-    //Completed Step Status:
-    $ui .= echo_en_cache('en_all_6186' /* Link Statuses */, $link_status, true, 'right');
 
     $ui .= ' <span>' . echo_in_outcome($in['in_outcome']).'</span>';
 
