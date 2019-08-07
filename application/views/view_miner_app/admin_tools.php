@@ -476,9 +476,7 @@ if(!$action) {
 
 } elseif($action=='or__children') {
 
-    $filter_ors = array(6685, 6684);
-
-    echo '<br /><p>Active OR intents of type '.join(',', $filter_ors).'</p><br />';
+    echo '<br /><p>Active <a href="/entities/6914">Intent Answer Types</a> are listed below.</p><br />';
 
     $all_steps = 0;
     $all_children = 0;
@@ -487,7 +485,7 @@ if(!$action) {
 
     foreach ($this->Intents_model->in_fetch(array(
         'in_status_entity_id IN (' . join(',', $this->config->item('en_ids_7356')) . ')' => null, //Intent Statuses Active
-        'in_type_entity_id IN (' . join(',', $filter_ors) . ')' => null,
+        'in_type_entity_id IN (' . join(',', $this->config->item('en_ids_7712')) . ')' => null,
     ), array(), 0, 0, array('in_id' => 'DESC')) as $count => $in) {
 
         echo '<div>'.($count+1).') '.echo_en_cache('en_all_4737' /* Intent Statuses */, $in['in_status_entity_id']).' '.echo_en_cache('en_all_6193' /* OR Intents */, $in['in_type_entity_id']).' <b><a href="https://mench.com/intents/'.$in['in_id'].'">'.echo_in_outcome($in['in_outcome']).'</a></b></div>';

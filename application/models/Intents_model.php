@@ -942,7 +942,7 @@ class Intents_model extends CI_Model
             'in_status_entity_id IN (' . join(',', $this->config->item('en_ids_7355')) . ')' => null, //Intent Statuses Public
             'ln_type_entity_id' => 4228, //Intent Link Regular Step
             'ln_child_intent_id' => $in['in_id'],
-            'in_type_entity_id IN (' . join(',', $this->config->item('en_ids_7705')) . ')' => null, //Intent Answer Types
+            'in_type_entity_id IN (' . join(',', $this->config->item('en_ids_7712')) . ')' => null, //Intent Answer Types
         ), array('in_parent'), 0) as $in_or_parent){
             if(count($child_unlock_paths)==0 || !filter_array($child_unlock_paths, 'in_id', $in_or_parent['in_id'])) {
                 array_push($child_unlock_paths, $in_or_parent);

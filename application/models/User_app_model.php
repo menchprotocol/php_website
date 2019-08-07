@@ -1172,17 +1172,21 @@ class User_app_model extends CI_Model
 
             $progression_type_entity_id = 6144; //User Step Requirement Sent
 
-        } elseif($has_children && $ins[0]['in_type_entity_id']==6684 /* OR Intent Single Answer */){
+        } elseif($has_children && $ins[0]['in_type_entity_id']==6684 /* Intent Answer Single-Choice */){
 
-            $progression_type_entity_id = 6157; //User Step Answered
+            $progression_type_entity_id = 6157; //User Step Single-Answered
 
-        } elseif($has_children && $ins[0]['in_type_entity_id']==6685 /* OR Intent Timed Answer */){
+        } elseif($has_children && $ins[0]['in_type_entity_id']==6685 /* Intent Answer Single-Choice Timed */){
 
-            $progression_type_entity_id = 7487; //User Step Answered Timely
+            $progression_type_entity_id = 7487; //User Step Single-Answered Timely
 
-        } elseif($has_children && $ins[0]['in_type_entity_id']==7231 /* OR Intent Multiple Answers */){
+        } elseif($has_children && $ins[0]['in_type_entity_id']==7231 /* Intent Answer Multiple-Choice */){
 
-            $progression_type_entity_id = 7489; //User Step Selected
+            $progression_type_entity_id = 7489; //User Step Multi-Answered
+
+        } elseif($has_children && $ins[0]['in_type_entity_id']==7706 /* Intent Answer Multiple-Choice Timed */){
+
+            $progression_type_entity_id = 7709; //User Step Multi-Answered Timely
 
         } else {
 

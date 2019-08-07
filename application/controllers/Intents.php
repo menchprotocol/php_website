@@ -325,7 +325,7 @@ class Intents extends CI_Controller
         ));
 
         //All seems good, go ahead and try creating the intent:
-        return echo_json($this->Intents_model->in_link_or_create($_POST['in_linked_id'], intval($_POST['is_parent']), $_POST['in_outcome'], $session_en['en_id'], 6183 /* Intent New */, ( !intval($_POST['is_parent']) && in_array($linked_ins[0]['in_type_entity_id'], $this->config->item('en_ids_6914')) ? 6914 /* AND Lock */ : 6677 /* AND Got It */ ), $_POST['in_link_child_id'], $_POST['next_level']));
+        return echo_json($this->Intents_model->in_link_or_create($_POST['in_linked_id'], intval($_POST['is_parent']), $_POST['in_outcome'], $session_en['en_id'], 6183 /* Intent New */, ( !intval($_POST['is_parent']) && in_array($linked_ins[0]['in_type_entity_id'], $this->config->item('en_ids_7712')) ? 6914 /* AND Lock */ : 6677 /* AND Got It */ ), $_POST['in_link_child_id'], $_POST['next_level']));
 
     }
 
