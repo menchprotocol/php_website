@@ -17,7 +17,7 @@ foreach($user_intents as $user_in){
 //Fetch parent tree all the way to the top of Action Plan ln_child_intent_id
 $found_grandpa_intersect = false; //Makes sure user can access this step as it should related to one of their intentions...
 
-
+/*
 echo '<div class="list-group parent-actionplans" style="margin-top: 10px;">';
 
 if(in_array($in['in_id'], $user_intentions_ids)){
@@ -51,7 +51,7 @@ foreach ($recursive_parents as $grand_parent_ids) {
             'ln_status_entity_id IN (' . join(',', $this->config->item('en_ids_7360')) . ')' => null, //Link Statuses Active
         ));
 
-        echo echo_actionplan_step_parent($parent_ins[0], (count($parent_progression_steps) > 0 ? $parent_progression_steps[0]['ln_status_entity_id'] : 6175 /* Link Drafting */));
+        echo echo_actionplan_step_parent($parent_ins[0], (count($parent_progression_steps) > 0 ? $parent_progression_steps[0]['ln_status_entity_id'] : 6175 )); //Link Drafting
 
         //We found an intersect:
         $found_grandpa_intersect = true;
@@ -59,7 +59,7 @@ foreach ($recursive_parents as $grand_parent_ids) {
     }
 }
 echo '</div>';
-
+*/
 
 
 
