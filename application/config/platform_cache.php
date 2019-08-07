@@ -11,7 +11,7 @@ defined('BASEPATH') OR exit('No direct script access allowed');
  *
  */
 
-//Generated 2019-08-06 18:54:37 PST
+//Generated 2019-08-06 19:00:35 PST
 
 //Intent Answer Types:
 $config['en_ids_7712'] = array(6684,6685,7231,7706);
@@ -1146,13 +1146,13 @@ $config['en_all_7164'] = array(
     ),
     4278 => array(
         'm_icon' => '<i class="far fa-eye"></i>',
-        'm_name' => 'User Sent Read on Messenger',
+        'm_name' => 'User Sent Messenger Read',
         'm_desc' => '',
         'm_parents' => array(7654,7164,4595,4755,4593),
     ),
     4279 => array(
         'm_icon' => '<i class="far fa-cloud-download"></i>',
-        'm_name' => 'User Sent Received on Messenger',
+        'm_name' => 'User Sent Messenger Received',
         'm_desc' => '',
         'm_parents' => array(7654,7164,4595,4755,4593),
     ),
@@ -2338,13 +2338,13 @@ $config['en_all_4755'] = array(
     ),
     4278 => array(
         'm_icon' => '<i class="far fa-eye"></i>',
-        'm_name' => 'User Sent Read on Messenger',
+        'm_name' => 'User Sent Messenger Read',
         'm_desc' => '',
         'm_parents' => array(7654,7164,4595,4755,4593),
     ),
     4279 => array(
         'm_icon' => '<i class="far fa-cloud-download"></i>',
-        'm_name' => 'User Sent Received on Messenger',
+        'm_name' => 'User Sent Messenger Received',
         'm_desc' => '',
         'm_parents' => array(7654,7164,4595,4755,4593),
     ),
@@ -2662,7 +2662,7 @@ $config['en_all_4755'] = array(
     ),
     7560 => array(
         'm_icon' => '<i class="fas fa-sign-in"></i>',
-        'm_name' => 'User Signin Intent Choose Channel',
+        'm_name' => 'User Signin Intent-Driven',
         'm_desc' => '',
         'm_parents' => array(4755,4269,4595,4593),
     ),
@@ -2716,7 +2716,7 @@ $config['en_all_4755'] = array(
     ),
     7702 => array(
         'm_icon' => '<i class="far fa-envelope-open"></i>',
-        'm_name' => 'User Intent Subscription Update',
+        'm_name' => 'User Intent Subscription Email',
         'm_desc' => '',
         'm_parents' => array(4595,4593,4755,7569),
     ),
@@ -2859,13 +2859,13 @@ $config['en_all_4595'] = array(
     ),
     4278 => array(
         'm_icon' => '<i class="far fa-eye"></i>',
-        'm_name' => 'User Sent Read on Messenger',
+        'm_name' => 'User Sent Messenger Read',
         'm_desc' => '1',
         'm_parents' => array(7654,7164,4595,4755,4593),
     ),
     4279 => array(
         'm_icon' => '<i class="far fa-cloud-download"></i>',
-        'm_name' => 'User Sent Received on Messenger',
+        'm_name' => 'User Sent Messenger Received',
         'm_desc' => '1',
         'm_parents' => array(7654,7164,4595,4755,4593),
     ),
@@ -3297,7 +3297,7 @@ $config['en_all_4595'] = array(
     ),
     7560 => array(
         'm_icon' => '<i class="fas fa-sign-in"></i>',
-        'm_name' => 'User Signin Intent Choose Channel',
+        'm_name' => 'User Signin Intent-Driven',
         'm_desc' => '1',
         'm_parents' => array(4755,4269,4595,4593),
     ),
@@ -3351,7 +3351,7 @@ $config['en_all_4595'] = array(
     ),
     7702 => array(
         'm_icon' => '<i class="far fa-envelope-open"></i>',
-        'm_name' => 'User Intent Subscription Update',
+        'm_name' => 'User Intent Subscription Email',
         'm_desc' => '1',
         'm_parents' => array(4595,4593,4755,7569),
     ),
@@ -3511,13 +3511,13 @@ $config['en_all_4593'] = array(
     ),
     4278 => array(
         'm_icon' => '<i class="far fa-eye"></i>',
-        'm_name' => 'User Sent Read on Messenger',
+        'm_name' => 'User Sent Messenger Read',
         'm_desc' => '',
         'm_parents' => array(7654,7164,4595,4755,4593),
     ),
     4279 => array(
         'm_icon' => '<i class="far fa-cloud-download"></i>',
-        'm_name' => 'User Sent Received on Messenger',
+        'm_name' => 'User Sent Messenger Received',
         'm_desc' => '',
         'm_parents' => array(7654,7164,4595,4755,4593),
     ),
@@ -3949,7 +3949,7 @@ $config['en_all_4593'] = array(
     ),
     7560 => array(
         'm_icon' => '<i class="fas fa-sign-in"></i>',
-        'm_name' => 'User Signin Intent Choose Channel',
+        'm_name' => 'User Signin Intent-Driven',
         'm_desc' => '',
         'm_parents' => array(4755,4269,4595,4593),
     ),
@@ -4003,7 +4003,7 @@ $config['en_all_4593'] = array(
     ),
     7702 => array(
         'm_icon' => '<i class="far fa-envelope-open"></i>',
-        'm_name' => 'User Intent Subscription Update',
+        'm_name' => 'User Intent Subscription Email',
         'm_desc' => '',
         'm_parents' => array(4595,4593,4755,7569),
     ),
