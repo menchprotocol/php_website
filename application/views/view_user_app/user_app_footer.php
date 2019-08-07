@@ -10,20 +10,29 @@
         <div class="container">
             <nav>
                 <ul class="footer-a">
-
                     <li class="social-li">
 
-                        <a href="https://github.com/askmench" target="_blank"
-                           class="social-link tag-manager-social-profile" data-toggle="tooltip" title="Mench is open-source. contribute on GitHub"
-                           data-placement="top"><i class="fab fa-github"></i></a>
+                        <div class="icon-main" style="margin-bottom:-12px; margin-top:60px;"><?= $this->config->item('system_icon') ?></div>
 
-                        <a href="https://askmench.slack.com" target="_blank"
-                           class="social-link tag-manager-social-profile" data-toggle="tooltip" title="Join the Conversation on Slack"
-                           data-placement="top"><i class="fab fa-slack"></i></a>
+                        <br />
+
+                        <?php $en_all_7369 = $this->config->item('en_all_7369'); /* Mench User App */ ?>
+                        <?php $en_all_7372 = $this->config->item('en_all_7372'); /* Mench Products */ ?>
 
 
-                        <span>|</span>
+                        <a href="/8263" class="social-link tag-manager-social-profile" data-toggle="tooltip"
+                           title="<?= $en_all_7372[7540]['m_name'] ?>" data-placement="top"><?= $en_all_7372[7540]['m_icon'] ?></a>
 
+
+                        <a href="/dashboard"
+                           class="social-link tag-manager-footer-dashboard" data-toggle="tooltip" title="<?= $en_all_7369[7161]['m_name'] ?>"
+                           data-placement="top"><?= $en_all_7369[7161]['m_icon'] ?></a>
+
+                        <a href="/signin"
+                           class="social-link tag-manager-sign-in" data-toggle="tooltip" title="<?= $en_all_7369[4269]['m_name'] ?>"
+                           data-placement="top"><?= $en_all_7369[4269]['m_icon'] ?></a>
+
+                        <br />
 
                         <a href="https://www.instagram.com/askmench/" target="_blank" class="social-link tag-manager-social-profile"
                            data-toggle="tooltip" title="Follow on Instagram" data-placement="top"><i
@@ -44,28 +53,14 @@
                            data-toggle="tooltip" title="Follow on LinkedIn" data-placement="top"><i
                                     class="fab fa-linkedin"></i></a>
 
-                        <span>|</span>
-
-
-                        <?php $en_all_7369 = $this->config->item('en_all_7369'); /* Mench User App */ ?>
-                        <?php $en_all_7372 = $this->config->item('en_all_7372'); /* Mench Products */ ?>
-
-                        <a href="/dashboard"
-                           class="social-link tag-manager-footer-dashboard" data-toggle="tooltip" title="<?= $en_all_7369[7161]['m_name'] ?>"
-                           data-placement="top"><?= $en_all_7369[7161]['m_icon'] ?></a>
-
-                        <a href="/signin"
-                           class="social-link tag-manager-sign-in" data-toggle="tooltip" title="<?= $en_all_7369[4269]['m_name'] ?>"
-                           data-placement="top"><?= $en_all_7369[4269]['m_icon'] ?></a>
-
-                        <a href="/8263" class="social-link tag-manager-social-profile" data-toggle="tooltip"
-                           title="<?= $en_all_7372[7540]['m_name'] ?>" data-placement="top"><?= $en_all_7372[7540]['m_icon'] ?></a>
 
                     </li>
                 </ul>
             </nav>
 
-            <div class="pfooter" style="font-size:0.8em;"><?= $this->config->item('system_icon').$this->config->item('system_name').' v' . $this->config->item('app_version') ?></div>
+            <div class="pfooter" style="font-size:0.8em;"><?= '<a href="https://github.com/askmench/mench-web-app" target="_blank"
+                           class="social-link tag-manager-social-profile" data-toggle="tooltip" title="Build to Mench on GitHub"
+                           data-placement="top"><i class="fab fa-github" style="padding-right: 3px;"></i>Mench Open-Source v' . $this->config->item('app_version').'</a>' ?></div>
 
         </div>
     </footer>

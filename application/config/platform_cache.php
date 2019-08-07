@@ -11,7 +11,7 @@ defined('BASEPATH') OR exit('No direct script access allowed');
  *
  */
 
-//Generated 2019-08-06 19:00:35 PST
+//Generated 2019-08-07 02:41:47 PST
 
 //Intent Answer Types:
 $config['en_ids_7712'] = array(6684,6685,7231,7706);
@@ -684,7 +684,7 @@ $config['en_all_7369'] = array(
     ),
     7161 => array(
         'm_icon' => '<i class="far fa-tachometer-alt-fast"></i>',
-        'm_name' => 'Mench Dashboard',
+        'm_name' => 'Platform Dashboard',
         'm_desc' => '',
         'm_parents' => array(7369,7368,7305),
     ),
@@ -749,7 +749,7 @@ $config['en_all_7368'] = array(
     ),
     7161 => array(
         'm_icon' => '<i class="far fa-tachometer-alt-fast"></i>',
-        'm_name' => 'Mench Dashboard',
+        'm_name' => 'Platform Dashboard',
         'm_desc' => '',
         'm_parents' => array(7369,7368,7305),
     ),
@@ -1242,7 +1242,7 @@ $config['en_all_7164'] = array(
     ),
     4570 => array(
         'm_icon' => '<i class="far fa-envelope-open"></i>',
-        'm_name' => 'User Received HTML/Email',
+        'm_name' => 'User Received Email Message',
         'm_desc' => '',
         'm_parents' => array(7569,7164,4595,4755,4593),
     ),
@@ -1584,7 +1584,7 @@ $config['en_all_4463'] = array(
     6138 => array(
         'm_icon' => '🚩',
         'm_name' => 'Action Plan',
-        'm_desc' => 'Each student has a collection of Intents that they want to accomplish, known as their Action Plan which is accessible via Facebook Messenger or by login into mench.com',
+        'm_desc' => 'Each user has a collection of Intents that they want to accomplish, known as their Action Plan which is accessible via Facebook Messenger or by login into mench.com',
         'm_parents' => array(7369,4463),
     ),
     6199 => array(
@@ -2452,7 +2452,7 @@ $config['en_all_4755'] = array(
     ),
     4570 => array(
         'm_icon' => '<i class="far fa-envelope-open"></i>',
-        'm_name' => 'User Received HTML/Email',
+        'm_name' => 'User Received Email Message',
         'm_desc' => '',
         'm_parents' => array(7569,7164,4595,4755,4593),
     ),
@@ -2985,7 +2985,7 @@ $config['en_all_4595'] = array(
     ),
     4570 => array(
         'm_icon' => '<i class="far fa-envelope-open"></i>',
-        'm_name' => 'User Received HTML/Email',
+        'm_name' => 'User Received Email Message',
         'm_desc' => '2',
         'm_parents' => array(7569,7164,4595,4755,4593),
     ),
@@ -3637,7 +3637,7 @@ $config['en_all_4593'] = array(
     ),
     4570 => array(
         'm_icon' => '<i class="far fa-envelope-open"></i>',
-        'm_name' => 'User Received HTML/Email',
+        'm_name' => 'User Received Email Message',
         'm_desc' => '',
         'm_parents' => array(7569,7164,4595,4755,4593),
     ),
