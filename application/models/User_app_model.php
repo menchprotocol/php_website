@@ -1068,13 +1068,6 @@ class User_app_model extends CI_Model
                 'message' => 'Invalid #' . $ins[0]['in_id'].' is not yet public',
             );
 
-        } elseif (!$push_message && in_array($ins[0]['in_type_entity_id'], $this->config->item('en_ids_7366') /* Private Intents */)) {
-
-            return array(
-                'status' => 0,
-                'message' => 'Invalid #' . $ins[0]['in_id'].' can only be completed using chat.',
-            );
-
         }
 
 
