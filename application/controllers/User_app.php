@@ -1465,56 +1465,88 @@ class User_app extends CI_Controller
 
         //This is a special command to find the next intent:
         if($in_id=='next'){
+
+            //See if we have pending messages:
+            $pending_messages = $this->Links_model->ln_fetch(array(
+                'ln_miner_entity_id' => $session_en['en_id'],
+                'ln_type_entity_id' => 4570, //User Received Email Message
+                'ln_status_entity_id IN (' . join(',', $this->config->item('en_ids_7364')) . ')' => null, //Link Statuses Incomplete
+            ), array(), 0, 0, array('ln_id' => 'ASC'));
+
             //Find the next item to navigate them to:
             $next_in_id = $this->User_app_model->actionplan_step_next_go($session_en['en_id'], false);
             $in_id = ( $next_in_id > 0 ? $next_in_id : 0 );
+
+        } else {
+
+            $pending_messages = array();
+            $in_id = intval($in_id);
+
         }
 
 
-        //Fetch user's intentions as we'd need to know their top-level goals:
-        $user_intents = $this->Links_model->ln_fetch(array(
-            'ln_miner_entity_id' => $session_en['en_id'],
-            'ln_type_entity_id IN (' . join(',', $this->config->item('en_ids_7347')) . ')' => null, //Action Plan Intention Set
-            'ln_status_entity_id IN (' . join(',', $this->config->item('en_ids_7364')) . ')' => null, //Link Statuses Incomplete
-            'in_status_entity_id IN (' . join(',', $this->config->item('en_ids_7355')) . ')' => null, //Intent Statuses Public
-        ), array('in_parent'), 0, 0, array('ln_order' => 'ASC'));
+        //Did we find any pending messages?
+        if(count($pending_messages) > 0){
 
-        //Show appropriate UI:
-        if ($in_id < 1) {
+            foreach($pending_messages as $pending_message){
+                //Update this message status to delivered:
+                $this->Links_model->ln_update($pending_message['ln_id'], array(
+                    'ln_status_entity_id' => 6176 /* Link Published */,
+                ), $session_en['en_id']);
+            }
 
-            //Log Action Plan View:
-            $this->Links_model->ln_create(array(
-                'ln_type_entity_id' => 4283, //Opened Action Plan
-                'ln_miner_entity_id' => $session_en['en_id'],
-            ));
-
-            //List all user intentions:
-            $this->load->view('view_user_app/actionplan_intentions', array(
-                'session_en' => $session_en,
-                'user_intents' => $user_intents,
+            //Show pending messages:
+            $this->load->view('view_user_app/actionplan_pending_messages', array(
+                'pending_messages' => $pending_messages,
             ));
 
         } else {
 
-            //Fetch/validate selected intent:
-            $ins = $this->Intents_model->in_fetch(array(
-                'in_id' => $in_id,
-            ));
+            //Fetch user's intentions as we'd need to know their top-level goals:
+            $user_intents = $this->Links_model->ln_fetch(array(
+                'ln_miner_entity_id' => $session_en['en_id'],
+                'ln_type_entity_id IN (' . join(',', $this->config->item('en_ids_7347')) . ')' => null, //Action Plan Intention Set
+                'ln_status_entity_id IN (' . join(',', $this->config->item('en_ids_7364')) . ')' => null, //Link Statuses Incomplete
+                'in_status_entity_id IN (' . join(',', $this->config->item('en_ids_7355')) . ')' => null, //Intent Statuses Public
+            ), array('in_parent'), 0, 0, array('ln_order' => 'ASC'));
 
-            if (count($ins) < 1) {
-                die('<div class="alert alert-danger" role="alert">Invalid Intent ID.</div>');
-            } elseif (!in_array($ins[0]['in_status_entity_id'], $this->config->item('en_ids_7355') /* Intent Statuses Public */)) {
-                die('<div class="alert alert-danger" role="alert">Intent is not made public yet.</div>');
+            //Show appropriate UI:
+            if ($in_id < 1) {
+
+                //Log Action Plan View:
+                $this->Links_model->ln_create(array(
+                    'ln_type_entity_id' => 4283, //Opened Action Plan
+                    'ln_miner_entity_id' => $session_en['en_id'],
+                ));
+
+                //List all user intentions:
+                $this->load->view('view_user_app/actionplan_intentions', array(
+                    'session_en' => $session_en,
+                    'user_intents' => $user_intents,
+                ));
+
+            } else {
+
+                //Fetch/validate selected intent:
+                $ins = $this->Intents_model->in_fetch(array(
+                    'in_id' => $in_id,
+                ));
+
+                if (count($ins) < 1) {
+                    die('<div class="alert alert-danger" role="alert">Invalid Intent ID.</div>');
+                } elseif (!in_array($ins[0]['in_status_entity_id'], $this->config->item('en_ids_7355') /* Intent Statuses Public */)) {
+                    die('<div class="alert alert-danger" role="alert">Intent is not made public yet.</div>');
+                }
+
+                //Load Action Plan UI with relevant variables:
+                $this->load->view('view_user_app/actionplan_step', array(
+                    'session_en' => $session_en,
+                    'user_intents' => $user_intents,
+                    'advance_step' => $this->User_app_model->actionplan_step_next_echo($session_en['en_id'], $in_id, false),
+                    'in' => $ins[0], //Currently focused intention:
+                ));
+
             }
-
-            //Load Action Plan UI with relevant variables:
-            $this->load->view('view_user_app/actionplan_step', array(
-                'session_en' => $session_en,
-                'user_intents' => $user_intents,
-                'advance_step' => $this->User_app_model->actionplan_step_next_echo($session_en['en_id'], $in_id, false),
-                'in' => $ins[0], //Currently focused intention:
-            ));
-
         }
     }
 

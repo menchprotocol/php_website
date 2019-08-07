@@ -997,7 +997,7 @@ class Communication_model extends CI_Model
 
             //Always returns a single (sometimes long) HTML message:
             array_push($output_messages, array(
-                'message_type_en_id' => 4570, //HTML Message Sent
+                'message_type_en_id' => 4570, //User Received Email Message
                 'message_body' => '<div class="i_content"><div class="msg">' . nl2br($output_body_message) . '</div></div>',
             ));
 

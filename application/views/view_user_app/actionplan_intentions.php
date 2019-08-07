@@ -12,13 +12,14 @@ echo '<h1>Action Plan</h1>';
 if(count($user_intents) > 0){
 
     //See if we have 2 or more intentions:
+    $has_pending_intentions = false;
     $has_multiple_intentions = ( count($user_intents) >= 2 );
 
     //User has multiple Action Plans, so list all Action Plans to enable User to choose:
     echo '<div id="actionplan_steps" class="list-group actionplan-list '.( $has_multiple_intentions ? 'actionplan-sort' : '').'" style="margin-top:15px;">';
     foreach ($user_intents as $priority => $ln) {
 
-        //Display row:
+         //Display row:
         echo '<a id="ap_in_'.$ln['in_id'].'" href="/actionplan/' . $ln['in_id'] . '" sort-link-id="'.$ln['ln_id'].'" class="list-group-item actionplan_sort">';
 
         echo '<span class="pull-right" style="padding-right:8px; padding-left:10px;">';
@@ -35,9 +36,16 @@ if(count($user_intents) > 0){
         echo '</div>';
         echo '</a>';
 
+        if(!$has_pending_intentions && $completion_rate['completion_percentage'] < 100){
+            $has_pending_intentions = true;
+        }
     }
 
     echo '</div>';
+
+    if($has_pending_intentions){
+        echo '<a class="btn btn-primary tag-manager-get-started" href="/actionplan/next" style="display: inline-block; padding:12px 36px; font-size: 1.3em;">Next Step&nbsp;&nbsp;&nbsp;<i class="fas fa-angle-double-right"></i></a>';
+    }
 
     if($has_multiple_intentions){
         //Give sorting tip:
