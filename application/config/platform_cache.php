@@ -11,7 +11,7 @@ defined('BASEPATH') OR exit('No direct script access allowed');
  *
  */
 
-//Generated 2019-08-06 18:35:48 PST
+//Generated 2019-08-06 18:38:49 PST
 
 //Intent Answer Types:
 $config['en_ids_7712'] = array(6684,6685,7231,7706);
@@ -329,7 +329,7 @@ $config['en_all_6193'] = array(
     ),
     6907 => array(
         'm_icon' => '<i class="far fa-lock"></i>',
-        'm_name' => 'Intent Answer Lock Any',
+        'm_name' => 'Intent Answer Unlock Any',
         'm_desc' => '',
         'm_parents' => array(7585,7486,7485,7309,6997,6193),
     ),
@@ -370,13 +370,13 @@ $config['en_all_7585'] = array(
     ),
     6914 => array(
         'm_icon' => '<i class="fas fa-lock"></i>',
-        'm_name' => 'Answer Lock And',
+        'm_name' => 'Answer Unlock All',
         'm_desc' => 'User will complete by (a) choosing intent as their answer or by (b) completing all child intents',
         'm_parents' => array(7585,7486,7485,7309,6997),
     ),
     6907 => array(
         'm_icon' => '<i class="far fa-lock"></i>',
-        'm_name' => 'Answer Lock Any',
+        'm_name' => 'Answer Unlock Any',
         'm_desc' => 'User will complete by (a) choosing intent as their answer or by (b) completing any child intent',
         'm_parents' => array(7585,7486,7485,7309,6997,6193),
     ),
@@ -567,13 +567,13 @@ $config['en_ids_7309'] = array(6907,6914);
 $config['en_all_7309'] = array(
     6907 => array(
         'm_icon' => '<i class="far fa-lock"></i>',
-        'm_name' => 'Intent Answer Lock Any',
+        'm_name' => 'Intent Answer Unlock Any',
         'm_desc' => '',
         'm_parents' => array(7585,7486,7485,7309,6997,6193),
     ),
     6914 => array(
         'm_icon' => '<i class="fas fa-lock"></i>',
-        'm_name' => 'Intent Answer Lock And',
+        'm_name' => 'Intent Answer Unlock All',
         'm_desc' => '',
         'm_parents' => array(7585,7486,7485,7309,6997),
     ),
