@@ -950,13 +950,13 @@ function echo_tree_users($in, $push_message = false, $autoexpand = false){
     $completion_percentage_fancy = ( $completion_percentage_raw == 0 ? 'none' : ( $completion_percentage_raw==100 ? 'all' : $completion_percentage_raw.'%' ) );
 
     //As messenger default format and HTML extra notes:
-    $pitch_body  = 'So far '.$completion_percentage_fancy .' of active users have completed this intention.';
+    $pitch_body  = $completion_percentage_fancy .' of engaged users completed this intention.';
 
     if ($push_message) {
         return '👤 ' . $pitch_body. "\n\n";
     } else {
         //HTML format
-        $pitch_title = '<span class="icon-block"><i class="fas fa-users"></i></span>&nbsp;'. echo_number($enrolled_users_count[0]['totals']) .' active users';
+        $pitch_title = '<span class="icon-block"><i class="fas fa-users"></i></span>&nbsp;'. echo_number($enrolled_users_count[0]['totals']) .' users engaged';
         return echo_tree_html_body(7615, $pitch_title, $pitch_body, $autoexpand);
     }
 }
