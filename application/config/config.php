@@ -5,7 +5,7 @@ defined('BASEPATH') OR exit('No direct script access allowed');
 /*
  *
  * Global variables used throughout the platform.
- * Example: $this->config->item('password_min_char')
+ * Example: $this->config->item('in_focus_id')
  *
  */
 

@@ -59,7 +59,7 @@
             </nav>
 
             <div class="pfooter" style="font-size:0.8em;"><?= '<a href="https://github.com/askmench/mench-web-app" target="_blank"
-                           class="social-link tag-manager-social-profile" data-toggle="tooltip" title="Build to Mench on GitHub"
+                           class="social-link tag-manager-social-profile" data-toggle="tooltip" title="Build Mench on GitHub"
                            data-placement="top"><i class="fab fa-github" style="padding-right: 3px;"></i>Mench Open-Source v' . $this->config->item('app_version').'</a>' ?></div>
 
         </div>

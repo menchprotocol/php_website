@@ -11,7 +11,7 @@ defined('BASEPATH') OR exit('No direct script access allowed');
  *
  */
 
-//Generated 2019-08-07 02:41:47 PST
+//Generated 2019-08-07 18:46:06 PST
 
 //Intent Answer Types:
 $config['en_ids_7712'] = array(6684,6685,7231,7706);
@@ -497,7 +497,7 @@ $config['en_ids_7529'] = array(4269,7531,7533,7567,7568,7608,7609);
 $config['en_all_7529'] = array(
     4269 => array(
         'm_icon' => '<i class="fas fa-sign-in"></i>',
-        'm_name' => 'Sign In/Up',
+        'm_name' => 'Sign In',
         'm_desc' => '',
         'm_parents' => array(7369,7529),
     ),
@@ -660,7 +660,7 @@ $config['en_ids_7369'] = array(4269,4430,6137,6138,7161,7291,7591,7592);
 $config['en_all_7369'] = array(
     4269 => array(
         'm_icon' => '<i class="fas fa-sign-in"></i>',
-        'm_name' => 'Sign In/Up',
+        'm_name' => 'Sign In',
         'm_desc' => '',
         'm_parents' => array(7369,7529),
     ),

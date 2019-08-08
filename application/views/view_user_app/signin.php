@@ -130,7 +130,7 @@ if(count($current_sign_in_attempt) == 0){
             <div class="form-group is-empty"><input type="text" placeholder="Tim Apple" id="input_name" maxlength="<?= $this->config->item('en_name_max_length') ?>" class="form-control border"></div>
 
             <!-- New Password -->
-            <span class="medium-header" style="padding-top: 20px;"><?= $en_all_6225[3286]['m_icon'].' New '.$en_all_6225[3286]['m_name'] ?>:</span>
+            <span class="medium-header" style="padding-top: 20px;"><?= $en_all_6225[3286]['m_icon'] ?> Create a new password:</span>
             <div class="form-group is-empty"><input type="password" id="new_password" class="form-control border"></div>
 
             <!-- Signup Buttons -->
