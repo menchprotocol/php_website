@@ -1112,8 +1112,8 @@ function echo_tree_experts($in, $push_message = false, $autoexpand = false)
     }
     if($expert_count > 0){
         if($source_count > 0){
-            $pitch_title .= ' from ';
-            $pitch_body .= ' from ';
+            $pitch_title .= ' by ';
+            $pitch_body .= ' by ';
         }
         $pitch_title .= $expert_count . ' expert'. echo__s($expert_count);
         $pitch_body .= $expert_count . ' industry expert'. echo__s($expert_count) . ($expert_count == 1 ? ':' : ' including') . $expert_info;

@@ -536,7 +536,7 @@ class Messenger extends CI_Controller
 
                             //We did not have any matches, but has some mismatches, maybe that's what they meant?
                             $this->Communication_model->dispatch_message(
-                                $en_all_6794[$mismatch_focus['in_type_entity_id']]['m_name'].' to complete this step. Please try again.',
+                                'Error: You should send me a '.$en_all_6794[$mismatch_focus['in_type_entity_id']]['m_name'].' message to complete this step. Please try again.',
                                 $en,
                                 true
                             );
