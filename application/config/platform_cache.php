@@ -11,7 +11,7 @@ defined('BASEPATH') OR exit('No direct script access allowed');
  *
  */
 
-//Generated 2019-08-07 18:46:06 PST
+//Generated 2019-08-07 19:15:08 PST
 
 //Intent Answer Types:
 $config['en_ids_7712'] = array(6684,6685,7231,7706);
