@@ -866,7 +866,7 @@ class Intents extends CI_Controller
             //Prep link Metadata to see if the Conditional Step Links score variables have changed:
             $ln_update = array(
                 'ln_type_entity_id'     => intval($_POST['ln_type_entity_id']),
-                'ln_status_entity_id'         => intval($_POST['ln_status_entity_id']),
+                'ln_status_entity_id'   => intval($_POST['ln_status_entity_id']),
             );
 
 
@@ -907,12 +907,6 @@ class Intents extends CI_Controller
                     //Yes, refresh the page:
                     $remove_redirect_url = '/intents/' . $_POST['top_level_ins'][0]; //First item is the main intent
                 }
-            } elseif(strlen($_POST['tr_in_link_update']) > 0 && !($_POST['tr_in_link_update']==$lns[0]['in_outcome'])){
-                //The value changed in an unknown way...
-                return echo_json(array(
-                    'status' => 0,
-                    'message' => 'Unknown '.( $_POST['is_parent'] ? 'child' : 'parent').' intent. Leave as-is or select intent from search suggestions.',
-                ));
             }
 
 
