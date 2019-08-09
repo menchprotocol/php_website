@@ -108,39 +108,19 @@ class Miner_app extends CI_Controller
             echo '<td style="text-align: left;"><span class="icon-block">' . $m['m_icon'] . '</span><a href="/entities/'.$en_id.'">' . $m['m_name'] . '</a></td>';
             echo '<td style="text-align: right;">' . '<a href="/links?in_status_entity_id=' . $en_id . '&ln_type_entity_id=4250">' . echo_number($objects_count[0]['totals']) . '</a>' . '<i class="fal fa-info-circle icon-block" data-toggle="tooltip" title="' . number_format($objects_count[0]['totals'], 0) . ' '. $m['m_desc'] . '" data-placement="top"></i>' . '</td>';
             echo '</tr>';
+
         }
         echo '</table>';
-
-
-
 
 
         //Intent Types:
-        echo '<table class="table table-condensed table-striped stats-table mini-stats-table ">';
+        echo echo_in_setting(7585,'in_type_entity_id');
 
-        echo '<tr class="panel-title down-border">';
-        echo '<td style="text-align: left;">'.$en_all_7302[7585]['m_name'].'</td>';
-        echo '<td style="text-align: right;">Intents</td>';
-        echo '</tr>';
+        //Intent Start Type:
+        echo echo_in_setting(7596,'in_start_type_entity_id');
 
-        foreach ($this->config->item('en_all_7585') as $type_en_id => $in_type) {
-
-            //Count this sub-type from the database:
-            $in_count = $this->Intents_model->in_fetch(array(
-                'in_type_entity_id' => $type_en_id,
-                'in_status_entity_id IN (' . join(',', $this->config->item('en_ids_7356')) . ')' => null, //Intent Statuses Active
-            ), array(), 0, 0, array(), 'COUNT(in_id) as total_active_intents');
-
-            //Echo this as the main title:
-            echo '<tr>';
-            echo '<td style="text-align: left;"><span class="icon-block">'.$in_type['m_icon'].'</span><a href="/entities/'.$type_en_id.'">'.$in_type['m_name'].'</a></td>';
-            echo '<td style="text-align: right;"><a href="/links?ln_type_entity_id=4250&in_status_entity_id=' . join(',', $this->config->item('en_ids_7356')) . '&in_type_entity_id='.$type_en_id.'">'.echo_number($in_count[0]['total_active_intents']).'</a><i class="fal fa-info-circle icon-block" data-toggle="tooltip" title="'.number_format($in_count[0]['total_active_intents'],0).' '.$in_type['m_desc'].'" data-placement="top"></i></td>';
-            echo '</tr>';
-
-        }
-
-        echo '</table>';
-
+        //Intent Completion Type:
+        echo echo_in_setting(7726,'in_completion_type_entity_id');
 
 
 
@@ -221,15 +201,9 @@ class Miner_app extends CI_Controller
 
 
 
-        //Verified Accounts
-        echo echo_en_stats_overview($this->config->item('en_all_6827'), $en_all_7303[6827]['m_name']);
 
 
-        //Mench Contributors
-        //echo echo_en_stats_overview($this->config->item('en_all_6827'), $en_all_7303[6827]['m_name']);
-
-
-        //TODO Deprecate
+        //Expert Sources
         $total_counts = array();
         $expert_sources = ''; //Saved the UI for later view...
         foreach ($this->config->item('en_all_3000') as $en_id => $m) {
@@ -286,6 +260,8 @@ class Miner_app extends CI_Controller
 
 
 
+        //Mench Community
+        echo echo_en_stats_overview($this->config->item('en_all_6827'), $en_all_7303[6827]['m_name']);
 
 
 

@@ -1823,6 +1823,39 @@ function echo_in_assessment_mark($in_ln){
 
 }
 
+function echo_in_setting($in_setting_en_id,$in_field_name){
+
+    $CI =& get_instance();
+    $en_all_7302 = $CI->config->item('en_all_7302'); //Intent Stats
+
+    $ui =  '<table class="table table-condensed table-striped stats-table mini-stats-table ">';
+
+    $ui .= '<tr class="panel-title down-border">';
+    $ui .= '<td style="text-align: left;">'.$en_all_7302[$in_setting_en_id]['m_name'].'</td>';
+    $ui .= '<td style="text-align: right;">Intents</td>';
+    $ui .= '</tr>';
+
+    foreach ($CI->config->item('en_all_'.$in_setting_en_id) as $type_en_id => $in_type) {
+
+        //Count this sub-type from the database:
+        $in_count = $CI->Intents_model->in_fetch(array(
+            $in_field_name => $type_en_id,
+            'in_status_entity_id IN (' . join(',', $CI->config->item('en_ids_7356')) . ')' => null, //Intent Statuses Active
+        ), array(), 0, 0, array(), 'COUNT(in_id) as total_active_intents');
+
+        //$ui .= this as the main title:
+        $ui .= '<tr>';
+        $ui .= '<td style="text-align: left;"><span class="icon-block">'.$in_type['m_icon'].'</span><a href="/entities/'.$type_en_id.'">'.$in_type['m_name'].'</a></td>';
+        $ui .= '<td style="text-align: right;"><a href="/links?ln_type_entity_id=4250&in_status_entity_id=' . join(',', $CI->config->item('en_ids_7356')) . '&in_type_entity_id='.$type_en_id.'">'.echo_number($in_count[0]['total_active_intents']).'</a><i class="fal fa-info-circle icon-block" data-toggle="tooltip" title="'.number_format($in_count[0]['total_active_intents'],0).' '.$in_type['m_desc'].'" data-placement="top"></i></td>';
+        $ui .= '</tr>';
+
+    }
+
+    $ui .= '</table>';
+
+    return $ui;
+}
+
 function echo_in($in, $level, $in_linked_id = 0, $is_parent = false)
 {
 
@@ -2008,7 +2041,7 @@ function echo_in($in, $level, $in_linked_id = 0, $is_parent = false)
         )), array(), 0, 0, array(), 'COUNT(ln_id) as total_steps');
     }
     if($actionplan_users[0]['total_steps'] > 0) {
-        $ui .= '<a id="match_list_'.$in['in_id'].'" href="#actionplanusers-'.$in['in_id'].'" onclick="in_action_plan_users('.$in['in_id'].')" class="badge badge-primary white-primary is_not_bg ' . advance_mode() . '" style="width:40px; margin:-3px -3px 0 4px;" data-toggle="tooltip" data-placement="bottom" title="Users who Completed this Step">'.( !count($in_filters['get_filter_query']) || $actionplan_users_match[0]['total_steps']>0 ? '<span class="btn-counter">' . ( count($in_filters['get_filter_query']) > 0 ? '<i class="fas fa-filter mini-filter"></i> '.echo_number($actionplan_users_match[0]['total_steps']) : echo_number($actionplan_users[0]['total_steps']) ) . '</span>' : '' ).'<i class="fas fa-walking"></i></a>';
+        $ui .= '<a id="match_list_'.$in['in_id'].'" href="#actionplanusers-'.$in['in_id'].'" onclick="in_action_plan_users('.$in['in_id'].')" class="badge badge-primary white-primary is_not_bg" style="width:40px; margin:-3px -3px 0 4px;" data-toggle="tooltip" data-placement="bottorm" title="Users who Completed this Step">'.( !count($in_filters['get_filter_query']) || $actionplan_users_match[0]['total_steps']>0 ? '<span class="btn-counter">' . ( count($in_filters['get_filter_query']) > 0 ? '<i class="fas fa-filter mini-filter"></i> '.echo_number($actionplan_users_match[0]['total_steps']) : echo_number($actionplan_users[0]['total_steps']) ) . '</span>' : '' ).'<i class="fas fa-walking"></i></a>';
     }
 
 

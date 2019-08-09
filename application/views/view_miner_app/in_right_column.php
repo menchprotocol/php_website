@@ -107,7 +107,7 @@
 
             </div>
 
-            <div class="col-md-6 <?= advance_mode() ?>">
+            <div class="col-md-6">
 
                 <div class="title">
                     <h4>
@@ -125,59 +125,61 @@
                     <div class="in-has-tr">
 
 
-                        <div class="modify_parent_in hidden">
-                            <span class="mini-header"><span class="tr_in_link_title"></span> Linked Intent:</span>
-                            <input style="padding-left:3px;" type="text" class="form-control algolia_search border in_quick_search" id="tr_in_link_update" value="" placeholder="Search replacement intent..." />
-                        </div>
+                        <div id="link-type-settings" class="<?= advance_mode() ?>">
+                            <div class="modify_parent_in hidden">
+                                <span class="mini-header"><span class="tr_in_link_title"></span> Linked Intent:</span>
+                                <input style="padding-left:3px;" type="text" class="form-control algolia_search border in_quick_search" id="tr_in_link_update" value="" placeholder="Search replacement intent..." />
+                            </div>
 
 
-                        <span class="mini-header">Type: <span class="<?= advance_mode() ?>">[<a href="javscript:void(0);" onclick="$('.modify_parent_in').toggleClass('hidden')" data-toggle="tooltip" title="Modify Linked Intent" data-placement="top"><u>EDIT</u></a>]</span></span>
-                        <div class="form-group label-floating is-empty">
+                            <span class="mini-header">Type: <span class="<?= advance_mode() ?>">[<a href="javscript:void(0);" onclick="$('.modify_parent_in').toggleClass('hidden')" data-toggle="tooltip" title="Modify Linked Intent" data-placement="top"><u>EDIT</u></a>]</span></span>
+                            <div class="form-group label-floating is-empty">
 
-                            <?php
-                            foreach ($this->config->item('en_all_4486') as $en_id => $m) {
-                                echo '<span class="radio" style="display:inline-block; margin-top: 0 !important;">
+                                <?php
+                                foreach ($this->config->item('en_all_4486') as $en_id => $m) {
+                                    echo '<span class="radio" style="display:inline-block; margin-top: 0 !important;">
                                             <label>
                                                 <input type="radio" id="ln_type_entity_id_' . $en_id . '" name="ln_type_entity_id" value="' . $en_id . '" />
                                                 '.$m['m_icon'].' ' . $m['m_name'] . '
                                             </label>
                                         </span>';
-                            }
-                            ?>
-
-                        </div>
-
-
-                        <?php $en_all_6410 = $this->config->item('en_all_6410'); ?>
-                        <div class="score_range_box hidden">
-                            <span class="mini-header"><?= $en_all_6410[6402]['m_name'] ?>:</span>
-                            <div class="form-group label-floating is-empty"
-                                 style="max-width:230px; margin:1px 0 10px;">
-                                <div class="input-group border">
-                                    <span class="input-group-addon addon-lean addon-grey" style="color:#2f2739; font-weight: 300;">IF Scores </span>
-                                    <input style="padding-left:0; padding-right:0; text-align:right;" type="number" step="1" data-lpignore="true"
-                                           maxlength="3" id="tr__conditional_score_min" value="" class="form-control">
-                                    <span class="input-group-addon addon-lean addon-grey" style="color:#2f2739; font-weight: 300; border-left: 1px solid #ccc;"><i
-                                            class="fal fa-fas fa-percentage"></i> to </span>
-                                    <input style="padding-left:3px; padding-right:0; text-align:right;" type="number" step="1" data-lpignore="true"
-                                           maxlength="3" id="tr__conditional_score_max" value="" class="form-control">
-                                    <span class="input-group-addon addon-lean addon-grey" style="color:#2f2739; font-weight: 300; border-left: 1px solid #ccc; border-right:0px solid #FFF;"><i
-                                            class="fal fa-fas fa-percentage"></i></span>
-                                </div>
-                            </div>
-                        </div>
-
-                        <div class="score_points hidden">
-                            <span class="mini-header"><?= $en_all_6410[4358]['m_name'] ?>:</span>
-                            <select class="form-control border" id="tr__assessment_points" style="margin-bottom:12px;">
-                                <?php
-                                foreach ($this->config->item('in_completion_marks') as $mark) {
-                                    echo '<option value="' . $mark . '">' . $mark . '</option>';
                                 }
                                 ?>
-                            </select>
-                        </div>
 
+                            </div>
+
+
+                            <?php $en_all_6410 = $this->config->item('en_all_6410'); ?>
+                            <div class="score_range_box hidden">
+                                <span class="mini-header"><?= $en_all_6410[6402]['m_name'] ?>:</span>
+                                <div class="form-group label-floating is-empty"
+                                     style="max-width:230px; margin:1px 0 10px;">
+                                    <div class="input-group border">
+                                        <span class="input-group-addon addon-lean addon-grey" style="color:#2f2739; font-weight: 300;">IF Scores </span>
+                                        <input style="padding-left:0; padding-right:0; text-align:right;" type="number" step="1" data-lpignore="true"
+                                               maxlength="3" id="tr__conditional_score_min" value="" class="form-control">
+                                        <span class="input-group-addon addon-lean addon-grey" style="color:#2f2739; font-weight: 300; border-left: 1px solid #ccc;"><i
+                                                    class="fal fa-fas fa-percentage"></i> to </span>
+                                        <input style="padding-left:3px; padding-right:0; text-align:right;" type="number" step="1" data-lpignore="true"
+                                               maxlength="3" id="tr__conditional_score_max" value="" class="form-control">
+                                        <span class="input-group-addon addon-lean addon-grey" style="color:#2f2739; font-weight: 300; border-left: 1px solid #ccc; border-right:0px solid #FFF;"><i
+                                                    class="fal fa-fas fa-percentage"></i></span>
+                                    </div>
+                                </div>
+                            </div>
+
+                            <div class="score_points hidden">
+                                <span class="mini-header"><?= $en_all_6410[4358]['m_name'] ?>:</span>
+                                <select class="form-control border" id="tr__assessment_points" style="margin-bottom:12px;">
+                                    <?php
+                                    foreach ($this->config->item('in_completion_marks') as $mark) {
+                                        echo '<option value="' . $mark . '">' . $mark . '</option>';
+                                    }
+                                    ?>
+                                </select>
+                            </div>
+
+                        </div>
 
                         <span class="mini-header" style="margin-top: 20px;">Status:</span>
                         <select class="form-control border" id="ln_status_entity_id" style="display: inline-block !important;">
