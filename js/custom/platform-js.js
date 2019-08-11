@@ -17,6 +17,21 @@ function modify_cancel(){
     }
 }
 
+function en_fetch_canonical_url(query_string, not_found){
+
+    //Do a call to PHP to fetch canonical URL and see if that exists:
+    $.post("/entities/en_fetch_canonical_url", { search_url:query_string }, function (searchdata) {
+        if(searchdata.status && searchdata.url_already_existed){
+            //URL was detected via PHP, update the search results:
+            $('.add-source-suggest').remove();
+            $('.not-found').html('<a href="/entities/'+searchdata.algolia_object.alg_obj_id+'" class="suggestion">' + echo_js_suggestion(searchdata.algolia_object, 1)+'</a>');
+        }
+    });
+
+    //We did not find the URL, offer them option to add it:
+    return '<a href="/entities/add_source_wizard?url='+ encodeURI(query_string) +'" class="suggestion add-source-suggest"><i class="fas fa-plus-circle" style="margin: 0 5px;"></i> Add Source Wizard</a>'
+        + ( not_found ? '<div class="not-found"><i class="fas fa-exclamation-triangle"></i> URL not found</div>' : '');
+}
 
 //Function to load all help messages throughout the platform:
 $(document).ready(function () {
@@ -42,7 +57,6 @@ $(document).ready(function () {
     }).autocomplete({hint: false, minLength: 2, autoselect: true, keyboardShortcuts: ['s']}, [
         {
             source: function (q, cb) {
-
                 //Append filters:
                 algolia_index.search(q, {
                     hitsPerPage: 14,
@@ -63,28 +77,16 @@ $(document).ready(function () {
                     return echo_js_suggestion(suggestion, 1);
                 },
                 header: function (data) {
-                    if($("#platform_search").val().charAt(0)=='#' || $("#platform_search").val().charAt(0)=='@'){
+                    if(validURL(data.query)){
+                        return en_fetch_canonical_url(data.query, false);
+                    } else if($("#platform_search").val().charAt(0)=='#' || $("#platform_search").val().charAt(0)=='@'){
                         return '<a href="javascript:add_search_item()" class="suggestion"><i class="fas fa-plus-circle" style="margin: 0 5px;"></i> Create ' + data.query + '</a>';
                     }
+
                 },
                 empty: function (data) {
-
-
                     if(validURL(data.query)){
-
-                        //Do a call to PHP to fetch canonical URL and see if that exists:
-                        $.post("/entities/en_fetch_canonical_url", { search_url:data.query }, function (searchdata) {
-                            if(searchdata.status && searchdata.url_already_existed){
-                                //URL was detected via PHP, update the search results:
-                                $('.add-source-suggest').remove();
-                                $('.not-found').html('<a href="/entities/'+searchdata.algolia_object.alg_obj_id+'" class="suggestion">' + echo_js_suggestion(searchdata.algolia_object, 1)+'</a>');
-                            }
-                        });
-
-                        //We did not find the URL, offer them option to add it:
-                        return '<a href="/entities/add_source_wizard?url='+ encodeURI(data.query) +'" class="suggestion add-source-suggest"><i class="fas fa-plus-circle" style="margin: 0 5px;"></i> Add Source Wizard</a>'
-                            + '<div class="not-found"><i class="fas fa-exclamation-triangle"></i> URL not found</div>';
-
+                        return en_fetch_canonical_url(data.query, true);
                     } else if($("#platform_search").val().charAt(0)=='#'){
                         return '<div class="not-found"><i class="fas fa-exclamation-triangle"></i> No intents found</div>';
                     } else if($("#platform_search").val().charAt(0)=='@'){

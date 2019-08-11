@@ -1168,6 +1168,11 @@ class User_app_model extends CI_Model
 
             $progression_type_entity_id = 6157; //User Step Single-Answered
 
+        } elseif($has_children && $ins[0]['in_type_entity_id']==6685 /* Intent Answer Single-Choice Timed */){
+
+            $progression_type_entity_id = 7487; //User Step Single-Answered Timely
+            $progression_type_entity_id = 6157; //TODO User Step Single-Answered (Remove after integration)
+
         } elseif($has_children && $ins[0]['in_type_entity_id']==7231 /* Intent Answer Multiple-Choice */){
 
             $progression_type_entity_id = 7489; //User Step Multi-Answered

@@ -122,23 +122,27 @@ function extract_references($ln_content)
 
     //Replace non-ascii characters with space:
     $ln_content = preg_replace('/[[:^print:]]/', ' ', $ln_content);
-    $parts = preg_split('/\s+/', $ln_content);
+    $has_double_colon = ( substr_count($ln_content , '::') > 0 );
+    $words = preg_split('/\s+/', $ln_content);
 
     //Analyze the message to find referencing URLs and Entities in the message text:
     $string_references = array(
         'ref_urls' => array(),
         'ref_entities' => array(),
         'ref_intents' => array(),
+        'ref_forbidden' => array(),
         'ref_commands' => array(),
+        'ref_custom' => array(),
     );
 
-    //See what we can find:
-    foreach ($parts as $part) {
 
-        if(substr($part, 0, 1) == '/') {
+    //See what we can find:
+    foreach ($words as $word) {
+
+        if(substr($word, 0, 1) == '/') {
 
             //Check maybe it's a command?
-            $command = includes_any($part, array('/firstname', '/link', '/setyourpassword'));
+            $command = includes_any($word, array('/firstname', '/link', '/setyourpassword'));
             if ($command) {
                 //Yes!
                 array_push($string_references['ref_commands'], $command);
@@ -149,15 +153,21 @@ function extract_references($ln_content)
                 }
             }
 
-        } elseif (filter_var($part, FILTER_VALIDATE_URL)) {
-            array_push($string_references['ref_urls'], $part);
-        } elseif (substr($part, 0, 1) == '@' && is_numeric(substr($part, 1)) && intval(substr($part, 1)) > 0) {
+        } elseif (!$has_double_colon && in_array($word, $CI->config->item('in_outcome_deny_terms'))) {
 
-            array_push($string_references['ref_entities'], intval(substr($part, 1)));
+            array_push($string_references['ref_forbidden'], $word);
 
-        } elseif (substr($part, 0, 1) == '#' && is_numeric(substr($part, 1)) && intval(substr($part, 1)) > 0) {
+        } elseif (filter_var($word, FILTER_VALIDATE_URL)) {
 
-            array_push($string_references['ref_intents'], intval(substr($part, 1)));
+            array_push($string_references['ref_urls'], $word);
+
+        } elseif (substr($word, 0, 1) == '@' && is_numeric(substr($word, 1)) && intval(substr($word, 1)) > 0) {
+
+            array_push($string_references['ref_entities'], intval(substr($word, 1)));
+
+        } elseif (substr($word, 0, 1) == '#' && is_numeric(substr($word, 1)) && intval(substr($word, 1)) > 0) {
+
+            array_push($string_references['ref_intents'], intval(substr($word, 1)));
 
         }
     }
@@ -1021,6 +1031,7 @@ function update_algolia($input_obj_type = null, $input_obj_id = 0, $return_row_o
                 $export_row['alg_obj_id'] = intval($db_row['in_id']);
                 $export_row['alg_obj_weight'] = ( isset($metadata['in__metadata_max_seconds']) ? intval($metadata['in__metadata_max_seconds']) : 0 );
                 $export_row['alg_obj_status'] = intval($db_row['in_status_entity_id']);
+                $export_row['alg_in_start_mode_entity_id'] = intval($db_row['in_start_mode_entity_id']);
                 $export_row['alg_obj_icon'] = $en_all_7585[$db_row['in_type_entity_id']]['m_icon']; //Entity type icon
                 $export_row['alg_obj_name'] = $db_row['in_outcome'];
                 $export_row['alg_obj_postfix'] =  ( $time_range ? '<span class="alg-postfix"><i class="fal fa-clock"></i>' . $time_range . '</span>' : '');

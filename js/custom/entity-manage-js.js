@@ -461,7 +461,6 @@ function en_modify_load(en_id, ln_id) {
 
         //Make the UI link and the notes in the edit box:
         $('.unlink-entity, .en-has-tr').removeClass('hidden');
-        $('.en-no-tr').addClass('hidden');
 
         //Assign value:
         $('#ln_content').val($(".ln_content_val_" + ln_id + ":first").text());
@@ -475,7 +474,6 @@ function en_modify_load(en_id, ln_id) {
 
         //Hide the section and clear it:
         $('.unlink-entity, .en-has-tr').addClass('hidden');
-        $('.en-no-tr').removeClass('hidden');
 
     }
 

@@ -61,7 +61,7 @@ $(document).ready(function () {
 
 
     //Lookout for intent link type changes:
-    $('input[type=radio][name=ln_type_entity_id], #ln_status_entity_id').change(function () {
+    $('#ln_type_entity_id, #ln_status_entity_id').change(function () {
         in_adjust_link_ui();
     });
 
@@ -116,7 +116,6 @@ function in_adjust_link_ui() {
 
         //Yes show that section:
         $('.in-has-tr').removeClass('hidden');
-        $('.in-no-tr').addClass('hidden');
 
         //What's the selected intent status?
         if (parseInt($('#ln_status_entity_id').find(":selected").val()) == 6173 /* Link Removed */) {
@@ -127,11 +126,12 @@ function in_adjust_link_ui() {
         }
 
         //What's the intent link type?
-        if ($('#ln_type_entity_id_4229').is(':checked')) {
+        if (parseInt($('#ln_type_entity_id').find(":selected").val()) == 4229 /* Conditional Step */) {
             //Conditional Step Links is checked:
             $('.score_range_box').removeClass('hidden');
             $('.score_points').addClass('hidden');
         } else {
+            //This should be a Required steo
             //Any is selected, lock the completion settings as its not allowed for ANY Branches:
             $('.score_range_box').addClass('hidden');
             $('.score_points').removeClass('hidden');
@@ -140,7 +140,6 @@ function in_adjust_link_ui() {
     } else {
         //Main intent, no link, so hide entire section:
         $('.in-has-tr').addClass('hidden');
-        $('.in-no-tr').removeClass('hidden');
     }
 }
 
@@ -303,8 +302,6 @@ function in_modify_load(in_id, ln_id) {
     remove_all_highlights();
     $(".highlight_in_"+in_id).addClass('in_highlight');
 
-    //Reset parent editing button:
-    $('.modify_parent_in').addClass('hidden');
 
     //Set title:
     $('.edit-header').html('<i class="fas fa-cog"></i> ' + $('.in_outcome_' + in_id + ':first').text());
@@ -334,7 +331,7 @@ function in_modify_load(in_id, ln_id) {
             $('#in_completion_seconds').val(data.in.in_completion_seconds);
             $('.tr_in_link_title').text('');
             $('#in_status_entity_id').val(data.in.in_status_entity_id).attr('original-status', data.in.in_status_entity_id); //Set the status before it gets changed by miners
-
+            $('#in_start_mode_entity_id').val(data.in.in_start_mode_entity_id); //Set the status before it gets changed by miners
 
             //Load intent link data if available:
             if (ln_id > 0) {
@@ -344,19 +341,10 @@ function in_modify_load(in_id, ln_id) {
                 $('#tr__conditional_score_min').val(data.ln.ln_metadata.tr__conditional_score_min);
                 $('#tr__conditional_score_max').val(data.ln.ln_metadata.tr__conditional_score_max);
                 $('#tr__assessment_points').val(data.ln.ln_metadata.tr__assessment_points);
+                $('#ln_type_entity_id').val(data.ln.ln_type_entity_id);
 
                 //Link editing adjustments:
-                $('#tr_in_link_update').val(data.ln.in_outcome);
                 $('.tr_in_link_title').text(( $('.intent_line_' + in_id).hasClass('parent-intent') ? 'Child' : 'Parent' ));
-
-                //Is this a Conditional Step Link? If so, load the min/max range:
-                if (data.ln.ln_type_entity_id == 4229) {
-                    //Yes, load the data (which must be there):
-                    $('#ln_type_entity_id_4229').prop("checked", true);
-                } else {
-                    //Fixed link:
-                    $('#ln_type_entity_id_4228').prop("checked", true);
-                }
             }
 
             //Make the frame visible:
@@ -424,6 +412,7 @@ function in_modify_save() {
         in_outcome: $('#in_outcome').val(),
         in_status_entity_id: parseInt($('#in_status_entity_id').val()),
         in_type_entity_id: parseInt($('#in_type_entity_id').val()),
+        in_start_mode_entity_id: parseInt($('#in_start_mode_entity_id').val()),
         in_completion_seconds: ( $('#in_completion_seconds').val().length > 0 ? parseInt($('#in_completion_seconds').val()) : 0 ),
         apply_recursively: (document.getElementById('apply_recursively').checked ? 1 : 0),
         is_parent: ( $('.intent_line_' + in_id).hasClass('parent-intent') ? 1 : 0 ),
@@ -432,7 +421,6 @@ function in_modify_save() {
         ln_id: parseInt($('#modifybox').attr('intent-tr-id')), //Will be zero for Level 1 intent!
         top_level_ins: top_level_ins,
         ln_type_entity_id: null,
-        tr_in_link_update: null,
         tr__conditional_score_min: null,
         tr__conditional_score_max: null,
         tr__assessment_points: null,
@@ -443,8 +431,7 @@ function in_modify_save() {
     if (modify_data['ln_id'] > 0) {
 
         modify_data['ln_status_entity_id'] = parseInt($('#ln_status_entity_id').val());
-        modify_data['ln_type_entity_id'] = parseInt($('input[name=ln_type_entity_id]:checked').val());
-        modify_data['tr_in_link_update'] = $('#tr_in_link_update').val();
+        modify_data['ln_type_entity_id'] = parseInt($('#ln_type_entity_id').val());
 
         if(modify_data['ln_type_entity_id'] == 4229){
             //Conditional Step Links
@@ -459,6 +446,7 @@ function in_modify_save() {
 
     //Show spinner:
     $('.save_intent_changes').html('<span><i class="fas fa-spinner fa-spin"></i> Saving...</span>').hide().fadeIn();
+
 
 
     //Save the rest of the content:
@@ -523,7 +511,7 @@ function in_modify_save() {
                 //Did the Link update?
                 if (modify_data['ln_id'] > 0) {
 
-                    $('.ln_type_' + modify_data['ln_id']).html('<span data-toggle="tooltip" data-placement="right" title="'+ en_all_4486[modify_data['ln_type_entity_id']]['m_name'] + ': '+ en_all_4486[modify_data['ln_type_entity_id']]['m_desc'] + '">'+ en_all_4486[modify_data['ln_type_entity_id']]['m_icon'] +'</span>');
+                    $('.ln_type_' + modify_data['ln_id']).html('<span data-toggle="tooltip" data-placement="right" title="'+ js_en_all_4486[modify_data['ln_type_entity_id']]['m_name'] + ': '+ js_en_all_4486[modify_data['ln_type_entity_id']]['m_desc'] + '">'+ js_en_all_4486[modify_data['ln_type_entity_id']]['m_icon'] +'</span>');
 
                     $('.ln_status_entity_id_' + modify_data['ln_id']).html('<span data-toggle="tooltip" data-placement="right" title="'+ js_en_all_6186[modify_data['ln_status_entity_id']]['m_name'] + ': '+ js_en_all_6186[modify_data['ln_status_entity_id']]['m_desc'] + '">'+ js_en_all_6186[modify_data['ln_status_entity_id']]['m_icon'] +'</span>');
 
@@ -537,13 +525,16 @@ function in_modify_save() {
 
                 //Always update 3x Intent icons...
 
-                $('.in_parent_type_' + modify_data['in_id']).html('<span data-toggle="tooltip" data-placement="right" title="'+ en_all_7585[modify_data['in_type_entity_id']]['m_name'] + ': '+ en_all_7585[modify_data['in_type_entity_id']]['m_desc'] + '">'+ en_all_7585[modify_data['in_type_entity_id']]['m_icon'] +'</span>');
+                $('.in_parent_type_' + modify_data['in_id']).html('<span data-toggle="tooltip" data-placement="right" title="'+ js_en_all_7585[modify_data['in_type_entity_id']]['m_name'] + ': '+ js_en_all_7585[modify_data['in_type_entity_id']]['m_desc'] + '">'+ js_en_all_7585[modify_data['in_type_entity_id']]['m_icon'] +'</span>');
 
                 //Also update possible child icons:
-                $('.in_icon_child_' + modify_data['in_id']).html(en_all_7585[modify_data['in_type_entity_id']]['m_icon']);
+                $('.in_icon_child_' + modify_data['in_id']).html(js_en_all_7585[modify_data['in_type_entity_id']]['m_icon']);
 
 
                 $('.in_status_entity_id_' + modify_data['in_id']).html('<span data-toggle="tooltip" data-placement="right" title="'+ js_en_all_4737[modify_data['in_status_entity_id']]['m_name'] + ': '+ js_en_all_4737[modify_data['in_status_entity_id']]['m_desc'] + '">'+ js_en_all_4737[modify_data['in_status_entity_id']]['m_icon'] +'</span>');
+
+
+                $('.in_start_mode_entity_id_' + modify_data['in_id']).html('<span data-toggle="tooltip" data-placement="right" title="'+ js_en_all_7596[modify_data['in_start_mode_entity_id']]['m_name'] + ': '+ js_en_all_7596[modify_data['in_start_mode_entity_id']]['m_desc'] + '">'+ js_en_all_7596[modify_data['in_start_mode_entity_id']]['m_icon'] +'</span>');
 
 
                 //Update UI to confirm with user:

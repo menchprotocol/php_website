@@ -76,7 +76,7 @@ if(count($current_sign_in_attempt) == 0){
 
     <div class="signin-logo"><img src="/img/bp_128.png" /></div>
 
-    <h1><?= $en_all_7369[4269]['m_name'] ?></h1>
+    <h1>Sign In/Up</h1>
 
     <?php
     if($referrer_in_id > 0){

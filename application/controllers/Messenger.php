@@ -13,6 +13,45 @@ class Messenger extends CI_Controller
     }
 
 
+    function debug($in_id){
+
+        $session_en = en_auth(array(1308));
+        if(!isset($session_en['en_id'])){
+            return echo_json(array(
+                'status' => 0,
+                'message' => 'Session Expired. Sign In as a Miner and Try again.',
+            ));
+        }
+
+
+        $ins = $this->Intents_model->in_fetch(array(
+            'in_id' => $in_id,
+            'in_status_entity_id IN (' . join(',', $this->config->item('en_ids_7355')) . ')' => null, //Intent Statuses Public
+        ));
+
+        if(count($ins) < 1){
+            return echo_json(array(
+                'status' => 0,
+                'message' => 'Public Intent not found',
+            ));
+        }
+
+        //List the intent:
+        return echo_json(array(
+            'in_user' => array(
+                'next_in_id' => $this->User_app_model->actionplan_step_next_find($session_en['en_id'], $ins[0]),
+                'progress' => $this->User_app_model->actionplan_completion_progress($session_en['en_id'], $ins[0]),
+                'marks' => $this->User_app_model->actionplan_completion_marks($session_en['en_id'], $ins[0]),
+            ),
+            'in_general' => array(
+                'recursive_parents' => $this->Intents_model->in_fetch_recursive_public_parents($ins[0]['in_id']),
+                'common_base' => $this->Intents_model->in_metadata_common_base($ins[0]),
+            ),
+        ));
+
+    }
+
+
 
     function messenger_fetch_profile($psid)
     {

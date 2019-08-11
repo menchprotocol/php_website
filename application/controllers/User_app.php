@@ -14,22 +14,6 @@ class User_app extends CI_Controller
 
 
 
-    function test($in_id){
-        $ins = $this->Intents_model->in_fetch(array(
-            'in_id' => $in_id,
-            'in_status_entity_id IN (' . join(',', $this->config->item('en_ids_7355')) . ')' => null, //Intent Statuses Public
-        ));
-
-        echo_json(array(
-            'next' => $this->User_app_model->actionplan_step_next_find(1, $ins[0]),
-            'completion' => $this->User_app_model->actionplan_completion_progress(1, $ins[0]),
-            'marks' => $this->User_app_model->actionplan_completion_marks(1, $ins[0]),
-            'recursive_parents' => $this->Intents_model->in_fetch_recursive_public_parents($ins[0]['in_id']),
-            'common_base' => $this->Intents_model->in_metadata_common_base($ins[0]),
-
-        ));
-    }
-
 
 
 

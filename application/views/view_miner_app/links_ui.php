@@ -188,12 +188,11 @@ if(isset($_GET['ln_content_search']) && strlen($_GET['ln_content_search']) > 0){
 
 
 if(isset($_GET['start_range']) && is_valid_date($_GET['start_range'])){
-    $filters['ln_timestamp >='] = $_GET['start_range'].' 00:00:00';
+    $filters['ln_timestamp >='] = $_GET['start_range'].( strlen($_GET['start_range']) <= 10 ? ' 00:00:00' : '' );
 }
 if(isset($_GET['end_range']) && is_valid_date($_GET['end_range'])){
-    $filters['ln_timestamp <='] = $_GET['end_range'].' 23:59:59';
+    $filters['ln_timestamp <='] = $_GET['end_range'].( strlen($_GET['end_range']) <= 10 ? ' 23:59:59' : '' );
 }
-
 
 
 

@@ -1585,6 +1585,9 @@ footer {
     color: #FF0000 !important;
 }
 
+.lightgrey{
+    color:#AAA !important;
+}
 
 .grey-input .form-group {
     margin: 0;
@@ -2464,11 +2467,6 @@ select.form-control {
     background-color: #FFFFFF;
     display: inline-block;
     width: 100%;
-}
-
-.en-no-tr, .in-no-tr{
-    font-size: 0.9em;
-    line-height: 120%;
 }
 
 .save-btn-box tbody {

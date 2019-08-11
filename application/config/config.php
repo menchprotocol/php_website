@@ -5,7 +5,7 @@ defined('BASEPATH') OR exit('No direct script access allowed');
 /*
  *
  * Global variables used throughout the platform.
- * Example: $this->config->item('in_focus_id')
+ * Example: $this->config->item('in_join_id')
  *
  */
 
@@ -16,7 +16,7 @@ date_default_timezone_set('America/Los_Angeles');
 
 //App Functionality:
 $config['base_url']                 = 'https://mench.com/';
-$config['app_version']              = '0.988'; //Cache buster for static JS/CSS files, so needs to be updated if you update static files
+$config['app_version']              = '0.99'; //Cache buster for static JS/CSS files, so needs to be updated if you update static files
 $config['system_name']              = 'Mench'; //Used for example when a link has no miner
 $config['system_icon']              = '<img src="/img/mench_white.png" />'; //Used for example when a link has no miner
 $config['app_enable_algolia']       = true; //May need to turn off if/when we reach monthly quota of 50k calls
@@ -31,13 +31,15 @@ $config['password_min_char']        = 6;
 
 //Intent References:
 $config['in_mission_id']            = 7766; //highest-level intent which defines the mission of Mench
+$config['in_join_id']               = 12599; //Where new users would start if they have not specified an intention
 $config['in_focus_id']              = 10430; //The intent that the Mench community is focused on
 $config['in_system_lock']           = array(8469, 7766, 10430, 11665); //Once set to published, their status will be locked by system
+$config['in_outcome_deny_terms']    = array('and', 'or', '&', 'so'); //Once set to published, their status will be locked by system
 
 //Intent Settings:
 $config['in_max_seconds']           = 28800; //The maximum seconds allowed per intent. If larger, the miner is asked to break it down into smaller intents
 $config['in_outcome_max']           = 89; //Max number of characters allowed for intent outcomes
-$config['in_completion_marks']      = array(-21, -13, -8, -5, -3, -2, -1, 0, 1, 2, 3, 5, 8, 13, 21); //Marks users get when completing an intent (Learn more @4358)
+$config['in_completion_marks']      = array(-89, -55, -34, -21, -13, -8, -5, -3, -2, -1, 0, 1, 2, 3, 5, 8, 13, 21, 34, 55, 89); //Marks users get when completing an intent (Learn more @4358)
 
 
 //Entities:

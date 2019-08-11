@@ -93,7 +93,7 @@ class Miner_app extends CI_Controller
         //Intent Statuses:
         echo '<table class="table table-condensed table-striped stats-table mini-stats-table">';
         echo '<tr class="panel-title down-border">';
-        echo '<td style="text-align: left;">'.$en_all_7302[4737]['m_name'].'</td>';
+        echo '<td style="text-align: left;">'.$en_all_7302[4737]['m_name'].echo__s(count($this->config->item('en_all_4737')), true).'</td>';
         echo '<td style="text-align: right;">Intents</td>';
         echo '</tr>';
         foreach ($this->config->item('en_all_4737') as $en_id => $m) {
@@ -113,15 +113,12 @@ class Miner_app extends CI_Controller
         echo '</table>';
 
 
+        //Intent Start Modes:
+        echo echo_in_setting(7596,'in_start_mode_entity_id');
+
+
         //Intent Types:
         echo echo_in_setting(7585,'in_type_entity_id');
-
-        //Intent Start Type:
-        echo echo_in_setting(7596,'in_start_type_entity_id');
-
-        //Intent Completion Type:
-        echo echo_in_setting(7726,'in_completion_type_entity_id');
-
 
 
         //Intent Verbs:
@@ -135,7 +132,7 @@ class Miner_app extends CI_Controller
         echo '<table class="table table-condensed table-striped stats-table mini-stats-table ">';
 
         echo '<tr class="panel-title down-border">';
-        echo '<td style="text-align: left;">'.$en_all_7302[5008]['m_name'].'</td>';
+        echo '<td style="text-align: left;">'.$en_all_7302[5008]['m_name'].echo__s(count($in_verbs)).'</td>';
         echo '<td style="text-align: right;">Intents</td>';
         echo '</tr>';
 
@@ -180,7 +177,7 @@ class Miner_app extends CI_Controller
         //Entity Statuses
         echo '<table class="table table-condensed table-striped stats-table mini-stats-table">';
         echo '<tr class="panel-title down-border">';
-        echo '<td style="text-align: left;">'.$en_all_7303[6177]['m_name'].'</td>';
+        echo '<td style="text-align: left;">'.$en_all_7303[6177]['m_name'].echo__s(count($this->config->item('en_all_6177')), true).'</td>';
         echo '<td style="text-align: right;">Entities</td>';
         echo '</tr>';
         foreach ($this->config->item('en_all_6177') as $en_id => $m) {
@@ -249,7 +246,7 @@ class Miner_app extends CI_Controller
 
 
         echo '<tr style="font-weight: bold;">';
-        echo '<td style="text-align: left;"><span class="icon-block"><i class="fas fa-asterisk"></i></span>Totals</td>';
+        echo '<td style="text-align: left;"><span class="icon-block"><i class="fas fa-asterisk"></i></span>Total</td>';
         foreach($this->config->item('en_all_7358') /* Entity Active Statuses */ as $en_status_entity_id => $m_status){
             echo '<td style="text-align: right;" '.( $en_status_entity_id != 6181 /* Entity Featured */ ? ' class="' . advance_mode() . '"' : '' ).'>' . echo_number($total_counts[$en_status_entity_id]) . '<i class="fal fa-info-circle icon-block" data-toggle="tooltip" title="'.number_format($total_counts[$en_status_entity_id], 0).' '.$en_all_7303[3000]['m_name'].' are '.$en_all_6177[$en_status_entity_id]['m_name'] . '" data-placement="top"></i>' . '</td>';
         }
@@ -280,7 +277,7 @@ class Miner_app extends CI_Controller
         //Link Status:
         echo '<table class="table table-condensed table-striped stats-table mini-stats-table">';
         echo '<tr class="panel-title down-border">';
-        echo '<td style="text-align: left;">'.$en_all_7304[6186]['m_name'].'</td>';
+        echo '<td style="text-align: left;">'.$en_all_7304[6186]['m_name'].echo__s(count($this->config->item('en_all_6186')), true).'</td>';
         echo '<td style="text-align: right;">Links</td>';
         echo '</tr>';
         foreach ($this->config->item('en_all_6186') as $en_id => $m) {
@@ -417,7 +414,7 @@ class Miner_app extends CI_Controller
         echo '<table class="table table-condensed table-striped stats-table mini-stats-table">';
 
         echo '<tr class="panel-title down-border">';
-        echo '<td style="text-align: left;">'.echo_number(count($all_link_types)).' '.$en_all_7304[4593]['m_name'].'</td>';
+        echo '<td style="text-align: left;">'.echo_number(count($all_link_types)).' '.$en_all_7304[4593]['m_name'].echo__s(count($all_link_types)).'</td>';
         echo '<td style="text-align: right;" class="' . advance_mode() . '">Credits</td>';
         echo '<td style="text-align: right;">Links</td>';
         echo '</tr>';
@@ -444,9 +441,6 @@ class Miner_app extends CI_Controller
 
             //Links count:
             echo '<td style="text-align: right;"><a href="/links?ln_status_entity_id='.join(',', $this->config->item('en_ids_7360')) /* Link Statuses Active */.'&ln_type_entity_id='.$ln['ln_type_entity_id'].'">'.echo_number($ln['trs_count']).'</a>'
-
-                //Private Link?
-                .( in_array($ln['ln_type_entity_id'] , $this->config->item('en_ids_4755')) ? '<span data-toggle="tooltip" title="'.$en_all_4463[4755]['m_name'].': '.$en_all_4463[4755]['m_desc'].'" data-placement="top" class="icon-block ' . advance_mode() . '">'.$en_all_4463[4755]['m_icon'].'</span>' : '<span class="icon-block ' . advance_mode() . '" data-toggle="tooltip" title="Public Information" data-placement="top"><i class="far fa-eye"></i></span>' )
 
                 //Info:
                 .( strlen($en_all_4593[$ln['ln_type_entity_id']]['m_desc']) > 0 ? '<i class="fal fa-info-circle icon-block" data-toggle="tooltip" title="'.number_format($ln['trs_count'], 0).' '.$en_all_4593[$ln['ln_type_entity_id']]['m_desc'].'" data-placement="top"></i>' : '<i class="fal fa-info-circle icon-block" data-toggle="tooltip" title="'.number_format($ln['trs_count'], 0).' Links" data-placement="top" style="color: #AAA;"></i>' ).'</td>';

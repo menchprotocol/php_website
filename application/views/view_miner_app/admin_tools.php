@@ -6,6 +6,8 @@ $en_all_6177 = $this->config->item('en_all_6177'); //Entity Statuses
 
 $moderation_tools = array(
     '/miner_app/admin_tools/in_replace_outcomes' => 'Intent Search/Replace Outcomes',
+    '/miner_app/admin_tools/in_invalid_outcomes' => 'Intent Invalid Outcomes',
+    '/miner_app/admin_tools/actionplan_debugger' => 'My Action Plan Debugger',
     '/miner_app/admin_tools/en_icon_search' => 'Entity Icon Search',
     '/miner_app/admin_tools/moderate_intent_notes' => 'Moderate Intent Notes',
     '/miner_app/admin_tools/identical_intent_outcomes' => 'Identical Intent Outcomes',
@@ -262,7 +264,67 @@ if(!$action) {
     echo '<input type="submit" class="btn btn-primary" value="Search">';
     echo '</form>';
 
+} elseif($action=='actionplan_debugger') {
+
+    echo '<ul class="breadcrumb"><li><a href="/miner_app/admin_tools">Admin Tools</a></li><li><b>'.$moderation_tools['/miner_app/admin_tools/'.$action].'</b></li></ul>';
+
+    //List this users Action Plan intents so they can choose:
+    echo '<div>Choose one of your action plan intentions to debug:</div><br />';
+
+    $user_intents = $this->Links_model->ln_fetch(array(
+        'ln_miner_entity_id' => $session_en['en_id'],
+        'ln_type_entity_id IN (' . join(',', $this->config->item('en_ids_7347')) . ')' => null, //Action Plan Intention Set
+        'ln_status_entity_id IN (' . join(',', $this->config->item('en_ids_7364')) . ')' => null, //Link Statuses Incomplete
+        'in_status_entity_id IN (' . join(',', $this->config->item('en_ids_7355')) . ')' => null, //Intent Statuses Public
+    ), array('in_parent'), 0, 0, array('ln_order' => 'ASC'));
+
+    foreach ($user_intents as $priority => $ln) {
+        echo '<div>'.($priority+1).') <a href="/messenger/debug/' . $ln['in_id'] . '">' . echo_in_outcome($ln['in_outcome']) . '</a></div>';
+    }
+
+} elseif($action=='in_invalid_outcomes') {
+
+    echo '<ul class="breadcrumb"><li><a href="/miner_app/admin_tools">Admin Tools</a></li><li><b>'.$moderation_tools['/miner_app/admin_tools/'.$action].'</b></li></ul>';
+
+    $active_ins = $this->Intents_model->in_fetch(array(
+        'in_status_entity_id IN (' . join(',', $this->config->item('en_ids_7356')) . ')' => null, //Intent Statuses Active
+    ));
+
+    //Give an overview:
+    echo '<p>When the validation criteria change within the in_validate_outcome() function, this page lists all the intents that no longer have a valid outcome.</p>';
+
+
+    //List the matching search:
+    echo '<table class="table table-condensed table-striped stats-table mini-stats-table">';
+
+
+    echo '<tr class="panel-title down-border" style="font-weight:bold !important;">';
+    echo '<td style="text-align: left;">#</td>';
+    echo '<td style="text-align: left;">Invalid Outcome</td>';
+    echo '</tr>';
+
+    $invalid_outcomes = 0;
+    foreach($active_ins as $count=>$in){
+
+        $in_outcome_validation = $this->Intents_model->in_validate_outcome($in['in_outcome'], $session_en['en_id'], $in['in_id']);
+
+        if(!$in_outcome_validation['status']){
+
+            $invalid_outcomes++;
+
+            //Update intent:
+            echo '<tr class="panel-title down-border">';
+            echo '<td style="text-align: left;">'.$invalid_outcomes.'</td>';
+            echo '<td style="text-align: left;">'.echo_en_cache('en_all_4737' /* Intent Statuses */, $in['in_status_entity_id'], true, 'right').' <a href="/intents/'.$in['in_id'].'">'.echo_in_outcome($in['in_outcome']).'</a></td>';
+            echo '</tr>';
+
+        }
+
+    }
+    echo '</table>';
+
 } elseif($action=='in_replace_outcomes') {
+
 
     echo '<ul class="breadcrumb"><li><a href="/miner_app/admin_tools">Admin Tools</a></li><li><b>'.$moderation_tools['/miner_app/admin_tools/'.$action].'</b></li></ul>';
 
@@ -499,7 +561,7 @@ if(!$action) {
             'ln_parent_intent_id' => $in['in_id'],
         ), array('in_child'), 0, 0, array('ln_order' => 'ASC')) as $child_or){
 
-            $qualified_update = ( $child_or['in_type_entity_id']==6677 /* AND GOT IT */ && in_array($child_or['in_status_entity_id'], $this->config->item('en_ids_7582')) /* Intent Statuses Starting Step */ );
+            $qualified_update = ( $child_or['in_type_entity_id']==6677 /* AND GOT IT */ && in_array($child_or['in_start_mode_entity_id'], $this->config->item('en_ids_7582')) /* Intent Action Plan Addable */ );
 
             //Count completions:
             if($qualified_update){
@@ -532,11 +594,11 @@ if(!$action) {
     echo '<p>Below are all the Conditional Step Links:</p>';
     echo '<table class="table table-condensed table-striped maxout" style="text-align: left;">';
 
-    $en_all_6410 = $this->config->item('en_all_6410');
+    $en_all_6103 = $this->config->item('en_all_6103'); //Link Metadata
     $en_all_6186 = $this->config->item('en_all_6186'); //Link Statuses
 
     echo '<tr style="font-weight: bold;">';
-    echo '<td colspan="4" style="text-align: left;">'.$en_all_6410[6402]['m_icon'].' '.$en_all_6410[6402]['m_name'].'</td>';
+    echo '<td colspan="4" style="text-align: left;">'.$en_all_6103[6402]['m_icon'].' '.$en_all_6103[6402]['m_name'].'</td>';
     echo '</tr>';
     $counter = 0;
     $total_count = 0;
@@ -548,7 +610,7 @@ if(!$action) {
     ), array('in_child'), 0, 0) as $in_ln) {
         //Echo HTML format of this message:
         $metadata = unserialize($in_ln['ln_metadata']);
-        $mark = echo_in_assessment_mark($in_ln);
+        $mark = echo_in_marks($in_ln);
         if($mark){
 
             //Fetch parent intent:
@@ -559,7 +621,7 @@ if(!$action) {
             $counter++;
             echo '<tr>';
             echo '<td style="width: 50px;">'.$counter.'</td>';
-            echo '<td style="font-weight: bold; font-size: 1.3em; width: 100px;">'.echo_in_assessment_mark($in_ln).'</td>';
+            echo '<td style="font-weight: bold; font-size: 1.3em; width: 100px;">'.echo_in_marks($in_ln).'</td>';
             echo '<td>'.$en_all_6186[$in_ln['ln_status_entity_id']]['m_icon'].'</td>';
             echo '<td style="text-align: left;">';
 
@@ -655,7 +717,7 @@ if(!$action) {
                 $counter++;
                 echo '<tr>';
                 echo '<td style="width: 50px;">'.$counter.'</td>';
-                echo '<td style="font-weight: bold; font-size: 1.3em; width: 100px;">'.echo_in_assessment_mark($in_ln).'</td>';
+                echo '<td style="font-weight: bold; font-size: 1.3em; width: 100px;">'.echo_in_marks($in_ln).'</td>';
                 echo '<td>'.$en_all_6186[$in_ln['ln_status_entity_id']]['m_icon'].'</td>';
                 echo '<td style="text-align: left;">';
                 echo '<div>';

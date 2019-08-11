@@ -606,8 +606,8 @@ class Intents_model extends CI_Model
             '__in__metadata_common_steps' => array(), //The tree structure that would be shared with all users regardless of their quick replies (OR Intent Answers)
             '__in__metadata_expansion_steps' => array(), //Intents that may exist as a link to expand an Action Plan tree by answering OR intents
             '__in__metadata_expansion_conditional' => array(), //Intents that may exist as a link to expand an Action Plan tree via Conditional Step links
+            '__in__metadata_terminations_7740' => array(), //Defines intents that are Terminate Intention in the tree @7742
         );
-
 
         //Fetch children:
         foreach($this->Links_model->ln_fetch(array(
@@ -633,6 +633,11 @@ class Intents_model extends CI_Model
                 //AND parent Intent with Fixed Step Link:
                 array_push($metadata_this['__in__metadata_common_steps'], intval($in_child['in_id']));
 
+
+                if($in_child['in_type_entity_id']==7740 /* Cancel Intention */){
+                    array_push($metadata_this['__in__metadata_terminations_7740'], intval($in_child['in_id']));
+                }
+
                 //Go recursively down:
                 $child_recursion = $this->Intents_model->in_metadata_common_base($in_child);
 
@@ -640,6 +645,10 @@ class Intents_model extends CI_Model
                 //Aggregate recursion data:
                 if(count($child_recursion['__in__metadata_common_steps']) > 0){
                     array_push($metadata_this['__in__metadata_common_steps'], $child_recursion['__in__metadata_common_steps']);
+                }
+
+                if(count($child_recursion['__in__metadata_terminations_7740']) > 0){
+                    array_push($metadata_this['__in__metadata_terminations_7740'], $child_recursion['__in__metadata_terminations_7740']);
                 }
 
                 //Merge expansion steps:
@@ -685,6 +694,7 @@ class Intents_model extends CI_Model
                 'in__metadata_common_steps' => $metadata_this['__in__metadata_common_steps'],
                 'in__metadata_expansion_steps' => $metadata_this['__in__metadata_expansion_steps'],
                 'in__metadata_expansion_conditional' => $metadata_this['__in__metadata_expansion_conditional'],
+                'in__metadata_terminations_7740' => $metadata_this['__in__metadata_terminations_7740'],
             ));
 
         }
@@ -1168,11 +1178,19 @@ class Intents_model extends CI_Model
             );
         }
 
-        //Do we have a double colon command?
-        if(substr_count($in_outcome , '::') ==1){
 
-            //Does the outcome have a parent intent reference?
-            $string_references = extract_references($in_outcome);
+        //Does the outcome have a parent intent reference?
+        $string_references = extract_references($in_outcome);
+
+
+        if(count($string_references['ref_forbidden']) > 0){
+
+            return array(
+                'status' => 0,
+                'message' => 'Intent outcome must be focused, micro and singular, so you cannot use "'.join('" or "',$string_references['ref_forbidden']).'". Think of the core outcome and just put that.',
+            );
+
+        } elseif(substr_count($in_outcome , '::') ==1){
 
             /*
             if(count($string_references['ref_intents']) != 1){
@@ -1182,7 +1200,6 @@ class Intents_model extends CI_Model
                 );
             } else
             */
-
 
             if(count($string_references['ref_intents'])>0 && strpos($in_outcome,'#') > strpos($in_outcome,'::')){
 

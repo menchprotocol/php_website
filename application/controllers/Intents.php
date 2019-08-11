@@ -160,7 +160,7 @@ class Intents extends CI_Controller
         ));
 
         //Load specific view based on intent status:
-        $this->load->view(( in_array($ins[0]['in_status_entity_id'], $this->config->item('en_ids_7582')) /* Intent Statuses Starting Step */ ? 'view_user_app/in_starting_point' : 'view_user_app/in_passing_point'  ), array(
+        $this->load->view(( in_array($ins[0]['in_start_mode_entity_id'], $this->config->item('en_ids_7582')) /* Intent Action Plan Addable */ ? 'view_user_app/in_starting_point' : 'view_user_app/in_passing_point'  ), array(
             'in' => $ins[0],
             'referrer_en_id' => $referrer_en_id,
             'session_en' => $session_en,
@@ -506,9 +506,9 @@ class Intents extends CI_Controller
             $item_ui .= '<td style="text-align:left;">'.echo_time_difference(strtotime($apu['ln_timestamp'])).'</td>';
             $item_ui .= '<td style="text-align:left;">';
 
-            $item_ui .= '<a href="/links?ln_id='.$apu['ln_id'].'" target="_blank">'.echo_en_cache('en_all_6255' /* User Steps Progress */, $apu['ln_type_entity_id']).'</a>';
-            $item_ui .= '&nbsp;<a href="/intents/'.$_POST['in_focus_id'].'?filter_user='.urlencode('@'.$apu['en_id'].' '.$apu['en_name']).'#actionplanusers-'.$_POST['in_id'].'" data-toggle="tooltip" data-placement="top" title="Filter by this user"><i class="far fa-filter"></i></a>';
-            $item_ui .= '&nbsp;<a href="/entities/'.$apu['en_id'].'" data-toggle="tooltip" data-placement="top" title="Link Miner Entity"><i class="far fa-user-circle"></i></a></td>';
+            $item_ui .= '<a href="/intents/'.$_POST['in_focus_id'].'?filter_user='.urlencode('@'.$apu['en_id'].' '.$apu['en_name']).'#actionplanusers-'.$_POST['in_id'].'" data-toggle="tooltip" data-placement="top" title="Filter by this user"><i class="far fa-filter"></i></a>';
+            $item_ui .= '&nbsp;<a href="/links?ln_id='.$apu['ln_id'].'" target="_blank" class="' . advance_mode() . '">'.echo_en_cache('en_all_6255' /* User Steps Progress */, $apu['ln_type_entity_id']).'</a>';
+            $item_ui .= '&nbsp;<a href="/entities/'.$apu['en_id'].'" data-toggle="tooltip" data-placement="top" title="Link Miner Entity" class="' . advance_mode() . '"><i class="far fa-user-circle"></i></a></td>';
             $item_ui .= '</tr>';
 
 
@@ -544,14 +544,17 @@ class Intents extends CI_Controller
         }
 
         //Regular list:
-        $ui .= '<tr style="font-weight: bold;">';
-        $ui .= '<td style="text-align:left; padding-left:3px;" colspan="2">' . ( $filter_applied ? 'Other ' : 'Completed ' ) . 'User' . echo__s($regular_list_counter).' ['.$regular_list_counter.']</td>';
-        $ui .= '<td style="text-align:left;"><i class="fas fa-walking" data-toggle="tooltip" data-placement="top" title="User Steps Progressed"></i></td>';
-        $ui .= '<td style="text-align:left;"><i class="far fa-clock" data-toggle="tooltip" data-placement="top" title="Completion time"></i></td>';
-        $ui .= '<td style="text-align:left;">&nbsp;</td>';
-        $ui .= '</tr>';
-        $ui .= $regular_list_ui;
-        $ui .= '</table>';
+        if($regular_list_ui){
+            $ui .= '<tr style="font-weight: bold;">';
+            $ui .= '<td style="text-align:left; padding-left:3px;" colspan="2">' . ( $filter_applied ? 'Other ' : 'Completed ' ) . 'User' . echo__s($regular_list_counter).' ['.$regular_list_counter.']</td>';
+            $ui .= '<td style="text-align:left;"><i class="fas fa-walking" data-toggle="tooltip" data-placement="top" title="User Steps Progressed"></i></td>';
+            $ui .= '<td style="text-align:left;"><i class="far fa-clock" data-toggle="tooltip" data-placement="top" title="Completion time"></i></td>';
+            $ui .= '<td style="text-align:left;">&nbsp;</td>';
+            $ui .= '</tr>';
+            $ui .= $regular_list_ui;
+            $ui .= '</table>';
+        }
+
 
         echo_json(array(
             'status' => 1,
@@ -565,7 +568,6 @@ class Intents extends CI_Controller
         //Authenticate Miner:
         $session_en = en_auth(array(1308));
         $ln_id = intval($_POST['ln_id']);
-        $ln_in_link_id = 0; //If >0 means linked intent is being updated...
 
         //Validate intent:
         $ins = $this->Intents_model->in_fetch(array(
@@ -632,6 +634,11 @@ class Intents extends CI_Controller
                 'status' => 0,
                 'message' => 'Missing Intent Status',
             ));
+        } elseif (!isset($_POST['in_start_mode_entity_id'])) {
+            return echo_json(array(
+                'status' => 0,
+                'message' => 'Missing Start Mode',
+            ));
         } elseif (count($ins) < 1) {
             return echo_json(array(
                 'status' => 0,
@@ -658,6 +665,7 @@ class Intents extends CI_Controller
         }
 
 
+
         //Transform intent type into standard DB field:
         $in_current = $ins[0];
 
@@ -666,6 +674,7 @@ class Intents extends CI_Controller
         $in_update = array(
             'in_type_entity_id' => $_POST['in_type_entity_id'],
             'in_status_entity_id' => $_POST['in_status_entity_id'],
+            'in_start_mode_entity_id' => $_POST['in_start_mode_entity_id'],
             'in_outcome' => trim($_POST['in_outcome']),
             'in_completion_seconds' => intval($_POST['in_completion_seconds']),
             'in_verb_entity_id' => $in_current['in_verb_entity_id'], //We assume no change, and will update if we detected change in outcome...
@@ -871,43 +880,6 @@ class Intents extends CI_Controller
 
 
 
-
-            //Validate the input for updating linked intent:
-            if(substr($_POST['tr_in_link_update'], 0, 1)=='#'){
-                $parts = explode(' ', $_POST['tr_in_link_update']);
-                $ln_in_link_id = intval(str_replace('#', '', $parts[0]));
-            }
-            if($ln_in_link_id > 0){
-
-                //Did we find it?
-                if($ln_in_link_id==$lns[0]['ln_parent_intent_id'] || $ln_in_link_id==$lns[0]['ln_child_intent_id']){
-                    return echo_json(array(
-                        'status' => 0,
-                        'message' => 'Intent already linked here',
-                    ));
-                }
-
-                //Validate intent:
-                $linked_ins = $this->Intents_model->in_fetch(array(
-                    'in_id' => $ln_in_link_id,
-                ));
-                if(count($linked_ins)==0){
-                    return echo_json(array(
-                        'status' => 0,
-                        'message' => 'Newly linked intent not found',
-                    ));
-                }
-
-                //All good, make the move:
-                $ln_update[( $_POST['is_parent'] ? 'ln_child_intent_id' : 'ln_parent_intent_id')] = $ln_in_link_id;
-                $ln_update['ln_order'] = 9999; //Place at the bottom of this new list
-                $remove_from_ui = 1;
-                //Did we move it on another intent on the same page? If so reload to show accurate info:
-                if(in_array($ln_in_link_id, $_POST['top_level_ins'])){
-                    //Yes, refresh the page:
-                    $remove_redirect_url = '/intents/' . $_POST['top_level_ins'][0]; //First item is the main intent
-                }
-            }
 
 
             //Prep variables:
