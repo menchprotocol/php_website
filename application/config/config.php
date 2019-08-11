@@ -34,7 +34,7 @@ $config['in_mission_id']            = 7766; //highest-level intent which defines
 $config['in_join_id']               = 12599; //Where new users would start if they have not specified an intention
 $config['in_focus_id']              = 10430; //The intent that the Mench community is focused on
 $config['in_system_lock']           = array(8469, 7766, 10430, 11665); //Once set to published, their status will be locked by system
-$config['in_outcome_deny_terms']    = array('and', 'or', '&', 'so'); //Once set to published, their status will be locked by system
+$config['in_outcome_deny_terms']    = array('and', 'or', 'so'); //Once set to published, their status will be locked by system
 
 //Intent Settings:
 $config['in_max_seconds']           = 28800; //The maximum seconds allowed per intent. If larger, the miner is asked to break it down into smaller intents

@@ -1822,7 +1822,7 @@ function echo_in_marks($in_ln){
 
 }
 
-function echo_in_setting($in_setting_en_id,$in_field_name){
+function echo_in_setting($in_setting_en_id, $in_field_name){
 
     $CI =& get_instance();
     $en_all_7302 = $CI->config->item('en_all_7302'); //Intent Stats
