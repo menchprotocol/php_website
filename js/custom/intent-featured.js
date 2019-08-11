@@ -24,7 +24,7 @@ $(document).ready(function () {
 
             //Log this section:
             js_ln_create({
-                ln_miner_entity_id: session_en_id, //If we have a user we log here
+                ln_creator_entity_id: session_en_id, //If we have a user we log here
                 ln_type_entity_id: 7611, //Intent User Engage
                 ln_parent_entity_id: section_en_id, //The section this user engaged with
                 ln_parent_intent_id: in_focus_id,
@@ -44,7 +44,7 @@ $(document).ready(function () {
 
             //Log this section:
             js_ln_create({
-                ln_miner_entity_id: session_en_id, //If we have a user we log here
+                ln_creator_entity_id: session_en_id, //If we have a user we log here
                 ln_type_entity_id: 7611, //Intent User Engage
                 ln_parent_entity_id: section_en_id, //The section this user engaged with
                 ln_parent_intent_id: in_focus_id,
@@ -60,7 +60,7 @@ $(document).ready(function () {
 
         //Log this section:
         js_ln_create({
-            ln_miner_entity_id: session_en_id, //If we have a user we log here
+            ln_creator_entity_id: session_en_id, //If we have a user we log here
             ln_type_entity_id: 7611, //Intent User Engage
             ln_parent_entity_id: 7614, //Expert Overview
             ln_child_entity_id: section_en_id, //The section this user engaged with
@@ -76,7 +76,7 @@ $(document).ready(function () {
 
         //Log this section:
         js_ln_create({
-            ln_miner_entity_id: session_en_id, //If we have a user we log here
+            ln_creator_entity_id: session_en_id, //If we have a user we log here
             ln_type_entity_id: 7611, //Intent User Engage
             ln_parent_entity_id: 7614, //Expert Overview
             ln_child_entity_id: section_en_id, //The section this user engaged with

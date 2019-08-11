@@ -14,14 +14,14 @@ class Links_model extends CI_Model
         parent::__construct();
     }
 
-    function ln_update($id, $update_columns, $ln_miner_entity_id = 0)
+    function ln_update($id, $update_columns, $ln_creator_entity_id = 0)
     {
 
         if (count($update_columns) == 0) {
             return false;
         }
 
-        if($ln_miner_entity_id > 0){
+        if($ln_creator_entity_id > 0){
             //Fetch link before updating:
             $before_data = $this->Links_model->ln_fetch(array(
                 'ln_id' => $id,
@@ -42,7 +42,7 @@ class Links_model extends CI_Model
 
         if ($affected_rows > 0) {
 
-            if($ln_miner_entity_id > 0){
+            if($ln_creator_entity_id > 0){
 
                 $en_all_6186 = $this->config->item('en_all_6186'); //Link Statuses
 
@@ -55,7 +55,7 @@ class Links_model extends CI_Model
                         //Value has changed, log link:
                         $this->Links_model->ln_create(array(
                             'ln_parent_link_id' => $id, //Link Reference
-                            'ln_miner_entity_id' => $ln_miner_entity_id,
+                            'ln_creator_entity_id' => $ln_creator_entity_id,
                             'ln_type_entity_id' => 4242, //Link Attribute Modified
                             'ln_content' => echo_clean_db_name($key) . ' changed from "' . ( $key=='ln_status_entity_id' ? $en_all_6186[$before_data[0][$key]]['m_name']  : $before_data[0][$key] ) . '" to "' . ( $key=='ln_status_entity_id' ? $en_all_6186[$value]['m_name']  : $value ) . '"',
                             'ln_metadata' => array(
@@ -115,7 +115,7 @@ class Links_model extends CI_Model
         } elseif (in_array('en_type', $join_objects)) {
             $this->db->join('table_entities', 'ln_type_entity_id=en_id','left');
         } elseif (in_array('en_miner', $join_objects)) {
-            $this->db->join('table_entities', 'ln_miner_entity_id=en_id','left');
+            $this->db->join('table_entities', 'ln_creator_entity_id=en_id','left');
         }
 
         foreach ($match_columns as $key => $value) {
@@ -146,12 +146,12 @@ class Links_model extends CI_Model
     {
 
         //Set some defaults:
-        if (!isset($insert_columns['ln_miner_entity_id']) || intval($insert_columns['ln_miner_entity_id']) < 1) {
-            $insert_columns['ln_miner_entity_id'] = 0;
+        if (!isset($insert_columns['ln_creator_entity_id']) || intval($insert_columns['ln_creator_entity_id']) < 1) {
+            $insert_columns['ln_creator_entity_id'] = 0;
         }
 
         //Only require link type:
-        if (detect_missing_columns($insert_columns, array('ln_type_entity_id'), $insert_columns['ln_miner_entity_id'])) {
+        if (detect_missing_columns($insert_columns, array('ln_type_entity_id'), $insert_columns['ln_creator_entity_id'])) {
             return false;
         }
 
@@ -196,7 +196,7 @@ class Links_model extends CI_Model
         }
 
         //Set credits:
-        $insert_columns['ln_credits'] = ( $insert_columns['ln_miner_entity_id'] > 0 ? fetch_credits($insert_columns['ln_type_entity_id']) : 0 );
+        $insert_columns['ln_credits'] = ( $insert_columns['ln_creator_entity_id'] > 0 ? fetch_credits($insert_columns['ln_type_entity_id']) : 0 );
 
         //Lets log:
         $this->db->insert('table_links', $insert_columns);
@@ -210,7 +210,7 @@ class Links_model extends CI_Model
             //This should not happen:
             $this->Links_model->ln_create(array(
                 'ln_type_entity_id' => 4246, //Platform Bug Reports
-                'ln_miner_entity_id' => $insert_columns['ln_miner_entity_id'],
+                'ln_creator_entity_id' => $insert_columns['ln_creator_entity_id'],
                 'ln_content' => 'ln_create() Failed to create',
                 'ln_metadata' => array(
                     'input' => $insert_columns,
@@ -251,7 +251,7 @@ class Links_model extends CI_Model
             foreach(explode(',', one_two_explode('&var_en_subscriber_ids=','', $en_all_5967[$insert_columns['ln_type_entity_id']]['m_desc'])) as $subscriber_en_id){
 
                 //Do not email the miner themselves, as already they know about their own engagement:
-                if($insert_columns['ln_type_entity_id']==4246 /* Always report bugs */ || $subscriber_en_id != $insert_columns['ln_miner_entity_id']){
+                if($insert_columns['ln_type_entity_id']==4246 /* Always report bugs */ || $subscriber_en_id != $insert_columns['ln_creator_entity_id']){
 
                     //Try fetching subscribers email:
                     foreach($this->Links_model->ln_fetch(array(
@@ -276,11 +276,11 @@ class Links_model extends CI_Model
 
                 //yes, start drafting email to be sent to them...
 
-                if($insert_columns['ln_miner_entity_id'] > 0){
+                if($insert_columns['ln_creator_entity_id'] > 0){
 
                     //Fetch miner details:
                     $miner_ens = $this->Entities_model->en_fetch(array(
-                        'en_id' => $insert_columns['ln_miner_entity_id'],
+                        'en_id' => $insert_columns['ln_creator_entity_id'],
                     ));
 
                     $miner_name = $miner_ens[0]['en_name'];
@@ -341,7 +341,7 @@ class Links_model extends CI_Model
                 foreach($sub_en_ids as $to_en_id){
                     $this->Links_model->ln_create(array(
                         'ln_type_entity_id' => 5967, //Link Carbon Copy Email
-                        'ln_miner_entity_id' => $to_en_id, //Sent to this user
+                        'ln_creator_entity_id' => $to_en_id, //Sent to this user
                         'ln_metadata' => $dispatched_email, //Save a copy of email
                         'ln_parent_link_id' => $insert_columns['ln_id'], //Save link
 

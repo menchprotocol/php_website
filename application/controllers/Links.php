@@ -570,7 +570,7 @@ class Links extends CI_Controller
 
             //Log Link:
             $this->Links_model->ln_create(array(
-                'ln_miner_entity_id' => $session_en['en_id'],
+                'ln_creator_entity_id' => $session_en['en_id'],
                 'ln_type_entity_id' => 5007, //Toggled Advance Mode
                 'ln_content' => 'Toggled '.( $toggled_setting ? 'ON' : 'OFF' ), //To be used when miner logs in again
             ));

@@ -11,7 +11,7 @@ defined('BASEPATH') OR exit('No direct script access allowed');
  *
  */
 
-//Generated 2019-08-10 19:45:28 PST
+//Generated 2019-08-11 16:33:55 PST
 
 //Link Metadata:
 $config['en_ids_6103'] = array(4358,6203,6402);
@@ -248,7 +248,7 @@ $config['en_all_7744'] = array(
     ),
 );
 
-//Terminate Intention:
+//Terminate Intention Links:
 $config['en_ids_7742'] = array(7492,7741);
 $config['en_all_7742'] = array(
     7492 => array(
@@ -882,7 +882,7 @@ $config['en_all_7372'] = array(
         'm_parents' => array(7372),
     ),
     7369 => array(
-        'm_icon' => '<i class="fas fa-user"></i>',
+        'm_icon' => '<i class="fas fa-flag"></i>',
         'm_name' => 'Mench User App',
         'm_desc' => 'A web portal for software engineers to assess/improve their skills & get matched with top companies.',
         'm_parents' => array(7372,4527),
@@ -953,7 +953,7 @@ $config['en_all_7369'] = array(
     ),
     7161 => array(
         'm_icon' => '<i class="far fa-tachometer-alt-fast"></i>',
-        'm_name' => 'Platform Dashboard',
+        'm_name' => 'Dashboard',
         'm_desc' => '',
         'm_parents' => array(7369,7368,7305),
     ),
@@ -1018,7 +1018,7 @@ $config['en_all_7368'] = array(
     ),
     7161 => array(
         'm_icon' => '<i class="far fa-tachometer-alt-fast"></i>',
-        'm_name' => 'Platform Dashboard',
+        'm_name' => 'Dashboard',
         'm_desc' => '',
         'm_parents' => array(7369,7368,7305),
     ),

@@ -126,7 +126,7 @@ class User_app extends CI_Controller
             $this->Links_model->ln_create(array(
                 'ln_content' => 'User failed to login using non-Chrome browser',
                 'ln_type_entity_id' => 7504, //Admin Review Required
-                'ln_miner_entity_id' => $ens[0]['en_id'],
+                'ln_creator_entity_id' => $ens[0]['en_id'],
             ));
 
             return echo_json(array(
@@ -228,7 +228,7 @@ class User_app extends CI_Controller
 
             //Validate user:
             $ens = $this->Entities_model->en_fetch(array(
-                'en_id' => $validate_links[0]['ln_miner_entity_id'],
+                'en_id' => $validate_links[0]['ln_creator_entity_id'],
             ));
             if(count($ens) < 1){
                 return echo_json(array(
@@ -267,7 +267,7 @@ class User_app extends CI_Controller
                     'ln_type_entity_id' => 4255, //Text link
                     'ln_content' => $input_password,
                     'ln_parent_entity_id' => 3286, //Mench Password
-                    'ln_miner_entity_id' => $ens[0]['en_id'],
+                    'ln_creator_entity_id' => $ens[0]['en_id'],
                     'ln_child_entity_id' => $ens[0]['en_id'],
                 ));
 
@@ -276,7 +276,7 @@ class User_app extends CI_Controller
 
             //Log password reset:
             $this->Links_model->ln_create(array(
-                'ln_miner_entity_id' => $ens[0]['en_id'],
+                'ln_creator_entity_id' => $ens[0]['en_id'],
                 'ln_type_entity_id' => 7578, //User Signin Password Updated
                 'ln_content' => $input_password, //A copy of their password set at this time
             ));
@@ -379,28 +379,28 @@ class User_app extends CI_Controller
         $this->Links_model->ln_create(array(
             'ln_type_entity_id' => 4230, //Raw link
             'ln_parent_entity_id' => 4430, //Mench User
-            'ln_miner_entity_id' => $user_en['en']['en_id'],
+            'ln_creator_entity_id' => $user_en['en']['en_id'],
             'ln_child_entity_id' => $user_en['en']['en_id'],
         ));
 
         $this->Links_model->ln_create(array(
             'ln_type_entity_id' => 4230, //Raw link
             'ln_parent_entity_id' => 3504, //English Language (Since everything is in English so far)
-            'ln_miner_entity_id' => $user_en['en']['en_id'],
+            'ln_creator_entity_id' => $user_en['en']['en_id'],
             'ln_child_entity_id' => $user_en['en']['en_id'],
         ));
         $this->Links_model->ln_create(array(
             'ln_type_entity_id' => 4255, //Text link
             'ln_content' => trim(strtolower($_POST['input_email'])),
             'ln_parent_entity_id' => 3288, //Mench Email
-            'ln_miner_entity_id' => $user_en['en']['en_id'],
+            'ln_creator_entity_id' => $user_en['en']['en_id'],
             'ln_child_entity_id' => $user_en['en']['en_id'],
         ));
         $this->Links_model->ln_create(array(
             'ln_type_entity_id' => 4255, //Text link
             'ln_content' => strtolower(hash('sha256', $this->config->item('password_salt') . $_POST['new_password'] . $user_en['en']['en_id'])),
             'ln_parent_entity_id' => 3286, //Mench Password
-            'ln_miner_entity_id' => $user_en['en']['en_id'],
+            'ln_creator_entity_id' => $user_en['en']['en_id'],
             'ln_child_entity_id' => $user_en['en']['en_id'],
         ));
 
@@ -446,7 +446,7 @@ class User_app extends CI_Controller
         //Log User Signin Joined Mench
         $invite_link = $this->Links_model->ln_create(array(
             'ln_type_entity_id' => 7562, //User Signin Joined Mench
-            'ln_miner_entity_id' => $user_en['en']['en_id'],
+            'ln_creator_entity_id' => $user_en['en']['en_id'],
             'ln_parent_intent_id' => intval($_POST['referrer_in_id']),
             'ln_parent_entity_id' => intval($_POST['referrer_en_id']),
             'ln_metadata' => array(
@@ -510,7 +510,7 @@ class User_app extends CI_Controller
         $reset_link = $this->Links_model->ln_create(array(
             'ln_type_entity_id' => 7563, //User Signin Magic Link Email
             'ln_content' => $_POST['input_email'],
-            'ln_miner_entity_id' => $user_emails[0]['en_id'], //User making request
+            'ln_creator_entity_id' => $user_emails[0]['en_id'], //User making request
             'ln_parent_intent_id' => intval($_POST['referrer_in_id']),
             'ln_parent_entity_id' => intval($_POST['referrer_en_id']),
         ));
@@ -573,7 +573,7 @@ class User_app extends CI_Controller
 
         //Fetch entity:
         $ens = $this->Entities_model->en_fetch(array(
-            'en_id' => $validate_links[0]['ln_miner_entity_id'],
+            'en_id' => $validate_links[0]['ln_creator_entity_id'],
         ));
         if(count($ens) < 1){
             return redirect_message('/signin?input_email='.$_GET['email'], '<div class="alert alert-danger" role="alert">User not found</div>');
@@ -735,7 +735,7 @@ class User_app extends CI_Controller
         //Log My Account View:
         $this->Links_model->ln_create(array(
             'ln_type_entity_id' => 4282, //Opened My Account
-            'ln_miner_entity_id' => $session_en['en_id'],
+            'ln_creator_entity_id' => $session_en['en_id'],
         ));
 
         //Load UI:
@@ -797,7 +797,7 @@ class User_app extends CI_Controller
         //Log Account iteration link type:
         $_POST['account_update_function'] = 'myaccount_save_full_name'; //Add this variable to indicate which My Account function created this link
         $this->Links_model->ln_create(array(
-            'ln_miner_entity_id' => $_POST['en_id'],
+            'ln_creator_entity_id' => $_POST['en_id'],
             'ln_type_entity_id' => 6224, //My Account Iterated
             'ln_content' => 'My Account Name Updated:'.$_POST['en_name'],
             'ln_metadata' => $_POST,
@@ -907,7 +907,7 @@ class User_app extends CI_Controller
             //Create new link:
             $this->Links_model->ln_create(array(
                 'ln_status_entity_id' => 6176, //Link Published
-                'ln_miner_entity_id' => $_POST['en_id'],
+                'ln_creator_entity_id' => $_POST['en_id'],
                 'ln_child_entity_id' => $_POST['en_id'],
                 'ln_type_entity_id' => 4319, //Phone are of type number
                 'ln_parent_entity_id' => 4783, //Phone Number
@@ -933,7 +933,7 @@ class User_app extends CI_Controller
         if($return['status']){
             $_POST['account_update_function'] = 'myaccount_save_phone'; //Add this variable to indicate which My Account function created this link
             $this->Links_model->ln_create(array(
-                'ln_miner_entity_id' => $_POST['en_id'],
+                'ln_creator_entity_id' => $_POST['en_id'],
                 'ln_type_entity_id' => 6224, //My Account Iterated
                 'ln_content' => 'My Account '.$return['message']. ( strlen($_POST['en_phone']) > 0 ? ': '.$_POST['en_phone'] : ''),
                 'ln_metadata' => $_POST,
@@ -1031,7 +1031,7 @@ class User_app extends CI_Controller
             //Create new link:
             $this->Links_model->ln_create(array(
                 'ln_status_entity_id' => 6176, //Link Published
-                'ln_miner_entity_id' => $_POST['en_id'],
+                'ln_creator_entity_id' => $_POST['en_id'],
                 'ln_child_entity_id' => $_POST['en_id'],
                 'ln_type_entity_id' => 4255, //Emails are of type Text
                 'ln_parent_entity_id' => 3288, //Mench Email
@@ -1057,7 +1057,7 @@ class User_app extends CI_Controller
             //Log Account iteration link type:
             $_POST['account_update_function'] = 'myaccount_save_email'; //Add this variable to indicate which My Account function created this link
             $this->Links_model->ln_create(array(
-                'ln_miner_entity_id' => $_POST['en_id'],
+                'ln_creator_entity_id' => $_POST['en_id'],
                 'ln_type_entity_id' => 6224, //My Account Iterated
                 'ln_content' => 'My Account '.$return['message']. ( strlen($_POST['en_email']) > 0 ? ': '.$_POST['en_email'] : ''),
                 'ln_metadata' => $_POST,
@@ -1131,7 +1131,7 @@ class User_app extends CI_Controller
                 'ln_status_entity_id' => 6176, //Link Published
                 'ln_type_entity_id' => 4255, //Passwords are of type Text
                 'ln_parent_entity_id' => 3286, //Password
-                'ln_miner_entity_id' => $_POST['en_id'],
+                'ln_creator_entity_id' => $_POST['en_id'],
                 'ln_child_entity_id' => $_POST['en_id'],
                 'ln_content' => $hashed_password,
             ), true);
@@ -1148,7 +1148,7 @@ class User_app extends CI_Controller
         if($return['status']){
             $_POST['account_update_function'] = 'myaccount_update_password'; //Add this variable to indicate which My Account function created this link
             $this->Links_model->ln_create(array(
-                'ln_miner_entity_id' => $_POST['en_id'],
+                'ln_creator_entity_id' => $_POST['en_id'],
                 'ln_type_entity_id' => 6224, //My Account Iterated
                 'ln_content' => 'My Account '.$return['message'],
                 'ln_metadata' => $_POST,
@@ -1278,7 +1278,7 @@ class User_app extends CI_Controller
                 //Create new link:
                 $this->Links_model->ln_create(array(
                     'ln_status_entity_id' => 6176, //Link Published
-                    'ln_miner_entity_id' => $_POST['en_id'],
+                    'ln_creator_entity_id' => $_POST['en_id'],
                     'ln_child_entity_id' => $_POST['en_id'],
                     'ln_type_entity_id' => 4256, //Generic URL
                     'ln_parent_entity_id' => $social_en_id,
@@ -1295,7 +1295,7 @@ class User_app extends CI_Controller
             //Log Account iteration link type:
             $_POST['account_update_function'] = 'myaccount_save_social_profiles'; //Add this variable to indicate which My Account function created this link
             $this->Links_model->ln_create(array(
-                'ln_miner_entity_id' => $_POST['en_id'],
+                'ln_creator_entity_id' => $_POST['en_id'],
                 'ln_type_entity_id' => 6224, //My Account Iterated
                 'ln_content' => 'My Account '.$success_messages,
                 'ln_metadata' => $_POST,
@@ -1383,7 +1383,7 @@ class User_app extends CI_Controller
         $progress_links = $this->Links_model->ln_fetch(array(
             'ln_status_entity_id IN (' . join(',', $this->config->item('en_ids_7360')) . ')' => null, //Link Statuses Active
             'ln_type_entity_id IN (' . join(',', $clear_links) . ')' => null,
-            'ln_miner_entity_id' => $en_id,
+            'ln_creator_entity_id' => $en_id,
         ), array(), 0);
 
         if(count($progress_links) > 0){
@@ -1395,7 +1395,7 @@ class User_app extends CI_Controller
             $clear_all_link = $this->Links_model->ln_create(array(
                 'ln_content' => $message,
                 'ln_type_entity_id' => 6415, //Action Plan Reset Steps
-                'ln_miner_entity_id' => $en_id,
+                'ln_creator_entity_id' => $en_id,
             ));
 
             //Remove all progressions:
@@ -1452,7 +1452,7 @@ class User_app extends CI_Controller
 
             //See if we have pending messages:
             $pending_messages = $this->Links_model->ln_fetch(array(
-                'ln_miner_entity_id' => $session_en['en_id'],
+                'ln_creator_entity_id' => $session_en['en_id'],
                 'ln_type_entity_id' => 4570, //User Received Email Message
                 'ln_status_entity_id IN (' . join(',', $this->config->item('en_ids_7364')) . ')' => null, //Link Statuses Incomplete
             ), array(), 0, 0, array('ln_id' => 'ASC'));
@@ -1488,7 +1488,7 @@ class User_app extends CI_Controller
 
             //Fetch user's intentions as we'd need to know their top-level goals:
             $user_intents = $this->Links_model->ln_fetch(array(
-                'ln_miner_entity_id' => $session_en['en_id'],
+                'ln_creator_entity_id' => $session_en['en_id'],
                 'ln_type_entity_id IN (' . join(',', $this->config->item('en_ids_7347')) . ')' => null, //Action Plan Intention Set
                 'ln_status_entity_id IN (' . join(',', $this->config->item('en_ids_7364')) . ')' => null, //Link Statuses Incomplete
                 'in_status_entity_id IN (' . join(',', $this->config->item('en_ids_7355')) . ')' => null, //Intent Statuses Public
@@ -1500,7 +1500,7 @@ class User_app extends CI_Controller
                 //Log Action Plan View:
                 $this->Links_model->ln_create(array(
                     'ln_type_entity_id' => 4283, //Opened Action Plan
-                    'ln_miner_entity_id' => $session_en['en_id'],
+                    'ln_creator_entity_id' => $session_en['en_id'],
                 ));
 
                 //List all user intentions:
@@ -1582,7 +1582,7 @@ class User_app extends CI_Controller
 
         //Go ahead and remove from Action Plan:
         $user_intents = $this->Links_model->ln_fetch(array(
-            'ln_miner_entity_id' => $_POST['en_miner_id'],
+            'ln_creator_entity_id' => $_POST['en_miner_id'],
             'ln_type_entity_id IN (' . join(',', $this->config->item('en_ids_7347')) . ')' => null, //Action Plan Intention Set
             'ln_status_entity_id IN (' . join(',', $this->config->item('en_ids_7364')) . ')' => null, //Link Statuses Incomplete
             'ln_parent_intent_id' => $_POST['in_id'],
@@ -1605,7 +1605,7 @@ class User_app extends CI_Controller
         //Log related link:
         $this->Links_model->ln_create(array(
             'ln_content' => $_POST['stop_feedback'],
-            'ln_miner_entity_id' => $_POST['en_miner_id'],
+            'ln_creator_entity_id' => $_POST['en_miner_id'],
             'ln_type_entity_id' => $_POST['stop_method_id'],
             'ln_parent_intent_id' => $_POST['in_id'],
         ));
@@ -1753,7 +1753,7 @@ class User_app extends CI_Controller
             $this->Links_model->ln_create(array(
                 'ln_parent_entity_id' => $_POST['selected_en_id'],
                 'ln_child_entity_id' => $_POST['en_miner_id'],
-                'ln_miner_entity_id' => $_POST['en_miner_id'],
+                'ln_creator_entity_id' => $_POST['en_miner_id'],
                 'ln_type_entity_id' => 4230, //Raw
                 'ln_status_entity_id' => 6176, //Link Published
             ));
@@ -1772,7 +1772,7 @@ class User_app extends CI_Controller
         //Log Account iteration link type:
         $_POST['account_update_function'] = 'myaccount_radio_update'; //Add this variable to indicate which My Account function created this link
         $this->Links_model->ln_create(array(
-            'ln_miner_entity_id' => $_POST['en_miner_id'],
+            'ln_creator_entity_id' => $_POST['en_miner_id'],
             'ln_type_entity_id' => 6224, //My Account Iterated
             'ln_content' => 'My Account '.( $_POST['enable_mulitiselect'] ? 'Multi' : 'Single' ).'-Select Radio Field '.( $_POST['was_already_selected'] ? 'Removed' : 'Added' ),
             'ln_metadata' => $_POST,
@@ -1824,7 +1824,7 @@ class User_app extends CI_Controller
         //Save sorting results:
         $this->Links_model->ln_create(array(
             'ln_type_entity_id' => 6132, //Action Plan Sorted
-            'ln_miner_entity_id' => $_POST['en_miner_id'],
+            'ln_creator_entity_id' => $_POST['en_miner_id'],
             'ln_metadata' => array(
                 'new_order' => $_POST['new_actionplan_order'],
                 'results' => $results,
@@ -1880,14 +1880,14 @@ class User_app extends CI_Controller
         //Fetch current progression links, if any:
         $current_progression_links = $this->Links_model->ln_fetch(array(
             'ln_type_entity_id IN (' . join(',', $this->config->item('en_ids_6146')) . ')' => null, //User Steps Completed
-            'ln_miner_entity_id' => $en_id,
+            'ln_creator_entity_id' => $en_id,
             'ln_parent_intent_id' => $parent_in_id,
             'ln_status_entity_id IN (' . join(',', $this->config->item('en_ids_7360')) . ')' => null, //Link Statuses Active
         ));
 
         //All good, save chosen OR path
         $new_progression_link = $this->Links_model->ln_create(array(
-            'ln_miner_entity_id' => $en_id,
+            'ln_creator_entity_id' => $en_id,
             'ln_type_entity_id' => $answer_type_en_id,
             'ln_parent_intent_id' => $parent_in_id,
             'ln_child_intent_id' => $answer_in_id,

@@ -55,14 +55,14 @@ if(count($current_sign_in_attempt) == 0){
     var fb_mench_url = '<?= $this->config->item('fb_mench_url') ?>';
     var channel_choice_messenger = {
         ln_type_entity_id: 7558, //User Signin with Messenger Choice
-        ln_miner_entity_id: session_en_id,
+        ln_creator_entity_id: session_en_id,
         ln_parent_intent_id: <?= intval($referrer_in_id) ?>,
         ln_parent_entity_id: <?= intval($referrer_en_id) ?>,
         ln_parent_link_id: <?= $current_sign_in_attempt['ln_id'] ?>,
     };
     var channel_choice_website = {
         ln_type_entity_id: 7559, //User Signin with Website Choice
-        ln_miner_entity_id: session_en_id,
+        ln_creator_entity_id: session_en_id,
         ln_parent_intent_id: <?= intval($referrer_in_id) ?>,
         ln_parent_entity_id: <?= intval($referrer_en_id) ?>,
         ln_parent_link_id: <?= $current_sign_in_attempt['ln_id'] ?>,

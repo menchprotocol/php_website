@@ -523,7 +523,7 @@ function echo_ln_connections($ln){
     foreach ($CI->config->item('tr_object_links') as $ln_field => $obj_type) {
 
         //Don't show miner and type as they are already printed on the first line:
-        if(!(!in_array($ln_field, array('ln_miner_entity_id','ln_type_entity_id')) && intval($ln[$ln_field]) > 0)){
+        if(!(!in_array($ln_field, array('ln_creator_entity_id','ln_type_entity_id')) && intval($ln[$ln_field]) > 0)){
             continue;
         }
 
@@ -610,10 +610,10 @@ function echo_ln($ln, $is_inner = false)
 
         //Show Miner:
         //Fetch Miner Entity:
-        if($ln['ln_miner_entity_id'] > 0){
+        if($ln['ln_creator_entity_id'] > 0){
 
             $miner_ens = $CI->Entities_model->en_fetch(array(
-                'en_id' => $ln['ln_miner_entity_id'],
+                'en_id' => $ln['ln_creator_entity_id'],
             ));
             $full_name = $miner_ens[0]['en_name'];
 
@@ -652,7 +652,7 @@ function echo_ln($ln, $is_inner = false)
     if(!$is_inner){
         //First count to see if this link has any connections:
         foreach ($CI->config->item('tr_object_links') as $ln_field => $obj_type) {
-            if (!in_array($ln_field, array('ln_miner_entity_id', 'ln_type_entity_id')) && intval($ln[$ln_field]) > 0) {
+            if (!in_array($ln_field, array('ln_creator_entity_id', 'ln_type_entity_id')) && intval($ln[$ln_field]) > 0) {
                 if($link_connections_count > 0){
                     $link_connections_clean_name .= ', ';
                 }
@@ -1583,7 +1583,7 @@ function echo_in_recommend($in, $common_prefix = null, $hide_class = null, $refe
     $is_starting = ( in_array($in['in_start_mode_entity_id'], $CI->config->item('en_ids_7582')) /* Intent Action Plan Addable */);
     $en_all_7369 = $CI->config->item('en_all_7369');
     $already_in_actionplan = (isset($session_en['en_id']) && count($CI->Links_model->ln_fetch(array(
-            'ln_miner_entity_id' => $session_en['en_id'],
+            'ln_creator_entity_id' => $session_en['en_id'],
             'ln_type_entity_id IN (' . join(',', $CI->config->item('en_ids_7347')) . ')' => null, //Action Plan Intention Set
             'ln_status_entity_id IN (' . join(',', $CI->config->item('en_ids_7364')) . ')' => null, //incomplete intentions
             'ln_parent_intent_id' => $in['in_id'],
@@ -2345,12 +2345,12 @@ function echo_en($en, $level, $is_parent = false)
     //Action Plan Set Intentions by Users and Companies:
     $user_intentions = $CI->Links_model->ln_fetch(array(
         'ln_type_entity_id IN (' . join(',', $CI->config->item('en_ids_7347')) . ')' => null, //Action Plan Set Intentions
-        'ln_miner_entity_id' => $en['en_id'],
+        'ln_creator_entity_id' => $en['en_id'],
         'ln_status_entity_id IN (' . join(',', $CI->config->item('en_ids_7360')) . ')' => null, //Link Statuses Active
     ), array(), 0, 0, array(), 'COUNT(ln_id) as total_steps');
 
     if($user_intentions[0]['total_steps'] > 0){
-        $ui .= '<a href="/links?ln_status_entity_id='.join(',', $CI->config->item('en_ids_7360')) /* Link Statuses Active */.'&ln_type_entity_id='.join(',', $CI->config->item('en_ids_7347')).'&ln_miner_entity_id=' . $en['en_id'] . '" class="badge badge-secondary white-secondary ' . advance_mode() . '" style="width:40px; margin-left:5px; margin-right: -3px;" data-toggle="tooltip" data-placement="bottom" title="Manage entity intentions"><span class="btn-counter">'.echo_number($user_intentions[0]['total_steps']).'</span><i class="far fa-bullseye-arrow"></i></a>';
+        $ui .= '<a href="/links?ln_status_entity_id='.join(',', $CI->config->item('en_ids_7360')) /* Link Statuses Active */.'&ln_type_entity_id='.join(',', $CI->config->item('en_ids_7347')).'&ln_creator_entity_id=' . $en['en_id'] . '" class="badge badge-secondary white-secondary ' . advance_mode() . '" style="width:40px; margin-left:5px; margin-right: -3px;" data-toggle="tooltip" data-placement="bottom" title="Manage entity intentions"><span class="btn-counter">'.echo_number($user_intentions[0]['total_steps']).'</span><i class="far fa-bullseye-arrow"></i></a>';
     }
 
 
@@ -2378,7 +2378,7 @@ function echo_en($en, $level, $is_parent = false)
 
     //Count & link to Entity links:
     $count_in_trs = $CI->Links_model->ln_fetch(array(
-        '(ln_parent_entity_id=' . $en['en_id'] . ' OR  ln_child_entity_id=' . $en['en_id'] . ' OR  ln_miner_entity_id=' . $en['en_id'] . ($ln_id > 0 ? ' OR ln_parent_link_id=' . $ln_id : '') . ')' => null,
+        '(ln_parent_entity_id=' . $en['en_id'] . ' OR  ln_child_entity_id=' . $en['en_id'] . ' OR  ln_creator_entity_id=' . $en['en_id'] . ($ln_id > 0 ? ' OR ln_parent_link_id=' . $ln_id : '') . ')' => null,
     ), array(), 0, 0, array(), 'COUNT(ln_id) as totals');
     if ($count_in_trs[0]['totals'] > 0) {
         //Show the link button:

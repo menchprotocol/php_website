@@ -145,7 +145,7 @@ class Intents extends CI_Controller
 
         //Log Intent Viewed by User:
         $this->Links_model->ln_create(array(
-            'ln_miner_entity_id' => ( isset($session_en['en_id']) ? intval($session_en['en_id']) : 0 ), //if user was available, they are logged as parent entity
+            'ln_creator_entity_id' => ( isset($session_en['en_id']) ? intval($session_en['en_id']) : 0 ), //if user was available, they are logged as parent entity
             'ln_type_entity_id' => 7610, //Intent Viewed by User
             'ln_parent_intent_id' => $in_id,
             'ln_order' => fetch_cookie_order('7610_'.$in_id),
@@ -253,7 +253,7 @@ class Intents extends CI_Controller
         $new_order = ( $this->session->userdata('user_session_count') + 1 );
         $this->session->set_userdata('user_session_count', $new_order);
         $this->Links_model->ln_create(array(
-            'ln_miner_entity_id' => $session_en['en_id'],
+            'ln_creator_entity_id' => $session_en['en_id'],
             'ln_type_entity_id' => 4993, //Miner Opened Intent
             'ln_child_intent_id' => $in_id,
             'ln_order' => $new_order,
@@ -465,7 +465,7 @@ class Intents extends CI_Controller
 
             //Count user Action Plan Progression Completed:
             $count_progression = $this->Links_model->ln_fetch(array(
-                'ln_miner_entity_id' => $apu['en_id'],
+                'ln_creator_entity_id' => $apu['en_id'],
                 'ln_type_entity_id IN (' . join(',', $this->config->item('en_ids_6255')) . ')' => null, //User Steps Progress
             ), array(), 0, 0, array(), 'COUNT(ln_id) as totals');
 
@@ -474,7 +474,7 @@ class Intents extends CI_Controller
                 //Search "ZEEBRA" to find dependant code
 
                 //See if this user matches the applied filters:
-                if($in_filters['get_filter_user'] > 0 && $in_filters['get_filter_user'] != $apu['ln_miner_entity_id']){
+                if($in_filters['get_filter_user'] > 0 && $in_filters['get_filter_user'] != $apu['ln_creator_entity_id']){
                     $is_a_match = false;
                 } elseif($in_filters['get_filter_start'] > 0 && strtotime($apu['ln_timestamp']) < $in_filters['get_filter_start']){
                     $is_a_match = false;
@@ -824,7 +824,7 @@ class Intents extends CI_Controller
 
                         //Log recursive update:
                         $this->Links_model->ln_create(array(
-                            'ln_miner_entity_id' => $session_en['en_id'],
+                            'ln_creator_entity_id' => $session_en['en_id'],
                             'ln_type_entity_id' => 6226, //Intents Recursively Updated
                             'ln_parent_intent_id' => $_POST['in_id'],
                             'ln_content' => $update_message,
@@ -958,7 +958,7 @@ class Intents extends CI_Controller
 
                 //Also update the timestamp & new miner:
                 $ln_update['ln_timestamp'] = date("Y-m-d H:i:s");
-                $ln_update['ln_miner_entity_id'] = $session_en['en_id'];
+                $ln_update['ln_creator_entity_id'] = $session_en['en_id'];
 
                 //Update links:
                 $this->Links_model->ln_update($ln_id, $ln_update, $session_en['en_id']);
@@ -1167,7 +1167,7 @@ class Intents extends CI_Controller
         //Create Message:
         $ln = $this->Links_model->ln_create(array(
             'ln_status_entity_id' => 6176, //Link Published
-            'ln_miner_entity_id' => $session_en['en_id'],
+            'ln_creator_entity_id' => $session_en['en_id'],
             'ln_order' => 1 + $this->Links_model->ln_max_order(array(
                     'ln_status_entity_id IN (' . join(',', $this->config->item('en_ids_7360')) . ')' => null, //Link Statuses Active
                     'ln_type_entity_id' => intval($_POST['focus_ln_type_entity_id']),
@@ -1270,7 +1270,7 @@ class Intents extends CI_Controller
         //Create message:
         $ln = $this->Links_model->ln_create(array(
             'ln_status_entity_id' => 6176, //Link Published
-            'ln_miner_entity_id' => $session_en['en_id'],
+            'ln_creator_entity_id' => $session_en['en_id'],
             'ln_type_entity_id' => $_POST['focus_ln_type_entity_id'],
             'ln_parent_entity_id' => $cdn_status['cdn_en']['en_id'],
             'ln_child_intent_id' => intval($_POST['in_id']),

@@ -61,7 +61,7 @@ $uri_segment_2 = $this->uri->segment(2);
                                     <td style="width:40px;">
                                         <?= $this->config->item('system_icon') ?>
                                     </td>
-                                    <td class="<?= advance_mode() ?>">
+                                    <td>
                                         <input type="text" class="algolia_search" id="platform_search" data-lpignore="true"
                                                placeholder="<?= $en_all_7368[7256]['m_desc'] ?>">
                                     </td>
@@ -73,49 +73,54 @@ $uri_segment_2 = $this->uri->segment(2);
                     <div class="collapse navbar-collapse">
                         <ul class="nav navbar-nav navbar-main navbar-right">
 
+                            <!-- Dashboard -->
+                            <li class="<?= ($uri_segment_1 == 'dashboard' ? 'links-active' : 'links-inactive') ?>" data-toggle="tooltip" data-placement="left" title="<?= $en_all_7368[7161]['m_name'] ?>">
+                                <a href="/dashboard">
+                                    <?= $en_all_7368[7161]['m_icon'] .' ' . $en_all_7368[7161]['m_name'] ?>
+                                </a>
+                            </li>
 
-                            <!-- Core Miner Functions -->
+
+                            <!-- Core Objects -->
                             <li class="<?= ($uri_segment_1 == 'intents' ? 'intent-active' : 'intent-inactive') ?>">
                                 <a href="/intents/<?= $this->session->userdata('user_default_intent') ?>">
                                     <?= $en_all_7368[4535]['m_icon'] .' '. $en_all_7368[4535]['m_name'] ?>
                                 </a>
                             </li>
-                            <li class="<?= advance_mode().($uri_segment_1 == 'entities' ? 'entity-active' : 'entity-inactive') ?>">
+                            <li class="<?= ($uri_segment_1 == 'entities' ? 'entity-active' : 'entity-inactive') ?>">
                                 <a href="/entities/<?= $this->config->item('en_focus_id') ?>">
                                     <?= $en_all_7368[4536]['m_icon'] .' '. $en_all_7368[4536]['m_name'] ?>
                                 </a>
                             </li>
-                            <li class="<?= advance_mode().($uri_segment_1 == 'links' ? 'links-active' : 'links-inactive') ?>">
+                            <li class="<?= ($uri_segment_1 == 'links' ? 'links-active' : 'links-inactive') ?>">
                                 <a href="/links">
                                     <?= $en_all_7368[6205]['m_icon'] .' '. $en_all_7368[6205]['m_name'] ?>
                                 </a>
                             </li>
 
 
-                            <!-- List other Apps -->
-                            <li class="<?= advance_mode().($uri_segment_1 == 'dashboard' ? 'links-active' : 'links-inactive') ?>" data-toggle="tooltip" data-placement="left" title="<?= $en_all_7368[7161]['m_name'] ?>">
-                                <a href="/dashboard">
-                                    <?= $en_all_7368[7161]['m_icon'] ?>
-                                </a>
-                            </li>
-                            <li class="<?= advance_mode().($uri_segment_1 == 'Minerapp' ? 'links-active' : 'links-inactive') ?>" data-toggle="tooltip" data-placement="left" title="<?= $en_all_7368[6287]['m_name'] ?>">
-                                <a href="/miner_app/admin_tools">
-                                    <?= $en_all_7368[6287]['m_icon'] ?>
-                                </a>
-                            </li>
-                            <li class="<?= advance_mode() ?> links-inactive" data-toggle="tooltip" data-placement="left" title="<?= $en_all_7372[7369]['m_name'] ?>">
+                            <!-- User App -->
+                            <li class="links-inactive" data-toggle="tooltip" data-placement="left" title="<?= $en_all_7372[7369]['m_name'] ?>">
                                 <a href="/actionplan">
                                     <?= $en_all_7372[7369]['m_icon'] ?>
                                 </a>
                             </li>
 
+                            <!-- Admin Apps -->
+                            <li class="<?= advance_mode().($uri_segment_1 == 'Minerapp' ? 'links-active' : 'links-inactive') ?>" data-toggle="tooltip" data-placement="left" title="<?= $en_all_7368[6287]['m_name'] ?>">
+                                <a href="/miner_app/admin_tools">
+                                    <?= $en_all_7368[6287]['m_icon'] ?>
+                                </a>
+                            </li>
 
-                            <!-- Advance Mode & signout -->
+                            <!-- Advance Mode -->
                             <li class="links-inactive <?= ( en_auth(array(1308)) ? '' : ' hidden ' ) ?>" data-toggle="tooltip" data-placement="left" title="<?= $en_all_7368[5007]['m_name'] ?>">
                                 <a href="javascript:void(0)" onclick="toggle_advance(0)">
                                     <i class="<?= ( $this->session->userdata('advance_view_enabled')==1 ? 'fas fa-expand-arrows' : 'fal fa-expand-arrows ' ) ?> advance-icon"></i>
                                 </a>
                             </li>
+
+                            <!-- Signout -->
                             <li data-toggle="tooltip" data-placement="left" title="<?= $en_all_7368[7291]['m_name'] ?>">
                                 <a href="/signout">
                                     <?= $en_all_7368[7291]['m_icon'] ?>

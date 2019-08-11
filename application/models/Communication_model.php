@@ -49,7 +49,7 @@ class Communication_model extends CI_Model
                     $this->Links_model->ln_create(array(
                         'ln_content' => 'Intent subscriber missing Mench email',
                         'ln_type_entity_id' => 7504, //Admin Review Required
-                        'ln_miner_entity_id' => $insert_columns['ln_miner_entity_id'], //HERE
+                        'ln_creator_entity_id' => $insert_columns['ln_creator_entity_id'], //HERE
                         'ln_parent_entity_id' => $subscriber_en['en_id'],
                         'ln_child_intent_id' => $subscriber_en['ln_child_intent_id'],
                     ));
@@ -112,7 +112,7 @@ class Communication_model extends CI_Model
                 //Log emails sent:
                 $this->Links_model->ln_create(array(
                     'ln_type_entity_id' => 7702, //User Intent Subscription Update
-                    'ln_miner_entity_id' => $subscriber_en['en_id'],
+                    'ln_creator_entity_id' => $subscriber_en['en_id'],
                     'ln_metadata' => $dispatched_email, //Save a copy of email
                     'ln_parent_link_id' => $insert_columns['ln_id'], //Save link
 
@@ -179,7 +179,7 @@ class Communication_model extends CI_Model
             //Log Error Link:
             $this->Links_model->ln_create(array(
                 'ln_type_entity_id' => 4246, //Platform Bug Reports
-                'ln_miner_entity_id' => (isset($recipient_en['en_id']) ? $recipient_en['en_id'] : 0),
+                'ln_creator_entity_id' => (isset($recipient_en['en_id']) ? $recipient_en['en_id'] : 0),
                 'ln_content' => 'dispatch_validate_message() returned error [' . $msg_dispatching['message'] . '] for input message [' . $input_message . ']',
                 'ln_metadata' => array(
                     'input_message' => $input_message,
@@ -213,7 +213,7 @@ class Communication_model extends CI_Model
                         //Ooopsi, we did! Log error Transcation:
                         $this->Links_model->ln_create(array(
                             'ln_type_entity_id' => 4246, //Platform Bug Reports
-                            'ln_miner_entity_id' => (isset($recipient_en['en_id']) ? $recipient_en['en_id'] : 0),
+                            'ln_creator_entity_id' => (isset($recipient_en['en_id']) ? $recipient_en['en_id'] : 0),
                             'ln_content' => 'dispatch_message() failed to send message via Facebook Graph API. See Metadata log for more details.',
                             'ln_metadata' => array(
                                 'input_message' => $input_message,
@@ -248,7 +248,7 @@ class Communication_model extends CI_Model
                     'ln_status_entity_id' => ( $msg_dispatching['user_chat_channel']==3288 /* Mench on Chrome */ ? 6175 /* Link Drafting, so we dispatch later */ : 6176 /* Link Published */ ),
                     'ln_content' => $msg_dispatching['input_message'],
                     'ln_type_entity_id' => $output_message['message_type_en_id'],
-                    'ln_miner_entity_id' => $recipient_en['en_id'],
+                    'ln_creator_entity_id' => $recipient_en['en_id'],
                     'ln_parent_entity_id' => $msg_dispatching['ln_parent_entity_id'], //Might be set if message had a referenced entity
                     'ln_metadata' => array(
                         'input_message' => $input_message,
@@ -1027,7 +1027,7 @@ class Communication_model extends CI_Model
                         'quick_replies' => $quick_replies,
                     ),
                     'ln_type_entity_id' => 4246, //Platform Bug Reports
-                    'ln_miner_entity_id' => $recipient_en['en_id'],
+                    'ln_creator_entity_id' => $recipient_en['en_id'],
                     'ln_parent_entity_id' => $message_type_en_id,
                     'ln_child_intent_id' => $message_in_id,
                 ));
@@ -1136,7 +1136,7 @@ class Communication_model extends CI_Model
 
         //Fetch user's Action Plan Intents:
         $user_intents = $this->Links_model->ln_fetch(array(
-            'ln_miner_entity_id' => $en_id,
+            'ln_creator_entity_id' => $en_id,
             'ln_type_entity_id IN (' . join(',', $this->config->item('en_ids_7347')) . ')' => null, //Action Plan Intention Set
             'ln_status_entity_id IN (' . join(',', $this->config->item('en_ids_7364')) . ')' => null, //Link Statuses Incomplete
             'in_status_entity_id IN (' . join(',', $this->config->item('en_ids_7355')) . ')' => null, //Intent Statuses Public
@@ -1185,7 +1185,7 @@ class Communication_model extends CI_Model
 
                 //Log intent recommend recommendation:
                 $this->Links_model->ln_create(array(
-                    'ln_miner_entity_id' => $en_id,
+                    'ln_creator_entity_id' => $en_id,
                     'ln_parent_intent_id' => $in['in_id'],
                     'ln_type_entity_id' => 6969, //Action Plan Intention recommend
                 ));
@@ -1382,7 +1382,7 @@ class Communication_model extends CI_Model
                     'ln_id' => $ap_step_ln_id,
                     //Also validate other requirements:
                     'ln_type_entity_id' => 6144, //Action Plan Submit Requirements
-                    'ln_miner_entity_id' => $en['en_id'], //for this user
+                    'ln_creator_entity_id' => $en['en_id'], //for this user
                     'ln_status_entity_id IN (' . join(',', $this->config->item('en_ids_7364')) . ')' => null, //Link Statuses Incomplete
                     'in_status_entity_id IN (' . join(',', $this->config->item('en_ids_7355')) . ')' => null, //Intent Statuses Public
                 ), array('in_parent'));
@@ -1453,7 +1453,7 @@ class Communication_model extends CI_Model
                 //User wants to completely unsubscribe from Mench:
                 $removed_intents = 0;
                 foreach ($this->Links_model->ln_fetch(array(
-                    'ln_miner_entity_id' => $en['en_id'],
+                    'ln_creator_entity_id' => $en['en_id'],
                     'ln_type_entity_id IN (' . join(',', $this->config->item('en_ids_7347')) . ')' => null, //Action Plan Intention Set
                     'ln_status_entity_id IN (' . join(',', $this->config->item('en_ids_7364')) . ')' => null, //Link Statuses Incomplete
                 )) as $ln) {
@@ -1477,7 +1477,7 @@ class Communication_model extends CI_Model
 
                 //User wants to Remove a specific Action Plan, validate it:
                 $user_intents = $this->Links_model->ln_fetch(array(
-                    'ln_miner_entity_id' => $en['en_id'],
+                    'ln_creator_entity_id' => $en['en_id'],
                     'ln_type_entity_id IN (' . join(',', $this->config->item('en_ids_7347')) . ')' => null, //Action Plan Intention Set
                     'ln_status_entity_id IN (' . join(',', $this->config->item('en_ids_7364')) . ')' => null, //Link Statuses Incomplete
                     'ln_parent_intent_id' => $action_unsubscribe,
@@ -1499,7 +1499,7 @@ class Communication_model extends CI_Model
                 //Re-sort remaining Action Plan intentions:
                 foreach($this->Links_model->ln_fetch(array(
                     'ln_type_entity_id IN (' . join(',', $this->config->item('en_ids_7347')) . ')' => null, //Action Plan Intention Set
-                    'ln_miner_entity_id' => $en['en_id'], //Belongs to this User
+                    'ln_creator_entity_id' => $en['en_id'], //Belongs to this User
                     'ln_status_entity_id IN (' . join(',', $this->config->item('en_ids_7364')) . ')' => null, //Link Statuses Incomplete
                 ), array(), 0, 0, array('ln_order' => 'ASC')) as $count => $ln){
                     $this->Links_model->ln_update($ln['ln_id'], array(
@@ -1695,7 +1695,7 @@ class Communication_model extends CI_Model
 
             //Make sure intention has not already been added to user Action Plan:
             if (count($this->Links_model->ln_fetch(array(
-                    'ln_miner_entity_id' => $en['en_id'],
+                    'ln_creator_entity_id' => $en['en_id'],
                     'ln_type_entity_id IN (' . join(',', $this->config->item('en_ids_7347')) . ')' => null, //Action Plan Intention Set
                     'ln_status_entity_id IN (' . join(',', $this->config->item('en_ids_7364')) . ')' => null, //Link Statuses Incomplete
                     'ln_parent_intent_id' => $ins[0]['in_id'],
@@ -1759,7 +1759,7 @@ class Communication_model extends CI_Model
 
                 //Log as Action Plan Considered:
                 $this->Links_model->ln_create(array(
-                    'ln_miner_entity_id' => $en['en_id'],
+                    'ln_creator_entity_id' => $en['en_id'],
                     'ln_type_entity_id' => 6149, //Action Plan Intention Considered
                     'ln_parent_intent_id' => $ins[0]['in_id'],
                     'ln_content' => $overview_message, //A copy of their message
@@ -1890,7 +1890,7 @@ class Communication_model extends CI_Model
 
             //We should already have a link for question, so let's find and update it:
             $pending_answer_links = $this->Links_model->ln_fetch(array(
-                'ln_miner_entity_id' => $en['en_id'],
+                'ln_creator_entity_id' => $en['en_id'],
                 'ln_type_entity_id' => $progression_type_entity_id,
                 'ln_parent_intent_id' => $question_in_id,
                 'ln_status_entity_id IN (' . join(',', $this->config->item('en_ids_7364')) . ')' => null, //Link Statuses Incomplete
@@ -2010,7 +2010,7 @@ class Communication_model extends CI_Model
         if (in_array($fb_received_message, array('stats', 'stat', 'statistics'))) {
 
             $user_intents = $this->Links_model->ln_fetch(array(
-                'ln_miner_entity_id' => $en['en_id'],
+                'ln_creator_entity_id' => $en['en_id'],
                 'ln_type_entity_id IN (' . join(',', $this->config->item('en_ids_7347')) . ')' => null, //Action Plan Intention Set
                 'ln_status_entity_id IN (' . join(',', $this->config->item('en_ids_7364')) . ')' => null, //Link Statuses Incomplete
                 'in_status_entity_id IN (' . join(',', $this->config->item('en_ids_7355')) . ')' => null, //Intent Statuses Public
@@ -2062,7 +2062,7 @@ class Communication_model extends CI_Model
 
             //Log command trigger:
             $this->Links_model->ln_create(array(
-                'ln_miner_entity_id' => $en['en_id'],
+                'ln_creator_entity_id' => $en['en_id'],
                 'ln_type_entity_id' => 6556, //User Commanded Stats
                 'ln_content' => $message,
             ));
@@ -2074,7 +2074,7 @@ class Communication_model extends CI_Model
 
             //Log command trigger:
             $this->Links_model->ln_create(array(
-                'ln_miner_entity_id' => $en['en_id'],
+                'ln_creator_entity_id' => $en['en_id'],
                 'ln_type_entity_id' => 6559, //User Commanded Next
                 'ln_parent_intent_id' => $next_in_id,
             ));
@@ -2108,7 +2108,7 @@ class Communication_model extends CI_Model
 
             //Log command trigger:
             $this->Links_model->ln_create(array(
-                'ln_miner_entity_id' => $en['en_id'],
+                'ln_creator_entity_id' => $en['en_id'],
                 'ln_type_entity_id' => 6560, //User Commanded Skip
                 'ln_parent_intent_id' => $next_in_id,
             ));
@@ -2117,7 +2117,7 @@ class Communication_model extends CI_Model
 
             //List their Action Plan intentions and let user choose which one to unsubscribe:
             $user_intents = $this->Links_model->ln_fetch(array(
-                'ln_miner_entity_id' => $en['en_id'],
+                'ln_creator_entity_id' => $en['en_id'],
                 'ln_type_entity_id IN (' . join(',', $this->config->item('en_ids_7347')) . ')' => null, //Action Plan Intention Set
                 'ln_status_entity_id IN (' . join(',', $this->config->item('en_ids_7364')) . ')' => null, //Link Statuses Incomplete
                 'in_status_entity_id IN (' . join(',', $this->config->item('en_ids_7355')) . ')' => null, //Intent Statuses Public
@@ -2188,7 +2188,7 @@ class Communication_model extends CI_Model
 
             //Log command trigger:
             $this->Links_model->ln_create(array(
-                'ln_miner_entity_id' => $en['en_id'],
+                'ln_creator_entity_id' => $en['en_id'],
                 'ln_type_entity_id' => 6578, //User Text Commanded Stop
                 'ln_content' => $message,
                 'ln_metadata' => $quick_replies,
@@ -2256,7 +2256,7 @@ class Communication_model extends CI_Model
 
                 //Make sure not already in Action Plan:
                 if(count($this->Links_model->ln_fetch(array(
-                        'ln_miner_entity_id' => $en['en_id'],
+                        'ln_creator_entity_id' => $en['en_id'],
                         'ln_type_entity_id IN (' . join(',', $this->config->item('en_ids_7347')) . ')' => null, //Action Plan Intention Set
                         'ln_status_entity_id IN (' . join(',', $this->config->item('en_ids_7364')) . ')' => null, //Link Statuses Incomplete
                         'ln_parent_intent_id' => $alg['alg_obj_id'],
@@ -2290,7 +2290,7 @@ class Communication_model extends CI_Model
                     'input_data' => $master_command,
                     'output' => $search_results,
                 ),
-                'ln_miner_entity_id' => $en['en_id'], //user who searched
+                'ln_creator_entity_id' => $en['en_id'], //user who searched
                 'ln_type_entity_id' => 4275, //User Text Command I Want To
             ));
 
@@ -2343,7 +2343,7 @@ class Communication_model extends CI_Model
             //We could not match the user command to any other command...
             //Now try to fetch the last quick reply that the user received from us:
             $last_quick_replies = $this->Links_model->ln_fetch(array(
-                'ln_miner_entity_id' => $en['en_id'],
+                'ln_creator_entity_id' => $en['en_id'],
                 'ln_type_entity_id' => 6563, //User Received Quick Reply
             ), array(), 1);
 
@@ -2370,7 +2370,7 @@ class Communication_model extends CI_Model
                                     'ln_content' => 'digest_received_payload() for custom response ['.$fb_received_message.'] returned error ['.$quick_reply_results['message'].']',
                                     'ln_metadata' => $ln_metadata,
                                     'ln_type_entity_id' => 4246, //Platform Bug Reports
-                                    'ln_miner_entity_id' => $en['en_id'],
+                                    'ln_creator_entity_id' => $en['en_id'],
                                     'ln_parent_link_id' => $last_quick_replies[0]['ln_id'],
                                 ));
 
@@ -2378,7 +2378,7 @@ class Communication_model extends CI_Model
 
                                 //All good, log link:
                                 $this->Links_model->ln_create(array(
-                                    'ln_miner_entity_id' => $en['en_id'],
+                                    'ln_creator_entity_id' => $en['en_id'],
                                     'ln_type_entity_id' => 4460, //User Sent Answer
                                     'ln_parent_link_id' => $last_quick_replies[0]['ln_id'],
                                     'ln_content' => $fb_received_message,
@@ -2399,7 +2399,7 @@ class Communication_model extends CI_Model
             //Let's check to see if a Mench admin has not started a manual conversation with them via Facebook Inbox Chat:
             if (count($this->Links_model->ln_fetch(array(
                     'ln_order' => 1, //A HACK to identify messages sent from us via Facebook Page Inbox
-                    'ln_miner_entity_id' => $en['en_id'],
+                    'ln_creator_entity_id' => $en['en_id'],
                     'ln_type_entity_id IN (' . join(',', $this->config->item('en_ids_4280')) . ')' => null, //User Received Messages with Messenger
                     'ln_timestamp >=' => date("Y-m-d H:i:s", (time() - (1800))), //Messages sent from us less than 30 minutes ago
                 ), array(), 1)) > 0) {
@@ -2422,7 +2422,7 @@ class Communication_model extends CI_Model
 
             //Log link:
             $this->Links_model->ln_create(array(
-                'ln_miner_entity_id' => $en['en_id'], //User who initiated this message
+                'ln_creator_entity_id' => $en['en_id'], //User who initiated this message
                 'ln_content' => $fb_received_message,
                 'ln_type_entity_id' => 4287, //Log Unrecognizable Message Received
             ));

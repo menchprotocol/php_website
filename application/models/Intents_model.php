@@ -15,11 +15,11 @@ class Intents_model extends CI_Model
     }
 
 
-    function in_create($insert_columns, $external_sync = false, $ln_miner_entity_id = 0)
+    function in_create($insert_columns, $external_sync = false, $ln_creator_entity_id = 0)
     {
 
         //What is required to create a new intent?
-        if (detect_missing_columns($insert_columns, array('in_outcome', 'in_type_entity_id', 'in_status_entity_id', 'in_verb_entity_id'), $ln_miner_entity_id)) {
+        if (detect_missing_columns($insert_columns, array('in_outcome', 'in_type_entity_id', 'in_status_entity_id', 'in_verb_entity_id'), $ln_creator_entity_id)) {
             return false;
         }
 
@@ -33,7 +33,7 @@ class Intents_model extends CI_Model
 
         if ($insert_columns['in_id'] > 0) {
 
-            if ($ln_miner_entity_id > 0) {
+            if ($ln_creator_entity_id > 0) {
 
                 if($external_sync){
                     //Update Algolia:
@@ -42,7 +42,7 @@ class Intents_model extends CI_Model
 
                 //Log link new entity:
                 $this->Links_model->ln_create(array(
-                    'ln_miner_entity_id' => $ln_miner_entity_id,
+                    'ln_creator_entity_id' => $ln_creator_entity_id,
                     'ln_child_intent_id' => $insert_columns['in_id'],
                     'ln_type_entity_id' => 4250, //New Intent Created
                 ));
@@ -67,7 +67,7 @@ class Intents_model extends CI_Model
             $this->Links_model->ln_create(array(
                 'ln_content' => 'in_create() failed to create a new intent',
                 'ln_type_entity_id' => 4246, //Platform Bug Reports
-                'ln_miner_entity_id' => $ln_miner_entity_id,
+                'ln_creator_entity_id' => $ln_creator_entity_id,
                 'ln_metadata' => $insert_columns,
             ));
             return false;
@@ -159,7 +159,7 @@ class Intents_model extends CI_Model
         return $ins;
     }
 
-    function in_update($id, $update_columns, $external_sync = false, $ln_miner_entity_id = 0)
+    function in_update($id, $update_columns, $external_sync = false, $ln_creator_entity_id = 0)
     {
 
         if (count($update_columns) == 0) {
@@ -167,7 +167,7 @@ class Intents_model extends CI_Model
         }
 
         //Fetch current intent filed values so we can compare later on after we've updated it:
-        if($ln_miner_entity_id > 0){
+        if($ln_creator_entity_id > 0){
             $before_data = $this->Intents_model->in_fetch(array('in_id' => $id));
         }
 
@@ -182,7 +182,7 @@ class Intents_model extends CI_Model
         $affected_rows = $this->db->affected_rows();
 
         //Do we need to do any additional work?
-        if ($affected_rows > 0 && $ln_miner_entity_id > 0) {
+        if ($affected_rows > 0 && $ln_creator_entity_id > 0) {
 
             //Note that unlike entity modification, we require a miner entity ID to log the modification link:
             //Log modification link for every field changed:
@@ -195,7 +195,7 @@ class Intents_model extends CI_Model
 
                     //Value has changed, log link:
                     $this->Links_model->ln_create(array(
-                        'ln_miner_entity_id' => $ln_miner_entity_id,
+                        'ln_creator_entity_id' => $ln_creator_entity_id,
                         'ln_type_entity_id' => 4264, //Intent Attribute Modified
                         'ln_child_intent_id' => $id,
                         'ln_content' => echo_clean_db_name($key) . ' changed from "' . ( in_array($key , array('in_status_entity_id')) ? $en_all_4737[$before_data[0][$key]]['m_name']  : $before_data[0][$key] ) . '" to "' . ( in_array($key , array('in_status_entity_id')) ? $en_all_4737[$value]['m_name'] : $value ) . '"',
@@ -222,7 +222,7 @@ class Intents_model extends CI_Model
             $this->Links_model->ln_create(array(
                 'ln_child_intent_id' => $id,
                 'ln_type_entity_id' => 4246, //Platform Bug Reports
-                'ln_miner_entity_id' => $ln_miner_entity_id,
+                'ln_creator_entity_id' => $ln_creator_entity_id,
                 'ln_content' => 'in_update() Failed to update',
                 'ln_metadata' => array(
                     'input' => $update_columns,
@@ -234,7 +234,7 @@ class Intents_model extends CI_Model
         return $affected_rows;
     }
 
-    function in_unlink($in_id, $ln_miner_entity_id = 0){
+    function in_unlink($in_id, $ln_creator_entity_id = 0){
 
         //Remove intent relations:
         $intent_remove_links = array_merge(
@@ -255,14 +255,14 @@ class Intents_model extends CI_Model
             //Remove this link:
             $links_removed += $this->Links_model->ln_update($ln['ln_id'], array(
                 'ln_status_entity_id' => 6173, //Link Removed
-            ), $ln_miner_entity_id);
+            ), $ln_creator_entity_id);
         }
 
         //Return links removed:
         return $links_removed;
     }
 
-    function in_link_or_create($in_linked_id, $is_parent, $in_outcome, $ln_miner_entity_id, $new_in_status = 6183 /* Intent New */, $in_type_entity_id = 6677 /* AND Got It */, $link_in_id = 0, $next_level = 0)
+    function in_link_or_create($in_linked_id, $is_parent, $in_outcome, $ln_creator_entity_id, $new_in_status = 6183 /* Intent New */, $in_type_entity_id = 6677 /* AND Got It */, $link_in_id = 0, $next_level = 0)
     {
 
         /*
@@ -373,7 +373,7 @@ class Intents_model extends CI_Model
 
 
             //Validate Intent Outcome:
-            $in_outcome_validation = $this->Intents_model->in_validate_outcome($in_outcome, $ln_miner_entity_id);
+            $in_outcome_validation = $this->Intents_model->in_validate_outcome($in_outcome, $ln_creator_entity_id);
             if(!$in_outcome_validation['status']){
                 //We had an error, return it:
                 return $in_outcome_validation;
@@ -386,14 +386,14 @@ class Intents_model extends CI_Model
                 'in_verb_entity_id' => $in_outcome_validation['detected_verb_entity_id'],
                 'in_type_entity_id' => $in_type_entity_id,
                 'in_status_entity_id' => $new_in_status,
-            ), true, $ln_miner_entity_id);
+            ), true, $ln_creator_entity_id);
 
         }
 
 
         //Create Intent Link:
         $relation = $this->Links_model->ln_create(array(
-            'ln_miner_entity_id' => $ln_miner_entity_id,
+            'ln_creator_entity_id' => $ln_creator_entity_id,
             'ln_type_entity_id' => 4228, //Intent Link Regular Step
             ( $is_parent ? 'ln_child_intent_id' : 'ln_parent_intent_id' ) => $in_linked_id,
             ( $is_parent ? 'ln_parent_intent_id' : 'ln_child_intent_id' ) => $intent_new['in_id'],
@@ -412,12 +412,12 @@ class Intents_model extends CI_Model
         }
 
         //Add Up-Vote if not yet added for this miner:
-        if($ln_miner_entity_id > 0){
+        if($ln_creator_entity_id > 0){
 
             $ln_miner_upvotes = $this->Links_model->ln_fetch(array(
                 ( $is_parent ? 'ln_child_intent_id' : 'ln_parent_intent_id' ) => $in_linked_id,
                 ( $is_parent ? 'ln_parent_intent_id' : 'ln_child_intent_id' ) => $intent_new['in_id'],
-                'ln_parent_entity_id' => $ln_miner_entity_id,
+                'ln_parent_entity_id' => $ln_creator_entity_id,
                 'ln_type_entity_id' => 4983, //Up-votes
                 'ln_status_entity_id IN (' . join(',', $this->config->item('en_ids_7360')) . ')' => null, //Link Statuses Active
             ));
@@ -426,10 +426,10 @@ class Intents_model extends CI_Model
                 //Add new up-vote
                 //No need to sync external sources via ln_create()
                 $up_vote = $this->Links_model->ln_create(array(
-                    'ln_miner_entity_id' => $ln_miner_entity_id,
-                    'ln_parent_entity_id' => $ln_miner_entity_id,
+                    'ln_creator_entity_id' => $ln_creator_entity_id,
+                    'ln_parent_entity_id' => $ln_creator_entity_id,
                     'ln_type_entity_id' => 4983, //Up-votes
-                    'ln_content' => '@'.$ln_miner_entity_id.' #'.( $is_parent ? $intent_new['in_id'] : $in_linked_id ), //Message content
+                    'ln_content' => '@'.$ln_creator_entity_id.' #'.( $is_parent ? $intent_new['in_id'] : $in_linked_id ), //Message content
                     ( $is_parent ? 'ln_child_intent_id' : 'ln_parent_intent_id' ) => $in_linked_id,
                     ( $is_parent ? 'ln_parent_intent_id' : 'ln_child_intent_id' ) => $intent_new['in_id'],
                 ));
@@ -1021,7 +1021,7 @@ class Intents_model extends CI_Model
 
     }
 
-    function in_force_verb_creation($in_outcome, $ln_miner_entity_id = 0){
+    function in_force_verb_creation($in_outcome, $ln_creator_entity_id = 0){
 
         //Fetch related variables:
         $outcome_words = explode(' ', $in_outcome);
@@ -1075,11 +1075,11 @@ class Intents_model extends CI_Model
         if(!$in_verb_entity_id){
 
             //Add and link verb:
-            $added_en = $this->Entities_model->en_verify_create(ucwords(strtolower($starting_verb)), $ln_miner_entity_id, false, 6181);
+            $added_en = $this->Entities_model->en_verify_create(ucwords(strtolower($starting_verb)), $ln_creator_entity_id, false, 6181);
 
             //Link to supported verbs:
             $this->Links_model->ln_create(array(
-                'ln_miner_entity_id' => $ln_miner_entity_id,
+                'ln_creator_entity_id' => $ln_creator_entity_id,
                 'ln_status_entity_id' => 6176, //Link Published
                 'ln_type_entity_id' => 4230, //Raw
                 'ln_parent_entity_id' => 5008, //Intent Supported Verbs
@@ -1101,7 +1101,7 @@ class Intents_model extends CI_Model
     }
 
 
-    function in_validate_outcome($in_outcome, $ln_miner_entity_id = 0, $skip_in_id = 0){
+    function in_validate_outcome($in_outcome, $ln_creator_entity_id = 0, $skip_in_id = 0){
 
         //Assign verb variables:
         $in_verb_entity_id = in_outcome_verb_id($in_outcome);
@@ -1145,7 +1145,7 @@ class Intents_model extends CI_Model
         } elseif(substr_count($in_outcome , '/force') > 0){
 
             //Force command detected, pass it on to the force function:
-            $force_outcome = $this->Intents_model->in_force_verb_creation($in_outcome, $ln_miner_entity_id);
+            $force_outcome = $this->Intents_model->in_force_verb_creation($in_outcome, $ln_creator_entity_id);
 
             if(!$force_outcome['status']){
                 //We had some errors in outcome structure:

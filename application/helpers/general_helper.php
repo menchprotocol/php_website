@@ -35,7 +35,7 @@ function load_algolia($index_name)
     }
 }
 
-function detect_missing_columns($insert_columns, $required_columns, $ln_miner_entity_id)
+function detect_missing_columns($insert_columns, $required_columns, $ln_creator_entity_id)
 {
     //A function used to review and require certain fields when inserting new rows in DB
     foreach ($required_columns as $req_field) {
@@ -49,7 +49,7 @@ function detect_missing_columns($insert_columns, $required_columns, $ln_miner_en
                     'required_columns' => $required_columns,
                 ),
                 'ln_type_entity_id' => 4246, //Platform Bug Reports
-                'ln_miner_entity_id' => $ln_miner_entity_id,
+                'ln_creator_entity_id' => $ln_creator_entity_id,
             ));
 
             return true; //We have an issue
@@ -508,7 +508,7 @@ function common_prefix($in__children, $max_look = 0){
     return trim($common_prefix);
 }
 
-function upload_to_cdn($file_url, $ln_miner_entity_id = 0, $ln_metadata = null, $is_local = false, $page_title = null)
+function upload_to_cdn($file_url, $ln_creator_entity_id = 0, $ln_metadata = null, $is_local = false, $page_title = null)
 {
 
     /*
@@ -566,7 +566,7 @@ function upload_to_cdn($file_url, $ln_miner_entity_id = 0, $ln_metadata = null, 
             //Define new URL:
             $cdn_new_url = trim($result['ObjectURL']);
 
-            if($ln_miner_entity_id < 1){
+            if($ln_creator_entity_id < 1){
                 //Just return URL:
                 return array(
                     'status' => 1,
@@ -575,7 +575,7 @@ function upload_to_cdn($file_url, $ln_miner_entity_id = 0, $ln_metadata = null, 
             }
 
             //Create and link new entity to CDN and uploader:
-            $url_entity = $CI->Entities_model->en_sync_url($cdn_new_url, $ln_miner_entity_id, array(4396 /* Mench CDN Entity */, $ln_miner_entity_id), 0, $page_title);
+            $url_entity = $CI->Entities_model->en_sync_url($cdn_new_url, $ln_creator_entity_id, array(4396 /* Mench CDN Entity */, $ln_creator_entity_id), 0, $page_title);
 
             if(isset($url_entity['en_url']['en_id']) && $url_entity['en_url']['en_id'] > 0){
 
@@ -590,7 +590,7 @@ function upload_to_cdn($file_url, $ln_miner_entity_id = 0, $ln_metadata = null, 
 
                 $CI->Links_model->ln_create(array(
                     'ln_type_entity_id' => 4246, //Platform Bug Reports
-                    'ln_miner_entity_id' => $ln_miner_entity_id,
+                    'ln_creator_entity_id' => $ln_creator_entity_id,
                     'ln_content' => 'upload_to_cdn() Failed to create new entity from CDN file',
                     'ln_metadata' => array(
                         'file_url' => $file_url,
@@ -609,7 +609,7 @@ function upload_to_cdn($file_url, $ln_miner_entity_id = 0, $ln_metadata = null, 
 
             $CI->Links_model->ln_create(array(
                 'ln_type_entity_id' => 4246, //Platform Bug Reports
-                'ln_miner_entity_id' => $ln_miner_entity_id,
+                'ln_creator_entity_id' => $ln_creator_entity_id,
                 'ln_content' => 'upload_to_cdn() Failed to upload file to Mench CDN',
                 'ln_metadata' => array(
                     'file_url' => $file_url,
@@ -630,7 +630,7 @@ function upload_to_cdn($file_url, $ln_miner_entity_id = 0, $ln_metadata = null, 
         //Log error:
         $CI->Links_model->ln_create(array(
             'ln_type_entity_id' => 4246, //Platform Bug Reports
-            'ln_miner_entity_id' => $ln_miner_entity_id,
+            'ln_creator_entity_id' => $ln_creator_entity_id,
             'ln_content' => 'upload_to_cdn() Failed to load AWS S3 module',
             'ln_metadata' => array(
                 'file_url' => $file_url,
@@ -810,8 +810,8 @@ function in_get_filters($return_get_filter_options = false){
             //All good, apply filter:
             $in_filters['get_filter_user'] = $filter_en_id; //Search "ZEEBRA" to find dependant code
             $in_filters['get_filter_url'] .= '?filter_user='.$_GET['filter_user'];
-            $in_filters['get_filter_links_url'] .= '&ln_miner_entity_id='.$filter_en_id;
-            $in_filters['get_filter_query']['ln_miner_entity_id'] = $in_filters['get_filter_user'];
+            $in_filters['get_filter_links_url'] .= '&ln_creator_entity_id='.$filter_en_id;
+            $in_filters['get_filter_query']['ln_creator_entity_id'] = $in_filters['get_filter_user'];
         }
     }
 
@@ -1211,7 +1211,7 @@ function fetch_credits($ln_type_entity_id){
     }
 }
 
-function update_metadata($obj_type, $obj_id, $new_fields, $ln_miner_entity_id = 0)
+function update_metadata($obj_type, $obj_id, $new_fields, $ln_creator_entity_id = 0)
 {
 
     $CI =& get_instance();
@@ -1288,19 +1288,19 @@ function update_metadata($obj_type, $obj_id, $new_fields, $ln_miner_entity_id = 
 
         $affected_rows = $CI->Intents_model->in_update($obj_id, array(
             'in_metadata' => $metadata,
-        ), ( $ln_miner_entity_id > 0 ), $ln_miner_entity_id);
+        ), ( $ln_creator_entity_id > 0 ), $ln_creator_entity_id);
 
     } elseif ($obj_type == 'en') {
 
         $affected_rows = $CI->Entities_model->en_update($obj_id, array(
             'en_metadata' => $metadata,
-        ), ( $ln_miner_entity_id > 0 ), $ln_miner_entity_id);
+        ), ( $ln_creator_entity_id > 0 ), $ln_creator_entity_id);
 
     } elseif ($obj_type == 'ln') {
 
         $affected_rows = $CI->Links_model->ln_update($obj_id, array(
             'ln_metadata' => $metadata,
-        ), $ln_miner_entity_id);
+        ), $ln_creator_entity_id);
 
     }
 

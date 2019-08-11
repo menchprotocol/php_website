@@ -94,7 +94,7 @@ class Entities extends CI_Controller
             $new_order = ( $this->session->userdata('user_session_count') + 1 );
             $this->session->set_userdata('user_session_count', $new_order);
             $this->Links_model->ln_create(array(
-                'ln_miner_entity_id' => $session_en['en_id'],
+                'ln_creator_entity_id' => $session_en['en_id'],
                 'ln_type_entity_id' => 4994, //Miner Opened Entity
                 'ln_child_entity_id' => $en_id,
                 'ln_order' => $new_order,
@@ -403,7 +403,7 @@ class Entities extends CI_Controller
 
             // Link to new OR existing entity:
             $ur2 = $this->Links_model->ln_create(array(
-                'ln_miner_entity_id' => $session_en['en_id'],
+                'ln_creator_entity_id' => $session_en['en_id'],
                 'ln_type_entity_id' => $ln_type_entity_id,
                 'ln_content' => $ln_content,
                 'ln_child_entity_id' => $ln_child_entity_id,
@@ -537,7 +537,7 @@ class Entities extends CI_Controller
 
             //Make sure entity is not referenced in key DB reference fields:
             $en_miners = $this->Links_model->ln_fetch(array(
-                'ln_miner_entity_id' => $_POST['en_id'],
+                'ln_creator_entity_id' => $_POST['en_id'],
             ), array(), 0, 0, array(), 'COUNT(ln_id) as totals');
             $en_link_types = $this->Links_model->ln_fetch(array(
                 'ln_type_entity_id' => $_POST['en_id'],
@@ -774,7 +774,7 @@ class Entities extends CI_Controller
                     'ln_type_entity_id' => $js_ln_type_entity_id,
                     'ln_status_entity_id' => intval($_POST['ln_status_entity_id']),
                     //Auto append timestamp and most recent miner:
-                    'ln_miner_entity_id' => $session_en['en_id'],
+                    'ln_creator_entity_id' => $session_en['en_id'],
                     'ln_timestamp' => date("Y-m-d H:i:s"),
                 ), $session_en['en_id']);
 
@@ -1118,7 +1118,7 @@ class Entities extends CI_Controller
                 //Add contributor to People or Organizations entity:
                 $this->Links_model->ln_create(array(
                     'ln_status_entity_id' => 6176, //Link Published
-                    'ln_miner_entity_id' => $session_en['en_id'],
+                    'ln_creator_entity_id' => $session_en['en_id'],
                     'ln_type_entity_id' => 4230, //Raw
                     'ln_parent_entity_id' => $_POST['entity_parent_id_' . $contributor_num], //People or Organizations
                     'ln_child_entity_id' => $sync_contributor['en_url']['en_id'],
@@ -1130,7 +1130,7 @@ class Entities extends CI_Controller
                     //Add contributor to industry experts:
                     $this->Links_model->ln_create(array(
                         'ln_status_entity_id' => 6176, //Link Published
-                        'ln_miner_entity_id' => $session_en['en_id'],
+                        'ln_creator_entity_id' => $session_en['en_id'],
                         'ln_content' => trim($_POST['why_expert_' . $contributor_num]),
                         'ln_type_entity_id' => $detected_ln_type['ln_type_entity_id'],
                         'ln_parent_entity_id' => 3084, //Industry Experts
@@ -1173,7 +1173,7 @@ class Entities extends CI_Controller
             //Insert new relation:
             $this->Links_model->ln_create(array(
                 'ln_status_entity_id' => 6176, //Link Published
-                'ln_miner_entity_id' => $session_en['en_id'],
+                'ln_creator_entity_id' => $session_en['en_id'],
                 'ln_child_entity_id' => $url_entity['en_url']['en_id'],
                 'ln_parent_entity_id' => $this_parent_en['this_parent_en_id'],
                 'ln_type_entity_id' => $this_parent_en['this_parent_en_type'],
@@ -1254,7 +1254,7 @@ class Entities extends CI_Controller
 
             //Mining credits:
             $en_miner_credits = $this->Links_model->ln_fetch(array(
-                'ln_miner_entity_id' => $en['en_id'],
+                'ln_creator_entity_id' => $en['en_id'],
                 'ln_status_entity_id IN (' . join(',', $this->config->item('en_ids_7360')) . ')' => null, //Link Statuses Active
             ), array(), 0, 0, array(), 'SUM(ln_credits) as total_credits');
             $score += $en_miner_credits[0]['total_credits'] * $score_weights['score_miner_credits'];

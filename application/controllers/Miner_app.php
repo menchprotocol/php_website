@@ -146,7 +146,7 @@ class Miner_app extends CI_Controller
             if(($count+1)==$show_max_verbs){
                 //Show expand button:
                 echo '<tr class="hiddenverbs">';
-                echo '<td style="text-align: left;" colspan="2"><span style="width:29px; display: inline-block; text-align: center;"><i class="fas fa-plus-circle"></i></span><a href="javascript:void(0);" onclick="$(\'.hiddenverbs\').toggleClass(\'hidden\')">See All '.echo_number(count($in_verbs)).' '.$en_all_7302[5008]['m_name'].'</a></td>';
+                echo '<td style="text-align: left;" colspan="2"><span style="width:29px; display: inline-block; text-align: center;"><i class="fas fa-plus-circle"></i></span><a href="javascript:void(0);" onclick="$(\'.hiddenverbs\').toggleClass(\'hidden\')">See All '.echo_number(count($in_verbs)).' '.$en_all_7302[5008]['m_name'].echo__s(count($in_verbs)).'</a></td>';
                 echo '</tr>';
                 //To keep stripe color in balance
                 echo '<tr class="hidden"><td style="text-align: left;" colspan="2"></td></tr>';
@@ -326,14 +326,14 @@ class Miner_app extends CI_Controller
         $top = 10;
         $filters = array(
             'ln_credits >' => 0,
-            'ln_miner_entity_id >' => 0, //Must have a miner
-            'ln_miner_entity_id IN ('.join(',', $certified_miners_en_ids).')' => null,
+            'ln_creator_entity_id >' => 0, //Must have a miner
+            'ln_creator_entity_id IN ('.join(',', $certified_miners_en_ids).')' => null,
         );
         if(!is_null($days_ago)){
             $start_date = date("Y-m-d" , (time() - ($days_ago * 24 * 3600)));
             $filters['ln_timestamp >='] = $start_date.' 00:00:00'; //From beginning of the day
         }
-        $top_users = $this->Links_model->ln_fetch($filters, array('en_miner'), $top, 0, array('credits_sum' => 'DESC'), 'COUNT(ln_miner_entity_id) as trs_count, SUM(ln_credits) as credits_sum, en_name, en_icon, ln_miner_entity_id', 'ln_miner_entity_id, en_name, en_icon');
+        $top_users = $this->Links_model->ln_fetch($filters, array('en_miner'), $top, 0, array('credits_sum' => 'DESC'), 'COUNT(ln_creator_entity_id) as trs_count, SUM(ln_credits) as credits_sum, en_name, en_icon, ln_creator_entity_id', 'ln_creator_entity_id, en_name, en_icon');
 
         if(count($top_users) < $top){
             $top = count($top_users);
@@ -349,9 +349,9 @@ class Miner_app extends CI_Controller
         foreach ($top_users as $count=>$ln) {
             echo '<tr>';
 
-            echo '<td style="text-align: left;"><span class="parent-icon" style="width: 29px; display: inline-block; text-align: center;">'.echo_en_icon($ln).'</span><a href="/entities/'.$ln['ln_miner_entity_id'].'">'.one_two_explode('',' ', $ln['en_name']).'</a> '.echo_rank($count+1).'</td>';
+            echo '<td style="text-align: left;"><span class="parent-icon" style="width: 29px; display: inline-block; text-align: center;">'.echo_en_icon($ln).'</span><a href="/entities/'.$ln['ln_creator_entity_id'].'">'.one_two_explode('',' ', $ln['en_name']).'</a> '.echo_rank($count+1).'</td>';
 
-            echo '<td style="text-align: right;"><a href="/links?ln_miner_entity_id='.$ln['ln_miner_entity_id'].( is_null($days_ago) ? '' : '&start_range='.$start_date ).'">'.echo_number($ln['credits_sum'], 1).'</a><i class="fal fa-info-circle icon-block" data-toggle="tooltip" title="'.$ln['en_name'].' earned '.number_format($ln['credits_sum'], 0).' credits with '.number_format($ln['trs_count'],0).' links ['.$days_term.'] averaging '.round(($ln['credits_sum']/$ln['trs_count']),1).' credits/link" data-placement="top"></i></td>';
+            echo '<td style="text-align: right;"><a href="/links?ln_creator_entity_id='.$ln['ln_creator_entity_id'].( is_null($days_ago) ? '' : '&start_range='.$start_date ).'">'.echo_number($ln['credits_sum'], 1).'</a><i class="fal fa-info-circle icon-block" data-toggle="tooltip" title="'.$ln['en_name'].' earned '.number_format($ln['credits_sum'], 0).' credits with '.number_format($ln['trs_count'],0).' links ['.$days_term.'] averaging '.round(($ln['credits_sum']/$ln['trs_count']),1).' credits/link" data-placement="top"></i></td>';
 
             echo '</tr>';
         }
@@ -365,14 +365,14 @@ class Miner_app extends CI_Controller
         $top = 10;
         $filters = array(
             'ln_credits >' => 0,
-            'ln_miner_entity_id >' => 0, //Must have a miner
-            'ln_miner_entity_id NOT IN ('.join(',', $certified_miners_en_ids).')' => null,
+            'ln_creator_entity_id >' => 0, //Must have a miner
+            'ln_creator_entity_id NOT IN ('.join(',', $certified_miners_en_ids).')' => null,
         );
         if(!is_null($days_ago)){
             $start_date = date("Y-m-d" , (time() - ($days_ago * 24 * 3600)));
             $filters['ln_timestamp >='] = $start_date.' 00:00:00'; //From beginning of the day
         }
-        $top_users = $this->Links_model->ln_fetch($filters, array('en_miner'), $top, 0, array('credits_sum' => 'DESC'), 'COUNT(ln_miner_entity_id) as trs_count, SUM(ln_credits) as credits_sum, en_name, en_icon, ln_miner_entity_id', 'ln_miner_entity_id, en_name, en_icon');
+        $top_users = $this->Links_model->ln_fetch($filters, array('en_miner'), $top, 0, array('credits_sum' => 'DESC'), 'COUNT(ln_creator_entity_id) as trs_count, SUM(ln_credits) as credits_sum, en_name, en_icon, ln_creator_entity_id', 'ln_creator_entity_id, en_name, en_icon');
 
         if(count($top_users) < $top){
             $top = count($top_users);
@@ -387,8 +387,8 @@ class Miner_app extends CI_Controller
 
         foreach ($top_users as $count=>$ln) {
             echo '<tr>';
-            echo '<td style="text-align: left;"><span class="parent-icon icon-block">'.echo_en_icon($ln).'</span><a href="/entities/'.$ln['ln_miner_entity_id'].'">'.one_two_explode('',' ',$ln['en_name']).'</a> '.echo_rank($count+1).'</td>';
-            echo '<td style="text-align: right;"><a href="/links?ln_miner_entity_id='.$ln['ln_miner_entity_id'].( is_null($days_ago) ? '' : '&start_range='.$start_date ).'">'.echo_number($ln['credits_sum'], 1).'</a><i class="fal fa-info-circle icon-block" data-toggle="tooltip" title="'.$ln['en_name'].' earned '.number_format($ln['credits_sum'], 0).' credits with '.number_format($ln['trs_count'],0).' links ['.$days_term.'] averaging '.round(($ln['credits_sum']/$ln['trs_count']),1).' credits/link" data-placement="top"></i></td>';
+            echo '<td style="text-align: left;"><span class="parent-icon icon-block">'.echo_en_icon($ln).'</span><a href="/entities/'.$ln['ln_creator_entity_id'].'">'.one_two_explode('',' ',$ln['en_name']).'</a> '.echo_rank($count+1).'</td>';
+            echo '<td style="text-align: right;"><a href="/links?ln_creator_entity_id='.$ln['ln_creator_entity_id'].( is_null($days_ago) ? '' : '&start_range='.$start_date ).'">'.echo_number($ln['credits_sum'], 1).'</a><i class="fal fa-info-circle icon-block" data-toggle="tooltip" title="'.$ln['en_name'].' earned '.number_format($ln['credits_sum'], 0).' credits with '.number_format($ln['trs_count'],0).' links ['.$days_term.'] averaging '.round(($ln['credits_sum']/$ln['trs_count']),1).' credits/link" data-placement="top"></i></td>';
             echo '</tr>';
         }
         echo '</table>';

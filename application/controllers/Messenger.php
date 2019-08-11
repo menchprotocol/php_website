@@ -221,7 +221,7 @@ class Messenger extends CI_Controller
                     //Log Link Only IF last delivery link was 3+ minutes ago (Since Facebook sends many of these):
                     $last_trs_logged = $this->Links_model->ln_fetch(array(
                         'ln_type_entity_id' => $ln_type_entity_id,
-                        'ln_miner_entity_id' => $en['en_id'],
+                        'ln_creator_entity_id' => $en['en_id'],
                         'ln_timestamp >=' => date("Y-m-d H:i:s", (time() - (60))), //Links logged less than 1 minutes ago
                     ), array(), 1);
 
@@ -230,7 +230,7 @@ class Messenger extends CI_Controller
                         $this->Links_model->ln_create(array(
                             'ln_metadata' => $ln_metadata,
                             'ln_type_entity_id' => $ln_type_entity_id,
-                            'ln_miner_entity_id' => $en['en_id'],
+                            'ln_creator_entity_id' => $en['en_id'],
                         ));
                     }
 
@@ -294,7 +294,7 @@ class Messenger extends CI_Controller
 
                     unset($ln_data); //Reset everything in case its set from the previous loop!
                     $ln_data = array(
-                        'ln_miner_entity_id' => $en['en_id'],
+                        'ln_creator_entity_id' => $en['en_id'],
                         'ln_metadata' => $ln_metadata, //Entire JSON object received by Facebook API
                         'ln_order' => ($sent_by_mench ? 1 : 0), //A HACK to identify messages sent from us via Facebook Page Inbox
                     );
@@ -328,7 +328,7 @@ class Messenger extends CI_Controller
                                 'ln_content' => 'digest_received_payload() for message returned error ['.$quick_reply_results['message'].']',
                                 'ln_metadata' => $ln_metadata,
                                 'ln_type_entity_id' => 4246, //Platform Bug Reports
-                                'ln_miner_entity_id' => $en['en_id'],
+                                'ln_creator_entity_id' => $en['en_id'],
                             ));
 
                         }
@@ -447,7 +447,7 @@ class Messenger extends CI_Controller
                                 $this->Links_model->ln_create(array(
                                     'ln_content' => 'api_webhook() received a message type that is not yet implemented: ['.$att['type'].']',
                                     'ln_type_entity_id' => 4246, //Platform Bug Reports
-                                    'ln_miner_entity_id' => $en['en_id'],
+                                    'ln_creator_entity_id' => $en['en_id'],
                                     'ln_metadata' => array(
                                         'ln_data' => $ln_data,
                                         'ln_metadata' => $ln_metadata,
@@ -470,7 +470,7 @@ class Messenger extends CI_Controller
                                 $this->Links_model->ln_create(array(
                                     'ln_content' => 'api_webhook() received a message type that is not yet implemented: ['.$att['type'].']',
                                     'ln_type_entity_id' => 4246, //Platform Bug Reports
-                                    'ln_miner_entity_id' => $en['en_id'],
+                                    'ln_creator_entity_id' => $en['en_id'],
                                     'ln_metadata' => array(
                                         'ln_data' => $ln_data,
                                         'ln_metadata' => $ln_metadata,
@@ -483,12 +483,12 @@ class Messenger extends CI_Controller
 
 
                     //So did we recognized the
-                    if (!isset($ln_data['ln_type_entity_id']) || !isset($ln_data['ln_miner_entity_id'])) {
+                    if (!isset($ln_data['ln_type_entity_id']) || !isset($ln_data['ln_creator_entity_id'])) {
 
                         //Ooooopsi, this seems to be an unknown message type:
                         $this->Links_model->ln_create(array(
                             'ln_type_entity_id' => 4246, //Platform Bug Reports
-                            'ln_miner_entity_id' => $en['en_id'],
+                            'ln_creator_entity_id' => $en['en_id'],
                             'ln_content' => 'facebook_webhook() Received unknown message type! Analyze metadata for more details',
                             'ln_metadata' => $ln_metadata,
                         ));
@@ -511,7 +511,7 @@ class Messenger extends CI_Controller
                         //Yes, see if we have a pending requirement submission:
                         foreach($this->Links_model->ln_fetch(array(
                             'ln_type_entity_id' => 6144, //Action Plan Submit Requirements
-                            'ln_miner_entity_id' => $ln_data['ln_miner_entity_id'], //for this user
+                            'ln_creator_entity_id' => $ln_data['ln_creator_entity_id'], //for this user
                             'ln_status_entity_id IN (' . join(',', $this->config->item('en_ids_7364')) . ')' => null, //Link Statuses Incomplete
                             'in_status_entity_id IN (' . join(',', $this->config->item('en_ids_7355')) . ')' => null, //Intent Statuses Public
                         ), array('in_parent'), 0) as $req_sub){
@@ -533,7 +533,7 @@ class Messenger extends CI_Controller
                                 $this->Links_model->ln_create(array(
                                     'ln_content' => 'api_webhook() found multiple matching submission requirements for the same user! Time to program the view with more options.',
                                     'ln_type_entity_id' => 4246, //Platform Bug Reports
-                                    'ln_miner_entity_id' => $en['en_id'],
+                                    'ln_creator_entity_id' => $en['en_id'],
                                     'ln_metadata' => array(
                                         'ln_data' => $ln_data,
                                         'pending_matches' => $pending_matches,
@@ -657,7 +657,7 @@ class Messenger extends CI_Controller
                         'ln_type_entity_id' => $ln_type_entity_id,
                         'ln_metadata' => $ln_metadata,
                         'ln_content' => $quick_reply_payload,
-                        'ln_miner_entity_id' => $en['en_id'],
+                        'ln_creator_entity_id' => $en['en_id'],
                     ));
 
                     //Digest quick reply Payload if any:
@@ -669,7 +669,7 @@ class Messenger extends CI_Controller
                                 'ln_content' => 'digest_received_payload() for postback/referral returned error ['.$quick_reply_results['message'].']',
                                 'ln_metadata' => $ln_metadata,
                                 'ln_type_entity_id' => 4246, //Platform Bug Reports
-                                'ln_miner_entity_id' => $en['en_id'],
+                                'ln_creator_entity_id' => $en['en_id'],
                             ));
 
                         }
@@ -707,7 +707,7 @@ class Messenger extends CI_Controller
                     $this->Links_model->ln_create(array(
                         'ln_metadata' => $ln_metadata,
                         'ln_type_entity_id' => 4266, //Messenger Optin
-                        'ln_miner_entity_id' => $en['en_id'],
+                        'ln_creator_entity_id' => $en['en_id'],
                     ));
 
                 } elseif (isset($im['message_request']) && $im['message_request'] == 'accept') {
@@ -719,7 +719,7 @@ class Messenger extends CI_Controller
                     $this->Links_model->ln_create(array(
                         'ln_metadata' => $ln_metadata,
                         'ln_type_entity_id' => 4577, //Message Request Accepted
-                        'ln_miner_entity_id' => $en['en_id'],
+                        'ln_creator_entity_id' => $en['en_id'],
                     ));
 
                 } else {
@@ -775,7 +775,7 @@ class Messenger extends CI_Controller
         foreach ($ln_pending as $ln) {
 
             //Store to CDN:
-            $cdn_status = upload_to_cdn($ln['ln_content'], $ln['ln_miner_entity_id'], $ln);
+            $cdn_status = upload_to_cdn($ln['ln_content'], $ln['ln_creator_entity_id'], $ln);
             if(!$cdn_status['status']){
                 continue;
             }
@@ -838,7 +838,7 @@ class Messenger extends CI_Controller
             }
 
             //Save photo to CDN:
-            $cdn_status = upload_to_cdn($ln['ln_content'], $ln['ln_miner_entity_id'], $ln, false, $ln['en_name'].' Profile Photo');
+            $cdn_status = upload_to_cdn($ln['ln_content'], $ln['ln_creator_entity_id'], $ln, false, $ln['en_name'].' Profile Photo');
             if (!$cdn_status['status']) {
                 continue;
             }

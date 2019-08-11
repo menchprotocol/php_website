@@ -88,12 +88,12 @@ if(isset($_GET['ln_status_entity_id']) && strlen($_GET['ln_status_entity_id']) >
     }
 }
 
-if(isset($_GET['ln_miner_entity_id']) && strlen($_GET['ln_miner_entity_id']) > 0){
-    if (substr_count($_GET['ln_miner_entity_id'], ',') > 0) {
+if(isset($_GET['ln_creator_entity_id']) && strlen($_GET['ln_creator_entity_id']) > 0){
+    if (substr_count($_GET['ln_creator_entity_id'], ',') > 0) {
         //This is multiple IDs:
-        $filters['( ln_miner_entity_id IN (' . $_GET['ln_miner_entity_id'] . '))'] = null;
-    } elseif (intval($_GET['ln_miner_entity_id']) > 0) {
-        $filters['ln_miner_entity_id'] = $_GET['ln_miner_entity_id'];
+        $filters['( ln_creator_entity_id IN (' . $_GET['ln_creator_entity_id'] . '))'] = null;
+    } elseif (intval($_GET['ln_creator_entity_id']) > 0) {
+        $filters['ln_creator_entity_id'] = $_GET['ln_creator_entity_id'];
     }
 }
 
@@ -156,9 +156,9 @@ if(isset($_GET['any_en_id']) && strlen($_GET['any_en_id']) > 0){
     //We need to look for both parent/child
     if (substr_count($_GET['any_en_id'], ',') > 0) {
         //This is multiple IDs:
-        $filters['( ln_child_entity_id IN (' . $_GET['any_en_id'] . ') OR ln_parent_entity_id IN (' . $_GET['any_en_id'] . ') OR ln_miner_entity_id IN (' . $_GET['any_en_id'] . ') ' . $parent_tr_filter . ' )'] = null;
+        $filters['( ln_child_entity_id IN (' . $_GET['any_en_id'] . ') OR ln_parent_entity_id IN (' . $_GET['any_en_id'] . ') OR ln_creator_entity_id IN (' . $_GET['any_en_id'] . ') ' . $parent_tr_filter . ' )'] = null;
     } elseif (intval($_GET['any_en_id']) > 0) {
-        $filters['( ln_child_entity_id = ' . $_GET['any_en_id'] . ' OR ln_parent_entity_id = ' . $_GET['any_en_id'] . ' OR ln_miner_entity_id = ' . $_GET['any_en_id'] . $parent_tr_filter . ' )'] = null;
+        $filters['( ln_child_entity_id = ' . $_GET['any_en_id'] . ' OR ln_parent_entity_id = ' . $_GET['any_en_id'] . ' OR ln_creator_entity_id = ' . $_GET['any_en_id'] . $parent_tr_filter . ' )'] = null;
     }
 }
 
@@ -283,7 +283,7 @@ echo '<div class="row">';
         echo '<input type="text" name="any_en_id" value="' . ((isset($_GET['any_en_id'])) ? $_GET['any_en_id'] : '') . '" class="form-control border">';
         echo '</div></td>';
 
-        echo '<td><span class="mini-header">Entity Miner IDs:</span><input type="text" name="ln_miner_entity_id" value="' . ((isset($_GET['ln_miner_entity_id'])) ? $_GET['ln_miner_entity_id'] : '') . '" class="form-control border"></td>';
+        echo '<td><span class="mini-header">Entity Miner IDs:</span><input type="text" name="ln_creator_entity_id" value="' . ((isset($_GET['ln_creator_entity_id'])) ? $_GET['ln_creator_entity_id'] : '') . '" class="form-control border"></td>';
 
         echo '<td><span class="mini-header">Entity Parent IDs:</span><input type="text" name="ln_parent_entity_id" value="' . ((isset($_GET['ln_parent_entity_id'])) ? $_GET['ln_parent_entity_id'] : '') . '" class="form-control border"></td>';
 
