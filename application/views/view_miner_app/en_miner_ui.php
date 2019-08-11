@@ -287,9 +287,7 @@
 
 
                             <!-- Entity Name -->
-                            <span class="mini-header" style="margin-top:20px;"><?= $en_all_6206[6197]['m_icon'].' '.$en_all_6206[6197]['m_name'] ?> [<span style="margin:0 0 10px 0;">
-                            <span id="charNameNum">0</span>/<?= $this->config->item('en_name_max_length') ?>
-                        </span>]</span>
+                            <span class="mini-header" style="margin-top:20px;"><?= $en_all_6206[6197]['m_icon'].' '.$en_all_6206[6197]['m_name'] ?> [<span style="margin:0 0 10px 0;"><span id="charNameNum">0</span>/<?= $this->config->item('en_name_max_length') ?></span>]</span>
                             <span class="white-wrapper">
                                 <textarea class="form-control text-edit border" id="en_name"
                                   onkeyup="en_name_word_count()" data-lpignore="true"
@@ -354,8 +352,7 @@
 
 
                                 <form class="drag-box" method="post" enctype="multipart/form-data">
-                                    <span class="mini-header" style="margin-top: 20px;"><?= $en_all_4341[4372]['m_icon'].' '.$en_all_4341[4372]['m_name'] ?> [<span style="margin:0 0 10px 0;">
-                                <span id="charln_contentNum">0</span>/<?= $this->config->item('messages_max_length') ?></span>]</span>
+                                    <span class="mini-header" style="margin-top: 20px;"><?= $en_all_4341[4372]['m_icon'].' '.$en_all_4341[4372]['m_name'] ?> [<span style="margin:0 0 10px 0;"><span id="charln_contentNum">0</span>/<?= $this->config->item('messages_max_length') ?></span>]</span>
                                     <span class="white-wrapper">
                                     <textarea class="form-control text-edit border" id="ln_content"
                                               maxlength="<?= $this->config->item('messages_max_length') ?>" data-lpignore="true"
