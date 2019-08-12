@@ -1883,13 +1883,13 @@ footer {
     border-right: 0 !important;
 }
 
-.intentadder-level-2-bottom, .intentadder-level-2-top {
+.intentadder-level-2-child, .intentadder-level-2-parent {
     height: 49px !important;
     font-weight: bold !important;
     font-size: 1em !important;
 }
 
-.intentadder-level-2-bottom::placeholder, .intentadder-level-2-top::placeholder {
+.intentadder-level-2-child::placeholder, .intentadder-level-2-parent::placeholder {
     font-size: 16px !important;
     font-family: Lato;
     line-height: 27px !important;

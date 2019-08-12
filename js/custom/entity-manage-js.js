@@ -1,5 +1,4 @@
-function en_load_search(focus_element, is_en_parent) {
-
+function en_load_search(focus_element, is_en_parent, shortcut) {
 
     $(focus_element + ' .new-input').focus(function() {
         $(focus_element + ' .algolia_search_pad' ).removeClass('hidden');
@@ -9,7 +8,7 @@ function en_load_search(focus_element, is_en_parent) {
 
         en_add_or_link(suggestion.alg_obj_id, is_en_parent);
 
-    }).autocomplete({hint: false, minLength: 2, keyboardShortcuts: ['a']}, [{
+    }).autocomplete({hint: false, minLength: 2, keyboardShortcuts: [shortcut]}, [{
 
         source: function (q, cb) {
             algolia_index.search(q, {
@@ -74,7 +73,7 @@ $(document).ready(function () {
 
         $(this).val('@' + suggestion.alg_obj_id + ' ' + suggestion.alg_obj_name);
 
-    }).autocomplete({hint: false, minLength: 2, keyboardShortcuts: ['a']}, [{
+    }).autocomplete({hint: false, minLength: 2}, [{
 
         source: function (q, cb) {
             algolia_index.search(q, {
@@ -171,8 +170,8 @@ $(document).ready(function () {
 
 
     //Loadup various search bars:
-    en_load_search("#new-parent", 1);
-    en_load_search("#new-children", 0);
+    en_load_search("#new-parent", 1, 'p');
+    en_load_search("#new-children", 0, 'c');
 
 
     //Watchout for file uplods:
@@ -365,7 +364,7 @@ function en_load_next_page(page, load_new_filter = 0) {
         if (load_new_filter) {
             $('#list-children').html(data + '<div id="new-children" class="list-group-item list_input grey-input">' + append_div + '</div>').hide().fadeIn();
             //Reset search engine:
-            en_load_search("#new-children", 0);
+            en_load_search("#new-children", 0, 'c');
         } else {
             //Update UI to confirm with user:
             $(data).insertBefore('#new-children');

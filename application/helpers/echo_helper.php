@@ -2187,7 +2187,7 @@ function echo_in($in, $level, $in_linked_id = 0, $is_parent = false)
         $ui .= '</div>';
 
         //Load JS search for this input:
-        $ui .= '<script> $(document).ready(function () { in_load_search(".intentadder-id-'.$in['in_id'].'", 0, 3); }); </script>';
+        $ui .= '<script> $(document).ready(function () { in_load_search(".intentadder-id-'.$in['in_id'].'", 0, 3, "'. $in['ln_order'] .'"); }); </script>';
 
         $ui .= '</div>';
     }

@@ -36,13 +36,13 @@ function prep_search_pad(){
     });
 
     //All level 2s:
-    $('.intentadder-level-2-top').focus(function() {
+    $('.intentadder-level-2-parent').focus(function() {
         $('.in_pad_top' ).removeClass('hidden');
     }).focusout(function() {
         $('.in_pad_top' ).addClass('hidden');
     });
 
-    $('.intentadder-level-2-bottom').focus(function() {
+    $('.intentadder-level-2-child').focus(function() {
         $('.in_pad_bottom' ).removeClass('hidden');
     }).focusout(function() {
         $('.in_pad_bottom' ).addClass('hidden');
@@ -67,7 +67,7 @@ function load_filters(){
 
         $(this).val('@' + suggestion.alg_obj_id + ' ' + suggestion.alg_obj_name);
 
-    }).autocomplete({hint: false, minLength: 2, keyboardShortcuts: ['a']}, [{
+    }).autocomplete({hint: false, minLength: 2}, [{
 
         source: function (q, cb) {
             algolia_index.search(q, {
@@ -99,8 +99,8 @@ function load_filters(){
 $(document).ready(function () {
 
     //Load top/bottom intent searches:
-    in_load_search(".intentadder-level-2-top",    1, 2);
-    in_load_search(".intentadder-level-2-bottom", 0, 2);
+    in_load_search(".intentadder-level-2-parent",1, 2, 'p');
+    in_load_search(".intentadder-level-2-child",0, 2, 'c');
 
     //Expand selections:
     prep_search_pad();
@@ -164,7 +164,7 @@ $(document).ready(function () {
 
 
 
-function in_load_search(focus_element, is_in_parent, next_in_level) {
+function in_load_search(focus_element, is_in_parent, next_in_level, shortcut) {
 
     //Loads the intent search bar only once for the add intent inputs
     if($(focus_element).hasClass('search-bar-loaded')){
@@ -177,7 +177,7 @@ function in_load_search(focus_element, is_in_parent, next_in_level) {
 
         in_link_or_create($(this).attr('intent-id'), is_in_parent, next_in_level, suggestion.alg_obj_id);
 
-    }).autocomplete({hint: false, minLength: 2, keyboardShortcuts: ['a']}, [{
+    }).autocomplete({hint: false, minLength: 2, keyboardShortcuts: [shortcut]}, [{
 
         source: function (q, cb) {
             algolia_index.search(q, {
@@ -427,7 +427,7 @@ function in_link_or_create(in_linked_id, is_parent, next_level, in_link_child_id
                 in_sort_load(data.new_in_id, 3);
 
                 //Load search again:
-                in_load_search(".intentadder-id-"+data.new_in_id, 0, 3);
+                in_load_search(".intentadder-id-"+data.new_in_id, 0, 3, 'n');
 
             } else if(!is_parent) {
 

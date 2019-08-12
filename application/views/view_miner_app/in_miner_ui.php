@@ -36,7 +36,7 @@ $in_filters = in_get_filters(true);
                 echo '<div class="list-group-item list_input grey-block">
                         <div class="form-group is-empty" style="margin: 0; padding: 0;">
                             <input type="text"
-                                   class="form-control intentadder-level-2-top algolia_search"
+                                   class="form-control intentadder-level-2-parent algolia_search"
                                    intent-id="' . $in['in_id'] . '"
                                    id="addintent-c-' . $in['in_id'] . '-1"
                                    placeholder="Add #Intent">
@@ -127,7 +127,7 @@ $in_filters = in_get_filters(true);
         echo '<div class="list-group-item list_input grey-block">
                     <div class="form-group is-empty" style="margin: 0; padding: 0;">
                         <input type="text"
-                               class="form-control intentadder-level-2-bottom algolia_search"
+                               class="form-control intentadder-level-2-child algolia_search"
                                maxlength="' . $this->config->item('in_outcome_max') . '"
                                intent-id="' . $in['in_id'] . '"
                                id="addintent-c-' . $in['in_id'] . '-0"

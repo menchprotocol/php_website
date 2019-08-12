@@ -44,14 +44,6 @@ $(document).ready(function () {
         //Watch for action keys:
         if (e.keyCode === 27) { //ESC
             modify_cancel();
-        } else if (e.keyCode === 68) { //D
-            window.location = '/dashboard';
-        } else if (e.keyCode === 76) { //L
-            window.location = '/links';
-        } else if (e.keyCode === 73) { //I
-            window.location = '/intents';
-        } else if (e.keyCode === 69) { //E
-            window.location = '/entities';
         }
     });
 
@@ -142,7 +134,7 @@ $(document).ready(function () {
 
         $(this).val('#'+suggestion.alg_obj_id+' '+suggestion.alg_obj_name);
 
-    }).autocomplete({hint: false, minLength: 2, keyboardShortcuts: ['a']}, [{
+    }).autocomplete({hint: false, minLength: 2}, [{
 
         source: function (q, cb) {
             algolia_index.search(q, {
