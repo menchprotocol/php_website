@@ -59,9 +59,6 @@ if(count($user_intents) > 0){
 
 }
 
-//Inform users how they can add new intentions:
-echo '<div class="actionplan-tip"><i class="fas fa-lightbulb"></i> TIP: '.echo_random_message('command_me').'</div>';
-
 //Are they a miner? Give them option to clear everything:
 if(count($this->Links_model->ln_fetch(array(
         'ln_status_entity_id IN (' . join(',', $this->config->item('en_ids_7359')) . ')' => null, //Link Statuses Public
