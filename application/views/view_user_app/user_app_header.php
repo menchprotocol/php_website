@@ -1,6 +1,8 @@
 <?php
 //Attempt to fetch session variables:
 $session_en = $this->session->userdata('user');
+$is_logged = isset($session_en['en_id']);
+$is_miner = en_auth(array(1308));
 $en_all_7369 = $this->config->item('en_all_7369');
 $url_part_1 = $this->uri->segment(1);
 ?><!doctype html>
@@ -33,14 +35,14 @@ $url_part_1 = $this->uri->segment(1);
     <div class="container">
         <!-- Brand and toggle get grouped for better mobile display -->
         <div class="navbar-header">
-            <a class="navbar-brand tag-manager-home-link" href="/"><img src="/img/bp_128.png" /><span
+            <a class="navbar-brand tag-manager-home-link" href="<?= ( $is_logged && !$is_miner ? '/actionplan' : '/'  ) ?>"><img src="/img/bp_128.png" /><span
                         style="text-transform: lowercase; color: #2f2739;"><?= $this->config->item('system_name') ?></span></a>
         </div>
 
         <div class="collapse navbar-collapse">
             <ul class="nav navbar-nav navbar-right">
                 <?php
-                if (isset($session_en['en_id'])) {
+                if ($is_logged) {
 
 
                     $navigation = array(
@@ -55,7 +57,7 @@ $url_part_1 = $this->uri->segment(1);
                     );
 
                     //If miner give access back to platform:
-                    if(en_auth(array(1308))){
+                    if($is_miner){
                         $en_all_7372 = $this->config->item('en_all_7372');
                         array_push($navigation, array(
                             'uri_segment_1' => 'dashboard',
