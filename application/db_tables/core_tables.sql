@@ -99,7 +99,6 @@ create index table_entities_en_status_entity_id_index
 
 
 -- Links
-
 alter table table_links
   owner to us;
 
