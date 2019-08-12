@@ -717,20 +717,6 @@ class Intents extends CI_Controller
 
                 } elseif ($key == 'in_type_entity_id') {
 
-                    //Make sure it's not added to any User's Action Plan:
-                    if(count($this->Links_model->ln_fetch(array(
-                            'ln_parent_intent_id' => $_POST['in_id'],
-                            'ln_type_entity_id IN (' . join(',', $this->config->item('en_ids_7347')) . ')' => null, //Action Plan Intention Set
-                            'ln_status_entity_id IN (' . join(',', $this->config->item('en_ids_7360')) . ')' => null, //Link Statuses Active
-                        ), array(), 1)) > 0){
-
-                        //Oooops, we can't do this, let Miner know:
-                        return echo_json(array(
-                            'status' => 0,
-                            'message' => 'Cannot change intent type as intention has already been added to user Action Plans.',
-                        ));
-                    }
-
                     //If it was locked and not being changed to a non-locked type, make sure no Lock Link Parents exist:
                     if(!in_array($value, $this->config->item('en_ids_7309') /* Action Plan Step Locked */)){
 
