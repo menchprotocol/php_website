@@ -457,7 +457,7 @@ class Intents_model extends CI_Model
 
     }
 
-    function in_manual_response_note($in, $push_message = false)
+    function in_create_new_content($in, $push_message = false)
     {
 
         /*
@@ -472,7 +472,7 @@ class Intents_model extends CI_Model
          *
          * */
 
-        if (!in_array($in['in_type_entity_id'], $this->config->item('en_ids_6794'))) {
+        if (!in_array($in['in_type_entity_id'], $this->config->item('en_ids_6144'))) {
             //Does not have any requirements:
             return null;
         }
@@ -480,14 +480,54 @@ class Intents_model extends CI_Model
         //Construct the message accordingly...
 
         //Fetch latest cache tree:
-        $en_all_6794 = $this->config->item('en_all_6794'); //Intent Requires Manual Response
+        $en_all_6144 = $this->config->item('en_all_6144'); //Intent Requires Manual Response
+        $content_name = strtolower($en_all_6144[$in['in_type_entity_id']]['m_name']);
         $ui = '';
 
         if($push_message){
-            $ui .= 'Send me a '. strtolower($en_all_6794[$in['in_type_entity_id']]['m_name']) .' to complete this step.';
+
+            //Messenger:
+            $ui .= 'Send me '.echo_a_an($content_name).' '. $content_name .' message to complete this step.';
+
         } else {
-            $ui .= '<p>Submit a '.$en_all_6794[$in['in_type_entity_id']]['m_name'] .' to continue:</p>';
-            $ui .= '<textarea id="stop_feedback" class="border" placeholder="" style="height:66px; width: 100%; padding: 5px;"></textarea>';
+
+
+            //HTML:
+            $ui .= '<p>Upload '.echo_a_an($content_name).' '. $content_name .' file to complete this step.</p>';
+
+            //Is this a text, URL or File upload?
+            if($in['in_type_entity_id'] == 6683 /* Text */){
+
+                $ui .= '<textarea id="user_new_content" class="border" placeholder="" style="height:66px; width: 100%; padding: 5px;"></textarea>';
+                $ui .= '<span class="saving_result"></span>';
+                $ui .= '<p><a class="btn btn-primary" href="javascript:void(0);" onsubmit="">Send '.$content_name.'</a></p>';
+
+            } elseif($in['in_type_entity_id'] == 6682 /* URL */){
+
+                $ui .= '<input type="url" id="user_new_content" class="border">';
+                $ui .= '<span class="saving_result"></span>';
+                $ui .= '<p><a class="btn btn-primary" href="javascript:void(0);" onsubmit="">Send '.$content_name.'</a></p>';
+
+            } elseif(in_array($in['in_type_entity_id'], $this->config->item('en_ids_7751')) /* Intent Upload File */){
+
+                //File Upload:
+                $ui .= '<span class="saving_result"></span>';
+                $ui .= '<input class="box__file inputfile" type="file" id="user_new_content" /><label class="textarea_buttons btn btn-primary" for="file" data-toggle="tooltip" title="Upload '.$content_name.' up to ' . $this->config->item('max_file_mb_size') . ' MB" data-placement="top">'.$en_all_6144[$in['in_type_entity_id']]['m_icon'].' Upload '.$content_name.'</label>';
+
+            } else {
+
+                //Not programmed yet! Inform user:
+                $ui .= '<span style="color: #FF0000;">Error: Unknown Input Type</span>';
+
+                //Log for admins:
+                $this->Links_model->ln_create(array(
+                    'ln_content' => 'in_create_new_content() has unknown file type @'.$in['in_type_entity_id'],
+                    'ln_type_entity_id' => 4246, //Platform Bug Reports
+                ));
+
+            }
+
+
         }
 
         //Return User-friendly message for Requires Manual Response:

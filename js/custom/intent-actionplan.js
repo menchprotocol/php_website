@@ -99,8 +99,8 @@ function load_filters(){
 $(document).ready(function () {
 
     //Load top/bottom intent searches:
-    in_load_search(".intentadder-level-2-parent",1, 2, 'p');
-    in_load_search(".intentadder-level-2-child",0, 2, 'c');
+    in_load_search(".intentadder-level-2-parent",1, 2, 'q');
+    in_load_search(".intentadder-level-2-child",0, 2, 'w');
 
     //Expand selections:
     prep_search_pad();

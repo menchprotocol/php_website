@@ -11,7 +11,77 @@ defined('BASEPATH') OR exit('No direct script access allowed');
  *
  */
 
-//Generated 2019-08-12 14:40:38 PST
+//Generated 2019-08-12 15:59:23 PST
+
+//Intent Upload File:
+$config['en_ids_7751'] = array(6678,6679,6680,6681);
+$config['en_all_7751'] = array(
+    6678 => array(
+        'm_icon' => '<i class="far fa-image"></i>',
+        'm_name' => 'Intent Send Image',
+        'm_desc' => '',
+        'm_parents' => array(7751,7585,6144,6192),
+    ),
+    6679 => array(
+        'm_icon' => '<i class="far fa-video"></i>',
+        'm_name' => 'Intent Send Video',
+        'm_desc' => '',
+        'm_parents' => array(7751,7585,6144,6192),
+    ),
+    6680 => array(
+        'm_icon' => '<i class="far fa-microphone"></i>',
+        'm_name' => 'Intent Send Audio',
+        'm_desc' => '',
+        'm_parents' => array(7751,7585,6144,6192),
+    ),
+    6681 => array(
+        'm_icon' => '<i class="far fa-file-pdf"></i>',
+        'm_name' => 'Intent Send Document',
+        'm_desc' => '',
+        'm_parents' => array(7751,7585,6144,6192),
+    ),
+);
+
+//User Step Create New Content:
+$config['en_ids_6144'] = array(6678,6679,6680,6681,6682,6683);
+$config['en_all_6144'] = array(
+    6678 => array(
+        'm_icon' => '<i class="far fa-image"></i>',
+        'm_name' => 'Image',
+        'm_desc' => '',
+        'm_parents' => array(7751,7585,6144,6192),
+    ),
+    6679 => array(
+        'm_icon' => '<i class="far fa-video"></i>',
+        'm_name' => 'Video',
+        'm_desc' => '',
+        'm_parents' => array(7751,7585,6144,6192),
+    ),
+    6680 => array(
+        'm_icon' => '<i class="far fa-microphone"></i>',
+        'm_name' => 'Audio',
+        'm_desc' => '',
+        'm_parents' => array(7751,7585,6144,6192),
+    ),
+    6681 => array(
+        'm_icon' => '<i class="far fa-file-pdf"></i>',
+        'm_name' => 'Document',
+        'm_desc' => '',
+        'm_parents' => array(7751,7585,6144,6192),
+    ),
+    6682 => array(
+        'm_icon' => '<i class="far fa-external-link"></i>',
+        'm_name' => 'URL',
+        'm_desc' => '',
+        'm_parents' => array(7585,6144,6192),
+    ),
+    6683 => array(
+        'm_icon' => '<i class="far fa-keyboard"></i>',
+        'm_name' => 'Text',
+        'm_desc' => '',
+        'm_parents' => array(7585,6144,6192),
+    ),
+);
 
 //Link Metadata:
 $config['en_ids_6103'] = array(4358,6203,6402);
@@ -398,10 +468,10 @@ $config['en_all_7703'] = array(
         'm_parents' => array(7703,4595,4593,4986,4485),
     ),
     6144 => array(
-        'm_icon' => '<i class="fas fa-shield-check"></i>',
-        'm_name' => 'User Step Requirement Sent',
+        'm_icon' => '<i class="far fa-cloud-upload-alt"></i>',
+        'm_name' => 'User Step Create New Content',
         'm_desc' => '',
-        'm_parents' => array(7703,4595,6255,6244,4755,6146,4593),
+        'm_parents' => array(4527,6768,7703,4595,6255,6244,4755,6146,4593),
     ),
     6154 => array(
         'm_icon' => '<i class="far fa-mountain"></i>',
@@ -570,8 +640,14 @@ $config['en_all_6193'] = array(
 );
 
 //Intent Type:
-$config['en_ids_7585'] = array(6677,6683,6682,6679,6680,6678,6681,6684,6685,7231,6914,6907,7740);
+$config['en_ids_7585'] = array(7753,6677,6683,6682,6679,6680,6678,6681,6684,6685,7231,6914,6907,7740);
 $config['en_all_7585'] = array(
+    7753 => array(
+        'm_icon' => '<i class="far fa-list-alt"></i>',
+        'm_name' => 'Select from List',
+        'm_desc' => 'Allows the miner to define the entity where the user must select from.',
+        'm_parents' => array(7585),
+    ),
     6677 => array(
         'm_icon' => '<i class="far fa-comments"></i>',
         'm_name' => 'Read Only',
@@ -582,37 +658,37 @@ $config['en_all_7585'] = array(
         'm_icon' => '<i class="far fa-keyboard"></i>',
         'm_name' => 'Send Text',
         'm_desc' => 'User will complete by sending a text message',
-        'm_parents' => array(7585,6144,6794,6192),
+        'm_parents' => array(7585,6144,6192),
     ),
     6682 => array(
         'm_icon' => '<i class="far fa-external-link"></i>',
         'm_name' => 'Send URL',
         'm_desc' => 'User will complete by sending a URL message',
-        'm_parents' => array(7585,6144,6794,6192),
+        'm_parents' => array(7585,6144,6192),
     ),
     6679 => array(
         'm_icon' => '<i class="far fa-video"></i>',
         'm_name' => 'Send Video',
         'm_desc' => 'User will complete by sending a video message',
-        'm_parents' => array(7585,6144,6794,6192),
+        'm_parents' => array(7751,7585,6144,6192),
     ),
     6680 => array(
         'm_icon' => '<i class="far fa-microphone"></i>',
         'm_name' => 'Send Audio',
         'm_desc' => 'User will complete by sending an audio message',
-        'm_parents' => array(7585,6144,6794,6192),
+        'm_parents' => array(7751,7585,6144,6192),
     ),
     6678 => array(
         'm_icon' => '<i class="far fa-image"></i>',
         'm_name' => 'Send Image',
         'm_desc' => 'User will complete by sending an image message',
-        'm_parents' => array(7585,6144,6794,6192),
+        'm_parents' => array(7751,7585,6144,6192),
     ),
     6681 => array(
-        'm_icon' => '<i class="far fa-paperclip"></i>',
-        'm_name' => 'Send File',
+        'm_icon' => '<i class="far fa-file-pdf"></i>',
+        'm_name' => 'Send Document',
         'm_desc' => 'User will complete by sending a file (PDF, DOC, etc...) message',
-        'm_parents' => array(7585,6144,6794,6192),
+        'm_parents' => array(7751,7585,6144,6192),
     ),
     6684 => array(
         'm_icon' => '<i class="far fa-check"></i>',
@@ -1681,47 +1757,6 @@ $config['en_all_6805'] = array(
     ),
 );
 
-//Intent Requires Manual Reply:
-$config['en_ids_6794'] = array(6678,6679,6680,6681,6682,6683);
-$config['en_all_6794'] = array(
-    6678 => array(
-        'm_icon' => '<i class="far fa-image"></i>',
-        'm_name' => 'Image',
-        'm_desc' => '',
-        'm_parents' => array(7585,6144,6794,6192),
-    ),
-    6679 => array(
-        'm_icon' => '<i class="far fa-video"></i>',
-        'm_name' => 'Video',
-        'm_desc' => '',
-        'm_parents' => array(7585,6144,6794,6192),
-    ),
-    6680 => array(
-        'm_icon' => '<i class="far fa-microphone"></i>',
-        'm_name' => 'Audio',
-        'm_desc' => '',
-        'm_parents' => array(7585,6144,6794,6192),
-    ),
-    6681 => array(
-        'm_icon' => '<i class="far fa-paperclip"></i>',
-        'm_name' => 'File',
-        'm_desc' => '',
-        'm_parents' => array(7585,6144,6794,6192),
-    ),
-    6682 => array(
-        'm_icon' => '<i class="far fa-external-link"></i>',
-        'm_name' => 'URL',
-        'm_desc' => '',
-        'm_parents' => array(7585,6144,6794,6192),
-    ),
-    6683 => array(
-        'm_icon' => '<i class="far fa-keyboard"></i>',
-        'm_name' => 'Text',
-        'm_desc' => '',
-        'm_parents' => array(7585,6144,6794,6192),
-    ),
-);
-
 //Platform Glossary:
 $config['en_ids_4463'] = array(1281,1308,3000,3084,4430,4433,4485,4535,4536,4595,4755,6138,6199,6205,6695);
 $config['en_all_4463'] = array(
@@ -1855,10 +1890,10 @@ $config['en_all_6255'] = array(
         'm_parents' => array(7703,4595,6274,6255,4755,6146,4593),
     ),
     6144 => array(
-        'm_icon' => '<i class="fas fa-shield-check"></i>',
-        'm_name' => 'User Step Requirement Sent',
+        'm_icon' => '<i class="far fa-cloud-upload-alt"></i>',
+        'm_name' => 'User Step Create New Content',
         'm_desc' => '',
-        'm_parents' => array(7703,4595,6255,6244,4755,6146,4593),
+        'm_parents' => array(4527,6768,7703,4595,6255,6244,4755,6146,4593),
     ),
     6157 => array(
         'm_icon' => '<i class="far fa-check-circle"></i>',
@@ -1908,10 +1943,10 @@ $config['en_all_6255'] = array(
 $config['en_ids_6244'] = array(6144,6157,7486,7487);
 $config['en_all_6244'] = array(
     6144 => array(
-        'm_icon' => '<i class="fas fa-shield-check"></i>',
-        'm_name' => 'User Step Requirement Sent',
+        'm_icon' => '<i class="far fa-cloud-upload-alt"></i>',
+        'm_name' => 'User Step Create New Content',
         'm_desc' => 'Logged initially when the user starts an intent that has a requirement submission (Text, URL, Video, Image, etc...) and is completed when they submit the requirement.',
-        'm_parents' => array(7703,4595,6255,6244,4755,6146,4593),
+        'm_parents' => array(4527,6768,7703,4595,6255,6244,4755,6146,4593),
     ),
     6157 => array(
         'm_icon' => '<i class="far fa-check-circle"></i>',
@@ -2100,10 +2135,10 @@ $config['en_all_6146'] = array(
         'm_parents' => array(4595,6146,4755,4593),
     ),
     6144 => array(
-        'm_icon' => '<i class="fas fa-shield-check"></i>',
-        'm_name' => 'Requirement Sent',
+        'm_icon' => '<i class="far fa-cloud-upload-alt"></i>',
+        'm_name' => 'Create New Content',
         'm_desc' => 'Completed when students submit the intent completion requirements (text, URL, video, etc...) set by miners',
-        'm_parents' => array(7703,4595,6255,6244,4755,6146,4593),
+        'm_parents' => array(4527,6768,7703,4595,6255,6244,4755,6146,4593),
     ),
     6157 => array(
         'm_icon' => '<i class="far fa-check-circle"></i>',
@@ -2662,10 +2697,10 @@ $config['en_all_4755'] = array(
         'm_parents' => array(4595,6146,4755,4593),
     ),
     6144 => array(
-        'm_icon' => '<i class="fas fa-shield-check"></i>',
-        'm_name' => 'User Step Requirement Sent',
+        'm_icon' => '<i class="far fa-cloud-upload-alt"></i>',
+        'm_name' => 'User Step Create New Content',
         'm_desc' => '',
-        'm_parents' => array(7703,4595,6255,6244,4755,6146,4593),
+        'm_parents' => array(4527,6768,7703,4595,6255,6244,4755,6146,4593),
     ),
     6149 => array(
         'm_icon' => '<i class="fas fa-search-plus"></i>',
@@ -3279,10 +3314,10 @@ $config['en_all_4595'] = array(
         'm_parents' => array(4595,6146,4755,4593),
     ),
     6144 => array(
-        'm_icon' => '<i class="fas fa-shield-check"></i>',
-        'm_name' => 'User Step Requirement Sent',
+        'm_icon' => '<i class="far fa-cloud-upload-alt"></i>',
+        'm_name' => 'User Step Create New Content',
         'm_desc' => '50',
-        'm_parents' => array(7703,4595,6255,6244,4755,6146,4593),
+        'm_parents' => array(4527,6768,7703,4595,6255,6244,4755,6146,4593),
     ),
     6149 => array(
         'm_icon' => '<i class="fas fa-search-plus"></i>',
@@ -3931,10 +3966,10 @@ $config['en_all_4593'] = array(
         'm_parents' => array(4595,6146,4755,4593),
     ),
     6144 => array(
-        'm_icon' => '<i class="fas fa-shield-check"></i>',
-        'm_name' => 'User Step Requirement Sent',
+        'm_icon' => '<i class="far fa-cloud-upload-alt"></i>',
+        'm_name' => 'User Step Create New Content',
         'm_desc' => 'Logged when a student submits the requirements (text, video, etc...) of an AND intent which could not be completed by simply receiving messages.',
-        'm_parents' => array(7703,4595,6255,6244,4755,6146,4593),
+        'm_parents' => array(4527,6768,7703,4595,6255,6244,4755,6146,4593),
     ),
     6149 => array(
         'm_icon' => '<i class="fas fa-search-plus"></i>',

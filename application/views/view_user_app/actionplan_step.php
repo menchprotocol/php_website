@@ -2,7 +2,7 @@
     //Set global variables:
     var en_miner_id = <?= $session_en['en_id'] ?>;
 </script>
-<script src="/js/custom/messenger-actionplan-progress.js?v=v<?= $this->config->item('app_version') ?>" type="text/javascript"></script>
+<script src="/js/custom/actionplan-step.js?v=v<?= $this->config->item('app_version') ?>" type="text/javascript"></script>
 <?php
 
 
@@ -81,7 +81,7 @@ if(!$found_grandpa_intersect){
     echo '<div class="sub_title">';
 
     //Progression link:
-    $en_all_6794 = $this->config->item('en_all_6794');
+    $en_all_6144 = $this->config->item('en_all_6144');
     $en_all_6146 = $this->config->item('en_all_6146');
     $en_all_6186 = $this->config->item('en_all_6186'); //Link Statuses
     $submission_messages = null;

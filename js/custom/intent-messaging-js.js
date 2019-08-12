@@ -43,14 +43,10 @@ var $input = $('.box' + in_id).find('input[type="file"]'),
         $label.text(files.length > 1 ? ($input.attr('data-multiple-caption') || '').replace('{count}', files.length) : files[0].name);
     };
 
-//...
-
 $input.on('drop', function (e) {
     droppedFiles = e.originalEvent.dataTransfer.files; // the files that were dropped
     showFiles(droppedFiles);
 });
-
-//...
 
 $input.on('change', function (e) {
     showFiles(e.target.files);

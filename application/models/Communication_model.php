@@ -686,7 +686,7 @@ class Communication_model extends CI_Model
 
         //Where is this request being made from? Public landing pages will have some restrictions on what they displat:
         $is_landing_page = is_numeric(str_replace('_','', $this->uri->segment(1)));
-        $is_action_plan = ($this->uri->segment(1)== 'Userapp');
+        $is_action_plan = ($this->uri->segment(1)=='user_app' && $this->uri->segment(2)=='actionplan_load');
         $is_entity = ($this->uri->segment(1)=='entities');
         $is_user_message = ($is_landing_page || $is_action_plan);
 
@@ -842,7 +842,7 @@ class Communication_model extends CI_Model
                 } else {
 
                     //Show entity link with status:
-                    $output_body_message = str_replace('@' . $string_references['ref_entities'][0], $en_all_6177[$ens[0]['en_status_entity_id']]['m_icon'].' <a href="/entities/' . $ens[0]['en_id'] . '" target="_parent">' . $ens[0]['en_name'] . '</a>', $output_body_message);
+                    $output_body_message = str_replace('@' . $string_references['ref_entities'][0], $en_all_6177[$ens[0]['en_status_entity_id']]['m_icon'].' <a href="/entities/' . $ens[0]['en_id'] . '" target="_parent">' . $ens[0]['en_name']  . $this->uri->segment(1) . $this->uri->segment(2) . '</a>', $output_body_message);
 
                 }
 
@@ -1355,10 +1355,10 @@ class Communication_model extends CI_Model
         } elseif (substr_count($quick_reply_payload, 'TRYANOTHERRESPONSE_') == 1) {
 
             //Users want to try their submission again:
-            $en_all_6794 = $this->config->item('en_all_6794'); //Requirement names
+            $en_all_6144 = $this->config->item('en_all_6144'); //Requirement names
             $in_type_entity_id = one_two_explode('TRYANOTHERRESPONSE_', '', $quick_reply_payload);
             $this->Communication_model->dispatch_message(
-                'Ok, so try again by sending me another '.$en_all_6794[$in_type_entity_id]['m_name'].' to continue.',
+                'Ok, so try again by sending me another '.$en_all_6144[$in_type_entity_id]['m_name'].' to continue.',
                 $en,
                 true
             );
@@ -1826,7 +1826,7 @@ class Communication_model extends CI_Model
                     $this->User_app_model->actionplan_step_skip_apply($en['en_id'], $in_id);
 
                     //Confirm the skip:
-                    $message = 'Got it! I successfully skipped all steps';
+                    $message = 'Got it! I successfully skipped selected steps';
 
                 }
 

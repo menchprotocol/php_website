@@ -170,8 +170,8 @@ $(document).ready(function () {
 
 
     //Loadup various search bars:
-    en_load_search("#new-parent", 1, 'p');
-    en_load_search("#new-children", 0, 'c');
+    en_load_search("#new-parent", 1, 'q');
+    en_load_search("#new-children", 0, 'w');
 
 
     //Watchout for file uplods:
@@ -364,7 +364,7 @@ function en_load_next_page(page, load_new_filter = 0) {
         if (load_new_filter) {
             $('#list-children').html(data + '<div id="new-children" class="list-group-item list_input grey-input">' + append_div + '</div>').hide().fadeIn();
             //Reset search engine:
-            en_load_search("#new-children", 0, 'c');
+            en_load_search("#new-children", 0, 'w');
         } else {
             //Update UI to confirm with user:
             $(data).insertBefore('#new-children');

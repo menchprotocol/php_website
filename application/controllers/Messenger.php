@@ -571,11 +571,11 @@ class Messenger extends CI_Controller
                             //Only focus on the first mismatch, ignore the rest if any!
                             $mismatch_focus = $pending_mismatches[0];
 
-                            $en_all_6794 = $this->config->item('en_all_6794'); //Requirement names
+                            $en_all_6144 = $this->config->item('en_all_6144'); //Requirement names
 
                             //We did not have any matches, but has some mismatches, maybe that's what they meant?
                             $this->Communication_model->dispatch_message(
-                                'Error: You should send me a '.$en_all_6794[$mismatch_focus['in_type_entity_id']]['m_name'].' message to complete this step. Please try again.',
+                                'Error: You should send me a '.$en_all_6144[$mismatch_focus['in_type_entity_id']]['m_name'].' message to complete this step. Please try again.',
                                 $en,
                                 true
                             );

@@ -73,7 +73,7 @@ class User_app_model extends CI_Model
          * */
 
 
-        if(in_array($in['in_type_entity_id'], $this->config->item('en_ids_6794'))){
+        if(in_array($in['in_type_entity_id'], $this->config->item('en_ids_6144'))){
             //Requires Manual Response so we cannot auto complete:
             return false;
         } elseif(!in_array($unlock_link_type_en_id, $this->config->item('en_ids_7494'))){
@@ -1094,7 +1094,7 @@ class User_app_model extends CI_Model
 
 
         //Fetch submission requirements, messages, children and current progressions (if any):
-        $completion_req_note = $this->Intents_model->in_manual_response_note($ins[0], $push_message); //See if we have intent requirements
+        $completion_req_note = $this->Intents_model->in_create_new_content($ins[0], $push_message); //See if we have intent requirements
         $in__messages = $this->Links_model->ln_fetch(array(
             'ln_status_entity_id IN (' . join(',', $this->config->item('en_ids_7359')) . ')' => null, //Link Statuses Public
             'ln_type_entity_id' => 4231, //Intent Note Messages

@@ -1367,6 +1367,115 @@ class User_app extends CI_Controller
 
 
 
+    function actionplan_file_upload()
+    {
+
+        //Authenticate User:
+        $session_en = en_auth();
+        if (!$session_en) {
+
+            return echo_json(array(
+                'status' => 0,
+                'message' => 'Invalid Session. Refresh to Continue',
+            ));
+
+        } elseif (!isset($_POST['in_id']) || !isset($_POST['focus_ln_type_entity_id'])) {
+
+            return echo_json(array(
+                'status' => 0,
+                'message' => 'Missing intent data.',
+            ));
+
+        } elseif (!isset($_POST['upload_type']) || !in_array($_POST['upload_type'], array('file', 'drop'))) {
+
+            return echo_json(array(
+                'status' => 0,
+                'message' => 'Unknown upload type.',
+            ));
+
+        } elseif (!isset($_FILES[$_POST['upload_type']]['tmp_name']) || strlen($_FILES[$_POST['upload_type']]['tmp_name']) == 0 || intval($_FILES[$_POST['upload_type']]['size']) == 0) {
+
+            return echo_json(array(
+                'status' => 0,
+                'message' => 'Unknown error while trying to save file.',
+            ));
+
+        } elseif ($_FILES[$_POST['upload_type']]['size'] > ($this->config->item('max_file_mb_size') * 1024 * 1024)) {
+
+            return echo_json(array(
+                'status' => 0,
+                'message' => 'File is larger than ' . $this->config->item('max_file_mb_size') . ' MB.',
+            ));
+
+        }
+
+        //Validate Intent:
+        $ins = $this->Intents_model->in_fetch(array(
+            'in_id' => $_POST['in_id'],
+        ));
+        if(count($ins)<1){
+            return echo_json(array(
+                'status' => 0,
+                'message' => 'Invalid Intent ID',
+            ));
+        }
+
+        //See if this message type has specific input requirements:
+        $valid_file_types = array(4258, 4259, 4260, 4261); //This must be a valid file type:  Video, Image, Audio or File
+
+        //Attempt to save file locally:
+        $file_parts = explode('.', $_FILES[$_POST['upload_type']]["name"]);
+        $temp_local = "application/cache/temp_files/" . md5($file_parts[0] . $_FILES[$_POST['upload_type']]["type"] . $_FILES[$_POST['upload_type']]["size"]) . '.' . $file_parts[(count($file_parts) - 1)];
+        move_uploaded_file($_FILES[$_POST['upload_type']]['tmp_name'], $temp_local);
+
+
+        //Attempt to store in Mench Cloud on Amazon S3:
+        if (isset($_FILES[$_POST['upload_type']]['type']) && strlen($_FILES[$_POST['upload_type']]['type']) > 0) {
+            $mime = $_FILES[$_POST['upload_type']]['type'];
+        } else {
+            $mime = mime_content_type($temp_local);
+        }
+
+        $cdn_status = upload_to_cdn($temp_local, $session_en['en_id'], $_FILES[$_POST['upload_type']], true);
+        if (!$cdn_status['status']) {
+            //Oops something went wrong:
+            return echo_json($cdn_status);
+        }
+
+
+        //Create message:
+        $ln = $this->Links_model->ln_create(array(
+            'ln_status_entity_id' => 6176, //Link Published
+            'ln_creator_entity_id' => $session_en['en_id'],
+            'ln_type_entity_id' => $_POST['focus_ln_type_entity_id'],
+            'ln_parent_entity_id' => $cdn_status['cdn_en']['en_id'],
+            'ln_child_intent_id' => intval($_POST['in_id']),
+            'ln_content' => '@' . $cdn_status['cdn_en']['en_id'], //Just place the entity reference as the entire message
+            'ln_order' => 1 + $this->Links_model->ln_max_order(array(
+                    'ln_type_entity_id' => $_POST['focus_ln_type_entity_id'],
+                    'ln_child_intent_id' => $_POST['in_id'],
+                )),
+        ));
+
+
+        //Fetch full message for proper UI display:
+        $new_messages = $this->Links_model->ln_fetch(array(
+            'ln_id' => $ln['ln_id'],
+        ));
+
+        //Echo message:
+        echo_json(array(
+            'status' => 1,
+            'message' => echo_in_message_manage(array_merge($new_messages[0], array(
+                'ln_child_entity_id' => $session_en['en_id'],
+            ))),
+        ));
+    }
+
+
+
+
+
     function actionplan_reset_progress($en_id, $timestamp, $secret_key){
 
         if($secret_key != md5($en_id . $this->config->item('actionplan_salt') . $timestamp)){
@@ -1536,6 +1645,7 @@ class User_app extends CI_Controller
                 $this->load->view('view_user_app/actionplan_intentions', array(
                     'session_en' => $session_en,
                     'user_intents' => $user_intents,
+                    'psid' => $psid,
                 ));
 
             } else {
@@ -1678,7 +1788,7 @@ class User_app extends CI_Controller
         //Assume its all good!
 
         //We actually skipped, draft message:
-        $message = '<div class="alert alert-success" role="alert">I successfully skipped all steps.</div>';
+        $message = '<div class="alert alert-success" role="alert">I successfully skipped selected steps.</div>';
 
         //Find the next item to navigate them to:
         $next_in_id = $this->User_app_model->actionplan_step_next_go($en_id, false);
