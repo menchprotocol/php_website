@@ -80,9 +80,16 @@ $(document).ready(function () {
                     if(validURL(data.query)){
                         return en_fetch_canonical_url(data.query, false);
                     } else if($("#platform_search").val().charAt(0)=='#' || $("#platform_search").val().charAt(0)=='@'){
-                        return '<a href="javascript:add_search_item()" class="suggestion"><i class="fas fa-plus-circle" style="margin: 0 5px;"></i> Create ' + data.query + '</a>';
+                        //See what follows the @/# sign to determine if we should create OR redirect:
+                        var search_body = $("#platform_search").val().substr(1);
+                        if(isNaN(search_body)){
+                            //NOT a valid number, give option to create:
+                            return '<a href="javascript:add_search_item()" class="suggestion"><i class="fas fa-plus-circle" style="margin: 0 5px;"></i> Create ' + data.query + '</a>';
+                        } else {
+                            //Valid Integer, Give option to go there:
+                            return '<a href="/' + ( $("#platform_search").val().charAt(0)=='#' ? 'intents' : 'entities' ) + '/' + search_body + '" class="suggestion"><i class="fas fa-plus-circle" style="margin: 0 5px;"></i> Go to ' + data.query
+                        }
                     }
-
                 },
                 empty: function (data) {
                     if(validURL(data.query)){

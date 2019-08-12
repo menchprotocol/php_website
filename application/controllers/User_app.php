@@ -238,25 +238,28 @@ class User_app extends CI_Controller
             }
 
 
+            //Generate the password hash:
+            $password_hash = hash('sha256', $this->config->item('password_salt') . $_POST['input_password']. $ens[0]['en_id']);
+
+
             //Fetch their passwords to authenticate login:
             $user_passwords = $this->Links_model->ln_fetch(array(
                 'ln_status_entity_id IN (' . join(',', $this->config->item('en_ids_7359')) . ')' => null, //Link Statuses Public
+                'ln_type_entity_id IN (' . join(',', $this->config->item('en_ids_4592')) . ')' => null, //Entity Link Connectors
                 'ln_parent_entity_id' => 3286, //Mench Sign In Password
                 'ln_child_entity_id' => $ens[0]['en_id'],
             ));
 
-            $input_password = hash('sha256', $this->config->item('password_salt') . $_POST['input_password']. $ens[0]['en_id']);
-
             if (count($user_passwords) > 0) {
 
-                $detected_ln_type = ln_detect_type($input_password);
+                $detected_ln_type = ln_detect_type($password_hash);
                 if (!$detected_ln_type['status']) {
                     return echo_json($detected_ln_type);
                 }
 
                 //Update existing password:
                 $this->Links_model->ln_update($user_passwords[0]['ln_id'], array(
-                    'ln_content' => $input_password,
+                    'ln_content' => $password_hash,
                     'ln_type_entity_id' => $detected_ln_type['ln_type_entity_id'],
                 ), $ens[0]['en_id']);
 
@@ -265,7 +268,7 @@ class User_app extends CI_Controller
                 //Create new password link:
                 $this->Links_model->ln_create(array(
                     'ln_type_entity_id' => 4255, //Text link
-                    'ln_content' => $input_password,
+                    'ln_content' => $password_hash,
                     'ln_parent_entity_id' => 3286, //Mench Password
                     'ln_creator_entity_id' => $ens[0]['en_id'],
                     'ln_child_entity_id' => $ens[0]['en_id'],
@@ -278,7 +281,7 @@ class User_app extends CI_Controller
             $this->Links_model->ln_create(array(
                 'ln_creator_entity_id' => $ens[0]['en_id'],
                 'ln_type_entity_id' => 7578, //User Signin Password Updated
-                'ln_content' => $input_password, //A copy of their password set at this time
+                'ln_content' => $password_hash, //A copy of their password set at this time
             ));
 
 
