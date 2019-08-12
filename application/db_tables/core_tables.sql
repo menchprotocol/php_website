@@ -12,9 +12,7 @@
 
 create table table_intents
 (
-  in_id                   serial                     not null
-    constraint table_intents_pkey
-      primary key,
+  in_id                   serial                     not null constraint table_intents_pkey primary key,
   in_status_entity_id     integer      default 6183  not null,
   in_start_mode_entity_id integer      default 7597  not null,
   in_type_entity_id       integer      default 6677  not null,
@@ -27,12 +25,10 @@ create table table_intents
 
 create table table_entities
 (
-  en_id                   serial                     not null
-    constraint table_entities_pkey
-      primary key,
+  en_id                   serial                     not null constraint table_entities_pkey primary key,
   en_status_entity_id     integer      default 6179  not null,
   en_trust_score          integer      default 0     not null,
-  en_name                 varchar(250)               not null,
+  en_name                 varchar(255)               not null,
   en_icon                 text,
   en_metadata             text
 );
@@ -40,9 +36,7 @@ create table table_entities
 
 create table table_links
 (
-  ln_id                   bigserial                  not null
-    constraint table_ledger_pkey
-      primary key,
+  ln_id                   bigserial                  not null constraint table_ledger_pkey primary key,
   ln_status_entity_id     integer      default 6176  not null,
   ln_type_entity_id       integer                    not null,
   ln_creator_entity_id    integer      default 0     not null,
@@ -51,9 +45,9 @@ create table table_links
   ln_parent_intent_id     integer      default 0     not null,
   ln_child_intent_id      integer      default 0     not null,
   ln_parent_link_id       bigint       default 0     not null,
+  ln_external_id          bigint       default 0     not null,
   ln_order                smallint     default 0     not null,
   ln_credits              smallint     default 0     not null,
-  ln_external_id          bigint       default 0     not null,
   ln_timestamp            timestamp(4) default now() not null,
   ln_content              text,
   ln_metadata             text
