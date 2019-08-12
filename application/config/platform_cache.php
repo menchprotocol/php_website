@@ -11,7 +11,7 @@ defined('BASEPATH') OR exit('No direct script access allowed');
  *
  */
 
-//Generated 2019-08-11 16:33:55 PST
+//Generated 2019-08-11 20:49:11 PST
 
 //Link Metadata:
 $config['en_ids_6103'] = array(4358,6203,6402);
@@ -386,14 +386,14 @@ $config['en_all_7703'] = array(
         'm_parents' => array(7703,4593,4595,4485),
     ),
     4983 => array(
-        'm_icon' => '<i class="far fa-bookmark"></i>',
-        'm_name' => 'Intent Note Reference',
+        'm_icon' => '<i class="far fa-user-edit"></i>',
+        'm_name' => 'Intent Note Author',
         'm_desc' => '',
         'm_parents' => array(7703,7551,4985,4595,4593,4485),
     ),
     6093 => array(
-        'm_icon' => '<i class="far fa-comments"></i>',
-        'm_name' => 'Intent Note Chatlog',
+        'm_icon' => '<i class="far fa-file-certificate"></i>',
+        'm_name' => 'Intent Note Changelog',
         'm_desc' => '',
         'm_parents' => array(7703,4595,4593,4986,4485),
     ),
@@ -422,8 +422,8 @@ $config['en_all_7703'] = array(
         'm_parents' => array(7704,7703,4595,6255,6244,6146,4755,4593),
     ),
     6242 => array(
-        'm_icon' => '<i class="far fa-check-square"></i>',
-        'm_name' => 'Intent Note On-Complete',
+        'm_icon' => '<i class="far fa-lightbulb-on"></i>',
+        'm_name' => 'Intent Note Endnote',
         'm_desc' => '',
         'm_parents' => array(7703,6345,4603,4595,4593,4986,4485),
     ),
@@ -465,12 +465,12 @@ $config['en_all_7703'] = array(
     ),
     7545 => array(
         'm_icon' => '<i class="far fa-tag"></i>',
-        'm_name' => 'Intent Note Entity Tag',
+        'm_name' => 'Intent Note Tag',
         'm_desc' => '',
         'm_parents' => array(7703,7551,4595,4593,4485),
     ),
     7701 => array(
-        'm_icon' => '<i class="fas fa-rss"></i>',
+        'm_icon' => '<i class="far fa-rss"></i>',
         'm_name' => 'Intent Note Subscriber',
         'm_desc' => '',
         'm_parents' => array(7703,4755,4593,4595,7551,4485),
@@ -481,7 +481,7 @@ $config['en_all_7703'] = array(
 $config['en_ids_7596'] = array(7597,7599,7598);
 $config['en_all_7596'] = array(
     7597 => array(
-        'm_icon' => '<i class="fal fa-grip-lines-vertical rotate45"></i>',
+        'm_icon' => '<i class="fal fa-grip-lines-vertical"></i>',
         'm_name' => 'Bridge Only',
         'm_desc' => 'Users cannot directly subscribe to this intent, but can engage with it as long as it\'s published.',
         'm_parents' => array(7596),
@@ -736,19 +736,19 @@ $config['en_all_7555'] = array(
 $config['en_ids_7551'] = array(4983,7545,7701);
 $config['en_all_7551'] = array(
     4983 => array(
-        'm_icon' => '<i class="far fa-bookmark"></i>',
-        'm_name' => 'Intent Note Reference',
+        'm_icon' => '<i class="far fa-user-edit"></i>',
+        'm_name' => 'Intent Note Author',
         'm_desc' => '',
         'm_parents' => array(7703,7551,4985,4595,4593,4485),
     ),
     7545 => array(
         'm_icon' => '<i class="far fa-tag"></i>',
-        'm_name' => 'Intent Note Entity Tag',
+        'm_name' => 'Intent Note Tag',
         'm_desc' => '',
         'm_parents' => array(7703,7551,4595,4593,4485),
     ),
     7701 => array(
-        'm_icon' => '<i class="fas fa-rss"></i>',
+        'm_icon' => '<i class="far fa-rss"></i>',
         'm_name' => 'Intent Note Subscriber',
         'm_desc' => '',
         'm_parents' => array(7703,4755,4593,4595,7551,4485),
@@ -1868,8 +1868,8 @@ $config['en_all_6345'] = array(
         'm_parents' => array(7703,6345,4986,4603,4593,4485,4595),
     ),
     6242 => array(
-        'm_icon' => '<i class="far fa-check-square"></i>',
-        'm_name' => 'Intent Note On-Complete',
+        'm_icon' => '<i class="far fa-lightbulb-on"></i>',
+        'm_name' => 'Intent Note Endnote',
         'm_desc' => '',
         'm_parents' => array(7703,6345,4603,4595,4593,4986,4485),
     ),
@@ -2001,14 +2001,14 @@ $config['en_all_4986'] = array(
         'm_parents' => array(7703,6345,4986,4603,4593,4485,4595),
     ),
     6093 => array(
-        'm_icon' => '<i class="far fa-comments"></i>',
-        'm_name' => 'Intent Note Chatlog',
+        'm_icon' => '<i class="far fa-file-certificate"></i>',
+        'm_name' => 'Intent Note Changelog',
         'm_desc' => '',
         'm_parents' => array(7703,4595,4593,4986,4485),
     ),
     6242 => array(
-        'm_icon' => '<i class="far fa-check-square"></i>',
-        'm_name' => 'Intent Note On-Complete',
+        'm_icon' => '<i class="far fa-lightbulb-on"></i>',
+        'm_name' => 'Intent Note Endnote',
         'm_desc' => '',
         'm_parents' => array(7703,6345,4603,4595,4593,4986,4485),
     ),
@@ -2919,7 +2919,7 @@ $config['en_all_4755'] = array(
         'm_parents' => array(7610,4755,4593,4595),
     ),
     7701 => array(
-        'm_icon' => '<i class="fas fa-rss"></i>',
+        'm_icon' => '<i class="far fa-rss"></i>',
         'm_name' => 'Intent Note Subscriber',
         'm_desc' => '',
         'm_parents' => array(7703,4755,4593,4595,7551,4485),
@@ -3212,8 +3212,8 @@ $config['en_all_4595'] = array(
         'm_parents' => array(7703,4593,4595,4485),
     ),
     4983 => array(
-        'm_icon' => '<i class="far fa-bookmark"></i>',
-        'm_name' => 'Intent Note Reference',
+        'm_icon' => '<i class="far fa-user-edit"></i>',
+        'm_name' => 'Intent Note Author',
         'm_desc' => '750',
         'm_parents' => array(7703,7551,4985,4595,4593,4485),
     ),
@@ -3296,8 +3296,8 @@ $config['en_all_4595'] = array(
         'm_parents' => array(4595,4593,4997),
     ),
     6093 => array(
-        'm_icon' => '<i class="far fa-comments"></i>',
-        'm_name' => 'Intent Note Chatlog',
+        'm_icon' => '<i class="far fa-file-certificate"></i>',
+        'm_name' => 'Intent Note Changelog',
         'm_desc' => '500',
         'm_parents' => array(7703,4595,4593,4986,4485),
     ),
@@ -3362,8 +3362,8 @@ $config['en_all_4595'] = array(
         'm_parents' => array(4595,4593),
     ),
     6242 => array(
-        'm_icon' => '<i class="far fa-check-square"></i>',
-        'm_name' => 'Intent Note On-Complete',
+        'm_icon' => '<i class="far fa-lightbulb-on"></i>',
+        'm_name' => 'Intent Note Endnote',
         'm_desc' => '2000',
         'm_parents' => array(7703,6345,4603,4595,4593,4986,4485),
     ),
@@ -3489,7 +3489,7 @@ $config['en_all_4595'] = array(
     ),
     7545 => array(
         'm_icon' => '<i class="far fa-tag"></i>',
-        'm_name' => 'Intent Note Entity Tag',
+        'm_name' => 'Intent Note Tag',
         'm_desc' => '500',
         'm_parents' => array(7703,7551,4595,4593,4485),
     ),
@@ -3554,7 +3554,7 @@ $config['en_all_4595'] = array(
         'm_parents' => array(7610,4755,4593,4595),
     ),
     7701 => array(
-        'm_icon' => '<i class="fas fa-rss"></i>',
+        'm_icon' => '<i class="far fa-rss"></i>',
         'm_name' => 'Intent Note Subscriber',
         'm_desc' => '50',
         'm_parents' => array(7703,4755,4593,4595,7551,4485),
@@ -3864,8 +3864,8 @@ $config['en_all_4593'] = array(
         'm_parents' => array(7703,4593,4595,4485),
     ),
     4983 => array(
-        'm_icon' => '<i class="far fa-bookmark"></i>',
-        'm_name' => 'Intent Note Reference',
+        'm_icon' => '<i class="far fa-user-edit"></i>',
+        'm_name' => 'Intent Note Author',
         'm_desc' => 'References track intent correlations referenced within expert sources, and represent a core building block of intelligence. References are among the most precious transaction types because they indicate that IF you do A, you will likely accomplish B. As miners mine content from more experts, certain intent correlations will receive more references than others, thus gaining more credibility.',
         'm_parents' => array(7703,7551,4985,4595,4593,4485),
     ),
@@ -3948,8 +3948,8 @@ $config['en_all_4593'] = array(
         'm_parents' => array(4595,4593,4997),
     ),
     6093 => array(
-        'm_icon' => '<i class="far fa-comments"></i>',
-        'm_name' => 'Intent Note Chatlog',
+        'm_icon' => '<i class="far fa-file-certificate"></i>',
+        'm_name' => 'Intent Note Changelog',
         'm_desc' => '',
         'm_parents' => array(7703,4595,4593,4986,4485),
     ),
@@ -4014,8 +4014,8 @@ $config['en_all_4593'] = array(
         'm_parents' => array(4595,4593),
     ),
     6242 => array(
-        'm_icon' => '<i class="far fa-check-square"></i>',
-        'm_name' => 'Intent Note On-Complete',
+        'm_icon' => '<i class="far fa-lightbulb-on"></i>',
+        'm_name' => 'Intent Note Endnote',
         'm_desc' => '',
         'm_parents' => array(7703,6345,4603,4595,4593,4986,4485),
     ),
@@ -4141,7 +4141,7 @@ $config['en_all_4593'] = array(
     ),
     7545 => array(
         'm_icon' => '<i class="far fa-tag"></i>',
-        'm_name' => 'Intent Note Entity Tag',
+        'm_name' => 'Intent Note Tag',
         'm_desc' => '',
         'm_parents' => array(7703,7551,4595,4593,4485),
     ),
@@ -4206,7 +4206,7 @@ $config['en_all_4593'] = array(
         'm_parents' => array(7610,4755,4593,4595),
     ),
     7701 => array(
-        'm_icon' => '<i class="fas fa-rss"></i>',
+        'm_icon' => '<i class="far fa-rss"></i>',
         'm_name' => 'Intent Note Subscriber',
         'm_desc' => 'When miners subscribe to receive intent updates and manage the intent.',
         'm_parents' => array(7703,4755,4593,4595,7551,4485),
@@ -4314,7 +4314,7 @@ $config['en_all_4454'] = array(
 );
 
 //Intent Notes:
-$config['en_ids_4485'] = array(4231,4983,4601,6242,7545,7701,6093);
+$config['en_ids_4485'] = array(4231,4983,7701,4601,6242,7545,6093);
 $config['en_all_4485'] = array(
     4231 => array(
         'm_icon' => '<i class="far fa-comment"></i>',
@@ -4323,10 +4323,16 @@ $config['en_all_4485'] = array(
         'm_parents' => array(7703,6345,4986,4603,4593,4485,4595),
     ),
     4983 => array(
-        'm_icon' => '<i class="far fa-bookmark"></i>',
-        'm_name' => 'Reference',
+        'm_icon' => '<i class="far fa-user-edit"></i>',
+        'm_name' => 'Author',
         'm_desc' => 'Tracks intent correlations mined from expert sources and miner perspectives. References give credibility to intent correlations. Never communicated with Students and only used for weighting purposes, like how Google uses link correlations for its PageRank algorithm.',
         'm_parents' => array(7703,7551,4985,4595,4593,4485),
+    ),
+    7701 => array(
+        'm_icon' => '<i class="far fa-rss"></i>',
+        'm_name' => 'Subscriber',
+        'm_desc' => 'Allows miners to follow an intent to receive updates.',
+        'm_parents' => array(7703,4755,4593,4595,7551,4485),
     ),
     4601 => array(
         'm_icon' => '<i class="far fa-bolt"></i>',
@@ -4335,26 +4341,20 @@ $config['en_all_4485'] = array(
         'm_parents' => array(7703,4593,4595,4485),
     ),
     6242 => array(
-        'm_icon' => '<i class="far fa-check-square"></i>',
-        'm_name' => 'On-Complete',
+        'm_icon' => '<i class="far fa-lightbulb-on"></i>',
+        'm_name' => 'Endnote',
         'm_desc' => 'Message delivered to students when they complete an intention.',
         'm_parents' => array(7703,6345,4603,4595,4593,4986,4485),
     ),
     7545 => array(
         'm_icon' => '<i class="far fa-tag"></i>',
-        'm_name' => 'Entity Tag',
+        'm_name' => 'Tag',
         'm_desc' => 'When completed by the user, adds the user as the child of these entities, and stores potential user response as link content.',
         'm_parents' => array(7703,7551,4595,4593,4485),
     ),
-    7701 => array(
-        'm_icon' => '<i class="fas fa-rss"></i>',
-        'm_name' => 'Subscriber',
-        'm_desc' => 'Allows miners to follow an intent to receive updates.',
-        'm_parents' => array(7703,4755,4593,4595,7551,4485),
-    ),
     6093 => array(
-        'm_icon' => '<i class="far fa-comments"></i>',
-        'm_name' => 'Chatlog',
+        'm_icon' => '<i class="far fa-file-certificate"></i>',
+        'm_name' => 'Changelog',
         'm_desc' => 'Similar to Wikipedia\'s Talk pages, the Mench changelog helps miners track the history and evolution of a intent and explain/propose changes/improvements.',
         'm_parents' => array(7703,4595,4593,4986,4485),
     ),
