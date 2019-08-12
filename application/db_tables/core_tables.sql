@@ -36,7 +36,7 @@ create table table_entities
 
 create table table_links
 (
-  ln_id                   bigserial                  not null constraint table_ledger_pkey primary key,
+  ln_id                   bigserial                  not null constraint table_links_pkey primary key,
   ln_status_entity_id     integer      default 6176  not null,
   ln_type_entity_id       integer                    not null,
   ln_creator_entity_id    integer      default 0     not null,
