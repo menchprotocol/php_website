@@ -1075,7 +1075,7 @@ class Intents_model extends CI_Model
         if(!$in_verb_entity_id){
 
             //Add and link verb:
-            $added_en = $this->Entities_model->en_verify_create(ucwords(strtolower($starting_verb)), $ln_creator_entity_id, false, 6181);
+            $added_en = $this->Entities_model->en_verify_create(ucwords(strtolower($starting_verb)), $ln_creator_entity_id, 6181);
 
             //Link to supported verbs:
             $this->Links_model->ln_create(array(
