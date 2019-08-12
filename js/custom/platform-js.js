@@ -93,7 +93,7 @@ $(document).ready(function () {
                             return '<a href="javascript:add_search_item()" class="suggestion"><i class="fas fa-plus-circle" style="margin: 0 5px;"></i> Create ' + data.query + '</a>';
                         } else {
                             //Valid Integer, Give option to go there:
-                            return '<a href="/' + ( $("#platform_search").val().charAt(0)=='#' ? 'intents' : 'entities' ) + '/' + search_body + '" class="suggestion"><i class="fas fa-plus-circle" style="margin: 0 5px;"></i> Go to ' + data.query
+                            return '<a href="/' + ( $("#platform_search").val().charAt(0)=='#' ? 'intents' : 'entities' ) + '/' + search_body + '" class="suggestion"><i class="far fa-level-up rotate90" style="margin: 0 5px;"></i> Go to ' + data.query
                         }
                     }
                 },
