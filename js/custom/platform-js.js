@@ -35,7 +35,6 @@ function en_fetch_canonical_url(query_string, not_found){
 
 
 
-
 //Function to load all help messages throughout the platform:
 $(document).ready(function () {
 
@@ -120,10 +119,14 @@ $(document).ready(function () {
     ]);
 
 
-    $("#platform_search, #searchForm").submit(function() {
+
+    $('#searchForm').on('submit', function(e) {
         //Only redirect if matching criteria:
         if(($("#platform_search").val().charAt(0)=='#' || $("#platform_search").val().charAt(0)=='@') && !isNaN($("#platform_search").val().substr(1))){
             window.location = '/' + ( $("#platform_search").val().charAt(0)=='#' ? 'intents' : 'entities' ) + '/' + $("#platform_search").val().substr(1);
+        } else {
+            alert('No search results found');
+            e.preventDefault();
         }
         return false;
     });
