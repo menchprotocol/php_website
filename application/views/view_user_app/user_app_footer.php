@@ -74,10 +74,6 @@
     <?php
 }
 
-if(isset($show_chat) && $show_chat){
-    $this->load->view('view_shared/messenger_web_chat');
-}
-
 
 //Load modal only if in Action Plan:
 if($this->uri->segment(1)=='actionplan'){
