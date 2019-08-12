@@ -124,8 +124,8 @@ $(document).ready(function () {
         //Only redirect if matching criteria:
         if(($("#platform_search").val().charAt(0)=='#' || $("#platform_search").val().charAt(0)=='@') && !isNaN($("#platform_search").val().substr(1))){
             window.location = '/' + ( $("#platform_search").val().charAt(0)=='#' ? 'intents' : 'entities' ) + '/' + $("#platform_search").val().substr(1);
-            return false;
         }
+        return false;
     });
 
 
