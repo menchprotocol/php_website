@@ -125,9 +125,6 @@ $(document).ready(function () {
         }
     });
 
-    //Always focus on search:
-    $("#platform_search").focus();
-
 
     //Load Algolia for link replacement search
     $(".in_quick_search").on('autocomplete:selected', function (event, suggestion, dataset) {
