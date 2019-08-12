@@ -123,13 +123,17 @@ function load_js_algolia() {
 
 $(document).ready(function () {
 
+
     $(document).keyup(function (e) {
         //Watch for action keys:
-        if (e.keyCode === 27) {
+        if (e.keyCode === 27) { //ESC
             modify_cancel();
-        } else if (e.keyCode === 76) {
-            //L for login:
-            window.location = '/signin';
+        } else if (e.keyCode === 81) { //Q
+            if(parseInt($('#js_logged_user_id').val()) > 0){
+                window.location = '/signout';
+            } else {
+                window.location = '/signin';
+            }
         }
     });
 

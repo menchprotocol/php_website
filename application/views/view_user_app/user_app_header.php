@@ -28,7 +28,9 @@ $url_part_1 = $this->uri->segment(1);
 </head>
 
 <body class="landing-page">
-<?php $this->load->view('view_shared/google_tag_manager'); ?>
+<?php $this->load->view('view_shared/google_tag_manager', array(
+    'session_en' => $session_en,
+)); ?>
 
 <?php if(!isset($hide_header) || !$hide_header){ ?>
 <nav class="navbar navbar-warning navbar-fixed-top navbar-color-on-scroll no-adj">

@@ -33,14 +33,25 @@ function en_fetch_canonical_url(query_string, not_found){
         + ( not_found ? '<div class="not-found"><i class="fas fa-exclamation-triangle"></i> URL not found</div>' : '');
 }
 
+
+
+
 //Function to load all help messages throughout the platform:
 $(document).ready(function () {
 
     //Watch typing:
     $(document).keyup(function (e) {
         //Watch for action keys:
-        if (e.keyCode === 27) {
+        if (e.keyCode === 27) { //ESC
             modify_cancel();
+        } else if (e.keyCode === 68) { //D
+            window.location = '/dashboard';
+        } else if (e.keyCode === 76) { //L
+            window.location = '/links';
+        } else if (e.keyCode === 73) { //I
+            window.location = '/intents';
+        } else if (e.keyCode === 69) { //E
+            window.location = '/entities';
         }
     });
 

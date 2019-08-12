@@ -37,7 +37,9 @@ $uri_segment_2 = $this->uri->segment(2);
 
 <body id="platform_body" class="<?= (isset($_GET['skip_header']) ? 'grey-bg' : '') ?>">
 
-    <?php $this->load->view('view_shared/google_tag_manager'); ?>
+    <?php $this->load->view('view_shared/google_tag_manager', array(
+       'session_en' => $session_en,
+    )); ?>
 
     <!-- Managed by JS to edit various fields -->
     <div class="edit-box hidden"></div>
@@ -85,12 +87,12 @@ $uri_segment_2 = $this->uri->segment(2);
 
                             <!-- Core Objects -->
                             <li class="<?= ($uri_segment_1 == 'intents' ? 'intent-active' : 'intent-inactive') ?>">
-                                <a href="/intents/<?= $this->session->userdata('user_default_intent') ?>">
+                                <a href="/intents">
                                     <?= $en_all_7368[4535]['m_icon'] .' '. $en_all_7368[4535]['m_name'] ?>
                                 </a>
                             </li>
                             <li class="<?= ($uri_segment_1 == 'entities' ? 'entity-active' : 'entity-inactive') ?>">
-                                <a href="/entities/<?= $this->config->item('en_focus_id') ?>">
+                                <a href="/entities">
                                     <?= $en_all_7368[4536]['m_icon'] .' '. $en_all_7368[4536]['m_name'] ?>
                                 </a>
                             </li>
