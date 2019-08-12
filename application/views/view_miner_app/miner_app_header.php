@@ -62,8 +62,10 @@ $uri_segment_2 = $this->uri->segment(2);
                                         <?= $this->config->item('system_icon') ?>
                                     </td>
                                     <td>
+                                        <form id="searchForm">
                                         <input type="text" class="algolia_search" id="platform_search" data-lpignore="true"
                                                placeholder="<?= $en_all_7368[7256]['m_desc'] ?>">
+                                        </form>
                                     </td>
                                 </tr>
                             </table>

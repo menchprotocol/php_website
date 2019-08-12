@@ -57,17 +57,23 @@ $(document).ready(function () {
     }).autocomplete({hint: false, minLength: 2, autoselect: true, keyboardShortcuts: ['s']}, [
         {
             source: function (q, cb) {
-                //Append filters:
-                algolia_index.search(q, {
-                    hitsPerPage: 14,
-                    filters: 'alg_obj_is_in ' + ( $("#platform_search").val().charAt(0)=='#' ? '=1' : ( $("#platform_search").val().charAt(0)=='@' ? '=0' : '>=0' ) ),
-                }, function (error, content) {
-                    if (error) {
-                        cb([]);
-                        return;
-                    }
-                    cb(content.hits, content);
-                });
+                //Do not search if specific command:
+                if(($("#platform_search").val().charAt(0)=='#' || $("#platform_search").val().charAt(0)=='@') && !isNaN($("#platform_search").val().substr(1))){
+                    cb([]);
+                    return;
+                } else {
+                    //Append filters:
+                    algolia_index.search(q, {
+                        hitsPerPage: 14,
+                        filters: 'alg_obj_is_in ' + ( $("#platform_search").val().charAt(0)=='#' ? '=1' : ( $("#platform_search").val().charAt(0)=='@' ? '=0' : '>=0' ) ),
+                    }, function (error, content) {
+                        if (error) {
+                            cb([]);
+                            return;
+                        }
+                        cb(content.hits, content);
+                    });
+                }
             },
             displayKey: function (suggestion) {
                 return ""
@@ -95,9 +101,13 @@ $(document).ready(function () {
                     if(validURL(data.query)){
                         return en_fetch_canonical_url(data.query, true);
                     } else if($("#platform_search").val().charAt(0)=='#'){
-                        return '<div class="not-found"><i class="fas fa-exclamation-triangle"></i> No intents found</div>';
+                        if(isNaN($("#platform_search").val().substr(1))){
+                            return '<div class="not-found"><i class="fas fa-exclamation-triangle"></i> No intents found</div>';
+                        }
                     } else if($("#platform_search").val().charAt(0)=='@'){
-                        return '<div class="not-found"><i class="fas fa-exclamation-triangle"></i> No entities found</div>';
+                        if(isNaN($("#platform_search").val().substr(1))) {
+                            return '<div class="not-found"><i class="fas fa-exclamation-triangle"></i> No entities found</div>';
+                        }
                     } else {
                         return '<div class="not-found"><i class="fas fa-exclamation-triangle"></i> No intents/entities found</div>';
                     }
@@ -106,6 +116,17 @@ $(document).ready(function () {
         }
     ]);
 
+
+    $("#platform_search, #searchForm").submit(function() {
+        //Only redirect if matching criteria:
+        if(($("#platform_search").val().charAt(0)=='#' || $("#platform_search").val().charAt(0)=='@') && !isNaN($("#platform_search").val().substr(1))){
+            window.location = '/' + ( $("#platform_search").val().charAt(0)=='#' ? 'intents' : 'entities' ) + '/' + $("#platform_search").val().substr(1);
+            return false;
+        }
+    });
+
+    //Always focus on search:
+    $("#platform_search").focus();
 
 
     //Load Algolia for link replacement search
