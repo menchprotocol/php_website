@@ -1170,7 +1170,7 @@ function echo_tree_steps($in, $push_message = 0, $autoexpand = false)
 
     //Now do measurements:
     $has_time_estimate = ( isset($metadata['in__metadata_max_seconds']) && $metadata['in__metadata_max_seconds']>0 );
-    $pitch_body = 'I estimate it would take you ' . strtolower(echo_step_range($in, true)).( $has_time_estimate ? ' in ' . strtolower(echo_time_range($in)) : '' ).' to '.echo_in_outcome($in['in_outcome']);
+    $pitch_body = 'I estimate it would take you ' . strtolower(echo_step_range($in, true)).( $has_time_estimate ? ' in ' . strtolower(echo_time_range($in)) : '' ).' to '.echo_in_outcome($in['in_outcome'], false, true);
 
 
     if ($push_message) {

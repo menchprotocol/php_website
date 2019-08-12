@@ -24,7 +24,7 @@ foreach ($this->Links_model->ln_fetch(array(
 
 
 //Action Plan Overview:
-$step_info = echo_tree_steps($in, false);
+$step_info = echo_tree_steps($in, false, true);
 $source_info = echo_tree_experts($in, false);
 $user_info = echo_tree_users($in, false);
 

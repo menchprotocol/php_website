@@ -76,20 +76,8 @@ $url_part_1 = $this->uri->segment(1);
 
                 } else {
 
-                    //Show details for companies:
-                    $company_information_intents = array();
-
-                    foreach($this->config->item('en_all_7593') as $en_id => $m) {
-
-                        //Echo header:
-                        echo '<li class="'.( $url_part_1==$m['m_desc'] ? ' front-active ' : '' ).'"><a href="/'.$m['m_desc'].'">'.( strlen($m['m_icon'])>0 ? '<span class="icon-block en-icon">'.$m['m_icon'].'</span>' : '' ).$m['m_name'].'</a></li>';
-
-                        //Gather intents:
-                        array_push($company_information_intents, intval($m['m_desc']));
-                    }
-
                     //Give option to sign-in:
-                    echo '<li><a href="/signin'.( isset($in['in_id']) && $in['in_id']!=$this->config->item('in_focus_id') && !in_array($in['in_id'], $company_information_intents) ? '?url=%2Fintents%2F'.$in['in_id'] : '' ).'" class="tag-manager-sign-in">'.$en_all_7369[4269]['m_name'].' '.$en_all_7369[4269]['m_icon'].'</a></li>';
+                    echo '<li><a href="/signin'.( isset($in['in_id']) && $in['in_id']!=$this->config->item('in_focus_id') ? '?url=%2Fintents%2F'.$in['in_id'] : '' ).'" class="tag-manager-sign-in">'.$en_all_7369[4269]['m_name'].' '.$en_all_7369[4269]['m_icon'].'</a></li>';
 
                     //Give option to Signup if Intent is passed:
                     echo '<li class="featured-nav"><a href="/'.( isset($in['in_id']) && $in['in_id']!=$this->config->item('in_focus_id') ? $in['in_id'] : $this->config->item('in_join_id') ).'/signin" class="tag-manager-sign-in">SIGN UP <i class="fas fa-user-plus"></i></a></li>';
