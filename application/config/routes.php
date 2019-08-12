@@ -26,6 +26,7 @@ $route['magiclogin/(:num)']     = "user_app/singin_magic_link_login/$1";
 $route['signout']               = "user_app/signout";
 $route['myaccount']             = "user_app/myaccount";
 $route['actionplan']            = "user_app/actionplan/0";
+$route['actionplan/delete']     = "user_app/actionplan_delete";
 $route['actionplan/next']       = "user_app/actionplan/next";
 $route['actionplan/(:num)']     = "user_app/actionplan/$1";
 

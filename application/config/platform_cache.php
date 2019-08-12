@@ -11,7 +11,7 @@ defined('BASEPATH') OR exit('No direct script access allowed');
  *
  */
 
-//Generated 2019-08-11 20:49:11 PST
+//Generated 2019-08-12 14:40:38 PST
 
 //Link Metadata:
 $config['en_ids_6103'] = array(4358,6203,6402);
@@ -500,35 +500,6 @@ $config['en_all_7596'] = array(
     ),
 );
 
-//Company Get Started:
-$config['en_ids_7593'] = array(7594,7592,7591,7606);
-$config['en_all_7593'] = array(
-    7594 => array(
-        'm_icon' => '',
-        'm_name' => 'Benefits',
-        'm_desc' => '10438',
-        'm_parents' => array(7593),
-    ),
-    7592 => array(
-        'm_icon' => '',
-        'm_name' => 'Features',
-        'm_desc' => '11884',
-        'm_parents' => array(7593,7369),
-    ),
-    7591 => array(
-        'm_icon' => '',
-        'm_name' => 'Pricing',
-        'm_desc' => '11882',
-        'm_parents' => array(7593,7369),
-    ),
-    7606 => array(
-        'm_icon' => '',
-        'm_name' => 'About Us',
-        'm_desc' => '12028',
-        'm_parents' => array(7593),
-    ),
-);
-
 //Intent Link Conditional Step:
 $config['en_ids_4229'] = array(6140,6402,6997);
 $config['en_all_4229'] = array(
@@ -925,7 +896,7 @@ $config['en_all_6287'] = array(
 );
 
 //Mench User App:
-$config['en_ids_7369'] = array(4269,4430,6137,6138,7161,7291,7591,7592);
+$config['en_ids_7369'] = array(4269,4430,6137,6138,7161,7291);
 $config['en_all_7369'] = array(
     4269 => array(
         'm_icon' => '<i class="fas fa-sign-in"></i>',
@@ -962,18 +933,6 @@ $config['en_all_7369'] = array(
         'm_name' => 'Logout',
         'm_desc' => '',
         'm_parents' => array(7368,7369),
-    ),
-    7591 => array(
-        'm_icon' => '',
-        'm_name' => 'Pricing',
-        'm_desc' => '',
-        'm_parents' => array(7593,7369),
-    ),
-    7592 => array(
-        'm_icon' => '',
-        'm_name' => 'Features',
-        'm_desc' => '',
-        'm_parents' => array(7593,7369),
     ),
 );
 
@@ -2740,7 +2699,7 @@ $config['en_all_4755'] = array(
     ),
     6415 => array(
         'm_icon' => '<i class="far fa-function"></i>',
-        'm_name' => 'User Progress Reset',
+        'm_name' => 'User Cleared Action Plan',
         'm_desc' => '',
         'm_parents' => array(4595,4755,6418,4593,6414),
     ),
@@ -3369,7 +3328,7 @@ $config['en_all_4595'] = array(
     ),
     6415 => array(
         'm_icon' => '<i class="far fa-function"></i>',
-        'm_name' => 'User Progress Reset',
+        'm_name' => 'User Cleared Action Plan',
         'm_desc' => '5',
         'm_parents' => array(4595,4755,6418,4593,6414),
     ),
@@ -4021,7 +3980,7 @@ $config['en_all_4593'] = array(
     ),
     6415 => array(
         'm_icon' => '<i class="far fa-function"></i>',
-        'm_name' => 'User Progress Reset',
+        'm_name' => 'User Cleared Action Plan',
         'm_desc' => 'Removes certain links types as defined by its children from a Student\'s Action Plan. Currently only available for Miners.',
         'm_parents' => array(4595,4755,6418,4593,6414),
     ),

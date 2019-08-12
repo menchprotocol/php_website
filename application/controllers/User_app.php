@@ -1390,7 +1390,7 @@ class User_app extends CI_Controller
         if(count($progress_links) > 0){
 
             //Yes they did have some:
-            $message = count($progress_links).' Action Plan progression link'.echo__s(count($progress_links)).' removed';
+            $message = 'I deleted '.count($progress_links).' link'.echo__s(count($progress_links)).' to empty your Action Plan. No more history left between us, you can start from the beginning at any time.';
 
             //Log link:
             $clear_all_link = $this->Links_model->ln_create(array(
@@ -1410,16 +1410,44 @@ class User_app extends CI_Controller
         } else {
 
             //Nothing to do:
-            $message = 'Nothing to delete...';
+            $message = 'Your Action Plan was already empty as there was nothing to delete';
 
         }
 
         //Show basic UI for now:
-        echo $message;
-        echo '<div><a href="/actionplan" style="font-weight: bold; font-size: 1.4em; margin-top: 10px;">Go Back</a></div>';
+        return redirect_message('/actionplan', '<div class="alert alert-success" role="alert"><i class="fas fa-radiation-alt"></i> '.$message.'</div>');
 
     }
 
+
+
+    function actionplan_delete($psid = 0)
+    {
+
+        $session_en = $this->session->userdata('user');
+        if (!$psid && !isset($session_en['en_id'])) {
+            die('<div class="alert alert-danger" role="alert">Invalid Credentials</div>');
+        } elseif (!is_dev_environment() && isset($_GET['sr']) && !parse_signed_request($_GET['sr'])) {
+            die('<div class="alert alert-danger" role="alert">Failed to authenticate your origin.</div>');
+        } elseif (!isset($session_en['en_id'])) {
+            //Messenger Webview, authenticate PSID:
+            $session_en = $this->Entities_model->en_messenger_auth($psid);
+            //Make sure we found them:
+            if (!$session_en) {
+                //We could not authenticate the user!
+                die('<div class="alert alert-danger" role="alert">Credentials could not be validated</div>');
+            }
+        }
+
+        $this->load->view('view_user_app/user_app_header', array(
+            'title' => 'Clear Action Plan',
+        ));
+        $this->load->view('view_user_app/actionplan_delete', array(
+            'session_en' => $session_en,
+        ));
+        $this->load->view('view_user_app/user_app_footer');
+
+    }
 
     function actionplan_load($psid, $in_id)
     {

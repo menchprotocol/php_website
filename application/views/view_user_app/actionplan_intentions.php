@@ -59,15 +59,8 @@ if(count($user_intents) > 0){
 
 }
 
-//Are they a miner? Give them option to clear everything:
-if(count($this->Links_model->ln_fetch(array(
-        'ln_status_entity_id IN (' . join(',', $this->config->item('en_ids_7359')) . ')' => null, //Link Statuses Public
-        'ln_type_entity_id IN (' . join(',', $this->config->item('en_ids_4592')) . ')' => null, //Entity Link Connectors
-        'ln_child_entity_id' => $session_en['en_id'],
-        'ln_parent_entity_id' => 1308, //Miners
-    ))) > 0){
-    $timestamp = time();
-    echo '<div style="text-align: right;"><a href="/user_app/actionplan_reset_progress/'.$session_en['en_id'].'/'.$timestamp.'/'.md5($session_en['en_id'] . $this->config->item('actionplan_salt') . $timestamp).'" style="font-size:0.6em; color:#CCC;"><i class="fas fa-trash-alt"></i> Clear All</a></div>';
-}
+//Give everyone the option to delete:
+echo '<div style="text-align: right;"><a href="/actionplan/delete" style="font-size:0.6em; color:#DDD;"><i class="fas fa-radiation-alt"></i> Clear Action Plan</a></div>';
+
 
 ?>
