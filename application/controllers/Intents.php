@@ -508,7 +508,7 @@ class Intents extends CI_Controller
 
             $item_ui .= '<a href="/intents/'.$_POST['in_focus_id'].'?filter_user='.urlencode('@'.$apu['en_id'].' '.$apu['en_name']).'#actionplanusers-'.$_POST['in_id'].'" data-toggle="tooltip" data-placement="top" title="Filter by this user"><i class="far fa-filter"></i></a>';
             $item_ui .= '&nbsp;<a href="/links?ln_id='.$apu['ln_id'].'" target="_blank" class="' . advance_mode() . '">'.echo_en_cache('en_all_6255' /* User Steps Progress */, $apu['ln_type_entity_id']).'</a>';
-            $item_ui .= '&nbsp;<a href="/entities/'.$apu['en_id'].'" data-toggle="tooltip" data-placement="top" title="Link Miner Entity" class="' . advance_mode() . '"><i class="far fa-user-circle"></i></a></td>';
+            $item_ui .= '&nbsp;<a href="/entities/'.$apu['en_id'].'" data-toggle="tooltip" data-placement="top" title="Link Creator" class="' . advance_mode() . '"><i class="far fa-user-circle"></i></a></td>';
             $item_ui .= '</tr>';
 
 

@@ -618,7 +618,7 @@ function echo_ln($ln, $is_inner = false)
             $full_name = $miner_ens[0]['en_name'];
 
             $ui .= '<span class="icon-main">'.echo_en_icon($miner_ens[0]).'</span>';
-            $ui .= '<a href="/entities/'.$miner_ens[0]['en_id'].'" data-toggle="tooltip" data-placement="top" title="Link Miner Entity"> <b>' . $full_name . '</b></a>';
+            $ui .= '<a href="/entities/'.$miner_ens[0]['en_id'].'" data-toggle="tooltip" data-placement="top" title="Link Creator"> <b>' . $full_name . '</b></a>';
 
         } else {
 
@@ -630,7 +630,7 @@ function echo_ln($ln, $is_inner = false)
     }
 
     //Link Type:
-    $ui .= '<a href="/entities/'.$ln['ln_type_entity_id'].'" data-toggle="tooltip" data-placement="top" title="Link Type Entity"><b style="padding-left:5px;">'. ( strlen($en_all_4593[$ln['ln_type_entity_id']]['m_icon']) > 0 ? '&nbsp;'.$en_all_4593[$ln['ln_type_entity_id']]['m_icon'] : '' ) .'&nbsp;'. $en_all_4593[$ln['ln_type_entity_id']]['m_name'] . '</b></a>';
+    $ui .= '<a href="/entities/'.$ln['ln_type_entity_id'].'" data-toggle="tooltip" data-placement="top" title="Link Type"><b style="padding-left:5px;">'. ( strlen($en_all_4593[$ln['ln_type_entity_id']]['m_icon']) > 0 ? '&nbsp;'.$en_all_4593[$ln['ln_type_entity_id']]['m_icon'] : '' ) .'&nbsp;'. $en_all_4593[$ln['ln_type_entity_id']]['m_name'] . '</b></a>';
 
     $ui .= '</div>';
 
@@ -2028,52 +2028,54 @@ function echo_in($in, $level, $in_linked_id = 0, $is_parent = false)
 
 
 
+    //For logged in users:
+    if(isset($session_en['en_id'])){
 
-
-    //Action Plan:
-    $actionplan_users = $CI->Links_model->ln_fetch(array(
-    'ln_type_entity_id IN (' . join(',', $CI->config->item('en_ids_6255')) . ')' => null, //Action Plan Steps Progressed
-    'ln_parent_intent_id' => $in['in_id'],
-    'ln_status_entity_id IN (' . join(',', $CI->config->item('en_ids_7359')) . ')' => null, //Link Statuses Public
-), array(), 0, 0, array(), 'COUNT(ln_id) as total_steps');
-
-    if(count($in_filters['get_filter_query']) > 0){
-        $actionplan_users_match = $CI->Links_model->ln_fetch(array_merge($in_filters['get_filter_query'], array(
+        //Action Plan:
+        $actionplan_users = $CI->Links_model->ln_fetch(array(
             'ln_type_entity_id IN (' . join(',', $CI->config->item('en_ids_6255')) . ')' => null, //Action Plan Steps Progressed
             'ln_parent_intent_id' => $in['in_id'],
             'ln_status_entity_id IN (' . join(',', $CI->config->item('en_ids_7359')) . ')' => null, //Link Statuses Public
-        )), array(), 0, 0, array(), 'COUNT(ln_id) as total_steps');
+        ), array(), 0, 0, array(), 'COUNT(ln_id) as total_steps');
+
+        if(count($in_filters['get_filter_query']) > 0){
+            $actionplan_users_match = $CI->Links_model->ln_fetch(array_merge($in_filters['get_filter_query'], array(
+                'ln_type_entity_id IN (' . join(',', $CI->config->item('en_ids_6255')) . ')' => null, //Action Plan Steps Progressed
+                'ln_parent_intent_id' => $in['in_id'],
+                'ln_status_entity_id IN (' . join(',', $CI->config->item('en_ids_7359')) . ')' => null, //Link Statuses Public
+            )), array(), 0, 0, array(), 'COUNT(ln_id) as total_steps');
+        }
+        if($actionplan_users[0]['total_steps'] > 0) {
+            $ui .= '<a id="match_list_'.$in['in_id'].'" href="#actionplanusers-'.$in['in_id'].'" onclick="in_action_plan_users('.$in['in_id'].')" class="badge badge-primary white-primary is_not_bg" style="width:40px; margin:-3px -3px 0 4px;" data-toggle="tooltip" data-placement="bottorm" title="Users who Completed this Step">'.( !count($in_filters['get_filter_query']) || $actionplan_users_match[0]['total_steps']>0 ? '<span class="btn-counter">' . ( count($in_filters['get_filter_query']) > 0 ? '<i class="fas fa-filter mini-filter"></i> '.echo_number($actionplan_users_match[0]['total_steps']) : echo_number($actionplan_users[0]['total_steps']) ) . '</span>' : '' ).'<i class="fas fa-walking"></i></a>';
+        }
+
+
+
+        //Intent Notes:
+        $count_in_notes = $CI->Links_model->ln_fetch(array(
+            'ln_status_entity_id IN (' . join(',', $CI->config->item('en_ids_7360')) . ')' => null, //Link Statuses Active
+            'ln_type_entity_id IN (' . join(',', $CI->config->item('en_ids_4485')) . ')' => null, //All Intent Notes
+            'ln_child_intent_id' => $in['in_id'],
+        ), array(), 0, 0, array(), 'COUNT(ln_id) as totals');
+
+        //Intent note messages only:
+        $count_in_messages = $CI->Links_model->ln_fetch(array(
+            'ln_status_entity_id IN (' . join(',', $CI->config->item('en_ids_7360')) . ')' => null, //Link Statuses Active
+            'ln_type_entity_id' => 4231, //Intent Note Messages
+            'ln_child_intent_id' => $in['in_id'],
+        ), array(), 0, 0, array(), 'COUNT(ln_id) as totals');
+
+        $non_message_notes = $count_in_notes[0]['totals'] -  $count_in_messages[0]['totals'];
+
+        $ui .= '<a href="#intentnotes-' . $in['in_id'] . '" onclick="in_messages_iframe('.$in['in_id'].')" class="msg-badge-' . $in['in_id'] . ' badge badge-primary white-primary is_not_bg '.( $level==0 ? '' . advance_mode() . '' : '' ).'" style="width:40px; margin-right:2px; margin-left:5px;" data-toggle="tooltip" title="Intent Notes" data-placement="bottom"><span class="btn-counter"><span class="in-notes-messages-' . $in['in_id'] . '">' . $count_in_messages[0]['totals'] .'</span>' . ( $non_message_notes > 0 ? '<span class="extra-note-counts '.advance_mode().'">+<span class="in-notes-non-messages-">'.$non_message_notes.'</span></span>' : '' ) . '</span><i class="fas fa-comment-plus"></i></a>';
+
+
+
+        //Intent modify:
+        $in__metadata_max_seconds = (isset($in_metadata['in__metadata_max_seconds']) ? $in_metadata['in__metadata_max_seconds'] : 0);
+        $ui .= '<a class="badge badge-primary white-primary is_not_bg" onclick="in_modify_load(' . $in['in_id'] . ',' . $ln_id . ')" style="margin:-2px -8px 0 0; width:40px;" href="#loadmodify-' . $in['in_id'] . '-' . $ln_id . '" data-toggle="tooltip" title="Intent completion cost. Click to modify intent'.( $level>1 ? ' and link' : '' ).'" data-placement="bottom"><span class="btn-counter slim-time t_estimate_' . $in['in_id'] . advance_mode() . '" tree-max-seconds="' . $in__metadata_max_seconds . '" intent-seconds="' . $in['in_completion_seconds'] . '">'.( $in__metadata_max_seconds > 0 ? echo_time_hours($in__metadata_max_seconds , true) : 0 ).'</span><i class="fas fa-cog"></i></a> &nbsp;';
+
     }
-    if($actionplan_users[0]['total_steps'] > 0) {
-        $ui .= '<a id="match_list_'.$in['in_id'].'" href="#actionplanusers-'.$in['in_id'].'" onclick="in_action_plan_users('.$in['in_id'].')" class="badge badge-primary white-primary is_not_bg" style="width:40px; margin:-3px -3px 0 4px;" data-toggle="tooltip" data-placement="bottorm" title="Users who Completed this Step">'.( !count($in_filters['get_filter_query']) || $actionplan_users_match[0]['total_steps']>0 ? '<span class="btn-counter">' . ( count($in_filters['get_filter_query']) > 0 ? '<i class="fas fa-filter mini-filter"></i> '.echo_number($actionplan_users_match[0]['total_steps']) : echo_number($actionplan_users[0]['total_steps']) ) . '</span>' : '' ).'<i class="fas fa-walking"></i></a>';
-    }
-
-
-
-    //Intent Notes:
-    $count_in_notes = $CI->Links_model->ln_fetch(array(
-        'ln_status_entity_id IN (' . join(',', $CI->config->item('en_ids_7360')) . ')' => null, //Link Statuses Active
-        'ln_type_entity_id IN (' . join(',', $CI->config->item('en_ids_4485')) . ')' => null, //All Intent Notes
-        'ln_child_intent_id' => $in['in_id'],
-    ), array(), 0, 0, array(), 'COUNT(ln_id) as totals');
-
-    //Intent note messages only:
-    $count_in_messages = $CI->Links_model->ln_fetch(array(
-        'ln_status_entity_id IN (' . join(',', $CI->config->item('en_ids_7360')) . ')' => null, //Link Statuses Active
-        'ln_type_entity_id' => 4231, //Intent Note Messages
-        'ln_child_intent_id' => $in['in_id'],
-    ), array(), 0, 0, array(), 'COUNT(ln_id) as totals');
-
-    $non_message_notes = $count_in_notes[0]['totals'] -  $count_in_messages[0]['totals'];
-
-    $ui .= '<a href="#intentnotes-' . $in['in_id'] . '" onclick="in_messages_iframe('.$in['in_id'].')" class="msg-badge-' . $in['in_id'] . ' badge badge-primary white-primary is_not_bg '.( $level==0 ? '' . advance_mode() . '' : '' ).'" style="width:40px; margin-right:2px; margin-left:5px;" data-toggle="tooltip" title="Intent Notes" data-placement="bottom"><span class="btn-counter"><span class="in-notes-messages-' . $in['in_id'] . '">' . $count_in_messages[0]['totals'] .'</span>' . ( $non_message_notes > 0 ? '<span class="extra-note-counts '.advance_mode().'">+<span class="in-notes-non-messages-">'.$non_message_notes.'</span></span>' : '' ) . '</span><i class="fas fa-comment-plus"></i></a>';
-
-
-
-    //Intent modify:
-    $in__metadata_max_seconds = (isset($in_metadata['in__metadata_max_seconds']) ? $in_metadata['in__metadata_max_seconds'] : 0);
-    $ui .= '<a class="badge badge-primary white-primary is_not_bg" onclick="in_modify_load(' . $in['in_id'] . ',' . $ln_id . ')" style="margin:-2px -8px 0 0; width:40px;" href="#loadmodify-' . $in['in_id'] . '-' . $ln_id . '" data-toggle="tooltip" title="Intent completion cost. Click to modify intent'.( $level>1 ? ' and link' : '' ).'" data-placement="bottom"><span class="btn-counter slim-time t_estimate_' . $in['in_id'] . advance_mode() . '" tree-max-seconds="' . $in__metadata_max_seconds . '" intent-seconds="' . $in['in_completion_seconds'] . '">'.( $in__metadata_max_seconds > 0 ? echo_time_hours($in__metadata_max_seconds , true) : 0 ).'</span><i class="fas fa-cog"></i></a> &nbsp;';
-
 
     //Intent Links:
     $count_in_trs = $CI->Links_model->ln_fetch(array_merge($in_filters['get_filter_query'], array(
@@ -2336,44 +2338,41 @@ function echo_en($en, $level, $is_parent = false)
 
 
 
-
     $ui .= '<span style="display: inline-block; float: right;">'; //Start of 5x Action Buttons
 
 
 
+    if(isset($session_en['en_id'])) {
 
-    //Action Plan Set Intentions by Users and Companies:
-    $user_intentions = $CI->Links_model->ln_fetch(array(
-        'ln_type_entity_id IN (' . join(',', $CI->config->item('en_ids_7347')) . ')' => null, //Action Plan Set Intentions
-        'ln_creator_entity_id' => $en['en_id'],
-        'ln_status_entity_id IN (' . join(',', $CI->config->item('en_ids_7360')) . ')' => null, //Link Statuses Active
-    ), array(), 0, 0, array(), 'COUNT(ln_id) as total_steps');
+        //Action Plan Set Intentions by Users and Companies:
+        $user_intentions = $CI->Links_model->ln_fetch(array(
+            'ln_type_entity_id IN (' . join(',', $CI->config->item('en_ids_7347')) . ')' => null, //Action Plan Set Intentions
+            'ln_creator_entity_id' => $en['en_id'],
+            'ln_status_entity_id IN (' . join(',', $CI->config->item('en_ids_7360')) . ')' => null, //Link Statuses Active
+        ), array(), 0, 0, array(), 'COUNT(ln_id) as total_steps');
 
-    if($user_intentions[0]['total_steps'] > 0){
-        $ui .= '<a href="/links?ln_status_entity_id='.join(',', $CI->config->item('en_ids_7360')) /* Link Statuses Active */.'&ln_type_entity_id='.join(',', $CI->config->item('en_ids_7347')).'&ln_creator_entity_id=' . $en['en_id'] . '" class="badge badge-secondary white-secondary ' . advance_mode() . '" style="width:40px; margin-left:5px; margin-right: -3px;" data-toggle="tooltip" data-placement="bottom" title="Manage entity intentions"><span class="btn-counter">'.echo_number($user_intentions[0]['total_steps']).'</span><i class="far fa-bullseye-arrow"></i></a>';
+        if($user_intentions[0]['total_steps'] > 0){
+            $ui .= '<a href="/links?ln_status_entity_id='.join(',', $CI->config->item('en_ids_7360')) /* Link Statuses Active */.'&ln_type_entity_id='.join(',', $CI->config->item('en_ids_7347')).'&ln_creator_entity_id=' . $en['en_id'] . '" class="badge badge-secondary white-secondary ' . advance_mode() . '" style="width:40px; margin-left:5px; margin-right: -3px;" data-toggle="tooltip" data-placement="bottom" title="Manage entity intentions"><span class="btn-counter">'.echo_number($user_intentions[0]['total_steps']).'</span><i class="far fa-bullseye-arrow"></i></a>';
+        }
+
+
+        //Count & Display active Intent Notes that this entity has been referenced within:
+        $messages = $CI->Links_model->ln_fetch(array(
+            'ln_status_entity_id IN (' . join(',', $CI->config->item('en_ids_7360')) . ')' => null, //Link Statuses Active
+            'ln_type_entity_id IN (' . join(',', $CI->config->item('en_ids_4485')) . ')' => null, //All Intent Notes
+            'ln_parent_entity_id' => $en['en_id'], //Entity Referenced in message content
+        ), array(), 0, 0, array(), 'COUNT(ln_id) AS total_messages');
+        if($messages[0]['total_messages'] > 0){
+            //Only show in non-advance mode if we have messages:
+            $ui .= '<a class="badge badge-secondary white-secondary '.( $level==0 || $messages[0]['total_messages'] == 0 ? advance_mode() : '' ) . '" href="#entityreferences-' . $en['en_id'] . '" onclick="' . ( $messages[0]['total_messages'] == 0 ? 'alert(\'No Intent Notes found that reference this entity\')' : ( $level==0 ? 'alert(\'Cannot manage here. Go to the entity to manage.\')' : 'en_load_messages('.$en['en_id'].')' ) ) . '" style="width:40px; margin-left:5px; margin-right: -3px;" data-toggle="tooltip" data-placement="bottom" title="Entity References within Intent Notes"><span class="btn-counter">' . echo_number($messages[0]['total_messages']) . '</span><i class="fas fa-comment-plus"></i></a>';
+        }
+
+
+
+        //Modify Entity:
+        $ui .= '<a href="#loadmodify-' . $en['en_id'] . '-' . $ln_id . '" onclick="'.( $level==0 ? 'alert(\'Cannot manage here. Go to the entity to manage.\')' : 'en_modify_load(' . $en['en_id'] . ',' . $ln_id . ')' ).'" class="badge badge-secondary white-secondary '.( $level==0 ? '' . advance_mode() . '' : '' ).'" style="margin:-2px -6px 0 5px; width:40px;" data-toggle="tooltip" data-placement="bottom" title="Entity trust score. Click to modify entity'.( $level>1 ? ' and link' : '' ).'"><span class="btn-counter">'.echo_number($en['en_trust_score']).'</span><i class="fas fa-cog" style="width:28px; padding-right:7px; text-align:center;"></i></a> &nbsp;';
+
     }
-
-
-
-
-    //Count & Display active Intent Notes that this entity has been referenced within:
-    $messages = $CI->Links_model->ln_fetch(array(
-        'ln_status_entity_id IN (' . join(',', $CI->config->item('en_ids_7360')) . ')' => null, //Link Statuses Active
-        'ln_type_entity_id IN (' . join(',', $CI->config->item('en_ids_4485')) . ')' => null, //All Intent Notes
-        'ln_parent_entity_id' => $en['en_id'], //Entity Referenced in message content
-    ), array(), 0, 0, array(), 'COUNT(ln_id) AS total_messages');
-    if($messages[0]['total_messages'] > 0){
-        //Only show in non-advance mode if we have messages:
-        $ui .= '<a class="badge badge-secondary white-secondary '.( $level==0 || $messages[0]['total_messages'] == 0 ? advance_mode() : '' ) . '" href="#entityreferences-' . $en['en_id'] . '" onclick="' . ( $messages[0]['total_messages'] == 0 ? 'alert(\'No Intent Notes found that reference this entity\')' : ( $level==0 ? 'alert(\'Cannot manage here. Go to the entity to manage.\')' : 'en_load_messages('.$en['en_id'].')' ) ) . '" style="width:40px; margin-left:5px; margin-right: -3px;" data-toggle="tooltip" data-placement="bottom" title="Entity References within Intent Notes"><span class="btn-counter">' . echo_number($messages[0]['total_messages']) . '</span><i class="fas fa-comment-plus"></i></a>';
-    }
-
-
-
-    //Modify Entity:
-    $ui .= '<a href="#loadmodify-' . $en['en_id'] . '-' . $ln_id . '" onclick="'.( $level==0 ? 'alert(\'Cannot manage here. Go to the entity to manage.\')' : 'en_modify_load(' . $en['en_id'] . ',' . $ln_id . ')' ).'" class="badge badge-secondary white-secondary '.( $level==0 ? '' . advance_mode() . '' : '' ).'" style="margin:-2px -6px 0 5px; width:40px;" data-toggle="tooltip" data-placement="bottom" title="Entity trust score. Click to modify entity'.( $level>1 ? ' and link' : '' ).'"><span class="btn-counter">'.echo_number($en['en_trust_score']).'</span><i class="fas fa-cog" style="width:28px; padding-right:7px; text-align:center;"></i></a> &nbsp;';
-
-
-
 
 
     //Count & link to Entity links:
