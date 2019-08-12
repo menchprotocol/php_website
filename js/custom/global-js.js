@@ -123,6 +123,17 @@ function load_js_algolia() {
 
 $(document).ready(function () {
 
+    $(document).keyup(function (e) {
+        //Watch for action keys:
+        if (e.keyCode === 27) {
+            modify_cancel();
+        } else if (e.keyCode === 76) {
+            //L for login:
+            window.location = '/signin';
+        }
+    });
+
+
     //Navbar landing page?
     if (!$(".navbar").hasClass("no-adj")) {
         adj();
