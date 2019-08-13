@@ -15,11 +15,11 @@ class Messenger extends CI_Controller
 
     function debug($in_id){
 
-        $session_en = en_auth(array(1308));
+        $session_en = en_auth();
         if(!isset($session_en['en_id'])){
             return echo_json(array(
                 'status' => 0,
-                'message' => 'Session Expired. Sign In as a Miner and Try again.',
+                'message' => 'Session Expired. Sign In and Try again.',
             ));
         }
 
