@@ -842,7 +842,7 @@ class Communication_model extends CI_Model
                 } else {
 
                     //Show entity link with status:
-                    $output_body_message = str_replace('@' . $string_references['ref_entities'][0], $en_all_6177[$ens[0]['en_status_entity_id']]['m_icon'].' <a href="/entities/' . $ens[0]['en_id'] . '" target="_parent">' . $ens[0]['en_name']  . $this->uri->segment(1) . $this->uri->segment(2) . '</a>', $output_body_message);
+                    $output_body_message = str_replace('@' . $string_references['ref_entities'][0], $en_all_6177[$ens[0]['en_status_entity_id']]['m_icon'].' <a href="/entities/' . $ens[0]['en_id'] . '" target="_parent">' . $ens[0]['en_name']  . '</a>', $output_body_message);
 
                 }
 
