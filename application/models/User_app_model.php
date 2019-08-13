@@ -135,7 +135,7 @@ class User_app_model extends CI_Model
                 'ln_creator_entity_id' => $en_id, //Belongs to this User
                 'ln_parent_intent_id' => $common_step_in_id,
                 'ln_status_entity_id' => 6176, //Link Published
-            ), ( $is_expansion ? array('in_child') : array('in_parent') ));
+            ),  array('in_parent'));
 
             //Have they completed this?
             if(count($completed_steps) == 0){
@@ -150,8 +150,13 @@ class User_app_model extends CI_Model
 
             } elseif($is_expansion){
 
+                //Fetch child intent:
+                $child_ins = $this->Intents_model->in_fetch(array(
+                    'in_id' => $completed_steps[0]['ln_child_intent_id'],
+                ));
+
                 //Completed step that has OR expansions, check recursively to see if next step within here:
-                $found_in_id = $this->User_app_model->actionplan_step_next_find($en_id, $completed_steps[0]);
+                $found_in_id = $this->User_app_model->actionplan_step_next_find($en_id, $child_ins[0]);
 
                 if($found_in_id > 0){
                     return $found_in_id;
