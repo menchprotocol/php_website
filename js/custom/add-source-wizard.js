@@ -89,7 +89,7 @@ function en_add_source_paste_url() {
     if(input_url.length > 0){
 
         //Show loading icon:
-        $('.url-error').html('<i class="fas fa-spinner fa-spin"></i> Loading...');
+        $('.url-error').html('<i class="fas fa-yin-yang fa-spin"></i> Loading...');
         $('.url-parsed').addClass('hidden');
 
         //Send for processing to see if all good:
@@ -144,7 +144,7 @@ function en_add_source_process(){
 
     //Set title:
     $('.add_source_body').addClass('hidden');
-    $('.add_source_result').html('<div class="center"><span><i class="fas fa-spinner fa-spin"></i></span> Processing...</div>');
+    $('.add_source_result').html('<div class="center"><span><i class="fas fa-yin-yang fa-spin"></i></span> Processing...</div>');
 
     //Fetch Intent Data to load modify widget:
     $.post("/entities/en_add_source_process", {

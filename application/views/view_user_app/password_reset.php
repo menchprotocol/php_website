@@ -9,7 +9,7 @@
 
         //Lock fields:
         pass_is_resetting = true;
-        $('#reset_pass_next').html('<span><i class="fas fa-spinner fa-spin"></i></span>');
+        $('#reset_pass_next').html('<span><i class="fas fa-yin-yang fa-spin"></i></span>');
         $('#input_password').prop('disabled', true).css('background-color','#EFEFEF');
 
         //Check email and validate:

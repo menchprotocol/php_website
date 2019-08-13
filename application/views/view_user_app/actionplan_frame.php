@@ -70,5 +70,5 @@ if (isset($session_en['en_id'])) {
 ?>
 
 <div id="page_content">
-    <div style="text-align:center; margin-top: 30px;"><i class="fas fa-spinner fa-spin"></i></div>
+    <div style="text-align:center; margin-top: 30px;"><i class="fas fa-yin-yang fa-spin"></i></div>
 </div>

@@ -181,7 +181,7 @@ function in_action_plan_users(in_id) {
     $(".highlight_in_"+in_id).addClass('in_highlight');
 
     //Show Loading Icon:
-    $('#ap_matching_users').html('<span><i class="fas fa-spinner fa-spin"></i> Loading...</span>').hide().fadeIn();
+    $('#ap_matching_users').html('<span><i class="fas fa-yin-yang fa-spin"></i> Loading...</span>').hide().fadeIn();
 
     //Load Matching Users:
     $.post("/intents/in_action_plan_users", {
@@ -445,7 +445,7 @@ function in_modify_save() {
     }
 
     //Show spinner:
-    $('.save_intent_changes').html('<span><i class="fas fa-spinner fa-spin"></i> Saving...</span>').hide().fadeIn();
+    $('.save_intent_changes').html('<span><i class="fas fa-yin-yang fa-spin"></i> Saving...</span>').hide().fadeIn();
 
 
 

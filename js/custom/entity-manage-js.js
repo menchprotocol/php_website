@@ -125,7 +125,7 @@ $(document).ready(function () {
 
             //Notify admin:
             $('.notify_en_remove').removeClass('hidden');
-            $('.entity_remove_stats').html('<i class="fas fa-spinner fa-spin"></i>');
+            $('.entity_remove_stats').html('<i class="fas fa-yin-yang fa-spin"></i>');
 
             //About to delete... Fetch total links:
             $.post("/entities/en_count_to_be_removed_links", { en_id: parseInt($('#modifybox').attr('entity-id')) }, function (data) {
@@ -345,10 +345,10 @@ function en_load_next_page(page, load_new_filter = 0) {
         //Replace load more with spinner:
         var append_div = $('#new-children').html();
         //The padding-bottom would remove the scrolling effect on the left side!
-        $('#list-children').html('<span class="load-more" style="padding-bottom:500px;"><i class="fas fa-spinner fa-spin"></i></span>').hide().fadeIn();
+        $('#list-children').html('<span class="load-more" style="padding-bottom:500px;"><i class="fas fa-yin-yang fa-spin"></i></span>').hide().fadeIn();
     } else {
         //Replace load more with spinner:
-        $('.load-more').html('<span class="load-more"><i class="fas fa-spinner fa-spin"></i></span>').hide().fadeIn();
+        $('.load-more').html('<span class="load-more"><i class="fas fa-yin-yang fa-spin"></i></span>').hide().fadeIn();
     }
 
     $.post("/entities/en_load_next_page", {
@@ -384,7 +384,7 @@ function en_ln_type_preview() {
      *
      * */
 
-    $('#en_type_link_id').html('<i class="fas fa-spinner fa-spin"></i> Loading...');
+    $('#en_type_link_id').html('<i class="fas fa-yin-yang fa-spin"></i> Loading...');
 
 
     //Fetch Intent Data to load modify widget:
@@ -488,7 +488,7 @@ function en_modify_load(en_id, ln_id) {
 function entity_link_form_lock(){
     $('#ln_content').prop("disabled", true).css('background-color','#CCC');
 
-    $('.btn-save').addClass('grey').attr('href', '#').html('<i class="fas fa-spinner fa-spin"></i> Uploading');
+    $('.btn-save').addClass('grey').attr('href', '#').html('<i class="fas fa-yin-yang fa-spin"></i> Uploading');
 
 }
 
@@ -626,7 +626,7 @@ function en_modify_save() {
     };
 
     //Show spinner:
-    $('.save_entity_changes').html('<span><i class="fas fa-spinner fa-spin"></i></span> Saving...').hide().fadeIn();
+    $('.save_entity_changes').html('<span><i class="fas fa-yin-yang fa-spin"></i></span> Saving...').hide().fadeIn();
 
 
     $.post("/entities/en_modify_save", modify_data, function (data) {
@@ -745,7 +745,7 @@ function en_load_messages(en_id) {
     var handler = $("#loaded-messages");
 
     //Show tem loader:
-    handler.html('<div style="text-align:left; padding-bottom:50px;"><i class="fas fa-spinner fa-spin"></i> Loading...</div>');
+    handler.html('<div style="text-align:left; padding-bottom:50px;"><i class="fas fa-yin-yang fa-spin"></i> Loading...</div>');
 
     //We might need to scroll:
     if (is_compact) {

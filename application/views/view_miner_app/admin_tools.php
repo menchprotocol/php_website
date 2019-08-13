@@ -771,7 +771,7 @@ if(!$action) {
 
 $(document).ready(function () {
 //Show spinner:
-$(\'#in_report_conditional_steps\').html(\'<span><i class="fas fa-spinner fa-spin"></i> Loading...</span>\').hide().fadeIn();
+$(\'#in_report_conditional_steps\').html(\'<span><i class="fas fa-yin-yang fa-spin"></i> Loading...</span>\').hide().fadeIn();
 //Load report based on input fields:
 $.post("/intents/in_report_conditional_steps", {
     starting_in: parseInt($(\'#starting_in\').val()),

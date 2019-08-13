@@ -64,7 +64,7 @@ function choose_channel(pathway_chosen){
     if(parseInt(pathway_chosen) == 6196 /* Mench on Messenger */ ){
 
         //Remove button:
-        $('#step1button').html('<div style="font-size: 1.2em; padding-top:10px;"><i class="fas fa-spinner fa-spin"></i> Taking you to Messenger...</div>');
+        $('#step1button').html('<div style="font-size: 1.2em; padding-top:10px;"><i class="fas fa-yin-yang fa-spin"></i> Taking you to Messenger...</div>');
 
         //Log link:
         signin_on_messenger();
@@ -91,7 +91,7 @@ function search_email(){
 
     //Lock fields:
     email_is_searching = true;
-    $('#email_check_next').html('<i class="fas fa-spinner fa-spin"></i>');
+    $('#email_check_next').html('<i class="fas fa-yin-yang fa-spin"></i>');
     $('#input_email').prop('disabled', true).css('background-color','#EFEFEF');
     $('#password_errors').html('&nbsp;');
     $('#custom_message').html(''); //Remove previous errors, if any
@@ -141,7 +141,7 @@ function add_account(){
 
     //Lock fields:
     account_is_adding = true;
-    $('#add_acount_next').html('<i class="fas fa-spinner fa-spin"></i>');
+    $('#add_acount_next').html('<i class="fas fa-yin-yang fa-spin"></i>');
     $('#input_name, #new_password').prop('disabled', true).css('background-color','#EFEFEF');
 
     //Check email and validate:
@@ -195,7 +195,7 @@ function singin_check_password(){
 
     //Lock fields:
     password_is_checking = true;
-    $('#password_check_next').html('<i class="fas fa-spinner fa-spin"></i>');
+    $('#password_check_next').html('<i class="fas fa-yin-yang fa-spin"></i>');
     $('#input_password').prop('disabled', true).css('background-color','#EFEFEF');
 
     //Check email and validate:
@@ -235,7 +235,7 @@ function singin_magic_link_email(){
 
         //Update UI:
         goto_step(5); //To check their email and create new account
-        $('.magic_result').html('<i class="fas fa-spinner fa-spin"></i> Emailing you a magic link...');
+        $('.magic_result').html('<i class="fas fa-yin-yang fa-spin"></i> Emailing you a magic link...');
 
         //Check email and validate:
         $.post("/user_app/singin_magic_link_email", {
