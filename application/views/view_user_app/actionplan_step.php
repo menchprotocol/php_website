@@ -71,6 +71,7 @@ if(!$found_grandpa_intersect){
     //Start showing the page:
     $time_estimate = echo_time_range($in);
 
+    echo '<div style="padding-top:0px;">&nbsp;</div>';
 
     //Show title
     if(in_is_clean_outcome($in)){
