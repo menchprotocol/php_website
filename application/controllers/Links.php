@@ -78,7 +78,9 @@ class Links extends CI_Controller
 
 
         //Display filter notes:
-        $message .= '<p style="margin: 10px 0 0 0;">'.( $has_more_links && $query_offset==0  ? 'First ' : ($query_offset+1).' - '). $total_items_loaded . ' of '. number_format($lns_count[0]['trs_count'] , 0) .' Links:</p>';
+        if($total_items_loaded > 0){
+            $message .= '<p style="margin: 10px 0 0 0;">'.( $has_more_links && $query_offset==0  ? 'First ' : ( $total_items_loaded >= ($query_offset+1) ? ($query_offset+1).' - ' . $total_items_loaded . ' of ' : '' )). number_format($lns_count[0]['trs_count'] , 0) .' Links:</p>';
+        }
         // with '.number_format($lns_count[0]['credits_sum'], 0).' awarded credits
 
 
@@ -102,7 +104,7 @@ class Links extends CI_Controller
         } else {
 
             //Show no link warning:
-            $message .= '<div class="alert alert-info" role="alert" style="margin-top: 0;"><i class="fas fa-exclamation-triangle"></i> No Links found with the selected filters. Modify filters and try again.</div>';
+            $message .= '<div class="alert alert-warning" role="alert" style="margin-top:20px;"><i class="fas fa-exclamation-triangle"></i> No Links found with the selected filters. Modify filters and try again.</div>';
 
         }
 

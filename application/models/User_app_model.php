@@ -1164,6 +1164,10 @@ class User_app_model extends CI_Model
                 }
             }
 
+        } elseif($ins[0]['in_type_entity_id']==7740 /* Intent Terminate */){
+
+            $progression_type_entity_id = 7741; //User Step Intention Terminated
+
         } elseif($completion_req_note){
 
             $progression_type_entity_id = 6144; //User Step Requirement Sent
@@ -1180,10 +1184,6 @@ class User_app_model extends CI_Model
         } elseif($has_children && $ins[0]['in_type_entity_id']==7231 /* Intent Answer Multiple-Choice */){
 
             $progression_type_entity_id = 7489; //User Step Multi-Answered
-
-        } elseif($ins[0]['in_type_entity_id']==7740 /* Intent Terminate */){
-
-            $progression_type_entity_id = 7741; //User Step Intention Terminated
 
         } else {
 
