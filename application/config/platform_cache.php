@@ -11,7 +11,7 @@ defined('BASEPATH') OR exit('No direct script access allowed');
  *
  */
 
-//Generated 2019-08-12 21:21:58 PST
+//Generated 2019-08-12 21:29:36 PST
 
 //Action Plan Intention Successful:
 $config['en_ids_7758'] = array(6154);
@@ -751,13 +751,19 @@ $config['en_all_7582'] = array(
 );
 
 //Link Carbon Copy Email:
-$config['en_ids_5967'] = array(4246,7504);
+$config['en_ids_5967'] = array(4246,6415,7504);
 $config['en_all_5967'] = array(
     4246 => array(
         'm_icon' => '<i class="far fa-bug"></i>',
         'm_name' => 'Admin Bug Reports',
         'm_desc' => '&var_en_subscriber_ids=1',
         'm_parents' => array(5967,4595,4755,4593),
+    ),
+    6415 => array(
+        'm_icon' => '<i class="far fa-function"></i>',
+        'm_name' => 'User Cleared Action Plan',
+        'm_desc' => '&var_en_subscriber_ids=2',
+        'm_parents' => array(5967,4595,4755,6418,4593,6414),
     ),
     7504 => array(
         'm_icon' => '<i class="far fa-comment-exclamation"></i>',
@@ -2747,7 +2753,7 @@ $config['en_all_4755'] = array(
         'm_icon' => '<i class="far fa-function"></i>',
         'm_name' => 'User Cleared Action Plan',
         'm_desc' => '',
-        'm_parents' => array(4595,4755,6418,4593,6414),
+        'm_parents' => array(5967,4595,4755,6418,4593,6414),
     ),
     6556 => array(
         'm_icon' => '<i class="fas fa-wand-magic"></i>',
@@ -3388,7 +3394,7 @@ $config['en_all_4595'] = array(
         'm_icon' => '<i class="far fa-function"></i>',
         'm_name' => 'User Cleared Action Plan',
         'm_desc' => '5',
-        'm_parents' => array(4595,4755,6418,4593,6414),
+        'm_parents' => array(5967,4595,4755,6418,4593,6414),
     ),
     6556 => array(
         'm_icon' => '<i class="fas fa-wand-magic"></i>',
@@ -4052,7 +4058,7 @@ $config['en_all_4593'] = array(
         'm_icon' => '<i class="far fa-function"></i>',
         'm_name' => 'User Cleared Action Plan',
         'm_desc' => 'Removes certain links types as defined by its children from a Student\'s Action Plan. Currently only available for Miners.',
-        'm_parents' => array(4595,4755,6418,4593,6414),
+        'm_parents' => array(5967,4595,4755,6418,4593,6414),
     ),
     6556 => array(
         'm_icon' => '<i class="fas fa-wand-magic"></i>',
