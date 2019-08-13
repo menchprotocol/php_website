@@ -134,13 +134,11 @@ class User_app_model extends CI_Model
             $check_termination_answers = array_merge($check_termination_answers , array_flatten($in_metadata['in__metadata_expansion_conditional']));
         }
         if(count($check_termination_answers) > 0 && count($this->Links_model->ln_fetch(array(
-                'ln_type_entity_id IN (' . join(',' , $this->config->item('en_ids_6146')) . ')' => null, //Action Plan Progression Steps
+                'ln_type_entity_id' => 7741, //User Step Intention Terminated
                 'ln_creator_entity_id' => $en_id, //Belongs to this User
                 'ln_parent_intent_id IN (' . join(',' , $check_termination_answers) . ')' => null, //All possible answers that might terminate...
                 'ln_status_entity_id' => 6176, //Link Published
-                'in_status_entity_id IN (' . join(',', $this->config->item('en_ids_7355')) . ')' => null, //Intent Statuses Public
-                'in_type_entity_id' => 7740, //Intent Answer Terminate
-            ), array('in_parent'))) > 0){
+            ))) > 0){
             return -1;
         }
 
@@ -248,10 +246,10 @@ class User_app_model extends CI_Model
             //Find first incomplete step for this Action Plan intention:
             $next_in_id = $this->User_app_model->actionplan_step_next_find($en_id, $user_intent);
 
-            if($advance_step && $next_in_id < 0){
+            if($next_in_id < 0){
 
                 //We need to terminate this:
-                $delete_result = $this->User_app_model->actionplan_intention_delete($en_id, $user_intent['in_id'], 7757 /* User Intent Terminated */);
+                $this->User_app_model->actionplan_intention_delete($en_id, $user_intent['in_id'], 7757 /* User Intent Terminated */);
                 break;
 
             } elseif($next_in_id > 0){
