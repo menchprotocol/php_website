@@ -141,7 +141,7 @@ class User_app_model extends CI_Model
                 'in_status_entity_id IN (' . join(',', $this->config->item('en_ids_7355')) . ')' => null, //Intent Statuses Public
                 'in_type_entity_id' => 7740, //Intent Answer Terminate
             ), array('in_parent'))) > 0){
-            return 0;
+            return -1;
         }
 
 
@@ -176,7 +176,7 @@ class User_app_model extends CI_Model
                 //Completed step that has OR expansions, check recursively to see if next step within here:
                 $found_in_id = $this->User_app_model->actionplan_step_next_find($en_id, $child_ins[0]);
 
-                if($found_in_id > 0){
+                if($found_in_id != 0){
                     return $found_in_id;
                 }
 
@@ -196,7 +196,7 @@ class User_app_model extends CI_Model
                     //Completed step that has OR expansions, check recursively to see if next step within here:
                     $found_in_id = $this->User_app_model->actionplan_step_next_find($en_id, $unlocked_conditions[0]);
 
-                    if($found_in_id > 0){
+                    if($found_in_id != 0){
                         return $found_in_id;
                     }
                 }
