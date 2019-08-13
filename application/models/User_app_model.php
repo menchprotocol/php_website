@@ -347,7 +347,7 @@ class User_app_model extends CI_Model
                     ),
                     array(
                         'content_type' => 'text',
-                        'title' => 'Continue ▶️',
+                        'title' => 'Cancel',
                         'payload' => 'SKIP-ACTIONPLAN_skip-cancel_'.$in_id, //Cancel skipping
                     ),
                 )
