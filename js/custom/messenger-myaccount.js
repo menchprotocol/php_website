@@ -65,7 +65,7 @@ function radio_update(parent_en_id, selected_en_id, enable_mulitiselect){
 function save_full_name(){
 
     //Show spinner:
-    $('.save_full_name').html('<span><i class="fas fa-yin-yang fa-spin"></i> Saving...</span>').hide().fadeIn();
+    $('.save_full_name').html('<span><i class="fas fa-yin-yang fa-spin"></i> ' + echo_ying_yang() +  '</span>').hide().fadeIn();
 
     //Save the rest of the content:
     $.post("/user_app/myaccount_save_full_name", {
@@ -96,7 +96,7 @@ function save_full_name(){
 function save_phone(){
 
     //Show spinner:
-    $('.save_phone').html('<span><i class="fas fa-yin-yang fa-spin"></i> Saving...</span>').hide().fadeIn();
+    $('.save_phone').html('<span><i class="fas fa-yin-yang fa-spin"></i> ' + echo_ying_yang() +  '</span>').hide().fadeIn();
 
     //Save the rest of the content:
     $.post("/user_app/myaccount_save_phone", {
@@ -127,7 +127,7 @@ function save_phone(){
 function save_email(){
 
     //Show spinner:
-    $('.save_email').html('<span><i class="fas fa-yin-yang fa-spin"></i> Saving...</span>').hide().fadeIn();
+    $('.save_email').html('<span><i class="fas fa-yin-yang fa-spin"></i> ' + echo_ying_yang() +  '</span>').hide().fadeIn();
 
     //Save the rest of the content:
     $.post("/user_app/myaccount_save_email", {
@@ -159,7 +159,7 @@ function save_email(){
 function myaccount_update_password(){
 
     //Show spinner:
-    $('.save_password').html('<span><i class="fas fa-yin-yang fa-spin"></i> Saving...</span>').hide().fadeIn();
+    $('.save_password').html('<span><i class="fas fa-yin-yang fa-spin"></i> ' + echo_ying_yang() +  '</span>').hide().fadeIn();
 
     //Save the rest of the content:
     $.post("/user_app/myaccount_update_password", {
@@ -192,7 +192,7 @@ function myaccount_update_password(){
 function save_social_profiles(){
 
     //Show spinner:
-    $('.save_social_profiles').html('<span><i class="fas fa-yin-yang fa-spin"></i> Saving...</span>').hide().fadeIn();
+    $('.save_social_profiles').html('<span><i class="fas fa-yin-yang fa-spin"></i> ' + echo_ying_yang() +  '</span>').hide().fadeIn();
 
 
     //Fetch all social profile input fields:

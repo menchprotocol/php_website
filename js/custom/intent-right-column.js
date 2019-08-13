@@ -445,7 +445,7 @@ function in_modify_save() {
     }
 
     //Show spinner:
-    $('.save_intent_changes').html('<span><i class="fas fa-yin-yang fa-spin"></i> Saving...</span>').hide().fadeIn();
+    $('.save_intent_changes').html('<span><i class="fas fa-yin-yang fa-spin"></i> ' + echo_ying_yang() +  '</span>').hide().fadeIn();
 
 
 
