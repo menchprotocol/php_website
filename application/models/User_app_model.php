@@ -325,7 +325,13 @@ class User_app_model extends CI_Model
             return false;
         }
 
-        $skip_message = 'Are you sure you want to skip the '.echo_step_range($ins[0], true).' to '.echo_in_outcome($ins[0]['in_outcome'], $push_message, true).'?';
+        $metadata = unserialize($ins[0]['in_metadata']);
+        if (isset($metadata['in__metadata_max_steps']) && $metadata['in__metadata_max_steps'] >= 3) {
+            $skip_message = 'Are you sure you want to skip all '.$metadata['in__metadata_max_steps'].' steps to '.echo_in_outcome($ins[0]['in_outcome'], $push_message, true).'?';
+        } else {
+            $skip_message = 'Are you sure you want to skip?';
+        }
+
 
         if(!$push_message){
 
@@ -342,12 +348,12 @@ class User_app_model extends CI_Model
                 array(
                     array(
                         'content_type' => 'text',
-                        'title' => 'Skip 🚫',
+                        'title' => 'Yes',
                         'payload' => 'SKIP-ACTIONPLAN_skip-confirm_'.$in_id, //Confirm and skip
                     ),
                     array(
                         'content_type' => 'text',
-                        'title' => 'Cancel',
+                        'title' => 'No',
                         'payload' => 'SKIP-ACTIONPLAN_skip-cancel_'.$in_id, //Cancel skipping
                     ),
                 )

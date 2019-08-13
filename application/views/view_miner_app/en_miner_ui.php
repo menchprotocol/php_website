@@ -17,6 +17,7 @@
         <?php
 
         //Parents
+        echo '<div class="' . advance_mode() . '">';
         echo '<h5><span class="badge badge-h"><span class="li-parent-count">' . count($entity['en__parents']) . '</span> Parent' . echo__s(count($entity['en__parents'])) . '</span></h5>';
         echo '<div id="list-parent" class="list-group  grey-list">';
         foreach ($entity['en__parents'] as $en) {
@@ -29,6 +30,7 @@
             </div>';
 
         echo '</div>';
+        echo '</div>';
 
 
 
@@ -38,10 +40,11 @@
         echo '<h5 class="badge badge-h indent1">Entity @'.$entity['en_id'].'</h5>';
 
         //Hidden link to Metadata:
-        echo '<a class="secret" href="/entities/en_review_metadata/' . $entity['en_id'] . '" style="margin-left: 5px;" target="_blank" data-toggle="tooltip" title="Review Entity Metadata" data-placement="top"><i class="fas fa-function"></i></a>';
+        if($is_miner){
+            echo '<a class="secret" href="/entities/en_review_metadata/' . $entity['en_id'] . '" style="margin-left: 5px;" target="_blank" data-toggle="tooltip" title="Review Entity Metadata" data-placement="top"><i class="fas fa-function"></i></a>';
 
-        echo '<a class="secret" href="/links/cron__sync_algolia/en/' . $entity['en_id'] . '" style="margin-left: 5px;" target="_blank" data-toggle="tooltip" title="Update Algolia Search Index" data-placement="top"><i class="fas fa-search"></i></a>';
-
+            echo '<a class="secret" href="/links/cron__sync_algolia/en/' . $entity['en_id'] . '" style="margin-left: 5px;" target="_blank" data-toggle="tooltip" title="Update Algolia Search Index" data-placement="top"><i class="fas fa-search"></i></a>';
+        }
 
         echo '<div id="entity-box" class="list-group indent1">';
         echo echo_en($entity, 1);
@@ -53,7 +56,7 @@
 
 
         //Children:
-        echo '<div class="indent2">';
+        echo '<div class="indent2 '. advance_mode() .'">';
         echo '<table width="100%" style="margin-top:10px;"><tr>';
         echo '<td style="width:170px;">';
 
@@ -65,7 +68,7 @@
             echo '</td>';
 
 
-        echo '<td style="text-align: right;"><div class="btn-group btn-group-sm ' . advance_mode() . '" style="margin-top:-5px;" role="group">';
+        echo '<td style="text-align: right;"><div class="btn-group btn-group-sm" style="margin-top:-5px;" role="group">';
 
         //Fetch current count for each status from DB:
         $child_en_filters = $this->Links_model->ln_fetch(array(
@@ -95,6 +98,7 @@
 
         echo '</div></td>';
         echo '</tr></table></div>';
+
 
 
         echo '<form class="mass_modify indent2 hidden" method="POST" action="" style="width: 100% !important;"><div class="inline-box">';
@@ -209,8 +213,6 @@
         //TODO Build UI for this via Github Issue #2354
         $set_sort = ( isset($_GET['set_sort']) ? $_GET['set_sort'] : 'none' );
         echo '<input type="hidden" id="set_sort" value="'.$set_sort.'" />'; //For JS to pass to the next page loader...
-
-
 
 
         echo '<div id="list-children" class="list-group grey-list indent2">';

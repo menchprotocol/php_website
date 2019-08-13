@@ -873,7 +873,6 @@ function echo_random_message($message_key, $return_all = false){
             "Learning everyday 😎",
             "Growing with you 🌸",
             "Getting smarter ^~^",
-            "Getting smarter ^~^",
         ),
         'command_me' => array(
             'You can add a new intention to your Action Plan by sending me a message that starts with "I want to", for example: "I want to assess my back-end skills" or "I want to recruit top talent"',
@@ -2069,7 +2068,7 @@ function echo_in($in, $level, $in_linked_id = 0, $is_parent = false)
     }
 
     //Loop through parents:
-    $ui .= '<span class="' . advance_mode() . '">';
+    $ui .= '<span class="' . ( $level == 1 ? '' : advance_mode()  ) . '">';
     foreach ($in['in__parents'] as $in_parent) {
         $ui .= ' &nbsp;<a href="/intents/' . $in_parent['in_id'] . $in_filters['get_filter_url'] . '" data-toggle="tooltip" title="' . $in_parent['in_outcome'] . '" data-placement="bottom" class="in_icon_child_' . $in_parent['in_id'] . '">' . $en_all_7585[$in_parent['in_type_entity_id']]['m_icon'] . '</a>';
     }
@@ -2383,7 +2382,7 @@ function echo_en($en, $level, $is_parent = false)
     }
 
     //Loop through parents and only show those that have en_icon set:
-    $ui .= '<span class="' . advance_mode() . '">';
+    $ui .= '<span class="' . ( $level == 1 ? '' : advance_mode() ) . '">';
     foreach ($en['en__parents'] as $en_parent) {
         $ui .= ' &nbsp;<a href="/entities/' . $en_parent['en_id'] . '" data-toggle="tooltip" title="' . $en_parent['en_name'] . (strlen($en_parent['ln_content']) > 0 ? ' = ' . $en_parent['ln_content'] : '') . '" data-placement="bottom" class="parent-icon en_child_icon_' . $en_parent['en_id'] . '">' . echo_en_icon($en_parent) . '</a>';
     }

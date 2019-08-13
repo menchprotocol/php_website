@@ -73,8 +73,8 @@ class Entities extends CI_Controller
             $en_id = $this->config->item('en_focus_id');
         }
 
-        $session_en = en_auth(array(1308), true); //Just be logged in to browse
-
+        $session_en = en_auth(array(1308,1281), true);
+        $is_miner = ( filter_array($session_en['en__parents'], 'en_id', 1308) ? 1 : 0 );
 
         //Do we have any mass action to process here?
         if (en_auth(array(1281)) && isset($_POST['mass_action_en_id']) && isset($_POST['mass_value1_'.$_POST['mass_action_en_id']]) && isset($_POST['mass_value2_'.$_POST['mass_action_en_id']])) {
@@ -118,6 +118,7 @@ class Entities extends CI_Controller
         ));
         $this->load->view('view_miner_app/en_miner_ui', array(
             'entity' => $ens[0],
+            'is_miner' => $is_miner,
         ));
         $this->load->view('view_miner_app/miner_app_footer');
 

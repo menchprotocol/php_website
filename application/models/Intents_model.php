@@ -801,7 +801,8 @@ class Intents_model extends CI_Model
         //The entities we need to check and see if they are industry experts:
         foreach ($this->Links_model->ln_fetch(array(
             'ln_parent_entity_id >' => 0, //Intent Notes that reference an entity
-            '(ln_child_intent_id='.$in_id.( count($flat_common_steps) > 0 ? ' OR ln_child_intent_id IN ('.join(',',$flat_common_steps).')' : '' ).')' => null,
+            'ln_type_entity_id IN (' . join(',', $this->config->item('en_ids_4485')).')' => null, //Intent Notes
+            '(ln_child_intent_id = ' . $in_id . ( count($flat_common_steps) > 0 ? ' OR ln_child_intent_id IN ('.join(',',$flat_common_steps).')' : '' ).')' => null,
             'ln_status_entity_id IN (' . join(',', $this->config->item('en_ids_7359')) . ')' => null, //Link Statuses Public
             'en_status_entity_id IN (' . join(',', $this->config->item('en_ids_7357')) . ')' => null, //Entity Statuses Public
         ), array('en_parent'), 0) as $note_en) {
