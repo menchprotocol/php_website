@@ -44,6 +44,7 @@
     echo ' var messages_max_length = ' . $this->config->item('messages_max_length') . '; ';
     echo ' var en_name_max_length = ' . $this->config->item('en_name_max_length') . '; ';
     echo ' var js_ying_yang = ' . json_encode(echo_random_message('ying_yang', true)) . '; ';
+    echo ' var js_saving_notify = ' . json_encode(echo_random_message('js_saving_notify', true)) . '; ';
 
     ?>
 </script>

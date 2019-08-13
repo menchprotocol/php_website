@@ -862,16 +862,18 @@ function echo_random_message($message_key, $return_all = false){
             "You deserve to be safe and to have nice things happen to you.",
             "You have the power to change the world.",
             "You're allowed to start small. 🐞",
-            "boop ^~^",
             "have you hugged anyone lately?",
             "it's time to check your thirst level, human.",
             "💗: please don't forget to take a little bit of time to say hi to a friend",
             "🌸: remember to let your eyes rest and look at a plant please",
             "🙌: take a second to adjust your posture",
+        ),
+        'saving_notify' => array(
+            "Saving...",
+            "You got this!",
+            "boop ^~^",
             "😎🌈💕"
         ),
-
-
         'command_me' => array(
             'You can add a new intention to your Action Plan by sending me a message that starts with "I want to", for example: "I want to assess my back-end skills" or "I want to recruit top talent"',
         ),

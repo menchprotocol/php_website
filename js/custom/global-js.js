@@ -113,6 +113,9 @@ function ordinal_suffix_of(i) {
 function echo_ying_yang(){
     return js_ying_yang[Math.floor(Math.random()*js_ying_yang.length)];
 }
+function echo_saving_notify(){
+    return echo_saving_notify[Math.floor(Math.random()*echo_saving_notify.length)];
+}
 
 function load_js_algolia() {
     $(".algolia_search").focus(function () {

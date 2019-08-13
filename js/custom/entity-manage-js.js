@@ -626,7 +626,7 @@ function en_modify_save() {
     };
 
     //Show spinner:
-    $('.save_entity_changes').html('<span><i class="fas fa-yin-yang fa-spin"></i></span> Saving...').hide().fadeIn();
+    $('.save_entity_changes').html('<span><i class="fas fa-yin-yang fa-spin"></i></span> ' + echo_saving_notify() +  '').hide().fadeIn();
 
 
     $.post("/entities/en_modify_save", modify_data, function (data) {
