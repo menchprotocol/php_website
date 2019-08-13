@@ -1582,7 +1582,7 @@ class User_app_model extends CI_Model
             }
 
             //List AND children:
-            if(!$has_multiple_children || !$frist_x_all_are_dirty){
+            if($has_multiple_children && !$frist_x_all_are_dirty){
 
                 //Are we still clean?
                 $key = 0;
