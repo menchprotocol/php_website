@@ -11,7 +11,7 @@ defined('BASEPATH') OR exit('No direct script access allowed');
  *
  */
 
-//Generated 2019-08-13 11:50:33 PST
+//Generated 2019-08-13 11:53:58 PST
 
 //Action Plan Intention Successful:
 $config['en_ids_7758'] = array(6154);
@@ -1097,7 +1097,7 @@ $config['en_all_7366'] = array(
 $config['en_ids_7364'] = array(6175);
 $config['en_all_7364'] = array(
     6175 => array(
-        'm_icon' => '<i class="far fa-sync-alt fa-spin"></i>',
+        'm_icon' => '<i class="far fa-spinner fa-spin"></i>',
         'm_name' => 'Link Drafting',
         'm_desc' => '',
         'm_parents' => array(7364,7360,6186),
@@ -1108,7 +1108,7 @@ $config['en_all_7364'] = array(
 $config['en_ids_7360'] = array(6175,6176);
 $config['en_all_7360'] = array(
     6175 => array(
-        'm_icon' => '<i class="far fa-sync-alt fa-spin"></i>',
+        'm_icon' => '<i class="far fa-spinner fa-spin"></i>',
         'm_name' => 'Link Drafting',
         'm_desc' => '',
         'm_parents' => array(7364,7360,6186),
@@ -1136,7 +1136,7 @@ $config['en_all_7359'] = array(
 $config['en_ids_7358'] = array(6180,6181);
 $config['en_all_7358'] = array(
     6180 => array(
-        'm_icon' => '<i class="far fa-sync-alt fa-spin"></i>',
+        'm_icon' => '<i class="far fa-spinner fa-spin"></i>',
         'm_name' => 'Entity Drafting',
         'm_desc' => '',
         'm_parents' => array(7358,6177),
@@ -1164,7 +1164,7 @@ $config['en_all_7357'] = array(
 $config['en_ids_7356'] = array(6183,6184);
 $config['en_all_7356'] = array(
     6183 => array(
-        'm_icon' => '<i class="far fa-sync-alt fa-spin"></i>',
+        'm_icon' => '<i class="far fa-spinner fa-spin"></i>',
         'm_name' => 'Intent Drafting',
         'm_desc' => '',
         'm_parents' => array(7356,4737),
@@ -1561,7 +1561,7 @@ $config['en_all_6186'] = array(
         'm_parents' => array(7360,7359,6186),
     ),
     6175 => array(
-        'm_icon' => '<i class="far fa-sync-alt fa-spin"></i>',
+        'm_icon' => '<i class="far fa-spinner fa-spin"></i>',
         'm_name' => 'Drafting',
         'm_desc' => 'being mined, to be published soon',
         'm_parents' => array(7364,7360,6186),
@@ -2100,7 +2100,7 @@ $config['en_all_4737'] = array(
         'm_parents' => array(7355,7356,4737),
     ),
     6183 => array(
-        'm_icon' => '<i class="far fa-sync-alt fa-spin"></i>',
+        'm_icon' => '<i class="far fa-spinner fa-spin"></i>',
         'm_name' => 'Drafting',
         'm_desc' => 'newly added, pending review',
         'm_parents' => array(7356,4737),
@@ -2123,7 +2123,7 @@ $config['en_all_6177'] = array(
         'm_parents' => array(7358,7357,6177),
     ),
     6180 => array(
-        'm_icon' => '<i class="far fa-sync-alt fa-spin"></i>',
+        'm_icon' => '<i class="far fa-spinner fa-spin"></i>',
         'm_name' => 'Drafting',
         'm_desc' => 'being mined, to be published soon',
         'm_parents' => array(7358,6177),
