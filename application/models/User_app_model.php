@@ -97,7 +97,7 @@ class User_app_model extends CI_Model
 
         //Ok, now we can mark it as complete:
         $this->Links_model->ln_create(array(
-            'ln_type_entity_id' => ( in_is_unlockable($in) ? $unlock_link_type_en_id : 4559 /* User Step Read Messages */ ),
+            'ln_type_entity_id' => ( in_is_unlockable($in) ? $unlock_link_type_en_id : ( $in['in_type_entity_id'] == 7740 /* Intent Terminate */ ? 7741 /* User Step Intention Terminated */ : 4559 /* User Step Read Messages */) ),
             'ln_creator_entity_id' => $en_id,
             'ln_parent_intent_id' => $in['in_id'],
             'ln_status_entity_id' => 6176, //Link Published
