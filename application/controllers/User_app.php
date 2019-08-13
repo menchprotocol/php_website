@@ -433,7 +433,7 @@ class User_app extends CI_Controller
 
         $html_message .= '<div>'.( count($referrer_ins) > 0 ? echo_in_outcome($referrer_ins[0]['in_outcome'], true) : 'Get started' ).':</div><br />';
         $actionplan_url = $this->config->item('base_url') . ( count($referrer_ins) > 0 ? 'actionplan/'.$referrer_ins[0]['in_id'] : '' );
-        $html_message .= '<div><a href="'.$actionplan_url.'" target="_blank">' . $actionplan_url . '</a></div><br /><br />';
+        $html_message .= '<div><a href="'.$actionplan_url.'" target="_blank">' . $actionplan_url . '</a></div><br />';
 
         $html_message .= '<div>Connect on Messenger:</div><br />';
         $messenger_url = $this->config->item('fb_mench_url') . ( count($referrer_ins) > 0 ? '?ref=' . ( $_POST['referrer_en_id'] > 0 ? 'REFERUSER_'.$_POST['referrer_en_id'].'_' : '' ) . $referrer_ins[0]['in_id'] : '' ) ;

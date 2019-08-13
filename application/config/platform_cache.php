@@ -11,7 +11,7 @@ defined('BASEPATH') OR exit('No direct script access allowed');
  *
  */
 
-//Generated 2019-08-12 15:59:23 PST
+//Generated 2019-08-12 18:42:27 PST
 
 //Intent Upload File:
 $config['en_ids_7751'] = array(6678,6679,6680,6681);
@@ -224,7 +224,7 @@ $config['en_all_6206'] = array(
     ),
     6197 => array(
         'm_icon' => '<i class="far fa-fingerprint"></i>',
-        'm_name' => 'Name',
+        'm_name' => 'Full Name',
         'm_desc' => '',
         'm_parents' => array(6232,6225,6213,6206),
     ),
@@ -329,9 +329,9 @@ $config['en_all_7742'] = array(
     ),
     7741 => array(
         'm_icon' => '<i class="far fa-times-circle"></i>',
-        'm_name' => 'User Step Intention Stopped',
+        'm_name' => 'User Step Intention Terminated',
         'm_desc' => '',
-        'm_parents' => array(7742,6146),
+        'm_parents' => array(7740,7742,6146),
     ),
 );
 
@@ -2013,7 +2013,7 @@ $config['en_ids_6225'] = array(6197,3288,3286,4783,3290,3287,3089,3289,6123,4454
 $config['en_all_6225'] = array(
     6197 => array(
         'm_icon' => '<i class="far fa-fingerprint"></i>',
-        'm_name' => 'Name',
+        'm_name' => 'Full Name',
         'm_desc' => 'Your first and last name:',
         'm_parents' => array(6232,6225,6213,6206),
     ),
@@ -2190,9 +2190,9 @@ $config['en_all_6146'] = array(
     ),
     7741 => array(
         'm_icon' => '<i class="far fa-times-circle"></i>',
-        'm_name' => 'Intention Stopped',
+        'm_name' => 'Intention Terminated',
         'm_desc' => '',
-        'm_parents' => array(7742,6146),
+        'm_parents' => array(7740,7742,6146),
     ),
 );
 

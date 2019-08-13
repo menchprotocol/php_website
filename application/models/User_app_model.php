@@ -135,13 +135,18 @@ class User_app_model extends CI_Model
                 'ln_creator_entity_id' => $en_id, //Belongs to this User
                 'ln_parent_intent_id' => $common_step_in_id,
                 'ln_status_entity_id' => 6176, //Link Published
-            ), ( $is_expansion ? array('in_child') : array() ));
+            ), ( $is_expansion ? array('in_child') : array('in_parent') ));
 
             //Have they completed this?
             if(count($completed_steps) == 0){
 
                 //Not completed yet, this is the next step:
                 return $common_step_in_id;
+
+            } elseif(in_array($completed_steps[0]['ln_type_entity_id'], $this->config->item('en_ids_7742')) /* Terminate Intention Links */){
+
+                //Must be terminated:
+                return 0;
 
             } elseif($is_expansion){
 
@@ -163,15 +168,14 @@ class User_app_model extends CI_Model
                     'ln_status_entity_id IN (' . join(',', $this->config->item('en_ids_7359')) . ')' => null, //Link Statuses Public
                 ), array('in_child'));
 
-                if(count($unlocked_conditions) < 1){
-                    continue;
-                }
+                if(count($unlocked_conditions) > 0){
 
-                //Completed step that has OR expansions, check recursively to see if next step within here:
-                $found_in_id = $this->User_app_model->actionplan_step_next_find($en_id, $unlocked_conditions[0]);
+                    //Completed step that has OR expansions, check recursively to see if next step within here:
+                    $found_in_id = $this->User_app_model->actionplan_step_next_find($en_id, $unlocked_conditions[0]);
 
-                if($found_in_id > 0){
-                    return $found_in_id;
+                    if($found_in_id > 0){
+                        return $found_in_id;
+                    }
                 }
             }
         }
@@ -1177,6 +1181,10 @@ class User_app_model extends CI_Model
 
             $progression_type_entity_id = 7489; //User Step Multi-Answered
 
+        } elseif($ins[0]['in_type_entity_id']==7740 /* Intent Terminate */){
+
+            $progression_type_entity_id = 7741; //User Step Intention Terminated
+
         } else {
 
             $progression_type_entity_id = 4559; //User Step Read Messages
@@ -1278,7 +1286,7 @@ class User_app_model extends CI_Model
                 $next_step_message .= '<div class="list-group" style="margin:0 0 0 0;">';
                 foreach($unlocked_steps as $unlocked_step){
                     //Add HTML step to UI:
-                    $next_step_message .= echo_actionplan_step_child($en_id, $unlocked_step, $unlocked_step['ln_status_entity_id'], true);
+                    $next_step_message .= echo_actionplan_step_child($en_id, $unlocked_step, true);
                 }
                 $next_step_message .= '</div>';
             }
@@ -1329,7 +1337,7 @@ class User_app_model extends CI_Model
                 if(!$push_message){
 
                     //Add HTML step to UI:
-                    $next_step_message .= echo_actionplan_step_child($en_id, $child_in, (count($child_progression_steps) > 0 ? $child_progression_steps[0]['ln_status_entity_id'] : 6175 /* Link Drafting */ ));
+                    $next_step_message .= echo_actionplan_step_child($en_id, $child_in);
 
                 } else {
 
@@ -1392,6 +1400,32 @@ class User_app_model extends CI_Model
 
             } else {
 
+                //See if we need to move the message inside the HTML:
+                $max_html_answers = 30;
+                $inline_answers = array();
+
+                for ($num = 1; $num <= $max_html_answers; $num++) {
+                    foreach ($in__messages as $index => $message_ln) {
+
+                        $valid_num = null;
+                        if(substr_count($message_ln['ln_content'] , $num.'. ')==1){
+                            $valid_num = $num.'. ';
+                        } elseif(substr_count($message_ln['ln_content'] , $num.".\n")==1){
+                            $valid_num = $num.".\n";
+                        }
+
+                        if($valid_num){
+                            $inline_answers[$num] = one_two_explode($valid_num , "\n", $message_ln['ln_content']);
+                            $in__messages[$index]['ln_content'] = trim(str_replace($valid_num.$inline_answers[$num], '', $message_ln['ln_content']));
+                            break;
+                        }
+                    }
+                    //Terminate if not found:
+                    if(!isset($inline_answers[$num])){
+                        break;
+                    }
+                }
+
                 $next_step_message .= '<div class="list-group" style="margin-top:10px;">';
 
             }
@@ -1434,12 +1468,12 @@ class User_app_model extends CI_Model
                     if(!$progress_completed){
 
                         //Need to select answer:
-                        $next_step_message .= '<a href="/user_app/actionplan_answer_question/6157/' . $en_id . '/' . $ins[0]['in_id'] . '/' . $child_in['in_id'] . '/' . md5($this->config->item('actionplan_salt') . $child_in['in_id'] . $ins[0]['in_id'] . $en_id) . '" class="list-group-item">';
+                        $next_step_message .= '<a href="/user_app/actionplan_answer_question/6157/' . $en_id . '/' . $ins[0]['in_id'] . '/' . $child_in['in_id'] . '/' . md5($this->config->item('actionplan_salt') . $child_in['in_id'] . $ins[0]['in_id'] . $en_id) . '" class="list-group-item lightgreybg">';
 
                     } elseif($was_selected){
 
                         //This was selected:
-                        $next_step_message .= '<a href="/actionplan/'.$child_in['in_id'] . '" class="list-group-item">';
+                        $next_step_message .= '<a href="/actionplan/'.$child_in['in_id'] . '" class="list-group-item lightgreybg">';
 
                     } else {
 
@@ -1461,8 +1495,14 @@ class User_app_model extends CI_Model
 
                     }
 
+
                     //Add to answer list:
-                    $next_step_message .= echo_in_outcome($child_in['in_outcome']);
+                    $potential_number = trim(str_replace('.','', echo_in_outcome($child_in['in_outcome'], true)));
+                    if(is_numeric($potential_number) && intval($potential_number)>0 && intval($potential_number)<=$max_html_answers && isset($inline_answers[intval($potential_number)])){
+                        $next_step_message .= $inline_answers[intval($potential_number)];
+                    } else {
+                        $next_step_message .= echo_in_outcome($child_in['in_outcome']);
+                    }
 
                 }
 
@@ -1477,11 +1517,6 @@ class User_app_model extends CI_Model
 
                     //Close tags:
                     if(!$progress_completed || $was_selected){
-
-                        //Simple right icon
-                        $next_step_message .= '<span class="pull-right" style="margin-top: -6px;">';
-                        $next_step_message .= '<span class="badge badge-primary"><i class="fas fa-angle-right"></i>&nbsp;</span>';
-                        $next_step_message .= '</span>';
 
                         $next_step_message .= '</a>';
 
@@ -1505,89 +1540,77 @@ class User_app_model extends CI_Model
         } elseif($has_children){
 
             //AND Children
-            $max_and_list = 5;
-            $has_multiple_children = (count($in__children) > 1); //Do we have 2 or more children?
+            $max_and_list           = ( $push_message ? 5 : 30 );
+            $has_multiple_children  = (count($in__children) > 1); //Do we have 2 or more children?
+            $frist_x_all_are_dirty  = true; //Assume all first X intent outcomes are non-clean unless proven otherwise
+
+
+            //Check to see if we need titles:
+            if($has_multiple_children){
+                foreach ($in__children as $count => $child_in) {
+                    if($count==$max_and_list){
+                        break;
+                    }
+                    if(in_is_clean_outcome($child_in)){
+                        $frist_x_all_are_dirty = false;
+                        break;
+                    }
+                }
+            }
 
             //List AND children:
-            if($has_multiple_children || !$push_message){
-
-                //Check to see if we need titles:
-                $check_clean = ($push_message && $has_multiple_children);
-                $frist_x_all_are_dirty = true; //Assume all first X intent outcomes are non-clean unless proven otherwise
-                if($check_clean){
-                    foreach ($in__children as $count => $child_in) {
-                        if($count==$max_and_list){
-                            break;
-                        }
-                        if(in_is_clean_outcome($child_in)){
-                            $frist_x_all_are_dirty = false;
-                            break;
-                        }
-                    }
-                }
-
+            if(!$has_multiple_children || !$frist_x_all_are_dirty){
 
                 //Are we still clean?
-                if(!$check_clean || !$frist_x_all_are_dirty){
+                $key = 0;
+                $common_prefix = common_prefix($in__children, $max_and_list); //Look only up to the max number of listed intents
 
-                    $key = 0;
-                    $common_prefix = common_prefix($in__children, $max_and_list); //Look only up to the max number of listed intents
+                foreach ($in__children as $child_in) {
 
-                    foreach ($in__children as $child_in) {
-
-                        if($key==0){
-                            if(!$push_message){
-                                $next_step_message .= '<div class="list-group" style="margin-top:10px;">';
-                            } else {
-                                $next_step_message .= "Here are the next steps:"."\n\n";
-                            }
-                        } else {
-                            if($push_message){
-
-                                $next_step_message .= "\n\n";
-
-                                //We know that the $next_step_message length cannot surpass the limit defined by fb_max_message variable!
-                                if (($key >= $max_and_list || strlen($next_step_message) > ($this->config->item('fb_max_message') - 150))) {
-                                    //We cannot add any more, indicate truncating:
-                                    $remainder = count($in__children) - $max_and_list;
-                                    $next_step_message .= '... plus ' . $remainder . ' more step' . echo__s($remainder) . '.';
-                                    break;
-                                }
-                            }
-                        }
-
-
-                        //Fetch progression data:
-                        $child_progression_steps = $this->Links_model->ln_fetch(array(
-                            'ln_type_entity_id IN (' . join(',', $this->config->item('en_ids_6146')) . ')' => null, //User Steps Completed
-                            'ln_creator_entity_id' => $en_id,
-                            'ln_parent_intent_id' => $child_in['in_id'],
-                            'ln_status_entity_id IN (' . join(',', $this->config->item('en_ids_7360')) . ')' => null, //Link Statuses Active
-                        ));
-
-
+                    if($key==0){
                         if(!$push_message){
-
-                            //Add HTML step to UI:
-                            $next_step_message .= echo_actionplan_step_child($en_id, $child_in, (count($child_progression_steps) > 0 ? $child_progression_steps[0]['ln_status_entity_id'] : 6175 /* Link Drafting */ ), false);
-
+                            $next_step_message .= '<div class="list-group" style="margin-top:10px;">';
                         } else {
-
-                            //Add simple message:
-                            $next_step_message .= ($key + 1) . '. ' . echo_in_outcome($child_in['in_outcome'], $push_message, false, false, $common_prefix);
-
+                            $next_step_message .= "Here are the next steps:"."\n\n";
                         }
+                    } else {
+                        if($push_message){
 
-                        $key++;
+                            $next_step_message .= "\n\n";
+
+                            //We know that the $next_step_message length cannot surpass the limit defined by fb_max_message variable!
+                            if (($key >= $max_and_list || strlen($next_step_message) > ($this->config->item('fb_max_message') - 150))) {
+                                //We cannot add any more, indicate truncating:
+                                $remainder = count($in__children) - $max_and_list;
+                                $next_step_message .= '... plus ' . $remainder . ' more step' . echo__s($remainder) . '.';
+                                break;
+                            }
+                        }
                     }
+
+
+
+                    if(!$push_message){
+
+                        //Add HTML step to UI:
+                        $next_step_message .= echo_actionplan_step_child($en_id, $child_in, false, $common_prefix);
+
+                    } else {
+
+                        //Add simple message:
+                        $next_step_message .= ($key + 1) . '. ' . echo_in_outcome($child_in['in_outcome'], $push_message, false, false, $common_prefix);
+
+                    }
+
+                    $key++;
                 }
-
-
 
                 if(!$push_message && $key > 0){
                     //Close the HTML tag we opened:
                     $next_step_message .= '</div>';
                 }
+
+
             }
         }
 
@@ -1651,7 +1674,7 @@ class User_app_model extends CI_Model
 
                 } else {
 
-                    $next_step_message .= '<div style="margin: 15px 0 0;"><a href="/actionplan/next" class="btn btn-md btn-primary">Next Step <i class="fas fa-angle-right"></i></a></div>';
+                    $next_step_message .= '<div style="margin: 15px 0 0;"><a href="/actionplan/next" class="btn btn-md btn-primary">Next <i class="fas fa-angle-right"></i></a></div>';
 
                 }
             } else {

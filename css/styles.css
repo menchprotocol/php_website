@@ -1426,6 +1426,7 @@ h5, .h5 {
 
 .list-group .list-group-item {
     margin-bottom:5px !important;
+    text-decoration: none !important;
 }
 
 
@@ -1587,6 +1588,10 @@ footer {
 
 .lightgrey{
     color:#AAA !important;
+}
+
+.lightgreybg{
+    background-color:#EFEFEF !important;
 }
 
 .grey-input .form-group {
@@ -1817,7 +1822,6 @@ footer {
 }
 
 .msg a span {
-    text-decoration: underline;
     overflow: hidden;
     display: inline-block;
     font-weight: 500;
@@ -3580,7 +3584,7 @@ h4 .tip-badge {
 
 .msg a {
     font-weight: bold !important;
-    text-decoration: underline !important;
+    text-decoration: underline;
 }
 
 .dash-label {

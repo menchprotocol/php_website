@@ -727,50 +727,23 @@ function echo_ln($ln, $is_inner = false)
 }
 
 
-function echo_actionplan_step_child($en_id, $in, $link_status, $is_unlocked_step = false, $common_prefix = null){
+function echo_actionplan_step_child($en_id, $in, $is_unlocked_step = false, $common_prefix = null){
 
     $CI =& get_instance();
 
-    //Completion Percentage?
-    $is_private_intent  = in_array($in['in_type_entity_id'], $CI->config->item('en_ids_7366')); //Private Intent
+    $completion_rate = $CI->User_app_model->actionplan_completion_progress($en_id, $in);
 
-    if($is_private_intent){
+    //Open list:
+    $ui = '<a href="/actionplan/'.$in['in_id']. '" class="list-group-item">';
 
-        //Open list:
-        $ui = '<span class="list-group-item">';
-        $ui .= '<i class="far fa-eye-slash"></i>&nbsp;';
-        $ui .= echo_in_outcome($in['in_outcome'], false, false, false, $common_prefix);
-        $ui .= ' [Answer by chat only]';
-        $ui .= '</span>';
+    $ui .= echo_in_outcome($in['in_outcome'], false, false, false, $common_prefix);
 
-    } else {
-
-        $completion_rate = $CI->User_app_model->actionplan_completion_progress($en_id, $in);
-
-
-        //Open list:
-        $ui = '<a href="/actionplan/'.$in['in_id']. '" class="list-group-item">';
-
-        //Simple right icon
-        $ui .= '<span class="pull-right" style="margin-top: -6px;">';
-        $ui .= '<span class="badge badge-primary"  data-toggle="tooltip" data-placement="top" title="'.$completion_rate['steps_completed'].'/'.$completion_rate['steps_total'].' Steps Completed" style="text-decoration:none;"><span style="font-size:0.7em;">'.$completion_rate['completion_percentage'].'%</span> <i class="fas fa-angle-right"></i>&nbsp;</span>';
-        $ui .= '</span>';
-
-        //Show status:
-        $ui .= echo_en_cache('en_all_6186' /* Link Statuses */, $link_status, true, null);
-
-        $ui .= '&nbsp;';
-        $ui .= echo_in_outcome($in['in_outcome'], false, false, false, $common_prefix);
-
-        if($is_unlocked_step){
-            $en_all_6103 = $CI->config->item('en_all_6103'); //Link Metadata
-            $ui .= '<span class="badge badge-primary" style="font-size: 0.8em; margin:-7px 0 -7px 5px;" data-toggle="tooltip" data-placement="right" title="'.$en_all_6103[6140]['m_name'].'">'.$en_all_6103[6140]['m_icon'].'</span>';
-        }
-
-        $ui .= '</a>';
+    if($is_unlocked_step){
+        $en_all_6103 = $CI->config->item('en_all_6103'); //Link Metadata
+        $ui .= '<span class="badge badge-primary" style="font-size: 0.8em; margin:-7px 0 -7px 5px;" data-toggle="tooltip" data-placement="right" title="'.$en_all_6103[6140]['m_name'].'">'.$en_all_6103[6140]['m_icon'].'</span>';
     }
 
-
+    $ui .= '</a>';
 
     return $ui;
 }
