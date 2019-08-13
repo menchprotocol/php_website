@@ -867,12 +867,13 @@ function echo_random_message($message_key, $return_all = false){
             "💗: please don't forget to take a little bit of time to say hi to a friend",
             "🌸: remember to let your eyes rest and look at a plant please",
             "🙌: take a second to adjust your posture",
+            "😎🌈💕"
         ),
         'saving_notify' => array(
-            "Saving...",
-            "You got this!",
-            "boop ^~^",
-            "😎🌈💕"
+            "Learning everyday 😎",
+            "Growing with you 🌸",
+            "Getting smarter ^~^",
+            "Getting smarter ^~^",
         ),
         'command_me' => array(
             'You can add a new intention to your Action Plan by sending me a message that starts with "I want to", for example: "I want to assess my back-end skills" or "I want to recruit top talent"',
@@ -2232,7 +2233,7 @@ function echo_in($in, $level, $in_linked_id = 0, $is_parent = false)
 
         $ui .= '<div>';
         $ui .= '<div class="list-group-item list_input new-in3-input link-class--' . $ln_id . ' hidden">
-                <div class="form-group is-empty"  style="margin: 0; padding: 0;"><form action="#" onsubmit="in_link_or_create(' . $in['in_id'] . ',3);" intent-id="' . $in['in_id'] . '"><input type="text" class="form-control autosearch intentadder-id-'.$in['in_id'].' algolia_search" maxlength="' . $CI->config->item('in_outcome_max') . '" id="addintent-cr-' . $ln_id . '" intent-id="' . $in['in_id'] . '" placeholder="Add #Intent"></form></div>
+                <div class="form-group is-empty"  style="margin: 0; padding: 0;"><form action="#" onsubmit="in_link_or_create(' . $in['in_id'] . ',3);" intent-id="' . $in['in_id'] . '"><input type="text" class="form-control autosearch intentadder-id-'.$in['in_id'].' algolia_search" maxlength="' . $CI->config->item('in_outcome_max') . '" id="addintent-cr-' . $ln_id . '" intent-id="' . $in['in_id'] . '" placeholder="Link to current intents or create a new one"></form></div>
         </div>';
 
         $ui .= '<div class="algolia_search_pad in_pad_'.$in['in_id'].' hidden"><span>Search existing intents or create a new one...</span></div>';

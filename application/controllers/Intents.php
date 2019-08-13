@@ -237,8 +237,8 @@ class Intents extends CI_Controller
         }
 
         //Authenticate Miner:
-        $session_en = en_auth(array(1308), true);
-
+        $session_en = en_auth(array(1308,1281), true);
+        $is_miner = ( filter_array($session_en['en__parents'], 'en_id', 1308) ? 1 : 0 );
 
         //Fetch intent with 2 levels of children:
         $ins = $this->Intents_model->in_fetch(array(
@@ -260,8 +260,13 @@ class Intents extends CI_Controller
         ));
 
         //Load views:
-        $this->load->view('view_miner_app/miner_app_header', array( 'title' => $ins[0]['in_outcome'].' | Intents' ));
-        $this->load->view('view_miner_app/in_miner_ui', array( 'in' => $ins[0] ));
+        $this->load->view('view_miner_app/miner_app_header', array(
+            'title' => $ins[0]['in_outcome'].' | Intents'
+        ));
+        $this->load->view('view_miner_app/in_miner_ui', array(
+            'in' => $ins[0] ,
+            'is_miner' => $is_miner,
+        ));
         $this->load->view('view_miner_app/miner_app_footer');
 
     }
@@ -1484,7 +1489,7 @@ class Intents extends CI_Controller
                 if($affected_rows > 0){
                     return echo_json(array(
                         'status' => 1,
-                        'message' => 'Successfully removed',
+                        'message' => echo_random_message('saving_notify'),
                     ));
                 } else {
                     return echo_json(array(

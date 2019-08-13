@@ -50,17 +50,20 @@ $in_filters = in_get_filters(true);
 
 
             echo '<div style="min-height:11px;">';
-            echo '<div class="intent-header '.advance_mode().'">';
+            echo '<div class="intent-header">';
 
                 //Focus intent:
-                echo '<h5 class="badge badge-h indent1 inline-block '.advance_mode().'">Intent #'.$in['in_id'].'</h5>';
+                echo '<h5 class="badge badge-h indent1 inline-block">Intent #'.$in['in_id'].'</h5>';
 
-                //Hidden Links:
-                echo '<a class="secret" href="/intents/cron__sync_extra_insights/' . $in['in_id'] . '/1?redirect=/' . $in['in_id'] . '" style="margin-left: 5px;" onclick="turn_off()" data-toggle="tooltip" title="Updates intent tree cache" data-placement="top"><i class="fal fa-sync-alt"></i></a>';
+                //Hidden Links for Miners:
+                if($is_miner){
+                    echo '<a class="secret" href="/intents/cron__sync_extra_insights/' . $in['in_id'] . '/1?redirect=/' . $in['in_id'] . '" style="margin-left: 5px;" onclick="turn_off()" data-toggle="tooltip" title="Updates intent tree cache" data-placement="top"><i class="fal fa-sync-alt"></i></a>';
 
-                echo '<a class="secret" href="/intents/in_review_metadata/' . $in['in_id'] . '" style="margin-left: 5px;" target="_blank" data-toggle="tooltip" title="Review Intent Metadata" data-placement="top"><i class="fas fa-function"></i></a>';
+                    echo '<a class="secret" href="/intents/in_review_metadata/' . $in['in_id'] . '" style="margin-left: 5px;" target="_blank" data-toggle="tooltip" title="Review Intent Metadata" data-placement="top"><i class="fas fa-function"></i></a>';
 
-                echo '<a class="secret" href="/links/cron__sync_algolia/in/' . $in['in_id'] . '" style="margin-left: 5px;" target="_blank" data-toggle="tooltip" title="Update Algolia Search Index" data-placement="top"><i class="fas fa-search"></i></a>';
+                    echo '<a class="secret" href="/links/cron__sync_algolia/in/' . $in['in_id'] . '" style="margin-left: 5px;" target="_blank" data-toggle="tooltip" title="Update Algolia Search Index" data-placement="top"><i class="fas fa-search"></i></a>';
+                }
+
 
             echo '</div>';
             echo '</div>';
@@ -131,7 +134,7 @@ $in_filters = in_get_filters(true);
                                maxlength="' . $this->config->item('in_outcome_max') . '"
                                intent-id="' . $in['in_id'] . '"
                                id="addintent-c-' . $in['in_id'] . '-0"
-                               placeholder="Add new intent starting with a Verb">
+                               placeholder="Link to current intents or create a new one">
                     </div>
                    <div class="algolia_search_pad in_pad_bottom hidden"><span>Search existing intents or create a new one...</span></div>
             </div>';
