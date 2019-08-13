@@ -89,7 +89,7 @@ function en_add_source_paste_url() {
     if(input_url.length > 0){
 
         //Show loading icon:
-        $('.url-error').html('<i class="fas fa-yin-yang fa-spin"></i> Loading...');
+        $('.url-error').html('<i class="fas fa-yin-yang fa-spin"></i> ' + echo_ying_yang() +  '');
         $('.url-parsed').addClass('hidden');
 
         //Send for processing to see if all good:

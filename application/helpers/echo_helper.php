@@ -769,7 +769,7 @@ function echo_actionplan_step_parent($in)
 }
 
 
-function echo_random_message($message_key){
+function echo_random_message($message_key, $return_all = false){
 
     /*
      *
@@ -799,6 +799,79 @@ function echo_random_message($message_key){
             'I cannot understand if you send me an out-of-context message. I would only understand if you choose one of the options that I recommend to you.',
             'I cannot respond to your custom messages and can only understand if you select one of the options that I recommend to you.',
         ),
+        'ying_yang' => array(
+            "Are you having a good day today?",
+            "Be gentle with yourself today.",
+            "Breakfast and lunch are as important as dinner, so please don't skip them!",
+            "Checking privilege...",
+            "Congratulate yourself for doing difficult things, even if they might not seem difficult to others.",
+            "Crunching the latest data, just for you. Hang tight...",
+            "Do you have a glass of water nearby? Time for a sip!",
+            "Don't be afraid to offer hugs. Someone probably needs them.",
+            "Don't compare yourself to others, they are not you! You are unique!",
+            "Don't forget to eat breakfast! It's important fuel for every adventure.",
+            "Go get a drink of water. Stay hydrated!",
+            "Have you danced today?",
+            "Have you listened to your favourite song recently? 🎵",
+            "Have you stretched recently? Do it now. It will help.",
+            "Have you told someone you're proud of them recently?",
+            "Help is out there. Don't be afraid to ask.",
+            "Hey! Life is tough, but so are you! 💪",
+            "Hey, jump up for a sec and stretch, yeah? 👐",
+            "I know it's cheesey but I hope you have a grate day!",
+            "I'm so proud of everything that my friends have done",
+            "Identity is fluid! People can change - be accepting.",
+            "If you're having a hard day, remember that you can do this because you're amazing!",
+            "Is there a window you can look through? The world is beautiful. 🌆",
+            "Is your seat comfortable? Can you adjust your chair properly?",
+            "It can be hard to get started, can't it? That's okay, you got this.",
+            "It's so great to have you here today",
+            "Keep growing, keep learning, keep moving forward!",
+            "Learning new things is important - open your eyes to the world around you!",
+            "Making things awesome...",
+            "Novel, new, silly, & unusual activities can help lift your mood.",
+            "Play for a few minutes. Doodle, learn solitaire, fold a paper airplane, do something fun.",
+            "Please try not to take yourself for granted. You're important.",
+            "Please wait, including everyone...",
+            "Rest your eyes for a moment. Look at something in the distance and count to five! 🌳",
+            "Self care is important, look after and love yourself, you're amazing!",
+            "Set aside time for a hobby. Gardening, drone building, knitting, do something for the pure pleasure of it.",
+            "So often our power lies not in ourselves, but in how we help others find their own strength",
+            "Sometimes doing something nice for somebody else is the best way to feel good about yourself! 👭",
+            "Stop. Breathe. Be here now.",
+            "Stop. Take three slow deep breaths.",
+            "Stuck? Ask for help. Talk to someone.",
+            "Take 5 minutes to straighten the space around you. Set a timer.",
+            "Take a break before you need it. It will make it easier to prevent burnout.",
+            "Take a moment to send a message to someone you love. 😻",
+            "Take care of yourself. We need you.",
+            "Technology is a tool. Use it wisely.",
+            "The impact you leave on the universe can never be erased.",
+            "There are no impostors here",
+            "There's someone who is so so grateful that you exist together.",
+            "Today is a great day to let a friend know how much you appreciate them.",
+            "Water is good for you year round. If you're thirsty, you're dehydrated.",
+            "We all have superpowers. You included. I hope you are using yours to make your life a joyful one.",
+            "When's the last time you treated yourself?",
+            "With the dawning of a new day comes a clean slate and lots of opportunity.",
+            "You are fantastic",
+            "You are loved. <3",
+            "You are so very important 💛💛💕",
+            "You can do this!",
+            "You cannot compare your successes to the apparent achievements of others. 🌄",
+            "You deserve to be safe and to have nice things happen to you.",
+            "You have the power to change the world.",
+            "You're allowed to start small. 🐞",
+            "boop ^~^",
+            "have you hugged anyone lately?",
+            "it's time to check your thirst level, human.",
+            "💗: please don't forget to take a little bit of time to say hi to a friend",
+            "🌸: remember to let your eyes rest and look at a plant please",
+            "🙌: take a second to adjust your posture",
+            "😎🌈💕"
+        ),
+
+
         'command_me' => array(
             'You can add a new intention to your Action Plan by sending me a message that starts with "I want to", for example: "I want to assess my back-end skills" or "I want to recruit top talent"',
         ),
@@ -820,9 +893,13 @@ function echo_random_message($message_key){
 
     } else {
 
-        //Return a random message:
-        return $rotation_index[$message_key][rand(0, (count($rotation_index[$message_key]) - 1))];
-
+        if($return_all){
+            //Return all options:
+            return $rotation_index[$message_key];
+        } else {
+            //Return a random message:
+            return $rotation_index[$message_key][rand(0, (count($rotation_index[$message_key]) - 1))];
+        }
     }
 
 }

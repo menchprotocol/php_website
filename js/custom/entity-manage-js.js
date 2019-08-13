@@ -384,7 +384,7 @@ function en_ln_type_preview() {
      *
      * */
 
-    $('#en_type_link_id').html('<i class="fas fa-yin-yang fa-spin"></i> Loading...');
+    $('#en_type_link_id').html('<i class="fas fa-yin-yang fa-spin"></i> ' + echo_ying_yang() +  '');
 
 
     //Fetch Intent Data to load modify widget:
@@ -745,7 +745,7 @@ function en_load_messages(en_id) {
     var handler = $("#loaded-messages");
 
     //Show tem loader:
-    handler.html('<div style="text-align:left; padding-bottom:50px;"><i class="fas fa-yin-yang fa-spin"></i> Loading...</div>');
+    handler.html('<div style="text-align:left; padding-bottom:50px;"><i class="fas fa-yin-yang fa-spin"></i> ' + echo_ying_yang() +  '</div>');
 
     //We might need to scroll:
     if (is_compact) {

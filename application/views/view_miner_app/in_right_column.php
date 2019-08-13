@@ -26,7 +26,7 @@
     </div>
     <div class="grey-box">
 
-        <div class="loadbox hidden"><i class="fas fa-yin-yang fa-spin"></i> Loading...</div>
+        <div class="loadbox hidden"><i class="fas fa-yin-yang fa-spin"></i> <?= echo_random_message('ying_yang') ?></div>
 
         <div class="row loadcontent">
 
@@ -235,7 +235,7 @@
     </div>
     <div class="grey-box" style="padding-bottom: 10px;">
         <iframe class="ajax-frame hidden" id="ajax_messaging_iframe" src=""></iframe>
-        <span class="frame-loader hidden"><i class="fas fa-yin-yang fa-spin"></i> Loading...</span></div>
+        <span class="frame-loader hidden"><i class="fas fa-yin-yang fa-spin"></i> <?= echo_random_message('ying_yang') ?></span></div>
 </div>
 
 

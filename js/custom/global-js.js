@@ -110,6 +110,10 @@ function ordinal_suffix_of(i) {
     return i + "th";
 }
 
+function echo_ying_yang(){
+    return js_ying_yang[Math.floor(Math.random()*js_ying_yang.length)];
+}
+
 function load_js_algolia() {
     $(".algolia_search").focus(function () {
         //Loadup Algolia once:
