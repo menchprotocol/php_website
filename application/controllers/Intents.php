@@ -1640,6 +1640,7 @@ class Intents extends CI_Controller
             //Update all Recommended Intentions and their tree:
             foreach ($this->Intents_model->in_fetch(array(
                 'in_status_entity_id IN (' . join(',', $this->config->item('en_ids_7355')) . ')' => null, //Intent Statuses Public
+                'in_start_mode_entity_id IN (' . join(',', $this->config->item('en_ids_7582')) . ')' => null, //Intent Action Plan Addable
             )) as $published_in) {
                 $tree = $this->Intents_model->in_metadata_extra_insights($published_in['in_id']);
                 if($tree){
