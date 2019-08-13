@@ -11,7 +11,7 @@ defined('BASEPATH') OR exit('No direct script access allowed');
  *
  */
 
-//Generated 2019-08-12 19:29:54 PST
+//Generated 2019-08-12 19:48:46 PST
 
 //Auto Completable:
 $config['en_ids_7756'] = array(6677,6907,6914);
@@ -341,23 +341,6 @@ $config['en_all_7744'] = array(
     ),
 );
 
-//Terminate Intention Links:
-$config['en_ids_7742'] = array(7492,7741);
-$config['en_all_7742'] = array(
-    7492 => array(
-        'm_icon' => '<i class="far fa-times-square"></i>',
-        'm_name' => 'User Step Path Not Found',
-        'm_desc' => '',
-        'm_parents' => array(7742,7703,6255,4755,4593,4595,6146),
-    ),
-    7741 => array(
-        'm_icon' => '<i class="far fa-times-circle"></i>',
-        'm_name' => 'User Step Intention Terminated',
-        'm_desc' => '',
-        'm_parents' => array(4755,4593,4595,7740,7742,6146),
-    ),
-);
-
 //Single Selectable:
 $config['en_ids_6204'] = array(3089,3289,3290,4454);
 $config['en_all_6204'] = array(
@@ -434,7 +417,7 @@ $config['en_all_7704'] = array(
 );
 
 //Link Intent Subscription Types:
-$config['en_ids_7703'] = array(4228,4229,4231,4242,4264,4559,4601,4983,6093,6144,6154,6155,6157,6242,6997,7485,7486,7487,7489,7492,7545,7701);
+$config['en_ids_7703'] = array(4228,4229,4231,4242,4264,4559,4601,4983,6093,6144,6154,6155,6157,6242,6997,7485,7486,7487,7489,7545,7701);
 $config['en_all_7703'] = array(
     4228 => array(
         'm_icon' => '<i class="fas fa-walking"></i>',
@@ -549,12 +532,6 @@ $config['en_all_7703'] = array(
         'm_name' => 'User Step Multi-Answered',
         'm_desc' => '',
         'm_parents' => array(7704,7703,4755,6255,4593,4595,6146),
-    ),
-    7492 => array(
-        'm_icon' => '<i class="far fa-times-square"></i>',
-        'm_name' => 'User Step Path Not Found',
-        'm_desc' => '',
-        'm_parents' => array(7742,7703,6255,4755,4593,4595,6146),
     ),
     7545 => array(
         'm_icon' => '<i class="far fa-tag"></i>',
@@ -1952,7 +1929,7 @@ $config['en_all_6255'] = array(
         'm_icon' => '<i class="far fa-times-square"></i>',
         'm_name' => 'User Step Path Not Found',
         'm_desc' => '',
-        'm_parents' => array(7742,7703,6255,4755,4593,4595,6146),
+        'm_parents' => array(6255,4755,4593,4595,6146),
     ),
 );
 
@@ -2203,13 +2180,13 @@ $config['en_all_6146'] = array(
         'm_icon' => '<i class="far fa-times-square"></i>',
         'm_name' => 'Path Not Found',
         'm_desc' => 'Logged when users arrive at a locked intent that has no public OR parents or no children, which means there is no way to unlock it.',
-        'm_parents' => array(7742,7703,6255,4755,4593,4595,6146),
+        'm_parents' => array(6255,4755,4593,4595,6146),
     ),
     7741 => array(
         'm_icon' => '<i class="far fa-times-circle"></i>',
         'm_name' => 'Intention Terminated',
         'm_desc' => '',
-        'm_parents' => array(4755,4593,4595,7740,7742,6146),
+        'm_parents' => array(4755,4593,4595,7740,6146),
     ),
 );
 
@@ -2837,7 +2814,7 @@ $config['en_all_4755'] = array(
         'm_icon' => '<i class="far fa-times-square"></i>',
         'm_name' => 'User Step Path Not Found',
         'm_desc' => '',
-        'm_parents' => array(7742,7703,6255,4755,4593,4595,6146),
+        'm_parents' => array(6255,4755,4593,4595,6146),
     ),
     7495 => array(
         'm_icon' => '<i class="far fa-bullseye-arrow"></i>',
@@ -2945,7 +2922,7 @@ $config['en_all_4755'] = array(
         'm_icon' => '<i class="far fa-times-circle"></i>',
         'm_name' => 'User Step Intention Terminated',
         'm_desc' => '',
-        'm_parents' => array(4755,4593,4595,7740,7742,6146),
+        'm_parents' => array(4755,4593,4595,7740,6146),
     ),
 );
 
@@ -3472,7 +3449,7 @@ $config['en_all_4595'] = array(
         'm_icon' => '<i class="far fa-times-square"></i>',
         'm_name' => 'User Step Path Not Found',
         'm_desc' => '1',
-        'm_parents' => array(7742,7703,6255,4755,4593,4595,6146),
+        'm_parents' => array(6255,4755,4593,4595,6146),
     ),
     7495 => array(
         'm_icon' => '<i class="far fa-bullseye-arrow"></i>',
@@ -3586,7 +3563,7 @@ $config['en_all_4595'] = array(
         'm_icon' => '<i class="far fa-times-circle"></i>',
         'm_name' => 'User Step Intention Terminated',
         'm_desc' => '1',
-        'm_parents' => array(4755,4593,4595,7740,7742,6146),
+        'm_parents' => array(4755,4593,4595,7740,6146),
     ),
 );
 
@@ -4130,7 +4107,7 @@ $config['en_all_4593'] = array(
         'm_icon' => '<i class="far fa-times-square"></i>',
         'm_name' => 'User Step Path Not Found',
         'm_desc' => '',
-        'm_parents' => array(7742,7703,6255,4755,4593,4595,6146),
+        'm_parents' => array(6255,4755,4593,4595,6146),
     ),
     7495 => array(
         'm_icon' => '<i class="far fa-bullseye-arrow"></i>',
@@ -4244,7 +4221,7 @@ $config['en_all_4593'] = array(
         'm_icon' => '<i class="far fa-times-circle"></i>',
         'm_name' => 'User Step Intention Terminated',
         'm_desc' => 'User ended their Action Plan prematurely',
-        'm_parents' => array(4755,4593,4595,7740,7742,6146),
+        'm_parents' => array(4755,4593,4595,7740,6146),
     ),
 );
 

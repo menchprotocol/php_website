@@ -123,6 +123,17 @@ class User_app_model extends CI_Model
          * */
 
         $in_metadata = unserialize($in['in_metadata']);
+
+        //Make sure of no terminations first:
+        if(count($in_metadata['in__metadata_terminations_7740']) > 0 && count($this->Links_model->ln_fetch(array(
+                'ln_type_entity_id IN (' . join(',' , $this->config->item('en_ids_6146')) . ')' => null, //Action Plan Progression Steps
+                'ln_creator_entity_id' => $en_id, //Belongs to this User
+                'ln_parent_intent_id IN (' . join(',' , $in_metadata['in__metadata_terminations_7740']) . ')' => null, //Action Plan Progression Steps
+                'ln_status_entity_id' => 6176, //Link Published
+            ))) > 0){
+            return 0;
+        }
+
         foreach(array_flatten($in_metadata['in__metadata_common_steps']) as $common_step_in_id){
 
             //Is this an expansion step?
@@ -142,11 +153,6 @@ class User_app_model extends CI_Model
 
                 //Not completed yet, this is the next step:
                 return $common_step_in_id;
-
-            } elseif(in_array($completed_steps[0]['ln_type_entity_id'], $this->config->item('en_ids_7742')) /* Terminate Intention Links */){
-
-                //Must be terminated:
-                return 0;
 
             } elseif($is_expansion){
 
