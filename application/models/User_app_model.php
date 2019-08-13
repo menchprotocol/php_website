@@ -125,14 +125,26 @@ class User_app_model extends CI_Model
         $in_metadata = unserialize($in['in_metadata']);
 
         //Make sure of no terminations first:
-        if(count($in_metadata['in__metadata_terminations_7740']) > 0 && count($this->Links_model->ln_fetch(array(
+        $check_termination_answers = array();
+
+        if(count($in_metadata['in__metadata_expansion_steps']) > 0){
+            $check_termination_answers = array_merge($check_termination_answers , array_flatten($in_metadata['in__metadata_expansion_steps']));
+        }
+        if(count($in_metadata['in__metadata_expansion_conditional']) > 0){
+            $check_termination_answers = array_merge($check_termination_answers , array_flatten($in_metadata['in__metadata_expansion_conditional']));
+        }
+        if(count($check_termination_answers) > 0 && count($this->Links_model->ln_fetch(array(
                 'ln_type_entity_id IN (' . join(',' , $this->config->item('en_ids_6146')) . ')' => null, //Action Plan Progression Steps
                 'ln_creator_entity_id' => $en_id, //Belongs to this User
-                'ln_parent_intent_id IN (' . join(',' , $in_metadata['in__metadata_terminations_7740']) . ')' => null, //Action Plan Progression Steps
+                'ln_parent_intent_id IN (' . join(',' , $check_termination_answers) . ')' => null, //All possible answers that might terminate...
                 'ln_status_entity_id' => 6176, //Link Published
-            ))) > 0){
+                'in_status_entity_id IN (' . join(',', $this->config->item('en_ids_7355')) . ')' => null, //Intent Statuses Public
+                'in_type_entity_id' => 7740, //Intent Answer Terminate
+            ), array('in_parent'))) > 0){
             return 0;
         }
+
+
 
         foreach(array_flatten($in_metadata['in__metadata_common_steps']) as $common_step_in_id){
 

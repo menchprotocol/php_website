@@ -11,7 +11,7 @@ defined('BASEPATH') OR exit('No direct script access allowed');
  *
  */
 
-//Generated 2019-08-12 19:48:46 PST
+//Generated 2019-08-12 20:28:27 PST
 
 //Auto Completable:
 $config['en_ids_7756'] = array(6677,6907,6914);
@@ -715,8 +715,8 @@ $config['en_all_7585'] = array(
         'm_parents' => array(7756,7585,7486,7485,7309,6997,6193),
     ),
     7740 => array(
-        'm_icon' => '<i class="far fa-times-circle"></i>',
-        'm_name' => 'Terminate Remaining',
+        'm_icon' => '<i class="fas fa-times-octagon"></i>',
+        'm_name' => 'Answer Terminate',
         'm_desc' => 'Signals the end of the intention when the user arrives here.',
         'm_parents' => array(6192,7585),
     ),

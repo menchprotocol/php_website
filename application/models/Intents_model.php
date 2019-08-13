@@ -646,7 +646,6 @@ class Intents_model extends CI_Model
             '__in__metadata_common_steps' => array(), //The tree structure that would be shared with all users regardless of their quick replies (OR Intent Answers)
             '__in__metadata_expansion_steps' => array(), //Intents that may exist as a link to expand an Action Plan tree by answering OR intents
             '__in__metadata_expansion_conditional' => array(), //Intents that may exist as a link to expand an Action Plan tree via Conditional Step links
-            '__in__metadata_terminations_7740' => array(), //Defines intents that are Terminate Intention in the tree @7742
         );
 
         //Fetch children:
@@ -685,10 +684,6 @@ class Intents_model extends CI_Model
                 //Aggregate recursion data:
                 if(count($child_recursion['__in__metadata_common_steps']) > 0){
                     array_push($metadata_this['__in__metadata_common_steps'], $child_recursion['__in__metadata_common_steps']);
-                }
-
-                if(count($child_recursion['__in__metadata_terminations_7740']) > 0){
-                    array_push($metadata_this['__in__metadata_terminations_7740'], $child_recursion['__in__metadata_terminations_7740']);
                 }
 
                 //Merge expansion steps:
@@ -734,7 +729,6 @@ class Intents_model extends CI_Model
                 'in__metadata_common_steps' => $metadata_this['__in__metadata_common_steps'],
                 'in__metadata_expansion_steps' => $metadata_this['__in__metadata_expansion_steps'],
                 'in__metadata_expansion_conditional' => $metadata_this['__in__metadata_expansion_conditional'],
-                'in__metadata_terminations_7740' => $metadata_this['__in__metadata_terminations_7740'],
             ));
 
         }

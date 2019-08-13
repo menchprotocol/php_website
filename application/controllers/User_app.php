@@ -1570,6 +1570,7 @@ class User_app extends CI_Controller
 
         //Authenticate user:
         $session_en = $this->session->userdata('user');
+        $is_messenger = false;
         if (!$psid && !isset($session_en['en_id'])) {
             die('<div class="alert alert-danger" role="alert">Invalid Credentials</div>');
         } elseif (!is_dev_environment() && isset($_GET['sr']) && !parse_signed_request($_GET['sr'])) {
@@ -1582,6 +1583,7 @@ class User_app extends CI_Controller
                 //We could not authenticate the user!
                 die('<div class="alert alert-danger" role="alert">Credentials could not be validated</div>');
             }
+            $is_messenger = true;
         }
 
 
