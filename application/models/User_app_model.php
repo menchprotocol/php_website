@@ -158,7 +158,7 @@ class User_app_model extends CI_Model
                 'ln_creator_entity_id' => $en_id, //Belongs to this User
                 'ln_parent_intent_id' => $common_step_in_id,
                 'ln_status_entity_id' => 6176, //Link Published
-            ),  array('in_parent'));
+            ),  ( $is_expansion ? array('in_child') : array() ));
 
             //Have they completed this?
             if(count($completed_steps) == 0){
@@ -168,13 +168,8 @@ class User_app_model extends CI_Model
 
             } elseif($is_expansion){
 
-                //Fetch child intent:
-                $child_ins = $this->Intents_model->in_fetch(array(
-                    'in_id' => $completed_steps[0]['ln_child_intent_id'],
-                ));
-
                 //Completed step that has OR expansions, check recursively to see if next step within here:
-                $found_in_id = $this->User_app_model->actionplan_step_next_find($en_id, $child_ins[0]);
+                $found_in_id = $this->User_app_model->actionplan_step_next_find($en_id, $completed_steps[0]);
 
                 if($found_in_id != 0){
                     return $found_in_id;
@@ -253,13 +248,21 @@ class User_app_model extends CI_Model
             //Find first incomplete step for this Action Plan intention:
             $next_in_id = $this->User_app_model->actionplan_step_next_find($en_id, $user_intent);
 
-            if($next_in_id > 0){
+            if($advance_step && $next_in_id < 0){
+
+                //We need to terminate this:
+                $delete_result = $this->User_app_model->actionplan_intention_delete($en_id, $user_intent['in_id'], 7757 /* User Intent Terminated */);
+                break;
+
+            } elseif($next_in_id > 0){
+
                 //We found the next incomplete step, return:
                 break;
+
             }
         }
 
-        if($advance_step){
+        if($advance_step && $next_in_id >= 0 /* NOT If it was terminated... */){
 
             //Did we find a next step?
             if($next_in_id > 0){
@@ -463,6 +466,80 @@ class User_app_model extends CI_Model
         return array(
             'in' => $top_priority_in,
             'completion_rate' => $completion_rate,
+        );
+
+    }
+
+    function actionplan_intention_delete($en_id, $in_id, $stop_method_id, $stop_feedback = null){
+
+
+        if(!in_array($stop_method_id, $this->config->item('en_ids_6150') /* Action Plan Intention Completed */)){
+            return array(
+                'status' => 0,
+                'message' => 'Invalid stop method',
+            );
+        }
+
+        //Validate intention to be removed:
+        $ins = $this->Intents_model->in_fetch(array(
+            'in_id' => $in_id,
+        ));
+        if (count($ins) < 1) {
+            return array(
+                'status' => 0,
+                'message' => 'Invalid intention',
+            );
+        }
+
+        //Go ahead and remove from Action Plan:
+        $user_intents = $this->Links_model->ln_fetch(array(
+            'ln_creator_entity_id' => $en_id,
+            'ln_type_entity_id IN (' . join(',', $this->config->item('en_ids_7347')) . ')' => null, //Action Plan Intention Set
+            'ln_status_entity_id IN (' . join(',', $this->config->item('en_ids_7364')) . ')' => null, //Link Statuses Incomplete
+            'ln_parent_intent_id' => $in_id,
+        ));
+        if(count($user_intents) < 1){
+            //Give error:
+            return array(
+                'status' => 0,
+                'message' => 'Could not locate Action Plan',
+            );
+        }
+
+
+        //Adjust Action Plan status:
+        foreach($user_intents as $ln){
+            $this->Links_model->ln_update($ln['ln_id'], array(
+                'ln_status_entity_id' => ( in_array($stop_method_id, $this->config->item('en_ids_7758') /* Action Plan Intention Successful */) ? 6176 /* Link Published */ : 6173 /* Link Removed */ ), //This is a nasty HACK!
+            ), $en_id);
+        }
+
+        //Log related link:
+        $this->Links_model->ln_create(array(
+            'ln_content' => $stop_feedback,
+            'ln_creator_entity_id' => $en_id,
+            'ln_type_entity_id' => $stop_method_id,
+            'ln_parent_intent_id' => $in_id,
+        ));
+
+
+        //Communicate with user:
+        $this->Communication_model->dispatch_message(
+            'I have removed the intention to '.$ins[0]['in_outcome'].' from your Action Plan.',
+            array('en_id' => $en_id),
+            true,
+            array(
+                array(
+                    'content_type' => 'text',
+                    'title' => 'Next',
+                    'payload' => 'GONEXT',
+                )
+            )
+        );
+
+        return array(
+            'status' => 1,
+            'message' => 'Success',
         );
 
     }

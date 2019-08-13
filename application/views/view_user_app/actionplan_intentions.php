@@ -1,7 +1,7 @@
 
 <script>
     //Set global variables:
-    var en_miner_id = <?= $session_en['en_id'] ?>;
+    var en_creator_id = <?= $session_en['en_id'] ?>;
 </script>
 <script src="/js/custom/actionplan-intentions.js?v=v<?= $this->config->item('app_version') ?>" type="text/javascript"></script>
 

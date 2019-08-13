@@ -1599,7 +1599,7 @@ class User_app extends CI_Controller
 
             //Find the next item to navigate them to:
             $next_in_id = $this->User_app_model->actionplan_step_next_go($session_en['en_id'], false);
-            $in_id = ( $next_in_id > 0 ? $next_in_id : 0 );
+            $in_id = ( $next_in_id > 0 ? $next_in_id : $next_in_id );
 
         } else {
 
@@ -1688,7 +1688,7 @@ class User_app extends CI_Controller
          * */
 
 
-        if (!isset($_POST['en_miner_id']) || intval($_POST['en_miner_id']) < 1) {
+        if (!isset($_POST['en_creator_id']) || intval($_POST['en_creator_id']) < 1) {
             return echo_json(array(
                 'status' => 0,
                 'message' => 'Invalid miner ID',
@@ -1710,65 +1710,16 @@ class User_app extends CI_Controller
             ));
         }
 
-        //Validate intention to be removed:
-        $ins = $this->Intents_model->in_fetch(array(
-            'in_id' => $_POST['in_id'],
-        ));
-        if (count($ins) < 1) {
+        //Call function to remove form action plan:
+        $delete_result = $this->User_app_model->actionplan_intention_delete($_POST['en_creator_id'], $_POST['in_id'], $_POST['stop_method_id'], $_POST['stop_feedback']);
+
+        if(!$delete_result['result']){
+            return echo_json($delete_result);
+        } else {
             return echo_json(array(
-                'status' => 0,
-                'message' => 'Invalid intention',
+                'status' => 1,
             ));
         }
-
-        //Go ahead and remove from Action Plan:
-        $user_intents = $this->Links_model->ln_fetch(array(
-            'ln_creator_entity_id' => $_POST['en_miner_id'],
-            'ln_type_entity_id IN (' . join(',', $this->config->item('en_ids_7347')) . ')' => null, //Action Plan Intention Set
-            'ln_status_entity_id IN (' . join(',', $this->config->item('en_ids_7364')) . ')' => null, //Link Statuses Incomplete
-            'ln_parent_intent_id' => $_POST['in_id'],
-        ));
-        if(count($user_intents) < 1){
-            //Give error:
-            return echo_json(array(
-                'status' => 0,
-                'message' => 'Could not locate Action Plan',
-            ));
-        }
-
-        //Adjust Action Plan status:
-        foreach($user_intents as $ln){
-            $this->Links_model->ln_update($ln['ln_id'], array(
-                'ln_status_entity_id' => ( $_POST['stop_method_id']==6154 ? 6176 /* Link Published */ : 6173 /* Link Removed */ ), //This is a nasty HACK!
-            ), $_POST['en_miner_id']);
-        }
-
-        //Log related link:
-        $this->Links_model->ln_create(array(
-            'ln_content' => $_POST['stop_feedback'],
-            'ln_creator_entity_id' => $_POST['en_miner_id'],
-            'ln_type_entity_id' => $_POST['stop_method_id'],
-            'ln_parent_intent_id' => $_POST['in_id'],
-        ));
-
-        //Communicate with user:
-        $this->Communication_model->dispatch_message(
-            'I have successfully removed the intention to '.$ins[0]['in_outcome'].' from your Action Plan. You can add it back to your Action Plan at any time and continue from where you left off.',
-            array('en_id' => $_POST['en_miner_id']),
-            true,
-            array(
-                array(
-                    'content_type' => 'text',
-                    'title' => 'Next',
-                    'payload' => 'GONEXT',
-                )
-            )
-        );
-
-        return echo_json(array(
-            'status' => 1,
-        ));
-
     }
 
 
@@ -1811,7 +1762,7 @@ class User_app extends CI_Controller
          *
          * */
 
-        if (!isset($_POST['en_miner_id']) || intval($_POST['en_miner_id']) < 1) {
+        if (!isset($_POST['en_creator_id']) || intval($_POST['en_creator_id']) < 1) {
             return echo_json(array(
                 'status' => 0,
                 'message' => 'Invalid miner ID',
@@ -1861,7 +1812,7 @@ class User_app extends CI_Controller
             //Remove selected options for this miner:
             foreach($this->Links_model->ln_fetch(array(
                 'ln_parent_entity_id IN (' . join(',', $possible_answers) . ')' => null,
-                'ln_child_entity_id' => $_POST['en_miner_id'],
+                'ln_child_entity_id' => $_POST['en_creator_id'],
                 'ln_type_entity_id IN (' . join(',', $this->config->item('en_ids_4592')) . ')' => null, //Entity Link Connectors
                 'ln_status_entity_id IN (' . join(',', $this->config->item('en_ids_7359')) . ')' => null, //Link Statuses Public
             )) as $remove_en){
@@ -1872,7 +1823,7 @@ class User_app extends CI_Controller
                         //They just unsubscribed, send them a message before its too late (changing their status):
                         $this->Communication_model->dispatch_message(
                             'This is a confirmation that you are now unsubscribed from Mench and I will not longer send you any messages. You can resume your subscription later by going to MY ACCOUNT > SUBSCRIPTION TYPE > Set Notification',
-                            array('en_id' => $_POST['en_miner_id']),
+                            array('en_id' => $_POST['en_creator_id']),
                             true
                         );
                     } elseif($remove_en['ln_parent_entity_id']==4455){
@@ -1884,7 +1835,7 @@ class User_app extends CI_Controller
                 //Should usually remove a single option:
                 $this->Links_model->ln_update($remove_en['ln_id'], array(
                     'ln_status_entity_id' => 6173, //Link Removed
-                ), $_POST['en_miner_id']);
+                ), $_POST['en_creator_id']);
             }
 
         }
@@ -1893,8 +1844,8 @@ class User_app extends CI_Controller
         if(!$_POST['enable_mulitiselect'] || !$_POST['was_already_selected']){
             $this->Links_model->ln_create(array(
                 'ln_parent_entity_id' => $_POST['selected_en_id'],
-                'ln_child_entity_id' => $_POST['en_miner_id'],
-                'ln_creator_entity_id' => $_POST['en_miner_id'],
+                'ln_child_entity_id' => $_POST['en_creator_id'],
+                'ln_creator_entity_id' => $_POST['en_creator_id'],
                 'ln_type_entity_id' => 4230, //Raw
                 'ln_status_entity_id' => 6176, //Link Published
             ));
@@ -1904,7 +1855,7 @@ class User_app extends CI_Controller
             //Now we can communicate with them again:
             $this->Communication_model->dispatch_message(
                 'Welcome back 🎉🎉🎉 This is a confirmation that you are now re-subscribed and I will continue to work with you on your Acion Plan intentions',
-                array('en_id' => $_POST['en_miner_id']),
+                array('en_id' => $_POST['en_creator_id']),
                 true
             );
         }
@@ -1913,7 +1864,7 @@ class User_app extends CI_Controller
         //Log Account iteration link type:
         $_POST['account_update_function'] = 'myaccount_radio_update'; //Add this variable to indicate which My Account function created this link
         $this->Links_model->ln_create(array(
-            'ln_creator_entity_id' => $_POST['en_miner_id'],
+            'ln_creator_entity_id' => $_POST['en_creator_id'],
             'ln_type_entity_id' => 6224, //My Account Iterated
             'ln_content' => 'My Account '.( $_POST['enable_mulitiselect'] ? 'Multi' : 'Single' ).'-Select Radio Field '.( $_POST['was_already_selected'] ? 'Removed' : 'Added' ),
             'ln_metadata' => $_POST,
@@ -1937,7 +1888,7 @@ class User_app extends CI_Controller
          *
          * */
 
-        if (!isset($_POST['en_miner_id']) || intval($_POST['en_miner_id']) < 1) {
+        if (!isset($_POST['en_creator_id']) || intval($_POST['en_creator_id']) < 1) {
             return echo_json(array(
                 'status' => 0,
                 'message' => 'Invalid miner ID',
@@ -1957,7 +1908,7 @@ class User_app extends CI_Controller
                 //Update order of this link:
                 $results[$ln_order] = $this->Links_model->ln_update(intval($ln_id), array(
                     'ln_order' => $ln_order,
-                ), $_POST['en_miner_id']);
+                ), $_POST['en_creator_id']);
             }
         }
 
@@ -1965,7 +1916,7 @@ class User_app extends CI_Controller
         //Save sorting results:
         $this->Links_model->ln_create(array(
             'ln_type_entity_id' => 6132, //Action Plan Sorted
-            'ln_creator_entity_id' => $_POST['en_miner_id'],
+            'ln_creator_entity_id' => $_POST['en_creator_id'],
             'ln_metadata' => array(
                 'new_order' => $_POST['new_actionplan_order'],
                 'results' => $results,
@@ -1974,12 +1925,12 @@ class User_app extends CI_Controller
 
 
         //Fetch top intention that being workined on now:
-        $top_priority = $this->User_app_model->actionplan_intention_focus($_POST['en_miner_id']);
+        $top_priority = $this->User_app_model->actionplan_intention_focus($_POST['en_creator_id']);
         if($top_priority){
             //Communicate top-priority with user:
             $this->Communication_model->dispatch_message(
                 '🚩 Action Plan prioritised: Now our focus is to '.$top_priority['in']['in_outcome'].' ('.$top_priority['completion_rate']['completion_percentage'].'% done)',
-                array('en_id' => $_POST['en_miner_id']),
+                array('en_id' => $_POST['en_creator_id']),
                 true,
                 array(
                     array(
