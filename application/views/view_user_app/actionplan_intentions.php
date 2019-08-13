@@ -60,7 +60,7 @@ if(count($user_intents) > 0){
 }
 
 //Give everyone the option to delete:
-echo '<div style="text-align: right;"><a href="/actionplan/delete/'.$psid.'" style="font-size:0.6em; color:#DDD;"><i class="fas fa-radiation-alt"></i> Clear Action Plan</a></div>';
+echo '<div style="text-align: right;"><a href="/actionplan/delete/'.$psid.'" style="font-size:0.6em; color:#DDD;"><i class="fas fa-trash-alt"></i> Clear Action Plan</a></div>';
 
 
 ?>

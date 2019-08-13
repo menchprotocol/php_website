@@ -1499,7 +1499,7 @@ class User_app extends CI_Controller
         if(count($progress_links) > 0){
 
             //Yes they did have some:
-            $message = 'I deleted '.count($progress_links).' link'.echo__s(count($progress_links)).' to empty your Action Plan. No more history left between us, you can start from the beginning at any time.';
+            $message = 'I deleted '.count($progress_links).' link'.echo__s(count($progress_links)).' to empty your Action Plan steps. You can also remove your Intentions using the "<i class="fas fa-comment-times" style="color: #222;"></i>" icon below.';
 
             //Log link:
             $clear_all_link = $this->Links_model->ln_create(array(
@@ -1524,7 +1524,7 @@ class User_app extends CI_Controller
         }
 
         //Show basic UI for now:
-        return redirect_message('/actionplan', '<div class="alert alert-success" role="alert"><i class="fas fa-radiation-alt"></i> '.$message.'</div>');
+        return redirect_message('/actionplan', '<div class="alert alert-success" role="alert"><i class="fas fa-trash-alt"></i> '.$message.'</div>');
 
     }
 
