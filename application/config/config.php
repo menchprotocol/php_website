@@ -16,7 +16,7 @@ date_default_timezone_set('America/Los_Angeles');
 
 //App Functionality:
 $config['base_url']                 = 'https://mench.com/';
-$config['app_version']              = '0.9997'; //Cache buster for static JS/CSS files, so needs to be updated if you update static files
+$config['app_version']              = '0.9998'; //Cache buster for static JS/CSS files, so needs to be updated if you update static files
 $config['system_name']              = 'Mench'; //Used for example when a link has no miner
 $config['system_icon']              = '<img src="/img/mench_white.png" />'; //Used for example when a link has no miner
 $config['app_enable_algolia']       = true; //May need to turn off if/when we reach monthly quota of 50k calls
@@ -38,7 +38,7 @@ $config['in_outcome_deny_terms']    = array('and', 'or', 'so'); //Once set to pu
 
 //Intent Settings:
 $config['in_max_seconds']           = 28800; //The maximum seconds allowed per intent. If larger, the miner is asked to break it down into smaller intents
-$config['in_outcome_max']           = 89; //Max number of characters allowed for intent outcomes
+$config['in_outcome_max']           = 100; //Max number of characters allowed for intent outcomes
 $config['in_completion_marks']      = array(-89, -55, -34, -21, -13, -8, -5, -3, -2, -1, 0, 1, 2, 3, 5, 8, 13, 21, 34, 55, 89); //Marks users get when completing an intent (Learn more @4358)
 
 

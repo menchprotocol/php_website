@@ -11,32 +11,73 @@ defined('BASEPATH') OR exit('No direct script access allowed');
  *
  */
 
-//Generated 2019-08-13 22:24:57 PST
+//Generated 2019-08-14 14:03:57 PST
 
-//Intent Publicly Searchable:
+//Algolia Indexable:
+$config['en_ids_7774'] = array(6175,6176,6180,6181,6183,6184);
+$config['en_all_7774'] = array(
+    6175 => array(
+        'm_icon' => '<i class="far fa-spinner fa-spin"></i>',
+        'm_name' => 'Link Drafting',
+        'm_desc' => '',
+        'm_parents' => array(7774,7364,7360,6186),
+    ),
+    6176 => array(
+        'm_icon' => '<i class="fas fa-globe"></i>',
+        'm_name' => 'Link Published',
+        'm_desc' => '',
+        'm_parents' => array(7774,7360,7359,6186),
+    ),
+    6180 => array(
+        'm_icon' => '<i class="far fa-spinner fa-spin"></i>',
+        'm_name' => 'Entity Drafting',
+        'm_desc' => '',
+        'm_parents' => array(7774,7358,6177),
+    ),
+    6181 => array(
+        'm_icon' => '<i class="fas fa-globe"></i>',
+        'm_name' => 'Entity Published',
+        'm_desc' => '',
+        'm_parents' => array(7774,7358,7357,6177),
+    ),
+    6183 => array(
+        'm_icon' => '<i class="far fa-spinner fa-spin"></i>',
+        'm_name' => 'Intent Drafting',
+        'm_desc' => '',
+        'm_parents' => array(7774,7356,4737),
+    ),
+    6184 => array(
+        'm_icon' => '<i class="fas fa-globe"></i>',
+        'm_name' => 'Intent Published',
+        'm_desc' => '',
+        'm_parents' => array(7774,7355,7356,4737),
+    ),
+);
+
+//Intent Types Searchable:
 $config['en_ids_7767'] = array(7598,7766,7768,7769);
 $config['en_all_7767'] = array(
     7598 => array(
-        'm_icon' => '<i class="fas fa-search-plus"></i>',
-        'm_name' => 'Intent Start Searchable',
+        'm_icon' => '<i class="fas fa-play"></i>',
+        'm_name' => 'Intent Start',
         'm_desc' => '',
         'm_parents' => array(7767,7582,7596),
     ),
     7766 => array(
-        'm_icon' => '<i class="far fa-search"></i>',
-        'm_name' => 'Intent Continue Searchable',
+        'm_icon' => '<i class="fas fa-search"></i>',
+        'm_name' => 'Intent Listed',
         'm_desc' => '',
         'm_parents' => array(7767,7596),
     ),
     7768 => array(
         'm_icon' => '<i class="fas fa-megaphone"></i>',
-        'm_name' => 'Intent Start Recommended',
+        'm_name' => 'Intent Featured',
         'm_desc' => '',
         'm_parents' => array(7767,7582,7596),
     ),
     7769 => array(
         'm_icon' => '<i class="fas fa-asterisk"></i>',
-        'm_name' => 'Intent Start Required',
+        'm_name' => 'Intent Required',
         'm_desc' => '',
         'm_parents' => array(7582,7767,7596),
     ),
@@ -439,8 +480,8 @@ $config['en_all_6201'] = array(
         'm_parents' => array(7302,6160,6213,6194,6232,4527,6201),
     ),
     7596 => array(
-        'm_icon' => '<i class="far fa-door-closed"></i>',
-        'm_name' => 'Access Mode',
+        'm_icon' => '<i class="far fa-eye"></i>',
+        'm_name' => 'Visibility Level',
         'm_desc' => '',
         'm_parents' => array(7302,6160,6201,6213,6194,6232,4527),
     ),
@@ -675,48 +716,36 @@ $config['en_all_7703'] = array(
     ),
 );
 
-//Intent Access Mode:
-$config['en_ids_7596'] = array(7770,7597,7766,7599,7598,7768,7769);
+//Intent Visibility Level:
+$config['en_ids_7596'] = array(7597,7766,7598,7768,7769);
 $config['en_all_7596'] = array(
-    7770 => array(
-        'm_icon' => '<i class="far fa-equals"></i>',
-        'm_name' => 'Continue Dependant',
-        'm_desc' => 'Users can only get to the intent through their first non-dependant parent',
-        'm_parents' => array(7596),
-    ),
     7597 => array(
-        'm_icon' => '<i class="far fa-equals rotate90"></i>',
-        'm_name' => 'Continue Unlisted',
+        'm_icon' => '<i class="far fa-eye-slash"></i>',
+        'm_name' => 'Unlisted',
         'm_desc' => 'Users cannot start at this intent or search for it but they can engage with it as long as it\'s published and they know the URL',
         'm_parents' => array(7596),
     ),
     7766 => array(
-        'm_icon' => '<i class="far fa-search"></i>',
-        'm_name' => 'Continue Searchable',
+        'm_icon' => '<i class="fas fa-search"></i>',
+        'm_name' => 'Listed',
         'm_desc' => 'Users cannot start at this intent but they can find it by searching it',
         'm_parents' => array(7767,7596),
     ),
-    7599 => array(
-        'm_icon' => '<i class="fas fa-play"></i>',
-        'm_name' => 'Start Unlisted',
-        'm_desc' => 'Users can start at this intent and add it to their Action Plan, but they cannot find it by searching for it, they need to know the URL to get started',
-        'm_parents' => array(7582,7596),
-    ),
     7598 => array(
-        'm_icon' => '<i class="fas fa-search-plus"></i>',
-        'm_name' => 'Start Searchable',
+        'm_icon' => '<i class="fas fa-play"></i>',
+        'm_name' => 'Start',
         'm_desc' => 'Users can start at this intent and find it by searching for it (maximum visibility)',
         'm_parents' => array(7767,7582,7596),
     ),
     7768 => array(
         'm_icon' => '<i class="fas fa-megaphone"></i>',
-        'm_name' => 'Start Recommended',
+        'm_name' => 'Featured',
         'm_desc' => 'Mench will feature intention on mench.com and via Messenger to new users while also allowing users to search for this intent',
         'm_parents' => array(7767,7582,7596),
     ),
     7769 => array(
         'm_icon' => '<i class="fas fa-asterisk"></i>',
-        'm_name' => 'Start Required',
+        'm_name' => 'Required',
         'm_desc' => 'Every single Mench user must complete this intention before working on any of their own Intentions added to their Action Plans',
         'm_parents' => array(7582,7767,7596),
     ),
@@ -875,29 +904,23 @@ $config['en_all_7585'] = array(
 );
 
 //Intent Action Plan Addable:
-$config['en_ids_7582'] = array(7598,7599,7768,7769);
+$config['en_ids_7582'] = array(7598,7768,7769);
 $config['en_all_7582'] = array(
     7598 => array(
-        'm_icon' => '<i class="fas fa-search-plus"></i>',
-        'm_name' => 'Intent Start Searchable',
+        'm_icon' => '<i class="fas fa-play"></i>',
+        'm_name' => 'Intent Start',
         'm_desc' => '',
         'm_parents' => array(7767,7582,7596),
     ),
-    7599 => array(
-        'm_icon' => '<i class="fas fa-play"></i>',
-        'm_name' => 'Intent Start Unlisted',
-        'm_desc' => '',
-        'm_parents' => array(7582,7596),
-    ),
     7768 => array(
         'm_icon' => '<i class="fas fa-megaphone"></i>',
-        'm_name' => 'Intent Start Recommended',
+        'm_name' => 'Intent Featured',
         'm_desc' => '',
         'm_parents' => array(7767,7582,7596),
     ),
     7769 => array(
         'm_icon' => '<i class="fas fa-asterisk"></i>',
-        'm_name' => 'Intent Start Required',
+        'm_name' => 'Intent Required',
         'm_desc' => '',
         'm_parents' => array(7582,7767,7596),
     ),
@@ -1259,7 +1282,7 @@ $config['en_all_7364'] = array(
         'm_icon' => '<i class="far fa-spinner fa-spin"></i>',
         'm_name' => 'Link Drafting',
         'm_desc' => '',
-        'm_parents' => array(7364,7360,6186),
+        'm_parents' => array(7774,7364,7360,6186),
     ),
 );
 
@@ -1270,13 +1293,13 @@ $config['en_all_7360'] = array(
         'm_icon' => '<i class="far fa-spinner fa-spin"></i>',
         'm_name' => 'Link Drafting',
         'm_desc' => '',
-        'm_parents' => array(7364,7360,6186),
+        'm_parents' => array(7774,7364,7360,6186),
     ),
     6176 => array(
         'm_icon' => '<i class="fas fa-globe"></i>',
         'm_name' => 'Link Published',
         'm_desc' => '',
-        'm_parents' => array(7360,7359,6186),
+        'm_parents' => array(7774,7360,7359,6186),
     ),
 );
 
@@ -1287,7 +1310,7 @@ $config['en_all_7359'] = array(
         'm_icon' => '<i class="fas fa-globe"></i>',
         'm_name' => 'Link Published',
         'm_desc' => '',
-        'm_parents' => array(7360,7359,6186),
+        'm_parents' => array(7774,7360,7359,6186),
     ),
 );
 
@@ -1298,13 +1321,13 @@ $config['en_all_7358'] = array(
         'm_icon' => '<i class="far fa-spinner fa-spin"></i>',
         'm_name' => 'Entity Drafting',
         'm_desc' => '',
-        'm_parents' => array(7358,6177),
+        'm_parents' => array(7774,7358,6177),
     ),
     6181 => array(
         'm_icon' => '<i class="fas fa-globe"></i>',
         'm_name' => 'Entity Published',
         'm_desc' => '',
-        'm_parents' => array(7358,7357,6177),
+        'm_parents' => array(7774,7358,7357,6177),
     ),
 );
 
@@ -1315,7 +1338,7 @@ $config['en_all_7357'] = array(
         'm_icon' => '<i class="fas fa-globe"></i>',
         'm_name' => 'Entity Published',
         'm_desc' => '',
-        'm_parents' => array(7358,7357,6177),
+        'm_parents' => array(7774,7358,7357,6177),
     ),
 );
 
@@ -1326,13 +1349,13 @@ $config['en_all_7356'] = array(
         'm_icon' => '<i class="far fa-spinner fa-spin"></i>',
         'm_name' => 'Intent Drafting',
         'm_desc' => '',
-        'm_parents' => array(7356,4737),
+        'm_parents' => array(7774,7356,4737),
     ),
     6184 => array(
         'm_icon' => '<i class="fas fa-globe"></i>',
         'm_name' => 'Intent Published',
         'm_desc' => '',
-        'm_parents' => array(7355,7356,4737),
+        'm_parents' => array(7774,7355,7356,4737),
     ),
 );
 
@@ -1343,7 +1366,7 @@ $config['en_all_7355'] = array(
         'm_icon' => '<i class="fas fa-globe"></i>',
         'm_name' => 'Intent Published',
         'm_desc' => '',
-        'm_parents' => array(7355,7356,4737),
+        'm_parents' => array(7774,7355,7356,4737),
     ),
 );
 
@@ -1398,8 +1421,8 @@ $config['en_all_7302'] = array(
         'm_parents' => array(7302,6160,6213,6194,6232,4527,6201),
     ),
     7596 => array(
-        'm_icon' => '<i class="far fa-door-closed"></i>',
-        'm_name' => 'Access Mode',
+        'm_icon' => '<i class="far fa-eye"></i>',
+        'm_name' => 'Visibility Level',
         'm_desc' => '',
         'm_parents' => array(7302,6160,6201,6213,6194,6232,4527),
     ),
@@ -1717,13 +1740,13 @@ $config['en_all_6186'] = array(
         'm_icon' => '<i class="fas fa-globe"></i>',
         'm_name' => 'Published',
         'm_desc' => 'live and ready to be shared with users',
-        'm_parents' => array(7360,7359,6186),
+        'm_parents' => array(7774,7360,7359,6186),
     ),
     6175 => array(
         'm_icon' => '<i class="far fa-spinner fa-spin"></i>',
         'm_name' => 'Drafting',
         'm_desc' => 'being mined, to be published soon',
-        'm_parents' => array(7364,7360,6186),
+        'm_parents' => array(7774,7364,7360,6186),
     ),
     6173 => array(
         'm_icon' => '<i class="far fa-unlink"></i>',
@@ -1832,8 +1855,8 @@ $config['en_all_6194'] = array(
         'm_parents' => array(7302,6160,6213,6194,6232,4527,6201),
     ),
     7596 => array(
-        'm_icon' => '<i class="far fa-door-closed"></i>',
-        'm_name' => 'Intent Access Mode',
+        'm_icon' => '<i class="far fa-eye"></i>',
+        'm_name' => 'Intent Visibility Level',
         'm_desc' => '',
         'm_parents' => array(7302,6160,6201,6213,6194,6232,4527),
     ),
@@ -2256,13 +2279,13 @@ $config['en_all_4737'] = array(
         'm_icon' => '<i class="fas fa-globe"></i>',
         'm_name' => 'Published',
         'm_desc' => 'newly added by miner but not yet checked by moderator',
-        'm_parents' => array(7355,7356,4737),
+        'm_parents' => array(7774,7355,7356,4737),
     ),
     6183 => array(
         'm_icon' => '<i class="far fa-spinner fa-spin"></i>',
         'm_name' => 'Drafting',
         'm_desc' => 'newly added, pending review',
-        'm_parents' => array(7356,4737),
+        'm_parents' => array(7774,7356,4737),
     ),
     6182 => array(
         'm_icon' => '<i class="far fa-trash-alt"></i>',
@@ -2279,13 +2302,13 @@ $config['en_all_6177'] = array(
         'm_icon' => '<i class="fas fa-globe"></i>',
         'm_name' => 'Published',
         'm_desc' => 'live and ready to be shared with users',
-        'm_parents' => array(7358,7357,6177),
+        'm_parents' => array(7774,7358,7357,6177),
     ),
     6180 => array(
         'm_icon' => '<i class="far fa-spinner fa-spin"></i>',
         'm_name' => 'Drafting',
         'm_desc' => 'being mined, to be published soon',
-        'm_parents' => array(7358,6177),
+        'm_parents' => array(7774,7358,6177),
     ),
     6178 => array(
         'm_icon' => '<i class="far fa-trash-alt"></i>',

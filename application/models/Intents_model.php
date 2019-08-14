@@ -19,7 +19,7 @@ class Intents_model extends CI_Model
     {
 
         //What is required to create a new intent?
-        if (detect_missing_columns($insert_columns, array('in_outcome', 'in_type_entity_id', 'in_status_entity_id', 'in_verb_entity_id'), $ln_creator_entity_id)) {
+        if (detect_missing_columns($insert_columns, array('in_outcome', 'in_type_entity_id', 'in_status_entity_id', 'in_verb_entity_id', 'in_visibility_level_entity_id'), $ln_creator_entity_id)) {
             return false;
         }
 
@@ -386,6 +386,7 @@ class Intents_model extends CI_Model
                 'in_verb_entity_id' => $in_outcome_validation['detected_verb_entity_id'],
                 'in_type_entity_id' => $in_type_entity_id,
                 'in_status_entity_id' => $new_in_status,
+                'in_visibility_level_entity_id' => 1111,
             ), true, $ln_creator_entity_id);
 
         }
@@ -1142,18 +1143,11 @@ class Intents_model extends CI_Model
         $in_verb_entity_id = in_outcome_verb_id($in_outcome);
 
         //Validate outcome:
-        if(strlen($in_outcome) < 5){
+        if(strlen($in_outcome) < 2){
 
             return array(
                 'status' => 0,
-                'message' => 'Outcome must be at-least 5 characters long',
-            );
-
-        } elseif(substr_count($in_outcome , ' ') < 1){
-
-            return array(
-                'status' => 0,
-                'message' => 'Outcome must have at-least two words',
+                'message' => 'Outcome must be at-least 2 characters long',
             );
 
         } elseif(substr_count($in_outcome , '  ') > 0){
@@ -1163,18 +1157,32 @@ class Intents_model extends CI_Model
                 'message' => 'Outcome cannot include double spaces',
             );
 
-        } elseif(substr_count($in_outcome , '::') >= 2){
+        } elseif(substr_count($in_outcome , '=') >= 2){
 
             return array(
                 'status' => 0,
-                'message' => 'You can only use the double colon command once',
+                'message' => 'You can only use = sign once',
             );
 
-        } elseif(strlen($in_outcome) < 5){
+        } elseif(substr_count($in_outcome , '=') == 1 && substr($in_outcome, 0, 1)!='='){
 
             return array(
                 'status' => 0,
-                'message' => 'Outcome must be at-least 5 characters long',
+                'message' => 'The = sign must be at the very beginning of the outcome',
+            );
+
+        } elseif(substr_count($in_outcome , '#') >= 1){
+
+            return array(
+                'status' => 0,
+                'message' => 'Cannot use hashtags',
+            );
+
+        } elseif(substr_count($in_outcome , '=') >= 1  && substr_count($in_outcome , '/force') > 0){
+
+            return array(
+                'status' => 0,
+                'message' => 'Cannot use /force command with = sign',
             );
 
         } elseif(substr_count($in_outcome , '/force') > 0){
@@ -1195,12 +1203,12 @@ class Intents_model extends CI_Model
                 $in_verb_entity_id = $force_outcome['in_verb_entity_id'];
             }
 
-        } elseif(!$in_verb_entity_id) {
+        } elseif( !substr_count($in_outcome , '=') && !$in_verb_entity_id ) {
 
-            //Not a acceptable Verb:
+            //Missing both requirements which one is needed:
             return array(
                 'status' => 0,
-                'message' => 'Intent must start with a supporting verb',
+                'message' => 'Intent must start with a supporting verb OR = sign',
             );
 
         }
@@ -1218,55 +1226,10 @@ class Intents_model extends CI_Model
         $string_references = extract_references($in_outcome);
 
 
-        if(count($string_references['ref_forbidden']) > 0){
-
+        if( !substr_count($in_outcome , '=') && count($string_references['ref_forbidden']) > 0 ){
             return array(
                 'status' => 0,
-                'message' => 'Intent outcome must be focused, micro and singular, so you cannot use "'.join('" or "',$string_references['ref_forbidden']).'". Think of the core outcome and just put that.',
-            );
-
-        } elseif(substr_count($in_outcome , '::') ==1){
-
-            /*
-            if(count($string_references['ref_intents']) != 1){
-                return array(
-                    'status' => 0,
-                    'message' => 'Double colon required an intent reference (like #1234) in the outcome',
-                );
-            } else
-            */
-
-            if(count($string_references['ref_intents'])>0 && strpos($in_outcome,'#') > strpos($in_outcome,'::')){
-
-                return array(
-                    'status' => 0,
-                    'message' => 'Intent reference must appear before double colon',
-                );
-
-            } else if(count($string_references['ref_intents'])>1){
-
-                return array(
-                    'status' => 0,
-                    'message' => 'Intent outcome can reference a maximum of 1 intent',
-                );
-
-            }
-        }
-
-        //Check to make sure it's not a duplicate outcome:
-        $in_dup_search_filters = array(
-            'in_status_entity_id IN (' . join(',', $this->config->item('en_ids_7356')) . ')' => null, //Intent Statuses Active
-            'LOWER(in_outcome)' => strtolower(trim($in_outcome)),
-        );
-        if($skip_in_id > 0){
-            $in_dup_search_filters['in_id !='] = $skip_in_id;
-        }
-        foreach($this->Intents_model->in_fetch($in_dup_search_filters) as $dup_in){
-            //This is a duplicate, disallow:
-            $en_all_4737 = $this->config->item('en_all_4737'); // Intent Statuses
-            return array(
-                'status' => 0,
-                'message' => 'Outcome ['.$in_outcome.'] already in-use by intent #'.$dup_in['in_id'].' with status ['.$en_all_4737[$dup_in['in_status_entity_id']]['m_name'].']',
+                'message' => 'Intent outcome must be focused so you cannot use "'.join('" or "',$string_references['ref_forbidden']).'". Think of the core outcome and just put that.',
             );
         }
 
@@ -1275,6 +1238,7 @@ class Intents_model extends CI_Model
             'status' => 1,
             'in_cleaned_outcome' => trim($in_outcome),
             'detected_verb_entity_id' => $in_verb_entity_id,
+            'detected_access_mode_entity_id' => ( substr($in_outcome, 0, 1)=='=' ? 7597 /* Continue Unlisted */ : 7766 /* Continue Listed */  ),
         );
 
     }

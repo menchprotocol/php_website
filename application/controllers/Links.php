@@ -163,6 +163,7 @@ class Links extends CI_Controller
                 'in_verb_entity_id' => $in_outcome_validation['detected_verb_entity_id'],
                 'in_type_entity_id' => 6677, //Read Messages
                 'in_status_entity_id' => 6183, //Intent New
+                'in_visibility_level_entity_id' => $in_outcome_validation['detected_access_mode_entity_id'],
             ), true, $session_en['en_id']);
 
             return echo_json(array(

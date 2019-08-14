@@ -585,7 +585,7 @@ if(!$action) {
             'ln_parent_intent_id' => $in['in_id'],
         ), array('in_child'), 0, 0, array('ln_order' => 'ASC')) as $child_or){
 
-            $qualified_update = ( $child_or['in_type_entity_id']==6677 /* AND GOT IT */ && in_array($child_or['in_access_mode_entity_id'], $this->config->item('en_ids_7582')) /* Intent Action Plan Addable */ );
+            $qualified_update = ( $child_or['in_type_entity_id']==6677 /* AND GOT IT */ && in_array($child_or['in_visibility_level_entity_id'], $this->config->item('en_ids_7582')) /* Intent Action Plan Addable */ );
 
             //Count completions:
             if($qualified_update){
