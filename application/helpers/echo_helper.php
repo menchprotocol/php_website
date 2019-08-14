@@ -1737,7 +1737,7 @@ function echo_radio_entities($parent_en_id, $child_en_id, $enable_mulitiselect){
         'ln_type_entity_id IN (' . join(',', $CI->config->item('en_ids_4592')) . ')' => null, //Entity Link Connectors
         'ln_status_entity_id IN (' . join(',', $CI->config->item('en_ids_7359')) . ')' => null, //Link Statuses Public
         'en_status_entity_id IN (' . join(',', $CI->config->item('en_ids_7357')) . ')' => null, //Entity Statuses Public
-    ), array('en_child'), 0, 0, array('ln_order' => 'ASC', 'en_trust_score' => 'DESC')) as $count => $item){
+    ), array('en_child'), 0, 0, array('ln_order' => 'ASC', 'en_name' => 'ASC')) as $count => $item){
 
         //Count total children unless its for subscription levels:
         if($parent_en_id!=4454){
@@ -2377,7 +2377,7 @@ function echo_en($en, $level, $is_parent = false)
             'ln_child_entity_id' => $en['en_id'], //This child entity
             'ln_status_entity_id IN (' . join(',', $CI->config->item('en_ids_7360')) . ')' => null, //Link Statuses Active
             'en_status_entity_id IN (' . join(',', $CI->config->item('en_ids_7358')) . ')' => null, //Entity Statuses Active
-        ), array('en_parent'), 0, 0, array('en_trust_score' => 'DESC'));
+        ), array('en_parent'), 0, 0, array('en_name' => 'ASC'));
     }
 
     //Loop through parents and only show those that have en_icon set:

@@ -80,7 +80,7 @@ class Entities_model extends CI_Model
         }
     }
 
-    function en_fetch($match_columns = array(), $join_objects = array(), $limit = 0, $limit_offset = 0, $order_columns = array('en_trust_score' => 'DESC'), $select = '*', $group_by = null)
+    function en_fetch($match_columns = array(), $join_objects = array(), $limit = 0, $limit_offset = 0, $order_columns = array('en_name' => 'ASC'), $select = '*', $group_by = null)
     {
 
         //Fetch the target entities:
@@ -131,7 +131,7 @@ class Entities_model extends CI_Model
                     'ln_child_entity_id' => $val['en_id'], //This child entity
                     'ln_status_entity_id IN (' . join(',', $this->config->item('en_ids_7360')) . ')' => null, //Link Statuses Active
                     'en_status_entity_id IN (' . join(',', $this->config->item('en_ids_7358')) . ')' => null, //Entity Statuses Active
-                ), array('en_parent'), 0, 0, array('en_trust_score' => 'DESC'));
+                ), array('en_parent'), 0, 0, array('en_name' => 'ASC'));
 
             }
         }

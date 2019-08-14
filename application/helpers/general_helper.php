@@ -1189,7 +1189,7 @@ function sort_entities($set_sort){
         //Default sorting:
         return array(
             'ln_order' => 'ASC',
-            'en_trust_score' => 'DESC'
+            'en_name' => 'ASC'
         );
 
     }
