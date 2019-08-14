@@ -88,14 +88,13 @@
 
 
 
-                    <span class="mini-header" style="margin-top: 20px;"><?= $en_all_6201[4736]['m_icon'].' '.$en_all_6201[4736]['m_name'] ?> [<span
+                    <span class="mini-header" style="margin-top: 20px;"><?= $en_all_6201[4736]['m_icon'].' '.$en_all_6201[4736]['m_name'] ?>* [<span
                                 style="margin:0 0 10px 0;"><span
                                     id="charNameNum">0</span>/<?= $this->config->item('in_outcome_max') ?></span>]</span>
                     <div class="form-group label-floating is-empty" style="height: 40px !important;">
                         <span class="white-wrapper"><textarea class="form-control text-edit msg main-box border" id="in_outcome" onkeyup="in_outcome_counter()"></textarea></span>
                     </div>
-                    <p><i class="fas fa-exclamation-triangle"></i> Intents must start with a <a href="/entities/5008"><b>Supporting Verb</b></a>.</p>
-
+                    <span class="mini-header" style="margin-top:2px;">*Start with a <a href="/entities/5008"><b>Published Verb</b></a> or <i class="fas fa-equals"></i> sign</span>
 
 
 

@@ -11,7 +11,7 @@ defined('BASEPATH') OR exit('No direct script access allowed');
  *
  */
 
-//Generated 2019-08-13 19:57:15 PST
+//Generated 2019-08-13 22:24:57 PST
 
 //Intent Publicly Searchable:
 $config['en_ids_7767'] = array(7598,7766,7768,7769);
@@ -321,7 +321,7 @@ $config['en_all_4341'] = array(
         'm_parents' => array(6160,6232,6213,6194,4341),
     ),
     4593 => array(
-        'm_icon' => '<i class="fas fa-plug"></i>',
+        'm_icon' => '<i class="far fa-shapes"></i>',
         'm_name' => 'Type',
         'm_desc' => '',
         'm_parents' => array(6160,6232,7304,6213,6194,4527,4341),
@@ -439,7 +439,7 @@ $config['en_all_6201'] = array(
         'm_parents' => array(7302,6160,6213,6194,6232,4527,6201),
     ),
     7596 => array(
-        'm_icon' => '<i class="fas fa-door-closed"></i>',
+        'm_icon' => '<i class="far fa-door-closed"></i>',
         'm_name' => 'Access Mode',
         'm_desc' => '',
         'm_parents' => array(7302,6160,6201,6213,6194,6232,4527),
@@ -868,7 +868,7 @@ $config['en_all_7585'] = array(
     ),
     7740 => array(
         'm_icon' => '<i class="fas fa-times-octagon"></i>',
-        'm_name' => 'Answer Terminate',
+        'm_name' => 'Terminate',
         'm_desc' => 'Signals the end of the intention when the user arrives here.',
         'm_parents' => array(6192,7585),
     ),
@@ -1398,7 +1398,7 @@ $config['en_all_7302'] = array(
         'm_parents' => array(7302,6160,6213,6194,6232,4527,6201),
     ),
     7596 => array(
-        'm_icon' => '<i class="fas fa-door-closed"></i>',
+        'm_icon' => '<i class="far fa-door-closed"></i>',
         'm_name' => 'Access Mode',
         'm_desc' => '',
         'm_parents' => array(7302,6160,6201,6213,6194,6232,4527),
@@ -1438,7 +1438,7 @@ $config['en_all_7303'] = array(
 $config['en_ids_7304'] = array(4593,6186,7159,7162,7163);
 $config['en_all_7304'] = array(
     4593 => array(
-        'm_icon' => '<i class="fas fa-plug"></i>',
+        'm_icon' => '<i class="far fa-shapes"></i>',
         'm_name' => 'Type',
         'm_desc' => '',
         'm_parents' => array(6160,6232,7304,6213,6194,4527,4341),
@@ -1796,7 +1796,7 @@ $config['en_all_6194'] = array(
         'm_parents' => array(6160,6232,6213,6194,4341),
     ),
     4593 => array(
-        'm_icon' => '<i class="fas fa-plug"></i>',
+        'm_icon' => '<i class="far fa-shapes"></i>',
         'm_name' => 'Link Type',
         'm_desc' => 'SELECT count(ln_id) as totals FROM table_links WHERE ln_type_entity_id=',
         'm_parents' => array(6160,6232,7304,6213,6194,4527,4341),
@@ -1832,7 +1832,7 @@ $config['en_all_6194'] = array(
         'm_parents' => array(7302,6160,6213,6194,6232,4527,6201),
     ),
     7596 => array(
-        'm_icon' => '<i class="fas fa-door-closed"></i>',
+        'm_icon' => '<i class="far fa-door-closed"></i>',
         'm_name' => 'Intent Access Mode',
         'm_desc' => '',
         'm_parents' => array(7302,6160,6201,6213,6194,6232,4527),

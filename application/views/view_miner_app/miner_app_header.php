@@ -78,7 +78,7 @@ $uri_segment_2 = $this->uri->segment(2);
                         <ul class="nav navbar-nav navbar-main navbar-right">
 
                             <!-- Dashboard -->
-                            <li class="<?= ($uri_segment_1 == 'dashboard' ? 'links-active' : 'links-inactive') ?>" data-toggle="tooltip" data-placement="left" title="<?= $en_all_7368[7161]['m_name'] ?>">
+                            <li class="<?= ($uri_segment_1 == 'dashboard' ? 'links-active' : 'links-inactive') ?>">
                                 <a href="/dashboard">
                                     <?= $en_all_7368[7161]['m_icon'] .' ' . $en_all_7368[7161]['m_name'] ?>
                                 </a>
