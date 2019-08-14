@@ -2293,7 +2293,7 @@ function echo_en($en, $level, $is_parent = false)
         $en_all_6186 = $CI->config->item('en_all_6186'); //Link Statuses
 
         //Show Link link icons:
-        $ui .= '<span class="double-icon" style="margin-right:7px;">';
+        $ui .= '<span class="double-icon '.advance_mode().'" style="margin-right:7px;">';
 
         //Show larger icon for link type (auto detected based on link content):
         $ui .= '<span class="icon-main ln_type_' . $ln_id . '"><span data-toggle="tooltip" data-placement="right" title="'.$en_all_4593[$en['ln_type_entity_id']]['m_name'].' @'.$en['ln_type_entity_id'].'">' . $en_all_4593[$en['ln_type_entity_id']]['m_icon'] . '</span></span> ';
@@ -2316,7 +2316,7 @@ function echo_en($en, $level, $is_parent = false)
     } elseif( $level > 0 ) {
 
         //Show Blank box:
-        $ui .= '<span class="double-icon" style="margin:0 3px;"><span class="icon-main"><i class="fas fa-map-marker-alt" data-toggle="tooltip" data-placement="right" title="You\'re Here"></i></span><span class="icon-top-right">&nbsp;</span></span>';
+        $ui .= '<span class="double-icon '.advance_mode().'" style="margin:0 3px;"></span>';
 
     }
 
@@ -2415,13 +2415,13 @@ function echo_en($en, $level, $is_parent = false)
         ), array(), 0, 0, array(), 'COUNT(ln_id) AS total_messages');
         if($messages[0]['total_messages'] > 0){
             //Only show in non-advance mode if we have messages:
-            $ui .= '<a class="badge badge-secondary white-secondary '.( $level==0 || $messages[0]['total_messages'] == 0 ? advance_mode() : '' ) . '" href="#entityreferences-' . $en['en_id'] . '" onclick="' . ( $messages[0]['total_messages'] == 0 ? 'alert(\'No Intent Notes found that reference this entity\')' : ( $level==0 ? 'alert(\'Cannot manage here. Go to the entity to manage.\')' : 'en_load_messages('.$en['en_id'].')' ) ) . '" style="width:40px; margin-left:5px; margin-right: -3px;" data-toggle="tooltip" data-placement="bottom" title="Entity References within Intent Notes"><span class="btn-counter">' . echo_number($messages[0]['total_messages']) . '</span><i class="fas fa-comment-plus"></i></a>';
+            $ui .= '<a class="badge badge-secondary white-secondary ' . advance_mode() .( $level==0 || $messages[0]['total_messages'] == 0 ? advance_mode() : '' ) . '" href="#entityreferences-' . $en['en_id'] . '" onclick="' . ( $messages[0]['total_messages'] == 0 ? 'alert(\'No Intent Notes found that reference this entity\')' : ( $level==0 ? 'alert(\'Cannot manage here. Go to the entity to manage.\')' : 'en_load_messages('.$en['en_id'].')' ) ) . '" style="width:40px; margin-left:5px; margin-right: -3px;" data-toggle="tooltip" data-placement="bottom" title="Entity References within Intent Notes"><span class="btn-counter">' . echo_number($messages[0]['total_messages']) . '</span><i class="fas fa-comment-plus"></i></a>';
         }
 
 
 
         //Modify Entity:
-        $ui .= '<a href="#loadmodify-' . $en['en_id'] . '-' . $ln_id . '" onclick="'.( $level==0 ? 'alert(\'Cannot manage here. Go to the entity to manage.\')' : 'en_modify_load(' . $en['en_id'] . ',' . $ln_id . ')' ).'" class="badge badge-secondary white-secondary '.( $level==0 ? '' . advance_mode() . '' : '' ).'" style="margin:-2px -6px 0 5px; width:40px;" data-toggle="tooltip" data-placement="bottom" title="Entity trust score. Click to modify entity'.( $level>1 ? ' and link' : '' ).'"><span class="btn-counter">'.echo_number($en['en_trust_score']).'</span><i class="fas fa-cog" style="width:28px; padding-right:7px; text-align:center;"></i></a> &nbsp;';
+        $ui .= '<a href="#loadmodify-' . $en['en_id'] . '-' . $ln_id . '" onclick="'.( $level==0 ? 'alert(\'Cannot manage here. Go to the entity to manage.\')' : 'en_modify_load(' . $en['en_id'] . ',' . $ln_id . ')' ).'" class="badge badge-secondary white-secondary '. advance_mode() . ( $level==0 ? '' . advance_mode() . '' : '' ).'" style="margin:-2px -6px 0 5px; width:40px;" data-toggle="tooltip" data-placement="bottom" title="Entity trust score. Click to modify entity'.( $level>1 ? ' and link' : '' ).'"><span class="btn-counter">'.echo_number($en['en_trust_score']).'</span><i class="fas fa-cog" style="width:28px; padding-right:7px; text-align:center;"></i></a> &nbsp;';
 
     }
 
@@ -2460,7 +2460,7 @@ function echo_en($en, $level, $is_parent = false)
 
     if($level == 1){
 
-        $ui .= '<a class="badge badge-secondary" href="https://www.google.com/search?q=' . urlencode($en['en_name']) . '" target="_blank" style="display:inline-block; margin-right:6px; width:40px; margin-left:1px; border:2px solid #0084ff !important;" data-toggle="tooltip" data-placement="bottom" title="Google Search (New Window)"><span class="btn-counter"><i class="fas fa-external-link"></i></span><i class="fas fa-search"></i></a>';
+        $ui .= '<em style="display:inline-block; margin-right:6px; width:40px;">&nbsp;</em>';
 
     } else {
 

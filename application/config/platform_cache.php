@@ -11,7 +11,7 @@ defined('BASEPATH') OR exit('No direct script access allowed');
  *
  */
 
-//Generated 2019-08-13 17:00:43 PST
+//Generated 2019-08-13 17:37:24 PST
 
 //Intent Note Subscriber:
 $config['en_ids_7701'] = array(4430);
@@ -1071,7 +1071,7 @@ $config['en_all_6287'] = array(
 );
 
 //Mench User App:
-$config['en_ids_7369'] = array(4269,4430,6137,6138,7161,7291);
+$config['en_ids_7369'] = array(4269,4430,6137,6138,7161,7291,7765);
 $config['en_all_7369'] = array(
     4269 => array(
         'm_icon' => '<i class="fas fa-sign-in"></i>',
@@ -1108,6 +1108,12 @@ $config['en_all_7369'] = array(
         'm_name' => 'Logout',
         'm_desc' => '',
         'm_parents' => array(7368,7369),
+    ),
+    7765 => array(
+        'm_icon' => '<i class="fas fa-globe"></i>',
+        'm_name' => 'Intent Landing Page',
+        'm_desc' => '',
+        'm_parents' => array(4535,7369),
     ),
 );
 
@@ -1655,7 +1661,7 @@ $config['en_all_6186'] = array(
         'm_parents' => array(7364,7360,6186),
     ),
     6173 => array(
-        'm_icon' => '<i class="far fa-trash-alt"></i>',
+        'm_icon' => '<i class="far fa-unlink"></i>',
         'm_name' => 'Unlinked',
         'm_desc' => 'archived',
         'm_parents' => array(6186),
@@ -2234,7 +2240,7 @@ $config['en_all_6146'] = array(
         'm_parents' => array(7703,4595,6274,6255,4755,6146,4593),
     ),
     6143 => array(
-        'm_icon' => '<i class="far fa-trash-alt"></i>',
+        'm_icon' => '<i class="far fa-fast-forward"></i>',
         'm_name' => 'Skipped',
         'm_desc' => 'Completed when students skip an intention and all its child intentions from their Action Plan',
         'm_parents' => array(4595,6146,4755,4593),
@@ -2796,7 +2802,7 @@ $config['en_all_4755'] = array(
         'm_parents' => array(4595,6410,4229,4755,4593),
     ),
     6143 => array(
-        'm_icon' => '<i class="far fa-trash-alt"></i>',
+        'm_icon' => '<i class="far fa-fast-forward"></i>',
         'm_name' => 'User Step Skipped',
         'm_desc' => '',
         'm_parents' => array(4595,6146,4755,4593),
@@ -3009,7 +3015,7 @@ $config['en_all_4755'] = array(
         'm_icon' => '<i class="far fa-eye"></i>',
         'm_name' => 'Intent User View',
         'm_desc' => '',
-        'm_parents' => array(7612,4755,4595,4593),
+        'm_parents' => array(7765,7612,4755,4595,4593),
     ),
     7611 => array(
         'm_icon' => '<i class="fas fa-hand-pointer"></i>',
@@ -3425,7 +3431,7 @@ $config['en_all_4595'] = array(
         'm_parents' => array(4595,6410,4229,4755,4593),
     ),
     6143 => array(
-        'm_icon' => '<i class="far fa-trash-alt"></i>',
+        'm_icon' => '<i class="far fa-fast-forward"></i>',
         'm_name' => 'User Step Skipped',
         'm_desc' => '1',
         'm_parents' => array(4595,6146,4755,4593),
@@ -3656,7 +3662,7 @@ $config['en_all_4595'] = array(
         'm_icon' => '<i class="far fa-eye"></i>',
         'm_name' => 'Intent User View',
         'm_desc' => '1',
-        'm_parents' => array(7612,4755,4595,4593),
+        'm_parents' => array(7765,7612,4755,4595,4593),
     ),
     7611 => array(
         'm_icon' => '<i class="fas fa-hand-pointer"></i>',
@@ -4089,7 +4095,7 @@ $config['en_all_4593'] = array(
         'm_parents' => array(4595,6410,4229,4755,4593),
     ),
     6143 => array(
-        'm_icon' => '<i class="far fa-trash-alt"></i>',
+        'm_icon' => '<i class="far fa-fast-forward"></i>',
         'm_name' => 'User Step Skipped',
         'm_desc' => 'Logged every time a student consciously skips an intent and it\'s recursive children.',
         'm_parents' => array(4595,6146,4755,4593),
@@ -4320,7 +4326,7 @@ $config['en_all_4593'] = array(
         'm_icon' => '<i class="far fa-eye"></i>',
         'm_name' => 'Intent User View',
         'm_desc' => 'When a user viewes the public intent landing page.',
-        'm_parents' => array(7612,4755,4595,4593),
+        'm_parents' => array(7765,7612,4755,4595,4593),
     ),
     7611 => array(
         'm_icon' => '<i class="fas fa-hand-pointer"></i>',
