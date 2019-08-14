@@ -115,12 +115,13 @@ class Miner_app extends CI_Controller
         echo '</table>';
 
 
-        //Intent Start Modes:
-        echo echo_in_setting(7596,'in_visibility_entity_id');
-
-
         //Intent Types:
         echo echo_in_setting(7585,'in_type_entity_id');
+
+
+        //Intent Access Modes:
+        echo echo_in_setting(7596,'in_access_mode_entity_id');
+
 
 
         //Intent Verbs:

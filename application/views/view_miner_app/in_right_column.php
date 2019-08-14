@@ -74,21 +74,6 @@
 
 
 
-
-                    <span class="<?= advance_mode() ?>">
-                        <span class="mini-header" style="margin-top: 20px;"><?= $en_all_6201[7596]['m_icon'].' '.$en_all_6201[7596]['m_name'] ?></span>
-                        <select class="form-control border" id="in_visibility_entity_id" style="margin-bottom: 12px;">
-                            <?php
-                            foreach ($this->config->item('en_all_7596') as $en_id => $m) {
-                                echo '<option value="' . $en_id . '">' . $m['m_name'] . '</option>';
-                            }
-                            ?>
-                        </select>
-                    </span>
-
-
-
-
                     <span class="mini-header" style="margin-top: 20px;"><?= $en_all_6201[7585]['m_icon'].' '.$en_all_6201[7585]['m_name'] ?></span>
                     <select class="form-control border" id="in_type_entity_id" style="margin-bottom: 12px;">
                         <?php
@@ -105,11 +90,25 @@
 
                     <span class="mini-header" style="margin-top: 20px;"><?= $en_all_6201[4736]['m_icon'].' '.$en_all_6201[4736]['m_name'] ?> [<span
                                 style="margin:0 0 10px 0;"><span
-                                    id="charNameNum">0</span>/<?= $this->config->item('in_outcome_max') ?></span>]<span class="<?= advance_mode() ?>">[<a href="/entities/5008" data-toggle="tooltip" title="See (and manage) list of supporting verbs that intent outcomes can start with" data-placement="right" target="_blank"><b>Verbs</b></a>]</span></span>
+                                    id="charNameNum">0</span>/<?= $this->config->item('in_outcome_max') ?></span>]</span>
                     <div class="form-group label-floating is-empty" style="height: 40px !important;">
                         <span class="white-wrapper"><textarea class="form-control text-edit msg main-box border" id="in_outcome" onkeyup="in_outcome_counter()"></textarea></span>
                     </div>
+                    <p><i class="fas fa-exclamation-triangle"></i> Intents must start with a <a href="/entities/5008"><b>Supporting Verb</b></a>.</p>
 
+
+
+
+                    <span class="<?= advance_mode() ?>">
+                        <span class="mini-header" style="margin-top: 20px;"><?= $en_all_6201[7596]['m_icon'].' '.$en_all_6201[7596]['m_name'] ?></span>
+                        <select class="form-control border" id="in_access_mode_entity_id" style="margin-bottom: 12px;">
+                            <?php
+                            foreach ($this->config->item('en_all_7596') as $en_id => $m) {
+                                echo '<option value="' . $en_id . '">' . $m['m_name'] . '</option>';
+                            }
+                            ?>
+                        </select>
+                    </span>
 
 
 

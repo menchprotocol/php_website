@@ -12,45 +12,45 @@
 
 create table table_intents
 (
-  in_id                   serial                     not null constraint table_intents_pkey primary key,
-  in_status_entity_id     integer      default 6183  not null,
-  in_visibility_entity_id integer      default 7597  not null,
-  in_type_entity_id       integer      default 6677  not null,
-  in_verb_entity_id       integer      default 0     not null,
-  in_completion_seconds   smallint     default 0     not null,
-  in_outcome              varchar(255)               not null,
-  in_metadata             text
+  in_id                    serial                     not null constraint table_intents_pkey primary key,
+  in_status_entity_id      integer      default 6183  not null,
+  in_access_mode_entity_id integer      default 7597  not null,
+  in_type_entity_id        integer      default 6677  not null,
+  in_verb_entity_id        integer      default 0     not null,
+  in_completion_seconds    smallint     default 0     not null,
+  in_outcome               varchar(255)               not null,
+  in_metadata              text
 );
 
 
 create table table_entities
 (
-  en_id                   serial                     not null constraint table_entities_pkey primary key,
-  en_status_entity_id     integer      default 6179  not null,
-  en_trust_score          integer      default 0     not null,
-  en_name                 varchar(255)               not null,
-  en_icon                 text,
-  en_metadata             text
+  en_id                    serial                     not null constraint table_entities_pkey primary key,
+  en_status_entity_id      integer      default 6179  not null,
+  en_trust_score           integer      default 0     not null,
+  en_name                  varchar(255)               not null,
+  en_icon                  text,
+  en_metadata              text
 );
 
 
 create table table_links
 (
-  ln_id                   bigserial                  not null constraint table_links_pkey primary key,
-  ln_status_entity_id     integer      default 6176  not null,
-  ln_type_entity_id       integer                    not null,
-  ln_creator_entity_id    integer      default 0     not null,
-  ln_parent_entity_id     integer      default 0     not null,
-  ln_child_entity_id      integer      default 0     not null,
-  ln_parent_intent_id     integer      default 0     not null,
-  ln_child_intent_id      integer      default 0     not null,
-  ln_parent_link_id       bigint       default 0     not null,
-  ln_external_id          bigint       default 0     not null,
-  ln_order                smallint     default 0     not null,
-  ln_credits              smallint     default 0     not null,
-  ln_timestamp            timestamp(4) default now() not null,
-  ln_content              text,
-  ln_metadata             text
+  ln_id                    bigserial                  not null constraint table_links_pkey primary key,
+  ln_status_entity_id      integer      default 6176  not null,
+  ln_type_entity_id        integer                    not null,
+  ln_creator_entity_id     integer      default 0     not null,
+  ln_parent_entity_id      integer      default 0     not null,
+  ln_child_entity_id       integer      default 0     not null,
+  ln_parent_intent_id      integer      default 0     not null,
+  ln_child_intent_id       integer      default 0     not null,
+  ln_parent_link_id        bigint       default 0     not null,
+  ln_external_id           bigint       default 0     not null,
+  ln_order                 smallint     default 0     not null,
+  ln_credits               smallint     default 0     not null,
+  ln_timestamp             timestamp(4) default now() not null,
+  ln_content               text,
+  ln_metadata              text
 );
 
 
@@ -80,7 +80,7 @@ create index table_intents_in_status_entity_id_index
   on table_intents (in_status_entity_id);
 
 create index table_intents_in_subscription_entity_id_index
-  on table_intents (in_visibility_entity_id);
+  on table_intents (in_access_mode_entity_id);
 
 
 -- Entities
