@@ -88,6 +88,8 @@ class Miner_app extends CI_Controller
 
     function extra_stats_intents(){
 
+        sleep(2);
+
         $en_all_7302 = $this->config->item('en_all_7302'); //Intent Stats
 
         //Intent Statuses:
@@ -168,6 +170,8 @@ class Miner_app extends CI_Controller
 
 
     function extra_stats_entities(){
+
+        sleep(2);
 
         $en_all_7303 = $this->config->item('en_all_7303'); //Platform Dashboard
         $en_all_6177 = $this->config->item('en_all_6177'); //Entity Statuses
