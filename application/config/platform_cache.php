@@ -11,7 +11,7 @@ defined('BASEPATH') OR exit('No direct script access allowed');
  *
  */
 
-//Generated 2019-08-13 19:04:21 PST
+//Generated 2019-08-13 19:41:02 PST
 
 //Intent Publicly Searchable:
 $config['en_ids_7767'] = array(7598,7766,7768,7769);
@@ -439,8 +439,8 @@ $config['en_all_6201'] = array(
         'm_parents' => array(7302,6160,6213,6194,6232,4527,6201),
     ),
     7596 => array(
-        'm_icon' => '<i class="far fa-eye"></i>',
-        'm_name' => 'Visibility Type',
+        'm_icon' => '<i class="fas fa-door-closed"></i>',
+        'm_name' => 'Access Mode',
         'm_desc' => '',
         'm_parents' => array(7302,6160,6201,6213,6194,6232,4527),
     ),
@@ -675,7 +675,7 @@ $config['en_all_7703'] = array(
     ),
 );
 
-//Intent Visibility Type:
+//Intent Access Mode:
 $config['en_ids_7596'] = array(7597,7766,7599,7598,7768,7769);
 $config['en_all_7596'] = array(
     7597 => array(
@@ -1392,8 +1392,8 @@ $config['en_all_7302'] = array(
         'm_parents' => array(7302,6160,6213,6194,6232,4527,6201),
     ),
     7596 => array(
-        'm_icon' => '<i class="far fa-eye"></i>',
-        'm_name' => 'Visibility Type',
+        'm_icon' => '<i class="fas fa-door-closed"></i>',
+        'm_name' => 'Access Mode',
         'm_desc' => '',
         'm_parents' => array(7302,6160,6201,6213,6194,6232,4527),
     ),
@@ -1826,8 +1826,8 @@ $config['en_all_6194'] = array(
         'm_parents' => array(7302,6160,6213,6194,6232,4527,6201),
     ),
     7596 => array(
-        'm_icon' => '<i class="far fa-eye"></i>',
-        'm_name' => 'Intent Visibility Type',
+        'm_icon' => '<i class="fas fa-door-closed"></i>',
+        'm_name' => 'Intent Access Mode',
         'm_desc' => '',
         'm_parents' => array(7302,6160,6201,6213,6194,6232,4527),
     ),
