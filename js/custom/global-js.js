@@ -55,7 +55,7 @@ function echo_js_suggestion(alg_obj, is_top){
 
 
 function turn_off() {
-    $('.dash').html('<span><i class="fas fa-yin-yang fa-spin"></i></span> Processing...');
+    $('.dash').html('<span><i class="fas fa-yin-yang fa-spin"></i></span> ' + echo_ying_yang());
 }
 
 function nl2br(str, is_xhtml) {

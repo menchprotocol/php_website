@@ -53,11 +53,13 @@ $in_filters = in_get_filters(true);
             echo '<div class="intent-header">';
 
                 //Focus intent:
-                echo '<h5 class="badge badge-h indent1 inline-block">Intent #'.$in['in_id'].'</h5>';
+            echo '<h5 class="badge badge-h indent1 inline-block">Intent #'.$in['in_id'].'</h5>';
 
-                //Hidden Links for Miners:
+            echo '<h5 class="badge badge-h indent1 inline-block"><i class="fas fa-globe"></i> <input type="url" value="'. $this->config->item('base_url') . $in['in_id'] .'" style="padding:0; margin:-2px 0; background-color:transparent; border:0; color:#FFF;" /><a href="/' . $in['in_id'] . '" target="_blank" style="margin-left:7px; color:#FFF !important;" data-toggle="tooltip" title="Visit landing page" data-placement="top"><i class="far fa-external-link"></i></a></h5>';
+
+            //Hidden Links for Miners:
                 if($is_miner){
-                    echo '<a class="secret" href="/intents/cron__sync_extra_insights/' . $in['in_id'] . '/1?redirect=/' . $in['in_id'] . '" style="margin-left: 5px;" onclick="turn_off()" data-toggle="tooltip" title="Updates intent tree cache" data-placement="top"><i class="fal fa-sync-alt"></i></a>';
+                    echo '<a class="secret" href="/intents/cron__sync_extra_insights/' . $in['in_id'] . '/1?redirect=/' . $in['in_id'] . '" style="margin-left:20px;" onclick="turn_off()" data-toggle="tooltip" title="Updates intent tree cache" data-placement="top"><i class="fal fa-sync-alt"></i></a>';
 
                     echo '<a class="secret" href="/intents/in_review_metadata/' . $in['in_id'] . '" style="margin-left: 5px;" target="_blank" data-toggle="tooltip" title="Review Intent Metadata" data-placement="top"><i class="fas fa-function"></i></a>';
 

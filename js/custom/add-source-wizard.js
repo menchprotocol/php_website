@@ -144,7 +144,7 @@ function en_add_source_process(){
 
     //Set title:
     $('.add_source_body').addClass('hidden');
-    $('.add_source_result').html('<div class="center"><span><i class="fas fa-yin-yang fa-spin"></i></span> Processing...</div>');
+    $('.add_source_result').html('<div class="center"><span><i class="fas fa-yin-yang fa-spin"></i></span> '+ echo_ying_yang() +'</div>');
 
     //Fetch Intent Data to load modify widget:
     $.post("/entities/en_add_source_process", {
