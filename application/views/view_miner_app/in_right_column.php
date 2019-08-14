@@ -77,7 +77,7 @@
 
                     <span class="<?= advance_mode() ?>">
                         <span class="mini-header" style="margin-top: 20px;"><?= $en_all_6201[7596]['m_icon'].' '.$en_all_6201[7596]['m_name'] ?></span>
-                        <select class="form-control border" id="in_start_mode_entity_id" style="margin-bottom: 12px;">
+                        <select class="form-control border" id="in_visibility_entity_id" style="margin-bottom: 12px;">
                             <?php
                             foreach ($this->config->item('en_all_7596') as $en_id => $m) {
                                 echo '<option value="' . $en_id . '">' . $m['m_name'] . '</option>';

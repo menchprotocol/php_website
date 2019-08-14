@@ -116,7 +116,7 @@ class Miner_app extends CI_Controller
 
 
         //Intent Start Modes:
-        echo echo_in_setting(7596,'in_start_mode_entity_id');
+        echo echo_in_setting(7596,'in_visibility_entity_id');
 
 
         //Intent Types:

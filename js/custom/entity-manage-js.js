@@ -384,7 +384,7 @@ function en_ln_type_preview() {
      *
      * */
 
-    $('#en_type_link_id').html('<i class="fas fa-yin-yang fa-spin"></i> ' + echo_ying_yang() +  '');
+    $('#en_type_link_id').html('<i class="fas fa-yin-yang fa-spin"></i>');
 
 
     //Fetch Intent Data to load modify widget:
