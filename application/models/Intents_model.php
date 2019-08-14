@@ -373,7 +373,7 @@ class Intents_model extends CI_Model
 
 
             //Validate Intent Outcome:
-            $in_outcome_validation = $this->Intents_model->in_validate_outcome($in_outcome, $ln_creator_entity_id);
+            $in_outcome_validation = $this->Intents_model->in_analyze_outcome($in_outcome, $ln_creator_entity_id);
             if(!$in_outcome_validation['status']){
                 //We had an error, return it:
                 return $in_outcome_validation;
@@ -1057,97 +1057,14 @@ class Intents_model extends CI_Model
 
     }
 
-    function in_force_verb_creation($in_outcome, $ln_creator_entity_id = 0){
-
-        //Fetch related variables:
-        $outcome_words = explode(' ', $in_outcome);
-        $starting_verb = trim($outcome_words[0]);
-        $in_verb_entity_id = in_outcome_verb_id($in_outcome);
-
-        //Run some checks on the intent outcome:
-        if(count($outcome_words) < 3) {
-
-            //The /force is a word, so Verb is too short:
-            return array(
-                'status' => 0,
-                'message' => 'Outcome must have at-least two words',
-            );
-
-        } elseif(!(substr($in_outcome, -7) == ' /force')){
-
-            //not positioned correctly:
-            return array(
-                'status' => 0,
-                'message' => '/force command must be the last word of the outcome',
-            );
-
-        } elseif(!en_auth(array(1281))){
-
-            //Not a acceptable Verb:
-            return array(
-                'status' => 0,
-                'message' => '/force command is only available to moderators',
-            );
-
-        } elseif(strlen($starting_verb) < 2) {
-
-            //Verb is too short:
-            return array(
-                'status' => 0,
-                'message' => 'Verb must be at-least 2 characters long',
-            );
-
-        } elseif(!ctype_alpha($starting_verb)){
-
-            //Not a acceptable Verb:
-            return array(
-                'status' => 0,
-                'message' => 'Verb should only consist of letters A-Z',
-            );
-
-        }
-
-        //Create the supporting verb if not already there:
-        if(!$in_verb_entity_id){
-
-            //Add and link verb:
-            $added_en = $this->Entities_model->en_verify_create(ucwords(strtolower($starting_verb)), $ln_creator_entity_id, 6181);
-
-            //Link to supported verbs:
-            $this->Links_model->ln_create(array(
-                'ln_creator_entity_id' => $ln_creator_entity_id,
-                'ln_status_entity_id' => 6176, //Link Published
-                'ln_type_entity_id' => 4230, //Raw
-                'ln_parent_entity_id' => 5008, //Intent Supported Verbs
-                'ln_child_entity_id' => $added_en['en']['en_id'],
-            ));
-
-            //Assign new verb ID to this intent:
-            $in_verb_entity_id = $added_en['en']['en_id'];
-        }
-
-
-        //All good, return results:
-        return array(
-            'status' => 1,
-            'in_cleaned_outcome' => str_replace(' /force' , '', $in_outcome),
-            'in_verb_entity_id' => $in_verb_entity_id,
-        );
-
-    }
-
-
-    function in_validate_outcome($in_outcome, $ln_creator_entity_id = 0, $skip_in_id = 0){
-
-        //Assign verb variables:
-        $in_verb_entity_id = in_outcome_verb_id($in_outcome);
+    function in_analyze_outcome($in_outcome, $ln_creator_entity_id = 0, $skip_in_id = 0){
 
         //Validate outcome:
-        if(strlen($in_outcome) < 2){
+        if(strlen($in_outcome) < 1){
 
             return array(
                 'status' => 0,
-                'message' => 'Outcome must be at-least 2 characters long',
+                'message' => 'Missing Outcome',
             );
 
         } elseif(substr_count($in_outcome , '  ') > 0){
@@ -1157,81 +1074,34 @@ class Intents_model extends CI_Model
                 'message' => 'Outcome cannot include double spaces',
             );
 
-        } elseif(substr_count($in_outcome , '=') >= 2){
+        } elseif (strlen($in_outcome) > $this->config->item('in_outcome_max')) {
 
             return array(
                 'status' => 0,
-                'message' => 'You can only use = sign once',
+                'message' => 'Outcome must be '.$this->config->item('in_outcome_max').' characters or less',
             );
 
-        } elseif(substr_count($in_outcome , '=') == 1 && substr($in_outcome, 0, 1)!='='){
+        }
 
-            return array(
-                'status' => 0,
-                'message' => 'The = sign must be at the very beginning of the outcome',
-            );
 
-        } elseif(substr_count($in_outcome , '#') >= 1){
+        //Determine verb, if any:
+        $in_verb_entity_id = in_outcome_verb_id($in_outcome);
 
-            return array(
-                'status' => 0,
-                'message' => 'Cannot use hashtags',
-            );
 
-        } elseif(substr_count($in_outcome , '=') >= 1  && substr_count($in_outcome , '/force') > 0){
+        if($in_verb_entity_id > 0){
 
-            return array(
-                'status' => 0,
-                'message' => 'Cannot use /force command with = sign',
-            );
+            //Does the outcome have a parent intent reference?
+            $string_references = extract_references($in_outcome);
 
-        } elseif(substr_count($in_outcome , '/force') > 0){
-
-            //Force command detected, pass it on to the force function:
-            $force_outcome = $this->Intents_model->in_force_verb_creation($in_outcome, $ln_creator_entity_id);
-
-            if(!$force_outcome['status']){
-                //We had some errors in outcome structure:
-                return $force_outcome['status'];
+            if( count($string_references['ref_forbidden']) > 0 ){
+                return array(
+                    'status' => 0,
+                    'message' => 'Intent outcome must be focused so you cannot use "'.join('" or "',$string_references['ref_forbidden']).'". Think of the core outcome and just put that.',
+                );
             }
-
-            //Update forced variables:
-            $in_outcome = $force_outcome['in_cleaned_outcome'];
-
-            //Update supporting verb ID if it was not set:
-            if(!$in_verb_entity_id){
-                $in_verb_entity_id = $force_outcome['in_verb_entity_id'];
-            }
-
-        } elseif( !substr_count($in_outcome , '=') && !$in_verb_entity_id ) {
-
-            //Missing both requirements which one is needed:
-            return array(
-                'status' => 0,
-                'message' => 'Intent must start with a supporting verb OR = sign',
-            );
-
-        }
-
-        //Check length now that potential /force command is removed:
-        if (strlen($in_outcome) > $this->config->item('in_outcome_max')) {
-            return array(
-                'status' => 0,
-                'message' => 'Intent outcome cannot be longer than '.$this->config->item('in_outcome_max').' characters',
-            );
         }
 
 
-        //Does the outcome have a parent intent reference?
-        $string_references = extract_references($in_outcome);
-
-
-        if( !substr_count($in_outcome , '=') && count($string_references['ref_forbidden']) > 0 ){
-            return array(
-                'status' => 0,
-                'message' => 'Intent outcome must be focused so you cannot use "'.join('" or "',$string_references['ref_forbidden']).'". Think of the core outcome and just put that.',
-            );
-        }
 
         //All good, return success:
         return array(

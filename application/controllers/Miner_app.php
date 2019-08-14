@@ -88,8 +88,6 @@ class Miner_app extends CI_Controller
 
     function extra_stats_intents(){
 
-        sleep(2);
-
         $en_all_7302 = $this->config->item('en_all_7302'); //Intent Stats
 
         //Intent Statuses:
@@ -171,8 +169,6 @@ class Miner_app extends CI_Controller
 
 
     function extra_stats_entities(){
-
-        sleep(2);
 
         $en_all_7303 = $this->config->item('en_all_7303'); //Platform Dashboard
         $en_all_6177 = $this->config->item('en_all_6177'); //Entity Statuses
@@ -265,6 +261,9 @@ class Miner_app extends CI_Controller
         //Mench Community
         echo echo_en_stats_overview($this->config->item('en_all_6827'), $en_all_7303[6827]['m_name']);
 
+
+        //Mench Platform Users
+        echo echo_en_stats_overview($this->config->item('en_all_7555'), $en_all_7303[7555]['m_name']);
 
 
         //Entity Mining Stats

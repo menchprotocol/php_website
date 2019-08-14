@@ -11,7 +11,7 @@ defined('BASEPATH') OR exit('No direct script access allowed');
  *
  */
 
-//Generated 2019-08-14 14:03:57 PST
+//Generated 2019-08-14 16:26:08 PST
 
 //Algolia Indexable:
 $config['en_ids_7774'] = array(6175,6176,6180,6181,6183,6184);
@@ -54,32 +54,32 @@ $config['en_all_7774'] = array(
     ),
 );
 
-//Intent Types Searchable:
-$config['en_ids_7767'] = array(7598,7766,7768,7769);
+//Intent Public Engagement Levels:
+$config['en_ids_7767'] = array(7769,7768,7598,7766);
 $config['en_all_7767'] = array(
-    7598 => array(
-        'm_icon' => '<i class="fas fa-play"></i>',
-        'm_name' => 'Intent Start',
-        'm_desc' => '',
-        'm_parents' => array(7767,7582,7596),
-    ),
-    7766 => array(
-        'm_icon' => '<i class="fas fa-search"></i>',
-        'm_name' => 'Intent Listed',
+    7769 => array(
+        'm_icon' => '<i class="fas fa-asterisk"></i>',
+        'm_name' => 'Required',
         'm_desc' => '',
         'm_parents' => array(7767,7596),
     ),
     7768 => array(
         'm_icon' => '<i class="fas fa-megaphone"></i>',
-        'm_name' => 'Intent Featured',
+        'm_name' => 'Featured',
         'm_desc' => '',
         'm_parents' => array(7767,7582,7596),
     ),
-    7769 => array(
-        'm_icon' => '<i class="fas fa-asterisk"></i>',
-        'm_name' => 'Intent Required',
+    7598 => array(
+        'm_icon' => '<i class="fas fa-user-plus"></i>',
+        'm_name' => 'Register',
         'm_desc' => '',
-        'm_parents' => array(7582,7767,7596),
+        'm_parents' => array(7767,7582,7596),
+    ),
+    7766 => array(
+        'm_icon' => '<i class="fas fa-search"></i>',
+        'm_name' => 'Listed',
+        'm_desc' => '',
+        'm_parents' => array(7767,7596),
     ),
 );
 
@@ -481,7 +481,7 @@ $config['en_all_6201'] = array(
     ),
     7596 => array(
         'm_icon' => '<i class="far fa-eye"></i>',
-        'm_name' => 'Visibility Level',
+        'm_name' => 'Engagement Level',
         'm_desc' => '',
         'm_parents' => array(7302,6160,6201,6213,6194,6232,4527),
     ),
@@ -716,26 +716,14 @@ $config['en_all_7703'] = array(
     ),
 );
 
-//Intent Visibility Level:
-$config['en_ids_7596'] = array(7597,7766,7598,7768,7769);
+//Intent Engagement Level:
+$config['en_ids_7596'] = array(7769,7768,7598,7766,7597);
 $config['en_all_7596'] = array(
-    7597 => array(
-        'm_icon' => '<i class="far fa-eye-slash"></i>',
-        'm_name' => 'Unlisted',
-        'm_desc' => 'Users cannot start at this intent or search for it but they can engage with it as long as it\'s published and they know the URL',
-        'm_parents' => array(7596),
-    ),
-    7766 => array(
-        'm_icon' => '<i class="fas fa-search"></i>',
-        'm_name' => 'Listed',
-        'm_desc' => 'Users cannot start at this intent but they can find it by searching it',
+    7769 => array(
+        'm_icon' => '<i class="fas fa-asterisk"></i>',
+        'm_name' => 'Required',
+        'm_desc' => 'Every single Mench user must complete this intention before working on any of their own Intentions added to their Action Plans',
         'm_parents' => array(7767,7596),
-    ),
-    7598 => array(
-        'm_icon' => '<i class="fas fa-play"></i>',
-        'm_name' => 'Start',
-        'm_desc' => 'Users can start at this intent and find it by searching for it (maximum visibility)',
-        'm_parents' => array(7767,7582,7596),
     ),
     7768 => array(
         'm_icon' => '<i class="fas fa-megaphone"></i>',
@@ -743,11 +731,23 @@ $config['en_all_7596'] = array(
         'm_desc' => 'Mench will feature intention on mench.com and via Messenger to new users while also allowing users to search for this intent',
         'm_parents' => array(7767,7582,7596),
     ),
-    7769 => array(
-        'm_icon' => '<i class="fas fa-asterisk"></i>',
-        'm_name' => 'Required',
-        'm_desc' => 'Every single Mench user must complete this intention before working on any of their own Intentions added to their Action Plans',
-        'm_parents' => array(7582,7767,7596),
+    7598 => array(
+        'm_icon' => '<i class="fas fa-user-plus"></i>',
+        'm_name' => 'Register',
+        'm_desc' => 'Users can start at this intent and find it by searching for it (maximum visibility)',
+        'm_parents' => array(7767,7582,7596),
+    ),
+    7766 => array(
+        'm_icon' => '<i class="fas fa-search"></i>',
+        'm_name' => 'Listed',
+        'm_desc' => 'Users cannot start at this intent but they can find it by searching it',
+        'm_parents' => array(7767,7596),
+    ),
+    7597 => array(
+        'm_icon' => '<i class="fas fa-equals"></i>',
+        'm_name' => 'Unlisted',
+        'm_desc' => 'Users cannot start at this intent or search for it but they can engage with it as long as it\'s published and they know the URL',
+        'm_parents' => array(7596),
     ),
 );
 
@@ -904,11 +904,11 @@ $config['en_all_7585'] = array(
 );
 
 //Intent Action Plan Addable:
-$config['en_ids_7582'] = array(7598,7768,7769);
+$config['en_ids_7582'] = array(7598,7768);
 $config['en_all_7582'] = array(
     7598 => array(
-        'm_icon' => '<i class="fas fa-play"></i>',
-        'm_name' => 'Intent Start',
+        'm_icon' => '<i class="fas fa-user-plus"></i>',
+        'm_name' => 'Intent Register',
         'm_desc' => '',
         'm_parents' => array(7767,7582,7596),
     ),
@@ -917,12 +917,6 @@ $config['en_all_7582'] = array(
         'm_name' => 'Intent Featured',
         'm_desc' => '',
         'm_parents' => array(7767,7582,7596),
-    ),
-    7769 => array(
-        'm_icon' => '<i class="fas fa-asterisk"></i>',
-        'm_name' => 'Intent Required',
-        'm_desc' => '',
-        'm_parents' => array(7582,7767,7596),
     ),
 );
 
@@ -949,7 +943,7 @@ $config['en_all_5967'] = array(
     ),
 );
 
-//Mench Platforms:
+//Mench Platform Options:
 $config['en_ids_7555'] = array(3288,6196);
 $config['en_all_7555'] = array(
     3288 => array(
@@ -1105,9 +1099,9 @@ $config['en_all_7372'] = array(
     ),
     7555 => array(
         'm_icon' => '<i class="fas fa-comments"></i>',
-        'm_name' => 'Mench Platforms',
+        'm_name' => 'Mench Platform Options',
         'm_desc' => '',
-        'm_parents' => array(7372,4527),
+        'm_parents' => array(7303,7372,4527),
     ),
     7735 => array(
         'm_icon' => '<i class="far fa-database"></i>',
@@ -1422,14 +1416,14 @@ $config['en_all_7302'] = array(
     ),
     7596 => array(
         'm_icon' => '<i class="far fa-eye"></i>',
-        'm_name' => 'Visibility Level',
+        'm_name' => 'Engagement Level',
         'm_desc' => '',
         'm_parents' => array(7302,6160,6201,6213,6194,6232,4527),
     ),
 );
 
 //Entity Dashboard:
-$config['en_ids_7303'] = array(3000,6177,6827,7167);
+$config['en_ids_7303'] = array(3000,6177,6827,7167,7555);
 $config['en_all_7303'] = array(
     3000 => array(
         'm_icon' => '<i class="fas fa-star"></i>',
@@ -1454,6 +1448,12 @@ $config['en_all_7303'] = array(
         'm_name' => 'Stats',
         'm_desc' => '',
         'm_parents' => array(7303,4527),
+    ),
+    7555 => array(
+        'm_icon' => '<i class="fas fa-comments"></i>',
+        'm_name' => 'Mench Platform Options',
+        'm_desc' => '',
+        'm_parents' => array(7303,7372,4527),
     ),
 );
 
@@ -1856,7 +1856,7 @@ $config['en_all_6194'] = array(
     ),
     7596 => array(
         'm_icon' => '<i class="far fa-eye"></i>',
-        'm_name' => 'Intent Visibility Level',
+        'm_name' => 'Intent Engagement Level',
         'm_desc' => '',
         'm_parents' => array(7302,6160,6201,6213,6194,6232,4527),
     ),

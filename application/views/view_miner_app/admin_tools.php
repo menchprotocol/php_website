@@ -291,7 +291,7 @@ if(!$action) {
     ));
 
     //Give an overview:
-    echo '<p>When the validation criteria change within the in_validate_outcome() function, this page lists all the intents that no longer have a valid outcome.</p>';
+    echo '<p>When the validation criteria change within the in_analyze_outcome() function, this page lists all the intents that no longer have a valid outcome.</p>';
 
 
     //List the matching search:
@@ -306,7 +306,7 @@ if(!$action) {
     $invalid_outcomes = 0;
     foreach($active_ins as $count=>$in){
 
-        $in_outcome_validation = $this->Intents_model->in_validate_outcome($in['in_outcome'], $session_en['en_id'], $in['in_id']);
+        $in_outcome_validation = $this->Intents_model->in_analyze_outcome($in['in_outcome'], $session_en['en_id'], $in['in_id']);
 
         if(!$in_outcome_validation['status']){
 
@@ -380,7 +380,7 @@ if(!$action) {
                 if($replace_with_is_set){
                     //Do replacement:
                     $new_outcome = str_replace($_GET['search_for'],$_GET['replace_with'],$in['in_outcome']);
-                    $in_outcome_validation = $this->Intents_model->in_validate_outcome($new_outcome, $session_en['en_id'], $in['in_id']);
+                    $in_outcome_validation = $this->Intents_model->in_analyze_outcome($new_outcome, $session_en['en_id'], $in['in_id']);
 
                     if($in_outcome_validation['status']){
                         $qualifying_replacements++;

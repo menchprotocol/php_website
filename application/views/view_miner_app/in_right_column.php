@@ -2,6 +2,7 @@
 <?php $en_all_6103 = $this->config->item('en_all_6103'); //Link Metadata ?>
 <?php $en_all_6201 = $this->config->item('en_all_6201'); //Intent Table ?>
 <?php $en_all_4341 = $this->config->item('en_all_4341'); //Link Table ?>
+<?php $en_all_7596 = $this->config->item('en_all_7596'); //Intent Engagement Level ?>
 
 
 <script>
@@ -94,19 +95,22 @@
                     <div class="form-group label-floating is-empty" style="height: 40px !important;">
                         <span class="white-wrapper"><textarea class="form-control text-edit msg main-box border" id="in_outcome" onkeyup="in_outcome_counter()"></textarea></span>
                     </div>
-                    <span class="mini-header" style="margin-top:2px;">*Start with a <a href="/entities/5008"><b>Published Verb</b></a> or <i class="fas fa-equals"></i> sign</span>
 
 
-
-                    <span class="<?= advance_mode() ?>">
+                    <span class="control_engagement">
                         <span class="mini-header" style="margin-top: 20px;"><?= $en_all_6201[7596]['m_icon'].' '.$en_all_6201[7596]['m_name'] ?></span>
+
+                        <span class="mini-header control_message" style="margin-top:2px;"> <b><?= $en_all_7596[7597]['m_icon'].' '.$en_all_7596[7597]['m_name'] ?></b> unless starts with a <a href="/entities/5008" data-toggle="tooltip" title="Browse published verbs (and suggest new ones)" data-placement="top"><b>Verb<i class="fas fa-angle-double-right" style="padding-left:2px;"></i></b></a></span>
+
                         <select class="form-control border" id="in_visibility_level_entity_id" style="margin-bottom: 12px;">
                             <?php
-                            foreach ($this->config->item('en_all_7596') as $en_id => $m) {
+                            foreach ($this->config->item('en_all_7767') as $en_id => $m) {
                                 echo '<option value="' . $en_id . '">' . $m['m_name'] . '</option>';
                             }
                             ?>
                         </select>
+
+
                     </span>
 
 

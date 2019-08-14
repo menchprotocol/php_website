@@ -104,7 +104,48 @@ function echo_js_hours(in_completion_seconds) {
         //Show in rounded hours:
         return Math.round((in_completion_seconds / 3600)) + "h";
     }
+
 }
+
+
+
+function in_control_engagement_level() {
+
+    //*
+    //Fetch intent link ID:
+    var ln_id = parseInt($('#modifybox').attr('intent-tr-id'));
+
+    if (!$('#modifybox').hasClass('hidden') && ln_id > 0) {
+
+        //Yes show that section:
+        $('.in-has-tr').removeClass('hidden');
+
+        //What's the selected intent status?
+        if (parseInt($('#ln_status_entity_id').find(":selected").val()) == 6173 /* Link Removed */) {
+            //About to delete? Notify them:
+            $('.notify_unlink_in').removeClass('hidden');
+        } else {
+            $('.notify_unlink_in').addClass('hidden');
+        }
+
+        //What's the intent link type?
+        if (parseInt($('#ln_type_entity_id').find(":selected").val()) == 4229 /* Conditional Step */) {
+            //Conditional Step Links is checked:
+            $('.score_range_box').removeClass('hidden');
+            $('.score_points').addClass('hidden');
+        } else {
+            //This should be a Required steo
+            //Any is selected, lock the completion settings as its not allowed for ANY Branches:
+            $('.score_range_box').addClass('hidden');
+            $('.score_points').removeClass('hidden');
+        }
+
+    } else {
+        //Main intent, no link, so hide entire section:
+        $('.in-has-tr').addClass('hidden');
+    }
+}
+
 
 
 function in_adjust_link_ui() {
@@ -142,6 +183,7 @@ function in_adjust_link_ui() {
         $('.in-has-tr').addClass('hidden');
     }
 }
+
 
 
 function in_messages_iframe(in_id) {

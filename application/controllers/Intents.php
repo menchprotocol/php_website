@@ -710,7 +710,7 @@ class Intents extends CI_Controller
                 if ($key == 'in_outcome') {
 
                     //Validate Intent Outcome:
-                    $in_outcome_validation = $this->Intents_model->in_validate_outcome($_POST['in_outcome'], $session_en['en_id'], $in_current['in_id']);
+                    $in_outcome_validation = $this->Intents_model->in_analyze_outcome($_POST['in_outcome'], $session_en['en_id'], $in_current['in_id']);
                     if(!$in_outcome_validation['status']){
                         //We had an error, return it:
                         return echo_json($in_outcome_validation);

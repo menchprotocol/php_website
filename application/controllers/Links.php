@@ -151,7 +151,7 @@ class Links extends CI_Controller
             }
 
             //Validate Intent Outcome:
-            $in_outcome_validation = $this->Intents_model->in_validate_outcome($in_outcome, $session_en['en_id']);
+            $in_outcome_validation = $this->Intents_model->in_analyze_outcome($in_outcome, $session_en['en_id']);
             if(!$in_outcome_validation['status']){
                 //We had an error, return it:
                 return echo_json($in_outcome_validation);
