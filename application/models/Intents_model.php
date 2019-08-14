@@ -457,7 +457,7 @@ class Intents_model extends CI_Model
 
     }
 
-    function in_create_new_content($in, $push_message = false)
+    function in_create_content($in, $push_message = false)
     {
 
         /*
@@ -493,14 +493,13 @@ class Intents_model extends CI_Model
 
 
             //HTML:
-            $ui .= '<p>Upload '.echo_a_an($content_name).' '. $content_name .' file to complete this step.</p>';
 
             //Is this a text, URL or File upload?
             if($in['in_type_entity_id'] == 6683 /* Text */){
 
                 $ui .= '<textarea id="user_new_content" class="border" placeholder="" style="height:66px; width: 100%; padding: 5px;"></textarea>';
                 $ui .= '<span class="saving_result"></span>';
-                $ui .= '<p><a class="btn btn-primary" href="javascript:void(0);" onsubmit="">Send '.$content_name.'</a></p>';
+                $ui .= '<p><a class="btn btn-primary" href="javascript:void(0);" onsubmit="">Send '.$content_name.' Message</a></p>';
 
             } elseif($in['in_type_entity_id'] == 6682 /* URL */){
 
@@ -511,6 +510,7 @@ class Intents_model extends CI_Model
             } elseif(in_array($in['in_type_entity_id'], $this->config->item('en_ids_7751')) /* Intent Upload File */){
 
                 //File Upload:
+                $ui .= '<p>Upload '.echo_a_an($content_name).' '. $content_name .' file to complete this step.</p>';
                 $ui .= '<span class="saving_result"></span>';
                 $ui .= '<input class="box__file inputfile" type="file" id="user_new_content" /><label class="textarea_buttons btn btn-primary" for="file" data-toggle="tooltip" title="Upload '.$content_name.' up to ' . $this->config->item('max_file_mb_size') . ' MB" data-placement="top">'.$en_all_6144[$in['in_type_entity_id']]['m_icon'].' Upload '.$content_name.'</label>';
 
@@ -521,7 +521,7 @@ class Intents_model extends CI_Model
 
                 //Log for admins:
                 $this->Links_model->ln_create(array(
-                    'ln_content' => 'in_create_new_content() has unknown file type @'.$in['in_type_entity_id'],
+                    'ln_content' => 'in_create_content() has unknown file type @'.$in['in_type_entity_id'],
                     'ln_type_entity_id' => 4246, //Platform Bug Reports
                 ));
 

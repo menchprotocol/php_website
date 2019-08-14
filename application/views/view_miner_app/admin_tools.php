@@ -399,8 +399,32 @@ if(!$action) {
                 echo '<tr class="panel-title down-border">';
                 echo '<td style="text-align: left;">'.($count+1).'</td>';
                 echo '<td style="text-align: left;">'.echo_en_cache('en_all_4737' /* Intent Statuses */, $in['in_status_entity_id'], true, 'right').' <a href="/intents/'.$in['in_id'].'">'.str_replace($_GET['search_for'],'<span class="is-highlighted">'.$_GET['search_for'].'</span>',$in['in_outcome']).'</a></td>';
-                echo '<td style="text-align: left;">'.($replace_with_is_set ? str_replace($_GET['replace_with'],'<span class="is-highlighted">'.$_GET['replace_with'].'</span>',$new_outcome) : '').'</td>';
-                echo '<td style="text-align: left;">'.( $replace_with_is_set && !$in_outcome_validation['status'] ? ' <i class="fas fa-exclamation-triangle"></i> Error: '.$in_outcome_validation['message'] : ( $replace_with_is_confirmed && $in_outcome_validation['status'] ? '<i class="fas fa-check-circle"></i> Outcome Updated' : '') ).'</td>';
+
+                if($replace_with_is_set){
+
+                    echo '<td style="text-align: left;">'.str_replace($_GET['replace_with'],'<span class="is-highlighted">'.$_GET['replace_with'].'</span>',$new_outcome).'</td>';
+                    echo '<td style="text-align: left;">'.( !$in_outcome_validation['status'] ? ' <i class="fas fa-exclamation-triangle"></i> Error: '.$in_outcome_validation['message'] : ( $replace_with_is_confirmed && $in_outcome_validation['status'] ? '<i class="fas fa-check-circle"></i> Outcome Updated' : '') ).'</td>';
+                } else {
+                    //Show parents now:
+                    echo '<td style="text-align: left;">';
+
+
+                    //Loop through parents:
+                    $en_all_7585 = $this->config->item('en_all_7585'); // Intent Types
+                    foreach ($this->Links_model->ln_fetch(array(
+                        'ln_status_entity_id IN (' . join(',', $this->config->item('en_ids_7360')) . ')' => null, //Link Statuses Active
+                        'in_status_entity_id IN (' . join(',', $this->config->item('en_ids_7356')) . ')' => null, //Intent Statuses Active
+                        'ln_type_entity_id IN (' . join(',', $this->config->item('en_ids_4486')) . ')' => null, //Intent Link Connectors
+                        'ln_child_intent_id' => $in['in_id'],
+                    ), array('in_parent')) as $in_parent) {
+                        echo '<a href="/intents/' . $in_parent['in_id'] . '" data-toggle="tooltip" title="' . $in_parent['in_outcome'] . '" data-placement="bottom" class="in_icon_child_' . $in_parent['in_id'] . '">' . $en_all_7585[$in_parent['in_type_entity_id']]['m_icon'] . '</a> &nbsp;';
+                    }
+
+                    echo '</td>';
+                    echo '<td style="text-align: left;"></td>';
+                }
+
+
                 echo '</tr>';
 
             }
