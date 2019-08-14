@@ -11,7 +11,30 @@ defined('BASEPATH') OR exit('No direct script access allowed');
  *
  */
 
-//Generated 2019-08-13 17:37:24 PST
+//Generated 2019-08-13 18:44:04 PST
+
+//Intent Publicly Searchable:
+$config['en_ids_7767'] = array(7598,7766,7768);
+$config['en_all_7767'] = array(
+    7598 => array(
+        'm_icon' => '<i class="fas fa-search-plus"></i>',
+        'm_name' => 'Intent Start Searchable',
+        'm_desc' => '',
+        'm_parents' => array(7767,7582,7596),
+    ),
+    7766 => array(
+        'm_icon' => '<i class="far fa-search"></i>',
+        'm_name' => 'Intent Continue Searchable',
+        'm_desc' => '',
+        'm_parents' => array(7767,7596),
+    ),
+    7768 => array(
+        'm_icon' => '<i class="fas fa-megaphone"></i>',
+        'm_name' => 'Intent Start Recommended',
+        'm_desc' => '',
+        'm_parents' => array(7767,7582,7596),
+    ),
+);
 
 //Intent Note Subscriber:
 $config['en_ids_7701'] = array(4430);
@@ -410,8 +433,8 @@ $config['en_all_6201'] = array(
         'm_parents' => array(7302,6160,6213,6194,6232,4527,6201),
     ),
     7596 => array(
-        'm_icon' => '<i class="far fa-play"></i>',
-        'm_name' => 'Start Mode',
+        'm_icon' => '<i class="far fa-eye"></i>',
+        'm_name' => 'Visibility',
         'm_desc' => '',
         'm_parents' => array(7302,6160,6201,6213,6194,6232,4527),
     ),
@@ -646,26 +669,44 @@ $config['en_all_7703'] = array(
     ),
 );
 
-//Intent Start Mode:
-$config['en_ids_7596'] = array(7597,7599,7598);
+//Intent Visibility:
+$config['en_ids_7596'] = array(7597,7766,7599,7598,7768,7769);
 $config['en_all_7596'] = array(
     7597 => array(
         'm_icon' => '<i class="fal fa-grip-lines-vertical"></i>',
-        'm_name' => 'Bridge Only',
-        'm_desc' => 'Users cannot directly subscribe to this intent, but can engage with it as long as it\'s published.',
+        'm_name' => 'Continue Unlisted',
+        'm_desc' => 'Users cannot start at this intent or search for it but they can engage with it as long as it\'s published and they know the URL',
         'm_parents' => array(7596),
     ),
+    7766 => array(
+        'm_icon' => '<i class="far fa-search"></i>',
+        'm_name' => 'Continue Searchable',
+        'm_desc' => 'Users cannot start at this intent but they can find it by searching it',
+        'm_parents' => array(7767,7596),
+    ),
     7599 => array(
-        'm_icon' => '<i class="fas fa-browser"></i>',
-        'm_name' => 'Unlisted Start',
-        'm_desc' => 'Users can directly subscribe to this intent as long they have the intent URL.',
+        'm_icon' => '<i class="fas fa-play"></i>',
+        'm_name' => 'Start Unlisted',
+        'm_desc' => 'Users can start at this intent and add it to their Action Plan, but they cannot find it by searching for it, they need to know the URL to get started',
         'm_parents' => array(7582,7596),
     ),
     7598 => array(
+        'm_icon' => '<i class="fas fa-search-plus"></i>',
+        'm_name' => 'Start Searchable',
+        'm_desc' => 'Users can start at this intent and find it by searching for it (maximum visibility)',
+        'm_parents' => array(7767,7582,7596),
+    ),
+    7768 => array(
         'm_icon' => '<i class="fas fa-megaphone"></i>',
-        'm_name' => 'Featured Start',
-        'm_desc' => 'Users can directly subscribe to it on mench.com where it would be publicly listed.',
-        'm_parents' => array(7582,7596),
+        'm_name' => 'Start Recommended',
+        'm_desc' => 'Mench will feature intention on mench.com and via Messenger to new users while also allowing users to search for this intent',
+        'm_parents' => array(7767,7582,7596),
+    ),
+    7769 => array(
+        'm_icon' => '<i class="fas fa-asterisk"></i>',
+        'm_name' => 'Start Required',
+        'm_desc' => 'Every single Mench user must complete this intention before working on any of their own Intentions added to their Action Plans',
+        'm_parents' => array(7596),
     ),
 );
 
@@ -822,19 +863,25 @@ $config['en_all_7585'] = array(
 );
 
 //Intent Action Plan Addable:
-$config['en_ids_7582'] = array(7598,7599);
+$config['en_ids_7582'] = array(7598,7599,7768);
 $config['en_all_7582'] = array(
     7598 => array(
-        'm_icon' => '<i class="fas fa-megaphone"></i>',
-        'm_name' => 'Featured Start Intent',
+        'm_icon' => '<i class="fas fa-search-plus"></i>',
+        'm_name' => 'Intent Start Searchable',
+        'm_desc' => '',
+        'm_parents' => array(7767,7582,7596),
+    ),
+    7599 => array(
+        'm_icon' => '<i class="fas fa-play"></i>',
+        'm_name' => 'Intent Start Unlisted',
         'm_desc' => '',
         'm_parents' => array(7582,7596),
     ),
-    7599 => array(
-        'm_icon' => '<i class="fas fa-browser"></i>',
-        'm_name' => 'Unlisted Start Intent',
+    7768 => array(
+        'm_icon' => '<i class="fas fa-megaphone"></i>',
+        'm_name' => 'Intent Start Recommended',
         'm_desc' => '',
-        'm_parents' => array(7582,7596),
+        'm_parents' => array(7767,7582,7596),
     ),
 );
 
@@ -1333,8 +1380,8 @@ $config['en_all_7302'] = array(
         'm_parents' => array(7302,6160,6213,6194,6232,4527,6201),
     ),
     7596 => array(
-        'm_icon' => '<i class="far fa-play"></i>',
-        'm_name' => 'Start Mode',
+        'm_icon' => '<i class="far fa-eye"></i>',
+        'm_name' => 'Visibility',
         'm_desc' => '',
         'm_parents' => array(7302,6160,6201,6213,6194,6232,4527),
     ),
@@ -1767,8 +1814,8 @@ $config['en_all_6194'] = array(
         'm_parents' => array(7302,6160,6213,6194,6232,4527,6201),
     ),
     7596 => array(
-        'm_icon' => '<i class="far fa-play"></i>',
-        'm_name' => 'Intent Start Mode',
+        'm_icon' => '<i class="far fa-eye"></i>',
+        'm_name' => 'Intent Visibility',
         'm_desc' => '',
         'm_parents' => array(7302,6160,6201,6213,6194,6232,4527),
     ),
