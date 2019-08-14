@@ -739,8 +739,8 @@ function echo_actionplan_step_child($en_id, $in, $is_unlocked_step = false, $com
     $ui .= echo_in_outcome($in['in_outcome'], false, false, false, $common_prefix);
 
     if($is_unlocked_step){
-        $en_all_6103 = $CI->config->item('en_all_6103'); //Link Metadata
-        $ui .= '<span class="badge badge-primary" style="font-size: 0.8em; margin:-7px 0 -7px 5px;" data-toggle="tooltip" data-placement="right" title="'.$en_all_6103[6140]['m_name'].'">'.$en_all_6103[6140]['m_icon'].'</span>';
+        $en_all_4229 = $CI->config->item('en_all_4229'); //Link Metadata
+        $ui .= '<span class="badge badge-primary" style="font-size: 0.8em; margin:-7px 0 -7px 5px;" data-toggle="tooltip" data-placement="right" title="'.$en_all_4229[6140]['m_name'].'">'.$en_all_4229[6140]['m_icon'].'</span>';
     }
 
     $ui .= '</a>';

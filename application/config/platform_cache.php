@@ -11,10 +11,10 @@ defined('BASEPATH') OR exit('No direct script access allowed');
  *
  */
 
-//Generated 2019-08-13 18:44:04 PST
+//Generated 2019-08-13 19:01:50 PST
 
 //Intent Publicly Searchable:
-$config['en_ids_7767'] = array(7598,7766,7768);
+$config['en_ids_7767'] = array(7598,7766,7768,7769);
 $config['en_all_7767'] = array(
     7598 => array(
         'm_icon' => '<i class="fas fa-search-plus"></i>',
@@ -33,6 +33,12 @@ $config['en_all_7767'] = array(
         'm_name' => 'Intent Start Recommended',
         'm_desc' => '',
         'm_parents' => array(7767,7582,7596),
+    ),
+    7769 => array(
+        'm_icon' => '<i class="fas fa-asterisk"></i>',
+        'm_name' => 'Intent Start Required',
+        'm_desc' => '',
+        'm_parents' => array(7582,7767,7596),
     ),
 );
 
@@ -706,7 +712,7 @@ $config['en_all_7596'] = array(
         'm_icon' => '<i class="fas fa-asterisk"></i>',
         'm_name' => 'Start Required',
         'm_desc' => 'Every single Mench user must complete this intention before working on any of their own Intentions added to their Action Plans',
-        'm_parents' => array(7596),
+        'm_parents' => array(7582,7767,7596),
     ),
 );
 
@@ -863,7 +869,7 @@ $config['en_all_7585'] = array(
 );
 
 //Intent Action Plan Addable:
-$config['en_ids_7582'] = array(7598,7599,7768);
+$config['en_ids_7582'] = array(7598,7599,7768,7769);
 $config['en_all_7582'] = array(
     7598 => array(
         'm_icon' => '<i class="fas fa-search-plus"></i>',
@@ -882,6 +888,12 @@ $config['en_all_7582'] = array(
         'm_name' => 'Intent Start Recommended',
         'm_desc' => '',
         'm_parents' => array(7767,7582,7596),
+    ),
+    7769 => array(
+        'm_icon' => '<i class="fas fa-asterisk"></i>',
+        'm_name' => 'Intent Start Required',
+        'm_desc' => '',
+        'm_parents' => array(7582,7767,7596),
     ),
 );
 

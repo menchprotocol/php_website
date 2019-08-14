@@ -33,7 +33,7 @@ $config['password_min_char']        = 6;
 $config['in_mission_id']            = 7766; //highest-level intent which defines the mission of Mench
 $config['in_join_id']               = 12599; //Where new users would start if they have not specified an intention
 $config['in_focus_id']              = 11762; //The intent that the Mench community is focused on
-$config['in_system_lock']           = array(8469, 7766, 11762, 11665); //Once set to published, their status will be locked by system
+$config['in_system_lock']           = array(7766, 11762); //Once set to published, their status will be locked by system
 $config['in_outcome_deny_terms']    = array('and', 'or', 'so'); //Once set to published, their status will be locked by system
 
 //Intent Settings:

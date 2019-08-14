@@ -106,8 +106,7 @@ if($referrer_en_id > 0){
     $in__recommended = $this->Links_model->ln_fetch(array(
         'ln_status_entity_id IN (' . join(',', $this->config->item('en_ids_7359')) . ')' => null, //Link Statuses Public
         'ln_type_entity_id' => 4228, //Intent Link Regular Step
-        'ln_parent_intent_id' => 8469, //Recommend Mench Intentions
-        'in_visibility_entity_id IN (' . join(',', $this->config->item('en_ids_7582')) . ')' => null, //Intent Action Plan Addable
+        'in_visibility_entity_id' => 7768, //Intent Start Recommend
         'in_status_entity_id IN (' . join(',', $this->config->item('en_ids_7355')) . ')' => null, //Intent Statuses Public
         'in_id !=' => $in['in_id'], //Not the current intent
     ), array('in_child'), 0, 0, array('ln_order' => 'ASC'));
