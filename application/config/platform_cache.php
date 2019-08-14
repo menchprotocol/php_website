@@ -11,7 +11,7 @@ defined('BASEPATH') OR exit('No direct script access allowed');
  *
  */
 
-//Generated 2019-08-13 19:41:02 PST
+//Generated 2019-08-13 19:57:15 PST
 
 //Intent Publicly Searchable:
 $config['en_ids_7767'] = array(7598,7766,7768,7769);
@@ -676,10 +676,16 @@ $config['en_all_7703'] = array(
 );
 
 //Intent Access Mode:
-$config['en_ids_7596'] = array(7597,7766,7599,7598,7768,7769);
+$config['en_ids_7596'] = array(7770,7597,7766,7599,7598,7768,7769);
 $config['en_all_7596'] = array(
+    7770 => array(
+        'm_icon' => '<i class="far fa-equals"></i>',
+        'm_name' => 'Continue Dependant',
+        'm_desc' => 'Users can only get to the intent through their first non-dependant parent',
+        'm_parents' => array(7596),
+    ),
     7597 => array(
-        'm_icon' => '<i class="fal fa-grip-lines-vertical"></i>',
+        'm_icon' => '<i class="far fa-equals rotate90"></i>',
         'm_name' => 'Continue Unlisted',
         'm_desc' => 'Users cannot start at this intent or search for it but they can engage with it as long as it\'s published and they know the URL',
         'm_parents' => array(7596),
