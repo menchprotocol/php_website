@@ -118,7 +118,7 @@ class Miner_app extends CI_Controller
 
 
         //Intent Access Modes:
-        echo echo_in_setting(7596,'in_visibility_level_entity_id');
+        echo echo_in_setting(7596,'in_engagement_level_entity_id');
 
 
 

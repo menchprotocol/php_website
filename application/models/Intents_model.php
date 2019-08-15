@@ -19,7 +19,7 @@ class Intents_model extends CI_Model
     {
 
         //What is required to create a new intent?
-        if (detect_missing_columns($insert_columns, array('in_outcome', 'in_type_entity_id', 'in_status_entity_id', 'in_verb_entity_id', 'in_visibility_level_entity_id'), $ln_creator_entity_id)) {
+        if (detect_missing_columns($insert_columns, array('in_outcome', 'in_type_entity_id', 'in_status_entity_id', 'in_verb_entity_id', 'in_engagement_level_entity_id'), $ln_creator_entity_id)) {
             return false;
         }
 
@@ -383,10 +383,10 @@ class Intents_model extends CI_Model
             //Create new intent:
             $intent_new = $this->Intents_model->in_create(array(
                 'in_outcome' => $in_outcome_validation['in_cleaned_outcome'],
-                'in_verb_entity_id' => $in_outcome_validation['detected_verb_entity_id'],
+                'in_verb_entity_id' => $in_outcome_validation['detected_in_verb_entity_id'],
                 'in_type_entity_id' => $in_type_entity_id,
                 'in_status_entity_id' => $new_in_status,
-                'in_visibility_level_entity_id' => 1111,
+                'in_engagement_level_entity_id' => $in_outcome_validation['detected_in_engagement_level_entity_id'],
             ), true, $ln_creator_entity_id);
 
         }
@@ -1107,8 +1107,8 @@ class Intents_model extends CI_Model
         return array(
             'status' => 1,
             'in_cleaned_outcome' => trim($in_outcome),
-            'detected_verb_entity_id' => $in_verb_entity_id,
-            'detected_access_mode_entity_id' => ( substr($in_outcome, 0, 1)=='=' ? 7597 /* Continue Unlisted */ : 7766 /* Continue Listed */  ),
+            'detected_in_verb_entity_id' => $in_verb_entity_id, //Could be zero
+            'detected_in_engagement_level_entity_id' => ( $in_verb_entity_id > 0 ? 7597 /* Unlisted */ : 7766 /* Listed */  ),
         );
 
     }

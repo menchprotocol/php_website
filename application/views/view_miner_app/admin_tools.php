@@ -391,7 +391,7 @@ if(!$action) {
                     //Update intent:
                     $this->Intents_model->in_update($in['in_id'], array(
                         'in_outcome' => $in_outcome_validation['in_cleaned_outcome'],
-                        'in_verb_entity_id' => $in_outcome_validation['detected_verb_entity_id'],
+                        'in_verb_entity_id' => $in_outcome_validation['detected_in_verb_entity_id'],
                     ), true, $session_en['en_id']);
                     $completed_replacements++;
                 }
@@ -585,7 +585,7 @@ if(!$action) {
             'ln_parent_intent_id' => $in['in_id'],
         ), array('in_child'), 0, 0, array('ln_order' => 'ASC')) as $child_or){
 
-            $qualified_update = ( $child_or['in_type_entity_id']==6677 /* AND GOT IT */ && in_array($child_or['in_visibility_level_entity_id'], $this->config->item('en_ids_7582')) /* Intent Action Plan Addable */ );
+            $qualified_update = ( $child_or['in_type_entity_id']==6677 /* AND GOT IT */ && in_array($child_or['in_engagement_level_entity_id'], $this->config->item('en_ids_7582')) /* Intent Action Plan Addable */ );
 
             //Count completions:
             if($qualified_update){

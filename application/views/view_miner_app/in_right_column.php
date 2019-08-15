@@ -102,9 +102,9 @@
 
                         <span class="mini-header control_message" style="margin-top:2px;"> <b><?= $en_all_7596[7597]['m_icon'].' '.$en_all_7596[7597]['m_name'] ?></b> unless starts with a <a href="/entities/5008" data-toggle="tooltip" title="Browse published verbs (and suggest new ones)" data-placement="top"><b>Verb<i class="fas fa-angle-double-right" style="padding-left:2px;"></i></b></a></span>
 
-                        <select class="form-control border" id="in_visibility_level_entity_id" style="margin-bottom: 12px;">
+                        <select class="form-control border" id="in_engagement_level_entity_id" style="margin-bottom: 12px;">
                             <?php
-                            foreach ($this->config->item('en_all_7767') as $en_id => $m) {
+                            foreach ($this->config->item('en_all_7596') as $en_id => $m) {
                                 echo '<option value="' . $en_id . '">' . $m['m_name'] . '</option>';
                             }
                             ?>
