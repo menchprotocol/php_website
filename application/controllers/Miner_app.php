@@ -123,7 +123,7 @@ class Miner_app extends CI_Controller
 
 
         //Intent Verbs:
-        $show_max_verbs = 5;
+        $show_max_verbs = 2;
 
         //Fetch all needed data:
         $in_verbs = $this->Intents_model->in_fetch(array(
@@ -196,13 +196,13 @@ class Miner_app extends CI_Controller
 
 
         //Expert Sources
-        $total_counts = array();
         $expert_sources = ''; //Saved the UI for later view...
+        $total_total_counts = array();
         foreach ($this->config->item('en_all_3000') as $en_id => $m) {
 
-            //Echo stats:
-            $expert_sources .= '<tr>';
-            $expert_sources .= '<td style="text-align: left;"><span class="icon-block">'.$m['m_icon'].'</span><a href="/entities/'.$en_id.'">'.$m['m_name'].'</a></td>';
+            $expert_source_statuses = '';
+            unset($total_counts);
+            $total_counts = array();
 
             //Count totals for each active status:
             foreach($this->config->item('en_all_7358') /* Entity Active Statuses */ as $en_status_entity_id => $m_status){
@@ -217,12 +217,24 @@ class Miner_app extends CI_Controller
                     $total_counts[$en_status_entity_id] = $source_count;
                 }
 
+
+                if(isset($total_total_counts[$en_status_entity_id])){
+                    $total_total_counts[$en_status_entity_id] += $source_count;
+                } else {
+                    $total_total_counts[$en_status_entity_id] = $source_count;
+                }
+
+
                 //Display row:
-                $expert_sources .= '<td style="text-align: right;"'.( $en_status_entity_id != 6181 /* Entity Featured */ ? ' class="' . advance_mode() . '"' : '' ).'><a href="/entities/' . $en_id .'#status-'.$en_status_entity_id.'">'.number_format($source_count,0).'</a><i class="fal fa-info-circle icon-block" data-toggle="tooltip" title="'.number_format($source_count,0).' '.$m['m_name'].' are '. $en_all_6177[$en_status_entity_id]['m_desc'] . '" data-placement="top"></i></td>';
+                $expert_source_statuses .= '<td style="text-align: right;"'.( $en_status_entity_id != 6181 /* Entity Featured */ ? ' class="' . advance_mode() . '"' : '' ).'><a href="/entities/' . $en_id .'#status-'.$en_status_entity_id.'">'.number_format($source_count,0).'</a><i class="fal fa-info-circle icon-block" data-toggle="tooltip" title="'.number_format($source_count,0).' '.$m['m_name'].' are '. $en_all_6177[$en_status_entity_id]['m_desc'] . '" data-placement="top"></i></td>';
 
 
             }
 
+            //Echo stats:
+            $expert_sources .= '<tr class="' .( !$total_counts[6181] ? advance_mode() : '' ) . '">';
+            $expert_sources .= '<td style="text-align: left;"><span class="icon-block">'.$m['m_icon'].'</span><a href="/entities/'.$en_id.'">'.$m['m_name'].'</a></td>';
+            $expert_sources .= $expert_source_statuses;
             $expert_sources .= '</tr>';
         }
 
@@ -243,7 +255,7 @@ class Miner_app extends CI_Controller
         echo '<tr style="font-weight: bold;">';
         echo '<td style="text-align: left;"><span class="icon-block"><i class="fas fa-asterisk"></i></span>Total</td>';
         foreach($this->config->item('en_all_7358') /* Entity Active Statuses */ as $en_status_entity_id => $m_status){
-            echo '<td style="text-align: right;" '.( $en_status_entity_id != 6181 /* Entity Featured */ ? ' class="' . advance_mode() . '"' : '' ).'>' . echo_number($total_counts[$en_status_entity_id]) . '<i class="fal fa-info-circle icon-block" data-toggle="tooltip" title="'.number_format($total_counts[$en_status_entity_id], 0).' '.$en_all_7303[3000]['m_name'].' are '.$en_all_6177[$en_status_entity_id]['m_name'] . '" data-placement="top"></i>' . '</td>';
+            echo '<td style="text-align: right;" '.( $en_status_entity_id != 6181 /* Entity Featured */ ? ' class="' . advance_mode() . '"' : '' ).'>' . echo_number($total_total_counts[$en_status_entity_id]) . '<i class="fal fa-info-circle icon-block" data-toggle="tooltip" title="'.number_format($total_total_counts[$en_status_entity_id], 0).' '.$en_all_7303[3000]['m_name'].' are '.$en_all_6177[$en_status_entity_id]['m_name'] . '" data-placement="top"></i>' . '</td>';
         }
         echo '</tr>';
 
