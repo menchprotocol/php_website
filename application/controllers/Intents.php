@@ -322,24 +322,39 @@ class Intents extends CI_Controller
                 'status' => 0,
                 'message' => 'Our mission cannot be added as a child intent, as its the top intention',
             ));
-        } elseif($_POST['in_link_child_id'] > 0 && count($this->Intents_model->in_fetch(array(
-                'in_id' => $_POST['in_link_child_id'],
-                'in_status_entity_id IN (' . join(',', $this->config->item('en_ids_7356')) . ')' => null, //Intent Statuses Active
-            )))==0){
-            //validate linked intent:
+        } elseif($_POST['in_link_child_id'] >= 2147483647){
             return echo_json(array(
                 'status' => 0,
-                'message' => 'Intent #'.$_POST['in_link_child_id'].' is not active',
+                'message' => 'Value must be less than 2147483647',
             ));
         }
 
-        //Fetch link intent to determine intent type:
-        $linked_ins = $this->Intents_model->in_fetch(array(
-            'in_id' => intval($_POST['in_linked_id']),
-        ));
+
+        $new_intent_type = 6677; //Intent Read-Only
+        $linked_ins = array();
+        if($_POST['in_link_child_id'] > 0){
+
+            //Fetch link intent to determine intent type:
+            $linked_ins = $this->Intents_model->in_fetch(array(
+                'in_id' => intval($_POST['in_linked_id']),
+                'in_status_entity_id IN (' . join(',', $this->config->item('en_ids_7356')) . ')' => null, //Intent Statuses Active
+            ));
+
+            if(count($linked_ins)==0){
+                //validate linked intent:
+                return echo_json(array(
+                    'status' => 0,
+                    'message' => 'Intent #'.$_POST['in_link_child_id'].' is not active',
+                ));
+            }
+
+            if(!intval($_POST['is_parent']) && in_array($linked_ins[0]['in_type_entity_id'], $this->config->item('en_ids_7712'))){
+                $new_intent_type = 6914; //Require All
+            }
+        }
 
         //All seems good, go ahead and try creating the intent:
-        return echo_json($this->Intents_model->in_link_or_create($_POST['in_linked_id'], intval($_POST['is_parent']), $_POST['in_outcome'], $session_en['en_id'], 6183 /* Intent New */, ( !intval($_POST['is_parent']) && in_array($linked_ins[0]['in_type_entity_id'], $this->config->item('en_ids_7712')) ? 6914 /* AND Lock */ : 6677 /* AND Got It */ ), $_POST['in_link_child_id'], $_POST['next_level']));
+        return echo_json($this->Intents_model->in_link_or_create($_POST['in_linked_id'], intval($_POST['is_parent']), trim($_POST['in_outcome']), $session_en['en_id'], 6183 /* Intent New */, $new_intent_type, $_POST['in_link_child_id'], $_POST['next_level']));
 
     }
 

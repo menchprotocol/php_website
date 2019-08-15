@@ -266,7 +266,7 @@ class Intents_model extends CI_Model
         return $links_removed;
     }
 
-    function in_link_or_create($in_linked_id, $is_parent, $in_outcome, $ln_creator_entity_id, $new_in_status = 6183 /* Intent New */, $in_type_entity_id = 6677 /* AND Got It */, $link_in_id = 0, $next_level = 0)
+    function in_link_or_create($in_linked_id, $is_parent, $in_outcome, $ln_creator_entity_id, $new_in_status = 6183 /* Intent New */, $in_type_entity_id = 6677 /* Intent Read-Only */, $link_in_id = 0, $next_level = 0)
     {
 
         /*

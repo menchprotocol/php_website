@@ -11,7 +11,7 @@ defined('BASEPATH') OR exit('No direct script access allowed');
  *
  */
 
-//Generated 2019-08-15 12:57:44 PST
+//Generated 2019-08-15 13:50:12 PST
 
 //Algolia Indexable:
 $config['en_ids_7774'] = array(6175,6176,6180,6181,6183,6184);
@@ -65,7 +65,7 @@ $config['en_all_7767'] = array(
     ),
     7768 => array(
         'm_icon' => '<i class="fas fa-megaphone"></i>',
-        'm_name' => 'Recommend',
+        'm_name' => 'Recommended',
         'm_desc' => '',
         'm_parents' => array(7767,7582,7596),
     ),
@@ -187,19 +187,19 @@ $config['en_ids_7756'] = array(6677,6907,6914);
 $config['en_all_7756'] = array(
     6677 => array(
         'm_icon' => '<i class="far fa-comments"></i>',
-        'm_name' => 'Intent Read Only',
+        'm_name' => 'Intent Read-Only',
         'm_desc' => '',
         'm_parents' => array(7756,7585,4559,6192),
     ),
     6907 => array(
         'm_icon' => '<i class="fas fa-cube"></i>',
-        'm_name' => 'Intent Meet Any Requirement',
+        'm_name' => 'Intent Require Any',
         'm_desc' => '',
         'm_parents' => array(7756,7585,7486,7485,7309,6997,6193),
     ),
     6914 => array(
         'm_icon' => '<i class="fas fa-cubes"></i>',
-        'm_name' => 'Intent Meet All Requirements',
+        'm_name' => 'Intent Require All',
         'm_desc' => '',
         'm_parents' => array(7756,7585,7486,7485,7309,6997),
     ),
@@ -210,7 +210,7 @@ $config['en_ids_7751'] = array(7637);
 $config['en_all_7751'] = array(
     7637 => array(
         'm_icon' => '<i class="far fa-paperclip"></i>',
-        'm_name' => 'Intent Upload Attachment',
+        'm_name' => 'Intent Attachment',
         'm_desc' => '',
         'm_parents' => array(7751,7585,6144,6192),
     ),
@@ -221,19 +221,19 @@ $config['en_ids_6144'] = array(6682,6683,7637);
 $config['en_all_6144'] = array(
     6682 => array(
         'm_icon' => '<i class="far fa-external-link"></i>',
-        'm_name' => 'URL',
+        'm_name' => 'Intent URL',
         'm_desc' => '',
         'm_parents' => array(7585,6144,6192),
     ),
     6683 => array(
         'm_icon' => '<i class="far fa-keyboard"></i>',
-        'm_name' => 'Text',
+        'm_name' => 'Intent Text',
         'm_desc' => '',
         'm_parents' => array(7585,6144,6192),
     ),
     7637 => array(
         'm_icon' => '<i class="far fa-paperclip"></i>',
-        'm_name' => 'Intent Upload Attachment',
+        'm_name' => 'Intent Attachment',
         'm_desc' => '',
         'm_parents' => array(7751,7585,6144,6192),
     ),
@@ -485,19 +485,19 @@ $config['en_ids_7712'] = array(6684,6685,7231);
 $config['en_all_7712'] = array(
     6684 => array(
         'm_icon' => '<i class="far fa-check"></i>',
-        'm_name' => 'Intent Answer Single-Choice',
+        'm_name' => 'Intent Single-Choice',
         'm_desc' => '',
         'm_parents' => array(7712,7588,7585,6157,6193),
     ),
     6685 => array(
         'm_icon' => '<i class="far fa-stopwatch"></i>',
-        'm_name' => 'Intent Answer Single-Choice Timed',
+        'm_name' => 'Intent Single-Choice Timed',
         'm_desc' => '',
         'm_parents' => array(7712,7488,7487,7585,7366,6193),
     ),
     7231 => array(
         'm_icon' => '<i class="far fa-check-double"></i>',
-        'm_name' => 'Intent Answer Multiple-Choice',
+        'm_name' => 'Intent Multiple-Choice',
         'm_desc' => '',
         'm_parents' => array(7712,7489,7588,7585,6193),
     ),
@@ -668,7 +668,7 @@ $config['en_all_7596'] = array(
     ),
     7768 => array(
         'm_icon' => '<i class="fas fa-megaphone"></i>',
-        'm_name' => 'Recommend',
+        'm_name' => 'Recommended',
         'm_desc' => 'Intent featured on mench.com and recommended to users when they finish an intention',
         'm_parents' => array(7767,7582,7596),
     ),
@@ -720,13 +720,13 @@ $config['en_ids_7588'] = array(6684,7231);
 $config['en_all_7588'] = array(
     6684 => array(
         'm_icon' => '<i class="far fa-check"></i>',
-        'm_name' => 'Intent Answer Single-Choice',
+        'm_name' => 'Intent Single-Choice',
         'm_desc' => '',
         'm_parents' => array(7712,7588,7585,6157,6193),
     ),
     7231 => array(
         'm_icon' => '<i class="far fa-check-double"></i>',
-        'm_name' => 'Intent Answer Multiple-Choice',
+        'm_name' => 'Intent Multiple-Choice',
         'm_desc' => '',
         'm_parents' => array(7712,7489,7588,7585,6193),
     ),
@@ -737,92 +737,86 @@ $config['en_ids_6193'] = array(6684,6685,7231,6907);
 $config['en_all_6193'] = array(
     6684 => array(
         'm_icon' => '<i class="far fa-check"></i>',
-        'm_name' => 'Intent Answer Single-Choice',
+        'm_name' => 'Intent Single-Choice',
         'm_desc' => '',
         'm_parents' => array(7712,7588,7585,6157,6193),
     ),
     6685 => array(
         'm_icon' => '<i class="far fa-stopwatch"></i>',
-        'm_name' => 'Intent Answer Single-Choice Timed',
+        'm_name' => 'Intent Single-Choice Timed',
         'm_desc' => '',
         'm_parents' => array(7712,7488,7487,7585,7366,6193),
     ),
     7231 => array(
         'm_icon' => '<i class="far fa-check-double"></i>',
-        'm_name' => 'Intent Answer Multiple-Choice',
+        'm_name' => 'Intent Multiple-Choice',
         'm_desc' => '',
         'm_parents' => array(7712,7489,7588,7585,6193),
     ),
     6907 => array(
         'm_icon' => '<i class="fas fa-cube"></i>',
-        'm_name' => 'Intent Meet Any Requirement',
+        'm_name' => 'Intent Require Any',
         'm_desc' => '',
         'm_parents' => array(7756,7585,7486,7485,7309,6997,6193),
     ),
 );
 
 //Intent Type:
-$config['en_ids_7585'] = array(6677,6683,6682,7637,6684,6685,7231,6914,6907,7740);
+$config['en_ids_7585'] = array(6677,6683,6682,7637,6684,6685,7231,6914,6907);
 $config['en_all_7585'] = array(
     6677 => array(
         'm_icon' => '<i class="far fa-comments"></i>',
-        'm_name' => 'Read Only',
+        'm_name' => 'Read-Only',
         'm_desc' => 'User will complete by reading intent messages only. No inputs required.',
         'm_parents' => array(7756,7585,4559,6192),
     ),
     6683 => array(
         'm_icon' => '<i class="far fa-keyboard"></i>',
-        'm_name' => 'Send Text',
+        'm_name' => 'Text',
         'm_desc' => 'User will complete by sending a text message',
         'm_parents' => array(7585,6144,6192),
     ),
     6682 => array(
         'm_icon' => '<i class="far fa-external-link"></i>',
-        'm_name' => 'Send URL',
+        'm_name' => 'URL',
         'm_desc' => 'User will complete by sending a URL message',
         'm_parents' => array(7585,6144,6192),
     ),
     7637 => array(
         'm_icon' => '<i class="far fa-paperclip"></i>',
-        'm_name' => 'Upload Attachment',
+        'm_name' => 'Attachment',
         'm_desc' => 'User completes by uploading a video, audio, image or document file',
         'm_parents' => array(7751,7585,6144,6192),
     ),
     6684 => array(
         'm_icon' => '<i class="far fa-check"></i>',
-        'm_name' => 'Answer Single-Choice',
+        'm_name' => 'Single-Choice',
         'm_desc' => 'User will complete by choosing a child intent as their answer',
         'm_parents' => array(7712,7588,7585,6157,6193),
     ),
     6685 => array(
         'm_icon' => '<i class="far fa-stopwatch"></i>',
-        'm_name' => 'Answer Single-Choice Timed',
+        'm_name' => 'Single-Choice Timed',
         'm_desc' => 'User will complete by choosing a child intent as their answer within a time limit',
         'm_parents' => array(7712,7488,7487,7585,7366,6193),
     ),
     7231 => array(
         'm_icon' => '<i class="far fa-check-double"></i>',
-        'm_name' => 'Answer Multiple-Choice',
+        'm_name' => 'Multiple-Choice',
         'm_desc' => 'User will complete by choosing one or more child intents as their answer',
         'm_parents' => array(7712,7489,7588,7585,6193),
     ),
     6914 => array(
         'm_icon' => '<i class="fas fa-cubes"></i>',
-        'm_name' => 'Meet All Requirements',
+        'm_name' => 'Require All',
         'm_desc' => 'User will complete by (a) choosing intent as their answer or by (b) completing all child intents',
         'm_parents' => array(7756,7585,7486,7485,7309,6997),
     ),
     6907 => array(
         'm_icon' => '<i class="fas fa-cube"></i>',
-        'm_name' => 'Meet Any Requirement',
+        'm_name' => 'Require Any',
         'm_desc' => 'User will complete by (a) choosing intent as their answer or by (b) completing any child intent',
         'm_parents' => array(7756,7585,7486,7485,7309,6997,6193),
-    ),
-    7740 => array(
-        'm_icon' => '<i class="fas fa-times-octagon"></i>',
-        'm_name' => 'Terminate',
-        'm_desc' => 'Signals the end of the intention when the user arrives here.',
-        'm_parents' => array(6192,7585),
     ),
 );
 
@@ -837,7 +831,7 @@ $config['en_all_7582'] = array(
     ),
     7768 => array(
         'm_icon' => '<i class="fas fa-megaphone"></i>',
-        'm_name' => 'Intent Recommend',
+        'm_name' => 'Intent Recommended',
         'm_desc' => '',
         'm_parents' => array(7767,7582,7596),
     ),
@@ -981,13 +975,13 @@ $config['en_ids_7309'] = array(6907,6914);
 $config['en_all_7309'] = array(
     6907 => array(
         'm_icon' => '<i class="fas fa-cube"></i>',
-        'm_name' => 'Intent Meet Any Requirement',
+        'm_name' => 'Intent Require Any',
         'm_desc' => '',
         'm_parents' => array(7756,7585,7486,7485,7309,6997,6193),
     ),
     6914 => array(
         'm_icon' => '<i class="fas fa-cubes"></i>',
-        'm_name' => 'Intent Meet All Requirements',
+        'm_name' => 'Intent Require All',
         'm_desc' => '',
         'm_parents' => array(7756,7585,7486,7485,7309,6997),
     ),
@@ -1186,7 +1180,7 @@ $config['en_ids_7366'] = array(6685);
 $config['en_all_7366'] = array(
     6685 => array(
         'm_icon' => '<i class="far fa-stopwatch"></i>',
-        'm_name' => 'Intent Answer Single-Choice Timed',
+        'm_name' => 'Intent Single-Choice Timed',
         'm_desc' => '',
         'm_parents' => array(7712,7488,7487,7585,7366,6193),
     ),
