@@ -43,7 +43,7 @@ $en_all_7369 = $this->config->item('en_all_7369');
                                    class="form-control intentadder-level-2-parent algolia_search"
                                    intent-id="' . $in['in_id'] . '"
                                    id="addintent-c-' . $in['in_id'] . '-1"
-                                   placeholder="Add #Intent">
+                                   placeholder="+ Intent">
                         </div>
                        <div class="algolia_search_pad in_pad_top hidden"><span>Search existing intents or create a new one...</span></div>
                 </div>';
@@ -140,7 +140,7 @@ $en_all_7369 = $this->config->item('en_all_7369');
                                maxlength="' . $this->config->item('in_outcome_max') . '"
                                intent-id="' . $in['in_id'] . '"
                                id="addintent-c-' . $in['in_id'] . '-0"
-                               placeholder="Link to current intents or create a new one">
+                               placeholder="+ Intent">
                     </div>
                    <div class="algolia_search_pad in_pad_bottom hidden"><span>Search existing intents or create a new one...</span></div>
             </div>';

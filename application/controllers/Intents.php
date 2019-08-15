@@ -322,6 +322,15 @@ class Intents extends CI_Controller
                 'status' => 0,
                 'message' => 'Our mission cannot be added as a child intent, as its the top intention',
             ));
+        } elseif(count($this->Intents_model->in_fetch(array(
+                'in_id' => $_POST['in_link_child_id'],
+                'in_status_entity_id IN (' . join(',', $this->config->item('en_ids_7356')) . ')' => null, //Intent Statuses Active
+            )))==0){
+            //validate linked intent:
+            return echo_json(array(
+                'status' => 0,
+                'message' => 'Intent #'.$_POST['in_link_child_id'].' is not active',
+            ));
         }
 
         //Fetch link intent to determine intent type:

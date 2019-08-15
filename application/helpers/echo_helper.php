@@ -1807,58 +1807,6 @@ function echo_en_stats_overview($cached_list, $report_name){
 
 }
 
-function echo_ln_type_group_stats($parent_stats, $child_stats_en_id){
-
-    $CI =& get_instance();
-
-    //Start the UI variable:
-    $ui = '<table class="table table-condensed table-striped stats-table mini-stats-table">';
-    $ui .= '<tr class="panel-title down-border">';
-    $ui .= '<td style="text-align: left;">'.$parent_stats[$child_stats_en_id]['m_name'].'</td>';
-    $ui .= '<td style="text-align: right;">Links</td>';
-    $ui .= '</tr>';
-
-    //Object Stats grouped by Status:
-    foreach ($CI->config->item('en_all_'.$child_stats_en_id) as $en_id => $en_m) {
-
-        //Determine if this is a link type, or if we'd need to aggregate all its children:
-        if(in_array($en_id , $CI->config->item('en_ids_4593'))){
-
-            //Count this status:
-            $objects_count = $CI->Links_model->ln_fetch(array(
-                'ln_type_entity_id' => $en_id,
-                'ln_status_entity_id IN (' . join(',', $CI->config->item('en_ids_7360')) . ')' => null, //Link Statuses Active
-            ), array(), 0, 0, array(), 'COUNT(ln_id) as totals');
-            $total_counts = $objects_count[0]['totals'];
-            $ln_type_filters = $en_id;
-            $type_description = '';
-
-        } else {
-
-            //Aggregate group stats:
-            $objects_count = $CI->Links_model->ln_fetch(array(
-                'ln_type_entity_id IN (' . join(',', $CI->config->item('en_ids_' . $en_id)) . ')' => null,
-                'ln_status_entity_id IN (' . join(',', $CI->config->item('en_ids_7360')) . ')' => null, //Link Statuses Active
-            ), array(), 0, 0, array(), 'COUNT(ln_id) as totals');
-            $total_counts = $objects_count[0]['totals'];
-            $ln_type_filters = join(',', $CI->config->item('en_ids_' . $en_id));
-            $type_description = '<span class="has-data ' . advance_mode() . '">['.count($CI->config->item('en_ids_' . $en_id)).' TYPES]</span>';
-
-        }
-
-        //Display this status count:
-        $ui .= '<tr>';
-        $ui .= '<td style="text-align: left;"><span class="icon-block">' . $en_m['m_icon'] . '</span><a href="/entities/'.$en_id.'">' . $en_m['m_name'] . '</a>'.$type_description.'</td>';
-        $ui .= '<td style="text-align: right;">' . ( $total_counts > 0 ? '<a href="/links?ln_status_entity_id='.join(',', $CI->config->item('en_ids_7360')) /* Link Statuses Active */.'&ln_type_entity_id=' . $ln_type_filters . '">' . echo_number($total_counts) . '</a>' : $total_counts ) . '<i class="fal fa-info-circle icon-block" data-toggle="tooltip" title="' .number_format($total_counts, 0) .' ' . $en_m['m_desc'] . '" data-placement="top"></i>' . '</td>';
-        $ui .= '</tr>';
-
-    }
-    $ui .= '</table>';
-
-    return $ui;
-
-}
-
 function echo_in_marks($in_ln){
 
     //Validate core inputs:
@@ -2233,7 +2181,7 @@ function echo_in($in, $level, $in_linked_id = 0, $is_parent = false)
 
         $ui .= '<div>';
         $ui .= '<div class="list-group-item list_input new-in3-input link-class--' . $ln_id . ' hidden">
-                <div class="form-group is-empty"  style="margin: 0; padding: 0;"><form action="#" onsubmit="in_link_or_create(' . $in['in_id'] . ',3);" intent-id="' . $in['in_id'] . '"><input type="text" class="form-control autosearch intentadder-id-'.$in['in_id'].' algolia_search" maxlength="' . $CI->config->item('in_outcome_max') . '" id="addintent-cr-' . $ln_id . '" intent-id="' . $in['in_id'] . '" placeholder="Link to current intents or create a new one"></form></div>
+                <div class="form-group is-empty"  style="margin: 0; padding: 0;"><form action="#" onsubmit="in_link_or_create(' . $in['in_id'] . ',3);" intent-id="' . $in['in_id'] . '"><input type="text" class="form-control autosearch intentadder-id-'.$in['in_id'].' algolia_search" maxlength="' . $CI->config->item('in_outcome_max') . '" id="addintent-cr-' . $ln_id . '" intent-id="' . $in['in_id'] . '" placeholder="+ Intent"></form></div>
         </div>';
 
         $ui .= '<div class="algolia_search_pad in_pad_'.$in['in_id'].' hidden"><span>Search existing intents or create a new one...</span></div>';

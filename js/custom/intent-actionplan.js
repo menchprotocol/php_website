@@ -172,6 +172,7 @@ function in_load_search(focus_element, is_in_parent, next_in_level, shortcut) {
         return false;
     }
 
+
     //Not yet loaded, continue with loading it:
     $(focus_element).addClass('search-bar-loaded').on('autocomplete:selected', function (event, suggestion, dataset) {
 
@@ -180,16 +181,23 @@ function in_load_search(focus_element, is_in_parent, next_in_level, shortcut) {
     }).autocomplete({hint: false, minLength: 2, keyboardShortcuts: [shortcut]}, [{
 
         source: function (q, cb) {
-            algolia_index.search(q, {
-                filters: 'alg_obj_is_in=1',
-                hitsPerPage: 7,
-            }, function (error, content) {
-                if (error) {
-                    cb([]);
-                    return;
-                }
-                cb(content.hits, content);
-            });
+
+            if($(focus_element).val().charAt(0)=='#'){
+                cb([]);
+                return;
+            } else {
+                algolia_index.search(q, {
+                    filters: 'alg_obj_is_in=1',
+                    hitsPerPage: 7,
+                }, function (error, content) {
+                    if (error) {
+                        cb([]);
+                        return;
+                    }
+                    cb(content.hits, content);
+                });
+            }
+
         },
         displayKey: function (suggestion) {
             return ""
@@ -199,12 +207,16 @@ function in_load_search(focus_element, is_in_parent, next_in_level, shortcut) {
                 return echo_js_suggestion(suggestion, 0);
             },
             header: function (data) {
-                if (!data.isEmpty) {
+                if (!($(focus_element).val().charAt(0)=='#') && !data.isEmpty) {
                     return '<a href="javascript:in_link_or_create(' + parseInt($(focus_element).attr('intent-id')) + ','+is_in_parent+','+next_in_level+')" class="suggestion"><span><i class="fas fa-plus-circle add-plus"></i></span> <b>' + data.query + '</b></a>';
                 }
             },
             empty: function (data) {
-                return '<a href="javascript:in_link_or_create(' + parseInt($(focus_element).attr('intent-id')) + ','+is_in_parent+','+next_in_level+')" class="suggestion"><span><i class="fas fa-plus-circle add-plus"></i></span> <b>' + data.query + '</b></a>';
+                if($(focus_element).val().charAt(0)=='#'){
+                    return '<a href="javascript:in_link_or_create(' + parseInt($(focus_element).attr('intent-id')) + ','+is_in_parent+','+next_in_level+')" class="suggestion"><span><i class="fas fa-link"></i></span> Link to <b>' + data.query + '</b></a>';
+                } else {
+                    return '<a href="javascript:in_link_or_create(' + parseInt($(focus_element).attr('intent-id')) + ','+is_in_parent+','+next_in_level+')" class="suggestion"><span><i class="fas fa-plus-circle add-plus"></i></span> <b>' + data.query + '</b></a>';
+                }
             },
         }
     }]).keypress(function (e) {
@@ -376,16 +388,31 @@ function in_link_or_create(in_linked_id, is_parent, next_level, in_link_child_id
         var input_field = $('.intentadder-id-' + in_linked_id);
     } else {
         //This should not happen:
-        alert('Invalid next_level value [' + next_level + ']');
+        alert('Error: Invalid next_level value [' + next_level + ']');
         return false;
     }
 
 
     var intent_name = input_field.val();
 
+
+    if( intent_name.charAt(0)=='#'){
+        if(isNaN(intent_name.substr(1))){
+            alert('Error: Use numbers only. Example: #1234');
+            return false;
+        } else {
+            //Update the references:
+            in_link_child_id = parseInt(intent_name.substr(1));
+            intent_name = ''; //As if we were just linking
+        }
+    }
+
+
+
+
     //We either need the intent name (to create a new intent) or the in_link_child_id>0 to create an intent link:
     if (!in_link_child_id && intent_name.length < 1) {
-        alert('Error: Missing Intent for level ['+next_level+']. Try Again...' + '.intentadder-id-' + in_linked_id);
+        alert('Error: Enter something');
         input_field.focus();
         return false;
     }

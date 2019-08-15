@@ -156,12 +156,6 @@ class Miner_app extends CI_Controller
 
         echo '</table>';
 
-
-
-
-        //Intent Mining Stats
-        echo echo_ln_type_group_stats($this->config->item('en_all_7302'),7166);
-
     }
 
 
@@ -265,9 +259,6 @@ class Miner_app extends CI_Controller
         //Mench Platform Users
         echo echo_en_stats_overview($this->config->item('en_all_7555'), $en_all_7303[7555]['m_name']);
 
-
-        //Entity Mining Stats
-        echo echo_ln_type_group_stats($this->config->item('en_all_7303'), 7167);
 
     }
     function extra_stats_links(){
@@ -398,12 +389,6 @@ class Miner_app extends CI_Controller
         echo '</table>';
 
 
-
-
-
-
-        //Links User Engagement Stats
-        echo echo_ln_type_group_stats($this->config->item('en_all_7304'), 7159);
 
 
 

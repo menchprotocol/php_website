@@ -100,10 +100,21 @@ if(count($current_sign_in_attempt) == 0){
             <div class="row">
                 <?php
                 foreach ($this->config->item('en_all_7555') as $en_id => $m) {
-                    echo '<div class="col-xs-6"><a class="'.$m['m_desc'].'" href="javascript:void(0);" onclick="choose_channel('.$en_id.')">' . $m['m_icon'] . ' ' . $m['m_name'] . ' &nbsp;&nbsp;<i class="fas fa-arrow-right"></i></a></div>';
+                    echo '<div class="col-xs-6"><a class="'.( $en_id==6196 /* Facebook Messenger */ ? 'btn btn-secondary' /* Blue */ : 'btn btn-primary' /* Yellow */ ).'" href="javascript:void(0);" onclick="choose_channel('.$en_id.')">' . $m['m_icon'] . ' ' . $m['m_name'] . ' &nbsp;&nbsp;<i class="fas fa-arrow-right"></i></a></div>';
                 }
                 ?>
             </div>
+            <div class="row help_me_choose hidden">
+                <?php
+                foreach ($this->config->item('en_all_7555') as $en_id => $m) {
+                    echo '<div class="col-xs-6"><i class="fas fa-info-circle"></i> '.$m['m_desc'].'</div>';
+                }
+                ?>
+            </div>
+            <div class="row help_me_choose center" style="padding-top:20px;">
+                <div class="col-xs-12"><a href="javascript:void(0);" onclick="$('.help_me_choose').toggleClass('hidden')"><i class="fas fa-question-circle"></i> Help me choose</a></div>
+            </div>
+
         </div>
 
 
