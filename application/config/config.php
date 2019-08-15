@@ -5,7 +5,7 @@ defined('BASEPATH') OR exit('No direct script access allowed');
 /*
  *
  * Global variables used throughout the platform.
- * Example: $this->config->item('base_url')
+ * Example: $this->config->item('in_recommend_id')
  *
  */
 
@@ -33,7 +33,13 @@ $config['password_min_char']        = 6;
 $config['in_mission_id']            = 7766; //highest-level intent which defines the mission of Mench
 $config['in_join_id']               = 12599; //Where new users would start if they have not specified an intention
 $config['in_focus_id']              = 11762; //The intent that the Mench community is focused on
-$config['in_system_lock']           = array(7766, 11762); //Once set to published, their status will be locked by system
+
+$config['in_required_id']           = 12830; //Intnents required by all users to be completed before moving to Action Plan
+$config['in_recommend_id']          = 12831; //Intents recommended to all users in the same order
+
+
+
+$config['in_system_lock']           = array(7766, 11762, 12830, 12831); //Once set to published, their status will be locked by system
 $config['in_outcome_deny_terms']    = array('and', 'or', 'so'); //Once set to published, their status will be locked by system
 
 //Intent Settings:

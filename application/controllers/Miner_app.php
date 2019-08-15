@@ -123,7 +123,7 @@ class Miner_app extends CI_Controller
 
 
         //Intent Verbs:
-        $show_max_verbs = 2;
+        $show_max_verbs = 3;
 
         //Fetch all needed data:
         $in_verbs = $this->Intents_model->in_fetch(array(
@@ -244,7 +244,7 @@ class Miner_app extends CI_Controller
         echo '<tr class="panel-title down-border">';
         echo '<td style="text-align: left;">'.$en_all_7303[3000]['m_name'].'</td>';
         foreach($this->config->item('en_all_7358') /* Entity Active Statuses */ as $en_status_entity_id => $m_status){
-            echo '<td style="text-align: right;" '.( $en_status_entity_id != 6181 /* Entity Featured */ ? ' class="' . advance_mode() . '"' : '' ).'>' . $en_all_6177[$en_status_entity_id]['m_name'] . '</td>';
+            echo '<td style="text-align: right;" '.( $en_status_entity_id != 6181 /* Entity Featured */ ? ' class="' . advance_mode() . '"' : '' ).'>' . ( $en_status_entity_id==6181 /* Published Entity */ ? 'Entities' /* Just say Entities for consistency */ : $en_all_6177[$en_status_entity_id]['m_name'] ) . '</td>';
         }
         echo '</tr>';
 

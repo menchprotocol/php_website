@@ -11,7 +11,7 @@ defined('BASEPATH') OR exit('No direct script access allowed');
  *
  */
 
-//Generated 2019-08-15 13:50:12 PST
+//Generated 2019-08-15 15:47:39 PST
 
 //Algolia Indexable:
 $config['en_ids_7774'] = array(6175,6176,6180,6181,6183,6184);
@@ -55,29 +55,17 @@ $config['en_all_7774'] = array(
 );
 
 //Intent Listed Publicly:
-$config['en_ids_7767'] = array(7769,7768,7598,7766);
+$config['en_ids_7767'] = array(7598,7766);
 $config['en_all_7767'] = array(
-    7769 => array(
-        'm_icon' => '<i class="fas fa-asterisk"></i>',
-        'm_name' => 'Required',
-        'm_desc' => '',
-        'm_parents' => array(7767,7596),
-    ),
-    7768 => array(
-        'm_icon' => '<i class="fas fa-megaphone"></i>',
-        'm_name' => 'Recommended',
-        'm_desc' => '',
-        'm_parents' => array(7767,7582,7596),
-    ),
     7598 => array(
-        'm_icon' => '<i class="fas fa-user-plus"></i>',
-        'm_name' => 'Get Started',
+        'm_icon' => '<i class="fas fa-play"></i>',
+        'm_name' => 'Start',
         'm_desc' => '',
         'm_parents' => array(7767,7582,7596),
     ),
     7766 => array(
-        'm_icon' => '<i class="fas fa-search"></i>',
-        'm_name' => 'Listed',
+        'm_icon' => '<i class="fas fa-dot-circle"></i>',
+        'm_name' => 'Plug',
         'm_desc' => '',
         'm_parents' => array(7767,7596),
     ),
@@ -193,13 +181,13 @@ $config['en_all_7756'] = array(
     ),
     6907 => array(
         'm_icon' => '<i class="fas fa-cube"></i>',
-        'm_name' => 'Intent Require Any',
+        'm_name' => 'Intent Meet Any Requirement',
         'm_desc' => '',
         'm_parents' => array(7756,7585,7486,7485,7309,6997,6193),
     ),
     6914 => array(
         'm_icon' => '<i class="fas fa-cubes"></i>',
-        'm_name' => 'Intent Require All',
+        'm_name' => 'Intent Meet All Requirements',
         'm_desc' => '',
         'm_parents' => array(7756,7585,7486,7485,7309,6997),
     ),
@@ -326,7 +314,7 @@ $config['en_all_4341'] = array(
         'm_parents' => array(6160,6232,6213,6194,4341),
     ),
     4593 => array(
-        'm_icon' => '<i class="far fa-shapes"></i>',
+        'm_icon' => '<i class="fas fa-plug"></i>',
         'm_name' => 'Type',
         'm_desc' => '',
         'm_parents' => array(6160,6232,7304,6213,6194,4527,4341),
@@ -438,14 +426,14 @@ $config['en_all_6201'] = array(
         'm_parents' => array(6232,6215,6201),
     ),
     7585 => array(
-        'm_icon' => '<i class="far fa-shapes"></i>',
+        'm_icon' => '<i class="fas fa-shield-check"></i>',
         'm_name' => 'Type',
         'm_desc' => '',
         'm_parents' => array(7302,6160,6213,6194,6232,4527,6201),
     ),
     7596 => array(
-        'm_icon' => '<i class="far fa-eye"></i>',
-        'm_name' => 'Engagement Level',
+        'm_icon' => '<i class="fas fa-shapes"></i>',
+        'm_name' => 'Connection',
         'm_desc' => '',
         'm_parents' => array(7302,6160,6201,6213,6194,6232,4527),
     ),
@@ -485,19 +473,19 @@ $config['en_ids_7712'] = array(6684,6685,7231);
 $config['en_all_7712'] = array(
     6684 => array(
         'm_icon' => '<i class="far fa-check"></i>',
-        'm_name' => 'Intent Single-Choice',
+        'm_name' => 'Intent Answer',
         'm_desc' => '',
         'm_parents' => array(7712,7588,7585,6157,6193),
     ),
     6685 => array(
         'm_icon' => '<i class="far fa-stopwatch"></i>',
-        'm_name' => 'Intent Single-Choice Timed',
+        'm_name' => 'Intent Answer Timed',
         'm_desc' => '',
         'm_parents' => array(7712,7488,7487,7585,7366,6193),
     ),
     7231 => array(
         'm_icon' => '<i class="far fa-check-double"></i>',
-        'm_name' => 'Intent Multiple-Choice',
+        'm_name' => 'Intent Answer Multi-Choice',
         'm_desc' => '',
         'm_parents' => array(7712,7489,7588,7585,6193),
     ),
@@ -657,36 +645,24 @@ $config['en_all_7703'] = array(
     ),
 );
 
-//Intent Engagement Level:
-$config['en_ids_7596'] = array(7769,7768,7598,7766,7597);
+//Intent Connection:
+$config['en_ids_7596'] = array(7598,7766,7597);
 $config['en_all_7596'] = array(
-    7769 => array(
-        'm_icon' => '<i class="fas fa-asterisk"></i>',
-        'm_name' => 'Required',
-        'm_desc' => 'Intent MUST be completed by ALL users before working on any other intention',
-        'm_parents' => array(7767,7596),
-    ),
-    7768 => array(
-        'm_icon' => '<i class="fas fa-megaphone"></i>',
-        'm_name' => 'Recommended',
-        'm_desc' => 'Intent featured on mench.com and recommended to users when they finish an intention',
-        'm_parents' => array(7767,7582,7596),
-    ),
     7598 => array(
-        'm_icon' => '<i class="fas fa-user-plus"></i>',
-        'm_name' => 'Get Started',
+        'm_icon' => '<i class="fas fa-play"></i>',
+        'm_name' => 'Start',
         'm_desc' => 'Intent is searchable and requires the user to register in order to continue',
         'm_parents' => array(7767,7582,7596),
     ),
     7766 => array(
-        'm_icon' => '<i class="fas fa-search"></i>',
-        'm_name' => 'Listed',
+        'm_icon' => '<i class="fas fa-dot-circle"></i>',
+        'm_name' => 'Plug',
         'm_desc' => 'Users can find intent by searching it or arriving at it from the parent',
         'm_parents' => array(7767,7596),
     ),
     7597 => array(
-        'm_icon' => '<i class="far fa-eye-slash"></i>',
-        'm_name' => 'Unlisted',
+        'm_icon' => '<i class="far fa-square"></i>',
+        'm_name' => 'Dependant',
         'm_desc' => 'Not searchable and only accessible through its parents',
         'm_parents' => array(7596),
     ),
@@ -720,13 +696,13 @@ $config['en_ids_7588'] = array(6684,7231);
 $config['en_all_7588'] = array(
     6684 => array(
         'm_icon' => '<i class="far fa-check"></i>',
-        'm_name' => 'Intent Single-Choice',
+        'm_name' => 'Intent Answer',
         'm_desc' => '',
         'm_parents' => array(7712,7588,7585,6157,6193),
     ),
     7231 => array(
         'm_icon' => '<i class="far fa-check-double"></i>',
-        'm_name' => 'Intent Multiple-Choice',
+        'm_name' => 'Intent Answer Multi-Choice',
         'm_desc' => '',
         'm_parents' => array(7712,7489,7588,7585,6193),
     ),
@@ -737,25 +713,25 @@ $config['en_ids_6193'] = array(6684,6685,7231,6907);
 $config['en_all_6193'] = array(
     6684 => array(
         'm_icon' => '<i class="far fa-check"></i>',
-        'm_name' => 'Intent Single-Choice',
+        'm_name' => 'Intent Answer',
         'm_desc' => '',
         'm_parents' => array(7712,7588,7585,6157,6193),
     ),
     6685 => array(
         'm_icon' => '<i class="far fa-stopwatch"></i>',
-        'm_name' => 'Intent Single-Choice Timed',
+        'm_name' => 'Intent Answer Timed',
         'm_desc' => '',
         'm_parents' => array(7712,7488,7487,7585,7366,6193),
     ),
     7231 => array(
         'm_icon' => '<i class="far fa-check-double"></i>',
-        'm_name' => 'Intent Multiple-Choice',
+        'm_name' => 'Intent Answer Multi-Choice',
         'm_desc' => '',
         'm_parents' => array(7712,7489,7588,7585,6193),
     ),
     6907 => array(
         'm_icon' => '<i class="fas fa-cube"></i>',
-        'm_name' => 'Intent Require Any',
+        'm_name' => 'Intent Meet Any Requirement',
         'm_desc' => '',
         'm_parents' => array(7756,7585,7486,7485,7309,6997,6193),
     ),
@@ -790,48 +766,42 @@ $config['en_all_7585'] = array(
     ),
     6684 => array(
         'm_icon' => '<i class="far fa-check"></i>',
-        'm_name' => 'Single-Choice',
+        'm_name' => 'Answer',
         'm_desc' => 'User will complete by choosing a child intent as their answer',
         'm_parents' => array(7712,7588,7585,6157,6193),
     ),
     6685 => array(
         'm_icon' => '<i class="far fa-stopwatch"></i>',
-        'm_name' => 'Single-Choice Timed',
+        'm_name' => 'Answer Timed',
         'm_desc' => 'User will complete by choosing a child intent as their answer within a time limit',
         'm_parents' => array(7712,7488,7487,7585,7366,6193),
     ),
     7231 => array(
         'm_icon' => '<i class="far fa-check-double"></i>',
-        'm_name' => 'Multiple-Choice',
+        'm_name' => 'Answer Multi-Choice',
         'm_desc' => 'User will complete by choosing one or more child intents as their answer',
         'm_parents' => array(7712,7489,7588,7585,6193),
     ),
     6914 => array(
         'm_icon' => '<i class="fas fa-cubes"></i>',
-        'm_name' => 'Require All',
+        'm_name' => 'Meet All Requirements',
         'm_desc' => 'User will complete by (a) choosing intent as their answer or by (b) completing all child intents',
         'm_parents' => array(7756,7585,7486,7485,7309,6997),
     ),
     6907 => array(
         'm_icon' => '<i class="fas fa-cube"></i>',
-        'm_name' => 'Require Any',
+        'm_name' => 'Meet Any Requirement',
         'm_desc' => 'User will complete by (a) choosing intent as their answer or by (b) completing any child intent',
         'm_parents' => array(7756,7585,7486,7485,7309,6997,6193),
     ),
 );
 
 //Intent Action Plan Addable:
-$config['en_ids_7582'] = array(7598,7768);
+$config['en_ids_7582'] = array(7598);
 $config['en_all_7582'] = array(
     7598 => array(
-        'm_icon' => '<i class="fas fa-user-plus"></i>',
-        'm_name' => 'Intent Get Started',
-        'm_desc' => '',
-        'm_parents' => array(7767,7582,7596),
-    ),
-    7768 => array(
-        'm_icon' => '<i class="fas fa-megaphone"></i>',
-        'm_name' => 'Intent Recommended',
+        'm_icon' => '<i class="fas fa-play"></i>',
+        'm_name' => 'Intent Start',
         'm_desc' => '',
         'm_parents' => array(7767,7582,7596),
     ),
@@ -975,13 +945,13 @@ $config['en_ids_7309'] = array(6907,6914);
 $config['en_all_7309'] = array(
     6907 => array(
         'm_icon' => '<i class="fas fa-cube"></i>',
-        'm_name' => 'Intent Require Any',
+        'm_name' => 'Intent Meet Any Requirement',
         'm_desc' => '',
         'm_parents' => array(7756,7585,7486,7485,7309,6997,6193),
     ),
     6914 => array(
         'm_icon' => '<i class="fas fa-cubes"></i>',
-        'm_name' => 'Intent Require All',
+        'm_name' => 'Intent Meet All Requirements',
         'm_desc' => '',
         'm_parents' => array(7756,7585,7486,7485,7309,6997),
     ),
@@ -1180,7 +1150,7 @@ $config['en_ids_7366'] = array(6685);
 $config['en_all_7366'] = array(
     6685 => array(
         'm_icon' => '<i class="far fa-stopwatch"></i>',
-        'm_name' => 'Intent Single-Choice Timed',
+        'm_name' => 'Intent Answer Timed',
         'm_desc' => '',
         'm_parents' => array(7712,7488,7487,7585,7366,6193),
     ),
@@ -1320,14 +1290,14 @@ $config['en_all_7302'] = array(
         'm_parents' => array(7777,6160,6232,7302,4506,6213,6194,6201),
     ),
     7585 => array(
-        'm_icon' => '<i class="far fa-shapes"></i>',
+        'm_icon' => '<i class="fas fa-shield-check"></i>',
         'm_name' => 'Type',
         'm_desc' => '',
         'm_parents' => array(7302,6160,6213,6194,6232,4527,6201),
     ),
     7596 => array(
-        'm_icon' => '<i class="far fa-eye"></i>',
-        'm_name' => 'Engagement Level',
+        'm_icon' => '<i class="fas fa-shapes"></i>',
+        'm_name' => 'Connection',
         'm_desc' => '',
         'm_parents' => array(7302,6160,6201,6213,6194,6232,4527),
     ),
@@ -1366,7 +1336,7 @@ $config['en_all_7303'] = array(
 $config['en_ids_7304'] = array(4593,6186,7162,7163);
 $config['en_all_7304'] = array(
     4593 => array(
-        'm_icon' => '<i class="far fa-shapes"></i>',
+        'm_icon' => '<i class="fas fa-plug"></i>',
         'm_name' => 'Type',
         'm_desc' => '',
         'm_parents' => array(6160,6232,7304,6213,6194,4527,4341),
@@ -1655,7 +1625,7 @@ $config['en_all_6194'] = array(
         'm_parents' => array(6160,6232,6213,6194,4341),
     ),
     4593 => array(
-        'm_icon' => '<i class="far fa-shapes"></i>',
+        'm_icon' => '<i class="fas fa-plug"></i>',
         'm_name' => 'Link Type',
         'm_desc' => 'SELECT count(ln_id) as totals FROM table_links WHERE ln_type_entity_id=',
         'm_parents' => array(6160,6232,7304,6213,6194,4527,4341),
@@ -1685,14 +1655,14 @@ $config['en_all_6194'] = array(
         'm_parents' => array(6160,6232,7304,4527,6194,6213,4341),
     ),
     7585 => array(
-        'm_icon' => '<i class="far fa-shapes"></i>',
+        'm_icon' => '<i class="fas fa-shield-check"></i>',
         'm_name' => 'Intent Type',
         'm_desc' => 'SELECT count(in_id) as totals FROM table_intents WHERE in_type_entity_id=',
         'm_parents' => array(7302,6160,6213,6194,6232,4527,6201),
     ),
     7596 => array(
-        'm_icon' => '<i class="far fa-eye"></i>',
-        'm_name' => 'Intent Engagement Level',
+        'm_icon' => '<i class="fas fa-shapes"></i>',
+        'm_name' => 'Intent Connection',
         'm_desc' => '',
         'm_parents' => array(7302,6160,6201,6213,6194,6232,4527),
     ),
