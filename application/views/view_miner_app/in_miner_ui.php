@@ -10,6 +10,9 @@ $en_all_7369 = $this->config->item('en_all_7369');
 <script src="/js/custom/intent-actionplan.js?v=v<?= $this->config->item('app_version') ?>"
         type="text/javascript"></script>
 
+<style>
+    .in_child_icon_<?= $in['in_id'] ?>{ display:none; }
+</style>
 
 <div class="row">
     <div class="<?= $this->config->item('css_column_1') ?>">

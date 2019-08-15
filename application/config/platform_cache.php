@@ -11,7 +11,7 @@ defined('BASEPATH') OR exit('No direct script access allowed');
  *
  */
 
-//Generated 2019-08-14 16:26:08 PST
+//Generated 2019-08-15 10:37:31 PST
 
 //Algolia Indexable:
 $config['en_ids_7774'] = array(6175,6176,6180,6181,6183,6184);
@@ -54,7 +54,7 @@ $config['en_all_7774'] = array(
     ),
 );
 
-//Intent Public Engagement Levels:
+//Intent Listed Publicly:
 $config['en_ids_7767'] = array(7769,7768,7598,7766);
 $config['en_all_7767'] = array(
     7769 => array(
@@ -65,13 +65,13 @@ $config['en_all_7767'] = array(
     ),
     7768 => array(
         'm_icon' => '<i class="fas fa-megaphone"></i>',
-        'm_name' => 'Featured',
+        'm_name' => 'Recommend',
         'm_desc' => '',
         'm_parents' => array(7767,7582,7596),
     ),
     7598 => array(
         'm_icon' => '<i class="fas fa-user-plus"></i>',
-        'm_name' => 'Register',
+        'm_name' => 'Enrolled',
         'm_desc' => '',
         'm_parents' => array(7767,7582,7596),
     ),
@@ -192,75 +192,33 @@ $config['en_all_7756'] = array(
         'm_parents' => array(7756,7585,4559,6192),
     ),
     6907 => array(
-        'm_icon' => '<i class="far fa-lock"></i>',
-        'm_name' => 'Intent Answer Unlock Any',
+        'm_icon' => '<i class="fas fa-cube"></i>',
+        'm_name' => 'Intent Meet Any Requirement',
         'm_desc' => '',
         'm_parents' => array(7756,7585,7486,7485,7309,6997,6193),
     ),
     6914 => array(
-        'm_icon' => '<i class="fas fa-lock"></i>',
-        'm_name' => 'Intent Answer Unlock All',
+        'm_icon' => '<i class="fas fa-cubes"></i>',
+        'm_name' => 'Intent Meet All Requirements',
         'm_desc' => '',
         'm_parents' => array(7756,7585,7486,7485,7309,6997),
     ),
 );
 
 //Intent Upload File:
-$config['en_ids_7751'] = array(6678,6679,6680,6681);
+$config['en_ids_7751'] = array(7637);
 $config['en_all_7751'] = array(
-    6678 => array(
-        'm_icon' => '<i class="far fa-image"></i>',
-        'm_name' => 'Intent Send Image',
-        'm_desc' => '',
-        'm_parents' => array(7751,7585,6144,6192),
-    ),
-    6679 => array(
-        'm_icon' => '<i class="far fa-video"></i>',
-        'm_name' => 'Intent Send Video',
-        'm_desc' => '',
-        'm_parents' => array(7751,7585,6144,6192),
-    ),
-    6680 => array(
-        'm_icon' => '<i class="far fa-microphone"></i>',
-        'm_name' => 'Intent Send Audio',
-        'm_desc' => '',
-        'm_parents' => array(7751,7585,6144,6192),
-    ),
-    6681 => array(
-        'm_icon' => '<i class="far fa-file-pdf"></i>',
-        'm_name' => 'Intent Send Document',
+    7637 => array(
+        'm_icon' => '<i class="far fa-paperclip"></i>',
+        'm_name' => 'Intent Upload Attachment',
         'm_desc' => '',
         'm_parents' => array(7751,7585,6144,6192),
     ),
 );
 
 //User Step Create New Content:
-$config['en_ids_6144'] = array(6678,6679,6680,6681,6682,6683);
+$config['en_ids_6144'] = array(6682,6683,7637);
 $config['en_all_6144'] = array(
-    6678 => array(
-        'm_icon' => '<i class="far fa-image"></i>',
-        'm_name' => 'Image',
-        'm_desc' => '',
-        'm_parents' => array(7751,7585,6144,6192),
-    ),
-    6679 => array(
-        'm_icon' => '<i class="far fa-video"></i>',
-        'm_name' => 'Video',
-        'm_desc' => '',
-        'm_parents' => array(7751,7585,6144,6192),
-    ),
-    6680 => array(
-        'm_icon' => '<i class="far fa-microphone"></i>',
-        'm_name' => 'Audio',
-        'm_desc' => '',
-        'm_parents' => array(7751,7585,6144,6192),
-    ),
-    6681 => array(
-        'm_icon' => '<i class="far fa-file-pdf"></i>',
-        'm_name' => 'Document',
-        'm_desc' => '',
-        'm_parents' => array(7751,7585,6144,6192),
-    ),
     6682 => array(
         'm_icon' => '<i class="far fa-external-link"></i>',
         'm_name' => 'URL',
@@ -272,6 +230,12 @@ $config['en_all_6144'] = array(
         'm_name' => 'Text',
         'm_desc' => '',
         'm_parents' => array(7585,6144,6192),
+    ),
+    7637 => array(
+        'm_icon' => '<i class="far fa-paperclip"></i>',
+        'm_name' => 'Intent Upload Attachment',
+        'm_desc' => '',
+        'm_parents' => array(7751,7585,6144,6192),
     ),
 );
 
@@ -459,7 +423,7 @@ $config['en_all_6201'] = array(
         'm_icon' => '<i class="far fa-tools"></i>',
         'm_name' => 'Verb',
         'm_desc' => '',
-        'm_parents' => array(6160,6232,7302,4506,6213,6194,6201),
+        'm_parents' => array(7777,6160,6232,7302,4506,6213,6194,6201),
     ),
     6159 => array(
         'm_icon' => '<i class="far fa-lambda"></i>',
@@ -722,31 +686,31 @@ $config['en_all_7596'] = array(
     7769 => array(
         'm_icon' => '<i class="fas fa-asterisk"></i>',
         'm_name' => 'Required',
-        'm_desc' => 'Every single Mench user must complete this intention before working on any of their own Intentions added to their Action Plans',
+        'm_desc' => 'Intent MUST be completed by ALL users before working on any other intention',
         'm_parents' => array(7767,7596),
     ),
     7768 => array(
         'm_icon' => '<i class="fas fa-megaphone"></i>',
-        'm_name' => 'Featured',
-        'm_desc' => 'Mench will feature intention on mench.com and via Messenger to new users while also allowing users to search for this intent',
+        'm_name' => 'Recommend',
+        'm_desc' => 'Intent featured on mench.com and recommended to users when they finish an intention',
         'm_parents' => array(7767,7582,7596),
     ),
     7598 => array(
         'm_icon' => '<i class="fas fa-user-plus"></i>',
-        'm_name' => 'Register',
-        'm_desc' => 'Users can start at this intent and find it by searching for it (maximum visibility)',
+        'm_name' => 'Enrolled',
+        'm_desc' => 'Intent is searchable and requires the user to register in order to continue',
         'm_parents' => array(7767,7582,7596),
     ),
     7766 => array(
         'm_icon' => '<i class="fas fa-search"></i>',
         'm_name' => 'Listed',
-        'm_desc' => 'Users cannot start at this intent but they can find it by searching it',
+        'm_desc' => 'Users can find intent by searching it or arriving at it from the parent',
         'm_parents' => array(7767,7596),
     ),
     7597 => array(
-        'm_icon' => '<i class="fas fa-equals"></i>',
+        'm_icon' => '<i class="far fa-eye-slash"></i>',
         'm_name' => 'Unlisted',
-        'm_desc' => 'Users cannot start at this intent or search for it but they can engage with it as long as it\'s published and they know the URL',
+        'm_desc' => 'Not searchable and only accessible through its parents',
         'm_parents' => array(7596),
     ),
 );
@@ -813,15 +777,15 @@ $config['en_all_6193'] = array(
         'm_parents' => array(7712,7489,7588,7585,6193),
     ),
     6907 => array(
-        'm_icon' => '<i class="far fa-lock"></i>',
-        'm_name' => 'Intent Answer Unlock Any',
+        'm_icon' => '<i class="fas fa-cube"></i>',
+        'm_name' => 'Intent Meet Any Requirement',
         'm_desc' => '',
         'm_parents' => array(7756,7585,7486,7485,7309,6997,6193),
     ),
 );
 
 //Intent Type:
-$config['en_ids_7585'] = array(6677,6683,6682,6679,6680,6678,6681,6684,6685,7231,6914,6907,7740);
+$config['en_ids_7585'] = array(6677,6683,6682,7637,6684,6685,7231,6914,6907,7740);
 $config['en_all_7585'] = array(
     6677 => array(
         'm_icon' => '<i class="far fa-comments"></i>',
@@ -841,28 +805,10 @@ $config['en_all_7585'] = array(
         'm_desc' => 'User will complete by sending a URL message',
         'm_parents' => array(7585,6144,6192),
     ),
-    6679 => array(
-        'm_icon' => '<i class="far fa-video"></i>',
-        'm_name' => 'Send Video',
-        'm_desc' => 'User will complete by sending a video message',
-        'm_parents' => array(7751,7585,6144,6192),
-    ),
-    6680 => array(
-        'm_icon' => '<i class="far fa-microphone"></i>',
-        'm_name' => 'Send Audio',
-        'm_desc' => 'User will complete by sending an audio message',
-        'm_parents' => array(7751,7585,6144,6192),
-    ),
-    6678 => array(
-        'm_icon' => '<i class="far fa-image"></i>',
-        'm_name' => 'Send Image',
-        'm_desc' => 'User will complete by sending an image message',
-        'm_parents' => array(7751,7585,6144,6192),
-    ),
-    6681 => array(
-        'm_icon' => '<i class="far fa-file-pdf"></i>',
-        'm_name' => 'Send Document',
-        'm_desc' => 'User will complete by sending a file (PDF, DOC, etc...) message',
+    7637 => array(
+        'm_icon' => '<i class="far fa-paperclip"></i>',
+        'm_name' => 'Upload Attachment',
+        'm_desc' => 'User completes by uploading a video, audio, image or document file',
         'm_parents' => array(7751,7585,6144,6192),
     ),
     6684 => array(
@@ -884,14 +830,14 @@ $config['en_all_7585'] = array(
         'm_parents' => array(7712,7489,7588,7585,6193),
     ),
     6914 => array(
-        'm_icon' => '<i class="fas fa-lock"></i>',
-        'm_name' => 'Answer Unlock All',
+        'm_icon' => '<i class="fas fa-cubes"></i>',
+        'm_name' => 'Meet All Requirements',
         'm_desc' => 'User will complete by (a) choosing intent as their answer or by (b) completing all child intents',
         'm_parents' => array(7756,7585,7486,7485,7309,6997),
     ),
     6907 => array(
-        'm_icon' => '<i class="far fa-lock"></i>',
-        'm_name' => 'Answer Unlock Any',
+        'm_icon' => '<i class="fas fa-cube"></i>',
+        'm_name' => 'Meet Any Requirement',
         'm_desc' => 'User will complete by (a) choosing intent as their answer or by (b) completing any child intent',
         'm_parents' => array(7756,7585,7486,7485,7309,6997,6193),
     ),
@@ -908,13 +854,13 @@ $config['en_ids_7582'] = array(7598,7768);
 $config['en_all_7582'] = array(
     7598 => array(
         'm_icon' => '<i class="fas fa-user-plus"></i>',
-        'm_name' => 'Intent Register',
+        'm_name' => 'Intent Enrolled',
         'm_desc' => '',
         'm_parents' => array(7767,7582,7596),
     ),
     7768 => array(
         'm_icon' => '<i class="fas fa-megaphone"></i>',
-        'm_name' => 'Intent Featured',
+        'm_name' => 'Intent Recommend',
         'm_desc' => '',
         'm_parents' => array(7767,7582,7596),
     ),
@@ -1057,14 +1003,14 @@ $config['en_all_7494'] = array(
 $config['en_ids_7309'] = array(6907,6914);
 $config['en_all_7309'] = array(
     6907 => array(
-        'm_icon' => '<i class="far fa-lock"></i>',
-        'm_name' => 'Intent Answer Unlock Any',
+        'm_icon' => '<i class="fas fa-cube"></i>',
+        'm_name' => 'Intent Meet Any Requirement',
         'm_desc' => '',
         'm_parents' => array(7756,7585,7486,7485,7309,6997,6193),
     ),
     6914 => array(
-        'm_icon' => '<i class="fas fa-lock"></i>',
-        'm_name' => 'Intent Answer Unlock All',
+        'm_icon' => '<i class="fas fa-cubes"></i>',
+        'm_name' => 'Intent Meet All Requirements',
         'm_desc' => '',
         'm_parents' => array(7756,7585,7486,7485,7309,6997),
     ),
@@ -1400,7 +1346,7 @@ $config['en_all_7302'] = array(
         'm_icon' => '<i class="far fa-tools"></i>',
         'm_name' => 'Verb',
         'm_desc' => '',
-        'm_parents' => array(6160,6232,7302,4506,6213,6194,6201),
+        'm_parents' => array(7777,6160,6232,7302,4506,6213,6194,6201),
     ),
     7166 => array(
         'm_icon' => '<i class="far fa-chart-pie"></i>',
@@ -1834,7 +1780,7 @@ $config['en_all_6194'] = array(
         'm_icon' => '<i class="far fa-tools"></i>',
         'm_name' => 'Intent Verb',
         'm_desc' => 'SELECT count(in_id) as totals FROM table_intents WHERE in_verb_entity_id=',
-        'm_parents' => array(6160,6232,7302,4506,6213,6194,6201),
+        'm_parents' => array(7777,6160,6232,7302,4506,6213,6194,6201),
     ),
     6177 => array(
         'm_icon' => '<i class="far fa-sliders-h"></i>',

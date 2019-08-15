@@ -290,7 +290,7 @@ class Messenger extends CI_Controller
 
 
                     //Set more variables:
-                    $in_type_entity_id_search = 0; //If >0, we will try to see if this message is to submit a requirement for an intent
+                    $matching_types = array(); //Defines the supported intent types
 
                     unset($ln_data); //Reset everything in case its set from the previous loop!
                     $ln_data = array(
@@ -346,8 +346,24 @@ class Messenger extends CI_Controller
                         } else {
 
                             //Could be either text or URL:
-                            $in_type_entity_id_search = ( filter_var($im['message']['text'], FILTER_VALIDATE_URL) ? 6682 /* URL Required */ : 6683 /* Text Required */ );
-
+                            if(filter_var($im['message']['text'], FILTER_VALIDATE_URL)){
+                                //The message is a URL:
+                                $matching_types = array(
+                                    7635 /* Send Anything */ ,
+                                    6683 /* Send Text */ ,
+                                    7637 /* Send Attachment */ ,
+                                    6682 /* Send URL */,
+                                    6679 /* Send Video */,
+                                    6680 /* Send Audio */,
+                                    6678 /* Send Image */,
+                                    6681 /* Send Document */
+                                );
+                            } else {
+                                $matching_types = array(
+                                    7635 /* Send Anything */ ,
+                                    6683 /* Send Text */
+                                );
+                            }
                             $ln_data['ln_type_entity_id'] = 4547; //User Sent Text Message
 
                         }
@@ -362,22 +378,38 @@ class Messenger extends CI_Controller
                                 'video' => array(
                                     'sent' => 4553,     //Link type for when sent to Users via Messenger
                                     'received' => 4548, //Link type for when received from Users via Messenger
-                                    'requirement' => 6679,
+                                    'matching_types' => array(
+                                        7635 /* Send Anything */ ,
+                                        7637 /* Send Attachment */ ,
+                                        6679 /* Send Video */
+                                    ),
                                 ),
                                 'audio' => array(
                                     'sent' => 4554,
                                     'received' => 4549,
-                                    'requirement' => 6680,
+                                    'matching_types' => array(
+                                        7635 /* Send Anything */ ,
+                                        7637 /* Send Attachment */ ,
+                                        6680 /* Send Audio */
+                                    ),
                                 ),
                                 'image' => array(
                                     'sent' => 4555,
                                     'received' => 4550,
-                                    'requirement' => 6678,
+                                    'matching_types' => array(
+                                        7635 /* Send Anything */ ,
+                                        7637 /* Send Attachment */ ,
+                                        6678 /* Send Image */
+                                    ),
                                 ),
                                 'file' => array(
                                     'sent' => 4556,
                                     'received' => 4551,
-                                    'requirement' => 6681,
+                                    'matching_types' => array(
+                                        7635 /* Send Anything */ ,
+                                        7637 /* Send Attachment */ ,
+                                        6681 /* Send Document */
+                                    ),
                                 ),
                             );
 
@@ -402,7 +434,7 @@ class Messenger extends CI_Controller
                                 $ln_data['ln_content'] = $att['payload']['url']; //Media Attachment Temporary Facebook URL
                                 $ln_data['ln_status_entity_id'] = 6175; //Link Drafting, since URL needs to be uploaded to Mench CDN via cron__save_chat_media()
                                 if(!$sent_by_mench){
-                                    $in_type_entity_id_search = $att_media_types[$att['type']]['requirement'];
+                                    $matching_types = $att_media_types[$att['type']]['matching_types'];
                                 }
 
                             } elseif ($att['type'] == 'location') {
@@ -503,7 +535,7 @@ class Messenger extends CI_Controller
 
 
                     //Did we have a pending response?
-                    if(isset($new_message['ln_id']) && $in_type_entity_id_search > 0){
+                    if(isset($new_message['ln_id']) && count($matching_types) > 0){
 
                         $pending_matches = array();
                         $pending_mismatches = array();
@@ -515,7 +547,7 @@ class Messenger extends CI_Controller
                             'ln_status_entity_id IN (' . join(',', $this->config->item('en_ids_7364')) . ')' => null, //Link Statuses Incomplete
                             'in_status_entity_id IN (' . join(',', $this->config->item('en_ids_7355')) . ')' => null, //Intent Statuses Public
                         ), array('in_parent'), 0) as $req_sub){
-                            if($req_sub['in_type_entity_id']==$in_type_entity_id_search){
+                            if(in_array($req_sub['in_type_entity_id'], $matching_types)){
                                 array_push($pending_matches, $req_sub);
                             } else {
                                 array_push($pending_mismatches, $req_sub);

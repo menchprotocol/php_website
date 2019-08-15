@@ -8,6 +8,9 @@
     var en_focus_id = <?= $entity['en_id'] ?>;
     var en_all_4592 = <?= json_encode($this->config->item('en_all_4592')) ?>;
 </script>
+<style>
+    .en_child_icon_<?= $entity['en_id'] ?>{ display:none; }
+</style>
 <script src="/js/custom/entity-manage-js.js?v=v<?= $this->config->item('app_version') ?>"
         type="text/javascript"></script>
 

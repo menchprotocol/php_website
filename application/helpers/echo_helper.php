@@ -2070,7 +2070,9 @@ function echo_in($in, $level, $in_linked_id = 0, $is_parent = false)
     //Loop through parents:
     $ui .= '<span class="' . ( $level == 1 ? '' : advance_mode()  ) . '">';
     foreach ($in['in__parents'] as $in_parent) {
-        $ui .= ' &nbsp;<a href="/intents/' . $in_parent['in_id'] . $in_filters['get_filter_url'] . '" data-toggle="tooltip" title="' . $in_parent['in_outcome'] . '" data-placement="bottom" class="in_icon_child_' . $in_parent['in_id'] . '">' . $en_all_7585[$in_parent['in_type_entity_id']]['m_icon'] . '</a>';
+        if($in_linked_id!=$in_parent['in_id']){
+            $ui .= ' &nbsp;<a href="/intents/' . $in_parent['in_id'] . $in_filters['get_filter_url'] . '" data-toggle="tooltip" title="' . $in_parent['in_outcome'] . '" data-placement="bottom" class="in_child_icon_' . $in_parent['in_id'] . '">' . $en_all_7585[$in_parent['in_type_entity_id']]['m_icon'] . '</a>';
+        }
     }
     $ui .= '</span>';
 
@@ -2371,6 +2373,7 @@ function echo_en($en, $level, $is_parent = false)
 
     //Do we have entity parents loaded in our data-set? If not, load it:
     if (!isset($en['en__parents'])) {
+
         //Fetch parents at this point:
         $en['en__parents'] = $CI->Links_model->ln_fetch(array(
             'ln_type_entity_id IN (' . join(',', $CI->config->item('en_ids_4592')) . ')' => null, //Entity Link Connectors
@@ -2381,9 +2384,9 @@ function echo_en($en, $level, $is_parent = false)
     }
 
     //Loop through parents and only show those that have en_icon set:
-    $ui .= '<span class="' . ( $level == 1 ? '' : advance_mode() ) . '">';
+    $ui .= '<span class="' . ( $level == 1 ? '' : advance_mode()  ) . '">';
     foreach ($en['en__parents'] as $en_parent) {
-        $ui .= ' &nbsp;<a href="/entities/' . $en_parent['en_id'] . '" data-toggle="tooltip" title="' . $en_parent['en_name'] . (strlen($en_parent['ln_content']) > 0 ? ' = ' . $en_parent['ln_content'] : '') . '" data-placement="bottom" class="parent-icon en_child_icon_' . $en_parent['en_id'] . '">' . echo_en_icon($en_parent) . '</a>';
+        $ui .= '<span class="parent-icon en_child_icon_' . $en_parent['en_id'] . '"> &nbsp;<a href="/entities/' . $en_parent['en_id'] . '" data-toggle="tooltip" title="' . $en_parent['en_name'] . (strlen($en_parent['ln_content']) > 0 ? ' = ' . $en_parent['ln_content'] : '') . '" data-placement="bottom">' . echo_en_icon($en_parent) . '</a></span>';
     }
     $ui .= '</span>';
 
@@ -2442,6 +2445,7 @@ function echo_en($en, $level, $is_parent = false)
 
     //Have we counted the Entity Children?
     if (!isset($en['en__child_count'])) {
+
         //Assume none:
         $en['en__child_count'] = 0;
 
@@ -2456,6 +2460,7 @@ function echo_en($en, $level, $is_parent = false)
         if (count($child_links) > 0) {
             $en['en__child_count'] = intval($child_links[0]['en__child_count']);
         }
+
     }
 
     if($level == 1){

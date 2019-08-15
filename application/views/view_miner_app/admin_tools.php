@@ -306,7 +306,7 @@ if(!$action) {
     $invalid_outcomes = 0;
     foreach($active_ins as $count=>$in){
 
-        $in_outcome_validation = $this->Intents_model->in_analyze_outcome($in['in_outcome'], $session_en['en_id'], $in['in_id']);
+        $in_outcome_validation = $this->Intents_model->in_analyze_outcome($in['in_outcome'], $in['in_engagement_level_entity_id']);
 
         if(!$in_outcome_validation['status']){
 
@@ -380,7 +380,7 @@ if(!$action) {
                 if($replace_with_is_set){
                     //Do replacement:
                     $new_outcome = str_replace($_GET['search_for'],$_GET['replace_with'],$in['in_outcome']);
-                    $in_outcome_validation = $this->Intents_model->in_analyze_outcome($new_outcome, $session_en['en_id'], $in['in_id']);
+                    $in_outcome_validation = $this->Intents_model->in_analyze_outcome($new_outcome, $in['in_engagement_level_entity_id']);
 
                     if($in_outcome_validation['status']){
                         $qualifying_replacements++;
@@ -417,7 +417,7 @@ if(!$action) {
                         'ln_type_entity_id IN (' . join(',', $this->config->item('en_ids_4486')) . ')' => null, //Intent Link Connectors
                         'ln_child_intent_id' => $in['in_id'],
                     ), array('in_parent')) as $in_parent) {
-                        echo '<a href="/intents/' . $in_parent['in_id'] . '" data-toggle="tooltip" title="' . $in_parent['in_outcome'] . '" data-placement="bottom" class="in_icon_child_' . $in_parent['in_id'] . '">' . $en_all_7585[$in_parent['in_type_entity_id']]['m_icon'] . '</a> &nbsp;';
+                        echo '<span class="in_child_icon_' . $in_parent['in_id'] . '"><a href="/intents/' . $in_parent['in_id'] . '" data-toggle="tooltip" title="' . $in_parent['in_outcome'] . '" data-placement="bottom">' . $en_all_7585[$in_parent['in_type_entity_id']]['m_icon'] . '</a> &nbsp;</span>';
                     }
 
                     echo '</td>';

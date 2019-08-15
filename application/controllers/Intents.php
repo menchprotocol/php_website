@@ -642,7 +642,7 @@ class Intents extends CI_Controller
         } elseif (!isset($_POST['in_engagement_level_entity_id'])) {
             return echo_json(array(
                 'status' => 0,
-                'message' => 'Missing Start Mode',
+                'message' => 'Missing Engagement Level',
             ));
         } elseif (count($ins) < 1) {
             return echo_json(array(
@@ -667,6 +667,26 @@ class Intents extends CI_Controller
                     'message' => 'MIN range cannot be larger than MAX',
                 ));
             }
+        } elseif (!in_array($_POST['in_type_entity_id'], $this->config->item('en_ids_7585'))) {
+            return echo_json(array(
+                'status' => 0,
+                'message' => 'Invalid Intent Type value',
+            ));
+        } elseif (!in_array($_POST['in_status_entity_id'], $this->config->item('en_ids_4737'))) {
+            return echo_json(array(
+                'status' => 0,
+                'message' => 'Invalid Intent Status value',
+            ));
+        } elseif (!in_array($_POST['in_engagement_level_entity_id'], $this->config->item('en_ids_7596'))) {
+            return echo_json(array(
+                'status' => 0,
+                'message' => 'Invalid Intent Engagement Level value',
+            ));
+        } elseif (!in_array($_POST['in_engagement_level_entity_id'], $this->config->item('en_ids_7596'))) {
+            return echo_json(array(
+                'status' => 0,
+                'message' => 'Invalid Intent Engagement Level value',
+            ));
         }
 
 
@@ -707,10 +727,10 @@ class Intents extends CI_Controller
 
             } else {
 
-                if ($key == 'in_outcome') {
+                if ($key == 'in_outcome' || $key == 'in_engagement_level_entity_id') {
 
                     //Validate Intent Outcome:
-                    $in_outcome_validation = $this->Intents_model->in_analyze_outcome($_POST['in_outcome'], $session_en['en_id'], $in_current['in_id']);
+                    $in_outcome_validation = $this->Intents_model->in_analyze_outcome($_POST['in_outcome'], $_POST['in_engagement_level_entity_id']);
                     if(!$in_outcome_validation['status']){
                         //We had an error, return it:
                         return echo_json($in_outcome_validation);

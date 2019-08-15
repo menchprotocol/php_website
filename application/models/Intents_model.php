@@ -19,8 +19,12 @@ class Intents_model extends CI_Model
     {
 
         //What is required to create a new intent?
-        if (detect_missing_columns($insert_columns, array('in_outcome', 'in_type_entity_id', 'in_status_entity_id', 'in_verb_entity_id', 'in_engagement_level_entity_id'), $ln_creator_entity_id)) {
+        if (detect_missing_columns($insert_columns, array('in_outcome', 'in_type_entity_id', 'in_status_entity_id', 'in_verb_entity_id'), $ln_creator_entity_id)) {
             return false;
+        }
+
+        if(!isset($insert_columns['in_engagement_level_entity_id'])){
+            $insert_columns['in_engagement_level_entity_id'] = 7597; //Always start at unlisted
         }
 
         //Lets now add:
@@ -373,7 +377,7 @@ class Intents_model extends CI_Model
 
 
             //Validate Intent Outcome:
-            $in_outcome_validation = $this->Intents_model->in_analyze_outcome($in_outcome, $ln_creator_entity_id);
+            $in_outcome_validation = $this->Intents_model->in_analyze_outcome($in_outcome);
             if(!$in_outcome_validation['status']){
                 //We had an error, return it:
                 return $in_outcome_validation;
@@ -386,7 +390,6 @@ class Intents_model extends CI_Model
                 'in_verb_entity_id' => $in_outcome_validation['detected_in_verb_entity_id'],
                 'in_type_entity_id' => $in_type_entity_id,
                 'in_status_entity_id' => $new_in_status,
-                'in_engagement_level_entity_id' => $in_outcome_validation['detected_in_engagement_level_entity_id'],
             ), true, $ln_creator_entity_id);
 
         }
@@ -672,11 +675,6 @@ class Intents_model extends CI_Model
 
                 //AND parent Intent with Fixed Step Link:
                 array_push($metadata_this['__in__metadata_common_steps'], intval($in_child['in_id']));
-
-
-                if($in_child['in_type_entity_id']==7740 /* Cancel Intention */){
-                    array_push($metadata_this['__in__metadata_terminations_7740'], intval($in_child['in_id']));
-                }
 
                 //Go recursively down:
                 $child_recursion = $this->Intents_model->in_metadata_common_base($in_child);
@@ -1057,7 +1055,10 @@ class Intents_model extends CI_Model
 
     }
 
-    function in_analyze_outcome($in_outcome, $ln_creator_entity_id = 0, $skip_in_id = 0){
+    function in_analyze_outcome($in_outcome, $in_engagement_level_entity_id = 7597 /* Unlist Default */){
+
+        //We assume no verb to start with:
+        $in_verb_entity_id = 0;
 
         //Validate outcome:
         if(strlen($in_outcome) < 1){
@@ -1065,6 +1066,13 @@ class Intents_model extends CI_Model
             return array(
                 'status' => 0,
                 'message' => 'Missing Outcome',
+            );
+
+        } elseif (!in_array($in_engagement_level_entity_id, $this->config->item('en_ids_7596'))) {
+
+            return array(
+                'status' => 0,
+                'message' => 'Invalid in_engagement_level_entity_id value',
             );
 
         } elseif(substr_count($in_outcome , '  ') > 0){
@@ -1081,23 +1089,34 @@ class Intents_model extends CI_Model
                 'message' => 'Outcome must be '.$this->config->item('in_outcome_max').' characters or less',
             );
 
-        }
+        } elseif (in_array($in_engagement_level_entity_id, $this->config->item('en_ids_7767'))) {
+
+            $en_all_7767 = $this->config->item('en_all_7767');
+
+            //Is this a public intent type? Then we require a proper verb to start with:
+            //Determine verb, if any:
+            $in_verb_entity_id = in_outcome_verb_id($in_outcome);
 
 
-        //Determine verb, if any:
-        $in_verb_entity_id = in_outcome_verb_id($in_outcome);
+            if(!$in_verb_entity_id){
 
-
-        if($in_verb_entity_id > 0){
-
-            //Does the outcome have a parent intent reference?
-            $string_references = extract_references($in_outcome);
-
-            if( count($string_references['ref_forbidden']) > 0 ){
                 return array(
                     'status' => 0,
-                    'message' => 'Intent outcome must be focused so you cannot use "'.join('" or "',$string_references['ref_forbidden']).'". Think of the core outcome and just put that.',
+                    'message' => $en_all_7767[$in_engagement_level_entity_id]['m_name'].' Intent outcomes must start with a published verb @5008.',
                 );
+
+            } else {
+
+                //Does the outcome have a parent intent reference?
+                $string_references = extract_references($in_outcome);
+
+                if( count($string_references['ref_forbidden']) > 0 ){
+                    return array(
+                        'status' => 0,
+                        'message' => $en_all_7767[$in_engagement_level_entity_id]['m_name'].' Intent outcomes must be focused on a single topic so they cannot use "'.join('" or "',$string_references['ref_forbidden']).'".',
+                    );
+                }
+
             }
         }
 
@@ -1108,7 +1127,6 @@ class Intents_model extends CI_Model
             'status' => 1,
             'in_cleaned_outcome' => trim($in_outcome),
             'detected_in_verb_entity_id' => $in_verb_entity_id, //Could be zero
-            'detected_in_engagement_level_entity_id' => ( $in_verb_entity_id > 0 ? 7597 /* Unlisted */ : 7766 /* Listed */  ),
         );
 
     }

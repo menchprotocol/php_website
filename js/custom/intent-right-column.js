@@ -570,7 +570,7 @@ function in_modify_save() {
                 $('.in_parent_type_' + modify_data['in_id']).html('<span data-toggle="tooltip" data-placement="right" title="'+ js_en_all_7585[modify_data['in_type_entity_id']]['m_name'] + ': '+ js_en_all_7585[modify_data['in_type_entity_id']]['m_desc'] + '">'+ js_en_all_7585[modify_data['in_type_entity_id']]['m_icon'] +'</span>');
 
                 //Also update possible child icons:
-                $('.in_icon_child_' + modify_data['in_id']).html(js_en_all_7585[modify_data['in_type_entity_id']]['m_icon']);
+                $('.in_child_icon_' + modify_data['in_id']).html(js_en_all_7585[modify_data['in_type_entity_id']]['m_icon']);
 
 
                 $('.in_status_entity_id_' + modify_data['in_id']).html('<span data-toggle="tooltip" data-placement="right" title="'+ js_en_all_4737[modify_data['in_status_entity_id']]['m_name'] + ': '+ js_en_all_4737[modify_data['in_status_entity_id']]['m_desc'] + '">'+ js_en_all_4737[modify_data['in_status_entity_id']]['m_icon'] +'</span>');
@@ -596,7 +596,7 @@ function in_modify_save() {
                     $('.edit-header').html('<i class="fas fa-cog"></i> ' + modify_data['in_outcome']);
 
                     //Also update possible child icons:
-                    $('.in_icon_child_' + modify_data['in_id']).attr('data-original-title', modify_data['in_outcome']);
+                    $('.in_child_icon_' + modify_data['in_id']).attr('data-original-title', modify_data['in_outcome']);
                 }
 
 

@@ -1056,7 +1056,7 @@ class User_app_model extends CI_Model
          * OR Intents are completed when a single child is completed
          *
          * */
-        $requires_all_children = ( $in['in_type_entity_id'] == 6914 /*AND Lock, meaning all children are needed */ );
+        $requires_all_children = ( $in['in_type_entity_id'] == 6914 /* AND Lock, meaning all children are needed */ );
 
         //Generate list of users who have completed it:
         $qualified_completed_users = array();

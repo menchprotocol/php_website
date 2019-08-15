@@ -151,7 +151,7 @@ class Links extends CI_Controller
             }
 
             //Validate Intent Outcome:
-            $in_outcome_validation = $this->Intents_model->in_analyze_outcome($in_outcome, $session_en['en_id']);
+            $in_outcome_validation = $this->Intents_model->in_analyze_outcome($in_outcome);
             if(!$in_outcome_validation['status']){
                 //We had an error, return it:
                 return echo_json($in_outcome_validation);
@@ -163,7 +163,6 @@ class Links extends CI_Controller
                 'in_verb_entity_id' => $in_outcome_validation['detected_in_verb_entity_id'],
                 'in_type_entity_id' => 6677, //Read Messages
                 'in_status_entity_id' => 6183, //Intent New
-                'in_engagement_level_entity_id' => $in_outcome_validation['detected_in_engagement_level_entity_id'],
             ), true, $session_en['en_id']);
 
             return echo_json(array(
