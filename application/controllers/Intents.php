@@ -160,7 +160,7 @@ class Intents extends CI_Controller
         ));
 
         //Load specific view based on intent status:
-        $this->load->view(( in_array($ins[0]['in_engagement_level_entity_id'], $this->config->item('en_ids_7582')) /* Intent Action Plan Addable */ ? 'view_user_app/in_starting_point' : 'view_user_app/in_passing_point'  ), array(
+        $this->load->view(( in_array($ins[0]['in_access_level_entity_id'], $this->config->item('en_ids_7582')) /* Intent Action Plan Addable */ ? 'view_user_app/in_starting_point' : 'view_user_app/in_passing_point'  ), array(
             'in' => $ins[0],
             'referrer_en_id' => $referrer_en_id,
             'session_en' => $session_en,
@@ -664,7 +664,7 @@ class Intents extends CI_Controller
                 'status' => 0,
                 'message' => 'Missing Intent Status',
             ));
-        } elseif (!isset($_POST['in_engagement_level_entity_id'])) {
+        } elseif (!isset($_POST['in_access_level_entity_id'])) {
             return echo_json(array(
                 'status' => 0,
                 'message' => 'Missing Engagement Level',
@@ -702,12 +702,12 @@ class Intents extends CI_Controller
                 'status' => 0,
                 'message' => 'Invalid Intent Status value',
             ));
-        } elseif (!in_array($_POST['in_engagement_level_entity_id'], $this->config->item('en_ids_7596'))) {
+        } elseif (!in_array($_POST['in_access_level_entity_id'], $this->config->item('en_ids_7596'))) {
             return echo_json(array(
                 'status' => 0,
                 'message' => 'Invalid Intent Engagement Level value',
             ));
-        } elseif (!in_array($_POST['in_engagement_level_entity_id'], $this->config->item('en_ids_7596'))) {
+        } elseif (!in_array($_POST['in_access_level_entity_id'], $this->config->item('en_ids_7596'))) {
             return echo_json(array(
                 'status' => 0,
                 'message' => 'Invalid Intent Engagement Level value',
@@ -724,7 +724,7 @@ class Intents extends CI_Controller
         $in_update = array(
             'in_type_entity_id' => $_POST['in_type_entity_id'],
             'in_status_entity_id' => $_POST['in_status_entity_id'],
-            'in_engagement_level_entity_id' => $_POST['in_engagement_level_entity_id'],
+            'in_access_level_entity_id' => $_POST['in_access_level_entity_id'],
             'in_outcome' => trim($_POST['in_outcome']),
             'in_completion_seconds' => intval($_POST['in_completion_seconds']),
             'in_verb_entity_id' => $in_current['in_verb_entity_id'], //We assume no change, and will update if we detected change in outcome...
@@ -752,10 +752,10 @@ class Intents extends CI_Controller
 
             } else {
 
-                if ($key == 'in_outcome' || $key == 'in_engagement_level_entity_id') {
+                if ($key == 'in_outcome' || $key == 'in_access_level_entity_id') {
 
                     //Validate Intent Outcome:
-                    $in_outcome_validation = $this->Intents_model->in_analyze_outcome($_POST['in_outcome'], $_POST['in_engagement_level_entity_id']);
+                    $in_outcome_validation = $this->Intents_model->in_analyze_outcome($_POST['in_outcome'], $_POST['in_access_level_entity_id']);
                     if(!$in_outcome_validation['status']){
                         //We had an error, return it:
                         return echo_json($in_outcome_validation);
@@ -1690,7 +1690,7 @@ class Intents extends CI_Controller
             //Update all Recommended Intentions and their tree:
             foreach ($this->Intents_model->in_fetch(array(
                 'in_status_entity_id IN (' . join(',', $this->config->item('en_ids_7355')) . ')' => null, //Intent Statuses Public
-                'in_engagement_level_entity_id IN (' . join(',', $this->config->item('en_ids_7582')) . ')' => null, //Intent Action Plan Addable
+                'in_access_level_entity_id IN (' . join(',', $this->config->item('en_ids_7582')) . ')' => null, //Intent Action Plan Addable
             )) as $published_in) {
                 $tree = $this->Intents_model->in_metadata_extra_insights($published_in['in_id']);
                 if($tree){

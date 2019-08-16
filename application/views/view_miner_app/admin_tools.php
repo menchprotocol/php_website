@@ -306,7 +306,7 @@ if(!$action) {
     $invalid_outcomes = 0;
     foreach($active_ins as $count=>$in){
 
-        $in_outcome_validation = $this->Intents_model->in_analyze_outcome($in['in_outcome'], $in['in_engagement_level_entity_id']);
+        $in_outcome_validation = $this->Intents_model->in_analyze_outcome($in['in_outcome'], $in['in_access_level_entity_id']);
 
         if(!$in_outcome_validation['status']){
 
@@ -331,11 +331,11 @@ if(!$action) {
         'in_id' => 8000,
     )) as $in){
 
-        $in_outcome_validation = $this->Intents_model->in_analyze_outcome($in['in_outcome'], $in['in_engagement_level_entity_id']);
+        $in_outcome_validation = $this->Intents_model->in_analyze_outcome($in['in_outcome'], $in['in_access_level_entity_id']);
 
         echo '<tr class="panel-title down-border">';
-        echo '<td style="text-align: left;">'.$in['in_outcome'].'<div style="font-size: 0.7em;">VERB @'.$in['in_verb_entity_id'].' CONNECTION @'.$in['in_engagement_level_entity_id'].'</div></td>';
-        echo '<td style="text-align: left;">'.$in['in_outcome'].'<div style="font-size: 0.7em;">VERB @'.$in['in_verb_entity_id'].' CONNECTION @'.$in['in_engagement_level_entity_id'].'</div></td>';
+        echo '<td style="text-align: left;">'.$in['in_outcome'].'<div style="font-size: 0.7em;">VERB @'.$in['in_verb_entity_id'].' CONNECTION @'.$in['in_access_level_entity_id'].'</div></td>';
+        echo '<td style="text-align: left;">'.$in['in_outcome'].'<div style="font-size: 0.7em;">VERB @'.$in['in_verb_entity_id'].' CONNECTION @'.$in['in_access_level_entity_id'].'</div></td>';
         echo '<td style="text-align: left;"></td>';
         echo '<td style="text-align: left;"></td>';
         echo '</tr>';
@@ -402,7 +402,7 @@ if(!$action) {
                 if($replace_with_is_set){
                     //Do replacement:
                     $new_outcome = str_replace($_GET['search_for'],$_GET['replace_with'],$in['in_outcome']);
-                    $in_outcome_validation = $this->Intents_model->in_analyze_outcome($new_outcome, $in['in_engagement_level_entity_id']);
+                    $in_outcome_validation = $this->Intents_model->in_analyze_outcome($new_outcome, $in['in_access_level_entity_id']);
 
                     if($in_outcome_validation['status']){
                         $qualifying_replacements++;
@@ -607,7 +607,7 @@ if(!$action) {
             'ln_parent_intent_id' => $in['in_id'],
         ), array('in_child'), 0, 0, array('ln_order' => 'ASC')) as $child_or){
 
-            $qualified_update = ( $child_or['in_type_entity_id']==6677 /* Intent Read-Only */ && in_array($child_or['in_engagement_level_entity_id'], $this->config->item('en_ids_7582')) /* Intent Action Plan Addable */ );
+            $qualified_update = ( $child_or['in_type_entity_id']==6677 /* Intent Read-Only */ && in_array($child_or['in_access_level_entity_id'], $this->config->item('en_ids_7582')) /* Intent Action Plan Addable */ );
 
             //Count completions:
             if($qualified_update){

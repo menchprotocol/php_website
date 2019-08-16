@@ -23,8 +23,8 @@ class Intents_model extends CI_Model
             return false;
         }
 
-        if(!isset($insert_columns['in_engagement_level_entity_id'])){
-            $insert_columns['in_engagement_level_entity_id'] = 7597; //Always start at unlisted
+        if(!isset($insert_columns['in_access_level_entity_id'])){
+            $insert_columns['in_access_level_entity_id'] = 7597; //Always start at unlisted
         }
 
         //Lets now add:
@@ -1061,7 +1061,7 @@ class Intents_model extends CI_Model
 
     }
 
-    function in_analyze_outcome($in_outcome, $in_engagement_level_entity_id = 7597 /* Unlist Default */){
+    function in_analyze_outcome($in_outcome, $in_access_level_entity_id = 7597 /* Unlist Default */){
 
         //We assume no verb to start with:
         $in_verb_entity_id = 0;
@@ -1074,11 +1074,11 @@ class Intents_model extends CI_Model
                 'message' => 'Missing Outcome',
             );
 
-        } elseif (!in_array($in_engagement_level_entity_id, $this->config->item('en_ids_7596'))) {
+        } elseif (!in_array($in_access_level_entity_id, $this->config->item('en_ids_7596'))) {
 
             return array(
                 'status' => 0,
-                'message' => 'Invalid in_engagement_level_entity_id value',
+                'message' => 'Invalid in_access_level_entity_id value',
             );
 
         } elseif(substr_count($in_outcome , '  ') > 0){
@@ -1095,7 +1095,7 @@ class Intents_model extends CI_Model
                 'message' => 'Outcome must be '.$this->config->item('in_outcome_max').' characters or less',
             );
 
-        } elseif (in_array($in_engagement_level_entity_id, $this->config->item('en_ids_7767'))) {
+        } elseif (in_array($in_access_level_entity_id, $this->config->item('en_ids_7767'))) {
 
             $en_all_7767 = $this->config->item('en_all_7767');
 
@@ -1108,7 +1108,7 @@ class Intents_model extends CI_Model
 
                 return array(
                     'status' => 0,
-                    'message' => $en_all_7767[$in_engagement_level_entity_id]['m_name'].' Intent outcomes must start with a published verb @5008.',
+                    'message' => $en_all_7767[$in_access_level_entity_id]['m_name'].' Intent outcomes must start with a published verb @5008.',
                 );
 
             } else {
@@ -1119,7 +1119,7 @@ class Intents_model extends CI_Model
                 if( count($string_references['ref_forbidden']) > 0 ){
                     return array(
                         'status' => 0,
-                        'message' => $en_all_7767[$in_engagement_level_entity_id]['m_name'].' Intent outcomes must be focused on a single topic so they cannot use "'.join('" or "',$string_references['ref_forbidden']).'".',
+                        'message' => $en_all_7767[$in_access_level_entity_id]['m_name'].' Intent outcomes must be focused on a single topic so they cannot use "'.join('" or "',$string_references['ref_forbidden']).'".',
                     );
                 }
 

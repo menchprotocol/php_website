@@ -1632,7 +1632,7 @@ function echo_in_recommend($in, $common_prefix = null, $hide_class = null, $refe
     //See if user is logged-in:
     $CI =& get_instance();
     $session_en = en_auth();
-    $is_starting = ( in_array($in['in_engagement_level_entity_id'], $CI->config->item('en_ids_7582')) /* Intent Action Plan Addable */);
+    $is_starting = ( in_array($in['in_access_level_entity_id'], $CI->config->item('en_ids_7582')) /* Intent Action Plan Addable */);
     $en_all_7369 = $CI->config->item('en_all_7369');
     $already_in_actionplan = (isset($session_en['en_id']) && count($CI->Links_model->ln_fetch(array(
             'ln_creator_entity_id' => $session_en['en_id'],
@@ -1954,7 +1954,7 @@ function echo_in($in, $level, $in_linked_id = 0, $is_parent = false)
     $ui .= '<span class="icon-top-right in_status_entity_id_' . $in['in_id'] . '"><span data-toggle="tooltip" data-placement="right" title="'.$en_all_4737[$in['in_status_entity_id']]['m_name'].': '.$en_all_4737[$in['in_status_entity_id']]['m_desc'].'">' . $en_all_4737[$in['in_status_entity_id']]['m_icon'] . '</span></span>';
 
     //Show intent start type:
-    $ui .= '<span class="icon-top-left '.advance_mode().' in_engagement_level_entity_id_' . $in['in_id'] . '" data-toggle="tooltip" data-placement="right" title="'.$en_all_7596[$in['in_engagement_level_entity_id']]['m_name'].': '.$en_all_7596[$in['in_engagement_level_entity_id']]['m_desc'].'">' . $en_all_7596[$in['in_engagement_level_entity_id']]['m_icon'] . '</span>';
+    $ui .= '<span class="icon-top-left '.advance_mode().' in_access_level_entity_id_' . $in['in_id'] . '" data-toggle="tooltip" data-placement="right" title="'.$en_all_7596[$in['in_access_level_entity_id']]['m_name'].': '.$en_all_7596[$in['in_access_level_entity_id']]['m_desc'].'">' . $en_all_7596[$in['in_access_level_entity_id']]['m_icon'] . '</span>';
 
 
 
