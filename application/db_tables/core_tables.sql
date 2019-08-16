@@ -14,7 +14,7 @@ create table table_intents
 (
   in_id                    serial                     not null constraint table_intents_pkey primary key,
   in_status_entity_id      integer      default 6183  not null,
-  in_access_level_entity_id integer      default 7597  not null,
+  in_level_entity_id       integer      default 7597  not null,
   in_type_entity_id        integer      default 6677  not null,
   in_verb_entity_id        integer      default 0     not null,
   in_completion_seconds    smallint     default 0     not null,
@@ -80,7 +80,7 @@ create index table_intents_in_status_entity_id_index
   on table_intents (in_status_entity_id);
 
 create index table_intents_in_subscription_entity_id_index
-  on table_intents (in_access_level_entity_id);
+  on table_intents (in_level_entity_id);
 
 
 -- Entities
