@@ -11,7 +11,7 @@ defined('BASEPATH') OR exit('No direct script access allowed');
  *
  */
 
-//Generated 2019-08-15 15:47:39 PST
+//Generated 2019-08-16 08:36:53 PST
 
 //Algolia Indexable:
 $config['en_ids_7774'] = array(6175,6176,6180,6181,6183,6184);
@@ -59,13 +59,13 @@ $config['en_ids_7767'] = array(7598,7766);
 $config['en_all_7767'] = array(
     7598 => array(
         'm_icon' => '<i class="fas fa-play"></i>',
-        'm_name' => 'Start',
+        'm_name' => 'Get Started',
         'm_desc' => '',
         'm_parents' => array(7767,7582,7596),
     ),
     7766 => array(
-        'm_icon' => '<i class="fas fa-dot-circle"></i>',
-        'm_name' => 'Plug',
+        'm_icon' => '<i class="fas fa-search"></i>',
+        'm_name' => 'Search',
         'm_desc' => '',
         'm_parents' => array(7767,7596),
     ),
@@ -433,7 +433,7 @@ $config['en_all_6201'] = array(
     ),
     7596 => array(
         'm_icon' => '<i class="fas fa-shapes"></i>',
-        'm_name' => 'Connection',
+        'm_name' => 'Engagement Level',
         'm_desc' => '',
         'm_parents' => array(7302,6160,6201,6213,6194,6232,4527),
     ),
@@ -645,24 +645,24 @@ $config['en_all_7703'] = array(
     ),
 );
 
-//Intent Connection:
+//Intent Engagement Level:
 $config['en_ids_7596'] = array(7598,7766,7597);
 $config['en_all_7596'] = array(
     7598 => array(
         'm_icon' => '<i class="fas fa-play"></i>',
-        'm_name' => 'Start',
+        'm_name' => 'Get Started',
         'm_desc' => 'Intent is searchable and requires the user to register in order to continue',
         'm_parents' => array(7767,7582,7596),
     ),
     7766 => array(
-        'm_icon' => '<i class="fas fa-dot-circle"></i>',
-        'm_name' => 'Plug',
+        'm_icon' => '<i class="fas fa-search"></i>',
+        'm_name' => 'Search',
         'm_desc' => 'Users can find intent by searching it or arriving at it from the parent',
         'm_parents' => array(7767,7596),
     ),
     7597 => array(
-        'm_icon' => '<i class="far fa-square"></i>',
-        'm_name' => 'Dependant',
+        'm_icon' => '<i class="far fa-eye-slash"></i>',
+        'm_name' => 'Unlisted',
         'm_desc' => 'Not searchable and only accessible through its parents',
         'm_parents' => array(7596),
     ),
@@ -801,7 +801,7 @@ $config['en_ids_7582'] = array(7598);
 $config['en_all_7582'] = array(
     7598 => array(
         'm_icon' => '<i class="fas fa-play"></i>',
-        'm_name' => 'Intent Start',
+        'm_name' => 'Intent Get Started',
         'm_desc' => '',
         'm_parents' => array(7767,7582,7596),
     ),
@@ -1297,7 +1297,7 @@ $config['en_all_7302'] = array(
     ),
     7596 => array(
         'm_icon' => '<i class="fas fa-shapes"></i>',
-        'm_name' => 'Connection',
+        'm_name' => 'Engagement Level',
         'm_desc' => '',
         'm_parents' => array(7302,6160,6201,6213,6194,6232,4527),
     ),
@@ -1662,7 +1662,7 @@ $config['en_all_6194'] = array(
     ),
     7596 => array(
         'm_icon' => '<i class="fas fa-shapes"></i>',
-        'm_name' => 'Intent Connection',
+        'm_name' => 'Intent Engagement Level',
         'm_desc' => '',
         'm_parents' => array(7302,6160,6201,6213,6194,6232,4527),
     ),

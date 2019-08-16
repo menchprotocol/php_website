@@ -323,6 +323,28 @@ if(!$action) {
     }
     echo '</table>';
 
+} elseif($action=='sync_intents') {
+
+    echo '<table class="table table-condensed table-striped stats-table mini-stats-table">';
+
+    foreach($this->Intents_model->in_fetch(array(
+        'in_id' => 8000,
+    )) as $in){
+
+        $in_outcome_validation = $this->Intents_model->in_analyze_outcome($in['in_outcome'], $in['in_engagement_level_entity_id']);
+
+        echo '<tr class="panel-title down-border">';
+        echo '<td style="text-align: left;">'.$in['in_outcome'].'<div style="font-size: 0.7em;">VERB @'.$in['in_verb_entity_id'].' CONNECTION @'.$in['in_engagement_level_entity_id'].'</div></td>';
+        echo '<td style="text-align: left;">'.$in['in_outcome'].'<div style="font-size: 0.7em;">VERB @'.$in['in_verb_entity_id'].' CONNECTION @'.$in['in_engagement_level_entity_id'].'</div></td>';
+        echo '<td style="text-align: left;"></td>';
+        echo '<td style="text-align: left;"></td>';
+        echo '</tr>';
+
+
+    }
+
+    echo '</table>';
+
 } elseif($action=='in_replace_outcomes') {
 
 

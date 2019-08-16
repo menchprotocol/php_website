@@ -310,8 +310,14 @@ class Intents_model extends CI_Model
             ));
 
             //Determine which is parent intent, and which is child
-            $parent_in = ( $is_parent ? $ins[0] : $linked_ins[0] );
-            $child_in = ( !$is_parent ? $ins[0] : $linked_ins[0] );
+            if($is_parent){
+                $parent_in = $ins[0];
+                $child_in = $linked_ins[0];
+            } else {
+                $parent_in = $linked_ins[0];
+                $child_in = $ins[0];
+            }
+
 
             if (count($ins) < 1) {
                 return array(

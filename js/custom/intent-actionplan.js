@@ -208,21 +208,21 @@ function in_load_search(focus_element, is_in_parent, next_in_level, shortcut) {
             },
             header: function (data) {
                 if (!($(focus_element).val().charAt(0)=='#') && !data.isEmpty) {
-                    return '<a href="javascript:in_link_or_create(' + parseInt($(focus_element).attr('intent-id')) + ','+is_in_parent+','+next_in_level+')" class="suggestion"><span><i class="fas fa-plus-circle add-plus"></i></span> <b>' + data.query + '</b></a>';
+                    return '<a href="javascript:in_link_or_create(' + parseInt($(focus_element).attr('intent-id')) + ','+is_in_parent+','+next_in_level+',0)" class="suggestion"><span><i class="fas fa-plus-circle add-plus"></i></span> <b>' + data.query + '</b></a>';
                 }
             },
             empty: function (data) {
                 if($(focus_element).val().charAt(0)=='#'){
-                    return '<a href="javascript:in_link_or_create(' + parseInt($(focus_element).attr('intent-id')) + ','+is_in_parent+','+next_in_level+')" class="suggestion"><span><i class="fas fa-link"></i></span> Link to <b>' + data.query + '</b></a>';
+                    return '<a href="javascript:in_link_or_create(' + parseInt($(focus_element).attr('intent-id')) + ','+is_in_parent+','+next_in_level+', 0)" class="suggestion"><span><i class="fas fa-link"></i></span> Link to <b>' + data.query + '</b></a>';
                 } else {
-                    return '<a href="javascript:in_link_or_create(' + parseInt($(focus_element).attr('intent-id')) + ','+is_in_parent+','+next_in_level+')" class="suggestion"><span><i class="fas fa-plus-circle add-plus"></i></span> <b>' + data.query + '</b></a>';
+                    return '<a href="javascript:in_link_or_create(' + parseInt($(focus_element).attr('intent-id')) + ','+is_in_parent+','+next_in_level+', 0)" class="suggestion"><span><i class="fas fa-plus-circle add-plus"></i></span> <b>' + data.query + '</b></a>';
                 }
             },
         }
     }]).keypress(function (e) {
         var code = (e.keyCode ? e.keyCode : e.which);
         if ((code == 13) || (e.ctrlKey && code == 13)) {
-            return in_link_or_create($(this).attr('intent-id'), is_in_parent, next_in_level);
+            return in_link_or_create($(this).attr('intent-id'), is_in_parent, next_in_level, 0);
         }
     });
 
@@ -368,7 +368,7 @@ function in_sort_load(in_id, level) {
 
 
 
-function in_link_or_create(in_linked_id, is_parent, next_level, in_link_child_id=0) {
+function in_link_or_create(in_linked_id, is_parent, next_level, in_link_child_id) {
 
     /*
      *
@@ -403,7 +403,7 @@ function in_link_or_create(in_linked_id, is_parent, next_level, in_link_child_id
         } else {
             //Update the references:
             in_link_child_id = parseInt(intent_name.substr(1));
-            intent_name = ''; //As if we were just linking
+            intent_name = in_link_child_id; //As if we were just linking
         }
     }
 

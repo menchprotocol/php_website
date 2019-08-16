@@ -332,11 +332,12 @@ class Intents extends CI_Controller
 
         $new_intent_type = 6677; //Intent Read-Only
         $linked_ins = array();
+
         if($_POST['in_link_child_id'] > 0){
 
             //Fetch link intent to determine intent type:
             $linked_ins = $this->Intents_model->in_fetch(array(
-                'in_id' => intval($_POST['in_linked_id']),
+                'in_id' => intval($_POST['in_link_child_id']),
                 'in_status_entity_id IN (' . join(',', $this->config->item('en_ids_7356')) . ')' => null, //Intent Statuses Active
             ));
 
