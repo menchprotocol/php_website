@@ -71,7 +71,8 @@
             echo '</td>';
 
 
-        echo '<td style="text-align: right;"><div class="btn-group btn-group-sm" style="margin-top:-5px;" role="group">';
+        echo '<td style="text-align: right;">';
+        echo '<div class="btn-group btn-group-sm" style="margin-top:-5px;" role="group">';
 
         //Fetch current count for each status from DB:
         $child_en_filters = $this->Links_model->ln_fetch(array(
@@ -99,7 +100,8 @@
 
         }
 
-        echo '</div></td>';
+        echo '</div>';
+        echo '</td>';
         echo '</tr></table></div>';
 
 

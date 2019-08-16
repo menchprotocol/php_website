@@ -1429,6 +1429,14 @@ h5, .h5 {
     text-decoration: none !important;
 }
 
+.btn-group-leaderboard{
+    margin: 0 0 5px 0;
+}
+
+
+.btn-group-leaderboard .btn{
+    padding: 2px 5px;
+}
 
 .list-is-children .list-group-item {
     margin-bottom:3px !important;

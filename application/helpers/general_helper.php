@@ -387,7 +387,7 @@ function filter_array($array, $match_key, $match_value)
 function in_is_unlockable($in){
     $CI =& get_instance();
     $in_is_public = in_array($in['in_status_entity_id'], $CI->config->item('en_ids_7355') /* Intent Statuses Public */);
-    $in_is_locked = in_array($in['in_type_entity_id'],   $CI->config->item('en_ids_7309') /* Action Plan Step Locked */);
+    $in_is_locked = in_array($in['in_completion_method_entity_id'],   $CI->config->item('en_ids_7309') /* Action Plan Step Locked */);
     return ($in_is_public && $in_is_locked);
 }
 
@@ -1031,8 +1031,8 @@ function update_algolia($input_obj_type = null, $input_obj_id = 0, $return_row_o
                 $export_row['alg_obj_id'] = intval($db_row['in_id']);
                 $export_row['alg_obj_weight'] = ( isset($metadata['in__metadata_max_seconds']) ? intval($metadata['in__metadata_max_seconds']) : 0 );
                 $export_row['alg_obj_status'] = intval($db_row['in_status_entity_id']);
-                $export_row['alg_in_level_entity_id'] = intval($db_row['in_level_entity_id']);
-                $export_row['alg_obj_icon'] = $en_all_7585[$db_row['in_type_entity_id']]['m_icon']; //Entity type icon
+                $export_row['alg_in_type_entity_id'] = intval($db_row['in_type_entity_id']);
+                $export_row['alg_obj_icon'] = $en_all_7585[$db_row['in_completion_method_entity_id']]['m_icon']; //Entity type icon
                 $export_row['alg_obj_name'] = $db_row['in_outcome'];
                 $export_row['alg_obj_postfix'] =  ( $time_range ? '<span class="alg-postfix"><i class="fal fa-clock"></i>' . $time_range . '</span>' : '');
 

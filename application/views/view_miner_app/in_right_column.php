@@ -76,7 +76,7 @@
 
 
                     <span class="mini-header" style="margin-top: 20px;"><?= $en_all_6201[7585]['m_icon'].' '.$en_all_6201[7585]['m_name'] ?></span>
-                    <select class="form-control border" id="in_type_entity_id" style="margin-bottom: 12px;">
+                    <select class="form-control border" id="in_completion_method_entity_id" style="margin-bottom: 12px;">
                         <?php
                         foreach ($this->config->item('en_all_7585') as $en_id => $m) {
                             echo '<option value="' . $en_id . '">' . $m['m_name'] . '</option>';
@@ -99,7 +99,7 @@
 
                     <span class="<?= advance_mode() ?>">
                         <span class="mini-header" style="margin-top: 20px;"><?= $en_all_6201[7596]['m_icon'].' '.$en_all_6201[7596]['m_name'] ?></span>
-                        <select class="form-control border" id="in_level_entity_id" style="margin-bottom: 12px;">
+                        <select class="form-control border" id="in_type_entity_id" style="margin-bottom: 12px;">
                             <?php
                             foreach ($this->config->item('en_all_7596') as $en_id => $m) {
                                 echo '<option value="' . $en_id . '">' . $m['m_name'] . '</option>';

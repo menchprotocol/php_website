@@ -19,12 +19,12 @@ class Intents_model extends CI_Model
     {
 
         //What is required to create a new intent?
-        if (detect_missing_columns($insert_columns, array('in_outcome', 'in_type_entity_id', 'in_status_entity_id', 'in_verb_entity_id'), $ln_creator_entity_id)) {
+        if (detect_missing_columns($insert_columns, array('in_outcome', 'in_completion_method_entity_id', 'in_status_entity_id', 'in_verb_entity_id'), $ln_creator_entity_id)) {
             return false;
         }
 
-        if(!isset($insert_columns['in_level_entity_id'])){
-            $insert_columns['in_level_entity_id'] = 7597; //Always start as a leaf
+        if(!isset($insert_columns['in_type_entity_id'])){
+            $insert_columns['in_type_entity_id'] = 7597; //Always start as a leaf
         }
 
         //Lets now add:
@@ -266,7 +266,7 @@ class Intents_model extends CI_Model
         return $links_removed;
     }
 
-    function in_link_or_create($in_linked_id, $is_parent, $in_outcome, $ln_creator_entity_id, $new_in_status = 6183 /* Intent New */, $in_type_entity_id = 6677 /* Intent Read-Only */, $link_in_id = 0, $next_level = 0)
+    function in_link_or_create($in_linked_id, $is_parent, $in_outcome, $ln_creator_entity_id, $new_in_status = 6183 /* Intent New */, $in_completion_method_entity_id = 6677 /* Intent Read-Only */, $link_in_id = 0, $next_level = 0)
     {
 
         /*
@@ -394,7 +394,7 @@ class Intents_model extends CI_Model
             $intent_new = $this->Intents_model->in_create(array(
                 'in_outcome' => $in_outcome_validation['in_cleaned_outcome'],
                 'in_verb_entity_id' => $in_outcome_validation['detected_in_verb_entity_id'],
-                'in_type_entity_id' => $in_type_entity_id,
+                'in_completion_method_entity_id' => $in_completion_method_entity_id,
                 'in_status_entity_id' => $new_in_status,
             ), true, $ln_creator_entity_id);
 
@@ -482,7 +482,7 @@ class Intents_model extends CI_Model
          *
          * */
 
-        if (!in_array($in['in_type_entity_id'], $this->config->item('en_ids_6144'))) {
+        if (!in_array($in['in_completion_method_entity_id'], $this->config->item('en_ids_6144'))) {
             //Does not have any requirements:
             return null;
         }
@@ -491,7 +491,7 @@ class Intents_model extends CI_Model
 
         //Fetch latest cache tree:
         $en_all_6144 = $this->config->item('en_all_6144'); //Intent Requires Manual Response
-        $content_name = strtolower($en_all_6144[$in['in_type_entity_id']]['m_name']);
+        $content_name = strtolower($en_all_6144[$in['in_completion_method_entity_id']]['m_name']);
         $ui = '';
 
         if($push_message){
@@ -505,24 +505,24 @@ class Intents_model extends CI_Model
             //HTML:
 
             //Is this a text, URL or File upload?
-            if($in['in_type_entity_id'] == 6683 /* Text */){
+            if($in['in_completion_method_entity_id'] == 6683 /* Text */){
 
                 $ui .= '<textarea id="user_new_content" class="border" placeholder="" style="height:66px; width: 100%; padding: 5px;"></textarea>';
                 $ui .= '<span class="saving_result"></span>';
                 $ui .= '<p><a class="btn btn-primary" href="javascript:void(0);" onsubmit="">Send '.$content_name.' Message</a></p>';
 
-            } elseif($in['in_type_entity_id'] == 6682 /* URL */){
+            } elseif($in['in_completion_method_entity_id'] == 6682 /* URL */){
 
                 $ui .= '<input type="url" id="user_new_content" class="border">';
                 $ui .= '<span class="saving_result"></span>';
                 $ui .= '<p><a class="btn btn-primary" href="javascript:void(0);" onsubmit="">Send '.$content_name.'</a></p>';
 
-            } elseif(in_array($in['in_type_entity_id'], $this->config->item('en_ids_7751')) /* Intent Upload File */){
+            } elseif(in_array($in['in_completion_method_entity_id'], $this->config->item('en_ids_7751')) /* Intent Upload File */){
 
                 //File Upload:
                 $ui .= '<p>Upload '.echo_a_an($content_name).' '. $content_name .' file to complete this step.</p>';
                 $ui .= '<span class="saving_result"></span>';
-                $ui .= '<input class="box__file inputfile" type="file" id="user_new_content" /><label class="textarea_buttons btn btn-primary" for="file" data-toggle="tooltip" title="Upload '.$content_name.' up to ' . $this->config->item('max_file_mb_size') . ' MB" data-placement="top">'.$en_all_6144[$in['in_type_entity_id']]['m_icon'].' Upload '.$content_name.'</label>';
+                $ui .= '<input class="box__file inputfile" type="file" id="user_new_content" /><label class="textarea_buttons btn btn-primary" for="file" data-toggle="tooltip" title="Upload '.$content_name.' up to ' . $this->config->item('max_file_mb_size') . ' MB" data-placement="top">'.$en_all_6144[$in['in_completion_method_entity_id']]['m_icon'].' Upload '.$content_name.'</label>';
 
             } else {
 
@@ -531,7 +531,7 @@ class Intents_model extends CI_Model
 
                 //Log for admins:
                 $this->Links_model->ln_create(array(
-                    'ln_content' => 'in_create_content() has unknown file type @'.$in['in_type_entity_id'],
+                    'ln_content' => 'in_create_content() has unknown file type @'.$in['in_completion_method_entity_id'],
                     'ln_type_entity_id' => 4246, //Platform Bug Reports
                 ));
 
@@ -629,7 +629,7 @@ class Intents_model extends CI_Model
                 'message' => 'Intent #' . $in['in_id'] . ' status is not yet public',
             );
 
-        } elseif ( in_array($in['in_type_entity_id'], $this->config->item('en_ids_7366')) ) {
+        } elseif ( in_array($in['in_completion_method_entity_id'], $this->config->item('en_ids_7366')) ) {
 
             //Intent type is private by nature:
             return array(
@@ -649,7 +649,7 @@ class Intents_model extends CI_Model
 
         //Set variables:
         $is_first_intent = ( !isset($focus_in['ln_id']) ); //First intent does not have a link, just the intent
-        $has_or_parent = in_array($focus_in['in_type_entity_id'] , $this->config->item('en_ids_6193') /* OR Intents */ );
+        $has_or_parent = in_array($focus_in['in_completion_method_entity_id'] , $this->config->item('en_ids_6193') /* OR Intents */ );
         $or_children = array(); //To be populated only if $focus_in is an OR intent
         $conditional_steps = array(); //To be populated only for Conditional Steps
         $metadata_this = array(
@@ -992,7 +992,7 @@ class Intents_model extends CI_Model
             'in_status_entity_id IN (' . join(',', $this->config->item('en_ids_7355')) . ')' => null, //Intent Statuses Public
             'ln_type_entity_id' => 4228, //Intent Link Regular Step
             'ln_child_intent_id' => $in['in_id'],
-            'in_type_entity_id IN (' . join(',', $this->config->item('en_ids_7712')) . ')' => null, //Intent Answer Types
+            'in_completion_method_entity_id IN (' . join(',', $this->config->item('en_ids_7712')) . ')' => null, //Intent Answer Types
         ), array('in_parent'), 0) as $in_or_parent){
             if(count($child_unlock_paths)==0 || !filter_array($child_unlock_paths, 'in_id', $in_or_parent['in_id'])) {
                 array_push($child_unlock_paths, $in_or_parent);
@@ -1061,7 +1061,7 @@ class Intents_model extends CI_Model
 
     }
 
-    function in_analyze_outcome($in_outcome, $in_level_entity_id = 7597 /* Leaf is Default */){
+    function in_analyze_outcome($in_outcome, $in_type_entity_id = 7597 /* Leaf is Default */){
 
         //We assume no verb to start with:
         $in_verb_entity_id = 0;
@@ -1074,7 +1074,7 @@ class Intents_model extends CI_Model
                 'message' => 'Missing Outcome',
             );
 
-        } elseif (!in_array($in_level_entity_id, $this->config->item('en_ids_7596'))) {
+        } elseif (!in_array($in_type_entity_id, $this->config->item('en_ids_7596'))) {
 
             return array(
                 'status' => 0,
@@ -1095,7 +1095,7 @@ class Intents_model extends CI_Model
                 'message' => 'Outcome must be '.$this->config->item('in_outcome_max').' characters or less',
             );
 
-        } elseif (in_array($in_level_entity_id, $this->config->item('en_ids_7767'))) {
+        } elseif (in_array($in_type_entity_id, $this->config->item('en_ids_7767'))) {
 
             $en_all_7767 = $this->config->item('en_all_7767');
 
@@ -1108,7 +1108,7 @@ class Intents_model extends CI_Model
 
                 return array(
                     'status' => 0,
-                    'message' => $en_all_7767[$in_level_entity_id]['m_name'].' Intent outcomes must start with a published verb @5008.',
+                    'message' => $en_all_7767[$in_type_entity_id]['m_name'].' Intent outcomes must start with a published verb @5008.',
                 );
 
             } else {
@@ -1119,7 +1119,7 @@ class Intents_model extends CI_Model
                 if( count($string_references['ref_forbidden']) > 0 ){
                     return array(
                         'status' => 0,
-                        'message' => $en_all_7767[$in_level_entity_id]['m_name'].' Intent outcomes must be focused on a single topic so they cannot use "'.join('" or "',$string_references['ref_forbidden']).'".',
+                        'message' => $en_all_7767[$in_type_entity_id]['m_name'].' Intent outcomes must be focused on a single topic so they cannot use "'.join('" or "',$string_references['ref_forbidden']).'".',
                     );
                 }
 

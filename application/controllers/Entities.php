@@ -547,7 +547,7 @@ class Entities extends CI_Controller
                 'in_verb_entity_id' => $_POST['en_id'],
             ), array(), 0, 0, array(), 'COUNT(in_id) as totals');
             $en_requirements = $this->Intents_model->in_fetch(array(
-                'in_type_entity_id' => $_POST['en_id'],
+                'in_completion_method_entity_id' => $_POST['en_id'],
             ), array(), 0, 0, array(), 'COUNT(in_id) as totals');
 
             if(count($en_miners) > 0 && $en_miners[0]['totals'] > 0){

@@ -113,12 +113,10 @@ class Miner_app extends CI_Controller
         echo '</table>';
 
 
-        //Intent Levels:
-        echo echo_in_setting(7596,'in_level_entity_id');
 
 
-        //Intent Types:
-        echo echo_in_setting(7585,'in_type_entity_id');
+
+
 
 
         //Intent Verbs:
@@ -154,6 +152,16 @@ class Miner_app extends CI_Controller
         }
 
         echo '</table>';
+
+
+        //Intent Completion Method:
+        echo echo_in_setting(7585,'in_completion_method_entity_id');
+
+
+
+        //Intent Type:
+        echo echo_in_setting(7596,'in_type_entity_id');
+
 
     }
 
@@ -348,10 +356,33 @@ class Miner_app extends CI_Controller
         echo '<table class="table table-condensed table-striped stats-table">';
 
         echo '<tr class="panel-title down-border">';
-        echo '<td style="text-align: left;">'.$en_all_7304[7162]['m_name'].' ['.$days_term.']</td>';
-        echo '<td style="text-align: right;">Credits</td>';
-        echo '</tr>';
+        echo '<td style="text-align: left;"><div>Leaderboard</div>';
+        //Leaderboard User Types
+        echo '<div class="btn-group btn-group-sm btn-group-leaderboard" role="group">';
+        $counter = 0;
+        foreach ($this->config->item('en_all_7798') as $en_id => $m) {
+            $counter++;
+            echo '<a href="#" onclick="leaderboard_filter_user_type('.$en_id.')" class="btn btn-default user-type-filter '.( $counter==1  ? ' btn-primary ' : '' ).' setting-en-'.$en_id.'">'.( strlen($m['m_icon']) > 0 ? $m['m_icon'].' ' : '' ).$m['m_name'].'</a>';
+        }
+        echo '</div>';
 
+
+
+        echo '</td>';
+        echo '<td style="text-align: right;"><div>Credits</div>';
+        //Leaderboard Time Frames
+        echo '<div class="btn-group btn-group-sm btn-group-leaderboard" role="group">';
+        $counter = 0;
+        foreach ($this->config->item('en_all_7799') as $en_id => $m) {
+            $counter++;
+            echo '<a href="#" onclick="leaderboard_filter_time_frame('.$en_id.')" class="btn btn-default time-frame-filter '.( $counter==count($this->config->item('en_all_7799'))  ? ' btn-primary ' : '' ).' setting-en-'.$en_id.'">'.( strlen($m['m_icon']) > 0 ? $m['m_icon'].' ' : '' ).$m['m_name'].'</a>';
+        }
+        echo '</div>';
+
+
+
+        echo '</td>';
+        echo '</tr>';
         foreach ($top_users as $count=>$ln) {
             echo '<tr>';
 
