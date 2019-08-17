@@ -1855,6 +1855,83 @@ function echo_in_setting($in_setting_en_id, $in_field_name){
     return $ui;
 }
 
+
+function echo_multi_row($main_obj, $all_link_types, $link_types_counts, $all_shown){
+
+    if(!is_array($all_link_types) || count($all_link_types) < 1){
+        return false;
+    }
+
+    $CI =& get_instance();
+
+    $en_all_4593 = $CI->config->item('en_all_4593');
+    $identifier = substr(md5($main_obj['m_name']), 0, 10);
+
+    $sub_rows = '';
+
+
+    //First display all children and sum them up:
+    $all_children = 0;
+    foreach($all_link_types as $en_id => $m){
+
+        if(in_array($en_id , $all_shown)){
+            continue;
+        }
+
+        $ln = filter_array($link_types_counts, 'ln_type_entity_id', $en_id);
+
+        //Addup counter:
+        $all_children += $ln['trs_count'];
+
+        //Subrow UI:
+        $sub_rows .=  '<tr class="hidden '.$identifier.'">';
+
+
+        if(!isset($en_all_4593[$en_id])){
+
+            $sub_rows .= '<td style="text-align: left; padding-left:30px;" colspan="2">MISSING @'.$en_id.' as Link Type</td>';
+
+        } else {
+
+            $sub_rows .= '<td style="text-align: left;">';
+            $sub_rows .= '<span class="icon-block" style="margin-left:22px;">'.$m['m_icon'].'</span>';
+            $sub_rows .= '<a href="/entities/'.$en_id.'">'.$m['m_name'].'</a>';
+            $sub_rows .= '</td>';
+
+            $sub_rows .= '<td style="text-align: right;">';
+            $sub_rows .= number_format($ln['trs_count'], 0) . ( strlen($en_all_4593[$en_id]['m_desc']) > 0 ? '<i class="fal fa-info-circle icon-block" data-toggle="tooltip" title="'.number_format($ln['trs_count'], 0).' '.$en_all_4593[$en_id]['m_desc'].'" data-placement="top"></i>' : '<i class="fal fa-info-circle icon-block" data-toggle="tooltip" title="'.number_format($ln['trs_count'], 0).' Links" data-placement="top" style="color: #AAA;"></i>' );
+            $sub_rows .= '</td>';
+
+        }
+
+
+        //sub-row count:
+        $sub_rows .= '</tr>';
+    }
+
+
+    if(fmod(count($all_link_types), 2)==1){
+        //Make it even:
+        $sub_rows .= '<tr class="hidden '.$identifier.'"><td colspan="2">&nbsp;</td></tr>';
+
+    }
+
+
+
+    //Fetch Title:
+    echo '<tr>';
+    echo '<td style="text-align: left;"><span class="icon-block
+">'.$main_obj['m_icon'].'</span><a href="javascript:void(0);" onclick="$(\'.'.$identifier.'\').toggleClass(\'hidden\')">'.$main_obj['m_name'].'</a></td>';
+    echo '<td style="text-align: right;">'.number_format($all_children) . ( strlen($main_obj['m_desc']) > 0 ? '<i class="fal fa-info-circle icon-block" data-toggle="tooltip" title="'.number_format($all_children, 0).' '.$main_obj['m_desc'].'" data-placement="top"></i>' : '<i class="fal fa-info-circle icon-block" data-toggle="tooltip" title="'.number_format($all_children, 0).' Links" data-placement="top" style="color: #AAA;"></i>' ) .'</td>';
+    echo '</tr>';
+
+
+    echo $sub_rows;
+
+}
+
+
+
 function echo_in($in, $level, $in_linked_id = 0, $is_parent = false)
 {
 

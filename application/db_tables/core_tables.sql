@@ -13,10 +13,10 @@
 create table table_intents
 (
   in_id                           serial                     not null constraint table_intents_pkey primary key,
+  in_verb_entity_id               integer      default 0     not null,
   in_status_entity_id             integer      default 6183  not null,
   in_type_entity_id               integer      default 7597  not null,
   in_completion_method_entity_id  integer      default 6677  not null,
-  in_verb_entity_id               integer      default 0     not null,
   in_completion_seconds           smallint     default 0     not null,
   in_outcome                      varchar(255)               not null,
   in_metadata                     text
