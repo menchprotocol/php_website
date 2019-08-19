@@ -1894,7 +1894,7 @@ function echo_multi_row($main_obj, $all_link_types, $link_types_counts, $all_sho
         } else {
 
             $sub_rows .= '<td style="text-align: left;">';
-            $sub_rows .= '<span class="icon-block" style="margin-left:22px;">'.$m['m_icon'].'</span>';
+            $sub_rows .= '<span class="icon-block" style="margin-left:3px;">'.$m['m_icon'].'</span>';
             $sub_rows .= '<a href="/entities/'.$en_id.'">'.$m['m_name'].'</a>';
             $sub_rows .= '</td>';
 
@@ -2311,10 +2311,7 @@ function echo_en($en, $level, $is_parent = false)
     $ui .= '<div entity-id="' . $en['en_id'] . '" en-status="' . $en['en_status_entity_id'] . '" tr-id="'.$ln_id.'" ln-status="'.( $ln_id > 0 ? $en['ln_status_entity_id'] : 0 ).'" is-parent="' . ($is_parent ? 1 : 0) . '" class="list-group-item object_highlight highlight_en_'.$en['en_id'].' en-item en___' . $en['en_id'] . ' ' . ($level <= 1 ? 'top_entity' : 'tr_' . $en['ln_id']) . ( $is_parent ? ' parent-entity ' : '' ) . '">';
 
 
-
     $ui .= '<span style="display:inline-block; margin-top:0px; padding-bottom: 5px;">';
-
-
 
 
     //Hidden fields to store dynamic value for on-demand JS modifications:

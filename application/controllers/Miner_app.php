@@ -145,7 +145,7 @@ class Miner_app extends CI_Controller
 
 
         //Intent Statuses:
-        echo '<table class="table table-condensed table-striped stats-table mini-stats-table">';
+        echo '<table class="table table-condensed table-striped stats-table mini-stats-table intent_statuses hidden">';
         echo '<tr class="panel-title down-border">';
         echo '<td style="text-align: left;">'.$en_all_7302[4737]['m_name'].echo__s(count($this->config->item('en_all_4737')), true).'</td>';
         echo '<td style="text-align: right;">Intents</td>';
@@ -166,6 +166,8 @@ class Miner_app extends CI_Controller
         }
         echo '</table>';
 
+        echo '<div class="intent_statuses center"><a href="javascript:void(0);" onclick="$(\'.intent_statuses\').toggleClass(\'hidden\')">See '.$en_all_7302[4737]['m_icon'].' '.$en_all_7302[4737]['m_name'].echo__s(count($this->config->item('en_all_4737')), true).'</a></div>';
+
 
 
     }
@@ -180,12 +182,9 @@ class Miner_app extends CI_Controller
         $en_all_6177 = $this->config->item('en_all_6177'); //Entity Statuses
 
 
-
-
-
-
         //Expert Sources
-        $expert_sources = ''; //Saved the UI for later view...
+        $expert_sources_unpublished = ''; //Saved the UI for later view...
+        $expert_sources_published = ''; //Saved the UI for later view...
         $total_total_counts = array();
         foreach ($this->config->item('en_all_3000') as $en_id => $m) {
 
@@ -221,10 +220,16 @@ class Miner_app extends CI_Controller
             }
 
             //Echo stats:
-            $expert_sources .= '<tr class="' .( !$total_counts[6181] ? advance_mode() : '' ) . '">';
+            $expert_sources = '<tr class="' .( !$total_counts[6181] ? advance_mode() : '' ) . '">';
             $expert_sources .= '<td style="text-align: left;"><span class="icon-block">'.$m['m_icon'].'</span><a href="/entities/'.$en_id.'">'.$m['m_name'].'</a></td>';
             $expert_sources .= $expert_source_statuses;
             $expert_sources .= '</tr>';
+
+            if($total_counts[6181]){
+                $expert_sources_published .= $expert_sources;
+            } else {
+                $expert_sources_unpublished .= $expert_sources;
+            }
         }
 
 
@@ -238,7 +243,8 @@ class Miner_app extends CI_Controller
         echo '</tr>';
 
 
-        echo $expert_sources;
+        echo $expert_sources_published;
+        echo $expert_sources_unpublished;
 
 
         echo '<tr style="font-weight: bold;">';
@@ -253,8 +259,10 @@ class Miner_app extends CI_Controller
 
 
 
+
         //Mench Community
         echo echo_en_stats_overview($this->config->item('en_all_6827'), $en_all_7303[6827]['m_name']);
+
 
 
         //Mench Platform Users
@@ -263,7 +271,7 @@ class Miner_app extends CI_Controller
 
 
         //Entity Statuses
-        echo '<table class="table table-condensed table-striped stats-table mini-stats-table">';
+        echo '<table class="table table-condensed table-striped stats-table mini-stats-table entity_statuses hidden">';
         echo '<tr class="panel-title down-border">';
         echo '<td style="text-align: left;">'.$en_all_7303[6177]['m_name'].echo__s(count($this->config->item('en_all_6177')), true).'</td>';
         echo '<td style="text-align: right;">Entities</td>';
@@ -283,7 +291,7 @@ class Miner_app extends CI_Controller
         }
         echo '</table>';
 
-
+        echo '<div class="entity_statuses center"><a href="javascript:void(0);" onclick="$(\'.entity_statuses\').toggleClass(\'hidden\')">See '.$en_all_7303[6177]['m_icon'].' '.$en_all_7303[6177]['m_name'].echo__s(count($this->config->item('en_all_4737')), true).'</a></div>';
 
 
     }
@@ -464,7 +472,7 @@ class Miner_app extends CI_Controller
 
 
         //Link Status:
-        echo '<table class="table table-condensed table-striped stats-table mini-stats-table">';
+        echo '<table class="table table-condensed table-striped stats-table mini-stats-table link_statuses hidden">';
         echo '<tr class="panel-title down-border">';
         echo '<td style="text-align: left;">'.$en_all_7304[6186]['m_name'].echo__s(count($this->config->item('en_all_6186')), true).'</td>';
         echo '<td style="text-align: right;">Links</td>';
@@ -487,6 +495,7 @@ class Miner_app extends CI_Controller
         }
         echo '</table>';
 
+        echo '<div class="link_statuses center"><a href="javascript:void(0);" onclick="$(\'.link_statuses\').toggleClass(\'hidden\')">See '.$en_all_7304[6186]['m_icon'].' '.$en_all_7304[6186]['m_name'].echo__s(count($this->config->item('en_all_4737')), true).'</a></div>';
 
 
 
