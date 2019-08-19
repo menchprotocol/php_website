@@ -11,7 +11,7 @@ defined('BASEPATH') OR exit('No direct script access allowed');
  *
  */
 
-//Generated 2019-08-19 06:57:09 PST
+//Generated 2019-08-19 07:01:30 PST
 
 //Miner Engagements:
 $config['en_ids_7809'] = array(4250,4251,4998,4999,5000,5001,5003,5865,5943,5981,5982);
@@ -2312,7 +2312,7 @@ $config['en_all_4737'] = array(
     ),
     6182 => array(
         'm_icon' => '<i class="far fa-trash-alt"></i>',
-        'm_name' => 'Deleted',
+        'm_name' => 'Archived',
         'm_desc' => 'archived',
         'm_parents' => array(4737),
     ),
@@ -2335,7 +2335,7 @@ $config['en_all_6177'] = array(
     ),
     6178 => array(
         'm_icon' => '<i class="far fa-trash-alt"></i>',
-        'm_name' => 'Deleted',
+        'm_name' => 'Archived',
         'm_desc' => 'archived',
         'm_parents' => array(6177),
     ),

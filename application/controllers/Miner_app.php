@@ -158,9 +158,9 @@ class Miner_app extends CI_Controller
             ), array(), 0, 0, array(), 'COUNT(in_id) as totals');
 
             //Display this status count:
-            echo '<tr class="'.( $en_id==6182 ? 'is-removed' : '' ).'">';
+            echo '<tr>';
             echo '<td style="text-align: left;"><span class="icon-block">' . $m['m_icon'] . '</span><a href="/entities/'.$en_id.'">' . $m['m_name'] . '</a></td>';
-            echo '<td style="text-align: right;">' . '<a href="/links?in_status_entity_id=' . $en_id . '&ln_type_entity_id=4250">' . echo_number($objects_count[0]['totals']) . '</a>' . '<i class="fal fa-info-circle icon-block" data-toggle="tooltip" title="' . number_format($objects_count[0]['totals'], 0) . ' '. $m['m_desc'] . '" data-placement="top"></i>' . '</td>';
+            echo '<td style="text-align: right;" class="'.( $en_id==6182 ? 'is-removed' : '' ).'">' . '<a href="/links?in_status_entity_id=' . $en_id . '&ln_type_entity_id=4250">' . echo_number($objects_count[0]['totals']) . '</a>' . '<i class="fal fa-info-circle icon-block" data-toggle="tooltip" title="' . number_format($objects_count[0]['totals'], 0) . ' '. $m['m_desc'] . '" data-placement="top"></i>' . '</td>';
             echo '</tr>';
 
         }
@@ -276,9 +276,9 @@ class Miner_app extends CI_Controller
             ), array(), 0, 0, array(), 'COUNT(en_id) as totals');
 
             //Display this status count:
-            echo '<tr class="'.( $en_id==6178 ? 'is-removed' : '' ).'">';
+            echo '<tr>';
             echo '<td style="text-align: left;"><span class="icon-block">' . $m['m_icon'] . '</span><a href="/entities/'.$en_id.'">' . $m['m_name'] . '</a></td>';
-            echo '<td style="text-align: right;">' . '<a href="/links?en_status_entity_id=' . $en_id . '&ln_type_entity_id=4251">' . echo_number($objects_count[0]['totals']) . '</a>' .'<i class="fal fa-info-circle icon-block" data-toggle="tooltip" title="' . number_format($objects_count[0]['totals'], 0).' '.$m['m_desc'] . '" data-placement="top"></i>' . '</td>';
+            echo '<td style="text-align: right;" class="'.( $en_id==6178 ? 'is-removed' : '' ).'">' . '<a href="/links?en_status_entity_id=' . $en_id . '&ln_type_entity_id=4251">' . echo_number($objects_count[0]['totals']) . '</a>' .'<i class="fal fa-info-circle icon-block" data-toggle="tooltip" title="' . number_format($objects_count[0]['totals'], 0).' '.$m['m_desc'] . '" data-placement="top"></i>' . '</td>';
             echo '</tr>';
         }
         echo '</table>';
@@ -477,9 +477,9 @@ class Miner_app extends CI_Controller
             ), array(), 0, 0, array(), 'COUNT(ln_id) as totals');
 
             //Display this status count:
-            echo '<tr class="'.( $en_id==6173 ? 'is-removed' : '' ).'">';
+            echo '<tr>';
             echo '<td style="text-align: left;"><span class="icon-block">' . $m['m_icon'] . '</span><a href="/entities/'.$en_id.'">' . $m['m_name'] . '</a></td>';
-            echo '<td style="text-align: right;">';
+            echo '<td style="text-align: right;" class="'.( $en_id==6173 ? 'is-removed' : '' ).'">';
             echo '<a href="/links?ln_status_entity_id=' . $en_id . '">' . echo_number($objects_count[0]['totals']) . '</a>';
             echo '<i class="fal fa-info-circle icon-block" data-toggle="tooltip" title="' . number_format($objects_count[0]['totals'], 0).' '.$m['m_desc'] . '" data-placement="top"></i>';
             echo '</td>';
