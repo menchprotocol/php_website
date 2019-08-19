@@ -11,10 +11,10 @@ defined('BASEPATH') OR exit('No direct script access allowed');
  *
  */
 
-//Generated 2019-08-19 13:02:09 PST
+//Generated 2019-08-19 13:17:22 PST
 
-//Intelligence Links:
-$config['en_ids_7812'] = array(4251,4259,4257,4261,4260,4319,4230,4255,4318,4256,4258,4263,4250,4229,4228,4983,6093,6242,4231,7701,7545,4601,4264);
+//Mined Intelligence:
+$config['en_ids_7812'] = array(4251,4259,4257,4261,4260,4319,4230,4255,4318,4256,4258,4250,4229,4228,4983,6093,6242,4231,7701,7545,4601);
 $config['en_all_7812'] = array(
     4251 => array(
         'm_icon' => '<i class="fas fa-at"></i>',
@@ -82,12 +82,6 @@ $config['en_all_7812'] = array(
         'm_desc' => '',
         'm_parents' => array(7812,6203,4593,4592,4537,4595),
     ),
-    4263 => array(
-        'm_icon' => '<i class="far fa-sync"></i>',
-        'm_name' => 'Entity Updated',
-        'm_desc' => '',
-        'm_parents' => array(7812,4755,4593,4595),
-    ),
     4250 => array(
         'm_icon' => '<i class="fas fa-hashtag"></i>',
         'm_name' => 'Intent Created',
@@ -148,16 +142,10 @@ $config['en_all_7812'] = array(
         'm_desc' => '',
         'm_parents' => array(7812,7703,4593,4595,4485),
     ),
-    4264 => array(
-        'm_icon' => '<i class="far fa-sync"></i>',
-        'm_name' => 'Intent Updated',
-        'm_desc' => '',
-        'm_parents' => array(7812,7703,4593,4595),
-    ),
 );
 
-//Mining Links:
-$config['en_ids_7809'] = array(4246,7504,5943,5001,5865,4999,4998,5000,5981,5982,5003,4994,6226,4993,4242,5007);
+//Mining Process:
+$config['en_ids_7809'] = array(4246,7504,5943,5001,5865,4999,4998,5000,5981,5982,5003,4994,4263,6226,4993,4264,4242,5007);
 $config['en_all_7809'] = array(
     4246 => array(
         'm_icon' => '<i class="far fa-bug"></i>',
@@ -231,6 +219,12 @@ $config['en_all_7809'] = array(
         'm_desc' => '',
         'm_parents' => array(7809,4595,4593),
     ),
+    4263 => array(
+        'm_icon' => '<i class="far fa-sync"></i>',
+        'm_name' => 'Entity Updated',
+        'm_desc' => '',
+        'm_parents' => array(7809,4755,4593,4595),
+    ),
     6226 => array(
         'm_icon' => '<i class="far fa-sync"></i>',
         'm_name' => 'Intent Mass Updates',
@@ -242,6 +236,12 @@ $config['en_all_7809'] = array(
         'm_name' => 'Intent Miner View',
         'm_desc' => '',
         'm_parents' => array(7809,7612,4595,4593),
+    ),
+    4264 => array(
+        'm_icon' => '<i class="far fa-sync"></i>',
+        'm_name' => 'Intent Updated',
+        'm_desc' => '',
+        'm_parents' => array(7809,7703,4593,4595),
     ),
     4242 => array(
         'm_icon' => '<i class="far fa-sync"></i>',
@@ -918,7 +918,7 @@ $config['en_all_7703'] = array(
         'm_icon' => '<i class="far fa-sync"></i>',
         'm_name' => 'Intent Updated',
         'm_desc' => '',
-        'm_parents' => array(7812,7703,4593,4595),
+        'm_parents' => array(7809,7703,4593,4595),
     ),
     4242 => array(
         'm_icon' => '<i class="far fa-sync"></i>',
@@ -1593,19 +1593,19 @@ $config['en_ids_7347'] = array(7495,7542,4235);
 $config['en_all_7347'] = array(
     7495 => array(
         'm_icon' => '<i class="far fa-bullseye-arrow"></i>',
-        'm_name' => 'User Intent Recommended',
+        'm_name' => 'Intent Recommended',
         'm_desc' => '',
         'm_parents' => array(4755,4595,4593,7347),
     ),
     7542 => array(
         'm_icon' => '<i class="far fa-bullseye-arrow"></i>',
-        'm_name' => 'User Intent Required',
+        'm_name' => 'Intent Required',
         'm_desc' => '',
         'm_parents' => array(4755,4595,4593,7347),
     ),
     4235 => array(
         'm_icon' => '<i class="far fa-bullseye-arrow"></i>',
-        'm_name' => 'User Intent Set',
+        'm_name' => 'Intent Set',
         'm_desc' => '',
         'm_parents' => array(7347,4595,4755,4593),
     ),
@@ -1696,14 +1696,14 @@ $config['en_all_7304'] = array(
 $config['en_ids_7233'] = array(7809,7812,7810,7347,7164);
 $config['en_all_7233'] = array(
     7809 => array(
-        'm_icon' => '<i class="far fa-shovel"></i>',
-        'm_name' => 'Mining',
+        'm_icon' => '<i class="far fa-sync"></i>',
+        'm_name' => 'Mining Process',
         'm_desc' => '',
         'm_parents' => array(4527,7233),
     ),
     7812 => array(
         'm_icon' => '<i class="far fa-brain"></i>',
-        'm_name' => 'Intelligence',
+        'm_name' => 'Mined Intelligence',
         'm_desc' => 'Maps intent/entity correlations which fuels all conversations. Collectively they are a measure for Mench\'s intelligence.',
         'm_parents' => array(4527,7233),
     ),
@@ -1721,21 +1721,15 @@ $config['en_all_7233'] = array(
     ),
     7164 => array(
         'm_icon' => '<i class="far fa-comments"></i>',
-        'm_name' => 'Conversation',
+        'm_name' => 'User Conversations',
         'm_desc' => '',
         'm_parents' => array(7233,7203,4527),
     ),
 );
 
 //Weekly Leaderboard Message:
-$config['en_ids_7203'] = array(7164,4250,4486,6255);
+$config['en_ids_7203'] = array(4250,4486,7164,6255);
 $config['en_all_7203'] = array(
-    7164 => array(
-        'm_icon' => '<i class="far fa-comments"></i>',
-        'm_name' => 'Conversation Links',
-        'm_desc' => '',
-        'm_parents' => array(7233,7203,4527),
-    ),
     4250 => array(
         'm_icon' => '<i class="fas fa-hashtag"></i>',
         'm_name' => 'Intent Created',
@@ -1748,6 +1742,12 @@ $config['en_all_7203'] = array(
         'm_desc' => '',
         'm_parents' => array(7203,4535,4527),
     ),
+    7164 => array(
+        'm_icon' => '<i class="far fa-comments"></i>',
+        'm_name' => 'User Conversations',
+        'm_desc' => '',
+        'm_parents' => array(7233,7203,4527),
+    ),
     6255 => array(
         'm_icon' => '<i class="fas fa-walking"></i>',
         'm_name' => 'User Steps Progressed',
@@ -1756,7 +1756,7 @@ $config['en_all_7203'] = array(
     ),
 );
 
-//Conversation Links:
+//User Conversations:
 $config['en_ids_7164'] = array(4282,6224,6415,4275,6559,6560,6556,6578,6154,6155,6149,6969,4283,6132,7757,4266,4267,4554,4570,4556,4555,7702,5967,7563,6563,4552,4553,7562,4577,4549,4551,4550,4557,4278,4279,4268,4299,4460,4547,4287,4548,7488,7485,7486,6144,7741,6140,4559,7489,7492,6997,6157,7487,6143);
 $config['en_all_7164'] = array(
     4282 => array(
@@ -3024,7 +3024,7 @@ $config['en_all_4755'] = array(
         'm_icon' => '<i class="far fa-sync"></i>',
         'm_name' => 'Entity Updated',
         'm_desc' => '',
-        'm_parents' => array(7812,4755,4593,4595),
+        'm_parents' => array(7809,4755,4593,4595),
     ),
     7701 => array(
         'm_icon' => '<i class="far fa-rss"></i>',
@@ -3593,7 +3593,7 @@ $config['en_all_4595'] = array(
         'm_icon' => '<i class="far fa-sync"></i>',
         'm_name' => 'Entity Updated',
         'm_desc' => '50',
-        'm_parents' => array(7812,4755,4593,4595),
+        'm_parents' => array(7809,4755,4593,4595),
     ),
     4250 => array(
         'm_icon' => '<i class="fas fa-hashtag"></i>',
@@ -3671,7 +3671,7 @@ $config['en_all_4595'] = array(
         'm_icon' => '<i class="far fa-sync"></i>',
         'm_name' => 'Intent Updated',
         'm_desc' => '1000',
-        'm_parents' => array(7812,7703,4593,4595),
+        'm_parents' => array(7809,7703,4593,4595),
     ),
     4242 => array(
         'm_icon' => '<i class="far fa-sync"></i>',
@@ -4239,7 +4239,7 @@ $config['en_all_4593'] = array(
         'm_icon' => '<i class="far fa-sync"></i>',
         'm_name' => 'Entity Updated',
         'm_desc' => 'When a Miner modified an entity attribute like Name, Icon or Status.',
-        'm_parents' => array(7812,4755,4593,4595),
+        'm_parents' => array(7809,4755,4593,4595),
     ),
     4250 => array(
         'm_icon' => '<i class="fas fa-hashtag"></i>',
@@ -4317,7 +4317,7 @@ $config['en_all_4593'] = array(
         'm_icon' => '<i class="far fa-sync"></i>',
         'm_name' => 'Intent Updated',
         'm_desc' => 'When an intent field is updated',
-        'm_parents' => array(7812,7703,4593,4595),
+        'm_parents' => array(7809,7703,4593,4595),
     ),
     4242 => array(
         'm_icon' => '<i class="far fa-sync"></i>',
