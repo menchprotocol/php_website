@@ -284,7 +284,7 @@
                                 <input type="hidden" id="en_link_count" value="0" />
                                 <div class="alert alert-danger" style="margin:5px 0px; padding:7px;">
                                     <i class="fas fa-exclamation-triangle"></i>
-                                    Saving will remove this entity and all its <span class="entity_remove_stats" style="display:inline-block; padding: 0;"></span> links.
+                                    Saving will archive this entity and UNLINK ALL <span class="entity_remove_stats" style="display:inline-block; padding: 0;"></span> links
                                 </div>
 
                                 <span class="mini-header"><span class="tr_in_link_title"></span> Merge Entity Into:</span>
@@ -351,7 +351,7 @@
                                 <div class="notify_unlink_en hidden">
                                     <div class="alert alert-warning" style="margin:5px 0px; padding:7px;">
                                         <i class="fas fa-exclamation-triangle"></i>
-                                        Saving will unlink entity.
+                                        Saving will unlink entity
                                     </div>
                                 </div>
 

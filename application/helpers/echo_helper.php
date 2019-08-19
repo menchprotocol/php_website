@@ -2411,7 +2411,7 @@ function echo_en($en, $level, $is_parent = false)
     //Loop through parents and only show those that have en_icon set:
     $ui .= '<span class="' . ( $level == 1 ? '' : advance_mode()  ) . '">';
     foreach ($en['en__parents'] as $en_parent) {
-        $ui .= '<span class="parent-icon en_child_icon_' . $en_parent['en_id'] . '"> &nbsp;<a href="/entities/' . $en_parent['en_id'] . '" data-toggle="tooltip" title="' . $en_parent['en_name'] . (strlen($en_parent['ln_content']) > 0 ? ' = ' . $en_parent['ln_content'] : '') . '" data-placement="bottom">' . echo_en_icon($en_parent) . '</a></span>';
+        $ui .= '<span class="parent-icon en_child_icon_' . $en_parent['en_id'] . '"><a href="/entities/' . $en_parent['en_id'] . '" data-toggle="tooltip" title="' . $en_parent['en_name'] . (strlen($en_parent['ln_content']) > 0 ? ' = ' . $en_parent['ln_content'] : '') . '" data-placement="bottom">' . echo_en_icon($en_parent) . '</a> &nbsp;</span>';
     }
     $ui .= '</span>';
 

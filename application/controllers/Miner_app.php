@@ -450,7 +450,7 @@ class Miner_app extends CI_Controller
             $remaining_child[$en_id] = $m;
         }
 
-        //Display Remaining:
+        //Display RemainingIF ANY:
         echo_multi_row(array(
             'm_icon' => '<i class="fas fa-shapes"></i>',
             'm_name' => 'Others',
@@ -558,7 +558,7 @@ class Miner_app extends CI_Controller
                 'en_status_entity_id IN (' . join(',', $this->config->item('en_ids_7357')) . ')' => null, //Entity Statuses Public
                 'ln_parent_entity_id' => $en['ln_child_entity_id'],
                 'ln_type_entity_id IN (' . join(',', $this->config->item('en_ids_4592')) . ')' => null, //Entity Link Connectors
-            ), array('en_child'), 0, 0, array('ln_order' => 'ASC', 'en_id' => 'ASC'));
+            ), array('en_child'), 0, 0, array('ln_order' => 'ASC', 'en_name' => 'ASC'));
 
 
             $child_ids = array();

@@ -66,7 +66,7 @@
                     <div class="notify_in_remove hidden">
                         <div class="alert alert-danger" style="margin:5px 0px; padding:7px;">
                             <i class="fas fa-exclamation-triangle"></i>
-                            Saving will remove intent and unlink all parents and children
+                            Saving will archive this intent and UNLINK ALL links
                         </div>
                     </div>
 
