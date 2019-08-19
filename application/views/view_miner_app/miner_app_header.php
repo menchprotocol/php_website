@@ -60,8 +60,10 @@ $uri_segment_2 = $this->uri->segment(2);
                         <span class="navbar-brand dashboard-logo">
                             <table style="width: 100%; border:0; padding:0; margin:0 0 0 0;">
                                 <tr>
-                                    <td style="width:40px;">
-                                        <?= $this->config->item('system_icon') ?>
+                                    <td style="width:40px;" data-toggle="tooltip" data-placement="bottom" title="<?= $en_all_7368[7161]['m_name'] ?>">
+                                        <a href="/dashboard" >
+                                            <?= $this->config->item('system_icon') ?>
+                                        </a>
                                     </td>
                                     <td>
                                         <form id="searchForm">
@@ -77,14 +79,6 @@ $uri_segment_2 = $this->uri->segment(2);
                     <div class="collapse navbar-collapse">
                         <ul class="nav navbar-nav navbar-main navbar-right">
 
-                            <!-- Dashboard -->
-                            <li class="<?= ($uri_segment_1 == 'dashboard' ? 'links-active' : 'links-inactive') ?>">
-                                <a href="/dashboard">
-                                    <?= $en_all_7368[7161]['m_icon'] .' ' . $en_all_7368[7161]['m_name'] ?>
-                                </a>
-                            </li>
-
-
                             <!-- Core Objects -->
                             <li class="<?= ($uri_segment_1 == 'intents' ? 'intent-active' : 'intent-inactive') ?>">
                                 <a href="/intents">
@@ -96,9 +90,12 @@ $uri_segment_2 = $this->uri->segment(2);
                                     <?= $en_all_7368[4536]['m_icon'] .' '. $en_all_7368[4536]['m_name'] ?>
                                 </a>
                             </li>
-                            <li class="<?= ($uri_segment_1 == 'links' ? 'links-active' : 'links-inactive') ?>">
+
+
+                            <!-- Links -->
+                            <li class="<?= ($uri_segment_1 == 'links' ? 'links-active' : 'links-inactive') ?>" data-toggle="tooltip" data-placement="left" title="<?= $en_all_7368[6205]['m_name'] ?>">
                                 <a href="/links">
-                                    <?= $en_all_7368[6205]['m_icon'] .' '. $en_all_7368[6205]['m_name'] ?>
+                                    <?= $en_all_7368[6205]['m_icon'] ?>
                                 </a>
                             </li>
 

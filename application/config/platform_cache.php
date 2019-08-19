@@ -11,7 +11,7 @@ defined('BASEPATH') OR exit('No direct script access allowed');
  *
  */
 
-//Generated 2019-08-16 17:29:02 PST
+//Generated 2019-08-19 06:57:09 PST
 
 //Miner Engagements:
 $config['en_ids_7809'] = array(4250,4251,4998,4999,5000,5001,5003,5865,5943,5981,5982);
@@ -287,13 +287,13 @@ $config['en_all_7774'] = array(
 $config['en_ids_7767'] = array(7598,7766);
 $config['en_all_7767'] = array(
     7598 => array(
-        'm_icon' => '<i class="fas fa-tree"></i>',
+        'm_icon' => '<i class="fas fa-tree-large"></i>',
         'm_name' => 'Tree',
         'm_desc' => '',
         'm_parents' => array(7767,7582,7596),
     ),
     7766 => array(
-        'm_icon' => '<i class="fas fa-code-branch rotate90"></i>',
+        'm_icon' => '<i class="fas fa-code-branch rotate74"></i>',
         'm_name' => 'Branch',
         'm_desc' => '',
         'm_parents' => array(7767,7596),
@@ -878,13 +878,13 @@ $config['en_all_7703'] = array(
 $config['en_ids_7596'] = array(7598,7766,7597);
 $config['en_all_7596'] = array(
     7598 => array(
-        'm_icon' => '<i class="fas fa-tree"></i>',
+        'm_icon' => '<i class="fas fa-tree-large"></i>',
         'm_name' => 'Tree',
         'm_desc' => 'Intent is searchable and requires the user to register in order to continue',
         'm_parents' => array(7767,7582,7596),
     ),
     7766 => array(
-        'm_icon' => '<i class="fas fa-code-branch rotate90"></i>',
+        'm_icon' => '<i class="fas fa-code-branch rotate74"></i>',
         'm_name' => 'Branch',
         'm_desc' => 'Users can find intent by searching it or arriving at it from the parent',
         'm_parents' => array(7767,7596),
@@ -1029,7 +1029,7 @@ $config['en_all_7585'] = array(
 $config['en_ids_7582'] = array(7598);
 $config['en_all_7582'] = array(
     7598 => array(
-        'm_icon' => '<i class="fas fa-tree"></i>',
+        'm_icon' => '<i class="fas fa-tree-large"></i>',
         'm_name' => 'Intent Tree',
         'm_desc' => '',
         'm_parents' => array(7767,7582,7596),
@@ -1291,7 +1291,7 @@ $config['en_all_7369'] = array(
     ),
     7161 => array(
         'm_icon' => '<i class="far fa-tachometer-alt-fast"></i>',
-        'm_name' => 'Dashboard',
+        'm_name' => 'Mench Dashboard',
         'm_desc' => '',
         'm_parents' => array(7369,7368,7305),
     ),
@@ -1350,7 +1350,7 @@ $config['en_all_7368'] = array(
     ),
     7161 => array(
         'm_icon' => '<i class="far fa-tachometer-alt-fast"></i>',
-        'm_name' => 'Dashboard',
+        'm_name' => 'Mench Dashboard',
         'm_desc' => '',
         'm_parents' => array(7369,7368,7305),
     ),

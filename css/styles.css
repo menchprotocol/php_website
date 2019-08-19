@@ -2551,6 +2551,14 @@ select.form-control {
     transform: rotate(45deg); /* W3C compliant browsers */
 }
 
+.rotate74 {
+    -webkit-transform: rotate(74deg); /* Chrome and other webkit browsers */
+    -moz-transform: rotate(74deg); /* FF */
+    -o-transform: rotate(74deg); /* Opera */
+    -ms-transform: rotate(74deg); /* IE9 */
+    transform: rotate(74deg); /* W3C compliant browsers */
+}
+
 .rotate90 {
     -webkit-transform: rotate(90deg); /* Chrome and other webkit browsers */
     -moz-transform: rotate(90deg); /* FF */
