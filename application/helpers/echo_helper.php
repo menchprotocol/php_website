@@ -1910,6 +1910,12 @@ function echo_multi_row($main_obj, $all_link_types, $link_types_counts, $all_sho
     }
 
 
+    //Terminate if nothing found:
+    if($all_children==0){
+        return false;
+    }
+
+
     if(fmod(count($all_link_types), 2)==1){
         //Make it even:
         $sub_rows .= '<tr class="hidden '.$identifier.'"><td colspan="2">&nbsp;</td></tr>';
