@@ -422,13 +422,7 @@ class Miner_app extends CI_Controller
 
 
 
-
-
-
-
         //All Link Types:
-
-
         echo '<table class="table table-condensed table-striped stats-table mini-stats-table">';
 
         echo '<tr class="panel-title down-border">';

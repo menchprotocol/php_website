@@ -1916,10 +1916,13 @@ function echo_multi_row($main_obj, $all_link_types, $link_types_counts, $all_sho
     }
 
 
-    if(fmod(count($all_link_types), 2)==1){
+    //Always add at-least one space:
+    $sub_rows .= '<tr class="hidden '.$identifier.'"><td colspan="2">&nbsp;</td></tr>';
+
+    //Maybe a second one too:
+    if(fmod(count($all_link_types), 2) == 0){
         //Make it even:
         $sub_rows .= '<tr class="hidden '.$identifier.'"><td colspan="2">&nbsp;</td></tr>';
-
     }
 
 
