@@ -11,7 +11,7 @@ defined('BASEPATH') OR exit('No direct script access allowed');
  *
  */
 
-//Generated 2019-08-20 11:31:03 PST
+//Generated 2019-08-20 12:18:15 PST
 
 //Mined Intelligence:
 $config['en_ids_7812'] = array(4251,4259,4257,4261,4260,4319,4230,4255,4318,4256,4258,4250,4229,4228,4983,6093,6242,4231,7701,7545,4601);
@@ -2120,7 +2120,7 @@ $config['en_all_6194'] = array(
     7596 => array(
         'm_icon' => '<i class="far fa-mountains"></i>',
         'm_name' => 'Intent Scope',
-        'm_desc' => 'SELECT count(in_id) as totals FROM table_intents WHERE in_scope_entity_id=',
+        'm_desc' => 'SELECT count(in_id) as totals FROM table_intents WHERE in_status_entity_id IN (6183,6184) AND in_scope_entity_id=',
         'm_parents' => array(7302,6160,6201,6213,6194,6232,4527),
     ),
     4737 => array(
@@ -2132,19 +2132,19 @@ $config['en_all_6194'] = array(
     7585 => array(
         'm_icon' => '<i class="far fa-shapes"></i>',
         'm_name' => 'Intent Type',
-        'm_desc' => 'SELECT count(in_id) as totals FROM table_intents WHERE in_type_entity_id=',
+        'm_desc' => 'SELECT count(in_id) as totals FROM table_intents WHERE in_status_entity_id IN (6183,6184) AND in_type_entity_id=',
         'm_parents' => array(7302,6160,6213,6194,6232,4527,6201),
     ),
     5008 => array(
         'm_icon' => '<i class="far fa-tools"></i>',
         'm_name' => 'Intent Verb',
-        'm_desc' => 'SELECT count(in_id) as totals FROM table_intents WHERE in_verb_entity_id=',
+        'm_desc' => 'SELECT count(in_id) as totals FROM table_intents WHERE in_status_entity_id IN (6183,6184) AND in_verb_entity_id=',
         'm_parents' => array(7777,6160,6232,7302,4506,6213,6194,6201),
     ),
     4364 => array(
         'm_icon' => '<i class="fas fa-user"></i>',
         'm_name' => 'Link Creator',
-        'm_desc' => 'SELECT count(ln_id) as totals FROM table_links WHERE ln_creator_entity_id=',
+        'm_desc' => 'SELECT count(ln_id) as totals FROM table_links WHERE ln_status_entity_id IN (6175,6176) AND ln_creator_entity_id=',
         'm_parents' => array(6160,6232,6213,6194,4341),
     ),
     6186 => array(
@@ -2156,7 +2156,7 @@ $config['en_all_6194'] = array(
     4593 => array(
         'm_icon' => '<i class="fas fa-plug"></i>',
         'm_name' => 'Link Type',
-        'm_desc' => 'SELECT count(ln_id) as totals FROM table_links WHERE ln_type_entity_id=',
+        'm_desc' => 'SELECT count(ln_id) as totals FROM table_links WHERE ln_status_entity_id IN (6175,6176) AND ln_type_entity_id=',
         'm_parents' => array(6160,6232,7304,6213,6194,4527,4341),
     ),
 );
