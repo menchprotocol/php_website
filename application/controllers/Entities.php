@@ -518,20 +518,6 @@ class Entities extends CI_Controller
             'en_status_entity_id' => intval($_POST['en_status_entity_id']),
         );
 
-        //Check to make sure name is not duplicate:
-        $duplicate_name_ens = $this->Entities_model->en_fetch(array(
-            'en_id !=' => $_POST['en_id'],
-            'en_status_entity_id IN (' . join(',', $this->config->item('en_ids_7358')) . ')' => null, //Entity Statuses Active
-            'LOWER(en_name)' => strtolower($en_update['en_name']),
-        ));
-        if(count($duplicate_name_ens) > 0){
-            //This is a duplicate, disallow:
-            return echo_json(array(
-                'status' => 0,
-                'message' => 'Name ['.$en_update['en_name'].'] already in use by entity @'.$duplicate_name_ens[0]['en_id'],
-            ));
-        }
-
         //Is this being removed?
         if (!in_array($en_update['en_status_entity_id'], $this->config->item('en_ids_7358') /* Entity Statuses Active */) && !($en_update['en_status_entity_id'] == $ens[0]['en_status_entity_id'])) {
 
