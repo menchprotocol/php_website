@@ -3289,7 +3289,7 @@ foreach(explode("\n",$list) as $count => $item){
         $done++;
 
         //Not found:
-        if(isset($GET['update'])){
+        if(isset($_GET['update'])){
             //Create Verb:
             $entity_new = $this->Entities_model->en_create(array(
                 'en_name' => ucwords($words[1]),
