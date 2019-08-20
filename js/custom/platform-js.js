@@ -24,7 +24,7 @@ function en_fetch_canonical_url(query_string, not_found){
         if(searchdata.status && searchdata.url_already_existed){
             //URL was detected via PHP, update the search results:
             $('.add-source-suggest').remove();
-            $('.not-found').html('<a href="/entities/'+searchdata.algolia_object.alg_obj_id+'" class="suggestion">' + echo_js_suggestion(searchdata.algolia_object, 1)+'</a>');
+            $('.not-found').html('<a href="/entities/'+searchdata.algolia_object.alg_obj_id+'" class="suggestion">' + echo_js_suggestion(searchdata.algolia_object, 1, 0)+'</a>');
         }
     });
 
@@ -45,8 +45,6 @@ $(document).ready(function () {
             modify_cancel();
         }
     });
-
-    load_js_algolia();
 
     $("#platform_search").on('autocomplete:selected', function (event, suggestion, dataset) {
 
@@ -82,7 +80,7 @@ $(document).ready(function () {
             },
             templates: {
                 suggestion: function (suggestion) {
-                    return echo_js_suggestion(suggestion, 1);
+                    return echo_js_suggestion(suggestion, 1, 0);
                 },
                 header: function (data) {
                     if(validURL(data.query)){
@@ -156,7 +154,7 @@ $(document).ready(function () {
         },
         templates: {
             suggestion: function (suggestion) {
-                return echo_js_suggestion(suggestion, 0);
+                return echo_js_suggestion(suggestion, 0, 0);
             },
             empty: function (data) {
                 return 'No intents found';

@@ -30,7 +30,7 @@ $(document).ready(function() {
         },
         templates: {
             suggestion: function (suggestion) {
-                return echo_js_suggestion(suggestion, 0);
+                return echo_js_suggestion(suggestion, 0, 0);
             },
         }
 

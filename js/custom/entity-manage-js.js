@@ -25,7 +25,7 @@ function en_load_search(focus_element, is_en_parent, shortcut) {
         templates: {
             suggestion: function (suggestion) {
                 //If clicked, would trigger the autocomplete:selected above which will trigger the en_add_or_link() function
-                return echo_js_suggestion(suggestion, 0);
+                return echo_js_suggestion(suggestion, 0, 0);
             },
             header: function (data) {
                 if (!data.isEmpty) {
@@ -92,7 +92,7 @@ $(document).ready(function () {
         },
         templates: {
             suggestion: function (suggestion) {
-                return echo_js_suggestion(suggestion, 0);
+                return echo_js_suggestion(suggestion, 0, 0);
             },
             empty: function (data) {
                 return '<div class="not-found"><i class="fas fa-exclamation-triangle"></i> No entities found</div>';

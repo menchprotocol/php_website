@@ -86,7 +86,7 @@ function load_filters(){
         },
         templates: {
             suggestion: function (suggestion) {
-                return echo_js_suggestion(suggestion, 0);
+                return echo_js_suggestion(suggestion, 0, 0);
             },
             empty: function (data) {
                 return '<div class="not-found"><i class="fas fa-exclamation-triangle"></i> No users found</div>';
@@ -204,7 +204,7 @@ function in_load_search(focus_element, is_in_parent, next_in_level, shortcut) {
         },
         templates: {
             suggestion: function (suggestion) {
-                return echo_js_suggestion(suggestion, 0);
+                return echo_js_suggestion(suggestion, 0, 0);
             },
             header: function (data) {
                 if (!($(focus_element).val().charAt(0)=='#') && !data.isEmpty) {

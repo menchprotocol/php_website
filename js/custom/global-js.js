@@ -39,7 +39,7 @@ function js_ln_create(new_ln_data){
 })(window,document,'script','dataLayer','GTM-WMGVHWL');
 
 
-function echo_js_suggestion(alg_obj, is_top){
+function echo_js_suggestion(alg_obj, is_top, is_basic){
 
     //Determine object type:
     var obj_type = ( parseInt(alg_obj.alg_obj_is_in)==1 ? 'in' : 'en' );
@@ -50,7 +50,7 @@ function echo_js_suggestion(alg_obj, is_top){
         var focus_field = js_en_all_6177;
     }
 
-    return '<span class="double-icon-search is-top-'+is_top+'"><span class="icon-main">' + alg_obj.alg_obj_icon + '</span><span class="icon-top-right">' + focus_field[alg_obj.alg_obj_status]["m_icon"] + '</span></span> ' + ( alg_obj._highlightResult && alg_obj._highlightResult.alg_obj_name.value ? alg_obj._highlightResult.alg_obj_name.value : alg_obj.alg_obj_name ) + alg_obj.alg_obj_postfix;
+    return '<span class="double-icon-search is-top-'+is_top+'">' + ( is_basic ? '' : '<span class="icon-main">' + alg_obj.alg_obj_icon + '</span>' ) + '<span class="icon-top-right">' + focus_field[alg_obj.alg_obj_status]["m_icon"] + '</span></span> ' + ( alg_obj._highlightResult && alg_obj._highlightResult.alg_obj_name.value ? alg_obj._highlightResult.alg_obj_name.value : alg_obj.alg_obj_name ) + alg_obj.alg_obj_postfix;
 }
 
 
@@ -131,6 +131,9 @@ function load_js_algolia() {
 $(document).ready(function () {
 
 
+    load_js_algolia();
+
+
     $(document).keyup(function (e) {
         //Watch for action keys:
         if (e.keyCode === 27) { //ESC
@@ -151,4 +154,50 @@ $(document).ready(function () {
     $(function () {
         $('[data-toggle="tooltip"]').tooltip();
     });
+
+
+    $('#searchFrontForm').on('submit', function(e) {
+        //Only redirect if matching criteria:
+        e.preventDefault();
+        return false;
+    });
+
+
+    $("#platform_front_search").on('autocomplete:selected', function (event, suggestion, dataset) {
+
+        window.location = "/" + suggestion.alg_obj_id;
+
+    }).autocomplete({hint: false, minLength: 2, autoselect: true, keyboardShortcuts: ['s']}, [
+        {
+            source: function (q, cb) {
+                //Append filters:
+                algolia_index.search(q, {
+                    hitsPerPage: 7,
+                    filters: 'alg_obj_is_in=1 AND alg_obj_scope=7598 AND alg_obj_status=6184', //Published Intent Trees
+                }, function (error, content) {
+                    if (error) {
+                        cb([]);
+                        return;
+                    }
+                    cb(content.hits, content);
+                });
+            },
+            displayKey: function (suggestion) {
+                return ""
+            },
+            templates: {
+                suggestion: function (suggestion) {
+                    return echo_js_suggestion(suggestion, 1, 1);
+                },
+                header: function (data) {
+                    return ""
+                },
+                empty: function (data) {
+                    return '<div class="not-found"><i class="fas fa-exclamation-triangle"></i> No results</div>';
+                },
+            }
+        }
+    ]);
+
+
 });

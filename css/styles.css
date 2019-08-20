@@ -583,7 +583,7 @@ input::-webkit-inner-spin-button {
 
 .landing-page .navbar-brand img {
     display: inline-block;
-    margin-top: -12px;
+    margin-top: -10px !important;
     width: 48px;
 }
 
@@ -620,7 +620,6 @@ input::-webkit-inner-spin-button {
 }
 
 .dashboard-logo {
-    width: 80% !important;
     padding: 10px 0 0 0 !important;
     text-align: left;
 }
@@ -4391,9 +4390,16 @@ h4 .tip-badge {
     font-size:0.7em !important;
 }
 
+.navbar-front-header { width:368px !important; }
 
 
 @media (max-width: 767px) {
+
+    .navbar-front-header { width: 320px !important; }
+
+    .landing-page .navbar-brand img {
+        margin-top: -13px !important;
+    }
 
     .hide-mini {
         display: none;
