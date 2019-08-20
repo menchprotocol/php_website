@@ -483,6 +483,7 @@ if(!$action) {
     echo '<ul class="breadcrumb"><li><a href="/miner_app/admin_tools">Admin Tools</a></li><li><b>'.$moderation_tools['/miner_app/admin_tools/'.$action].'</b></li></ul>';
 
     //Would ensure intents have synced statuses:
+    $verbs_appended = 0;
     $count = 0;
     $fixed = 0;
     foreach($this->Intents_model->in_fetch() as $in){
@@ -500,15 +501,31 @@ if(!$action) {
                 'in_verb_entity_id' => $in_verb_entity_id,
             ), true, $session_en['en_id']);
 
-        } elseif(!$in['in_verb_entity_id']){
+        } elseif(!$in_verb_entity_id){
 
-            //Invalid intent verb:
-            echo '<div>Unknown Verb: <a href="/intents/'.$in['in_id'].'">'.$in['in_outcome'].'</a></div>';
+            if(isset($_GET['append_verb'])){
 
+                $new_outcome = $_GET['append_verb'].' '.$in['in_outcome'];
+                $in_verb_entity_id_append = in_outcome_verb_id($new_outcome);
+
+                if($in_verb_entity_id_append > 0){
+                    $this->Intents_model->in_update($in['in_id'], array(
+                        'in_outcome' => $new_outcome,
+                        'in_verb_entity_id' => $in_verb_entity_id_append,
+                    ), true, $session_en['en_id']);
+                    $verbs_appended++;
+                } else {
+                    echo '<div>FAILED to Append: <a href="/intents/'.$in['in_id'].'">'.$in['in_outcome'].'</a></div>';
+                }
+
+            } else {
+                //Invalid intent verb:
+                echo '<div>Unknown Verb: <a href="/intents/'.$in['in_id'].'">'.$in['in_outcome'].'</a></div>';
+            }
         }
     }
 
-    echo '<div>'.$fixed.'/'.$count.' Intent verbs fixed</div>';
+    echo '<div>'.$fixed.'/'.$count.' Intent verbs fixed'.( $verbs_appended > 0 ? ' & '.$verbs_appended.' verbs appended' : '' ).'</div>';
 
 } elseif($action=='identical_intent_outcomes') {
 
