@@ -622,6 +622,7 @@ input::-webkit-inner-spin-button {
 .dashboard-logo {
     padding: 10px 0 0 0 !important;
     text-align: left;
+    width: 100% !important;
 }
 
 .dashboard-logo img {

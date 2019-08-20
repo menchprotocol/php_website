@@ -38,7 +38,7 @@ $url_part_1 = $this->uri->segment(1);
 
         <!-- Brand and toggle get grouped for better mobile display -->
         <div class="navbar-header navbar-front-header">
-             <span class="navbar-brand dashboard-logo" style="width: 100% !important;">
+             <span class="navbar-brand dashboard-logo">
                 <table style="width: 100%; border:0; padding:0; margin:-5px 0 0 0;">
                     <tr>
                         <td style="width:40px;">
