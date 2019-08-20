@@ -51,23 +51,6 @@
 
         echo '<div id="entity-box" class="list-group indent1">';
         echo echo_en($entity, 1);
-
-
-
-        //Show database connectors:
-        /*
-        $en_count_6194 = en_count_6194($entity['en_id']);
-        if(count($en_count_6194) > 0){
-            $en_all_6194 = $this->config->item('en_all_6194');
-            //Show this entities connections:
-            echo '<div style="border:1px solid #CCC; border-radius: 5px;">';
-            foreach($en_count_6194 as $en_id=>$en_count){
-                echo '<div>'.number_format($en_count, 0).' '.$en_all_6194[$en_id]['m_icon'].' '.$en_all_6194[$en_id]['m_name'].'</div>';
-            }
-            echo '</div>';
-        }
-        */
-
         echo '</div>';
 
 

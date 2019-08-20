@@ -523,46 +523,22 @@ class Entities extends CI_Controller
 
 
             //Make sure entity is not referenced in key DB reference fields:
-            $en_miners = $this->Links_model->ln_fetch(array(
-                'ln_creator_entity_id' => $_POST['en_id'],
-            ), array(), 0, 0, array(), 'COUNT(ln_id) as totals');
-            $en_link_types = $this->Links_model->ln_fetch(array(
-                'ln_type_entity_id' => $_POST['en_id'],
-            ), array(), 0, 0, array(), 'COUNT(ln_id) as totals');
-            $en_verbs = $this->Intents_model->in_fetch(array(
-                'in_verb_entity_id' => $_POST['en_id'],
-            ), array(), 0, 0, array(), 'COUNT(in_id) as totals');
-            $en_requirements = $this->Intents_model->in_fetch(array(
-                'in_type_entity_id' => $_POST['en_id'],
-            ), array(), 0, 0, array(), 'COUNT(in_id) as totals');
+            $en_count_references = en_count_references($_POST['en_id']);
+            if(count($en_count_references) > 0){
 
-            if(count($en_miners) > 0 && $en_miners[0]['totals'] > 0){
-                //Cannot delete this entity until intent references are removed:
+                $en_all_6194 = $this->config->item('en_all_6194');
+
+                //Construct the message:
+                $error_message = 'Cannot be removed because entity is referenced as ';
+                foreach($en_count_references as $en_id=>$en_count){
+                    $error_message .= $en_all_6194[$en_id]['m_name'].' '.echo_number($en_count).' times ';
+                }
+
                 return echo_json(array(
                     'status' => 0,
-                    'message' => 'Cannot be removed because entity has mined '.echo_number($en_miners[0]['totals']).' links',
-                ));
-            } elseif(count($en_link_types) > 0 && $en_link_types[0]['totals'] > 0){
-                //Cannot delete this entity until intent references are removed:
-                return echo_json(array(
-                    'status' => 0,
-                    'message' => 'Cannot be removed because entity is a link type with '.echo_number($en_link_types[0]['totals']).' links',
-                ));
-            } elseif(count($en_verbs) > 0 && $en_verbs[0]['totals'] > 0){
-                //Cannot delete this entity until intent references are removed:
-                return echo_json(array(
-                    'status' => 0,
-                    'message' => 'Cannot be removed because entity is a verb for '.echo_number($en_verbs[0]['totals']).' intents',
-                ));
-            } elseif(count($en_requirements) > 0 && $en_requirements[0]['totals'] > 0){
-                //Cannot delete this entity until intent references are removed:
-                return echo_json(array(
-                    'status' => 0,
-                    'message' => 'Cannot be removed because entity is an intent type for '.echo_number($en_requirements[0]['totals']).' intents',
+                    'message' => $error_message,
                 ));
             }
-
-
 
 
 

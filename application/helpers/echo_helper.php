@@ -2378,6 +2378,7 @@ function echo_en($en, $level, $is_parent = false)
 
 
 
+
     //Does this entity also include a link?
     if ($ln_id > 0) {
 
@@ -2393,6 +2394,24 @@ function echo_en($en, $level, $is_parent = false)
         $ui .= '<span class="ln_content_val_' . $ln_id . ' hidden">' . $en['ln_content'] . '</span>';
 
     }
+
+
+    //Show database connectors:
+    if($level == 1){
+        $en_count_references = en_count_references($en['en_id']);
+        if(count($en_count_references) > 0){
+
+            $en_all_6194 = $CI->config->item('en_all_6194');
+
+            //Show this entities connections:
+            $ref_count = 0;
+            foreach($en_count_references as $en_id=>$en_count){
+                $ui .= '&nbsp;&nbsp;<a href="/entities/'.$en_id.'" style="font-size:0.8em; font-weight:bold;" data-toggle="tooltip" data-placement="top" title="This entity is referenced as '.$en_all_6194[$en_id]['m_name'].' '.number_format($en_count, 0).' times">'.$en_all_6194[$en_id]['m_icon'] . ' '. echo_number($en_count).'</a>';
+                $ref_count++;
+            }
+        }
+    }
+
 
 
 

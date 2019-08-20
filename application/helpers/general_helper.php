@@ -335,27 +335,24 @@ function is_valid_icon($string, $only_return_requirements = false){
 
 }
 
-function en_count_6194($en_id){
+function en_count_references($en_input_id){
 
-    return array();
 
     $connectors_found = array();
     $CI =& get_instance();
 
     foreach($CI->config->item('en_all_6194') /* Entity Database References */ as $en_id => $m){
-        if(strlen($m['m_desc']) > 0){
-
-            //Count rows:
-            $query = $CI->db->query($m['m_desc']);
-            foreach ($query->result() as $row)
-            {
-                echo $row->title;
-                echo $row->name;
-                echo $row->body;
+        //Count rows:
+        $query = $CI->db->query( $m['m_desc'] . $en_input_id );
+        foreach ($query->result() as $row)
+        {
+            if($row->totals > 0){
+                $connectors_found[$en_id] = $row->totals;
             }
         }
-
     }
+
+    return $connectors_found;
 }
 
 function in_outcome_verb_id($string){
