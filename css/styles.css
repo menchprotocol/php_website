@@ -2303,7 +2303,11 @@ select.form-control {
 }
 
 .stats-table td {
-    padding: 5px !important;
+    padding: 5px;
+}
+
+.table-condensed > tbody > tr > td, .table-condensed > tbody > tr > th, .table-condensed > tfoot > tr > td, .table-condensed > tfoot > tr > th, .table-condensed > thead > tr > td, .table-condensed > thead > tr > th {
+    padding: 3px;
 }
 .addon-grey {
     background-color: #EFEFEF !important;
@@ -2312,6 +2316,7 @@ select.form-control {
 .stats-table, .stats-table tr {
     width: 100%;
     text-align: left;
+    margin-bottom: 24px;
 }
 
 

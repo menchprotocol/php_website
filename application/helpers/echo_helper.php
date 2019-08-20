@@ -1872,11 +1872,14 @@ function echo_multi_row($main_obj, $all_link_types, $link_types_counts, $all_sho
 
     //First display all children and sum them up:
     $all_children = 0;
+    $all_link_type_ids = array();
     foreach($all_link_types as $en_id => $m){
 
         if(in_array($en_id , $all_shown)){
             continue;
         }
+
+        array_push($all_link_type_ids, $en_id);
 
         $ln = filter_array($link_types_counts, 'ln_type_entity_id', $en_id);
 
@@ -1894,13 +1897,16 @@ function echo_multi_row($main_obj, $all_link_types, $link_types_counts, $all_sho
         } else {
 
             $sub_rows .= '<td style="text-align: left;">';
-            $sub_rows .= '<span class="icon-block" style="margin-left:3px;">'.$m['m_icon'].'</span>';
+            $sub_rows .= '<span class="icon-block" style="margin-left:4px; border-left: 1px solid #222;">'.$m['m_icon'].'</span>';
             $sub_rows .= '<a href="/entities/'.$en_id.'">'.$m['m_name'].'</a>';
             $sub_rows .= '</td>';
 
-            $sub_rows .= '<td style="text-align: right;">';
-            $sub_rows .= number_format($ln['trs_count'], 0) . ( strlen($en_all_4593[$en_id]['m_desc']) > 0 ? '<i class="fal fa-info-circle icon-block" data-toggle="tooltip" title="'.number_format($ln['trs_count'], 0).' '.$en_all_4593[$en_id]['m_desc'].'" data-placement="top"></i>' : '<i class="fal fa-info-circle icon-block" data-toggle="tooltip" title="'.number_format($ln['trs_count'], 0).' Links" data-placement="top" style="color: #AAA;"></i>' );
-            $sub_rows .= '</td>';
+
+            $sub_rows .= '<td style="text-align: right;"><span style="margin-right:4px; border-right: 1px solid #222;">';
+
+            $sub_rows .= '<a href="/links?ln_status_entity_id='.join(',', $CI->config->item('en_ids_7360')) /* Link Statuses Active */.'&ln_type_entity_id=' . $en_id . '">'.number_format($ln['trs_count'], 0) . '</a>' . ( strlen($en_all_4593[$en_id]['m_desc']) > 0 ? '<i class="fal fa-info-circle icon-block" data-toggle="tooltip" title="'.number_format($ln['trs_count'], 0).' '.$en_all_4593[$en_id]['m_desc'].'" data-placement="top"></i>' : '<i class="fal fa-info-circle icon-block" data-toggle="tooltip" title="'.number_format($ln['trs_count'], 0).' Links" data-placement="top" style="color: #AAA;"></i>' );
+
+            $sub_rows .= '</span></td>';
 
         }
 
@@ -1928,10 +1934,10 @@ function echo_multi_row($main_obj, $all_link_types, $link_types_counts, $all_sho
 
 
     //Fetch Title:
-    echo '<tr style="font-weight: bold;">';
+    echo '<tr>';
     echo '<td style="text-align: left;"><span class="icon-block
 ">'.$main_obj['m_icon'].'</span><a href="javascript:void(0);" onclick="$(\'.'.$identifier.'\').toggleClass(\'hidden\')">'.$main_obj['m_name'].'</a></td>';
-    echo '<td style="text-align: right;">'.number_format($all_children) . ( strlen($main_obj['m_desc']) > 0 ? '<i class="fal fa-info-circle icon-block" data-toggle="tooltip" title="'.number_format($all_children, 0).' '.$main_obj['m_desc'].'" data-placement="top"></i>' : '<i class="fal fa-info-circle icon-block" data-toggle="tooltip" title="'.number_format($all_children, 0).' Links" data-placement="top" style="color: #AAA;"></i>' ) .'</td>';
+    echo '<td style="text-align: right;"><a href="/links?ln_status_entity_id='.join(',', $CI->config->item('en_ids_7360')) /* Link Statuses Active */.'&ln_type_entity_id=' . join(',' , $all_link_type_ids) . '">'.number_format($all_children).'</a>' . ( strlen($main_obj['m_desc']) > 0 ? '<i class="fal fa-info-circle icon-block" data-toggle="tooltip" title="'.number_format($all_children, 0).' '.$main_obj['m_desc'].'" data-placement="top"></i>' : '<i class="fal fa-info-circle icon-block" data-toggle="tooltip" title="'.number_format($all_children, 0).' Links" data-placement="top" style="color: #AAA;"></i>' ) .'</td>';
     echo '</tr>';
 
 

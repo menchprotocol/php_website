@@ -11,7 +11,7 @@ defined('BASEPATH') OR exit('No direct script access allowed');
  *
  */
 
-//Generated 2019-08-20 12:18:15 PST
+//Generated 2019-08-20 13:19:16 PST
 
 //Mined Intelligence:
 $config['en_ids_7812'] = array(4251,4259,4257,4261,4260,4319,4230,4255,4318,4256,4258,4250,4229,4228,4983,6093,6242,4231,7701,7545,4601);
@@ -1295,7 +1295,7 @@ $config['en_all_7529'] = array(
         'm_parents' => array(7529),
     ),
     7810 => array(
-        'm_icon' => '<i class="far fa-user-plus"></i>',
+        'm_icon' => '<i class="fas fa-plus-circle"></i>',
         'm_name' => 'User Onboarding',
         'm_desc' => '',
         'm_parents' => array(4527,7529,4269,7233),
@@ -1738,31 +1738,31 @@ $config['en_all_7304'] = array(
 $config['en_ids_7233'] = array(7809,7812,7810,7347,7164);
 $config['en_all_7233'] = array(
     7809 => array(
-        'm_icon' => '<i class="far fa-sync"></i>',
+        'm_icon' => '<i class="fas fa-plus-circle"></i>',
         'm_name' => 'Mining Process',
         'm_desc' => '',
         'm_parents' => array(4527,7233),
     ),
     7812 => array(
-        'm_icon' => '<i class="far fa-brain"></i>',
+        'm_icon' => '<i class="fas fa-plus-circle"></i>',
         'm_name' => 'Mined Intelligence',
         'm_desc' => 'Maps intent/entity correlations which fuels all conversations. Collectively they are a measure for Mench\'s intelligence.',
         'm_parents' => array(4527,7233),
     ),
     7810 => array(
-        'm_icon' => '<i class="far fa-user-plus"></i>',
+        'm_icon' => '<i class="fas fa-plus-circle"></i>',
         'm_name' => 'User Onboarding',
         'm_desc' => '',
         'm_parents' => array(4527,7529,4269,7233),
     ),
     7347 => array(
-        'm_icon' => '<i class="far fa-bullseye-arrow"></i>',
+        'm_icon' => '<i class="fas fa-plus-circle"></i>',
         'm_name' => 'User Set Intention',
         'm_desc' => '',
         'm_parents' => array(7233,4527,6219),
     ),
     7164 => array(
-        'm_icon' => '<i class="far fa-comments"></i>',
+        'm_icon' => '<i class="fas fa-plus-circle"></i>',
         'm_name' => 'User Conversations',
         'm_desc' => '',
         'm_parents' => array(7233,7203,4527),
@@ -1785,7 +1785,7 @@ $config['en_all_7203'] = array(
         'm_parents' => array(7203,4535,4527),
     ),
     7164 => array(
-        'm_icon' => '<i class="far fa-comments"></i>',
+        'm_icon' => '<i class="fas fa-plus-circle"></i>',
         'm_name' => 'User Conversations',
         'm_desc' => '',
         'm_parents' => array(7233,7203,4527),
