@@ -35,25 +35,25 @@ $url_part_1 = $this->uri->segment(1);
 <?php if(!isset($hide_header) || !$hide_header){ ?>
 <nav class="navbar navbar-warning navbar-fixed-top navbar-color-on-scroll no-adj">
     <div class="container">
+
         <!-- Brand and toggle get grouped for better mobile display -->
         <div class="navbar-header navbar-front-header">
-
              <span class="navbar-brand dashboard-logo" style="width: 100% !important;">
-                            <table style="width: 100%; border:0; padding:0; margin:-5px 0 0 0;">
-                                <tr>
-                                    <td style="width:40px;">
-                                        <a class="navbar-brand tag-manager-home-link" href="/"><img src="/img/bp_128.png" /><span
-                                                    style="text-transform: lowercase; color: #2f2739;"></span></a>
-                                    </td>
-                                    <td>
-                                        <form id="searchFrontForm">
-                                        <input type="text" class="algolia_search" id="platform_front_search" data-lpignore="true"
-                                               placeholder="Search...">
-                                        </form>
-                                    </td>
-                                </tr>
-                            </table>
-                        </span>
+                <table style="width: 100%; border:0; padding:0; margin:-5px 0 0 0;">
+                    <tr>
+                        <td style="width:40px;">
+                            <a class="navbar-brand tag-manager-home-link" href="/"><img src="/img/bp_128.png" /><span
+                                        style="text-transform: lowercase; color: #2f2739;"></span></a>
+                        </td>
+                        <td>
+                            <form id="searchFrontForm">
+                            <input type="text" class="algolia_search" id="platform_front_search" data-lpignore="true"
+                                   placeholder="Search...">
+                            </form>
+                        </td>
+                    </tr>
+                </table>
+            </span>
         </div>
 
         <div class="collapse navbar-collapse">

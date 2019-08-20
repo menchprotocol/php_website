@@ -4390,12 +4390,12 @@ h4 .tip-badge {
     font-size:0.7em !important;
 }
 
-.navbar-front-header { width:368px !important; }
+.navbar-front-header { width:398px !important; }
 
 
 @media (max-width: 767px) {
 
-    .navbar-front-header { width: 320px !important; }
+    .navbar-front-header { width: 340px !important; }
 
     .landing-page .navbar-brand img {
         margin-top: -13px !important;

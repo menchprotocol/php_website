@@ -50,7 +50,14 @@ function echo_js_suggestion(alg_obj, is_top, is_basic){
         var focus_field = js_en_all_6177;
     }
 
-    return '<span class="double-icon-search is-top-'+is_top+'">' + ( is_basic ? '' : '<span class="icon-main">' + alg_obj.alg_obj_icon + '</span>' ) + '<span class="icon-top-right">' + focus_field[alg_obj.alg_obj_status]["m_icon"] + '</span></span> ' + ( alg_obj._highlightResult && alg_obj._highlightResult.alg_obj_name.value ? alg_obj._highlightResult.alg_obj_name.value : alg_obj.alg_obj_name ) + alg_obj.alg_obj_postfix;
+    var obj_full_name = ( alg_obj._highlightResult && alg_obj._highlightResult.alg_obj_name.value ? alg_obj._highlightResult.alg_obj_name.value : alg_obj.alg_obj_name );
+
+    if(is_basic){
+        return obj_full_name;
+    } else {
+        return '<span class="double-icon-search is-top-'+is_top+'"><span class="icon-main">' + alg_obj.alg_obj_icon + '</span><span class="icon-top-right">' + focus_field[alg_obj.alg_obj_status]["m_icon"] + '</span></span> ' + obj_full_name + alg_obj.alg_obj_postfix;
+    }
+
 }
 
 
