@@ -941,7 +941,7 @@ class Intents_model extends CI_Model
              *
              * */
             usort($metadata_this['__in__metadata_experts'], 'en_trust_score_sort');
-            foreach ($metadata_this['__in__metadata_sources'] as $type_en_id => $current_us) {
+            foreach ($metadata_this['__in__metadata_sources'] as $type_en_id => $current_en) {
                 usort($metadata_this['__in__metadata_sources'][$type_en_id], 'en_trust_score_sort');
             }
 

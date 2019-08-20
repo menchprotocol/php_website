@@ -1282,12 +1282,15 @@ class User_app_model extends CI_Model
 
         } elseif($has_children && $ins[0]['in_completion_method_entity_id']==6685 /* Intent Answer Single-Choice Timed */){
 
+            //TODO Implement
             $progression_type_entity_id = 7487; //User Step Single-Answered Timely
-            $progression_type_entity_id = 6157; //TODO User Step Single-Answered (Remove after integration)
+            $progression_type_entity_id = 6157; //User Step Single-Answered
 
         } elseif($has_children && $ins[0]['in_completion_method_entity_id']==7231 /* Intent Answer Multiple-Choice */){
 
+            //TODO Implement
             $progression_type_entity_id = 7489; //User Step Multi-Answered
+            $progression_type_entity_id = 6157; //User Step Single-Answered
 
         } else {
 

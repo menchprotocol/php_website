@@ -280,10 +280,10 @@ class Entities extends CI_Controller
         }
 
         //Validate parent entity:
-        $current_us = $this->Entities_model->en_fetch(array(
+        $current_en = $this->Entities_model->en_fetch(array(
             'en_id' => $_POST['en_id'],
         ));
-        if (count($current_us) < 1) {
+        if (count($current_en) < 1) {
             return echo_json(array(
                 'status' => 0,
                 'message' => 'Invalid parent entity ID',
@@ -374,13 +374,13 @@ class Entities extends CI_Controller
             //Add links only if not already added by the URL function:
             if ($_POST['is_parent']) {
 
-                $ln_child_entity_id = $current_us[0]['en_id'];
+                $ln_child_entity_id = $current_en[0]['en_id'];
                 $ln_parent_entity_id = $entity_new['en_id'];
 
             } else {
 
                 $ln_child_entity_id = $entity_new['en_id'];
-                $ln_parent_entity_id = $current_us[0]['en_id'];
+                $ln_parent_entity_id = $current_en[0]['en_id'];
 
             }
 
