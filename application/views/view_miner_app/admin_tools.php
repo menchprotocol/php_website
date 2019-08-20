@@ -3293,9 +3293,8 @@ foreach(explode("\n",$list) as $count => $item){
             //Create Verb:
             $entity_new = $this->Entities_model->en_create(array(
                 'en_name' => ucwords($words[1]),
-                'en_icon' => $en_icon,
                 'en_status_entity_id' => 6181, //Entity Published
-            ), true, 1);
+            ), false, 1);
 
             if(isset($entity_new['en_id']) && $entity_new['en_id'] > 0){
                 //Link to verbs:
