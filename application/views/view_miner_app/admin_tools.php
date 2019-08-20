@@ -1,6 +1,6 @@
 <?php
 
-if(!isset($GET['start'])){
+if(!isset($_GET['start'])){
     die('will be up soon');
 }
 
