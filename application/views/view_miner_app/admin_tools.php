@@ -500,6 +500,11 @@ if(!$action) {
                 'in_verb_entity_id' => $in_verb_entity_id,
             ), true, $session_en['en_id']);
 
+        } elseif(!$in['in_verb_entity_id']){
+
+            //Invalid intent verb:
+            echo '<div>Unknown Verb: <a href="/intents/'.$in['in_id'].'">'.$in['in_outcome'].'</a></div>';
+
         }
     }
 
