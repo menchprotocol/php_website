@@ -91,13 +91,12 @@ class Miner_app extends CI_Controller
         $en_all_7302 = $this->config->item('en_all_7302'); //Intent Stats
 
 
-
-
-
-
-
         //Intent Type:
-        echo echo_in_setting(7596,'in_type_entity_id');
+        echo echo_in_setting(7585,'in_type_entity_id');
+
+
+        //Intent Scope:
+        echo echo_in_setting(7596,'in_scope_entity_id');
 
 
 
@@ -136,8 +135,9 @@ class Miner_app extends CI_Controller
         echo '</table>';
 
 
-        //Intent Completion Method:
-        echo echo_in_setting(7585,'in_completion_method_entity_id');
+
+
+
 
 
 

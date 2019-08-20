@@ -42,7 +42,7 @@ class Intents extends CI_Controller
                 'ln_status_entity_id IN (' . join(',', $this->config->item('en_ids_7359')) . ')' => null, //Link Statuses Public
                 'in_status_entity_id IN (' . join(',', $this->config->item('en_ids_7355')) . ')' => null, //Intent Statuses Public
                 'ln_type_entity_id' => 4228, //Intent Link Regular Step
-                'in_completion_method_entity_id IN (' . join(',', $this->config->item('en_ids_6193')) . ')' => null, //OR Intents
+                'in_type_entity_id IN (' . join(',', $this->config->item('en_ids_6193')) . ')' => null, //OR Intents
                 'ln_parent_intent_id' => $assessment_in['in_id'],
             ), array('in_child'), 0, 0, array('ln_order' => 'ASC')) as $rank2 => $assessment2_in){
                 echo '&nbsp;&nbsp;&nbsp;&nbsp;'.($rank+1).'.'.($rank2+1). ') '. $assessment2_in['in_outcome'].'<br />';
@@ -159,8 +159,8 @@ class Intents extends CI_Controller
             'title' => echo_in_outcome($ins[0]['in_outcome'], true),
         ));
 
-        //Load specific view based on intent status:
-        $this->load->view(( in_array($ins[0]['in_type_entity_id'], $this->config->item('en_ids_7582')) /* Intent Action Plan Addable */ ? 'view_user_app/in_starting_point' : 'view_user_app/in_passing_point'  ), array(
+        //Load specific view based on intent scope:
+        $this->load->view(( in_array($ins[0]['in_scope_entity_id'], $this->config->item('en_ids_7582')) /* Intent Action Plan Addable */ ? 'view_user_app/in_starting_point' : 'view_user_app/in_passing_point'  ), array(
             'in' => $ins[0],
             'referrer_en_id' => $referrer_en_id,
             'session_en' => $session_en,
@@ -216,7 +216,7 @@ class Intents extends CI_Controller
         //Return report:
         return echo_json(array(
             'status' => 1,
-            'message' => '<h3>'.$en_all_7585[$ins[0]['in_completion_method_entity_id']]['m_icon'].' '.$en_all_4737[$ins[0]['in_status_entity_id']]['m_icon'].' '.echo_in_outcome($ins[0]['in_outcome'], false, false, true).'</h3>'.echo_in_answer_scores($_POST['starting_in'], $_POST['depth_levels'], $_POST['depth_levels'], $ins[0]['in_completion_method_entity_id']),
+            'message' => '<h3>'.$en_all_7585[$ins[0]['in_type_entity_id']]['m_icon'].' '.$en_all_4737[$ins[0]['in_status_entity_id']]['m_icon'].' '.echo_in_outcome($ins[0]['in_outcome'], false, false, true).'</h3>'.echo_in_answer_scores($_POST['starting_in'], $_POST['depth_levels'], $_POST['depth_levels'], $ins[0]['in_type_entity_id']),
         ));
 
     }
@@ -349,7 +349,7 @@ class Intents extends CI_Controller
                 ));
             }
 
-            if(!intval($_POST['is_parent']) && in_array($linked_ins[0]['in_completion_method_entity_id'], $this->config->item('en_ids_7712'))){
+            if(!intval($_POST['is_parent']) && in_array($linked_ins[0]['in_type_entity_id'], $this->config->item('en_ids_7712'))){
                 $new_intent_type = 6914; //Require All
             }
         }
@@ -629,10 +629,10 @@ class Intents extends CI_Controller
                 'status' => 0,
                 'message' => 'Missing tr__assessment_points',
             ));
-        } elseif (!isset($_POST['in_completion_method_entity_id'])) {
+        } elseif (!isset($_POST['in_type_entity_id'])) {
             return echo_json(array(
                 'status' => 0,
-                'message' => 'Invalid in_completion_method_entity_id',
+                'message' => 'Invalid in_type_entity_id',
             ));
         } elseif (!isset($_POST['level']) || intval($_POST['level']) < 1 || intval($_POST['level']) > 3) {
             return echo_json(array(
@@ -664,10 +664,10 @@ class Intents extends CI_Controller
                 'status' => 0,
                 'message' => 'Missing in_status_entity_id',
             ));
-        } elseif (!isset($_POST['in_type_entity_id'])) {
+        } elseif (!isset($_POST['in_scope_entity_id'])) {
             return echo_json(array(
                 'status' => 0,
-                'message' => 'Missing in_type_entity_id',
+                'message' => 'Missing in_scope_entity_id',
             ));
         } elseif (count($ins) < 1) {
             return echo_json(array(
@@ -692,25 +692,25 @@ class Intents extends CI_Controller
                     'message' => 'MIN range cannot be larger than MAX',
                 ));
             }
-        } elseif (!in_array($_POST['in_completion_method_entity_id'], $this->config->item('en_ids_7585'))) {
+        } elseif (!in_array($_POST['in_type_entity_id'], $this->config->item('en_ids_7585'))) {
             return echo_json(array(
                 'status' => 0,
-                'message' => 'Invalid in_completion_method_entity_id',
+                'message' => 'Invalid in_type_entity_id',
             ));
         } elseif (!in_array($_POST['in_status_entity_id'], $this->config->item('en_ids_4737'))) {
             return echo_json(array(
                 'status' => 0,
                 'message' => 'Invalid in_status_entity_id',
             ));
-        } elseif (!in_array($_POST['in_type_entity_id'], $this->config->item('en_ids_7596'))) {
+        } elseif (!in_array($_POST['in_scope_entity_id'], $this->config->item('en_ids_7596'))) {
             return echo_json(array(
                 'status' => 0,
-                'message' => 'Invalid in_type_entity_id',
+                'message' => 'Invalid in_scope_entity_id',
             ));
-        } elseif (!in_array($_POST['in_type_entity_id'], $this->config->item('en_ids_7596'))) {
+        } elseif (!in_array($_POST['in_scope_entity_id'], $this->config->item('en_ids_7596'))) {
             return echo_json(array(
                 'status' => 0,
-                'message' => 'Invalid in_type_entity_id',
+                'message' => 'Invalid in_scope_entity_id',
             ));
         }
 
@@ -722,9 +722,9 @@ class Intents extends CI_Controller
 
         //Prep new variables:
         $in_update = array(
-            'in_completion_method_entity_id' => $_POST['in_completion_method_entity_id'],
-            'in_status_entity_id' => $_POST['in_status_entity_id'],
             'in_type_entity_id' => $_POST['in_type_entity_id'],
+            'in_status_entity_id' => $_POST['in_status_entity_id'],
+            'in_scope_entity_id' => $_POST['in_scope_entity_id'],
             'in_outcome' => trim($_POST['in_outcome']),
             'in_completion_seconds' => intval($_POST['in_completion_seconds']),
             'in_verb_entity_id' => $in_current['in_verb_entity_id'], //We assume no change, and will update if we detected change in outcome...
@@ -752,10 +752,10 @@ class Intents extends CI_Controller
 
             } else {
 
-                if ($key == 'in_outcome' || $key == 'in_type_entity_id') {
+                if ($key == 'in_outcome' || $key == 'in_scope_entity_id') {
 
                     //Validate Intent Outcome:
-                    $in_outcome_validation = $this->Intents_model->in_analyze_outcome($_POST['in_outcome'], $_POST['in_type_entity_id']);
+                    $in_outcome_validation = $this->Intents_model->in_analyze_outcome($_POST['in_outcome'], $_POST['in_scope_entity_id']);
                     if(!$in_outcome_validation['status']){
                         //We had an error, return it:
                         return echo_json($in_outcome_validation);
@@ -765,7 +765,7 @@ class Intents extends CI_Controller
                     $in_update['in_outcome'] = $in_outcome_validation['in_cleaned_outcome'];
                     $in_update['in_verb_entity_id'] = $in_outcome_validation['detected_in_verb_entity_id'];
 
-                } elseif ($key == 'in_completion_method_entity_id') {
+                } elseif ($key == 'in_type_entity_id') {
 
                     //If it was locked and not being changed to a non-locked type, make sure no Lock Link Parents exist:
                     if(!in_array($value, $this->config->item('en_ids_7309') /* Action Plan Step Locked */)){
@@ -962,7 +962,7 @@ class Intents extends CI_Controller
                             ));
 
                             //Ensure child is locked:
-                            if(!in_array($child_ins[0]['in_completion_method_entity_id'], $this->config->item('en_ids_7309') /* Action Plan Step Locked */)){
+                            if(!in_array($child_ins[0]['in_type_entity_id'], $this->config->item('en_ids_7309') /* Action Plan Step Locked */)){
                                 return echo_json(array(
                                     'status' => 0,
                                     'message' => 'Locked Step requires a locked child intent (AND Lock or Or Lock)',
@@ -1690,7 +1690,7 @@ class Intents extends CI_Controller
             //Update all Recommended Intentions and their tree:
             foreach ($this->Intents_model->in_fetch(array(
                 'in_status_entity_id IN (' . join(',', $this->config->item('en_ids_7355')) . ')' => null, //Intent Statuses Public
-                'in_type_entity_id IN (' . join(',', $this->config->item('en_ids_7582')) . ')' => null, //Intent Action Plan Addable
+                'in_scope_entity_id IN (' . join(',', $this->config->item('en_ids_7582')) . ')' => null, //Intent Action Plan Addable
             )) as $published_in) {
                 $tree = $this->Intents_model->in_metadata_extra_insights($published_in['in_id']);
                 if($tree){

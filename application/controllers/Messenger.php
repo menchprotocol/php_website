@@ -547,7 +547,7 @@ class Messenger extends CI_Controller
                             'ln_status_entity_id IN (' . join(',', $this->config->item('en_ids_7364')) . ')' => null, //Link Statuses Incomplete
                             'in_status_entity_id IN (' . join(',', $this->config->item('en_ids_7355')) . ')' => null, //Intent Statuses Public
                         ), array('in_parent'), 0) as $req_sub){
-                            if(in_array($req_sub['in_completion_method_entity_id'], $matching_types)){
+                            if(in_array($req_sub['in_type_entity_id'], $matching_types)){
                                 array_push($pending_matches, $req_sub);
                             } else {
                                 array_push($pending_mismatches, $req_sub);
@@ -588,7 +588,7 @@ class Messenger extends CI_Controller
                                     array(
                                         'content_type' => 'text',
                                         'title' => 'Try Again',
-                                        'payload' => 'TRYANOTHERRESPONSE_' . $first_chioce['in_completion_method_entity_id'],
+                                        'payload' => 'TRYANOTHERRESPONSE_' . $first_chioce['in_type_entity_id'],
                                     ),
                                     array(
                                         'content_type' => 'text',
@@ -607,7 +607,7 @@ class Messenger extends CI_Controller
 
                             //We did not have any matches, but has some mismatches, maybe that's what they meant?
                             $this->Communication_model->dispatch_message(
-                                'Error: You should send me a '.$en_all_6144[$mismatch_focus['in_completion_method_entity_id']]['m_name'].' message to complete this step. Please try again.',
+                                'Error: You should send me a '.$en_all_6144[$mismatch_focus['in_type_entity_id']]['m_name'].' message to complete this step. Please try again.',
                                 $en,
                                 true
                             );

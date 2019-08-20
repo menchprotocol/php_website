@@ -32,8 +32,7 @@ class Entities_model extends CI_Model
         }
 
         if (!isset($insert_columns['en_trust_score'])) {
-            //Will be later calculated via a cron job:
-            $insert_columns['en_trust_score'] = 0;
+            $insert_columns['en_trust_score'] = 0; //Start at zero and update via cron-job
         }
 
         //Lets now add:

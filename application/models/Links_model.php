@@ -172,9 +172,6 @@ class Links_model extends CI_Model
             $insert_columns['ln_content'] = null;
         }
 
-        if (!isset($insert_columns['ln_external_id'])) {
-            $insert_columns['ln_external_id'] = 0;
-        }
 
         if (!isset($insert_columns['ln_timestamp']) || is_null($insert_columns['ln_timestamp'])) {
             //Time with milliseconds:
@@ -189,20 +186,24 @@ class Links_model extends CI_Model
         }
 
         //Set some zero defaults if not set:
-        foreach (array('ln_child_intent_id', 'ln_parent_intent_id', 'ln_child_entity_id', 'ln_parent_entity_id', 'ln_parent_link_id') as $dz) {
+        foreach (array('ln_child_intent_id', 'ln_parent_intent_id', 'ln_child_entity_id', 'ln_parent_entity_id', 'ln_parent_link_id', 'ln_external_id', 'ln_order') as $dz) {
             if (!isset($insert_columns[$dz])) {
                 $insert_columns[$dz] = 0;
             }
         }
 
+
         //Set credits:
         $insert_columns['ln_credits'] = ( $insert_columns['ln_creator_entity_id'] > 0 ? fetch_credits($insert_columns['ln_type_entity_id']) : 0 );
+
 
         //Lets log:
         $this->db->insert('table_links', $insert_columns);
 
+
         //Fetch inserted id:
         $insert_columns['ln_id'] = $this->db->insert_id();
+
 
         //All good huh?
         if ($insert_columns['ln_id'] < 1) {

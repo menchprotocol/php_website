@@ -130,7 +130,6 @@ function extract_references($ln_content)
         'ref_urls' => array(),
         'ref_entities' => array(),
         'ref_intents' => array(),
-        'ref_forbidden' => array(),
         'ref_commands' => array(),
         'ref_custom' => array(),
     );
@@ -152,10 +151,6 @@ function extract_references($ln_content)
                     break; //Will not search for any more referencing after a /link command...
                 }
             }
-
-        } elseif (!$has_double_colon && in_array($word, $CI->config->item('in_outcome_deny_terms'))) {
-
-            array_push($string_references['ref_forbidden'], $word);
 
         } elseif (filter_var($word, FILTER_VALIDATE_URL)) {
 
@@ -340,6 +335,28 @@ function is_valid_icon($string, $only_return_requirements = false){
 
 }
 
+function en_count_6194($en_id){
+
+    return array();
+
+    $connectors_found = array();
+    $CI =& get_instance();
+
+    foreach($CI->config->item('en_all_6194') /* Entity Database References */ as $en_id => $m){
+        if(strlen($m['m_desc']) > 0){
+
+            //Count rows:
+            $query = $CI->db->query($m['m_desc']);
+            foreach ($query->result() as $row)
+            {
+                echo $row->title;
+                echo $row->name;
+                echo $row->body;
+            }
+        }
+
+    }
+}
 
 function in_outcome_verb_id($string){
 
@@ -387,7 +404,7 @@ function filter_array($array, $match_key, $match_value)
 function in_is_unlockable($in){
     $CI =& get_instance();
     $in_is_public = in_array($in['in_status_entity_id'], $CI->config->item('en_ids_7355') /* Intent Statuses Public */);
-    $in_is_locked = in_array($in['in_completion_method_entity_id'],   $CI->config->item('en_ids_7309') /* Action Plan Step Locked */);
+    $in_is_locked = in_array($in['in_type_entity_id'],   $CI->config->item('en_ids_7309') /* Action Plan Step Locked */);
     return ($in_is_public && $in_is_locked);
 }
 
@@ -1031,8 +1048,8 @@ function update_algolia($input_obj_type = null, $input_obj_id = 0, $return_row_o
                 $export_row['alg_obj_id'] = intval($db_row['in_id']);
                 $export_row['alg_obj_weight'] = ( isset($metadata['in__metadata_max_seconds']) ? intval($metadata['in__metadata_max_seconds']) : 0 );
                 $export_row['alg_obj_status'] = intval($db_row['in_status_entity_id']);
-                $export_row['alg_in_type_entity_id'] = intval($db_row['in_type_entity_id']);
-                $export_row['alg_obj_icon'] = $en_all_7585[$db_row['in_completion_method_entity_id']]['m_icon']; //Entity type icon
+                $export_row['alg_in_scope_entity_id'] = intval($db_row['in_scope_entity_id']);
+                $export_row['alg_obj_icon'] = $en_all_7585[$db_row['in_type_entity_id']]['m_icon']; //Entity type icon
                 $export_row['alg_obj_name'] = $db_row['in_outcome'];
                 $export_row['alg_obj_postfix'] =  ( $time_range ? '<span class="alg-postfix"><i class="fal fa-clock"></i>' . $time_range . '</span>' : '');
 

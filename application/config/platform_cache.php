@@ -11,7 +11,7 @@ defined('BASEPATH') OR exit('No direct script access allowed');
  *
  */
 
-//Generated 2019-08-19 16:23:10 PST
+//Generated 2019-08-20 11:31:03 PST
 
 //Mined Intelligence:
 $config['en_ids_7812'] = array(4251,4259,4257,4261,4260,4319,4230,4255,4318,4256,4258,4250,4229,4228,4983,6093,6242,4231,7701,7545,4601);
@@ -636,25 +636,31 @@ $config['en_all_6103'] = array(
 );
 
 //Link Table:
-$config['en_ids_4341'] = array(4429,4369,4372,4595,7694,4367,6103,4370,4366,4368,4371,6186,4362,4593,4364);
+$config['en_ids_4341'] = array(4429,4369,4372,4364,4595,7694,4367,6103,4370,4366,4368,4371,6186,4362,4593);
 $config['en_all_4341'] = array(
     4429 => array(
         'm_icon' => '<i class="fas fa-at"></i>',
         'm_name' => 'Child Entity',
         'm_desc' => '',
-        'm_parents' => array(6160,6232,6213,6194,4341),
+        'm_parents' => array(6160,6232,6213,4341),
     ),
     4369 => array(
         'm_icon' => '<i class="fas fa-hashtag"></i>',
         'm_name' => 'Child Intent',
         'm_desc' => '',
-        'm_parents' => array(6202,6232,6213,6194,4341),
+        'm_parents' => array(6202,6232,6213,4341),
     ),
     4372 => array(
         'm_icon' => '<i class="fas fa-sticky-note"></i>',
         'm_name' => 'Content',
         'm_desc' => '',
         'm_parents' => array(6232,6213,4341),
+    ),
+    4364 => array(
+        'm_icon' => '<i class="fas fa-user"></i>',
+        'm_name' => 'Creator',
+        'm_desc' => '',
+        'm_parents' => array(6160,6232,6213,6194,4341),
     ),
     4595 => array(
         'm_icon' => '<i class="fas fa-award"></i>',
@@ -690,19 +696,19 @@ $config['en_all_4341'] = array(
         'm_icon' => '<i class="fas fa-at"></i>',
         'm_name' => 'Parent Entity',
         'm_desc' => '',
-        'm_parents' => array(6160,6232,6213,6194,4341),
+        'm_parents' => array(6160,6232,6213,4341),
     ),
     4368 => array(
         'm_icon' => '<i class="fas fa-hashtag"></i>',
         'm_name' => 'Parent Intent',
         'm_desc' => '',
-        'm_parents' => array(6202,6232,6213,6194,4341),
+        'm_parents' => array(6202,6232,6213,4341),
     ),
     4371 => array(
         'm_icon' => '<i class="fas fa-link"></i>',
         'm_name' => 'Parent',
         'm_desc' => '',
-        'm_parents' => array(4367,6232,6213,6194,4341),
+        'm_parents' => array(4367,6232,6213,4341),
     ),
     6186 => array(
         'm_icon' => '<i class="far fa-sliders-h"></i>',
@@ -721,12 +727,6 @@ $config['en_all_4341'] = array(
         'm_name' => 'Type',
         'm_desc' => '',
         'm_parents' => array(6160,6232,7304,6213,6194,4527,4341),
-    ),
-    4364 => array(
-        'm_icon' => '<i class="fas fa-user"></i>',
-        'm_name' => 'User',
-        'm_desc' => '',
-        'm_parents' => array(6160,6232,6213,6194,4341),
     ),
 );
 
@@ -772,14 +772,8 @@ $config['en_all_6206'] = array(
 );
 
 //Intent Table:
-$config['en_ids_6201'] = array(7585,4356,6202,6159,4736,4737,7596,5008);
+$config['en_ids_6201'] = array(4356,6202,6159,4736,7596,4737,7585,5008);
 $config['en_all_6201'] = array(
-    7585 => array(
-        'm_icon' => '<i class="far fa-shapes"></i>',
-        'm_name' => 'Completion Method',
-        'm_desc' => '',
-        'm_parents' => array(7302,6160,6213,6194,6232,4527,6201),
-    ),
     4356 => array(
         'm_icon' => '<i class="far fa-clock"></i>',
         'm_name' => 'Completion Time',
@@ -804,17 +798,23 @@ $config['en_all_6201'] = array(
         'm_desc' => '',
         'm_parents' => array(6232,6213,6201),
     ),
+    7596 => array(
+        'm_icon' => '<i class="far fa-mountains"></i>',
+        'm_name' => 'Scope',
+        'm_desc' => '',
+        'm_parents' => array(7302,6160,6201,6213,6194,6232,4527),
+    ),
     4737 => array(
         'm_icon' => '<i class="far fa-sliders-h"></i>',
         'm_name' => 'Status',
         'm_desc' => '',
         'm_parents' => array(6160,6232,7302,6194,6213,6201,4527),
     ),
-    7596 => array(
-        'm_icon' => '<i class="far fa-mountains"></i>',
+    7585 => array(
+        'm_icon' => '<i class="far fa-shapes"></i>',
         'm_name' => 'Type',
         'm_desc' => '',
-        'm_parents' => array(7302,6160,6201,6213,6194,6232,4527),
+        'm_parents' => array(7302,6160,6213,6194,6232,4527,6201),
     ),
     5008 => array(
         'm_icon' => '<i class="far fa-tools"></i>',
@@ -1030,7 +1030,7 @@ $config['en_all_7703'] = array(
     ),
 );
 
-//Intent Type:
+//Intent Scope:
 $config['en_ids_7596'] = array(7598,7766,7597);
 $config['en_all_7596'] = array(
     7598 => array(
@@ -1122,7 +1122,7 @@ $config['en_all_6193'] = array(
     ),
 );
 
-//Intent Completion Method:
+//Intent Type:
 $config['en_ids_7585'] = array(6677,6683,6682,7637,6684,6685,7231,6914,6907);
 $config['en_all_7585'] = array(
     6677 => array(
@@ -1654,13 +1654,13 @@ $config['en_all_7347'] = array(
 );
 
 //Intent Dashboard:
-$config['en_ids_7302'] = array(7585,4737,7596,5008);
+$config['en_ids_7302'] = array(7596,4737,7585,5008);
 $config['en_all_7302'] = array(
-    7585 => array(
-        'm_icon' => '<i class="far fa-shapes"></i>',
-        'm_name' => 'Completion Method',
-        'm_desc' => '',
-        'm_parents' => array(7302,6160,6213,6194,6232,4527,6201),
+    7596 => array(
+        'm_icon' => '<i class="far fa-mountains"></i>',
+        'm_name' => 'Scope',
+        'm_desc' => 'Defines who and how can access intent. Note that all intents are accessible to all users, it\'s just the level of visibility/engagement that is different.',
+        'm_parents' => array(7302,6160,6201,6213,6194,6232,4527),
     ),
     4737 => array(
         'm_icon' => '<i class="far fa-sliders-h"></i>',
@@ -1668,11 +1668,11 @@ $config['en_all_7302'] = array(
         'm_desc' => '',
         'm_parents' => array(6160,6232,7302,6194,6213,6201,4527),
     ),
-    7596 => array(
-        'm_icon' => '<i class="far fa-mountains"></i>',
+    7585 => array(
+        'm_icon' => '<i class="far fa-shapes"></i>',
         'm_name' => 'Type',
-        'm_desc' => 'Defines who and how can access intent. Note that all intents are accessible to all users, it\'s just the level of visibility/engagement that is different.',
-        'm_parents' => array(7302,6160,6201,6213,6194,6232,4527),
+        'm_desc' => '',
+        'm_parents' => array(7302,6160,6213,6194,6232,4527,6201),
     ),
     5008 => array(
         'm_icon' => '<i class="far fa-tools"></i>',
@@ -2108,8 +2108,8 @@ $config['en_all_6186'] = array(
     ),
 );
 
-//Database Connector Fields:
-$config['en_ids_6194'] = array(6177,7585,4737,7596,5008,4429,4369,4366,4368,4371,6186,4593,4364);
+//Entity Database References:
+$config['en_ids_6194'] = array(6177,7596,4737,7585,5008,4364,6186,4593);
 $config['en_all_6194'] = array(
     6177 => array(
         'm_icon' => '<i class="far fa-sliders-h"></i>',
@@ -2117,11 +2117,11 @@ $config['en_all_6194'] = array(
         'm_desc' => 'SELECT count(en_id) as totals FROM table_entities WHERE en_status_entity_id=',
         'm_parents' => array(6160,6232,7303,6194,6213,6206,4527),
     ),
-    7585 => array(
-        'm_icon' => '<i class="far fa-shapes"></i>',
-        'm_name' => 'Intent Completion Method',
-        'm_desc' => 'SELECT count(in_id) as totals FROM table_intents WHERE in_type_entity_id=',
-        'm_parents' => array(7302,6160,6213,6194,6232,4527,6201),
+    7596 => array(
+        'm_icon' => '<i class="far fa-mountains"></i>',
+        'm_name' => 'Intent Scope',
+        'm_desc' => 'SELECT count(in_id) as totals FROM table_intents WHERE in_scope_entity_id=',
+        'm_parents' => array(7302,6160,6201,6213,6194,6232,4527),
     ),
     4737 => array(
         'm_icon' => '<i class="far fa-sliders-h"></i>',
@@ -2129,11 +2129,11 @@ $config['en_all_6194'] = array(
         'm_desc' => 'SELECT count(in_id) as totals FROM table_intents WHERE in_status_entity_id=',
         'm_parents' => array(6160,6232,7302,6194,6213,6201,4527),
     ),
-    7596 => array(
-        'm_icon' => '<i class="far fa-mountains"></i>',
+    7585 => array(
+        'm_icon' => '<i class="far fa-shapes"></i>',
         'm_name' => 'Intent Type',
-        'm_desc' => '',
-        'm_parents' => array(7302,6160,6201,6213,6194,6232,4527),
+        'm_desc' => 'SELECT count(in_id) as totals FROM table_intents WHERE in_type_entity_id=',
+        'm_parents' => array(7302,6160,6213,6194,6232,4527,6201),
     ),
     5008 => array(
         'm_icon' => '<i class="far fa-tools"></i>',
@@ -2141,35 +2141,11 @@ $config['en_all_6194'] = array(
         'm_desc' => 'SELECT count(in_id) as totals FROM table_intents WHERE in_verb_entity_id=',
         'm_parents' => array(7777,6160,6232,7302,4506,6213,6194,6201),
     ),
-    4429 => array(
-        'm_icon' => '<i class="fas fa-at"></i>',
-        'm_name' => 'Link Child Entity',
-        'm_desc' => 'SELECT count(ln_id) as totals FROM table_links WHERE ln_child_entity_id=',
+    4364 => array(
+        'm_icon' => '<i class="fas fa-user"></i>',
+        'm_name' => 'Link Creator',
+        'm_desc' => 'SELECT count(ln_id) as totals FROM table_links WHERE ln_creator_entity_id=',
         'm_parents' => array(6160,6232,6213,6194,4341),
-    ),
-    4369 => array(
-        'm_icon' => '<i class="fas fa-hashtag"></i>',
-        'm_name' => 'Link Child Intent',
-        'm_desc' => '',
-        'm_parents' => array(6202,6232,6213,6194,4341),
-    ),
-    4366 => array(
-        'm_icon' => '<i class="fas fa-at"></i>',
-        'm_name' => 'Link Parent Entity',
-        'm_desc' => 'SELECT count(ln_id) as totals FROM table_links WHERE ln_parent_entity_id=',
-        'm_parents' => array(6160,6232,6213,6194,4341),
-    ),
-    4368 => array(
-        'm_icon' => '<i class="fas fa-hashtag"></i>',
-        'm_name' => 'Link Parent Intent',
-        'm_desc' => '',
-        'm_parents' => array(6202,6232,6213,6194,4341),
-    ),
-    4371 => array(
-        'm_icon' => '<i class="fas fa-link"></i>',
-        'm_name' => 'Link Parent Link',
-        'm_desc' => '',
-        'm_parents' => array(4367,6232,6213,6194,4341),
     ),
     6186 => array(
         'm_icon' => '<i class="far fa-sliders-h"></i>',
@@ -2182,12 +2158,6 @@ $config['en_all_6194'] = array(
         'm_name' => 'Link Type',
         'm_desc' => 'SELECT count(ln_id) as totals FROM table_links WHERE ln_type_entity_id=',
         'm_parents' => array(6160,6232,7304,6213,6194,4527,4341),
-    ),
-    4364 => array(
-        'm_icon' => '<i class="fas fa-user"></i>',
-        'm_name' => 'Link User',
-        'm_desc' => 'SELECT count(ln_id) as totals FROM table_links WHERE ln_miner_entity_id=',
-        'm_parents' => array(6160,6232,6213,6194,4341),
     ),
 );
 

@@ -307,7 +307,7 @@ if(!$action) {
     $invalid_outcomes = 0;
     foreach($active_ins as $count=>$in){
 
-        $in_outcome_validation = $this->Intents_model->in_analyze_outcome($in['in_outcome'], $in['in_type_entity_id']);
+        $in_outcome_validation = $this->Intents_model->in_analyze_outcome($in['in_outcome'], $in['in_scope_entity_id']);
 
         if(!$in_outcome_validation['status']){
 
@@ -332,11 +332,11 @@ if(!$action) {
         'in_id' => 8000,
     )) as $in){
 
-        $in_outcome_validation = $this->Intents_model->in_analyze_outcome($in['in_outcome'], $in['in_type_entity_id']);
+        $in_outcome_validation = $this->Intents_model->in_analyze_outcome($in['in_outcome'], $in['in_scope_entity_id']);
 
         echo '<tr class="panel-title down-border">';
-        echo '<td style="text-align: left;">'.$in['in_outcome'].'<div style="font-size: 0.7em;">VERB @'.$in['in_verb_entity_id'].' CONNECTION @'.$in['in_type_entity_id'].'</div></td>';
-        echo '<td style="text-align: left;">'.$in['in_outcome'].'<div style="font-size: 0.7em;">VERB @'.$in['in_verb_entity_id'].' CONNECTION @'.$in['in_type_entity_id'].'</div></td>';
+        echo '<td style="text-align: left;">'.$in['in_outcome'].'<div style="font-size: 0.7em;">VERB @'.$in['in_verb_entity_id'].' CONNECTION @'.$in['in_scope_entity_id'].'</div></td>';
+        echo '<td style="text-align: left;">'.$in['in_outcome'].'<div style="font-size: 0.7em;">VERB @'.$in['in_verb_entity_id'].' CONNECTION @'.$in['in_scope_entity_id'].'</div></td>';
         echo '<td style="text-align: left;"></td>';
         echo '<td style="text-align: left;"></td>';
         echo '</tr>';
@@ -403,7 +403,7 @@ if(!$action) {
                 if($replace_with_is_set){
                     //Do replacement:
                     $new_outcome = str_replace($_GET['search_for'],$_GET['replace_with'],$in['in_outcome']);
-                    $in_outcome_validation = $this->Intents_model->in_analyze_outcome($new_outcome, $in['in_type_entity_id']);
+                    $in_outcome_validation = $this->Intents_model->in_analyze_outcome($new_outcome, $in['in_scope_entity_id']);
 
                     if($in_outcome_validation['status']){
                         $qualifying_replacements++;
@@ -440,7 +440,7 @@ if(!$action) {
                         'ln_type_entity_id IN (' . join(',', $this->config->item('en_ids_4486')) . ')' => null, //Intent Link Connectors
                         'ln_child_intent_id' => $in['in_id'],
                     ), array('in_parent')) as $in_parent) {
-                        echo '<span class="in_child_icon_' . $in_parent['in_id'] . '"><a href="/intents/' . $in_parent['in_id'] . '" data-toggle="tooltip" title="' . $in_parent['in_outcome'] . '" data-placement="bottom">' . $en_all_7585[$in_parent['in_completion_method_entity_id']]['m_icon'] . '</a> &nbsp;</span>';
+                        echo '<span class="in_child_icon_' . $in_parent['in_id'] . '"><a href="/intents/' . $in_parent['in_id'] . '" data-toggle="tooltip" title="' . $in_parent['in_outcome'] . '" data-placement="bottom">' . $en_all_7585[$in_parent['in_type_entity_id']]['m_icon'] . '</a> &nbsp;</span>';
                     }
 
                     echo '</td>';
@@ -594,10 +594,10 @@ if(!$action) {
 
     foreach ($this->Intents_model->in_fetch(array(
         'in_status_entity_id IN (' . join(',', $this->config->item('en_ids_7356')) . ')' => null, //Intent Statuses Active
-        'in_completion_method_entity_id IN (' . join(',', $this->config->item('en_ids_7712')) . ')' => null,
+        'in_type_entity_id IN (' . join(',', $this->config->item('en_ids_7712')) . ')' => null,
     ), array(), 0, 0, array('in_id' => 'DESC')) as $count => $in) {
 
-        echo '<div>'.($count+1).') '.echo_en_cache('en_all_4737' /* Intent Statuses */, $in['in_status_entity_id']).' '.echo_en_cache('en_all_6193' /* OR Intents */, $in['in_completion_method_entity_id']).' <b><a href="https://mench.com/intents/'.$in['in_id'].'">'.echo_in_outcome($in['in_outcome']).'</a></b></div>';
+        echo '<div>'.($count+1).') '.echo_en_cache('en_all_4737' /* Intent Statuses */, $in['in_status_entity_id']).' '.echo_en_cache('en_all_6193' /* OR Intents */, $in['in_type_entity_id']).' <b><a href="https://mench.com/intents/'.$in['in_id'].'">'.echo_in_outcome($in['in_outcome']).'</a></b></div>';
 
         echo '<ul>';
         //Fetch all children for this OR:
@@ -608,7 +608,7 @@ if(!$action) {
             'ln_parent_intent_id' => $in['in_id'],
         ), array('in_child'), 0, 0, array('ln_order' => 'ASC')) as $child_or){
 
-            $qualified_update = ( $child_or['in_completion_method_entity_id']==6677 /* Intent Read-Only */ && in_array($child_or['in_type_entity_id'], $this->config->item('en_ids_7582')) /* Intent Action Plan Addable */ );
+            $qualified_update = ( $child_or['in_type_entity_id']==6677 /* Intent Read-Only */ && in_array($child_or['in_scope_entity_id'], $this->config->item('en_ids_7582')) /* Intent Action Plan Addable */ );
 
             //Count completions:
             if($qualified_update){
@@ -625,7 +625,7 @@ if(!$action) {
             }
 
             $all_children++;
-            echo '<li>'.echo_en_cache('en_all_6186' /* Link Statuses */, $child_or['ln_status_entity_id']).' '.echo_en_cache('en_all_4737' /* Intent Statuses */, $child_or['in_status_entity_id']).' '.echo_en_cache('en_all_7585', $child_or['in_completion_method_entity_id']).' <a href="https://mench.com/intents/'.$child_or['in_id'].'" '.( $qualified_update ? '' : 'style="color:#FF0000;"' ).'>'.echo_in_outcome($child_or['in_outcome']).'</a>'.( count($user_steps) > 0 ? ' / Steps: '.count($user_steps) : '' ).'</li>';
+            echo '<li>'.echo_en_cache('en_all_6186' /* Link Statuses */, $child_or['ln_status_entity_id']).' '.echo_en_cache('en_all_4737' /* Intent Statuses */, $child_or['in_status_entity_id']).' '.echo_en_cache('en_all_7585', $child_or['in_type_entity_id']).' <a href="https://mench.com/intents/'.$child_or['in_id'].'" '.( $qualified_update ? '' : 'style="color:#FF0000;"' ).'>'.echo_in_outcome($child_or['in_outcome']).'</a>'.( count($user_steps) > 0 ? ' / Steps: '.count($user_steps) : '' ).'</li>';
         }
         echo '</ul>';
         echo '<hr />';
@@ -685,10 +685,10 @@ if(!$action) {
             if(count($this->Links_model->ln_fetch(array(
                     'ln_status_entity_id IN (' . join(',', $this->config->item('en_ids_7360')) . ')' => null, //Link Statuses Active
                     'in_status_entity_id IN (' . join(',', $this->config->item('en_ids_7356')) . ')' => null, //Intent Statuses Active
-                    'in_completion_method_entity_id NOT IN (6907,6914)' => null, //NOT AND/OR Lock
+                    'in_type_entity_id NOT IN (6907,6914)' => null, //NOT AND/OR Lock
                     'ln_type_entity_id IN (' . join(',', $this->config->item('en_ids_4486')) . ')' => null, //Intent Link Connectors
                     'ln_child_intent_id' => $in_ln['in_id'],
-                ), array('in_parent'))) > 1 || $in_ln['in_completion_method_entity_id'] != 6677){
+                ), array('in_parent'))) > 1 || $in_ln['in_type_entity_id'] != 6677){
 
                 echo '<div>';
                 echo 'NOT COOL';

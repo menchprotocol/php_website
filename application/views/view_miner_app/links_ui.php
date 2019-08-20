@@ -34,19 +34,19 @@ if(isset($_GET['in_status_entity_id']) && strlen($_GET['in_status_entity_id']) >
 
 
 
-if(isset($_GET['in_type_entity_id']) && strlen($_GET['in_type_entity_id']) > 0){
+if(isset($_GET['in_scope_entity_id']) && strlen($_GET['in_scope_entity_id']) > 0){
     if(isset($_GET['ln_type_entity_id']) && $_GET['ln_type_entity_id']==4250){ //Intent created
         //Filter intent status based on
         $join_by = array('in_child');
 
-        if (substr_count($_GET['in_type_entity_id'], ',') > 0) {
+        if (substr_count($_GET['in_scope_entity_id'], ',') > 0) {
             //This is multiple IDs:
-            $filters['( in_type_entity_id IN (' . $_GET['in_type_entity_id'] . '))'] = null;
+            $filters['( in_scope_entity_id IN (' . $_GET['in_scope_entity_id'] . '))'] = null;
         } else {
-            $filters['in_type_entity_id'] = intval($_GET['in_type_entity_id']);
+            $filters['in_scope_entity_id'] = intval($_GET['in_scope_entity_id']);
         }
     } else {
-        unset($_GET['in_type_entity_id']);
+        unset($_GET['in_scope_entity_id']);
     }
 }
 
@@ -68,18 +68,18 @@ if(isset($_GET['in_verb_entity_id']) && strlen($_GET['in_verb_entity_id']) > 0){
     }
 }
 
-if(isset($_GET['in_completion_method_entity_id']) && strlen($_GET['in_completion_method_entity_id']) > 0){
+if(isset($_GET['in_type_entity_id']) && strlen($_GET['in_type_entity_id']) > 0){
     if(isset($_GET['ln_type_entity_id']) && $_GET['ln_type_entity_id']==4250){ //Intent created
         //Filter intent status based on
         $join_by = array('in_child');
-        if (substr_count($_GET['in_completion_method_entity_id'], ',') > 0) {
+        if (substr_count($_GET['in_type_entity_id'], ',') > 0) {
             //This is multiple IDs:
-            $filters['( in_completion_method_entity_id IN (' . $_GET['in_completion_method_entity_id'] . '))'] = null;
+            $filters['( in_type_entity_id IN (' . $_GET['in_type_entity_id'] . '))'] = null;
         } else {
-            $filters['in_completion_method_entity_id'] = intval($_GET['in_completion_method_entity_id']);
+            $filters['in_type_entity_id'] = intval($_GET['in_type_entity_id']);
         }
     } else {
-        unset($_GET['in_completion_method_entity_id']);
+        unset($_GET['in_type_entity_id']);
     }
 }
 
@@ -225,7 +225,7 @@ if(isset($_GET['end_range']) && is_valid_date($_GET['end_range'])){
 //Fetch unique link types recorded so far:
 $ini_filter = array();
 foreach($filters as $key => $value){
-    if(!includes_any($key, array('in_status_entity_id', 'in_verb_entity_id', 'in_completion_method_entity_id', 'en_status_entity_id', 'in_type_entity_id'))){
+    if(!includes_any($key, array('in_status_entity_id', 'in_verb_entity_id', 'in_type_entity_id', 'en_status_entity_id', 'in_scope_entity_id'))){
         $ini_filter[$key] = $value;
     }
 }
@@ -408,9 +408,9 @@ echo '</div></td>';
 
     echo '<div class="filter-statuses filter-in-status hidden"><span class="mini-header">Intent Status(es)</span><input type="text" name="in_status_entity_id" value="' . ((isset($_GET['in_status_entity_id'])) ? $_GET['in_status_entity_id'] : '') . '" class="form-control border"></div>';
 
-    echo '<div class="filter-statuses filter-in-status hidden"><span class="mini-header">Intent Type(s)</span><input type="text" name="in_type_entity_id" value="' . ((isset($_GET['in_type_entity_id'])) ? $_GET['in_type_entity_id'] : '') . '" class="form-control border"></div>';
+    echo '<div class="filter-statuses filter-in-status hidden"><span class="mini-header">Intent Scope(s)</span><input type="text" name="in_scope_entity_id" value="' . ((isset($_GET['in_scope_entity_id'])) ? $_GET['in_scope_entity_id'] : '') . '" class="form-control border"></div>';
 
-        echo '<div class="filter-statuses filter-in-status hidden"><span class="mini-header">Intent Completion Method(s)</span><input type="text" name="in_completion_method_entity_id" value="' . ((isset($_GET['in_completion_method_entity_id'])) ? $_GET['in_completion_method_entity_id'] : '') . '" class="form-control border"></div>';
+        echo '<div class="filter-statuses filter-in-status hidden"><span class="mini-header">Intent Type(s)</span><input type="text" name="in_type_entity_id" value="' . ((isset($_GET['in_type_entity_id'])) ? $_GET['in_type_entity_id'] : '') . '" class="form-control border"></div>';
 
         echo '<div class="filter-statuses filter-in-status hidden"><span class="mini-header">Intent Verb(s)</span><input type="text" name="in_verb_entity_id" value="' . ((isset($_GET['in_verb_entity_id'])) ? $_GET['in_verb_entity_id'] : '') . '" class="form-control border"></div>';
 
