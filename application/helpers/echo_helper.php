@@ -1191,12 +1191,11 @@ function echo_tree_steps($in, $push_message = 0, $autoexpand = false)
 
     //Now do measurements:
     $has_time_estimate = ( isset($metadata['in__metadata_max_seconds']) && $metadata['in__metadata_max_seconds']>0 );
-    $pitch_body = 'I estimate it would take you ' . strtolower(echo_step_range($in, true)).( $has_time_estimate ? ' in ' . strtolower(echo_time_range($in)) : '' ).' to '.echo_in_outcome($in['in_outcome'], false);
+    $pitch_body = 'I estimate it would take you ' . strtolower(echo_step_range($in, true)).( $has_time_estimate ? ' in ' . strtolower(echo_time_range($in)) : '' ).' to '.echo_in_outcome($in['in_outcome'], false).'.';
 
 
     if ($push_message) {
 
-        $pitch_body .= '.';
         return '🚩 ' . $pitch_body. "\n\n";
 
     } else {
@@ -1206,7 +1205,6 @@ function echo_tree_steps($in, $push_message = 0, $autoexpand = false)
 
         //If NOT private, Expand body to include Action Plan overview:
         if(!in_array($in['in_type_entity_id'], $CI->config->item('en_ids_7366'))){
-            $pitch_body .= '. Here\'s an overview:';
             $pitch_body .= '<div class="inner_actionplan">';
             $pitch_body .= echo_tree_actionplan($in, false);
             $pitch_body .= '</div>';
@@ -1245,6 +1243,10 @@ function echo_tree_actionplan($in, $autoexpand){
     $return_html .= '<div class="list-group grey_list actionplan_list maxout public_ap">';
 
     foreach ($in__children as $in_level2_counter => $in_level2) {
+
+        if(!in_is_clean_outcome($in_level2)){
+            continue;
+        }
 
         //Is this private?
         $is_private = (in_array($in_level2['in_type_entity_id'], $CI->config->item('en_ids_7366')));
@@ -1327,6 +1329,11 @@ function echo_tree_actionplan($in, $autoexpand){
                 //List level 3:
                 $return_html .= '<ul class="action-plan-sub-list">';
                 foreach ($in_level2_children as $in_level3_counter => $in_level3) {
+
+
+                    if(!in_is_clean_outcome($in_level3)){
+                        continue;
+                    }
 
                     //Is this private?
                     $is_private = (in_array($in_level3['in_type_entity_id'], $CI->config->item('en_ids_7366')));
