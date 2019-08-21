@@ -11,7 +11,7 @@ defined('BASEPATH') OR exit('No direct script access allowed');
  *
  */
 
-//Generated 2019-08-20 13:19:16 PST
+//Generated 2019-08-20 16:59:21 PST
 
 //Mined Intelligence:
 $config['en_ids_7812'] = array(4251,4259,4257,4261,4260,4319,4230,4255,4318,4256,4258,4250,4229,4228,4983,6093,6242,4231,7701,7545,4601);
@@ -1419,7 +1419,7 @@ $config['en_all_6287'] = array(
 );
 
 //Mench User App:
-$config['en_ids_7369'] = array(6138,7765,7291,7161,4430,6137,4269);
+$config['en_ids_7369'] = array(6138,7765,7291,7161,10563,4430,6137,7256,4269);
 $config['en_all_7369'] = array(
     6138 => array(
         'm_icon' => '🚩',
@@ -1445,6 +1445,12 @@ $config['en_all_7369'] = array(
         'm_desc' => '',
         'm_parents' => array(7369,7368,7305),
     ),
+    10563 => array(
+        'm_icon' => '<i class="far fa-sitemap"></i>',
+        'm_name' => 'Mench Sitemap',
+        'm_desc' => 'A list of all published intent trees that users can get started at.',
+        'm_parents' => array(7369),
+    ),
     4430 => array(
         'm_icon' => '<i class="fas fa-user"></i>',
         'm_name' => 'Mench Users',
@@ -1456,6 +1462,12 @@ $config['en_all_7369'] = array(
         'm_name' => 'My Account',
         'm_desc' => 'A web-based portal (also accessible via Messenger) enabling students to manage their account',
         'm_parents' => array(7369),
+    ),
+    7256 => array(
+        'm_icon' => '<i class="fas fa-search"></i>',
+        'm_name' => 'Platform Search Bar',
+        'm_desc' => 'A limited version of the search bar focused on published intent trees.',
+        'm_parents' => array(7369,7368,3323),
     ),
     4269 => array(
         'm_icon' => '<i class="fas fa-sign-in"></i>',
@@ -1514,7 +1526,7 @@ $config['en_all_7368'] = array(
         'm_icon' => '<i class="fas fa-search"></i>',
         'm_name' => 'Platform Search Bar',
         'm_desc' => 'Intents, Entities & URLs',
-        'm_parents' => array(7368,3323),
+        'm_parents' => array(7369,7368,3323),
     ),
     5007 => array(
         'm_icon' => '<i class="fas fa-expand-arrows"></i>',

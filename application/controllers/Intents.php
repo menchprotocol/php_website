@@ -362,6 +362,18 @@ class Intents extends CI_Controller
 
 
 
+    function in_sitemap(){
+        $session_en = en_auth();
+        $this->load->view('view_user_app/user_app_header', array(
+            'session_en' => $session_en,
+            'title' => 'Published Intents',
+        ));
+        $this->load->view('view_user_app/in_sitemap', array(
+            'session_en' => $session_en,
+        ));
+        $this->load->view('view_user_app/user_app_footer');
+    }
+
 
 
     function in_migrate()

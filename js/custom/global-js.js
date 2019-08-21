@@ -190,17 +190,20 @@ $(document).ready(function () {
                 });
             },
             displayKey: function (suggestion) {
-                return ""
+                return '<div class="not-found"><i class="fas fa-exclamation-triangle"></i>No results</div>';
             },
             templates: {
                 suggestion: function (suggestion) {
                     return echo_js_suggestion(suggestion, 1, 1);
                 },
                 header: function (data) {
-                    return ""
+                    return '';
+                },
+                footer: function (data) {
+                    return '<div class="not-found"><a href="/sitemap" class="suggestion"><i class="far fa-sitemap"></i> Browse All</a></div>';
                 },
                 empty: function (data) {
-                    return '<div class="not-found"><i class="fas fa-exclamation-triangle"></i> No results</div>';
+                    return '<div class="not-found"><i class="fas fa-exclamation-triangle"></i>No results</div>';
                 },
             }
         }

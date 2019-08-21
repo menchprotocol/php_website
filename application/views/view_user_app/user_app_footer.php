@@ -49,6 +49,10 @@
                            class="social-link tag-manager-footer-dashboard" data-toggle="tooltip" title="<?= $en_all_7369[7161]['m_name'] ?>"
                            data-placement="top"><?= $en_all_7369[7161]['m_icon'] ?></a>
 
+                        <a href="/sitemap"
+                           class="social-link tag-manager-footer-sitemap" data-toggle="tooltip" title="<?= $en_all_7369[10563]['m_name'] ?>"
+                           data-placement="top"><?= $en_all_7369[10563]['m_icon'] ?></a>
+
                         <a href="/signin"
                            class="social-link tag-manager-sign-in" data-toggle="tooltip" title="<?= $en_all_7369[4269]['m_name'] ?>"
                            data-placement="top"><?= $en_all_7369[4269]['m_icon'] ?></a>
