@@ -327,7 +327,7 @@ class User_app_model extends CI_Model
 
         $metadata = unserialize($ins[0]['in_metadata']);
         if (isset($metadata['in__metadata_max_steps']) && $metadata['in__metadata_max_steps'] >= 3) {
-            $skip_message = 'Are you sure you want to skip all '.$metadata['in__metadata_max_steps'].' steps to '.echo_in_outcome($ins[0]['in_outcome'], $push_message, true).'?';
+            $skip_message = 'Are you sure you want to skip all '.$metadata['in__metadata_max_steps'].' steps?';
         } else {
             $skip_message = 'Are you sure you want to skip?';
         }
@@ -808,7 +808,7 @@ class User_app_model extends CI_Model
                     $found_match++;
 
                     //It did match here! Log and notify user!
-                    $message = 'You completed the step to '.echo_in_outcome($in['in_outcome'], true, true).'. ';
+                    $message = 'You completed the step to '.echo_in_outcome($in['in_outcome'], true).'. ';
 
                     //Append based on title type:
                     if(in_is_clean_outcome($locked_link)){
@@ -1705,7 +1705,7 @@ class User_app_model extends CI_Model
                     } else {
 
                         //Add simple message:
-                        $next_step_message .= ($key + 1) . '. ' . echo_in_outcome($child_in['in_outcome'], $push_message, false, false, $common_prefix);
+                        $next_step_message .= ($key + 1) . '. ' . echo_in_outcome($child_in['in_outcome'], $push_message, false, $common_prefix);
 
                     }
 

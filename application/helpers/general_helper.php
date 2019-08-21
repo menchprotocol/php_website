@@ -487,16 +487,11 @@ function common_prefix($in__children, $max_look = 0){
         return null; //Cannot do this for less than 2 intents
     }
 
-    $exclusion_words = array('a','for');
-
     //Go through each child one by one and see if each word exists in all:
     $common_prefix = '';
     foreach(explode(' ', $in__children[0]['in_outcome']) as $word_pos=>$word){
 
-        if(in_array(strtolower($word), $exclusion_words)){
-            //Reset the index as it no longer matches:
-            break;
-        } elseif($max_look > 0 && $word_pos == $max_look){
+        if($max_look > 0 && $word_pos == $max_look){
             break; //Look no more...
         }
 
@@ -504,8 +499,13 @@ function common_prefix($in__children, $max_look = 0){
         $all_the_same = true;
         foreach($in__children as $in){
             $in_words = explode(' ', $in['in_outcome']);
+
             if(!isset($in_words[$word_pos]) || $in_words[$word_pos]!=$word){
                 //Not the same:
+                $all_the_same = false;
+                break;
+            } elseif(substr($in['in_outcome'], 1)=='='){
+                //Does it start with an equal sight? Break it:
                 $all_the_same = false;
                 break;
             }

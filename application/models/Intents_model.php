@@ -367,24 +367,7 @@ class Intents_model extends CI_Model
 
         } else {
 
-            //We are NOT linking to an existing intent, but instead, we're creating a new intent:
-
-            //See if we have the double column shortcut:
-            if(substr($in_outcome, 0, 2) == '::'){
-
-                //Yes, validate this command:
-                if($is_parent){
-                    return array(
-                        'status' => 0,
-                        'message' => 'You can use the double column shortcut for child entities only.',
-                    );
-                }
-
-                //Apply shortcut and update the intent outcome:
-                $parent_in_outcome_words = explode(' ', $linked_ins[0]['in_outcome']);
-                $in_outcome = $parent_in_outcome_words[0].' #'.$linked_ins[0]['in_id'].' :: '.trim(substr($in_outcome, 2));
-            }
-
+            //We are NOT linking to an existing intent, but instead, we're creating a new intent
 
             //Validate Intent Outcome:
             $in_outcome_validation = $this->Intents_model->in_validate_outcome($in_outcome);
@@ -392,7 +375,6 @@ class Intents_model extends CI_Model
                 //We had an error, return it:
                 return $in_outcome_validation;
             }
-
 
             //Create new intent:
             $intent_new = $this->Intents_model->in_create(array(

@@ -188,7 +188,7 @@ function echo_url_embed($url, $full_message = null, $return_array = false)
     }
 }
 
-function echo_in_outcome($in_outcome, $push_message = false, $reference_attribution = false, $show_entire_outcome = false, $common_prefix = null){
+function echo_in_outcome($in_outcome, $push_message = false, $show_entire_outcome = false, $common_prefix = null){
 
     /*
      * This function applies the double column
@@ -197,33 +197,26 @@ function echo_in_outcome($in_outcome, $push_message = false, $reference_attribut
      *
      * */
 
-    if($reference_attribution && substr_count($in_outcome , '::') > 0){
+    $CI =& get_instance();
 
-        $CI =& get_instance();
-        $attribution_in_id = intval(one_two_explode(' #',' ',$in_outcome));
-        if($attribution_in_id > 0){
-            //Fetch attribution intent:
-            $ins = $CI->Intents_model->in_fetch(array(
-                'in_id' => $attribution_in_id,
-            ));
-        }
+    if(substr($in_outcome,0,1)=='='){
 
-        if(!isset($ins[0])){
-            //Report error:
-            $CI->Links_model->ln_create(array(
-                'ln_content' => 'echo_in_outcome() found intent outcome ['.$in_outcome.'] that has colon but not a valid intent reference',
-                'ln_type_entity_id' => 4246, //Platform Bug Reports
-            ));
+        if($push_message){
+
+            return ( $show_entire_outcome ? $in_outcome : substr($in_outcome,1) );
+
         } else {
-            //All good, replace title:
-            $in_outcome = $ins[0]['in_outcome'];
+
+            //Miner view:
+            if($show_entire_outcome){
+                return '<i class="far fa-equals" style="color: #BBB; font-size: 0.9em;"></i> <span class="click_expand">'.htmlentities(substr($in_outcome,1)).'</span>';
+            } else {
+                return '<span class="click_expand">'.htmlentities(trim(substr($in_outcome,1))).'</span>';
+            }
+
         }
 
-    }
-
-
-    //See if outcome has a double column:
-    if(substr_count($in_outcome , '::') != 1){
+    } else {
 
         if(strlen($common_prefix) > 0){
             $in_outcome = trim(substr($in_outcome, strlen($common_prefix)));
@@ -242,24 +235,6 @@ function echo_in_outcome($in_outcome, $push_message = false, $reference_attribut
 
         }
 
-    } else {
-
-        //We have it, let's apply it:
-        $in_outcome_parts = explode('::',$in_outcome,2);
-
-        if($push_message){
-
-            return ( $show_entire_outcome ? $in_outcome : trim($in_outcome_parts[1]) );
-
-        } else {
-
-            //Miner view:
-            if($show_entire_outcome){
-                return '<span class="double-column-omit click_expand" data-toggle="tooltip" data-placement="top" title="Not shown to users">'.htmlentities($in_outcome_parts[0]).'::</span><span class="click_expand">'.htmlentities($in_outcome_parts[1]).'</span>';
-            } else {
-                return '<span class="click_expand">'.htmlentities(trim($in_outcome_parts[1])).'</span>';
-            }
-        }
     }
 }
 
@@ -736,7 +711,7 @@ function echo_actionplan_step_child($en_id, $in, $is_unlocked_step = false, $com
     //Open list:
     $ui = '<a href="/actionplan/'.$in['in_id']. '" class="list-group-item">';
 
-    $ui .= echo_in_outcome($in['in_outcome'], false, false, false, $common_prefix);
+    $ui .= echo_in_outcome($in['in_outcome'], false, false, $common_prefix);
 
     if($is_unlocked_step){
         $en_all_4229 = $CI->config->item('en_all_4229'); //Link Metadata
@@ -1216,7 +1191,7 @@ function echo_tree_steps($in, $push_message = 0, $autoexpand = false)
 
     //Now do measurements:
     $has_time_estimate = ( isset($metadata['in__metadata_max_seconds']) && $metadata['in__metadata_max_seconds']>0 );
-    $pitch_body = 'I estimate it would take you ' . strtolower(echo_step_range($in, true)).( $has_time_estimate ? ' in ' . strtolower(echo_time_range($in)) : '' ).' to '.echo_in_outcome($in['in_outcome'], false, true);
+    $pitch_body = 'I estimate it would take you ' . strtolower(echo_step_range($in, true)).( $has_time_estimate ? ' in ' . strtolower(echo_time_range($in)) : '' ).' to '.echo_in_outcome($in['in_outcome'], false);
 
 
     if ($push_message) {
@@ -1318,7 +1293,7 @@ function echo_tree_actionplan($in, $autoexpand){
         }
 
 
-        $return_html .= '<span id="title-' . $in_level2['in_id'] . '">' . echo_in_outcome($in_level2['in_outcome'], false, false, false, $common_prefix) . '</span>';
+        $return_html .= '<span id="title-' . $in_level2['in_id'] . '">' . echo_in_outcome($in_level2['in_outcome'], false, false, $common_prefix) . '</span>';
 
 
         if($has_level2_content){
@@ -1381,7 +1356,7 @@ function echo_tree_actionplan($in, $autoexpand){
                         $return_html .= '<span class="icon-block"><i class="fal fa-check-circle"></i></span>';
                     }
 
-                    $return_html .= echo_in_outcome($in_level3['in_outcome'], false, false, false, $common_prefix_granchild);
+                    $return_html .= echo_in_outcome($in_level3['in_outcome'], false, false, $common_prefix_granchild);
 
                     if(count($in_level3_messages) > 0){
                         $return_html .= '</a>';
@@ -1641,7 +1616,7 @@ function echo_in_recommend($in, $common_prefix = null, $hide_class = null, $refe
     $ui .= '<span class="badge badge-primary fr-bgd" style="margin-top: -4px;">'.( $already_in_actionplan ? $en_all_7369[6138]['m_icon'] : '<i class="fas fa-angle-right"></i>' ).'</span>';
     $ui .= '</span>';
 
-    $ui .= '<span style="color:#222; font-weight:500; font-size:1.2em;">'.echo_in_outcome($in['in_outcome'], false, false, false, $common_prefix).'</span>';
+    $ui .= '<span style="color:#222; font-weight:500; font-size:1.2em;">'.echo_in_outcome($in['in_outcome'], false, false, $common_prefix).'</span>';
 
     $ui .= '</a>';
     return $ui;
@@ -1688,7 +1663,7 @@ function echo_in_answer_scores($starting_in, $depth_levels, $original_depth_leve
 
         $ui .= '<span class="icon-block" data-toggle="tooltip" data-placement="top" title="Intent Type: '.$en_all_7585[$in_ln['in_type_entity_id']]['m_name'].'">'. $en_all_7585[$in_ln['in_type_entity_id']]['m_icon'] . '</span>';
         $ui .= '<span class="icon-block" data-toggle="tooltip" data-placement="top" title="Intent Status: '.$en_all_4737[$in_ln['in_status_entity_id']]['m_name'].'">'. $en_all_4737[$in_ln['in_status_entity_id']]['m_icon']. '</span>';
-        $ui .= '<a href="/miner_app/admin_tools/assessment_marks_birds_eye?starting_in='.$in_ln['in_id'].'&depth_levels='.$original_depth_levels.'" data-toggle="tooltip" data-placement="top" title="Navigate report to this intent"><u>' .   echo_in_outcome($in_ln['in_outcome'], false, false, true) . '</u></a>';
+        $ui .= '<a href="/miner_app/admin_tools/assessment_marks_birds_eye?starting_in='.$in_ln['in_id'].'&depth_levels='.$original_depth_levels.'" data-toggle="tooltip" data-placement="top" title="Navigate report to this intent"><u>' .   echo_in_outcome($in_ln['in_outcome'], false, true) . '</u></a>';
 
         $ui .= ' [<span data-toggle="tooltip" data-placement="top" title="Completion Marks">'.( ($in_ln['ln_type_entity_id'] == 4228 && in_array($parent_in_type_entity_id , $CI->config->item('en_ids_6193') /* OR Intents */ )) || ($in_ln['ln_type_entity_id'] == 4229) ? echo_in_marks($in_ln) : '' ).'</span>]';
 
@@ -2053,16 +2028,16 @@ function echo_in($in, $level, $in_linked_id = 0, $is_parent = false)
     if ($level <= 1) {
 
         $ui .= '<span><b id="in_level1_outcome" style="font-size: 1.4em; padding-left: 5px;">';
-        $ui .= '<span class="in_outcome_' . $in['in_id'] . '">' . echo_in_outcome($in['in_outcome'], false, false, true) . '</span>';
+        $ui .= '<span class="in_outcome_' . $in['in_id'] . '">' . echo_in_outcome($in['in_outcome'], false, true) . '</span>';
         $ui .= '</b></span>';
 
     } elseif ($level == 2) {
 
-        $ui .= '<span>&nbsp;<i id="handle-' . $ln_id . '" class="fal click_expand fa-plus-circle"></i> <span id="title_' . $ln_id . '" style="font-weight: 500;" class="cdr_crnt click_expand tree_title in_outcome_' . $in['in_id'] . '">' . echo_in_outcome($in['in_outcome'], false, false, true) . '</span></span>';
+        $ui .= '<span>&nbsp;<i id="handle-' . $ln_id . '" class="fal click_expand fa-plus-circle"></i> <span id="title_' . $ln_id . '" style="font-weight: 500;" class="cdr_crnt click_expand tree_title in_outcome_' . $in['in_id'] . '">' . echo_in_outcome($in['in_outcome'], false, true) . '</span></span>';
 
     } elseif ($level == 3) {
 
-        $ui .= '<span id="title_' . $ln_id . '" class="tree_title in_outcome_' . $in['in_id'] . '" style="padding-left:25px;">' .echo_in_outcome($in['in_outcome'], false, false, true) . '</span> ';
+        $ui .= '<span id="title_' . $ln_id . '" class="tree_title in_outcome_' . $in['in_id'] . '" style="padding-left:25px;">' .echo_in_outcome($in['in_outcome'], false, true) . '</span> ';
 
         //Is this the focused item in the parent sibling dropdown?
         if($is_child_focused){
