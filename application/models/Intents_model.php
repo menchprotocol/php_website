@@ -1071,7 +1071,7 @@ class Intents_model extends CI_Model
         //Prep basic variables to start validation:
         $starts_with_equal = ( substr($in_outcome, 0, 1) == '=' );
         $scope_supports_equal = in_array($in_scope_entity_id, $this->config->item('en_ids_10567'));
-        $in_verb_entity_id = ( $starts_with_equal ? 0 : in_outcome_verb_id($in_outcome) );
+        $in_verb_entity_id = ( $starts_with_equal ? 10569 : in_outcome_verb_id($in_outcome) );
         $en_all_7596 = $this->config->item('en_all_7596'); // Intent Scope
 
 
@@ -1126,7 +1126,7 @@ class Intents_model extends CI_Model
         return array(
             'status' => 1,
             'in_cleaned_outcome' => trim($in_outcome),
-            'detected_in_verb_entity_id' => $in_verb_entity_id, //May be zero
+            'detected_in_verb_entity_id' => $in_verb_entity_id,
         );
 
     }

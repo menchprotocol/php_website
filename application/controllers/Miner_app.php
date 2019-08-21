@@ -14,26 +14,6 @@ class Miner_app extends CI_Controller
 
 
 
-    function fix(){
-
-        $dup_ins = array();
-        $counter = 0;
-        foreach($this->Links_model->ln_fetch(array(
-            'ln_status_entity_id IN (' . join(',', $this->config->item('en_ids_7359')) . ')' => null, //Link Statuses Public
-            'ln_type_entity_id' => 4264, //Intent Update
-            'ln_creator_entity_id' => 1, //Shervin
-            'ln_child_intent_id >' => 0,
-            'ln_id >=' => 2037572,
-            'ln_id <=' => 2037749,
-        ), array('in_child'), 0) as $ln){
-            if($ln['in_verb_entity_id']==5438 && !in_array($ln['in_id'], $dup_ins)){
-                $counter++;
-                echo $counter.') <a href="/intents/'.$ln['in_id'].'">'.$ln['in_outcome'].'</a><br />';
-                array_push($dup_ins, $ln['in_id']);
-            }
-        }
-    }
-
 
     function admin_tools($action = null, $command1 = null, $command2 = null)
     {
@@ -142,7 +122,7 @@ class Miner_app extends CI_Controller
             if(($count+1)==$show_max_verbs){
                 //Show expand button:
                 echo '<tr class="hiddenverbs">';
-                echo '<td style="text-align: left;" colspan="2"><span style="width:29px; display: inline-block; text-align: center;"><i class="fas fa-plus-circle"></i></span><a href="javascript:void(0);" onclick="$(\'.hiddenverbs\').toggleClass(\'hidden\')">'.number_format((count($in_verbs)-$show_max_verbs),0).' more '.$en_all_7302[5008]['m_name'].echo__s(count($in_verbs)).'</a></td>';
+                echo '<td style="text-align: left;" colspan="2"><span style="width:29px; display: inline-block; text-align: center;"><i class="fas fa-plus-circle"></i></span><a href="javascript:void(0);" onclick="$(\'.hiddenverbs\').toggleClass(\'hidden\')">All '.number_format(count($in_verbs),0).' '.$en_all_7302[5008]['m_name'].echo__s(count($in_verbs)).'</a></td>';
                 echo '</tr>';
                 //To keep stripe color in balance
                 echo '<tr class="hidden"><td style="text-align: left;" colspan="2"></td></tr>';
