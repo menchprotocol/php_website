@@ -16,7 +16,7 @@ date_default_timezone_set('America/Los_Angeles');
 
 //App Functionality:
 $config['base_url']                 = 'https://mench.com/';
-$config['app_version']              = '1.003'; //Cache buster for static JS/CSS files, so needs to be updated if you update static files
+$config['app_version']              = '1.004'; //Cache buster for static JS/CSS files, so needs to be updated if you update static files
 $config['system_name']              = 'Mench'; //Used for example when a link has no miner
 $config['system_icon']              = '<img src="/img/mench_white.png" />'; //Used for example when a link has no miner
 $config['app_enable_algolia']       = true; //May need to turn off if/when we reach monthly quota of 50k calls

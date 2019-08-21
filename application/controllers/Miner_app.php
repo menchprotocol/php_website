@@ -490,7 +490,7 @@ class Miner_app extends CI_Controller
 
 
 
-        echo '<div style="min-height:470px;">';
+        echo '<div style="min-height:400px;">';
         echo '<table class="table table-condensed table-striped stats-table">';
 
         echo '<thead>';

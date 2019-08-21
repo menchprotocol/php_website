@@ -333,7 +333,7 @@ class Links_model extends CI_Model
                 $html_message .= '<div>Link ID: <a href="https://mench.com/links?ln_id=' . $insert_columns['ln_id'] . '" target="_blank">' . $insert_columns['ln_id'] . '</a></div>';
 
                 //Inform how to change settings:
-                $html_message .= '<div style="color: #AAAAAA; font-size:0.9em; margin-top:20px;">Manage your email notifications via <a href="https://mench.com/entities/5966" target="_blank">@5966</a></div>';
+                $html_message .= '<div style="color: #AAAAAA; font-size:0.9em; margin-top:20px;">Manage your email notifications via <a href="https://mench.com/entities/5967" target="_blank">@5967</a></div>';
 
                 //Send email:
                 $dispatched_email = $this->Communication_model->user_received_emails($sub_emails, $subject, $html_message);

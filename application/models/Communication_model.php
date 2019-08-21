@@ -165,7 +165,7 @@ class Communication_model extends CI_Model
          * */
 
         //This could happen with random messages
-        if(is_null($input_message)){
+        if(strlen($input_message) < 1){
             return false;
         }
 
@@ -366,7 +366,7 @@ class Communication_model extends CI_Model
                         'message' => 'Each /command can only be used once per message',
                     );
 
-                } elseif(in_array('/link',$string_references['ref_commands']) && count($quick_replies) > 0){
+                } elseif(in_array('/link:',$string_references['ref_commands']) && count($quick_replies) > 0){
 
                     return array(
                         'status' => 0,
@@ -637,7 +637,7 @@ class Communication_model extends CI_Model
         //Determine if we have a button link:
         $fb_button_title = null;
         $fb_button_url = null;
-        if (in_array('/link', $string_references['ref_commands'])) {
+        if (in_array('/link:', $string_references['ref_commands'])) {
 
             //Validate /link format:
             $link_anchor = trim(one_two_explode('/link:', ':http', $output_body_message));
