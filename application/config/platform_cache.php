@@ -11,21 +11,21 @@ defined('BASEPATH') OR exit('No direct script access allowed');
  *
  */
 
-//Generated 2019-08-21 14:07:09 PST
+//Generated 2019-08-21 14:08:49 PST
 
 //User Selectable Completion:
 $config['en_ids_10570'] = array(6154,6155);
 $config['en_all_10570'] = array(
     6154 => array(
         'm_icon' => '<i class="far fa-mountain"></i>',
-        'm_name' => 'User Intent Accomplished',
-        'm_desc' => '',
+        'm_name' => 'Intent Accomplished',
+        'm_desc' => 'You successfully accomplished your intention so you no longer want to receive future updates',
         'm_parents' => array(10570,7164,7758,7703,4595,4506,6150,4755,4593),
     ),
     6155 => array(
         'm_icon' => '<i class="far fa-stop-circle"></i>',
-        'm_name' => 'User Intent Cancelled',
-        'm_desc' => '',
+        'm_name' => 'Intent Cancelled',
+        'm_desc' => 'You did NOT accomplish the intention and you want to stop all future updates on this intention',
         'm_parents' => array(10570,7164,7703,4595,4506,6150,4593,4755),
     ),
 );
@@ -2517,19 +2517,19 @@ $config['en_all_6150'] = array(
     6154 => array(
         'm_icon' => '<i class="far fa-mountain"></i>',
         'm_name' => 'Intent Accomplished',
-        'm_desc' => 'You successfully accomplished your intention so you no longer want to receive future updates',
+        'm_desc' => '',
         'm_parents' => array(10570,7164,7758,7703,4595,4506,6150,4755,4593),
     ),
     6155 => array(
         'm_icon' => '<i class="far fa-stop-circle"></i>',
         'm_name' => 'Intent Cancelled',
-        'm_desc' => 'You did NOT accomplish the intention and you want to stop all future updates on this intention',
+        'm_desc' => '',
         'm_parents' => array(10570,7164,7703,4595,4506,6150,4593,4755),
     ),
     7757 => array(
         'm_icon' => '<i class="fas fa-times-octagon"></i>',
         'm_name' => 'Intent Terminated',
-        'm_desc' => 'The user completed their intention by terminating it as they where not eligible to have it completed.',
+        'm_desc' => '',
         'm_parents' => array(7164,4755,4593,4595,6150),
     ),
 );
