@@ -127,7 +127,7 @@ if(count($current_sign_in_attempt) == 0){
                 <a href="javascript:void(0)" onclick="goto_step(1)" class="btn btn-primary transparent pass btn-raised btn-round <?= ( $referrer_in_id > 0 ? '' : ' hidden ' ) ?>"><i class="fas fa-arrow-left"></i></a>
                 <a href="javascript:void(0)" onclick="search_email()" id="email_check_next" class="btn btn-primary pass btn-raised btn-round btn-next">Next <i class="fas fa-arrow-right"></i></a>
             </span>
-            <span id="messenger_signin" style="padding-left:5px; font-size:1em !important;" class="<?= ( $referrer_in_id > 0 ? ' hidden ' : '' ) ?>">Or <a href="javascript:void(0)" onclick="confirm_signin_on_messenger()" class="underdot" style="font-size:1em !important;">Connect using Messenger <i class="fab fa-facebook-messenger"></i></a></span>
+            <span id="messenger_signin" style="padding-left:5px; font-size:1em !important;" class="<?= ( $referrer_in_id > 0 ? ' hidden ' : '' ) ?>">Or <a href="javascript:void(0)" onclick="confirm_signin_on_messenger()" class="underdot" style="font-size:1em !important;">Connect on Messenger <i class="fab fa-facebook-messenger"></i></a></span>
         </div>
 
 

@@ -37,9 +37,6 @@ function goto_step(this_step_count){
 function confirm_signin_on_messenger(){
     var r = confirm("Ok, I will take you to Messenger now...");
     if (r == true) {
-        //Go to target intent:
-        $('#messenger_signin').html('Redirecting...');
-
         signin_on_messenger();
     }
 }
