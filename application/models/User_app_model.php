@@ -809,16 +809,11 @@ class User_app_model extends CI_Model
 
                     //It did match here! Log and notify user!
                     $message = 'You completed the step to '.echo_in_outcome($in['in_outcome'], true).'. ';
-
-                    //Append based on title type:
-                    if(in_is_clean_outcome($locked_link)){
-                        $message .= 'This unlocked a new step to '.echo_in_outcome($locked_link['in_outcome'], true);
-                    } else {
-                        $message .= 'The result:' . "\n\n" . echo_in_outcome($locked_link['in_outcome'], true);
-                    }
-
-                    //Give reference in Action Plan
-                    $message .= ' /link:Open 🚩Action Plan:https://mench.com/actionplan/'.$locked_link['in_id'];
+                    $message .= (in_is_clean_outcome($locked_link) ? 'This unlocked a new step to:' : 'The result:' );
+                    $message .= "\n";
+                    $message .= "\n==================";
+                    $message .= "\n" . echo_in_outcome($locked_link['in_outcome'], true);
+                    $message .= "\n==================";
 
 
                     //Communicate message to user:
