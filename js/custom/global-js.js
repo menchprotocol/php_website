@@ -173,7 +173,7 @@ $(document).ready(function () {
 
     $("#platform_front_search").on('autocomplete:selected', function (event, suggestion, dataset) {
 
-        $('#platform_front_search').prop("disabled", true).css('background-color','#EFEFEF').val(echo_ying_yang()).css('font-size','0.8em');
+        $('#platform_front_search').prop("disabled", true).val('Loading...').css('background-color','#EFEFEF').css('font-size','0.8em');
         window.location = "/" + suggestion.alg_obj_id;
 
     }).autocomplete({hint: false, minLength: 1, autoselect: true, keyboardShortcuts: ['s']}, [
