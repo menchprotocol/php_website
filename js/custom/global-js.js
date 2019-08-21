@@ -172,9 +172,10 @@ $(document).ready(function () {
 
     $("#platform_front_search").on('autocomplete:selected', function (event, suggestion, dataset) {
 
+        $('#platform_front_search').prop("disabled", true).css('background-color','#EFEFEF').val(echo_ying_yang()).css('font-size','0.8em');
         window.location = "/" + suggestion.alg_obj_id;
 
-    }).autocomplete({hint: false, minLength: 2, autoselect: true, keyboardShortcuts: ['s']}, [
+    }).autocomplete({hint: false, minLength: 1, autoselect: true, keyboardShortcuts: ['s']}, [
         {
             source: function (q, cb) {
                 //Append filters:
@@ -190,14 +191,11 @@ $(document).ready(function () {
                 });
             },
             displayKey: function (suggestion) {
-                return '<div class="not-found"><i class="fas fa-exclamation-triangle"></i>No results</div>';
+                return '';
             },
             templates: {
                 suggestion: function (suggestion) {
                     return echo_js_suggestion(suggestion, 1, 1);
-                },
-                header: function (data) {
-                    return '';
                 },
                 footer: function (data) {
                     return '<div class="not-found"><a href="/sitemap" class="suggestion"><i class="far fa-sitemap"></i> Browse All</a></div>';

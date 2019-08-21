@@ -48,7 +48,7 @@ $url_part_1 = $this->uri->segment(1);
                         <td>
                             <form id="searchFrontForm">
                             <input type="text" class="algolia_search" id="platform_front_search" data-lpignore="true"
-                                   placeholder="Search...">
+                                   placeholder="Search Mench...">
                             </form>
                         </td>
                     </tr>
