@@ -471,7 +471,7 @@ if(!$action) {
         $in_outcome_validation = $this->Intents_model->in_validate_outcome($in['in_outcome'], $in['in_scope_entity_id']);
         if(!$in_outcome_validation['status']){
 
-            echo '<div>Outcome validation error: '.$in_outcome_validation['message'].'</div>';
+            echo '<div>Outcome validation error: '.$in_outcome_validation['message'].' (<a href="/intents/'.$in['in_id'].'">'.$in['in_outcome'].'</a>)</div>';
 
         } elseif($in_outcome_validation['detected_in_verb_entity_id'] != $in['in_verb_entity_id']) {
 

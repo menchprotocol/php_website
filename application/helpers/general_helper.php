@@ -122,7 +122,6 @@ function extract_references($ln_content)
 
     //Replace non-ascii characters with space:
     $ln_content = preg_replace('/[[:^print:]]/', ' ', $ln_content);
-    $has_double_colon = ( substr_count($ln_content , '::') > 0 );
     $words = preg_split('/\s+/', $ln_content);
 
     //Analyze the message to find referencing URLs and Entities in the message text:
@@ -728,24 +727,7 @@ function boost_power()
 }
 
 function in_is_clean_outcome($in){
-
-    /*
-     *
-     * A clean intent outcome is one where there is
-     * no double colon command OR a reference to an
-     * intent ID, because this indicates that the
-     * title was repetitive or not unique...
-     *
-     * */
-
-    if(substr_count($in['in_outcome'], '::') > 0){
-        return false;
-    }
-
-    //See if we have an intent reference:
-    $string_references = extract_references($in['in_outcome']);
-    return ( count($string_references['ref_intents']) == 0 );
-
+    return !( $in['in_verb_entity_id'] == 10569 );
 }
 
 function objectToArray($object)
