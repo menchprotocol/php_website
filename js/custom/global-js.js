@@ -141,6 +141,12 @@ $(document).ready(function () {
     load_js_algolia();
 
 
+    //Disappear in a while:
+    setTimeout(function () {
+        $("#platform_front_search").focus()
+    }, 144);
+
+
     $(document).keyup(function (e) {
         //Watch for action keys:
         if (e.keyCode === 27) { //ESC
@@ -168,6 +174,7 @@ $(document).ready(function () {
         e.preventDefault();
         return false;
     });
+
 
 
     $("#platform_front_search").on('autocomplete:selected', function (event, suggestion, dataset) {
