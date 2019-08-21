@@ -544,15 +544,19 @@ class Intents extends CI_Controller
             $item_ui .= '<span class="icon-block en-icon">'.echo_en_icon($apu).'</span> '.$apu['en_name'];
             $item_ui .= ( strlen($apu['ln_content']) > 0 ? '<div class="user-comment">'.$this->Communication_model->dispatch_message($apu['ln_content']).'</div>' : '' );
             $item_ui .= '</td>';
+
+            $item_ui .= '<td style="text-align:left;"><a href="/links?ln_id='.$apu['ln_id'].'" target="_blank" class="' . advance_mode() . '">'.echo_en_cache('en_all_6255' /* User Steps Progress */, $apu['ln_type_entity_id']).'</a></td>';
             $item_ui .= '<td style="text-align:left;">'.echo_number($count_progression[0]['totals']).'</td>';
             $item_ui .= '<td style="text-align:left;">'.echo_time_difference(strtotime($apu['ln_timestamp'])).'</td>';
             $item_ui .= '<td style="text-align:left;">';
 
-            $item_ui .= '<a href="/intents/'.$_POST['in_focus_id'].'?filter_user='.urlencode('@'.$apu['en_id'].' '.$apu['en_name']).'#actionplanusers-'.$_POST['in_id'].'" data-toggle="tooltip" data-placement="top" title="Filter by this user"><i class="far fa-filter"></i></a>';
-            $item_ui .= '&nbsp;<a href="/links?ln_id='.$apu['ln_id'].'" target="_blank" class="' . advance_mode() . '">'.echo_en_cache('en_all_6255' /* User Steps Progress */, $apu['ln_type_entity_id']).'</a>';
-            $item_ui .= '&nbsp;<a href="/entities/'.$apu['en_id'].'" data-toggle="tooltip" data-placement="top" title="Link Creator" class="' . advance_mode() . '"><i class="far fa-user-circle"></i></a></td>';
-            $item_ui .= '</tr>';
+                $item_ui .= '<a href="/intents/'.$_POST['in_focus_id'].'?filter_user='.urlencode('@'.$apu['en_id'].' '.$apu['en_name']).'#actionplanusers-'.$_POST['in_id'].'" data-toggle="tooltip" data-placement="top" title="Filter by this user"><i class="far fa-filter"></i></a>';
+                $item_ui .= '&nbsp;<a href="/entities/'.$apu['en_id'].'" data-toggle="tooltip" data-placement="top" title="User Entity" class="' . advance_mode() . '"><i class="fas fa-at"></i></a>';
 
+                $item_ui .= '&nbsp;<a href="/links?ln_creator_entity_id='.$apu['en_id'].'" data-toggle="tooltip" data-placement="top" title="Full History" class="' . advance_mode() . '"><i class="fas fa-link"></i></a>';
+
+            $item_ui .= '</td>';
+            $item_ui .= '</tr>';
 
             //Decide which list it should go to:
             if($filter_applied && $is_a_match){
@@ -572,6 +576,7 @@ class Intents extends CI_Controller
 
             $ui .= '<tr style="font-weight: bold;">';
             $ui .= '<td style="text-align:left; padding-left:3px;" colspan="2">Matching User'.echo__s($filters_list_counter).' ['.$filters_list_counter.']</td>';
+            $ui .= '<td style="text-align:left;">&nbsp;</td>';
             $ui .= '<td style="text-align:left;"><i class="fas fa-walking" data-toggle="tooltip" data-placement="top" title="User Steps Progressed"></i></td>';
             $ui .= '<td style="text-align:left;"><i class="far fa-clock" data-toggle="tooltip" data-placement="top" title="Completion time"></i></td>';
             $ui .= '<td style="text-align:left;">&nbsp;</td>';
@@ -589,6 +594,7 @@ class Intents extends CI_Controller
         if($regular_list_ui){
             $ui .= '<tr style="font-weight: bold;">';
             $ui .= '<td style="text-align:left; padding-left:3px;" colspan="2">' . ( $filter_applied ? 'Other ' : 'Completed ' ) . 'User' . echo__s($regular_list_counter).' ['.$regular_list_counter.']</td>';
+            $ui .= '<td style="text-align:left;">&nbsp;</td>';
             $ui .= '<td style="text-align:left;"><i class="fas fa-walking" data-toggle="tooltip" data-placement="top" title="User Steps Progressed"></i></td>';
             $ui .= '<td style="text-align:left;"><i class="far fa-clock" data-toggle="tooltip" data-placement="top" title="Completion time"></i></td>';
             $ui .= '<td style="text-align:left;">&nbsp;</td>';
