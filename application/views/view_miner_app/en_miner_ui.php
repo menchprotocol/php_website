@@ -20,19 +20,17 @@
         <?php
 
         //Parents
-        echo '<div class="' . advance_mode() . '">';
         echo '<h5><span class="badge badge-h"><span class="li-parent-count">' . count($entity['en__parents']) . '</span> Parent' . echo__s(count($entity['en__parents'])) . '</span></h5>';
         echo '<div id="list-parent" class="list-group  grey-list">';
         foreach ($entity['en__parents'] as $en) {
             echo echo_en($en, 2, true);
         }
         //Input to add new parents:
-        echo '<div id="new-parent" class="list-group-item list_input grey-input">
+        echo '<div id="new-parent" class="list-group-item list_input grey-input ' . advance_mode() . '">
                     <div class="form-group is-empty"><input type="text" class="form-control new-input algolia_search" data-lpignore="true" placeholder="+ Entity/URL"></div>
                     <div class="algolia_search_pad hidden"><span>Search existing entities, create a new entity or paste a URL...</span></div>
             </div>';
 
-        echo '</div>';
         echo '</div>';
 
 
@@ -56,7 +54,7 @@
 
 
         //Children:
-        echo '<div class="indent2 '. advance_mode() .'">';
+        echo '<div class="indent2">';
         echo '<table width="100%" style="margin-top:10px;"><tr>';
         echo '<td style="width:170px;">';
 

@@ -455,9 +455,9 @@ function redirect_message($url, $message = null)
 }
 
 
-function advance_mode(){
+function advance_mode($append_css = null){
     $CI =& get_instance();
-    return ' advance-ui '.( $CI->session->userdata('advance_view_enabled')==1 ? '' : ' hidden ' );
+    return $append_css.' advance-ui '.( $CI->session->userdata('advance_view_enabled')==1 ? '' : ' hidden ' );
 }
 
 

@@ -4393,6 +4393,11 @@ h4 .tip-badge {
 
 .navbar-front-header { width:398px !important; }
 
+.no_child_message{
+    padding: 0 0 13px 78px;
+    font-style: italic;
+    font-size: 0.9em;
+}
 
 @media (max-width: 767px) {
 

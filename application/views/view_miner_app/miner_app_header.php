@@ -1,6 +1,7 @@
 <?php
 //Attempt to fetch session variables:
 $session_en = $this->session->userdata('user');
+$is_miner = en_auth(array(1308));
 $en_all_7372 = $this->config->item('en_all_7372');
 $en_all_7368 = $this->config->item('en_all_7368');
 $uri_segment_1 = $this->uri->segment(1);
@@ -31,6 +32,9 @@ $uri_segment_2 = $this->uri->segment(2);
     <link href="/css/lib/jquery.mCustomScrollbar.min.css" rel="stylesheet"/>
     <?php $this->load->view('view_shared/global_js_css'); ?>
     <script src="/js/custom/platform-js.js?v=v<?= $this->config->item('app_version') ?>" type="text/javascript"></script>
+
+    <!-- Author CSS to make certain fields visible IF user is the object creator -->
+    <?= ( isset($session_en['en_id']) && !$is_miner ? '<style>  .author_'.$session_en['en_id'].' { display:inline-block !important; } </style>' : '' ) ?>
 
 </head>
 
@@ -115,7 +119,7 @@ $uri_segment_2 = $this->uri->segment(2);
                             </li>
 
                             <!-- Advance Mode -->
-                            <li class="links-inactive <?= ( en_auth(array(1308)) ? '' : ' hidden ' ) ?>" data-toggle="tooltip" data-placement="left" title="<?= $en_all_7368[5007]['m_name'] ?>">
+                            <li class="links-inactive <?= ( $is_miner ? '' : ' hidden ' ) ?>" data-toggle="tooltip" data-placement="left" title="<?= $en_all_7368[5007]['m_name'] ?>">
                                 <a href="javascript:void(0)" onclick="toggle_advance(0)">
                                     <i class="<?= ( $this->session->userdata('advance_view_enabled')==1 ? 'fas fa-expand-arrows' : 'fal fa-expand-arrows ' ) ?> advance-icon"></i>
                                 </a>

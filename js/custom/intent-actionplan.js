@@ -386,6 +386,10 @@ function in_link_or_create(in_linked_id, is_parent, next_level, in_link_child_id
         var sort_handler = ".is_level3_sortable";
         var sort_list_id = "list-cr-" + $('.intent_line_' + in_linked_id).attr('in-link-id');
         var input_field = $('.intentadder-id-' + in_linked_id);
+
+        //Remove no-intent message:
+        $('.no_child_'+in_linked_id).remove();
+
     } else {
         //This should not happen:
         alert('Error: Invalid next_level value [' + next_level + ']');

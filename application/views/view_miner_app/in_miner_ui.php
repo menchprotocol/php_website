@@ -25,19 +25,17 @@ $en_all_7369 = $this->config->item('en_all_7369');
 
         } else {
 
-            echo '<div class="parent-intents-block '.advance_mode().'">';
+            //Parent intents:
+            echo '<h5 class="badge badge-h"><span class="li-parent-count parent-counter-' . $in['in_id'] . '">' . count($in['in__parents']) . '</span> Parent' . echo__s(count($in['in__parents'])) . '</h5>';
+            echo '<div id="list-in-' . $in['in_id'] . '-1" class="list-group list-level-2">';
 
-                //Parent intents:
-                echo '<h5 class="badge badge-h"><span class="li-parent-count parent-counter-' . $in['in_id'] . '">' . count($in['in__parents']) . '</span> Parent' . echo__s(count($in['in__parents'])) . '</h5>';
-                echo '<div id="list-in-' . $in['in_id'] . '-1" class="list-group list-level-2">';
+            //List current parent intents:
+            foreach ($in['in__parents'] as $parent_in) {
+                echo echo_in($parent_in, 2, 0, true);
+            }
 
-                //List current parent intents:
-                foreach ($in['in__parents'] as $parent_in) {
-                    echo echo_in($parent_in, 2, 0, true);
-                }
-
-                //Add parent intent:
-                echo '<div class="list-group-item list_input grey-block">
+            //Add parent intent:
+            echo '<div class="list-group-item list_input grey-block '.advance_mode().'">
                         <div class="form-group is-empty" style="margin: 0; padding: 0;">
                             <input type="text"
                                    class="form-control intentadder-level-2-parent algolia_search"
@@ -47,9 +45,8 @@ $en_all_7369 = $this->config->item('en_all_7369');
                         </div>
                        <div class="algolia_search_pad in_pad_top hidden"><span>Search existing intents or create a new one...</span></div>
                 </div>';
-                echo '</div>';
-
             echo '</div>';
+
 
 
 
@@ -62,13 +59,17 @@ $en_all_7369 = $this->config->item('en_all_7369');
             echo '<h5 class="badge badge-h indent1 inline-block">'.$en_all_7369[7765]['m_icon'].' <input type="url" value="'. $this->config->item('base_url') . $in['in_id'] .'" style="padding:0; margin:-2px 0; background-color:transparent; border:0; color:#FFF;" /><a href="/' . $in['in_id'] . '" target="_blank" style="margin-left:7px; color:#FFF !important;" data-toggle="tooltip" title="'.$en_all_7369[7765]['m_name'].'" data-placement="bottom"><i class="far fa-external-link"></i></a></h5>';
 
             //Hidden Links for Miners:
-                if($is_miner){
-                    echo '<a class="secret" href="/intents/cron__sync_extra_insights/' . $in['in_id'] . '/1?redirect=/' . $in['in_id'] . '" style="margin-left:20px;" onclick="turn_off()" data-toggle="tooltip" title="Updates intent tree cache" data-placement="bottom"><i class="fal fa-sync-alt"></i></a>';
+            if($is_miner){
+                echo '<span class="'.advance_mode().'">';
 
-                    echo '<a class="secret" href="/intents/in_review_metadata/' . $in['in_id'] . '" style="margin-left: 5px;" target="_blank" data-toggle="tooltip" title="Review Intent Metadata" data-placement="bottom"><i class="fas fa-function"></i></a>';
+                echo '<a class="secret" href="/intents/cron__sync_extra_insights/' . $in['in_id'] . '/1?redirect=/' . $in['in_id'] . '" style="margin-left:20px;" onclick="turn_off()" data-toggle="tooltip" title="Updates intent tree cache" data-placement="bottom"><i class="fal fa-sync-alt"></i></a>';
 
-                    echo '<a class="secret" href="/links/cron__sync_algolia/in/' . $in['in_id'] . '" style="margin-left: 5px;" target="_blank" data-toggle="tooltip" title="Update Algolia Search Index" data-placement="bottom"><i class="fas fa-search"></i></a>';
-                }
+                echo '<a class="secret" href="/intents/in_review_metadata/' . $in['in_id'] . '" style="margin-left: 5px;" target="_blank" data-toggle="tooltip" title="Review Intent Metadata" data-placement="bottom"><i class="fas fa-function"></i></a>';
+
+                echo '<a class="secret" href="/links/cron__sync_algolia/in/' . $in['in_id'] . '" style="margin-left: 5px;" target="_blank" data-toggle="tooltip" title="Update Algolia Search Index" data-placement="bottom"><i class="fas fa-search"></i></a>';
+
+                echo '</span>';
+            }
 
 
             echo '</div>';
@@ -87,14 +88,14 @@ $en_all_7369 = $this->config->item('en_all_7369');
         //Expand/Contract All buttons:
         $metadata = unserialize($in['in_metadata']);
 
-        echo '<div class="indent2 intent-children-header '.advance_mode().'">';
+        echo '<div class="indent2 intent-children-header">';
 
             echo '<h5 class="badge badge-h" style="display: inline-block;"><span class="li-children-count children-counter-' . $in['in_id'] . '">' . count($in['in__children']) . '</span> Children</h5>';
 
-            echo '<div id="expand_intents" style="padding-left:8px; display: inline-block;">';
-            echo '<i class="fas fa-plus-circle expand_all" style="font-size: 1.2em;" data-toggle="tooltip" title="Expand Grandchildren" data-placement="top"></i> &nbsp;';
-            echo '<i class="fas fa-minus-circle close_all" style="font-size: 1.2em;" data-toggle="tooltip" title="Contact Grandchildren" data-placement="top"></i>';
-            echo '<i class="far fa-filter toggle_filters" style="font-size: 1.2em; margin-left: 6px;" data-toggle="tooltip" title="Apply Intent Filters" data-placement="top"></i>';
+            echo '<div id="expand_intents" style="padding-left:8px; display:'. ( count($in['in__children']) > 0 ? 'inline-block' : 'none' ) .';">';
+            echo '<i class="fas fa-plus-circle expand_all" style="font-size: 1.2em;" data-toggle="tooltip" title="Expand All Children" data-placement="top"></i> &nbsp;';
+            echo '<i class="fas fa-minus-circle close_all" style="font-size: 1.2em;" data-toggle="tooltip" title="Contact All Children" data-placement="top"></i>';
+            echo '<i class="far fa-filter toggle_filters '.advance_mode().'" style="font-size: 1.2em; margin-left: 6px;" data-toggle="tooltip" title="Apply Intent Filters" data-placement="top"></i>';
             echo '</div>';
 
 
@@ -132,9 +133,8 @@ $en_all_7369 = $this->config->item('en_all_7369');
             echo echo_in($child_in, 2, $in['in_id']);
         }
 
-
         //Add child intent:
-        echo '<div class="list-group-item list_input grey-block">
+        echo '<div class="list-group-item list_input grey-block '.advance_mode(in_authors_css($in)).'">
                     <div class="form-group is-empty" style="margin: 0; padding: 0;">
                         <input type="text"
                                class="form-control intentadder-level-2-child algolia_search"
