@@ -585,8 +585,8 @@ class Intents extends CI_Controller
             $ui .= $filters_list_ui;
 
             //Add two space blocks:
-            $ui .= '<tr><td colspan="5">&nbsp;</td></tr>';
-            $ui .= '<tr><td colspan="5">&nbsp;</td></tr>';
+            $ui .= '<tr><td colspan="6">&nbsp;</td></tr>';
+            $ui .= '<tr><td colspan="6">&nbsp;</td></tr>';
 
         }
 
