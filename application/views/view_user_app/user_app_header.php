@@ -96,7 +96,7 @@ $url_part_1 = $this->uri->segment(1);
                 } else {
 
                     //Give option to sign-in:
-                    echo '<li><a href="/signin'.( isset($in['in_id']) && $in['in_id']!=$this->config->item('in_focus_id') ? '?url=%2Fintents%2F'.$in['in_id'] : '' ).'" class="tag-manager-sign-in">'.$en_all_7369[4269]['m_name'].' '.$en_all_7369[4269]['m_icon'].'</a></li>';
+                    echo '<li><a href="/signin" class="tag-manager-sign-in">'.$en_all_7369[4269]['m_name'].' '.$en_all_7369[4269]['m_icon'].'</a></li>';
 
                     //Give option to Signup if Intent is passed:
                     echo '<li class="featured-nav"><a href="/'.( isset($in['in_id']) && $in['in_id']!=$this->config->item('in_focus_id') ? $in['in_id'] : $this->config->item('in_join_id') ).'/signin" class="tag-manager-sign-in">SIGN UP <i class="fas fa-user-plus"></i></a></li>';

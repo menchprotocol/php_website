@@ -11,7 +11,7 @@ defined('BASEPATH') OR exit('No direct script access allowed');
  *
  */
 
-//Generated 2019-08-20 16:59:21 PST
+//Generated 2019-08-20 18:59:58 PST
 
 //Mined Intelligence:
 $config['en_ids_7812'] = array(4251,4259,4257,4261,4260,4319,4230,4255,4318,4256,4258,4250,4229,4228,4983,6093,6242,4231,7701,7545,4601);
@@ -651,13 +651,13 @@ $config['en_all_4341'] = array(
         'm_parents' => array(6202,6232,6213,4341),
     ),
     4372 => array(
-        'm_icon' => '<i class="fas fa-sticky-note"></i>',
+        'm_icon' => '<i class="far fa-sticky-note"></i>',
         'm_name' => 'Content',
         'm_desc' => '',
         'm_parents' => array(6232,6213,4341),
     ),
     4364 => array(
-        'm_icon' => '<i class="fas fa-user"></i>',
+        'm_icon' => '<i class="far fa-user-edit"></i>',
         'm_name' => 'Creator',
         'm_desc' => '',
         'm_parents' => array(6160,6232,6213,6194,4341),
@@ -2154,7 +2154,7 @@ $config['en_all_6194'] = array(
         'm_parents' => array(7777,6160,6232,7302,4506,6213,6194,6201),
     ),
     4364 => array(
-        'm_icon' => '<i class="fas fa-user"></i>',
+        'm_icon' => '<i class="far fa-user-edit"></i>',
         'm_name' => 'Link Creator',
         'm_desc' => 'SELECT count(ln_id) as totals FROM table_links WHERE ln_status_entity_id IN (6175,6176) AND ln_creator_entity_id=',
         'm_parents' => array(6160,6232,6213,6194,4341),
