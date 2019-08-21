@@ -90,7 +90,7 @@ if($this->uri->segment(1)=='actionplan'){
 
                     <div class="form-group label-floating is-empty">
                         <?php
-                        foreach($this->config->item('en_all_6150') as $en_id => $m){
+                        foreach($this->config->item('en_all_10570') as $en_id => $m){
                             echo '<span class="radio">
                         <label style="font-size:1em; font-weight: 300;">
                             <input type="radio" name="stop_type" value="' . $en_id . '" />

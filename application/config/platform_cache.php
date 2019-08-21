@@ -11,7 +11,24 @@ defined('BASEPATH') OR exit('No direct script access allowed');
  *
  */
 
-//Generated 2019-08-21 09:39:46 PST
+//Generated 2019-08-21 14:07:09 PST
+
+//User Selectable Completion:
+$config['en_ids_10570'] = array(6154,6155);
+$config['en_all_10570'] = array(
+    6154 => array(
+        'm_icon' => '<i class="far fa-mountain"></i>',
+        'm_name' => 'User Intent Accomplished',
+        'm_desc' => '',
+        'm_parents' => array(10570,7164,7758,7703,4595,4506,6150,4755,4593),
+    ),
+    6155 => array(
+        'm_icon' => '<i class="far fa-stop-circle"></i>',
+        'm_name' => 'User Intent Cancelled',
+        'm_desc' => '',
+        'm_parents' => array(10570,7164,7703,4595,4506,6150,4593,4755),
+    ),
+);
 
 //Intent Scopes Searchable:
 $config['en_ids_10568'] = array(7598);
@@ -573,7 +590,7 @@ $config['en_all_7758'] = array(
         'm_icon' => '<i class="far fa-mountain"></i>',
         'm_name' => 'User Intent Accomplished',
         'm_desc' => '',
-        'm_parents' => array(7164,7758,7703,4595,4506,6150,4755,4593),
+        'm_parents' => array(10570,7164,7758,7703,4595,4506,6150,4755,4593),
     ),
 );
 
@@ -842,7 +859,7 @@ $config['en_all_6201'] = array(
         'm_icon' => '<i class="far fa-tools"></i>',
         'm_name' => 'Verb',
         'm_desc' => '',
-        'm_parents' => array(7777,6160,6232,7302,4506,6213,6194,6201),
+        'm_parents' => array(4736,7777,6160,6232,7302,4506,6213,6194,6201),
     ),
 );
 
@@ -994,13 +1011,13 @@ $config['en_all_7703'] = array(
         'm_icon' => '<i class="far fa-mountain"></i>',
         'm_name' => 'User Intent Accomplished',
         'm_desc' => '',
-        'm_parents' => array(7164,7758,7703,4595,4506,6150,4755,4593),
+        'm_parents' => array(10570,7164,7758,7703,4595,4506,6150,4755,4593),
     ),
     6155 => array(
         'm_icon' => '<i class="far fa-stop-circle"></i>',
         'm_name' => 'User Intent Cancelled',
         'm_desc' => '',
-        'm_parents' => array(7164,7703,4595,4506,6150,4593,4755),
+        'm_parents' => array(10570,7164,7703,4595,4506,6150,4593,4755),
     ),
     7485 => array(
         'm_icon' => '<i class="fas fa-lock-open"></i>',
@@ -1712,7 +1729,7 @@ $config['en_all_7302'] = array(
         'm_icon' => '<i class="far fa-tools"></i>',
         'm_name' => 'Verb',
         'm_desc' => '',
-        'm_parents' => array(7777,6160,6232,7302,4506,6213,6194,6201),
+        'm_parents' => array(4736,7777,6160,6232,7302,4506,6213,6194,6201),
     ),
 );
 
@@ -1887,13 +1904,13 @@ $config['en_all_7164'] = array(
         'm_icon' => '<i class="far fa-mountain"></i>',
         'm_name' => 'Intent Accomplished',
         'm_desc' => '',
-        'm_parents' => array(7164,7758,7703,4595,4506,6150,4755,4593),
+        'm_parents' => array(10570,7164,7758,7703,4595,4506,6150,4755,4593),
     ),
     6155 => array(
         'm_icon' => '<i class="far fa-stop-circle"></i>',
         'm_name' => 'Intent Cancelled',
         'm_desc' => '',
-        'm_parents' => array(7164,7703,4595,4506,6150,4593,4755),
+        'm_parents' => array(10570,7164,7703,4595,4506,6150,4593,4755),
     ),
     4283 => array(
         'm_icon' => '<i class="far fa-eye"></i>',
@@ -2173,7 +2190,7 @@ $config['en_all_6194'] = array(
         'm_icon' => '<i class="far fa-tools"></i>',
         'm_name' => 'Intent Verb',
         'm_desc' => 'SELECT count(in_id) as totals FROM table_intents WHERE in_status_entity_id IN (6183,6184) AND in_verb_entity_id=',
-        'm_parents' => array(7777,6160,6232,7302,4506,6213,6194,6201),
+        'm_parents' => array(4736,7777,6160,6232,7302,4506,6213,6194,6201),
     ),
     4364 => array(
         'm_icon' => '<i class="far fa-user-edit"></i>',
@@ -2501,13 +2518,13 @@ $config['en_all_6150'] = array(
         'm_icon' => '<i class="far fa-mountain"></i>',
         'm_name' => 'Intent Accomplished',
         'm_desc' => 'You successfully accomplished your intention so you no longer want to receive future updates',
-        'm_parents' => array(7164,7758,7703,4595,4506,6150,4755,4593),
+        'm_parents' => array(10570,7164,7758,7703,4595,4506,6150,4755,4593),
     ),
     6155 => array(
         'm_icon' => '<i class="far fa-stop-circle"></i>',
         'm_name' => 'Intent Cancelled',
         'm_desc' => 'You did NOT accomplish the intention and you want to stop all future updates on this intention',
-        'm_parents' => array(7164,7703,4595,4506,6150,4593,4755),
+        'm_parents' => array(10570,7164,7703,4595,4506,6150,4593,4755),
     ),
     7757 => array(
         'm_icon' => '<i class="fas fa-times-octagon"></i>',
@@ -3112,13 +3129,13 @@ $config['en_all_4755'] = array(
         'm_icon' => '<i class="far fa-mountain"></i>',
         'm_name' => 'User Intent Accomplished',
         'm_desc' => '',
-        'm_parents' => array(7164,7758,7703,4595,4506,6150,4755,4593),
+        'm_parents' => array(10570,7164,7758,7703,4595,4506,6150,4755,4593),
     ),
     6155 => array(
         'm_icon' => '<i class="far fa-stop-circle"></i>',
         'm_name' => 'User Intent Cancelled',
         'm_desc' => '',
-        'm_parents' => array(7164,7703,4595,4506,6150,4593,4755),
+        'm_parents' => array(10570,7164,7703,4595,4506,6150,4593,4755),
     ),
     6149 => array(
         'm_icon' => '<i class="fas fa-search-plus"></i>',
@@ -3741,13 +3758,13 @@ $config['en_all_4595'] = array(
         'm_icon' => '<i class="far fa-mountain"></i>',
         'm_name' => 'User Intent Accomplished',
         'm_desc' => '10',
-        'm_parents' => array(7164,7758,7703,4595,4506,6150,4755,4593),
+        'm_parents' => array(10570,7164,7758,7703,4595,4506,6150,4755,4593),
     ),
     6155 => array(
         'm_icon' => '<i class="far fa-stop-circle"></i>',
         'm_name' => 'User Intent Cancelled',
         'm_desc' => '10',
-        'm_parents' => array(7164,7703,4595,4506,6150,4593,4755),
+        'm_parents' => array(10570,7164,7703,4595,4506,6150,4593,4755),
     ),
     6149 => array(
         'm_icon' => '<i class="fas fa-search-plus"></i>',
@@ -4387,13 +4404,13 @@ $config['en_all_4593'] = array(
         'm_icon' => '<i class="far fa-mountain"></i>',
         'm_name' => 'User Intent Accomplished',
         'm_desc' => 'Student accomplished their intention 🎉🎉🎉',
-        'm_parents' => array(7164,7758,7703,4595,4506,6150,4755,4593),
+        'm_parents' => array(10570,7164,7758,7703,4595,4506,6150,4755,4593),
     ),
     6155 => array(
         'm_icon' => '<i class="far fa-stop-circle"></i>',
         'm_name' => 'User Intent Cancelled',
         'm_desc' => 'Student prematurely removed an intention from their Action Plan without accomplishing it.',
-        'm_parents' => array(7164,7703,4595,4506,6150,4593,4755),
+        'm_parents' => array(10570,7164,7703,4595,4506,6150,4593,4755),
     ),
     6149 => array(
         'm_icon' => '<i class="fas fa-search-plus"></i>',
