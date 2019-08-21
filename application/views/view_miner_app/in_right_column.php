@@ -12,7 +12,7 @@
     //Include some cached entities:
     var js_en_all_4486 = <?= json_encode($this->config->item('en_all_4486')) ?>; // Intent Links
     var js_en_all_7585 = <?= json_encode($this->config->item('en_all_7585')) ?>; // Intent Types
-    var js_en_all_7596 = <?= json_encode($this->config->item('en_all_7596')) ?>; // Intent Start Types
+    var js_en_all_7596 = <?= json_encode($this->config->item('en_all_7596')) ?>; // Intent Scope
 </script>
 <script src="/js/custom/intent-right-column.js?v=v<?= $this->config->item('app_version') ?>"
         type="text/javascript"></script>

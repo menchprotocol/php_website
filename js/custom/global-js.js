@@ -182,7 +182,7 @@ $(document).ready(function () {
                 //Append filters:
                 algolia_index.search(q, {
                     hitsPerPage: 7,
-                    filters: 'alg_obj_is_in=1 AND alg_obj_scope=7598 AND alg_obj_status=6184', //Published Intent Trees
+                    filters: 'alg_obj_is_in=1 AND alg_obj_scope=7598 AND alg_obj_status=6184', //TODO replace hard-coded values with _10568 & _7355 cache values
                 }, function (error, content) {
                     if (error) {
                         cb([]);

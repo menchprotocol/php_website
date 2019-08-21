@@ -219,13 +219,13 @@ class Messenger extends CI_Controller
                     $en = $this->Entities_model->en_messenger_auth($im['sender']['id']);
 
                     //Log Link Only IF last delivery link was 3+ minutes ago (Since Facebook sends many of these):
-                    $last_trs_logged = $this->Links_model->ln_fetch(array(
+                    $last_links_logged = $this->Links_model->ln_fetch(array(
                         'ln_type_entity_id' => $ln_type_entity_id,
                         'ln_creator_entity_id' => $en['en_id'],
                         'ln_timestamp >=' => date("Y-m-d H:i:s", (time() - (60))), //Links logged less than 1 minutes ago
                     ), array(), 1);
 
-                    if (count($last_trs_logged) == 0) {
+                    if (count($last_links_logged) == 0) {
                         //We had no recent links of this kind, so go ahead and log:
                         $this->Links_model->ln_create(array(
                             'ln_metadata' => $ln_metadata,

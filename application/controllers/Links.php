@@ -72,14 +72,14 @@ class Links extends CI_Controller
 
         //Fetch links and total link counts:
         $lns = $this->Links_model->ln_fetch($filters, $join_by, $item_per_page, $query_offset);
-        $lns_count = $this->Links_model->ln_fetch($filters, $join_by, 0, 0, array(), 'COUNT(ln_id) as trs_count, SUM(ln_credits) as credits_sum');
+        $lns_count = $this->Links_model->ln_fetch($filters, $join_by, 0, 0, array(), 'COUNT(ln_id) as links_count, SUM(ln_credits) as credits_sum');
         $total_items_loaded = ($query_offset+count($lns));
-        $has_more_links = ($lns_count[0]['trs_count'] > 0 && $total_items_loaded < $lns_count[0]['trs_count']);
+        $has_more_links = ($lns_count[0]['links_count'] > 0 && $total_items_loaded < $lns_count[0]['links_count']);
 
 
         //Display filter notes:
         if($total_items_loaded > 0){
-            $message .= '<p style="margin: 10px 0 0 0;">'.( $has_more_links && $query_offset==0  ? 'First ' : ($query_offset+1).' - ' ) . ( $total_items_loaded >= ($query_offset+1) ?  $total_items_loaded . ' of ' : '' ) . number_format($lns_count[0]['trs_count'] , 0) .' Links:</p>';
+            $message .= '<p style="margin: 10px 0 0 0;">'.( $has_more_links && $query_offset==0  ? 'First ' : ($query_offset+1).' - ' ) . ( $total_items_loaded >= ($query_offset+1) ?  $total_items_loaded . ' of ' : '' ) . number_format($lns_count[0]['links_count'] , 0) .' Links:</p>';
         }
         // with '.number_format($lns_count[0]['credits_sum'], 0).' awarded credits
 
@@ -97,7 +97,7 @@ class Links extends CI_Controller
                 $message .= '<div id="link_page_'.$next_page.'"><a href="javascript:void(0);" style="margin:10px 0 72px 0;" class="btn btn-primary grey" onclick="load_link_list(link_filters, link_join_by, '.$next_page.');"><i class="fas fa-plus-circle"></i> Page '.$next_page.'</a></div>';
                 $message .= '';
             } else {
-                $message .= '<div style="margin:10px 0 72px 0;"><i class="far fa-check-circle"></i> All '.$lns_count[0]['trs_count'].' link'.echo__s($lns_count[0]['trs_count']).' have been loaded</div>';
+                $message .= '<div style="margin:10px 0 72px 0;"><i class="far fa-check-circle"></i> All '.$lns_count[0]['links_count'].' link'.echo__s($lns_count[0]['links_count']).' have been loaded</div>';
 
             }
 
@@ -151,7 +151,7 @@ class Links extends CI_Controller
             }
 
             //Validate Intent Outcome:
-            $in_outcome_validation = $this->Intents_model->in_analyze_outcome($in_outcome);
+            $in_outcome_validation = $this->Intents_model->in_validate_outcome($in_outcome);
             if(!$in_outcome_validation['status']){
                 //We had an error, return it:
                 return echo_json($in_outcome_validation);
@@ -161,7 +161,7 @@ class Links extends CI_Controller
             $intent_new = $this->Intents_model->in_create(array(
                 'in_outcome' => $in_outcome_validation['in_cleaned_outcome'],
                 'in_verb_entity_id' => $in_outcome_validation['detected_in_verb_entity_id'],
-                'in_type_entity_id' => 6677, //Read Messages
+                'in_type_entity_id' => 6677, //Read-Only
                 'in_status_entity_id' => 6183, //Intent New
             ), true, $session_en['en_id']);
 

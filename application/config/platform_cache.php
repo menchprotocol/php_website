@@ -11,9 +11,31 @@ defined('BASEPATH') OR exit('No direct script access allowed');
  *
  */
 
-//Generated 2019-08-20 18:59:58 PST
+//Generated 2019-08-21 09:39:46 PST
 
-//Mined Intelligence:
+//Intent Scopes Searchable:
+$config['en_ids_10568'] = array(7598);
+$config['en_all_10568'] = array(
+    7598 => array(
+        'm_icon' => '<i class="fas fa-tree-large"></i>',
+        'm_name' => 'Intent Tree',
+        'm_desc' => '',
+        'm_parents' => array(10568,7767,7582,7596),
+    ),
+);
+
+//Intent Scopes Supports Equal:
+$config['en_ids_10567'] = array(7597);
+$config['en_all_10567'] = array(
+    7597 => array(
+        'm_icon' => '<i class="far fa-leaf"></i>',
+        'm_name' => 'Intent Leaf',
+        'm_desc' => '',
+        'm_parents' => array(10567,7596),
+    ),
+);
+
+//Link Type Mench Intelligence:
 $config['en_ids_7812'] = array(4251,4259,4257,4261,4260,4319,4230,4255,4318,4256,4258,4250,4229,4228,4983,6093,6242,4231,7701,7545,4601);
 $config['en_all_7812'] = array(
     4251 => array(
@@ -144,7 +166,7 @@ $config['en_all_7812'] = array(
     ),
 );
 
-//Mining Process:
+//Link Type Mench Training:
 $config['en_ids_7809'] = array(4246,7504,5943,5001,5865,4999,4998,5000,5981,5982,5003,4994,4263,6226,4993,4264,4242,5007);
 $config['en_all_7809'] = array(
     4246 => array(
@@ -257,7 +279,7 @@ $config['en_all_7809'] = array(
     ),
 );
 
-//User Onboarding:
+//Link Type User Onboarding:
 $config['en_ids_7810'] = array(6149,7611,6969,7610,7563,4266,4267,7578,4577,4268,4299,7561,7564,7559,7560,7558,7562);
 $config['en_all_7810'] = array(
     6149 => array(
@@ -439,14 +461,14 @@ $config['en_all_7774'] = array(
     ),
 );
 
-//Intent Listed Publicly:
+//Intent Scopes Mineable:
 $config['en_ids_7767'] = array(7598,7766);
 $config['en_all_7767'] = array(
     7598 => array(
         'm_icon' => '<i class="fas fa-tree-large"></i>',
         'm_name' => 'Tree',
         'm_desc' => '',
-        'm_parents' => array(7767,7582,7596),
+        'm_parents' => array(10568,7767,7582,7596),
     ),
     7766 => array(
         'm_icon' => '<i class="fas fa-code-branch rotate74"></i>',
@@ -1037,7 +1059,7 @@ $config['en_all_7596'] = array(
         'm_icon' => '<i class="fas fa-tree-large"></i>',
         'm_name' => 'Tree',
         'm_desc' => 'Intent is searchable and requires the user to register in order to continue',
-        'm_parents' => array(7767,7582,7596),
+        'm_parents' => array(10568,7767,7582,7596),
     ),
     7766 => array(
         'm_icon' => '<i class="fas fa-code-branch rotate74"></i>',
@@ -1049,7 +1071,7 @@ $config['en_all_7596'] = array(
         'm_icon' => '<i class="far fa-leaf"></i>',
         'm_name' => 'Leaf',
         'm_desc' => 'Not searchable and only accessible through its parents',
-        'm_parents' => array(7596),
+        'm_parents' => array(10567,7596),
     ),
 );
 
@@ -1181,14 +1203,14 @@ $config['en_all_7585'] = array(
     ),
 );
 
-//Intent Action Plan Addable:
+//Intent Scopes Get Started:
 $config['en_ids_7582'] = array(7598);
 $config['en_all_7582'] = array(
     7598 => array(
         'm_icon' => '<i class="fas fa-tree-large"></i>',
         'm_name' => 'Intent Tree',
         'm_desc' => '',
-        'm_parents' => array(7767,7582,7596),
+        'm_parents' => array(10568,7767,7582,7596),
     ),
 );
 
@@ -1256,7 +1278,7 @@ $config['en_all_7551'] = array(
 );
 
 //Mench Conversation Templates:
-$config['en_ids_7529'] = array(7609,7608,7533,7531,7567,7568,7810);
+$config['en_ids_7529'] = array(7609,7608,7533,7531,7567,7810,7568);
 $config['en_all_7529'] = array(
     7609 => array(
         'm_icon' => '<i class="fas fa-smile-plus"></i>',
@@ -1288,17 +1310,17 @@ $config['en_all_7529'] = array(
         'm_desc' => '',
         'm_parents' => array(7529),
     ),
+    7810 => array(
+        'm_icon' => '<i class="fas fa-plus-circle"></i>',
+        'm_name' => 'Link Type User Onboarding',
+        'm_desc' => '',
+        'm_parents' => array(4527,7529,4269,7233),
+    ),
     7568 => array(
         'm_icon' => '<i class="fas fa-asterisk"></i>',
         'm_name' => 'Reset Password',
         'm_desc' => '',
         'm_parents' => array(7529),
-    ),
-    7810 => array(
-        'm_icon' => '<i class="fas fa-plus-circle"></i>',
-        'm_name' => 'User Onboarding',
-        'm_desc' => '',
-        'm_parents' => array(4527,7529,4269,7233),
     ),
 );
 
@@ -1642,7 +1664,7 @@ $config['en_all_7355'] = array(
     ),
 );
 
-//User Set Intention:
+//Link Type User Activation:
 $config['en_ids_7347'] = array(7495,7542,4235);
 $config['en_all_7347'] = array(
     7495 => array(
@@ -1751,32 +1773,32 @@ $config['en_ids_7233'] = array(7809,7812,7810,7347,7164);
 $config['en_all_7233'] = array(
     7809 => array(
         'm_icon' => '<i class="fas fa-plus-circle"></i>',
-        'm_name' => 'Mining Process',
-        'm_desc' => '',
+        'm_name' => 'Mench Training',
+        'm_desc' => 'All activity that prepares intelligence to be mined',
         'm_parents' => array(4527,7233),
     ),
     7812 => array(
         'm_icon' => '<i class="fas fa-plus-circle"></i>',
-        'm_name' => 'Mined Intelligence',
-        'm_desc' => 'Maps intent/entity correlations which fuels all conversations. Collectively they are a measure for Mench\'s intelligence.',
+        'm_name' => 'Mench Intelligence',
+        'm_desc' => 'Core logical processing links that map intent/entity correlations that power all conversations',
         'm_parents' => array(4527,7233),
     ),
     7810 => array(
         'm_icon' => '<i class="fas fa-plus-circle"></i>',
         'm_name' => 'User Onboarding',
-        'm_desc' => '',
+        'm_desc' => 'User `window-shopping` activities before joining Mench',
         'm_parents' => array(4527,7529,4269,7233),
     ),
     7347 => array(
         'm_icon' => '<i class="fas fa-plus-circle"></i>',
-        'm_name' => 'User Set Intention',
-        'm_desc' => '',
+        'm_name' => 'User Activation',
+        'm_desc' => 'User activation tracks user intentions, which guide Mench to deliver relevant intelligence',
         'm_parents' => array(7233,4527,6219),
     ),
     7164 => array(
         'm_icon' => '<i class="fas fa-plus-circle"></i>',
-        'm_name' => 'User Conversations',
-        'm_desc' => '',
+        'm_name' => 'User Conversation',
+        'm_desc' => 'Post-activation activities to help users accomplish their intentions',
         'm_parents' => array(7233,7203,4527),
     ),
 );
@@ -1798,7 +1820,7 @@ $config['en_all_7203'] = array(
     ),
     7164 => array(
         'm_icon' => '<i class="fas fa-plus-circle"></i>',
-        'm_name' => 'User Conversations',
+        'm_name' => 'Link Type User Conversation',
         'm_desc' => '',
         'm_parents' => array(7233,7203,4527),
     ),
@@ -1810,7 +1832,7 @@ $config['en_all_7203'] = array(
     ),
 );
 
-//User Conversations:
+//Link Type User Conversation:
 $config['en_ids_7164'] = array(4282,6224,6415,4275,6559,6560,6556,6578,6154,6155,4283,6132,7757,5967,7563,4554,4570,4556,4555,7702,6563,4552,4553,4549,4551,4550,4557,4278,4279,4460,4547,4287,4548,7488,7485,7486,6144,7741,6140,4559,7489,7492,6997,6157,7487,6143,7562);
 $config['en_all_7164'] = array(
     4282 => array(

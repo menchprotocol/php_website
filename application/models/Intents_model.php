@@ -387,7 +387,7 @@ class Intents_model extends CI_Model
 
 
             //Validate Intent Outcome:
-            $in_outcome_validation = $this->Intents_model->in_analyze_outcome($in_outcome);
+            $in_outcome_validation = $this->Intents_model->in_validate_outcome($in_outcome);
             if(!$in_outcome_validation['status']){
                 //We had an error, return it:
                 return $in_outcome_validation;
@@ -1065,15 +1065,18 @@ class Intents_model extends CI_Model
 
     }
 
-    function in_analyze_outcome($in_outcome, $in_scope_entity_id = 7597 /* Leaf is Default */){
+    function in_validate_outcome($in_outcome, $in_scope_entity_id = 7597 /* Leaf is Default */){
 
 
-        //Is this a public intent type? Then we require a proper verb to start with:
-        //Determine verb, if any:
-        $in_verb_entity_id = in_outcome_verb_id($in_outcome);
+        //Prep basic variables to start validation:
+        $starts_with_equal = ( substr($in_outcome, 0, 1) == '=' );
+        $scope_supports_equal = in_array($in_scope_entity_id, $this->config->item('en_ids_10567'));
+        $in_verb_entity_id = ( $starts_with_equal ? 0 : in_outcome_verb_id($in_outcome) );
+        $en_all_7596 = $this->config->item('en_all_7596'); // Intent Scope
 
-        //Validate outcome:
-        if(strlen($in_outcome) < 1){
+
+        //Validate:
+        if(strlen(trim($in_outcome)) <= ( $starts_with_equal ? 1 : 0 )){
 
             return array(
                 'status' => 0,
@@ -1084,7 +1087,7 @@ class Intents_model extends CI_Model
 
             return array(
                 'status' => 0,
-                'message' => 'Invalid level value',
+                'message' => 'Invalid in_scope_entity_id',
             );
 
         } elseif(substr_count($in_outcome , '  ') > 0){
@@ -1101,11 +1104,18 @@ class Intents_model extends CI_Model
                 'message' => 'Outcome must be '.$this->config->item('in_outcome_max').' characters or less',
             );
 
-        } elseif(!$in_verb_entity_id) {
+        } elseif ($starts_with_equal && !$scope_supports_equal) {
 
             return array(
                 'status' => 0,
-                'message' => 'Intent outcomes must start with a published verb @5008.',
+                'message' => $en_all_7596[$in_scope_entity_id]['m_name'].' Intents cannot start with equal',
+            );
+
+        } elseif(!$starts_with_equal && !$in_verb_entity_id) {
+
+            return array(
+                'status' => 0,
+                'message' => 'Intent outcomes must start with a verb OR =',
             );
 
         }
@@ -1116,7 +1126,7 @@ class Intents_model extends CI_Model
         return array(
             'status' => 1,
             'in_cleaned_outcome' => trim($in_outcome),
-            'detected_in_verb_entity_id' => $in_verb_entity_id, //Could be zero
+            'detected_in_verb_entity_id' => $in_verb_entity_id, //May be zero
         );
 
     }

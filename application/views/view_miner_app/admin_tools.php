@@ -292,7 +292,7 @@ if(!$action) {
     ));
 
     //Give an overview:
-    echo '<p>When the validation criteria change within the in_analyze_outcome() function, this page lists all the intents that no longer have a valid outcome.</p>';
+    echo '<p>When the validation criteria change within the in_validate_outcome() function, this page lists all the intents that no longer have a valid outcome.</p>';
 
 
     //List the matching search:
@@ -307,7 +307,7 @@ if(!$action) {
     $invalid_outcomes = 0;
     foreach($active_ins as $count=>$in){
 
-        $in_outcome_validation = $this->Intents_model->in_analyze_outcome($in['in_outcome'], $in['in_scope_entity_id']);
+        $in_outcome_validation = $this->Intents_model->in_validate_outcome($in['in_outcome'], $in['in_scope_entity_id']);
 
         if(!$in_outcome_validation['status']){
 
@@ -332,7 +332,7 @@ if(!$action) {
         'in_id' => 8000,
     )) as $in){
 
-        $in_outcome_validation = $this->Intents_model->in_analyze_outcome($in['in_outcome'], $in['in_scope_entity_id']);
+        $in_outcome_validation = $this->Intents_model->in_validate_outcome($in['in_outcome'], $in['in_scope_entity_id']);
 
         echo '<tr class="panel-title down-border">';
         echo '<td style="text-align: left;">'.$in['in_outcome'].'<div style="font-size: 0.7em;">VERB @'.$in['in_verb_entity_id'].' CONNECTION @'.$in['in_scope_entity_id'].'</div></td>';
@@ -403,7 +403,7 @@ if(!$action) {
                 if($replace_with_is_set){
                     //Do replacement:
                     $new_outcome = str_replace($_GET['search_for'],$_GET['replace_with'],$in['in_outcome']);
-                    $in_outcome_validation = $this->Intents_model->in_analyze_outcome($new_outcome, $in['in_scope_entity_id']);
+                    $in_outcome_validation = $this->Intents_model->in_validate_outcome($new_outcome, $in['in_scope_entity_id']);
 
                     if($in_outcome_validation['status']){
                         $qualifying_replacements++;
@@ -586,7 +586,7 @@ if(!$action) {
     //Hidden function to reset points:
     $all_link_types = $this->Links_model->ln_fetch(array(
         'ln_status_entity_id IN (' . join(',', $this->config->item('en_ids_7360')) . ')' => null, //Link Statuses Active
-    ), array('en_type'), 0, 0, array('en_name' => 'ASC'), 'COUNT(ln_type_entity_id) as trs_count, en_name, en_icon, ln_type_entity_id', 'ln_type_entity_id, en_name, en_icon');
+    ), array('en_type'), 0, 0, array('en_name' => 'ASC'), 'COUNT(ln_type_entity_id) as links_count, en_name, en_icon, ln_type_entity_id', 'ln_type_entity_id, en_name, en_icon');
 
 
     $total_updated = 0;
@@ -630,7 +630,7 @@ if(!$action) {
             'ln_parent_intent_id' => $in['in_id'],
         ), array('in_child'), 0, 0, array('ln_order' => 'ASC')) as $child_or){
 
-            $qualified_update = ( $child_or['in_type_entity_id']==6677 /* Intent Read-Only */ && in_array($child_or['in_scope_entity_id'], $this->config->item('en_ids_7582')) /* Intent Action Plan Addable */ );
+            $qualified_update = ( $child_or['in_type_entity_id']==6677 /* Intent Read-Only */ && in_array($child_or['in_scope_entity_id'], $this->config->item('en_ids_7582')) /* Intent Scopes Get Started */ );
 
             //Count completions:
             if($qualified_update){

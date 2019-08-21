@@ -1626,7 +1626,7 @@ function echo_in_recommend($in, $common_prefix = null, $hide_class = null, $refe
     //See if user is logged-in:
     $CI =& get_instance();
     $session_en = en_auth();
-    $is_starting = ( in_array($in['in_scope_entity_id'], $CI->config->item('en_ids_7582')) /* Intent Action Plan Addable */);
+    $is_starting = ( in_array($in['in_scope_entity_id'], $CI->config->item('en_ids_7582')) /* Intent Scopes Get Started */);
     $en_all_7369 = $CI->config->item('en_all_7369');
     $already_in_actionplan = (isset($session_en['en_id']) && count($CI->Links_model->ln_fetch(array(
             'ln_creator_entity_id' => $session_en['en_id'],
@@ -1850,7 +1850,7 @@ function echo_in_setting($in_setting_en_id, $in_field_name){
 }
 
 
-function echo_multi_row($main_obj, $all_link_types, $link_types_counts, $all_shown){
+function echo_2level_entities($main_obj, $all_link_types, $link_types_counts, $all_shown){
 
     if(!is_array($all_link_types) || count($all_link_types) < 1){
         return false;
@@ -1878,7 +1878,7 @@ function echo_multi_row($main_obj, $all_link_types, $link_types_counts, $all_sho
         $ln = filter_array($link_types_counts, 'ln_type_entity_id', $en_id);
 
         //Addup counter:
-        $all_children += $ln['trs_count'];
+        $all_children += $ln['links_count'];
 
         //Subrow UI:
         $sub_rows .=  '<tr class="hidden '.$identifier.'">';
@@ -1898,7 +1898,7 @@ function echo_multi_row($main_obj, $all_link_types, $link_types_counts, $all_sho
 
             $sub_rows .= '<td style="text-align: right;"><span style="margin-right:4px; border-right: 1px solid #222;">';
 
-            $sub_rows .= '<a href="/links?ln_status_entity_id='.join(',', $CI->config->item('en_ids_7360')) /* Link Statuses Active */.'&ln_type_entity_id=' . $en_id . '">'.number_format($ln['trs_count'], 0) . '</a>' . ( strlen($en_all_4593[$en_id]['m_desc']) > 0 ? '<i class="fal fa-info-circle icon-block" data-toggle="tooltip" title="'.number_format($ln['trs_count'], 0).' '.$en_all_4593[$en_id]['m_desc'].'" data-placement="top"></i>' : '<i class="fal fa-info-circle icon-block" data-toggle="tooltip" title="'.number_format($ln['trs_count'], 0).' Links" data-placement="top" style="color: #AAA;"></i>' );
+            $sub_rows .= '<a href="/links?ln_status_entity_id='.join(',', $CI->config->item('en_ids_7360')) /* Link Statuses Active */.'&ln_type_entity_id=' . $en_id . '">'.number_format($ln['links_count'], 0) . '</a>' . ( strlen($en_all_4593[$en_id]['m_desc']) > 0 ? '<i class="fal fa-info-circle icon-block" data-toggle="tooltip" title="'.$en_all_4593[$en_id]['m_desc'].'" data-placement="top"></i>' : '<i class="fal fa-info-circle icon-block" data-toggle="tooltip" title="'.number_format($ln['links_count'], 0).' Links" data-placement="top" style="color: #AAA;"></i>' );
 
             $sub_rows .= '</span></td>';
 
@@ -1931,7 +1931,7 @@ function echo_multi_row($main_obj, $all_link_types, $link_types_counts, $all_sho
     echo '<tr>';
     echo '<td style="text-align: left;"><span class="icon-block
 ">'.$main_obj['m_icon'].'</span><a href="javascript:void(0);" onclick="$(\'.'.$identifier.'\').toggleClass(\'hidden\')">'.$main_obj['m_name'].'</a></td>';
-    echo '<td style="text-align: right;"><a href="/links?ln_status_entity_id='.join(',', $CI->config->item('en_ids_7360')) /* Link Statuses Active */.'&ln_type_entity_id=' . join(',' , $all_link_type_ids) . '">'.number_format($all_children).'</a>' . ( strlen($main_obj['m_desc']) > 0 ? '<i class="fal fa-info-circle icon-block" data-toggle="tooltip" title="'.number_format($all_children, 0).' '.$main_obj['m_desc'].'" data-placement="top"></i>' : '<i class="fal fa-info-circle icon-block" data-toggle="tooltip" title="'.number_format($all_children, 0).' Links" data-placement="top" style="color: #AAA;"></i>' ) .'</td>';
+    echo '<td style="text-align: right;"><a href="/links?ln_status_entity_id='.join(',', $CI->config->item('en_ids_7360')) /* Link Statuses Active */.'&ln_type_entity_id=' . join(',' , $all_link_type_ids) . '">'.number_format($all_children).'</a>' . ( strlen($main_obj['m_desc']) > 0 ? '<i class="fal fa-info-circle icon-block" data-toggle="tooltip" title="'.$main_obj['m_desc'].'" data-placement="top"></i>' : '<i class="fal fa-info-circle icon-block" data-toggle="tooltip" title="'.number_format($all_children, 0).' Links" data-placement="top" style="color: #AAA;"></i>' ) .'</td>';
     echo '</tr>';
 
 
@@ -1958,7 +1958,7 @@ function echo_in($in, $level, $in_linked_id = 0, $is_parent = false)
     $session_en = $CI->session->userdata('user');
     $en_all_4737 = $CI->config->item('en_all_4737'); // Intent Statuses
     $en_all_7585 = $CI->config->item('en_all_7585'); // Intent Types
-    $en_all_7596 = $CI->config->item('en_all_7596'); // Intent Start Types
+    $en_all_7596 = $CI->config->item('en_all_7596'); // Intent Scope
     $en_all_6186 = $CI->config->item('en_all_6186'); // Link Status
     $is_child_focused = ($level == 3 && $is_parent && $CI->uri->segment(2)==$in['in_id']);
     $in_filters = in_get_filters(); //If we have any intent filters applied
