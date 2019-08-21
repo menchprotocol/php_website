@@ -329,18 +329,21 @@ if(!$action) {
     echo '<table class="table table-condensed table-striped stats-table mini-stats-table">';
 
     foreach($this->Intents_model->in_fetch(array(
-        'in_id' => 8000,
-    )) as $in){
+        'in_outcome LIKE \'% :: %\'' => null,
+    ), array(), ( isset($_GET['limit']) ? $_GET['limit'] : 1 )) as $in){
 
-        $in_outcome_validation = $this->Intents_model->in_validate_outcome($in['in_outcome'], $in['in_scope_entity_id']);
+        $in_parts = explode(' :: ',$in['in_outcome'],2);
 
         echo '<tr class="panel-title down-border">';
-        echo '<td style="text-align: left;">'.$in['in_outcome'].'<div style="font-size: 0.7em;">VERB @'.$in['in_verb_entity_id'].' CONNECTION @'.$in['in_scope_entity_id'].'</div></td>';
-        echo '<td style="text-align: left;">'.$in['in_outcome'].'<div style="font-size: 0.7em;">VERB @'.$in['in_verb_entity_id'].' CONNECTION @'.$in['in_scope_entity_id'].'</div></td>';
-        echo '<td style="text-align: left;"></td>';
-        echo '<td style="text-align: left;"></td>';
+        echo '<td style="text-align: left;"><a href="/intents/'.$in['in_id'].'">'.$in['in_outcome'].'</a></td>';
+        echo '<td style="text-align: left;">='.$in_parts[1].'</td>';
         echo '</tr>';
 
+        $this->Intents_model->in_update($in['in_id'], array(
+            'in_outcome' => '='.$in_parts[1],
+            'in_verb_entity_id' => 10569, //Equal sign
+            'in_scope_entity_id' => 7597, //Leaf
+        ), false, 1);
 
     }
 
@@ -483,7 +486,6 @@ if(!$action) {
     echo '<ul class="breadcrumb"><li><a href="/miner_app/admin_tools">Admin Tools</a></li><li><b>'.$moderation_tools['/miner_app/admin_tools/'.$action].'</b></li></ul>';
 
     //Would ensure intents have synced statuses:
-    $verbs_appended = 0;
     $count = 0;
     $fixed = 0;
     foreach($this->Intents_model->in_fetch() as $in){
@@ -491,41 +493,24 @@ if(!$action) {
         $count++;
 
         //Validate Intent Outcome:
-        $in_verb_entity_id = in_outcome_verb_id($in['in_outcome']);
+        $in_outcome_validation = $this->Intents_model->in_validate_outcome($in['in_outcome'], $in['in_scope_entity_id']);
+        if(!$in_outcome_validation['status']){
 
-        if($in_verb_entity_id > 0 && $in_verb_entity_id != $in['in_verb_entity_id']) {
+            echo '<div>Outcome validation error: '.$in_outcome_validation['message'].'</div>';
+
+        } elseif($in_outcome_validation['detected_in_verb_entity_id'] != $in['in_verb_entity_id']) {
 
             //Not a match, fix it:
             $fixed++;
             $this->Intents_model->in_update($in['in_id'], array(
-                'in_verb_entity_id' => $in_verb_entity_id,
+                'in_verb_entity_id' => $in_outcome_validation['detected_in_verb_entity_id'],
             ), true, $session_en['en_id']);
 
-        } elseif(!$in_verb_entity_id){
-
-            if(isset($_GET['append_verb'])){
-
-                $new_outcome = $_GET['append_verb'].' '.$in['in_outcome'];
-                $in_verb_entity_id_append = in_outcome_verb_id($new_outcome);
-
-                if($in_verb_entity_id_append > 0){
-                    $this->Intents_model->in_update($in['in_id'], array(
-                        'in_outcome' => $new_outcome,
-                        'in_verb_entity_id' => $in_verb_entity_id_append,
-                    ), true, $session_en['en_id']);
-                    $verbs_appended++;
-                } else {
-                    echo '<div>FAILED to Append: <a href="/intents/'.$in['in_id'].'">'.$in['in_outcome'].'</a></div>';
-                }
-
-            } else {
-                //Invalid intent verb:
-                echo '<div>Unknown Verb: <a href="/intents/'.$in['in_id'].'">'.$in['in_outcome'].'</a></div>';
-            }
         }
+
     }
 
-    echo '<div>'.$fixed.'/'.$count.' Intent verbs fixed'.( $verbs_appended > 0 ? ' & '.$verbs_appended.' verbs appended' : '' ).'</div>';
+    echo '<div>'.$fixed.'/'.$count.' Intent verbs fixed</div>';
 
 } elseif($action=='identical_intent_outcomes') {
 
