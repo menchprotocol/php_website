@@ -324,31 +324,6 @@ if(!$action) {
     }
     echo '</table>';
 
-} elseif($action=='sync_intents') {
-
-    echo '<table class="table table-condensed table-striped stats-table mini-stats-table">';
-
-    foreach($this->Intents_model->in_fetch(array(
-        'in_outcome LIKE \'% :: %\'' => null,
-    ), array(), ( isset($_GET['limit']) ? $_GET['limit'] : 1 )) as $in){
-
-        $in_parts = explode(' :: ',$in['in_outcome'],2);
-
-        echo '<tr class="panel-title down-border">';
-        echo '<td style="text-align: left;"><a href="/intents/'.$in['in_id'].'">'.$in['in_outcome'].'</a></td>';
-        echo '<td style="text-align: left;">='.$in_parts[1].'</td>';
-        echo '</tr>';
-
-        $this->Intents_model->in_update($in['in_id'], array(
-            'in_outcome' => '='.$in_parts[1],
-            'in_verb_entity_id' => 10569, //Equal sign
-            'in_scope_entity_id' => 7597, //Leaf
-        ), false, 1);
-
-    }
-
-    echo '</table>';
-
 } elseif($action=='in_replace_outcomes') {
 
 

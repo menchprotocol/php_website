@@ -1108,7 +1108,7 @@ class Intents_model extends CI_Model
 
             return array(
                 'status' => 0,
-                'message' => $en_all_7596[$in_scope_entity_id]['m_name'].' Intents cannot start with equal',
+                'message' => $en_all_7596[$in_scope_entity_id]['m_name'].' Intents must start with a verb',
             );
 
         } elseif(!$starts_with_equal && !$in_verb_entity_id) {
@@ -1116,6 +1116,13 @@ class Intents_model extends CI_Model
             return array(
                 'status' => 0,
                 'message' => 'Intent outcomes must start with a verb OR =',
+            );
+
+        } elseif(!$starts_with_equal && substr_count($in_outcome, '=')>0) {
+
+            return array(
+                'status' => 0,
+                'message' => 'Equal sign must be at the very beginning of the outcome',
             );
 
         }
