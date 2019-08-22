@@ -2220,7 +2220,7 @@ class Communication_model extends CI_Model
             $search_index = load_algolia('alg_index');
             $res = $search_index->search($master_command, [
                 'hitsPerPage' => 6, //Max results
-                'filters' => 'alg_obj_is_in=1 AND (alg_obj_scope = '.join(' OR alg_in_scope_entity_id = ', $this->config->item('en_ids_7582')).')', //Intent Scopes Get Started
+                'filters' => 'alg_obj_is_in=1 AND _tags:alg_for_users',
             ]);
             $search_results = $res['hits'];
 

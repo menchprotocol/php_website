@@ -54,18 +54,27 @@ $(document).ready(function () {
             window.location = "/entities/" + suggestion.alg_obj_id;
         }
 
-    }).autocomplete({hint: false, minLength: 2, autoselect: true, keyboardShortcuts: ['s']}, [
+    }).autocomplete({hint: false, minLength: 1, autoselect: true, keyboardShortcuts: ['s']}, [
         {
             source: function (q, cb) {
                 //Do not search if specific command:
-                if(($("#platform_search").val().charAt(0)=='#' || $("#platform_search").val().charAt(0)=='@') && !isNaN($("#platform_search").val().substr(1))){
+                if (($("#platform_search").val().charAt(0) == '#' || $("#platform_search").val().charAt(0) == '@') && !isNaN($("#platform_search").val().substr(1))) {
                     cb([]);
                     return;
                 } else {
+
                     //Append filters:
                     algolia_index.search(q, {
                         hitsPerPage: 14,
-                        filters: 'alg_obj_is_in ' + ( $("#platform_search").val().charAt(0)=='#' ? '=1' : ( $("#platform_search").val().charAt(0)=='@' ? '=0' : '>=0' ) ),
+                        filters:
+                            (js_advance_view_enabled ? '' : '(' +
+                                '(' +
+                                '    _tags:alg_author_' + js_user_id +
+                                ' OR _tags:alg_for_users' +
+                                ' OR _tags:alg_for_trainer' +
+                                ') AND ') +
+                            ' alg_obj_is_in' + ($("#platform_search").val().charAt(0) == '#' ? '=1' : ($("#platform_search").val().charAt(0) == '@' ? '=0' : '>=0'))
+                        ,
                     }, function (error, content) {
                         if (error) {
                             cb([]);
@@ -75,7 +84,7 @@ $(document).ready(function () {
                     });
                 }
             },
-            displayKey: function (suggestion) {
+            displayKey: function(suggestion) {
                 return ""
             },
             templates: {
@@ -235,11 +244,6 @@ jQuery.fn.extend({
     }
 });
 
-function load_edit(handler){
-    var position = $(handler).offset();
-    $('.edit-box').css('top', position.top).css('left', position.left).removeClass('hidden');
-}
-
 function ms_toggle(ln_id, new_state) {
 
     if (new_state < 0) {
@@ -281,6 +285,8 @@ function toggle_advance(basic_toggle){
     $.post("/links/toggle_advance", {}, function (data) {
         if(!data.status){
             alert('Error: ' + data.message);
+        } else {
+            js_advance_view_enabled = ( js_advance_view_enabled ? 0 : 1 );
         }
     });
 

@@ -55,7 +55,7 @@ function echo_js_suggestion(alg_obj, is_top, is_basic){
     if(is_basic){
         return obj_full_name;
     } else {
-        return '<span class="double-icon-search is-top-'+is_top+'"><span class="icon-main">' + alg_obj.alg_obj_icon + '</span><span class="icon-top-right">' + focus_field[alg_obj.alg_obj_status]["m_icon"] + '</span></span> ' + obj_full_name + alg_obj.alg_obj_postfix;
+        return '<span class="double-icon-search is-top-'+is_top+'"><span class="icon-main">' + alg_obj.alg_obj_icon + '</span><span class="icon-top-right">' + focus_field[alg_obj.alg_obj_status]["m_icon"] + '</span></span> ' + obj_full_name;
     }
 
 }
@@ -182,7 +182,7 @@ $(document).ready(function () {
                 //Append filters:
                 algolia_index.search(q, {
                     hitsPerPage: 7,
-                    filters: 'alg_obj_is_in=1 AND alg_obj_scope=7598 AND alg_obj_status=6184', //TODO replace hard-coded values with _10568 & _7355 cache values
+                    filters: 'alg_obj_is_in=1 AND _tags:alg_for_users', //TODO replace hard-coded values with _10568 cache values
                 }, function (error, content) {
                     if (error) {
                         cb([]);

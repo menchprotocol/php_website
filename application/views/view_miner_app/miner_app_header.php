@@ -9,17 +9,6 @@ $uri_segment_2 = $this->uri->segment(2);
 ?><!doctype html>
 <html lang="en">
 <head>
-    <!--
-
-    WELCOME TO MENCH SOURCE CODE!
-
-    INTERESTED IN BUILDING THE FUTURE OF EDUCATION?
-
-    CHECKOUT OUR GITHUB PROJECT PAGE FOR MORE INFO:
-
-    https://github.com/askmench
-
-    -->
     <meta charset="utf-8"/>
     <link rel="icon" type="image/png" href="/img/bp_white.png">
     <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1"/>
@@ -34,7 +23,7 @@ $uri_segment_2 = $this->uri->segment(2);
     <script src="/js/custom/platform-js.js?v=v<?= $this->config->item('app_version') ?>" type="text/javascript"></script>
 
     <!-- Author CSS to make certain fields visible IF user is the object creator -->
-    <?= ( isset($session_en['en_id']) && !$is_miner ? '<style>  .author_'.$session_en['en_id'].' { display:inline-block !important; } </style>' : '' ) ?>
+    <?= ( isset($session_en['en_id']) && !$is_miner ? '<style> .author_'.$session_en['en_id'].' { display:inline-block !important; } </style>' : '' ) ?>
 
 </head>
 
@@ -45,9 +34,6 @@ $uri_segment_2 = $this->uri->segment(2);
        'session_en' => $session_en,
     )); ?>
 
-    <!-- Managed by JS to edit various fields -->
-    <div class="edit-box hidden"></div>
-
     <div class="wrapper" id="platform">
 
         <?php if (!isset($_GET['skip_header'])) { ?>
@@ -55,12 +41,6 @@ $uri_segment_2 = $this->uri->segment(2);
                 <div class="container-fluid">
 
                     <div class="navbar-header">
-                        <button type="button" class="navbar-toggle" data-toggle="collapse">
-                            <span class="sr-only">Toggle navigation</span>
-                            <span class="icon-bar"></span>
-                            <span class="icon-bar"></span>
-                            <span class="icon-bar"></span>
-                        </button>
                         <span class="navbar-brand dashboard-logo">
                             <table style="width: 100%; border:0; padding:0; margin:0 0 0 0;">
                                 <tr>

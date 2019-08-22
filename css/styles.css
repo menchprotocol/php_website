@@ -3868,17 +3868,6 @@ h4 .tip-badge {
     color: #FF0000 !important;
 }
 
-.edit-box {
-    display: block;
-    position: absolute;
-    width: 280px;
-    height: 200px;
-    background-color: #EFEFEF;
-    z-index: 99999;
-    border-radius: 5px;
-    border: 1px solid #CCC;
-}
-
 .edit-header {
     max-width: 90%;
     overflow: hidden;

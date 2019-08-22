@@ -999,24 +999,36 @@ function update_algolia($input_obj_type = null, $input_obj_id = 0, $return_row_o
                 $export_row['alg_obj_id'] = intval($db_row['en_id']);
                 $export_row['alg_obj_weight'] = intval($db_row['en_trust_score']);
                 $export_row['alg_obj_status'] = intval($db_row['en_status_entity_id']);
-                $export_row['alg_obj_scope'] = 0; //Entities have no scope
                 $export_row['alg_obj_icon'] = echo_en_icon($db_row);
                 $export_row['alg_obj_name'] = $db_row['en_name'];
-                $export_row['alg_obj_postfix'] = ''; //Entities have no post-fix at this time
+
+                array_push($export_row['_tags'], 'alg_author_' . $db_row['en_id']);
 
                 //Add keywords:
+                $has_public_entity_parent = false;
                 $export_row['alg_obj_keywords'] = '';
                 foreach ($db_row['en__parents'] as $ln) {
 
                     //Always add to tags:
-                    array_push($export_row['_tags'], 'tag_en_parent_' . $ln['en_id']);
+                    array_push($export_row['_tags'], 'alg_author_' . $ln['en_id']);
+
+                    if(!$has_public_entity_parent && in_array($ln['en_id'], $CI->config->item('en_ids_10571'))){
+                        $has_public_entity_parent = true;
+                    }
 
                     //Add content to keywords if any:
                     if (strlen($ln['ln_content']) > 0) {
                         $export_row['alg_obj_keywords'] .= $ln['ln_content'] . ' ';
                     }
+
                 }
+
                 $export_row['alg_obj_keywords'] = trim(strip_tags($export_row['alg_obj_keywords']));
+
+
+                if($has_public_entity_parent && in_array(intval($db_row['en_status_entity_id']), $CI->config->item('en_ids_7357'))){ //Entity Statuses Public
+                    array_push($export_row['_tags'], 'alg_for_users');
+                }
 
             } elseif ($loop_obj == 'in') {
 
@@ -1028,10 +1040,9 @@ function update_algolia($input_obj_type = null, $input_obj_id = 0, $return_row_o
                 $export_row['alg_obj_id'] = intval($db_row['in_id']);
                 $export_row['alg_obj_weight'] = ( isset($metadata['in__metadata_max_seconds']) ? intval($metadata['in__metadata_max_seconds']) : 0 );
                 $export_row['alg_obj_status'] = intval($db_row['in_status_entity_id']);
-                $export_row['alg_obj_scope'] = intval($db_row['in_scope_entity_id']);
                 $export_row['alg_obj_icon'] = $en_all_7585[$db_row['in_type_entity_id']]['m_icon']; //Entity type icon
                 $export_row['alg_obj_name'] = $db_row['in_outcome'];
-                $export_row['alg_obj_postfix'] =  ( $time_range ? '<span class="alg-postfix"><i class="fal fa-clock"></i>' . $time_range . '</span>' : '');
+
 
                 //Add keywords:
                 $export_row['alg_obj_keywords'] = '';
@@ -1039,6 +1050,25 @@ function update_algolia($input_obj_type = null, $input_obj_id = 0, $return_row_o
                     $export_row['alg_obj_keywords'] .= $ln['ln_content'] . ' ';
                 }
                 $export_row['alg_obj_keywords'] = trim(strip_tags($export_row['alg_obj_keywords']));
+
+
+                //Add authors:
+                foreach($CI->Links_model->ln_fetch(array(
+                    'ln_status_entity_id IN (' . join(',', $CI->config->item('en_ids_7359')) . ')' => null, //Link Statuses Public
+                    'ln_type_entity_id' => 4983, //Intent Note Author
+                    'ln_child_intent_id' => $db_row['in_id'],
+                    'ln_parent_entity_id >' => 0, //Where the author entity is stored
+                ), array(), 0) as $author){
+                    array_push($export_row['_tags'], 'alg_author_' . $author['ln_parent_entity_id']);
+                }
+
+
+                //If Public Status:
+                if(in_array(intval($db_row['in_status_entity_id']), $CI->config->item('en_ids_7355')) && in_array(intval($db_row['in_scope_entity_id']), $CI->config->item('en_ids_7582'))){
+                    array_push($export_row['_tags'], 'alg_for_users');
+                } elseif(in_array(intval($db_row['in_scope_entity_id']), $CI->config->item('en_ids_7767'))){
+                    array_push($export_row['_tags'], 'alg_for_trainer');
+                }
 
             }
 

@@ -71,7 +71,7 @@ function load_filters(){
 
         source: function (q, cb) {
             algolia_index.search(q, {
-                filters: 'tag_en_parent_4430', //Entities belonging to Mench Users
+                filters: '_tags:alg_author_4430', //Entities belonging to Mench Users
                 hitsPerPage: 7,
             }, function (error, content) {
                 if (error) {
@@ -96,7 +96,84 @@ function load_filters(){
 
 }
 
+
+function copyToClipboard(elem) {
+    // create hidden text element, if it doesn't already exist
+    var targetId = "_hiddenCopyText_";
+    var isInput = elem.tagName === "INPUT" || elem.tagName === "TEXTAREA";
+    var origSelectionStart, origSelectionEnd;
+    if (isInput) {
+        // can just use the original source element for the selection and copy
+        target = elem;
+        origSelectionStart = elem.selectionStart;
+        origSelectionEnd = elem.selectionEnd;
+    } else {
+        // must use a temporary form element for the selection and copy
+        target = document.getElementById(targetId);
+        if (!target) {
+            var target = document.createElement("textarea");
+            target.style.position = "absolute";
+            target.style.left = "-9999px";
+            target.style.top = "0";
+            target.id = targetId;
+            document.body.appendChild(target);
+        }
+        target.textContent = elem.textContent;
+    }
+    // select the content
+    var currentFocus = document.activeElement;
+    target.focus();
+    target.setSelectionRange(0, target.value.length);
+
+    // copy the selection
+    var succeed;
+    try {
+        succeed = document.execCommand("copy");
+    } catch(e) {
+        succeed = false;
+    }
+    // restore original focus
+    if (currentFocus && typeof currentFocus.focus === "function") {
+        currentFocus.focus();
+    }
+
+    if (isInput) {
+        // restore prior selection
+        elem.setSelectionRange(origSelectionStart, origSelectionEnd);
+    } else {
+        // clear temporary content
+        target.textContent = "";
+    }
+
+    if(succeed){
+        $('#landing_page_url').blur();
+        $('#landing_page_state').html('&nbsp;&nbsp;&nbsp;COPIED').hide().fadeIn();
+        setTimeout(function () {
+
+            //Hide the editor & saving results:
+            $('#landing_page_state').fadeOut();
+
+        }, 1500)
+
+    }
+
+    return succeed;
+}
+
+
 $(document).ready(function () {
+
+
+    $('#landing_page_url').click(function (e) {
+        copyToClipboard(document.getElementById("landing_page_url"));
+    });
+
+
+    $('#expand_intents .expand_all').click(function (e) {
+        $(".list-is-children .is_level2_sortable").each(function () {
+            ms_toggle($(this).attr('in-link-id'), 1);
+        });
+    });
 
     //Load top/bottom intent searches:
     in_load_search(".intentadder-level-2-parent",1, 2, 'q');

@@ -26,7 +26,7 @@ $en_all_7369 = $this->config->item('en_all_7369');
         } else {
 
             //Parent intents:
-            echo '<h5 class="badge badge-h"><span class="li-parent-count parent-counter-' . $in['in_id'] . '">' . count($in['in__parents']) . '</span> Parent' . echo__s(count($in['in__parents'])) . '</h5>';
+            echo '<h5 class="badge badge-h '.( !count($in['in__parents']) ? advance_mode() : '' ).'"><span class="li-parent-count parent-counter-' . $in['in_id'] . '">' . count($in['in__parents']) . '</span> Parent' . echo__s(count($in['in__parents'])) . '</h5>';
             echo '<div id="list-in-' . $in['in_id'] . '-1" class="list-group list-level-2">';
 
             //List current parent intents:
@@ -56,7 +56,7 @@ $en_all_7369 = $this->config->item('en_all_7369');
                 //Focus intent:
             echo '<h5 class="badge badge-h indent1 inline-block">Intent #'.$in['in_id'].'</h5>';
 
-            echo '<h5 class="badge badge-h indent1 inline-block">'.$en_all_7369[7765]['m_icon'].' <input type="url" value="'. $this->config->item('base_url') . $in['in_id'] .'" style="padding:0; margin:-2px 0; background-color:transparent; border:0; color:#FFF;" /><a href="/' . $in['in_id'] . '" target="_blank" style="margin-left:7px; color:#FFF !important;" data-toggle="tooltip" title="'.$en_all_7369[7765]['m_name'].'" data-placement="bottom"><i class="far fa-external-link"></i></a></h5>';
+            echo '<h5 class="badge badge-h indent1 inline-block">'.$en_all_7369[7765]['m_icon'].' <input id="landing_page_url" type="url" value="'. $this->config->item('base_url') . $in['in_id'] .'" style="padding:0; margin:-2px 0; background-color:transparent; border:0; color:#FFF;" /><a href="/' . $in['in_id'] . '" target="_blank" style="margin-left:7px; color:#FFF !important;" data-toggle="tooltip" title="'.$en_all_7369[7765]['m_name'].'" data-placement="bottom"><i class="fas fa-external-link"></i></a><span id="landing_page_state"></span></h5>';
 
             //Hidden Links for Miners:
             if($is_miner){

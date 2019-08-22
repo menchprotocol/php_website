@@ -1964,6 +1964,17 @@ function echo_in($in, $level, $in_linked_id = 0, $is_parent = false)
     $in_metadata = unserialize($in['in_metadata']);
 
 
+    if ($level == 2 && !isset($in['in__grandchildren'])) {
+        //Fetch children if parent, since there are no children fetched:
+        $in['in__grandchildren'] = $CI->Links_model->ln_fetch(array(
+            'ln_status_entity_id IN (' . join(',', $CI->config->item('en_ids_7360')) . ')' => null, //Link Statuses Active
+            'in_status_entity_id IN (' . join(',', $CI->config->item('en_ids_7356')) . ')' => null, //Intent Statuses Active
+            'ln_type_entity_id IN (' . join(',', $CI->config->item('en_ids_4486')) . ')' => null, //Intent Link Connectors
+            'ln_parent_intent_id' => $in['in_id'],
+        ), array('in_child'), 0, 0, array('ln_order' => 'ASC')); //Child intents must be ordered
+    }
+
+
     if ($level <= 1) {
 
         //No Link for level 1 intent:
@@ -2025,9 +2036,8 @@ function echo_in($in, $level, $in_linked_id = 0, $is_parent = false)
 
 
 
-
     //Always Show Intent Icon
-    $ui .= '<span class="double-icon" style="margin-right:5px;">';
+    $ui .= '<span class="double-icon" style="margin-right:9px;">';
 
 
     //Show larger intent type icon:
@@ -2049,17 +2059,17 @@ function echo_in($in, $level, $in_linked_id = 0, $is_parent = false)
     //Intent UI based on level:
     if ($level <= 1) {
 
-        $ui .= '<span><b id="in_level1_outcome" style="font-size: 1.4em; padding-left: 5px;">';
+        $ui .= '<span><b id="in_level1_outcome" style="font-size: 1.4em;">';
         $ui .= '<span class="in_outcome_' . $in['in_id'] . '">' . echo_in_outcome($in['in_outcome'], false, true) . '</span>';
         $ui .= '</b></span>';
 
     } elseif ($level == 2) {
 
-        $ui .= '<span>&nbsp;<i id="handle-' . $ln_id . '" class="fal click_expand fa-plus-circle"></i> <span id="title_' . $ln_id . '" style="font-weight: 500;" class="cdr_crnt click_expand tree_title in_outcome_' . $in['in_id'] . '">' . echo_in_outcome($in['in_outcome'], false, true) . '</span></span>';
+        $ui .= '<span id="title_' . $ln_id . '" style="font-weight: 500;" class="cdr_crnt click_expand tree_title in_outcome_' . $in['in_id'] . '">' . echo_in_outcome($in['in_outcome'], false, true) . '</span>';
 
     } elseif ($level == 3) {
 
-        $ui .= '<span id="title_' . $ln_id . '" class="tree_title in_outcome_' . $in['in_id'] . '" style="padding-left:25px;">' .echo_in_outcome($in['in_outcome'], false, true) . '</span> ';
+        $ui .= '<span id="title_' . $ln_id . '" class="tree_title in_outcome_' . $in['in_id'] . '">' .echo_in_outcome($in['in_outcome'], false, true) . '</span> ';
 
         //Is this the focused item in the parent sibling dropdown?
         if($is_child_focused){
@@ -2243,20 +2253,6 @@ function echo_in($in, $level, $in_linked_id = 0, $is_parent = false)
      *
      * */
     if ($level == 2) {
-
-        //Fetch children if parent, since there are no children fetched:
-        if(!isset($in['in__grandchildren'])){
-
-            $in['in__grandchildren'] = $CI->Links_model->ln_fetch(array(
-                'ln_status_entity_id IN (' . join(',', $CI->config->item('en_ids_7360')) . ')' => null, //Link Statuses Active
-                'in_status_entity_id IN (' . join(',', $CI->config->item('en_ids_7356')) . ')' => null, //Intent Statuses Active
-                'ln_type_entity_id IN (' . join(',', $CI->config->item('en_ids_4486')) . ')' => null, //Intent Link Connectors
-                'ln_parent_intent_id' => $in['in_id'],
-            ), array('in_child'), 0, 0, array('ln_order' => 'ASC')); //Child intents must be ordered
-
-        }
-
-
 
         $ui .= '<div id="list-cr-' . $ln_id . '" class="list-group step-group link-class--' . $ln_id . ' hidden" intent-id="' . $in['in_id'] . '">';
 
@@ -2445,7 +2441,7 @@ function echo_en($en, $level, $is_parent = false)
     //Parent entities:
     $ui .= '<span class="' . advance_mode() . '">';
     foreach ($en['en__parents'] as $en_parent) {
-        $ui .= '<span class="parent-icon en_child_icon_' . $en_parent['en_id'] . '"><a href="/entities/' . $en_parent['en_id'] . '" data-toggle="tooltip" title="' . $en_parent['en_name'] . (strlen($en_parent['ln_content']) > 0 ? ' = ' . $en_parent['ln_content'] : '') . '" data-placement="bottom">' . echo_en_icon($en_parent) . '</a> &nbsp;</span>';
+        $ui .= '<span class="parent-icon en_child_icon_' . $en_parent['en_id'] . '"><a href="/entities/' . $en_parent['en_id'] . '" data-toggle="tooltip" title="' . $en_parent['en_name'] . (strlen($en_parent['ln_content']) > 0 ? ' = ' . $en_parent['ln_content'] : '') . '" data-placement="bottom">' . echo_en_icon($en_parent) . '</a></span> &nbsp;';
     }
     $ui .= '</span>';
 
