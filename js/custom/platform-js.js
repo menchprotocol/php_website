@@ -67,7 +67,7 @@ $(document).ready(function () {
                     algolia_index.search(q, {
                         hitsPerPage: 14,
                         filters:
-                            (js_advance_view_enabled ? '' : '(' +
+                            ( js_advance_view_enabled ? '' :
                                 '(' +
                                 '    _tags:alg_author_' + js_user_id +
                                 ' OR _tags:alg_for_users' +

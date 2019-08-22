@@ -1012,6 +1012,7 @@ function update_algolia($input_obj_type = null, $input_obj_id = 0, $return_row_o
                     //Always add to tags:
                     array_push($export_row['_tags'], 'alg_author_' . $ln['en_id']);
 
+
                     if(!$has_public_entity_parent && in_array($ln['en_id'], $CI->config->item('en_ids_10571'))){
                         $has_public_entity_parent = true;
                     }
@@ -1053,13 +1054,15 @@ function update_algolia($input_obj_type = null, $input_obj_id = 0, $return_row_o
 
 
                 //Add authors:
-                foreach($CI->Links_model->ln_fetch(array(
-                    'ln_status_entity_id IN (' . join(',', $CI->config->item('en_ids_7359')) . ')' => null, //Link Statuses Public
-                    'ln_type_entity_id' => 4983, //Intent Note Author
-                    'ln_child_intent_id' => $db_row['in_id'],
-                    'ln_parent_entity_id >' => 0, //Where the author entity is stored
-                ), array(), 0) as $author){
-                    array_push($export_row['_tags'], 'alg_author_' . $author['ln_parent_entity_id']);
+                if(in_array(intval($db_row['in_scope_entity_id']), $CI->config->item('en_ids_7767'))){
+                    foreach($CI->Links_model->ln_fetch(array(
+                        'ln_status_entity_id IN (' . join(',', $CI->config->item('en_ids_7359')) . ')' => null, //Link Statuses Public
+                        'ln_type_entity_id' => 4983, //Intent Note Author
+                        'ln_child_intent_id' => $db_row['in_id'],
+                        'ln_parent_entity_id >' => 0, //Where the author entity is stored
+                    ), array(), 0) as $author){
+                        array_push($export_row['_tags'], 'alg_author_' . $author['ln_parent_entity_id']);
+                    }
                 }
 
 
