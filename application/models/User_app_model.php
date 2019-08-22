@@ -52,7 +52,7 @@ class User_app_model extends CI_Model
         } elseif ($is_trainer) {
 
             //They have admin rights:
-            $session_data['user_default_intent'] = $this->config->item('in_focus_id');
+            $session_data['user_default_intent'] = ( substr($is_trainer['ln_content'],0,1)=='#' ? substr($is_trainer['ln_content'],1) : $this->config->item('in_focus_id') );
             $session_data['user_session_count'] = 0;
             $session_data['advance_view_enabled'] = 0;
 
