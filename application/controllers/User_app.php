@@ -138,7 +138,7 @@ class User_app extends CI_Controller
 
 
         //Assign session & log link:
-        $this->User_app_model->user_activate_session($ens[0], $is_miner);
+        $this->User_app_model->user_activate_session($ens[0]);
 
 
 
@@ -229,7 +229,7 @@ class User_app extends CI_Controller
             //Validate user:
             $ens = $this->Entities_model->en_fetch(array(
                 'en_id' => $validate_links[0]['ln_creator_entity_id'],
-            ));
+            ), array('skip_en__parents'));
             if(count($ens) < 1){
                 return echo_json(array(
                     'status' => 0,
@@ -286,8 +286,8 @@ class User_app extends CI_Controller
 
 
             //Log them in:
+            $ens[0] = $this->User_app_model->user_activate_session($ens[0]);
             $is_miner = filter_array($ens[0]['en__parents'], 'en_id', 1308); //Mench Miners
-            $this->User_app_model->user_activate_session($ens[0], $is_miner);
 
             //Their next intent in line:
             return echo_json(array(
@@ -458,7 +458,7 @@ class User_app extends CI_Controller
         ));
 
         //Assign session & log login link:
-        $this->User_app_model->user_activate_session($user_en['en'], false);
+        $this->User_app_model->user_activate_session($user_en['en']);
 
 
         if (strlen($_POST['referrer_url']) > 0) {
@@ -583,11 +583,14 @@ class User_app extends CI_Controller
         }
 
         //Log them in:
+        $ens[0] = $this->User_app_model->user_activate_session($ens[0]);
+
+        //Redirect based on permissions:
         $is_miner = filter_array($ens[0]['en__parents'], 'en_id', 1308); //Mench Miners
-        $this->User_app_model->user_activate_session($ens[0], $is_miner);
+        $is_trainer = filter_array($ens[0]['en__parents'], 'en_id', 7512); //Mench Trainers
 
         //Take them to next step:
-        return redirect_message(( $is_miner ? '/dashboard' : '/actionplan/next' ));
+        return redirect_message(( $is_miner || $is_trainer ? '/dashboard' : '/actionplan/next' ));
     }
 
     function singin_check_email(){

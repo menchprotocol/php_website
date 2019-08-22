@@ -11,7 +11,7 @@ defined('BASEPATH') OR exit('No direct script access allowed');
  *
  */
 
-//Generated 2019-08-21 22:20:19 PST
+//Generated 2019-08-21 23:05:49 PST
 
 //Public Entities:
 $config['en_ids_10571'] = array(2997,4446,2999,3005,4763,3147,4883,3192,3000,5948,2998,4433,3084,1281,1308,7512);
@@ -110,7 +110,7 @@ $config['en_all_10571'] = array(
         'm_icon' => '<i class="fas fa-user-edit"></i>',
         'm_name' => 'Mench Trainers',
         'm_desc' => '',
-        'm_parents' => array(10571,4985,6827),
+        'm_parents' => array(7798,10571,4985,6827),
     ),
 );
 
@@ -522,13 +522,19 @@ $config['en_all_7799'] = array(
 );
 
 //Leaderboard User Groups:
-$config['en_ids_7798'] = array(1308,4430);
+$config['en_ids_7798'] = array(1308,7512,4430);
 $config['en_all_7798'] = array(
     1308 => array(
         'm_icon' => '<i class="fas fa-user-hard-hat"></i>',
         'm_name' => 'Miners',
         'm_desc' => '',
         'm_parents' => array(10571,7798,7368,6827,4463,4426),
+    ),
+    7512 => array(
+        'm_icon' => '<i class="fas fa-user-edit"></i>',
+        'm_name' => 'Trainers',
+        'm_desc' => '',
+        'm_parents' => array(7798,10571,4985,6827),
     ),
     4430 => array(
         'm_icon' => '<i class="fas fa-user"></i>',
@@ -2350,7 +2356,7 @@ $config['en_all_6827'] = array(
         'm_icon' => '<i class="fas fa-user-edit"></i>',
         'm_name' => 'Trainers',
         'm_desc' => 'Those training Mench on intents and messages only. Trainers are junior miners who get to access a limited version of the Mench mining app',
-        'm_parents' => array(10571,4985,6827),
+        'm_parents' => array(7798,10571,4985,6827),
     ),
     4430 => array(
         'm_icon' => '<i class="fas fa-user"></i>',

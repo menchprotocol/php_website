@@ -233,7 +233,7 @@ class Intents extends CI_Controller
 
         if($in_id == 0){
             //Set to default:
-            $in_id = $this->config->item('in_focus_id');
+            $in_id = $this->session->userdata('user_session_count');
         }
 
         //Authenticate Miner:
@@ -246,7 +246,7 @@ class Intents extends CI_Controller
         ), array('in__parents','in__grandchildren'));
         //Make sure we found it:
         if ( count($ins) < 1) {
-            return redirect_message('/intents/' . $this->config->item('in_focus_id'), '<div class="alert alert-danger" role="alert">Intent #' . $in_id . ' not found</div>');
+            return redirect_message('/intents/' . $this->session->userdata('user_session_count'), '<div class="alert alert-danger" role="alert">Intent #' . $in_id . ' not found</div>');
         }
 
         //Update session count and log link:
@@ -831,7 +831,7 @@ class Intents extends CI_Controller
                                 $remove_redirect_url = '/intents/' . $in_current['in__parents'][0]['in_id'];
                             } else {
                                 //No parents, redirect to default intent:
-                                $remove_redirect_url = '/intents/' . $this->config->item('in_focus_id');
+                                $remove_redirect_url = '/intents/' . $this->session->userdata('user_session_count');
                             }
                         }
 

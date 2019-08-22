@@ -311,38 +311,13 @@ class Miner_app extends CI_Controller
         }
 
 
-
-
         //Now see what type of report they want:
         if($user_group_en_id==1308 /* Miners */){
 
             //Miners:
             $filters = array(
-                'ln_credits >' => 0,
+                'ln_creator_entity_id IN ('.join(',', $miners_en_ids).')' => null,
             );
-            $filters['ln_creator_entity_id IN ('.join(',', $miners_en_ids).')'] = null;
-            if($days_ago){
-                $start_date = date("Y-m-d" , (time() - ($days_ago * 24 * 3600)));
-                $filters['ln_timestamp >='] = $start_date.' 00:00:00'; //From beginning of the day
-            }
-
-            $show_max_users = $this->Links_model->ln_fetch($filters, array('en_miner'), $show_max, 0, array('credits_sum' => 'DESC'), 'COUNT(ln_creator_entity_id) as links_count, SUM(ln_credits) as credits_sum, en_name, en_icon, ln_creator_entity_id', 'ln_creator_entity_id, en_name, en_icon');
-
-            if(count($show_max_users) < $show_max){
-                $show_max = count($show_max_users);
-            }
-
-
-            foreach ($show_max_users as $count=>$ln) {
-                echo '<tr>';
-
-                echo '<td style="text-align: left;"><span class="parent-icon" style="width: 29px; display: inline-block; text-align: center;">'.echo_en_icon($ln).'</span><a href="/entities/'.$ln['ln_creator_entity_id'].'">'.one_two_explode('',' ', $ln['en_name']).'</a> '.echo_rank($count+1).'</td>';
-
-                echo '<td style="text-align: right;"><a href="/links?ln_creator_entity_id='.$ln['ln_creator_entity_id'].( !$days_ago ? '' : '&start_range='.$start_date ).'">'.number_format($ln['credits_sum'], 0).'</a><i class="fal fa-info-circle icon-block" data-toggle="tooltip" title="'.$ln['en_name'].' credits for '.number_format($ln['links_count'],0).' links averaging '.round(($ln['credits_sum']/$ln['links_count']),1).' credits/link" data-placement="top"></i></td>';
-
-                echo '</tr>';
-
-            }
 
         } else {
 
@@ -360,45 +335,41 @@ class Miner_app extends CI_Controller
 
             if($user_group_en_id==7512 /* Trainers */){
 
-                //Trainers:
-                $filters['ln_creator_entity_id NOT IN ('.join(',', $miners_en_ids).')'] = null;
-                $filters['ln_creator_entity_id IN ('.join(',', $miners_en_ids).')'] = null;
-
+                $filters = array(
+                    'ln_creator_entity_id IN ('.join(',', $trainers_en_ids).')' => null,
+                );
 
             } elseif($user_group_en_id==4430 /* Users */) {
 
-                //Users:
-                //Top Users:
-                $show_max = 10;
                 $filters = array(
+                    'ln_creator_entity_id NOT IN ('.join(',', array_merge($miners_en_ids, $trainers_en_ids)).')' => null,
                     'ln_creator_entity_id >' => 0, //Must have a miner
-                    'ln_creator_entity_id NOT IN ('.join(',', $miners_en_ids).')' => null,
                 );
-                if($days_ago){
-                    $start_date = date("Y-m-d" , (time() - ($days_ago * 24 * 3600)));
-                    $filters['ln_timestamp >='] = $start_date.' 00:00:00'; //From beginning of the day
-                }
-                $show_max_users = $this->Links_model->ln_fetch($filters, array('en_miner'), $show_max, 0, array('credits_sum' => 'DESC'), 'COUNT(ln_creator_entity_id) as links_count, SUM(ln_credits) as credits_sum, en_name, en_icon, ln_creator_entity_id', 'ln_creator_entity_id, en_name, en_icon');
-
-                if(count($show_max_users) < $show_max){
-                    $show_max = count($show_max_users);
-                }
-
-                foreach ($show_max_users as $count=>$ln) {
-
-                    echo '<tr>';
-                    echo '<td style="text-align: left;"><span class="parent-icon icon-block">'.echo_en_icon($ln).'</span><a href="/entities/'.$ln['ln_creator_entity_id'].'">'.one_two_explode('',' ',$ln['en_name']).'</a> '.echo_rank($count+1).'</td>';
-                    echo '<td style="text-align: right;"><a href="/links?ln_creator_entity_id='.$ln['ln_creator_entity_id'].( !$days_ago ? '' : '&start_range='.$start_date ).'">'.number_format($ln['credits_sum'], 0).'</a><i class="fal fa-info-circle icon-block" data-toggle="tooltip" title="'.$ln['en_name'].' credits for '.number_format($ln['links_count'],0).' links averaging '.round(($ln['credits_sum']/$ln['links_count']),1).' credits/link" data-placement="top"></i></td>';
-                    echo '</tr>';
-
-                }
-
-            } else {
-
-                //Unknown?!
-
 
             }
+        }
+
+
+        //Do we have a date filter?
+        if($days_ago){
+            $start_date = date("Y-m-d" , (time() - ($days_ago * 24 * 3600)));
+            $filters['ln_timestamp >='] = $start_date.' 00:00:00'; //From beginning of the day
+        }
+
+
+        //Fetch leaderboard:
+        $leaderboard_ens = $this->Links_model->ln_fetch($filters, array('en_miner'), $show_max, 0, array('credits_sum' => 'DESC'), 'COUNT(ln_creator_entity_id) as links_count, SUM(ln_credits) as credits_sum, en_name, en_icon, ln_creator_entity_id', 'ln_creator_entity_id, en_name, en_icon');
+
+        if(count($leaderboard_ens) > 0){
+            foreach ($leaderboard_ens as $count=>$ln) {
+                echo '<tr>';
+                echo '<td style="text-align: left;"><span class="parent-icon icon-block">'.echo_en_icon($ln).'</span><a href="/entities/'.$ln['ln_creator_entity_id'].'">'.one_two_explode('',' ',$ln['en_name']).'</a> '.echo_rank($count+1).'</td>';
+                echo '<td style="text-align: right;"><a href="/links?ln_creator_entity_id='.$ln['ln_creator_entity_id'].( !$days_ago ? '' : '&start_range='.$start_date ).'">'.number_format($ln['credits_sum'], 0).'</a><i class="fal fa-info-circle icon-block" data-toggle="tooltip" title="'.$ln['en_name'].' credits for '.number_format($ln['links_count'],0).' links averaging '.round(($ln['credits_sum']/$ln['links_count']),1).' credits/link" data-placement="top"></i></td>';
+                echo '</tr>';
+
+            }
+        } else {
+            echo '<tr><td colspan="2"><div class="alert alert-warning"><i class="fas fa-exclamation-triangle"></i> Nobody here yet...</div></td></tr>';
         }
     }
 

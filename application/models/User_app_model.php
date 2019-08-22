@@ -17,16 +17,20 @@ class User_app_model extends CI_Model
 
 
 
-    function user_activate_session($en, $is_miner){
+    function user_activate_session($en){
 
-        //Fetch parent data if missing:
-        if(!isset($en['en__parents']) || count($en['en__parents']) < 1){
-            //Fetch full data:
-            $ens = $this->Entities_model->en_fetch(array(
-                'en_id' => $en['en_id'],
-            ));
-            $en = $ens[0];
-        }
+        //Set parents to published only:
+        $en['en__parents'] = $this->Links_model->ln_fetch(array(
+            'ln_type_entity_id IN (' . join(',', $this->config->item('en_ids_4592')) . ')' => null, //Entity Link Connectors
+            'ln_child_entity_id' => $en['en_id'], //This child entity
+            'ln_parent_entity_id IN (' . join(',', $this->config->item('en_ids_7798')) . ')' => null, //Leaderboard User Groups
+            'ln_status_entity_id IN (' . join(',', $this->config->item('en_ids_7359')) . ')' => null, //Link Statuses Public
+            'en_status_entity_id IN (' . join(',', $this->config->item('en_ids_7357')) . ')' => null, //Entity Statuses Public
+        ));
+
+        $is_user = filter_array($en['en__parents'], 'ln_parent_entity_id', 4430);
+        $is_trainer = filter_array($en['en__parents'], 'ln_parent_entity_id', 7512);
+        $is_miner = filter_array($en['en__parents'], 'ln_parent_entity_id', 1308);
 
         //Assign user details:
         $session_data['user'] = $en;
@@ -46,6 +50,13 @@ class User_app_model extends CI_Model
             $session_data['user_session_count'] = 0;
             $session_data['advance_view_enabled'] = ( count($last_advance_settings) > 0 && substr_count($last_advance_settings[0]['ln_content'] , ' ON')==1 ? 1 : 0 );
 
+        } elseif ($is_trainer) {
+
+            //They have admin rights:
+            $session_data['user_default_intent'] = $this->config->item('in_focus_id');
+            $session_data['user_session_count'] = 0;
+            $session_data['advance_view_enabled'] = 0;
+
         }
 
         //Log Sign In Link:
@@ -55,8 +66,10 @@ class User_app_model extends CI_Model
         ));
 
         //All good to go!
-        //Load session and redirect:
-        return $this->session->set_userdata($session_data);
+        $this->session->set_userdata($session_data);
+
+        //Return user data:
+        return $en;
 
     }
 
