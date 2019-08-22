@@ -884,30 +884,6 @@ class Communication_model extends CI_Model
                     );
                 }
 
-                //Check up-voting restrictions:
-                if($is_being_modified){
-
-                    //Entity reference must be either the miner themselves or an expert source:
-                    $session_en = en_auth(array(1308)); //Is miners
-                    if($string_references['ref_entities'][0] != $session_en['en_id']){
-
-                        //Reference is not the logged-in miner, let's check to make sure it's an expert source
-                        $is_expert_sources = $this->Links_model->ln_fetch(array(
-                            'ln_status_entity_id IN (' . join(',', $this->config->item('en_ids_7360')) . ')' => null, //Link Statuses Active
-                            'ln_child_entity_id' => $string_references['ref_entities'][0],
-                            'ln_parent_entity_id IN ('.join(',' , $this->config->item('en_ids_3000')).')' => null, //Intent Supported Verbs
-                            'ln_type_entity_id IN (' . join(',', $this->config->item('en_ids_4592')) . ')' => null, //Entity Link Connectors
-                        ));
-
-                        if(count($is_expert_sources) < 1){
-                            return array(
-                                'status' => 0,
-                                'message' => 'Voter entity must be either you OR an expert source entity belonging to @3000',
-                            );
-                        }
-                    }
-                }
-
 
                 //Note that currently intent references are not displayed on the landing page (Only Messages are) OR messenger format
 
