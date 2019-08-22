@@ -122,7 +122,7 @@ class User_app extends CI_Controller
 
 
         //Applicable for anyone using the Mench mining app:
-        if (!$is_chrome && $is_miner) {
+        if (!$is_chrome && ($is_miner || $is_trainer)) {
 
             $this->Links_model->ln_create(array(
                 'ln_content' => 'User failed to login using non-Chrome browser',
@@ -132,7 +132,7 @@ class User_app extends CI_Controller
 
             return echo_json(array(
                 'status' => 0,
-                'message' => 'Mench Miner App only support Google Chrome web browser.',
+                'message' => 'Mench mining app currently works with Google Chrome only',
             ));
 
         }
