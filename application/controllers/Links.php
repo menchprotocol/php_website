@@ -208,10 +208,10 @@ class Links extends CI_Controller
                 'status' => 0,
                 'message' => 'Invalid Link ID',
             ));
-        } elseif(in_array($lns[0]['ln_type_entity_id'] , $this->config->item('en_ids_4755')) /* Link Type is locked */ && !en_auth(array(1281)) /* Viewer NOT a moderator */){
+        } elseif(in_array($lns[0]['ln_type_entity_id'] , $this->config->item('en_ids_4755')) /* Link Type is locked */ && !en_auth(array(1308)) /* Viewer NOT a miner */){
             return echo_json(array(
                 'status' => 0,
-                'message' => 'Link content visible to moderators only',
+                'message' => 'Link content visible to miners only',
             ));
         } elseif(!en_auth(array(1308)) /* Viewer NOT a miner */) {
             return echo_json(array(

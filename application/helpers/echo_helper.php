@@ -547,7 +547,7 @@ function echo_ln($ln, $is_inner = false)
         );
     }
 
-    $hide_sensitive_details = (in_array($ln['ln_type_entity_id'] , $CI->config->item('en_ids_4755')) /* Link Type is locked */ && !en_auth(array(1281)) /* Viewer NOT a moderator */);
+    $hide_sensitive_details = (in_array($ln['ln_type_entity_id'] , $CI->config->item('en_ids_4755')) /* Link Type is locked */ && !en_auth(array(1308)) /* Viewer NOT a miner */);
 
 
 
@@ -2340,8 +2340,8 @@ function echo_en($en, $level, $is_parent = false)
 
         //Show link index
         if($en['ln_external_id'] > 0){
-            if(en_auth(array(1281)) && $en['ln_parent_entity_id']==6196){
-                //Give Moderators the ability to ping Messenger profiles:
+            if(en_auth(array(1308)) && $en['ln_parent_entity_id']==6196){
+                //Give miners the ability to ping Messenger profiles:
                 $ui .= '<span class="icon-top-left" data-toggle="tooltip" data-placement="right" title="Link External ID = '.$en['ln_external_id'].' [Messenger Profile]"><a href="/messenger/messenger_fetch_profile/'.$en['ln_external_id'].'" target="_blank"><i class="fas fa-project-diagram"></i></a></span>';
             } else {
                 $ui .= '<span class="icon-top-left" data-toggle="tooltip" data-placement="right" title="Link External ID = '.$en['ln_external_id'].'"><i class="fas fa-project-diagram"></i></span>';

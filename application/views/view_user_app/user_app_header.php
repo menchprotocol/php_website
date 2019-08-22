@@ -2,7 +2,6 @@
 //Attempt to fetch session variables:
 $session_en = $this->session->userdata('user');
 $is_logged = isset($session_en['en_id']);
-$is_miner = en_auth(array(1308));
 $en_all_7369 = $this->config->item('en_all_7369');
 $url_part_1 = $this->uri->segment(1);
 ?><!doctype html>
@@ -63,7 +62,7 @@ $url_part_1 = $this->uri->segment(1);
                     );
 
                     //If miner give access back to platform:
-                    if($is_miner){
+                    if(en_auth(array(1308,7512))){
                         $en_all_7372 = $this->config->item('en_all_7372');
                         array_push($navigation, array(
                             'uri_segment_1' => 'dashboard',

@@ -57,7 +57,7 @@ class Messenger extends CI_Controller
     {
 
         //Only moderators can do this at this time:
-        $session_en = en_auth(array(1281));
+        $session_en = en_auth(array(1308));
         if (!$session_en) {
             return echo_json(array(
                 'status' => 0,

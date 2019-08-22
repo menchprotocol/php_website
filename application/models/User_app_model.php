@@ -25,7 +25,7 @@ class User_app_model extends CI_Model
             'ln_child_entity_id' => $en['en_id'], //This child entity
             'ln_parent_entity_id IN (' . join(',', $this->config->item('en_ids_7798')) . ')' => null, //Leaderboard User Groups
             'ln_status_entity_id IN (' . join(',', $this->config->item('en_ids_7359')) . ')' => null, //Link Statuses Public
-        ));
+        ), array('en_parent'));
 
         $is_user = filter_array($en['en__parents'], 'ln_parent_entity_id', 4430);
         $is_trainer = filter_array($en['en__parents'], 'ln_parent_entity_id', 7512);

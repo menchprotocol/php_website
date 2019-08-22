@@ -14,7 +14,7 @@ class Entities extends CI_Controller
     function add_source_wizard()
     {
         //Authenticate Miner, redirect if failed:
-        $session_en = en_auth(array(1308), true);
+        $session_en = en_auth(array(1308,7512), true);
 
         //Show frame to be loaded in modal:
         $this->load->view('view_miner_app/miner_app_header', array(
@@ -34,7 +34,7 @@ class Entities extends CI_Controller
          *
          * */
 
-        $session_en = en_auth(array(1308));
+        $session_en = en_auth(array(1308,7512));
         if (!$session_en) {
             return echo_json(array(
                 'status' => 0,
@@ -73,11 +73,11 @@ class Entities extends CI_Controller
             $en_id = $this->config->item('en_focus_id');
         }
 
-        $session_en = en_auth(array(1308,1281), true);
+        $session_en = en_auth(array(1308,7512), true);
         $is_miner = ( filter_array($session_en['en__parents'], 'en_id', 1308) ? 1 : 0 );
 
         //Do we have any mass action to process here?
-        if (en_auth(array(1281)) && isset($_POST['mass_action_en_id']) && isset($_POST['mass_value1_'.$_POST['mass_action_en_id']]) && isset($_POST['mass_value2_'.$_POST['mass_action_en_id']])) {
+        if (en_auth(array(1308)) && isset($_POST['mass_action_en_id']) && isset($_POST['mass_value1_'.$_POST['mass_action_en_id']]) && isset($_POST['mass_value2_'.$_POST['mass_action_en_id']])) {
 
             //Process mass action:
             $process_mass_action = $this->Entities_model->en_mass_update($en_id, intval($_POST['mass_action_en_id']), $_POST['mass_value1_'.$_POST['mass_action_en_id']], $_POST['mass_value2_'.$_POST['mass_action_en_id']], $session_en['en_id']);
@@ -218,7 +218,7 @@ class Entities extends CI_Controller
         $parent_en_id = intval($_POST['parent_en_id']);
         $en_focus_filter = intval($_POST['en_focus_filter']);
         $page = intval($_POST['page']);
-        $session_en = en_auth(array(1308));
+        $session_en = en_auth(array(1308,7512));
         $filters = array(
             'ln_parent_entity_id' => $parent_en_id,
             'ln_type_entity_id IN (' . join(',', $this->config->item('en_ids_4592')) . ')' => null, //Entity Link Connectors
@@ -844,7 +844,7 @@ class Entities extends CI_Controller
     function en_fetch_canonical_url(){
 
         //Auth user and check required variables:
-        $session_en = en_auth(array(1308));
+        $session_en = en_auth(array(1308,7512));
 
         if (!$session_en) {
             return echo_json(array(
@@ -881,7 +881,7 @@ class Entities extends CI_Controller
     {
 
         //Auth user and check required variables:
-        $session_en = en_auth(array(1308));
+        $session_en = en_auth(array(1308,7512));
 
         //Description type requirement:
         $contributor_type_requirement = array(4230, 4255); //Raw or Text string

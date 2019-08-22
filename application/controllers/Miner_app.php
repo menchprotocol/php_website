@@ -20,8 +20,8 @@ class Miner_app extends CI_Controller
 
         boost_power();
 
-        //Validate moderator:
-        $session_en = en_auth(array(1281), true);
+        //Validate miner:
+        $session_en = en_auth(array(1308), true);
 
         //Load tools:
         $this->load->view('view_miner_app/miner_app_header', array(
@@ -39,7 +39,7 @@ class Miner_app extends CI_Controller
 
     function dashboard()
     {
-        $session_en = en_auth(array(1308)); //Just be logged in to browse
+        $session_en = en_auth(array(1308,7512)); //Just be logged in to browse
         $en_all_7368 = $this->config->item('en_all_7368');
         $this->load->view(($session_en ? 'view_miner_app/miner_app_header' : 'view_user_app/user_app_header'), array(
             'title' => $en_all_7368[7161]['m_name'],
