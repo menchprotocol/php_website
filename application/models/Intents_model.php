@@ -376,6 +376,7 @@ class Intents_model extends CI_Model
                 return $in_outcome_validation;
             }
 
+
             //Create new intent:
             $intent_new = $this->Intents_model->in_create(array(
                 'in_outcome' => $in_outcome_validation['in_cleaned_outcome'],
@@ -383,6 +384,22 @@ class Intents_model extends CI_Model
                 'in_type_entity_id' => $in_type_entity_id,
                 'in_status_entity_id' => $new_in_status,
             ), true, $ln_creator_entity_id);
+
+
+            //Add user as Admin IF NOT a miner:
+            if(!count($this->Links_model->ln_fetch(array(
+                'ln_child_entity_id' => $ln_creator_entity_id,
+                'ln_parent_entity_id' => 1308, //Mench Miners
+                'ln_type_entity_id IN (' . join(',', $this->config->item('en_ids_4592')) . ')' => null, //Entity Link Connectors
+                'ln_status_entity_id IN (' . join(',', $this->config->item('en_ids_7359')) . ')' => null, //Link Statuses Public
+            )))){
+                $this->Links_model->ln_create(array(
+                    'ln_creator_entity_id' => $ln_creator_entity_id,
+                    'ln_parent_entity_id' => $ln_creator_entity_id,
+                    'ln_type_entity_id' => 10573, //Intent Note Admin
+                    'ln_child_intent_id' => $intent_new['in_id'],
+                ));
+            }
 
         }
 
@@ -407,30 +424,26 @@ class Intents_model extends CI_Model
 
         }
 
-        //Add author if not yet added:
+        //Add up-vote if not yet added:
         if($ln_creator_entity_id > 0){
 
-            $ln_miner_upvotes = $this->Links_model->ln_fetch(array(
-                ( $is_parent ? 'ln_child_intent_id' : 'ln_parent_intent_id' ) => $in_linked_id,
-                ( $is_parent ? 'ln_parent_intent_id' : 'ln_child_intent_id' ) => $intent_new['in_id'],
-                'ln_parent_entity_id' => $ln_creator_entity_id,
-                'ln_type_entity_id' => 4983, //Intent Note Author
-                'ln_status_entity_id IN (' . join(',', $this->config->item('en_ids_7360')) . ')' => null, //Link Statuses Active
-            ));
-
-            if(count($ln_miner_upvotes) == 0){
-                //Add new author
-                //No need to sync external sources via ln_create()
-                $up_vote = $this->Links_model->ln_create(array(
+            if(!count($this->Links_model->ln_fetch(array(
+                    ( $is_parent ? 'ln_child_intent_id' : 'ln_parent_intent_id' ) => $in_linked_id,
+                    ( $is_parent ? 'ln_parent_intent_id' : 'ln_child_intent_id' ) => $intent_new['in_id'],
+                    'ln_parent_entity_id' => $ln_creator_entity_id,
+                    'ln_type_entity_id' => 4983, //Intent Note Up-Vote
+                    'ln_status_entity_id IN (' . join(',', $this->config->item('en_ids_7360')) . ')' => null, //Link Statuses Active
+                )))){
+                //Add new up-vote:
+                $this->Links_model->ln_create(array(
                     'ln_creator_entity_id' => $ln_creator_entity_id,
                     'ln_parent_entity_id' => $ln_creator_entity_id,
-                    'ln_type_entity_id' => 4983, //Intent Note Author
+                    'ln_type_entity_id' => 4983, //Intent Note Up-Vote
                     'ln_content' => '@'.$ln_creator_entity_id.' #'.( $is_parent ? $intent_new['in_id'] : $in_linked_id ), //Message content
                     ( $is_parent ? 'ln_child_intent_id' : 'ln_parent_intent_id' ) => $in_linked_id,
                     ( $is_parent ? 'ln_parent_intent_id' : 'ln_child_intent_id' ) => $intent_new['in_id'],
                 ));
             }
-
         }
 
 

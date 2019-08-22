@@ -16,7 +16,7 @@ date_default_timezone_set('America/Los_Angeles');
 
 //App Functionality:
 $config['base_url']                 = 'https://mench.com/';
-$config['app_version']              = '1.0092'; //Cache buster for static JS/CSS files, so needs to be updated if you update static files`
+$config['app_version']              = '1.0093'; //Cache buster for static JS/CSS files, so needs to be updated if you update static files`
 $config['system_name']              = 'Mench'; //Used for example when a link has no miner
 $config['system_icon']              = '<img src="/img/mench_white.png" />'; //Used for example when a link has no miner
 $config['app_enable_algolia']       = true; //May need to turn off if/when we reach monthly quota of 50k calls
@@ -48,7 +48,6 @@ $config['in_completion_marks']      = array(-89, -55, -34, -21, -13, -8, -5, -3,
 
 
 //Entities:
-$config['en_focus_id']              = 3463; //The default platform entity that is loaded when Entities is clicked
 $config['en_name_max_length']       = 250; //Max number of characters allowed in the title of intents
 
 

@@ -24,7 +24,7 @@ class Links extends CI_Controller
          *
          * */
 
-        $session_en = en_auth(array(1308)); //Just be logged in to browse
+        $session_en = en_auth(array(1308,7512)); //Just be logged in to browse
 
         //Load header:
         $this->load->view(($session_en ? 'view_miner_app/miner_app_header' : 'view_user_app/user_app_header'), array(
@@ -121,7 +121,7 @@ class Links extends CI_Controller
     function add_search_item(){
 
         //Authenticate Miner:
-        $session_en = en_auth(array(1308));
+        $session_en = en_auth(array(1308,7512));
 
         if (!$session_en) {
 
@@ -207,11 +207,6 @@ class Links extends CI_Controller
             return echo_json(array(
                 'status' => 0,
                 'message' => 'Invalid Link ID',
-            ));
-        } elseif(in_array($lns[0]['ln_type_entity_id'] , $this->config->item('en_ids_4755')) /* Link Type is locked */ && !en_auth(array(1308)) /* Viewer NOT a miner */){
-            return echo_json(array(
-                'status' => 0,
-                'message' => 'Link content visible to miners only',
             ));
         } elseif(!en_auth(array(1308)) /* Viewer NOT a miner */) {
             return echo_json(array(
@@ -377,7 +372,7 @@ class Links extends CI_Controller
             $this->db->insert('gephi_nodes', array(
                 'id' => $id_prefix['en'].$en['en_id'],
                 'label' => $en['en_name'],
-                'size' => ( $en['en_id']==$this->config->item('en_focus_id') ? 3 * $node_size['en'] : $node_size['en'] ),
+                'size' => $node_size['en'] ,
                 'node_type' => 2, //Entity
                 'node_status' => $en['en_status_entity_id'],
             ));

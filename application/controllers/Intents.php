@@ -221,7 +221,8 @@ class Intents extends CI_Controller
 
     }
 
-    function in_miner_ui($in_id)
+
+    function in_miner_ui($in_id = 0)
     {
 
         /*
@@ -235,8 +236,7 @@ class Intents extends CI_Controller
         $session_en = en_auth(array(1308,7512), true);
 
         if($in_id == 0){
-            //Set to default:
-            $in_id = $this->session->userdata('user_default_intent');
+            return redirect_message('/intents/' . $this->session->userdata('user_default_intent'));
         }
 
         //Fetch intent with 2 levels of children:
@@ -486,7 +486,7 @@ class Intents extends CI_Controller
         if(count($actionplan_users) < 1){
             return echo_json(array(
                 'status' => 0,
-                'message' => 'No users found who have completed this intention',
+                'message' => '<i class="fas fa-exclamation-triangle"></i> Nobody has completed this intention yet',
             ));
         }
 
@@ -607,6 +607,46 @@ class Intents extends CI_Controller
             'message' => $ui,
         ));
     }
+
+
+    function in_unlink_only(){
+
+        //Authenticate Miner:
+        $session_en = en_auth(array(1308,7512));
+
+        if (!$session_en) {
+            return echo_json(array(
+                'status' => 0,
+                'message' => 'Session Expired',
+            ));
+        } elseif (!isset($_POST['ln_id']) || intval($_POST['ln_id'])<1) {
+            return echo_json(array(
+                'status' => 0,
+                'message' => 'Missing ln_id',
+            ));
+        } elseif(!count($this->Links_model->ln_fetch(array(
+            'ln_id' => intval($_POST['ln_id']),
+            'ln_type_entity_id IN (' . join(',', $this->config->item('en_ids_4486')) . ')' => null, //Intent Link Connectors
+            'ln_status_entity_id IN (' . join(',', $this->config->item('en_ids_7360')) . ')' => null, //Link Statuses Active
+        )))){
+            return echo_json(array(
+                'status' => 0,
+                'message' => 'Link not found (already removed?)',
+            ));
+        }
+
+        //Unlink:
+        $this->Links_model->ln_update($_POST['ln_id'], array(
+            'ln_status_entity_id' => 6173, //Link Unlinked
+        ), $session_en['en_id']);
+
+        //Return success:
+        return echo_json(array(
+            'status' => 1,
+        ));
+
+    }
+
 
     function in_modify_save()
     {

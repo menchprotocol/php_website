@@ -170,7 +170,6 @@ if(!$action) {
     $orphan_ens = $this->Entities_model->en_fetch(array(
         ' NOT EXISTS (SELECT 1 FROM table_links WHERE en_id=ln_child_entity_id AND ln_type_entity_id IN (' . join(',', $this->config->item('en_ids_4592')) . ') AND ln_status_entity_id IN ('.join(',', $this->config->item('en_ids_7360')) /* Link Statuses Active */.')) ' => null,
         'en_status_entity_id IN (' . join(',', $this->config->item('en_ids_7358')) . ')' => null, //Entity Statuses Active
-        'en_id !=' => $this->config->item('en_focus_id'),
     ), array('skip_en__parents'));
 
     if(count($orphan_ens) > 0){
@@ -769,7 +768,7 @@ if(!$action) {
 
 } elseif($action=='assessment_marks_birds_eye') {
 
-    //Give an overview of the point links in a hierchial format to enable moderators to overview:
+    //Give an overview of the point links in a hierchial format to enable miners to overview:
     $_GET['starting_in']    = ( isset($_GET['starting_in']) && intval($_GET['starting_in']) > 0 ? $_GET['starting_in'] : $this->session->userdata('user_default_intent') );
     $_GET['depth_levels']   = ( isset($_GET['depth_levels']) && intval($_GET['depth_levels']) > 0 ? $_GET['depth_levels'] : 3 );
 

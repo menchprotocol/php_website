@@ -56,12 +56,11 @@ class Messenger extends CI_Controller
     function messenger_fetch_profile($psid)
     {
 
-        //Only moderators can do this at this time:
         $session_en = en_auth(array(1308));
         if (!$session_en) {
             return echo_json(array(
                 'status' => 0,
-                'message' => 'Session Expired. Sign In as a moderator and Try again.',
+                'message' => 'Session Expired. Sign In as a miner and Try again.',
             ));
         }
 

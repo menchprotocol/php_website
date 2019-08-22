@@ -68,13 +68,12 @@ class Entities extends CI_Controller
     function en_miner_ui($en_id)
     {
 
-        if ($en_id == 0) {
-            //Set to default:
-            $en_id = $this->config->item('en_focus_id');
-        }
-
         $session_en = en_auth(array(1308,7512), true);
         $is_miner = ( filter_array($session_en['en__parents'], 'en_id', 1308) ? 1 : 0 );
+
+        if ($en_id == 0) {
+            return redirect_message('/entities/' . ( $is_miner ? 3463 /* Default miner entity */ : $session_en['en_id'] ));
+        }
 
         //Do we have any mass action to process here?
         if (en_auth(array(1308)) && isset($_POST['mass_action_en_id']) && isset($_POST['mass_value1_'.$_POST['mass_action_en_id']]) && isset($_POST['mass_value2_'.$_POST['mass_action_en_id']])) {

@@ -554,7 +554,7 @@ class User_app extends CI_Controller
     function singin_magic_link_login($ln_id){
 
         //Validate email:
-        if(en_auth(array(1308))){
+        if(en_auth(array(1308,7512))){
             return redirect_message('/dashboard');
         } elseif(en_auth()){
             return redirect_message('/actionplan/next');

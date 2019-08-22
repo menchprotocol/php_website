@@ -884,6 +884,28 @@ class Communication_model extends CI_Model
                     );
                 }
 
+                //Check up-voting restrictions:
+                if($is_being_modified){
+
+                    //Entity reference must be either the miner themselves or an expert source:
+                    $session_en = en_auth(array(1308,7512)); //Is miners/trainer
+                    if($string_references['ref_entities'][0] != $session_en['en_id']){
+
+                        //Reference is not the logged-in miner, let's check to make sure it's an expert source
+                        if(!count($this->Links_model->ln_fetch(array(
+                            'ln_status_entity_id IN (' . join(',', $this->config->item('en_ids_7359')) . ')' => null, //Link Statuses Public
+                            'ln_child_entity_id' => $string_references['ref_entities'][0],
+                            'ln_parent_entity_id IN ('.join(',' , $this->config->item('en_ids_4983')).')' => null, //Intent Note Up-Vote
+                            'ln_type_entity_id IN (' . join(',', $this->config->item('en_ids_4592')) . ')' => null, //Entity Link Connectors
+                        )))){
+                            return array(
+                                'status' => 0,
+                                'message' => 'Up-voter must be either you OR an Experts, Expert Sources or Mench Users (See @4983 for supporting entities)',
+                            );
+                        }
+                    }
+                }
+
 
                 //Note that currently intent references are not displayed on the landing page (Only Messages are) OR messenger format
 

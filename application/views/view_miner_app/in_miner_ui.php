@@ -132,7 +132,7 @@ $en_all_7369 = $this->config->item('en_all_7369');
         }
 
         //Add child intent:
-        echo '<div class="list-group-item list_input grey-block '.advance_mode(in_authors_css($in)).'">
+        echo '<div class="list-group-item list_input grey-block '.advance_mode(in_authors_class($in)).'">
                     <div class="form-group is-empty" style="margin: 0; padding: 0;">
                         <input type="text"
                                class="form-control intentadder-level-2-child algolia_search"

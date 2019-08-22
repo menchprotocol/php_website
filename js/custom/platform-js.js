@@ -34,7 +34,6 @@ function en_fetch_canonical_url(query_string, not_found){
 }
 
 
-
 //Function to load all help messages throughout the platform:
 $(document).ready(function () {
 

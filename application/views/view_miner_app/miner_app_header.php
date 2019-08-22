@@ -22,8 +22,9 @@ $uri_segment_2 = $this->uri->segment(2);
     <?php $this->load->view('view_shared/global_js_css'); ?>
     <script src="/js/custom/platform-js.js?v=v<?= $this->config->item('app_version') ?>" type="text/javascript"></script>
 
+
     <!-- Author CSS to make certain fields visible IF user is the object creator -->
-    <?= ( isset($session_en['en_id']) && !$is_miner ? '<style> .author_'.$session_en['en_id'].' { display:inline-block !important; } </style>' : '' ) ?>
+    <?= ( !$is_miner ? '<style> span.author_class_'.$session_en['en_id'].' { display:inline-block !important; } div.author_class_'.$session_en['en_id'].' { display:block !important; } </style>' : '' ) ?>
 
 </head>
 
@@ -106,7 +107,7 @@ $uri_segment_2 = $this->uri->segment(2);
                             </li>
 
                             <!-- Signout -->
-                            <li data-toggle="tooltip" data-placement="left" title="<?= $en_all_7368[7291]['m_name'] ?>">
+                            <li data-toggle="tooltip" data-placement="left" title="<?= $en_all_7368[7291]['m_name'].' '.$session_en['en_name'] ?>">
                                 <a href="/signout">
                                     <?= $en_all_7368[7291]['m_icon'] ?>
                                 </a>

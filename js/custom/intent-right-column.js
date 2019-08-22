@@ -231,23 +231,11 @@ function in_action_plan_users(in_id) {
         in_focus_id: in_focus_id,
         in_id: in_id
     }, function (data) {
-        if (!data.status) {
+        //Load content:
+        $('#ap_matching_users').html(data.message).hide().fadeIn();
 
-            //Hide Box:
-            $('.fixed-box').addClass('hidden');
-
-            //Opppsi, show the error:
-            alert('Error: ' + data.message);
-
-        } else {
-
-            //Load content:
-            $('#ap_matching_users').html(data.message).hide().fadeIn();
-
-            //Tooltips:
-            $('[data-toggle="tooltip"]').tooltip();
-
-        }
+        //Tooltips:
+        $('[data-toggle="tooltip"]').tooltip();
     });
 
 }
@@ -431,6 +419,61 @@ function in_modify_load(in_id, ln_id) {
     });
 }
 
+
+
+
+function in_unlink_only(in_id, level, ln_id){
+    var r = confirm("Are you sure you want to unlink intent?");
+    if (r == true) {
+        //Quickly remove first:
+        in_ui_remove(in_id, level, ln_id);
+
+        //Then process & show possible errors:
+        $.post("/intents/in_unlink_only", {ln_id: ln_id}, function (data) {
+            if (!data.status) {
+                alert('Failed to Remove: ' + data.message);
+            }
+        });
+    }
+}
+
+
+function in_ui_remove(in_id,level,ln_id){
+
+    //Fetch parent intent before removing element from DOM:
+    var parent_in_id = parseInt($('.intent_line_' + in_id).attr('parent-intent-id'));
+
+    //Remove Hash:
+    window.location.hash = '#';
+
+    //Reset opacity:
+    remove_all_highlights();
+
+    //Adjust completion cost:
+    adjust_js_ui(in_id, level, 0, 0, 1, 0);
+
+    //Remove from UI:
+    $('.in__tr_' + ln_id).html('<span style="color:#2f2739;"><i class="fas fa-trash-alt"></i></span>');
+
+    //Hide the editor & saving results:
+    $('.in__tr_' + ln_id).fadeOut();
+
+    //Disappear in a while:
+    setTimeout(function () {
+
+        //Hide the editor & saving results:
+        $('.in__tr_' + ln_id).remove();
+
+        //Hide editing box:
+        $('#modifybox').addClass('hidden');
+
+        //Re-sort sibling intents:
+        in_sort_save(parent_in_id, level);
+
+    }, 610);
+
+}
+
 function in_modify_save() {
 
     //Validate that we have all we need:
@@ -512,37 +555,8 @@ function in_modify_save() {
 
                 } else {
 
-                    //Fetch parent intent before removing element from DOM:
-                    var parent_in_id = parseInt($('.intent_line_' + modify_data['in_id']).attr('parent-intent-id'));
-
-                    //Remove Hash:
-                    window.location.hash = '#';
-
-                    //Reset opacity:
-                    remove_all_highlights();
-
-                    //Adjust completion cost:
-                    adjust_js_ui(modify_data['in_id'], modify_data['level'], 0, 0, 1, 0);
-
                     //Remove from UI:
-                    $('.in__tr_' + modify_data['ln_id']).html('<span style="color:#2f2739;"><i class="fas fa-trash-alt"></i> Removed</span>');
-
-                    //Hide the editor & saving results:
-                    $('.in__tr_' + modify_data['ln_id']).fadeOut();
-
-                    //Disappear in a while:
-                    setTimeout(function () {
-
-                        //Hide the editor & saving results:
-                        $('.in__tr_' + modify_data['ln_id']).remove();
-
-                        //Hide editing box:
-                        $('#modifybox').addClass('hidden');
-
-                        //Re-sort sibling intents:
-                        in_sort_save(parent_in_id, modify_data['level']);
-
-                    }, 610);
+                    in_ui_remove(modify_data['in_id'], modify_data['level'], modify_data['ln_id']);
 
                 }
 
