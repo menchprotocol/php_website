@@ -58,7 +58,7 @@ $en_all_7369 = $this->config->item('en_all_7369');
 
             echo '<h5 class="badge badge-h indent1 inline-block">'.$en_all_7369[7765]['m_icon'].' <input id="landing_page_url" type="url" value="'. $this->config->item('base_url') . $in['in_id'] .'" style="padding:0; margin:-2px 0; background-color:transparent; border:0; color:#FFF;" /><a href="/' . $in['in_id'] . '" target="_blank" style="margin-left:7px; color:#FFF !important;" data-toggle="tooltip" title="'.$en_all_7369[7765]['m_name'].'" data-placement="bottom"><i class="fas fa-external-link"></i></a><span id="landing_page_state"></span></h5>';
 
-            //Hidden Links for Miners:
+            //Hidden Links for Miners ONLY:
             if($is_miner){
                 echo '<span class="'.advance_mode().'">';
 

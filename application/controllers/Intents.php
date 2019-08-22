@@ -237,8 +237,7 @@ class Intents extends CI_Controller
         }
 
         //Authenticate Miner:
-        $session_en = en_auth(array(1308,1281), true);
-        $is_miner = ( filter_array($session_en['en__parents'], 'en_id', 1308) ? 1 : 0 );
+        $session_en = en_auth(array(1308,7512), true);
 
         //Fetch intent with 2 levels of children:
         $ins = $this->Intents_model->in_fetch(array(
@@ -265,7 +264,7 @@ class Intents extends CI_Controller
         ));
         $this->load->view('view_miner_app/in_miner_ui', array(
             'in' => $ins[0] ,
-            'is_miner' => $is_miner,
+            'is_miner' => ( filter_array($session_en['en__parents'], 'en_id', 1308) ? 1 : 0 ),
         ));
         $this->load->view('view_miner_app/miner_app_footer');
 
@@ -286,7 +285,7 @@ class Intents extends CI_Controller
          * */
 
         //Authenticate Miner:
-        $session_en = en_auth(array(1308));
+        $session_en = en_auth(array(1308,7512));
         if (!$session_en) {
             return echo_json(array(
                 'status' => 0,
@@ -380,7 +379,7 @@ class Intents extends CI_Controller
     {
 
         //Authenticate Miner:
-        $session_en = en_auth(array(1308));
+        $session_en = en_auth(array(1308,7512));
         if (!$session_en) {
             return echo_json(array(
                 'status' => 0,
@@ -614,7 +613,7 @@ class Intents extends CI_Controller
     {
 
         //Authenticate Miner:
-        $session_en = en_auth(array(1308));
+        $session_en = en_auth(array(1308,7512));
         $ln_id = intval($_POST['ln_id']);
 
         //Validate intent:
@@ -1078,7 +1077,7 @@ class Intents extends CI_Controller
     {
 
         //Authenticate Miner:
-        $session_en = en_auth(array(1308));
+        $session_en = en_auth(array(1308,7512));
         if (!$session_en) {
             echo_json(array(
                 'status' => 0,
@@ -1142,7 +1141,7 @@ class Intents extends CI_Controller
     {
 
         //Authenticate as a Miner:
-        $session_en = en_auth(array(1308));
+        $session_en = en_auth(array(1308,7512));
         if (!$session_en) {
             //Display error:
             die('<span style="color:#FF0000;">Error: Invalid Session. Sign In again to continue.</span>');
@@ -1169,7 +1168,7 @@ class Intents extends CI_Controller
     {
 
         //Authenticate Miner:
-        $session_en = en_auth(array(1308));
+        $session_en = en_auth(array(1308,7512));
 
         if (!$session_en) {
 
@@ -1246,7 +1245,7 @@ class Intents extends CI_Controller
     {
 
         //Authenticate Miner:
-        $session_en = en_auth(array(1308));
+        $session_en = en_auth(array(1308,7512));
         if (!$session_en) {
 
             return echo_json(array(
@@ -1360,7 +1359,7 @@ class Intents extends CI_Controller
          *
          * */
 
-        $session_en = en_auth(array(1308));
+        $session_en = en_auth(array(1308,7512));
         if (!$session_en) {
             return echo_json(array(
                 'status' => 0,
@@ -1441,7 +1440,7 @@ class Intents extends CI_Controller
     {
 
         //Authenticate Miner:
-        $session_en = en_auth(array(1308));
+        $session_en = en_auth(array(1308,7512));
         if (!$session_en) {
 
             return echo_json(array(
@@ -1482,7 +1481,7 @@ class Intents extends CI_Controller
     {
 
         //Authenticate Miner:
-        $session_en = en_auth(array(1308));
+        $session_en = en_auth(array(1308,7512));
         if (!$session_en) {
             return echo_json(array(
                 'status' => 0,

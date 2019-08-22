@@ -116,8 +116,9 @@ class User_app extends CI_Controller
         $is_chrome = (strpos($_SERVER['HTTP_USER_AGENT'], 'Chrome') !== false || strpos($_SERVER['HTTP_USER_AGENT'], 'CriOS') !== false);
 
 
-        $is_user = filter_array($ens[0]['en__parents'], 'en_id', 4430); //Mench Users
-        $is_miner = filter_array($ens[0]['en__parents'], 'en_id', 1308); //Mench Miners
+        $is_user = filter_array($ens[0]['en__parents'], 'en_id', 4430);
+        $is_trainer = filter_array($ens[0]['en__parents'], 'en_id', 7512);
+        $is_miner = filter_array($ens[0]['en__parents'], 'en_id', 1308);
 
 
         //Applicable for anyone using the Mench mining app:
@@ -144,7 +145,7 @@ class User_app extends CI_Controller
 
         if (isset($_POST['referrer_url']) && strlen($_POST['referrer_url']) > 0) {
             $login_url = urldecode($_POST['referrer_url']);
-        } else if ($is_miner) {
+        } else if ($is_miner || $is_trainer) {
             $login_url = '/dashboard';
         } else {
             $login_url = '/actionplan';
@@ -287,12 +288,14 @@ class User_app extends CI_Controller
 
             //Log them in:
             $ens[0] = $this->User_app_model->user_activate_session($ens[0]);
-            $is_miner = filter_array($ens[0]['en__parents'], 'en_id', 1308); //Mench Miners
+
+            $is_miner = filter_array($ens[0]['en__parents'], 'en_id', 1308);
+            $is_trainer = filter_array($ens[0]['en__parents'], 'en_id', 7512);
 
             //Their next intent in line:
             return echo_json(array(
                 'status' => 1,
-                'login_url' => ( $is_miner ? '/dashboard' : '/actionplan/next' ),
+                'login_url' => ( $is_miner || $is_trainer ? '/dashboard' : '/actionplan/next' ),
             ));
 
 
@@ -586,8 +589,8 @@ class User_app extends CI_Controller
         $ens[0] = $this->User_app_model->user_activate_session($ens[0]);
 
         //Redirect based on permissions:
-        $is_miner = filter_array($ens[0]['en__parents'], 'en_id', 1308); //Mench Miners
-        $is_trainer = filter_array($ens[0]['en__parents'], 'en_id', 7512); //Mench Trainers
+        $is_miner = filter_array($ens[0]['en__parents'], 'en_id', 1308);
+        $is_trainer = filter_array($ens[0]['en__parents'], 'en_id', 7512);
 
         //Take them to next step:
         return redirect_message(( $is_miner || $is_trainer ? '/dashboard' : '/actionplan/next' ));
