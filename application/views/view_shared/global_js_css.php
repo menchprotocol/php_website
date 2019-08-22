@@ -59,7 +59,7 @@ https://mench.com/12747
     echo ' var en_name_max_length = ' . $this->config->item('en_name_max_length') . '; ';
     echo ' var js_ying_yang = ' . json_encode(echo_random_message('ying_yang', true)) . '; ';
     echo ' var js_saving_notify = ' . json_encode(echo_random_message('saving_notify', true)) . '; ';
-    echo ' var js_advance_view_enabled = ' . $this->session->userdata('advance_view_enabled') . '; ';
+    echo ' var js_advance_view_enabled = ' . ( $this->session->userdata('advance_view_enabled') ? 1 : 0 ) . '; ';
     echo ' var js_user_id = ' . ( isset($session_en['en_id']) ? $session_en['en_id'] : 0 ) . '; ';
 
     ?>
