@@ -231,13 +231,13 @@ class Intents extends CI_Controller
          *
          * */
 
-        if($in_id == 0){
-            //Set to default:
-            $in_id = $this->session->userdata('user_session_count');
-        }
-
         //Authenticate Miner:
         $session_en = en_auth(array(1308,7512), true);
+
+        if($in_id == 0){
+            //Set to default:
+            $in_id = $this->session->userdata('user_default_intent');
+        }
 
         //Fetch intent with 2 levels of children:
         $ins = $this->Intents_model->in_fetch(array(
@@ -245,7 +245,7 @@ class Intents extends CI_Controller
         ), array('in__parents','in__grandchildren'));
         //Make sure we found it:
         if ( count($ins) < 1) {
-            return redirect_message('/intents/' . $this->session->userdata('user_session_count'), '<div class="alert alert-danger" role="alert">Intent #' . $in_id . ' not found</div>');
+            return redirect_message('/intents/' . $this->session->userdata('user_default_intent'), '<div class="alert alert-danger" role="alert">Intent #' . $in_id . ' not found</div>');
         }
 
         //Update session count and log link:
@@ -264,7 +264,6 @@ class Intents extends CI_Controller
         ));
         $this->load->view('view_miner_app/in_miner_ui', array(
             'in' => $ins[0] ,
-            'is_miner' => ( filter_array($session_en['en__parents'], 'en_id', 1308) ? 1 : 0 ),
         ));
         $this->load->view('view_miner_app/miner_app_footer');
 
@@ -830,7 +829,7 @@ class Intents extends CI_Controller
                                 $remove_redirect_url = '/intents/' . $in_current['in__parents'][0]['in_id'];
                             } else {
                                 //No parents, redirect to default intent:
-                                $remove_redirect_url = '/intents/' . $this->session->userdata('user_session_count');
+                                $remove_redirect_url = '/intents/' . $this->session->userdata('user_default_intent');
                             }
                         }
 
