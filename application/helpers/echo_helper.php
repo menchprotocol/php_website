@@ -1254,7 +1254,7 @@ function echo_tree_actionplan($in, $autoexpand){
 
     foreach ($in__children as $in_level2_counter => $in_level2) {
 
-        if(!in_is_clean_outcome($in_level2)){
+        if(!in_is_clean_outcome($in_level2) || in_array($in_level2['in_type_entity_id'], $CI->config->item('en_ids_7309'))){
             continue;
         }
 
@@ -1341,7 +1341,7 @@ function echo_tree_actionplan($in, $autoexpand){
                 foreach ($in_level2_children as $in_level3_counter => $in_level3) {
 
 
-                    if(!in_is_clean_outcome($in_level3)){
+                    if(!in_is_clean_outcome($in_level3) || in_array($in_level2['in_type_entity_id'], $CI->config->item('en_ids_7309'))){
                         continue;
                     }
 
