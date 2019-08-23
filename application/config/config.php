@@ -31,14 +31,14 @@ $config['password_min_char']        = 6;
 
 //Intent References:
 $config['in_mission_id']            = 7766; //highest-level intent which defines the mission of Mench
-$config['in_join_id']               = 12599; //Where new users would start if they have not specified an intention
+$config['in_join_id']               = 12677; //Where new users would start if they have not specified an intention
 $config['in_focus_id']              = 11762; //The intent that the Mench community is focused on
 
 $config['in_required_id']           = 12830; //Intnents required by all users to be completed before moving to Action Plan
 
 
 
-$config['in_system_lock']           = array(7766, 11762, 12830, 12831); //Once set to published, their status will be locked by system
+$config['in_system_lock']           = array(7766, 11762, 12830, 12831, 12677); //Once set to published, their status will be locked by system
 
 //Intent Settings:
 $config['in_max_seconds']           = 28800; //The maximum seconds allowed per intent. If larger, the miner is asked to break it down into smaller intents
