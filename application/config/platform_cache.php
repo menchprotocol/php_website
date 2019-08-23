@@ -11,7 +11,7 @@ defined('BASEPATH') OR exit('No direct script access allowed');
  *
  */
 
-//Generated 2019-08-23 12:10:29 PST
+//Generated 2019-08-23 13:16:23 PST
 
 //Public Entities:
 $config['en_ids_10571'] = array(2997,4446,3005,4763,3147,2999,4883,3192,3000,5948,2998,4433,3084,1281,1308,7512);
@@ -1351,7 +1351,7 @@ $config['en_all_7582'] = array(
 );
 
 //User Link CC Email:
-$config['en_ids_5967'] = array(4246,7504,6415);
+$config['en_ids_5967'] = array(4246,7504,6415,4235);
 $config['en_all_5967'] = array(
     4246 => array(
         'm_icon' => '<i class="far fa-bug"></i>',
@@ -1370,6 +1370,12 @@ $config['en_all_5967'] = array(
         'm_name' => 'User Cleared Action Plan',
         'm_desc' => '&var_en_subscriber_ids=2',
         'm_parents' => array(7164,5967,4595,4755,6418,4593,6414),
+    ),
+    4235 => array(
+        'm_icon' => '<i class="far fa-bullseye-arrow"></i>',
+        'm_name' => 'User Intent Set',
+        'm_desc' => '&var_en_subscriber_ids=1',
+        'm_parents' => array(5967,7347,4595,4755,4593),
     ),
 );
 
@@ -1825,7 +1831,7 @@ $config['en_all_7347'] = array(
         'm_icon' => '<i class="far fa-bullseye-arrow"></i>',
         'm_name' => 'Intent Set',
         'm_desc' => '',
-        'm_parents' => array(7347,4595,4755,4593),
+        'm_parents' => array(5967,7347,4595,4755,4593),
     ),
 );
 
@@ -3302,7 +3308,7 @@ $config['en_all_4755'] = array(
         'm_icon' => '<i class="far fa-bullseye-arrow"></i>',
         'm_name' => 'User Intent Set',
         'm_desc' => '',
-        'm_parents' => array(7347,4595,4755,4593),
+        'm_parents' => array(5967,7347,4595,4755,4593),
     ),
     7757 => array(
         'm_icon' => '<i class="fas fa-times-octagon"></i>',
@@ -3937,7 +3943,7 @@ $config['en_all_4595'] = array(
         'm_icon' => '<i class="far fa-bullseye-arrow"></i>',
         'm_name' => 'User Intent Set',
         'm_desc' => '50',
-        'm_parents' => array(7347,4595,4755,4593),
+        'm_parents' => array(5967,7347,4595,4755,4593),
     ),
     7757 => array(
         'm_icon' => '<i class="fas fa-times-octagon"></i>',
@@ -4589,7 +4595,7 @@ $config['en_all_4593'] = array(
         'm_icon' => '<i class="far fa-bullseye-arrow"></i>',
         'm_name' => 'User Intent Set',
         'm_desc' => 'Intentions set by users which will be completed by taking steps using the Action Plan',
-        'm_parents' => array(7347,4595,4755,4593),
+        'm_parents' => array(5967,7347,4595,4755,4593),
     ),
     7757 => array(
         'm_icon' => '<i class="fas fa-times-octagon"></i>',
