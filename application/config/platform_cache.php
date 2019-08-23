@@ -11,7 +11,7 @@ defined('BASEPATH') OR exit('No direct script access allowed');
  *
  */
 
-//Generated 2019-08-22 18:43:01 PST
+//Generated 2019-08-22 18:47:49 PST
 
 //Public Entities:
 $config['en_ids_10571'] = array(2997,4446,2999,3005,4763,3147,4883,3192,3000,5948,2998,4433,3084,1281,1308,7512);
@@ -1939,7 +1939,7 @@ $config['en_all_7233'] = array(
     ),
     7164 => array(
         'm_icon' => '<i class="fas fa-plus-circle"></i>',
-        'm_name' => 'User Post-Intention Progress',
+        'm_name' => 'User Post-Intention Chat',
         'm_desc' => 'Steps we take to get closer to your intentions',
         'm_parents' => array(7233,7203,4527),
     ),
@@ -1962,7 +1962,7 @@ $config['en_all_7203'] = array(
     ),
     7164 => array(
         'm_icon' => '<i class="fas fa-plus-circle"></i>',
-        'm_name' => 'Link Type User Post-Intention Progress',
+        'm_name' => 'Link Type User Post-Intention Chat',
         'm_desc' => '',
         'm_parents' => array(7233,7203,4527),
     ),
@@ -1974,7 +1974,7 @@ $config['en_all_7203'] = array(
     ),
 );
 
-//Link Type User Post-Intention Progress:
+//Link Type User Post-Intention Chat:
 $config['en_ids_7164'] = array(4282,6224,6415,4275,6559,6560,6556,6578,6154,6155,4283,6132,7757,5967,7563,4554,4570,4556,4555,7702,6563,4552,4553,4549,4551,4550,4557,4278,4279,4460,4547,4287,4548,7488,7485,7486,6144,7741,6140,4559,7489,7492,6997,6157,7487,6143,7562);
 $config['en_all_7164'] = array(
     4282 => array(
