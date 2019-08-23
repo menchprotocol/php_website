@@ -61,7 +61,7 @@
                 </ul>
             </nav>
 
-            <div style="font-size: 0.9em;"><span class="parent-icon"><?= $this->config->item('system_icon') ?></span> Mench v<?= $this->config->item('app_version') ?></div>
+            <div style="font-size: 0.72em; text-transform: uppercase; color: #222; font-weight:500;"><a href="/12747" class="underdot" data-toggle="tooltip" title="We're on a mission to unleash human potential by building and sharing consensus" data-placement="top" style="display: inline-block">We're Hiring</a> <span style="display: inline-block"><span class="parent-icon"><?= $this->config->item('system_icon') ?></span> Mench <a href="/12748" class="underdot" data-toggle="tooltip" title="Get started with the Mench open-source platform" data-placement="top">open-source</a> v<?= $this->config->item('app_version') ?></span></div>
 
         </div>
     </footer>

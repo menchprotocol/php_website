@@ -1177,7 +1177,8 @@ class Communication_model extends CI_Model
                 array_push($quick_replies, array(
                     'content_type' => 'text',
                     'title' => ( $count+1 ),
-                    'payload' => 'SUBSCRIBE-INITIATE_' . $in['in_id'],
+                    //'payload' => 'SUBSCRIBE-INITIATE_' . $in['in_id'],
+                    'payload' => 'SUBSCRIBE-CONFIRM_' . $ins[0]['in_id'],
                 ));
 
                 //Log intent recommend recommendation:
@@ -1648,8 +1649,8 @@ class Communication_model extends CI_Model
                 array(
                     array(
                         'content_type' => 'text',
-                        'title' => 'Yes, Learn More',
-                        'payload' => 'SUBSCRIBE-INITIATE_' . $ins[0]['in_id'],
+                        'title' => 'Yes', //Yes, Learn More
+                        'payload' => 'SUBSCRIBE-CONFIRM_' . $ins[0]['in_id'], //'SUBSCRIBE-INITIATE_' . $ins[0]['in_id']
                     ),
                     array(
                         'content_type' => 'text',
@@ -2273,7 +2274,7 @@ class Communication_model extends CI_Model
                 array_push($quick_replies, array(
                     'content_type' => 'text',
                     'title' => $new_intent_count,
-                    'payload' => 'SUBSCRIBE-INITIATE_' . $ins[0]['in_id'],
+                    'payload' => 'SUBSCRIBE-CONFIRM_' . $ins[0]['in_id'], //'SUBSCRIBE-INITIATE_' . $ins[0]['in_id']
                 ));
             }
 

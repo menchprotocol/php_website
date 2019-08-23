@@ -23,8 +23,9 @@ foreach ($this->Links_model->ln_fetch(array(
 }
 
 
+
 //Action Plan Overview:
-$step_info = echo_tree_steps($in, false, true);
+$step_info = echo_tree_steps($in, false);
 $source_info = echo_tree_experts($in, false);
 $user_info = echo_tree_users($in, false);
 
@@ -38,6 +39,7 @@ if($step_info || $source_info || $user_info){
     //Just give some space:
     echo '<br />';
 }
+
 
 //Check to see if added to Action Plan for logged-in users:
 if(isset($session_en['en_id']) && $referrer_en_id == 0){
@@ -150,6 +152,17 @@ if($referrer_en_id > 0){
     //Merge all intents:
     $in__other = array_merge($in__recommended, $in__parents, $in__siblings, $in__children, $in__granchildren);
 
+
+    //Cleanup to create the final list:
+    $already_printed = array(); //Make sure we don't show anything twice
+    foreach($in__other as $key => $other_in){
+        if(!in_is_clean_outcome($other_in) || in_array($other_in['in_id'], $already_printed)){
+            unset($in__other[$key]);
+        } else {
+            array_push($already_printed, $other_in['in_id']); //Keep track to make sure its printed only once
+        }
+    }
+
 }
 
 
@@ -157,29 +170,33 @@ if($referrer_en_id > 0){
 //Display if any:
 if(count($in__other) > 0){
 
-    //echo '<h3 style="margin-bottom:5px; margin-top:55px;">Other Intentions:</h3>';
-    echo '<p style="margin:40px 0 15px;">Other intentions I can help you with:</p>';
+    $en_all_7369 = $this->config->item('en_all_7369');
+
+
+    echo '<p style="margin:25px 0 15px;" class="other_intents">Or consider <a href="javascript:void(0)" onclick="$(\'.other_intents\').toggleClass(\'hidden\')">'.count($in__other).' other intentions</a>.</p>';
+
+
+    echo '<div class="other_intents hidden">';
+    echo '<p style="margin:25px 0 15px;">Here are some other intentions I can help you with:</p>';
     echo '<div class="list-group grey_list actionplan_list maxout">';
-    $max_visible = 7;
+    $max_visible = 30;
 
     //Now fetch Recommended Intents:
-    $already_printed = array(); //Make sure we don't show anything twice
     foreach ($in__other as $other_in) {
-        if(!in_is_clean_outcome($other_in)){
-            continue;
-        }
-        if(in_array($other_in['in_id'], $already_printed)){
-            continue; //Already printed!
-        }
-
         echo echo_in_recommend($other_in, null, ( count($already_printed) >= $max_visible ? 'extra-recommendations hidden' : null ), $referrer_en_id);
-        array_push($already_printed, $other_in['in_id']); //Keep track to make sure its printed only once
     }
 
     if(count($already_printed) > $max_visible){
         //Show show more button:
         echo '<a href="javascript:void(0);" onclick="$(\'.extra-recommendations\').toggleClass(\'hidden\');" class="list-group-item extra-recommendations"><i class="fas fa-plus-circle"></i> <b style="font-weight: 500;">'.(count($already_printed)-$max_visible).' More Recommendations</b></a>';
     }
+
+    echo '</div>';
+
+    echo '<p style="margin:25px 0 15px;">Just so you know, I\'m trained on even <a href="/sitemap">more intentions</a> &raquo;</p>';
+
+
+
 
     echo '</div>';
 

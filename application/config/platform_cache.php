@@ -11,10 +11,10 @@ defined('BASEPATH') OR exit('No direct script access allowed');
  *
  */
 
-//Generated 2019-08-22 19:08:24 PST
+//Generated 2019-08-23 12:10:29 PST
 
 //Public Entities:
-$config['en_ids_10571'] = array(2997,4446,2999,3005,4763,3147,4883,3192,3000,5948,2998,4433,3084,1281,1308,7512);
+$config['en_ids_10571'] = array(2997,4446,3005,4763,3147,2999,4883,3192,3000,5948,2998,4433,3084,1281,1308,7512);
 $config['en_all_10571'] = array(
     2997 => array(
         'm_icon' => '<i class="far fa-newspaper"></i>',
@@ -27,12 +27,6 @@ $config['en_all_10571'] = array(
         'm_name' => 'Expert Assessments',
         'm_desc' => '',
         'm_parents' => array(10571,4983,7614,3000),
-    ),
-    2999 => array(
-        'm_icon' => '<i class="far fa-microphone"></i>',
-        'm_name' => 'Expert Audios',
-        'm_desc' => '',
-        'm_parents' => array(10571,4983,7614,6805,3000),
     ),
     3005 => array(
         'm_icon' => '<i class="far fa-book"></i>',
@@ -49,6 +43,12 @@ $config['en_all_10571'] = array(
     3147 => array(
         'm_icon' => '<i class="far fa-presentation"></i>',
         'm_name' => 'Expert Courses',
+        'm_desc' => '',
+        'm_parents' => array(10571,4983,7614,6805,3000),
+    ),
+    2999 => array(
+        'm_icon' => '<i class="far fa-microphone"></i>',
+        'm_name' => 'Expert Podcasts',
         'm_desc' => '',
         'm_parents' => array(10571,4983,7614,6805,3000),
     ),
@@ -620,7 +620,7 @@ $config['en_all_7701'] = array(
 );
 
 //Intent Note Up-Vote:
-$config['en_ids_4983'] = array(2997,4446,2999,3005,4763,3147,4883,3192,5948,2998,3084,4430);
+$config['en_ids_4983'] = array(2997,4446,3005,4763,3147,2999,4883,3192,5948,2998,3084,4430);
 $config['en_all_4983'] = array(
     2997 => array(
         'm_icon' => '<i class="far fa-newspaper"></i>',
@@ -633,12 +633,6 @@ $config['en_all_4983'] = array(
         'm_name' => 'Expert Assessments',
         'm_desc' => '',
         'm_parents' => array(10571,4983,7614,3000),
-    ),
-    2999 => array(
-        'm_icon' => '<i class="far fa-microphone"></i>',
-        'm_name' => 'Expert Audios',
-        'm_desc' => '',
-        'm_parents' => array(10571,4983,7614,6805,3000),
     ),
     3005 => array(
         'm_icon' => '<i class="far fa-book"></i>',
@@ -655,6 +649,12 @@ $config['en_all_4983'] = array(
     3147 => array(
         'm_icon' => '<i class="far fa-presentation"></i>',
         'm_name' => 'Expert Courses',
+        'm_desc' => '',
+        'm_parents' => array(10571,4983,7614,6805,3000),
+    ),
+    2999 => array(
+        'm_icon' => '<i class="far fa-microphone"></i>',
+        'm_name' => 'Expert Podcasts',
         'm_desc' => '',
         'm_parents' => array(10571,4983,7614,6805,3000),
     ),
@@ -1489,7 +1489,7 @@ $config['en_all_7494'] = array(
     ),
 );
 
-//Locked Intents:
+//Intent Type Requirement:
 $config['en_ids_7309'] = array(6914,6907);
 $config['en_all_7309'] = array(
     6914 => array(
@@ -1583,7 +1583,7 @@ $config['en_all_6287'] = array(
 );
 
 //Mench User App:
-$config['en_ids_7369'] = array(6138,7765,7291,7161,10563,4430,6137,7256,4269);
+$config['en_ids_7369'] = array(6138,7765,7161,7291,7256,4269,10563,4430,6137);
 $config['en_all_7369'] = array(
     6138 => array(
         'm_icon' => '🚩',
@@ -1597,39 +1597,21 @@ $config['en_all_7369'] = array(
         'm_desc' => '',
         'm_parents' => array(4535,7369),
     ),
+    7161 => array(
+        'm_icon' => '<i class="far fa-tachometer-alt-fast"></i>',
+        'm_name' => 'Dashboard',
+        'm_desc' => '',
+        'm_parents' => array(7369,7368,7305),
+    ),
     7291 => array(
         'm_icon' => '<i class="fas fa-power-off"></i>',
         'm_name' => 'Logout',
         'm_desc' => '',
         'm_parents' => array(7368,7369),
     ),
-    7161 => array(
-        'm_icon' => '<i class="far fa-tachometer-alt-fast"></i>',
-        'm_name' => 'Mench Dashboard',
-        'm_desc' => '',
-        'm_parents' => array(7369,7368,7305),
-    ),
-    10563 => array(
-        'm_icon' => '<i class="far fa-sitemap"></i>',
-        'm_name' => 'Mench Sitemap',
-        'm_desc' => 'A list of all published intent trees that users can get started at.',
-        'm_parents' => array(7369),
-    ),
-    4430 => array(
-        'm_icon' => '<i class="far fa-user"></i>',
-        'm_name' => 'Mench Users',
-        'm_desc' => '',
-        'm_parents' => array(7798,4983,7701,7369,6827,4426,4463),
-    ),
-    6137 => array(
-        'm_icon' => '👤',
-        'm_name' => 'My Account',
-        'm_desc' => 'A web-based portal (also accessible via Messenger) enabling students to manage their account',
-        'm_parents' => array(7369),
-    ),
     7256 => array(
         'm_icon' => '<i class="fas fa-search"></i>',
-        'm_name' => 'Platform Search Bar',
+        'm_name' => 'Search',
         'm_desc' => 'A limited version of the search bar focused on published intent trees.',
         'm_parents' => array(7369,7368,3323),
     ),
@@ -1639,10 +1621,28 @@ $config['en_all_7369'] = array(
         'm_desc' => '',
         'm_parents' => array(7369),
     ),
+    10563 => array(
+        'm_icon' => '<i class="far fa-sitemap"></i>',
+        'm_name' => 'Sitemap',
+        'm_desc' => 'A list of all published intent trees that users can get started at.',
+        'm_parents' => array(7369),
+    ),
+    4430 => array(
+        'm_icon' => '<i class="far fa-user"></i>',
+        'm_name' => 'Users',
+        'm_desc' => '',
+        'm_parents' => array(7798,4983,7701,7369,6827,4426,4463),
+    ),
+    6137 => array(
+        'm_icon' => '👤',
+        'm_name' => 'My Account',
+        'm_desc' => 'A web-based portal (also accessible via Messenger) enabling students to manage their account',
+        'm_parents' => array(7369),
+    ),
 );
 
 //Mench Miner App:
-$config['en_ids_7368'] = array(4536,4535,6205,7291,6287,7161,1308,7256,5007);
+$config['en_ids_7368'] = array(4536,4535,6205,6287,7161,7291,1308,7256,5007);
 $config['en_all_7368'] = array(
     4536 => array(
         'm_icon' => '<i class="fas fa-at"></i>',
@@ -1662,12 +1662,6 @@ $config['en_all_7368'] = array(
         'm_desc' => '',
         'm_parents' => array(7368,4534,4463),
     ),
-    7291 => array(
-        'm_icon' => '<i class="fas fa-power-off"></i>',
-        'm_name' => 'Logout',
-        'm_desc' => '',
-        'm_parents' => array(7368,7369),
-    ),
     6287 => array(
         'm_icon' => '<i class="fas fa-user-shield"></i>',
         'm_name' => 'Mench Admin Tools',
@@ -1680,6 +1674,12 @@ $config['en_all_7368'] = array(
         'm_desc' => '',
         'm_parents' => array(7369,7368,7305),
     ),
+    7291 => array(
+        'm_icon' => '<i class="fas fa-power-off"></i>',
+        'm_name' => 'Mench Logout',
+        'm_desc' => '',
+        'm_parents' => array(7368,7369),
+    ),
     1308 => array(
         'm_icon' => '<i class="far fa-user-hard-hat"></i>',
         'm_name' => 'Mench Miners',
@@ -1688,7 +1688,7 @@ $config['en_all_7368'] = array(
     ),
     7256 => array(
         'm_icon' => '<i class="fas fa-search"></i>',
-        'm_name' => 'Platform Search Bar',
+        'm_name' => 'Mench Search',
         'm_desc' => 'Intents, Entities & URLs',
         'm_parents' => array(7369,7368,3323),
     ),
@@ -1939,7 +1939,7 @@ $config['en_all_7233'] = array(
     ),
     7164 => array(
         'm_icon' => '<i class="fas fa-plus-circle"></i>',
-        'm_name' => 'User Post-Intention Progress',
+        'm_name' => 'User Post-Intention Chat',
         'm_desc' => 'Interactions I have with users to get them closer to their intentions',
         'm_parents' => array(7233,7203,4527),
     ),
@@ -1962,7 +1962,7 @@ $config['en_all_7203'] = array(
     ),
     7164 => array(
         'm_icon' => '<i class="fas fa-plus-circle"></i>',
-        'm_name' => 'Link Type User Post-Intention Progress',
+        'm_name' => 'Link Type User Post-Intention Chat',
         'm_desc' => '',
         'm_parents' => array(7233,7203,4527),
     ),
@@ -1974,7 +1974,7 @@ $config['en_all_7203'] = array(
     ),
 );
 
-//Link Type User Post-Intention Progress:
+//Link Type User Post-Intention Chat:
 $config['en_ids_7164'] = array(4282,6224,6415,4275,6559,6560,6556,6578,6154,6155,4283,6132,7757,5967,7563,4554,4570,4556,4555,7702,6563,4552,4553,4549,4551,4550,4557,4278,4279,4460,4547,4287,4548,7488,7485,7486,6144,7741,6140,4559,7489,7492,6997,6157,7487,6143,7562);
 $config['en_all_7164'] = array(
     4282 => array(
@@ -2385,14 +2385,8 @@ $config['en_all_6827'] = array(
 );
 
 //Entity Link Content Requires Text:
-$config['en_ids_6805'] = array(2999,3005,4763,3147,4883,3192);
+$config['en_ids_6805'] = array(3005,4763,3147,2999,4883,3192);
 $config['en_all_6805'] = array(
-    2999 => array(
-        'm_icon' => '<i class="far fa-microphone"></i>',
-        'm_name' => 'Expert Audios',
-        'm_desc' => '',
-        'm_parents' => array(10571,4983,7614,6805,3000),
-    ),
     3005 => array(
         'm_icon' => '<i class="far fa-book"></i>',
         'm_name' => 'Expert Books',
@@ -2408,6 +2402,12 @@ $config['en_all_6805'] = array(
     3147 => array(
         'm_icon' => '<i class="far fa-presentation"></i>',
         'm_name' => 'Expert Courses',
+        'm_desc' => '',
+        'm_parents' => array(10571,4983,7614,6805,3000),
+    ),
+    2999 => array(
+        'm_icon' => '<i class="far fa-microphone"></i>',
+        'm_name' => 'Expert Podcasts',
         'm_desc' => '',
         'm_parents' => array(10571,4983,7614,6805,3000),
     ),
@@ -5081,7 +5081,7 @@ $config['en_all_4537'] = array(
 );
 
 //Expert Sources:
-$config['en_ids_3000'] = array(2997,4446,2999,3005,4763,3147,4883,3192,5948,2998);
+$config['en_ids_3000'] = array(2997,4446,3005,4763,3147,2999,4883,3192,5948,2998);
 $config['en_all_3000'] = array(
     2997 => array(
         'm_icon' => '<i class="far fa-newspaper"></i>',
@@ -5094,12 +5094,6 @@ $config['en_all_3000'] = array(
         'm_name' => 'Expert Assessments',
         'm_desc' => '',
         'm_parents' => array(10571,4983,7614,3000),
-    ),
-    2999 => array(
-        'm_icon' => '<i class="far fa-microphone"></i>',
-        'm_name' => 'Expert Audios',
-        'm_desc' => '',
-        'm_parents' => array(10571,4983,7614,6805,3000),
     ),
     3005 => array(
         'm_icon' => '<i class="far fa-book"></i>',
@@ -5116,6 +5110,12 @@ $config['en_all_3000'] = array(
     3147 => array(
         'm_icon' => '<i class="far fa-presentation"></i>',
         'm_name' => 'Expert Courses',
+        'm_desc' => '',
+        'm_parents' => array(10571,4983,7614,6805,3000),
+    ),
+    2999 => array(
+        'm_icon' => '<i class="far fa-microphone"></i>',
+        'm_name' => 'Expert Podcasts',
         'm_desc' => '',
         'm_parents' => array(10571,4983,7614,6805,3000),
     ),

@@ -251,7 +251,7 @@ class Miner_app extends CI_Controller
 
 
         echo '<tr style="font-weight: bold;">';
-        echo '<td style="text-align: left;"><span class="icon-block"><i class="fas fa-asterisk"></i></span>Total</td>';
+        echo '<td style="text-align: left;"><span class="icon-block"><i class="fas fa-asterisk"></i></span>All '.$en_all_7303[3000]['m_name'].'</td>';
         foreach($this->config->item('en_all_7358') /* Entity Active Statuses */ as $en_status_entity_id => $m_status){
             echo '<td style="text-align: right;" '.( $en_status_entity_id != 6181 && 0 /* Entity Featured */ ? ' class="' . advance_mode() . '"' : '' ).'>' . number_format($total_total_counts[$en_status_entity_id], 0) . '<i class="fal fa-info-circle icon-block" data-toggle="tooltip" title="'.$en_all_6177[$en_status_entity_id]['m_name'] . ' '.$en_all_7303[3000]['m_name'].'" data-placement="top"></i>' . '</td>';
         }
