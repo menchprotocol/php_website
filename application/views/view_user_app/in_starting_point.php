@@ -11,7 +11,9 @@
 echo '<div class="landing-page-intro" id="in_public_ui">';
 
 //Intent Title:
-echo '<h1 style="margin-bottom:30px;" id="title-parent">' . echo_in_outcome($in['in_outcome']) . '</h1>';
+if(in_is_clean_outcome($in)){
+    echo '<h1 style="margin-bottom:30px;" id="title-parent">' . echo_in_outcome($in['in_outcome']) . '</h1>';
+}
 
 //Fetch & Display Intent Note Messages:
 foreach ($this->Links_model->ln_fetch(array(
