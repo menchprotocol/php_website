@@ -5,7 +5,7 @@ defined('BASEPATH') OR exit('No direct script access allowed');
 /*
  *
  * Global variables used throughout the platform.
- * Example: $this->config->item('in_recommend_id')
+ * Example: $this->config->item('')
  *
  */
 
@@ -35,7 +35,6 @@ $config['in_join_id']               = 12599; //Where new users would start if th
 $config['in_focus_id']              = 11762; //The intent that the Mench community is focused on
 
 $config['in_required_id']           = 12830; //Intnents required by all users to be completed before moving to Action Plan
-$config['in_recommend_id']          = 12831; //Intents recommended to all users in the same order
 
 
 

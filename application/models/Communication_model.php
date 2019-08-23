@@ -1149,8 +1149,7 @@ class Communication_model extends CI_Model
 
         //Fetch Recommended Intentions not yet taken by user:
         $recommend_filters = array(
-            'ln_parent_intent_id' => $this->config->item('in_recommend_id'),
-            'in_scope_entity_id IN (' . join(',', $this->config->item('en_ids_7582')) . ')' => null, //Intent Scopes Get Started
+            'ln_parent_intent_id' => 12831,
             'in_status_entity_id IN (' . join(',', $this->config->item('en_ids_7355')) . ')' => null, //Intent Statuses Public
             'ln_status_entity_id IN (' . join(',', $this->config->item('en_ids_7359')) . ')' => null, //Link Statuses Public
             'ln_type_entity_id' => 4228, //Intent Link Regular Step
