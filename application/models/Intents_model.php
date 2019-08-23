@@ -508,13 +508,13 @@ class Intents_model extends CI_Model
 
                 $ui .= '<textarea id="user_new_content" class="border" placeholder="" style="height:66px; width: 100%; padding: 5px;"></textarea>';
                 $ui .= '<span class="saving_result"></span>';
-                $ui .= '<p><a class="btn btn-primary" href="javascript:void(0);" onsubmit="">Send '.$content_name.' Message</a></p>';
+                $ui .= '<p><a class="btn btn-primary" href="javascript:void(0);" onsubmit="">Save & Continue</a></p>';
 
             } elseif($in['in_type_entity_id'] == 6682 /* URL */){
 
                 $ui .= '<input type="url" id="user_new_content" class="border">';
                 $ui .= '<span class="saving_result"></span>';
-                $ui .= '<p><a class="btn btn-primary" href="javascript:void(0);" onsubmit="">Send '.$content_name.'</a></p>';
+                $ui .= '<p><a class="btn btn-primary" href="javascript:void(0);" onsubmit="">Save & Continue</a></p>';
 
             } elseif(in_array($in['in_type_entity_id'], $this->config->item('en_ids_7751')) /* Intent Upload File */){
 
