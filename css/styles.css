@@ -4606,3 +4606,9 @@ h4 .tip-badge {
     background-color: #222 !important;
     color: #FFF !important;
 }
+
+
+.user-type-filter, .user-type-filter:focus, .user-type-filter:hover, .user-type-filter:active{
+    font-size:11px !important;
+    font-weight: 500 !important;
+}

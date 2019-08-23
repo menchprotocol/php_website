@@ -463,13 +463,10 @@ class Miner_app extends CI_Controller
 
         echo '</table>';
 
-        //echo '<div class="link_statuses center"><a href="javascript:void(0);" onclick="$(\'.link_statuses\').toggleClass(\'hidden\')">See '.$en_all_7304[6186]['m_icon'].' '.$en_all_7304[6186]['m_name'].echo__s(count($this->config->item('en_all_4737')), true).'</a></div>';
 
 
 
-
-
-        echo '<div style="min-height:400px;">';
+        echo '<div style="min-height:360px;">';
         echo '<table class="table table-condensed table-striped stats-table">';
 
         echo '<thead>';

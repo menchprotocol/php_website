@@ -153,7 +153,7 @@ function copyToClipboard(elem) {
             //Hide the editor & saving results:
             $('#landing_page_state').fadeOut();
 
-        }, 1500)
+        }, 987)
 
     }
 
