@@ -11,7 +11,7 @@ defined('BASEPATH') OR exit('No direct script access allowed');
  *
  */
 
-//Generated 2019-08-22 17:55:19 PST
+//Generated 2019-08-22 18:43:01 PST
 
 //Public Entities:
 $config['en_ids_10571'] = array(2997,4446,2999,3005,4763,3147,4883,3192,3000,5948,2998,4433,3084,1281,1308,7512);
@@ -153,7 +153,7 @@ $config['en_all_10567'] = array(
     ),
 );
 
-//Link Type Mench Intelligence:
+//Link Type Mench Knowledge:
 $config['en_ids_7812'] = array(4251,4259,4257,4261,4260,4319,4230,4255,4318,4256,4258,4250,4229,4228,6093,6242,7545,4601,4231,7701,10573,4983);
 $config['en_all_7812'] = array(
     4251 => array(
@@ -403,7 +403,7 @@ $config['en_all_7809'] = array(
     ),
 );
 
-//Link Type User Onboarding:
+//Link Type User Pre-Intention Chat:
 $config['en_ids_7810'] = array(6149,7611,6969,7610,7563,4266,4267,7578,4577,4268,4299,7561,7564,7559,7560,7558,7562);
 $config['en_all_7810'] = array(
     6149 => array(
@@ -1454,7 +1454,7 @@ $config['en_all_7529'] = array(
     ),
     7810 => array(
         'm_icon' => '<i class="fas fa-plus-circle"></i>',
-        'm_name' => 'Link Type User Onboarding',
+        'm_name' => 'Link Type User Pre-Intention Chat',
         'm_desc' => '',
         'm_parents' => array(4527,7529,4269,7233),
     ),
@@ -1806,7 +1806,7 @@ $config['en_all_7355'] = array(
     ),
 );
 
-//Link Type User Activation:
+//Link Type User Set Intention:
 $config['en_ids_7347'] = array(7495,7542,4235);
 $config['en_all_7347'] = array(
     7495 => array(
@@ -1916,31 +1916,31 @@ $config['en_all_7233'] = array(
     7809 => array(
         'm_icon' => '<i class="fas fa-plus-circle"></i>',
         'm_name' => 'Mench Training',
-        'm_desc' => 'All activity that prepares intelligence to be mined',
+        'm_desc' => 'A track record of how Mench was trained',
         'm_parents' => array(4527,7233),
     ),
     7812 => array(
         'm_icon' => '<i class="fas fa-plus-circle"></i>',
-        'm_name' => 'Mench Intelligence',
-        'm_desc' => 'Core logical processing links that map intent/entity correlations that power all conversations',
+        'm_name' => 'Mench Knowledge',
+        'm_desc' => 'Links that map intent/entity correlations that power my intelligence',
         'm_parents' => array(4527,7233),
     ),
     7810 => array(
         'm_icon' => '<i class="fas fa-plus-circle"></i>',
-        'm_name' => 'User Onboarding',
+        'm_name' => 'User Pre-Intention Chat',
         'm_desc' => 'User `window-shopping` activities before joining Mench',
         'm_parents' => array(4527,7529,4269,7233),
     ),
     7347 => array(
         'm_icon' => '<i class="fas fa-plus-circle"></i>',
-        'm_name' => 'User Activation',
-        'm_desc' => 'User activation tracks user intentions, which guide Mench to deliver relevant intelligence',
+        'm_name' => 'User Set Intention',
+        'm_desc' => 'Setting an intention is a very important milestone as its an explicit command that helps me help you',
         'm_parents' => array(7233,4527,6219),
     ),
     7164 => array(
         'm_icon' => '<i class="fas fa-plus-circle"></i>',
-        'm_name' => 'User Conversation',
-        'm_desc' => 'Post-activation activities to help users accomplish their intentions',
+        'm_name' => 'User Post-Intention Progress',
+        'm_desc' => 'Steps we take to get closer to your intentions',
         'm_parents' => array(7233,7203,4527),
     ),
 );
@@ -1962,7 +1962,7 @@ $config['en_all_7203'] = array(
     ),
     7164 => array(
         'm_icon' => '<i class="fas fa-plus-circle"></i>',
-        'm_name' => 'Link Type User Conversation',
+        'm_name' => 'Link Type User Post-Intention Progress',
         'm_desc' => '',
         'm_parents' => array(7233,7203,4527),
     ),
@@ -1974,7 +1974,7 @@ $config['en_all_7203'] = array(
     ),
 );
 
-//Link Type User Conversation:
+//Link Type User Post-Intention Progress:
 $config['en_ids_7164'] = array(4282,6224,6415,4275,6559,6560,6556,6578,6154,6155,4283,6132,7757,5967,7563,4554,4570,4556,4555,7702,6563,4552,4553,4549,4551,4550,4557,4278,4279,4460,4547,4287,4548,7488,7485,7486,6144,7741,6140,4559,7489,7492,6997,6157,7487,6143,7562);
 $config['en_all_7164'] = array(
     4282 => array(
