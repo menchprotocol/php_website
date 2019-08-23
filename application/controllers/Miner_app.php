@@ -294,7 +294,7 @@ class Miner_app extends CI_Controller
 
 
 
-    function load_leaderboard($user_group_en_id, $days_ago){
+    function load_leaderboard($user_group_en_id, $time_group_en_id){
 
 
         //Fetch top certified miners vs top users:
@@ -351,8 +351,9 @@ class Miner_app extends CI_Controller
 
 
         //Do we have a date filter?
-        if($days_ago){
-            $start_date = date("Y-m-d" , (time() - ($days_ago * 24 * 3600)));
+        $start_date = null;
+        if($time_group_en_id==7801){
+            $start_date = date("Y-m-d" , (time() - (7 * 24 * 3600)));
             $filters['ln_timestamp >='] = $start_date.' 00:00:00'; //From beginning of the day
         }
 
@@ -364,7 +365,7 @@ class Miner_app extends CI_Controller
             foreach ($leaderboard_ens as $count=>$ln) {
                 echo '<tr>';
                 echo '<td style="text-align: left;"><span class="parent-icon icon-block">'.echo_en_icon($ln).'</span><a href="/entities/'.$ln['ln_creator_entity_id'].'">'.one_two_explode('',' ',$ln['en_name']).'</a> '.echo_rank($count+1).'</td>';
-                echo '<td style="text-align: right;"><a href="/links?ln_creator_entity_id='.$ln['ln_creator_entity_id'].( !$days_ago ? '' : '&start_range='.$start_date ).'">'.number_format($ln['credits_sum'], 0).'</a><i class="fal fa-info-circle icon-block" data-toggle="tooltip" title="'.$ln['en_name'].' credits for '.number_format($ln['links_count'],0).' links averaging '.round(($ln['credits_sum']/$ln['links_count']),1).' credits/link" data-placement="top"></i></td>';
+                echo '<td style="text-align: right;"><a href="/links?ln_creator_entity_id='.$ln['ln_creator_entity_id'].( $start_date ? '&start_range='.$start_date : $start_date ).'">'.number_format($ln['credits_sum'], 0).'</a><i class="fal fa-info-circle icon-block" data-toggle="tooltip" title="'.$ln['en_name'].' credits for '.number_format($ln['links_count'],0).' links averaging '.round(($ln['credits_sum']/$ln['links_count']),1).' credits/link" data-placement="top"></i></td>';
                 echo '</tr>';
 
             }
@@ -422,7 +423,7 @@ class Miner_app extends CI_Controller
 
         //Display RemainingIF ANY:
         echo_2level_entities(array(
-            'm_icon' => '<i class="fas fa-shapes"></i>',
+            'm_icon' => '<i class="fas fa-plus-circle"></i>',
             'm_name' => 'Others',
             'm_desc' => 'What is left',
         ), $remaining_child, $link_types_counts, $all_shown);
@@ -476,7 +477,7 @@ class Miner_app extends CI_Controller
         $counter = 0;
         foreach ($this->config->item('en_all_7798') as $en_id => $m) {
             $counter++;
-            echo '<a href="javascript:void(0)" onclick="leaderboard_filter_user_type('.$en_id.')" class="btn btn-default user-type-filter '.( $counter==1  ? ' btn-primary ' : '' ).' setting-en-'.$en_id.'">'.( strlen($m['m_icon']) > 0 ? $m['m_icon'].' ' : '' ).$m['m_name'].'</a>';
+            echo '<a href="javascript:void(0)" onclick="leaderboard_filter_user_type('.$en_id.')" class="btn btn-default user-type-filter setting-en-'.$en_id.'">'.$m['m_name'].'</a>';
         }
         echo '</div>';
 
@@ -485,7 +486,7 @@ class Miner_app extends CI_Controller
         //Leaderboard Time Frames
         echo '<div class="btn-group btn-group-sm btn-group-leaderboard" role="group">';
         foreach ($this->config->item('en_all_7799') as $en_id => $m) {
-            echo '<a href="javascript:void(0)" onclick="leaderboard_filter_time_frame('.$m['m_desc'].','.$en_id.')" class="btn btn-default time-frame-filter '.( $m['m_desc']==7 ? ' btn-primary ' : '' ).' setting-en-'.$en_id.'">'.( strlen($m['m_icon']) > 0 ? $m['m_icon'].' ' : '' ).$m['m_name'].'</a>';
+            echo '<a href="javascript:void(0)" onclick="leaderboard_filter_time_frame('.$en_id.')" class="btn btn-default user-type-filter setting-en-'.$en_id.'">'.$m['m_name'].'</a>';
         }
         echo '</div>';
 

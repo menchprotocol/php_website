@@ -1053,11 +1053,11 @@ function update_algolia($input_obj_type = null, $input_obj_id = 0, $return_row_o
                 $export_row['alg_obj_keywords'] = trim(strip_tags($export_row['alg_obj_keywords']));
 
 
-                //Append Admins:
+                //Append Trainers:
                 if(in_array(intval($db_row['in_scope_entity_id']), $CI->config->item('en_ids_7767'))){
                     foreach($CI->Links_model->ln_fetch(array(
                         'ln_status_entity_id IN (' . join(',', $CI->config->item('en_ids_7359')) . ')' => null, //Link Statuses Public
-                        'ln_type_entity_id' => 10573, //Intent Note Admin
+                        'ln_type_entity_id' => 10573, //Intent Note Trainer
                         'ln_child_intent_id' => $db_row['in_id'],
                         'ln_parent_entity_id >' => 0, //Where the author entity is stored
                     ), array(), 0) as $author){

@@ -386,7 +386,7 @@ class Intents_model extends CI_Model
             ), true, $ln_creator_entity_id);
 
 
-            //Add user as Admin IF NOT a miner:
+            //Add user as Trainer IF NOT a miner:
             if(!count($this->Links_model->ln_fetch(array(
                 'ln_child_entity_id' => $ln_creator_entity_id,
                 'ln_parent_entity_id' => 1308, //Mench Miners
@@ -396,7 +396,7 @@ class Intents_model extends CI_Model
                 $this->Links_model->ln_create(array(
                     'ln_creator_entity_id' => $ln_creator_entity_id,
                     'ln_parent_entity_id' => $ln_creator_entity_id,
-                    'ln_type_entity_id' => 10573, //Intent Note Admin
+                    'ln_type_entity_id' => 10573, //Intent Note Trainer
                     'ln_child_intent_id' => $intent_new['in_id'],
                 ));
             }

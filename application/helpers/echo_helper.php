@@ -1809,12 +1809,12 @@ function echo_in_marks($in_ln){
 }
 
 function in_authors_class($in){
-    //Allow to edit IF they are part of the intent Admins:
+    //Allow to edit IF they are part of the intent Trainers:
     $css_author = '';
     $CI =& get_instance();
     foreach($CI->Links_model->ln_fetch(array(
         'ln_status_entity_id IN (' . join(',', $CI->config->item('en_ids_7359')) . ')' => null, //Link Statuses Public
-        'ln_type_entity_id' => 10573, //Intent Note Admin
+        'ln_type_entity_id' => 10573, //Intent Note Trainer
         'ln_child_intent_id' => $in['in_id'],
         'ln_parent_entity_id >' => 0, //Where the author entity is stored
     ), array(), 0) as $author){

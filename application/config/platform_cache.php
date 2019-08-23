@@ -11,55 +11,55 @@ defined('BASEPATH') OR exit('No direct script access allowed');
  *
  */
 
-//Generated 2019-08-22 12:22:42 PST
+//Generated 2019-08-22 17:55:19 PST
 
 //Public Entities:
 $config['en_ids_10571'] = array(2997,4446,2999,3005,4763,3147,4883,3192,3000,5948,2998,4433,3084,1281,1308,7512);
 $config['en_all_10571'] = array(
     2997 => array(
-        'm_icon' => '<i class="fas fa-newspaper"></i>',
+        'm_icon' => '<i class="far fa-newspaper"></i>',
         'm_name' => 'Expert Articles',
         'm_desc' => '',
         'm_parents' => array(10571,4983,7614,3000),
     ),
     4446 => array(
-        'm_icon' => '<i class="fas fa-tachometer"></i>',
+        'm_icon' => '<i class="far fa-tachometer"></i>',
         'm_name' => 'Expert Assessments',
         'm_desc' => '',
         'm_parents' => array(10571,4983,7614,3000),
     ),
     2999 => array(
-        'm_icon' => '<i class="fas fa-microphone"></i>',
+        'm_icon' => '<i class="far fa-microphone"></i>',
         'm_name' => 'Expert Audios',
         'm_desc' => '',
         'm_parents' => array(10571,4983,7614,6805,3000),
     ),
     3005 => array(
-        'm_icon' => '<i class="fas fa-book"></i>',
+        'm_icon' => '<i class="far fa-book"></i>',
         'm_name' => 'Expert Books',
         'm_desc' => '',
         'm_parents' => array(10571,4983,7614,6805,3000),
     ),
     4763 => array(
-        'm_icon' => '<i class="fas fa-bullhorn"></i>',
+        'm_icon' => '<i class="far fa-megaphone"></i>',
         'm_name' => 'Expert Channels',
         'm_desc' => '',
         'm_parents' => array(10571,4983,7614,6805,3000),
     ),
     3147 => array(
-        'm_icon' => '<i class="fas fa-presentation"></i>',
+        'm_icon' => '<i class="far fa-presentation"></i>',
         'm_name' => 'Expert Courses',
         'm_desc' => '',
         'm_parents' => array(10571,4983,7614,6805,3000),
     ),
     4883 => array(
-        'm_icon' => '<i class="fas fa-concierge-bell"></i>',
+        'm_icon' => '<i class="far fa-concierge-bell"></i>',
         'm_name' => 'Expert Services',
         'm_desc' => '',
         'm_parents' => array(10571,4983,7614,6805,3000),
     ),
     3192 => array(
-        'm_icon' => '<i class="fas fa-compact-disc"></i>',
+        'm_icon' => '<i class="far fa-compact-disc"></i>',
         'm_name' => 'Expert Software',
         'm_desc' => '',
         'm_parents' => array(10571,4983,7614,6805,3000),
@@ -71,19 +71,19 @@ $config['en_all_10571'] = array(
         'm_parents' => array(10571,7303,3463,4506,4527,4463),
     ),
     5948 => array(
-        'm_icon' => '<i class="fas fa-file-invoice"></i>',
+        'm_icon' => '<i class="far fa-file-invoice"></i>',
         'm_name' => 'Expert Templates',
         'm_desc' => '',
         'm_parents' => array(10571,4983,7614,3000),
     ),
     2998 => array(
-        'm_icon' => '<i class="fas fa-film"></i>',
+        'm_icon' => '<i class="far fa-film"></i>',
         'm_name' => 'Expert Videos',
         'm_desc' => '',
         'm_parents' => array(10571,4983,7614,3000),
     ),
     4433 => array(
-        'm_icon' => '<i class="fas fa-user-ninja"></i>',
+        'm_icon' => '<i class="far fa-user-ninja"></i>',
         'm_name' => 'Mench Coders',
         'm_desc' => '',
         'm_parents' => array(10571,6827,4463,4426),
@@ -95,22 +95,22 @@ $config['en_all_10571'] = array(
         'm_parents' => array(10571,4983,6827,4463),
     ),
     1281 => array(
-        'm_icon' => '<i class="fas fa-user-shield"></i>',
+        'm_icon' => '<i class="far fa-user-shield"></i>',
         'm_name' => 'Mench Masters',
         'm_desc' => '',
         'm_parents' => array(10571,6287,6827,4463),
     ),
     1308 => array(
-        'm_icon' => '<i class="fas fa-user-hard-hat"></i>',
+        'm_icon' => '<i class="far fa-user-hard-hat"></i>',
         'm_name' => 'Mench Miners',
         'm_desc' => '',
         'm_parents' => array(10571,7798,7368,6827,4463,4426),
     ),
     7512 => array(
-        'm_icon' => '<i class="fas fa-user-edit"></i>',
+        'm_icon' => '<i class="far fa-user-edit"></i>',
         'm_name' => 'Mench Trainers',
         'm_desc' => '',
-        'm_parents' => array(7798,10571,4985,6827),
+        'm_parents' => array(10573,7798,10571,4985,6827),
     ),
 );
 
@@ -154,7 +154,7 @@ $config['en_all_10567'] = array(
 );
 
 //Link Type Mench Intelligence:
-$config['en_ids_7812'] = array(4251,4259,4257,4261,4260,4319,4230,4255,4318,4256,4258,4250,4229,4228,6093,6242,7545,4601,4231,7701,4983);
+$config['en_ids_7812'] = array(4251,4259,4257,4261,4260,4319,4230,4255,4318,4256,4258,4250,4229,4228,6093,6242,7545,4601,4231,7701,10573,4983);
 $config['en_all_7812'] = array(
     4251 => array(
         'm_icon' => '<i class="fas fa-at"></i>',
@@ -275,6 +275,12 @@ $config['en_all_7812'] = array(
         'm_name' => 'Intent Note Subscriber',
         'm_desc' => '',
         'm_parents' => array(7812,4527,7703,4593,4595,7551,4485),
+    ),
+    10573 => array(
+        'm_icon' => '<i class="far fa-user-edit"></i>',
+        'm_name' => 'Intent Note Trainer',
+        'm_desc' => '',
+        'm_parents' => array(7812,4593,7703,4595,7551,4485),
     ),
     4983 => array(
         'm_icon' => '<i class="far fa-thumbs-up"></i>',
@@ -510,13 +516,13 @@ $config['en_all_7799'] = array(
     7802 => array(
         'm_icon' => '',
         'm_name' => 'All-Time',
-        'm_desc' => '0',
+        'm_desc' => '',
         'm_parents' => array(7799),
     ),
     7801 => array(
         'm_icon' => '',
-        'm_name' => '7-Days',
-        'm_desc' => '7',
+        'm_name' => 'Week',
+        'm_desc' => '',
         'm_parents' => array(7799),
     ),
 );
@@ -525,19 +531,19 @@ $config['en_all_7799'] = array(
 $config['en_ids_7798'] = array(1308,7512,4430);
 $config['en_all_7798'] = array(
     1308 => array(
-        'm_icon' => '<i class="fas fa-user-hard-hat"></i>',
+        'm_icon' => '<i class="far fa-user-hard-hat"></i>',
         'm_name' => 'Miners',
         'm_desc' => '',
         'm_parents' => array(10571,7798,7368,6827,4463,4426),
     ),
     7512 => array(
-        'm_icon' => '<i class="fas fa-user-edit"></i>',
+        'm_icon' => '<i class="far fa-user-edit"></i>',
         'm_name' => 'Trainers',
         'm_desc' => '',
-        'm_parents' => array(7798,10571,4985,6827),
+        'm_parents' => array(10573,7798,10571,4985,6827),
     ),
     4430 => array(
-        'm_icon' => '<i class="fas fa-user"></i>',
+        'm_icon' => '<i class="far fa-user"></i>',
         'm_name' => 'Users',
         'm_desc' => '',
         'm_parents' => array(7798,4983,7701,7369,6827,4426,4463),
@@ -606,7 +612,7 @@ $config['en_all_7767'] = array(
 $config['en_ids_7701'] = array(4430);
 $config['en_all_7701'] = array(
     4430 => array(
-        'm_icon' => '<i class="fas fa-user"></i>',
+        'm_icon' => '<i class="far fa-user"></i>',
         'm_name' => 'Mench Users',
         'm_desc' => '',
         'm_parents' => array(7798,4983,7701,7369,6827,4426,4463),
@@ -617,61 +623,61 @@ $config['en_all_7701'] = array(
 $config['en_ids_4983'] = array(2997,4446,2999,3005,4763,3147,4883,3192,5948,2998,3084,4430);
 $config['en_all_4983'] = array(
     2997 => array(
-        'm_icon' => '<i class="fas fa-newspaper"></i>',
+        'm_icon' => '<i class="far fa-newspaper"></i>',
         'm_name' => 'Expert Articles',
         'm_desc' => '',
         'm_parents' => array(10571,4983,7614,3000),
     ),
     4446 => array(
-        'm_icon' => '<i class="fas fa-tachometer"></i>',
+        'm_icon' => '<i class="far fa-tachometer"></i>',
         'm_name' => 'Expert Assessments',
         'm_desc' => '',
         'm_parents' => array(10571,4983,7614,3000),
     ),
     2999 => array(
-        'm_icon' => '<i class="fas fa-microphone"></i>',
+        'm_icon' => '<i class="far fa-microphone"></i>',
         'm_name' => 'Expert Audios',
         'm_desc' => '',
         'm_parents' => array(10571,4983,7614,6805,3000),
     ),
     3005 => array(
-        'm_icon' => '<i class="fas fa-book"></i>',
+        'm_icon' => '<i class="far fa-book"></i>',
         'm_name' => 'Expert Books',
         'm_desc' => '',
         'm_parents' => array(10571,4983,7614,6805,3000),
     ),
     4763 => array(
-        'm_icon' => '<i class="fas fa-bullhorn"></i>',
+        'm_icon' => '<i class="far fa-megaphone"></i>',
         'm_name' => 'Expert Channels',
         'm_desc' => '',
         'm_parents' => array(10571,4983,7614,6805,3000),
     ),
     3147 => array(
-        'm_icon' => '<i class="fas fa-presentation"></i>',
+        'm_icon' => '<i class="far fa-presentation"></i>',
         'm_name' => 'Expert Courses',
         'm_desc' => '',
         'm_parents' => array(10571,4983,7614,6805,3000),
     ),
     4883 => array(
-        'm_icon' => '<i class="fas fa-concierge-bell"></i>',
+        'm_icon' => '<i class="far fa-concierge-bell"></i>',
         'm_name' => 'Expert Services',
         'm_desc' => '',
         'm_parents' => array(10571,4983,7614,6805,3000),
     ),
     3192 => array(
-        'm_icon' => '<i class="fas fa-compact-disc"></i>',
+        'm_icon' => '<i class="far fa-compact-disc"></i>',
         'm_name' => 'Expert Software',
         'm_desc' => '',
         'm_parents' => array(10571,4983,7614,6805,3000),
     ),
     5948 => array(
-        'm_icon' => '<i class="fas fa-file-invoice"></i>',
+        'm_icon' => '<i class="far fa-file-invoice"></i>',
         'm_name' => 'Expert Templates',
         'm_desc' => '',
         'm_parents' => array(10571,4983,7614,3000),
     ),
     2998 => array(
-        'm_icon' => '<i class="fas fa-film"></i>',
+        'm_icon' => '<i class="far fa-film"></i>',
         'm_name' => 'Expert Videos',
         'm_desc' => '',
         'm_parents' => array(10571,4983,7614,3000),
@@ -683,7 +689,7 @@ $config['en_all_4983'] = array(
         'm_parents' => array(10571,4983,6827,4463),
     ),
     4430 => array(
-        'm_icon' => '<i class="fas fa-user"></i>',
+        'm_icon' => '<i class="far fa-user"></i>',
         'm_name' => 'Mench Users',
         'm_desc' => '',
         'm_parents' => array(7798,4983,7701,7369,6827,4426,4463),
@@ -1046,7 +1052,7 @@ $config['en_all_7704'] = array(
 );
 
 //Link Intent Subscription Types:
-$config['en_ids_7703'] = array(4229,4228,10573,6093,6242,7545,4601,4231,7701,4983,4264,4242,6154,6155,7485,7486,6144,4559,7489,6997,6157,7487);
+$config['en_ids_7703'] = array(4229,4228,6093,6242,7545,4601,4231,7701,10573,4983,4264,4242,6154,6155,7485,7486,6144,4559,7489,6997,6157,7487);
 $config['en_all_7703'] = array(
     4229 => array(
         'm_icon' => '<i class="fas fa-lock"></i>',
@@ -1059,12 +1065,6 @@ $config['en_all_7703'] = array(
         'm_name' => 'Intent Link Required',
         'm_desc' => '',
         'm_parents' => array(7812,7703,6410,4593,4486,4595),
-    ),
-    10573 => array(
-        'm_icon' => '<i class="far fa-user-cog"></i>',
-        'm_name' => 'Intent Note Admin',
-        'm_desc' => '',
-        'm_parents' => array(4593,7703,4595,7551,4485),
     ),
     6093 => array(
         'm_icon' => '<i class="far fa-comment-exclamation"></i>',
@@ -1101,6 +1101,12 @@ $config['en_all_7703'] = array(
         'm_name' => 'Intent Note Subscriber',
         'm_desc' => '',
         'm_parents' => array(7812,4527,7703,4593,4595,7551,4485),
+    ),
+    10573 => array(
+        'm_icon' => '<i class="far fa-user-edit"></i>',
+        'm_name' => 'Intent Note Trainer',
+        'm_desc' => '',
+        'm_parents' => array(7812,4593,7703,4595,7551,4485),
     ),
     4983 => array(
         'm_icon' => '<i class="far fa-thumbs-up"></i>',
@@ -1385,14 +1391,8 @@ $config['en_all_7555'] = array(
 );
 
 //Intent Notes Entity Referencing Required:
-$config['en_ids_7551'] = array(10573,7545,7701,4983);
+$config['en_ids_7551'] = array(7545,7701,10573,4983);
 $config['en_all_7551'] = array(
-    10573 => array(
-        'm_icon' => '<i class="far fa-user-cog"></i>',
-        'm_name' => 'Intent Note Admin',
-        'm_desc' => '',
-        'm_parents' => array(4593,7703,4595,7551,4485),
-    ),
     7545 => array(
         'm_icon' => '<i class="far fa-tag"></i>',
         'm_name' => 'Intent Note Entity Tag',
@@ -1404,6 +1404,12 @@ $config['en_all_7551'] = array(
         'm_name' => 'Intent Note Subscriber',
         'm_desc' => '',
         'm_parents' => array(7812,4527,7703,4593,4595,7551,4485),
+    ),
+    10573 => array(
+        'm_icon' => '<i class="far fa-user-edit"></i>',
+        'm_name' => 'Intent Note Trainer',
+        'm_desc' => '',
+        'm_parents' => array(7812,4593,7703,4595,7551,4485),
     ),
     4983 => array(
         'm_icon' => '<i class="far fa-thumbs-up"></i>',
@@ -1551,7 +1557,7 @@ $config['en_all_7372'] = array(
 $config['en_ids_6287'] = array(1281,7257,7258,7274);
 $config['en_all_6287'] = array(
     1281 => array(
-        'm_icon' => '<i class="fas fa-user-shield"></i>',
+        'm_icon' => '<i class="far fa-user-shield"></i>',
         'm_name' => 'Mench Masters',
         'm_desc' => '',
         'm_parents' => array(10571,6287,6827,4463),
@@ -1610,7 +1616,7 @@ $config['en_all_7369'] = array(
         'm_parents' => array(7369),
     ),
     4430 => array(
-        'm_icon' => '<i class="fas fa-user"></i>',
+        'm_icon' => '<i class="far fa-user"></i>',
         'm_name' => 'Mench Users',
         'm_desc' => '',
         'm_parents' => array(7798,4983,7701,7369,6827,4426,4463),
@@ -1675,7 +1681,7 @@ $config['en_all_7368'] = array(
         'm_parents' => array(7369,7368,7305),
     ),
     1308 => array(
-        'm_icon' => '<i class="fas fa-user-hard-hat"></i>',
+        'm_icon' => '<i class="far fa-user-hard-hat"></i>',
         'm_name' => 'Mench Miners',
         'm_desc' => '',
         'm_parents' => array(10571,7798,7368,6827,4463,4426),
@@ -1868,7 +1874,7 @@ $config['en_all_7303'] = array(
         'm_parents' => array(10571,7303,3463,4506,4527,4463),
     ),
     6827 => array(
-        'm_icon' => '<i class="fas fa-users-crown"></i>',
+        'm_icon' => '<i class="far fa-users-crown"></i>',
         'm_name' => 'Mench Community',
         'm_desc' => '',
         'm_parents' => array(3303,3314,2738,7303,4527),
@@ -2341,37 +2347,37 @@ $config['en_all_6827'] = array(
         'm_parents' => array(10571,4983,6827,4463),
     ),
     1281 => array(
-        'm_icon' => '<i class="fas fa-user-shield"></i>',
+        'm_icon' => '<i class="far fa-user-shield"></i>',
         'm_name' => 'Masters',
         'm_desc' => 'The dedicated team that ensures the continuous operation of the Mench platform, governs its principles and empowers the entire community to unleash more of their potential',
         'm_parents' => array(10571,6287,6827,4463),
     ),
     1308 => array(
-        'm_icon' => '<i class="fas fa-user-hard-hat"></i>',
+        'm_icon' => '<i class="far fa-user-hard-hat"></i>',
         'm_name' => 'Miners',
         'm_desc' => 'Certified miners who understand the core mining principles',
         'm_parents' => array(10571,7798,7368,6827,4463,4426),
     ),
     4433 => array(
-        'm_icon' => '<i class="fas fa-user-ninja"></i>',
+        'm_icon' => '<i class="far fa-user-ninja"></i>',
         'm_name' => 'Coders',
         'm_desc' => 'Software Engineers contributing to our open-source codebase hosted on GitHub',
         'm_parents' => array(10571,6827,4463,4426),
     ),
     6695 => array(
-        'm_icon' => '<i class="fas fa-users"></i>',
+        'm_icon' => '<i class="far fa-users"></i>',
         'm_name' => 'Companies',
         'm_desc' => 'Companies who partner with Mench to automate their job posting conversations',
         'm_parents' => array(6827,4426,4463),
     ),
     7512 => array(
-        'm_icon' => '<i class="fas fa-user-edit"></i>',
+        'm_icon' => '<i class="far fa-user-edit"></i>',
         'm_name' => 'Trainers',
         'm_desc' => 'Those training Mench on intents and messages only. Trainers are junior miners who get to access a limited version of the Mench mining app',
-        'm_parents' => array(7798,10571,4985,6827),
+        'm_parents' => array(10573,7798,10571,4985,6827),
     ),
     4430 => array(
-        'm_icon' => '<i class="fas fa-user"></i>',
+        'm_icon' => '<i class="far fa-user"></i>',
         'm_name' => 'Users',
         'm_desc' => 'Users who are pursuing their intentions using Mench, mainly to get hired at their dream job',
         'm_parents' => array(7798,4983,7701,7369,6827,4426,4463),
@@ -2382,37 +2388,37 @@ $config['en_all_6827'] = array(
 $config['en_ids_6805'] = array(2999,3005,4763,3147,4883,3192);
 $config['en_all_6805'] = array(
     2999 => array(
-        'm_icon' => '<i class="fas fa-microphone"></i>',
+        'm_icon' => '<i class="far fa-microphone"></i>',
         'm_name' => 'Expert Audios',
         'm_desc' => '',
         'm_parents' => array(10571,4983,7614,6805,3000),
     ),
     3005 => array(
-        'm_icon' => '<i class="fas fa-book"></i>',
+        'm_icon' => '<i class="far fa-book"></i>',
         'm_name' => 'Expert Books',
         'm_desc' => '',
         'm_parents' => array(10571,4983,7614,6805,3000),
     ),
     4763 => array(
-        'm_icon' => '<i class="fas fa-bullhorn"></i>',
+        'm_icon' => '<i class="far fa-megaphone"></i>',
         'm_name' => 'Expert Channels',
         'm_desc' => '',
         'm_parents' => array(10571,4983,7614,6805,3000),
     ),
     3147 => array(
-        'm_icon' => '<i class="fas fa-presentation"></i>',
+        'm_icon' => '<i class="far fa-presentation"></i>',
         'm_name' => 'Expert Courses',
         'm_desc' => '',
         'm_parents' => array(10571,4983,7614,6805,3000),
     ),
     4883 => array(
-        'm_icon' => '<i class="fas fa-concierge-bell"></i>',
+        'm_icon' => '<i class="far fa-concierge-bell"></i>',
         'm_name' => 'Expert Services',
         'm_desc' => '',
         'm_parents' => array(10571,4983,7614,6805,3000),
     ),
     3192 => array(
-        'm_icon' => '<i class="fas fa-compact-disc"></i>',
+        'm_icon' => '<i class="far fa-compact-disc"></i>',
         'm_name' => 'Expert Software',
         'm_desc' => '',
         'm_parents' => array(10571,4983,7614,6805,3000),
@@ -2471,13 +2477,13 @@ $config['en_all_4463'] = array(
         'm_parents' => array(7368,4534,4463),
     ),
     4433 => array(
-        'm_icon' => '<i class="fas fa-user-ninja"></i>',
+        'm_icon' => '<i class="far fa-user-ninja"></i>',
         'm_name' => 'Mench Coders',
         'm_desc' => 'Developers who are contributing to the Mench open-source project on GitHub: https://github.com/askmench',
         'm_parents' => array(10571,6827,4463,4426),
     ),
     6695 => array(
-        'm_icon' => '<i class="fas fa-users"></i>',
+        'm_icon' => '<i class="far fa-users"></i>',
         'm_name' => 'Mench Companies',
         'm_desc' => 'Users who can manage the accounts of organizations they belong to.',
         'm_parents' => array(6827,4426,4463),
@@ -2489,19 +2495,19 @@ $config['en_all_4463'] = array(
         'm_parents' => array(10571,4983,6827,4463),
     ),
     1281 => array(
-        'm_icon' => '<i class="fas fa-user-shield"></i>',
+        'm_icon' => '<i class="far fa-user-shield"></i>',
         'm_name' => 'Mench Masters',
         'm_desc' => 'Mench Team members who serve the community by mediating and solving issues.',
         'm_parents' => array(10571,6287,6827,4463),
     ),
     1308 => array(
-        'm_icon' => '<i class="fas fa-user-hard-hat"></i>',
+        'm_icon' => '<i class="far fa-user-hard-hat"></i>',
         'm_name' => 'Mench Miners',
         'm_desc' => 'Everyone on Mench is mining intelligence, but this group of individuals have set their intention to become a Mench miner and have graduated from our training program on how to Mine intelligence using Mench.',
         'm_parents' => array(10571,7798,7368,6827,4463,4426),
     ),
     4430 => array(
-        'm_icon' => '<i class="fas fa-user"></i>',
+        'm_icon' => '<i class="far fa-user"></i>',
         'm_name' => 'Mench Users',
         'm_desc' => 'Users connected to Mench Personal Assistant on Facebook Messenger.',
         'm_parents' => array(7798,4983,7701,7369,6827,4426,4463),
@@ -3096,13 +3102,13 @@ $config['en_all_4426'] = array(
         'm_parents' => array(6232,6214,4319,4426,4527,4463,4341),
     ),
     4433 => array(
-        'm_icon' => '<i class="fas fa-user-ninja"></i>',
+        'm_icon' => '<i class="far fa-user-ninja"></i>',
         'm_name' => 'Mench Coders',
         'm_desc' => 'Requires admin review and approval',
         'm_parents' => array(10571,6827,4463,4426),
     ),
     6695 => array(
-        'm_icon' => '<i class="fas fa-users"></i>',
+        'm_icon' => '<i class="far fa-users"></i>',
         'm_name' => 'Mench Companies',
         'm_desc' => '',
         'm_parents' => array(6827,4426,4463),
@@ -3114,13 +3120,13 @@ $config['en_all_4426'] = array(
         'm_parents' => array(7555,6225,4426,4755),
     ),
     1308 => array(
-        'm_icon' => '<i class="fas fa-user-hard-hat"></i>',
+        'm_icon' => '<i class="far fa-user-hard-hat"></i>',
         'm_name' => 'Mench Miners',
         'm_desc' => 'Requires admin review and approval',
         'm_parents' => array(10571,7798,7368,6827,4463,4426),
     ),
     4430 => array(
-        'm_icon' => '<i class="fas fa-user"></i>',
+        'm_icon' => '<i class="far fa-user"></i>',
         'm_name' => 'Mench Users',
         'm_desc' => '',
         'm_parents' => array(7798,4983,7701,7369,6827,4426,4463),
@@ -3583,7 +3589,7 @@ $config['en_all_4755'] = array(
 );
 
 //Link Credits:
-$config['en_ids_4595'] = array(4246,7504,5943,5001,5865,4999,4998,5000,5981,5982,5003,4251,4259,4257,4261,4260,4319,4230,4255,4318,4256,4258,4994,4263,4250,4229,4228,6226,4993,10573,6093,6242,7545,4601,4231,7701,4983,4264,4242,5007,4282,6224,6415,4275,6559,6560,6556,6578,6154,6155,6149,7611,6969,4283,6132,7495,7542,4235,7757,7610,5967,7563,4266,4267,7578,4554,4570,4556,4555,7702,6563,4552,4553,4577,4549,4551,4550,4557,4278,4279,4268,4299,4460,4547,4287,4548,7561,7564,7559,7560,7558,7488,7485,7486,6144,7741,6140,4559,7489,7492,6997,6157,7487,6143,7562);
+$config['en_ids_4595'] = array(4246,7504,5943,5001,5865,4999,4998,5000,5981,5982,5003,4251,4259,4257,4261,4260,4319,4230,4255,4318,4256,4258,4994,4263,4250,4229,4228,6226,4993,6093,6242,7545,4601,4231,7701,10573,4983,4264,4242,5007,4282,6224,6415,4275,6559,6560,6556,6578,6154,6155,6149,7611,6969,4283,6132,7495,7542,4235,7757,7610,5967,7563,4266,4267,7578,4554,4570,4556,4555,7702,6563,4552,4553,4577,4549,4551,4550,4557,4278,4279,4268,4299,4460,4547,4287,4548,7561,7564,7559,7560,7558,7488,7485,7486,6144,7741,6140,4559,7489,7492,6997,6157,7487,6143,7562);
 $config['en_all_4595'] = array(
     4246 => array(
         'm_icon' => '<i class="far fa-bug"></i>',
@@ -3759,12 +3765,6 @@ $config['en_all_4595'] = array(
         'm_desc' => '1',
         'm_parents' => array(7809,7612,4595,4593),
     ),
-    10573 => array(
-        'm_icon' => '<i class="far fa-user-cog"></i>',
-        'm_name' => 'Intent Note Admin',
-        'm_desc' => '500',
-        'm_parents' => array(4593,7703,4595,7551,4485),
-    ),
     6093 => array(
         'm_icon' => '<i class="far fa-comment-exclamation"></i>',
         'm_name' => 'Intent Note Changelog',
@@ -3800,6 +3800,12 @@ $config['en_all_4595'] = array(
         'm_name' => 'Intent Note Subscriber',
         'm_desc' => '50',
         'm_parents' => array(7812,4527,7703,4593,4595,7551,4485),
+    ),
+    10573 => array(
+        'm_icon' => '<i class="far fa-user-edit"></i>',
+        'm_name' => 'Intent Note Trainer',
+        'm_desc' => '500',
+        'm_parents' => array(7812,4593,7703,4595,7551,4485),
     ),
     4983 => array(
         'm_icon' => '<i class="far fa-thumbs-up"></i>',
@@ -4235,7 +4241,7 @@ $config['en_all_4600'] = array(
 );
 
 //Link Type:
-$config['en_ids_4593'] = array(4246,7504,5943,5001,5865,4999,4998,5000,5981,5982,5003,4251,4259,4257,4261,4260,4319,4230,4255,4318,4256,4258,4994,4263,4250,4229,4228,6226,4993,10573,6093,6242,7545,4601,4231,7701,4983,4264,4242,5007,4282,6224,6415,4275,6559,6560,6556,6578,6154,6155,6149,7611,6969,4283,6132,7495,7542,4235,7757,7610,5967,7563,4266,4267,7578,4554,4570,4556,4555,7702,6563,4552,4553,4577,4549,4551,4550,4557,4278,4279,4268,4299,4460,4547,4287,4548,7561,7564,7559,7560,7558,7488,7485,7486,6144,7741,6140,4559,7489,7492,6997,6157,7487,6143,7562);
+$config['en_ids_4593'] = array(4246,7504,5943,5001,5865,4999,4998,5000,5981,5982,5003,4251,4259,4257,4261,4260,4319,4230,4255,4318,4256,4258,4994,4263,4250,4229,4228,6226,4993,6093,6242,7545,4601,4231,7701,10573,4983,4264,4242,5007,4282,6224,6415,4275,6559,6560,6556,6578,6154,6155,6149,7611,6969,4283,6132,7495,7542,4235,7757,7610,5967,7563,4266,4267,7578,4554,4570,4556,4555,7702,6563,4552,4553,4577,4549,4551,4550,4557,4278,4279,4268,4299,4460,4547,4287,4548,7561,7564,7559,7560,7558,7488,7485,7486,6144,7741,6140,4559,7489,7492,6997,6157,7487,6143,7562);
 $config['en_all_4593'] = array(
     4246 => array(
         'm_icon' => '<i class="far fa-bug"></i>',
@@ -4411,12 +4417,6 @@ $config['en_all_4593'] = array(
         'm_desc' => '',
         'm_parents' => array(7809,7612,4595,4593),
     ),
-    10573 => array(
-        'm_icon' => '<i class="far fa-user-cog"></i>',
-        'm_name' => 'Intent Note Admin',
-        'm_desc' => 'Keeps track of the users who can manage/edit the intent',
-        'm_parents' => array(4593,7703,4595,7551,4485),
-    ),
     6093 => array(
         'm_icon' => '<i class="far fa-comment-exclamation"></i>',
         'm_name' => 'Intent Note Changelog',
@@ -4452,6 +4452,12 @@ $config['en_all_4593'] = array(
         'm_name' => 'Intent Note Subscriber',
         'm_desc' => 'When miners subscribe to receive intent updates and manage the intent.',
         'm_parents' => array(7812,4527,7703,4593,4595,7551,4485),
+    ),
+    10573 => array(
+        'm_icon' => '<i class="far fa-user-edit"></i>',
+        'm_name' => 'Intent Note Trainer',
+        'm_desc' => 'Keeps track of the users who can manage/edit the intent',
+        'm_parents' => array(7812,4593,7703,4595,7551,4485),
     ),
     4983 => array(
         'm_icon' => '<i class="far fa-thumbs-up"></i>',
@@ -4938,25 +4944,25 @@ $config['en_all_4592'] = array(
 $config['en_ids_4454'] = array(4456,4457,4458,4455);
 $config['en_all_4454'] = array(
     4456 => array(
-        'm_icon' => '<i class="fal fa-volume-up"></i>',
+        'm_icon' => '<i class="far fa-volume-up"></i>',
         'm_name' => 'Regular Notifications',
         'm_desc' => 'User is connected and will be notified by sound & vibration for new Mench messages',
         'm_parents' => array(4454),
     ),
     4457 => array(
-        'm_icon' => '<i class="fal fa-volume-down"></i>',
+        'm_icon' => '<i class="far fa-volume-down"></i>',
         'm_name' => 'Silent Notifications',
         'm_desc' => 'User is connected and will be notified by on-screen notification only for new Mench messages',
         'm_parents' => array(4454),
     ),
     4458 => array(
-        'm_icon' => '<i class="fal fa-volume-mute"></i>',
+        'm_icon' => '<i class="far fa-volume-mute"></i>',
         'm_name' => 'No Notifications',
         'm_desc' => 'User is connected but will not be notified for new Mench messages except the red icon indicator on the Messenger app which would indicate the total number of new messages they have',
         'm_parents' => array(4454),
     ),
     4455 => array(
-        'm_icon' => '<i class="fas fa-ban"></i>',
+        'm_icon' => '<i class="far fa-ban"></i>',
         'm_name' => 'Unsubscribe',
         'm_desc' => 'Stop all communications until you re-subscribe',
         'm_parents' => array(5008,4454),
@@ -5009,10 +5015,10 @@ $config['en_all_4485'] = array(
         'm_parents' => array(7812,4527,7703,4593,4595,7551,4485),
     ),
     10573 => array(
-        'm_icon' => '<i class="far fa-user-cog"></i>',
-        'm_name' => 'Admin',
+        'm_icon' => '<i class="far fa-user-edit"></i>',
+        'm_name' => 'Trainer',
         'm_desc' => 'Tracks users who can administrate this intent.',
-        'm_parents' => array(4593,7703,4595,7551,4485),
+        'm_parents' => array(7812,4593,7703,4595,7551,4485),
     ),
 );
 
@@ -5078,61 +5084,61 @@ $config['en_all_4537'] = array(
 $config['en_ids_3000'] = array(2997,4446,2999,3005,4763,3147,4883,3192,5948,2998);
 $config['en_all_3000'] = array(
     2997 => array(
-        'm_icon' => '<i class="fas fa-newspaper"></i>',
+        'm_icon' => '<i class="far fa-newspaper"></i>',
         'm_name' => 'Expert Articles',
         'm_desc' => '',
         'm_parents' => array(10571,4983,7614,3000),
     ),
     4446 => array(
-        'm_icon' => '<i class="fas fa-tachometer"></i>',
+        'm_icon' => '<i class="far fa-tachometer"></i>',
         'm_name' => 'Expert Assessments',
         'm_desc' => '',
         'm_parents' => array(10571,4983,7614,3000),
     ),
     2999 => array(
-        'm_icon' => '<i class="fas fa-microphone"></i>',
+        'm_icon' => '<i class="far fa-microphone"></i>',
         'm_name' => 'Expert Audios',
         'm_desc' => '',
         'm_parents' => array(10571,4983,7614,6805,3000),
     ),
     3005 => array(
-        'm_icon' => '<i class="fas fa-book"></i>',
+        'm_icon' => '<i class="far fa-book"></i>',
         'm_name' => 'Expert Books',
         'm_desc' => '',
         'm_parents' => array(10571,4983,7614,6805,3000),
     ),
     4763 => array(
-        'm_icon' => '<i class="fas fa-bullhorn"></i>',
+        'm_icon' => '<i class="far fa-megaphone"></i>',
         'm_name' => 'Expert Channels',
         'm_desc' => '',
         'm_parents' => array(10571,4983,7614,6805,3000),
     ),
     3147 => array(
-        'm_icon' => '<i class="fas fa-presentation"></i>',
+        'm_icon' => '<i class="far fa-presentation"></i>',
         'm_name' => 'Expert Courses',
         'm_desc' => '',
         'm_parents' => array(10571,4983,7614,6805,3000),
     ),
     4883 => array(
-        'm_icon' => '<i class="fas fa-concierge-bell"></i>',
+        'm_icon' => '<i class="far fa-concierge-bell"></i>',
         'm_name' => 'Expert Services',
         'm_desc' => '',
         'm_parents' => array(10571,4983,7614,6805,3000),
     ),
     3192 => array(
-        'm_icon' => '<i class="fas fa-compact-disc"></i>',
+        'm_icon' => '<i class="far fa-compact-disc"></i>',
         'm_name' => 'Expert Software',
         'm_desc' => '',
         'm_parents' => array(10571,4983,7614,6805,3000),
     ),
     5948 => array(
-        'm_icon' => '<i class="fas fa-file-invoice"></i>',
+        'm_icon' => '<i class="far fa-file-invoice"></i>',
         'm_name' => 'Expert Templates',
         'm_desc' => '',
         'm_parents' => array(10571,4983,7614,3000),
     ),
     2998 => array(
-        'm_icon' => '<i class="fas fa-film"></i>',
+        'm_icon' => '<i class="far fa-film"></i>',
         'm_name' => 'Expert Videos',
         'm_desc' => '',
         'm_parents' => array(10571,4983,7614,3000),
