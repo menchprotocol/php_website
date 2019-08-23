@@ -11,7 +11,7 @@ defined('BASEPATH') OR exit('No direct script access allowed');
  *
  */
 
-//Generated 2019-08-22 18:47:49 PST
+//Generated 2019-08-22 19:08:24 PST
 
 //Public Entities:
 $config['en_ids_10571'] = array(2997,4446,2999,3005,4763,3147,4883,3192,3000,5948,2998,4433,3084,1281,1308,7512);
@@ -1916,31 +1916,31 @@ $config['en_all_7233'] = array(
     7809 => array(
         'm_icon' => '<i class="fas fa-plus-circle"></i>',
         'm_name' => 'Mench Training',
-        'm_desc' => 'A track record of how Mench was trained',
+        'm_desc' => 'A track record of how I was trained',
         'm_parents' => array(4527,7233),
     ),
     7812 => array(
         'm_icon' => '<i class="fas fa-plus-circle"></i>',
         'm_name' => 'Mench Knowledge',
-        'm_desc' => 'Links that map intent/entity correlations that power my intelligence',
+        'm_desc' => 'The main components of my intelligence that power all my conversations',
         'm_parents' => array(4527,7233),
     ),
     7810 => array(
         'm_icon' => '<i class="fas fa-plus-circle"></i>',
         'm_name' => 'User Pre-Intention Chat',
-        'm_desc' => 'User `window-shopping` activities before joining Mench',
+        'm_desc' => 'Interactions I have with users before they join by setting their first intention',
         'm_parents' => array(4527,7529,4269,7233),
     ),
     7347 => array(
         'm_icon' => '<i class="fas fa-plus-circle"></i>',
         'm_name' => 'User Set Intention',
-        'm_desc' => 'Setting an intention is a very important milestone as its an explicit command that helps me help you',
+        'm_desc' => 'Once a user sets their intention, they are considered activated and ready to take steps towards their goals',
         'm_parents' => array(7233,4527,6219),
     ),
     7164 => array(
         'm_icon' => '<i class="fas fa-plus-circle"></i>',
-        'm_name' => 'User Post-Intention Chat',
-        'm_desc' => 'Steps we take to get closer to your intentions',
+        'm_name' => 'User Post-Intention Progress',
+        'm_desc' => 'Interactions I have with users to get them closer to their intentions',
         'm_parents' => array(7233,7203,4527),
     ),
 );
@@ -1962,7 +1962,7 @@ $config['en_all_7203'] = array(
     ),
     7164 => array(
         'm_icon' => '<i class="fas fa-plus-circle"></i>',
-        'm_name' => 'Link Type User Post-Intention Chat',
+        'm_name' => 'Link Type User Post-Intention Progress',
         'm_desc' => '',
         'm_parents' => array(7233,7203,4527),
     ),
@@ -1974,7 +1974,7 @@ $config['en_all_7203'] = array(
     ),
 );
 
-//Link Type User Post-Intention Chat:
+//Link Type User Post-Intention Progress:
 $config['en_ids_7164'] = array(4282,6224,6415,4275,6559,6560,6556,6578,6154,6155,4283,6132,7757,5967,7563,4554,4570,4556,4555,7702,6563,4552,4553,4549,4551,4550,4557,4278,4279,4460,4547,4287,4548,7488,7485,7486,6144,7741,6140,4559,7489,7492,6997,6157,7487,6143,7562);
 $config['en_all_7164'] = array(
     4282 => array(
