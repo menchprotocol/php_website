@@ -406,7 +406,7 @@ class Miner_app extends CI_Controller
         //Count all rows:
         $link_types_counts = $this->Links_model->ln_fetch(array(
             'ln_status_entity_id IN (' . join(',', $this->config->item('en_ids_7360')) . ')' => null, //Link Statuses Active
-        ), array('en_type'), 0, 0, array('en_name' => 'ASC'), 'COUNT(ln_type_entity_id) as links_count, en_name, en_icon, ln_type_entity_id', 'ln_type_entity_id, en_name, en_icon');
+        ), array('en_type'), 0, 0, array(), 'COUNT(ln_type_entity_id) as links_count, en_name, en_icon, ln_type_entity_id', 'ln_type_entity_id, en_name, en_icon');
 
         //Start with everything, and go one by one:
         $all_link_types = $this->config->item('en_all_4593');

@@ -55,7 +55,7 @@ if(count($user_intents) > 0){
 } else {
 
     //Show warning:
-    echo '<div class="alert alert-warning"><i class="fas fa-exclamation-triangle"></i> Your Action Plan has no intentions, yet.</div>';
+    echo '<div class="alert alert-warning"><i class="fas fa-exclamation-triangle"></i> No intentions added to your action plan, yet. <a href="/sitemap">Browse intentions</a> to get started.</div>';
 
 }
 

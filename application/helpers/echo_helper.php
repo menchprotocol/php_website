@@ -1881,9 +1881,13 @@ function echo_2level_entities($main_obj, $all_link_types, $link_types_counts, $a
             continue;
         }
 
-        array_push($all_link_type_ids, $en_id);
-
         $ln = filter_array($link_types_counts, 'ln_type_entity_id', $en_id);
+
+        if( !$ln['links_count'] ){
+            continue;
+        }
+
+        array_push($all_link_type_ids, $en_id);
 
         //Addup counter:
         $all_children += $ln['links_count'];
@@ -1899,12 +1903,12 @@ function echo_2level_entities($main_obj, $all_link_types, $link_types_counts, $a
         } else {
 
             $sub_rows .= '<td style="text-align: left;">';
-            $sub_rows .= '<span class="icon-block" style="margin-left:4px; border-left: 1px solid #222;">'.$m['m_icon'].'</span>';
+            $sub_rows .= '<span class="icon-block" style="margin-left:10px;">'.$m['m_icon'].'</span>';
             $sub_rows .= '<a href="/entities/'.$en_id.'">'.$m['m_name'].'</a>';
             $sub_rows .= '</td>';
 
 
-            $sub_rows .= '<td style="text-align: right;"><span style="margin-right:4px; border-right: 1px solid #222;">';
+            $sub_rows .= '<td style="text-align: right;"><span>';
 
             $sub_rows .= '<a href="/links?ln_status_entity_id='.join(',', $CI->config->item('en_ids_7360')) /* Link Statuses Active */.'&ln_type_entity_id=' . $en_id . '">'.number_format($ln['links_count'], 0) . '</a>' . ( strlen($en_all_4593[$en_id]['m_desc']) > 0 ? '<i class="fal fa-info-circle icon-block" data-toggle="tooltip" title="'.$en_all_4593[$en_id]['m_desc'].'" data-placement="top"></i>' : '<i class="fal fa-info-circle icon-block" data-toggle="tooltip" title="'.number_format($ln['links_count'], 0).' Links" data-placement="top" style="color: #AAA;"></i>' );
 
@@ -1914,7 +1918,7 @@ function echo_2level_entities($main_obj, $all_link_types, $link_types_counts, $a
 
 
         //sub-row count:
-        $sub_rows .= '</tr>';
+        $sub_rows .= '</div></tr>';
     }
 
 
@@ -1928,7 +1932,7 @@ function echo_2level_entities($main_obj, $all_link_types, $link_types_counts, $a
     $sub_rows .= '<tr class="hidden '.$identifier.'"><td colspan="2">&nbsp;</td></tr>';
 
     //Maybe a second one too:
-    if(fmod(count($all_link_types), 2) == 0){
+    if(fmod(count($all_link_type_ids), 2) == 0){
         //Make it even:
         $sub_rows .= '<tr class="hidden '.$identifier.'"><td colspan="2">&nbsp;</td></tr>';
     }
@@ -1938,7 +1942,7 @@ function echo_2level_entities($main_obj, $all_link_types, $link_types_counts, $a
     //Fetch Title:
     echo '<tr>';
     echo '<td style="text-align: left;"><span class="icon-block
-">'.$main_obj['m_icon'].'</span><a href="javascript:void(0);" onclick="$(\'.'.$identifier.'\').toggleClass(\'hidden\')">'.$main_obj['m_name'].'</a></td>';
+"><i class="fas fa-plus-circle '.$identifier.'"></i><i class="fas fa-minus-circle '.$identifier.' hidden"></i></span><a href="javascript:void(0);" onclick="$(\'.'.$identifier.'\').toggleClass(\'hidden\')">'.$main_obj['m_name'].'</a></td>';
     echo '<td style="text-align: right;"><a href="/links?ln_status_entity_id='.join(',', $CI->config->item('en_ids_7360')) /* Link Statuses Active */.'&ln_type_entity_id=' . join(',' , $all_link_type_ids) . '">'.number_format($all_children).'</a>' . ( strlen($main_obj['m_desc']) > 0 ? '<i class="fal fa-info-circle icon-block" data-toggle="tooltip" title="'.$main_obj['m_desc'].'" data-placement="top"></i>' : '<i class="fal fa-info-circle icon-block" data-toggle="tooltip" title="'.number_format($all_children, 0).' Links" data-placement="top" style="color: #AAA;"></i>' ) .'</td>';
     echo '</tr>';
 
