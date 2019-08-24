@@ -74,7 +74,7 @@ foreach ($this->Links_model->ln_fetch(array(
 
 
         //Learn more option:
-        echo '<i class="fal fa-info-circle"></i> <span data-toggle="tooltip" title="'.$m['m_desc'].'" data-placement="bottom" class="underdot">Usage Notes</span> &nbsp;';
+        echo '<i class="fas fa-info-circle"></i> <span data-toggle="tooltip" title="'.$m['m_desc'].'" data-placement="bottom" class="underdot">Usage Notes</span> &nbsp;';
 
 
         //Does it support sorting?

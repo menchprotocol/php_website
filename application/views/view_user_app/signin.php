@@ -107,7 +107,7 @@ if(count($current_sign_in_attempt) == 0){
             <div class="row help_me_choose hidden">
                 <?php
                 foreach ($this->config->item('en_all_7555') as $en_id => $m) {
-                    echo '<div class="col-xs-6"><i class="fal fa-info-circle"></i> '.$m['m_desc'].'</div>';
+                    echo '<div class="col-xs-6"><i class="fas fa-info-circle"></i> '.$m['m_desc'].'</div>';
                 }
                 ?>
             </div>
