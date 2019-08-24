@@ -122,7 +122,7 @@ class Miner_app extends CI_Controller
 
             echo '<tr class="'.( $count >= $show_max_verbs ? 'hiddenverbs hidden' : '' ).'">';
             echo '<td style="text-align: left;"><span style="width:29px; display: inline-block; text-align: center;">'.echo_en_icon($verb).'</span><a href="/entities/'.$verb['in_verb_entity_id'].'">'.$verb['en_name'].'</a></td>';
-            echo '<td style="text-align: right;"><a href="/links?ln_type_entity_id=4250&in_status_entity_id=' . join(',', $this->config->item('en_ids_7356')) . '&in_verb_entity_id='.$verb['in_verb_entity_id'].'">'.number_format($verb['totals'],0).'</a><i class="far fa-info-circle icon-block" data-toggle="tooltip" title="Intent'.echo__s($verb['totals']).' starting with '.$verb['en_name'].'" data-placement="top"></i></td>';
+            echo '<td style="text-align: right;"><a href="/links?ln_type_entity_id=4250&in_status_entity_id=' . join(',', $this->config->item('en_ids_7356')) . '&in_verb_entity_id='.$verb['in_verb_entity_id'].'">'.number_format($verb['totals'],0).'</a><i class="fal fa-info-circle icon-block" data-toggle="tooltip" title="Intent'.echo__s($verb['totals']).' starting with '.$verb['en_name'].'" data-placement="top"></i></td>';
             echo '</tr>';
 
             if(($count+1)==$show_max_verbs){
@@ -162,7 +162,7 @@ class Miner_app extends CI_Controller
             //Display this status count:
             echo '<tr>';
             echo '<td style="text-align: left;"><span class="icon-block">' . $m['m_icon'] . '</span><a href="/entities/'.$en_id.'">' . $m['m_name'] . '</a></td>';
-            echo '<td style="text-align: right;" class="'.( $en_id==6182 ? 'is-removed' : '' ).'">' . '<a href="/links?in_status_entity_id=' . $en_id . '&ln_type_entity_id=4250">' . number_format($objects_count[0]['totals'],0) . '</a>' . '<i class="far fa-info-circle icon-block" data-toggle="tooltip" title="'. $m['m_desc'] . '" data-placement="top"></i>' . '</td>';
+            echo '<td style="text-align: right;" class="'.( $en_id==6182 ? 'is-removed' : '' ).'">' . '<a href="/links?in_status_entity_id=' . $en_id . '&ln_type_entity_id=4250">' . number_format($objects_count[0]['totals'],0) . '</a>' . '<i class="fal fa-info-circle icon-block" data-toggle="tooltip" title="'. $m['m_desc'] . '" data-placement="top"></i>' . '</td>';
             echo '</tr>';
 
         }
@@ -217,7 +217,7 @@ class Miner_app extends CI_Controller
 
 
                 //Display row:
-                $expert_source_statuses .= '<td style="text-align: right;"'.( $en_status_entity_id != 6181 /* Entity Featured */ && 0 ? ' class="' . advance_mode() . '"' : '' ).'><a href="/entities/' . $en_id .'#status-'.$en_status_entity_id.'">'.number_format($source_count,0).'</a><i class="far fa-info-circle icon-block" data-toggle="tooltip" title="'  . $m['m_name'] . ' that are ' . $en_all_6177[$en_status_entity_id]['m_desc'] . '" data-placement="top"></i></td>';
+                $expert_source_statuses .= '<td style="text-align: right;"'.( $en_status_entity_id != 6181 /* Entity Featured */ && 0 ? ' class="' . advance_mode() . '"' : '' ).'><a href="/entities/' . $en_id .'#status-'.$en_status_entity_id.'">'.number_format($source_count,0).'</a><i class="fal fa-info-circle icon-block" data-toggle="tooltip" title="'  . $m['m_name'] . ' that are ' . $en_all_6177[$en_status_entity_id]['m_desc'] . '" data-placement="top"></i></td>';
 
 
             }
@@ -253,7 +253,7 @@ class Miner_app extends CI_Controller
         echo '<tr style="font-weight: bold;">';
         echo '<td style="text-align: left;"><span class="icon-block"><i class="fas fa-asterisk"></i></span>All '.$en_all_7303[3000]['m_name'].'</td>';
         foreach($this->config->item('en_all_7358') /* Entity Active Statuses */ as $en_status_entity_id => $m_status){
-            echo '<td style="text-align: right;" '.( $en_status_entity_id != 6181 && 0 /* Entity Featured */ ? ' class="' . advance_mode() . '"' : '' ).'>' . number_format($total_total_counts[$en_status_entity_id], 0) . '<i class="far fa-info-circle icon-block" data-toggle="tooltip" title="'.$en_all_6177[$en_status_entity_id]['m_name'] . ' '.$en_all_7303[3000]['m_name'].'" data-placement="top"></i>' . '</td>';
+            echo '<td style="text-align: right;" '.( $en_status_entity_id != 6181 && 0 /* Entity Featured */ ? ' class="' . advance_mode() . '"' : '' ).'>' . number_format($total_total_counts[$en_status_entity_id], 0) . '<i class="fal fa-info-circle icon-block" data-toggle="tooltip" title="'.$en_all_6177[$en_status_entity_id]['m_name'] . ' '.$en_all_7303[3000]['m_name'].'" data-placement="top"></i>' . '</td>';
         }
         echo '</tr>';
 
@@ -285,7 +285,7 @@ class Miner_app extends CI_Controller
             //Display this status count:
             echo '<tr>';
             echo '<td style="text-align: left;"><span class="icon-block">' . $m['m_icon'] . '</span><a href="/entities/'.$en_id.'">' . $m['m_name'] . '</a></td>';
-            echo '<td style="text-align: right;" class="'.( $en_id==6178 ? 'is-removed' : '' ).'">' . '<a href="/links?en_status_entity_id=' . $en_id . '&ln_type_entity_id=4251">' . number_format($objects_count[0]['totals'], 0) . '</a>' .'<i class="far fa-info-circle icon-block" data-toggle="tooltip" title="'.$m['m_desc'] . '" data-placement="top"></i>' . '</td>';
+            echo '<td style="text-align: right;" class="'.( $en_id==6178 ? 'is-removed' : '' ).'">' . '<a href="/links?en_status_entity_id=' . $en_id . '&ln_type_entity_id=4251">' . number_format($objects_count[0]['totals'], 0) . '</a>' .'<i class="fal fa-info-circle icon-block" data-toggle="tooltip" title="'.$m['m_desc'] . '" data-placement="top"></i>' . '</td>';
             echo '</tr>';
 
         }
@@ -369,7 +369,7 @@ class Miner_app extends CI_Controller
             foreach ($leaderboard_ens as $count=>$ln) {
                 echo '<tr>';
                 echo '<td style="text-align: left;"><span class="parent-icon icon-block">'.echo_en_icon($ln).'</span><a href="/entities/'.$ln['ln_creator_entity_id'].'">'.one_two_explode('',' ',$ln['en_name']).'</a> '.echo_rank($count+1).'</td>';
-                echo '<td style="text-align: right;"><a href="/links?ln_creator_entity_id='.$ln['ln_creator_entity_id'].( $start_date ? '&start_range='.$start_date : $start_date ).'">'.number_format($ln['credits_sum'], 0).'</a><i class="far fa-info-circle icon-block" data-toggle="tooltip" title="'.$ln['en_name'].' credits for '.number_format($ln['links_count'],0).' links averaging '.round(($ln['credits_sum']/$ln['links_count']),1).' credits/link" data-placement="top"></i></td>';
+                echo '<td style="text-align: right;"><a href="/links?ln_creator_entity_id='.$ln['ln_creator_entity_id'].( $start_date ? '&start_range='.$start_date : $start_date ).'">'.number_format($ln['credits_sum'], 0).'</a><i class="fal fa-info-circle icon-block" data-toggle="tooltip" title="'.$ln['en_name'].' credits for '.number_format($ln['links_count'],0).' links averaging '.round(($ln['credits_sum']/$ln['links_count']),1).' credits/link" data-placement="top"></i></td>';
                 echo '</tr>';
 
             }
@@ -456,7 +456,7 @@ class Miner_app extends CI_Controller
             echo '<td style="text-align: left;"><span class="icon-block">' . $m['m_icon'] . '</span><a href="/entities/'.$en_id.'">' . $m['m_name'] . '</a></td>';
             echo '<td style="text-align: right;" class="'.( $en_id==6173 ? 'is-removed' : '' ).'">';
             echo '<a href="/links?ln_status_entity_id=' . $en_id . '">' . number_format($objects_count[0]['totals'],0) . '</a>';
-            echo '<i class="far fa-info-circle icon-block" data-toggle="tooltip" title="' . $m['m_desc'] . '" data-placement="top"></i>';
+            echo '<i class="fal fa-info-circle icon-block" data-toggle="tooltip" title="' . $m['m_desc'] . '" data-placement="top"></i>';
             echo '</td>';
             echo '</tr>';
         }
