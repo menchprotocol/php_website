@@ -1808,14 +1808,14 @@ function echo_in_marks($in_ln){
 
 }
 
-function in_authors_class($in){
+function in_authors_class($in_id){
     //Allow to edit IF they are part of the intent Trainers:
     $css_author = '';
     $CI =& get_instance();
     foreach($CI->Links_model->ln_fetch(array(
         'ln_status_entity_id IN (' . join(',', $CI->config->item('en_ids_7359')) . ')' => null, //Link Statuses Public
         'ln_type_entity_id' => 10573, //Intent Note Trainer
-        'ln_child_intent_id' => $in['in_id'],
+        'ln_child_intent_id' => $in_id,
         'ln_parent_entity_id >' => 0, //Where the author entity is stored
     ), array(), 0) as $author){
         //Append CSS class:
@@ -2138,7 +2138,7 @@ function echo_in($in, $level, $in_linked_id = 0, $is_parent = false)
     $css_author = '';
     if(isset($session_en['en_id'])){
 
-        $author_class = in_authors_class($in);
+        $author_class = in_authors_class($in['in_id']);
 
         //Action Plan:
         $actionplan_users = $CI->Links_model->ln_fetch(array(
@@ -2190,7 +2190,7 @@ function echo_in($in, $level, $in_linked_id = 0, $is_parent = false)
         //Intent Unlink for trainers:
         if(filter_array($session_en['en__parents'], 'en_id', 7512)){
             if($ln_id > 0){
-                $ui .= '<a class="badge badge-primary white-primary is_not_bg" onclick="in_unlink_only(' . $in['in_id'] . ','.$level.',' . $ln_id . ')" style="margin:-2px -8px 0 4px; width:40px;" href="javascript:void(0)" data-toggle="tooltip" title="Unlink Intent" data-placement="bottom"><i class="far fa-trash-alt"></i></a> &nbsp;';
+                $ui .= '<a class="badge badge-primary white-primary is_not_bg '.advance_mode(in_authors_class($in_linked_id)).'" onclick="in_unlink_only(' . $in['in_id'] . ','.$level.',' . $ln_id . ')" style="margin:-2px -8px 0 4px; width:40px;" href="javascript:void(0)" data-toggle="tooltip" title="Unlink Intent" data-placement="bottom"><i class="far fa-trash-alt"></i></a> &nbsp;';
             } else {
                 $ui .= '<span style="width:43px; display: inline-block;">&nbsp;</span>';
             }
@@ -2291,7 +2291,7 @@ function echo_in($in, $level, $in_linked_id = 0, $is_parent = false)
         }
 
 
-        $ui .= '<div class="'.advance_mode(in_authors_class($in)).'">';
+        $ui .= '<div class="'.advance_mode(in_authors_class($in['in_id'])).'">';
         $ui .= '<div class="list-group-item list_input new-in3-input link-class--' . $ln_id . ' hidden">
                 <div class="form-group is-empty"  style="margin: 0; padding: 0;"><form action="#" onsubmit="in_link_or_create(' . $in['in_id'] . ',0,3);" intent-id="' . $in['in_id'] . '"><input type="text" class="form-control intentadder-id-'.$in['in_id'].' algolia_search" maxlength="' . $CI->config->item('in_outcome_max') . '" id="addintent-cr-' . $ln_id . '" intent-id="' . $in['in_id'] . '" placeholder="+ Intent"></form></div>
         </div>';
