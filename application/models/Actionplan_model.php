@@ -1,6 +1,6 @@
 <?php if (!defined('BASEPATH')) exit('No direct script access allowed');
 
-class User_app_model extends CI_Model
+class Actionplan_model extends CI_Model
 {
 
     /*
@@ -15,64 +15,7 @@ class User_app_model extends CI_Model
     }
 
 
-
-
-    function user_activate_session($en){
-
-        //Set parents to published only:
-        $en['en__parents'] = $this->Links_model->ln_fetch(array(
-            'ln_type_entity_id IN (' . join(',', $this->config->item('en_ids_4592')) . ')' => null, //Entity Link Connectors
-            'ln_child_entity_id' => $en['en_id'], //This child entity
-            'ln_parent_entity_id IN (' . join(',', $this->config->item('en_ids_7798')) . ')' => null, //Leaderboard User Groups
-            'ln_status_entity_id IN (' . join(',', $this->config->item('en_ids_7359')) . ')' => null, //Link Statuses Public
-        ), array('en_parent'));
-
-        $is_user = filter_array($en['en__parents'], 'ln_parent_entity_id', 4430);
-        $is_trainer = filter_array($en['en__parents'], 'ln_parent_entity_id', 7512);
-        $is_miner = filter_array($en['en__parents'], 'ln_parent_entity_id', 1308);
-
-        //Assign user details:
-        $session_data['user'] = $en;
-
-        //Are they miner? Give them Sign In access:
-        if ($is_miner) {
-
-            //Check their advance mode status:
-            $last_advance_settings = $this->Links_model->ln_fetch(array(
-                'ln_creator_entity_id' => $en['en_id'],
-                'ln_type_entity_id' => 5007, //Toggled Advance Mode
-                'ln_status_entity_id IN (' . join(',', $this->config->item('en_ids_7360')) . ')' => null, //Link Statuses Active
-            ), array(), 1, 0, array('ln_id' => 'DESC'));
-
-            //They have admin rights:
-            $session_data['user_default_intent'] = $this->config->item('in_focus_id');
-            $session_data['user_session_count'] = 0;
-            $session_data['advance_view_enabled'] = ( count($last_advance_settings) > 0 && substr_count($last_advance_settings[0]['ln_content'] , ' ON')==1 ? 1 : 0 );
-
-        } elseif ($is_trainer) {
-
-            //They have admin rights:
-            $session_data['user_default_intent'] = ( substr($is_trainer['ln_content'],0,1)=='#' ? substr($is_trainer['ln_content'],1) : $this->config->item('in_focus_id') );
-            $session_data['user_session_count'] = 0;
-            $session_data['advance_view_enabled'] = 0;
-
-        }
-
-        //Log Sign In Link:
-        $this->Links_model->ln_create(array(
-            'ln_creator_entity_id' => $en['en_id'],
-            'ln_type_entity_id' => 7564, //User Signin on Website Success
-        ));
-
-        //All good to go!
-        $this->session->set_userdata($session_data);
-
-        //Return user data:
-        return $en;
-
-    }
-
-    function actionplan_completion_auto_complete($en_id, $in, $unlock_link_type_en_id){
+    function completion_auto_complete($en_id, $in, $unlock_link_type_en_id){
 
         /*
          *
@@ -117,7 +60,7 @@ class User_app_model extends CI_Model
 
 
         //Process on-complete automations:
-        $this->User_app_model->actionplan_completion_checks($en_id, $in, true, true);
+        $this->Actionplan_model->completion_checks($en_id, $in, true, true);
 
 
         //All good:
@@ -125,7 +68,7 @@ class User_app_model extends CI_Model
     }
 
 
-    function actionplan_step_next_find($en_id, $in){
+    function step_next_find($en_id, $in){
 
         /*
          *
@@ -179,7 +122,7 @@ class User_app_model extends CI_Model
             } elseif($is_expansion){
 
                 //Completed step that has OR expansions, check recursively to see if next step within here:
-                $found_in_id = $this->User_app_model->actionplan_step_next_find($en_id, $completed_steps[0]);
+                $found_in_id = $this->Actionplan_model->step_next_find($en_id, $completed_steps[0]);
 
                 if($found_in_id != 0){
                     return $found_in_id;
@@ -199,7 +142,7 @@ class User_app_model extends CI_Model
                 if(count($unlocked_conditions) > 0){
 
                     //Completed step that has OR expansions, check recursively to see if next step within here:
-                    $found_in_id = $this->User_app_model->actionplan_step_next_find($en_id, $unlocked_conditions[0]);
+                    $found_in_id = $this->Actionplan_model->step_next_find($en_id, $unlocked_conditions[0]);
 
                     if($found_in_id != 0){
                         return $found_in_id;
@@ -214,7 +157,7 @@ class User_app_model extends CI_Model
 
     }
 
-    function actionplan_step_next_go($en_id, $advance_step, $send_title_message = false)
+    function step_next_go($en_id, $advance_step, $send_title_message = false)
     {
 
         /*
@@ -256,12 +199,12 @@ class User_app_model extends CI_Model
         foreach($user_intents as $user_intent){
 
             //Find first incomplete step for this Action Plan intention:
-            $next_in_id = $this->User_app_model->actionplan_step_next_find($en_id, $user_intent);
+            $next_in_id = $this->Actionplan_model->step_next_find($en_id, $user_intent);
 
             if($next_in_id < 0){
 
                 //We need to terminate this:
-                $this->User_app_model->actionplan_intention_delete($en_id, $user_intent['in_id'], 7757 /* User Intent Terminated */);
+                $this->Actionplan_model->intention_delete($en_id, $user_intent['in_id'], 7757 /* User Intent Terminated */);
                 break;
 
             } elseif($next_in_id > 0){
@@ -298,7 +241,7 @@ class User_app_model extends CI_Model
                 }
 
                 //Yes, communicate it:
-                $this->User_app_model->actionplan_step_next_echo($en_id, $next_in_id);
+                $this->Actionplan_model->step_echo($en_id, $next_in_id);
 
             } else {
 
@@ -320,7 +263,7 @@ class User_app_model extends CI_Model
 
     }
 
-    function actionplan_step_skip_initiate($en_id, $in_id, $push_message = true){
+    function step_skip_initiate($en_id, $in_id, $push_message = true){
 
         //Fetch this intent:
         $ins = $this->Intents_model->in_fetch(array(
@@ -330,7 +273,7 @@ class User_app_model extends CI_Model
         if(count($ins) < 1){
             $this->Links_model->ln_create(array(
                 'ln_child_intent_id' => $in_id,
-                'ln_content' => 'actionplan_step_skip_initiate() did not locate the published intent',
+                'ln_content' => 'step_skip_initiate() did not locate the published intent',
                 'ln_type_entity_id' => 4246, //Platform Bug Reports
                 'ln_creator_entity_id' => $en_id,
             ));
@@ -374,7 +317,7 @@ class User_app_model extends CI_Model
         }
     }
 
-    function actionplan_step_skip_apply($en_id, $in_id)
+    function step_skip_apply($en_id, $in_id)
     {
 
         //Fetch intent common steps:
@@ -384,7 +327,7 @@ class User_app_model extends CI_Model
         ));
         if(count($ins) < 1){
             $this->Links_model->ln_create(array(
-                'ln_content' => 'actionplan_step_skip_apply() failed to locate published intent',
+                'ln_content' => 'step_skip_apply() failed to locate published intent',
                 'ln_type_entity_id' => 4246, //Platform Bug Reports
                 'ln_creator_entity_id' => $en_id,
                 'ln_parent_intent_id' => $in_id,
@@ -397,7 +340,7 @@ class User_app_model extends CI_Model
 
         if(!isset($in_metadata['in__metadata_common_steps'])){
             $this->Links_model->ln_create(array(
-                'ln_content' => 'actionplan_step_skip_apply() failed to locate metadata common steps',
+                'ln_content' => 'step_skip_apply() failed to locate metadata common steps',
                 'ln_type_entity_id' => 4246, //Platform Bug Reports
                 'ln_creator_entity_id' => $en_id,
                 'ln_parent_intent_id' => $in_id,
@@ -438,14 +381,14 @@ class User_app_model extends CI_Model
         }
 
         //Process on-complete automations:
-        $this->User_app_model->actionplan_completion_checks($en_id, $ins[0], true, false);
+        $this->Actionplan_model->completion_checks($en_id, $ins[0], true, false);
 
         //Return number of skipped steps:
         return count($flat_common_steps);
 
     }
 
-    function actionplan_intention_focus($en_id){
+    function intention_focus($en_id){
 
         /*
          *
@@ -464,7 +407,7 @@ class User_app_model extends CI_Model
         ), array('in_parent'), 0, 0, array('ln_order' => 'ASC')) as $actionplan_in){
 
             //See progress rate so far:
-            $completion_rate = $this->User_app_model->actionplan_completion_progress($en_id, $actionplan_in);
+            $completion_rate = $this->Actionplan_model->completion_progress($en_id, $actionplan_in);
 
             if($completion_rate['completion_percentage'] < 100){
                 //This is the top priority now:
@@ -486,7 +429,7 @@ class User_app_model extends CI_Model
 
     }
 
-    function actionplan_intention_delete($en_id, $in_id, $stop_method_id, $stop_feedback = null){
+    function intention_delete($en_id, $in_id, $stop_method_id, $stop_feedback = null){
 
 
         if(!in_array($stop_method_id, $this->config->item('en_ids_6150') /* Action Plan Intention Completed */)){
@@ -560,7 +503,7 @@ class User_app_model extends CI_Model
 
     }
 
-    function actionplan_intention_add($en_id, $in_id, $recommender_in_id = 0, $echo_next_step = true){
+    function intention_add($en_id, $in_id, $recommender_in_id = 0, $echo_next_step = true){
 
         //Validate Intent ID:
         $ins = $this->Intents_model->in_fetch(array(
@@ -581,7 +524,7 @@ class User_app_model extends CI_Model
             //Log error:
             $this->Links_model->ln_create(array(
                 'ln_parent_intent_id' => $in_id,
-                'ln_content' => 'actionplan_intention_add() was about to add an intention that was not public',
+                'ln_content' => 'intention_add() was about to add an intention that was not public',
                 'ln_type_entity_id' => 4246, //Platform Bug Reports
                 'ln_creator_entity_id' => $en_id,
             ));
@@ -601,7 +544,7 @@ class User_app_model extends CI_Model
             //Oooops this already exists in the Action Plan:
             $this->Links_model->ln_create(array(
                 'ln_parent_intent_id' => $in_id,
-                'ln_content' => 'actionplan_intention_add() blocked the addition of a duplicate intention to the Action Plan',
+                'ln_content' => 'intention_add() blocked the addition of a duplicate intention to the Action Plan',
                 'ln_type_entity_id' => 4246, //Platform Bug Reports
                 'ln_creator_entity_id' => $en_id,
             ));
@@ -676,14 +619,14 @@ class User_app_model extends CI_Model
          * */
 
         //Fetch top intention that being workined on now:
-        $top_priority = $this->User_app_model->actionplan_intention_focus($en_id);
+        $top_priority = $this->Actionplan_model->intention_focus($en_id);
 
         if($top_priority){
             if($recommender_in_id > 0 || $top_priority['in']['in_id']==$ins[0]['in_id']){
 
                 if($echo_next_step){
                     //The newly added intent is the top priority, so let's initiate first message for action plan tree:
-                    $this->User_app_model->actionplan_step_next_echo($en_id, $ins[0]['in_id']);
+                    $this->Actionplan_model->step_echo($en_id, $ins[0]['in_id']);
                 }
 
             } else {
@@ -720,7 +663,7 @@ class User_app_model extends CI_Model
 
 
 
-    function actionplan_completion_recursive_up($en_id, $in, $is_bottom_level = true){
+    function completion_recursive_up($en_id, $in, $is_bottom_level = true){
 
         /*
          *
@@ -736,7 +679,7 @@ class User_app_model extends CI_Model
 
 
         //First let's make sure this entire intent tree completed by the user:
-        $completion_rate = $this->User_app_model->actionplan_completion_progress($en_id, $in);
+        $completion_rate = $this->Actionplan_model->completion_progress($en_id, $in);
 
 
         if($completion_rate['completion_percentage'] < 100){
@@ -770,7 +713,7 @@ class User_app_model extends CI_Model
                 $this->Links_model->ln_create(array(
                     'ln_parent_intent_id' => $in['in_id'],
                     'ln_child_intent_id' => $existing_expansions[0]['ln_child_intent_id'],
-                    'ln_content' => 'actionplan_completion_recursive_up() detected duplicate Label Expansion entries',
+                    'ln_content' => 'completion_recursive_up() detected duplicate Label Expansion entries',
                     'ln_type_entity_id' => 4246, //Platform Bug Reports
                     'ln_creator_entity_id' => $en_id,
                 ));
@@ -782,7 +725,7 @@ class User_app_model extends CI_Model
 
 
             //Yes, Let's calculate user's score for this tree:
-            $user_marks = $this->User_app_model->actionplan_completion_marks($en_id, $in);
+            $user_marks = $this->Actionplan_model->completion_marks($en_id, $in);
 
 
 
@@ -849,7 +792,7 @@ class User_app_model extends CI_Model
                     ));
 
                     //See if we also need to mark the child as complete:
-                    $this->User_app_model->actionplan_completion_auto_complete($en_id, $locked_link, 6997 /* User Step Score Unlock */);
+                    $this->Actionplan_model->completion_auto_complete($en_id, $locked_link, 6997 /* User Step Score Unlock */);
 
                 }
             }
@@ -857,7 +800,7 @@ class User_app_model extends CI_Model
             //We must have exactly 1 match by now:
             if($found_match != 1){
                 $this->Links_model->ln_create(array(
-                    'ln_content' => 'actionplan_completion_recursive_up() found ['.$found_match.'] routing logic matches!',
+                    'ln_content' => 'completion_recursive_up() found ['.$found_match.'] routing logic matches!',
                     'ln_type_entity_id' => 4246, //Platform Bug Reports
                     'ln_creator_entity_id' => $en_id,
                     'ln_parent_intent_id' => $in['in_id'],
@@ -876,7 +819,7 @@ class User_app_model extends CI_Model
         if($is_bottom_level){
 
             //Fetch user intentions:
-            $user_intentions_ids = $this->User_app_model->actionplan_intention_ids($en_id);
+            $user_intentions_ids = $this->Actionplan_model->intention_ids($en_id);
 
             //Fetch all parents trees for this intent
             $recursive_parents = $this->Intents_model->in_fetch_recursive_public_parents($in['in_id']);
@@ -913,7 +856,7 @@ class User_app_model extends CI_Model
                     if(count($parent_ins) > 0){
 
                         //Fetch parent completion:
-                        $unlock_steps_messages_recursive = $this->User_app_model->actionplan_completion_recursive_up($en_id, $parent_ins[0], false);
+                        $unlock_steps_messages_recursive = $this->Actionplan_model->completion_recursive_up($en_id, $parent_ins[0], false);
 
                         //What did we find?
                         if(count($unlock_steps_messages_recursive) > 0){
@@ -933,7 +876,7 @@ class User_app_model extends CI_Model
         return $unlock_steps_messages;
     }
 
-    function actionplan_completion_checks($en_id, $in, $send_message, $step_progress_made){
+    function completion_checks($en_id, $in, $send_message, $step_progress_made){
 
 
         /*
@@ -968,7 +911,7 @@ class User_app_model extends CI_Model
 
 
         //Try to unlock steps:
-        $unlock_steps_messages = $this->User_app_model->actionplan_completion_recursive_up($en_id, $in);
+        $unlock_steps_messages = $this->Actionplan_model->completion_recursive_up($en_id, $in);
 
 
         //Merge the two, if any:
@@ -999,7 +942,7 @@ class User_app_model extends CI_Model
     }
 
 
-    function actionplan_unlock_recursive_up($in_id, $is_bottom_level = true)
+    function unlock_recursive_up($in_id, $is_bottom_level = true)
     {
         /*
          *
@@ -1019,7 +962,7 @@ class User_app_model extends CI_Model
         }
     }
 
-    function actionplan_unlock_locked_step($en_id, $in){
+    function unlock_locked_step($en_id, $in){
 
         /*
          * A function that starts from a locked intent and checks:
@@ -1117,18 +1060,19 @@ class User_app_model extends CI_Model
     }
 
 
-    function actionplan_step_next_echo($en_id, $in_id, $push_message = true)
+    function step_echo($en_id, $in_id, $push_message = true)
     {
 
         /*
          *
          * Advance the user action plan by 1 step
          *
-         * - $in_id:            The next step intent to be completed now
          *
          * - $en_id:            The recipient who will receive the messages via
          *                      Facebook Messenger. Note that this function does
          *                      not support an HTML format, only Messenger.
+         *
+         * - $in_id:            The next step intent to be completed now
          *
          * */
 
@@ -1159,7 +1103,7 @@ class User_app_model extends CI_Model
             $this->Links_model->ln_create(array(
                 'ln_type_entity_id' => 4246, //Platform Bug Reports
                 'ln_creator_entity_id' => $en_id,
-                'ln_content' => 'actionplan_step_next_echo() called invalid intent',
+                'ln_content' => 'step_echo() called invalid intent',
                 'ln_parent_intent_id' => $ins[0]['in_id'],
             ));
 
@@ -1173,7 +1117,7 @@ class User_app_model extends CI_Model
             $this->Links_model->ln_create(array(
                 'ln_type_entity_id' => 4246, //Platform Bug Reports
                 'ln_creator_entity_id' => $en_id,
-                'ln_content' => 'actionplan_step_next_echo() called intent that is not yet public',
+                'ln_content' => 'step_echo() called intent that is not yet public',
                 'ln_parent_intent_id' => $ins[0]['in_id'],
             ));
 
@@ -1742,7 +1686,7 @@ class User_app_model extends CI_Model
         if(isset($new_progression_link['ln_status_entity_id']) && in_array($new_progression_link['ln_status_entity_id'], $this->config->item('en_ids_7359') /* Link Statuses Public */)){
 
             //Process on-complete automations:
-            $on_complete_messages = $this->User_app_model->actionplan_completion_checks($en_id, $ins[0], false, $step_progress_made);
+            $on_complete_messages = $this->Actionplan_model->completion_checks($en_id, $ins[0], false, $step_progress_made);
 
             if($step_progress_made && count($on_complete_messages) > 0){
                 //Add on-complete messages (if any) to the current messages:
@@ -1773,7 +1717,7 @@ class User_app_model extends CI_Model
             $next_in_id = 0;
             if(!$has_children){
                 //Let's see if we have a next step:
-                $next_in_id = $this->User_app_model->actionplan_step_next_go($en_id, false);
+                $next_in_id = $this->Actionplan_model->step_next_go($en_id, false);
             }
 
             if($has_children || $next_in_id>0){
@@ -1890,7 +1834,7 @@ class User_app_model extends CI_Model
 
     }
 
-    function actionplan_completion_marks($en_id, $in, $top_level = true)
+    function completion_marks($en_id, $in, $top_level = true)
     {
 
         //Fetch/validate Action Plan Common Steps:
@@ -1899,7 +1843,7 @@ class User_app_model extends CI_Model
 
             //Should not happen, log error:
             $this->Links_model->ln_create(array(
-                'ln_content' => 'actionplan_completion_marks() Detected user Action Plan without in__metadata_common_steps value!',
+                'ln_content' => 'completion_marks() Detected user Action Plan without in__metadata_common_steps value!',
                 'ln_type_entity_id' => 4246, //Platform Bug Reports
                 'ln_creator_entity_id' => $en_id,
                 'ln_parent_intent_id' => $in['in_id'],
@@ -2001,7 +1945,7 @@ class User_app_model extends CI_Model
 
                     if(count($ins) > 0){
                         //Fetch recursive:
-                        $recursive_stats = $this->User_app_model->actionplan_completion_marks($en_id, array_merge($expansion_in, $ins[0]), false);
+                        $recursive_stats = $this->Actionplan_model->completion_marks($en_id, array_merge($expansion_in, $ins[0]), false);
                         $metadata_this['steps_answered_count'] += $recursive_stats['steps_answered_count'];
 
                         $this_answer_marks = $answer_marks_index[$expansion_in['ln_child_intent_id']];
@@ -2024,7 +1968,7 @@ class User_app_model extends CI_Model
 
     }
 
-    function actionplan_completion_progress($en_id, $in, $top_level = true)
+    function completion_progress($en_id, $in, $top_level = true)
     {
 
         //Fetch/validate Action Plan Common Steps:
@@ -2075,7 +2019,7 @@ class User_app_model extends CI_Model
             ), array('in_child')) as $expansion_in) {
 
                 //Fetch recursive:
-                $recursive_stats = $this->User_app_model->actionplan_completion_progress($en_id, $expansion_in, false);
+                $recursive_stats = $this->Actionplan_model->completion_progress($en_id, $expansion_in, false);
 
                 //Addup completion stats for this:
                 $metadata_this['steps_total'] += $recursive_stats['steps_total'];
@@ -2100,7 +2044,7 @@ class User_app_model extends CI_Model
             ), array('in_child')) as $expansion_in) {
 
                 //Fetch recursive:
-                $recursive_stats = $this->User_app_model->actionplan_completion_progress($en_id, $expansion_in, false);
+                $recursive_stats = $this->Actionplan_model->completion_progress($en_id, $expansion_in, false);
 
                 //Addup completion stats for this:
                 $metadata_this['steps_total'] += $recursive_stats['steps_total'];
@@ -2136,14 +2080,13 @@ class User_app_model extends CI_Model
 
         }
 
-
         //Return results:
         return $metadata_this;
 
     }
 
 
-    function actionplan_intention_ids($en_id){
+    function intention_ids($en_id){
         //Simply returns all the intention IDs for a user's Action Plan:
         $user_intentions_ids = array();
         foreach($this->Links_model->ln_fetch(array(

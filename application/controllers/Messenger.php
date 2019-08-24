@@ -39,9 +39,9 @@ class Messenger extends CI_Controller
         //List the intent:
         return echo_json(array(
             'in_user' => array(
-                'next_in_id' => $this->User_app_model->actionplan_step_next_find($session_en['en_id'], $ins[0]),
-                'progress' => $this->User_app_model->actionplan_completion_progress($session_en['en_id'], $ins[0]),
-                'marks' => $this->User_app_model->actionplan_completion_marks($session_en['en_id'], $ins[0]),
+                'next_in_id' => $this->Actionplan_model->step_next_find($session_en['en_id'], $ins[0]),
+                'progress' => $this->Actionplan_model->completion_progress($session_en['en_id'], $ins[0]),
+                'marks' => $this->Actionplan_model->completion_marks($session_en['en_id'], $ins[0]),
             ),
             'in_general' => array(
                 'recursive_parents' => $this->Intents_model->in_fetch_recursive_public_parents($ins[0]['in_id']),

@@ -22,6 +22,67 @@ class Communication_model extends CI_Model
     }
 
 
+
+
+
+    function activate_session($en){
+
+        //Set parents to published only:
+        $en['en__parents'] = $this->Links_model->ln_fetch(array(
+            'ln_type_entity_id IN (' . join(',', $this->config->item('en_ids_4592')) . ')' => null, //Entity Link Connectors
+            'ln_child_entity_id' => $en['en_id'], //This child entity
+            'ln_parent_entity_id IN (' . join(',', $this->config->item('en_ids_7798')) . ')' => null, //Leaderboard User Groups
+            'ln_status_entity_id IN (' . join(',', $this->config->item('en_ids_7359')) . ')' => null, //Link Statuses Public
+        ), array('en_parent'));
+
+        $is_user = filter_array($en['en__parents'], 'ln_parent_entity_id', 4430);
+        $is_trainer = filter_array($en['en__parents'], 'ln_parent_entity_id', 7512);
+        $is_miner = filter_array($en['en__parents'], 'ln_parent_entity_id', 1308);
+
+        //Assign user details:
+        $session_data['user'] = $en;
+
+        //Are they miner? Give them Sign In access:
+        if ($is_miner) {
+
+            //Check their advance mode status:
+            $last_advance_settings = $this->Links_model->ln_fetch(array(
+                'ln_creator_entity_id' => $en['en_id'],
+                'ln_type_entity_id' => 5007, //Toggled Advance Mode
+                'ln_status_entity_id IN (' . join(',', $this->config->item('en_ids_7360')) . ')' => null, //Link Statuses Active
+            ), array(), 1, 0, array('ln_id' => 'DESC'));
+
+            //They have admin rights:
+            $session_data['user_default_intent'] = $this->config->item('in_focus_id');
+            $session_data['user_session_count'] = 0;
+            $session_data['advance_view_enabled'] = ( count($last_advance_settings) > 0 && substr_count($last_advance_settings[0]['ln_content'] , ' ON')==1 ? 1 : 0 );
+
+        } elseif ($is_trainer) {
+
+            //They have admin rights:
+            $session_data['user_default_intent'] = ( substr($is_trainer['ln_content'],0,1)=='#' ? substr($is_trainer['ln_content'],1) : $this->config->item('in_focus_id') );
+            $session_data['user_session_count'] = 0;
+            $session_data['advance_view_enabled'] = 0;
+
+        }
+
+        //Log Sign In Link:
+        $this->Links_model->ln_create(array(
+            'ln_creator_entity_id' => $en['en_id'],
+            'ln_type_entity_id' => 7564, //User Signin on Website Success
+        ));
+
+        //All good to go!
+        $this->session->set_userdata($session_data);
+
+        //Return user data:
+        return $en;
+
+    }
+
+
+
+
     function dispatch_subscription_email($related_intents){
 
         $en_all_7703 = $this->config->item('en_all_7703'); //Load all link types
@@ -107,7 +168,7 @@ class Communication_model extends CI_Model
                 $personalized_intro .= '<div style="color: #AAAAAA; font-size:0.9em; margin-top:20px;">Manage this subscription via <a href="https://mench.com/intents/'.$subscriber_en['ln_child_intent_id'].'" target="_blank">#'.$subscriber_en['ln_child_intent_id'].'</a></div>';
 
                 //Send email:
-                $dispatched_email = $this->Communication_model->user_received_emails(array($en_email['ln_content']), $subject, $personalized_intro);
+                $dispatched_email = $this->Communication_model->dispatch_emails(array($en_email['ln_content']), $subject, $personalized_intro);
 
                 //Log emails sent:
                 $this->Links_model->ln_create(array(
@@ -1420,10 +1481,10 @@ class Communication_model extends CI_Model
             */
 
             //Process on-complete automations:
-            $this->User_app_model->actionplan_completion_checks($en['en_id'], $pending_req_submission[0], true, true);
+            $this->Actionplan_model->completion_checks($en['en_id'], $pending_req_submission[0], true, true);
 
             //Load next option:
-            $this->User_app_model->actionplan_step_next_go($en['en_id'], true, true);
+            $this->Actionplan_model->step_next_go($en['en_id'], true, true);
 
 
         } elseif (substr_count($quick_reply_payload, 'UNSUBSCRIBE_') == 1) {
@@ -1608,7 +1669,7 @@ class Communication_model extends CI_Model
             }
 
             //Add to Action Plan:
-            $this->User_app_model->actionplan_intention_add($en['en_id'], $in_id);
+            $this->Actionplan_model->intention_add($en['en_id'], $in_id);
 
         } elseif (is_numeric($quick_reply_payload)) {
 
@@ -1768,7 +1829,7 @@ class Communication_model extends CI_Model
         } elseif ($quick_reply_payload == 'GONEXT') {
 
             //Fetch and communicate next intent:
-            $this->User_app_model->actionplan_step_next_go($en['en_id'], true, true);
+            $this->Actionplan_model->step_next_go($en['en_id'], true, true);
 
         } elseif (substr_count($quick_reply_payload, 'ADD_RECOMMENDED_') == 1) {
 
@@ -1777,7 +1838,7 @@ class Communication_model extends CI_Model
             $recommended_in_id = $in_ids[1];
 
             //Add this item to the tio of the Action Plan:
-            $this->User_app_model->actionplan_intention_add($en['en_id'], $recommended_in_id, $recommender_in_id);
+            $this->Actionplan_model->intention_add($en['en_id'], $recommended_in_id, $recommender_in_id);
 
         } elseif (substr_count($quick_reply_payload, 'SUBSCRIBE-CONFIRM_') == 1) {
 
@@ -1785,7 +1846,7 @@ class Communication_model extends CI_Model
             $in_id = intval(one_two_explode('SUBSCRIBE-CONFIRM_', '', $quick_reply_payload));
 
             //Add to Action Plan:
-            $this->User_app_model->actionplan_intention_add($en['en_id'], $in_id);
+            $this->Actionplan_model->intention_add($en['en_id'], $in_id);
 
         } elseif (substr_count($quick_reply_payload, 'SKIP-ACTIONPLAN_') == 1) {
 
@@ -1808,7 +1869,7 @@ class Communication_model extends CI_Model
 
                 //User has indicated they want to skip this tree and move on to the next item in-line:
                 //Lets confirm the implications of this SKIP to ensure they are aware:
-                $this->User_app_model->actionplan_step_skip_initiate($en['en_id'], $in_id);
+                $this->Actionplan_model->step_skip_initiate($en['en_id'], $in_id);
 
             } else {
 
@@ -1821,7 +1882,7 @@ class Communication_model extends CI_Model
                 } elseif ($skip_action == 'skip-confirm') {
 
                     //Actually skip and see if we've finished this Action Plan:
-                    $this->User_app_model->actionplan_step_skip_apply($en['en_id'], $in_id);
+                    $this->Actionplan_model->step_skip_apply($en['en_id'], $in_id);
 
                     //Confirm the skip:
                     $message = 'Got it! I successfully skipped selected steps';
@@ -1843,7 +1904,7 @@ class Communication_model extends CI_Model
                 );
 
                 //Communicate next step:
-                $this->User_app_model->actionplan_step_next_go($en['en_id'], true, true);
+                $this->Actionplan_model->step_next_go($en['en_id'], true, true);
 
             }
 
@@ -1932,11 +1993,11 @@ class Communication_model extends CI_Model
 
 
                     //See if we also need to mark the answer as complete:
-                    $this->User_app_model->actionplan_completion_auto_complete($en['en_id'], $answer_ins[0], 7485 /* User Step Answer Unlock */);
+                    $this->Actionplan_model->completion_auto_complete($en['en_id'], $answer_ins[0], 7485 /* User Step Answer Unlock */);
 
 
                     //Find/Advance to the next step:
-                    $this->User_app_model->actionplan_step_next_go($en['en_id'], true, true);
+                    $this->Actionplan_model->step_next_go($en['en_id'], true, true);
 
                 }
 
@@ -2038,7 +2099,7 @@ class Communication_model extends CI_Model
                 //Show them a list of their Action Plan and completion stats:
                 foreach($user_intents as $user_intent){
                     //Completion Percentage so far:
-                    $completion_rate = $this->User_app_model->actionplan_completion_progress($en['en_id'], $user_intent);
+                    $completion_rate = $this->Actionplan_model->completion_progress($en['en_id'], $user_intent);
                     $message .= "\n\n" . $completion_rate['completion_percentage'].'% ['.$completion_rate['steps_completed'].'/'.$completion_rate['steps_total'].' step'.echo__s($completion_rate['steps_total']).'] '.echo_in_outcome($user_intent['in_outcome']);
                 }
 
@@ -2068,7 +2129,7 @@ class Communication_model extends CI_Model
         } elseif (in_array($fb_received_message, array('next', 'continue', 'go'))) {
 
             //Give them the next step of their Action Plan:
-            $next_in_id = $this->User_app_model->actionplan_step_next_go($en['en_id'], true, true);
+            $next_in_id = $this->Actionplan_model->step_next_go($en['en_id'], true, true);
 
             //Log command trigger:
             $this->Links_model->ln_create(array(
@@ -2080,12 +2141,12 @@ class Communication_model extends CI_Model
         } elseif ($fb_received_message == 'skip') {
 
             //Find the next intent in the Action Plan to skip:
-            $next_in_id = $this->User_app_model->actionplan_step_next_go($en['en_id'], false);
+            $next_in_id = $this->Actionplan_model->step_next_go($en['en_id'], false);
 
             if($next_in_id > 0){
 
                 //Initiate skip request:
-                $this->User_app_model->actionplan_step_skip_initiate($en['en_id'], $next_in_id);
+                $this->Actionplan_model->step_skip_initiate($en['en_id'], $next_in_id);
 
             } else {
 
@@ -2426,7 +2487,7 @@ class Communication_model extends CI_Model
             ));
 
             //Call to Action: Does this user have any Action Plans?
-            $next_in_id = $this->User_app_model->actionplan_step_next_go($en['en_id'], false);
+            $next_in_id = $this->Actionplan_model->step_next_go($en['en_id'], false);
 
             if($next_in_id > 0){
 
@@ -2455,7 +2516,7 @@ class Communication_model extends CI_Model
 
 
 
-    function user_received_emails($to_array, $subject, $html_message)
+    function dispatch_emails($to_array, $subject, $html_message)
     {
 
         /*

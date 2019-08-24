@@ -716,7 +716,7 @@ function echo_actionplan_step_child($en_id, $in, $is_unlocked_step = false, $com
 
     $CI =& get_instance();
 
-    $completion_rate = $CI->User_app_model->actionplan_completion_progress($en_id, $in);
+    $completion_rate = $CI->Actionplan_model->completion_progress($en_id, $in);
 
     //Open list:
     $ui = '<a href="/actionplan/'.$in['in_id']. '" class="list-group-item">';

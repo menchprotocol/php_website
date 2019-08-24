@@ -139,7 +139,7 @@ class User_app extends CI_Controller
 
 
         //Assign session & log link:
-        $this->User_app_model->user_activate_session($ens[0]);
+        $this->Communication_model->activate_session($ens[0]);
 
 
 
@@ -287,7 +287,7 @@ class User_app extends CI_Controller
 
 
             //Log them in:
-            $ens[0] = $this->User_app_model->user_activate_session($ens[0]);
+            $ens[0] = $this->Communication_model->activate_session($ens[0]);
 
             $is_miner = filter_array($ens[0]['en__parents'], 'en_id', 1308);
             $is_trainer = filter_array($ens[0]['en__parents'], 'en_id', 7512);
@@ -421,7 +421,7 @@ class User_app extends CI_Controller
             ));
 
             //Add this intention to their Action Plan:
-            $this->User_app_model->actionplan_intention_add($user_en['en']['en_id'], $_POST['referrer_in_id'], 0, false);
+            $this->Actionplan_model->intention_add($user_en['en']['en_id'], $_POST['referrer_in_id'], 0, false);
 
         } else {
             $referrer_ins = array();
@@ -447,7 +447,7 @@ class User_app extends CI_Controller
         $html_message .= '<div><a href="https://mench.com?utm_source=mench&utm_medium=email&utm_campaign=signup" target="_blank">mench.com</a></div>';
 
         //Send Welcome Email:
-        $email_log = $this->Communication_model->user_received_emails(array($_POST['input_email']), $subject, $html_message);
+        $email_log = $this->Communication_model->dispatch_emails(array($_POST['input_email']), $subject, $html_message);
 
         //Log User Signin Joined Mench
         $invite_link = $this->Links_model->ln_create(array(
@@ -461,7 +461,7 @@ class User_app extends CI_Controller
         ));
 
         //Assign session & log login link:
-        $this->User_app_model->user_activate_session($user_en['en']);
+        $this->Communication_model->activate_session($user_en['en']);
 
 
         if (strlen($_POST['referrer_url']) > 0) {
@@ -543,7 +543,7 @@ class User_app extends CI_Controller
         $html_message .= '<div>- <a href="https://mench.com?utm_source=mench&utm_medium=email&utm_campaign=resetpass" target="_blank">Mench</a></div>';
 
         //Send email:
-        $this->Communication_model->user_received_emails(array($_POST['input_email']), $subject, $html_message);
+        $this->Communication_model->dispatch_emails(array($_POST['input_email']), $subject, $html_message);
 
         //Return success
         return echo_json(array(
@@ -586,7 +586,7 @@ class User_app extends CI_Controller
         }
 
         //Log them in:
-        $ens[0] = $this->User_app_model->user_activate_session($ens[0]);
+        $ens[0] = $this->Communication_model->activate_session($ens[0]);
 
         //Redirect based on permissions:
         $is_miner = filter_array($ens[0]['en__parents'], 'en_id', 1308);
@@ -1352,7 +1352,7 @@ class User_app extends CI_Controller
         }
 
         //Attempt to add intent to Action Plan:
-        if($this->User_app_model->actionplan_intention_add($session_en['en_id'], $_POST['in_id'], 0, false)){
+        if($this->Actionplan_model->intention_add($session_en['en_id'], $_POST['in_id'], 0, false)){
             //All good:
             $en_all_7369 = $this->config->item('en_all_7369');
             return echo_json(array(
@@ -1604,7 +1604,7 @@ class User_app extends CI_Controller
             ), array(), 0, 0, array('ln_id' => 'ASC'));
 
             //Find the next item to navigate them to:
-            $next_in_id = $this->User_app_model->actionplan_step_next_go($session_en['en_id'], false);
+            $next_in_id = $this->Actionplan_model->step_next_go($session_en['en_id'], false);
             $in_id = ( $next_in_id > 0 ? $next_in_id : $next_in_id );
 
         } else {
@@ -1673,7 +1673,7 @@ class User_app extends CI_Controller
                 $this->load->view('view_user_app/actionplan_step', array(
                     'session_en' => $session_en,
                     'user_intents' => $user_intents,
-                    'advance_step' => $this->User_app_model->actionplan_step_next_echo($session_en['en_id'], $in_id, false),
+                    'advance_step' => $this->Actionplan_model->step_echo($session_en['en_id'], $in_id, false),
                     'in' => $ins[0], //Currently focused intention:
                 ));
 
@@ -1717,7 +1717,7 @@ class User_app extends CI_Controller
         }
 
         //Call function to remove form action plan:
-        $delete_result = $this->User_app_model->actionplan_intention_delete($_POST['en_creator_id'], $_POST['in_id'], $_POST['stop_method_id'], $_POST['stop_feedback']);
+        $delete_result = $this->Actionplan_model->intention_delete($_POST['en_creator_id'], $_POST['in_id'], $_POST['stop_method_id'], $_POST['stop_feedback']);
 
         if(!$delete_result['result']){
             return echo_json($delete_result);
@@ -1734,7 +1734,7 @@ class User_app extends CI_Controller
 
         //Just give them an overview of what they are about to skip:
         return echo_json(array(
-            'skip_step_preview' => 'WARNING: '.$this->User_app_model->actionplan_step_skip_initiate($en_id, $in_id, false).' Are you sure you want to skip?',
+            'skip_step_preview' => 'WARNING: '.$this->Actionplan_model->step_skip_initiate($en_id, $in_id, false).' Are you sure you want to skip?',
         ));
 
     }
@@ -1743,14 +1743,14 @@ class User_app extends CI_Controller
     {
 
         //Actually go ahead and skip
-        $this->User_app_model->actionplan_step_skip_apply($en_id, $in_id);
+        $this->Actionplan_model->step_skip_apply($en_id, $in_id);
         //Assume its all good!
 
         //We actually skipped, draft message:
         $message = '<div class="alert alert-success" role="alert">I successfully skipped selected steps.</div>';
 
         //Find the next item to navigate them to:
-        $next_in_id = $this->User_app_model->actionplan_step_next_go($en_id, false);
+        $next_in_id = $this->Actionplan_model->step_next_go($en_id, false);
         if ($next_in_id > 0) {
             return redirect_message('/actionplan/' . $next_in_id, $message);
         } else {
@@ -1931,7 +1931,7 @@ class User_app extends CI_Controller
 
 
         //Fetch top intention that being workined on now:
-        $top_priority = $this->User_app_model->actionplan_intention_focus($_POST['en_creator_id']);
+        $top_priority = $this->Actionplan_model->intention_focus($_POST['en_creator_id']);
         if($top_priority){
             //Communicate top-priority with user:
             $this->Communication_model->dispatch_message(
@@ -1993,7 +1993,7 @@ class User_app extends CI_Controller
         ));
 
         //See if we also need to mark the child as complete:
-        $this->User_app_model->actionplan_completion_auto_complete($en_id, $answer_ins[0], 7485 /* User Step Answer Unlock */);
+        $this->Actionplan_model->completion_auto_complete($en_id, $answer_ins[0], 7485 /* User Step Answer Unlock */);
 
         //Archive current progression links:
         foreach($current_progression_links as $ln){

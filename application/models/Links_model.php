@@ -336,7 +336,7 @@ class Links_model extends CI_Model
                 $html_message .= '<div style="color: #AAAAAA; font-size:0.9em; margin-top:20px;">Manage your email notifications via <a href="https://mench.com/entities/5967" target="_blank">@5967</a></div>';
 
                 //Send email:
-                $dispatched_email = $this->Communication_model->user_received_emails($sub_emails, $subject, $html_message);
+                $dispatched_email = $this->Communication_model->dispatch_emails($sub_emails, $subject, $html_message);
 
                 //Log emails sent:
                 foreach($sub_en_ids as $to_en_id){
