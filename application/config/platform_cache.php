@@ -11,7 +11,7 @@ defined('BASEPATH') OR exit('No direct script access allowed');
  *
  */
 
-//Generated 2019-08-23 16:07:42 PST
+//Generated 2019-08-24 14:56:57 PST
 
 //Public Entities:
 $config['en_ids_10571'] = array(2997,4446,3005,4763,3147,2999,4883,3192,3000,5948,2998,4433,3084,1281,1308,7512);
@@ -403,7 +403,7 @@ $config['en_all_7809'] = array(
     ),
 );
 
-//Link Type User Pre-Intention Chat:
+//Link Type User Pre-Intention:
 $config['en_ids_7810'] = array(6149,7611,6969,7610,7563,4266,4267,7578,4577,4268,4299,7561,7564,7559,7560,7558,7562);
 $config['en_all_7810'] = array(
     6149 => array(
@@ -1460,7 +1460,7 @@ $config['en_all_7529'] = array(
     ),
     7810 => array(
         'm_icon' => '<i class="fas fa-plus-circle"></i>',
-        'm_name' => 'Link Type User Pre-Intention Chat',
+        'm_name' => 'Link Type User Pre-Intention',
         'm_desc' => '',
         'm_parents' => array(4527,7529,4269,7233),
     ),
@@ -1933,7 +1933,7 @@ $config['en_all_7233'] = array(
     ),
     7810 => array(
         'm_icon' => '<i class="fas fa-plus-circle"></i>',
-        'm_name' => 'User Pre-Intention Chat',
+        'm_name' => 'User Pre-Intention',
         'm_desc' => 'Interactions I have with users before they join by setting their first intention',
         'm_parents' => array(4527,7529,4269,7233),
     ),
@@ -1945,7 +1945,7 @@ $config['en_all_7233'] = array(
     ),
     7164 => array(
         'm_icon' => '<i class="fas fa-plus-circle"></i>',
-        'm_name' => 'User Post-Intention Chat',
+        'm_name' => 'User Post-Intention',
         'm_desc' => 'Interactions I have with users to get them closer to their intentions',
         'm_parents' => array(7233,7203,4527),
     ),
@@ -1968,7 +1968,7 @@ $config['en_all_7203'] = array(
     ),
     7164 => array(
         'm_icon' => '<i class="fas fa-plus-circle"></i>',
-        'm_name' => 'Link Type User Post-Intention Chat',
+        'm_name' => 'Link Type User Post-Intention',
         'm_desc' => '',
         'm_parents' => array(7233,7203,4527),
     ),
@@ -1980,7 +1980,7 @@ $config['en_all_7203'] = array(
     ),
 );
 
-//Link Type User Post-Intention Chat:
+//Link Type User Post-Intention:
 $config['en_ids_7164'] = array(4282,6224,6415,4275,6559,6560,6556,6578,6154,6155,4283,6132,7757,5967,7563,4554,4570,4556,4555,7702,6563,4552,4553,4549,4551,4550,4557,4278,4279,4460,4547,4287,4548,7488,7485,7486,6144,7741,6140,4559,7489,7492,6997,6157,7487,6143,7562);
 $config['en_all_7164'] = array(
     4282 => array(
