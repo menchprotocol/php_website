@@ -54,14 +54,15 @@
                         }
                         ?>
                     </select>
-                    <span class="checkbox apply-recursive inline-block hidden">
+
+                    <span class="<?= advance_mode() ?>"><span class="checkbox apply-recursive inline-block hidden">
                                 <label style="display:inline-block !important; font-size: 0.9em !important; margin-left:5px;">
                                     <input type="checkbox" id="apply_recursively"/>
                                     <span class="underdot" data-toggle="tooltip" data-placement="top"
                                           title="If chcecked will also apply the new status recursively down (children, grandchildren, etc...) that have the same original status">Recursive
                                     </span>
                                 </label>
-                            </span>
+                            </span></span>
 
                     <div class="notify_in_remove hidden">
                         <div class="alert alert-danger" style="margin:5px 0px; padding:7px;">

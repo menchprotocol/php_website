@@ -2189,8 +2189,8 @@ function echo_in($in, $level, $in_linked_id = 0, $is_parent = false)
 
         //Intent Unlink for trainers:
         if(filter_array($session_en['en__parents'], 'en_id', 7512)){
-            if($ln_id > 0){
-                $ui .= '<a class="badge badge-primary white-primary is_not_bg '.advance_mode(in_authors_class($in_linked_id)).'" onclick="in_unlink_only(' . $in['in_id'] . ','.$level.',' . $ln_id . ')" style="margin:-2px -8px 0 4px; width:40px;" href="javascript:void(0)" data-toggle="tooltip" title="Unlink Intent" data-placement="bottom"><i class="far fa-trash-alt"></i></a> &nbsp;';
+            if($ln_id > 0 && $in_linked_id > 0){
+                $ui .= '<span class="'.advance_mode(in_authors_class($in_linked_id)).'"><a class="badge badge-primary white-primary is_not_bg " onclick="in_unlink_only(' . $in['in_id'] . ','.$level.',' . $ln_id . ')" style="margin:-2px -8px 0 4px; width:40px;" href="javascript:void(0)" data-toggle="tooltip" title="Unlink Intent" data-placement="bottom"><i class="far fa-trash-alt"></i></a> &nbsp;</span>';
             } else {
                 $ui .= '<span style="width:43px; display: inline-block;">&nbsp;</span>';
             }
