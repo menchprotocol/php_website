@@ -57,11 +57,15 @@
                            class="social-link tag-manager-sign-in" data-toggle="tooltip" title="<?= $en_all_7369[4269]['m_name'] ?>"
                            data-placement="top"><?= $en_all_7369[4269]['m_icon'] ?></a>
 
+                        <a href="/signin"
+                           class="social-link tag-manager-sign-in" data-toggle="tooltip" title="<?= $en_all_7369[4269]['m_name'] ?>"
+                           data-placement="top"><?= $en_all_7369[4269]['m_icon'] ?></a>
+
                     </li>
                 </ul>
             </nav>
 
-            <div style="font-size: 0.7em; text-transform: uppercase; color: #222; font-weight:500;"><span style="display: inline-block"><a href="/12747" class="underdot" data-toggle="tooltip" title="We're on a mission to unleash human potential by building and sharing consensus" data-placement="top">We're Hiring</a></span> &nbsp;&nbsp;<span style="display: inline-block"><span class="parent-icon"><?= $this->config->item('system_icon') ?></span>&nbsp; Mench <a href="/12748" class="underdot" data-toggle="tooltip" title="Get started with the Mench open-source platform" data-placement="top">open-source</a> v<?= $this->config->item('app_version') ?></span></div>
+            <div style="font-size: 0.7em; text-transform: uppercase; color: #222; font-weight:500;"><span style="display: inline-block"><a href="/12747" class="underdot">We're Hiring</a></span> &nbsp;&nbsp;<span style="display: inline-block"><span class="parent-icon"><?= $this->config->item('system_icon') ?></span>&nbsp; Mench <a href="/12748" class="underdot">open-source</a> v<?= $this->config->item('app_version') ?></span></div>
 
         </div>
     </footer>

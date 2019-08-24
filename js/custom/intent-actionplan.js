@@ -264,7 +264,7 @@ function in_load_search(focus_element, is_in_parent, next_in_level, shortcut) {
                 return;
             } else {
                 algolia_index.search(q, {
-                    filters: 'alg_obj_is_in=1',
+                    filters: ( js_advance_view_enabled ? '' : '(_tags:alg_for_trainer OR _tags:alg_for_users) AND alg_obj_status=6184 AND') + ' alg_obj_is_in=1',
                     hitsPerPage: 7,
                 }, function (error, content) {
                     if (error) {
