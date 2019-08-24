@@ -57,10 +57,6 @@
                            class="social-link tag-manager-sign-in" data-toggle="tooltip" title="<?= $en_all_7369[4269]['m_name'] ?>"
                            data-placement="top"><?= $en_all_7369[4269]['m_icon'] ?></a>
 
-                        <a href="/signin"
-                           class="social-link tag-manager-sign-in" data-toggle="tooltip" title="<?= $en_all_7369[4269]['m_name'] ?>"
-                           data-placement="top"><?= $en_all_7369[4269]['m_icon'] ?></a>
-
                     </li>
                 </ul>
             </nav>
