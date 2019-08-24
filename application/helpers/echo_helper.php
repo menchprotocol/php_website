@@ -2058,7 +2058,7 @@ function echo_in($in, $level, $in_linked_id = 0, $is_parent = false)
     $ui .= '<span class="icon-top-right in_status_entity_id_' . $in['in_id'] . '"><span data-toggle="tooltip" data-placement="right" title="'.$en_all_4737[$in['in_status_entity_id']]['m_name'].': '.$en_all_4737[$in['in_status_entity_id']]['m_desc'].'">' . $en_all_4737[$in['in_status_entity_id']]['m_icon'] . '</span></span>';
 
 
-    $ui .= '<span class="icon-top-left '.advance_mode().' in_scope_entity_id_' . $in['in_id'] . '" data-toggle="tooltip" data-placement="right" title="'.$en_all_7596[$in['in_scope_entity_id']]['m_name'].': '.$en_all_7596[$in['in_scope_entity_id']]['m_desc'].'">' . $en_all_7596[$in['in_scope_entity_id']]['m_icon'] . '</span>';
+    $ui .= '<span class="icon-top-left in_scope_entity_id_' . $in['in_id'] . '" data-toggle="tooltip" data-placement="right" title="'.$en_all_7596[$in['in_scope_entity_id']]['m_name'].': '.$en_all_7596[$in['in_scope_entity_id']]['m_desc'].'">' . $en_all_7596[$in['in_scope_entity_id']]['m_icon'] . '</span>';
 
 
 

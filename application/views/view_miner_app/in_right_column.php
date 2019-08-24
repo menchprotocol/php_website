@@ -101,28 +101,23 @@
 
 
 
-
-                    <span class="<?= advance_mode() ?>">
-                        <span class="mini-header" style="margin-top: 20px;"><?= $en_all_6201[7596]['m_icon'].' '.$en_all_6201[7596]['m_name'] ?></span>
-                        <select class="form-control border" id="in_scope_entity_id" style="margin-bottom: 12px;">
-                            <?php
-                            foreach ($this->config->item('en_all_7596') as $en_id => $m) {
-                                echo '<option value="' . $en_id . '">' . $m['m_name'] . '</option>';
-                            }
-                            ?>
-                        </select>
-                    </span>
+                    <span class="mini-header" style="margin-top: 20px;"><?= $en_all_6201[7596]['m_icon'].' '.$en_all_6201[7596]['m_name'] ?></span>
+                    <select class="form-control border" id="in_scope_entity_id" style="margin-bottom: 12px;">
+                        <?php
+                        foreach ($this->config->item('en_all_7596') as $en_id => $m) {
+                            echo '<option value="' . $en_id . '">' . $m['m_name'] . '</option>';
+                        }
+                        ?>
+                    </select>
 
 
 
 
-                    <div class="time-estimate-box">
-                        <span class="mini-header" style="margin-top:20px;"><?= $en_all_6201[4356]['m_icon'].' '.$en_all_6201[4356]['m_name'] ?></span>
-                        <div class="form-group label-floating is-empty">
-                            <div class="input-group border" style="width:132px;">
-                                <input style="padding-left:3px;" type="number" step="1" min="0" id="in_completion_seconds" class="form-control">
-                                <span class="input-group-addon addon-lean addon-grey" style="color:#2f2739; font-weight: 300;">Seconds</span>
-                            </div>
+                    <span class="mini-header" style="margin-top:20px;"><?= $en_all_6201[4356]['m_icon'].' '.$en_all_6201[4356]['m_name'] ?></span>
+                    <div class="form-group label-floating is-empty">
+                        <div class="input-group border" style="width:132px;">
+                            <input style="padding-left:3px;" type="number" step="1" min="0" id="in_completion_seconds" class="form-control">
+                            <span class="input-group-addon addon-lean addon-grey" style="color:#2f2739; font-weight: 300;">Seconds</span>
                         </div>
                     </div>
 
