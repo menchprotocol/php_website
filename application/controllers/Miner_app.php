@@ -217,7 +217,7 @@ class Miner_app extends CI_Controller
 
 
                 //Display row:
-                $expert_source_statuses .= '<td style="text-align: right;"'.( $en_status_entity_id != 6181 /* Entity Featured */ && 0 ? ' class="' . advance_mode() . '"' : '' ).'><a href="/entities/' . $en_id .'#status-'.$en_status_entity_id.'">'.number_format($source_count,0).'</a><i class="fas fa-info-circle icon-block" data-toggle="tooltip" title="'  . $m['m_name'] . ' that are ' . $en_all_6177[$en_status_entity_id]['m_desc'] . '" data-placement="top"></i></td>';
+                $expert_source_statuses .= '<td style="text-align: right;"'.( $en_status_entity_id != 6181 /* Entity Featured */ ? ' class="' . advance_mode() . '"' : '' ).'><a href="/entities/' . $en_id .'#status-'.$en_status_entity_id.'">'.number_format($source_count,0).'</a><i class="fas fa-info-circle icon-block" data-toggle="tooltip" title="'  . $m['m_name'] . ' that are ' . $en_all_6177[$en_status_entity_id]['m_desc'] . '" data-placement="top"></i></td>';
 
 
             }
