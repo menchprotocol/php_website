@@ -36,11 +36,6 @@
                            data-toggle="tooltip" title="Follow on LinkedIn" data-placement="top"><i
                                     class="fab fa-linkedin"></i></a>
 
-                        <a href="https://github.com/askmench/mench-web-app" target="_blank" class="social-link tag-manager-social-profile"
-                           data-toggle="tooltip" title="Mench is open-source! Build with us on GitHub" data-placement="top"><i
-                                    class="fab fa-github"></i></a>
-
-
                         <a href="/8263" class="social-link tag-manager-social-profile" data-toggle="tooltip"
                            title="<?= $en_all_7372[7540]['m_name'] ?>" data-placement="top"><?= $en_all_7372[7540]['m_icon'] ?></a>
 
@@ -61,7 +56,9 @@
                 </ul>
             </nav>
 
-            <div style="font-size: 0.7em; text-transform: uppercase; color: #222; font-weight:500;"><span style="display: inline-block"><a href="/12747" class="underdot">We're Hiring</a></span> &nbsp;&nbsp;<span style="display: inline-block"><span class="parent-icon"><?= $this->config->item('system_icon') ?></span>&nbsp; Mench <a href="/12748" class="underdot">open-source</a> v<?= $this->config->item('app_version') ?></span></div>
+            <div style="font-size: 0.7em; text-transform: uppercase; color: #222; font-weight:500;"><span style="display: inline-block"><span class="parent-icon"><?= $this->config->item('system_icon') ?> <a href="/12748" class="underdot">open-source</a></span></span> &nbsp;|&nbsp; <span style="display: inline-block"><i
+                            class="far fa-users"></i> <a href="/12747" class="underdot">Join Our Team</a></span> &nbsp;|&nbsp; <i
+                        class="fab fa-github"></i><a href="https://github.com/askmench/mench-web-app" target="_blank" class="social-link tag-manager-social-profile underdot" data-toggle="tooltip" title="Mench is open-source! Build with us on GitHub" data-placement="top">v<?= $this->config->item('app_version') ?></a></div>
 
         </div>
     </footer>
