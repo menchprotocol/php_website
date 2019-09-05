@@ -11,7 +11,30 @@ defined('BASEPATH') OR exit('No direct script access allowed');
  *
  */
 
-//Generated 2019-09-05 15:34:40 PST
+//Generated 2019-09-05 15:42:55 PST
+
+//Link Type User Set Intention:
+$config['en_ids_7347'] = array(7495,7542,4235);
+$config['en_all_7347'] = array(
+    7495 => array(
+        'm_icon' => '<i class="far fa-bullseye-arrow ispink"></i>',
+        'm_name' => 'Intent Recommended',
+        'm_desc' => '',
+        'm_parents' => array(7347,7164,10593,10590,4755,4595,4593),
+    ),
+    7542 => array(
+        'm_icon' => '<i class="far fa-bullseye-arrow ispink"></i>',
+        'm_name' => 'Intent Required',
+        'm_desc' => '',
+        'm_parents' => array(7347,7164,10594,10590,4755,4595,4593),
+    ),
+    4235 => array(
+        'm_icon' => '<i class="far fa-bullseye-arrow ispink"></i>',
+        'm_name' => 'Intent Set',
+        'm_desc' => '',
+        'm_parents' => array(7347,7164,10589,5967,4595,4755,4593),
+    ),
+);
 
 //Intent Type AND:
 $config['en_ids_6192'] = array(7637,6914,6677,6683,6682);
@@ -1366,7 +1389,7 @@ $config['en_all_5967'] = array(
         'm_icon' => '<i class="far fa-bullseye-arrow ispink"></i>',
         'm_name' => 'User Intent Set',
         'm_desc' => '&var_en_subscriber_ids=1',
-        'm_parents' => array(7164,10589,5967,4595,4755,4593),
+        'm_parents' => array(7347,7164,10589,5967,4595,4755,4593),
     ),
 );
 
@@ -2021,19 +2044,19 @@ $config['en_all_7164'] = array(
         'm_icon' => '<i class="far fa-bullseye-arrow ispink"></i>',
         'm_name' => 'Intent Recommended',
         'm_desc' => '',
-        'm_parents' => array(7164,10593,10590,4755,4595,4593),
+        'm_parents' => array(7347,7164,10593,10590,4755,4595,4593),
     ),
     7542 => array(
         'm_icon' => '<i class="far fa-bullseye-arrow ispink"></i>',
         'm_name' => 'Intent Required',
         'm_desc' => '',
-        'm_parents' => array(7164,10594,10590,4755,4595,4593),
+        'm_parents' => array(7347,7164,10594,10590,4755,4595,4593),
     ),
     4235 => array(
         'm_icon' => '<i class="far fa-bullseye-arrow ispink"></i>',
         'm_name' => 'Intent Set',
         'm_desc' => '',
-        'm_parents' => array(7164,10589,5967,4595,4755,4593),
+        'm_parents' => array(7347,7164,10589,5967,4595,4755,4593),
     ),
     7757 => array(
         'm_icon' => '<i class="fas fa-times-octagon ispink"></i>',
@@ -3336,19 +3359,19 @@ $config['en_all_4755'] = array(
         'm_icon' => '<i class="far fa-bullseye-arrow ispink"></i>',
         'm_name' => 'User Intent Recommended',
         'm_desc' => '',
-        'm_parents' => array(7164,10593,10590,4755,4595,4593),
+        'm_parents' => array(7347,7164,10593,10590,4755,4595,4593),
     ),
     7542 => array(
         'm_icon' => '<i class="far fa-bullseye-arrow ispink"></i>',
         'm_name' => 'User Intent Required',
         'm_desc' => '',
-        'm_parents' => array(7164,10594,10590,4755,4595,4593),
+        'm_parents' => array(7347,7164,10594,10590,4755,4595,4593),
     ),
     4235 => array(
         'm_icon' => '<i class="far fa-bullseye-arrow ispink"></i>',
         'm_name' => 'User Intent Set',
         'm_desc' => '',
-        'm_parents' => array(7164,10589,5967,4595,4755,4593),
+        'm_parents' => array(7347,7164,10589,5967,4595,4755,4593),
     ),
     7757 => array(
         'm_icon' => '<i class="fas fa-times-octagon ispink"></i>',
@@ -3971,19 +3994,19 @@ $config['en_all_4595'] = array(
         'm_icon' => '<i class="far fa-bullseye-arrow ispink"></i>',
         'm_name' => 'User Intent Recommended',
         'm_desc' => '10',
-        'm_parents' => array(7164,10593,10590,4755,4595,4593),
+        'm_parents' => array(7347,7164,10593,10590,4755,4595,4593),
     ),
     7542 => array(
         'm_icon' => '<i class="far fa-bullseye-arrow ispink"></i>',
         'm_name' => 'User Intent Required',
         'm_desc' => '10',
-        'm_parents' => array(7164,10594,10590,4755,4595,4593),
+        'm_parents' => array(7347,7164,10594,10590,4755,4595,4593),
     ),
     4235 => array(
         'm_icon' => '<i class="far fa-bullseye-arrow ispink"></i>',
         'm_name' => 'User Intent Set',
         'm_desc' => '50',
-        'm_parents' => array(7164,10589,5967,4595,4755,4593),
+        'm_parents' => array(7347,7164,10589,5967,4595,4755,4593),
     ),
     7757 => array(
         'm_icon' => '<i class="fas fa-times-octagon ispink"></i>',
@@ -4623,19 +4646,19 @@ $config['en_all_4593'] = array(
         'm_icon' => '<i class="far fa-bullseye-arrow ispink"></i>',
         'm_name' => 'User Intent Recommended',
         'm_desc' => 'Intention recommended by Mench and added to Action Plan to enable the user to complete their intention',
-        'm_parents' => array(7164,10593,10590,4755,4595,4593),
+        'm_parents' => array(7347,7164,10593,10590,4755,4595,4593),
     ),
     7542 => array(
         'm_icon' => '<i class="far fa-bullseye-arrow ispink"></i>',
         'm_name' => 'User Intent Required',
         'm_desc' => '',
-        'm_parents' => array(7164,10594,10590,4755,4595,4593),
+        'm_parents' => array(7347,7164,10594,10590,4755,4595,4593),
     ),
     4235 => array(
         'm_icon' => '<i class="far fa-bullseye-arrow ispink"></i>',
         'm_name' => 'User Intent Set',
         'm_desc' => 'Intentions set by users which will be completed by taking steps using the Action Plan',
-        'm_parents' => array(7164,10589,5967,4595,4755,4593),
+        'm_parents' => array(7347,7164,10589,5967,4595,4755,4593),
     ),
     7757 => array(
         'm_icon' => '<i class="fas fa-times-octagon ispink"></i>',
