@@ -6,16 +6,16 @@
 
 
 /* Entity Color Palette @10604 */
-.ispurple             { color:#9400D3; }
-.isgreen              { color:#228B22; }
-.isred, .fas.redalert { color:#FF0000; }
-.isgrey, .lightgrey   { color:#AAAAAA; }
-.isolive              { color:#808000; }
-.isnavy               { color:#000080; }
-.isorange             { color:#FF8C00; }
-.ispink               { color:#FF1493; }
-.iswhite              { color:#FFFFFF; }
-.isbrown              { color:#8B4513; }
+.ispurple             { color:#9400D3 !important; }
+.isgreen              { color:#228B22 !important; }
+.isred, .fas.redalert { color:#FF0000 !important; }
+.isgrey, .lightgrey   { color:#AAAAAA !important; }
+.isolive              { color:#808000 !important; }
+.isnavy               { color:#000080 !important; }
+.isorange             { color:#FF8C00 !important; }
+.ispink               { color:#FF1493 !important; }
+.iswhite              { color:#FFFFFF !important; }
+.isbrown              { color:#8B4513 !important; }
 
 
 
