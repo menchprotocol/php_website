@@ -381,6 +381,15 @@ function in_outcome_verb_id($string){
     return 0;
 }
 
+function addup_array($array, $match_key)
+{
+    $total = 0;
+    foreach ($array as $item) {
+        $total += $item[$match_key];
+    }
+    return $total;
+}
+
 function filter_array($array, $match_key, $match_value)
 {
 

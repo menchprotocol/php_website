@@ -112,9 +112,9 @@ class Links_model extends CI_Model
             $this->db->join('table_entities', 'ln_parent_entity_id=en_id','left');
         } elseif (in_array('en_child', $join_objects)) {
             $this->db->join('table_entities', 'ln_child_entity_id=en_id','left');
-        } elseif (in_array('en_type', $join_objects)) {
+        } elseif (in_array('ln_type', $join_objects)) {
             $this->db->join('table_entities', 'ln_type_entity_id=en_id','left');
-        } elseif (in_array('en_miner', $join_objects)) {
+        } elseif (in_array('ln_creator', $join_objects)) {
             $this->db->join('table_entities', 'ln_creator_entity_id=en_id','left');
         }
 

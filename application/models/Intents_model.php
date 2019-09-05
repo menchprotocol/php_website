@@ -90,8 +90,10 @@ class Intents_model extends CI_Model
         $this->db->select($select);
         $this->db->from('table_intents');
 
-        if (in_array('in_verb_entity_id', $join_objects)) {
+        if (in_array('in_verb', $join_objects)) {
             $this->db->join('table_entities', 'in_verb_entity_id=en_id', 'left');
+        } elseif (in_array('in_type', $join_objects)) {
+            $this->db->join('table_entities', 'in_type_entity_id=en_id', 'left');
         }
 
         foreach ($match_columns as $key => $value) {

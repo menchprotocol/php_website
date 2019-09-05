@@ -9,11 +9,6 @@ $any_in_en_set = ( ( isset($_GET['any_en_id']) && $_GET['any_en_id'] > 0 ) || ( 
 $parent_tr_filter = ( isset($_GET['ln_parent_link_id']) && $_GET['ln_parent_link_id'] > 0 ? ' OR ln_parent_link_id = '.$_GET['ln_parent_link_id'].' ' : false );
 
 
-//Override if group entity set:
-if(isset($_GET['ln_type_entity_id_group']) && strlen($_GET['ln_type_entity_id_group']) > 0){
-    $_GET['ln_type_entity_id'] = $_GET['ln_type_entity_id_group'];
-}
-
 
 //Apply filters:
 if(isset($_GET['in_status_entity_id']) && strlen($_GET['in_status_entity_id']) > 0){
@@ -346,17 +341,7 @@ echo '<div class="row">';
 
 
         //Link Type Filter Groups
-        echo '<td><div style="padding-right:5px;">';
-        echo '<span class="mini-header">Link Type Filter Groups:</span>';
-        echo '<select class="form-control border" name="ln_type_entity_id_group" id="ln_type_entity_id_group" class="border" style="width: 100% !important;">';
-        echo '<option value="">Choose Link Type Groups...</option>';
-        foreach ($this->config->item('en_all_7233') as $en_id => $m) {
-            if(is_array($this->config->item('en_ids_'.$en_id))){
-                echo '<option value="' . join(',',$this->config->item('en_ids_'.$en_id)) . '" ' . ((isset($_GET['ln_type_entity_id_group']) && urldecode($_GET['ln_type_entity_id_group']) == join(',',$this->config->item('en_ids_'.$en_id))) ? 'selected="selected"' : '') . '>' . $m['m_name'] . '</option>';
-            }
-        }
-        echo '</select>';
-        echo '</div></td>';
+        echo '<td></td>';
 
 
 
@@ -394,10 +379,10 @@ echo '</div></td>';
                 //Fetch details for this user:
                 $all_link_count = 0;
                 $select_ui = '';
-                foreach ($this->Links_model->ln_fetch($ini_filter, array('en_type'), 0, 0, array('en_name' => 'ASC'), 'COUNT(ln_type_entity_id) as links_count, SUM(ln_credits) as credits_sum, en_name, ln_type_entity_id', 'ln_type_entity_id, en_name') as $ln) {
+                foreach ($this->Links_model->ln_fetch($ini_filter, array('ln_type'), 0, 0, array('en_name' => 'ASC'), 'COUNT(ln_type_entity_id) as total_count, SUM(ln_credits) as credits_sum, en_name, ln_type_entity_id', 'ln_type_entity_id, en_name') as $ln) {
                     //Echo drop down:
-                    $select_ui .= '<option value="' . $ln['ln_type_entity_id'] . '" ' . ((isset($_GET['ln_type_entity_id']) && $_GET['ln_type_entity_id'] == $ln['ln_type_entity_id']) ? 'selected="selected"' : '') . '>' . $ln['en_name'] . ' ('  . number_format($ln['links_count'], 0) . ')</option>';
-                    $all_link_count += $ln['links_count'];
+                    $select_ui .= '<option value="' . $ln['ln_type_entity_id'] . '" ' . ((isset($_GET['ln_type_entity_id']) && $_GET['ln_type_entity_id'] == $ln['ln_type_entity_id']) ? 'selected="selected"' : '') . '>' . $ln['en_name'] . ' ('  . number_format($ln['total_count'], 0) . ')</option>';
+                    $all_link_count += $ln['total_count'];
                 }
 
                 //Now that we know the total show:

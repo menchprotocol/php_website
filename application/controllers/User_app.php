@@ -174,7 +174,7 @@ class User_app extends CI_Controller
             'ln_id' => $ln_id,
             'ln_content' => $_GET['email'],
             'ln_type_entity_id' => 7563, //User Signin Magic Link Email
-        ), array('en_miner')); //The user making the request
+        ), array('ln_creator')); //The user making the request
 
         if(count($validate_links) < 1){
             //Probably already completed the reset password:

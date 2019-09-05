@@ -1782,8 +1782,7 @@ function echo_en_stats_overview($cached_list, $report_name){
     $ui = '<table class="table table-condensed table-striped stats-table">';
 
     $ui .= '<tr class="panel-title down-border">';
-    $ui .= '<td style="text-align: left;">'.$report_name.'</td>';
-    $ui .= '<td style="text-align: right;">Entities</td>';
+    $ui .= '<td style="text-align: left;" colspan="2">'.$report_name.'</td>';
     $ui .= '</tr>';
 
     $ui .= $inner_ui;
@@ -1824,7 +1823,7 @@ function in_authors_class($in_id){
     return $css_author;
 }
 
-function echo_in_setting($in_setting_en_id, $in_field_name){
+function echo_in_setting($in_setting_en_id, $in_field_name, $addup_total_count){
 
     $CI =& get_instance();
     $en_all_7302 = $CI->config->item('en_all_7302'); //Intent Stats
@@ -1832,8 +1831,7 @@ function echo_in_setting($in_setting_en_id, $in_field_name){
     $ui =  '<table class="table table-condensed table-striped stats-table mini-stats-table ">';
 
     $ui .= '<tr class="panel-title down-border">';
-    $ui .= '<td style="text-align: left;">'.$en_all_7302[$in_setting_en_id]['m_name'].echo__s(count($CI->config->item('en_all_'.$in_setting_en_id))).'</td>';
-    $ui .= '<td style="text-align: right;">Intents</td>';
+    $ui .= '<td style="text-align: left;" colspan="2">'.$en_all_7302[$in_setting_en_id]['m_name'].echo__s(count($CI->config->item('en_all_'.$in_setting_en_id))).'</td>';
     $ui .= '</tr>';
 
     foreach ($CI->config->item('en_all_'.$in_setting_en_id) as $type_en_id => $in_type) {
@@ -1841,13 +1839,13 @@ function echo_in_setting($in_setting_en_id, $in_field_name){
         //Count this sub-type from the database:
         $in_count = $CI->Intents_model->in_fetch(array(
             $in_field_name => $type_en_id,
-            'in_status_entity_id IN (' . join(',', $CI->config->item('en_ids_7356')) . ')' => null, //Intent Statuses Active
-        ), array(), 0, 0, array(), 'COUNT(in_id) as total_active_intents');
+            'in_status_entity_id IN (' . join(',', $CI->config->item('en_ids_7355')) . ')' => null, //Intent Statuses Public
+        ), array(), 0, 0, array(), 'COUNT(in_id) as total_public_intents');
 
         //$ui .= this as the main title:
         $ui .= '<tr>';
         $ui .= '<td style="text-align: left;"><span class="icon-block">'.$in_type['m_icon'].'</span><a href="/entities/'.$type_en_id.'">'.$in_type['m_name'].'</a></td>';
-        $ui .= '<td style="text-align: right;"><a href="/links?ln_type_entity_id=4250&in_status_entity_id=' . join(',', $CI->config->item('en_ids_7356')) . '&'.$in_field_name.'='.$type_en_id.'">'.number_format($in_count[0]['total_active_intents'], 0).'</a></td>';
+        $ui .= '<td style="text-align: right;"><a href="/links?ln_type_entity_id=4250&in_status_entity_id=' . join(',', $CI->config->item('en_ids_7356')) . '&'.$in_field_name.'='.$type_en_id.'" data-toggle="tooltip" data-placement="top" title="'.number_format($in_count[0]['total_public_intents'], 0).' Intent'.echo__s($in_count[0]['total_public_intents']).'">'.number_format($in_count[0]['total_public_intents']/$addup_total_count*100, 1).'%</a></td>';
         $ui .= '</tr>';
 
     }
@@ -1858,7 +1856,7 @@ function echo_in_setting($in_setting_en_id, $in_field_name){
 }
 
 
-function echo_2level_entities($main_obj, $all_link_types, $link_types_counts, $all_shown){
+function echo_2level_entities($main_obj, $all_link_types, $link_types_counts, $all_shown, $link_field, $details_en, $addup_total_count){
 
     if(!is_array($all_link_types) || count($all_link_types) < 1){
         return false;
@@ -1866,11 +1864,10 @@ function echo_2level_entities($main_obj, $all_link_types, $link_types_counts, $a
 
     $CI =& get_instance();
 
-    $en_all_4593 = $CI->config->item('en_all_4593');
+    $en_all_detail = $CI->config->item($details_en);
     $identifier = substr(md5($main_obj['m_name']), 0, 10);
 
     $sub_rows = '';
-
 
     //First display all children and sum them up:
     $all_children = 0;
@@ -1881,22 +1878,22 @@ function echo_2level_entities($main_obj, $all_link_types, $link_types_counts, $a
             continue;
         }
 
-        $ln = filter_array($link_types_counts, 'ln_type_entity_id', $en_id);
+        $ln = filter_array($link_types_counts, 'en_id', $en_id);
 
-        if( !$ln['links_count'] ){
+        if( !$ln['total_count'] ){
             continue;
         }
 
         array_push($all_link_type_ids, $en_id);
 
         //Addup counter:
-        $all_children += $ln['links_count'];
+        $all_children += $ln['total_count'];
 
         //Subrow UI:
         $sub_rows .=  '<tr class="hidden '.$identifier.'">';
 
 
-        if(!isset($en_all_4593[$en_id])){
+        if(!isset($en_all_detail[$en_id])){
 
             $sub_rows .= '<td style="text-align: left; padding-left:30px;" colspan="2">MISSING @'.$en_id.' as Link Type</td>';
 
@@ -1910,7 +1907,7 @@ function echo_2level_entities($main_obj, $all_link_types, $link_types_counts, $a
 
             $sub_rows .= '<td style="text-align: right;"><span>';
 
-            $sub_rows .= '<a href="/links?ln_status_entity_id='.join(',', $CI->config->item('en_ids_7360')) /* Link Statuses Active */.'&ln_type_entity_id=' . $en_id . '">'.number_format($ln['links_count'], 0) . '</a>';
+            $sub_rows .= '<a href="/links?ln_status_entity_id='.join(',', $CI->config->item('en_ids_7360')) /* Link Statuses Active */.'&'.$link_field.'=' . $en_id . '" data-toggle="tooltip" data-placement="top" title="'.number_format($ln['total_count'], 0).' Intent'.echo__s($ln['total_count']).'">'.number_format($ln['total_count']/$addup_total_count*100, 1) . '%</a>';
 
             $sub_rows .= '</span></td>';
 
@@ -1943,7 +1940,7 @@ function echo_2level_entities($main_obj, $all_link_types, $link_types_counts, $a
     echo '<tr>';
     echo '<td style="text-align: left;"><span class="icon-block
 "><i class="fas fa-plus-circle '.$identifier.'"></i><i class="fas fa-minus-circle '.$identifier.' hidden"></i></span><a href="javascript:void(0);" onclick="$(\'.'.$identifier.'\').toggleClass(\'hidden\')">'.$main_obj['m_name'].'</a></td>';
-    echo '<td style="text-align: right;"><a href="/links?ln_status_entity_id='.join(',', $CI->config->item('en_ids_7360')) /* Link Statuses Active */.'&ln_type_entity_id=' . join(',' , $all_link_type_ids) . '">'.number_format($all_children).'</a>' .'</td>';
+    echo '<td style="text-align: right;"><a href="/links?ln_status_entity_id='.join(',', $CI->config->item('en_ids_7360')) /* Link Statuses Active */.'&'.$link_field.'=' . join(',' , $all_link_type_ids) . '" data-toggle="tooltip" data-placement="top" title="'.number_format($all_children, 0).' Intent'.echo__s($all_children).'">'.number_format($all_children/$addup_total_count*100, 1).'%</a></td>';
     echo '</tr>';
 
 
@@ -2436,7 +2433,7 @@ function echo_en($en, $level, $is_parent = false)
             //Show this entities connections:
             $ref_count = 0;
             foreach($en_count_references as $en_id=>$en_count){
-                $ui .= '&nbsp;&nbsp;<a href="/entities/'.$en_id.'" style="font-size:0.8em; font-weight:bold;" data-toggle="tooltip" data-placement="top" title="This entity is referenced as '.$en_all_6194[$en_id]['m_name'].' '.number_format($en_count, 0).' times">'.$en_all_6194[$en_id]['m_icon'] . ' '. echo_number($en_count).'</a>';
+                $ui .= '&nbsp;&nbsp;<a href="/links?any_en_id=' . $en_id . '" style="font-size:0.8em; font-weight:bold;" data-toggle="tooltip" data-placement="top" title="This entity is referenced as '.$en_all_6194[$en_id]['m_name'].' '.number_format($en_count, 0).' times">'.$en_all_6194[$en_id]['m_icon'] . ' '. echo_number($en_count).'</a>';
                 $ref_count++;
             }
         }

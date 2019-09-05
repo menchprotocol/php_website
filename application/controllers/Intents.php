@@ -482,7 +482,7 @@ class Intents extends CI_Controller
             'ln_parent_intent_id' => $ins[0]['in_id'],
             'ln_status_entity_id IN (' . join(',', $this->config->item('en_ids_7359')) . ')' => null, //Link Statuses Public
             'en_status_entity_id IN (' . join(',', $this->config->item('en_ids_7357')) . ')' => null, //Entity Statuses Public
-        ), array('en_miner'), 500);
+        ), array('ln_creator'), 500);
         if(count($actionplan_users) < 1){
             return echo_json(array(
                 'status' => 0,
@@ -1091,7 +1091,7 @@ class Intents extends CI_Controller
             //Fetch last intent Link:
             $lns = $this->Links_model->ln_fetch(array(
                 'ln_id' => $ln_id,
-            ), array('en_miner'));
+            ), array('ln_creator'));
 
         }
 

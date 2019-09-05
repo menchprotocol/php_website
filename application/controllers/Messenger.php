@@ -847,7 +847,7 @@ class Messenger extends CI_Controller
         $ln_pending = $this->Links_model->ln_fetch(array(
             'ln_status_entity_id' => 6175, //Link Drafting
             'ln_type_entity_id' => 4299, //Updated Profile Picture
-        ), array('en_miner'), 20); //Max number of scans per run
+        ), array('ln_creator'), 20); //Max number of scans per run
 
 
         //Set link statuses to drafting so other Cron jobs don't pick them up:

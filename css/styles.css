@@ -1,5 +1,26 @@
 @CHARSET "ISO-8859-1";
 
+/* Core Colors */
+.blue                 { color:#0084ff !important; }
+.yellow               { color:#ffe027 !important; }
+
+
+/* Entity Color Palette @10604 */
+.ispurple             { color:#9400D3 !important; }
+.isgreen              { color:#228B22 !important; }
+.isred, .fas.redalert { color:#FF0000 !important; }
+.isgrey, .lightgrey   { color:#AAAAAA !important; }
+.isolive              { color:#808000 !important; }
+.isnavy               { color:#000080 !important; }
+.isorange             { color:#FF8C00 !important; }
+.ispink               { color:#FF1493 !important; }
+.iswhite              { color:#FFFFFF !important; }
+.isbrown              { color:#8B4513 !important; }
+
+
+
+
+
 #platform_body {
     background-color: #FFF;
 }
@@ -282,9 +303,6 @@ h1, .h1 {
     font-size: 1.1em !important;
 }
 
-.blue {
-    color: #0084ff !important;
-}
 
 .badge-secondary i {
     color: #FFF !important;
@@ -1023,9 +1041,6 @@ input::-webkit-inner-spin-button {
     color: #2f2739;
 }
 
-.yellow {
-    color:#ffe027 !important;
-}
 
 .list-group-item .title-main {
     display: inline;
@@ -1588,14 +1603,6 @@ footer {
 
 .grey .fas, .grey .fal, .grey {
     color: #2f2739 !important;
-}
-
-.fas.redalert {
-    color: #FF0000 !important;
-}
-
-.lightgrey{
-    color:#AAA !important;
 }
 
 .lightgreybg{

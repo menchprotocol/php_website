@@ -778,7 +778,7 @@ class Entities extends CI_Controller
             //Fetch entity link:
             $lns = $this->Links_model->ln_fetch(array(
                 'ln_id' => $_POST['ln_id'],
-            ), array('en_miner'));
+            ), array('ln_creator'));
 
             //Prep last updated:
             $return_array['ln_content'] = echo_ln_urls($ln_content, $js_ln_type_entity_id);
