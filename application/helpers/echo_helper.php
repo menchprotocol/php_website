@@ -1856,6 +1856,40 @@ function echo_in_setting($in_setting_en_id, $in_field_name, $addup_total_count){
 }
 
 
+function echo_2level_stats($stat_name, $stats_en_id, $mother_en_id, $link_types_counts, $addup_total_count, $link_field){
+
+    $CI =& get_instance();
+
+    echo '<table class="table table-condensed table-striped stats-table mini-stats-table">';
+
+    echo '<tr class="panel-title down-border">';
+    echo '<td style="text-align: left;" colspan="2">'.$stat_name.'</td>';
+    echo '</tr>';
+
+    $all_shown = array();
+    foreach ($CI->config->item('en_all_'.$stats_en_id) as $en_id => $m) {
+        echo_2level_entities($m, $CI->config->item('en_all_'.$en_id), $link_types_counts, $all_shown, $link_field, 'en_all_'.$mother_en_id, $addup_total_count);
+        $all_shown = array_merge($all_shown, $CI->config->item('en_ids_'.$en_id));
+    }
+
+    //Turn into array:
+    $remaining_child = array();
+    foreach($CI->config->item('en_all_'.$mother_en_id) as $en_id => $m){
+        $remaining_child[$en_id] = $m;
+    }
+
+    //Display RemainingIF ANY:
+    echo_2level_entities(array(
+        'm_icon' => '<i class="fas fa-plus-circle"></i>',
+        'm_name' => 'Others',
+        'm_desc' => 'What is left',
+    ), $remaining_child, $link_types_counts, $all_shown, $link_field, 'en_all_'.$mother_en_id, $addup_total_count);
+
+    echo '</table>';
+
+}
+
+
 function echo_2level_entities($main_obj, $all_link_types, $link_types_counts, $all_shown, $link_field, $details_en, $addup_total_count){
 
     if(!is_array($all_link_types) || count($all_link_types) < 1){

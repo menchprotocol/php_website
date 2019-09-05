@@ -90,15 +90,6 @@ class Miner_app extends CI_Controller
 
         $en_all_7302 = $this->config->item('en_all_7302'); //Intent Stats
 
-
-        //AND/OR Intent Type
-        echo '<table class="table table-condensed table-striped stats-table mini-stats-table">';
-
-        echo '<tr class="panel-title down-border">';
-        echo '<td style="text-align: left;" colspan="2">Types</td>';
-        echo '</tr>';
-
-
         //Count all intent types:
         $intent_types_counts = $this->Intents_model->in_fetch(array(
             'in_status_entity_id IN (' . join(',', $this->config->item('en_ids_7355')) . ')' => null, //Intent Statuses Public
@@ -107,40 +98,16 @@ class Miner_app extends CI_Controller
         //Count totals:
         $addup_total_count = addup_array($intent_types_counts, 'total_count');
 
-
-        $all_shown = array();
-        foreach ($this->config->item('en_all_10602') as $en_id => $m) {
-            echo_2level_entities($m, $this->config->item('en_all_'.$en_id), $intent_types_counts, $all_shown, 'in_type_entity_id', 'en_all_7585', $addup_total_count);
-            $all_shown = array_merge($all_shown, $this->config->item('en_ids_'.$en_id));
-        }
-
-        //Turn into array:
-        $remaining_child = array();
-        foreach($this->config->item('en_all_7585') as $en_id => $m){
-            $remaining_child[$en_id] = $m;
-        }
-
-        //Display Remaining IF ANY:
-        echo_2level_entities(array(
-            'm_icon' => '<i class="fas fa-plus-circle"></i>',
-            'm_name' => 'Others',
-            'm_desc' => 'What is left',
-        ), $remaining_child, $intent_types_counts, $all_shown, 'in_type_entity_id', 'en_all_7585', $addup_total_count);
-
-        echo '</table>';
-
+        //Link Stages
+        echo_2level_stats($en_all_7302[10602]['m_name'], 10602, 7585, $intent_types_counts, $addup_total_count, 'in_type_entity_id');
 
 
         //Intent Scopes:
         echo echo_in_setting(7596,'in_scope_entity_id', $addup_total_count);
 
 
-
-
         //Intent Types (FLAT):
         //echo echo_in_setting(7585,'in_type_entity_id', $addup_total_count);
-
-
 
 
         //Intent Verbs:
@@ -427,21 +394,6 @@ class Miner_app extends CI_Controller
 
 
 
-
-
-
-
-
-
-
-
-        //All Link Types:
-        echo '<table class="table table-condensed table-striped stats-table mini-stats-table">';
-
-        echo '<tr class="panel-title down-border">';
-        echo '<td style="text-align: left;" colspan="2">'.$en_all_7304[4593]['m_name'].'s</td>';
-        echo '</tr>';
-
         //Count all rows:
         $link_types_counts = $this->Links_model->ln_fetch(array(
             'ln_status_entity_id IN (' . join(',', $this->config->item('en_ids_7360')) . ')' => null, //Link Statuses Active
@@ -450,36 +402,18 @@ class Miner_app extends CI_Controller
         //Count totals:
         $addup_total_count = addup_array($link_types_counts, 'total_count');
 
-        $all_shown = array();
-        foreach ($this->config->item('en_all_7233') as $en_id => $m) {
-            echo_2level_entities($m, $this->config->item('en_all_'.$en_id), $link_types_counts, $all_shown, 'ln_type_entity_id', 'en_all_4593', $addup_total_count);
-            $all_shown = array_merge($all_shown, $this->config->item('en_ids_'.$en_id));
-        }
 
-        //Turn into array:
-        $remaining_child = array();
-        foreach($this->config->item('en_all_4593') as $en_id => $m){
-            $remaining_child[$en_id] = $m;
-        }
+        //Link Direction
+        echo_2level_stats($en_all_7304[10591]['m_name'], 10591, 4593, $link_types_counts, $addup_total_count, 'ln_type_entity_id');
 
-        //Display RemainingIF ANY:
-        echo_2level_entities(array(
-            'm_icon' => '<i class="fas fa-plus-circle"></i>',
-            'm_name' => 'Others',
-            'm_desc' => 'What is left',
-        ), $remaining_child, $link_types_counts, $all_shown, 'ln_type_entity_id', 'en_all_4593', $addup_total_count);
-
-        echo '</table>';
-
-
-
+        //Link Stages
+        echo_2level_stats($en_all_7304[7233]['m_name'], 7233, 4593, $link_types_counts, $addup_total_count, 'ln_type_entity_id');
 
 
         //Link Status:
         echo '<table class="table table-condensed table-striped stats-table mini-stats-table link_statuses '.advance_mode().'">';
         echo '<tr class="panel-title down-border">';
-        echo '<td style="text-align: left;">'.$en_all_7304[6186]['m_name'].echo__s(count($this->config->item('en_all_6186')), true).'</td>';
-        echo '<td style="text-align: right;">Links</td>';
+        echo '<td style="text-align: left;" colspan="2">'.$en_all_7304[6186]['m_name'].echo__s(count($this->config->item('en_all_6186')), true).'</td>';
         echo '</tr>';
         foreach ($this->config->item('en_all_6186') as $en_id => $m) {
 
