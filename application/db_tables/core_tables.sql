@@ -16,7 +16,7 @@ create table table_intents
   in_status_entity_id             integer      not null,
   in_outcome                      varchar(255) not null,
   in_verb_entity_id               integer      not null,
-  in_type_entity_id               integer      not null,
+  in_subtype_entity_id            integer      not null,
   in_scope_entity_id              integer      not null,
   in_completion_seconds           smallint     not null,
   in_metadata                     text
@@ -68,8 +68,8 @@ create unique index table_intents_in_id_uindex
 create index table_intents_in_verb_entity_id_index
   on table_intents (in_verb_entity_id);
 
-create index table_intents_in_type_entity_id_index
-  on table_intents (in_type_entity_id);
+create index table_intents_in_subtype_entity_id_index
+  on table_intents (in_subtype_entity_id);
 
 create index table_intents_in_completion_seconds_index
   on table_intents (in_completion_seconds);

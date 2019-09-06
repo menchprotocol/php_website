@@ -2355,7 +2355,7 @@ $config['en_all_6194'] = array(
     7585 => array(
         'm_icon' => '<i class="far fa-shapes"></i>',
         'm_name' => 'Intent Type',
-        'm_desc' => 'SELECT count(in_id) as totals FROM table_intents WHERE in_status_entity_id IN (6183,6184) AND in_type_entity_id=',
+        'm_desc' => 'SELECT count(in_id) as totals FROM table_intents WHERE in_status_entity_id IN (6183,6184) AND in_subtype_entity_id=',
         'm_parents' => array(6160,6213,6194,6232,4527,6201),
     ),
     5008 => array(

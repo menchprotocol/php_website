@@ -1415,9 +1415,9 @@ class Communication_model extends CI_Model
 
             //Users want to try their submission again:
             $en_all_6144 = $this->config->item('en_all_6144'); //Requirement names
-            $in_type_entity_id = one_two_explode('TRYANOTHERRESPONSE_', '', $quick_reply_payload);
+            $in_subtype_entity_id = one_two_explode('TRYANOTHERRESPONSE_', '', $quick_reply_payload);
             $this->Communication_model->dispatch_message(
-                'Ok, so try again by sending me another '.$en_all_6144[$in_type_entity_id]['m_name'].' to continue.',
+                'Ok, so try again by sending me another '.$en_all_6144[$in_subtype_entity_id]['m_name'].' to continue.',
                 $en,
                 true
             );
