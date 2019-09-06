@@ -404,10 +404,7 @@ class Miner_app extends CI_Controller
 
 
         //Link Direction
-        echo_2level_stats($en_all_7304[10591]['m_name'], 10591, 4593, $link_types_counts, $addup_total_count, 'ln_type_entity_id');
-
-        //Link Stages
-        echo_2level_stats($en_all_7304[7233]['m_name'], 7233, 4593, $link_types_counts, $addup_total_count, 'ln_type_entity_id');
+        echo_2level_stats('Types', 10591, 4593, $link_types_counts, $addup_total_count, 'ln_type_entity_id');
 
 
         //Link Status:
