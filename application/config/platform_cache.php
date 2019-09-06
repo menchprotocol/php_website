@@ -11,9 +11,9 @@ defined('BASEPATH') OR exit('No direct script access allowed');
  *
  */
 
-//Generated 2019-09-06 14:20:13 PST
+//Generated 2019-09-06 15:05:24 PST
 
-//Words Out:
+//Output:
 $config['en_ids_10590'] = array(4994,4993,4282,6149,7611,6969,4283,7495,7542,7610,5967,7563,4554,4570,4556,4555,7702,6563,4552,4553,7562);
 $config['en_all_10590'] = array(
     4994 => array(
@@ -144,7 +144,7 @@ $config['en_all_10590'] = array(
     ),
 );
 
-//Words In:
+//Input:
 $config['en_ids_10589'] = array(4246,7504,5943,5001,5865,4999,4998,5000,5981,5982,5003,4251,4259,4257,4261,4260,4319,4230,4255,4318,4256,4258,4263,4250,4229,4228,6226,6093,6242,7545,4601,4231,7701,10573,4983,4264,4242,5007,6224,6415,4275,6559,6560,6556,6578,6154,6155,6132,4235,7757,4266,4267,7578,4577,4549,4551,4550,4557,4278,4279,4268,4299,4460,4547,4287,4548,7561,7564,7559,7560,7558,7488,7485,7486,6144,7741,6140,4559,7489,7492,6997,6157,7487,6143);
 $config['en_all_10589'] = array(
     4246 => array(
@@ -676,7 +676,7 @@ $config['en_all_7347'] = array(
     ),
 );
 
-//Intent Type AND:
+//Intent AND:
 $config['en_ids_6192'] = array(7637,6914,6677,6683,6682);
 $config['en_all_6192'] = array(
     7637 => array(
@@ -751,18 +751,18 @@ $config['en_all_10592'] = array(
     ),
 );
 
-//Link Direction:
+//Link Directions:
 $config['en_ids_10591'] = array(10589,10590);
 $config['en_all_10591'] = array(
     10589 => array(
-        'm_icon' => '<i class="fas fa-download isolive"></i>',
-        'm_name' => 'Words In',
+        'm_icon' => '<i class="far fa-comment-plus"></i>',
+        'm_name' => 'Input',
         'm_desc' => '',
         'm_parents' => array(4527,10591),
     ),
     10590 => array(
-        'm_icon' => '<i class="fas fa-upload isolive"></i>',
-        'm_name' => 'Words Out',
+        'm_icon' => '<i class="far fa-comment-smile"></i>',
+        'm_name' => 'Output',
         'm_desc' => '',
         'm_parents' => array(4527,10591),
     ),
@@ -1368,7 +1368,7 @@ $config['en_all_6201'] = array(
     ),
     7585 => array(
         'm_icon' => '<i class="far fa-shapes"></i>',
-        'm_name' => 'Type',
+        'm_name' => 'Subtype',
         'm_desc' => '',
         'm_parents' => array(6160,6213,6194,6232,4527,6201),
     ),
@@ -1655,7 +1655,7 @@ $config['en_all_7588'] = array(
     ),
 );
 
-//Intent Type OR:
+//Intent OR:
 $config['en_ids_6193'] = array(6684,6685,7231,6907);
 $config['en_all_6193'] = array(
     6684 => array(
@@ -1684,7 +1684,7 @@ $config['en_all_6193'] = array(
     ),
 );
 
-//Intent Type:
+//Intent Subtype:
 $config['en_ids_7585'] = array(6677,6683,6682,7637,6684,6685,7231,6914,6907);
 $config['en_all_7585'] = array(
     6677 => array(
@@ -2278,10 +2278,10 @@ $config['en_all_7304'] = array(
         'm_parents' => array(7304,7254),
     ),
     10591 => array(
-        'm_icon' => '<i class="fas fa-directions isolive"></i>',
-        'm_name' => 'Direction',
+        'm_icon' => '<i class="fas fa-directions"></i>',
+        'm_name' => 'Directions',
         'm_desc' => '',
-        'm_parents' => array(7304,10616,6771,4527,10588),
+        'm_parents' => array(7304,6771,4527,10588),
     ),
     6186 => array(
         'm_icon' => '<i class="far fa-sliders-h"></i>',
@@ -2354,7 +2354,7 @@ $config['en_all_6194'] = array(
     ),
     7585 => array(
         'm_icon' => '<i class="far fa-shapes"></i>',
-        'm_name' => 'Intent Type',
+        'm_name' => 'Intent Subtype',
         'm_desc' => 'SELECT count(in_id) as totals FROM table_intents WHERE in_status_entity_id IN (6183,6184) AND in_subtype_entity_id=',
         'm_parents' => array(6160,6213,6194,6232,4527,6201),
     ),

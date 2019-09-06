@@ -1973,7 +1973,7 @@ function echo_2level_entities($main_obj, $all_link_types, $link_types_counts, $a
     //Fetch Title:
     echo '<tr>';
     echo '<td style="text-align: left;"><span class="icon-block
-"><i class="fas fa-plus-circle '.$identifier.'"></i><i class="fas fa-minus-circle '.$identifier.' hidden"></i></span><a href="javascript:void(0);" onclick="$(\'.'.$identifier.'\').toggleClass(\'hidden\')">'.$main_obj['m_name'].'</a></td>';
+">'.$main_obj['m_icon'].'</span><a href="javascript:void(0);" onclick="$(\'.'.$identifier.'\').toggleClass(\'hidden\')">'.$main_obj['m_name'].'<i class="fal fa-plus-circle '.$identifier.'" style="padding-left: 5px;"></i><i class="fal fa-minus-circle '.$identifier.' hidden" style="padding-left: 5px;"></i></a></td>';
     echo '<td style="text-align: right;"><a href="/links?ln_status_entity_id='.join(',', $CI->config->item('en_ids_7360')) /* Link Statuses Active */.'&'.$link_field.'=' . join(',' , $all_link_type_ids) . '" data-toggle="tooltip" data-placement="top" title="'.number_format($all_children, 0).' Intent'.echo__s($all_children).'">'.number_format($all_children/$addup_total_count*100, 1).'%</a></td>';
     echo '</tr>';
 

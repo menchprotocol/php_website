@@ -441,6 +441,9 @@ a.badge-primary:hover {
     text-align: center;
 }
 
+.bottom-spacing{
+    margin-bottom:72px;
+}
 
 .app-version{
     position: fixed;
@@ -2503,7 +2506,6 @@ select.form-control {
         width:100% !important;
     }
 
-
     .hide-small {
         display: none;
     }
@@ -2770,9 +2772,7 @@ a.badge:focus, a.badge:hover {
     display:block; text-align: center !important; margin-top: 40px;
 }
 
-.bottom-spacing{
-    margin-bottom:72px;
-}
+
 
 .input-group-addon .fa-plus {font-size: 19px; width: 24px; text-align: center; margin-left: 3px;}
 
