@@ -11,7 +11,7 @@ defined('BASEPATH') OR exit('No direct script access allowed');
  *
  */
 
-//Generated 2019-09-06 12:07:07 PST
+//Generated 2019-09-06 14:20:13 PST
 
 //Words Out:
 $config['en_ids_10590'] = array(4994,4993,4282,6149,7611,6969,4283,7495,7542,7610,5967,7563,4554,4570,4556,4555,7702,6563,4552,4553,7562);
@@ -863,7 +863,7 @@ $config['en_all_10571'] = array(
     ),
     3000 => array(
         'm_icon' => '<i class="far fa-whistle"></i>',
-        'm_name' => 'Training Sources',
+        'm_name' => 'Trained Expert Sources',
         'm_desc' => '',
         'm_parents' => array(10571,7303,3463,4506,4527,4463),
     ),
@@ -2240,19 +2240,19 @@ $config['en_all_7302'] = array(
 );
 
 //Entity Dashboard:
-$config['en_ids_7303'] = array(6177,6827,7555,3000);
+$config['en_ids_7303'] = array(6827,6177,7555,3000);
 $config['en_all_7303'] = array(
+    6827 => array(
+        'm_icon' => '<i class="far fa-users-crown"></i>',
+        'm_name' => 'Community Members',
+        'm_desc' => '',
+        'm_parents' => array(3303,3314,2738,7303,4527),
+    ),
     6177 => array(
         'm_icon' => '<i class="far fa-sliders-h"></i>',
         'm_name' => 'Status',
         'm_desc' => '',
         'm_parents' => array(6160,6232,7303,6194,6213,6206,4527),
-    ),
-    6827 => array(
-        'm_icon' => '<i class="far fa-users-crown"></i>',
-        'm_name' => 'Mench Community',
-        'm_desc' => '',
-        'm_parents' => array(3303,3314,2738,7303,4527),
     ),
     7555 => array(
         'm_icon' => '<i class="fas fa-comments"></i>',
@@ -2262,7 +2262,7 @@ $config['en_all_7303'] = array(
     ),
     3000 => array(
         'm_icon' => '<i class="far fa-whistle"></i>',
-        'm_name' => 'Training Sources',
+        'm_name' => 'Trained Expert Sources',
         'm_desc' => '',
         'm_parents' => array(10571,7303,3463,4506,4527,4463),
     ),
@@ -2384,7 +2384,7 @@ $config['en_all_6194'] = array(
     ),
 );
 
-//Mench Community:
+//Community Members:
 $config['en_ids_6827'] = array(4430,3084,6695,4433,7512);
 $config['en_all_6827'] = array(
     4430 => array(
@@ -2549,7 +2549,7 @@ $config['en_all_4463'] = array(
     ),
     3000 => array(
         'm_icon' => '<i class="far fa-whistle"></i>',
-        'm_name' => 'Training Sources',
+        'm_name' => 'Trained Expert Sources',
         'm_desc' => 'We train the Mench personal assistant with sources produced by industry experts. Sources include videos, articles, books, online courses and other channels used by experts to share their knowledge.',
         'm_parents' => array(10571,7303,3463,4506,4527,4463),
     ),
@@ -5115,7 +5115,7 @@ $config['en_all_4537'] = array(
     ),
 );
 
-//Training Sources:
+//Trained Expert Sources:
 $config['en_ids_3000'] = array(2997,4446,3005,4763,3147,2999,4883,3192,5948,2998);
 $config['en_all_3000'] = array(
     2997 => array(

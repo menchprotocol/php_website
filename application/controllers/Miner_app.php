@@ -111,7 +111,7 @@ class Miner_app extends CI_Controller
 
 
         //Intent Verbs:
-        $show_max_verbs = 4;
+        $show_max_verbs = 3;
 
 
         //Fetch all needed data:
@@ -122,7 +122,7 @@ class Miner_app extends CI_Controller
         echo '<table class="table table-condensed table-striped stats-table mini-stats-table ">';
 
         echo '<tr class="panel-title down-border">';
-        echo '<td style="text-align: left;" colspan="2">'.$en_all_7302[5008]['m_name'].echo__s(count($in_verbs)).'</td>';
+        echo '<td style="text-align: left;" colspan="2">'.number_format(count($in_verbs), 0).' '.$en_all_7302[5008]['m_name'].echo__s(count($in_verbs)).'</td>';
         echo '</tr>';
 
         foreach($in_verbs as $count => $verb){
@@ -135,7 +135,7 @@ class Miner_app extends CI_Controller
             if(($count+1)==$show_max_verbs){
                 //Show expand button:
                 echo '<tr class="hiddenverbs">';
-                echo '<td style="text-align: left;" colspan="2"><span style="width:29px; display: inline-block; text-align: center;"><i class="fas fa-plus-circle"></i></span><a href="javascript:void(0);" onclick="$(\'.hiddenverbs\').toggleClass(\'hidden\')">All '.number_format(count($in_verbs),0).' '.$en_all_7302[5008]['m_name'].echo__s(count($in_verbs)).'</a></td>';
+                echo '<td style="text-align: left;" colspan="2"><span style="width:29px; display: inline-block; text-align: center;"><i class="fas fa-plus-circle"></i></span><a href="javascript:void(0);" onclick="$(\'.hiddenverbs\').toggleClass(\'hidden\')">View All</a></td>';
                 echo '</tr>';
                 //To keep stripe color in balance
                 echo '<tr class="hidden"><td style="text-align: left;" colspan="2"></td></tr>';
@@ -169,7 +169,7 @@ class Miner_app extends CI_Controller
             echo '<tr>';
             echo '<td style="text-align: left;"><span class="icon-block">' . $m['m_icon'] . '</span><a href="/entities/'.$en_id.'">' . $m['m_name'] . '</a></td>';
 
-            echo '<td style="text-align: right;" class="'.( $en_id==6182 ? 'is-removed' : '' ).'">' . '<a href="/links?in_status_entity_id=' . $en_id . '&ln_type_entity_id=4250">' . number_format($objects_count[0]['totals'],0) .'</a></td>';
+            echo '<td style="text-align: right;">' . '<a href="/links?in_status_entity_id=' . $en_id . '&ln_type_entity_id=4250">' . number_format($objects_count[0]['totals'],0) .'</a></td>';
 
             echo '</tr>';
 
@@ -188,6 +188,15 @@ class Miner_app extends CI_Controller
 
         $en_all_7303 = $this->config->item('en_all_7303'); //Platform Dashboard
         $en_all_6177 = $this->config->item('en_all_6177'); //Entity Statuses
+
+
+
+
+        //Mench Community
+        echo echo_en_stats_overview($this->config->item('en_all_6827'), $en_all_7303[6827]['m_name']);
+
+
+
 
 
         //Expert Sources
@@ -241,11 +250,10 @@ class Miner_app extends CI_Controller
 
         }
 
-
         echo '<table class="table table-condensed table-striped stats-table">';
 
         echo '<tr class="panel-title down-border">';
-        echo '<td style="text-align: left;">'.$en_all_7303[3000]['m_name'].'</td>';
+        echo '<td style="text-align: left;">'.number_format($total_total_counts[6181], 0).' '.$en_all_7303[3000]['m_name'].'</td>';
         foreach($this->config->item('en_all_7358') /* Entity Active Statuses */ as $en_status_entity_id => $m_status){
             if($en_status_entity_id == 6181 /* Entity Published */){
                 echo '<td style="text-align:right;"><div class="' . advance_mode() . '">' . $en_all_6177[$en_status_entity_id]['m_name'] . '</div></td>';
@@ -260,8 +268,8 @@ class Miner_app extends CI_Controller
         echo $expert_sources_unpublished;
 
 
-        echo '<tr style="font-weight: bold;">';
-        echo '<td style="text-align: left;"><span class="icon-block"><i class="fas fa-asterisk"></i></span>All '.$en_all_7303[3000]['m_name'].'</td>';
+        echo '<tr style="font-weight: bold;" class="'.advance_mode().'">';
+        echo '<td style="text-align: left;"><span class="icon-block"><i class="fas fa-asterisk"></i></span>Totals</td>';
         foreach($this->config->item('en_all_7358') /* Entity Active Statuses */ as $en_status_entity_id => $m_status){
             echo '<td style="text-align: right;" '.( $en_status_entity_id != 6181 /* Entity Featured */ ? ' class="' . advance_mode() . '"' : '' ).'>' . number_format($total_total_counts[$en_status_entity_id], 0) . '</td>';
         }
@@ -272,9 +280,6 @@ class Miner_app extends CI_Controller
 
 
 
-
-        //Mench Community
-        echo echo_en_stats_overview($this->config->item('en_all_6827'), $en_all_7303[6827]['m_name']);
 
 
 
@@ -294,7 +299,7 @@ class Miner_app extends CI_Controller
             //Display this status count:
             echo '<tr>';
             echo '<td style="text-align: left;"><span class="icon-block">' . $m['m_icon'] . '</span><a href="/entities/'.$en_id.'">' . $m['m_name'] . '</a></td>';
-            echo '<td style="text-align: right;" class="'.( $en_id==6178 ? 'is-removed' : '' ).'">' . '<a href="/links?en_status_entity_id=' . $en_id . '&ln_type_entity_id=4251">' . number_format($objects_count[0]['totals'], 0) . '</a>' . '</td>';
+            echo '<td style="text-align: right;">' . '<a href="/links?en_status_entity_id=' . $en_id . '&ln_type_entity_id=4251">' . number_format($objects_count[0]['totals'], 0) . '</a>' . '</td>';
             echo '</tr>';
 
         }
@@ -422,10 +427,11 @@ class Miner_app extends CI_Controller
             //Display this status count:
             echo '<tr>';
             echo '<td style="text-align: left;"><span class="icon-block">' . $m['m_icon'] . '</span><a href="/entities/'.$en_id.'">' . $m['m_name'] . '</a></td>';
-            echo '<td style="text-align: right;" class="'.( $en_id==6173 ? 'is-removed' : '' ).'">';
+            echo '<td style="text-align: right;">';
             echo '<a href="/links?ln_status_entity_id=' . $en_id . '">' . number_format($objects_count[0]['totals'],0) . '</a>';
             echo '</td>';
             echo '</tr>';
+
         }
 
         echo '</table>';
@@ -450,7 +456,7 @@ class Miner_app extends CI_Controller
         echo '</div>';
 
         echo '</td>';
-        echo '<td style="text-align: right;"><div>Credits</div>';
+        echo '<td style="text-align: right;"><div>Words</div>';
         //Leaderboard Time Frames
         echo '<div class="btn-group btn-group-sm btn-group-leaderboard" role="group">';
         foreach ($this->config->item('en_all_7799') as $en_id => $m) {

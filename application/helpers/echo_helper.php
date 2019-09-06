@@ -1782,7 +1782,7 @@ function echo_en_stats_overview($cached_list, $report_name){
     $ui = '<table class="table table-condensed table-striped stats-table">';
 
     $ui .= '<tr class="panel-title down-border">';
-    $ui .= '<td style="text-align: left;" colspan="2">'.$report_name.'</td>';
+    $ui .= '<td style="text-align: left;" colspan="2">'.number_format($total_count,0).' '.$report_name.'</td>';
     $ui .= '</tr>';
 
     $ui .= $inner_ui;
@@ -1831,7 +1831,7 @@ function echo_in_setting($in_setting_en_id, $in_field_name, $addup_total_count){
     $ui =  '<table class="table table-condensed table-striped stats-table mini-stats-table ">';
 
     $ui .= '<tr class="panel-title down-border">';
-    $ui .= '<td style="text-align: left;" colspan="2">'.$en_all_7302[$in_setting_en_id]['m_name'].echo__s(count($CI->config->item('en_all_'.$in_setting_en_id))).'</td>';
+    $ui .= '<td style="text-align: left;" colspan="2">'.number_format(count($CI->config->item('en_all_'.$in_setting_en_id)),0).' '.$en_all_7302[$in_setting_en_id]['m_name'].echo__s(count($CI->config->item('en_all_'.$in_setting_en_id))).'</td>';
     $ui .= '</tr>';
 
     foreach ($CI->config->item('en_all_'.$in_setting_en_id) as $type_en_id => $in_type) {
@@ -1863,7 +1863,7 @@ function echo_2level_stats($stat_name, $stats_en_id, $mother_en_id, $link_types_
     echo '<table class="table table-condensed table-striped stats-table mini-stats-table">';
 
     echo '<tr class="panel-title down-border">';
-    echo '<td style="text-align: left;" colspan="2">'.$stat_name.'</td>';
+    echo '<td style="text-align: left;" colspan="2">'.number_format(count($CI->config->item('en_all_'.$stats_en_id)), 0).' '.$stat_name.'</td>';
     echo '</tr>';
 
     $all_shown = array();

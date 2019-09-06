@@ -3909,10 +3909,6 @@ h4 .tip-badge {
     border-radius: 50%;
 }
 
-.is-removed, .is-removed span {
-    text-decoration: line-through !important;
-}
-
 .icon-main img {
     width: 24px;
     height: 24px;
