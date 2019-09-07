@@ -6,19 +6,17 @@
 
 
 /* Entity Color Palette @10604 */
-.ispurple             { color:#9400D3 !important; }
-.isgreen              { color:#228B22 !important; }
-.isred, .fas.redalert { color:#FF0000 !important; }
-.isgrey, .lightgrey   { color:#AAAAAA !important; }
-.isolive              { color:#808000 !important; }
-.isnavy               { color:#000080 !important; }
-.isorange             { color:#FF8C00 !important; }
-.ispink               { color:#FF1493 !important; }
-.iswhite              { color:#FFFFFF !important; }
-.isbrown              { color:#8B4513 !important; }
-
-
-
+.ispurple, .ispurple a             { color:#9400D3 !important; }
+.isgreen, .isgreen a              { color:#228B22 !important; }
+.isred, .isred a, .fas.redalert { color:#FF0000 !important; }
+.isgrey, .isgrey a, .lightgrey   { color:#AAAAAA !important; }
+.isolive, .isolive a  { color:#808000 !important; }
+.isnavy, .isnavy a               { color:#000080 !important; }
+.isorange, .isorange a             { color:#FF8C00 !important; }
+.ispink, .ispink a               { color:#FF1493 !important; }
+.iswhite, .iswhite a              { color:#FFFFFF !important; }
+.isbrown, .isbrown a              { color:#8B4513 !important; }
+.isturquoise, .isturquoise a              { color:#20B2AA !important; }
 
 
 #platform_body {
