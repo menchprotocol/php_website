@@ -111,15 +111,6 @@ if(!$action) {
     }
 
 
-    //Fetch word stats:
-    $words_above_zeros = $this->Links_model->ln_fetch(array(
-        'ln_words >' => 0,
-    ), array(), 0, 0, array(), 'COUNT(ln_id) as total_links, SUM(ln_words) as total_words');
-    $words_below_zeros = $this->Links_model->ln_fetch(array(
-        'ln_words <' => 0,
-    ), array(), 0, 0, array(), 'COUNT(ln_id) as total_links, SUM(ln_words) as total_words');
-
-
     echo '<table class="table table-condensed table-striped stats-table mini-stats-table">';
 
     echo '<tr class="panel-title down-border">';
@@ -133,7 +124,7 @@ if(!$action) {
 
         $words_stats = $this->Links_model->ln_fetch(array(
             $words_setting => 0,
-        ), array(), 0, 0, array(), 'COUNT(ln_id) as total_links, SUM(ln_words) as total_words');
+        ), array(), 0, 0, array(), 'COUNT(ln_id) as total_links, SUM(ABS(ln_words)) as total_words');
 
         echo '<tr class="panel-title down-border">';
         echo '<td style="text-align: left;">'.$words_setting.' 0</td>';

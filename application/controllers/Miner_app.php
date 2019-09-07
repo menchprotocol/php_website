@@ -310,83 +310,59 @@ class Miner_app extends CI_Controller
 
 
 
-    function load_leaderboard($user_group_en_id, $time_group_en_id){
+    function load_leaderboard($direction_en_id, $timeframe_en_id){
 
 
-        //Fetch top certified miners vs top users:
+        //Fetch top users per each direction
         $show_max = 10;
 
 
-        $miners_en_ids = array();
-        foreach($this->Links_model->ln_fetch(array(
-            'ln_parent_entity_id' => 1308, //Mench Miners
-            'ln_type_entity_id IN (' . join(',', $this->config->item('en_ids_4592')) . ')' => null, //Entity Link Connectors
-            'ln_status_entity_id IN (' . join(',', $this->config->item('en_ids_7359')) . ')' => null, //Link Statuses Public
-        )) as $ln){
-            array_push($miners_en_ids, $ln['ln_child_entity_id']);
-        }
-
-
         //Now see what type of report they want:
-        if($user_group_en_id==1308 /* Miners */){
-
-            //Miners:
+        if($direction_en_id==10589 /* Input */){
             $filters = array(
-                'ln_creator_entity_id IN ('.join(',', $miners_en_ids).')' => null,
+                'ln_words>' => 0,
+                'ln_creator_entity_id >' => 0,
             );
-
-        } else {
-
-            //Trainers or Users:
-            $trainers_en_ids = array();
-            foreach($this->Links_model->ln_fetch(array(
-                'ln_parent_entity_id' => 7512, //Mench Trainers
-                'ln_type_entity_id IN (' . join(',', $this->config->item('en_ids_4592')) . ')' => null, //Entity Link Connectors
-                'ln_status_entity_id IN (' . join(',', $this->config->item('en_ids_7359')) . ')' => null, //Link Statuses Public
-                'ln_child_entity_id NOT IN ('.join(',', $miners_en_ids).')' => null, //Exclude miners from Trainers group...
-            )) as $ln){
-                array_push($trainers_en_ids, $ln['ln_child_entity_id']);
-            }
-
-
-            if($user_group_en_id==7512 /* Trainers */){
-
-                $filters = array(
-                    'ln_creator_entity_id IN ('.join(',', $trainers_en_ids).')' => null,
-                );
-
-            } elseif($user_group_en_id==4430 /* Users */) {
-
-                $filters = array(
-                    'ln_creator_entity_id NOT IN ('.join(',', array_merge($miners_en_ids, $trainers_en_ids)).')' => null,
-                    'ln_creator_entity_id >' => 0, //Must have a miner
-                );
-
-            }
+        } elseif($direction_en_id==10590 /* Output */){
+            $filters = array(
+                'ln_words<' => 0,
+                'ln_creator_entity_id >' => 0,
+            );
         }
 
 
         //Do we have a date filter?
         $start_date = null;
-        if($time_group_en_id==7801){
-            $start_date = date("Y-m-d" , (time() - (7 * 24 * 3600)));
+        if($timeframe_en_id==7801 /* This Week */){
+
+            //Week always starts on Monday:
+            if(date('D') === 'Mon'){
+                //Today is Monday:
+                $start_date = date("Y-m-d");
+            } else {
+                $start_date = date("Y-m-d", strtotime('previous monday'));
+            }
+
             $filters['ln_timestamp >='] = $start_date.' 00:00:00'; //From beginning of the day
         }
 
 
         //Fetch leaderboard:
-        $leaderboard_ens = $this->Links_model->ln_fetch($filters, array('ln_creator'), $show_max, 0, array('credits_sum' => 'DESC'), 'COUNT(ln_creator_entity_id) as total_count, SUM(ln_credits) as credits_sum, en_name, en_icon, ln_creator_entity_id', 'ln_creator_entity_id, en_name, en_icon');
+        $leaderboard_ens = $this->Links_model->ln_fetch($filters, array('ln_creator'), $show_max, 0, array('total_words' => 'DESC'), 'SUM(ABS(ln_words)) as total_words, en_name, en_icon, en_id', 'en_id, en_name, en_icon');
 
+        //Did we find anyone?
         if(count($leaderboard_ens) > 0){
             foreach ($leaderboard_ens as $count=>$ln) {
-                echo '<tr>';
-                echo '<td style="text-align: left;"><span class="parent-icon icon-block">'.echo_en_icon($ln).'</span><a href="/entities/'.$ln['ln_creator_entity_id'].'">'.one_two_explode('',' ',$ln['en_name']).'</a> '.echo_rank($count+1).'</td>';
-                echo '<td style="text-align: right;"><a href="/links?ln_creator_entity_id='.$ln['ln_creator_entity_id'].( $start_date ? '&start_range='.$start_date : $start_date ).'">'.number_format($ln['credits_sum'], 0).'</a></td>';
-                echo '</tr>';
+                if($ln['total_words'] >= 1){
+                    echo '<tr>';
+                    echo '<td style="text-align: left;"><span class="parent-icon icon-block">'.echo_en_icon($ln).'</span><a href="/entities/'.$ln['en_id'].'">'.one_two_explode('',' ',$ln['en_name']).'</a> '.echo_rank($count+1).'</td>';
+                    echo '<td style="text-align: right;"><a href="/links?ln_creator_entity_id='.$ln['en_id'].( $start_date ? '&start_range='.$start_date : $start_date ).'">'.number_format($ln['total_words'], 0).'</a></td>';
+                    echo '</tr>';
 
+                }
             }
         } else {
-            echo '<tr><td colspan="2"><div class="alert alert-warning"><i class="fas fa-exclamation-triangle"></i> Nobody here yet...</div></td></tr>';
+            echo '<tr><td colspan="2"><div class="alert alert-warning"><i class="fas fa-exclamation-triangle"></i> No activity yet...</div></td></tr>';
         }
     }
 
@@ -441,7 +417,6 @@ class Miner_app extends CI_Controller
 
 
 
-        echo '<div style="min-height:360px;">';
         echo '<table class="table table-condensed table-striped stats-table isturquoise">';
 
         echo '<thead>';
@@ -451,9 +426,9 @@ class Miner_app extends CI_Controller
         //Leaderboard User Types
         echo '<div class="btn-group btn-group-sm btn-group-leaderboard" role="group">';
         $counter = 0;
-        foreach ($this->config->item('en_all_7798') as $en_id => $m) {
+        foreach ($this->config->item('en_all_10591') as $en_id => $m) {
             $counter++;
-            echo '<a href="javascript:void(0)" onclick="leaderboard_filter_user_type('.$en_id.')" class="btn btn-default user-type-filter setting-en-'.$en_id.'">'.$m['m_name'].'</a>';
+            echo '<a href="javascript:void(0)" onclick="leaderboard_filter_direction('.$en_id.')" class="btn btn-default user-type-filter setting-en-'.$en_id.'">'.$m['m_name'].'</a>';
         }
         echo '</div>';
 
@@ -462,7 +437,7 @@ class Miner_app extends CI_Controller
         //Leaderboard Time Frames
         echo '<div class="btn-group btn-group-sm btn-group-leaderboard" role="group">';
         foreach ($this->config->item('en_all_7799') as $en_id => $m) {
-            echo '<a href="javascript:void(0)" onclick="leaderboard_filter_time_frame('.$en_id.')" class="btn btn-default user-type-filter setting-en-'.$en_id.'">'.$m['m_name'].'</a>';
+            echo '<a href="javascript:void(0)" onclick="leaderboard_filter_timeframe('.$en_id.')" class="btn btn-default user-type-filter setting-en-'.$en_id.'">'.$m['m_name'].'</a>';
         }
         echo '</div>';
 
@@ -474,8 +449,6 @@ class Miner_app extends CI_Controller
         echo '<tbody id="body_inject"><tr><td colspan="10"><div style="text-align: center;"><i class="fas fa-yin-yang fa-spin"></i> '.echo_random_message('ying_yang').'</div></td></tr></tbody>';
 
         echo '</table>';
-        echo '&nbsp;</div>';
-
 
 
     }

@@ -31,7 +31,6 @@ class Communication_model extends CI_Model
         $en['en__parents'] = $this->Links_model->ln_fetch(array(
             'ln_type_entity_id IN (' . join(',', $this->config->item('en_ids_4592')) . ')' => null, //Entity Link Connectors
             'ln_child_entity_id' => $en['en_id'], //This child entity
-            'ln_parent_entity_id IN (' . join(',', $this->config->item('en_ids_7798')) . ')' => null, //Leaderboard User Groups
             'ln_status_entity_id IN (' . join(',', $this->config->item('en_ids_7359')) . ')' => null, //Link Statuses Public
         ), array('en_parent'));
 

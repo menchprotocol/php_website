@@ -72,7 +72,7 @@ class Links extends CI_Controller
 
         //Fetch links and total link counts:
         $lns = $this->Links_model->ln_fetch($filters, $join_by, $item_per_page, $query_offset);
-        $lns_count = $this->Links_model->ln_fetch($filters, $join_by, 0, 0, array(), 'COUNT(ln_id) as total_count, SUM(ln_credits) as credits_sum');
+        $lns_count = $this->Links_model->ln_fetch($filters, $join_by, 0, 0, array(), 'COUNT(ln_id) as total_count, SUM(ln_credits) as total_words');
         $total_items_loaded = ($query_offset+count($lns));
         $has_more_links = ($lns_count[0]['total_count'] > 0 && $total_items_loaded < $lns_count[0]['total_count']);
 
@@ -81,7 +81,7 @@ class Links extends CI_Controller
         if($total_items_loaded > 0){
             $message .= '<p style="margin: 10px 0 0 0;">'.( $has_more_links && $query_offset==0  ? 'First ' : ($query_offset+1).' - ' ) . ( $total_items_loaded >= ($query_offset+1) ?  $total_items_loaded . ' of ' : '' ) . number_format($lns_count[0]['total_count'] , 0) .' Links:</p>';
         }
-        // with '.number_format($lns_count[0]['credits_sum'], 0).' awarded credits
+        // with '.number_format($lns_count[0]['total_words'], 0).' awarded credits
 
 
         if(count($lns)>0){

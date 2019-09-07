@@ -11,7 +11,7 @@ defined('BASEPATH') OR exit('No direct script access allowed');
  *
  */
 
-//Generated 2019-09-07 09:07:35 PST
+//Generated 2019-09-07 14:01:56 PST
 
 //Word:
 $config['en_ids_10594'] = array(4246,7504,4242,6224,6415,6132,4235,7757,7578,4299,6140);
@@ -1391,7 +1391,7 @@ $config['en_all_10592'] = array(
     10596 => array(
         'm_icon' => '<i class="fas fa-square-root ispurple"></i>',
         'm_name' => 'Nod',
-        'm_desc' => '1/34th of a word only',
+        'm_desc' => 'A fraction of a word',
         'm_parents' => array(4527,10592),
     ),
     10593 => array(
@@ -1510,13 +1510,13 @@ $config['en_all_10571'] = array(
         'm_icon' => '<i class="far fa-user-hard-hat isturquoise"></i>',
         'm_name' => 'Mench Miners',
         'm_desc' => '',
-        'm_parents' => array(10571,7798,7368,4463,4426),
+        'm_parents' => array(10571,7368,4463,4426),
     ),
     7512 => array(
         'm_icon' => '<i class="far fa-user-edit isturquoise"></i>',
         'm_name' => 'Mench Trainers',
         'm_desc' => '',
-        'm_parents' => array(10573,7798,10571,4985,6827),
+        'm_parents' => array(10573,10571,4985,6827),
     ),
     3000 => array(
         'm_icon' => '<i class="far fa-whistle isnavy"></i>',
@@ -1570,38 +1570,15 @@ $config['en_ids_7799'] = array(7802,7801);
 $config['en_all_7799'] = array(
     7802 => array(
         'm_icon' => '',
-        'm_name' => 'All-Time',
+        'm_name' => 'All Time',
         'm_desc' => '',
         'm_parents' => array(7799),
     ),
     7801 => array(
         'm_icon' => '',
-        'm_name' => 'Week',
+        'm_name' => 'This Week',
         'm_desc' => '',
         'm_parents' => array(7799),
-    ),
-);
-
-//Leaderboard User Groups:
-$config['en_ids_7798'] = array(1308,7512,4430);
-$config['en_all_7798'] = array(
-    1308 => array(
-        'm_icon' => '<i class="far fa-user-hard-hat isturquoise"></i>',
-        'm_name' => 'Miners',
-        'm_desc' => '',
-        'm_parents' => array(10571,7798,7368,4463,4426),
-    ),
-    7512 => array(
-        'm_icon' => '<i class="far fa-user-edit isturquoise"></i>',
-        'm_name' => 'Trainers',
-        'm_desc' => '',
-        'm_parents' => array(10573,7798,10571,4985,6827),
-    ),
-    4430 => array(
-        'm_icon' => '<i class="far fa-user isturquoise"></i>',
-        'm_name' => 'Users',
-        'm_desc' => '',
-        'm_parents' => array(7798,4983,7701,7369,6827,4426,4463),
     ),
 );
 
@@ -1670,7 +1647,7 @@ $config['en_all_7701'] = array(
         'm_icon' => '<i class="far fa-user isturquoise"></i>',
         'm_name' => 'Mench Users',
         'm_desc' => '',
-        'm_parents' => array(7798,4983,7701,7369,6827,4426,4463),
+        'm_parents' => array(4983,7701,7369,6827,4426,4463),
     ),
 );
 
@@ -1747,7 +1724,7 @@ $config['en_all_4983'] = array(
         'm_icon' => '<i class="far fa-user isturquoise"></i>',
         'm_name' => 'Mench Users',
         'm_desc' => '',
-        'm_parents' => array(7798,4983,7701,7369,6827,4426,4463),
+        'm_parents' => array(4983,7701,7369,6827,4426,4463),
     ),
 );
 
@@ -2692,7 +2669,7 @@ $config['en_all_7369'] = array(
         'm_icon' => '<i class="far fa-user isturquoise"></i>',
         'm_name' => 'Users',
         'm_desc' => '',
-        'm_parents' => array(7798,4983,7701,7369,6827,4426,4463),
+        'm_parents' => array(4983,7701,7369,6827,4426,4463),
     ),
     6137 => array(
         'm_icon' => '👤',
@@ -2745,7 +2722,7 @@ $config['en_all_7368'] = array(
         'm_icon' => '<i class="far fa-user-hard-hat isturquoise"></i>',
         'm_name' => 'Mench Miners',
         'm_desc' => '',
-        'm_parents' => array(10571,7798,7368,4463,4426),
+        'm_parents' => array(10571,7368,4463,4426),
     ),
     7256 => array(
         'm_icon' => '<i class="fas fa-search"></i>',
@@ -2938,7 +2915,7 @@ $config['en_all_7304'] = array(
         'm_icon' => '<i class="fas fa-directions ispurple"></i>',
         'm_name' => 'Directions',
         'm_desc' => '',
-        'm_parents' => array(7304,6771,4527,10588),
+        'm_parents' => array(7797,7304,6771,4527,10588),
     ),
     6186 => array(
         'm_icon' => '<i class="far fa-sliders-h"></i>',
@@ -3048,7 +3025,7 @@ $config['en_all_6827'] = array(
         'm_icon' => '<i class="far fa-user isturquoise"></i>',
         'm_name' => 'Users',
         'm_desc' => 'Users who are pursuing their intentions using Mench, mainly to get hired at their dream job',
-        'm_parents' => array(7798,4983,7701,7369,6827,4426,4463),
+        'm_parents' => array(4983,7701,7369,6827,4426,4463),
     ),
     3084 => array(
         'm_icon' => '<i class="fas fa-user-astronaut isturquoise"></i>',
@@ -3072,7 +3049,7 @@ $config['en_all_6827'] = array(
         'm_icon' => '<i class="far fa-user-edit isturquoise"></i>',
         'm_name' => 'Trainers',
         'm_desc' => 'Those training Mench on intents and messages only. Trainers are junior miners who get to access a limited version of the Mench mining app',
-        'm_parents' => array(10573,7798,10571,4985,6827),
+        'm_parents' => array(10573,10571,4985,6827),
     ),
 );
 
@@ -3190,13 +3167,13 @@ $config['en_all_4463'] = array(
         'm_icon' => '<i class="far fa-user-hard-hat isturquoise"></i>',
         'm_name' => 'Mench Miners',
         'm_desc' => 'Everyone on Mench is mining intelligence, but this group of individuals have set their intention to become a Mench miner and have graduated from our training program on how to Mine intelligence using Mench.',
-        'm_parents' => array(10571,7798,7368,4463,4426),
+        'm_parents' => array(10571,7368,4463,4426),
     ),
     4430 => array(
         'm_icon' => '<i class="far fa-user isturquoise"></i>',
         'm_name' => 'Mench Users',
         'm_desc' => 'Users connected to Mench Personal Assistant on Facebook Messenger.',
-        'm_parents' => array(7798,4983,7701,7369,6827,4426,4463),
+        'm_parents' => array(4983,7701,7369,6827,4426,4463),
     ),
     4755 => array(
         'm_icon' => '<i class="fal fa-eye-slash ispurple"></i>',
@@ -3821,13 +3798,13 @@ $config['en_all_4426'] = array(
         'm_icon' => '<i class="far fa-user-hard-hat isturquoise"></i>',
         'm_name' => 'Mench Miners',
         'm_desc' => 'Requires admin review and approval',
-        'm_parents' => array(10571,7798,7368,4463,4426),
+        'm_parents' => array(10571,7368,4463,4426),
     ),
     4430 => array(
         'm_icon' => '<i class="far fa-user isturquoise"></i>',
         'm_name' => 'Mench Users',
         'm_desc' => '',
-        'm_parents' => array(7798,4983,7701,7369,6827,4426,4463),
+        'm_parents' => array(4983,7701,7369,6827,4426,4463),
     ),
     4426 => array(
         'm_icon' => '<i class="fas fa-lock"></i>',
