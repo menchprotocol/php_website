@@ -99,7 +99,7 @@ if(!$action) {
         //Go through all the links and update their words:
         boost_power();
         $updated = 0;
-        foreach($this->Links_model->ln_fetch(array()) as $ln){
+        foreach($this->Links_model->ln_fetch(array(), array(), 0) as $ln){
             $this->Links_model->ln_update($ln['ln_id'], array(
                 'ln_words' => ln_type_words($ln),
             ));
