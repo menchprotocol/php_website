@@ -870,11 +870,18 @@ class Entities_model extends CI_Model
 
                 $applied_success++;
 
-            } elseif ($action_en_id == 5000 && substr_count($en['en_name'], $action_command1) > 0) { //Replace Entity Matching String
+            } elseif ($action_en_id == 5000 && substr_count($en['en_name'], $action_command1) > 0) { //Replace Entity Matching Name
 
-                //Make sure the SEARCH string exists:
                 $this->Entities_model->en_update($en['en_id'], array(
                     'en_name' => str_replace($action_command1, $action_command2, $en['en_name']),
+                ), true, $ln_creator_entity_id);
+
+                $applied_success++;
+
+            } elseif ($action_en_id == 10625 && substr_count($en['en_icon'], $action_command1) > 0) { //Replace Entity Matching Icon
+
+                $this->Entities_model->en_update($en['en_id'], array(
+                    'en_icon' => str_replace($action_command1, $action_command2, $en['en_icon']),
                 ), true, $ln_creator_entity_id);
 
                 $applied_success++;

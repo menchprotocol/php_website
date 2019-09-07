@@ -116,7 +116,7 @@
 
                 $input_options .= '<i class="fal fa-info-circle" data-toggle="tooltip" data-placement="right" title="'.$mass_action_en['m_desc'].'"></i> ';
 
-                if(in_array($action_en_id, array(5000, 5001))){
+                if(in_array($action_en_id, array(5000, 5001, 10625))){
 
                     //String Find and Replace:
 
