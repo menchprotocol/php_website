@@ -314,7 +314,7 @@ class Miner_app extends CI_Controller
 
 
         //Fetch top users per each direction
-        $show_max = 10;
+        $show_max = 8;
 
 
         //Now see what type of report they want:
