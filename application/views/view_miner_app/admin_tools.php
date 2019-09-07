@@ -95,12 +95,12 @@ if(!$action) {
 
 
 
-    if(isset($_GET['updateall']) || isset($_GET['updatezero'])){
+    if(isset($_GET['updateall']) || isset($_GET['updatesome'])){
         //Go through all the links and update their words:
         boost_power();
         $updated = 0;
         foreach($this->Links_model->ln_fetch(( isset($_GET['updateall']) ? array() : array(
-            'ln_words !=' => 0,
+            'ln_type_entity_id IN (' . $_GET['updatesome'] . ')' => null,
         )), array(), 0) as $ln){
             $this->Links_model->ln_update($ln['ln_id'], array(
                 'ln_words' => ln_type_words($ln),
@@ -586,36 +586,6 @@ if(!$action) {
     } else {
         echo '<div class="alert alert-success maxout"><i class="fas fa-check-circle"></i> No duplicates found!</div>';
     }
-
-
-} elseif($action=='reset_all_credits') {
-
-
-    die('Locked via code base');
-
-    boost_power();
-
-    //Hidden function to reset points:
-    $all_link_types = $this->Links_model->ln_fetch(array(
-        'ln_status_entity_id IN (' . join(',', $this->config->item('en_ids_7360')) . ')' => null, //Link Statuses Active
-    ), array('ln_type'), 0, 0, array('en_name' => 'ASC'), 'COUNT(ln_type_entity_id) as total_count, en_name, en_icon, ln_type_entity_id', 'ln_type_entity_id, en_name, en_icon');
-
-
-    $total_updated = 0;
-    foreach ($all_link_types as $count => $ln) {
-
-        $credits = fetch_credits($ln['ln_type_entity_id']);
-
-        //Update all links with out-of-date points:
-        $this->db->query("UPDATE table_links SET ln_credits = ".$credits." WHERE ln_credits != ".$credits." AND ln_type_entity_id = " . $ln['ln_type_entity_id']);
-
-        //Count how many updates:
-        $total_updated += $this->db->affected_rows();
-
-    }
-
-    echo $total_updated.' links updated with new credit rates';
-
 
 } elseif($action=='or__children') {
 

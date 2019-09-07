@@ -1218,8 +1218,8 @@ class Entities extends CI_Controller
             $en_miner_credits = $this->Links_model->ln_fetch(array(
                 'ln_creator_entity_id' => $en['en_id'],
                 'ln_status_entity_id IN (' . join(',', $this->config->item('en_ids_7360')) . ')' => null, //Link Statuses Active
-            ), array(), 0, 0, array(), 'SUM(ln_credits) as total_credits');
-            $score += $en_miner_credits[0]['total_credits'] * $score_weights['score_miner_credits'];
+            ), array(), 0, 0, array(), 'SUM(ABS(ln_words)) as total_words');
+            $score += $en_miner_credits[0]['total_words'] * $score_weights['score_miner_credits'];
 
             //Do we need to update?
             if($en['en_trust_score'] != $score){

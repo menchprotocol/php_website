@@ -369,7 +369,6 @@ class Miner_app extends CI_Controller
     function extra_stats_links(){
 
 
-        $en_all_4463 = $this->config->item('en_all_4463'); //Platform Glossary
         $en_all_4593 = $this->config->item('en_all_4593'); //Load all link types
         $en_all_7304 = $this->config->item('en_all_7304'); //Link Stats
 

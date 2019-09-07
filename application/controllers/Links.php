@@ -72,7 +72,7 @@ class Links extends CI_Controller
 
         //Fetch links and total link counts:
         $lns = $this->Links_model->ln_fetch($filters, $join_by, $item_per_page, $query_offset);
-        $lns_count = $this->Links_model->ln_fetch($filters, $join_by, 0, 0, array(), 'COUNT(ln_id) as total_count, SUM(ln_credits) as total_words');
+        $lns_count = $this->Links_model->ln_fetch($filters, $join_by, 0, 0, array(), 'COUNT(ln_id) as total_count, SUM(ABS(ln_words)) as total_words');
         $total_items_loaded = ($query_offset+count($lns));
         $has_more_links = ($lns_count[0]['total_count'] > 0 && $total_items_loaded < $lns_count[0]['total_count']);
 

@@ -156,8 +156,8 @@ class Links_model extends CI_Model
         }
 
         //Unset un-allowed columns to be manually added:
-        if (isset($insert_columns['ln_credits'])) {
-            unset($insert_columns['ln_credits']);
+        if (isset($insert_columns['ln_words'])) {
+            unset($insert_columns['ln_words']);
         }
 
         //Clean metadata is provided:
@@ -192,9 +192,6 @@ class Links_model extends CI_Model
             }
         }
 
-
-        //Set credits:
-        $insert_columns['ln_credits'] = ( $insert_columns['ln_creator_entity_id'] > 0 ? fetch_credits($insert_columns['ln_type_entity_id']) : 0 );
 
         //Determine word weight
         $insert_columns['ln_words'] = ln_type_words($insert_columns);

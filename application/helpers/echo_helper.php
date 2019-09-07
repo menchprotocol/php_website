@@ -534,7 +534,7 @@ function echo_ln($ln, $is_inner = false)
 
     $CI =& get_instance();
     $en_all_4593 = $CI->config->item('en_all_4593');
-    $en_all_4463 = $CI->config->item('en_all_4463'); //Platform Glossary
+    $en_all_4341 = $CI->config->item('en_all_4341'); //Link Table
     $session_en = en_auth();
     if(isset($session_en['en_id'])){
         $is_owner = ( $ln['ln_creator_entity_id']>0 && $session_en['en_id']==$ln['ln_creator_entity_id'] );
@@ -667,11 +667,9 @@ function echo_ln($ln, $is_inner = false)
     }
 
 
+    //Link words
+    $ui .= '<span class="link-connection-a"><span data-toggle="tooltip" data-placement="top" title="Number of words exchanged in this link" style="min-width:30px; display: inline-block;">'.$en_all_4341[10588]['m_icon']. ' '. number_format($ln['ln_words'], (fmod($ln['ln_words'],1)>0 ? 2 : 0)) .'</span></span> &nbsp;';
 
-
-    if($ln['ln_credits'] > 0){
-        $ui .= '<span class="link-connection-a"><span data-toggle="tooltip" data-placement="top" title="'.$en_all_4463[4595]['m_name'].' awarded to '.$full_name.'" style="min-width:30px; display: inline-block;">'.$en_all_4463[4595]['m_icon']. ' '. number_format($ln['ln_credits'], 0) .'</span></span> &nbsp;';
-    }
 
     if($ln['ln_order'] > 0){
         $ui .= '<span class="link-connection-a"><span data-toggle="tooltip" data-placement="top" title="Link ordered '.echo_ordinal_number($ln['ln_order']).'" style="min-width:30px; display: inline-block;"><i class="fas fa-sort"></i> '.echo_ordinal_number($ln['ln_order']).' Order</span></span> &nbsp;';

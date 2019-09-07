@@ -47,7 +47,6 @@ create table table_links
   ln_parent_link_id               bigint       not null,
   ln_external_id                  bigint       not null,
   ln_order                        smallint     not null,
-  ln_credits                      smallint     not null,
   ln_timestamp                    timestamp(4) not null,
   ln_content                      text,
   ln_metadata                     text
@@ -129,9 +128,6 @@ create index table_ledger_tr_tr_parent_id_index
 
 create index table_ledger_tr_order_index
   on table_links (ln_order);
-
-create index table_links_ln_credits_index
-  on table_links (ln_credits);
 
 create index table_links_ln_status_entity_id_index
   on table_links (ln_status_entity_id);
