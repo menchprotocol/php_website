@@ -134,6 +134,10 @@ function load_leaderboard(){
 
         $('#body_inject').html(data);
 
+        //Highlight current classes (AGAIN, to fix loading bug):
+        $('.setting-en-'+js_timeframe_en_id).addClass('btn-primary');
+        $('.setting-en-'+js_direction_en_id).addClass('btn-primary');
+
         //Reload Tooltip again:
         $('[data-toggle="tooltip"]').tooltip();
     });
