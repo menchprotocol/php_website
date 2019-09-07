@@ -11,7 +11,7 @@ defined('BASEPATH') OR exit('No direct script access allowed');
  *
  */
 
-//Generated 2019-09-06 18:38:26 PST
+//Generated 2019-09-06 18:45:26 PST
 
 //Output:
 $config['en_ids_10590'] = array(4994,4993,4282,6149,7611,6969,4283,7495,7542,7610,5967,7563,4554,4570,4556,4555,7702,6563,4552,4553,7562);
@@ -1273,13 +1273,13 @@ $config['en_all_4341'] = array(
         'm_parents' => array(6232,6213,4341),
     ),
     4593 => array(
-        'm_icon' => '<i class="fas fa-plug"></i>',
+        'm_icon' => '<i class="fas fa-plug ispurple"></i>',
         'm_name' => 'Type',
         'm_desc' => '',
-        'm_parents' => array(6160,6232,6213,6194,4527,4341),
+        'm_parents' => array(10609,6160,6232,6213,6194,4527,4341),
     ),
     10588 => array(
-        'm_icon' => '<i class="fas fa-file-word"></i>',
+        'm_icon' => '<i class="fas fa-file-word ispurple"></i>',
         'm_name' => 'Words',
         'm_desc' => '',
         'm_parents' => array(10609,4506,4341),
@@ -2377,10 +2377,10 @@ $config['en_all_6194'] = array(
         'm_parents' => array(6160,6232,7304,4527,6194,6213,4341),
     ),
     4593 => array(
-        'm_icon' => '<i class="fas fa-plug"></i>',
+        'm_icon' => '<i class="fas fa-plug ispurple"></i>',
         'm_name' => 'Link Type',
         'm_desc' => 'SELECT count(ln_id) as totals FROM table_links WHERE ln_status_entity_id IN (6175,6176) AND ln_type_entity_id=',
-        'm_parents' => array(6160,6232,6213,6194,4527,4341),
+        'm_parents' => array(10609,6160,6232,6213,6194,4527,4341),
     ),
 );
 
