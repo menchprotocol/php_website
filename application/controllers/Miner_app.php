@@ -156,7 +156,7 @@ class Miner_app extends CI_Controller
         //Intent Statuses:
         echo '<table class="table table-condensed table-striped stats-table mini-stats-table intent_statuses '.advance_mode().'">';
         echo '<tr class="panel-title down-border">';
-        echo '<td style="text-align: left;" colspan="2">'.$en_all_7302[4737]['m_name'].echo__s(count($this->config->item('en_all_4737')), true).'</td>';
+        echo '<td style="text-align: left;" colspan="2">'.count($this->config->item('en_all_4737')).' '.$en_all_7302[4737]['m_name'].echo__s(count($this->config->item('en_all_4737')), true).'</td>';
         echo '</tr>';
         foreach ($this->config->item('en_all_4737') as $en_id => $m) {
 
@@ -287,7 +287,7 @@ class Miner_app extends CI_Controller
         //Entity Statuses
         echo '<table class="table table-condensed table-striped stats-table mini-stats-table entity_statuses '.advance_mode().'">';
         echo '<tr class="panel-title down-border">';
-        echo '<td style="text-align: left;" colspan="2">'.$en_all_7303[6177]['m_name'].echo__s(count($this->config->item('en_all_6177')), true).'</td>';
+        echo '<td style="text-align: left;" colspan="2">'.count($this->config->item('en_all_6177')).' '.$en_all_7303[6177]['m_name'].echo__s(count($this->config->item('en_all_6177')), true).'</td>';
         echo '</tr>';
         foreach ($this->config->item('en_all_6177') as $en_id => $m) {
 
@@ -415,7 +415,7 @@ class Miner_app extends CI_Controller
         //Link Status:
         echo '<table class="table table-condensed table-striped stats-table mini-stats-table link_statuses '.advance_mode().'">';
         echo '<tr class="panel-title down-border">';
-        echo '<td style="text-align: left;" colspan="2">'.$en_all_7304[6186]['m_name'].echo__s(count($this->config->item('en_all_6186')), true).'</td>';
+        echo '<td style="text-align: left;" colspan="2">'.count($this->config->item('en_all_6186')).' '.$en_all_7304[6186]['m_name'].echo__s(count($this->config->item('en_all_6186')), true).'</td>';
         echo '</tr>';
         foreach ($this->config->item('en_all_6186') as $en_id => $m) {
 
