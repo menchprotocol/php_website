@@ -95,11 +95,13 @@ if(!$action) {
 
 
 
-    if(isset($_GET['update'])){
+    if(isset($_GET['updateall']) || isset($_GET['updatezero'])){
         //Go through all the links and update their words:
         boost_power();
         $updated = 0;
-        foreach($this->Links_model->ln_fetch(array(), array(), 0) as $ln){
+        foreach($this->Links_model->ln_fetch(( isset($_GET['updateall']) ? array() : array(
+            'ln_words !=' => 0,
+        )), array(), 0) as $ln){
             $this->Links_model->ln_update($ln['ln_id'], array(
                 'ln_words' => ln_type_words($ln),
             ));
@@ -127,14 +129,14 @@ if(!$action) {
     echo '<td style="text-align: left;">Words/link</td>';
     echo '</tr>';
 
-    foreach (array('ln_words', 'ln_words>', 'ln_words<') as $words_setting) {
+    foreach (array('ln_words =', 'ln_words >', 'ln_words <') as $words_setting) {
 
         $words_stats = $this->Links_model->ln_fetch(array(
             $words_setting => 0,
         ), array(), 0, 0, array(), 'COUNT(ln_id) as total_links, SUM(ln_words) as total_words');
 
         echo '<tr class="panel-title down-border">';
-        echo '<td style="text-align: left;">'.$words_setting.'=0</td>';
+        echo '<td style="text-align: left;">'.$words_setting.' 0</td>';
         echo '<td style="text-align: left;">'.number_format($words_stats[0]['total_links'], 0).'</td>';
         echo '<td style="text-align: left;">'.number_format($words_stats[0]['total_words'], 2).'</td>';
         echo '<td style="text-align: left;">'.( $words_stats[0]['total_links']>0 ? number_format(($words_stats[0]['total_words']/$words_stats[0]['total_links']), 2) : '0' ).'</td>';
