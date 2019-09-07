@@ -11,7 +11,7 @@ defined('BASEPATH') OR exit('No direct script access allowed');
  *
  */
 
-//Generated 2019-09-06 19:00:03 PST
+//Generated 2019-09-06 19:06:58 PST
 
 //Output:
 $config['en_ids_10590'] = array(4994,4993,4282,6149,7611,6969,4283,7495,7542,7610,5967,7563,4554,4570,4556,4555,7702,6563,4552,4553,7562);
@@ -1219,7 +1219,7 @@ $config['en_all_4341'] = array(
         'm_parents' => array(6160,6232,6213,6194,4341),
     ),
     4595 => array(
-        'm_icon' => '<i class="fas fa-award"></i>',
+        'm_icon' => '<i class="fas fa-award ispurple"></i>',
         'm_name' => 'Credits',
         'm_desc' => '',
         'm_parents' => array(6771,6232,6214,4319,4426,4527,4463,4341),
@@ -1361,7 +1361,7 @@ $config['en_all_6201'] = array(
         'm_parents' => array(6232,6213,6201),
     ),
     7596 => array(
-        'm_icon' => '<i class="far fa-mountains isgreen"></i>',
+        'm_icon' => '<i class="fas fa-mountains isgreen"></i>',
         'm_name' => 'Scope',
         'm_desc' => '',
         'm_parents' => array(10610,7302,6160,6201,6213,6194,6232,4527),
@@ -2220,7 +2220,7 @@ $config['en_all_7355'] = array(
 $config['en_ids_7302'] = array(7596,4737,10602,5008);
 $config['en_all_7302'] = array(
     7596 => array(
-        'm_icon' => '<i class="far fa-mountains isgreen"></i>',
+        'm_icon' => '<i class="fas fa-mountains isgreen"></i>',
         'm_name' => 'Scope',
         'm_desc' => 'Defines who and how can access intent. Note that all intents are accessible to all users, it\'s just the level of visibility/engagement that is different.',
         'm_parents' => array(10610,7302,6160,6201,6213,6194,6232,4527),
@@ -2307,7 +2307,7 @@ $config['en_all_7203'] = array(
         'm_parents' => array(10593,10589,7203,4593,4595),
     ),
     4486 => array(
-        'm_icon' => '<i class="fas fa-hashtag"></i>',
+        'm_icon' => '<i class="fas fa-hashtag ispurple"></i>',
         'm_name' => 'Intent Links',
         'm_desc' => '',
         'm_parents' => array(7203,4535,4527),
@@ -2347,7 +2347,7 @@ $config['en_all_6194'] = array(
         'm_parents' => array(6160,6232,7303,6194,6213,6206,4527),
     ),
     7596 => array(
-        'm_icon' => '<i class="far fa-mountains isgreen"></i>',
+        'm_icon' => '<i class="fas fa-mountains isgreen"></i>',
         'm_name' => 'Intent Scope',
         'm_desc' => 'SELECT count(in_id) as totals FROM table_intents WHERE in_status_entity_id IN (6183,6184) AND in_scope_entity_id=',
         'm_parents' => array(10610,7302,6160,6201,6213,6194,6232,4527),
@@ -2488,7 +2488,7 @@ $config['en_all_4463'] = array(
         'm_parents' => array(6232,4463,6214,6206),
     ),
     4485 => array(
-        'm_icon' => '<i class="far fa-comment-plus"></i>',
+        'm_icon' => '<i class="far fa-comment-plus ispurple"></i>',
         'm_name' => 'Intent Notes',
         'm_desc' => 'Intent notes are various information collected around intentions that enable Mench to operate as a Personal Assistant for students looking to accomplish an intent.',
         'm_parents' => array(7552,4535,4527,4463),
@@ -2500,7 +2500,7 @@ $config['en_all_4463'] = array(
         'm_parents' => array(10608,7368,4534,4463),
     ),
     4595 => array(
-        'm_icon' => '<i class="fas fa-award"></i>',
+        'm_icon' => '<i class="fas fa-award ispurple"></i>',
         'm_name' => 'Link Credits',
         'm_desc' => 'Contribution credits awarded to Mench users based on the actions they take.',
         'm_parents' => array(6771,6232,6214,4319,4426,4527,4463,4341),
@@ -2548,8 +2548,8 @@ $config['en_all_4463'] = array(
         'm_parents' => array(7798,4983,7701,7369,6827,4426,4463),
     ),
     4755 => array(
-        'm_icon' => '<i class="fal fa-eye-slash"></i>',
-        'm_name' => 'Private Links',
+        'm_icon' => '<i class="fal fa-eye-slash ispurple"></i>',
+        'm_name' => 'Private Link Types',
         'm_desc' => 'Mench is open-source but most of our student generated content is private and accessible either by the student or Mench\'s core contributors.',
         'm_parents' => array(6771,4463,4426,4527,4757),
     ),
@@ -2944,7 +2944,7 @@ $config['en_all_4277'] = array(
         'm_parents' => array(4277),
     ),
     6554 => array(
-        'm_icon' => '<i class="fas fa-wand-magic"></i>',
+        'm_icon' => '<i class="fas fa-wand-magic ispurple"></i>',
         'm_name' => 'User Sent Messenger Command Messages',
         'm_desc' => '',
         'm_parents' => array(4277),
@@ -3143,7 +3143,7 @@ $config['en_all_4426'] = array(
         'm_parents' => array(4758,4506,4426,4527),
     ),
     4595 => array(
-        'm_icon' => '<i class="fas fa-award"></i>',
+        'm_icon' => '<i class="fas fa-award ispurple"></i>',
         'm_name' => 'Link Credits',
         'm_desc' => '',
         'm_parents' => array(6771,6232,6214,4319,4426,4527,4463,4341),
@@ -3185,8 +3185,8 @@ $config['en_all_4426'] = array(
         'm_parents' => array(3303,6771,4426,4527,4757,4428),
     ),
     4755 => array(
-        'm_icon' => '<i class="fal fa-eye-slash"></i>',
-        'm_name' => 'Private Links',
+        'm_icon' => '<i class="fal fa-eye-slash ispurple"></i>',
+        'm_name' => 'Private Link Types',
         'm_desc' => '',
         'm_parents' => array(6771,4463,4426,4527,4757),
     ),
@@ -3198,7 +3198,7 @@ $config['en_all_4426'] = array(
     ),
 );
 
-//Private Links:
+//Private Link Types:
 $config['en_ids_4755'] = array(4246,7504,4263,4242,3288,3286,4783,4282,6224,6415,4275,6559,6560,6556,6578,6154,6155,6149,7611,6969,4283,6132,7495,7542,4235,7757,7610,5967,7563,4266,4267,7578,4554,4570,4556,4555,7702,6563,4552,4553,4577,4549,4551,4550,4557,4278,4279,4268,4299,4460,4547,4287,4548,7561,7564,7559,7560,7558,7488,7485,7486,6144,7741,6140,4559,7489,7492,6997,6157,7487,6143,7562);
 $config['en_all_4755'] = array(
     4246 => array(
