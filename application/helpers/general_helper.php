@@ -381,6 +381,54 @@ function in_outcome_verb_id($string){
     return 0;
 }
 
+
+
+function ln_type_words($ln){
+
+    $CI =& get_instance();
+
+    //Set words:
+    if(in_array($ln['ln_type_entity_id'], $CI->config->item('en_ids_10596'))){
+
+        //Nod:
+        $link_words = $CI->config->item('nod_word_ratio');
+
+    } else {
+
+        //Word or Statement, count links:
+        $link_words = 0;
+
+        //Consider each object link as a word:
+        foreach (array('ln_child_intent_id', 'ln_parent_intent_id', 'ln_child_entity_id', 'ln_parent_entity_id', 'ln_parent_link_id') as $dz) {
+            if (isset($ln[$dz]) && intval($ln[$dz]) > 0) {
+                $link_words++;
+            }
+        }
+
+        //Is it a statement that has content??
+        if(in_array($ln['ln_type_entity_id'], $CI->config->item('en_ids_10593')) && isset($ln['ln_content']) && strlen($ln['ln_content']) > 0){
+            //Statement with content:
+            $link_words += 1 + substr_count(str_replace('  ',' ', $ln['ln_content']), ' ');
+        }
+
+        if($link_words==0){
+            //Should be at-least 1 word:
+            $link_words = 1;
+        }
+    }
+
+
+
+    //Give negative sign if output
+    if(in_array($ln['ln_type_entity_id'], $CI->config->item('en_ids_10590'))){
+        //This is an output, return negative:
+        $link_words = -1 * $link_words;
+    }
+
+
+    return $link_words;
+}
+
 function addup_array($array, $match_key)
 {
     $total = 0;

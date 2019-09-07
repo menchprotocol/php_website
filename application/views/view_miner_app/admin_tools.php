@@ -20,6 +20,7 @@ $moderation_tools = array(
     '/miner_app/admin_tools/assessment_marks_birds_eye' => 'Completion Marks Birds Eye View',
     '/miner_app/admin_tools/compose_test_message' => 'Compose Test Message',
     '/miner_app/admin_tools/sync_in_verbs' => 'Sync Intent Verbs',
+    '/miner_app/admin_tools/link_words_stats' => 'Link Words Stats',
 );
 
 $cron_jobs = array(
@@ -84,6 +85,65 @@ if(!$action) {
 
     }
     echo '</div>';
+
+} elseif($action=='link_words_stats') {
+
+
+
+    //Show breadcrumb:
+    echo '<ul class="breadcrumb"><li><a href="/miner_app/admin_tools">Admin Tools</a></li><li><b>'.$moderation_tools['/miner_app/admin_tools/'.$action].'</b></li></ul>';
+
+
+
+    if(isset($_GET['update'])){
+        //Go through all the links and update their words:
+        boost_power();
+        $updated = 0;
+        foreach($this->Links_model->ln_fetch(array()) as $ln){
+            $this->Links_model->ln_update($ln['ln_id'], array(
+                'ln_words' => ln_type_words($ln),
+            ));
+            $updated++;
+        }
+        echo '<div class="alert alert-warning">'.$updated.' links updated with new word counts.</div>';
+    }
+
+
+    //Fetch word stats:
+    $words_above_zeros = $this->Links_model->ln_fetch(array(
+        'ln_words >' => 0,
+    ), array(), 0, 0, array(), 'COUNT(ln_id) as total_links, SUM(ln_words) as total_words');
+    $words_below_zeros = $this->Links_model->ln_fetch(array(
+        'ln_words <' => 0,
+    ), array(), 0, 0, array(), 'COUNT(ln_id) as total_links, SUM(ln_words) as total_words');
+
+
+    echo '<table class="table table-condensed table-striped stats-table mini-stats-table">';
+
+    echo '<tr class="panel-title down-border">';
+    echo '<td style="text-align: left;">Group</td>';
+    echo '<td style="text-align: left;">Links</td>';
+    echo '<td style="text-align: left;">Words</td>';
+    echo '<td style="text-align: left;">Words/link</td>';
+    echo '</tr>';
+
+    foreach (array('ln_words', 'ln_words>', 'ln_words<') as $words_setting) {
+
+        $words_stats = $this->Links_model->ln_fetch(array(
+            $words_setting => 0,
+        ), array(), 0, 0, array(), 'COUNT(ln_id) as total_links, SUM(ln_words) as total_words');
+
+        echo '<tr class="panel-title down-border">';
+        echo '<td style="text-align: left;">'.$words_setting.'=0</td>';
+        echo '<td style="text-align: left;">'.number_format($words_stats[0]['total_links'], 0).'</td>';
+        echo '<td style="text-align: left;">'.number_format($words_stats[0]['total_words'], 2).'</td>';
+        echo '<td style="text-align: left;">'.( $words_stats[0]['total_links']>0 ? number_format(($words_stats[0]['total_words']/$words_stats[0]['total_links']), 2) : '0' ).'</td>';
+        echo '</tr>';
+
+    }
+
+    echo '</table>';
+
 
 } elseif($action=='moderate_intent_notes'){
 

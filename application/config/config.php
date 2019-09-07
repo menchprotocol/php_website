@@ -5,7 +5,7 @@ defined('BASEPATH') OR exit('No direct script access allowed');
 /*
  *
  * Global variables used throughout the platform.
- * Example: $this->config->item('')
+ * Example: $this->config->item('nod_word_ratio')
  *
  */
 
@@ -20,6 +20,7 @@ $config['app_version']              = '1.026'; //Cache buster for static JS/CSS 
 $config['system_name']              = 'Mench'; //Used for example when a link has no miner
 $config['system_icon']              = '<img src="/img/mench_white.png" />'; //Used for example when a link has no miner
 $config['app_enable_algolia']       = true; //May need to turn off if/when we reach monthly quota of 50k calls
+$config['nod_word_ratio']           = 0.02; //The ratio of a Nod to a Word
 $config['max_file_mb_size']         = 25; //Server setting is 32MB
 $config['items_per_page']           = 100; //The limit of how many items should be loaded per page/section
 $config['css_column_1']             = 'col-xs-7 cols'; //Size of grid 1 (IF Change col-xs then also update on other code base

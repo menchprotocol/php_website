@@ -196,6 +196,8 @@ class Links_model extends CI_Model
         //Set credits:
         $insert_columns['ln_credits'] = ( $insert_columns['ln_creator_entity_id'] > 0 ? fetch_credits($insert_columns['ln_type_entity_id']) : 0 );
 
+        //Determine word weight
+        $insert_columns['ln_words'] = ln_type_words($insert_columns);
 
         //Lets log:
         $this->db->insert('table_links', $insert_columns);

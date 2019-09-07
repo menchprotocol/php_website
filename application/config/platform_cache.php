@@ -11,22 +11,434 @@ defined('BASEPATH') OR exit('No direct script access allowed');
  *
  */
 
-//Generated 2019-09-06 19:19:40 PST
+//Generated 2019-09-07 09:07:35 PST
 
-//Output:
-$config['en_ids_10590'] = array(4994,4993,4282,6149,7611,6969,4283,7495,7542,7610,5967,7563,4554,4570,4556,4555,7702,6563,4552,4553,7562);
-$config['en_all_10590'] = array(
+//Word:
+$config['en_ids_10594'] = array(4246,7504,4242,6224,6415,6132,4235,7757,7578,4299,6140);
+$config['en_all_10594'] = array(
+    4246 => array(
+        'm_icon' => '<i class="far fa-bug ispurple"></i>',
+        'm_name' => 'Admin Bug Reports',
+        'm_desc' => '',
+        'm_parents' => array(10594,10589,5967,4595,4755,4593),
+    ),
+    7504 => array(
+        'm_icon' => '<i class="far fa-comment-exclamation ispurple"></i>',
+        'm_name' => 'Admin Review Trigger',
+        'm_desc' => '',
+        'm_parents' => array(10594,10589,5967,4755,4595,4593),
+    ),
+    4242 => array(
+        'm_icon' => '<i class="far fa-sync ispurple"></i>',
+        'm_name' => 'Link Updated',
+        'm_desc' => '',
+        'm_parents' => array(10594,10589,7703,4755,4593,4595),
+    ),
+    6224 => array(
+        'm_icon' => '<i class="far fa-sync ispurple"></i>',
+        'm_name' => 'User Account Updated',
+        'm_desc' => '',
+        'm_parents' => array(10594,10589,4595,4755,6222,4593),
+    ),
+    6415 => array(
+        'm_icon' => '<i class="far fa-function ispurple"></i>',
+        'm_name' => 'User Cleared Action Plan',
+        'm_desc' => '',
+        'm_parents' => array(10594,10589,5967,4595,4755,6418,4593,6414),
+    ),
+    6132 => array(
+        'm_icon' => '<i class="fas fa-exchange rotate90 ispurple"></i>',
+        'm_name' => 'User Intent Prioritized',
+        'm_desc' => '',
+        'm_parents' => array(10594,10589,4595,6153,4506,4755,4593),
+    ),
+    4235 => array(
+        'm_icon' => '<i class="far fa-bullseye-arrow ispurple"></i>',
+        'm_name' => 'User Intent Set',
+        'm_desc' => '',
+        'm_parents' => array(10594,7347,10589,5967,4595,4755,4593),
+    ),
+    7757 => array(
+        'm_icon' => '<i class="fas fa-times-octagon ispurple"></i>',
+        'm_name' => 'User Intent Terminated',
+        'm_desc' => '',
+        'm_parents' => array(10594,10589,4755,4593,4595,6150),
+    ),
+    7578 => array(
+        'm_icon' => '<i class="fas fa-user-lock ispurple"></i>',
+        'm_name' => 'User Password Updated',
+        'm_desc' => '',
+        'm_parents' => array(10594,10589,4595,4755,4593),
+    ),
+    4299 => array(
+        'm_icon' => '<i class="far fa-id-badge ispurple"></i>',
+        'm_name' => 'User Sent Profile Photo',
+        'm_desc' => '',
+        'm_parents' => array(10594,10589,7654,4595,6222,4755,4593),
+    ),
+    6140 => array(
+        'm_icon' => '<i class="fas fa-lock-open ispurple"></i>',
+        'm_name' => 'User Step Link Unlock',
+        'm_desc' => '',
+        'm_parents' => array(10594,10589,4595,6410,4229,4755,4593),
+    ),
+);
+
+//Statement:
+$config['en_ids_10593'] = array(4251,4259,4257,4261,4260,4319,4230,4255,4318,4256,4258,4263,4250,4229,4228,6093,6242,7545,4601,4231,7701,10573,4983,4264,6154,6155,5967,7563,4554,4570,4556,4555,7702,6563,4552,4553,4549,4551,4550,4557,4460,4547,4548,7562);
+$config['en_all_10593'] = array(
+    4251 => array(
+        'm_icon' => '<i class="fas fa-at ispurple"></i>',
+        'm_name' => 'Entity Created',
+        'm_desc' => '',
+        'm_parents' => array(10593,10589,4593,4595),
+    ),
+    4259 => array(
+        'm_icon' => '<i class="far fa-volume-up ispurple"></i>',
+        'm_name' => 'Entity Link Audio',
+        'm_desc' => '',
+        'm_parents' => array(10593,10589,6203,4593,4592,4537,4595),
+    ),
+    4257 => array(
+        'm_icon' => '<i class="far fa-play-circle ispurple"></i>',
+        'm_name' => 'Entity Link Embed',
+        'm_desc' => '',
+        'm_parents' => array(10593,10589,4593,4592,4537,4506,4595),
+    ),
+    4261 => array(
+        'm_icon' => '<i class="far fa-file-pdf ispurple"></i>',
+        'm_name' => 'Entity Link File',
+        'm_desc' => '',
+        'm_parents' => array(10593,10589,6203,4593,4592,4537,4595),
+    ),
+    4260 => array(
+        'm_icon' => '<i class="far fa-image ispurple"></i>',
+        'm_name' => 'Entity Link Image',
+        'm_desc' => '',
+        'm_parents' => array(10593,10589,6203,4593,4592,4537,4595),
+    ),
+    4319 => array(
+        'm_icon' => '<i class="far fa-sort-numeric-down ispurple"></i>',
+        'm_name' => 'Entity Link Integer',
+        'm_desc' => '',
+        'm_parents' => array(10593,10589,4593,4592,4595),
+    ),
+    4230 => array(
+        'm_icon' => '<i class="far fa-level-up rotate90 ispurple"></i>',
+        'm_name' => 'Entity Link Raw',
+        'm_desc' => '',
+        'm_parents' => array(10593,10589,4593,4592,4595),
+    ),
+    4255 => array(
+        'm_icon' => '<i class="far fa-align-left ispurple"></i>',
+        'm_name' => 'Entity Link Text',
+        'm_desc' => '',
+        'm_parents' => array(10593,10589,4593,4592,4595),
+    ),
+    4318 => array(
+        'm_icon' => '<i class="far fa-clock ispurple"></i>',
+        'm_name' => 'Entity Link Time',
+        'm_desc' => '',
+        'm_parents' => array(10593,10589,4593,4592,4595),
+    ),
+    4256 => array(
+        'm_icon' => '<i class="far fa-browser ispurple"></i>',
+        'm_name' => 'Entity Link URL',
+        'm_desc' => '',
+        'm_parents' => array(10593,10589,4593,4592,4537,4595),
+    ),
+    4258 => array(
+        'm_icon' => '<i class="far fa-video ispurple"></i>',
+        'm_name' => 'Entity Link Video',
+        'm_desc' => '',
+        'm_parents' => array(10593,10589,6203,4593,4592,4537,4595),
+    ),
+    4263 => array(
+        'm_icon' => '<i class="far fa-sync ispurple"></i>',
+        'm_name' => 'Entity Updated',
+        'm_desc' => '',
+        'm_parents' => array(10593,10589,4755,4593,4595),
+    ),
+    4250 => array(
+        'm_icon' => '<i class="fas fa-hashtag ispurple"></i>',
+        'm_name' => 'Intent Created',
+        'm_desc' => '',
+        'm_parents' => array(10593,10589,7203,4593,4595),
+    ),
+    4229 => array(
+        'm_icon' => '<i class="fas fa-lock ispurple"></i>',
+        'm_name' => 'Intent Link Conditional',
+        'm_desc' => '',
+        'm_parents' => array(10593,10589,7703,4527,6410,6283,4593,4486,4595),
+    ),
+    4228 => array(
+        'm_icon' => '<i class="fas fa-walking ispurple"></i>',
+        'm_name' => 'Intent Link Required',
+        'm_desc' => '',
+        'm_parents' => array(10593,10589,7703,6410,4593,4486,4595),
+    ),
+    6093 => array(
+        'm_icon' => '<i class="far fa-comment-exclamation ispurple"></i>',
+        'm_name' => 'Intent Note Changelog',
+        'm_desc' => '',
+        'm_parents' => array(10593,10589,7703,4595,4593,4986,4485),
+    ),
+    6242 => array(
+        'm_icon' => '<i class="far fa-lightbulb-on ispurple"></i>',
+        'm_name' => 'Intent Note Endnote',
+        'm_desc' => '',
+        'm_parents' => array(10593,10589,7703,6345,4603,4595,4593,4986,4485),
+    ),
+    7545 => array(
+        'm_icon' => '<i class="far fa-tag ispurple"></i>',
+        'm_name' => 'Intent Note Entity Tag',
+        'm_desc' => '',
+        'm_parents' => array(10593,10589,7703,7551,4595,4593,4485),
+    ),
+    4601 => array(
+        'm_icon' => '<i class="far fa-search ispurple"></i>',
+        'm_name' => 'Intent Note Keyword',
+        'm_desc' => '',
+        'm_parents' => array(10593,10589,7703,4593,4595,4485),
+    ),
+    4231 => array(
+        'm_icon' => '<i class="far fa-comment ispurple"></i>',
+        'm_name' => 'Intent Note Message',
+        'm_desc' => '',
+        'm_parents' => array(10593,10589,7703,6345,4986,4603,4593,4485,4595),
+    ),
+    7701 => array(
+        'm_icon' => '<i class="far fa-rss ispurple"></i>',
+        'm_name' => 'Intent Note Subscriber',
+        'm_desc' => '',
+        'm_parents' => array(10593,10589,4527,7703,4593,4595,7551,4485),
+    ),
+    10573 => array(
+        'm_icon' => '<i class="far fa-user-edit ispurple"></i>',
+        'm_name' => 'Intent Note Trainer',
+        'm_desc' => '',
+        'm_parents' => array(10593,10589,4593,7703,4595,7551,4485),
+    ),
+    4983 => array(
+        'm_icon' => '<i class="far fa-thumbs-up ispurple"></i>',
+        'm_name' => 'Intent Note Up-Vote',
+        'm_desc' => '',
+        'm_parents' => array(10593,10589,4527,7703,7551,4985,4595,4593,4485),
+    ),
+    4264 => array(
+        'm_icon' => '<i class="far fa-sync ispurple"></i>',
+        'm_name' => 'Intent Updated',
+        'm_desc' => '',
+        'm_parents' => array(10593,10589,7703,4593,4595),
+    ),
+    6154 => array(
+        'm_icon' => '<i class="far fa-mountain ispurple"></i>',
+        'm_name' => 'User Intent Accomplished',
+        'm_desc' => '',
+        'm_parents' => array(10593,10589,10570,7758,7703,4595,4506,6150,4755,4593),
+    ),
+    6155 => array(
+        'm_icon' => '<i class="far fa-stop-circle ispurple"></i>',
+        'm_name' => 'User Intent Cancelled',
+        'm_desc' => '',
+        'm_parents' => array(10593,10589,10570,7703,4595,4506,6150,4593,4755),
+    ),
+    5967 => array(
+        'm_icon' => '<i class="far fa-envelope-open ispurple"></i>',
+        'm_name' => 'User Link CC Email',
+        'm_desc' => '',
+        'm_parents' => array(10593,10590,4506,4527,7569,4595,4755,4593),
+    ),
+    7563 => array(
+        'm_icon' => '<i class="far fa-envelope-open ispurple"></i>',
+        'm_name' => 'User Magic-Link Email',
+        'm_desc' => '',
+        'm_parents' => array(10593,10590,4755,7569,4595,4593),
+    ),
+    4554 => array(
+        'm_icon' => '<i class="far fa-volume-up ispurple"></i>',
+        'm_name' => 'User Received Audio',
+        'm_desc' => '',
+        'm_parents' => array(10593,10590,4595,6102,4755,4593,4280),
+    ),
+    4570 => array(
+        'm_icon' => '<i class="far fa-envelope-open ispurple"></i>',
+        'm_name' => 'User Received Email',
+        'm_desc' => '',
+        'm_parents' => array(10593,10590,7569,4595,4755,4593),
+    ),
+    4556 => array(
+        'm_icon' => '<i class="far fa-file-pdf ispurple"></i>',
+        'm_name' => 'User Received File',
+        'm_desc' => '',
+        'm_parents' => array(10593,10590,4595,6102,4755,4593,4280),
+    ),
+    4555 => array(
+        'm_icon' => '<i class="far fa-image ispurple"></i>',
+        'm_name' => 'User Received Image',
+        'm_desc' => '',
+        'm_parents' => array(10593,10590,4595,6102,4755,4593,4280),
+    ),
+    7702 => array(
+        'm_icon' => '<i class="far fa-envelope-open ispurple"></i>',
+        'm_name' => 'User Received Intent Email',
+        'm_desc' => '',
+        'm_parents' => array(10593,10590,4595,4593,4755,7569),
+    ),
+    6563 => array(
+        'm_icon' => '<i class="far fa-check ispurple"></i>',
+        'm_name' => 'User Received Quick Reply',
+        'm_desc' => '',
+        'm_parents' => array(10593,10590,4595,4593,4755,4280),
+    ),
+    4552 => array(
+        'm_icon' => '<i class="far fa-align-left ispurple"></i>',
+        'm_name' => 'User Received Text',
+        'm_desc' => '',
+        'm_parents' => array(10593,10590,4595,4755,4593,4280),
+    ),
+    4553 => array(
+        'm_icon' => '<i class="far fa-video ispurple"></i>',
+        'm_name' => 'User Received Video',
+        'm_desc' => '',
+        'm_parents' => array(10593,10590,4595,6102,4755,4593,4280),
+    ),
+    4549 => array(
+        'm_icon' => '<i class="far fa-volume-up ispurple"></i>',
+        'm_name' => 'User Sent Audio',
+        'm_desc' => '',
+        'm_parents' => array(10593,10589,7653,4595,6102,4755,4593),
+    ),
+    4551 => array(
+        'm_icon' => '<i class="far fa-file-pdf ispurple"></i>',
+        'm_name' => 'User Sent File',
+        'm_desc' => '',
+        'm_parents' => array(10593,10589,7653,4595,6102,4755,4593),
+    ),
+    4550 => array(
+        'm_icon' => '<i class="far fa-image ispurple"></i>',
+        'm_name' => 'User Sent Image',
+        'm_desc' => '',
+        'm_parents' => array(10593,10589,7653,4595,6102,4755,4593),
+    ),
+    4557 => array(
+        'm_icon' => '<i class="far fa-location-circle ispurple"></i>',
+        'm_name' => 'User Sent Location',
+        'm_desc' => '',
+        'm_parents' => array(10593,10589,7653,4595,4755,4593),
+    ),
+    4460 => array(
+        'm_icon' => '<i class="far fa-check ispurple"></i>',
+        'm_name' => 'User Sent Quick Reply',
+        'm_desc' => '',
+        'm_parents' => array(10593,10589,7653,4595,4755,4593),
+    ),
+    4547 => array(
+        'm_icon' => '<i class="far fa-align-left ispurple"></i>',
+        'm_name' => 'User Sent Text',
+        'm_desc' => '',
+        'm_parents' => array(10593,10589,7653,4595,4755,4593),
+    ),
+    4548 => array(
+        'm_icon' => '<i class="far fa-video ispurple"></i>',
+        'm_name' => 'User Sent Video',
+        'm_desc' => '',
+        'm_parents' => array(10593,10589,7653,4595,6102,4755,4593),
+    ),
+    7562 => array(
+        'm_icon' => '<i class="far fa-envelope-open ispurple"></i>',
+        'm_name' => 'User Welcome Email',
+        'm_desc' => '',
+        'm_parents' => array(10593,10590,4755,7569,4595,4593),
+    ),
+);
+
+//Nod:
+$config['en_ids_10596'] = array(10625,5943,5001,5865,4999,4998,5000,5981,5982,5003,4994,6226,4993,5007,4282,4275,6559,6560,6556,6578,6149,7611,6969,4283,7495,7542,7610,4266,4267,4577,4278,4279,4268,4287,7561,7564,7559,7560,7558,7488,7485,7486,6144,7741,4559,7489,7492,6997,6157,7487,6143);
+$config['en_all_10596'] = array(
+    10625 => array(
+        'm_icon' => '<i class="fal fa-list-alt ispurple"></i>',
+        'm_name' => 'Entities Icon Replace',
+        'm_desc' => '',
+        'm_parents' => array(4595,10589,10596,4593,4997),
+    ),
+    5943 => array(
+        'm_icon' => '<i class="fal fa-list-alt ispurple"></i>',
+        'm_name' => 'Entities Icon Update',
+        'm_desc' => '',
+        'm_parents' => array(10596,10589,4595,4593,4997),
+    ),
+    5001 => array(
+        'm_icon' => '<i class="fal fa-list-alt ispurple"></i>',
+        'm_name' => 'Entities Link Contents',
+        'm_desc' => '',
+        'm_parents' => array(10596,10589,4595,4593,4997),
+    ),
+    5865 => array(
+        'm_icon' => '<i class="fal fa-list-alt ispurple"></i>',
+        'm_name' => 'Entities Link Status',
+        'm_desc' => '',
+        'm_parents' => array(10596,10589,4595,4593,4997),
+    ),
+    4999 => array(
+        'm_icon' => '<i class="fal fa-list-alt ispurple"></i>',
+        'm_name' => 'Entities Name Postfix',
+        'm_desc' => '',
+        'm_parents' => array(10596,10589,4595,4593,4997),
+    ),
+    4998 => array(
+        'm_icon' => '<i class="fal fa-list-alt ispurple"></i>',
+        'm_name' => 'Entities Name Prefix',
+        'm_desc' => '',
+        'm_parents' => array(10596,10589,4595,4593,4997),
+    ),
+    5000 => array(
+        'm_icon' => '<i class="fal fa-list-alt ispurple"></i>',
+        'm_name' => 'Entities Name Replace',
+        'm_desc' => '',
+        'm_parents' => array(10596,10589,4595,4593,4997),
+    ),
+    5981 => array(
+        'm_icon' => '<i class="fal fa-list-alt ispurple"></i>',
+        'm_name' => 'Entities Parent Add',
+        'm_desc' => '',
+        'm_parents' => array(10596,10589,4595,4593,4997),
+    ),
+    5982 => array(
+        'm_icon' => '<i class="fal fa-list-alt ispurple"></i>',
+        'm_name' => 'Entities Parent Remove',
+        'm_desc' => '',
+        'm_parents' => array(10596,10589,4595,4593,4997),
+    ),
+    5003 => array(
+        'm_icon' => '<i class="fal fa-list-alt ispurple"></i>',
+        'm_name' => 'Entities Status Replace',
+        'm_desc' => '',
+        'm_parents' => array(10596,10589,4595,4593,4997),
+    ),
     4994 => array(
         'm_icon' => '<i class="far fa-eye ispurple"></i>',
         'm_name' => 'Entity Miner View',
         'm_desc' => '',
-        'm_parents' => array(10594,10590,4595,4593),
+        'm_parents' => array(10596,10590,4595,4593),
+    ),
+    6226 => array(
+        'm_icon' => '<i class="far fa-sync ispurple"></i>',
+        'm_name' => 'Intent Mass Updates',
+        'm_desc' => '',
+        'm_parents' => array(10596,10589,4595,4593),
     ),
     4993 => array(
         'm_icon' => '<i class="far fa-eye ispurple"></i>',
         'm_name' => 'Intent Miner View',
         'm_desc' => '',
-        'm_parents' => array(10594,10590,7612,4595,4593),
+        'm_parents' => array(10596,10590,7612,4595,4593),
+    ),
+    5007 => array(
+        'm_icon' => '<i class="fas fa-expand-arrows ispurple"></i>',
+        'm_name' => 'Toggle Advance Mode',
+        'm_desc' => '',
+        'm_parents' => array(10596,10589,7368,4595,4757,4593),
     ),
     4282 => array(
         'm_icon' => '<i class="far fa-eye ispurple"></i>',
@@ -34,23 +446,53 @@ $config['en_all_10590'] = array(
         'm_desc' => '',
         'm_parents' => array(10596,10590,4595,4755,6222,4593),
     ),
+    4275 => array(
+        'm_icon' => '<i class="fas fa-wand-magic ispurple"></i>',
+        'm_name' => 'User Commanded Intent',
+        'm_desc' => '',
+        'm_parents' => array(10596,10589,4595,6554,4755,4593),
+    ),
+    6559 => array(
+        'm_icon' => '<i class="fas fa-wand-magic ispurple"></i>',
+        'm_name' => 'User Commanded Next',
+        'm_desc' => '',
+        'm_parents' => array(10596,10589,4595,4755,4593,6554),
+    ),
+    6560 => array(
+        'm_icon' => '<i class="fas fa-wand-magic ispurple"></i>',
+        'm_name' => 'User Commanded Skip',
+        'm_desc' => '',
+        'm_parents' => array(10596,10589,4595,4755,4593,6554),
+    ),
+    6556 => array(
+        'm_icon' => '<i class="fas fa-wand-magic ispurple"></i>',
+        'm_name' => 'User Commanded Stats',
+        'm_desc' => '',
+        'm_parents' => array(10596,10589,4595,4755,4593,6554),
+    ),
+    6578 => array(
+        'm_icon' => '<i class="fas fa-wand-magic ispurple"></i>',
+        'm_name' => 'User Commanded Stop',
+        'm_desc' => '',
+        'm_parents' => array(10596,10589,4595,4755,4593,6554),
+    ),
     6149 => array(
         'm_icon' => '<i class="fas fa-search-plus ispurple"></i>',
         'm_name' => 'User Intent Considered',
         'm_desc' => '',
-        'm_parents' => array(10594,10590,4595,6153,4755,4593),
+        'm_parents' => array(10596,10590,4595,6153,4755,4593),
     ),
     7611 => array(
         'm_icon' => '<i class="fas fa-hand-pointer ispurple"></i>',
         'm_name' => 'User Intent Engaged',
         'm_desc' => '',
-        'm_parents' => array(10593,10590,7610,4755,4593,4595),
+        'm_parents' => array(10596,10590,7610,4755,4593,4595),
     ),
     6969 => array(
         'm_icon' => '<i class="fas fa-megaphone ispurple"></i>',
         'm_name' => 'User Intent Featured',
         'm_desc' => '',
-        'm_parents' => array(10594,10590,4595,4593,4755,6153),
+        'm_parents' => array(10596,10590,4595,4593,4755,6153),
     ),
     4283 => array(
         'm_icon' => '<i class="far fa-eye ispurple"></i>',
@@ -62,19 +504,228 @@ $config['en_all_10590'] = array(
         'm_icon' => '<i class="far fa-bullseye-arrow ispurple"></i>',
         'm_name' => 'User Intent Recommended',
         'm_desc' => '',
-        'm_parents' => array(7347,10593,10590,4755,4595,4593),
+        'm_parents' => array(10596,7347,10590,4755,4595,4593),
     ),
     7542 => array(
         'm_icon' => '<i class="far fa-bullseye-arrow ispurple"></i>',
         'm_name' => 'User Intent Required',
         'm_desc' => '',
-        'm_parents' => array(7347,10594,10590,4755,4595,4593),
+        'm_parents' => array(10596,7347,10590,4755,4595,4593),
     ),
     7610 => array(
         'm_icon' => '<i class="far fa-eye ispurple"></i>',
         'm_name' => 'User Intent Viewed',
         'm_desc' => '',
-        'm_parents' => array(10593,10590,7765,7612,4755,4595,4593),
+        'm_parents' => array(10596,10590,7765,7612,4755,4595,4593),
+    ),
+    4266 => array(
+        'm_icon' => '<i class="fab fa-facebook-messenger ispurple"></i>',
+        'm_name' => 'User Messenger Opt-in',
+        'm_desc' => '',
+        'm_parents' => array(10596,10589,4595,4755,4593),
+    ),
+    4267 => array(
+        'm_icon' => '<i class="fab fa-facebook-messenger ispurple"></i>',
+        'm_name' => 'User Messenger Referral',
+        'm_desc' => '',
+        'm_parents' => array(10596,10589,4595,4755,4593),
+    ),
+    4577 => array(
+        'm_icon' => '<i class="far fa-user-plus ispurple"></i>',
+        'm_name' => 'User Sent Access',
+        'm_desc' => '',
+        'm_parents' => array(10596,10589,7654,4755,4595,4593),
+    ),
+    4278 => array(
+        'm_icon' => '<i class="far fa-eye ispurple"></i>',
+        'm_name' => 'User Sent Messenger Read',
+        'm_desc' => '',
+        'm_parents' => array(10596,10589,7654,4595,4755,4593),
+    ),
+    4279 => array(
+        'm_icon' => '<i class="far fa-cloud-download ispurple"></i>',
+        'm_name' => 'User Sent Messenger Received',
+        'm_desc' => '',
+        'm_parents' => array(10596,10589,7654,4595,4755,4593),
+    ),
+    4268 => array(
+        'm_icon' => '<i class="far fa-user-tag ispurple"></i>',
+        'm_name' => 'User Sent Postback',
+        'm_desc' => '',
+        'm_parents' => array(10596,10589,7654,4595,4755,4593),
+    ),
+    4287 => array(
+        'm_icon' => '<i class="far fa-comment-exclamation ispurple"></i>',
+        'm_name' => 'User Sent Unknown Message',
+        'm_desc' => '',
+        'm_parents' => array(10596,10589,7654,4595,4755,4593),
+    ),
+    7561 => array(
+        'm_icon' => '<i class="fas fa-sign-in ispurple"></i>',
+        'm_name' => 'User Signin Generally',
+        'm_desc' => '',
+        'm_parents' => array(10596,10589,4755,4595,4593),
+    ),
+    7564 => array(
+        'm_icon' => '<i class="fas fa-sign-in ispurple"></i>',
+        'm_name' => 'User Signin Success',
+        'm_desc' => '',
+        'm_parents' => array(10596,10589,4755,4595,4593),
+    ),
+    7559 => array(
+        'm_icon' => '<i class="fas fa-envelope-open ispurple"></i>',
+        'm_name' => 'User Signin with Email',
+        'm_desc' => '',
+        'm_parents' => array(10596,10589,4755,4595,4593),
+    ),
+    7560 => array(
+        'm_icon' => '<i class="fas fa-sign-in ispurple"></i>',
+        'm_name' => 'User Signin with Intention',
+        'm_desc' => '',
+        'm_parents' => array(10596,10589,4755,4595,4593),
+    ),
+    7558 => array(
+        'm_icon' => '<i class="fab fa-facebook-messenger ispurple"></i>',
+        'm_name' => 'User Signin with Messenger',
+        'm_desc' => '',
+        'm_parents' => array(10596,10589,4755,4595,4593),
+    ),
+    7488 => array(
+        'm_icon' => '<i class="far fa-calendar-times ispurple"></i>',
+        'm_name' => 'User Step Answer Timeout',
+        'm_desc' => '',
+        'm_parents' => array(10596,10589,4755,4593,4595,6146),
+    ),
+    7485 => array(
+        'm_icon' => '<i class="fas fa-lock-open ispurple"></i>',
+        'm_name' => 'User Step Any Answer Unlock',
+        'm_desc' => '',
+        'm_parents' => array(10596,10589,7703,7494,4595,4593,4755,6146,6255),
+    ),
+    7486 => array(
+        'm_icon' => '<i class="fas fa-lock-open ispurple"></i>',
+        'm_name' => 'User Step Children Unlock',
+        'm_desc' => '',
+        'm_parents' => array(10596,10589,7703,7494,6244,6146,4755,4593,4595,6255),
+    ),
+    6144 => array(
+        'm_icon' => '<i class="far fa-cloud-upload-alt ispurple"></i>',
+        'm_name' => 'User Step Create New Content',
+        'm_desc' => '',
+        'm_parents' => array(10596,10589,4527,6768,7703,4595,6255,6244,4755,6146,4593),
+    ),
+    7741 => array(
+        'm_icon' => '<i class="far fa-times-circle ispurple"></i>',
+        'm_name' => 'User Step Intention Terminated',
+        'm_desc' => '',
+        'm_parents' => array(10596,10589,4755,4593,4595,7740,6146),
+    ),
+    4559 => array(
+        'm_icon' => '<i class="far fa-comments ispurple"></i>',
+        'm_name' => 'User Step Messages Only',
+        'm_desc' => '',
+        'm_parents' => array(10596,10589,7703,4595,6274,6255,4755,6146,4593),
+    ),
+    7489 => array(
+        'm_icon' => '<i class="far fa-check-circle ispurple"></i>',
+        'm_name' => 'User Step Multi-Answered',
+        'm_desc' => '',
+        'm_parents' => array(10596,10589,7704,7703,4755,6255,4593,4595,6146),
+    ),
+    7492 => array(
+        'm_icon' => '<i class="far fa-times-square ispurple"></i>',
+        'm_name' => 'User Step Path Not Found',
+        'm_desc' => '',
+        'm_parents' => array(10596,10589,6255,4755,4593,4595,6146),
+    ),
+    6997 => array(
+        'm_icon' => '<i class="fas fa-lock-open ispurple"></i>',
+        'm_name' => 'User Step Score Unlock',
+        'm_desc' => '',
+        'm_parents' => array(10596,10589,7703,7494,4229,6255,4595,4593,4755,6146),
+    ),
+    6157 => array(
+        'm_icon' => '<i class="far fa-check-circle ispurple"></i>',
+        'm_name' => 'User Step Single-Answered',
+        'm_desc' => '',
+        'm_parents' => array(10596,10589,7704,7703,4595,6255,6244,6146,4755,4593),
+    ),
+    7487 => array(
+        'm_icon' => '<i class="far fa-check-circle ispurple"></i>',
+        'm_name' => 'User Step Single-Answered Timely',
+        'm_desc' => '',
+        'm_parents' => array(10596,10589,7704,7703,6244,4755,6255,4593,4595,6146),
+    ),
+    6143 => array(
+        'm_icon' => '<i class="far fa-fast-forward ispurple"></i>',
+        'm_name' => 'User Step Skipped',
+        'm_desc' => '',
+        'm_parents' => array(10596,10589,4595,6146,4755,4593),
+    ),
+);
+
+//Output:
+$config['en_ids_10590'] = array(4994,4993,4282,6149,7611,6969,4283,7495,7542,7610,5967,7563,4554,4570,4556,4555,7702,6563,4552,4553,7562);
+$config['en_all_10590'] = array(
+    4994 => array(
+        'm_icon' => '<i class="far fa-eye ispurple"></i>',
+        'm_name' => 'Entity Miner View',
+        'm_desc' => '',
+        'm_parents' => array(10596,10590,4595,4593),
+    ),
+    4993 => array(
+        'm_icon' => '<i class="far fa-eye ispurple"></i>',
+        'm_name' => 'Intent Miner View',
+        'm_desc' => '',
+        'm_parents' => array(10596,10590,7612,4595,4593),
+    ),
+    4282 => array(
+        'm_icon' => '<i class="far fa-eye ispurple"></i>',
+        'm_name' => 'User Account Opened',
+        'm_desc' => '',
+        'm_parents' => array(10596,10590,4595,4755,6222,4593),
+    ),
+    6149 => array(
+        'm_icon' => '<i class="fas fa-search-plus ispurple"></i>',
+        'm_name' => 'User Intent Considered',
+        'm_desc' => '',
+        'm_parents' => array(10596,10590,4595,6153,4755,4593),
+    ),
+    7611 => array(
+        'm_icon' => '<i class="fas fa-hand-pointer ispurple"></i>',
+        'm_name' => 'User Intent Engaged',
+        'm_desc' => '',
+        'm_parents' => array(10596,10590,7610,4755,4593,4595),
+    ),
+    6969 => array(
+        'm_icon' => '<i class="fas fa-megaphone ispurple"></i>',
+        'm_name' => 'User Intent Featured',
+        'm_desc' => '',
+        'm_parents' => array(10596,10590,4595,4593,4755,6153),
+    ),
+    4283 => array(
+        'm_icon' => '<i class="far fa-eye ispurple"></i>',
+        'm_name' => 'User Intent Listed',
+        'm_desc' => '',
+        'm_parents' => array(10596,10590,4595,6153,4755,4593),
+    ),
+    7495 => array(
+        'm_icon' => '<i class="far fa-bullseye-arrow ispurple"></i>',
+        'm_name' => 'User Intent Recommended',
+        'm_desc' => '',
+        'm_parents' => array(10596,7347,10590,4755,4595,4593),
+    ),
+    7542 => array(
+        'm_icon' => '<i class="far fa-bullseye-arrow ispurple"></i>',
+        'm_name' => 'User Intent Required',
+        'm_desc' => '',
+        'm_parents' => array(10596,7347,10590,4755,4595,4593),
+    ),
+    7610 => array(
+        'm_icon' => '<i class="far fa-eye ispurple"></i>',
+        'm_name' => 'User Intent Viewed',
+        'm_desc' => '',
+        'm_parents' => array(10596,10590,7765,7612,4755,4595,4593),
     ),
     5967 => array(
         'm_icon' => '<i class="far fa-envelope-open ispurple"></i>',
@@ -307,7 +958,7 @@ $config['en_all_10589'] = array(
         'm_icon' => '<i class="fas fa-walking ispurple"></i>',
         'm_name' => 'Intent Link Required',
         'm_desc' => '',
-        'm_parents' => array(10594,10589,7703,6410,4593,4486,4595),
+        'm_parents' => array(10593,10589,7703,6410,4593,4486,4595),
     ),
     6226 => array(
         'm_icon' => '<i class="far fa-sync ispurple"></i>',
@@ -666,13 +1317,13 @@ $config['en_all_7347'] = array(
         'm_icon' => '<i class="far fa-bullseye-arrow ispurple"></i>',
         'm_name' => 'Intent Recommended',
         'm_desc' => '',
-        'm_parents' => array(7347,10593,10590,4755,4595,4593),
+        'm_parents' => array(10596,7347,10590,4755,4595,4593),
     ),
     7542 => array(
         'm_icon' => '<i class="far fa-bullseye-arrow ispurple"></i>',
         'm_name' => 'Intent Required',
         'm_desc' => '',
-        'm_parents' => array(7347,10594,10590,4755,4595,4593),
+        'm_parents' => array(10596,7347,10590,4755,4595,4593),
     ),
     4235 => array(
         'm_icon' => '<i class="far fa-bullseye-arrow ispurple"></i>',
@@ -741,19 +1392,19 @@ $config['en_all_10592'] = array(
         'm_icon' => '<i class="fas fa-square-root ispurple"></i>',
         'm_name' => 'Nod',
         'm_desc' => '1/34th of a word only',
-        'm_parents' => array(10592),
+        'm_parents' => array(4527,10592),
     ),
     10593 => array(
         'm_icon' => '<i class="fas fa-union ispurple"></i>',
         'm_name' => 'Statement',
         'm_desc' => 'Multiple words based on content plus connections',
-        'm_parents' => array(10592),
+        'm_parents' => array(4527,10592),
     ),
     10594 => array(
         'm_icon' => '<i class="fas fa-value-absolute ispurple"></i>',
         'm_name' => 'Word',
         'm_desc' => 'A single word plus connections',
-        'm_parents' => array(10592),
+        'm_parents' => array(4527,10592),
     ),
 );
 
@@ -1474,7 +2125,7 @@ $config['en_all_7703'] = array(
         'm_icon' => '<i class="fas fa-walking ispurple"></i>',
         'm_name' => 'Intent Link Required',
         'm_desc' => '',
-        'm_parents' => array(10594,10589,7703,6410,4593,4486,4595),
+        'm_parents' => array(10593,10589,7703,6410,4593,4486,4595),
     ),
     6093 => array(
         'm_icon' => '<i class="far fa-comment-exclamation ispurple"></i>',
@@ -3307,19 +3958,19 @@ $config['en_all_4755'] = array(
         'm_icon' => '<i class="fas fa-search-plus ispurple"></i>',
         'm_name' => 'User Intent Considered',
         'm_desc' => '',
-        'm_parents' => array(10594,10590,4595,6153,4755,4593),
+        'm_parents' => array(10596,10590,4595,6153,4755,4593),
     ),
     7611 => array(
         'm_icon' => '<i class="fas fa-hand-pointer ispurple"></i>',
         'm_name' => 'User Intent Engaged',
         'm_desc' => '',
-        'm_parents' => array(10593,10590,7610,4755,4593,4595),
+        'm_parents' => array(10596,10590,7610,4755,4593,4595),
     ),
     6969 => array(
         'm_icon' => '<i class="fas fa-megaphone ispurple"></i>',
         'm_name' => 'User Intent Featured',
         'm_desc' => '',
-        'm_parents' => array(10594,10590,4595,4593,4755,6153),
+        'm_parents' => array(10596,10590,4595,4593,4755,6153),
     ),
     4283 => array(
         'm_icon' => '<i class="far fa-eye ispurple"></i>',
@@ -3337,13 +3988,13 @@ $config['en_all_4755'] = array(
         'm_icon' => '<i class="far fa-bullseye-arrow ispurple"></i>',
         'm_name' => 'User Intent Recommended',
         'm_desc' => '',
-        'm_parents' => array(7347,10593,10590,4755,4595,4593),
+        'm_parents' => array(10596,7347,10590,4755,4595,4593),
     ),
     7542 => array(
         'm_icon' => '<i class="far fa-bullseye-arrow ispurple"></i>',
         'm_name' => 'User Intent Required',
         'm_desc' => '',
-        'm_parents' => array(7347,10594,10590,4755,4595,4593),
+        'm_parents' => array(10596,7347,10590,4755,4595,4593),
     ),
     4235 => array(
         'm_icon' => '<i class="far fa-bullseye-arrow ispurple"></i>',
@@ -3361,7 +4012,7 @@ $config['en_all_4755'] = array(
         'm_icon' => '<i class="far fa-eye ispurple"></i>',
         'm_name' => 'User Intent Viewed',
         'm_desc' => '',
-        'm_parents' => array(10593,10590,7765,7612,4755,4595,4593),
+        'm_parents' => array(10596,10590,7765,7612,4755,4595,4593),
     ),
     5967 => array(
         'm_icon' => '<i class="far fa-envelope-open ispurple"></i>',
@@ -3780,7 +4431,7 @@ $config['en_all_4595'] = array(
         'm_icon' => '<i class="far fa-eye ispurple"></i>',
         'm_name' => 'Entity Miner View',
         'm_desc' => '1',
-        'm_parents' => array(10594,10590,4595,4593),
+        'm_parents' => array(10596,10590,4595,4593),
     ),
     4263 => array(
         'm_icon' => '<i class="far fa-sync ispurple"></i>',
@@ -3804,7 +4455,7 @@ $config['en_all_4595'] = array(
         'm_icon' => '<i class="fas fa-walking ispurple"></i>',
         'm_name' => 'Intent Link Required',
         'm_desc' => '2000',
-        'm_parents' => array(10594,10589,7703,6410,4593,4486,4595),
+        'm_parents' => array(10593,10589,7703,6410,4593,4486,4595),
     ),
     6226 => array(
         'm_icon' => '<i class="far fa-sync ispurple"></i>',
@@ -3816,7 +4467,7 @@ $config['en_all_4595'] = array(
         'm_icon' => '<i class="far fa-eye ispurple"></i>',
         'm_name' => 'Intent Miner View',
         'm_desc' => '1',
-        'm_parents' => array(10594,10590,7612,4595,4593),
+        'm_parents' => array(10596,10590,7612,4595,4593),
     ),
     6093 => array(
         'm_icon' => '<i class="far fa-comment-exclamation ispurple"></i>',
@@ -3948,19 +4599,19 @@ $config['en_all_4595'] = array(
         'm_icon' => '<i class="fas fa-search-plus ispurple"></i>',
         'm_name' => 'User Intent Considered',
         'm_desc' => '5',
-        'm_parents' => array(10594,10590,4595,6153,4755,4593),
+        'm_parents' => array(10596,10590,4595,6153,4755,4593),
     ),
     7611 => array(
         'm_icon' => '<i class="fas fa-hand-pointer ispurple"></i>',
         'm_name' => 'User Intent Engaged',
         'm_desc' => '1',
-        'm_parents' => array(10593,10590,7610,4755,4593,4595),
+        'm_parents' => array(10596,10590,7610,4755,4593,4595),
     ),
     6969 => array(
         'm_icon' => '<i class="fas fa-megaphone ispurple"></i>',
         'm_name' => 'User Intent Featured',
         'm_desc' => '2',
-        'm_parents' => array(10594,10590,4595,4593,4755,6153),
+        'm_parents' => array(10596,10590,4595,4593,4755,6153),
     ),
     4283 => array(
         'm_icon' => '<i class="far fa-eye ispurple"></i>',
@@ -3978,13 +4629,13 @@ $config['en_all_4595'] = array(
         'm_icon' => '<i class="far fa-bullseye-arrow ispurple"></i>',
         'm_name' => 'User Intent Recommended',
         'm_desc' => '10',
-        'm_parents' => array(7347,10593,10590,4755,4595,4593),
+        'm_parents' => array(10596,7347,10590,4755,4595,4593),
     ),
     7542 => array(
         'm_icon' => '<i class="far fa-bullseye-arrow ispurple"></i>',
         'm_name' => 'User Intent Required',
         'm_desc' => '10',
-        'm_parents' => array(7347,10594,10590,4755,4595,4593),
+        'm_parents' => array(10596,7347,10590,4755,4595,4593),
     ),
     4235 => array(
         'm_icon' => '<i class="far fa-bullseye-arrow ispurple"></i>',
@@ -4002,7 +4653,7 @@ $config['en_all_4595'] = array(
         'm_icon' => '<i class="far fa-eye ispurple"></i>',
         'm_name' => 'User Intent Viewed',
         'm_desc' => '1',
-        'm_parents' => array(10593,10590,7765,7612,4755,4595,4593),
+        'm_parents' => array(10596,10590,7765,7612,4755,4595,4593),
     ),
     5967 => array(
         'm_icon' => '<i class="far fa-envelope-open ispurple"></i>',
@@ -4438,7 +5089,7 @@ $config['en_all_4593'] = array(
         'm_icon' => '<i class="far fa-eye ispurple"></i>',
         'm_name' => 'Entity Miner View',
         'm_desc' => '',
-        'm_parents' => array(10594,10590,4595,4593),
+        'm_parents' => array(10596,10590,4595,4593),
     ),
     4263 => array(
         'm_icon' => '<i class="far fa-sync ispurple"></i>',
@@ -4462,7 +5113,7 @@ $config['en_all_4593'] = array(
         'm_icon' => '<i class="fas fa-walking ispurple"></i>',
         'm_name' => 'Intent Link Required',
         'm_desc' => '',
-        'm_parents' => array(10594,10589,7703,6410,4593,4486,4595),
+        'm_parents' => array(10593,10589,7703,6410,4593,4486,4595),
     ),
     6226 => array(
         'm_icon' => '<i class="far fa-sync ispurple"></i>',
@@ -4474,7 +5125,7 @@ $config['en_all_4593'] = array(
         'm_icon' => '<i class="far fa-eye ispurple"></i>',
         'm_name' => 'Intent Miner View',
         'm_desc' => '',
-        'm_parents' => array(10594,10590,7612,4595,4593),
+        'm_parents' => array(10596,10590,7612,4595,4593),
     ),
     6093 => array(
         'm_icon' => '<i class="far fa-comment-exclamation ispurple"></i>',
@@ -4606,19 +5257,19 @@ $config['en_all_4593'] = array(
         'm_icon' => '<i class="fas fa-search-plus ispurple"></i>',
         'm_name' => 'User Intent Considered',
         'm_desc' => 'When a student chooses to review a given intention from the intentions they have searched or have been recommended after selecting GET STARTED from a mench.com intent landing page.',
-        'm_parents' => array(10594,10590,4595,6153,4755,4593),
+        'm_parents' => array(10596,10590,4595,6153,4755,4593),
     ),
     7611 => array(
         'm_icon' => '<i class="fas fa-hand-pointer ispurple"></i>',
         'm_name' => 'User Intent Engaged',
         'm_desc' => 'Logged when a user expands a section of the intent',
-        'm_parents' => array(10593,10590,7610,4755,4593,4595),
+        'm_parents' => array(10596,10590,7610,4755,4593,4595),
     ),
     6969 => array(
         'm_icon' => '<i class="fas fa-megaphone ispurple"></i>',
         'm_name' => 'User Intent Featured',
         'm_desc' => 'Logged every time an intention is recommended to a user by Mench',
-        'm_parents' => array(10594,10590,4595,4593,4755,6153),
+        'm_parents' => array(10596,10590,4595,4593,4755,6153),
     ),
     4283 => array(
         'm_icon' => '<i class="far fa-eye ispurple"></i>',
@@ -4636,13 +5287,13 @@ $config['en_all_4593'] = array(
         'm_icon' => '<i class="far fa-bullseye-arrow ispurple"></i>',
         'm_name' => 'User Intent Recommended',
         'm_desc' => 'Intention recommended by Mench and added to Action Plan to enable the user to complete their intention',
-        'm_parents' => array(7347,10593,10590,4755,4595,4593),
+        'm_parents' => array(10596,7347,10590,4755,4595,4593),
     ),
     7542 => array(
         'm_icon' => '<i class="far fa-bullseye-arrow ispurple"></i>',
         'm_name' => 'User Intent Required',
         'm_desc' => '',
-        'm_parents' => array(7347,10594,10590,4755,4595,4593),
+        'm_parents' => array(10596,7347,10590,4755,4595,4593),
     ),
     4235 => array(
         'm_icon' => '<i class="far fa-bullseye-arrow ispurple"></i>',
@@ -4660,7 +5311,7 @@ $config['en_all_4593'] = array(
         'm_icon' => '<i class="far fa-eye ispurple"></i>',
         'm_name' => 'User Intent Viewed',
         'm_desc' => 'When a user viewes the public intent landing page.',
-        'm_parents' => array(10593,10590,7765,7612,4755,4595,4593),
+        'm_parents' => array(10596,10590,7765,7612,4755,4595,4593),
     ),
     5967 => array(
         'm_icon' => '<i class="far fa-envelope-open ispurple"></i>',
@@ -5088,7 +5739,7 @@ $config['en_all_4486'] = array(
         'm_icon' => '<i class="fas fa-walking ispurple"></i>',
         'm_name' => 'Required',
         'm_desc' => 'Intent link published and added to user Action Plans up-front',
-        'm_parents' => array(10594,10589,7703,6410,4593,4486,4595),
+        'm_parents' => array(10593,10589,7703,6410,4593,4486,4595),
     ),
     4229 => array(
         'm_icon' => '<i class="fas fa-lock ispurple"></i>',
