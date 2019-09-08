@@ -6,6 +6,7 @@ $en_all_4737 = $this->config->item('en_all_4737'); // Intent Statuses
 $en_all_6177 = $this->config->item('en_all_6177'); //Entity Statuses
 
 $moderation_tools = array(
+    '/miner_app/admin_tools/link_words_stats' => 'Link Words Stats',
     '/miner_app/admin_tools/in_replace_outcomes' => 'Intent Search/Replace Outcomes',
     '/miner_app/admin_tools/in_invalid_outcomes' => 'Intent Invalid Outcomes',
     '/miner_app/admin_tools/actionplan_debugger' => 'My Action Plan Debugger',
@@ -20,7 +21,6 @@ $moderation_tools = array(
     '/miner_app/admin_tools/assessment_marks_birds_eye' => 'Completion Marks Birds Eye View',
     '/miner_app/admin_tools/compose_test_message' => 'Compose Test Message',
     '/miner_app/admin_tools/sync_in_verbs' => 'Sync Intent Verbs',
-    '/miner_app/admin_tools/link_words_stats' => 'Link Words Stats',
 );
 
 $cron_jobs = array(
@@ -94,12 +94,19 @@ if(!$action) {
     echo '<ul class="breadcrumb"><li><a href="/miner_app/admin_tools">Admin Tools</a></li><li><b>'.$moderation_tools['/miner_app/admin_tools/'.$action].'</b></li></ul>';
 
 
+    if(isset($_GET['resetall'])){
 
-    if(isset($_GET['updateall']) || isset($_GET['updatesome'])){
+        $this->db->query("UPDATE table_links SET ln_words=0;");
+        echo '<div class="alert alert-warning">All link counts reset to zero.</div>';
+
+    } elseif(isset($_GET['updateall']) || isset($_GET['updatesome'])){
+
         //Go through all the links and update their words:
         boost_power();
         $updated = 0;
-        foreach($this->Links_model->ln_fetch(( isset($_GET['updateall']) ? array() : array(
+        foreach($this->Links_model->ln_fetch(( isset($_GET['updateall']) ? array(
+            'ln_words' => 0,
+        ) : array(
             'ln_type_entity_id IN (' . $_GET['updatesome'] . ')' => null,
         )), array(), 0) as $ln){
             $this->Links_model->ln_update($ln['ln_id'], array(
@@ -108,6 +115,7 @@ if(!$action) {
             $updated++;
         }
         echo '<div class="alert alert-warning">'.$updated.' links updated with new word counts.</div>';
+
     }
 
 
@@ -124,7 +132,10 @@ if(!$action) {
 
 
     //Count them all:
-    $all_stats = $this->Links_model->ln_fetch(array(), array(), 0, 0, array(), 'COUNT(ln_id) as total_links, SUM(ABS(ln_words)) as total_words');
+    $all_stats = $this->Links_model->ln_fetch(array(
+        'ln_status_entity_id IN (' . join(',', $this->config->item('en_ids_7359')) . ')' => null, //Link Statuses Public
+    ), array(), 0, 0, array(), 'COUNT(ln_id) as total_links, SUM(ABS(ln_words)) as total_words');
+
 
     echo '<tr class="panel-title down-border" style="font-weight: bold;">';
     echo '<td style="text-align: left;">Total</td>';
@@ -144,6 +155,7 @@ if(!$action) {
 
         $words_stats = $this->Links_model->ln_fetch(array(
             $words_setting => 0,
+            'ln_status_entity_id IN (' . join(',', $this->config->item('en_ids_7359')) . ')' => null, //Link Statuses Public
         ), array(), 0, 0, array(), 'COUNT(ln_id) as total_links, SUM(ln_words) as total_words');
 
         echo '<tr class="panel-title down-border">';
@@ -161,7 +173,9 @@ if(!$action) {
     echo '<tr class="panel-title down-border"><td style="text-align: left;" colspan="6">&nbsp;</td></tr>';
 
     //Show each link type:
-    foreach ($this->Links_model->ln_fetch(array(), array('ln_type'), 0, 0, array('total_words' => 'DESC'), 'COUNT(ln_id) as total_links, SUM(ln_words) as total_words, en_name, en_icon, en_id', 'en_id, en_name, en_icon') as $ln) {
+    foreach ($this->Links_model->ln_fetch(array(
+        'ln_status_entity_id IN (' . join(',', $this->config->item('en_ids_7359')) . ')' => null, //Link Statuses Public
+    ), array('ln_type'), 0, 0, array('total_words' => 'DESC'), 'COUNT(ln_id) as total_links, SUM(ln_words) as total_words, en_name, en_icon, en_id', 'en_id, en_name, en_icon') as $ln) {
 
         echo '<tr class="panel-title down-border">';
         echo '<td style="text-align: left;"><span class="icon-block">'.$ln['en_icon'].'</span> <a href="/entities/'.$ln['en_id'].'">'.$ln['en_name'].'</a></td>';

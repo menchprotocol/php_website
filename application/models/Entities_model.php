@@ -594,8 +594,8 @@ class Entities_model extends CI_Model
 
             //Check to see if URL already exists:
             $url_links = $this->Links_model->ln_fetch(array(
-                'en_status_entity_id IN (' . join(',', $this->config->item('en_ids_6177')) . ')' => null, //Entity Statuses (ALL)
-                'ln_status_entity_id IN (' . join(',', $this->config->item('en_ids_6186')) . ')' => null, //Link Statuses (ALL)
+                'en_status_entity_id IN (' . join(',', $this->config->item('en_ids_7358')) . ')' => null, //Entity Statuses Active
+                'ln_status_entity_id IN (' . join(',', $this->config->item('en_ids_7360')) . ')' => null, //Link Statuses Active
                 'ln_type_entity_id IN (' . join(',', $this->config->item('en_ids_4537')) . ')' => null, //Entity URL Links
                 'ln_content' => $url,
             ), array('en_child'));
