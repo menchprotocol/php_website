@@ -405,7 +405,7 @@ function curl_get_file_size( $url ) {
     curl_setopt( $curl, CURLOPT_HEADER, true );
     curl_setopt( $curl, CURLOPT_RETURNTRANSFER, true );
     curl_setopt( $curl, CURLOPT_FOLLOWLOCATION, true );
-    curl_setopt( $curl, CURLOPT_USERAGENT, get_user_agent_string() );
+    curl_setopt( $curl, CURLOPT_USERAGENT, "Mozilla/5.0 (Linux; Android 6.0.1; SM-G935S Build/MMB29K; wv) AppleWebKit/537.36 (KHTML, like Gecko) Version/4.0 Chrome/55.0.2883.91 Mobile Safari/537.36" );
 
     $data = curl_exec( $curl );
     curl_close( $curl );
