@@ -1904,6 +1904,7 @@ function echo_2level_entities($main_obj, $all_link_types, $link_types_counts, $a
     $identifier = substr(md5($main_obj['m_name']), 0, 10);
 
     $sub_rows = '';
+    $sub_advance_rows = '';
 
     //First display all children and sum them up:
     $total_sum = 0;
@@ -1915,6 +1916,7 @@ function echo_2level_entities($main_obj, $all_link_types, $link_types_counts, $a
         }
 
         $ln = filter_array($link_types_counts, 'en_id', $en_id);
+        $show_in_advance_only = $display_field=='total_words' && (!in_array($en_id, $CI->config->item('en_ids_10593')) /* Statement */ || abs($ln['total_words']) < 100 );
 
         if( !$ln['total_count'] ){
             continue;
@@ -1930,57 +1932,50 @@ function echo_2level_entities($main_obj, $all_link_types, $link_types_counts, $a
         }
 
         //Subrow UI:
-        $sub_rows .=  '<tr class="hidden '.$identifier.'">';
+        $this_rows =  '<tr class="hidden ' . $identifier . '">';
 
 
         if(!isset($en_all_detail[$en_id])){
 
-            $sub_rows .= '<td style="text-align: left; padding-left:30px;" colspan="2">MISSING @'.$en_id.' as Link Type</td>';
+            $this_rows .= '<td style="text-align: left; padding-left:30px;" colspan="2">MISSING @'.$en_id.' as Link Type</td>';
 
         } else {
 
-            $sub_rows .= '<td style="text-align: left;">';
-            $sub_rows .= '<span class="icon-block" style="margin-left:8px;">'.$m['m_icon'].'</span>';
-            $sub_rows .= '<a href="/entities/'.$en_id.'">'.$m['m_name'].'</a>';
-            $sub_rows .= '</td>';
+            $this_rows .= '<td style="text-align: left;" class="'.( $show_in_advance_only ? advance_mode() : '' ).'">';
+            $this_rows .= '<span class="icon-block" style="margin-left:8px;">'.$m['m_icon'].'</span>';
+            $this_rows .= '<a href="/entities/'.$en_id.'">'.$m['m_name'].'</a>';
+            $this_rows .= '</td>';
 
 
-            $sub_rows .= '<td style="text-align: right;"><span>';
-
+            $this_rows .= '<td style="text-align: right;" class="'.( $show_in_advance_only ? advance_mode() : '' ).'">';
             if($display_field=='total_count'){
 
-                $sub_rows .= '<a href="/links?ln_status_entity_id='.join(',', $CI->config->item('en_ids_7360')) /* Link Statuses Active */.'&'.$link_field.'=' . $en_id . '" data-toggle="tooltip" data-placement="top" title="'.number_format($ln['total_count'], 0).' Intent'.echo__s($ln['total_count']).'">'.number_format($ln['total_count']/$addup_total_count*100, 1) . '%</a>';
+                $this_rows .= '<a href="/links?ln_status_entity_id='.join(',', $CI->config->item('en_ids_7360')) /* Link Statuses Active */.'&'.$link_field.'=' . $en_id . '" data-toggle="tooltip" data-placement="top" title="'.number_format($ln['total_count'], 0).' Intent'.echo__s($ln['total_count']).'">'.number_format($ln['total_count']/$addup_total_count*100, 1) . '%</a>';
 
             } elseif($display_field=='total_words'){
 
-                $sub_rows .= '<a href="/links?ln_status_entity_id='.join(',', $CI->config->item('en_ids_7360')) /* Link Statuses Active */.'&'.$link_field.'=' . $en_id . '" data-toggle="tooltip" data-placement="top" title="'.number_format($ln['total_words'], 0).' Word'.echo__s($ln['total_words']).'">'.number_format($ln['total_words'], 0) . '</a>';
+                $this_rows .= '<a href="/links?ln_status_entity_id='.join(',', $CI->config->item('en_ids_7360')) /* Link Statuses Active */.'&'.$link_field.'=' . $en_id . '" data-toggle="tooltip" data-placement="top" title="'.number_format($ln['total_words'], 0).' Word'.echo__s($ln['total_words']).'">'.number_format($ln['total_words'], 0) . '</a>';
 
             }
-
-
-            $sub_rows .= '</span></td>';
+            $this_rows .= '</td>';
 
         }
 
 
         //sub-row count:
-        $sub_rows .= '</div></tr>';
+        $this_rows .= '</tr>';
+        
+        if($show_in_advance_only){
+            $sub_advance_rows .= $this_rows;
+        } else {
+            $sub_rows .= $this_rows;
+        }
     }
 
 
     //Terminate if nothing found:
     if($total_sum==0){
         return false;
-    }
-
-
-    //Always add at-least one space:
-    $sub_rows .= '<tr class="hidden '.$identifier.'"><td colspan="2">&nbsp;</td></tr>';
-
-    //Maybe a second one too:
-    if(fmod(count($all_link_type_ids), 2) == 0){
-        //Make it even:
-        $sub_rows .= '<tr class="hidden '.$identifier.'"><td colspan="2">&nbsp;</td></tr>';
     }
 
 
@@ -2007,6 +2002,16 @@ function echo_2level_entities($main_obj, $all_link_types, $link_types_counts, $a
 
 
     echo $sub_rows;
+    echo $sub_advance_rows;
+
+    //Always add at-least one space:
+    echo '<tr class="hidden '.$identifier.'"><td colspan="2">&nbsp;</td></tr>';
+
+    //Maybe a second one too:
+    if(fmod(count($all_link_type_ids), 2) == 0){
+        //Make it even:
+        echo '<tr class="hidden '.$identifier.'"><td colspan="2">&nbsp;</td></tr>';
+    }
 
 }
 
