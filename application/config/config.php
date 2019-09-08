@@ -32,7 +32,7 @@ $config['password_min_char']        = 6;
 //Word converter:
 $config['words_per_nod']            = 0.02; //The number of words per Nod
 $config['words_per_second']         = 2.67; //The number of words per second
-$config['bytes_per_word']           = 102400; //1 Word = 100KB
+$config['bytes_per_word']           = 1024; //1 Word = 1KB
 $config['unknown_file_seconds']     = 30; //When we cannot find the length of a video
 
 
