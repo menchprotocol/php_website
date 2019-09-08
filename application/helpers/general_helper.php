@@ -461,8 +461,7 @@ function ln_type_word_count($ln){
             if($ln['ln_type_entity_id']==4257 /* Embed */) {
 
                 //Determine words based on content duration fetched from embed source:
-                $file_seconds = echo_url_embed($ln['ln_content'], null, false, true);
-                $link_words += number_format( $file_seconds * $CI->config->item('words_per_second'), 2);
+                $link_words += round( echo_url_embed($ln['ln_content'], null, false, true) * $CI->config->item('words_per_second'), 2);
 
             } elseif(in_array($ln['ln_type_entity_id'], $CI->config->item('en_ids_10627') /* Attachments */)){
 
