@@ -14,7 +14,7 @@ class Miner_app extends CI_Controller
 
 
     function test(){
-        echo file_get_contents('https://www.youtube.com/watch?v=8i60Zvr_idk');
+        echo echo_url_embed('https://www.youtube.com/watch?v=8i60Zvr_idk', null, false, true);
     }
 
 
