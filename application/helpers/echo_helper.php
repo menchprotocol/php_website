@@ -668,7 +668,7 @@ function echo_ln($ln, $is_inner = false)
 
 
     //Link words
-    $ui .= '<span class="link-connection-a"><span data-toggle="tooltip" data-placement="top" title="Number of words exchanged in this link" style="min-width:30px; display: inline-block;">'.$en_all_4341[10588]['m_icon']. ' '. number_format($ln['ln_words'], (fmod($ln['ln_words'],1)>0 ? 2 : 0)) .'</span></span> &nbsp;';
+    $ui .= '<span class="link-connection-a"><span data-toggle="tooltip" data-placement="top" title="Number of words exchanged in this link" style="min-width:30px; display: inline-block;">'.$en_all_4341[10588]['m_icon']. ' '. number_format($ln['ln_words'], (fmod($ln['ln_words'],1)==0 ? 0 : 2)) .'</span></span> &nbsp;';
 
 
     if($ln['ln_order'] > 0){
@@ -809,8 +809,7 @@ function echo_random_message($message_key, $return_all = false){
             "Making things awesome...",
             "Novel, new, silly, & unusual activities can help lift your mood.",
             "Play for a few minutes. Doodle, learn solitaire, fold a paper airplane, do something fun.",
-            "Please try not to take yourself for granted. You're important.",
-            "Please wait, including everyone...",
+            "Don't take yourself for granted. You're important.",
             "Rest your eyes for a moment. Look at something in the distance and count to five! 🌳",
             "Self care is important, look after and love yourself, you're amazing!",
             "Set aside time for a hobby. Gardening, drone building, knitting, do something for the pure pleasure of it.",
@@ -841,8 +840,8 @@ function echo_random_message($message_key, $return_all = false){
             "You're allowed to start small. 🐞",
             "have you hugged anyone lately?",
             "it's time to check your thirst level, human.",
-            "💗: please don't forget to take a little bit of time to say hi to a friend",
-            "🌸: remember to let your eyes rest and look at a plant please",
+            "💗: don't forget to take a little bit of time to say hi to a friend",
+            "🌸: remember to let your eyes rest, maybe by looking at a plant...",
             "🙌: take a second to adjust your posture",
             "😎🌈💕"
         ),
@@ -1854,7 +1853,7 @@ function echo_in_setting($in_setting_en_id, $in_field_name, $addup_total_count){
 }
 
 
-function echo_2level_stats($stat_name, $stats_en_id, $mother_en_id, $link_types_counts, $addup_total_count, $link_field){
+function echo_2level_stats($stat_name, $stats_en_id, $mother_en_id, $link_types_counts, $addup_total_count, $link_field, $display_field){
 
     $CI =& get_instance();
 
@@ -1866,7 +1865,7 @@ function echo_2level_stats($stat_name, $stats_en_id, $mother_en_id, $link_types_
 
     $all_shown = array();
     foreach ($CI->config->item('en_all_'.$stats_en_id) as $en_id => $m) {
-        echo_2level_entities($m, $CI->config->item('en_all_'.$en_id), $link_types_counts, $all_shown, $link_field, 'en_all_'.$mother_en_id, $addup_total_count);
+        echo_2level_entities($m, $CI->config->item('en_all_'.$en_id), $link_types_counts, $all_shown, $link_field, 'en_all_'.$mother_en_id, $addup_total_count, $display_field);
         $all_shown = array_merge($all_shown, $CI->config->item('en_ids_'.$en_id));
     }
 
@@ -1881,14 +1880,14 @@ function echo_2level_stats($stat_name, $stats_en_id, $mother_en_id, $link_types_
         'm_icon' => '<i class="fas fa-plus-circle"></i>',
         'm_name' => 'Others',
         'm_desc' => 'What is left',
-    ), $remaining_child, $link_types_counts, $all_shown, $link_field, 'en_all_'.$mother_en_id, $addup_total_count);
+    ), $remaining_child, $link_types_counts, $all_shown, $link_field, 'en_all_'.$mother_en_id, $addup_total_count, $display_field);
 
     echo '</table>';
 
 }
 
 
-function echo_2level_entities($main_obj, $all_link_types, $link_types_counts, $all_shown, $link_field, $details_en, $addup_total_count){
+function echo_2level_entities($main_obj, $all_link_types, $link_types_counts, $all_shown, $link_field, $details_en, $addup_total_count, $display_field){
 
     if(!is_array($all_link_types) || count($all_link_types) < 1){
         return false;
@@ -1902,7 +1901,7 @@ function echo_2level_entities($main_obj, $all_link_types, $link_types_counts, $a
     $sub_rows = '';
 
     //First display all children and sum them up:
-    $all_children = 0;
+    $total_sum = 0;
     $all_link_type_ids = array();
     foreach($all_link_types as $en_id => $m){
 
@@ -1919,7 +1918,11 @@ function echo_2level_entities($main_obj, $all_link_types, $link_types_counts, $a
         array_push($all_link_type_ids, $en_id);
 
         //Addup counter:
-        $all_children += $ln['total_count'];
+        if($display_field=='total_count'){
+            $total_sum += $ln['total_count'];
+        } elseif($display_field=='total_words'){
+            $total_sum += abs($ln['total_words']);
+        }
 
         //Subrow UI:
         $sub_rows .=  '<tr class="hidden '.$identifier.'">';
@@ -1939,7 +1942,16 @@ function echo_2level_entities($main_obj, $all_link_types, $link_types_counts, $a
 
             $sub_rows .= '<td style="text-align: right;"><span>';
 
-            $sub_rows .= '<a href="/links?ln_status_entity_id='.join(',', $CI->config->item('en_ids_7360')) /* Link Statuses Active */.'&'.$link_field.'=' . $en_id . '" data-toggle="tooltip" data-placement="top" title="'.number_format($ln['total_count'], 0).' Intent'.echo__s($ln['total_count']).'">'.number_format($ln['total_count']/$addup_total_count*100, 1) . '%</a>';
+            if($display_field=='total_count'){
+
+                $sub_rows .= '<a href="/links?ln_status_entity_id='.join(',', $CI->config->item('en_ids_7360')) /* Link Statuses Active */.'&'.$link_field.'=' . $en_id . '" data-toggle="tooltip" data-placement="top" title="'.number_format($ln['total_count'], 0).' Intent'.echo__s($ln['total_count']).'">'.number_format($ln['total_count']/$addup_total_count*100, 1) . '%</a>';
+
+            } elseif($display_field=='total_words'){
+
+                $sub_rows .= '<a href="/links?ln_status_entity_id='.join(',', $CI->config->item('en_ids_7360')) /* Link Statuses Active */.'&'.$link_field.'=' . $en_id . '" data-toggle="tooltip" data-placement="top" title="'.number_format($ln['total_words'], 0).' Word'.echo__s($ln['total_words']).'">'.number_format($ln['total_words'], 0) . '</a>';
+
+            }
+
 
             $sub_rows .= '</span></td>';
 
@@ -1952,7 +1964,7 @@ function echo_2level_entities($main_obj, $all_link_types, $link_types_counts, $a
 
 
     //Terminate if nothing found:
-    if($all_children==0){
+    if($total_sum==0){
         return false;
     }
 
@@ -1972,7 +1984,20 @@ function echo_2level_entities($main_obj, $all_link_types, $link_types_counts, $a
     echo '<tr>';
     echo '<td style="text-align: left;"><span class="icon-block
 ">'.$main_obj['m_icon'].'</span><a href="javascript:void(0);" onclick="$(\'.'.$identifier.'\').toggleClass(\'hidden\')">'.$main_obj['m_name'].'<i class="fal fa-plus-circle '.$identifier.'" style="padding-left: 5px;"></i><i class="fal fa-minus-circle '.$identifier.' hidden" style="padding-left: 5px;"></i></a></td>';
-    echo '<td style="text-align: right;"><a href="/links?ln_status_entity_id='.join(',', $CI->config->item('en_ids_7360')) /* Link Statuses Active */.'&'.$link_field.'=' . join(',' , $all_link_type_ids) . '" data-toggle="tooltip" data-placement="top" title="'.number_format($all_children, 0).' Intent'.echo__s($all_children).'">'.number_format($all_children/$addup_total_count*100, 1).'%</a></td>';
+    echo '<td style="text-align: right;">';
+
+    if($display_field=='total_count'){
+
+        echo '<a href="/links?ln_status_entity_id='.join(',', $CI->config->item('en_ids_7360')) /* Link Statuses Active */.'&'.$link_field.'=' . join(',' , $all_link_type_ids) . '" data-toggle="tooltip" data-placement="top" title="'.number_format($total_sum, 0).' Intent'.echo__s($total_sum).'">'.number_format($total_sum/$addup_total_count*100, 1).'%</a>';
+
+    } elseif($display_field=='total_words'){
+
+        echo '<a href="/links?ln_status_entity_id='.join(',', $CI->config->item('en_ids_7360')) /* Link Statuses Active */.'&'.$link_field.'=' . join(',' , $all_link_type_ids) . '" data-toggle="tooltip" data-placement="top" title="'.number_format($total_sum, 0).' Word'.echo__s($total_sum).'">'.number_format($total_sum, 0).'</a>';
+
+    }
+
+
+    echo '</td>';
     echo '</tr>';
 
 

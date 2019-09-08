@@ -396,10 +396,10 @@ function ln_type_words($ln){
     } else {
 
         //Word or Statement, count links:
-        $link_words = 0;
+        $link_words = 1;
 
         //Consider each object link as a word:
-        foreach (array('ln_child_intent_id', 'ln_parent_intent_id', 'ln_child_entity_id', 'ln_parent_entity_id', 'ln_parent_link_id') as $dz) {
+        foreach (array('ln_creator_entity_id', 'ln_child_intent_id', 'ln_parent_intent_id', 'ln_child_entity_id', 'ln_parent_entity_id', 'ln_parent_link_id') as $dz) {
             if (isset($ln[$dz]) && intval($ln[$dz]) > 0) {
                 $link_words++;
             }
@@ -411,10 +411,6 @@ function ln_type_words($ln){
             $link_words += 1 + substr_count(str_replace('  ',' ', $ln['ln_content']), ' ');
         }
 
-        if($link_words==0){
-            //Should be at-least 1 word:
-            $link_words = 1;
-        }
     }
 
 

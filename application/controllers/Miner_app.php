@@ -99,15 +99,11 @@ class Miner_app extends CI_Controller
         $addup_total_count = addup_array($intent_types_counts, 'total_count');
 
         //Link Stages
-        echo '<div class="isolive">';
-        echo_2level_stats($en_all_7302[10602]['m_name'], 10602, 7585, $intent_types_counts, $addup_total_count, 'in_subtype_entity_id');
-        echo '</div>';
+        echo_2level_stats($en_all_7302[10602]['m_name'], 10602, 7585, $intent_types_counts, $addup_total_count, 'in_subtype_entity_id', 'total_count');
 
 
         //Intent Scopes:
-        echo '<div class="isgreen">';
         echo echo_in_setting(7596,'in_scope_entity_id', $addup_total_count);
-        echo '</div>';
 
         //Intent Verbs:
         $show_max_verbs = 3;
@@ -118,7 +114,7 @@ class Miner_app extends CI_Controller
             'in_status_entity_id IN (' . join(',', $this->config->item('en_ids_7355')) . ')' => null, //Intent Statuses Public
         ), array('in_verb'), 0, 0, array('totals' => 'DESC'), 'COUNT(in_id) as totals, in_verb_entity_id, en_name, en_icon', 'in_verb_entity_id, en_name, en_icon');
 
-        echo '<table class="table table-condensed table-striped stats-table mini-stats-table isbrown">';
+        echo '<table class="table table-condensed table-striped stats-table mini-stats-table">';
 
         echo '<tr class="panel-title down-border">';
         echo '<td style="text-align: left;" colspan="2">'.number_format(count($in_verbs), 0).' '.$en_all_7302[5008]['m_name'].echo__s(count($in_verbs)).'</td>';
@@ -192,9 +188,7 @@ class Miner_app extends CI_Controller
 
 
         //Mench Community
-        echo '<div class="isturquoise">';
         echo echo_en_stats_overview($this->config->item('en_all_6827'), $en_all_7303[6827]['m_name']);
-        echo '</div>';
 
 
 
@@ -250,7 +244,7 @@ class Miner_app extends CI_Controller
 
         }
 
-        echo '<table class="table table-condensed table-striped stats-table isnavy">';
+        echo '<table class="table table-condensed table-striped stats-table">';
 
         echo '<tr class="panel-title down-border">';
         echo '<td style="text-align: left;">'.number_format($total_total_counts[6181], 0).' '.$en_all_7303[3000]['m_name'].'</td>';
@@ -377,16 +371,14 @@ class Miner_app extends CI_Controller
         //Count all rows:
         $link_types_counts = $this->Links_model->ln_fetch(array(
             'ln_status_entity_id IN (' . join(',', $this->config->item('en_ids_7360')) . ')' => null, //Link Statuses Active
-        ), array('ln_type'), 0, 0, array(), 'COUNT(ln_type_entity_id) as total_count, en_name, en_icon, en_id', 'en_id, en_name, en_icon');
+        ), array('ln_type'), 0, 0, array(), 'COUNT(ln_id) as total_count, SUM(ABS(ln_words)) as total_words, en_name, en_icon, en_id', 'en_id, en_name, en_icon');
 
         //Count totals:
         $addup_total_count = addup_array($link_types_counts, 'total_count');
 
 
         //Link Direction
-        echo '<div class="ispurple">';
-        echo_2level_stats($en_all_7304[10591]['m_name'], 10591, 4593, $link_types_counts, $addup_total_count, 'ln_type_entity_id');
-        echo '</div>';
+        echo_2level_stats($en_all_7304[10591]['m_name'], 10591, 4593, $link_types_counts, $addup_total_count, 'ln_type_entity_id', 'total_words');
 
 
         //Link Status:
@@ -416,7 +408,7 @@ class Miner_app extends CI_Controller
 
 
 
-        echo '<table class="table table-condensed table-striped stats-table isturquoise">';
+        echo '<table class="table table-condensed table-striped stats-table">';
 
         echo '<thead>';
 

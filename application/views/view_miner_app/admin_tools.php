@@ -116,21 +116,60 @@ if(!$action) {
     echo '<tr class="panel-title down-border">';
     echo '<td style="text-align: left;">Group</td>';
     echo '<td style="text-align: left;">Links</td>';
+    echo '<td style="text-align: left;">%</td>';
     echo '<td style="text-align: left;">Words</td>';
-    echo '<td style="text-align: left;">Words/link</td>';
+    echo '<td style="text-align: left;">%</td>';
+    echo '<td style="text-align: left;">Words/Link</td>';
     echo '</tr>';
 
+
+    //Count them all:
+    $all_stats = $this->Links_model->ln_fetch(array(), array(), 0, 0, array(), 'COUNT(ln_id) as total_links, SUM(ABS(ln_words)) as total_words');
+
+    echo '<tr class="panel-title down-border" style="font-weight: bold;">';
+    echo '<td style="text-align: left;">Total</td>';
+    echo '<td style="text-align: left;">'.number_format($all_stats[0]['total_links'], 0).'</td>';
+    echo '<td style="text-align: left;">100%</td>';
+    echo '<td style="text-align: left;">'.number_format(round($all_stats[0]['total_words']), 0).'</td>';
+    echo '<td style="text-align: left;">100%</td>';
+    echo '<td style="text-align: left;">'.number_format(($all_stats[0]['total_words']/$all_stats[0]['total_links']), 2).'</td>';
+    echo '</tr>';
+
+    //Add some empty space:
+    echo '<tr class="panel-title down-border"><td style="text-align: left;" colspan="6">&nbsp;</td></tr>';
+
+
+    //Now do a high level stats:
     foreach (array('ln_words =', 'ln_words >', 'ln_words <') as $words_setting) {
 
         $words_stats = $this->Links_model->ln_fetch(array(
             $words_setting => 0,
-        ), array(), 0, 0, array(), 'COUNT(ln_id) as total_links, SUM(ABS(ln_words)) as total_words');
+        ), array(), 0, 0, array(), 'COUNT(ln_id) as total_links, SUM(ln_words) as total_words');
 
         echo '<tr class="panel-title down-border">';
         echo '<td style="text-align: left;">'.$words_setting.' 0</td>';
         echo '<td style="text-align: left;">'.number_format($words_stats[0]['total_links'], 0).'</td>';
-        echo '<td style="text-align: left;">'.number_format($words_stats[0]['total_words'], 2).'</td>';
-        echo '<td style="text-align: left;">'.( $words_stats[0]['total_links']>0 ? number_format(($words_stats[0]['total_words']/$words_stats[0]['total_links']), 2) : '0' ).'</td>';
+        echo '<td style="text-align: left;">'.number_format($words_stats[0]['total_links']/$all_stats[0]['total_links']*100, 2).'%</td>';
+        echo '<td style="text-align: left;">'.number_format(round($words_stats[0]['total_words']), 0).'</td>';
+        echo '<td style="text-align: left;">'.number_format($words_stats[0]['total_words']/$all_stats[0]['total_words']*100, 2).'%</td>';
+        echo '<td style="text-align: left;">'.( $words_stats[0]['total_links']>0 ? number_format(($words_stats[0]['total_words']/$words_stats[0]['total_links']), 2) : '0.00' ).'</td>';
+        echo '</tr>';
+
+    }
+
+    //Add some empty space:
+    echo '<tr class="panel-title down-border"><td style="text-align: left;" colspan="6">&nbsp;</td></tr>';
+
+    //Show each link type:
+    foreach ($this->Links_model->ln_fetch(array(), array('ln_type'), 0, 0, array('total_words' => 'DESC'), 'COUNT(ln_id) as total_links, SUM(ln_words) as total_words, en_name, en_icon, en_id', 'en_id, en_name, en_icon') as $ln) {
+
+        echo '<tr class="panel-title down-border">';
+        echo '<td style="text-align: left;"><span class="icon-block">'.$ln['en_icon'].'</span> <a href="/entities/'.$ln['en_id'].'">'.$ln['en_name'].'</a></td>';
+        echo '<td style="text-align: left;">'.number_format($ln['total_links'], 0).'</td>';
+        echo '<td style="text-align: left;">'.number_format($ln['total_links']/$all_stats[0]['total_links']*100, 2).'%</td>';
+        echo '<td style="text-align: left;">'.number_format(round($ln['total_words']), 0).'</td>';
+        echo '<td style="text-align: left;">'.number_format($ln['total_words']/$all_stats[0]['total_words']*100, 2).'%</td>';
+        echo '<td style="text-align: left;">'.( $ln['total_links']>0 ? number_format(($ln['total_words']/$ln['total_links']), 2) : '0.00' ).'</td>';
         echo '</tr>';
 
     }

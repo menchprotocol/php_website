@@ -575,7 +575,7 @@ class Messenger extends CI_Controller
 
                             //We did find a pending submission requirement, confirm with user:
                             $this->Communication_model->dispatch_message(
-                                'Got it! Please confirm your submission:',
+                                'Got it! Confirm your submission:',
                                 $en,
                                 true,
                                 array(
@@ -606,7 +606,7 @@ class Messenger extends CI_Controller
 
                             //We did not have any matches, but has some mismatches, maybe that's what they meant?
                             $this->Communication_model->dispatch_message(
-                                'Error: You should send me a '.$en_all_6144[$mismatch_focus['in_subtype_entity_id']]['m_name'].' message to complete this step. Please try again.',
+                                'Error: You should send me a '.$en_all_6144[$mismatch_focus['in_subtype_entity_id']]['m_name'].' message to complete this step.',
                                 $en,
                                 true
                             );

@@ -48,6 +48,7 @@ create table table_links
   ln_external_id                  bigint       not null,
   ln_order                        smallint     not null,
   ln_timestamp                    timestamp(4) not null,
+  ln_words                        double precision not null,
   ln_content                      text,
   ln_metadata                     text
 );
