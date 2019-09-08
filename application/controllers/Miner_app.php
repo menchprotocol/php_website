@@ -413,7 +413,9 @@ class Miner_app extends CI_Controller
         echo '<thead>';
 
         echo '<tr class="panel-title down-border">';
+
         echo '<td style="text-align: left;"><div>'.$en_all_7304[7797]['m_name'].'</div>';
+
         //Leaderboard User Types
         echo '<div class="btn-group btn-group-sm btn-group-leaderboard" role="group">';
         $counter = 0;

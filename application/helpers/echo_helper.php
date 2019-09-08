@@ -1860,7 +1860,12 @@ function echo_2level_stats($stat_name, $stats_en_id, $mother_en_id, $link_types_
     echo '<table class="table table-condensed table-striped stats-table mini-stats-table">';
 
     echo '<tr class="panel-title down-border">';
-    echo '<td style="text-align: left;" colspan="2">'.number_format(count($CI->config->item('en_all_'.$stats_en_id)), 0).' '.$stat_name.'</td>';
+    echo '<td style="text-align: left;">'.number_format(count($CI->config->item('en_all_'.$stats_en_id)), 0).' '.$stat_name.'</td>';
+    if($display_field=='total_words'){
+        echo '<td style="text-align: right;">Words</td>';
+    } else {
+        echo '<td>&nbsp;</td>';
+    }
     echo '</tr>';
 
     $all_shown = array();
