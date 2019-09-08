@@ -103,7 +103,7 @@ if(!$action) {
             'ln_type_entity_id IN (' . $_GET['updatesome'] . ')' => null,
         )), array(), 0) as $ln){
             $this->Links_model->ln_update($ln['ln_id'], array(
-                'ln_words' => ln_type_words($ln),
+                'ln_words' => ln_type_word_count($ln),
             ));
             $updated++;
         }

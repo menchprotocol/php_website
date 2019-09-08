@@ -95,7 +95,7 @@ function echo_url_type($url, $en_type_link_id)
 
 
 
-function echo_url_embed($url, $full_message = null, $return_array = false)
+function echo_url_embed($url, $full_message = null, $return_array = false, $return_duration = false)
 {
 
 
@@ -112,6 +112,7 @@ function echo_url_embed($url, $full_message = null, $return_array = false)
     $clean_url = null;
     $embed_html_code = null;
     $prefix_message = null;
+    $CI =& get_instance();
 
     if (!$full_message) {
         $full_message = $url;
@@ -139,6 +140,20 @@ function echo_url_embed($url, $full_message = null, $return_array = false)
             //Set the Clean URL:
             $clean_url = 'https://www.youtube.com/watch?v=' . $video_id;
 
+
+            if($return_duration) {
+                //Maybe this is a slice, which we can determine the duration from:
+                if ($start_sec && $end_sec) {
+                    return ($end_sec-$start_sec);
+                }
+
+                //Fetch seconds from the website:
+                $total_seconds = intval(one_two_explode('lengthSeconds":"','"', file_get_contents($clean_url)));
+                if($total_seconds > 0){
+                    return $total_seconds;
+                }
+            }
+
             //Inform User that this is a sliced video
             if ($start_sec || $end_sec) {
                 $embed_html_code .= '<div class="video-prefix"><i class="fab fa-youtube"></i> Watch ' . (($start_sec && $end_sec) ? 'this <b>' . echo_time_minutes(($end_sec - $start_sec)) . '</b> video clip' : 'from <b>' . ($start_sec ? echo_time_minutes($start_sec) : 'start') . '</b> to <b>' . ($end_sec ? echo_time_minutes($end_sec) : 'end') . '</b>') . ':</div>';
@@ -149,6 +164,14 @@ function echo_url_embed($url, $full_message = null, $return_array = false)
         }
 
     } elseif (substr_count($url, 'vimeo.com/') == 1 && is_numeric(one_two_explode('vimeo.com/','?',$url))) {
+
+        if($return_duration){
+            //Fetch seconds from the website:
+            $total_seconds = intval(one_two_explode('"duration":{"raw":',',', file_get_contents($url)));
+            if($total_seconds > 0){
+                return $total_seconds;
+            }
+        }
 
         //Seems to be Vimeo:
         $video_id = trim(one_two_explode('vimeo.com/', '?', $url));
@@ -161,6 +184,14 @@ function echo_url_embed($url, $full_message = null, $return_array = false)
 
     } elseif (substr_count($url, 'wistia.com/medias/') == 1) {
 
+        if($return_duration){
+            //Fetch seconds from the website:
+            $total_seconds = intval(one_two_explode('mediaDuration=','&', file_get_contents($url)));
+            if($total_seconds > 0) {
+                return $total_seconds;
+            }
+        }
+
         //Seems to be Wistia:
         $video_id = trim(one_two_explode('wistia.com/medias/', '?', $url));
         $clean_url = trim(one_two_explode('', '?', $url));
@@ -168,7 +199,13 @@ function echo_url_embed($url, $full_message = null, $return_array = false)
 
     }
 
-    if ($return_array) {
+
+    if($return_duration){
+
+        //Still here? Could not determine video length, return default:
+        return $CI->config->item('unknown_file_seconds');
+
+    } elseif ($return_array) {
 
         //Return all aspects of this parsed URL:
         return array(
@@ -668,7 +705,7 @@ function echo_ln($ln, $is_inner = false)
 
 
     //Link words
-    $ui .= '<span class="link-connection-a"><span data-toggle="tooltip" data-placement="top" title="Number of words exchanged in this link" style="min-width:30px; display: inline-block;">'.$en_all_4341[10588]['m_icon']. ' '. number_format($ln['ln_words'], (fmod($ln['ln_words'],1)==0 ? 0 : 2)) .'</span></span> &nbsp;';
+    $ui .= '<span class="link-connection-a"><span data-toggle="tooltip" data-placement="top" title="Number of words exchanged in this link" style="min-width:30px; display: inline-block;">'.$en_all_4341[10588]['m_icon']. ' '. number_format(abs($ln['ln_words']), (fmod($ln['ln_words'],1)==0 ? 0 : 2)) .' WORD'.strtoupper(echo__s($ln['ln_words'])).' '.( $ln['ln_words'] > 0 ? 'IN' : 'OUT' ).'</span></span> &nbsp;';
 
 
     if($ln['ln_order'] > 0){
@@ -2531,7 +2568,7 @@ function echo_en($en, $level, $is_parent = false)
     //Parent entities:
     $ui .= '<span class="' . advance_mode() . '">';
     foreach ($en['en__parents'] as $en_parent) {
-        $ui .= '<span class="parent-icon en_child_icon_' . $en_parent['en_id'] . '"><a href="/entities/' . $en_parent['en_id'] . '" data-toggle="tooltip" title="' . $en_parent['en_name'] . (strlen($en_parent['ln_content']) > 0 ? ' = ' . $en_parent['ln_content'] : '') . '" data-placement="bottom">' . echo_en_icon($en_parent) . '</a></span> &nbsp;';
+        $ui .= '<span class="en_child_icon_' . $en_parent['en_id'] . '"><span class="parent-icon"><a href="/entities/' . $en_parent['en_id'] . '" data-toggle="tooltip" title="' . $en_parent['en_name'] . (strlen($en_parent['ln_content']) > 0 ? ' = ' . $en_parent['ln_content'] : '') . '" data-placement="bottom">' . echo_en_icon($en_parent) . '</a></span> &nbsp;</span>';
     }
     $ui .= '</span>';
 

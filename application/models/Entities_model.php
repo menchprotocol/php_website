@@ -55,6 +55,7 @@ class Entities_model extends CI_Model
                 'ln_creator_entity_id' => ($ln_creator_entity_id > 0 ? $ln_creator_entity_id : $insert_columns['en_id']),
                 'ln_child_entity_id' => $insert_columns['en_id'],
                 'ln_type_entity_id' => 4251, //New Entity Created
+                'ln_content' => $insert_columns['en_name'],
             ));
 
             //Fetch to return the complete entity data:

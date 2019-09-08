@@ -382,8 +382,57 @@ function in_outcome_verb_id($string){
 }
 
 
+function curl_get_file_size( $url ) {
 
-function ln_type_words($ln){
+    /**
+     * Returns the size of a file without downloading it, or -1 if the file
+     * size could not be determined.
+     *
+     * @param $url - The location of the remote file to download. Cannot
+     * be null or empty.
+     *
+     * @return The size of the file referenced by $url, or -1 if the size
+     * could not be determined.
+     */
+
+    // Assume failure.
+    $result = -1;
+
+    $curl = curl_init( $url );
+
+    // Issue a HEAD request and follow any redirects.
+    curl_setopt( $curl, CURLOPT_NOBODY, true );
+    curl_setopt( $curl, CURLOPT_HEADER, true );
+    curl_setopt( $curl, CURLOPT_RETURNTRANSFER, true );
+    curl_setopt( $curl, CURLOPT_FOLLOWLOCATION, true );
+    curl_setopt( $curl, CURLOPT_USERAGENT, get_user_agent_string() );
+
+    $data = curl_exec( $curl );
+    curl_close( $curl );
+
+    if( $data ) {
+        $content_length = "unknown";
+        $status = "unknown";
+
+        if( preg_match( "/^HTTP\/1\.[01] (\d\d\d)/", $data, $matches ) ) {
+            $status = (int)$matches[1];
+        }
+
+        if( preg_match( "/Content-Length: (\d+)/", $data, $matches ) ) {
+            $content_length = (int)$matches[1];
+        }
+
+        // http://en.wikipedia.org/wiki/List_of_HTTP_status_codes
+        if( $status == 200 || ($status > 300 && $status <= 308) ) {
+            $result = $content_length;
+        }
+    }
+
+    return $result;
+}
+
+
+function ln_type_word_count($ln){
 
     $CI =& get_instance();
 
@@ -391,26 +440,50 @@ function ln_type_words($ln){
     if(in_array($ln['ln_type_entity_id'], $CI->config->item('en_ids_10596'))){
 
         //Nod:
-        $link_words = $CI->config->item('nod_word_ratio');
+        $link_words = $CI->config->item('words_per_nod');
 
     } else {
 
         //Word or Statement, count links:
-        $link_words = 1;
+        $link_words = 0;
 
         //Consider each object link as a word:
-        foreach (array('ln_creator_entity_id', 'ln_child_intent_id', 'ln_parent_intent_id', 'ln_child_entity_id', 'ln_parent_entity_id', 'ln_parent_link_id') as $dz) {
+        foreach (array('ln_child_intent_id', 'ln_parent_intent_id', 'ln_child_entity_id', 'ln_parent_entity_id', 'ln_parent_link_id', 'ln_external_id') as $dz) {
             if (isset($ln[$dz]) && intval($ln[$dz]) > 0) {
                 $link_words++;
             }
         }
 
         //Is it a statement that has content??
-        if(in_array($ln['ln_type_entity_id'], $CI->config->item('en_ids_10593')) && isset($ln['ln_content']) && strlen($ln['ln_content']) > 0){
-            //Statement with content:
-            $link_words += 1 + substr_count(str_replace('  ',' ', $ln['ln_content']), ' ');
+        if(in_array($ln['ln_type_entity_id'], $CI->config->item('en_ids_10593') /* Statement */) && isset($ln['ln_content']) && strlen($ln['ln_content']) > 0){
+
+            //Let's calculate the number of words in this statement based on it's content:
+            if($ln['ln_type_entity_id']==4257 /* Embed */) {
+
+                //Determine words based on content duration fetched from embed source:
+                $file_seconds = echo_url_embed($ln['ln_content'], null, false, true);
+                $link_words += number_format( $file_seconds * $CI->config->item('words_per_second'), 2);
+
+            } elseif(in_array($ln['ln_type_entity_id'], $CI->config->item('en_ids_10627') /* Attachments */)){
+
+                $file_size = curl_get_file_size($ln['ln_content']);
+                if($file_size > 0){
+                    //Convert file size to words:
+                    $link_words =+ number_format( $file_size / $CI->config->item('bytes_per_word'), 2 );
+                } else {
+                    //File size could not be determined, so let's just add a default:
+                    $link_words += number_format( $CI->config->item('unknown_file_seconds') * $CI->config->item('words_per_second'), 2);
+                }
+
+            } else {
+                $link_words += 1 + substr_count(str_replace('  ',' ', strip_tags($ln['ln_content'])), ' ');
+            }
         }
 
+        if($link_words < 1){
+            //Must be at-least one:
+            $link_words = 1;
+        }
     }
 
 

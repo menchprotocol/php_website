@@ -194,7 +194,7 @@ class Links_model extends CI_Model
 
 
         //Determine word weight
-        $insert_columns['ln_words'] = ln_type_words($insert_columns);
+        $insert_columns['ln_words'] = ln_type_word_count($insert_columns);
 
         //Lets log:
         $this->db->insert('table_links', $insert_columns);

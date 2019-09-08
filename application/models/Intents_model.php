@@ -52,6 +52,7 @@ class Intents_model extends CI_Model
                 $this->Links_model->ln_create(array(
                     'ln_creator_entity_id' => $ln_creator_entity_id,
                     'ln_child_intent_id' => $insert_columns['in_id'],
+                    'ln_content' => $insert_columns['in_outcome'],
                     'ln_type_entity_id' => 4250, //New Intent Created
                 ));
 
