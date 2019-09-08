@@ -145,7 +145,7 @@ function echo_url_embed($url, $full_message = null, $return_array = false, $retu
             }
 
             //Fetch seconds from the website:
-            $total_seconds = intval(one_two_explode('lengthSeconds":"','"', @file_get_contents($url)));
+            $total_seconds = intval(one_two_explode('lengthSeconds\\":\\"',"\\", @file_get_contents($url)));
             if($total_seconds > 0){
                 return $total_seconds;
             }
