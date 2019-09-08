@@ -120,6 +120,7 @@ function echo_url_embed($url, $full_message = null, $return_array = false, $retu
 
     //See if $url has a valid embed video in it, and transform it if it does:
     $is_embed = (substr_count($url, 'youtube.com/embed/') == 1);
+
     if (substr_count($url, 'youtube.com/watch?v=') == 1 || substr_count($url, 'youtu.be/') == 1 || $is_embed) {
 
         $start_sec = 0;
@@ -135,24 +136,24 @@ function echo_url_embed($url, $full_message = null, $return_array = false, $retu
             }
         }
 
-        if ($video_id) {
+
+        if($return_duration) {
+
+            //Maybe this is a slice, which we can determine the duration from:
+            if ($start_sec && $end_sec) {
+                return ($end_sec-$start_sec);
+            }
+
+            //Fetch seconds from the website:
+            $total_seconds = intval(one_two_explode('lengthSeconds":"','"', file_get_contents($url)));
+            if($total_seconds > 0){
+                return $total_seconds;
+            }
+
+        } elseif ($video_id) {
 
             //Set the Clean URL:
             $clean_url = 'https://www.youtube.com/watch?v=' . $video_id;
-
-
-            if($return_duration) {
-                //Maybe this is a slice, which we can determine the duration from:
-                if ($start_sec && $end_sec) {
-                    return ($end_sec-$start_sec);
-                }
-
-                //Fetch seconds from the website:
-                $total_seconds = intval(one_two_explode('lengthSeconds":"','"', file_get_contents($clean_url)));
-                if($total_seconds > 0){
-                    return $total_seconds;
-                }
-            }
 
             //Inform User that this is a sliced video
             if ($start_sec || $end_sec) {
