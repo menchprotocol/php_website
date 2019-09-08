@@ -2568,7 +2568,7 @@ function echo_en($en, $level, $is_parent = false)
     //Parent entities:
     $ui .= '<span class="' . advance_mode() . '">';
     foreach ($en['en__parents'] as $en_parent) {
-        $ui .= '<span class="en_child_icon_' . $en_parent['en_id'] . '"><span class="parent-icon"><a href="/entities/' . $en_parent['en_id'] . '" data-toggle="tooltip" title="' . $en_parent['en_name'] . (strlen($en_parent['ln_content']) > 0 ? ' = ' . $en_parent['ln_content'] : '') . '" data-placement="bottom">' . echo_en_icon($en_parent) . '</a></span> &nbsp;</span>';
+        $ui .= '<span class="en_child_icon_' . $en_parent['en_id'] . '">&nbsp;<span class="parent-icon"><a href="/entities/' . $en_parent['en_id'] . '" data-toggle="tooltip" title="' . $en_parent['en_name'] . (strlen($en_parent['ln_content']) > 0 ? ' = ' . $en_parent['ln_content'] : '') . '" data-placement="bottom">' . echo_en_icon($en_parent) . '</a></span> </span>';
     }
     $ui .= '</span>';
 
