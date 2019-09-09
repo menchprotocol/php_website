@@ -71,7 +71,7 @@ $config['tr_object_links']          = array( //Each link can have any of the fol
 
 //Facebook:
 $config['fb_max_message']           = 2000; //The maximum length of a Message accepted via Messenger API
-//Note: We have a config variable named "fb_credentials" stored in config/credentials.php
+//Note: We have a config variable named "cred_facebook" stored in config/credentials.php
 
 $config['fb_settings']              = array(
                                         'page_id'               => '381488558920384',

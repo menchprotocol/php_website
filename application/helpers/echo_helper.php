@@ -137,20 +137,25 @@ function echo_url_embed($url, $full_message = null, $return_array = false, $retu
         }
 
 
-        if($return_duration) {
+        if ($video_id) {
 
-            //Maybe this is a slice, which we can determine the duration from:
-            if ($start_sec && $end_sec) {
-                return ($end_sec-$start_sec);
+            if($return_duration) {
+
+                //Maybe this is a slice, which we can determine the duration from:
+                if ($start_sec && $end_sec) {
+                    return ($end_sec-$start_sec);
+                }
+
+                $cred_youtube = $CI->config->item('cred_youtube');
+                $api_data = json_decode(file_get_contents('https://www.googleapis.com/youtube/v3/videos?part=contentDetails&id='.$video_id.'&key='.$cred_youtube['server_key']), true);
+
+                //Fetch seconds from the website:
+                if(isset($api_data['items'][0]['contentDetails']['duration'])){
+                    //Looks something like this: PT1H33M58S or PT4M13S
+                    return ISO8601ToSeconds($api_data['items'][0]['contentDetails']['duration']);
+                }
+
             }
-
-            //Fetch seconds from the website:
-            $total_seconds = intval(preg_replace('/[^0-9]+/', '', one_two_explode('lengthSeconds',',', @file_get_contents($url))));
-            if($total_seconds > 0){
-                return $total_seconds;
-            }
-
-        } elseif ($video_id) {
 
             //Set the Clean URL:
             $clean_url = 'https://www.youtube.com/watch?v=' . $video_id;

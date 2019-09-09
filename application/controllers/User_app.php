@@ -101,7 +101,7 @@ class User_app extends CI_Controller
                 'status' => 0,
                 'message' => 'Password link is not public. Contact us to adjust your account.',
             ));
-        } elseif ($user_passwords[0]['ln_content'] != hash('sha256', $this->config->item('password_salt') . $_POST['input_password'] . $ens[0]['en_id'])) {
+        } elseif ($user_passwords[0]['ln_content'] != hash('sha256', $this->config->item('cred_password_salt') . $_POST['input_password'] . $ens[0]['en_id'])) {
             //Bad password
             return echo_json(array(
                 'status' => 0,
@@ -240,7 +240,7 @@ class User_app extends CI_Controller
 
 
             //Generate the password hash:
-            $password_hash = hash('sha256', $this->config->item('password_salt') . $_POST['input_password']. $ens[0]['en_id']);
+            $password_hash = hash('sha256', $this->config->item('cred_password_salt') . $_POST['input_password']. $ens[0]['en_id']);
 
 
             //Fetch their passwords to authenticate login:
@@ -404,7 +404,7 @@ class User_app extends CI_Controller
         ));
         $this->Links_model->ln_create(array(
             'ln_type_entity_id' => 4255, //Text link
-            'ln_content' => strtolower(hash('sha256', $this->config->item('password_salt') . $_POST['new_password'] . $user_en['en']['en_id'])),
+            'ln_content' => strtolower(hash('sha256', $this->config->item('cred_password_salt') . $_POST['new_password'] . $user_en['en']['en_id'])),
             'ln_parent_entity_id' => 3286, //Mench Password
             'ln_creator_entity_id' => $user_en['en']['en_id'],
             'ln_child_entity_id' => $user_en['en']['en_id'],
@@ -1105,7 +1105,7 @@ class User_app extends CI_Controller
             'ln_child_entity_id' => $_POST['en_id'],
         ));
 
-        $hashed_password = strtolower(hash('sha256', $this->config->item('password_salt') . $_POST['input_password'] . $_POST['en_id']));
+        $hashed_password = strtolower(hash('sha256', $this->config->item('cred_password_salt') . $_POST['input_password'] . $_POST['en_id']));
 
 
         if (count($user_passwords) > 0) {
@@ -1484,7 +1484,7 @@ class User_app extends CI_Controller
 
     function actionplan_reset_progress($en_id, $timestamp, $secret_key){
 
-        if($secret_key != md5($en_id . $this->config->item('actionplan_salt') . $timestamp)){
+        if($secret_key != md5($en_id . $this->config->item('cred_password_salt') . $timestamp)){
             die('Invalid Secret Key');
         }
 
@@ -1960,7 +1960,7 @@ class User_app extends CI_Controller
     function actionplan_answer_question($answer_type_en_id, $en_id, $parent_in_id, $answer_in_id, $w_key)
     {
 
-        if ($w_key != md5($this->config->item('actionplan_salt') . $answer_in_id . $parent_in_id . $en_id)) {
+        if ($w_key != md5($this->config->item('cred_password_salt') . $answer_in_id . $parent_in_id . $en_id)) {
             return redirect_message('/actionplan/' . $parent_in_id, '<div class="alert alert-danger" role="alert">Invalid Authentication Key</div>');
         } elseif (!in_array($answer_type_en_id, $this->config->item('en_ids_7704'))) {
             return redirect_message('/actionplan/' . $parent_in_id, '<div class="alert alert-danger" role="alert">Invalid answer type</div>');

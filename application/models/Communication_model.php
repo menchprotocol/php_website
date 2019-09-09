@@ -1303,11 +1303,11 @@ class Communication_model extends CI_Model
         }
 
         //Fetch access token and settings:
-        $fb_credentials = $this->config->item('fb_credentials');
+        $cred_facebook = $this->config->item('cred_facebook');
         $fb_settings = $this->config->item('fb_settings');
 
         $access_token_payload = array(
-            'access_token' => $fb_credentials['mench_access_token']
+            'access_token' => $cred_facebook['mench_access_token']
         );
 
         if ($action == 'GET' && count($payload) > 0) {
@@ -2533,7 +2533,7 @@ class Communication_model extends CI_Model
         $this->CLIENT = new Aws\Ses\SesClient([
             'version' => 'latest',
             'region' => 'us-west-2',
-            'credentials' => $this->config->item('aws_credentials'),
+            'credentials' => $this->config->item('cred_aws'),
         ]);
 
         return $this->CLIENT->sendEmail(array(

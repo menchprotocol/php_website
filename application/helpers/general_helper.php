@@ -27,10 +27,10 @@ function load_algolia($index_name)
 {
     //Loads up algolia search engine functions
     $CI =& get_instance();
-    $algolia_credentials = $CI->config->item('algolia_credentials');
+    $cred_algolia = $CI->config->item('cred_algolia');
     if ($CI->config->item('app_enable_algolia')) {
         require_once('application/libraries/algoliasearch.php');
-        $client = new \AlgoliaSearch\Client($algolia_credentials['application_id'], $algolia_credentials['api_key']);
+        $client = new \AlgoliaSearch\Client($cred_algolia['application_id'], $cred_algolia['api_key']);
         return $client->initIndex($index_name);
     }
 }
@@ -78,7 +78,7 @@ function parse_signed_request($signed_request)
     //A function recommended by Facebook tp parse the signed request we receive from Facebook servers
     //Fetch app settings:
     $CI =& get_instance();
-    $fb_credentials = $CI->config->item('fb_credentials');
+    $cred_facebook = $CI->config->item('cred_facebook');
 
     list($encoded_sig, $payload) = explode('.', $signed_request, 2);
 
@@ -87,7 +87,7 @@ function parse_signed_request($signed_request)
     $data = json_decode(base64_url_decode($payload), true);
 
     // Confirm the signature
-    $expected_sig = hash_hmac('sha256', $payload, $fb_credentials['client_secret'], $raw = true);
+    $expected_sig = hash_hmac('sha256', $payload, $cred_facebook['client_secret'], $raw = true);
     if ($sig !== $expected_sig) {
         //error_log('Bad Signed JSON signature!');
         return null;
@@ -497,6 +497,17 @@ function ln_type_word_count($ln){
     return $link_words;
 }
 
+
+function ISO8601ToSeconds($ISO8601){
+    $interval = new \DateInterval($ISO8601);
+
+    return ($interval->d * 24 * 60 * 60) +
+        ($interval->h * 60 * 60) +
+        ($interval->i * 60) +
+        $interval->s;
+}
+
+
 function addup_array($array, $match_key)
 {
     $total = 0;
@@ -687,7 +698,7 @@ function upload_to_cdn($file_url, $ln_creator_entity_id = 0, $ln_metadata = null
         $s3 = new Aws\S3\S3Client([
             'version' => 'latest',
             'region' => 'us-west-2',
-            'credentials' => $CI->config->item('aws_credentials'),
+            'credentials' => $CI->config->item('cred_aws'),
         ]);
         $result = $s3->putObject(array(
             'Bucket' => 's3foundation', //Same bucket for now
