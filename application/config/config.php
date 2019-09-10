@@ -31,7 +31,7 @@ $config['password_min_char']        = 6;
 
 //Word converter:
 $config['words_per_nod']            = 0.02; //The number of words per Nod
-$config['bytes_per_word']           = 3200; //1 Word ~ 3KB
+$config['bytes_per_word']           = 30000; //1 Word ~ 30KB
 $config['unknown_file_words']       = 3; //When we cannot find the file size
 
 
