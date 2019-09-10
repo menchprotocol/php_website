@@ -13,12 +13,6 @@ class Miner_app extends CI_Controller
     }
 
 
-    function test(){
-        echo echo_url_embed('https://www.youtube.com/watch?v='.$_GET['v'], null, false, true);
-    }
-
-
-
     function admin_tools($action = null, $command1 = null, $command2 = null)
     {
 

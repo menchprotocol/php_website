@@ -436,7 +436,6 @@ function ln_type_word_count($ln){
 
     $CI =& get_instance();
 
-    //Set words:
     if(in_array($ln['ln_type_entity_id'], $CI->config->item('en_ids_10596'))){
 
         //Nod:
@@ -444,11 +443,11 @@ function ln_type_word_count($ln){
 
     } else {
 
-        //Word or Statement, count links:
+        //Word OR Statement, count links:
         $link_words = 0;
 
         //Consider each object link as a word:
-        foreach (array('ln_child_intent_id', 'ln_parent_intent_id', 'ln_child_entity_id', 'ln_parent_entity_id', 'ln_parent_link_id', 'ln_external_id') as $dz) {
+        foreach (array('ln_creator_entity_id', 'ln_child_intent_id', 'ln_parent_intent_id', 'ln_child_entity_id', 'ln_parent_entity_id', 'ln_parent_link_id', 'ln_external_id') as $dz) {
             if (isset($ln[$dz]) && intval($ln[$dz]) > 0) {
                 $link_words++;
             }
@@ -458,12 +457,7 @@ function ln_type_word_count($ln){
         if(in_array($ln['ln_type_entity_id'], $CI->config->item('en_ids_10593') /* Statement */) && isset($ln['ln_content']) && strlen($ln['ln_content']) > 0){
 
             //Let's calculate the number of words in this statement based on it's content:
-            if($ln['ln_type_entity_id']==4257 /* Embed */) {
-
-                //Determine words based on content duration fetched from embed source:
-                $link_words += round( echo_url_embed($ln['ln_content'], null, false, true) * $CI->config->item('words_per_second'), 2);
-
-            } elseif(in_array($ln['ln_type_entity_id'], $CI->config->item('en_ids_10627') /* Attachments */)){
+            if(in_array($ln['ln_type_entity_id'], $CI->config->item('en_ids_10627') /* Attachments */)){
 
                 $file_size = curl_get_file_size($ln['ln_content']);
                 if($file_size > 0){
@@ -471,12 +465,13 @@ function ln_type_word_count($ln){
                     $link_words =+ number_format( $file_size / $CI->config->item('bytes_per_word'), 2 );
                 } else {
                     //File size could not be determined, so let's just add a default:
-                    $link_words += number_format( $CI->config->item('unknown_file_seconds') * $CI->config->item('words_per_second'), 2);
+                    $link_words += number_format( $CI->config->item('unknown_file_words'), 2);
                 }
 
             } else {
-                $link_words += 1 + substr_count(str_replace('  ',' ', strip_tags($ln['ln_content'])), ' ');
+                $link_words += substr_count(str_replace('  ',' ', strip_tags($ln['ln_content'])), ' ');
             }
+
         }
 
         if($link_words < 1){

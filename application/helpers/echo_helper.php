@@ -95,7 +95,7 @@ function echo_url_type($url, $en_type_link_id)
 
 
 
-function echo_url_embed($url, $full_message = null, $return_array = false, $return_duration = false)
+function echo_url_embed($url, $full_message = null, $return_array = false)
 {
 
 
@@ -139,24 +139,6 @@ function echo_url_embed($url, $full_message = null, $return_array = false, $retu
 
         if ($video_id) {
 
-            if($return_duration) {
-
-                //Maybe this is a slice, which we can determine the duration from:
-                if ($start_sec && $end_sec) {
-                    return ($end_sec-$start_sec);
-                }
-
-                $cred_youtube = $CI->config->item('cred_youtube');
-                $api_data = json_decode(file_get_contents('https://www.googleapis.com/youtube/v3/videos?part=contentDetails&id='.$video_id.'&key='.$cred_youtube['server_key']), true);
-
-                //Fetch seconds from the website:
-                if(isset($api_data['items'][0]['contentDetails']['duration'])){
-                    //Looks something like this: PT1H33M58S or PT4M13S
-                    return ISO8601ToSeconds($api_data['items'][0]['contentDetails']['duration']);
-                }
-
-            }
-
             //Set the Clean URL:
             $clean_url = 'https://www.youtube.com/watch?v=' . $video_id;
 
@@ -171,14 +153,6 @@ function echo_url_embed($url, $full_message = null, $return_array = false, $retu
 
     } elseif (substr_count($url, 'vimeo.com/') == 1 && is_numeric(one_two_explode('vimeo.com/','?',$url))) {
 
-        if($return_duration){
-            //Fetch seconds from the website:
-            $total_seconds = intval(one_two_explode('"duration":{"raw":',',', @file_get_contents($url)));
-            if($total_seconds > 0){
-                return $total_seconds;
-            }
-        }
-
         //Seems to be Vimeo:
         $video_id = trim(one_two_explode('vimeo.com/', '?', $url));
 
@@ -190,14 +164,6 @@ function echo_url_embed($url, $full_message = null, $return_array = false, $retu
 
     } elseif (substr_count($url, 'wistia.com/medias/') == 1) {
 
-        if($return_duration){
-            //Fetch seconds from the website:
-            $total_seconds = intval(one_two_explode('mediaDuration=','&', @file_get_contents($url)));
-            if($total_seconds > 0) {
-                return $total_seconds;
-            }
-        }
-
         //Seems to be Wistia:
         $video_id = trim(one_two_explode('wistia.com/medias/', '?', $url));
         $clean_url = trim(one_two_explode('', '?', $url));
@@ -206,12 +172,7 @@ function echo_url_embed($url, $full_message = null, $return_array = false, $retu
     }
 
 
-    if($return_duration){
-
-        //Still here? Could not determine video length, return default:
-        return $CI->config->item('unknown_file_seconds');
-
-    } elseif ($return_array) {
+    if ($return_array) {
 
         //Return all aspects of this parsed URL:
         return array(
@@ -1959,7 +1920,7 @@ function echo_2level_entities($main_obj, $all_link_types, $link_types_counts, $a
         }
 
         $ln = filter_array($link_types_counts, 'en_id', $en_id);
-        $show_in_advance_only = $display_field=='total_words' && (!in_array($en_id, $CI->config->item('en_ids_10593')) /* Statement */ || abs($ln['total_words']) < 100 );
+        $show_in_advance_only = ($display_field=='total_words' && (in_array($en_id, $CI->config->item('en_ids_10596')) /* Nod */ || abs($ln['total_words']) < 100 ));
 
         if( !$ln['total_count'] ){
             continue;

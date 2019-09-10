@@ -31,9 +31,8 @@ $config['password_min_char']        = 6;
 
 //Word converter:
 $config['words_per_nod']            = 0.02; //The number of words per Nod
-$config['words_per_second']         = 2.67; //The number of words per second
 $config['bytes_per_word']           = 10240; //1 Word = 10KB
-$config['unknown_file_seconds']     = 30; //When we cannot find the length of a video
+$config['unknown_file_words']       = 3; //When we cannot find the file size
 
 
 //Intent References:
