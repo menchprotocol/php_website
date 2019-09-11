@@ -524,7 +524,7 @@ if(!$action) {
                     foreach ($this->Links_model->ln_fetch(array(
                         'ln_status_entity_id IN (' . join(',', $this->config->item('en_ids_7360')) . ')' => null, //Link Statuses Active
                         'in_status_entity_id IN (' . join(',', $this->config->item('en_ids_7356')) . ')' => null, //Intent Statuses Active
-                        'ln_type_entity_id IN (' . join(',', $this->config->item('en_ids_4486')) . ')' => null, //Intent Link Connectors
+                        'ln_type_entity_id IN (' . join(',', $this->config->item('en_ids_4486')) . ')' => null, //Intent-to-Intent Links
                         'ln_child_intent_id' => $in['in_id'],
                     ), array('in_parent')) as $in_parent) {
                         echo '<span class="in_child_icon_' . $in_parent['in_id'] . '"><a href="/intents/' . $in_parent['in_id'] . '" data-toggle="tooltip" title="' . $in_parent['in_outcome'] . '" data-placement="bottom">' . $en_all_7585[$in_parent['in_subtype_entity_id']]['m_icon'] . '</a> &nbsp;</span>';
@@ -747,7 +747,7 @@ if(!$action) {
                     'ln_status_entity_id IN (' . join(',', $this->config->item('en_ids_7360')) . ')' => null, //Link Statuses Active
                     'in_status_entity_id IN (' . join(',', $this->config->item('en_ids_7356')) . ')' => null, //Intent Statuses Active
                     'in_subtype_entity_id NOT IN (6907,6914)' => null, //NOT AND/OR Lock
-                    'ln_type_entity_id IN (' . join(',', $this->config->item('en_ids_4486')) . ')' => null, //Intent Link Connectors
+                    'ln_type_entity_id IN (' . join(',', $this->config->item('en_ids_4486')) . ')' => null, //Intent-to-Intent Links
                     'ln_child_intent_id' => $in_ln['in_id'],
                 ), array('in_parent'))) > 1 || $in_ln['in_subtype_entity_id'] != 6677){
 

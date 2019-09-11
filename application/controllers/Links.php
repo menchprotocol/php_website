@@ -306,7 +306,7 @@ class Links extends CI_Controller
         $this->db->query("TRUNCATE TABLE public.gephi_edges CONTINUE IDENTITY RESTRICT;");
         $this->db->query("TRUNCATE TABLE public.gephi_nodes CONTINUE IDENTITY RESTRICT;");
 
-        //Load Intent Link Connectors:
+        //Load Intent-to-Intent Links:
         $en_all_4593 = $this->config->item('en_all_4593');
 
         //To make sure intent/entity IDs are unique:
@@ -345,7 +345,7 @@ class Links extends CI_Controller
             foreach($this->Links_model->ln_fetch(array(
                 'ln_status_entity_id IN (' . join(',', $this->config->item('en_ids_7360')) . ')' => null, //Link Statuses Active
                 'in_status_entity_id IN (' . join(',', $this->config->item('en_ids_7356')) . ')' => null, //Intent Statuses Active
-                'ln_type_entity_id IN (' . join(',', $this->config->item('en_ids_4486')) . ')' => null, //Intent Link Connectors
+                'ln_type_entity_id IN (' . join(',', $this->config->item('en_ids_4486')) . ')' => null, //Intent-to-Intent Links
                 'ln_parent_intent_id' => $in['in_id'],
             ), array('in_child'), 0, 0) as $in_child){
 
@@ -381,7 +381,7 @@ class Links extends CI_Controller
             foreach($this->Links_model->ln_fetch(array(
                 'ln_status_entity_id IN (' . join(',', $this->config->item('en_ids_7360')) . ')' => null, //Link Statuses Active
                 'en_status_entity_id IN (' . join(',', $this->config->item('en_ids_7358')) . ')' => null, //Entity Statuses Active
-                'ln_type_entity_id IN (' . join(',', $this->config->item('en_ids_4592')) . ')' => null, //Entity Link Connectors
+                'ln_type_entity_id IN (' . join(',', $this->config->item('en_ids_4592')) . ')' => null, //Entity-to-Entity Links
                 'ln_parent_entity_id' => $en['en_id'],
             ), array('en_child'), 0, 0) as $en_child){
 
@@ -475,7 +475,7 @@ class Links extends CI_Controller
         $valid_variables = array();
         foreach($this->Links_model->ln_fetch(array(
             'ln_parent_entity_id' => 6232, //Variables Names
-            'ln_type_entity_id IN (' . join(',', $this->config->item('en_ids_4592')) . ')' => null, //Entity Link Connectors
+            'ln_type_entity_id IN (' . join(',', $this->config->item('en_ids_4592')) . ')' => null, //Entity-to-Entity Links
             'ln_status_entity_id IN (' . join(',', $this->config->item('en_ids_7359')) . ')' => null, //Link Statuses Public
             'en_status_entity_id IN (' . join(',', $this->config->item('en_ids_7357')) . ')' => null, //Entity Statuses Public
             'LENGTH(ln_content) > 0' => null,

@@ -220,7 +220,7 @@ class Entities extends CI_Controller
         $session_en = en_auth(array(1308,7512));
         $filters = array(
             'ln_parent_entity_id' => $parent_en_id,
-            'ln_type_entity_id IN (' . join(',', $this->config->item('en_ids_4592')) . ')' => null, //Entity Link Connectors
+            'ln_type_entity_id IN (' . join(',', $this->config->item('en_ids_4592')) . ')' => null, //Entity-to-Entity Links
             'en_status_entity_id IN (' . join(',', ( $en_focus_filter<0 /* Remove Filters*/ ? $this->config->item('en_ids_7358') /* Entity Statuses Active */ : array($en_focus_filter) /* This specific filter*/ )) . ')' => null,
             'ln_status_entity_id IN (' . join(',', $this->config->item('en_ids_7360')) . ')' => null, //Link Statuses Active
         );
@@ -437,7 +437,7 @@ class Entities extends CI_Controller
         //Simply counts the links for a given entity:
         $all_en_links = $this->Links_model->ln_fetch(array(
             'ln_status_entity_id IN (' . join(',', $this->config->item('en_ids_7360')) . ')' => null, //Link Statuses Active
-            'ln_type_entity_id IN (' . join(',', $this->config->item('en_ids_4592')) . ')' => null, //Entity Link Connectors
+            'ln_type_entity_id IN (' . join(',', $this->config->item('en_ids_4592')) . ')' => null, //Entity-to-Entity Links
             '(ln_child_entity_id = ' . $_POST['en_id'] . ' OR ln_parent_entity_id = ' . $_POST['en_id'] . ')' => null,
         ), array(), 999999);
 
@@ -1008,7 +1008,7 @@ class Entities extends CI_Controller
                         'message' => 'Contributor #' . $contributor_num . ' entity ID @' . $ln_en_link_id . ' is invalid',
                     ));
                 } elseif(count($this->Links_model->ln_fetch(array( //Make sure this entity is linked to industry experts:
-                        'ln_type_entity_id IN (' . join(',', $this->config->item('en_ids_4592')) . ')' => null, //Entity Link Connectors
+                        'ln_type_entity_id IN (' . join(',', $this->config->item('en_ids_4592')) . ')' => null, //Entity-to-Entity Links
                         'ln_parent_entity_id' => 3084, //Industry Experts
                         'ln_child_entity_id' => $referenced_ens[0]['en_id'],
                         'ln_status_entity_id IN (' . join(',', $this->config->item('en_ids_7360')) . ')' => null, //Link Statuses Active
@@ -1200,7 +1200,7 @@ class Entities extends CI_Controller
             //Parents
             $en_parents = $this->Links_model->ln_fetch(array(
                 'ln_child_entity_id' => $en['en_id'],
-                'ln_type_entity_id IN (' . join(',', $this->config->item('en_ids_4592')) . ')' => null, //Entity Link Connectors
+                'ln_type_entity_id IN (' . join(',', $this->config->item('en_ids_4592')) . ')' => null, //Entity-to-Entity Links
                 'ln_status_entity_id IN (' . join(',', $this->config->item('en_ids_7360')) . ')' => null, //Link Statuses Active
             ), array(), 0, 0, array(), 'COUNT(ln_id) as totals');
             $score += $en_parents[0]['totals'] * $score_weights['score_parent'];
@@ -1208,7 +1208,7 @@ class Entities extends CI_Controller
             //Children:
             $en_children = $this->Links_model->ln_fetch(array(
                 'ln_parent_entity_id' => $en['en_id'],
-                'ln_type_entity_id IN (' . join(',', $this->config->item('en_ids_4592')) . ')' => null, //Entity Link Connectors
+                'ln_type_entity_id IN (' . join(',', $this->config->item('en_ids_4592')) . ')' => null, //Entity-to-Entity Links
                 'ln_status_entity_id IN (' . join(',', $this->config->item('en_ids_7360')) . ')' => null, //Link Statuses Active
             ), array(), 0, 0, array(), 'COUNT(ln_id) as totals');
             $score += $en_children[0]['totals'] * $score_weights['score_children'];

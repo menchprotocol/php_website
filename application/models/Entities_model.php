@@ -127,7 +127,7 @@ class Entities_model extends CI_Model
 
                 //Fetch parents by default:
                 $res[$key]['en__parents'] = $this->Links_model->ln_fetch(array(
-                    'ln_type_entity_id IN (' . join(',', $this->config->item('en_ids_4592')) . ')' => null, //Entity Link Connectors
+                    'ln_type_entity_id IN (' . join(',', $this->config->item('en_ids_4592')) . ')' => null, //Entity-to-Entity Links
                     'ln_child_entity_id' => $val['en_id'], //This child entity
                     'ln_status_entity_id IN (' . join(',', $this->config->item('en_ids_7360')) . ')' => null, //Link Statuses Active
                     'en_status_entity_id IN (' . join(',', $this->config->item('en_ids_7358')) . ')' => null, //Entity Statuses Active
@@ -315,7 +315,7 @@ class Entities_model extends CI_Model
                     //Entity links:
                     $this->Links_model->ln_fetch(array(
                         'ln_status_entity_id IN (' . join(',', $this->config->item('en_ids_7360')) . ')' => null, //Link Statuses Active
-                        'ln_type_entity_id IN (' . join(',', $this->config->item('en_ids_4592')) . ')' => null, //Entity Link Connectors
+                        'ln_type_entity_id IN (' . join(',', $this->config->item('en_ids_4592')) . ')' => null, //Entity-to-Entity Links
                         '(ln_child_entity_id = ' . $en_id . ' OR ln_parent_entity_id = ' . $en_id . ')' => null,
                     ), array(), 0)
                 ) as $adjust_tr){
@@ -745,7 +745,7 @@ class Entities_model extends CI_Model
         //Search and see if we can find $value in the link content:
         $matching_entities = $this->Links_model->ln_fetch(array(
             'ln_parent_entity_id' => $en_parent_id,
-            'ln_type_entity_id IN (' . join(',', $this->config->item('en_ids_4592')) . ')' => null, //Entity Link Connectors
+            'ln_type_entity_id IN (' . join(',', $this->config->item('en_ids_4592')) . ')' => null, //Entity-to-Entity Links
             'ln_content' => trim($value),
             'ln_status_entity_id IN (' . join(',', $this->config->item('en_ids_7360')) . ')' => null, //Link Statuses Active
         ), array(), 0);
@@ -814,7 +814,7 @@ class Entities_model extends CI_Model
         $applied_success = 0; //To be populated...
         $children = $this->Links_model->ln_fetch(array(
             'ln_parent_entity_id' => $en_id,
-            'ln_type_entity_id IN (' . join(',', $this->config->item('en_ids_4592')) . ')' => null, //Entity Link Connectors
+            'ln_type_entity_id IN (' . join(',', $this->config->item('en_ids_4592')) . ')' => null, //Entity-to-Entity Links
             'ln_status_entity_id IN (' . join(',', $this->config->item('en_ids_7360')) . ')' => null, //Link Statuses Active
             'en_status_entity_id IN (' . join(',', $this->config->item('en_ids_7358')) . ')' => null, //Entity Statuses Active
         ), array('en_child'), 0);
@@ -849,7 +849,7 @@ class Entities_model extends CI_Model
 
                 //See if child entity has searched parent entity:
                 $child_parent_ens = $this->Links_model->ln_fetch(array(
-                    'ln_type_entity_id IN (' . join(',', $this->config->item('en_ids_4592')) . ')' => null, //Entity Link Connectors
+                    'ln_type_entity_id IN (' . join(',', $this->config->item('en_ids_4592')) . ')' => null, //Entity-to-Entity Links
                     'ln_child_entity_id' => $en['en_id'], //This child entity
                     'ln_parent_entity_id' => $parent_en_id,
                     'ln_status_entity_id IN (' . join(',', $this->config->item('en_ids_7360')) . ')' => null, //Link Statuses Active
@@ -965,7 +965,7 @@ class Entities_model extends CI_Model
         //Do a child count:
         $child_links = $this->Links_model->ln_fetch(array(
             'ln_parent_entity_id' => $en_id,
-            'ln_type_entity_id IN (' . join(',', $this->config->item('en_ids_4592')) . ')' => null, //Entity Link Connectors
+            'ln_type_entity_id IN (' . join(',', $this->config->item('en_ids_4592')) . ')' => null, //Entity-to-Entity Links
             'ln_status_entity_id IN (' . join(',', $this->config->item('en_ids_7360')) . ')' => null, //Link Statuses Active
             'en_status_entity_id IN (' . join(',', $en_statuses) . ')' => null,
         ), array('en_child'), 0, 0, array(), 'COUNT(en_id) as en__child_count');
@@ -1000,7 +1000,7 @@ class Entities_model extends CI_Model
         //Try matching Facebook PSID to existing Users:
         $user_messenger = $this->Links_model->ln_fetch(array(
             'ln_status_entity_id IN (' . join(',', $this->config->item('en_ids_7359')) . ')' => null, //Link Statuses Public
-            'ln_type_entity_id IN (' . join(',', $this->config->item('en_ids_4592')) . ')' => null, //Entity Link Connectors
+            'ln_type_entity_id IN (' . join(',', $this->config->item('en_ids_4592')) . ')' => null, //Entity-to-Entity Links
             'ln_parent_entity_id' => 6196, //Mench Messenger
             'ln_external_id' => $psid,
         ), array('en_child'));
@@ -1093,7 +1093,7 @@ class Entities_model extends CI_Model
             return false;
         } elseif(count($this->Links_model->ln_fetch(array(
                 'ln_status_entity_id IN (' . join(',', $this->config->item('en_ids_7359')) . ')' => null, //Link Statuses Public
-                'ln_type_entity_id IN (' . join(',', $this->config->item('en_ids_4592')) . ')' => null, //Entity Link Connectors
+                'ln_type_entity_id IN (' . join(',', $this->config->item('en_ids_4592')) . ')' => null, //Entity-to-Entity Links
                 'ln_parent_entity_id' => 6196, //Mench Messenger
                 'ln_external_id' => $psid,
             )))>0){

@@ -406,7 +406,6 @@ class Intents extends CI_Controller
             ));
         }
 
-
         //Fetch all three intents to ensure they are all valid and use them for link logging:
         $this_in = $this->Intents_model->in_fetch(array(
             'in_id' => intval($_POST['in_id']),
@@ -626,7 +625,7 @@ class Intents extends CI_Controller
             ));
         } elseif(!count($this->Links_model->ln_fetch(array(
             'ln_id' => intval($_POST['ln_id']),
-            'ln_type_entity_id IN (' . join(',', $this->config->item('en_ids_4486')) . ')' => null, //Intent Link Connectors
+            'ln_type_entity_id IN (' . join(',', $this->config->item('en_ids_4486')) . ')' => null, //Intent-to-Intent Links
             'ln_status_entity_id IN (' . join(',', $this->config->item('en_ids_7360')) . ')' => null, //Link Statuses Active
         )))){
             return echo_json(array(
@@ -955,7 +954,7 @@ class Intents extends CI_Controller
             //Validate Link and inputs:
             $lns = $this->Links_model->ln_fetch(array(
                 'ln_id' => $ln_id,
-                'ln_type_entity_id IN (' . join(',', $this->config->item('en_ids_4486')) . ')' => null, //Intent Link Connectors
+                'ln_type_entity_id IN (' . join(',', $this->config->item('en_ids_4486')) . ')' => null, //Intent-to-Intent Links
                 'ln_status_entity_id IN (' . join(',', $this->config->item('en_ids_7360')) . ')' => null, //Link Statuses Active
             ), array(( $_POST['is_parent'] ? 'in_child' : 'in_parent')));
             if(count($lns) < 1){
@@ -1013,7 +1012,7 @@ class Intents extends CI_Controller
                         'ln_metadata' => array_merge( $ln_metadata, array(
                             'tr__assessment_points' => intval($_POST['tr__assessment_points']),
                         )),
-                    ), $session_en['en_id'], 10663 /* Intent Link Iterated Marks */);
+                    ), $session_en['en_id'], 10663 /* Intent Link Iterated Marks */, 'Marks iterated from [' . $ln_metadata['tr__assessment_points']. '] to [' . $_POST['tr__assessment_points']. ']');
                 }
 
                 if($_POST['ln_type_entity_id'] == 4229 && (
@@ -1027,10 +1026,12 @@ class Intents extends CI_Controller
                             'tr__conditional_score_min' => doubleval($_POST['tr__conditional_score_min']),
                             'tr__conditional_score_max' => doubleval($_POST['tr__conditional_score_max']),
                         )),
-                    ), $session_en['en_id'], 10664 /* Intent Link Iterated Score */);
+                    ), $session_en['en_id'], 10664 /* Intent Link Iterated Score */, 'Score Range iterated from [' . $ln_metadata['tr__conditional_score_min'].'% - '.$ln_metadata['tr__conditional_score_max']. '%] to [' . $_POST['tr__conditional_score_min'].'% - '.$_POST['tr__conditional_score_max']. '%]');
                 }
             }
         }
+
+
 
 
         //Let's see how many intents, if any, have unlocked completions:
@@ -1112,7 +1113,7 @@ class Intents extends CI_Controller
                 //Fetch for the record:
                 $children_before = $this->Links_model->ln_fetch(array(
                     'ln_parent_intent_id' => intval($_POST['in_id']),
-                    'ln_type_entity_id IN (' . join(',', $this->config->item('en_ids_4486')) . ')' => null, //Intent Link Connectors
+                    'ln_type_entity_id IN (' . join(',', $this->config->item('en_ids_4486')) . ')' => null, //Intent-to-Intent Links
                     'ln_status_entity_id IN (' . join(',', $this->config->item('en_ids_7360')) . ')' => null, //Link Statuses Active
                 ), array('in_child'), 0, 0, array('ln_order' => 'ASC'));
 
@@ -1126,7 +1127,7 @@ class Intents extends CI_Controller
                 //Fetch again for the record:
                 $children_after = $this->Links_model->ln_fetch(array(
                     'ln_parent_intent_id' => intval($_POST['in_id']),
-                    'ln_type_entity_id IN (' . join(',', $this->config->item('en_ids_4486')) . ')' => null, //Intent Link Connectors
+                    'ln_type_entity_id IN (' . join(',', $this->config->item('en_ids_4486')) . ')' => null, //Intent-to-Intent Links
                     'ln_status_entity_id IN (' . join(',', $this->config->item('en_ids_7360')) . ')' => null, //Link Statuses Active
                 ), array('in_child'), 0, 0, array('ln_order' => 'ASC'));
 
@@ -1400,7 +1401,7 @@ class Intents extends CI_Controller
             //Fetch intent link:
             $lns = $this->Links_model->ln_fetch(array(
                 'ln_id' => $_POST['ln_id'],
-                'ln_type_entity_id IN (' . join(',', $this->config->item('en_ids_4486')) . ')' => null, //Intent Link Connectors
+                'ln_type_entity_id IN (' . join(',', $this->config->item('en_ids_4486')) . ')' => null, //Intent-to-Intent Links
                 'ln_status_entity_id IN (' . join(',', $this->config->item('en_ids_7360')) . ')' => null, //Link Statuses Active
             ), array(( $_POST['is_parent'] ? 'in_child' : 'in_parent' )));
 

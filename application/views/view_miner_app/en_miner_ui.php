@@ -72,7 +72,7 @@
         //Fetch current count for each status from DB:
         $child_en_filters = $this->Links_model->ln_fetch(array(
             'ln_parent_entity_id' => $entity['en_id'],
-            'ln_type_entity_id IN (' . join(',', $this->config->item('en_ids_4592')) . ')' => null, //Entity Link Connectors
+            'ln_type_entity_id IN (' . join(',', $this->config->item('en_ids_4592')) . ')' => null, //Entity-to-Entity Links
             'ln_status_entity_id IN (' . join(',', $this->config->item('en_ids_7360')) . ')' => null, //Link Statuses Active
             'en_status_entity_id IN (' . join(',', $this->config->item('en_ids_7358')) . ')' => null, //Entity Statuses Active
         ), array('en_child'), 0, 0, array('en_status_entity_id' => 'ASC'), 'COUNT(en_id) as totals, en_status_entity_id', 'en_status_entity_id');
@@ -220,7 +220,7 @@
 
         $en__children = $this->Links_model->ln_fetch(array(
             'ln_parent_entity_id' => $entity['en_id'],
-            'ln_type_entity_id IN (' . join(',', $this->config->item('en_ids_4592')) . ')' => null, //Entity Link Connectors
+            'ln_type_entity_id IN (' . join(',', $this->config->item('en_ids_4592')) . ')' => null, //Entity-to-Entity Links
             'ln_status_entity_id IN (' . join(',', $this->config->item('en_ids_7360')) . ')' => null, //Link Statuses Active
             'en_status_entity_id IN (' . join(',', $this->config->item('en_ids_7358')) . ')' => null, //Entity Statuses Active
         ), array('en_child'), $this->config->item('items_per_page'), 0, sort_entities($set_sort));

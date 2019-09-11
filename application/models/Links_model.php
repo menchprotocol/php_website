@@ -14,7 +14,7 @@ class Links_model extends CI_Model
         parent::__construct();
     }
 
-    function ln_update($id, $update_columns, $ln_creator_entity_id = 0, $ln_type_entity_id = 4242 /* Link Updated */)
+    function ln_update($id, $update_columns, $ln_creator_entity_id = 0, $ln_type_entity_id = 4242 /* Link Updated */, $ln_content = '')
     {
 
         if (count($update_columns) == 0) {
@@ -43,28 +43,83 @@ class Links_model extends CI_Model
         //Log changes if successful:
         if ($affected_rows > 0 && $ln_creator_entity_id > 0) {
 
-            //Note what's changed, if anything:
-            $ln_content = '';
+            if(strlen($ln_content) == 0){
+                if(in_array($ln_type_entity_id, $this->config->item('en_ids_10593') /* Statement */)){
 
-            if(in_array($ln_type_entity_id, $this->config->item('en_ids_10593') /* Statement */)){
+                    //Since it's a statement we want to determine the change in content:
+                    if($before_data[0]['ln_content']!=$update_columns['ln_content']){
+                        $ln_content .= word_change_calculator($before_data[0]['ln_content'], $update_columns['ln_content']);
+                    }
 
-                //Since it's a statement we want to determine the change in content:
-                if($before_data[0]['ln_content']!=$update_columns['ln_content']){
-                    $ln_content .= word_change_calculator($before_data[0]['ln_content'], $update_columns['ln_content']);
-                }
+                } else {
 
-            } else {
+                    //Log modification link for every field changed:
+                    foreach ($update_columns as $key => $value) {
+                        if($before_data[0][$key]==$value){
+                            continue;
+                        }
 
-                $en_all_6186 = $this->config->item('en_all_6186'); //Link Statuses
+                        //Now determine what type is this:
+                        if($key=='ln_status_entity_id'){
 
-                //Log modification link for every field changed:
-                foreach ($update_columns as $key => $value) {
-                    if($before_data[0][$key]!=$value && in_array($key, array('ln_status_entity_id', 'ln_content', 'ln_order', 'ln_parent_entity_id', 'ln_child_entity_id', 'ln_parent_intent_id', 'ln_child_intent_id', 'ln_metadata', 'ln_type_entity_id'))){
-                        $ln_content .= echo_clean_db_name($key) . ' iterated from [' . ( $key=='ln_status_entity_id' ? $en_all_6186[$before_data[0][$key]]['m_name']  : $before_data[0][$key] ) . '] to [' . ( $key=='ln_status_entity_id' ? $en_all_6186[$value]['m_name'] : $value ) . ']'."\n";
+                            $en_all_6186 = $this->config->item('en_all_6186'); //Link Statuses
+                            $ln_content .= echo_clean_db_name($key) . ' iterated from [' . $en_all_6186[$before_data[0][$key]]['m_name'] . '] to [' . $en_all_6186[$value]['m_name'] . ']'."\n";
+
+                        } elseif($key=='ln_type_entity_id'){
+
+                            $en_all_4486 = $this->config->item('en_all_4486'); //Intent-to-Intent Links
+                            $ln_content .= echo_clean_db_name($key) . ' iterated from [' . $en_all_4486[$before_data[0][$key]]['m_name'] . '] to [' . $en_all_4486[$value]['m_name'] . ']'."\n";
+
+                        } elseif(in_array($key, array('ln_parent_entity_id', 'ln_child_entity_id'))) {
+
+                            //Fetch new/old entity names:
+                            $before_ens = $this->Entities_model->en_fetch(array(
+                                'en_id' => $before_data[0][$key],
+                            ), array('skip_en__parents'));
+                            $after_ens = $this->Entities_model->en_fetch(array(
+                                'en_id' => $value,
+                            ), array('skip_en__parents'));
+
+                            $ln_content .= echo_clean_db_name($key) . ' iterated from [' . $before_ens[0]['en_name'] . '] to [' . $after_ens[0]['en_name'] . ']' . "\n";
+
+                        } elseif(in_array($key, array('ln_parent_intent_id', 'ln_child_intent_id'))) {
+
+                            //Fetch new/old intent outcomes:
+                            $before_ins = $this->Intents_model->in_fetch(array(
+                                'in_id' => $before_data[0][$key],
+                            ));
+                            $after_ins = $this->Intents_model->in_fetch(array(
+                                'in_id' => $value,
+                            ));
+
+                            $ln_content .= echo_clean_db_name($key) . ' iterated from [' . $before_ins[0]['in_outcome'] . '] to [' . $after_ins[0]['in_outcome'] . ']' . "\n";
+
+                        } elseif(in_array($key, array('ln_content', 'ln_order'))){
+
+                            $ln_content .= echo_clean_db_name($key) . ' iterated from [' . $before_data[0][$key] . '] to [' . $value . ']'."\n";
+
+                        } else {
+
+                            //Should not log updates since not specifically programmed:
+                            continue;
+
+                        }
                     }
                 }
             }
 
+
+            //Determine fields that have changed:
+            $fields_changed = array();
+            foreach ($update_columns as $key => $value) {
+                if($before_data[0][$key]!=$value && in_array($key, array('ln_status_entity_id', 'ln_content', 'ln_order', 'ln_parent_entity_id', 'ln_child_entity_id', 'ln_parent_intent_id', 'ln_child_intent_id', 'ln_metadata', 'ln_type_entity_id'))){
+                    array_push($fields_changed, array(
+                        'field' => $key,
+                        'before' => $before_data[0][$key],
+                        'after' => $value,
+                    ));
+                }
+            }
 
             if(strlen($ln_content) > 0){
                 //Value has changed, log link:
@@ -75,9 +130,7 @@ class Links_model extends CI_Model
                     'ln_content' => $ln_content,
                     'ln_metadata' => array(
                         'ln_id' => $id,
-                        'field' => $key,
-                        'before' => $before_data[0][$key],
-                        'after' => $value,
+                        'fields_changed' => $fields_changed,
                     ),
                     //Copy old values for parent/child intent/entity links:
                     'ln_parent_entity_id' => $before_data[0]['ln_parent_entity_id'],

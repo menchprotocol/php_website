@@ -132,7 +132,7 @@ class Intents_model extends CI_Model
                 $ins[$key]['in__parents'] = $this->Links_model->ln_fetch(array(
                     'ln_status_entity_id IN (' . join(',', $this->config->item('en_ids_7360')) . ')' => null, //Link Statuses Active
                     'in_status_entity_id IN (' . join(',', $this->config->item('en_ids_7356')) . ')' => null, //Intent Statuses Active
-                    'ln_type_entity_id IN (' . join(',', $this->config->item('en_ids_4486')) . ')' => null, //Intent Link Connectors
+                    'ln_type_entity_id IN (' . join(',', $this->config->item('en_ids_4486')) . ')' => null, //Intent-to-Intent Links
                     'ln_child_intent_id' => $value['in_id'],
                 ), array('in_parent')); //Note that parents do not need any sorting, since we only sort child intents
 
@@ -145,7 +145,7 @@ class Intents_model extends CI_Model
                 $ins[$key]['in__children'] = $this->Links_model->ln_fetch(array(
                     'ln_status_entity_id IN (' . join(',', $this->config->item('en_ids_7360')) . ')' => null, //Link Statuses Active
                     'in_status_entity_id IN (' . join(',', $this->config->item('en_ids_7356')) . ')' => null, //Intent Statuses Active
-                    'ln_type_entity_id IN (' . join(',', $this->config->item('en_ids_4486')) . ')' => null, //Intent Link Connectors
+                    'ln_type_entity_id IN (' . join(',', $this->config->item('en_ids_4486')) . ')' => null, //Intent-to-Intent Links
                     'ln_parent_intent_id' => $value['in_id'],
                 ), array('in_child'), 0, 0, array('ln_order' => 'ASC')); //Child intents must be ordered
 
@@ -157,7 +157,7 @@ class Intents_model extends CI_Model
                         $ins[$key]['in__children'][$key2]['in__grandchildren'] = $this->Links_model->ln_fetch(array(
                             'ln_status_entity_id IN (' . join(',', $this->config->item('en_ids_7360')) . ')' => null, //Link Statuses Active
                             'in_status_entity_id IN (' . join(',', $this->config->item('en_ids_7356')) . ')' => null, //Intent Statuses Active
-                            'ln_type_entity_id IN (' . join(',', $this->config->item('en_ids_4486')) . ')' => null, //Intent Link Connectors
+                            'ln_type_entity_id IN (' . join(',', $this->config->item('en_ids_4486')) . ')' => null, //Intent-to-Intent Links
                             'ln_parent_intent_id' => $value2['in_id'],
                         ), array('in_child'), 0, 0, array('ln_order' => 'ASC')); //Child intents must be ordered
 
@@ -306,7 +306,7 @@ class Intents_model extends CI_Model
         $intent_remove_links = array_merge(
             $this->Links_model->ln_fetch(array( //Intent Links
                 'ln_status_entity_id IN (' . join(',', $this->config->item('en_ids_7360')) . ')' => null, //Link Statuses Active
-                'ln_type_entity_id IN (' . join(',', $this->config->item('en_ids_4486')) . ')' => null, //Intent Link Connectors
+                'ln_type_entity_id IN (' . join(',', $this->config->item('en_ids_4486')) . ')' => null, //Intent-to-Intent Links
                 '(ln_child_intent_id = '.$in_id.' OR ln_parent_intent_id = '.$in_id.')' => null,
             ), array(), 0),
             $this->Links_model->ln_fetch(array( //Intent Notes
@@ -400,7 +400,7 @@ class Intents_model extends CI_Model
             $dup_links = $this->Links_model->ln_fetch(array(
                 'ln_parent_intent_id' => $parent_in['in_id'],
                 'ln_child_intent_id' => $child_in['in_id'],
-                'ln_type_entity_id IN (' . join(',', $this->config->item('en_ids_4486')) . ')' => null, //Intent Link Connectors
+                'ln_type_entity_id IN (' . join(',', $this->config->item('en_ids_4486')) . ')' => null, //Intent-to-Intent Links
                 'ln_status_entity_id IN (' . join(',', $this->config->item('en_ids_7360')) . ')' => null, //Link Statuses Active
             ));
 
@@ -448,7 +448,7 @@ class Intents_model extends CI_Model
             if(!count($this->Links_model->ln_fetch(array(
                 'ln_child_entity_id' => $ln_creator_entity_id,
                 'ln_parent_entity_id' => 1308, //Mench Miners
-                'ln_type_entity_id IN (' . join(',', $this->config->item('en_ids_4592')) . ')' => null, //Entity Link Connectors
+                'ln_type_entity_id IN (' . join(',', $this->config->item('en_ids_4592')) . ')' => null, //Entity-to-Entity Links
                 'ln_status_entity_id IN (' . join(',', $this->config->item('en_ids_7359')) . ')' => null, //Link Statuses Public
             )))){
                 $this->Links_model->ln_create(array(
@@ -470,7 +470,7 @@ class Intents_model extends CI_Model
             ( $is_parent ? 'ln_parent_intent_id' : 'ln_child_intent_id' ) => $intent_new['in_id'],
             'ln_order' => 1 + $this->Links_model->ln_max_order(array(
                     'ln_status_entity_id IN (' . join(',', $this->config->item('en_ids_7360')) . ')' => null, //Link Statuses Active
-                    'ln_type_entity_id IN (' . join(',', $this->config->item('en_ids_4486')) . ')' => null, //Intent Link Connectors
+                    'ln_type_entity_id IN (' . join(',', $this->config->item('en_ids_4486')) . ')' => null, //Intent-to-Intent Links
                     'ln_parent_intent_id' => ( $is_parent ? $intent_new['in_id'] : $in_linked_id ),
                 )),
         ), true);
@@ -509,7 +509,7 @@ class Intents_model extends CI_Model
         $new_ins = $this->Links_model->ln_fetch(array(
             ( $is_parent ? 'ln_child_intent_id' : 'ln_parent_intent_id' ) => $in_linked_id,
             ( $is_parent ? 'ln_parent_intent_id' : 'ln_child_intent_id' ) => $intent_new['in_id'],
-            'ln_type_entity_id IN (' . join(',', $this->config->item('en_ids_4486')) . ')' => null, //Intent Link Connectors
+            'ln_type_entity_id IN (' . join(',', $this->config->item('en_ids_4486')) . ')' => null, //Intent-to-Intent Links
             'ln_status_entity_id IN (' . join(',', $this->config->item('en_ids_7360')) . ')' => null, //Link Statuses Active
             'in_status_entity_id IN (' . join(',', $this->config->item('en_ids_7356')) . ')' => null, //Intent Statuses Active
         ), array(($is_parent ? 'in_parent' : 'in_child')), 1); //We did a limit to 1, but this should return 1 anyways since it's a specific/unique relation
@@ -611,7 +611,7 @@ class Intents_model extends CI_Model
         foreach($this->Links_model->ln_fetch(array(
             'in_status_entity_id IN (' . join(',', $this->config->item('en_ids_7355')) . ')' => null, //Intent Statuses Public
             'ln_status_entity_id IN (' . join(',', $this->config->item('en_ids_7359')) . ')' => null, //Link Statuses Public
-            'ln_type_entity_id IN (' . join(',', $this->config->item('en_ids_4486')) . ')' => null, //Intent Link Connectors
+            'ln_type_entity_id IN (' . join(',', $this->config->item('en_ids_4486')) . ')' => null, //Intent-to-Intent Links
             'ln_child_intent_id' => $in_id,
         ), array('in_parent')) as $in_parent){
 
@@ -650,7 +650,7 @@ class Intents_model extends CI_Model
         foreach($this->Links_model->ln_fetch(array(
             'in_status_entity_id IN (' . join(',', $this->config->item('en_ids_7356')) . ')' => null, //Intent Statuses Active
             'ln_status_entity_id IN (' . join(',', $this->config->item('en_ids_7360')) . ')' => null, //Link Statuses Active
-            'ln_type_entity_id IN (' . join(',', $this->config->item('en_ids_4486')) . ')' => null, //Intent Link Connectors
+            'ln_type_entity_id IN (' . join(',', $this->config->item('en_ids_4486')) . ')' => null, //Intent-to-Intent Links
             'ln_parent_intent_id' => $in_id,
         ), array('in_child')) as $in_child){
 
@@ -719,7 +719,7 @@ class Intents_model extends CI_Model
         foreach($this->Links_model->ln_fetch(array(
             'ln_status_entity_id IN (' . join(',', $this->config->item('en_ids_7359')) . ')' => null, //Link Statuses Public
             'in_status_entity_id IN (' . join(',', $this->config->item('en_ids_7355')) . ')' => null, //Intent Statuses Public
-            'ln_type_entity_id IN (' . join(',', $this->config->item('en_ids_4486')) . ')' => null, //Intent Link Connectors
+            'ln_type_entity_id IN (' . join(',', $this->config->item('en_ids_4486')) . ')' => null, //Intent-to-Intent Links
             'ln_parent_intent_id' => $focus_in['in_id'],
         ), array('in_child'), 0, 0, array('ln_order' => 'ASC')) as $in_child){
 
@@ -872,7 +872,7 @@ class Intents_model extends CI_Model
             //Referenced entity in intent notes... Fetch parents:
             foreach($this->Links_model->ln_fetch(array(
                 'ln_child_entity_id' => $note_en['ln_parent_entity_id'],
-                'ln_type_entity_id IN (' . join(',', $this->config->item('en_ids_4592')).')' => null, //Entity Link Connectors
+                'ln_type_entity_id IN (' . join(',', $this->config->item('en_ids_4592')).')' => null, //Entity-to-Entity Links
                 'ln_status_entity_id IN (' . join(',', $this->config->item('en_ids_7359')) . ')' => null, //Link Statuses Public
             ), array(), 0) as $parent_en){
 
@@ -897,7 +897,7 @@ class Intents_model extends CI_Model
                     $expert_parents = $this->Links_model->ln_fetch(array(
                         'en_status_entity_id IN (' . join(',', $this->config->item('en_ids_7357')) . ')' => null, //Entity Statuses Public
                         'ln_status_entity_id IN (' . join(',', $this->config->item('en_ids_7359')) . ')' => null, //Link Statuses Public
-                        'ln_type_entity_id IN (' . join(',', $this->config->item('en_ids_4592')).')' => null, //Entity Link Connectors
+                        'ln_type_entity_id IN (' . join(',', $this->config->item('en_ids_4592')).')' => null, //Entity-to-Entity Links
                         'ln_parent_entity_id' => 3084, //Industry Experts
                         'ln_child_entity_id' => $parent_en['ln_parent_entity_id'],
                     ), array('en_child'), 0);

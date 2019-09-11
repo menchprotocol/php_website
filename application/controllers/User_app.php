@@ -246,7 +246,7 @@ class User_app extends CI_Controller
             //Fetch their passwords to authenticate login:
             $user_passwords = $this->Links_model->ln_fetch(array(
                 'ln_status_entity_id IN (' . join(',', $this->config->item('en_ids_7359')) . ')' => null, //Link Statuses Public
-                'ln_type_entity_id IN (' . join(',', $this->config->item('en_ids_4592')) . ')' => null, //Entity Link Connectors
+                'ln_type_entity_id IN (' . join(',', $this->config->item('en_ids_4592')) . ')' => null, //Entity-to-Entity Links
                 'ln_parent_entity_id' => 3286, //Mench Sign In Password
                 'ln_child_entity_id' => $ens[0]['en_id'],
             ));
@@ -1799,7 +1799,7 @@ class User_app extends CI_Controller
             //Fetch all possible answers based on parent entity:
             $filters = array(
                 'ln_parent_entity_id' => $_POST['parent_en_id'],
-                'ln_type_entity_id IN (' . join(',', $this->config->item('en_ids_4592')) . ')' => null, //Entity Link Connectors
+                'ln_type_entity_id IN (' . join(',', $this->config->item('en_ids_4592')) . ')' => null, //Entity-to-Entity Links
                 'ln_status_entity_id IN (' . join(',', $this->config->item('en_ids_7359')) . ')' => null, //Link Statuses Public
                 'en_status_entity_id IN (' . join(',', $this->config->item('en_ids_7357')) . ')' => null, //Entity Statuses Public
             );
@@ -1819,7 +1819,7 @@ class User_app extends CI_Controller
             foreach($this->Links_model->ln_fetch(array(
                 'ln_parent_entity_id IN (' . join(',', $possible_answers) . ')' => null,
                 'ln_child_entity_id' => $_POST['en_creator_id'],
-                'ln_type_entity_id IN (' . join(',', $this->config->item('en_ids_4592')) . ')' => null, //Entity Link Connectors
+                'ln_type_entity_id IN (' . join(',', $this->config->item('en_ids_4592')) . ')' => null, //Entity-to-Entity Links
                 'ln_status_entity_id IN (' . join(',', $this->config->item('en_ids_7359')) . ')' => null, //Link Statuses Public
             )) as $remove_en){
 

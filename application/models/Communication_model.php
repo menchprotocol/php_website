@@ -29,7 +29,7 @@ class Communication_model extends CI_Model
 
         //Set parents to published only:
         $en['en__parents'] = $this->Links_model->ln_fetch(array(
-            'ln_type_entity_id IN (' . join(',', $this->config->item('en_ids_4592')) . ')' => null, //Entity Link Connectors
+            'ln_type_entity_id IN (' . join(',', $this->config->item('en_ids_4592')) . ')' => null, //Entity-to-Entity Links
             'ln_child_entity_id' => $en['en_id'], //This child entity
             'ln_status_entity_id IN (' . join(',', $this->config->item('en_ids_7359')) . ')' => null, //Link Statuses Public
         ), array('en_parent'));
@@ -537,7 +537,7 @@ class Communication_model extends CI_Model
 
             $user_messenger = $this->Links_model->ln_fetch(array(
                 'ln_status_entity_id IN (' . join(',', $this->config->item('en_ids_7359')) . ')' => null, //Link Statuses Public
-                'ln_type_entity_id IN (' . join(',', $this->config->item('en_ids_4592')) . ')' => null, //Entity Link Connectors
+                'ln_type_entity_id IN (' . join(',', $this->config->item('en_ids_4592')) . ')' => null, //Entity-to-Entity Links
                 'ln_parent_entity_id' => 6196, //Mench Messenger
                 'ln_child_entity_id' => $recipient_en['en_id'],
                 'ln_external_id >' => 0,
@@ -600,7 +600,7 @@ class Communication_model extends CI_Model
             //Fetch recipient notification type:
             $lns_comm_level = $this->Links_model->ln_fetch(array(
                 'ln_parent_entity_id IN (' . join(',', $this->config->item('en_ids_4454')) . ')' => null,
-                'ln_type_entity_id IN (' . join(',', $this->config->item('en_ids_4592')) . ')' => null, //Entity Link Connectors
+                'ln_type_entity_id IN (' . join(',', $this->config->item('en_ids_4592')) . ')' => null, //Entity-to-Entity Links
                 'ln_child_entity_id' => $recipient_en['en_id'],
                 'ln_status_entity_id IN (' . join(',', $this->config->item('en_ids_7359')) . ')' => null, //Link Statuses Public
             ));
@@ -956,7 +956,7 @@ class Communication_model extends CI_Model
                             'ln_status_entity_id IN (' . join(',', $this->config->item('en_ids_7359')) . ')' => null, //Link Statuses Public
                             'ln_child_entity_id' => $string_references['ref_entities'][0],
                             'ln_parent_entity_id IN ('.join(',' , $this->config->item('en_ids_4983')).')' => null, //Intent Note Up-Vote
-                            'ln_type_entity_id IN (' . join(',', $this->config->item('en_ids_4592')) . ')' => null, //Entity Link Connectors
+                            'ln_type_entity_id IN (' . join(',', $this->config->item('en_ids_4592')) . ')' => null, //Entity-to-Entity Links
                         )))){
                             return array(
                                 'status' => 0,

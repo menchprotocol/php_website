@@ -1660,7 +1660,7 @@ function echo_in_answer_scores($starting_in, $depth_levels, $original_depth_leve
     $ui = null;
     foreach($CI->Links_model->ln_fetch(array(
         'ln_parent_intent_id' => $starting_in,
-        'ln_type_entity_id IN (' . join(',', $CI->config->item('en_ids_4486')) . ')' => null, //Intent Link Connectors
+        'ln_type_entity_id IN (' . join(',', $CI->config->item('en_ids_4486')) . ')' => null, //Intent-to-Intent Links
         'ln_status_entity_id IN (' . join(',', $CI->config->item('en_ids_7360')) . ')' => null, //Link Statuses Active
         'in_status_entity_id IN (' . join(',', $CI->config->item('en_ids_7356')) . ')' => null, //Intent Statuses Active
     ), array('in_child'), 0, 0, array('ln_order' => 'ASC')) as $in_ln){
@@ -1721,7 +1721,7 @@ function echo_radio_entities($parent_en_id, $child_en_id, $enable_mulitiselect){
     //Fetch all children:
     foreach($CI->Links_model->ln_fetch(array(
         'ln_parent_entity_id' => $parent_en_id,
-        'ln_type_entity_id IN (' . join(',', $CI->config->item('en_ids_4592')) . ')' => null, //Entity Link Connectors
+        'ln_type_entity_id IN (' . join(',', $CI->config->item('en_ids_4592')) . ')' => null, //Entity-to-Entity Links
         'ln_status_entity_id IN (' . join(',', $CI->config->item('en_ids_7359')) . ')' => null, //Link Statuses Public
         'en_status_entity_id IN (' . join(',', $CI->config->item('en_ids_7357')) . ')' => null, //Entity Statuses Public
     ), array('en_child'), 0, 0, array('ln_order' => 'ASC', 'en_name' => 'ASC')) as $count => $item){
@@ -1729,7 +1729,7 @@ function echo_radio_entities($parent_en_id, $child_en_id, $enable_mulitiselect){
         //Count total children unless its for subscription levels:
         if($parent_en_id!=4454){
             $user_count = $CI->Links_model->ln_fetch(array(
-                'ln_type_entity_id IN (' . join(',', $CI->config->item('en_ids_4592')) . ')' => null, //Entity Link Connectors
+                'ln_type_entity_id IN (' . join(',', $CI->config->item('en_ids_4592')) . ')' => null, //Entity-to-Entity Links
                 'ln_parent_entity_id' => $item['en_id'],
                 'ln_status_entity_id IN (' . join(',', $CI->config->item('en_ids_7359')) . ')' => null, //Link Statuses Public
             ), array(), 0, 0, array(), 'COUNT(ln_id) as totals');
@@ -1739,7 +1739,7 @@ function echo_radio_entities($parent_en_id, $child_en_id, $enable_mulitiselect){
         $ui .= '<a href="javascript:void(0);" onclick="radio_update('.$parent_en_id.','.$item['en_id'].','.$enable_mulitiselect.')" class="list-group-item item-'.$item['en_id'].' '.( $count>=$show_max ? 'extra-items-'.$parent_en_id.' hidden ' : '' ).( count($CI->Links_model->ln_fetch(array(
                 'ln_parent_entity_id' => $item['en_id'],
                 'ln_child_entity_id' => $child_en_id,
-                'ln_type_entity_id IN (' . join(',', $CI->config->item('en_ids_4592')) . ')' => null, //Entity Link Connectors
+                'ln_type_entity_id IN (' . join(',', $CI->config->item('en_ids_4592')) . ')' => null, //Entity-to-Entity Links
                 'ln_status_entity_id IN (' . join(',', $CI->config->item('en_ids_7359')) . ')' => null, //Link Statuses Public
             )))>0 ? ' active ' : '' ). '">'.( strlen($item['en_icon'])>0 ? '<span class="left-icon">'.$item['en_icon'].'</span>' : '' ).$item['en_name'].'<span class="change-results"></span>'.( $parent_en_id!=4454 ? '<span class="pull-right">'.echo_number($user_count[0]['totals']).' <i class="fal fa-users"></i></span>' : '' ).'</a>';
     }
@@ -1766,7 +1766,7 @@ function echo_en_stats_overview($cached_list, $report_name){
         //Do a child count:
         $child_links = $CI->Links_model->ln_fetch(array(
             'ln_parent_entity_id' => $group_en_id,
-            'ln_type_entity_id IN (' . join(',', $CI->config->item('en_ids_4592')) . ')' => null, //Entity Link Connectors
+            'ln_type_entity_id IN (' . join(',', $CI->config->item('en_ids_4592')) . ')' => null, //Entity-to-Entity Links
             'ln_status_entity_id IN (' . join(',', $CI->config->item('en_ids_7360')) . ')' => null, //Link Statuses Active
             'en_status_entity_id IN (' . join(',', $CI->config->item('en_ids_7358')) . ')' => null, //Entity Statuses Active
         ), array('en_child'), 0, 0, array(), 'COUNT(en_id) as en__child_count');
@@ -2052,7 +2052,7 @@ function echo_in($in, $level, $in_linked_id = 0, $is_parent = false)
         $in['in__grandchildren'] = $CI->Links_model->ln_fetch(array(
             'ln_status_entity_id IN (' . join(',', $CI->config->item('en_ids_7360')) . ')' => null, //Link Statuses Active
             'in_status_entity_id IN (' . join(',', $CI->config->item('en_ids_7356')) . ')' => null, //Intent Statuses Active
-            'ln_type_entity_id IN (' . join(',', $CI->config->item('en_ids_4486')) . ')' => null, //Intent Link Connectors
+            'ln_type_entity_id IN (' . join(',', $CI->config->item('en_ids_4486')) . ')' => null, //Intent-to-Intent Links
             'ln_parent_intent_id' => $in['in_id'],
         ), array('in_child'), 0, 0, array('ln_order' => 'ASC')); //Child intents must be ordered
     }
@@ -2098,7 +2098,7 @@ function echo_in($in, $level, $in_linked_id = 0, $is_parent = false)
 
     } elseif($level > 1) {
 
-        //Fetch Intent Link Connectors:
+        //Fetch Intent-to-Intent Links:
         $en_all_4486 = $CI->config->item('en_all_4486');
 
         //Show Link link icons:
@@ -2185,7 +2185,7 @@ function echo_in($in, $level, $in_linked_id = 0, $is_parent = false)
         $in['in__parents'] = $CI->Links_model->ln_fetch(array(
             'ln_status_entity_id IN (' . join(',', $CI->config->item('en_ids_7360')) . ')' => null, //Link Statuses Active
             'in_status_entity_id IN (' . join(',', $CI->config->item('en_ids_7356')) . ')' => null, //Intent Statuses Active
-            'ln_type_entity_id IN (' . join(',', $CI->config->item('en_ids_4486')) . ')' => null, //Intent Link Connectors
+            'ln_type_entity_id IN (' . join(',', $CI->config->item('en_ids_4486')) . ')' => null, //Intent-to-Intent Links
             'ln_child_intent_id' => $in['in_id'],
         ), array('in_parent')); //Note that parents do not need any sorting, since we only sort child intents
 
@@ -2296,7 +2296,7 @@ function echo_in($in, $level, $in_linked_id = 0, $is_parent = false)
         //Do a live child count:
         $child_links = $CI->Links_model->ln_fetch(array(
             'ln_parent_intent_id' => $in['in_id'],
-            'ln_type_entity_id IN (' . join(',', $CI->config->item('en_ids_4486')) . ')' => null, //Intent Link Connectors
+            'ln_type_entity_id IN (' . join(',', $CI->config->item('en_ids_4486')) . ')' => null, //Intent-to-Intent Links
             'ln_status_entity_id IN (' . join(',', $CI->config->item('en_ids_7360')) . ')' => null, //Link Statuses Active
             'in_status_entity_id IN (' . join(',', $CI->config->item('en_ids_7356')) . ')' => null, //Intent Statuses Active
         ), array('in_child'), 0, 0, array(), 'COUNT(in_id) as in__child_count');
@@ -2524,7 +2524,7 @@ function echo_en($en, $level, $is_parent = false)
 
         //Fetch parents at this point:
         $en['en__parents'] = $CI->Links_model->ln_fetch(array(
-            'ln_type_entity_id IN (' . join(',', $CI->config->item('en_ids_4592')) . ')' => null, //Entity Link Connectors
+            'ln_type_entity_id IN (' . join(',', $CI->config->item('en_ids_4592')) . ')' => null, //Entity-to-Entity Links
             'ln_child_entity_id' => $en['en_id'], //This child entity
             'ln_status_entity_id IN (' . join(',', $CI->config->item('en_ids_7360')) . ')' => null, //Link Statuses Active
             'en_status_entity_id IN (' . join(',', $CI->config->item('en_ids_7358')) . ')' => null, //Entity Statuses Active
@@ -2601,7 +2601,7 @@ function echo_en($en, $level, $is_parent = false)
         //Do a child count:
         $child_links = $CI->Links_model->ln_fetch(array(
             'ln_parent_entity_id' => $en['en_id'],
-            'ln_type_entity_id IN (' . join(',', $CI->config->item('en_ids_4592')) . ')' => null, //Entity Link Connectors
+            'ln_type_entity_id IN (' . join(',', $CI->config->item('en_ids_4592')) . ')' => null, //Entity-to-Entity Links
             'ln_status_entity_id IN (' . join(',', $CI->config->item('en_ids_7360')) . ')' => null, //Link Statuses Active
             'en_status_entity_id IN (' . join(',', $CI->config->item('en_ids_7358')) . ')' => null, //Entity Statuses Active
         ), array('en_child'), 0, 0, array(), 'COUNT(en_id) as en__child_count');

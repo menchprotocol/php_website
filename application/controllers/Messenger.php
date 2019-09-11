@@ -67,7 +67,7 @@ class Messenger extends CI_Controller
         //Validate messenger ID:
         $user_messenger = $this->Links_model->ln_fetch(array(
             'ln_status_entity_id IN (' . join(',', $this->config->item('en_ids_7359')) . ')' => null, //Link Statuses Public
-            'ln_type_entity_id IN (' . join(',', $this->config->item('en_ids_4592')) . ')' => null, //Entity Link Connectors
+            'ln_type_entity_id IN (' . join(',', $this->config->item('en_ids_4592')) . ')' => null, //Entity-to-Entity Links
             'ln_parent_entity_id' => 6196, //Mench Messenger
             'ln_external_id' => $psid,
         ));
@@ -259,7 +259,7 @@ class Messenger extends CI_Controller
                     //Check if this User is unsubscribed:
                     if (!$is_quick_reply && count($this->Links_model->ln_fetch(array(
                             'ln_parent_entity_id' => 4455, //Unsubscribed
-                            'ln_type_entity_id IN (' . join(',', $this->config->item('en_ids_4592')) . ')' => null, //Entity Link Connectors
+                            'ln_type_entity_id IN (' . join(',', $this->config->item('en_ids_4592')) . ')' => null, //Entity-to-Entity Links
                             'ln_child_entity_id' => $en['en_id'],
                             'ln_status_entity_id IN (' . join(',', $this->config->item('en_ids_7359')) . ')' => null, //Link Statuses Public
                         ))) > 0) {

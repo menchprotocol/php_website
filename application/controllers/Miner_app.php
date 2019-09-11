@@ -457,7 +457,7 @@ class Miner_app extends CI_Controller
         //First first all entities that have Cache in PHP Config @4527 as their parent:
         $config_ens = $this->Links_model->ln_fetch(array(
             'ln_status_entity_id IN (' . join(',', $this->config->item('en_ids_7359')) . ')' => null, //Link Statuses Public
-            'ln_type_entity_id IN (' . join(',', $this->config->item('en_ids_4592')) . ')' => null, //Entity Link Connectors
+            'ln_type_entity_id IN (' . join(',', $this->config->item('en_ids_4592')) . ')' => null, //Entity-to-Entity Links
             'ln_parent_entity_id' => 4527,
         ), array('en_child'), 0);
 
@@ -470,7 +470,7 @@ class Miner_app extends CI_Controller
                 'ln_status_entity_id IN (' . join(',', $this->config->item('en_ids_7359')) . ')' => null, //Link Statuses Public
                 'en_status_entity_id IN (' . join(',', $this->config->item('en_ids_7357')) . ')' => null, //Entity Statuses Public
                 'ln_parent_entity_id' => $en['ln_child_entity_id'],
-                'ln_type_entity_id IN (' . join(',', $this->config->item('en_ids_4592')) . ')' => null, //Entity Link Connectors
+                'ln_type_entity_id IN (' . join(',', $this->config->item('en_ids_4592')) . ')' => null, //Entity-to-Entity Links
             ), array('en_child'), 0, 0, array('ln_order' => 'ASC', 'en_name' => 'ASC'));
 
 
@@ -495,7 +495,7 @@ class Miner_app extends CI_Controller
                     'ln_status_entity_id IN (' . join(',', $this->config->item('en_ids_7359')) . ')' => null, //Link Statuses Public
                     'en_status_entity_id IN (' . join(',', $this->config->item('en_ids_7357')) . ')' => null, //Entity Statuses Public
                     'ln_child_entity_id' => $child['en_id'],
-                    'ln_type_entity_id IN (' . join(',', $this->config->item('en_ids_4592')) . ')' => null, //Entity Link Connectors
+                    'ln_type_entity_id IN (' . join(',', $this->config->item('en_ids_4592')) . ')' => null, //Entity-to-Entity Links
                 ), array('en_parent'), 0);
                 foreach($child_parents as $cp_en){
                     array_push($child_parent_ids, intval($cp_en['en_id']));

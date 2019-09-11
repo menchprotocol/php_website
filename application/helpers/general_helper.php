@@ -1166,7 +1166,7 @@ function update_algolia($input_obj_type = null, $input_obj_id = 0, $return_row_o
                 //Count published children:
                 $published_child_count = $CI->Links_model->ln_fetch(array(
                     'ln_parent_entity_id' => $db_row['en_id'],
-                    'ln_type_entity_id IN (' . join(',', $CI->config->item('en_ids_4592')) . ')' => null, //Entity Link Connectors
+                    'ln_type_entity_id IN (' . join(',', $CI->config->item('en_ids_4592')) . ')' => null, //Entity-to-Entity Links
                     'ln_status_entity_id IN (' . join(',', $CI->config->item('en_ids_7359')) . ')' => null, //Link Statuses Public
                     'en_status_entity_id IN (' . join(',', $CI->config->item('en_ids_7357')) . ')' => null, //Entity Statuses Public
                 ), array('en_child'), 0, 0, array(), 'COUNT(ln_id) AS published_child_count');
