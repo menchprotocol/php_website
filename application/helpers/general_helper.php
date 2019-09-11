@@ -441,9 +441,14 @@ function ln_type_word_count($ln){
         //Nod:
         $link_words = $CI->config->item('words_per_nod');
 
+    } elseif(in_array($ln['ln_type_entity_id'], $CI->config->item('en_ids_10539'))){
+
+        //Word:
+        $link_words = 1.00;
+
     } else {
 
-        //Word OR Statement, count links:
+        //Word OR Statement + Connection:
         $link_words = 0;
 
         //Consider each object link as a word:
@@ -481,7 +486,6 @@ function ln_type_word_count($ln){
     }
 
 
-
     //Give negative sign if output
     if(in_array($ln['ln_type_entity_id'], $CI->config->item('en_ids_10590'))){
         //This is an output, return negative:
@@ -490,6 +494,47 @@ function ln_type_word_count($ln){
 
 
     return $link_words;
+
+}
+
+function word_diff_desc($before_string, $after_string){
+
+    //See whats added, what's removed:
+    $before_words = explode(' ', $before_string);
+    $after_words = explode(' ', $after_string);
+    $new_words = array();
+    $removed_words = array();
+
+    foreach($before_words as $before_word){
+        if(!in_array($before_word, $after_words)){
+            array_push($removed_words, $before_word);
+        }
+    }
+
+    foreach($after_words as $after_word){
+        if(!in_array($after_word, $before_words)){
+            array_push($new_words, $after_word);
+        }
+    }
+
+    $ln_content = '';
+    if(count($removed_words)>0){
+        $ln_content .= 'Removed['.join(', ',$removed_words).']';
+    }
+    if(count($new_words)>0){
+        if(strlen($ln_content) > 0){
+            $ln_content .= ' ';
+        }
+        $ln_content .= 'Added['.join(', ',$new_words).']';
+    }
+
+    //Was anything added/removed?
+    if(strlen($ln_content)==0){
+        //Nope, so probably outcome words just got rearranged, make sure NO SPACE to treat this as one word:
+        $ln_content .= 'Rearranged['.join('->',$before_words).']to['.join('->',$after_words).']';
+    }
+
+    return $ln_content;
 }
 
 

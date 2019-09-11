@@ -170,10 +170,12 @@ class Intents_model extends CI_Model
         return $ins;
     }
 
-    function in_update($id, $update_columns, $external_sync = false, $ln_creator_entity_id = 0)
+    function in_update($id, $update_columns, $external_sync = false, $ln_creator_entity_id = 0, $ln_type_entity_id = 4264 /* Intent Updated */)
     {
 
         if (count($update_columns) == 0) {
+            return false;
+        } elseif (!in_array($ln_type_entity_id, $this->config->item('en_ids_4593'))) {
             return false;
         }
 
@@ -195,6 +197,8 @@ class Intents_model extends CI_Model
         //Do we need to do any additional work?
         if ($affected_rows > 0 && $ln_creator_entity_id > 0) {
 
+            $en_all_4737 = $this->config->item('en_all_4737'); // Intent Statuses
+
             //Note that unlike entity modification, we require a miner entity ID to log the modification link:
             //Log modification link for every field changed:
             foreach ($update_columns as $key => $value) {
@@ -202,14 +206,24 @@ class Intents_model extends CI_Model
                 //Has this value changed compared to what we initially had in DB?
                 if (!($before_data[0][$key] == $value) && !in_array($key, array('in_metadata'))) {
 
-                    $en_all_4737 = $this->config->item('en_all_4737'); // Intent Statuses
+                    if($ln_type_entity_id==4264 /* Intent Updated */){
+
+                        $ln_content = echo_clean_db_name($key) . ' changed from "' . ( in_array($key , array('in_status_entity_id')) ? $en_all_4737[$before_data[0][$key]]['m_name']  : $before_data[0][$key] ) . '" to "' . ( in_array($key , array('in_status_entity_id')) ? $en_all_4737[$value]['m_name'] : $value ) . '"';
+
+                    } elseif($ln_type_entity_id==10644 /* Intent Outcome Iterated */) {
+
+                        //Determine the words that changed:
+                        $ln_content = word_diff_desc($before_data[0]['in_outcome'], $value);
+
+                    }
+
 
                     //Value has changed, log link:
                     $this->Links_model->ln_create(array(
                         'ln_creator_entity_id' => $ln_creator_entity_id,
-                        'ln_type_entity_id' => 4264, //Intent Attribute Modified
+                        'ln_type_entity_id' => $ln_type_entity_id,
                         'ln_child_intent_id' => $id,
-                        'ln_content' => echo_clean_db_name($key) . ' changed from "' . ( in_array($key , array('in_status_entity_id')) ? $en_all_4737[$before_data[0][$key]]['m_name']  : $before_data[0][$key] ) . '" to "' . ( in_array($key , array('in_status_entity_id')) ? $en_all_4737[$value]['m_name'] : $value ) . '"',
+                        'ln_content' => $ln_content,
                         'ln_metadata' => array(
                             'in_id' => $id,
                             'field' => $key,

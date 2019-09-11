@@ -14,10 +14,12 @@ class Links_model extends CI_Model
         parent::__construct();
     }
 
-    function ln_update($id, $update_columns, $ln_creator_entity_id = 0)
+    function ln_update($id, $update_columns, $ln_creator_entity_id = 0, $ln_type_entity_id = 4242 /* Link Updated */)
     {
 
         if (count($update_columns) == 0) {
+            return false;
+        } elseif (!in_array($ln_type_entity_id, $this->config->item('en_ids_4593'))) {
             return false;
         }
 
@@ -56,7 +58,7 @@ class Links_model extends CI_Model
                         $this->Links_model->ln_create(array(
                             'ln_parent_link_id' => $id, //Link Reference
                             'ln_creator_entity_id' => $ln_creator_entity_id,
-                            'ln_type_entity_id' => 4242, //Link Attribute Modified
+                            'ln_type_entity_id' => $ln_type_entity_id,
                             'ln_content' => echo_clean_db_name($key) . ' changed from "' . ( $key=='ln_status_entity_id' ? $en_all_6186[$before_data[0][$key]]['m_name']  : $before_data[0][$key] ) . '" to "' . ( $key=='ln_status_entity_id' ? $en_all_6186[$value]['m_name']  : $value ) . '"',
                             'ln_metadata' => array(
                                 'ln_id' => $id,

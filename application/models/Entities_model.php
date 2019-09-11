@@ -173,14 +173,24 @@ class Entities_model extends CI_Model
                 //Has this value changed compared to what we initially had in DB?
                 if (!($before_data[0][$key] == $value) && !in_array($key, array('en_metadata', 'en_trust_score'))) {
 
+                    if($key=='en_name') {
 
+                        $ln_type_entity_id = 10646;// Entity Name Iterated
+                        $ln_content = word_diff_desc($before_data[0][$key], $value);
+
+                    } else {
+
+                        $ln_type_entity_id = 4263;// Entity Updated
+                        $ln_content = echo_clean_db_name($key) . ' changed from "' . ( $key=='en_status_entity_id' ? $en_all_6177[$before_data[0][$key]]['m_name'] : $before_data[0][$key] ) . '" to "' . ( $key=='en_status_entity_id' ? $en_all_6177[$value]['m_name'] : $value ) . '"';
+
+                    }
 
                     //Value has changed, log link:
                     $this->Links_model->ln_create(array(
                         'ln_creator_entity_id' => ($ln_creator_entity_id > 0 ? $ln_creator_entity_id : $id),
-                        'ln_type_entity_id' => 4263, //Entity Attribute Modified
+                        'ln_type_entity_id' => $ln_type_entity_id,
                         'ln_child_entity_id' => $id,
-                        'ln_content' => echo_clean_db_name($key) . ' changed from "' . ( $key=='en_status_entity_id' ? $en_all_6177[$before_data[0][$key]]['m_name'] : $before_data[0][$key] ) . '" to "' . ( $key=='en_status_entity_id' ? $en_all_6177[$value]['m_name'] : $value ) . '"',
+                        'ln_content' => $ln_content,
                         'ln_metadata' => array(
                             'en_id' => $id,
                             'field' => $key,

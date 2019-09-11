@@ -901,7 +901,9 @@ class Intents extends CI_Controller
                             }
 
                             //We're updating the status:
-                            $recursive_update_count += $this->Intents_model->in_update($recursive_in['in_id'], array( $key => $value ), true, $session_en['en_id']);
+                            $recursive_update_count += $this->Intents_model->in_update($recursive_in['in_id'], array(
+                                'in_status_entity_id' => $value,
+                            ), true, $session_en['en_id']);
 
                             //Add to matchind children array:
                             array_push($matching_child_ids, intval($recursive_in['in_id']));
@@ -933,7 +935,9 @@ class Intents extends CI_Controller
                 }
 
                 //This field has been updated, update one field at a time:
-                $this->Intents_model->in_update($_POST['in_id'], array( $key => $_POST[$key] ), true, $session_en['en_id']);
+                $this->Intents_model->in_update($_POST['in_id'], array(
+                    $key => $_POST[$key],
+                ), true, $session_en['en_id'], ( $key=='in_outcome' ? 10644 /* Intent Outcome Iterated */ : 4264 /* Intent Updated */ ));
 
             }
         }

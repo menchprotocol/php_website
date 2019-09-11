@@ -96,6 +96,7 @@ if(!$action) {
 
     if(isset($_GET['resetall'])){
 
+        boost_power();
         $this->db->query("UPDATE table_links SET ln_words=0;");
         echo '<div class="alert alert-warning">All link counts reset to zero.</div>';
 
@@ -163,11 +164,15 @@ if(!$action) {
         echo '<td style="text-align: left;">'.number_format($words_stats[0]['total_links'], 0).'</td>';
         echo '<td style="text-align: left;">'.number_format($words_stats[0]['total_links']/$all_stats[0]['total_links']*100, 2).'%</td>';
         echo '<td style="text-align: left;">'.number_format(round($words_stats[0]['total_words']), 0).'</td>';
-        echo '<td style="text-align: left;">'.number_format($words_stats[0]['total_words']/$all_stats[0]['total_words']*100, 2).'%</td>';
+        echo '<td style="text-align: left;">'.( $all_stats[0]['total_words']>0 ? number_format($words_stats[0]['total_words']/$all_stats[0]['total_words']*100, 2) : '0.00' ).'%</td>';
         echo '<td style="text-align: left;">'.( $words_stats[0]['total_links']>0 ? number_format(($words_stats[0]['total_words']/$words_stats[0]['total_links']), 2) : '0.00' ).'</td>';
         echo '</tr>';
 
     }
+
+
+    $en_all_10592 = $this->config->item('en_all_10592');
+    $en_all_10591 = $this->config->item('en_all_10591');
 
     //Add some empty space:
     echo '<tr class="panel-title down-border"><td style="text-align: left;" colspan="6">&nbsp;</td></tr>';
@@ -181,9 +186,9 @@ if(!$action) {
         echo '<td style="text-align: left;"><span class="icon-block">'.$ln['en_icon'].'</span> <a href="/entities/'.$ln['en_id'].'">'.$ln['en_name'].'</a></td>';
         echo '<td style="text-align: left;">'.number_format($ln['total_links'], 0).'</td>';
         echo '<td style="text-align: left;">'.number_format($ln['total_links']/$all_stats[0]['total_links']*100, 2).'%</td>';
-        echo '<td style="text-align: left;">'.number_format(round($ln['total_words']), 0).'</td>';
+        echo '<td style="text-align: left;"><span class="icon-block">'.( in_array($ln['en_id'], $this->config->item('en_ids_10589')) ? $en_all_10591[10589]['m_icon'] : $en_all_10591[10590]['m_icon'] ).'</span>'.number_format(round($ln['total_words']), 0).'</td>';
         echo '<td style="text-align: left;">'.number_format($ln['total_words']/$all_stats[0]['total_words']*100, 2).'%</td>';
-        echo '<td style="text-align: left;">'.( $ln['total_links']>0 ? number_format(($ln['total_words']/$ln['total_links']), 2) : '0.00' ).'</td>';
+        echo '<td style="text-align: left;"><span class="icon-block">'.( in_array($ln['en_id'], $this->config->item('en_ids_10596')) ? $en_all_10592[10596]['m_icon'] : ( in_array($ln['en_id'], $this->config->item('en_ids_10593')) ? $en_all_10592[10593]['m_icon'] : $en_all_10592[10594]['m_icon'] )).'</span>'.( $ln['total_links']>0 ? number_format(($ln['total_words']/$ln['total_links']), 2) : '0.00' ).'</td>';
         echo '</tr>';
 
     }
@@ -497,6 +502,9 @@ if(!$action) {
                     //Update intent:
                     $this->Intents_model->in_update($in['in_id'], array(
                         'in_outcome' => $in_outcome_validation['in_cleaned_outcome'],
+                    ), true, $session_en['en_id'], 10644 /* Intent Outcome Iterated */);
+
+                    $this->Intents_model->in_update($in['in_id'], array(
                         'in_verb_entity_id' => $in_outcome_validation['detected_in_verb_entity_id'],
                     ), true, $session_en['en_id']);
                     $completed_replacements++;
