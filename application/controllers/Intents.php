@@ -209,7 +209,7 @@ class Intents extends CI_Controller
 
 
         //Load AND/OR Intents:
-        $en_all_7585 = $this->config->item('en_all_7585'); // Intent Types
+        $en_all_7585 = $this->config->item('en_all_7585'); // Intent Subtypes
         $en_all_4737 = $this->config->item('en_all_4737'); // Intent Statuses
 
 
@@ -937,7 +937,7 @@ class Intents extends CI_Controller
                 //This field has been updated, update one field at a time:
                 $this->Intents_model->in_update($_POST['in_id'], array(
                     $key => $_POST[$key],
-                ), true, $session_en['en_id'], ( $key=='in_outcome' ? 10644 /* Intent Outcome Iterated */ : 4264 /* Intent Updated */ ));
+                ), true, $session_en['en_id']);
 
             }
         }

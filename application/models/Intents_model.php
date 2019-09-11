@@ -170,12 +170,10 @@ class Intents_model extends CI_Model
         return $ins;
     }
 
-    function in_update($id, $update_columns, $external_sync = false, $ln_creator_entity_id = 0, $ln_type_entity_id = 4264 /* Intent Updated */)
+    function in_update($id, $update_columns, $external_sync = false, $ln_creator_entity_id = 0)
     {
 
         if (count($update_columns) == 0) {
-            return false;
-        } elseif (!in_array($ln_type_entity_id, $this->config->item('en_ids_4593'))) {
             return false;
         }
 
@@ -197,42 +195,85 @@ class Intents_model extends CI_Model
         //Do we need to do any additional work?
         if ($affected_rows > 0 && $ln_creator_entity_id > 0) {
 
-            $en_all_4737 = $this->config->item('en_all_4737'); // Intent Statuses
 
             //Note that unlike entity modification, we require a miner entity ID to log the modification link:
             //Log modification link for every field changed:
             foreach ($update_columns as $key => $value) {
 
                 //Has this value changed compared to what we initially had in DB?
-                if (!($before_data[0][$key] == $value) && !in_array($key, array('in_metadata'))) {
+                if (!($before_data[0][$key] == $value)) {
+                    continue;
+                }
 
-                    if($ln_type_entity_id==4264 /* Intent Updated */){
-
-                        $ln_content = echo_clean_db_name($key) . ' changed from "' . ( in_array($key , array('in_status_entity_id')) ? $en_all_4737[$before_data[0][$key]]['m_name']  : $before_data[0][$key] ) . '" to "' . ( in_array($key , array('in_status_entity_id')) ? $en_all_4737[$value]['m_name'] : $value ) . '"';
-
-                    } elseif($ln_type_entity_id==10644 /* Intent Outcome Iterated */) {
-
-                        //Determine the words that changed:
-                        $ln_content = word_diff_desc($before_data[0]['in_outcome'], $value);
-
-                    }
+                //Assume no entity links unless specifically defined:
+                $ln_child_entity_id = 0;
+                $ln_parent_entity_id = 0;
 
 
-                    //Value has changed, log link:
-                    $this->Links_model->ln_create(array(
-                        'ln_creator_entity_id' => $ln_creator_entity_id,
-                        'ln_type_entity_id' => $ln_type_entity_id,
-                        'ln_child_intent_id' => $id,
-                        'ln_content' => $ln_content,
-                        'ln_metadata' => array(
-                            'in_id' => $id,
-                            'field' => $key,
-                            'before' => $before_data[0][$key],
-                            'after' => $value,
-                        ),
-                    ));
+                if($key=='in_outcome') {
+
+                    $ln_type_entity_id = 10644; //Intent Iterated Outcome
+                    $ln_content = word_change_calculator($before_data[0][$key], $value);
+
+                } elseif($key=='in_verb_entity_id') {
+
+                    $ln_type_entity_id = 10647; //Intent Iterated Verb
+                    $ln_content = word_change_calculator($before_data[0][$key], $value);
+                    $ln_child_entity_id = 0;
+                    $ln_parent_entity_id = 0;
+
+                } elseif($key=='in_status_entity_id'){
+
+                    $ln_type_entity_id = 10648; //Intent Iterated Status
+                    $en_all_4737 = $this->config->item('en_all_4737'); // Intent Statuses
+                    $ln_content = echo_clean_db_name($key) . ' iterated from [' . $en_all_4737[$before_data[0][$key]]['m_name'] . '] to [' . $en_all_4737[$value]['m_name'] . ']';
+                    $ln_parent_entity_id = $value;
+                    $ln_child_entity_id = $before_data[0][$key];
+
+                } elseif($key=='in_scope_entity_id'){
+
+                    $ln_type_entity_id = 10649; //Intent Iterated Scope
+                    $en_all_7596 = $this->config->item('en_all_7596'); // Intent Scope
+                    $ln_content = echo_clean_db_name($key) . ' iterated from [' . $en_all_7596[$before_data[0][$key]]['m_name'] . '] to [' . $en_all_7596[$value]['m_name'] . ']';
+                    $ln_parent_entity_id = $value;
+                    $ln_child_entity_id = $before_data[0][$key];
+
+                } elseif($key=='in_subtype_entity_id'){
+
+                    $ln_type_entity_id = 10651; //Intent Iterated Subtype
+                    $en_all_7585 = $this->config->item('en_all_7585'); // Intent Subtypes
+                    $ln_content = echo_clean_db_name($key) . ' iterated from [' . $en_all_7585[$before_data[0][$key]]['m_name'] . '] to [' . $en_all_7585[$value]['m_name'] . ']';
+                    $ln_parent_entity_id = $value;
+                    $ln_child_entity_id = $before_data[0][$key];
+
+                } elseif($key=='in_completion_seconds') {
+
+                    $ln_type_entity_id = 10650; //Intent Iterated Completion Time
+                    $ln_content = echo_clean_db_name($key) . ' iterated from [' . $before_data[0][$key] . '] to [' . $value . ']';
+
+                } else {
+
+                    //Should not log updates since not specifically programmed:
+                    continue;
 
                 }
+
+
+                //Value has changed, log link:
+                $this->Links_model->ln_create(array(
+                    'ln_creator_entity_id' => $ln_creator_entity_id,
+                    'ln_type_entity_id' => $ln_type_entity_id,
+                    'ln_child_intent_id' => $id,
+                    'ln_child_entity_id' => $ln_child_entity_id,
+                    'ln_parent_entity_id' => $ln_parent_entity_id,
+                    'ln_content' => $ln_content,
+                    'ln_metadata' => array(
+                        'in_id' => $id,
+                        'field' => $key,
+                        'before' => $before_data[0][$key],
+                        'after' => $value,
+                    ),
+                ));
 
             }
 

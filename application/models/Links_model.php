@@ -59,7 +59,7 @@ class Links_model extends CI_Model
                             'ln_parent_link_id' => $id, //Link Reference
                             'ln_creator_entity_id' => $ln_creator_entity_id,
                             'ln_type_entity_id' => $ln_type_entity_id,
-                            'ln_content' => echo_clean_db_name($key) . ' changed from "' . ( $key=='ln_status_entity_id' ? $en_all_6186[$before_data[0][$key]]['m_name']  : $before_data[0][$key] ) . '" to "' . ( $key=='ln_status_entity_id' ? $en_all_6186[$value]['m_name']  : $value ) . '"',
+                            'ln_content' => echo_clean_db_name($key) . ' iterated from [' . ( $key=='ln_status_entity_id' ? $en_all_6186[$before_data[0][$key]]['m_name']  : $before_data[0][$key] ) . '] to [' . ( $key=='ln_status_entity_id' ? $en_all_6186[$value]['m_name']  : $value ) . ']',
                             'ln_metadata' => array(
                                 'ln_id' => $id,
                                 'field' => $key,

@@ -497,7 +497,7 @@ function ln_type_word_count($ln){
 
 }
 
-function word_diff_desc($before_string, $after_string){
+function word_change_calculator($before_string, $after_string){
 
     //See whats added, what's removed:
     $before_words = explode(' ', $before_string);
@@ -1052,7 +1052,7 @@ function update_algolia($input_obj_type = null, $input_obj_id = 0, $return_row_o
         );
     }
 
-    $en_all_7585 = $CI->config->item('en_all_7585'); // Intent Types
+    $en_all_7585 = $CI->config->item('en_all_7585'); // Intent Subtypes
 
     //Define the support objects indexed on algolia:
     $input_obj_id = intval($input_obj_id);

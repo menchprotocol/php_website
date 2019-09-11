@@ -1426,7 +1426,7 @@ function echo_en_messages($ln){
 
 
     //Referenced Intent:
-    $en_all_7585 = $CI->config->item('en_all_7585'); // Intent Types
+    $en_all_7585 = $CI->config->item('en_all_7585'); // Intent Subtypes
     $ui .= '<li><a class="btn btn-primary button-max" style="border:2px solid #ffe027 !important;" href="/intents/' . $ln['ln_child_intent_id'] . '" target="_parent" title="Message Intent: '.$ln['in_outcome'].'" data-toggle="tooltip" data-placement="top">'.$en_all_4737[$ln['in_status_entity_id']]['m_icon'].'&nbsp; '.$en_all_7585[$ln['in_subtype_entity_id']]['m_icon'].' '.$ln['in_outcome'].'</a></li>';
 
     //Links:
@@ -1655,7 +1655,7 @@ function echo_in_answer_scores($starting_in, $depth_levels, $original_depth_leve
     $en_all_6186 = $CI->config->item('en_all_6186'); //Link Statuses
     $en_all_4486 = $CI->config->item('en_all_4486');
     $en_all_4737 = $CI->config->item('en_all_4737'); // Intent Statuses
-    $en_all_7585 = $CI->config->item('en_all_7585'); // Intent Types
+    $en_all_7585 = $CI->config->item('en_all_7585'); // Intent Subtypes
 
     $ui = null;
     foreach($CI->Links_model->ln_fetch(array(
@@ -2037,7 +2037,7 @@ function echo_in($in, $level, $in_linked_id = 0, $is_parent = false)
     $CI =& get_instance();
     $session_en = $CI->session->userdata('user');
     $en_all_4737 = $CI->config->item('en_all_4737'); // Intent Statuses
-    $en_all_7585 = $CI->config->item('en_all_7585'); // Intent Types
+    $en_all_7585 = $CI->config->item('en_all_7585'); // Intent Subtypes
     $en_all_7596 = $CI->config->item('en_all_7596'); // Intent Scope
     $en_all_6186 = $CI->config->item('en_all_6186'); // Link Status
     $is_child_focused = ($level == 3 && $is_parent && $CI->uri->segment(2)==$in['in_id']);

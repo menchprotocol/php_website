@@ -176,12 +176,13 @@ class Entities_model extends CI_Model
                     if($key=='en_name') {
 
                         $ln_type_entity_id = 10646;// Entity Name Iterated
-                        $ln_content = word_diff_desc($before_data[0][$key], $value);
+                        $ln_content = word_change_calculator($before_data[0][$key], $value);
 
                     } else {
 
                         $ln_type_entity_id = 4263;// Entity Updated
-                        $ln_content = echo_clean_db_name($key) . ' changed from "' . ( $key=='en_status_entity_id' ? $en_all_6177[$before_data[0][$key]]['m_name'] : $before_data[0][$key] ) . '" to "' . ( $key=='en_status_entity_id' ? $en_all_6177[$value]['m_name'] : $value ) . '"';
+                        $ln_content = echo_clean_db_name($key) . ' iterated from [' . ( $key=='en_status_entity_id' ? $en_all_6177[$before_data[0][$key]]['m_name'] : $before_data[0][$key] ) . '] to [' . ( $key=='en_status_entity_id' ? $en_all_6177[$value]['m_name'] : $value ) . ']';
+                        //Unlike intents, we cannot log parent/child entity relations since the child entity slot is already taken...
 
                     }
 

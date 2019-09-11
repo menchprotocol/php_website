@@ -502,12 +502,8 @@ if(!$action) {
                     //Update intent:
                     $this->Intents_model->in_update($in['in_id'], array(
                         'in_outcome' => $in_outcome_validation['in_cleaned_outcome'],
-                    ), true, $session_en['en_id'], 10644 /* Intent Outcome Iterated */);
-
-                    $this->Intents_model->in_update($in['in_id'], array(
                         'in_verb_entity_id' => $in_outcome_validation['detected_in_verb_entity_id'],
                     ), true, $session_en['en_id']);
-                    $completed_replacements++;
                 }
 
                 echo '<tr class="panel-title down-border">';
@@ -524,7 +520,7 @@ if(!$action) {
 
 
                     //Loop through parents:
-                    $en_all_7585 = $this->config->item('en_all_7585'); // Intent Types
+                    $en_all_7585 = $this->config->item('en_all_7585'); // Intent Subtypes
                     foreach ($this->Links_model->ln_fetch(array(
                         'ln_status_entity_id IN (' . join(',', $this->config->item('en_ids_7360')) . ')' => null, //Link Statuses Active
                         'in_status_entity_id IN (' . join(',', $this->config->item('en_ids_7356')) . ')' => null, //Intent Statuses Active

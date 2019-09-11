@@ -88,7 +88,7 @@ class Miner_app extends CI_Controller
 
         $en_all_7302 = $this->config->item('en_all_7302'); //Intent Stats
 
-        //Count all intent types:
+        //Count all Intent Subtypes:
         $intent_types_counts = $this->Intents_model->in_fetch(array(
             'in_status_entity_id IN (' . join(',', $this->config->item('en_ids_7355')) . ')' => null, //Intent Statuses Public
         ), array('in_type'), 0, 0, array(), 'COUNT(in_subtype_entity_id) as total_count, en_name, en_icon, en_id', 'en_id, en_name, en_icon');

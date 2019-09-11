@@ -2341,7 +2341,7 @@ class Communication_model extends CI_Model
 
             //Log intent search:
             $this->Links_model->ln_create(array(
-                'ln_content' => ( $new_intent_count > 0 ? $message : 'Found ' . $new_intent_count . ' intent' . echo__s($new_intent_count) . ' matching "' . $master_command . '"' ),
+                'ln_content' => ( $new_intent_count > 0 ? $message : 'Found ' . $new_intent_count . ' intent' . echo__s($new_intent_count) . ' matching [' . $master_command . ']' ),
                 'ln_metadata' => array(
                     'app_enable_algolia' => $this->config->item('app_enable_algolia'),
                     'new_intent_count' => $new_intent_count,

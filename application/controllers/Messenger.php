@@ -289,7 +289,7 @@ class Messenger extends CI_Controller
 
 
                     //Set more variables:
-                    $matching_types = array(); //Defines the supported intent types
+                    $matching_types = array(); //Defines the supported Intent Subtypes
 
                     unset($ln_data); //Reset everything in case its set from the previous loop!
                     $ln_data = array(
