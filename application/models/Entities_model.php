@@ -156,7 +156,6 @@ class Entities_model extends CI_Model
             $update_columns['en_metadata'] = serialize($update_columns['en_metadata']);
         }
 
-
         //Update:
         $this->db->where('en_id', $id);
         $this->db->update('table_entities', $update_columns);
@@ -165,43 +164,52 @@ class Entities_model extends CI_Model
         //Do we need to do any additional work?
         if ($affected_rows > 0 && $ln_creator_entity_id > 0) {
 
-            $en_all_6177 = $this->config->item('en_all_6177'); //Entity Statuses
-
             //Log modification link for every field changed:
             foreach ($update_columns as $key => $value) {
 
-                //Has this value changed compared to what we initially had in DB?
-                if (!($before_data[0][$key] == $value) && !in_array($key, array('en_metadata', 'en_trust_score'))) {
+                if ($before_data[0][$key] == $value){
+                    //Nothing changed:
+                    continue;
+                }
 
-                    if($key=='en_name') {
+                //FYI: Unlike intents, we cannot log parent/child entity relations since the child entity slot is already taken...
 
-                        $ln_type_entity_id = 10646;// Entity Name Iterated
-                        $ln_content = word_change_calculator($before_data[0][$key], $value);
+                if($key=='en_name') {
 
-                    } else {
+                    $ln_type_entity_id = 10646; //Entity Iterated Name
+                    $ln_content = word_change_calculator($before_data[0][$key], $value);
 
-                        $ln_type_entity_id = 4263;// Entity Updated
-                        $ln_content = echo_clean_db_name($key) . ' iterated from [' . ( $key=='en_status_entity_id' ? $en_all_6177[$before_data[0][$key]]['m_name'] : $before_data[0][$key] ) . '] to [' . ( $key=='en_status_entity_id' ? $en_all_6177[$value]['m_name'] : $value ) . ']';
-                        //Unlike intents, we cannot log parent/child entity relations since the child entity slot is already taken...
+                } elseif($key=='en_status_entity_id') {
 
-                    }
+                    $ln_type_entity_id = 10654; //Entity Iterated Status
+                    $en_all_6177 = $this->config->item('en_all_6177'); //Entity Statuses
+                    $ln_content = echo_clean_db_name($key) . ' iterated from [' . $en_all_6177[$before_data[0][$key]]['m_name'] . '] to [' . $en_all_6177[$value]['m_name'] . ']';
 
-                    //Value has changed, log link:
-                    $this->Links_model->ln_create(array(
-                        'ln_creator_entity_id' => ($ln_creator_entity_id > 0 ? $ln_creator_entity_id : $id),
-                        'ln_type_entity_id' => $ln_type_entity_id,
-                        'ln_child_entity_id' => $id,
-                        'ln_content' => $ln_content,
-                        'ln_metadata' => array(
-                            'en_id' => $id,
-                            'field' => $key,
-                            'before' => $before_data[0][$key],
-                            'after' => $value,
-                        ),
-                    ));
+                } elseif($key=='en_icon') {
 
+                    $ln_type_entity_id = 10653; //Entity Iterated Icon
+                    $ln_content = echo_clean_db_name($key) . ' iterated from [' . $before_data[0][$key] . '] to [' . $value . ']';
+
+                } else {
+
+                    //Should not log updates since not specifically programmed:
+                    continue;
 
                 }
+
+                //Value has changed, log link:
+                $this->Links_model->ln_create(array(
+                    'ln_creator_entity_id' => ($ln_creator_entity_id > 0 ? $ln_creator_entity_id : $id),
+                    'ln_type_entity_id' => $ln_type_entity_id,
+                    'ln_child_entity_id' => $id,
+                    'ln_content' => $ln_content,
+                    'ln_metadata' => array(
+                        'en_id' => $id,
+                        'field' => $key,
+                        'before' => $before_data[0][$key],
+                        'after' => $value,
+                    ),
+                ));
 
             }
 

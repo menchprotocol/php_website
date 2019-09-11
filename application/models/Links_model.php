@@ -19,7 +19,7 @@ class Links_model extends CI_Model
 
         if (count($update_columns) == 0) {
             return false;
-        } elseif (!in_array($ln_type_entity_id, $this->config->item('en_ids_4593'))) {
+        } elseif (!in_array($ln_type_entity_id, $this->config->item('en_ids_10658'))) {
             return false;
         }
 
@@ -41,58 +41,53 @@ class Links_model extends CI_Model
         $affected_rows = $this->db->affected_rows();
 
         //Log changes if successful:
+        if ($affected_rows > 0 && $ln_creator_entity_id > 0) {
 
-        if ($affected_rows > 0) {
+            //Note what's changed, if anything:
+            $ln_content = '';
 
-            if($ln_creator_entity_id > 0){
+            if(in_array($ln_type_entity_id, $this->config->item('en_ids_10593') /* Statement */)){
+
+                //Since it's a statement we want to determine the change in content:
+                if($before_data[0]['ln_content']!=$update_columns['ln_content']){
+                    $ln_content .= word_change_calculator($before_data[0]['ln_content'], $update_columns['ln_content']);
+                }
+
+            } else {
 
                 $en_all_6186 = $this->config->item('en_all_6186'); //Link Statuses
 
                 //Log modification link for every field changed:
                 foreach ($update_columns as $key => $value) {
-
-                    //Has this value changed compared to what we initially had in DB?
-                    if ( !($before_data[0][$key] == $value) && in_array($key, array('ln_status_entity_id', 'ln_content', 'ln_order', 'ln_parent_entity_id', 'ln_child_entity_id', 'ln_parent_intent_id', 'ln_child_intent_id', 'ln_metadata', 'ln_type_entity_id'))) {
-
-                        //Value has changed, log link:
-                        $this->Links_model->ln_create(array(
-                            'ln_parent_link_id' => $id, //Link Reference
-                            'ln_creator_entity_id' => $ln_creator_entity_id,
-                            'ln_type_entity_id' => $ln_type_entity_id,
-                            'ln_content' => echo_clean_db_name($key) . ' iterated from [' . ( $key=='ln_status_entity_id' ? $en_all_6186[$before_data[0][$key]]['m_name']  : $before_data[0][$key] ) . '] to [' . ( $key=='ln_status_entity_id' ? $en_all_6186[$value]['m_name']  : $value ) . ']',
-                            'ln_metadata' => array(
-                                'ln_id' => $id,
-                                'field' => $key,
-                                'before' => $before_data[0][$key],
-                                'after' => $value,
-                            ),
-                            //Copy old values for parent/child intent/entity links:
-                            'ln_parent_entity_id' => $before_data[0]['ln_parent_entity_id'],
-                            'ln_child_entity_id'  => $before_data[0]['ln_child_entity_id'],
-                            'ln_parent_intent_id' => $before_data[0]['ln_parent_intent_id'],
-                            'ln_child_intent_id'  => $before_data[0]['ln_child_intent_id'],
-                        ));
-
+                    if($before_data[0][$key]!=$value && in_array($key, array('ln_status_entity_id', 'ln_content', 'ln_order', 'ln_parent_entity_id', 'ln_child_entity_id', 'ln_parent_intent_id', 'ln_child_intent_id', 'ln_metadata', 'ln_type_entity_id'))){
+                        $ln_content .= echo_clean_db_name($key) . ' iterated from [' . ( $key=='ln_status_entity_id' ? $en_all_6186[$before_data[0][$key]]['m_name']  : $before_data[0][$key] ) . '] to [' . ( $key=='ln_status_entity_id' ? $en_all_6186[$value]['m_name'] : $value ) . ']'."\n";
                     }
                 }
             }
 
-        } else {
 
-            //This should not happen BUT was happening ALOT!
-            //TODO Re-enable later and see why it keeps happening...
-            /*
-            $this->Links_model->ln_create(array(
-                'ln_parent_link_id' => $id, //Link Reference
-                'ln_type_entity_id' => 4246, //Platform Bug Reports
-                'ln_content' => 'ln_update() Failed to update',
-                'ln_metadata' => array(
-                    'input' => $update_columns,
-                ),
-            ));
-            */
-
+            if(strlen($ln_content) > 0){
+                //Value has changed, log link:
+                $this->Links_model->ln_create(array(
+                    'ln_parent_link_id' => $id, //Link Reference
+                    'ln_creator_entity_id' => $ln_creator_entity_id,
+                    'ln_type_entity_id' => $ln_type_entity_id,
+                    'ln_content' => $ln_content,
+                    'ln_metadata' => array(
+                        'ln_id' => $id,
+                        'field' => $key,
+                        'before' => $before_data[0][$key],
+                        'after' => $value,
+                    ),
+                    //Copy old values for parent/child intent/entity links:
+                    'ln_parent_entity_id' => $before_data[0]['ln_parent_entity_id'],
+                    'ln_child_entity_id'  => $before_data[0]['ln_child_entity_id'],
+                    'ln_parent_intent_id' => $before_data[0]['ln_parent_intent_id'],
+                    'ln_child_intent_id'  => $before_data[0]['ln_child_intent_id'],
+                ));
+            }
         }
+
         return $affected_rows;
     }
 

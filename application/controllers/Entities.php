@@ -505,7 +505,6 @@ class Entities extends CI_Controller
             ));
         }
 
-        $ln_has_updated = false;
         $remove_from_ui = 0;
         $remove_redirect_url = null;
         $js_ln_type_entity_id = 0; //Detect link type based on content
@@ -642,7 +641,6 @@ class Entities extends CI_Controller
                 'ln_id' => $_POST['ln_id'],
                 'ln_status_entity_id IN (' . join(',', $this->config->item('en_ids_7360')) . ')' => null, //Link Statuses Active
             ));
-
             if (count($en_lns) < 1) {
                 return echo_json(array(
                     'status' => 0,
@@ -650,6 +648,21 @@ class Entities extends CI_Controller
                 ));
             }
 
+
+            //Status change?
+            if($en_lns[0]['ln_status_entity_id']!=$_POST['ln_status_entity_id']){
+
+                $this->Links_model->ln_update($_POST['ln_id'], array(
+                    'ln_status_entity_id' => intval($_POST['ln_status_entity_id']),
+                ), $session_en['en_id'], 10656 /* Entity Link Iterated Status */);
+
+                if ($_POST['ln_status_entity_id'] == 6173 /* Link Removed */) {
+                    $remove_from_ui = 1;
+                }
+            }
+
+
+            //Link content change?
             if ($en_lns[0]['ln_content'] == $_POST['ln_content']) {
 
                 //Link content has not changed:
@@ -718,30 +731,22 @@ class Entities extends CI_Controller
                 //Update variables:
                 $ln_content = $_POST['ln_content'];
                 $js_ln_type_entity_id = $detected_ln_type['ln_type_entity_id'];
-            }
 
 
-            //Has the link content changes?
-            if (!($en_lns[0]['ln_content'] == $_POST['ln_content']) || !($en_lns[0]['ln_status_entity_id'] == $_POST['ln_status_entity_id'])) {
-
-                if ($_POST['ln_status_entity_id'] == 6173 /* Link Removed */) {
-                    $remove_from_ui = 1;
-                }
-
-                $ln_has_updated = true;
-
-                //Something has changed, log this:
                 $this->Links_model->ln_update($_POST['ln_id'], array(
                     'ln_content' => $ln_content,
-                    'ln_type_entity_id' => $js_ln_type_entity_id,
-                    'ln_status_entity_id' => intval($_POST['ln_status_entity_id']),
-                    //Auto append timestamp and most recent miner:
                     'ln_creator_entity_id' => $session_en['en_id'],
                     'ln_timestamp' => date("Y-m-d H:i:s"),
-                ), $session_en['en_id']);
+                ), $session_en['en_id'], 10657 /* Entity Link Iterated Content */);
 
+
+                //Also, did the link type change based on the content change?
+                if($js_ln_type_entity_id!=$en_lns[0]['ln_type_entity_id']){
+                    $this->Links_model->ln_update($_POST['ln_id'], array(
+                        'ln_type_entity_id' => $js_ln_type_entity_id,
+                    ), $session_en['en_id'], 10659 /* Entity Link Iterated Type */);
+                }
             }
-
         }
 
         //Now update the DB:

@@ -429,7 +429,7 @@ class Intents extends CI_Controller
         //Make the move:
         $this->Links_model->ln_update(intval($_POST['ln_id']), array(
             'ln_parent_intent_id' => $to_in[0]['in_id'],
-        ), $session_en['en_id']);
+        ), $session_en['en_id'], 10660 /* Intent Migrate Parent Link */);
 
         //Return success
         echo_json(array(
@@ -638,7 +638,7 @@ class Intents extends CI_Controller
         //Unlink:
         $this->Links_model->ln_update($_POST['ln_id'], array(
             'ln_status_entity_id' => 6173, //Link Unlinked
-        ), $session_en['en_id']);
+        ), $session_en['en_id'], 10656 /* Entity Link Iterated Status  */);
 
         //Return success:
         return echo_json(array(
@@ -965,98 +965,71 @@ class Intents extends CI_Controller
                 ));
             }
 
-            //Prep link Metadata to see if the Conditional Step Links score variables have changed:
-            $ln_update = array(
-                'ln_type_entity_id'     => intval($_POST['ln_type_entity_id']),
-                'ln_status_entity_id'   => intval($_POST['ln_status_entity_id']),
-            );
+
+            if($_POST['ln_status_entity_id'] != $lns[0]['ln_status_entity_id']){
+                if($_POST['ln_status_entity_id'] == 6173 /* Link Removed */){
+                    $remove_from_ui = 1;
+                }
+                $this->Links_model->ln_update($ln_id, array(
+                    'ln_status_entity_id' => $_POST['ln_status_entity_id'],
+                ), $session_en['en_id'], 10661 /* Intent Link Iterated Status */);
+            }
 
 
+            if(in_array($_POST['ln_status_entity_id'], $this->config->item('en_ids_7360') /* Link Statuses Active */)){
 
+                if($_POST['ln_type_entity_id'] != $lns[0]['ln_type_entity_id']){
+                    if($_POST['ln_type_entity_id'] == 4229 /* Intent Link Locked Step */){
 
+                        //Intent Link Locked Step requires the child intent to be locked:
 
-            //Prep variables:
-            $ln_metadata = ( strlen($lns[0]['ln_metadata']) > 0 ? unserialize($lns[0]['ln_metadata']) : array() );
+                        //Fetch child intent (we might not have it):
+                        $child_ins = $this->Intents_model->in_fetch(array(
+                            'in_id' => $lns[0]['ln_child_intent_id'],
+                        ));
 
-            //Check to see if anything changed in the link?
-            $link_meta_updated = ( (($ln_update['ln_type_entity_id'] == 4228 && (
+                        //Ensure child is locked:
+                        if(!in_array($child_ins[0]['in_subtype_entity_id'], $this->config->item('en_ids_7309') /* Action Plan Step Locked */)){
+                            return echo_json(array(
+                                'status' => 0,
+                                'message' => 'Locked Step requires a locked child intent (AND Lock or Or Lock)',
+                            ));
+                        }
+                    }
+                    $this->Links_model->ln_update($ln_id, array(
+                        'ln_type_entity_id' => $_POST['ln_type_entity_id'],
+                    ), $session_en['en_id'], 10662 /* Intent Link Iterated Type */);
+                }
+
+                //Prep Metadata:
+                $ln_metadata = ( strlen($lns[0]['ln_metadata']) > 0 ? unserialize($lns[0]['ln_metadata']) : array() );
+
+                if($_POST['ln_type_entity_id'] == 4228 && (
                         !isset($ln_metadata['tr__assessment_points']) ||
                         !(intval($ln_metadata['tr__assessment_points'])==intval($_POST['tr__assessment_points']))
-                    ))) || (($ln_update['ln_type_entity_id'] == 4229 && (
+                    )){
+
+                    $this->Links_model->ln_update($ln_id, array(
+                        'ln_metadata' => array_merge( $ln_metadata, array(
+                            'tr__assessment_points' => intval($_POST['tr__assessment_points']),
+                        )),
+                    ), $session_en['en_id'], 10663 /* Intent Link Iterated Marks */);
+                }
+
+                if($_POST['ln_type_entity_id'] == 4229 && (
                         !isset($ln_metadata['tr__conditional_score_min']) ||
                         !isset($ln_metadata['tr__conditional_score_max']) ||
                         !(doubleval($ln_metadata['tr__conditional_score_max'])==doubleval($_POST['tr__conditional_score_max'])) ||
                         !(doubleval($ln_metadata['tr__conditional_score_min'])==doubleval($_POST['tr__conditional_score_min']))
-                    ))));
-
-
-
-            foreach ($ln_update as $key => $value) {
-
-                //Did this value change?
-                if ($value == $lns[0][$key]) {
-
-                    //No it did not! Remove it!
-                    unset($ln_update[$key]);
-
-                } else {
-
-                    if($key=='ln_status_entity_id'){
-
-                        if($value == 6173 /* Link Removed */){
-                            $remove_from_ui = 1;
-                        }
-
-                    } elseif($key=='ln_type_entity_id'){
-
-                        if($value == 4229 /* Intent Link Locked Step */){
-
-                            //Intent Link Locked Step requires the child intent to be locked:
-
-                            //Fetch child intent (we might not have it):
-                            $child_ins = $this->Intents_model->in_fetch(array(
-                                'in_id' => $lns[0]['ln_child_intent_id'],
-                            ));
-
-                            //Ensure child is locked:
-                            if(!in_array($child_ins[0]['in_subtype_entity_id'], $this->config->item('en_ids_7309') /* Action Plan Step Locked */)){
-                                return echo_json(array(
-                                    'status' => 0,
-                                    'message' => 'Locked Step requires a locked child intent (AND Lock or Or Lock)',
-                                ));
-                            }
-                        }
-                    }
+                    )){
+                    $this->Links_model->ln_update($ln_id, array(
+                        'ln_metadata' => array_merge( $ln_metadata, array(
+                            'tr__conditional_score_min' => doubleval($_POST['tr__conditional_score_min']),
+                            'tr__conditional_score_max' => doubleval($_POST['tr__conditional_score_max']),
+                        )),
+                    ), $session_en['en_id'], 10664 /* Intent Link Iterated Score */);
                 }
             }
-
-
-            //Was anything updated?
-            if(count($ln_update) > 0 || $link_meta_updated){
-                $link_was_updated = true;
-            }
-
-
-
-            //Did anything change?
-            if( $link_was_updated ){
-
-                if($link_meta_updated && (!isset($ln_update['ln_status_entity_id']) || in_array($ln_update['ln_status_entity_id'], $this->config->item('en_ids_7360') /* Link Statuses Active */))){
-                    $ln_update['ln_metadata'] = array_merge( $ln_metadata, array(
-                        'tr__conditional_score_min' => doubleval($_POST['tr__conditional_score_min']),
-                        'tr__conditional_score_max' => doubleval($_POST['tr__conditional_score_max']),
-                        'tr__assessment_points' => intval($_POST['tr__assessment_points']),
-                    ));
-                }
-
-                //Also update the timestamp & new miner:
-                $ln_update['ln_timestamp'] = date("Y-m-d H:i:s");
-                $ln_update['ln_creator_entity_id'] = $session_en['en_id'];
-
-                //Update links:
-                $this->Links_model->ln_update($ln_id, $ln_update, $session_en['en_id']);
-            }
-
         }
 
 
@@ -1074,8 +1047,8 @@ class Intents extends CI_Controller
 
         }
 
-
-        $return_data = array(
+        //Show success:
+        return echo_json(array(
             'status' => 1,
             'message' => '<i class="fas fa-check"></i> Saved',
             'remove_from_ui' => $remove_from_ui,
@@ -1083,24 +1056,11 @@ class Intents extends CI_Controller
             'remove_redirect_url' => $remove_redirect_url,
             'recursive_update_count' => $recursive_update_count,
             'in__metadata_max_steps' => -( isset($in_metadata['in__metadata_max_steps']) ? $in_metadata['in__metadata_max_steps'] : 0 ),
+
             //Passon unlock data, if any:
             'ins_unlocked_completions_count' => $ins_unlocked_completions_count,
             'steps_unlocked_completions_count' => $steps_unlocked_completions_count,
-        );
-
-
-        //Did we have an intent link update? If so, update the last updated UI:
-        if($link_was_updated){
-
-            //Fetch last intent Link:
-            $lns = $this->Links_model->ln_fetch(array(
-                'ln_id' => $ln_id,
-            ), array('ln_creator'));
-
-        }
-
-        //Show success:
-        return echo_json($return_data);
+        ));
 
     }
 

@@ -200,8 +200,8 @@ class Intents_model extends CI_Model
             //Log modification link for every field changed:
             foreach ($update_columns as $key => $value) {
 
-                //Has this value changed compared to what we initially had in DB?
-                if (!($before_data[0][$key] == $value)) {
+                if ($before_data[0][$key] == $value){
+                    //Nothing changed:
                     continue;
                 }
 
@@ -219,8 +219,8 @@ class Intents_model extends CI_Model
 
                     $ln_type_entity_id = 10647; //Intent Iterated Verb
                     $ln_content = word_change_calculator($before_data[0][$key], $value);
-                    $ln_child_entity_id = 0;
-                    $ln_parent_entity_id = 0;
+                    $ln_parent_entity_id = $value;
+                    $ln_child_entity_id = $before_data[0][$key];
 
                 } elseif($key=='in_status_entity_id'){
 
