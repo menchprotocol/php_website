@@ -8,13 +8,10 @@ function echo_en_load_more($page, $limit, $en__child_count)
 
     echo '<a class="load-more list-group-item" href="javascript:void(0);" onclick="en_load_next_page(' . $page . ')">';
 
-    //Right content:
-    echo '<span class="pull-right" style="margin-right: 6px;"><span class="badge badge-secondary"><i class="fas fa-search-plus"></i></span></span>';
-
     //Regular section:
     $max_entities = (($page + 1) * $limit);
     $max_entities = ($max_entities > $en__child_count ? $en__child_count : $max_entities);
-    echo 'Load ' . (($page * $limit) + 1) . ' - ' . $max_entities . ' from ' . $en__child_count . ' total';
+    echo '<i class="fas fa-plus-circle"></i> Load ' . (($page * $limit) + 1) . ' - ' . $max_entities . ' from ' . $en__child_count . ' total';
 
     echo '</a>';
 }
