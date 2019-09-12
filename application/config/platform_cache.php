@@ -11,7 +11,7 @@ defined('BASEPATH') OR exit('No direct script access allowed');
  *
  */
 
-//Generated 2019-09-12 13:36:33 PST
+//Generated 2019-09-12 15:27:45 PST
 
 //Platform Cache:
 $config['en_ids_4527'] = array(7758,7774,7756,6827,4997,7303,6194,6805,6177,7358,7357,6206,4592,4537,10627,6192,7712,7302,4229,6345,4485,4986,7551,7701,4983,6193,7596,7582,7767,10568,10567,7588,4737,7356,7355,7585,6201,4486,7309,10602,7751,7799,7304,10591,7703,10658,6103,6186,7360,7364,7359,4341,4593,7347,10592,7529,7555,7372,7368,6287,7369,4426,6225,10596,4527,7366,4755,10571,6204,6123,10593,4454,5969,3000,4600,6150,5967,4280,10570,4277,6102,7704,6144,6244,6255,6274,6146,7494,7203,10539,10594,10589,10590);
@@ -2782,37 +2782,37 @@ $config['en_all_7799'] = array(
 $config['en_ids_7774'] = array(6180,6181,6183,6184,6175,6176);
 $config['en_all_7774'] = array(
     6180 => array(
-        'm_icon' => '<i class="far fa-spinner fa-spin"></i>',
+        'm_icon' => '<i class="far fa-spinner fa-spin blue"></i>',
         'm_name' => 'Entity Drafting',
         'm_desc' => '',
         'm_parents' => array(7774,7358,6177),
     ),
     6181 => array(
-        'm_icon' => '<i class="fas fa-globe"></i>',
+        'm_icon' => '<i class="fas fa-globe blue"></i>',
         'm_name' => 'Entity Published',
         'm_desc' => '',
         'm_parents' => array(7774,7358,7357,6177),
     ),
     6183 => array(
-        'm_icon' => '<i class="far fa-spinner fa-spin"></i>',
+        'm_icon' => '<i class="far fa-spinner fa-spin yellow"></i>',
         'm_name' => 'Intent Drafting',
         'm_desc' => '',
         'm_parents' => array(7774,7356,4737),
     ),
     6184 => array(
-        'm_icon' => '<i class="fas fa-globe"></i>',
+        'm_icon' => '<i class="fas fa-globe yellow"></i>',
         'm_name' => 'Intent Published',
         'm_desc' => '',
         'm_parents' => array(7774,7355,7356,4737),
     ),
     6175 => array(
-        'm_icon' => '<i class="far fa-spinner fa-spin"></i>',
+        'm_icon' => '<i class="far fa-spinner fa-spin ispink"></i>',
         'm_name' => 'Link Drafting',
         'm_desc' => '',
         'm_parents' => array(7774,7364,7360,6186),
     ),
     6176 => array(
-        'm_icon' => '<i class="fas fa-globe"></i>',
+        'm_icon' => '<i class="fas fa-globe ispink"></i>',
         'm_name' => 'Link Published',
         'm_desc' => '',
         'm_parents' => array(7774,7360,7359,6186),
@@ -4045,7 +4045,7 @@ $config['en_all_7366'] = array(
 $config['en_ids_7364'] = array(6175);
 $config['en_all_7364'] = array(
     6175 => array(
-        'm_icon' => '<i class="far fa-spinner fa-spin"></i>',
+        'm_icon' => '<i class="far fa-spinner fa-spin ispink"></i>',
         'm_name' => 'Link Drafting',
         'm_desc' => '',
         'm_parents' => array(7774,7364,7360,6186),
@@ -4056,13 +4056,13 @@ $config['en_all_7364'] = array(
 $config['en_ids_7360'] = array(6175,6176);
 $config['en_all_7360'] = array(
     6175 => array(
-        'm_icon' => '<i class="far fa-spinner fa-spin"></i>',
+        'm_icon' => '<i class="far fa-spinner fa-spin ispink"></i>',
         'm_name' => 'Link Drafting',
         'm_desc' => '',
         'm_parents' => array(7774,7364,7360,6186),
     ),
     6176 => array(
-        'm_icon' => '<i class="fas fa-globe"></i>',
+        'm_icon' => '<i class="fas fa-globe ispink"></i>',
         'm_name' => 'Link Published',
         'm_desc' => '',
         'm_parents' => array(7774,7360,7359,6186),
@@ -4073,7 +4073,7 @@ $config['en_all_7360'] = array(
 $config['en_ids_7359'] = array(6176);
 $config['en_all_7359'] = array(
     6176 => array(
-        'm_icon' => '<i class="fas fa-globe"></i>',
+        'm_icon' => '<i class="fas fa-globe ispink"></i>',
         'm_name' => 'Link Published',
         'm_desc' => '',
         'm_parents' => array(7774,7360,7359,6186),
@@ -4084,13 +4084,13 @@ $config['en_all_7359'] = array(
 $config['en_ids_7358'] = array(6180,6181);
 $config['en_all_7358'] = array(
     6180 => array(
-        'm_icon' => '<i class="far fa-spinner fa-spin"></i>',
+        'm_icon' => '<i class="far fa-spinner fa-spin blue"></i>',
         'm_name' => 'Entity Drafting',
         'm_desc' => '',
         'm_parents' => array(7774,7358,6177),
     ),
     6181 => array(
-        'm_icon' => '<i class="fas fa-globe"></i>',
+        'm_icon' => '<i class="fas fa-globe blue"></i>',
         'm_name' => 'Entity Published',
         'm_desc' => '',
         'm_parents' => array(7774,7358,7357,6177),
@@ -4101,7 +4101,7 @@ $config['en_all_7358'] = array(
 $config['en_ids_7357'] = array(6181);
 $config['en_all_7357'] = array(
     6181 => array(
-        'm_icon' => '<i class="fas fa-globe"></i>',
+        'm_icon' => '<i class="fas fa-globe blue"></i>',
         'm_name' => 'Entity Published',
         'm_desc' => '',
         'm_parents' => array(7774,7358,7357,6177),
@@ -4112,13 +4112,13 @@ $config['en_all_7357'] = array(
 $config['en_ids_7356'] = array(6183,6184);
 $config['en_all_7356'] = array(
     6183 => array(
-        'm_icon' => '<i class="far fa-spinner fa-spin"></i>',
+        'm_icon' => '<i class="far fa-spinner fa-spin yellow"></i>',
         'm_name' => 'Intent Drafting',
         'm_desc' => '',
         'm_parents' => array(7774,7356,4737),
     ),
     6184 => array(
-        'm_icon' => '<i class="fas fa-globe"></i>',
+        'm_icon' => '<i class="fas fa-globe yellow"></i>',
         'm_name' => 'Intent Published',
         'm_desc' => '',
         'm_parents' => array(7774,7355,7356,4737),
@@ -4129,7 +4129,7 @@ $config['en_all_7356'] = array(
 $config['en_ids_7355'] = array(6184);
 $config['en_all_7355'] = array(
     6184 => array(
-        'm_icon' => '<i class="fas fa-globe"></i>',
+        'm_icon' => '<i class="fas fa-globe yellow"></i>',
         'm_name' => 'Intent Published',
         'm_desc' => '',
         'm_parents' => array(7774,7355,7356,4737),
@@ -4226,19 +4226,19 @@ $config['en_all_7203'] = array(
 $config['en_ids_6186'] = array(6176,6175,6173);
 $config['en_all_6186'] = array(
     6176 => array(
-        'm_icon' => '<i class="fas fa-globe"></i>',
+        'm_icon' => '<i class="fas fa-globe ispink"></i>',
         'm_name' => 'Published',
         'm_desc' => 'live and ready to be shared with users',
         'm_parents' => array(7774,7360,7359,6186),
     ),
     6175 => array(
-        'm_icon' => '<i class="far fa-spinner fa-spin"></i>',
+        'm_icon' => '<i class="far fa-spinner fa-spin ispink"></i>',
         'm_name' => 'Drafting',
         'm_desc' => 'being mined, to be published soon',
         'm_parents' => array(7774,7364,7360,6186),
     ),
     6173 => array(
-        'm_icon' => '<i class="far fa-trash-alt"></i>',
+        'm_icon' => '<i class="far fa-trash-alt ispink"></i>',
         'm_name' => 'Unlinked',
         'm_desc' => 'archived',
         'm_parents' => array(10686,10678,10673,6186),
@@ -4617,19 +4617,19 @@ $config['en_all_6225'] = array(
 $config['en_ids_4737'] = array(6184,6183,6182);
 $config['en_all_4737'] = array(
     6184 => array(
-        'm_icon' => '<i class="fas fa-globe"></i>',
+        'm_icon' => '<i class="fas fa-globe yellow"></i>',
         'm_name' => 'Published',
         'm_desc' => 'newly added by miner but not yet checked by moderator',
         'm_parents' => array(7774,7355,7356,4737),
     ),
     6183 => array(
-        'm_icon' => '<i class="far fa-spinner fa-spin"></i>',
+        'm_icon' => '<i class="far fa-spinner fa-spin yellow"></i>',
         'm_name' => 'Drafting',
         'm_desc' => 'newly added, pending review',
         'm_parents' => array(7774,7356,4737),
     ),
     6182 => array(
-        'm_icon' => '<i class="far fa-trash-alt"></i>',
+        'm_icon' => '<i class="far fa-trash-alt yellow"></i>',
         'm_name' => 'Archived',
         'm_desc' => 'archived',
         'm_parents' => array(10671,4737),
@@ -4640,19 +4640,19 @@ $config['en_all_4737'] = array(
 $config['en_ids_6177'] = array(6181,6180,6178);
 $config['en_all_6177'] = array(
     6181 => array(
-        'm_icon' => '<i class="fas fa-globe"></i>',
+        'm_icon' => '<i class="fas fa-globe blue"></i>',
         'm_name' => 'Published',
         'm_desc' => 'live and ready to be shared with users',
         'm_parents' => array(7774,7358,7357,6177),
     ),
     6180 => array(
-        'm_icon' => '<i class="far fa-spinner fa-spin"></i>',
+        'm_icon' => '<i class="far fa-spinner fa-spin blue"></i>',
         'm_name' => 'Drafting',
         'm_desc' => 'being mined, to be published soon',
         'm_parents' => array(7774,7358,6177),
     ),
     6178 => array(
-        'm_icon' => '<i class="far fa-trash-alt"></i>',
+        'm_icon' => '<i class="far fa-trash-alt blue"></i>',
         'm_name' => 'Archived',
         'm_desc' => 'archived',
         'm_parents' => array(10672,6177),
