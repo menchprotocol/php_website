@@ -762,7 +762,7 @@ class Entities_model extends CI_Model
 
         } else {
 
-            //Ooooopsi, this value did not exist! Notify the admin so we can look into this:
+            //Ooooopsi, this value did not exist! Notify the Trainer so we can look into this:
             $this->Links_model->ln_create(array(
                 'ln_content' => 'en_search_match() found [' . count($matching_entities) . '] results as the children of en_id=[' . $en_parent_id . '] that had the value of [' . $value . '].',
                 'ln_type_entity_id' => 4246, //Platform Bug Reports
@@ -1060,10 +1060,10 @@ class Entities_model extends CI_Model
 
 
         if(count($duplicate_ens) > 0){
-            //Log a link to inform admin of this:
+            //Log a link to inform Trainer of this:
             $this->Links_model->ln_create(array(
                 'ln_content' => 'Duplicate entity names detected for ['.$duplicate_ens[0]['en_name'].']',
-                'ln_type_entity_id' => 7504, //Admin Review Required
+                'ln_type_entity_id' => 7504, //Trainer Review Required
                 'ln_child_entity_id' => $entity_new['en_id'],
                 'ln_parent_entity_id' => $duplicate_ens[0]['en_id'],
                 'ln_creator_entity_id' => $ln_creator_entity_id,

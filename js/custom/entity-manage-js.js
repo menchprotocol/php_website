@@ -123,7 +123,7 @@ $(document).ready(function () {
 
         if (parseInt($('#en_status_entity_id').find(":selected").val()) == 6178 /* Entity Removed */) {
 
-            //Notify admin:
+            //Notify Trainer:
             $('.notify_en_remove').removeClass('hidden');
             $('.entity_remove_stats').html('<i class="fas fa-yin-yang fa-spin"></i>');
 

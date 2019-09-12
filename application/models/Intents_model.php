@@ -590,7 +590,7 @@ class Intents_model extends CI_Model
                 //Not programmed yet! Inform user:
                 $ui .= '<span style="color: #FF0000;">Error: Unknown Input Type</span>';
 
-                //Log for admins:
+                //Log for Trainers:
                 $this->Links_model->ln_create(array(
                     'ln_content' => 'in_create_content() has unknown file type @'.$in['in_subtype_entity_id'],
                     'ln_type_entity_id' => 4246, //Platform Bug Reports

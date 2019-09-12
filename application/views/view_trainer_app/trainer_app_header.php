@@ -90,9 +90,9 @@ $uri_segment_2 = $this->uri->segment(2);
                                 </a>
                             </li>
 
-                            <!-- Admin Apps -->
+                            <!-- Trainer Apps -->
                             <li class="<?= advance_mode().($uri_segment_1 == 'trainerapp' ? 'transparent-active' : 'transparent-inactive') ?>" data-toggle="tooltip" data-placement="left" title="<?= $en_all_7368[6287]['m_name'] ?>">
-                                <a href="/trainer_app/admin_tools">
+                                <a href="/trainer_app/trainer_tools">
                                     <?= $en_all_7368[6287]['m_icon'] ?>
                                 </a>
                             </li>

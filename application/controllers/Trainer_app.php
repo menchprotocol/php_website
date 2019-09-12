@@ -13,7 +13,7 @@ class Trainer_app extends CI_Controller
     }
 
 
-    function admin_tools($action = null, $command1 = null, $command2 = null)
+    function trainer_tools($action = null, $command1 = null, $command2 = null)
     {
 
         boost_power();
@@ -25,7 +25,7 @@ class Trainer_app extends CI_Controller
         $this->load->view('view_trainer_app/trainer_app_header', array(
             'title' => 'Moderation Tools',
         ));
-        $this->load->view('view_trainer_app/admin_tools' , array(
+        $this->load->view('view_trainer_app/trainer_tools' , array(
             'action' => $action,
             'command1' => $command1,
             'command2' => $command2,

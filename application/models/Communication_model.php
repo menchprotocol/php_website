@@ -51,14 +51,14 @@ class Communication_model extends CI_Model
                 'ln_status_entity_id IN (' . join(',', $this->config->item('en_ids_7360')) . ')' => null, //Link Statuses Active
             ), array(), 1, 0, array('ln_id' => 'DESC'));
 
-            //They have admin rights:
+            //They have Trainer rights:
             $session_data['user_default_intent'] = $this->config->item('in_focus_id');
             $session_data['user_session_count'] = 0;
             $session_data['advance_view_enabled'] = ( count($last_advance_settings) > 0 && substr_count($last_advance_settings[0]['ln_content'] , ' ON')==1 ? 1 : 0 );
 
         } elseif ($is_trainer) {
 
-            //They have admin rights:
+            //They have Trainer rights:
             $session_data['user_default_intent'] = ( substr($is_trainer['ln_content'],0,1)=='#' ? substr($is_trainer['ln_content'],1) : $this->config->item('in_focus_id') );
             $session_data['user_session_count'] = 0;
             $session_data['advance_view_enabled'] = 0;
@@ -108,7 +108,7 @@ class Communication_model extends CI_Model
                     //Subscriber is missing an email link:
                     $this->Links_model->ln_create(array(
                         'ln_content' => 'Intent subscriber missing Mench email',
-                        'ln_type_entity_id' => 7504, //Admin Review Required
+                        'ln_type_entity_id' => 7504, //Trainer Review Required
                         'ln_creator_entity_id' => $insert_columns['ln_creator_entity_id'], //HERE
                         'ln_parent_entity_id' => $subscriber_en['en_id'],
                         'ln_child_intent_id' => $subscriber_en['ln_child_intent_id'],
@@ -2347,7 +2347,7 @@ class Communication_model extends CI_Model
 
                             if(!$quick_reply_results['status']){
 
-                                //There was an error, inform admin:
+                                //There was an error, inform Trainer:
                                 $this->Links_model->ln_create(array(
                                     'ln_content' => 'digest_received_payload() for custom response ['.$fb_received_message.'] returned error ['.$quick_reply_results['message'].']',
                                     'ln_metadata' => $ln_metadata,
@@ -2378,7 +2378,7 @@ class Communication_model extends CI_Model
 
 
 
-            //Let's check to see if a Mench admin has not started a manual conversation with them via Facebook Inbox Chat:
+            //Let's check to see if a Mench Trainer has not started a manual conversation with them via Facebook Inbox Chat:
             if (count($this->Links_model->ln_fetch(array(
                     'ln_order' => 1, //A HACK to identify messages sent from us via Facebook Page Inbox
                     'ln_creator_entity_id' => $en['en_id'],
@@ -2386,7 +2386,7 @@ class Communication_model extends CI_Model
                     'ln_timestamp >=' => date("Y-m-d H:i:s", (time() - (1800))), //Messages sent from us less than 30 minutes ago
                 ), array(), 1)) > 0) {
 
-                //Yes, this user is talking to an admin so do not interrupt their conversation:
+                //Yes, this user is talking to an Trainer so do not interrupt their conversation:
                 return false;
 
             }

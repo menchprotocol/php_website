@@ -126,7 +126,7 @@ class User_app extends CI_Controller
 
             $this->Links_model->ln_create(array(
                 'ln_content' => 'User failed to login using non-Chrome browser',
-                'ln_type_entity_id' => 7504, //Admin Review Required
+                'ln_type_entity_id' => 7504, //Trainer Review Required
                 'ln_creator_entity_id' => $ens[0]['en_id'],
             ));
 

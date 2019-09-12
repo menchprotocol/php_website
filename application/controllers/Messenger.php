@@ -322,7 +322,7 @@ class Messenger extends CI_Controller
                         $quick_reply_results = $this->Communication_model->digest_received_payload($en, $im['message']['quick_reply']['payload']);
 
                         if(!$quick_reply_results['status']){
-                            //There was an error, inform admin:
+                            //There was an error, inform Trainer:
                             $this->Links_model->ln_create(array(
                                 'ln_content' => 'digest_received_payload() for message returned error ['.$quick_reply_results['message'].']',
                                 'ln_metadata' => $ln_metadata,
@@ -729,7 +729,7 @@ class Messenger extends CI_Controller
                     if ($quick_reply_payload) {
                         $quick_reply_results = $this->Communication_model->digest_received_payload($en, $quick_reply_payload);
                         if(!$quick_reply_results['status']){
-                            //There was an error, inform admin:
+                            //There was an error, inform Trainer:
                             $this->Links_model->ln_create(array(
                                 'ln_content' => 'digest_received_payload() for postback/referral returned error ['.$quick_reply_results['message'].']',
                                 'ln_metadata' => $ln_metadata,
@@ -815,7 +815,7 @@ class Messenger extends CI_Controller
          * Stores these media in Mench CDN:
          *
          * 1) Media received from users
-         * 2) Media sent from Mench Admins via Facebook Chat Inbox
+         * 2) Media sent from Mench Trainers via Facebook Chat Inbox
          *
          * Note: It would not store media that is sent from intent
          * notes since those are already stored.
