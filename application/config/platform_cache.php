@@ -11,10 +11,45 @@ defined('BASEPATH') OR exit('No direct script access allowed');
  *
  */
 
-//Generated 2019-09-12 15:27:45 PST
+//Generated 2019-09-12 15:50:59 PST
+
+//Link Connector Fields:
+$config['en_ids_10692'] = array(4429,4369,4366,4368,4371);
+$config['en_all_10692'] = array(
+    4429 => array(
+        'm_icon' => '<i class="fas fa-at ispink"></i>',
+        'm_name' => 'Link Child Entity',
+        'm_desc' => '',
+        'm_parents' => array(10692,6160,6232,4341),
+    ),
+    4369 => array(
+        'm_icon' => '<i class="fas fa-hashtag ispink"></i>',
+        'm_name' => 'Link Child Intent',
+        'm_desc' => '',
+        'm_parents' => array(10692,6202,6232,4341),
+    ),
+    4366 => array(
+        'm_icon' => '<i class="fas fa-at ispink"></i>',
+        'm_name' => 'Link Parent Entity',
+        'm_desc' => '',
+        'm_parents' => array(10692,6160,6232,4341),
+    ),
+    4368 => array(
+        'm_icon' => '<i class="fas fa-hashtag ispink"></i>',
+        'm_name' => 'Link Parent Intent',
+        'm_desc' => '',
+        'm_parents' => array(10692,6202,6232,4341),
+    ),
+    4371 => array(
+        'm_icon' => '<i class="fas fa-link ispink"></i>',
+        'm_name' => 'Link Parent Link',
+        'm_desc' => '',
+        'm_parents' => array(10692,4367,6232,4341),
+    ),
+);
 
 //Platform Cache:
-$config['en_ids_4527'] = array(7758,7774,7756,6827,4997,7303,6194,6805,6177,7358,7357,6206,4592,4537,10627,6192,7712,7302,4229,6345,4485,4986,7551,7701,4983,6193,7596,7582,7767,10568,10567,7588,4737,7356,7355,7585,6201,4486,7309,10602,7751,7799,7304,10591,7703,10658,6103,6186,7360,7364,7359,4341,4593,7347,10592,7529,7555,7372,7368,6287,7369,4426,6225,10596,4527,7366,4755,10571,6204,6123,10593,4454,5969,3000,4600,6150,5967,4280,10570,4277,6102,7704,6144,6244,6255,6274,6146,7494,7203,10539,10594,10589,10590);
+$config['en_ids_4527'] = array(7758,7774,7756,6827,4997,7303,6194,6805,6177,7358,7357,6206,4592,4537,10627,6192,7712,7302,4229,6345,4485,4986,7551,7701,4983,6193,7596,7582,7767,10568,10567,7588,4737,7356,7355,7585,6201,4486,7309,10602,7751,7799,10692,7304,10591,7703,10658,6103,6186,7360,7364,7359,4341,4593,7347,10592,7529,7555,7372,7368,6287,7369,4426,6225,10596,4527,7366,4755,10571,6204,6123,10593,4454,5969,3000,4600,6150,5967,4280,10570,4277,6102,7704,6144,6244,6255,6274,6146,7494,7203,10539,10594,10589,10590);
 $config['en_all_4527'] = array(
     7758 => array(
         'm_icon' => '<i class="far fa-mountain ispink"></i>',
@@ -267,6 +302,12 @@ $config['en_all_4527'] = array(
         'm_name' => 'Leaderboard Time Frames',
         'm_desc' => '&var_trimcache=Leaderboard',
         'm_parents' => array(4527,7797),
+    ),
+    10692 => array(
+        'm_icon' => '<i class="fas fa-bezier-curve ispink"></i>',
+        'm_name' => 'Link Connector Fields',
+        'm_desc' => '',
+        'm_parents' => array(4527,6771),
     ),
     7304 => array(
         'm_icon' => '<i class="far fa-chart-bar ispink"></i>',
@@ -1250,20 +1291,8 @@ $config['en_all_10593'] = array(
 );
 
 //Nod:
-$config['en_ids_10596'] = array(4246,7504,10625,5943,5001,5865,4999,4998,5000,5981,5982,5003,10659,10689,4994,10647,6226,10681,4993,4264,4242,5007,6415,4275,6559,6560,6556,6578,6149,7611,6969,4283,7495,7542,7610,5967,7563,10690,4266,4267,4282,10683,4577,4278,4279,4268,10687,4287,7561,7564,7559,7560,7558,7488,7485,7486,6144,7741,10685,4559,7489,7492,6997,6157,7487,6143,7562);
+$config['en_ids_10596'] = array(10625,5943,5001,5865,4999,4998,5000,5981,5982,5003,10659,10689,4994,10647,6226,10681,4993,4264,4242,4246,7504,5007,6415,4275,6559,6560,6556,6578,6149,7611,6969,4283,7495,7542,7610,5967,7563,10690,4266,4267,4282,10683,4577,4278,4279,4268,10687,4287,7561,7564,7559,7560,7558,7488,7485,7486,6144,7741,10685,4559,7489,7492,6997,6157,7487,6143,7562);
 $config['en_all_10596'] = array(
-    4246 => array(
-        'm_icon' => '<i class="far fa-bug ispink"></i>',
-        'm_name' => 'Admin Bug Reports',
-        'm_desc' => '',
-        'm_parents' => array(10596,10589,5967,4755,4593),
-    ),
-    7504 => array(
-        'm_icon' => '<i class="far fa-comment-exclamation ispink"></i>',
-        'm_name' => 'Admin Review Trigger',
-        'm_desc' => '',
-        'm_parents' => array(10596,10589,5967,4755,4593),
-    ),
     10625 => array(
         'm_icon' => '<i class="far fa-user-circle ispink"></i>',
         'm_name' => 'Entities Icon Replace',
@@ -1378,9 +1407,21 @@ $config['en_all_10596'] = array(
         'm_desc' => '',
         'm_parents' => array(10658,10596,10589,4755,4593),
     ),
+    4246 => array(
+        'm_icon' => '<i class="far fa-bug ispink"></i>',
+        'm_name' => 'Trainer Bug Reports',
+        'm_desc' => '',
+        'm_parents' => array(10596,10589,5967,4755,4593),
+    ),
+    7504 => array(
+        'm_icon' => '<i class="far fa-comment-exclamation ispink"></i>',
+        'm_name' => 'Trainer Review Trigger',
+        'm_desc' => '',
+        'm_parents' => array(10596,10589,5967,4755,4593),
+    ),
     5007 => array(
         'm_icon' => '<i class="fas fa-expand-arrows ispink"></i>',
-        'm_name' => 'Toggle Advance Mode',
+        'm_name' => 'Trainer Toggle Advance Mode',
         'm_desc' => '',
         'm_parents' => array(10596,10589,7368,4757,4593),
     ),
@@ -1788,20 +1829,8 @@ $config['en_all_10590'] = array(
 );
 
 //Words In:
-$config['en_ids_10589'] = array(4246,7504,10625,5943,5001,5865,4999,4998,5000,5981,5982,5003,4251,10672,10653,10646,10654,4259,4257,4261,4260,4319,10657,10656,10659,10689,4230,4255,4318,10673,4256,4258,4263,4250,10671,10650,10644,10649,10648,10651,10647,4229,10663,10664,10661,10662,4228,10686,10660,6093,6242,7545,4601,4231,10679,10677,10676,7701,10678,10573,4983,6226,10681,10675,6132,4264,4242,5007,6415,4275,6559,6560,6556,6578,6154,6155,6150,4235,7757,7578,6224,10690,4266,4267,10683,4577,4549,4551,4550,4557,4278,4279,4268,4299,4460,10687,4547,4287,4548,7561,7564,7559,7560,7558,7488,7485,7486,6144,7741,10685,6140,4559,7489,7492,6997,6157,7487,6143);
+$config['en_ids_10589'] = array(10625,5943,5001,5865,4999,4998,5000,5981,5982,5003,4251,10672,10653,10646,10654,4259,4257,4261,4260,4319,10657,10656,10659,10689,4230,4255,4318,10673,4256,4258,4263,4250,10671,10650,10644,10649,10648,10651,10647,4229,10663,10664,10661,10662,4228,10686,10660,6093,6242,7545,4601,4231,10679,10677,10676,7701,10678,10573,4983,6226,10681,10675,6132,4264,4242,4246,7504,5007,6415,4275,6559,6560,6556,6578,6154,6155,6150,4235,7757,7578,6224,10690,4266,4267,10683,4577,4549,4551,4550,4557,4278,4279,4268,4299,4460,10687,4547,4287,4548,7561,7564,7559,7560,7558,7488,7485,7486,6144,7741,10685,6140,4559,7489,7492,6997,6157,7487,6143);
 $config['en_all_10589'] = array(
-    4246 => array(
-        'm_icon' => '<i class="far fa-bug ispink"></i>',
-        'm_name' => 'Admin Bug Reports',
-        'm_desc' => '',
-        'm_parents' => array(10596,10589,5967,4755,4593),
-    ),
-    7504 => array(
-        'm_icon' => '<i class="far fa-comment-exclamation ispink"></i>',
-        'm_name' => 'Admin Review Trigger',
-        'm_desc' => '',
-        'm_parents' => array(10596,10589,5967,4755,4593),
-    ),
     10625 => array(
         'm_icon' => '<i class="far fa-user-circle ispink"></i>',
         'm_name' => 'Entities Icon Replace',
@@ -2192,9 +2221,21 @@ $config['en_all_10589'] = array(
         'm_desc' => '',
         'm_parents' => array(10658,10596,10589,4755,4593),
     ),
+    4246 => array(
+        'm_icon' => '<i class="far fa-bug ispink"></i>',
+        'm_name' => 'Trainer Bug Reports',
+        'm_desc' => '',
+        'm_parents' => array(10596,10589,5967,4755,4593),
+    ),
+    7504 => array(
+        'm_icon' => '<i class="far fa-comment-exclamation ispink"></i>',
+        'm_name' => 'Trainer Review Trigger',
+        'm_desc' => '',
+        'm_parents' => array(10596,10589,5967,4755,4593),
+    ),
     5007 => array(
         'm_icon' => '<i class="fas fa-expand-arrows ispink"></i>',
-        'm_name' => 'Toggle Advance Mode',
+        'm_name' => 'Trainer Toggle Advance Mode',
         'm_desc' => '',
         'm_parents' => array(10596,10589,7368,4757,4593),
     ),
@@ -3022,13 +3063,13 @@ $config['en_all_4341'] = array(
         'm_icon' => '<i class="fas fa-at ispink"></i>',
         'm_name' => 'Child Entity',
         'm_desc' => '',
-        'm_parents' => array(6160,6232,4341),
+        'm_parents' => array(10692,6160,6232,4341),
     ),
     4369 => array(
         'm_icon' => '<i class="fas fa-hashtag ispink"></i>',
         'm_name' => 'Child Intent',
         'm_desc' => '',
-        'm_parents' => array(6202,6232,4341),
+        'm_parents' => array(10692,6202,6232,4341),
     ),
     4372 => array(
         'm_icon' => '<i class="fas fa-sticky-note ispink"></i>',
@@ -3070,19 +3111,19 @@ $config['en_all_4341'] = array(
         'm_icon' => '<i class="fas fa-at ispink"></i>',
         'm_name' => 'Parent Entity',
         'm_desc' => '',
-        'm_parents' => array(6160,6232,4341),
+        'm_parents' => array(10692,6160,6232,4341),
     ),
     4368 => array(
         'm_icon' => '<i class="fas fa-hashtag ispink"></i>',
         'm_name' => 'Parent Intent',
         'm_desc' => '',
-        'm_parents' => array(6202,6232,4341),
+        'm_parents' => array(10692,6202,6232,4341),
     ),
     4371 => array(
         'm_icon' => '<i class="fas fa-link ispink"></i>',
         'm_name' => 'Parent',
         'm_desc' => '',
-        'm_parents' => array(4367,6232,4341),
+        'm_parents' => array(10692,4367,6232,4341),
     ),
     6186 => array(
         'm_icon' => '<i class="far fa-sliders-h ispink"></i>',
@@ -3691,13 +3732,13 @@ $config['en_ids_5967'] = array(4246,7504,6415,4235);
 $config['en_all_5967'] = array(
     4246 => array(
         'm_icon' => '<i class="far fa-bug ispink"></i>',
-        'm_name' => 'Admin Bug Reports',
+        'm_name' => 'Trainer Bug Reports',
         'm_desc' => '&var_en_subscriber_ids=1',
         'm_parents' => array(10596,10589,5967,4755,4593),
     ),
     7504 => array(
         'm_icon' => '<i class="far fa-comment-exclamation ispink"></i>',
-        'm_name' => 'Admin Review Trigger',
+        'm_name' => 'Trainer Review Trigger',
         'm_desc' => '&var_en_subscriber_ids=1',
         'm_parents' => array(10596,10589,5967,4755,4593),
     ),
@@ -4024,7 +4065,7 @@ $config['en_all_7368'] = array(
     ),
     5007 => array(
         'm_icon' => '<i class="fas fa-expand-arrows ispink"></i>',
-        'm_name' => 'Toggle Advance Mode',
+        'm_name' => 'Trainer Toggle Advance Mode',
         'm_desc' => '',
         'm_parents' => array(10596,10589,7368,4757,4593),
     ),
@@ -5030,20 +5071,8 @@ $config['en_all_4426'] = array(
 );
 
 //Private Link Types:
-$config['en_ids_4755'] = array(4246,7504,4263,10681,6132,4242,3288,3286,4783,6415,4275,6559,6560,6556,6578,6154,6155,6150,6149,7611,6969,4283,7495,7542,4235,7757,7610,7578,6224,5967,7563,4266,4267,4282,4554,4570,4556,4555,7702,6563,4552,4553,4577,4549,4551,4550,4557,4278,4279,4268,4299,4460,10687,4547,4287,4548,7561,7564,7559,7560,7558,7488,7485,7486,6144,7741,10685,6140,4559,7489,7492,6997,6157,7487,6143,7562);
+$config['en_ids_4755'] = array(4263,10681,6132,4242,3288,3286,4783,4246,7504,6415,4275,6559,6560,6556,6578,6154,6155,6150,6149,7611,6969,4283,7495,7542,4235,7757,7610,7578,6224,5967,7563,4266,4267,4282,4554,4570,4556,4555,7702,6563,4552,4553,4577,4549,4551,4550,4557,4278,4279,4268,4299,4460,10687,4547,4287,4548,7561,7564,7559,7560,7558,7488,7485,7486,6144,7741,10685,6140,4559,7489,7492,6997,6157,7487,6143,7562);
 $config['en_all_4755'] = array(
-    4246 => array(
-        'm_icon' => '<i class="far fa-bug ispink"></i>',
-        'm_name' => 'Admin Bug Reports',
-        'm_desc' => '',
-        'm_parents' => array(10596,10589,5967,4755,4593),
-    ),
-    7504 => array(
-        'm_icon' => '<i class="far fa-comment-exclamation ispink"></i>',
-        'm_name' => 'Admin Review Trigger',
-        'm_desc' => '',
-        'm_parents' => array(10596,10589,5967,4755,4593),
-    ),
     4263 => array(
         'm_icon' => '<i class="far fa-sync ispink"></i>',
         'm_name' => 'Entity Updated [DEPRECATING SOON]',
@@ -5085,6 +5114,18 @@ $config['en_all_4755'] = array(
         'm_name' => 'Phone Number',
         'm_desc' => '',
         'm_parents' => array(6225,4755,4319),
+    ),
+    4246 => array(
+        'm_icon' => '<i class="far fa-bug ispink"></i>',
+        'm_name' => 'Trainer Bug Reports',
+        'm_desc' => '',
+        'm_parents' => array(10596,10589,5967,4755,4593),
+    ),
+    7504 => array(
+        'm_icon' => '<i class="far fa-comment-exclamation ispink"></i>',
+        'm_name' => 'Trainer Review Trigger',
+        'm_desc' => '',
+        'm_parents' => array(10596,10589,5967,4755,4593),
     ),
     6415 => array(
         'm_icon' => '<i class="far fa-function ispink"></i>',
@@ -5508,20 +5549,8 @@ $config['en_all_4600'] = array(
 );
 
 //Link Type:
-$config['en_ids_4593'] = array(4246,7504,10625,5943,5001,5865,4999,4998,5000,5981,5982,5003,4251,10672,10653,10646,10654,4259,4257,4261,4260,4319,10657,10656,10659,10689,4230,4255,4318,10673,4256,4258,4994,4263,4250,10671,10650,10644,10649,10648,10651,10647,4229,10663,10664,10661,10662,4228,10686,10660,6093,6242,7545,4601,4231,10679,10677,10676,7701,10678,10573,4983,6226,10681,10675,6132,4993,4264,4242,5007,6415,4275,6559,6560,6556,6578,6154,6155,6150,6149,7611,6969,4283,7495,7542,4235,7757,7610,7578,6224,5967,7563,10690,4266,4267,4282,10683,4554,4570,4556,4555,7702,6563,4552,4553,4577,4549,4551,4550,4557,4278,4279,4268,4299,4460,10687,4547,4287,4548,7561,7564,7559,7560,7558,7488,7485,7486,6144,7741,10685,6140,4559,7489,7492,6997,6157,7487,6143,7562);
+$config['en_ids_4593'] = array(10625,5943,5001,5865,4999,4998,5000,5981,5982,5003,4251,10672,10653,10646,10654,4259,4257,4261,4260,4319,10657,10656,10659,10689,4230,4255,4318,10673,4256,4258,4994,4263,4250,10671,10650,10644,10649,10648,10651,10647,4229,10663,10664,10661,10662,4228,10686,10660,6093,6242,7545,4601,4231,10679,10677,10676,7701,10678,10573,4983,6226,10681,10675,6132,4993,4264,4242,4246,7504,5007,6415,4275,6559,6560,6556,6578,6154,6155,6150,6149,7611,6969,4283,7495,7542,4235,7757,7610,7578,6224,5967,7563,10690,4266,4267,4282,10683,4554,4570,4556,4555,7702,6563,4552,4553,4577,4549,4551,4550,4557,4278,4279,4268,4299,4460,10687,4547,4287,4548,7561,7564,7559,7560,7558,7488,7485,7486,6144,7741,10685,6140,4559,7489,7492,6997,6157,7487,6143,7562);
 $config['en_all_4593'] = array(
-    4246 => array(
-        'm_icon' => '<i class="far fa-bug ispink"></i>',
-        'm_name' => 'Admin Bug Reports',
-        'm_desc' => '',
-        'm_parents' => array(10596,10589,5967,4755,4593),
-    ),
-    7504 => array(
-        'm_icon' => '<i class="far fa-comment-exclamation ispink"></i>',
-        'm_name' => 'Admin Review Trigger',
-        'm_desc' => 'Certain links that match an unknown behavior would require an admin to review and ensure it\'s all good',
-        'm_parents' => array(10596,10589,5967,4755,4593),
-    ),
     10625 => array(
         'm_icon' => '<i class="far fa-user-circle ispink"></i>',
         'm_name' => 'Entities Icon Replace',
@@ -5924,9 +5953,21 @@ $config['en_all_4593'] = array(
         'm_desc' => 'Logged for each link column that is updated consciously by the user',
         'm_parents' => array(10658,10596,10589,4755,4593),
     ),
+    4246 => array(
+        'm_icon' => '<i class="far fa-bug ispink"></i>',
+        'm_name' => 'Trainer Bug Reports',
+        'm_desc' => '',
+        'm_parents' => array(10596,10589,5967,4755,4593),
+    ),
+    7504 => array(
+        'm_icon' => '<i class="far fa-comment-exclamation ispink"></i>',
+        'm_name' => 'Trainer Review Trigger',
+        'm_desc' => 'Certain links that match an unknown behavior would require an admin to review and ensure it\'s all good',
+        'm_parents' => array(10596,10589,5967,4755,4593),
+    ),
     5007 => array(
         'm_icon' => '<i class="fas fa-expand-arrows ispink"></i>',
-        'm_name' => 'Toggle Advance Mode',
+        'm_name' => 'Trainer Toggle Advance Mode',
         'm_desc' => '',
         'm_parents' => array(10596,10589,7368,4757,4593),
     ),

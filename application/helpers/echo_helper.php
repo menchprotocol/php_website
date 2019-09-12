@@ -534,8 +534,11 @@ function echo_ln($ln, $is_inner = false)
 {
 
     $CI =& get_instance();
-    $en_all_4593 = $CI->config->item('en_all_4593');
+    $en_all_4593 = $CI->config->item('en_all_4593'); //Link Type
+    $en_all_4527 = $CI->config->item('en_all_4527'); //Platform Cache
     $en_all_4341 = $CI->config->item('en_all_4341'); //Link Table
+    $en_all_7368 = $CI->config->item('en_all_7368'); //Trainer App
+
     $session_en = en_auth();
     if(isset($session_en['en_id'])){
         $is_owner = ( $ln['ln_creator_entity_id']>0 && $session_en['en_id']==$ln['ln_creator_entity_id'] );
@@ -573,11 +576,11 @@ function echo_ln($ln, $is_inner = false)
     //Link ID Row of data:
     $ui .= '<div style="padding: 0px 0 8px 12px; font-size: 0.9em;">';
 
-    $ui .= '<span data-toggle="tooltip" data-placement="top" title="Link ID"><a href="/links?ln_id='.$ln['ln_id'].'"><i class="fas fa-link"></i> '.$ln['ln_id'].'</a></span>';
+    $ui .= '<span data-toggle="tooltip" data-placement="top" title="Link ID"><a href="/links?ln_id='.$ln['ln_id'].'">'.$en_all_7368[6205]['m_icon'].' '.$ln['ln_id'].'</a></span>';
 
     $ui .= ' &nbsp;&nbsp;<span data-toggle="tooltip" data-placement="top" title="Link is '.$en_all_6186[$ln['ln_status_entity_id']]['m_desc'].'">'.$en_all_6186[$ln['ln_status_entity_id']]['m_icon'].' '.$en_all_6186[$ln['ln_status_entity_id']]['m_name'].'</span>';
 
-    $ui .= ' &nbsp;&nbsp;<span data-toggle="tooltip" data-placement="top" title="Link Creation Timestamp: ' . $ln['ln_timestamp'] . ' PST"><i class="fas fa-clock"></i> ' . echo_time_difference(strtotime($ln['ln_timestamp'])) . ' ago</span>';
+    $ui .= ' &nbsp;&nbsp;<span data-toggle="tooltip" data-placement="top" title="Link Creation Timestamp: ' . $ln['ln_timestamp'] . ' PST">'.$en_all_4341[4362]['m_icon']. ' ' . echo_time_difference(strtotime($ln['ln_timestamp'])) . ' ago</span>';
 
     $ui .= '</div>';
 
@@ -673,23 +676,23 @@ function echo_ln($ln, $is_inner = false)
 
 
     if($ln['ln_order'] > 0){
-        $ui .= '<span class="link-connection-a"><span data-toggle="tooltip" data-placement="top" title="Link ordered '.echo_ordinal_number($ln['ln_order']).'" style="min-width:30px; display: inline-block;"><i class="fas fa-sort"></i> '.echo_ordinal_number($ln['ln_order']).' Order</span></span> &nbsp;';
+        $ui .= '<span class="link-connection-a"><span data-toggle="tooltip" data-placement="top" title="Link ordered '.echo_ordinal_number($ln['ln_order']).'" style="min-width:30px; display: inline-block;">'.$en_all_4341[4370]['m_icon']. ' '.echo_ordinal_number($ln['ln_order']).' Order</span></span> &nbsp;';
     }
 
     //Is this a trainer? Show them metadata status:
     if(!$hide_sensitive_details && strlen($ln['ln_metadata']) > 0){
-        $ui .= '<span class="link-connection-a"><a href="/links/link_json/' . $ln['ln_id'] . '" target="_blank" data-toggle="tooltip" data-placement="top" title="View link metadata (in new window)" style="min-width:26px; display: inline-block;"><i class="far fa-lambda"></i> Metadata</a></span> &nbsp;';
+        $ui .= '<span class="link-connection-a"><a href="/links/link_json/' . $ln['ln_id'] . '" target="_blank" data-toggle="tooltip" data-placement="top" title="View link metadata (in new window)" style="min-width:26px; display: inline-block;">'.$en_all_4341[6103]['m_icon']. ' Metadata</a></span> &nbsp;';
     }
 
     if(!$hide_sensitive_details && $ln['ln_external_id'] > 0){
-        $ui .= '<span class="link-connection-a" data-toggle="tooltip" data-placement="top" title="Link External ID"><i class="fas fa-project-diagram"></i> '.$ln['ln_external_id'].'</span> &nbsp;';
+        $ui .= '<span class="link-connection-a" data-toggle="tooltip" data-placement="top" title="Link External ID">'.$en_all_4527[6103]['m_icon']. ' '.$ln['ln_external_id'].'</span> &nbsp;';
     }
 
     //Give option to load if it has connections:
     if(!$is_inner && (strlen($link_connections_clean_name) > 0 || $load_main)){
 
         if(!$load_main || $child_links[0]['total_child_links'] > 0){
-            $ui .= '<span class="link_connections_link_'.$ln['ln_id'].' link-connection-a"><a href="#linkconnection-'.$ln['ln_id'].'" onclick="load_link_connections('.$ln['ln_id'].','.$load_main.')"  data-toggle="tooltip" data-placement="top" title="Append Link Connections"><i class="fas fa-project-diagram"></i> '.$link_connections_clean_name.'</a></span>';
+            $ui .= '<span class="link_connections_link_'.$ln['ln_id'].' link-connection-a"><a href="#linkconnection-'.$ln['ln_id'].'" onclick="load_link_connections('.$ln['ln_id'].','.$load_main.')"  data-toggle="tooltip" data-placement="top" title="'.$en_all_4527[10692]['m_name'].'">'.$en_all_4527[10692]['m_icon'].' '.$link_connections_clean_name.'</a></span>';
         }
 
         $ui .= '</div>'; //Close main link box
