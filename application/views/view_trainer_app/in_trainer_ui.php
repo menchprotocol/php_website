@@ -151,7 +151,7 @@ $en_all_7369 = $this->config->item('en_all_7369');
 
 
     <div class="<?= $this->config->item('css_column_2') ?>">
-        <?php $this->load->view('view_miner_app/in_right_column'); ?>
+        <?php $this->load->view('view_trainer_app/in_right_column'); ?>
     </div>
 </div>
 

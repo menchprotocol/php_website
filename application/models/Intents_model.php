@@ -196,7 +196,7 @@ class Intents_model extends CI_Model
         if ($affected_rows > 0 && $ln_creator_entity_id > 0) {
 
 
-            //Note that unlike entity modification, we require a miner entity ID to log the modification link:
+            //Note that unlike entity modification, we require a trainer entity ID to log the modification link:
             //Log modification link for every field changed:
             foreach ($update_columns as $key => $value) {
 
@@ -448,7 +448,7 @@ class Intents_model extends CI_Model
             ), true, $ln_creator_entity_id);
 
 
-            //Add user as Trainer IF NOT a miner:
+            //Add user as Trainer IF NOT a trainer:
             if(!count($this->Links_model->ln_fetch(array(
                 'ln_child_entity_id' => $ln_creator_entity_id,
                 'ln_parent_entity_id' => 1308, //Mench Trainers

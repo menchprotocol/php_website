@@ -431,10 +431,10 @@ class Entities_model extends CI_Model
          * Input legend:
          *
          * - $url:                  Input URL
-         * - $ln_creator_entity_id:       IF > 0 will save URL (if not already there) and give credit to this entity as the miner
+         * - $ln_creator_entity_id:       IF > 0 will save URL (if not already there) and give credit to this entity as the trainer
          * - $link_parent_en_ids:  IF array includes entity IDs that will be added as parent entity of this URL
          * - $add_to_child_en_id:   IF > 0 Will also add URL to this child if present
-         * - $page_title:           If set it would override the entity title that is auto generated (Used in Add Source Wizard to enable miners to edit auto generated title)
+         * - $page_title:           If set it would override the entity title that is auto generated (Used in Add Source Wizard to enable trainers to edit auto generated title)
          *
          * */
 
@@ -639,7 +639,7 @@ class Entities_model extends CI_Model
                     $page_title = $en_all_4592[$ln_type_entity_id]['m_name'].' '.substr(md5($url), 0, 16);
                 }
 
-                //Create a new entity for this URL ONLY If miner entity is provided...
+                //Create a new entity for this URL ONLY If trainer entity is provided...
                 $added_en = $this->Entities_model->en_verify_create($page_title, $ln_creator_entity_id, 6181);
                 if($added_en['status']){
 
@@ -674,7 +674,7 @@ class Entities_model extends CI_Model
                 }
 
             } else {
-                //URL not found and no miner entity provided to create the URL:
+                //URL not found and no trainer entity provided to create the URL:
                 $en_url = array();
             }
         }
@@ -848,7 +848,7 @@ class Entities_model extends CI_Model
 
             } elseif (in_array($action_en_id, array(5981, 5982))) { //Add/Remove parent entity
 
-                //What miner searched for:
+                //What trainer searched for:
                 $parent_en_id = intval(one_two_explode('@',' ',$action_command1));
 
                 //See if child entity has searched parent entity:
@@ -1155,7 +1155,7 @@ class Entities_model extends CI_Model
                         //Create new link:
                         $this->Links_model->ln_create(array(
                             'ln_type_entity_id' => 4230, //Raw link
-                            'ln_creator_entity_id' => $added_en['en']['en_id'], //User gets credit as miner
+                            'ln_creator_entity_id' => $added_en['en']['en_id'], //User gets credit as trainer
                             'ln_parent_entity_id' => $ln_parent_entity_id,
                             'ln_child_entity_id' => $added_en['en']['en_id'],
                         ));

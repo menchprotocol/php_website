@@ -36,13 +36,13 @@ class Communication_model extends CI_Model
 
         $is_user = filter_array($en['en__parents'], 'ln_parent_entity_id', 4430);
         $is_trainer = filter_array($en['en__parents'], 'ln_parent_entity_id', 7512);
-        $is_miner = filter_array($en['en__parents'], 'ln_parent_entity_id', 1308);
+        $is_trainer = filter_array($en['en__parents'], 'ln_parent_entity_id', 1308);
 
         //Assign user details:
         $session_data['user'] = $en;
 
-        //Are they miner? Give them Sign In access:
-        if ($is_miner) {
+        //Are they trainer? Give them Sign In access:
+        if ($is_trainer) {
 
             //Check their advance mode status:
             $last_advance_settings = $this->Links_model->ln_fetch(array(
@@ -947,11 +947,11 @@ class Communication_model extends CI_Model
                 //Check up-voting restrictions:
                 if($is_being_modified){
 
-                    //Entity reference must be either the miner themselves or an expert source:
-                    $session_en = en_auth(array(1308,7512)); //Is miners/trainer
+                    //Entity reference must be either the trainer themselves or an expert source:
+                    $session_en = en_auth(array(1308,7512)); //Is trainers/trainer
                     if($string_references['ref_entities'][0] != $session_en['en_id']){
 
-                        //Reference is not the logged-in miner, let's check to make sure it's an expert source
+                        //Reference is not the logged-in trainer, let's check to make sure it's an expert source
                         if(!count($this->Links_model->ln_fetch(array(
                             'ln_status_entity_id IN (' . join(',', $this->config->item('en_ids_7359')) . ')' => null, //Link Statuses Public
                             'ln_child_entity_id' => $string_references['ref_entities'][0],

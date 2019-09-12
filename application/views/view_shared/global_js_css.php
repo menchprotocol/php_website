@@ -3,7 +3,7 @@
 
 HELP US BUILT THE FUTURE
 
-JOIN OUR TEAM:
+JOIN MENCH1
 
 https://mench.com/12747
 

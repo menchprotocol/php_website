@@ -1,7 +1,7 @@
 <?php
 defined('BASEPATH') OR exit('No direct script access allowed');
 
-class Miner_app extends CI_Controller
+class Trainer_app extends CI_Controller
 {
 
     function __construct()
@@ -18,20 +18,20 @@ class Miner_app extends CI_Controller
 
         boost_power();
 
-        //Validate miner:
+        //Validate trainer:
         $session_en = en_auth(array(1308), true);
 
         //Load tools:
-        $this->load->view('view_miner_app/miner_app_header', array(
+        $this->load->view('view_trainer_app/trainer_app_header', array(
             'title' => 'Moderation Tools',
         ));
-        $this->load->view('view_miner_app/admin_tools' , array(
+        $this->load->view('view_trainer_app/admin_tools' , array(
             'action' => $action,
             'command1' => $command1,
             'command2' => $command2,
             'session_en' => $session_en,
         ));
-        $this->load->view('view_miner_app/miner_app_footer');
+        $this->load->view('view_trainer_app/trainer_app_footer');
     }
 
 
@@ -39,11 +39,11 @@ class Miner_app extends CI_Controller
     {
         $session_en = en_auth(array(1308,7512)); //Just be logged in to browse
         $en_all_7368 = $this->config->item('en_all_7368');
-        $this->load->view(($session_en ? 'view_miner_app/miner_app_header' : 'view_user_app/user_app_header'), array(
+        $this->load->view(($session_en ? 'view_trainer_app/trainer_app_header' : 'view_user_app/user_app_header'), array(
             'title' => $en_all_7368[7161]['m_name'],
         ));
-        $this->load->view('view_miner_app/mench_dashboard');
-        $this->load->view(($session_en ? 'view_miner_app/miner_app_footer' : 'view_user_app/user_app_footer'));
+        $this->load->view('view_trainer_app/mench_dashboard');
+        $this->load->view(($session_en ? 'view_trainer_app/trainer_app_footer' : 'view_user_app/user_app_footer'));
     }
 
 
@@ -115,7 +115,7 @@ class Miner_app extends CI_Controller
         echo '<table class="table table-condensed table-striped stats-table mini-stats-table">';
 
         echo '<tr class="panel-title down-border">';
-        echo '<td style="text-align: left;" colspan="2">'.number_format(count($in_verbs), 0).' '.$en_all_7302[5008]['m_name'].echo__s(count($in_verbs)).'</td>';
+        echo '<td style="text-align: left;" colspan="2">'.$en_all_7302[5008]['m_name'].echo__s(count($in_verbs)).' ['.number_format(count($in_verbs), 0).']</td>';
         echo '</tr>';
 
         foreach($in_verbs as $count => $verb){
@@ -149,7 +149,7 @@ class Miner_app extends CI_Controller
         //Intent Statuses:
         echo '<table class="table table-condensed table-striped stats-table mini-stats-table intent_statuses '.advance_mode().'">';
         echo '<tr class="panel-title down-border">';
-        echo '<td style="text-align: left;" colspan="2">'.count($this->config->item('en_all_4737')).' '.$en_all_7302[4737]['m_name'].echo__s(count($this->config->item('en_all_4737')), true).'</td>';
+        echo '<td style="text-align: left;" colspan="2">'.$en_all_7302[4737]['m_name'].echo__s(count($this->config->item('en_all_4737')), true).'</td>';
         echo '</tr>';
         foreach ($this->config->item('en_all_4737') as $en_id => $m) {
 
@@ -221,10 +221,8 @@ class Miner_app extends CI_Controller
                     $total_total_counts[$en_status_entity_id] = $source_count;
                 }
 
-
                 //Display row:
                 $expert_source_statuses .= '<td style="text-align: right;"'.( $en_status_entity_id != 6181 /* Entity Featured */ ? ' class="' . advance_mode() . '"' : '' ).'><a href="/entities/' . $en_id .'#status-'.$en_status_entity_id.'">'.number_format($source_count,0).'</a></td>';
-
 
             }
 
@@ -245,7 +243,7 @@ class Miner_app extends CI_Controller
         echo '<table class="table table-condensed table-striped stats-table">';
 
         echo '<tr class="panel-title down-border">';
-        echo '<td style="text-align: left;">'.number_format($total_total_counts[6181], 0).' '.$en_all_7303[3000]['m_name'].'</td>';
+        echo '<td style="text-align: left;">'.$en_all_7303[3000]['m_name'].' ['.number_format($total_total_counts[6181], 0).']</td>';
         foreach($this->config->item('en_all_7358') /* Entity Active Statuses */ as $en_status_entity_id => $m_status){
             if($en_status_entity_id == 6181 /* Entity Published */){
                 echo '<td style="text-align:right;"><div class="' . advance_mode() . '">' . $en_all_6177[$en_status_entity_id]['m_name'] . '</div></td>';
@@ -279,7 +277,7 @@ class Miner_app extends CI_Controller
         //Entity Statuses
         echo '<table class="table table-condensed table-striped stats-table mini-stats-table entity_statuses '.advance_mode().'">';
         echo '<tr class="panel-title down-border">';
-        echo '<td style="text-align: left;" colspan="2">'.count($this->config->item('en_all_6177')).' '.$en_all_7303[6177]['m_name'].echo__s(count($this->config->item('en_all_6177')), true).'</td>';
+        echo '<td style="text-align: left;" colspan="2">'.$en_all_7303[6177]['m_name'].echo__s(count($this->config->item('en_all_6177')), true).'</td>';
         echo '</tr>';
         foreach ($this->config->item('en_all_6177') as $en_id => $m) {
 
@@ -376,13 +374,13 @@ class Miner_app extends CI_Controller
 
 
         //Link Direction
-        echo_2level_stats($en_all_7304[10591]['m_name'], 10591, 4593, $link_types_counts, $addup_total_count, 'ln_type_entity_id', 'total_words');
+        echo_2level_stats('Types', 10591, 4593, $link_types_counts, $addup_total_count, 'ln_type_entity_id', 'total_words');
 
 
         //Link Status:
         echo '<table class="table table-condensed table-striped stats-table mini-stats-table link_statuses '.advance_mode().'">';
         echo '<tr class="panel-title down-border">';
-        echo '<td style="text-align: left;" colspan="2">'.count($this->config->item('en_all_6186')).' '.$en_all_7304[6186]['m_name'].echo__s(count($this->config->item('en_all_6186')), true).'</td>';
+        echo '<td style="text-align: left;" colspan="2">'.$en_all_7304[6186]['m_name'].echo__s(count($this->config->item('en_all_6186')), true).'</td>';
         echo '</tr>';
         foreach ($this->config->item('en_all_6186') as $en_id => $m) {
 

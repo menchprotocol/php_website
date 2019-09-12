@@ -360,7 +360,7 @@ function in_modify_load(in_id, ln_id) {
             //Load inputs:
             $('#in_completion_seconds').val(data.in.in_completion_seconds);
             $('.tr_in_link_title').text('');
-            $('#in_status_entity_id').val(data.in.in_status_entity_id).attr('original-status', data.in.in_status_entity_id); //Set the status before it gets changed by miners
+            $('#in_status_entity_id').val(data.in.in_status_entity_id).attr('original-status', data.in.in_status_entity_id); //Set the status before it gets changed by trainers
             $('#in_scope_entity_id').val(data.in.in_scope_entity_id);
 
             //Load intent link data if available:
@@ -616,7 +616,7 @@ function in_modify_save() {
 
                 //Should we try to check unlockable completions?
                 if(data.ins_unlocked_completions_count > 0){
-                    //We did complete/unlock some intents, inform miner and refresh:
+                    //We did complete/unlock some intents, inform trainer and refresh:
                     alert('Publishing this intent has just unlocked '+data.steps_unlocked_completions_count+' steps across '+data.ins_unlocked_completions_count+' intents. Page will be refreshed to reflect changes.');
                     window.location = "/intents/" + in_focus_id;
                 }

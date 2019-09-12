@@ -299,7 +299,7 @@ class Links_model extends CI_Model
             $sub_en_ids = array();
             foreach(explode(',', one_two_explode('&var_en_subscriber_ids=','', $en_all_5967[$insert_columns['ln_type_entity_id']]['m_desc'])) as $subscriber_en_id){
 
-                //Do not email the miner themselves, as already they know about their own engagement:
+                //Do not email the trainer themselves, as already they know about their own engagement:
                 if($insert_columns['ln_type_entity_id']==4246 /* Always report bugs */ || $subscriber_en_id != $insert_columns['ln_creator_entity_id']){
 
                     //Try fetching subscribers email:
@@ -327,23 +327,23 @@ class Links_model extends CI_Model
 
                 if($insert_columns['ln_creator_entity_id'] > 0){
 
-                    //Fetch miner details:
-                    $miner_ens = $this->Entities_model->en_fetch(array(
+                    //Fetch trainer details:
+                    $trainer_ens = $this->Entities_model->en_fetch(array(
                         'en_id' => $insert_columns['ln_creator_entity_id'],
                     ));
 
-                    $miner_name = $miner_ens[0]['en_name'];
+                    $trainer_name = $trainer_ens[0]['en_name'];
 
                 } else {
 
-                    //No miner:
-                    $miner_name = $this->config->item('system_name');
+                    //No trainer:
+                    $trainer_name = $this->config->item('system_name');
 
                 }
 
 
                 //Email Subject:
-                $subject = 'Notification: '  . $miner_name . ' ' . $en_all_5967[$insert_columns['ln_type_entity_id']]['m_name'];
+                $subject = 'Notification: '  . $trainer_name . ' ' . $en_all_5967[$insert_columns['ln_type_entity_id']]['m_name'];
 
                 //Compose email body, start with link content:
                 $html_message = '<div>' . ( strlen($insert_columns['ln_content']) > 0 ? $insert_columns['ln_content'] : '<i>No link content</i>') . '</div><br />';

@@ -23,7 +23,7 @@ class User_app extends CI_Controller
         //Check to see if they are already logged in?
         $session_en = $this->session->userdata('user');
         if (isset($session_en['en__parents'][0])) {
-            //Lead miner and above, go to console:
+            //Lead trainer and above, go to console:
             if(filter_array($session_en['en__parents'], 'en_id', 1308)){
                 return redirect_message('/dashboard');
             } else {
@@ -118,11 +118,11 @@ class User_app extends CI_Controller
 
         $is_user = filter_array($ens[0]['en__parents'], 'en_id', 4430);
         $is_trainer = filter_array($ens[0]['en__parents'], 'en_id', 7512);
-        $is_miner = filter_array($ens[0]['en__parents'], 'en_id', 1308);
+        $is_trainer = filter_array($ens[0]['en__parents'], 'en_id', 1308);
 
 
         //Applicable for anyone using the Mench mining app:
-        if (!$is_chrome && ($is_miner || $is_trainer)) {
+        if (!$is_chrome && ($is_trainer || $is_trainer)) {
 
             $this->Links_model->ln_create(array(
                 'ln_content' => 'User failed to login using non-Chrome browser',
@@ -145,7 +145,7 @@ class User_app extends CI_Controller
 
         if (isset($_POST['referrer_url']) && strlen($_POST['referrer_url']) > 0) {
             $login_url = urldecode($_POST['referrer_url']);
-        } else if ($is_miner || $is_trainer) {
+        } else if ($is_trainer || $is_trainer) {
             $login_url = '/dashboard';
         } else {
             $login_url = '/actionplan';
@@ -289,13 +289,13 @@ class User_app extends CI_Controller
             //Log them in:
             $ens[0] = $this->Communication_model->activate_session($ens[0]);
 
-            $is_miner = filter_array($ens[0]['en__parents'], 'en_id', 1308);
+            $is_trainer = filter_array($ens[0]['en__parents'], 'en_id', 1308);
             $is_trainer = filter_array($ens[0]['en__parents'], 'en_id', 7512);
 
             //Their next intent in line:
             return echo_json(array(
                 'status' => 1,
-                'login_url' => ( $is_miner || $is_trainer ? '/dashboard' : '/actionplan/next' ),
+                'login_url' => ( $is_trainer || $is_trainer ? '/dashboard' : '/actionplan/next' ),
             ));
 
 
@@ -589,11 +589,11 @@ class User_app extends CI_Controller
         $ens[0] = $this->Communication_model->activate_session($ens[0]);
 
         //Redirect based on permissions:
-        $is_miner = filter_array($ens[0]['en__parents'], 'en_id', 1308);
+        $is_trainer = filter_array($ens[0]['en__parents'], 'en_id', 1308);
         $is_trainer = filter_array($ens[0]['en__parents'], 'en_id', 7512);
 
         //Take them to next step:
-        return redirect_message(( $is_miner || $is_trainer ? '/dashboard' : '/actionplan/next' ));
+        return redirect_message(( $is_trainer || $is_trainer ? '/dashboard' : '/actionplan/next' ));
     }
 
     function singin_check_email(){
@@ -1697,7 +1697,7 @@ class User_app extends CI_Controller
         if (!isset($_POST['en_creator_id']) || intval($_POST['en_creator_id']) < 1) {
             return echo_json(array(
                 'status' => 0,
-                'message' => 'Invalid miner ID',
+                'message' => 'Invalid trainer ID',
             ));
         } elseif (!isset($_POST['in_id']) || intval($_POST['in_id']) < 1) {
             return echo_json(array(
@@ -1771,7 +1771,7 @@ class User_app extends CI_Controller
         if (!isset($_POST['en_creator_id']) || intval($_POST['en_creator_id']) < 1) {
             return echo_json(array(
                 'status' => 0,
-                'message' => 'Invalid miner ID',
+                'message' => 'Invalid trainer ID',
             ));
         } elseif (!isset($_POST['parent_en_id']) || intval($_POST['parent_en_id']) < 1) {
             return echo_json(array(
@@ -1815,7 +1815,7 @@ class User_app extends CI_Controller
                 array_push($possible_answers, $answer_en['en_id']);
             }
 
-            //Remove selected options for this miner:
+            //Remove selected options for this trainer:
             foreach($this->Links_model->ln_fetch(array(
                 'ln_parent_entity_id IN (' . join(',', $possible_answers) . ')' => null,
                 'ln_child_entity_id' => $_POST['en_creator_id'],
@@ -1897,7 +1897,7 @@ class User_app extends CI_Controller
         if (!isset($_POST['en_creator_id']) || intval($_POST['en_creator_id']) < 1) {
             return echo_json(array(
                 'status' => 0,
-                'message' => 'Invalid miner ID',
+                'message' => 'Invalid trainer ID',
             ));
         } elseif (!isset($_POST['new_actionplan_order']) || !is_array($_POST['new_actionplan_order']) || count($_POST['new_actionplan_order']) < 1) {
             return echo_json(array(

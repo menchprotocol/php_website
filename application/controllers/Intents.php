@@ -222,7 +222,7 @@ class Intents extends CI_Controller
     }
 
 
-    function in_miner_ui($in_id = 0)
+    function in_trainer_ui($in_id = 0)
     {
 
         /*
@@ -259,13 +259,13 @@ class Intents extends CI_Controller
         ));
 
         //Load views:
-        $this->load->view('view_miner_app/miner_app_header', array(
+        $this->load->view('view_trainer_app/trainer_app_header', array(
             'title' => $ins[0]['in_outcome'].' | Intents'
         ));
-        $this->load->view('view_miner_app/in_miner_ui', array(
+        $this->load->view('view_trainer_app/in_trainer_ui', array(
             'in' => $ins[0] ,
         ));
-        $this->load->view('view_miner_app/miner_app_footer');
+        $this->load->view('view_trainer_app/trainer_app_footer');
 
     }
 
@@ -927,7 +927,7 @@ class Intents extends CI_Controller
                             ),
                         ));
 
-                        //Set message in session to inform miner:
+                        //Set message in session to inform trainer:
                         $this->session->set_flashdata('flash_message', '<div class="alert alert-success" role="alert">'.$update_message.'</div>');
 
                     }
@@ -1163,13 +1163,13 @@ class Intents extends CI_Controller
         $_GET['skip_header'] = 1;
 
         //Load view:
-        $this->load->view('view_miner_app/miner_app_header', array(
+        $this->load->view('view_trainer_app/trainer_app_header', array(
             'title' => 'Intent #' . $in_id . ' Messages',
         ));
-        $this->load->view('view_miner_app/in_messages_frame', array(
+        $this->load->view('view_trainer_app/in_messages_frame', array(
             'in_id' => $in_id,
         ));
-        $this->load->view('view_miner_app/miner_app_footer');
+        $this->load->view('view_trainer_app/trainer_app_footer');
 
     }
 

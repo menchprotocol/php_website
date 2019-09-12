@@ -7,10 +7,10 @@ $route['translate_uri_dashes']      = FALSE;
 $route['default_controller']        = "intents";
 
 //Trainer Intents/Entities:
-$route['entities/(:num)']           = "entities/en_miner_ui/$1";
-$route['entities']                  = "entities/en_miner_ui/0";
-$route['intents/(:num)']            = "intents/in_miner_ui/$1";
-$route['intents']                   = "intents/in_miner_ui/0";
+$route['entities/(:num)']           = "entities/en_trainer_ui/$1";
+$route['entities']                  = "entities/en_trainer_ui/0";
+$route['intents/(:num)']            = "intents/in_trainer_ui/$1";
+$route['intents']                   = "intents/in_trainer_ui/0";
 
 $route['(:num)_(:num)']             = "intents/in_public_ui/$2/$1"; //Public Intent Landing Page
 $route['(:num)']                    = "intents/in_public_ui/$1"; //Public Intent Landing Page
@@ -32,4 +32,4 @@ $route['actionplan/delete/(:num)']  = "user_app/actionplan_delete/$1";
 $route['actionplan/next']           = "user_app/actionplan/next";
 $route['actionplan/(:num)']         = "user_app/actionplan/$1";
 
-$route['dashboard']                 = "miner_app/dashboard";
+$route['dashboard']                 = "trainer_app/dashboard";

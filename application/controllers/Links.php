@@ -27,15 +27,15 @@ class Links extends CI_Controller
         $session_en = en_auth(array(1308,7512)); //Just be logged in to browse
 
         //Load header:
-        $this->load->view(($session_en ? 'view_miner_app/miner_app_header' : 'view_user_app/user_app_header'), array(
+        $this->load->view(($session_en ? 'view_trainer_app/trainer_app_header' : 'view_user_app/user_app_header'), array(
             'title' => 'Mench Links',
         ));
 
         //Load main:
-        $this->load->view('view_miner_app/links_ui');
+        $this->load->view('view_trainer_app/links_ui');
 
         //Load footer:
-        $this->load->view(($session_en ? 'view_miner_app/miner_app_footer' : 'view_user_app/user_app_footer'));
+        $this->load->view(($session_en ? 'view_trainer_app/trainer_app_footer' : 'view_user_app/user_app_footer'));
 
     }
 
@@ -208,10 +208,10 @@ class Links extends CI_Controller
                 'status' => 0,
                 'message' => 'Invalid Link ID',
             ));
-        } elseif(!en_auth(array(1308)) /* Viewer NOT a miner */) {
+        } elseif(!en_auth(array(1308)) /* Viewer NOT a trainer */) {
             return echo_json(array(
                 'status' => 0,
-                'message' => 'Link metadata visible to miners only',
+                'message' => 'Link metadata visible to trainers only',
             ));
         } else {
 
@@ -554,7 +554,7 @@ class Links extends CI_Controller
 
     function toggle_advance(){
 
-        //Toggles the advance session variable for the miner on/off for logged-in miners:
+        //Toggles the advance session variable for the trainer on/off for logged-in trainers:
         $session_en = en_auth(array(1308));
 
         if($session_en){
@@ -569,7 +569,7 @@ class Links extends CI_Controller
             $this->Links_model->ln_create(array(
                 'ln_creator_entity_id' => $session_en['en_id'],
                 'ln_type_entity_id' => 5007, //Toggled Advance Mode
-                'ln_content' => 'Toggled '.( $toggled_setting ? 'ON' : 'OFF' ), //To be used when miner logs in again
+                'ln_content' => 'Toggled '.( $toggled_setting ? 'ON' : 'OFF' ), //To be used when trainer logs in again
             ));
 
             //Return to JS function:

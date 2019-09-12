@@ -3,6 +3,7 @@
 <?php $en_all_6201 = $this->config->item('en_all_6201'); //Intent Table ?>
 <?php $en_all_4341 = $this->config->item('en_all_4341'); //Link Table ?>
 <?php $en_all_7596 = $this->config->item('en_all_7596'); //Intent Engagement Level ?>
+<?php $en_all_7368 = $this->config->item('en_all_7368'); //Trainer App ?>
 
 
 <script>
@@ -34,9 +35,7 @@
             <div class="col-md-6 inlineform">
 
 
-                <div class="title"><h4><i
-                            class="fas fa-hashtag"></i> Intent Settings
-                    </h4></div>
+                <div class="title"><h4><?= $en_all_7368[4535]['m_icon'].' Intent Settings' ?></h4></div>
 
 
                 <div class="inline-box" style="margin-bottom: 15px;">
@@ -133,14 +132,9 @@
 
                 <div class="<?= advance_mode() ?>">
 
-                <div class="title">
-                    <h4>
-                        <i class="fas fa-link"></i> Link Settings
-                    </h4>
-                </div>
+                    <div class="title"><h4><?= $en_all_7368[6205]['m_icon'].' Link Settings' ?></h4></div>
 
-
-                <div class="inline-box" style="margin-bottom:0px;">
+                    <div class="inline-box" style="margin-bottom:0px;">
 
 
                     <span class="mini-header"><?= $en_all_4341[6186]['m_icon'].' '.$en_all_4341[6186]['m_name'] ?></span>

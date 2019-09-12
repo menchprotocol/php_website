@@ -6,21 +6,21 @@ $en_all_4737 = $this->config->item('en_all_4737'); // Intent Statuses
 $en_all_6177 = $this->config->item('en_all_6177'); //Entity Statuses
 
 $moderation_tools = array(
-    '/miner_app/admin_tools/link_words_stats' => 'Link Words Stats',
-    '/miner_app/admin_tools/in_replace_outcomes' => 'Intent Search/Replace Outcomes',
-    '/miner_app/admin_tools/in_invalid_outcomes' => 'Intent Invalid Outcomes',
-    '/miner_app/admin_tools/actionplan_debugger' => 'My Action Plan Debugger',
-    '/miner_app/admin_tools/en_icon_search' => 'Entity Icon Search',
-    '/miner_app/admin_tools/moderate_intent_notes' => 'Moderate Intent Notes',
-    '/miner_app/admin_tools/identical_intent_outcomes' => 'Identical Intent Outcomes',
-    '/miner_app/admin_tools/identical_entity_names' => 'Identical Entity Names',
-    '/miner_app/admin_tools/or__children' => 'List OR Intents + Answers',
-    '/miner_app/admin_tools/orphan_intents' => 'Orphan Intents',
-    '/miner_app/admin_tools/orphan_entities' => 'Orphan Entities',
-    '/miner_app/admin_tools/assessment_marks_list_all' => 'Completion Marks List All',
-    '/miner_app/admin_tools/assessment_marks_birds_eye' => 'Completion Marks Birds Eye View',
-    '/miner_app/admin_tools/compose_test_message' => 'Compose Test Message',
-    '/miner_app/admin_tools/sync_in_verbs' => 'Sync Intent Verbs',
+    '/trainer_app/admin_tools/link_words_stats' => 'Link Words Stats',
+    '/trainer_app/admin_tools/in_replace_outcomes' => 'Intent Search/Replace Outcomes',
+    '/trainer_app/admin_tools/in_invalid_outcomes' => 'Intent Invalid Outcomes',
+    '/trainer_app/admin_tools/actionplan_debugger' => 'My Action Plan Debugger',
+    '/trainer_app/admin_tools/en_icon_search' => 'Entity Icon Search',
+    '/trainer_app/admin_tools/moderate_intent_notes' => 'Moderate Intent Notes',
+    '/trainer_app/admin_tools/identical_intent_outcomes' => 'Identical Intent Outcomes',
+    '/trainer_app/admin_tools/identical_entity_names' => 'Identical Entity Names',
+    '/trainer_app/admin_tools/or__children' => 'List OR Intents + Answers',
+    '/trainer_app/admin_tools/orphan_intents' => 'Orphan Intents',
+    '/trainer_app/admin_tools/orphan_entities' => 'Orphan Entities',
+    '/trainer_app/admin_tools/assessment_marks_list_all' => 'Completion Marks List All',
+    '/trainer_app/admin_tools/assessment_marks_birds_eye' => 'Completion Marks Birds Eye View',
+    '/trainer_app/admin_tools/compose_test_message' => 'Compose Test Message',
+    '/trainer_app/admin_tools/sync_in_verbs' => 'Sync Intent Verbs',
 );
 
 $cron_jobs = array(
@@ -34,9 +34,9 @@ $cron_jobs = array(
 
 
 $developer_tools = array(
-    '/miner_app/platform_cache' => 'Platform PHP Cache',
-    '/miner_app/my_session' => 'My Session Variables',
-    '/miner_app/php_info' => 'Server PHP Info',
+    '/trainer_app/platform_cache' => 'Platform PHP Cache',
+    '/trainer_app/my_session' => 'My Session Variables',
+    '/trainer_app/php_info' => 'Server PHP Info',
 );
 
 
@@ -91,7 +91,7 @@ if(!$action) {
 
 
     //Show breadcrumb:
-    echo '<ul class="breadcrumb"><li><a href="/miner_app/admin_tools">Admin Tools</a></li><li><b>'.$moderation_tools['/miner_app/admin_tools/'.$action].'</b></li></ul>';
+    echo '<ul class="breadcrumb"><li><a href="/trainer_app/admin_tools">Admin Tools</a></li><li><b>'.$moderation_tools['/trainer_app/admin_tools/'.$action].'</b></li></ul>';
 
 
     if(isset($_GET['resetall'])){
@@ -206,7 +206,7 @@ if(!$action) {
 
     echo '<div class="row">';
     echo '<div class="'.$this->config->item('css_column_1').'">';
-    echo '<ul class="breadcrumb"><li><a href="/miner_app/admin_tools">Admin Tools</a></li><li><b>'.$moderation_tools['/miner_app/admin_tools/'.$action].'</b></li></ul>';
+    echo '<ul class="breadcrumb"><li><a href="/trainer_app/admin_tools">Admin Tools</a></li><li><b>'.$moderation_tools['/trainer_app/admin_tools/'.$action].'</b></li></ul>';
     //List intents and allow to modify and manage intent notes:
     if(count($pendin_in_notes) > 0){
         foreach($pendin_in_notes as $pendin_in_note){
@@ -218,14 +218,14 @@ if(!$action) {
 
     echo '</div>';
     echo '<div class="'.$this->config->item('css_column_2').'">';
-    $this->load->view('view_miner_app/in_right_column');
+    $this->load->view('view_trainer_app/in_right_column');
     echo '</div>';
     echo '</div>';
 
 
 } elseif($action=='orphan_intents') {
 
-    echo '<ul class="breadcrumb"><li><a href="/miner_app/admin_tools">Admin Tools</a></li><li><b>'.$moderation_tools['/miner_app/admin_tools/'.$action].'</b></li></ul>';
+    echo '<ul class="breadcrumb"><li><a href="/trainer_app/admin_tools">Admin Tools</a></li><li><b>'.$moderation_tools['/trainer_app/admin_tools/'.$action].'</b></li></ul>';
 
     $orphan_ins = $this->Intents_model->in_fetch(array(
         ' NOT EXISTS (SELECT 1 FROM table_links WHERE in_id=ln_child_intent_id AND ln_type_entity_id IN (' . join(',', $this->config->item('en_ids_4486')) . ') AND ln_status_entity_id IN ('.join(',', $this->config->item('en_ids_7360')) /* Link Statuses Active */.')) ' => null,
@@ -267,7 +267,7 @@ if(!$action) {
             echo '<br />';
             echo '<a class="remove-all" href="javascript:void(0);" onclick="$(\'.remove-all\').toggleClass(\'hidden\')">Remove All</a>';
             echo '<div class="remove-all hidden maxout"><b style="color: #FF0000;">WARNING</b>: All intents and all their links will be removed. ONLY do this after reviewing all orphans one-by-one and making sure they cannot become a child of an existing intent.<br /><br /></div>';
-            echo '<a class="remove-all hidden maxout" href="/miner_app/admin_tools/orphan_intents/remove_all" onclick="">Confirm: <b>Remove All</b> &raquo;</a>';
+            echo '<a class="remove-all hidden maxout" href="/trainer_app/admin_tools/orphan_intents/remove_all" onclick="">Confirm: <b>Remove All</b> &raquo;</a>';
         }
 
     } else {
@@ -276,7 +276,7 @@ if(!$action) {
 
 } elseif($action=='orphan_entities') {
 
-    echo '<ul class="breadcrumb"><li><a href="/miner_app/admin_tools">Admin Tools</a></li><li><b>'.$moderation_tools['/miner_app/admin_tools/'.$action].'</b></li></ul>';
+    echo '<ul class="breadcrumb"><li><a href="/trainer_app/admin_tools">Admin Tools</a></li><li><b>'.$moderation_tools['/trainer_app/admin_tools/'.$action].'</b></li></ul>';
 
     $orphan_ens = $this->Entities_model->en_fetch(array(
         ' NOT EXISTS (SELECT 1 FROM table_links WHERE en_id=ln_child_entity_id AND ln_type_entity_id IN (' . join(',', $this->config->item('en_ids_4592')) . ') AND ln_status_entity_id IN ('.join(',', $this->config->item('en_ids_7360')) /* Link Statuses Active */.')) ' => null,
@@ -316,7 +316,7 @@ if(!$action) {
             echo '<br />';
             echo '<a class="remove-all" href="javascript:void(0);" onclick="$(\'.remove-all\').toggleClass(\'hidden\')">Remove All</a>';
             echo '<div class="remove-all hidden maxout"><b style="color: #FF0000;">WARNING</b>: All entities and all their links will be removed. ONLY do this after reviewing all orphans one-by-one and making sure they cannot become a child of an existing entity.<br /><br /></div>';
-            echo '<a class="remove-all hidden maxout" href="/miner_app/admin_tools/orphan_entities/remove_all" onclick="">Confirm: <b>Remove All</b> &raquo;</a>';
+            echo '<a class="remove-all hidden maxout" href="/trainer_app/admin_tools/orphan_entities/remove_all" onclick="">Confirm: <b>Remove All</b> &raquo;</a>';
         }
 
     } else {
@@ -326,7 +326,7 @@ if(!$action) {
 
 } elseif($action=='en_icon_search') {
 
-    echo '<ul class="breadcrumb"><li><a href="/miner_app/admin_tools">Admin Tools</a></li><li><b>'.$moderation_tools['/miner_app/admin_tools/'.$action].'</b></li></ul>';
+    echo '<ul class="breadcrumb"><li><a href="/trainer_app/admin_tools">Admin Tools</a></li><li><b>'.$moderation_tools['/trainer_app/admin_tools/'.$action].'</b></li></ul>';
 
     //UI to compose a test message:
     echo '<form method="GET" action="">';
@@ -394,7 +394,7 @@ if(!$action) {
 
 } elseif($action=='actionplan_debugger') {
 
-    echo '<ul class="breadcrumb"><li><a href="/miner_app/admin_tools">Admin Tools</a></li><li><b>'.$moderation_tools['/miner_app/admin_tools/'.$action].'</b></li></ul>';
+    echo '<ul class="breadcrumb"><li><a href="/trainer_app/admin_tools">Admin Tools</a></li><li><b>'.$moderation_tools['/trainer_app/admin_tools/'.$action].'</b></li></ul>';
 
     //List this users Action Plan intents so they can choose:
     echo '<div>Choose one of your action plan intentions to debug:</div><br />';
@@ -412,7 +412,7 @@ if(!$action) {
 
 } elseif($action=='in_invalid_outcomes') {
 
-    echo '<ul class="breadcrumb"><li><a href="/miner_app/admin_tools">Admin Tools</a></li><li><b>'.$moderation_tools['/miner_app/admin_tools/'.$action].'</b></li></ul>';
+    echo '<ul class="breadcrumb"><li><a href="/trainer_app/admin_tools">Admin Tools</a></li><li><b>'.$moderation_tools['/trainer_app/admin_tools/'.$action].'</b></li></ul>';
 
     $active_ins = $this->Intents_model->in_fetch(array(
         'in_status_entity_id IN (' . join(',', $this->config->item('en_ids_7356')) . ')' => null, //Intent Statuses Active
@@ -454,7 +454,7 @@ if(!$action) {
 } elseif($action=='in_replace_outcomes') {
 
 
-    echo '<ul class="breadcrumb"><li><a href="/miner_app/admin_tools">Admin Tools</a></li><li><b>'.$moderation_tools['/miner_app/admin_tools/'.$action].'</b></li></ul>';
+    echo '<ul class="breadcrumb"><li><a href="/trainer_app/admin_tools">Admin Tools</a></li><li><b>'.$moderation_tools['/trainer_app/admin_tools/'.$action].'</b></li></ul>';
 
     //UI to compose a test message:
     echo '<form method="GET" action="">';
@@ -584,7 +584,7 @@ if(!$action) {
 
 } elseif($action=='sync_in_verbs') {
 
-    echo '<ul class="breadcrumb"><li><a href="/miner_app/admin_tools">Admin Tools</a></li><li><b>'.$moderation_tools['/miner_app/admin_tools/'.$action].'</b></li></ul>';
+    echo '<ul class="breadcrumb"><li><a href="/trainer_app/admin_tools">Admin Tools</a></li><li><b>'.$moderation_tools['/trainer_app/admin_tools/'.$action].'</b></li></ul>';
 
     //Would ensure intents have synced statuses:
     $count = 0;
@@ -615,7 +615,7 @@ if(!$action) {
 
 } elseif($action=='identical_intent_outcomes') {
 
-    echo '<ul class="breadcrumb"><li><a href="/miner_app/admin_tools">Admin Tools</a></li><li><b>'.$moderation_tools['/miner_app/admin_tools/'.$action].'</b></li></ul>';
+    echo '<ul class="breadcrumb"><li><a href="/trainer_app/admin_tools">Admin Tools</a></li><li><b>'.$moderation_tools['/trainer_app/admin_tools/'.$action].'</b></li></ul>';
 
     //Do a query to detect intents with the exact same title:
     $q = $this->db->query('select in1.* from table_intents in1 where (select count(*) from table_intents in2 where in2.in_outcome = in1.in_outcome AND in2.in_status_entity_id IN (' . join(',', $this->config->item('en_ids_7356')) . ')) > 1 AND in1.in_status_entity_id IN (' . join(',', $this->config->item('en_ids_7356')) . ') ORDER BY in1.in_outcome ASC');
@@ -639,7 +639,7 @@ if(!$action) {
 
 } elseif($action=='identical_entity_names') {
 
-    echo '<ul class="breadcrumb"><li><a href="/miner_app/admin_tools">Admin Tools</a></li><li><b>'.$moderation_tools['/miner_app/admin_tools/'.$action].'</b></li></ul>';
+    echo '<ul class="breadcrumb"><li><a href="/trainer_app/admin_tools">Admin Tools</a></li><li><b>'.$moderation_tools['/trainer_app/admin_tools/'.$action].'</b></li></ul>';
 
     $q = $this->db->query('select en1.* from table_entities en1 where (select count(*) from table_entities en2 where en2.en_name = en1.en_name AND en2.en_status_entity_id IN (' . join(',', $this->config->item('en_ids_7358')) . ')) > 1 AND en1.en_status_entity_id IN (' . join(',', $this->config->item('en_ids_7358')) . ') ORDER BY en1.en_name ASC');
     $duplicates = $q->result_array();
@@ -714,7 +714,7 @@ if(!$action) {
 } elseif($action=='assessment_marks_list_all') {
 
 
-    echo '<ul class="breadcrumb"><li><a href="/miner_app/admin_tools">Admin Tools</a></li><li><b>'.$moderation_tools['/miner_app/admin_tools/'.$action].'</b></li></ul>';
+    echo '<ul class="breadcrumb"><li><a href="/trainer_app/admin_tools">Admin Tools</a></li><li><b>'.$moderation_tools['/trainer_app/admin_tools/'.$action].'</b></li></ul>';
 
     echo '<p>Below are all the Conditional Step Links:</p>';
     echo '<table class="table table-condensed table-striped maxout" style="text-align: left;">';
@@ -865,11 +865,11 @@ if(!$action) {
 
 } elseif($action=='assessment_marks_birds_eye') {
 
-    //Give an overview of the point links in a hierchial format to enable miners to overview:
+    //Give an overview of the point links in a hierchial format to enable trainers to overview:
     $_GET['starting_in']    = ( isset($_GET['starting_in']) && intval($_GET['starting_in']) > 0 ? $_GET['starting_in'] : $this->session->userdata('user_default_intent') );
     $_GET['depth_levels']   = ( isset($_GET['depth_levels']) && intval($_GET['depth_levels']) > 0 ? $_GET['depth_levels'] : 3 );
 
-    echo '<ul class="breadcrumb"><li><a href="/miner_app/admin_tools">Admin Tools</a></li><li><b>'.$moderation_tools['/miner_app/admin_tools/'.$action].'</b></li></ul>';
+    echo '<ul class="breadcrumb"><li><a href="/trainer_app/admin_tools">Admin Tools</a></li><li><b>'.$moderation_tools['/trainer_app/admin_tools/'.$action].'</b></li></ul>';
 
 
     echo '<form method="GET" action="">';
@@ -921,7 +921,7 @@ $.post("/intents/in_report_conditional_steps", {
 
     if(isset($_POST['test_message'])){
 
-        echo '<ul class="breadcrumb"><li><a href="/miner_app/admin_tools">Admin Tools</a></li><li><a href="/miner_app/admin_tools/'.$action.'">'.$moderation_tools['/miner_app/admin_tools/'.$action].'</a></li><li><b>Review Message</b></li></ul>';
+        echo '<ul class="breadcrumb"><li><a href="/trainer_app/admin_tools">Admin Tools</a></li><li><a href="/trainer_app/admin_tools/'.$action.'">'.$moderation_tools['/trainer_app/admin_tools/'.$action].'</a></li><li><b>Review Message</b></li></ul>';
 
         if(intval($_POST['push_message']) && intval($_POST['recipient_en'])){
 
@@ -947,7 +947,7 @@ $.post("/intents/in_report_conditional_steps", {
 
     } else {
 
-        echo '<ul class="breadcrumb"><li><a href="/miner_app/admin_tools">Admin Tools</a></li><li><b>'.$moderation_tools['/miner_app/admin_tools/'.$action].'</b></li></ul>';
+        echo '<ul class="breadcrumb"><li><a href="/trainer_app/admin_tools">Admin Tools</a></li><li><b>'.$moderation_tools['/trainer_app/admin_tools/'.$action].'</b></li></ul>';
 
         //UI to compose a test message:
         echo '<form method="POST" action="" class="maxout">';

@@ -17,11 +17,11 @@ class Entities extends CI_Controller
         $session_en = en_auth(array(1308,7512), true);
 
         //Show frame to be loaded in modal:
-        $this->load->view('view_miner_app/miner_app_header', array(
+        $this->load->view('view_trainer_app/trainer_app_header', array(
             'title' => 'Add Source Wizard',
         ));
-        $this->load->view('view_miner_app/en_add_source_wizard');
-        $this->load->view('view_miner_app/miner_app_footer');
+        $this->load->view('view_trainer_app/en_add_source_wizard');
+        $this->load->view('view_trainer_app/trainer_app_footer');
     }
 
 
@@ -65,14 +65,14 @@ class Entities extends CI_Controller
 
 
     //Lists entities
-    function en_miner_ui($en_id)
+    function en_trainer_ui($en_id)
     {
 
         $session_en = en_auth(array(1308,7512), true);
-        $is_miner = ( filter_array($session_en['en__parents'], 'en_id', 1308) ? 1 : 0 );
+        $is_trainer = ( filter_array($session_en['en__parents'], 'en_id', 1308) ? 1 : 0 );
 
         if ($en_id == 0) {
-            return redirect_message('/entities/' . ( $is_miner ? 3463 /* Default miner entity */ : $session_en['en_id'] ));
+            return redirect_message('/entities/' . ( $is_trainer ? 3463 /* Default trainer entity */ : $session_en['en_id'] ));
         }
 
         //Do we have any mass action to process here?
@@ -111,15 +111,15 @@ class Entities extends CI_Controller
         }
 
         //Load views:
-        $this->load->view('view_miner_app/miner_app_header', array(
+        $this->load->view('view_trainer_app/trainer_app_header', array(
             'title' => $ens[0]['en_name'] . ' | Entities',
             'message' => $message, //Possible mass-action message for UI:
         ));
-        $this->load->view('view_miner_app/en_miner_ui', array(
+        $this->load->view('view_trainer_app/en_trainer_ui', array(
             'entity' => $ens[0],
-            'is_miner' => $is_miner,
+            'is_trainer' => $is_trainer,
         ));
-        $this->load->view('view_miner_app/miner_app_footer');
+        $this->load->view('view_trainer_app/trainer_app_footer');
 
     }
 
@@ -251,7 +251,7 @@ class Entities extends CI_Controller
     function en_add_or_link()
     {
 
-        //Responsible to link parent/children entities to each other via a JS function on en_miner_ui.php
+        //Responsible to link parent/children entities to each other via a JS function on en_trainer_ui.php
 
         //Auth user and check required variables:
         $session_en = en_auth(array(1308));
@@ -820,7 +820,7 @@ class Entities extends CI_Controller
         $_GET['skip_header'] = 1;
 
         //Show frame to be loaded in modal:
-        $this->load->view('view_miner_app/miner_app_header', array(
+        $this->load->view('view_trainer_app/trainer_app_header', array(
             'title' => 'Managed Intent Notes',
         ));
         echo '<div id="list-messages" class="list-group grey-list">';
@@ -828,7 +828,7 @@ class Entities extends CI_Controller
             echo echo_en_messages($ln);
         }
         echo '</div>';
-        $this->load->view('view_miner_app/miner_app_footer');
+        $this->load->view('view_trainer_app/trainer_app_footer');
     }
 
 
@@ -1186,7 +1186,7 @@ class Entities extends CI_Controller
             'score_parent' => 5, //Score per each parent entity
             'score_children' => 2, //Score per each child entity
             'score_link' => 0.25, //Score per each link of any type and any status
-            'score_miner_credits' => 0.10, // This is X where: 1 miner credits = X score
+            'score_trainer_words' => 0.10, // This is X where: 1 trainer credits = X score
         );
 
         //Fetch entities with/without filter:
@@ -1223,11 +1223,11 @@ class Entities extends CI_Controller
             $score += $en_lns[0]['totals'] * $score_weights['score_link'];
 
             //Mining credits:
-            $en_miner_credits = $this->Links_model->ln_fetch(array(
+            $en_trainer_words = $this->Links_model->ln_fetch(array(
                 'ln_creator_entity_id' => $en['en_id'],
                 'ln_status_entity_id IN (' . join(',', $this->config->item('en_ids_7360')) . ')' => null, //Link Statuses Active
             ), array(), 0, 0, array(), 'SUM(ABS(ln_words)) as total_words');
-            $score += $en_miner_credits[0]['total_words'] * $score_weights['score_miner_credits'];
+            $score += $en_trainer_words[0]['total_words'] * $score_weights['score_trainer_words'];
 
             //Do we need to update?
             if($en['en_trust_score'] != $score){

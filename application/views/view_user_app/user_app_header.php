@@ -61,7 +61,7 @@ $url_part_1 = $this->uri->segment(1);
                         )
                     );
 
-                    //If miner give access back to platform:
+                    //If trainer give access back to platform:
                     if(en_auth(array(1308,7512))){
                         $en_all_7372 = $this->config->item('en_all_7372');
                         array_push($navigation, array(

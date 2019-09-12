@@ -60,7 +60,7 @@ class Messenger extends CI_Controller
         if (!$session_en) {
             return echo_json(array(
                 'status' => 0,
-                'message' => 'Session Expired. Sign In as a miner and Try again.',
+                'message' => 'Session Expired. Sign In as a trainer and Try again.',
             ));
         }
 

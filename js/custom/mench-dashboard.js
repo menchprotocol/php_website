@@ -30,7 +30,7 @@ var update_basic_stats = function() {
     updating_basic_stats = true;
 
     //Fetch latest stats:
-    $.post("/miner_app/basic_stats_all", {}, function (data) {
+    $.post("/trainer_app/basic_stats_all", {}, function (data) {
 
         //Updated Intents?
         if(data.intents.extended_stats != $('#stats_intents_box .extended_stats').html()){
@@ -88,7 +88,7 @@ function load_extra_stats(object_id){
         $('#stats_' + object_id + '_box .load_stats_box').removeClass('hidden').html('<div style="text-align: center;"><i class="fas fa-yin-yang fa-spin"></i> ' + echo_ying_yang() + '</div>');
 
         //Save the rest of the content:
-        $.post("/miner_app/extra_stats_" + object_id, {}, function (data) {
+        $.post("/trainer_app/extra_stats_" + object_id, {}, function (data) {
 
             if(object_id=='links'){
 
@@ -130,7 +130,7 @@ function load_leaderboard(){
     $('.setting-en-'+js_direction_en_id).addClass('btn-third');
 
     //Fetch latest stats:
-    $.post("/miner_app/load_leaderboard/"+js_direction_en_id+"/"+js_timeframe_en_id, {}, function (data) {
+    $.post("/trainer_app/load_leaderboard/"+js_direction_en_id+"/"+js_timeframe_en_id, {}, function (data) {
 
         $('#body_inject').html(data);
 
