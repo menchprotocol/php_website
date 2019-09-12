@@ -242,6 +242,9 @@ if(isset($_GET['ln_type_entity_id'])){
 
 $has_filters = ( count($_GET) > 0 );
 
+
+$en_all_7368 = $CI->config->item('en_all_7368'); //Trainer App
+
 ?>
 
 <script>
@@ -256,7 +259,7 @@ $has_filters = ( count($_GET) > 0 );
 echo '<div class="row">';
     echo '<div class="'.$this->config->item('css_column_1').'">';
 
-        echo '<h1><i class="fas fa-link"></i> Links</h1>';
+        echo '<h1>'.$en_all_7368[6205]['m_icon'].' Links</h1>';
 
         echo '<div><a href="javascript:void();" onclick="$(\'.show-filter\').toggleClass(\'hidden\');"><i class="far fa-filter"></i> Toggle Filters</a></div>';
 
