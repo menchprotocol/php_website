@@ -13,7 +13,7 @@ class Entities extends CI_Controller
 
     function add_source_wizard()
     {
-        //Authenticate Miner, redirect if failed:
+        //Authenticate Trainer, redirect if failed:
         $session_en = en_auth(array(1308,7512), true);
 
         //Show frame to be loaded in modal:
@@ -94,7 +94,7 @@ class Entities extends CI_Controller
             $this->session->set_userdata('user_session_count', $new_order);
             $this->Links_model->ln_create(array(
                 'ln_creator_entity_id' => $session_en['en_id'],
-                'ln_type_entity_id' => 4994, //Miner Opened Entity
+                'ln_type_entity_id' => 4994, //Trainer Opened Entity
                 'ln_child_entity_id' => $en_id,
                 'ln_order' => $new_order,
             ));
@@ -166,7 +166,7 @@ class Entities extends CI_Controller
     function en_save_file_upload()
     {
 
-        //Authenticate Miner:
+        //Authenticate Trainer:
         $session_en = en_auth(array(1308));
         if (!$session_en) {
             return echo_json(array(
@@ -652,13 +652,16 @@ class Entities extends CI_Controller
             //Status change?
             if($en_lns[0]['ln_status_entity_id']!=$_POST['ln_status_entity_id']){
 
+                if (in_array($_POST['ln_status_entity_id'], $this->config->item('en_ids_7360') /* Link Statuses Active */)) {
+                    $ln_status_entity_id = 10656; //Entity Link Iterated Status
+                } else {
+                    $remove_from_ui = 1;
+                    $ln_status_entity_id = 10673; //Entity Link Unlinked
+                }
+
                 $this->Links_model->ln_update($_POST['ln_id'], array(
                     'ln_status_entity_id' => intval($_POST['ln_status_entity_id']),
-                ), $session_en['en_id'], 10656 /* Entity Link Iterated Status */);
-
-                if ($_POST['ln_status_entity_id'] == 6173 /* Link Removed */) {
-                    $remove_from_ui = 1;
-                }
+                ), $session_en['en_id'], $ln_status_entity_id);
             }
 
 

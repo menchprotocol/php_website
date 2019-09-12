@@ -375,7 +375,7 @@ class Actionplan_model extends CI_Model
                 $this->Links_model->ln_update($ln['ln_id'], array(
                     'ln_parent_link_id' => $new_progression_link['ln_id'],
                     'ln_status_entity_id' => 6173, //Link Removed
-                ), $en_id);
+                ), $en_id, 6143 /* User Step Skipped */);
             }
 
         }
@@ -469,8 +469,8 @@ class Actionplan_model extends CI_Model
         //Adjust Action Plan status:
         foreach($user_intents as $ln){
             $this->Links_model->ln_update($ln['ln_id'], array(
-                'ln_status_entity_id' => ( in_array($stop_method_id, $this->config->item('en_ids_7758') /* Action Plan Intention Successful */) ? 6176 /* Link Published */ : 6173 /* Link Removed */ ), //This is a nasty HACK!
-            ), $en_id);
+                'ln_status_entity_id' => ( in_array($stop_method_id, $this->config->item('en_ids_7758') /* Action Plan Intention Successful */) ? 6176 /* Link Published */ : 6173 /* Link Removed */ ),
+            ), $en_id, 6150 /* User Intent Completed */);
         }
 
         //Log related link:
@@ -580,10 +580,12 @@ class Actionplan_model extends CI_Model
                 'ln_status_entity_id' => 6175, //Link Drafting
                 'ln_creator_entity_id' => $en_id, //Belongs to this User
             )) as $current_intentions){
+
                 //Update order:
                 $this->Links_model->ln_update($current_intentions['ln_id'], array(
                     'ln_order' => ($current_intentions['ln_order'] + 1),
-                ));
+                ), $en_id, 10681 /* Intents Ordered Automatically  */);
+
             }
 
             if($echo_next_step){
@@ -1284,7 +1286,7 @@ class Actionplan_model extends CI_Model
                     $this->Links_model->ln_update($ln['ln_id'], array(
                         'ln_parent_link_id' => $new_progression_link['ln_id'],
                         'ln_status_entity_id' => 6173, //Link Removed
-                    ), $en_id);
+                    ), $en_id, 10685 /* User Step Iterated */);
 
                     //Remove from array:
                     unset($current_progression_links[$key]);

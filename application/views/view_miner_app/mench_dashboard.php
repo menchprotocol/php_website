@@ -22,7 +22,7 @@ $en_all_7368 = $this->config->item('en_all_7368');
 
 
     <div id="stats_links_box" class="col-lg-4 col-md-8 col-md-offset-2 col-lg-offset-0 bottom-spacing">
-        <div class="large-stat"><a href="javascript:void(0);" onclick="load_extra_stats('links')"><?= $en_all_7368[6205]['m_icon'] ?> <span class="extended_stats"><i class="fas fa-yin-yang fa-spin"></i></span> <span class="substitle"><?= $en_all_7368[6205]['m_name'] ?> <i class="extra_stat_content far fa-plus-circle"></i><i class="extra_stat_content far fa-minus-circle hidden"></i></span></a></div>
+        <div class="large-stat"><a href="javascript:void(0);" onclick="load_extra_stats('links')" class="ispink"><?= $en_all_7368[6205]['m_icon'] ?> <span class="extended_stats"><i class="fas fa-yin-yang fa-spin"></i></span> <span class="substitle"><?= $en_all_7368[6205]['m_name'] ?> <i class="extra_stat_content far fa-plus-circle"></i><i class="extra_stat_content far fa-minus-circle hidden"></i></span></a></div>
         <div class="load_stats_box extra_stat_content hidden"></div>
     </div>
 

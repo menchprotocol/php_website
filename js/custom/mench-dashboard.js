@@ -123,11 +123,11 @@ function load_leaderboard(){
     $('#body_inject').html('<tr><td colspan="10"><div style="text-align: center;"><i class="fas fa-yin-yang fa-spin"></i> ' + echo_ying_yang() + '</div></td></tr>');
 
     //Remove all classes:
-    $('.user-type-filter').removeClass('btn-primary');
+    $('.user-type-filter').removeClass('btn-third');
 
     //Highlight current classes:
-    $('.setting-en-'+js_timeframe_en_id).addClass('btn-primary');
-    $('.setting-en-'+js_direction_en_id).addClass('btn-primary');
+    $('.setting-en-'+js_timeframe_en_id).addClass('btn-third');
+    $('.setting-en-'+js_direction_en_id).addClass('btn-third');
 
     //Fetch latest stats:
     $.post("/miner_app/load_leaderboard/"+js_direction_en_id+"/"+js_timeframe_en_id, {}, function (data) {
@@ -135,8 +135,8 @@ function load_leaderboard(){
         $('#body_inject').html(data);
 
         //Highlight current classes (AGAIN, to fix loading bug):
-        $('.setting-en-'+js_timeframe_en_id).addClass('btn-primary');
-        $('.setting-en-'+js_direction_en_id).addClass('btn-primary');
+        $('.setting-en-'+js_timeframe_en_id).addClass('btn-third');
+        $('.setting-en-'+js_direction_en_id).addClass('btn-third');
 
         //Reload Tooltip again:
         $('[data-toggle="tooltip"]').tooltip();

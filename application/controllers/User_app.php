@@ -262,7 +262,7 @@ class User_app extends CI_Controller
                 $this->Links_model->ln_update($user_passwords[0]['ln_id'], array(
                     'ln_content' => $password_hash,
                     'ln_type_entity_id' => $detected_ln_type['ln_type_entity_id'],
-                ), $ens[0]['en_id']);
+                ), $ens[0]['en_id'], 7578 /* User Iterated Password */);
 
             } else {
 
@@ -281,7 +281,7 @@ class User_app extends CI_Controller
             //Log password reset:
             $this->Links_model->ln_create(array(
                 'ln_creator_entity_id' => $ens[0]['en_id'],
-                'ln_type_entity_id' => 7578, //User Signin Password Updated
+                'ln_type_entity_id' => 7578, //User Iterated Password
                 'ln_content' => $password_hash, //A copy of their password set at this time
             ));
 
@@ -881,7 +881,7 @@ class User_app extends CI_Controller
                 //Remove:
                 $this->Links_model->ln_update($user_phones[0]['ln_id'], array(
                     'ln_status_entity_id' => 6173, //Link Removed
-                ), $_POST['en_id']);
+                ), $_POST['en_id'], 6224 /* User Account Updated */);
 
                 $return = array(
                     'status' => 1,
@@ -893,7 +893,7 @@ class User_app extends CI_Controller
                 //Update if not duplicate:
                 $this->Links_model->ln_update($user_phones[0]['ln_id'], array(
                     'ln_content' => $_POST['en_phone'],
-                ), $_POST['en_id']);
+                ), $_POST['en_id'], 6224 /* User Account Updated */);
 
                 $return = array(
                     'status' => 1,
@@ -1005,7 +1005,7 @@ class User_app extends CI_Controller
                 //Remove email:
                 $this->Links_model->ln_update($user_emails[0]['ln_id'], array(
                     'ln_status_entity_id' => 6173, //Link Removed
-                ), $_POST['en_id']);
+                ), $_POST['en_id'], 6224 /* User Account Updated */);
 
                 $return = array(
                     'status' => 1,
@@ -1017,7 +1017,7 @@ class User_app extends CI_Controller
                 //Update if not duplicate:
                 $this->Links_model->ln_update($user_emails[0]['ln_id'], array(
                     'ln_content' => $_POST['en_email'],
-                ), $_POST['en_id']);
+                ), $_POST['en_id'], 6224 /* User Account Updated */);
 
                 $return = array(
                     'status' => 1,
@@ -1122,7 +1122,7 @@ class User_app extends CI_Controller
                 //Update password:
                 $this->Links_model->ln_update($user_passwords[0]['ln_id'], array(
                     'ln_content' => $hashed_password,
-                ), $_POST['en_id']);
+                ), $_POST['en_id'], 7578 /* User Iterated Password  */);
 
                 $return = array(
                     'status' => 1,
@@ -1261,7 +1261,7 @@ class User_app extends CI_Controller
                     //Update profile since different:
                     $this->Links_model->ln_update($social_url_exists[0]['ln_id'], array(
                         'ln_content' => $social_url,
-                    ), $_POST['en_id']);
+                    ), $_POST['en_id'], 6224 /* User Account Updated */);
 
                     $success_messages .= $en_all_6123[$social_en_id]['m_name'] . ' Updated. ';
 
@@ -1270,7 +1270,7 @@ class User_app extends CI_Controller
                     //Remove profile:
                     $this->Links_model->ln_update($social_url_exists[0]['ln_id'], array(
                         'ln_status_entity_id' => 6173, //Link Removed
-                    ), $_POST['en_id']);
+                    ), $_POST['en_id'], 6224 /* User Account Updated */);
 
                     $success_messages .= $en_all_6123[$social_en_id]['m_name'] . ' Removed. ';
 
@@ -1519,7 +1519,7 @@ class User_app extends CI_Controller
                 $this->Links_model->ln_update($progress_link['ln_id'], array(
                     'ln_status_entity_id' => 6173, //Link Removed
                     'ln_parent_link_id' => $clear_all_link['ln_id'], //To indicate when it was removed
-                ), $en_id);
+                ), $en_id, 6415 /* User Cleared Action Plan */);
             }
 
         } else {
@@ -1619,10 +1619,10 @@ class User_app extends CI_Controller
         if(count($pending_messages) > 0){
 
             foreach($pending_messages as $pending_message){
-                //Update this message status to delivered:
+                //Update this message status to delivered as the user has read this email:
                 $this->Links_model->ln_update($pending_message['ln_id'], array(
                     'ln_status_entity_id' => 6176 /* Link Published */,
-                ), $session_en['en_id']);
+                ), $session_en['en_id'], 10683 /* User Read Email */);
             }
 
             //Show pending messages:
@@ -1841,7 +1841,7 @@ class User_app extends CI_Controller
                 //Should usually remove a single option:
                 $this->Links_model->ln_update($remove_en['ln_id'], array(
                     'ln_status_entity_id' => 6173, //Link Removed
-                ), $_POST['en_creator_id']);
+                ), $_POST['en_creator_id'], 6224 /* User Account Updated */);
             }
 
         }
@@ -1914,20 +1914,9 @@ class User_app extends CI_Controller
                 //Update order of this link:
                 $results[$ln_order] = $this->Links_model->ln_update(intval($ln_id), array(
                     'ln_order' => $ln_order,
-                ), $_POST['en_creator_id']);
+                ), $_POST['en_creator_id'], 6132 /* Intents Ordered by User */);
             }
         }
-
-
-        //Save sorting results:
-        $this->Links_model->ln_create(array(
-            'ln_type_entity_id' => 6132, //Action Plan Sorted
-            'ln_creator_entity_id' => $_POST['en_creator_id'],
-            'ln_metadata' => array(
-                'new_order' => $_POST['new_actionplan_order'],
-                'results' => $results,
-            ),
-        ));
 
 
         //Fetch top intention that being workined on now:
@@ -1995,12 +1984,12 @@ class User_app extends CI_Controller
         //See if we also need to mark the child as complete:
         $this->Actionplan_model->completion_auto_complete($en_id, $answer_ins[0], 7485 /* User Step Answer Unlock */);
 
-        //Archive current progression links:
+        //Archive previous progression links:
         foreach($current_progression_links as $ln){
             $this->Links_model->ln_update($ln['ln_id'], array(
                 'ln_parent_link_id' => $new_progression_link['ln_id'],
                 'ln_status_entity_id' => 6173, //Link Removed
-            ), $en_id);
+            ), $en_id, 10685 /* User Step Iterated */);
         }
 
         return redirect_message('/actionplan/next', '<p><i class="far fa-check-circle"></i> I saved your answer.</p>');

@@ -6,7 +6,7 @@ $route['404_override']              = 'user_app/page_not_found';
 $route['translate_uri_dashes']      = FALSE;
 $route['default_controller']        = "intents";
 
-//Miner Intents/Entities:
+//Trainer Intents/Entities:
 $route['entities/(:num)']           = "entities/en_miner_ui/$1";
 $route['entities']                  = "entities/en_miner_ui/0";
 $route['intents/(:num)']            = "intents/in_miner_ui/$1";

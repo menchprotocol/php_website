@@ -298,7 +298,7 @@ echo '<div class="row">';
         echo '<input type="text" name="any_en_id" value="' . ((isset($_GET['any_en_id'])) ? $_GET['any_en_id'] : '') . '" class="form-control border">';
         echo '</div></td>';
 
-        echo '<td><span class="mini-header">Entity Miner IDs:</span><input type="text" name="ln_creator_entity_id" value="' . ((isset($_GET['ln_creator_entity_id'])) ? $_GET['ln_creator_entity_id'] : '') . '" class="form-control border"></td>';
+        echo '<td><span class="mini-header">Creator Entity IDs:</span><input type="text" name="ln_creator_entity_id" value="' . ((isset($_GET['ln_creator_entity_id'])) ? $_GET['ln_creator_entity_id'] : '') . '" class="form-control border"></td>';
 
         echo '<td><span class="mini-header">Entity Parent IDs:</span><input type="text" name="ln_parent_entity_id" value="' . ((isset($_GET['ln_parent_entity_id'])) ? $_GET['ln_parent_entity_id'] : '') . '" class="form-control border"></td>';
 
@@ -431,7 +431,7 @@ echo '</div></td>';
 
 
 
-        echo '<input type="submit" class="btn btn-sm btn-primary" value="Apply" />';
+        echo '<input type="submit" class="btn btn-sm btn-third" value="Apply" />';
 
         if($has_filters){
             echo ' &nbsp;<a href="/links" style="font-size: 0.8em;">Remove Filters</a>';

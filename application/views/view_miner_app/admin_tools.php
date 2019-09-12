@@ -333,6 +333,7 @@ if(!$action) {
 
     echo '<div class="mini-header">Search For:</div>';
     echo '<input type="text" class="form-control border maxout" name="search_for" value="'.@$_GET['search_for'].'"><br />';
+    echo '<input type="submit" class="btn btn-primary" value="Search">';
 
 
     if(isset($_GET['search_for']) && strlen($_GET['search_for'])>0){
@@ -357,8 +358,16 @@ if(!$action) {
             echo '<td style="text-align: left;">#</td>';
             echo '<td style="text-align: left;">Matching Search</td>';
             echo '</tr>';
+            $replaced = 0;
 
             foreach($matching_results as $count=>$en){
+
+                if(isset($_GET['do_replace']) && isset($_GET['replace_with'])){
+                    $replaced += $this->Entities_model->en_update($en['en_id'], array(
+                        'en_icon' => str_ireplace($_GET['search_for'], $_GET['replace_with'], $en['en_icon']),
+                    ), false, $session_en['en_id']);
+
+                }
 
                 echo '<tr class="panel-title down-border">';
                 echo '<td style="text-align: left;">'.($count+1).'</td>';
@@ -366,13 +375,21 @@ if(!$action) {
                 echo '</tr>';
 
             }
+
+            if($replaced > 0){
+                echo '<div class="alert alert-success"><i class="fas fa-exclamation"></i> Updated icons for '.$replaced.' entities.</div>';
+            }
         }
 
         echo '</table>';
+
+
+        echo '<div class="mini-header">Replace With:</div>';
+        echo '<input type="text" class="form-control border maxout" name="replace_with" value="'.@$_GET['replace_with'].'"><br />';
+        echo '<input type="submit" name="do_replace" class="btn btn-primary" value="Replace">';
     }
 
 
-    echo '<input type="submit" class="btn btn-primary" value="Search">';
     echo '</form>';
 
 } elseif($action=='actionplan_debugger') {

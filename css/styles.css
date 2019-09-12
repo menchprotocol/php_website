@@ -1,24 +1,5 @@
 @CHARSET "ISO-8859-1";
 
-/* Core Colors */
-.blue                 { color:#0084ff !important; }
-.yellow               { color:#ffe027 !important; }
-
-
-/* Entity Color Palette @10604 */
-.ispurple, .ispurple a             { color:#9400D3 !important; }
-.isgreen, .isgreen a              { color:#228B22 !important; }
-.isred, .isred a, .fas.redalert { color:#FF0000 !important; }
-.isgrey, .isgrey a, .lightgrey   { color:#AAAAAA !important; }
-.isolive, .isolive a  { color:#808000 !important; }
-.isnavy, .isnavy a               { color:#000080 !important; }
-.isorange, .isorange a             { color:#FF8C00 !important; }
-.ispink, .ispink a               { color:#FF1493 !important; }
-.iswhite, .iswhite a              { color:#FFFFFF !important; }
-.isbrown, .isbrown a              { color:#8B4513 !important; }
-.isturquoise, .isturquoise a              { color:#20B2AA !important; }
-
-
 #platform_body {
     background-color: #FFF;
 }
@@ -35,7 +16,6 @@ body.grey-bg {
     background-color: #EFEFEF !important;
 }
 
-
 h1, .h1 {
     font-size: 2.5em;
     line-height: 1.15em;
@@ -46,7 +26,7 @@ h1, .h1 {
     color: #FFF !important;
 }
 
-.featured-nav a:hover{
+.featured-nav a:hover {
     background: #FFF !important;
     color: #222 !important;
 }
@@ -63,11 +43,9 @@ h1, .h1 {
     color: #2f2739 !important;
 }
 
-
 .no-frame .container-fluid {
     padding: 0 !important;
 }
-
 
 #platform_body .navbar-nav a:hover, #platform_body .navbar-nav a:focus {
     color: #2f2739 !important;
@@ -303,7 +281,7 @@ h1, .h1 {
 
 
 .badge-secondary i {
-    color: #FFF !important;
+    color: #FFF;
 }
 
 .fixed-box {
@@ -3545,7 +3523,15 @@ h4 .tip-badge {
     color: #FFF;
 }
 
-.btn-secondary {
+
+.btn.btn-third, .btn.btn-third:hover, .btn.btn-third:focus, .btn.btn-third:active, .btn.btn-third.active, .btn.btn-third:active:focus, .btn.btn-third:active:hover, .btn.btn-third.active:focus, .btn.btn-third.active:hover, .open > .btn.btn-third.dropdown-toggle, .open > .btn.btn-third.dropdown-toggle:focus, .open > .btn.btn-third.dropdown-toggle:hover, .navbar .navbar-nav > li > a.btn.btn-third, .navbar .navbar-nav > li > a.btn.btn-third:hover, .navbar .navbar-nav > li > a.btn.btn-third:focus, .navbar .navbar-nav > li > a.btn.btn-third:active, .navbar .navbar-nav > li > a.btn.btn-third.active, .navbar .navbar-nav > li > a.btn.btn-third:active:focus, .navbar .navbar-nav > li > a.btn.btn-third:active:hover, .navbar .navbar-nav > li > a.btn.btn-third.active:focus, .navbar .navbar-nav > li > a.btn.btn-third.active:hover, .open > .navbar .navbar-nav > li > a.btn.btn-third.dropdown-toggle, .open > .navbar .navbar-nav > li > a.btn.btn-third.dropdown-toggle:focus, .open > .navbar .navbar-nav > li > a.btn.btn-third.dropdown-toggle:hover {
+    background-color: #FF1493;
+    color: #FFF;
+}
+
+
+
+.btn-secondary, .btn-third {
     font-size:15px !important;
 }
 
@@ -3751,20 +3737,26 @@ h4 .tip-badge {
     background-color:#c1dffb !important;
 }
 
-#platform_body .intent-active a, #platform_body .intent-active a:hover, #platform_body .intent-active a:focus, #platform_body .intent-inactive > a:hover {
+#platform_body .intent-active a, #platform_body .intent-active a:hover, #platform_body .intent-active a:focus, #platform_body .intent-inactive > a:hover , .intent-active .fas, .intent-inactive:hover .fas {
     background-color: #ffe027 !important;
     color: #2f2739 !important;
     cursor: pointer !important;
 }
 
 
-#platform_body .entity-active > a, #platform_body .entity-active > a:hover, #platform_body .entity-active > a:focus, #platform_body .entity-inactive > a:hover {
+#platform_body .entity-active > a, #platform_body .entity-active > a:hover, #platform_body .entity-active > a:focus, #platform_body .entity-inactive > a:hover , .entity-active .fas, .entity-inactive:hover .fas {
     background-color: #0084ff !important;
     color: #fff !important;
     cursor: pointer !important;
 }
 
-#platform_body .links-active > a, #platform_body .links-active > a:hover, #platform_body .links-active > a:focus, #platform_body .links-inactive > a:hover {
+#platform_body .link-active > a, #platform_body .link-active > a:hover, #platform_body .link-active > a:focus, #platform_body .link-inactive > a:hover, .link-active .fas, .link-inactive:hover .fas {
+    background-color: #FF1493 !important;
+    color: #fff !important;
+    cursor: pointer !important;
+}
+
+#platform_body .transparent-active > a, #platform_body .transparent-active > a:hover, #platform_body .transparent-active > a:focus, #platform_body .transparent-inactive > a:hover {
     background-color: #fff !important;
     color: #2b2b2b !important;
     cursor: pointer !important;
@@ -3970,7 +3962,7 @@ h4 .tip-badge {
 
 
 .white-secondary>i, .white-secondary .fas {
-    color: #2b2b2b !important;
+    color: #2b2b2b;
 }
 
 
@@ -3982,9 +3974,6 @@ h4 .tip-badge {
 }
 
 
-.white-primary>i, .white-primary .fas {
-    color: #2b2b2b !important;
-}
 
 .inline-block{
     display: inline-block !important;
@@ -4613,3 +4602,23 @@ h4 .tip-badge {
     font-size:11px !important;
     font-weight: 500 !important;
 }
+
+
+
+/* Core Colors */
+.blue                 { color:#0084ff !important; }
+.yellow               { color:#ffe027 !important; }
+
+
+/* Entity Color Palette @10604 */
+.ispurple, .ispurple a             { color:#9400D3 !important; }
+.isgreen, .isgreen a              { color:#228B22 !important; }
+.isred, .isred a, .fas.redalert { color:#FF0000 !important; }
+.isgrey, .isgrey a, .lightgrey   { color:#AAAAAA !important; }
+.isolive, .isolive a  { color:#808000 !important; }
+.isnavy, .isnavy a               { color:#000080 !important; }
+.isorange, .isorange a             { color:#FF8C00 !important; }
+.ispink, .ispink a               { color:#FF1493 !important; }
+.iswhite, .iswhite a              { color:#FFFFFF !important; }
+.isbrown, .isbrown a              { color:#8B4513 !important; }
+.isturquoise, .isturquoise a              { color:#20B2AA !important; }

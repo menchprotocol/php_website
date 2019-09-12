@@ -181,7 +181,11 @@ class Entities_model extends CI_Model
 
                 } elseif($key=='en_status_entity_id') {
 
-                    $ln_type_entity_id = 10654; //Entity Iterated Status
+                    if(in_array($value, $this->config->item('en_ids_7358') /* Entity Statuses Active */)){
+                        $ln_type_entity_id = 10654; //Entity Iterated Status
+                    } else {
+                        $ln_type_entity_id = 10672; //Entity Iterated Archived
+                    }
                     $en_all_6177 = $this->config->item('en_all_6177'); //Entity Statuses
                     $ln_content = echo_clean_db_name($key) . ' iterated from [' . $en_all_6177[$before_data[0][$key]]['m_name'] . '] to [' . $en_all_6177[$value]['m_name'] . ']';
 
@@ -280,7 +284,7 @@ class Entities_model extends CI_Model
                 //Do not log update link here as we would log it further below:
                 $this->Links_model->ln_update($ln['ln_id'], array(
                     'ln_status_entity_id' => 6173, //Link Removed
-                ));
+                ), 6224 /* User Account Updated */);
             }
 
         }
@@ -335,14 +339,14 @@ class Entities_model extends CI_Model
                 }
 
                 //Update Link:
-                $adjusted_count += $this->Links_model->ln_update($adjust_tr['ln_id'], $updating_fields, $ln_creator_entity_id);
+                $adjusted_count += $this->Links_model->ln_update($adjust_tr['ln_id'], $updating_fields, $ln_creator_entity_id, 10689 /* Entity Link Merged */);
 
             } else {
 
                 //Remove this link:
                 $adjusted_count += $this->Links_model->ln_update($adjust_tr['ln_id'], array(
                     'ln_status_entity_id' => 6173, //Link Removed
-                ), $ln_creator_entity_id);
+                ), $ln_creator_entity_id, 10673 /* Entity Link Unlinked */);
 
             }
         }
@@ -875,7 +879,7 @@ class Entities_model extends CI_Model
 
                         $this->Links_model->ln_update($remove_tr['ln_id'], array(
                             'ln_status_entity_id' => 6173, //Link Removed
-                        ), $ln_creator_entity_id);
+                        ), $ln_creator_entity_id, 10673 /* Entity Link Unlinked  */);
 
                         $applied_success++;
                     }
@@ -910,7 +914,7 @@ class Entities_model extends CI_Model
 
                 $this->Links_model->ln_update($en['ln_id'], array(
                     'ln_content' => str_replace($action_command1, $action_command2, $en['ln_content']),
-                ), $ln_creator_entity_id);
+                ), $ln_creator_entity_id, 10657 /* Entity Link Iterated Content  */);
 
                 $applied_success++;
 
@@ -922,11 +926,11 @@ class Entities_model extends CI_Model
 
                 $applied_success++;
 
-            } elseif ($action_en_id == 5865 && ($action_command1=='*' || $en['ln_status_entity_id']==$action_command1) && in_array($action_command2, $this->config->item('en_ids_6186'))) { //Update Matching Link Status
+            } elseif ($action_en_id == 5865 && ($action_command1=='*' || $en['ln_status_entity_id']==$action_command1) && in_array($action_command2, $this->config->item('en_ids_6186') /* Link Statuses */)) { //Update Matching Link Status
 
                 $this->Links_model->ln_update($en['ln_id'], array(
                     'ln_status_entity_id' => $action_command2,
-                ), $ln_creator_entity_id);
+                ), $ln_creator_entity_id, ( in_array($action_command2, $this->config->item('en_ids_7360') /* Link Statuses Active */) ? 10656 /* Entity Link Iterated Status */ : 10673 /* Entity Link Unlinked */ ));
 
                 $applied_success++;
 

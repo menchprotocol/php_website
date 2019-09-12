@@ -214,7 +214,7 @@ class Communication_model extends CI_Model
          * - $push_message:         If TRUE this function will prepare a message to be
          *                          delivered to use using either Messenger or Chrome. If FALSE, it
          *                          would prepare a message for immediate HTML view. The HTML
-         *                          format will consider if a Miner is logged in or not,
+         *                          format will consider if a Trainer is logged in or not,
          *                          which will alter the HTML format.
          *
          *
@@ -302,7 +302,7 @@ class Communication_model extends CI_Model
 
             }
 
-            //Log successful Link for message delivery (Unless Miners viewing HTML):
+            //Log successful Link for message delivery (Unless Trainers viewing HTML):
             if(isset($recipient_en['en_id']) && $push_message){
                 $this->Links_model->ln_create(array(
                     'ln_status_entity_id' => ( $msg_dispatching['user_chat_channel']==3288 /* Mench on Chrome */ ? 6175 /* Link Drafting, so we dispatch later */ : 6176 /* Link Published */ ),
@@ -1410,82 +1410,6 @@ class Communication_model extends CI_Model
                 'message' => 'Missing quick reply payload',
             );
 
-        } elseif (substr_count($quick_reply_payload, 'TRYANOTHERRESPONSE_') == 1) {
-
-            //Users want to try their submission again:
-            $en_all_6144 = $this->config->item('en_all_6144'); //Requirement names
-            $in_subtype_entity_id = one_two_explode('TRYANOTHERRESPONSE_', '', $quick_reply_payload);
-            $this->Communication_model->dispatch_message(
-                'Ok, so try again by sending me another '.$en_all_6144[$in_subtype_entity_id]['m_name'].' to continue.',
-                $en,
-                true
-            );
-
-        } elseif (substr_count($quick_reply_payload, 'CONFIRMRESPONSE_') == 1) {
-
-            $append_link_ids = explode('_', one_two_explode('CONFIRMRESPONSE_', '', $quick_reply_payload));
-            $message_ln_id = intval($append_link_ids[0]);
-            $ap_step_ln_id = intval($append_link_ids[1]);
-
-            //Validate the message
-            if($message_ln_id>0 && $ap_step_ln_id>0){
-
-                //Validate message:
-                $new_message_links = $this->Links_model->ln_fetch(array(
-                    'ln_id' => $message_ln_id,
-                ));
-
-                //Validate Action Plan step:
-                $pending_req_submission = $this->Links_model->ln_fetch(array(
-                    'ln_id' => $ap_step_ln_id,
-                    //Also validate other requirements:
-                    'ln_type_entity_id' => 6144, //Action Plan Submit Requirements
-                    'ln_creator_entity_id' => $en['en_id'], //for this user
-                    'ln_status_entity_id IN (' . join(',', $this->config->item('en_ids_7364')) . ')' => null, //Link Statuses Incomplete
-                    'in_status_entity_id IN (' . join(',', $this->config->item('en_ids_7355')) . ')' => null, //Intent Statuses Public
-                ), array('in_parent'));
-
-            }
-
-
-            if(!isset($pending_req_submission[0]) || !isset($new_message_links[0])){
-                return array(
-                    'status' => 0,
-                    'message' => 'Invalid command to mark step as complete',
-                );
-            }
-
-
-            //Make changes:
-            $this->Links_model->ln_update($pending_req_submission[0]['ln_id'], array(
-                'ln_content' => $new_message_links[0]['ln_content'],
-                'ln_status_entity_id' => 6176, //Link Published
-                'ln_parent_link_id' => $new_message_links[0]['ln_id'],
-            ), $en['en_id']);
-
-
-            //Confirm with user:
-            $this->Communication_model->dispatch_message(
-                echo_random_message('affirm_progress'),
-                $en,
-                true
-            );
-
-            /*
-            $this->Communication_model->dispatch_message(
-                'I saved your submission to your Action Plan /link:See in 🚩Action Plan:https://mench.com/actionplan/' . $pending_req_submission[0]['in_id'],
-                $en,
-                true
-            );
-            */
-
-            //Process on-complete automations:
-            $this->Actionplan_model->completion_checks($en['en_id'], $pending_req_submission[0], true, true);
-
-            //Load next option:
-            $this->Actionplan_model->step_next_go($en['en_id'], true, true);
-
-
         } elseif (substr_count($quick_reply_payload, 'UNSUBSCRIBE_') == 1) {
 
             $action_unsubscribe = one_two_explode('UNSUBSCRIBE_', '', $quick_reply_payload);
@@ -1518,7 +1442,7 @@ class Communication_model extends CI_Model
                     $removed_intents++;
                     $this->Links_model->ln_update($ln['ln_id'], array(
                         'ln_status_entity_id' => 6173, //Link Removed
-                    ), $en['en_id']); //Give credit to miner
+                    ), $en['en_id'], 6150 /* User Intent Completed */);
                 }
 
                 //Update User communication level to Unsubscribe:
@@ -1552,7 +1476,7 @@ class Communication_model extends CI_Model
                 //Update status for this single Action Plan:
                 $this->Links_model->ln_update($user_intents[0]['ln_id'], array(
                     'ln_status_entity_id' => 6173, //Link Removed
-                ), $en['en_id']);
+                ), $en['en_id'], 6150 /* User Intent Completed */);
 
                 //Re-sort remaining Action Plan intentions:
                 foreach($this->Links_model->ln_fetch(array(
@@ -1562,7 +1486,7 @@ class Communication_model extends CI_Model
                 ), array(), 0, 0, array('ln_order' => 'ASC')) as $count => $ln){
                     $this->Links_model->ln_update($ln['ln_id'], array(
                         'ln_order' => ($count+1),
-                    ), $en['en_id']);
+                    ), $en['en_id'], 10681 /* Intents Ordered Automatically */);
                 }
 
                 //Show success message to user:
@@ -1964,7 +1888,7 @@ class Communication_model extends CI_Model
                         $this->Links_model->ln_update($ln['ln_id'], array(
                             'ln_child_intent_id' => $answer_in_id, //Save answer
                             'ln_status_entity_id' => 6176, //Link Published
-                        ), $en['en_id']);
+                        ), $en['en_id'], 6157 /* User Step Single-Answered */);
 
                         //Update status:
                         $published_answer = true;

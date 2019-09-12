@@ -224,8 +224,12 @@ class Intents_model extends CI_Model
 
                 } elseif($key=='in_status_entity_id'){
 
-                    $ln_type_entity_id = 10648; //Intent Iterated Status
-                    $en_all_4737 = $this->config->item('en_all_4737'); // Intent Statuses
+                    if(in_array($value, $this->config->item('en_ids_7356') /* Intent Statuses Active */)){
+                        $ln_type_entity_id = 10648; //Intent Iterated Status
+                    } else {
+                        $ln_type_entity_id = 10671; //Intent Iterated Archived
+                    }
+                    $en_all_4737 = $this->config->item('en_all_4737'); //Intent Statuses
                     $ln_content = echo_clean_db_name($key) . ' iterated from [' . $en_all_4737[$before_data[0][$key]]['m_name'] . '] to [' . $en_all_4737[$value]['m_name'] . ']';
                     $ln_parent_entity_id = $value;
                     $ln_child_entity_id = $before_data[0][$key];
@@ -233,7 +237,7 @@ class Intents_model extends CI_Model
                 } elseif($key=='in_scope_entity_id'){
 
                     $ln_type_entity_id = 10649; //Intent Iterated Scope
-                    $en_all_7596 = $this->config->item('en_all_7596'); // Intent Scope
+                    $en_all_7596 = $this->config->item('en_all_7596'); //Intent Scope
                     $ln_content = echo_clean_db_name($key) . ' iterated from [' . $en_all_7596[$before_data[0][$key]]['m_name'] . '] to [' . $en_all_7596[$value]['m_name'] . ']';
                     $ln_parent_entity_id = $value;
                     $ln_child_entity_id = $before_data[0][$key];
@@ -241,7 +245,7 @@ class Intents_model extends CI_Model
                 } elseif($key=='in_subtype_entity_id'){
 
                     $ln_type_entity_id = 10651; //Intent Iterated Subtype
-                    $en_all_7585 = $this->config->item('en_all_7585'); // Intent Subtypes
+                    $en_all_7585 = $this->config->item('en_all_7585'); //Intent Subtypes
                     $ln_content = echo_clean_db_name($key) . ' iterated from [' . $en_all_7585[$before_data[0][$key]]['m_name'] . '] to [' . $en_all_7585[$value]['m_name'] . ']';
                     $ln_parent_entity_id = $value;
                     $ln_child_entity_id = $before_data[0][$key];
@@ -321,7 +325,7 @@ class Intents_model extends CI_Model
             //Remove this link:
             $links_removed += $this->Links_model->ln_update($ln['ln_id'], array(
                 'ln_status_entity_id' => 6173, //Link Removed
-            ), $ln_creator_entity_id);
+            ), $ln_creator_entity_id, 10686 /* Intent Link Unlinked */);
         }
 
         //Return links removed:
@@ -447,7 +451,7 @@ class Intents_model extends CI_Model
             //Add user as Trainer IF NOT a miner:
             if(!count($this->Links_model->ln_fetch(array(
                 'ln_child_entity_id' => $ln_creator_entity_id,
-                'ln_parent_entity_id' => 1308, //Mench Miners
+                'ln_parent_entity_id' => 1308, //Mench Trainers
                 'ln_type_entity_id IN (' . join(',', $this->config->item('en_ids_4592')) . ')' => null, //Entity-to-Entity Links
                 'ln_status_entity_id IN (' . join(',', $this->config->item('en_ids_7359')) . ')' => null, //Link Statuses Public
             )))){
@@ -994,7 +998,7 @@ class Intents_model extends CI_Model
 
             /*
              *
-             * Sort Miners, Experts & Sources by trust score
+             * Sort Trainers, Experts & Sources by trust score
              *
              * */
             usort($metadata_this['__in__metadata_experts'], 'en_trust_score_sort');

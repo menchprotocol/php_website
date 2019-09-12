@@ -419,7 +419,7 @@ class Miner_app extends CI_Controller
         $counter = 0;
         foreach ($this->config->item('en_all_10591') as $en_id => $m) {
             $counter++;
-            echo '<a href="javascript:void(0)" onclick="leaderboard_filter_direction('.$en_id.')" class="btn btn-default user-type-filter setting-en-'.$en_id.'">'.$m['m_name'].'</a>';
+            echo '<a href="javascript:void(0)" onclick="leaderboard_filter_direction('.$en_id.')" class="btn user-type-filter setting-en-'.$en_id.'">'.$m['m_name'].'</a>';
         }
         echo '</div>';
 
@@ -428,7 +428,7 @@ class Miner_app extends CI_Controller
         //Leaderboard Time Frames
         echo '<div class="btn-group btn-group-sm btn-group-leaderboard" role="group">';
         foreach ($this->config->item('en_all_7799') as $en_id => $m) {
-            echo '<a href="javascript:void(0)" onclick="leaderboard_filter_timeframe('.$en_id.')" class="btn btn-default user-type-filter setting-en-'.$en_id.'">'.$m['m_name'].'</a>';
+            echo '<a href="javascript:void(0)" onclick="leaderboard_filter_timeframe('.$en_id.')" class="btn user-type-filter setting-en-'.$en_id.'">'.$m['m_name'].'</a>';
         }
         echo '</div>';
 

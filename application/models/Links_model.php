@@ -14,12 +14,12 @@ class Links_model extends CI_Model
         parent::__construct();
     }
 
-    function ln_update($id, $update_columns, $ln_creator_entity_id = 0, $ln_type_entity_id = 4242 /* Link Updated */, $ln_content = '')
+    function ln_update($id, $update_columns, $ln_creator_entity_id = 0, $ln_type_entity_id = 0, $ln_content = '')
     {
 
         if (count($update_columns) == 0) {
             return false;
-        } elseif (!in_array($ln_type_entity_id, $this->config->item('en_ids_10658'))) {
+        } elseif ($ln_type_entity_id>0 && !in_array($ln_type_entity_id, $this->config->item('en_ids_10658'))) {
             return false;
         }
 
@@ -41,7 +41,7 @@ class Links_model extends CI_Model
         $affected_rows = $this->db->affected_rows();
 
         //Log changes if successful:
-        if ($affected_rows > 0 && $ln_creator_entity_id > 0) {
+        if ($affected_rows > 0 && $ln_creator_entity_id > 0 && $ln_type_entity_id > 0) {
 
             if(strlen($ln_content) == 0){
                 if(in_array($ln_type_entity_id, $this->config->item('en_ids_10593') /* Statement */)){
@@ -108,11 +108,10 @@ class Links_model extends CI_Model
                 }
             }
 
-
             //Determine fields that have changed:
             $fields_changed = array();
             foreach ($update_columns as $key => $value) {
-                if($before_data[0][$key]!=$value && in_array($key, array('ln_status_entity_id', 'ln_content', 'ln_order', 'ln_parent_entity_id', 'ln_child_entity_id', 'ln_parent_intent_id', 'ln_child_intent_id', 'ln_metadata', 'ln_type_entity_id'))){
+                if($before_data[0][$key]!=$value){
                     array_push($fields_changed, array(
                         'field' => $key,
                         'before' => $before_data[0][$key],
@@ -121,7 +120,7 @@ class Links_model extends CI_Model
                 }
             }
 
-            if(strlen($ln_content) > 0){
+            if(strlen($ln_content) > 0 && count($fields_changed) > 0){
                 //Value has changed, log link:
                 $this->Links_model->ln_create(array(
                     'ln_parent_link_id' => $id, //Link Reference

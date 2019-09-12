@@ -573,29 +573,63 @@ class Messenger extends CI_Controller
                                 ));
                             }
 
-                            //We did find a pending submission requirement, confirm with user:
-                            $this->Communication_model->dispatch_message(
-                                'Got it! Confirm your submission:',
-                                $en,
-                                true,
-                                array(
-                                    array(
-                                        'content_type' => 'text',
-                                        'title' => 'Confirm ✅',
-                                        'payload' => 'CONFIRMRESPONSE_' . $new_message['ln_id'] . '_' . $first_chioce['ln_id'],
-                                    ),
-                                    array(
-                                        'content_type' => 'text',
-                                        'title' => 'Try Again',
-                                        'payload' => 'TRYANOTHERRESPONSE_' . $first_chioce['in_subtype_entity_id'],
-                                    ),
-                                    array(
-                                        'content_type' => 'text',
-                                        'title' => 'Skip',
-                                        'payload' => 'SKIP-ACTIONPLAN_skip-initiate_' . $first_chioce['in_id'],
-                                    )
-                                )
-                            );
+
+                            //Accept their answer:
+
+                            //Validate Action Plan step:
+                            $pending_req_submission = $this->Links_model->ln_fetch(array(
+                                'ln_id' => $first_chioce['ln_id'],
+                                //Also validate other requirements:
+                                'ln_type_entity_id' => 6144, //Action Plan Submit Requirements
+                                'ln_creator_entity_id' => $en['en_id'], //for this user
+                                'ln_status_entity_id IN (' . join(',', $this->config->item('en_ids_7364')) . ')' => null, //Link Statuses Incomplete
+                                'in_status_entity_id IN (' . join(',', $this->config->item('en_ids_7355')) . ')' => null, //Intent Statuses Public
+                            ), array('in_parent'));
+
+
+                            if(isset($pending_req_submission[0])){
+
+                                //Make changes:
+                                $this->Links_model->ln_update($pending_req_submission[0]['ln_id'], array(
+                                    'ln_content' => $new_message['ln_content'],
+                                    'ln_status_entity_id' => 6176, //Link Published
+                                    'ln_parent_link_id' => $new_message['ln_id'],
+                                ), $en['en_id'], 10687 /* User Sent Requirement */);
+
+
+                                //Confirm with user:
+                                $this->Communication_model->dispatch_message(
+                                    echo_random_message('affirm_progress'),
+                                    $en,
+                                    true
+                                );
+
+                                //Process on-complete automations:
+                                $this->Actionplan_model->completion_checks($en['en_id'], $pending_req_submission[0], true, true);
+
+                            } else {
+
+                                //Opppsi:
+                                $this->Links_model->ln_create(array(
+                                    'ln_parent_link_id' => $first_chioce['ln_id'],
+                                    'ln_content' => 'messenger_webhook() failed to validate user response original step',
+                                    'ln_type_entity_id' => 4246, //Platform Bug Reports
+                                    'ln_creator_entity_id' => $en['en_id'], //for this user
+                                ));
+
+                                //Confirm with user:
+                                $this->Communication_model->dispatch_message(
+                                    'Unable to accept your response. My trainers have already been notified.',
+                                    $en,
+                                    true
+                                );
+                            }
+
+
+
+                            //Load next option:
+                            $this->Actionplan_model->step_next_go($en['en_id'], true, true);
+
 
                         } elseif(count($pending_mismatches) > 0){
 
@@ -791,16 +825,7 @@ class Messenger extends CI_Controller
         $ln_pending = $this->Links_model->ln_fetch(array(
             'ln_status_entity_id' => 6175, //Link Drafting
             'ln_type_entity_id IN (' . join(',', $this->config->item('en_ids_6102')) . ')' => null, //User Sent/Received Media Links
-        ), array(), 20);
-
-        //Set link statuses to drafting so other Cron jobs don't pick them up:
-        foreach ($ln_pending as $ln) {
-            if($ln['ln_status_entity_id'] == 6175 /* Link Drafting */){
-                $this->Links_model->ln_update($ln['ln_id'], array(
-                    'ln_status_entity_id' => 6175, //Link Drafting
-                ));
-            }
-        }
+        ), array(), 10);
 
         $counter = 0;
         foreach ($ln_pending as $ln) {
@@ -816,7 +841,7 @@ class Messenger extends CI_Controller
                 'ln_content' => $cdn_status['cdn_url'], //CDN URL
                 'ln_child_entity_id' => $cdn_status['cdn_en']['en_id'], //New URL Entity
                 'ln_status_entity_id' => 6176, //Link Published
-            ));
+            ), $ln['ln_creator_entity_id'], 10690 /* User Media Uploaded */);
 
             //Increase counter:
             $counter++;
@@ -850,16 +875,6 @@ class Messenger extends CI_Controller
         ), array('ln_creator'), 20); //Max number of scans per run
 
 
-        //Set link statuses to drafting so other Cron jobs don't pick them up:
-        foreach ($ln_pending as $ln) {
-            if($ln['ln_status_entity_id'] == 6175 /* Link Drafting */){
-                $this->Links_model->ln_update($ln['ln_id'], array(
-                    'ln_status_entity_id' => 6175, /* Link Drafting */
-                ));
-            }
-        }
-
-
         //Now go through and upload to CDN:
         foreach ($ln_pending as $ln) {
 
@@ -891,13 +906,13 @@ class Messenger extends CI_Controller
             //Update link:
             $this->Links_model->ln_update($ln['ln_id'], array(
                 'ln_status_entity_id' => 6176, //Link Published
-                'ln_content' => null, //Remove URL from content to indicate its done
+                'ln_content' => $cdn_status,
                 'ln_child_entity_id' => $ln_child_entity_id,
                 'ln_metadata' => array(
                     'original_url' => $ln['ln_content'],
                     'cdn_status' => $cdn_status,
                 ),
-            ));
+            ), $ln['ln_creator_entity_id'], 10690 /* User Media Uploaded */);
 
         }
 

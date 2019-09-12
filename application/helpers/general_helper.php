@@ -1478,19 +1478,19 @@ function update_metadata($obj_type, $obj_id, $new_fields, $ln_creator_entity_id 
 
         $affected_rows = $CI->Intents_model->in_update($obj_id, array(
             'in_metadata' => $metadata,
-        ), ( $ln_creator_entity_id > 0 ), $ln_creator_entity_id);
+        ), false, $ln_creator_entity_id);
 
     } elseif ($obj_type == 'en') {
 
         $affected_rows = $CI->Entities_model->en_update($obj_id, array(
             'en_metadata' => $metadata,
-        ), ( $ln_creator_entity_id > 0 ), $ln_creator_entity_id);
+        ), false, $ln_creator_entity_id);
 
     } elseif ($obj_type == 'ln') {
 
         $affected_rows = $CI->Links_model->ln_update($obj_id, array(
             'ln_metadata' => $metadata,
-        ), $ln_creator_entity_id);
+        ));
 
     }
 

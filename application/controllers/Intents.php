@@ -175,7 +175,7 @@ class Intents extends CI_Controller
 
     function in_report_conditional_steps(){
 
-        //Authenticate Miner:
+        //Authenticate Trainer:
         $session_en = en_auth(array(1308));
 
         if (!$session_en) {
@@ -227,12 +227,12 @@ class Intents extends CI_Controller
 
         /*
          *
-         * Main intent view that Miners use to manage the
+         * Main intent view that Trainers use to manage the
          * intent networks.
          *
          * */
 
-        //Authenticate Miner:
+        //Authenticate Trainer:
         $session_en = en_auth(array(1308,7512), true);
 
         if($in_id == 0){
@@ -253,7 +253,7 @@ class Intents extends CI_Controller
         $this->session->set_userdata('user_session_count', $new_order);
         $this->Links_model->ln_create(array(
             'ln_creator_entity_id' => $session_en['en_id'],
-            'ln_type_entity_id' => 4993, //Miner Opened Intent
+            'ln_type_entity_id' => 4993, //Trainer Opened Intent
             'ln_child_intent_id' => $in_id,
             'ln_order' => $new_order,
         ));
@@ -283,7 +283,7 @@ class Intents extends CI_Controller
          *
          * */
 
-        //Authenticate Miner:
+        //Authenticate Trainer:
         $session_en = en_auth(array(1308,7512));
         if (!$session_en) {
             return echo_json(array(
@@ -377,7 +377,7 @@ class Intents extends CI_Controller
     function in_migrate()
     {
 
-        //Authenticate Miner:
+        //Authenticate Trainer:
         $session_en = en_auth(array(1308,7512));
         if (!$session_en) {
             return echo_json(array(
@@ -610,7 +610,7 @@ class Intents extends CI_Controller
 
     function in_unlink_only(){
 
-        //Authenticate Miner:
+        //Authenticate Trainer:
         $session_en = en_auth(array(1308,7512));
 
         if (!$session_en) {
@@ -637,7 +637,7 @@ class Intents extends CI_Controller
         //Unlink:
         $this->Links_model->ln_update($_POST['ln_id'], array(
             'ln_status_entity_id' => 6173, //Link Unlinked
-        ), $session_en['en_id'], 10656 /* Entity Link Iterated Status  */);
+        ), $session_en['en_id'], 10686 /* Intent Link Unlinked  */);
 
         //Return success:
         return echo_json(array(
@@ -650,7 +650,7 @@ class Intents extends CI_Controller
     function in_modify_save()
     {
 
-        //Authenticate Miner:
+        //Authenticate Trainer:
         $session_en = en_auth(array(1308,7512));
         $ln_id = intval($_POST['ln_id']);
 
@@ -966,12 +966,18 @@ class Intents extends CI_Controller
 
 
             if($_POST['ln_status_entity_id'] != $lns[0]['ln_status_entity_id']){
-                if($_POST['ln_status_entity_id'] == 6173 /* Link Removed */){
+
+                if(!in_array($_POST['ln_status_entity_id'], $this->config->item('en_ids_7360'))){
+                    //No longer active:
                     $remove_from_ui = 1;
+                    $ln_type_entity_id = 10686; //Intent Link Unlinked
+                } else {
+                    $ln_type_entity_id = 10661; //Intent Link Iterated Status
                 }
+
                 $this->Links_model->ln_update($ln_id, array(
                     'ln_status_entity_id' => $_POST['ln_status_entity_id'],
-                ), $session_en['en_id'], 10661 /* Intent Link Iterated Status */);
+                ), $session_en['en_id'], $ln_type_entity_id);
             }
 
 
@@ -1080,7 +1086,7 @@ class Intents extends CI_Controller
     function in_sort_save()
     {
 
-        //Authenticate Miner:
+        //Authenticate Trainer:
         $session_en = en_auth(array(1308,7512));
         if (!$session_en) {
             echo_json(array(
@@ -1121,7 +1127,7 @@ class Intents extends CI_Controller
                 foreach ($_POST['new_ln_orders'] as $rank => $ln_id) {
                     $this->Links_model->ln_update(intval($ln_id), array(
                         'ln_order' => intval($rank),
-                    ), $session_en['en_id']);
+                    ), $session_en['en_id'], 10675 /* Intents Ordered by Trainer */);
                 }
 
                 //Fetch again for the record:
@@ -1144,7 +1150,7 @@ class Intents extends CI_Controller
     function in_messages_iframe($in_id)
     {
 
-        //Authenticate as a Miner:
+        //Authenticate as a Trainer:
         $session_en = en_auth(array(1308,7512));
         if (!$session_en) {
             //Display error:
@@ -1171,7 +1177,7 @@ class Intents extends CI_Controller
     function in_new_message_from_text()
     {
 
-        //Authenticate Miner:
+        //Authenticate Trainer:
         $session_en = en_auth(array(1308,7512));
 
         if (!$session_en) {
@@ -1248,7 +1254,7 @@ class Intents extends CI_Controller
     function in_new_message_from_attachment()
     {
 
-        //Authenticate Miner:
+        //Authenticate Trainer:
         $session_en = en_auth(array(1308,7512));
         if (!$session_en) {
 
@@ -1356,10 +1362,10 @@ class Intents extends CI_Controller
 
         /*
          *
-         * An AJAX function that is triggered every time a Miner
+         * An AJAX function that is triggered every time a Trainer
          * selects to modify an intent. It will check the
          * Requires Manual Response of an intent so it can
-         * check proper boxes to help Miner modify the intent.
+         * check proper boxes to help Trainer modify the intent.
          *
          * */
 
@@ -1443,7 +1449,7 @@ class Intents extends CI_Controller
     function in_message_sort()
     {
 
-        //Authenticate Miner:
+        //Authenticate Trainer:
         $session_en = en_auth(array(1308,7512));
         if (!$session_en) {
 
@@ -1467,10 +1473,10 @@ class Intents extends CI_Controller
         foreach ($_POST['new_ln_orders'] as $ln_order => $ln_id) {
             if (intval($ln_id) > 0) {
                 $sort_count++;
-                //Log update and give credit to the session Miner:
+                //Log update and give credit to the session Trainer:
                 $this->Links_model->ln_update($ln_id, array(
                     'ln_order' => intval($ln_order),
-                ), $session_en['en_id']);
+                ), $session_en['en_id'], 10676 /* Intent Notes Ordered */);
             }
         }
 
@@ -1484,7 +1490,7 @@ class Intents extends CI_Controller
     function in_message_modify_save()
     {
 
-        //Authenticate Miner:
+        //Authenticate Trainer:
         $session_en = en_auth(array(1308,7512));
         if (!$session_en) {
             return echo_json(array(
@@ -1536,22 +1542,70 @@ class Intents extends CI_Controller
             ));
         }
 
+        //Validate new message:
+        $msg_validation = $this->Communication_model->dispatch_validate_message($_POST['ln_content'], $session_en, false, array(), $messages[0]['ln_type_entity_id'], $_POST['in_id']);
+        if (!$msg_validation['status']) {
+
+            //There was some sort of an error:
+            return echo_json($msg_validation);
+
+        } elseif($messages[0]['ln_content'] != $msg_validation['input_message']) {
+
+            //Now update the DB:
+            $this->Links_model->ln_update(intval($_POST['ln_id']), array(
+                'ln_content' => $msg_validation['input_message'],
+                'ln_parent_entity_id' => $msg_validation['ln_parent_entity_id'],
+                'ln_parent_intent_id' => $msg_validation['ln_parent_intent_id'],
+            ), $session_en['en_id'], 10679 /* Intent Notes Iterated Content */, word_change_calculator($messages[0]['ln_content'], $msg_validation['input_message']));
+
+        }
+
 
         //Did the message status change?
         if($messages[0]['ln_status_entity_id'] != $_POST['message_ln_status_entity_id']){
 
             //Are we deleting this message?
-            if($_POST['message_ln_status_entity_id'] == 6173 /* Link Removed*/){
+            if(in_array($_POST['message_ln_status_entity_id'], $this->config->item('en_ids_7360') /* Link Statuses Active */)){
+
+                //If making the link public, all referenced entities must also be public...
+                if(in_array($_POST['message_ln_status_entity_id'], $this->config->item('en_ids_7359') /* Link Statuses Public */)){
+
+                    //We're publishing, make sure potential entity references are also published:
+                    $string_references = extract_references($_POST['ln_content']);
+
+                    if (count($string_references['ref_entities']) > 0) {
+
+                        //We do have an entity reference, what's its status?
+                        $ref_ens = $this->Entities_model->en_fetch(array(
+                            'en_id' => $string_references['ref_entities'][0],
+                        ));
+
+                        if(count($ref_ens)>0 && !in_array($ref_ens[0]['en_status_entity_id'], $this->config->item('en_ids_7357') /* Entity Statuses Public */)){
+                            return echo_json(array(
+                                'status' => 0,
+                                'message' => 'You cannot published this message because its referenced entity is not yet public',
+                            ));
+                        }
+                    }
+                }
 
                 //yes, do so and return results:
                 $affected_rows = $this->Links_model->ln_update(intval($_POST['ln_id']), array(
                     'ln_status_entity_id' => $_POST['message_ln_status_entity_id'],
-                ), $session_en['en_id']);
+                ), $session_en['en_id'], 10677 /* Intent Notes Iterated Status */);
+
+            } else {
+
+                //New status is no longer active, so remove the intent note:
+                $affected_rows = $this->Links_model->ln_update(intval($_POST['ln_id']), array(
+                    'ln_status_entity_id' => $_POST['message_ln_status_entity_id'],
+                ), $session_en['en_id'], 10678 /* Intent Notes Unlinked */);
 
                 //Return success:
                 if($affected_rows > 0){
                     return echo_json(array(
                         'status' => 1,
+                        'remove_from_ui' => 1,
                         'message' => echo_random_message('saving_notify'),
                     ));
                 } else {
@@ -1560,65 +1614,21 @@ class Intents extends CI_Controller
                         'message' => 'Error trying to remove message',
                     ));
                 }
-
-            } elseif($_POST['message_ln_status_entity_id'] == 6176 /* Link Published */){
-
-                //We're publishing, make sure potential entity references are also published:
-                $string_references = extract_references($_POST['ln_content']);
-
-                if (count($string_references['ref_entities']) > 0) {
-
-                    //We do have an entity reference, what's its status?
-                    $ref_ens = $this->Entities_model->en_fetch(array(
-                        'en_id' => $string_references['ref_entities'][0],
-                    ));
-
-                    if(count($ref_ens)>0 && !in_array($ref_ens[0]['en_status_entity_id'], $this->config->item('en_ids_7357') /* Entity Statuses Public */)){
-                        return echo_json(array(
-                            'status' => 0,
-                            'message' => 'You cannot published this message because its referenced entity is not yet public',
-                        ));
-                    }
-                }
             }
         }
 
-
-
-        //Validate new message:
-        $msg_validation = $this->Communication_model->dispatch_validate_message($_POST['ln_content'], $session_en, false, array(), $messages[0]['ln_type_entity_id'], $_POST['in_id']);
-        if (!$msg_validation['status']) {
-            //There was some sort of an error:
-            return echo_json($msg_validation);
-        }
-
-
-        //All good, lets move on:
-        //Define what needs to be updated:
-        $to_update = array(
-            'ln_status_entity_id' => $_POST['message_ln_status_entity_id'],
-            'ln_content' => $msg_validation['input_message'],
-            'ln_parent_entity_id' => $msg_validation['ln_parent_entity_id'],
-            'ln_parent_intent_id' => $msg_validation['ln_parent_intent_id'],
-        );
-
-        //Now update the DB:
-        $this->Links_model->ln_update(intval($_POST['ln_id']), $to_update, $session_en['en_id']);
-
-        //Re-fetch the message for display purposes:
-        $new_messages = $this->Links_model->ln_fetch(array(
-            'ln_id' => intval($_POST['ln_id']),
-        ));
 
         $en_all_6186 = $this->config->item('en_all_6186');
 
         //Print the challenge:
         return echo_json(array(
             'status' => 1,
+            'remove_from_ui' => 0,
             'message' => $this->Communication_model->dispatch_message($msg_validation['input_message'], $session_en, false, array(), $_POST['in_id']),
-            'message_new_status_icon' => '<span title="' . $en_all_6186[$to_update['ln_status_entity_id']]['m_name'] . ': ' . $en_all_6186[$to_update['ln_status_entity_id']]['m_desc'] . '" data-toggle="tooltip" data-placement="top">' . $en_all_6186[$to_update['ln_status_entity_id']]['m_icon'] . '</span>', //This might have changed
+            'message_new_status_icon' => '<span title="' . $en_all_6186[$_POST['message_ln_status_entity_id']]['m_name'] . ': ' . $en_all_6186[$_POST['message_ln_status_entity_id']]['m_desc'] . '" data-toggle="tooltip" data-placement="top">' . $en_all_6186[$_POST['message_ln_status_entity_id']]['m_icon'] . '</span>', //This might have changed
             'success_icon' => '<span><i class="fas fa-check"></i> Saved</span>',
         ));
+
     }
 
 

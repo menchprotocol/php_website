@@ -120,7 +120,7 @@ class Links extends CI_Controller
 
     function add_search_item(){
 
-        //Authenticate Miner:
+        //Authenticate Trainer:
         $session_en = en_auth(array(1308,7512));
 
         if (!$session_en) {
@@ -243,7 +243,7 @@ class Links extends CI_Controller
     function load_link_connections(){
 
 
-        //Authenticate Miner:
+        //Authenticate Trainer:
         if (!isset($_POST['ln_id']) || intval($_POST['ln_id']) < 1) {
             return echo_json(array(
                 'status' => 0,
