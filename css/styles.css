@@ -141,14 +141,14 @@ h1, .h1 {
 }
 
 .badge-primary, .panel-primary>.panel-heading .badge-primary {
-    background-color: #fdde24;
+    background-color: #f9da22;
     color: #2f2739;
 }
 
 .btn-xs.btn-black {
     font-size: 0.6em !important;
     font-weight: normal !important;
-    border: 2px solid #fdde24 !important;
+    border: 2px solid #f9da22 !important;
     background-color: #fff !important;
     color: #2f2739 !important;
 }
@@ -481,7 +481,7 @@ input::-webkit-inner-spin-button {
 
 .copy-btn-done {
     color: #2f2739 !important;
-    background-color: #fdde24 !important;
+    background-color: #f9da22 !important;
 }
 
 .progress {
@@ -1015,8 +1015,8 @@ input::-webkit-inner-spin-button {
 
 
 .entity-list .list-group-item.active, .entity-list .list-group-item.active:focus, .entity-list .list-group-item.active:hover {
-    background-color: #fdde24;
-    border-color: #fdde24;
+    background-color: #f9da22;
+    border-color: #f9da22;
     color: #2f2739;
 }
 
@@ -1318,7 +1318,7 @@ h5, .h5 {
 }
 
 .public-profiles > a:hover {
-    color: #fdde24 !important;
+    color: #f9da22 !important;
 }
 
 .subhead {
@@ -1567,7 +1567,7 @@ footer {
 }
 
 .suggestion:hover {
-    background-color: #fdde24;
+    background-color: #f9da22;
 }
 
 .grey-input {
@@ -2604,7 +2604,7 @@ select.form-control {
 }
 
 .mini-li .fas {
-    color: #fdde24;
+    color: #f9da22;
 }
 
 .mini-li a:hover .fas {
@@ -2626,7 +2626,7 @@ select.form-control {
 }
 
 .nav > .active > a:focus, .nav > .active > a:hover {
-    background-color: #fdde24 !important;
+    background-color: #f9da22 !important;
     cursor: default !important;
 }
 
@@ -2862,7 +2862,7 @@ a.badge:focus, a.badge:hover {
 }
 
 .add_intent:hover, .algolia-autocomplete .aa-dropdown-menu .aa-suggestion.aa-cursor {
-    background-color: #fdde24;
+    background-color: #f9da22;
     text-decoration: none;
     line-height: 120% !important;
 }
@@ -3190,7 +3190,7 @@ a .badge {
 }
 
 .badge-click {
-    background-color: #fdde24;
+    background-color: #f9da22;
     color: #2f2739;
     border: 1px solid #2f2739;
     margin-top: -4px;
@@ -3216,7 +3216,7 @@ h4 .tip-badge {
 .help_body {
     cursor: default;
     display: none;
-    background-color: #fdde24;
+    background-color: #f9da22;
     border: 1px solid #FFF;
     margin: 0 0 10px;
     padding: 10px;
@@ -3616,7 +3616,7 @@ h4 .tip-badge {
 
 .nav-pills-primary li.active a {
     border-radius: 5px !important;
-    border: 1px solid #fdde24;
+    border: 1px solid #f9da22;
     box-shadow: none !important;
 }
 
@@ -3661,7 +3661,7 @@ h4 .tip-badge {
 
 .navbar-main > .active > a, .navbar-main > .active > a:hover, .navbar-main > .active > a:focus {
     color: #2f2739 !important;
-    background-color: #fdde24 !important;
+    background-color: #f9da22 !important;
     border-radius: 5px !important;
     cursor: pointer !important;
     border: 1px solid #FFF;
@@ -3738,7 +3738,7 @@ h4 .tip-badge {
 }
 
 #platform_body .intent-active a, #platform_body .intent-active a:hover, #platform_body .intent-active a:focus, #platform_body .intent-inactive > a:hover , .intent-active .fas, .intent-inactive:hover .fas {
-    background-color: #fdde24 !important;
+    background-color: #f9da22 !important;
     color: #2f2739 !important;
     cursor: pointer !important;
 }
@@ -3970,7 +3970,7 @@ h4 .tip-badge {
     background-color: transparent !important;
     cursor: pointer !important;
     color: #2b2b2b !important;
-    border:2px solid #fdde24 !important;
+    border:2px solid #f9da22 !important;
 }
 
 
@@ -4331,7 +4331,7 @@ h4 .tip-badge {
 }
 
 .is-highlighted{
-    background-color:#fdde24;
+    background-color:#f9da22;
 }
 .has-data{
     padding-left:5px;
@@ -4607,7 +4607,7 @@ h4 .tip-badge {
 
 /* Core Colors */
 .blue                 { color:#0084ff !important; }
-.yellow               { color:#fdde24 !important; }
+.yellow               { color:#f9da22 !important; }
 
 
 /* Entity Color Palette @10604 */
