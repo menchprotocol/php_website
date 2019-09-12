@@ -1446,7 +1446,7 @@ class Communication_model extends CI_Model
                 }
 
                 //Update User communication level to Unsubscribe:
-                $this->Entities_model->en_radio_set(4454, 4455, $en['en_id'], $en['en_id']);
+                $this->Entities_model->en_radio_set(4454, 4455, $en['en_id']);
 
                 //Let them know about these changes:
                 $this->Communication_model->dispatch_message(
@@ -1510,7 +1510,7 @@ class Communication_model extends CI_Model
             if ($quick_reply_payload == 'RESUBSCRIBE_YES') {
 
                 //Update User communication level to Receive Silent Push Notifications:
-                $this->Entities_model->en_radio_set(4454, 4457, $en['en_id'], $en['en_id']);
+                $this->Entities_model->en_radio_set(4454, 4457, $en['en_id']);
 
                 //Inform them:
                 $this->Communication_model->dispatch_message(

@@ -241,14 +241,14 @@ class Entities_model extends CI_Model
     }
 
 
-    function en_radio_set($en_parent_bucket_id, $set_en_child_id = 0, $en_user_id, $ln_creator_entity_id = 0)
+    function en_radio_set($en_parent_bucket_id, $set_en_child_id, $ln_creator_entity_id)
     {
 
         /*
          * Treats an entity child group as a drop down menu where:
          *
          *  $en_parent_bucket_id is the parent of the drop down
-         *  $en_user_id is the user entity ID that one of the children of $en_parent_bucket_id should be assigned (like a drop down)
+         *  $ln_creator_entity_id is the user entity ID that one of the children of $en_parent_bucket_id should be assigned (like a drop down)
          *  $set_en_child_id is the new value to be assigned, which could also be null (meaning just remove all current values)
          *
          * This function is helpful to manage things like User communication levels
@@ -270,7 +270,7 @@ class Entities_model extends CI_Model
         $already_assigned = ($set_en_child_id < 1);
         $updated_ln_id = 0;
         foreach ($this->Links_model->ln_fetch(array(
-            'ln_child_entity_id' => $en_user_id,
+            'ln_child_entity_id' => $ln_creator_entity_id,
             'ln_parent_entity_id IN (' . join(',', $children) . ')' => null, //Current children
             'ln_status_entity_id IN (' . join(',', $this->config->item('en_ids_7360')) . ')' => null, //Link Statuses Active
         ), array(), $this->config->item('items_per_page')) as $ln) {
@@ -284,7 +284,7 @@ class Entities_model extends CI_Model
                 //Do not log update link here as we would log it further below:
                 $this->Links_model->ln_update($ln['ln_id'], array(
                     'ln_status_entity_id' => 6173, //Link Removed
-                ), 6224 /* User Account Updated */);
+                ), $ln_creator_entity_id, 6224 /* User Account Updated */);
             }
 
         }
@@ -295,7 +295,7 @@ class Entities_model extends CI_Model
             //Let's go ahead and add desired entity as parent:
             $this->Links_model->ln_create(array(
                 'ln_creator_entity_id' => $ln_creator_entity_id,
-                'ln_child_entity_id' => $en_user_id,
+                'ln_child_entity_id' => $ln_creator_entity_id,
                 'ln_parent_entity_id' => $set_en_child_id,
                 'ln_type_entity_id' => 4230, //Raw link
                 'ln_parent_link_id' => $updated_ln_id,
