@@ -1018,7 +1018,7 @@ class Intents extends CI_Controller
                         'ln_metadata' => array_merge( $ln_metadata, array(
                             'tr__assessment_points' => intval($_POST['tr__assessment_points']),
                         )),
-                    ), $session_en['en_id'], 10663 /* Intent Link Iterated Marks */, 'Marks iterated from [' . $ln_metadata['tr__assessment_points']. '] to [' . $_POST['tr__assessment_points']. ']');
+                    ), $session_en['en_id'], 10663 /* Intent Link Iterated Marks */, 'Marks iterated'.( isset($ln_metadata['tr__assessment_points']) ? ' from [' . $ln_metadata['tr__assessment_points']. ']' : '' ).' to [' . $_POST['tr__assessment_points']. ']');
                 }
 
                 if($_POST['ln_type_entity_id'] == 4229 && (
@@ -1032,7 +1032,7 @@ class Intents extends CI_Controller
                             'tr__conditional_score_min' => doubleval($_POST['tr__conditional_score_min']),
                             'tr__conditional_score_max' => doubleval($_POST['tr__conditional_score_max']),
                         )),
-                    ), $session_en['en_id'], 10664 /* Intent Link Iterated Score */, 'Score Range iterated from [' . $ln_metadata['tr__conditional_score_min'].'% - '.$ln_metadata['tr__conditional_score_max']. '%] to [' . $_POST['tr__conditional_score_min'].'% - '.$_POST['tr__conditional_score_max']. '%]');
+                    ), $session_en['en_id'], 10664 /* Intent Link Iterated Score */, 'Score Range iterated'.( isset($ln_metadata['tr__conditional_score_min']) && isset($ln_metadata['tr__conditional_score_max']) ? ' from [' . $ln_metadata['tr__conditional_score_min'].'% - '.$ln_metadata['tr__conditional_score_max']. '%]' : '' ).' to [' . $_POST['tr__conditional_score_min'].'% - '.$_POST['tr__conditional_score_max']. '%]');
                 }
             }
         }
