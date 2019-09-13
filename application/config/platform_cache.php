@@ -11,7 +11,7 @@ defined('BASEPATH') OR exit('No direct script access allowed');
  *
  */
 
-//Generated 2019-09-12 16:10:57 PST
+//Generated 2019-09-13 06:33:31 PST
 
 //Link Connector Fields:
 $config['en_ids_10692'] = array(4429,4369,4366,4368,4371);
@@ -418,7 +418,7 @@ $config['en_all_4527'] = array(
         'm_parents' => array(7368,4527,7284),
     ),
     7369 => array(
-        'm_icon' => '<i class="fas fa-flag"></i>',
+        'm_icon' => '<i class="far fa-user"></i>',
         'm_name' => 'Mench User App',
         'm_desc' => '&var_trimcache=Mench',
         'm_parents' => array(7372,4527),
@@ -544,7 +544,7 @@ $config['en_all_4527'] = array(
         'm_parents' => array(6771,4527),
     ),
     7704 => array(
-        'm_icon' => '<i class="far fa-check-circle"></i>',
+        'm_icon' => '<i class="far fa-check-circle ispink"></i>',
         'm_name' => 'User Step Answered Successfully',
         'm_desc' => '',
         'm_parents' => array(4527,7493),
@@ -761,7 +761,7 @@ $config['en_all_10658'] = array(
 );
 
 //Word:
-$config['en_ids_10539'] = array(10672,10653,10654,10656,10673,10671,10650,10649,10648,10651,10663,10661,10662,10686,10677,10676,10678,10675,6132,6154,6155,6150,4235,7757,7578,6224,4557,4299,4460,4547,6140);
+$config['en_ids_10539'] = array(10672,10653,10654,4257,4319,10656,4230,10673,4256,10671,10650,10649,10648,10651,10663,10661,10662,10686,10677,10676,10678,10675,6132,6154,6155,6150,4235,7757,7578,6224,4557,4299,4460,4547,6140);
 $config['en_all_10539'] = array(
     10672 => array(
         'm_icon' => '<i class="far fa-trash-alt ispink"></i>',
@@ -781,17 +781,41 @@ $config['en_all_10539'] = array(
         'm_desc' => '',
         'm_parents' => array(4593,10539,10589,10645),
     ),
+    4257 => array(
+        'm_icon' => '<i class="far fa-play-circle ispink"></i>',
+        'm_name' => 'Entity Link Embed',
+        'm_desc' => '',
+        'm_parents' => array(10539,10589,4593,4592,4537,4506),
+    ),
+    4319 => array(
+        'm_icon' => '<i class="far fa-sort-numeric-down ispink"></i>',
+        'm_name' => 'Entity Link Integer',
+        'm_desc' => '',
+        'm_parents' => array(10539,10589,4593,4592),
+    ),
     10656 => array(
         'm_icon' => '<i class="far fa-sliders-h ispink"></i>',
         'm_name' => 'Entity Link Iterated Status',
         'm_desc' => '',
         'm_parents' => array(4593,10589,10539,10658,10645),
     ),
+    4230 => array(
+        'm_icon' => '<i class="far fa-level-up rotate90 ispink"></i>',
+        'm_name' => 'Entity Link Raw',
+        'm_desc' => '',
+        'm_parents' => array(10539,10589,4593,4592),
+    ),
     10673 => array(
         'm_icon' => '<i class="far fa-trash-alt ispink"></i>',
         'm_name' => 'Entity Link Unlinked',
         'm_desc' => '',
         'm_parents' => array(10645,4593,10539,10589,10658),
+    ),
+    4256 => array(
+        'm_icon' => '<i class="far fa-browser ispink"></i>',
+        'm_name' => 'Entity Link URL',
+        'm_desc' => '',
+        'm_parents' => array(10539,10589,4593,4592,4537),
     ),
     10671 => array(
         'm_icon' => '<i class="far fa-trash-alt ispink"></i>',
@@ -1029,37 +1053,13 @@ $config['en_all_10627'] = array(
 );
 
 //Word + Connections:
-$config['en_ids_10594'] = array(4257,4319,4230,4318,4256,4229,10664,4228,10660,7545,7701,10573);
+$config['en_ids_10594'] = array(4318,4229,10664,4228,10660,7545,7701,10573);
 $config['en_all_10594'] = array(
-    4257 => array(
-        'm_icon' => '<i class="far fa-play-circle ispink"></i>',
-        'm_name' => 'Entity Link Embed',
-        'm_desc' => '',
-        'm_parents' => array(10594,10589,4593,4592,4537,4506),
-    ),
-    4319 => array(
-        'm_icon' => '<i class="far fa-sort-numeric-down ispink"></i>',
-        'm_name' => 'Entity Link Integer',
-        'm_desc' => '',
-        'm_parents' => array(10594,10589,4593,4592),
-    ),
-    4230 => array(
-        'm_icon' => '<i class="far fa-level-up rotate90 ispink"></i>',
-        'm_name' => 'Entity Link Raw',
-        'm_desc' => '',
-        'm_parents' => array(10594,10589,4593,4592),
-    ),
     4318 => array(
         'm_icon' => '<i class="far fa-clock ispink"></i>',
         'm_name' => 'Entity Link Time',
         'm_desc' => '',
         'm_parents' => array(10594,10589,4593,4592),
-    ),
-    4256 => array(
-        'm_icon' => '<i class="far fa-browser ispink"></i>',
-        'm_name' => 'Entity Link URL',
-        'm_desc' => '',
-        'm_parents' => array(10594,10589,4593,4592,4537),
     ),
     4229 => array(
         'm_icon' => '<i class="fas fa-lock ispink"></i>',
@@ -1279,7 +1279,7 @@ $config['en_all_10593'] = array(
 );
 
 //Nod:
-$config['en_ids_10596'] = array(10625,5943,5001,5865,4999,4998,5000,5981,5982,5003,10659,10689,4994,10647,6226,10681,4993,4246,7504,5007,6415,4275,6559,6560,6556,6578,6149,7611,6969,4283,7495,7542,7610,5967,7563,10690,4266,4267,4282,10683,4577,4278,4279,4268,10687,4287,7561,7564,7559,7560,7558,7488,7485,7486,6144,7741,10685,4559,7489,7492,6997,6157,7487,6143,7562);
+$config['en_ids_10596'] = array(10625,5943,5001,5865,4999,4998,5000,5981,5982,5003,10659,10689,10647,6226,10681,4246,7504,5007,4994,4993,6415,4275,6559,6560,6556,6578,6149,7611,6969,4283,7495,7542,7610,5967,7563,10690,4266,4267,4282,10683,4577,4278,4279,4268,10687,4287,7561,7564,7559,7560,7558,7488,7485,7486,6144,7741,10685,4559,7489,7492,6997,6157,7487,6143,7562);
 $config['en_all_10596'] = array(
     10625 => array(
         'm_icon' => '<i class="far fa-user-circle ispink"></i>',
@@ -1353,12 +1353,6 @@ $config['en_all_10596'] = array(
         'm_desc' => '',
         'm_parents' => array(10596,10589,4593,10658,10645),
     ),
-    4994 => array(
-        'm_icon' => '<i class="far fa-eye ispink"></i>',
-        'm_name' => 'Entity Trainer View',
-        'm_desc' => '',
-        'm_parents' => array(10596,10590,4593),
-    ),
     10647 => array(
         'm_icon' => '<i class="far fa-tools ispink"></i>',
         'm_name' => 'Intent Iterated Verb',
@@ -1377,12 +1371,6 @@ $config['en_all_10596'] = array(
         'm_desc' => '',
         'm_parents' => array(10638,10589,10596,4755,4593,10658),
     ),
-    4993 => array(
-        'm_icon' => '<i class="far fa-eye ispink"></i>',
-        'm_name' => 'Intent Trainer View',
-        'm_desc' => '',
-        'm_parents' => array(10596,10590,7612,4593),
-    ),
     4246 => array(
         'm_icon' => '<i class="far fa-bug ispink"></i>',
         'm_name' => 'Trainer Bug Reports',
@@ -1400,6 +1388,18 @@ $config['en_all_10596'] = array(
         'm_name' => 'Trainer Toggle Advance Mode',
         'm_desc' => '',
         'm_parents' => array(10596,10589,7368,4757,4593),
+    ),
+    4994 => array(
+        'm_icon' => '<i class="far fa-eye ispink"></i>',
+        'm_name' => 'Trainer View Entity',
+        'm_desc' => '',
+        'm_parents' => array(10596,10590,4593),
+    ),
+    4993 => array(
+        'm_icon' => '<i class="far fa-eye ispink"></i>',
+        'm_name' => 'Trainer View Intent',
+        'm_desc' => '',
+        'm_parents' => array(10596,10590,7612,4593),
     ),
     6415 => array(
         'm_icon' => '<i class="far fa-function ispink"></i>',
@@ -1630,7 +1630,7 @@ $config['en_all_10596'] = array(
         'm_parents' => array(10596,10589,7703,6274,6255,4755,6146,4593),
     ),
     7489 => array(
-        'm_icon' => '<i class="far fa-check-circle ispink"></i>',
+        'm_icon' => '<i class="far fa-check-double ispink"></i>',
         'm_name' => 'User Step Multi-Answered',
         'm_desc' => '',
         'm_parents' => array(10596,10589,7704,7703,4755,6255,4593,6146),
@@ -1648,13 +1648,13 @@ $config['en_all_10596'] = array(
         'm_parents' => array(10596,10589,7703,7494,4229,6255,4593,4755,6146),
     ),
     6157 => array(
-        'm_icon' => '<i class="far fa-check-circle ispink"></i>',
+        'm_icon' => '<i class="far fa-check ispink"></i>',
         'm_name' => 'User Step Single-Answered',
         'm_desc' => '',
         'm_parents' => array(10596,10589,7704,7703,6255,6244,6146,4755,4593),
     ),
     7487 => array(
-        'm_icon' => '<i class="far fa-check-circle ispink"></i>',
+        'm_icon' => '<i class="far fa-stopwatch ispink"></i>',
         'm_name' => 'User Step Single-Answered Timely',
         'm_desc' => '',
         'm_parents' => array(10596,10589,7704,7703,6244,4755,6255,4593,6146),
@@ -1678,13 +1678,13 @@ $config['en_ids_10590'] = array(4994,4993,6149,7611,6969,4283,7495,7542,7610,596
 $config['en_all_10590'] = array(
     4994 => array(
         'm_icon' => '<i class="far fa-eye ispink"></i>',
-        'm_name' => 'Entity Trainer View',
+        'm_name' => 'Trainer View Entity',
         'm_desc' => '',
         'm_parents' => array(10596,10590,4593),
     ),
     4993 => array(
         'm_icon' => '<i class="far fa-eye ispink"></i>',
-        'm_name' => 'Intent Trainer View',
+        'm_name' => 'Trainer View Intent',
         'm_desc' => '',
         'm_parents' => array(10596,10590,7612,4593),
     ),
@@ -1907,7 +1907,7 @@ $config['en_all_10589'] = array(
         'm_icon' => '<i class="far fa-play-circle ispink"></i>',
         'm_name' => 'Entity Link Embed',
         'm_desc' => '',
-        'm_parents' => array(10594,10589,4593,4592,4537,4506),
+        'm_parents' => array(10539,10589,4593,4592,4537,4506),
     ),
     4261 => array(
         'm_icon' => '<i class="far fa-file-pdf ispink"></i>',
@@ -1925,7 +1925,7 @@ $config['en_all_10589'] = array(
         'm_icon' => '<i class="far fa-sort-numeric-down ispink"></i>',
         'm_name' => 'Entity Link Integer',
         'm_desc' => '',
-        'm_parents' => array(10594,10589,4593,4592),
+        'm_parents' => array(10539,10589,4593,4592),
     ),
     10657 => array(
         'm_icon' => '<i class="fas fa-sticky-note ispink"></i>',
@@ -1955,7 +1955,7 @@ $config['en_all_10589'] = array(
         'm_icon' => '<i class="far fa-level-up rotate90 ispink"></i>',
         'm_name' => 'Entity Link Raw',
         'm_desc' => '',
-        'm_parents' => array(10594,10589,4593,4592),
+        'm_parents' => array(10539,10589,4593,4592),
     ),
     4255 => array(
         'm_icon' => '<i class="far fa-align-left ispink"></i>',
@@ -1979,7 +1979,7 @@ $config['en_all_10589'] = array(
         'm_icon' => '<i class="far fa-browser ispink"></i>',
         'm_name' => 'Entity Link URL',
         'm_desc' => '',
-        'm_parents' => array(10594,10589,4593,4592,4537),
+        'm_parents' => array(10539,10589,4593,4592,4537),
     ),
     4258 => array(
         'm_icon' => '<i class="far fa-video ispink"></i>',
@@ -2462,7 +2462,7 @@ $config['en_all_10589'] = array(
         'm_parents' => array(10596,10589,7703,6274,6255,4755,6146,4593),
     ),
     7489 => array(
-        'm_icon' => '<i class="far fa-check-circle ispink"></i>',
+        'm_icon' => '<i class="far fa-check-double ispink"></i>',
         'm_name' => 'User Step Multi-Answered',
         'm_desc' => '',
         'm_parents' => array(10596,10589,7704,7703,4755,6255,4593,6146),
@@ -2480,13 +2480,13 @@ $config['en_all_10589'] = array(
         'm_parents' => array(10596,10589,7703,7494,4229,6255,4593,4755,6146),
     ),
     6157 => array(
-        'm_icon' => '<i class="far fa-check-circle ispink"></i>',
+        'm_icon' => '<i class="far fa-check ispink"></i>',
         'm_name' => 'User Step Single-Answered',
         'm_desc' => '',
         'm_parents' => array(10596,10589,7704,7703,6255,6244,6146,4755,4593),
     ),
     7487 => array(
-        'm_icon' => '<i class="far fa-check-circle ispink"></i>',
+        'm_icon' => '<i class="far fa-stopwatch ispink"></i>',
         'm_name' => 'User Step Single-Answered Timely',
         'm_desc' => '',
         'm_parents' => array(10596,10589,7704,7703,6244,4755,6255,4593,6146),
@@ -3295,19 +3295,19 @@ $config['en_all_7712'] = array(
 $config['en_ids_7704'] = array(7489,6157,7487);
 $config['en_all_7704'] = array(
     7489 => array(
-        'm_icon' => '<i class="far fa-check-circle ispink"></i>',
+        'm_icon' => '<i class="far fa-check-double ispink"></i>',
         'm_name' => 'User Step Multi-Answered',
         'm_desc' => '',
         'm_parents' => array(10596,10589,7704,7703,4755,6255,4593,6146),
     ),
     6157 => array(
-        'm_icon' => '<i class="far fa-check-circle ispink"></i>',
+        'm_icon' => '<i class="far fa-check ispink"></i>',
         'm_name' => 'User Step Single-Answered',
         'm_desc' => '',
         'm_parents' => array(10596,10589,7704,7703,6255,6244,6146,4755,4593),
     ),
     7487 => array(
-        'm_icon' => '<i class="far fa-check-circle ispink"></i>',
+        'm_icon' => '<i class="far fa-stopwatch ispink"></i>',
         'm_name' => 'User Step Single-Answered Timely',
         'm_desc' => '',
         'm_parents' => array(10596,10589,7704,7703,6244,4755,6255,4593,6146),
@@ -3492,7 +3492,7 @@ $config['en_all_7703'] = array(
         'm_parents' => array(10596,10589,7703,6274,6255,4755,6146,4593),
     ),
     7489 => array(
-        'm_icon' => '<i class="far fa-check-circle ispink"></i>',
+        'm_icon' => '<i class="far fa-check-double ispink"></i>',
         'm_name' => 'User Step Multi-Answered',
         'm_desc' => '',
         'm_parents' => array(10596,10589,7704,7703,4755,6255,4593,6146),
@@ -3504,13 +3504,13 @@ $config['en_all_7703'] = array(
         'm_parents' => array(10596,10589,7703,7494,4229,6255,4593,4755,6146),
     ),
     6157 => array(
-        'm_icon' => '<i class="far fa-check-circle ispink"></i>',
+        'm_icon' => '<i class="far fa-check ispink"></i>',
         'm_name' => 'User Step Single-Answered',
         'm_desc' => '',
         'm_parents' => array(10596,10589,7704,7703,6255,6244,6146,4755,4593),
     ),
     7487 => array(
-        'm_icon' => '<i class="far fa-check-circle ispink"></i>',
+        'm_icon' => '<i class="far fa-stopwatch ispink"></i>',
         'm_name' => 'User Step Single-Answered Timely',
         'm_desc' => '',
         'm_parents' => array(10596,10589,7704,7703,6244,4755,6255,4593,6146),
@@ -3869,7 +3869,7 @@ $config['en_all_7372'] = array(
         'm_parents' => array(7372,1326),
     ),
     7369 => array(
-        'm_icon' => '<i class="fas fa-flag"></i>',
+        'm_icon' => '<i class="far fa-user"></i>',
         'm_name' => 'Mench User App',
         'm_desc' => 'A web portal for software engineers to assess/improve their skills & get matched with top companies.',
         'm_parents' => array(7372,4527),
@@ -4435,7 +4435,7 @@ $config['en_all_6255'] = array(
         'm_parents' => array(10596,10589,7703,6274,6255,4755,6146,4593),
     ),
     7489 => array(
-        'm_icon' => '<i class="far fa-check-circle ispink"></i>',
+        'm_icon' => '<i class="far fa-check-double ispink"></i>',
         'm_name' => 'User Step Multi-Answered',
         'm_desc' => '',
         'm_parents' => array(10596,10589,7704,7703,4755,6255,4593,6146),
@@ -4453,13 +4453,13 @@ $config['en_all_6255'] = array(
         'm_parents' => array(10596,10589,7703,7494,4229,6255,4593,4755,6146),
     ),
     6157 => array(
-        'm_icon' => '<i class="far fa-check-circle ispink"></i>',
+        'm_icon' => '<i class="far fa-check ispink"></i>',
         'm_name' => 'User Step Single-Answered',
         'm_desc' => '',
         'm_parents' => array(10596,10589,7704,7703,6255,6244,6146,4755,4593),
     ),
     7487 => array(
-        'm_icon' => '<i class="far fa-check-circle ispink"></i>',
+        'm_icon' => '<i class="far fa-stopwatch ispink"></i>',
         'm_name' => 'User Step Single-Answered Timely',
         'm_desc' => '',
         'm_parents' => array(10596,10589,7704,7703,6244,4755,6255,4593,6146),
@@ -4482,13 +4482,13 @@ $config['en_all_6244'] = array(
         'm_parents' => array(10596,10589,4527,6768,7703,6255,6244,4755,6146,4593),
     ),
     6157 => array(
-        'm_icon' => '<i class="far fa-check-circle ispink"></i>',
+        'm_icon' => '<i class="far fa-check ispink"></i>',
         'm_name' => 'User Step Single-Answered',
         'm_desc' => 'Logged initially when the user arrives at a regular OR intent, and completed when they submit their answer.',
         'm_parents' => array(10596,10589,7704,7703,6255,6244,6146,4755,4593),
     ),
     7487 => array(
-        'm_icon' => '<i class="far fa-check-circle ispink"></i>',
+        'm_icon' => '<i class="far fa-stopwatch ispink"></i>',
         'm_name' => 'User Step Single-Answered Timely',
         'm_desc' => 'Logged initially when the user starts to answer a timed OR intent, and will be published if they are successful at answering it on time. If not, will update link type to User Step Answer Timeout.',
         'm_parents' => array(10596,10589,7704,7703,6244,4755,6255,4593,6146),
@@ -4704,7 +4704,7 @@ $config['en_all_6146'] = array(
         'm_parents' => array(10596,10589,7703,6274,6255,4755,6146,4593),
     ),
     7489 => array(
-        'm_icon' => '<i class="far fa-check-circle ispink"></i>',
+        'm_icon' => '<i class="far fa-check-double ispink"></i>',
         'm_name' => 'Multi-Answered',
         'm_desc' => 'User made a selection as part of a multiple-choice answer question',
         'm_parents' => array(10596,10589,7704,7703,4755,6255,4593,6146),
@@ -4722,13 +4722,13 @@ $config['en_all_6146'] = array(
         'm_parents' => array(10596,10589,7703,7494,4229,6255,4593,4755,6146),
     ),
     6157 => array(
-        'm_icon' => '<i class="far fa-check-circle ispink"></i>',
+        'm_icon' => '<i class="far fa-check ispink"></i>',
         'm_name' => 'Single-Answered',
         'm_desc' => 'Completed after the student answers the question to the OR intent.',
         'm_parents' => array(10596,10589,7704,7703,6255,6244,6146,4755,4593),
     ),
     7487 => array(
-        'm_icon' => '<i class="far fa-check-circle ispink"></i>',
+        'm_icon' => '<i class="far fa-stopwatch ispink"></i>',
         'm_name' => 'Single-Answered Timely',
         'm_desc' => 'When the user answers a question within the defined timeframe',
         'm_parents' => array(10596,10589,7704,7703,6244,4755,6255,4593,6146),
@@ -5428,7 +5428,7 @@ $config['en_all_4755'] = array(
         'm_parents' => array(10596,10589,7703,6274,6255,4755,6146,4593),
     ),
     7489 => array(
-        'm_icon' => '<i class="far fa-check-circle ispink"></i>',
+        'm_icon' => '<i class="far fa-check-double ispink"></i>',
         'm_name' => 'User Step Multi-Answered',
         'm_desc' => '',
         'm_parents' => array(10596,10589,7704,7703,4755,6255,4593,6146),
@@ -5446,13 +5446,13 @@ $config['en_all_4755'] = array(
         'm_parents' => array(10596,10589,7703,7494,4229,6255,4593,4755,6146),
     ),
     6157 => array(
-        'm_icon' => '<i class="far fa-check-circle ispink"></i>',
+        'm_icon' => '<i class="far fa-check ispink"></i>',
         'm_name' => 'User Step Single-Answered',
         'm_desc' => '',
         'm_parents' => array(10596,10589,7704,7703,6255,6244,6146,4755,4593),
     ),
     7487 => array(
-        'm_icon' => '<i class="far fa-check-circle ispink"></i>',
+        'm_icon' => '<i class="far fa-stopwatch ispink"></i>',
         'm_name' => 'User Step Single-Answered Timely',
         'm_desc' => '',
         'm_parents' => array(10596,10589,7704,7703,6244,4755,6255,4593,6146),
@@ -5489,7 +5489,7 @@ $config['en_all_4600'] = array(
 );
 
 //Link Type:
-$config['en_ids_4593'] = array(10625,5943,5001,5865,4999,4998,5000,5981,5982,5003,4251,10672,10653,10646,10654,4259,4257,4261,4260,4319,10657,10656,10659,10689,4230,4255,4318,10673,4256,4258,4994,4250,10671,10650,10644,10649,10648,10651,10647,4229,10663,10664,10661,10662,4228,10686,10660,6093,6242,7545,4601,4231,10679,10677,10676,7701,10678,10573,4983,6226,10681,10675,6132,4993,4246,7504,5007,6415,4275,6559,6560,6556,6578,6154,6155,6150,6149,7611,6969,4283,7495,7542,4235,7757,7610,7578,6224,5967,7563,10690,4266,4267,4282,10683,4554,4570,4556,4555,7702,6563,4552,4553,4577,4549,4551,4550,4557,4278,4279,4268,4299,4460,10687,4547,4287,4548,7561,7564,7559,7560,7558,7488,7485,7486,6144,7741,10685,6140,4559,7489,7492,6997,6157,7487,6143,7562);
+$config['en_ids_4593'] = array(10625,5943,5001,5865,4999,4998,5000,5981,5982,5003,4251,10672,10653,10646,10654,4259,4257,4261,4260,4319,10657,10656,10659,10689,4230,4255,4318,10673,4256,4258,4250,10671,10650,10644,10649,10648,10651,10647,4229,10663,10664,10661,10662,4228,10686,10660,6093,6242,7545,4601,4231,10679,10677,10676,7701,10678,10573,4983,6226,10681,10675,6132,4246,7504,5007,4994,4993,6415,4275,6559,6560,6556,6578,6154,6155,6150,6149,7611,6969,4283,7495,7542,4235,7757,7610,7578,6224,5967,7563,10690,4266,4267,4282,10683,4554,4570,4556,4555,7702,6563,4552,4553,4577,4549,4551,4550,4557,4278,4279,4268,4299,4460,10687,4547,4287,4548,7561,7564,7559,7560,7558,7488,7485,7486,6144,7741,10685,6140,4559,7489,7492,6997,6157,7487,6143,7562);
 $config['en_all_4593'] = array(
     10625 => array(
         'm_icon' => '<i class="far fa-user-circle ispink"></i>',
@@ -5591,7 +5591,7 @@ $config['en_all_4593'] = array(
         'm_icon' => '<i class="far fa-play-circle ispink"></i>',
         'm_name' => 'Entity Link Embed',
         'm_desc' => '',
-        'm_parents' => array(10594,10589,4593,4592,4537,4506),
+        'm_parents' => array(10539,10589,4593,4592,4537,4506),
     ),
     4261 => array(
         'm_icon' => '<i class="far fa-file-pdf ispink"></i>',
@@ -5609,7 +5609,7 @@ $config['en_all_4593'] = array(
         'm_icon' => '<i class="far fa-sort-numeric-down ispink"></i>',
         'm_name' => 'Entity Link Integer',
         'm_desc' => '',
-        'm_parents' => array(10594,10589,4593,4592),
+        'm_parents' => array(10539,10589,4593,4592),
     ),
     10657 => array(
         'm_icon' => '<i class="fas fa-sticky-note ispink"></i>',
@@ -5639,7 +5639,7 @@ $config['en_all_4593'] = array(
         'm_icon' => '<i class="far fa-level-up rotate90 ispink"></i>',
         'm_name' => 'Entity Link Raw',
         'm_desc' => '',
-        'm_parents' => array(10594,10589,4593,4592),
+        'm_parents' => array(10539,10589,4593,4592),
     ),
     4255 => array(
         'm_icon' => '<i class="far fa-align-left ispink"></i>',
@@ -5663,19 +5663,13 @@ $config['en_all_4593'] = array(
         'm_icon' => '<i class="far fa-browser ispink"></i>',
         'm_name' => 'Entity Link URL',
         'm_desc' => '',
-        'm_parents' => array(10594,10589,4593,4592,4537),
+        'm_parents' => array(10539,10589,4593,4592,4537),
     ),
     4258 => array(
         'm_icon' => '<i class="far fa-video ispink"></i>',
         'm_name' => 'Entity Link Video',
         'm_desc' => '',
         'm_parents' => array(10627,10593,10589,6203,4593,4592,4537),
-    ),
-    4994 => array(
-        'm_icon' => '<i class="far fa-eye ispink"></i>',
-        'm_name' => 'Entity Trainer View',
-        'm_desc' => '',
-        'm_parents' => array(10596,10590,4593),
     ),
     4250 => array(
         'm_icon' => '<i class="fas fa-hashtag ispink"></i>',
@@ -5869,12 +5863,6 @@ $config['en_all_4593'] = array(
         'm_desc' => 'Student re-prioritized their top-level intentions to focus on intentions that currently matter the most.',
         'm_parents' => array(10638,10539,10639,10589,6153,4506,4755,4593),
     ),
-    4993 => array(
-        'm_icon' => '<i class="far fa-eye ispink"></i>',
-        'm_name' => 'Intent Trainer View',
-        'm_desc' => '',
-        'm_parents' => array(10596,10590,7612,4593),
-    ),
     4246 => array(
         'm_icon' => '<i class="far fa-bug ispink"></i>',
         'm_name' => 'Trainer Bug Reports',
@@ -5892,6 +5880,18 @@ $config['en_all_4593'] = array(
         'm_name' => 'Trainer Toggle Advance Mode',
         'm_desc' => '',
         'm_parents' => array(10596,10589,7368,4757,4593),
+    ),
+    4994 => array(
+        'm_icon' => '<i class="far fa-eye ispink"></i>',
+        'm_name' => 'Trainer View Entity',
+        'm_desc' => '',
+        'm_parents' => array(10596,10590,4593),
+    ),
+    4993 => array(
+        'm_icon' => '<i class="far fa-eye ispink"></i>',
+        'm_name' => 'Trainer View Intent',
+        'm_desc' => '',
+        'm_parents' => array(10596,10590,7612,4593),
     ),
     6415 => array(
         'm_icon' => '<i class="far fa-function ispink"></i>',
@@ -6266,7 +6266,7 @@ $config['en_all_4593'] = array(
         'm_parents' => array(10596,10589,7703,6274,6255,4755,6146,4593),
     ),
     7489 => array(
-        'm_icon' => '<i class="far fa-check-circle ispink"></i>',
+        'm_icon' => '<i class="far fa-check-double ispink"></i>',
         'm_name' => 'User Step Multi-Answered',
         'm_desc' => '',
         'm_parents' => array(10596,10589,7704,7703,4755,6255,4593,6146),
@@ -6284,13 +6284,13 @@ $config['en_all_4593'] = array(
         'm_parents' => array(10596,10589,7703,7494,4229,6255,4593,4755,6146),
     ),
     6157 => array(
-        'm_icon' => '<i class="far fa-check-circle ispink"></i>',
+        'm_icon' => '<i class="far fa-check ispink"></i>',
         'm_name' => 'User Step Single-Answered',
         'm_desc' => '',
         'm_parents' => array(10596,10589,7704,7703,6255,6244,6146,4755,4593),
     ),
     7487 => array(
-        'm_icon' => '<i class="far fa-check-circle ispink"></i>',
+        'm_icon' => '<i class="far fa-stopwatch ispink"></i>',
         'm_name' => 'User Step Single-Answered Timely',
         'm_desc' => '',
         'm_parents' => array(10596,10589,7704,7703,6244,4755,6255,4593,6146),
@@ -6322,7 +6322,7 @@ $config['en_all_4592'] = array(
         'm_icon' => '<i class="far fa-play-circle ispink"></i>',
         'm_name' => 'Embed',
         'm_desc' => '',
-        'm_parents' => array(10594,10589,4593,4592,4537,4506),
+        'm_parents' => array(10539,10589,4593,4592,4537,4506),
     ),
     4261 => array(
         'm_icon' => '<i class="far fa-file-pdf ispink"></i>',
@@ -6340,13 +6340,13 @@ $config['en_all_4592'] = array(
         'm_icon' => '<i class="far fa-sort-numeric-down ispink"></i>',
         'm_name' => 'Integer',
         'm_desc' => '',
-        'm_parents' => array(10594,10589,4593,4592),
+        'm_parents' => array(10539,10589,4593,4592),
     ),
     4230 => array(
         'm_icon' => '<i class="far fa-level-up rotate90 ispink"></i>',
         'm_name' => 'Raw',
         'm_desc' => '',
-        'm_parents' => array(10594,10589,4593,4592),
+        'm_parents' => array(10539,10589,4593,4592),
     ),
     4255 => array(
         'm_icon' => '<i class="far fa-align-left ispink"></i>',
@@ -6364,7 +6364,7 @@ $config['en_all_4592'] = array(
         'm_icon' => '<i class="far fa-browser ispink"></i>',
         'm_name' => 'URL',
         'm_desc' => '',
-        'm_parents' => array(10594,10589,4593,4592,4537),
+        'm_parents' => array(10539,10589,4593,4592,4537),
     ),
     4258 => array(
         'm_icon' => '<i class="far fa-video ispink"></i>',
@@ -6486,7 +6486,7 @@ $config['en_all_4537'] = array(
         'm_icon' => '<i class="far fa-play-circle ispink"></i>',
         'm_name' => 'Embed',
         'm_desc' => 'Link note contain a recognizable URL that offers an embed widget for a more engaging play-back experience.',
-        'm_parents' => array(10594,10589,4593,4592,4537,4506),
+        'm_parents' => array(10539,10589,4593,4592,4537,4506),
     ),
     4261 => array(
         'm_icon' => '<i class="far fa-file-pdf ispink"></i>',
@@ -6504,7 +6504,7 @@ $config['en_all_4537'] = array(
         'm_icon' => '<i class="far fa-browser ispink"></i>',
         'm_name' => 'URL',
         'm_desc' => 'Link note contains a generic URL only.',
-        'm_parents' => array(10594,10589,4593,4592,4537),
+        'm_parents' => array(10539,10589,4593,4592,4537),
     ),
     4258 => array(
         'm_icon' => '<i class="far fa-video ispink"></i>',
