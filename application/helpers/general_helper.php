@@ -531,13 +531,13 @@ function word_change_calculator($before_string, $after_string){
     $removed_words = array();
 
     foreach($before_words as $before_word){
-        if(strlen($before_word)>1 && !in_array($before_word, $after_words)){
+        if(strlen(trim($before_word))>0 && !in_array($before_word, $after_words)){
             array_push($removed_words, $before_word);
         }
     }
 
     foreach($after_words as $after_word){
-        if(strlen($after_word)>1 && !in_array($after_word, $before_words)){
+        if(strlen(trim($after_word))>0 && !in_array($after_word, $before_words)){
             array_push($new_words, $after_word);
         }
     }
