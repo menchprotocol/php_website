@@ -35,14 +35,14 @@ class Communication_model extends CI_Model
         ), array('en_parent'));
 
         $is_user = filter_array($en['en__parents'], 'ln_parent_entity_id', 4430);
-        $is_trainer = filter_array($en['en__parents'], 'ln_parent_entity_id', 7512);
-        $is_trainer = filter_array($en['en__parents'], 'ln_parent_entity_id', 1308);
+        $is_level1_trainer = filter_array($en['en__parents'], 'ln_parent_entity_id', 7512);
+        $is_level2_trainer = filter_array($en['en__parents'], 'ln_parent_entity_id', 1308);
 
         //Assign user details:
         $session_data['user'] = $en;
 
         //Are they trainer? Give them Sign In access:
-        if ($is_trainer) {
+        if ($is_level1_trainer) {
 
             //Check their advance mode status:
             $last_advance_settings = $this->Links_model->ln_fetch(array(
@@ -53,15 +53,20 @@ class Communication_model extends CI_Model
 
             //They have Trainer rights:
             $session_data['user_default_intent'] = $this->config->item('in_focus_id');
-            $session_data['user_session_count'] = 0;
             $session_data['advance_view_enabled'] = ( count($last_advance_settings) > 0 && substr_count($last_advance_settings[0]['ln_content'] , ' ON')==1 ? 1 : 0 );
 
-        } elseif ($is_trainer) {
+        } elseif ($is_level2_trainer) {
 
             //They have Trainer rights:
-            $session_data['user_default_intent'] = ( substr($is_trainer['ln_content'],0,1)=='#' ? substr($is_trainer['ln_content'],1) : $this->config->item('in_focus_id') );
-            $session_data['user_session_count'] = 0;
+            $session_data['user_default_intent'] = ( substr($is_level2_trainer['ln_content'],0,1)=='#' ? substr($is_level2_trainer['ln_content'],1) : $this->config->item('in_focus_id') );
             $session_data['advance_view_enabled'] = 0;
+
+        }
+
+        if($is_level1_trainer || $is_level2_trainer){
+
+            $session_data['user_session_count'] = 0;
+            $session_data['last_word_in_ln_id'] = last_word_in_ln_id($en['en_id']);
 
         }
 

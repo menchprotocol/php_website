@@ -57,6 +57,48 @@ class Trainer_app extends CI_Controller
     }
 
 
+    function count_new_words_in(){
+
+        $session_en = en_auth(array(1308,7512));
+
+        if (!$session_en) {
+            return echo_json(array(
+                'status' => 0,
+                'message' => 'Session Expired',
+            ));
+        }
+
+        $last_word_in_ln_id = intval($this->session->userdata('last_word_in_ln_id'));
+
+        //Count all new words since the last one:
+        $all_stats = $this->Links_model->ln_fetch(array(
+            'ln_creator_entity_id' => $session_en['en_id'],
+            'ln_id>' => $last_word_in_ln_id,
+            'ln_words>' => 0, //Words IN only
+            'ln_status_entity_id IN (' . join(',', $this->config->item('en_ids_7360')) . ')' => null, //Link Statuses Active
+        ), array(), 0, 0, array(), 'COUNT(ln_id) as total_links, SUM(ln_words) as total_words');
+
+        if(count($all_stats)>0 && $all_stats[0]['total_words']>=1){
+
+            //Update session:
+            $this->session->set_userdata('last_word_in_ln_id', last_word_in_ln_id($session_en['en_id']));
+
+            return echo_json(array(
+                'status' => 1,
+                'message' => '<b class="ispink"><i class="fas fa-file-word ispink"></i> '.number_format($all_stats[0]['total_words'], 0).' WORD'.strtoupper(echo__s(round($all_stats[0]['total_words']))).' IN</b>',
+            ));
+
+        } else {
+
+            //Did not find any results:
+            return echo_json(array(
+                'status' => 0,
+                'message' => 'No new words',
+            ));
+
+        }
+    }
+
     function basic_stats_all(){
 
         //Return stats for the platform home page:

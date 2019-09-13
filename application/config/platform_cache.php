@@ -11,7 +11,7 @@ defined('BASEPATH') OR exit('No direct script access allowed');
  *
  */
 
-//Generated 2019-09-13 06:33:31 PST
+//Generated 2019-09-13 14:25:23 PST
 
 //Link Connector Fields:
 $config['en_ids_10692'] = array(4429,4369,4366,4368,4371);
@@ -319,7 +319,7 @@ $config['en_all_4527'] = array(
         'm_icon' => '<i class="fas fa-directions ispink"></i>',
         'm_name' => 'Link Directions',
         'm_desc' => '',
-        'm_parents' => array(7797,7304,6771,4527,10588),
+        'm_parents' => array(6204,7797,7304,6771,4527,10588),
     ),
     7703 => array(
         'm_icon' => '<i class="fas fa-rss ispink"></i>',
@@ -385,7 +385,7 @@ $config['en_all_4527'] = array(
         'm_icon' => '<i class="fas fa-weight ispink"></i>',
         'm_name' => 'Link Word Weight',
         'm_desc' => '',
-        'm_parents' => array(6771,4527,10588),
+        'm_parents' => array(6204,6771,4527,10588),
     ),
     7529 => array(
         'm_icon' => '<i class="fas fa-hat-wizard"></i>',
@@ -3204,7 +3204,7 @@ $config['en_all_6201'] = array(
 );
 
 //Single Selectable:
-$config['en_ids_6204'] = array(6177,3290,7596,4737,7585,10602,5008,6186,4454,3289);
+$config['en_ids_6204'] = array(6177,3290,7596,4737,7585,10602,5008,10591,6186,10592,4454,3289);
 $config['en_all_6204'] = array(
     6177 => array(
         'm_icon' => '<i class="far fa-sliders-h blue"></i>',
@@ -3248,11 +3248,23 @@ $config['en_all_6204'] = array(
         'm_desc' => '',
         'm_parents' => array(6204,10647,4736,7777,6160,6232,7302,4506,6194,6201),
     ),
+    10591 => array(
+        'm_icon' => '<i class="fas fa-directions ispink"></i>',
+        'm_name' => 'Link Directions',
+        'm_desc' => '',
+        'm_parents' => array(6204,7797,7304,6771,4527,10588),
+    ),
     6186 => array(
         'm_icon' => '<i class="far fa-sliders-h ispink"></i>',
         'm_name' => 'Link Status',
         'm_desc' => '',
         'm_parents' => array(10677,10661,10656,6204,5865,6160,6232,7304,4527,6194,4341),
+    ),
+    10592 => array(
+        'm_icon' => '<i class="fas fa-weight ispink"></i>',
+        'm_name' => 'Link Word Weight',
+        'm_desc' => '',
+        'm_parents' => array(6204,6771,4527,10588),
     ),
     4454 => array(
         'm_icon' => '<i class="far fa-bells"></i>',
@@ -4200,7 +4212,7 @@ $config['en_all_7304'] = array(
         'm_icon' => '<i class="fas fa-directions ispink"></i>',
         'm_name' => 'Directions',
         'm_desc' => '',
-        'm_parents' => array(7797,7304,6771,4527,10588),
+        'm_parents' => array(6204,7797,7304,6771,4527,10588),
     ),
     6186 => array(
         'm_icon' => '<i class="far fa-sliders-h ispink"></i>',

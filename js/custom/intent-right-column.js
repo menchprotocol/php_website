@@ -90,7 +90,7 @@ $(document).ready(function () {
 
 
 //This also has an equal PHP function echo_time_hours() which we want to make sure has more/less the same logic:
-function echo_js_hours(in_completion_seconds) {
+function in_update_time(in_completion_seconds) {
 
     in_completion_seconds = parseInt(in_completion_seconds);
     if (in_completion_seconds < 1) {
@@ -182,6 +182,7 @@ function in_adjust_link_ui() {
         //Main intent, no link, so hide entire section:
         $('.in-has-tr').addClass('hidden');
     }
+
 }
 
 
@@ -241,7 +242,7 @@ function in_action_plan_users(in_id) {
 }
 
 
-function adjust_js_ui(in_id, level, new_hours, intent_deficit_count, apply_to_tree, skip_intent_adjustments) {
+function in_adjust_ui(in_id, level, new_hours, intent_deficit_count, apply_to_tree, skip_intent_adjustments) {
 
     intent_deficit_count = parseInt(intent_deficit_count);
     var in_completion_seconds = parseFloat($('.t_estimate_' + in_id + ':first').attr('intent-seconds'));
@@ -253,10 +254,10 @@ function adjust_js_ui(in_id, level, new_hours, intent_deficit_count, apply_to_tr
         var in_new__metadata_seconds = in__metadata_seconds + in_deficit_seconds;
         $('.t_estimate_' + in_id)
             .attr('tree-max-seconds', in_new__metadata_seconds)
-            .text(echo_js_hours(in_new__metadata_seconds));
+            .text(in_update_time(in_new__metadata_seconds));
 
         if (!apply_to_tree) {
-            $('.t_estimate_' + in_id).attr('intent-seconds', new_hours).text(echo_js_hours(in_new__metadata_seconds));
+            $('.t_estimate_' + in_id).attr('intent-seconds', new_hours).text(in_update_time(in_new__metadata_seconds));
         }
     }
 
@@ -283,7 +284,7 @@ function adjust_js_ui(in_id, level, new_hours, intent_deficit_count, apply_to_tr
         //Update Hours (Either level 1 or 2):
         $('.t_estimate_' + in_linked_id)
             .attr('tree-max-seconds', in_new_parent__metadata_seconds)
-            .text(echo_js_hours(in_new_parent__metadata_seconds));
+            .text(in_update_time(in_new_parent__metadata_seconds));
 
 
         if (level == 3) {
@@ -299,7 +300,7 @@ function adjust_js_ui(in_id, level, new_hours, intent_deficit_count, apply_to_tr
             //Update Hours:
             $('.t_estimate_' + in_top_level)
                 .attr('tree-max-seconds', in_new__metadata_seconds)
-                .text(echo_js_hours(in_new__metadata_seconds));
+                .text(in_update_time(in_new__metadata_seconds));
         }
     }
 }
@@ -430,7 +431,10 @@ function in_unlink_only(in_id, level, ln_id){
 
         //Then process & show possible errors:
         $.post("/intents/in_unlink_only", {ln_id: ln_id}, function (data) {
-            if (!data.status) {
+            if (data.status) {
+                //Show trainers their new words:
+                count_new_words_in();
+            } else {
                 alert('Failed to Remove: ' + data.message);
             }
         });
@@ -450,7 +454,7 @@ function in_ui_remove(in_id,level,ln_id){
     remove_all_highlights();
 
     //Adjust completion cost:
-    adjust_js_ui(in_id, level, 0, 0, 1, 0);
+    in_adjust_ui(in_id, level, 0, 0, 1, 0);
 
     //Remove from UI:
     $('.in__tr_' + ln_id).html('<span style="color:#2f2739;"><i class="fas fa-trash-alt"></i></span>');
@@ -544,6 +548,9 @@ function in_modify_save() {
 
         } else {
 
+            //Show trainers their new words:
+            count_new_words_in();
+
             //Has the intent/intent-link been removed? Either way, we need to hide this row:
             if (data.remove_from_ui) {
 
@@ -598,7 +605,7 @@ function in_modify_save() {
 
 
                 //Adjust completion cost:
-                adjust_js_ui(modify_data['in_id'], modify_data['level'], modify_data['in_completion_seconds'], 0, 0, 0);
+                in_adjust_ui(modify_data['in_id'], modify_data['level'], modify_data['in_completion_seconds'], 0, 0, 0);
 
 
                 //Did the outcome change?

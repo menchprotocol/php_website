@@ -180,7 +180,7 @@ $(document).ready(function () {
 
     //Watchout for file uplods:
     $('.box' + in_id).find('input[type="file"]').change(function () {
-        in_new_message_from_attachment(droppedFiles, 'file');
+        in_message_from_attachment(droppedFiles, 'file');
     });
 
 
@@ -203,7 +203,7 @@ $(document).ready(function () {
             .on('drop', function (e) {
                 droppedFiles = e.originalEvent.dataTransfer.files;
                 e.preventDefault();
-                in_new_message_from_attachment(droppedFiles, 'drop');
+                in_message_from_attachment(droppedFiles, 'drop');
             });
     }
 });
@@ -227,7 +227,10 @@ function in_message_sort_apply(ln_type_entity_id) {
     if(sort_rank > 0){
         $.post("/intents/in_message_sort", {new_ln_orders: new_ln_orders}, function (data) {
             //Only show message if there was an error:
-            if (!data.status) {
+            if (data.status) {
+                //Show trainers their new words:
+                count_new_words_in();
+            } else {
                 //Show error:
                 alert('ERROR: ' + data.message);
             }
@@ -321,6 +324,9 @@ function in_message_modify_save(ln_id, initial_ln_type_entity_id) {
     $.post("/intents/in_message_modify_save", modify_data, function (data) {
 
         if (data.status) {
+
+            //Show trainers their new words:
+            count_new_words_in();
 
             //Did we remove this message?
             if(data.remove_from_ui){
@@ -433,7 +439,7 @@ function in_message_form_unlock(result) {
     }
 }
 
-function in_new_message_from_attachment(droppedFiles, uploadType) {
+function in_message_from_attachment(droppedFiles, uploadType) {
 
     //Prevent multiple concurrent uploads:
     if ($('.box' + in_id).hasClass('is-uploading')) {
@@ -461,7 +467,7 @@ function in_new_message_from_attachment(droppedFiles, uploadType) {
         ajaxData.append('in_id', in_id);
 
         $.ajax({
-            url: '/intents/in_new_message_from_attachment',
+            url: '/intents/in_message_from_attachment',
             type: $('.box' + in_id).attr('method'),
             data: ajaxData,
             dataType: 'json',
@@ -472,6 +478,9 @@ function in_new_message_from_attachment(droppedFiles, uploadType) {
                 $('.box' + in_id).removeClass('is-uploading');
             },
             success: function (data) {
+                //Show trainers their new words:
+                count_new_words_in();
+
                 in_message_form_unlock(data);
 
                 //Adjust Action Plan counter by one:
@@ -511,6 +520,9 @@ function in_message_create() {
 
         //Raw Inputs Fields if success:
         if (data.status) {
+
+            //Show trainers their new words:
+            count_new_words_in();
 
             //Adjust counter by one:
             in_note_messages_count++;

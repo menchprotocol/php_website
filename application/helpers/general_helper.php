@@ -432,6 +432,18 @@ function curl_get_file_size( $url ) {
 }
 
 
+function last_word_in_ln_id($user_en_id){
+
+    $CI =& get_instance();
+    $last_word_in = $CI->Links_model->ln_fetch(array(
+        'ln_creator_entity_id' => $user_en_id,
+        'ln_words >' => 0,
+        'ln_status_entity_id IN (' . join(',', $CI->config->item('en_ids_7360')) . ')' => null, //Link Statuses Active
+    ), array(), 1, 0, array('ln_id' => 'DESC'));
+    return ( count($last_word_in) > 0 ? intval($last_word_in[0]['ln_id']) : 0 );
+
+}
+
 function filter_cache_group($search_en_id, $cache_en_id){
 
     //Determines which category an entity belongs to

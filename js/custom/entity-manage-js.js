@@ -297,6 +297,9 @@ function en_add_or_link(en_existing_id, is_parent) {
 
         if (data.status) {
 
+            //Show trainers their new words:
+            count_new_words_in();
+
             //Raw input to make it ready for next URL:
             input.focus();
 
@@ -339,7 +342,7 @@ function en_name_word_count() {
 
 
 
-function en_load_next_page(page, load_new_filter = 0) {
+function en_load_next_page(page, load_new_filter) {
 
     if (load_new_filter) {
         //Replace load more with spinner:
@@ -562,11 +565,15 @@ function en_save_file_upload(droppedFiles, uploadType) {
 
                 if(data.status){
 
+                    //Show trainers their new words:
+                    count_new_words_in();
+
                     //Add URL to input:
                     $('#ln_content').val( data.cdn_url );
 
                     //Update count:
                     ln_content_word_count('#ln_content','#charln_contentNum');
+
                     //Also update type:
                     en_ln_type_preview();
                 }
@@ -632,6 +639,9 @@ function en_modify_save() {
     $.post("/entities/en_modify_save", modify_data, function (data) {
 
         if (data.status) {
+
+            //Show trainers their new words:
+            count_new_words_in();
 
             if(data.remove_from_ui){
 

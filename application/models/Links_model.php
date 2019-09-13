@@ -67,8 +67,8 @@ class Links_model extends CI_Model
 
                         } elseif($key=='ln_type_entity_id'){
 
-                            $en_all_4486 = $this->config->item('en_all_4486'); //Intent-to-Intent Links
-                            $ln_content .= echo_clean_db_name($key) . ' iterated from [' . $en_all_4486[$before_data[0][$key]]['m_name'] . '] to [' . $en_all_4486[$value]['m_name'] . ']'."\n";
+                            $en_all_4593 = $this->config->item('en_all_4593'); //Link Types
+                            $ln_content .= echo_clean_db_name($key) . ' iterated from [' . $en_all_4593[$before_data[0][$key]]['m_name'] . '] to [' . $en_all_4593[$value]['m_name'] . ']'."\n";
 
                         } elseif(in_array($key, array('ln_parent_entity_id', 'ln_child_entity_id'))) {
 
@@ -405,6 +405,7 @@ class Links_model extends CI_Model
             }
 
         }
+
 
 
 

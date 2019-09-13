@@ -187,16 +187,23 @@ function en_add_source_process(){
 
     }, function (data) {
 
-        if (!data.status) {
+        if (data.status) {
+
+            //Show trainers their new words:
+            count_new_words_in();
+
+            setTimeout(function () {
+
+                //All good, go to newly added source:
+                window.location = '/entities/' + data.new_source_id;
+
+            }, 377);
+
+        } else {
 
             //Opppsi, show the error:
             $('.add_source_result').html('<span style="color:#FF0000;">Error: '+ data.message +'</span>');
             $('.add_source_body').removeClass('hidden');
-
-        } else {
-
-            //All good, go to newly added source:
-            window.location = '/entities/' + data.new_source_id;
 
         }
     });

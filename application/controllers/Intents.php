@@ -1251,7 +1251,7 @@ class Intents extends CI_Controller
     }
 
 
-    function in_new_message_from_attachment()
+    function in_message_from_attachment()
     {
 
         //Authenticate Trainer:

@@ -33,6 +33,23 @@ function en_fetch_canonical_url(query_string, not_found){
         + ( not_found ? '<div class="not-found"><i class="fas fa-exclamation-triangle"></i> URL not found</div>' : '');
 }
 
+function count_new_words_in(){
+    $.post("/trainer_app/count_new_words_in", {}, function (data) {
+        if(data.status){
+            //Preserve current version:
+            var current_version = $(".app-version").text();
+
+            //Show trainers their new word count:
+            $(".app-version").html(data.message).fadeOut(54).fadeIn(54);
+
+            //Replace message with platform version again:
+            setTimeout(function () {
+                $(".app-version").html(current_version);
+            }, 1000);
+        }
+    });
+}
+
 
 //Function to load all help messages throughout the platform:
 $(document).ready(function () {
@@ -309,16 +326,21 @@ function add_search_item(){
     //Attemps to create a new intent OR entity based on the value in the search box
     $.post("/links/add_search_item", { raw_string: $("#platform_search").val() }, function (data) {
 
-        if(!data.status){
+        if(data.status){
+
+            //Show trainers their new words:
+            count_new_words_in();
+
+            setTimeout(function () {
+                //All good, redirect to newly added intent/entity:
+                window.location = data.new_item_url;
+            }, 377);
+
+        } else {
 
             //We had some error:
             $('#platform_search').prop("disabled", false);
             alert('ERROR: ' + data.message);
-
-        } else {
-
-            //All good, redirect to newly added intent/entity:
-            window.location = data.new_item_url;
 
         }
     });

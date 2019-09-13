@@ -215,7 +215,7 @@ $(document).ready(function () {
             in_sort_load(in_id, 3);
 
             //Load time:
-            $('.t_estimate_' + in_id).text(echo_js_hours($('.t_estimate_' + in_id + ':first').attr('tree-max-seconds')));
+            $('.t_estimate_' + in_id).text(in_update_time($('.t_estimate_' + in_id + ':first').attr('tree-max-seconds')));
 
         });
 
@@ -225,14 +225,11 @@ $(document).ready(function () {
                 var in_id = $(this).attr('intent-id');
                 if (in_id) {
                     //Load time:
-                    $('.t_estimate_' + in_id).text(echo_js_hours($('.t_estimate_' + in_id + ':first').attr('tree-max-seconds')));
+                    $('.t_estimate_' + in_id).text(in_update_time($('.t_estimate_' + in_id + ':first').attr('tree-max-seconds')));
                 }
             });
         }
     }
-
-
-
 
 });
 
@@ -344,7 +341,10 @@ function in_sort_save(in_id, level) {
         //Update backend:
         $.post("/intents/in_sort_save", {in_id: in_id, new_ln_orders: new_ln_orders}, function (data) {
             //Update UI to confirm with user:
-            if (!data.status) {
+            if (data.status) {
+                //Show trainers their new words:
+                count_new_words_in();
+            } else {
                 //There was some sort of an error returned!
                 alert('ERROR: ' + data.message);
             }
@@ -422,12 +422,12 @@ function in_sort_load(in_id, level) {
                     if (!(step_hours == 0)) {
                         //Remove from old one:
                         var from_hours_new = parseFloat($('.t_estimate_' + inputs.from_in_id + ':first').attr('tree-max-seconds')) - step_hours;
-                        $('.t_estimate_' + inputs.from_in_id).attr('tree-max-seconds', from_hours_new).text(echo_js_hours(from_hours_new));
+                        $('.t_estimate_' + inputs.from_in_id).attr('tree-max-seconds', from_hours_new).text(in_update_time(from_hours_new));
                         $('.children-counter-' + inputs.from_in_id).text(parseInt($('.children-counter-' + inputs.from_in_id + ':first').text()) - intent_count);
 
                         //Add to new:
                         var to_hours_new = parseFloat($('.t_estimate_' + inputs.to_in_id + ':first').attr('tree-max-seconds')) + step_hours;
-                        $('.t_estimate_' + inputs.to_in_id).attr('tree-max-seconds', to_hours_new).text(echo_js_hours(to_hours_new));
+                        $('.t_estimate_' + inputs.to_in_id).attr('tree-max-seconds', to_hours_new).text(in_update_time(to_hours_new));
                         $('.children-counter-' + inputs.to_in_id).text(parseInt($('.children-counter-' + inputs.to_in_id + ':first').text()) + intent_count);
                     }
 
@@ -515,6 +515,9 @@ function in_link_or_create(in_linked_id, is_parent, next_level, in_link_child_id
 
         if (data.status) {
 
+            //Show trainers their new words:
+            count_new_words_in();
+
             //Add new
             add_to_list(sort_list_id, sort_handler, data.in_child_html);
 
@@ -548,7 +551,7 @@ function in_link_or_create(in_linked_id, is_parent, next_level, in_link_child_id
             $('[data-toggle="tooltip"]').tooltip();
 
             //Adjust time:
-            adjust_js_ui(data.new_in_id, next_level, 0, 0, 0, 1);
+            in_adjust_ui(data.new_in_id, next_level, 0, 0, 0, 1);
 
         } else {
             //Show errors:

@@ -7,7 +7,7 @@ $en_all_7369 = $this->config->item('en_all_7369');
     var in_focus_id = <?= $in['in_id'] ?>;
     var js_in_filters = <?= json_encode($in_filters) ?>; //Passon current filters to user match list
 </script>
-<script src="/js/custom/intent-actionplan.js?v=v<?= $this->config->item('app_version') ?>"
+<script src="/js/custom/intent-manage-js.js?v=v<?= $this->config->item('app_version') ?>"
         type="text/javascript"></script>
 
 <style>
