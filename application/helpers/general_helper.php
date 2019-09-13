@@ -531,13 +531,13 @@ function word_change_calculator($before_string, $after_string){
     $removed_words = array();
 
     foreach($before_words as $before_word){
-        if(!in_array($before_word, $after_words)){
+        if(strlen($before_word)>1 && !in_array($before_word, $after_words)){
             array_push($removed_words, $before_word);
         }
     }
 
     foreach($after_words as $after_word){
-        if(!in_array($after_word, $before_words)){
+        if(strlen($after_word)>1 && !in_array($after_word, $before_words)){
             array_push($new_words, $after_word);
         }
     }
@@ -547,7 +547,7 @@ function word_change_calculator($before_string, $after_string){
         $ln_content .= 'Removed['.join(', ',$removed_words).']';
     }
     if(count($new_words)>0){
-        if(strlen($ln_content) > 0){
+        if(count($removed_words)>0){
             $ln_content .= ' ';
         }
         $ln_content .= 'Added['.join(', ',$new_words).']';
