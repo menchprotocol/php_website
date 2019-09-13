@@ -88,6 +88,35 @@ class Trainer_app extends CI_Controller
 
         $en_all_7302 = $this->config->item('en_all_7302'); //Intent Stats
 
+
+
+        //Intent Statuses:
+        echo '<table class="table table-condensed table-striped stats-table mini-stats-table intent_statuses '.advance_mode().'">';
+        echo '<tr class="panel-title down-border">';
+        echo '<td style="text-align: left;" colspan="2">'.$en_all_7302[4737]['m_name'].echo__s(count($this->config->item('en_all_4737')), true).'</td>';
+        echo '</tr>';
+        foreach ($this->config->item('en_all_4737') as $en_id => $m) {
+
+            //Count this status:
+            $objects_count = $this->Intents_model->in_fetch(array(
+                'in_status_entity_id' => $en_id
+            ), array(), 0, 0, array(), 'COUNT(in_id) as totals');
+
+            //Display this status count:
+            echo '<tr>';
+            echo '<td style="text-align: left;"><span class="icon-block">' . $m['m_icon'] . '</span><a href="/entities/'.$en_id.'">' . $m['m_name'] . '</a></td>';
+
+            echo '<td style="text-align: right;">' . '<a href="/links?in_status_entity_id=' . $en_id . '&ln_type_entity_id=4250">' . number_format($objects_count[0]['totals'],0) .'</a></td>';
+
+            echo '</tr>';
+
+        }
+        echo '</table>';
+
+
+
+
+
         //Count all Intent Subtypes:
         $intent_types_counts = $this->Intents_model->in_fetch(array(
             'in_status_entity_id IN (' . join(',', $this->config->item('en_ids_7355')) . ')' => null, //Intent Statuses Public
@@ -138,38 +167,6 @@ class Trainer_app extends CI_Controller
         echo '</table>';
 
 
-
-
-
-
-
-
-
-
-        //Intent Statuses:
-        echo '<table class="table table-condensed table-striped stats-table mini-stats-table intent_statuses '.advance_mode().'">';
-        echo '<tr class="panel-title down-border">';
-        echo '<td style="text-align: left;" colspan="2">'.$en_all_7302[4737]['m_name'].echo__s(count($this->config->item('en_all_4737')), true).'</td>';
-        echo '</tr>';
-        foreach ($this->config->item('en_all_4737') as $en_id => $m) {
-
-            //Count this status:
-            $objects_count = $this->Intents_model->in_fetch(array(
-                'in_status_entity_id' => $en_id
-            ), array(), 0, 0, array(), 'COUNT(in_id) as totals');
-
-            //Display this status count:
-            echo '<tr>';
-            echo '<td style="text-align: left;"><span class="icon-block">' . $m['m_icon'] . '</span><a href="/entities/'.$en_id.'">' . $m['m_name'] . '</a></td>';
-
-            echo '<td style="text-align: right;">' . '<a href="/links?in_status_entity_id=' . $en_id . '&ln_type_entity_id=4250">' . number_format($objects_count[0]['totals'],0) .'</a></td>';
-
-            echo '</tr>';
-
-        }
-        echo '</table>';
-
-
     }
 
 
@@ -181,6 +178,34 @@ class Trainer_app extends CI_Controller
 
         $en_all_7303 = $this->config->item('en_all_7303'); //Platform Dashboard
         $en_all_6177 = $this->config->item('en_all_6177'); //Entity Statuses
+
+
+
+
+
+
+
+        //Entity Statuses
+        echo '<table class="table table-condensed table-striped stats-table mini-stats-table entity_statuses '.advance_mode().'">';
+        echo '<tr class="panel-title down-border">';
+        echo '<td style="text-align: left;" colspan="2">'.$en_all_7303[6177]['m_name'].echo__s(count($this->config->item('en_all_6177')), true).'</td>';
+        echo '</tr>';
+        foreach ($this->config->item('en_all_6177') as $en_id => $m) {
+
+            //Count this status:
+            $objects_count = $this->Entities_model->en_fetch(array(
+                'en_status_entity_id' => $en_id
+            ), array(), 0, 0, array(), 'COUNT(en_id) as totals');
+
+            //Display this status count:
+            echo '<tr>';
+            echo '<td style="text-align: left;"><span class="icon-block">' . $m['m_icon'] . '</span><a href="/entities/'.$en_id.'">' . $m['m_name'] . '</a></td>';
+            echo '<td style="text-align: right;">' . '<a href="/links?en_status_entity_id=' . $en_id . '&ln_type_entity_id=4251">' . number_format($objects_count[0]['totals'], 0) . '</a>' . '</td>';
+            echo '</tr>';
+
+        }
+        echo '</table>';
+
 
 
 
@@ -270,32 +295,6 @@ class Trainer_app extends CI_Controller
 
 
 
-
-
-
-
-        //Entity Statuses
-        echo '<table class="table table-condensed table-striped stats-table mini-stats-table entity_statuses '.advance_mode().'">';
-        echo '<tr class="panel-title down-border">';
-        echo '<td style="text-align: left;" colspan="2">'.$en_all_7303[6177]['m_name'].echo__s(count($this->config->item('en_all_6177')), true).'</td>';
-        echo '</tr>';
-        foreach ($this->config->item('en_all_6177') as $en_id => $m) {
-
-            //Count this status:
-            $objects_count = $this->Entities_model->en_fetch(array(
-                'en_status_entity_id' => $en_id
-            ), array(), 0, 0, array(), 'COUNT(en_id) as totals');
-
-            //Display this status count:
-            echo '<tr>';
-            echo '<td style="text-align: left;"><span class="icon-block">' . $m['m_icon'] . '</span><a href="/entities/'.$en_id.'">' . $m['m_name'] . '</a></td>';
-            echo '<td style="text-align: right;">' . '<a href="/links?en_status_entity_id=' . $en_id . '&ln_type_entity_id=4251">' . number_format($objects_count[0]['totals'], 0) . '</a>' . '</td>';
-            echo '</tr>';
-
-        }
-        echo '</table>';
-
-
     }
 
 
@@ -362,19 +361,6 @@ class Trainer_app extends CI_Controller
 
 
 
-        //Count all rows:
-        $link_types_counts = $this->Links_model->ln_fetch(array(
-            'ln_status_entity_id IN (' . join(',', $this->config->item('en_ids_7359')) . ')' => null, //Link Statuses Public
-        ), array('ln_type'), 0, 0, array(), 'COUNT(ln_id) as total_count, SUM(ABS(ln_words)) as total_words, en_name, en_icon, en_id', 'en_id, en_name, en_icon');
-
-        //Count totals:
-        $addup_total_count = addup_array($link_types_counts, 'total_count');
-
-
-        //Link Direction
-        echo_2level_stats('Types', 10591, 4593, $link_types_counts, $addup_total_count, 'ln_type_entity_id', 'total_words');
-
-
         //Link Status:
         echo '<table class="table table-condensed table-striped stats-table mini-stats-table link_statuses '.advance_mode().'">';
         echo '<tr class="panel-title down-border">';
@@ -402,15 +388,32 @@ class Trainer_app extends CI_Controller
 
 
 
+
+
+        //Count all rows:
+        $link_types_counts = $this->Links_model->ln_fetch(array(
+            'ln_status_entity_id IN (' . join(',', $this->config->item('en_ids_7359')) . ')' => null, //Link Statuses Public
+        ), array('ln_type'), 0, 0, array(), 'COUNT(ln_id) as total_count, SUM(ABS(ln_words)) as total_words, en_name, en_icon, en_id', 'en_id, en_name, en_icon');
+
+        //Count totals:
+        $addup_total_count = addup_array($link_types_counts, 'total_count');
+
+        //Link Direction
+        echo_2level_stats('Types', 10591, 4593, $link_types_counts, $addup_total_count, 'ln_type_entity_id', 'total_words');
+
+
+
+
+
+
+
+
+
+        //Leaderboard
         echo '<table class="table table-condensed table-striped stats-table">';
-
         echo '<thead>';
-
         echo '<tr class="panel-title down-border">';
-
         echo '<td style="text-align: left;"><div>'.$en_all_7304[7797]['m_name'].'</div>';
-
-        //Leaderboard User Types
         echo '<div class="btn-group btn-group-sm btn-group-leaderboard" role="group">';
         $counter = 0;
         foreach ($this->config->item('en_all_10591') as $en_id => $m) {
@@ -432,11 +435,9 @@ class Trainer_app extends CI_Controller
         echo '</tr>';
         echo '</thead>';
 
-        //JS will update this:
         echo '<tbody id="body_inject"><tr><td colspan="10"><div style="text-align: center;"><i class="fas fa-yin-yang fa-spin"></i> '.echo_random_message('ying_yang').'</div></td></tr></tbody>';
 
         echo '</table>';
-
 
     }
 

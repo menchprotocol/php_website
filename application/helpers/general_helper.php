@@ -452,7 +452,7 @@ function ln_type_word_count($ln){
         $link_words = 0;
 
         //Consider each object link as a word:
-        foreach (array('ln_creator_entity_id', 'ln_child_intent_id', 'ln_parent_intent_id', 'ln_child_entity_id', 'ln_parent_entity_id') as $dz) {
+        foreach (array('ln_child_intent_id', 'ln_parent_intent_id', 'ln_child_entity_id', 'ln_parent_entity_id') as $dz) {
             if (isset($ln[$dz]) && intval($ln[$dz]) > 0) {
                 $link_words++;
             }
