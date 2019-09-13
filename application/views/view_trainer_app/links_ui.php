@@ -243,7 +243,7 @@ if(isset($_GET['ln_type_entity_id'])){
 $has_filters = ( count($_GET) > 0 );
 
 
-$en_all_7368 = $CI->config->item('en_all_7368'); //Trainer App
+$en_all_7368 = $this->config->item('en_all_7368'); //Trainer App
 
 ?>
 

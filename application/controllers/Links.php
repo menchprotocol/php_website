@@ -79,9 +79,9 @@ class Links extends CI_Controller
 
         //Display filter notes:
         if($total_items_loaded > 0){
-            $message .= '<p style="margin: 10px 0 0 0;">'.( $has_more_links && $query_offset==0  ? 'First ' : ($query_offset+1).' - ' ) . ( $total_items_loaded >= ($query_offset+1) ?  $total_items_loaded . ' of ' : '' ) . number_format($lns_count[0]['total_count'] , 0) .' Links:</p>';
+            $message .= '<p style="margin: 10px 0 0 0;">'.( $has_more_links && $query_offset==0  ? 'First ' : ($query_offset+1).' - ' ) . ( $total_items_loaded >= ($query_offset+1) ?  $total_items_loaded . ' of ' : '' ) . number_format($lns_count[0]['total_count'] , 0) .' Links ('.number_format($lns_count[0]['total_words'], 0).' words):</p>';
         }
-        // with '.number_format($lns_count[0]['total_words'], 0).' awarded credits
+        //
 
 
         if(count($lns)>0){
