@@ -1010,8 +1010,8 @@ class Intents extends CI_Controller
                 $ln_metadata = ( strlen($lns[0]['ln_metadata']) > 0 ? unserialize($lns[0]['ln_metadata']) : array() );
 
                 if($_POST['ln_type_entity_id'] == 4228 && (
-                        !isset($ln_metadata['tr__assessment_points']) ||
-                        !(intval($ln_metadata['tr__assessment_points'])==intval($_POST['tr__assessment_points']))
+                        (!isset($ln_metadata['tr__assessment_points']) && intval($_POST['tr__assessment_points'])!=0) ||
+                        (isset($ln_metadata['tr__assessment_points']) && intval($ln_metadata['tr__assessment_points'])!=intval($_POST['tr__assessment_points']))
                     )){
 
                     $this->Links_model->ln_update($ln_id, array(
@@ -1022,10 +1022,10 @@ class Intents extends CI_Controller
                 }
 
                 if($_POST['ln_type_entity_id'] == 4229 && (
-                        !isset($ln_metadata['tr__conditional_score_min']) ||
-                        !isset($ln_metadata['tr__conditional_score_max']) ||
-                        !(doubleval($ln_metadata['tr__conditional_score_max'])==doubleval($_POST['tr__conditional_score_max'])) ||
-                        !(doubleval($ln_metadata['tr__conditional_score_min'])==doubleval($_POST['tr__conditional_score_min']))
+                        (!isset($ln_metadata['tr__conditional_score_max']) && intval($_POST['tr__conditional_score_max'])!=0) ||
+                        (!isset($ln_metadata['tr__conditional_score_min']) && intval($_POST['tr__conditional_score_min'])!=0) ||
+                        (isset($ln_metadata['tr__conditional_score_max']) && doubleval($ln_metadata['tr__conditional_score_max'])!=doubleval($_POST['tr__conditional_score_max'])) ||
+                        (isset($ln_metadata['tr__conditional_score_min']) && doubleval($ln_metadata['tr__conditional_score_min'])!=doubleval($_POST['tr__conditional_score_min']))
                     )){
                     $this->Links_model->ln_update($ln_id, array(
                         'ln_metadata' => array_merge( $ln_metadata, array(
