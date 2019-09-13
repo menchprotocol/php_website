@@ -432,6 +432,19 @@ function curl_get_file_size( $url ) {
 }
 
 
+function filter_cache_group($search_en_id, $cache_en_id){
+
+    //Determines which category an entity belongs to
+
+    $CI =& get_instance();
+    foreach ($CI->config->item('en_all_'.$cache_en_id) as $en_id => $m) {
+        if(in_array($search_en_id, $CI->config->item('en_ids_'.$en_id))){
+            return $m;
+        }
+    }
+    return false;
+}
+
 function ln_type_word_count($ln){
 
     $CI =& get_instance();
