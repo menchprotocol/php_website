@@ -33,18 +33,25 @@ function en_fetch_canonical_url(query_string, not_found){
         + ( not_found ? '<div class="not-found"><i class="fas fa-exclamation-triangle"></i> URL not found</div>' : '');
 }
 
-function count_new_words_in(){
+function count_new_words_in(target_parent_frame){
+
+    if(target_parent_frame){
+        var focus_element = $(".app-version", window.parent.document);
+    } else {
+        var focus_element = $(".app-version");
+    }
+
     $.post("/trainer_app/count_new_words_in", {}, function (data) {
         if(data.status){
             //Preserve current version:
-            var current_version = $(".app-version").text();
+            var current_version = focus_element.text();
 
             //Show trainers their new word count:
-            $(".app-version").html(data.message).fadeOut(54).fadeIn(54);
+            focus_element.html(data.message).fadeOut(127).fadeIn(127);
 
             //Replace message with platform version again:
             setTimeout(function () {
-                $(".app-version").html(current_version);
+                focus_element.html(current_version);
             }, 1000);
         }
     });
@@ -329,7 +336,7 @@ function add_search_item(){
         if(data.status){
 
             //Show trainers their new words:
-            count_new_words_in();
+            count_new_words_in(0);
 
             setTimeout(function () {
                 //All good, redirect to newly added intent/entity:

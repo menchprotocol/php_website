@@ -229,7 +229,7 @@ function in_message_sort_apply(ln_type_entity_id) {
             //Only show message if there was an error:
             if (data.status) {
                 //Show trainers their new words:
-                count_new_words_in();
+                count_new_words_in(1);
             } else {
                 //Show error:
                 alert('ERROR: ' + data.message);
@@ -326,7 +326,7 @@ function in_message_modify_save(ln_id, initial_ln_type_entity_id) {
         if (data.status) {
 
             //Show trainers their new words:
-            count_new_words_in();
+            count_new_words_in(1);
 
             //Did we remove this message?
             if(data.remove_from_ui){
@@ -479,7 +479,7 @@ function in_message_from_attachment(droppedFiles, uploadType) {
             },
             success: function (data) {
                 //Show trainers their new words:
-                count_new_words_in();
+                count_new_words_in(1);
 
                 in_message_form_unlock(data);
 
@@ -522,7 +522,7 @@ function in_message_create() {
         if (data.status) {
 
             //Show trainers their new words:
-            count_new_words_in();
+            count_new_words_in(1);
 
             //Adjust counter by one:
             in_note_messages_count++;

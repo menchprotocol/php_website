@@ -298,7 +298,7 @@ function en_add_or_link(en_existing_id, is_parent) {
         if (data.status) {
 
             //Show trainers their new words:
-            count_new_words_in();
+            count_new_words_in(0);
 
             //Raw input to make it ready for next URL:
             input.focus();
@@ -566,7 +566,7 @@ function en_save_file_upload(droppedFiles, uploadType) {
                 if(data.status){
 
                     //Show trainers their new words:
-                    count_new_words_in();
+                    count_new_words_in(0);
 
                     //Add URL to input:
                     $('#ln_content').val( data.cdn_url );
@@ -641,7 +641,7 @@ function en_modify_save() {
         if (data.status) {
 
             //Show trainers their new words:
-            count_new_words_in();
+            count_new_words_in(0);
 
             if(data.remove_from_ui){
 

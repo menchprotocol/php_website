@@ -190,7 +190,7 @@ function en_add_source_process(){
         if (data.status) {
 
             //Show trainers their new words:
-            count_new_words_in();
+            count_new_words_in(0);
 
             setTimeout(function () {
 

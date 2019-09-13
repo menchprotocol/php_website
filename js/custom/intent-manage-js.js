@@ -343,7 +343,7 @@ function in_sort_save(in_id, level) {
             //Update UI to confirm with user:
             if (data.status) {
                 //Show trainers their new words:
-                count_new_words_in();
+                count_new_words_in(0);
             } else {
                 //There was some sort of an error returned!
                 alert('ERROR: ' + data.message);
@@ -516,7 +516,7 @@ function in_link_or_create(in_linked_id, is_parent, next_level, in_link_child_id
         if (data.status) {
 
             //Show trainers their new words:
-            count_new_words_in();
+            count_new_words_in(0);
 
             //Add new
             add_to_list(sort_list_id, sort_handler, data.in_child_html);
