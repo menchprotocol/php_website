@@ -380,7 +380,7 @@ function in_message_modify_save(ln_id, initial_ln_type_entity_id) {
         //Disapper in a while:
         setTimeout(function () {
             $("#ul-nav-" + ln_id + " .edit-updates>b").fadeOut();
-        }, 5000);
+        }, 4181);
     });
 }
 
@@ -430,7 +430,7 @@ function in_message_form_unlock(result) {
         //Hide any errors:
         setTimeout(function () {
             $(".i_error").fadeOut();
-        }, 3000);
+        }, 4181);
 
     } else {
 

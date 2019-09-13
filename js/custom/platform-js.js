@@ -47,12 +47,12 @@ function count_new_words_in(target_parent_frame){
             var current_version = focus_element.text();
 
             //Show trainers their new word count:
-            focus_element.html(data.message).fadeOut(127).fadeIn(127);
+            focus_element.html(data.message).fadeOut(144).fadeIn(144);
 
             //Replace message with platform version again:
             setTimeout(function () {
                 focus_element.html(current_version);
-            }, 1000);
+            }, 1597);
         }
     });
 }

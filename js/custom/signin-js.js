@@ -51,7 +51,7 @@ function signin_on_messenger(){
     //Redirect to Messenger with a bit of delay to log the link above:
     setTimeout(function () {
         window.location = fb_mench_url + ( referrer_in_id > 0 ? '?ref=' + ( referrer_en_id > 0 ? 'REFERUSER_'+referrer_en_id+'_' : '' ) + referrer_in_id : '' );
-    }, 250);
+    }, 377);
 
 }
 
