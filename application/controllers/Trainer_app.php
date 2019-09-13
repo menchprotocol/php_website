@@ -306,18 +306,16 @@ class Trainer_app extends CI_Controller
         //Fetch top users per each direction
         $show_max = 8;
 
+        $filters = array(
+            'ln_status_entity_id IN (' . join(',', $this->config->item('en_ids_7359')) . ')' => null, //Link Statuses Public
+            'ln_creator_entity_id >' => 0,
+        );
 
         //Now see what type of report they want:
         if($direction_en_id==10589 /* Input */){
-            $filters = array(
-                'ln_words>' => 0,
-                'ln_creator_entity_id >' => 0,
-            );
+            $filters['ln_words>'] = 0;
         } elseif($direction_en_id==10590 /* Output */){
-            $filters = array(
-                'ln_words<' => 0,
-                'ln_creator_entity_id >' => 0,
-            );
+            $filters['ln_words<'] = 0;
         }
 
 
@@ -346,7 +344,7 @@ class Trainer_app extends CI_Controller
                 if($ln['total_words'] >= 1){
                     echo '<tr>';
                     echo '<td style="text-align: left;"><span class="parent-icon icon-block">'.echo_en_icon($ln).'</span><a href="/entities/'.$ln['en_id'].'">'.one_two_explode('',' ',$ln['en_name']).'</a> '.echo_rank($count+1).'</td>';
-                    echo '<td style="text-align: right;"><a href="/links?ln_creator_entity_id='.$ln['en_id'].( $start_date ? '&start_range='.$start_date : $start_date ).'">'.number_format($ln['total_words'], 0).'</a></td>';
+                    echo '<td style="text-align: right;"><a href="/links?ln_status_entity_id='.join(',', $this->config->item('en_ids_7359')) /* Link Statuses Public */.'&ln_type_entity_id='.join(',', $this->config->item('en_ids_'.$direction_en_id)).'&ln_creator_entity_id='.$ln['en_id'].( $start_date ? '&start_range='.$start_date : $start_date ).'">'.number_format($ln['total_words'], 0).'</a></td>';
                     echo '</tr>';
 
                 }
@@ -366,7 +364,7 @@ class Trainer_app extends CI_Controller
 
         //Count all rows:
         $link_types_counts = $this->Links_model->ln_fetch(array(
-            'ln_status_entity_id IN (' . join(',', $this->config->item('en_ids_7360')) . ')' => null, //Link Statuses Active
+            'ln_status_entity_id IN (' . join(',', $this->config->item('en_ids_7359')) . ')' => null, //Link Statuses Public
         ), array('ln_type'), 0, 0, array(), 'COUNT(ln_id) as total_count, SUM(ABS(ln_words)) as total_words, en_name, en_icon, en_id', 'en_id, en_name, en_icon');
 
         //Count totals:

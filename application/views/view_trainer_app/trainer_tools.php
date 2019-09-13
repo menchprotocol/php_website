@@ -196,6 +196,50 @@ if(!$action) {
     echo '</table>';
 
 
+} elseif($action=='dodo'){
+
+    //Intent
+    $qs = $this->Links_model->ln_fetch(array(
+        'ln_type_entity_id' => 4250,
+    ), array(), 0, 0, array('ln_id' => 'ASC'));
+    $todo = 0;
+    $done = 0;
+    foreach($qs as $ln){
+        $todo++;
+        $ins = $this->Intents_model->in_fetch(array(
+            'in_id' => $ln['ln_child_intent_id'],
+        ));
+        if(count($ins) > 0){
+            $this->Links_model->ln_update($ln['ln_id'], array(
+                'ln_content' => $ins[0]['in_outcome'],
+            ));
+            $done;
+        }
+    }
+    echo $todo.'/'.$done.'/'.count($qs).' intent done<br />';
+
+
+    //Entity
+    $en_lns = $this->Links_model->ln_fetch(array(
+        'ln_type_entity_id' => 4251,
+    ), array(), 0, 0, array('ln_id' => 'ASC'));
+    $todoen = 0;
+    $doneen = 0;
+    foreach($en_lns as $ln){
+        $todoen++;
+        $ens = $this->Entities_model->en_fetch(array(
+            'en_id' => $ln['ln_child_entity_id'],
+        ));
+        if(count($ens) > 0){
+            $this->Links_model->ln_update($ln['ln_id'], array(
+                'ln_content' => $ens[0]['en_name'],
+            ));
+            $doneen;
+        }
+    }
+
+    echo $todoen.'/'.$doneen.'/'.count($en_lns).' entity done';
+
 } elseif($action=='moderate_intent_notes'){
 
     //Fetch pending notes:
