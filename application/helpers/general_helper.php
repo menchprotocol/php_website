@@ -544,7 +544,7 @@ function word_change_calculator($before_string, $after_string){
 
     $ln_content = '';
     if(count($removed_words)>0){
-        $ln_content .= 'Removed['.join(', ',$removed_words).']';
+        $ln_content .= 'Removed['.join(',',$removed_words).']'; //All removed count as 1
     }
     if(count($new_words)>0){
         if(count($removed_words)>0){
