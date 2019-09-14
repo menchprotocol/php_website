@@ -1893,7 +1893,8 @@ class Communication_model extends CI_Model
                         $this->Links_model->ln_update($ln['ln_id'], array(
                             'ln_child_intent_id' => $answer_in_id, //Save answer
                             'ln_status_entity_id' => 6176, //Link Published
-                        ), $en['en_id'], 6157 /* User Step Single-Answered */);
+                            'ln_timestamp' => date("Y-m-d H:i:s"),
+                        ));
 
                         //Update status:
                         $published_answer = true;
