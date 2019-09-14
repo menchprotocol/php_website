@@ -31,7 +31,7 @@ if(count($user_intents) > 0){
         echo '<span class="actionplan-title in-title-'.$ln['in_id'].'">' . $ln['in_outcome'] . '</span>';
         echo '<div class="actionplan-overview">';
 
-        echo '<span title="'.$completion_rate['steps_completed'].'/'.$completion_rate['steps_total'].' Steps Completed">'.echo_en_cache('en_all_6186', ( $completion_rate['completion_percentage']==100 ? 6176 /* Link Published */ : 6175 /* Link Drafting */ ), true, null).$completion_rate['completion_percentage'].'% Complete</span>';
+        echo '<span title="'.$completion_rate['steps_completed'].'/'.$completion_rate['steps_total'].' Steps Completed">'.$completion_rate['completion_percentage'].'% Complete</span>';
         echo ', <span class="results-ln-'.$ln['ln_id'].'">'.echo_ordinal_number(($priority+1)).'</span> Priority';
         echo '</div>';
         echo '</a>';
