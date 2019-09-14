@@ -90,7 +90,7 @@ class Intents extends CI_Controller
             //Go to mench.com for now:
             return redirect_message('https://mench.com');
 
-        } elseif (filter_array($session_en['en__parents'], 'en_id', 1308)) {
+        } elseif (filter_array($session_en['en__parents'], 'en_id', array(1308, 7512))) {
 
             //Go to the Mench dashboard:
             return redirect_message('/dashboard');
@@ -233,7 +233,7 @@ class Intents extends CI_Controller
          * */
 
         //Authenticate Trainer:
-        $session_en = en_auth(array(1308,7512), true);
+        $session_en = en_auth($this->config->item('en_ids_10691') /* Mench Trainers */, true);
 
         if($in_id == 0){
             return redirect_message('/intents/' . $this->session->userdata('user_default_intent'));
@@ -284,7 +284,7 @@ class Intents extends CI_Controller
          * */
 
         //Authenticate Trainer:
-        $session_en = en_auth(array(1308,7512));
+        $session_en = en_auth($this->config->item('en_ids_10691') /* Mench Trainers */);
         if (!$session_en) {
             return echo_json(array(
                 'status' => 0,
@@ -378,7 +378,7 @@ class Intents extends CI_Controller
     {
 
         //Authenticate Trainer:
-        $session_en = en_auth(array(1308,7512));
+        $session_en = en_auth($this->config->item('en_ids_10691') /* Mench Trainers */);
         if (!$session_en) {
             return echo_json(array(
                 'status' => 0,
@@ -611,7 +611,7 @@ class Intents extends CI_Controller
     function in_unlink_only(){
 
         //Authenticate Trainer:
-        $session_en = en_auth(array(1308,7512));
+        $session_en = en_auth($this->config->item('en_ids_10691') /* Mench Trainers */);
 
         if (!$session_en) {
             return echo_json(array(
@@ -651,7 +651,7 @@ class Intents extends CI_Controller
     {
 
         //Authenticate Trainer:
-        $session_en = en_auth(array(1308,7512));
+        $session_en = en_auth($this->config->item('en_ids_10691') /* Mench Trainers */);
         $ln_id = intval($_POST['ln_id']);
 
         //Validate intent:
@@ -1085,7 +1085,7 @@ class Intents extends CI_Controller
     {
 
         //Authenticate Trainer:
-        $session_en = en_auth(array(1308,7512));
+        $session_en = en_auth($this->config->item('en_ids_10691') /* Mench Trainers */);
         if (!$session_en) {
             echo_json(array(
                 'status' => 0,
@@ -1149,7 +1149,7 @@ class Intents extends CI_Controller
     {
 
         //Authenticate as a Trainer:
-        $session_en = en_auth(array(1308,7512));
+        $session_en = en_auth($this->config->item('en_ids_10691') /* Mench Trainers */);
         if (!$session_en) {
             //Display error:
             die('<span style="color:#FF0000;">Error: Invalid Session. Sign In again to continue.</span>');
@@ -1176,7 +1176,7 @@ class Intents extends CI_Controller
     {
 
         //Authenticate Trainer:
-        $session_en = en_auth(array(1308,7512));
+        $session_en = en_auth($this->config->item('en_ids_10691') /* Mench Trainers */);
 
         if (!$session_en) {
 
@@ -1253,7 +1253,7 @@ class Intents extends CI_Controller
     {
 
         //Authenticate Trainer:
-        $session_en = en_auth(array(1308,7512));
+        $session_en = en_auth($this->config->item('en_ids_10691') /* Mench Trainers */);
         if (!$session_en) {
 
             return echo_json(array(
@@ -1367,7 +1367,7 @@ class Intents extends CI_Controller
          *
          * */
 
-        $session_en = en_auth(array(1308,7512));
+        $session_en = en_auth($this->config->item('en_ids_10691') /* Mench Trainers */);
         if (!$session_en) {
             return echo_json(array(
                 'status' => 0,
@@ -1448,7 +1448,7 @@ class Intents extends CI_Controller
     {
 
         //Authenticate Trainer:
-        $session_en = en_auth(array(1308,7512));
+        $session_en = en_auth($this->config->item('en_ids_10691') /* Mench Trainers */);
         if (!$session_en) {
 
             return echo_json(array(
@@ -1489,7 +1489,7 @@ class Intents extends CI_Controller
     {
 
         //Authenticate Trainer:
-        $session_en = en_auth(array(1308,7512));
+        $session_en = en_auth($this->config->item('en_ids_10691') /* Mench Trainers */);
         if (!$session_en) {
             return echo_json(array(
                 'status' => 0,

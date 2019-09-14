@@ -62,7 +62,7 @@ $url_part_1 = $this->uri->segment(1);
                     );
 
                     //If trainer give access back to platform:
-                    if(en_auth(array(1308,7512))){
+                    if(en_auth($this->config->item('en_ids_10691') /* Mench Trainers */)){
                         $en_all_7372 = $this->config->item('en_all_7372');
                         array_push($navigation, array(
                             'uri_segment_1' => 'dashboard',

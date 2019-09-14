@@ -11,7 +11,30 @@ defined('BASEPATH') OR exit('No direct script access allowed');
  *
  */
 
-//Generated 2019-09-13 14:25:23 PST
+//Generated 2019-09-13 19:28:09 PST
+
+//Mench Trainers:
+$config['en_ids_10691'] = array(7512,1308,1281);
+$config['en_all_10691'] = array(
+    7512 => array(
+        'm_icon' => '<i class="far fa-user-hard-hat isorange"></i>',
+        'm_name' => 'Mench Trainers Level 1',
+        'm_desc' => 'Entry level trainers focused on intents and intent notes only',
+        'm_parents' => array(10606,10691,10573,10571,4985),
+    ),
+    1308 => array(
+        'm_icon' => '<i class="far fa-user-hard-hat isturquoise"></i>',
+        'm_name' => 'Mench Trainers Level 2',
+        'm_desc' => 'Certified trainers who understand the core training principles',
+        'm_parents' => array(10626,10691,10571,4463,4426),
+    ),
+    1281 => array(
+        'm_icon' => '<i class="far fa-user-hard-hat isnavy"></i>',
+        'm_name' => 'Mench Trainers Level 3',
+        'm_desc' => 'The dedicated team that ensures the continuous operation of the Mench platform, governs its principles and empowers the entire community to unleash more of their potential',
+        'm_parents' => array(10618,10691,10571,4463),
+    ),
+);
 
 //Link Connector Fields:
 $config['en_ids_10692'] = array(4429,4369,4366,4368,4371);
@@ -49,7 +72,7 @@ $config['en_all_10692'] = array(
 );
 
 //Platform Cache:
-$config['en_ids_4527'] = array(7758,7774,7756,6827,4997,7303,6194,6805,6177,7358,7357,6206,4592,4537,10627,6192,7712,7302,4229,6345,4485,4986,7551,7701,4983,6193,7596,7582,7767,10568,10567,7588,4737,7356,7355,7585,6201,4486,7309,10602,7751,7799,10692,7304,10591,7703,10658,6103,6186,7360,7364,7359,4341,4593,7347,10592,7529,7555,7372,7368,6287,7369,4426,6225,10596,4527,7366,4755,10571,6204,6123,10593,4454,5969,3000,4600,6150,5967,4280,10570,4277,6102,7704,6144,6244,6255,6274,6146,7494,7203,10539,10594,10589,10590);
+$config['en_ids_4527'] = array(7758,7774,7756,6827,4997,7303,6194,6805,6177,7358,7357,6206,4592,4537,10627,6192,7712,7302,4229,6345,4485,4986,7551,7701,4983,6193,7596,7582,7767,10568,10567,7588,4737,7356,7355,7585,6201,4486,7309,10602,7751,7799,10692,7304,10591,7703,10658,6103,6186,7360,7364,7359,4341,4593,7347,10592,7529,7555,7372,7368,10691,6287,7369,4426,6225,10596,4527,7366,4755,10571,6204,6123,10593,4454,5969,3000,4600,6150,5967,4280,10570,4277,6102,7704,6144,6244,6255,6274,6146,7494,7203,10539,10594,10589,10590);
 $config['en_all_4527'] = array(
     7758 => array(
         'm_icon' => '<i class="far fa-mountain ispink"></i>',
@@ -136,7 +159,7 @@ $config['en_all_4527'] = array(
         'm_parents' => array(4758,4527),
     ),
     10627 => array(
-        'm_icon' => '<i class="far fa-paperclip"></i>',
+        'm_icon' => '<i class="far fa-paperclip ispink"></i>',
         'm_name' => 'File Type Attachment',
         'm_desc' => '',
         'm_parents' => array(4527,6771),
@@ -410,6 +433,12 @@ $config['en_all_4527'] = array(
         'm_name' => 'Mench Trainer App',
         'm_desc' => '',
         'm_parents' => array(7372,4527),
+    ),
+    10691 => array(
+        'm_icon' => '<i class="far fa-user-hard-hat"></i>',
+        'm_name' => 'Mench Trainers',
+        'm_desc' => '',
+        'm_parents' => array(4527,7368,6827),
     ),
     6287 => array(
         'm_icon' => '<i class="far fa-tools"></i>',
@@ -3007,7 +3036,7 @@ $config['en_all_6103'] = array(
         'm_parents' => array(10664,6103,6410),
     ),
     6203 => array(
-        'm_icon' => '<i class="far fa-lambda"></i>',
+        'm_icon' => '<i class="far fa-lambda ispink"></i>',
         'm_name' => 'Facebook Attachment ID',
         'm_desc' => 'For media files such as videos, audios, images and other files, we cache them with the Facebook Server so we can instantly deliver them to students. This variables in the link metadata is where we store the attachment ID. See the children to better understand which links types support this caching feature.',
         'm_parents' => array(6232,6215,2793,6103),
@@ -4019,7 +4048,7 @@ $config['en_all_7368'] = array(
         'm_icon' => '<i class="far fa-user-hard-hat"></i>',
         'm_name' => 'Mench Trainers',
         'm_desc' => '',
-        'm_parents' => array(7368,6827),
+        'm_parents' => array(4527,7368,6827),
     ),
     6287 => array(
         'm_icon' => '<i class="far fa-tools"></i>',
@@ -4328,7 +4357,7 @@ $config['en_all_6827'] = array(
         'm_icon' => '<i class="far fa-user-hard-hat"></i>',
         'm_name' => 'Trainers',
         'm_desc' => 'Users who actively train the Mench personal assistant',
-        'm_parents' => array(7368,6827),
+        'm_parents' => array(4527,7368,6827),
     ),
     6695 => array(
         'm_icon' => '<i class="far fa-users"></i>',

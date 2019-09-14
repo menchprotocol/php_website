@@ -953,7 +953,7 @@ class Communication_model extends CI_Model
                 if($is_being_modified){
 
                     //Entity reference must be either the trainer themselves or an expert source:
-                    $session_en = en_auth(array(1308,7512)); //Is trainers/trainer
+                    $session_en = en_auth($this->config->item('en_ids_10691') /* Mench Trainers */);
                     if($string_references['ref_entities'][0] != $session_en['en_id']){
 
                         //Reference is not the logged-in trainer, let's check to make sure it's an expert source

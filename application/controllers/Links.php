@@ -24,7 +24,7 @@ class Links extends CI_Controller
          *
          * */
 
-        $session_en = en_auth(array(1308,7512)); //Just be logged in to browse
+        $session_en = en_auth($this->config->item('en_ids_10691') /* Mench Trainers */);
 
         //Load header:
         $this->load->view(($session_en ? 'view_trainer_app/trainer_app_header' : 'view_user_app/user_app_header'), array(
@@ -121,7 +121,7 @@ class Links extends CI_Controller
     function add_search_item(){
 
         //Authenticate Trainer:
-        $session_en = en_auth(array(1308,7512));
+        $session_en = en_auth($this->config->item('en_ids_10691') /* Mench Trainers */);
 
         if (!$session_en) {
 

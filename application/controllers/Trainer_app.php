@@ -37,7 +37,7 @@ class Trainer_app extends CI_Controller
 
     function dashboard()
     {
-        $session_en = en_auth(array(1308,7512)); //Just be logged in to browse
+        $session_en = en_auth($this->config->item('en_ids_10691') /* Mench Trainers */);
         $en_all_7368 = $this->config->item('en_all_7368');
         $this->load->view(($session_en ? 'view_trainer_app/trainer_app_header' : 'view_user_app/user_app_header'), array(
             'title' => $en_all_7368[7161]['m_name'],
@@ -59,7 +59,7 @@ class Trainer_app extends CI_Controller
 
     function count_new_words_in(){
 
-        $session_en = en_auth(array(1308,7512));
+        $session_en = en_auth($this->config->item('en_ids_10691') /* Mench Trainers */);
 
         if (!$session_en) {
             return echo_json(array(

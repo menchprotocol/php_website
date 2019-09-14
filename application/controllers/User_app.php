@@ -24,7 +24,7 @@ class User_app extends CI_Controller
         $session_en = $this->session->userdata('user');
         if (isset($session_en['en__parents'][0])) {
             //Lead trainer and above, go to console:
-            if(filter_array($session_en['en__parents'], 'en_id', 1308)){
+            if(filter_array($session_en['en__parents'], 'en_id', array(1308, 7512))){
                 return redirect_message('/dashboard');
             } else {
                 return redirect_message('/actionplan' . ( $in_id > 0 ? '/'.$in_id : '' ));
@@ -117,12 +117,11 @@ class User_app extends CI_Controller
 
 
         $is_user = filter_array($ens[0]['en__parents'], 'en_id', 4430);
-        $is_trainer = filter_array($ens[0]['en__parents'], 'en_id', 7512);
-        $is_trainer = filter_array($ens[0]['en__parents'], 'en_id', 1308);
+        $is_any_trainer = filter_array($ens[0]['en__parents'], 'en_id', $this->config->item('en_ids_10691') /* Mench Trainers */);
 
 
         //Applicable for anyone using the Mench mining app:
-        if (!$is_chrome && ($is_trainer || $is_trainer)) {
+        if (!$is_chrome && $is_any_trainer) {
 
             $this->Links_model->ln_create(array(
                 'ln_content' => 'User failed to login using non-Chrome browser',
@@ -145,7 +144,7 @@ class User_app extends CI_Controller
 
         if (isset($_POST['referrer_url']) && strlen($_POST['referrer_url']) > 0) {
             $login_url = urldecode($_POST['referrer_url']);
-        } else if ($is_trainer || $is_trainer) {
+        } elseif ($is_any_trainer) {
             $login_url = '/dashboard';
         } else {
             $login_url = '/actionplan';
@@ -289,13 +288,13 @@ class User_app extends CI_Controller
             //Log them in:
             $ens[0] = $this->Communication_model->activate_session($ens[0]);
 
-            $is_trainer = filter_array($ens[0]['en__parents'], 'en_id', 1308);
-            $is_trainer = filter_array($ens[0]['en__parents'], 'en_id', 7512);
+            //Is this user a trainer?
+            $is_any_trainer = filter_array($ens[0]['en__parents'], 'en_id', $this->config->item('en_ids_10691') /* Mench Trainers */);
 
             //Their next intent in line:
             return echo_json(array(
                 'status' => 1,
-                'login_url' => ( $is_trainer || $is_trainer ? '/dashboard' : '/actionplan/next' ),
+                'login_url' => ( $is_any_trainer ? '/dashboard' : '/actionplan/next' ),
             ));
 
 
@@ -554,7 +553,7 @@ class User_app extends CI_Controller
     function singin_magic_link_login($ln_id){
 
         //Validate email:
-        if(en_auth(array(1308,7512))){
+        if(en_auth($this->config->item('en_ids_10691') /* Mench Trainers */)){
             return redirect_message('/dashboard');
         } elseif(en_auth()){
             return redirect_message('/actionplan/next');
