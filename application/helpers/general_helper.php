@@ -544,13 +544,13 @@ function word_change_calculator($before_string, $after_string){
 
     $ln_content = '';
     if(count($removed_words)>0){
-        $ln_content .= 'Removed['.join(',',$removed_words).']'; //All removed count as 1
+        $ln_content .= 'Removed['.join('][',$removed_words).']'; //All removed count as 1 (No space)
     }
     if(count($new_words)>0){
         if(count($removed_words)>0){
             $ln_content .= ' ';
         }
-        $ln_content .= 'Added['.join(', ',$new_words).']';
+        $ln_content .= 'Added['.join('] [',$new_words).']'; //Each added word counts as 1 word (because of the space)
     }
 
     //Was anything added/removed?
