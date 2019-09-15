@@ -348,9 +348,7 @@ class Messenger extends CI_Controller
                             if(filter_var($im['message']['text'], FILTER_VALIDATE_URL)){
                                 //The message is a URL:
                                 $matching_types = array(
-                                    7635 /* Send Anything */ ,
                                     6683 /* Send Text */ ,
-                                    7637 /* Send Attachment */ ,
                                     6682 /* Send URL */,
                                     6679 /* Send Video */,
                                     6680 /* Send Audio */,
@@ -359,7 +357,6 @@ class Messenger extends CI_Controller
                                 );
                             } else {
                                 $matching_types = array(
-                                    7635 /* Send Anything */ ,
                                     6683 /* Send Text */
                                 );
                             }
@@ -378,8 +375,7 @@ class Messenger extends CI_Controller
                                     'sent' => 4553,     //Link type for when sent to Users via Messenger
                                     'received' => 4548, //Link type for when received from Users via Messenger
                                     'matching_types' => array(
-                                        7635 /* Send Anything */ ,
-                                        7637 /* Send Attachment */ ,
+                                        7637 /* Send Multimedia */ ,
                                         6679 /* Send Video */
                                     ),
                                 ),
@@ -387,8 +383,7 @@ class Messenger extends CI_Controller
                                     'sent' => 4554,
                                     'received' => 4549,
                                     'matching_types' => array(
-                                        7635 /* Send Anything */ ,
-                                        7637 /* Send Attachment */ ,
+                                        7637 /* Send Multimedia */ ,
                                         6680 /* Send Audio */
                                     ),
                                 ),
@@ -396,8 +391,7 @@ class Messenger extends CI_Controller
                                     'sent' => 4555,
                                     'received' => 4550,
                                     'matching_types' => array(
-                                        7635 /* Send Anything */ ,
-                                        7637 /* Send Attachment */ ,
+                                        7637 /* Send Multimedia */ ,
                                         6678 /* Send Image */
                                     ),
                                 ),
@@ -405,8 +399,6 @@ class Messenger extends CI_Controller
                                     'sent' => 4556,
                                     'received' => 4551,
                                     'matching_types' => array(
-                                        7635 /* Send Anything */ ,
-                                        7637 /* Send Attachment */ ,
                                         6681 /* Send Document */
                                     ),
                                 ),
@@ -640,7 +632,7 @@ class Messenger extends CI_Controller
 
                             //We did not have any matches, but has some mismatches, maybe that's what they meant?
                             $this->Communication_model->dispatch_message(
-                                'Error: You should send me a '.$en_all_6144[$mismatch_focus['in_subtype_entity_id']]['m_name'].' message to complete this step.',
+                                'Error: You should '.$en_all_6144[$mismatch_focus['in_subtype_entity_id']]['m_name'].' to complete this step.',
                                 $en,
                                 true
                             );

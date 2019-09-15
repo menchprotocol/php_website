@@ -558,7 +558,7 @@ class Intents_model extends CI_Model
         if($push_message){
 
             //Messenger:
-            $ui .= 'Send me '.echo_a_an($content_name).' '. $content_name .' message to complete this step.';
+            $ui .= $content_name .' to complete this step.';
 
         } else {
 

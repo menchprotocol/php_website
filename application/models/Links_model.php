@@ -35,6 +35,11 @@ class Links_model extends CI_Model
             $update_columns['ln_metadata'] = serialize($update_columns['ln_metadata']);
         }
 
+        //Set content to null if defined as empty:
+        if(isset($update_columns['ln_content']) && !strlen($update_columns['ln_content'])){
+            $update_columns['ln_content'] = null;
+        }
+
         //Update:
         $this->db->where('ln_id', $id);
         $this->db->update('table_links', $update_columns);
