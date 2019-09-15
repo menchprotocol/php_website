@@ -1871,7 +1871,7 @@ class User_app extends CI_Controller
         $this->Links_model->ln_create(array(
             'ln_creator_entity_id' => $_POST['en_creator_id'],
             'ln_type_entity_id' => 6224, //My Account Iterated
-            'ln_content' => 'My Account '.( $_POST['enable_mulitiselect'] ? 'Multi' : 'Single' ).'-Select Radio Field '.( $_POST['was_already_selected'] ? 'Removed' : 'Added' ),
+            'ln_content' => 'My Account '.( $_POST['enable_mulitiselect'] ? 'Multi-Select Radio Field ' : 'Single-Select Radio Field ' ).( $_POST['was_already_selected'] ? 'Removed' : 'Added' ),
             'ln_metadata' => $_POST,
             'ln_parent_entity_id' => $_POST['parent_en_id'],
             'ln_child_entity_id' => $_POST['selected_en_id'],

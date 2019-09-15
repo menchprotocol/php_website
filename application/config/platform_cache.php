@@ -11,7 +11,7 @@ defined('BASEPATH') OR exit('No direct script access allowed');
  *
  */
 
-//Generated 2019-09-13 19:28:09 PST
+//Generated 2019-09-15 09:23:02 PST
 
 //Mench Trainers:
 $config['en_ids_10691'] = array(7512,1308,1281);
@@ -501,7 +501,7 @@ $config['en_all_4527'] = array(
         'm_parents' => array(4428,4506,4527,4758),
     ),
     6123 => array(
-        'm_icon' => '<i class="far fa-share-alt-square"></i>',
+        'm_icon' => '<i class="far fa-share-alt-square blue"></i>',
         'm_name' => 'Social Profiles',
         'm_desc' => '',
         'm_parents' => array(6225,4527),
@@ -513,7 +513,7 @@ $config['en_all_4527'] = array(
         'm_parents' => array(4527,10592),
     ),
     4454 => array(
-        'm_icon' => '<i class="far fa-bells"></i>',
+        'm_icon' => '<i class="far fa-bells blue"></i>',
         'm_name' => 'Subscription Settings',
         'm_desc' => '',
         'm_parents' => array(7552,6225,6204,4527),
@@ -3242,7 +3242,7 @@ $config['en_all_6204'] = array(
         'm_parents' => array(6204,5003,10654,6160,6232,7303,6194,6206,4527),
     ),
     3290 => array(
-        'm_icon' => '<i class="far fa-transgender"></i>',
+        'm_icon' => '<i class="far fa-transgender blue"></i>',
         'm_name' => 'Genders',
         'm_desc' => '',
         'm_parents' => array(6225,6204),
@@ -3296,13 +3296,13 @@ $config['en_all_6204'] = array(
         'm_parents' => array(6204,6771,4527,10588),
     ),
     4454 => array(
-        'm_icon' => '<i class="far fa-bells"></i>',
+        'm_icon' => '<i class="far fa-bells blue"></i>',
         'm_name' => 'Subscription Settings',
         'm_desc' => '',
         'm_parents' => array(7552,6225,6204,4527),
     ),
     3289 => array(
-        'm_icon' => '<i class="far fa-map"></i>',
+        'm_icon' => '<i class="far fa-map blue"></i>',
         'm_name' => 'Timezones',
         'm_desc' => '',
         'm_parents' => array(6204,6225),
@@ -3759,7 +3759,7 @@ $config['en_all_7555'] = array(
         'm_parents' => array(5969,7555,3320),
     ),
     3288 => array(
-        'm_icon' => '<i class="far fa-envelope-open"></i>',
+        'm_icon' => '<i class="far fa-envelope-open blue"></i>',
         'm_name' => 'Email',
         'm_desc' => 'Connect with Mench on Google Chrome but get your notifications via Email.',
         'm_parents' => array(7555,6225,4426,4755),
@@ -4592,55 +4592,55 @@ $config['en_all_6225'] = array(
         'm_parents' => array(10646,5000,4998,4999,6232,6225,6206),
     ),
     3288 => array(
-        'm_icon' => '<i class="far fa-envelope-open"></i>',
+        'm_icon' => '<i class="far fa-envelope-open blue"></i>',
         'm_name' => 'Mench Email',
         'm_desc' => 'Your email address is also used to login to Mench:',
         'm_parents' => array(7555,6225,4426,4755),
     ),
     3286 => array(
-        'm_icon' => '<i class="far fa-key"></i>',
+        'm_icon' => '<i class="far fa-key blue"></i>',
         'm_name' => 'Mench Password',
         'm_desc' => 'The password used to login to Mench:',
         'm_parents' => array(7578,6225,5969,4755),
     ),
     4783 => array(
-        'm_icon' => '<i class="far fa-phone"></i>',
+        'm_icon' => '<i class="far fa-phone blue"></i>',
         'm_name' => 'Phone Number',
         'm_desc' => 'Your number for potential employers to call you at:',
         'm_parents' => array(6225,4755,4319),
     ),
     3290 => array(
-        'm_icon' => '<i class="far fa-transgender"></i>',
+        'm_icon' => '<i class="far fa-transgender blue"></i>',
         'm_name' => 'Genders',
         'm_desc' => 'Choose one of the following:',
         'm_parents' => array(6225,6204),
     ),
     3287 => array(
-        'm_icon' => '<i class="far fa-language"></i>',
+        'm_icon' => '<i class="far fa-language blue"></i>',
         'm_name' => 'Languages',
         'm_desc' => 'Choose all the languages you speak fluently:',
         'm_parents' => array(7552,6225,6122),
     ),
     3089 => array(
-        'm_icon' => '<i class="far fa-globe"></i>',
+        'm_icon' => '<i class="far fa-globe blue"></i>',
         'm_name' => 'Countries',
         'm_desc' => 'Choose your current country of residence:',
         'm_parents' => array(6122,6225),
     ),
     3289 => array(
-        'm_icon' => '<i class="far fa-map"></i>',
+        'm_icon' => '<i class="far fa-map blue"></i>',
         'm_name' => 'Timezones',
         'm_desc' => 'Choose your current timezone:',
         'm_parents' => array(6204,6225),
     ),
     6123 => array(
-        'm_icon' => '<i class="far fa-share-alt-square"></i>',
+        'm_icon' => '<i class="far fa-share-alt-square blue"></i>',
         'm_name' => 'Social Profiles',
         'm_desc' => 'Social profiles you\'d like to share with potential employers:',
         'm_parents' => array(6225,4527),
     ),
     4454 => array(
-        'm_icon' => '<i class="far fa-bells"></i>',
+        'm_icon' => '<i class="far fa-bells blue"></i>',
         'm_name' => 'Subscription Settings',
         'm_desc' => 'Choose how you like to be notified for messages I send you via Messenger:',
         'm_parents' => array(7552,6225,6204,4527),
@@ -4932,7 +4932,7 @@ $config['en_all_5969'] = array(
         'm_parents' => array(5969,7555,3320),
     ),
     3286 => array(
-        'm_icon' => '<i class="far fa-key"></i>',
+        'm_icon' => '<i class="far fa-key blue"></i>',
         'm_name' => 'Mench Password',
         'm_desc' => 'Managed through the Forgot Password section in the Login page',
         'm_parents' => array(7578,6225,5969,4755),
@@ -5020,7 +5020,7 @@ $config['en_all_4426'] = array(
         'm_parents' => array(10571,6827,4463,4426),
     ),
     3288 => array(
-        'm_icon' => '<i class="far fa-envelope-open"></i>',
+        'm_icon' => '<i class="far fa-envelope-open blue"></i>',
         'm_name' => 'Mench Email',
         'm_desc' => '',
         'm_parents' => array(7555,6225,4426,4755),
@@ -5079,19 +5079,19 @@ $config['en_all_4755'] = array(
         'm_parents' => array(10638,10539,10639,10589,6153,4506,4755,4593),
     ),
     3288 => array(
-        'm_icon' => '<i class="far fa-envelope-open"></i>',
+        'm_icon' => '<i class="far fa-envelope-open blue"></i>',
         'm_name' => 'Mench Email',
         'm_desc' => '',
         'm_parents' => array(7555,6225,4426,4755),
     ),
     3286 => array(
-        'm_icon' => '<i class="far fa-key"></i>',
+        'm_icon' => '<i class="far fa-key blue"></i>',
         'm_name' => 'Mench Password',
         'm_desc' => '',
         'm_parents' => array(7578,6225,5969,4755),
     ),
     4783 => array(
-        'm_icon' => '<i class="far fa-phone"></i>',
+        'm_icon' => '<i class="far fa-phone blue"></i>',
         'm_name' => 'Phone Number',
         'm_desc' => '',
         'm_parents' => array(6225,4755,4319),

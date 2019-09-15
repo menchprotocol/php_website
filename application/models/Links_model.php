@@ -19,7 +19,7 @@ class Links_model extends CI_Model
 
         if (count($update_columns) == 0) {
             return false;
-        } elseif ($ln_type_entity_id>0 && !in_array($ln_type_entity_id, $this->config->item('en_ids_10658'))) {
+        } elseif ($ln_type_entity_id>0 && !in_array($ln_type_entity_id, $this->config->item('en_ids_4593'))) {
             return false;
         }
 
