@@ -1447,7 +1447,7 @@ class Communication_model extends CI_Model
                     $removed_intents++;
                     $this->Links_model->ln_update($ln['ln_id'], array(
                         'ln_status_entity_id' => 6173, //Link Removed
-                    ), $en['en_id'], 6150 /* User Intent Completed */);
+                    ), $en['en_id'], 6155 /* User Intent Cancelled */);
                 }
 
                 //Update User communication level to Unsubscribe:
@@ -1481,7 +1481,7 @@ class Communication_model extends CI_Model
                 //Update status for this single Action Plan:
                 $this->Links_model->ln_update($user_intents[0]['ln_id'], array(
                     'ln_status_entity_id' => 6173, //Link Removed
-                ), $en['en_id'], 6150 /* User Intent Completed */);
+                ), $en['en_id'], 6155 /* User Intent Cancelled */);
 
                 //Re-sort remaining Action Plan intentions:
                 foreach($this->Links_model->ln_fetch(array(
@@ -1893,7 +1893,8 @@ class Communication_model extends CI_Model
                         $this->Links_model->ln_update($ln['ln_id'], array(
                             'ln_child_intent_id' => $answer_in_id, //Save answer
                             'ln_status_entity_id' => 6176, //Link Published
-                        ), $en['en_id'], 6157 /* User Step Single-Answered */);
+                            'ln_timestamp' => date("Y-m-d H:i:s"),
+                        ));
 
                         //Update status:
                         $published_answer = true;

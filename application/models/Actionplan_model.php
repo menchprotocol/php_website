@@ -375,7 +375,7 @@ class Actionplan_model extends CI_Model
                 $this->Links_model->ln_update($ln['ln_id'], array(
                     'ln_parent_link_id' => $new_progression_link['ln_id'],
                     'ln_status_entity_id' => 6173, //Link Removed
-                ), $en_id, 6143 /* User Step Skipped */);
+                ));
             }
 
         }
@@ -469,17 +469,10 @@ class Actionplan_model extends CI_Model
         //Adjust Action Plan status:
         foreach($user_intents as $ln){
             $this->Links_model->ln_update($ln['ln_id'], array(
+                'ln_content' => $stop_feedback,
                 'ln_status_entity_id' => ( in_array($stop_method_id, $this->config->item('en_ids_7758') /* Action Plan Intention Successful */) ? 6176 /* Link Published */ : 6173 /* Link Removed */ ),
-            ), $en_id, 6150 /* User Intent Completed */);
+            ), $en_id, $stop_method_id);
         }
-
-        //Log related link:
-        $this->Links_model->ln_create(array(
-            'ln_content' => $stop_feedback,
-            'ln_creator_entity_id' => $en_id,
-            'ln_type_entity_id' => $stop_method_id,
-            'ln_parent_intent_id' => $in_id,
-        ));
 
 
         //Communicate with user:
