@@ -11,7 +11,7 @@ defined('BASEPATH') OR exit('No direct script access allowed');
  *
  */
 
-//Generated 2019-09-15 09:23:02 PST
+//Generated 2019-09-15 09:47:26 PST
 
 //Mench Trainers:
 $config['en_ids_10691'] = array(7512,1308,1281);
@@ -581,7 +581,7 @@ $config['en_all_4527'] = array(
     6144 => array(
         'm_icon' => '<i class="far fa-cloud-upload-alt ispink"></i>',
         'm_name' => 'User Step Create New Content',
-        'm_desc' => '&var_trimcache=Intent Send',
+        'm_desc' => '&var_trimcache=Intent',
         'm_parents' => array(10596,10589,4527,6768,7703,6255,6244,4755,6146,4593),
     ),
     6244 => array(
@@ -3002,19 +3002,19 @@ $config['en_ids_6144'] = array(7637,6683,6682);
 $config['en_all_6144'] = array(
     7637 => array(
         'm_icon' => '<i class="far fa-paperclip yellow"></i>',
-        'm_name' => 'Intent Attachment',
+        'm_name' => 'Attachment',
         'm_desc' => '',
         'm_parents' => array(10687,7751,7585,6144,6192),
     ),
     6683 => array(
         'm_icon' => '<i class="far fa-keyboard yellow"></i>',
-        'm_name' => 'Intent Text Message',
+        'm_name' => 'Text Message',
         'm_desc' => '',
         'm_parents' => array(10687,7585,6144,6192),
     ),
     6682 => array(
         'm_icon' => '<i class="far fa-external-link yellow"></i>',
-        'm_name' => 'Intent URL',
+        'm_name' => 'URL',
         'm_desc' => '',
         'm_parents' => array(10687,7585,6144,6192),
     ),
