@@ -11,7 +11,7 @@ defined('BASEPATH') OR exit('No direct script access allowed');
  *
  */
 
-//Generated 2019-09-15 12:52:06 PST
+//Generated 2019-09-15 13:03:26 PST
 
 //Mench Trainers:
 $config['en_ids_10691'] = array(7512,1308,1281);
@@ -647,7 +647,7 @@ $config['en_all_4527'] = array(
 );
 
 //Link Iterations:
-$config['en_ids_10658'] = array(10657,10656,10659,10689,10673,10663,10664,10661,10662,10686,10660,10679,10677,10676,10678,10681,10675,7578,10690,10683,10687,10685);
+$config['en_ids_10658'] = array(10657,10656,10659,10689,10673,10663,10664,10661,10662,10686,10660,10679,10677,10676,10678,10681,10675,7578,10690,10683,10685);
 $config['en_all_10658'] = array(
     10657 => array(
         'm_icon' => '<i class="fas fa-sticky-note ispink"></i>',
@@ -769,17 +769,11 @@ $config['en_all_10658'] = array(
         'm_desc' => '',
         'm_parents' => array(6153,10658,10596,10589,4593,7654),
     ),
-    10687 => array(
-        'm_icon' => '<i class="far fa-shield-check ispink"></i>',
-        'm_name' => 'User Sent Requirement',
-        'm_desc' => '',
-        'm_parents' => array(4755,10589,10596,4593,6153,10658,6146,6255),
-    ),
     10685 => array(
         'm_icon' => '<i class="fas fa-sync ispink"></i>',
         'm_name' => 'User Step Iterated',
         'm_desc' => '',
-        'm_parents' => array(4755,10596,10589,4593,10638,10658,6255,6146),
+        'm_parents' => array(4755,10596,10589,4593,10638,10658),
     ),
 );
 
@@ -1296,7 +1290,7 @@ $config['en_all_10593'] = array(
 );
 
 //Nod:
-$config['en_ids_10596'] = array(10625,5943,5001,5865,4999,4998,5000,5981,5982,5003,10659,10689,10647,6226,10681,4246,7504,5007,4994,4993,6415,4275,6559,6560,6556,6578,6149,7611,6969,4283,7495,7542,7610,5967,7563,10690,4266,4267,4282,10683,4577,4278,4279,4268,10687,4287,7561,7564,7559,7560,7558,7488,7485,7486,6144,7741,10685,4559,7489,7492,6997,6157,7487,6143,7562);
+$config['en_ids_10596'] = array(10625,5943,5001,5865,4999,4998,5000,5981,5982,5003,10659,10689,10647,6226,10681,4246,7504,5007,4994,4993,6415,4275,6559,6560,6556,6578,6149,7611,6969,4283,7495,7542,7610,5967,7563,10690,4266,4267,4282,10683,4577,4278,4279,4268,4287,7561,7564,7559,7560,7558,7488,7485,7486,6144,7741,10685,4559,7489,7492,6997,6157,7487,6143,7562);
 $config['en_all_10596'] = array(
     10625 => array(
         'm_icon' => '<i class="far fa-user-circle ispink"></i>',
@@ -1562,12 +1556,6 @@ $config['en_all_10596'] = array(
         'm_desc' => '',
         'm_parents' => array(10596,10589,7654,4755,4593),
     ),
-    10687 => array(
-        'm_icon' => '<i class="far fa-shield-check ispink"></i>',
-        'm_name' => 'User Sent Requirement',
-        'm_desc' => '',
-        'm_parents' => array(4755,10589,10596,4593,6153,10658,6146,6255),
-    ),
     4287 => array(
         'm_icon' => '<i class="far fa-comment-exclamation ispink"></i>',
         'm_name' => 'User Sent Unknown Message',
@@ -1638,7 +1626,7 @@ $config['en_all_10596'] = array(
         'm_icon' => '<i class="fas fa-sync ispink"></i>',
         'm_name' => 'User Step Iterated',
         'm_desc' => '',
-        'm_parents' => array(4755,10596,10589,4593,10638,10658,6255,6146),
+        'm_parents' => array(4755,10596,10589,4593,10638,10658),
     ),
     4559 => array(
         'm_icon' => '<i class="far fa-comments ispink"></i>',
@@ -1822,7 +1810,7 @@ $config['en_all_10590'] = array(
 );
 
 //Words In:
-$config['en_ids_10589'] = array(10625,5943,5001,5865,4999,4998,5000,5981,5982,5003,4251,10672,10653,10646,10654,4259,4257,4261,4260,4319,10657,10656,10659,10689,4230,4255,4318,10673,4256,4258,4250,10671,10650,10644,10649,10648,10651,10647,4229,10663,10664,10661,10662,4228,10686,10660,6093,6242,7545,4601,4231,10679,10677,10676,7701,10678,10573,4983,6226,10681,10675,6132,4246,7504,5007,6415,4275,6559,6560,6556,6578,6154,6155,4235,7757,7578,6224,10690,4266,4267,10683,4577,4549,4551,4550,4557,4278,4279,4268,4299,4460,10687,4547,4287,4548,7561,7564,7559,7560,7558,7488,7485,7486,6144,7741,10685,6140,4559,7489,7492,6997,6157,7487,6143);
+$config['en_ids_10589'] = array(10625,5943,5001,5865,4999,4998,5000,5981,5982,5003,4251,10672,10653,10646,10654,4259,4257,4261,4260,4319,10657,10656,10659,10689,4230,4255,4318,10673,4256,4258,4250,10671,10650,10644,10649,10648,10651,10647,4229,10663,10664,10661,10662,4228,10686,10660,6093,6242,7545,4601,4231,10679,10677,10676,7701,10678,10573,4983,6226,10681,10675,6132,4246,7504,5007,6415,4275,6559,6560,6556,6578,6154,6155,4235,7757,7578,6224,10690,4266,4267,10683,4577,4549,4551,4550,4557,4278,4279,4268,4299,4460,4547,4287,4548,7561,7564,7559,7560,7558,7488,7485,7486,6144,7741,10685,6140,4559,7489,7492,6997,6157,7487,6143);
 $config['en_all_10589'] = array(
     10625 => array(
         'm_icon' => '<i class="far fa-user-circle ispink"></i>',
@@ -2370,12 +2358,6 @@ $config['en_all_10589'] = array(
         'm_desc' => '',
         'm_parents' => array(10539,10589,7653,4755,4593),
     ),
-    10687 => array(
-        'm_icon' => '<i class="far fa-shield-check ispink"></i>',
-        'm_name' => 'User Sent Requirement',
-        'm_desc' => '',
-        'm_parents' => array(4755,10589,10596,4593,6153,10658,6146,6255),
-    ),
     4547 => array(
         'm_icon' => '<i class="far fa-align-left ispink"></i>',
         'm_name' => 'User Sent Text',
@@ -2458,7 +2440,7 @@ $config['en_all_10589'] = array(
         'm_icon' => '<i class="fas fa-sync ispink"></i>',
         'm_name' => 'User Step Iterated',
         'm_desc' => '',
-        'm_parents' => array(4755,10596,10589,4593,10638,10658,6255,6146),
+        'm_parents' => array(4755,10596,10589,4593,10638,10658),
     ),
     6140 => array(
         'm_icon' => '<i class="fas fa-lock-open ispink"></i>',
@@ -2546,7 +2528,7 @@ $config['en_all_6192'] = array(
         'm_icon' => '<i class="fas fa-film yellow"></i>',
         'm_name' => 'Upload Multimedia',
         'm_desc' => '',
-        'm_parents' => array(10687,7751,7585,6144,6192),
+        'm_parents' => array(7751,7585,6144,6192),
     ),
     6677 => array(
         'm_icon' => '<i class="far fa-comments yellow"></i>',
@@ -2558,37 +2540,37 @@ $config['en_all_6192'] = array(
         'm_icon' => '<i class="far fa-keyboard yellow"></i>',
         'm_name' => 'Send Text Message',
         'm_desc' => '',
-        'm_parents' => array(10687,7585,6144,6192),
+        'm_parents' => array(7585,6144,6192),
     ),
     6682 => array(
         'm_icon' => '<i class="far fa-external-link yellow"></i>',
         'm_name' => 'Send URL',
         'm_desc' => '',
-        'm_parents' => array(10687,7585,6144,6192),
+        'm_parents' => array(7585,6144,6192),
     ),
     6679 => array(
         'm_icon' => '<i class="far fa-video yellow"></i>',
         'm_name' => 'Upload Video',
         'm_desc' => '',
-        'm_parents' => array(10687,7751,7585,6144,6192),
+        'm_parents' => array(7751,7585,6144,6192),
     ),
     6680 => array(
         'm_icon' => '<i class="far fa-microphone yellow"></i>',
         'm_name' => 'Upload Audio',
         'm_desc' => '',
-        'm_parents' => array(10687,7751,7585,6144,6192),
+        'm_parents' => array(7751,7585,6144,6192),
     ),
     6678 => array(
         'm_icon' => '<i class="far fa-image yellow"></i>',
         'm_name' => 'Upload Image',
         'm_desc' => '',
-        'm_parents' => array(10687,7751,7585,6144,6192),
+        'm_parents' => array(7751,7585,6144,6192),
     ),
     6681 => array(
         'm_icon' => '<i class="far fa-file-pdf yellow"></i>',
         'm_name' => 'Upload File',
         'm_desc' => '',
-        'm_parents' => array(10687,7751,7585,6144,6192),
+        'm_parents' => array(7751,7585,6144,6192),
     ),
 );
 
@@ -2999,31 +2981,31 @@ $config['en_all_7751'] = array(
         'm_icon' => '<i class="far fa-microphone yellow"></i>',
         'm_name' => 'Intent Upload Audio',
         'm_desc' => '',
-        'm_parents' => array(10687,7751,7585,6144,6192),
+        'm_parents' => array(7751,7585,6144,6192),
     ),
     6681 => array(
         'm_icon' => '<i class="far fa-file-pdf yellow"></i>',
         'm_name' => 'Intent Upload File',
         'm_desc' => '',
-        'm_parents' => array(10687,7751,7585,6144,6192),
+        'm_parents' => array(7751,7585,6144,6192),
     ),
     6678 => array(
         'm_icon' => '<i class="far fa-image yellow"></i>',
         'm_name' => 'Intent Upload Image',
         'm_desc' => '',
-        'm_parents' => array(10687,7751,7585,6144,6192),
+        'm_parents' => array(7751,7585,6144,6192),
     ),
     7637 => array(
         'm_icon' => '<i class="fas fa-film yellow"></i>',
         'm_name' => 'Intent Upload Multimedia',
         'm_desc' => '',
-        'm_parents' => array(10687,7751,7585,6144,6192),
+        'm_parents' => array(7751,7585,6144,6192),
     ),
     6679 => array(
         'm_icon' => '<i class="far fa-video yellow"></i>',
         'm_name' => 'Intent Upload Video',
         'm_desc' => '',
-        'm_parents' => array(10687,7751,7585,6144,6192),
+        'm_parents' => array(7751,7585,6144,6192),
     ),
 );
 
@@ -3034,43 +3016,43 @@ $config['en_all_6144'] = array(
         'm_icon' => '<i class="far fa-keyboard yellow"></i>',
         'm_name' => 'Send Text Message',
         'm_desc' => '',
-        'm_parents' => array(10687,7585,6144,6192),
+        'm_parents' => array(7585,6144,6192),
     ),
     6682 => array(
         'm_icon' => '<i class="far fa-external-link yellow"></i>',
         'm_name' => 'Send URL',
         'm_desc' => '',
-        'm_parents' => array(10687,7585,6144,6192),
+        'm_parents' => array(7585,6144,6192),
     ),
     6680 => array(
         'm_icon' => '<i class="far fa-microphone yellow"></i>',
         'm_name' => 'Upload Audio',
         'm_desc' => '',
-        'm_parents' => array(10687,7751,7585,6144,6192),
+        'm_parents' => array(7751,7585,6144,6192),
     ),
     6681 => array(
         'm_icon' => '<i class="far fa-file-pdf yellow"></i>',
         'm_name' => 'Upload File',
         'm_desc' => '',
-        'm_parents' => array(10687,7751,7585,6144,6192),
+        'm_parents' => array(7751,7585,6144,6192),
     ),
     6678 => array(
         'm_icon' => '<i class="far fa-image yellow"></i>',
         'm_name' => 'Upload Image',
         'm_desc' => '',
-        'm_parents' => array(10687,7751,7585,6144,6192),
+        'm_parents' => array(7751,7585,6144,6192),
     ),
     7637 => array(
         'm_icon' => '<i class="fas fa-film yellow"></i>',
         'm_name' => 'Upload Multimedia',
         'm_desc' => '',
-        'm_parents' => array(10687,7751,7585,6144,6192),
+        'm_parents' => array(7751,7585,6144,6192),
     ),
     6679 => array(
         'm_icon' => '<i class="far fa-video yellow"></i>',
         'm_name' => 'Upload Video',
         'm_desc' => '',
-        'm_parents' => array(10687,7751,7585,6144,6192),
+        'm_parents' => array(7751,7585,6144,6192),
     ),
 );
 
@@ -3717,43 +3699,43 @@ $config['en_all_7585'] = array(
         'm_icon' => '<i class="far fa-keyboard yellow"></i>',
         'm_name' => 'Send Text Message',
         'm_desc' => 'User will complete by sending a text message',
-        'm_parents' => array(10687,7585,6144,6192),
+        'm_parents' => array(7585,6144,6192),
     ),
     6682 => array(
         'm_icon' => '<i class="far fa-external-link yellow"></i>',
         'm_name' => 'Send URL',
         'm_desc' => 'User will complete by sending a URL message',
-        'm_parents' => array(10687,7585,6144,6192),
+        'm_parents' => array(7585,6144,6192),
     ),
     6680 => array(
         'm_icon' => '<i class="far fa-microphone yellow"></i>',
         'm_name' => 'Upload Audio',
         'm_desc' => 'User will complete by sending an audio message',
-        'm_parents' => array(10687,7751,7585,6144,6192),
+        'm_parents' => array(7751,7585,6144,6192),
     ),
     6678 => array(
         'm_icon' => '<i class="far fa-image yellow"></i>',
         'm_name' => 'Upload Image',
         'm_desc' => 'User will complete by sending an image message',
-        'm_parents' => array(10687,7751,7585,6144,6192),
+        'm_parents' => array(7751,7585,6144,6192),
     ),
     6679 => array(
         'm_icon' => '<i class="far fa-video yellow"></i>',
         'm_name' => 'Upload Video',
         'm_desc' => 'User will complete by sending a video message',
-        'm_parents' => array(10687,7751,7585,6144,6192),
+        'm_parents' => array(7751,7585,6144,6192),
     ),
     7637 => array(
         'm_icon' => '<i class="fas fa-film yellow"></i>',
         'm_name' => 'Upload Multimedia',
         'm_desc' => 'User completes by uploading a video, audio or image file',
-        'm_parents' => array(10687,7751,7585,6144,6192),
+        'm_parents' => array(7751,7585,6144,6192),
     ),
     6681 => array(
         'm_icon' => '<i class="far fa-file-pdf yellow"></i>',
         'm_name' => 'Upload File',
         'm_desc' => 'User will complete by sending a file (PDF, DOC, etc...) message',
-        'm_parents' => array(10687,7751,7585,6144,6192),
+        'm_parents' => array(7751,7585,6144,6192),
     ),
     6684 => array(
         'm_icon' => '<i class="far fa-check yellow"></i>',
@@ -4515,14 +4497,8 @@ $config['en_all_6274'] = array(
 );
 
 //User Steps Progressed:
-$config['en_ids_6255'] = array(10687,7485,7486,6144,10685,4559,7489,7492,6997,6157,7487);
+$config['en_ids_6255'] = array(7485,7486,6144,4559,7489,7492,6997,6157,7487);
 $config['en_all_6255'] = array(
-    10687 => array(
-        'm_icon' => '<i class="far fa-shield-check ispink"></i>',
-        'm_name' => 'User Sent Requirement',
-        'm_desc' => '',
-        'm_parents' => array(4755,10589,10596,4593,6153,10658,6146,6255),
-    ),
     7485 => array(
         'm_icon' => '<i class="fas fa-lock-open ispink"></i>',
         'm_name' => 'User Step Answer Unlock',
@@ -4540,12 +4516,6 @@ $config['en_all_6255'] = array(
         'm_name' => 'User Step Create New Content',
         'm_desc' => '',
         'm_parents' => array(10596,10589,4527,6768,7703,6255,6244,4755,6146,4593),
-    ),
-    10685 => array(
-        'm_icon' => '<i class="fas fa-sync ispink"></i>',
-        'm_name' => 'User Step Iterated',
-        'm_desc' => '',
-        'm_parents' => array(4755,10596,10589,4593,10638,10658,6255,6146),
     ),
     4559 => array(
         'm_icon' => '<i class="far fa-comments ispink"></i>',
@@ -4772,14 +4742,8 @@ $config['en_all_6177'] = array(
 );
 
 //User Steps Taken:
-$config['en_ids_6146'] = array(10687,7488,7485,7486,6144,7741,10685,4559,7489,7492,6997,6157,7487,6143);
+$config['en_ids_6146'] = array(7488,7485,7486,6144,7741,4559,7489,7492,6997,6157,7487,6143);
 $config['en_all_6146'] = array(
-    10687 => array(
-        'm_icon' => '<i class="far fa-shield-check ispink"></i>',
-        'm_name' => 'User Sent Requirement',
-        'm_desc' => '',
-        'm_parents' => array(4755,10589,10596,4593,6153,10658,6146,6255),
-    ),
     7488 => array(
         'm_icon' => '<i class="far fa-calendar-times ispink"></i>',
         'm_name' => 'Answer Timeout',
@@ -4809,12 +4773,6 @@ $config['en_all_6146'] = array(
         'm_name' => 'Intention Terminated',
         'm_desc' => '',
         'm_parents' => array(10596,10589,4755,4593,7740,6146),
-    ),
-    10685 => array(
-        'm_icon' => '<i class="fas fa-sync ispink"></i>',
-        'm_name' => 'Iterated',
-        'm_desc' => '',
-        'm_parents' => array(4755,10596,10589,4593,10638,10658,6255,6146),
     ),
     4559 => array(
         'm_icon' => '<i class="far fa-comments ispink"></i>',
@@ -5142,7 +5100,7 @@ $config['en_all_4426'] = array(
 );
 
 //Private Link Types:
-$config['en_ids_4755'] = array(10681,6132,3288,3286,4783,4246,7504,6415,4275,6559,6560,6556,6578,6154,6155,6149,7611,6969,4283,7495,7542,4235,7757,7610,7578,6224,5967,7563,4266,4267,4282,4554,4570,4556,4555,7702,6563,4552,4553,4577,4549,4551,4550,4557,4278,4279,4268,4299,4460,10687,4547,4287,4548,7561,7564,7559,7560,7558,7488,7485,7486,6144,7741,10685,6140,4559,7489,7492,6997,6157,7487,6143,7562);
+$config['en_ids_4755'] = array(10681,6132,3288,3286,4783,4246,7504,6415,4275,6559,6560,6556,6578,6154,6155,6149,7611,6969,4283,7495,7542,4235,7757,7610,7578,6224,5967,7563,4266,4267,4282,4554,4570,4556,4555,7702,6563,4552,4553,4577,4549,4551,4550,4557,4278,4279,4268,4299,4460,4547,4287,4548,7561,7564,7559,7560,7558,7488,7485,7486,6144,7741,10685,6140,4559,7489,7492,6997,6157,7487,6143,7562);
 $config['en_all_4755'] = array(
     10681 => array(
         'm_icon' => '<i class="fas fa-sort ispink"></i>',
@@ -5438,12 +5396,6 @@ $config['en_all_4755'] = array(
         'm_desc' => '',
         'm_parents' => array(10539,10589,7653,4755,4593),
     ),
-    10687 => array(
-        'm_icon' => '<i class="far fa-shield-check ispink"></i>',
-        'm_name' => 'User Sent Requirement',
-        'm_desc' => '',
-        'm_parents' => array(4755,10589,10596,4593,6153,10658,6146,6255),
-    ),
     4547 => array(
         'm_icon' => '<i class="far fa-align-left ispink"></i>',
         'm_name' => 'User Sent Text',
@@ -5526,7 +5478,7 @@ $config['en_all_4755'] = array(
         'm_icon' => '<i class="fas fa-sync ispink"></i>',
         'm_name' => 'User Step Iterated',
         'm_desc' => '',
-        'm_parents' => array(4755,10596,10589,4593,10638,10658,6255,6146),
+        'm_parents' => array(4755,10596,10589,4593,10638,10658),
     ),
     6140 => array(
         'm_icon' => '<i class="fas fa-lock-open ispink"></i>',
@@ -5602,7 +5554,7 @@ $config['en_all_4600'] = array(
 );
 
 //Link Type:
-$config['en_ids_4593'] = array(10625,5943,5001,5865,4999,4998,5000,5981,5982,5003,4251,10672,10653,10646,10654,4259,4257,4261,4260,4319,10657,10656,10659,10689,4230,4255,4318,10673,4256,4258,4250,10671,10650,10644,10649,10648,10651,10647,4229,10663,10664,10661,10662,4228,10686,10660,6093,6242,7545,4601,4231,10679,10677,10676,7701,10678,10573,4983,6226,10681,10675,6132,4246,7504,5007,4994,4993,6415,4275,6559,6560,6556,6578,6154,6155,6149,7611,6969,4283,7495,7542,4235,7757,7610,7578,6224,5967,7563,10690,4266,4267,4282,10683,4554,4570,4556,4555,7702,6563,4552,4553,4577,4549,4551,4550,4557,4278,4279,4268,4299,4460,10687,4547,4287,4548,7561,7564,7559,7560,7558,7488,7485,7486,6144,7741,10685,6140,4559,7489,7492,6997,6157,7487,6143,7562);
+$config['en_ids_4593'] = array(10625,5943,5001,5865,4999,4998,5000,5981,5982,5003,4251,10672,10653,10646,10654,4259,4257,4261,4260,4319,10657,10656,10659,10689,4230,4255,4318,10673,4256,4258,4250,10671,10650,10644,10649,10648,10651,10647,4229,10663,10664,10661,10662,4228,10686,10660,6093,6242,7545,4601,4231,10679,10677,10676,7701,10678,10573,4983,6226,10681,10675,6132,4246,7504,5007,4994,4993,6415,4275,6559,6560,6556,6578,6154,6155,6149,7611,6969,4283,7495,7542,4235,7757,7610,7578,6224,5967,7563,10690,4266,4267,4282,10683,4554,4570,4556,4555,7702,6563,4552,4553,4577,4549,4551,4550,4557,4278,4279,4268,4299,4460,4547,4287,4548,7561,7564,7559,7560,7558,7488,7485,7486,6144,7741,10685,6140,4559,7489,7492,6997,6157,7487,6143,7562);
 $config['en_all_4593'] = array(
     10625 => array(
         'm_icon' => '<i class="far fa-user-circle ispink"></i>',
@@ -6270,12 +6222,6 @@ $config['en_all_4593'] = array(
         'm_desc' => '',
         'm_parents' => array(10539,10589,7653,4755,4593),
     ),
-    10687 => array(
-        'm_icon' => '<i class="far fa-shield-check ispink"></i>',
-        'm_name' => 'User Sent Requirement',
-        'm_desc' => '',
-        'm_parents' => array(4755,10589,10596,4593,6153,10658,6146,6255),
-    ),
     4547 => array(
         'm_icon' => '<i class="far fa-align-left ispink"></i>',
         'm_name' => 'User Sent Text',
@@ -6358,7 +6304,7 @@ $config['en_all_4593'] = array(
         'm_icon' => '<i class="fas fa-sync ispink"></i>',
         'm_name' => 'User Step Iterated',
         'm_desc' => 'When users update their a step they made previous progress',
-        'm_parents' => array(4755,10596,10589,4593,10638,10658,6255,6146),
+        'm_parents' => array(4755,10596,10589,4593,10638,10658),
     ),
     6140 => array(
         'm_icon' => '<i class="fas fa-lock-open ispink"></i>',

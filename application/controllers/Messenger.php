@@ -586,8 +586,8 @@ class Messenger extends CI_Controller
                                     'ln_content' => $new_message['ln_content'],
                                     'ln_status_entity_id' => 6176, //Link Published
                                     'ln_parent_link_id' => $new_message['ln_id'],
-                                ), $en['en_id'], 10687 /* User Sent Requirement */);
-
+                                    'ln_timestamp' => date("Y-m-d H:i:s"),
+                                ));
 
                                 //Confirm with user:
                                 $this->Communication_model->dispatch_message(
