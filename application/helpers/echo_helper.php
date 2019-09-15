@@ -1215,7 +1215,7 @@ function echo_tree_steps($in, $push_message = 0, $autoexpand = false)
         $pitch_title = '<span class="icon-block"><i class="fas fa-flag"></i></span>&nbsp;'.$metadata['in__metadata_max_steps'].' step'.echo__s($metadata['in__metadata_max_steps']).( $has_time_estimate ? ' in ' . strtolower(echo_time_range($in)) : ' to complete' );
 
         //If NOT private, Expand body to include Action Plan overview:
-        if(!in_array($in['in_subtype_entity_id'], $CI->config->item('en_ids_7366'))){
+        if(!in_array($in['in_completion_method_entity_id'], $CI->config->item('en_ids_7366'))){
             $pitch_body .= '<div class="inner_actionplan">';
             $pitch_body .= echo_tree_actionplan($in, false);
             $pitch_body .= '</div>';
@@ -1232,7 +1232,7 @@ function echo_tree_actionplan($in, $autoexpand){
     $CI =& get_instance();
 
     //Is this private?
-    if(in_array($in['in_subtype_entity_id'], $CI->config->item('en_ids_7366'))){
+    if(in_array($in['in_completion_method_entity_id'], $CI->config->item('en_ids_7366'))){
         return null;
     }
 
@@ -1255,12 +1255,12 @@ function echo_tree_actionplan($in, $autoexpand){
 
     foreach ($in__children as $in_level2_counter => $in_level2) {
 
-        if(!in_is_clean_outcome($in_level2) || in_array($in_level2['in_subtype_entity_id'], $CI->config->item('en_ids_7309'))){
+        if(!in_is_clean_outcome($in_level2) || in_array($in_level2['in_completion_method_entity_id'], $CI->config->item('en_ids_7309'))){
             continue;
         }
 
         //Is this private?
-        $is_private = (in_array($in_level2['in_subtype_entity_id'], $CI->config->item('en_ids_7366')));
+        $is_private = (in_array($in_level2['in_completion_method_entity_id'], $CI->config->item('en_ids_7366')));
         if($is_private){
 
             $has_level2_content = false;
@@ -1342,12 +1342,12 @@ function echo_tree_actionplan($in, $autoexpand){
                 foreach ($in_level2_children as $in_level3_counter => $in_level3) {
 
 
-                    if(!in_is_clean_outcome($in_level3) || in_array($in_level2['in_subtype_entity_id'], $CI->config->item('en_ids_7309'))){
+                    if(!in_is_clean_outcome($in_level3) || in_array($in_level2['in_completion_method_entity_id'], $CI->config->item('en_ids_7309'))){
                         continue;
                     }
 
                     //Is this private?
-                    $is_private = (in_array($in_level3['in_subtype_entity_id'], $CI->config->item('en_ids_7366')));
+                    $is_private = (in_array($in_level3['in_completion_method_entity_id'], $CI->config->item('en_ids_7366')));
                     if($is_private){
 
                         $in_level3_messages = array();
@@ -1427,7 +1427,7 @@ function echo_en_messages($ln){
 
     //Referenced Intent:
     $en_all_7585 = $CI->config->item('en_all_7585'); // Intent Subtypes
-    $ui .= '<li><a class="btn btn-primary button-max" style="border:2px solid #f9da22 !important;" href="/intents/' . $ln['ln_child_intent_id'] . '" target="_parent" title="Message Intent: '.$ln['in_outcome'].'" data-toggle="tooltip" data-placement="top">'.$en_all_4737[$ln['in_status_entity_id']]['m_icon'].'&nbsp; '.$en_all_7585[$ln['in_subtype_entity_id']]['m_icon'].' '.$ln['in_outcome'].'</a></li>';
+    $ui .= '<li><a class="btn btn-primary button-max" style="border:2px solid #f9da22 !important;" href="/intents/' . $ln['ln_child_intent_id'] . '" target="_parent" title="Message Intent: '.$ln['in_outcome'].'" data-toggle="tooltip" data-placement="top">'.$en_all_4737[$ln['in_status_entity_id']]['m_icon'].'&nbsp; '.$en_all_7585[$ln['in_completion_method_entity_id']]['m_icon'].' '.$ln['in_outcome'].'</a></li>';
 
     //Links:
     $count_msg_trs = $CI->Links_model->ln_fetch(array(
@@ -1640,7 +1640,7 @@ function echo_in_recommend($in, $common_prefix = null, $hide_class = null, $refe
     return $ui;
 }
 
-function echo_in_answer_scores($starting_in, $depth_levels, $original_depth_levels, $parent_in_subtype_entity_id){
+function echo_in_answer_scores($starting_in, $depth_levels, $original_depth_levels, $parent_in_completion_method_entity_id){
 
     if($depth_levels<=0){
         //End recursion:
@@ -1679,11 +1679,11 @@ function echo_in_answer_scores($starting_in, $depth_levels, $original_depth_leve
         $ui .= '<span class="icon-block" data-toggle="tooltip" data-placement="top" title="Intent Link Type: '.$en_all_4486[$in_ln['ln_type_entity_id']]['m_name'].'">'. $en_all_4486[$in_ln['ln_type_entity_id']]['m_icon'] . '</span>';
         $ui .= '<span class="icon-block" data-toggle="tooltip" data-placement="top" title="Intent Link Status: '.$en_all_6186[$in_ln['ln_status_entity_id']]['m_name'].'">'. $en_all_6186[$in_ln['ln_status_entity_id']]['m_icon'] . '</span>';
 
-        $ui .= '<span class="icon-block" data-toggle="tooltip" data-placement="top" title="Intent Type: '.$en_all_7585[$in_ln['in_subtype_entity_id']]['m_name'].'">'. $en_all_7585[$in_ln['in_subtype_entity_id']]['m_icon'] . '</span>';
+        $ui .= '<span class="icon-block" data-toggle="tooltip" data-placement="top" title="Intent Type: '.$en_all_7585[$in_ln['in_completion_method_entity_id']]['m_name'].'">'. $en_all_7585[$in_ln['in_completion_method_entity_id']]['m_icon'] . '</span>';
         $ui .= '<span class="icon-block" data-toggle="tooltip" data-placement="top" title="Intent Status: '.$en_all_4737[$in_ln['in_status_entity_id']]['m_name'].'">'. $en_all_4737[$in_ln['in_status_entity_id']]['m_icon']. '</span>';
         $ui .= '<a href="/trainer_app/trainer_tools/assessment_marks_birds_eye?starting_in='.$in_ln['in_id'].'&depth_levels='.$original_depth_levels.'" data-toggle="tooltip" data-placement="top" title="Navigate report to this intent"><u>' .   echo_in_outcome($in_ln['in_outcome'], false, true) . '</u></a>';
 
-        $ui .= ' [<span data-toggle="tooltip" data-placement="top" title="Completion Marks">'.( ($in_ln['ln_type_entity_id'] == 4228 && in_array($parent_in_subtype_entity_id , $CI->config->item('en_ids_6193') /* OR Intents */ )) || ($in_ln['ln_type_entity_id'] == 4229) ? echo_in_marks($in_ln) : '' ).'</span>]';
+        $ui .= ' [<span data-toggle="tooltip" data-placement="top" title="Completion Marks">'.( ($in_ln['ln_type_entity_id'] == 4228 && in_array($parent_in_completion_method_entity_id , $CI->config->item('en_ids_6193') /* OR Intents */ )) || ($in_ln['ln_type_entity_id'] == 4229) ? echo_in_marks($in_ln) : '' ).'</span>]';
 
         if(count($messages) > 0){
             $ui .= ' <a href="javascript:void(0);" onclick="$(\'.messages-'.$in_ln['in_id'].'\').toggleClass(\'hidden\');"><i class="fas fa-comment"></i><b>' .  count($messages) . '</b></a>';
@@ -1700,7 +1700,7 @@ function echo_in_answer_scores($starting_in, $depth_levels, $original_depth_leve
         $ui .= '</div>';
 
         //Go Recursively down:
-        $ui .=  echo_in_answer_scores($in_ln['in_id'], $depth_levels, $original_depth_levels, $in_ln['in_subtype_entity_id']);
+        $ui .=  echo_in_answer_scores($in_ln['in_id'], $depth_levels, $original_depth_levels, $in_ln['in_completion_method_entity_id']);
 
     }
 
@@ -2125,7 +2125,7 @@ function echo_in($in, $level, $in_linked_id = 0, $is_parent = false)
 
 
     //Show larger intent type icon:
-    $ui .= '<span class="icon-main in_parent_type_' . $in['in_id'] . '"><span data-toggle="tooltip" data-placement="right" title="'.$en_all_7585[$in['in_subtype_entity_id']]['m_name'].': '.$en_all_7585[$in['in_subtype_entity_id']]['m_desc'].'">' . $en_all_7585[$in['in_subtype_entity_id']]['m_icon'] . '</span></span>';
+    $ui .= '<span class="icon-main in_parent_type_' . $in['in_id'] . '"><span data-toggle="tooltip" data-placement="right" title="'.$en_all_7585[$in['in_completion_method_entity_id']]['m_name'].': '.$en_all_7585[$in['in_completion_method_entity_id']]['m_desc'].'">' . $en_all_7585[$in['in_completion_method_entity_id']]['m_icon'] . '</span></span>';
 
     //Show smaller intent status:
     $ui .= '<span class="icon-top-right in_status_entity_id_' . $in['in_id'] . '"><span data-toggle="tooltip" data-placement="right" title="'.$en_all_4737[$in['in_status_entity_id']]['m_name'].': '.$en_all_4737[$in['in_status_entity_id']]['m_desc'].'">' . $en_all_4737[$in['in_status_entity_id']]['m_icon'] . '</span></span>';
@@ -2196,7 +2196,7 @@ function echo_in($in, $level, $in_linked_id = 0, $is_parent = false)
     $ui .= '<span class="' . advance_mode() . '">';
     foreach ($in['in__parents'] as $in_parent) {
         if($in_linked_id!=$in_parent['in_id']){
-            $ui .= ' &nbsp;<a href="/intents/' . $in_parent['in_id'] . $in_filters['get_filter_url'] . '" data-toggle="tooltip" title="' . $in_parent['in_outcome'] . '" data-placement="bottom" class="in_child_icon_' . $in_parent['in_id'] . '">' . $en_all_7585[$in_parent['in_subtype_entity_id']]['m_icon'] . '</a>';
+            $ui .= ' &nbsp;<a href="/intents/' . $in_parent['in_id'] . $in_filters['get_filter_url'] . '" data-toggle="tooltip" title="' . $in_parent['in_outcome'] . '" data-placement="bottom" class="in_child_icon_' . $in_parent['in_id'] . '">' . $en_all_7585[$in_parent['in_completion_method_entity_id']]['m_icon'] . '</a>';
         }
     }
     $ui .= '</span>';

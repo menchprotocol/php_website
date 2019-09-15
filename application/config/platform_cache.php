@@ -4351,7 +4351,7 @@ $config['en_all_6194'] = array(
     7585 => array(
         'm_icon' => '<i class="fas fa-check-circle yellow"></i>',
         'm_name' => 'Intent Completion Method',
-        'm_desc' => 'SELECT count(in_id) as totals FROM table_intents WHERE in_status_entity_id IN (6183,6184) AND in_subtype_entity_id=',
+        'm_desc' => 'SELECT count(in_id) as totals FROM table_intents WHERE in_status_entity_id IN (6183,6184) AND in_completion_method_entity_id=',
         'm_parents' => array(10608,6204,10651,6160,6194,6232,4527,6201),
     ),
     7596 => array(

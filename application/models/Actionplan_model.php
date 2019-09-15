@@ -28,7 +28,7 @@ class Actionplan_model extends CI_Model
          * */
 
 
-        if(!in_array($in['in_subtype_entity_id'], $this->config->item('en_ids_7756'))){
+        if(!in_array($in['in_completion_method_entity_id'], $this->config->item('en_ids_7756'))){
             //Not Auto Completable:
             return false;
         } elseif(!in_array($unlock_link_type_en_id, $this->config->item('en_ids_7494'))){
@@ -729,7 +729,7 @@ class Actionplan_model extends CI_Model
             //Detect potential conditional steps to be Unlocked:
             $found_match = 0;
             $locked_links = $this->Links_model->ln_fetch(array(
-                'in_subtype_entity_id IN (' . join(',', $this->config->item('en_ids_7309')) . ')' => null, //Action Plan Step Locked
+                'in_completion_method_entity_id IN (' . join(',', $this->config->item('en_ids_7309')) . ')' => null, //Action Plan Step Locked
                 'in_status_entity_id IN (' . join(',', $this->config->item('en_ids_7355')) . ')' => null, //Intent Statuses Public
                 'ln_status_entity_id IN (' . join(',', $this->config->item('en_ids_7359')) . ')' => null, //Link Statuses Public
                 'ln_type_entity_id' => 4229, //Intent Link Locked Step
@@ -946,7 +946,7 @@ class Actionplan_model extends CI_Model
          * */
 
         foreach($this->Links_model->ln_fetch(array(
-            'in_subtype_entity_id IN (' . join(',', $this->config->item('en_ids_7309')) . ')' => null, //Action Plan Step Locked
+            'in_completion_method_entity_id IN (' . join(',', $this->config->item('en_ids_7309')) . ')' => null, //Action Plan Step Locked
             'in_status_entity_id IN (' . join(',', $this->config->item('en_ids_7355')) . ')' => null, //Intent Statuses Public
 
             'ln_status_entity_id IN (' . join(',', $this->config->item('en_ids_7359')) . ')' => null, //Link Statuses Public
@@ -1001,7 +1001,7 @@ class Actionplan_model extends CI_Model
          * OR Intents are completed when a single child is completed
          *
          * */
-        $requires_all_children = ( $in['in_subtype_entity_id'] == 6914 /* AND Lock, meaning all children are needed */ );
+        $requires_all_children = ( $in['in_completion_method_entity_id'] == 6914 /* AND Lock, meaning all children are needed */ );
 
         //Generate list of users who have completed it:
         $qualified_completed_users = array();
@@ -1214,7 +1214,7 @@ class Actionplan_model extends CI_Model
                 }
             }
 
-        } elseif($ins[0]['in_subtype_entity_id']==7740 /* Intent Terminate */){
+        } elseif($ins[0]['in_completion_method_entity_id']==7740 /* Intent Terminate */){
 
             $progression_type_entity_id = 7741; //User Step Intention Terminated
 
@@ -1222,17 +1222,17 @@ class Actionplan_model extends CI_Model
 
             $progression_type_entity_id = 6144; //User Step Requirement Sent
 
-        } elseif($has_children && $ins[0]['in_subtype_entity_id']==6684 /* Intent Answer Single-Choice */){
+        } elseif($has_children && $ins[0]['in_completion_method_entity_id']==6684 /* Intent Answer Single-Choice */){
 
             $progression_type_entity_id = 6157; //User Step Single-Answered
 
-        } elseif($has_children && $ins[0]['in_subtype_entity_id']==6685 /* Intent Answer Single-Choice Timed */){
+        } elseif($has_children && $ins[0]['in_completion_method_entity_id']==6685 /* Intent Answer Single-Choice Timed */){
 
             //TODO Implement
             $progression_type_entity_id = 7487; //User Step Single-Answered Timely
             $progression_type_entity_id = 6157; //User Step Single-Answered
 
-        } elseif($has_children && $ins[0]['in_subtype_entity_id']==7231 /* Intent Answer Multiple-Choice */){
+        } elseif($has_children && $ins[0]['in_completion_method_entity_id']==7231 /* Intent Answer Multiple-Choice */){
 
             //TODO Implement
             $progression_type_entity_id = 7489; //User Step Multi-Answered
@@ -1421,7 +1421,7 @@ class Actionplan_model extends CI_Model
             //They still need to complete:
             $next_step_message .= $completion_req_note;
 
-        } elseif($has_children && in_array($ins[0]['in_subtype_entity_id'] , $this->config->item('en_ids_6193') /* OR Intents */ )){
+        } elseif($has_children && in_array($ins[0]['in_completion_method_entity_id'] , $this->config->item('en_ids_6193') /* OR Intents */ )){
 
 
             //Prep variables:

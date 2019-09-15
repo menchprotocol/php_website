@@ -387,7 +387,7 @@ function in_modify_load(in_id, ln_id) {
             in_outcome_counter();
             in_adjust_link_ui();
 
-            $('#in_subtype_entity_id').val(data.in.in_subtype_entity_id); //Set intent type
+            $('#in_completion_method_entity_id').val(data.in.in_completion_method_entity_id); //Set intent type
 
             //Update intent outcome and set focus:
             $('#in_outcome').val(data.in.in_outcome).focus();
@@ -408,7 +408,7 @@ function in_modify_load(in_id, ln_id) {
             }
 
             //See if we need to lock the intent type editor:
-            //$('#in_subtype_entity_id').attr('disabled', (data.in_action_plan_count > 0 || in_is_system_locked));
+            //$('#in_completion_method_entity_id').attr('disabled', (data.in_action_plan_count > 0 || in_is_system_locked));
 
             //We might need to scroll if mobile:
             if (is_compact) {
@@ -500,7 +500,7 @@ function in_modify_save() {
         level: parseInt($('#modifybox').attr('level')),
         in_outcome: $('#in_outcome').val(),
         in_status_entity_id: parseInt($('#in_status_entity_id').val()),
-        in_subtype_entity_id: parseInt($('#in_subtype_entity_id').val()),
+        in_completion_method_entity_id: parseInt($('#in_completion_method_entity_id').val()),
         in_scope_entity_id: parseInt($('#in_scope_entity_id').val()),
         in_completion_seconds: ( $('#in_completion_seconds').val().length > 0 ? parseInt($('#in_completion_seconds').val()) : 0 ),
         apply_recursively: (document.getElementById('apply_recursively').checked ? 1 : 0),
@@ -588,10 +588,10 @@ function in_modify_save() {
 
                 //Always update 3x Intent icons...
 
-                $('.in_parent_type_' + modify_data['in_id']).html('<span data-toggle="tooltip" data-placement="right" title="'+ js_en_all_7585[modify_data['in_subtype_entity_id']]['m_name'] + ': '+ js_en_all_7585[modify_data['in_subtype_entity_id']]['m_desc'] + '">'+ js_en_all_7585[modify_data['in_subtype_entity_id']]['m_icon'] +'</span>');
+                $('.in_parent_type_' + modify_data['in_id']).html('<span data-toggle="tooltip" data-placement="right" title="'+ js_en_all_7585[modify_data['in_completion_method_entity_id']]['m_name'] + ': '+ js_en_all_7585[modify_data['in_completion_method_entity_id']]['m_desc'] + '">'+ js_en_all_7585[modify_data['in_completion_method_entity_id']]['m_icon'] +'</span>');
 
                 //Also update possible child icons:
-                $('.in_child_icon_' + modify_data['in_id']).html(js_en_all_7585[modify_data['in_subtype_entity_id']]['m_icon']);
+                $('.in_child_icon_' + modify_data['in_id']).html(js_en_all_7585[modify_data['in_completion_method_entity_id']]['m_icon']);
 
 
                 $('.in_status_entity_id_' + modify_data['in_id']).html('<span data-toggle="tooltip" data-placement="right" title="'+ js_en_all_4737[modify_data['in_status_entity_id']]['m_name'] + ': '+ js_en_all_4737[modify_data['in_status_entity_id']]['m_desc'] + '">'+ js_en_all_4737[modify_data['in_status_entity_id']]['m_icon'] +'</span>');

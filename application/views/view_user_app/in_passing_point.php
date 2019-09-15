@@ -26,7 +26,7 @@ foreach ($this->Links_model->ln_fetch(array(
 
 
 //Intent Select Publicly? If so, allow user to choose path:
-if(in_array($in['in_subtype_entity_id'], $this->config->item('en_ids_7588'))){
+if(in_array($in['in_completion_method_entity_id'], $this->config->item('en_ids_7588'))){
 
     //Give option to choose a child path:
     echo '<div class="list-group actionplan_list grey_list" style="margin-top:40px;">';

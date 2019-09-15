@@ -162,13 +162,13 @@ class Trainer_app extends CI_Controller
         //Count all Intent Subtypes:
         $intent_types_counts = $this->Intents_model->in_fetch(array(
             'in_status_entity_id IN (' . join(',', $this->config->item('en_ids_7355')) . ')' => null, //Intent Statuses Public
-        ), array('in_type'), 0, 0, array(), 'COUNT(in_subtype_entity_id) as total_count, en_name, en_icon, en_id', 'en_id, en_name, en_icon');
+        ), array('in_type'), 0, 0, array(), 'COUNT(in_completion_method_entity_id) as total_count, en_name, en_icon, en_id', 'en_id, en_name, en_icon');
 
         //Count totals:
         $addup_total_count = addup_array($intent_types_counts, 'total_count');
 
         //Link Stages
-        echo_2level_stats($en_all_7302[10602]['m_name'], 10602, 7585, $intent_types_counts, $addup_total_count, 'in_subtype_entity_id', 'total_count');
+        echo_2level_stats($en_all_7302[10602]['m_name'], 10602, 7585, $intent_types_counts, $addup_total_count, 'in_completion_method_entity_id', 'total_count');
 
 
         //Intent Scopes:
