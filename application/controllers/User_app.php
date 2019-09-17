@@ -24,7 +24,7 @@ class User_app extends CI_Controller
         $session_en = $this->session->userdata('user');
         if (isset($session_en['en__parents'][0])) {
             //Lead trainer and above, go to console:
-            if(filter_array($session_en['en__parents'], 'en_id', array(1308, 7512))){
+            if(filter_array($session_en['en__parents'], 'en_id', $this->config->item('en_ids_10691') /* Mench Trainers */)){
                 return redirect_message('/dashboard');
             } else {
                 return redirect_message('/actionplan' . ( $in_id > 0 ? '/'.$in_id : '' ));
@@ -588,11 +588,10 @@ class User_app extends CI_Controller
         $ens[0] = $this->Communication_model->activate_session($ens[0]);
 
         //Redirect based on permissions:
-        $is_trainer = filter_array($ens[0]['en__parents'], 'en_id', 1308);
-        $is_trainer = filter_array($ens[0]['en__parents'], 'en_id', 7512);
+        $is_trainer = filter_array($ens[0]['en__parents'], 'en_id', $this->config->item('en_ids_10691') /* Mench Trainers */);
 
         //Take them to next step:
-        return redirect_message(( $is_trainer || $is_trainer ? '/dashboard' : '/actionplan/next' ));
+        return redirect_message( $is_trainer ? '/dashboard' : '/actionplan/next' );
     }
 
     function singin_check_email(){

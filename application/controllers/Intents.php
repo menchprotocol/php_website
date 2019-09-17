@@ -90,7 +90,7 @@ class Intents extends CI_Controller
             //Go to mench.com for now:
             return redirect_message('https://mench.com');
 
-        } elseif (filter_array($session_en['en__parents'], 'en_id', array(1308, 7512))) {
+        } elseif (filter_array($session_en['en__parents'], 'en_id', $this->config->item('en_ids_10691') /* Mench Trainers */)) {
 
             //Go to the Mench dashboard:
             return redirect_message('/dashboard');
@@ -176,7 +176,7 @@ class Intents extends CI_Controller
     function in_report_conditional_steps(){
 
         //Authenticate Trainer:
-        $session_en = en_auth(array(1308));
+        $session_en = en_auth($this->config->item('en_ids_10704') /* Mench Administrators */);
 
         if (!$session_en) {
             return echo_json(array(

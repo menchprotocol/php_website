@@ -16,7 +16,7 @@ date_default_timezone_set('America/Los_Angeles');
 
 //App Functionality:
 $config['base_url']                 = 'https://mench.com/';
-$config['app_version']              = '1.040'; //Cache buster for static JS/CSS files, so needs to be updated if you update static files`
+$config['app_version']              = '1.042'; //Cache buster for static JS/CSS files, so needs to be updated if you update static files`
 $config['system_name']              = 'Mench'; //Used for example when a link has no trainer
 $config['system_icon']              = '<img src="/img/mench_white.png" />'; //Used for example when a link has no trainer
 $config['app_enable_algolia']       = true; //May need to turn off if/when we reach monthly quota of 50k calls
@@ -28,6 +28,7 @@ $config['fb_mench_url']             = 'https://m.me/askmench'; //The URL of Menc
 $config['magic_link_expiry']        = 3600;
 $config['pasword_reset_expiry']     = 86400;
 $config['password_min_char']        = 6;
+
 
 //Word converter:
 $config['words_per_nod']            = 0.02; //The number of words per Nod

@@ -56,7 +56,7 @@ class Messenger extends CI_Controller
     function messenger_fetch_profile($psid)
     {
 
-        $session_en = en_auth(array(1308));
+        $session_en = en_auth($this->config->item('en_ids_10704') /* Mench Administrators */);
         if (!$session_en) {
             return echo_json(array(
                 'status' => 0,

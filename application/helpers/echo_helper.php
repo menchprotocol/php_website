@@ -542,10 +542,10 @@ function echo_ln($ln, $is_inner = false)
     $session_en = en_auth();
     if(isset($session_en['en_id'])){
         $is_owner = ( $ln['ln_creator_entity_id']>0 && $session_en['en_id']==$ln['ln_creator_entity_id'] );
-        $is_trainer = filter_array($session_en['en__parents'], 'en_id', 1308);
+        $is_admin = filter_array($session_en['en__parents'], 'en_id', $CI->config->item('en_ids_10704') /* Mench Administrators */);
     } else {
         $is_owner = false;
-        $is_trainer = false;
+        $is_admin = false;
     }
 
 
@@ -561,7 +561,7 @@ function echo_ln($ln, $is_inner = false)
     }
 
 
-    $hide_sensitive_details = (!$is_trainer && !$is_owner && in_array($ln['ln_type_entity_id'] , $CI->config->item('en_ids_4755')) /* Link Type is locked */);
+    $hide_sensitive_details = (!$is_admin && !$is_owner && in_array($ln['ln_type_entity_id'] , $CI->config->item('en_ids_4755')) /* Link Type is locked */);
 
 
 
@@ -1763,20 +1763,53 @@ function echo_en_stats_overview($cached_list, $report_name){
     $total_count = 0;
     foreach($cached_list as $group_en_id=>$people_group) {
 
-        //Do a child count:
-        $child_links = $CI->Links_model->ln_fetch(array(
-            'ln_parent_entity_id' => $group_en_id,
-            'ln_type_entity_id IN (' . join(',', $CI->config->item('en_ids_4592')) . ')' => null, //Entity-to-Entity Links
-            'ln_status_entity_id IN (' . join(',', $CI->config->item('en_ids_7360')) . ')' => null, //Link Statuses Active
-            'en_status_entity_id IN (' . join(',', $CI->config->item('en_ids_7358')) . ')' => null, //Entity Statuses Active
-        ), array('en_child'), 0, 0, array(), 'COUNT(en_id) as en__child_count');
+        //See if this item has a cahce, which if does, we need to fetch it's children ($cached_list granchildren):
+        if(is_array($CI->config->item('en_ids_'.$group_en_id))){
 
-        $inner_ui .= '<tr>';
-        $inner_ui .= '<td style="text-align: left;"><span class="icon-block">' . $people_group['m_icon'] . '</span><a href="/entities/'.$group_en_id.'">' . $people_group['m_name'] . '</a></td>';
-        $inner_ui .= '<td style="text-align: right;"><a href="/links?ln_status_entity_id='.join(',', $CI->config->item('en_ids_7360')) /* Link Statuses Active */.'&ln_type_entity_id='.join(',', $CI->config->item('en_ids_4592')).'&ln_parent_entity_id=' . $group_en_id . '">' . number_format($child_links[0]['en__child_count'], 0) . '</a></td>';
-        $inner_ui .= '</tr>';
+            $identifier = 'child_ends_'.$group_en_id;
+            $subset_total = 0;
 
-        $total_count += $child_links[0]['en__child_count'];
+            foreach($CI->config->item('en_ids_'.$group_en_id) as $inner_group_en_id=>$inner_people_group) {
+
+                //Do a child count:
+                $child_links = $CI->Links_model->ln_fetch(array(
+                    'ln_parent_entity_id' => $group_en_id,
+                    'ln_type_entity_id IN (' . join(',', $CI->config->item('en_ids_4592')) . ')' => null, //Entity-to-Entity Links
+                    'ln_status_entity_id IN (' . join(',', $CI->config->item('en_ids_7359')) . ')' => null, //Link Statuses Public
+                    'en_status_entity_id IN (' . join(',', $CI->config->item('en_ids_7357')) . ')' => null, //Entity Statuses Public
+                ), array('en_child'), 0, 0, array(), 'COUNT(en_id) as en__child_count');
+
+                $subset_total += $child_links[0]['en__child_count'];
+
+            }
+
+            $total_count += $subset_total;
+
+            $inner_ui .= '<tr>';
+            $inner_ui .= '<td style="text-align: left;"><span class="icon-block">' . $people_group['m_icon'] . '</span><a href="/entities/'.$group_en_id.'">'.$people_group['m_name'].'</a></td>';
+            $inner_ui .= '<td style="text-align: right;"><a href="/links?ln_status_entity_id='.join(',', $CI->config->item('en_ids_7359')) /* Link Statuses Public */.'&ln_type_entity_id='.join(',', $CI->config->item('en_ids_4592')).'&ln_parent_entity_id=' . join(',', $CI->config->item('en_ids_'.$group_en_id)) . '">' . number_format($subset_total, 0) . '</a></td>';
+            $inner_ui .= '</tr>';
+
+        } else {
+
+            //Do a child count:
+            $child_links = $CI->Links_model->ln_fetch(array(
+                'ln_parent_entity_id' => $group_en_id,
+                'ln_type_entity_id IN (' . join(',', $CI->config->item('en_ids_4592')) . ')' => null, //Entity-to-Entity Links
+                'ln_status_entity_id IN (' . join(',', $CI->config->item('en_ids_7359')) . ')' => null, //Link Statuses Public
+                'en_status_entity_id IN (' . join(',', $CI->config->item('en_ids_7357')) . ')' => null, //Entity Statuses Public
+            ), array('en_child'), 0, 0, array(), 'COUNT(en_id) as en__child_count');
+
+            $total_count += $child_links[0]['en__child_count'];
+
+            $inner_ui .= '<tr>';
+            $inner_ui .= '<td style="text-align: left;"><span class="icon-block">' . $people_group['m_icon'] . '</span><a href="/entities/'.$group_en_id.'">' . $people_group['m_name'] . '</a></td>';
+            $inner_ui .= '<td style="text-align: right;"><a href="/links?ln_status_entity_id='.join(',', $CI->config->item('en_ids_7359')) /* Link Statuses Public */.'&ln_type_entity_id='.join(',', $CI->config->item('en_ids_4592')).'&ln_parent_entity_id=' . $group_en_id . '">' . number_format($child_links[0]['en__child_count'], 0) . '</a></td>';
+            $inner_ui .= '</tr>';
+
+        }
+
+
     }
 
 
@@ -1936,43 +1969,43 @@ function echo_2level_entities($main_obj, $all_link_types, $link_types_counts, $a
         }
 
         //Subrow UI:
-        $this_rows =  '<tr class="hidden ' . $identifier . '">';
+        $rows =  '<tr class="hidden ' . $identifier . '">';
 
 
         if(!isset($en_all_detail[$en_id])){
 
-            $this_rows .= '<td style="text-align: left; padding-left:30px;" colspan="2">MISSING @'.$en_id.' as Link Type</td>';
+            $rows .= '<td style="text-align: left; padding-left:30px;" colspan="2">MISSING @'.$en_id.' as Link Type</td>';
 
         } else {
 
-            $this_rows .= '<td style="text-align: left;" class="'.( $show_in_advance_only ? advance_mode() : '' ).'">';
-            $this_rows .= '<span class="icon-block" style="margin-left:8px;">'.$m['m_icon'].'</span>';
-            $this_rows .= '<a href="/entities/'.$en_id.'">'.$m['m_name'].'</a>';
-            $this_rows .= '</td>';
+            $rows .= '<td style="text-align: left;" class="'.( $show_in_advance_only ? advance_mode() : '' ).'">';
+            $rows .= '<span class="icon-block" style="margin-left:8px;">'.$m['m_icon'].'</span>';
+            $rows .= '<a href="/entities/'.$en_id.'">'.$m['m_name'].'</a>';
+            $rows .= '</td>';
 
 
-            $this_rows .= '<td style="text-align: right;" class="'.( $show_in_advance_only ? advance_mode() : '' ).'">';
+            $rows .= '<td style="text-align: right;" class="'.( $show_in_advance_only ? advance_mode() : '' ).'">';
             if($display_field=='total_count'){
 
-                $this_rows .= '<a href="/links?ln_status_entity_id='.join(',', $CI->config->item('en_ids_7360')) /* Link Statuses Active */.'&'.$link_field.'=' . $en_id . '" data-toggle="tooltip" data-placement="top" title="'.number_format($ln['total_count'], 0).' Intent'.echo__s($ln['total_count']).'">'.number_format($ln['total_count']/$addup_total_count*100, 1) . '%</a>';
+                $rows .= '<a href="/links?ln_status_entity_id='.join(',', $CI->config->item('en_ids_7360')) /* Link Statuses Active */.'&'.$link_field.'=' . $en_id . '" data-toggle="tooltip" data-placement="top" title="'.number_format($ln['total_count'], 0).' Intent'.echo__s($ln['total_count']).'">'.number_format($ln['total_count']/$addup_total_count*100, 1) . '%</a>';
 
             } elseif($display_field=='total_words'){
 
-                $this_rows .= '<a href="/links?ln_status_entity_id='.join(',', $CI->config->item('en_ids_7360')) /* Link Statuses Active */.'&'.$link_field.'=' . $en_id . '" data-toggle="tooltip" data-placement="top" title="'.number_format($ln['total_words'], 0).' Word'.echo__s($ln['total_words']).'">'.number_format($ln['total_words'], 0) . '</a>';
+                $rows .= '<a href="/links?ln_status_entity_id='.join(',', $CI->config->item('en_ids_7360')) /* Link Statuses Active */.'&'.$link_field.'=' . $en_id . '" data-toggle="tooltip" data-placement="top" title="'.number_format($ln['total_words'], 0).' Word'.echo__s($ln['total_words']).'">'.number_format($ln['total_words'], 0) . '</a>';
 
             }
-            $this_rows .= '</td>';
+            $rows .= '</td>';
 
         }
 
 
         //sub-row count:
-        $this_rows .= '</tr>';
+        $rows .= '</tr>';
         
         if($show_in_advance_only){
-            $sub_advance_rows .= $this_rows;
+            $sub_advance_rows .= $rows;
         } else {
-            $sub_rows .= $this_rows;
+            $sub_rows .= $rows;
         }
     }
 
@@ -2261,7 +2294,7 @@ function echo_in($in, $level, $in_linked_id = 0, $is_parent = false)
 
 
         //Intent Unlink for trainers:
-        if(filter_array($session_en['en__parents'], 'en_id', 7512)){
+        if(filter_array($session_en['en__parents'], 'en_id', $CI->config->item('en_ids_10691') /* Mench Trainers */)){
             if($ln_id > 0 && $in_linked_id > 0){
                 $ui .= '<span class="'.advance_mode(in_trainer_class($in_linked_id)).'"><a class="badge badge-primary white-primary is_not_bg " onclick="in_unlink_only(' . $in['in_id'] . ','.$level.',' . $ln_id . ')" style="margin:-2px -8px 0 4px; width:40px;" href="javascript:void(0)" data-toggle="tooltip" title="Unlink Intent" data-placement="bottom"><i class="far fa-trash-alt"></i></a> &nbsp;</span>';
             } else {
@@ -2438,7 +2471,7 @@ function echo_en($en, $level, $is_parent = false)
 
         //Show link index
         if($en['ln_external_id'] > 0){
-            if(en_auth(array(1281)) && $en['ln_parent_entity_id']==6196){
+            if(en_auth($CI->config->item('en_ids_10704') /* Mench Administrators */) && $en['ln_parent_entity_id']==6196){
                 //Give trainers the ability to ping Messenger profiles:
                 $ui .= '<span class="icon-top-left" data-toggle="tooltip" data-placement="right" title="Link External ID = '.$en['ln_external_id'].' [Messenger Profile]"><a href="/messenger/messenger_fetch_profile/'.$en['ln_external_id'].'" target="_blank"><i class="fas fa-project-diagram"></i></a></span>';
             } else {

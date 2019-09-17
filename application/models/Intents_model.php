@@ -451,7 +451,8 @@ class Intents_model extends CI_Model
             //Add user as Trainer IF Level 1 trainer:
             if(count($this->Links_model->ln_fetch(array(
                 'ln_child_entity_id' => $ln_creator_entity_id,
-                'ln_parent_entity_id' => 7512, //Mench Trainers Level 1
+                'ln_parent_entity_id IN (' . join(',', $this->config->item('en_ids_10691')) . ')' => null, //IS Mench Trainers
+                'ln_parent_entity_id NOT IN (' . join(',', $this->config->item('en_ids_10704')) . ')' => null, //BUT NOT Mench Administrators
                 'ln_type_entity_id IN (' . join(',', $this->config->item('en_ids_4592')) . ')' => null, //Entity-to-Entity Links
                 'ln_status_entity_id IN (' . join(',', $this->config->item('en_ids_7359')) . ')' => null, //Link Statuses Public
             )))){

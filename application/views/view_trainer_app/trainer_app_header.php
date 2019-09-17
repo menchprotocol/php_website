@@ -1,7 +1,7 @@
 <?php
 //Attempt to fetch session variables:
 $session_en = $this->session->userdata('user');
-$is_trainer = en_auth(array(1308));
+$is_trainer = en_auth($this->config->item('en_ids_10704') /* Mench Administrators */);
 $en_all_7372 = $this->config->item('en_all_7372');
 $en_all_7368 = $this->config->item('en_all_7368'); //Trainer App
 $uri_segment_1 = $this->uri->segment(1);

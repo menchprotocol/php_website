@@ -11,10 +11,21 @@ defined('BASEPATH') OR exit('No direct script access allowed');
  *
  */
 
-//Generated 2019-09-16 22:27:09 PST
+//Generated 2019-09-17 09:05:13 PST
+
+//Mench Administrators:
+$config['en_ids_10704'] = array(1308);
+$config['en_all_10704'] = array(
+    1308 => array(
+        'm_icon' => '<i class="far fa-user-hard-hat isnavy"></i>',
+        'm_name' => 'Mench Trainers Level 2',
+        'm_desc' => '',
+        'm_parents' => array(10704,10618,10691,10571,4463,4426),
+    ),
+);
 
 //Mench Trainers:
-$config['en_ids_10691'] = array(7512,1308,1281);
+$config['en_ids_10691'] = array(7512,1308);
 $config['en_all_10691'] = array(
     7512 => array(
         'm_icon' => '<i class="far fa-user-hard-hat isorange"></i>',
@@ -23,16 +34,10 @@ $config['en_all_10691'] = array(
         'm_parents' => array(10606,10691,10573,10571,4985),
     ),
     1308 => array(
-        'm_icon' => '<i class="far fa-user-hard-hat isturquoise"></i>',
+        'm_icon' => '<i class="far fa-user-hard-hat isnavy"></i>',
         'm_name' => 'Mench Trainers Level 2',
         'm_desc' => 'Certified trainers who understand the core training principles',
-        'm_parents' => array(10626,10691,10571,4463,4426),
-    ),
-    1281 => array(
-        'm_icon' => '<i class="far fa-user-hard-hat isnavy"></i>',
-        'm_name' => 'Mench Trainers Level 3',
-        'm_desc' => 'The dedicated team that ensures the continuous operation of the Mench platform, governs its principles and empowers the entire community to unleash more of their potential',
-        'm_parents' => array(10618,10691,10571,4463),
+        'm_parents' => array(10704,10618,10691,10571,4463,4426),
     ),
 );
 
@@ -72,7 +77,7 @@ $config['en_all_10692'] = array(
 );
 
 //Platform Cache:
-$config['en_ids_4527'] = array(7758,7774,7756,6827,4997,7303,6194,6805,6177,7358,7357,6206,4592,4537,10627,6192,7712,7585,7302,7596,4229,6345,4485,4986,7551,7701,4983,6193,7582,7767,10568,10567,7588,4737,7356,7355,6201,4486,7309,10602,7751,7799,10692,7304,10591,7703,10658,6103,6186,7360,7364,7359,4341,4593,7347,10592,7529,7555,7372,7368,10691,6287,7369,4426,6225,10596,4527,7366,4755,10571,6204,6123,10593,4454,5969,3000,4600,6150,5967,4280,10570,4277,6102,7704,6144,6244,6255,6274,6146,7494,7203,10539,10594,10589,10590);
+$config['en_ids_4527'] = array(7758,7774,7756,6827,4997,7303,6194,6805,6177,7358,7357,6206,4592,4537,10627,6192,7712,7585,7302,7596,4229,6345,4485,4986,7551,7701,4983,6193,7582,7767,10568,10567,7588,4737,7356,7355,6201,4486,7309,10602,7751,7799,10692,7304,10591,7703,10658,6103,6186,7360,7364,7359,4341,4593,7347,10592,10704,7529,7555,7372,7368,10691,6287,7369,4426,6225,10596,4527,7366,4755,10571,6204,6123,10593,4454,5969,3000,4600,6150,5967,4280,10570,4277,6102,7704,6144,6244,6255,6274,6146,7494,7203,10539,10594,10589,10590);
 $config['en_all_4527'] = array(
     7758 => array(
         'm_icon' => '<i class="far fa-mountain"></i>',
@@ -409,6 +414,12 @@ $config['en_all_4527'] = array(
         'm_name' => 'Link Word Weight',
         'm_desc' => '',
         'm_parents' => array(6204,6771,4527,10588),
+    ),
+    10704 => array(
+        'm_icon' => '<i class="far fa-user-shield"></i>',
+        'm_name' => 'Mench Administrators',
+        'm_desc' => '',
+        'm_parents' => array(4527,7254),
     ),
     7529 => array(
         'm_icon' => '<i class="fas fa-hat-wizard"></i>',
@@ -2638,7 +2649,7 @@ $config['en_all_10591'] = array(
 );
 
 //Public Entities:
-$config['en_ids_10571'] = array(2997,4446,3005,4763,3147,2999,4883,3192,5948,2998,3084,7512,1308,1281,3000);
+$config['en_ids_10571'] = array(2997,4446,3005,4763,3147,2999,4883,3192,5948,2998,3084,7512,1308,3000);
 $config['en_all_10571'] = array(
     2997 => array(
         'm_icon' => '<i class="far fa-newspaper"></i>',
@@ -2713,16 +2724,10 @@ $config['en_all_10571'] = array(
         'm_parents' => array(10606,10691,10573,10571,4985),
     ),
     1308 => array(
-        'm_icon' => '<i class="far fa-user-hard-hat isturquoise"></i>',
+        'm_icon' => '<i class="far fa-user-hard-hat isnavy"></i>',
         'm_name' => 'Mench Trainers Level 2',
         'm_desc' => '',
-        'm_parents' => array(10626,10691,10571,4463,4426),
-    ),
-    1281 => array(
-        'm_icon' => '<i class="far fa-user-hard-hat isnavy"></i>',
-        'm_name' => 'Mench Trainers Level 3',
-        'm_desc' => '',
-        'm_parents' => array(10618,10691,10571,4463),
+        'm_parents' => array(10704,10618,10691,10571,4463,4426),
     ),
     3000 => array(
         'm_icon' => '<i class="far fa-whistle"></i>',
@@ -5038,10 +5043,10 @@ $config['en_all_4426'] = array(
         'm_parents' => array(7555,6225,4426,4755),
     ),
     1308 => array(
-        'm_icon' => '<i class="far fa-user-hard-hat isturquoise"></i>',
+        'm_icon' => '<i class="far fa-user-hard-hat isnavy"></i>',
         'm_name' => 'Mench Trainers Level 2',
         'm_desc' => 'Requires admin review and approval',
-        'm_parents' => array(10626,10691,10571,4463,4426),
+        'm_parents' => array(10704,10618,10691,10571,4463,4426),
     ),
     4430 => array(
         'm_icon' => '<i class="far fa-user"></i>',

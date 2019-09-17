@@ -19,7 +19,7 @@ class Trainer_app extends CI_Controller
         boost_power();
 
         //Validate trainer:
-        $session_en = en_auth(array(1308), true);
+        $session_en = en_auth($this->config->item('en_ids_10704') /* Mench Administrators */, true);
 
         //Load tools:
         $this->load->view('view_trainer_app/trainer_app_header', array(
@@ -175,7 +175,7 @@ class Trainer_app extends CI_Controller
         echo echo_in_setting(7596,'in_level_entity_id', $addup_total_count);
 
         //Intent Verbs:
-        $show_max_verbs = 3;
+        $show_max_verbs = 5;
 
 
         //Fetch all needed data:
@@ -345,7 +345,7 @@ class Trainer_app extends CI_Controller
 
 
         //Fetch top users per each direction
-        $show_max = 8;
+        $show_max = 10;
 
         $filters = array(
             'ln_status_entity_id IN (' . join(',', $this->config->item('en_ids_7359')) . ')' => null, //Link Statuses Public

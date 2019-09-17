@@ -207,7 +207,7 @@ class Links extends CI_Controller
                 'status' => 0,
                 'message' => 'Invalid Link ID',
             ));
-        } elseif(!en_auth(array(1308)) /* Viewer NOT a trainer */) {
+        } elseif(!en_auth($this->config->item('en_ids_10704') /* Mench Administrators */) /* Viewer NOT a trainer */) {
             return echo_json(array(
                 'status' => 0,
                 'message' => 'Link metadata visible to trainers only',
@@ -554,7 +554,7 @@ class Links extends CI_Controller
     function toggle_advance(){
 
         //Toggles the advance session variable for the trainer on/off for logged-in trainers:
-        $session_en = en_auth(array(1308));
+        $session_en = en_auth($this->config->item('en_ids_10704') /* Mench Administrators */);
 
         if($session_en){
 

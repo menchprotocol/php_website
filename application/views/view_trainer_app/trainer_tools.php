@@ -199,7 +199,18 @@ if(!$action) {
     echo '</table>';
 
 
+} elseif($action=='random_user_icon'){
+
+    for($i=0;$i<1000;$i++){
+        if(fmod($i, 50)==0 && $i>1){
+            echo '<br />';
+        }
+        echo '<span class="icon-block">'.random_user_icon().'</span>';
+    }
+
 } elseif($action=='moderate_intent_notes'){
+
+
 
     //Fetch pending notes:
     $pendin_in_notes = $this->Links_model->ln_fetch(array(

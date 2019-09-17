@@ -42,7 +42,7 @@
         echo '<h5 class="badge badge-h indent1">Entity @'.$entity['en_id'].'</h5>';
 
         //Hidden link to Metadata:
-        if($is_trainer){
+        if($is_admin){
             echo '<a class="secret" href="/entities/en_review_metadata/' . $entity['en_id'] . '" style="margin-left: 5px;" target="_blank" data-toggle="tooltip" title="Review Entity Metadata" data-placement="bottom"><i class="fas fa-function"></i></a>';
 
             echo '<a class="secret" href="/links/cron__sync_algolia/en/' . $entity['en_id'] . '" style="margin-left: 5px;" target="_blank" data-toggle="tooltip" title="Update Algolia Search Index" data-placement="bottom"><i class="fas fa-search"></i></a>';

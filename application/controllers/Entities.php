@@ -69,14 +69,14 @@ class Entities extends CI_Controller
     {
 
         $session_en = en_auth($this->config->item('en_ids_10691') /* Mench Trainers */, true);
-        $is_trainer = ( filter_array($session_en['en__parents'], 'en_id', 1308) ? 1 : 0 );
+        $is_admin = ( filter_array($session_en['en__parents'], 'en_id', $this->config->item('en_ids_10704') /* Mench Administrators */) ? 1 : 0 );
 
         if ($en_id == 0) {
-            return redirect_message('/entities/' . ( $is_trainer ? 3463 /* Default trainer entity */ : $session_en['en_id'] ));
+            return redirect_message('/entities/' . ( $is_admin ? 3463 /* Default trainer entity */ : $session_en['en_id'] ));
         }
 
         //Do we have any mass action to process here?
-        if (en_auth(array(1308)) && isset($_POST['mass_action_en_id']) && isset($_POST['mass_value1_'.$_POST['mass_action_en_id']]) && isset($_POST['mass_value2_'.$_POST['mass_action_en_id']])) {
+        if (en_auth($this->config->item('en_ids_10704') /* Mench Administrators */) && isset($_POST['mass_action_en_id']) && isset($_POST['mass_value1_'.$_POST['mass_action_en_id']]) && isset($_POST['mass_value2_'.$_POST['mass_action_en_id']])) {
 
             //Process mass action:
             $process_mass_action = $this->Entities_model->en_mass_update($en_id, intval($_POST['mass_action_en_id']), $_POST['mass_value1_'.$_POST['mass_action_en_id']], $_POST['mass_value2_'.$_POST['mass_action_en_id']], $session_en['en_id']);
@@ -117,7 +117,7 @@ class Entities extends CI_Controller
         ));
         $this->load->view('view_trainer_app/en_trainer_ui', array(
             'entity' => $ens[0],
-            'is_trainer' => $is_trainer,
+            'is_admin' => $is_admin,
         ));
         $this->load->view('view_trainer_app/trainer_app_footer');
 
@@ -167,7 +167,7 @@ class Entities extends CI_Controller
     {
 
         //Authenticate Trainer:
-        $session_en = en_auth(array(1308));
+        $session_en = en_auth($this->config->item('en_ids_10704') /* Mench Administrators */);
         if (!$session_en) {
             return echo_json(array(
                 'status' => 0,
@@ -254,7 +254,7 @@ class Entities extends CI_Controller
         //Responsible to link parent/children entities to each other via a JS function on en_trainer_ui.php
 
         //Auth user and check required variables:
-        $session_en = en_auth(array(1308));
+        $session_en = en_auth($this->config->item('en_ids_10704') /* Mench Administrators */);
 
         if (!$session_en) {
             return echo_json(array(
@@ -453,7 +453,7 @@ class Entities extends CI_Controller
     {
 
         //Auth user and check required variables:
-        $session_en = en_auth(array(1308));
+        $session_en = en_auth($this->config->item('en_ids_10704') /* Mench Administrators */);
         $messages_max_length = $this->config->item('messages_max_length');
         $success_message = 'Saved'; //Default, might change based on what we do...
 

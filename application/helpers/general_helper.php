@@ -573,6 +573,19 @@ function ISO8601ToSeconds($ISO8601){
 }
 
 
+function random_user_icon(){
+
+    //Generates a random icon for new users by randomly combining the following:
+
+    $icon_styles = array('fas', 'far', 'fal');
+    $animal_icons = array('alicorn', 'badger-honey', 'bat', 'cat', 'cow', 'crow', 'deer', 'deer-rudolph', 'dog', 'dog-leashed', 'dove', 'dragon', 'duck', 'elephant', 'fish', 'frog', 'hippo', 'horse', 'horse-head', 'kiwi-bird', 'monkey', 'narwhal', 'otter', 'pegasus', 'pig', 'rabbit', 'rabbit-fast', 'ram', 'sheep', 'snake', 'spider', 'spider-black-widow', 'squirrel', 'turtle', 'unicorn', 'whale');
+    $icon_colors = array('blue', 'isbrown', 'isgreen', 'isgrey', 'isnavy', 'isolive', 'isorange', 'ispurple', 'isturquoise', 'isdarkred', 'islightblue', 'ismatt', 'isdarkorange');
+
+    return '<i class="'.$icon_styles[array_rand($icon_styles)].' fa-'.$animal_icons[array_rand($animal_icons)].' '.$icon_colors[array_rand($icon_colors)].'"></i>';
+
+}
+
+
 function addup_array($array, $match_key)
 {
     $total = 0;
@@ -631,7 +644,7 @@ function en_auth($en_permission_group = null, $force_redirect = 0)
         return false;
     } else {
         //Block access:
-        return redirect_message((isset($session_en['en__parents'][0]) && filter_array($session_en['en__parents'], 'en_id', 1308) ? '/intents/' . $CI->config->item('in_focus_id') : '/signin?url=' . urlencode($_SERVER['REQUEST_URI'])), '<div class="alert alert-danger" role="alert">Error: ' . (isset($session_en['en_id']) ? 'Access not authorized.' : 'You must sign-in to access this page.') . '</div>');
+        return redirect_message((isset($session_en['en__parents'][0]) && filter_array($session_en['en__parents'], 'en_id', $CI->config->item('en_ids_10704') /* Mench Administrators */) ? '/intents/' . $CI->config->item('in_focus_id') : '/signin?url=' . urlencode($_SERVER['REQUEST_URI'])), '<div class="alert alert-danger" role="alert">Error: ' . (isset($session_en['en_id']) ? 'Access not authorized.' : 'You must sign-in to access this page.') . '</div>');
     }
 
 }
