@@ -559,9 +559,6 @@ function in_modify_save() {
 
                 } else {
 
-                    //Show trainers their new words:
-                    count_new_words_in(0);
-
                     //Remove from UI:
                     in_ui_remove(modify_data['in_id'], modify_data['level'], modify_data['ln_id']);
 

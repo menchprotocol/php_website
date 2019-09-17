@@ -910,7 +910,8 @@ class Intents extends CI_Controller
                         }
 
                         //Success message:
-                        $update_message = 'Successfully updated '.$recursive_update_count.' '.echo_clean_db_name($key).' from ['.$in_current['in_status_entity_id'].'] to ['.$value.']'.( $links_removed>0 ? ' and removed ['.$links_removed.'] intent links' : '' );
+
+                        $update_message = 'Successfully updated '.$recursive_update_count.' '.echo_clean_db_name($key).' from ['.echo_en_cache('en_all_4737' /* Intent Statuses */, $in_current['in_status_entity_id'], false, null).'] to ['.echo_en_cache('en_all_4737' /* Intent Statuses */, $value, false, null).']'.( $links_removed>0 ? ' and removed ['.$links_removed.'] intent links' : '' );
 
                         //Log recursive update:
                         $this->Links_model->ln_create(array(
