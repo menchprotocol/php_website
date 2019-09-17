@@ -213,8 +213,8 @@ if(!$action) {
             'ln_type_entity_id IN (' . join(',', $this->config->item('en_ids_4592')) . ')' => null, //Entity-to-Entity Links
             'ln_status_entity_id IN (' . join(',', $this->config->item('en_ids_7359')) . ')' => null, //Link Statuses Public
             'en_status_entity_id IN (' . join(',', $this->config->item('en_ids_7357')) . ')' => null, //Entity Statuses Public
-        ), array(), 0) as $mench_user){
-            $updated += $this->Entities_model->en_update($mench_user['ln_child_entity_id'], array(
+        ), array('en_child'), 0) as $mench_user){
+            $updated += $this->Entities_model->en_update($mench_user['en_id'], array(
                 'en_icon' => random_user_icon(),
             ));
         }
