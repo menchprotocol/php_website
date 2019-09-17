@@ -13,6 +13,25 @@ class Links extends CI_Controller
     }
 
 
+    function fix(){
+        foreach($this->Links_model->ln_fetch(array(
+            'ln_status_entity_id IN (' . join(',', $this->config->item('en_ids_7360')) . ')' => null, //Link Statuses Active
+            'ln_type_entity_id' => 10653, //All Intent Notes
+            'ln_id >=' => 2074925, //All Intent Notes
+        ), array(), 0, 0, array('ln_id' => 'DESC')) as $count => $fix_ln){
+            //echo '<div style="font-size: 0.8em;">'.substr($fix_ln['ln_timestamp'], 0, 19).' > '.$fix_ln['ln_id'].' > '.$count.' > '.htmlentities(one_two_explode('iterated from [','] to',$fix_ln['ln_content'])).'</div>';
+
+            //Update icon again:
+            $this->Entities_model->en_update($fix_ln['ln_child_entity_id'], array(
+                'en_icon' => one_two_explode('iterated from [','] to',$fix_ln['ln_content']),
+            ));
+
+            //$this->db->query("DELETE FROM table_links WHERE ln_id=".$fix_ln['ln_id'].";");
+
+        }
+
+        echo 'Fixed';
+    }
 
     function index()
     {
