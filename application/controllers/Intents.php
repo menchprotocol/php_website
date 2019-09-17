@@ -862,7 +862,7 @@ class Intents extends CI_Controller
                         $remove_from_ui = 1;
 
                         //Did we remove the main intent?
-                        if($_POST['level']==1){
+                        if($_POST['level']==1 || intval($_POST['apply_recursively'])){
                             //Yes, redirect to a parent intent if we have any:
                             if(count($in_current['in__parents']) > 0){
                                 $remove_redirect_url = '/intents/' . $in_current['in__parents'][0]['in_id'];
