@@ -11,7 +11,7 @@ defined('BASEPATH') OR exit('No direct script access allowed');
  *
  */
 
-//Generated 2019-09-16 22:09:57 PST
+//Generated 2019-09-16 22:15:46 PST
 
 //Mench Trainers:
 $config['en_ids_10691'] = array(7512,1308,1281);
@@ -633,13 +633,13 @@ $config['en_all_4527'] = array(
         'm_parents' => array(4527,10592),
     ),
     10589 => array(
-        'm_icon' => '<i class="far fa-download"></i>',
+        'm_icon' => '<i class="far fa-download ispink"></i>',
         'm_name' => 'Words In',
         'm_desc' => '',
         'm_parents' => array(4527,10591),
     ),
     10590 => array(
-        'm_icon' => '<i class="far fa-upload"></i>',
+        'm_icon' => '<i class="far fa-upload ispink"></i>',
         'm_name' => 'Words Out',
         'm_desc' => '',
         'm_parents' => array(4527,10591),
@@ -2531,43 +2531,43 @@ $config['en_all_6192'] = array(
         'm_parents' => array(7751,7585,6144,6192),
     ),
     6677 => array(
-        'm_icon' => '<i class="far fa-comments "></i>',
+        'm_icon' => '<i class="fas fa-comments "></i>',
         'm_name' => 'Read-Only',
         'm_desc' => '',
         'm_parents' => array(7756,7585,4559,6192),
     ),
     6683 => array(
-        'm_icon' => '<i class="far fa-keyboard "></i>',
+        'm_icon' => '<i class="fas fa-keyboard "></i>',
         'm_name' => 'Send Text Message',
         'm_desc' => '',
         'm_parents' => array(7585,6144,6192),
     ),
     6682 => array(
-        'm_icon' => '<i class="far fa-external-link "></i>',
+        'm_icon' => '<i class="fas fa-external-link "></i>',
         'm_name' => 'Send URL',
         'm_desc' => '',
         'm_parents' => array(7585,6144,6192),
     ),
     6679 => array(
-        'm_icon' => '<i class="far fa-video "></i>',
+        'm_icon' => '<i class="fas fa-video "></i>',
         'm_name' => 'Upload Video',
         'm_desc' => '',
         'm_parents' => array(7751,7585,6144,6192),
     ),
     6680 => array(
-        'm_icon' => '<i class="far fa-microphone "></i>',
+        'm_icon' => '<i class="fas fa-microphone "></i>',
         'm_name' => 'Upload Audio',
         'm_desc' => '',
         'm_parents' => array(7751,7585,6144,6192),
     ),
     6678 => array(
-        'm_icon' => '<i class="far fa-image "></i>',
+        'm_icon' => '<i class="fas fa-image "></i>',
         'm_name' => 'Upload Image',
         'm_desc' => '',
         'm_parents' => array(7751,7585,6144,6192),
     ),
     6681 => array(
-        'm_icon' => '<i class="far fa-file-pdf "></i>',
+        'm_icon' => '<i class="fas fa-file-pdf "></i>',
         'm_name' => 'Upload File',
         'm_desc' => '',
         'm_parents' => array(7751,7585,6144,6192),
@@ -2624,13 +2624,13 @@ $config['en_all_10592'] = array(
 $config['en_ids_10591'] = array(10589,10590);
 $config['en_all_10591'] = array(
     10589 => array(
-        'm_icon' => '<i class="far fa-download"></i>',
+        'm_icon' => '<i class="far fa-download ispink"></i>',
         'm_name' => 'Words In',
         'm_desc' => '',
         'm_parents' => array(4527,10591),
     ),
     10590 => array(
-        'm_icon' => '<i class="far fa-upload"></i>',
+        'm_icon' => '<i class="far fa-upload ispink"></i>',
         'm_name' => 'Words Out',
         'm_desc' => '',
         'm_parents' => array(4527,10591),
@@ -2804,7 +2804,7 @@ $config['en_all_7774'] = array(
         'm_parents' => array(7774,7358,6177),
     ),
     6181 => array(
-        'm_icon' => '<i class="fas fa-globe"></i>',
+        'm_icon' => '<i class="fas fa-globe blue"></i>',
         'm_name' => 'Entity Published',
         'm_desc' => '',
         'm_parents' => array(7774,7358,7357,6177),
@@ -2816,7 +2816,7 @@ $config['en_all_7774'] = array(
         'm_parents' => array(7774,7356,4737),
     ),
     6184 => array(
-        'm_icon' => '<i class="fas fa-globe "></i>',
+        'm_icon' => '<i class="fas fa-globe yellow "></i>',
         'm_name' => 'Intent Published',
         'm_desc' => '',
         'm_parents' => array(7774,7355,7356,4737),
@@ -2828,7 +2828,7 @@ $config['en_all_7774'] = array(
         'm_parents' => array(7774,7364,7360,6186),
     ),
     6176 => array(
-        'm_icon' => '<i class="fas fa-globe"></i>',
+        'm_icon' => '<i class="fas fa-globe ispink"></i>',
         'm_name' => 'Link Published',
         'm_desc' => '',
         'm_parents' => array(7774,7360,7359,6186),
@@ -2967,7 +2967,7 @@ $config['en_all_7756'] = array(
         'm_parents' => array(7756,7585,7486,7485,7309,6997,6193),
     ),
     6677 => array(
-        'm_icon' => '<i class="far fa-comments "></i>',
+        'm_icon' => '<i class="fas fa-comments "></i>',
         'm_name' => 'Intent Read-Only',
         'm_desc' => '',
         'm_parents' => array(7756,7585,4559,6192),
@@ -2978,19 +2978,19 @@ $config['en_all_7756'] = array(
 $config['en_ids_7751'] = array(6680,6681,6678,7637,6679);
 $config['en_all_7751'] = array(
     6680 => array(
-        'm_icon' => '<i class="far fa-microphone "></i>',
+        'm_icon' => '<i class="fas fa-microphone "></i>',
         'm_name' => 'Intent Upload Audio',
         'm_desc' => '',
         'm_parents' => array(7751,7585,6144,6192),
     ),
     6681 => array(
-        'm_icon' => '<i class="far fa-file-pdf "></i>',
+        'm_icon' => '<i class="fas fa-file-pdf "></i>',
         'm_name' => 'Intent Upload File',
         'm_desc' => '',
         'm_parents' => array(7751,7585,6144,6192),
     ),
     6678 => array(
-        'm_icon' => '<i class="far fa-image "></i>',
+        'm_icon' => '<i class="fas fa-image "></i>',
         'm_name' => 'Intent Upload Image',
         'm_desc' => '',
         'm_parents' => array(7751,7585,6144,6192),
@@ -3002,7 +3002,7 @@ $config['en_all_7751'] = array(
         'm_parents' => array(7751,7585,6144,6192),
     ),
     6679 => array(
-        'm_icon' => '<i class="far fa-video "></i>',
+        'm_icon' => '<i class="fas fa-video "></i>',
         'm_name' => 'Intent Upload Video',
         'm_desc' => '',
         'm_parents' => array(7751,7585,6144,6192),
@@ -3013,31 +3013,31 @@ $config['en_all_7751'] = array(
 $config['en_ids_6144'] = array(6683,6682,6680,6681,6678,7637,6679);
 $config['en_all_6144'] = array(
     6683 => array(
-        'm_icon' => '<i class="far fa-keyboard "></i>',
+        'm_icon' => '<i class="fas fa-keyboard "></i>',
         'm_name' => 'Send Text Message',
         'm_desc' => '',
         'm_parents' => array(7585,6144,6192),
     ),
     6682 => array(
-        'm_icon' => '<i class="far fa-external-link "></i>',
+        'm_icon' => '<i class="fas fa-external-link "></i>',
         'm_name' => 'Send URL',
         'm_desc' => '',
         'm_parents' => array(7585,6144,6192),
     ),
     6680 => array(
-        'm_icon' => '<i class="far fa-microphone "></i>',
+        'm_icon' => '<i class="fas fa-microphone "></i>',
         'm_name' => 'Upload Audio',
         'm_desc' => '',
         'm_parents' => array(7751,7585,6144,6192),
     ),
     6681 => array(
-        'm_icon' => '<i class="far fa-file-pdf "></i>',
+        'm_icon' => '<i class="fas fa-file-pdf "></i>',
         'm_name' => 'Upload File',
         'm_desc' => '',
         'm_parents' => array(7751,7585,6144,6192),
     ),
     6678 => array(
-        'm_icon' => '<i class="far fa-image "></i>',
+        'm_icon' => '<i class="fas fa-image "></i>',
         'm_name' => 'Upload Image',
         'm_desc' => '',
         'm_parents' => array(7751,7585,6144,6192),
@@ -3049,7 +3049,7 @@ $config['en_all_6144'] = array(
         'm_parents' => array(7751,7585,6144,6192),
     ),
     6679 => array(
-        'm_icon' => '<i class="far fa-video "></i>',
+        'm_icon' => '<i class="fas fa-video "></i>',
         'm_name' => 'Upload Video',
         'm_desc' => '',
         'm_parents' => array(7751,7585,6144,6192),
@@ -3349,19 +3349,19 @@ $config['en_all_6204'] = array(
 $config['en_ids_7712'] = array(7231,6684,6685);
 $config['en_all_7712'] = array(
     7231 => array(
-        'm_icon' => '<i class="far fa-check-double "></i>',
+        'm_icon' => '<i class="fas fa-question-circle"></i>',
         'm_name' => 'Intent Answer Multi-Choice',
         'm_desc' => '',
         'm_parents' => array(7712,7489,7588,7585,6193),
     ),
     6684 => array(
-        'm_icon' => '<i class="far fa-check "></i>',
+        'm_icon' => '<i class="fas fa-question"></i>',
         'm_name' => 'Intent Answer Single-Choice',
         'm_desc' => '',
         'm_parents' => array(7712,7588,7585,6157,6193),
     ),
     6685 => array(
-        'm_icon' => '<i class="far fa-stopwatch "></i>',
+        'm_icon' => '<i class="fas fa-stopwatch "></i>',
         'm_name' => 'Intent Answer Single-Choice Timed',
         'm_desc' => '',
         'm_parents' => array(7712,7488,7487,7585,7366,6193),
@@ -3644,13 +3644,13 @@ $config['en_all_4229'] = array(
 $config['en_ids_7588'] = array(7231,6684);
 $config['en_all_7588'] = array(
     7231 => array(
-        'm_icon' => '<i class="far fa-check-double "></i>',
+        'm_icon' => '<i class="fas fa-question-circle"></i>',
         'm_name' => 'Intent Answer Multi-Choice',
         'm_desc' => '',
         'm_parents' => array(7712,7489,7588,7585,6193),
     ),
     6684 => array(
-        'm_icon' => '<i class="far fa-check "></i>',
+        'm_icon' => '<i class="fas fa-question"></i>',
         'm_name' => 'Intent Answer Single-Choice',
         'm_desc' => '',
         'm_parents' => array(7712,7588,7585,6157,6193),
@@ -3661,19 +3661,19 @@ $config['en_all_7588'] = array(
 $config['en_ids_6193'] = array(6684,6685,7231,6907);
 $config['en_all_6193'] = array(
     6684 => array(
-        'm_icon' => '<i class="far fa-check "></i>',
+        'm_icon' => '<i class="fas fa-question"></i>',
         'm_name' => 'Answer Single-Choice',
         'm_desc' => '',
         'm_parents' => array(7712,7588,7585,6157,6193),
     ),
     6685 => array(
-        'm_icon' => '<i class="far fa-stopwatch "></i>',
+        'm_icon' => '<i class="fas fa-stopwatch "></i>',
         'm_name' => 'Answer Single-Choice Timed',
         'm_desc' => '',
         'm_parents' => array(7712,7488,7487,7585,7366,6193),
     ),
     7231 => array(
-        'm_icon' => '<i class="far fa-check-double "></i>',
+        'm_icon' => '<i class="fas fa-question-circle"></i>',
         'm_name' => 'Answer Multi-Choice',
         'm_desc' => '',
         'm_parents' => array(7712,7489,7588,7585,6193),
@@ -3690,37 +3690,37 @@ $config['en_all_6193'] = array(
 $config['en_ids_7585'] = array(6677,6683,6682,6680,6678,6679,7637,6681,6684,6685,7231,6907,6914);
 $config['en_all_7585'] = array(
     6677 => array(
-        'm_icon' => '<i class="far fa-comments "></i>',
+        'm_icon' => '<i class="fas fa-comments "></i>',
         'm_name' => 'Read-Only',
         'm_desc' => 'User will complete by reading intent messages only. No inputs required.',
         'm_parents' => array(7756,7585,4559,6192),
     ),
     6683 => array(
-        'm_icon' => '<i class="far fa-keyboard "></i>',
+        'm_icon' => '<i class="fas fa-keyboard "></i>',
         'm_name' => 'Send Text Message',
         'm_desc' => 'User will complete by sending a text message',
         'm_parents' => array(7585,6144,6192),
     ),
     6682 => array(
-        'm_icon' => '<i class="far fa-external-link "></i>',
+        'm_icon' => '<i class="fas fa-external-link "></i>',
         'm_name' => 'Send URL',
         'm_desc' => 'User will complete by sending a URL message',
         'm_parents' => array(7585,6144,6192),
     ),
     6680 => array(
-        'm_icon' => '<i class="far fa-microphone "></i>',
+        'm_icon' => '<i class="fas fa-microphone "></i>',
         'm_name' => 'Upload Audio',
         'm_desc' => 'User will complete by sending an audio message',
         'm_parents' => array(7751,7585,6144,6192),
     ),
     6678 => array(
-        'm_icon' => '<i class="far fa-image "></i>',
+        'm_icon' => '<i class="fas fa-image "></i>',
         'm_name' => 'Upload Image',
         'm_desc' => 'User will complete by sending an image message',
         'm_parents' => array(7751,7585,6144,6192),
     ),
     6679 => array(
-        'm_icon' => '<i class="far fa-video "></i>',
+        'm_icon' => '<i class="fas fa-video "></i>',
         'm_name' => 'Upload Video',
         'm_desc' => 'User will complete by sending a video message',
         'm_parents' => array(7751,7585,6144,6192),
@@ -3732,25 +3732,25 @@ $config['en_all_7585'] = array(
         'm_parents' => array(7751,7585,6144,6192),
     ),
     6681 => array(
-        'm_icon' => '<i class="far fa-file-pdf "></i>',
+        'm_icon' => '<i class="fas fa-file-pdf "></i>',
         'm_name' => 'Upload File',
         'm_desc' => 'User will complete by sending a file (PDF, DOC, etc...) message',
         'm_parents' => array(7751,7585,6144,6192),
     ),
     6684 => array(
-        'm_icon' => '<i class="far fa-check "></i>',
+        'm_icon' => '<i class="fas fa-question"></i>',
         'm_name' => 'Answer Single-Choice',
         'm_desc' => 'User will complete by choosing a child intent as their answer',
         'm_parents' => array(7712,7588,7585,6157,6193),
     ),
     6685 => array(
-        'm_icon' => '<i class="far fa-stopwatch "></i>',
+        'm_icon' => '<i class="fas fa-stopwatch "></i>',
         'm_name' => 'Answer Single-Choice Timed',
         'm_desc' => 'User will complete by choosing a child intent as their answer within a time limit',
         'm_parents' => array(7712,7488,7487,7585,7366,6193),
     ),
     7231 => array(
-        'm_icon' => '<i class="far fa-check-double "></i>',
+        'm_icon' => '<i class="fas fa-question-circle"></i>',
         'm_name' => 'Answer Multi-Choice',
         'm_desc' => 'User will complete by choosing one or more child intents as their answer',
         'm_parents' => array(7712,7489,7588,7585,6193),
@@ -4128,7 +4128,7 @@ $config['en_all_7368'] = array(
 $config['en_ids_7366'] = array(6685);
 $config['en_all_7366'] = array(
     6685 => array(
-        'm_icon' => '<i class="far fa-stopwatch "></i>',
+        'm_icon' => '<i class="fas fa-stopwatch "></i>',
         'm_name' => 'Intent Answer Single-Choice Timed',
         'm_desc' => '',
         'm_parents' => array(7712,7488,7487,7585,7366,6193),
@@ -4156,7 +4156,7 @@ $config['en_all_7360'] = array(
         'm_parents' => array(7774,7364,7360,6186),
     ),
     6176 => array(
-        'm_icon' => '<i class="fas fa-globe"></i>',
+        'm_icon' => '<i class="fas fa-globe ispink"></i>',
         'm_name' => 'Link Published',
         'm_desc' => '',
         'm_parents' => array(7774,7360,7359,6186),
@@ -4167,7 +4167,7 @@ $config['en_all_7360'] = array(
 $config['en_ids_7359'] = array(6176);
 $config['en_all_7359'] = array(
     6176 => array(
-        'm_icon' => '<i class="fas fa-globe"></i>',
+        'm_icon' => '<i class="fas fa-globe ispink"></i>',
         'm_name' => 'Link Published',
         'm_desc' => '',
         'm_parents' => array(7774,7360,7359,6186),
@@ -4184,7 +4184,7 @@ $config['en_all_7358'] = array(
         'm_parents' => array(7774,7358,6177),
     ),
     6181 => array(
-        'm_icon' => '<i class="fas fa-globe"></i>',
+        'm_icon' => '<i class="fas fa-globe blue"></i>',
         'm_name' => 'Entity Published',
         'm_desc' => '',
         'm_parents' => array(7774,7358,7357,6177),
@@ -4195,7 +4195,7 @@ $config['en_all_7358'] = array(
 $config['en_ids_7357'] = array(6181);
 $config['en_all_7357'] = array(
     6181 => array(
-        'm_icon' => '<i class="fas fa-globe"></i>',
+        'm_icon' => '<i class="fas fa-globe blue"></i>',
         'm_name' => 'Entity Published',
         'm_desc' => '',
         'm_parents' => array(7774,7358,7357,6177),
@@ -4212,7 +4212,7 @@ $config['en_all_7356'] = array(
         'm_parents' => array(7774,7356,4737),
     ),
     6184 => array(
-        'm_icon' => '<i class="fas fa-globe "></i>',
+        'm_icon' => '<i class="fas fa-globe yellow "></i>',
         'm_name' => 'Intent Published',
         'm_desc' => '',
         'm_parents' => array(7774,7355,7356,4737),
@@ -4223,7 +4223,7 @@ $config['en_all_7356'] = array(
 $config['en_ids_7355'] = array(6184);
 $config['en_all_7355'] = array(
     6184 => array(
-        'm_icon' => '<i class="fas fa-globe "></i>',
+        'm_icon' => '<i class="fas fa-globe yellow "></i>',
         'm_name' => 'Intent Published',
         'm_desc' => '',
         'm_parents' => array(7774,7355,7356,4737),
@@ -4320,7 +4320,7 @@ $config['en_all_7203'] = array(
 $config['en_ids_6186'] = array(6176,6175,6173);
 $config['en_all_6186'] = array(
     6176 => array(
-        'm_icon' => '<i class="fas fa-globe"></i>',
+        'm_icon' => '<i class="fas fa-globe ispink"></i>',
         'm_name' => 'Published',
         'm_desc' => 'live and ready to be shared with users',
         'm_parents' => array(7774,7360,7359,6186),
@@ -4699,7 +4699,7 @@ $config['en_all_6225'] = array(
 $config['en_ids_4737'] = array(6184,6183,6182);
 $config['en_all_4737'] = array(
     6184 => array(
-        'm_icon' => '<i class="fas fa-globe "></i>',
+        'm_icon' => '<i class="fas fa-globe yellow "></i>',
         'm_name' => 'Published',
         'm_desc' => 'newly added by miner but not yet checked by moderator',
         'm_parents' => array(7774,7355,7356,4737),
@@ -4722,7 +4722,7 @@ $config['en_all_4737'] = array(
 $config['en_ids_6177'] = array(6181,6180,6178);
 $config['en_all_6177'] = array(
     6181 => array(
-        'm_icon' => '<i class="fas fa-globe"></i>',
+        'm_icon' => '<i class="fas fa-globe blue"></i>',
         'm_name' => 'Published',
         'm_desc' => 'live and ready to be shared with users',
         'm_parents' => array(7774,7358,7357,6177),
