@@ -448,10 +448,10 @@ class Intents_model extends CI_Model
             ), true, $ln_creator_entity_id);
 
 
-            //Add user as Trainer IF NOT a trainer:
-            if(!count($this->Links_model->ln_fetch(array(
+            //Add user as Trainer IF Level 1 trainer:
+            if(count($this->Links_model->ln_fetch(array(
                 'ln_child_entity_id' => $ln_creator_entity_id,
-                'ln_parent_entity_id' => 1308, //Mench Trainers
+                'ln_parent_entity_id' => 7512, //Mench Trainers Level 1
                 'ln_type_entity_id IN (' . join(',', $this->config->item('en_ids_4592')) . ')' => null, //Entity-to-Entity Links
                 'ln_status_entity_id IN (' . join(',', $this->config->item('en_ids_7359')) . ')' => null, //Link Statuses Public
             )))){
@@ -460,6 +460,7 @@ class Intents_model extends CI_Model
                     'ln_parent_entity_id' => $ln_creator_entity_id,
                     'ln_type_entity_id' => 10573, //Intent Note Trainer
                     'ln_child_intent_id' => $intent_new['in_id'],
+                    'ln_content' => '@'.$ln_creator_entity_id,
                 ));
             }
 
