@@ -2293,8 +2293,8 @@ function echo_in($in, $level, $in_linked_id = 0, $is_parent = false)
         $ui .= '<span class="'.advance_mode($trainer_class).'"><a class="badge badge-primary white-primary is_not_bg" onclick="in_modify_load(' . $in['in_id'] . ',' . $ln_id . ')" style="margin:-2px -8px 0 0; width:40px;" href="#loadmodify-' . $in['in_id'] . '-' . $ln_id . '" data-toggle="tooltip" title="Intent completion cost. Click to modify intent'.( $level>1 ? ' and link' : '' ).'" data-placement="bottom"><span class="btn-counter slim-time t_estimate_' . $in['in_id'] . advance_mode() . '" tree-max-seconds="' . $in__metadata_max_seconds . '" intent-seconds="' . $in['in_completion_seconds'] . '">'.( $in__metadata_max_seconds > 0 ? echo_time_hours($in__metadata_max_seconds , true) : 0 ).'</span><i class="fas fa-cog"></i></a> &nbsp;</span>';
 
 
-        //Intent Unlink for trainers:
-        if(filter_array($session_en['en__parents'], 'en_id', $CI->config->item('en_ids_10691') /* Mench Trainers */)){
+        //Intent Unlink for Level 1 trainers only:
+        if(filter_array($session_en['en__parents'], 'en_id', $CI->config->item('en_ids_10691') /* Mench Trainers */) && !filter_array($session_en['en__parents'], 'en_id', $CI->config->item('en_ids_10704') /* Mench Administrators */)){
             if($ln_id > 0 && $in_linked_id > 0){
                 $ui .= '<span class="'.advance_mode(in_trainer_class($in_linked_id)).'"><a class="badge badge-primary white-primary is_not_bg " onclick="in_unlink_only(' . $in['in_id'] . ','.$level.',' . $ln_id . ')" style="margin:-2px -8px 0 4px; width:40px;" href="javascript:void(0)" data-toggle="tooltip" title="Unlink Intent" data-placement="bottom"><i class="far fa-trash-alt"></i></a> &nbsp;</span>';
             } else {
