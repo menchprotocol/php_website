@@ -1808,7 +1808,7 @@ function echo_in_marks($in_ln){
 
 }
 
-function in_authors_class($in_id){
+function in_trainer_class($in_id){
     //Allow to edit IF they are part of the intent Trainers:
     $css_author = '';
     $CI =& get_instance();
@@ -1819,7 +1819,7 @@ function in_authors_class($in_id){
         'ln_parent_entity_id >' => 0, //Where the author entity is stored
     ), array(), 0) as $author){
         //Append CSS class:
-        $css_author .= ' author_class_'.$author['ln_parent_entity_id'].' ';
+        $css_author .= ' trainer_class_'.$author['ln_parent_entity_id'].' ';
     }
     return $css_author;
 }
@@ -2211,7 +2211,7 @@ function echo_in($in, $level, $in_linked_id = 0, $is_parent = false)
     $css_author = '';
     if(isset($session_en['en_id'])){
 
-        $author_class = in_authors_class($in['in_id']);
+        $trainer_class = in_trainer_class($in['in_id']);
 
         //Action Plan:
         $actionplan_users = $CI->Links_model->ln_fetch(array(
@@ -2228,7 +2228,7 @@ function echo_in($in, $level, $in_linked_id = 0, $is_parent = false)
             )), array(), 0, 0, array(), 'COUNT(ln_id) as total_steps');
         }
         if(1 || $actionplan_users[0]['total_steps'] > 0) {
-            $ui .= '<span class="'.advance_mode($author_class).'"><a id="match_list_'.$in['in_id'].'" href="#actionplanusers-'.$in['in_id'].'" onclick="in_action_plan_users('.$in['in_id'].')" class="badge badge-primary white-primary is_not_bg" style="width:40px; margin:-3px -3px 0 4px;" data-toggle="tooltip" data-placement="bottom" title="'.$en_all_4527[6255]['m_name'].'">'.( !count($in_filters['get_filter_query']) || $actionplan_users_match[0]['total_steps']>0 ? '<span class="btn-counter">' . ( count($in_filters['get_filter_query']) > 0 ? '<i class="fas fa-filter mini-filter"></i> '.echo_number($actionplan_users_match[0]['total_steps']) : echo_number($actionplan_users[0]['total_steps']) ) . '</span>' : '' ).$en_all_4527[6255]['m_icon'].'</a></span>';
+            $ui .= '<span class="'.advance_mode($trainer_class).'"><a id="match_list_'.$in['in_id'].'" href="#actionplanusers-'.$in['in_id'].'" onclick="in_action_plan_users('.$in['in_id'].')" class="badge badge-primary white-primary is_not_bg" style="width:40px; margin:-3px -3px 0 4px;" data-toggle="tooltip" data-placement="bottom" title="'.$en_all_4527[6255]['m_name'].'">'.( !count($in_filters['get_filter_query']) || $actionplan_users_match[0]['total_steps']>0 ? '<span class="btn-counter">' . ( count($in_filters['get_filter_query']) > 0 ? '<i class="fas fa-filter mini-filter"></i> '.echo_number($actionplan_users_match[0]['total_steps']) : echo_number($actionplan_users[0]['total_steps']) ) . '</span>' : '' ).$en_all_4527[6255]['m_icon'].'</a></span>';
         }
 
 
@@ -2249,7 +2249,7 @@ function echo_in($in, $level, $in_linked_id = 0, $is_parent = false)
 
         $non_message_notes = $count_in_notes[0]['totals'] -  $count_in_messages[0]['totals'];
 
-        $ui .= '<span class="'.advance_mode($author_class).'"><a href="#intentnotes-' . $in['in_id'] . '" onclick="in_messages_iframe('.$in['in_id'].')" class="msg-badge-' . $in['in_id'] . ' badge badge-primary white-primary is_not_bg '.( $level==0 ? '' . advance_mode() . '' : '' ).'" style="width:40px; margin-right:2px; margin-left:5px;" data-toggle="tooltip" title="'.$en_all_4527[4485]['m_name'].'" data-placement="bottom"><span class="btn-counter"><span class="in-notes-messages-' . $in['in_id'] . '">' . $count_in_messages[0]['totals'] .'</span>' . ( $non_message_notes > 0 ? '<span class="extra-note-counts '.advance_mode().'">+<span class="in-notes-non-messages-">'.$non_message_notes.'</span></span>' : '' ) . '</span>'.$en_all_4527[4485]['m_icon'].'</a></span>';
+        $ui .= '<span class="'.advance_mode($trainer_class).'"><a href="#intentnotes-' . $in['in_id'] . '" onclick="in_messages_iframe('.$in['in_id'].')" class="msg-badge-' . $in['in_id'] . ' badge badge-primary white-primary is_not_bg '.( $level==0 ? '' . advance_mode() . '' : '' ).'" style="width:40px; margin-right:2px; margin-left:5px;" data-toggle="tooltip" title="'.$en_all_4527[4485]['m_name'].'" data-placement="bottom"><span class="btn-counter"><span class="in-notes-messages-' . $in['in_id'] . '">' . $count_in_messages[0]['totals'] .'</span>' . ( $non_message_notes > 0 ? '<span class="extra-note-counts '.advance_mode().'">+<span class="in-notes-non-messages-">'.$non_message_notes.'</span></span>' : '' ) . '</span>'.$en_all_4527[4485]['m_icon'].'</a></span>';
 
 
 
@@ -2257,13 +2257,13 @@ function echo_in($in, $level, $in_linked_id = 0, $is_parent = false)
         //Intent modify:
         $in__metadata_max_seconds = (isset($in_metadata['in__metadata_max_seconds']) ? $in_metadata['in__metadata_max_seconds'] : 0);
 
-        $ui .= '<span class="'.advance_mode($author_class).'"><a class="badge badge-primary white-primary is_not_bg" onclick="in_modify_load(' . $in['in_id'] . ',' . $ln_id . ')" style="margin:-2px -8px 0 0; width:40px;" href="#loadmodify-' . $in['in_id'] . '-' . $ln_id . '" data-toggle="tooltip" title="Intent completion cost. Click to modify intent'.( $level>1 ? ' and link' : '' ).'" data-placement="bottom"><span class="btn-counter slim-time t_estimate_' . $in['in_id'] . advance_mode() . '" tree-max-seconds="' . $in__metadata_max_seconds . '" intent-seconds="' . $in['in_completion_seconds'] . '">'.( $in__metadata_max_seconds > 0 ? echo_time_hours($in__metadata_max_seconds , true) : 0 ).'</span><i class="fas fa-cog"></i></a> &nbsp;</span>';
+        $ui .= '<span class="'.advance_mode($trainer_class).'"><a class="badge badge-primary white-primary is_not_bg" onclick="in_modify_load(' . $in['in_id'] . ',' . $ln_id . ')" style="margin:-2px -8px 0 0; width:40px;" href="#loadmodify-' . $in['in_id'] . '-' . $ln_id . '" data-toggle="tooltip" title="Intent completion cost. Click to modify intent'.( $level>1 ? ' and link' : '' ).'" data-placement="bottom"><span class="btn-counter slim-time t_estimate_' . $in['in_id'] . advance_mode() . '" tree-max-seconds="' . $in__metadata_max_seconds . '" intent-seconds="' . $in['in_completion_seconds'] . '">'.( $in__metadata_max_seconds > 0 ? echo_time_hours($in__metadata_max_seconds , true) : 0 ).'</span><i class="fas fa-cog"></i></a> &nbsp;</span>';
 
 
         //Intent Unlink for trainers:
         if(filter_array($session_en['en__parents'], 'en_id', 7512)){
             if($ln_id > 0 && $in_linked_id > 0){
-                $ui .= '<span class="'.advance_mode(in_authors_class($in_linked_id)).'"><a class="badge badge-primary white-primary is_not_bg " onclick="in_unlink_only(' . $in['in_id'] . ','.$level.',' . $ln_id . ')" style="margin:-2px -8px 0 4px; width:40px;" href="javascript:void(0)" data-toggle="tooltip" title="Unlink Intent" data-placement="bottom"><i class="far fa-trash-alt"></i></a> &nbsp;</span>';
+                $ui .= '<span class="'.advance_mode(in_trainer_class($in_linked_id)).'"><a class="badge badge-primary white-primary is_not_bg " onclick="in_unlink_only(' . $in['in_id'] . ','.$level.',' . $ln_id . ')" style="margin:-2px -8px 0 4px; width:40px;" href="javascript:void(0)" data-toggle="tooltip" title="Unlink Intent" data-placement="bottom"><i class="far fa-trash-alt"></i></a> &nbsp;</span>';
             } else {
                 $ui .= '<span style="width:43px; display: inline-block;">&nbsp;</span>';
             }
@@ -2365,7 +2365,7 @@ function echo_in($in, $level, $in_linked_id = 0, $is_parent = false)
         }
 
 
-        $ui .= '<div class="'.advance_mode(in_authors_class($in['in_id'])).'">';
+        $ui .= '<div class="'.advance_mode(in_trainer_class($in['in_id'])).'">';
         $ui .= '<div class="list-group-item list_input new-in3-input link-class--' . $ln_id . ' hidden">
                 <div class="form-group is-empty"  style="margin: 0; padding: 0;"><form action="#" onsubmit="in_link_or_create(' . $in['in_id'] . ',0,3);" intent-id="' . $in['in_id'] . '"><input type="text" class="form-control intentadder-id-'.$in['in_id'].' algolia_search" maxlength="' . $CI->config->item('in_outcome_max') . '" id="addintent-cr-' . $ln_id . '" intent-id="' . $in['in_id'] . '" placeholder="+ Intent"></form></div>
         </div>';

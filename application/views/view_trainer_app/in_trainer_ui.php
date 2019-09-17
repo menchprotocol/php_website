@@ -26,7 +26,7 @@ $en_all_7369 = $this->config->item('en_all_7369');
         } else {
 
             //Parent intents:
-            echo '<h5 class="badge badge-h '.( !count($in['in__parents']) ? advance_mode() : '' ).'"><span class="li-parent-count parent-counter-' . $in['in_id'] . '">' . count($in['in__parents']) . '</span> Parent' . echo__s(count($in['in__parents'])) . '</h5>';
+            echo '<h5 class="badge badge-h"><span class="li-parent-count parent-counter-' . $in['in_id'] . '">' . count($in['in__parents']) . '</span> Parent' . echo__s(count($in['in__parents'])) . '</h5>';
             echo '<div id="list-in-' . $in['in_id'] . '-1" class="list-group list-level-2">';
 
             //List current parent intents:
@@ -35,7 +35,7 @@ $en_all_7369 = $this->config->item('en_all_7369');
             }
 
             //Add parent intent:
-            echo '<div class="list-group-item list_input grey-block '.advance_mode().'">
+            echo '<div class="list-group-item list_input grey-block">
                         <div class="form-group is-empty" style="margin: 0; padding: 0;">
                             <input type="text"
                                    class="form-control intentadder-level-2-parent algolia_search"
@@ -132,7 +132,7 @@ $en_all_7369 = $this->config->item('en_all_7369');
         }
 
         //Add child intent:
-        echo '<div class="list-group-item list_input grey-block '.advance_mode(in_authors_class($in['in_id'])).'">
+        echo '<div class="list-group-item list_input grey-block '.advance_mode(in_trainer_class($in['in_id'])).'">
                     <div class="form-group is-empty" style="margin: 0; padding: 0;">
                         <input type="text"
                                class="form-control intentadder-level-2-child algolia_search"

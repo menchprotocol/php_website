@@ -24,7 +24,7 @@ $uri_segment_2 = $this->uri->segment(2);
 
 
     <!-- Author CSS to make certain fields visible IF user is the object creator -->
-    <?= ( !$is_trainer ? '<style> span.author_class_'.$session_en['en_id'].' { display:inline-block !important; } div.author_class_'.$session_en['en_id'].' { display:block !important; } </style>' : '' ) ?>
+    <?= ( !$is_trainer ? '<style> span.trainer_class_'.$session_en['en_id'].' { display:inline-block !important; } div.trainer_class_'.$session_en['en_id'].' { display:block !important; } </style>' : '' ) ?>
 
 </head>
 

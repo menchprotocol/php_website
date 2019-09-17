@@ -26,7 +26,7 @@ $config['css_column_1']             = 'col-xs-7 cols'; //Size of grid 1 (IF Chan
 $config['css_column_2']             = 'col-xs-5 cols'; //Size of grid 2
 $config['fb_mench_url']             = 'https://m.me/askmench'; //The URL of Mench on Messenger
 $config['magic_link_expiry']        = 3600;
-$config['pas    sword_reset_expiry']    = 86400;
+$config['pasword_reset_expiry']     = 86400;
 $config['password_min_char']        = 6;
 
 //Word converter:
