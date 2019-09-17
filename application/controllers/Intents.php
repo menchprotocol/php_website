@@ -159,8 +159,8 @@ class Intents extends CI_Controller
             'title' => echo_in_outcome($ins[0]['in_outcome'], true),
         ));
 
-        //Load specific view based on intent scope:
-        $this->load->view(( in_array($ins[0]['in_scope_entity_id'], $this->config->item('en_ids_7582')) /* Intent Scopes Get Started */ ? 'view_user_app/in_starting_point' : 'view_user_app/in_passing_point'  ), array(
+        //Load specific view based on Intent Level:
+        $this->load->view(( in_array($ins[0]['in_level_entity_id'], $this->config->item('en_ids_7582')) /* Intent Levels Get Started */ ? 'view_user_app/in_starting_point' : 'view_user_app/in_passing_point'  ), array(
             'in' => $ins[0],
             'referrer_en_id' => $referrer_en_id,
             'session_en' => $session_en,
@@ -719,10 +719,10 @@ class Intents extends CI_Controller
                 'status' => 0,
                 'message' => 'Missing in_status_entity_id',
             ));
-        } elseif (!isset($_POST['in_scope_entity_id'])) {
+        } elseif (!isset($_POST['in_level_entity_id'])) {
             return echo_json(array(
                 'status' => 0,
-                'message' => 'Missing in_scope_entity_id',
+                'message' => 'Missing in_level_entity_id',
             ));
         } elseif (count($ins) < 1) {
             return echo_json(array(
@@ -757,21 +757,21 @@ class Intents extends CI_Controller
                 'status' => 0,
                 'message' => 'Invalid in_status_entity_id',
             ));
-        } elseif (!in_array($_POST['in_scope_entity_id'], $this->config->item('en_ids_7596'))) {
+        } elseif (!in_array($_POST['in_level_entity_id'], $this->config->item('en_ids_7596'))) {
             return echo_json(array(
                 'status' => 0,
-                'message' => 'Invalid in_scope_entity_id',
+                'message' => 'Invalid in_level_entity_id',
             ));
-        } elseif (!in_array($_POST['in_scope_entity_id'], $this->config->item('en_ids_7596'))) {
+        } elseif (!in_array($_POST['in_level_entity_id'], $this->config->item('en_ids_7596'))) {
             return echo_json(array(
                 'status' => 0,
-                'message' => 'Invalid in_scope_entity_id',
+                'message' => 'Invalid in_level_entity_id',
             ));
         }
 
 
         //Validate Intent Outcome:
-        $in_outcome_validation = $this->Intents_model->in_validate_outcome($_POST['in_outcome'], $_POST['in_scope_entity_id']);
+        $in_outcome_validation = $this->Intents_model->in_validate_outcome($_POST['in_outcome'], $_POST['in_level_entity_id']);
         if(!$in_outcome_validation['status']){
             //We had an error, return it:
             return echo_json($in_outcome_validation);
@@ -789,7 +789,7 @@ class Intents extends CI_Controller
         $in_update = array(
             'in_completion_method_entity_id' => $_POST['in_completion_method_entity_id'],
             'in_status_entity_id' => $_POST['in_status_entity_id'],
-            'in_scope_entity_id' => $_POST['in_scope_entity_id'],
+            'in_level_entity_id' => $_POST['in_level_entity_id'],
             'in_completion_seconds' => intval($_POST['in_completion_seconds']),
             'in_outcome' => $_POST['in_outcome'],
             'in_verb_entity_id' => $_POST['in_verb_entity_id'],
@@ -1716,7 +1716,7 @@ class Intents extends CI_Controller
             //Update all Recommended Intentions and their tree:
             foreach ($this->Intents_model->in_fetch(array(
                 'in_status_entity_id IN (' . join(',', $this->config->item('en_ids_7355')) . ')' => null, //Intent Statuses Public
-                'in_scope_entity_id IN (' . join(',', $this->config->item('en_ids_7582')) . ')' => null, //Intent Scopes Get Started
+                'in_level_entity_id IN (' . join(',', $this->config->item('en_ids_7582')) . ')' => null, //Intent Levels Get Started
             )) as $published_in) {
                 $tree = $this->Intents_model->in_metadata_extra_insights($published_in['in_id']);
                 if($tree){

@@ -85,7 +85,7 @@ if(isset($session_en['en_id']) && $referrer_en_id == 0){
 //Child intentions:
 $in__children = $this->Links_model->ln_fetch(array(
     'ln_status_entity_id IN (' . join(',', $this->config->item('en_ids_7359')) . ')' => null, //Link Statuses Public
-    'in_scope_entity_id IN (' . join(',', $this->config->item('en_ids_7582')) . ')' => null, //Intent Scopes Get Started
+    'in_level_entity_id IN (' . join(',', $this->config->item('en_ids_7582')) . ')' => null, //Intent Levels Get Started
     'in_status_entity_id IN (' . join(',', $this->config->item('en_ids_7355')) . ')' => null, //Intent Statuses Public
     'ln_type_entity_id' => 4228, //Intent Link Regular Step
     'ln_parent_intent_id' => $in['in_id'],
@@ -94,7 +94,7 @@ $in__children = $this->Links_model->ln_fetch(array(
 //Parent intentions:
 $in__parents = $this->Links_model->ln_fetch(array(
     'ln_status_entity_id IN (' . join(',', $this->config->item('en_ids_7359')) . ')' => null, //Link Statuses Public
-    'in_scope_entity_id IN (' . join(',', $this->config->item('en_ids_7582')) . ')' => null, //Intent Scopes Get Started
+    'in_level_entity_id IN (' . join(',', $this->config->item('en_ids_7582')) . ')' => null, //Intent Levels Get Started
     'in_status_entity_id IN (' . join(',', $this->config->item('en_ids_7355')) . ')' => null, //Intent Statuses Public
     'ln_type_entity_id' => 4228, //Intent Link Regular Step
     'ln_child_intent_id' => $in['in_id'],
@@ -125,7 +125,7 @@ if($referrer_en_id > 0){
     ), array('in_parent')) as $parent_in) {
         $in__siblings = array_merge($in__siblings, $this->Links_model->ln_fetch(array(
             'ln_status_entity_id IN (' . join(',', $this->config->item('en_ids_7359')) . ')' => null, //Link Statuses Public
-            'in_scope_entity_id IN (' . join(',', $this->config->item('en_ids_7582')) . ')' => null, //Intent Scopes Get Started
+            'in_level_entity_id IN (' . join(',', $this->config->item('en_ids_7582')) . ')' => null, //Intent Levels Get Started
             'in_status_entity_id IN (' . join(',', $this->config->item('en_ids_7355')) . ')' => null, //Intent Statuses Public
             'ln_type_entity_id' => 4228, //Intent Link Regular Step
             'ln_parent_intent_id' => $parent_in['in_id'],
@@ -143,7 +143,7 @@ if($referrer_en_id > 0){
     ), array('in_child')) as $child_in) {
         $in__granchildren = array_merge($in__granchildren, $this->Links_model->ln_fetch(array(
             'ln_status_entity_id IN (' . join(',', $this->config->item('en_ids_7359')) . ')' => null, //Link Statuses Public
-            'in_scope_entity_id IN (' . join(',', $this->config->item('en_ids_7582')) . ')' => null, //Intent Scopes Get Started
+            'in_level_entity_id IN (' . join(',', $this->config->item('en_ids_7582')) . ')' => null, //Intent Levels Get Started
             'in_status_entity_id IN (' . join(',', $this->config->item('en_ids_7355')) . ')' => null, //Intent Statuses Public
             'ln_type_entity_id' => 4228, //Intent Link Regular Step
             'ln_parent_intent_id' => $child_in['in_id'],

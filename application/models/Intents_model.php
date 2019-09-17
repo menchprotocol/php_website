@@ -23,8 +23,8 @@ class Intents_model extends CI_Model
             return false;
         }
 
-        if(!isset($insert_columns['in_scope_entity_id'])){
-            $insert_columns['in_scope_entity_id'] = 7597; //Always start as a leaf
+        if(!isset($insert_columns['in_level_entity_id'])){
+            $insert_columns['in_level_entity_id'] = 7597; //Always start as a leaf
         }
 
         if(!isset($insert_columns['in_completion_seconds']) || $insert_columns['in_completion_seconds'] < 0){
@@ -234,10 +234,10 @@ class Intents_model extends CI_Model
                     $ln_parent_entity_id = $value;
                     $ln_child_entity_id = $before_data[0][$key];
 
-                } elseif($key=='in_scope_entity_id'){
+                } elseif($key=='in_level_entity_id'){
 
                     $ln_type_entity_id = 10649; //Intent Iterated Scope
-                    $en_all_7596 = $this->config->item('en_all_7596'); //Intent Scope
+                    $en_all_7596 = $this->config->item('en_all_7596'); //Intent Level
                     $ln_content = echo_clean_db_name($key) . ' iterated from [' . $en_all_7596[$before_data[0][$key]]['m_name'] . '] to [' . $en_all_7596[$value]['m_name'] . ']';
                     $ln_parent_entity_id = $value;
                     $ln_child_entity_id = $before_data[0][$key];
@@ -1123,14 +1123,14 @@ class Intents_model extends CI_Model
 
     }
 
-    function in_validate_outcome($in_outcome, $in_scope_entity_id = 7597 /* Leaf is Default */){
+    function in_validate_outcome($in_outcome, $in_level_entity_id = 7597 /* Leaf is Default */){
 
 
         //Prep basic variables to start validation:
         $starts_with_equal = ( substr($in_outcome, 0, 1) == '=' );
-        $scope_supports_equal = in_array($in_scope_entity_id, $this->config->item('en_ids_10567'));
+        $scope_supports_equal = in_array($in_level_entity_id, $this->config->item('en_ids_10567'));
         $in_verb_entity_id = ( $starts_with_equal ? 10569 : in_outcome_verb_id($in_outcome) );
-        $en_all_7596 = $this->config->item('en_all_7596'); // Intent Scope
+        $en_all_7596 = $this->config->item('en_all_7596'); // Intent Level
 
 
         //Validate:
@@ -1141,11 +1141,11 @@ class Intents_model extends CI_Model
                 'message' => 'Missing Outcome',
             );
 
-        } elseif (!in_array($in_scope_entity_id, $this->config->item('en_ids_7596'))) {
+        } elseif (!in_array($in_level_entity_id, $this->config->item('en_ids_7596'))) {
 
             return array(
                 'status' => 0,
-                'message' => 'Invalid in_scope_entity_id',
+                'message' => 'Invalid in_level_entity_id',
             );
 
         } elseif(substr_count($in_outcome , '  ') > 0){
@@ -1166,7 +1166,7 @@ class Intents_model extends CI_Model
 
             return array(
                 'status' => 0,
-                'message' => $en_all_7596[$in_scope_entity_id]['m_name'].' Intents must start with a verb',
+                'message' => $en_all_7596[$in_level_entity_id]['m_name'].' Intents must start with a verb',
             );
 
         } elseif(!$starts_with_equal && !$in_verb_entity_id) {

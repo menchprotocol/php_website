@@ -1255,7 +1255,7 @@ function update_algolia($input_obj_type = null, $input_obj_id = 0, $return_row_o
 
 
                 //Append Trainers:
-                if(in_array(intval($db_row['in_scope_entity_id']), $CI->config->item('en_ids_7767'))){
+                if(in_array(intval($db_row['in_level_entity_id']), $CI->config->item('en_ids_7767'))){
                     foreach($CI->Links_model->ln_fetch(array(
                         'ln_status_entity_id IN (' . join(',', $CI->config->item('en_ids_7359')) . ')' => null, //Link Statuses Public
                         'ln_type_entity_id' => 10573, //Intent Note Trainer
@@ -1268,9 +1268,9 @@ function update_algolia($input_obj_type = null, $input_obj_id = 0, $return_row_o
 
 
                 //If Public Status:
-                if(in_array(intval($db_row['in_status_entity_id']), $CI->config->item('en_ids_7355')) && in_array(intval($db_row['in_scope_entity_id']), $CI->config->item('en_ids_7582'))){
+                if(in_array(intval($db_row['in_status_entity_id']), $CI->config->item('en_ids_7355')) && in_array(intval($db_row['in_level_entity_id']), $CI->config->item('en_ids_7582'))){
                     array_push($export_row['_tags'], 'alg_for_users');
-                } elseif(in_array(intval($db_row['in_scope_entity_id']), $CI->config->item('en_ids_7767'))){
+                } elseif(in_array(intval($db_row['in_level_entity_id']), $CI->config->item('en_ids_7767'))){
                     array_push($export_row['_tags'], 'alg_for_trainer');
                 }
 

@@ -171,8 +171,8 @@ class Trainer_app extends CI_Controller
         echo_2level_stats($en_all_7302[10602]['m_name'], 10602, 7585, $intent_types_counts, $addup_total_count, 'in_completion_method_entity_id', 'total_count');
 
 
-        //Intent Scopes:
-        echo echo_in_setting(7596,'in_scope_entity_id', $addup_total_count);
+        //Intent Levels:
+        echo echo_in_setting(7596,'in_level_entity_id', $addup_total_count);
 
         //Intent Verbs:
         $show_max_verbs = 3;

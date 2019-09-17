@@ -1559,7 +1559,7 @@ class Communication_model extends CI_Model
             //Validate intent:
             $ins = $this->Intents_model->in_fetch(array(
                 'in_id' => $in_id,
-                'in_scope_entity_id IN (' . join(',', $this->config->item('en_ids_7582')) . ')' => null, //Intent Scopes Get Started
+                'in_level_entity_id IN (' . join(',', $this->config->item('en_ids_7582')) . ')' => null, //Intent Levels Get Started
                 'in_status_entity_id IN (' . join(',', $this->config->item('en_ids_7355')) . ')' => null, //Intent Statuses Public
             ));
             if (count($ins) < 1) {
@@ -1605,7 +1605,7 @@ class Communication_model extends CI_Model
             $in_id = intval($quick_reply_payload);
             $ins = $this->Intents_model->in_fetch(array(
                 'in_id' => $in_id,
-                'in_scope_entity_id IN (' . join(',', $this->config->item('en_ids_7582')) . ')' => null, //Intent Scopes Get Started
+                'in_level_entity_id IN (' . join(',', $this->config->item('en_ids_7582')) . ')' => null, //Intent Levels Get Started
                 'in_status_entity_id IN (' . join(',', $this->config->item('en_ids_7355')) . ')' => null, //Intent Statuses Public
             ));
             if (count($ins) < 1) {

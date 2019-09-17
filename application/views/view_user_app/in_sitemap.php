@@ -2,7 +2,7 @@
 
 $en_all_7369 = $this->config->item('en_all_7369');
 $in_published_trees = $this->Intents_model->in_fetch(array(
-    'in_scope_entity_id' => 7598, //Tree
+    'in_level_entity_id' => 7598, //Tree
     'in_status_entity_id' => 6184, //Published
 ), array(), 0, 0, array(
     'in_outcome' => 'ASC',

@@ -1619,7 +1619,7 @@ function echo_in_recommend($in, $common_prefix = null, $hide_class = null, $refe
     //See if user is logged-in:
     $CI =& get_instance();
     $session_en = en_auth();
-    $is_starting = ( in_array($in['in_scope_entity_id'], $CI->config->item('en_ids_7582')) /* Intent Scopes Get Started */);
+    $is_starting = ( in_array($in['in_level_entity_id'], $CI->config->item('en_ids_7582')) /* Intent Levels Get Started */);
     $en_all_7369 = $CI->config->item('en_all_7369');
     $already_in_actionplan = (isset($session_en['en_id']) && count($CI->Links_model->ln_fetch(array(
             'ln_creator_entity_id' => $session_en['en_id'],
@@ -2038,7 +2038,7 @@ function echo_in($in, $level, $in_linked_id = 0, $is_parent = false)
     $session_en = $CI->session->userdata('user');
     $en_all_4737 = $CI->config->item('en_all_4737'); // Intent Statuses
     $en_all_7585 = $CI->config->item('en_all_7585'); // Intent Subtypes
-    $en_all_7596 = $CI->config->item('en_all_7596'); // Intent Scope
+    $en_all_7596 = $CI->config->item('en_all_7596'); // Intent Level
     $en_all_6186 = $CI->config->item('en_all_6186'); // Link Status
     $en_all_4527 = $CI->config->item('en_all_4527'); //Platform Cache
     $is_child_focused = ($level == 3 && $is_parent && $CI->uri->segment(2)==$in['in_id']);
@@ -2131,7 +2131,7 @@ function echo_in($in, $level, $in_linked_id = 0, $is_parent = false)
     $ui .= '<span class="icon-top-right in_status_entity_id_' . $in['in_id'] . '"><span data-toggle="tooltip" data-placement="right" title="'.$en_all_4737[$in['in_status_entity_id']]['m_name'].': '.$en_all_4737[$in['in_status_entity_id']]['m_desc'].'">' . $en_all_4737[$in['in_status_entity_id']]['m_icon'] . '</span></span>';
 
 
-    $ui .= '<span class="icon-top-left in_scope_entity_id_' . $in['in_id'] . '" data-toggle="tooltip" data-placement="right" title="'.$en_all_7596[$in['in_scope_entity_id']]['m_name'].': '.$en_all_7596[$in['in_scope_entity_id']]['m_desc'].'">' . $en_all_7596[$in['in_scope_entity_id']]['m_icon'] . '</span>';
+    $ui .= '<span class="icon-top-left in_level_entity_id_' . $in['in_id'] . '" data-toggle="tooltip" data-placement="right" title="'.$en_all_7596[$in['in_level_entity_id']]['m_name'].': '.$en_all_7596[$in['in_level_entity_id']]['m_desc'].'">' . $en_all_7596[$in['in_level_entity_id']]['m_icon'] . '</span>';
 
 
 

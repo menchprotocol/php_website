@@ -11,7 +11,7 @@ defined('BASEPATH') OR exit('No direct script access allowed');
  *
  */
 
-//Generated 2019-09-16 22:15:46 PST
+//Generated 2019-09-16 22:27:09 PST
 
 //Mench Trainers:
 $config['en_ids_10691'] = array(7512,1308,1281);
@@ -72,7 +72,7 @@ $config['en_all_10692'] = array(
 );
 
 //Platform Cache:
-$config['en_ids_4527'] = array(7758,7774,7756,6827,4997,7303,6194,6805,6177,7358,7357,6206,4592,4537,10627,6192,7712,7585,7302,4229,6345,4485,4986,7551,7701,4983,6193,7596,7582,7767,10568,10567,7588,4737,7356,7355,6201,4486,7309,10602,7751,7799,10692,7304,10591,7703,10658,6103,6186,7360,7364,7359,4341,4593,7347,10592,7529,7555,7372,7368,10691,6287,7369,4426,6225,10596,4527,7366,4755,10571,6204,6123,10593,4454,5969,3000,4600,6150,5967,4280,10570,4277,6102,7704,6144,6244,6255,6274,6146,7494,7203,10539,10594,10589,10590);
+$config['en_ids_4527'] = array(7758,7774,7756,6827,4997,7303,6194,6805,6177,7358,7357,6206,4592,4537,10627,6192,7712,7585,7302,7596,4229,6345,4485,4986,7551,7701,4983,6193,7582,7767,10568,10567,7588,4737,7356,7355,6201,4486,7309,10602,7751,7799,10692,7304,10591,7703,10658,6103,6186,7360,7364,7359,4341,4593,7347,10592,7529,7555,7372,7368,10691,6287,7369,4426,6225,10596,4527,7366,4755,10571,6204,6123,10593,4454,5969,3000,4600,6150,5967,4280,10570,4277,6102,7704,6144,6244,6255,6274,6146,7494,7203,10539,10594,10589,10590);
 $config['en_all_4527'] = array(
     7758 => array(
         'm_icon' => '<i class="far fa-mountain"></i>',
@@ -188,6 +188,12 @@ $config['en_all_4527'] = array(
         'm_desc' => '&var_trimcache=Intent',
         'm_parents' => array(4527,7161,4535),
     ),
+    7596 => array(
+        'm_icon' => '<i class="fas fa-triangle"></i>',
+        'm_name' => 'Intent Level',
+        'm_desc' => '&var_trimcache=Intent',
+        'm_parents' => array(6204,10649,7302,6160,6201,6194,6232,4527),
+    ),
     4229 => array(
         'm_icon' => '<i class="fas fa-lock ispink"></i>',
         'm_name' => 'Intent Link Conditional',
@@ -235,12 +241,6 @@ $config['en_all_4527'] = array(
         'm_name' => 'Intent OR',
         'm_desc' => '&var_trimcache=Intent',
         'm_parents' => array(10602,4527),
-    ),
-    7596 => array(
-        'm_icon' => '<i class="fas fa-mountains "></i>',
-        'm_name' => 'Intent Scope',
-        'm_desc' => '&var_trimcache=Intent',
-        'm_parents' => array(6204,10649,7302,6160,6201,6194,6232,4527),
     ),
     7582 => array(
         'm_icon' => '<i class="fas fa-flag"></i>',
@@ -847,7 +847,7 @@ $config['en_all_10539'] = array(
         'm_parents' => array(7703,10539,4593,10589,10638),
     ),
     10649 => array(
-        'm_icon' => '<i class="fas fa-mountains ispink"></i>',
+        'm_icon' => '<i class="fas fa-triangle ispink"></i>',
         'm_name' => 'Intent Iterated Scope',
         'm_desc' => '',
         'm_parents' => array(7703,10539,4593,10589,10638),
@@ -2017,7 +2017,7 @@ $config['en_all_10589'] = array(
         'm_parents' => array(7703,10589,10593,4593,10638),
     ),
     10649 => array(
-        'm_icon' => '<i class="fas fa-mountains ispink"></i>',
+        'm_icon' => '<i class="fas fa-triangle ispink"></i>',
         'm_name' => 'Intent Iterated Scope',
         'm_desc' => '',
         'm_parents' => array(7703,10539,4593,10589,10638),
@@ -2638,7 +2638,7 @@ $config['en_all_10591'] = array(
 );
 
 //Public Entities:
-$config['en_ids_10571'] = array(2997,4446,3005,4763,3147,2999,4883,3192,5948,2998,4433,3084,7512,1308,1281,3000);
+$config['en_ids_10571'] = array(2997,4446,3005,4763,3147,2999,4883,3192,5948,2998,3084,7512,1308,1281,3000);
 $config['en_all_10571'] = array(
     2997 => array(
         'm_icon' => '<i class="far fa-newspaper"></i>',
@@ -2700,12 +2700,6 @@ $config['en_all_10571'] = array(
         'm_desc' => '',
         'm_parents' => array(10571,4983,7614,3000),
     ),
-    4433 => array(
-        'm_icon' => '<i class="far fa-user-ninja"></i>',
-        'm_name' => 'Mench Coders',
-        'm_desc' => '',
-        'm_parents' => array(10571,6827,4463,4426),
-    ),
     3084 => array(
         'm_icon' => '<i class="fas fa-user-astronaut"></i>',
         'm_name' => 'Mench Experts',
@@ -2759,7 +2753,7 @@ $config['en_all_10570'] = array(
 $config['en_ids_10568'] = array(7598);
 $config['en_all_10568'] = array(
     7598 => array(
-        'm_icon' => '<i class="fas fa-play-circle "></i>',
+        'm_icon' => '<i class="fas fa-users-class"></i>',
         'm_name' => 'Intent Course',
         'm_desc' => '',
         'm_parents' => array(10568,7767,7582,7596),
@@ -2839,7 +2833,7 @@ $config['en_all_7774'] = array(
 $config['en_ids_7767'] = array(7598,7766);
 $config['en_all_7767'] = array(
     7598 => array(
-        'm_icon' => '<i class="fas fa-play-circle "></i>',
+        'm_icon' => '<i class="fas fa-users-class"></i>',
         'm_name' => 'Course',
         'm_desc' => '',
         'm_parents' => array(10568,7767,7582,7596),
@@ -3216,7 +3210,7 @@ $config['en_all_6206'] = array(
 );
 
 //Intent Table:
-$config['en_ids_6201'] = array(7585,4356,6202,6159,4736,7596,4737,5008);
+$config['en_ids_6201'] = array(7585,4356,6202,7596,6159,4736,4737,5008);
 $config['en_all_6201'] = array(
     7585 => array(
         'm_icon' => '<i class="fas fa-check-circle "></i>',
@@ -3236,6 +3230,12 @@ $config['en_all_6201'] = array(
         'm_desc' => '',
         'm_parents' => array(6232,6215,6201),
     ),
+    7596 => array(
+        'm_icon' => '<i class="fas fa-triangle"></i>',
+        'm_name' => 'Level',
+        'm_desc' => '',
+        'm_parents' => array(6204,10649,7302,6160,6201,6194,6232,4527),
+    ),
     6159 => array(
         'm_icon' => '<i class="far fa-lambda "></i>',
         'm_name' => 'Metadata',
@@ -3247,12 +3247,6 @@ $config['en_all_6201'] = array(
         'm_name' => 'Outcome',
         'm_desc' => '',
         'm_parents' => array(10644,6232,6201),
-    ),
-    7596 => array(
-        'm_icon' => '<i class="fas fa-mountains "></i>',
-        'm_name' => 'Scope',
-        'm_desc' => '',
-        'm_parents' => array(6204,10649,7302,6160,6201,6194,6232,4527),
     ),
     4737 => array(
         'm_icon' => '<i class="far fa-sliders-h "></i>',
@@ -3290,8 +3284,8 @@ $config['en_all_6204'] = array(
         'm_parents' => array(10608,6204,10651,6160,6194,6232,4527,6201),
     ),
     7596 => array(
-        'm_icon' => '<i class="fas fa-mountains "></i>',
-        'm_name' => 'Intent Scope',
+        'm_icon' => '<i class="fas fa-triangle"></i>',
+        'm_name' => 'Intent Level',
         'm_desc' => '',
         'm_parents' => array(6204,10649,7302,6160,6201,6194,6232,4527),
     ),
@@ -3413,7 +3407,7 @@ $config['en_all_7703'] = array(
         'm_parents' => array(7703,10589,10593,4593,10638),
     ),
     10649 => array(
-        'm_icon' => '<i class="fas fa-mountains ispink"></i>',
+        'm_icon' => '<i class="fas fa-triangle ispink"></i>',
         'm_name' => 'Intent Iterated Scope',
         'm_desc' => '',
         'm_parents' => array(7703,10539,4593,10589,10638),
@@ -3594,7 +3588,7 @@ $config['en_all_7703'] = array(
     ),
 );
 
-//Intent Scope:
+//Intent Level:
 $config['en_ids_7596'] = array(7597,7766,7598);
 $config['en_all_7596'] = array(
     7597 => array(
@@ -3610,7 +3604,7 @@ $config['en_all_7596'] = array(
         'm_parents' => array(7767,7596),
     ),
     7598 => array(
-        'm_icon' => '<i class="fas fa-play-circle "></i>',
+        'm_icon' => '<i class="fas fa-users-class"></i>',
         'm_name' => 'Course',
         'm_desc' => 'Intent is searchable and requires the user to register in order to continue',
         'm_parents' => array(10568,7767,7582,7596),
@@ -3773,7 +3767,7 @@ $config['en_all_7585'] = array(
 $config['en_ids_7582'] = array(7598);
 $config['en_all_7582'] = array(
     7598 => array(
-        'm_icon' => '<i class="fas fa-play-circle "></i>',
+        'm_icon' => '<i class="fas fa-users-class"></i>',
         'm_name' => 'Intent Course',
         'm_desc' => '',
         'm_parents' => array(10568,7767,7582,7596),
@@ -4234,8 +4228,8 @@ $config['en_all_7355'] = array(
 $config['en_ids_7302'] = array(7596,4737,10602,5008);
 $config['en_all_7302'] = array(
     7596 => array(
-        'm_icon' => '<i class="fas fa-mountains "></i>',
-        'm_name' => 'Scope',
+        'm_icon' => '<i class="fas fa-triangle"></i>',
+        'm_name' => 'Level',
         'm_desc' => 'Defines who and how can access intent. Note that all intents are accessible to all users, it\'s just the level of visibility/engagement that is different.',
         'm_parents' => array(6204,10649,7302,6160,6201,6194,6232,4527),
     ),
@@ -4355,9 +4349,9 @@ $config['en_all_6194'] = array(
         'm_parents' => array(10608,6204,10651,6160,6194,6232,4527,6201),
     ),
     7596 => array(
-        'm_icon' => '<i class="fas fa-mountains "></i>',
-        'm_name' => 'Intent Scope',
-        'm_desc' => 'SELECT count(in_id) as totals FROM table_intents WHERE in_status_entity_id IN (6183,6184) AND in_scope_entity_id=',
+        'm_icon' => '<i class="fas fa-triangle"></i>',
+        'm_name' => 'Intent Level',
+        'm_desc' => 'SELECT count(in_id) as totals FROM table_intents WHERE in_status_entity_id IN (6183,6184) AND in_level_entity_id=',
         'm_parents' => array(6204,10649,7302,6160,6201,6194,6232,4527),
     ),
     4737 => array(
@@ -4393,25 +4387,13 @@ $config['en_all_6194'] = array(
 );
 
 //Community Members:
-$config['en_ids_6827'] = array(4430,3084,4433,10691,6695);
+$config['en_ids_6827'] = array(3084,10691,4430);
 $config['en_all_6827'] = array(
-    4430 => array(
-        'm_icon' => '<i class="far fa-user"></i>',
-        'm_name' => 'Users',
-        'm_desc' => 'Users who are pursuing their intentions using Mench, mainly to get hired at their dream job',
-        'm_parents' => array(4983,7701,7369,6827,4426,4463),
-    ),
     3084 => array(
         'm_icon' => '<i class="fas fa-user-astronaut"></i>',
         'm_name' => 'Experts',
         'm_desc' => 'Experienced in their respective industry with a track record of advancing their field of knowldge',
         'm_parents' => array(10571,4983,6827,4463),
-    ),
-    4433 => array(
-        'm_icon' => '<i class="far fa-user-ninja"></i>',
-        'm_name' => 'Coders',
-        'm_desc' => 'Software Engineers contributing to our open-source codebase hosted on GitHub',
-        'm_parents' => array(10571,6827,4463,4426),
     ),
     10691 => array(
         'm_icon' => '<i class="far fa-user-hard-hat"></i>',
@@ -4419,11 +4401,11 @@ $config['en_all_6827'] = array(
         'm_desc' => 'Users who actively train the Mench personal assistant',
         'm_parents' => array(4527,7368,6827),
     ),
-    6695 => array(
-        'm_icon' => '<i class="far fa-users"></i>',
-        'm_name' => 'Employers',
-        'm_desc' => 'Companies who partner with Mench to automate their job posting conversations',
-        'm_parents' => array(6827,4426,4463),
+    4430 => array(
+        'm_icon' => '<i class="far fa-user"></i>',
+        'm_name' => 'Users',
+        'm_desc' => 'Users who are pursuing their intentions using Mench, mainly to get hired at their dream job',
+        'm_parents' => array(4983,7701,7369,6827,4426,4463),
     ),
 );
 
@@ -5041,7 +5023,7 @@ $config['en_all_4997'] = array(
 );
 
 //Modification Lock:
-$config['en_ids_4426'] = array(4997,4433,3288,6695,1308,4430,4426,4755,5969);
+$config['en_ids_4426'] = array(4997,3288,1308,4430,4426,4755,5969);
 $config['en_all_4426'] = array(
     4997 => array(
         'm_icon' => '<i class="fas fa-list-alt"></i>',
@@ -5049,23 +5031,11 @@ $config['en_all_4426'] = array(
         'm_desc' => '',
         'm_parents' => array(4536,4506,4426,4527),
     ),
-    4433 => array(
-        'm_icon' => '<i class="far fa-user-ninja"></i>',
-        'm_name' => 'Mench Coders',
-        'm_desc' => 'Requires admin review and approval',
-        'm_parents' => array(10571,6827,4463,4426),
-    ),
     3288 => array(
         'm_icon' => '<i class="far fa-envelope-open"></i>',
         'm_name' => 'Mench Email',
         'm_desc' => '',
         'm_parents' => array(7555,6225,4426,4755),
-    ),
-    6695 => array(
-        'm_icon' => '<i class="far fa-users"></i>',
-        'm_name' => 'Mench Employers',
-        'm_desc' => '',
-        'm_parents' => array(6827,4426,4463),
     ),
     1308 => array(
         'm_icon' => '<i class="far fa-user-hard-hat isturquoise"></i>',
@@ -5761,7 +5731,7 @@ $config['en_all_4593'] = array(
         'm_parents' => array(7703,10589,10593,4593,10638),
     ),
     10649 => array(
-        'm_icon' => '<i class="fas fa-mountains ispink"></i>',
+        'm_icon' => '<i class="fas fa-triangle ispink"></i>',
         'm_name' => 'Intent Iterated Scope',
         'm_desc' => '',
         'm_parents' => array(7703,10539,4593,10589,10638),

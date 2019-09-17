@@ -13,7 +13,7 @@
     //Include some cached entities:
     var js_en_all_4486 = <?= json_encode($this->config->item('en_all_4486')) ?>; // Intent Links
     var js_en_all_7585 = <?= json_encode($this->config->item('en_all_7585')) ?>; // Intent Subtypes
-    var js_en_all_7596 = <?= json_encode($this->config->item('en_all_7596')) ?>; // Intent Scope
+    var js_en_all_7596 = <?= json_encode($this->config->item('en_all_7596')) ?>; // Intent Level
 </script>
 <script src="/js/custom/intent-right-column.js?v=v<?= $this->config->item('app_version') ?>"
         type="text/javascript"></script>
@@ -102,7 +102,7 @@
 
 
                     <span class="mini-header" style="margin-top: 20px;"><?= $en_all_6201[7596]['m_icon'].' '.$en_all_6201[7596]['m_name'] ?></span>
-                    <select class="form-control border" id="in_scope_entity_id" style="margin-bottom: 12px;">
+                    <select class="form-control border" id="in_level_entity_id" style="margin-bottom: 12px;">
                         <?php
                         foreach ($this->config->item('en_all_7596') as $en_id => $m) {
                             echo '<option value="' . $en_id . '">' . $m['m_name'] . '</option>';

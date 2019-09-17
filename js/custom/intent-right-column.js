@@ -362,7 +362,7 @@ function in_modify_load(in_id, ln_id) {
             $('#in_completion_seconds').val(data.in.in_completion_seconds);
             $('.tr_in_link_title').text('');
             $('#in_status_entity_id').val(data.in.in_status_entity_id).attr('original-status', data.in.in_status_entity_id); //Set the status before it gets changed by trainers
-            $('#in_scope_entity_id').val(data.in.in_scope_entity_id);
+            $('#in_level_entity_id').val(data.in.in_level_entity_id);
 
             //Load intent link data if available:
             if (ln_id > 0) {
@@ -501,7 +501,7 @@ function in_modify_save() {
         in_outcome: $('#in_outcome').val(),
         in_status_entity_id: parseInt($('#in_status_entity_id').val()),
         in_completion_method_entity_id: parseInt($('#in_completion_method_entity_id').val()),
-        in_scope_entity_id: parseInt($('#in_scope_entity_id').val()),
+        in_level_entity_id: parseInt($('#in_level_entity_id').val()),
         in_completion_seconds: ( $('#in_completion_seconds').val().length > 0 ? parseInt($('#in_completion_seconds').val()) : 0 ),
         apply_recursively: (document.getElementById('apply_recursively').checked ? 1 : 0),
         is_parent: ( $('.intent_line_' + in_id).hasClass('parent-intent') ? 1 : 0 ),
@@ -597,7 +597,7 @@ function in_modify_save() {
                 $('.in_status_entity_id_' + modify_data['in_id']).html('<span data-toggle="tooltip" data-placement="right" title="'+ js_en_all_4737[modify_data['in_status_entity_id']]['m_name'] + ': '+ js_en_all_4737[modify_data['in_status_entity_id']]['m_desc'] + '">'+ js_en_all_4737[modify_data['in_status_entity_id']]['m_icon'] +'</span>');
 
 
-                $('.in_scope_entity_id_' + modify_data['in_id']).html('<span data-toggle="tooltip" data-placement="right" title="'+ js_en_all_7596[modify_data['in_scope_entity_id']]['m_name'] + ': '+ js_en_all_7596[modify_data['in_scope_entity_id']]['m_desc'] + '">'+ js_en_all_7596[modify_data['in_scope_entity_id']]['m_icon'] +'</span>');
+                $('.in_level_entity_id_' + modify_data['in_id']).html('<span data-toggle="tooltip" data-placement="right" title="'+ js_en_all_7596[modify_data['in_level_entity_id']]['m_name'] + ': '+ js_en_all_7596[modify_data['in_level_entity_id']]['m_desc'] + '">'+ js_en_all_7596[modify_data['in_level_entity_id']]['m_icon'] +'</span>');
 
 
                 //Update UI to confirm with user:
