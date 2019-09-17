@@ -373,7 +373,7 @@ class User_app extends CI_Controller
 
 
         //All good, create new entity:
-        $user_en = $this->Entities_model->en_verify_create(trim($_POST['input_name']), 0, 6181);
+        $user_en = $this->Entities_model->en_verify_create(trim($_POST['input_name']), 0, 6181, random_user_icon());
         if(!$user_en['status']){
             //We had an error, return it:
             return echo_json($user_en);

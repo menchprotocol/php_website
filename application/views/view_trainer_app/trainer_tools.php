@@ -21,6 +21,7 @@ $moderation_tools = array(
     '/trainer_app/trainer_tools/assessment_marks_birds_eye' => 'Completion Marks Birds Eye View',
     '/trainer_app/trainer_tools/compose_test_message' => 'Compose Test Message',
     '/trainer_app/trainer_tools/sync_in_verbs' => 'Sync Intent Verbs',
+    '/trainer_app/trainer_tools/random_user_icon' => 'Random User Icons',
 );
 
 $cron_jobs = array(
@@ -201,8 +202,27 @@ if(!$action) {
 
 } elseif($action=='random_user_icon'){
 
-    for($i=0;$i<1000;$i++){
-        if(fmod($i, 50)==0 && $i>1){
+    //Show breadcrumb:
+    echo '<ul class="breadcrumb"><li><a href="/trainer_app/trainer_tools">Trainer Tools</a></li><li><b>'.$moderation_tools['/trainer_app/trainer_tools/'.$action].'</b></li></ul>';
+
+    if(isset($_GET['update_user_icons'])){
+
+        $updated = 0;
+        foreach($this->Links_model->ln_fetch(array(
+            'ln_parent_entity_id' => 4430, //Mench Users
+            'ln_type_entity_id IN (' . join(',', $this->config->item('en_ids_4592')) . ')' => null, //Entity-to-Entity Links
+            'ln_status_entity_id IN (' . join(',', $this->config->item('en_ids_7359')) . ')' => null, //Link Statuses Public
+            'en_status_entity_id IN (' . join(',', $this->config->item('en_ids_7357')) . ')' => null, //Entity Statuses Public
+        ), array(), 0) as $mench_user){
+            $updated += $this->Entities_model->en_update($mench_user['ln_child_entity_id'], array(
+                'en_icon' => random_user_icon(),
+            ));
+        }
+        echo '<div class="alert alert-success"><i class="fas fa-check-circle"></i> '.$updated.' User profiles updated with random animal icons</div>';
+    }
+
+    for($i=0;$i<750;$i++){
+        if(fmod($i, 30)==0 && $i>1){
             echo '<br />';
         }
         echo '<span class="icon-block">'.random_user_icon().'</span>';

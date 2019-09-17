@@ -1124,7 +1124,7 @@ class Entities_model extends CI_Model
              * */
 
             //Create user entity:
-            $added_en = $this->Entities_model->en_verify_create('User '.rand(100000000, 999999999), 0, 6181);
+            $added_en = $this->Entities_model->en_verify_create('User '.rand(100000000, 999999999), 0, 6181, random_user_icon());
 
         } else {
 
@@ -1132,7 +1132,7 @@ class Entities_model extends CI_Model
             $fb_profile = $graph_fetch['ln_metadata']['result'];
 
             //Create user entity with their Facebook Graph name:
-            $added_en = $this->Entities_model->en_verify_create($fb_profile['first_name'] . ' ' . $fb_profile['last_name'], 0, 6181);
+            $added_en = $this->Entities_model->en_verify_create($fb_profile['first_name'] . ' ' . $fb_profile['last_name'], 0, 6181, random_user_icon());
 
 
             //See if we could fetch FULL profile data:
@@ -1162,17 +1162,6 @@ class Entities_model extends CI_Model
 
                     }
                 }
-            }
-
-            //Do we have a profile image?
-            if(isset($fb_profile['profile_pic'])){
-                //Create link to save profile picture:
-                $this->Links_model->ln_create(array(
-                    'ln_status_entity_id' => 6175, //Link Drafting
-                    'ln_type_entity_id' => 4299, //Updated Profile Picture
-                    'ln_creator_entity_id' => $added_en['en']['en_id'], //The User who added this
-                    'ln_content' => $fb_profile['profile_pic'], //Image to be saved to Mench CDN
-                ));
             }
         }
 

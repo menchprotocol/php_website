@@ -416,9 +416,6 @@ class Messenger extends CI_Controller
                                  * our server is none-responsive which would cause
                                  * Facebook to resent this Attachment!
                                  *
-                                 * The solution is to create a @4299 link to save
-                                 * this attachment using a cron job later on.
-                                 *
                                  * */
 
                                 $ln_data['ln_type_entity_id'] = $att_media_types[$att['type']][($sent_by_mench ? 'sent' : 'received')];
@@ -842,73 +839,6 @@ class Messenger extends CI_Controller
         //Echo message for cron job:
         echo $counter . ' message media files saved to Mench CDN';
 
-    }
-
-    function cron__save_profile_photo()
-    {
-
-        /*
-         *
-         * Every time we receive a media file from Facebook
-         * we need to upload it to our own CDNs using the
-         * short-lived URL provided by Facebook so we can
-         * access it indefinitely without restriction.
-         * This process is managed by creating a @4299
-         * Link Type which this cron job grabs and
-         * uploads to Mench CDN.
-         *
-         * Runs every minute with the cron job.
-         *
-         * */
-
-        $ln_pending = $this->Links_model->ln_fetch(array(
-            'ln_status_entity_id' => 6175, //Link Drafting
-            'ln_type_entity_id' => 4299, //Updated Profile Picture
-        ), array('ln_creator'), 20); //Max number of scans per run
-
-
-        //Now go through and upload to CDN:
-        foreach ($ln_pending as $ln) {
-
-            //make sure it's a URL:
-            if(!filter_var($ln['ln_content'], FILTER_VALIDATE_URL)){
-                continue;
-            }
-
-            //Save photo to CDN:
-            $cdn_status = upload_to_cdn($ln['ln_content'], $ln['ln_creator_entity_id'], $ln, false, $ln['en_name'].' Profile Photo');
-            if (!$cdn_status['status']) {
-                continue;
-            }
-
-            //Update entity icon only if not already set:
-            $ln_child_entity_id = 0;
-            if (strlen($ln['en_icon']) < 1) {
-
-                //Update Cover ID:
-                $this->Entities_model->en_update($ln['en_id'], array(
-                    'en_icon' => '<img src="' . $cdn_status['cdn_url'] . '">',
-                ), true, $ln['en_id']);
-
-                //Link link to entity:
-                $ln_child_entity_id = $ln['en_id'];
-
-            }
-
-            //Update link:
-            $this->Links_model->ln_update($ln['ln_id'], array(
-                'ln_status_entity_id' => 6176, //Link Published
-                'ln_content' => $cdn_status,
-                'ln_child_entity_id' => $ln_child_entity_id,
-                'ln_metadata' => array(
-                    'original_url' => $ln['ln_content'],
-                    'cdn_status' => $cdn_status,
-                ),
-            ), $ln['ln_creator_entity_id'], 10690 /* User Media Uploaded */);
-
-        }
-
-        echo_json($ln_pending);
     }
 
 
