@@ -2,7 +2,7 @@
 
 function add_to_actionplan(){
     $('#added_to_actionplan').html('<span><i class="fas fa-yin-yang fa-spin"></i></span> Adding...');
-    $.post("/user_app/actionplan_intention_add", {in_id: in_focus_id}, function (data) {
+    $.post("/user_app/actionplan_intention_add", {in_id: in_loaded_id}, function (data) {
         //Show them success:
         $('#added_to_actionplan').html(data.message);
 
@@ -27,9 +27,9 @@ $(document).ready(function () {
                 ln_creator_entity_id: session_en_id, //If we have a user we log here
                 ln_type_entity_id: 7611, //Intent User Engage
                 ln_parent_entity_id: section_en_id, //The section this user engaged with
-                ln_parent_intent_id: in_focus_id,
+                ln_parent_intent_id: in_loaded_id,
                 ln_child_intent_id: 0, //Since they just opened the heading, not a sub-section of Steps Overview
-                ln_order: '7611_' + section_en_id + '_' + in_focus_id, //The section for this intent
+                ln_order: '7611_' + section_en_id + '_' + in_loaded_id, //The section for this intent
             });
         }
     });
@@ -47,9 +47,9 @@ $(document).ready(function () {
                 ln_creator_entity_id: session_en_id, //If we have a user we log here
                 ln_type_entity_id: 7611, //Intent User Engage
                 ln_parent_entity_id: section_en_id, //The section this user engaged with
-                ln_parent_intent_id: in_focus_id,
+                ln_parent_intent_id: in_loaded_id,
                 ln_child_intent_id: child_in_id,
-                ln_order: section_en_id + '_' + child_in_id + '__' + in_focus_id,
+                ln_order: section_en_id + '_' + child_in_id + '__' + in_loaded_id,
             });
         }
     });
@@ -64,8 +64,8 @@ $(document).ready(function () {
             ln_type_entity_id: 7611, //Intent User Engage
             ln_parent_entity_id: 7614, //Expert Overview
             ln_child_entity_id: section_en_id, //The section this user engaged with
-            ln_parent_intent_id: in_focus_id,
-            ln_order: section_en_id + '__' + in_focus_id,
+            ln_parent_intent_id: in_loaded_id,
+            ln_order: section_en_id + '__' + in_loaded_id,
         });
     });
 
@@ -80,8 +80,8 @@ $(document).ready(function () {
             ln_type_entity_id: 7611, //Intent User Engage
             ln_parent_entity_id: 7614, //Expert Overview
             ln_child_entity_id: section_en_id, //The section this user engaged with
-            ln_parent_intent_id: in_focus_id,
-            ln_order: section_en_id + '__' + in_focus_id,
+            ln_parent_intent_id: in_loaded_id,
+            ln_order: section_en_id + '__' + in_loaded_id,
         });
     });
 

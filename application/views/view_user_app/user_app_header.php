@@ -3,7 +3,6 @@
 $session_en = $this->session->userdata('user');
 $is_logged = isset($session_en['en_id']);
 $en_all_7369 = $this->config->item('en_all_7369');
-$url_part_1 = $this->uri->segment(1);
 ?><!doctype html>
 <html lang="en">
 <head>
@@ -98,7 +97,7 @@ $url_part_1 = $this->uri->segment(1);
 <?php } ?>
 
 <div class="main main-raised main-plain">
-    <div class="container <?= ( in_array($url_part_1, array('links', 'dashboard') /* Need 100% Width */) ? 'links-container' : 'body-container' ) ?>">
+    <div class="container <?= ( in_array($this->uri->segment(1), array('links', 'dashboard') /* Need 100% Width */) ? 'links-container' : 'body-container' ) ?>">
 
 <?php
 //Show possible flash message:

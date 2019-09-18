@@ -98,13 +98,13 @@ class Intents extends CI_Controller
         } else {
 
             //Go to focus intent
-            return redirect_message('/' . $this->config->item('in_focus_id'));
+            return redirect_message('/');
 
         }
     }
 
 
-    function in_public_ui($in_id, $referrer_en_id = 0)
+    function in_public_ui($in_id = 0, $referrer_en_id = 0)
     {
 
         /*
@@ -117,9 +117,9 @@ class Intents extends CI_Controller
         //Fetch user session:
         $session_en = en_auth();
 
-        //This is here to redirect from /start to /10430 so everything works fine...
-        if($referrer_en_id==0 && $this->uri->segment(1) != $in_id){
-            return redirect_message('/'.$in_id);
+        //If not set, load default intention.
+        if(!$in_id){
+            $in_id = $this->config->item('in_focus_id');
         }
 
         //Fetch data:
@@ -129,7 +129,7 @@ class Intents extends CI_Controller
 
         //Make sure we found it:
         if ( count($ins) < 1) {
-            return redirect_message('/' . $this->config->item('in_focus_id'), '<div class="alert alert-danger" role="alert">Intent #' . $in_id . ' not found</div>');
+            return redirect_message('/', '<div class="alert alert-danger" role="alert">Intent #' . $in_id . ' not found</div>');
         }
 
         //Make sure intent is public:
@@ -138,7 +138,7 @@ class Intents extends CI_Controller
         //Did we have any issues?
         if(!$public_in['status']){
             //Return error:
-            return redirect_message('/' . $this->config->item('in_focus_id'), '<div class="alert alert-danger" role="alert">'.$public_in['message'].'</div>');
+            return redirect_message('/', '<div class="alert alert-danger" role="alert">'.$public_in['message'].'</div>');
         }
 
         //Fetch/Create landing page view cookie:
@@ -453,7 +453,7 @@ class Intents extends CI_Controller
                 'status' => 0,
                 'message' => 'Missing filter settings',
             ));
-        } elseif (!isset($_POST['in_focus_id']) || intval($_POST['in_focus_id']) < 1) {
+        } elseif (!isset($_POST['in_loaded_id']) || intval($_POST['in_loaded_id']) < 1) {
             return echo_json(array(
                 'status' => 0,
                 'message' => 'Invalid Focus Intent ID',
@@ -549,7 +549,7 @@ class Intents extends CI_Controller
             $item_ui .= '<td style="text-align:left;">'.echo_time_difference(strtotime($apu['ln_timestamp'])).'</td>';
             $item_ui .= '<td style="text-align:left;">';
 
-                $item_ui .= '<a href="/intents/'.$_POST['in_focus_id'].'?filter_user='.urlencode('@'.$apu['en_id'].' '.$apu['en_name']).'#actionplanusers-'.$_POST['in_id'].'" data-toggle="tooltip" data-placement="top" title="Filter by this user"><i class="far fa-filter"></i></a>';
+                $item_ui .= '<a href="/intents/'.$_POST['in_loaded_id'].'?filter_user='.urlencode('@'.$apu['en_id'].' '.$apu['en_name']).'#actionplanusers-'.$_POST['in_id'].'" data-toggle="tooltip" data-placement="top" title="Filter by this user"><i class="far fa-filter"></i></a>';
                 $item_ui .= '&nbsp;<a href="/entities/'.$apu['en_id'].'" data-toggle="tooltip" data-placement="top" title="User Entity" class="' . advance_mode() . '"><i class="fas fa-at"></i></a>';
 
                 $item_ui .= '&nbsp;<a href="/links?ln_creator_entity_id='.$apu['en_id'].'" data-toggle="tooltip" data-placement="top" title="Full History" class="' . advance_mode() . '"><i class="fas fa-link"></i></a>';

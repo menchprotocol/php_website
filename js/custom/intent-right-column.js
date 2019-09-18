@@ -229,7 +229,7 @@ function in_action_plan_users(in_id) {
     //Load Matching Users:
     $.post("/intents/in_action_plan_users", {
         in_filters:( typeof js_in_filters !== 'undefined' ? js_in_filters : [] ),
-        in_focus_id: in_focus_id,
+        in_loaded_id: in_loaded_id,
         in_id: in_id
     }, function (data) {
         //Load content:
@@ -625,7 +625,7 @@ function in_modify_save() {
                 if(data.ins_unlocked_completions_count > 0){
                     //We did complete/unlock some intents, inform trainer and refresh:
                     alert('Publishing this intent has just unlocked '+data.steps_unlocked_completions_count+' steps across '+data.ins_unlocked_completions_count+' intents. Page will be refreshed to reflect changes.');
-                    window.location = "/intents/" + in_focus_id;
+                    window.location = "/intents/" + in_loaded_id;
                 }
 
             }
@@ -637,7 +637,7 @@ function in_modify_save() {
             //What's the final action?
             if (modify_data['apply_recursively'] && data.recursive_update_count > 0) {
                 //Refresh page soon to show new status for children:
-                window.location = "/intents/" + in_focus_id;
+                window.location = "/intents/" + in_loaded_id;
             } else {
                 //Clear times:
                 setTimeout(function () {

@@ -183,7 +183,7 @@ $(document).ready(function () {
     prep_search_pad();
 
     //Load Sortable for level 2:
-    in_sort_load(in_focus_id, 2);
+    in_sort_load(in_loaded_id, 2);
 
     //Watch the expand/close all buttons:
     $('#expand_intents .expand_all').click(function (e) {
@@ -306,7 +306,7 @@ function in_load_search(focus_element, is_in_parent, next_in_level, shortcut) {
 function in_sort_save(in_id, level) {
 
     if (level == 2) {
-        var s_element = "list-in-" + in_focus_id + '-0';
+        var s_element = "list-in-" + in_loaded_id + '-0';
         var s_draggable = ".is_level2_sortable";
     } else if (level == 3) {
         var s_element = "list-cr-" + $('.intent_line_' + in_id).attr('in-link-id');
@@ -357,7 +357,7 @@ function in_sort_load(in_id, level) {
 
     if (level == 2) {
         var element_key = null;
-        var s_element = "list-in-" + in_focus_id + '-0';
+        var s_element = "list-in-" + in_loaded_id + '-0';
         var s_draggable = ".is_level2_sortable";
     } else if (level == 3) {
         var element_key = '.intent_line_' + in_id;
@@ -457,7 +457,7 @@ function in_link_or_create(in_linked_id, is_parent, next_level, in_link_child_id
 
     if (next_level == 2) {
         var sort_handler = ".is_level2_sortable";
-        var sort_list_id = "list-in-" + in_focus_id + '-' + is_parent;
+        var sort_list_id = "list-in-" + in_loaded_id + '-' + is_parent;
         var input_field = $('#addintent-c-' + in_linked_id + '-' + is_parent);
     } else if (next_level == 3) {
         var sort_handler = ".is_level3_sortable";
