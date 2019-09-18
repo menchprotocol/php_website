@@ -2145,7 +2145,7 @@ function echo_in($in, $level, $in_linked_id = 0, $is_parent = false)
         $ui .= '<span class="icon-top-right ln_status_entity_id_' . $ln_id . '"><span data-toggle="tooltip" data-placement="right" title="'.$en_all_6186[$in['ln_status_entity_id']]['m_name'].' @'.$in['ln_status_entity_id'].': '.$en_all_6186[$in['ln_status_entity_id']]['m_desc'].'">' . $en_all_6186[$in['ln_status_entity_id']]['m_icon'] . '</span></span>';
 
         //Show Completion Marks based on Intent Link Type:
-        $ui .= '<span class="icon-3rd in_assessment_' . $ln_id . '" data-toggle="tooltip" data-placement="right" title="Completion Marks">'. echo_in_marks($in) .'</span>';
+        $ui .= '<span class="icon-3rd ispink in_assessment_' . $ln_id . '" data-toggle="tooltip" data-placement="right" title="Completion Marks">'. echo_in_marks($in) .'</span>';
 
         $ui .= '</span>';
 
@@ -2476,6 +2476,11 @@ function echo_en($en, $level, $is_parent = false)
             } else {
                 $ui .= '<span class="icon-top-left" data-toggle="tooltip" data-placement="right" title="Link External ID = '.$en['ln_external_id'].'"><i class="fas fa-project-diagram"></i></span>';
             }
+        }
+
+        if($en['ln_order'] > 0){
+            //Show Completion Marks based on Intent Link Type:
+            $ui .= '<span class="icon-3rd ispink">'. echo_ordinal_number($en['ln_order']) .'</span>';
         }
 
         $ui .= '</span>';

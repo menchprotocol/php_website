@@ -493,7 +493,7 @@ class Communication_model extends CI_Model
 
                 return array(
                     'status' => 0,
-                    'message' => $en_all_4485[$message_type_en_id]['m_name'].' requires an entity reference.',
+                    'message' => $en_all_4485[$message_type_en_id]['m_name'].' require an entity reference.',
                 );
 
             }

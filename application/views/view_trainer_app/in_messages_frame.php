@@ -53,7 +53,7 @@ foreach ($this->Links_model->ln_fetch(array(
     <?php
     foreach ($en_all_4485 as $ln_type_entity_id => $m) {
         echo '<li role="presentation" class="nav_' . $ln_type_entity_id . ' active '.( in_array(5007 , $m['m_parents']) ? ' ' . advance_mode() . '' : '' ).'">';
-        echo '<a href="#intentnotes-' . $in_id . '-'.$ln_type_entity_id.'"> ' . $m['m_icon'] . ' ' . $m['m_name'] . 's [<span class="mtd_count_'.$in_id.'_'.$ln_type_entity_id.'">'.( isset($counters[$ln_type_entity_id]) ? $counters[$ln_type_entity_id] : 0 ).'</span>] </a>';
+        echo '<a href="#intentnotes-' . $in_id . '-'.$ln_type_entity_id.'"> ' . $m['m_icon'] . ' ' . $m['m_name'] . ' [<span class="mtd_count_'.$in_id.'_'.$ln_type_entity_id.'">'.( isset($counters[$ln_type_entity_id]) ? $counters[$ln_type_entity_id] : 0 ).'</span>] </a>';
         echo '</li>';
     }
     ?>
@@ -107,7 +107,7 @@ foreach ($this->Links_model->ln_fetch(array(
 
 
         if (!isset($counters[$ln_type_entity_id])) {
-            echo '<div class="ix-tip no-messages' . $in_id . '_' . $ln_type_entity_id . ' all_msg msg_en_type_' . $ln_type_entity_id . '"><i class="fas fa-exclamation-triangle"></i> No ' . strtolower($m['m_name']) . 's are added yet</div>';
+            echo '<div class="ix-tip no-messages' . $in_id . '_' . $ln_type_entity_id . ' all_msg msg_en_type_' . $ln_type_entity_id . '"><i class="fas fa-exclamation-triangle"></i> No ' . $m['m_name'] . ' added yet</div>';
         }
 
     }
@@ -147,7 +147,7 @@ foreach ($this->Links_model->ln_fetch(array(
 
     //Fetch for all message types:
     foreach ($en_all_4485 as $ln_type_entity_id => $m) {
-        echo '<div class="iphone-add-btn all_msg msg_en_type_' . $ln_type_entity_id . '"><a href="javascript:in_message_create();" id="add_message_' . $ln_type_entity_id . '_' . $in_id . '" data-toggle="tooltip" title="or hit CTRL+ENTER ;)" data-placement="right" class="btn btn-primary">ADD '.$m['m_icon'].' ' . $m['m_name'] . '</a></div>';
+        echo '<div class="iphone-add-btn all_msg msg_en_type_' . $ln_type_entity_id . '"><a href="javascript:in_message_create();" id="add_message_' . $ln_type_entity_id . '_' . $in_id . '" data-toggle="tooltip" title="or hit CTRL+ENTER ;)" data-placement="right" class="btn btn-primary">ADD TO '.$m['m_icon'].' ' . $m['m_name'] . '</a></div>';
     }
 
     echo '</form>';
