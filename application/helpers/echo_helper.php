@@ -189,7 +189,7 @@ function echo_url_embed($url, $full_message = null, $return_array = false)
     }
 }
 
-function echo_in_outcome($in_outcome, $push_message = false, $show_entire_outcome = false, $common_prefix = null){
+function echo_in_outcome($in_outcome, $push_message = false, $show_entire_outcome = false, $in_common_prefix = null){
 
     /*
      * This function applies the double column
@@ -219,8 +219,8 @@ function echo_in_outcome($in_outcome, $push_message = false, $show_entire_outcom
 
     } else {
 
-        if(strlen($common_prefix) > 0){
-            $in_outcome = trim(substr($in_outcome, strlen($common_prefix)));
+        if(strlen($in_common_prefix) > 0){
+            $in_outcome = trim(substr($in_outcome, strlen($in_common_prefix)));
             if(preg_match("/^[a-z]+$/", substr($in_outcome, 0, 1))){
                 $in_outcome = strtoupper(substr($in_outcome, 0, 1)).substr($in_outcome, 1);
             }
@@ -714,7 +714,7 @@ function echo_ln($ln, $is_inner = false)
 }
 
 
-function echo_actionplan_step_child($en_id, $in, $is_unlocked_step = false, $common_prefix = null){
+function echo_actionplan_step_child($en_id, $in, $is_unlocked_step = false, $in_common_prefix = null){
 
     $CI =& get_instance();
 
@@ -723,7 +723,7 @@ function echo_actionplan_step_child($en_id, $in, $is_unlocked_step = false, $com
     //Open list:
     $ui = '<a href="/actionplan/'.$in['in_id']. '" class="list-group-item">';
 
-    $ui .= echo_in_outcome($in['in_outcome'], false, false, $common_prefix);
+    $ui .= echo_in_outcome($in['in_outcome'], false, false, $in_common_prefix);
 
     if($is_unlocked_step){
         $en_all_4229 = $CI->config->item('en_all_4229'); //Link Metadata
@@ -1249,7 +1249,7 @@ function echo_tree_actionplan($in, $autoexpand){
     }
 
 
-    $common_prefix = common_prefix($in__children);
+    $in_common_prefix = in_common_prefix($in__children);
     $return_html = '';
     $return_html .= '<div class="list-group grey_list actionplan_list maxout public_ap">';
 
@@ -1306,7 +1306,7 @@ function echo_tree_actionplan($in, $autoexpand){
         }
 
 
-        $return_html .= '<span id="title-' . $in_level2['in_id'] . '">' . echo_in_outcome($in_level2['in_outcome'], false, false, $common_prefix) . '</span>';
+        $return_html .= '<span id="title-' . $in_level2['in_id'] . '">' . echo_in_outcome($in_level2['in_outcome'], false, false, $in_common_prefix) . '</span>';
 
 
         if($has_level2_content){
@@ -1335,7 +1335,7 @@ function echo_tree_actionplan($in, $autoexpand){
             if (count($in_level2_children) > 0) {
 
                 //See if they have a common base:
-                $common_prefix_granchild = common_prefix($in_level2_children);
+                $in_common_prefix_granchild = in_common_prefix($in_level2_children);
 
                 //List level 3:
                 $return_html .= '<ul class="action-plan-sub-list">';
@@ -1374,7 +1374,7 @@ function echo_tree_actionplan($in, $autoexpand){
                         $return_html .= '<span class="icon-block"><i class="fal fa-check-circle"></i></span>';
                     }
 
-                    $return_html .= echo_in_outcome($in_level3['in_outcome'], false, false, $common_prefix_granchild);
+                    $return_html .= echo_in_outcome($in_level3['in_outcome'], false, false, $in_common_prefix_granchild);
 
                     if(count($in_level3_messages) > 0){
                         $return_html .= '</a>';
@@ -1613,7 +1613,7 @@ function echo_en_cache($config_var_name, $en_id, $micro_status = true, $data_pla
 }
 
 
-function echo_in_recommend($in, $common_prefix = null, $hide_class = null, $referrer_en_id = 0)
+function echo_in_recommend($in, $in_common_prefix = null, $hide_class = null, $referrer_en_id = 0)
 {
 
     //See if user is logged-in:
@@ -1634,7 +1634,7 @@ function echo_in_recommend($in, $common_prefix = null, $hide_class = null, $refe
     $ui .= '<span class="badge badge-primary fr-bgd" style="margin-top: -4px;">'.( $already_in_actionplan ? $en_all_7369[6138]['m_icon'] : '<i class="fas fa-angle-right"></i>' ).'</span>';
     $ui .= '</span>';
 
-    $ui .= '<span style="color:#222; font-weight:500; font-size:1.2em;">'.echo_in_outcome($in['in_outcome'], false, false, $common_prefix).'</span>';
+    $ui .= '<span style="color:#222; font-weight:500; font-size:1.2em;">'.echo_in_outcome($in['in_outcome'], false, false, $in_common_prefix).'</span>';
 
     $ui .= '</a>';
     return $ui;

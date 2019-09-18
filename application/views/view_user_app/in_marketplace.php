@@ -1,21 +1,30 @@
 <?php
 
-$in_published_trees = $this->Intents_model->in_fetch(array(
-    'in_level_entity_id' => 7598, //Tree
-    'in_status_entity_id' => 6184, //Published
-), array(), 0, 0, array(
-    'in_outcome' => 'ASC',
-));
+//Go through all categories and see which ones have published courses:
+foreach($this->config->item('en_all_10709') /* Course Categories */ as $en_id => $m) {
 
+    //Count total published courses here:
+    $published_ins = $this->Links_model->ln_fetch(array(
+        'ln_status_entity_id IN (' . join(',', $this->config->item('en_ids_7359')) . ')' => null, //Link Statuses Public
+        'in_status_entity_id IN (' . join(',', $this->config->item('en_ids_7355')) . ')' => null, //Intent Statuses Public
+        'in_level_entity_id IN (' . join(',', $this->config->item('en_ids_7582')) . ')' => null, //Intent Levels Get Started
+        'ln_type_entity_id' => 10715, //Intent Note Categories
+        'ln_parent_entity_id' => $en_id,
+    ), array('in_child'));
 
-echo '<p style="margin:25px 0 15px;">So far I\'m trained on '.count($in_published_trees).' intentions:</p>';
+    if(!count($published_ins)){
+        continue;
+    }
 
+    //Create list:
+    $category_list = '<div class="list-group actionplan_list grey_list" style="font-size: 0.6em;">';
+    foreach($published_ins as $published_in){
+        $category_list .= echo_in_recommend($published_in);
+    }
+    $category_list .= '</div>';
 
-echo '<div class="list-group actionplan_list grey_list" style="margin-top:40px;">';
-foreach($in_published_trees as $in_published_tree){
-    echo echo_in_recommend($in_published_tree, null, null);
+    echo echo_tree_html_body($en_id, $m['m_icon'].' '.$m['m_name'].' ['.count($published_ins).']', $category_list, false);
+
 }
-
-echo '</div>';
 
 ?>

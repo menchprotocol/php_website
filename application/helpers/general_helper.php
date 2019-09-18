@@ -694,7 +694,7 @@ function fetch_cookie_order($cookie_name){
 }
 
 
-function common_prefix($in__children, $max_look = 0){
+function in_common_prefix($in__children, $max_look = 0){
 
 
     if(count($in__children) < 2){
@@ -702,7 +702,7 @@ function common_prefix($in__children, $max_look = 0){
     }
 
     //Go through each child one by one and see if each word exists in all:
-    $common_prefix = '';
+    $in_common_prefix = '';
     foreach(explode(' ', $in__children[0]['in_outcome']) as $word_pos=>$word){
 
         if($max_look > 0 && $word_pos == $max_look){
@@ -726,13 +726,13 @@ function common_prefix($in__children, $max_look = 0){
         }
 
         if($all_the_same){
-            $common_prefix .= $word.' ';
+            $in_common_prefix .= $word.' ';
         } else {
             break;
         }
     }
 
-    return trim($common_prefix);
+    return trim($in_common_prefix);
 }
 
 function upload_to_cdn($file_url, $ln_creator_entity_id = 0, $ln_metadata = null, $is_local = false, $page_title = null)

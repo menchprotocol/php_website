@@ -11,14 +11,20 @@ defined('BASEPATH') OR exit('No direct script access allowed');
  *
  */
 
-//Generated 2019-09-18 13:17:23 PST
+//Generated 2019-09-18 13:50:58 PST
 
 //Course Categories:
-$config['en_ids_10709'] = array(10710,10712,10716,10717,10718,10711,10719,10720,10721,10722,10723,10724,10725);
+$config['en_ids_10709'] = array(10710,10711,10712,10716,10717,10718,10719,10720,10721,10722,10723,10724,10725);
 $config['en_all_10709'] = array(
     10710 => array(
         'm_icon' => '<i class="far fa-code"></i>',
-        'm_name' => 'Development',
+        'm_name' => 'Software Engineering',
+        'm_desc' => '',
+        'm_parents' => array(10715,10709),
+    ),
+    10711 => array(
+        'm_icon' => '<i class="far fa-smile"></i>',
+        'm_name' => 'Personal Development',
         'm_desc' => '',
         'm_parents' => array(10715,10709),
     ),
@@ -43,12 +49,6 @@ $config['en_all_10709'] = array(
     10718 => array(
         'm_icon' => '<i class="far fa-clipboard-list-check"></i>',
         'm_name' => 'Office Productivity',
-        'm_desc' => '',
-        'm_parents' => array(10715,10709),
-    ),
-    10711 => array(
-        'm_icon' => '<i class="far fa-smile"></i>',
-        'm_name' => 'Personal Development',
         'm_desc' => '',
         'm_parents' => array(10715,10709),
     ),
@@ -525,7 +525,7 @@ $config['en_all_4527'] = array(
     7372 => array(
         'm_icon' => '<i class="fas fa-layer-group"></i>',
         'm_name' => 'Mench Products',
-        'm_desc' => '',
+        'm_desc' => '&var_trimcache=Mench',
         'm_parents' => array(2738,4527),
     ),
     7368 => array(
@@ -4053,43 +4053,43 @@ $config['en_ids_7372'] = array(7735,6403,7555,7540,7305,7369,7368);
 $config['en_all_7372'] = array(
     7735 => array(
         'm_icon' => '<i class="far fa-database"></i>',
-        'm_name' => 'Mench Database Tables',
+        'm_name' => 'Database Tables',
         'm_desc' => '',
         'm_parents' => array(7372),
     ),
     6403 => array(
         'm_icon' => '<i class="fas fa-code"></i>',
-        'm_name' => 'Mench PHP Repository',
+        'm_name' => 'PHP Repository',
         'm_desc' => 'So far all our products are built using the same PHP application',
         'm_parents' => array(7372,3324,7391,7390,4523,3325,3323,3326),
     ),
     7555 => array(
         'm_icon' => '<i class="fas fa-comments"></i>',
-        'm_name' => 'Mench Platform Users',
+        'm_name' => 'Platform Users',
         'm_desc' => '',
         'm_parents' => array(7303,7372,4527),
     ),
     7540 => array(
         'm_icon' => '<i class="fas fa-balance-scale"></i>',
-        'm_name' => 'Mench Terms Of Service',
+        'm_name' => 'Terms Of Service',
         'm_desc' => '#8272',
         'm_parents' => array(7372,7305),
     ),
     7305 => array(
         'm_icon' => '<img src="https://mench.com/img/bp_128.png">',
-        'm_name' => 'Mench Website',
+        'm_name' => 'Website',
         'm_desc' => '',
         'm_parents' => array(7372,1326),
     ),
     7369 => array(
         'm_icon' => '<i class="far fa-user"></i>',
-        'm_name' => 'Mench User App',
+        'm_name' => 'User App',
         'm_desc' => 'A web portal for software engineers to assess/improve their skills & get matched with top companies.',
         'm_parents' => array(7372,4527),
     ),
     7368 => array(
         'm_icon' => '<i class="far fa-user-hard-hat"></i>',
-        'm_name' => 'Mench Trainer App',
+        'm_name' => 'Trainer App',
         'm_desc' => 'A web portal for industry researchers to mine expert intelligence as Mench intents/entities.',
         'm_parents' => array(7372,4527),
     ),

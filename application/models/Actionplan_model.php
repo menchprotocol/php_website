@@ -1616,7 +1616,7 @@ class Actionplan_model extends CI_Model
 
                 //Are we still clean?
                 $key = 0;
-                $common_prefix = common_prefix($in__children, $max_and_list); //Look only up to the max number of listed intents
+                $in_common_prefix = in_common_prefix($in__children, $max_and_list); //Look only up to the max number of listed intents
 
                 foreach ($in__children as $child_in) {
 
@@ -1646,12 +1646,12 @@ class Actionplan_model extends CI_Model
                     if(!$push_message){
 
                         //Add HTML step to UI:
-                        $next_step_message .= echo_actionplan_step_child($en_id, $child_in, false, $common_prefix);
+                        $next_step_message .= echo_actionplan_step_child($en_id, $child_in, false, $in_common_prefix);
 
                     } else {
 
                         //Add simple message:
-                        $next_step_message .= ($key + 1) . '. ' . echo_in_outcome($child_in['in_outcome'], $push_message, false, $common_prefix);
+                        $next_step_message .= ($key + 1) . '. ' . echo_in_outcome($child_in['in_outcome'], $push_message, false, $in_common_prefix);
 
                     }
 
