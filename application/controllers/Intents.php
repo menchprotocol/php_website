@@ -373,6 +373,15 @@ class Intents extends CI_Controller
     }
 
 
+    function in_completion_rates(){
+        $this->load->view('view_user_app/user_app_header', array(
+            'title' => 'Completion Rates',
+        ));
+        $this->load->view('view_user_app/in_completion_rates');
+        $this->load->view('view_user_app/user_app_footer');
+    }
+
+
 
     function in_migrate()
     {
