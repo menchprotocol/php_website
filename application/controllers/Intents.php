@@ -167,6 +167,13 @@ class Intents extends CI_Controller
             'autoexpand' => (isset($_GET['autoexpand']) && intval($_GET['autoexpand'])),
         ));
 
+        //Display the marketplace if this is the home page.
+        if($in_id==$this->config->item('in_focus_id')){
+            $this->load->view('view_user_app/in_marketplace', array(
+                'session_en' => $session_en,
+            ));
+        }
+
         $this->load->view('view_user_app/user_app_footer');
 
     }
@@ -357,20 +364,6 @@ class Intents extends CI_Controller
 
     }
 
-
-
-
-    function in_sitemap(){
-        $session_en = en_auth();
-        $this->load->view('view_user_app/user_app_header', array(
-            'session_en' => $session_en,
-            'title' => 'Published Intents',
-        ));
-        $this->load->view('view_user_app/in_sitemap', array(
-            'session_en' => $session_en,
-        ));
-        $this->load->view('view_user_app/user_app_footer');
-    }
 
 
     function in_completion_rates(){

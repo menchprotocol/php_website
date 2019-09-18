@@ -15,7 +15,6 @@ $route['intents']                   = "intents/in_trainer_ui/0";
 $route['(:num)_(:num)']             = "intents/in_public_ui/$2/$1"; //Public Intent Landing Page
 $route['(:num)']                    = "intents/in_public_ui/$1"; //Public Intent Landing Page
 $route['start']                     = "intents/in_public_ui/10430"; //For companies to get started
-$route['sitemap']                   = "intents/in_sitemap"; //To list all published intent trees
 $route['completion_rates']          = "intents/in_completion_rates";
 
 //Users:
