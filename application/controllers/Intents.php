@@ -300,23 +300,23 @@ class Intents extends CI_Controller
         }
 
         //Now fetch parent intents to allow trainer to log their up-vote:
-        $in__parents = $this->Links_model->ln_fetch(array(
+        //List parent intentions to allow trainer to cast their up-vote:
+        $upvote_parents = '';
+        foreach($this->Links_model->ln_fetch(array(
             'ln_status_entity_id IN (' . join(',', $this->config->item('en_ids_7360')) . ')' => null, //Link Statuses Active
             'in_status_entity_id IN (' . join(',', $this->config->item('en_ids_7356')) . ')' => null, //Intent Statuses Active
             'ln_type_entity_id IN (' . join(',', $this->config->item('en_ids_4486')) . ')' => null, //Intent-to-Intent Links
             'ln_child_intent_id' => $_POST['in_id'],
-        ), array('in_parent'));
-
-        if(count($in__parents) > 0){
-
-            //List parent intentions to allow trainer to cast their up-vote:
-            $upvote_parents = '';
-            foreach($in__parents as $in){
+        ), array('in_parent')) as $in){
+            if(in_is_clean_outcome($in)){
                 $upvote_parents .= '<a href="/intents/in_submit_upvote/'.$_POST['in_loaded_id'].'/'.$_POST['in_id'].'/'.$in['in_id'].'" class="list-group-item">';
                 $upvote_parents .= '<span class="pull-right"><i class="far fa-thumbs-up"></i></span>';
                 $upvote_parents .= '<span style="color:#222; font-weight:500; font-size:1.2em;">'.echo_in_outcome($in['in_outcome']).'</span>';
                 $upvote_parents .= '</a>';
             }
+        }
+
+        if(strlen($upvote_parents) > 0){
 
             return echo_json(array(
                 'status' => 1,
