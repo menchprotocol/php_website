@@ -308,12 +308,10 @@ class Intents extends CI_Controller
             'ln_type_entity_id IN (' . join(',', $this->config->item('en_ids_4486')) . ')' => null, //Intent-to-Intent Links
             'ln_child_intent_id' => $_POST['in_id'],
         ), array('in_parent')) as $in){
-            if(in_is_clean_outcome($in)){
-                $upvote_parents .= '<a href="/intents/in_submit_upvote/'.$_POST['in_loaded_id'].'/'.$_POST['in_id'].'/'.$in['in_id'].'" class="list-group-item">';
-                $upvote_parents .= '<span class="pull-right"><i class="far fa-thumbs-up"></i></span>';
-                $upvote_parents .= '<span style="color:#222; font-weight:500; font-size:1.2em;">'.echo_in_outcome($in['in_outcome']).'</span>';
-                $upvote_parents .= '</a>';
-            }
+            $upvote_parents .= '<a href="/intents/in_submit_upvote/'.$_POST['in_loaded_id'].'/'.$_POST['in_id'].'/'.$in['in_id'].'" class="list-group-item">';
+            $upvote_parents .= '<span class="pull-right"><i class="far fa-thumbs-up"></i></span>';
+            $upvote_parents .= '<span style="color:#222; font-weight:500; font-size:1.2em;">'.echo_in_outcome($in['in_outcome']).'</span>';
+            $upvote_parents .= '</a>';
         }
 
         if(strlen($upvote_parents) > 0){
