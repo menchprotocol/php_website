@@ -44,16 +44,16 @@ foreach ($this->Links_model->ln_fetch(array(
     var in_note_messages_count = <?= $in_note_messages_count ?>;
     var focus_ln_type_entity_id = <?= $en_ids_4485[0] ?>; //The message type that is the focus on-start.
 </script>
-<script src="/js/custom/intent-messaging-js.js?v=v<?= $this->config->item('app_version') ?>" type="text/javascript"></script>
+<script src="/js/custom/in_notes.js?v=v<?= $this->config->item('app_version') ?>" type="text/javascript"></script>
 
 
 
 <!-- Message types navigation menu -->
-<ul class="nav nav-tabs iphone-nav-tabs <?= advance_mode() ?>">
+<ul class="nav nav-tabs iphone-nav-tabs">
     <?php
     foreach ($en_all_4485 as $ln_type_entity_id => $m) {
         echo '<li role="presentation" class="nav_' . $ln_type_entity_id . ' active '.( in_array(5007 , $m['m_parents']) ? ' ' . advance_mode() . '' : '' ).'">';
-        echo '<a href="#intentnotes-' . $in_id . '-'.$ln_type_entity_id.'"> ' . $m['m_icon'] . ' ' . $m['m_name'] . ' [<span class="mtd_count_'.$in_id.'_'.$ln_type_entity_id.'">'.( isset($counters[$ln_type_entity_id]) ? $counters[$ln_type_entity_id] : 0 ).'</span>] </a>';
+        echo '<a href="#intentnotes-' . $in_id . '-'.$ln_type_entity_id.'"> ' . $m['m_icon'] . ' <span class="mtd_count_'.$in_id.'_'.$ln_type_entity_id.'">'.( isset($counters[$ln_type_entity_id]) ? $counters[$ln_type_entity_id] : 0 ).'</span></a>';
         echo '</li>';
     }
     ?>
@@ -69,12 +69,11 @@ foreach ($this->Links_model->ln_fetch(array(
     foreach ($en_all_4485 as $ln_type_entity_id => $m) {
 
 
-        echo '<div class="'.advance_mode().'">';
         echo '<div class="all_msg msg_en_type_' . $ln_type_entity_id . ' sorting-enabled">';
 
 
         //Learn more option:
-        echo '<i class="fal fa-info-circle"></i> <span data-toggle="tooltip" title="'.$m['m_desc'].'" data-placement="bottom" class="underdot">Usage Notes</span> &nbsp;';
+        echo $m['m_icon'].' <span data-toggle="tooltip" title="'.$m['m_desc'].'" data-placement="bottom" class="underdot">'.$m['m_name'].'</span> &nbsp;';
 
 
         //Does it support sorting?
@@ -102,7 +101,6 @@ foreach ($this->Links_model->ln_fetch(array(
             echo '<span><i class="fas fa-comment-check"></i> <span data-toggle="tooltip" class="underdot" title="A message that is communicated to users" data-placement="bottom">User Deliverable</span> &nbsp;</span>';
         }
 
-        echo '</div>';
         echo '</div>';
 
 
@@ -137,8 +135,8 @@ foreach ($this->Links_model->ln_fetch(array(
     //File counter:
     echo '<span id="charNum' . $in_id . '">0</span>/' . $messages_max_length;
 
-    ///firstname
-    echo '<a href="javascript:in_message_add_name();" class="textarea_buttons ' . advance_mode() . ' remove_loading" style="float:right; margin-left:8px;" data-toggle="tooltip" title="Personalize this message by adding the user\'s First Name" data-placement="left"><i class="far fa-user"></i> /firstname</a>';
+    //firstname
+    echo '<a href="javascript:in_message_add_name();" class="textarea_buttons remove_loading" style="float:right; margin-left:8px;" data-toggle="tooltip" title="Personalize this message by adding the user\'s First Name" data-placement="left"><i class="far fa-user"></i> /firstname</a>';
 
     //Choose a file:
     echo '<div style="float:right; display:inline-block;" class="remove_loading"><input class="box__file inputfile" type="file" name="file" id="file" /><label class="textarea_buttons" for="file" data-toggle="tooltip" title="Upload files up to ' . $this->config->item('max_file_mb_size') . ' MB" data-placement="top"><i class="fal fa-cloud-upload"></i> Upload</label></div>';
@@ -147,7 +145,7 @@ foreach ($this->Links_model->ln_fetch(array(
 
     //Fetch for all message types:
     foreach ($en_all_4485 as $ln_type_entity_id => $m) {
-        echo '<div class="iphone-add-btn all_msg msg_en_type_' . $ln_type_entity_id . '"><a href="javascript:in_message_create();" id="add_message_' . $ln_type_entity_id . '_' . $in_id . '" data-toggle="tooltip" title="or hit CTRL+ENTER ;)" data-placement="right" class="btn btn-primary">ADD TO '.$m['m_icon'].' ' . $m['m_name'] . '</a></div>';
+        echo '<div class="iphone-add-btn all_msg msg_en_type_' . $ln_type_entity_id . '"><a href="javascript:in_message_create();" id="add_message_' . $ln_type_entity_id . '_' . $in_id . '" data-toggle="tooltip" title="or hit CTRL+ENTER ;)" data-placement="right" class="btn btn-third" style="color:#FFF !important; font-size:0.8em !important;">ADD TO ' . $m['m_name'] . '</a></div>';
     }
 
     echo '</form>';

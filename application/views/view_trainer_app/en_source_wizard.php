@@ -1,6 +1,6 @@
 <?php $en_all_6805 = $this->config->item('en_all_6805'); ?>
 
-<script src="/js/custom/add-source-wizard.js?v=v<?= $this->config->item('app_version').time() ?>"
+<script src="/js/custom/en_source_wizard.js?v=v<?= $this->config->item('app_version').time() ?>"
         type="text/javascript"></script>
 
 

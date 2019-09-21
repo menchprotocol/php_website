@@ -22,18 +22,10 @@ $uri_segment_2 = $this->uri->segment(2);
     <?php $this->load->view('view_shared/global_js_css'); ?>
     <script src="/js/custom/platform-js.js?v=v<?= $this->config->item('app_version') ?>" type="text/javascript"></script>
 
-
-    <!-- Author CSS to make certain fields visible IF user is the object creator -->
-    <?= ( !$is_trainer ? '<style> span.trainer_class_'.$session_en['en_id'].' { display:inline-block !important; } div.trainer_class_'.$session_en['en_id'].' { display:block !important; } </style>' : '' ) ?>
-
 </head>
 
 
 <body id="platform_body" class="<?= (isset($_GET['skip_header']) ? 'grey-bg' : '') ?>">
-
-    <?php $this->load->view('view_shared/google_tag_manager', array(
-       'session_en' => $session_en,
-    )); ?>
 
     <div class="wrapper" id="platform">
 

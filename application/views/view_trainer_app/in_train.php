@@ -7,7 +7,7 @@ $en_all_7369 = $this->config->item('en_all_7369');
     var in_loaded_id = <?= $in['in_id'] ?>;
     var js_in_filters = <?= json_encode($in_filters) ?>; //Passon current filters to user match list
 </script>
-<script src="/js/custom/intent-manage-js.js?v=v<?= $this->config->item('app_version') ?>"
+<script src="/js/custom/in_train.js?v=v<?= $this->config->item('app_version') ?>"
         type="text/javascript"></script>
 
 <style>
@@ -41,7 +41,7 @@ $en_all_7369 = $this->config->item('en_all_7369');
                                    class="form-control intentadder-level-2-parent algolia_search"
                                    intent-id="' . $in['in_id'] . '"
                                    id="addintent-c-' . $in['in_id'] . '-1"
-                                   placeholder="+ Intent">
+                                   placeholder="Add Intent">
                         </div>
                        <div class="algolia_search_pad in_pad_top hidden"><span>Search existing intents or create a new one...</span></div>
                 </div>';
@@ -93,7 +93,7 @@ $en_all_7369 = $this->config->item('en_all_7369');
             echo '<div id="expand_intents" style="padding-left:8px; display:'. ( count($in['in__children']) > 0 ? 'inline-block' : 'none' ) .';">';
             echo '<i class="fas fa-plus-circle expand_all" style="font-size: 1.2em;" data-toggle="tooltip" title="Expand All Children" data-placement="top"></i> &nbsp;';
             echo '<i class="fas fa-minus-circle close_all" style="font-size: 1.2em;" data-toggle="tooltip" title="Contact All Children" data-placement="top"></i>';
-            echo '<i class="far fa-filter toggle_filters '.advance_mode().'" style="font-size: 1.2em; margin-left: 6px;" data-toggle="tooltip" title="Apply Intent Filters" data-placement="top"></i>';
+            echo '<i class="far fa-filter toggle_filters" style="font-size: 1.2em; margin-left: 6px;" data-toggle="tooltip" title="Apply Intent Filters" data-placement="top"></i>';
             echo '</div>';
 
 
@@ -132,17 +132,20 @@ $en_all_7369 = $this->config->item('en_all_7369');
         }
 
         //Add child intent:
-        echo '<div class="list-group-item list_input grey-block '.advance_mode(in_trainer_class($in['in_id'])).'">
+        if(in_can_train($in['in_id'], $session_en['en_id'])){
+            echo '<div class="list-group-item list_input grey-block">
                     <div class="form-group is-empty" style="margin: 0; padding: 0;">
                         <input type="text"
                                class="form-control intentadder-level-2-child algolia_search"
                                maxlength="' . $this->config->item('in_outcome_max') . '"
                                intent-id="' . $in['in_id'] . '"
                                id="addintent-c-' . $in['in_id'] . '-0"
-                               placeholder="+ Intent">
+                               placeholder="Add Intent">
                     </div>
                    <div class="algolia_search_pad in_pad_bottom hidden"><span>Search existing intents or create a new one...</span></div>
             </div>';
+        }
+
         echo '</div>';
 
         ?>
@@ -151,7 +154,7 @@ $en_all_7369 = $this->config->item('en_all_7369');
 
 
     <div class="<?= $this->config->item('css_column_2') ?>">
-        <?php $this->load->view('view_trainer_app/in_right_column'); ?>
+        <?php $this->load->view('view_trainer_app/in_modify'); ?>
     </div>
 </div>
 

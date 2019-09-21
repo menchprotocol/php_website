@@ -42,7 +42,7 @@ class Trainer_app extends CI_Controller
         $this->load->view(($session_en ? 'view_trainer_app/trainer_app_header' : 'view_user_app/user_app_header'), array(
             'title' => $en_all_7368[7161]['m_name'],
         ));
-        $this->load->view('view_trainer_app/mench_dashboard');
+        $this->load->view('view_trainer_app/trainer_dashboard');
         $this->load->view(($session_en ? 'view_trainer_app/trainer_app_footer' : 'view_user_app/user_app_footer'));
     }
 
@@ -129,7 +129,6 @@ class Trainer_app extends CI_Controller
     function extra_stats_intents(){
 
         $en_all_7302 = $this->config->item('en_all_7302'); //Intent Stats
-
 
 
         //Intent Statuses:

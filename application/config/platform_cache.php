@@ -11,7 +11,7 @@ defined('BASEPATH') OR exit('No direct script access allowed');
  *
  */
 
-//Generated 2019-09-18 13:50:58 PST
+//Generated 2019-09-21 15:32:24 PST
 
 //Course Categories:
 $config['en_ids_10709'] = array(10710,10711,10712,10716,10717,10718,10719,10720,10721,10722,10723,10724,10725);
@@ -103,7 +103,7 @@ $config['en_all_10704'] = array(
         'm_icon' => '<i class="far fa-user-hard-hat isnavy"></i>',
         'm_name' => 'Mench Trainers Level 2',
         'm_desc' => '',
-        'm_parents' => array(4983,10704,10618,10691,10571,4463,4426),
+        'm_parents' => array(7701,4983,10704,10618,10691,10571,4463,4426),
     ),
 );
 
@@ -114,13 +114,13 @@ $config['en_all_10691'] = array(
         'm_icon' => '<i class="far fa-user-hard-hat isorange"></i>',
         'm_name' => 'Mench Trainers Level 1',
         'm_desc' => 'Entry level trainers focused on intents and intent notes only',
-        'm_parents' => array(4983,10606,10691,10573,10571,4985),
+        'm_parents' => array(7701,4983,10606,10691,10573,10571,4985),
     ),
     1308 => array(
         'm_icon' => '<i class="far fa-user-hard-hat isnavy"></i>',
         'm_name' => 'Mench Trainers Level 2',
         'm_desc' => 'Certified trainers who understand the core training principles',
-        'm_parents' => array(4983,10704,10618,10691,10571,4463,4426),
+        'm_parents' => array(7701,4983,10704,10618,10691,10571,4463,4426),
     ),
 );
 
@@ -187,7 +187,7 @@ $config['en_all_4527'] = array(
         'm_parents' => array(3303,3314,2738,7303,4527),
     ),
     10709 => array(
-        'm_icon' => '<i class="fas fa-shapes"></i>',
+        'm_icon' => '<i class="fas fa-folder-tree"></i>',
         'm_name' => 'Course Categories',
         'm_desc' => '',
         'm_parents' => array(3463,4527,10715,7254),
@@ -322,7 +322,7 @@ $config['en_all_4527'] = array(
         'm_icon' => '<i class="far fa-rss ispink"></i>',
         'm_name' => 'Intent Note Subscribers',
         'm_desc' => 'Enforces Subscribers that are a grandchild of this entity.',
-        'm_parents' => array(10594,10589,4527,7703,4593,7551,4485),
+        'm_parents' => array(5007,10594,10589,4527,7703,4593,7551,4485),
     ),
     4983 => array(
         'm_icon' => '<i class="far fa-thumbs-up ispink"></i>',
@@ -1158,7 +1158,7 @@ $config['en_all_10627'] = array(
 );
 
 //Word + Connections:
-$config['en_ids_10594'] = array(4318,4229,10664,4228,10660,10715,7701,7545,10573);
+$config['en_ids_10594'] = array(4318,4229,10664,4228,10660,10573,10715,7545,7701);
 $config['en_all_10594'] = array(
     4318 => array(
         'm_icon' => '<i class="far fa-clock ispink"></i>',
@@ -1190,34 +1190,34 @@ $config['en_all_10594'] = array(
         'm_desc' => '',
         'm_parents' => array(7703,4593,10638,10589,10594,10658),
     ),
+    10573 => array(
+        'm_icon' => '<i class="far fa-bookmark ispink"></i>',
+        'm_name' => 'Intent Note Bookmarks',
+        'm_desc' => '',
+        'm_parents' => array(10594,10589,4593,7703,7551,4485),
+    ),
     10715 => array(
-        'm_icon' => '<i class="far fa-shapes ispink"></i>',
+        'm_icon' => '<i class="far fa-folder-tree ispink"></i>',
         'm_name' => 'Intent Note Categories',
         'm_desc' => '',
-        'm_parents' => array(7703,7551,10589,10594,4593,4485),
+        'm_parents' => array(5007,7703,7551,10589,10594,4593,4485),
+    ),
+    7545 => array(
+        'm_icon' => '<i class="far fa-at ispink"></i>',
+        'm_name' => 'Intent Note Entity Maps',
+        'm_desc' => '',
+        'm_parents' => array(5007,10594,10589,7703,7551,4593,4485),
     ),
     7701 => array(
         'm_icon' => '<i class="far fa-rss ispink"></i>',
         'm_name' => 'Intent Note Subscribers',
         'm_desc' => '',
-        'm_parents' => array(10594,10589,4527,7703,4593,7551,4485),
-    ),
-    7545 => array(
-        'm_icon' => '<i class="far fa-tag ispink"></i>',
-        'm_name' => 'Intent Note Tags',
-        'm_desc' => '',
-        'm_parents' => array(10594,10589,7703,7551,4593,4485),
-    ),
-    10573 => array(
-        'm_icon' => '<i class="far fa-user-hard-hat ispink"></i>',
-        'm_name' => 'Intent Note Trainers',
-        'm_desc' => '',
-        'm_parents' => array(10594,10589,4593,7703,7551,4485),
+        'm_parents' => array(5007,10594,10589,4527,7703,4593,7551,4485),
     ),
 );
 
 //Statement + Connections:
-$config['en_ids_10593'] = array(4251,10646,4259,4261,4260,10657,4255,4258,4250,10644,6093,6242,4601,4231,10679,4983,4554,4570,4556,4555,7702,6563,4552,4553,4549,4551,4550,4548);
+$config['en_ids_10593'] = array(4251,10646,4259,4261,4260,10657,4255,4258,4250,10644,4601,4231,10679,6093,4983,4554,4570,4556,4555,7702,6563,4552,4553,4549,4551,4550,4548);
 $config['en_all_10593'] = array(
     4251 => array(
         'm_icon' => '<i class="fas fa-at ispink"></i>',
@@ -1279,20 +1279,8 @@ $config['en_all_10593'] = array(
         'm_desc' => '',
         'm_parents' => array(7703,10589,10593,4593,10638),
     ),
-    6093 => array(
-        'm_icon' => '<i class="far fa-comment-exclamation ispink"></i>',
-        'm_name' => 'Intent Note Changelogs',
-        'm_desc' => '',
-        'm_parents' => array(10593,10589,7703,4593,4986,4485),
-    ),
-    6242 => array(
-        'm_icon' => '<i class="far fa-lightbulb-on ispink"></i>',
-        'm_name' => 'Intent Note Endnotes',
-        'm_desc' => '',
-        'm_parents' => array(10593,10589,7703,6345,4603,4593,4986,4485),
-    ),
     4601 => array(
-        'm_icon' => '<i class="far fa-search ispink"></i>',
+        'm_icon' => '<i class="far fa-tags ispink"></i>',
         'm_name' => 'Intent Note Keywords',
         'm_desc' => '',
         'm_parents' => array(10593,10589,7703,4593,4485),
@@ -1308,6 +1296,12 @@ $config['en_all_10593'] = array(
         'm_name' => 'Intent Notes Iterated Content',
         'm_desc' => '',
         'm_parents' => array(10589,4593,10593,10658,10638),
+    ),
+    6093 => array(
+        'm_icon' => '<i class="far fa-user-hard-hat ispink"></i>',
+        'm_name' => 'Intent Note Trainer Chats',
+        'm_desc' => '',
+        'm_parents' => array(10593,10589,7703,4593,4986,4485),
     ),
     4983 => array(
         'm_icon' => '<i class="far fa-thumbs-up ispink"></i>',
@@ -1910,7 +1904,7 @@ $config['en_all_10590'] = array(
 );
 
 //Words In:
-$config['en_ids_10589'] = array(10625,5943,5001,5865,4999,4998,5000,5981,5982,5003,4251,10672,10653,10646,10654,4259,4257,4261,4260,4319,10657,10656,10659,10689,4230,4255,4318,10673,4256,4258,4250,10671,10650,10644,10649,10648,10651,10647,4229,10663,10664,10661,10662,4228,10686,10660,10715,6093,6242,4601,4231,10679,10677,10676,7701,10678,7545,10573,4983,6226,10681,10675,6132,4246,7504,5007,6415,4275,6559,6560,6556,6578,6154,6155,4235,7757,7578,6224,10690,4266,4267,10683,4577,4549,4551,4550,4557,4278,4279,4268,4460,4547,4287,4548,7561,7564,7559,7560,7558,7488,7485,7486,6144,7741,10685,6140,4559,7489,7492,6997,6157,7487,6143);
+$config['en_ids_10589'] = array(10625,5943,5001,5865,4999,4998,5000,5981,5982,5003,4251,10672,10653,10646,10654,4259,4257,4261,4260,4319,10657,10656,10659,10689,4230,4255,4318,10673,4256,4258,4250,10671,10650,10644,10649,10648,10651,10647,4229,10663,10664,10661,10662,4228,10686,10660,10573,10715,7545,4601,4231,10679,10677,10676,7701,10678,6093,4983,6226,10681,10675,6132,4246,7504,5007,6415,4275,6559,6560,6556,6578,6154,6155,4235,7757,7578,6224,10690,4266,4267,10683,4577,4549,4551,4550,4557,4278,4279,4268,4460,4547,4287,4548,7561,7564,7559,7560,7558,7488,7485,7486,6144,7741,10685,6140,4559,7489,7492,6997,6157,7487,6143);
 $config['en_all_10589'] = array(
     10625 => array(
         'm_icon' => '<i class="far fa-user-circle ispink"></i>',
@@ -2188,26 +2182,26 @@ $config['en_all_10589'] = array(
         'm_desc' => '',
         'm_parents' => array(7703,4593,10638,10589,10594,10658),
     ),
+    10573 => array(
+        'm_icon' => '<i class="far fa-bookmark ispink"></i>',
+        'm_name' => 'Intent Note Bookmarks',
+        'm_desc' => '',
+        'm_parents' => array(10594,10589,4593,7703,7551,4485),
+    ),
     10715 => array(
-        'm_icon' => '<i class="far fa-shapes ispink"></i>',
+        'm_icon' => '<i class="far fa-folder-tree ispink"></i>',
         'm_name' => 'Intent Note Categories',
         'm_desc' => '',
-        'm_parents' => array(7703,7551,10589,10594,4593,4485),
+        'm_parents' => array(5007,7703,7551,10589,10594,4593,4485),
     ),
-    6093 => array(
-        'm_icon' => '<i class="far fa-comment-exclamation ispink"></i>',
-        'm_name' => 'Intent Note Changelogs',
+    7545 => array(
+        'm_icon' => '<i class="far fa-at ispink"></i>',
+        'm_name' => 'Intent Note Entity Maps',
         'm_desc' => '',
-        'm_parents' => array(10593,10589,7703,4593,4986,4485),
-    ),
-    6242 => array(
-        'm_icon' => '<i class="far fa-lightbulb-on ispink"></i>',
-        'm_name' => 'Intent Note Endnotes',
-        'm_desc' => '',
-        'm_parents' => array(10593,10589,7703,6345,4603,4593,4986,4485),
+        'm_parents' => array(5007,10594,10589,7703,7551,4593,4485),
     ),
     4601 => array(
-        'm_icon' => '<i class="far fa-search ispink"></i>',
+        'm_icon' => '<i class="far fa-tags ispink"></i>',
         'm_name' => 'Intent Note Keywords',
         'm_desc' => '',
         'm_parents' => array(10593,10589,7703,4593,4485),
@@ -2240,7 +2234,7 @@ $config['en_all_10589'] = array(
         'm_icon' => '<i class="far fa-rss ispink"></i>',
         'm_name' => 'Intent Note Subscribers',
         'm_desc' => '',
-        'm_parents' => array(10594,10589,4527,7703,4593,7551,4485),
+        'm_parents' => array(5007,10594,10589,4527,7703,4593,7551,4485),
     ),
     10678 => array(
         'm_icon' => '<i class="far fa-trash-alt ispink"></i>',
@@ -2248,17 +2242,11 @@ $config['en_all_10589'] = array(
         'm_desc' => '',
         'm_parents' => array(10658,10539,10589,4593,10638),
     ),
-    7545 => array(
-        'm_icon' => '<i class="far fa-tag ispink"></i>',
-        'm_name' => 'Intent Note Tags',
-        'm_desc' => '',
-        'm_parents' => array(10594,10589,7703,7551,4593,4485),
-    ),
-    10573 => array(
+    6093 => array(
         'm_icon' => '<i class="far fa-user-hard-hat ispink"></i>',
-        'm_name' => 'Intent Note Trainers',
+        'm_name' => 'Intent Note Trainer Chats',
         'm_desc' => '',
-        'm_parents' => array(10594,10589,4593,7703,7551,4485),
+        'm_parents' => array(10593,10589,7703,4593,4986,4485),
     ),
     4983 => array(
         'm_icon' => '<i class="far fa-thumbs-up ispink"></i>',
@@ -2810,13 +2798,13 @@ $config['en_all_10571'] = array(
         'm_icon' => '<i class="far fa-user-hard-hat isorange"></i>',
         'm_name' => 'Mench Trainers Level 1',
         'm_desc' => '',
-        'm_parents' => array(4983,10606,10691,10573,10571,4985),
+        'm_parents' => array(7701,4983,10606,10691,10573,10571,4985),
     ),
     1308 => array(
         'm_icon' => '<i class="far fa-user-hard-hat isnavy"></i>',
         'm_name' => 'Mench Trainers Level 2',
         'm_desc' => '',
-        'm_parents' => array(4983,10704,10618,10691,10571,4463,4426),
+        'm_parents' => array(7701,4983,10704,10618,10691,10571,4463,4426),
     ),
     3000 => array(
         'm_icon' => '<i class="far fa-whistle"></i>',
@@ -2941,8 +2929,20 @@ $config['en_all_7767'] = array(
 );
 
 //Intent Note Subscribers:
-$config['en_ids_7701'] = array(4430);
+$config['en_ids_7701'] = array(7512,1308,4430);
 $config['en_all_7701'] = array(
+    7512 => array(
+        'm_icon' => '<i class="far fa-user-hard-hat isorange"></i>',
+        'm_name' => 'Mench Trainers Level 1',
+        'm_desc' => '',
+        'm_parents' => array(7701,4983,10606,10691,10573,10571,4985),
+    ),
+    1308 => array(
+        'm_icon' => '<i class="far fa-user-hard-hat isnavy"></i>',
+        'm_name' => 'Mench Trainers Level 2',
+        'm_desc' => '',
+        'm_parents' => array(7701,4983,10704,10618,10691,10571,4463,4426),
+    ),
     4430 => array(
         'm_icon' => '<i class="far fa-user"></i>',
         'm_name' => 'Mench Users',
@@ -3024,13 +3024,13 @@ $config['en_all_4983'] = array(
         'm_icon' => '<i class="far fa-user-hard-hat isorange"></i>',
         'm_name' => 'Mench Trainers Level 1',
         'm_desc' => '',
-        'm_parents' => array(4983,10606,10691,10573,10571,4985),
+        'm_parents' => array(7701,4983,10606,10691,10573,10571,4985),
     ),
     1308 => array(
         'm_icon' => '<i class="far fa-user-hard-hat isnavy"></i>',
         'm_name' => 'Mench Trainers Level 2',
         'm_desc' => '',
-        'm_parents' => array(4983,10704,10618,10691,10571,4463,4426),
+        'm_parents' => array(7701,4983,10704,10618,10691,10571,4463,4426),
     ),
     4430 => array(
         'm_icon' => '<i class="far fa-user"></i>',
@@ -3492,7 +3492,7 @@ $config['en_all_7704'] = array(
 );
 
 //Link Intent Subscription Types:
-$config['en_ids_7703'] = array(10671,10650,10644,10649,10648,10651,4229,10663,10664,10661,10662,4228,10686,10660,10715,6093,6242,4601,4231,7701,7545,10573,4983,10675,6154,6155,7485,7486,6144,4559,7489,6997,6157,7487);
+$config['en_ids_7703'] = array(10671,10650,10644,10649,10648,10651,4229,10663,10664,10661,10662,4228,10686,10660,10573,10715,7545,4601,4231,7701,6093,4983,10675,6154,6155,7485,7486,6144,4559,7489,6997,6157,7487);
 $config['en_all_7703'] = array(
     10671 => array(
         'm_icon' => '<i class="far fa-trash-alt ispink"></i>',
@@ -3578,26 +3578,26 @@ $config['en_all_7703'] = array(
         'm_desc' => '',
         'm_parents' => array(7703,4593,10638,10589,10594,10658),
     ),
+    10573 => array(
+        'm_icon' => '<i class="far fa-bookmark ispink"></i>',
+        'm_name' => 'Intent Note Bookmarks',
+        'm_desc' => '',
+        'm_parents' => array(10594,10589,4593,7703,7551,4485),
+    ),
     10715 => array(
-        'm_icon' => '<i class="far fa-shapes ispink"></i>',
+        'm_icon' => '<i class="far fa-folder-tree ispink"></i>',
         'm_name' => 'Intent Note Categories',
         'm_desc' => '',
-        'm_parents' => array(7703,7551,10589,10594,4593,4485),
+        'm_parents' => array(5007,7703,7551,10589,10594,4593,4485),
     ),
-    6093 => array(
-        'm_icon' => '<i class="far fa-comment-exclamation ispink"></i>',
-        'm_name' => 'Intent Note Changelogs',
+    7545 => array(
+        'm_icon' => '<i class="far fa-at ispink"></i>',
+        'm_name' => 'Intent Note Entity Maps',
         'm_desc' => '',
-        'm_parents' => array(10593,10589,7703,4593,4986,4485),
-    ),
-    6242 => array(
-        'm_icon' => '<i class="far fa-lightbulb-on ispink"></i>',
-        'm_name' => 'Intent Note Endnotes',
-        'm_desc' => '',
-        'm_parents' => array(10593,10589,7703,6345,4603,4593,4986,4485),
+        'm_parents' => array(5007,10594,10589,7703,7551,4593,4485),
     ),
     4601 => array(
-        'm_icon' => '<i class="far fa-search ispink"></i>',
+        'm_icon' => '<i class="far fa-tags ispink"></i>',
         'm_name' => 'Intent Note Keywords',
         'm_desc' => '',
         'm_parents' => array(10593,10589,7703,4593,4485),
@@ -3612,19 +3612,13 @@ $config['en_all_7703'] = array(
         'm_icon' => '<i class="far fa-rss ispink"></i>',
         'm_name' => 'Intent Note Subscribers',
         'm_desc' => '',
-        'm_parents' => array(10594,10589,4527,7703,4593,7551,4485),
+        'm_parents' => array(5007,10594,10589,4527,7703,4593,7551,4485),
     ),
-    7545 => array(
-        'm_icon' => '<i class="far fa-tag ispink"></i>',
-        'm_name' => 'Intent Note Tags',
-        'm_desc' => '',
-        'm_parents' => array(10594,10589,7703,7551,4593,4485),
-    ),
-    10573 => array(
+    6093 => array(
         'm_icon' => '<i class="far fa-user-hard-hat ispink"></i>',
-        'm_name' => 'Intent Note Trainers',
+        'm_name' => 'Intent Note Trainer Chats',
         'm_desc' => '',
-        'm_parents' => array(10594,10589,4593,7703,7551,4485),
+        'm_parents' => array(10593,10589,7703,4593,4986,4485),
     ),
     4983 => array(
         'm_icon' => '<i class="far fa-thumbs-up ispink"></i>',
@@ -3933,31 +3927,31 @@ $config['en_all_7555'] = array(
 );
 
 //Intent Notes Entity Referencing Required:
-$config['en_ids_7551'] = array(10715,7701,7545,10573,4983);
+$config['en_ids_7551'] = array(10573,10715,7545,7701,4983);
 $config['en_all_7551'] = array(
+    10573 => array(
+        'm_icon' => '<i class="far fa-bookmark ispink"></i>',
+        'm_name' => 'Intent Note Bookmarks',
+        'm_desc' => '',
+        'm_parents' => array(10594,10589,4593,7703,7551,4485),
+    ),
     10715 => array(
-        'm_icon' => '<i class="far fa-shapes ispink"></i>',
+        'm_icon' => '<i class="far fa-folder-tree ispink"></i>',
         'm_name' => 'Intent Note Categories',
         'm_desc' => '',
-        'm_parents' => array(7703,7551,10589,10594,4593,4485),
+        'm_parents' => array(5007,7703,7551,10589,10594,4593,4485),
+    ),
+    7545 => array(
+        'm_icon' => '<i class="far fa-at ispink"></i>',
+        'm_name' => 'Intent Note Entity Maps',
+        'm_desc' => '',
+        'm_parents' => array(5007,10594,10589,7703,7551,4593,4485),
     ),
     7701 => array(
         'm_icon' => '<i class="far fa-rss ispink"></i>',
         'm_name' => 'Intent Note Subscribers',
         'm_desc' => '',
-        'm_parents' => array(10594,10589,4527,7703,4593,7551,4485),
-    ),
-    7545 => array(
-        'm_icon' => '<i class="far fa-tag ispink"></i>',
-        'm_name' => 'Intent Note Tags',
-        'm_desc' => '',
-        'm_parents' => array(10594,10589,7703,7551,4593,4485),
-    ),
-    10573 => array(
-        'm_icon' => '<i class="far fa-user-hard-hat ispink"></i>',
-        'm_name' => 'Intent Note Trainers',
-        'm_desc' => '',
-        'm_parents' => array(10594,10589,4593,7703,7551,4485),
+        'm_parents' => array(5007,10594,10589,4527,7703,4593,7551,4485),
     ),
     4983 => array(
         'm_icon' => '<i class="far fa-thumbs-up ispink"></i>',
@@ -4563,14 +4557,8 @@ $config['en_all_6805'] = array(
 );
 
 //Intent Note Conversations:
-$config['en_ids_6345'] = array(6242,4231);
+$config['en_ids_6345'] = array(4231);
 $config['en_all_6345'] = array(
-    6242 => array(
-        'm_icon' => '<i class="far fa-lightbulb-on ispink"></i>',
-        'm_name' => 'Intent Note Endnotes',
-        'm_desc' => '',
-        'm_parents' => array(10593,10589,7703,6345,4603,4593,4986,4485),
-    ),
     4231 => array(
         'm_icon' => '<i class="far fa-comment ispink"></i>',
         'm_name' => 'Intent Note Messages',
@@ -4702,25 +4690,19 @@ $config['en_all_6150'] = array(
 );
 
 //Intent Notes Entity Referencing Optional:
-$config['en_ids_4986'] = array(6093,6242,4231);
+$config['en_ids_4986'] = array(4231,6093);
 $config['en_all_4986'] = array(
-    6093 => array(
-        'm_icon' => '<i class="far fa-comment-exclamation ispink"></i>',
-        'm_name' => 'Intent Note Changelogs',
-        'm_desc' => '',
-        'm_parents' => array(10593,10589,7703,4593,4986,4485),
-    ),
-    6242 => array(
-        'm_icon' => '<i class="far fa-lightbulb-on ispink"></i>',
-        'm_name' => 'Intent Note Endnotes',
-        'm_desc' => '',
-        'm_parents' => array(10593,10589,7703,6345,4603,4593,4986,4485),
-    ),
     4231 => array(
         'm_icon' => '<i class="far fa-comment ispink"></i>',
         'm_name' => 'Intent Note Messages',
         'm_desc' => '',
         'm_parents' => array(10593,10589,7703,6345,4986,4603,4593,4485),
+    ),
+    6093 => array(
+        'm_icon' => '<i class="far fa-user-hard-hat ispink"></i>',
+        'm_name' => 'Intent Note Trainer Chats',
+        'm_desc' => '',
+        'm_parents' => array(10593,10589,7703,4593,4986,4485),
     ),
 );
 
@@ -5153,7 +5135,7 @@ $config['en_all_4426'] = array(
         'm_icon' => '<i class="far fa-user-hard-hat isnavy"></i>',
         'm_name' => 'Mench Trainers Level 2',
         'm_desc' => 'Requires admin review and approval',
-        'm_parents' => array(4983,10704,10618,10691,10571,4463,4426),
+        'm_parents' => array(7701,4983,10704,10618,10691,10571,4463,4426),
     ),
     4430 => array(
         'm_icon' => '<i class="far fa-user"></i>',
@@ -5630,7 +5612,7 @@ $config['en_all_4600'] = array(
 );
 
 //Link Type:
-$config['en_ids_4593'] = array(10625,5943,5001,5865,4999,4998,5000,5981,5982,5003,4251,10672,10653,10646,10654,4259,4257,4261,4260,4319,10657,10656,10659,10689,4230,4255,4318,10673,4256,4258,4250,10671,10650,10644,10649,10648,10651,10647,4229,10663,10664,10661,10662,4228,10686,10660,10715,6093,6242,4601,4231,10679,10677,10676,7701,10678,7545,10573,4983,6226,10681,10675,6132,4246,7504,5007,4994,4993,6415,4275,6559,6560,6556,6578,6154,6155,6149,7611,6969,4283,7495,7542,4235,7757,7610,7578,6224,5967,7563,10690,4266,4267,4282,10683,4554,4570,4556,4555,7702,6563,4552,4553,4577,4549,4551,4550,4557,4278,4279,4268,4460,4547,4287,4548,7561,7564,7559,7560,7558,7488,7485,7486,6144,7741,10685,6140,4559,7489,7492,6997,6157,7487,6143,7562);
+$config['en_ids_4593'] = array(10625,5943,5001,5865,4999,4998,5000,5981,5982,5003,4251,10672,10653,10646,10654,4259,4257,4261,4260,4319,10657,10656,10659,10689,4230,4255,4318,10673,4256,4258,4250,10671,10650,10644,10649,10648,10651,10647,4229,10663,10664,10661,10662,4228,10686,10660,10573,10715,7545,4601,4231,10679,10677,10676,7701,10678,6093,4983,6226,10681,10675,6132,4246,7504,5007,4994,4993,6415,4275,6559,6560,6556,6578,6154,6155,6149,7611,6969,4283,7495,7542,4235,7757,7610,7578,6224,5967,7563,10690,4266,4267,4282,10683,4554,4570,4556,4555,7702,6563,4552,4553,4577,4549,4551,4550,4557,4278,4279,4268,4460,4547,4287,4548,7561,7564,7559,7560,7558,7488,7485,7486,6144,7741,10685,6140,4559,7489,7492,6997,6157,7487,6143,7562);
 $config['en_all_4593'] = array(
     10625 => array(
         'm_icon' => '<i class="far fa-user-circle ispink"></i>',
@@ -5908,26 +5890,26 @@ $config['en_all_4593'] = array(
         'm_desc' => '',
         'm_parents' => array(7703,4593,10638,10589,10594,10658),
     ),
+    10573 => array(
+        'm_icon' => '<i class="far fa-bookmark ispink"></i>',
+        'm_name' => 'Intent Note Bookmarks',
+        'm_desc' => 'Keeps track of the users who can manage/edit the intent',
+        'm_parents' => array(10594,10589,4593,7703,7551,4485),
+    ),
     10715 => array(
-        'm_icon' => '<i class="far fa-shapes ispink"></i>',
+        'm_icon' => '<i class="far fa-folder-tree ispink"></i>',
         'm_name' => 'Intent Note Categories',
         'm_desc' => '',
-        'm_parents' => array(7703,7551,10589,10594,4593,4485),
+        'm_parents' => array(5007,7703,7551,10589,10594,4593,4485),
     ),
-    6093 => array(
-        'm_icon' => '<i class="far fa-comment-exclamation ispink"></i>',
-        'm_name' => 'Intent Note Changelogs',
+    7545 => array(
+        'm_icon' => '<i class="far fa-at ispink"></i>',
+        'm_name' => 'Intent Note Entity Maps',
         'm_desc' => '',
-        'm_parents' => array(10593,10589,7703,4593,4986,4485),
-    ),
-    6242 => array(
-        'm_icon' => '<i class="far fa-lightbulb-on ispink"></i>',
-        'm_name' => 'Intent Note Endnotes',
-        'm_desc' => '',
-        'm_parents' => array(10593,10589,7703,6345,4603,4593,4986,4485),
+        'm_parents' => array(5007,10594,10589,7703,7551,4593,4485),
     ),
     4601 => array(
-        'm_icon' => '<i class="far fa-search ispink"></i>',
+        'm_icon' => '<i class="far fa-tags ispink"></i>',
         'm_name' => 'Intent Note Keywords',
         'm_desc' => '',
         'm_parents' => array(10593,10589,7703,4593,4485),
@@ -5960,7 +5942,7 @@ $config['en_all_4593'] = array(
         'm_icon' => '<i class="far fa-rss ispink"></i>',
         'm_name' => 'Intent Note Subscribers',
         'm_desc' => 'When trainers subscribe to receive intent updates and manage the intent.',
-        'm_parents' => array(10594,10589,4527,7703,4593,7551,4485),
+        'm_parents' => array(5007,10594,10589,4527,7703,4593,7551,4485),
     ),
     10678 => array(
         'm_icon' => '<i class="far fa-trash-alt ispink"></i>',
@@ -5968,17 +5950,11 @@ $config['en_all_4593'] = array(
         'm_desc' => '',
         'm_parents' => array(10658,10539,10589,4593,10638),
     ),
-    7545 => array(
-        'm_icon' => '<i class="far fa-tag ispink"></i>',
-        'm_name' => 'Intent Note Tags',
-        'm_desc' => '',
-        'm_parents' => array(10594,10589,7703,7551,4593,4485),
-    ),
-    10573 => array(
+    6093 => array(
         'm_icon' => '<i class="far fa-user-hard-hat ispink"></i>',
-        'm_name' => 'Intent Note Trainers',
-        'm_desc' => 'Keeps track of the users who can manage/edit the intent',
-        'm_parents' => array(10594,10589,4593,7703,7551,4485),
+        'm_name' => 'Intent Note Trainer Chats',
+        'm_desc' => '',
+        'm_parents' => array(10593,10589,7703,4593,4986,4485),
     ),
     4983 => array(
         'm_icon' => '<i class="far fa-thumbs-up ispink"></i>',
@@ -6533,61 +6509,55 @@ $config['en_all_4454'] = array(
 );
 
 //Intent Notes:
-$config['en_ids_4485'] = array(4231,4983,4601,6242,7545,10715,6093,7701,10573);
+$config['en_ids_4485'] = array(4231,4983,4601,10573,6093,7545,10715,7701);
 $config['en_all_4485'] = array(
     4231 => array(
         'm_icon' => '<i class="far fa-comment ispink"></i>',
         'm_name' => 'Messages',
-        'm_desc' => 'Delivered in-order when student initially starts this intent. Goal is to give key insights that streamline the execution of the intention.',
+        'm_desc' => 'Sent to user over web or Messenger on how to accomplish intention',
         'm_parents' => array(10593,10589,7703,6345,4986,4603,4593,4485),
     ),
     4983 => array(
         'm_icon' => '<i class="far fa-thumbs-up ispink"></i>',
         'm_name' => 'Up-Votes',
-        'm_desc' => 'Tracks intent correlations mined from expert sources and miner perspectives. References give credibility to intent correlations. Never communicated with Students and only used for weighting purposes, like how Google uses link correlations for its PageRank algorithm.',
+        'm_desc' => 'Tracks trainer and expert confidence in intent relations while also enabling trainers to join & manage intentions',
         'm_parents' => array(10593,10589,4527,7703,7551,4985,4593,4485),
     ),
     4601 => array(
-        'm_icon' => '<i class="far fa-search ispink"></i>',
+        'm_icon' => '<i class="far fa-tags ispink"></i>',
         'm_name' => 'Keywords',
-        'm_desc' => 'Never delivered to students, instead, it maps alternative ways an intent could be named so we can better understand student commands.',
+        'm_desc' => 'Maps alternative terms used to trigger an intent so it can be easily found',
         'm_parents' => array(10593,10589,7703,4593,4485),
     ),
-    6242 => array(
-        'm_icon' => '<i class="far fa-lightbulb-on ispink"></i>',
-        'm_name' => 'Endnotes',
-        'm_desc' => 'Message delivered to students when they complete an intention.',
-        'm_parents' => array(10593,10589,7703,6345,4603,4593,4986,4485),
-    ),
-    7545 => array(
-        'm_icon' => '<i class="far fa-tag ispink"></i>',
-        'm_name' => 'Tags',
-        'm_desc' => 'When completed by the user, adds the user as the child of these entities, and stores potential user response as link content.',
-        'm_parents' => array(10594,10589,7703,7551,4593,4485),
-    ),
-    10715 => array(
-        'm_icon' => '<i class="far fa-shapes ispink"></i>',
-        'm_name' => 'Categories',
-        'm_desc' => 'Defines the marketplace categories this intent belongs to.',
-        'm_parents' => array(7703,7551,10589,10594,4593,4485),
+    10573 => array(
+        'm_icon' => '<i class="far fa-bookmark ispink"></i>',
+        'm_name' => 'Bookmarks',
+        'm_desc' => 'Adds intent to trainer dashboard for faster access',
+        'm_parents' => array(10594,10589,4593,7703,7551,4485),
     ),
     6093 => array(
-        'm_icon' => '<i class="far fa-comment-exclamation ispink"></i>',
-        'm_name' => 'Changelogs',
-        'm_desc' => 'Similar to Wikipedia\'s Talk pages, the Mench changelog helps miners track the history and evolution of a intent and explain/propose changes/improvements.',
+        'm_icon' => '<i class="far fa-user-hard-hat ispink"></i>',
+        'm_name' => 'Trainer Chats',
+        'm_desc' => 'Logs trainer conversations around intention',
         'm_parents' => array(10593,10589,7703,4593,4986,4485),
+    ),
+    7545 => array(
+        'm_icon' => '<i class="far fa-at ispink"></i>',
+        'm_name' => 'Entity Maps',
+        'm_desc' => 'Maps entities as the parent of the user who completes the intent',
+        'm_parents' => array(5007,10594,10589,7703,7551,4593,4485),
+    ),
+    10715 => array(
+        'm_icon' => '<i class="far fa-folder-tree ispink"></i>',
+        'm_name' => 'Categories',
+        'm_desc' => 'Defines the categories this intent belongs to in the Mench marketplace',
+        'm_parents' => array(5007,7703,7551,10589,10594,4593,4485),
     ),
     7701 => array(
         'm_icon' => '<i class="far fa-rss ispink"></i>',
         'm_name' => 'Subscribers',
-        'm_desc' => 'Allows miners to follow an intent to receive updates.',
-        'm_parents' => array(10594,10589,4527,7703,4593,7551,4485),
-    ),
-    10573 => array(
-        'm_icon' => '<i class="far fa-user-hard-hat ispink"></i>',
-        'm_name' => 'Trainers',
-        'm_desc' => 'Tracks users who can administrate this intent.',
-        'm_parents' => array(10594,10589,4593,7703,7551,4485),
+        'm_desc' => 'Send updates to users and trainers when intent is modified',
+        'm_parents' => array(5007,10594,10589,4527,7703,4593,7551,4485),
     ),
 );
 

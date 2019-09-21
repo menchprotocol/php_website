@@ -7,10 +7,10 @@ $route['translate_uri_dashes']      = FALSE;
 $route['default_controller']        = "intents/in_public_ui";
 
 //Trainer Intents/Entities:
-$route['entities/(:num)']           = "entities/en_trainer_ui/$1";
-$route['entities']                  = "entities/en_trainer_ui/0";
-$route['intents/(:num)']            = "intents/in_trainer_ui/$1";
-$route['intents']                   = "intents/in_trainer_ui/0";
+$route['entities/(:num)']           = "entities/en_train/$1";
+$route['entities']                  = "entities/en_train/0";
+$route['intents/(:num)']            = "intents/in_train/$1";
+$route['intents']                   = "intents/in_train/0";
 
 $route['(:num)_(:num)']             = "intents/in_public_ui/$2/$1"; //Public Intent Landing Page
 $route['(:num)']                    = "intents/in_public_ui/$1"; //Public Intent Landing Page

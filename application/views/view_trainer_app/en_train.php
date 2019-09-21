@@ -12,7 +12,7 @@
 <style>
     .en_child_icon_<?= $entity['en_id'] ?>{ display:none; }
 </style>
-<script src="/js/custom/entity-manage-js.js?v=v<?= $this->config->item('app_version') ?>"
+<script src="/js/custom/en_train.js?v=v<?= $this->config->item('app_version') ?>"
         type="text/javascript"></script>
 
 <div class="row">
@@ -28,7 +28,7 @@
         }
         //Input to add new parents:
         echo '<div id="new-parent" class="list-group-item list_input grey-input ' . advance_mode() . '">
-                    <div class="form-group is-empty"><input type="text" class="form-control new-input algolia_search" data-lpignore="true" placeholder="+ Entity/URL"></div>
+                    <div class="form-group is-empty"><input type="text" class="form-control new-input algolia_search" data-lpignore="true" placeholder="Add Entity/URL"></div>
                     <div class="algolia_search_pad hidden"><span>Search existing entities, create a new entity or paste a URL...</span></div>
             </div>';
 
@@ -234,9 +234,9 @@
         }
 
 
-        //Input to add new parents:
+        //Input to add new child:
         echo '<div id="new-children" class="list-group-item list_input grey-input '. advance_mode() .'">
-            <div class="form-group is-empty"><input type="text" class="form-control new-input algolia_search" data-lpignore="true" placeholder="+ Entity/URL"></div>
+            <div class="form-group is-empty"><input type="text" class="form-control new-input algolia_search" data-lpignore="true" placeholder="Add Entity/URL"></div>
             <div class="algolia_search_pad hidden"><span>Search existing entities, create a new entity or paste a URL...</span></div>
     </div>';
         echo '</div>';

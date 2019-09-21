@@ -252,7 +252,7 @@ if(!$action) {
 
     echo '</div>';
     echo '<div class="'.$this->config->item('css_column_2').'">';
-    $this->load->view('view_trainer_app/in_right_column');
+    $this->load->view('view_trainer_app/in_modify');
     echo '</div>';
     echo '</div>';
 

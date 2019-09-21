@@ -31,7 +31,7 @@ class Links extends CI_Controller
         ));
 
         //Load main:
-        $this->load->view('view_trainer_app/links_ui');
+        $this->load->view('view_trainer_app/ln_list');
 
         //Load footer:
         $this->load->view(($session_en ? 'view_trainer_app/trainer_app_footer' : 'view_user_app/user_app_footer'));
@@ -352,7 +352,7 @@ class Links extends CI_Controller
                     'source' => $id_prefix['in'].$in_child['ln_parent_intent_id'],
                     'target' => $id_prefix['in'].$in_child['ln_child_intent_id'],
                     'label' => $en_all_4593[$in_child['ln_type_entity_id']]['m_name'], //TODO maybe give visibility to condition here?
-                    'weight' => 1, //TODO Maybe update later?
+                    'weight' => 1,
                     'edge_type_en_id' => $in_child['ln_type_entity_id'],
                     'edge_status' => $in_child['ln_status_entity_id'],
                 ));
@@ -388,7 +388,7 @@ class Links extends CI_Controller
                     'source' => $id_prefix['en'].$en_child['ln_parent_entity_id'],
                     'target' => $id_prefix['en'].$en_child['ln_child_entity_id'],
                     'label' => $en_all_4593[$en_child['ln_type_entity_id']]['m_name'].': '.$en_child['ln_content'],
-                    'weight' => 1, //TODO Maybe update later?
+                    'weight' => 1,
                     'edge_type_en_id' => $en_child['ln_type_entity_id'],
                     'edge_status' => $en_child['ln_status_entity_id'],
                 ));
@@ -418,7 +418,7 @@ class Links extends CI_Controller
                 'source' => $message['ln_id'],
                 'target' => $id_prefix['in'].$message['ln_child_intent_id'],
                 'label' => 'Child Intent',
-                'weight' => 1, //TODO Maybe update later?
+                'weight' => 1,
             ));
 
             //Add parent intent link?
@@ -427,7 +427,7 @@ class Links extends CI_Controller
                     'source' => $id_prefix['in'].$message['ln_parent_intent_id'],
                     'target' => $message['ln_id'],
                     'label' => 'Parent Intent',
-                    'weight' => 1, //TODO Maybe update later?
+                    'weight' => 1,
                 ));
             }
 
@@ -437,7 +437,7 @@ class Links extends CI_Controller
                     'source' => $id_prefix['en'].$message['ln_parent_entity_id'],
                     'target' => $message['ln_id'],
                     'label' => 'Parent Entity',
-                    'weight' => 1, //TODO Maybe update later?
+                    'weight' => 1,
                 ));
             }
 

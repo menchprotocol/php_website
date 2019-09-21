@@ -235,7 +235,26 @@ $(document).ready(function () {
 
 
 
+function in_load_upvote(in_id, in_outcome){
 
+    //Immediately load modal:
+    $('#upvote_parents').html('<i class="fas fa-yin-yang fa-spin"></i>');
+    $('.upvote_intent').html(in_outcome);
+    $('#addUpVote').modal('show');
+
+    //Then load data into modal:
+    $.post("/intents/in_load_upvote", {in_id: in_id, in_loaded_id:in_loaded_id}, function (data) {
+        //Update UI to confirm with user:
+        if (data.status) {
+            //Show trainers their new words:
+            $('#upvote_parents').html(data.upvote_parents);
+        } else {
+            //There was some sort of an error returned!
+            alert('ERROR: ' + data.message);
+        }
+    });
+
+}
 
 
 function in_load_search(focus_element, is_in_parent, next_in_level, shortcut) {

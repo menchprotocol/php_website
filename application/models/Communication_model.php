@@ -907,7 +907,7 @@ class Communication_model extends CI_Model
                 } else {
 
                     //Show entity link with status:
-                    $output_body_message = str_replace('@' . $string_references['ref_entities'][0], $en_all_6177[$ens[0]['en_status_entity_id']]['m_icon'].' <a href="/entities/' . $ens[0]['en_id'] . '" target="_parent">' . $ens[0]['en_name']  . '</a>', $output_body_message);
+                    $output_body_message = str_replace('@' . $string_references['ref_entities'][0], '<span class="icon-block">'.$en_all_6177[$ens[0]['en_status_entity_id']]['m_icon'].'</span><a href="/entities/' . $ens[0]['en_id'] . '" target="_parent">' . $ens[0]['en_name']  . '</a>', $output_body_message);
 
                 }
 
@@ -960,7 +960,7 @@ class Communication_model extends CI_Model
                         if(!count($this->Links_model->ln_fetch(array(
                             'ln_status_entity_id IN (' . join(',', $this->config->item('en_ids_7359')) . ')' => null, //Link Statuses Public
                             'ln_child_entity_id' => $string_references['ref_entities'][0],
-                            'ln_parent_entity_id IN ('.join(',' , $this->config->item('en_ids_4983')).')' => null, //Intent Note Up-Vote
+                            'ln_parent_entity_id IN ('.join(',' , $this->config->item('en_ids_4983')).')' => null, //Intent Note Up-Votes
                             'ln_type_entity_id IN (' . join(',', $this->config->item('en_ids_4592')) . ')' => null, //Entity-to-Entity Links
                         )))){
                             return array(
@@ -979,7 +979,8 @@ class Communication_model extends CI_Model
 
 
                 //Add Intent up-vote to beginning:
-                $output_body_message = '<div style="margin-bottom:5px; border-bottom: 1px solid #E5E5E5; padding-bottom:10px;">IF you <a href="/intents/' . $upvote_child_ins[0]['in_id'] . '" target="_parent">' . echo_in_outcome($upvote_child_ins[0]['in_outcome'], false, true) . '</a> THEN you will <a href="/intents/' . $referenced_ins[0]['in_id'] . '" target="_parent">' . echo_in_outcome($referenced_ins[0]['in_outcome'], false, false, true) . '</a></div>' . $output_body_message;
+                $output_body_message = '<div style="margin-bottom:5px; border-bottom: 1px solid #E5E5E5; padding-bottom:10px;"><span class="icon-block"><i class="far fa-thumbs-up ispink"></i></span>IF <a href="/intents/' . $upvote_child_ins[0]['in_id'] . '" target="_parent">' . echo_in_outcome($upvote_child_ins[0]['in_outcome'], false, true) . '</a> THEN <a href="/intents/' . $referenced_ins[0]['in_id'] . '" target="_parent">' . echo_in_outcome($referenced_ins[0]['in_outcome'], false, false) . '</a></div>' . $output_body_message;
+
             } else {
 
                 //Intent referencing without an entity referencing, show simply the intent:

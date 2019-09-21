@@ -447,24 +447,6 @@ class Intents_model extends CI_Model
                 'in_status_entity_id' => $new_in_status,
             ), true, $ln_creator_entity_id);
 
-
-            //Add user as Trainer IF Level 1 trainer:
-            if(count($this->Links_model->ln_fetch(array(
-                'ln_child_entity_id' => $ln_creator_entity_id,
-                'ln_parent_entity_id IN (' . join(',', $this->config->item('en_ids_10691')) . ')' => null, //IS Mench Trainers
-                'ln_parent_entity_id NOT IN (' . join(',', $this->config->item('en_ids_10704')) . ')' => null, //BUT NOT Mench Administrators
-                'ln_type_entity_id IN (' . join(',', $this->config->item('en_ids_4592')) . ')' => null, //Entity-to-Entity Links
-                'ln_status_entity_id IN (' . join(',', $this->config->item('en_ids_7359')) . ')' => null, //Link Statuses Public
-            )))){
-                $this->Links_model->ln_create(array(
-                    'ln_creator_entity_id' => $ln_creator_entity_id,
-                    'ln_parent_entity_id' => $ln_creator_entity_id,
-                    'ln_type_entity_id' => 10573, //Intent Note Trainer
-                    'ln_child_intent_id' => $intent_new['in_id'],
-                    'ln_content' => '@'.$ln_creator_entity_id,
-                ));
-            }
-
         }
 
 
@@ -495,14 +477,15 @@ class Intents_model extends CI_Model
                     ( $is_parent ? 'ln_child_intent_id' : 'ln_parent_intent_id' ) => $in_linked_id,
                     ( $is_parent ? 'ln_parent_intent_id' : 'ln_child_intent_id' ) => $intent_new['in_id'],
                     'ln_parent_entity_id' => $ln_creator_entity_id,
-                    'ln_type_entity_id' => 4983, //Intent Note Up-Vote
+                    'ln_type_entity_id' => 4983, //Intent Note Up-Votes
                     'ln_status_entity_id IN (' . join(',', $this->config->item('en_ids_7360')) . ')' => null, //Link Statuses Active
                 )))){
+
                 //Add new up-vote:
                 $this->Links_model->ln_create(array(
                     'ln_creator_entity_id' => $ln_creator_entity_id,
                     'ln_parent_entity_id' => $ln_creator_entity_id,
-                    'ln_type_entity_id' => 4983, //Intent Note Up-Vote
+                    'ln_type_entity_id' => 4983, //Intent Note Up-Votes
                     'ln_content' => '@'.$ln_creator_entity_id.' #'.( $is_parent ? $intent_new['in_id'] : $in_linked_id ), //Message content
                     ( $is_parent ? 'ln_child_intent_id' : 'ln_parent_intent_id' ) => $in_linked_id,
                     ( $is_parent ? 'ln_parent_intent_id' : 'ln_child_intent_id' ) => $intent_new['in_id'],

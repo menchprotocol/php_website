@@ -889,49 +889,29 @@ class Actionplan_model extends CI_Model
          * */
 
 
-        //Start with on-complete tips if any:
-        if($step_progress_made){
-
-            $on_complete_messages = $this->Links_model->ln_fetch(array(
-                'ln_status_entity_id IN (' . join(',', $this->config->item('en_ids_7359')) . ')' => null, //Link Statuses Public
-                'ln_type_entity_id' => 6242, //On-Complete Tips
-                'ln_child_intent_id' => $in['in_id'],
-            ), array(), 0, 0, array('ln_order' => 'ASC'));
-
-        } else {
-
-            $on_complete_messages = array();
-
-        }
-
-
         //Try to unlock steps:
         $unlock_steps_messages = $this->Actionplan_model->completion_recursive_up($en_id, $in);
-
-
-        //Merge the two, if any:
-        $on_complete_messages = array_merge($on_complete_messages, $unlock_steps_messages);
 
 
         //Return all the messages:
         if($send_message){
 
             //Send message to user:
-            foreach($on_complete_messages as $on_complete_message){
+            foreach($unlock_steps_messages as $message){
                 $this->Communication_model->dispatch_message(
-                    $on_complete_message['ln_content'],
+                    $message['ln_content'],
                     array('en_id' => $en_id),
                     true
                 );
             }
 
             //Return the number of messages sent:
-            return count($on_complete_messages);
+            return count($unlock_steps_messages);
 
         } else {
 
             //Return messages array:
-            return $on_complete_messages;
+            return $unlock_steps_messages;
 
         }
     }

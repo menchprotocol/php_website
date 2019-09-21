@@ -3,7 +3,7 @@
     var in_loaded_id = <?= $in['in_id'] ?>;
     var session_en_id = <?= ( isset($session_en['en_id']) ? intval($session_en['en_id']) : 0 ) ?>;
 </script>
-<script src="/js/custom/intent-featured.js?v=v<?= $this->config->item('app_version') ?>"
+<script src="/js/custom/in_landing_page.js?v=v<?= $this->config->item('app_version') ?>"
         type="text/javascript"></script>
 
 <?php
@@ -58,12 +58,12 @@ if(isset($session_en['en_id']) && $referrer_en_id == 0){
         //Show when was added:
         echo '<p>Intention is already added to your '.$en_all_7369[6138]['m_icon'].' '.$en_all_7369[6138]['m_name'].'.</p>';
 
-        echo '<a class="btn btn-primary tag-manager-get-started" href="/actionplan/'.$in['in_id'].'" style="display: inline-block; padding:12px 36px; font-size: 1.3em;">Resume&nbsp;&nbsp;&nbsp;<i class="fas fa-angle-double-right"></i></a>';
+        echo '<a class="btn btn-primary" href="/actionplan/'.$in['in_id'].'" style="display: inline-block; padding:12px 36px; font-size: 1.3em;">Resume&nbsp;&nbsp;&nbsp;<i class="fas fa-angle-double-right"></i></a>';
 
     } else {
 
         //Give option to add:
-        echo '<div id="added_to_actionplan"><a class="btn btn-primary tag-manager-get-started" href="javascript:void(0);" onclick="add_to_actionplan()" style="display: inline-block; padding:12px 36px; font-size: 1.3em;">Get Started&nbsp;&nbsp;&nbsp;<i class="fas fa-angle-double-right"></i></a></div>';
+        echo '<div id="added_to_actionplan"><a class="btn btn-primary" href="javascript:void(0);" onclick="add_to_actionplan()" style="display: inline-block; padding:12px 36px; font-size: 1.3em;">Get Started&nbsp;&nbsp;&nbsp;<i class="fas fa-angle-double-right"></i></a></div>';
 
 
     }
@@ -71,7 +71,7 @@ if(isset($session_en['en_id']) && $referrer_en_id == 0){
 } else {
 
     //Give option to add:
-    echo '<a class="btn btn-primary tag-manager-get-started" href="'.( $referrer_en_id > 0 ? $referrer_en_id.'_' : '' ).$in['in_id'].'/signin" style="display: inline-block; padding:12px 36px; font-size: 1.3em;">Get Started&nbsp;&nbsp;&nbsp;<i class="fas fa-angle-double-right"></i></a>';
+    echo '<a class="btn btn-primary" href="'.( $referrer_en_id > 0 ? $referrer_en_id.'_' : '' ).$in['in_id'].'/signin" style="display: inline-block; padding:12px 36px; font-size: 1.3em;">Get Started&nbsp;&nbsp;&nbsp;<i class="fas fa-angle-double-right"></i></a>';
 
 }
 

@@ -68,7 +68,7 @@ if(count($current_sign_in_attempt) == 0){
         ln_parent_link_id: <?= $current_sign_in_attempt['ln_id'] ?>,
     };
 </script>
-<script src="/js/custom/signin-js.js?v=v<?= $this->config->item('app_version') ?>"
+<script src="/js/custom/user_signin.js?v=v<?= $this->config->item('app_version') ?>"
         type="text/javascript"></script>
 
 

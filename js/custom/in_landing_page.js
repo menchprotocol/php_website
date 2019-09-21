@@ -16,7 +16,7 @@ function add_to_actionplan(){
 $(document).ready(function () {
 
     //Lookout for intent link type changes:
-    $('.tag-manager-overview-link').click(function () {
+    $('.js-ln-create-overview-link').click(function () {
         //Only log engagement if opening:
         if($(this).hasClass('collapsed')){
 
@@ -35,7 +35,7 @@ $(document).ready(function () {
     });
 
 
-    $('.tag-manager-steps-review').click(function () {
+    $('.js-ln-create-steps-review').click(function () {
         //Only log engagement if opening:
         if($(this).attr('aria-expanded')=='false'){
 
@@ -54,7 +54,7 @@ $(document).ready(function () {
         }
     });
 
-    $('.tag-manager-expert-full-list').click(function () {
+    $('.js-ln-create-expert-full-list').click(function () {
         //Only log engagement if opening:
         var section_en_id = 7616; //Intent Engage Experts Full List
 
@@ -69,7 +69,7 @@ $(document).ready(function () {
         });
     });
 
-    $('.tag-manager-expert-sources').click(function () {
+    $('.js-ln-create-expert-sources').click(function () {
 
         //Only log engagement if opening:
         var section_en_id = parseInt($(this).attr('source-type-en-id')); //Determine the source type

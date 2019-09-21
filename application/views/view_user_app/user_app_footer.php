@@ -17,36 +17,36 @@
                         <?php $en_all_7372 = $this->config->item('en_all_7372'); /* Mench Products */ ?>
 
 
-                        <a href="https://www.instagram.com/askmench/" target="_blank" class="social-link tag-manager-social-profile"
+                        <a href="https://www.instagram.com/askmench/" target="_blank" class="social-link"
                            data-toggle="tooltip" title="Follow on Instagram" data-placement="top"><i
                                     class="fab fa-instagram"></i></a>
 
-                        <a href="https://www.facebook.com/askmench" target="_blank" class="social-link tag-manager-social-profile"
+                        <a href="https://www.facebook.com/askmench" target="_blank" class="social-link"
                            data-toggle="tooltip" title="Follow on Facebook" data-placement="top"><i
                                     class="fab fa-facebook"></i></a>
 
-                        <a href="https://twitter.com/askmench" target="_blank" class="social-link tag-manager-social-profile" data-toggle="tooltip"
+                        <a href="https://twitter.com/askmench" target="_blank" class="social-link" data-toggle="tooltip"
                            title="Follow on Twitter" data-placement="top"><i class="fab fa-twitter"></i></a>
 
                         <a href="https://www.youtube.com/channel/UCOH64HiAIfJlz73tTSI8n-g" target="_blank"
-                           class="social-link tag-manager-social-profile" data-toggle="tooltip" title="Subscribe on YouTube"
+                           class="social-link" data-toggle="tooltip" title="Subscribe on YouTube"
                            data-placement="top"><i class="fab fa-youtube"></i></a>
 
-                        <a href="https://www.linkedin.com/company/askmench/" target="_blank" class="social-link tag-manager-social-profile"
+                        <a href="https://www.linkedin.com/company/askmench/" target="_blank" class="social-link"
                            data-toggle="tooltip" title="Follow on LinkedIn" data-placement="top"><i
                                     class="fab fa-linkedin"></i></a>
 
-                        <a href="/8263" class="social-link tag-manager-social-profile" data-toggle="tooltip"
+                        <a href="/8263" class="social-link" data-toggle="tooltip"
                            title="<?= $en_all_7372[7540]['m_name'] ?>" data-placement="top"><?= $en_all_7372[7540]['m_icon'] ?></a>
 
 
                         <a href="/dashboard"
-                           class="social-link tag-manager-footer-dashboard" data-toggle="tooltip" title="<?= $en_all_7369[7161]['m_name'] ?>"
+                           class="social-link" data-toggle="tooltip" title="<?= $en_all_7369[7161]['m_name'] ?>"
                            data-placement="top"><?= $en_all_7369[7161]['m_icon'] ?></a>
 
 
                         <a href="/signin"
-                           class="social-link tag-manager-sign-in" data-toggle="tooltip" title="<?= $en_all_7369[4269]['m_name'] ?>"
+                           class="social-link" data-toggle="tooltip" title="<?= $en_all_7369[4269]['m_name'] ?>"
                            data-placement="top"><?= $en_all_7369[4269]['m_icon'] ?></a>
 
                     </li>

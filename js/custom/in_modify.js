@@ -75,7 +75,7 @@ $(document).ready(function () {
         if (hash_parts.length >= 2) {
             //Fetch level if available:
             if (hash_parts[0] == 'intentnotes') {
-                in_messages_iframe(hash_parts[1]);
+                in_notes_iframe(hash_parts[1]);
             } else if (hash_parts[0] == 'loadmodify') {
                 in_modify_load(hash_parts[1], hash_parts[2]);
             } else if (hash_parts[0] == 'actionplanusers') {
@@ -187,7 +187,7 @@ function in_adjust_link_ui() {
 
 
 
-function in_messages_iframe(in_id) {
+function in_notes_iframe(in_id) {
 
     //Set opacity:
     remove_all_highlights();
@@ -202,7 +202,7 @@ function in_messages_iframe(in_id) {
     $('#load_messaging_frame .badge-h-max').html('<i class="fas fa-comment-plus"></i> ' + $('.in_outcome_' + in_id + ':first').text());
 
     //Load content via a URL:
-    $('.ajax-frame').attr('src', '/intents/in_messages_iframe/' + in_id).css('margin-top', '0');
+    $('.ajax-frame').attr('src', '/intents/in_notes_iframe/' + in_id).css('margin-top', '0');
     $('.ajax-frame').on("load", function () {
         $('.frame-loader').addClass('hidden');
         $('.ajax-frame').removeClass('hidden').contents().find('#ln_content' + in_id).focus();
@@ -420,26 +420,6 @@ function in_modify_load(in_id, ln_id) {
     });
 }
 
-
-
-
-function in_unlink_only(in_id, level, ln_id){
-    var r = confirm("Are you sure you want to unlink intent?");
-    if (r == true) {
-        //Quickly remove first:
-        in_ui_remove(in_id, level, ln_id);
-
-        //Then process & show possible errors:
-        $.post("/intents/in_unlink_only", {ln_id: ln_id}, function (data) {
-            if (data.status) {
-                //Show trainers their new words:
-                count_new_words_in(0);
-            } else {
-                alert('Failed to Remove: ' + data.message);
-            }
-        });
-    }
-}
 
 
 function in_ui_remove(in_id,level,ln_id){

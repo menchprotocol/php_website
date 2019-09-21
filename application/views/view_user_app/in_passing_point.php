@@ -3,7 +3,7 @@
     var in_loaded_id = <?= $in['in_id'] ?>;
     var session_en_id = <?= ( isset($session_en['en_id']) ? intval($session_en['en_id']) : 0 ) ?>;
 </script>
-<script src="/js/custom/intent-featured.js?v=v<?= $this->config->item('app_version') ?>"
+<script src="/js/custom/in_landing_page.js?v=v<?= $this->config->item('app_version') ?>"
         type="text/javascript"></script>
 
 <?php

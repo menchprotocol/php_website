@@ -15,7 +15,7 @@
     var js_en_all_7585 = <?= json_encode($this->config->item('en_all_7585')) ?>; // Intent Subtypes
     var js_en_all_7596 = <?= json_encode($this->config->item('en_all_7596')) ?>; // Intent Level
 </script>
-<script src="/js/custom/intent-right-column.js?v=v<?= $this->config->item('app_version') ?>"
+<script src="/js/custom/in_modify.js?v=v<?= $this->config->item('app_version') ?>"
         type="text/javascript"></script>
 
 
@@ -130,7 +130,6 @@
 
             <div class="col-md-6 in-has-tr">
 
-                <div class="<?= advance_mode() ?>">
 
                     <div class="title"><h4><?= $en_all_7368[6205]['m_icon'].' Link Settings' ?></h4></div>
 
@@ -156,52 +155,52 @@
 
 
 
-                    <span class="mini-header" style="margin-top: 20px;"><?= $en_all_4341[4593]['m_icon'].' '.$en_all_4341[4593]['m_name'] ?></span>
-                    <select class="form-control border" id="ln_type_entity_id" style="margin-bottom: 12px;">
-                        <?php
-                        foreach ($this->config->item('en_all_4486') as $en_id => $m) {
-                            echo '<option value="' . $en_id . '">' . $m['m_name'] . '</option>';
-                        }
-                        ?>
-                    </select>
+                    <div class="<?= advance_mode() ?>">
 
-
-
-                    <div class="score_range_box hidden">
-                        <span class="mini-header" style="margin-top: 20px;"><?= $en_all_6103[6402]['m_icon'].' '.$en_all_6103[6402]['m_name'] ?></span>
-                        <div class="form-group label-floating is-empty"
-                             style="max-width:230px; margin:1px 0 10px;">
-                            <div class="input-group border">
-                                <span class="input-group-addon addon-lean addon-grey" style="color:#2f2739; font-weight: 300;">IF Scores </span>
-                                <input style="padding-left:0; padding-right:0; text-align:right;" type="number" step="1" data-lpignore="true"
-                                       maxlength="3" id="tr__conditional_score_min" value="" class="form-control">
-                                <span class="input-group-addon addon-lean addon-grey" style="color:#2f2739; font-weight: 300; border-left: 1px solid #ccc;"><i
-                                            class="fal fa-fas fa-percentage"></i> to </span>
-                                <input style="padding-left:3px; padding-right:0; text-align:right;" type="number" step="1" data-lpignore="true"
-                                       maxlength="3" id="tr__conditional_score_max" value="" class="form-control">
-                                <span class="input-group-addon addon-lean addon-grey" style="color:#2f2739; font-weight: 300; border-left: 1px solid #ccc; border-right:0px solid #FFF;"><i
-                                            class="fal fa-fas fa-percentage"></i></span>
-                            </div>
-                        </div>
-                    </div>
-
-                    <div class="score_points hidden">
-                        <span class="mini-header" style="margin-top: 20px;"><?= $en_all_6103[4358]['m_icon'].' '.$en_all_6103[4358]['m_name'] ?></span>
-                        <select class="form-control border" id="tr__assessment_points" style="margin-bottom:12px;">
+                        <span class="mini-header" style="margin-top: 20px;"><?= $en_all_4341[4593]['m_icon'].' '.$en_all_4341[4593]['m_name'] ?></span>
+                        <select class="form-control border" id="ln_type_entity_id" style="margin-bottom: 12px;">
                             <?php
-                            foreach ($this->config->item('in_completion_marks') as $mark) {
-                                echo '<option value="' . $mark . '">' . $mark . '</option>';
+                            foreach ($this->config->item('en_all_4486') as $en_id => $m) {
+                                echo '<option value="' . $en_id . '">' . $m['m_name'] . '</option>';
                             }
                             ?>
                         </select>
-                    </div>
 
+                        <div class="score_range_box hidden">
+                            <span class="mini-header" style="margin-top: 20px;"><?= $en_all_6103[6402]['m_icon'].' '.$en_all_6103[6402]['m_name'] ?></span>
+                            <div class="form-group label-floating is-empty"
+                                 style="max-width:230px; margin:1px 0 10px;">
+                                <div class="input-group border">
+                                    <span class="input-group-addon addon-lean addon-grey" style="color:#2f2739; font-weight: 300;">IF Scores </span>
+                                    <input style="padding-left:0; padding-right:0; text-align:right;" type="number" step="1" data-lpignore="true"
+                                           maxlength="3" id="tr__conditional_score_min" value="" class="form-control">
+                                    <span class="input-group-addon addon-lean addon-grey" style="color:#2f2739; font-weight: 300; border-left: 1px solid #ccc;"><i
+                                                class="fal fa-fas fa-percentage"></i> to </span>
+                                    <input style="padding-left:3px; padding-right:0; text-align:right;" type="number" step="1" data-lpignore="true"
+                                           maxlength="3" id="tr__conditional_score_max" value="" class="form-control">
+                                    <span class="input-group-addon addon-lean addon-grey" style="color:#2f2739; font-weight: 300; border-left: 1px solid #ccc; border-right:0px solid #FFF;"><i
+                                                class="fal fa-fas fa-percentage"></i></span>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="score_points hidden">
+                            <span class="mini-header" style="margin-top: 20px;"><?= $en_all_6103[4358]['m_icon'].' '.$en_all_6103[4358]['m_name'] ?></span>
+                            <select class="form-control border" id="tr__assessment_points" style="margin-bottom:12px;">
+                                <?php
+                                foreach ($this->config->item('in_completion_marks') as $mark) {
+                                    echo '<option value="' . $mark . '">' . $mark . '</option>';
+                                }
+                                ?>
+                            </select>
+                        </div>
+
+                    </div>
                 </div>
 
 
                 <div class="save-btn-spot">&nbsp;</div>
 
-                </div>
             </div>
         </div>
 

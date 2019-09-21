@@ -229,7 +229,7 @@ class Intents extends CI_Controller
     }
 
 
-    function in_trainer_ui($in_id = 0)
+    function in_train($in_id = 0)
     {
 
         /*
@@ -269,14 +269,91 @@ class Intents extends CI_Controller
         $this->load->view('view_trainer_app/trainer_app_header', array(
             'title' => $ins[0]['in_outcome'].' | Intents'
         ));
-        $this->load->view('view_trainer_app/in_trainer_ui', array(
-            'in' => $ins[0] ,
+        $this->load->view('view_trainer_app/in_train', array(
+            'in' => $ins[0],
+            'session_en' => $session_en,
         ));
         $this->load->view('view_trainer_app/trainer_app_footer');
 
     }
 
 
+
+    function in_load_upvote(){
+
+        $session_en = en_auth($this->config->item('en_ids_10691') /* Mench Trainers */);
+        if (!$session_en) {
+            return echo_json(array(
+                'status' => 0,
+                'message' => 'Invalid Session. Refresh the Page to Continue',
+            ));
+        } elseif (!isset($_POST['in_id']) || intval($_POST['in_id']) < 1) {
+            return echo_json(array(
+                'status' => 0,
+                'message' => 'Missing Intent ID',
+            ));
+        } elseif (!isset($_POST['in_loaded_id']) || intval($_POST['in_loaded_id']) < 1) {
+            return echo_json(array(
+                'status' => 0,
+                'message' => 'Missing Loaded Intent ID',
+            ));
+        }
+
+        //Now fetch parent intents to allow trainer to log their up-vote:
+        $in__parents = $this->Links_model->ln_fetch(array(
+            'ln_status_entity_id IN (' . join(',', $this->config->item('en_ids_7360')) . ')' => null, //Link Statuses Active
+            'in_status_entity_id IN (' . join(',', $this->config->item('en_ids_7356')) . ')' => null, //Intent Statuses Active
+            'ln_type_entity_id IN (' . join(',', $this->config->item('en_ids_4486')) . ')' => null, //Intent-to-Intent Links
+            'ln_child_intent_id' => $_POST['in_id'],
+        ), array('in_parent'));
+
+        if(count($in__parents) > 0){
+
+            //List parent intentions to allow trainer to cast their up-vote:
+            $upvote_parents = '';
+            foreach($in__parents as $in){
+                $upvote_parents .= '<a href="/intents/in_submit_upvote/'.$_POST['in_loaded_id'].'/'.$_POST['in_id'].'/'.$in['in_id'].'" class="list-group-item">';
+                $upvote_parents .= '<span class="pull-right"><i class="far fa-thumbs-up"></i></span>';
+                $upvote_parents .= '<span style="color:#222; font-weight:500; font-size:1.2em;">'.echo_in_outcome($in['in_outcome']).'</span>';
+                $upvote_parents .= '</a>';
+            }
+
+            return echo_json(array(
+                'status' => 1,
+                'upvote_parents' => $upvote_parents,
+            ));
+
+        } else {
+
+            //Intention has no parents, therefore no up-votes can be casted. Inform the trainer:
+            return echo_json(array(
+                'status' => 1,
+                'upvote_parents' => '<div class="alert alert-danger" role="alert">No parent intentions found. Add a parent intention before casting an up-vote.</div>',
+            ));
+
+        }
+    }
+
+
+    function in_submit_upvote($in_loaded_id, $in_id, $parent_in_id){
+
+        //Make sure it's a logged in trainer:
+        $session_en = en_auth($this->config->item('en_ids_10691') /* Mench Trainers */, true);
+
+        //Log up-vote:
+        $this->Links_model->ln_create(array(
+            'ln_creator_entity_id' => $session_en['en_id'],
+            'ln_parent_entity_id' => $session_en['en_id'],
+            'ln_type_entity_id' => 4983, //Intent Note Up-Votes
+            'ln_content' => '@'.$session_en['en_id'].' #'.$parent_in_id,
+            'ln_child_intent_id' => $in_id,
+            'ln_parent_intent_id' => $parent_in_id,
+        ));
+
+        //Go back to intention:
+        return redirect_message('/intents/'.$in_loaded_id, '<div class="alert alert-success" role="alert"><i class="far fa-thumbs-up"></i> Up-Vote casted successfully</div>');
+
+    }
 
 
     function in_link_or_create()
@@ -544,15 +621,15 @@ class Intents extends CI_Controller
             $item_ui .= ( strlen($apu['ln_content']) > 0 ? '<div class="user-comment">'.$this->Communication_model->dispatch_message($apu['ln_content']).'</div>' : '' );
             $item_ui .= '</td>';
 
-            $item_ui .= '<td style="text-align:left;"><a href="/links?ln_id='.$apu['ln_id'].'" target="_blank" class="' . advance_mode() . '">'.echo_en_cache('en_all_6255' /* User Steps Progress */, $apu['ln_type_entity_id']).'</a></td>';
+            $item_ui .= '<td style="text-align:left;"><a href="/links?ln_id='.$apu['ln_id'].'" target="_blank">'.echo_en_cache('en_all_6255' /* User Steps Progress */, $apu['ln_type_entity_id']).'</a></td>';
             $item_ui .= '<td style="text-align:left;">'.echo_number($count_progression[0]['totals']).'</td>';
             $item_ui .= '<td style="text-align:left;">'.echo_time_difference(strtotime($apu['ln_timestamp'])).'</td>';
             $item_ui .= '<td style="text-align:left;">';
 
                 $item_ui .= '<a href="/intents/'.$_POST['in_loaded_id'].'?filter_user='.urlencode('@'.$apu['en_id'].' '.$apu['en_name']).'#actionplanusers-'.$_POST['in_id'].'" data-toggle="tooltip" data-placement="top" title="Filter by this user"><i class="far fa-filter"></i></a>';
-                $item_ui .= '&nbsp;<a href="/entities/'.$apu['en_id'].'" data-toggle="tooltip" data-placement="top" title="User Entity" class="' . advance_mode() . '"><i class="fas fa-at"></i></a>';
+                $item_ui .= '&nbsp;<a href="/entities/'.$apu['en_id'].'" data-toggle="tooltip" data-placement="top" title="User Entity"><i class="fas fa-at"></i></a>';
 
-                $item_ui .= '&nbsp;<a href="/links?ln_creator_entity_id='.$apu['en_id'].'" data-toggle="tooltip" data-placement="top" title="Full History" class="' . advance_mode() . '"><i class="fas fa-link"></i></a>';
+                $item_ui .= '&nbsp;<a href="/links?ln_creator_entity_id='.$apu['en_id'].'" data-toggle="tooltip" data-placement="top" title="Full User History"><i class="fas fa-link"></i></a>';
 
             $item_ui .= '</td>';
             $item_ui .= '</tr>';
@@ -607,45 +684,6 @@ class Intents extends CI_Controller
             'status' => 1,
             'message' => $ui,
         ));
-    }
-
-
-    function in_unlink_only(){
-
-        //Authenticate Trainer:
-        $session_en = en_auth($this->config->item('en_ids_10691') /* Mench Trainers */);
-
-        if (!$session_en) {
-            return echo_json(array(
-                'status' => 0,
-                'message' => 'Session Expired',
-            ));
-        } elseif (!isset($_POST['ln_id']) || intval($_POST['ln_id'])<1) {
-            return echo_json(array(
-                'status' => 0,
-                'message' => 'Missing ln_id',
-            ));
-        } elseif(!count($this->Links_model->ln_fetch(array(
-            'ln_id' => intval($_POST['ln_id']),
-            'ln_type_entity_id IN (' . join(',', $this->config->item('en_ids_4486')) . ')' => null, //Intent-to-Intent Links
-            'ln_status_entity_id IN (' . join(',', $this->config->item('en_ids_7360')) . ')' => null, //Link Statuses Active
-        )))){
-            return echo_json(array(
-                'status' => 0,
-                'message' => 'Link not found (already removed?)',
-            ));
-        }
-
-        //Unlink:
-        $this->Links_model->ln_update($_POST['ln_id'], array(
-            'ln_status_entity_id' => 6173, //Link Unlinked
-        ), $session_en['en_id'], 10686 /* Intent Link Unlinked  */);
-
-        //Return success:
-        return echo_json(array(
-            'status' => 1,
-        ));
-
     }
 
 
@@ -1148,7 +1186,7 @@ class Intents extends CI_Controller
     }
 
 
-    function in_messages_iframe($in_id)
+    function in_notes_iframe($in_id)
     {
 
         //Authenticate as a Trainer:
@@ -1167,7 +1205,7 @@ class Intents extends CI_Controller
         $this->load->view('view_trainer_app/trainer_app_header', array(
             'title' => 'Intent #' . $in_id . ' Messages',
         ));
-        $this->load->view('view_trainer_app/in_messages_frame', array(
+        $this->load->view('view_trainer_app/in_notes', array(
             'in_id' => $in_id,
         ));
         $this->load->view('view_trainer_app/trainer_app_footer');

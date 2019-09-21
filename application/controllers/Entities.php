@@ -20,7 +20,7 @@ class Entities extends CI_Controller
         $this->load->view('view_trainer_app/trainer_app_header', array(
             'title' => 'Add Source Wizard',
         ));
-        $this->load->view('view_trainer_app/en_add_source_wizard');
+        $this->load->view('view_trainer_app/en_source_wizard');
         $this->load->view('view_trainer_app/trainer_app_footer');
     }
 
@@ -65,7 +65,7 @@ class Entities extends CI_Controller
 
 
     //Lists entities
-    function en_trainer_ui($en_id)
+    function en_train($en_id)
     {
 
         $session_en = en_auth($this->config->item('en_ids_10691') /* Mench Trainers */, true);
@@ -115,7 +115,7 @@ class Entities extends CI_Controller
             'title' => $ens[0]['en_name'] . ' | Entities',
             'message' => $message, //Possible mass-action message for UI:
         ));
-        $this->load->view('view_trainer_app/en_trainer_ui', array(
+        $this->load->view('view_trainer_app/en_train', array(
             'entity' => $ens[0],
             'is_admin' => $is_admin,
         ));
@@ -251,7 +251,7 @@ class Entities extends CI_Controller
     function en_add_or_link()
     {
 
-        //Responsible to link parent/children entities to each other via a JS function on en_trainer_ui.php
+        //Responsible to link parent/children entities to each other via a JS function on en_train.php
 
         //Auth user and check required variables:
         $session_en = en_auth($this->config->item('en_ids_10704') /* Mench Administrators */);

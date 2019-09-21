@@ -15,9 +15,6 @@ $en_all_7369 = $this->config->item('en_all_7369');
 </head>
 
 <body class="landing-page">
-<?php $this->load->view('view_shared/google_tag_manager', array(
-    'session_en' => $session_en,
-)); ?>
 
 <?php if(!isset($hide_header) || !$hide_header){ ?>
 <nav class="navbar navbar-warning navbar-fixed-top navbar-color-on-scroll no-adj">
@@ -29,7 +26,7 @@ $en_all_7369 = $this->config->item('en_all_7369');
                 <table style="width: 100%; border:0; padding:0; margin:-5px 0 0 0;">
                     <tr>
                         <td style="width:40px;">
-                            <a class="navbar-brand tag-manager-home-link" href="/"><img src="/img/bp_128.png" /><span
+                            <a class="navbar-brand" href="/"><img src="/img/bp_128.png" /><span
                                         style="text-transform: lowercase; color: #2f2739;"></span></a>
                         </td>
                         <td>
@@ -83,10 +80,10 @@ $en_all_7369 = $this->config->item('en_all_7369');
                 } else {
 
                     //Give option to sign-in:
-                    echo '<li><a href="/signin" class="tag-manager-sign-in">'.$en_all_7369[4269]['m_name'].' '.$en_all_7369[4269]['m_icon'].'</a></li>';
+                    echo '<li><a href="/signin">'.$en_all_7369[4269]['m_name'].' '.$en_all_7369[4269]['m_icon'].'</a></li>';
 
                     //Give option to Signup if Intent is passed:
-                    echo '<li class="featured-nav"><a href="/'.( isset($in['in_id']) && $in['in_id']!=$this->config->item('in_focus_id') ? $in['in_id'] : $this->config->item('in_join_id') ).'/signin" class="tag-manager-sign-in">SIGN UP <i class="fas fa-user-plus"></i></a></li>';
+                    echo '<li class="featured-nav"><a href="/'.( isset($in['in_id']) && $in['in_id']!=$this->config->item('in_focus_id') ? $in['in_id'] : $this->config->item('in_join_id') ).'/signin">SIGN UP <i class="fas fa-user-plus"></i></a></li>';
 
                 }
                 ?>

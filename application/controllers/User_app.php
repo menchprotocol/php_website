@@ -36,7 +36,7 @@ class User_app extends CI_Controller
             'hide_header' => 1,
             'title' => $en_all_7369[4269]['m_name'],
         ));
-        $this->load->view('view_user_app/signin', array(
+        $this->load->view('view_user_app/user_signin', array(
             'referrer_in_id' => intval($in_id),
             'referrer_en_id' => intval($referrer_en_id),
             'session_en' => $this->session->userdata('user'),

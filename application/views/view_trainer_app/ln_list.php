@@ -251,7 +251,7 @@ $en_all_7368 = $this->config->item('en_all_7368'); //Trainer App
     var link_filters = '<?= serialize(count($filters) > 0 ? $filters : array()) ?>';
     var link_join_by = '<?= serialize(count($join_by) > 0 ? $join_by : array()) ?>';
 </script>
-<script src="/js/custom/links-js.js?v=v<?= $this->config->item('app_version') ?>"
+<script src="/js/custom/ln_list.js?v=v<?= $this->config->item('app_version') ?>"
         type="text/javascript"></script>
 
 <?php
@@ -453,7 +453,7 @@ echo '</div></td>';
     //Show left column for intent management
     //TODO support entity management later...
     echo '<div class="'.$this->config->item('css_column_2').'">';
-        $this->load->view('view_trainer_app/in_right_column');
+        $this->load->view('view_trainer_app/in_modify');
     echo '</div>';
 
 
