@@ -251,9 +251,7 @@ function echo_in_message_manage($ln)
 
     $CI =& get_instance();
     $session_en = $CI->session->userdata('user');
-
-    //Intent Notes types:
-    $en_all_4485 = $CI->config->item('en_all_4485');
+    $en_all_4485 = $CI->config->item('en_all_4485'); //Intent Notes
 
 
     //Link Statuses
@@ -1631,6 +1629,21 @@ function echo_in_recommend($in, $in_common_prefix = null, $hide_class = null, $r
 
     $ui .= '<span style="color:#222; font-weight:500; font-size:1.2em;">'.echo_in_outcome($in['in_outcome'], false, false, $in_common_prefix).'</span>';
 
+    $ui .= '</a>';
+    return $ui;
+}
+
+
+function echo_in_dashboard($in)
+{
+    $CI =& get_instance();
+    $en_all_7585 = $CI->config->item('en_all_7585'); // Intent Subtypes
+    $ui = '<a href="/intents/' . $in['in_id'] . '" class="list-group-item">';
+    $ui .= '<span class="pull-right">';
+    $ui .= '<span class="badge badge-primary fr-bgd" style="margin-top: -4px;"><i class="fas fa-angle-right"></i></span>';
+    $ui .= '</span>';
+    $ui .= '<span class="icon-block">'.$en_all_7585[$in['in_completion_method_entity_id']]['m_icon'].'</span>';
+    $ui .= '<span style="color:#222; font-weight:500; font-size:1.2em;">'.echo_in_outcome($in['in_outcome'], false, true).'</span>';
     $ui .= '</a>';
     return $ui;
 }

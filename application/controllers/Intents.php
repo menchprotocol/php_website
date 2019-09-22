@@ -242,39 +242,52 @@ class Intents extends CI_Controller
         //Authenticate Trainer:
         $session_en = en_auth($this->config->item('en_ids_10691') /* Mench Trainers */, true);
 
-        if($in_id == 0){
-            return redirect_message('/intents/' . $this->session->userdata('user_default_intent'));
+
+        if(!$in_id){
+
+            //Load the intent dashboard...
+
+            $this->load->view('view_trainer_app/trainer_app_header', array(
+                'title' => 'Intents Dashboard'
+            ));
+            $this->load->view('view_trainer_app/in_dashboard', array(
+                'session_en' => $session_en,
+            ));
+            $this->load->view('view_trainer_app/trainer_app_footer');
+
+        } else {
+
+            //Load a specific intent...
+
+            //Fetch intent with 2 levels of children:
+            $ins = $this->Intents_model->in_fetch(array(
+                'in_id' => $in_id,
+            ), array('in__parents','in__grandchildren'));
+            //Make sure we found it:
+            if ( count($ins) < 1) {
+                return redirect_message('/intents/' . $this->session->userdata('user_default_intent'), '<div class="alert alert-danger" role="alert">Intent #' . $in_id . ' not found</div>');
+            }
+
+            //Update session count and log link:
+            $new_order = ( $this->session->userdata('user_session_count') + 1 );
+            $this->session->set_userdata('user_session_count', $new_order);
+            $this->Links_model->ln_create(array(
+                'ln_creator_entity_id' => $session_en['en_id'],
+                'ln_type_entity_id' => 4993, //Trainer Opened Intent
+                'ln_child_intent_id' => $in_id,
+                'ln_order' => $new_order,
+            ));
+
+            //Load views:
+            $this->load->view('view_trainer_app/trainer_app_header', array(
+                'title' => $ins[0]['in_outcome'].' | Intents'
+            ));
+            $this->load->view('view_trainer_app/in_train', array(
+                'in' => $ins[0],
+                'session_en' => $session_en,
+            ));
+            $this->load->view('view_trainer_app/trainer_app_footer');
         }
-
-        //Fetch intent with 2 levels of children:
-        $ins = $this->Intents_model->in_fetch(array(
-            'in_id' => $in_id,
-        ), array('in__parents','in__grandchildren'));
-        //Make sure we found it:
-        if ( count($ins) < 1) {
-            return redirect_message('/intents/' . $this->session->userdata('user_default_intent'), '<div class="alert alert-danger" role="alert">Intent #' . $in_id . ' not found</div>');
-        }
-
-        //Update session count and log link:
-        $new_order = ( $this->session->userdata('user_session_count') + 1 );
-        $this->session->set_userdata('user_session_count', $new_order);
-        $this->Links_model->ln_create(array(
-            'ln_creator_entity_id' => $session_en['en_id'],
-            'ln_type_entity_id' => 4993, //Trainer Opened Intent
-            'ln_child_intent_id' => $in_id,
-            'ln_order' => $new_order,
-        ));
-
-        //Load views:
-        $this->load->view('view_trainer_app/trainer_app_header', array(
-            'title' => $ins[0]['in_outcome'].' | Intents'
-        ));
-        $this->load->view('view_trainer_app/in_train', array(
-            'in' => $ins[0],
-            'session_en' => $session_en,
-        ));
-        $this->load->view('view_trainer_app/trainer_app_footer');
-
     }
 
 

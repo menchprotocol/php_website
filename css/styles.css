@@ -2260,16 +2260,6 @@ select.form-control {
     padding-left: 10px;
 }
 
-.indent1_retire {
-    margin-left: 0px;
-    margin-left: 15px;
-}
-
-.indent2_retire {
-    margin-left: 0;
-    margin-left: 30px;
-}
-
 .save-btn-spot{
     height: 70px !important;
 }
@@ -4401,14 +4391,6 @@ h4 .tip-badge {
         font-size: 2em;
     }
 
-    .indent1_retire {
-        margin-left: 8px;
-    }
-
-    .indent2_retire {
-
-        margin-left: 16px;
-    }
 
     .btn.btn-sm, .btn-group-sm .btn, .navbar .navbar-nav > li > a.btn.btn-sm, .btn-group-sm .navbar .navbar-nav > li > a.btn {
         padding: 5px;

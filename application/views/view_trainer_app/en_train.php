@@ -39,7 +39,7 @@
 
 
         //Focused/current entity:
-        echo '<h5 class="badge badge-h indent1">Entity @'.$entity['en_id'].'</h5>';
+        echo '<h5 class="badge badge-h">Entity @'.$entity['en_id'].'</h5>';
 
         //Hidden link to Metadata:
         if($is_admin){
@@ -48,14 +48,13 @@
             echo '<a class="secret" href="/links/cron__sync_algolia/en/' . $entity['en_id'] . '" style="margin-left: 5px;" target="_blank" data-toggle="tooltip" title="Update Algolia Search Index" data-placement="bottom"><i class="fas fa-search"></i></a>';
         }
 
-        echo '<div id="entity-box" class="list-group indent1">';
+        echo '<div id="entity-box" class="list-group">';
         echo echo_en($entity, 1);
         echo '</div>';
 
 
 
         //Children:
-        echo '<div class="indent2">';
         echo '<table width="100%" style="margin-top:10px;"><tr>';
         echo '<td style="width:170px;">';
 
@@ -98,11 +97,11 @@
 
         echo '</div>';
         echo '</td>';
-        echo '</tr></table></div>';
+        echo '</tr></table>';
 
 
 
-        echo '<form class="mass_modify indent2 hidden" method="POST" action="" style="width: 100% !important;"><div class="inline-box">';
+        echo '<form class="mass_modify hidden" method="POST" action="" style="width: 100% !important;"><div class="inline-box">';
 
 
             $dropdown_options = '';
@@ -216,7 +215,7 @@
         echo '<input type="hidden" id="set_sort" value="'.$set_sort.'" />'; //For JS to pass to the next page loader...
 
 
-        echo '<div id="list-children" class="list-group grey-list indent2">';
+        echo '<div id="list-children" class="list-group grey-list">';
 
 
         $en__children = $this->Links_model->ln_fetch(array(

@@ -21,7 +21,7 @@ $en_all_7369 = $this->config->item('en_all_7369');
 
             //Focus intent:
             echo '<div>&nbsp;</div>'; //Give some top space since we don't have parents here...
-            echo '<h5 class="badge badge-h indent1 inline-block"><i class="far fa-globe"></i> Our Mission</h5>';
+            echo '<h5 class="badge badge-h inline-block"><i class="far fa-globe"></i> Our Mission</h5>';
 
         } else {
 
@@ -54,9 +54,9 @@ $en_all_7369 = $this->config->item('en_all_7369');
             echo '<div class="intent-header">';
 
                 //Focus intent:
-            echo '<h5 class="badge badge-h indent1 inline-block">Intent #'.$in['in_id'].'</h5>';
+            echo '<h5 class="badge badge-h inline-block">Intent #'.$in['in_id'].'</h5>';
 
-            echo '<h5 class="badge badge-h indent1 inline-block">'.$en_all_7369[7765]['m_icon'].' &nbsp;<input id="landing_page_url" data-toggle="tooltip" title="Click to Copy URL" data-placement="bottom" type="url" value="mench.com/' . $in['in_id'] .'" style="padding:0; margin:-2px 0; width:144px; background-color:transparent; border:0; color:#FFF; cursor:copy !important;" /><a href="/' . $in['in_id'] . '" target="_blank" style="margin-left:7px; color:#FFF !important;" data-toggle="tooltip" title="Open Landing Page (New Window)" data-placement="bottom"><i class="fas fa-external-link"></i></a><span id="landing_page_state"></span></h5>';
+            echo '<h5 class="badge badge-h inline-block">'.$en_all_7369[7765]['m_icon'].' &nbsp;<input id="landing_page_url" data-toggle="tooltip" title="Click to Copy URL" data-placement="bottom" type="url" value="mench.com/' . $in['in_id'] .'" style="padding:0; margin:-2px 0; width:144px; background-color:transparent; border:0; color:#FFF; cursor:copy !important;" /><a href="/' . $in['in_id'] . '" target="_blank" style="margin-left:7px; color:#FFF !important;" data-toggle="tooltip" title="Open Landing Page (New Window)" data-placement="bottom"><i class="fas fa-external-link"></i></a><span id="landing_page_state"></span></h5>';
 
             //Hidden Links for Trainers ONLY:
             echo '<span class="'.advance_mode().'">';
@@ -77,7 +77,7 @@ $en_all_7369 = $this->config->item('en_all_7369');
 
 
         //Main intent:
-        echo '<div class="list-group indent1">';
+        echo '<div class="list-group">';
         echo echo_in($in, 1);
         echo '</div>';
 
@@ -86,7 +86,7 @@ $en_all_7369 = $this->config->item('en_all_7369');
         //Expand/Contract All buttons:
         $metadata = unserialize($in['in_metadata']);
 
-        echo '<div class="indent2 intent-children-header">';
+        echo '<div class="intent-children-header">';
 
             echo '<h5 class="badge badge-h" style="display: inline-block;"><span class="li-children-count children-counter-' . $in['in_id'] . '">' . count($in['in__children']) . '</span> Children</h5>';
 
@@ -126,7 +126,7 @@ $en_all_7369 = $this->config->item('en_all_7369');
 
 
         //List child intents:
-        echo '<div id="list-in-' . $in['in_id'] . '-0" class="list-group list-is-children list-level-2 indent2">';
+        echo '<div id="list-in-' . $in['in_id'] . '-0" class="list-group list-is-children list-level-2">';
         foreach ($in['in__children'] as $child_in) {
             echo echo_in($child_in, 2, $in['in_id']);
         }
