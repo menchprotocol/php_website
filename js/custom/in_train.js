@@ -5,6 +5,84 @@
 *
 * */
 
+
+
+
+$(document).ready(function () {
+
+
+    $('#landing_page_url').click(function (e) {
+        copyToClipboard(document.getElementById("landing_page_url"));
+    });
+
+
+    $('#expand_intents .expand_all').click(function (e) {
+        $(".list-is-children .is_level2_sortable").each(function () {
+            ms_toggle($(this).attr('in-link-id'), 1);
+        });
+    });
+
+    //Load top/bottom intent searches:
+    in_load_search(".intentadder-level-2-parent",1, 2, 'q');
+    in_load_search(".intentadder-level-2-child",0, 2, 'w');
+
+    //Expand selections:
+    prep_search_pad();
+
+    //Load Sortable for level 2:
+    in_sort_load(in_loaded_id, 2);
+
+    //Watch the expand/close all buttons:
+    $('#expand_intents .expand_all').click(function (e) {
+        $(".list-is-children .is_level2_sortable").each(function () {
+            ms_toggle($(this).attr('in-link-id'), 1);
+        });
+    });
+    $('#expand_intents .close_all').click(function (e) {
+        $(".list-is-children .is_level2_sortable").each(function () {
+            ms_toggle($(this).attr('in-link-id'), 0);
+        });
+    });
+    $('#expand_intents .toggle_filters').click(function (e) {
+        $(".in__filters").toggleClass('hidden');
+    });
+
+    $('#filter_user').focus(function (e) {
+        load_filters();
+    });
+
+    //Activate sorting for level 3 intents:
+    if ($('.step-group').length) {
+
+        $(".step-group").each(function () {
+
+            var in_id = parseInt($(this).attr('intent-id'));
+
+            //Load sorting for level 3 intents:
+            in_sort_load(in_id, 3);
+
+            //Load time:
+            $('.t_estimate_' + in_id).text(in_update_time($('.t_estimate_' + in_id + ':first').attr('tree-max-seconds')));
+
+        });
+
+        if ($('.is_level3_sortable').length) {
+            //Goo through all Steps:
+            $(".is_level3_sortable").each(function () {
+                var in_id = $(this).attr('intent-id');
+                if (in_id) {
+                    //Load time:
+                    $('.t_estimate_' + in_id).text(in_update_time($('.t_estimate_' + in_id + ':first').attr('tree-max-seconds')));
+                }
+            });
+        }
+    }
+
+});
+
+
+
+
 function prep_search_pad(){
 
     //Activate expansion for intent level 2 items that are not already expanded
@@ -161,85 +239,10 @@ function copyToClipboard(elem) {
 }
 
 
-$(document).ready(function () {
-
-
-    $('#landing_page_url').click(function (e) {
-        copyToClipboard(document.getElementById("landing_page_url"));
-    });
-
-
-    $('#expand_intents .expand_all').click(function (e) {
-        $(".list-is-children .is_level2_sortable").each(function () {
-            ms_toggle($(this).attr('in-link-id'), 1);
-        });
-    });
-
-    //Load top/bottom intent searches:
-    in_load_search(".intentadder-level-2-parent",1, 2, 'q');
-    in_load_search(".intentadder-level-2-child",0, 2, 'w');
-
-    //Expand selections:
-    prep_search_pad();
-
-    //Load Sortable for level 2:
-    in_sort_load(in_loaded_id, 2);
-
-    //Watch the expand/close all buttons:
-    $('#expand_intents .expand_all').click(function (e) {
-        $(".list-is-children .is_level2_sortable").each(function () {
-            ms_toggle($(this).attr('in-link-id'), 1);
-        });
-    });
-    $('#expand_intents .close_all').click(function (e) {
-        $(".list-is-children .is_level2_sortable").each(function () {
-            ms_toggle($(this).attr('in-link-id'), 0);
-        });
-    });
-    $('#expand_intents .toggle_filters').click(function (e) {
-        $(".in__filters").toggleClass('hidden');
-    });
-
-    $('#filter_user').focus(function (e) {
-        load_filters();
-    });
-
-    //Activate sorting for level 3 intents:
-    if ($('.step-group').length) {
-
-        $(".step-group").each(function () {
-
-            var in_id = parseInt($(this).attr('intent-id'));
-
-            //Load sorting for level 3 intents:
-            in_sort_load(in_id, 3);
-
-            //Load time:
-            $('.t_estimate_' + in_id).text(in_update_time($('.t_estimate_' + in_id + ':first').attr('tree-max-seconds')));
-
-        });
-
-        if ($('.is_level3_sortable').length) {
-            //Goo through all Steps:
-            $(".is_level3_sortable").each(function () {
-                var in_id = $(this).attr('intent-id');
-                if (in_id) {
-                    //Load time:
-                    $('.t_estimate_' + in_id).text(in_update_time($('.t_estimate_' + in_id + ':first').attr('tree-max-seconds')));
-                }
-            });
-        }
-    }
-
-});
-
-
-
 function in_load_upvote(in_id, in_outcome){
 
     //Immediately load modal:
-    $('#upvote_parents').html('<i class="fas fa-yin-yang fa-spin"></i>');
-    $('.upvote_intent').html(in_outcome);
+    $('#upvote_parents, .upvote_intent').html('<i class="fas fa-yin-yang fa-spin"></i>');
     $('#addUpVote').modal('show');
 
     //Then load data into modal:
@@ -247,6 +250,7 @@ function in_load_upvote(in_id, in_outcome){
         //Update UI to confirm with user:
         if (data.status) {
             //Show trainers their new words:
+            $('.upvote_intent').html(data.in_outcome);
             $('#upvote_parents').html(data.upvote_parents);
         } else {
             //There was some sort of an error returned!

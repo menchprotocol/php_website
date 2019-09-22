@@ -287,10 +287,10 @@ function echo_in_message_manage($ln)
     $count_msg_trs = $CI->Links_model->ln_fetch(array(
         '( ln_id = ' . $ln['ln_id'] . ' OR ln_parent_link_id = ' . $ln['ln_id'] . ')' => null,
     ), array(), 0, 0, array(), 'COUNT(ln_id) as totals');
-    $ui .= '<li style="min-width:48px; display:inline-block;"><a class="btn btn-third edit-off" style="border:2px solid #FF1493 !important;" href="/links?ln_id=' . $ln['ln_id'] . '" target="_parent"><i class="fas fa-link iswhite"></i> '.echo_number($count_msg_trs[0]['totals']).'</a></li>';
+    $ui .= '<li style="min-width:48px; display:inline-block;" class="'.advance_mode().'"><a class="btn btn-third edit-off" style="border:2px solid #FF1493 !important;" href="/links?ln_id=' . $ln['ln_id'] . '" target="_parent"><i class="fas fa-link iswhite"></i> '.echo_number($count_msg_trs[0]['totals']).'</a></li>';
 
     //Modify:
-    $ui .= '<li class="edit-off" style="margin-left:0;"><span class="on-hover"><a class="btn btn-third white-third" href="javascript:in_message_modify_start(' . $ln['ln_id'] . ',' . $ln['ln_type_entity_id'] . ');" title="Modify Message" data-toggle="tooltip" data-placement="top" style="border:2px solid #FF1493 !important; margin-right:4px !important;"><i class="fas fa-pen-square"></i></a></span></li>';
+    $ui .= '<li class="edit-off"><span class="on-hover"><a href="javascript:in_message_modify_start(' . $ln['ln_id'] . ',' . $ln['ln_type_entity_id'] . ');" title="Modify Message" data-toggle="tooltip" data-placement="top"><i class="fas fa-pen-square ispink"></i></a>&nbsp;</span></li>';
 
     //Sort:
     if(in_array(4603, $en_all_4485[$ln['ln_type_entity_id']]['m_parents'])){
@@ -2220,7 +2220,7 @@ function echo_in($in, $level, $in_linked_id = 0, $is_parent = false)
     //Loop through parents:
     foreach ($in['in__parents'] as $in_parent) {
         if($in_linked_id!=$in_parent['in_id']){
-            $ui .= ' &nbsp;<a href="/intents/' . $in_parent['in_id'] . $in_filters['get_filter_url'] . '" data-toggle="tooltip" title="' . $in_parent['in_outcome'] . '" data-placement="bottom" class="in_child_icon_' . $in_parent['in_id'] . '">' . $en_all_7585[$in_parent['in_completion_method_entity_id']]['m_icon'] . '</a>';
+            $ui .= ' &nbsp;<a href="/intents/' . $in_parent['in_id'] . $in_filters['get_filter_url'] . '" data-toggle="tooltip" title="' . stripslashes($in_parent['in_outcome']) . '" data-placement="bottom" class="in_child_icon_' . $in_parent['in_id'] . '">' . $en_all_7585[$in_parent['in_completion_method_entity_id']]['m_icon'] . '</a>';
         }
     }
 
@@ -2269,7 +2269,7 @@ function echo_in($in, $level, $in_linked_id = 0, $is_parent = false)
         } else {
 
             //Give trainer option to join intention by up-voting it:
-            $ui .= '<a class="badge badge-primary white-primary is_not_bg" onclick="in_load_upvote(' . $in['in_id'] . ', \'' . stripslashes($in['in_outcome']) . '\')" style="margin:-2px -8px 0 3px; width:82px;" href="#" data-toggle="tooltip" title="Join this intention by casting your up-vote" data-placement="bottom"><i class="far fa-thumbs-up"></i> JOIN</a> &nbsp;';
+            $ui .= '<a class="badge badge-primary white-primary is_not_bg" onclick="in_load_upvote(' . $in['in_id'] . ')" style="margin:-2px -8px 0 3px; width:82px;" href="#" data-toggle="tooltip" title="Join this intention by casting your up-vote" data-placement="bottom"><i class="far fa-thumbs-up"></i> JOIN</a> &nbsp;';
 
         }
 
@@ -2288,18 +2288,18 @@ function echo_in($in, $level, $in_linked_id = 0, $is_parent = false)
                 'ln_status_entity_id IN (' . join(',', $CI->config->item('en_ids_7359')) . ')' => null, //Link Statuses Public
             )), array(), 0, 0, array(), 'COUNT(ln_id) as total_steps');
         }
-        $ui .= '<span><a id="match_list_'.$in['in_id'].'" href="#actionplanusers-'.$in['in_id'].'" onclick="in_action_plan_users('.$in['in_id'].')" class="badge badge-primary white-primary is_not_bg" style="width:40px; margin:-3px -2px 0 3px;" data-toggle="tooltip" data-placement="bottom" title="'.$en_all_4527[6255]['m_name'].'">'.( !count($in_filters['get_filter_query']) || $actionplan_users_match[0]['total_steps']>0 ? '<span class="btn-counter">' . ( count($in_filters['get_filter_query']) > 0 ? '<i class="fas fa-filter mini-filter"></i> '.echo_number($actionplan_users_match[0]['total_steps']) : echo_number($actionplan_users[0]['total_steps']) ) . '</span>' : '' ).$en_all_4527[6255]['m_icon'].'</a></span>';
+        $ui .= '<span><a id="match_list_'.$in['in_id'].'" href="#actionplanusers-'.$in['in_id'].'" onclick="in_action_plan_users('.$in['in_id'].')" class="badge badge-primary white-primary is_not_bg" style="width:40px; margin:-3px -1px 0 3px;" data-toggle="tooltip" data-placement="bottom" title="'.$en_all_4527[6255]['m_name'].'">'.( !count($in_filters['get_filter_query']) || $actionplan_users_match[0]['total_steps']>0 ? '<span class="btn-counter">' . ( count($in_filters['get_filter_query']) > 0 ? '<i class="fas fa-filter mini-filter"></i> '.echo_number($actionplan_users_match[0]['total_steps']) : echo_number($actionplan_users[0]['total_steps']) ) . '</span>' : '' ).$en_all_4527[6255]['m_icon'].'</a></span>';
 
 
 
 
-        //Intent Links:
+        //Intent Links/History:
         $en_all_7368 = $CI->config->item('en_all_7368'); //Trainer App
         $count_in_trs = $CI->Links_model->ln_fetch(array_merge($in_filters['get_filter_query'], array(
             '(ln_parent_intent_id=' . $in['in_id'] . ' OR ln_child_intent_id=' . $in['in_id'] . ($ln_id > 0 ? ' OR ln_parent_link_id=' . $ln_id : '') . ')' => null,
         )), array(), 0, 0, array(), 'COUNT(ln_id) as totals');
         //Show link to load these links:
-        $ui .= '<span><a href="/links?any_in_id=' . $in['in_id'] . '&ln_parent_link_id=' . $ln_id . $in_filters['get_filter_links_url'] . '" class="badge badge-primary is_not_bg" style="width:40px; margin:-3px 0px 0 4px; border:2px solid #f9da22 !important;"><span class="btn-counter">' . ( strlen($in_filters['get_filter_url']) > 0 ? '<i class="fas fa-filter mini-filter"></i> ' : '' ) . echo_number($count_in_trs[0]['totals']) . '</span>'.$en_all_7368[6205]['m_icon'].'</a></span>';
+        $ui .= '<span class="'.advance_mode().'"><a href="/links?any_in_id=' . $in['in_id'] . '&ln_parent_link_id=' . $ln_id . $in_filters['get_filter_links_url'] . '" class="badge badge-primary is_not_bg" style="width:40px; margin:-3px 0px 0 4px; border:2px solid #f9da22 !important;"><span class="btn-counter">' . ( strlen($in_filters['get_filter_url']) > 0 ? '<i class="fas fa-filter mini-filter"></i> ' : '' ) . echo_number($count_in_trs[0]['totals']) . '</span>'.$en_all_7368[6205]['m_icon'].'</a></span>';
 
 
     }
@@ -2619,7 +2619,7 @@ function echo_en($en, $level, $is_parent = false)
     ), array(), 0, 0, array(), 'COUNT(ln_id) as totals');
     if ($count_in_trs[0]['totals'] > 0) {
         //Show the link button:
-        $ui .= '<a href="/links?any_en_id=' . $en['en_id'] . '&ln_parent_link_id=' . $ln_id . '" class="badge badge-secondary" style="width:40px; margin:-3px 2px 0 2px; border:2px solid #0084ff !important;"><span class="btn-counter">' . echo_number($count_in_trs[0]['totals']) . '</span>'.$en_all_7368[6205]['m_icon'].'</a>';
+        $ui .= '<a href="/links?any_en_id=' . $en['en_id'] . '&ln_parent_link_id=' . $ln_id . '" class="badge badge-secondary '.advance_mode().'" style="width:40px; margin:-3px 2px 0 2px; border:2px solid #0084ff !important;"><span class="btn-counter">' . echo_number($count_in_trs[0]['totals']) . '</span>'.$en_all_7368[6205]['m_icon'].'</a>';
     }
 
 

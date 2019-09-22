@@ -299,6 +299,16 @@ class Intents extends CI_Controller
             ));
         }
 
+        $ins = $this->Intents_model->in_fetch(array(
+            'in_id' => $_POST['in_id'],
+        ));
+        if (!count($ins)) {
+            return echo_json(array(
+                'status' => 0,
+                'message' => 'Invalid Intent ID',
+            ));
+        }
+
         //Now fetch parent intents to allow trainer to log their up-vote:
         //List parent intentions to allow trainer to cast their up-vote:
         $upvote_parents = '';
@@ -310,26 +320,16 @@ class Intents extends CI_Controller
         ), array('in_parent')) as $in){
             $upvote_parents .= '<a href="/intents/in_submit_upvote/'.$_POST['in_loaded_id'].'/'.$_POST['in_id'].'/'.$in['in_id'].'" class="list-group-item">';
             $upvote_parents .= '<span class="pull-right"><i class="far fa-thumbs-up"></i></span>';
-            $upvote_parents .= '<span style="color:#222; font-weight:500; font-size:1.2em;">'.echo_in_outcome($in['in_outcome']).'</span>';
+            $upvote_parents .= '<span style="color:#222; font-weight:500; font-size:1.2em;">'.echo_in_outcome($in['in_outcome'], false, true).'</span>';
             $upvote_parents .= '</a>';
         }
 
-        if(strlen($upvote_parents) > 0){
-
-            return echo_json(array(
-                'status' => 1,
-                'upvote_parents' => $upvote_parents,
-            ));
-
-        } else {
-
-            //Intention has no parents, therefore no up-votes can be casted. Inform the trainer:
-            return echo_json(array(
-                'status' => 1,
-                'upvote_parents' => '<div class="alert alert-danger" role="alert">No parent intentions found. Add a parent intention before casting an up-vote.</div>',
-            ));
-
-        }
+        //Return results:
+        return echo_json(array(
+            'status' => 1,
+            'upvote_parents' => ( strlen($upvote_parents) > 0 ? $upvote_parents : '<div class="alert alert-danger" role="alert">No parent intentions found. Add a parent intention before casting an up-vote.</div>' ),
+            'in_outcome' => echo_in_outcome($ins[0]['in_outcome'], false, true),
+        ));
     }
 
 
