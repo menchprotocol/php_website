@@ -37,10 +37,8 @@ $uri_segment_2 = $this->uri->segment(2);
                         <span class="navbar-brand dashboard-logo">
                             <table style="width: 100%; border:0; padding:0; margin:0 0 0 0;">
                                 <tr>
-                                    <td style="width:40px;" data-toggle="tooltip" data-placement="bottom" title="<?= $en_all_7368[7161]['m_name'] ?>">
-                                        <a href="/dashboard" >
-                                            <?= $this->config->item('system_icon') ?>
-                                        </a>
+                                    <td style="width:40px;">
+                                        <?= $this->config->item('system_icon') ?>
                                     </td>
                                     <td>
                                         <form id="searchForm">
@@ -72,6 +70,13 @@ $uri_segment_2 = $this->uri->segment(2);
                             <li class="<?= ($uri_segment_1 == 'links' ? 'link-active' : 'link-inactive') ?>">
                                 <a href="/links">
                                     <?= $en_all_7368[6205]['m_icon'] .' '. $en_all_7368[6205]['m_name'] ?>
+                                </a>
+                            </li>
+
+                            <!-- Dashboard -->
+                            <li class="<?= ($uri_segment_1 == 'dashboard' ? 'transparent-active' : 'transparent-inactive') ?>" data-toggle="tooltip" data-placement="left" title="<?= $en_all_7368[7161]['m_name'] ?>">
+                                <a href="/dashboard">
+                                    <?= $en_all_7368[7161]['m_icon'] ?>
                                 </a>
                             </li>
 

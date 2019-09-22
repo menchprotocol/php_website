@@ -25,7 +25,7 @@ class User_app extends CI_Controller
         if (isset($session_en['en__parents'][0])) {
             //Lead trainer and above, go to console:
             if(filter_array($session_en['en__parents'], 'en_id', $this->config->item('en_ids_10691') /* Mench Trainers */)){
-                return redirect_message('/dashboard');
+                return redirect_message('/intents');
             } else {
                 return redirect_message('/actionplan' . ( $in_id > 0 ? '/'.$in_id : '' ));
             }
@@ -145,7 +145,7 @@ class User_app extends CI_Controller
         if (isset($_POST['referrer_url']) && strlen($_POST['referrer_url']) > 0) {
             $login_url = urldecode($_POST['referrer_url']);
         } elseif ($is_any_trainer) {
-            $login_url = '/dashboard';
+            $login_url = '/intents';
         } else {
             $login_url = '/actionplan';
         }
@@ -294,7 +294,7 @@ class User_app extends CI_Controller
             //Their next intent in line:
             return echo_json(array(
                 'status' => 1,
-                'login_url' => ( $is_any_trainer ? '/dashboard' : '/actionplan/next' ),
+                'login_url' => ( $is_any_trainer ? '/intents' : '/actionplan/next' ),
             ));
 
 
@@ -554,7 +554,7 @@ class User_app extends CI_Controller
 
         //Validate email:
         if(en_auth($this->config->item('en_ids_10691') /* Mench Trainers */)){
-            return redirect_message('/dashboard');
+            return redirect_message('/intents');
         } elseif(en_auth()){
             return redirect_message('/actionplan/next');
         } elseif(!isset($_GET['email']) || !filter_var($_GET['email'], FILTER_VALIDATE_EMAIL)){
@@ -591,7 +591,7 @@ class User_app extends CI_Controller
         $is_trainer = filter_array($ens[0]['en__parents'], 'en_id', $this->config->item('en_ids_10691') /* Mench Trainers */);
 
         //Take them to next step:
-        return redirect_message( $is_trainer ? '/dashboard' : '/actionplan/next' );
+        return redirect_message( $is_trainer ? '/intents' : '/actionplan/next' );
     }
 
     function singin_check_email(){
