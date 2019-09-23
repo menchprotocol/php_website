@@ -195,10 +195,6 @@ if(count($in__other) > 0){
 
     echo '</div>';
 
-    echo '<p style="margin:25px 0 15px;">Just so you know, I\'m trained on even <a href="/">more intentions</a> &raquo;</p>';
-
-
-
 
     echo '</div>';
 

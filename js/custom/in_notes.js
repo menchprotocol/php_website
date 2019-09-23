@@ -336,7 +336,7 @@ function in_message_modify_save(ln_id, initial_ln_type_entity_id) {
 
                 //Adjust counter by one:
                 in_note_messages_count--;
-                $(".in-notes-messages-" + in_id, window.parent.document).text(in_note_messages_count);
+                $(".in-notes-count-" + in_id, window.parent.document).text(in_note_messages_count);
 
                 //Disapper in a while:
                 setTimeout(function ()
@@ -485,7 +485,7 @@ function in_message_from_attachment(droppedFiles, uploadType) {
 
                 //Adjust Action Plan counter by one:
                 in_note_messages_count++;
-                $(".in-notes-messages-" + in_id, window.parent.document).text(in_note_messages_count);
+                $(".in-notes-count-" + in_id, window.parent.document).text(in_note_messages_count);
             },
             error: function (data) {
                 var result = [];
@@ -526,7 +526,7 @@ function in_message_create() {
 
             //Adjust counter by one:
             in_note_messages_count++;
-            $(".in-notes-messages-" + in_id, window.parent.document).text(in_note_messages_count);
+            $(".in-notes-count-" + in_id, window.parent.document).text(in_note_messages_count);
 
             //Reset input field:
             $("#ln_content" + in_id).val("");

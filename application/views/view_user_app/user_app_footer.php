@@ -54,7 +54,7 @@
             </nav>
 
 
-            <div style="font-size: 0.7em; text-transform: uppercase; color: #222; font-weight:500;"><span style="display: inline-block"><i class="fab fa-github"></i> <a href="https://github.com/askmench/mench-web-app" class="underdot">opensource</a></span> &nbsp;|&nbsp; <span style="display: inline-block"><i class="fas fa-user-plus"></i> <a href="/12747" class="underdot">Join US</a></span> &nbsp;|&nbsp; <span class="parent-icon"><?= $this->config->item('system_icon') ?></span> v<?= $this->config->item('app_version') ?></div>
+            <div style="font-size: 0.7em; text-transform: uppercase; color: #222; font-weight:500;"><span style="display: inline-block"><i class="fab fa-github"></i> <a href="https://github.com/askmench/mench-web-app" class="underdot">Open Source</a></span> &nbsp;|&nbsp; <span style="display: inline-block"><i class="fas fa-user-plus"></i> <a href="/12747" class="underdot">Join US</a></span> &nbsp;|&nbsp; <span class="parent-icon"><?= $this->config->item('system_icon') ?></span> v<?= $this->config->item('app_version') ?></div>
 
         </div>
     </footer>

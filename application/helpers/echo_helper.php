@@ -2246,22 +2246,13 @@ function echo_in($in, $level, $in_linked_id = 0, $is_parent = false)
     //Trainer features only:
     if($is_trainer){
 
-        $count_in_messages = $CI->Links_model->ln_fetch(array(
-            'ln_status_entity_id IN (' . join(',', $CI->config->item('en_ids_7360')) . ')' => null, //Link Statuses Active
-            'ln_type_entity_id' => 4231, //Intent Note Messages
-            'ln_child_intent_id' => $in['in_id'],
-        ), array(), 0, 0, array(), 'COUNT(ln_id) as totals');
-
-        $count_in_non_messages = $CI->Links_model->ln_fetch(array(
+        $count_in_notes = $CI->Links_model->ln_fetch(array(
             'ln_status_entity_id IN (' . join(',', $CI->config->item('en_ids_7360')) . ')' => null, //Link Statuses Active
             'ln_type_entity_id IN (' . join(',', $CI->config->item('en_ids_4485')) . ')' => null, //All Intent Notes
-            'ln_type_entity_id !=' => 4231, //NOT Intent Note Messages
             'ln_child_intent_id' => $in['in_id'],
         ), array(), 0, 0, array(), 'COUNT(ln_id) as totals');
 
-        $message_counters = '<span class="btn-counter"><span class="in-notes-messages-' . $in['in_id'] . '">' . $count_in_messages[0]['totals'] .'</span>' . ( $count_in_non_messages[0]['totals'] > 0 ? '<span class="extra-note-counts '.advance_mode().'">+<span class="in-notes-non-messages-">'.$count_in_non_messages[0]['totals'].'</span></span>' : '' ) . '</span>';
-
-
+        $message_counters = '<span class="btn-counter"><span class="in-notes-count-' . $in['in_id'] . '">' . $count_in_notes[0]['totals'] .'</span></span>';
 
         //Can this trainer train this intent?
         if($can_train){
@@ -2277,7 +2268,6 @@ function echo_in($in, $level, $in_linked_id = 0, $is_parent = false)
 
             //Intent modify:
             $in__metadata_max_seconds = (isset($in_metadata['in__metadata_max_seconds']) ? $in_metadata['in__metadata_max_seconds'] : 0);
-
             $ui .= '<a class="badge badge-primary white-primary is_not_bg" onclick="in_modify_load(' . $in['in_id'] . ',' . $ln_id . ')" style="margin:-2px -8px 0 5px; width:40px;" href="#loadmodify-' . $in['in_id'] . '-' . $ln_id . '" data-toggle="tooltip" title="Intent completion cost. Click to modify intent'.( $level>1 ? ' and link' : '' ).'" data-placement="bottom"><span class="btn-counter slim-time t_estimate_' . $in['in_id'] . '" tree-max-seconds="' . $in__metadata_max_seconds . '" intent-seconds="' . $in['in_completion_seconds'] . '">'.( $in__metadata_max_seconds > 0 ? echo_time_hours($in__metadata_max_seconds , true) : 0 ).'</span><i class="fas fa-cog"></i></a> &nbsp;';
 
             //Messages
