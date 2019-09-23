@@ -11,7 +11,7 @@ defined('BASEPATH') OR exit('No direct script access allowed');
  *
  */
 
-//Generated 2019-09-21 15:32:24 PST
+//Generated 2019-09-22 18:11:54 PST
 
 //Course Categories:
 $config['en_ids_10709'] = array(10710,10711,10712,10716,10717,10718,10719,10720,10721,10722,10723,10724,10725);
@@ -160,7 +160,7 @@ $config['en_all_10692'] = array(
 );
 
 //Platform Cache:
-$config['en_ids_4527'] = array(7758,7774,7756,6827,10709,4997,7303,6194,6805,6177,7358,7357,6206,4592,4537,10627,6192,7712,7585,7302,7596,4229,6345,4485,4986,7551,7701,4983,6193,7582,7767,10568,10567,7588,4737,7356,7355,6201,4486,7309,10602,7751,7799,10692,7304,10591,7703,10658,6103,6186,7360,7364,7359,4341,4593,7347,10592,10704,7529,7555,7372,7368,10691,6287,7369,4426,6225,10596,4527,7366,4755,10571,6204,6123,10593,4454,5969,3000,4600,6150,5967,4280,10570,4277,6102,7704,6144,6244,6255,6274,6146,7494,7203,10539,10594,10589,10590);
+$config['en_ids_4527'] = array(7758,7774,7756,6827,10709,4997,7303,6194,6805,6177,7358,7357,6206,4592,4537,10627,6192,7712,7585,7302,7596,4229,6345,4485,4986,7551,7701,4983,6193,7582,10568,10567,7588,4737,7356,7355,6201,4486,7309,10602,7751,7799,10692,7304,10591,7703,10658,6103,6186,7360,7364,7359,4341,4593,7347,10592,10704,7529,7555,7372,7368,10691,6287,7369,4426,6225,10596,4527,7366,4755,10571,6204,6123,10593,4454,5969,7767,3000,4600,6150,5967,4280,10570,4277,6102,7704,6144,6244,6255,6274,6146,7494,7203,10539,10594,10589,10590);
 $config['en_all_4527'] = array(
     7758 => array(
         'm_icon' => '<i class="far fa-mountain"></i>',
@@ -190,7 +190,7 @@ $config['en_all_4527'] = array(
         'm_icon' => '<i class="fas fa-folder-tree"></i>',
         'm_name' => 'Course Categories',
         'm_desc' => '',
-        'm_parents' => array(3463,4527,10715,7254),
+        'm_parents' => array(4527,10715,7254),
     ),
     4997 => array(
         'm_icon' => '<i class="fas fa-list-alt"></i>',
@@ -341,12 +341,6 @@ $config['en_all_4527'] = array(
         'm_name' => 'Intent Scopes Get Started',
         'm_desc' => '',
         'm_parents' => array(7493,4527,6768),
-    ),
-    7767 => array(
-        'm_icon' => '<i class="fas fa-hard-hat"></i>',
-        'm_name' => 'Intent Scopes Mineable',
-        'm_desc' => '&var_trimcache=Intent',
-        'm_parents' => array(4428,4527,6768),
     ),
     10568 => array(
         'm_icon' => '<i class="fas fa-search"></i>',
@@ -624,11 +618,17 @@ $config['en_all_4527'] = array(
         'm_desc' => '',
         'm_parents' => array(3303,6771,4426,4527,4757,4428),
     ),
+    7767 => array(
+        'm_icon' => '<i class="fas fa-hard-hat"></i>',
+        'm_name' => 'Trainable Intents',
+        'm_desc' => '&var_trimcache=Intent',
+        'm_parents' => array(4428,4527,6768),
+    ),
     3000 => array(
         'm_icon' => '<i class="far fa-whistle"></i>',
         'm_name' => 'Trained Expert Sources',
         'm_desc' => '',
-        'm_parents' => array(10571,7303,3463,4506,4527,4463),
+        'm_parents' => array(10571,7303,4506,4527,4463),
     ),
     4600 => array(
         'm_icon' => '<i class="far fa-badge-check"></i>',
@@ -2810,7 +2810,7 @@ $config['en_all_10571'] = array(
         'm_icon' => '<i class="far fa-whistle"></i>',
         'm_name' => 'Trained Expert Sources',
         'm_desc' => '',
-        'm_parents' => array(10571,7303,3463,4506,4527,4463),
+        'm_parents' => array(10571,7303,4506,4527,4463),
     ),
 );
 
@@ -2911,7 +2911,7 @@ $config['en_all_7774'] = array(
     ),
 );
 
-//Intent Scopes Mineable:
+//Trainable Intents:
 $config['en_ids_7767'] = array(7598,7766);
 $config['en_all_7767'] = array(
     7598 => array(
@@ -4384,7 +4384,7 @@ $config['en_all_7303'] = array(
         'm_icon' => '<i class="far fa-whistle"></i>',
         'm_name' => 'Trained Expert Sources',
         'm_desc' => '',
-        'm_parents' => array(10571,7303,3463,4506,4527,4463),
+        'm_parents' => array(10571,7303,4506,4527,4463),
     ),
 );
 
@@ -5601,7 +5601,7 @@ $config['en_all_4600'] = array(
         'm_icon' => '<i class="fas fa-user-tie"></i>',
         'm_name' => 'Companies',
         'm_desc' => '',
-        'm_parents' => array(3463,4600),
+        'm_parents' => array(4600),
     ),
     1278 => array(
         'm_icon' => '👪',

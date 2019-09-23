@@ -72,7 +72,7 @@ class Entities extends CI_Controller
         $is_admin = ( filter_array($session_en['en__parents'], 'en_id', $this->config->item('en_ids_10704') /* Mench Administrators */) ? 1 : 0 );
 
         if ($en_id == 0) {
-            return redirect_message('/entities/' . ( $is_admin ? 3463 /* Default trainer entity */ : $session_en['en_id'] ));
+            return redirect_message('/entities/' . $session_en['en_id']);
         }
 
         //Do we have any mass action to process here?
