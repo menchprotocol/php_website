@@ -2246,6 +2246,23 @@ function echo_in($in, $level, $in_linked_id = 0, $is_parent = false)
     //Trainer features only:
     if($is_trainer){
 
+        $count_in_messages = $CI->Links_model->ln_fetch(array(
+            'ln_status_entity_id IN (' . join(',', $CI->config->item('en_ids_7360')) . ')' => null, //Link Statuses Active
+            'ln_type_entity_id' => 4231, //Intent Note Messages
+            'ln_child_intent_id' => $in['in_id'],
+        ), array(), 0, 0, array(), 'COUNT(ln_id) as totals');
+
+        $count_in_non_messages = $CI->Links_model->ln_fetch(array(
+            'ln_status_entity_id IN (' . join(',', $CI->config->item('en_ids_7360')) . ')' => null, //Link Statuses Active
+            'ln_type_entity_id IN (' . join(',', $CI->config->item('en_ids_4485')) . ')' => null, //All Intent Notes
+            'ln_type_entity_id !=' => 4231, //NOT Intent Note Messages
+            'ln_child_intent_id' => $in['in_id'],
+        ), array(), 0, 0, array(), 'COUNT(ln_id) as totals');
+
+        $message_counters = '<span class="btn-counter"><span class="in-notes-messages-' . $in['in_id'] . '">' . $count_in_messages[0]['totals'] .'</span>' . ( $count_in_non_messages[0]['totals'] > 0 ? '<span class="extra-note-counts '.advance_mode().'">+<span class="in-notes-non-messages-">'.$count_in_non_messages[0]['totals'].'</span></span>' : '' ) . '</span>';
+
+
+
         //Can this trainer train this intent?
         if($can_train){
 
@@ -2258,31 +2275,18 @@ function echo_in($in, $level, $in_linked_id = 0, $is_parent = false)
              *
              * */
 
-            $count_in_messages = $CI->Links_model->ln_fetch(array(
-                'ln_status_entity_id IN (' . join(',', $CI->config->item('en_ids_7360')) . ')' => null, //Link Statuses Active
-                'ln_type_entity_id' => 4231, //Intent Note Messages
-                'ln_child_intent_id' => $in['in_id'],
-            ), array(), 0, 0, array(), 'COUNT(ln_id) as totals');
-
-            $count_in_non_messages = $CI->Links_model->ln_fetch(array(
-                'ln_status_entity_id IN (' . join(',', $CI->config->item('en_ids_7360')) . ')' => null, //Link Statuses Active
-                'ln_type_entity_id IN (' . join(',', $CI->config->item('en_ids_4485')) . ')' => null, //All Intent Notes
-                'ln_type_entity_id !=' => 4231, //NOT Intent Note Messages
-                'ln_child_intent_id' => $in['in_id'],
-            ), array(), 0, 0, array(), 'COUNT(ln_id) as totals');
-
-            $ui .= '<a href="#intentnotes-' . $in['in_id'] . '" onclick="in_notes_iframe('.$in['in_id'].')" class="msg-badge-' . $in['in_id'] . ' badge badge-primary white-primary is_not_bg" style="width:40px; margin-right:2px; margin-left:5px;" data-toggle="tooltip" title="'.$en_all_4527[4485]['m_name'].'" data-placement="bottom"><span class="btn-counter"><span class="in-notes-messages-' . $in['in_id'] . '">' . $count_in_messages[0]['totals'] .'</span>' . ( $count_in_non_messages[0]['totals'] > 0 ? '<span class="extra-note-counts '.advance_mode().'">+<span class="in-notes-non-messages-">'.$count_in_non_messages[0]['totals'].'</span></span>' : '' ) . '</span>'.$en_all_4527[4485]['m_icon'].'</a>';
-
-
             //Intent modify:
             $in__metadata_max_seconds = (isset($in_metadata['in__metadata_max_seconds']) ? $in_metadata['in__metadata_max_seconds'] : 0);
 
-            $ui .= '<a class="badge badge-primary white-primary is_not_bg" onclick="in_modify_load(' . $in['in_id'] . ',' . $ln_id . ')" style="margin:-2px -8px 0 0; width:40px;" href="#loadmodify-' . $in['in_id'] . '-' . $ln_id . '" data-toggle="tooltip" title="Intent completion cost. Click to modify intent'.( $level>1 ? ' and link' : '' ).'" data-placement="bottom"><span class="btn-counter slim-time t_estimate_' . $in['in_id'] . '" tree-max-seconds="' . $in__metadata_max_seconds . '" intent-seconds="' . $in['in_completion_seconds'] . '">'.( $in__metadata_max_seconds > 0 ? echo_time_hours($in__metadata_max_seconds , true) : 0 ).'</span><i class="fas fa-cog"></i></a> &nbsp;';
+            $ui .= '<a class="badge badge-primary white-primary is_not_bg" onclick="in_modify_load(' . $in['in_id'] . ',' . $ln_id . ')" style="margin:-2px -8px 0 5px; width:40px;" href="#loadmodify-' . $in['in_id'] . '-' . $ln_id . '" data-toggle="tooltip" title="Intent completion cost. Click to modify intent'.( $level>1 ? ' and link' : '' ).'" data-placement="bottom"><span class="btn-counter slim-time t_estimate_' . $in['in_id'] . '" tree-max-seconds="' . $in__metadata_max_seconds . '" intent-seconds="' . $in['in_completion_seconds'] . '">'.( $in__metadata_max_seconds > 0 ? echo_time_hours($in__metadata_max_seconds , true) : 0 ).'</span><i class="fas fa-cog"></i></a> &nbsp;';
+
+            //Messages
+            $ui .= '<a href="#intentnotes-' . $in['in_id'] . '" onclick="in_notes_iframe('.$in['in_id'].')" class="msg-badge-' . $in['in_id'] . ' badge badge-primary white-primary is_not_bg" style="width:40px; margin-right:-1px; margin-left:3px;" data-toggle="tooltip" title="'.$en_all_4527[4485]['m_name'].'" data-placement="bottom">' . $message_counters . $en_all_4527[4485]['m_icon'].'</a>';
 
         } else {
 
             //Give trainer option to join intention by up-voting it:
-            $ui .= '<a class="badge badge-primary white-primary is_not_bg" onclick="in_load_upvote(' . $in['in_id'] . ')" style="margin:-2px -8px 0 3px; width:82px;" href="#" data-toggle="tooltip" title="Join this intention by casting your up-vote" data-placement="bottom"><i class="far fa-thumbs-up"></i> JOIN</a> &nbsp;';
+            $ui .= '<a class="badge badge-primary white-primary is_not_bg" onclick="in_load_upvote(' . $in['in_id'] . ')" style="margin:-2px -8px 0 3px; width:82px;" href="#" data-toggle="tooltip" title="Join this intention by casting your up-vote" data-placement="bottom">'.$message_counters.'<i class="far fa-thumbs-up"></i> JOIN</a> &nbsp;';
 
         }
 
