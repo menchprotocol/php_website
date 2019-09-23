@@ -11,7 +11,7 @@ defined('BASEPATH') OR exit('No direct script access allowed');
  *
  */
 
-//Generated 2019-09-22 18:11:54 PST
+//Generated 2019-09-22 22:32:18 PST
 
 //Course Categories:
 $config['en_ids_10709'] = array(10710,10711,10712,10716,10717,10718,10719,10720,10721,10722,10723,10724,10725);
@@ -679,8 +679,8 @@ $config['en_all_4527'] = array(
         'm_parents' => array(4527,7493),
     ),
     6144 => array(
-        'm_icon' => '<i class="far fa-cloud-upload-alt ispink"></i>',
-        'm_name' => 'User Step Create New Content',
+        'm_icon' => '<i class="fas fa-cloud-upload-alt ispink"></i>',
+        'm_name' => 'User Step Requirement Submitted',
         'm_desc' => '&var_trimcache=Intent',
         'm_parents' => array(10596,10589,4527,6768,7703,6255,6244,4755,6146,4593),
     ),
@@ -1384,7 +1384,7 @@ $config['en_all_10593'] = array(
 );
 
 //Nod:
-$config['en_ids_10596'] = array(10625,5943,5001,5865,4999,4998,5000,5981,5982,5003,10659,10689,10647,6226,10681,4246,7504,5007,4994,4993,6415,4275,6559,6560,6556,6578,6149,7611,6969,4283,7495,7542,7610,5967,7563,10690,4266,4267,4282,10683,4577,4278,4279,4268,4287,7561,7564,7559,7560,7558,7488,7485,7486,6144,7741,10685,4559,7489,7492,6997,6157,7487,6143,7562);
+$config['en_ids_10596'] = array(10625,5943,5001,5865,4999,4998,5000,5981,5982,5003,10659,10689,10647,6226,10681,4246,7504,5007,4994,4993,6415,4275,6559,6560,6556,6578,6149,7611,6969,4283,7495,7542,7610,5967,7563,10690,4266,4267,4282,10683,4577,4278,4279,4268,4287,7561,7564,7559,7560,7558,7488,7485,7486,7741,10685,4559,7489,7492,6144,6997,6157,7487,6143,7562);
 $config['en_all_10596'] = array(
     10625 => array(
         'm_icon' => '<i class="far fa-user-circle ispink"></i>',
@@ -1687,7 +1687,7 @@ $config['en_all_10596'] = array(
         'm_parents' => array(10596,10589,4755,4593),
     ),
     7488 => array(
-        'm_icon' => '<i class="far fa-calendar-times ispink"></i>',
+        'm_icon' => '<i class="fas fa-calendar-times ispink"></i>',
         'm_name' => 'User Step Answer Timeout',
         'm_desc' => '',
         'm_parents' => array(10596,10589,4755,4593,6146),
@@ -1704,17 +1704,11 @@ $config['en_all_10596'] = array(
         'm_desc' => '',
         'm_parents' => array(10596,10589,7703,7494,6244,6146,4755,4593,6255),
     ),
-    6144 => array(
-        'm_icon' => '<i class="far fa-cloud-upload-alt ispink"></i>',
-        'm_name' => 'User Step Create New Content',
-        'm_desc' => '',
-        'm_parents' => array(10596,10589,4527,6768,7703,6255,6244,4755,6146,4593),
-    ),
     7741 => array(
-        'm_icon' => '<i class="far fa-times-circle ispink"></i>',
+        'm_icon' => '<i class="fas fa-times-circle ispink"></i>',
         'm_name' => 'User Step Intention Terminated',
         'm_desc' => '',
-        'm_parents' => array(10596,10589,4755,4593,7740,6146),
+        'm_parents' => array(10596,10589,4755,4593,6146),
     ),
     10685 => array(
         'm_icon' => '<i class="fas fa-sync ispink"></i>',
@@ -1723,22 +1717,28 @@ $config['en_all_10596'] = array(
         'm_parents' => array(4755,10596,10589,4593,10638,10658),
     ),
     4559 => array(
-        'm_icon' => '<i class="far fa-comments ispink"></i>',
+        'm_icon' => '<i class="fas fa-comments ispink"></i>',
         'm_name' => 'User Step Messages Only',
         'm_desc' => '',
         'm_parents' => array(10596,10589,7703,6274,6255,4755,6146,4593),
     ),
     7489 => array(
-        'm_icon' => '<i class="far fa-check-double ispink"></i>',
+        'm_icon' => '<i class="fas fa-check-double ispink"></i>',
         'm_name' => 'User Step Multi-Answered',
         'm_desc' => '',
         'm_parents' => array(10596,10589,7704,7703,4755,6255,4593,6146),
     ),
     7492 => array(
-        'm_icon' => '<i class="far fa-times-square ispink"></i>',
+        'm_icon' => '<i class="fas fa-times-square ispink"></i>',
         'm_name' => 'User Step Path Not Found',
         'm_desc' => '',
         'm_parents' => array(10596,10589,6255,4755,4593,6146),
+    ),
+    6144 => array(
+        'm_icon' => '<i class="fas fa-cloud-upload-alt ispink"></i>',
+        'm_name' => 'User Step Requirement Submitted',
+        'm_desc' => '',
+        'm_parents' => array(10596,10589,4527,6768,7703,6255,6244,4755,6146,4593),
     ),
     6997 => array(
         'm_icon' => '<i class="fas fa-lock-open ispink"></i>',
@@ -1747,19 +1747,19 @@ $config['en_all_10596'] = array(
         'm_parents' => array(10596,10589,7703,7494,4229,6255,4593,4755,6146),
     ),
     6157 => array(
-        'm_icon' => '<i class="far fa-check ispink"></i>',
+        'm_icon' => '<i class="fas fa-question ispink"></i>',
         'm_name' => 'User Step Single-Answered',
         'm_desc' => '',
         'm_parents' => array(10596,10589,7704,7703,6255,6244,6146,4755,4593),
     ),
     7487 => array(
-        'm_icon' => '<i class="far fa-stopwatch ispink"></i>',
+        'm_icon' => '<i class="fas fa-stopwatch ispink"></i>',
         'm_name' => 'User Step Single-Answered Timely',
         'm_desc' => '',
         'm_parents' => array(10596,10589,7704,7703,6244,4755,6255,4593,6146),
     ),
     6143 => array(
-        'm_icon' => '<i class="far fa-fast-forward ispink"></i>',
+        'm_icon' => '<i class="fas fa-fast-forward ispink"></i>',
         'm_name' => 'User Step Skipped',
         'm_desc' => '',
         'm_parents' => array(10596,10589,6146,4755,4593),
@@ -1904,7 +1904,7 @@ $config['en_all_10590'] = array(
 );
 
 //Words In:
-$config['en_ids_10589'] = array(10625,5943,5001,5865,4999,4998,5000,5981,5982,5003,4251,10672,10653,10646,10654,4259,4257,4261,4260,4319,10657,10656,10659,10689,4230,4255,4318,10673,4256,4258,4250,10671,10650,10644,10649,10648,10651,10647,4229,10663,10664,10661,10662,4228,10686,10660,10573,10715,7545,4601,4231,10679,10677,10676,7701,10678,6093,4983,6226,10681,10675,6132,4246,7504,5007,6415,4275,6559,6560,6556,6578,6154,6155,4235,7757,7578,6224,10690,4266,4267,10683,4577,4549,4551,4550,4557,4278,4279,4268,4460,4547,4287,4548,7561,7564,7559,7560,7558,7488,7485,7486,6144,7741,10685,6140,4559,7489,7492,6997,6157,7487,6143);
+$config['en_ids_10589'] = array(10625,5943,5001,5865,4999,4998,5000,5981,5982,5003,4251,10672,10653,10646,10654,4259,4257,4261,4260,4319,10657,10656,10659,10689,4230,4255,4318,10673,4256,4258,4250,10671,10650,10644,10649,10648,10651,10647,4229,10663,10664,10661,10662,4228,10686,10660,10573,10715,7545,4601,4231,10679,10677,10676,7701,10678,6093,4983,6226,10681,10675,6132,4246,7504,5007,6415,4275,6559,6560,6556,6578,6154,6155,4235,7757,7578,6224,10690,4266,4267,10683,4577,4549,4551,4550,4557,4278,4279,4268,4460,4547,4287,4548,7561,7564,7559,7560,7558,7488,7485,7486,7741,10685,6140,4559,7489,7492,6144,6997,6157,7487,6143);
 $config['en_all_10589'] = array(
     10625 => array(
         'm_icon' => '<i class="far fa-user-circle ispink"></i>',
@@ -2495,7 +2495,7 @@ $config['en_all_10589'] = array(
         'm_parents' => array(10596,10589,4755,4593),
     ),
     7488 => array(
-        'm_icon' => '<i class="far fa-calendar-times ispink"></i>',
+        'm_icon' => '<i class="fas fa-calendar-times ispink"></i>',
         'm_name' => 'User Step Answer Timeout',
         'm_desc' => '',
         'm_parents' => array(10596,10589,4755,4593,6146),
@@ -2512,17 +2512,11 @@ $config['en_all_10589'] = array(
         'm_desc' => '',
         'm_parents' => array(10596,10589,7703,7494,6244,6146,4755,4593,6255),
     ),
-    6144 => array(
-        'm_icon' => '<i class="far fa-cloud-upload-alt ispink"></i>',
-        'm_name' => 'User Step Create New Content',
-        'm_desc' => '',
-        'm_parents' => array(10596,10589,4527,6768,7703,6255,6244,4755,6146,4593),
-    ),
     7741 => array(
-        'm_icon' => '<i class="far fa-times-circle ispink"></i>',
+        'm_icon' => '<i class="fas fa-times-circle ispink"></i>',
         'm_name' => 'User Step Intention Terminated',
         'm_desc' => '',
-        'm_parents' => array(10596,10589,4755,4593,7740,6146),
+        'm_parents' => array(10596,10589,4755,4593,6146),
     ),
     10685 => array(
         'm_icon' => '<i class="fas fa-sync ispink"></i>',
@@ -2537,22 +2531,28 @@ $config['en_all_10589'] = array(
         'm_parents' => array(10539,10589,6410,4229,4755,4593),
     ),
     4559 => array(
-        'm_icon' => '<i class="far fa-comments ispink"></i>',
+        'm_icon' => '<i class="fas fa-comments ispink"></i>',
         'm_name' => 'User Step Messages Only',
         'm_desc' => '',
         'm_parents' => array(10596,10589,7703,6274,6255,4755,6146,4593),
     ),
     7489 => array(
-        'm_icon' => '<i class="far fa-check-double ispink"></i>',
+        'm_icon' => '<i class="fas fa-check-double ispink"></i>',
         'm_name' => 'User Step Multi-Answered',
         'm_desc' => '',
         'm_parents' => array(10596,10589,7704,7703,4755,6255,4593,6146),
     ),
     7492 => array(
-        'm_icon' => '<i class="far fa-times-square ispink"></i>',
+        'm_icon' => '<i class="fas fa-times-square ispink"></i>',
         'm_name' => 'User Step Path Not Found',
         'm_desc' => '',
         'm_parents' => array(10596,10589,6255,4755,4593,6146),
+    ),
+    6144 => array(
+        'm_icon' => '<i class="fas fa-cloud-upload-alt ispink"></i>',
+        'm_name' => 'User Step Requirement Submitted',
+        'm_desc' => '',
+        'm_parents' => array(10596,10589,4527,6768,7703,6255,6244,4755,6146,4593),
     ),
     6997 => array(
         'm_icon' => '<i class="fas fa-lock-open ispink"></i>',
@@ -2561,19 +2561,19 @@ $config['en_all_10589'] = array(
         'm_parents' => array(10596,10589,7703,7494,4229,6255,4593,4755,6146),
     ),
     6157 => array(
-        'm_icon' => '<i class="far fa-check ispink"></i>',
+        'm_icon' => '<i class="fas fa-question ispink"></i>',
         'm_name' => 'User Step Single-Answered',
         'm_desc' => '',
         'm_parents' => array(10596,10589,7704,7703,6255,6244,6146,4755,4593),
     ),
     7487 => array(
-        'm_icon' => '<i class="far fa-stopwatch ispink"></i>',
+        'm_icon' => '<i class="fas fa-stopwatch ispink"></i>',
         'm_name' => 'User Step Single-Answered Timely',
         'm_desc' => '',
         'm_parents' => array(10596,10589,7704,7703,6244,4755,6255,4593,6146),
     ),
     6143 => array(
-        'm_icon' => '<i class="far fa-fast-forward ispink"></i>',
+        'm_icon' => '<i class="fas fa-fast-forward ispink"></i>',
         'm_name' => 'User Step Skipped',
         'm_desc' => '',
         'm_parents' => array(10596,10589,6146,4755,4593),
@@ -2843,8 +2843,14 @@ $config['en_all_10568'] = array(
 );
 
 //Intent Scopes Supports Equal:
-$config['en_ids_10567'] = array(7597);
+$config['en_ids_10567'] = array(7766,7597);
 $config['en_all_10567'] = array(
+    7766 => array(
+        'm_icon' => '<i class="fas fa-flag "></i>',
+        'm_name' => 'Intent Milestone',
+        'm_desc' => '',
+        'm_parents' => array(10567,7767,7596),
+    ),
     7597 => array(
         'm_icon' => '<i class="far fa-check-square "></i>',
         'm_name' => 'Intent Task',
@@ -2924,7 +2930,7 @@ $config['en_all_7767'] = array(
         'm_icon' => '<i class="fas fa-flag "></i>',
         'm_name' => 'Milestone',
         'm_desc' => '',
-        'm_parents' => array(7767,7596),
+        'm_parents' => array(10567,7767,7596),
     ),
 );
 
@@ -3109,7 +3115,7 @@ $config['en_all_7751'] = array(
     ),
 );
 
-//User Step Create New Content:
+//User Step Requirement Submitted:
 $config['en_ids_6144'] = array(6683,6682,6680,6681,6678,7637,6679);
 $config['en_all_6144'] = array(
     6683 => array(
@@ -3449,7 +3455,7 @@ $config['en_all_6204'] = array(
 $config['en_ids_7712'] = array(7231,6684,6685);
 $config['en_all_7712'] = array(
     7231 => array(
-        'm_icon' => '<i class="fas fa-question-circle"></i>',
+        'm_icon' => '<i class="fas fa-check-double"></i>',
         'm_name' => 'Intent Answer Multi-Choice',
         'm_desc' => '',
         'm_parents' => array(7712,7489,7588,7585,6193),
@@ -3472,19 +3478,19 @@ $config['en_all_7712'] = array(
 $config['en_ids_7704'] = array(7489,6157,7487);
 $config['en_all_7704'] = array(
     7489 => array(
-        'm_icon' => '<i class="far fa-check-double ispink"></i>',
+        'm_icon' => '<i class="fas fa-check-double ispink"></i>',
         'm_name' => 'User Step Multi-Answered',
         'm_desc' => '',
         'm_parents' => array(10596,10589,7704,7703,4755,6255,4593,6146),
     ),
     6157 => array(
-        'm_icon' => '<i class="far fa-check ispink"></i>',
+        'm_icon' => '<i class="fas fa-question ispink"></i>',
         'm_name' => 'User Step Single-Answered',
         'm_desc' => '',
         'm_parents' => array(10596,10589,7704,7703,6255,6244,6146,4755,4593),
     ),
     7487 => array(
-        'm_icon' => '<i class="far fa-stopwatch ispink"></i>',
+        'm_icon' => '<i class="fas fa-stopwatch ispink"></i>',
         'm_name' => 'User Step Single-Answered Timely',
         'm_desc' => '',
         'm_parents' => array(10596,10589,7704,7703,6244,4755,6255,4593,6146),
@@ -3492,7 +3498,7 @@ $config['en_all_7704'] = array(
 );
 
 //Link Intent Subscription Types:
-$config['en_ids_7703'] = array(10671,10650,10644,10649,10648,10651,4229,10663,10664,10661,10662,4228,10686,10660,10573,10715,7545,4601,4231,7701,6093,4983,10675,6154,6155,7485,7486,6144,4559,7489,6997,6157,7487);
+$config['en_ids_7703'] = array(10671,10650,10644,10649,10648,10651,4229,10663,10664,10661,10662,4228,10686,10660,10573,10715,7545,4601,4231,7701,6093,4983,10675,6154,6155,7485,7486,4559,7489,6144,6997,6157,7487);
 $config['en_all_7703'] = array(
     10671 => array(
         'm_icon' => '<i class="far fa-trash-alt ispink"></i>',
@@ -3656,23 +3662,23 @@ $config['en_all_7703'] = array(
         'm_desc' => '',
         'm_parents' => array(10596,10589,7703,7494,6244,6146,4755,4593,6255),
     ),
-    6144 => array(
-        'm_icon' => '<i class="far fa-cloud-upload-alt ispink"></i>',
-        'm_name' => 'User Step Create New Content',
-        'm_desc' => '',
-        'm_parents' => array(10596,10589,4527,6768,7703,6255,6244,4755,6146,4593),
-    ),
     4559 => array(
-        'm_icon' => '<i class="far fa-comments ispink"></i>',
+        'm_icon' => '<i class="fas fa-comments ispink"></i>',
         'm_name' => 'User Step Messages Only',
         'm_desc' => '',
         'm_parents' => array(10596,10589,7703,6274,6255,4755,6146,4593),
     ),
     7489 => array(
-        'm_icon' => '<i class="far fa-check-double ispink"></i>',
+        'm_icon' => '<i class="fas fa-check-double ispink"></i>',
         'm_name' => 'User Step Multi-Answered',
         'm_desc' => '',
         'm_parents' => array(10596,10589,7704,7703,4755,6255,4593,6146),
+    ),
+    6144 => array(
+        'm_icon' => '<i class="fas fa-cloud-upload-alt ispink"></i>',
+        'm_name' => 'User Step Requirement Submitted',
+        'm_desc' => '',
+        'm_parents' => array(10596,10589,4527,6768,7703,6255,6244,4755,6146,4593),
     ),
     6997 => array(
         'm_icon' => '<i class="fas fa-lock-open ispink"></i>',
@@ -3681,13 +3687,13 @@ $config['en_all_7703'] = array(
         'm_parents' => array(10596,10589,7703,7494,4229,6255,4593,4755,6146),
     ),
     6157 => array(
-        'm_icon' => '<i class="far fa-check ispink"></i>',
+        'm_icon' => '<i class="fas fa-question ispink"></i>',
         'm_name' => 'User Step Single-Answered',
         'm_desc' => '',
         'm_parents' => array(10596,10589,7704,7703,6255,6244,6146,4755,4593),
     ),
     7487 => array(
-        'm_icon' => '<i class="far fa-stopwatch ispink"></i>',
+        'm_icon' => '<i class="fas fa-stopwatch ispink"></i>',
         'm_name' => 'User Step Single-Answered Timely',
         'm_desc' => '',
         'm_parents' => array(10596,10589,7704,7703,6244,4755,6255,4593,6146),
@@ -3707,7 +3713,7 @@ $config['en_all_7596'] = array(
         'm_icon' => '<i class="fas fa-flag "></i>',
         'm_name' => 'Milestone',
         'm_desc' => 'Users can find intent by searching it or arriving at it from the parent',
-        'm_parents' => array(7767,7596),
+        'm_parents' => array(10567,7767,7596),
     ),
     7598 => array(
         'm_icon' => '<i class="fas fa-users-class"></i>',
@@ -3744,7 +3750,7 @@ $config['en_all_4229'] = array(
 $config['en_ids_7588'] = array(7231,6684);
 $config['en_all_7588'] = array(
     7231 => array(
-        'm_icon' => '<i class="fas fa-question-circle"></i>',
+        'm_icon' => '<i class="fas fa-check-double"></i>',
         'm_name' => 'Intent Answer Multi-Choice',
         'm_desc' => '',
         'm_parents' => array(7712,7489,7588,7585,6193),
@@ -3773,7 +3779,7 @@ $config['en_all_6193'] = array(
         'm_parents' => array(7712,7488,7487,7585,7366,6193),
     ),
     7231 => array(
-        'm_icon' => '<i class="fas fa-question-circle"></i>',
+        'm_icon' => '<i class="fas fa-check-double"></i>',
         'm_name' => 'Answer Multi-Choice',
         'm_desc' => '',
         'm_parents' => array(7712,7489,7588,7585,6193),
@@ -3850,7 +3856,7 @@ $config['en_all_7585'] = array(
         'm_parents' => array(7712,7488,7487,7585,7366,6193),
     ),
     7231 => array(
-        'm_icon' => '<i class="fas fa-question-circle"></i>',
+        'm_icon' => '<i class="fas fa-check-double"></i>',
         'm_name' => 'Answer Multi-Choice',
         'm_desc' => 'User will complete by choosing one or more child intents as their answer',
         'm_parents' => array(7712,7489,7588,7585,6193),
@@ -4571,7 +4577,7 @@ $config['en_all_6345'] = array(
 $config['en_ids_6274'] = array(4559);
 $config['en_all_6274'] = array(
     4559 => array(
-        'm_icon' => '<i class="far fa-comments ispink"></i>',
+        'm_icon' => '<i class="fas fa-comments ispink"></i>',
         'm_name' => 'User Step Messages Only',
         'm_desc' => '',
         'm_parents' => array(10596,10589,7703,6274,6255,4755,6146,4593),
@@ -4579,7 +4585,7 @@ $config['en_all_6274'] = array(
 );
 
 //User Steps Progressed:
-$config['en_ids_6255'] = array(7485,7486,6144,4559,7489,7492,6997,6157,7487);
+$config['en_ids_6255'] = array(7485,7486,4559,7489,7492,6144,6997,6157,7487);
 $config['en_all_6255'] = array(
     7485 => array(
         'm_icon' => '<i class="fas fa-lock-open ispink"></i>',
@@ -4593,29 +4599,29 @@ $config['en_all_6255'] = array(
         'm_desc' => '',
         'm_parents' => array(10596,10589,7703,7494,6244,6146,4755,4593,6255),
     ),
-    6144 => array(
-        'm_icon' => '<i class="far fa-cloud-upload-alt ispink"></i>',
-        'm_name' => 'User Step Create New Content',
-        'm_desc' => '',
-        'm_parents' => array(10596,10589,4527,6768,7703,6255,6244,4755,6146,4593),
-    ),
     4559 => array(
-        'm_icon' => '<i class="far fa-comments ispink"></i>',
+        'm_icon' => '<i class="fas fa-comments ispink"></i>',
         'm_name' => 'User Step Messages Only',
         'm_desc' => '',
         'm_parents' => array(10596,10589,7703,6274,6255,4755,6146,4593),
     ),
     7489 => array(
-        'm_icon' => '<i class="far fa-check-double ispink"></i>',
+        'm_icon' => '<i class="fas fa-check-double ispink"></i>',
         'm_name' => 'User Step Multi-Answered',
         'm_desc' => '',
         'm_parents' => array(10596,10589,7704,7703,4755,6255,4593,6146),
     ),
     7492 => array(
-        'm_icon' => '<i class="far fa-times-square ispink"></i>',
+        'm_icon' => '<i class="fas fa-times-square ispink"></i>',
         'm_name' => 'User Step Path Not Found',
         'm_desc' => '',
         'm_parents' => array(10596,10589,6255,4755,4593,6146),
+    ),
+    6144 => array(
+        'm_icon' => '<i class="fas fa-cloud-upload-alt ispink"></i>',
+        'm_name' => 'User Step Requirement Submitted',
+        'm_desc' => '',
+        'm_parents' => array(10596,10589,4527,6768,7703,6255,6244,4755,6146,4593),
     ),
     6997 => array(
         'm_icon' => '<i class="fas fa-lock-open ispink"></i>',
@@ -4624,13 +4630,13 @@ $config['en_all_6255'] = array(
         'm_parents' => array(10596,10589,7703,7494,4229,6255,4593,4755,6146),
     ),
     6157 => array(
-        'm_icon' => '<i class="far fa-check ispink"></i>',
+        'm_icon' => '<i class="fas fa-question ispink"></i>',
         'm_name' => 'User Step Single-Answered',
         'm_desc' => '',
         'm_parents' => array(10596,10589,7704,7703,6255,6244,6146,4755,4593),
     ),
     7487 => array(
-        'm_icon' => '<i class="far fa-stopwatch ispink"></i>',
+        'm_icon' => '<i class="fas fa-stopwatch ispink"></i>',
         'm_name' => 'User Step Single-Answered Timely',
         'm_desc' => '',
         'm_parents' => array(10596,10589,7704,7703,6244,4755,6255,4593,6146),
@@ -4647,19 +4653,19 @@ $config['en_all_6244'] = array(
         'm_parents' => array(10596,10589,7703,7494,6244,6146,4755,4593,6255),
     ),
     6144 => array(
-        'm_icon' => '<i class="far fa-cloud-upload-alt ispink"></i>',
-        'm_name' => 'User Step Create New Content',
+        'm_icon' => '<i class="fas fa-cloud-upload-alt ispink"></i>',
+        'm_name' => 'User Step Requirement Submitted',
         'm_desc' => 'Logged initially when the user starts an intent that has a requirement submission (Text, URL, Video, Image, etc...) and is completed when they submit the requirement.',
         'm_parents' => array(10596,10589,4527,6768,7703,6255,6244,4755,6146,4593),
     ),
     6157 => array(
-        'm_icon' => '<i class="far fa-check ispink"></i>',
+        'm_icon' => '<i class="fas fa-question ispink"></i>',
         'm_name' => 'User Step Single-Answered',
         'm_desc' => 'Logged initially when the user arrives at a regular OR intent, and completed when they submit their answer.',
         'm_parents' => array(10596,10589,7704,7703,6255,6244,6146,4755,4593),
     ),
     7487 => array(
-        'm_icon' => '<i class="far fa-stopwatch ispink"></i>',
+        'm_icon' => '<i class="fas fa-stopwatch ispink"></i>',
         'm_name' => 'User Step Single-Answered Timely',
         'm_desc' => 'Logged initially when the user starts to answer a timed OR intent, and will be published if they are successful at answering it on time. If not, will update link type to User Step Answer Timeout.',
         'm_parents' => array(10596,10589,7704,7703,6244,4755,6255,4593,6146),
@@ -4818,10 +4824,10 @@ $config['en_all_6177'] = array(
 );
 
 //User Steps Taken:
-$config['en_ids_6146'] = array(7488,7485,7486,6144,7741,4559,7489,7492,6997,6157,7487,6143);
+$config['en_ids_6146'] = array(7488,7485,7486,7741,4559,7489,7492,6144,6997,6157,7487,6143);
 $config['en_all_6146'] = array(
     7488 => array(
-        'm_icon' => '<i class="far fa-calendar-times ispink"></i>',
+        'm_icon' => '<i class="fas fa-calendar-times ispink"></i>',
         'm_name' => 'Answer Timeout',
         'm_desc' => 'User failed to answer the question within the allocated time',
         'm_parents' => array(10596,10589,4755,4593,6146),
@@ -4838,35 +4844,35 @@ $config['en_all_6146'] = array(
         'm_desc' => 'When users unlock locked AND or OR intents by completing ALL or ANY of their children',
         'm_parents' => array(10596,10589,7703,7494,6244,6146,4755,4593,6255),
     ),
-    6144 => array(
-        'm_icon' => '<i class="far fa-cloud-upload-alt ispink"></i>',
-        'm_name' => 'Create New Content',
-        'm_desc' => 'Completed when students submit the intent completion requirements (text, URL, video, etc...) set by miners',
-        'm_parents' => array(10596,10589,4527,6768,7703,6255,6244,4755,6146,4593),
-    ),
     7741 => array(
-        'm_icon' => '<i class="far fa-times-circle ispink"></i>',
+        'm_icon' => '<i class="fas fa-times-circle ispink"></i>',
         'm_name' => 'Intention Terminated',
         'm_desc' => '',
-        'm_parents' => array(10596,10589,4755,4593,7740,6146),
+        'm_parents' => array(10596,10589,4755,4593,6146),
     ),
     4559 => array(
-        'm_icon' => '<i class="far fa-comments ispink"></i>',
+        'm_icon' => '<i class="fas fa-comments ispink"></i>',
         'm_name' => 'Messages Only',
         'm_desc' => 'Completed when students complete a basic AND intent without any submission requirements',
         'm_parents' => array(10596,10589,7703,6274,6255,4755,6146,4593),
     ),
     7489 => array(
-        'm_icon' => '<i class="far fa-check-double ispink"></i>',
+        'm_icon' => '<i class="fas fa-check-double ispink"></i>',
         'm_name' => 'Multi-Answered',
         'm_desc' => 'User made a selection as part of a multiple-choice answer question',
         'm_parents' => array(10596,10589,7704,7703,4755,6255,4593,6146),
     ),
     7492 => array(
-        'm_icon' => '<i class="far fa-times-square ispink"></i>',
+        'm_icon' => '<i class="fas fa-times-square ispink"></i>',
         'm_name' => 'Path Not Found',
         'm_desc' => 'Logged when users arrive at a locked intent that has no public OR parents or no children, which means there is no way to unlock it.',
         'm_parents' => array(10596,10589,6255,4755,4593,6146),
+    ),
+    6144 => array(
+        'm_icon' => '<i class="fas fa-cloud-upload-alt ispink"></i>',
+        'm_name' => 'Requirement Submitted',
+        'm_desc' => 'Completed when students submit the intent completion requirements (text, URL, video, etc...) set by miners',
+        'm_parents' => array(10596,10589,4527,6768,7703,6255,6244,4755,6146,4593),
     ),
     6997 => array(
         'm_icon' => '<i class="fas fa-lock-open ispink"></i>',
@@ -4875,19 +4881,19 @@ $config['en_all_6146'] = array(
         'm_parents' => array(10596,10589,7703,7494,4229,6255,4593,4755,6146),
     ),
     6157 => array(
-        'm_icon' => '<i class="far fa-check ispink"></i>',
+        'm_icon' => '<i class="fas fa-question ispink"></i>',
         'm_name' => 'Single-Answered',
         'm_desc' => 'Completed after the student answers the question to the OR intent.',
         'm_parents' => array(10596,10589,7704,7703,6255,6244,6146,4755,4593),
     ),
     7487 => array(
-        'm_icon' => '<i class="far fa-stopwatch ispink"></i>',
+        'm_icon' => '<i class="fas fa-stopwatch ispink"></i>',
         'm_name' => 'Single-Answered Timely',
         'm_desc' => 'When the user answers a question within the defined timeframe',
         'm_parents' => array(10596,10589,7704,7703,6244,4755,6255,4593,6146),
     ),
     6143 => array(
-        'm_icon' => '<i class="far fa-fast-forward ispink"></i>',
+        'm_icon' => '<i class="fas fa-fast-forward ispink"></i>',
         'm_name' => 'Skipped',
         'm_desc' => 'Completed when students skip an intention and all its child intentions from their Action Plan',
         'm_parents' => array(10596,10589,6146,4755,4593),
@@ -5164,7 +5170,7 @@ $config['en_all_4426'] = array(
 );
 
 //Private Link Types:
-$config['en_ids_4755'] = array(10681,6132,3288,3286,4783,4246,7504,6415,4275,6559,6560,6556,6578,6154,6155,6149,7611,6969,4283,7495,7542,4235,7757,7610,7578,6224,5967,7563,4266,4267,4282,4554,4570,4556,4555,7702,6563,4552,4553,4577,4549,4551,4550,4557,4278,4279,4268,4460,4547,4287,4548,7561,7564,7559,7560,7558,7488,7485,7486,6144,7741,10685,6140,4559,7489,7492,6997,6157,7487,6143,7562);
+$config['en_ids_4755'] = array(10681,6132,3288,3286,4783,4246,7504,6415,4275,6559,6560,6556,6578,6154,6155,6149,7611,6969,4283,7495,7542,4235,7757,7610,7578,6224,5967,7563,4266,4267,4282,4554,4570,4556,4555,7702,6563,4552,4553,4577,4549,4551,4550,4557,4278,4279,4268,4460,4547,4287,4548,7561,7564,7559,7560,7558,7488,7485,7486,7741,10685,6140,4559,7489,7492,6144,6997,6157,7487,6143,7562);
 $config['en_all_4755'] = array(
     10681 => array(
         'm_icon' => '<i class="fas fa-sort ispink"></i>',
@@ -5503,7 +5509,7 @@ $config['en_all_4755'] = array(
         'm_parents' => array(10596,10589,4755,4593),
     ),
     7488 => array(
-        'm_icon' => '<i class="far fa-calendar-times ispink"></i>',
+        'm_icon' => '<i class="fas fa-calendar-times ispink"></i>',
         'm_name' => 'User Step Answer Timeout',
         'm_desc' => '',
         'm_parents' => array(10596,10589,4755,4593,6146),
@@ -5520,17 +5526,11 @@ $config['en_all_4755'] = array(
         'm_desc' => '',
         'm_parents' => array(10596,10589,7703,7494,6244,6146,4755,4593,6255),
     ),
-    6144 => array(
-        'm_icon' => '<i class="far fa-cloud-upload-alt ispink"></i>',
-        'm_name' => 'User Step Create New Content',
-        'm_desc' => '',
-        'm_parents' => array(10596,10589,4527,6768,7703,6255,6244,4755,6146,4593),
-    ),
     7741 => array(
-        'm_icon' => '<i class="far fa-times-circle ispink"></i>',
+        'm_icon' => '<i class="fas fa-times-circle ispink"></i>',
         'm_name' => 'User Step Intention Terminated',
         'm_desc' => '',
-        'm_parents' => array(10596,10589,4755,4593,7740,6146),
+        'm_parents' => array(10596,10589,4755,4593,6146),
     ),
     10685 => array(
         'm_icon' => '<i class="fas fa-sync ispink"></i>',
@@ -5545,22 +5545,28 @@ $config['en_all_4755'] = array(
         'm_parents' => array(10539,10589,6410,4229,4755,4593),
     ),
     4559 => array(
-        'm_icon' => '<i class="far fa-comments ispink"></i>',
+        'm_icon' => '<i class="fas fa-comments ispink"></i>',
         'm_name' => 'User Step Messages Only',
         'm_desc' => '',
         'm_parents' => array(10596,10589,7703,6274,6255,4755,6146,4593),
     ),
     7489 => array(
-        'm_icon' => '<i class="far fa-check-double ispink"></i>',
+        'm_icon' => '<i class="fas fa-check-double ispink"></i>',
         'm_name' => 'User Step Multi-Answered',
         'm_desc' => '',
         'm_parents' => array(10596,10589,7704,7703,4755,6255,4593,6146),
     ),
     7492 => array(
-        'm_icon' => '<i class="far fa-times-square ispink"></i>',
+        'm_icon' => '<i class="fas fa-times-square ispink"></i>',
         'm_name' => 'User Step Path Not Found',
         'm_desc' => '',
         'm_parents' => array(10596,10589,6255,4755,4593,6146),
+    ),
+    6144 => array(
+        'm_icon' => '<i class="fas fa-cloud-upload-alt ispink"></i>',
+        'm_name' => 'User Step Requirement Submitted',
+        'm_desc' => '',
+        'm_parents' => array(10596,10589,4527,6768,7703,6255,6244,4755,6146,4593),
     ),
     6997 => array(
         'm_icon' => '<i class="fas fa-lock-open ispink"></i>',
@@ -5569,19 +5575,19 @@ $config['en_all_4755'] = array(
         'm_parents' => array(10596,10589,7703,7494,4229,6255,4593,4755,6146),
     ),
     6157 => array(
-        'm_icon' => '<i class="far fa-check ispink"></i>',
+        'm_icon' => '<i class="fas fa-question ispink"></i>',
         'm_name' => 'User Step Single-Answered',
         'm_desc' => '',
         'm_parents' => array(10596,10589,7704,7703,6255,6244,6146,4755,4593),
     ),
     7487 => array(
-        'm_icon' => '<i class="far fa-stopwatch ispink"></i>',
+        'm_icon' => '<i class="fas fa-stopwatch ispink"></i>',
         'm_name' => 'User Step Single-Answered Timely',
         'm_desc' => '',
         'm_parents' => array(10596,10589,7704,7703,6244,4755,6255,4593,6146),
     ),
     6143 => array(
-        'm_icon' => '<i class="far fa-fast-forward ispink"></i>',
+        'm_icon' => '<i class="fas fa-fast-forward ispink"></i>',
         'm_name' => 'User Step Skipped',
         'm_desc' => '',
         'm_parents' => array(10596,10589,6146,4755,4593),
@@ -5612,7 +5618,7 @@ $config['en_all_4600'] = array(
 );
 
 //Link Type:
-$config['en_ids_4593'] = array(10625,5943,5001,5865,4999,4998,5000,5981,5982,5003,4251,10672,10653,10646,10654,4259,4257,4261,4260,4319,10657,10656,10659,10689,4230,4255,4318,10673,4256,4258,4250,10671,10650,10644,10649,10648,10651,10647,4229,10663,10664,10661,10662,4228,10686,10660,10573,10715,7545,4601,4231,10679,10677,10676,7701,10678,6093,4983,6226,10681,10675,6132,4246,7504,5007,4994,4993,6415,4275,6559,6560,6556,6578,6154,6155,6149,7611,6969,4283,7495,7542,4235,7757,7610,7578,6224,5967,7563,10690,4266,4267,4282,10683,4554,4570,4556,4555,7702,6563,4552,4553,4577,4549,4551,4550,4557,4278,4279,4268,4460,4547,4287,4548,7561,7564,7559,7560,7558,7488,7485,7486,6144,7741,10685,6140,4559,7489,7492,6997,6157,7487,6143,7562);
+$config['en_ids_4593'] = array(10625,5943,5001,5865,4999,4998,5000,5981,5982,5003,4251,10672,10653,10646,10654,4259,4257,4261,4260,4319,10657,10656,10659,10689,4230,4255,4318,10673,4256,4258,4250,10671,10650,10644,10649,10648,10651,10647,4229,10663,10664,10661,10662,4228,10686,10660,10573,10715,7545,4601,4231,10679,10677,10676,7701,10678,6093,4983,6226,10681,10675,6132,4246,7504,5007,4994,4993,6415,4275,6559,6560,6556,6578,6154,6155,6149,7611,6969,4283,7495,7542,4235,7757,7610,7578,6224,5967,7563,10690,4266,4267,4282,10683,4554,4570,4556,4555,7702,6563,4552,4553,4577,4549,4551,4550,4557,4278,4279,4268,4460,4547,4287,4548,7561,7564,7559,7560,7558,7488,7485,7486,7741,10685,6140,4559,7489,7492,6144,6997,6157,7487,6143,7562);
 $config['en_all_4593'] = array(
     10625 => array(
         'm_icon' => '<i class="far fa-user-circle ispink"></i>',
@@ -6323,7 +6329,7 @@ $config['en_all_4593'] = array(
         'm_parents' => array(10596,10589,4755,4593),
     ),
     7488 => array(
-        'm_icon' => '<i class="far fa-calendar-times ispink"></i>',
+        'm_icon' => '<i class="fas fa-calendar-times ispink"></i>',
         'm_name' => 'User Step Answer Timeout',
         'm_desc' => '',
         'm_parents' => array(10596,10589,4755,4593,6146),
@@ -6340,17 +6346,11 @@ $config['en_all_4593'] = array(
         'm_desc' => '',
         'm_parents' => array(10596,10589,7703,7494,6244,6146,4755,4593,6255),
     ),
-    6144 => array(
-        'm_icon' => '<i class="far fa-cloud-upload-alt ispink"></i>',
-        'm_name' => 'User Step Create New Content',
-        'm_desc' => 'Logged when a student submits the requirements (text, video, etc...) of an AND intent which could not be completed by simply receiving messages.',
-        'm_parents' => array(10596,10589,4527,6768,7703,6255,6244,4755,6146,4593),
-    ),
     7741 => array(
-        'm_icon' => '<i class="far fa-times-circle ispink"></i>',
+        'm_icon' => '<i class="fas fa-times-circle ispink"></i>',
         'm_name' => 'User Step Intention Terminated',
         'm_desc' => 'User ended their Action Plan prematurely',
-        'm_parents' => array(10596,10589,4755,4593,7740,6146),
+        'm_parents' => array(10596,10589,4755,4593,6146),
     ),
     10685 => array(
         'm_icon' => '<i class="fas fa-sync ispink"></i>',
@@ -6365,22 +6365,28 @@ $config['en_all_4593'] = array(
         'm_parents' => array(10539,10589,6410,4229,4755,4593),
     ),
     4559 => array(
-        'm_icon' => '<i class="far fa-comments ispink"></i>',
+        'm_icon' => '<i class="fas fa-comments ispink"></i>',
         'm_name' => 'User Step Messages Only',
         'm_desc' => 'Logged when a student receives the messages of an AND intent that does not have any completion requirements.',
         'm_parents' => array(10596,10589,7703,6274,6255,4755,6146,4593),
     ),
     7489 => array(
-        'm_icon' => '<i class="far fa-check-double ispink"></i>',
+        'm_icon' => '<i class="fas fa-check-double ispink"></i>',
         'm_name' => 'User Step Multi-Answered',
         'm_desc' => '',
         'm_parents' => array(10596,10589,7704,7703,4755,6255,4593,6146),
     ),
     7492 => array(
-        'm_icon' => '<i class="far fa-times-square ispink"></i>',
+        'm_icon' => '<i class="fas fa-times-square ispink"></i>',
         'm_name' => 'User Step Path Not Found',
         'm_desc' => '',
         'm_parents' => array(10596,10589,6255,4755,4593,6146),
+    ),
+    6144 => array(
+        'm_icon' => '<i class="fas fa-cloud-upload-alt ispink"></i>',
+        'm_name' => 'User Step Requirement Submitted',
+        'm_desc' => 'Logged when a student submits the requirements (text, video, etc...) of an AND intent which could not be completed by simply receiving messages.',
+        'm_parents' => array(10596,10589,4527,6768,7703,6255,6244,4755,6146,4593),
     ),
     6997 => array(
         'm_icon' => '<i class="fas fa-lock-open ispink"></i>',
@@ -6389,19 +6395,19 @@ $config['en_all_4593'] = array(
         'm_parents' => array(10596,10589,7703,7494,4229,6255,4593,4755,6146),
     ),
     6157 => array(
-        'm_icon' => '<i class="far fa-check ispink"></i>',
+        'm_icon' => '<i class="fas fa-question ispink"></i>',
         'm_name' => 'User Step Single-Answered',
         'm_desc' => '',
         'm_parents' => array(10596,10589,7704,7703,6255,6244,6146,4755,4593),
     ),
     7487 => array(
-        'm_icon' => '<i class="far fa-stopwatch ispink"></i>',
+        'm_icon' => '<i class="fas fa-stopwatch ispink"></i>',
         'm_name' => 'User Step Single-Answered Timely',
         'm_desc' => '',
         'm_parents' => array(10596,10589,7704,7703,6244,4755,6255,4593,6146),
     ),
     6143 => array(
-        'm_icon' => '<i class="far fa-fast-forward ispink"></i>',
+        'm_icon' => '<i class="fas fa-fast-forward ispink"></i>',
         'm_name' => 'User Step Skipped',
         'm_desc' => 'Logged every time a student consciously skips an intent and it\'s recursive children.',
         'm_parents' => array(10596,10589,6146,4755,4593),

@@ -61,7 +61,7 @@ $en_all_7369 = $this->config->item('en_all_7369');
                     if(en_auth($this->config->item('en_ids_10691') /* Mench Trainers */)){
                         $en_all_7372 = $this->config->item('en_all_7372');
                         array_push($navigation, array(
-                            'uri_segment_1' => 'dashboard',
+                            'uri_segment_1' => 'intents',
                             'anchor' => '<span class="micro-image">'.$en_all_7372[7368]['m_icon'].'</span> '.$en_all_7372[7368]['m_name'].' &nbsp;<i class="fas fa-long-arrow-right"></i>',
                         ));
                     }
