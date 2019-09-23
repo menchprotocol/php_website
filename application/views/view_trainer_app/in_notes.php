@@ -29,9 +29,7 @@ foreach ($this->Links_model->ln_fetch(array(
         $counters[$in_note['ln_type_entity_id']] = 1;
     }
 
-    if($in_note['ln_type_entity_id']==4231){
-        $in_note_messages_count++;
-    }
+    $in_note_messages_count++;
 
 }
 ?>
