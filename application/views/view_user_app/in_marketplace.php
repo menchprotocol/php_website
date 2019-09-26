@@ -16,14 +16,16 @@ foreach($this->config->item('en_all_10709') /* Course Categories */ as $en_id =>
         continue;
     }
 
+    $in_common_prefix = in_common_prefix($published_ins);
+
     //Create list:
     $category_list = '<div class="list-group actionplan_list grey_list" style="font-size: 0.6em;">';
     foreach($published_ins as $published_in){
-        $category_list .= echo_in_recommend($published_in);
+        $category_list .= echo_in_recommend($published_in, $in_common_prefix);
     }
     $category_list .= '</div>';
 
-    echo echo_tree_html_body($en_id, $m['m_icon'].' '.$m['m_name'].' ['.count($published_ins).']', $category_list, false);
+    echo echo_tree_html_body($en_id, '<span class="icon-block">'.$m['m_icon'].'</span> '.$m['m_name'].' ['.count($published_ins).']', $category_list, false);
 
 }
 
