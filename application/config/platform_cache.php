@@ -11,7 +11,7 @@ defined('BASEPATH') OR exit('No direct script access allowed');
  *
  */
 
-//Generated 2019-09-25 23:13:15 PST
+//Generated 2019-09-26 06:45:22 PST
 
 //Mench Categories:
 $config['en_ids_10709'] = array(10865,10861,10862,10867,10864,10863);
@@ -470,7 +470,7 @@ $config['en_all_4527'] = array(
     ),
     7555 => array(
         'm_icon' => '<i class="fas fa-comments"></i>',
-        'm_name' => 'Mench Platform Users',
+        'm_name' => 'Mench Platforms',
         'm_desc' => '&var_trimcache=Mench ',
         'm_parents' => array(7303,7372,4527),
     ),
@@ -3873,7 +3873,7 @@ $config['en_all_5967'] = array(
     ),
 );
 
-//Mench Platform Users:
+//Mench Platforms:
 $config['en_ids_7555'] = array(6196,3288);
 $config['en_all_7555'] = array(
     6196 => array(
@@ -3883,8 +3883,8 @@ $config['en_all_7555'] = array(
         'm_parents' => array(5969,7555,3320),
     ),
     3288 => array(
-        'm_icon' => '<i class="far fa-envelope-open"></i>',
-        'm_name' => 'Email',
+        'm_icon' => '<i class="fab fa-chrome"></i>',
+        'm_name' => 'Web',
         'm_desc' => 'Connect with Mench on Google Chrome but get your notifications via Email.',
         'm_parents' => array(7555,6225,4426,4755),
     ),
@@ -4023,7 +4023,7 @@ $config['en_all_7372'] = array(
     ),
     7555 => array(
         'm_icon' => '<i class="fas fa-comments"></i>',
-        'm_name' => 'Platform Users',
+        'm_name' => 'Platforms',
         'm_desc' => '',
         'm_parents' => array(7303,7372,4527),
     ),
@@ -4340,7 +4340,7 @@ $config['en_all_7303'] = array(
     ),
     7555 => array(
         'm_icon' => '<i class="fas fa-comments"></i>',
-        'm_name' => 'Mench Platform Users',
+        'm_name' => 'Mench Platforms',
         'm_desc' => '',
         'm_parents' => array(7303,7372,4527),
     ),
@@ -4680,8 +4680,8 @@ $config['en_all_6225'] = array(
         'm_parents' => array(10646,5000,4998,4999,6232,6225,6206),
     ),
     3288 => array(
-        'm_icon' => '<i class="far fa-envelope-open"></i>',
-        'm_name' => 'Mench Email',
+        'm_icon' => '<i class="fab fa-chrome"></i>',
+        'm_name' => 'Mench Web',
         'm_desc' => 'Your email address is also used to login to Mench:',
         'm_parents' => array(7555,6225,4426,4755),
     ),
@@ -5081,19 +5081,13 @@ $config['en_all_4997'] = array(
 );
 
 //Modification Lock:
-$config['en_ids_4426'] = array(4997,3288,1308,4430,4426,4755,5969);
+$config['en_ids_4426'] = array(4997,1308,4430,3288,4426,4755,5969);
 $config['en_all_4426'] = array(
     4997 => array(
         'm_icon' => '<i class="fas fa-list-alt"></i>',
         'm_name' => 'Entities Mass Iterations',
         'm_desc' => '',
         'm_parents' => array(4536,4506,4426,4527),
-    ),
-    3288 => array(
-        'm_icon' => '<i class="far fa-envelope-open"></i>',
-        'm_name' => 'Mench Email',
-        'm_desc' => '',
-        'm_parents' => array(7555,6225,4426,4755),
     ),
     1308 => array(
         'm_icon' => '<i class="far fa-user-hard-hat isnavy"></i>',
@@ -5106,6 +5100,12 @@ $config['en_all_4426'] = array(
         'm_name' => 'Mench Users',
         'm_desc' => '',
         'm_parents' => array(4983,7701,7369,6827,4426,4463),
+    ),
+    3288 => array(
+        'm_icon' => '<i class="fab fa-chrome"></i>',
+        'm_name' => 'Mench Web',
+        'm_desc' => '',
+        'm_parents' => array(7555,6225,4426,4755),
     ),
     4426 => array(
         'm_icon' => '<i class="fas fa-lock"></i>',
@@ -5128,7 +5128,7 @@ $config['en_all_4426'] = array(
 );
 
 //Private Link Types:
-$config['en_ids_4755'] = array(10681,6132,3288,3286,4783,4246,7504,6415,4275,6559,6560,6556,6578,6154,6155,6149,7611,6969,4283,7495,7542,4235,7757,7610,7578,6224,5967,7563,4266,4267,4282,4554,4570,4556,4555,7702,6563,4552,4553,4577,4549,4551,4550,4557,4278,4279,4268,4460,4547,4287,4548,7561,7564,7559,7560,7558,7488,7485,7486,7741,10685,6140,4559,7489,7492,6144,6997,6157,7487,6143,7562);
+$config['en_ids_4755'] = array(10681,6132,3286,3288,4783,4246,7504,6415,4275,6559,6560,6556,6578,6154,6155,6149,7611,6969,4283,7495,7542,4235,7757,7610,7578,6224,5967,7563,4266,4267,4282,4554,4570,4556,4555,7702,6563,4552,4553,4577,4549,4551,4550,4557,4278,4279,4268,4460,4547,4287,4548,7561,7564,7559,7560,7558,7488,7485,7486,7741,10685,6140,4559,7489,7492,6144,6997,6157,7487,6143,7562);
 $config['en_all_4755'] = array(
     10681 => array(
         'm_icon' => '<i class="fas fa-sort ispink"></i>',
@@ -5142,17 +5142,17 @@ $config['en_all_4755'] = array(
         'm_desc' => '',
         'm_parents' => array(10638,10539,10639,10589,6153,4506,4755,4593),
     ),
-    3288 => array(
-        'm_icon' => '<i class="far fa-envelope-open"></i>',
-        'm_name' => 'Mench Email',
-        'm_desc' => '',
-        'm_parents' => array(7555,6225,4426,4755),
-    ),
     3286 => array(
         'm_icon' => '<i class="far fa-key"></i>',
         'm_name' => 'Mench Password',
         'm_desc' => '',
         'm_parents' => array(7578,6225,5969,4755),
+    ),
+    3288 => array(
+        'm_icon' => '<i class="fab fa-chrome"></i>',
+        'm_name' => 'Mench Web',
+        'm_desc' => '',
+        'm_parents' => array(7555,6225,4426,4755),
     ),
     4783 => array(
         'm_icon' => '<i class="far fa-phone"></i>',
