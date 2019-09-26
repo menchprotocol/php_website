@@ -11,88 +11,46 @@ defined('BASEPATH') OR exit('No direct script access allowed');
  *
  */
 
-//Generated 2019-09-22 22:32:18 PST
+//Generated 2019-09-25 20:18:11 PST
 
-//Course Categories:
-$config['en_ids_10709'] = array(10710,10711,10712,10716,10717,10718,10719,10720,10721,10722,10723,10724,10725);
+//Mench Categories:
+$config['en_ids_10709'] = array(10865,10861,10862,10867,10864,10863);
 $config['en_all_10709'] = array(
-    10710 => array(
-        'm_icon' => '<i class="far fa-code"></i>',
-        'm_name' => 'Software Engineering',
+    10865 => array(
+        'm_icon' => '<i class="far fa-user-plus"></i>',
+        'm_name' => 'Job Applications',
         'm_desc' => '',
-        'm_parents' => array(10715,10709),
+        'm_parents' => array(10709),
     ),
-    10711 => array(
-        'm_icon' => '<i class="far fa-smile"></i>',
-        'm_name' => 'Personal Development',
+    10861 => array(
+        'm_icon' => '<i class="far fa-tachometer-fast"></i>',
+        'm_name' => 'Skill Assessments',
         'm_desc' => '',
-        'm_parents' => array(10715,10709),
+        'm_parents' => array(10709),
     ),
-    10712 => array(
-        'm_icon' => '<i class="far fa-chart-line"></i>',
-        'm_name' => 'Business',
+    10862 => array(
+        'm_icon' => '<i class="far fa-user-circle"></i>',
+        'm_name' => 'Personality Tests',
         'm_desc' => '',
-        'm_parents' => array(10715,10709),
+        'm_parents' => array(10709),
     ),
-    10716 => array(
-        'm_icon' => '<i class="far fa-wallet"></i>',
-        'm_name' => 'Finance & Accounting',
+    10867 => array(
+        'm_icon' => '<i class="far fa-id-card-alt"></i>',
+        'm_name' => 'Branding & Story Telling',
         'm_desc' => '',
-        'm_parents' => array(10715,10709),
+        'm_parents' => array(10709),
     ),
-    10717 => array(
-        'm_icon' => '<i class="far fa-desktop"></i>',
-        'm_name' => 'IT & Software',
+    10864 => array(
+        'm_icon' => '<i class="far fa-comment-smile"></i>',
+        'm_name' => 'Interview Practice',
         'm_desc' => '',
-        'm_parents' => array(10715,10709),
+        'm_parents' => array(10709),
     ),
-    10718 => array(
-        'm_icon' => '<i class="far fa-clipboard-list-check"></i>',
-        'm_name' => 'Office Productivity',
+    10863 => array(
+        'm_icon' => '<i class="far fa-file-word"></i>',
+        'm_name' => 'Resume & Cover Letters',
         'm_desc' => '',
-        'm_parents' => array(10715,10709),
-    ),
-    10719 => array(
-        'm_icon' => '<i class="far fa-pencil-ruler"></i>',
-        'm_name' => 'Design',
-        'm_desc' => '',
-        'm_parents' => array(10715,10709),
-    ),
-    10720 => array(
-        'm_icon' => '<i class="far fa-bullseye-arrow"></i>',
-        'm_name' => 'Marketing',
-        'm_desc' => '',
-        'm_parents' => array(10715,10709),
-    ),
-    10721 => array(
-        'm_icon' => '<i class="far fa-hand-peace"></i>',
-        'm_name' => 'Lifestyle',
-        'm_desc' => '',
-        'm_parents' => array(10715,10709),
-    ),
-    10722 => array(
-        'm_icon' => '<i class="far fa-camera-retro"></i>',
-        'm_name' => 'Photography',
-        'm_desc' => '',
-        'm_parents' => array(10715,10709),
-    ),
-    10723 => array(
-        'm_icon' => '<i class="far fa-heartbeat"></i>',
-        'm_name' => 'Health & Fitness',
-        'm_desc' => '',
-        'm_parents' => array(10715,10709),
-    ),
-    10724 => array(
-        'm_icon' => '<i class="far fa-music"></i>',
-        'm_name' => 'Music',
-        'm_desc' => '',
-        'm_parents' => array(10715,10709),
-    ),
-    10725 => array(
-        'm_icon' => '<i class="far fa-atom-alt"></i>',
-        'm_name' => 'Teaching & Academics',
-        'm_desc' => '',
-        'm_parents' => array(10715,10709),
+        'm_parents' => array(10709),
     ),
 );
 
@@ -160,7 +118,7 @@ $config['en_all_10692'] = array(
 );
 
 //Platform Cache:
-$config['en_ids_4527'] = array(7758,7774,7756,6827,10709,4997,7303,6194,6805,6177,7358,7357,6206,4592,4537,10627,6192,7712,7585,7302,7596,4229,6345,4485,4986,7551,7701,4983,6193,7582,10568,10567,7588,4737,7356,7355,6201,4486,7309,10602,7751,7799,10692,7304,10591,7703,10658,6103,6186,7360,7364,7359,4341,4593,7347,10592,10704,7529,7555,7372,7368,10691,6287,7369,4426,6225,10596,4527,7366,4755,10571,6204,6123,10593,4454,5969,7767,3000,4600,6150,5967,4280,10570,4277,6102,7704,6144,6244,6255,6274,6146,7494,7203,10539,10594,10589,10590);
+$config['en_ids_4527'] = array(7758,7774,7756,6827,4997,7303,6194,6805,6177,7358,7357,6206,4592,4537,10627,6192,7712,7585,7302,7596,4229,6345,4485,4986,7551,7701,4983,6193,7582,10568,10567,7588,4737,7356,7355,6201,4486,7309,10602,7751,7799,10692,7304,10591,7703,10658,6103,6186,7360,7364,7359,4341,4593,7347,10592,10704,10709,7529,7555,7372,7368,10691,6287,7369,4426,6225,10596,4527,7366,4755,10571,6204,6123,10593,4454,5969,7767,3000,4600,6150,5967,4280,10570,4277,6102,7704,6144,6244,6255,6274,6146,7494,7203,10539,10594,10589,10590);
 $config['en_all_4527'] = array(
     7758 => array(
         'm_icon' => '<i class="far fa-mountain"></i>',
@@ -185,12 +143,6 @@ $config['en_all_4527'] = array(
         'm_name' => 'Community Members',
         'm_desc' => '&var_trimcache=Mench ',
         'm_parents' => array(3303,3314,2738,7303,4527),
-    ),
-    10709 => array(
-        'm_icon' => '<i class="fas fa-folder-tree"></i>',
-        'm_name' => 'Course Categories',
-        'm_desc' => '',
-        'm_parents' => array(4527,10715,7254),
     ),
     4997 => array(
         'm_icon' => '<i class="fas fa-list-alt"></i>',
@@ -503,6 +455,12 @@ $config['en_all_4527'] = array(
         'm_name' => 'Mench Administrators',
         'm_desc' => '',
         'm_parents' => array(4527,7254),
+    ),
+    10709 => array(
+        'm_icon' => '<i class="fas fa-folder-tree"></i>',
+        'm_name' => 'Mench Categories',
+        'm_desc' => '',
+        'm_parents' => array(10715,1,4527,7254),
     ),
     7529 => array(
         'm_icon' => '<i class="fas fa-hat-wizard"></i>',
