@@ -10,7 +10,7 @@ foreach($this->config->item('en_all_10709') /* Course Categories */ as $en_id =>
         'in_level_entity_id IN (' . join(',', $this->config->item('en_ids_7582')) . ')' => null, //Intent Levels Get Started
         'ln_type_entity_id' => 10715, //Intent Note Categories
         'ln_parent_entity_id' => $en_id,
-    ), array('in_child'));
+    ), array('in_child'), 0, 0, array('in_outcome' => 'ASC'));
 
     if(!count($published_ins)){
         continue;
