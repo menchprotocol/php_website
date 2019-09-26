@@ -11,10 +11,10 @@ defined('BASEPATH') OR exit('No direct script access allowed');
  *
  */
 
-//Generated 2019-09-26 06:45:22 PST
+//Generated 2019-09-26 07:01:40 PST
 
 //Mench Categories:
-$config['en_ids_10709'] = array(10865,10861,10862,10867,10864,10863);
+$config['en_ids_10709'] = array(10865,10861,10862,10867,10864,10863,10870);
 $config['en_all_10709'] = array(
     10865 => array(
         'm_icon' => '<i class="far fa-user-plus"></i>',
@@ -49,6 +49,12 @@ $config['en_all_10709'] = array(
     10863 => array(
         'm_icon' => '<i class="far fa-file-word"></i>',
         'm_name' => 'Resume & Cover Letters',
+        'm_desc' => '',
+        'm_parents' => array(10709),
+    ),
+    10870 => array(
+        'm_icon' => '<i class="far fa-shapes"></i>',
+        'm_name' => 'Others',
         'm_desc' => '',
         'm_parents' => array(10709),
     ),
@@ -3879,13 +3885,13 @@ $config['en_all_7555'] = array(
     6196 => array(
         'm_icon' => '<i class="fab fa-facebook-messenger"></i>',
         'm_name' => 'Messenger',
-        'm_desc' => 'Establish a consistent connection with Mench on Facebook Messenger to seamlessly get everything done in one place. (RECOMMENDED)',
+        'm_desc' => 'Establish a consistent connection with Mench on Messenger and get everything done in one place. (RECOMMENDED)',
         'm_parents' => array(5969,7555,3320),
     ),
     3288 => array(
         'm_icon' => '<i class="fab fa-chrome"></i>',
-        'm_name' => 'Web',
-        'm_desc' => 'Connect with Mench on Google Chrome but get your notifications via Email.',
+        'm_name' => 'Website',
+        'm_desc' => 'Connect with Mench on a web browser like Chrome or Safari and receive notifications via Email.',
         'm_parents' => array(7555,6225,4426,4755),
     ),
 );
@@ -4681,7 +4687,7 @@ $config['en_all_6225'] = array(
     ),
     3288 => array(
         'm_icon' => '<i class="fab fa-chrome"></i>',
-        'm_name' => 'Mench Web',
+        'm_name' => 'Mench Website',
         'm_desc' => 'Your email address is also used to login to Mench:',
         'm_parents' => array(7555,6225,4426,4755),
     ),
@@ -5103,7 +5109,7 @@ $config['en_all_4426'] = array(
     ),
     3288 => array(
         'm_icon' => '<i class="fab fa-chrome"></i>',
-        'm_name' => 'Mench Web',
+        'm_name' => 'Mench Website',
         'm_desc' => '',
         'm_parents' => array(7555,6225,4426,4755),
     ),
@@ -5150,7 +5156,7 @@ $config['en_all_4755'] = array(
     ),
     3288 => array(
         'm_icon' => '<i class="fab fa-chrome"></i>',
-        'm_name' => 'Mench Web',
+        'm_name' => 'Mench Website',
         'm_desc' => '',
         'm_parents' => array(7555,6225,4426,4755),
     ),
