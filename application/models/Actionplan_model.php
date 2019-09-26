@@ -534,13 +534,19 @@ class Actionplan_model extends CI_Model
                 'ln_status_entity_id IN (' . join(',', $this->config->item('en_ids_7364')) . ')' => null, //Link Statuses Incomplete
             ))) > 0){
 
-            //Oooops this already exists in the Action Plan:
-            $this->Links_model->ln_create(array(
-                'ln_parent_intent_id' => $in_id,
-                'ln_content' => 'intention_add() blocked the addition of a duplicate intention to the Action Plan',
-                'ln_type_entity_id' => 4246, //Platform Bug Reports
-                'ln_creator_entity_id' => $en_id,
-            ));
+            //Inform user:
+            $this->Communication_model->dispatch_message(
+                'This intention has already been added to your Action Plan 🙌 /link:Open 🚩Action Plan:https://mench.com/actionplan/' . $ins[0]['in_id'],
+                array('en_id' => $en_id),
+                true,
+                array(
+                    array(
+                        'content_type' => 'text',
+                        'title' => 'Next',
+                        'payload' => 'GONEXT',
+                    )
+                )
+            );
 
             return false;
 
