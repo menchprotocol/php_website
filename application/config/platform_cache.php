@@ -11,7 +11,7 @@ defined('BASEPATH') OR exit('No direct script access allowed');
  *
  */
 
-//Generated 2019-09-26 07:01:40 PST
+//Generated 2019-09-26 10:03:16 PST
 
 //Mench Categories:
 $config['en_ids_10709'] = array(10865,10861,10862,10867,10864,10863,10870);
@@ -124,7 +124,7 @@ $config['en_all_10692'] = array(
 );
 
 //Platform Cache:
-$config['en_ids_4527'] = array(7758,7774,7756,6827,4997,7303,6194,6805,6177,7358,7357,6206,4592,4537,10627,6192,7712,7585,7302,7596,4229,6345,4485,4986,7551,7701,4983,6193,7582,10568,10567,7588,4737,7356,7355,6201,4486,7309,10602,7751,7799,10692,7304,10591,7703,10658,6103,6186,7360,7364,7359,4341,4593,7347,10592,10704,10709,7529,7555,7372,7368,10691,6287,7369,4426,6225,10596,4527,7366,4755,10571,6204,6123,10593,4454,5969,7767,3000,4600,6150,5967,4280,10570,4277,6102,7704,6144,6244,6255,6274,6146,7494,7203,10539,10594,10589,10590);
+$config['en_ids_4527'] = array(7758,7774,7756,6827,4997,6194,6805,7303,6177,7358,7357,6206,4592,4537,10627,6192,7712,7585,7596,4229,6345,4485,4986,7551,7701,4983,6193,7582,10568,10567,7588,7302,4737,7356,7355,6201,4486,7309,10602,7751,7799,10692,10591,7703,10658,6103,7304,6186,7360,7364,7359,4341,4593,7347,10592,10704,10709,7529,7555,7372,7368,10691,6287,7369,4426,6225,10596,4527,7366,4755,10571,6204,6123,10593,4454,5969,7767,3000,4600,6150,5967,4280,10570,4277,6102,7704,6144,6244,6255,6274,6146,7494,7203,10539,10594,10589,10590);
 $config['en_all_4527'] = array(
     7758 => array(
         'm_icon' => '<i class="far fa-mountain"></i>',
@@ -156,12 +156,6 @@ $config['en_all_4527'] = array(
         'm_desc' => '&var_trimcache=Entities ',
         'm_parents' => array(4536,4506,4426,4527),
     ),
-    7303 => array(
-        'm_icon' => '<i class="far fa-chart-bar"></i>',
-        'm_name' => 'Entity Dashboard',
-        'm_desc' => '&var_trimcache=Entity',
-        'm_parents' => array(4527,7161,4536),
-    ),
     6194 => array(
         'm_icon' => '<i class="far fa-database"></i>',
         'm_name' => 'Entity Database References',
@@ -173,6 +167,12 @@ $config['en_all_4527'] = array(
         'm_name' => 'Entity Link Content Requires Text',
         'm_desc' => '',
         'm_parents' => array(4527,4758),
+    ),
+    7303 => array(
+        'm_icon' => '<i class="far fa-chart-bar"></i>',
+        'm_name' => 'Entity Stats',
+        'm_desc' => '&var_trimcache=Entity',
+        'm_parents' => array(4527,7161,4536),
     ),
     6177 => array(
         'm_icon' => '<i class="far fa-sliders-h"></i>',
@@ -233,12 +233,6 @@ $config['en_all_4527'] = array(
         'm_name' => 'Intent Completion Method',
         'm_desc' => '&var_trimcache=Intent',
         'm_parents' => array(10608,6204,10651,6160,6194,6232,4527,6201),
-    ),
-    7302 => array(
-        'm_icon' => '<i class="far fa-chart-bar "></i>',
-        'm_name' => 'Intent Dashboard',
-        'm_desc' => '&var_trimcache=Intent',
-        'm_parents' => array(4527,7161,4535),
     ),
     7596 => array(
         'm_icon' => '<i class="fas fa-triangle"></i>',
@@ -318,6 +312,12 @@ $config['en_all_4527'] = array(
         'm_desc' => '',
         'm_parents' => array(4527,6768),
     ),
+    7302 => array(
+        'm_icon' => '<i class="far fa-chart-bar "></i>',
+        'm_name' => 'Intent Stats',
+        'm_desc' => '&var_trimcache=Intent',
+        'm_parents' => array(4527,7161,4535),
+    ),
     4737 => array(
         'm_icon' => '<i class="far fa-sliders-h "></i>',
         'm_name' => 'Intent Status',
@@ -378,12 +378,6 @@ $config['en_all_4527'] = array(
         'm_desc' => '',
         'm_parents' => array(4527,6771),
     ),
-    7304 => array(
-        'm_icon' => '<i class="far fa-chart-bar"></i>',
-        'm_name' => 'Link Dashboard',
-        'm_desc' => '&var_trimcache=Link',
-        'm_parents' => array(4527,6205,7161),
-    ),
     10591 => array(
         'm_icon' => '<i class="fas fa-directions"></i>',
         'm_name' => 'Link Directions',
@@ -407,6 +401,12 @@ $config['en_all_4527'] = array(
         'm_name' => 'Link Metadata',
         'm_desc' => '',
         'm_parents' => array(4527,6232,6195,4341),
+    ),
+    7304 => array(
+        'm_icon' => '<i class="far fa-chart-bar"></i>',
+        'm_name' => 'Link Stats',
+        'm_desc' => '&var_trimcache=Link',
+        'm_parents' => array(4527,6205,7161),
     ),
     6186 => array(
         'm_icon' => '<i class="far fa-sliders-h"></i>',
@@ -4083,7 +4083,7 @@ $config['en_all_6287'] = array(
 );
 
 //Mench User App:
-$config['en_ids_7369'] = array(6138,7765,7161,7291,7256,4269,4430,6137);
+$config['en_ids_7369'] = array(6138,7765,7291,7256,4269,7161,4430,6137);
 $config['en_all_7369'] = array(
     6138 => array(
         'm_icon' => '🚩',
@@ -4096,12 +4096,6 @@ $config['en_all_7369'] = array(
         'm_name' => 'Intent Landing Page',
         'm_desc' => '',
         'm_parents' => array(4535,7369),
-    ),
-    7161 => array(
-        'm_icon' => '<i class="far fa-tachometer-alt-fast"></i>',
-        'm_name' => 'Dashboard',
-        'm_desc' => '',
-        'm_parents' => array(7369,7368,7305),
     ),
     7291 => array(
         'm_icon' => '<i class="fas fa-power-off"></i>',
@@ -4121,6 +4115,12 @@ $config['en_all_7369'] = array(
         'm_desc' => '',
         'm_parents' => array(7369),
     ),
+    7161 => array(
+        'm_icon' => '<i class="far fa-chart-bar"></i>',
+        'm_name' => 'Stats',
+        'm_desc' => '',
+        'm_parents' => array(7369,7368,7305),
+    ),
     4430 => array(
         'm_icon' => '<i class="far fa-user"></i>',
         'm_name' => 'Users',
@@ -4136,7 +4136,7 @@ $config['en_all_7369'] = array(
 );
 
 //Mench Trainer App:
-$config['en_ids_7368'] = array(4536,4535,6205,7161,7291,7256,10691,6287,5007);
+$config['en_ids_7368'] = array(4536,4535,6205,7291,7256,7161,10691,6287,5007);
 $config['en_all_7368'] = array(
     4536 => array(
         'm_icon' => '<i class="fas fa-at blue"></i>',
@@ -4156,12 +4156,6 @@ $config['en_all_7368'] = array(
         'm_desc' => '',
         'm_parents' => array(10607,7368,4534,4463),
     ),
-    7161 => array(
-        'm_icon' => '<i class="far fa-tachometer-alt-fast"></i>',
-        'm_name' => 'Mench Dashboard',
-        'm_desc' => '',
-        'm_parents' => array(7369,7368,7305),
-    ),
     7291 => array(
         'm_icon' => '<i class="fas fa-power-off"></i>',
         'm_name' => 'Mench Logout',
@@ -4173,6 +4167,12 @@ $config['en_all_7368'] = array(
         'm_name' => 'Mench Search',
         'm_desc' => 'Intents, Entities & URLs',
         'm_parents' => array(7369,7368,3323),
+    ),
+    7161 => array(
+        'm_icon' => '<i class="far fa-chart-bar"></i>',
+        'm_name' => 'Mench Stats',
+        'm_desc' => '',
+        'm_parents' => array(7369,7368,7305),
     ),
     10691 => array(
         'm_icon' => '<i class="far fa-user-hard-hat"></i>',
@@ -4300,7 +4300,7 @@ $config['en_all_7355'] = array(
     ),
 );
 
-//Intent Dashboard:
+//Intent Stats:
 $config['en_ids_7302'] = array(7596,4737,10602,5008);
 $config['en_all_7302'] = array(
     7596 => array(
@@ -4329,7 +4329,7 @@ $config['en_all_7302'] = array(
     ),
 );
 
-//Entity Dashboard:
+//Entity Stats:
 $config['en_ids_7303'] = array(6827,6177,7555,3000);
 $config['en_all_7303'] = array(
     6827 => array(
@@ -4358,7 +4358,7 @@ $config['en_all_7303'] = array(
     ),
 );
 
-//Link Dashboard:
+//Link Stats:
 $config['en_ids_7304'] = array(7797,10591,6186);
 $config['en_all_7304'] = array(
     7797 => array(

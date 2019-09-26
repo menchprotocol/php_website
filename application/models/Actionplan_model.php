@@ -536,7 +536,7 @@ class Actionplan_model extends CI_Model
 
             //Inform user:
             $this->Communication_model->dispatch_message(
-                'This intention has already been added to your Action Plan 🙌 /link:Open 🚩Action Plan:https://mench.com/actionplan/' . $ins[0]['in_id'],
+                'I noticed that this intention has already been added to your Action Plan /link:Open 🚩Action Plan:https://mench.com/actionplan/' . $ins[0]['in_id'],
                 array('en_id' => $en_id),
                 true
             );
