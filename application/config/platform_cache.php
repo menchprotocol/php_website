@@ -11,7 +11,7 @@ defined('BASEPATH') OR exit('No direct script access allowed');
  *
  */
 
-//Generated 2019-09-25 20:18:11 PST
+//Generated 2019-09-25 23:13:15 PST
 
 //Mench Categories:
 $config['en_ids_10709'] = array(10865,10861,10862,10867,10864,10863);
@@ -4029,7 +4029,7 @@ $config['en_all_7372'] = array(
     ),
     7540 => array(
         'm_icon' => '<i class="fas fa-balance-scale"></i>',
-        'm_name' => 'Terms Of Service',
+        'm_name' => 'Terms',
         'm_desc' => '#8272',
         'm_parents' => array(7372,7305),
     ),

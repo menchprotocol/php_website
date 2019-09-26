@@ -8,14 +8,11 @@
 
     <footer class="footer" style="margin:30px 0 50px 0;">
         <div class="container">
+
+
             <nav>
                 <ul class="footer-a">
                     <li class="social-li">
-
-
-                        <?php $en_all_7369 = $this->config->item('en_all_7369'); /* Mench User App */ ?>
-                        <?php $en_all_7372 = $this->config->item('en_all_7372'); /* Mench Products */ ?>
-
 
                         <a href="https://www.instagram.com/askmench/" target="_blank" class="social-link"
                            data-toggle="tooltip" title="Follow on Instagram" data-placement="top"><i
@@ -36,25 +33,22 @@
                            data-toggle="tooltip" title="Follow on LinkedIn" data-placement="top"><i
                                     class="fab fa-linkedin"></i></a>
 
-                        <a href="/8263" class="social-link" data-toggle="tooltip"
-                           title="<?= $en_all_7372[7540]['m_name'] ?>" data-placement="top"><?= $en_all_7372[7540]['m_icon'] ?></a>
-
-
-                        <a href="/dashboard"
-                           class="social-link" data-toggle="tooltip" title="<?= $en_all_7369[7161]['m_name'] ?>"
-                           data-placement="top"><?= $en_all_7369[7161]['m_icon'] ?></a>
-
-
-                        <a href="/signin"
-                           class="social-link" data-toggle="tooltip" title="<?= $en_all_7369[4269]['m_name'] ?>"
-                           data-placement="top"><?= $en_all_7369[4269]['m_icon'] ?></a>
+                        <a href="https://github.com/askmench/mench-web-app" target="_blank" class="social-link"
+                           data-toggle="tooltip" title="Mench is open-source, contribute on Github" data-placement="top"><i
+                                    class="fab fa-github"></i></a>
 
                     </li>
                 </ul>
             </nav>
 
 
-            <div style="font-size: 0.7em; text-transform: uppercase; color: #222; font-weight:500;"><span style="display: inline-block"><i class="fab fa-github"></i> <a href="https://github.com/askmench/mench-web-app" class="underdot">Open Source</a></span> &nbsp;|&nbsp; <span style="display: inline-block"><i class="fas fa-user-plus"></i> <a href="/12747" class="underdot">Join US</a></span> &nbsp;|&nbsp; <span class="parent-icon"><?= $this->config->item('system_icon') ?></span> v<?= $this->config->item('app_version') ?></div>
+            <?php $en_all_7369 = $this->config->item('en_all_7369'); /* Mench User App */ ?>
+            <?php $en_all_7372 = $this->config->item('en_all_7372'); /* Mench Products */ ?>
+
+            <div style="font-size: 0.8em; text-transform: uppercase; color: #222; font-weight:500;"><span style="display: inline-block"><?= $en_all_7369[7161]['m_icon'] ?> <a href="/dashboard" class="underdot"><?= $en_all_7369[7161]['m_name'] ?></a></span> &nbsp;|&nbsp; <span style="display: inline-block"><?= $en_all_7372[7540]['m_icon'] ?> <a href="/8263" class="underdot"><?= $en_all_7372[7540]['m_name'] ?></a></span> &nbsp;|&nbsp; <span style="display: inline-block"><?= $en_all_7369[4269]['m_icon'] ?> <a href="/signin" class="underdot"><?= $en_all_7369[4269]['m_name'] ?></a></span></div>
+
+
+
 
         </div>
     </footer>

@@ -25,7 +25,7 @@ foreach($this->config->item('en_all_10709') /* Course Categories */ as $en_id =>
     }
     $category_list .= '</div>';
 
-    echo echo_tree_html_body($en_id, '<span class="icon-block">'.$m['m_icon'].'</span> '.$m['m_name'].' ['.count($published_ins).']', $category_list, false);
+    echo echo_tree_html_body($en_id, '<span class="icon-block">'.$m['m_icon'].'</span> '.count($published_ins).' '.$m['m_name'], $category_list, false);
 
 }
 
