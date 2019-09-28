@@ -223,6 +223,14 @@ function echo_in_outcome($in_outcome, $push_message = false, $show_entire_outcom
             $in_outcome = trim(substr($in_outcome, strlen($in_common_prefix)));
         }
 
+        //See if we have any hashtag references that need to be removed:
+        foreach(explode(' ', $in_outcome) as $word){
+            if(substr($word,0,1)=='#' && is_numeric(substr($word,1))){
+                //This seems to be an intent reference, have it removed:
+                $in_outcome = str_replace(' '.$word,'', $in_outcome);
+            }
+        }
+
         if($push_message){
 
             return $in_outcome;
