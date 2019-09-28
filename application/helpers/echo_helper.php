@@ -210,7 +210,7 @@ function echo_in_outcome($in_outcome, $push_message = false, $show_entire_outcom
 
             //Trainer view:
             if($show_entire_outcome){
-                return '<i class="far fa-equals" style="color: #BBB; font-size: 0.9em;"></i> <span class="click_expand">'.htmlentities(substr($in_outcome,1)).'</span>';
+                return '<i class="far fa-equals secondary-info"></i> <span class="click_expand">'.htmlentities(substr($in_outcome,1)).'</span>';
             } else {
                 return '<span class="click_expand">'.htmlentities(trim(substr($in_outcome,1))).'</span>';
             }
@@ -227,7 +227,7 @@ function echo_in_outcome($in_outcome, $push_message = false, $show_entire_outcom
         foreach(explode(' ', $in_outcome) as $word){
             if(substr($word,0,1)=='#' && is_numeric(substr($word,1))){
                 //This seems to be an intent reference, have it removed:
-                $in_outcome = str_replace(' '.$word,'', $in_outcome);
+                $in_outcome = str_replace(' '.$word, ( $show_entire_outcome ? ' <span class="secondary-info">'.$word.'</span>' : '' ), $in_outcome);
             }
         }
 
