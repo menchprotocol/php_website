@@ -182,17 +182,24 @@ class Trainer_app extends CI_Controller
             'in_status_entity_id IN (' . join(',', $this->config->item('en_ids_7355')) . ')' => null, //Intent Statuses Public
         ), array('in_verb'), 0, 0, array('totals' => 'DESC'), 'COUNT(in_id) as totals, in_verb_entity_id, en_name, en_icon', 'in_verb_entity_id, en_name, en_icon');
 
+
         echo '<table class="table table-condensed table-striped stats-table mini-stats-table">';
 
         echo '<tr class="panel-title down-border">';
-        echo '<td style="text-align: left;" colspan="2">'.$en_all_7302[5008]['m_name'].echo__s(count($in_verbs)).' ['.number_format(count($in_verbs), 0).']</td>';
+        echo '<td style="text-align: left;" colspan="2">'.$en_all_7302[5008]['m_name'].'s ['.number_format(count($in_verbs)-1, 0).']</td>';
         echo '</tr>';
 
+        $inherit_verbs = 0;
         foreach($in_verbs as $count => $verb){
+
+            if($verb['in_verb_entity_id']==10569){
+                $inherit_verbs = $verb['totals'];
+                continue;
+            }
 
             echo '<tr class="'.( $count >= $show_max_verbs ? 'hiddenverbs hidden' : '' ).'">';
             echo '<td style="text-align: left;"><span style="width:29px; display: inline-block; text-align: center;">'.echo_en_icon($verb).'</span><a href="/entities/'.$verb['in_verb_entity_id'].'">'.$verb['en_name'].'</a></td>';
-            echo '<td style="text-align: right;"><a href="/links?ln_type_entity_id=4250&in_status_entity_id=' . join(',', $this->config->item('en_ids_7356')) . '&in_verb_entity_id='.$verb['in_verb_entity_id'].'" data-toggle="tooltip" data-placement="top" title="'.number_format($verb['totals'], 0).' Intent'.echo__s($verb['totals']).'">'.number_format($verb['totals']/$addup_total_count*100, 1).'%</a></td>';
+            echo '<td style="text-align: right;"><a href="/links?ln_type_entity_id=4250&in_status_entity_id=' . join(',', $this->config->item('en_ids_7356')) . '&in_verb_entity_id='.$verb['in_verb_entity_id'].'" data-toggle="tooltip" data-placement="top" title="'.number_format($verb['totals'], 0).' Intent'.echo__s($verb['totals']).'">'.number_format($verb['totals']/($addup_total_count-$inherit_verbs)*100, 1).'%</a></td>';
             echo '</tr>';
 
             if(($count+1)==$show_max_verbs){
