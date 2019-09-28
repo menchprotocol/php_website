@@ -230,7 +230,9 @@ function echo_in_outcome($in_outcome, $push_message = false, $show_entire_outcom
         if(substr($last_word,0,1)=='#' && is_numeric(substr($last_word,1))){
             //This seems to be an intent reference, have it removed:
             $in_outcome = str_replace(' '.$last_word, '', $in_outcome);
-            $append_last_word = ' <span class="secondary-info">'.$last_word.'</span>';
+            if($show_entire_outcome){
+                $append_last_word = ' <span class="secondary-info">'.$last_word.'</span>';
+            }
         }
 
         if($push_message){
