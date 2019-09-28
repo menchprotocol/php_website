@@ -224,7 +224,8 @@ function echo_in_outcome($in_outcome, $push_message = false, $show_entire_outcom
         }
 
         //See if we have any hashtag references that need to be removed:
-        $last_word = end(explode(' ', $in_outcome));
+        $words = explode(' ', $in_outcome);
+        $last_word = end($words);
         $append_last_word = '';
         if(substr($last_word,0,1)=='#' && is_numeric(substr($last_word,1))){
             //This seems to be an intent reference, have it removed:
