@@ -224,11 +224,12 @@ function echo_in_outcome($in_outcome, $push_message = false, $show_entire_outcom
         }
 
         //See if we have any hashtag references that need to be removed:
-        foreach(explode(' ', $in_outcome) as $word){
-            if(substr($word,0,1)=='#' && is_numeric(substr($word,1))){
-                //This seems to be an intent reference, have it removed:
-                $in_outcome = str_replace(' '.$word, ( $show_entire_outcome ? ' <span class="secondary-info">'.$word.'</span>' : '' ), $in_outcome);
-            }
+        $last_word = end(explode(' ', $in_outcome));
+        $append_last_word = '';
+        if(substr($last_word,0,1)=='#' && is_numeric(substr($last_word,1))){
+            //This seems to be an intent reference, have it removed:
+            $in_outcome = str_replace(' '.$last_word, '', $in_outcome);
+            $append_last_word = ' <span class="secondary-info">'.$last_word.'</span>';
         }
 
         if($push_message){
@@ -237,7 +238,7 @@ function echo_in_outcome($in_outcome, $push_message = false, $show_entire_outcom
 
         } else {
 
-            return htmlentities(trim($in_outcome));
+            return htmlentities(trim($in_outcome)).$append_last_word;
 
         }
 
