@@ -3981,7 +3981,9 @@ h4 .tip-badge {
 }
 
 .secondary-info{
-    color: #BBB; font-size: 0.9em;
+    color: #BBB;
+    font-size: 1em;
+    font-weight: 300;
 }
 
 .modal .modal-dialog {
