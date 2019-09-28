@@ -11,7 +11,7 @@ defined('BASEPATH') OR exit('No direct script access allowed');
  *
  */
 
-//Generated 2019-09-27 19:43:46 PST
+//Generated 2019-09-28 00:26:10 PST
 
 //Mench Categories:
 $config['en_ids_10709'] = array(10865,10861,10862,10867,10864,10863,10870);
@@ -881,7 +881,7 @@ $config['en_all_10539'] = array(
         'm_parents' => array(4593,10589,10539,10658,10645),
     ),
     4230 => array(
-        'm_icon' => '<i class="far fa-level-up rotate90 ispink"></i>',
+        'm_icon' => '<i class="far fa-link rotate90 ispink"></i>',
         'm_name' => 'Entity Link Raw',
         'm_desc' => '',
         'm_parents' => array(10539,10589,4593,4592),
@@ -1143,8 +1143,8 @@ $config['en_all_10594'] = array(
         'm_parents' => array(7703,10638,10594,10589,4593,4229,10658),
     ),
     4228 => array(
-        'm_icon' => '<i class="fas fa-walking ispink"></i>',
-        'm_name' => 'Intent Link Required',
+        'm_icon' => '<i class="far fa-link rotate90 ispink"></i>',
+        'm_name' => 'Intent Link Normal',
         'm_desc' => '',
         'm_parents' => array(10594,10589,7703,6410,4593,4486),
     ),
@@ -2015,7 +2015,7 @@ $config['en_all_10589'] = array(
         'm_parents' => array(10596,10589,4593,10658,10645),
     ),
     4230 => array(
-        'm_icon' => '<i class="far fa-level-up rotate90 ispink"></i>',
+        'm_icon' => '<i class="far fa-link rotate90 ispink"></i>',
         'm_name' => 'Entity Link Raw',
         'm_desc' => '',
         'm_parents' => array(10539,10589,4593,4592),
@@ -2129,8 +2129,8 @@ $config['en_all_10589'] = array(
         'm_parents' => array(10638,7703,10539,10589,4593,10658),
     ),
     4228 => array(
-        'm_icon' => '<i class="fas fa-walking ispink"></i>',
-        'm_name' => 'Intent Link Required',
+        'm_icon' => '<i class="far fa-link rotate90 ispink"></i>',
+        'm_name' => 'Intent Link Normal',
         'm_desc' => '',
         'm_parents' => array(10594,10589,7703,6410,4593,4486),
     ),
@@ -3531,8 +3531,8 @@ $config['en_all_7703'] = array(
         'm_parents' => array(10638,7703,10539,10589,4593,10658),
     ),
     4228 => array(
-        'm_icon' => '<i class="fas fa-walking ispink"></i>',
-        'm_name' => 'Intent Link Required',
+        'm_icon' => '<i class="far fa-link rotate90 ispink"></i>',
+        'm_name' => 'Intent Link Normal',
         'm_desc' => '',
         'm_parents' => array(10594,10589,7703,6410,4593,4486),
     ),
@@ -5729,7 +5729,7 @@ $config['en_all_4593'] = array(
         'm_parents' => array(10596,10589,4593,10658,10645),
     ),
     4230 => array(
-        'm_icon' => '<i class="far fa-level-up rotate90 ispink"></i>',
+        'm_icon' => '<i class="far fa-link rotate90 ispink"></i>',
         'm_name' => 'Entity Link Raw',
         'm_desc' => '',
         'm_parents' => array(10539,10589,4593,4592),
@@ -5843,8 +5843,8 @@ $config['en_all_4593'] = array(
         'm_parents' => array(10638,7703,10539,10589,4593,10658),
     ),
     4228 => array(
-        'm_icon' => '<i class="fas fa-walking ispink"></i>',
-        'm_name' => 'Intent Link Required',
+        'm_icon' => '<i class="far fa-link rotate90 ispink"></i>',
+        'm_name' => 'Intent Link Normal',
         'm_desc' => '',
         'm_parents' => array(10594,10589,7703,6410,4593,4486),
     ),
@@ -6418,7 +6418,7 @@ $config['en_all_4592'] = array(
         'm_parents' => array(10539,10589,4593,4592),
     ),
     4230 => array(
-        'm_icon' => '<i class="far fa-level-up rotate90 ispink"></i>',
+        'm_icon' => '<i class="far fa-link rotate90 ispink"></i>',
         'm_name' => 'Raw',
         'm_desc' => '',
         'm_parents' => array(10539,10589,4593,4592),
@@ -6535,8 +6535,8 @@ $config['en_all_4485'] = array(
 $config['en_ids_4486'] = array(4228,4229);
 $config['en_all_4486'] = array(
     4228 => array(
-        'm_icon' => '<i class="fas fa-walking ispink"></i>',
-        'm_name' => 'Required',
+        'm_icon' => '<i class="far fa-link rotate90 ispink"></i>',
+        'm_name' => 'Normal',
         'm_desc' => 'Intent link published and added to user Action Plans up-front',
         'm_parents' => array(10594,10589,7703,6410,4593,4486),
     ),
