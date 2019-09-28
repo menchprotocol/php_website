@@ -35,14 +35,14 @@ class Trainer_app extends CI_Controller
     }
 
 
-    function dashboard()
+    function mench_stats()
     {
         $session_en = en_auth($this->config->item('en_ids_10691') /* Mench Trainers */);
         $en_all_7368 = $this->config->item('en_all_7368');
         $this->load->view(($session_en ? 'view_trainer_app/trainer_app_header' : 'view_user_app/user_app_header'), array(
             'title' => $en_all_7368[7161]['m_name'],
         ));
-        $this->load->view('view_trainer_app/trainer_dashboard');
+        $this->load->view('view_trainer_app/mench_stats');
         $this->load->view(($session_en ? 'view_trainer_app/trainer_app_footer' : 'view_user_app/user_app_footer'));
     }
 

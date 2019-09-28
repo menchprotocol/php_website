@@ -94,7 +94,7 @@ $en_all_7369 = $this->config->item('en_all_7369');
 <?php } ?>
 
 <div class="main main-raised main-plain">
-    <div class="container <?= ( in_array($this->uri->segment(1), array('links', 'dashboard') /* Need 100% Width */) ? 'links-container' : 'body-container' ) ?>">
+    <div class="container <?= ( in_array($this->uri->segment(1), array('links', 'stats') /* Need 100% Width */) ? 'links-container' : 'body-container' ) ?>">
 
 <?php
 //Show possible flash message:

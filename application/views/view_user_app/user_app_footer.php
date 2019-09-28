@@ -45,7 +45,7 @@
             <?php $en_all_7369 = $this->config->item('en_all_7369'); /* Mench User App */ ?>
             <?php $en_all_7372 = $this->config->item('en_all_7372'); /* Mench Products */ ?>
 
-            <div style="font-size: 0.8em; text-transform: uppercase; color: #222; font-weight:500;"><span style="display: inline-block"><?= $en_all_7369[7161]['m_icon'] ?> <a href="/dashboard" class="underdot"><?= $en_all_7369[7161]['m_name'] ?></a></span> &nbsp;|&nbsp; <span style="display: inline-block"><?= $en_all_7372[7540]['m_icon'] ?> <a href="/8263" class="underdot"><?= $en_all_7372[7540]['m_name'] ?></a></span> &nbsp;|&nbsp; <span style="display: inline-block"><?= $en_all_7369[4269]['m_icon'] ?> <a href="/signin" class="underdot"><?= $en_all_7369[4269]['m_name'] ?></a></span></div>
+            <div style="font-size: 0.8em; text-transform: uppercase; color: #222; font-weight:500;"><span style="display: inline-block"><?= $en_all_7369[7161]['m_icon'] ?> <a href="/stats" class="underdot"><?= $en_all_7369[7161]['m_name'] ?></a></span> &nbsp;|&nbsp; <span style="display: inline-block"><?= $en_all_7372[7540]['m_icon'] ?> <a href="/8263" class="underdot"><?= $en_all_7372[7540]['m_name'] ?></a></span> &nbsp;|&nbsp; <span style="display: inline-block"><?= $en_all_7369[4269]['m_icon'] ?> <a href="/signin" class="underdot"><?= $en_all_7369[4269]['m_name'] ?></a></span></div>
 
 
 

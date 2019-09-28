@@ -92,7 +92,7 @@ class Intents extends CI_Controller
 
         } elseif (filter_array($session_en['en__parents'], 'en_id', $this->config->item('en_ids_10691') /* Mench Trainers */)) {
 
-            //Go to the Mench dashboard:
+            //Go to the Mench stats:
             return redirect_message('/intents');
 
         } else {

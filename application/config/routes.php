@@ -31,4 +31,4 @@ $route['actionplan/delete/(:num)']  = "user_app/actionplan_delete/$1";
 $route['actionplan/next']           = "user_app/actionplan/next";
 $route['actionplan/(:num)']         = "user_app/actionplan/$1";
 
-$route['dashboard']                 = "trainer_app/dashboard";
+$route['stats']                     = "trainer_app/mench_stats";

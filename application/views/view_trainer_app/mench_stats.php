@@ -1,5 +1,5 @@
 
-<script src="/js/custom/trainer_dashboard.js?v=v<?= $this->config->item('app_version') ?>"
+<script src="/js/custom/mench_stats.js?v=v<?= $this->config->item('app_version') ?>"
         type="text/javascript"></script>
 
 <?php

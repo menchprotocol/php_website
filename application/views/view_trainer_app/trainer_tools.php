@@ -213,6 +213,7 @@ if(!$action) {
             'ln_type_entity_id IN (' . join(',', $this->config->item('en_ids_4592')) . ')' => null, //Entity-to-Entity Links
             'ln_status_entity_id IN (' . join(',', $this->config->item('en_ids_7359')) . ')' => null, //Link Statuses Public
             'en_status_entity_id IN (' . join(',', $this->config->item('en_ids_7357')) . ')' => null, //Entity Statuses Public
+            'LENGTH(en_icon) < 1' => null, //No Icon set
         ), array('en_child'), 0) as $mench_user){
             $updated += $this->Entities_model->en_update($mench_user['en_id'], array(
                 'en_icon' => random_user_icon(),

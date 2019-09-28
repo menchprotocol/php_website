@@ -73,9 +73,9 @@ $uri_segment_2 = $this->uri->segment(2);
                                 </a>
                             </li>
 
-                            <!-- Dashboard -->
-                            <li class="<?= ($uri_segment_1 == 'dashboard' ? 'transparent-active' : 'transparent-inactive') ?>" data-toggle="tooltip" data-placement="left" title="<?= $en_all_7368[7161]['m_name'] ?>">
-                                <a href="/dashboard">
+                            <!-- Mench Stats -->
+                            <li class="<?= ($uri_segment_1 == 'stats' ? 'transparent-active' : 'transparent-inactive') ?>" data-toggle="tooltip" data-placement="left" title="<?= $en_all_7368[7161]['m_name'] ?>">
+                                <a href="/stats">
                                     <?= $en_all_7368[7161]['m_icon'] ?>
                                 </a>
                             </li>
