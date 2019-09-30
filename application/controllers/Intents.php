@@ -1016,21 +1016,6 @@ class Intents extends CI_Controller
             if(in_array($_POST['ln_status_entity_id'], $this->config->item('en_ids_7360') /* Link Statuses Active */)){
 
                 if($_POST['ln_type_entity_id'] != $lns[0]['ln_type_entity_id']){
-                    if($_POST['ln_type_entity_id'] == 4229 /* Intent Link Locked Step */){
-
-                        //Fetch child intent (we might not have it):
-                        $child_ins = $this->Intents_model->in_fetch(array(
-                            'in_id' => $lns[0]['ln_child_intent_id'],
-                        ));
-
-                        //Ensure child is locked:
-                        if(!in_array($child_ins[0]['in_completion_method_entity_id'], $this->config->item('en_ids_7309') /* Action Plan Step Locked */)){
-                            return echo_json(array(
-                                'status' => 0,
-                                'message' => 'Locked Step requires a required child intent (Require All or Any)',
-                            ));
-                        }
-                    }
                     $this->Links_model->ln_update($ln_id, array(
                         'ln_type_entity_id' => $_POST['ln_type_entity_id'],
                     ), $session_en['en_id'], 10662 /* Intent Link Iterated Type */);
