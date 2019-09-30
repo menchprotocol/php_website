@@ -868,27 +868,7 @@ class Intents extends CI_Controller
 
             } else {
 
-                if ($key == 'in_completion_method_entity_id') {
-
-                    //If it was locked and not being changed to a non-locked type, make sure no Lock Link Parents exist:
-                    if(!in_array($value, $this->config->item('en_ids_7309') /* Action Plan Step Locked */)){
-
-                        //Previously locked but now being changed to a non-locked intent type, let's see if none of the the parent links are link lock:
-                        if(count($this->Links_model->ln_fetch(array(
-                                'ln_status_entity_id IN (' . join(',', $this->config->item('en_ids_7360')) . ')' => null, //Link Statuses Active
-                                'in_status_entity_id IN (' . join(',', $this->config->item('en_ids_7356')) . ')' => null, //Intent Statuses Active
-                                'ln_type_entity_id' => 4229, //Intent Link Locked Step
-                                'ln_child_intent_id' => $_POST['in_id'],
-                            ), array('in_parent'))) > 0){
-                            return echo_json(array(
-                                'status' => 0,
-                                'message' => 'Cannot change to non-locked intent type because there are parent intent locked steps that require this intent to be locked',
-                            ));
-                        }
-
-                    }
-
-                } elseif ($key == 'in_status_entity_id') {
+                if ($key == 'in_status_entity_id') {
 
                     $links_removed = 0;
 
