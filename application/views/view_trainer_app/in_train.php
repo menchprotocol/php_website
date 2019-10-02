@@ -57,7 +57,7 @@ $en_all_7369 = $this->config->item('en_all_7369');
             //Focus intent:
             echo '<h5 class="badge badge-h inline-block">Intent #'.$in['in_id'].'</h5>';
 
-            echo '<h5 class="badge badge-h inline-block hidden">'.$en_all_7369[7765]['m_icon'].' &nbsp;<input id="landing_page_url" data-toggle="tooltip" title="Click to Copy URL" data-placement="bottom" type="url" value="mench.com/' . $in['in_id'] .'" style="padding:0; margin:-2px 0; width:144px; background-color:transparent; border:0; color:#FFF; cursor:copy !important;" /><a href="/' . $in['in_id'] . '" target="_blank" style="margin-left:7px; color:#FFF !important;" data-toggle="tooltip" title="Open Landing Page (New Window)" data-placement="bottom"><i class="fas fa-external-link"></i></a><span id="landing_page_state"></span></h5>';
+            echo '<h5 class="badge badge-h inline-block">'.$en_all_7369[7765]['m_icon'].' &nbsp;<input id="landing_page_url" data-toggle="tooltip" title="Click to Copy URL" data-placement="bottom" type="url" value="mench.com/' . $in['in_id'] .'" style="padding:0; margin:-2px 0; width:144px; background-color:transparent; border:0; color:#FFF; cursor:copy !important;" /><a href="/' . $in['in_id'] . '" target="_blank" style="margin-left:7px; color:#FFF !important;" data-toggle="tooltip" title="Open Landing Page (New Window)" data-placement="bottom"><i class="fas fa-external-link"></i></a><span id="landing_page_state"></span></h5>';
 
 
 
