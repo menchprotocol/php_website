@@ -1,17 +1,18 @@
 <?php
+
 defined('BASEPATH') OR exit('No direct script access allowed');
 
 /*
- * Keep a cache of certain parts of the Intent tree for faster processing
- * So we don't have to make DB calls to figure them out every time!
- * See here for all entities cached: https://mench.com/entities/4527
- * use-case format: $this->config->item('')
- *
- * ATTENTION: Also search for "en_ids_" and "en_all_" when trying to manage these throughout the code base
- *
- */
+* Keep a cache of certain parts of the Intent tree for faster processing
+* So we don't have to make DB calls to figure them out every time!
+* See here for all entities cached: https://mench.com/entities/4527
+* use-case format: $this->config->item('')
+*
+* ATTENTION: Also search for "en_ids_" and "en_all_" when trying to manage these throughout the code base
+*
+*/
 
-//Generated 2019-10-01 20:24:56 PST
+//Generated 2019-10-01 20:31:57 PST
 
 //Mench Platform Focused Topics:
 $config['en_ids_10709'] = array(10865,10861,10862,10867,10864,10870);
@@ -2543,19 +2544,19 @@ $config['en_ids_7347'] = array(4235,7495,7542);
 $config['en_all_7347'] = array(
     4235 => array(
         'm_icon' => '<i class="far fa-bookmark ispink"></i>',
-        'm_name' => 'Reader Blog Bookmarked',
+        'm_name' => 'Blog Bookmarked',
         'm_desc' => '',
         'm_parents' => array(10539,7347,10589,5967,4755,4593),
     ),
     7495 => array(
         'm_icon' => '<i class="far fa-bullseye-arrow ispink"></i>',
-        'm_name' => 'Reader Blog Recommended',
+        'm_name' => 'Blog Recommended',
         'm_desc' => '',
         'm_parents' => array(10596,7347,10590,4755,4593),
     ),
     7542 => array(
         'm_icon' => '<i class="far fa-bullseye-arrow ispink"></i>',
-        'm_name' => 'Reader Blog Required',
+        'm_name' => 'Blog Required',
         'm_desc' => '',
         'm_parents' => array(10596,7347,10590,4755,4593),
     ),
@@ -2566,61 +2567,61 @@ $config['en_ids_6192'] = array(6914,7637,7636,6677,6683,6682,6679,6680,6678,6681
 $config['en_all_6192'] = array(
     6914 => array(
         'm_icon' => '<i class="fas fa-cubes "></i>',
-        'm_name' => 'Blog Read All Children',
+        'm_name' => 'Read All Children',
         'm_desc' => '',
         'm_parents' => array(6192,7756,7585,7486,7485,7309,6997),
     ),
     7637 => array(
         'm_icon' => '<i class="fas fa-film "></i>',
-        'm_name' => 'Blog Submit Multimedia',
+        'm_name' => 'Submit Multimedia',
         'm_desc' => '',
         'm_parents' => array(7751,7585,6144,6192),
     ),
     7636 => array(
         'm_icon' => '<i class="fas fa-calendar-plus "></i>',
-        'm_name' => 'Blog Submit Schedule',
+        'm_name' => 'Submit Schedule',
         'm_desc' => '',
         'm_parents' => array(7585,6192),
     ),
     6677 => array(
         'm_icon' => '<i class="fas fa-comments "></i>',
-        'm_name' => 'Blog Read Only',
+        'm_name' => 'Read Only',
         'm_desc' => '',
         'm_parents' => array(7756,7585,4559,6192),
     ),
     6683 => array(
         'm_icon' => '<i class="fas fa-keyboard "></i>',
-        'm_name' => 'Blog Submit Text',
+        'm_name' => 'Submit Text',
         'm_desc' => '',
         'm_parents' => array(7585,6144,6192),
     ),
     6682 => array(
         'm_icon' => '<i class="fas fa-external-link "></i>',
-        'm_name' => 'Blog Submit URL',
+        'm_name' => 'Submit URL',
         'm_desc' => '',
         'm_parents' => array(7585,6144,6192),
     ),
     6679 => array(
         'm_icon' => '<i class="fas fa-video "></i>',
-        'm_name' => 'Blog Submit Video',
+        'm_name' => 'Submit Video',
         'm_desc' => '',
         'm_parents' => array(7751,7585,6144,6192),
     ),
     6680 => array(
         'm_icon' => '<i class="fas fa-microphone "></i>',
-        'm_name' => 'Blog Submit Audio',
+        'm_name' => 'Submit Audio',
         'm_desc' => '',
         'm_parents' => array(7751,7585,6144,6192),
     ),
     6678 => array(
         'm_icon' => '<i class="fas fa-image "></i>',
-        'm_name' => 'Blog Submit Image',
+        'm_name' => 'Submit Image',
         'm_desc' => '',
         'm_parents' => array(7751,7585,6144,6192),
     ),
     6681 => array(
         'm_icon' => '<i class="fas fa-file-pdf "></i>',
-        'm_name' => 'Blog Submit File',
+        'm_name' => 'Submit File',
         'm_desc' => '',
         'm_parents' => array(7751,7585,6144,6192),
     ),
@@ -2631,13 +2632,13 @@ $config['en_ids_10602'] = array(6192,6193);
 $config['en_all_10602'] = array(
     6192 => array(
         'm_icon' => '<i class="far fa-sitemap "></i>',
-        'm_name' => 'Blog AND',
+        'm_name' => 'AND',
         'm_desc' => 'AND Intents are completed when ALL their children are complete',
         'm_parents' => array(4527,10602),
     ),
     6193 => array(
         'm_icon' => '<i class="far fa-code-merge "></i>',
-        'm_name' => 'Blog OR',
+        'm_name' => 'OR',
         'm_desc' => 'OR Intents are completed when ANY of their children are complete',
         'm_parents' => array(10602,4527),
     ),
@@ -2677,13 +2678,13 @@ $config['en_ids_10591'] = array(10589,10590);
 $config['en_all_10591'] = array(
     10589 => array(
         'm_icon' => '<i class="far fa-user-edit ispink"></i>',
-        'm_name' => 'Interactions by Bloggers',
+        'm_name' => 'Bloggers',
         'm_desc' => '',
         'm_parents' => array(4527,10591),
     ),
     10590 => array(
         'm_icon' => '<i class="far fa-user ispink"></i>',
-        'm_name' => 'Interactions by Readers',
+        'm_name' => 'Readers',
         'm_desc' => '',
         'm_parents' => array(4527,10591),
     ),
@@ -2783,13 +2784,13 @@ $config['en_ids_10570'] = array(6154,6155);
 $config['en_all_10570'] = array(
     6154 => array(
         'm_icon' => '<i class="far fa-mountain ispink"></i>',
-        'm_name' => 'Reader Blog Accomplished',
+        'm_name' => 'Blog Accomplished',
         'm_desc' => 'You successfully accomplished your intention so you no longer want to receive future updates',
         'm_parents' => array(10888,10539,10639,10589,10570,7758,7703,4506,6150,4755,4593),
     ),
     6155 => array(
         'm_icon' => '<i class="far fa-bookmark ispink"></i>',
-        'm_name' => 'Reader Blog Bookmark Removed',
+        'm_name' => 'Blog Bookmark Removed',
         'm_desc' => 'You did NOT accomplish the intention and you want to stop all future updates on this intention',
         'm_parents' => array(10888,10539,10639,10589,10570,7703,4506,6150,4593,4755),
     ),
@@ -2828,13 +2829,13 @@ $config['en_ids_7799'] = array(7802,7801);
 $config['en_all_7799'] = array(
     7802 => array(
         'm_icon' => '',
-        'm_name' => 'Leaderboard All Time',
+        'm_name' => 'All Time',
         'm_desc' => '',
         'm_parents' => array(7799),
     ),
     7801 => array(
         'm_icon' => '',
-        'm_name' => 'Leaderboard This Week',
+        'm_name' => 'This Week',
         'm_desc' => '',
         'm_parents' => array(7799),
     ),
@@ -2886,13 +2887,13 @@ $config['en_ids_7767'] = array(7598,7766);
 $config['en_all_7767'] = array(
     7598 => array(
         'm_icon' => '<i class="far fa-newspaper"></i>',
-        'm_name' => 'Blog Post',
+        'm_name' => 'Post',
         'm_desc' => '',
         'm_parents' => array(10568,7767,7582,7596),
     ),
     7766 => array(
         'm_icon' => '<i class="far fa-scroll"></i>',
-        'm_name' => 'Blog Page',
+        'm_name' => 'Page',
         'm_desc' => '',
         'm_parents' => array(10567,7767,7596),
     ),
@@ -3090,43 +3091,43 @@ $config['en_ids_6144'] = array(6680,6681,6678,7637,6683,6682,6679);
 $config['en_all_6144'] = array(
     6680 => array(
         'm_icon' => '<i class="fas fa-microphone "></i>',
-        'm_name' => 'Blog Submit Audio',
+        'm_name' => 'Submit Audio',
         'm_desc' => '',
         'm_parents' => array(7751,7585,6144,6192),
     ),
     6681 => array(
         'm_icon' => '<i class="fas fa-file-pdf "></i>',
-        'm_name' => 'Blog Submit File',
+        'm_name' => 'Submit File',
         'm_desc' => '',
         'm_parents' => array(7751,7585,6144,6192),
     ),
     6678 => array(
         'm_icon' => '<i class="fas fa-image "></i>',
-        'm_name' => 'Blog Submit Image',
+        'm_name' => 'Submit Image',
         'm_desc' => '',
         'm_parents' => array(7751,7585,6144,6192),
     ),
     7637 => array(
         'm_icon' => '<i class="fas fa-film "></i>',
-        'm_name' => 'Blog Submit Multimedia',
+        'm_name' => 'Submit Multimedia',
         'm_desc' => '',
         'm_parents' => array(7751,7585,6144,6192),
     ),
     6683 => array(
         'm_icon' => '<i class="fas fa-keyboard "></i>',
-        'm_name' => 'Blog Submit Text',
+        'm_name' => 'Submit Text',
         'm_desc' => '',
         'm_parents' => array(7585,6144,6192),
     ),
     6682 => array(
         'm_icon' => '<i class="fas fa-external-link "></i>',
-        'm_name' => 'Blog Submit URL',
+        'm_name' => 'Submit URL',
         'm_desc' => '',
         'm_parents' => array(7585,6144,6192),
     ),
     6679 => array(
         'm_icon' => '<i class="fas fa-video "></i>',
-        'm_name' => 'Blog Submit Video',
+        'm_name' => 'Submit Video',
         'm_desc' => '',
         'm_parents' => array(7751,7585,6144,6192),
     ),
@@ -3160,19 +3161,19 @@ $config['en_ids_4341'] = array(6103,6186,4593,4429,4369,4372,4364,7694,4367,4370
 $config['en_all_4341'] = array(
     6103 => array(
         'm_icon' => '<i class="far fa-lambda"></i>',
-        'm_name' => 'Interaction Metadata',
+        'm_name' => 'Metadata',
         'm_desc' => '',
         'm_parents' => array(4527,6232,6195,4341),
     ),
     6186 => array(
         'm_icon' => '<i class="far fa-sliders-h"></i>',
-        'm_name' => 'Interaction Status',
+        'm_name' => 'Status',
         'm_desc' => '',
         'm_parents' => array(10677,10661,10656,6204,5865,6160,6232,7304,4527,6194,4341),
     ),
     4593 => array(
         'm_icon' => '<i class="fas fa-plug"></i>',
-        'm_name' => 'Interaction Type',
+        'm_name' => 'Type',
         'm_desc' => '',
         'm_parents' => array(10607,10659,6160,6232,6194,4527,4341),
     ),
@@ -3255,37 +3256,37 @@ $config['en_ids_6206'] = array(6198,6160,6172,6197,6177,6199);
 $config['en_all_6206'] = array(
     6198 => array(
         'm_icon' => '<i class="fas fa-user-circle"></i>',
-        'm_name' => 'Thing Icon',
+        'm_name' => 'Icon',
         'm_desc' => '',
         'm_parents' => array(10653,5943,10625,6232,6206),
     ),
     6160 => array(
         'm_icon' => '<i class="fas fa-at"></i>',
-        'm_name' => 'Thing ID',
+        'm_name' => 'ID',
         'm_desc' => '',
         'm_parents' => array(6232,6215,6206),
     ),
     6172 => array(
         'm_icon' => '<i class="fas fa-lambda"></i>',
-        'm_name' => 'Thing Metadata',
+        'm_name' => 'Metadata',
         'm_desc' => '',
         'm_parents' => array(6232,3323,6206,6195),
     ),
     6197 => array(
         'm_icon' => '<i class="fas fa-fingerprint"></i>',
-        'm_name' => 'Thing Name',
+        'm_name' => 'Name',
         'm_desc' => '',
         'm_parents' => array(10646,5000,4998,4999,6232,6225,6206),
     ),
     6177 => array(
         'm_icon' => '<i class="fas fa-sliders-h"></i>',
-        'm_name' => 'Thing Status',
+        'm_name' => 'Status',
         'm_desc' => '',
         'm_parents' => array(6204,5003,10654,6160,6232,7303,6194,6206,4527),
     ),
     6199 => array(
         'm_icon' => '<i class="fas fa-shield-check"></i>',
-        'm_name' => 'Thing Trust Score',
+        'm_name' => 'Trust Score',
         'm_desc' => '',
         'm_parents' => array(6232,4463,6214,6206),
     ),
@@ -3296,49 +3297,49 @@ $config['en_ids_6201'] = array(6202,6159,4356,7596,4737,4736,7585,5008);
 $config['en_all_6201'] = array(
     6202 => array(
         'm_icon' => '<i class="fas fa-hashtag "></i>',
-        'm_name' => 'Blog ID',
+        'm_name' => 'ID',
         'm_desc' => '',
         'm_parents' => array(6232,6215,6201),
     ),
     6159 => array(
         'm_icon' => '<i class="fas fa-lambda "></i>',
-        'm_name' => 'Blog Metadata',
+        'm_name' => 'Metadata',
         'm_desc' => 'Intent metadata contains variables that have been automatically calculated and automatically updates using a cron job. Intent Metadata are the backbone of key functions and user interfaces like the intent landing page or Action Plan completion workflows.',
         'm_parents' => array(6232,6201,6195),
     ),
     4356 => array(
         'm_icon' => '<i class="fas fa-stopwatch"></i>',
-        'm_name' => 'Blog Read Time',
+        'm_name' => 'Read Time',
         'm_desc' => '',
         'm_parents' => array(10650,6232,6201),
     ),
     7596 => array(
         'm_icon' => '<i class="fas fa-triangle"></i>',
-        'm_name' => 'Blog Scope',
+        'm_name' => 'Scope',
         'm_desc' => '',
         'm_parents' => array(6204,10649,7302,6160,6201,6194,6232,4527),
     ),
     4737 => array(
         'm_icon' => '<i class="fas fa-sliders-h "></i>',
-        'm_name' => 'Blog Status',
+        'm_name' => 'Status',
         'm_desc' => '',
         'm_parents' => array(6204,10648,6226,6160,6232,7302,6194,6201,4527),
     ),
     4736 => array(
         'm_icon' => '<i class="fas fa-h1"></i>',
-        'm_name' => 'Blog Title',
+        'm_name' => 'Title',
         'm_desc' => '',
         'm_parents' => array(10644,6232,6201),
     ),
     7585 => array(
         'm_icon' => '<i class="fas fa-puzzle-piece"></i>',
-        'm_name' => 'Blog Type',
+        'm_name' => 'Type',
         'm_desc' => '',
         'm_parents' => array(10608,6204,10651,6160,6194,6232,4527,6201),
     ),
     5008 => array(
         'm_icon' => '<i class="fas fa-tools "></i>',
-        'm_name' => 'Blog Verb',
+        'm_name' => 'Verb',
         'm_desc' => '',
         'm_parents' => array(6204,10647,4736,7777,6160,6232,7302,4506,6194,6201),
     ),
@@ -3675,19 +3676,19 @@ $config['en_ids_7596'] = array(7597,7766,7598);
 $config['en_all_7596'] = array(
     7597 => array(
         'm_icon' => '<i class="far fa-comment-alt-lines"></i>',
-        'm_name' => 'Blog Snippet',
+        'm_name' => 'Snippet',
         'm_desc' => 'Only accessible through parent blogs',
         'm_parents' => array(10567,7596),
     ),
     7766 => array(
         'm_icon' => '<i class="far fa-scroll"></i>',
-        'm_name' => 'Blog Page',
+        'm_name' => 'Page',
         'm_desc' => 'Searchable by readers, Reusable by bloggers and accessible through parent blogs',
         'm_parents' => array(10567,7767,7596),
     ),
     7598 => array(
         'm_icon' => '<i class="far fa-newspaper"></i>',
-        'm_name' => 'Blog Post',
+        'm_name' => 'Post',
         'm_desc' => 'Searchable by readers, reusable by bloggers, accessible through parent blogs & requires readers to sign-in to continue',
         'm_parents' => array(10568,7767,7582,7596),
     ),
@@ -3738,25 +3739,25 @@ $config['en_ids_6193'] = array(6684,6685,7231,6907);
 $config['en_all_6193'] = array(
     6684 => array(
         'm_icon' => '<i class="fas fa-question"></i>',
-        'm_name' => 'Blog Choose Single Child',
+        'm_name' => 'Choose Single Child',
         'm_desc' => '',
         'm_parents' => array(7712,7588,7585,6157,6193),
     ),
     6685 => array(
         'm_icon' => '<i class="fas fa-stopwatch "></i>',
-        'm_name' => 'Blog Choose Single Child Timed',
+        'm_name' => 'Choose Single Child Timed',
         'm_desc' => '',
         'm_parents' => array(7712,7488,7487,7585,7366,6193),
     ),
     7231 => array(
         'm_icon' => '<i class="fas fa-check-double"></i>',
-        'm_name' => 'Blog Choose Multiple Childred',
+        'm_name' => 'Choose Multiple Childred',
         'm_desc' => '',
         'm_parents' => array(7712,7489,7588,7585,6193),
     ),
     6907 => array(
         'm_icon' => '<i class="fas fa-cube "></i>',
-        'm_name' => 'Blog Read Any Child',
+        'm_name' => 'Read Any Child',
         'm_desc' => '',
         'm_parents' => array(7756,7585,7486,7485,7309,6997,6193),
     ),
@@ -3767,85 +3768,85 @@ $config['en_ids_7585'] = array(7636,6677,6683,6682,6680,6678,6679,7637,6681,6684
 $config['en_all_7585'] = array(
     7636 => array(
         'm_icon' => '<i class="fas fa-calendar-plus "></i>',
-        'm_name' => 'Blog Submit Schedule',
+        'm_name' => 'Submit Schedule',
         'm_desc' => '',
         'm_parents' => array(7585,6192),
     ),
     6677 => array(
         'm_icon' => '<i class="fas fa-comments "></i>',
-        'm_name' => 'Blog Read Only',
+        'm_name' => 'Read Only',
         'm_desc' => 'User will complete by reading intent messages only. No inputs required.',
         'm_parents' => array(7756,7585,4559,6192),
     ),
     6683 => array(
         'm_icon' => '<i class="fas fa-keyboard "></i>',
-        'm_name' => 'Blog Submit Text',
+        'm_name' => 'Submit Text',
         'm_desc' => 'User will complete by sending a text message',
         'm_parents' => array(7585,6144,6192),
     ),
     6682 => array(
         'm_icon' => '<i class="fas fa-external-link "></i>',
-        'm_name' => 'Blog Submit URL',
+        'm_name' => 'Submit URL',
         'm_desc' => 'User will complete by sending a URL message',
         'm_parents' => array(7585,6144,6192),
     ),
     6680 => array(
         'm_icon' => '<i class="fas fa-microphone "></i>',
-        'm_name' => 'Blog Submit Audio',
+        'm_name' => 'Submit Audio',
         'm_desc' => 'User will complete by sending an audio message',
         'm_parents' => array(7751,7585,6144,6192),
     ),
     6678 => array(
         'm_icon' => '<i class="fas fa-image "></i>',
-        'm_name' => 'Blog Submit Image',
+        'm_name' => 'Submit Image',
         'm_desc' => 'User will complete by sending an image message',
         'm_parents' => array(7751,7585,6144,6192),
     ),
     6679 => array(
         'm_icon' => '<i class="fas fa-video "></i>',
-        'm_name' => 'Blog Submit Video',
+        'm_name' => 'Submit Video',
         'm_desc' => 'User will complete by sending a video message',
         'm_parents' => array(7751,7585,6144,6192),
     ),
     7637 => array(
         'm_icon' => '<i class="fas fa-film "></i>',
-        'm_name' => 'Blog Submit Multimedia',
+        'm_name' => 'Submit Multimedia',
         'm_desc' => 'User completes by uploading a video, audio or image file',
         'm_parents' => array(7751,7585,6144,6192),
     ),
     6681 => array(
         'm_icon' => '<i class="fas fa-file-pdf "></i>',
-        'm_name' => 'Blog Submit File',
+        'm_name' => 'Submit File',
         'm_desc' => 'User will complete by sending a file (PDF, DOC, etc...) message',
         'm_parents' => array(7751,7585,6144,6192),
     ),
     6684 => array(
         'm_icon' => '<i class="fas fa-question"></i>',
-        'm_name' => 'Blog Choose Single Child',
+        'm_name' => 'Choose Single Child',
         'm_desc' => 'User will complete by choosing a child intent as their answer',
         'm_parents' => array(7712,7588,7585,6157,6193),
     ),
     6685 => array(
         'm_icon' => '<i class="fas fa-stopwatch "></i>',
-        'm_name' => 'Blog Choose Single Child Timed',
+        'm_name' => 'Choose Single Child Timed',
         'm_desc' => 'User will complete by choosing a child intent as their answer within a time limit',
         'm_parents' => array(7712,7488,7487,7585,7366,6193),
     ),
     7231 => array(
         'm_icon' => '<i class="fas fa-check-double"></i>',
-        'm_name' => 'Blog Choose Multiple Childred',
+        'm_name' => 'Choose Multiple Childred',
         'm_desc' => 'User will complete by choosing one or more child intents as their answer',
         'm_parents' => array(7712,7489,7588,7585,6193),
     ),
     6907 => array(
         'm_icon' => '<i class="fas fa-cube "></i>',
-        'm_name' => 'Blog Read Any Child',
+        'm_name' => 'Read Any Child',
         'm_desc' => 'User will complete by (a) choosing intent as their answer or by (b) completing any child intent',
         'm_parents' => array(7756,7585,7486,7485,7309,6997,6193),
     ),
     6914 => array(
         'm_icon' => '<i class="fas fa-cubes "></i>',
-        'm_name' => 'Blog Read All Children',
+        'm_name' => 'Read All Children',
         'm_desc' => 'User will complete by (a) choosing intent as their answer or by (b) completing all child intents',
         'm_parents' => array(6192,7756,7585,7486,7485,7309,6997),
     ),
@@ -4029,43 +4030,43 @@ $config['en_ids_7372'] = array(7735,7555,6403,7540,7305,7369,7368);
 $config['en_all_7372'] = array(
     7735 => array(
         'm_icon' => '<i class="far fa-database"></i>',
-        'm_name' => 'Mench Database Tables',
+        'm_name' => 'Database Tables',
         'm_desc' => '',
         'm_parents' => array(7372),
     ),
     7555 => array(
         'm_icon' => '<i class="far fa-comments"></i>',
-        'm_name' => 'Mench Notifications',
+        'm_name' => 'Notifications',
         'm_desc' => '',
         'm_parents' => array(7303,7372,4527),
     ),
     6403 => array(
         'm_icon' => '<i class="fas fa-code"></i>',
-        'm_name' => 'Mench PHP Code',
+        'm_name' => 'PHP Code',
         'm_desc' => 'So far all our products are built using the same PHP application',
         'm_parents' => array(7372,3324,7391,7390,4523,3325,3323,3326),
     ),
     7540 => array(
         'm_icon' => '<i class="fas fa-balance-scale"></i>',
-        'm_name' => 'Mench Terms',
+        'm_name' => 'Terms',
         'm_desc' => '#8272',
         'm_parents' => array(7372,7305),
     ),
     7305 => array(
         'm_icon' => '<img src="https://mench.com/img/bp_128.png">',
-        'm_name' => 'Mench Website',
+        'm_name' => 'Website',
         'm_desc' => '',
         'm_parents' => array(7372,1326),
     ),
     7369 => array(
         'm_icon' => '<i class="far fa-user"></i>',
-        'm_name' => 'Mench Reader Console',
+        'm_name' => 'Reader Console',
         'm_desc' => 'A web-based application for readers to to read and interact with blog posts',
         'm_parents' => array(7372,4527),
     ),
     7368 => array(
         'm_icon' => '<i class="far fa-user-edit"></i>',
-        'm_name' => 'Mench Blogger Console',
+        'm_name' => 'Blogger Console',
         'm_desc' => 'A web-based application for bloggers to create interactive blogs',
         'm_parents' => array(7372,4527),
     ),
@@ -4105,31 +4106,31 @@ $config['en_all_7369'] = array(
     ),
     7291 => array(
         'm_icon' => '<i class="fas fa-power-off"></i>',
-        'm_name' => 'Mench Logout',
+        'm_name' => 'Logout',
         'm_desc' => '',
         'm_parents' => array(7368,7369),
     ),
     4430 => array(
         'm_icon' => '<i class="far fa-user"></i>',
-        'm_name' => 'Mench Readers',
+        'm_name' => 'Readers',
         'm_desc' => '',
         'm_parents' => array(4983,7701,7369,6827,4426,4463),
     ),
     7256 => array(
         'm_icon' => '<i class="fas fa-search"></i>',
-        'm_name' => 'Mench Search',
+        'm_name' => 'Search',
         'm_desc' => 'A limited version of the search bar focused on published intent trees.',
         'm_parents' => array(7369,7368,3323),
     ),
     4269 => array(
         'm_icon' => '<i class="fas fa-sign-in"></i>',
-        'm_name' => 'Mench Sign In',
+        'm_name' => 'Sign In',
         'm_desc' => '',
         'm_parents' => array(7369),
     ),
     7161 => array(
         'm_icon' => '<i class="far fa-chart-bar"></i>',
-        'm_name' => 'Mench Stats',
+        'm_name' => 'Stats',
         'm_desc' => '',
         'm_parents' => array(7369,7368,7305),
     ),
@@ -4152,55 +4153,55 @@ $config['en_ids_7368'] = array(10691,4535,6205,7291,6287,7256,7161,4536,5007);
 $config['en_all_7368'] = array(
     10691 => array(
         'm_icon' => '<i class="far fa-user-edit"></i>',
-        'm_name' => 'Mench Bloggers',
+        'm_name' => 'Bloggers',
         'm_desc' => '',
         'm_parents' => array(4527,7368,6827),
     ),
     4535 => array(
         'm_icon' => '<i class="fas fa-hashtag yellow"></i>',
-        'm_name' => 'Mench Blogs',
+        'm_name' => 'Blogs',
         'm_desc' => '',
         'm_parents' => array(10608,7368,4534,4463),
     ),
     6205 => array(
         'm_icon' => '<i class="fas fa-exchange rotate90 ispink"></i>',
-        'm_name' => 'Mench Interactions',
+        'm_name' => 'Interactions',
         'm_desc' => '',
         'm_parents' => array(10607,7368,4534,4463),
     ),
     7291 => array(
         'm_icon' => '<i class="fas fa-power-off"></i>',
-        'm_name' => 'Mench Logout',
+        'm_name' => 'Logout',
         'm_desc' => '',
         'm_parents' => array(7368,7369),
     ),
     6287 => array(
         'm_icon' => '<i class="far fa-tools"></i>',
-        'm_name' => 'Mench Moderation Tools',
+        'm_name' => 'Moderation Tools',
         'm_desc' => 'Tools for moderating the Mench platform',
         'm_parents' => array(7368,4527,7284),
     ),
     7256 => array(
         'm_icon' => '<i class="fas fa-search"></i>',
-        'm_name' => 'Mench Search',
+        'm_name' => 'Search',
         'm_desc' => 'Intents, Entities & URLs',
         'm_parents' => array(7369,7368,3323),
     ),
     7161 => array(
         'm_icon' => '<i class="far fa-chart-bar"></i>',
-        'm_name' => 'Mench Stats',
+        'm_name' => 'Stats',
         'm_desc' => '',
         'm_parents' => array(7369,7368,7305),
     ),
     4536 => array(
         'm_icon' => '<i class="fas fa-at blue"></i>',
-        'm_name' => 'Mench Things',
+        'm_name' => 'Things',
         'm_desc' => '',
         'm_parents' => array(10605,7368,4534,4463),
     ),
     5007 => array(
         'm_icon' => '<i class="fas fa-expand-arrows ispink"></i>',
-        'm_name' => 'Mench Toggle Advance Mode',
+        'm_name' => 'Toggle Advance Mode',
         'm_desc' => '',
         'm_parents' => array(10596,10589,7368,4757,4593),
     ),
@@ -4317,25 +4318,25 @@ $config['en_ids_7302'] = array(7596,4737,10602,5008);
 $config['en_all_7302'] = array(
     7596 => array(
         'm_icon' => '<i class="fas fa-triangle"></i>',
-        'm_name' => 'Blog Scope',
+        'm_name' => 'Scope',
         'm_desc' => 'Defines who and how can access intent. Note that all intents are accessible to all users, it\'s just the level of visibility/engagement that is different.',
         'm_parents' => array(6204,10649,7302,6160,6201,6194,6232,4527),
     ),
     4737 => array(
         'm_icon' => '<i class="fas fa-sliders-h "></i>',
-        'm_name' => 'Blog Status',
+        'm_name' => 'Status',
         'm_desc' => '',
         'm_parents' => array(6204,10648,6226,6160,6232,7302,6194,6201,4527),
     ),
     10602 => array(
         'm_icon' => '<i class="far fa-puzzle-piece"></i>',
-        'm_name' => 'Blog Type Groups',
+        'm_name' => 'Type Groups',
         'm_desc' => '',
         'm_parents' => array(10893,6204,7302,4527),
     ),
     5008 => array(
         'm_icon' => '<i class="fas fa-tools "></i>',
-        'm_name' => 'Blog Verb',
+        'm_name' => 'Verb',
         'm_desc' => '',
         'm_parents' => array(6204,10647,4736,7777,6160,6232,7302,4506,6194,6201),
     ),
@@ -4358,7 +4359,7 @@ $config['en_all_7303'] = array(
     ),
     6177 => array(
         'm_icon' => '<i class="fas fa-sliders-h"></i>',
-        'm_name' => 'Thing Status',
+        'm_name' => 'Status',
         'm_desc' => '',
         'm_parents' => array(6204,5003,10654,6160,6232,7303,6194,6206,4527),
     ),
@@ -4375,13 +4376,13 @@ $config['en_ids_7304'] = array(10591,6186,7797);
 $config['en_all_7304'] = array(
     10591 => array(
         'm_icon' => '<i class="fas fa-directions"></i>',
-        'm_name' => 'Interaction Reader Groups',
+        'm_name' => 'Reader Groups',
         'm_desc' => '',
         'm_parents' => array(6204,7797,7304,6771,4527,10588),
     ),
     6186 => array(
         'm_icon' => '<i class="far fa-sliders-h"></i>',
-        'm_name' => 'Interaction Status',
+        'm_name' => 'Status',
         'm_desc' => '',
         'm_parents' => array(10677,10661,10656,6204,5865,6160,6232,7304,4527,6194,4341),
     ),
@@ -4479,19 +4480,19 @@ $config['en_ids_6827'] = array(3084,10691,4430);
 $config['en_all_6827'] = array(
     3084 => array(
         'm_icon' => '<i class="fas fa-user-astronaut"></i>',
-        'm_name' => 'Mench Experts',
+        'm_name' => 'Experts',
         'm_desc' => 'Experienced in their respective industry with a track record of advancing their field of knowldge',
         'm_parents' => array(10571,4983,6827,4463),
     ),
     10691 => array(
         'm_icon' => '<i class="far fa-user-edit"></i>',
-        'm_name' => 'Mench Bloggers',
+        'm_name' => 'Bloggers',
         'm_desc' => 'Users who actively train the Mench personal assistant',
         'm_parents' => array(4527,7368,6827),
     ),
     4430 => array(
         'm_icon' => '<i class="far fa-user"></i>',
-        'm_name' => 'Mench Readers',
+        'm_name' => 'Readers',
         'm_desc' => 'Users who are pursuing their intentions using Mench, mainly to get hired at their dream job',
         'm_parents' => array(4983,7701,7369,6827,4426,4463),
     ),
@@ -4653,19 +4654,19 @@ $config['en_ids_6150'] = array(6154,6155,7757);
 $config['en_all_6150'] = array(
     6154 => array(
         'm_icon' => '<i class="far fa-mountain ispink"></i>',
-        'm_name' => 'Reader Blog Accomplished',
+        'm_name' => 'Blog Accomplished',
         'm_desc' => '',
         'm_parents' => array(10888,10539,10639,10589,10570,7758,7703,4506,6150,4755,4593),
     ),
     6155 => array(
         'm_icon' => '<i class="far fa-bookmark ispink"></i>',
-        'm_name' => 'Reader Blog Bookmark Removed',
+        'm_name' => 'Blog Bookmark Removed',
         'm_desc' => '',
         'm_parents' => array(10888,10539,10639,10589,10570,7703,4506,6150,4593,4755),
     ),
     7757 => array(
         'm_icon' => '<i class="fas fa-times-octagon ispink"></i>',
-        'm_name' => 'Reader Blog Terminated',
+        'm_name' => 'Blog Terminated',
         'm_desc' => '',
         'm_parents' => array(10539,10589,4755,4593,6150),
     ),
@@ -4693,7 +4694,7 @@ $config['en_ids_6225'] = array(6197,3288,3286,4783,3290,3287,3089,3289,6123,4454
 $config['en_all_6225'] = array(
     6197 => array(
         'm_icon' => '<i class="fas fa-fingerprint"></i>',
-        'm_name' => 'Thing Name',
+        'm_name' => 'Name',
         'm_desc' => 'Your first and last name:',
         'm_parents' => array(10646,5000,4998,4999,6232,6225,6206),
     ),
@@ -4758,19 +4759,19 @@ $config['en_ids_4737'] = array(6184,6183,6182);
 $config['en_all_4737'] = array(
     6184 => array(
         'm_icon' => '<i class="fas fa-globe yellow "></i>',
-        'm_name' => 'Blog Published',
+        'm_name' => 'Published',
         'm_desc' => 'newly added by miner but not yet checked by moderator',
         'm_parents' => array(7774,7355,7356,4737),
     ),
     6183 => array(
         'm_icon' => '<i class="far fa-spinner fa-spin "></i>',
-        'm_name' => 'Blog Drafting',
+        'm_name' => 'Drafting',
         'm_desc' => 'newly added, pending review',
         'm_parents' => array(7774,7356,4737),
     ),
     6182 => array(
         'm_icon' => '<i class="far fa-trash-alt "></i>',
-        'm_name' => 'Blog Archived',
+        'm_name' => 'Archived',
         'm_desc' => 'archived',
         'm_parents' => array(10671,4737),
     ),
@@ -4804,67 +4805,67 @@ $config['en_ids_6146'] = array(7488,7485,7741,7486,4559,7489,7492,6997,6157,7487
 $config['en_all_6146'] = array(
     7488 => array(
         'm_icon' => '<i class="fas fa-calendar-times ispink"></i>',
-        'm_name' => 'Reader Step Answer Timeout',
+        'm_name' => 'Answer Timeout',
         'm_desc' => 'User failed to answer the question within the allocated time',
         'm_parents' => array(10596,10589,4755,4593,6146),
     ),
     7485 => array(
         'm_icon' => '<i class="fas fa-lock-open ispink"></i>',
-        'm_name' => 'Reader Step Answer Unlock',
+        'm_name' => 'Answer Unlock',
         'm_desc' => 'When users unlock locked AND or OR intents by simply answering an open OR question',
         'm_parents' => array(10596,10589,7703,7494,4593,4755,6146,6255),
     ),
     7741 => array(
         'm_icon' => '<i class="fas fa-times-circle ispink"></i>',
-        'm_name' => 'Reader Step Blogion Terminated',
+        'm_name' => 'Blogion Terminated',
         'm_desc' => '',
         'm_parents' => array(10596,10589,4755,4593,6146),
     ),
     7486 => array(
         'm_icon' => '<i class="fas fa-lock-open ispink"></i>',
-        'm_name' => 'Reader Step Children Unlock',
+        'm_name' => 'Children Unlock',
         'm_desc' => 'When users unlock locked AND or OR intents by completing ALL or ANY of their children',
         'm_parents' => array(10596,10589,7703,7494,6244,6146,4755,4593,6255),
     ),
     4559 => array(
         'm_icon' => '<i class="fas fa-comments ispink"></i>',
-        'm_name' => 'Reader Step Messages Only',
+        'm_name' => 'Messages Only',
         'm_desc' => 'Completed when students complete a basic AND intent without any submission requirements',
         'm_parents' => array(10596,10589,7703,6274,6255,4755,6146,4593),
     ),
     7489 => array(
         'm_icon' => '<i class="fas fa-check-double ispink"></i>',
-        'm_name' => 'Reader Step Multi-Answered',
+        'm_name' => 'Multi-Answered',
         'm_desc' => 'User made a selection as part of a multiple-choice answer question',
         'm_parents' => array(10596,10589,7704,7703,4755,6255,4593,6146),
     ),
     7492 => array(
         'm_icon' => '<i class="fas fa-times-square ispink"></i>',
-        'm_name' => 'Reader Step Path Not Found',
+        'm_name' => 'Path Not Found',
         'm_desc' => 'Logged when users arrive at a locked intent that has no public OR parents or no children, which means there is no way to unlock it.',
         'm_parents' => array(10596,10589,6255,4755,4593,6146),
     ),
     6997 => array(
         'm_icon' => '<i class="fas fa-lock-open ispink"></i>',
-        'm_name' => 'Reader Step Score Unlock',
+        'm_name' => 'Score Unlock',
         'm_desc' => 'When users unlock locked AND or OR intents by scoring within the range of a conditional intent link',
         'm_parents' => array(10596,10589,7703,7494,4229,6255,4593,4755,6146),
     ),
     6157 => array(
         'm_icon' => '<i class="fas fa-question ispink"></i>',
-        'm_name' => 'Reader Step Single-Answered',
+        'm_name' => 'Single-Answered',
         'm_desc' => 'Completed after the student answers the question to the OR intent.',
         'm_parents' => array(10596,10589,7704,7703,6255,6244,6146,4755,4593),
     ),
     7487 => array(
         'm_icon' => '<i class="fas fa-stopwatch ispink"></i>',
-        'm_name' => 'Reader Step Single-Answered Timely',
+        'm_name' => 'Single-Answered Timely',
         'm_desc' => 'When the user answers a question within the defined timeframe',
         'm_parents' => array(10596,10589,7704,7703,6244,4755,6255,4593,6146),
     ),
     6143 => array(
         'm_icon' => '<i class="fas fa-fast-forward ispink"></i>',
-        'm_name' => 'Reader Step Skipped',
+        'm_name' => 'Skipped',
         'm_desc' => 'Completed when students skip an intention and all its child intentions from their Action Plan',
         'm_parents' => array(10596,10589,6146,4755,4593),
     ),
@@ -5038,61 +5039,61 @@ $config['en_ids_4997'] = array(10625,5943,5001,5865,4999,4998,5000,5981,5982,500
 $config['en_all_4997'] = array(
     10625 => array(
         'm_icon' => '<i class="far fa-user-circle ispink"></i>',
-        'm_name' => 'Thing Mass Icon Replace',
+        'm_name' => 'Icon Replace',
         'm_desc' => 'Search for occurrence of string in child entity icons and if found, updates it with a replacement string',
         'm_parents' => array(10589,10596,4593,4997),
     ),
     5943 => array(
         'm_icon' => '<i class="far fa-user-circle ispink"></i>',
-        'm_name' => 'Thing Mass Icon Update',
+        'm_name' => 'Icon Update',
         'm_desc' => 'Updates all child entity icons with string which needs to be a valid icon',
         'm_parents' => array(10596,10589,4593,4997),
     ),
     5001 => array(
         'm_icon' => '<i class="fas fa-sticky-note ispink"></i>',
-        'm_name' => 'Thing Mass Interaction Contents',
+        'm_name' => 'Interaction Contents',
         'm_desc' => 'Search for occurance of string in child entity link contents and if found, updates it with a replacement string',
         'm_parents' => array(10596,10589,4593,4997),
     ),
     5865 => array(
         'm_icon' => '<i class="far fa-sliders-h ispink"></i>',
-        'm_name' => 'Thing Mass Interaction Status',
+        'm_name' => 'Interaction Status',
         'm_desc' => 'Updates all child entity link statuses that match the initial link status condition',
         'm_parents' => array(10596,10589,4593,4997),
     ),
     4999 => array(
         'm_icon' => '<i class="far fa-fingerprint ispink"></i>',
-        'm_name' => 'Thing Mass Name Postfix',
+        'm_name' => 'Name Postfix',
         'm_desc' => 'Adds string to the end of all child entities',
         'm_parents' => array(10596,10589,4593,4997),
     ),
     4998 => array(
         'm_icon' => '<i class="far fa-fingerprint ispink"></i>',
-        'm_name' => 'Thing Mass Name Prefix',
+        'm_name' => 'Name Prefix',
         'm_desc' => 'Adds string to the beginning of all child entities. Make sure to include a space for it to look good',
         'm_parents' => array(10596,10589,4593,4997),
     ),
     5000 => array(
         'm_icon' => '<i class="far fa-fingerprint ispink"></i>',
-        'm_name' => 'Thing Mass Name Replace',
+        'm_name' => 'Name Replace',
         'm_desc' => 'Search for occurrence of string in child entity names and if found, updates it with a replacement string',
         'm_parents' => array(10596,10589,4593,4997),
     ),
     5981 => array(
         'm_icon' => '<i class="fas fa-layer-plus ispink"></i>',
-        'm_name' => 'Thing Mass Parent Add',
+        'm_name' => 'Parent Add',
         'm_desc' => 'If not already done so, will add searched entity as the parent of all child entities',
         'm_parents' => array(10596,10589,4593,4997),
     ),
     5982 => array(
         'm_icon' => '<i class="fas fa-layer-minus ispink"></i>',
-        'm_name' => 'Thing Mass Parent Remove',
+        'm_name' => 'Parent Remove',
         'm_desc' => 'If already added as the parent, this will remove searched entity as the parent of all child entities',
         'm_parents' => array(10596,10589,4593,4997),
     ),
     5003 => array(
         'm_icon' => '<i class="far fa-sliders-h ispink"></i>',
-        'm_name' => 'Thing Mass Status Replace',
+        'm_name' => 'Status Replace',
         'm_desc' => 'Updates all child entity statuses that match the initial entity status condition',
         'm_parents' => array(10596,10589,4593,4997),
     ),
@@ -6401,61 +6402,61 @@ $config['en_ids_4592'] = array(4259,4230,4257,4261,4260,4319,4255,4318,4256,4258
 $config['en_all_4592'] = array(
     4259 => array(
         'm_icon' => '<i class="far fa-volume-up ispink"></i>',
-        'm_name' => 'Thing-to-Thing Interaction Audio',
+        'm_name' => 'Audio',
         'm_desc' => '',
         'm_parents' => array(10627,10593,10589,6203,4593,4592,4537),
     ),
     4230 => array(
         'm_icon' => '<i class="far fa-link rotate90 ispink"></i>',
-        'm_name' => 'Thing-to-Thing Interaction Basic',
+        'm_name' => 'Basic',
         'm_desc' => '',
         'm_parents' => array(10539,10589,4593,4592),
     ),
     4257 => array(
         'm_icon' => '<i class="far fa-play-circle ispink"></i>',
-        'm_name' => 'Thing-to-Thing Interaction Embed',
+        'm_name' => 'Embed',
         'm_desc' => '',
         'm_parents' => array(10539,10589,4593,4592,4537,4506),
     ),
     4261 => array(
         'm_icon' => '<i class="far fa-file-pdf ispink"></i>',
-        'm_name' => 'Thing-to-Thing Interaction File',
+        'm_name' => 'File',
         'm_desc' => '',
         'm_parents' => array(10627,10593,10589,6203,4593,4592,4537),
     ),
     4260 => array(
         'm_icon' => '<i class="far fa-image ispink"></i>',
-        'm_name' => 'Thing-to-Thing Interaction Image',
+        'm_name' => 'Image',
         'm_desc' => '',
         'm_parents' => array(10627,10593,10589,6203,4593,4592,4537),
     ),
     4319 => array(
         'm_icon' => '<i class="far fa-sort-numeric-down ispink"></i>',
-        'm_name' => 'Thing-to-Thing Interaction Integer',
+        'm_name' => 'Integer',
         'm_desc' => '',
         'm_parents' => array(10539,10589,4593,4592),
     ),
     4255 => array(
         'm_icon' => '<i class="far fa-align-left ispink"></i>',
-        'm_name' => 'Thing-to-Thing Interaction Text',
+        'm_name' => 'Text',
         'm_desc' => '',
         'm_parents' => array(10593,10589,4593,4592),
     ),
     4318 => array(
         'm_icon' => '<i class="far fa-clock ispink"></i>',
-        'm_name' => 'Thing-to-Thing Interaction Time',
+        'm_name' => 'Time',
         'm_desc' => '',
         'm_parents' => array(10594,10589,4593,4592),
     ),
     4256 => array(
         'm_icon' => '<i class="far fa-browser ispink"></i>',
-        'm_name' => 'Thing-to-Thing Interaction URL',
+        'm_name' => 'URL',
         'm_desc' => '',
         'm_parents' => array(10539,10589,4593,4592,4537),
     ),
     4258 => array(
         'm_icon' => '<i class="far fa-video ispink"></i>',
-        'm_name' => 'Thing-to-Thing Interaction Video',
+        'm_name' => 'Video',
         'm_desc' => '',
         'm_parents' => array(10627,10593,10589,6203,4593,4592,4537),
     ),
@@ -6495,49 +6496,49 @@ $config['en_ids_4485'] = array(4231,4983,4601,10573,6093,7545,10715,7701);
 $config['en_all_4485'] = array(
     4231 => array(
         'm_icon' => '<i class="far fa-comment ispink"></i>',
-        'm_name' => 'Blog Note Messages',
+        'm_name' => 'Messages',
         'm_desc' => 'Messages sent to readers over web or Messenger',
         'm_parents' => array(10593,10589,7703,6345,4986,4603,4593,4485),
     ),
     4983 => array(
         'm_icon' => '<i class="far fa-thumbs-up ispink"></i>',
-        'm_name' => 'Blog Note References',
+        'm_name' => 'References',
         'm_desc' => 'References people and expert sources who agree with this blog',
         'm_parents' => array(10593,10589,4527,7703,7551,4985,4593,4485),
     ),
     4601 => array(
         'm_icon' => '<i class="far fa-search ispink"></i>',
-        'm_name' => 'Blog Note Keywords',
+        'm_name' => 'Keywords',
         'm_desc' => 'Maps alternative terms used to search for this blog',
         'm_parents' => array(10593,10589,7703,4593,4485),
     ),
     10573 => array(
         'm_icon' => '<i class="far fa-bookmark ispink"></i>',
-        'm_name' => 'Blog Note Bookmarks',
+        'm_name' => 'Bookmarks',
         'm_desc' => 'Saved to bloggers blog dashboard for faster access',
         'm_parents' => array(10594,10589,4593,7703,7551,4485),
     ),
     6093 => array(
         'm_icon' => '<i class="far fa-comments-alt ispink"></i>',
-        'm_name' => 'Blog Note Discussions',
+        'm_name' => 'Discussions',
         'm_desc' => 'Background blogger discussions on this blog',
         'm_parents' => array(10593,10589,7703,4593,4986,4485),
     ),
     7545 => array(
         'm_icon' => '<i class="far fa-tags ispink"></i>',
-        'm_name' => 'Blog Note Tags',
+        'm_name' => 'Tags',
         'm_desc' => 'Things to be added as the parent of readers after blog is read',
         'm_parents' => array(5007,10594,10589,7703,7551,4593,4485),
     ),
     10715 => array(
         'm_icon' => '<i class="far fa-folder-tree ispink"></i>',
-        'm_name' => 'Blog Note Topics',
+        'm_name' => 'Topics',
         'm_desc' => 'Defines the categories this intent belongs to in the Mench marketplace',
         'm_parents' => array(5007,7703,7551,10589,10594,4593,4485),
     ),
     7701 => array(
         'm_icon' => '<i class="far fa-user-plus ispink"></i>',
-        'm_name' => 'Blog Note Followers',
+        'm_name' => 'Followers',
         'm_desc' => 'Keep readers & bloggers updated of updates',
         'm_parents' => array(5007,10594,10589,4527,7703,4593,7551,4485),
     ),
@@ -6548,13 +6549,13 @@ $config['en_ids_4486'] = array(4228,4229);
 $config['en_all_4486'] = array(
     4228 => array(
         'm_icon' => '<i class="far fa-link rotate90 ispink"></i>',
-        'm_name' => 'Blog-to-Blog Interaction Basic',
+        'm_name' => 'Blog-to- Basic',
         'm_desc' => 'Intent link published and added to user Action Plans up-front',
         'm_parents' => array(10594,10589,7703,6410,4593,4486),
     ),
     4229 => array(
         'm_icon' => '<i class="fas fa-lock ispink"></i>',
-        'm_name' => 'Blog-to-Blog Interaction Conditional',
+        'm_name' => 'Blog-to- Conditional',
         'm_desc' => 'Intent added to Action Plans after parent intent is complete AND the user\'s % score falls within the defined min/max range',
         'm_parents' => array(10594,10589,7703,4527,6410,6283,4593,4486),
     ),
@@ -6565,37 +6566,37 @@ $config['en_ids_4537'] = array(4259,4257,4261,4260,4256,4258);
 $config['en_all_4537'] = array(
     4259 => array(
         'm_icon' => '<i class="far fa-volume-up ispink"></i>',
-        'm_name' => 'Thing-to-Thing Interaction Audio',
+        'm_name' => 'Thing-to- Audio',
         'm_desc' => 'Link notes contain a URL to a raw audio file.',
         'm_parents' => array(10627,10593,10589,6203,4593,4592,4537),
     ),
     4257 => array(
         'm_icon' => '<i class="far fa-play-circle ispink"></i>',
-        'm_name' => 'Thing-to-Thing Interaction Embed',
+        'm_name' => 'Thing-to- Embed',
         'm_desc' => 'Link note contain a recognizable URL that offers an embed widget for a more engaging play-back experience.',
         'm_parents' => array(10539,10589,4593,4592,4537,4506),
     ),
     4261 => array(
         'm_icon' => '<i class="far fa-file-pdf ispink"></i>',
-        'm_name' => 'Thing-to-Thing Interaction File',
+        'm_name' => 'Thing-to- File',
         'm_desc' => 'Link notes contain a URL to a raw file.',
         'm_parents' => array(10627,10593,10589,6203,4593,4592,4537),
     ),
     4260 => array(
         'm_icon' => '<i class="far fa-image ispink"></i>',
-        'm_name' => 'Thing-to-Thing Interaction Image',
+        'm_name' => 'Thing-to- Image',
         'm_desc' => 'Link notes contain a URL to a raw image file.',
         'm_parents' => array(10627,10593,10589,6203,4593,4592,4537),
     ),
     4256 => array(
         'm_icon' => '<i class="far fa-browser ispink"></i>',
-        'm_name' => 'Thing-to-Thing Interaction URL',
+        'm_name' => 'Thing-to- URL',
         'm_desc' => 'Link note contains a generic URL only.',
         'm_parents' => array(10539,10589,4593,4592,4537),
     ),
     4258 => array(
         'm_icon' => '<i class="far fa-video ispink"></i>',
-        'm_name' => 'Thing-to-Thing Interaction Video',
+        'm_name' => 'Thing-to- Video',
         'm_desc' => 'Link notes contain a URL to a raw video file.',
         'm_parents' => array(10627,10593,10589,6203,4593,4592,4537),
     ),
