@@ -60,14 +60,14 @@
                 </div>
 
                 <div class="input-group border" style="background-color: #FFF; margin-bottom: 3px;">
-                    <span class="input-group-addon addon-lean addon-grey" style="color:#2f2739; font-weight: 300;">Expert URL<b style="color:#FF0000;" data-toggle="tooltip" data-placement="top" title="Required">*</b></span>
+                    <span class="input-group-addon addon-lean addon-grey" style="color:#070707; font-weight: 300;">Expert URL<b style="color:#FF0000;" data-toggle="tooltip" data-placement="top" title="Required">*</b></span>
                     <input style="padding-left:3px;" type="url" id="ref_url_<?= $contributor_num ?>" class="form-control">
                 </div>
 
                 <div class="form-group label-floating is-empty">
                     <div class="input-group border">
                         <span class="input-group-addon addon-lean addon-grey"
-                              style="color:#2f2739; font-weight: 300;">Expert <b style="color:#FF0000;" data-toggle="tooltip" data-placement="top" title="Required">*</b><br />Summary
+                              style="color:#070707; font-weight: 300;">Expert <b style="color:#FF0000;" data-toggle="tooltip" data-placement="top" title="Required">*</b><br />Summary
                         </span>
                         <span class="white-wrapper">
                             <textarea class="form-control right-textarea characterLimiter textarea_<?= $contributor_num ?>" id-postfix="<?= $contributor_num ?>" id="why_expert_<?= $contributor_num ?>"></textarea>

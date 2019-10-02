@@ -1,3 +1,7 @@
+<?php $en_all_7368 = $this->config->item('en_all_7368'); //Trainer App ?>
+<?php $en_all_6206 = $this->config->item('en_all_6206'); //Entity Table ?>
+<?php $en_all_4341 = $this->config->item('en_all_4341'); //Link Table ?>
+
 <div id="modifybox" class="fixed-box hidden" entity-id="0" entity-link-id="0">
 
     <h5 class="badge badge-h edit-header"><i class="fas fa-cog"></i> Modify</h5>
@@ -62,7 +66,7 @@
                             <input type="text" id="en_icon" value=""
                                    maxlength="<?= $this->config->item('en_name_max_length') ?>" data-lpignore="true" placeholder=""
                                    class="form-control">
-                            <span class="input-group-addon addon-lean addon-grey icon-demo" style="color:#2f2739; font-weight: 300; padding-left:7px !important; padding-right:6px !important;"><i class="fas fa-at grey-at"></i></span>
+                            <span class="input-group-addon addon-lean addon-grey icon-demo" style="color:#070707; font-weight: 300; padding-left:7px !important; padding-right:6px !important;"><i class="fas fa-at grey-at"></i></span>
                         </div>
                     </div>
 

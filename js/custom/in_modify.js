@@ -72,7 +72,7 @@ $(document).ready(function () {
     if (window.location.hash) {
         var hash = window.location.hash.substring(1); //Puts hash in variable, and removes the # character
         var hash_parts = hash.split("-");
-        if (hash_parts.length >= 2) {
+        if (hash_parts.length > 0) {
             //Fetch level if available:
             if (hash_parts[0] == 'intentnotes') {
                 in_notes_iframe(hash_parts[1]);
@@ -81,6 +81,13 @@ $(document).ready(function () {
             } else if (hash_parts[0] == 'actionplanusers') {
                 in_action_plan_users(hash_parts[1]);
             }
+        } else {
+            alert('no hashtag');
+            //If no hashtag, auto load Blog Notes:
+            in_notes_iframe(in_loaded_id);
+
+            //Add Hashtag to URL:
+            window.location.hash = 'intentnotes-'+in_loaded_id;
         }
     }
 
@@ -437,7 +444,7 @@ function in_ui_remove(in_id,level,ln_id){
     in_adjust_ui(in_id, level, 0, 0, 1, 0);
 
     //Remove from UI:
-    $('.in__tr_' + ln_id).html('<span style="color:#2f2739;"><i class="fas fa-trash-alt"></i></span>');
+    $('.in__tr_' + ln_id).html('<span style="color:#070707;"><i class="fas fa-trash-alt"></i></span>');
 
     //Hide the editor & saving results:
     $('.in__tr_' + ln_id).fadeOut();

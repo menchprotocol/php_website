@@ -10,7 +10,7 @@
         //Lock fields:
         pass_is_resetting = true;
         $('#reset_pass_next').html('<span><i class="fas fa-yin-yang fa-spin"></i></span>');
-        $('#input_password').prop('disabled', true).css('background-color','#EFEFEF');
+        $('#input_password').prop('disabled', true).css('background-color','#F0F0F0');
 
         //Check email and validate:
         $.post("/user_app/signin_reset_password_apply", {

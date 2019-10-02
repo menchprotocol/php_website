@@ -27,7 +27,7 @@ $en_all_7369 = $this->config->item('en_all_7369');
                     <tr>
                         <td style="width:40px;">
                             <a class="navbar-brand" href="/"><img src="/img/bp_128.png" /><span
-                                        style="text-transform: lowercase; color: #2f2739;"></span></a>
+                                        style="text-transform: lowercase; color: #070707;"></span></a>
                         </td>
                         <td>
                             <form id="searchFrontForm">
@@ -74,7 +74,7 @@ $en_all_7369 = $this->config->item('en_all_7369');
 
                     //Display all:
                     foreach ($navigation as $nav_item) {
-                        echo '<li><a href="/' . $nav_item['uri_segment_1'] . '" ' . ( $this->uri->segment(1) == $nav_item['uri_segment_1'] ? ' style="color:#FFF; background-color:#2f2739 !important;"' : '') . '>' . $nav_item['anchor'] . '</a></li>';
+                        echo '<li><a href="/' . $nav_item['uri_segment_1'] . '" ' . ( $this->uri->segment(1) == $nav_item['uri_segment_1'] ? ' style="color:#FFF; background-color:#070707 !important;"' : '') . '>' . $nav_item['anchor'] . '</a></li>';
                     }
 
                 } else {

@@ -117,7 +117,7 @@
                     <div class="form-group label-floating is-empty">
                         <div class="input-group border" style="width:132px;">
                             <input style="padding-left:3px;" type="number" step="1" min="0" id="in_completion_seconds" class="form-control">
-                            <span class="input-group-addon addon-lean addon-grey" style="color:#2f2739; font-weight: 300;">Seconds</span>
+                            <span class="input-group-addon addon-lean addon-grey" style="color:#070707; font-weight: 300;">Seconds</span>
                         </div>
                     </div>
 
@@ -171,14 +171,14 @@
                             <div class="form-group label-floating is-empty"
                                  style="max-width:230px; margin:1px 0 10px;">
                                 <div class="input-group border">
-                                    <span class="input-group-addon addon-lean addon-grey" style="color:#2f2739; font-weight: 300;">IF Scores </span>
+                                    <span class="input-group-addon addon-lean addon-grey" style="color:#070707; font-weight: 300;">IF Scores </span>
                                     <input style="padding-left:0; padding-right:0; text-align:right;" type="number" step="1" data-lpignore="true"
                                            maxlength="3" id="tr__conditional_score_min" value="" class="form-control">
-                                    <span class="input-group-addon addon-lean addon-grey" style="color:#2f2739; font-weight: 300; border-left: 1px solid #ccc;"><i
+                                    <span class="input-group-addon addon-lean addon-grey" style="color:#070707; font-weight: 300; border-left: 1px solid #ccc;"><i
                                                 class="fal fa-fas fa-percentage"></i> to </span>
                                     <input style="padding-left:3px; padding-right:0; text-align:right;" type="number" step="1" data-lpignore="true"
                                            maxlength="3" id="tr__conditional_score_max" value="" class="form-control">
-                                    <span class="input-group-addon addon-lean addon-grey" style="color:#2f2739; font-weight: 300; border-left: 1px solid #ccc; border-right:0px solid #FFF;"><i
+                                    <span class="input-group-addon addon-lean addon-grey" style="color:#070707; font-weight: 300; border-left: 1px solid #ccc; border-right:0px solid #FFF;"><i
                                                 class="fal fa-fas fa-percentage"></i></span>
                                 </div>
                             </div>

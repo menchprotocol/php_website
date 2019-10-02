@@ -89,7 +89,7 @@ function search_email(){
     //Lock fields:
     email_is_searching = true;
     $('#email_check_next').html('<i class="fas fa-yin-yang fa-spin"></i>');
-    $('#input_email').prop('disabled', true).css('background-color','#EFEFEF');
+    $('#input_email').prop('disabled', true).css('background-color','#F0F0F0');
     $('#password_errors').html('&nbsp;');
     $('#custom_message').html(''); //Remove previous errors, if any
 
@@ -139,7 +139,7 @@ function add_account(){
     //Lock fields:
     account_is_adding = true;
     $('#add_acount_next').html('<i class="fas fa-yin-yang fa-spin"></i>');
-    $('#input_name, #new_password').prop('disabled', true).css('background-color','#EFEFEF');
+    $('#input_name, #new_password').prop('disabled', true).css('background-color','#F0F0F0');
 
     //Check email and validate:
     $.post("/user_app/signin_create_account", {
@@ -193,7 +193,7 @@ function singin_check_password(){
     //Lock fields:
     password_is_checking = true;
     $('#password_check_next').html('<i class="fas fa-yin-yang fa-spin"></i>');
-    $('#input_password').prop('disabled', true).css('background-color','#EFEFEF');
+    $('#input_password').prop('disabled', true).css('background-color','#F0F0F0');
 
     //Check email and validate:
     $.post("/user_app/singin_check_password", {
