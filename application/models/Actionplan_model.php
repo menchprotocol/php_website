@@ -741,7 +741,6 @@ class Actionplan_model extends CI_Model
             //Detect potential conditional steps to be Unlocked:
             $found_match = 0;
             $locked_links = $this->Links_model->ln_fetch(array(
-                'in_completion_method_entity_id IN (' . join(',', $this->config->item('en_ids_7309')) . ')' => null, //Action Plan Step Locked
                 'in_status_entity_id IN (' . join(',', $this->config->item('en_ids_7355')) . ')' => null, //Intent Statuses Public
                 'ln_status_entity_id IN (' . join(',', $this->config->item('en_ids_7359')) . ')' => null, //Link Statuses Public
                 'ln_type_entity_id' => 4229, //Intent Link Locked Step
