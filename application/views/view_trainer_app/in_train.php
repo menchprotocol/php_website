@@ -15,6 +15,11 @@ $en_all_7369 = $this->config->item('en_all_7369');
 </style>
 
 <div class="row">
+
+    <div class="<?= $this->config->item('css_column_2') ?>">
+        <?php $this->load->view('view_trainer_app/in_modify'); ?>
+    </div>
+
     <div class="<?= $this->config->item('css_column_1') ?>">
         <?php
         if($in['in_id'] == $this->config->item('in_mission_id')){
@@ -150,11 +155,6 @@ $en_all_7369 = $this->config->item('en_all_7369');
 
         ?>
 
-    </div>
-
-
-    <div class="<?= $this->config->item('css_column_2') ?>">
-        <?php $this->load->view('view_trainer_app/in_modify'); ?>
     </div>
 </div>
 

@@ -506,7 +506,20 @@ class Trainer_app extends CI_Controller
             'ln_parent_entity_id' => 4527,
         ), array('en_child'), 0);
 
+        echo htmlentities('<?php').'<br /><br />';
+        echo 'defined(\'BASEPATH\') OR exit(\'No direct script access allowed\');'.'<br /><br />';
+
+        echo '/*<br />
+ * Keep a cache of certain parts of the Intent tree for faster processing<br />
+ * So we don\'t have to make DB calls to figure them out every time!<br />
+ * See here for all entities cached: https://mench.com/entities/4527<br />
+ * use-case format: $this->config->item(\'\')<br />
+ *<br />
+ * ATTENTION: Also search for "en_ids_" and "en_all_" when trying to manage these throughout the code base<br />
+ *<br />
+ */<br /><br />';
         echo '//Generated '.date("Y-m-d H:i:s").' PST<br />';
+
 
         foreach($config_ens as $en){
 
@@ -530,8 +543,8 @@ class Trainer_app extends CI_Controller
             foreach($children as $child){
 
                 //Do we have an omit command?
-                if(substr_count($en['ln_content'], '&var_trimcache=') == 1){
-                    $child['en_name'] = trim(str_replace(one_two_explode('&var_trimcache=','',$en['ln_content']) , '', $child['en_name']));
+                if(substr_count($en['ln_content'], '&trim=') == 1){
+                    $child['en_name'] = trim(str_replace(one_two_explode('&trim=','',$en['ln_content']) , '', $child['en_name']));
                 }
 
                 //Fetch all parents for this child:
