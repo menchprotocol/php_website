@@ -16,9 +16,7 @@
         type="text/javascript"></script>
 
 <div class="row">
-    <div class="<?= $this->config->item('css_column_2') ?>">
-        <?php $this->load->view('view_trainer_app/en_modify'); ?>
-    </div>
+
     <div class="<?= $this->config->item('css_column_1') ?>">
 
         <?php
@@ -245,6 +243,11 @@
 
         ?>
     </div>
+
+    <div class="<?= $this->config->item('css_column_2') ?>">
+        <?php $this->load->view('view_trainer_app/en_modify'); ?>
+    </div>
+
 </div>
 
 <div style="height: 50px;">&nbsp;</div>
