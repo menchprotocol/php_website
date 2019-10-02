@@ -210,7 +210,7 @@ $(document).ready(function () {
         var hash_parts = hash.split("-");
         if (hash_parts.length >= 2) {
             //Fetch level if available:
-            if (hash_parts[0] == 'entityreferences') {
+            if (hash_parts[0] == 'entitynotes') {
                 en_load_messages( hash_parts[1]);
             } else if (hash_parts[0] == 'loadmodify') {
                 en_modify_load(hash_parts[1], hash_parts[2]);

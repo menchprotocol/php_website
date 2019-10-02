@@ -1186,6 +1186,13 @@ class Entities_model extends CI_Model
             'ln_child_entity_id' => $added_en['en']['en_id'],
         ));
 
+        $this->Links_model->ln_create(array(
+            'ln_type_entity_id' => 4230, //Raw link
+            'ln_parent_entity_id' => 1278, //People
+            'ln_creator_entity_id' => $added_en['en']['en_id'],
+            'ln_child_entity_id' => $added_en['en']['en_id'],
+        ));
+
         //Add default Notification Level:
         $this->Links_model->ln_create(array(
             'ln_parent_entity_id' => 4456, //Receive Regular Notifications (User can change later on...)

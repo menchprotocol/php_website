@@ -4611,7 +4611,7 @@ h4 .tip-badge {
 .isgreen, .isgreen a                { color:#228B22 !important; }
 .isred, .isred a, .fas.redalert     { color:#FF0000 !important; }
 .isdarkred, .isdarkred a            { color:#A93226 !important; }
-.isgrey, .isgrey a, .lightgrey      { color:#AAAAAA !important; }
+.isgrey, .isgrey a, .lightgrey      { color:#F0F0F0 !important; }
 .isolive, .isolive a                { color:#808000 !important; }
 .isnavy, .isnavy a                  { color:#000080 !important; }
 .isorange, .isorange a              { color:#FF8C00 !important; }
@@ -4619,5 +4619,5 @@ h4 .tip-badge {
 .isbrown, .isbrown a                { color:#8B4513 !important; }
 .isturquoise, .isturquoise a        { color:#20B2AA !important; }
 .islightblue, .islightblue a        { color:#85C1E9 !important; }
-.ismatt, .ismatt a                  { color:#34495E !important; }
+.ismatt, .ismatt a                  { color:#070707 !important; }
 .isdarkorange, .isdarkorange a      { color:#D35400 !important; }

@@ -390,6 +390,13 @@ class User_app extends CI_Controller
 
         $this->Links_model->ln_create(array(
             'ln_type_entity_id' => 4230, //Raw link
+            'ln_parent_entity_id' => 1278, //People
+            'ln_creator_entity_id' => $user_en['en']['en_id'],
+            'ln_child_entity_id' => $user_en['en']['en_id'],
+        ));
+
+        $this->Links_model->ln_create(array(
+            'ln_type_entity_id' => 4230, //Raw link
             'ln_parent_entity_id' => 3504, //English Language (Since everything is in English so far)
             'ln_creator_entity_id' => $user_en['en']['en_id'],
             'ln_child_entity_id' => $user_en['en']['en_id'],

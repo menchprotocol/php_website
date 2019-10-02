@@ -2622,7 +2622,7 @@ function echo_en($en, $level, $is_parent = false)
         ), array(), 0, 0, array(), 'COUNT(ln_id) AS total_messages');
         if($messages[0]['total_messages'] > 0){
             //Only show in non-advance mode if we have messages:
-            $ui .= '<a class="badge badge-secondary white-secondary ' .( $level==0 || $messages[0]['total_messages'] == 0 ? advance_mode() : '' ) . '" href="#entityreferences-' . $en['en_id'] . '" onclick="' . ( $messages[0]['total_messages'] == 0 ? 'alert(\'No Intent Notes found that reference this entity\')' : ( $level==0 ? 'alert(\'Cannot manage here. Go to the entity to manage.\')' : 'en_load_messages('.$en['en_id'].')' ) ) . '" style="width:40px; margin-left:5px; margin-right: -3px;" data-toggle="tooltip" data-placement="bottom" title="'.$en_all_4527[4485]['m_name'].'"><span class="btn-counter">' . echo_number($messages[0]['total_messages']) . '</span>'.$en_all_4527[4485]['m_icon'].'</a>';
+            $ui .= '<a class="badge badge-secondary white-secondary ' .( $level==0 || $messages[0]['total_messages'] == 0 ? advance_mode() : '' ) . '" href="#entitynotes-' . $en['en_id'] . '" onclick="' . ( $messages[0]['total_messages'] == 0 ? 'alert(\'No Intent Notes found that reference this entity\')' : ( $level==0 ? 'alert(\'Cannot manage here. Go to the entity to manage.\')' : 'en_load_messages('.$en['en_id'].')' ) ) . '" style="width:40px; margin-left:5px; margin-right: -3px;" data-toggle="tooltip" data-placement="bottom" title="'.$en_all_4527[4485]['m_name'].'"><span class="btn-counter">' . echo_number($messages[0]['total_messages']) . '</span>'.$en_all_4527[4485]['m_icon'].'</a>';
         }
 
 
