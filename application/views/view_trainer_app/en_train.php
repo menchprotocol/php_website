@@ -22,7 +22,9 @@
         <?php
 
         //Parents
-        echo '<h5><span class="badge badge-h"><span class="li-parent-count">' . count($entity['en__parents']) . '</span> Parent' . echo__s(count($entity['en__parents'])) . '</span></h5>';
+        echo '<h5 class="badge badge-h"><a href="javascript:void(0);" onclick="$(\'.parents-div\').toggleClass(\'hidden\')" style="color: #FFF;"><i class="far fa-plus-circle parents-div"></i><i class="far fa-minus-circle parents-div hidden"></i> <span class="li-parent-count">' . count($entity['en__parents']) . '</span> Parent' . echo__s(count($entity['en__parents'])).'</a></h5>';
+
+        echo '<div class="parents-div hidden">';
         echo '<div id="list-parent" class="list-group  grey-list">';
         foreach ($entity['en__parents'] as $en) {
             echo echo_en($en, 2, true);
@@ -34,12 +36,13 @@
             </div>';
 
         echo '</div>';
+        echo '</div>';
 
 
 
 
 
-        //Focused/current entity:
+        //Focused Entity:
         echo '<h5 class="badge badge-h">Entity @'.$entity['en_id'].'</h5>';
 
         //Hidden link to Metadata:

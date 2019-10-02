@@ -27,7 +27,9 @@ $en_all_7369 = $this->config->item('en_all_7369');
         } else {
 
             //Parent intents:
-            echo '<h5 class="badge badge-h"><span class="li-parent-count parent-counter-' . $in['in_id'] . '">' . count($in['in__parents']) . '</span> Parent' . echo__s(count($in['in__parents'])) . '</h5>';
+            echo '<h5 class="badge badge-h"><a href="javascript:void(0);" onclick="$(\'.parents-div\').toggleClass(\'hidden\')" style="color: #FFF;"><i class="far fa-plus-circle parents-div"></i><i class="far fa-minus-circle parents-div hidden"></i> <span class="li-parent-count parent-counter-' . $in['in_id'] . '">'.count($in['in__parents']) . '</span> Parent' . echo__s(count($in['in__parents'])).'</a></h5>';
+
+            echo '<div class="parents-div hidden">';
             echo '<div id="list-in-' . $in['in_id'] . '-1" class="list-group list-level-2">';
 
             //List current parent intents:
@@ -47,19 +49,20 @@ $en_all_7369 = $this->config->item('en_all_7369');
                        <div class="algolia_search_pad in_pad_top hidden"><span>Search existing intents or create a new one...</span></div>
                 </div>';
             echo '</div>';
+            echo '</div>';
 
 
 
 
-            echo '<div style="min-height:11px;">';
-            echo '<div class="intent-header">';
-
-                //Focus intent:
+            //Focus intent:
             echo '<h5 class="badge badge-h inline-block">Intent #'.$in['in_id'].'</h5>';
 
-            echo '<h5 class="badge badge-h inline-block">'.$en_all_7369[7765]['m_icon'].' &nbsp;<input id="landing_page_url" data-toggle="tooltip" title="Click to Copy URL" data-placement="bottom" type="url" value="mench.com/' . $in['in_id'] .'" style="padding:0; margin:-2px 0; width:144px; background-color:transparent; border:0; color:#FFF; cursor:copy !important;" /><a href="/' . $in['in_id'] . '" target="_blank" style="margin-left:7px; color:#FFF !important;" data-toggle="tooltip" title="Open Landing Page (New Window)" data-placement="bottom"><i class="fas fa-external-link"></i></a><span id="landing_page_state"></span></h5>';
+            echo '<h5 class="badge badge-h inline-block hidden">'.$en_all_7369[7765]['m_icon'].' &nbsp;<input id="landing_page_url" data-toggle="tooltip" title="Click to Copy URL" data-placement="bottom" type="url" value="mench.com/' . $in['in_id'] .'" style="padding:0; margin:-2px 0; width:144px; background-color:transparent; border:0; color:#FFF; cursor:copy !important;" /><a href="/' . $in['in_id'] . '" target="_blank" style="margin-left:7px; color:#FFF !important;" data-toggle="tooltip" title="Open Landing Page (New Window)" data-placement="bottom"><i class="fas fa-external-link"></i></a><span id="landing_page_state"></span></h5>';
+
+
 
             //Hidden Links for Trainers ONLY:
+            //TODO Turn into drop-down menu for Bloggers only
             echo '<span class="'.advance_mode().'">';
 
             echo '<a class="secret" href="/intents/cron__sync_extra_insights/' . $in['in_id'] . '/1?redirect=/' . $in['in_id'] . '" style="margin-left:20px;" onclick="turn_off()" data-toggle="tooltip" title="Updates intent tree cache" data-placement="bottom"><i class="fal fa-sync-alt"></i></a>';
@@ -69,10 +72,6 @@ $en_all_7369 = $this->config->item('en_all_7369');
             echo '<a class="secret" href="/links/cron__sync_algolia/in/' . $in['in_id'] . '" style="margin-left: 5px;" target="_blank" data-toggle="tooltip" title="Update Algolia Search Index" data-placement="bottom"><i class="fas fa-search"></i></a>';
 
             echo '</span>';
-
-
-            echo '</div>';
-            echo '</div>';
 
         }
 
