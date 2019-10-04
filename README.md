@@ -3,14 +3,8 @@
 ![THE MENCH GAME](/img/mench-v2-128.png)
 
 1. ![#FC1B44](http://placehold.jp/FC1B44/ffffff/15x15.png?text=+&css=%7B%22border-radius%22%3A%2220px%22%7D)READ
-2. ![#FFDF0F](http://placehold.jp/FFDF0F/ffffff/15x15.png?text=+&css=%7B%22border-radius%22%3A%2215px%22%7D)BLOG
-2. ![#FFDF0F](http://placehold.jp/FFDF0F/ffffff/15x15.png?text=+&css=%7B%22border-radius%22%3A%2222px%22%7D)BLOG
-2. ![#FFDF0F](http://placehold.jp/FFDF0F/ffffff/15x15.png?text=+&css=%7B%22border-radius%22%3A%2225px%22%7D)BLOG
-2. ![#FFDF0F](http://placehold.jp/FFDF0F/ffffff/15x15.png?text=+&css=%7B%22border-radius%22%3A%2221px%22%7D)BLOG
-3. ![#008DF2](http://placehold.jp/008DF2/ffffff/15x15.png?text=+&css=%7B%22border-radius%22%3A%2215px%22%7D)PLAY
-3. ![#008DF2](http://placehold.jp/008DF2/ffffff/15x15.png?text=+&css=%7B%22border-radius%22%3A%2222px%22%7D)PLAY
+2. ![#FFDF0F](http://placehold.jp/FFDF0F/ffffff/15x15.png?text=+&css=%7B%22border-radius%22%3A%2220px%22%7D)BLOG
 3. ![#008DF2](http://placehold.jp/008DF2/ffffff/15x15.png?text=+&css=%7B%22border-radius%22%3A%2220px%22%7D)PLAY
-3. ![#008DF2](http://placehold.jp/008DF2/ffffff/15x15.png?text=+&css=%7B%22border-radius%22%3A%2221px%22%7D)PLAY
 
 GAMEPLAY:
 
