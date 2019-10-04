@@ -12,7 +12,7 @@ defined('BASEPATH') OR exit('No direct script access allowed');
 *
 */
 
-//Generated 2019-10-03 20:51:00 PST
+//Generated 2019-10-03 20:54:15 PST
 
 //Mench Platform Focused Topics:
 $config['en_ids_10709'] = array(10865,10861,10862,10870);
@@ -54,7 +54,7 @@ $config['en_all_10704'] = array(
      ),
 );
 
-//Mench Bloggers:
+//MENCH Bloggers:
 $config['en_ids_10691'] = array(7512,1308);
 $config['en_all_10691'] = array(
      7512 => array(
@@ -358,12 +358,12 @@ $config['en_all_4527'] = array(
      7368 => array(
         'm_icon' => '<i class="far fa-user-edit"></i>',
         'm_name' => 'Mench Blogger Console',
-        'm_desc' => '&trim=Mench',
+        'm_desc' => '&trim=MENCH',
         'm_parents' => array(7372,4527),
      ),
      10691 => array(
         'm_icon' => '<i class="far fa-user-edit"></i>',
-        'm_name' => 'Mench Bloggers',
+        'm_name' => 'MENCH Bloggers',
         'm_desc' => '',
         'm_parents' => array(4527,7368,6827),
      ),
@@ -375,7 +375,7 @@ $config['en_all_4527'] = array(
      ),
      6287 => array(
         'm_icon' => '<i class="far fa-user-shield"></i>',
-        'm_name' => 'Mench Moderation Tools',
+        'm_name' => 'MENCH Moderation Tools',
         'm_desc' => '',
         'm_parents' => array(7368,4527,7284),
      ),
@@ -1371,7 +1371,7 @@ $config['en_all_10596'] = array(
      ),
      5007 => array(
         'm_icon' => '<i class="fas fa-expand-arrows ispink"></i>',
-        'm_name' => 'Mench Toggle Advance Mode',
+        'm_name' => 'MENCH Toggle Advance Mode',
         'm_desc' => '',
         'm_parents' => array(10596,10589,7368,4757,4593),
      ),
@@ -2047,7 +2047,7 @@ $config['en_all_10589'] = array(
      ),
      5007 => array(
         'm_icon' => '<i class="fas fa-expand-arrows ispink"></i>',
-        'm_name' => 'Mench Toggle Advance Mode',
+        'm_name' => 'MENCH Toggle Advance Mode',
         'm_desc' => '',
         'm_parents' => array(10596,10589,7368,4757,4593),
      ),
@@ -4060,7 +4060,7 @@ $config['en_all_7372'] = array(
      ),
 );
 
-//Mench Moderation Tools:
+//MENCH Moderation Tools:
 $config['en_ids_6287'] = array(7257,7258,7274);
 $config['en_all_6287'] = array(
      7257 => array(
@@ -4094,7 +4094,7 @@ $config['en_all_7369'] = array(
      ),
      7291 => array(
         'm_icon' => '<i class="fas fa-power-off"></i>',
-        'm_name' => 'Logout',
+        'm_name' => 'MENCH Logout',
         'm_desc' => '',
         'm_parents' => array(7368,7369),
      ),
@@ -4106,7 +4106,7 @@ $config['en_all_7369'] = array(
      ),
      7256 => array(
         'm_icon' => '<i class="fas fa-search"></i>',
-        'm_name' => 'Search',
+        'm_name' => 'MENCH Search',
         'm_desc' => 'A limited version of the search bar focused on published intent trees.',
         'm_parents' => array(7369,7368,3323),
      ),
@@ -4118,7 +4118,7 @@ $config['en_all_7369'] = array(
      ),
      7161 => array(
         'm_icon' => '<i class="far fa-chart-bar"></i>',
-        'm_name' => 'Stats',
+        'm_name' => 'MENCH Stats',
         'm_desc' => '',
         'm_parents' => array(7369,7368,7305),
      ),
@@ -4147,7 +4147,7 @@ $config['en_all_7368'] = array(
      ),
      4535 => array(
         'm_icon' => '<i class="fas fa-circle yellow"></i>',
-        'm_name' => 'MENCH BLOGS',
+        'm_name' => 'BLOGS',
         'm_desc' => '',
         'm_parents' => array(2738,10608,7368,4463),
      ),
@@ -4165,13 +4165,13 @@ $config['en_all_7368'] = array(
      ),
      4536 => array(
         'm_icon' => '<i class="fas fa-circle blue"></i>',
-        'm_name' => 'MENCH PLAYERS',
+        'm_name' => 'PLAYERS',
         'm_desc' => '',
         'm_parents' => array(2738,10605,7368,4463),
      ),
      6205 => array(
         'm_icon' => '<i class="fas fa-circle ispink"></i>',
-        'm_name' => 'MENCH READS',
+        'm_name' => 'READS',
         'm_desc' => '',
         'm_parents' => array(2738,10607,7368,4463),
      ),
@@ -4474,7 +4474,7 @@ $config['en_all_6827'] = array(
      ),
      10691 => array(
         'm_icon' => '<i class="far fa-user-edit"></i>',
-        'm_name' => 'Bloggers',
+        'm_name' => 'MENCH Bloggers',
         'm_desc' => 'Users who actively train the Mench personal assistant',
         'm_parents' => array(4527,7368,6827),
      ),
@@ -5791,7 +5791,7 @@ $config['en_all_4593'] = array(
      ),
      5007 => array(
         'm_icon' => '<i class="fas fa-expand-arrows ispink"></i>',
-        'm_name' => 'Mench Toggle Advance Mode',
+        'm_name' => 'MENCH Toggle Advance Mode',
         'm_desc' => '',
         'm_parents' => array(10596,10589,7368,4757,4593),
      ),
