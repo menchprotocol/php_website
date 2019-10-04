@@ -9,7 +9,7 @@
 GAMEPLAY:
 
 1. MENCH MISSION: get you to your goals, faster.
-2. MENCH READs connect PLAYers to favourite BLOGs.
+2. MENCH ![#FC1B44](READ)s connect PLAYers to favourite BLOGs.
 3. MENCH BLOGs are READ/made by PLAYers.
 4. MENCH PLAYers READ/BLOG rates measured in words.
 5. MENCH PLAYers READ 1,000 words/week for FREE.
