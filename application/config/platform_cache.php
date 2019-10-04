@@ -12,7 +12,30 @@ defined('BASEPATH') OR exit('No direct script access allowed');
 *
 */
 
-//Generated 2019-10-03 20:54:15 PST
+//Generated 2019-10-04 11:05:16 PST
+
+//MENCH:
+$config['en_ids_2738'] = array(4535,4536,6205);
+$config['en_all_2738'] = array(
+     4535 => array(
+        'm_icon' => '<i class="fas fa-circle yellow"></i>',
+        'm_name' => 'BLOG',
+        'm_desc' => '',
+        'm_parents' => array(2738,10608,7368,4463),
+     ),
+     4536 => array(
+        'm_icon' => '<i class="fas fa-circle blue"></i>',
+        'm_name' => 'PLAY',
+        'm_desc' => '',
+        'm_parents' => array(2738,10605,7368,4463),
+     ),
+     6205 => array(
+        'm_icon' => '<i class="fas fa-circle ispink"></i>',
+        'm_name' => 'READ',
+        'm_desc' => '',
+        'm_parents' => array(2738,10607,7368,4463),
+     ),
+);
 
 //Mench Platform Focused Topics:
 $config['en_ids_10709'] = array(10865,10861,10862,10870);
@@ -107,7 +130,7 @@ $config['en_all_10692'] = array(
 );
 
 //Mench Platform Cache:
-$config['en_ids_4527'] = array(7758,7774,6192,7712,7756,7701,4229,4486,4485,6193,4983,7596,7588,7302,4737,7356,7355,6201,7585,10602,7309,7751,6827,10627,7703,10692,6103,10591,10589,10590,7304,6186,7360,7364,7359,4341,4593,7347,10658,10592,7799,7368,10691,7529,6287,4527,7555,10709,10704,7372,7369,6225,10596,7366,4755,10571,6345,4600,6150,5967,4280,10570,4277,6102,7704,6244,6255,6274,6146,7494,6144,3000,7767,10568,7582,6204,10539,10594,6123,10593,4454,6194,5969,6805,4592,4537,4997,4986,7551,4426,7303,6177,7358,7357,6206,10567,7203);
+$config['en_ids_4527'] = array(7758,7774,6192,7712,7756,7701,4229,4486,4485,6193,4983,7596,7588,7302,4737,7356,7355,6201,7585,10602,7309,7751,6827,10627,7703,10692,6103,10591,10589,10590,7304,6186,7360,7364,7359,4341,4593,7347,10658,10592,7799,2738,7368,10691,7529,6287,4527,7555,10709,10704,7372,7369,6225,10596,7366,4755,10571,6345,4600,6150,5967,4280,10570,4277,6102,7704,6244,6255,6274,6146,7494,6144,3000,7767,10568,7582,6204,10539,10594,6123,10593,4454,6194,5969,6805,4592,4537,4997,4986,7551,4426,7303,6177,7358,7357,6206,10567,7203);
 $config['en_all_4527'] = array(
      7758 => array(
         'm_icon' => '<i class="far fa-mountain"></i>',
@@ -354,6 +377,12 @@ $config['en_all_4527'] = array(
         'm_name' => 'Leaderboard Time Frames',
         'm_desc' => '&trim=Leaderboard',
         'm_parents' => array(4527,7797),
+     ),
+     2738 => array(
+        'm_icon' => '<img src="https://mench.com/img/mench-v2-128.png">',
+        'm_name' => 'MENCH',
+        'm_desc' => '',
+        'm_parents' => array(4527,1,2,7312,4762,2750),
      ),
      7368 => array(
         'm_icon' => '<i class="far fa-user-edit"></i>',
@@ -4137,19 +4166,19 @@ $config['en_all_7369'] = array(
 );
 
 //Mench Blogger Console:
-$config['en_ids_7368'] = array(10691,4535,7291,6287,4536,6205,7256,7161,5007);
+$config['en_ids_7368'] = array(4535,10691,7291,6287,7256,7161,5007,4536,6205);
 $config['en_all_7368'] = array(
+     4535 => array(
+        'm_icon' => '<i class="fas fa-circle yellow"></i>',
+        'm_name' => 'BLOG',
+        'm_desc' => '',
+        'm_parents' => array(2738,10608,7368,4463),
+     ),
      10691 => array(
         'm_icon' => '<i class="far fa-user-edit"></i>',
         'm_name' => 'Bloggers',
         'm_desc' => '',
         'm_parents' => array(4527,7368,6827),
-     ),
-     4535 => array(
-        'm_icon' => '<i class="fas fa-circle yellow"></i>',
-        'm_name' => 'BLOGS',
-        'm_desc' => '',
-        'm_parents' => array(2738,10608,7368,4463),
      ),
      7291 => array(
         'm_icon' => '<i class="fas fa-power-off"></i>',
@@ -4162,18 +4191,6 @@ $config['en_all_7368'] = array(
         'm_name' => 'Moderation Tools',
         'm_desc' => 'Tools for moderating the Mench platform',
         'm_parents' => array(7368,4527,7284),
-     ),
-     4536 => array(
-        'm_icon' => '<i class="fas fa-circle blue"></i>',
-        'm_name' => 'PLAYERS',
-        'm_desc' => '',
-        'm_parents' => array(2738,10605,7368,4463),
-     ),
-     6205 => array(
-        'm_icon' => '<i class="fas fa-circle ispink"></i>',
-        'm_name' => 'READS',
-        'm_desc' => '',
-        'm_parents' => array(2738,10607,7368,4463),
      ),
      7256 => array(
         'm_icon' => '<i class="fas fa-search"></i>',
@@ -4192,6 +4209,18 @@ $config['en_all_7368'] = array(
         'm_name' => 'Toggle Advance Mode',
         'm_desc' => '',
         'm_parents' => array(10596,10589,7368,4757,4593),
+     ),
+     4536 => array(
+        'm_icon' => '<i class="fas fa-circle blue"></i>',
+        'm_name' => 'PLAY',
+        'm_desc' => '',
+        'm_parents' => array(2738,10605,7368,4463),
+     ),
+     6205 => array(
+        'm_icon' => '<i class="fas fa-circle ispink"></i>',
+        'm_name' => 'READ',
+        'm_desc' => '',
+        'm_parents' => array(2738,10607,7368,4463),
      ),
 );
 
