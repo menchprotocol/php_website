@@ -6,60 +6,18 @@ var isAdvancedUpload = function () {
 }();
 
 
-function modify_cancel(){
-    $('.fixed-box').addClass('hidden');
-    remove_all_highlights();
-    $("input").blur();
-    if(history.pushState) {
-        history.pushState(null, null, '#');
-    } else {
-        location.hash = '#';
-    }
-}
+//In milli seconds:
+var fadeout_frequency = 1000;
+var fadeout_speed = 21;
+var updating_basic_stats = false;
 
-function en_fetch_canonical_url(query_string, not_found){
-
-    //Do a call to PHP to fetch canonical URL and see if that exists:
-    $.post("/entities/en_fetch_canonical_url", { search_url:query_string }, function (searchdata) {
-        if(searchdata.status && searchdata.url_already_existed){
-            //URL was detected via PHP, update the search results:
-            $('.add-source-suggest').remove();
-            $('.not-found').html('<a href="/entities/'+searchdata.algolia_object.alg_obj_id+'" class="suggestion">' + echo_js_suggestion(searchdata.algolia_object, 1, 0)+'</a>');
-        }
-    });
-
-    //We did not find the URL, offer them option to add it:
-    return '<a href="/entities/add_source_wizard?url='+ encodeURI(query_string) +'" class="suggestion add-source-suggest"><i class="fas fa-plus-circle" style="margin: 0 5px;"></i> Add Source Wizard</a>'
-        + ( not_found ? '<div class="not-found"><i class="fas fa-exclamation-triangle"></i> URL not found</div>' : '');
-}
-
-function count_new_words_in(target_parent_frame){
-
-    if(target_parent_frame){
-        var focus_element = $(".app-version", window.parent.document);
-    } else {
-        var focus_element = $(".app-version");
-    }
-
-    $.post("/trainer_app/count_new_words_in", {}, function (data) {
-        if(data.status){
-            //Preserve current version:
-            var current_version = focus_element.text();
-
-            //Show trainers their new word count:
-            focus_element.html(data.message).fadeOut(144).fadeIn(144);
-
-            //Replace message with platform version again:
-            setTimeout(function () {
-                focus_element.html(current_version);
-            }, 1597);
-        }
-    });
-}
-
-
-//Function to load all help messages throughout the platform:
 $(document).ready(function () {
+
+    //Update stats on load:
+    update_basic_stats();
+
+    //Continue updating basic stats:
+    setInterval(update_basic_stats, fadeout_frequency);
 
     //Watch typing:
     $(document).keyup(function (e) {
@@ -92,7 +50,7 @@ $(document).ready(function () {
                         filters:
                             ( js_advance_view_enabled ? '' :
                                 '(' +
-                                '    _tags:alg_author_' + js_user_id +
+                                '    _tags:alg_author_' + js_pl_id +
                                 ' OR _tags:alg_for_users' +
                                 ' OR _tags:alg_for_trainer' +
                                 ') AND ') +
@@ -211,7 +169,91 @@ $(document).ready(function () {
             $('#tab' + hash).addClass('active');
         }
     });
+
 });
+
+
+//Update page count stats & refresh them visually once they change:
+var update_basic_stats = function() {
+    //your jQuery ajax code
+
+    if(updating_basic_stats){
+        return false;
+    }
+
+    //Now we're updating:
+    updating_basic_stats = true;
+
+    //Fetch latest stats:
+    $.post("/trainer_app/basic_stats_all", {}, function (data) {
+
+        if(data.intents.current_count != $('.blog .current_count').html()){
+            $('.blog .current_count').html(data.intents.current_count).fadeOut(fadeout_speed).fadeIn(fadeout_speed);
+        }
+        if(data.entities.current_count != $('.play .current_count').html()){
+            $('.play .current_count').html(data.entities.current_count).fadeOut(fadeout_speed).fadeIn(fadeout_speed);
+        }
+        if(data.links.current_count != $('.read .current_count').html()){
+            $('.read .current_count').html(data.links.current_count).fadeOut(fadeout_speed).fadeIn(fadeout_speed);
+        }
+
+        updating_basic_stats = false;
+    });
+
+};
+
+
+function modify_cancel(){
+    $('.fixed-box').addClass('hidden');
+    remove_all_highlights();
+    $("input").blur();
+    if(history.pushState) {
+        history.pushState(null, null, '#');
+    } else {
+        location.hash = '#';
+    }
+}
+
+function en_fetch_canonical_url(query_string, not_found){
+
+    //Do a call to PHP to fetch canonical URL and see if that exists:
+    $.post("/entities/en_fetch_canonical_url", { search_url:query_string }, function (searchdata) {
+        if(searchdata.status && searchdata.url_already_existed){
+            //URL was detected via PHP, update the search results:
+            $('.add-source-suggest').remove();
+            $('.not-found').html('<a href="/entities/'+searchdata.algolia_object.alg_obj_id+'" class="suggestion">' + echo_js_suggestion(searchdata.algolia_object, 1, 0)+'</a>');
+        }
+    });
+
+    //We did not find the URL, offer them option to add it:
+    return '<a href="/entities/add_source_wizard?url='+ encodeURI(query_string) +'" class="suggestion add-source-suggest"><i class="fas fa-plus-circle" style="margin: 0 5px;"></i> Add Source Wizard</a>'
+        + ( not_found ? '<div class="not-found"><i class="fas fa-exclamation-triangle"></i> URL not found</div>' : '');
+}
+
+function count_new_words_in(target_parent_frame){
+
+    if(target_parent_frame){
+        var focus_element = $(".app-version", window.parent.document);
+    } else {
+        var focus_element = $(".app-version");
+    }
+
+    $.post("/trainer_app/count_new_words_in", {}, function (data) {
+        if(data.status){
+            //Preserve current version:
+            var current_version = focus_element.text();
+
+            //Show trainers their new word count:
+            focus_element.html(data.message).fadeOut(144).fadeIn(144);
+
+            //Replace message with platform version again:
+            setTimeout(function () {
+                focus_element.html(current_version);
+            }, 1597);
+        }
+    });
+}
+
 
 
 function remove_all_highlights(){
@@ -318,7 +360,7 @@ function toggle_advance(basic_toggle){
 
 function ln_content_word_count(el_textarea, el_counter) {
     var len = $(el_textarea).val().length;
-    if (len > messages_max_length) {
+    if (len > ln_content_max_length) {
         $(el_counter).addClass('overload').text(len);
     } else {
         $(el_counter).removeClass('overload').text(len);

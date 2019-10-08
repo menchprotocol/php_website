@@ -111,10 +111,10 @@ function ordinal_suffix_of(i) {
 }
 
 function echo_ying_yang(){
-    return js_ying_yang[Math.floor(Math.random()*js_ying_yang.length)];
+    return random_loading_message[Math.floor(Math.random()*random_loading_message.length)];
 }
 function echo_saving_notify(){
-    return js_saving_notify[Math.floor(Math.random()*js_saving_notify.length)];
+    return random_saving_message[Math.floor(Math.random()*random_saving_message.length)];
 }
 
 function load_js_algolia() {
@@ -164,12 +164,12 @@ $(document).ready(function () {
 
 
 
-    $("#platform_front_search").on('autocomplete:selected', function (event, suggestion, dataset) {
+    $("#mench_search").on('autocomplete:selected', function (event, suggestion, dataset) {
 
-        $('#platform_front_search').prop("disabled", true).val('Loading...').css('background-color','#F0F0F0').css('font-size','0.8em');
+        $('#mench_search').prop("disabled", true).val('Loading...').css('background-color','#F0F0F0').css('font-size','0.8em');
         window.location = "/" + suggestion.alg_obj_id;
 
-    }).autocomplete({hint: false, minLength: 1, autoselect: true, keyboardShortcuts: ['s']}, [
+    }).autocomplete({hint: false, minLength: 1, autoselect: true, keyboardShortcuts: ['s'], dropdownMenuContainer: $('#searchresults')}, [
         {
             source: function (q, cb) {
                 //Append filters:

@@ -104,7 +104,7 @@ class Intents extends CI_Controller
     }
 
 
-    function in_public_ui($in_id = 0, $referrer_en_id = 0)
+    function in_public_ui($in_id = 0)
     {
 
         /*
@@ -162,7 +162,6 @@ class Intents extends CI_Controller
         //Load specific view based on Intent Level:
         $this->load->view(( in_array($ins[0]['in_level_entity_id'], $this->config->item('en_ids_7582')) /* Intent Levels Get Started */ ? 'view_user_app/in_starting_point' : 'view_user_app/in_passing_point'  ), array(
             'in' => $ins[0],
-            'referrer_en_id' => $referrer_en_id,
             'session_en' => $session_en,
             'autoexpand' => (isset($_GET['autoexpand']) && intval($_GET['autoexpand'])),
         ));
@@ -405,10 +404,10 @@ class Intents extends CI_Controller
                 'status' => 0,
                 'message' => 'Missing either Intent Outcome OR Child Intent ID',
             ));
-        } elseif (strlen($_POST['in_outcome']) > $this->config->item('in_outcome_max')) {
+        } elseif (strlen($_POST['in_outcome']) > $this->config->item('in_outcome_max_length')) {
             return echo_json(array(
                 'status' => 0,
-                'message' => 'Intent outcome cannot be longer than '.$this->config->item('in_outcome_max').' characters',
+                'message' => 'Intent outcome cannot be longer than '.$this->config->item('in_outcome_max_length').' characters',
             ));
         } elseif(!$_POST['is_parent'] && $_POST['in_link_child_id']==$this->config->item('in_mission_id')){
             return echo_json(array(

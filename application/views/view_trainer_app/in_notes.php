@@ -2,7 +2,7 @@
 
 //Fetch Messages based on in_id:
 $session_en = $this->session->userdata('user');
-$messages_max_length = $this->config->item('messages_max_length');
+$ln_content_max_length = $this->config->item('ln_content_max_length');
 $en_ids_4485 = $this->config->item('en_ids_4485');
 $en_all_4485 = $this->config->item('en_all_4485');
 
@@ -38,7 +38,7 @@ foreach ($this->Links_model->ln_fetch(array(
 <script>
     //pass core variables to JS:
     var in_id = <?= $in_id ?>;
-    var messages_max_length = <?= $messages_max_length ?>;
+    var ln_content_max_length = <?= $ln_content_max_length ?>;
     var in_note_messages_count = <?= $in_note_messages_count ?>;
     var focus_ln_type_entity_id = <?= $en_ids_4485[0] ?>; //The message type that is the focus on-start.
 </script>
@@ -131,7 +131,7 @@ foreach ($this->Links_model->ln_fetch(array(
 
     echo '<div id="ln_content_counter" style="margin:0 0 1px 0; font-size:0.8em;">';
     //File counter:
-    echo '<span id="charNum' . $in_id . '">0</span>/' . $messages_max_length;
+    echo '<span id="charNum' . $in_id . '">0</span>/' . $ln_content_max_length;
 
     //firstname
     echo '<a href="javascript:in_message_add_name();" class="textarea_buttons remove_loading" style="float:right; margin-left:8px;" data-toggle="tooltip" title="Personalize this message by adding the user\'s First Name" data-placement="left"><i class="far fa-user"></i> /firstname</a>';

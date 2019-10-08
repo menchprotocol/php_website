@@ -4,9 +4,19 @@ defined('BASEPATH') OR exit('No direct script access allowed');
 //General:
 $route['404_override']              = 'user_app/page_not_found';
 $route['translate_uri_dashes']      = FALSE;
-$route['default_controller']        = "intents/in_public_ui";
+$route['default_controller']        = "mench/mench";
 
-//Trainer Intents/Entities:
+
+$route['play/(:num)']            = "entities/en_train/$1";
+$route['play']                   = "entities/en_train/0";
+$route['blog/(:num)']            = "intents/in_train/$1";
+$route['blog']                   = "intents/in_train/0";
+$route['read/(:num)']            = "intents/in_train/$1";
+$route['blog']                   = "intents/in_train/0";
+
+
+
+
 $route['entities/(:num)']           = "entities/en_train/$1";
 $route['entities']                  = "entities/en_train/0";
 $route['intents/(:num)']            = "intents/in_train/$1";

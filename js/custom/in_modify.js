@@ -315,7 +315,7 @@ function in_adjust_ui(in_id, level, new_hours, intent_deficit_count, apply_to_tr
 
 function in_outcome_counter() {
     var len = $('#in_outcome').val().length;
-    if (len > in_outcome_max) {
+    if (len > in_outcome_max_length) {
         $('#charNameNum').addClass('overload').text(len);
     } else {
         $('#charNameNum').removeClass('overload').text(len);

@@ -16,10 +16,7 @@ body.grey-bg {
     background-color: #F0F0F0 !important;
 }
 
-h1, .h1 {
-    font-size: 2.5em;
-    line-height: 1.15em;
-}
+
 
 .featured-nav a {
     background: #222 !important;
@@ -365,7 +362,6 @@ a.badge-primary:hover {
 .left-li-title {
     line-height: 120%;
     padding: 10px 15px;
-    font-family: "Roboto Slab", "Times New Roman", serif;
     font-weight: bold;
     font-size: 1.3em;
 }
@@ -383,10 +379,6 @@ a.badge-primary:hover {
     cursor: pointer;
 }
 
-#in_level1_outcome {
-    font-family: "Roboto Slab", "Times New Roman", serif;
-}
-
 #en_link_preview{
     display: inline-block;
     overflow: hidden;
@@ -395,7 +387,6 @@ a.badge-primary:hover {
 
 .top_entity .en_name {
     font-size: 1.4em;
-    font-family: "Roboto Slab", "Times New Roman", serif;
     font-weight: bold;
     padding-left: 3px;
 }
@@ -531,7 +522,6 @@ input::-webkit-inner-spin-button {
 
 .navbar-brand span {
     display: inline-block;
-    font-family: 'Titillium Web', sans-serif;
     font-size: 36px;
     color: #070707;
 }
@@ -909,7 +899,6 @@ input::-webkit-inner-spin-button {
 .card-title .title-sub {
     display: block;
     font-size: 0.8em;
-    font-family: Lato;
     color: #999;
     font-weight: normal;
     line-height: 110% !important;
@@ -1645,7 +1634,6 @@ footer {
     font-size: 0.8em;
     font-weight: normal;
     color: #999;
-    font-family: Lato;
     padding: 0;
     margin: 0;
 }
@@ -1802,7 +1790,6 @@ footer {
 
 .msg {
     font-size: 1em !important;
-    font-family: Lato, Helvetica, sans-serif !important;
     line-height: 110% !important;
     font-weight: 300 !important;
     color: #070707;
@@ -1848,14 +1835,12 @@ footer {
     height: 49px !important;
     font-weight: 300 !important;
     font-size: 18px !important;
-    font-family: Lato;
     line-height: 27px !important;
     color: #070707;
 }
 
 .listerin::placeholder {
     font-size: 16px !important;
-    font-family: Lato;
     line-height: 27px !important;
     color: #AAA;
     text-transform: uppercase;
@@ -1889,7 +1874,6 @@ footer {
 
 .intentadder-level-2-child::placeholder, .intentadder-level-2-parent::placeholder {
     font-size: 16px !important;
-    font-family: Lato;
     line-height: 27px !important;
     color: #AAA;
     text-transform: none;
@@ -1919,7 +1903,6 @@ footer {
 
 .new-in3-input input[type=text]::placeholder {
     font-size: 16px !important;
-    font-family: Lato;
     line-height: 27px !important;
     color: #555;
     text-transform: none;
@@ -2566,7 +2549,6 @@ select.form-control {
 
 .ql-editor p, .ql-editor ol, .ql-editor ul, .ql-editor pre, .ql-editor blockquote, .ql-editor h1, .ql-editor h2, .ql-editor h3, .ql-editor h4, .ql-editor h5, .ql-editor h6 {
     margin: 0 0 12px 0 !important;
-    font-family: Lato;
     font-size: 1.4em;
     line-height: 120%;
     color: #070707;
@@ -2847,7 +2829,6 @@ a.badge:focus, a.badge:hover {
     font-size: 18px !important;
     font-weight: 500 !important;
     line-height: 120% !important;
-    font-family: "Lato", "Helvetica", "Arial", sans-serif !important;
     margin: 0 !important;
 }
 
@@ -3176,7 +3157,6 @@ a .badge {
     border-radius: 5px;
     margin: 0;
     cursor: default;
-    font-family: "Lato", "Helvetica", "Arial", sans-serif;
 }
 
 .badge-click {
@@ -3578,7 +3558,6 @@ h4 .tip-badge {
 
 .msgin::placeholder {
     font-size: 16px !important;
-    font-family: Lato !important;
     line-height: 110% !important;
     font-weight: 500 !important;
     color: #888;
@@ -4598,12 +4577,107 @@ h4 .tip-badge {
     font-weight: 500 !important;
 }
 
+.form-control {
+    border:1px solid #070707;
+}
+
+#searchresults{
+
+}
+
+.container {
+    width: 100%;
+    padding-right: 0;
+    padding-left: 0;
+}
+
+.container-body{
+    margin-top: 39px;
+}
+
+.navbar-bottom{
+width: 100%;
+background-color: #FFF;
+border-top:3px solid #070707;
+}
+.navbar-bottom td{
+padding:3px 0 3px;
+}
+.single-a {
+width:42px;
+margin: 0;
+padding: 0;
+line-height: 100% !important;
+}
+.single-a a{
+display: block;
+text-align: center;
+border-radius: 2px;
+margin-left:5px;
+color:#070707;
+padding: 12px 5px 8px;
+}
+.single-a .fas, .single-a .fal, .single-a .far{
+font-size: 1.2em;
+}
+.single-a a:hover{
+background-color:#070707;
+color:#FFF;
+}
+
+
+
+.mench-logo{
+font-size: 1.8em;
+margin-left:3px;
+line-height: 100%;
+}
+
+.navbar-top{
+width: 100%;
+background-color: #FFF;
+}
+
+.navbar-top td{
+width: 33.3% !important;
+}
+
+.navbar-top .mn_name{
+font-size:1.2em;
+margin-left:3px;
+}
+.navbar-top .current_count{
+font-size:1em;
+}
+
+.navbar-top a{
+padding:9px 5px 5px;
+display: block;
+text-decoration: none;
+border-bottom:3px solid;
+line-height: 110%;
+}
+
+h1, .navbar-top .mn_name, .mench-logo {
+font-family: 'Montserrat', sans-serif;
+text-transform: uppercase;
+}
 
 
 /* 3x Core Colors */
-.blue, .isblue, .isblue a           { color:#008DF2 !important; }
-.yellow, .isyellow, .isyellow a     { color:#FFDF0F !important; }
-.pink, .ispink, .ispink a           { color:#FC1B44 !important; }
+.blue, .isblue, .isblue a, .play           { color:#008DF2 !important; }
+.yellow, .isyellow, .isyellow a, .blog     { color:#FFDF0F !important; }
+.pink, .ispink, .ispink a, .read           { color:#FC1B44 !important; }
+
+.border-play     { border-color:#008DF2 !important; }
+.border-blog     { border-color:#FFDF0F !important; }
+.border-read     { border-color:#FC1B44 !important; }
+
+.background-play, .border-play:hover     { background-color:#008DF2 !important; color:#FFF !important; }
+.background-blog, .border-blog:hover     { background-color:#FFDF0F !important; color:#FFF !important; }
+.background-read, .border-read:hover     { background-color:#FC1B44 !important; color:#FFF !important; }
+
+.background-play .fas, .background-blog .fas, .background-read .fas, .background-play .far, .background-blog .far, .background-read .far, .background-play .fal, .background-blog .fal, .background-read .fal     { color:#FFF !important; }
 
 
 /* Entity Color Palette @10604 */
@@ -4621,3 +4695,5 @@ h4 .tip-badge {
 .islightblue, .islightblue a        { color:#85C1E9 !important; }
 .ismatt, .ismatt a                  { color:#070707 !important; }
 .isdarkorange, .isdarkorange a      { color:#D35400 !important; }
+
+

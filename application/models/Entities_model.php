@@ -1201,44 +1201,6 @@ class Entities_model extends CI_Model
             'ln_child_entity_id' => $added_en['en']['en_id'],
         ));
 
-        //Have they been referred by someone?
-        if(substr_count($quick_reply_payload, 'REFERUSER_') == 1){
-
-            //See what the payload is:
-            $append_link_ids = explode('_', one_two_explode('REFERUSER_', '', $quick_reply_payload));
-            $referrer_en_id = intval($append_link_ids[0]);
-            $in_id = intval($append_link_ids[1]);
-
-
-            //Validate referer:
-            //Fetch and validate entity referrer:
-            $referrer_ens = $this->Entities_model->en_fetch(array(
-                'en_id' => $referrer_en_id,
-                'en_status_entity_id IN (' . join(',', $this->config->item('en_ids_7357')) . ')' => null, //Entity Statuses Public
-            ));
-
-            if(count($referrer_ens) > 0){
-
-                //Add them as the child of the referer:
-                $this->Links_model->ln_create(array(
-                    'ln_type_entity_id' => 4255, //Text link
-                    'ln_content' => 'Referrer',
-                    'ln_creator_entity_id' => $referrer_en_id,
-                    'ln_parent_entity_id' => $referrer_en_id,
-                    'ln_child_entity_id' => $added_en['en']['en_id'],
-                ));
-
-                //Log referrer link type:
-                $this->Links_model->ln_create(array(
-                    'ln_type_entity_id' => 7484, //User Referred User
-                    'ln_creator_entity_id' => $referrer_en_id,
-                    'ln_child_entity_id' => $added_en['en']['en_id'],
-                    'ln_child_intent_id' => $in_id,
-                ));
-
-            }
-        }
-
 
         if(!$fetch_result){
             //Let them know to complete their profile:

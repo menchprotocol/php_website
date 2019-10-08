@@ -232,11 +232,11 @@ function ln_detect_type($string)
     $string = trim($string);
     $CI =& get_instance();
 
-    if(strlen($string) > $CI->config->item('messages_max_length')){
+    if(strlen($string) > $CI->config->item('ln_content_max_length')){
 
         return array(
             'status' => 0,
-            'message' => 'String is ['.(strlen($string) - $CI->config->item('messages_max_length')).'] characters longer than the allowed length of '.$CI->config->item('messages_max_length').' characters.',
+            'message' => 'String is ['.(strlen($string) - $CI->config->item('ln_content_max_length')).'] characters longer than the allowed length of '.$CI->config->item('ln_content_max_length').' characters.',
         );
 
     } elseif (is_null($string) || strlen($string) == 0) {

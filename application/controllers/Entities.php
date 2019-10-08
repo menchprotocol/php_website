@@ -113,7 +113,7 @@ class Entities extends CI_Controller
         //Load views:
         $this->load->view('view_trainer_app/trainer_app_header', array(
             'title' => $ens[0]['en_name'] . ' | Entities',
-            'message' => $message, //Possible mass-action message for UI:
+            'flash_message' => $message, //Possible mass-action message for UI:
         ));
         $this->load->view('view_trainer_app/en_train', array(
             'entity' => $ens[0],
@@ -454,7 +454,7 @@ class Entities extends CI_Controller
 
         //Auth user and check required variables:
         $session_en = en_auth($this->config->item('en_ids_10704') /* Mench Administrators */);
-        $messages_max_length = $this->config->item('messages_max_length');
+        $ln_content_max_length = $this->config->item('ln_content_max_length');
         $success_message = 'Saved'; //Default, might change based on what we do...
 
         //Fetch current data:

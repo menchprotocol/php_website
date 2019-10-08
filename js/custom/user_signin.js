@@ -50,7 +50,7 @@ function signin_on_messenger(){
 
     //Redirect to Messenger with a bit of delay to log the link above:
     setTimeout(function () {
-        window.location = fb_mench_url + ( referrer_in_id > 0 ? '?ref=' + ( referrer_en_id > 0 ? 'REFERUSER_'+referrer_en_id+'_' : '' ) + referrer_in_id : '' );
+        window.location = fb_mench_url;
     }, 377);
 
 }
@@ -98,7 +98,6 @@ function search_email(){
 
         input_email: $('#input_email').val(),
         referrer_in_id: referrer_in_id,
-        referrer_en_id: referrer_en_id,
 
     }, function (data) {
 
@@ -148,7 +147,6 @@ function add_account(){
         new_password: $('#new_password').val(),
         referrer_url: referrer_url,
         referrer_in_id: referrer_in_id,
-        referrer_en_id: referrer_en_id,
     }, function (data) {
 
         if (data.status) {
@@ -238,7 +236,6 @@ function singin_magic_link_email(){
         $.post("/user_app/singin_magic_link_email", {
             input_email: $('#input_email').val(),
             referrer_in_id: referrer_in_id,
-            referrer_en_id: referrer_en_id,
         }, function (data) {
             if (data.status) {
                 //All good, they can close window:

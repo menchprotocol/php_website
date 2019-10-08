@@ -17,7 +17,7 @@ date_default_timezone_set('America/Los_Angeles');
 //App Functionality:
 $config['base_url']                 = 'https://mench.com/';
 $config['app_version']              = '1.0691'; //Cache buster for static JS/CSS files, so needs to be updated if you update static files`
-$config['system_name']              = 'Mench'; //Used for example when a link has no trainer
+$config['system_name']              = 'MENCH'; //Used for example when a link has no trainer
 $config['system_icon']              = '<img src="/img/mench_white.png" />'; //Used for example when a link has no trainer
 $config['app_enable_algolia']       = true; //May need to turn off if/when we reach monthly quota of 50k calls
 $config['max_file_mb_size']         = 25; //Server setting is 32MB
@@ -49,7 +49,7 @@ $config['in_system_lock']           = array(7766, 11762, 12830, 12831, 12677); /
 
 //Intent Settings:
 $config['in_max_seconds']           = 28800; //The maximum seconds allowed per intent. If larger, the trainer is asked to break it down into smaller intents
-$config['in_outcome_max']           = 100; //Max number of characters allowed for intent outcomes
+$config['in_outcome_max_length']           = 100; //Max number of characters allowed for intent outcomes
 $config['in_completion_marks']      = array(-89, -55, -34, -21, -13, -8, -5, -3, -2, -1, 0, 1, 2, 3, 5, 8, 13, 21, 34, 55, 89); //Marks users get when completing an intent (Learn more @4358)
 
 
@@ -58,7 +58,7 @@ $config['en_name_max_length']       = 250; //Max number of characters allowed in
 
 
 //Links:
-$config['messages_max_length']      = 610; //Max number of characters allowed in messages. Facebook's cap is 2000 characters/message
+$config['ln_content_max_length']      = 610; //Max number of characters allowed in messages. Facebook's cap is 2000 characters/message
 $config['tr_object_links']          = array( //Each link can have any of the following object links
                                         'ln_type_entity_id' => 'en',
                                         'ln_creator_entity_id' => 'en',

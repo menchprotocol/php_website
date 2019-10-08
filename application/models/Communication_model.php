@@ -356,10 +356,10 @@ class Communication_model extends CI_Model
                 'status' => 0,
                 'message' => 'Missing Message Content',
             );
-        } elseif ($strict_validation && strlen($input_message) > $this->config->item('messages_max_length')) {
+        } elseif ($strict_validation && strlen($input_message) > $this->config->item('ln_content_max_length')) {
             return array(
                 'status' => 0,
-                'message' => 'Message is longer than the allowed ' . $this->config->item('messages_max_length') . ' characters',
+                'message' => 'Message is longer than the allowed ' . $this->config->item('ln_content_max_length') . ' characters',
             );
         } elseif (!preg_match('//u', $input_message)) {
             return array(
@@ -1552,56 +1552,6 @@ class Communication_model extends CI_Model
 
             //List Recommended Intents and let them choose:
             $this->Communication_model->dispatch_recommendations($en['en_id']);
-
-        } elseif (substr_count($quick_reply_payload, 'REFERUSER_') == 1) {
-
-            $append_link_ids = explode('_', one_two_explode('REFERUSER_', '', $quick_reply_payload));
-            $referrer_en_id = intval($append_link_ids[0]);
-            $in_id = intval($append_link_ids[1]);
-
-
-            //Validate intent:
-            $ins = $this->Intents_model->in_fetch(array(
-                'in_id' => $in_id,
-                'in_level_entity_id IN (' . join(',', $this->config->item('en_ids_7582')) . ')' => null, //Intent Levels Get Started
-                'in_status_entity_id IN (' . join(',', $this->config->item('en_ids_7355')) . ')' => null, //Intent Statuses Public
-            ));
-            if (count($ins) < 1) {
-
-                $this->Communication_model->dispatch_message(
-                    '❌ Error: I cannot add this intention to your Action Plan because its not a starting-point intent.',
-                    $en,
-                    true,
-                    array(
-                        array(
-                            'content_type' => 'text',
-                            'title' => 'Next',
-                            'payload' => 'GONEXT',
-                        ),
-                    )
-                );
-
-                return array(
-                    'status' => 0,
-                    'message' => 'Failed to validate starting-point intent',
-                );
-            }
-
-
-            //Fetch and validate entity referrer:
-            $referrer_ens = $this->Entities_model->en_fetch(array(
-                'en_id' => $referrer_en_id,
-                'en_status_entity_id IN (' . join(',', $this->config->item('en_ids_7357')) . ')' => null, //Entity Statuses Public
-            ));
-            if(count($referrer_ens) < 1){
-                return array(
-                    'status' => 0,
-                    'message' => 'Invalid referrer entity ID',
-                );
-            }
-
-            //Add to Action Plan:
-            $this->Actionplan_model->intention_add($en['en_id'], $in_id);
 
         } elseif (is_numeric($quick_reply_payload)) {
 

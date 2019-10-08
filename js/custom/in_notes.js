@@ -16,7 +16,7 @@ function in_message_add_name() {
 function in_message_char_count() {
     //Update count:
     var len = $('#ln_content' + in_id).val().length;
-    if (len > messages_max_length) {
+    if (len > ln_content_max_length) {
         $('#charNum' + in_id).addClass('overload').text(len);
     } else {
         $('#charNum' + in_id).removeClass('overload').text(len);
@@ -30,7 +30,7 @@ function in_message_validate(ln_id) {
     }
     //Update count:
     var len = $('#message_body_' + ln_id).val().length;
-    if (len > messages_max_length) {
+    if (len > ln_content_max_length) {
         $('#charNumEditing' + ln_id).addClass('overload').text(len);
     } else {
         $('#charNumEditing' + ln_id).removeClass('overload').text(len);

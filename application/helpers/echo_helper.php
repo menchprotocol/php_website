@@ -314,7 +314,7 @@ function echo_in_message_manage($ln)
 
 
     //Counter:
-    $ui .= '<li class="edit-on hidden"><span id="charNumEditing' . $ln['ln_id'] . '">0</span>/' . $CI->config->item('messages_max_length') . '</li>';
+    $ui .= '<li class="edit-on hidden"><span id="charNumEditing' . $ln['ln_id'] . '">0</span>/' . $CI->config->item('ln_content_max_length') . '</li>';
 
     //Save Edit:
     $ui .= '<li class="pull-right edit-on hidden"><a class="btn btn-third white-third" title="Save changes" data-toggle="tooltip" data-placement="top" href="javascript:in_message_modify_save(' . $ln['ln_id'] . ',' . $ln['ln_type_entity_id'] . ');"><i class="fas fa-check"></i> Save</a></li>';
@@ -1618,7 +1618,7 @@ function echo_en_cache($config_var_name, $en_id, $micro_status = true, $data_pla
 }
 
 
-function echo_in_recommend($in, $in_common_prefix = null, $hide_class = null, $referrer_en_id = 0)
+function echo_in_recommend($in, $in_common_prefix = null, $hide_class = null)
 {
 
     //See if user is logged-in:
@@ -1633,7 +1633,7 @@ function echo_in_recommend($in, $in_common_prefix = null, $hide_class = null, $r
             'ln_parent_intent_id' => $in['in_id'],
         ))) > 0);
 
-    $ui = '<a href="' . ( $already_in_actionplan ? '/actionplan/'.$in['in_id'] : ( $referrer_en_id > 0 ? '/'.$referrer_en_id.'_'.$in['in_id'] : '/'.$in['in_id'] )) . '" class="list-group-item '.$hide_class .'">';
+    $ui = '<a href="' . ( $already_in_actionplan ? '/actionplan/'.$in['in_id'] : '/'.$in['in_id']) . '" class="list-group-item '.$hide_class .'">';
 
     $ui .= '<span class="pull-right">';
     $ui .= '<span class="badge badge-primary fr-bgd" style="margin-top: -4px;">'.( $already_in_actionplan ? $en_all_7369[6138]['m_icon'] : '<i class="fas fa-angle-right"></i>' ).'</span>';
@@ -2414,7 +2414,7 @@ function echo_in($in, $level, $in_linked_id = 0, $is_parent = false)
         if($can_train){
 
             $ui .= '<div class="list-group-item list_input new-in3-input link-class--' . $ln_id . ' hidden">
-                <div class="form-group is-empty"  style="margin: 0; padding: 0;"><form action="#" onsubmit="in_link_or_create(' . $in['in_id'] . ',0,3);" intent-id="' . $in['in_id'] . '"><input type="text" class="form-control intentadder-id-'.$in['in_id'].' algolia_search" maxlength="' . $CI->config->item('in_outcome_max') . '" id="addintent-cr-' . $ln_id . '" intent-id="' . $in['in_id'] . '" placeholder="Add Intent"></form></div>
+                <div class="form-group is-empty"  style="margin: 0; padding: 0;"><form action="#" onsubmit="in_link_or_create(' . $in['in_id'] . ',0,3);" intent-id="' . $in['in_id'] . '"><input type="text" class="form-control intentadder-id-'.$in['in_id'].' algolia_search" maxlength="' . $CI->config->item('in_outcome_max_length') . '" id="addintent-cr-' . $ln_id . '" intent-id="' . $in['in_id'] . '" placeholder="Add Intent"></form></div>
         </div>';
 
             $ui .= '<div class="algolia_search_pad in_pad_'.$in['in_id'].' hidden"><span>Search existing intents or create a new one...</span></div>';

@@ -114,13 +114,13 @@ class Trainer_app extends CI_Controller
 
         return echo_json(array(
             'intents' => array(
-                'extended_stats' => number_format($in_count[0]['total_public_intents']),
+                'current_count' => number_format($in_count[0]['total_public_intents']),
             ),
             'entities' => array(
-                'extended_stats' => number_format($en_count[0]['total_public_entities']),
+                'current_count' => number_format($en_count[0]['total_public_entities']),
             ),
             'links' => array(
-                'extended_stats' => number_format($ln_count[0]['total_public_links']),
+                'current_count' => number_format($ln_count[0]['total_public_links']),
             )
         ));
 

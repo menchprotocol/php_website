@@ -137,7 +137,7 @@ $en_all_7369 = $this->config->item('en_all_7369');
                     <div class="form-group is-empty" style="margin: 0; padding: 0;">
                         <input type="text"
                                class="form-control intentadder-level-2-child algolia_search"
-                               maxlength="' . $this->config->item('in_outcome_max') . '"
+                               maxlength="' . $this->config->item('in_outcome_max_length') . '"
                                intent-id="' . $in['in_id'] . '"
                                id="addintent-c-' . $in['in_id'] . '-0"
                                placeholder="Add Intent">

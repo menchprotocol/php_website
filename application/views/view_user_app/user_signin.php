@@ -6,7 +6,6 @@ $en_all_7555 = $this->config->item('en_all_7555');
 $this_attempt = array(
     'ln_type_entity_id' => ( $referrer_in_id > 0 ? 7560 /* User Signin Intent Channel Choose */ : 7561 /* User Signin on Website */ ),
     'ln_parent_intent_id' => $referrer_in_id,
-    'ln_parent_entity_id' => $referrer_en_id,
 );
 
 $current_sign_in_attempt = array(); //Will try to find this...
@@ -49,7 +48,6 @@ if(count($current_sign_in_attempt) == 0){
 
 <script>
     var referrer_in_id = <?= intval($referrer_in_id) ?>;
-    var referrer_en_id = <?= intval($referrer_en_id) ?>;
     var session_en_id = <?= ( isset($session_en['en_id']) ? intval($session_en['en_id']) : 0 ) ?>;
     var referrer_url = '<?= @$_GET['url'] ?>';
     var fb_mench_url = '<?= $this->config->item('fb_mench_url') ?>';
@@ -57,14 +55,12 @@ if(count($current_sign_in_attempt) == 0){
         ln_type_entity_id: 7558, //User Signin with Messenger Choice
         ln_creator_entity_id: session_en_id,
         ln_parent_intent_id: <?= intval($referrer_in_id) ?>,
-        ln_parent_entity_id: <?= intval($referrer_en_id) ?>,
         ln_parent_link_id: <?= $current_sign_in_attempt['ln_id'] ?>,
     };
     var channel_choice_website = {
         ln_type_entity_id: 7559, //User Signin with Website Choice
         ln_creator_entity_id: session_en_id,
         ln_parent_intent_id: <?= intval($referrer_in_id) ?>,
-        ln_parent_entity_id: <?= intval($referrer_en_id) ?>,
         ln_parent_link_id: <?= $current_sign_in_attempt['ln_id'] ?>,
     };
 </script>
@@ -85,7 +81,7 @@ if(count($current_sign_in_attempt) == 0){
             'in_status_entity_id IN (' . join(',', $this->config->item('en_ids_7355')) . ')' => null, //Intent Statuses Public
         ));
         if(count($ins) > 0){
-            echo '<p>To <a href="/'.( $referrer_en_id > 0 ? $referrer_en_id.'_' : '' ).$referrer_in_id.'">'.echo_in_outcome($ins[0]['in_outcome']).'</a></p>';
+            echo '<p>To <a href="/'.$referrer_in_id.'">'.echo_in_outcome($ins[0]['in_outcome']).'</a></p>';
         }
     } elseif(isset($_GET['url']) && strlen($_GET['url']) > 0){
         echo '<p>To access <u>'.urldecode($_GET['url']).'</u></p>';

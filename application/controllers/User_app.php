@@ -18,7 +18,7 @@ class User_app extends CI_Controller
 
 
 
-    function signin($in_id = 0, $referrer_en_id = 0){
+    function signin($in_id = 0){
 
         //Check to see if they are already logged in?
         $session_en = $this->session->userdata('user');
@@ -38,7 +38,6 @@ class User_app extends CI_Controller
         ));
         $this->load->view('view_user_app/user_signin', array(
             'referrer_in_id' => intval($in_id),
-            'referrer_en_id' => intval($referrer_en_id),
             'session_en' => $this->session->userdata('user'),
         ));
         $this->load->view('view_user_app/user_app_footer', array(
@@ -304,7 +303,7 @@ class User_app extends CI_Controller
 
     function signin_create_account(){
 
-        if (!isset($_POST['referrer_in_id']) || !isset($_POST['referrer_en_id']) || !isset($_POST['referrer_url'])) {
+        if (!isset($_POST['referrer_in_id']) || !isset($_POST['referrer_url'])) {
             return echo_json(array(
                 'status' => 0,
                 'message' => 'Missing core data',
@@ -445,7 +444,7 @@ class User_app extends CI_Controller
         $html_message .= '<div><a href="'.$actionplan_url.'" target="_blank">' . $actionplan_url . '</a></div><br />';
 
         $html_message .= '<div>Connect on Messenger:</div><br />';
-        $messenger_url = $this->config->item('fb_mench_url') . ( count($referrer_ins) > 0 ? '?ref=' . ( $_POST['referrer_en_id'] > 0 ? 'REFERUSER_'.$_POST['referrer_en_id'].'_' : '' ) . $referrer_ins[0]['in_id'] : '' ) ;
+        $messenger_url = $this->config->item('fb_mench_url') . ( count($referrer_ins) > 0 ? '?ref=' . $referrer_ins[0]['in_id'] : '' ) ;
         $html_message .= '<div><a href="'.$messenger_url.'" target="_blank">' . $messenger_url . '</a></div>';
         $html_message .= '<br /><br />';
         $html_message .= '<div>Cheers,</div><br />';
@@ -460,7 +459,6 @@ class User_app extends CI_Controller
             'ln_type_entity_id' => 7562, //User Signin Joined Mench
             'ln_creator_entity_id' => $user_en['en']['en_id'],
             'ln_parent_intent_id' => intval($_POST['referrer_in_id']),
-            'ln_parent_entity_id' => intval($_POST['referrer_en_id']),
             'ln_metadata' => array(
                 'email_log' => $email_log,
             ),
@@ -496,7 +494,7 @@ class User_app extends CI_Controller
                 'status' => 0,
                 'message' => 'Invalid email address',
             ));
-        } elseif (!isset($_POST['referrer_in_id']) || !isset($_POST['referrer_en_id'])) {
+        } elseif (!isset($_POST['referrer_in_id'])) {
             return echo_json(array(
                 'status' => 0,
                 'message' => 'Missing core data',
@@ -524,7 +522,6 @@ class User_app extends CI_Controller
             'ln_content' => $_POST['input_email'],
             'ln_creator_entity_id' => $user_emails[0]['en_id'], //User making request
             'ln_parent_intent_id' => intval($_POST['referrer_in_id']),
-            'ln_parent_entity_id' => intval($_POST['referrer_en_id']),
         ));
 
         //This is a new email, send invitation to join:
@@ -608,7 +605,7 @@ class User_app extends CI_Controller
                 'status' => 0,
                 'message' => 'Invalid email address',
             ));
-        } elseif (!isset($_POST['referrer_in_id']) || !isset($_POST['referrer_en_id'])) {
+        } elseif (!isset($_POST['referrer_in_id'])) {
             return echo_json(array(
                 'status' => 0,
                 'message' => 'Missing core data',

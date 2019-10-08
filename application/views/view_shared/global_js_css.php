@@ -1,13 +1,5 @@
 
-<!--
 
-HELP US BUILT THE FUTURE
-
-JOIN MENCH1
-
-https://mench.com/12747
-
--->
 
 <!-- START GLOBAL STATIC RESOURCES -->
 <link rel="stylesheet" type="text/css"
@@ -24,7 +16,6 @@ https://mench.com/12747
 <link href="/css/lib/simplebar.css" rel="stylesheet"/>
 <link href="/css/lib/material-dashboard.css" rel="stylesheet"/>
 <link href="/css/lib/material-kit.css" rel="stylesheet"/>
-<link href="/css/styles.css?v=v<?= $this->config->item('app_version') ?>" rel="stylesheet"/>
 
 
 <!-- Core JS File/Variables -->
@@ -34,11 +25,7 @@ https://mench.com/12747
 <script src="/js/lib/material.min.js" type="text/javascript"></script>
 <script src="/js/lib/material-dashboard.js" type="text/javascript"></script>
 <script src="/js/lib/simplebar.js"></script>
-<script src="/js/lib/jquery.textcomplete.min.js"></script>
-<script src="/js/lib/autocomplete.jquery.min.js"></script>
-<script src="/js/lib/algoliasearch.min.js"></script>
-<script src="/js/lib/sortable.min.js" type="text/javascript"></script>
-<script src="/js/custom/global-js.js?v=v<?= $this->config->item('app_version') ?>" type="text/javascript"></script>
+
 
 <script>
     <?php
@@ -54,13 +41,13 @@ https://mench.com/12747
     echo ' var js_en_all_6186 = ' . json_encode($this->config->item('en_all_6186')) . '; '; // Link Statuses
 
     //Input Limitations:
-    echo ' var in_outcome_max = ' . $this->config->item('in_outcome_max') . '; ';
-    echo ' var messages_max_length = ' . $this->config->item('messages_max_length') . '; ';
+    echo ' var in_outcome_max_length = ' . $this->config->item('in_outcome_max_length') . '; ';
+    echo ' var ln_content_max_length = ' . $this->config->item('ln_content_max_length') . '; ';
     echo ' var en_name_max_length = ' . $this->config->item('en_name_max_length') . '; ';
-    echo ' var js_ying_yang = ' . json_encode(echo_random_message('ying_yang', true)) . '; ';
-    echo ' var js_saving_notify = ' . json_encode(echo_random_message('saving_notify', true)) . '; ';
+    echo ' var random_loading_message = ' . json_encode(echo_random_message('ying_yang', true)) . '; ';
+    echo ' var random_saving_message = ' . json_encode(echo_random_message('saving_notify', true)) . '; ';
     echo ' var js_advance_view_enabled = ' . ( $this->session->userdata('advance_view_enabled') ? 1 : 0 ) . '; ';
-    echo ' var js_user_id = ' . ( isset($session_en['en_id']) ? $session_en['en_id'] : 0 ) . '; ';
+    echo ' var js_pl_id = ' . ( isset($session_en['en_id']) ? $session_en['en_id'] : 0 ) . '; ';
 
     ?>
 </script>

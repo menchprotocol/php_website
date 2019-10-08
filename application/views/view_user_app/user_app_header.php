@@ -31,7 +31,7 @@ $en_all_7369 = $this->config->item('en_all_7369');
                         </td>
                         <td>
                             <form id="searchFrontForm">
-                            <input type="text" class="algolia_search" id="platform_front_search" data-lpignore="true"
+                            <input type="text" class="algolia_search" id="mench_search" data-lpignore="true"
                                    placeholder="Search Mench...">
                             </form>
                         </td>

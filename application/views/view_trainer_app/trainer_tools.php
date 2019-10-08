@@ -199,7 +199,6 @@ if(!$action) {
 
     echo '</table>';
 
-
 } elseif($action=='random_user_icon'){
 
     //Show breadcrumb:

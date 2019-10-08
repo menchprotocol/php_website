@@ -1139,11 +1139,11 @@ class Intents_model extends CI_Model
                 'message' => 'Outcome cannot include double spaces',
             );
 
-        } elseif (strlen($in_outcome) > $this->config->item('in_outcome_max')) {
+        } elseif (strlen($in_outcome) > $this->config->item('in_outcome_max_length')) {
 
             return array(
                 'status' => 0,
-                'message' => 'Outcome must be '.$this->config->item('in_outcome_max').' characters or less',
+                'message' => 'Outcome must be '.$this->config->item('in_outcome_max_length').' characters or less',
             );
 
         } elseif ($starts_with_equal && !$scope_supports_equal) {

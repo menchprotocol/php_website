@@ -39,7 +39,7 @@ if(in_array($in['in_completion_method_entity_id'], $this->config->item('en_ids_7
     $in_common_prefix = in_common_prefix($in__children);
 
     foreach ($in__children as $child_in) {
-        echo echo_in_recommend($child_in, $in_common_prefix, null, $referrer_en_id);
+        echo echo_in_recommend($child_in, $in_common_prefix, null);
     }
     echo '</div>';
 
