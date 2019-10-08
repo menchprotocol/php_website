@@ -99,32 +99,6 @@ class Trainer_app extends CI_Controller
         }
     }
 
-    function basic_stats_all(){
-
-        //Return stats for the platform home page:
-        $in_count = $this->Intents_model->in_fetch(array(
-            'in_status_entity_id IN (' . join(',', $this->config->item('en_ids_7355')) . ')' => null, //Intent Statuses Public
-        ), array(), 0, 0, array(), 'COUNT(in_id) as total_public_intents');
-        $en_count = $this->Entities_model->en_fetch(array(
-            'en_status_entity_id IN (' . join(',', $this->config->item('en_ids_7357')) . ')' => null, //Entity Statuses Public
-        ), array(), 0, 0, array(), 'COUNT(en_id) as total_public_entities');
-        $ln_count = $this->Links_model->ln_fetch(array(
-            'ln_status_entity_id IN (' . join(',', $this->config->item('en_ids_7359')) . ')' => null, //Link Statuses Public
-        ), array(), 0, 0, array(), 'COUNT(ln_id) as total_public_links');
-
-        return echo_json(array(
-            'intents' => array(
-                'current_count' => number_format($in_count[0]['total_public_intents']),
-            ),
-            'entities' => array(
-                'current_count' => number_format($en_count[0]['total_public_entities']),
-            ),
-            'links' => array(
-                'current_count' => number_format($ln_count[0]['total_public_links']),
-            )
-        ));
-
-    }
 
     function extra_stats_intents(){
 
@@ -132,7 +106,7 @@ class Trainer_app extends CI_Controller
 
 
         //Intent Statuses:
-        echo '<table class="table table-condensed table-striped stats-table mini-stats-table intent_statuses '.advance_mode().'">';
+        echo '<table class="table table-sm table-striped stats-table mini-stats-table intent_statuses '.advance_mode().'">';
         echo '<tr class="panel-title down-border">';
         echo '<td style="text-align: left;" colspan="2">'.$en_all_7302[4737]['m_name'].echo__s(count($this->config->item('en_all_4737')), true).'</td>';
         echo '</tr>';
@@ -183,7 +157,7 @@ class Trainer_app extends CI_Controller
         ), array('in_verb'), 0, 0, array('totals' => 'DESC'), 'COUNT(in_id) as totals, in_verb_entity_id, en_name, en_icon', 'in_verb_entity_id, en_name, en_icon');
 
 
-        echo '<table class="table table-condensed table-striped stats-table mini-stats-table">';
+        echo '<table class="table table-sm table-striped stats-table mini-stats-table">';
 
         echo '<tr class="panel-title down-border">';
         echo '<td style="text-align: left;" colspan="2">'.$en_all_7302[5008]['m_name'].'s ['.number_format(count($in_verbs)-1, 0).']</td>';
@@ -234,7 +208,7 @@ class Trainer_app extends CI_Controller
 
 
         //Entity Statuses
-        echo '<table class="table table-condensed table-striped stats-table mini-stats-table entity_statuses '.advance_mode().'">';
+        echo '<table class="table table-sm table-striped stats-table mini-stats-table entity_statuses '.advance_mode().'">';
         echo '<tr class="panel-title down-border">';
         echo '<td style="text-align: left;" colspan="2">'.$en_all_7303[6177]['m_name'].echo__s(count($this->config->item('en_all_6177')), true).'</td>';
         echo '</tr>';
@@ -313,7 +287,7 @@ class Trainer_app extends CI_Controller
 
         }
 
-        echo '<table class="table table-condensed table-striped stats-table">';
+        echo '<table class="table table-sm table-striped stats-table">';
 
         echo '<tr class="panel-title down-border">';
         echo '<td style="text-align: left;">'.$en_all_7303[3000]['m_name'].' ['.number_format($total_total_counts[6181], 0).']</td>';
@@ -347,60 +321,6 @@ class Trainer_app extends CI_Controller
 
 
 
-    function load_leaderboard($direction_en_id, $timeframe_en_id){
-
-
-        //Fetch top users per each direction
-        $show_max = 10;
-
-        $filters = array(
-            'ln_status_entity_id IN (' . join(',', $this->config->item('en_ids_7359')) . ')' => null, //Link Statuses Public
-            'ln_creator_entity_id >' => 0,
-        );
-
-        //Now see what type of report they want:
-        if($direction_en_id==10589 /* Input */){
-            $filters['ln_words>'] = 0;
-        } elseif($direction_en_id==10590 /* Output */){
-            $filters['ln_words<'] = 0;
-        }
-
-
-        //Do we have a date filter?
-        $start_date = null;
-        if($timeframe_en_id==7801 /* This Week */){
-
-            //Week always starts on Monday:
-            if(date('D') === 'Mon'){
-                //Today is Monday:
-                $start_date = date("Y-m-d");
-            } else {
-                $start_date = date("Y-m-d", strtotime('previous monday'));
-            }
-
-            $filters['ln_timestamp >='] = $start_date.' 00:00:00'; //From beginning of the day
-        }
-
-
-        //Fetch leaderboard:
-        $leaderboard_ens = $this->Links_model->ln_fetch($filters, array('ln_creator'), $show_max, 0, array('total_words' => 'DESC'), 'SUM(ABS(ln_words)) as total_words, en_name, en_icon, en_id', 'en_id, en_name, en_icon');
-
-        //Did we find anyone?
-        if(count($leaderboard_ens) > 0){
-            foreach ($leaderboard_ens as $count=>$ln) {
-                if($ln['total_words'] >= 1){
-                    echo '<tr>';
-                    echo '<td style="text-align: left;"><span class="parent-icon icon-block">'.echo_en_icon($ln).'</span><a href="/entities/'.$ln['en_id'].'">'.one_two_explode('',' ',$ln['en_name']).'</a> '.echo_rank($count+1).'</td>';
-                    echo '<td style="text-align: right;"><a href="/links?ln_status_entity_id='.join(',', $this->config->item('en_ids_7359')) /* Link Statuses Public */.'&ln_type_entity_id='.join(',', $this->config->item('en_ids_'.$direction_en_id)).'&ln_creator_entity_id='.$ln['en_id'].( $start_date ? '&start_range='.$start_date : $start_date ).'">'.number_format($ln['total_words'], 0).'</a></td>';
-                    echo '</tr>';
-
-                }
-            }
-        } else {
-            echo '<tr><td colspan="2"><div class="alert alert-warning"><i class="fas fa-exclamation-triangle"></i> No activity yet...</div></td></tr>';
-        }
-    }
-
     function extra_stats_links(){
 
 
@@ -408,9 +328,8 @@ class Trainer_app extends CI_Controller
         $en_all_7304 = $this->config->item('en_all_7304'); //Link Stats
 
 
-
         //Link Status:
-        echo '<table class="table table-condensed table-striped stats-table mini-stats-table link_statuses '.advance_mode().'">';
+        echo '<table class="table table-sm table-striped stats-table mini-stats-table link_statuses '.advance_mode().'">';
         echo '<tr class="panel-title down-border">';
         echo '<td style="text-align: left;" colspan="2">'.$en_all_7304[6186]['m_name'].echo__s(count($this->config->item('en_all_6186')), true).'</td>';
         echo '</tr>';
@@ -449,43 +368,6 @@ class Trainer_app extends CI_Controller
         //Link Direction
         echo_2level_stats('Types', 10591, 4593, $link_types_counts, $addup_total_count, 'ln_type_entity_id', 'total_words');
 
-
-
-
-
-
-
-
-
-        //Leaderboard
-        echo '<table class="table table-condensed table-striped stats-table">';
-        echo '<thead>';
-        echo '<tr class="panel-title down-border">';
-        echo '<td style="text-align: left;"><div>'.$en_all_7304[7797]['m_name'].'</div>';
-        echo '<div class="btn-group btn-group-sm btn-group-leaderboard" role="group">';
-        $counter = 0;
-        foreach ($this->config->item('en_all_10591') as $en_id => $m) {
-            $counter++;
-            echo '<a href="javascript:void(0)" onclick="leaderboard_filter_direction('.$en_id.')" class="btn user-type-filter setting-en-'.$en_id.'">'.$m['m_name'].'</a>';
-        }
-        echo '</div>';
-
-        echo '</td>';
-        echo '<td style="text-align: right;"><div>Words</div>';
-        //Leaderboard Time Frames
-        echo '<div class="btn-group btn-group-sm btn-group-leaderboard" role="group">';
-        foreach ($this->config->item('en_all_7799') as $en_id => $m) {
-            echo '<a href="javascript:void(0)" onclick="leaderboard_filter_timeframe('.$en_id.')" class="btn user-type-filter setting-en-'.$en_id.'">'.$m['m_name'].'</a>';
-        }
-        echo '</div>';
-
-        echo '</td>';
-        echo '</tr>';
-        echo '</thead>';
-
-        echo '<tbody id="body_inject"><tr><td colspan="10"><div style="text-align: center;"><i class="fas fa-yin-yang fa-spin"></i> '.echo_random_message('ying_yang').'</div></td></tr></tbody>';
-
-        echo '</table>';
 
     }
 

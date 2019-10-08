@@ -306,7 +306,7 @@ function in_message_modify_cancel(ln_id, success=0) {
 function in_message_modify_save(ln_id, initial_ln_type_entity_id) {
 
     //Show loader:
-    $("#ul-nav-" + ln_id + " .edit-updates").html('<div><i class="fas fa-yin-yang fa-spin"></i></div>');
+    $("#ul-nav-" + ln_id + " .edit-updates").html('<div><i class="far fa-yin-yang fa-spin"></i></div>');
 
     //Revert View:
     in_message_modify_cancel(ln_id, 1);
@@ -389,7 +389,7 @@ var button_value = null;
 
 function in_message_form_lock() {
     button_value = $('#add_message_' + focus_ln_type_entity_id + '_' + in_id).html();
-    $('#add_message_' + focus_ln_type_entity_id + '_' + in_id).html('<span><i class="fas fa-yin-yang fa-spin"></i></span>');
+    $('#add_message_' + focus_ln_type_entity_id + '_' + in_id).html('<span><i class="far fa-yin-yang fa-spin"></i></span>');
     $('#add_message_' + focus_ln_type_entity_id + '_' + in_id).attr('href', '#');
 
     $('.add-msg' + in_id).addClass('is-working');

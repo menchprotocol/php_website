@@ -56,7 +56,7 @@ if (isset($session_en['en_id'])) {
                 function error(err) {
 
                     //Give them instructions on how to access via mench.co:
-                    $("#page_content").html('<div class="alert alert-info" role="alert" style="line-height:110%;"><i class="fas fa-exclamation-triangle"></i> To access your Account you need to <a href="https://mench.com/signin?url=<?= urlencode($_SERVER['REQUEST_URI']) ?>" style="font-weight:bold;">Sign In</a></div>');
+                    $("#page_content").html('<div class="alert alert-info" role="alert" style="line-height:110%;"><i class="fas fa-exclamation-triangle"></i> To access your Account you need to <a href="https://mench.com/sign?url=<?= urlencode($_SERVER['REQUEST_URI']) ?>" style="font-weight:bold;">Sign In</a></div>');
 
                 }
             );
@@ -68,5 +68,5 @@ if (isset($session_en['en_id'])) {
 ?>
 
 <div id="page_content">
-    <div style="text-align:center; margin-top: 30px;"><i class="fas fa-yin-yang fa-spin"></i></div>
+    <div style="text-align:center; margin-top: 30px;"><i class="far fa-yin-yang fa-spin"></i></div>
 </div>

@@ -8,9 +8,7 @@
     background-color: #070707;
 }
 
-body {
-    background-color: #FFF !important;
-}
+
 
 body.grey-bg {
     background-color: #F0F0F0 !important;
@@ -21,11 +19,6 @@ body.grey-bg {
 .featured-nav a {
     background: #222 !important;
     color: #FFF !important;
-}
-
-.featured-nav a:hover {
-    background: #FFF !important;
-    color: #222 !important;
 }
 
 .navbar .navbar-nav > li > a {
@@ -538,6 +531,10 @@ input::-webkit-inner-spin-button {
     border-top: 0px solid #ddd;
 }
 
+.table, .table tr {
+    width:100%;
+}
+
 .description, .card-description, .footer-big p, .card .footer .stats {
     color: #333;
 }
@@ -547,11 +544,11 @@ input::-webkit-inner-spin-button {
 }
 
 .icon-block{
-    width: 28px; display: inline-block; text-align: center;
+    width: 34px; display: inline-block; text-align: center;
 }
 
 .icon-block-lg{
-    width: 34px; display: inline-block; text-align: center;
+    width: 40px; display: inline-block; text-align: center;
 }
 
 
@@ -1125,19 +1122,11 @@ a.underdot {
 }
 
 body {
-    font-size: 18px;
+    font-size: 1.4em;
 }
 
 p a, td a {
     text-decoration: underline;
-}
-
-.mono {
-    font-family: monospace;
-    background-color: #F0F0F0;
-    padding: 10px;
-    line-height: 180%;
-    border-radius: 5px;
 }
 
 .entity-appendix {
@@ -2265,7 +2254,7 @@ select.form-control {
     padding: 5px;
 }
 
-.table-condensed > tbody > tr > td, .table-condensed > tbody > tr > th, .table-condensed > tfoot > tr > td, .table-condensed > tfoot > tr > th, .table-condensed > thead > tr > td, .table-condensed > thead > tr > th {
+.table-sm > tbody > tr > td, .table-sm > tbody > tr > th, .table-sm > tfoot > tr > td, .table-sm > tfoot > tr > th, .table-sm > thead > tr > td, .table-sm > thead > tr > th {
     padding: 3px;
 }
 .addon-grey {
@@ -3465,7 +3454,7 @@ h4 .tip-badge {
     text-decoration: none !important;
 }
 
-.price-box .btn-primary, .price-box .btn-primary:hover {
+.price-box .btn-blog, .price-box .btn-blog:hover {
     color: #070707 !important;
     font-size: 0.9em;
     margin: 0 !important;
@@ -3488,20 +3477,31 @@ h4 .tip-badge {
     margin-left: 42px;
 }
 
-.btn.btn-secondary, .btn.btn-secondary:hover, .btn.btn-secondary:focus, .btn.btn-secondary:active, .btn.btn-secondary.active, .btn.btn-secondary:active:focus, .btn.btn-secondary:active:hover, .btn.btn-secondary.active:focus, .btn.btn-secondary.active:hover, .open > .btn.btn-secondary.dropdown-toggle, .open > .btn.btn-secondary.dropdown-toggle:focus, .open > .btn.btn-secondary.dropdown-toggle:hover, .navbar .navbar-nav > li > a.btn.btn-secondary, .navbar .navbar-nav > li > a.btn.btn-secondary:hover, .navbar .navbar-nav > li > a.btn.btn-secondary:focus, .navbar .navbar-nav > li > a.btn.btn-secondary:active, .navbar .navbar-nav > li > a.btn.btn-secondary.active, .navbar .navbar-nav > li > a.btn.btn-secondary:active:focus, .navbar .navbar-nav > li > a.btn.btn-secondary:active:hover, .navbar .navbar-nav > li > a.btn.btn-secondary.active:focus, .navbar .navbar-nav > li > a.btn.btn-secondary.active:hover, .open > .navbar .navbar-nav > li > a.btn.btn-secondary.dropdown-toggle, .open > .navbar .navbar-nav > li > a.btn.btn-secondary.dropdown-toggle:focus, .open > .navbar .navbar-nav > li > a.btn.btn-secondary.dropdown-toggle:hover {
+.btn.btn-play, .btn.btn-play:hover, .btn.btn-play:focus, .btn.btn-play:active, .btn.btn-play.active, .btn.btn-play:active:focus, .btn.btn-play:active:hover, .btn.btn-play.active:focus, .btn.btn-play.active:hover, .open > .btn.btn-play.dropdown-toggle, .open > .btn.btn-play.dropdown-toggle:focus, .open > .btn.btn-play.dropdown-toggle:hover, .navbar .navbar-nav > li > a.btn.btn-play, .navbar .navbar-nav > li > a.btn.btn-play:hover, .navbar .navbar-nav > li > a.btn.btn-play:focus, .navbar .navbar-nav > li > a.btn.btn-play:active, .navbar .navbar-nav > li > a.btn.btn-play.active, .navbar .navbar-nav > li > a.btn.btn-play:active:focus, .navbar .navbar-nav > li > a.btn.btn-play:active:hover, .navbar .navbar-nav > li > a.btn.btn-play.active:focus, .navbar .navbar-nav > li > a.btn.btn-play.active:hover, .open > .navbar .navbar-nav > li > a.btn.btn-play.dropdown-toggle, .open > .navbar .navbar-nav > li > a.btn.btn-play.dropdown-toggle:focus, .open > .navbar .navbar-nav > li > a.btn.btn-play.dropdown-toggle:hover {
     background-color: #008DF2;
     color: #FFF;
 }
 
 
-.btn.btn-third, .btn.btn-third:hover, .btn.btn-third:focus, .btn.btn-third:active, .btn.btn-third.active, .btn.btn-third:active:focus, .btn.btn-third:active:hover, .btn.btn-third.active:focus, .btn.btn-third.active:hover, .open > .btn.btn-third.dropdown-toggle, .open > .btn.btn-third.dropdown-toggle:focus, .open > .btn.btn-third.dropdown-toggle:hover, .navbar .navbar-nav > li > a.btn.btn-third, .navbar .navbar-nav > li > a.btn.btn-third:hover, .navbar .navbar-nav > li > a.btn.btn-third:focus, .navbar .navbar-nav > li > a.btn.btn-third:active, .navbar .navbar-nav > li > a.btn.btn-third.active, .navbar .navbar-nav > li > a.btn.btn-third:active:focus, .navbar .navbar-nav > li > a.btn.btn-third:active:hover, .navbar .navbar-nav > li > a.btn.btn-third.active:focus, .navbar .navbar-nav > li > a.btn.btn-third.active:hover, .open > .navbar .navbar-nav > li > a.btn.btn-third.dropdown-toggle, .open > .navbar .navbar-nav > li > a.btn.btn-third.dropdown-toggle:focus, .open > .navbar .navbar-nav > li > a.btn.btn-third.dropdown-toggle:hover {
-    background-color: #FC1B44;
+.btn.btn-main, .btn.btn-main:hover, .btn.btn-main:focus, .btn.btn-main:active, .btn.btn-main.active, .btn.btn-main:active:focus, .btn.btn-main:active:hover, .btn.btn-main.active:focus, .btn.btn-main.active:hover, .open > .btn.btn-main.dropdown-toggle, .open > .btn.btn-main.dropdown-toggle:focus, .open > .btn.btn-main.dropdown-toggle:hover, .navbar .navbar-nav > li > a.btn.btn-main, .navbar .navbar-nav > li > a.btn.btn-main:hover, .navbar .navbar-nav > li > a.btn.btn-main:focus, .navbar .navbar-nav > li > a.btn.btn-main:active, .navbar .navbar-nav > li > a.btn.btn-main.active, .navbar .navbar-nav > li > a.btn.btn-main:active:focus, .navbar .navbar-nav > li > a.btn.btn-main:active:hover, .navbar .navbar-nav > li > a.btn.btn-main.active:focus, .navbar .navbar-nav > li > a.btn.btn-main.active:hover, .open > .navbar .navbar-nav > li > a.btn.btn-main.dropdown-toggle, .open > .navbar .navbar-nav > li > a.btn.btn-main.dropdown-toggle:focus, .open > .navbar .navbar-nav > li > a.btn.btn-main.dropdown-toggle:hover {
+    background-color: #070707;
     color: #FFF;
 }
 
 
+.btn.btn-read, .btn.btn-read:hover, .btn.btn-read:focus, .btn.btn-read:active, .btn.btn-read.active, .btn.btn-read:active:focus, .btn.btn-read:active:hover, .btn.btn-read.active:focus, .btn.btn-read.active:hover, .open > .btn.btn-read.dropdown-toggle, .open > .btn.btn-read.dropdown-toggle:focus, .open > .btn.btn-read.dropdown-toggle:hover, .navbar .navbar-nav > li > a.btn.btn-read, .navbar .navbar-nav > li > a.btn.btn-read:hover, .navbar .navbar-nav > li > a.btn.btn-read:focus, .navbar .navbar-nav > li > a.btn.btn-read:active, .navbar .navbar-nav > li > a.btn.btn-read.active, .navbar .navbar-nav > li > a.btn.btn-read:active:focus, .navbar .navbar-nav > li > a.btn.btn-read:active:hover, .navbar .navbar-nav > li > a.btn.btn-read.active:focus, .navbar .navbar-nav > li > a.btn.btn-read.active:hover, .open > .navbar .navbar-nav > li > a.btn.btn-read.dropdown-toggle, .open > .navbar .navbar-nav > li > a.btn.btn-read.dropdown-toggle:focus, .open > .navbar .navbar-nav > li > a.btn.btn-read.dropdown-toggle:hover {
+    background-color: #FC1B44;
+    color: #FFF;
+}
 
-.btn-secondary, .btn-third {
+.btn.btn-blog, .btn.btn-blog:hover, .btn.btn-blog:focus, .btn.btn-blog:active, .btn.btn-blog.active, .btn.btn-blog:active:focus, .btn.btn-blog:active:hover, .btn.btn-blog.active:focus, .btn.btn-blog.active:hover, .open > .btn.btn-blog.dropdown-toggle, .open > .btn.btn-blog.dropdown-toggle:focus, .open > .btn.btn-blog.dropdown-toggle:hover, .navbar .navbar-nav > li > a.btn.btn-blog, .navbar .navbar-nav > li > a.btn.btn-blog:hover, .navbar .navbar-nav > li > a.btn.btn-blog:focus, .navbar .navbar-nav > li > a.btn.btn-blog:active, .navbar .navbar-nav > li > a.btn.btn-blog.active, .navbar .navbar-nav > li > a.btn.btn-blog:active:focus, .navbar .navbar-nav > li > a.btn.btn-blog:active:hover, .navbar .navbar-nav > li > a.btn.btn-blog.active:focus, .navbar .navbar-nav > li > a.btn.btn-blog.active:hover, .open > .navbar .navbar-nav > li > a.btn.btn-blog.dropdown-toggle, .open > .navbar .navbar-nav > li > a.btn.btn-blog.dropdown-toggle:focus, .open > .navbar .navbar-nav > li > a.btn.btn-blog.dropdown-toggle:hover {
+    background-color: #FFDF0F;
+    color: #070707;
+}
+
+
+
+.btn-play, .btn-read {
     font-size:15px !important;
 }
 
@@ -3917,7 +3917,7 @@ h4 .tip-badge {
     transition: none !important;
 }
 
-.signin-error-box{
+.sign-error-box{
     padding: 7px 0;
     color:#FF0000 !important;
 }
@@ -3984,7 +3984,7 @@ h4 .tip-badge {
 .mini-header{
     font-size: 0.7em;
     font-weight: 300;
-    color: #000;
+    color: #070707;
     text-transform: uppercase;
     line-height: 100%;
     padding: 0;
@@ -3996,7 +3996,7 @@ h4 .tip-badge {
 .medium-header{
     font-size: 1.2em;
     font-weight: 500;
-    color: #000;
+    color: #070707;
     text-transform: uppercase;
     line-height: 100%;
     padding: 0;
@@ -4129,9 +4129,6 @@ h4 .tip-badge {
     padding: 10px !important;
 }
 
-.signin-logo img {
-    width: 80px;
-}
 .sign-in-page{
     max-width:372px !important;
     text-align: center !important;
@@ -4150,14 +4147,6 @@ h4 .tip-badge {
 }
 
 
-.landing-page-intro .msg, .landing-page-intro li, p {
-    font-size: 1.2em !important;
-}
-
-
-.landing-page-intro .msg, .landing-page-intro li, p {
-    font-size: 1.4em !important;
-}
 
 .landing-page-intro h4 {
     line-height: 130% !important;
@@ -4564,8 +4553,6 @@ h4 .tip-badge {
     text-transform: lowercase !important;
 }
 
-
-
 .front-active a, .nav > .front-active > a:focus, .nav > .front-active > a:hover {
     background-color: #222 !important;
     color: #FFF !important;
@@ -4580,120 +4567,3 @@ h4 .tip-badge {
 .form-control {
     border:1px solid #070707;
 }
-
-#searchresults{
-
-}
-
-.container {
-    width: 100%;
-    padding-right: 0;
-    padding-left: 0;
-}
-
-.container-body{
-    margin-top: 39px;
-}
-
-.navbar-bottom{
-width: 100%;
-background-color: #FFF;
-border-top:3px solid #070707;
-}
-.navbar-bottom td{
-padding:3px 0 3px;
-}
-.single-a {
-width:42px;
-margin: 0;
-padding: 0;
-line-height: 100% !important;
-}
-.single-a a{
-display: block;
-text-align: center;
-border-radius: 2px;
-margin-left:5px;
-color:#070707;
-padding: 12px 5px 8px;
-}
-.single-a .fas, .single-a .fal, .single-a .far{
-font-size: 1.2em;
-}
-.single-a a:hover{
-background-color:#070707;
-color:#FFF;
-}
-
-
-
-.mench-logo{
-font-size: 1.8em;
-margin-left:3px;
-line-height: 100%;
-}
-
-.navbar-top{
-width: 100%;
-background-color: #FFF;
-}
-
-.navbar-top td{
-width: 33.3% !important;
-}
-
-.navbar-top .mn_name{
-font-size:1.2em;
-margin-left:3px;
-}
-.navbar-top .current_count{
-font-size:1em;
-}
-
-.navbar-top a{
-padding:9px 5px 5px;
-display: block;
-text-decoration: none;
-border-bottom:3px solid;
-line-height: 110%;
-}
-
-h1, .navbar-top .mn_name, .mench-logo {
-font-family: 'Montserrat', sans-serif;
-text-transform: uppercase;
-}
-
-
-/* 3x Core Colors */
-.blue, .isblue, .isblue a, .play           { color:#008DF2 !important; }
-.yellow, .isyellow, .isyellow a, .blog     { color:#FFDF0F !important; }
-.pink, .ispink, .ispink a, .read           { color:#FC1B44 !important; }
-
-.border-play     { border-color:#008DF2 !important; }
-.border-blog     { border-color:#FFDF0F !important; }
-.border-read     { border-color:#FC1B44 !important; }
-
-.background-play, .border-play:hover     { background-color:#008DF2 !important; color:#FFF !important; }
-.background-blog, .border-blog:hover     { background-color:#FFDF0F !important; color:#FFF !important; }
-.background-read, .border-read:hover     { background-color:#FC1B44 !important; color:#FFF !important; }
-
-.background-play .fas, .background-blog .fas, .background-read .fas, .background-play .far, .background-blog .far, .background-read .far, .background-play .fal, .background-blog .fal, .background-read .fal     { color:#FFF !important; }
-
-
-/* Entity Color Palette @10604 */
-.ispurple, .ispurple a              { color:#9400D3 !important; }
-.isgreen, .isgreen a                { color:#228B22 !important; }
-.isred, .isred a, .fas.redalert     { color:#FF0000 !important; }
-.isdarkred, .isdarkred a            { color:#A93226 !important; }
-.isgrey, .isgrey a, .lightgrey      { color:#F0F0F0 !important; }
-.isolive, .isolive a                { color:#808000 !important; }
-.isnavy, .isnavy a                  { color:#000080 !important; }
-.isorange, .isorange a              { color:#FF8C00 !important; }
-.iswhite, .iswhite a                { color:#FFFFFF !important; }
-.isbrown, .isbrown a                { color:#8B4513 !important; }
-.isturquoise, .isturquoise a        { color:#20B2AA !important; }
-.islightblue, .islightblue a        { color:#85C1E9 !important; }
-.ismatt, .ismatt a                  { color:#070707 !important; }
-.isdarkorange, .isdarkorange a      { color:#D35400 !important; }
-
-

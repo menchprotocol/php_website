@@ -115,7 +115,7 @@ $en_all_7369 = $this->config->item('en_all_7369');
 
 
             //Go button:
-            echo '<td><span class="mini-header">&nbsp;</span><input type="submit" value="Apply" class="btn btn-primary inline-block"></td>';
+            echo '<td><span class="mini-header">&nbsp;</span><input type="submit" value="Apply" class="btn btn-blog inline-block"></td>';
 
 
             echo '</tr></table>';

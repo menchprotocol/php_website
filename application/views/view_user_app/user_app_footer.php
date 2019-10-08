@@ -45,7 +45,7 @@
             <?php $en_all_7369 = $this->config->item('en_all_7369'); /* Mench User App */ ?>
             <?php $en_all_7372 = $this->config->item('en_all_7372'); /* Mench Products */ ?>
 
-            <div style="font-size: 0.8em; text-transform: uppercase; color: #222; font-weight:500;"><?= $en_all_7369[7161]['m_icon'] ?> <a href="/stats" class="underdot"><?= $en_all_7369[7161]['m_name'] ?></a> &nbsp;|&nbsp; <?= $en_all_7372[7540]['m_icon'] ?> <a href="/8263" class="underdot"><?= $en_all_7372[7540]['m_name'] ?></a> &nbsp;|&nbsp; <?= $en_all_7369[4269]['m_icon'] ?> <a href="/signin" class="underdot"><?= $en_all_7369[4269]['m_name'] ?></a></div>
+            <div style="font-size: 0.8em; text-transform: uppercase; color: #222; font-weight:500;"><?= $en_all_7369[7161]['m_icon'] ?> <a href="/stats" class="underdot"><?= $en_all_7369[7161]['m_name'] ?></a> &nbsp;|&nbsp; <?= $en_all_7372[7540]['m_icon'] ?> <a href="/8263" class="underdot"><?= $en_all_7372[7540]['m_name'] ?></a> &nbsp;|&nbsp; <?= $en_all_7369[4269]['m_icon'] ?> <a href="/sign" class="underdot"><?= $en_all_7369[4269]['m_name'] ?></a></div>
 
 
 
@@ -95,7 +95,7 @@ if($this->uri->segment(1)=='actionplan'){
                 </div>
                 <div class="modal-footer">
                     <button type="button" class="btn btn-default" data-dismiss="modal">Cancel</button>
-                    <button type="button" onclick="apply_stop()" class="btn btn-primary"><i class="fas fa-comment-times"></i> Remove</button>
+                    <button type="button" onclick="apply_stop()" class="btn btn-blog"><i class="fas fa-comment-times"></i> Remove</button>
                 </div>
             </div>
         </div>

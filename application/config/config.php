@@ -5,7 +5,7 @@ defined('BASEPATH') OR exit('No direct script access allowed');
 /*
  *
  * Global variables used throughout the platform.
- * Example: $this->config->item('bytes_per_word')
+ * Example: $this->config->item('read_word_limit')
  *
  */
 
@@ -18,6 +18,7 @@ date_default_timezone_set('America/Los_Angeles');
 $config['base_url']                 = 'https://mench.com/';
 $config['app_version']              = '1.0691'; //Cache buster for static JS/CSS files, so needs to be updated if you update static files`
 $config['system_name']              = 'MENCH'; //Used for example when a link has no trainer
+$config['read_word_limit_monthly']  = 2000; //number of words everyone can read for FREE each month
 $config['system_icon']              = '<img src="/img/mench_white.png" />'; //Used for example when a link has no trainer
 $config['app_enable_algolia']       = true; //May need to turn off if/when we reach monthly quota of 50k calls
 $config['max_file_mb_size']         = 25; //Server setting is 32MB

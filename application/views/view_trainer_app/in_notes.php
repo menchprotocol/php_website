@@ -143,7 +143,7 @@ foreach ($this->Links_model->ln_fetch(array(
 
     //Fetch for all message types:
     foreach ($en_all_4485 as $ln_type_entity_id => $m) {
-        echo '<div class="iphone-add-btn all_msg msg_en_type_' . $ln_type_entity_id . '"><a href="javascript:in_message_create();" id="add_message_' . $ln_type_entity_id . '_' . $in_id . '" data-toggle="tooltip" title="or hit CTRL+ENTER ;)" data-placement="right" class="btn btn-third" style="color:#FFF !important; font-size:0.8em !important;">ADD TO ' . $m['m_name'] . '</a></div>';
+        echo '<div class="iphone-add-btn all_msg msg_en_type_' . $ln_type_entity_id . '"><a href="javascript:in_message_create();" id="add_message_' . $ln_type_entity_id . '_' . $in_id . '" data-toggle="tooltip" title="or hit CTRL+ENTER ;)" data-placement="right" class="btn btn-read" style="color:#FFF !important; font-size:0.8em !important;">ADD TO ' . $m['m_name'] . '</a></div>';
     }
 
     echo '</form>';

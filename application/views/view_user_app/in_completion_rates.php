@@ -48,7 +48,7 @@ echo '<h1 style="margin-bottom:30px;" id="title-parent">'.$en_all_7596[7598]['m_
 echo '<p style="margin:25px 0 25px;">Mench is an open platform on a mission to streamline how we learn. Here are our live completion stats:</p>';
 
 
-echo '<table class="table table-condensed table-striped stats-table mini-stats-table" style="font-size: 0.8em;">';
+echo '<table class="table table-sm table-striped stats-table mini-stats-table" style="font-size: 0.8em;">';
 
 echo '<tr class="panel-title down-border">';
 echo '<td style="text-align: left;">Mench '.$en_all_7596[7598]['m_name'].'</td>';

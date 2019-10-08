@@ -58,12 +58,12 @@ if(isset($session_en['en_id'])){
         //Show when was added:
         echo '<p>Intention is already added to your '.$en_all_7369[6138]['m_icon'].' '.$en_all_7369[6138]['m_name'].'.</p>';
 
-        echo '<a class="btn btn-primary" href="/actionplan/'.$in['in_id'].'" style="display: inline-block; padding:12px 36px; font-size: 1.3em;">Resume&nbsp;&nbsp;&nbsp;<i class="fas fa-angle-double-right"></i></a>';
+        echo '<a class="btn btn-blog" href="/actionplan/'.$in['in_id'].'" style="display: inline-block; padding:12px 36px; font-size: 1.3em;">Resume&nbsp;&nbsp;&nbsp;<i class="fas fa-angle-double-right"></i></a>';
 
     } else {
 
         //Give option to add:
-        echo '<div id="added_to_actionplan"><a class="btn btn-primary" href="javascript:void(0);" onclick="add_to_actionplan()" style="display: inline-block; padding:12px 36px; font-size: 1.3em;">Get Started&nbsp;&nbsp;&nbsp;<i class="fas fa-angle-double-right"></i></a></div>';
+        echo '<div id="added_to_actionplan"><a class="btn btn-blog" href="javascript:void(0);" onclick="add_to_actionplan()" style="display: inline-block; padding:12px 36px; font-size: 1.3em;">Get Started&nbsp;&nbsp;&nbsp;<i class="fas fa-angle-double-right"></i></a></div>';
 
 
     }
@@ -71,7 +71,7 @@ if(isset($session_en['en_id'])){
 } else {
 
     //Give option to add:
-    echo '<a class="btn btn-primary" href="'.$in['in_id'].'/signin" style="display: inline-block; padding:12px 36px; font-size: 1.3em;">Get Started&nbsp;&nbsp;&nbsp;<i class="fas fa-angle-double-right"></i></a>';
+    echo '<a class="btn btn-blog" href="'.$in['in_id'].'/sign" style="display: inline-block; padding:12px 36px; font-size: 1.3em;">Get Started&nbsp;&nbsp;&nbsp;<i class="fas fa-angle-double-right"></i></a>';
 
 }
 

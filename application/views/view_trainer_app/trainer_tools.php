@@ -121,7 +121,7 @@ if(!$action) {
     }
 
 
-    echo '<table class="table table-condensed table-striped stats-table mini-stats-table">';
+    echo '<table class="table table-sm table-striped stats-table mini-stats-table">';
 
     echo '<tr class="panel-title down-border">';
     echo '<td style="text-align: left;">Group</td>';
@@ -372,7 +372,7 @@ if(!$action) {
 
     echo '<div class="mini-header">Search For:</div>';
     echo '<input type="text" class="form-control border maxout" name="search_for" value="'.@$_GET['search_for'].'"><br />';
-    echo '<input type="submit" class="btn btn-primary" value="Search">';
+    echo '<input type="submit" class="btn btn-blog" value="Search">';
 
 
     if(isset($_GET['search_for']) && strlen($_GET['search_for'])>0){
@@ -383,7 +383,7 @@ if(!$action) {
         ));
 
         //List the matching search:
-        echo '<table class="table table-condensed table-striped stats-table mini-stats-table">';
+        echo '<table class="table table-sm table-striped stats-table mini-stats-table">';
 
 
         echo '<tr class="panel-title down-border">';
@@ -425,7 +425,7 @@ if(!$action) {
 
         echo '<div class="mini-header">Replace With:</div>';
         echo '<input type="text" class="form-control border maxout" name="replace_with" value="'.@$_GET['replace_with'].'"><br />';
-        echo '<input type="submit" name="do_replace" class="btn btn-primary" value="Replace">';
+        echo '<input type="submit" name="do_replace" class="btn btn-blog" value="Replace">';
     }
 
 
@@ -462,7 +462,7 @@ if(!$action) {
 
 
     //List the matching search:
-    echo '<table class="table table-condensed table-striped stats-table mini-stats-table">';
+    echo '<table class="table table-sm table-striped stats-table mini-stats-table">';
 
 
     echo '<tr class="panel-title down-border" style="font-weight:bold !important;">';
@@ -516,7 +516,7 @@ if(!$action) {
         ));
 
         //List the matching search:
-        echo '<table class="table table-condensed table-striped stats-table mini-stats-table">';
+        echo '<table class="table table-sm table-striped stats-table mini-stats-table">';
 
 
         echo '<tr class="panel-title down-border">';
@@ -617,7 +617,7 @@ if(!$action) {
     }
 
 
-    echo '<input type="submit" class="btn btn-primary" value="Go">';
+    echo '<input type="submit" class="btn btn-blog" value="Go">';
     echo '</form>';
 
 
@@ -756,7 +756,7 @@ if(!$action) {
     echo '<ul class="breadcrumb"><li><a href="/trainer_app/trainer_tools">Trainer Tools</a></li><li><b>'.$moderation_tools['/trainer_app/trainer_tools/'.$action].'</b></li></ul>';
 
     echo '<p>Below are all the Conditional Step Links:</p>';
-    echo '<table class="table table-condensed table-striped maxout" style="text-align: left;">';
+    echo '<table class="table table-sm table-striped maxout" style="text-align: left;">';
 
     $en_all_6103 = $this->config->item('en_all_6103'); //Link Metadata
     $en_all_6186 = $this->config->item('en_all_6186'); //Link Statuses
@@ -839,7 +839,7 @@ if(!$action) {
 
     if(1){
         echo '<p>Below are all the fixed step links that award/subtract Completion Marks:</p>';
-        echo '<table class="table table-condensed table-striped maxout" style="text-align: left;">';
+        echo '<table class="table table-sm table-striped maxout" style="text-align: left;">';
 
         echo '<tr style="font-weight: bold;">';
         echo '<td colspan="4" style="text-align: left;">Completion Marks</td>';
@@ -924,7 +924,7 @@ if(!$action) {
                     <span class="input-group-addon addon-lean addon-grey" style="color:#070707; font-weight: 300; border-left: 1px solid #ccc; border-right:0px solid #FFF;"> levels deep.</span>
                 </div>
             </div>
-            <input type="submit" class="btn btn-primary btn-sm" value="Go" style="display: inline-block; margin-top: -41px;" />
+            <input type="submit" class="btn btn-blog btn-sm" value="Go" style="display: inline-block; margin-top: -41px;" />
         </div>';
 
     echo '</form>';
@@ -935,7 +935,7 @@ if(!$action) {
 
 $(document).ready(function () {
 //Show spinner:
-$(\'#in_report_conditional_steps\').html(\'<span><i class="fas fa-yin-yang fa-spin"></i> \' + echo_ying_yang() +  \'</span>\').hide().fadeIn();
+$(\'#in_report_conditional_steps\').html(\'<span><i class="far fa-yin-yang fa-spin"></i> \' + echo_ying_yang() +  \'</span>\').hide().fadeIn();
 //Load report based on input fields:
 $.post("/intents/in_report_conditional_steps", {
     starting_in: parseInt($(\'#starting_in\').val()),
@@ -1001,7 +1001,7 @@ $.post("/intents/in_report_conditional_steps", {
         echo '<input type="number" class="form-control border" name="push_message" value="1"><br /><br />';
 
 
-        echo '<input type="submit" class="btn btn-primary" value="Compose Test Message">';
+        echo '<input type="submit" class="btn btn-blog" value="Compose Test Message">';
         echo '</form>';
 
     }

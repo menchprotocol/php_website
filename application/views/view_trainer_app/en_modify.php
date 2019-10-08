@@ -131,7 +131,7 @@
 
         <table>
             <tr>
-                <td class="save-td"><a href="javascript:en_modify_save();" class="btn btn-secondary btn-save">Save</a></td>
+                <td class="save-td"><a href="javascript:en_modify_save();" class="btn btn-play btn-save">Save</a></td>
                 <td class="save-result-td"><span class="save_entity_changes"></span></td>
             </tr>
         </table>

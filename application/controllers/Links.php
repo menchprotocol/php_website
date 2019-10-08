@@ -93,7 +93,7 @@ class Links extends CI_Controller
 
             //Do we have more to show?
             if($has_more_links){
-                $message .= '<div id="link_page_'.$next_page.'"><a href="javascript:void(0);" style="margin:10px 0 72px 0;" class="btn btn-primary grey" onclick="load_link_list(link_filters, link_join_by, '.$next_page.');"><i class="fas fa-plus-circle"></i> Page '.$next_page.'</a></div>';
+                $message .= '<div id="link_page_'.$next_page.'"><a href="javascript:void(0);" style="margin:10px 0 72px 0;" class="btn btn-blog grey" onclick="load_link_list(link_filters, link_join_by, '.$next_page.');"><i class="fas fa-plus-circle"></i> Page '.$next_page.'</a></div>';
                 $message .= '';
             } else {
                 $message .= '<div style="margin:10px 0 72px 0;"><i class="far fa-check-circle"></i> All '.$lns_count[0]['total_count'].' link'.echo__s($lns_count[0]['total_count']).' have been loaded</div>';

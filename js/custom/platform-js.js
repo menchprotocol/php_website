@@ -10,6 +10,17 @@ var isAdvancedUpload = function () {
 var fadeout_frequency = 1000;
 var fadeout_speed = 21;
 var updating_basic_stats = false;
+var searchbar_loaded = 0;
+function load_searchbar(){
+    if(searchbar_loaded){
+        return false;
+    }
+
+    searchbar_loaded = 1; //Indicate as loaded
+    $('.search-toggle').toggleClass('hidden');
+    $('.algolia_search').focus();
+}
+
 
 $(document).ready(function () {
 
@@ -18,6 +29,13 @@ $(document).ready(function () {
 
     //Continue updating basic stats:
     setInterval(update_basic_stats, fadeout_frequency);
+
+
+    $("#mench_search").focus(function() {
+        if(!searchbar_loaded){
+            load_searchbar();
+        }
+    });
 
     //Watch typing:
     $(document).keyup(function (e) {
@@ -185,7 +203,7 @@ var update_basic_stats = function() {
     updating_basic_stats = true;
 
     //Fetch latest stats:
-    $.post("/trainer_app/basic_stats_all", {}, function (data) {
+    $.post("/mench/update_counters", {}, function (data) {
 
         if(data.intents.current_count != $('.blog .current_count').html()){
             $('.blog .current_count').html(data.intents.current_count).fadeOut(fadeout_speed).fadeIn(fadeout_speed);

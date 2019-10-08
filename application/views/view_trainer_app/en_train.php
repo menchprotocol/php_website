@@ -89,7 +89,7 @@
             $en_all_6177 = $this->config->item('en_all_6177'); //Entity Statuses
 
             //Show fixed All button:
-            echo '<a href="#" onclick="en_filter_status(-1)" class="btn btn-default btn-secondary u-status-filter u-status--1" data-toggle="tooltip" data-placement="top" title="View all entities"><i class="fas fa-at"></i><span class="hide-small"> All</span> [<span class="li-children-count">' . $entity['en__child_count'] . '</span>]</a>';
+            echo '<a href="#" onclick="en_filter_status(-1)" class="btn btn-default btn-play u-status-filter u-status--1" data-toggle="tooltip" data-placement="top" title="View all entities"><i class="fas fa-at"></i><span class="hide-small"> All</span> [<span class="li-children-count">' . $entity['en__child_count'] . '</span>]</a>';
 
             //Show each specific filter based on DB counts:
             foreach ($child_en_filters as $c_c) {
@@ -206,7 +206,7 @@
 
             echo $input_options;
 
-            echo '<input type="submit" value="Apply" class="btn btn-secondary inline-block">';
+            echo '<input type="submit" value="Apply" class="btn btn-play inline-block">';
 
         echo '</div></form>';
 

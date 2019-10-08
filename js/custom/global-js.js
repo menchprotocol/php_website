@@ -55,7 +55,7 @@ function echo_js_suggestion(alg_obj, is_top, is_basic){
 
 
 function turn_off() {
-    $('.dash').html('<span><i class="fas fa-yin-yang fa-spin"></i></span> ' + echo_ying_yang());
+    $('.dash').html('<span><i class="far fa-yin-yang fa-spin"></i></span> ' + echo_ying_yang());
 }
 
 function nl2br(str, is_xhtml) {
@@ -174,8 +174,8 @@ $(document).ready(function () {
             source: function (q, cb) {
                 //Append filters:
                 algolia_index.search(q, {
-                    hitsPerPage: 7,
-                    filters: 'alg_obj_is_in=1 AND _tags:alg_for_users', //TODO replace hard-coded values with _10568 cache values
+                    hitsPerPage: 10,
+                    filters: algolia_filter,
                 }, function (error, content) {
                     if (error) {
                         cb([]);

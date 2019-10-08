@@ -1,0 +1,144 @@
+@CHARSET "ISO-8859-1";
+
+body {
+    background-color: #FFF !important;
+}
+
+/* FONTS */
+.montserrat {
+    font-family: 'Montserrat', sans-serif;
+    text-transform: uppercase;
+}
+.mono{
+    font-family: 'Nanum Gothic Coding', monospace;
+}
+
+h1 {
+    font-family: 'Montserrat', sans-serif;
+    text-transform: uppercase;
+    padding: 34px 0 0 !important;
+    font-size: 2.2em;
+}
+
+h2 {
+    font-family: 'Montserrat', sans-serif;
+    padding:0 !important;
+    font-size: 1.3em;
+}
+
+a {
+    color: #070707;
+    text-decoration: underline;
+}
+
+a:hover {
+    color: #070707;
+    text-decoration: none;
+}
+
+
+.container {
+    width: 100%;
+    padding-right: 0;
+    padding-left: 0;
+}
+
+.container-body{
+    margin-top: 39px;
+    margin-bottom: 50px;
+    padding: 0 5px;
+}
+
+/* MENCH Colors */
+.blue, .isblue, .isblue a, .play           { color:#008DF2 !important; }
+.yellow, .isyellow, .isyellow a, .blog     { color:#FFDF0F !important; }
+.pink, .ispink, .ispink a, .read           { color:#FC1B44 !important; }
+
+.border-play     { border-color:#008DF2 !important; }
+.border-blog     { border-color:#FFDF0F !important; }
+.border-read     { border-color:#FC1B44 !important; }
+
+
+.background-play, a.border-play:hover     { background-color:#008DF2 !important; color:#FFFFFF !important; }
+.background-blog, a.border-blog:hover     { background-color:#FFDF0F !important; color:#070707 !important; }
+.background-read, a.border-read:hover     { background-color:#FC1B44 !important; color:#FFFFFF !important; }
+
+.background-play .fas, .background-blog .fas, .background-read .fas, .background-play .far, .background-blog .far, .background-read .far, .background-play .fal, .background-blog .fal, .background-read .fal { color:#FFF !important; }
+
+/* Color Palette @10604 */
+.isgreen, .isgreen a                { color:#228B22 !important; }
+.isred, .isred a, .fas.redalert     { color:#FF0000 !important; }
+.isgrey, .isgrey a, .lightgrey      { color:#F0F0F0 !important; }
+.ismatt, .ismatt a                  { color:#070707 !important; }
+
+
+
+/* HEADER */
+.header-top{
+    width: 100%;
+    background-color: #FFF;
+}
+
+.header-top td{
+    width: 33.3% !important;
+}
+
+.header-top .mn_name{
+    font-size:1.2em;
+    margin-left:3px;
+}
+.header-top .current_count{
+    font-size:1em;
+}
+
+.header-top a{
+    padding:9px 5px 5px;
+    display: block;
+    text-decoration: none;
+    border-bottom:3px solid;
+    line-height: 110%;
+}
+
+
+
+/* FOOTER */
+.footer-bottom {
+    width: 100%;
+    background-color: #FFF;
+    border-top:3px solid #070707;
+}
+.footer-bottom td {
+    padding:3px 0 3px;
+}
+.footer-bottom .block-link {
+    width:48px;
+    margin: 0;
+    padding: 0;
+    line-height: 100% !important;
+}
+.footer-bottom .block-link a{
+    display: block;
+    text-align: center;
+    border-radius: 2px;
+    margin-left:5px;
+    color:#070707;
+    padding: 12px 5px 8px;
+}
+.footer-bottom .block-link .fas, .block-link .fal, .block-link .far{
+    font-size: 1.2em;
+}
+.footer-bottom .block-link a:hover, .block-link a:hover .fas, .block-link a:hover .fal, .block-link a:hover .far {
+    background-color:#070707;
+    color:#FFF !important;
+}
+
+.footer-bottom .mench-logo{
+    font-size: 1.8em;
+    margin-left:3px;
+    line-height: 100%;
+}
+
+
+
+/* STYLES */
+.btn{ text-decoration: none; }

@@ -1,10 +1,11 @@
 
+
+
+
 //In milli seconds:
 var fadeout_frequency = 1000;
 var fadeout_speed = 21;
 var updating_basic_stats = false;
-var js_timeframe_en_id;
-var js_direction_en_id;
 
 $(document).ready(function () {
 
@@ -29,7 +30,7 @@ var update_basic_stats = function() {
     updating_basic_stats = true;
 
     //Fetch latest stats:
-    $.post("/trainer_app/basic_stats_all", {}, function (data) {
+    $.post("/trainer_app/update_counters", {}, function (data) {
 
         //Updated Intents?
         if(data.intents.current_count != $('#stats_intents_box .current_count').html()){
@@ -57,16 +58,6 @@ var update_basic_stats = function() {
 };
 
 
-function leaderboard_filter_direction(en_id){
-    js_direction_en_id = en_id;
-    load_leaderboard();
-}
-
-function leaderboard_filter_timeframe(en_id){
-    js_timeframe_en_id = en_id;
-    load_leaderboard();
-}
-
 
 //Function that loads extra stats into view:
 function load_extra_stats(object_id){
@@ -81,20 +72,10 @@ function load_extra_stats(object_id){
     if(is_openning){
 
         //Show spinner:
-        $('#stats_' + object_id + '_box .load_stats_box').removeClass('hidden').html('<div style="text-align: center;"><i class="fas fa-yin-yang fa-spin"></i> ' + echo_ying_yang() + '</div>');
+        $('#stats_' + object_id + '_box .load_stats_box').removeClass('hidden').html('<div style="text-align: center;"><i class="far fa-yin-yang fa-spin"></i> ' + echo_ying_yang() + '</div>');
 
         //Save the rest of the content:
         $.post("/trainer_app/extra_stats_" + object_id, {}, function (data) {
-
-            if(object_id=='links'){
-
-                //Load initial leaderboard:;
-                js_timeframe_en_id = 7801; //This Week
-                js_direction_en_id = 10589; //Input
-
-                //Load leaderboard:
-                load_leaderboard();
-            }
 
             //Load data:
             $('#stats_' + object_id + '_box .load_stats_box').html(data);
@@ -106,35 +87,6 @@ function load_extra_stats(object_id){
         });
 
     }
-}
-
-
-
-
-function load_leaderboard(){
-
-    //Show loader:
-    $('#body_inject').html('<tr><td colspan="10"><div style="text-align: center;"><i class="fas fa-yin-yang fa-spin"></i> ' + echo_ying_yang() + '</div></td></tr>');
-
-    //Remove all classes:
-    $('.user-type-filter').removeClass('btn-third');
-
-    //Highlight current classes:
-    $('.setting-en-'+js_timeframe_en_id).addClass('btn-third');
-    $('.setting-en-'+js_direction_en_id).addClass('btn-third');
-
-    //Fetch latest stats:
-    $.post("/trainer_app/load_leaderboard/"+js_direction_en_id+"/"+js_timeframe_en_id, {}, function (data) {
-
-        $('#body_inject').html(data);
-
-        //Highlight current classes (AGAIN, to fix loading bug):
-        $('.setting-en-'+js_timeframe_en_id).addClass('btn-third');
-        $('.setting-en-'+js_direction_en_id).addClass('btn-third');
-
-        //Reload Tooltip again:
-        $('[data-toggle="tooltip"]').tooltip();
-    });
 }
 
 

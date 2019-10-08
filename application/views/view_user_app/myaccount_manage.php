@@ -37,7 +37,7 @@
         } elseif($acc_en_id==6197 /* Full Name */){
 
             echo '<span class="white-wrapper"><input type="text" id="en_name" class="form-control border" value="'.$session_en['en_name'].'" /></span>
-                    <a href="javascript:void(0)" onclick="save_full_name()" class="btn btn-sm btn-primary">Save</a>
+                    <a href="javascript:void(0)" onclick="save_full_name()" class="btn btn-sm btn-blog">Save</a>
                     <span class="saving-account save_full_name"></span>';
 
         } elseif($acc_en_id==3288 /* Mench Email */){
@@ -50,7 +50,7 @@
             ));
 
             echo '<span class="white-wrapper"><input type="email" id="en_email" class="form-control border" value="'.( count($user_emails) > 0 ? $user_emails[0]['ln_content'] : '' ).'" placeholder="you@gmail.com" /></span>
-                    <a href="javascript:void(0)" onclick="save_email()" class="btn btn-sm btn-primary">Save</a>
+                    <a href="javascript:void(0)" onclick="save_email()" class="btn btn-sm btn-blog">Save</a>
                     <span class="saving-account save_email"></span>';
 
         } elseif($acc_en_id==3286 /* Password */){
@@ -63,7 +63,7 @@
             ));
 
             echo '<span class="white-wrapper"><input type="password" id="input_password" class="form-control border" placeholder="Set new password..." /></span>
-                    <a href="javascript:void(0)" onclick="myaccount_update_password()" class="btn btn-sm btn-primary">Save</a>
+                    <a href="javascript:void(0)" onclick="myaccount_update_password()" class="btn btn-sm btn-blog">Save</a>
                     <span class="saving-account save_password"></span>
                     <p>Note: '. ( count($user_passwords) > 0 ? 'Password updated '.echo_time_difference(strtotime($user_passwords[0]['ln_timestamp'])).' ago.' : 'You have not yet set a password.') .'</p>';
 
@@ -77,7 +77,7 @@
             ));
 
             echo '<span class="white-wrapper"><input type="number" id="en_phone" class="form-control border" value="'.( count($user_phones) > 0 ? $user_phones[0]['ln_content'] : '' ).'" placeholder="Set phone number..." /></span>
-                    <a href="javascript:void(0)" onclick="save_phone()" class="btn btn-sm btn-primary">Save</a>
+                    <a href="javascript:void(0)" onclick="save_phone()" class="btn btn-sm btn-blog">Save</a>
                     <span class="saving-account save_phone"></span>';
 
         } elseif($acc_en_id==6123 /* Social Profiles */){
@@ -102,7 +102,7 @@
             }
             echo '</table>';
 
-            echo '<a href="javascript:void(0)" onclick="save_social_profiles()" class="btn btn-sm btn-primary">Save</a>
+            echo '<a href="javascript:void(0)" onclick="save_social_profiles()" class="btn btn-sm btn-blog">Save</a>
                                 <span class="saving-account save_social_profiles"></span>';
 
         }

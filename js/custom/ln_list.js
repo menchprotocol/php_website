@@ -35,7 +35,7 @@ function check_in_en_status_entity_id(){
 
 function load_link_list(link_filters, link_join_by, page_num){
     //Show spinner:
-    $('#link_page_'+page_num).html('<div style="margin:20px 0 100px 0;"><i class="fas fa-yin-yang fa-spin"></i> ' + echo_ying_yang() +  '</div>').hide().fadeIn();
+    $('#link_page_'+page_num).html('<div style="margin:20px 0 100px 0;"><i class="far fa-yin-yang fa-spin"></i> ' + echo_ying_yang() +  '</div>').hide().fadeIn();
 
     //Load report based on input fields:
     $.post("/links/load_link_list", {
@@ -58,7 +58,7 @@ function load_link_list(link_filters, link_join_by, page_num){
 function load_link_connections(ln_id,load_main) {
 
     //Show loading instead of button:
-    $('.link_connections_link_'+ln_id).html('<span><i class="fas fa-yin-yang fa-spin"></i> ' + echo_ying_yang() +  '</span>').hide().fadeIn();
+    $('.link_connections_link_'+ln_id).html('<span><i class="far fa-yin-yang fa-spin"></i> ' + echo_ying_yang() +  '</span>').hide().fadeIn();
 
     //Fetch Connections UI
     $.post("/links/load_link_connections", {

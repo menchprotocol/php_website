@@ -17,9 +17,16 @@ $session_en = $this->session->userdata('user');
 
 
     <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css" integrity="sha384-ggOyR0iXCbMQv3Xipma34MD+dH/1fQ784/j6cY/iJTQUOhcWr7x9JvoRxT2MZw1T" crossorigin="anonymous">
-    <link href="https://fonts.googleapis.com/css?family=Montserrat:800&display=swap" rel="stylesheet">
-    <link href="/css/styles.css?v=v<?= $this->config->item('app_version') ?>" rel="stylesheet"/>
+    <link href="https://fonts.googleapis.com/css?family=Montserrat:800|Nanum+Gothic+Coding&display=swap" rel="stylesheet">
+    <link href="/css/custom/styles.css?v=v<?= $this->config->item('app_version') ?>" rel="stylesheet"/>
+    <link href="/css/custom/mench.css?v=v<?= $this->config->item('app_version') ?>" rel="stylesheet"/>
 
+    <!--
+    <link href="/css/lib/material-dashboard.css" rel="stylesheet"/>
+    <link href="/css/lib/material-kit.css" rel="stylesheet"/>
+    <script src="/js/lib/material.min.js" type="text/javascript"></script>
+    <script src="/js/lib/material-dashboard.js" type="text/javascript"></script>
+    -->
 
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.4.1/jquery.min.js"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.7/umd/popper.min.js" integrity="sha384-UO2eT0CpHqdSJQ6hJty5KVphtPhzWj9WO1clHTMGa3JDZwrnQq4sF86dIHNDz0W1" crossorigin="anonymous"></script>
@@ -36,6 +43,9 @@ $session_en = $this->session->userdata('user');
         //Player Variables:
         echo ' var js_advance_view_enabled = ' . ( $this->session->userdata('advance_view_enabled') ? 1 : 0 ) . '; ';
         echo ' var js_pl_id = ' . ( isset($session_en['en_id']) ? $session_en['en_id'] : 0 ) . '; ';
+        //echo ' var algolia_filter = \'alg_obj_is_in=1 AND _tags:alg_for_users\'; ';
+        echo ' var algolia_filter = \'\'; ';
+
 
         //Width-Dependant UI control:
         echo ' var is_compact = (is_mobile() || $(window).width() < 767); ';
@@ -50,7 +60,7 @@ $session_en = $this->session->userdata('user');
         echo ' var ln_content_max_length = ' . $this->config->item('ln_content_max_length') . '; ';
         echo ' var en_name_max_length = ' . $this->config->item('en_name_max_length') . '; ';
 
-        //Randomg Messages:
+        //Random Messages:
         echo ' var random_loading_message = ' . json_encode(echo_random_message('ying_yang', true)) . '; ';
         echo ' var random_saving_message = ' . json_encode(echo_random_message('saving_notify', true)) . '; ';
         ?>
@@ -59,39 +69,54 @@ $session_en = $this->session->userdata('user');
 
 <body>
 
+<?php
+//Any message we need to show here?
+if (!isset($flash_message)) {
+    $flash_message = $this->session->flashdata('flash_message');
+}
+if(strlen($flash_message) > 0){
+    echo '<div class="container container-body" id="custom_message">'.$flash_message.'</div>';
+}
+?>
 
-    <table class="container navbar-top fixed-top">
-        <tr>
-            <?php
-            foreach($this->config->item('en_all_2738') as $en_id => $m){
-                $handle = strtolower($m['m_name']);
-                echo '<td><a class="'.$handle.' border-'.$handle.( $this->uri->segment(1)==$handle || $handle=='read' ? ' background-'.$handle: null ).'" href="/'.$handle.'">' . $m['m_icon'] . '<span class="mn_name">' . $m['m_name'] . '</span> <span class="current_count"><i class="fas fa-yin-yang fa-spin"></i></span></a></td>';
-            }
-            ?>
-        </tr>
-    </table>
+    <?php if(!isset($hide_header) || !$hide_header){ ?>
+
+        <!-- HEADER -->
+        <table class="container header-top fixed-top">
+            <tr>
+                <?php
+                foreach($this->config->item('en_all_2738') as $en_id => $m){
+                    $handle = strtolower($m['m_name']);
+                    echo '<td><a class="'.$handle.' border-'.$handle.( $this->uri->segment(1)==$handle ? ' background-'.$handle: null ).'" href="/'.$handle.'">' . $m['m_icon'] . '<span class="mn_name montserrat">' . $m['m_name'] . '</span> <span class="current_count"><i class="far fa-yin-yang fa-spin"></i></span></a></td>';
+                }
+                ?>
+            </tr>
+        </table>
 
 
-    <form id="searchFrontForm">
-    <table class="container navbar-bottom fixed-bottom">
-        <tr>
-            <td><span class="mench-logo search-toggle">MENCH</span><div class="search-toggle hidden"><input class="form-control algolia_search" type="search" id="mench_search" data-lpignore="true" placeholder="SEARCH MENCH..."></div></td>
-            <td class="single-a search-toggle"><a href="javascript:void(0);" onclick="$('.search-toggle').toggleClass('hidden');$('.algolia_search').focus();"><i class="far fa-search"></i></a></td>
-            <td class="single-a"><a href="/signin"><i class="far fa-sign-in"></i></a></td>
-        </tr>
-    </table>
-    </form>
+        <!-- FOOTER -->
+        <form id="searchFrontForm">
+        <table class="container footer-bottom fixed-bottom">
+            <tr>
+                <td><img src="/img/mench-v2-128.png" class="search-toggle" style="width: 35px; margin-top: -17px;" /><span class="mench-logo montserrat search-toggle">MENCH</span><div class="search-toggle hidden"><input class="form-control algolia_search" type="search" id="mench_search" data-lpignore="true" placeholder="SEARCH MENCH..."></div></td>
+                <td class="block-link search-toggle"><a href="javascript:void(0);" onclick="load_searchbar();"><i class="far fa-search"></i></a></td>
+                <td class="block-link search-toggle"><a href="/8263"><i class="far fa-balance-scale"></i></a></td>
+                <td class="block-link">
+                    <?php
+                    if (isset($session_en['en_id'])) {
+                        echo '<a href="/play/'.$session_en['en_id'].'">'.echo_en_icon($session_en).'</a>';
+                    } else {
+                        //Give option to signin
+                        echo '<a href="/sign"><i class="far fa-sign-in"></i></a>';
+                    }
+                    ?>
+                </td>
+            </tr>
+        </table>
+        </form>
 
 
-    <?php
-    //Any message we need to show here?
-    if (!isset($flash_message)) {
-        $flash_message = $this->session->flashdata('flash_message');
-    }
-    if(strlen($flash_message) > 0){
-        echo '<div class="container container-body" id="custom_message">'.$flash_message.'</div>';
-    }
-    ?>
+        <!-- SEARCH -->
+        <div class="container container-body" id="searchresults"></div>
 
-    <!-- Algolia Search Results -->
-    <div class="container container-body" id="searchresults"></div>
+    <?php } ?>

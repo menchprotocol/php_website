@@ -273,7 +273,7 @@ echo '<div class="row">';
 
 
 
-        echo '<table class="table table-condensed maxout"><tr>';
+        echo '<table class="table table-sm maxout"><tr>';
 
         //ANY Intent
         echo '<td><div style="padding-right:5px;">';
@@ -293,7 +293,7 @@ echo '<div class="row">';
 
 
 
-        echo '<table class="table table-condensed maxout"><tr>';
+        echo '<table class="table table-sm maxout"><tr>';
 
         //ANY Entity
         echo '<td><div style="padding-right:5px;">';
@@ -313,7 +313,7 @@ echo '<div class="row">';
 
 
 
-        echo '<table class="table table-condensed maxout"><tr>';
+        echo '<table class="table table-sm maxout"><tr>';
 
         //ANY Link
         echo '<td><div style="padding-right:5px;">';
@@ -334,7 +334,7 @@ echo '<div class="row">';
 
 
 
-        echo '<table class="table table-condensed maxout"><tr>';
+        echo '<table class="table table-sm maxout"><tr>';
 
         //Search
         echo '<td><div style="padding-right:5px;">';
@@ -350,7 +350,7 @@ echo '<div class="row">';
 
 
 //Filters UI:
-echo '<table class="table table-condensed maxout"><tr>';
+echo '<table class="table table-sm maxout"><tr>';
 
 echo '<td valign="top" style="vertical-align: top;"><div style="padding-right:5px;">';
 echo '<span class="mini-header">Start Date:</span>';
@@ -434,7 +434,7 @@ echo '</div></td>';
 
 
 
-        echo '<input type="submit" class="btn btn-sm btn-third" value="Apply" />';
+        echo '<input type="submit" class="btn btn-sm btn-read" value="Apply" />';
 
         if($has_filters){
             echo ' &nbsp;<a href="/links" style="font-size: 0.8em;">Remove Filters</a>';

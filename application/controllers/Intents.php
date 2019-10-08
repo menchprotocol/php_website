@@ -655,7 +655,7 @@ class Intents extends CI_Controller
 
 
         //Filtered list if any:
-        $ui = '<table class="table table-condensed table-striped">';
+        $ui = '<table class="table table-sm table-striped">';
 
 
         if($filter_applied){

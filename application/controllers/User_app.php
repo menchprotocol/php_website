@@ -18,36 +18,6 @@ class User_app extends CI_Controller
 
 
 
-    function signin($in_id = 0){
-
-        //Check to see if they are already logged in?
-        $session_en = $this->session->userdata('user');
-        if (isset($session_en['en__parents'][0])) {
-            //Lead trainer and above, go to console:
-            if(filter_array($session_en['en__parents'], 'en_id', $this->config->item('en_ids_10691') /* Mench Trainers */)){
-                return redirect_message('/intents');
-            } else {
-                return redirect_message('/actionplan' . ( $in_id > 0 ? '/'.$in_id : '' ));
-            }
-        }
-
-        $en_all_7369 = $this->config->item('en_all_7369');
-        $this->load->view('view_user_app/user_app_header', array(
-            'hide_header' => 1,
-            'title' => $en_all_7369[4269]['m_name'],
-        ));
-        $this->load->view('view_user_app/user_signin', array(
-            'referrer_in_id' => intval($in_id),
-            'session_en' => $this->session->userdata('user'),
-        ));
-        $this->load->view('view_user_app/user_app_footer', array(
-            'hide_footer' => 1,
-        ));
-
-    }
-
-
-
 
     function singin_check_password(){
 
@@ -156,7 +126,7 @@ class User_app extends CI_Controller
 
     }
 
-    function signin_reset_password_ui($ln_id){
+    function sign_reset_password_ui($ln_id){
 
         //Log all sessions out:
         $this->session->sess_destroy();
@@ -164,7 +134,7 @@ class User_app extends CI_Controller
         //Make sure email input is provided:
         if(!isset($_GET['email']) || !filter_var($_GET['email'], FILTER_VALIDATE_EMAIL)){
             //Missing email input:
-            return redirect_message('/signin', '<div class="alert alert-danger" role="alert">Missing email address</div>');
+            return redirect_message('/sign', '<div class="alert alert-danger" role="alert">Missing email address</div>');
         }
 
         //Validate link ID and matching email:
@@ -176,7 +146,7 @@ class User_app extends CI_Controller
 
         if(count($validate_links) < 1){
             //Probably already completed the reset password:
-            return redirect_message('/signin', '<div class="alert alert-danger" role="alert">Reset password link not found</div>');
+            return redirect_message('/sign', '<div class="alert alert-danger" role="alert">Reset password link not found</div>');
         }
 
         $this->load->view('view_user_app/user_app_header', array(
@@ -195,7 +165,7 @@ class User_app extends CI_Controller
 
 
 
-    function signin_reset_password_apply()
+    function sign_reset_password_apply()
     {
 
         //This function updates the user's new password as requested via a password reset:
@@ -301,7 +271,7 @@ class User_app extends CI_Controller
     }
 
 
-    function signin_create_account(){
+    function sign_create_account(){
 
         if (!isset($_POST['referrer_in_id']) || !isset($_POST['referrer_url'])) {
             return echo_json(array(
@@ -563,7 +533,7 @@ class User_app extends CI_Controller
             return redirect_message('/actionplan/next');
         } elseif(!isset($_GET['email']) || !filter_var($_GET['email'], FILTER_VALIDATE_EMAIL)){
             //Missing email input:
-            return redirect_message('/signin', '<div class="alert alert-danger" role="alert">Missing email address</div>');
+            return redirect_message('/sign', '<div class="alert alert-danger" role="alert">Missing email address</div>');
         }
 
         //Validate link ID and matching email:
@@ -574,10 +544,10 @@ class User_app extends CI_Controller
         )); //The user making the request
         if(count($validate_links) < 1){
             //Probably already completed the reset password:
-            return redirect_message('/signin?input_email='.$_GET['email'], '<div class="alert alert-danger" role="alert">Invalid data source</div>');
+            return redirect_message('/sign?input_email='.$_GET['email'], '<div class="alert alert-danger" role="alert">Invalid data source</div>');
         } elseif(strtotime($validate_links[0]['ln_timestamp']) + $this->config->item('magic_link_expiry') < time()){
             //Probably already completed the reset password:
-            return redirect_message('/signin?input_email='.$_GET['email'], '<div class="alert alert-danger" role="alert">Magic link has expired. Try again.</div>');
+            return redirect_message('/sign?input_email='.$_GET['email'], '<div class="alert alert-danger" role="alert">Magic link has expired. Try again.</div>');
         }
 
         //Fetch entity:
@@ -585,7 +555,7 @@ class User_app extends CI_Controller
             'en_id' => $validate_links[0]['ln_creator_entity_id'],
         ));
         if(count($ens) < 1){
-            return redirect_message('/signin?input_email='.$_GET['email'], '<div class="alert alert-danger" role="alert">User not found</div>');
+            return redirect_message('/sign?input_email='.$_GET['email'], '<div class="alert alert-danger" role="alert">User not found</div>');
         }
 
         //Log them in:

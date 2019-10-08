@@ -28,7 +28,7 @@
     </div>
     <div class="grey-box">
 
-        <div class="loadbox hidden"><i class="fas fa-yin-yang fa-spin"></i> <?= echo_random_message('ying_yang') ?></div>
+        <div class="loadbox hidden"><i class="far fa-yin-yang fa-spin"></i> <?= echo_random_message('ying_yang') ?></div>
 
         <div class="row loadcontent">
 
@@ -206,7 +206,7 @@
 
         <table class="loadcontent">
             <tr>
-                <td class="save-td"><a href="javascript:in_modify_save();" class="btn btn-primary">Save</a></td>
+                <td class="save-td"><a href="javascript:in_modify_save();" class="btn btn-blog">Save</a></td>
                 <td class="save-result-td"><span class="save_intent_changes"></span></td>
             </tr>
         </table>
@@ -223,7 +223,7 @@
     </div>
     <div class="grey-box" style="padding-bottom: 10px;">
         <iframe class="ajax-frame hidden" id="ajax_messaging_iframe" src=""></iframe>
-        <span class="frame-loader hidden"><i class="fas fa-yin-yang fa-spin"></i> <?= echo_random_message('ying_yang') ?></span></div>
+        <span class="frame-loader hidden"><i class="far fa-yin-yang fa-spin"></i> <?= echo_random_message('ying_yang') ?></span></div>
 </div>
 
 

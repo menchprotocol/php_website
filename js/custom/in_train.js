@@ -242,7 +242,7 @@ function copyToClipboard(elem) {
 function in_load_upvote(in_id, in_outcome){
 
     //Immediately load modal:
-    $('#upvote_parents, .upvote_intent').html('<i class="fas fa-yin-yang fa-spin"></i>');
+    $('#upvote_parents, .upvote_intent').html('<i class="far fa-yin-yang fa-spin"></i>');
     $('#addUpVote').modal('show');
 
     //Then load data into modal:
@@ -522,7 +522,7 @@ function in_link_or_create(in_linked_id, is_parent, next_level, in_link_child_id
     }
 
     //Set processing status:
-    add_to_list(sort_list_id, sort_handler, '<div id="temp' + next_level + '" class="list-group-item"><i class="fas fa-yin-yang fa-spin"></i> Adding... </div>');
+    add_to_list(sort_list_id, sort_handler, '<div id="temp' + next_level + '" class="list-group-item"><i class="far fa-yin-yang fa-spin"></i> Adding... </div>');
 
     //Update backend:
     $.post("/intents/in_link_or_create", {

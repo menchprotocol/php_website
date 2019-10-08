@@ -34,14 +34,14 @@ function goto_step(this_step_count){
     $('#step'+step_count+' :input:visible:first').focus();
 }
 
-function confirm_signin_on_messenger(){
+function confirm_sign_on_messenger(){
     var r = confirm("Ok, I will take you to Messenger now...");
     if (r == true) {
-        signin_on_messenger();
+        sign_on_messenger();
     }
 }
 
-function signin_on_messenger(){
+function sign_on_messenger(){
 
     if(!logged_messenger){
         js_ln_create(channel_choice_messenger);
@@ -55,16 +55,16 @@ function signin_on_messenger(){
 
 }
 
-function choose_channel(pathway_chosen){
+function select_channel(pathway_chosen){
 
 
     if(parseInt(pathway_chosen) == 6196 /* Mench on Messenger */ ){
 
         //Remove button:
-        $('#step1button').html('<div style="font-size: 1.2em; padding-top:10px;"><i class="fas fa-yin-yang fa-spin"></i> Taking you to Messenger...</div>');
+        $('#step1button').html('<div style="font-size: 1.2em; padding-top:10px;"><i class="far fa-yin-yang fa-spin"></i> Taking you to Messenger...</div>');
 
         //Log link:
-        signin_on_messenger();
+        sign_on_messenger();
 
     } else {
 
@@ -88,7 +88,7 @@ function search_email(){
 
     //Lock fields:
     email_is_searching = true;
-    $('#email_check_next').html('<i class="fas fa-yin-yang fa-spin"></i>');
+    $('#email_check_next').html('<i class="far fa-yin-yang fa-spin" style="font-size: 2em;"></i>');
     $('#input_email').prop('disabled', true).css('background-color','#F0F0F0');
     $('#password_errors').html('&nbsp;');
     $('#custom_message').html(''); //Remove previous errors, if any
@@ -103,7 +103,7 @@ function search_email(){
 
         //Release field lock:
         email_is_searching = false;
-        $('#email_check_next').html('Next <i class="fas fa-arrow-right"></i>');
+        $('#email_check_next').html('<i class="fas fa-arrow-right" style="font-size: 2em;"></i>');
         $('#input_email').prop('disabled', false).css('background-color','#FFFFFF');
 
         if (data.status) {
@@ -137,11 +137,11 @@ function add_account(){
 
     //Lock fields:
     account_is_adding = true;
-    $('#add_acount_next').html('<i class="fas fa-yin-yang fa-spin"></i>');
+    $('#add_acount_next').html('<i class="far fa-yin-yang fa-spin"></i>');
     $('#input_name, #new_password').prop('disabled', true).css('background-color','#F0F0F0');
 
     //Check email and validate:
-    $.post("/user_app/signin_create_account", {
+    $.post("/user_app/sign_create_account", {
         input_email: $('#input_email').val(),
         input_name: $('#input_name').val(),
         new_password: $('#new_password').val(),
@@ -190,7 +190,7 @@ function singin_check_password(){
 
     //Lock fields:
     password_is_checking = true;
-    $('#password_check_next').html('<i class="fas fa-yin-yang fa-spin"></i>');
+    $('#password_check_next').html('<i class="far fa-yin-yang fa-spin"></i>');
     $('#input_password').prop('disabled', true).css('background-color','#F0F0F0');
 
     //Check email and validate:
@@ -203,7 +203,7 @@ function singin_check_password(){
         if (data.status) {
 
             //Release field lock:
-            $('#password_check_next').html('<i class="fas fa-check-circle"></i>');
+            $('#password_check_next').html('<i class="fas fa-check-circle" style="font-size: 2em;"></i>');
             $('#password_errors').html('&nbsp;');
 
             //Redirect
@@ -213,7 +213,7 @@ function singin_check_password(){
 
             //Release field lock:
             password_is_checking = false;
-            $('#password_check_next').html('Sign In <i class="fas fa-arrow-right"></i>');
+            $('#password_check_next').html('<i class="fas fa-arrow-right" style="font-size: 2em;"></i>');
             $('#input_password').prop('disabled', false).css('background-color','#FFFFFF').focus();
 
             //Show errors:
@@ -230,7 +230,7 @@ function singin_magic_link_email(){
 
         //Update UI:
         goto_step(5); //To check their email and create new account
-        $('.magic_result').html('<i class="fas fa-yin-yang fa-spin"></i> Emailing you a magic link...');
+        $('.magic_result').html('<i class="far fa-yin-yang fa-spin"></i> Emailing you a magic link...');
 
         //Check email and validate:
         $.post("/user_app/singin_magic_link_email", {

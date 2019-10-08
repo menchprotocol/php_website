@@ -555,20 +555,20 @@ class Intents_model extends CI_Model
 
                 $ui .= '<textarea id="user_new_content" class="border" placeholder="" style="height:66px; width: 100%; padding: 5px;"></textarea>';
                 $ui .= '<span class="saving_result"></span>';
-                $ui .= '<p><a class="btn btn-primary" href="javascript:void(0);" onsubmit="">Save & Continue</a></p>';
+                $ui .= '<p><a class="btn btn-blog" href="javascript:void(0);" onsubmit="">Save & Continue</a></p>';
 
             } elseif($in['in_completion_method_entity_id'] == 6682 /* URL */){
 
                 $ui .= '<input type="url" id="user_new_content" class="border">';
                 $ui .= '<span class="saving_result"></span>';
-                $ui .= '<p><a class="btn btn-primary" href="javascript:void(0);" onsubmit="">Save & Continue</a></p>';
+                $ui .= '<p><a class="btn btn-blog" href="javascript:void(0);" onsubmit="">Save & Continue</a></p>';
 
             } elseif(in_array($in['in_completion_method_entity_id'], $this->config->item('en_ids_7751')) /* Intent Upload File */){
 
                 //File Upload:
                 $ui .= '<p>Upload '.echo_a_an($content_name).' '. $content_name .' file to complete this step.</p>';
                 $ui .= '<span class="saving_result"></span>';
-                $ui .= '<input class="box__file inputfile" type="file" id="user_new_content" /><label class="textarea_buttons btn btn-primary" for="file" data-toggle="tooltip" title="Upload '.$content_name.' up to ' . $this->config->item('max_file_mb_size') . ' MB" data-placement="top">'.$en_all_6144[$in['in_completion_method_entity_id']]['m_icon'].' Upload '.$content_name.'</label>';
+                $ui .= '<input class="box__file inputfile" type="file" id="user_new_content" /><label class="textarea_buttons btn btn-blog" for="file" data-toggle="tooltip" title="Upload '.$content_name.' up to ' . $this->config->item('max_file_mb_size') . ' MB" data-placement="top">'.$en_all_6144[$in['in_completion_method_entity_id']]['m_icon'].' Upload '.$content_name.'</label>';
 
             } else {
 
