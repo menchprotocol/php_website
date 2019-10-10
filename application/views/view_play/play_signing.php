@@ -1,7 +1,7 @@
 <?php
-$en_all_7369 = $this->config->item('en_all_7369');
 $en_all_6225 = $this->config->item('en_all_6225');
 $en_all_7555 = $this->config->item('en_all_7555');
+$en_all_7305 = $this->config->item('en_all_7305'); //MENCH PLATFORM
 
 $this_attempt = array(
     'ln_type_entity_id' => ( $referrer_in_id > 0 ? 7560 /* User Signin Intent Channel Choose */ : 7561 /* User Signin on Website */ ),
@@ -65,13 +65,11 @@ if(count($current_sign_in_attempt) == 0){
         type="text/javascript"></script>
 
 
-<div class="landing-page-intro sign-in-page">
+<div class="container center-info">
 
-    <br />
-    <br />
-    <div class="sign-logo"><img src="/img/mench-v2-128.png" /></div>
+    <div class="sign-logo text-center"><img src="/img/mench-v2-128.png" class="mench-spin" /></div>
 
-    <h1>Sign In/Up</h1>
+    <h1 class="text-center"><?= $en_all_7305[4269]['m_name'] ?></h1>
 
     <?php
     if($referrer_in_id > 0){
@@ -117,10 +115,10 @@ if(count($current_sign_in_attempt) == 0){
         <div id="step2" class="signup-steps hidden">
             <span class="medium-header"><?= $en_all_7555[3288]['m_icon'].' '.$en_all_7555[3288]['m_name'] ?></span>
             <div class="form-group is-empty"><input type="email" id="input_email" <?= isset($_GET['input_email']) ? ' value="'.$_GET['input_email'].'" ' : '' ?> class="form-control border"></div>
-            <div id="email_errors" class="sign-error-box"></div>
+            <div id="email_errors" class="isred"></div>
             <span id="step2buttons">
                 <a href="javascript:void(0)" onclick="goto_step(1)" class="btn btn-main transparent pass btn-raised btn-round <?= ( $referrer_in_id > 0 ? '' : ' hidden ' ) ?>"><i class="fas fa-arrow-left"></i></a>
-                <a href="javascript:void(0)" onclick="search_email()" id="email_check_next" class="btn btn-main pass btn-raised btn-round btn-next"><i class="fas fa-arrow-right" style="font-size: 2em;"></i></a>
+                <a href="javascript:void(0)" onclick="search_email()" id="email_check_next" class="btn btn-main pass btn-raised btn-round btn-next"><i class="fas fa-arrow-right"></i></a>
             </span>
             <span id="messenger_sign" style="padding-left:5px; font-size:1em !important;" class="<?= ( $referrer_in_id > 0 ? ' hidden ' : '' ) ?>">OR <a href="javascript:void(0)" onclick="confirm_sign_on_messenger()" class="underdot" style="font-size:1em !important;">USE MESSENGER <i class="fab fa-facebook-messenger"></i></a></span>
         </div>
@@ -140,10 +138,10 @@ if(count($current_sign_in_attempt) == 0){
             <div class="form-group is-empty"><input type="password" id="new_password" class="form-control border"></div>
 
             <!-- Signup Buttons -->
-            <div id="new_account_errors" class="sign-error-box"></div>
+            <div id="new_account_errors" class="isred"></div>
             <span id="step2buttons">
-                <a href="javascript:void(0)" onclick="goto_step(2)" class="btn btn-main transparent pass btn-raised btn-round"><i class="fas fa-arrow-left" style="font-size:2em;"></i></a>
-                <a href="javascript:void(0)" onclick="add_account()" id="add_acount_next" class="btn btn-main pass btn-raised btn-round btn-next"><i class="fas fa-arrow-right" style="font-size:2em;"></i></a>
+                <a href="javascript:void(0)" onclick="goto_step(2)" class="btn btn-main transparent pass btn-raised btn-round"><i class="fas fa-arrow-left"></i></a>
+                <a href="javascript:void(0)" onclick="add_account()" id="add_acount_next" class="btn btn-main pass btn-raised btn-round btn-next"><i class="fas fa-arrow-right"></i></a>
             </span>
 
         </div>
@@ -155,15 +153,15 @@ if(count($current_sign_in_attempt) == 0){
             <!-- To be updated to >0 IF email was found -->
             <input type="hidden" id="login_en_id" value="0" />
 
-            <span class="medium-header"><?= $en_all_6225[3286]['m_icon'].' '.$en_all_6225[3286]['m_name'] ?> for <span class="focus_email"></span></span>
+            <span class="medium-header"><?= $en_all_6225[3286]['m_icon'].' '.$en_all_6225[3286]['m_name'] ?></span>
             <div class="form-group is-empty"><input type="password" id="input_password" class="form-control border"></div>
-            <div id="password_errors" class="sign-error-box"></div>
+            <div id="password_errors" class="isred"></div>
             <span id="step3buttons">
-                <a href="javascript:void(0)" data-toggle="tooltip" data-placement="bottom" title="Go Back" onclick="goto_step(2)" class="btn btn-main transparent pass btn-raised btn-round"><i class="fas fa-arrow-left" style="font-size:2em;"></i></a>
-                <a href="javascript:void(0)" onclick="singin_check_password()" id="password_check_next" class="btn btn-main pass btn-raised btn-round btn-next"><i class="fas fa-arrow-right" style="font-size: 2em;"></i></a>
+                <a href="javascript:void(0)" data-toggle="tooltip" data-placement="bottom" title="Go Back" onclick="goto_step(2)" class="btn btn-main transparent pass btn-raised btn-round"><i class="fas fa-arrow-left"></i></a>
+                <a href="javascript:void(0)" onclick="singin_check_password()" id="password_check_next" class="btn btn-main pass btn-raised btn-round btn-next"><i class="fas fa-arrow-right"></i></a>
             </span>
 
-            <span style="padding-left:5px; font-size:0.9em !important;">OR <a href="javascript:void(0)" onclick="singin_magic_link_email()" class="underdot" style="font-size:1em !important;">USE MAGIC EMAIL <i class="fas fa-wand-magic"></i></a></span>
+            <span style="padding-left:5px; font-size:0.9em !important;">OR <a href="javascript:void(0)" onclick="singin_magic_link_email()" class="underdot" style="font-size:1em !important;">MAGIC LINK <i class="fas fa-envelope-open"></i></a></span>
 
         </div>
 

@@ -23,8 +23,8 @@ $config['system_icon']              = '<img src="/img/mench_white.png" />'; //Us
 $config['app_enable_algolia']       = true; //May need to turn off if/when we reach monthly quota of 50k calls
 $config['max_file_mb_size']         = 25; //Server setting is 32MB
 $config['items_per_page']           = 100; //The limit of how many items should be loaded per page/section
-$config['css_column_1']             = 'col-xs-7 cols'; //Size of grid 1 (IF Change col-xs then also update on other code base
-$config['css_column_2']             = 'col-xs-5 cols'; //Size of grid 2
+$config['css_column_1']             = 'col-sm-6'; //Size of grid 1 (IF Change col-xs then also update on other code base
+$config['css_column_2']             = 'col-sm-6'; //Size of grid 2
 $config['fb_mench_url']             = 'https://m.me/askmench'; //The URL of Mench on Messenger
 $config['magic_link_expiry']        = 3600;
 $config['pasword_reset_expiry']     = 86400;
@@ -37,7 +37,7 @@ $config['bytes_per_word']           = 30000; //1 Word ~ 30KB
 $config['unknown_file_words']       = 3; //When we cannot find the file size
 
 
-//Intent References:
+//BLOG
 $config['in_mission_id']            = 7766; //highest-level intent which defines the mission of Mench
 $config['in_join_id']               = 12677; //Where new users would start if they have not specified an intention
 $config['in_focus_id']              = 11762; //The intent that the Mench community is focused on
@@ -48,17 +48,16 @@ $config['in_required_id']           = 12830; //Intnents required by all users to
 
 $config['in_system_lock']           = array(7766, 11762, 12830, 12831, 12677); //Once set to published, their status will be locked by system
 
-//Intent Settings:
 $config['in_max_seconds']           = 28800; //The maximum seconds allowed per intent. If larger, the trainer is asked to break it down into smaller intents
 $config['in_outcome_max_length']           = 100; //Max number of characters allowed for intent outcomes
 $config['in_completion_marks']      = array(-89, -55, -34, -21, -13, -8, -5, -3, -2, -1, 0, 1, 2, 3, 5, 8, 13, 21, 34, 55, 89); //Marks users get when completing an intent (Learn more @4358)
 
 
-//Entities:
+//PLAY
 $config['en_name_max_length']       = 250; //Max number of characters allowed in the title of intents
 
 
-//Links:
+//READ
 $config['ln_content_max_length']      = 610; //Max number of characters allowed in messages. Facebook's cap is 2000 characters/message
 $config['tr_object_links']          = array( //Each link can have any of the following object links
                                         'ln_type_entity_id' => 'en',
@@ -83,7 +82,6 @@ $config['fb_convert_4454']          = array( //Facebook Messenger Notification L
                                         4456 => 'REGULAR',
                                         4457 => 'SILENT_PUSH',
                                         4458 => 'NO_PUSH',
-                                        //@4455 => Unsubscribe NOT listed here since in that case all communication is blocked!
                                     );
 $config['fb_convert_4537']          = array( //Dedicated media formats supported by Facebook Messenger
                                         4258 => 'video',

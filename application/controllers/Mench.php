@@ -13,8 +13,7 @@ class Mench extends CI_Controller
 
 
     function overview(){
-        //Load default:
-        return redirect_message('/play');
+        return redirect_message('/read'); //DEFAULT
     }
 
     function update_counters(){

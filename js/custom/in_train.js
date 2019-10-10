@@ -149,7 +149,7 @@ function load_filters(){
 
         source: function (q, cb) {
             algolia_index.search(q, {
-                filters: '_tags:alg_author_4430', //Entities belonging to Mench Users
+                filters: '_tags:alg_author_4430', //Available to all Players
                 hitsPerPage: 7,
             }, function (error, content) {
                 if (error) {

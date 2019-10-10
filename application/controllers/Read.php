@@ -11,4 +11,12 @@ class Read extends CI_Controller
         $this->output->enable_profiler(FALSE);
     }
 
+    function overview(){
+        $this->load->view('view_mench/shared_header', array(
+            'title' => 'READ',
+        ));
+        $this->load->view('view_read/read_overview');
+        $this->load->view('view_mench/shared_footer');
+    }
+
 }

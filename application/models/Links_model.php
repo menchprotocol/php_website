@@ -371,7 +371,7 @@ class Links_model extends CI_Model
                             $ens = $this->Entities_model->en_fetch(array(
                                 'en_id' => $insert_columns[$ln_field],
                             ));
-                            $html_message .= '<div>' . echo_clean_db_name($ln_field) . ': <a href="https://mench.com/entities/' . $ens[0]['en_id'] . '" target="_parent">@'.$ens[0]['en_id'].' '.$ens[0]['en_name'].'</a></div>';
+                            $html_message .= '<div>' . echo_clean_db_name($ln_field) . ': <a href="https://mench.com/play/' . $ens[0]['en_id'] . '" target="_parent">@'.$ens[0]['en_id'].' '.$ens[0]['en_name'].'</a></div>';
 
                         } elseif ($obj_type == 'ln') {
 
@@ -386,7 +386,7 @@ class Links_model extends CI_Model
                 $html_message .= '<div>Link ID: <a href="https://mench.com/links?ln_id=' . $insert_columns['ln_id'] . '" target="_blank">' . $insert_columns['ln_id'] . '</a></div>';
 
                 //Inform how to change settings:
-                $html_message .= '<div style="color: #AAAAAA; font-size:0.9em; margin-top:20px;">Manage your email notifications via <a href="https://mench.com/entities/5967" target="_blank">@5967</a></div>';
+                $html_message .= '<div style="color: #AAAAAA; font-size:0.9em; margin-top:20px;">Manage your email notifications via <a href="https://mench.com/play/5967" target="_blank">@5967</a></div>';
 
                 //Send email:
                 $dispatched_email = $this->Communication_model->dispatch_emails($sub_emails, $subject, $html_message);

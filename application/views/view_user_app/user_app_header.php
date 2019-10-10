@@ -2,7 +2,7 @@
 //Attempt to fetch session variables:
 $session_en = $this->session->userdata('user');
 $is_logged = isset($session_en['en_id']);
-$en_all_7369 = $this->config->item('en_all_7369');
+$en_all_7305 = $this->config->item('en_all_7305');
 ?><!doctype html>
 <html lang="en">
 <head>
@@ -45,31 +45,19 @@ $en_all_7369 = $this->config->item('en_all_7369');
                 <?php
                 if ($is_logged) {
 
-
-                    $navigation = array(
-                        array(
-                            'uri_segment_1' => 'actionplan',
-                            'anchor' => $en_all_7369[6138]['m_icon'].' '.$en_all_7369[6138]['m_name'],
-                        ),
-                        array(
-                            'uri_segment_1' => 'myaccount',
-                            'anchor' => $en_all_7369[6137]['m_icon'].' '.$en_all_7369[6137]['m_name'],
-                        )
-                    );
-
                     //If trainer give access back to platform:
                     if(en_auth($this->config->item('en_ids_10691') /* Mench Trainers */)){
-                        $en_all_7372 = $this->config->item('en_all_7372');
+                        $en_all_7305 = $this->config->item('en_all_7305');
                         array_push($navigation, array(
                             'uri_segment_1' => 'intents',
-                            'anchor' => '<span class="micro-image">'.$en_all_7372[7368]['m_icon'].'</span> '.$en_all_7372[7368]['m_name'].' &nbsp;<i class="fas fa-long-arrow-right"></i>',
+                            'anchor' => 'BLOG <i class="fas fa-long-arrow-right"></i>',
                         ));
                     }
 
                     //Add signout:
                     array_push($navigation, array(
                         'uri_segment_1' => 'signout',
-                        'anchor' => $en_all_7369[7291]['m_icon'].' '.$en_all_7369[7291]['m_name'],
+                        'anchor' => $en_all_7305[7291]['m_icon'].' '.$en_all_7305[7291]['m_name'],
                     ));
 
                     //Display all:
@@ -80,7 +68,7 @@ $en_all_7369 = $this->config->item('en_all_7369');
                 } else {
 
                     //Give option to sign-in:
-                    echo '<li><a href="/sign">'.$en_all_7369[4269]['m_name'].' '.$en_all_7369[4269]['m_icon'].'</a></li>';
+                    echo '<li><a href="/sign">'.$en_all_7305[4269]['m_name'].' '.$en_all_7305[4269]['m_icon'].'</a></li>';
 
                     //Give option to Signup if Intent is passed:
                     echo '<li class="featured-nav"><a href="/'.( isset($in['in_id']) && $in['in_id']!=$this->config->item('in_focus_id') ? $in['in_id'] : $this->config->item('in_join_id') ).'/sign">SIGN UP <i class="fas fa-user-plus"></i></a></li>';

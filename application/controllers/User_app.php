@@ -29,7 +29,7 @@ class User_app extends CI_Controller
         } elseif (!isset($_POST['input_password']) || strlen($_POST['input_password']) < $this->config->item('password_min_char')) {
             return echo_json(array(
                 'status' => 0,
-                'message' => 'Password longer than '.$this->config->item('password_min_char').' characters',
+                'message' => 'Invalid Password',
             ));
         } elseif (!isset($_POST['referrer_url'])) {
             return echo_json(array(
@@ -134,7 +134,7 @@ class User_app extends CI_Controller
         //Make sure email input is provided:
         if(!isset($_GET['email']) || !filter_var($_GET['email'], FILTER_VALIDATE_EMAIL)){
             //Missing email input:
-            return redirect_message('/sign', '<div class="alert alert-danger" role="alert">Missing email address</div>');
+            return redirect_message('/sign', '<div class="alert alert-danger" role="alert">Missing Email</div>');
         }
 
         //Validate link ID and matching email:
@@ -281,7 +281,7 @@ class User_app extends CI_Controller
         } elseif (!isset($_POST['input_email']) || !filter_var($_POST['input_email'], FILTER_VALIDATE_EMAIL)) {
             return echo_json(array(
                 'status' => 0,
-                'message' => 'Invalid email address',
+                'message' => 'Invalid Email',
             ));
         } elseif (!isset($_POST['input_name']) || strlen($_POST['input_name'])<1) {
             return echo_json(array(
@@ -462,7 +462,7 @@ class User_app extends CI_Controller
         if (!isset($_POST['input_email']) || !filter_var($_POST['input_email'], FILTER_VALIDATE_EMAIL)) {
             return echo_json(array(
                 'status' => 0,
-                'message' => 'Invalid email address',
+                'message' => 'Invalid Email',
             ));
         } elseif (!isset($_POST['referrer_in_id'])) {
             return echo_json(array(
@@ -533,7 +533,7 @@ class User_app extends CI_Controller
             return redirect_message('/actionplan/next');
         } elseif(!isset($_GET['email']) || !filter_var($_GET['email'], FILTER_VALIDATE_EMAIL)){
             //Missing email input:
-            return redirect_message('/sign', '<div class="alert alert-danger" role="alert">Missing email address</div>');
+            return redirect_message('/sign', '<div class="alert alert-danger" role="alert">Missing Email</div>');
         }
 
         //Validate link ID and matching email:
@@ -573,7 +573,7 @@ class User_app extends CI_Controller
         if (!isset($_POST['input_email']) || !filter_var($_POST['input_email'], FILTER_VALIDATE_EMAIL)) {
             return echo_json(array(
                 'status' => 0,
-                'message' => 'Invalid email address',
+                'message' => 'Invalid Email',
             ));
         } elseif (!isset($_POST['referrer_in_id'])) {
             return echo_json(array(
@@ -936,7 +936,7 @@ class User_app extends CI_Controller
         } elseif (!isset($_POST['en_email']) || (strlen($_POST['en_email']) > 0 && !filter_var($_POST['en_email'], FILTER_VALIDATE_EMAIL))) {
             return echo_json(array(
                 'status' => 0,
-                'message' => 'Invalid email address',
+                'message' => 'Invalid Email',
             ));
         }
 
@@ -1326,10 +1326,10 @@ class User_app extends CI_Controller
         //Attempt to add intent to Action Plan:
         if($this->Actionplan_model->intention_add($session_en['en_id'], $_POST['in_id'], 0, false)){
             //All good:
-            $en_all_7369 = $this->config->item('en_all_7369');
+            $en_all_7305 = $this->config->item('en_all_7305');
             return echo_json(array(
                 'status' => 1,
-                'message' => '<i class="far fa-check-circle"></i> Added to your '.$en_all_7369[6138]['m_icon'].' '.$en_all_7369[6138]['m_name'],
+                'message' => '<i class="far fa-check-circle"></i> Added to your '.$en_all_7305[6138]['m_icon'].' '.$en_all_7305[6138]['m_name'],
                 'add_redirect' => '/actionplan/'.$_POST['in_id'],
             ));
         } else {
@@ -1762,8 +1762,6 @@ class User_app extends CI_Controller
             ));
         }
 
-        //Used when the user subscribed back to us:
-        $greet_them_back = false;
 
         if(!$_POST['enable_mulitiselect'] || $_POST['was_already_selected']){
             //Since this is not a multi-select we want to remove all existing options...
@@ -1794,22 +1792,6 @@ class User_app extends CI_Controller
                 'ln_type_entity_id IN (' . join(',', $this->config->item('en_ids_4592')) . ')' => null, //Entity-to-Entity Links
                 'ln_status_entity_id IN (' . join(',', $this->config->item('en_ids_7359')) . ')' => null, //Link Statuses Public
             )) as $remove_en){
-
-                //Does this have to do with changing Subscription Type? We need to confirm with them if so:
-                if($_POST['parent_en_id']==4454){
-                    if($_POST['selected_en_id']==4455){
-                        //They just unsubscribed, send them a message before its too late (changing their status):
-                        $this->Communication_model->dispatch_message(
-                            'This is a confirmation that you are now unsubscribed from Mench and I will not longer send you any messages. You can resume your subscription later by going to MY ACCOUNT > SUBSCRIPTION TYPE > Set Notification',
-                            array('en_id' => $_POST['en_creator_id']),
-                            true
-                        );
-                    } elseif($remove_en['ln_parent_entity_id']==4455){
-                        //They used to be ub-subscribed, now they join back, confirm with them AFTER we update their settings:
-                        $greet_them_back = true;
-                    }
-                }
-
                 //Should usually remove a single option:
                 $this->Links_model->ln_update($remove_en['ln_id'], array(
                     'ln_status_entity_id' => 6173, //Link Removed
@@ -1827,15 +1809,6 @@ class User_app extends CI_Controller
                 'ln_type_entity_id' => 4230, //Raw
                 'ln_status_entity_id' => 6176, //Link Published
             ));
-        }
-
-        if($greet_them_back){
-            //Now we can communicate with them again:
-            $this->Communication_model->dispatch_message(
-                'Welcome back 🎉🎉🎉 This is a confirmation that you are now re-subscribed and I will continue to work with you on your Acion Plan intentions',
-                array('en_id' => $_POST['en_creator_id']),
-                true
-            );
         }
 
 

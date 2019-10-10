@@ -27,7 +27,7 @@ $moderation_tools = array(
 $cron_jobs = array(
     '/intents/cron__sync_common_base' => 'Sync Common Base Metadata',
     '/intents/cron__sync_extra_insights' => 'Sync Extra Insights Metadata',
-    '/entities/cron__update_trust_score' => 'Update All Entity Trust Scores',
+    '/play/cron__update_trust_score' => 'Update All Entity Trust Scores',
     '/links/cron__sync_algolia' => 'Sync Algolia Index [Limited calls!]',
     '/links/cron__sync_gephi' => 'Sync Gephi Graph Index',
     '/links/cron__clean_metadatas' => 'Clean Unused Metadata Variables',
@@ -45,7 +45,7 @@ $developer_tools = array(
 if(!$action) {
 
     $en_all_7368 = $this->config->item('en_all_7368');
-    echo '<h1>'.$en_all_7368[6287]['m_icon'].' '.$en_all_7368[6287]['m_name'].' <a href="/entities/6287" style="font-size: 0.5em; color: #999;" title="'.$en_all_7368[6287]['m_name'].' entity controlling this tool" data-toggle="tooltip" data-placement="right">@6287</a></h1>';
+    echo '<h1>'.$en_all_7368[6287]['m_icon'].' '.$en_all_7368[6287]['m_name'].' <a href="/play/6287" style="font-size: 0.5em; color: #999;" title="'.$en_all_7368[6287]['m_name'].' entity controlling this tool" data-toggle="tooltip" data-placement="right">@6287</a></h1>';
 
     echo '<div class="list-group actionplan_list grey_list maxout">';
     foreach ($moderation_tools as $tool_key => $tool_name) {
@@ -151,7 +151,6 @@ if(!$action) {
     //Add some empty space:
     echo '<tr class="panel-title down-border"><td style="text-align: left;" colspan="6">&nbsp;</td></tr>';
 
-
     //Now do a high level stats:
     foreach (array('ln_words =', 'ln_words >', 'ln_words <') as $words_setting) {
 
@@ -187,7 +186,7 @@ if(!$action) {
         $word_weight = filter_cache_group($ln['en_id'], 10592);
 
         echo '<tr class="panel-title down-border">';
-        echo '<td style="text-align: left;"><span class="icon-block">'.$ln['en_icon'].'</span> <a href="/entities/'.$ln['en_id'].'">'.$ln['en_name'].'</a></td>';
+        echo '<td style="text-align: left;"><span class="icon-block">'.$ln['en_icon'].'</span> <a href="/play/'.$ln['en_id'].'">'.$ln['en_name'].'</a></td>';
         echo '<td style="text-align: left;">'.number_format($ln['total_links'], 0).'</td>';
         echo '<td style="text-align: left;">'.number_format($ln['total_links']/$all_stats[0]['total_links']*100, 2).'%</td>';
         echo '<td style="text-align: left;"><span class="icon-block">'.( in_array($ln['en_id'], $this->config->item('en_ids_10589')) ? $en_all_10591[10589]['m_icon'] : $en_all_10591[10590]['m_icon'] ).'</span>'.number_format(round($ln['total_words']), 0).'</td>';
@@ -328,7 +327,7 @@ if(!$action) {
         foreach ($orphan_ens  as $count => $orphan_en) {
 
             //Show entity:
-            echo '<div>'.($count+1).') <span data-toggle="tooltip" data-placement="right" title="'.$en_all_6177[$orphan_en['en_status_entity_id']]['m_name'].': '.$en_all_6177[$orphan_en['en_status_entity_id']]['m_desc'].'">' . $en_all_6177[$orphan_en['en_status_entity_id']]['m_icon'] . '</span> <a href="/entities/'.$orphan_en['en_id'].'"><b>'.$orphan_en['en_name'].'</b></a>';
+            echo '<div>'.($count+1).') <span data-toggle="tooltip" data-placement="right" title="'.$en_all_6177[$orphan_en['en_status_entity_id']]['m_name'].': '.$en_all_6177[$orphan_en['en_status_entity_id']]['m_desc'].'">' . $en_all_6177[$orphan_en['en_status_entity_id']]['m_icon'] . '</span> <a href="/play/'.$orphan_en['en_id'].'"><b>'.$orphan_en['en_name'].'</b></a>';
 
             //Do we need to remove?
             if($command1=='remove_all'){
@@ -410,7 +409,7 @@ if(!$action) {
 
                 echo '<tr class="panel-title down-border">';
                 echo '<td style="text-align: left;">'.($count+1).'</td>';
-                echo '<td style="text-align: left;">'.echo_en_cache('en_all_6177' /* Entity Statuses */, $en['en_status_entity_id'], true, 'right').' <span class="icon-block">'.echo_en_icon($en).'</span><a href="/entities/'.$en['en_id'].'">'.$en['en_name'].'</a></td>';
+                echo '<td style="text-align: left;">'.echo_en_cache('en_all_6177' /* Entity Statuses */, $en['en_status_entity_id'], true, 'right').' <span class="icon-block">'.echo_en_icon($en).'</span><a href="/play/'.$en['en_id'].'">'.$en['en_name'].'</a></td>';
                 echo '</tr>';
 
             }
@@ -693,7 +692,7 @@ if(!$action) {
                 $prev_title = $en['en_name'];
             }
 
-            echo '<span data-toggle="tooltip" data-placement="right" title="'.$en_all_6177[$en['en_status_entity_id']]['m_name'].': '.$en_all_6177[$en['en_status_entity_id']]['m_desc'].'">' . $en_all_6177[$en['en_status_entity_id']]['m_icon'] . '</span> <a href="/entities/' . $en['en_id'] . '"><b>' . $en['en_name'] . '</b></a> @' . $en['en_id'] . '<br />';
+            echo '<span data-toggle="tooltip" data-placement="right" title="'.$en_all_6177[$en['en_status_entity_id']]['m_name'].': '.$en_all_6177[$en['en_status_entity_id']]['m_desc'].'">' . $en_all_6177[$en['en_status_entity_id']]['m_icon'] . '</span> <a href="/play/' . $en['en_id'] . '"><b>' . $en['en_name'] . '</b></a> @' . $en['en_id'] . '<br />';
         }
 
     } else {
@@ -702,7 +701,7 @@ if(!$action) {
 
 } elseif($action=='or__children') {
 
-    echo '<br /><p>Active <a href="/entities/6914">Intent Answer Types</a> are listed below.</p><br />';
+    echo '<br /><p>Active <a href="/play/6914">Intent Answer Types</a> are listed below.</p><br />';
 
     $all_steps = 0;
     $all_children = 0;

@@ -6,52 +6,6 @@
 <?php if(!isset($hide_footer) || !$hide_footer){ ?>
 <?php if(!isset($hide_social) || !$hide_social){ ?>
 
-    <footer class="footer" style="margin:30px 0 50px 0;">
-        <div class="container">
-
-
-            <nav>
-                <ul class="footer-a">
-                    <li class="social-li">
-
-                        <a href="https://www.instagram.com/askmench/" target="_blank" class="social-link"
-                           data-toggle="tooltip" title="Follow on Instagram" data-placement="top"><i
-                                    class="fab fa-instagram"></i></a>
-
-                        <a href="https://www.facebook.com/askmench" target="_blank" class="social-link"
-                           data-toggle="tooltip" title="Follow on Facebook" data-placement="top"><i
-                                    class="fab fa-facebook"></i></a>
-
-                        <a href="https://twitter.com/askmench" target="_blank" class="social-link" data-toggle="tooltip"
-                           title="Follow on Twitter" data-placement="top"><i class="fab fa-twitter"></i></a>
-
-                        <a href="https://www.youtube.com/channel/UCOH64HiAIfJlz73tTSI8n-g" target="_blank"
-                           class="social-link" data-toggle="tooltip" title="Subscribe on YouTube"
-                           data-placement="top"><i class="fab fa-youtube"></i></a>
-
-                        <a href="https://www.linkedin.com/company/askmench/" target="_blank" class="social-link"
-                           data-toggle="tooltip" title="Follow on LinkedIn" data-placement="top"><i
-                                    class="fab fa-linkedin"></i></a>
-
-                        <a href="https://github.com/askmench/mench-web-app" target="_blank" class="social-link"
-                           data-toggle="tooltip" title="Mench is open-source, contribute on Github" data-placement="top"><i
-                                    class="fab fa-github"></i></a>
-
-                    </li>
-                </ul>
-            </nav>
-
-
-            <?php $en_all_7369 = $this->config->item('en_all_7369'); /* Mench User App */ ?>
-            <?php $en_all_7372 = $this->config->item('en_all_7372'); /* Mench Products */ ?>
-
-            <div style="font-size: 0.8em; text-transform: uppercase; color: #222; font-weight:500;"><?= $en_all_7369[7161]['m_icon'] ?> <a href="/stats" class="underdot"><?= $en_all_7369[7161]['m_name'] ?></a> &nbsp;|&nbsp; <?= $en_all_7372[7540]['m_icon'] ?> <a href="/8263" class="underdot"><?= $en_all_7372[7540]['m_name'] ?></a> &nbsp;|&nbsp; <?= $en_all_7369[4269]['m_icon'] ?> <a href="/sign" class="underdot"><?= $en_all_7369[4269]['m_name'] ?></a></div>
-
-
-
-
-        </div>
-    </footer>
 
 <?php } else { ?>
 

@@ -109,8 +109,6 @@ class Messenger extends CI_Controller
         //Wait until Facebook pro-pagates changes of our whitelisted_domains setting:
         sleep(2);
 
-        $en_all_7369 = $this->config->item('en_all_7369');
-
         //Now let's update the menu:
         array_push($res, $this->Communication_model->facebook_graph('POST', '/me/messenger_profile', array(
             'persistent_menu' => array(
@@ -120,17 +118,25 @@ class Messenger extends CI_Controller
                     'disabled_surfaces' => array('CUSTOMER_CHAT_PLUGIN'),
                     'call_to_actions' => array(
                         array(
-                            'title' => $en_all_7369[6138]['m_icon'].' '.$en_all_7369[6138]['m_name'],
+                            'title' => '🔵 PLAY',
                             'type' => 'web_url',
-                            'url' => 'https://mench.com/actionplan',
+                            'url' => 'https://mench.com/play',
                             'webview_height_ratio' => 'tall',
                             'webview_share_button' => 'hide',
                             'messenger_extensions' => true,
                         ),
                         array(
-                            'title' => $en_all_7369[6137]['m_icon'].' '.$en_all_7369[6137]['m_name'],
+                            'title' => '🔴 READ',
                             'type' => 'web_url',
-                            'url' => 'https://mench.com/myaccount',
+                            'url' => 'https://mench.com/read',
+                            'webview_height_ratio' => 'tall',
+                            'webview_share_button' => 'hide',
+                            'messenger_extensions' => true,
+                        ),
+                        array(
+                            'title' => '🟡 BLOG', //Yellow emoji is new so will appear soon (hopefully)
+                            'type' => 'web_url',
+                            'url' => 'https://mench.com/blog',
                             'webview_height_ratio' => 'tall',
                             'webview_share_button' => 'hide',
                             'messenger_extensions' => true,
@@ -255,38 +261,6 @@ class Messenger extends CI_Controller
                     $sent_by_mench = (isset($im['message']['is_echo'])); //Indicates the message sent from the page itself
                     $en = $this->Entities_model->en_messenger_auth(($sent_by_mench ? $im['recipient']['id'] : $im['sender']['id']));
                     $is_quick_reply = (isset($im['message']['quick_reply']['payload']));
-
-                    //Check if this User is unsubscribed:
-                    if (!$is_quick_reply && count($this->Links_model->ln_fetch(array(
-                            'ln_parent_entity_id' => 4455, //Unsubscribed
-                            'ln_type_entity_id IN (' . join(',', $this->config->item('en_ids_4592')) . ')' => null, //Entity-to-Entity Links
-                            'ln_child_entity_id' => $en['en_id'],
-                            'ln_status_entity_id IN (' . join(',', $this->config->item('en_ids_7359')) . ')' => null, //Link Statuses Public
-                        ))) > 0) {
-
-                        //Yes, this User is Unsubscribed! Give them an option to re-activate their Mench account:
-                        $this->Communication_model->dispatch_message(
-                            'You are currently unsubscribed. Would you like me to re-activate your account?',
-                            $en,
-                            true,
-                            array(
-                                array(
-                                    'content_type' => 'text',
-                                    'title' => 'Yes, Re-Activate',
-                                    'payload' => 'RESUBSCRIBE_YES',
-                                ),
-                                array(
-                                    'content_type' => 'text',
-                                    'title' => 'Stay Unsubscribed',
-                                    'payload' => 'RESUBSCRIBE_NO',
-                                ),
-                            )
-                        );
-
-                        //Terminate:
-                        return print_r('re-subscribe');
-                    }
-
 
                     //Set more variables:
                     $matching_types = array(); //Defines the supported Intent Subtypes

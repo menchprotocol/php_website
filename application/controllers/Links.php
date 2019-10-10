@@ -180,7 +180,7 @@ class Links extends CI_Controller
                 //Assign new entity:
                 return echo_json(array(
                     'status' => 1,
-                    'new_item_url' => '/entities/' . $added_en['en']['en_id'],
+                    'new_item_url' => '/play/' . $added_en['en']['en_id'],
                 ));
             }
 
@@ -458,7 +458,7 @@ class Links extends CI_Controller
          * all variables that are not indexed
          * as part of Variables Names entity @6232
          *
-         * https://mench.com/entities/6232
+         * https://mench.com/play/6232
          *
          *
          * */

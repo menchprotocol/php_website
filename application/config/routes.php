@@ -7,17 +7,17 @@ $route['translate_uri_dashes']      = FALSE;
 $route['default_controller']        = "mench/overview";
 
 
-$route['sign']                    = "play/sign";
-$route['play/(:num)']               = "play/en_train/$1";
+$route['play/(:num)']               = "play/play_modify/$1"; //Set to: play_view
+$route['play/(:num)/modify']        = "play/play_modify/$1";
+$route['blog/(:num)']               = "blog/blog_modify/$1";
+$route['read/(:num)']               = "read/blog_read/$1";
+
+$route['sign']                      = "play/sign";
 $route['play']                      = "play/overview";
-$route['blog/(:num)']               = "intents/in_train/$1";
-$route['blog']                      = "intents/in_train/0";
-$route['read/(:num)']               = "intents/in_train/$1";
-$route['blog']                      = "intents/in_train/0";
+$route['read']                      = "read/overview";
+$route['blog']                      = "blog/overview";
 
 
-$route['entities/(:num)']           = "entities/en_train/$1";
-$route['entities']                  = "entities/en_train/0";
 $route['intents/(:num)']            = "intents/in_train/$1";
 $route['intents']                   = "intents/in_train/0";
 

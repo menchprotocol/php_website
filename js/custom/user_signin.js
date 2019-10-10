@@ -88,8 +88,8 @@ function search_email(){
 
     //Lock fields:
     email_is_searching = true;
-    $('#email_check_next').html('<i class="far fa-yin-yang fa-spin" style="font-size: 2em;"></i>');
-    $('#input_email').prop('disabled', true).css('background-color','#F0F0F0');
+    $('#email_check_next').html('<i class="far fa-yin-yang fa-spin"></i>');
+    $('#input_email').prop('disabled', true).css('background-color','#F7F7F7');
     $('#password_errors').html('&nbsp;');
     $('#custom_message').html(''); //Remove previous errors, if any
 
@@ -103,7 +103,7 @@ function search_email(){
 
         //Release field lock:
         email_is_searching = false;
-        $('#email_check_next').html('<i class="fas fa-arrow-right" style="font-size: 2em;"></i>');
+        $('#email_check_next').html('<i class="fas fa-arrow-right"></i>');
         $('#input_email').prop('disabled', false).css('background-color','#FFFFFF');
 
         if (data.status) {
@@ -138,7 +138,7 @@ function add_account(){
     //Lock fields:
     account_is_adding = true;
     $('#add_acount_next').html('<i class="far fa-yin-yang fa-spin"></i>');
-    $('#input_name, #new_password').prop('disabled', true).css('background-color','#F0F0F0');
+    $('#input_name, #new_password').prop('disabled', true).css('background-color','#F7F7F7');
 
     //Check email and validate:
     $.post("/user_app/sign_create_account", {
@@ -191,7 +191,7 @@ function singin_check_password(){
     //Lock fields:
     password_is_checking = true;
     $('#password_check_next').html('<i class="far fa-yin-yang fa-spin"></i>');
-    $('#input_password').prop('disabled', true).css('background-color','#F0F0F0');
+    $('#input_password').prop('disabled', true).css('background-color','#F7F7F7');
 
     //Check email and validate:
     $.post("/user_app/singin_check_password", {
@@ -203,7 +203,7 @@ function singin_check_password(){
         if (data.status) {
 
             //Release field lock:
-            $('#password_check_next').html('<i class="fas fa-check-circle" style="font-size: 2em;"></i>');
+            $('#password_check_next').html('<i class="fas fa-check-circle"></i>');
             $('#password_errors').html('&nbsp;');
 
             //Redirect
@@ -213,7 +213,7 @@ function singin_check_password(){
 
             //Release field lock:
             password_is_checking = false;
-            $('#password_check_next').html('<i class="fas fa-arrow-right" style="font-size: 2em;"></i>');
+            $('#password_check_next').html('<i class="fas fa-arrow-right"></i>');
             $('#input_password').prop('disabled', false).css('background-color','#FFFFFF').focus();
 
             //Show errors:

@@ -94,7 +94,7 @@ class Communication_model extends CI_Model
 
         //Update potential subscribers:
         foreach($this->Links_model->ln_fetch(array(
-            'ln_type_entity_id' => 7701, //Intent Note Subscriber
+            'ln_type_entity_id' => 4983, //UP-VOTES
             'ln_child_intent_id IN (' . join(',', $related_intents) . ')' => null, //Fetch subscribers for all intents
             'ln_status_entity_id IN (' . join(',', $this->config->item('en_ids_7359')) . ')' => null, //Link Statuses Public
             'en_status_entity_id IN (' . join(',', $this->config->item('en_ids_7357')) . ')' => null, //Entity Statuses Public
@@ -155,7 +155,7 @@ class Communication_model extends CI_Model
                             $ens = $this->Entities_model->en_fetch(array(
                                 'en_id' => $insert_columns[$ln_field],
                             ));
-                            $personalized_intro .= '<div>' . echo_clean_db_name($ln_field) . ': <a href="https://mench.com/entities/' . $ens[0]['en_id'] . '" target="_parent">@'.$ens[0]['en_id'].' '.$ens[0]['en_name'].'</a></div>';
+                            $personalized_intro .= '<div>' . echo_clean_db_name($ln_field) . ': <a href="https://mench.com/play/' . $ens[0]['en_id'] . '" target="_parent">@'.$ens[0]['en_id'].' '.$ens[0]['en_name'].'</a></div>';
 
                         } elseif ($obj_type == 'ln') {
 
@@ -602,7 +602,6 @@ class Communication_model extends CI_Model
                 4456 => 'REGULAR',
                 4457 => 'SILENT_PUSH',
                 4458 => 'NO_PUSH',
-                4455 => 'NO_PUSH', //Unsubscribed users only get messages if they messages us first
             );
 
             //Fetch recipient notification type:
@@ -623,7 +622,7 @@ class Communication_model extends CI_Model
 
             } elseif (count($lns_comm_level) > 1) {
 
-                //This should find exactly one result as it belongs to User Radio Entity @6137
+                //This should find exactly one result
                 return array(
                     'status' => 0,
                     'message' => 'User has more than 1 Notification Level parent entity relation',
@@ -910,7 +909,7 @@ class Communication_model extends CI_Model
                 } else {
 
                     //Show entity link with status:
-                    $output_body_message = str_replace('@' . $string_references['ref_entities'][0], '<span class="icon-block">'.$en_all_6177[$ens[0]['en_status_entity_id']]['m_icon'].'</span><a href="/entities/' . $ens[0]['en_id'] . '" target="_parent">' . $ens[0]['en_name']  . '</a>', $output_body_message);
+                    $output_body_message = str_replace('@' . $string_references['ref_entities'][0], '<span class="icon-block">'.$en_all_6177[$ens[0]['en_status_entity_id']]['m_icon'].'</span><a href="/play/' . $ens[0]['en_id'] . '" target="_parent">' . $ens[0]['en_name']  . '</a>', $output_body_message);
 
                 }
 
@@ -1018,7 +1017,7 @@ class Communication_model extends CI_Model
          * The format of this will be array( $ln_child_entity_id => $ln_content )
          * to define both message and it's type.
          *
-         * See all sent message types here: https://mench.com/entities/4280
+         * See all sent message types here: https://mench.com/play/4280
          *
          * */
         $output_messages = array();
@@ -1454,8 +1453,7 @@ class Communication_model extends CI_Model
                     ), $en['en_id'], 6155 /* User Intent Cancelled */);
                 }
 
-                //Update User communication level to Unsubscribe:
-                $this->Entities_model->en_radio_set(4454, 4455, $en['en_id']);
+                //TODO DELETE THEIR ACCOUNT HERE
 
                 //Let them know about these changes:
                 $this->Communication_model->dispatch_message(
@@ -1510,33 +1508,6 @@ class Communication_model extends CI_Model
                             'payload' => 'GONEXT',
                         )
                     )
-                );
-
-            }
-
-        } elseif (substr_count($quick_reply_payload, 'RESUBSCRIBE_') == 1) {
-
-            if ($quick_reply_payload == 'RESUBSCRIBE_YES') {
-
-                //Update User communication level to Receive Silent Push Notifications:
-                $this->Entities_model->en_radio_set(4454, 4457, $en['en_id']);
-
-                //Inform them:
-                $this->Communication_model->dispatch_message(
-                    'Sweet, your account is now activated but you don\'t have any intentions added to your Action Plan yet.',
-                    $en,
-                    true
-                );
-
-                //List Recommended Intents and let them choose:
-                $this->Communication_model->dispatch_recommendations($en['en_id']);
-
-            } elseif ($quick_reply_payload == 'RESUBSCRIBE_NO') {
-
-                $this->Communication_model->dispatch_message(
-                    'Ok, I will keep you unsubscribed 🙏',
-                    $en,
-                    true
                 );
 
             }

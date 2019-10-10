@@ -226,7 +226,7 @@ function ln_detect_type($string)
 
     /*
      * Detect what type of entity-to-entity URL type should we create
-     * based on options listed in this tree: https://mench.com/entities/4227
+     * based on options listed in this tree: https://mench.com/play/4227
      * */
 
     $string = trim($string);
@@ -1064,7 +1064,7 @@ function update_algolia($input_obj_type = null, $input_obj_id = 0, $return_row_o
 
     /*
      *
-     * Syncs intents/entities with Algolia Index
+     * Syncs data with Algolia Index
      *
      * */
 
@@ -1193,7 +1193,7 @@ function update_algolia($input_obj_type = null, $input_obj_id = 0, $return_row_o
 
             }
 
-            //To hold parent intents/entities:
+            //To hold parent info
             $export_row['_tags'] = array();
 
             //Now build object-specific index:

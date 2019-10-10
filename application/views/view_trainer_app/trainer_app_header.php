@@ -2,7 +2,7 @@
 //Attempt to fetch session variables:
 $session_en = $this->session->userdata('user');
 $is_trainer = en_auth($this->config->item('en_ids_10704') /* Mench Administrators */);
-$en_all_7372 = $this->config->item('en_all_7372');
+$en_all_7305 = $this->config->item('en_all_7305');
 $en_all_7368 = $this->config->item('en_all_7368'); //Trainer App
 $uri_segment_1 = $this->uri->segment(1);
 $uri_segment_2 = $this->uri->segment(2);
@@ -61,7 +61,7 @@ $uri_segment_2 = $this->uri->segment(2);
                                 </a>
                             </li>
                             <li class="<?= ($uri_segment_1 == 'entities' ? 'entity-active' : 'entity-inactive') ?>">
-                                <a href="/entities">
+                                <a href="/play">
                                     <?= $en_all_7368[4536]['m_icon'] .' '. $en_all_7368[4536]['m_name'] ?>
                                 </a>
                             </li>
@@ -81,9 +81,9 @@ $uri_segment_2 = $this->uri->segment(2);
                             </li>
 
                             <!-- User App -->
-                            <li class="transparent-inactive" data-toggle="tooltip" data-placement="left" title="<?= $en_all_7372[7369]['m_name'] ?>">
+                            <li class="transparent-inactive" data-toggle="tooltip" data-placement="left" title="<?= $en_all_7305[7305]['m_name'] ?>">
                                 <a href="/actionplan">
-                                    <?= $en_all_7372[7369]['m_icon'] ?>
+                                    <?= $en_all_7305[7305]['m_icon'] ?>
                                 </a>
                             </li>
 

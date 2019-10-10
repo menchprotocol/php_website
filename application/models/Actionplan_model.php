@@ -676,7 +676,7 @@ class Actionplan_model extends CI_Model
          *
          * Function Entity:
          *
-         * https://mench.com/entities/6410
+         * https://mench.com/play/6410
          *
          * */
 
@@ -1120,7 +1120,7 @@ class Actionplan_model extends CI_Model
          * There are different ways to complete an intent
          * as listed under User Steps Completed:
          *
-         * https://mench.com/entities/6146
+         * https://mench.com/play/6146
          *
          * We'll start by assuming the most basic form of
          * completion (Action Plan Auto Complete) and
@@ -1133,7 +1133,7 @@ class Actionplan_model extends CI_Model
          * to move to the next step as defined by
          * Action Plan 2-Step Link Types:
          *
-         * https://mench.com/entities/6244
+         * https://mench.com/play/6244
          *
          * */
 
@@ -1718,7 +1718,7 @@ class Actionplan_model extends CI_Model
 
                 } else {
 
-                    $next_step_message .= '<div style="margin: 15px 0 0;"><a href="/actionplan/next" class="btn btn-md btn-blog"><i class="fas fa-angle-right" style="font-size: 2em;"></i></a></div>';
+                    $next_step_message .= '<div style="margin: 15px 0 0;"><a href="/actionplan/next" class="btn btn-md btn-blog"><i class="fas fa-angle-right"></i></a></div>';
 
                 }
             } else {

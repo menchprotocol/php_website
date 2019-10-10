@@ -46,7 +46,7 @@ if($step_info || $source_info || $user_info){
 //Check to see if added to Action Plan for logged-in users:
 if(isset($session_en['en_id'])){
 
-    $en_all_7369 = $this->config->item('en_all_7369');
+    $en_all_7305 = $this->config->item('en_all_7305');
 
     if(count($this->Links_model->ln_fetch(array(
             'ln_creator_entity_id' => $session_en['en_id'],
@@ -56,7 +56,7 @@ if(isset($session_en['en_id'])){
         ))) > 0){
 
         //Show when was added:
-        echo '<p>Intention is already added to your '.$en_all_7369[6138]['m_icon'].' '.$en_all_7369[6138]['m_name'].'.</p>';
+        echo '<p>Intention is already added to your '.$en_all_7305[6138]['m_icon'].' '.$en_all_7305[6138]['m_name'].'.</p>';
 
         echo '<a class="btn btn-blog" href="/actionplan/'.$in['in_id'].'" style="display: inline-block; padding:12px 36px; font-size: 1.3em;">Resume&nbsp;&nbsp;&nbsp;<i class="fas fa-angle-double-right"></i></a>';
 
@@ -166,7 +166,7 @@ foreach($in__other as $key => $other_in){
 //Display if any:
 if(count($in__other) > 0){
 
-    $en_all_7369 = $this->config->item('en_all_7369');
+    $en_all_7305 = $this->config->item('en_all_7305');
 
 
     echo '<p style="margin:25px 0 15px;" class="other_intents">Or consider <a href="javascript:void(0)" onclick="$(\'.other_intents\').toggleClass(\'hidden\')">'.count($in__other).' other intentions</a>.</p>';

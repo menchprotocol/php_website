@@ -10,7 +10,7 @@
         //Lock fields:
         pass_is_resetting = true;
         $('#reset_pass_next').html('<span><i class="far fa-yin-yang fa-spin"></i></span>');
-        $('#input_password').prop('disabled', true).css('background-color','#F0F0F0');
+        $('#input_password').prop('disabled', true).css('background-color','#F7F7F7');
 
         //Check email and validate:
         $.post("/user_app/sign_reset_password_apply", {
@@ -65,7 +65,7 @@
             <div class="form-group is-empty" style="font-size: 0.9em;">*At-least <?= $this->config->item('password_min_char') ?> characters</div>
 
             <!-- Apply Buttons -->
-            <div id="pass_reset_errors" class="sign-error-box"></div>
+            <div id="pass_reset_errors" class="isred"></div>
             <span id="step2buttons">
                 <a href="javascript:void(0)" onclick="sign_reset_password_apply()" id="reset_pass_next" class="btn btn-blog pass btn-raised btn-round btn-next">Update & Sign-In <i class="fas fa-arrow-right"></i></a>
             </span>

@@ -8,12 +8,6 @@ function radio_update(parent_en_id, selected_en_id, enable_mulitiselect){
     if(!enable_mulitiselect && was_already_selected){
         //Nothing to do here:
         return false;
-    } else if(parent_en_id==4454 && selected_en_id==4455){
-        //It seems user wants to unsubscribe, confirm before doing so:
-        var r = confirm("Are you sure you want to unsubscribe from Mench and stop all communications? I will no longer message you unless you re-subscribe later on.");
-        if (r == false) {
-            return false;
-        }
     }
 
     //Show spinner on the notification element:

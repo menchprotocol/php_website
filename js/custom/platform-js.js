@@ -50,7 +50,7 @@ $(document).ready(function () {
         if (parseInt(suggestion.alg_obj_is_in)==1) {
             window.location = "/intents/" + suggestion.alg_obj_id;
         } else {
-            window.location = "/entities/" + suggestion.alg_obj_id;
+            window.location = "/play/" + suggestion.alg_obj_id;
         }
 
     }).autocomplete({hint: false, minLength: 1, autoselect: true, keyboardShortcuts: ['s']}, [
@@ -110,14 +110,14 @@ $(document).ready(function () {
                         return en_fetch_canonical_url(data.query, true);
                     } else if($("#platform_search").val().charAt(0)=='#'){
                         if(isNaN($("#platform_search").val().substr(1))){
-                            return '<div class="not-found"><i class="fas fa-exclamation-triangle"></i> No intents found</div>';
+                            return '<div class="not-found"><i class="fas fa-exclamation-triangle"></i> No BLOG found</div>';
                         }
                     } else if($("#platform_search").val().charAt(0)=='@'){
                         if(isNaN($("#platform_search").val().substr(1))) {
-                            return '<div class="not-found"><i class="fas fa-exclamation-triangle"></i> No entities found</div>';
+                            return '<div class="not-found"><i class="fas fa-exclamation-triangle"></i> No PLAY found</div>';
                         }
                     } else {
-                        return '<div class="not-found"><i class="fas fa-exclamation-triangle"></i> No intents/entities found</div>';
+                        return '<div class="not-found"><i class="fas fa-exclamation-triangle"></i> No BLOG/PLAY found</div>';
                     }
                 },
             }
@@ -235,16 +235,16 @@ function modify_cancel(){
 function en_fetch_canonical_url(query_string, not_found){
 
     //Do a call to PHP to fetch canonical URL and see if that exists:
-    $.post("/entities/en_fetch_canonical_url", { search_url:query_string }, function (searchdata) {
+    $.post("/play/en_fetch_canonical_url", { search_url:query_string }, function (searchdata) {
         if(searchdata.status && searchdata.url_already_existed){
             //URL was detected via PHP, update the search results:
             $('.add-source-suggest').remove();
-            $('.not-found').html('<a href="/entities/'+searchdata.algolia_object.alg_obj_id+'" class="suggestion">' + echo_js_suggestion(searchdata.algolia_object, 1, 0)+'</a>');
+            $('.not-found').html('<a href="/play/'+searchdata.algolia_object.alg_obj_id+'" class="suggestion">' + echo_js_suggestion(searchdata.algolia_object, 1, 0)+'</a>');
         }
     });
 
     //We did not find the URL, offer them option to add it:
-    return '<a href="/entities/add_source_wizard?url='+ encodeURI(query_string) +'" class="suggestion add-source-suggest"><i class="fas fa-plus-circle" style="margin: 0 5px;"></i> Add Source Wizard</a>'
+    return '<a href="/play/add_source_wizard?url='+ encodeURI(query_string) +'" class="suggestion add-source-suggest"><i class="fas fa-plus-circle" style="margin: 0 5px;"></i> Add Source Wizard</a>'
         + ( not_found ? '<div class="not-found"><i class="fas fa-exclamation-triangle"></i> URL not found</div>' : '');
 }
 

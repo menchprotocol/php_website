@@ -93,7 +93,7 @@ function en_add_source_paste_url() {
         $('.url-parsed').addClass('hidden');
 
         //Send for processing to see if all good:
-        $.post("/entities/en_add_source_paste_url", { input_url:input_url }, function (data) {
+        $.post("/play/en_add_source_paste_url", { input_url:input_url }, function (data) {
 
             //Update sorts in both lists:
             if (!data.status) {
@@ -147,7 +147,7 @@ function en_add_source_process(){
     $('.add_source_result').html('<div class="center"><span><i class="far fa-yin-yang fa-spin"></i></span> '+ echo_ying_yang() +'</div>');
 
     //Fetch Intent Data to load modify widget:
-    $.post("/entities/en_add_source_process", {
+    $.post("/play/en_add_source_process", {
 
         source_url: $('#source_url').val(),
         source_parent_ens: source_parent_ens,
@@ -195,7 +195,7 @@ function en_add_source_process(){
             setTimeout(function () {
 
                 //All good, go to newly added source:
-                window.location = '/entities/' + data.new_source_id;
+                window.location = '/play/' + data.new_source_id;
 
             }, 377);
 

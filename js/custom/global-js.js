@@ -166,7 +166,7 @@ $(document).ready(function () {
 
     $("#mench_search").on('autocomplete:selected', function (event, suggestion, dataset) {
 
-        $('#mench_search').prop("disabled", true).val('Loading...').css('background-color','#F0F0F0').css('font-size','0.8em');
+        $('#mench_search').prop("disabled", true).val('Loading...').css('background-color','#F7F7F7').css('font-size','0.8em');
         window.location = "/" + suggestion.alg_obj_id;
 
     }).autocomplete({hint: false, minLength: 1, autoselect: true, keyboardShortcuts: ['s'], dropdownMenuContainer: $('#searchresults')}, [

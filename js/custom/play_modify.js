@@ -128,7 +128,7 @@ $(document).ready(function () {
             $('.entity_remove_stats').html('<i class="far fa-yin-yang fa-spin"></i>');
 
             //About to delete... Fetch total links:
-            $.post("/entities/en_count_to_be_removed_links", { en_id: parseInt($('#modifybox').attr('entity-id')) }, function (data) {
+            $.post("/play/en_count_to_be_removed_links", { en_id: parseInt($('#modifybox').attr('entity-id')) }, function (data) {
 
                 if(data.status){
                     $('.entity_remove_stats').html('<b>'+data.en_link_count+'</b>');
@@ -283,7 +283,7 @@ function en_add_or_link(en_existing_id, is_parent) {
 
 
     //Add via Ajax:
-    $.post("/entities/en_add_or_link", {
+    $.post("/play/en_add_or_link", {
 
         en_id: en_focus_id,
         en_existing_id: en_existing_id,
@@ -354,7 +354,7 @@ function en_load_next_page(page, load_new_filter) {
         $('.load-more').html('<span class="load-more"><i class="far fa-yin-yang fa-spin"></i></span>').hide().fadeIn();
     }
 
-    $.post("/entities/en_load_next_page", {
+    $.post("/play/en_load_next_page", {
         page: page,
         parent_en_id: en_focus_id,
         en_focus_filter: en_focus_filter,
@@ -391,7 +391,7 @@ function en_ln_type_preview() {
 
 
     //Fetch Intent Data to load modify widget:
-    $.post("/entities/en_ln_type_preview", {
+    $.post("/play/en_ln_type_preview", {
         ln_content: $('#ln_content').val(),
         ln_id: parseInt($('#modifybox').attr('entity-link-id')),
     }, function (data) {
@@ -551,7 +551,7 @@ function en_save_file_upload(droppedFiles, uploadType) {
         ajaxData.append('upload_type', uploadType);
 
         $.ajax({
-            url: '/entities/en_save_file_upload',
+            url: '/play/en_save_file_upload',
             type: 'post',
             data: ajaxData,
             dataType: 'json',
@@ -636,7 +636,7 @@ function en_modify_save() {
     $('.save_entity_changes').html('<span><i class="far fa-yin-yang fa-spin"></i></span> ' + echo_saving_notify() +  '').hide().fadeIn();
 
 
-    $.post("/entities/en_modify_save", modify_data, function (data) {
+    $.post("/play/en_modify_save", modify_data, function (data) {
 
         if (data.status) {
 
@@ -765,7 +765,7 @@ function en_load_messages(en_id) {
     }
 
     //Load the frame:
-    $.post("/entities/en_load_messages/"+en_id, {}, function (data) {
+    $.post("/play/en_load_messages/"+en_id, {}, function (data) {
         //Raw Inputs Fields if success:
         handler.html(data);
 

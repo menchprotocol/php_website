@@ -54,7 +54,7 @@ function echo_url_type($url, $en_type_link_id)
      *
      * Displays Entity Links that are a URL based on their
      * $en_type_link_id as listed under Entity URL Links:
-     * https://mench.com/entities/4537
+     * https://mench.com/play/4537
      *
      * */
     if ($en_type_link_id == 4256 /* Generic URL */) {
@@ -612,7 +612,7 @@ function echo_ln($ln, $is_inner = false)
             $full_name = $trainer_ens[0]['en_name'];
 
             $ui .= '<span class="icon-main">'.echo_en_icon($trainer_ens[0]).'</span>';
-            $ui .= '<a href="/entities/'.$trainer_ens[0]['en_id'].'" data-toggle="tooltip" data-placement="top" title="Link Creator"> <b>' . $full_name . '</b></a>';
+            $ui .= '<a href="/play/'.$trainer_ens[0]['en_id'].'" data-toggle="tooltip" data-placement="top" title="Link Creator"> <b>' . $full_name . '</b></a>';
 
         } else {
 
@@ -624,7 +624,7 @@ function echo_ln($ln, $is_inner = false)
     }
 
     //Link Type:
-    $ui .= '<a href="/entities/'.$ln['ln_type_entity_id'].'" data-toggle="tooltip" data-placement="top" title="Link Type"><b style="padding-left:5px;">'. ( strlen($en_all_4593[$ln['ln_type_entity_id']]['m_icon']) > 0 ? '&nbsp;'.$en_all_4593[$ln['ln_type_entity_id']]['m_icon'] : '' ) .'&nbsp;'. $en_all_4593[$ln['ln_type_entity_id']]['m_name'] . '</b></a>';
+    $ui .= '<a href="/play/'.$ln['ln_type_entity_id'].'" data-toggle="tooltip" data-placement="top" title="Link Type"><b style="padding-left:5px;">'. ( strlen($en_all_4593[$ln['ln_type_entity_id']]['m_icon']) > 0 ? '&nbsp;'.$en_all_4593[$ln['ln_type_entity_id']]['m_icon'] : '' ) .'&nbsp;'. $en_all_4593[$ln['ln_type_entity_id']]['m_name'] . '</b></a>';
 
     $ui .= '</div>';
 
@@ -1067,7 +1067,7 @@ function echo_tree_experts($in, $push_message = false, $autoexpand = false)
                     $source_info .= ' ';
 
                     //Show link to platform:
-                    //$source_info .= '<a href="/entities/' . $en['en_id'] . '">';
+                    //$source_info .= '<a href="/play/' . $en['en_id'] . '">';
                     $source_info .= '<span>';
                     $source_info .= $en['en_name'];
                     $source_info .= '</span>';
@@ -1116,7 +1116,7 @@ function echo_tree_experts($in, $push_message = false, $autoexpand = false)
             } else {
 
                 //HTML Format:
-                //$expert_info .= '<a href="/entities/' . $en['en_id'] . '">';
+                //$expert_info .= '<a href="/play/' . $en['en_id'] . '">';
                 $expert_info .= '<span>';
                 $expert_info .= $en['en_name'];
                 $expert_info .= '</span>';
@@ -1304,10 +1304,10 @@ function echo_tree_actionplan($in, $autoexpand){
 
         if($has_level2_content){
             $return_html .= '<a class="js-ln-create-steps-review" intent-id="'.$in_level2['in_id'].'" role="button" data-toggle="collapse" data-parent="#open' . $in_level2_counter . '" href="#collapse' . $in_level2_counter . '" aria-expanded="' . ($autoexpand ? 'true' : 'false') . '" aria-controls="collapse' . $in_level2_counter . '">';
-            $return_html .= '<span class="icon-block-lg"><i class="fas fa-plus-circle"></i></span>';
+            $return_html .= '<span class="icon-block"><i class="fas fa-plus-circle"></i></span>';
         } else {
             $return_html .= '<span class="empty-block">';
-            $return_html .= '<span class="icon-block-lg"><i class="fal fa-check-circle"></i></span>';
+            $return_html .= '<span class="icon-block"><i class="fal fa-check-circle"></i></span>';
         }
 
 
@@ -1625,7 +1625,7 @@ function echo_in_recommend($in, $in_common_prefix = null, $hide_class = null)
     $CI =& get_instance();
     $session_en = en_auth();
     $is_starting = ( in_array($in['in_level_entity_id'], $CI->config->item('en_ids_7582')) /* Intent Levels Get Started */);
-    $en_all_7369 = $CI->config->item('en_all_7369');
+    $en_all_7305 = $CI->config->item('en_all_7305');
     $already_in_actionplan = (isset($session_en['en_id']) && count($CI->Links_model->ln_fetch(array(
             'ln_creator_entity_id' => $session_en['en_id'],
             'ln_type_entity_id IN (' . join(',', $CI->config->item('en_ids_7347')) . ')' => null, //Action Plan Intention Set
@@ -1636,7 +1636,7 @@ function echo_in_recommend($in, $in_common_prefix = null, $hide_class = null)
     $ui = '<a href="' . ( $already_in_actionplan ? '/actionplan/'.$in['in_id'] : '/'.$in['in_id']) . '" class="list-group-item '.$hide_class .'">';
 
     $ui .= '<span class="pull-right">';
-    $ui .= '<span class="badge badge-primary fr-bgd" style="margin-top: -4px;">'.( $already_in_actionplan ? $en_all_7369[6138]['m_icon'] : '<i class="fas fa-angle-right"></i>' ).'</span>';
+    $ui .= '<span class="badge badge-primary fr-bgd" style="margin-top: -4px;">'.( $already_in_actionplan ? $en_all_7305[6138]['m_icon'] : '<i class="fas fa-angle-right"></i>' ).'</span>';
     $ui .= '</span>';
 
     $ui .= '<span style="color:#222; font-weight:500; font-size:1.2em;">'.echo_in_outcome($in['in_outcome'], false, false, $in_common_prefix).'</span>';
@@ -1806,7 +1806,7 @@ function echo_en_stats_overview($cached_list, $report_name){
             $total_count += $subset_total;
 
             $inner_ui .= '<tr>';
-            $inner_ui .= '<td style="text-align: left;"><span class="icon-block">' . $people_group['m_icon'] . '</span><a href="/entities/'.$group_en_id.'">'.$people_group['m_name'].'</a></td>';
+            $inner_ui .= '<td style="text-align: left;"><span class="icon-block">' . $people_group['m_icon'] . '</span><a href="/play/'.$group_en_id.'">'.$people_group['m_name'].'</a></td>';
             $inner_ui .= '<td style="text-align: right;"><a href="/links?ln_status_entity_id='.join(',', $CI->config->item('en_ids_7359')) /* Link Statuses Public */.'&ln_type_entity_id='.join(',', $CI->config->item('en_ids_4592')).'&ln_parent_entity_id=' . join(',', $CI->config->item('en_ids_'.$group_en_id)) . '">' . number_format($subset_total, 0) . '</a></td>';
             $inner_ui .= '</tr>';
 
@@ -1823,7 +1823,7 @@ function echo_en_stats_overview($cached_list, $report_name){
             $total_count += $child_links[0]['en__child_count'];
 
             $inner_ui .= '<tr>';
-            $inner_ui .= '<td style="text-align: left;"><span class="icon-block">' . $people_group['m_icon'] . '</span><a href="/entities/'.$group_en_id.'">' . $people_group['m_name'] . '</a></td>';
+            $inner_ui .= '<td style="text-align: left;"><span class="icon-block">' . $people_group['m_icon'] . '</span><a href="/play/'.$group_en_id.'">' . $people_group['m_name'] . '</a></td>';
             $inner_ui .= '<td style="text-align: right;"><a href="/links?ln_status_entity_id='.join(',', $CI->config->item('en_ids_7359')) /* Link Statuses Public */.'&ln_type_entity_id='.join(',', $CI->config->item('en_ids_4592')).'&ln_parent_entity_id=' . $group_en_id . '">' . number_format($child_links[0]['en__child_count'], 0) . '</a></td>';
             $inner_ui .= '</tr>';
 
@@ -1893,7 +1893,7 @@ function echo_in_setting($in_setting_en_id, $in_field_name, $addup_total_count){
 
         //$ui .= this as the main title:
         $ui .= '<tr>';
-        $ui .= '<td style="text-align: left;"><span class="icon-block">'.$in_type['m_icon'].'</span><a href="/entities/'.$type_en_id.'">'.$in_type['m_name'].'</a></td>';
+        $ui .= '<td style="text-align: left;"><span class="icon-block">'.$in_type['m_icon'].'</span><a href="/play/'.$type_en_id.'">'.$in_type['m_name'].'</a></td>';
         $ui .= '<td style="text-align: right;"><a href="/links?ln_type_entity_id=4250&in_status_entity_id=' . join(',', $CI->config->item('en_ids_7356')) . '&'.$in_field_name.'='.$type_en_id.'" data-toggle="tooltip" data-placement="top" title="'.number_format($in_count[0]['total_public_intents'], 0).' Intent'.echo__s($in_count[0]['total_public_intents']).'">'.number_format($in_count[0]['total_public_intents']/$addup_total_count*100, 1).'%</a></td>';
         $ui .= '</tr>';
 
@@ -1995,7 +1995,7 @@ function echo_2level_entities($main_obj, $all_link_types, $link_types_counts, $a
 
             $rows .= '<td style="text-align: left;" class="'.( $show_in_advance_only ? advance_mode() : '' ).'">';
             $rows .= '<span class="icon-block" style="margin-left:8px;">'.$m['m_icon'].'</span>';
-            $rows .= '<a href="/entities/'.$en_id.'">'.$m['m_name'].'</a>';
+            $rows .= '<a href="/play/'.$en_id.'">'.$m['m_name'].'</a>';
             $rows .= '</td>';
 
 
@@ -2591,7 +2591,7 @@ function echo_en($en, $level, $is_parent = false)
 
     //Parent entities:
     foreach ($en['en__parents'] as $en_parent) {
-        $ui .= '<span class="en_child_icon_' . $en_parent['en_id'] . '">&nbsp;<span class="parent-icon"><a href="/entities/' . $en_parent['en_id'] . '" data-toggle="tooltip" title="' . $en_parent['en_name'] . (strlen($en_parent['ln_content']) > 0 ? ' = ' . $en_parent['ln_content'] : '') . '" data-placement="bottom">' . echo_en_icon($en_parent) . '</a></span> </span>';
+        $ui .= '<span class="en_child_icon_' . $en_parent['en_id'] . '">&nbsp;<span class="parent-icon"><a href="/play/' . $en_parent['en_id'] . '" data-toggle="tooltip" title="' . $en_parent['en_name'] . (strlen($en_parent['ln_content']) > 0 ? ' = ' . $en_parent['ln_content'] : '') . '" data-placement="bottom">' . echo_en_icon($en_parent) . '</a></span> </span>';
     }
 
 
@@ -2672,7 +2672,7 @@ function echo_en($en, $level, $is_parent = false)
 
     } else {
 
-        $ui .= '<a class="badge badge-secondary" href="/entities/' . $en['en_id']. '" style="display:inline-block; margin-right:6px; width:40px; margin-left:1px; border:2px solid #008DF2 !important;">' . ($en['en__child_count'] > 0 ? '<span class="btn-counter" title="' . number_format($en['en__child_count'], 0) . ' Entities">' . echo_number($en['en__child_count']) . '</span>' : '') . '<i class="'.( $level==0 ? 'fas fa-angle-right' : ( $is_parent ? 'fas fa-angle-up' : 'fas fa-angle-down' )).'"></i></a>';
+        $ui .= '<a class="badge badge-secondary" href="/play/' . $en['en_id']. '" style="display:inline-block; margin-right:6px; width:40px; margin-left:1px; border:2px solid #008DF2 !important;">' . ($en['en__child_count'] > 0 ? '<span class="btn-counter" title="' . number_format($en['en__child_count'], 0) . ' Entities">' . echo_number($en['en__child_count']) . '</span>' : '') . '<i class="'.( $level==0 ? 'fas fa-angle-right' : ( $is_parent ? 'fas fa-angle-up' : 'fas fa-angle-down' )).'"></i></a>';
 
     }
 

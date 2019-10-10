@@ -1,7 +1,16 @@
 @CHARSET "ISO-8859-1";
 
 body {
-    background-color: #FFF !important;
+    background-color: #F7F7F7 !important;
+    margin:50px 0;
+    font-size: 1.3em;
+}
+
+[class*="col-"] {padding-left:5px;padding-right:5px;}
+.row {margin-left:-5px;margin-right:-5px;}
+.container {padding-left:5px;padding-right:5px;}
+.table-sm td, .table-sm th {
+    padding: .3rem .1em;
 }
 
 /* FONTS */
@@ -13,17 +22,41 @@ body {
     font-family: 'Nanum Gothic Coding', monospace;
 }
 
+table td { border: none !important; }
+
 h1 {
     font-family: 'Montserrat', sans-serif;
     text-transform: uppercase;
-    padding: 34px 0 0 !important;
+    padding:10px 0 0;
     font-size: 2.2em;
 }
 
 h2 {
     font-family: 'Montserrat', sans-serif;
-    padding:0 !important;
-    font-size: 1.3em;
+    padding:5px 0 0;
+    font-size: 1.2em;
+}
+
+h4{
+    font-family: 'Montserrat', sans-serif;
+    padding:15px 0 0;
+    font-size: 0.7em;
+    color:#070707;
+}
+
+h4 b{
+    background-color: #F7F7F7;
+    padding:3px;
+}
+
+h4 span{
+    display: block;
+    width: 100%;
+    border-bottom:1px solid #070707;
+    padding: 0;
+    margin: 0;
+    line-height: 100%;
+    margin-top: -23px;
 }
 
 a {
@@ -36,18 +69,33 @@ a:hover {
     text-decoration: none;
 }
 
+li a {
+    text-decoration: none;
+}
 
-.container {
+/* FUNCTIONAL */
+.hidden { display: none !important; }
+.inline-block{ display: inline-block !important; }
+.icon-block{ width: 34px; display: inline-block; text-align: center; }
+.fixed-top td { vertical-align: bottom; }
+
+.table-striped tbody tr:nth-of-type(even) {
+    background-color:transparent;
+}
+.table-striped tbody tr:nth-of-type(odd) {
+    background-color:#FFFFFF;
+}
+
+
+
+.center-info{
     width: 100%;
-    padding-right: 0;
-    padding-left: 0;
+    max-width:340px !important;
+    padding: 15px;
+    margin: 0 auto;
 }
 
-.container-body{
-    margin-top: 39px;
-    margin-bottom: 50px;
-    padding: 0 5px;
-}
+
 
 /* MENCH Colors */
 .blue, .isblue, .isblue a, .play           { color:#008DF2 !important; }
@@ -63,20 +111,96 @@ a:hover {
 .background-blog, a.border-blog:hover     { background-color:#FFDF0F !important; color:#070707 !important; }
 .background-read, a.border-read:hover     { background-color:#FC1B44 !important; color:#FFFFFF !important; }
 
-.background-play .fas, .background-blog .fas, .background-read .fas, .background-play .far, .background-blog .far, .background-read .far, .background-play .fal, .background-blog .fal, .background-read .fal { color:#FFF !important; }
+.background-play .fas, .background-blog .fas, .background-read .fas, .background-play .far, .background-blog .far, .background-read .far, .background-play .fal, .background-blog .fal, .background-read .fal { color:#FFFFFF !important; }
 
 /* Color Palette @10604 */
 .isgreen, .isgreen a                { color:#228B22 !important; }
 .isred, .isred a, .fas.redalert     { color:#FF0000 !important; }
-.isgrey, .isgrey a, .lightgrey      { color:#F0F0F0 !important; }
+.isgrey, .isgrey a, .lightgrey      { color:#F7F7F7 !important; }
 .ismatt, .ismatt a                  { color:#070707 !important; }
 
+.mench-spin {
+    -webkit-animation: fa-spin 7s infinite linear;
+    animation: fa-spin 7s infinite linear;
+}
+
+.btn .far, .btn .fas, .btn .fal { font-size: 1.5em; margin-top:3px; min-width:40px; }
+
+.btn.btn-play, .btn.btn-play:hover, .btn.btn-play:focus, .btn.btn-play:active, .btn.btn-play.active, .btn.btn-play:active:focus, .btn.btn-play:active:hover, .btn.btn-play.active:focus, .btn.btn-play.active:hover, .open > .btn.btn-play.dropdown-toggle, .open > .btn.btn-play.dropdown-toggle:focus, .open > .btn.btn-play.dropdown-toggle:hover, .navbar .navbar-nav > li > a.btn.btn-play, .navbar .navbar-nav > li > a.btn.btn-play:hover, .navbar .navbar-nav > li > a.btn.btn-play:focus, .navbar .navbar-nav > li > a.btn.btn-play:active, .navbar .navbar-nav > li > a.btn.btn-play.active, .navbar .navbar-nav > li > a.btn.btn-play:active:focus, .navbar .navbar-nav > li > a.btn.btn-play:active:hover, .navbar .navbar-nav > li > a.btn.btn-play.active:focus, .navbar .navbar-nav > li > a.btn.btn-play.active:hover, .open > .navbar .navbar-nav > li > a.btn.btn-play.dropdown-toggle, .open > .navbar .navbar-nav > li > a.btn.btn-play.dropdown-toggle:focus, .open > .navbar .navbar-nav > li > a.btn.btn-play.dropdown-toggle:hover {
+    background-color: #008DF2;
+    color: #FFFFFF;
+}
+
+.btn.btn-main, .btn.btn-main:hover, .btn.btn-main:focus, .btn.btn-main:active, .btn.btn-main.active, .btn.btn-main:active:focus, .btn.btn-main:active:hover, .btn.btn-main.active:focus, .btn.btn-main.active:hover, .open > .btn.btn-main.dropdown-toggle, .open > .btn.btn-main.dropdown-toggle:focus, .open > .btn.btn-main.dropdown-toggle:hover, .navbar .navbar-nav > li > a.btn.btn-main, .navbar .navbar-nav > li > a.btn.btn-main:hover, .navbar .navbar-nav > li > a.btn.btn-main:focus, .navbar .navbar-nav > li > a.btn.btn-main:active, .navbar .navbar-nav > li > a.btn.btn-main.active, .navbar .navbar-nav > li > a.btn.btn-main:active:focus, .navbar .navbar-nav > li > a.btn.btn-main:active:hover, .navbar .navbar-nav > li > a.btn.btn-main.active:focus, .navbar .navbar-nav > li > a.btn.btn-main.active:hover, .open > .navbar .navbar-nav > li > a.btn.btn-main.dropdown-toggle, .open > .navbar .navbar-nav > li > a.btn.btn-main.dropdown-toggle:focus, .open > .navbar .navbar-nav > li > a.btn.btn-main.dropdown-toggle:hover {
+    background-color: #070707;
+    color: #FFFFFF;
+}
+
+.btn.btn-read, .btn.btn-read:hover, .btn.btn-read:focus, .btn.btn-read:active, .btn.btn-read.active, .btn.btn-read:active:focus, .btn.btn-read:active:hover, .btn.btn-read.active:focus, .btn.btn-read.active:hover, .open > .btn.btn-read.dropdown-toggle, .open > .btn.btn-read.dropdown-toggle:focus, .open > .btn.btn-read.dropdown-toggle:hover, .navbar .navbar-nav > li > a.btn.btn-read, .navbar .navbar-nav > li > a.btn.btn-read:hover, .navbar .navbar-nav > li > a.btn.btn-read:focus, .navbar .navbar-nav > li > a.btn.btn-read:active, .navbar .navbar-nav > li > a.btn.btn-read.active, .navbar .navbar-nav > li > a.btn.btn-read:active:focus, .navbar .navbar-nav > li > a.btn.btn-read:active:hover, .navbar .navbar-nav > li > a.btn.btn-read.active:focus, .navbar .navbar-nav > li > a.btn.btn-read.active:hover, .open > .navbar .navbar-nav > li > a.btn.btn-read.dropdown-toggle, .open > .navbar .navbar-nav > li > a.btn.btn-read.dropdown-toggle:focus, .open > .navbar .navbar-nav > li > a.btn.btn-read.dropdown-toggle:hover {
+    background-color: #FC1B44;
+    color: #FFFFFF;
+}
+
+.btn.btn-blog, .btn.btn-blog:hover, .btn.btn-blog:focus, .btn.btn-blog:active, .btn.btn-blog.active, .btn.btn-blog:active:focus, .btn.btn-blog:active:hover, .btn.btn-blog.active:focus, .btn.btn-blog.active:hover, .open > .btn.btn-blog.dropdown-toggle, .open > .btn.btn-blog.dropdown-toggle:focus, .open > .btn.btn-blog.dropdown-toggle:hover, .navbar .navbar-nav > li > a.btn.btn-blog, .navbar .navbar-nav > li > a.btn.btn-blog:hover, .navbar .navbar-nav > li > a.btn.btn-blog:focus, .navbar .navbar-nav > li > a.btn.btn-blog:active, .navbar .navbar-nav > li > a.btn.btn-blog.active, .navbar .navbar-nav > li > a.btn.btn-blog:active:focus, .navbar .navbar-nav > li > a.btn.btn-blog:active:hover, .navbar .navbar-nav > li > a.btn.btn-blog.active:focus, .navbar .navbar-nav > li > a.btn.btn-blog.active:hover, .open > .navbar .navbar-nav > li > a.btn.btn-blog.dropdown-toggle, .open > .navbar .navbar-nav > li > a.btn.btn-blog.dropdown-toggle:focus, .open > .navbar .navbar-nav > li > a.btn.btn-blog.dropdown-toggle:hover {
+    background-color: #FFDF0F;
+    color: #070707;
+}
+
+.form-control, .nav-tabs, .dropdown-menu {
+    border-color:#070707 !important;
+}
+
+.nav-tabs .nav-item.show .nav-link, .nav-tabs .nav-link.active, .nav-tabs .nav-link:focus, .nav-tabs .nav-link:hover{
+    border-color:#070707 !important;
+    border-bottom: 1px solid #FFF !important;
+}
+
+/* ROTATIONS */
+.rotate30 {
+    -webkit-transform: rotate(30deg); /* Chrome and other webkit browsers */
+    -moz-transform: rotate(30deg); /* FF */
+    -o-transform: rotate(30deg); /* Opera */
+    -ms-transform: rotate(30deg); /* IE9 */
+    transform: rotate(30deg); /* W3C compliant browsers */
+}
+
+.rotate45 {
+    -webkit-transform: rotate(45deg); /* Chrome and other webkit browsers */
+    -moz-transform: rotate(45deg); /* FF */
+    -o-transform: rotate(45deg); /* Opera */
+    -ms-transform: rotate(45deg); /* IE9 */
+    transform: rotate(45deg); /* W3C compliant browsers */
+}
+
+.rotate74 {
+    -webkit-transform: rotate(74deg); /* Chrome and other webkit browsers */
+    -moz-transform: rotate(74deg); /* FF */
+    -o-transform: rotate(74deg); /* Opera */
+    -ms-transform: rotate(74deg); /* IE9 */
+    transform: rotate(74deg); /* W3C compliant browsers */
+}
+
+.rotate90 {
+    -webkit-transform: rotate(90deg); /* Chrome and other webkit browsers */
+    -moz-transform: rotate(90deg); /* FF */
+    -o-transform: rotate(90deg); /* Opera */
+    -ms-transform: rotate(90deg); /* IE9 */
+    transform: rotate(90deg); /* W3C compliant browsers */
+}
+
+.rotate180 {
+    -webkit-transform: rotate(180deg); /* Chrome and other webkit browsers */
+    -moz-transform: rotate(180deg); /* FF */
+    -o-transform: rotate(180deg); /* Opera */
+    -ms-transform: rotate(180deg); /* IE9 */
+    transform: rotate(180deg); /* W3C compliant browsers */
+}
 
 
 /* HEADER */
 .header-top{
     width: 100%;
-    background-color: #FFF;
+    background-color: #F7F7F7;
 }
 
 .header-top td{
@@ -86,9 +210,13 @@ a:hover {
 .header-top .mn_name{
     font-size:1.2em;
     margin-left:3px;
+    min-width: 74px;
+    display: inline-block;
 }
 .header-top .current_count{
     font-size:1em;
+    min-width: 92px;
+    display: inline-block;
 }
 
 .header-top a{
@@ -104,8 +232,17 @@ a:hover {
 /* FOOTER */
 .footer-bottom {
     width: 100%;
-    background-color: #FFF;
+    background-color: #F7F7F7;
     border-top:3px solid #070707;
+}
+.footer-bottom .footer-logo{
+    width: 35px;
+    margin-top: -17px;
+    margin-left:5px;
+    margin-right:4px;
+}
+.footer-bottom #searchFrontForm, .algolia-autocomplete{
+     width: 100%;
 }
 .footer-bottom td {
     padding:3px 0 3px;
@@ -119,7 +256,6 @@ a:hover {
 .footer-bottom .block-link a{
     display: block;
     text-align: center;
-    border-radius: 2px;
     margin-left:5px;
     color:#070707;
     padding: 12px 5px 8px;
@@ -129,7 +265,7 @@ a:hover {
 }
 .footer-bottom .block-link a:hover, .block-link a:hover .fas, .block-link a:hover .fal, .block-link a:hover .far {
     background-color:#070707;
-    color:#FFF !important;
+    color:#FFFFFF !important;
 }
 
 .footer-bottom .mench-logo{
@@ -139,6 +275,50 @@ a:hover {
 }
 
 
+.nav-tabs {
+    border-left: 1px solid;
+    border-right: 1px solid;
+    margin-top: -9px;
+}
+
+.nav-link {
+    padding: .5rem 0.6rem;
+    font-size: 1em;
+    margin-top: 9px;
+    margin-left: -1px;
+}
+
+.no-cursor{
+    cursor: default !important;
+
+}
 
 /* STYLES */
 .btn{ text-decoration: none; }
+
+
+
+/* RESPONSIVE */
+@media (max-width:767px) {
+    body {
+        font-size:1em;
+    }
+    .footer-bottom .footer-logo{
+        width:27px;
+        margin-top:-12px;
+    }
+    h4 span{
+        margin-top: -18px;
+    }
+}
+@media (max-width:1200px){
+    .container {
+        max-width: none;
+    }
+}
+
+@media (max-width:2584px){
+    .container {
+        max-width:1200px;
+    }
+}

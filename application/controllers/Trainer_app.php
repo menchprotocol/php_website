@@ -119,7 +119,7 @@ class Trainer_app extends CI_Controller
 
             //Display this status count:
             echo '<tr>';
-            echo '<td style="text-align: left;"><span class="icon-block">' . $m['m_icon'] . '</span><a href="/entities/'.$en_id.'">' . $m['m_name'] . '</a></td>';
+            echo '<td style="text-align: left;"><span class="icon-block">' . $m['m_icon'] . '</span><a href="/play/'.$en_id.'">' . $m['m_name'] . '</a></td>';
 
             echo '<td style="text-align: right;">' . '<a href="/links?in_status_entity_id=' . $en_id . '&ln_type_entity_id=4250">' . number_format($objects_count[0]['totals'],0) .'</a></td>';
 
@@ -172,7 +172,7 @@ class Trainer_app extends CI_Controller
             }
 
             echo '<tr class="'.( $count >= $show_max_verbs ? 'hiddenverbs hidden' : '' ).'">';
-            echo '<td style="text-align: left;"><span style="width:29px; display: inline-block; text-align: center;">'.echo_en_icon($verb).'</span><a href="/entities/'.$verb['in_verb_entity_id'].'">'.$verb['en_name'].'</a></td>';
+            echo '<td style="text-align: left;"><span style="width:29px; display: inline-block; text-align: center;">'.echo_en_icon($verb).'</span><a href="/play/'.$verb['in_verb_entity_id'].'">'.$verb['en_name'].'</a></td>';
             echo '<td style="text-align: right;"><a href="/links?ln_type_entity_id=4250&in_status_entity_id=' . join(',', $this->config->item('en_ids_7356')) . '&in_verb_entity_id='.$verb['in_verb_entity_id'].'" data-toggle="tooltip" data-placement="top" title="'.number_format($verb['totals'], 0).' Intent'.echo__s($verb['totals']).'">'.number_format($verb['totals']/($addup_total_count-$inherit_verbs)*100, 1).'%</a></td>';
             echo '</tr>';
 
@@ -221,7 +221,7 @@ class Trainer_app extends CI_Controller
 
             //Display this status count:
             echo '<tr>';
-            echo '<td style="text-align: left;"><span class="icon-block">' . $m['m_icon'] . '</span><a href="/entities/'.$en_id.'">' . $m['m_name'] . '</a></td>';
+            echo '<td style="text-align: left;"><span class="icon-block">' . $m['m_icon'] . '</span><a href="/play/'.$en_id.'">' . $m['m_name'] . '</a></td>';
             echo '<td style="text-align: right;">' . '<a href="/links?en_status_entity_id=' . $en_id . '&ln_type_entity_id=4251">' . number_format($objects_count[0]['totals'], 0) . '</a>' . '</td>';
             echo '</tr>';
 
@@ -269,13 +269,13 @@ class Trainer_app extends CI_Controller
                 }
 
                 //Display row:
-                $expert_source_statuses .= '<td style="text-align: right;"'.( $en_status_entity_id != 6181 /* Entity Featured */ ? ' class="' . advance_mode() . '"' : '' ).'><a href="/entities/' . $en_id .'#status-'.$en_status_entity_id.'">'.number_format($source_count,0).'</a></td>';
+                $expert_source_statuses .= '<td style="text-align: right;"'.( $en_status_entity_id != 6181 /* Entity Featured */ ? ' class="' . advance_mode() . '"' : '' ).'><a href="/play/' . $en_id .'#status-'.$en_status_entity_id.'">'.number_format($source_count,0).'</a></td>';
 
             }
 
             //Echo stats:
             $expert_sources = '<tr class="' .( !$total_counts[6181] ? advance_mode() : '' ) . '">';
-            $expert_sources .= '<td style="text-align: left;"><span class="icon-block">'.$m['m_icon'].'</span><a href="/entities/'.$en_id.'">'.$m['m_name'].'</a></td>';
+            $expert_sources .= '<td style="text-align: left;"><span class="icon-block">'.$m['m_icon'].'</span><a href="/play/'.$en_id.'">'.$m['m_name'].'</a></td>';
             $expert_sources .= $expert_source_statuses;
             $expert_sources .= '</tr>';
 
@@ -342,7 +342,7 @@ class Trainer_app extends CI_Controller
 
             //Display this status count:
             echo '<tr>';
-            echo '<td style="text-align: left;"><span class="icon-block">' . $m['m_icon'] . '</span><a href="/entities/'.$en_id.'">' . $m['m_name'] . '</a></td>';
+            echo '<td style="text-align: left;"><span class="icon-block">' . $m['m_icon'] . '</span><a href="/play/'.$en_id.'">' . $m['m_name'] . '</a></td>';
             echo '<td style="text-align: right;">';
             echo '<a href="/links?ln_status_entity_id=' . $en_id . '">' . number_format($objects_count[0]['totals'],0) . '</a>';
             echo '</td>';
@@ -394,7 +394,7 @@ class Trainer_app extends CI_Controller
         echo '/*<br />
  * Keep a cache of certain parts of the Intent tree for faster processing<br />
  * So we don\'t have to make DB calls to figure them out every time!<br />
- * See here for all entities cached: https://mench.com/entities/4527<br />
+ * See here for all entities cached: https://mench.com/play/4527<br />
  * use-case format: $this->config->item(\'\')<br />
  *<br />
  * ATTENTION: Also search for "en_ids_" and "en_all_" when trying to manage these throughout the code base<br />
@@ -426,7 +426,8 @@ class Trainer_app extends CI_Controller
 
                 //Do we have an omit command?
                 if(substr_count($en['ln_content'], '&trim=') == 1){
-                    $child['en_name'] = trim(str_replace(one_two_explode('&trim=','',$en['ln_content']) , '', $child['en_name']));
+                    $trim_word = one_two_explode('&trim=','',$en['ln_content']);
+                    $child['en_name'] = trim(str_replace($trim_word.' ' , '', str_replace(' '.$trim_word , '', $child['en_name'])));
                 }
 
                 //Fetch all parents for this child:

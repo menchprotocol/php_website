@@ -3,6 +3,9 @@
 <?php $en_all_4341 = $this->config->item('en_all_4341'); //Link Table ?>
 <?php $en_all_7368 = $this->config->item('en_all_7368'); //Trainer App ?>
 
+<link href="/css/custom/styles.css?v=v<?= $this->config->item('app_version') ?>" rel="stylesheet"/>
+
+
 <script>
     //Set global variables:
     var en_focus_filter = -1; //No filter, show all
@@ -12,9 +15,10 @@
 <style>
     .en_child_icon_<?= $entity['en_id'] ?>{ display:none; }
 </style>
-<script src="/js/custom/en_train.js?v=v<?= $this->config->item('app_version') ?>"
+<script src="/js/custom/play_modify.js?v=v<?= $this->config->item('app_version') ?>"
         type="text/javascript"></script>
 
+<div class="container">
 <div class="row">
 
     <div class="<?= $this->config->item('css_column_1') ?>">
@@ -47,7 +51,7 @@
 
         //Hidden link to Metadata:
         if($is_admin){
-            echo '<a class="secret" href="/entities/en_review_metadata/' . $entity['en_id'] . '" style="margin-left: 5px;" target="_blank" data-toggle="tooltip" title="Review Entity Metadata" data-placement="bottom"><i class="fas fa-function"></i></a>';
+            echo '<a class="secret" href="/play/en_review_metadata/' . $entity['en_id'] . '" style="margin-left: 5px;" target="_blank" data-toggle="tooltip" title="Review Entity Metadata" data-placement="bottom"><i class="fas fa-function"></i></a>';
 
             echo '<a class="secret" href="/links/cron__sync_algolia/en/' . $entity['en_id'] . '" style="margin-left: 5px;" target="_blank" data-toggle="tooltip" title="Update Algolia Search Index" data-placement="bottom"><i class="fas fa-search"></i></a>';
         }
@@ -254,3 +258,5 @@
 </div>
 
 <div style="height: 50px;">&nbsp;</div>
+
+</div>
