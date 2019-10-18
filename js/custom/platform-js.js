@@ -7,7 +7,7 @@ var isAdvancedUpload = function () {
 
 
 //In milli seconds:
-var fadeout_frequency = 1000;
+var fadeout_frequency = 5000;
 var fadeout_speed = 21;
 var updating_basic_stats = false;
 var searchbar_loaded = 0;
@@ -48,7 +48,7 @@ $(document).ready(function () {
     $("#platform_search").on('autocomplete:selected', function (event, suggestion, dataset) {
 
         if (parseInt(suggestion.alg_obj_is_in)==1) {
-            window.location = "/intents/" + suggestion.alg_obj_id;
+            window.location = "/blog/" + suggestion.alg_obj_id;
         } else {
             window.location = "/play/" + suggestion.alg_obj_id;
         }
@@ -65,15 +65,7 @@ $(document).ready(function () {
                     //Append filters:
                     algolia_index.search(q, {
                         hitsPerPage: 14,
-                        filters:
-                            ( js_advance_view_enabled ? '' :
-                                '(' +
-                                '    _tags:alg_author_' + js_pl_id +
-                                ' OR _tags:alg_for_users' +
-                                ' OR _tags:alg_for_trainer' +
-                                ') AND ') +
-                            ' alg_obj_is_in' + ($("#platform_search").val().charAt(0) == '#' ? '=1' : ($("#platform_search").val().charAt(0) == '@' ? '=0' : '>=0'))
-                        ,
+                        filters:' alg_obj_is_in' + ($("#platform_search").val().charAt(0) == '#' ? '=1' : ($("#platform_search").val().charAt(0) == '@' ? '=0' : '>=0')),
                     }, function (error, content) {
                         if (error) {
                             cb([]);
@@ -203,7 +195,7 @@ var update_basic_stats = function() {
     updating_basic_stats = true;
 
     //Fetch latest stats:
-    $.post("/mench/update_counters", {}, function (data) {
+    $.post("/play/update_counters", {}, function (data) {
 
         if(data.intents.current_count != $('.blog .current_count').html()){
             $('.blog .current_count').html(data.intents.current_count).fadeOut(fadeout_speed).fadeIn(fadeout_speed);
@@ -247,31 +239,6 @@ function en_fetch_canonical_url(query_string, not_found){
     return '<a href="/play/add_source_wizard?url='+ encodeURI(query_string) +'" class="suggestion add-source-suggest"><i class="fas fa-plus-circle" style="margin: 0 5px;"></i> Add Source Wizard</a>'
         + ( not_found ? '<div class="not-found"><i class="fas fa-exclamation-triangle"></i> URL not found</div>' : '');
 }
-
-function count_new_words_in(target_parent_frame){
-
-    if(target_parent_frame){
-        var focus_element = $(".app-version", window.parent.document);
-    } else {
-        var focus_element = $(".app-version");
-    }
-
-    $.post("/trainer_app/count_new_words_in", {}, function (data) {
-        if(data.status){
-            //Preserve current version:
-            var current_version = focus_element.text();
-
-            //Show trainers their new word count:
-            focus_element.html(data.message).fadeOut(144).fadeIn(144);
-
-            //Replace message with platform version again:
-            setTimeout(function () {
-                focus_element.html(current_version);
-            }, 1597);
-        }
-    });
-}
-
 
 
 function remove_all_highlights(){
@@ -346,30 +313,40 @@ function ms_toggle(ln_id, new_state) {
 }
 
 
-function toggle_advance(basic_toggle){
+function toggle_superpower(superpower_id){
 
-    //Toggle UI elements:
-    $('.advance-ui').toggleClass('hidden');
+    superpower_id = parseInt(superpower_id);
 
-    if(basic_toggle){
-        //Only Make instant UI changes:
-        return true;
-    }
-
-    //If an iframe is loaded, also apply logic to iframe UI:
-    if($('#ajax_messaging_iframe').attr('src') && $('#ajax_messaging_iframe').attr('src').length > 0){
-        document.getElementById('ajax_messaging_iframe').contentWindow.toggle_advance(1);
-    }
-
-    //Change top menu icon:
-    $('.advance-icon').toggleClass('fal').toggleClass('fas');
+    var superpower_icon = $('.superpower-frame-'+superpower_id).html();
+    $('.superpower-frame-'+superpower_id).html('<i class="far fa-yin-yang fa-spin"></i>');
 
     //Save session variable to save the state of advance setting:
-    $.post("/links/toggle_advance", {}, function (data) {
+    $.post("/read/toggle_superpower/"+superpower_id, {}, function (data) {
+
+        //Change top menu icon:
+        $('.superpower-frame-'+superpower_id).html(superpower_icon);
+
         if(!data.status){
+
             alert('Error: ' + data.message);
+
         } else {
-            js_advance_view_enabled = ( js_advance_view_enabled ? 0 : 1 );
+
+            //Toggle UI elements:
+            $('.superpower-'+superpower_id).toggleClass('hidden');
+
+            //Change top menu icon:
+            $('.superpower-frame-'+superpower_id).toggleClass('active');
+
+            //TOGGLE:
+            var index = js_active_superpowers.indexOf(superpower_id);
+            if (index > -1) {
+                //Remove it:
+                js_active_superpowers.splice(index, 1);
+            } else {
+                //Not there, add it:
+                js_active_superpowers.push(superpower_id);
+            }
         }
     });
 
@@ -378,7 +355,7 @@ function toggle_advance(basic_toggle){
 
 function ln_content_word_count(el_textarea, el_counter) {
     var len = $(el_textarea).val().length;
-    if (len > ln_content_max_length) {
+    if (len > js_en_all_6404[11073]['m_desc']) {
         $(el_counter).addClass('overload').text(len);
     } else {
         $(el_counter).removeClass('overload').text(len);
@@ -391,12 +368,9 @@ function add_search_item(){
     $('#platform_search').prop("disabled", true);
 
     //Attemps to create a new intent OR entity based on the value in the search box
-    $.post("/links/add_search_item", { raw_string: $("#platform_search").val() }, function (data) {
+    $.post("/read/add_search_item", { raw_string: $("#platform_search").val() }, function (data) {
 
         if(data.status){
-
-            //Show trainers their new words:
-            count_new_words_in(0);
 
             setTimeout(function () {
                 //All good, redirect to newly added intent/entity:

@@ -146,27 +146,17 @@ $(document).ready(function () {
         }
     });
 
-    if (is_compact) {
+    //Adjust height of the messaging windows:
+    $('.grey-box').css('max-height', (parseInt($(window).height()) - 130) + 'px');
 
-        //Adjust columns:
-        $('.cols').removeClass('col-xs-6').addClass('col-sm-6');
-        $('.fixed-box').addClass('release-fixture');
-        $('.dash').css('margin-bottom', '0px'); //For iframe to show better
-
-    } else {
-
-        //Adjust height of the messaging windows:
-        $('.grey-box').css('max-height', (parseInt($(window).height()) - 130) + 'px');
-
-        //Make editing frames Sticky for scrolling longer lists
-        $(".main-panel").scroll(function () {
-            var top_position = $(this).scrollTop();
-            clearTimeout($.data(this, 'scrollTimer'));
-            $.data(this, 'scrollTimer', setTimeout(function () {
-                $(".fixed-box").css('top', (top_position - 0)); //PX also set in style.css for initial load
-            }, 34));
-        });
-    }
+    //Make editing frames Sticky for scrolling longer lists
+    $(".main-panel").scroll(function () {
+        var top_position = $(this).scrollTop();
+        clearTimeout($.data(this, 'scrollTimer'));
+        $.data(this, 'scrollTimer', setTimeout(function () {
+            $(".fixed-box").css('top', (top_position - 0)); //PX also set in style.css for initial load
+        }, 34));
+    });
 
 
     //Loadup various search bars:
@@ -263,13 +253,12 @@ function en_add_or_link(en_existing_id, is_parent) {
     if (is_parent) {
         var input = $('#new-parent .new-input');
         var list_id = 'list-parent';
-        var counter_class = '.li-parent-count';
+        var counter_class = '.counter-11030';
     } else {
         var input = $('#new-children .new-input');
         var list_id = 'list-children';
-        var counter_class = '.li-children-count';
+        var counter_class = '.counter-11029';
     }
-
 
     var en_new_string = null;
     if (en_existing_id == 0) {
@@ -296,9 +285,6 @@ function en_add_or_link(en_existing_id, is_parent) {
         input.prop('disabled', false);
 
         if (data.status) {
-
-            //Show trainers their new words:
-            count_new_words_in(0);
 
             //Raw input to make it ready for next URL:
             input.focus();
@@ -333,7 +319,7 @@ function en_filter_status(new_val) {
 
 function en_name_word_count() {
     var len = $('#en_name').val().length;
-    if (len > en_name_max_length) {
+    if (len > js_en_all_6404[11072]['m_desc']) {
         $('#charNameNum').addClass('overload').text(len);
     } else {
         $('#charNameNum').removeClass('overload').text(len);
@@ -358,7 +344,6 @@ function en_load_next_page(page, load_new_filter) {
         page: page,
         parent_en_id: en_focus_id,
         en_focus_filter: en_focus_filter,
-        set_sort: $('#set_sort').val(),
     }, function (data) {
 
         //Appending to existing content:
@@ -478,14 +463,6 @@ function en_modify_load(en_id, ln_id) {
         $('.unlink-entity, .en-has-tr').addClass('hidden');
 
     }
-
-
-    //We might need to scroll:
-    if (is_compact) {
-        $('.main-panel').animate({
-            scrollTop: 9999
-        }, 150);
-    }
 }
 
 function entity_link_form_lock(){
@@ -565,9 +542,6 @@ function en_save_file_upload(droppedFiles, uploadType) {
 
                 if(data.status){
 
-                    //Show trainers their new words:
-                    count_new_words_in(0);
-
                     //Add URL to input:
                     $('#ln_content').val( data.cdn_url );
 
@@ -639,9 +613,6 @@ function en_modify_save() {
     $.post("/play/en_modify_save", modify_data, function (data) {
 
         if (data.status) {
-
-            //Show trainers their new words:
-            count_new_words_in(0);
 
             if(data.remove_from_ui){
 
@@ -755,14 +726,7 @@ function en_load_messages(en_id) {
     var handler = $("#loaded-messages");
 
     //Show tem loader:
-    handler.html('<div style="text-align:left; padding-bottom:50px;"><i class="far fa-yin-yang fa-spin"></i> ' + echo_ying_yang() +  '</div>');
-
-    //We might need to scroll:
-    if (is_compact) {
-        $('.main-panel').animate({
-            scrollTop: 9999
-        }, 150);
-    }
+    handler.html('<div style="text-align:left; padding-bottom:50px;"><i class="far fa-yin-yang fa-spin"></i> ' + echo_loading_notify() +  '</div>');
 
     //Load the frame:
     $.post("/play/en_load_messages/"+en_id, {}, function (data) {

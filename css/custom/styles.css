@@ -3660,13 +3660,6 @@ h4 .tip-badge {
     cursor: pointer !important;
 }
 
-
-#in_public_ui h3 {
-    margin: 45px 0 0px 3px !important;
-    padding-bottom: 0px !important;
-    border-bottom: 0 !important;
-}
-
 .badge > img {
     width: 23px;
     height: 23px;
@@ -3677,13 +3670,6 @@ h4 .tip-badge {
     width: 32px;
     margin: -13px 0 -8px -2px !important;
     height: 32px !important;
-    border-radius: 50% !important;
-}
-
-.en-icon img {
-    width: 24px !important;
-    margin: -13px 0 -8px -2px !important;
-    height: 24px !important;
     border-radius: 50% !important;
 }
 

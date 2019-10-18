@@ -1,7 +1,7 @@
 <?php
 $en_all_6225 = $this->config->item('en_all_6225');
 $en_all_7555 = $this->config->item('en_all_7555');
-$en_all_7305 = $this->config->item('en_all_7305'); //MENCH PLATFORM
+$en_all_11035 = $this->config->item('en_all_11035'); //MENCH PLAYER NAVIGATION
 
 $this_attempt = array(
     'ln_type_entity_id' => ( $referrer_in_id > 0 ? 7560 /* User Signin Intent Channel Choose */ : 7561 /* User Signin on Website */ ),
@@ -35,7 +35,7 @@ if(is_array($current_sign_in_attempts) && count($current_sign_in_attempts) > 0){
 if(count($current_sign_in_attempt) == 0){
 
     //Log link:
-    $current_sign_in_attempt = $this->Links_model->ln_create($this_attempt);
+    $current_sign_in_attempt = $this->READ_model->ln_create($this_attempt);
 
     //Grow the array:
     array_push($current_sign_in_attempts, $current_sign_in_attempt);
@@ -49,7 +49,6 @@ if(count($current_sign_in_attempt) == 0){
 <script>
     var referrer_in_id = <?= intval($referrer_in_id) ?>;
     var referrer_url = '<?= @$_GET['url'] ?>';
-    var fb_mench_url = '<?= $this->config->item('fb_mench_url') ?>';
     var channel_choice_messenger = {
         ln_type_entity_id: 7558, //User Signin with Messenger Choice
         ln_parent_intent_id: <?= intval($referrer_in_id) ?>,
@@ -61,7 +60,7 @@ if(count($current_sign_in_attempt) == 0){
         ln_parent_link_id: <?= $current_sign_in_attempt['ln_id'] ?>,
     };
 </script>
-<script src="/js/custom/user_signin.js?v=v<?= $this->config->item('app_version') ?>"
+<script src="/js/custom/user_signin.js?v=v<?= config_value(11060) ?>"
         type="text/javascript"></script>
 
 
@@ -69,16 +68,16 @@ if(count($current_sign_in_attempt) == 0){
 
     <div class="sign-logo text-center"><img src="/img/mench-v2-128.png" class="mench-spin" /></div>
 
-    <h1 class="text-center"><?= $en_all_7305[4269]['m_name'] ?></h1>
+    <h1 class="text-center"><?= $en_all_11035[4269]['m_name'] ?></h1>
 
     <?php
     if($referrer_in_id > 0){
-        $ins = $this->Intents_model->in_fetch(array(
+        $ins = $this->BLOG_model->in_fetch(array(
             'in_id' => $referrer_in_id,
             'in_status_entity_id IN (' . join(',', $this->config->item('en_ids_7355')) . ')' => null, //Intent Statuses Public
         ));
         if(count($ins) > 0){
-            echo '<p>To <a href="/'.$referrer_in_id.'">'.echo_in_outcome($ins[0]['in_outcome']).'</a></p>';
+            echo '<p>To <a href="/read/'.$referrer_in_id.'">'.echo_in_outcome($ins[0]['in_outcome']).'</a></p>';
         }
     } elseif(isset($_GET['url']) && strlen($_GET['url']) > 0){
         echo '<p>To access <u>'.urldecode($_GET['url']).'</u></p>';
@@ -131,7 +130,7 @@ if(count($current_sign_in_attempt) == 0){
 
             <!-- Full Name -->
             <span class="medium-header" style="padding-top: 20px;"><?= $en_all_6225[6197]['m_icon'].' '.$en_all_6225[6197]['m_name'] ?>:</span>
-            <div class="form-group is-empty"><input type="text" placeholder="Tim Apple" id="input_name" maxlength="<?= $this->config->item('en_name_max_length') ?>" class="form-control border"></div>
+            <div class="form-group is-empty"><input type="text" placeholder="Tim Apple" id="input_name" maxlength="<?= config_value(11072) ?>" class="form-control border"></div>
 
             <!-- New Password -->
             <span class="medium-header" style="padding-top: 20px;"><?= $en_all_6225[3286]['m_icon'] ?> Create a new password:</span>

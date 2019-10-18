@@ -17,7 +17,6 @@ create table table_intents
   in_outcome                      varchar(255) not null,
   in_verb_entity_id               integer      not null,
   in_completion_method_entity_id            integer      not null,
-  in_level_entity_id              integer      not null,
   in_completion_seconds           smallint     not null,
   in_metadata                     text
 );
@@ -76,9 +75,6 @@ create index table_intents_in_completion_seconds_index
 
 create index table_intents_in_status_entity_id_index
   on table_intents (in_status_entity_id);
-
-create index table_intents_in_subscription_entity_id_index
-  on table_intents (in_level_entity_id);
 
 
 -- Entities

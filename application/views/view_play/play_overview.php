@@ -1,56 +1,62 @@
 <?php
-$session_en = $this->session->userdata('user');
+$session_en = en_auth();
 $en_all_2738 = $this->config->item('en_all_2738'); //MENCH
-$en_all_7305 = $this->config->item('en_all_7305'); //MENCH PLATFORM
+$en_all_11035 = $this->config->item('en_all_11035'); //MENCH PLAYER NAVIGATION
 $en_all_10591 = $this->config->item('en_all_10591'); //PLAYER PLAYS
 
 ?>
 <div class="container">
 
-    <h1>RULES</h1>
-    <ul style="list-style: decimal;">
-        <li><b class="montserrat"><?= $en_all_2738[4536]['m_name'] ?></b> starts when you <b class="montserrat"><?= $en_all_2738[6205]['m_name'] ?></b> or <b class="montserrat"><?= $en_all_2738[4535]['m_name'] ?></b>.</li>
-        <li><b class="montserrat"><?= $en_all_2738[6205]['m_name'] ?></b> <?= number_format($this->config->item('read_word_limit_monthly'), 0) ?> monthly words FREE or subscribe for $5.</li>
-        <li><b class="montserrat"><?= $en_all_2738[4535]['m_name'] ?></b> to earn $$$ relative to your monthly <b class="montserrat"><?= $en_all_2738[6205]['m_name'] ?></b>s.</li>
-    </ul>
-
-
-    <div style="padding-bottom:21px;">
-        <?php
-        if (!isset($session_en['en_id'])) {
-            echo '<a href="/sign" class="btn btn-play montserrat">'.$en_all_7305[4269]['m_name'].'</a>';
-        }
-        ?>
-        <a href="/read" class="btn btn-read montserrat"><?= $en_all_2738[6205]['m_name'] ?></a>
-        <a href="/blog" class="btn btn-blog montserrat"><?= $en_all_2738[4535]['m_name'] ?></a>
-    </div>
-
-
-    <h1>TOP PLAYERS</h1>
     <div class="row">
-        <div class="col-md">
+        <div class="col-lg">
+
             <?php
-            echo '<table class="table table-sm table-striped">';
-            echo '<thead>';
-            echo '<tr>';
-            echo '<td style="text-align: left;"><span class="icon-block">'.$en_all_10591[10590]['m_icon'].'</span><h2 class="inline-block">'.$en_all_10591[10590]['m_name'].'</h2></td>';
-            echo '<td style="text-align: right;"><h2>WORDS</h2></td>';
-            echo '</tr>';
-            echo '</thead>';
-            echo '<tbody id="content_10590"><tr><td colspan="2"><span class="icon-block"><i class="far fa-yin-yang fa-spin"></i></span></td></tr></tbody>';
-            echo '</table>';
+            if($session_en){
+
+                //PLAYER IS LOGGED IN...
+                echo '<h1><span class="en-icon">'.echo_en_icon($session_en).'</span> '.$session_en['en_name'].'</h1>';
+                echo '<p>Welcome Back.</p>';
+
+                $en_all_11035 = $this->config->item('en_all_11035'); //MENCH PLAYER NAVIGATION
+                echo '<a href="/play/myaccount" class="btn btn-play montserrat">'.$en_all_11035[6225]['m_name'].'</a>&nbsp;';
+                echo '<a href="javascript:void(0);" onclick="$(\'.see_more_how\').toggleClass(\'hidden\')" class="btn btn-read montserrat see_more_how">HOW TO PLAY</a>';
+
+            }
             ?>
-        </div>
-        <div class="col-md offset-md-1">
+
+            <div class="<?= ( $session_en ? 'see_more_how hidden' : '' ) ?>">
+                <h1>HOW TO PLAY</h1>
+                <ul style="list-style: decimal;">
+                    <li>Earn 1x <?= $en_all_2738[4536]['m_icon'] ?><b class="montserrat play"><?= $en_all_2738[4536]['m_name'] ?></b> coin when you join</li>
+                    <li>Earn 1x <?= $en_all_2738[6205]['m_icon'] ?><b class="montserrat read"><?= $en_all_2738[6205]['m_name'] ?></b> coin for every word you read</li>
+                    <li>Earn 1x <?= $en_all_2738[4535]['m_icon'] ?><b class="montserrat blog"><?= $en_all_2738[4535]['m_name'] ?></b> coin for every word you blog</li>
+                    <li>Earn up to <?= config_value(11061) ?>x <?= $en_all_2738[6205]['m_icon'] ?><b class="montserrat read"><?= $en_all_2738[6205]['m_name'] ?></b> coins/month FREE</li>
+                    <li>Earn UNLIMITED <?= $en_all_2738[6205]['m_icon'] ?><b class="montserrat read"><?= $en_all_2738[6205]['m_name'] ?></b> coins for $5/month</li>
+                    <li>Earn monthly income with your <?= $en_all_2738[4535]['m_icon'] ?><b class="montserrat blog"><?= $en_all_2738[4535]['m_name'] ?></b> coins</li>
+                    <li>Earn more coins to unlock new <a href="/play/10957" class="btn btn-sm btn-play montserrat">SUPERPOWERS</a></li>
+                </ul>
+            </div>
+
             <?php
-            echo '<table class="table table-sm table-striped">';
+            if (!isset($session_en['en_id'])) {
+                echo '<div style="padding-bottom:21px;"><a href="/sign" class="btn btn-play montserrat">'.$en_all_11035[4269]['m_name'].'</a></div>';
+            }
+            ?>
+
+        </div>
+        <div class="col-lg">
+
+            <h1 style="margin-bottom: 0;">TOP PLAYERS</h1>
+            <?php
+            echo '<table id="leaderboard" class="table table-sm table-striped">';
             echo '<thead>';
-            echo '<tr>';
-            echo '<td style="text-align: left;"><span class="icon-block">'.$en_all_10591[10589]['m_icon'].'</span><h2 class="inline-block">'.$en_all_10591[10589]['m_name'].'</h2></td>';
-            echo '<td style="text-align: right;"><h2>WORDS</h2></td>';
+            echo '<tr style="padding:0;">';
+            echo '<td style="width: 34%"><span class="parent-icon icon-block">'.$en_all_2738[4536]['m_icon'].'</span><b class="montserrat play">'.$en_all_2738[4536]['m_name'].'</b></td>';
+            echo '<td style="width: 33%">'.$en_all_2738[6205]['m_icon'].' <b class="montserrat read">'.$en_all_2738[6205]['m_name'].'</b></td>';
+            echo '<td style="width: 33%">'.$en_all_2738[4535]['m_icon'].' <b class="montserrat blog">'.$en_all_2738[4535]['m_name'].'</b></td>';
             echo '</tr>';
             echo '</thead>';
-            echo '<tbody id="content_10589"><tr><td colspan="2"><span class="icon-block"><i class="far fa-yin-yang fa-spin"></i></span></td></tr></tbody>';
+            echo '<tbody><tr><td colspan="3"><span class="icon-block"><i class="far fa-yin-yang fa-spin"></i></span></td></tr></tbody>';
             echo '</table>';
             ?>
         </div>
@@ -59,17 +65,13 @@ $en_all_10591 = $this->config->item('en_all_10591'); //PLAYER PLAYS
 
     <script>
 
-
         $(document).ready(function () {
-            setTimeout(function () {
-                load_leaderboard(10589);
-                load_leaderboard(10590);
-            }, 377);
+            load_leaderboard();
         });
 
-        function load_leaderboard(choose_10591){
-            $.post("/play/leaderboard/"+choose_10591, {}, function (data) {
-                $('#content_' + choose_10591).html(data);
+        function load_leaderboard(){
+            $.post("/play/leaderboard/", {}, function (data) {
+                $('#leaderboard tbody').html(data);
                 $('[data-toggle="tooltip"]').tooltip();
             });
         }

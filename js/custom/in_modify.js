@@ -9,47 +9,9 @@ var match_search_loaded = 0; //Keeps track of when we load the match search
 
 $(document).ready(function () {
 
-    if (is_compact) {
-
-        //Remove all columns
-        $('.cols').removeClass('col-xs-1').removeClass('col-xs-2').removeClass('col-xs-3').removeClass('col-xs-4').removeClass('col-xs-5').removeClass('col-xs-6').removeClass('col-xs-7').removeClass('col-xs-8').removeClass('col-xs-9').removeClass('col-xs-10').removeClass('col-xs-11');
-
-        //Add largest column:
-        $('.cols').addClass('col-xs-12');
-        $('.fixed-box').addClass('release-fixture');
-        $('.dash').css('margin-bottom', '0px'); //For iframe to show better
-
-    } else {
-
-        //Adjust height of the messaging windows:
-        $('.grey-box').css('height', (parseInt($(window).height()) - 190) + 'px');
-        $('.grey-box').css('max-height', (parseInt($(window).height()) - 190) + 'px');
-
-        $('.ajax-frame').css('height', (parseInt($(window).height()) - 225) + 'px');
-        $('.ajax-frame').css('max-height', (parseInt($(window).height()) - 225) + 'px');
-
-        //Make editing frames Sticky for scrolling longer lists
-        $(".main-panel").scroll(function () {
-            var top_position = $(this).scrollTop();
-            clearTimeout($.data(this, 'scrollTimer'));
-            $.data(this, 'scrollTimer', setTimeout(function () {
-                $("#modifybox, #load_messaging_frame, #load_action_plan_frame").css('top', (top_position - 0)); //PX also set in style.css for initial load
-            }, 34));
-        });
-
-    }
-
 
     //Watch for intent status change:
     $("#in_status_entity_id").change(function () {
-
-        //Should we show the recursive button? Only if the status changes from the original one...
-        if( parseInt($('#in_status_entity_id').attr('original-status'))==parseInt(this.value)){
-            $('.apply-recursive').addClass('hidden');
-            $('#apply_recursively').prop('checked', false);
-        } else {
-            $('.apply-recursive').removeClass('hidden');
-        }
 
         //Should we show intent archiving warning?
         if(parseInt(this.value) == 6182 /* Intent Removed */){
@@ -75,19 +37,10 @@ $(document).ready(function () {
         if (hash_parts.length > 0) {
             //Fetch level if available:
             if (hash_parts[0] == 'intentnotes') {
-                in_notes_iframe(hash_parts[1]);
+
             } else if (hash_parts[0] == 'loadmodify') {
                 in_modify_load(hash_parts[1], hash_parts[2]);
-            } else if (hash_parts[0] == 'actionplanusers') {
-                in_action_plan_users(hash_parts[1]);
             }
-        } else {
-            alert('no hashtag');
-            //If no hashtag, auto load Blog Notes:
-            in_notes_iframe(in_loaded_id);
-
-            //Add Hashtag to URL:
-            window.location.hash = 'intentnotes-'+in_loaded_id;
         }
     }
 
@@ -193,62 +146,6 @@ function in_adjust_link_ui() {
 }
 
 
-
-function in_notes_iframe(in_id) {
-
-    //Set opacity:
-    remove_all_highlights();
-    $(".highlight_in_"+in_id).addClass('in_highlight');
-
-    //Start loading:
-    $('.frame-loader').removeClass('hidden');
-    $('.fixed-box, .ajax-frame').addClass('hidden');
-    $('#load_messaging_frame').removeClass('hidden').hide().fadeIn();
-
-    //Set title:
-    $('#load_messaging_frame .badge-h-max').html('<i class="fas fa-comment-plus"></i> ' + $('.in_outcome_' + in_id + ':first').text());
-
-    //Load content via a URL:
-    $('.ajax-frame').attr('src', '/intents/in_notes_iframe/' + in_id).css('margin-top', '0');
-    $('.ajax-frame').on("load", function () {
-        $('.frame-loader').addClass('hidden');
-        $('.ajax-frame').removeClass('hidden').contents().find('#ln_content' + in_id).focus();
-        $('[data-toggle="tooltip"]').tooltip();
-    });
-}
-
-function in_action_plan_users(in_id) {
-
-    //Start loading:
-    $('.fixed-box').addClass('hidden');
-    $('#load_action_plan_frame').removeClass('hidden').hide().fadeIn();
-
-    //Set title:
-    $('#load_action_plan_frame .badge-h-max').html('<i class="fas fa-walking"></i> ' + $('.in_outcome_' + in_id + ':first').text());
-
-    //Set opacity:
-    remove_all_highlights();
-    $(".highlight_in_"+in_id).addClass('in_highlight');
-
-    //Show Loading Icon:
-    $('#ap_matching_users').html('<span><i class="far fa-yin-yang fa-spin"></i> ' + echo_ying_yang() +  '</span>').hide().fadeIn();
-
-    //Load Matching Users:
-    $.post("/intents/in_action_plan_users", {
-        in_filters:( typeof js_in_filters !== 'undefined' ? js_in_filters : [] ),
-        in_loaded_id: in_loaded_id,
-        in_id: in_id
-    }, function (data) {
-        //Load content:
-        $('#ap_matching_users').html(data.message).hide().fadeIn();
-
-        //Tooltips:
-        $('[data-toggle="tooltip"]').tooltip();
-    });
-
-}
-
-
 function in_adjust_ui(in_id, level, new_hours, intent_deficit_count, apply_to_tree, skip_intent_adjustments) {
 
     intent_deficit_count = parseInt(intent_deficit_count);
@@ -315,7 +212,7 @@ function in_adjust_ui(in_id, level, new_hours, intent_deficit_count, apply_to_tr
 
 function in_outcome_counter() {
     var len = $('#in_outcome').val().length;
-    if (len > in_outcome_max_length) {
+    if (len > js_en_all_6404[11071]['m_desc']) {
         $('#charNameNum').addClass('overload').text(len);
     } else {
         $('#charNameNum').removeClass('overload').text(len);
@@ -333,7 +230,6 @@ function in_modify_load(in_id, ln_id) {
     $("#modifybox").removeClass('hidden').hide().fadeIn();
     $('#modifybox').attr('intent-tr-id', 0).attr('intent-id', 0).attr('level', 0);
     $('.apply-recursive').addClass('hidden');
-    $('#apply_recursively').prop('checked', false);
     $('.save_intent_changes').html(' ');
 
     //Reset & set new opacity:
@@ -345,7 +241,7 @@ function in_modify_load(in_id, ln_id) {
     $('.edit-header').html('<i class="fas fa-cog"></i> ' + $('.in_outcome_' + in_id + ':first').text());
 
     //Fetch Intent Data to load modify widget:
-    $.post("/intents/in_load_data", {
+    $.post("/blog/in_load_data", {
         in_id: in_id,
         ln_id: ln_id,
         is_parent: ( $('.intent_line_' + in_id).hasClass('parent-intent') ? 1 : 0 ),
@@ -369,8 +265,6 @@ function in_modify_load(in_id, ln_id) {
             $('#in_completion_seconds').val(data.in.in_completion_seconds);
             $('.tr_in_link_title').text('');
             $('#in_status_entity_id').val(data.in.in_status_entity_id).attr('original-status', data.in.in_status_entity_id); //Set the status before it gets changed by trainers
-            $('#in_level_entity_id').val(data.in.in_level_entity_id);
-
             //Load intent link data if available:
             if (ln_id > 0) {
 
@@ -403,26 +297,10 @@ function in_modify_load(in_id, ln_id) {
             $('[data-toggle="tooltip"]').tooltip();
 
 
-            var in_is_system_locked = ( in_system_lock.indexOf(parseInt(data.in.in_id)) !== -1 );
-
             //Status locked intent?
-            if(in_is_system_locked){
-                $('#in_status_entity_id').prop('disabled', true);
-                $('.in_status_entity_id_lock').removeClass('hidden');
-            } else {
-                $('#in_status_entity_id').prop('disabled', false);
-                $('.in_status_entity_id_lock').addClass('hidden');
-            }
+            $('#in_status_entity_id').prop('disabled', false);
+            $('.in_status_entity_id_lock').addClass('hidden');
 
-            //See if we need to lock the intent type editor:
-            //$('#in_completion_method_entity_id').attr('disabled', (data.in_action_plan_count > 0 || in_is_system_locked));
-
-            //We might need to scroll if mobile:
-            if (is_compact) {
-                $('.main-panel').animate({
-                    scrollTop: 9999
-                }, 150);
-            }
         }
     });
 }
@@ -488,9 +366,7 @@ function in_modify_save() {
         in_outcome: $('#in_outcome').val(),
         in_status_entity_id: parseInt($('#in_status_entity_id').val()),
         in_completion_method_entity_id: parseInt($('#in_completion_method_entity_id').val()),
-        in_level_entity_id: parseInt($('#in_level_entity_id').val()),
         in_completion_seconds: ( $('#in_completion_seconds').val().length > 0 ? parseInt($('#in_completion_seconds').val()) : 0 ),
-        apply_recursively: (document.getElementById('apply_recursively').checked ? 1 : 0),
         is_parent: ( $('.intent_line_' + in_id).hasClass('parent-intent') ? 1 : 0 ),
 
         //Link variables:
@@ -526,7 +402,7 @@ function in_modify_save() {
 
 
     //Save the rest of the content:
-    $.post("/intents/in_modify_save", modify_data, function (data) {
+    $.post("/blog/in_modify_save", modify_data, function (data) {
 
         if (!data.status) {
 
@@ -552,9 +428,6 @@ function in_modify_save() {
                 }
 
             } else {
-
-                //Show trainers their new words:
-                count_new_words_in(0);
 
                 //Intent has not been updated:
 
@@ -584,9 +457,6 @@ function in_modify_save() {
                 $('.in_status_entity_id_' + modify_data['in_id']).html('<span data-toggle="tooltip" data-placement="right" title="'+ js_en_all_4737[modify_data['in_status_entity_id']]['m_name'] + ': '+ js_en_all_4737[modify_data['in_status_entity_id']]['m_desc'] + '">'+ js_en_all_4737[modify_data['in_status_entity_id']]['m_icon'] +'</span>');
 
 
-                $('.in_level_entity_id_' + modify_data['in_id']).html('<span data-toggle="tooltip" data-placement="right" title="'+ js_en_all_7596[modify_data['in_level_entity_id']]['m_name'] + ': '+ js_en_all_7596[modify_data['in_level_entity_id']]['m_desc'] + '">'+ js_en_all_7596[modify_data['in_level_entity_id']]['m_icon'] +'</span>');
-
-
                 //Update UI to confirm with user:
                 $('.save_intent_changes').html(data.message).hide().fadeIn();
 
@@ -612,7 +482,7 @@ function in_modify_save() {
                 if(data.ins_unlocked_completions_count > 0){
                     //We did complete/unlock some intents, inform trainer and refresh:
                     alert('Publishing this intent has just unlocked '+data.steps_unlocked_completions_count+' steps across '+data.ins_unlocked_completions_count+' intents. Page will be refreshed to reflect changes.');
-                    window.location = "/intents/" + in_loaded_id;
+                    window.location = "/blog/" + in_loaded_id;
                 }
 
             }
@@ -621,16 +491,10 @@ function in_modify_save() {
             $('[data-toggle="tooltip"]').tooltip();
 
 
-            //What's the final action?
-            if (modify_data['apply_recursively'] && data.recursive_update_count > 0) {
-                //Refresh page soon to show new status for children:
-                window.location = "/intents/" + in_loaded_id;
-            } else {
-                //Clear times:
-                setTimeout(function () {
-                    $('.save_intent_changes').html(' ');
-                }, 1597);
-            }
+            //Clear times:
+            setTimeout(function () {
+                $('.save_intent_changes').html(' ');
+            }, 1597);
         }
     });
 

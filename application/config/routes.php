@@ -2,41 +2,38 @@
 defined('BASEPATH') OR exit('No direct script access allowed');
 
 //General:
-$route['404_override']              = 'user_app/page_not_found';
+$route['404_override']              = 'play/page_not_found';
 $route['translate_uri_dashes']      = FALSE;
-$route['default_controller']        = "mench/overview";
+$route['default_controller']        = "read/overview";
 
 
 $route['play/(:num)']               = "play/play_modify/$1"; //Set to: play_view
-$route['play/(:num)/modify']        = "play/play_modify/$1";
 $route['blog/(:num)']               = "blog/blog_modify/$1";
-$route['read/(:num)']               = "read/blog_read/$1";
+$route['read/(:num)']               = "read/blog/$1";
+$route['(:num)']                    = "read/blog/$1"; //OLD URL STRUCTURE - DEPRECATE SOON...
 
 $route['sign']                      = "play/sign";
 $route['play']                      = "play/overview";
 $route['read']                      = "read/overview";
 $route['blog']                      = "blog/overview";
+$route['blog/demo']                 = "blog/demo";
+
+$route['read/next']                 = "read/read_history_overview";
+$route['read/history']              = "read/read_history_overview";
+$route['read/history/(:num)']       = "read/read_history_item";
 
 
-$route['intents/(:num)']            = "intents/in_train/$1";
-$route['intents']                   = "intents/in_train/0";
-
-$route['(:num)_(:num)']             = "intents/in_public_ui/$2/$1"; //Public Intent Landing Page
-$route['(:num)']                    = "intents/in_public_ui/$1"; //Public Intent Landing Page
-$route['completion_rates']          = "intents/in_completion_rates";
+$route['completion_rates']          = "blog/in_completion_rates";
 
 //Users:
-$route['(:num)_(:num)/sign']      = "user_app/sign/$2/$1";
-$route['(:num)/sign']             = "user_app/sign/$1";
-$route['resetpassword/(:num)']      = "user_app/sign_reset_password_ui/$1";
-$route['magiclogin/(:num)']         = "user_app/singin_magic_link_login/$1";
+$route['(:num)_(:num)/sign']      = "play/sign/$2/$1";
+$route['(:num)/sign']             = "play/sign/$1";
+$route['resetpassword/(:num)']      = "play/sign_reset_password_ui/$1";
+$route['magiclogin/(:num)']         = "play/singin_magic_link_login/$1";
 
-$route['signout']                   = "user_app/signout";
-$route['myaccount']                 = "user_app/myaccount";
-$route['actionplan']                = "user_app/actionplan/0";
-$route['actionplan/delete']         = "user_app/actionplan_delete";
-$route['actionplan/delete/(:num)']  = "user_app/actionplan_delete/$1";
-$route['actionplan/next']           = "user_app/actionplan/next";
-$route['actionplan/(:num)']         = "user_app/actionplan/$1";
-
-$route['stats']                     = "trainer_app/mench_stats";
+$route['signout']                   = "play/signout";
+$route['actionplan']                = "read/actionplan/0";
+$route['actionplan/delete']         = "read/actionplan_delete";
+$route['actionplan/delete/(:num)']  = "read/actionplan_delete/$1";
+$route['actionplan/next']           = "read/actionplan/next";
+$route['actionplan/(:num)']         = "read/actionplan/$1";

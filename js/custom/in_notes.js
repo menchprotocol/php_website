@@ -16,7 +16,7 @@ function in_message_add_name() {
 function in_message_char_count() {
     //Update count:
     var len = $('#ln_content' + in_id).val().length;
-    if (len > ln_content_max_length) {
+    if (len > js_en_all_6404[11073]['m_desc']) {
         $('#charNum' + in_id).addClass('overload').text(len);
     } else {
         $('#charNum' + in_id).removeClass('overload').text(len);
@@ -30,7 +30,7 @@ function in_message_validate(ln_id) {
     }
     //Update count:
     var len = $('#message_body_' + ln_id).val().length;
-    if (len > ln_content_max_length) {
+    if (len > js_en_all_6404[11073]['m_desc']) {
         $('#charNumEditing' + ln_id).addClass('overload').text(len);
     } else {
         $('#charNumEditing' + ln_id).removeClass('overload').text(len);
@@ -142,12 +142,6 @@ $(document).ready(function () {
 
     in_message_inline_en_search();
 
-    //Load Nice sort for messages body
-    new SimpleBar(document.getElementById('intent_messages' + in_id), {
-        // option1: value1,
-        // option2: value2
-    });
-
     //Watch for message creation:
     $('#ln_content' + in_id).keydown(function (e) {
         if (e.ctrlKey && e.keyCode == 13) {
@@ -225,12 +219,9 @@ function in_message_sort_apply(ln_type_entity_id) {
 
     //Update backend if any:
     if(sort_rank > 0){
-        $.post("/intents/in_message_sort", {new_ln_orders: new_ln_orders}, function (data) {
+        $.post("/blog/in_message_sort", {new_ln_orders: new_ln_orders}, function (data) {
             //Only show message if there was an error:
-            if (data.status) {
-                //Show trainers their new words:
-                count_new_words_in(1);
-            } else {
+            if (!data.status) {
                 //Show error:
                 alert('ERROR: ' + data.message);
             }
@@ -321,22 +312,15 @@ function in_message_modify_save(ln_id, initial_ln_type_entity_id) {
     };
 
     //Update message:
-    $.post("/intents/in_message_modify_save", modify_data, function (data) {
+    $.post("/blog/in_message_modify_save", modify_data, function (data) {
 
         if (data.status) {
-
-            //Show trainers their new words:
-            count_new_words_in(1);
 
             //Did we remove this message?
             if(data.remove_from_ui){
 
                 //Yes, message was removed, adjust accordingly:
                 $("#ul-nav-" + ln_id).html('<div>' + data.message + '</div>');
-
-                //Adjust counter by one:
-                in_note_messages_count--;
-                $(".in-notes-count-" + in_id, window.parent.document).text(in_note_messages_count);
 
                 //Disapper in a while:
                 setTimeout(function ()
@@ -467,7 +451,7 @@ function in_message_from_attachment(droppedFiles, uploadType) {
         ajaxData.append('in_id', in_id);
 
         $.ajax({
-            url: '/intents/in_message_from_attachment',
+            url: '/blog/in_message_from_attachment',
             type: $('.box' + in_id).attr('method'),
             data: ajaxData,
             dataType: 'json',
@@ -478,14 +462,9 @@ function in_message_from_attachment(droppedFiles, uploadType) {
                 $('.box' + in_id).removeClass('is-uploading');
             },
             success: function (data) {
-                //Show trainers their new words:
-                count_new_words_in(1);
 
                 in_message_form_unlock(data);
 
-                //Adjust Action Plan counter by one:
-                in_note_messages_count++;
-                $(".in-notes-count-" + in_id, window.parent.document).text(in_note_messages_count);
             },
             error: function (data) {
                 var result = [];
@@ -510,7 +489,7 @@ function in_message_create() {
     in_message_form_lock();
 
     //Update backend:
-    $.post("/intents/in_new_message_from_text", {
+    $.post("/blog/in_new_message_from_text", {
 
         in_id: in_id, //Synonymous
         ln_content: $('#ln_content' + in_id).val(),
@@ -520,13 +499,6 @@ function in_message_create() {
 
         //Raw Inputs Fields if success:
         if (data.status) {
-
-            //Show trainers their new words:
-            count_new_words_in(1);
-
-            //Adjust counter by one:
-            in_note_messages_count++;
-            $(".in-notes-count-" + in_id, window.parent.document).text(in_note_messages_count);
 
             //Reset input field:
             $("#ln_content" + in_id).val("");

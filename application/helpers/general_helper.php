@@ -28,7 +28,7 @@ function load_algolia($index_name)
     //Loads up algolia search engine functions
     $CI =& get_instance();
     $cred_algolia = $CI->config->item('cred_algolia');
-    if ($CI->config->item('app_enable_algolia')) {
+    if (intval(config_value(11062))) {
         require_once('application/libraries/algoliasearch.php');
         $client = new \AlgoliaSearch\Client($cred_algolia['application_id'], $cred_algolia['api_key']);
         return $client->initIndex($index_name);
@@ -42,7 +42,7 @@ function detect_missing_columns($insert_columns, $required_columns, $ln_creator_
         if (!isset($insert_columns[$req_field]) || strlen($insert_columns[$req_field]) == 0) {
             //Ooops, we're missing this required field:
             $CI =& get_instance();
-            $CI->Links_model->ln_create(array(
+            $CI->READ_model->ln_create(array(
                 'ln_content' => 'Missing required field [' . $req_field . '] for inserting new DB row',
                 'ln_metadata' => array(
                     'insert_columns' => $insert_columns,
@@ -232,11 +232,11 @@ function ln_detect_type($string)
     $string = trim($string);
     $CI =& get_instance();
 
-    if(strlen($string) > $CI->config->item('ln_content_max_length')){
+    if(strlen($string) > config_value(11073)){
 
         return array(
             'status' => 0,
-            'message' => 'String is ['.(strlen($string) - $CI->config->item('ln_content_max_length')).'] characters longer than the allowed length of '.$CI->config->item('ln_content_max_length').' characters.',
+            'message' => 'String is ['.(strlen($string) - config_value(11073)).'] characters longer than the allowed length of '.config_value(11073).' characters.',
         );
 
     } elseif (is_null($string) || strlen($string) == 0) {
@@ -244,6 +244,20 @@ function ln_detect_type($string)
         return array(
             'status' => 1,
             'ln_type_entity_id' => 4230, //Raw
+        );
+
+    } elseif (in_array(substr($string, 0, 3), array('fas', 'far', 'fal', 'fad')) && substr($string, 3, 4)==' fa-') {
+
+        return array(
+            'status' => 1,
+            'ln_type_entity_id' => 10669, //ICON
+        );
+
+    } elseif (is_emojis_only($string)) {
+
+        return array(
+            'status' => 1,
+            'ln_type_entity_id' => 10668, //EMOJI
         );
 
     } elseif ((strlen(bigintval($string)) == strlen($string) || (in_array(substr($string , 0, 1), array('+','-')) && strlen(bigintval(substr($string , 1))) == strlen(substr($string , 1)))) && (intval($string) != 0 || $string == '0')) {
@@ -257,7 +271,7 @@ function ln_detect_type($string)
 
         //It's a URL, see what type (this could fail if duplicate, etc...):
         $CI =& get_instance();
-        return $CI->Entities_model->en_sync_url($string);
+        return $CI->PLAY_model->en_sync_url($string);
 
     } elseif (strlen($string) > 9 && (is_valid_date($string) || strtotime($string) > 0)) {
 
@@ -364,7 +378,7 @@ function in_outcome_verb_id($string){
     if(count($letters) >= 2){
 
         //Do a DB call to see if this verb is supported:
-        $found_verbs = $CI->Links_model->ln_fetch(array(
+        $found_verbs = $CI->READ_model->ln_fetch(array(
             'ln_status_entity_id IN (' . join(',', $CI->config->item('en_ids_7359')) . ')' => null, //Link Statuses Public
             'en_status_entity_id IN (' . join(',', $CI->config->item('en_ids_7357')) . ')' => null, //Entity Statuses Public
             'ln_parent_entity_id' => 5008, //Intent Supported Verbs
@@ -432,18 +446,6 @@ function curl_get_file_size( $url ) {
 }
 
 
-function last_word_in_ln_id($user_en_id){
-
-    $CI =& get_instance();
-    $last_word_in = $CI->Links_model->ln_fetch(array(
-        'ln_creator_entity_id' => $user_en_id,
-        'ln_words >' => 0,
-        'ln_status_entity_id IN (' . join(',', $CI->config->item('en_ids_7360')) . ')' => null, //Link Statuses Active
-    ), array(), 1, 0, array('ln_id' => 'DESC'));
-    return ( count($last_word_in) > 0 ? intval($last_word_in[0]['ln_id']) : 0 );
-
-}
-
 function filter_cache_group($search_en_id, $cache_en_id){
 
     //Determines which category an entity belongs to
@@ -457,6 +459,12 @@ function filter_cache_group($search_en_id, $cache_en_id){
     return false;
 }
 
+function config_value($config_en_id){
+    $CI =& get_instance();
+    $en_all_6404 = $CI->config->item('en_all_6404');
+    return $en_all_6404[$config_en_id]['m_desc'];
+}
+
 function ln_type_word_count($ln){
 
     $CI =& get_instance();
@@ -464,7 +472,7 @@ function ln_type_word_count($ln){
     if(in_array($ln['ln_type_entity_id'], $CI->config->item('en_ids_10596'))){
 
         //Nod:
-        $link_words = $CI->config->item('words_per_nod');
+        $link_words = number_format(1 / config_value(11067), 2);
 
     } elseif(in_array($ln['ln_type_entity_id'], $CI->config->item('en_ids_10539'))){
 
@@ -492,10 +500,10 @@ function ln_type_word_count($ln){
                 $file_size = curl_get_file_size($ln['ln_content']);
                 if($file_size > 0){
                     //Convert file size to words:
-                    $link_words =+ number_format( $file_size / $CI->config->item('bytes_per_word'), 2 );
+                    $link_words =+ number_format( $file_size / config_value(11069), 2 );
                 } else {
                     //File size could not be determined, so let's just add a default:
-                    $link_words += number_format( $CI->config->item('unknown_file_words'), 2);
+                    $link_words += number_format( config_value(11070), 2);
                 }
 
             } else {
@@ -595,20 +603,34 @@ function addup_array($array, $match_key)
     return $total;
 }
 
-function filter_array($array, $match_key, $match_value)
+function filter_array($array, $match_key, $match_value, $return_all = false)
 {
 
     //Searches through $array and attempts to find $array[$match_key] = $match_value
     if (!is_array($array) || count($array) < 1) {
         return false;
     }
+
+    $all_matches = array();
     foreach ($array as $key => $value) {
         if (isset($value[$match_key]) && ( is_array($match_value) ? in_array($value[$match_key], $match_value) : $value[$match_key]==$match_value )) {
-            return $array[$key];
+            if($return_all){
+                array_push($all_matches, $value[$match_key]);
+            } else {
+                return $array[$key];
+            }
         }
     }
-    //Could not find it!
-    return false;
+
+
+    if($return_all){
+
+        return $all_matches;
+
+    } else {
+        //Could not find it!
+        return false;
+    }
 }
 
 function in_is_unlockable($in){
@@ -616,7 +638,7 @@ function in_is_unlockable($in){
     return in_array($in['in_status_entity_id'], $CI->config->item('en_ids_7355') /* Intent Statuses Public */);
 }
 
-function en_auth($en_permission_group = null, $force_redirect = 0)
+function en_auth($required_superpowers = null, $force_redirect = 0)
 {
 
     //Authenticates logged-in users with their session information
@@ -624,12 +646,12 @@ function en_auth($en_permission_group = null, $force_redirect = 0)
     $session_en = $CI->session->userdata('user');
 
     //Let's start checking various ways we can give user access:
-    if (!$en_permission_group && is_array($session_en) && count($session_en) > 0) {
+    if (!$required_superpowers && is_array($session_en) && count($session_en) > 0) {
 
         //No minimum level required, grant access IF user is logged in:
         return $session_en;
 
-    } elseif (isset($session_en['en_id']) && filter_array($session_en['en__parents'], 'en_id', $en_permission_group)) {
+    } elseif (isset($session_en['en_id']) && filter_array($session_en['en__parents'], 'en_id', $required_superpowers)) {
 
         //They are part of one of the levels assigned to them:
         return $session_en;
@@ -642,7 +664,14 @@ function en_auth($en_permission_group = null, $force_redirect = 0)
         return false;
     } else {
         //Block access:
-        return redirect_message((isset($session_en['en__parents'][0]) && filter_array($session_en['en__parents'], 'en_id', $CI->config->item('en_ids_10704') /* Mench Administrators */) ? '/intents/' . $CI->config->item('in_focus_id') : '/sign?url=' . urlencode($_SERVER['REQUEST_URI'])), '<div class="alert alert-danger" role="alert">Error: ' . (isset($session_en['en_id']) ? 'Access not authorized.' : 'You must sign-in to access this page.') . '</div>');
+        if(isset($session_en['en__parents'][0])){
+            $goto_url = '/play';
+        } else {
+            $goto_url = '/sign?url=' . urlencode($_SERVER['REQUEST_URI']);
+        }
+
+        //Now redirect:
+        return redirect_message($goto_url, '<div class="alert alert-danger" role="alert">Error: ' . (isset($session_en['en_id']) ? 'Access not authorized.' : 'You must sign-in to access this page.') . '</div>');
     }
 
 }
@@ -667,9 +696,24 @@ function redirect_message($url, $message = null)
 }
 
 
-function advance_mode(){
+
+function assigned_superpower($parent_en_ids){
     $CI =& get_instance();
-    return ' advance-ui '.( $CI->session->userdata('advance_view_enabled')==1 ? '' : ' hidden ' );
+    $assigned_superpowers = array_intersect($CI->config->item('en_ids_10957'), $parent_en_ids);
+    if(count($assigned_superpowers)>0){
+        return end($assigned_superpowers);
+    } else {
+        return 0;
+    }
+}
+
+function require_superpower($superpower_en_id){
+    if(!$superpower_en_id){
+        return false;
+    }
+    $CI =& get_instance();
+    $assigned_superpowers = $CI->session->userdata('active_superpowers');
+    return ' superpower-'.$superpower_en_id.' '.( count($assigned_superpowers)>0 && in_array($superpower_en_id, $assigned_superpowers) ? '' : ' hidden ' );
 }
 
 
@@ -800,7 +844,7 @@ function upload_to_cdn($file_url, $ln_creator_entity_id = 0, $ln_metadata = null
             }
 
             //Create and link new entity to CDN and uploader:
-            $url_entity = $CI->Entities_model->en_sync_url($cdn_new_url, $ln_creator_entity_id, array(4396 /* Mench CDN Entity */, $ln_creator_entity_id), 0, $page_title);
+            $url_entity = $CI->PLAY_model->en_sync_url($cdn_new_url, $ln_creator_entity_id, array(4396 /* Mench CDN Entity */, $ln_creator_entity_id), 0, $page_title);
 
             if(isset($url_entity['en_url']['en_id']) && $url_entity['en_url']['en_id'] > 0){
 
@@ -813,7 +857,7 @@ function upload_to_cdn($file_url, $ln_creator_entity_id = 0, $ln_metadata = null
 
             } else {
 
-                $CI->Links_model->ln_create(array(
+                $CI->READ_model->ln_create(array(
                     'ln_type_entity_id' => 4246, //Platform Bug Reports
                     'ln_creator_entity_id' => $ln_creator_entity_id,
                     'ln_content' => 'upload_to_cdn() Failed to create new entity from CDN file',
@@ -832,7 +876,7 @@ function upload_to_cdn($file_url, $ln_creator_entity_id = 0, $ln_metadata = null
 
         } else {
 
-            $CI->Links_model->ln_create(array(
+            $CI->READ_model->ln_create(array(
                 'ln_type_entity_id' => 4246, //Platform Bug Reports
                 'ln_creator_entity_id' => $ln_creator_entity_id,
                 'ln_content' => 'upload_to_cdn() Failed to upload file to Mench CDN',
@@ -853,7 +897,7 @@ function upload_to_cdn($file_url, $ln_creator_entity_id = 0, $ln_metadata = null
     } else {
 
         //Log error:
-        $CI->Links_model->ln_create(array(
+        $CI->READ_model->ln_create(array(
             'ln_type_entity_id' => 4246, //Platform Bug Reports
             'ln_creator_entity_id' => $ln_creator_entity_id,
             'ln_content' => 'upload_to_cdn() Failed to load AWS S3 module',
@@ -931,6 +975,17 @@ function analyze_domain($full_url){
 }
 
 
+function featured_topic_ids(){
+    $CI =& get_instance();
+    $featured_topic_ids = array();
+    foreach($CI->config->item('en_ids_10869') as $level1_topic_id){
+        array_push($featured_topic_ids, $level1_topic_id);
+        $featured_topic_ids = array_merge($featured_topic_ids, $CI->config->item('en_ids_'.$level1_topic_id));
+    }
+    return $featured_topic_ids;
+}
+
+
 function boost_power()
 {
     //Give php page instance more processing power
@@ -955,107 +1010,6 @@ function objectToArray($object)
 }
 
 
-function in_get_filters($return_get_filter_options = false){
-
-    $in_filters = array(
-        'get_filter_user' => 0,
-        'get_filter_start' => 0,
-        'get_filter_end' => 0,
-        'get_filter_query' => array(),
-        'get_filter_url' => '',
-        'get_filter_links_url' => '',
-    );
-
-    if($return_get_filter_options){
-        $in_filters['get_filter_options'] = array(
-            array(
-                'range_name' => 'All-Time',
-                'range_start' => 0, //Beginning of time
-                'range_end' => 0, //Now
-            ),
-            array(
-                'range_name' => 'Today',
-                'range_start' => mktime(0, 0, 0, date("n"), date("j"), date("Y")),
-                'range_end' => 0,
-            ),
-            array(
-                'range_name' => 'Yesterday',
-                'range_start' => mktime(0, 0, 0, date("n"), (date("j")-1), date("Y")),
-                'range_end' => mktime(0, 0, 0, date("n"), date("j"), date("Y")),
-            ),
-            array(
-                'range_name' => 'Last 3 Days',
-                'range_start' => mktime(0, 0, 0, date("n"), (date("j")-3), date("Y")),
-                'range_end' => 0,
-            ),
-            array(
-                'range_name' => 'Last 7 Days',
-                'range_start' => mktime(0, 0, 0, date("n"), (date("j")-7), date("Y")),
-                'range_end' => 0,
-            ),
-            array(
-                'range_name' => 'Last 14 Days',
-                'range_start' => mktime(0, 0, 0, date("n"), (date("j")-14), date("Y")),
-                'range_end' => 0,
-            ),
-            array(
-                'range_name' => 'Last 30 Days',
-                'range_start' => mktime(0, 0, 0, date("n"), (date("j")-30), date("Y")),
-                'range_end' => 0,
-            ),
-            array(
-                'range_name' => 'Last 90 Days',
-                'range_start' => mktime(0, 0, 0, date("n"), (date("j")-90), date("Y")),
-                'range_end' => 0,
-            ),
-        );
-    }
-
-    //Intent User Action Plan Filter:
-    if(isset($_GET['filter_user'])){
-        $filter_en_id = intval(one_two_explode('@',' ', urldecode($_GET['filter_user'])));
-        if($filter_en_id > 0){
-            //All good, apply filter:
-            $in_filters['get_filter_user'] = $filter_en_id; //Search "ZEEBRA" to find dependant code
-            $in_filters['get_filter_url'] .= '?filter_user='.$_GET['filter_user'];
-            $in_filters['get_filter_links_url'] .= '&ln_creator_entity_id='.$filter_en_id;
-            $in_filters['get_filter_query']['ln_creator_entity_id'] = $in_filters['get_filter_user'];
-        }
-    }
-
-    //Intent Time Range Filter:
-    if(isset($_GET['filter_time'])){
-
-        $time_parts = explode('-', urldecode($_GET['filter_time']), 2);
-        $either_time_set = false;
-
-        if(intval($time_parts[0]) > 0){
-
-            $either_time_set = true;
-            $in_filters['get_filter_start'] = intval($time_parts[0]); //Search "ZEEBRA" to find dependant code
-            $in_filters['get_filter_links_url'] .= '&start_range='.date("Y-m-d H:i:s", $in_filters['get_filter_start']);
-            $in_filters['get_filter_query']['ln_timestamp >='] = date("Y-m-d H:i:s", $in_filters['get_filter_start']);
-
-        }
-
-        if(intval($time_parts[1]) > 0){
-
-            $either_time_set = true;
-            $in_filters['get_filter_end'] = intval($time_parts[1]); //Search "ZEEBRA" to find dependant code
-            $in_filters['get_filter_links_url'] .= '&end_range='.date("Y-m-d H:i:s", $in_filters['get_filter_end']);
-            $in_filters['get_filter_query']['ln_timestamp <='] = date("Y-m-d H:i:s", $in_filters['get_filter_end']);
-
-        }
-
-        if($either_time_set){
-            $in_filters['get_filter_url'] .= ( strlen($in_filters['get_filter_url']) > 0 ? '&' : '?' ).'filter_time='.$_GET['filter_time'];
-        }
-    }
-
-
-
-    return $in_filters;
-}
 
 function update_algolia($input_obj_type = null, $input_obj_id = 0, $return_row_only = false)
 {
@@ -1070,7 +1024,7 @@ function update_algolia($input_obj_type = null, $input_obj_id = 0, $return_row_o
 
     $valid_objects = array('en','in');
 
-    if (!$CI->config->item('app_enable_algolia')) {
+    if (!intval(config_value(11062))) {
         //Algolia is disabled, so avoid syncing:
         return array(
             'status' => 0,
@@ -1099,7 +1053,7 @@ function update_algolia($input_obj_type = null, $input_obj_id = 0, $return_row_o
 
         if(is_dev_environment()){
             //Do a call on live as this does not work on local due to security limitations:
-            return json_decode(@file_get_contents("https://mench.com/links/cron__sync_algolia/" . ( $input_obj_type ? $input_obj_type . '/' . $input_obj_id : '' )));
+            return json_decode(@file_get_contents("https://mench.com/read/cron__sync_algolia/" . ( $input_obj_type ? $input_obj_type . '/' . $input_obj_id : '' )));
         }
 
         //Load Algolia Index
@@ -1145,7 +1099,7 @@ function update_algolia($input_obj_type = null, $input_obj_id = 0, $return_row_o
                 $limits['in_status_entity_id IN (' . join(',', $CI->config->item('en_ids_7356')) . ')'] = null; //Intent Statuses Active
             }
 
-            $db_rows['in'] = $CI->Intents_model->in_fetch($limits, array('in__messages'));
+            $db_rows['in'] = $CI->BLOG_model->in_fetch($limits, array('in__messages'));
 
         } elseif ($loop_obj == 'en') {
 
@@ -1155,7 +1109,7 @@ function update_algolia($input_obj_type = null, $input_obj_id = 0, $return_row_o
                 $limits['en_status_entity_id IN (' . join(',', $CI->config->item('en_ids_7358')) . ')'] = null; //Entity Statuses Active
             }
 
-            $db_rows['en'] = $CI->Entities_model->en_fetch($limits, array('en__parents'));
+            $db_rows['en'] = $CI->PLAY_model->en_fetch($limits, array('en__parents'));
 
         }
 
@@ -1200,7 +1154,7 @@ function update_algolia($input_obj_type = null, $input_obj_id = 0, $return_row_o
             if ($loop_obj == 'en') {
 
                 //Count published children:
-                $published_child_count = $CI->Links_model->ln_fetch(array(
+                $published_child_count = $CI->READ_model->ln_fetch(array(
                     'ln_parent_entity_id' => $db_row['en_id'],
                     'ln_type_entity_id IN (' . join(',', $CI->config->item('en_ids_4592')) . ')' => null, //Entity-to-Entity Links
                     'ln_status_entity_id IN (' . join(',', $CI->config->item('en_ids_7359')) . ')' => null, //Link Statuses Public
@@ -1266,7 +1220,7 @@ function update_algolia($input_obj_type = null, $input_obj_id = 0, $return_row_o
 
 
                 //If trainer has up-voted then give them access to manage intent
-                foreach($CI->Links_model->ln_fetch(array(
+                foreach($CI->READ_model->ln_fetch(array(
                     'ln_status_entity_id IN (' . join(',', $CI->config->item('en_ids_7359')) . ')' => null, //Link Statuses Public
                     'ln_type_entity_id' => 4983, //Intent Note Up-Votes
                     'ln_child_intent_id' => $db_row['in_id'],
@@ -1277,10 +1231,8 @@ function update_algolia($input_obj_type = null, $input_obj_id = 0, $return_row_o
 
 
                 //If Public Status:
-                if(in_array(intval($db_row['in_status_entity_id']), $CI->config->item('en_ids_7355')) && in_array(intval($db_row['in_level_entity_id']), $CI->config->item('en_ids_7582'))){
+                if(in_array(intval($db_row['in_status_entity_id']), $CI->config->item('en_ids_7355')) && in_array($db_row['in_completion_method_entity_id'], $CI->config->item('en_ids_7582'))){
                     array_push($export_row['_tags'], 'alg_for_users');
-                } elseif(in_array(intval($db_row['in_level_entity_id']), $CI->config->item('en_ids_7767'))){
-                    array_push($export_row['_tags'], 'alg_for_trainer');
                 }
 
             }
@@ -1405,36 +1357,6 @@ function update_algolia($input_obj_type = null, $input_obj_id = 0, $return_row_o
 
 }
 
-
-function sort_entities($set_sort){
-
-    if($set_sort=='en_name'){
-
-        return array('en_name' => 'ASC');
-
-    } elseif($set_sort=='en_status_entity_id'){
-
-        return array('en_status_entity_id' => 'ASC');
-
-    } elseif($set_sort=='ln_status_entity_id'){
-
-        return array('ln_status_entity_id' => 'ASC');
-
-    } elseif($set_sort=='ln_content'){
-
-        return array('ln_content' => 'ASC');
-
-    } else {
-
-        //Default sorting:
-        return array(
-            'ln_order' => 'ASC',
-            'en_name' => 'ASC'
-        );
-
-    }
-}
-
 function update_metadata($obj_type, $obj_id, $new_fields, $ln_creator_entity_id = 0)
 {
 
@@ -1461,19 +1383,19 @@ function update_metadata($obj_type, $obj_id, $new_fields, $ln_creator_entity_id 
     //Fetch metadata for this object:
     if ($obj_type == 'in') {
 
-        $db_objects = $CI->Intents_model->in_fetch(array(
+        $db_objects = $CI->BLOG_model->in_fetch(array(
             $obj_type . '_id' => $obj_id,
         ));
 
     } elseif ($obj_type == 'en') {
 
-        $db_objects = $CI->Entities_model->en_fetch(array(
+        $db_objects = $CI->PLAY_model->en_fetch(array(
             $obj_type . '_id' => $obj_id,
         ));
 
     } elseif ($obj_type == 'ln') {
 
-        $db_objects = $CI->Links_model->ln_fetch(array(
+        $db_objects = $CI->READ_model->ln_fetch(array(
             $obj_type . '_id' => $obj_id,
         ));
 
@@ -1510,19 +1432,19 @@ function update_metadata($obj_type, $obj_id, $new_fields, $ln_creator_entity_id 
     //Now update DB without logging any links as this is considered a back-end update:
     if ($obj_type == 'in') {
 
-        $affected_rows = $CI->Intents_model->in_update($obj_id, array(
+        $affected_rows = $CI->BLOG_model->in_update($obj_id, array(
             'in_metadata' => $metadata,
         ), false, $ln_creator_entity_id);
 
     } elseif ($obj_type == 'en') {
 
-        $affected_rows = $CI->Entities_model->en_update($obj_id, array(
+        $affected_rows = $CI->PLAY_model->en_update($obj_id, array(
             'en_metadata' => $metadata,
         ), false, $ln_creator_entity_id);
 
     } elseif ($obj_type == 'ln') {
 
-        $affected_rows = $CI->Links_model->ln_update($obj_id, array(
+        $affected_rows = $CI->READ_model->ln_update($obj_id, array(
             'ln_metadata' => $metadata,
         ));
 

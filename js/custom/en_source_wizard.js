@@ -89,7 +89,7 @@ function en_add_source_paste_url() {
     if(input_url.length > 0){
 
         //Show loading icon:
-        $('.url-error').html('<i class="far fa-yin-yang fa-spin"></i> ' + echo_ying_yang() +  '');
+        $('.url-error').html('<i class="far fa-yin-yang fa-spin"></i> ' + echo_loading_notify() +  '');
         $('.url-parsed').addClass('hidden');
 
         //Send for processing to see if all good:
@@ -144,7 +144,7 @@ function en_add_source_process(){
 
     //Set title:
     $('.add_source_body').addClass('hidden');
-    $('.add_source_result').html('<div class="center"><span><i class="far fa-yin-yang fa-spin"></i></span> '+ echo_ying_yang() +'</div>');
+    $('.add_source_result').html('<div class="center"><span><i class="far fa-yin-yang fa-spin"></i></span> '+ echo_loading_notify() +'</div>');
 
     //Fetch Intent Data to load modify widget:
     $.post("/play/en_add_source_process", {
@@ -188,9 +188,6 @@ function en_add_source_process(){
     }, function (data) {
 
         if (data.status) {
-
-            //Show trainers their new words:
-            count_new_words_in(0);
 
             setTimeout(function () {
 

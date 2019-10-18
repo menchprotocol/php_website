@@ -50,7 +50,7 @@ function sign_on_messenger(){
 
     //Redirect to Messenger with a bit of delay to log the link above:
     setTimeout(function () {
-        window.location = fb_mench_url;
+        window.location = 'https://m.me/askmench';
     }, 377);
 
 }
@@ -94,7 +94,7 @@ function search_email(){
     $('#custom_message').html(''); //Remove previous errors, if any
 
     //Check email and validate:
-    $.post("/user_app/singin_check_email", {
+    $.post("/play/singin_check_email", {
 
         input_email: $('#input_email').val(),
         referrer_in_id: referrer_in_id,
@@ -141,7 +141,7 @@ function add_account(){
     $('#input_name, #new_password').prop('disabled', true).css('background-color','#F7F7F7');
 
     //Check email and validate:
-    $.post("/user_app/sign_create_account", {
+    $.post("/play/sign_create_account", {
         input_email: $('#input_email').val(),
         input_name: $('#input_name').val(),
         new_password: $('#new_password').val(),
@@ -194,7 +194,7 @@ function singin_check_password(){
     $('#input_password').prop('disabled', true).css('background-color','#F7F7F7');
 
     //Check email and validate:
-    $.post("/user_app/singin_check_password", {
+    $.post("/play/singin_check_password", {
         login_en_id: $('#login_en_id').val(),
         input_password: $('#input_password').val(),
         referrer_url: referrer_url,
@@ -233,7 +233,7 @@ function singin_magic_link_email(){
         $('.magic_result').html('<i class="far fa-yin-yang fa-spin"></i> Emailing you a magic link...');
 
         //Check email and validate:
-        $.post("/user_app/singin_magic_link_email", {
+        $.post("/play/singin_magic_link_email", {
             input_email: $('#input_email').val(),
             referrer_in_id: referrer_in_id,
         }, function (data) {

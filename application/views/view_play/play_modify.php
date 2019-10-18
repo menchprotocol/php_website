@@ -2,8 +2,7 @@
 <?php $en_all_6206 = $this->config->item('en_all_6206'); //Entity Table ?>
 <?php $en_all_4341 = $this->config->item('en_all_4341'); //Link Table ?>
 <?php $en_all_7368 = $this->config->item('en_all_7368'); //Trainer App ?>
-
-<link href="/css/custom/styles.css?v=v<?= $this->config->item('app_version') ?>" rel="stylesheet"/>
+<?php $en_all_11035 = $this->config->item('en_all_11035'); //MENCH PLAYER NAVIGATION ?>
 
 
 <script>
@@ -15,46 +14,218 @@
 <style>
     .en_child_icon_<?= $entity['en_id'] ?>{ display:none; }
 </style>
-<script src="/js/custom/play_modify.js?v=v<?= $this->config->item('app_version') ?>"
+<script src="/js/custom/play_modify.js?v=v<?= config_value(11060) ?>"
         type="text/javascript"></script>
 
 <div class="container">
-<div class="row">
 
-    <div class="<?= $this->config->item('css_column_1') ?>">
+    <?php
 
-        <?php
+    echo '<div class="row">';
 
-        //Parents
-        echo '<h5 class="badge badge-h"><a href="javascript:void(0);" onclick="$(\'.parents-div\').toggleClass(\'hidden\')" style="color: #FFF;"><i class="far fa-plus-circle parents-div"></i><i class="far fa-minus-circle parents-div hidden"></i> <span class="li-parent-count">' . count($entity['en__parents']) . '</span> Parent' . echo__s(count($entity['en__parents'])).'</a></h5>';
+        //COL 1
+        echo '<div class="col-lg-8 col-md-7"><h1>'.$entity['en_icon'].' '.$entity['en_name'].'</h1></div>';
 
-        echo '<div class="parents-div hidden">';
-        echo '<div id="list-parent" class="list-group  grey-list">';
-        foreach ($entity['en__parents'] as $en) {
-            echo echo_en($en, 2, true);
+        //COL 2
+        echo '<div class="col-lg-4 col-md-5">';
+            echo '<div class="first_title center-right">';
+
+            echo echo_dropdown(6177, $entity['en_status_entity_id'], true);
+
+            //Show Signout Button IF LOGGED-IN PLAYER ON OWN ACCOUNT
+            if(isset($session_en['en_id']) && $session_en['en_id']==$entity['en_id']){
+                echo '<a href="/play/myaccount" class="btn btn-sm btn-primary btn-five inline-block" data-toggle="tooltip" data-placement="top" title="'.$en_all_11035[6225]['m_desc'].'">'.$en_all_11035[6225]['m_icon'].' '.$en_all_11035[6225]['m_name'].'</a>';
+
+                echo '<a href="/signout" class="btn btn-sm btn-primary btn-five inline-block" data-toggle="tooltip" data-placement="top" title="'.$en_all_11035[7291]['m_name'].'">'.$en_all_11035[7291]['m_icon'].'</a>';
+            }
+
+
+            //REFERENCES
+            $en_count_references = en_count_references($entity['en_id']);
+            if(count($en_count_references) > 0){
+
+                $en_all_6194 = $this->config->item('en_all_6194');
+
+                //Show this entities connections:
+                $ref_count = 0;
+                echo '<div class="'.require_superpower(10989 /* PEGASUS */).'">';
+                foreach($en_count_references as $en_id=>$en_count){
+                    echo '<a href="/read/history?any_en_id=' . $en_id . '" data-toggle="tooltip" data-placement="top" title="This entity is referenced as '.$en_all_6194[$en_id]['m_name'].' '.number_format($en_count, 0).' times">'.$en_all_6194[$en_id]['m_icon'] . ' '. echo_number($en_count).'</a>&nbsp;&nbsp;';
+                    $ref_count++;
+                }
+                echo '</div>';
+            }
+
+            echo '</div>';
+        echo '</div>';
+    echo '</div>';
+
+
+
+
+    $en_id = 11033;
+    $tab_content = '';
+
+    echo '<div class="row">';
+    echo '<div class="col-md">';
+    echo '<ul class="nav nav-pill nav-pill-sm pill menu_bar">';
+
+    foreach ($this->config->item('en_all_'.$en_id) as $en_id2 => $m2){
+
+        if(in_array(11040 , $m2['m_parents'])){
+            //Display drop down menu:
+            echo '<li class="nav-item dropdown '.require_superpower(assigned_superpower($m2['m_parents'])).'">';
+            echo '<a class="nav-link dropdown-toggle" data-toggle="dropdown" href="#" role="button" aria-haspopup="true" aria-expanded="false"></a>';
+            echo '<div class="dropdown-menu">';
+            foreach ($this->config->item('en_all_'.$en_id2) as $en_id3 => $m3){
+                echo '<a class="dropdown-item" target="_blank" href="' . $m3['m_desc'] . $entity['en_id'] . '"><span class="icon-block en-icon">'.$m3['m_icon'].'</span> '.$m3['m_name'].'</a>';
+            }
+            echo '</div>';
+            echo '</li>';
+            continue;
         }
-        //Input to add new parents:
-        echo '<div id="new-parent" class="list-group-item list_input grey-input ' . advance_mode() . '">
+
+
+
+
+
+        //Determine counter:
+        $default_active = false;
+        $show_tab_names = (in_array($en_id2, $this->config->item('en_ids_11084')));
+        $counter = null; //Assume no counters
+        $this_tab = '';
+
+
+
+
+        //PLAY
+
+        if($en_id2==11030){
+
+            //PLAY TREE PROFILE
+            $fetch_11030 = $this->READ_model->ln_fetch(array(
+                'ln_type_entity_id IN (' . join(',', $this->config->item('en_ids_4592')) . ')' => null, //Entity-to-Entity Links
+                'ln_status_entity_id IN (' . join(',', $this->config->item('en_ids_7360')) . ')' => null, //Link Statuses Active
+                'en_status_entity_id IN (' . join(',', $this->config->item('en_ids_7358')) . ')' => null, //Entity Statuses Active
+                'ln_child_entity_id' => $entity['en_id'],
+            ), array('en_parent'), 0, 0, array('ln_up_order' => 'ASC'));
+
+            $counter = count($fetch_11030);
+            $default_active = true;
+
+            $this_tab .= '<div id="list-parent" class="list-group ">';
+            foreach ($fetch_11030 as $en) {
+                $this_tab .= echo_en($en, 2, true);
+            }
+
+            //Input to add new parents:
+            $this_tab .= '<div id="new-parent" class="en-item list-group-item '.require_superpower(10989 /* PEGASUS */).'">
                     <div class="form-group is-empty"><input type="text" class="form-control new-input algolia_search" data-lpignore="true" placeholder="Add Entity/URL"></div>
                     <div class="algolia_search_pad hidden"><span>Search existing entities, create a new entity or paste a URL...</span></div>
             </div>';
 
-        echo '</div>';
-        echo '</div>';
+            $this_tab .= '</div>';
+
+        } elseif($en_id2==11029){
+
+            //PLAY TREE PROJECTS
+
+            //COUNT TOTAL
+            $child_links = $this->READ_model->ln_fetch(array(
+                'ln_parent_entity_id' => $entity['en_id'],
+                'ln_type_entity_id IN (' . join(',', $this->config->item('en_ids_4592')) . ')' => null, //Entity-to-Entity Links
+                'ln_status_entity_id IN (' . join(',', $this->config->item('en_ids_7360')) . ')' => null, //Link Statuses Active
+                'en_status_entity_id IN (' . join(',', $this->config->item('en_ids_7358')) . ')' => null, //Entity Statuses Active
+            ), array('en_child'), 0, 0, array(), 'COUNT(en_id) as en__child_count');
+            $counter = $child_links[0]['en__child_count'];
 
 
+            $fetch_11029 = $this->READ_model->ln_fetch(array(
+                'ln_type_entity_id IN (' . join(',', $this->config->item('en_ids_4592')) . ')' => null, //Entity-to-Entity Links
+                'ln_status_entity_id IN (' . join(',', $this->config->item('en_ids_7360')) . ')' => null, //Link Statuses Active
+                'en_status_entity_id IN (' . join(',', $this->config->item('en_ids_7358')) . ')' => null, //Entity Statuses Active
+                'ln_parent_entity_id' => $entity['en_id'],
+            ), array('en_child'), config_value(11064), 0, array('ln_order' => 'ASC', 'en_name' => 'ASC'));
 
+            $this_tab .= '<div id="list-children" class="list-group">';
 
+            foreach ($fetch_11029 as $en) {
+                $this_tab .= echo_en($en, 2, false);
+            }
+            if ($counter > count($fetch_11029)) {
+                $this_tab .= echo_en_load_more(1, config_value(11064), $counter);
+            }
 
-        //Focused Entity:
-        echo '<h5 class="badge badge-h">Entity @'.$entity['en_id'].'</h5>';
+            //Input to add new child:
+            $this_tab .= '<div id="new-children" class="en-item list-group-item '.require_superpower(10989 /* PEGASUS */).'">
+            <div class="form-group is-empty"><input type="text" class="form-control new-input algolia_search" data-lpignore="true" placeholder="Add Entity/URL"></div>
+            <div class="algolia_search_pad hidden"><span>Search existing entities, create a new entity or paste a URL...</span></div>
+    </div>';
+            $this_tab .= '</div>';
 
-        //Hidden link to Metadata:
-        if($is_admin){
-            echo '<a class="secret" href="/play/en_review_metadata/' . $entity['en_id'] . '" style="margin-left: 5px;" target="_blank" data-toggle="tooltip" title="Review Entity Metadata" data-placement="bottom"><i class="fas fa-function"></i></a>';
+        } elseif(in_array($en_id2, array(7347,6146))){
 
-            echo '<a class="secret" href="/links/cron__sync_algolia/en/' . $entity['en_id'] . '" style="margin-left: 5px;" target="_blank" data-toggle="tooltip" title="Update Algolia Search Index" data-placement="bottom"><i class="fas fa-search"></i></a>';
+            //READER READS & BOOKMARKS
+            $item_counters = $this->READ_model->ln_fetch(array(
+                'ln_status_entity_id IN (' . join(',', $this->config->item('en_ids_7360')) . ')' => null, //Link Statuses Active
+                'ln_type_entity_id IN (' . join(',', $this->config->item('en_ids_'.$en_id2)) . ')' => null,
+                'ln_creator_entity_id' => $entity['en_id'],
+            ), array(), 1, 0, array(), 'COUNT(ln_id) as totals');
+
+            $counter = $item_counters[0]['totals'];
+
+        } elseif(in_array($en_id2, $this->config->item('en_ids_4485'))){
+
+            //BLOG NOTE
+            $item_counters = $this->READ_model->ln_fetch(array(
+                'ln_status_entity_id IN (' . join(',', $this->config->item('en_ids_7360')) . ')' => null, //Link Statuses Active
+                'ln_type_entity_id' => $en_id2,
+                '(ln_creator_entity_id='.$entity['en_id'].' OR ln_child_entity_id='.$entity['en_id'].' OR ln_parent_entity_id='.$entity['en_id'].')' => null,
+            ), array(), 1, 0, array(), 'COUNT(ln_id) as totals');
+
+            $counter = $item_counters[0]['totals'];
+
         }
+
+        //Don't show empty tabs:
+        if(!is_null($counter) && $counter < 1 && !$show_tab_names){
+            continue;
+        }
+
+
+        echo '<li class="nav-item"><a class="nav-link tab-nav-'.$en_id.' tab-head-'.$en_id2.' '.( $default_active ? ' active ' : '' ).require_superpower(assigned_superpower($m2['m_parents'])).'" href="#loadtab-'.$en_id.'-'.$en_id2.'" onclick="loadtab('.$en_id.','.$en_id2.')" data-toggle="tooltip" data-placement="top" title="'.( $show_tab_names ? '' : $m2['m_name'] ).'">'.$m2['m_icon'].( is_null($counter) ? '' : ' <span class="counter-'.$en_id2.'">'.echo_number($counter).'</span>' ).( $show_tab_names ? ' '.$m2['m_name'] : '' ).'</a></li>';
+
+
+        $tab_content .= '<div class="tab-content tab-group-'.$en_id.' tab-data-'.$en_id2.( $default_active ? '' : ' hidden ' ).'">';
+        $tab_content .= $this_tab;
+        $tab_content .= '</div>';
+
+    }
+    echo '</ul>';
+    echo $tab_content;
+    echo '</div>';
+
+
+
+
+
+
+    echo '</div>';
+
+    ?>
+
+
+
+
+
+
+
+    <div class="row">
+
+    <div class="col-sm-6">
+
+        <?php
+
 
         echo '<div id="entity-box" class="list-group">';
         echo echo_en($entity, 1);
@@ -66,10 +237,7 @@
         echo '<table width="100%" style="margin-top:10px;"><tr>';
         echo '<td style="width:170px;">';
 
-
-            echo '<h5 class="badge badge-h inline-block"><span class="li-children-count inline-block">' . $entity['en__child_count'] . '</span> Children</h5>';
-
-            echo '<span class="' . advance_mode() . '"><a href="javascript:void(0);" onclick="$(\'.mass_modify\').toggleClass(\'hidden\');mass_action_ui();" style="text-decoration: none; margin-left: 5px;"  data-toggle="tooltip" data-placement="right" title="Mass Update Children"><i class="fal fa-list-alt" style="font-size: 1.2em; color: #2b2b2b;"></i></a></span>';
+            echo '<span class="' . require_superpower(10989 /* PEGASUS */) . '"><a href="javascript:void(0);" onclick="$(\'.mass_modify\').toggleClass(\'hidden\');mass_action_ui();" style="text-decoration: none; margin-left: 5px;"  data-toggle="tooltip" data-placement="right" title="Mass Update Children"><i class="fal fa-list-alt" style="font-size: 1.2em; color: #2b2b2b;"></i></a></span>';
 
             echo '</td>';
 
@@ -78,7 +246,7 @@
         echo '<div class="btn-group btn-group-sm" style="margin-top:-5px;" role="group">';
 
         //Fetch current count for each status from DB:
-        $child_en_filters = $this->Links_model->ln_fetch(array(
+        $child_en_filters = $this->READ_model->ln_fetch(array(
             'ln_parent_entity_id' => $entity['en_id'],
             'ln_type_entity_id IN (' . join(',', $this->config->item('en_ids_4592')) . ')' => null, //Entity-to-Entity Links
             'ln_status_entity_id IN (' . join(',', $this->config->item('en_ids_7360')) . ')' => null, //Link Statuses Active
@@ -93,7 +261,7 @@
             $en_all_6177 = $this->config->item('en_all_6177'); //Entity Statuses
 
             //Show fixed All button:
-            echo '<a href="#" onclick="en_filter_status(-1)" class="btn btn-default btn-play u-status-filter u-status--1" data-toggle="tooltip" data-placement="top" title="View all entities"><i class="fas fa-at"></i><span class="hide-small"> All</span> [<span class="li-children-count">' . $entity['en__child_count'] . '</span>]</a>';
+            echo '<a href="#" onclick="en_filter_status(-1)" class="btn btn-default btn-play u-status-filter u-status--1" data-toggle="tooltip" data-placement="top" title="View all entities"><i class="fas fa-at"></i><span class="hide-small"> All</span> [<span class="counter-11029">' . $entity['en__child_count'] . '</span>]</a>';
 
             //Show each specific filter based on DB counts:
             foreach ($child_en_filters as $c_c) {
@@ -215,44 +383,11 @@
         echo '</div></form>';
 
 
-
-
-        //Private hack for now:
-        //TODO Build UI for this via Github Issue #2354
-        $set_sort = ( isset($_GET['set_sort']) ? $_GET['set_sort'] : 'none' );
-        echo '<input type="hidden" id="set_sort" value="'.$set_sort.'" />'; //For JS to pass to the next page loader...
-
-
-        echo '<div id="list-children" class="list-group grey-list">';
-
-
-        $en__children = $this->Links_model->ln_fetch(array(
-            'ln_parent_entity_id' => $entity['en_id'],
-            'ln_type_entity_id IN (' . join(',', $this->config->item('en_ids_4592')) . ')' => null, //Entity-to-Entity Links
-            'ln_status_entity_id IN (' . join(',', $this->config->item('en_ids_7360')) . ')' => null, //Link Statuses Active
-            'en_status_entity_id IN (' . join(',', $this->config->item('en_ids_7358')) . ')' => null, //Entity Statuses Active
-        ), array('en_child'), $this->config->item('items_per_page'), 0, sort_entities($set_sort));
-
-        foreach ($en__children as $en) {
-            echo echo_en($en, 2);
-        }
-        if ($entity['en__child_count'] > count($en__children)) {
-            echo_en_load_more(1, $this->config->item('items_per_page'), $entity['en__child_count']);
-        }
-
-
-        //Input to add new child:
-        echo '<div id="new-children" class="list-group-item list_input grey-input '. advance_mode() .'">
-            <div class="form-group is-empty"><input type="text" class="form-control new-input algolia_search" data-lpignore="true" placeholder="Add Entity/URL"></div>
-            <div class="algolia_search_pad hidden"><span>Search existing entities, create a new entity or paste a URL...</span></div>
-    </div>';
-        echo '</div>';
-
         ?>
     </div>
 
-    <div class="<?= $this->config->item('css_column_2') ?>">
-        <?php $this->load->view('view_trainer_app/en_modify'); ?>
+    <div class="col-sm-6">
+        <?php $this->load->view('view_play/en_modify'); ?>
     </div>
 
 </div>

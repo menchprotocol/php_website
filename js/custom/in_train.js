@@ -11,11 +11,6 @@
 $(document).ready(function () {
 
 
-    $('#landing_page_url').click(function (e) {
-        copyToClipboard(document.getElementById("landing_page_url"));
-    });
-
-
     $('#expand_intents .expand_all').click(function (e) {
         $(".list-is-children .is_level2_sortable").each(function () {
             ms_toggle($(this).attr('in-link-id'), 1);
@@ -42,13 +37,6 @@ $(document).ready(function () {
         $(".list-is-children .is_level2_sortable").each(function () {
             ms_toggle($(this).attr('in-link-id'), 0);
         });
-    });
-    $('#expand_intents .toggle_filters').click(function (e) {
-        $(".in__filters").toggleClass('hidden');
-    });
-
-    $('#filter_user').focus(function (e) {
-        load_filters();
     });
 
     //Activate sorting for level 3 intents:
@@ -128,139 +116,6 @@ function prep_search_pad(){
 
 }
 
-var filters_loaded = false;
-
-function load_filters(){
-
-    //Do not load twice:
-    if(filters_loaded){
-        return false;
-    }
-
-
-    filters_loaded = true;
-
-    //Load entity search for mass update function:
-    $('#filter_user').on('autocomplete:selected', function (event, suggestion, dataset) {
-
-        $(this).val('@' + suggestion.alg_obj_id + ' ' + suggestion.alg_obj_name);
-
-    }).autocomplete({hint: false, minLength: 2}, [{
-
-        source: function (q, cb) {
-            algolia_index.search(q, {
-                filters: '_tags:alg_author_4430', //Available to all Players
-                hitsPerPage: 7,
-            }, function (error, content) {
-                if (error) {
-                    cb([]);
-                    return;
-                }
-                cb(content.hits, content);
-            });
-        },
-        displayKey: function (suggestion) {
-            return '@' + suggestion.alg_obj_id + ' ' + suggestion.alg_obj_name;
-        },
-        templates: {
-            suggestion: function (suggestion) {
-                return echo_js_suggestion(suggestion, 0, 0);
-            },
-            empty: function (data) {
-                return '<div class="not-found"><i class="fas fa-exclamation-triangle"></i> No users found</div>';
-            },
-        }
-    }]);
-
-}
-
-
-function copyToClipboard(elem) {
-    // create hidden text element, if it doesn't already exist
-    var targetId = "_hiddenCopyText_";
-    var isInput = elem.tagName === "INPUT" || elem.tagName === "TEXTAREA";
-    var origSelectionStart, origSelectionEnd;
-    if (isInput) {
-        // can just use the original source element for the selection and copy
-        target = elem;
-        origSelectionStart = elem.selectionStart;
-        origSelectionEnd = elem.selectionEnd;
-    } else {
-        // must use a temporary form element for the selection and copy
-        target = document.getElementById(targetId);
-        if (!target) {
-            var target = document.createElement("textarea");
-            target.style.position = "absolute";
-            target.style.left = "-9999px";
-            target.style.top = "0";
-            target.id = targetId;
-            document.body.appendChild(target);
-        }
-        target.textContent = elem.textContent;
-    }
-    // select the content
-    var currentFocus = document.activeElement;
-    target.focus();
-    target.setSelectionRange(0, target.value.length);
-
-    // copy the selection
-    var succeed;
-    try {
-        succeed = document.execCommand("copy");
-    } catch(e) {
-        succeed = false;
-    }
-    // restore original focus
-    if (currentFocus && typeof currentFocus.focus === "function") {
-        currentFocus.focus();
-    }
-
-    if (isInput) {
-        // restore prior selection
-        elem.setSelectionRange(origSelectionStart, origSelectionEnd);
-    } else {
-        // clear temporary content
-        target.textContent = "";
-    }
-
-    if(succeed){
-        $('#landing_page_url').blur();
-        $('#landing_page_state').html('&nbsp;&nbsp;&nbsp;COPIED').hide().fadeIn();
-        setTimeout(function () {
-
-            //Hide the editor & saving results:
-            $('#landing_page_state').fadeOut();
-
-        }, 987)
-
-    }
-
-    return succeed;
-}
-
-
-function in_load_upvote(in_id, in_outcome){
-
-    //Immediately load modal:
-    $('#upvote_parents, .upvote_intent').html('<i class="far fa-yin-yang fa-spin"></i>');
-    $('#addUpVote').modal('show');
-
-    //Then load data into modal:
-    $.post("/intents/in_load_upvote", {in_id: in_id, in_loaded_id:in_loaded_id}, function (data) {
-        //Update UI to confirm with user:
-        if (data.status) {
-            //Show trainers their new words:
-            $('.upvote_intent').html(data.in_outcome);
-            $('#upvote_parents').html(data.upvote_parents);
-        } else {
-            //There was some sort of an error returned!
-            alert('ERROR: ' + data.message);
-        }
-    });
-
-}
-
-
 function in_load_search(focus_element, is_in_parent, next_in_level, shortcut) {
 
     //Loads the intent search bar only once for the add intent inputs
@@ -284,7 +139,7 @@ function in_load_search(focus_element, is_in_parent, next_in_level, shortcut) {
                 return;
             } else {
                 algolia_index.search(q, {
-                    filters: ( js_advance_view_enabled ? '' : '(_tags:alg_for_trainer OR _tags:alg_for_users) AND alg_obj_status=6184 AND') + ' alg_obj_is_in=1',
+                    filters: ( js_active_superpowers.includes(10989 /* PEGASUS */) ? '' : '_tags:alg_for_users AND alg_obj_status=6184 AND') + ' alg_obj_is_in=1',
                     hitsPerPage: 7,
                 }, function (error, content) {
                     if (error) {
@@ -362,12 +217,9 @@ function in_sort_save(in_id, level) {
     //It might be zero for lists that have jsut been emptied
     if (sort_rank > 0 && in_id) {
         //Update backend:
-        $.post("/intents/in_sort_save", {in_id: in_id, new_ln_orders: new_ln_orders}, function (data) {
+        $.post("/blog/in_sort_save", {in_id: in_id, new_ln_orders: new_ln_orders}, function (data) {
             //Update UI to confirm with user:
-            if (data.status) {
-                //Show trainers their new words:
-                count_new_words_in(0);
-            } else {
+            if (!data.status) {
                 //There was some sort of an error returned!
                 alert('ERROR: ' + data.message);
             }
@@ -425,7 +277,7 @@ function in_sort_load(in_id, level) {
             };
 
             //Update:
-            $.post("/intents/in_migrate", inputs, function (data) {
+            $.post("/blog/in_migrate", inputs, function (data) {
                 //Update sorts in both lists:
                 if (!data.status) {
 
@@ -525,7 +377,7 @@ function in_link_or_create(in_linked_id, is_parent, next_level, in_link_child_id
     add_to_list(sort_list_id, sort_handler, '<div id="temp' + next_level + '" class="list-group-item"><i class="far fa-yin-yang fa-spin"></i> Adding... </div>');
 
     //Update backend:
-    $.post("/intents/in_link_or_create", {
+    $.post("/blog/in_link_or_create", {
         in_linked_id: in_linked_id,
         is_parent:is_parent,
         in_outcome: intent_name,
@@ -537,9 +389,6 @@ function in_link_or_create(in_linked_id, is_parent, next_level, in_link_child_id
         $("#temp" + next_level).remove();
 
         if (data.status) {
-
-            //Show trainers their new words:
-            count_new_words_in(0);
 
             //Add new
             add_to_list(sort_list_id, sort_handler, data.in_child_html);
