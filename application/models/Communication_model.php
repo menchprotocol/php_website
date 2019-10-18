@@ -34,9 +34,11 @@ class Communication_model extends CI_Model
             'ln_status_entity_id IN (' . join(',', $this->config->item('en_ids_7359')) . ')' => null, //Link Statuses Public
         ), array('en_parent'));
 
-        $is_user = 1;
-        $is_trainer = in_array($en['en_id'], array(1,2));
-        $is_admin = in_array($en['en_id'], array(1,2));
+        $is_user = filter_array($en['en__parents'], 'ln_parent_entity_id', 4430);
+        $is_trainer = filter_array($en['en__parents'], 'ln_parent_entity_id', $this->config->item('en_ids_10691') /* Mench Trainers */);
+        $is_admin = filter_array($en['en__parents'], 'ln_parent_entity_id', $this->config->item('en_ids_10704') /* Mench Administrators */);
+
+
 
         //Assign user details:
         $session_data['user'] = $en;
