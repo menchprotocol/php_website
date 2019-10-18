@@ -639,10 +639,6 @@ if(!$action) {
                 'in_verb_entity_id' => 0,
             ));
         }
-
-        if($count > 100){
-            break;
-        }
     }
 
     echo '<div>'.$fixed.'/'.$count.' Intents fixed</div>';
