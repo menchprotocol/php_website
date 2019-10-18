@@ -677,14 +677,11 @@ class READ_model extends CI_Model
                         'in_id' => $next_in_id,
                     ));
 
-                    //Inform of intent title only if its a clean title:
-                    if(in_is_clean_outcome($next_step_ins[0])){
-                        $this->READ_model->dispatch_message(
-                            'Let\'s '. $next_step_ins[0]['in_outcome'],
-                            array('en_id' => $en_id),
-                            true
-                        );
-                    }
+                    $this->READ_model->dispatch_message(
+                        echo_random_message('next_blog_is') . $next_step_ins[0]['in_outcome'],
+                        array('en_id' => $en_id),
+                        true
+                    );
 
                 }
 
@@ -952,27 +949,10 @@ class READ_model extends CI_Model
         //Validate Intent ID:
         $ins = $this->BLOG_model->in_fetch(array(
             'in_id' => $in_id,
+            'in_status_entity_id IN (' . join(',', $this->config->item('en_ids_7355')) . ')' => null, //Intent Statuses Public
         ));
 
         if (count($ins) != 1) {
-            return false;
-        }
-
-
-        //Make sure intent is public:
-        $public_in = $this->BLOG_model->in_is_public($ins[0], true);
-
-        //Did we have any issues?
-        if(!$public_in['status']){
-
-            //Log error:
-            $this->READ_model->ln_create(array(
-                'ln_parent_intent_id' => $in_id,
-                'ln_content' => 'intention_add() was about to add a BLOG that was not public',
-                'ln_type_entity_id' => 4246, //Platform Bug Reports
-                'ln_creator_entity_id' => $en_id,
-            ));
-
             return false;
         }
 
@@ -1225,7 +1205,7 @@ class READ_model extends CI_Model
 
                     //It did match here! Log and notify user!
                     $message = 'You completed the step to '.echo_in_outcome($in['in_outcome'], true).'. ';
-                    $message .= (in_is_clean_outcome($locked_link) ? 'This unlocked a new step to:' : 'The result:' );
+                    $message .= 'The result:';
                     $message .= "\n";
                     $message .= "\n==================";
                     $message .= "\n" . echo_in_outcome($locked_link['in_outcome'], true);
@@ -2035,7 +2015,6 @@ class READ_model extends CI_Model
             //AND Children
             $max_and_list           = ( $push_message ? 5 : 30 );
             $has_multiple_children  = (count($in__children) > 1); //Do we have 2 or more children?
-            $frist_x_all_are_dirty  = true; //Assume all first X intent outcomes are non-clean unless proven otherwise
 
 
             //Check to see if we need titles:
@@ -2044,15 +2023,11 @@ class READ_model extends CI_Model
                     if($count==$max_and_list){
                         break;
                     }
-                    if(in_is_clean_outcome($child_in)){
-                        $frist_x_all_are_dirty = false;
-                        break;
-                    }
                 }
             }
 
             //List AND children:
-            if($has_multiple_children && !$frist_x_all_are_dirty){
+            if($has_multiple_children){
 
                 //Are we still clean?
                 $key = 0;
@@ -4509,19 +4484,6 @@ class READ_model extends CI_Model
                     'in_status_entity_id IN (' . join(',', $this->config->item('en_ids_7355')) . ')' => null, //Intent Statuses Public
                 ));
                 if(count($ins) < 1){
-                    continue;
-                }
-
-                //Make sure no dummy title:
-                if(!in_is_clean_outcome($ins[0])){
-                    continue;
-                }
-
-                //Make sure intent is public:
-                $public_in = $this->BLOG_model->in_is_public($ins[0], true);
-
-                //Did we have any issues?
-                if(!$public_in['status']){
                     continue;
                 }
 

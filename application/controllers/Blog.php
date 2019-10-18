@@ -512,7 +512,7 @@ class Blog extends CI_Controller {
 
 
         //Validate Intent Outcome:
-        $in_outcome_validation = $this->BLOG_model->in_validate_outcome($_POST['in_outcome']);
+        $in_outcome_validation = $this->BLOG_model->in_outcome_validate($_POST['in_outcome']);
         if(!$in_outcome_validation['status']){
             //We had an error, return it:
             return echo_json($in_outcome_validation);
@@ -522,7 +522,6 @@ class Blog extends CI_Controller {
         $in_current = $ins[0];
 
         //So we consistently have all variables in POST:
-        $_POST['in_verb_entity_id'] = $in_outcome_validation['detected_in_verb_entity_id'];
         $_POST['in_outcome'] = $in_outcome_validation['in_cleaned_outcome'];
 
 
@@ -532,7 +531,6 @@ class Blog extends CI_Controller {
             'in_status_entity_id' => $_POST['in_status_entity_id'],
             'in_completion_seconds' => intval($_POST['in_completion_seconds']),
             'in_outcome' => $_POST['in_outcome'],
-            'in_verb_entity_id' => $_POST['in_verb_entity_id'],
         );
 
 

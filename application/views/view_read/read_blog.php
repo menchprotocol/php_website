@@ -15,10 +15,8 @@ if(in_array($in['in_completion_method_entity_id'], $this->config->item('en_ids_7
 
     <?php
 
-    //Intent Title:
-    if(in_is_clean_outcome($in)){
-        echo '<h1 style="margin-bottom:30px;" id="title-parent">' . echo_in_outcome($in['in_outcome']) . '</h1>';
-    }
+    echo '<h1 style="margin-bottom:30px;" id="title-parent">' . echo_in_outcome($in['in_outcome']) . '</h1>';
+
 
     //Fetch & Display Intent Note Messages:
     foreach ($this->READ_model->ln_fetch(array(
@@ -148,7 +146,7 @@ if(in_array($in['in_completion_method_entity_id'], $this->config->item('en_ids_7
     //Cleanup to create the final list:
     $already_printed = array(); //Make sure we don't show anything twice
     foreach($in__other as $key => $other_in){
-        if(!in_is_clean_outcome($other_in) || in_array($other_in['in_id'], $already_printed)){
+        if(in_array($other_in['in_id'], $already_printed)){
             unset($in__other[$key]);
         } else {
             array_push($already_printed, $other_in['in_id']); //Keep track to make sure its printed only once
@@ -213,9 +211,7 @@ if(in_array($in['in_completion_method_entity_id'], $this->config->item('en_ids_7
     <?php
 
     //Intent Title:
-    if(in_is_clean_outcome($in)) {
-        echo '<h1 style="margin-bottom:30px;" id="title-parent">' . echo_in_outcome($in['in_outcome']) . '</h1>';
-    }
+    echo '<h1 style="margin-bottom:30px;" id="title-parent">' . echo_in_outcome($in['in_outcome']) . '</h1>';
 
 
     //Fetch & Display Intent Note Messages:

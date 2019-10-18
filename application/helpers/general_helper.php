@@ -993,10 +993,6 @@ function boost_power()
     ini_set('max_execution_time', 0);
 }
 
-function in_is_clean_outcome($in){
-    return !( $in['in_verb_entity_id'] == 10569 );
-}
-
 function objectToArray($object)
 {
     //Transform an object into an array

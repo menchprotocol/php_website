@@ -19,7 +19,7 @@ class BLOG_model extends CI_Model
     {
 
         //What is required to create a new intent?
-        if (detect_missing_columns($insert_columns, array('in_outcome', 'in_completion_method_entity_id', 'in_status_entity_id', 'in_verb_entity_id'), $ln_creator_entity_id)) {
+        if (detect_missing_columns($insert_columns, array('in_outcome', 'in_completion_method_entity_id', 'in_status_entity_id'), $ln_creator_entity_id)) {
             return false;
         }
 
@@ -87,9 +87,7 @@ class BLOG_model extends CI_Model
         $this->db->select($select);
         $this->db->from('table_intents');
 
-        if (in_array('in_verb', $join_objects)) {
-            $this->db->join('table_entities', 'in_verb_entity_id=en_id', 'left');
-        } elseif (in_array('in_type', $join_objects)) {
+        if (in_array('in_type', $join_objects)) {
             $this->db->join('table_entities', 'in_completion_method_entity_id=en_id', 'left');
         }
 
@@ -196,13 +194,6 @@ class BLOG_model extends CI_Model
 
                     $ln_type_entity_id = 10644; //Intent Iterated Outcome
                     $ln_content = word_change_calculator($before_data[0][$key], $value);
-
-                } elseif($key=='in_verb_entity_id') {
-
-                    $ln_type_entity_id = 10647; //Intent Iterated Verb
-                    $ln_content = word_change_calculator($before_data[0][$key], $value);
-                    $ln_parent_entity_id = $value;
-                    $ln_child_entity_id = $before_data[0][$key];
 
                 } elseif($key=='in_status_entity_id'){
 
@@ -406,7 +397,7 @@ class BLOG_model extends CI_Model
             //We are NOT linking to an existing intent, but instead, we're creating a new intent
 
             //Validate Intent Outcome:
-            $in_outcome_validation = $this->BLOG_model->in_validate_outcome($in_outcome);
+            $in_outcome_validation = $this->BLOG_model->in_outcome_validate($in_outcome);
             if(!$in_outcome_validation['status']){
                 //We had an error, return it:
                 return $in_outcome_validation;
@@ -416,7 +407,6 @@ class BLOG_model extends CI_Model
             //Create new intent:
             $intent_new = $this->BLOG_model->in_create(array(
                 'in_outcome' => $in_outcome_validation['in_cleaned_outcome'],
-                'in_verb_entity_id' => $in_outcome_validation['detected_in_verb_entity_id'],
                 'in_completion_method_entity_id' => $in_completion_method_entity_id,
                 'in_status_entity_id' => $new_in_status,
             ), true, $ln_creator_entity_id);
@@ -636,34 +626,6 @@ class BLOG_model extends CI_Model
     }
 
 
-
-    function in_is_public($in, $force_starting_step = false){
-
-        //Find reasons for it not being available...
-
-        if ( !in_array($in['in_status_entity_id'], $this->config->item('en_ids_7355') /* Intent Statuses Public */) ) {
-
-            //Don't show the intent name yet as its not published:
-            return array(
-                'status' => 0,
-                'message' => 'Intent #' . $in['in_id'] . ' status is not yet public',
-            );
-
-        } elseif ( in_array($in['in_completion_method_entity_id'], $this->config->item('en_ids_7366')) ) {
-
-            //Intent type is private by nature:
-            return array(
-                'status' => 0,
-                'message' => 'Intent #' . $in['in_id'] . ' type is private',
-            );
-        }
-
-
-        //All good:
-        return array(
-            'status' => 1,
-        );
-    }
 
     function in_metadata_common_base($focus_in){
 
@@ -1081,58 +1043,36 @@ class BLOG_model extends CI_Model
 
     }
 
-    function in_validate_outcome($in_outcome){
-
-
-        //Prep basic variables to start validation:
-        $starts_with_equal = ( substr($in_outcome, 0, 1) == '=' );
-        $in_verb_entity_id = ( $starts_with_equal ? 10569 : in_outcome_verb_id($in_outcome) );
+    function in_outcome_validate($in_outcome){
 
         //Validate:
-        if(strlen(trim($in_outcome)) <= ( $starts_with_equal ? 1 : 0 )){
+        if(!strlen(trim($in_outcome))){
 
             return array(
                 'status' => 0,
-                'message' => 'Missing Outcome',
+                'message' => 'Title missing',
             );
 
         } elseif(substr_count($in_outcome , '  ') > 0){
 
             return array(
                 'status' => 0,
-                'message' => 'Outcome cannot include double spaces',
+                'message' => 'Title cannot include double spaces',
             );
 
         } elseif (strlen($in_outcome) > config_value(11071)) {
 
             return array(
                 'status' => 0,
-                'message' => 'Outcome must be '.config_value(11071).' characters or less',
-            );
-
-        } elseif(!$starts_with_equal && !$in_verb_entity_id) {
-
-            return array(
-                'status' => 0,
-                'message' => 'Intent outcomes must start with a verb OR =',
-            );
-
-        } elseif(!$starts_with_equal && substr_count($in_outcome, '=')>0) {
-
-            return array(
-                'status' => 0,
-                'message' => 'Equal sign must be at the very beginning of the outcome',
+                'message' => 'Title must be '.config_value(11071).' characters or less',
             );
 
         }
-
-
 
         //All good, return success:
         return array(
             'status' => 1,
             'in_cleaned_outcome' => trim($in_outcome),
-            'detected_in_verb_entity_id' => $in_verb_entity_id,
         );
 
     }

@@ -73,11 +73,7 @@ if(!$found_grandpa_intersect){
 
     echo '<div style="padding-top:0px;">&nbsp;</div>';
 
-    //Show title
-    if(in_is_clean_outcome($in)){
-        echo '<h1>' . echo_in_outcome($in['in_outcome']). '</h1>';
-    }
-
+    echo '<h1>' . echo_in_outcome($in['in_outcome']). '</h1>';
 
     echo '<div class="sub_title">';
 

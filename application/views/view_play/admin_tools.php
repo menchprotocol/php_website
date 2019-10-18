@@ -457,7 +457,7 @@ if(!$action) {
     ));
 
     //Give an overview:
-    echo '<p>When the validation criteria change within the in_validate_outcome() function, this page lists all the intents that no longer have a valid outcome.</p>';
+    echo '<p>When the validation criteria change within the in_outcome_validate() function, this page lists all the intents that no longer have a valid outcome.</p>';
 
 
     //List the matching search:
@@ -472,7 +472,7 @@ if(!$action) {
     $invalid_outcomes = 0;
     foreach($active_ins as $count=>$in){
 
-        $in_outcome_validation = $this->BLOG_model->in_validate_outcome($in['in_outcome']);
+        $in_outcome_validation = $this->BLOG_model->in_outcome_validate($in['in_outcome']);
 
         if(!$in_outcome_validation['status']){
 
@@ -546,7 +546,7 @@ if(!$action) {
                 if($replace_with_is_set){
                     //Do replacement:
                     $new_outcome = str_replace($_GET['search_for'],$_GET['replace_with'],$in['in_outcome']);
-                    $in_outcome_validation = $this->BLOG_model->in_validate_outcome($new_outcome);
+                    $in_outcome_validation = $this->BLOG_model->in_outcome_validate($new_outcome);
 
                     if($in_outcome_validation['status']){
                         $qualifying_replacements++;
@@ -557,7 +557,6 @@ if(!$action) {
                     //Update intent:
                     $this->BLOG_model->in_update($in['in_id'], array(
                         'in_outcome' => $in_outcome_validation['in_cleaned_outcome'],
-                        'in_verb_entity_id' => $in_outcome_validation['detected_in_verb_entity_id'],
                     ), true, $session_en['en_id']);
                 }
 
@@ -627,29 +626,26 @@ if(!$action) {
     //Would ensure intents have synced statuses:
     $count = 0;
     $fixed = 0;
-    foreach($this->BLOG_model->in_fetch() as $in){
+    foreach($this->BLOG_model->in_fetch(array(
+        'in_verb_entity_id' => 10569,
+    )) as $in){
 
         $count++;
 
-        //Validate Intent Outcome:
-        $in_outcome_validation = $this->BLOG_model->in_validate_outcome($in['in_outcome']);
-        if(!$in_outcome_validation['status']){
-
-            echo '<div>Outcome validation error: '.$in_outcome_validation['message'].' (<a href="/blog/'.$in['in_id'].'">'.$in['in_outcome'].'</a>)</div>';
-
-        } elseif($in_outcome_validation['detected_in_verb_entity_id'] != $in['in_verb_entity_id']) {
-
-            //Not a match, fix it:
+        if(substr($in['in_outcome'], 0, 1)=='='){
             $fixed++;
             $this->BLOG_model->in_update($in['in_id'], array(
-                'in_verb_entity_id' => $in_outcome_validation['detected_in_verb_entity_id'],
-            ), true, $session_en['en_id']);
-
+                'in_outcome' => trim(substr($in['in_outcome'], 1)),
+                'in_verb_entity_id' => 0,
+            ));
         }
 
+        if($count > 100){
+            break;
+        }
     }
 
-    echo '<div>'.$fixed.'/'.$count.' Intent verbs fixed</div>';
+    echo '<div>'.$fixed.'/'.$count.' Intents fixed</div>';
 
 } elseif($action=='identical_intent_outcomes') {
 

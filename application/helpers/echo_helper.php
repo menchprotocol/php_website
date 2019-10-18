@@ -791,6 +791,12 @@ function echo_random_message($message_key, $return_all = false){
             null,
             null,
         ),
+        'next_blog_is' => array(
+            'Next: ',
+            'Next blog is: ',
+            'Ok moving on to the next blog: ',
+            'Moving to the next blog: ',
+        ),
         'one_way_only' => array(
             'I am not designed to respond to custom messages. I can understand you only when you choose one of the options that I recommend to you.',
             'I cannot understand if you send me an out-of-context message. I would only understand if you choose one of the options that I recommend to you.',
@@ -1227,12 +1233,9 @@ function echo_tree_steps($in, $push_message = 0, $autoexpand = false)
         //HTML format
         $pitch_title = '<span class="icon-block"><i class="fas fa-flag"></i></span>&nbsp;'.$metadata['in__metadata_max_steps'].' step'.echo__s($metadata['in__metadata_max_steps']).( $has_time_estimate ? ' in ' . strtolower(echo_time_range($in)) : ' to complete' );
 
-        //If NOT private, Expand body to include Action Plan overview:
-        if(!in_array($in['in_completion_method_entity_id'], $CI->config->item('en_ids_7366'))){
-            $pitch_body .= '<div class="inner_actionplan">';
-            $pitch_body .= echo_tree_actionplan($in, false);
-            $pitch_body .= '</div>';
-        }
+        $pitch_body .= '<div class="inner_actionplan">';
+        $pitch_body .= echo_tree_actionplan($in, false);
+        $pitch_body .= '</div>';
 
         return echo_tree_html_body(7613, $pitch_title, $pitch_body, $autoexpand);
 
@@ -1243,11 +1246,6 @@ function echo_tree_actionplan($in, $autoexpand){
 
 
     $CI =& get_instance();
-
-    //Is this private?
-    if(in_array($in['in_completion_method_entity_id'], $CI->config->item('en_ids_7366'))){
-        return null;
-    }
 
     //Fetch actual children:
     $in__children = $CI->READ_model->ln_fetch(array(
@@ -1268,37 +1266,24 @@ function echo_tree_actionplan($in, $autoexpand){
 
     foreach ($in__children as $in_level2_counter => $in_level2) {
 
-        if(!in_is_clean_outcome($in_level2) || in_array($in_level2['in_completion_method_entity_id'], $CI->config->item('en_ids_7309'))){
-            continue;
-        }
 
-        //Is this private?
-        $is_private = (in_array($in_level2['in_completion_method_entity_id'], $CI->config->item('en_ids_7366')));
-        if($is_private){
+        //Level 3 intents:
+        $in_level2_children = $CI->READ_model->ln_fetch(array(
+            'ln_status_entity_id IN (' . join(',', $CI->config->item('en_ids_7359')) . ')' => null, //Link Statuses Public
+            'in_status_entity_id IN (' . join(',', $CI->config->item('en_ids_7355')) . ')' => null, //Intent Statuses Public
+            'ln_type_entity_id' => 4228, //Intent Link Regular Step
+            'ln_parent_intent_id' => $in_level2['in_id'],
+        ), array('in_child'), 0, 0, array('ln_order' => 'ASC'));
 
-            $has_level2_content = false;
+        //Fetch messages:
+        $in_level2_messages = $CI->READ_model->ln_fetch(array(
+            'ln_status_entity_id IN (' . join(',', $CI->config->item('en_ids_7359')) . ')' => null, //Link Statuses Public
+            'ln_type_entity_id' => 4231, //Intent Note Messages
+            'ln_child_intent_id' => $in_level2['in_id'],
+        ), array(), 0, 0, array('ln_order' => 'ASC'));
 
-        } else {
-
-            //Level 3 intents:
-            $in_level2_children = $CI->READ_model->ln_fetch(array(
-                'ln_status_entity_id IN (' . join(',', $CI->config->item('en_ids_7359')) . ')' => null, //Link Statuses Public
-                'in_status_entity_id IN (' . join(',', $CI->config->item('en_ids_7355')) . ')' => null, //Intent Statuses Public
-                'ln_type_entity_id' => 4228, //Intent Link Regular Step
-                'ln_parent_intent_id' => $in_level2['in_id'],
-            ), array('in_child'), 0, 0, array('ln_order' => 'ASC'));
-
-            //Fetch messages:
-            $in_level2_messages = $CI->READ_model->ln_fetch(array(
-                'ln_status_entity_id IN (' . join(',', $CI->config->item('en_ids_7359')) . ')' => null, //Link Statuses Public
-                'ln_type_entity_id' => 4231, //Intent Note Messages
-                'ln_child_intent_id' => $in_level2['in_id'],
-            ), array(), 0, 0, array('ln_order' => 'ASC'));
-
-            //Determine intent type/settings:
-            $has_level2_content = (count($in_level2_children)>0 || count($in_level2_messages)>0);
-
-        }
+        //Determine intent type/settings:
+        $has_level2_content = (count($in_level2_children)>0 || count($in_level2_messages)>0);
 
 
 
@@ -1354,27 +1339,12 @@ function echo_tree_actionplan($in, $autoexpand){
                 $return_html .= '<ul class="action-plan-sub-list">';
                 foreach ($in_level2_children as $in_level3_counter => $in_level3) {
 
-
-                    if(!in_is_clean_outcome($in_level3) || in_array($in_level2['in_completion_method_entity_id'], $CI->config->item('en_ids_7309'))){
-                        continue;
-                    }
-
-                    //Is this private?
-                    $is_private = (in_array($in_level3['in_completion_method_entity_id'], $CI->config->item('en_ids_7366')));
-                    if($is_private){
-
-                        $in_level3_messages = array();
-
-                    } else {
-
-                        //Fetch messages:
-                        $in_level3_messages = $CI->READ_model->ln_fetch(array(
-                            'ln_status_entity_id IN (' . join(',', $CI->config->item('en_ids_7359')) . ')' => null, //Link Statuses Public
-                            'ln_type_entity_id' => 4231, //Intent Note Messages
-                            'ln_child_intent_id' => $in_level3['in_id'],
-                        ), array(), 0, 0, array('ln_order' => 'ASC'));
-
-                    }
+                    //Fetch messages:
+                    $in_level3_messages = $CI->READ_model->ln_fetch(array(
+                        'ln_status_entity_id IN (' . join(',', $CI->config->item('en_ids_7359')) . ')' => null, //Link Statuses Public
+                        'ln_type_entity_id' => 4231, //Intent Note Messages
+                        'ln_child_intent_id' => $in_level3['in_id'],
+                    ), array(), 0, 0, array('ln_order' => 'ASC'));
 
 
                     $return_html .= '<li>';

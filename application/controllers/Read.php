@@ -49,15 +49,9 @@ class Read extends CI_Controller
         //Make sure we found it:
         if ( count($ins) < 1) {
             return redirect_message('/read', '<div class="alert alert-danger" role="alert">Intent #' . $in_id . ' not found</div>');
-        }
-
-        //Make sure intent is public:
-        $public_in = $this->BLOG_model->in_is_public($ins[0]);
-
-        //Did we have any issues?
-        if(!$public_in['status']){
+        } elseif(!in_array($ins[0]['in_status_entity_id'], $this->config->item('en_ids_7355') /* Intent Statuses Public */)){
             //Return error:
-            return redirect_message('/read', '<div class="alert alert-danger" role="alert">'.$public_in['message'].'</div>');
+            return redirect_message('/read', '<div class="alert alert-danger" role="alert">BLOG is not yet published</div>');
         }
 
         //Fetch/Create landing page view cookie:
@@ -166,49 +160,6 @@ class Read extends CI_Controller
 
         //Link Stages
         echo_2level_stats($en_all_7302[10602]['m_name'], 10602, 7585, $intent_types_counts, $addup_total_count, 'in_completion_method_entity_id', 'total_count');
-
-
-        //Intent Verbs:
-        $show_max_verbs = 5;
-
-
-        //Fetch all needed data:
-        $in_verbs = $this->BLOG_model->in_fetch(array(
-            'in_status_entity_id IN (' . join(',', $this->config->item('en_ids_7355')) . ')' => null, //Intent Statuses Public
-        ), array('in_verb'), 0, 0, array('totals' => 'DESC'), 'COUNT(in_id) as totals, in_verb_entity_id, en_name, en_icon', 'in_verb_entity_id, en_name, en_icon');
-
-
-        echo '<table class="table table-sm table-striped stats-table mini-stats-table">';
-
-        echo '<tr class="panel-title down-border">';
-        echo '<td style="text-align: left;" colspan="2">'.$en_all_7302[5008]['m_name'].'s ['.number_format(count($in_verbs)-1, 0).']</td>';
-        echo '</tr>';
-
-        $inherit_verbs = 0;
-        foreach($in_verbs as $count => $verb){
-
-            if($verb['in_verb_entity_id']==10569){
-                $inherit_verbs = $verb['totals'];
-                continue;
-            }
-
-            echo '<tr class="'.( $count >= $show_max_verbs ? 'hiddenverbs hidden' : '' ).'">';
-            echo '<td style="text-align: left;"><span style="width:29px; display: inline-block; text-align: center;">'.echo_en_icon($verb).'</span><a href="/play/'.$verb['in_verb_entity_id'].'">'.$verb['en_name'].'</a></td>';
-            echo '<td style="text-align: right;"><a href="/read/history?ln_type_entity_id=4250&in_status_entity_id=' . join(',', $this->config->item('en_ids_7356')) . '&in_verb_entity_id='.$verb['in_verb_entity_id'].'" data-toggle="tooltip" data-placement="top" title="'.number_format($verb['totals'], 0).' Intent'.echo__s($verb['totals']).'">'.number_format($verb['totals']/($addup_total_count-$inherit_verbs)*100, 1).'%</a></td>';
-            echo '</tr>';
-
-            if(($count+1)==$show_max_verbs){
-                //Show expand button:
-                echo '<tr class="hiddenverbs">';
-                echo '<td style="text-align: left;" colspan="2"><span style="width:29px; display: inline-block; text-align: center;"><i class="fas fa-plus-circle"></i></span><a href="javascript:void(0);" onclick="$(\'.hiddenverbs\').toggleClass(\'hidden\')">View All</a></td>';
-                echo '</tr>';
-                //To keep stripe color in balance
-                echo '<tr class="hidden"><td style="text-align: left;" colspan="2"></td></tr>';
-            }
-        }
-
-        echo '</table>';
-
 
 
 
@@ -504,7 +455,7 @@ class Read extends CI_Controller
             }
 
             //Validate Intent Outcome:
-            $in_outcome_validation = $this->BLOG_model->in_validate_outcome($in_outcome);
+            $in_outcome_validation = $this->BLOG_model->in_outcome_validate($in_outcome);
             if(!$in_outcome_validation['status']){
                 //We had an error, return it:
                 return echo_json($in_outcome_validation);
@@ -513,7 +464,6 @@ class Read extends CI_Controller
             //All good, let's create the intent:
             $intent_new = $this->BLOG_model->in_create(array(
                 'in_outcome' => $in_outcome_validation['in_cleaned_outcome'],
-                'in_verb_entity_id' => $in_outcome_validation['detected_in_verb_entity_id'],
                 'in_completion_method_entity_id' => 6677, //Read-Only
                 'in_status_entity_id' => 6183, //Intent New
             ), true, $session_en['en_id']);

@@ -2749,9 +2749,10 @@ class Play extends CI_Controller
 
         //First first all entities that have Cache in PHP Config @4527 as their parent:
         $config_ens = $this->READ_model->ln_fetch(array(
+            'en_status_entity_id IN (' . join(',', $this->config->item('en_ids_7357')) . ')' => null, //Entity Statuses Public
             'ln_status_entity_id IN (' . join(',', $this->config->item('en_ids_7359')) . ')' => null, //Link Statuses Public
             'ln_type_entity_id IN (' . join(',', $this->config->item('en_ids_4592')) . ')' => null, //Entity-to-Entity Links
-            'ln_parent_entity_id' => 4527,
+            'ln_parent_entity_id' => 45270,
         ), array('en_child'), 0);
 
         echo htmlentities('<?php').'<br /><br />';
