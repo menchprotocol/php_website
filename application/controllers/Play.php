@@ -352,7 +352,7 @@ class Play extends CI_Controller
         ));
 
         foreach ($child_entities as $en) {
-            echo echo_en($en, 2, false);
+            echo echo_en($en,false);
         }
 
         //Count total children:
@@ -536,7 +536,7 @@ class Play extends CI_Controller
         return echo_json(array(
             'status' => 1,
             'en_new_status' => $ens_latest[0]['en_status_entity_id'],
-            'en_new_echo' => echo_en(array_merge($ens_latest[0], $ur2), 2, $_POST['is_parent']),
+            'en_new_echo' => echo_en(array_merge($ens_latest[0], $ur2), $_POST['is_parent']),
         ));
     }
 
@@ -621,7 +621,6 @@ class Play extends CI_Controller
         }
 
         $remove_from_ui = 0;
-        $remove_redirect_url = null;
         $js_ln_type_entity_id = 0; //Detect link type based on content
 
         //Prepare data to be updated:

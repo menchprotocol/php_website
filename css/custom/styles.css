@@ -637,7 +637,7 @@ input::-webkit-inner-spin-button {
     border-bottom-right-radius: 3px;
 }
 
-.list-level-2 > .is_level2_sortable, #temp2, #list-children > .list-group-item, .list-grey .list-group-item {
+.list-level-2 > .blogs_sortable, #temp2, #list-children > .list-group-item, .list-grey .list-group-item {
     margin-bottom: 3px;
     border: 0;
     background-color: #F7F7F7;
@@ -646,7 +646,7 @@ input::-webkit-inner-spin-button {
 
 
 
-.is_level2_sortable:hover, .is_level3_sortable:hover, .en-item:hover, .list-messages > div > div:hover {
+.blogs_sortable:hover, .is_level3_sortable:hover, .en-item:hover, .list-messages > div > div:hover {
     background-color: #E5E5E5 !important;
     border-color: transparent !important;
 }
@@ -657,7 +657,7 @@ input::-webkit-inner-spin-button {
     cursor: default !important;
 }
 
-.is_level2_sortable:hover {
+.blogs_sortable:hover {
     cursor: pointer !important;
 }
 .is-msg:hover{
@@ -2726,7 +2726,7 @@ a.badge:focus, a.badge:hover {
     color: #070707;
 }
 
-.is_level2_sortable .label {
+.blogs_sortable .label {
     display: inline-block;
 }
 

@@ -306,7 +306,7 @@ class BLOG_model extends CI_Model
         return $links_removed;
     }
 
-    function in_link_or_create($in_linked_id, $is_parent, $in_outcome, $ln_creator_entity_id, $new_in_status = 6183 /* Intent New */, $in_completion_method_entity_id = 6677 /* Intent Read-Only */, $link_in_id = 0, $next_level = 0)
+    function in_link_or_create($in_linked_id, $is_parent, $in_outcome, $ln_creator_entity_id, $new_in_status = 6183 /* Intent New */, $in_completion_method_entity_id = 6677 /* Intent Read-Only */, $link_in_id = 0)
     {
 
         /*
@@ -314,7 +314,7 @@ class BLOG_model extends CI_Model
          * The main intent creation function that would create
          * appropriate links and return the intent view.
          *
-         * Either creates an intent link between $in_linked_id & $link_in_id
+         * Either creates a BLOG link between $in_linked_id & $link_in_id
          * (IF $link_in_id>0) OR will create a new intent with outcome $in_outcome
          * and link it to $in_linked_id (In this case $link_in_id will be 0)
          *
@@ -482,7 +482,7 @@ class BLOG_model extends CI_Model
         return array(
             'status' => 1,
             'new_in_id' => $intent_new['in_id'],
-            'in_child_html' => ( in_array($next_level, array(2,3)) ? echo_in($new_ins[0], $next_level, $in_linked_id, $is_parent) : null ),
+            'in_child_html' => echo_in($new_ins[0], $in_linked_id, $is_parent),
         );
 
     }
@@ -492,7 +492,7 @@ class BLOG_model extends CI_Model
 
         /*
          *
-         * Sometimes to mark an intent as complete the Users might
+         * Sometimes to mark a BLOG as complete the Users might
          * need to meet certain requirements in what they submit to do so.
          * This function fetches those requirements from the Platform and
          * Provides an easy to understand message to communicate

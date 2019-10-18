@@ -46,7 +46,7 @@
                     //No bookmarks yet:
                     $en_all_4527 = $this->config->item('en_all_4527'); //Platform Cache
                     $en_all_4485 = $this->config->item('en_all_4485'); //Intent Notes
-                    echo '<div class="alert alert-warning" style="margin: 0"><div style="margin-bottom: 10px;"><i class="fas fa-exclamation-triangle"></i> You have not bookmarked any intention yet. You can bookmark an intention by navigating to it and then:</div>'.$en_all_4527[4485]['m_icon'] .' '. $en_all_4527[4485]['m_name'].' <i class="fas fa-chevron-right" style="margin: 0 7px;"></i> '.$en_all_4485[10573]['m_icon'] .' '. $en_all_4485[10573]['m_name'].' <i class="fas fa-chevron-right" style="margin: 0 7px;"></i> Add "<b>@'.$session_en['en_id'].'</b>" (Your Entity ID)</div>';
+                    echo '<div class="alert alert-warning" style="margin: 0"><div style="margin-bottom: 10px;"><i class="fas fa-exclamation-triangle"></i> You have not bookmarked any intention yet. You can bookmark a BLOG by navigating to it and then:</div>'.$en_all_4527[4485]['m_icon'] .' '. $en_all_4527[4485]['m_name'].' <i class="fas fa-chevron-right" style="margin: 0 7px;"></i> '.$en_all_4485[10573]['m_icon'] .' '. $en_all_4485[10573]['m_name'].' <i class="fas fa-chevron-right" style="margin: 0 7px;"></i> Add "<b>@'.$session_en['en_id'].'</b>" (Your Entity ID)</div>';
 
                 }
 

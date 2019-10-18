@@ -997,7 +997,7 @@ class Read extends CI_Controller
 
         /*
          *
-         * The Ajax function to add an intention to the Action Plan from the landing page.
+         * The Ajax function to add a BLOG to the Action Plan from the landing page.
          *
          * */
 
@@ -1350,7 +1350,7 @@ class Read extends CI_Controller
         /*
          *
          * When users indicate they want to stop
-         * an intention this function saves the changes
+         * a BLOG this function saves the changes
          * necessary and remove the intention from their
          * Action Plan.
          *

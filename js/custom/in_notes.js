@@ -236,7 +236,7 @@ function in_message_sort_load() {
     var sort_msg = Sortable.create( document.getElementById("message-sorting") , {
         animation: 150, // ms, animation speed moving items when sorting, `0` � without animation
         handle: ".message-sorting", // Restricts sort start click/touch to the specified element
-        draggable: ".is_level2_sortable", // Specifies which items inside the element should be sortable
+        draggable: ".blogs_sortable", // Specifies which items inside the element should be sortable
         onUpdate: function (evt/**Event*/) {
             //Apply new sort:
             in_message_sort_apply(focus_ln_type_entity_id);

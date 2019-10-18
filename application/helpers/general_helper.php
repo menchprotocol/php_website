@@ -978,9 +978,9 @@ function analyze_domain($full_url){
 function featured_topic_ids(){
     $CI =& get_instance();
     $featured_topic_ids = array();
-    foreach($CI->config->item('en_ids_10869') as $level1_topic_id){
-        array_push($featured_topic_ids, $level1_topic_id);
-        $featured_topic_ids = array_merge($featured_topic_ids, $CI->config->item('en_ids_'.$level1_topic_id));
+    foreach($CI->config->item('en_ids_10869') as $topic_id){
+        array_push($featured_topic_ids, $topic_id);
+        $featured_topic_ids = array_merge($featured_topic_ids, $CI->config->item('en_ids_'.$topic_id));
     }
     return $featured_topic_ids;
 }
@@ -1203,7 +1203,7 @@ function update_algolia($input_obj_type = null, $input_obj_id = 0, $return_row_o
                 $time_range = echo_time_range($db_row, true, true);
                 $metadata = unserialize($db_row['in_metadata']);
 
-                $export_row['alg_obj_is_in'] = 1; //This is an intent
+                $export_row['alg_obj_is_in'] = 1; //This is a BLOG
                 $export_row['alg_obj_id'] = intval($db_row['in_id']);
                 $export_row['alg_obj_weight'] = ( isset($metadata['in__metadata_max_seconds']) ? intval($metadata['in__metadata_max_seconds']) : 0 );
                 $export_row['alg_obj_status'] = intval($db_row['in_status_entity_id']);

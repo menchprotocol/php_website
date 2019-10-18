@@ -463,7 +463,7 @@ class READ_model extends CI_Model
 
         /*
          *
-         * A function that marks an intent as complete IF
+         * A function that marks a BLOG as complete IF
          * the intent has nothing of substance to be
          * further communicated/done by the user.
          *
@@ -968,7 +968,7 @@ class READ_model extends CI_Model
             //Log error:
             $this->READ_model->ln_create(array(
                 'ln_parent_intent_id' => $in_id,
-                'ln_content' => 'intention_add() was about to add an intention that was not public',
+                'ln_content' => 'intention_add() was about to add a BLOG that was not public',
                 'ln_type_entity_id' => 4246, //Platform Bug Reports
                 'ln_creator_entity_id' => $en_id,
             ));
@@ -1572,7 +1572,7 @@ class READ_model extends CI_Model
 
         /*
          *
-         * There are different ways to complete an intent
+         * There are different ways to complete a BLOG
          * as listed under User Steps Completed:
          *
          * https://mench.com/play/6146
@@ -2928,7 +2928,7 @@ class READ_model extends CI_Model
                 if(count($string_references['ref_intents']) != 1){
                     return array(
                         'status' => 0,
-                        'message' => $en_all_4485[$message_type_en_id]['m_name'].' require an intent reference.',
+                        'message' => $en_all_4485[$message_type_en_id]['m_name'].' require a BLOG reference.',
                     );
                 } elseif($message_in_id < 1){
                     return array(
@@ -3380,7 +3380,7 @@ class READ_model extends CI_Model
             }
         }
 
-        //Do we have an intent up-vote?
+        //Do we have a BLOG up-vote?
         if (!$push_message && count($string_references['ref_intents']) > 0 && $message_in_id > 0) {
 
             $referenced_ins = $this->BLOG_model->in_fetch(array(
@@ -3826,7 +3826,7 @@ class READ_model extends CI_Model
                 if (count($user_intents) < 1) {
                     return array(
                         'status' => 0,
-                        'message' => 'UNSUBSCRIBE_ Failed to skip an intent from the master Action Plan',
+                        'message' => 'UNSUBSCRIBE_ Failed to skip a BLOG from the master Action Plan',
                     );
                 }
 
@@ -3943,10 +3943,10 @@ class READ_model extends CI_Model
 
         } elseif (substr_count($quick_reply_payload, 'SUBSCRIBE-INITIATE_') == 1) {
 
-            //User has confirmed their desire to subscribe to an intention:
+            //User has confirmed their desire to subscribe to a BLOG:
             $in_id = intval(one_two_explode('SUBSCRIBE-INITIATE_', '', $quick_reply_payload));
 
-            //Initiating an intent Action Plan:
+            //Initiating a BLOG Action Plan:
             $ins = $this->BLOG_model->in_fetch(array(
                 'in_id' => $in_id,
                 'in_status_entity_id IN (' . join(',', $this->config->item('en_ids_7355')) . ')' => null, //Intent Statuses Public

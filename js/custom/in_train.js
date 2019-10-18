@@ -12,59 +12,32 @@ $(document).ready(function () {
 
 
     $('#expand_intents .expand_all').click(function (e) {
-        $(".list-is-children .is_level2_sortable").each(function () {
+        $(".list-is-children .blogs_sortable").each(function () {
             ms_toggle($(this).attr('in-link-id'), 1);
         });
     });
 
     //Load top/bottom intent searches:
-    in_load_search(".intentadder-level-2-parent",1, 2, 'q');
-    in_load_search(".intentadder-level-2-child",0, 2, 'w');
+    in_load_search(".intentadder-level-2-parent",1, 'q');
+    in_load_search(".intentadder-level-2-child",0, 'w');
 
     //Expand selections:
     prep_search_pad();
 
-    //Load Sortable for level 2:
-    in_sort_load(in_loaded_id, 2);
+    //Load Sortable:
+    in_sort_load(in_loaded_id);
 
     //Watch the expand/close all buttons:
     $('#expand_intents .expand_all').click(function (e) {
-        $(".list-is-children .is_level2_sortable").each(function () {
+        $(".list-is-children .blogs_sortable").each(function () {
             ms_toggle($(this).attr('in-link-id'), 1);
         });
     });
     $('#expand_intents .close_all').click(function (e) {
-        $(".list-is-children .is_level2_sortable").each(function () {
+        $(".list-is-children .blogs_sortable").each(function () {
             ms_toggle($(this).attr('in-link-id'), 0);
         });
     });
-
-    //Activate sorting for level 3 intents:
-    if ($('.step-group').length) {
-
-        $(".step-group").each(function () {
-
-            var in_id = parseInt($(this).attr('intent-id'));
-
-            //Load sorting for level 3 intents:
-            in_sort_load(in_id, 3);
-
-            //Load time:
-            $('.t_estimate_' + in_id).text(in_update_time($('.t_estimate_' + in_id + ':first').attr('tree-max-seconds')));
-
-        });
-
-        if ($('.is_level3_sortable').length) {
-            //Goo through all Steps:
-            $(".is_level3_sortable").each(function () {
-                var in_id = $(this).attr('intent-id');
-                if (in_id) {
-                    //Load time:
-                    $('.t_estimate_' + in_id).text(in_update_time($('.t_estimate_' + in_id + ':first').attr('tree-max-seconds')));
-                }
-            });
-        }
-    }
 
 });
 
@@ -74,7 +47,7 @@ $(document).ready(function () {
 function prep_search_pad(){
 
     //Activate expansion for intent level 2 items that are not already expanded
-    $('.is_level2_sortable').each(function () {
+    $('.blogs_sortable').each(function () {
 
         if(!$(this).hasClass('is_expanded')){
 
@@ -91,14 +64,6 @@ function prep_search_pad(){
             });
 
         }
-
-        //Expand level 3 results:
-        $('.new-in3-input .algolia_search').focus(function() {
-            $('.in_pad_' + $(this).attr('intent-id') ).removeClass('hidden');
-        }).focusout(function() {
-            $('.in_pad_' + $(this).attr('intent-id') ).addClass('hidden');
-        });
-
     });
 
     //All level 2s:
@@ -116,7 +81,7 @@ function prep_search_pad(){
 
 }
 
-function in_load_search(focus_element, is_in_parent, next_in_level, shortcut) {
+function in_load_search(focus_element, is_in_parent, shortcut) {
 
     //Loads the intent search bar only once for the add intent inputs
     if($(focus_element).hasClass('search-bar-loaded')){
@@ -128,7 +93,7 @@ function in_load_search(focus_element, is_in_parent, next_in_level, shortcut) {
     //Not yet loaded, continue with loading it:
     $(focus_element).addClass('search-bar-loaded').on('autocomplete:selected', function (event, suggestion, dataset) {
 
-        in_link_or_create($(this).attr('intent-id'), is_in_parent, next_in_level, suggestion.alg_obj_id);
+        in_link_or_create($(this).attr('intent-id'), is_in_parent, suggestion.alg_obj_id);
 
     }).autocomplete({hint: false, minLength: 2, keyboardShortcuts: [shortcut]}, [{
 
@@ -160,41 +125,31 @@ function in_load_search(focus_element, is_in_parent, next_in_level, shortcut) {
             },
             header: function (data) {
                 if (!($(focus_element).val().charAt(0)=='#') && !data.isEmpty) {
-                    return '<a href="javascript:in_link_or_create(' + parseInt($(focus_element).attr('intent-id')) + ','+is_in_parent+','+next_in_level+',0)" class="suggestion"><span><i class="fas fa-plus-circle add-plus"></i></span> <b>' + data.query + '</b></a>';
+                    return '<a href="javascript:in_link_or_create(' + parseInt($(focus_element).attr('intent-id')) + ','+is_in_parent+',0)" class="suggestion"><span><i class="fas fa-plus-circle add-plus"></i></span> <b>' + data.query + '</b></a>';
                 }
             },
             empty: function (data) {
                 if($(focus_element).val().charAt(0)=='#'){
-                    return '<a href="javascript:in_link_or_create(' + parseInt($(focus_element).attr('intent-id')) + ','+is_in_parent+','+next_in_level+', 0)" class="suggestion"><span><i class="fas fa-link"></i></span> Link to <b>' + data.query + '</b></a>';
+                    return '<a href="javascript:in_link_or_create(' + parseInt($(focus_element).attr('intent-id')) + ','+is_in_parent+',0)" class="suggestion"><span><i class="fas fa-link"></i></span> Link to <b>' + data.query + '</b></a>';
                 } else {
-                    return '<a href="javascript:in_link_or_create(' + parseInt($(focus_element).attr('intent-id')) + ','+is_in_parent+','+next_in_level+', 0)" class="suggestion"><span><i class="fas fa-plus-circle add-plus"></i></span> <b>' + data.query + '</b></a>';
+                    return '<a href="javascript:in_link_or_create(' + parseInt($(focus_element).attr('intent-id')) + ','+is_in_parent+',0)" class="suggestion"><span><i class="fas fa-plus-circle add-plus"></i></span> <b>' + data.query + '</b></a>';
                 }
             },
         }
     }]).keypress(function (e) {
         var code = (e.keyCode ? e.keyCode : e.which);
         if ((code == 13) || (e.ctrlKey && code == 13)) {
-            return in_link_or_create($(this).attr('intent-id'), is_in_parent, next_in_level, 0);
+            return in_link_or_create($(this).attr('intent-id'), is_in_parent, 0);
         }
     });
 
 }
 
 
-function in_sort_save(in_id, level) {
+function in_sort_save(in_id) {
 
-    if (level == 2) {
-        var s_element = "list-in-" + in_loaded_id + '-0';
-        var s_draggable = ".is_level2_sortable";
-    } else if (level == 3) {
-        var s_element = "list-cr-" + $('.intent_line_' + in_id).attr('in-link-id');
-        var s_draggable = ".is_level3_sortable";
-    } else {
-        //Should not happen!
-        return false;
-    }
-
-    //Fetch new sort:
+    var s_element = "list-in-" + in_loaded_id + '-0';
+    var s_draggable = ".blogs_sortable";
     var new_ln_orders = [];
     var sort_rank = 0;
 
@@ -228,127 +183,45 @@ function in_sort_save(in_id, level) {
 }
 
 
-function in_sort_load(in_id, level) {
+function in_sort_load(in_id) {
 
-    if (level == 2) {
-        var element_key = null;
-        var s_element = "list-in-" + in_loaded_id + '-0';
-        var s_draggable = ".is_level2_sortable";
-    } else if (level == 3) {
-        var element_key = '.intent_line_' + in_id;
-        var s_element = "list-cr-" + $(element_key).attr('in-link-id');
-        var s_draggable = ".is_level3_sortable";
-    } else {
-        //Invalid level, should not happen!
-        return false;
-    }
 
+    var element_key = null;
+    var s_element = "list-in-" + in_loaded_id + '-0';
+    var s_draggable = ".blogs_sortable";
     var theobject = document.getElementById(s_element);
-
     if (!theobject) {
         //due to duplicate intents belonging in this tree:
         //TODO Fix later to support duplicate intents
         return false;
     }
 
-    var settings = {
+    var sort = Sortable.create(theobject, {
         animation: 150, // ms, animation speed moving items when sorting, `0` � without animation
         draggable: s_draggable, // Specifies which items inside the element should be sortable
         handle: ".enable-sorting", // Restricts sort start click/touch to the specified element
         onUpdate: function (evt/**Event*/) {
-            in_sort_save(in_id, level);
+            in_sort_save(in_id);
         }
-    };
-
-
-    //Enable moving level 3 intents between level 2 intents:
-    if (level == "3") {
-
-        settings['group'] = "steplists";
-        settings['ghostClass'] = "drop-step-here";
-        settings['onAdd'] = function (evt) {
-
-            //Define variables:
-            var inputs = {
-                ln_id: parseInt(evt.item.attributes['in-link-id'].nodeValue),
-                in_id: parseInt(evt.item.attributes['intent-id'].nodeValue),
-                from_in_id: parseInt(evt.from.attributes['intent-id'].value),
-                to_in_id: parseInt(evt.to.attributes['intent-id'].value),
-            };
-
-            //Update:
-            $.post("/blog/in_migrate", inputs, function (data) {
-                //Update sorts in both lists:
-                if (!data.status) {
-
-                    //There was some sort of an error returned!
-                    alert('ERROR: ' + data.message);
-
-                } else {
-
-                    //All good as expected!
-                    //Moved the parent pointer:
-                    $('.intent_line_' + inputs.in_id).attr('parent-intent-id', inputs.to_in_id);
-
-                    //Determine core variables for hour move calculations:
-                    var step_hours = parseFloat($('.t_estimate_' + inputs.in_id + ':first').attr('tree-max-seconds'));
-                    var intent_count = parseInt($('.children-counter-' + inputs.in_id + ':first').text());
-
-                    if (!(step_hours == 0)) {
-                        //Remove from old one:
-                        var from_hours_new = parseFloat($('.t_estimate_' + inputs.from_in_id + ':first').attr('tree-max-seconds')) - step_hours;
-                        $('.t_estimate_' + inputs.from_in_id).attr('tree-max-seconds', from_hours_new).text(in_update_time(from_hours_new));
-                        $('.children-counter-' + inputs.from_in_id).text(parseInt($('.children-counter-' + inputs.from_in_id + ':first').text()) - intent_count);
-
-                        //Add to new:
-                        var to_hours_new = parseFloat($('.t_estimate_' + inputs.to_in_id + ':first').attr('tree-max-seconds')) + step_hours;
-                        $('.t_estimate_' + inputs.to_in_id).attr('tree-max-seconds', to_hours_new).text(in_update_time(to_hours_new));
-                        $('.children-counter-' + inputs.to_in_id).text(parseInt($('.children-counter-' + inputs.to_in_id + ':first').text()) + intent_count);
-                    }
-
-                    //Update sorting for both lists:
-                    in_sort_save(inputs.from_in_id, 3);
-                    in_sort_save(inputs.to_in_id, 3);
-
-                }
-            });
-        };
-    }
-
-    var sort = Sortable.create(theobject, settings);
+    });
 }
 
 
 
-function in_link_or_create(in_linked_id, is_parent, next_level, in_link_child_id) {
+function in_link_or_create(in_linked_id, is_parent, in_link_child_id) {
 
     /*
      *
-     * Either creates an intent link between in_linked_id & in_link_child_id
+     * Either creates a BLOG link between in_linked_id & in_link_child_id
      * OR will create a new intent based on input text and then link it
      * to in_linked_id (In this case in_link_child_id=0)
      *
      * */
 
-    if (next_level == 2) {
-        var sort_handler = ".is_level2_sortable";
-        var sort_list_id = "list-in-" + in_loaded_id + '-' + is_parent;
-        var input_field = $('#addintent-c-' + in_linked_id + '-' + is_parent);
-    } else if (next_level == 3) {
-        var sort_handler = ".is_level3_sortable";
-        var sort_list_id = "list-cr-" + $('.intent_line_' + in_linked_id).attr('in-link-id');
-        var input_field = $('.intentadder-id-' + in_linked_id);
 
-        //Remove no-intent message:
-        $('.no_child_'+in_linked_id).remove();
-
-    } else {
-        //This should not happen:
-        alert('Error: Invalid next_level value [' + next_level + ']');
-        return false;
-    }
-
-
+    var sort_handler = ".blogs_sortable";
+    var sort_list_id = "list-in-" + in_loaded_id + '-' + is_parent;
+    var input_field = $('#addintent-c-' + in_linked_id + '-' + is_parent);
     var intent_name = input_field.val();
 
 
@@ -366,7 +239,7 @@ function in_link_or_create(in_linked_id, is_parent, next_level, in_link_child_id
 
 
 
-    //We either need the intent name (to create a new intent) or the in_link_child_id>0 to create an intent link:
+    //We either need the intent name (to create a new intent) or the in_link_child_id>0 to create a BLOG link:
     if (!in_link_child_id && intent_name.length < 1) {
         alert('Error: Enter something');
         input_field.focus();
@@ -374,19 +247,18 @@ function in_link_or_create(in_linked_id, is_parent, next_level, in_link_child_id
     }
 
     //Set processing status:
-    add_to_list(sort_list_id, sort_handler, '<div id="temp' + next_level + '" class="list-group-item"><i class="far fa-yin-yang fa-spin"></i> Adding... </div>');
+    add_to_list(sort_list_id, sort_handler, '<div id="tempLoader" class="list-group-item"><i class="far fa-yin-yang fa-spin"></i> Adding... </div>');
 
     //Update backend:
     $.post("/blog/in_link_or_create", {
         in_linked_id: in_linked_id,
         is_parent:is_parent,
         in_outcome: intent_name,
-        next_level: next_level,
         in_link_child_id: in_link_child_id
     }, function (data) {
 
         //Remove loader:
-        $("#temp" + next_level).remove();
+        $("#tempLoader").remove();
 
         if (data.status) {
 
@@ -394,36 +266,13 @@ function in_link_or_create(in_linked_id, is_parent, next_level, in_link_child_id
             add_to_list(sort_list_id, sort_handler, data.in_child_html);
 
             //Reload sorting to enable sorting for the newly added intent:
-            in_sort_load(in_linked_id, next_level);
+            in_sort_load(in_linked_id);
 
             //Expand selections:
             prep_search_pad();
 
-            if (next_level == 2) {
-
-                if(!is_parent){
-                    //Adjust the Step count:
-                    in_sort_save(0, 2);
-                }
-
-                //Reload sorting to enable sorting for the newly added intent:
-                in_sort_load(data.new_in_id, 3);
-
-                //Load search again:
-                in_load_search(".intentadder-id-"+data.new_in_id, 0, 3, 'n');
-
-            } else if(!is_parent) {
-
-                //Adjust Intent Level 3 sorting:
-                in_sort_save(in_linked_id, next_level);
-
-            }
-
             //Tooltips:
             $('[data-toggle="tooltip"]').tooltip();
-
-            //Adjust time:
-            in_adjust_ui(data.new_in_id, next_level, 0, 0, 0, 1);
 
         } else {
             //Show errors:

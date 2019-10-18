@@ -113,7 +113,7 @@ foreach ($this->config->item('en_all_11021') as $en_id => $m){
             $this_tab .= '<div id="list-in-' . $in['in_id'] . '-1" class="list-group list-level-2">';
 
             foreach ($fetch_11019 as $parent_in) {
-                $this_tab .= echo_in($parent_in, 2, 0, true);
+                $this_tab .= echo_in($parent_in, true);
             }
 
             $this_tab .= '<div class="list-group-item list_input grey-block">
@@ -145,7 +145,7 @@ foreach ($this->config->item('en_all_11021') as $en_id => $m){
             //List child intents:
             $this_tab .= '<div id="list-in-' . $in['in_id'] . '-0" class="list-group list-is-children list-level-2">';
             foreach ($fetch_11020 as $child_in) {
-                $this_tab .= echo_in($child_in, 2, $in['in_id']);
+                $this_tab .= echo_in($child_in, $in['in_id']);
             }
 
             //Add child intent:

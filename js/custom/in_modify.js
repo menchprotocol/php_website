@@ -146,70 +146,6 @@ function in_adjust_link_ui() {
 }
 
 
-function in_adjust_ui(in_id, level, new_hours, intent_deficit_count, apply_to_tree, skip_intent_adjustments) {
-
-    intent_deficit_count = parseInt(intent_deficit_count);
-    var in_completion_seconds = parseFloat($('.t_estimate_' + in_id + ':first').attr('intent-seconds'));
-    var in__metadata_seconds = parseFloat($('.t_estimate_' + in_id + ':first').attr('tree-max-seconds'));
-    var in_deficit_seconds = new_hours - (skip_intent_adjustments ? 0 : (apply_to_tree ? in__metadata_seconds : in_completion_seconds));
-
-    //Adjust same level hours:
-    if (!skip_intent_adjustments) {
-        var in_new__metadata_seconds = in__metadata_seconds + in_deficit_seconds;
-        $('.t_estimate_' + in_id)
-            .attr('tree-max-seconds', in_new__metadata_seconds)
-            .text(in_update_time(in_new__metadata_seconds));
-
-        if (!apply_to_tree) {
-            $('.t_estimate_' + in_id).attr('intent-seconds', new_hours).text(in_update_time(in_new__metadata_seconds));
-        }
-    }
-
-
-    //Adjust parent counters, if any:
-    if (!(intent_deficit_count == 0)) {
-        //See how many parents we have:
-        $('.inb-counter').each(function () {
-            $(this).text(parseInt($(this).text()) + intent_deficit_count);
-        });
-    }
-
-    if (level >= 2) {
-
-        //Adjust the parent level hours:
-        var in_linked_id = parseInt($('.intent_line_' + in_id).attr('parent-intent-id'));
-        var in_parent__metadata_seconds = parseFloat($('.t_estimate_' + in_linked_id + ':first').attr('tree-max-seconds'));
-        var in_new_parent__metadata_seconds = in_parent__metadata_seconds + in_deficit_seconds;
-
-        if (!(intent_deficit_count == 0)) {
-            $('.children-counter-' + in_linked_id).text(parseInt($('.children-counter-' + in_linked_id + ':first').text()) + intent_deficit_count);
-        }
-
-        //Update Hours (Either level 1 or 2):
-        $('.t_estimate_' + in_linked_id)
-            .attr('tree-max-seconds', in_new_parent__metadata_seconds)
-            .text(in_update_time(in_new_parent__metadata_seconds));
-
-
-        if (level == 3) {
-            //Adjust top level intent as well:
-            var in_top_level = parseInt($('.intent_line_' + in_linked_id).attr('parent-intent-id'));
-            var in_primary__metadata_seconds = parseFloat($('.t_estimate_' + in_top_level + ':first').attr('tree-max-seconds'));
-            var in_new__metadata_seconds = in_primary__metadata_seconds + in_deficit_seconds;
-
-            if (!(intent_deficit_count == 0)) {
-                $('.children-counter-' + in_top_level).text(parseInt($('.children-counter-' + in_top_level + ':first').text()) + intent_deficit_count);
-            }
-
-            //Update Hours:
-            $('.t_estimate_' + in_top_level)
-                .attr('tree-max-seconds', in_new__metadata_seconds)
-                .text(in_update_time(in_new__metadata_seconds));
-        }
-    }
-}
-
-
 function in_outcome_counter() {
     var len = $('#in_outcome').val().length;
     if (len > js_en_all_6404[11071]['m_desc']) {
@@ -228,7 +164,7 @@ function in_modify_load(in_id, ln_id) {
     $('#modifybox .grey-box .loadbox').removeClass('hidden');
     $('.fixed-box, .ajax-frame').addClass('hidden');
     $("#modifybox").removeClass('hidden').hide().fadeIn();
-    $('#modifybox').attr('intent-tr-id', 0).attr('intent-id', 0).attr('level', 0);
+    $('#modifybox').attr('intent-tr-id', 0).attr('intent-id', 0);
     $('.apply-recursive').addClass('hidden');
     $('.save_intent_changes').html(' ');
 
@@ -256,10 +192,8 @@ function in_modify_load(in_id, ln_id) {
             //All good, let's load the data into the Modify Widget...
 
             //Update variables:
-            var level = (ln_id == 0 ? 1 : parseInt($('.in__tr_' + ln_id).attr('intent-level'))); //Either 1, 2 or 3
             $('#modifybox').attr('intent-tr-id', ln_id);
             $('#modifybox').attr('intent-id', in_id);
-            $('#modifybox').attr('level', level);
 
             //Load inputs:
             $('#in_completion_seconds').val(data.in.in_completion_seconds);
@@ -307,7 +241,7 @@ function in_modify_load(in_id, ln_id) {
 
 
 
-function in_ui_remove(in_id,level,ln_id){
+function in_ui_remove(in_id,ln_id){
 
     //Fetch parent intent before removing element from DOM:
     var parent_in_id = parseInt($('.intent_line_' + in_id).attr('parent-intent-id'));
@@ -317,9 +251,6 @@ function in_ui_remove(in_id,level,ln_id){
 
     //Reset opacity:
     remove_all_highlights();
-
-    //Adjust completion cost:
-    in_adjust_ui(in_id, level, 0, 0, 1, 0);
 
     //Remove from UI:
     $('.in__tr_' + ln_id).html('<span style="color:#070707;"><i class="fas fa-trash-alt"></i></span>');
@@ -337,7 +268,7 @@ function in_ui_remove(in_id,level,ln_id){
         $('#modifybox').addClass('hidden');
 
         //Re-sort sibling intents:
-        in_sort_save(parent_in_id, level);
+        in_sort_save(parent_in_id);
 
     }, 610);
 
@@ -351,7 +282,7 @@ function in_modify_save() {
         return false;
     }
 
-    //Prepare top-level intents (in case we move an intent here):
+    //Prepare BLOGS (in case we move a BLOG here):
     var in_id = parseInt($('#modifybox').attr('intent-id'));
     var top_level_ins = [ in_id ];
     $(".level2_in").each(function () {
@@ -362,7 +293,6 @@ function in_modify_save() {
     //Prepare data to be modified for this intent:
     var modify_data = {
         in_id: in_id,
-        level: parseInt($('#modifybox').attr('level')),
         in_outcome: $('#in_outcome').val(),
         in_status_entity_id: parseInt($('#in_status_entity_id').val()),
         in_completion_method_entity_id: parseInt($('#in_completion_method_entity_id').val()),
@@ -414,18 +344,8 @@ function in_modify_save() {
             //Has the intent/intent-link been removed? Either way, we need to hide this row:
             if (data.remove_from_ui) {
 
-                //Intent has been either removed OR unlinked:
-                if (data.remove_redirect_url) {
-
-                    //move up 1 level as this was the focus intent:
-                    window.location = data.remove_redirect_url;
-
-                } else {
-
-                    //Remove from UI:
-                    in_ui_remove(modify_data['in_id'], modify_data['level'], modify_data['ln_id']);
-
-                }
+                //Remove from UI:
+                in_ui_remove(modify_data['in_id'], modify_data['ln_id']);
 
             } else {
 
@@ -459,10 +379,6 @@ function in_modify_save() {
 
                 //Update UI to confirm with user:
                 $('.save_intent_changes').html(data.message).hide().fadeIn();
-
-
-                //Adjust completion cost:
-                in_adjust_ui(modify_data['in_id'], modify_data['level'], modify_data['in_completion_seconds'], 0, 0, 0);
 
 
                 //Did the outcome change?

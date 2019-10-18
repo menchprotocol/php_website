@@ -248,7 +248,7 @@ if(!$action) {
     //List intents and allow to modify and manage intent notes:
     if(count($pendin_in_notes) > 0){
         foreach($pendin_in_notes as $pendin_in_note){
-            echo echo_in($pendin_in_note, 0);
+            echo echo_in($pendin_in_note);
         }
     } else {
         echo '<div class="alert alert-success"><i class="fas fa-check-circle"></i> No Pending Intent Notes at this time</div>';

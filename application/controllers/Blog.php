@@ -217,7 +217,7 @@ class Blog extends CI_Controller {
 
         /*
          *
-         * Either creates an intent link between in_linked_id & in_link_child_id
+         * Either creates a BLOG link between in_linked_id & in_link_child_id
          * OR will create a new intent with outcome in_outcome and then link it
          * to in_linked_id (In this case in_link_child_id=0)
          *
@@ -239,11 +239,6 @@ class Blog extends CI_Controller {
             return echo_json(array(
                 'status' => 0,
                 'message' => 'Missing Is Parent setting',
-            ));
-        } elseif (!isset($_POST['next_level']) || !in_array(intval($_POST['next_level']), array(2,3))) {
-            return echo_json(array(
-                'status' => 0,
-                'message' => 'Invalid Intent Level',
             ));
         } elseif (!isset($_POST['in_outcome']) || !isset($_POST['in_link_child_id']) || ( strlen($_POST['in_outcome']) < 1 && intval($_POST['in_link_child_id']) < 1)) {
             return echo_json(array(
@@ -288,7 +283,7 @@ class Blog extends CI_Controller {
         }
 
         //All seems good, go ahead and try creating the intent:
-        return echo_json($this->BLOG_model->in_link_or_create($_POST['in_linked_id'], intval($_POST['is_parent']), trim($_POST['in_outcome']), $session_en['en_id'], 6183 /* Intent New */, $new_intent_type, $_POST['in_link_child_id'], $_POST['next_level']));
+        return echo_json($this->BLOG_model->in_link_or_create($_POST['in_linked_id'], intval($_POST['is_parent']), trim($_POST['in_outcome']), $session_en['en_id'], 6183 /* Intent New */, $new_intent_type, $_POST['in_link_child_id']));
 
     }
 
@@ -302,69 +297,6 @@ class Blog extends CI_Controller {
         $this->load->view('footer');
     }
 
-
-
-    function in_migrate()
-    {
-
-        //Authenticate Trainer:
-        $session_en = en_auth(null);
-        if (!$session_en) {
-            return echo_json(array(
-                'status' => 0,
-                'message' => 'Expired Session or Missing Superpower',
-            ));
-        } elseif (!isset($_POST['ln_id']) || intval($_POST['ln_id']) < 1) {
-            return echo_json(array(
-                'status' => 0,
-                'message' => 'Invalid ln_id',
-            ));
-        } elseif (!isset($_POST['in_id']) || intval($_POST['in_id']) < 1) {
-            return echo_json(array(
-                'status' => 0,
-                'message' => 'Invalid in_id',
-            ));
-        } elseif (!isset($_POST['from_in_id']) || intval($_POST['from_in_id']) < 1) {
-            return echo_json(array(
-                'status' => 0,
-                'message' => 'Missing from_in_id',
-            ));
-        } elseif (!isset($_POST['to_in_id']) || intval($_POST['to_in_id']) < 1) {
-            return echo_json(array(
-                'status' => 0,
-                'message' => 'Missing to_in_id',
-            ));
-        }
-
-        //Fetch all three intents to ensure they are all valid and use them for link logging:
-        $this_in = $this->BLOG_model->in_fetch(array(
-            'in_id' => intval($_POST['in_id']),
-        ));
-        $from_in = $this->BLOG_model->in_fetch(array(
-            'in_id' => intval($_POST['from_in_id']),
-        ));
-        $to_in = $this->BLOG_model->in_fetch(array(
-            'in_id' => intval($_POST['to_in_id']),
-            'in_status_entity_id IN (' . join(',', $this->config->item('en_ids_7356')) . ')' => null, //Intent Statuses Active
-        ));
-
-        if (!isset($this_in[0]) || !isset($from_in[0]) || !isset($to_in[0])) {
-            return echo_json(array(
-                'status' => 0,
-                'message' => 'Invalid intent IDs',
-            ));
-        }
-
-        //Make the move:
-        $this->READ_model->ln_update(intval($_POST['ln_id']), array(
-            'ln_parent_intent_id' => $to_in[0]['in_id'],
-        ), $session_en['en_id'], 10660 /* Intent Migrate Parent Link */);
-
-        //Return success
-        echo_json(array(
-            'status' => 1,
-        ));
-    }
 
     function in_READ_BOOKMARKS(){
 
@@ -508,11 +440,6 @@ class Blog extends CI_Controller {
                 'status' => 0,
                 'message' => 'Invalid in_id',
             ));
-        } elseif (intval($_POST['level'])==1 && intval($_POST['ln_id'])>0) {
-            return echo_json(array(
-                'status' => 0,
-                'message' => 'Level 1 intent should not have a link',
-            ));
         } elseif (!isset($_POST['tr__conditional_score_min']) || !isset($_POST['tr__conditional_score_max'])) {
             return echo_json(array(
                 'status' => 0,
@@ -532,11 +459,6 @@ class Blog extends CI_Controller {
             return echo_json(array(
                 'status' => 0,
                 'message' => 'Invalid in_completion_method_entity_id',
-            ));
-        } elseif (!isset($_POST['level']) || intval($_POST['level']) < 1 || intval($_POST['level']) > 3) {
-            return echo_json(array(
-                'status' => 0,
-                'message' => 'Invalid level',
             ));
         } elseif (!isset($_POST['in_outcome'])) {
             return echo_json(array(
@@ -619,7 +541,6 @@ class Blog extends CI_Controller {
 
         //Determines if Intent has been removed OR unlinked:
         $remove_from_ui = 0; //Assume not
-        $remove_redirect_url = null;
 
         //Did anything change?
         $recursive_update_count = 0;
@@ -644,17 +565,6 @@ class Blog extends CI_Controller {
 
                         //Intent has been removed:
                         $remove_from_ui = 1;
-
-                        //Did we remove the main intent?
-                        if($_POST['level']==1){
-                            //Yes, redirect to a parent intent if we have any:
-                            if(count($in_current['in__parents']) > 0){
-                                $remove_redirect_url = '/blog/' . $in_current['in__parents'][0]['in_id'];
-                            } else {
-                                //No parents, redirect to default intent:
-                                $remove_redirect_url = '/blog';
-                            }
-                        }
 
                         //Unlink intent links:
                         $links_removed += $this->BLOG_model->in_unlink($_POST['in_id'] , $session_en['en_id']);
@@ -683,7 +593,7 @@ class Blog extends CI_Controller {
         $link_was_updated = false;
 
 
-        //Does this request has an intent link?
+        //Does this request has a BLOG link?
         if($ln_id > 0){
 
             //Validate Link and inputs:
@@ -778,7 +688,6 @@ class Blog extends CI_Controller {
             'message' => '<i class="fas fa-check"></i> Saved',
             'remove_from_ui' => $remove_from_ui,
             'formatted_in_outcome' => ( isset($in_update['in_outcome']) ? echo_in_outcome($in_update['in_outcome'], false, true) : null ),
-            'remove_redirect_url' => $remove_redirect_url,
             'recursive_update_count' => $recursive_update_count,
             'in__metadata_max_steps' => -( isset($in_metadata['in__metadata_max_steps']) ? $in_metadata['in__metadata_max_steps'] : 0 ),
 
@@ -1054,8 +963,8 @@ class Blog extends CI_Controller {
         /*
          *
          * An AJAX function that is triggered every time a Trainer
-         * selects to modify an intent. It will check the
-         * Requires Manual Response of an intent so it can
+         * selects to modify a BLOG. It will check the
+         * Requires Manual Response of a BLOG so it can
          * check proper boxes to help Trainer modify the intent.
          *
          * */

@@ -115,7 +115,7 @@
 
             $this_tab .= '<div id="list-parent" class="list-group ">';
             foreach ($fetch_11030 as $en) {
-                $this_tab .= echo_en($en, 2, true);
+                $this_tab .= echo_en($en,true);
             }
 
             //Input to add new parents:
@@ -150,7 +150,7 @@
             $this_tab .= '<div id="list-children" class="list-group">';
 
             foreach ($fetch_11029 as $en) {
-                $this_tab .= echo_en($en, 2, false);
+                $this_tab .= echo_en($en,false);
             }
             if ($counter > count($fetch_11029)) {
                 $this_tab .= echo_en_load_more(1, config_value(11064), $counter);
@@ -228,7 +228,7 @@
 
 
         echo '<div id="entity-box" class="list-group">';
-        echo echo_en($entity, 1);
+        echo echo_en($entity);
         echo '</div>';
 
 
