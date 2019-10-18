@@ -119,7 +119,9 @@ class Intents extends CI_Controller
 
         //If not set, load default intention.
         if(!$in_id){
-            $in_id = $this->config->item('in_focus_id');
+            //Home Page, show upcoming notice:
+            $this->load->view('mench_launching');
+            return false;
         }
 
         //Fetch data:
