@@ -41,19 +41,21 @@ class Play extends CI_Controller
             'cookie: __cfduid=db6eef3c324dc50d96ef21938b6f00edc1559329362; _ga=GA1.2.2055208362.1565325511; lightstep_session_id=7e05aed248707e2e; lightstep_guid/medium-web=93bf19db9151b98a; tz=420; pr=2; lightstep_guid/lite-web=58f426d9268501ac; _gid=GA1.2.1980711924.1571614565; optimizelyEndUserId=lo_e8082354b03e; uid=lo_e8082354b03e; sid=1:/xbfZQ7E3E7EPoIIifaIKj/DmNhQCAKcI9h6hfo+EFoV1Vicr75acNYhuyD26dd9; __cfruid=119da54070c31f79db03af372b90931f3f9aa260-1571694671; _parsely_session={%22sid%22:38%2C%22surl%22:%22https://medium.com/%22%2C%22sref%22:%22%22%2C%22sts%22:1571694672029%2C%22slts%22:1571688510366}; _parsely_visitor={%22id%22:%22pid=acaaa24a25423adbd91231b52e769418%22%2C%22session_count%22:38%2C%22last_session_ts%22:1571694672029}; sz=1652',
         );
 
-        if(!isset($_POST['custom_head'])){
-            $_POST['custom_head'] = join("\n", $custom_header);
+        if(0){
+            if(!isset($_POST['custom_head'])){
+                $_POST['custom_head'] = join("\n", $custom_header);
+            }
+
+
+            echo count(explode("\n", $_POST['custom_head']));
+
+            ?>
+            <form action="" method="post">
+                <input type="submit" name="GO">
+                <textarea style="width: 800px; height: 500px; font-size: 8px;" name="custom_head"><?= $_POST['custom_head'] ?></textarea>
+            </form>
+            <?php
         }
-
-
-        echo count(explode("\n", $_POST['custom_head']));
-
-        ?>
-        <form action="" method="post">
-            <input type="submit" name="GO">
-            <textarea style="width: 800px; height: 500px; font-size: 8px;" name="custom_head"><?= $_POST['custom_head'] ?></textarea>
-        </form>
-        <?php
 
 
 
@@ -469,17 +471,32 @@ fragment PostListingItemSidebar_post on Post {
         );
 
 
-        $ch = curl_init();
-        curl_setopt($ch, CURLOPT_URL, $url);
-        curl_setopt($ch, CURLOPT_POST, 1);
-        curl_setopt($ch, CURLOPT_RETURNTRANSFER, TRUE);
-        curl_setopt($ch, CURLOPT_USERAGENT, 'Mozilla/5.0 (Macintosh; Intel Mac OS X 10_14_6) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/77.0.3865.120 Safari/537.36');
-        curl_setopt($ch, CURLOPT_POSTFIELDS, http_build_query($data));
-        curl_setopt($ch, CURLOPT_HTTPHEADER, explode("\n", $_POST['custom_head']));
-        $server_output = curl_exec ($ch);
-        curl_close ($ch);
+        foreach($i=0;$i<=10;$i++){
 
-        echo $server_output;
+            $this_header = array();
+            foreach ($custom_header as $custom_head){
+                if(rand(0,1)>=1){
+                    array_push($this_header, $custom_head);
+                }
+            }
+
+            echo count($custom_header).' > '.join(' ||| ', $this_header);
+
+            $ch = curl_init();
+            curl_setopt($ch, CURLOPT_URL, $url);
+            curl_setopt($ch, CURLOPT_POST, 1);
+            curl_setopt($ch, CURLOPT_RETURNTRANSFER, TRUE);
+            curl_setopt($ch, CURLOPT_USERAGENT, 'Mozilla/5.0 (Macintosh; Intel Mac OS X 10_14_6) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/77.0.3865.120 Safari/537.36');
+            curl_setopt($ch, CURLOPT_POSTFIELDS, http_build_query($data));
+            curl_setopt($ch, CURLOPT_HTTPHEADER, $this_header);
+            $server_output = curl_exec ($ch);
+            curl_close ($ch);
+
+            echo $server_output;
+            echo '<hr />';
+
+        }
+
 
     }
 
