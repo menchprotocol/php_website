@@ -46,9 +46,11 @@ class Play extends CI_Controller
         }
 
 
+        echo count(explode("\n", $_POST['custom_head']));
+
         ?>
         <form action="" method="post">
-            <textarea style="width: 400px; height: 500px; font-size: 8px;" name="custom_head"><?= $_POST['custom_head'] ?></textarea>
+            <textarea style="width: 800px; height: 500px; font-size: 8px;" name="custom_head"><?= $_POST['custom_head'] ?></textarea>
             <input type="submit" name="GO">
         </form>
         <?php
