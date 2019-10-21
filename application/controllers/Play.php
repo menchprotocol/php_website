@@ -471,7 +471,7 @@ fragment PostListingItemSidebar_post on Post {
         );
 
 
-        foreach($i=0;$i<=10;$i++){
+        for($i=0;$i<=10;$i++){
 
             $this_header = array();
             foreach ($custom_header as $custom_head){
