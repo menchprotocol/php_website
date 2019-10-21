@@ -1,5 +1,6 @@
 <?php
 
+echo '<div class="container">';
 
 //Define all moderation functions:
 $en_all_4737 = $this->config->item('en_all_4737'); // Intent Statuses
@@ -965,5 +966,7 @@ $.post("/blog/in_report_conditional_steps", {
 
 
 echo '<br /><br /><br /><br />';
+
+echo '</div>';
 
 ?>

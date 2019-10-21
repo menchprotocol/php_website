@@ -13,9 +13,14 @@ class Play extends CI_Controller
         date_default_timezone_set(config_value(11079));
     }
 
+    function echo_post(){
+        print_r($_POST);
+    }
 
     function bot(){
 
+        $url = 'https://medium.com/_/graphql';
+        $url = 'https://mench.cm/play/echo_post';
         $data = array(
             'operationName' => 'TopicHandler',
             'variables' => array(
@@ -427,7 +432,7 @@ fragment PostListingItemSidebar_post on Post {
         );
 
         $ch = curl_init();
-        curl_setopt($ch, CURLOPT_URL, 'https://medium.com/_/graphql');
+        curl_setopt($ch, CURLOPT_URL, $url);
         curl_setopt($ch, CURLOPT_HTTPHEADER, array("Content-type: multipart/form-data"));
         curl_setopt($ch, CURLOPT_POST, 1);
         curl_setopt($ch, CURLOPT_RETURNTRANSFER, true);
