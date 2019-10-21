@@ -11,7 +11,7 @@ $(document).ready(function() {
         //Update the contributor metadata:
         search_contributor($(this).attr('contributor-box'));
 
-    }).autocomplete({hint: false, minLength: 2}, [{
+    }).autocomplete({hint: false, minLength: 1}, [{
 
         source: function (q, cb) {
             algolia_index.search(q, {
@@ -30,7 +30,7 @@ $(document).ready(function() {
         },
         templates: {
             suggestion: function (suggestion) {
-                return echo_js_suggestion(suggestion, 0, 0);
+                return echo_js_suggestion(suggestion);
             },
         }
 

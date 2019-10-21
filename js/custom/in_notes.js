@@ -149,15 +149,6 @@ $(document).ready(function () {
         }
     });
 
-    //Have we loaded a different message type?
-    if (window.location.hash) {
-        var hash = window.location.hash.substring(1); //Puts hash in variable, and removes the # character
-        var hash_parts = hash.split("-");
-        if (hash_parts.length == 3) {
-            //Seems right, lets assign:
-            focus_ln_type_entity_id = hash_parts[2];
-        }
-    }
 
     //Function to control clicks on Message type header:
     in_message_load_type(focus_ln_type_entity_id);

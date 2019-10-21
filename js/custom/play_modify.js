@@ -8,7 +8,7 @@ function en_load_search(focus_element, is_en_parent, shortcut) {
 
         en_add_or_link(suggestion.alg_obj_id, is_en_parent);
 
-    }).autocomplete({hint: false, minLength: 2, keyboardShortcuts: [shortcut]}, [{
+    }).autocomplete({hint: false, minLength: 1, keyboardShortcuts: [shortcut]}, [{
 
         source: function (q, cb) {
             algolia_index.search(q, {
@@ -25,15 +25,15 @@ function en_load_search(focus_element, is_en_parent, shortcut) {
         templates: {
             suggestion: function (suggestion) {
                 //If clicked, would trigger the autocomplete:selected above which will trigger the en_add_or_link() function
-                return echo_js_suggestion(suggestion, 0, 0);
+                return echo_js_suggestion(suggestion);
             },
             header: function (data) {
                 if (!data.isEmpty) {
-                    return '<a href="javascript:en_add_or_link(0,'+is_en_parent+')" class="suggestion"><span><i class="fas fa-plus-circle add-plus"></i></span> <b>' + data.query + '</b></a>';
+                    return '<a href="javascript:en_add_or_link(0,'+is_en_parent+')" class="suggestion"><span class="icon-block-sm"><i class="fas fa-plus-circle add-plus"></i></span><b>' + data.query + '</b></a>';
                 }
             },
             empty: function (data) {
-                return '<a href="javascript:en_add_or_link(0,'+is_en_parent+')" class="suggestion"><span><i class="fas fa-plus-circle add-plus"></i></span> <b>' + data.query + '</b></a>';
+                return '<a href="javascript:en_add_or_link(0,'+is_en_parent+')" class="suggestion"><span class="icon-block-sm"><i class="fas fa-plus-circle add-plus"></i></span><b>' + data.query + '</b></a>';
             },
         }
     }]).keypress(function (e) {
@@ -73,7 +73,7 @@ $(document).ready(function () {
 
         $(this).val('@' + suggestion.alg_obj_id + ' ' + suggestion.alg_obj_name);
 
-    }).autocomplete({hint: false, minLength: 2}, [{
+    }).autocomplete({hint: false, minLength: 1}, [{
 
         source: function (q, cb) {
             algolia_index.search(q, {
@@ -92,7 +92,7 @@ $(document).ready(function () {
         },
         templates: {
             suggestion: function (suggestion) {
-                return echo_js_suggestion(suggestion, 0, 0);
+                return echo_js_suggestion(suggestion);
             },
             empty: function (data) {
                 return '<div class="not-found"><i class="fas fa-exclamation-triangle"></i> No entities found</div>';
@@ -194,24 +194,6 @@ $(document).ready(function () {
 
 
 
-    //Do we need to auto load anything?
-    if (window.location.hash) {
-        var hash = window.location.hash.substring(1); //Puts hash in variable, and removes the # character
-        var hash_parts = hash.split("-");
-        if (hash_parts.length >= 2) {
-            //Fetch level if available:
-            if (hash_parts[0] == 'entitynotes') {
-                en_load_messages( hash_parts[1]);
-            } else if (hash_parts[0] == 'loadmodify') {
-                en_modify_load(hash_parts[1], hash_parts[2]);
-            } else if (hash_parts[0] == 'status') {
-                //Update status:
-                en_filter_status(hash_parts[1]);
-            }
-        }
-    }
-
-
 
 
     //Watchout for content change
@@ -310,10 +292,10 @@ function en_add_or_link(en_existing_id, is_parent) {
 
 function en_filter_status(new_val) {
     //Remove active class:
-    $('.u-status-filter').removeClass('btn-play');
+    $('.u-status-filter').removeClass('active');
     //We do have a filter:
     en_focus_filter = parseInt(new_val);
-    $('.u-status-' + new_val).addClass('btn-play');
+    $('.u-status-' + new_val).addClass('active');
     en_load_next_page(0, 1);
 }
 
@@ -428,10 +410,8 @@ function en_modify_load(en_id, ln_id) {
     $('#en_name').val(en_full_name).focus();
     $('.edit-header').html('<i class="fas fa-cog"></i> ' + en_full_name);
     $('#en_status_entity_id').val($(".en___" + en_id + ":first").attr('en-status'));
-    $('#ln_status_entity_id').val($(".en___" + en_id + ":first").attr('ln-status'));
     $('.save_entity_changes').html('');
     $('.entity_remove_stats').html('');
-    $('#en_link_count').val('0');
 
     if (parseInt($('.en__icon_' + en_id).attr('en-is-set')) > 0) {
         $('#en_icon').val($('.en__icon_' + en_id).html());
@@ -445,6 +425,10 @@ function en_modify_load(en_id, ln_id) {
 
     //Only show unlink button if not level 1
     if (parseInt(ln_id) > 0) {
+
+        $('#ln_status_entity_id').val($(".en___" + en_id + ":first").attr('ln-status'));
+        $('#en_link_count').val('0');
+
 
         //Make the UI link and the notes in the edit box:
         $('.unlink-entity, .en-has-tr').removeClass('hidden');
@@ -625,9 +609,6 @@ function en_modify_save() {
 
                 } else {
 
-                    //Remove Hash:
-                    window.location.hash = '#';
-
                     //Reset opacity:
                     remove_all_highlights();
 
@@ -704,37 +685,6 @@ function en_modify_save() {
             //Ooops there was an error!
             $('.save_entity_changes').html('<span style="color:#FF0000;"><i class="fas fa-exclamation-triangle"></i> ' + data.message + '</span>').hide().fadeIn();
         }
-
-    });
-
-}
-
-
-
-function en_load_messages(en_id) {
-
-    //Make the frame visible:
-    $('#loaded-messages').html(''); //Reset messages
-    $('.fixed-box').addClass('hidden');
-    $("#message-frame").removeClass('hidden').hide().fadeIn().attr('entity-id', en_id);
-    $("#message-frame h4").text($(".en_name_" + en_id + ":first").text());
-
-    //Set opacity:
-    remove_all_highlights();
-    $(".highlight_en_"+en_id).addClass('en_highlight');
-
-    var handler = $("#loaded-messages");
-
-    //Show tem loader:
-    handler.html('<div style="text-align:left; padding-bottom:50px;"><i class="far fa-yin-yang fa-spin"></i> ' + echo_loading_notify() +  '</div>');
-
-    //Load the frame:
-    $.post("/play/en_load_messages/"+en_id, {}, function (data) {
-        //Raw Inputs Fields if success:
-        handler.html(data);
-
-        //Show inner tooltips:
-        $('[data-toggle="tooltip"]').tooltip();
 
     });
 

@@ -45,89 +45,6 @@ $(document).ready(function () {
         }
     });
 
-    $("#platform_search").on('autocomplete:selected', function (event, suggestion, dataset) {
-
-        if (parseInt(suggestion.alg_obj_is_in)==1) {
-            window.location = "/blog/" + suggestion.alg_obj_id;
-        } else {
-            window.location = "/play/" + suggestion.alg_obj_id;
-        }
-
-    }).autocomplete({hint: false, minLength: 1, autoselect: true, keyboardShortcuts: ['s']}, [
-        {
-            source: function (q, cb) {
-                //Do not search if specific command:
-                if (($("#platform_search").val().charAt(0) == '#' || $("#platform_search").val().charAt(0) == '@') && !isNaN($("#platform_search").val().substr(1))) {
-                    cb([]);
-                    return;
-                } else {
-
-                    //Append filters:
-                    algolia_index.search(q, {
-                        hitsPerPage: 14,
-                        filters:' alg_obj_is_in' + ($("#platform_search").val().charAt(0) == '#' ? '=1' : ($("#platform_search").val().charAt(0) == '@' ? '=0' : '>=0')),
-                    }, function (error, content) {
-                        if (error) {
-                            cb([]);
-                            return;
-                        }
-                        cb(content.hits, content);
-                    });
-                }
-            },
-            displayKey: function(suggestion) {
-                return ""
-            },
-            templates: {
-                suggestion: function (suggestion) {
-                    return echo_js_suggestion(suggestion, 1, 0);
-                },
-                header: function (data) {
-                    if(validURL(data.query)){
-                        return en_fetch_canonical_url(data.query, false);
-                    } else if($("#platform_search").val().charAt(0)=='#' || $("#platform_search").val().charAt(0)=='@'){
-                        //See what follows the @/# sign to determine if we should create OR redirect:
-                        var search_body = $("#platform_search").val().substr(1);
-                        if(isNaN(search_body)){
-                            //NOT a valid number, give option to create:
-                            return '<a href="javascript:add_search_item()" class="suggestion"><i class="fas fa-plus-circle" style="margin: 0 5px;"></i> Create ' + data.query + '</a>';
-                        } else {
-                            //Valid Integer, Give option to go there:
-                            return '<a href="/' + ( $("#platform_search").val().charAt(0)=='#' ? 'intents' : 'entities' ) + '/' + search_body + '" class="suggestion"><i class="far fa-level-up rotate90" style="margin: 0 5px;"></i> Go to ' + data.query
-                        }
-                    }
-                },
-                empty: function (data) {
-                    if(validURL(data.query)){
-                        return en_fetch_canonical_url(data.query, true);
-                    } else if($("#platform_search").val().charAt(0)=='#'){
-                        if(isNaN($("#platform_search").val().substr(1))){
-                            return '<div class="not-found"><i class="fas fa-exclamation-triangle"></i> No BLOG found</div>';
-                        }
-                    } else if($("#platform_search").val().charAt(0)=='@'){
-                        if(isNaN($("#platform_search").val().substr(1))) {
-                            return '<div class="not-found"><i class="fas fa-exclamation-triangle"></i> No PLAY found</div>';
-                        }
-                    } else {
-                        return '<div class="not-found"><i class="fas fa-exclamation-triangle"></i> No BLOG/PLAY found</div>';
-                    }
-                },
-            }
-        }
-    ]);
-
-
-
-    $('#searchForm').on('submit', function(e) {
-        //Only redirect if matching criteria:
-        if(($("#platform_search").val().charAt(0)=='#' || $("#platform_search").val().charAt(0)=='@') && !isNaN($("#platform_search").val().substr(1))){
-            window.location = '/' + ( $("#platform_search").val().charAt(0)=='#' ? 'intents' : 'entities' ) + '/' + $("#platform_search").val().substr(1);
-        } else {
-            alert('No search results found');
-            e.preventDefault();
-        }
-        return false;
-    });
 
 
     //Load Algolia for link replacement search
@@ -135,7 +52,7 @@ $(document).ready(function () {
 
         $(this).val('#'+suggestion.alg_obj_id+' '+suggestion.alg_obj_name);
 
-    }).autocomplete({hint: false, minLength: 2}, [{
+    }).autocomplete({hint: false, minLength: 1}, [{
 
         source: function (q, cb) {
             algolia_index.search(q, {
@@ -154,7 +71,7 @@ $(document).ready(function () {
         },
         templates: {
             suggestion: function (suggestion) {
-                return echo_js_suggestion(suggestion, 0, 0);
+                return echo_js_suggestion(suggestion);
             },
             empty: function (data) {
                 return 'No intents found';
@@ -166,9 +83,9 @@ $(document).ready(function () {
 
 
     $('#topnav li a').click(function (event) {
+
         event.preventDefault();
         var hash = $(this).attr('href').replace('#', '');
-        window.location.hash = hash;
 
         if (hash.length > 0 && $('#tab' + hash).length && !$('#tab' + hash).hasClass("hidden")) {
             //Adjust Header:
@@ -231,12 +148,12 @@ function en_fetch_canonical_url(query_string, not_found){
         if(searchdata.status && searchdata.url_already_existed){
             //URL was detected via PHP, update the search results:
             $('.add-source-suggest').remove();
-            $('.not-found').html('<a href="/play/'+searchdata.algolia_object.alg_obj_id+'" class="suggestion">' + echo_js_suggestion(searchdata.algolia_object, 1, 0)+'</a>');
+            $('.not-found').html('<a href="/play/'+searchdata.algolia_object.alg_obj_id+'" class="suggestion">' + echo_js_suggestion(searchdata.algolia_object)+'</a>');
         }
     });
 
     //We did not find the URL, offer them option to add it:
-    return '<a href="/play/add_source_wizard?url='+ encodeURI(query_string) +'" class="suggestion add-source-suggest"><i class="fas fa-plus-circle" style="margin: 0 5px;"></i> Add Source Wizard</a>'
+    return '<a href="/play/add_source_wizard?url='+ encodeURI(query_string) +'" class="suggestion add-source-suggest"><span class="icon-block-sm"><i class="fas fa-plus-circle" style="margin: 0 5px;"></i></span>Add Source Wizard</a>'
         + ( not_found ? '<div class="not-found"><i class="fas fa-exclamation-triangle"></i> URL not found</div>' : '');
 }
 
@@ -339,13 +256,13 @@ function toggle_superpower(superpower_id){
             $('.superpower-frame-'+superpower_id).toggleClass('active');
 
             //TOGGLE:
-            var index = js_active_superpowers.indexOf(superpower_id);
+            var index = js_assigned_superpowers.indexOf(superpower_id);
             if (index > -1) {
                 //Remove it:
-                js_active_superpowers.splice(index, 1);
+                js_assigned_superpowers.splice(index, 1);
             } else {
                 //Not there, add it:
-                js_active_superpowers.push(superpower_id);
+                js_assigned_superpowers.push(superpower_id);
             }
         }
     });
@@ -361,29 +278,3 @@ function ln_content_word_count(el_textarea, el_counter) {
         $(el_counter).removeClass('overload').text(len);
     }
 }
-
-function add_search_item(){
-
-    //Lock search bar:
-    $('#platform_search').prop("disabled", true);
-
-    //Attemps to create a new intent OR entity based on the value in the search box
-    $.post("/read/add_search_item", { raw_string: $("#platform_search").val() }, function (data) {
-
-        if(data.status){
-
-            setTimeout(function () {
-                //All good, redirect to newly added intent/entity:
-                window.location = data.new_item_url;
-            }, 377);
-
-        } else {
-
-            //We had some error:
-            $('#platform_search').prop("disabled", false);
-            alert('ERROR: ' + data.message);
-
-        }
-    });
-}
-

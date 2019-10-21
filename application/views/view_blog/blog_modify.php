@@ -116,7 +116,7 @@ foreach ($this->config->item('en_all_11021') as $en_id => $m){
                                        id="addintent-c-' . $in['in_id'] . '-1"
                                        placeholder="Add Intent">
                             </div>
-                           <div class="algolia_search_pad in_pad_top hidden"><span>Search existing intents or create a new one...</span></div>
+                           <div class="algolia_search_pad in_pad_top hidden"><span>Search existing blogs or create a new one...</span></div>
                     </div>';
             $this_tab .= '</div>';
 
@@ -151,7 +151,7 @@ foreach ($this->config->item('en_all_11021') as $en_id => $m){
                                id="addintent-c-' . $in['in_id'] . '-0"
                                placeholder="Add Intent">
                     </div>
-                   <div class="algolia_search_pad in_pad_bottom hidden"><span>Search existing intents or create a new one...</span></div>
+                   <div class="algolia_search_pad in_pad_bottom hidden"><span>Search existing blogs or create a new one...</span></div>
             </div>';
             }
 

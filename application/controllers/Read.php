@@ -398,10 +398,10 @@ class Read extends CI_Controller
 
             //Do we have more to show?
             if($has_more_links){
-                $message .= '<div id="link_page_'.$next_page.'"><a href="javascript:void(0);" style="margin:10px 0 72px 0;" class="btn btn-blog grey" onclick="load_link_list(link_filters, link_join_by, '.$next_page.');"><i class="fas fa-plus-circle"></i> Page '.$next_page.'</a></div>';
+                $message .= '<div id="link_page_'.$next_page.'"><a href="javascript:void(0);" style="margin:10px 0 72px 0;" class="btn btn-blog grey" onclick="load_link_list(link_filters, link_join_by, '.$next_page.');"><span class="icon-block-sm"><i class="fas fa-plus-circle"></i></span>Page '.$next_page.'</a></div>';
                 $message .= '';
             } else {
-                $message .= '<div style="margin:10px 0 72px 0;"><i class="far fa-check-circle"></i> All '.$lns_count[0]['total_count'].' link'.echo__s($lns_count[0]['total_count']).' have been loaded</div>';
+                $message .= '<div style="margin:10px 0 72px 0;"><span class="icon-block-sm"><i class="far fa-check-circle"></i></span>All '.$lns_count[0]['total_count'].' link'.echo__s($lns_count[0]['total_count']).' have been loaded</div>';
 
             }
 
@@ -420,82 +420,6 @@ class Read extends CI_Controller
 
 
     }
-
-
-    function add_search_item(){
-
-        //Authenticate Trainer:
-        $session_en = en_auth(null);
-
-        if (!$session_en) {
-
-            return echo_json(array(
-                'status' => 0,
-                'message' => 'Expired Session or Missing Superpower',
-            ));
-
-        } elseif (!isset($_POST['raw_string'])) {
-
-            return echo_json(array(
-                'status' => 0,
-                'message' => 'Missing Link ID',
-            ));
-
-        }
-
-        //See if intent or entity:
-        if(substr($_POST['raw_string'], 0, 1)=='#'){
-
-            $in_outcome = trim(substr($_POST['raw_string'], 1));
-            if(strlen($in_outcome)<2){
-                return echo_json(array(
-                    'status' => 0,
-                    'message' => 'Intent outcome must be at-least 2 characters long.',
-                ));
-            }
-
-            //Validate Intent Outcome:
-            $in_outcome_validation = $this->BLOG_model->in_outcome_validate($in_outcome);
-            if(!$in_outcome_validation['status']){
-                //We had an error, return it:
-                return echo_json($in_outcome_validation);
-            }
-
-            //All good, let's create the intent:
-            $intent_new = $this->BLOG_model->in_create(array(
-                'in_outcome' => $in_outcome_validation['in_cleaned_outcome'],
-                'in_completion_method_entity_id' => 6677, //Read-Only
-                'in_status_entity_id' => 6183, //Intent New
-            ), true, $session_en['en_id']);
-
-            return echo_json(array(
-                'status' => 1,
-                'new_item_url' => '/blog/' . $intent_new['in_id'],
-            ));
-
-        } elseif(substr($_POST['raw_string'], 0, 1)=='@'){
-
-            //Create entity:
-            $added_en = $this->PLAY_model->en_verify_create(trim(substr($_POST['raw_string'], 1)), $session_en['en_id']);
-            if(!$added_en['status']){
-                //We had an error, return it:
-                return echo_json($added_en);
-            } else {
-                //Assign new entity:
-                return echo_json(array(
-                    'status' => 1,
-                    'new_item_url' => '/play/' . $added_en['en']['en_id'],
-                ));
-            }
-
-        } else {
-            return echo_json(array(
-                'status' => 0,
-                'message' => 'Invalid string. Must start with either # or @.',
-            ));
-        }
-    }
-
 
 
     function link_json($ln_id)

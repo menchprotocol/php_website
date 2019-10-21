@@ -1047,6 +1047,7 @@ function update_algolia($input_obj_type = null, $input_obj_id = 0, $return_row_o
     }
 
 
+    $featured_topic_ids = featured_topic_ids();
     $all_export_rows = array();
     $all_db_rows = array();
     $synced_count = 0;
@@ -1136,7 +1137,7 @@ function update_algolia($input_obj_type = null, $input_obj_id = 0, $return_row_o
                 array_push($export_row['_tags'], 'alg_author_' . $db_row['en_id']);
 
                 //Add keywords:
-                $has_public_entity_parent = false;
+                $has_featured_parent_en = false;
                 $export_row['alg_obj_keywords'] = '';
                 foreach ($db_row['en__parents'] as $ln) {
 
@@ -1144,8 +1145,8 @@ function update_algolia($input_obj_type = null, $input_obj_id = 0, $return_row_o
                     array_push($export_row['_tags'], 'alg_author_' . $ln['en_id']);
 
 
-                    if(!$has_public_entity_parent && in_array($ln['en_id'], $CI->config->item('en_ids_10571'))){
-                        $has_public_entity_parent = true;
+                    if(!$has_featured_parent_en && in_array($ln['en_id'], $CI->config->item('en_ids_10571'))){
+                        $has_featured_parent_en = true;
                     }
 
                     //Add content to keywords if any:
@@ -1158,8 +1159,8 @@ function update_algolia($input_obj_type = null, $input_obj_id = 0, $return_row_o
                 $export_row['alg_obj_keywords'] = trim(strip_tags($export_row['alg_obj_keywords']));
 
 
-                if($has_public_entity_parent && in_array(intval($db_row['en_status_entity_id']), $CI->config->item('en_ids_7357'))){ //Entity Statuses Public
-                    array_push($export_row['_tags'], 'alg_for_users');
+                if($has_featured_parent_en && in_array(intval($db_row['en_status_entity_id']), $CI->config->item('en_ids_7357'))){
+                    array_push($export_row['_tags'], 'alg_is_published_featured');
                 }
 
             } elseif ($loop_obj == 'in') {
@@ -1195,9 +1196,16 @@ function update_algolia($input_obj_type = null, $input_obj_id = 0, $return_row_o
                 }
 
 
-                //If Public Status:
-                if(in_array(intval($db_row['in_status_entity_id']), $CI->config->item('en_ids_7355')) && in_array($db_row['in_completion_method_entity_id'], $CI->config->item('en_ids_7582'))){
-                    array_push($export_row['_tags'], 'alg_for_users');
+                //Set published status if featured:
+                if(count($CI->READ_model->ln_fetch(array(
+                        'in_completion_method_entity_id IN (' . join(',', $CI->config->item('en_ids_7582')) . ')' => null, //READ LOGIN REQUIRED
+                        'in_status_entity_id IN (' . join(',', $CI->config->item('en_ids_7355')) . ')' => null, //Intent Statuses Public
+                        'ln_status_entity_id IN (' . join(',', $CI->config->item('en_ids_7359')) . ')' => null, //Link Statuses Public
+                        'ln_type_entity_id' => 4601, //BLOG KEYWORDS
+                        'ln_child_intent_id' => $db_row['in_id'],
+                        'ln_parent_entity_id IN (' . join(',', $featured_topic_ids) . ')' => null,
+                    ), array('in_child')))){
+                    array_push($export_row['_tags'], 'alg_is_published_featured');
                 }
 
             }

@@ -11,7 +11,7 @@ function echo_en_load_more($page, $limit, $en__child_count)
     //Regular section:
     $max_entities = (($page + 1) * $limit);
     $max_entities = ($max_entities > $en__child_count ? $en__child_count : $max_entities);
-    $ui .= '<i class="fas fa-plus-circle"></i> Load ' . (($page * $limit) + 1) . ' - ' . $max_entities . ' from ' . $en__child_count . ' total';
+    $ui .= '<span class="icon-block-sm"><i class="fas fa-plus-circle"></i></span>Load ' . (($page * $limit) + 1) . ' - ' . $max_entities . ' from ' . $en__child_count . ' total';
     $ui .= '</a>';
 
     return $ui;
@@ -1351,12 +1351,12 @@ function echo_tree_actionplan($in, $autoexpand){
     return $return_html;
 }
 
+
 function echo_en_messages($ln){
 
     $CI =& get_instance();
     $session_en = en_auth();
     $en_all_4737 = $CI->config->item('en_all_4737'); // Intent Statuses
-    $en_all_4485 = $CI->config->item('en_all_4485');
     $en_all_6186 = $CI->config->item('en_all_6186'); //Link Statuses
 
     $ui = '<div class="entities-msg">';
@@ -1372,19 +1372,17 @@ function echo_en_messages($ln){
     $ui .= '<li><a class="btn btn-blog button-max" style="border:2px solid #FFDF0F !important;" href="/blog/' . $ln['ln_child_intent_id'] . '" target="_parent" title="Message Intent: '.$ln['in_outcome'].'" data-toggle="tooltip" data-placement="top">'.$en_all_4737[$ln['in_status_entity_id']]['m_icon'].'&nbsp; '.$en_all_7585[$ln['in_completion_method_entity_id']]['m_icon'].' '.$ln['in_outcome'].'</a></li>';
 
     //READ HISTORY:
+    /*
     $count_msg_trs = $CI->READ_model->ln_fetch(array(
         '( ln_id = ' . $ln['ln_id'] . ' OR ln_parent_link_id = ' . $ln['ln_id'] . ')' => null,
     ), array(), 0, 0, array(), 'COUNT(ln_id) as totals');
     $ui .= '<li><a class="btn btn-blog" style="border:2px solid #FFDF0F !important;" href="/read/history/' . $ln['ln_id'] . '" target="_parent"><i class="fas fa-link"></i> '.echo_number($count_msg_trs[0]['totals']).'</a></li>';
+    */
 
-    //Intent Note Type:
-    $ui .= '<li style="margin: 0 3px 0 0;"><span title="'.$en_all_4485[$ln['ln_type_entity_id']]['m_name'].': '.$en_all_4485[$ln['ln_type_entity_id']]['m_desc'].'" data-toggle="tooltip" data-placement="top">'.$en_all_4485[$ln['ln_type_entity_id']]['m_icon'].'</span></li>';
 
     //Link Status:
     $ui .= '<li style="margin: 0 3px 0 0;"><span title="'.$en_all_6186[$ln['ln_status_entity_id']]['m_name'].': '.$en_all_6186[$ln['ln_status_entity_id']]['m_desc'].'" data-toggle="tooltip" data-placement="top">'.$en_all_6186[$ln['ln_status_entity_id']]['m_icon'].'</span></li>';
 
-    //Order:
-    $ui .= '<li style="margin: 0 3px 0 0;"><span title="Order messages" data-toggle="tooltip" data-placement="top"><i class="fas fa-sort"></i>' . echo_ordinal_number($ln['ln_order']) . '</span></li>';
 
     $ui .= '<li style="clear: both;">&nbsp;</li>';
 
@@ -1712,7 +1710,7 @@ function echo_radio_entities($parent_en_id, $child_en_id, $enable_mulitiselect){
     //Did we have too many items?
     if($count>=$show_max){
         //Show "Show more" button
-        $ui .= '<a href="javascript:void(0);" class="list-group-item extra-items-'.$parent_en_id.'" onclick="$(\'.extra-items-'.$parent_en_id.'\').toggleClass(\'hidden\')"><i class="fas fa-plus-circle"></i> Show '.($count-$show_max).' more</a>';
+        $ui .= '<a href="javascript:void(0);" class="list-group-item extra-items-'.$parent_en_id.'" onclick="$(\'.extra-items-'.$parent_en_id.'\').toggleClass(\'hidden\')"><span class="icon-block-sm"><i class="fas fa-plus-circle"></i></span>Show '.($count-$show_max).' more</a>';
     }
 
     $ui .= '</div>';
@@ -2103,8 +2101,7 @@ function echo_in($in, $in_linked_id = 0, $is_parent = false)
      *
      * */
 
-    $ui .= '<span class="pull-right">';
-
+    $ui .= '<div style="float:right; display:inline-block;  padding-left:5px;" class="'. require_superpower(10989 /* PEGASUS */) .'">';
 
 
     //Do we have intent parents loaded in our data-set?
@@ -2128,52 +2125,20 @@ function echo_in($in, $in_linked_id = 0, $is_parent = false)
     }
 
 
-    $ui .= '<span style="display: inline-block; float: right;">'; //Start of 5x Action Buttons
-
-
-
-
-    $count_in_notes = $CI->READ_model->ln_fetch(array(
-        'ln_status_entity_id IN (' . join(',', $CI->config->item('en_ids_7360')) . ')' => null, //Link Statuses Active
-        'ln_type_entity_id IN (' . join(',', $CI->config->item('en_ids_4485')) . ')' => null, //All Intent Notes
-        'ln_child_intent_id' => $in['in_id'],
-    ), array(), 0, 0, array(), 'COUNT(ln_id) as totals');
-
-    $message_counters = '<span class="btn-counter"><span class="in-notes-count-' . $in['in_id'] . '">' . $count_in_notes[0]['totals'] .'</span></span>';
 
     //Can this trainer train this intent?
     if($can_train){
 
-        /*
-         *
-         * Count intent notes based on two groups:
-         *
-         * 1. Messages
-         * 2. Everything else
-         *
-         * */
-
-        //Intent modify:
-        $in__metadata_max_seconds = (isset($in_metadata['in__metadata_max_seconds']) ? $in_metadata['in__metadata_max_seconds'] : 0);
-        $ui .= '<a class="badge badge-primary white-primary is_not_bg" onclick="in_modify_load(' . $in['in_id'] . ',' . $ln_id . ')" style="margin:-2px -8px 0 5px; width:40px;" href="#loadmodify-' . $in['in_id'] . '-' . $ln_id . '" data-toggle="tooltip" title="Intent completion cost. Click to modify intent" data-placement="bottom"><span class="btn-counter slim-time t_estimate_' . $in['in_id'] . '" tree-max-seconds="' . $in__metadata_max_seconds . '" intent-seconds="' . $in['in_completion_seconds'] . '">'.( $in__metadata_max_seconds > 0 ? echo_time_hours($in__metadata_max_seconds , true) : 0 ).'</span><i class="fas fa-cog"></i></a> &nbsp;';
+        //Modify Intent:
+        $ui .= '<a href="javascript:void(0);" onclick="in_modify_load(' . $in['in_id'] . ',' . $ln_id . ')" class="btn btn-primary btn-blog"><i class="fas fa-cog"></i></a></div>';
 
     } else {
 
         //Give trainer option to join intention by up-voting it:
-        $ui .= '<a class="badge badge-primary white-primary is_not_bg" onclick="/blog/in_submit_upvote/'.$in['in_id'].'" style="margin:-2px -8px 0 3px; width:82px;" href="#" data-toggle="tooltip" title="Join this intention by casting your up-vote" data-placement="bottom">'.$message_counters.'<i class="far fa-thumbs-up"></i> JOIN</a> &nbsp;';
+        $ui .= '<a class="badge badge-primary white-primary is_not_bg" onclick="/blog/in_submit_upvote/'.$in['in_id'].'" style="margin:-2px -8px 0 3px; width:82px;" href="#" data-toggle="tooltip" title="Join this intention by casting your up-vote" data-placement="bottom"><i class="far fa-thumbs-up"></i> JOIN</a> &nbsp;';
 
     }
 
-
-
-
-    //Intent Links/History:
-    $en_all_7368 = $CI->config->item('en_all_7368'); //Trainer App
-    $count_in_trs = $CI->READ_model->ln_fetch(array(
-        '(ln_parent_intent_id=' . $in['in_id'] . ' OR ln_child_intent_id=' . $in['in_id'] . ($ln_id > 0 ? ' OR ln_parent_link_id=' . $ln_id : '') . ')' => null,
-    ), array(), 0, 0, array(), 'COUNT(ln_id) as totals');
-    //Show link to load these links:
-    $ui .= '<span class="'.require_superpower(10989 /* PEGASUS */).'"><a href="/read/history?any_in_id=' . $in['in_id'] . '&ln_parent_link_id=' . $ln_id . '" class="badge badge-primary is_not_bg" style="width:40px; margin:-3px 0px 0 4px; border:2px solid #FFDF0F !important;"><span class="btn-counter">' . echo_number($count_in_trs[0]['totals']) . '</span>'.$en_all_7368[6205]['m_icon'].'</a></span>';
 
 
 
@@ -2201,9 +2166,12 @@ function echo_in($in, $in_linked_id = 0, $is_parent = false)
 
 
 
-    $ui .= '</span>'; //End of 5x Action Buttons
 
-    $ui .= '</span>'; //End of right column
+    $ui .= '</div>';
+
+
+
+
 
 
     $ui .= '</div>';
@@ -2350,6 +2318,7 @@ function echo_en($en, $is_parent = false)
 
 
 
+
     //Have we counted the Entity Children?
     if (!isset($en['en__child_count'])) {
 
@@ -2370,8 +2339,13 @@ function echo_en($en, $is_parent = false)
 
     }
 
-    $ui .= '<a style="float:right; display:inline-block;" class="btn btn-primary btn-play" href="/play/' . $en['en_id']. '">' . ($en['en__child_count'] > 0 ? '<span class="btn-counter '.require_superpower(10989 /* PEGASUS */).'" title="' . number_format($en['en__child_count'], 0) . ' Entities">' . echo_number($en['en__child_count']) . '</span>' : '') . ' <i class="fas fa-angle-right"></i></a>';
+    //Modify Entity:
+    $ui .= '<div style="float:right; display:inline-block;  padding-left:5px;" class="'. require_superpower(10989 /* PEGASUS */) .'"><a href="javascript:void(0);" onclick="en_modify_load(' . $en['en_id'] . ',' . $ln_id . ')" class="btn btn-primary btn-play"><i class="fas fa-cog"></i></a></div>';
 
+
+
+
+    $ui .= '<div style="float:right; display:inline-block;" class=""><a class="btn btn-primary btn-play" href="/play/' . $en['en_id']. '">' . ($en['en__child_count'] > 0 ? '<span class="btn-counter '.require_superpower(10989 /* PEGASUS */).'" title="' . number_format($en['en__child_count'], 0) . ' Entities">' . echo_number($en['en__child_count']) . '</span>' : '') . ' <i class="fas fa-angle-right"></i></a></div>';
 
 
     $ui .= '</div>';

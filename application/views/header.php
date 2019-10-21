@@ -47,9 +47,8 @@ $assigned_superpowers = ( isset($session_en['en__parents']) ? filter_array($sess
     echo '<script type="text/javascript">';
 
     //PLAYER
-    echo ' var js_active_superpowers = ' . json_encode($this->session->userdata('active_superpowers')) . '; ';
+    echo ' var js_assigned_superpowers = ' . json_encode($this->session->userdata('active_superpowers')) . '; ';
     echo ' var js_pl_id = ' . ( isset($session_en['en_id']) ? $session_en['en_id'] : 0 ) . '; ';
-    echo ' var algolia_filter = \'\'; '; //alg_obj_is_in=1 AND _tags:alg_for_users
 
     //LOAD JS CACHE:
     foreach($this->config->item('en_all_11054') as $en_id => $m){

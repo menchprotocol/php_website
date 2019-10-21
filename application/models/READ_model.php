@@ -3084,7 +3084,6 @@ class READ_model extends CI_Model
          * */
         if ($strict_validation && count($string_references['ref_urls']) > 0) {
 
-
             //BUGGY
             //No entity linked, but we have a URL that we should turn into an entity if not already:
             $url_entity = $this->PLAY_model->en_sync_url($string_references['ref_urls'][0], ( isset($recipient_en['en_id']) ? $recipient_en['en_id'] : 0 ));
@@ -3174,7 +3173,7 @@ class READ_model extends CI_Model
 
         /*
          *
-         * Process Possible Referenced Entity
+         * Referenced Entity
          *
          * */
 
@@ -3186,9 +3185,7 @@ class READ_model extends CI_Model
 
         //Where is this request being made from? Public landing pages will have some restrictions on what they displat:
         $is_landing_page = is_numeric(str_replace('_','', $this->uri->segment(1)));
-        $is_action_plan = ($this->uri->segment(1)=='user_app' && $this->uri->segment(2)=='actionplan_load');
-        $is_entity = ($this->uri->segment(1)=='entities');
-        $is_user_message = ($is_landing_page || $is_action_plan);
+        $is_user_message = ($is_landing_page || $this->uri->segment(1)=='read');
 
         if (count($string_references['ref_entities']) > 0) {
 
@@ -3223,7 +3220,8 @@ class READ_model extends CI_Model
             $entity_appendix = null;
 
             //Determine what type of Media this reference has:
-            if(!$is_entity){
+            if(!($this->uri->segment(1)=='play' && $this->uri->segment(2)==$string_references['ref_entities'][0])){
+
                 foreach ($ens[0]['en__parents'] as $parent_en) {
 
                     //Define what type of entity parent link content should be displayed up-front in Messages
@@ -4466,7 +4464,7 @@ class READ_model extends CI_Model
             $search_index = load_algolia('alg_index');
             $res = $search_index->search($master_command, [
                 'hitsPerPage' => 6, //Max results
-                'filters' => 'alg_obj_is_in=1 AND _tags:alg_for_users',
+                'filters' => 'alg_obj_is_in=1 AND _tags:alg_is_published_featured',
             ]);
             $search_results = $res['hits'];
 

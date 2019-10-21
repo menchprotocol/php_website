@@ -29,23 +29,6 @@ $(document).ready(function () {
 
 
 
-
-    //Do we need to auto load anything?
-    if (window.location.hash) {
-        var hash = window.location.hash.substring(1); //Puts hash in variable, and removes the # character
-        var hash_parts = hash.split("-");
-        if (hash_parts.length > 0) {
-            //Fetch level if available:
-            if (hash_parts[0] == 'intentnotes') {
-
-            } else if (hash_parts[0] == 'loadmodify') {
-                in_modify_load(hash_parts[1], hash_parts[2]);
-            }
-        }
-    }
-
-
-
 });
 
 
@@ -245,9 +228,6 @@ function in_ui_remove(in_id,ln_id){
 
     //Fetch parent intent before removing element from DOM:
     var parent_in_id = parseInt($('.intent_line_' + in_id).attr('parent-intent-id'));
-
-    //Remove Hash:
-    window.location.hash = '#';
 
     //Reset opacity:
     remove_all_highlights();

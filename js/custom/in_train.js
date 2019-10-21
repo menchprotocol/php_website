@@ -74,7 +74,7 @@ function in_load_search(focus_element, is_in_parent, shortcut) {
 
         in_link_or_create($(this).attr('intent-id'), is_in_parent, suggestion.alg_obj_id);
 
-    }).autocomplete({hint: false, minLength: 2, keyboardShortcuts: [shortcut]}, [{
+    }).autocomplete({hint: false, minLength: 1, keyboardShortcuts: [shortcut]}, [{
 
         source: function (q, cb) {
 
@@ -83,7 +83,7 @@ function in_load_search(focus_element, is_in_parent, shortcut) {
                 return;
             } else {
                 algolia_index.search(q, {
-                    filters: ( js_active_superpowers.includes(10989 /* PEGASUS */) ? '' : '_tags:alg_for_users AND alg_obj_status=6184 AND') + ' alg_obj_is_in=1',
+                    filters: ( js_assigned_superpowers.includes(10989 /* PEGASUS */) ? '' : '_tags:alg_is_published_featured AND') + ' alg_obj_is_in=1',
                     hitsPerPage: 7,
                 }, function (error, content) {
                     if (error) {
@@ -100,18 +100,18 @@ function in_load_search(focus_element, is_in_parent, shortcut) {
         },
         templates: {
             suggestion: function (suggestion) {
-                return echo_js_suggestion(suggestion, 0, 0);
+                return echo_js_suggestion(suggestion);
             },
             header: function (data) {
                 if (!($(focus_element).val().charAt(0)=='#') && !data.isEmpty) {
-                    return '<a href="javascript:in_link_or_create(' + parseInt($(focus_element).attr('intent-id')) + ','+is_in_parent+',0)" class="suggestion"><span><i class="fas fa-plus-circle add-plus"></i></span> <b>' + data.query + '</b></a>';
+                    return '<a href="javascript:in_link_or_create(' + parseInt($(focus_element).attr('intent-id')) + ','+is_in_parent+',0)" class="suggestion"><span class="icon-block-sm"><i class="fas fa-plus-circle add-plus"></i></span><b>' + data.query + '</b></a>';
                 }
             },
             empty: function (data) {
                 if($(focus_element).val().charAt(0)=='#'){
-                    return '<a href="javascript:in_link_or_create(' + parseInt($(focus_element).attr('intent-id')) + ','+is_in_parent+',0)" class="suggestion"><span><i class="fas fa-link"></i></span> Link to <b>' + data.query + '</b></a>';
+                    return '<a href="javascript:in_link_or_create(' + parseInt($(focus_element).attr('intent-id')) + ','+is_in_parent+',0)" class="suggestion"><span class="icon-block-sm"><i class="fas fa-link"></i></span>Link to <b>' + data.query + '</b></a>';
                 } else {
-                    return '<a href="javascript:in_link_or_create(' + parseInt($(focus_element).attr('intent-id')) + ','+is_in_parent+',0)" class="suggestion"><span><i class="fas fa-plus-circle add-plus"></i></span> <b>' + data.query + '</b></a>';
+                    return '<a href="javascript:in_link_or_create(' + parseInt($(focus_element).attr('intent-id')) + ','+is_in_parent+',0)" class="suggestion"><span class="icon-block-sm"><i class="fas fa-plus-circle add-plus"></i></span><b>' + data.query + '</b></a>';
                 }
             },
         }

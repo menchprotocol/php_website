@@ -102,8 +102,8 @@ li a {
 }
 
 /* FUNCTIONAL */
-.hidden { display: none !important; }
 .inline-block{ display: inline-block !important; }
+.hidden { display: none !important; }
 .icon-block{ min-width: 34px; display: inline-block; text-align: center; }
 .icon-block-sm{ min-width:30px; display: inline-block; text-align: center; }
 .icon-block-lg{ min-width:50px; display: inline-block; text-align: center; }
@@ -130,6 +130,77 @@ li a {
     background-color:#FFFFFF;
 }
 
+#searchresults{
+    background-color: #FFFFFF;
+    border-radius: 3px;
+    padding: 10px;
+    width: 100%;
+    height: 500px;
+}
+
+
+.algolia_search_pad{
+    height: 295px;
+}
+
+.algolia_search_pad span{
+    color: #999;
+    padding-top:125px;
+    display: block;
+    text-align: center;
+    font-size: 1.1em;
+}
+
+.algolia-autocomplete .aa-dropdown-menu, #searchresults aa-dropdown-menu {
+    width: 100%;
+    border-top: none;
+    font-size: 1em;
+    font-weight: normal;
+    background-color: #FFFFFF;
+    z-index: 9999 !important;
+}
+
+.fixed-top, .fixed-bottom {
+    z-index: 9999999 !important;
+}
+
+.stats-select{
+    margin: 0 auto;
+}
+
+.algolia-autocomplete .aa-dropdown-menu .aa-suggestion, #searchresults .aa-dropdown-menu .aa-suggestion {
+    cursor: pointer !important;
+    padding: 5px 4px !important;
+    color: #070707 !important;
+    border-top: 1px solid #F7F7F7 !important;
+    font-size: 18px !important;
+    font-weight: 500 !important;
+    line-height: 120% !important;
+    margin: 0 !important;
+}
+
+.algolia-autocomplete .aa-dropdown-menu .aa-suggestion.aa-cursor {
+    background-color: #070707;
+    color: #FFFFFF !important;
+    text-decoration: none;
+    line-height: 120% !important;
+}
+
+.algolia-autocomplete .aa-dropdown-menu .aa-suggestion em {
+    font-weight: bold;
+    font-style: normal;
+}
+
+.suggestion {
+    font-size: 18px;
+    display: block;
+    padding:8px 4px 6px;
+    line-height: 120% !important;
+}
+
+.suggestion:hover {
+    background-color: #FFDF0F;
+}
 
 
 .en-item:nth-of-type(odd) {
@@ -159,7 +230,13 @@ li a {
     margin: 0 auto;
 }
 
-
+.grey-box {
+    padding:0;
+    margin: 25px 0;
+    display: block;
+    overflow-y: auto;
+    overflow-x: hidden;
+}
 
 /* MENCH Colors */
 .blue, .isblue, .isblue a, .play, .play .fas, .play .far, .play .fal           { color:#008DF2 !important; }
@@ -340,7 +417,7 @@ li a {
     margin-left:5px;
     margin-right:4px;
 }
-.footer-bottom #searchFrontForm, .algolia-autocomplete{
+.footer-bottom #searchFrontForm, .algolia-autocomplete, .algolia-autocomplete .aa-input, .algolia-autocomplete .aa-hint{
      width: 100%;
 }
 .footer-bottom td {

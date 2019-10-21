@@ -25,7 +25,7 @@ function js_ln_create(new_ln_data){
 }
 
 
-function echo_js_suggestion(alg_obj, is_top, is_basic){
+function echo_js_suggestion(alg_obj){
 
     //Determine object type:
     var obj_type = ( parseInt(alg_obj.alg_obj_is_in)==1 ? 'in' : 'en' );
@@ -38,12 +38,7 @@ function echo_js_suggestion(alg_obj, is_top, is_basic){
 
     var obj_full_name = ( alg_obj._highlightResult && alg_obj._highlightResult.alg_obj_name.value ? alg_obj._highlightResult.alg_obj_name.value : alg_obj.alg_obj_name );
 
-    if(is_basic){
-        return obj_full_name;
-    } else {
-        return '<span class="double-icon-search is-top-'+is_top+'"><span class="icon-main">' + alg_obj.alg_obj_icon + '</span><span class="icon-top-right">' + focus_field[alg_obj.alg_obj_status]["m_icon"] + '</span></span> ' + obj_full_name;
-    }
-
+    return '<span class="icon-block-sm">' + alg_obj.alg_obj_icon + '</span>' + obj_full_name;
 }
 
 
@@ -163,8 +158,8 @@ $(document).ready(function () {
     });
 
 
+    //Prevent search submit:
     $('#searchFrontForm').on('submit', function(e) {
-        //Only redirect if matching criteria:
         e.preventDefault();
         return false;
     });
@@ -174,39 +169,77 @@ $(document).ready(function () {
     $("#mench_search").on('autocomplete:selected', function (event, suggestion, dataset) {
 
         $('#mench_search').prop("disabled", true).val('Loading...').css('background-color','#F7F7F7').css('font-size','0.8em');
-        window.location = "/" + suggestion.alg_obj_id;
 
-    }).autocomplete({hint: false, minLength: 1, autoselect: true, keyboardShortcuts: ['s'], dropdownMenuContainer: $('#searchresults')}, [
+        if (parseInt(suggestion.alg_obj_is_in)==1) {
+            window.location = "/read/" + suggestion.alg_obj_id;
+        } else {
+            window.location = "/play/" + suggestion.alg_obj_id;
+        }
+
+    }).autocomplete({hint: true, minLength: 1, autoselect: true, keyboardShortcuts: ['s'], dropdownMenuContainer: $('#searchresults')}, [
         {
             source: function (q, cb) {
-                //Append filters:
-                algolia_index.search(q, {
-                    hitsPerPage: 10,
-                    filters: algolia_filter,
-                }, function (error, content) {
-                    if (error) {
-                        cb([]);
-                        return;
-                    }
-                    cb(content.hits, content);
-                });
+                //Do not search if specific command:
+                if (($("#mench_search").val().charAt(0) == '#' || $("#mench_search").val().charAt(0) == '@') && !isNaN($("#mench_search").val().substr(1))) {
+                    cb([]);
+                    return;
+                } else {
+
+                    //Append filters:
+                    algolia_index.search(q, {
+                        hitsPerPage: 14,
+                        filters:' alg_obj_is_in' + ($("#mench_search").val().charAt(0) == '#' ? '=1' : ($("#mench_search").val().charAt(0) == '@' ? '=0' : '>=0')) + ( js_assigned_superpowers.includes(10989 /* PEGASUS */) ? '' : ' AND _tags:alg_is_published_featured'),
+                    }, function (error, content) {
+                        if (error) {
+                            cb([]);
+                            return;
+                        }
+                        cb(content.hits, content);
+                    });
+                }
             },
-            displayKey: function (suggestion) {
-                return '';
+            displayKey: function(suggestion) {
+                return ""
             },
             templates: {
                 suggestion: function (suggestion) {
-                    return echo_js_suggestion(suggestion, 1, 1);
+                    return echo_js_suggestion(suggestion);
                 },
-                footer: function (data) {
-                    return '<div class="not-found"><a href="/" class="suggestion"><i class="far fa-sitemap"></i> Browse All</a></div>';
+                header: function (data) {
+                    if(validURL(data.query)){
+
+                        return en_fetch_canonical_url(data.query, false);
+
+                    } else if($("#mench_search").val().charAt(0)=='#' || $("#mench_search").val().charAt(0)=='@'){
+
+                        //See what follows the @/# sign to determine if we should create OR redirect:
+                        var search_body = $("#mench_search").val().substr(1);
+                        if(!isNaN(search_body)){
+                            //Valid Integer, Give option to go there:
+                            return '<a href="/' + ( $("#mench_search").val().charAt(0)=='#' ? 'intents' : 'entities' ) + '/' + search_body + '" class="suggestion"><i class="far fa-level-up rotate90" style="margin: 0 5px;"></i> Go to ' + data.query
+                        }
+
+                    }
                 },
                 empty: function (data) {
-                    return '<div class="not-found"><i class="fas fa-exclamation-triangle"></i>No results</div>';
+                    if(validURL(data.query)){
+                        return en_fetch_canonical_url(data.query, true);
+                    } else if($("#mench_search").val().charAt(0)=='#'){
+                        if(isNaN($("#mench_search").val().substr(1))){
+                            return '<div class="not-found"><i class="fas fa-exclamation-triangle"></i> No BLOG found</div>';
+                        }
+                    } else if($("#mench_search").val().charAt(0)=='@'){
+                        if(isNaN($("#mench_search").val().substr(1))) {
+                            return '<div class="not-found"><i class="fas fa-exclamation-triangle"></i> No PLAY found</div>';
+                        }
+                    } else {
+                        return '<div class="not-found"><i class="fas fa-exclamation-triangle"></i> No results found</div>';
+                    }
                 },
             }
         }
     ]);
+
 
 
 });

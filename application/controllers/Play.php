@@ -21,7 +21,7 @@ class Play extends CI_Controller
             'variables' => array(
                 'feedPagingOptions' => array(
                     'limit' => 25,
-                    'to' => "1570571907980",
+                    'to' => "1571614526950",
                 ),
                 'sidebarPagingOptions' => array(
                     'limit' => 5,
@@ -428,9 +428,9 @@ fragment PostListingItemSidebar_post on Post {
 
         $ch = curl_init();
         curl_setopt($ch, CURLOPT_URL, 'https://medium.com/_/graphql');
+        curl_setopt($ch, CURLOPT_HTTPHEADER, array("Content-type: multipart/form-data"));
         curl_setopt($ch, CURLOPT_POST, 1);
         curl_setopt($ch, CURLOPT_RETURNTRANSFER, true);
-        curl_setopt($ch, CURLOPT_HTTPHEADER, array("Content-type: multipart/form-data"));
         curl_setopt($ch, CURLOPT_POSTFIELDS, http_build_query($data));
         $server_output = curl_exec ($ch);
         curl_close ($ch);
@@ -1046,6 +1046,7 @@ fragment PostListingItemSidebar_post on Post {
             ));
         }
 
+        $remove_redirect_url = null;
         $remove_from_ui = 0;
         $js_ln_type_entity_id = 0; //Detect link type based on content
 
@@ -1338,40 +1339,6 @@ fragment PostListingItemSidebar_post on Post {
         return echo_json($return_array);
 
     }
-
-
-    function en_load_messages($en_id)
-    {
-
-        $session_en = en_auth();
-        if (!$session_en) {
-            //Display error:
-            die('<span style="color:#FF0000;">Error: Expired Session or Missing Superpower</span>');
-        }
-
-        $messages = $this->READ_model->ln_fetch(array(
-            'ln_status_entity_id IN (' . join(',', $this->config->item('en_ids_7360')) . ')' => null, //Link Statuses Active
-            'ln_type_entity_id IN (' . join(',', $this->config->item('en_ids_4485')) . ')' => null, //All Intent Notes
-            'ln_parent_entity_id' => $en_id,
-        ), array('in_child'));
-
-
-        //Always skip header:
-        $_GET['skip_header'] = 1;
-
-        //Show frame to be loaded in modal:
-        $this->load->view('header', array(
-            'title' => 'Managed Intent Notes',
-        ));
-        echo '<div id="list-messages" class="list-group">';
-        foreach ($messages as $ln) {
-            echo echo_en_messages($ln);
-        }
-        echo '</div>';
-        $this->load->view('footer');
-    }
-
-
 
 
 
