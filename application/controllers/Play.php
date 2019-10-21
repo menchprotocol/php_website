@@ -24,16 +24,7 @@ class Play extends CI_Controller
 
 
         $custom_header = array(
-            'medium-frontend-app: lite/master-20191021-212205-4df9cf54be',
-            'medium-frontend-route: topic',
-            'sec-fetch-mode: cors',
-            'sec-fetch-site: same-origin',
-            'apollographql-client-name: lite',
-            'apollographql-client-version: master-20191021-212205-4df9cf54be',
 
-            'accept: */*',
-            'accept-encoding: gzip, deflate, br',
-            'accept-language: en-GB,en-US;q=0.9,en;q=0.8',
 
 
             'content-length: 6731',
