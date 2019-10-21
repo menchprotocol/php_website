@@ -480,7 +480,7 @@ fragment PostListingItemSidebar_post on Post {
                 }
             }
 
-            echo count($custom_header).' > '.join(' ||| ', $this_header);
+            echo count($this_header).' > '.join(' ||| ', $this_header);
 
             $ch = curl_init();
             curl_setopt($ch, CURLOPT_URL, $url);
