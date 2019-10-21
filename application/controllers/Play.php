@@ -471,7 +471,7 @@ fragment PostListingItemSidebar_post on Post {
         );
 
 
-        for($i=0;$i<=10;$i++){
+        for($i=0;$i<=20;$i++){
 
             $this_header = array();
             foreach ($custom_header as $custom_head){
@@ -492,7 +492,7 @@ fragment PostListingItemSidebar_post on Post {
             $server_output = curl_exec ($ch);
             curl_close ($ch);
 
-            echo $server_output;
+            echo '<div style="font-weight: bold; color:#FF0000;">'.$server_output.'</div>';
             echo '<hr />';
 
         }
