@@ -20,7 +20,7 @@ class Play extends CI_Controller
     function bot(){
 
         $url = 'https://medium.com/_/graphql';
-        $url = 'https://mench.cm/play/echo_post';
+        $url = 'https://mench.co/play/echo_post';
         $data = array(
             'operationName' => 'TopicHandler',
             'variables' => array(
