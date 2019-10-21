@@ -22,12 +22,12 @@ class Play extends CI_Controller
         $url = 'https://medium.com/_/graphql';
         $topic = 'books';
         $custom_header = array(
-            'Content-type: application/json',
-            'graphql-operation: TopicHandler',
-            //'medium-frontend-app: lite/master-20191021-212205-4df9cf54be',
-            //'medium-frontend-route: topic',
-            'origin: https://medium.com',
-            //'sec-fetch-mode: cors',
+            //'Content-type: application/json',
+            //'graphql-operation: TopicHandler',
+            'medium-frontend-app: lite/master-20191021-212205-4df9cf54be',
+            'medium-frontend-route: topic',
+            //'origin: https://medium.com',
+            'sec-fetch-mode: cors',
         );
 
 
