@@ -20,17 +20,28 @@ class Play extends CI_Controller
     function bot(){
 
         $url = 'https://medium.com/_/graphql';
+        $topic = 'books';
+        $custom_header = array(
+            'Content-type: application/json',
+            'graphql-operation: TopicHandler',
+            'medium-frontend-app: lite/master-20191021-212205-4df9cf54be',
+            'medium-frontend-route: topic',
+            'origin: https://medium.com',
+            'sec-fetch-mode: cors',
+        );
+
+
         $data = array(
             'operationName' => 'TopicHandler',
             'variables' => array(
                 'feedPagingOptions' => array(
                     'limit' => 25,
-                    'to' => "1571614526950",
+                    'to' => '1571614526950',
                 ),
                 'sidebarPagingOptions' => array(
                     'limit' => 5,
                 ),
-                'topicSlug' => "books",
+                'topicSlug' => $topic,
             ),
             'query' => 'query TopicHandler($topicSlug: ID!, $feedPagingOptions: PagingOptions, $sidebarPagingOptions: PagingOptions) {
   topic(slug: $topicSlug) {
@@ -430,16 +441,19 @@ fragment PostListingItemSidebar_post on Post {
 }',
         );
 
+
         $ch = curl_init();
         curl_setopt($ch, CURLOPT_URL, $url);
         curl_setopt($ch, CURLOPT_POST, 1);
         curl_setopt($ch, CURLOPT_RETURNTRANSFER, true);
         curl_setopt($ch, CURLOPT_POSTFIELDS, http_build_query($data));
+        curl_setopt($ch, CURLOPT_REFERER, 'https://medium.com/topic/'.$topic);
+        curl_setopt($ch, CURLOPT_USERAGENT, 'Mozilla/5.0 (Macintosh; Intel Mac OS X 10_14_6) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/77.0.3865.120 Safari/537.36');
+        curl_setopt($ch, CURLOPT_HTTPHEADER, $custom_header);
         $server_output = curl_exec ($ch);
         curl_close ($ch);
 
         echo $server_output;
-
 
     }
 
