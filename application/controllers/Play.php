@@ -449,7 +449,7 @@ fragment PostListingItemSidebar_post on Post {
         curl_setopt($ch, CURLOPT_POSTFIELDS, http_build_query($data));
         curl_setopt($ch, CURLOPT_REFERER, 'https://medium.com/topic/'.$topic);
         curl_setopt($ch, CURLOPT_USERAGENT, 'Mozilla/5.0 (Macintosh; Intel Mac OS X 10_14_6) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/77.0.3865.120 Safari/537.36');
-        curl_setopt($ch, CURLOPT_HTTPHEADER, $custom_header);
+        //curl_setopt($ch, CURLOPT_HTTPHEADER, $custom_header);
         $server_output = curl_exec ($ch);
         curl_close ($ch);
 
