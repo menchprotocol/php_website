@@ -42,17 +42,17 @@ $play_focus_found = false; //Used to determine the first tab to be opened
 echo '<div class="row">';
 
     //LEFT TITLE
-    echo '<div class="col-lg-8 col-md-7">';
+    echo '<div class="'.$this->config->item('col_1').'">';
     echo '<h1>'.echo_in_outcome($in['in_outcome']).'</h1>';
     echo '</div>';
 
 
     //RIGHT SETTING
-    echo '<div class="col-lg-4 col-md-5">';
+    echo '<div class="'.$this->config->item('col_2').'">';
     echo '<div class="first_title center-right">';
-    echo echo_dropdown(7585, $in['in_completion_method_entity_id']);
-    echo echo_dropdown(4737, $in['in_status_entity_id'], true);
-    echo '<a href="javascript:void(0)" onclick="$(\'.menu_bar\').toggleClass(\'hidden\')" class="btn btn-sm btn-primary inline-block"><i class="fas fa-cog" style="font-size: 1.2em;"></i></a>';
+    echo echo_dropdown(7585, $in['in_completion_method_entity_id'], false, ': ');
+    echo '<div style="float: right;"><a href="javascript:void(0)" onclick="$(\'.menu_bar\').toggleClass(\'hidden\')" class="btn btn-sm btn-primary inline-block"><i class="fas fa-cog" style="font-size: 1.2em;"></i></a></div>';
+    echo '<div style="margin-right: 5px;float: right;">'.echo_dropdown(4737, $in['in_status_entity_id'], true, null).'</div>';
     echo '</div>';
     echo '</div>';
 
@@ -69,23 +69,15 @@ foreach ($this->config->item('en_all_11021') as $en_id => $m){
     $tab_content = '';
     $default_active = false;
     
-    echo '<div class="'.( $col_num==1 ? 'col-lg-8 col-md-7' : 'col-lg-4 col-md-5' ).'">';
+    echo '<div class="'.$this->config->item('col_'.$col_num).'">';
 
-    echo '<ul class="nav nav-pill nav-pill-sm pill menu_bar hidden">';
+    echo '<ul class="nav nav-tabs nav-tabs-sm menu_bar hidden">';
 
     foreach ($this->config->item('en_all_'.$en_id) as $en_id2 => $m2){
 
 
         if(in_array(11040 , $m2['m_parents'])){
-            //Display drop down menu:
-            echo '<li class="nav-item dropdown '.require_superpower(assigned_superpower($m2['m_parents'])).'">';
-            echo '<a class="nav-link dropdown-toggle" data-toggle="dropdown" href="#" role="button" aria-haspopup="true" aria-expanded="false"></a>';
-            echo '<div class="dropdown-menu">';
-            foreach ($this->config->item('en_all_'.$en_id2) as $en_id3 => $m3){
-                echo '<a class="dropdown-item" target="_blank" href="' . $m3['m_desc'] . $in['in_id'] . '"><span class="icon-block en-icon">'.$m3['m_icon'].'</span> '.$m3['m_name'].'</a>';
-            }
-            echo '</div>';
-            echo '</li>';
+            echo echo_caret($en_id2, $m2, $in['in_id']);
             continue;
         }
 
@@ -116,7 +108,7 @@ foreach ($this->config->item('en_all_11021') as $en_id => $m){
                 $this_tab .= echo_in($parent_in, true);
             }
 
-            $this_tab .= '<div class="list-group-item list_input grey-block">
+            $this_tab .= '<div class="list-group-item list_input grey-block '.require_superpower(10989 /* PEGASUS */).'">
                             <div class="form-group is-empty" style="margin: 0; padding: 0;">
                                 <input type="text"
                                        class="form-control intentadder-level-2-parent algolia_search"
@@ -247,7 +239,7 @@ foreach ($this->config->item('en_all_11021') as $en_id => $m){
 
 
 
-        echo '<li class="nav-item"><a class="nav-link tab-nav-'.$en_id.' tab-head-'.$en_id2.' '.( $default_active ? ' active ' : '' ).require_superpower(assigned_superpower($m2['m_parents'])).'" href="#loadtab-'.$en_id.'-'.$en_id2.'" onclick="loadtab('.$en_id.','.$en_id2.')" data-toggle="tooltip" data-placement="top" title="'.( $show_tab_names ? '' : $m2['m_name'] ).'">'.$m2['m_icon'].( is_null($counter) ? '' : ' <span class="counter-'.$en_id2.'">'.echo_number($counter).'</span>' ).( $show_tab_names ? ' '.$m2['m_name'] : '' ).'</a></li>';
+        echo '<li class="nav-item"><a class="nav-link tab-nav-'.$en_id.' tab-head-'.$en_id2.' '.( $default_active ? ' active ' : '' ).require_superpower(assigned_superpower($m2['m_parents'])).'" href="javascript:void(0);" onclick="loadtab('.$en_id.','.$en_id2.')" data-toggle="tooltip" data-placement="top" title="'.( $show_tab_names ? '' : $m2['m_name'] ).'">'.$m2['m_icon'].( is_null($counter) ? '' : ' <span class="counter-'.$en_id2.'">'.echo_number($counter).'</span>' ).( $show_tab_names ? ' '.$m2['m_name'] : '' ).'</a></li>';
 
         $tab_content .= '<div class="tab-content tab-group-'.$en_id.' tab-data-'.$en_id2.( $default_active ? '' : ' hidden ' ).'">';
         $tab_content .= $this_tab;

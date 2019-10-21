@@ -14,6 +14,432 @@ class Play extends CI_Controller
     }
 
 
+    function bot(){
+
+        $data = array(
+            'operationName' => 'TopicHandler',
+            'variables' => array(
+                'feedPagingOptions' => array(
+                    'limit' => 25,
+                    'to' => "1570571907980",
+                ),
+                'sidebarPagingOptions' => array(
+                    'limit' => 5,
+                ),
+                'topicSlug' => "books",
+            ),
+            'query' => 'query TopicHandler($topicSlug: ID!, $feedPagingOptions: PagingOptions, $sidebarPagingOptions: PagingOptions) {
+  topic(slug: $topicSlug) {
+    canonicalSlug
+    ...TopicScreen_topic
+    __typename
+  }
+}
+
+fragment PostListingItemFeed_postPreview on PostPreview {
+  post {
+    ...PostListingItemPreview_post
+    ...PostListingItemByline_post
+    ...PostListingItemImage_post
+    ...PostPresentationTracker_post
+    __typename
+  }
+  __typename
+}
+
+fragment PostListingItemPreview_post on Post {
+  id
+  mediumUrl
+  title
+  previewContent {
+    subtitle
+    isFullContent
+    __typename
+  }
+  isPublished
+  creator {
+    id
+    __typename
+  }
+  __typename
+}
+
+fragment PostListingItemByline_post on Post {
+  id
+  creator {
+    id
+    username
+    name
+    __typename
+  }
+  isLocked
+  readingTime
+  ...BookmarkButton_post
+  firstPublishedAt
+  statusForCollection
+  collection {
+    id
+    name
+    ...collectionUrl_collection
+    __typename
+  }
+  __typename
+}
+
+fragment BookmarkButton_post on Post {
+  ...SusiClickable_post
+  ...WithSetReadingList_post
+  __typename
+}
+
+fragment SusiClickable_post on Post {
+  id
+  mediumUrl
+  ...SusiContainer_post
+  __typename
+}
+
+fragment SusiContainer_post on Post {
+  id
+  __typename
+}
+
+fragment WithSetReadingList_post on Post {
+  ...ReadingList_post
+  __typename
+}
+
+fragment ReadingList_post on Post {
+  id
+  readingList
+  __typename
+}
+
+fragment collectionUrl_collection on Collection {
+  id
+  domain
+  slug
+  __typename
+}
+
+fragment PostListingItemImage_post on Post {
+  id
+  mediumUrl
+  previewImage {
+    id
+    focusPercentX
+    focusPercentY
+    __typename
+  }
+  __typename
+}
+
+fragment PostPresentationTracker_post on Post {
+  id
+  visibility
+  previewContent {
+    isFullContent
+    __typename
+  }
+  collection {
+    id
+    __typename
+  }
+  __typename
+}
+
+fragment TopicScreen_topic on Topic {
+  id
+  ...TopicMetadata_topic
+  ...TopicLandingHeader_topic
+  ...TopicFeaturedAndLatest_topic
+  ...TopicLandingRelatedTopics_topic
+  ...TopicLandingPopular_posts
+  __typename
+}
+
+fragment TopicMetadata_topic on Topic {
+  name
+  description
+  image {
+    id
+    __typename
+  }
+  __typename
+}
+
+fragment TopicLandingHeader_topic on Topic {
+  name
+  description
+  visibility
+  ...TopicFollowButtonSignedIn_topic
+  ...TopicFollowButtonSignedOut_topic
+  __typename
+}
+
+fragment TopicFollowButtonSignedIn_topic on Topic {
+  slug
+  isFollowing
+  __typename
+}
+
+fragment TopicFollowButtonSignedOut_topic on Topic {
+  id
+  slug
+  ...SusiClickable_topic
+  __typename
+}
+
+fragment SusiClickable_topic on Topic {
+  ...SusiContainer_topic
+  __typename
+}
+
+fragment SusiContainer_topic on Topic {
+  ...SignInContainer_topic
+  ...SignUpOptions_topic
+  __typename
+}
+
+fragment SignInContainer_topic on Topic {
+  ...SignInOptions_topic
+  __typename
+}
+
+fragment SignInOptions_topic on Topic {
+  id
+  name
+  __typename
+}
+
+fragment SignUpOptions_topic on Topic {
+  id
+  name
+  __typename
+}
+
+fragment TopicFeaturedAndLatest_topic on Topic {
+  featuredPosts {
+    postPreviews {
+      post {
+        id
+        ...TopicLandingFeaturedStory_post
+        __typename
+      }
+      __typename
+    }
+    __typename
+  }
+  featuredTopicWriters(limit: 1) {
+    ...FeaturedWriter_featuredTopicWriter
+    __typename
+  }
+  latestPosts(paging: $feedPagingOptions) {
+    postPreviews {
+      post {
+        id
+        __typename
+      }
+      ...PostListingItemFeed_postPreview
+      __typename
+    }
+    pagingInfo {
+      next {
+        limit
+        to
+        __typename
+      }
+      __typename
+    }
+    __typename
+  }
+  __typename
+}
+
+fragment TopicLandingFeaturedStory_post on Post {
+  ...FeaturedPostPreview_post
+  ...PostListingItemPreview_post
+  ...PostListingItemBylineWithAvatar_post
+  ...PostListingItemImage_post
+  ...PostPresentationTracker_post
+  __typename
+}
+
+fragment FeaturedPostPreview_post on Post {
+  id
+  title
+  mediumUrl
+  previewContent {
+    subtitle
+    isFullContent
+    __typename
+  }
+  __typename
+}
+
+fragment PostListingItemBylineWithAvatar_post on Post {
+  creator {
+    username
+    name
+    id
+    imageId
+    mediumMemberAt
+    __typename
+  }
+  isLocked
+  readingTime
+  updatedAt
+  statusForCollection
+  collection {
+    id
+    name
+    ...collectionUrl_collection
+    __typename
+  }
+  __typename
+}
+
+fragment FeaturedWriter_featuredTopicWriter on FeaturedTopicWriter {
+  user {
+    id
+    username
+    name
+    bio
+    ...UserAvatar_user
+    ...UserFollowButton_user
+    __typename
+  }
+  posts {
+    postPreviews {
+      ...PostListingItemFeaturedWriter_postPreview
+      __typename
+    }
+    __typename
+  }
+  __typename
+}
+
+fragment UserAvatar_user on User {
+  username
+  id
+  name
+  imageId
+  mediumMemberAt
+  __typename
+}
+
+fragment UserFollowButton_user on User {
+  ...UserFollowButtonSignedIn_user
+  ...UserFollowButtonSignedOut_user
+  __typename
+}
+
+fragment UserFollowButtonSignedIn_user on User {
+  id
+  isFollowing
+  __typename
+}
+
+fragment UserFollowButtonSignedOut_user on User {
+  id
+  ...SusiClickable_user
+  __typename
+}
+
+fragment SusiClickable_user on User {
+  ...SusiContainer_user
+  __typename
+}
+
+fragment SusiContainer_user on User {
+  ...SignInContainer_user
+  ...SignUpOptions_user
+  __typename
+}
+
+fragment SignInContainer_user on User {
+  ...SignInOptions_user
+  __typename
+}
+
+fragment SignInOptions_user on User {
+  id
+  name
+  __typename
+}
+
+fragment SignUpOptions_user on User {
+  id
+  name
+  __typename
+}
+
+fragment PostListingItemFeaturedWriter_postPreview on PostPreview {
+  postId
+  post {
+    readingTime
+    id
+    mediumUrl
+    title
+    ...PostListingItemImage_post
+    ...PostPresentationTracker_post
+    __typename
+  }
+  __typename
+}
+
+fragment TopicLandingRelatedTopics_topic on Topic {
+  relatedTopics {
+    topic {
+      name
+      slug
+      __typename
+    }
+    __typename
+  }
+  __typename
+}
+
+fragment TopicLandingPopular_posts on Topic {
+  name
+  popularPosts(paging: $sidebarPagingOptions) {
+    postPreviews {
+      post {
+        ...PostListingItemSidebar_post
+        __typename
+      }
+      __typename
+    }
+    __typename
+  }
+  __typename
+}
+
+fragment PostListingItemSidebar_post on Post {
+  id
+  mediumUrl
+  title
+  readingTime
+  ...PostListingItemImage_post
+  ...PostPresentationTracker_post
+  __typename
+}',
+        );
+
+        $ch = curl_init();
+        curl_setopt($ch, CURLOPT_URL, 'https://medium.com/_/graphql');
+        curl_setopt($ch, CURLOPT_POST, 1);
+        curl_setopt($ch, CURLOPT_RETURNTRANSFER, true);
+        curl_setopt($ch, CURLOPT_HTTPHEADER, array("Content-type: multipart/form-data"));
+        curl_setopt($ch, CURLOPT_POSTFIELDS, http_build_query($data));
+        $server_output = curl_exec ($ch);
+        curl_close ($ch);
+
+        echo $server_output;
+
+
+    }
+
     function overview(){
         $this->load->view('header', array(
             'title' => 'PLAY',

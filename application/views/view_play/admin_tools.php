@@ -20,7 +20,6 @@ $moderation_tools = array(
     '/play/admin_tools/assessment_marks_list_all' => 'Completion Marks List All',
     '/play/admin_tools/assessment_marks_birds_eye' => 'Completion Marks Birds Eye View',
     '/play/admin_tools/compose_test_message' => 'Compose Test Message',
-    '/play/admin_tools/sync_in_verbs' => 'Sync Intent Verbs',
     '/play/admin_tools/random_user_icon' => 'Random User Icons',
 );
 
@@ -618,30 +617,6 @@ if(!$action) {
     echo '<input type="submit" class="btn btn-blog" value="Go">';
     echo '</form>';
 
-
-} elseif($action=='sync_in_verbs') {
-
-    echo '<ul class="breadcrumb"><li><a href="/play/admin_tools">Trainer Tools</a></li><li><b>'.$moderation_tools['/play/admin_tools/'.$action].'</b></li></ul>';
-
-    //Would ensure intents have synced statuses:
-    $count = 0;
-    $fixed = 0;
-    foreach($this->BLOG_model->in_fetch(array(
-        'in_verb_entity_id' => 10569,
-    )) as $in){
-
-        $count++;
-
-        if(substr($in['in_outcome'], 0, 1)=='='){
-            $fixed++;
-            $this->BLOG_model->in_update($in['in_id'], array(
-                'in_outcome' => trim(substr($in['in_outcome'], 1)),
-                'in_verb_entity_id' => 0,
-            ));
-        }
-    }
-
-    echo '<div>'.$fixed.'/'.$count.' Intents fixed</div>';
 
 } elseif($action=='identical_intent_outcomes') {
 

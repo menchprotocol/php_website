@@ -2066,7 +2066,7 @@ class READ_model extends CI_Model
                     } else {
 
                         //Add simple message:
-                        $next_step_message .= ($key + 1) . '. ' . echo_in_outcome($child_in['in_outcome'], $push_message, false, $in_common_prefix);
+                        $next_step_message .= ($key + 1) . '. ' . echo_in_outcome($child_in['in_outcome'], $push_message, $in_common_prefix);
 
                     }
 
@@ -3414,7 +3414,7 @@ class READ_model extends CI_Model
 
 
                 //Add Intent up-vote to beginning:
-                $output_body_message = '<div style="margin-bottom:5px; border-bottom: 1px solid #E5E5E5; padding-bottom:10px;"><span class="icon-block"><i class="far fa-thumbs-up ispink"></i></span>IF <a href="/blog/' . $upvote_child_ins[0]['in_id'] . '" target="_parent">' . echo_in_outcome($upvote_child_ins[0]['in_outcome'], false, true) . '</a> THEN <a href="/blog/' . $referenced_ins[0]['in_id'] . '" target="_parent">' . echo_in_outcome($referenced_ins[0]['in_outcome'], false, false) . '</a></div>' . $output_body_message;
+                $output_body_message = '<div style="margin-bottom:5px; border-bottom: 1px solid #E5E5E5; padding-bottom:10px;"><span class="icon-block"><i class="far fa-thumbs-up ispink"></i></span>IF <a href="/blog/' . $upvote_child_ins[0]['in_id'] . '" target="_parent">' . echo_in_outcome($upvote_child_ins[0]['in_outcome'], false, true) . '</a> THEN <a href="/blog/' . $referenced_ins[0]['in_id'] . '" target="_parent">' . echo_in_outcome($referenced_ins[0]['in_outcome'], false) . '</a></div>' . $output_body_message;
 
             } else {
 
@@ -3424,7 +3424,7 @@ class READ_model extends CI_Model
                 $output_body_message = trim(str_replace('#' . $referenced_ins[0]['in_id'], '', $output_body_message));
 
                 //Add Intent up-vote to beginning:
-                $output_body_message = '<div style="margin-bottom:5px; border-bottom: 1px solid #E5E5E5; padding-bottom:10px;"><a href="/blog/' . $referenced_ins[0]['in_id'] . '" target="_parent">' . echo_in_outcome($referenced_ins[0]['in_outcome'], false, true) . '</a></div>' . $output_body_message;
+                $output_body_message = '<div style="margin-bottom:5px; border-bottom: 1px solid #E5E5E5; padding-bottom:10px;"><a href="/blog/' . $referenced_ins[0]['in_id'] . '" target="_parent">' . echo_in_outcome($referenced_ins[0]['in_outcome'], false) . '</a></div>' . $output_body_message;
 
             }
 

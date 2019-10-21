@@ -131,7 +131,6 @@ function loadtab(tab_group_id, tab_data_id){
     $('.tab-group-'+tab_group_id+'.tab-data-'+tab_data_id).removeClass('hidden');
     $('.tab-nav-'+tab_group_id+'.tab-head-'+tab_data_id).addClass('active');
 
-
     //Load data:
 
 }

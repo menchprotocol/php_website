@@ -24,6 +24,13 @@ body {
     font-family: 'Nanum Gothic Coding', monospace;
 }
 
+.nav-tabs-sm .nav-link {
+    display: block;
+    padding: .5rem .5rem;
+    font-size: 0.8em;
+    font-family: 'Montserrat', sans-serif;
+}
+
 .btn-primary {
     color: #fff;
     background-color: #070707;
@@ -98,7 +105,7 @@ li a {
 .hidden { display: none !important; }
 .inline-block{ display: inline-block !important; }
 .icon-block{ min-width: 34px; display: inline-block; text-align: center; }
-.icon-block-sm{ min-width:32px; display: inline-block; text-align: center; }
+.icon-block-sm{ min-width:30px; display: inline-block; text-align: center; }
 .icon-block-lg{ min-width:50px; display: inline-block; text-align: center; }
 .fixed-top td { vertical-align: bottom; }
 
@@ -133,12 +140,15 @@ li a {
 }
 
 .en-item .col2{
-    font-size: 0.9em;
-    font-weight: 300;
+    overflow: hidden;
 }
 
-.en-item .col3{
-    text-align: right;
+.en-item .ln_content{
+    font-size: 0.8em;
+    font-weight: 300;
+    overflow: hidden;
+    max-width: 80%;
+    display: inline-block;
 }
 
 

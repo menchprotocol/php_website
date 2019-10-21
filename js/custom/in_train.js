@@ -18,7 +18,6 @@ $(document).ready(function () {
     });
 
     //Load top/bottom intent searches:
-    in_load_search(".intentadder-level-2-parent",1, 'q');
     in_load_search(".intentadder-level-2-child",0, 'w');
 
     //Expand selections:
@@ -45,26 +44,6 @@ $(document).ready(function () {
 
 
 function prep_search_pad(){
-
-    //Activate expansion for intent level 2 items that are not already expanded
-    $('.blogs_sortable').each(function () {
-
-        if(!$(this).hasClass('is_expanded')){
-
-            $(this).addClass('is_expanded').on('click', function(e) {
-
-                if (e.target !== this){
-                    if(jQuery.inArray("click_expand", e.target.classList) == -1){
-                        return;
-                    }
-                }
-
-                //Expand children:
-                ms_toggle(parseInt($(this).attr('in-link-id')), -1);
-            });
-
-        }
-    });
 
     //All level 2s:
     $('.intentadder-level-2-parent').focus(function() {

@@ -368,33 +368,6 @@ function en_count_references($en_input_id){
     return $connectors_found;
 }
 
-function in_outcome_verb_id($string){
-
-    //Prep variables:
-    $CI =& get_instance();
-    $letters = explode(' ',trim($string));
-
-    //Must be at-least two parts:
-    if(count($letters) >= 2){
-
-        //Do a DB call to see if this verb is supported:
-        $found_verbs = $CI->READ_model->ln_fetch(array(
-            'ln_status_entity_id IN (' . join(',', $CI->config->item('en_ids_7359')) . ')' => null, //Link Statuses Public
-            'en_status_entity_id IN (' . join(',', $CI->config->item('en_ids_7357')) . ')' => null, //Entity Statuses Public
-            'ln_parent_entity_id' => 5008, //Intent Supported Verbs
-            'LOWER(en_name)' => strtolower($letters[0]),
-        ), array('en_child'), 1);
-
-        if(count($found_verbs) > 0){
-            return $found_verbs[0]['en_id'];
-        }
-
-    }
-
-    //Still here? Did not find it:
-    return 0;
-}
-
 
 function curl_get_file_size( $url ) {
 
@@ -758,10 +731,6 @@ function in_common_prefix($in__children, $max_look = 0){
 
             if(!isset($in_words[$word_pos]) || $in_words[$word_pos]!=$word){
                 //Not the same:
-                $all_the_same = false;
-                break;
-            } elseif(substr($in['in_outcome'], 1)=='='){
-                //Does it start with an equal sight? Break it:
                 $all_the_same = false;
                 break;
             }

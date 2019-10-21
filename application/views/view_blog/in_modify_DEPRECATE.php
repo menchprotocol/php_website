@@ -64,8 +64,6 @@
                     <div class="form-group label-floating is-empty" style="height: 40px !important; margin-bottom: 0;">
                         <span class="white-wrapper"><textarea class="form-control text-edit msg main-box border" id="in_outcome" onkeyup="in_outcome_counter()"></textarea></span>
                     </div>
-                    <span class="mini-header" style="margin-top:5px;">* Start with a <a href="/play/5008" data-toggle="tooltip" data-placement="top" title="Browse all supporting verbs"><b>verb</b></a> or <i class="fas fa-equals"></i> sign</span>
-
 
 
 
