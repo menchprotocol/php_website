@@ -24,14 +24,26 @@ class Play extends CI_Controller
 
 
         $custom_header = array(
+            'medium-frontend-app: lite/master-20191021-212205-4df9cf54be',
+            'medium-frontend-route: topic',
+            'sec-fetch-mode: cors',
+            'sec-fetch-site: same-origin',
+            'apollographql-client-name: lite',
+            'apollographql-client-version: master-20191021-212205-4df9cf54be',
+
+            'accept: */*',
+            'accept-encoding: gzip, deflate, br',
+            'accept-language: en-GB,en-US;q=0.9,en;q=0.8',
 
 
+            'content-length: 6731',
             'content-type: application/json',
             'graphql-operation: TopicHandler',
             'origin: https://medium.com',
             'referer: https://medium.com/topic/'.$topic,
             'cookie: __cfduid=db6eef3c324dc50d96ef21938b6f00edc1559329362; _ga=GA1.2.2055208362.1565325511; lightstep_session_id=7e05aed248707e2e; lightstep_guid/medium-web=93bf19db9151b98a; tz=420; pr=2; lightstep_guid/lite-web=58f426d9268501ac; _gid=GA1.2.1980711924.1571614565; optimizelyEndUserId=lo_e8082354b03e; uid=lo_e8082354b03e; sid=1:/xbfZQ7E3E7EPoIIifaIKj/DmNhQCAKcI9h6hfo+EFoV1Vicr75acNYhuyD26dd9; __cfruid=119da54070c31f79db03af372b90931f3f9aa260-1571694671; _parsely_session={%22sid%22:38%2C%22surl%22:%22https://medium.com/%22%2C%22sref%22:%22%22%2C%22sts%22:1571694672029%2C%22slts%22:1571688510366}; _parsely_visitor={%22id%22:%22pid=acaaa24a25423adbd91231b52e769418%22%2C%22session_count%22:38%2C%22last_session_ts%22:1571694672029}; sz=1652',
         );
+
 
         $data = array(
             'operationName' => 'TopicHandler',
