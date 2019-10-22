@@ -18,6 +18,7 @@ $(document).ready(function () {
     });
 
     //Load top/bottom intent searches:
+    in_load_search(".intentadder-level-2-parent",1, 'q');
     in_load_search(".intentadder-level-2-child",0, 'w');
 
     //Expand selections:
