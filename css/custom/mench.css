@@ -224,7 +224,7 @@ li a {
 
 .center-info{
     width: 100%;
-    max-width:340px;
+    max-width:340px !important;
     padding: 15px;
     margin: 0 auto;
 }
