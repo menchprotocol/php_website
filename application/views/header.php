@@ -117,11 +117,10 @@ if(strlen($flash_message) > 0){
                             <div class="supwerpower_view hidden">
                                 <?php
                                 if(count($this->session->userdata('assigned_superpowers_en_ids'))){
-
-                                    $en_all_10957 = $this->config->item('en_all_10957');
-
-                                    foreach($this->session->userdata('assigned_superpowers_en_ids') as $superpower_en_id) {
-                                        echo '<a class="btn btn-sm btn-superpower icon-block-lg superpower-frame-'.$superpower_en_id.' '.( in_array($superpower_en_id, $this->session->userdata('assigned_superpowers_en_ids')) ? 'active' : '' ).'" href="javascript:void();" onclick="toggle_superpower('.$superpower_en_id.')" data-toggle="tooltip" data-placement="top" title="'.$en_all_10957[$superpower_en_id]['m_name'].' '.$en_all_10957[$superpower_en_id]['m_desc'].'">'.$en_all_10957[$superpower_en_id]['m_icon'].'</a>';
+                                    foreach($this->config->item('en_all_10957') as $superpower_en_id => $m){
+                                        if(in_array($en_id, $this->session->userdata('assigned_superpowers_en_ids'))){
+                                            echo '<a class="btn btn-sm btn-superpower icon-block-lg superpower-frame-'.$superpower_en_id.' '.( in_array($superpower_en_id, $this->session->userdata('activate_superpowers_en_ids')) ? 'active' : '' ).'" href="javascript:void();" onclick="toggle_superpower('.$superpower_en_id.')" data-toggle="tooltip" data-placement="top" title="'.$m['m_name'].' '.$m['m_desc'].'">'.$m['m_icon'].'</a>';
+                                        }
                                     }
                                 }
                                 ?>
