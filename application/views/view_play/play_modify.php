@@ -282,7 +282,7 @@ $en_all_11035 = $this->config->item('en_all_11035'); //MENCH PLAYER NAVIGATION
                 }
 
                 //Input to add new parents:
-                $this_tab .= '<div id="new-parent" class="list-group-item '.require_superpower(10989 /* PEGASUS */).'">
+                $this_tab .= '<div id="new-parent" class="'.require_superpower(10989 /* PEGASUS */).'">
                     <div class="form-group is-empty"><input type="text" class="form-control new-input algolia_search" data-lpignore="true" placeholder="Add Entity/URL"></div>
                     <div class="algolia_search_pad hidden"><span>Search existing players, create a new player or paste a URL...</span></div>
             </div>';
@@ -322,7 +322,7 @@ $en_all_11035 = $this->config->item('en_all_11035'); //MENCH PLAYER NAVIGATION
                 }
 
                 //Input to add new child:
-                $this_tab .= '<div id="new-children" class="list-group-item '.require_superpower(10989 /* PEGASUS */).'">
+                $this_tab .= '<div id="new-children" class="'.require_superpower(10989 /* PEGASUS */).'">
             <div class="form-group is-empty"><input type="text" class="form-control new-input algolia_search" data-lpignore="true" placeholder="Add Entity/URL"></div>
             <div class="algolia_search_pad hidden"><span>Search existing players, create a new player or paste a URL...</span></div>
     </div>';
