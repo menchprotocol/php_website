@@ -13,36 +13,6 @@ class Play extends CI_Controller
         date_default_timezone_set(config_var(11079));
     }
 
-    function tweak(){
-
-        foreach ($this->READ_model->ln_fetch(array(
-            'ln_type_entity_id IN (' . join(',', $this->config->item('en_ids_4592')) . ')' => null, //Entity-to-Entity Links
-            'ln_parent_entity_id' => 11097,
-            'ln_status_entity_id IN (' . join(',', $this->config->item('en_ids_7359')) . ')' => null, //Link Statuses Public
-        ), array('en_child')) as $medium_topic){
-
-            if(strlen($medium_topic['ln_content'])<1){
-                continue;
-            }
-
-            if($this->READ_model->ln_create(array(
-                'ln_creator_entity_id' => 1,
-                'ln_status_entity_id' => 6176, //Link Published
-                'ln_type_entity_id' => 4256,
-                'ln_parent_entity_id' => 3311,
-                'ln_child_entity_id' => $medium_topic['en_id'],
-                'ln_content' => 'https://medium.com/topic/'.$medium_topic['ln_content'],
-            ))){
-
-                $this->READ_model->ln_update($medium_topic['ln_id'], array(
-                    'ln_type_entity_id' => 4230,
-                    'ln_content' => null,
-                ), 1, 10679);
-
-                echo $medium_topic['en_name'];
-            }
-        }
-    }
 
     function launching_soon(){
 
