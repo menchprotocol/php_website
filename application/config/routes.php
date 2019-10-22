@@ -4,7 +4,7 @@ defined('BASEPATH') OR exit('No direct script access allowed');
 //General:
 $route['404_override']              = 'play/page_not_found';
 $route['translate_uri_dashes']      = FALSE;
-$route['default_controller']        = "read/overview";
+$route['default_controller']        = "play/launching_soon";
 
 
 $route['play/(:num)']               = "play/play_modify/$1"; //Set to: play_view

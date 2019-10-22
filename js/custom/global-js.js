@@ -166,7 +166,22 @@ $(document).ready(function () {
 
 
 
-    $("#mench_search").on('autocomplete:selected', function (event, suggestion, dataset) {
+    $("#mench_search").focusin(function() {
+
+        $(".container").not('.show-while-searching').addClass('hidden');
+        $(".searchpad").removeClass('hidden');
+
+    }).keyup(function() {
+
+        $(".container").not('.show-while-searching').addClass('hidden');
+        $(".searchpad").removeClass('hidden');
+
+    }).focusout(function() {
+
+        $(".container").not('.show-while-searching').removeClass('hidden');
+        $(".searchpad").addClass('hidden');
+
+    }).on('autocomplete:selected', function (event, suggestion, dataset) {
 
         $('#mench_search').prop("disabled", true).val('Loading...').css('background-color','#F7F7F7').css('font-size','0.8em');
 
@@ -176,7 +191,7 @@ $(document).ready(function () {
             window.location = "/play/" + suggestion.alg_obj_id;
         }
 
-    }).autocomplete({hint: true, minLength: 1, autoselect: true, keyboardShortcuts: ['s'], dropdownMenuContainer: $('#searchresults')}, [
+    }).autocomplete({minLength: 1, autoselect: true, keyboardShortcuts: ['s'], dropdownMenuContainer: $('#searchresults')}, [
         {
             source: function (q, cb) {
                 //Do not search if specific command:

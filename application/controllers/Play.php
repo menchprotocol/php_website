@@ -13,6 +13,22 @@ class Play extends CI_Controller
         date_default_timezone_set(config_value(11079));
     }
 
+    function launching_soon(){
+
+        $session_en = en_auth();
+        if($session_en){
+            return redirect_message('/blog');
+        }
+
+
+        $this->load->view('header', array(
+            'title' => 'READ. PLAY. BLOG.',
+            'hide_header' => 1,
+        ));
+        $this->load->view('view_play/launching_soon');
+        $this->load->view('footer');
+    }
+
     function echo_post(){
         print_r($_POST);
     }
