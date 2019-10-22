@@ -31,19 +31,28 @@ class PLAY_model extends CI_Model
 
 
         //SUPERPOWERS
-        $session_data['assigned_superpowers'] = array();
+        $session_data['assigned_superpowers_en_ids'] = array(); //All superpowers assigned to player
+        $session_data['activate_superpowers_en_ids'] = array(); //Only superpowers activated by player
 
-        foreach($this->config->item('en_ids_10957') as $superpower_en_id) {
 
-            $last_advance_settings = $this->READ_model->ln_fetch(array(
-                'ln_creator_entity_id' => $en['en_id'],
-                'ln_type_entity_id' => 5007, //TOGGLE SUPERPOWER
-                'ln_parent_entity_id' => $superpower_en_id,
-                'ln_status_entity_id IN (' . join(',', $this->config->item('en_ids_7360')) . ')' => null, //Link Statuses Active
-            ), array(), 1, 0, array('ln_id' => 'DESC'));
+        foreach($en['en__parents'] as $en_parent){
+            if(in_array($en_parent['en_id'], $this->config->item('en_ids_10957')) && in_array($en_parent['en_status_entity_id'], $this->config->item('en_ids_7357')) && in_array($en_parent['ln_status_entity_id'], $this->config->item('en_ids_7359'))){
 
-            if(count($last_advance_settings) > 0 && substr_count($last_advance_settings[0]['ln_content'] , ' ON')==1){
-                array_push($session_data['assigned_superpowers'], $superpower_en_id);
+                //It's assigned!
+                array_push($session_data['assigned_superpowers_en_ids'], $en_parent['en_id']);
+
+                //is it activated?
+                $last_advance_settings = $this->READ_model->ln_fetch(array(
+                    'ln_creator_entity_id' => $en['en_id'],
+                    'ln_type_entity_id' => 5007, //TOGGLE SUPERPOWER
+                    'ln_parent_entity_id' => $en_parent['en_id'],
+                    'ln_status_entity_id IN (' . join(',', $this->config->item('en_ids_7360')) . ')' => null, //Link Statuses Active
+                ), array(), 1); //Fetch the single most recent supoerpower toggle only
+
+                //Was the latest toggle to activate?
+                if(count($last_advance_settings) > 0 && substr_count($last_advance_settings[0]['ln_content'] , ' ACTIVATED')==1){
+                    array_push($session_data['activate_superpowers_en_ids'], $en_parent['en_id']);
+                }
             }
         }
 

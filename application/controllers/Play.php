@@ -1059,6 +1059,68 @@ fragment PostListingItemSidebar_post on Post {
 
     }
 
+
+
+    function toggle_superpower($superpower_en_id){
+
+        //Toggles the advance session variable for the trainer on/off for logged-in trainers:
+        $session_en = en_auth();
+        $superpower_en_id = intval($superpower_en_id);
+        $en_all_10957 = $this->config->item('en_all_10957');
+
+        if(!$session_en){
+
+            return echo_json(array(
+                'status' => 0,
+                'message' => 'Expired Session or Missing Superpower',
+            ));
+
+        } elseif(!in_array($superpower_en_id, $this->session->userdata('assigned_superpowers_en_ids'))){
+
+            //Access not authorized:
+            return echo_json(array(
+                'status' => 0,
+                'message' => 'You are not assigned to the superpowers of '.$en_all_10957[$superpower_en_id]['m_icon'],
+            ));
+
+        }
+
+        //Figure out new toggle state:
+        $session_data = $this->session->all_userdata();
+
+        if(in_array($superpower_en_id, $session_data['activate_superpowers_en_ids'])){
+            //Already there, turn it off:
+            $session_data['activate_superpowers_en_ids'] = array_diff($session_data['activate_superpowers_en_ids'], array($superpower_en_id));
+            $toggled_setting = 'DEACTIVATED';
+        } else {
+            //Not there, turn it on:
+            array_push($session_data['activate_superpowers_en_ids'], $superpower_en_id);
+            $toggled_setting = 'ACTIVATED';
+        }
+
+
+        //Update Session:
+        $this->session->set_userdata($session_data);
+
+
+        //Log Link:
+        $this->READ_model->ln_create(array(
+            'ln_creator_entity_id' => $session_en['en_id'],
+            'ln_type_entity_id' => 5007, //TOGGLE SUPERPOWER
+            'ln_parent_entity_id' => $superpower_en_id,
+            'ln_content' => 'SUPERPOWER TURNED '.$toggled_setting, //To be used when trainer logs in again
+        ));
+
+        //Return to JS function:
+        return echo_json(array(
+            'status' => 1,
+            'message' => 'Success',
+        ));
+    }
+
+
+
+
     function en_modify_save()
     {
 

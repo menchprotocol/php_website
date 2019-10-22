@@ -670,23 +670,22 @@ function redirect_message($url, $message = null)
 
 
 
-function assigned_superpower($parent_en_ids){
+function find_matching_superpowers($parent_en_ids){
     $CI =& get_instance();
-    $assigned_superpowers = array_intersect($CI->config->item('en_ids_10957'), $parent_en_ids);
-    if(count($assigned_superpowers)>0){
-        return end($assigned_superpowers);
+    $find_matching_superpowers = array_intersect($CI->config->item('en_ids_10957'), $parent_en_ids);
+    if(count($find_matching_superpowers)>0){
+        return end($find_matching_superpowers);
     } else {
         return 0;
     }
 }
 
-function require_superpower($superpower_en_id){
-    if(!$superpower_en_id){
+function require_activate_superpower($superpower_en_id){
+    if(!$superpower_en_id || !en_auth()){
         return false;
     }
     $CI =& get_instance();
-    $assigned_superpowers = $CI->session->userdata('assigned_superpowers');
-    return ' superpower-'.$superpower_en_id.' '.( count($assigned_superpowers)>0 && in_array($superpower_en_id, $assigned_superpowers) ? '' : ' hidden ' );
+    return ' superpower-'.$superpower_en_id.' '.( in_array($superpower_en_id, $CI->session->userdata('activate_superpowers_en_ids')) ? '' : ' hidden ' );
 }
 
 

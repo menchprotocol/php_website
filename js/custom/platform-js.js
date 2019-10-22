@@ -238,7 +238,7 @@ function toggle_superpower(superpower_id){
     $('.superpower-frame-'+superpower_id).html('<i class="far fa-yin-yang fa-spin"></i>');
 
     //Save session variable to save the state of advance setting:
-    $.post("/read/toggle_superpower/"+superpower_id, {}, function (data) {
+    $.post("/play/toggle_superpower/"+superpower_id, {}, function (data) {
 
         //Change top menu icon:
         $('.superpower-frame-'+superpower_id).html(superpower_icon);
@@ -256,13 +256,13 @@ function toggle_superpower(superpower_id){
             $('.superpower-frame-'+superpower_id).toggleClass('active');
 
             //TOGGLE:
-            var index = js_assigned_superpowers.indexOf(superpower_id);
+            var index = js_assigned_superpowers_en_ids.indexOf(superpower_id);
             if (index > -1) {
                 //Remove it:
-                js_assigned_superpowers.splice(index, 1);
+                js_assigned_superpowers_en_ids.splice(index, 1);
             } else {
                 //Not there, add it:
-                js_assigned_superpowers.push(superpower_id);
+                js_assigned_superpowers_en_ids.push(superpower_id);
             }
         }
     });
