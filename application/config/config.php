@@ -2,10 +2,6 @@
 defined('BASEPATH') OR exit('No direct script access allowed');
 
 
-//MENCH
-$config['col_1']                 = 'col-lg-7 col-md-6';
-$config['col_2']                 = 'col-lg-5 col-md-6';
-
 /*
  |--------------------------------------------------------------------------
  | Base Site URL

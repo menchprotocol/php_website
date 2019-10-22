@@ -1,10 +1,12 @@
 
-<?php $en_all_6206 = $this->config->item('en_all_6206'); //Entity Table ?>
-<?php $en_all_4341 = $this->config->item('en_all_4341'); //Link Table ?>
-<?php $en_all_7368 = $this->config->item('en_all_7368'); //Trainer App ?>
+<?php
 
-<?php $en_all_11035 = $this->config->item('en_all_11035'); //MENCH PLAYER NAVIGATION ?>
-
+$en_all_6206 = $this->config->item('en_all_6206'); //Entity Table
+$en_all_4341 = $this->config->item('en_all_4341'); //Link Table
+$en_all_7368 = $this->config->item('en_all_7368'); //Trainer App
+$en_all_6177 = $this->config->item('en_all_6177'); //Entity Statuses
+$en_all_11035 = $this->config->item('en_all_11035'); //MENCH PLAYER NAVIGATION
+?>
 
 <script>
     //Set global variables:
@@ -15,51 +17,51 @@
 <style>
     .en_child_icon_<?= $entity['en_id'] ?>{ display:none; }
 </style>
-<script src="/js/custom/play_modify.js?v=v<?= config_value(11060) ?>"
+<script src="/js/custom/play_modify.js?v=v<?= config_var(11060) ?>"
         type="text/javascript"></script>
 
 <div class="container">
 
     <?php
 
-    //Hidden Entity Level 1 for editing only:
-    echo '<div class="hidden">'.echo_en($entity).'</div>';
 
-    echo '<div class="row">';
-
-        //NAME
-        echo '<div class="'.$this->config->item('col_1').'"><h1>'.$entity['en_icon'].' '.$entity['en_name'].'</h1></div>';
-
-        //SETTINGS
-        echo '<div class="'.$this->config->item('col_2').'">';
-
-            echo '<div class="first_title center-right">';
-
-            //echo echo_dropdown(6177, $entity['en_status_entity_id'], true, null);
+    //NAME
+    echo '<h1 class="inline" style="padding-right:10px;"><span class="en_ui_icon_'.$entity['en_id'].'">'.$entity['en_icon'].'</span> <span class="en_name_'.$entity['en_id'].'">'.$entity['en_name'].'</span></h1>';
 
 
-            //Show Signout Button IF LOGGED-IN PLAYER ON OWN ACCOUNT
-            if(isset($session_en['en_id']) && $session_en['en_id']==$entity['en_id']){
-
-                echo '<a href="/play/myaccount" class="btn btn-sm btn-primary btn-five inline-block" data-toggle="tooltip" data-placement="top" title="'.$en_all_11035[6225]['m_desc'].'">'.$en_all_11035[6225]['m_icon'].' '.$en_all_11035[6225]['m_name'].'</a>';
-
-                //echo '<a href="/play" class="btn btn-sm btn-primary btn-five inline-block" data-toggle="tooltip" data-placement="top" title="'.$en_all_11035[6225]['m_desc'].'">'.$en_all_11035[6225]['m_icon'].' '.$en_all_11035[6225]['m_name'].'</a>';
-
-                echo '<a href="/signout" class="btn btn-sm btn-primary btn-five inline-block" data-toggle="tooltip" data-placement="top" title="'.$en_all_11035[7291]['m_name'].'">'.$en_all_11035[7291]['m_icon'].'</a>';
+    echo '<div class="inline-block" style="padding-bottom:10px;">';
 
 
-            }
+    //STATUS
+    echo '<span class="icon-block-sm en_status_entity_id_' . $entity['en_id'] . ( in_array($entity['en_status_entity_id'], $this->config->item('en_ids_7357')) ? require_superpower(10989 /* PEGASUS */) : '' ).'"><span data-toggle="tooltip" data-placement="bottom" title="'.$en_all_6177[$entity['en_status_entity_id']]['m_name'].': '.$en_all_6177[$entity['en_status_entity_id']]['m_desc'].'">' . $en_all_6177[$entity['en_status_entity_id']]['m_icon'] . '</span></span>';
 
 
-            //Edit Modif
-            echo '<a href="javascript:void(0);" onclick="en_modify_load(' . $entity['en_id'] . ',0)" class="btn btn-sm btn-primary btn-five inline-block '. require_superpower(10989 /* PEGASUS */) .'"><i class="fas fa-cog"></i></a>';
+    //ACCOUNT
+    if(isset($session_en['en_id']) && $session_en['en_id']==$entity['en_id']){
+
+        echo '<a href="/play/myaccount" class="btn btn-sm btn-primary btn-five inline-block" data-toggle="tooltip" data-placement="bottom" title="'.$en_all_11035[6225]['m_desc'].'">'.$en_all_11035[6225]['m_icon'].' '.$en_all_11035[6225]['m_name'].'</a>';
+
+        echo '<a href="/signout" class="btn btn-sm btn-primary btn-five inline-block" data-toggle="tooltip" data-placement="bottom" title="'.$en_all_11035[7291]['m_name'].'">'.$en_all_11035[7291]['m_icon'].'</a>';
+
+    }
+
+    //MODIFY
+    echo '<a href="javascript:void(0);" onclick="en_modify_load(' . $entity['en_id'] . ',0)" class="btn btn-sm btn-primary btn-five inline-block '. require_superpower(10989 /* PEGASUS */) .'"><i class="fas fa-cog"></i></a>';
 
 
-            echo '</div>';
-        echo '</div>';
+    //REFERENCES
+    $en_count_references = en_count_references($entity['en_id']);
+    if(count($en_count_references) > 0){
+        $en_all_6194 = $this->config->item('en_all_6194');
+        //Show this entities connections:
+        $ref_count = 0;
+        foreach($en_count_references as $en_id=>$en_count){
+            echo '&nbsp;&nbsp;<span data-toggle="tooltip" data-placement="bottom" title="Referenced as '.$en_all_6194[$en_id]['m_name'].' '.number_format($en_count, 0).' times">'.$en_all_6194[$en_id]['m_icon'] . ' '. echo_number($en_count).'</span>';
+            $ref_count++;
+        }
+    }
+
     echo '</div>';
-
-
 
     ?>
 
@@ -106,7 +108,7 @@
 
 
                         <!-- Entity Name -->
-                        <span class="mini-header" style="margin-top:20px;"><?= $en_all_6206[6197]['m_icon'].' '.$en_all_6206[6197]['m_name'] ?> [<span style="margin:0 0 10px 0;"><span id="charNameNum">0</span>/<?= config_value(11072) ?></span>]</span>
+                        <span class="mini-header" style="margin-top:20px;"><?= $en_all_6206[6197]['m_icon'].' '.$en_all_6206[6197]['m_name'] ?> [<span style="margin:0 0 10px 0;"><span id="charNameNum">0</span>/<?= config_var(11072) ?></span>]</span>
                         <span class="white-wrapper">
                                 <textarea class="form-control text-edit border" id="en_name"
                                           onkeyup="en_name_word_count()" data-lpignore="true"
@@ -129,7 +131,7 @@
                              style="margin:1px 0 10px;">
                             <div class="input-group border">
                                 <input type="text" id="en_icon" value=""
-                                       maxlength="<?= config_value(11072) ?>" data-lpignore="true" placeholder=""
+                                       maxlength="<?= config_var(11072) ?>" data-lpignore="true" placeholder=""
                                        class="form-control">
                                 <span class="input-group-addon addon-lean addon-grey icon-demo" style="color:#070707; font-weight: 300; padding-left:7px !important; padding-right:6px !important;"><i class="fas fa-at grey-at"></i></span>
                             </div>
@@ -167,16 +169,16 @@
 
 
                             <form class="drag-box" method="post" enctype="multipart/form-data">
-                                <span class="mini-header" style="margin-top: 20px;"><?= $en_all_4341[4372]['m_icon'].' '.$en_all_4341[4372]['m_name'] ?> [<span style="margin:0 0 10px 0;"><span id="charln_contentNum">0</span>/<?= config_value(11073) ?></span>]</span>
+                                <span class="mini-header" style="margin-top: 20px;"><?= $en_all_4341[4372]['m_icon'].' '.$en_all_4341[4372]['m_name'] ?> [<span style="margin:0 0 10px 0;"><span id="charln_contentNum">0</span>/<?= config_var(11073) ?></span>]</span>
                                 <span class="white-wrapper">
                                     <textarea class="form-control text-edit border" id="ln_content"
-                                              maxlength="<?= config_value(11073) ?>" data-lpignore="true"
+                                              maxlength="<?= config_var(11073) ?>" data-lpignore="true"
                                               placeholder="Write Message, Drop a File or Paste URL"
                                               style="height:126px; min-height:126px;">
                                     </textarea>
                                 </span>
 
-                                <span><input class="box__file inputfile" type="file" name="file" id="file" /><label class="textarea_buttons" for="file" data-toggle="tooltip" title="Upload files up to <?= config_value(11063) ?> MB" data-placement="top"><i class="fal fa-cloud-upload"></i> Upload</label></span>
+                                <span><input class="box__file inputfile" type="file" name="file" id="file" /><label class="textarea_buttons" for="file" data-toggle="tooltip" title="Upload files up to <?= config_var(11063) ?> MB" data-placement="top"><i class="fal fa-cloud-upload"></i> Upload</label></span>
                             </form>
 
 
@@ -226,7 +228,6 @@
 
     <?php
 
-
     $col_num = 0;
     echo '<div class="row">';
     foreach ($this->config->item('en_all_11088') as $en_id => $m){
@@ -235,8 +236,7 @@
         $tab_content = '';
         $default_active = false;
 
-        echo '<div class="'.$this->config->item('col_'.$col_num).'">';
-
+        echo '<div class="'.config_var($col_num==1 ? 11092 : 11093).'">';
 
 
         echo '<ul class="nav nav-tabs nav-tabs-sm menu_bar">';
@@ -244,6 +244,7 @@
         foreach ($this->config->item('en_all_'.$en_id) as $en_id2 => $m2){
 
 
+            //Is this a caret menu?
             if(in_array(11040 , $m2['m_parents'])){
                 echo echo_caret($en_id2, $m2, $entity['en_id']);
                 continue;
@@ -281,7 +282,7 @@
                 }
 
                 //Input to add new parents:
-                $this_tab .= '<div id="new-parent" class="en-item list-group-item '.require_superpower(10989 /* PEGASUS */).'">
+                $this_tab .= '<div id="new-parent" class="list-group-item '.require_superpower(10989 /* PEGASUS */).'">
                     <div class="form-group is-empty"><input type="text" class="form-control new-input algolia_search" data-lpignore="true" placeholder="Add Entity/URL"></div>
                     <div class="algolia_search_pad hidden"><span>Search existing players, create a new player or paste a URL...</span></div>
             </div>';
@@ -290,7 +291,7 @@
 
             } elseif($en_id2==11029){
 
-                //PLAY TREE DOWN/OUTPUT
+                //PLAY PROJETCS
                 $default_active = true; //RIGHT
 
 
@@ -309,7 +310,7 @@
                     'ln_status_entity_id IN (' . join(',', $this->config->item('en_ids_7360')) . ')' => null, //Link Statuses Active
                     'en_status_entity_id IN (' . join(',', $this->config->item('en_ids_7358')) . ')' => null, //Entity Statuses Active
                     'ln_parent_entity_id' => $entity['en_id'],
-                ), array('en_child'), config_value(11064), 0, array('ln_order' => 'ASC', 'en_name' => 'ASC'));
+                ), array('en_child'), config_var(11064), 0, array('ln_order' => 'ASC', 'en_name' => 'ASC'));
 
                 $this_tab .= '<div id="list-children" class="list-group">';
 
@@ -317,11 +318,11 @@
                     $this_tab .= echo_en($en,false);
                 }
                 if ($counter > count($fetch_11029)) {
-                    $this_tab .= echo_en_load_more(1, config_value(11064), $counter);
+                    $this_tab .= echo_en_load_more(1, config_var(11064), $counter);
                 }
 
                 //Input to add new child:
-                $this_tab .= '<div id="new-children" class="en-item list-group-item '.require_superpower(10989 /* PEGASUS */).'">
+                $this_tab .= '<div id="new-children" class="list-group-item '.require_superpower(10989 /* PEGASUS */).'">
             <div class="form-group is-empty"><input type="text" class="form-control new-input algolia_search" data-lpignore="true" placeholder="Add Entity/URL"></div>
             <div class="algolia_search_pad hidden"><span>Search existing players, create a new player or paste a URL...</span></div>
     </div>';
@@ -544,6 +545,11 @@
     }
 
     echo '</div>';
+
+
+
+    //FOR EDITING ONLY (HIDDEN FROM UI):
+    echo '<div class="hidden">'.echo_en($entity).'</div>';
 
     ?>
 

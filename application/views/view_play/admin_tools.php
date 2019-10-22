@@ -240,7 +240,7 @@ if(!$action) {
     $pendin_in_notes = $this->READ_model->ln_fetch(array(
         'ln_status_entity_id IN (' . join(',', $this->config->item('en_ids_7364')) . ')' => null, //Link Statuses Incomplete
         'ln_type_entity_id IN (' . join(',', $this->config->item('en_ids_4485')) . ')' => null, //All Intent Notes
-    ), array('in_child'), config_value(11064), 0, array('ln_id' => 'ASC'));
+    ), array('in_child'), config_var(11064), 0, array('ln_id' => 'ASC'));
 
     echo '<div class="row">';
     echo '<div class="col-sm-6">';

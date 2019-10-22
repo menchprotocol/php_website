@@ -60,7 +60,7 @@
 
                     <span class="mini-header" style="margin-top: 20px;"><?= $en_all_6201[4736]['m_icon'].' '.$en_all_6201[4736]['m_name'] ?>* [<span
                                 style="margin:0 0 10px 0;"><span
-                                    id="charNameNum">0</span>/<?= config_value(11071) ?></span>]</span>
+                                    id="charNameNum">0</span>/<?= config_var(11071) ?></span>]</span>
                     <div class="form-group label-floating is-empty" style="height: 40px !important; margin-bottom: 0;">
                         <span class="white-wrapper"><textarea class="form-control text-edit msg main-box border" id="in_outcome" onkeyup="in_outcome_counter()"></textarea></span>
                     </div>

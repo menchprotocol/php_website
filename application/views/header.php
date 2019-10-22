@@ -26,10 +26,10 @@ $assigned_superpowers = ( isset($session_en['en__parents']) ? filter_array($sess
     <link href="/css/lib/material-kit.css" rel="stylesheet"/>
     <script src="/js/lib/material.min.js" type="text/javascript"></script>
     <script src="/js/lib/material-dashboard.js" type="text/javascript"></script>
-    <link href="/css/custom/styles.css?v=v<?= config_value(11060) ?>" rel="stylesheet"/>
+    <link href="/css/custom/styles.css?v=v<?= config_var(11060) ?>" rel="stylesheet"/>
     -->
 
-    <link href="/css/custom/mench.css?v=v<?= config_value(11060) ?>" rel="stylesheet"/>
+    <link href="/css/custom/mench.css?v=v<?= config_var(11060) ?>" rel="stylesheet"/>
 
 
     <?php
@@ -62,8 +62,8 @@ $assigned_superpowers = ( isset($session_en['en__parents']) ? filter_array($sess
     <script src="/js/lib/autocomplete.jquery.min.js"></script>
     <script src="/js/lib/algoliasearch.min.js"></script>
     <script src="/js/lib/sortable.min.js" type="text/javascript"></script>
-    <script src="/js/custom/global-js.js?v=v<?= config_value(11060) ?>" type="text/javascript"></script>
-    <script src="/js/custom/platform-js.js?v=v<?= config_value(11060) ?>" type="text/javascript"></script>
+    <script src="/js/custom/global-js.js?v=v<?= config_var(11060) ?>" type="text/javascript"></script>
+    <script src="/js/custom/platform-js.js?v=v<?= config_var(11060) ?>" type="text/javascript"></script>
 </head>
 
 <body>

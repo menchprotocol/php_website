@@ -2,7 +2,7 @@
     //Define some global variables:
     var in_loaded_id = <?= $in['in_id'] ?>;
 </script>
-<script src="/js/custom/in_train.js?v=v<?= config_value(11060) ?>"
+<script src="/js/custom/in_train.js?v=v<?= config_var(11060) ?>"
         type="text/javascript"></script>
 
 <style>
@@ -15,7 +15,7 @@
     var in_id = <?= $in['in_id'] ?>;
     var focus_ln_type_entity_id = 4231;
 </script>
-<script src="/js/custom/in_notes.js?v=v<?= config_value(11060) ?>" type="text/javascript"></script>
+<script src="/js/custom/in_notes.js?v=v<?= config_var(11060) ?>" type="text/javascript"></script>
 
 
 <script>
@@ -23,12 +23,11 @@
     var js_en_all_4486 = <?= json_encode($this->config->item('en_all_4486')) ?>; // Intent Links
     var js_en_all_7585 = <?= json_encode($this->config->item('en_all_7585')) ?>; // Intent Subtypes
 </script>
-<script src="/js/custom/in_modify.js?v=v<?= config_value(11060) ?>"
+<script src="/js/custom/in_modify.js?v=v<?= config_var(11060) ?>"
         type="text/javascript"></script>
 
 
 
-<div class="container">
 
 <?php
 
@@ -39,21 +38,25 @@ $play_focus_found = false; //Used to determine the first tab to be opened
 
 
 
+echo '<div class="container">';
+
+
+
 echo '<div class="row">';
 
     //LEFT TITLE
-    echo '<div class="'.$this->config->item('col_1').'">';
-    echo '<h1>'.echo_in_outcome($in['in_outcome']).'</h1>';
+    echo '<div class="'.config_var(11094).'">';
+        echo '<h1>'.echo_in_outcome($in['in_outcome']).'</h1>';
     echo '</div>';
 
 
-    //RIGHT SETTING
-    echo '<div class="'.$this->config->item('col_2').'">';
-    echo '<div class="first_title center-right">';
-    echo echo_dropdown(7585, $in['in_completion_method_entity_id'], false, ': ');
-    echo '<div style="float: right;"><a href="javascript:void(0)" onclick="$(\'.menu_bar\').toggleClass(\'hidden\')" class="btn btn-sm btn-primary inline-block"><i class="fas fa-cog" style="font-size: 1.2em;"></i></a></div>';
-    echo '<div style="margin-right: 5px;float: right;">'.echo_dropdown(4737, $in['in_status_entity_id'], true, null).'</div>';
-    echo '</div>';
+    //RIGHT SETTINGS
+    echo '<div class="'.config_var(11095).'">';
+        echo '<div class="first_title center-right">';
+            echo echo_dropdown(7585, $in['in_completion_method_entity_id'], false, ': ');
+            echo '<div class="pull-right"><a href="javascript:void(0)" onclick="$(\'.menu_bar\').toggleClass(\'hidden\')" class="btn btn-sm btn-primary inline-block"><i class="fas fa-cog" style="font-size: 1.2em;"></i></a></div>';
+            echo '<div style="margin-right: 5px;" class="pull-right">'.echo_dropdown(4737, $in['in_status_entity_id'], true, null).'</div>';
+        echo '</div>';
     echo '</div>';
 
 echo '</div>';
@@ -61,21 +64,22 @@ echo '</div>';
 
 
 
-$col_num = 0;
 echo '<div class="row">';
+$col_num = 0;
 foreach ($this->config->item('en_all_11021') as $en_id => $m){
 
     $col_num++;
     $tab_content = '';
     $default_active = false;
     
-    echo '<div class="'.$this->config->item('col_'.$col_num).'">';
+    echo '<div class="'.config_var($col_num==1 ? 11094 : 11095).'">';
 
     echo '<ul class="nav nav-tabs nav-tabs-sm menu_bar hidden">';
 
     foreach ($this->config->item('en_all_'.$en_id) as $en_id2 => $m2){
 
 
+        //Is this a caret menu?
         if(in_array(11040 , $m2['m_parents'])){
             echo echo_caret($en_id2, $m2, $in['in_id']);
             continue;
@@ -86,7 +90,6 @@ foreach ($this->config->item('en_all_11021') as $en_id => $m){
         $show_tab_names = in_array($en_id2, $this->config->item('en_ids_11031'));
         $counter = null; //Assume no counters
         $this_tab = '';
-
 
 
         //BLOG
@@ -108,7 +111,7 @@ foreach ($this->config->item('en_all_11021') as $en_id => $m){
                 $this_tab .= echo_in($parent_in, true);
             }
 
-            $this_tab .= '<div class="list-group-item list_input grey-block '.require_superpower(10989 /* PEGASUS */).'">
+            $this_tab .= '<div class="list_input grey-block '.require_superpower(10989 /* PEGASUS */).'">
                             <div class="form-group is-empty" style="margin: 0; padding: 0;">
                                 <input type="text"
                                        class="form-control intentadder-level-2-parent algolia_search"
@@ -118,6 +121,7 @@ foreach ($this->config->item('en_all_11021') as $en_id => $m){
                             </div>
                            <div class="algolia_search_pad in_pad_top hidden"><span>Search existing blogs or create a new one...</span></div>
                     </div>';
+
             $this_tab .= '</div>';
 
 
@@ -142,11 +146,11 @@ foreach ($this->config->item('en_all_11021') as $en_id => $m){
 
             //Add child intent:
             if(in_can_train($in['in_id'])){
-                $this_tab .= '<div class="list-group-item list_input grey-block">
+                $this_tab .= '<div class="list_input grey-block">
                     <div class="form-group is-empty" style="margin: 0; padding: 0;">
                         <input type="text"
                                class="form-control intentadder-level-2-child algolia_search"
-                               maxlength="' . config_value(11071) . '"
+                               maxlength="' . config_var(11071) . '"
                                intent-id="' . $in['in_id'] . '"
                                id="addintent-c-' . $in['in_id'] . '-0"
                                placeholder="Add Intent">
@@ -181,10 +185,8 @@ foreach ($this->config->item('en_all_11021') as $en_id => $m){
             $counter = count($blog_notes);
 
             if($en_id2==4231){
-                $default_active = true; //BLOG NOTES always first for blogging
+                $default_active = true; //BLOG MESSAGES
             }
-
-
 
             //Show no-Message notifications for each message type:
             $this_tab .= '<div id="intent_messages'.$in['in_id'].'">';
@@ -214,13 +216,13 @@ foreach ($this->config->item('en_all_11021') as $en_id => $m){
 
             $this_tab .= '<div id="ln_content_counter" style="margin:0 0 1px 0; font-size:0.8em;">';
             //File counter:
-            $this_tab .= '<span id="charNum' . $in['in_id'] . '">0</span>/' . config_value(11073);
+            $this_tab .= '<span id="charNum' . $in['in_id'] . '">0</span>/' . config_var(11073);
 
             //firstname
-            $this_tab .= '<a href="javascript:in_message_add_name();" class="textarea_buttons remove_loading" style="float:right; margin-left:8px;" data-toggle="tooltip" title="Personalize this message by adding the user\'s First Name" data-placement="left"><i class="far fa-user"></i> /firstname</a>';
+            $this_tab .= '<a href="javascript:in_message_add_name();" class="textarea_buttons remove_loading pull-right inline-block" style="margin-left:8px;" data-toggle="tooltip" title="Personalize this message by adding the user\'s First Name" data-placement="left"><i class="far fa-user"></i> /firstname</a>';
 
             //Choose a file:
-            $this_tab .= '<div style="float:right; display:inline-block;" class="remove_loading"><input class="box__file inputfile" type="file" name="file" id="file" /><label class="textarea_buttons" for="file" data-toggle="tooltip" title="Upload files up to ' . config_value(11063) . ' MB" data-placement="top"><i class="fal fa-cloud-upload"></i> Upload</label></div>';
+            $this_tab .= '<div class="remove_loading pull-right inline-block"><input class="box__file inputfile" type="file" name="file" id="file" /><label class="textarea_buttons" for="file" data-toggle="tooltip" title="Upload files up to ' . config_var(11063) . ' MB" data-placement="top"><i class="fal fa-cloud-upload"></i> Upload</label></div>';
             $this_tab .= '</div>';
 
 
@@ -237,9 +239,8 @@ foreach ($this->config->item('en_all_11021') as $en_id => $m){
 
 
 
-
-
         echo '<li class="nav-item"><a class="nav-link tab-nav-'.$en_id.' tab-head-'.$en_id2.' '.( $default_active ? ' active ' : '' ).require_superpower(assigned_superpower($m2['m_parents'])).'" href="javascript:void(0);" onclick="loadtab('.$en_id.','.$en_id2.')" data-toggle="tooltip" data-placement="top" title="'.( $show_tab_names ? '' : $m2['m_name'] ).'">'.$m2['m_icon'].( is_null($counter) ? '' : ' <span class="counter-'.$en_id2.'">'.echo_number($counter).'</span>' ).( $show_tab_names ? ' '.$m2['m_name'] : '' ).'</a></li>';
+
 
         $tab_content .= '<div class="tab-content tab-group-'.$en_id.' tab-data-'.$en_id2.( $default_active ? '' : ' hidden ' ).'">';
         $tab_content .= $this_tab;
@@ -248,12 +249,16 @@ foreach ($this->config->item('en_all_11021') as $en_id => $m){
         $default_active = false;
 
     }
+
     echo '</ul>';
+
     echo $tab_content;
+
     echo '</div>';
+
 }
+
+echo '</div>';
 echo '</div>';
 
 ?>
-
-</div>

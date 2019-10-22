@@ -2047,7 +2047,7 @@ class READ_model extends CI_Model
                             $next_step_message .= "\n\n";
 
                             //We know that the $next_step_message length cannot surpass the limit defined by facebook
-                            if (($key >= $max_and_list || strlen($next_step_message) > (config_value(11074) - 150))) {
+                            if (($key >= $max_and_list || strlen($next_step_message) > (config_var(11074) - 150))) {
                                 //We cannot add any more, indicate truncating:
                                 $remainder = count($in__children) - $max_and_list;
                                 $next_step_message .= '... plus ' . $remainder . ' more step' . echo__s($remainder) . '.';
@@ -2793,10 +2793,10 @@ class READ_model extends CI_Model
                 'status' => 0,
                 'message' => 'Missing Message Content',
             );
-        } elseif ($strict_validation && strlen($input_message) > config_value(11073)) {
+        } elseif ($strict_validation && strlen($input_message) > config_var(11073)) {
             return array(
                 'status' => 0,
-                'message' => 'Message is longer than the allowed ' . config_value(11073) . ' characters',
+                'message' => 'Message is longer than the allowed ' . config_var(11073) . ' characters',
             );
         } elseif (!preg_match('//u', $input_message)) {
             return array(
@@ -3647,7 +3647,7 @@ class READ_model extends CI_Model
             $payload = array();
         }
 
-        $graph_url = 'https://graph.facebook.com/' . config_value(11077) . $graph_url;
+        $graph_url = 'https://graph.facebook.com/' . config_var(11077) . $graph_url;
         $counter = 0;
         foreach ($access_token_payload as $key => $val) {
             $graph_url = $graph_url . ($counter == 0 ? '?' : '&') . $key . '=' . $val;
@@ -4451,7 +4451,7 @@ class READ_model extends CI_Model
 
 
             //Make sure algolia is enabled:
-            if (!intval(config_value(11062))) {
+            if (!intval(config_var(11062))) {
                 $this->READ_model->dispatch_message(
                     'Currently I cannot search for any intentions. Try again later.',
                     $en,
@@ -4516,7 +4516,7 @@ class READ_model extends CI_Model
             $this->READ_model->ln_create(array(
                 'ln_content' => ( $new_intent_count > 0 ? $message : 'Found ' . $new_intent_count . ' intent' . echo__s($new_intent_count) . ' matching [' . $master_command . ']' ),
                 'ln_metadata' => array(
-                    'app_enable_algolia' => intval(config_value(11062)),
+                    'app_enable_algolia' => intval(config_var(11062)),
                     'new_intent_count' => $new_intent_count,
                     'input_data' => $master_command,
                     'output' => $search_results,

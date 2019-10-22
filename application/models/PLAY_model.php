@@ -325,7 +325,7 @@ class PLAY_model extends CI_Model
             'ln_child_entity_id' => $ln_creator_entity_id,
             'ln_parent_entity_id IN (' . join(',', $children) . ')' => null, //Current children
             'ln_status_entity_id IN (' . join(',', $this->config->item('en_ids_7360')) . ')' => null, //Link Statuses Active
-        ), array(), config_value(11064)) as $ln) {
+        ), array(), config_var(11064)) as $ln) {
 
             if (!$already_assigned && $ln['ln_parent_entity_id'] == $set_en_child_id) {
                 $already_assigned = true;

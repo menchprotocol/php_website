@@ -38,7 +38,7 @@ if (isset($session_en['en_id'])) {
         //the Messenger Extensions JS SDK is done loading:
         window.extAsyncInit = function () {
             //Get context:
-            MessengerExtensions.getContext('<?= config_value(11076) ?>',
+            MessengerExtensions.getContext('<?= config_var(11076) ?>',
                 function success(thread_context) {
                     // success
                     //user ID was successfully obtained.

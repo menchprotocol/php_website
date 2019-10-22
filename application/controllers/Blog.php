@@ -9,7 +9,7 @@ class Blog extends CI_Controller {
 
         $this->output->enable_profiler(FALSE);
 
-        date_default_timezone_set(config_value(11079));
+        date_default_timezone_set(config_var(11079));
     }
 
     function overview(){
@@ -245,10 +245,10 @@ class Blog extends CI_Controller {
                 'status' => 0,
                 'message' => 'Missing either Intent Outcome OR Child Intent ID',
             ));
-        } elseif (strlen($_POST['in_outcome']) > config_value(11071)) {
+        } elseif (strlen($_POST['in_outcome']) > config_var(11071)) {
             return echo_json(array(
                 'status' => 0,
-                'message' => 'Intent outcome cannot be longer than '.config_value(11071).' characters',
+                'message' => 'Intent outcome cannot be longer than '.config_var(11071).' characters',
             ));
         } elseif($_POST['in_link_child_id'] >= 2147483647){
             return echo_json(array(
@@ -450,10 +450,10 @@ class Blog extends CI_Controller {
                 'status' => 0,
                 'message' => 'Missing tr__assessment_points',
             ));
-        } elseif (intval($_POST['tr__assessment_points'])!=$_POST['tr__assessment_points'] || $_POST['tr__assessment_points']<config_value(11056) || $_POST['tr__assessment_points']>config_value(11057)) {
+        } elseif (intval($_POST['tr__assessment_points'])!=$_POST['tr__assessment_points'] || $_POST['tr__assessment_points']<config_var(11056) || $_POST['tr__assessment_points']>config_var(11057)) {
             return echo_json(array(
                 'status' => 0,
-                'message' => $en_all_6103[4358]['m_name'].' must be an integer between '.config_value(11056).' - '.config_value(11057),
+                'message' => $en_all_6103[4358]['m_name'].' must be an integer between '.config_var(11056).' - '.config_var(11057),
             ));
         } elseif (!isset($_POST['in_completion_method_entity_id'])) {
             return echo_json(array(
@@ -882,11 +882,11 @@ class Blog extends CI_Controller {
                 'message' => 'Unknown error while trying to save file.',
             ));
 
-        } elseif ($_FILES[$_POST['upload_type']]['size'] > (config_value(11063) * 1024 * 1024)) {
+        } elseif ($_FILES[$_POST['upload_type']]['size'] > (config_var(11063) * 1024 * 1024)) {
 
             return echo_json(array(
                 'status' => 0,
-                'message' => 'File is larger than ' . config_value(11063) . ' MB.',
+                'message' => 'File is larger than ' . config_var(11063) . ' MB.',
             ));
 
         }

@@ -12,7 +12,7 @@ defined('BASEPATH') OR exit('No direct script access allowed');
 *
 */
 
-//Generated 2019-10-21 08:23:58 PST
+//Generated 2019-10-22 11:23:09 PST
 
 //PLAY TABS:
 $config['en_ids_11088'] = array(11033,11089);
@@ -36,7 +36,7 @@ $config['en_ids_11089'] = array(11029);
 $config['en_all_11089'] = array(
     11029 => array(
         'm_icon' => '<i class="fas fa-hand-holding-seedling blue"></i>',
-        'm_name' => 'OUTPUTS',
+        'm_name' => 'PROJECTS',
         'm_desc' => '',
         'm_parents' => array(11084,11089,11028),
     ),
@@ -354,10 +354,10 @@ $config['en_all_10718'] = array(
         'm_parents' => array(3084,10718,2750,1326),
     ),
     2792 => array(
-        'm_icon' => '<i class="fab fa-google"></i>',
+        'm_icon' => '<i class="fab fa-google" aria-hidden="true"></i>',
         'm_name' => 'Google',
         'm_desc' => '',
-        'm_parents' => array(10718,3084,1326,2750),
+        'm_parents' => array(3088,10718,3084,1326,2750),
     ),
     10766 => array(
         'm_icon' => '<i class="far fa-building"></i>',
@@ -854,14 +854,14 @@ $config['en_all_11007'] = array(
 $config['en_ids_11084'] = array(11030,11029);
 $config['en_all_11084'] = array(
     11030 => array(
-        'm_icon' => '<i class="fas fa-sun blue"></i>',
-        'm_name' => 'PLAYER INPUTS',
+        'm_icon' => '<i class="fas fa-id-badge blue"></i>',
+        'm_name' => 'PLAYER PROFILE',
         'm_desc' => '',
         'm_parents' => array(11084,11033,11028),
     ),
     11029 => array(
         'm_icon' => '<i class="fas fa-hand-holding-seedling blue"></i>',
-        'm_name' => 'PLAYER OUTPUTS',
+        'm_name' => 'PLAYER PROJECTS',
         'm_desc' => '',
         'm_parents' => array(11084,11089,11028),
     ),
@@ -871,8 +871,8 @@ $config['en_all_11084'] = array(
 $config['en_ids_11033'] = array(11030,7545,10573,4983,4231,4601,7347,6146,11039);
 $config['en_all_11033'] = array(
     11030 => array(
-        'm_icon' => '<i class="fas fa-sun blue"></i>',
-        'm_name' => 'INPUTS',
+        'm_icon' => '<i class="fas fa-id-badge blue"></i>',
+        'm_name' => 'PROFILE',
         'm_desc' => '',
         'm_parents' => array(11084,11033,11028),
     ),
@@ -1312,12 +1312,24 @@ $config['en_all_11058'] = array(
 );
 
 //PLATFORM CONFIG VARIABLES:
-$config['en_ids_6404'] = array(11062,11071,11069,11079,11076,11077,11074,11075,11064,11065,11063,11060,11067,11066,11072,11073,11057,11056,11061,11070);
+$config['en_ids_6404'] = array(11062,11094,11095,11071,11069,11079,11076,11077,11074,11075,11064,11065,11063,11060,11067,11066,11072,11092,11093,11073,11057,11056,11061,11070);
 $config['en_all_6404'] = array(
     11062 => array(
         'm_icon' => '<i class="far fa-lambda"></i>',
         'm_name' => 'ALGOLIA ENABLED',
         'm_desc' => '1',
+        'm_parents' => array(6404),
+    ),
+    11094 => array(
+        'm_icon' => '',
+        'm_name' => 'BLOG LEFT COLUMN',
+        'm_desc' => 'col-lg-7 col-md-6',
+        'm_parents' => array(6404),
+    ),
+    11095 => array(
+        'm_icon' => '',
+        'm_name' => 'BLOG RIGHT COLUMN',
+        'm_desc' => 'col-lg-5 col-md-6',
         'm_parents' => array(6404),
     ),
     11071 => array(
@@ -1381,9 +1393,9 @@ $config['en_all_6404'] = array(
         'm_parents' => array(6404),
     ),
     11060 => array(
-        'm_icon' => '<i class="far fa-lambda"></i>',
+        'm_icon' => '<i class="far fa-lambda" aria-hidden="true"></i>',
         'm_name' => 'MENCH PLATFORM VERSION',
-        'm_desc' => '1.07',
+        'm_desc' => '1.09',
         'm_parents' => array(6404),
     ),
     11067 => array(
@@ -1402,6 +1414,18 @@ $config['en_all_6404'] = array(
         'm_icon' => '<i class="far fa-lambda"></i>',
         'm_name' => 'PLAYER NAME MAX LENGTH',
         'm_desc' => '140',
+        'm_parents' => array(6404),
+    ),
+    11092 => array(
+        'm_icon' => '',
+        'm_name' => 'PLAY LEFT COLUMN',
+        'm_desc' => 'col-md-6',
+        'm_parents' => array(6404),
+    ),
+    11093 => array(
+        'm_icon' => '',
+        'm_name' => 'PLAY RIGHT COLUMN',
+        'm_desc' => 'col-md-6',
         'm_parents' => array(6404),
     ),
     11073 => array(
@@ -1522,7 +1546,7 @@ $config['en_ids_11035'] = array(4269,7291,6225,4536,7256,7540,11087);
 $config['en_all_11035'] = array(
     4269 => array(
         'm_icon' => '<i class="fas fa-sign-in-alt blue"></i>',
-        'm_name' => 'JOIN/LOGIN TO PLAY',
+        'm_name' => 'JOIN/LOGIN',
         'm_desc' => '',
         'm_parents' => array(11035),
     ),
@@ -1603,14 +1627,14 @@ $config['en_all_11031'] = array(
 $config['en_ids_11028'] = array(11030,11029);
 $config['en_all_11028'] = array(
     11030 => array(
-        'm_icon' => '<i class="fas fa-sun blue"></i>',
-        'm_name' => 'PLAYER INPUTS',
+        'm_icon' => '<i class="fas fa-id-badge blue"></i>',
+        'm_name' => 'PLAYER PROFILE',
         'm_desc' => 'Describe PLAYER. Where it comes from. It\'s origin.',
         'm_parents' => array(11084,11033,11028),
     ),
     11029 => array(
         'm_icon' => '<i class="fas fa-hand-holding-seedling blue"></i>',
-        'm_name' => 'PLAYER OUTPUTS',
+        'm_name' => 'PLAYER PROJECTS',
         'm_desc' => 'What the PLAYER chooses to focus on. It\'s work. It\'s responsibility.',
         'm_parents' => array(11084,11089,11028),
     ),
@@ -1934,7 +1958,7 @@ $config['en_all_10692'] = array(
 );
 
 //PLATFORM CACHE PHP:
-$config['en_ids_4527'] = array(7758,10809,10956,11047,6192,7712,4983,7756,4229,10589,10990,4485,6193,7596,7588,7302,4737,7356,7355,6201,11021,7529,4486,7585,10602,7309,7751,6150,10712,10719,10869,10627,10746,7703,7360,7364,7359,10717,10721,10720,11080,2738,7368,7555,6287,11035,11059,11058,10716,6225,10718,10711,11054,4527,6404,6232,4537,6194,11039,6827,4426,11007,4454,6123,6177,11033,4997,11089,3000,7303,6206,11088,4592,4755,10571,6345,11081,4600,7347,5967,6146,6255,4280,10590,10570,4277,6102,7704,6244,6274,7494,6144,7582,6103,10596,10539,10594,10692,10591,10593,7304,6186,4341,4593,10658,10592,11031,11084,6204,10710,10957,10725,6805,4986,7551,7358,7357,11018,11028);
+$config['en_ids_4527'] = array(7758,10809,10956,11047,6192,7712,4983,7756,4229,10589,10990,4485,6193,7596,7588,7302,4737,7356,7355,6201,11021,7529,4486,7585,10602,7309,7751,6150,10712,10719,10571,10869,10627,10746,7703,7360,7364,7359,10717,10721,10720,11080,2738,7368,7555,6287,11035,11059,11058,10716,6225,10718,10711,11054,4527,6404,6232,4537,6194,11039,6827,4426,11007,4454,6123,6177,11033,4997,11089,3000,7303,6206,11088,4592,4755,6345,11081,4600,7347,5967,6146,6255,4280,10590,10570,4277,6102,7704,6244,6274,7494,6144,7582,6103,10596,10539,10594,10692,10591,10593,7304,6186,4341,4593,10658,10592,11031,11084,6204,10710,10957,10725,6805,4986,7551,7358,7357,11018,11028);
 $config['en_all_4527'] = array(
     7758 => array(
         'm_icon' => '<i class="far fa-mountain"></i>',
@@ -2116,11 +2140,17 @@ $config['en_all_4527'] = array(
         'm_desc' => '',
         'm_parents' => array(4527,10869),
     ),
+    10571 => array(
+        'm_icon' => '<i class="fas fa-megaphone blue"></i>',
+        'm_name' => 'FEATURED PLAYERS',
+        'm_desc' => '',
+        'm_parents' => array(4527,4758),
+    ),
     10869 => array(
-        'm_icon' => '<i class="fas fa-megaphone"></i>',
+        'm_icon' => '<i class="fas fa-megaphone ispink"></i>',
         'm_name' => 'FEATURED TOPICS',
         'm_desc' => '',
-        'm_parents' => array(4527,7254),
+        'm_parents' => array(6771,4527),
     ),
     10627 => array(
         'm_icon' => '<i class="far fa-paperclip"></i>',
@@ -2379,12 +2409,6 @@ $config['en_all_4527'] = array(
         'm_name' => 'PRIVATE READ',
         'm_desc' => '',
         'm_parents' => array(6771,4463,4426,4527),
-    ),
-    10571 => array(
-        'm_icon' => '<i class="fas fa-globe"></i>',
-        'm_name' => 'Public Entities',
-        'm_desc' => '',
-        'm_parents' => array(4527,4758),
     ),
     6345 => array(
         'm_icon' => '<i class="fas fa-comment-check"></i>',
@@ -4541,7 +4565,7 @@ $config['en_all_10591'] = array(
     ),
 );
 
-//Public Entities:
+//FEATURED PLAYERS:
 $config['en_ids_10571'] = array(2997,4446,3005,4763,3147,3084,3000,2999,4883,3192,5948,2998);
 $config['en_all_10571'] = array(
     2997 => array(
@@ -6262,7 +6286,7 @@ $config['en_all_6123'] = array(
         'm_parents' => array(6123,1326,4763,2750),
     ),
     3311 => array(
-        'm_icon' => '<i class="fab fa-medium"></i>',
+        'm_icon' => '<i class="fab fa-medium" aria-hidden="true"></i>',
         'm_name' => 'Medium',
         'm_desc' => '',
         'm_parents' => array(6123,2750,1326),

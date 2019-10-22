@@ -38,7 +38,7 @@ function echo_js_suggestion(alg_obj){
 
     var obj_full_name = ( alg_obj._highlightResult && alg_obj._highlightResult.alg_obj_name.value ? alg_obj._highlightResult.alg_obj_name.value : alg_obj.alg_obj_name );
 
-    return '<span class="icon-block-sm">' + alg_obj.alg_obj_icon + '</span>' + obj_full_name;
+    return '<span class="icon-block">' + alg_obj.alg_obj_icon + '</span>' + obj_full_name;
 }
 
 
@@ -202,7 +202,7 @@ $(document).ready(function () {
 
                     //Append filters:
                     algolia_index.search(q, {
-                        hitsPerPage: 14,
+                        hitsPerPage: 20,
                         filters:' alg_obj_is_in' + ($("#mench_search").val().charAt(0) == '#' ? '=1' : ($("#mench_search").val().charAt(0) == '@' ? '=0' : '>=0')) + ( js_assigned_superpowers.includes(10989 /* PEGASUS */) ? '' : ' AND _tags:alg_is_published_featured'),
                     }, function (error, content) {
                         if (error) {

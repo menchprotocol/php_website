@@ -6,7 +6,7 @@ function echo_en_load_more($page, $limit, $en__child_count)
      * Gives an option to "Load More" entities when we have too many to show in one go
      * */
 
-    $ui = '<a class="load-more en-item list-group-item" href="javascript:void(0);" onclick="en_load_next_page(' . $page . ', 0)">';
+    $ui = '<a class="load-more list-group-item" href="javascript:void(0);" onclick="en_load_next_page(' . $page . ', 0)">';
 
     //Regular section:
     $max_entities = (($page + 1) * $limit);
@@ -271,7 +271,7 @@ function echo_in_message_manage($ln)
 
 
     //Counter:
-    $ui .= '<li class="edit-on hidden"><span id="charNumEditing' . $ln['ln_id'] . '">0</span>/' . config_value(11073) . '</li>';
+    $ui .= '<li class="edit-on hidden"><span id="charNumEditing' . $ln['ln_id'] . '">0</span>/' . config_var(11073) . '</li>';
 
     //Save Edit:
     $ui .= '<li class="pull-right edit-on hidden"><a class="btn btn-read white-third" title="Save changes" data-toggle="tooltip" data-placement="top" href="javascript:in_message_modify_save(' . $ln['ln_id'] . ',' . $ln['ln_type_entity_id'] . ');"><i class="fas fa-check"></i> Save</a></li>';
@@ -2036,6 +2036,7 @@ function echo_in($in, $in_linked_id = 0, $is_parent = false)
      *
      * */
 
+
     $CI =& get_instance();
 
     $en_all_6186 = $CI->config->item('en_all_6186'); //Link Statuses
@@ -2051,6 +2052,7 @@ function echo_in($in, $in_linked_id = 0, $is_parent = false)
     //Prep link metadata to be analyzed later:
     $ln_id = $in['ln_id'];
     $ln_metadata = unserialize($in['ln_metadata']);
+
 
     $ui = '<div in-link-id="' . $ln_id . '" in-tr-type="' . $in['ln_type_entity_id'] . '" intent-id="' . $in['in_id'] . '" parent-intent-id="' . $in_linked_id . '" class="list-group-item blogs_sortable level2_in object_highlight highlight_in_'.$in['in_id'] . ' intent_line_' . $in['in_id'] . ( $is_parent ? ' parent-intent ' : ' enable-sorting ' ) . ' in__tr_'.$ln_id.'">';
 
@@ -2073,6 +2075,7 @@ function echo_in($in, $in_linked_id = 0, $is_parent = false)
 
     //LINK STATUS
     $ui .= '<span class="icon-block-sm ln_status_entity_id_' . $ln_id . ( in_array($in['ln_status_entity_id'], $CI->config->item('en_ids_7359')) ? require_superpower(10989 /* PEGASUS */) : '' ) . '"><span data-toggle="tooltip" data-placement="right" title="'.$en_all_6186[$in['ln_status_entity_id']]['m_name'].' @'.$in['ln_status_entity_id'].': '.$en_all_6186[$in['ln_status_entity_id']]['m_desc'].'">' . $en_all_6186[$in['ln_status_entity_id']]['m_icon'] . '</span></span>';
+
 
     //Show Completion Marks based on Intent Link Type:
     $ui .= '<span class="in_assessment_' . $ln_id . require_superpower(10989 /* PEGASUS */) . '" data-toggle="tooltip" data-placement="right" title="Completion Marks">'. echo_in_marks($in) .'</span>';
@@ -2101,7 +2104,7 @@ function echo_in($in, $in_linked_id = 0, $is_parent = false)
      *
      * */
 
-    $ui .= '<div style="float:right; display:inline-block;  padding-left:5px;" class="'. require_superpower(10989 /* PEGASUS */) .'">';
+    $ui .= '<div style="padding-left:5px;" class="pull-right inline-block '. require_superpower(10989 /* PEGASUS */) .'">';
 
 
     //Do we have intent parents loaded in our data-set?
@@ -2130,7 +2133,7 @@ function echo_in($in, $in_linked_id = 0, $is_parent = false)
     if($can_train){
 
         //Modify Intent:
-        $ui .= '<a href="javascript:void(0);" onclick="in_modify_load(' . $in['in_id'] . ',' . $ln_id . ')" class="btn btn-primary btn-blog"><i class="fas fa-cog"></i></a></div>';
+        $ui .= '<a href="javascript:void(0);" onclick="in_modify_load(' . $in['in_id'] . ',' . $ln_id . ')" class="btn btn-primary btn-blog"><i class="fas fa-cog"></i></a>';
 
     } else {
 
@@ -2225,7 +2228,7 @@ function echo_en($en, $is_parent = false)
 
 
     //ROW
-    $ui .= '<div class="en-item object_highlight highlight_en_'.$en['en_id'].' en___' . $en['en_id'] . ( $ln_id > 0 ? ' tr_' . $en['ln_id'].' ' : '' ) . ( $is_parent ? ' parent-entity ' : '' ) . '" entity-id="' . $en['en_id'] . '" en-status="' . $en['en_status_entity_id'] . '" tr-id="'.$ln_id.'" ln-status="'.( $ln_id ? $en['ln_status_entity_id'] : 0 ).'" is-parent="' . ($is_parent ? 1 : 0) . '">';
+    $ui .= '<div class="list-group-item en-item object_highlight highlight_en_'.$en['en_id'].' en___' . $en['en_id'] . ( $ln_id > 0 ? ' tr_' . $en['ln_id'].' ' : '' ) . ( $is_parent ? ' parent-entity ' : '' ) . '" entity-id="' . $en['en_id'] . '" en-status="' . $en['en_status_entity_id'] . '" tr-id="'.$ln_id.'" ln-status="'.( $ln_id ? $en['ln_status_entity_id'] : 0 ).'" is-parent="' . ($is_parent ? 1 : 0) . '">';
 
 
     $ui .= '<div class="col1 col-md">';
@@ -2291,28 +2294,6 @@ function echo_en($en, $is_parent = false)
     }
 
 
-    //Do we have entity parents loaded in our data-set? If not, load it:
-    if (!isset($en['en__parents'])) {
-
-        //Fetch parents at this point:
-        $en['en__parents'] = $CI->READ_model->ln_fetch(array(
-            'ln_type_entity_id IN (' . join(',', $CI->config->item('en_ids_4592')) . ')' => null, //Entity-to-Entity Links
-            'ln_child_entity_id' => $en['en_id'], //This child entity
-            'ln_status_entity_id IN (' . join(',', $CI->config->item('en_ids_7360')) . ')' => null, //Link Statuses Active
-            'en_status_entity_id IN (' . join(',', $CI->config->item('en_ids_7358')) . ')' => null, //Entity Statuses Active
-        ), array('en_parent'), 0, 0, array('en_name' => 'ASC'));
-    }
-
-
-    //Parent entities:
-    if(count($en['en__parents']) > 0){
-        $ui .= ' <div style="float:left; display:inline-block;">';
-        foreach ($en['en__parents'] as $en_parent) {
-            $ui .= '<span class="icon-block en_child_icon_' . $en_parent['en_id'] . require_superpower(10989 /* PEGASUS */) . '"><a href="/play/' . $en_parent['en_id'] . '" data-toggle="tooltip" title="' . $en_parent['en_name'] . (strlen($en_parent['ln_content']) > 0 ? ' = ' . $en_parent['ln_content'] : '') . '" data-placement="bottom">' . echo_en_icon($en_parent) . '</a></span>';
-        }
-        $ui .= ' </div>';
-    }
-
 
 
 
@@ -2339,13 +2320,45 @@ function echo_en($en, $is_parent = false)
 
     }
 
-    //Modify Entity:
-    $ui .= '<div style="float:right; display:inline-block;  padding-left:5px;" class="'. require_superpower(10989 /* PEGASUS */) .'"><a href="javascript:void(0);" onclick="en_modify_load(' . $en['en_id'] . ',' . $ln_id . ')" class="btn btn-primary btn-play"><i class="fas fa-cog"></i></a></div>';
+
+
+    $ui .= '<div class="pull-right inline-block"><a class="btn btn-primary btn-play" href="/play/' . $en['en_id']. '">' . ($en['en__child_count'] > 0 ? '<span class="btn-counter '.require_superpower(10989 /* PEGASUS */).'" title="' . number_format($en['en__child_count'], 0) . ' Entities">' . echo_number($en['en__child_count']) . '</span>' : '') . ' <i class="fas fa-angle-right"></i></a></div>';
 
 
 
 
-    $ui .= '<div style="float:right; display:inline-block;" class=""><a class="btn btn-primary btn-play" href="/play/' . $en['en_id']. '">' . ($en['en__child_count'] > 0 ? '<span class="btn-counter '.require_superpower(10989 /* PEGASUS */).'" title="' . number_format($en['en__child_count'], 0) . ' Entities">' . echo_number($en['en__child_count']) . '</span>' : '') . ' <i class="fas fa-angle-right"></i></a></div>';
+
+
+
+
+
+    //ICON SET
+    $ui .= '<div class="pull-right inline-block '. require_superpower(10989 /* PEGASUS */) .'">';
+
+    //Do we have entity parents loaded in our data-set? If not, load it:
+    if (!isset($en['en__parents'])) {
+        $en['en__parents'] = $CI->READ_model->ln_fetch(array(
+            'ln_type_entity_id IN (' . join(',', $CI->config->item('en_ids_4592')) . ')' => null, //Entity-to-Entity Links
+            'ln_child_entity_id' => $en['en_id'], //This child entity
+            'ln_status_entity_id IN (' . join(',', $CI->config->item('en_ids_7360')) . ')' => null, //Link Statuses Active
+            'en_status_entity_id IN (' . join(',', $CI->config->item('en_ids_7358')) . ')' => null, //Entity Statuses Active
+        ), array('en_parent'), 0, 0, array('en_name' => 'ASC'));
+    }
+
+    //PARENTS
+    if(count($en['en__parents']) > 0){
+        foreach ($en['en__parents'] as $en_parent) {
+            $ui .= '<span class="icon-block-sm en_child_icon_' . $en_parent['en_id'] . '"><a href="/play/' . $en_parent['en_id'] . '" data-toggle="tooltip" title="' . $en_parent['en_name'] . (strlen($en_parent['ln_content']) > 0 ? ' = ' . $en_parent['ln_content'] : '') . '" data-placement="bottom">' . echo_en_icon($en_parent) . '</a></span>';
+        }
+    }
+
+    //MODIFY
+    $ui .= '<span class="icon-block-sm"><a href="javascript:void(0);" onclick="en_modify_load(' . $en['en_id'] . ',' . $ln_id . ')"><i class="fas fa-cog"></i></a></span>';
+
+    $ui .= ' </div>';
+
+
+
 
 
     $ui .= '</div>';

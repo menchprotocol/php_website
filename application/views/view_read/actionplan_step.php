@@ -2,7 +2,7 @@
     //Set global variables:
     var en_creator_id = <?= $session_en['en_id'] ?>;
 </script>
-<script src="/js/custom/actionplan-step.js?v=v<?= config_value(11060) ?>" type="text/javascript"></script>
+<script src="/js/custom/actionplan-step.js?v=v<?= config_var(11060) ?>" type="text/javascript"></script>
 <?php
 
 

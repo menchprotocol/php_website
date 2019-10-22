@@ -60,7 +60,7 @@ if(count($current_sign_in_attempt) == 0){
         ln_parent_link_id: <?= $current_sign_in_attempt['ln_id'] ?>,
     };
 </script>
-<script src="/js/custom/user_signin.js?v=v<?= config_value(11060) ?>"
+<script src="/js/custom/user_signin.js?v=v<?= config_var(11060) ?>"
         type="text/javascript"></script>
 
 
@@ -130,7 +130,7 @@ if(count($current_sign_in_attempt) == 0){
 
             <!-- Full Name -->
             <span class="medium-header" style="padding-top: 20px;"><?= $en_all_6225[6197]['m_icon'].' '.$en_all_6225[6197]['m_name'] ?>:</span>
-            <div class="form-group is-empty"><input type="text" placeholder="Tim Apple" id="input_name" maxlength="<?= config_value(11072) ?>" class="form-control border"></div>
+            <div class="form-group is-empty"><input type="text" placeholder="Tim Apple" id="input_name" maxlength="<?= config_var(11072) ?>" class="form-control border"></div>
 
             <!-- New Password -->
             <span class="medium-header" style="padding-top: 20px;"><?= $en_all_6225[3286]['m_icon'] ?> Create a new password:</span>

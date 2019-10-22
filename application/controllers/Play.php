@@ -10,7 +10,7 @@ class Play extends CI_Controller
 
         $this->output->enable_profiler(FALSE);
 
-        date_default_timezone_set(config_value(11079));
+        date_default_timezone_set(config_var(11079));
     }
 
     function launching_soon(){
@@ -798,10 +798,10 @@ fragment PostListingItemSidebar_post on Post {
                 'status' => 0,
                 'message' => 'Unknown error while trying to save file.',
             ));
-        } elseif ($_FILES[$_POST['upload_type']]['size'] > (config_value(11063) * 1024 * 1024)) {
+        } elseif ($_FILES[$_POST['upload_type']]['size'] > (config_var(11063) * 1024 * 1024)) {
             return echo_json(array(
                 'status' => 0,
-                'message' => 'File is larger than ' . config_value(11063) . ' MB.',
+                'message' => 'File is larger than ' . config_var(11063) . ' MB.',
             ));
         }
 
@@ -828,7 +828,7 @@ fragment PostListingItemSidebar_post on Post {
     function en_load_next_page()
     {
 
-        $items_per_page = config_value(11064);
+        $items_per_page = config_var(11064);
         $parent_en_id = intval($_POST['parent_en_id']);
         $en_focus_filter = intval($_POST['en_focus_filter']);
         $page = intval($_POST['page']);
@@ -1101,10 +1101,10 @@ fragment PostListingItemSidebar_post on Post {
                 'status' => 0,
                 'message' => 'Missing entity link data',
             ));
-        } elseif (strlen($_POST['en_name']) > config_value(11072)) {
+        } elseif (strlen($_POST['en_name']) > config_var(11072)) {
             return echo_json(array(
                 'status' => 0,
-                'message' => 'Name is longer than the allowed ' . config_value(11072) . ' characters. Shorten and try again.',
+                'message' => 'Name is longer than the allowed ' . config_var(11072) . ' characters. Shorten and try again.',
             ));
         } elseif(!isset($_POST['en_icon']) || !is_valid_icon($_POST['en_icon'])){
             //Check if valid icon:
@@ -1829,7 +1829,7 @@ fragment PostListingItemSidebar_post on Post {
                 'status' => 0,
                 'message' => 'Missing user ID',
             ));
-        } elseif (!isset($_POST['input_password']) || strlen($_POST['input_password']) < config_value(11066)) {
+        } elseif (!isset($_POST['input_password']) || strlen($_POST['input_password']) < config_var(11066)) {
             return echo_json(array(
                 'status' => 0,
                 'message' => 'Invalid Password',
@@ -1945,10 +1945,10 @@ fragment PostListingItemSidebar_post on Post {
                 'status' => 0,
                 'message' => 'Missing core data',
             ));
-        } elseif (strlen($_POST['input_password']) < config_value(11066)) {
+        } elseif (strlen($_POST['input_password']) < config_var(11066)) {
             return echo_json(array(
                 'status' => 0,
-                'message' => 'Must be longer than '.config_value(11066).' characters',
+                'message' => 'Must be longer than '.config_var(11066).' characters',
             ));
         } else {
 
@@ -2087,10 +2087,10 @@ fragment PostListingItemSidebar_post on Post {
                 'message' => 'Last name must be 2 characters or longer',
                 'focus_input_field' => 'input_name',
             ));
-        } elseif (strlen($_POST['input_name']) > config_value(11072)) {
+        } elseif (strlen($_POST['input_name']) > config_var(11072)) {
             return echo_json(array(
                 'status' => 0,
-                'message' => 'Full name must be less than '.config_value(11072).' characters',
+                'message' => 'Full name must be less than '.config_var(11072).' characters',
                 'focus_input_field' => 'input_name',
             ));
         } elseif (!isset($_POST['new_password']) || strlen($_POST['new_password'])<1) {
@@ -2099,10 +2099,10 @@ fragment PostListingItemSidebar_post on Post {
                 'message' => 'Missing password',
                 'focus_input_field' => 'new_password',
             ));
-        } elseif (strlen($_POST['new_password']) < config_value(11066)) {
+        } elseif (strlen($_POST['new_password']) < config_var(11066)) {
             return echo_json(array(
                 'status' => 0,
-                'message' => 'New password must be '.config_value(11066).' characters or longer',
+                'message' => 'New password must be '.config_var(11066).' characters or longer',
                 'focus_input_field' => 'new_password',
             ));
         }
@@ -2270,7 +2270,7 @@ fragment PostListingItemSidebar_post on Post {
         ##Email Body
         $html_message = '<div>Hi '.one_two_explode('',' ',$user_emails[0]['en_name']).' 👋</div><br /><br />';
 
-        $magic_link_expiry_hours = (config_value(11065)/3600);
+        $magic_link_expiry_hours = (config_var(11065)/3600);
         $html_message .= '<div>Signin within '.$magic_link_expiry_hours.'-hour'.echo__s($magic_link_expiry_hours).':</div>';
         $magiclogin_url = 'https://mench.com/magiclogin/' . $reset_link['ln_id'] . '?email='.$_POST['input_email'];
         $html_message .= '<div><a href="'.$magiclogin_url.'" target="_blank">' . $magiclogin_url . '</a></div>';
@@ -2313,7 +2313,7 @@ fragment PostListingItemSidebar_post on Post {
         if(count($validate_links) < 1){
             //Probably already completed the reset password:
             return redirect_message('/sign?input_email='.$_GET['email'], '<div class="alert alert-danger" role="alert">Invalid data source</div>');
-        } elseif(strtotime($validate_links[0]['ln_timestamp']) + config_value(11065) < time()){
+        } elseif(strtotime($validate_links[0]['ln_timestamp']) + config_var(11065) < time()){
             //Probably already completed the reset password:
             return redirect_message('/sign?input_email='.$_GET['email'], '<div class="alert alert-danger" role="alert">Magic link has expired. Try again.</div>');
         }
@@ -2899,10 +2899,10 @@ fragment PostListingItemSidebar_post on Post {
                 'status' => 0,
                 'message' => 'Missing entity ID',
             ));
-        } elseif (!isset($_POST['input_password']) || strlen($_POST['input_password']) < config_value(11066)) {
+        } elseif (!isset($_POST['input_password']) || strlen($_POST['input_password']) < config_var(11066)) {
             return echo_json(array(
                 'status' => 0,
-                'message' => 'New password must be '.config_value(11066).' characters or more',
+                'message' => 'New password must be '.config_var(11066).' characters or more',
             ));
         }
 

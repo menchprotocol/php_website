@@ -28,7 +28,7 @@ function load_algolia($index_name)
     //Loads up algolia search engine functions
     $CI =& get_instance();
     $cred_algolia = $CI->config->item('cred_algolia');
-    if (intval(config_value(11062))) {
+    if (intval(config_var(11062))) {
         require_once('application/libraries/algoliasearch.php');
         $client = new \AlgoliaSearch\Client($cred_algolia['application_id'], $cred_algolia['api_key']);
         return $client->initIndex($index_name);
@@ -232,11 +232,11 @@ function ln_detect_type($string)
     $string = trim($string);
     $CI =& get_instance();
 
-    if(strlen($string) > config_value(11073)){
+    if(strlen($string) > config_var(11073)){
 
         return array(
             'status' => 0,
-            'message' => 'String is ['.(strlen($string) - config_value(11073)).'] characters longer than the allowed length of '.config_value(11073).' characters.',
+            'message' => 'String is ['.(strlen($string) - config_var(11073)).'] characters longer than the allowed length of '.config_var(11073).' characters.',
         );
 
     } elseif (is_null($string) || strlen($string) == 0) {
@@ -432,7 +432,7 @@ function filter_cache_group($search_en_id, $cache_en_id){
     return false;
 }
 
-function config_value($config_en_id){
+function config_var($config_en_id){
     $CI =& get_instance();
     $en_all_6404 = $CI->config->item('en_all_6404');
     return $en_all_6404[$config_en_id]['m_desc'];
@@ -445,7 +445,7 @@ function ln_type_word_count($ln){
     if(in_array($ln['ln_type_entity_id'], $CI->config->item('en_ids_10596'))){
 
         //Nod:
-        $link_words = number_format(1 / config_value(11067), 2);
+        $link_words = number_format(1 / config_var(11067), 2);
 
     } elseif(in_array($ln['ln_type_entity_id'], $CI->config->item('en_ids_10539'))){
 
@@ -473,10 +473,10 @@ function ln_type_word_count($ln){
                 $file_size = curl_get_file_size($ln['ln_content']);
                 if($file_size > 0){
                     //Convert file size to words:
-                    $link_words =+ number_format( $file_size / config_value(11069), 2 );
+                    $link_words =+ number_format( $file_size / config_var(11069), 2 );
                 } else {
                     //File size could not be determined, so let's just add a default:
-                    $link_words += number_format( config_value(11070), 2);
+                    $link_words += number_format( config_var(11070), 2);
                 }
 
             } else {
@@ -989,7 +989,7 @@ function update_algolia($input_obj_type = null, $input_obj_id = 0, $return_row_o
 
     $valid_objects = array('en','in');
 
-    if (!intval(config_value(11062))) {
+    if (!intval(config_var(11062))) {
         //Algolia is disabled, so avoid syncing:
         return array(
             'status' => 0,

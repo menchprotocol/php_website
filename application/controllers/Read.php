@@ -10,7 +10,7 @@ class Read extends CI_Controller
 
         $this->output->enable_profiler(FALSE);
 
-        date_default_timezone_set(config_value(11079));
+        date_default_timezone_set(config_var(11079));
     }
 
     function overview(){
@@ -369,7 +369,7 @@ class Read extends CI_Controller
         $join_by = unserialize($_POST['link_join_by']);
         $page_num = ( isset($_POST['page_num']) && intval($_POST['page_num'])>=2 ? intval($_POST['page_num']) : 1 );
         $next_page = ($page_num+1);
-        $item_per_page = (is_dev_environment() ? 20 : config_value(11064));
+        $item_per_page = (is_dev_environment() ? 20 : config_var(11064));
         $query_offset = (($page_num-1)*$item_per_page);
 
         $message = '';
@@ -943,11 +943,11 @@ class Read extends CI_Controller
                 'message' => 'Unknown error while trying to save file.',
             ));
 
-        } elseif ($_FILES[$_POST['upload_type']]['size'] > (config_value(11063) * 1024 * 1024)) {
+        } elseif ($_FILES[$_POST['upload_type']]['size'] > (config_var(11063) * 1024 * 1024)) {
 
             return echo_json(array(
                 'status' => 0,
-                'message' => 'File is larger than ' . config_value(11063) . ' MB.',
+                'message' => 'File is larger than ' . config_var(11063) . ' MB.',
             ));
 
         }
@@ -1584,7 +1584,7 @@ class Read extends CI_Controller
         foreach ($ln_metadata['entry'] as $entry) {
 
             //check the page ID:
-            if (!isset($entry['id']) || !($entry['id'] == config_value(11075))) {
+            if (!isset($entry['id']) || !($entry['id'] == config_var(11075))) {
                 //This can happen for the older webhook that we offered to other FB pages:
                 continue;
             } elseif (!isset($entry['messaging'])) {

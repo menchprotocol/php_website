@@ -217,7 +217,7 @@ $en_all_7368 = $this->config->item('en_all_7368'); //Trainer App
     var link_filters = '<?= serialize(count($filters) > 0 ? $filters : array()) ?>';
     var link_join_by = '<?= serialize(count($join_by) > 0 ? $join_by : array()) ?>';
 </script>
-<script src="/js/custom/ln_list.js?v=v<?= config_value(11060) ?>"
+<script src="/js/custom/ln_list.js?v=v<?= config_var(11060) ?>"
         type="text/javascript"></script>
 
 <?php

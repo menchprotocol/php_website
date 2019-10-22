@@ -1,51 +1,4 @@
-function en_load_search(focus_element, is_en_parent, shortcut) {
 
-    $(focus_element + ' .new-input').focus(function() {
-        $(focus_element + ' .algolia_search_pad' ).removeClass('hidden');
-    }).focusout(function() {
-        $(focus_element + ' .algolia_search_pad' ).addClass('hidden');
-    }).on('autocomplete:selected', function (event, suggestion, dataset) {
-
-        en_add_or_link(suggestion.alg_obj_id, is_en_parent);
-
-    }).autocomplete({hint: false, minLength: 1, keyboardShortcuts: [shortcut]}, [{
-
-        source: function (q, cb) {
-            algolia_index.search(q, {
-                filters: 'alg_obj_is_in=0',
-                hitsPerPage: 7,
-            }, function (error, content) {
-                if (error) {
-                    cb([]);
-                    return;
-                }
-                cb(content.hits, content);
-            });
-        },
-        templates: {
-            suggestion: function (suggestion) {
-                //If clicked, would trigger the autocomplete:selected above which will trigger the en_add_or_link() function
-                return echo_js_suggestion(suggestion);
-            },
-            header: function (data) {
-                if (!data.isEmpty) {
-                    return '<a href="javascript:en_add_or_link(0,'+is_en_parent+')" class="suggestion"><span class="icon-block-sm"><i class="fas fa-plus-circle add-plus"></i></span><b>' + data.query + '</b></a>';
-                }
-            },
-            empty: function (data) {
-                return '<a href="javascript:en_add_or_link(0,'+is_en_parent+')" class="suggestion"><span class="icon-block-sm"><i class="fas fa-plus-circle add-plus"></i></span><b>' + data.query + '</b></a>';
-            },
-        }
-    }]).keypress(function (e) {
-
-        var code = (e.keyCode ? e.keyCode : e.which);
-        if ((code == 13) || (e.ctrlKey && code == 13)) {
-            en_add_or_link(0, is_en_parent);
-            return true;
-        }
-
-    });
-}
 
 
 //Define file upload variables:
@@ -56,16 +9,6 @@ var $input = $('.drag-box').find('input[type="file"]'),
         $label.text(files.length > 1 ? ($input.attr('data-multiple-caption') || '').replace('{count}', files.length) : files[0].name);
     };
 
-
-
-
-
-function mass_action_ui(){
-    $('.mass_action_item').addClass('hidden');
-    $('#mass_id_' + $('#set_mass_action').val() ).removeClass('hidden');
-}
-
-
 $(document).ready(function () {
 
     //Load entity search for mass update function:
@@ -73,7 +16,7 @@ $(document).ready(function () {
 
         $(this).val('@' + suggestion.alg_obj_id + ' ' + suggestion.alg_obj_name);
 
-    }).autocomplete({hint: false, minLength: 1}, [{
+    }).autocomplete({hint: false, minLength: 2}, [{
 
         source: function (q, cb) {
             algolia_index.search(q, {
@@ -223,6 +166,67 @@ $(document).ready(function () {
 
 
 });
+
+
+
+
+
+function en_load_search(focus_element, is_en_parent, shortcut) {
+
+    $(focus_element + ' .new-input').focus(function() {
+        $(focus_element + ' .algolia_search_pad' ).removeClass('hidden');
+    }).focusout(function() {
+        $(focus_element + ' .algolia_search_pad' ).addClass('hidden');
+    }).on('autocomplete:selected', function (event, suggestion, dataset) {
+
+        en_add_or_link(suggestion.alg_obj_id, is_en_parent);
+
+    }).autocomplete({hint: false, minLength: 1, keyboardShortcuts: [shortcut]}, [{
+
+        source: function (q, cb) {
+            algolia_index.search(q, {
+                filters: 'alg_obj_is_in=0',
+                hitsPerPage: 7,
+            }, function (error, content) {
+                if (error) {
+                    cb([]);
+                    return;
+                }
+                cb(content.hits, content);
+            });
+        },
+        templates: {
+            suggestion: function (suggestion) {
+                //If clicked, would trigger the autocomplete:selected above which will trigger the en_add_or_link() function
+                return echo_js_suggestion(suggestion);
+            },
+            header: function (data) {
+                if (!data.isEmpty) {
+                    return '<a href="javascript:en_add_or_link(0,'+is_en_parent+')" class="suggestion"><span class="icon-block"><i class="fas fa-plus-circle add-plus"></i></span><b>' + data.query + '</b></a>';
+                }
+            },
+            empty: function (data) {
+                return '<a href="javascript:en_add_or_link(0,'+is_en_parent+')" class="suggestion"><span class="icon-block"><i class="fas fa-plus-circle add-plus"></i></span><b>' + data.query + '</b></a>';
+            },
+        }
+    }]).keypress(function (e) {
+
+        var code = (e.keyCode ? e.keyCode : e.which);
+        if ((code == 13) || (e.ctrlKey && code == 13)) {
+            en_add_or_link(0, is_en_parent);
+            return true;
+        }
+
+    });
+}
+
+
+
+function mass_action_ui(){
+    $('.mass_action_item').addClass('hidden');
+    $('#mass_id_' + $('#set_mass_action').val() ).removeClass('hidden');
+}
+
 
 
 

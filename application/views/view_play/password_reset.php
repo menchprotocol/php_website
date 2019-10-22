@@ -62,7 +62,7 @@
             <!-- New Password-->
             <span class="medium-header" style="padding-top: 20px;"><i class="far fa-key"></i> New Password for <span style="text-transform: lowercase !important;"><?= $validate_link['ln_content'] ?></span></span>
             <div class="form-group is-empty"><input type="password" autocomplete="false" id="input_password" class="form-control border"></div>
-            <div class="form-group is-empty" style="font-size: 0.9em;">*At-least <?= config_value(11066) ?> characters</div>
+            <div class="form-group is-empty" style="font-size: 0.9em;">*At-least <?= config_var(11066) ?> characters</div>
 
             <!-- Apply Buttons -->
             <div id="pass_reset_errors" class="isred"></div>
