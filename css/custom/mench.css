@@ -2,7 +2,7 @@
 
 body {
     background-color: #F7F7F7 !important;
-    margin:50px 0;
+    margin:65px 0;
     font-size: 1.3em;
     font-family: 'Open Sans', sans-serif;
     font-weight: 400;
@@ -51,7 +51,6 @@ table td { border: none !important; }
 
 h1 {
     font-family: 'Montserrat', sans-serif;
-    padding:20px 0 0;
     font-size: 1.9em;
 }
 
@@ -122,7 +121,7 @@ li a {
 
 .first_title { min-height:84px;}
 .btn-five { margin-right:5px; }
-.center-right{ padding-top:25px; }
+.center-right{ padding-top:10px; }
 
 .table-striped tbody tr:nth-of-type(even) {
     background-color:transparent;
@@ -237,6 +236,13 @@ li a {
     display: block;
     overflow-y: auto;
     overflow-x: hidden;
+}
+
+.nav-tabs .nav-item {
+    margin-bottom: -2px;
+}
+.nav-tabs{
+    margin-top: 20px;
 }
 
 /* MENCH Colors */
