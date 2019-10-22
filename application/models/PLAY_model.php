@@ -39,7 +39,7 @@ class PLAY_model extends CI_Model
             if(in_array($en_parent['en_id'], $this->config->item('en_ids_10957')) && in_array($en_parent['en_status_entity_id'], $this->config->item('en_ids_7357')) && in_array($en_parent['ln_status_entity_id'], $this->config->item('en_ids_7359'))){
 
                 //It's assigned!
-                array_push($session_data['assigned_superpowers_en_ids'], $en_parent['en_id']);
+                array_push($session_data['assigned_superpowers_en_ids'], intval($en_parent['en_id']));
 
                 //is it activated?
                 $last_advance_settings = $this->READ_model->ln_fetch(array(
@@ -51,7 +51,7 @@ class PLAY_model extends CI_Model
 
                 //Was the latest toggle to activate?
                 if(count($last_advance_settings) > 0 && substr_count($last_advance_settings[0]['ln_content'] , ' ACTIVATED')==1){
-                    array_push($session_data['activate_superpowers_en_ids'], $en_parent['en_id']);
+                    array_push($session_data['activate_superpowers_en_ids'], intval($en_parent['en_id']));
                 }
             }
         }
