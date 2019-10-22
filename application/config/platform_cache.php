@@ -12,7 +12,7 @@ defined('BASEPATH') OR exit('No direct script access allowed');
 *
 */
 
-//Generated 2019-10-22 11:23:09 PST
+//Generated 2019-10-22 13:05:31 PST
 
 //PLAY TABS:
 $config['en_ids_11088'] = array(11033,11089);
@@ -35,8 +35,8 @@ $config['en_all_11088'] = array(
 $config['en_ids_11089'] = array(11029);
 $config['en_all_11089'] = array(
     11029 => array(
-        'm_icon' => '<i class="fas fa-hand-holding-seedling blue"></i>',
-        'm_name' => 'PROJECTS',
+        'm_icon' => '<i class="fas fa-hand-holding-seedling blue" aria-hidden="true"></i>',
+        'm_name' => 'PORTFOLIO',
         'm_desc' => '',
         'm_parents' => array(11084,11089,11028),
     ),
@@ -851,19 +851,19 @@ $config['en_all_11007'] = array(
 );
 
 //SHOW PLAY TAB NAMES:
-$config['en_ids_11084'] = array(11030,11029);
+$config['en_ids_11084'] = array(11029,11030);
 $config['en_all_11084'] = array(
+    11029 => array(
+        'm_icon' => '<i class="fas fa-hand-holding-seedling blue" aria-hidden="true"></i>',
+        'm_name' => 'PLAYER PORTFOLIO',
+        'm_desc' => '',
+        'm_parents' => array(11084,11089,11028),
+    ),
     11030 => array(
         'm_icon' => '<i class="fas fa-id-badge blue"></i>',
         'm_name' => 'PLAYER PROFILE',
         'm_desc' => '',
         'm_parents' => array(11084,11033,11028),
-    ),
-    11029 => array(
-        'm_icon' => '<i class="fas fa-hand-holding-seedling blue"></i>',
-        'm_name' => 'PLAYER PROJECTS',
-        'm_desc' => '',
-        'm_parents' => array(11084,11089,11028),
     ),
 );
 
@@ -1633,8 +1633,8 @@ $config['en_all_11028'] = array(
         'm_parents' => array(11084,11033,11028),
     ),
     11029 => array(
-        'm_icon' => '<i class="fas fa-hand-holding-seedling blue"></i>',
-        'm_name' => 'PLAYER PROJECTS',
+        'm_icon' => '<i class="fas fa-hand-holding-seedling blue" aria-hidden="true"></i>',
+        'm_name' => 'PLAYER PORTFOLIO',
         'm_desc' => 'What the PLAYER chooses to focus on. It\'s work. It\'s responsibility.',
         'm_parents' => array(11084,11089,11028),
     ),

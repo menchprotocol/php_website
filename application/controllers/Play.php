@@ -3285,7 +3285,6 @@ fragment PostListingItemSidebar_post on Post {
  * Keep a cache of certain parts of the Intent tree for faster processing<br />
  * So we don\'t have to make DB calls to figure them out every time!<br />
  * See here for all entities cached: https://mench.com/play/4527<br />
- * use-case format: $this->config->item(\'\')<br />
  *<br />
  * ATTENTION: Also search for "en_ids_" and "en_all_" when trying to manage these throughout the code base<br />
  *<br />

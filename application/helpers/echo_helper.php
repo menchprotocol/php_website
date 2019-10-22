@@ -2320,9 +2320,7 @@ function echo_en($en, $is_parent = false)
 
 
 
-    $ui .= '<div class="pull-right inline-block"><a class="btn btn-primary btn-play" href="/play/' . $en['en_id']. '">' . ($en['en__child_count'] > 0 ? '<span class="btn-counter '.require_activate_superpower(10989 /* PEGASUS */).'" title="' . number_format($en['en__child_count'], 0) . ' Entities">' . echo_number($en['en__child_count']) . '</span>' : '') . ' <i class="fas fa-angle-right"></i></a></div>';
-
-
+    $ui .= '<div class="pull-right inline-block"><a class="btn btn-primary btn-play" href="/play/' . $en['en_id']. '">' . ($en['en__child_count'] > 0 ? echo_number($en['en__child_count']) : '') . ' <i class="fas fa-angle-right"></i></a></div>';
 
 
 
