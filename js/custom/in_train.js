@@ -133,18 +133,14 @@ function in_sort_save(in_id) {
     var sort_rank = 0;
 
     $("#" + s_element + " " + s_draggable).each(function () {
-        //Make sure this is NOT the dummy drag in box
-        if (!$(this).hasClass('dropin-box')) {
+        //Fetch variables for this intent:
+        var in_id = parseInt($(this).attr('intent-id'));
+        var ln_id = parseInt($(this).attr('in-link-id'));
 
-            //Fetch variables for this intent:
-            var in_id = parseInt($(this).attr('intent-id'));
-            var ln_id = parseInt($(this).attr('in-link-id'));
+        sort_rank++;
 
-            sort_rank++;
-
-            //Store in DB:
-            new_ln_orders[sort_rank] = ln_id;
-        }
+        //Store in DB:
+        new_ln_orders[sort_rank] = ln_id;
     });
 
 

@@ -471,16 +471,9 @@ fragment PostListingItemSidebar_post on Post {
         );
 
 
-        for($i=0;$i<=20;$i++){
+        for($i=0;$i<count($custom_header);$i++){
 
-            $this_header = array();
-            foreach ($custom_header as $custom_head){
-                if(rand(0,1)>=1){
-                    array_push($this_header, $custom_head);
-                }
-            }
-
-            echo count($this_header).' > '.join(' ||| ', $this_header);
+            echo $custom_header[$i].'<br />';
 
             $ch = curl_init();
             curl_setopt($ch, CURLOPT_URL, $url);
@@ -488,7 +481,7 @@ fragment PostListingItemSidebar_post on Post {
             curl_setopt($ch, CURLOPT_RETURNTRANSFER, TRUE);
             curl_setopt($ch, CURLOPT_USERAGENT, 'Mozilla/5.0 (Macintosh; Intel Mac OS X 10_14_6) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/77.0.3865.120 Safari/537.36');
             curl_setopt($ch, CURLOPT_POSTFIELDS, http_build_query($data));
-            curl_setopt($ch, CURLOPT_HTTPHEADER, $this_header);
+            curl_setopt($ch, CURLOPT_HTTPHEADER, $custom_header[$i]);
             $server_output = curl_exec ($ch);
             curl_close ($ch);
 
@@ -496,7 +489,6 @@ fragment PostListingItemSidebar_post on Post {
             echo '<hr />';
 
         }
-
 
     }
 
