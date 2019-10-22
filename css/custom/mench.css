@@ -461,20 +461,20 @@ li a {
     border: 1px solid #F7F7F7;
 }
 
-.list-group-item2{
-    background-color: #F7F7F7;
-    border: 1px solid #F7F7F7;
+
+.player-settings{
+    color: #070707;
     text-decoration: none;
 }
-.list-group-item2.active{
-    color: #070707;
-    background-color: #FFFFFF;
-    border: 1px solid #070707;
+.player-settings:hover{
+    background-color: #fffba4;
+    border: 1px solid #fffba4;
 }
-.list-group-item2:hover{
-    color: #070707;
-    background-color: #FFFFFF;
-    border: 1px solid #FFFFFF;
+.player-settings.active{
+    background-color: #FFFFFF !important;
+    border: 1px solid #070707 !important;
+    cursor: default !important;
+    color: #070707 !important;
 }
 
 .panel-collapse {
