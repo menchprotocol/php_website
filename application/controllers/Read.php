@@ -810,13 +810,13 @@ class Read extends CI_Controller
         //Figure out new toggle state:
         $session_data = $this->session->all_userdata();
 
-        if(in_array($superpower_en_id, $session_data['active_superpowers'])){
+        if(in_array($superpower_en_id, $session_data['assigned_superpowers'])){
             //Already there, turn it off:
-            $session_data['active_superpowers'] = array_diff($session_data['active_superpowers'], array($superpower_en_id));
+            $session_data['assigned_superpowers'] = array_diff($session_data['assigned_superpowers'], array($superpower_en_id));
             $toggled_setting = 'OFF';
         } else {
             //Not there, turn it on:
-            array_push($session_data['active_superpowers'], $superpower_en_id);
+            array_push($session_data['assigned_superpowers'], $superpower_en_id);
             $toggled_setting = 'ON';
         }
 

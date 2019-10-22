@@ -685,7 +685,7 @@ function require_superpower($superpower_en_id){
         return false;
     }
     $CI =& get_instance();
-    $assigned_superpowers = $CI->session->userdata('active_superpowers');
+    $assigned_superpowers = $CI->session->userdata('assigned_superpowers');
     return ' superpower-'.$superpower_en_id.' '.( count($assigned_superpowers)>0 && in_array($superpower_en_id, $assigned_superpowers) ? '' : ' hidden ' );
 }
 

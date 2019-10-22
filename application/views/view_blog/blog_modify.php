@@ -52,7 +52,7 @@ echo '<div class="row">';
 
     //RIGHT SETTINGS
     echo '<div class="'.config_var(11095).'">';
-        echo '<div class="first_title center-right">';
+        echo '<div class="center-right">';
             echo echo_dropdown(7585, $in['in_completion_method_entity_id'], false, ': ');
             echo '<div class="pull-right"><a href="javascript:void(0)" onclick="$(\'.menu_bar\').toggleClass(\'hidden\')" class="btn btn-sm btn-primary inline-block"><i class="fas fa-cog" style="font-size: 1.2em;"></i></a></div>';
             echo '<div style="margin-right: 5px;" class="pull-right">'.echo_dropdown(4737, $in['in_status_entity_id'], true, null).'</div>';

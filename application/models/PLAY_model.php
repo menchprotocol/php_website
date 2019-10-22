@@ -31,7 +31,7 @@ class PLAY_model extends CI_Model
 
 
         //SUPERPOWERS
-        $session_data['active_superpowers'] = array();
+        $session_data['assigned_superpowers'] = array();
 
         foreach($this->config->item('en_ids_10957') as $superpower_en_id) {
 
@@ -43,7 +43,7 @@ class PLAY_model extends CI_Model
             ), array(), 1, 0, array('ln_id' => 'DESC'));
 
             if(count($last_advance_settings) > 0 && substr_count($last_advance_settings[0]['ln_content'] , ' ON')==1){
-                array_push($session_data['active_superpowers'], $superpower_en_id);
+                array_push($session_data['assigned_superpowers'], $superpower_en_id);
             }
         }
 

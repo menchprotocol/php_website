@@ -2065,8 +2065,6 @@ function echo_in($in, $in_linked_id = 0, $is_parent = false)
 
 
 
-
-
     //Fetch Intent-to-Intent Links:
     $en_all_4486 = $CI->config->item('en_all_4486');
 
