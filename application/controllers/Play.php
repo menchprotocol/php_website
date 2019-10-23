@@ -3221,7 +3221,7 @@ fragment PostListingItemSidebar_post on Post {
                 if (!$is_valid_url) {
                     return echo_json(array(
                         'status' => 0,
-                        'message' => 'Invalid ' . $en_all_6123[$social_en_id]['m_name'] . ' URL',
+                        'message' => 'Invalid input for ' . $en_all_6123[$social_en_id]['m_name'],
                     ));
                 }
             }

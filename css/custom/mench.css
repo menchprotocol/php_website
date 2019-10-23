@@ -551,6 +551,10 @@ li a {
         min-width: 60px;
     }
     .icon-block-sm{ min-width:26px; }
+    #searchresults{
+        height: 200px;
+        background-color: #FF0000;
+    }
 
 }
 @media (max-width:1200px){
