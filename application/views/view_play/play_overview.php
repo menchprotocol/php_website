@@ -14,7 +14,7 @@ $en_all_10591 = $this->config->item('en_all_10591'); //PLAYER PLAYS
                 <li>Get a <?= $en_all_2738[6205]['m_icon'] ?> coin for each word you <b class="montserrat read"><?= $en_all_2738[6205]['m_name'] ?></b></li>
                 <li>Get a <?= $en_all_2738[4535]['m_icon'] ?> coin for each word you <b class="montserrat blog"><?= $en_all_2738[4535]['m_name'] ?></b></li>
                 <li><b class="montserrat read"><?= $en_all_2738[6205]['m_name'] ?></b> up to <?= config_var(11061) ?> words/month FREE</li>
-                <li><b class="montserrat read"><?= $en_all_2738[6205]['m_name'] ?></b> UNLIMITED words for $5/month</li>
+                <li><b class="montserrat read"><?= $en_all_2738[6205]['m_name'] ?></b> unlimited words for $5/month</li>
                 <li>Earn monthly cash with your <?= $en_all_2738[4535]['m_icon'] ?> coins</li>
 
                 <li class="hidden">Earn 1x <?= $en_all_2738[4536]['m_icon'] ?><b class="montserrat play"><?= $en_all_2738[4536]['m_name'] ?></b> coin when you join</li>
