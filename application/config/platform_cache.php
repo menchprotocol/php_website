@@ -12,7 +12,7 @@ defined('BASEPATH') OR exit('No direct script access allowed');
 *
 */
 
-//Generated 2019-10-23 01:13:34 PST
+//Generated 2019-10-23 10:51:03 PST
 
 //PLAY TABS:
 $config['en_ids_11088'] = array(11033,11089);
@@ -1461,7 +1461,7 @@ $config['en_all_6404'] = array(
     11060 => array(
         'm_icon' => '<i class="far fa-lambda" aria-hidden="true"></i>',
         'm_name' => 'MENCH PLATFORM VERSION',
-        'm_desc' => '1.091',
+        'm_desc' => '1.092',
         'm_parents' => array(6404),
     ),
     11067 => array(
