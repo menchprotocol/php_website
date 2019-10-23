@@ -168,12 +168,8 @@ $(document).ready(function () {
 
     $("#mench_search").focusin(function() {
 
-
         $(".container").not('.show-while-searching').addClass('hidden');
         $(".searchpad").removeClass('hidden');
-        setTimeout(function () {
-            $("html, body").animate({ scrollTop: 0 }, "slow");
-        }, 610);
 
     }).keyup(function() {
 
