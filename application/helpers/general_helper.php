@@ -681,8 +681,12 @@ function find_matching_superpowers($parent_en_ids){
 }
 
 function require_superpower($superpower_en_id){
+    if(!$superpower_en_id){
+        //Ignore calls without a superpower:
+        return false;
+    }
     $CI =& get_instance();
-    return ' superpower-'.$superpower_en_id.' '.( en_auth() && $superpower_en_id && in_array($superpower_en_id, $CI->session->userdata('activate_superpowers_en_ids')) ? '' : ' hidden ' );
+    return ' superpower-'.$superpower_en_id.' '.( en_auth() && in_array($superpower_en_id, $CI->session->userdata('activate_superpowers_en_ids')) ? '' : ' hidden ' );
 }
 
 
