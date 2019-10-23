@@ -111,7 +111,7 @@ foreach ($this->config->item('en_all_11021') as $en_id => $m){
                 $this_tab .= echo_in($parent_in, true);
             }
 
-            $this_tab .= '<div class="list_input grey-block '.require_activate_superpower(10989 /* PEGASUS */).'">
+            $this_tab .= '<div class="list_input grey-block '.require_superpower(10989 /* PEGASUS */).'">
                             <div class="form-group is-empty" style="margin: 0; padding: 0;">
                                 <input type="text"
                                        class="form-control intentadder-level-2-parent algolia_search"
@@ -239,7 +239,7 @@ foreach ($this->config->item('en_all_11021') as $en_id => $m){
 
 
 
-        echo '<li class="nav-item"><a class="nav-link tab-nav-'.$en_id.' tab-head-'.$en_id2.' '.( $default_active ? ' active ' : '' ).require_activate_superpower(find_matching_superpowers($m2['m_parents'])).'" href="javascript:void(0);" onclick="loadtab('.$en_id.','.$en_id2.')" data-toggle="tooltip" data-placement="top" title="'.( $show_tab_names ? '' : $m2['m_name'] ).'">'.$m2['m_icon'].( is_null($counter) ? '' : ' <span class="counter-'.$en_id2.'">'.echo_number($counter).'</span>' ).( $show_tab_names ? ' '.$m2['m_name'] : '' ).'</a></li>';
+        echo '<li class="nav-item"><a class="nav-link tab-nav-'.$en_id.' tab-head-'.$en_id2.' '.( $default_active ? ' active ' : '' ).require_superpower(find_matching_superpowers($m2['m_parents'])).'" href="javascript:void(0);" onclick="loadtab('.$en_id.','.$en_id2.')" data-toggle="tooltip" data-placement="top" title="'.( $show_tab_names ? '' : $m2['m_name'] ).'">'.$m2['m_icon'].( is_null($counter) ? '' : ' <span class="counter-'.$en_id2.'">'.echo_number($counter).'</span>' ).( $show_tab_names ? ' '.$m2['m_name'] : '' ).'</a></li>';
 
 
         $tab_content .= '<div class="tab-content tab-group-'.$en_id.' tab-data-'.$en_id2.( $default_active ? '' : ' hidden ' ).'">';

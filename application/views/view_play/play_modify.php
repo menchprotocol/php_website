@@ -33,7 +33,7 @@ $en_all_11035 = $this->config->item('en_all_11035'); //MENCH PLAYER NAVIGATION
 
 
     //STATUS
-    echo '<span class="icon-block-sm en_status_entity_id_' . $entity['en_id'] . ( in_array($entity['en_status_entity_id'], $this->config->item('en_ids_7357')) ? require_activate_superpower(10989 /* PEGASUS */) : '' ).'"><span data-toggle="tooltip" data-placement="bottom" title="'.$en_all_6177[$entity['en_status_entity_id']]['m_name'].': '.$en_all_6177[$entity['en_status_entity_id']]['m_desc'].'">' . $en_all_6177[$entity['en_status_entity_id']]['m_icon'] . '</span></span>';
+    echo '<span class="icon-block-sm en_status_entity_id_' . $entity['en_id'] . ( in_array($entity['en_status_entity_id'], $this->config->item('en_ids_7357')) ? require_superpower(10989 /* PEGASUS */) : '' ).'"><span data-toggle="tooltip" data-placement="bottom" title="'.$en_all_6177[$entity['en_status_entity_id']]['m_name'].': '.$en_all_6177[$entity['en_status_entity_id']]['m_desc'].'">' . $en_all_6177[$entity['en_status_entity_id']]['m_icon'] . '</span></span>';
 
 
     //ACCOUNT
@@ -46,7 +46,7 @@ $en_all_11035 = $this->config->item('en_all_11035'); //MENCH PLAYER NAVIGATION
     }
 
     //MODIFY
-    echo '<a href="javascript:void(0);" onclick="en_modify_load(' . $entity['en_id'] . ',0)" class="btn btn-sm btn-primary btn-five inline-block '. require_activate_superpower(10989 /* PEGASUS */) .'"><i class="fas fa-cog"></i></a>';
+    echo '<a href="javascript:void(0);" onclick="en_modify_load(' . $entity['en_id'] . ',0)" class="btn btn-sm btn-primary btn-five inline-block '. require_superpower(10989 /* PEGASUS */) .'"><i class="fas fa-cog"></i></a>';
 
 
     //REFERENCES
@@ -282,7 +282,7 @@ $en_all_11035 = $this->config->item('en_all_11035'); //MENCH PLAYER NAVIGATION
                 }
 
                 //Input to add new parents:
-                $this_tab .= '<div id="new-parent" class="'.require_activate_superpower(10989 /* PEGASUS */).'">
+                $this_tab .= '<div id="new-parent" class="'.require_superpower(10989 /* PEGASUS */).'">
                     <div class="form-group is-empty"><input type="text" class="form-control new-input algolia_search" data-lpignore="true" placeholder="Add Entity/URL"></div>
                     <div class="algolia_search_pad hidden"><span>Search existing players, create a new player or paste a URL...</span></div>
             </div>';
@@ -322,7 +322,7 @@ $en_all_11035 = $this->config->item('en_all_11035'); //MENCH PLAYER NAVIGATION
                 }
 
                 //Input to add new child:
-                $this_tab .= '<div id="new-children" class="'.require_activate_superpower(10989 /* PEGASUS */).'">
+                $this_tab .= '<div id="new-children" class="'.require_superpower(10989 /* PEGASUS */).'">
             <div class="form-group is-empty"><input type="text" class="form-control new-input algolia_search" data-lpignore="true" placeholder="Add Entity/URL"></div>
             <div class="algolia_search_pad hidden"><span>Search existing players, create a new player or paste a URL...</span></div>
     </div>';
@@ -334,7 +334,7 @@ $en_all_11035 = $this->config->item('en_all_11035'); //MENCH PLAYER NAVIGATION
 
 
                 //FILTERS
-                $tab_content .= '<table width="100%" style="margin-top:10px;" class="' . require_activate_superpower(10989 /* PEGASUS */) . '"><tr>';
+                $tab_content .= '<table width="100%" style="margin-top:10px;" class="' . require_superpower(10989 /* PEGASUS */) . '"><tr>';
                 $tab_content .= '<td>';
 
                 $tab_content .= '<span><a href="javascript:void(0);" onclick="$(\'.mass_modify\').toggleClass(\'hidden\');mass_action_ui();" style="text-decoration: none; margin-left: 5px;"  data-toggle="tooltip" data-placement="right" title="Mass Update Children"><i class="fal fa-list-alt" style="font-size: 1.2em; color: #2b2b2b;"></i></a></span>';
@@ -527,7 +527,7 @@ $en_all_11035 = $this->config->item('en_all_11035'); //MENCH PLAYER NAVIGATION
             }
 
 
-            echo '<li class="nav-item"><a class="nav-link tab-nav-'.$en_id.' tab-head-'.$en_id2.' '.( $default_active ? ' active ' : '' ).require_activate_superpower(find_matching_superpowers($m2['m_parents'])).'" href="javascript:void(0);" onclick="loadtab('.$en_id.','.$en_id2.')" data-toggle="tooltip" data-placement="top" title="'.( $show_tab_names ? '' : $m2['m_name'] ).'">'.$m2['m_icon'].( is_null($counter) ? '' : ' <span class="counter-'.$en_id2.'">'.echo_number($counter).'</span>' ).( $show_tab_names ? ' '.$m2['m_name'] : '' ).'</a></li>';
+            echo '<li class="nav-item"><a class="nav-link tab-nav-'.$en_id.' tab-head-'.$en_id2.' '.( $default_active ? ' active ' : '' ).require_superpower(find_matching_superpowers($m2['m_parents'])).'" href="javascript:void(0);" onclick="loadtab('.$en_id.','.$en_id2.')" data-toggle="tooltip" data-placement="top" title="'.( $show_tab_names ? '' : $m2['m_name'] ).'">'.$m2['m_icon'].( is_null($counter) ? '' : ' <span class="counter-'.$en_id2.'">'.echo_number($counter).'</span>' ).( $show_tab_names ? ' '.$m2['m_name'] : '' ).'</a></li>';
 
 
             $tab_content .= '<div class="tab-content tab-group-'.$en_id.' tab-data-'.$en_id2.( $default_active ? '' : ' hidden ' ).'">';

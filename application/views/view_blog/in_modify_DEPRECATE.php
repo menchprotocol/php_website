@@ -110,7 +110,7 @@
 
 
 
-                    <div class="<?= require_activate_superpower(10989 /* PEGASUS */) ?>">
+                    <div class="<?= require_superpower(10989 /* PEGASUS */) ?>">
 
                         <span class="mini-header" style="margin-top: 20px;"><?= $en_all_4341[4593]['m_icon'].' '.$en_all_4341[4593]['m_name'] ?></span>
                         <select class="form-control border" id="ln_type_entity_id" style="margin-bottom: 12px;">

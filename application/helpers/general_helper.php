@@ -680,12 +680,9 @@ function find_matching_superpowers($parent_en_ids){
     }
 }
 
-function require_activate_superpower($superpower_en_id){
-    if(!$superpower_en_id || !en_auth()){
-        return false;
-    }
+function require_superpower($superpower_en_id){
     $CI =& get_instance();
-    return ' superpower-'.$superpower_en_id.' '.( in_array($superpower_en_id, $CI->session->userdata('activate_superpowers_en_ids')) ? '' : ' hidden ' );
+    return ' superpower-'.$superpower_en_id.' '.( en_auth() && $superpower_en_id && in_array($superpower_en_id, $CI->session->userdata('activate_superpowers_en_ids')) ? '' : ' hidden ' );
 }
 
 
