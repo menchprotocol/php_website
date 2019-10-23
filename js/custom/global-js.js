@@ -168,6 +168,7 @@ $(document).ready(function () {
 
     $("#mench_search").focusin(function() {
 
+        window.scrollTo(0, 0);
         $(".container").not('.show-while-searching').addClass('hidden');
         $(".searchpad").removeClass('hidden');
 
