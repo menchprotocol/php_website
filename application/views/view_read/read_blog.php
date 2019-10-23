@@ -170,7 +170,7 @@ if(in_array($in['in_completion_method_entity_id'], $this->config->item('en_ids_7
 
         //Now fetch Recommended Intents:
         foreach ($in__other as $other_in) {
-            echo echo_in_recommend($other_in, null, ( count($already_printed) >= $max_visible ? 'extra-recommendations hidden' : null ));
+            echo echo_in_read($other_in, null, ( count($already_printed) >= $max_visible ? 'extra-recommendations hidden' : null ));
         }
 
         if(count($already_printed) > $max_visible){
@@ -238,7 +238,7 @@ if(in_array($in['in_completion_method_entity_id'], $this->config->item('en_ids_7
         $in_common_prefix = in_common_prefix($in__children);
 
         foreach ($in__children as $child_in) {
-            echo echo_in_recommend($child_in, $in_common_prefix, null);
+            echo echo_in_read($child_in, $in_common_prefix, null);
         }
         echo '</div>';
 

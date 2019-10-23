@@ -88,7 +88,7 @@ class Read extends CI_Controller
 
 
 
-    function index()
+    function history()
     {
         /*
          *
@@ -98,19 +98,12 @@ class Read extends CI_Controller
          *
          * */
 
-        $session_en = en_auth(null);
-
         //Load header:
         $this->load->view('header', array(
-            'title' => 'Mench Links',
+            'title' => 'READ HISTORY',
         ));
-
-        //Load main:
-        $this->load->view('view_read/ln_list');
-
-        //Load footer:
+        $this->load->view('view_read/read_history');
         $this->load->view('footer');
-
     }
 
 
@@ -383,7 +376,7 @@ class Read extends CI_Controller
 
         //Display filter notes:
         if($total_items_loaded > 0){
-            $message .= '<p style="margin: 10px 0 0 0;">'.( $has_more_links && $query_offset==0  ? 'First ' : ($query_offset+1).' - ' ) . ( $total_items_loaded >= ($query_offset+1) ?  $total_items_loaded . ' of ' : '' ) . number_format($lns_count[0]['total_count'] , 0) .' Links ('.number_format($lns_count[0]['total_words'], 0).' words):</p>';
+            $message .= '<p style="margin:10px 0; font-weight: bold;"><span class="icon-block"><i class="fas fa-file-search"></i></span>'.( $has_more_links && $query_offset==0  ? 'FIRST ' : ($query_offset+1).' - ' ) . ( $total_items_loaded >= ($query_offset+1) ?  $total_items_loaded . ' OF ' : '' ) . number_format($lns_count[0]['total_count'] , 0) .' READS TOTALLING '.number_format($lns_count[0]['total_words'], 0).' WORDS:</p>';
         }
         //
 
@@ -398,7 +391,7 @@ class Read extends CI_Controller
 
             //Do we have more to show?
             if($has_more_links){
-                $message .= '<div id="link_page_'.$next_page.'"><a href="javascript:void(0);" style="margin:10px 0 72px 0;" class="btn btn-blog grey" onclick="load_link_list(link_filters, link_join_by, '.$next_page.');"><span class="icon-block-sm"><i class="fas fa-plus-circle"></i></span>Page '.$next_page.'</a></div>';
+                $message .= '<div id="link_page_'.$next_page.'"><a href="javascript:void(0);" style="margin:10px 0 72px 0;" class="btn btn-read" onclick="load_link_list(link_filters, link_join_by, '.$next_page.');"><span class="icon-block-sm"><i class="fas fa-plus-circle"></i></span>Page '.$next_page.'</a></div>';
                 $message .= '';
             } else {
                 $message .= '<div style="margin:10px 0 72px 0;"><span class="icon-block-sm"><i class="far fa-check-circle"></i></span>All '.$lns_count[0]['total_count'].' link'.echo__s($lns_count[0]['total_count']).' have been loaded</div>';
@@ -422,7 +415,7 @@ class Read extends CI_Controller
     }
 
 
-    function link_json($ln_id)
+    function history_read($ln_id)
     {
 
         //Fetch link metadata and display it:
@@ -433,12 +426,12 @@ class Read extends CI_Controller
         if (count($lns) < 1) {
             return echo_json(array(
                 'status' => 0,
-                'message' => 'Invalid Link ID',
+                'message' => 'Invalid READ ID',
             ));
         } elseif(!en_auth(10989 /* PEGASUS */) /* Viewer NOT a trainer */) {
             return echo_json(array(
                 'status' => 0,
-                'message' => 'Link metadata visible to trainers only',
+                'message' => 'Missing the superpower required to view this',
             ));
         } else {
 
@@ -474,7 +467,7 @@ class Read extends CI_Controller
         if (!isset($_POST['ln_id']) || intval($_POST['ln_id']) < 1) {
             return echo_json(array(
                 'status' => 0,
-                'message' => 'Missing Link ID',
+                'message' => 'Missing READ ID',
             ));
         } elseif (!isset($_POST['load_main'])) {
             return echo_json(array(
@@ -490,7 +483,7 @@ class Read extends CI_Controller
         if (count($lns) < 1) {
             return echo_json(array(
                 'status' => 0,
-                'message' => 'Invalid Link ID',
+                'message' => 'Invalid READ ID',
             ));
         }
 
@@ -501,7 +494,7 @@ class Read extends CI_Controller
         foreach ($this->READ_model->ln_fetch(array(
             'ln_parent_link_id' => $_POST['ln_id'],
         ), array(), 0, 0, array('ln_id' => 'DESC')) as $ln_child) {
-            $ln_connections_ui .= '<div class="tr-child">' . echo_ln($ln_child, true) . '</div>';
+            $ln_connections_ui .= '<div class="read-hisotry-child">' . echo_ln($ln_child, true) . '</div>';
         }
 
         //Return UI:

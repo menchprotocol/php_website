@@ -50,7 +50,7 @@ function sign_on_messenger(){
 
     //Redirect to Messenger with a bit of delay to log the link above:
     setTimeout(function () {
-        window.location = 'https://m.me/askmench';
+        window.location = 'https://m.me/menchblogs';
     }, 377);
 
 }

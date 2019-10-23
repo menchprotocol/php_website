@@ -55,7 +55,7 @@ function in_update_time(in_completion_seconds) {
 function in_control_engagement_level() {
 
     //*
-    //Fetch intent link ID:
+    //Fetch intent READ ID:
     var ln_id = parseInt($('#modifybox').attr('intent-tr-id'));
 
     if (!$('#modifybox').hasClass('hidden') && ln_id > 0) {
@@ -93,7 +93,7 @@ function in_control_engagement_level() {
 
 function in_adjust_link_ui() {
 
-    //Fetch intent link ID:
+    //Fetch intent READ ID:
     var ln_id = parseInt($('#modifybox').attr('intent-tr-id'));
 
     if (!$('#modifybox').hasClass('hidden') && ln_id > 0) {

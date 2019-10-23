@@ -102,7 +102,7 @@ $en_all_11035 = $this->config->item('en_all_11035'); //MENCH PLAYER NAVIGATION
                 $profile_array = filter_array($user_social_profiles, 'ln_parent_entity_id', $acc_en_id);
                 echo '<tr>';
                 echo '<td style="padding:0 5px 2px 0 !important; width: 26px; font-size: 1.2em !important;">'.$acc_detail['m_icon'].'</td>';
-                echo '<td style="width: 100%; padding-bottom:5px;"><span class="white-wrapper"><input type="url" value="'.( $profile_array ? $profile_array['ln_content'] : '' ).'" parent-en-id="'.$acc_en_id.'" class="form-control border social_profile_url" placeholder="'.$acc_detail['m_name'].' Profile URL" style="display: inline-block;" /></span></td>';
+                echo '<td style="width: 100%; padding-bottom:5px;"><span class="white-wrapper"><input type="url" value="'.( $profile_array ? $profile_array['ln_content'] : '' ).'" parent-en-id="'.$acc_en_id.'" class="form-control border social_profile_url" placeholder="'.$acc_detail['m_name'].'" style="display: inline-block;" /></span></td>';
                 echo '</tr>';
             }
             echo '</table>';

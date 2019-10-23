@@ -533,7 +533,22 @@ li a {
     color:#FC1B44 !important;
 }
 
+.read-hisotry-child {
+    margin: 0 0 0 30px;
+}
+.read-micro-data {
+    font-size: 0.9em;
+    text-transform: uppercase;
+}
 
+.read-history-msg{
+    padding: 5px;
+    margin-bottom: 10px;
+    font-size: 0.8em;
+}
+.read-history-msg .msg{
+    margin-bottom:0;
+}
 
 /* RESPONSIVE */
 @media (max-width:767px) {
@@ -551,9 +566,10 @@ li a {
         min-width: 60px;
     }
     .icon-block-sm{ min-width:26px; }
-    #searchresults{
+    .searchpad{
         height: 200px;
         background-color: #FF0000;
+        overflow: hidden;
     }
 
 }

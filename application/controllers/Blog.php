@@ -603,7 +603,7 @@ class Blog extends CI_Controller {
             if(count($lns) < 1){
                 return echo_json(array(
                     'status' => 0,
-                    'message' => 'Invalid link ID',
+                    'message' => 'Invalid READ ID',
                 ));
             }
 
@@ -981,7 +981,7 @@ class Blog extends CI_Controller {
         } elseif (!isset($_POST['ln_id'])) {
             return echo_json(array(
                 'status' => 0,
-                'message' => 'Missing Intent Link ID',
+                'message' => 'Missing Intent READ ID',
             ));
         }
 
@@ -1012,7 +1012,7 @@ class Blog extends CI_Controller {
             if(count($lns) < 1){
                 return echo_json(array(
                     'status' => 0,
-                    'message' => 'Invalid Intent Link ID',
+                    'message' => 'Invalid Intent READ ID',
                 ));
             }
 
@@ -1098,7 +1098,7 @@ class Blog extends CI_Controller {
         } elseif (!isset($_POST['ln_id']) || intval($_POST['ln_id']) < 1) {
             return echo_json(array(
                 'status' => 0,
-                'message' => 'Missing Link ID',
+                'message' => 'Missing READ ID',
             ));
         } elseif (!isset($_POST['message_ln_status_entity_id'])) {
             return echo_json(array(

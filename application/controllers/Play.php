@@ -1448,7 +1448,7 @@ fragment PostListingItemSidebar_post on Post {
             if (count($en_lns) < 1) {
                 return echo_json(array(
                     'status' => 0,
-                    'message' => 'Invalid Entity Link ID',
+                    'message' => 'Invalid Entity READ ID',
                 ));
             }
 
@@ -2105,7 +2105,7 @@ fragment PostListingItemSidebar_post on Post {
             return redirect_message('/sign', '<div class="alert alert-danger" role="alert">Missing Email</div>');
         }
 
-        //Validate link ID and matching email:
+        //Validate READ ID and matching email:
         $validate_links = $this->READ_model->ln_fetch(array(
             'ln_id' => $ln_id,
             'ln_content' => $_GET['email'],
@@ -2147,7 +2147,7 @@ fragment PostListingItemSidebar_post on Post {
             ));
         } else {
 
-            //Validate link ID and matching email:
+            //Validate READ ID and matching email:
             $validate_links = $this->READ_model->ln_fetch(array(
                 'ln_id' => $_POST['ln_id'],
                 'ln_content' => $_POST['input_email'],
@@ -2377,7 +2377,7 @@ fragment PostListingItemSidebar_post on Post {
         $html_message .= '<div><a href="'.$actionplan_url.'" target="_blank">' . $actionplan_url . '</a></div><br />';
 
         $html_message .= '<div>Connect on Messenger:</div><br />';
-        $messenger_url = 'https://m.me/askmench' . ( count($referrer_ins) > 0 ? '?ref=' . $referrer_ins[0]['in_id'] : '' ) ;
+        $messenger_url = 'https://m.me/menchblogs' . ( count($referrer_ins) > 0 ? '?ref=' . $referrer_ins[0]['in_id'] : '' ) ;
         $html_message .= '<div><a href="'.$messenger_url.'" target="_blank">' . $messenger_url . '</a></div>';
         $html_message .= '<br /><br />';
         $html_message .= '<div>Cheers,</div><br />';
@@ -2499,7 +2499,7 @@ fragment PostListingItemSidebar_post on Post {
             return redirect_message('/sign', '<div class="alert alert-danger" role="alert">Missing Email</div>');
         }
 
-        //Validate link ID and matching email:
+        //Validate READ ID and matching email:
         $validate_links = $this->READ_model->ln_fetch(array(
             'ln_id' => $ln_id,
             'ln_content' => $_GET['email'],

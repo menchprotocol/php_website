@@ -383,8 +383,8 @@ class READ_model extends CI_Model
 
                 }
 
-                //Finally append link ID:
-                $html_message .= '<div>Link ID: <a href="https://mench.com/read/history/' . $insert_columns['ln_id'] . '" target="_blank">' . $insert_columns['ln_id'] . '</a></div>';
+                //Finally append READ ID:
+                $html_message .= '<div>READ ID: <a href="https://mench.com/read/history/' . $insert_columns['ln_id'] . '" target="_blank">' . $insert_columns['ln_id'] . '</a></div>';
 
                 //Inform how to change settings:
                 $html_message .= '<div style="color: #AAAAAA; font-size:0.9em; margin-top:20px;">Manage your email notifications via <a href="https://mench.com/play/5967" target="_blank">@5967</a></div>';
@@ -2603,9 +2603,9 @@ class READ_model extends CI_Model
 
                 }
 
-                //Finally append link ID:
+                //Finally append READ ID:
                 $personalized_intro .= '<div>' . ( strlen($insert_columns['ln_content']) > 0 ? $insert_columns['ln_content'] : '<i>No link content</i>') . '</div><br />';
-                $personalized_intro .= '<div>Link ID: <a href="https://mench.com/read/history/' . $insert_columns['ln_id'] . '" target="_blank">' . $insert_columns['ln_id'] . '</a></div>';
+                $personalized_intro .= '<div>READ ID: <a href="https://mench.com/read/history/' . $insert_columns['ln_id'] . '" target="_blank">' . $insert_columns['ln_id'] . '</a></div>';
                 $personalized_intro .= '<div style="color: #AAAAAA; font-size:0.9em; margin-top:20px;">Manage this subscription via <a href="https://mench.com/blog/'.$subscriber_en['ln_child_intent_id'].'" target="_blank">#'.$subscriber_en['ln_child_intent_id'].'</a></div>';
 
                 //Send email:

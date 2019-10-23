@@ -469,7 +469,7 @@ function echo_ln_connections($ln){
             continue;
         }
 
-        $ln_connections_ui .= '<div class="tr-child">';
+        $ln_connections_ui .= '<div class="read-hisotry-child">';
 
         if(in_array(6160 , $m['m_parents'])){
             //PLAY
@@ -481,7 +481,7 @@ function echo_ln_connections($ln){
             //BLOG
             $ins = $CI->BLOG_model->in_fetch(array('in_id' => $ln[$en_all_6232[$en_id]['m_desc']]));
             if(count($ins) > 0){
-                $ln_connections_ui .= echo_in($ins[0]);
+                $ln_connections_ui .= echo_in_read($ins[0]);
             }
         } elseif(in_array(4367 , $m['m_parents'])){
             //READ
@@ -532,17 +532,18 @@ function echo_ln($ln, $is_inner = false)
 
 
     //Display the item
-    $ui = '<div class="list-group-item tr-box">';
+    $ui = '<div style="margin-bottom:20px;">';
+    $ui .= '<div class="list-group-item">';
 
 
     //What type of main content do we have, if any?
     $en_all_6186 = $CI->config->item('en_all_6186'); //Link Statuses
 
 
-    //Link ID Row of data:
-    $ui .= '<div style="padding: 0px 0 8px 12px; font-size: 0.9em;">';
+    //READ ID Row of data:
+    $ui .= '<div class="read-micro-data">';
 
-    $ui .= '<span data-toggle="tooltip" data-placement="top" title="Link ID"><a href="/read/history/'.$ln['ln_id'].'">'.$en_all_7368[6205]['m_icon'].' '.$ln['ln_id'].'</a></span>';
+    $ui .= '<span data-toggle="tooltip" data-placement="top" title="READ ID">'.$en_all_7368[6205]['m_icon'].$ln['ln_id'].'</span>';
 
     $ui .= ' &nbsp;&nbsp;<span data-toggle="tooltip" data-placement="top" title="Link is '.$en_all_6186[$ln['ln_status_entity_id']]['m_desc'].'">'.$en_all_6186[$ln['ln_status_entity_id']]['m_icon'].' '.$en_all_6186[$ln['ln_status_entity_id']]['m_name'].'</span>';
 
@@ -551,15 +552,16 @@ function echo_ln($ln, $is_inner = false)
     $ui .= '</div>';
 
 
+
     //Trainer and Link Type row:
-    $ui .= '<div style="padding:0 10px 12px;">';
+    $ui .= '<div style="padding: 10px 0;">';
 
     if($hide_sensitive_details){
 
         //Hide Trainer identity:
         $full_name = 'Hidden User';
         $ui .= '<span class="icon-main"><i class="fal fa-eye-slash"></i></span>';
-        $ui .= '<b data-toggle="tooltip" data-placement="top" title="Details are kept private">&nbsp;Private Entity</b>';
+        $ui .= '<b data-toggle="tooltip" data-placement="top" title="Details are kept private">&nbsp;Private Player</b>';
 
     } else {
 
@@ -572,8 +574,8 @@ function echo_ln($ln, $is_inner = false)
             ));
             $full_name = $trainer_ens[0]['en_name'];
 
-            $ui .= '<span class="icon-main">'.echo_en_icon($trainer_ens[0]).'</span>';
-            $ui .= '<a href="/play/'.$trainer_ens[0]['en_id'].'" data-toggle="tooltip" data-placement="top" title="Link Creator"> <b>' . $full_name . '</b></a>';
+            $ui .= '<span class="icon-main">'.echo_en_icon($trainer_ens[0]).'</span> ';
+            $ui .= '<a href="/play/'.$trainer_ens[0]['en_id'].'" data-toggle="tooltip" data-placement="top" title="Link Creator"><b>' . $full_name . '</b></a>';
 
         } else {
 
@@ -584,7 +586,7 @@ function echo_ln($ln, $is_inner = false)
     }
 
     //Link Type:
-    $ui .= '<a href="/play/'.$ln['ln_type_entity_id'].'" data-toggle="tooltip" data-placement="top" title="Link Type"><b style="padding-left:5px;">'. ( strlen($en_all_4593[$ln['ln_type_entity_id']]['m_icon']) > 0 ? '&nbsp;'.$en_all_4593[$ln['ln_type_entity_id']]['m_icon'] : '' ) .'&nbsp;'. $en_all_4593[$ln['ln_type_entity_id']]['m_name'] . '</b></a>';
+    $ui .= '&nbsp;'.( strlen($en_all_4593[$ln['ln_type_entity_id']]['m_icon']) > 0 ? '&nbsp;'.$en_all_4593[$ln['ln_type_entity_id']]['m_icon'].'&nbsp;' : '' ).'<a href="/play/'.$ln['ln_type_entity_id'].'" data-toggle="tooltip" data-placement="top" title="Link Type"><b style="padding-left:5px;">'. $en_all_4593[$ln['ln_type_entity_id']]['m_name'] . '</b></a>';
 
     $ui .= '</div>';
 
@@ -593,7 +595,7 @@ function echo_ln($ln, $is_inner = false)
 
     //Do we have a content to show?
     if(!$hide_sensitive_details && strlen($ln['ln_content']) > 0){
-        $ui .= '<div class="e-msg">';
+        $ui .= '<div class="read-history-msg mono">';
         $ui .= $CI->READ_model->dispatch_message($ln['ln_content']);
         $ui .= '</div>';
     }
@@ -643,27 +645,27 @@ function echo_ln($ln, $is_inner = false)
 
 
     //Link words
-    $ui .= '<span class="link-connection-a"><span data-toggle="tooltip" data-placement="top" title="Number of words exchanged in this link" style="min-width:30px; display: inline-block;">'.$en_all_4341[10588]['m_icon']. ' '. number_format(abs($ln['ln_words']), (fmod($ln['ln_words'],1)==0 ? 0 : 2)) .' WORD'.strtoupper(echo__s($ln['ln_words'])).' '.( $ln['ln_words'] > 0 ? 'IN' : 'OUT' ).'</span></span> &nbsp;';
+    $ui .= '<span class="read-micro-data"><span data-toggle="tooltip" data-placement="top" title="Number of words exchanged in this link" style="min-width:30px; display: inline-block;"><i class="fas fa-file-word '.( $ln['ln_words'] > 0 ? 'yellow' : 'ispink' ).'"></i> '. number_format(abs($ln['ln_words']), (fmod($ln['ln_words'],1)==0 ? 0 : 2)) .' WORD'.strtoupper(echo__s($ln['ln_words'])).' '.( $ln['ln_words'] > 0 ? 'BLOGGED' : 'READ' ).'</span></span> &nbsp;';
 
 
     if($ln['ln_order'] > 0){
-        $ui .= '<span class="link-connection-a"><span data-toggle="tooltip" data-placement="top" title="Link ordered '.echo_ordinal_number($ln['ln_order']).'" style="min-width:30px; display: inline-block;">'.$en_all_4341[4370]['m_icon']. ' '.echo_ordinal_number($ln['ln_order']).' Order</span></span> &nbsp;';
+        $ui .= '<span class="read-micro-data"><span data-toggle="tooltip" data-placement="top" title="Link ordered '.echo_ordinal_number($ln['ln_order']).'" style="min-width:30px; display: inline-block;">'.$en_all_4341[4370]['m_icon']. ' '.echo_ordinal_number($ln['ln_order']).'</span></span> &nbsp;';
     }
 
     //Is this a trainer? Show them metadata status:
     if(!$hide_sensitive_details && strlen($ln['ln_metadata']) > 0){
-        $ui .= '<span class="link-connection-a"><a href="/read/link_json/' . $ln['ln_id'] . '" target="_blank" data-toggle="tooltip" data-placement="top" title="View link metadata (in new window)" style="min-width:26px; display: inline-block;">'.$en_all_4341[6103]['m_icon']. ' Metadata</a></span> &nbsp;';
+        $ui .= '<span class="read-micro-data">'.$en_all_4341[6103]['m_icon']. ' <a href="/read/history/' . $ln['ln_id'] . '" target="_blank" data-toggle="tooltip" data-placement="top" title="View link metadata (in new window)" style="min-width:26px; display: inline-block;">Metadata</a></span> &nbsp;';
     }
 
     if(!$hide_sensitive_details && $ln['ln_external_id'] > 0){
-        $ui .= '<span class="link-connection-a" data-toggle="tooltip" data-placement="top" title="Link External ID">'.$en_all_4527[6103]['m_icon']. ' '.$ln['ln_external_id'].'</span> &nbsp;';
+        $ui .= '<span class="read-micro-data" data-toggle="tooltip" data-placement="top" title="Link External ID">'.$en_all_4527[6103]['m_icon']. ' '.$ln['ln_external_id'].'</span> &nbsp;';
     }
 
     //Give option to load if it has connections:
     if(!$is_inner && (strlen($link_connections_clean_name) > 0 || $load_main)){
 
         if(!$load_main || $child_links[0]['total_child_links'] > 0){
-            $ui .= '<span class="link_connections_link_'.$ln['ln_id'].' link-connection-a"><a href="#linkconnection-'.$ln['ln_id'].'" onclick="load_link_connections('.$ln['ln_id'].','.$load_main.')"  data-toggle="tooltip" data-placement="top" title="'.$en_all_4527[10692]['m_name'].'">'.$en_all_4527[10692]['m_icon'].' '.$link_connections_clean_name.'</a></span>';
+            $ui .= '<span class="link_connections_link_'.$ln['ln_id'].' read-micro-data"><a href="#linkconnection-'.$ln['ln_id'].'" onclick="load_link_connections('.$ln['ln_id'].','.$load_main.')"  data-toggle="tooltip" data-placement="top" title="'.$en_all_4527[10692]['m_name'].'">'.$en_all_4527[10692]['m_icon'].' '.$link_connections_clean_name.'</a></span>';
         }
 
         $ui .= '</div>'; //Close main link box
@@ -680,6 +682,8 @@ function echo_ln($ln, $is_inner = false)
         $ui .= '</div>'; //Close main link box
 
     }
+
+    $ui .= '</div>'; //Close it all
 
     return $ui;
 }
@@ -1553,28 +1557,20 @@ function echo_en_cache($config_var_name, $en_id, $micro_status = true, $data_pla
 }
 
 
-function echo_in_recommend($in, $in_common_prefix = null, $hide_class = null)
+function echo_in_read($in, $in_common_prefix = null, $hide_class = null)
 {
 
     //See if user is logged-in:
     $CI =& get_instance();
     $session_en = en_auth();
-    $already_in_actionplan = (isset($session_en['en_id']) && count($CI->READ_model->ln_fetch(array(
-            'ln_creator_entity_id' => $session_en['en_id'],
-            'ln_type_entity_id IN (' . join(',', $CI->config->item('en_ids_7347')) . ')' => null, //Action Plan Intention Set
-            'ln_status_entity_id IN (' . join(',', $CI->config->item('en_ids_7364')) . ')' => null, //incomplete intentions
-            'ln_parent_intent_id' => $in['in_id'],
-        ))) > 0);
 
-    $ui = '<a href="/read/'.$in['in_id'] . '" class="list-group-item '.$hide_class .'">';
-
-    $ui .= '<span class="pull-right">';
-    $ui .= '<span class="badge badge-primary fr-bgd" style="margin-top: -4px;">'.( $already_in_actionplan ? '<i class="fas fa-bookmark ispink"></i>' : '<i class="fas fa-angle-right"></i>' ).'</span>';
-    $ui .= '</span>';
+    $ui = '<div class="list-group-item '.$hide_class .'">';
 
     $ui .= '<span style="color:#222; font-weight:500; font-size:1.2em;">'.echo_in_outcome($in['in_outcome'], false, $in_common_prefix).'</span>';
 
-    $ui .= '</a>';
+    $ui .= '<div class="pull-right inline-block"><a class="btn btn-primary btn-read" href="/read/'.$in['in_id'] . '"><i class="fas fa-angle-right"></i></a></div>';
+
+    $ui .= '</div>';
     return $ui;
 }
 

@@ -18,9 +18,8 @@ $route['read']                      = "read/overview";
 $route['blog']                      = "blog/overview";
 $route['blog/demo']                 = "blog/demo";
 
+$route['read/history/(:num)']       = "read/history_read/$1";
 $route['read/next']                 = "read/read_history_overview";
-$route['read/history']              = "read/read_history_overview";
-$route['read/history/(:num)']       = "read/read_history_item";
 
 
 $route['completion_rates']          = "blog/in_completion_rates";
