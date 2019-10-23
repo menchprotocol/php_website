@@ -23,7 +23,7 @@ $en_all_10591 = $this->config->item('en_all_10591'); //PLAYER PLAYS
 
             <?php
             if ($session_en) {
-                echo '<div style="padding-bottom:21px;"><a href="/play/'.$session_en['en_id'].'" class="btn btn-play montserrat">My Profile <span class="icon-block en-icon">'.$session_en['en_icon'].'</span></a></div>';
+                echo '<div style="padding-bottom:21px;"><a href="/play/'.$session_en['en_id'].'" class="btn btn-play montserrat">My Profile <span class="icon-block en-icon white-icon">'.$session_en['en_icon'].'</span></a></div>';
             } else {
                 echo '<div style="padding-bottom:21px;"><a href="/sign" class="btn btn-play montserrat">'.$en_all_11035[4269]['m_name'].'</a></div>';
             }

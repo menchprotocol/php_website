@@ -560,6 +560,10 @@ li a {
     margin-bottom:0;
 }
 
+.white-icon .fas, .white-icon .fal, .white-icon .far{
+    color:#FFFFFF !important;
+}
+
 /* RESPONSIVE */
 @media (max-width:767px) {
     body {
