@@ -2,10 +2,12 @@
 
 body {
     background-color: #F7F7F7 !important;
-    margin:65px 0;
     font-size: 1.3em;
     font-family: 'Open Sans', sans-serif;
     font-weight: 400;
+}
+.searchpad, body{
+    margin:65px 0;
 }
 
 [class*="col-"] {padding-left:5px;padding-right:5px;}
@@ -137,10 +139,10 @@ li a {
 .searchpad{
     margin: 0 auto !important;
     position: fixed;
-    top: 50px;
     right: 0;
     left: 0;
     width: 100%;
+    top: 0;
 }
 #searchresults{
     width: 100%;
@@ -574,6 +576,9 @@ li a {
         min-width: 60px;
     }
     .icon-block-sm{ min-width:26px; }
+    .searchpad {
+        margin-top:200px;
+    }
 
 }
 @media (max-width:1200px){
