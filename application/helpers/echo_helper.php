@@ -2241,7 +2241,7 @@ function echo_en($en, $is_parent = false)
         $en_all_6186 = $CI->config->item('en_all_6186'); //Link Statuses
 
         //LINK TYPE
-        $ui .= '<span class="icon-block-sm ln_type_' . $ln_id . require_activate_superpower(10989 /* PEGASUS */).'"><span data-toggle="tooltip" data-placement="right" title="'.$en_all_4593[$en['ln_type_entity_id']]['m_name'].' @'.$en['ln_type_entity_id'].'">' . $en_all_4593[$en['ln_type_entity_id']]['m_icon'] . '</span></span> ';
+        $ui .= '<span class="icon-block-sm ln_type_' . $ln_id . require_activate_superpower(10989 /* PEGASUS */).'"><span data-toggle="tooltip" data-placement="right" title="'.$en_all_4593[$en['ln_type_entity_id']]['m_name'].' @'.$en['ln_type_entity_id'].'">' . $en_all_4593[$en['ln_type_entity_id']]['m_icon'] . '</span></span>';
 
         //LINK STATUS
         $ui .= '<span class="icon-block-sm ln_status_entity_id_' . $ln_id . ( in_array($en['ln_status_entity_id'], $CI->config->item('en_ids_7359')) ? require_activate_superpower(10989 /* PEGASUS */) : '' ).'"><span data-toggle="tooltip" data-placement="right" title="'.$en_all_6186[$en['ln_status_entity_id']]['m_name'].' @'.$en['ln_status_entity_id'].': '.$en_all_6186[$en['ln_status_entity_id']]['m_desc'].'">' . $en_all_6186[$en['ln_status_entity_id']]['m_icon'] . '</span></span>';

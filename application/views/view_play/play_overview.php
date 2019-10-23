@@ -3,7 +3,6 @@ $session_en = en_auth();
 $en_all_2738 = $this->config->item('en_all_2738'); //MENCH
 $en_all_11035 = $this->config->item('en_all_11035'); //MENCH PLAYER NAVIGATION
 $en_all_10591 = $this->config->item('en_all_10591'); //PLAYER PLAYS
-
 ?>
 <div class="container">
 
@@ -11,14 +10,14 @@ $en_all_10591 = $this->config->item('en_all_10591'); //PLAYER PLAYS
         <div class="col-lg">
 
             <h1>HOW TO PLAY</h1>
-            <ul style="list-style: decimal;">
-                <li>Earn 1x <?= $en_all_2738[4536]['m_icon'] ?><b class="montserrat play"><?= $en_all_2738[4536]['m_name'] ?></b> coin when you join</li>
+            <ul class="intructions-list">
+                <li class="hidden">Earn 1x <?= $en_all_2738[4536]['m_icon'] ?><b class="montserrat play"><?= $en_all_2738[4536]['m_name'] ?></b> coin when you join</li>
                 <li>Earn 1x <?= $en_all_2738[6205]['m_icon'] ?><b class="montserrat read"><?= $en_all_2738[6205]['m_name'] ?></b> coin for every word you read</li>
                 <li>Earn 1x <?= $en_all_2738[4535]['m_icon'] ?><b class="montserrat blog"><?= $en_all_2738[4535]['m_name'] ?></b> coin for every word you blog</li>
                 <li>Earn up to <?= config_var(11061) ?>x <?= $en_all_2738[6205]['m_icon'] ?><b class="montserrat read"><?= $en_all_2738[6205]['m_name'] ?></b> coins/month FREE</li>
                 <li>Earn UNLIMITED <?= $en_all_2738[6205]['m_icon'] ?><b class="montserrat read"><?= $en_all_2738[6205]['m_name'] ?></b> coins for $5/month</li>
                 <li>Earn monthly income with your <?= $en_all_2738[4535]['m_icon'] ?><b class="montserrat blog"><?= $en_all_2738[4535]['m_name'] ?></b> coins</li>
-                <li>Earn more coins to unlock new <a href="/play/10957" class="btn btn-sm btn-play montserrat">SUPERPOWERS</a></li>
+                <li class="hidden">Earn more coins to unlock new <a href="/play/10957" class="btn btn-sm btn-play montserrat">SUPERPOWERS</a></li>
             </ul>
 
             <?php

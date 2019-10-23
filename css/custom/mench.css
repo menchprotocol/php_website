@@ -24,6 +24,11 @@ body {
     font-family: 'Nanum Gothic Coding', monospace;
 }
 
+.intructions-list{
+    list-style: decimal;
+    margin-left:-15px;
+}
+
 .nav-tabs-sm .nav-link {
     display: block;
     padding: .5rem .5rem;
@@ -529,6 +534,9 @@ li a {
         min-width: 60px;
     }
     .icon-block-sm{ min-width:26px; }
+    .intructions-list{
+        font-size: 0.9em;
+    }
 
 }
 @media (max-width:1200px){
