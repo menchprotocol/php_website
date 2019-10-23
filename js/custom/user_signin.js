@@ -224,7 +224,7 @@ function singin_check_password(){
 
 }
 
-function singin_magic_link_email(){
+function magicemail(){
     var r = confirm("I will email you a link to "+$('#input_email').val()+" so you can easily login.");
     if (r == true) {
 
@@ -233,7 +233,7 @@ function singin_magic_link_email(){
         $('.magic_result').html('<i class="far fa-yin-yang fa-spin"></i> Emailing you a magic link...');
 
         //Check email and validate:
-        $.post("/play/singin_magic_link_email", {
+        $.post("/play/magicemail", {
             input_email: $('#input_email').val(),
             referrer_in_id: referrer_in_id,
         }, function (data) {

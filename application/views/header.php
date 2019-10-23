@@ -143,7 +143,7 @@ if(strlen($flash_message) > 0){
                         } else {
 
                             //Give option to signin
-                            echo '<td class="block-link"><a href="/sign" data-toggle="tooltip" data-placement="top" title="'.$en_all_11035[4269]['m_name'].'">'.$en_all_11035[4269]['m_icon'].'</a></td>';
+                            echo '<td class="block-link"><a href="/play/signin" data-toggle="tooltip" data-placement="top" title="'.$en_all_11035[4269]['m_name'].'">'.$en_all_11035[4269]['m_icon'].'</a></td>';
 
                         }
                         ?>

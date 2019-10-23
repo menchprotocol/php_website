@@ -12,13 +12,14 @@ class Blog extends CI_Controller {
         date_default_timezone_set(config_var(11079));
     }
 
-    function overview(){
+    function blog_overview(){
         $this->load->view('header', array(
             'title' => 'BLOG',
         ));
         $this->load->view('view_blog/blog_overview');
         $this->load->view('footer');
     }
+
 
     function demo(){
         $this->load->view('header', array(
@@ -374,7 +375,7 @@ class Blog extends CI_Controller {
             $item_ui .= ( strlen($apu['ln_content']) > 0 ? '<div class="user-comment">'.$this->READ_model->dispatch_message($apu['ln_content']).'</div>' : '' );
             $item_ui .= '</td>';
 
-            $item_ui .= '<td style="text-align:left;"><a href="/read/history/'.$apu['ln_id'].'" target="_blank">'.echo_en_cache('en_all_6255' /* User Steps Progress */, $apu['ln_type_entity_id']).'</a></td>';
+            $item_ui .= '<td style="text-align:left;"><a href="/read/view_json/'.$apu['ln_id'].'" target="_blank">'.echo_en_cache('en_all_6255' /* User Steps Progress */, $apu['ln_type_entity_id']).'</a></td>';
             $item_ui .= '<td style="text-align:left;">'.echo_number($count_progression[0]['totals']).'</td>';
             $item_ui .= '<td style="text-align:left;">'.echo_time_difference(strtotime($apu['ln_timestamp'])).'</td>';
             $item_ui .= '<td style="text-align:left;">';

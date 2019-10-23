@@ -41,7 +41,7 @@ $en_all_11035 = $this->config->item('en_all_11035'); //MENCH PLAYER NAVIGATION
 
         echo '<a href="/play/myaccount" class="btn btn-sm btn-primary btn-five inline-block" data-toggle="tooltip" data-placement="bottom" title="'.$en_all_11035[6225]['m_desc'].'">'.$en_all_11035[6225]['m_icon'].' '.$en_all_11035[6225]['m_name'].'</a>';
 
-        echo '<a href="/signout" class="btn btn-sm btn-primary btn-five inline-block" data-toggle="tooltip" data-placement="bottom" title="'.$en_all_11035[7291]['m_name'].'">'.$en_all_11035[7291]['m_icon'].'</a>';
+        echo '<a href="/play/signout" class="btn btn-sm btn-primary btn-five inline-block" data-toggle="tooltip" data-placement="bottom" title="'.$en_all_11035[7291]['m_name'].'">'.$en_all_11035[7291]['m_icon'].'</a>';
 
     }
 
@@ -333,17 +333,6 @@ $en_all_11035 = $this->config->item('en_all_11035'); //MENCH PLAYER NAVIGATION
 
 
 
-                //FILTERS
-                $tab_content .= '<table width="100%" style="margin-top:10px;" class="' . require_superpower(10989 /* PEGASUS */) . '"><tr>';
-                $tab_content .= '<td>';
-
-                $tab_content .= '<span><a href="javascript:void(0);" onclick="$(\'.mass_modify\').toggleClass(\'hidden\');mass_action_ui();" style="text-decoration: none; margin-left: 5px;"  data-toggle="tooltip" data-placement="right" title="Mass Update Children"><i class="fal fa-list-alt" style="font-size: 1.2em; color: #2b2b2b;"></i></a></span>';
-
-                $tab_content .= '</td>';
-
-
-                $tab_content .= '<td style="text-align: right;">';
-
                 //Fetch current count for each status from DB:
                 $child_en_filters = $this->READ_model->ln_fetch(array(
                     'ln_parent_entity_id' => $entity['en_id'],
@@ -351,7 +340,6 @@ $en_all_11035 = $this->config->item('en_all_11035'); //MENCH PLAYER NAVIGATION
                     'ln_status_entity_id IN (' . join(',', $this->config->item('en_ids_7360')) . ')' => null, //Link Statuses Active
                     'en_status_entity_id IN (' . join(',', $this->config->item('en_ids_7358')) . ')' => null, //Entity Statuses Active
                 ), array('en_child'), 0, 0, array('en_status_entity_id' => 'ASC'), 'COUNT(en_id) as totals, en_status_entity_id', 'en_status_entity_id');
-
 
                 //Only show filtering UI if we find child entities with different statuses (Otherwise no need to filter):
                 if (count($child_en_filters) > 0 && $child_en_filters[0]['totals'] < $entity['en__child_count']) {
@@ -374,13 +362,43 @@ $en_all_11035 = $this->config->item('en_all_11035'); //MENCH PLAYER NAVIGATION
 
                 }
 
-                $tab_content .= '</td>';
-                $tab_content .= '</tr></table>';
+            } elseif(in_array($en_id2, array(7347,6146))){
+
+                //READER READS & BOOKMARKS
+                $item_counters = $this->READ_model->ln_fetch(array(
+                    'ln_status_entity_id IN (' . join(',', $this->config->item('en_ids_7360')) . ')' => null, //Link Statuses Active
+                    'ln_type_entity_id IN (' . join(',', $this->config->item('en_ids_'.$en_id2)) . ')' => null,
+                    'ln_creator_entity_id' => $entity['en_id'],
+                ), array(), 1, 0, array(), 'COUNT(ln_id) as totals');
+
+                $counter = $item_counters[0]['totals'];
+
+            } elseif(in_array($en_id2, $this->config->item('en_ids_4485'))){
+
+                //BLOG NOTES
+                $blog_note_filters = array(
+                    'ln_status_entity_id IN (' . join(',', $this->config->item('en_ids_7360')) . ')' => null, //Link Statuses Active
+                    'ln_type_entity_id' => $en_id2,
+                    '(ln_creator_entity_id='.$entity['en_id'].' OR ln_child_entity_id='.$entity['en_id'].' OR ln_parent_entity_id='.$entity['en_id'].')' => null,
+                );
+
+                //COUNT ONLY
+                $item_counters = $this->READ_model->ln_fetch($blog_note_filters, array(), 1, 0, array(), 'COUNT(ln_id) as totals');
+                $counter = $item_counters[0]['totals'];
 
 
+                //SHOW LASTEST 100
+                $this_tab .= '<div id="list-messages" class="list-group">';
+                foreach ($this->READ_model->ln_fetch($blog_note_filters, array('in_child')) as $blog_note) {
+                    $this_tab .= echo_en_messages($blog_note);
+                }
+                $this_tab .= '</div>';
 
-                $tab_content .= '<form class="mass_modify hidden" method="POST" action="" style="width: 100% !important;"><div class="inline-box">';
 
+            } elseif($en_id2==4997){
+
+
+                $this_tab .= '<form class="mass_modify" method="POST" action="" style="width: 100% !important;"><div class="inline-box">';
 
                 $dropdown_options = '';
                 $input_options = '';
@@ -476,48 +494,15 @@ $en_all_11035 = $this->config->item('en_all_11035'); //MENCH PLAYER NAVIGATION
 
                 }
 
-                $tab_content .= '<select class="form-control border inline-block" name="mass_action_en_id" id="set_mass_action">';
-                $tab_content .= $dropdown_options;
-                $tab_content .= '</select>';
+                $this_tab .= '<select class="form-control border inline-block" name="mass_action_en_id" id="set_mass_action">';
+                $this_tab .= $dropdown_options;
+                $this_tab .= '</select>';
 
-                $tab_content .= $input_options;
+                $this_tab .= $input_options;
 
-                $tab_content .= '<input type="submit" value="Apply" class="btn btn-play inline-block">';
+                $this_tab .= '<input type="submit" value="Apply" class="btn btn-play inline-block">';
 
-                $tab_content .= '</div></form>';
-
-
-            } elseif(in_array($en_id2, array(7347,6146))){
-
-                //READER READS & BOOKMARKS
-                $item_counters = $this->READ_model->ln_fetch(array(
-                    'ln_status_entity_id IN (' . join(',', $this->config->item('en_ids_7360')) . ')' => null, //Link Statuses Active
-                    'ln_type_entity_id IN (' . join(',', $this->config->item('en_ids_'.$en_id2)) . ')' => null,
-                    'ln_creator_entity_id' => $entity['en_id'],
-                ), array(), 1, 0, array(), 'COUNT(ln_id) as totals');
-
-                $counter = $item_counters[0]['totals'];
-
-            } elseif(in_array($en_id2, $this->config->item('en_ids_4485'))){
-
-                //BLOG NOTES
-                $blog_note_filters = array(
-                    'ln_status_entity_id IN (' . join(',', $this->config->item('en_ids_7360')) . ')' => null, //Link Statuses Active
-                    'ln_type_entity_id' => $en_id2,
-                    '(ln_creator_entity_id='.$entity['en_id'].' OR ln_child_entity_id='.$entity['en_id'].' OR ln_parent_entity_id='.$entity['en_id'].')' => null,
-                );
-
-                //COUNT ONLY
-                $item_counters = $this->READ_model->ln_fetch($blog_note_filters, array(), 1, 0, array(), 'COUNT(ln_id) as totals');
-                $counter = $item_counters[0]['totals'];
-
-
-                //SHOW LASTEST 100
-                $this_tab .= '<div id="list-messages" class="list-group">';
-                foreach ($this->READ_model->ln_fetch($blog_note_filters, array('in_child')) as $blog_note) {
-                    $this_tab .= echo_en_messages($blog_note);
-                }
-                $this_tab .= '</div>';
+                $this_tab .= '</div></form>';
 
             }
 

@@ -13,7 +13,7 @@ class Read extends CI_Controller
         date_default_timezone_set(config_var(11079));
     }
 
-    function overview(){
+    function read_overview(){
 
         if($this->uri->segment(1) != 'read'){
             return redirect_message('/read'); //DEFAULT
@@ -28,7 +28,7 @@ class Read extends CI_Controller
 
 
 
-    function blog($in_id = 0)
+    function read_blog($in_id = 0)
     {
 
         /*
@@ -415,7 +415,7 @@ class Read extends CI_Controller
     }
 
 
-    function history_read($ln_id)
+    function view_json($ln_id)
     {
 
         //Fetch link metadata and display it:

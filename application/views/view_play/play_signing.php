@@ -160,7 +160,7 @@ if(count($current_sign_in_attempt) == 0){
                 <a href="javascript:void(0)" onclick="singin_check_password()" id="password_check_next" class="btn btn-main pass btn-raised btn-round btn-next"><i class="fas fa-arrow-right"></i></a>
             </span>
 
-            <span style="padding-left:5px; font-size:0.9em !important;">OR <a href="javascript:void(0)" onclick="singin_magic_link_email()" class="underdot" style="font-size:1em !important;">MAGIC LINK <i class="fas fa-envelope-open"></i></a></span>
+            <span style="padding-left:5px; font-size:0.9em !important;">OR <a href="javascript:void(0)" onclick="magicemail()" class="underdot" style="font-size:1em !important;">MAGIC LINK <i class="fas fa-envelope-open"></i></a></span>
 
         </div>
 
