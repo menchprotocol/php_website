@@ -33,7 +33,7 @@
     echo '<script type="text/javascript">';
 
     //PLAYER
-    echo ' var js_assigned_superpowers_en_ids = ' . json_encode($this->session->userdata('assigned_superpowers_en_ids')) . '; ';
+    echo ' var js_assigned_superpowers_en_ids = ' . json_encode(( count($this->session->userdata('assigned_superpowers_en_ids')) ? $this->session->userdata('assigned_superpowers_en_ids') : array() )) . '; ';
     echo ' var js_pl_id = ' . ( isset($session_en['en_id']) ? $session_en['en_id'] : 0 ) . '; ';
 
     //LOAD JS CACHE:
@@ -127,7 +127,7 @@ if(strlen($flash_message) > 0){
                             </div>
                         </td>
 
-                        <td class="block-link search-toggle"><a class="supwerpower_view" href="javascript:void(0);" onclick="load_searchbar();" data-toggle="tooltip" data-placement="top" title="<?= $en_all_11035[7256]['m_name'] ?>"><?= $en_all_11035[7256]['m_icon'] ?></a></td>
+                        <td class="block-link search-toggle"><a class="supwerpower_view" href="javascript:void(0);" onclick="load_searchbar();"><?= $en_all_11035[7256]['m_icon'] ?></a></td>
 
                         <?php
 
