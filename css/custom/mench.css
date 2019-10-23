@@ -110,7 +110,7 @@ li a {
 .inline{ display: inline !important; }
 .hidden { display: none !important; }
 .icon-block{ min-width: 34px; display: inline-block; text-align: center; }
-.icon-block-sm{ min-width:30px; display: inline-block; text-align: center; }
+.icon-block-sm{ min-width:30px; display: inline-block; text-align: center; font-size: 0.9em; }
 .icon-block-lg{ min-width:50px; display: inline-block; text-align: center; }
 .fixed-top td { vertical-align: bottom; }
 
@@ -534,9 +534,6 @@ li a {
         min-width: 60px;
     }
     .icon-block-sm{ min-width:26px; }
-    .intructions-list{
-        font-size: 0.9em;
-    }
 
 }
 @media (max-width:1200px){

@@ -774,7 +774,7 @@ fragment PostListingItemSidebar_post on Post {
                 echo '<tr class="'.( $count<$show_max ? '' : 'see_more_who hidden').'">';
 
                 //PLAY
-                echo '<td><span class="parent-icon icon-block">'.echo_en_icon($ln).'</span><a href="/play/'.$ln['en_id'].'">'.one_two_explode('',' ',$ln['en_name']).'</a></td>';
+                echo '<td><span class="parent-icon icon-block-sm">'.echo_en_icon($ln).'</span><a href="/play/'.$ln['en_id'].'">'.one_two_explode('',' ',$ln['en_name']).'</a></td>';
 
                 //READ
                 echo '<td><a href="/read/history?ln_status_entity_id='.join(',', $this->config->item('en_ids_7359')) /* Link Statuses Public */.'&ln_type_entity_id='.join(',', $this->config->item('en_ids_10590')).'&ln_creator_entity_id='.$ln['en_id'].( $start_date ? '&start_range='.$start_date : $start_date ).'" class="mono">'.number_format($read_coins[0]['total_words'], 0).'</a></td>';
