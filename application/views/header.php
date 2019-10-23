@@ -133,7 +133,7 @@ if(strlen($flash_message) > 0){
 
 
                         //TERMS/SUPERPOWERS:
-                        echo '<td class="block-link"><a '. ( count($this->session->userdata('assigned_superpowers_en_ids')) ? 'href="javascript:void(0);" onclick="$(\'.supwerpower_view\').toggleClass(\'hidden\');"' : 'href="/read/8263" data-toggle="tooltip" data-placement="top" title="'.$en_all_11035[7540]['m_name'].'"' ) .'>'.$en_all_11035[7540]['m_icon'].'</a></td>';
+                        echo '<td class="block-link"><a '. ( count($this->session->userdata('assigned_superpowers_en_ids')) ? 'href="javascript:void(0);" onclick="$(\'.supwerpower_view\').toggleClass(\'hidden\');"' : 'href="/read/8263" title="'.$en_all_11035[7540]['m_name'].'"' ) .'>'.$en_all_11035[7540]['m_icon'].'</a></td>';
 
 
                         if (isset($session_en['en_id'])) {
