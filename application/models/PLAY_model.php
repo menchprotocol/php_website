@@ -866,14 +866,14 @@ class PLAY_model extends CI_Model
                 'message' => 'Invalid icon: '. is_valid_icon(null, true),
             );
 
-        } elseif(in_array($action_en_id, array(5981, 5982)) && !is_valid_en_string($action_command1)){
+        } elseif(in_array($action_en_id, array(5981, 5982, 11956)) && !is_valid_en_string($action_command1)){
 
             return array(
                 'status' => 0,
                 'message' => 'Unknown searched entity. Format must be: @123 Entity Name',
             );
 
-        } elseif($action_en_id==11956 && (!is_valid_en_string($action_command1) || !is_valid_en_string($action_command2))){
+        } elseif($action_en_id==11956 && !is_valid_en_string($action_command2)){
 
             return array(
                 'status' => 0,
@@ -921,12 +921,7 @@ class PLAY_model extends CI_Model
 
                 $applied_success++;
 
-            } elseif ($action_en_id == 11956) {
-
-                //ADD IF PARENT
-
-
-            } elseif (in_array($action_en_id, array(5981, 5982))) { //Add/Remove parent entity
+            } elseif (in_array($action_en_id, array(5981, 5982, 11956))) { //Add/Remove parent entity
 
                 //What trainer searched for:
                 $parent_en_id = intval(one_two_explode('@',' ',$action_command1));
@@ -939,7 +934,9 @@ class PLAY_model extends CI_Model
                     'ln_status_entity_id IN (' . join(',', $this->config->item('en_ids_7360')) . ')' => null, //Link Statuses Active
                 ));
 
-                if($action_en_id==5981 && count($child_parent_ens)==0){ //Parent Entity Addition
+                if($action_en_id==5981 && count($child_parent_ens)==0){
+
+                    //Parent Entity Addition
 
                     //Does not exist, need to be added as parent:
                     $this->READ_model->ln_create(array(
@@ -952,16 +949,33 @@ class PLAY_model extends CI_Model
 
                     $applied_success++;
 
-                } elseif($action_en_id==5982 && count($child_parent_ens) > 0){ //Parent Entity Removal
+                } elseif(count($child_parent_ens) > 0 && in_array($action_en_id, array(5982, 11956))){
 
-                    //Already added as parent so it needs to be removed:
-                    foreach($child_parent_ens as $remove_tr){
+                    if($action_en_id==5982){
 
-                        $this->READ_model->ln_update($remove_tr['ln_id'], array(
-                            'ln_status_entity_id' => 6173, //Link Removed
-                        ), $ln_creator_entity_id, 10673 /* Entity Link Unlinked  */);
+                        //Parent Entity Removal
+                        foreach($child_parent_ens as $remove_tr){
 
-                        $applied_success++;
+                            $this->READ_model->ln_update($remove_tr['ln_id'], array(
+                                'ln_status_entity_id' => 6173, //Link Removed
+                            ), $ln_creator_entity_id, 10673 /* Entity Link Unlinked  */);
+
+                            $applied_success++;
+                        }
+
+                    } elseif($action_en_id==11956) {
+
+                        $parent_new_en_id = intval(one_two_explode('@',' ',$action_command2));
+
+                        //Add as a parent because it meets the condition
+                        $this->READ_model->ln_create(array(
+                            'ln_status_entity_id' => 6176, //Link Published
+                            'ln_creator_entity_id' => $ln_creator_entity_id,
+                            'ln_type_entity_id' => 4230, //Raw
+                            'ln_child_entity_id' => $en['en_id'], //This child entity
+                            'ln_parent_entity_id' => $parent_new_en_id,
+                        ));
+
                     }
 
                 }
