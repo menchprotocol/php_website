@@ -14,9 +14,22 @@ class Play extends CI_Controller
     }
 
 
-    function medium_topic_publishers(){
+    function update_11158(){
+
+    }
+
+    function add_11158(){
 
         //A function that goes through Medium topics @11097 and fetches all the top Publishers @11158 within that topic
+        $ln_creator_entity_id = 1; //Shervin as Developer for logging all READS
+
+        //Fetch URL:
+        $medium_urls = $this->READ_model->ln_fetch(array(
+            'ln_status_entity_id IN (' . join(',', $this->config->item('en_ids_7359')) . ')' => null, //Link Statuses Public
+            'ln_type_entity_id IN (' . join(',', $this->config->item('en_ids_4592')) . ')' => null, //Entity-to-Entity Links
+            'ln_parent_entity_id' => 1326, //Domain Names
+            'ln_child_entity_id' => 3311, //Medium URL
+        ));
 
 
         $topic_count = 0;
@@ -70,78 +83,61 @@ class Play extends CI_Controller
                 }
 
                 //Now sync authors in Database:
+                $newly_added = 0;
+
                 foreach($unique_authors as $author_handler){
 
-                    $full_url = 'https://medium.com/@'.$author_handler;
+                    $full_url = rtrim($medium_urls[0]['ln_content'], '/') . '/@' . $author_handler;
 
                     //Add to DB IF not already there:
-                    if(count($this->READ_model->ln_fetch(array(
-                        'ln_status_entity_id IN (' . join(',', $this->config->item('en_ids_7359')) . ')' => null, //Link Statuses Public
+                    if(!count($this->READ_model->ln_fetch(array(
+                        'ln_status_entity_id IN (' . join(',', $this->config->item('en_ids_7360')) . ')' => null, //Link Statuses Active
                         'ln_type_entity_id' => 4256, //Generic URL
+                        'ln_parent_entity_id' => 3311, //Medium URL
                         'ln_content' => $full_url,
                     )))){
+
+                        $newly_added++;
+
+                        //Create new Player:
+                        $added_en = $this->PLAY_model->en_verify_create($author_handler, $ln_creator_entity_id, 6181, random_user_icon());
+
+                        //Create relevant READS:
+
+                        $this->READ_model->ln_create(array(
+                            'ln_type_entity_id' => 4230, //Raw link
+                            'ln_creator_entity_id' => $ln_creator_entity_id,
+                            'ln_parent_entity_id' => 1278, //People
+                            'ln_child_entity_id' => $added_en['en']['en_id'],
+                        ));
+
+                        $this->READ_model->ln_create(array(
+                            'ln_type_entity_id' => 4230, //Raw link
+                            'ln_creator_entity_id' => $ln_creator_entity_id,
+                            'ln_parent_entity_id' => 11158, //Medium Publisher
+                            'ln_child_entity_id' => $added_en['en']['en_id'],
+                        ));
+
+                        $this->READ_model->ln_create(array(
+                            'ln_type_entity_id' => 4256, //Generic URL
+                            'ln_creator_entity_id' => $ln_creator_entity_id,
+                            'ln_parent_entity_id' => 3311, //Medium URL
+                            'ln_child_entity_id' => $added_en['en']['en_id'],
+                            'ln_content' => $full_url,
+                        ));
 
                     }
                 }
 
                 //Count total authors:
-                echo '<div>'.$topic_count.') Found '.count($unique_authors).' Authors in ['.$medium_topic_link['ln_content'].'] ['.join(', ',$unique_authors).']</div>';
+                echo '<div>'.$topic_count.') Added '.$newly_added.' Authors in ['.$medium_topic_link['ln_content'].'] from the full list ['.join(', ',$unique_authors).']</div>';
 
 
             }
 
-            /*
-            if($this->READ_model->ln_create(array(
-                'ln_creator_entity_id' => 1,
-                'ln_status_entity_id' => 6176, //Link Published
-                'ln_type_entity_id' => 4256,
-                'ln_parent_entity_id' => 3311,
-                'ln_child_entity_id' => $medium_topic['en_id'],
-                'ln_content' => 'https://medium.com/topic/'.$medium_topic['ln_content'],
-            ))){
-
-                $this->READ_model->ln_update($medium_topic['ln_id'], array(
-                    'ln_type_entity_id' => 4230,
-                    'ln_content' => null,
-                ), 1, 10679);
-
-                echo $medium_topic['en_name'];
-            }
-            */
 
             if($topic_count >= 1){
                 break; //One topic for now
-            }
-        }
-    }
-
-    function tweak(){
-
-        foreach ($this->READ_model->ln_fetch(array(
-            'ln_type_entity_id IN (' . join(',', $this->config->item('en_ids_4592')) . ')' => null, //Entity-to-Entity Links
-            'ln_parent_entity_id' => 11097,
-            'ln_status_entity_id IN (' . join(',', $this->config->item('en_ids_7359')) . ')' => null, //Link Statuses Public
-        ), array('en_child')) as $medium_topic){
-
-            if(strlen($medium_topic['ln_content'])<1){
-                continue;
-            }
-
-            if($this->READ_model->ln_create(array(
-                'ln_creator_entity_id' => 1,
-                'ln_status_entity_id' => 6176, //Link Published
-                'ln_type_entity_id' => 4256,
-                'ln_parent_entity_id' => 3311,
-                'ln_child_entity_id' => $medium_topic['en_id'],
-                'ln_content' => 'https://medium.com/topic/'.$medium_topic['ln_content'],
-            ))){
-
-                $this->READ_model->ln_update($medium_topic['ln_id'], array(
-                    'ln_type_entity_id' => 4230,
-                    'ln_content' => null,
-                ), 1, 10679);
-
-                echo $medium_topic['en_name'];
             }
         }
     }
