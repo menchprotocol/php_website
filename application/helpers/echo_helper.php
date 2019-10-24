@@ -2317,10 +2317,12 @@ function echo_en($en, $is_parent = false)
 
 
 
+    //MODIFY
+    $ui .= '<span class="pull-right icon-block-sm '. require_superpower(10989 /* PEGASUS */) .'"><a href="javascript:void(0);" onclick="en_modify_load(' . $en['en_id'] . ',' . $ln_id . ')"><i class="fas fa-cog blue" data-toggle="tooltip" title="MODIFY PLAYER" data-placement="bottom"></i></a></span>';
+
+
+    //FOLLOW
     $ui .= '<div class="pull-right inline-block"><a class="btn btn-primary btn-play" href="/play/' . $en['en_id']. '">' . ($en['en__child_count'] > 0 ? echo_number($en['en__child_count']) : '') . ' <i class="fas fa-angle-right"></i></a></div>';
-
-
-
 
 
 
@@ -2344,9 +2346,6 @@ function echo_en($en, $is_parent = false)
             $ui .= '<span class="icon-block-sm en_child_icon_' . $en_parent['en_id'] . '"><a href="/play/' . $en_parent['en_id'] . '" data-toggle="tooltip" title="' . $en_parent['en_name'] . (strlen($en_parent['ln_content']) > 0 ? ' = ' . $en_parent['ln_content'] : '') . '" data-placement="bottom">' . echo_en_icon($en_parent) . '</a></span>';
         }
     }
-
-    //MODIFY
-    $ui .= '<span class="icon-block-sm"><a href="javascript:void(0);" onclick="en_modify_load(' . $en['en_id'] . ',' . $ln_id . ')"><i class="fas fa-cog blue"></i></a></span>';
 
     $ui .= ' </div>';
 

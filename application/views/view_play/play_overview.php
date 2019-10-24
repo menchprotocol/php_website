@@ -9,6 +9,15 @@ $en_all_10591 = $this->config->item('en_all_10591'); //PLAYER PLAYS
     <div class="row">
         <div class="col-lg">
 
+            <h1>ABOUT US</h1>
+            <p><b class="montserrat">MENCH</b> is an interactive blogging platform that allows anyone to share stories & ideas that matter. Creators use our open-source publishing tools to make interactive blogs that can be read over the web or Messenger.</p>
+
+            <div style="padding-bottom:30px;">
+                <a href="/read" class="btn btn-read montserrat">START READING <i class="fas fa-angle-right"></i></a>
+                <a href="/blog" class="btn btn-blog montserrat">START BLOGGING <i class="fas fa-angle-right"></i></a>
+            </div>
+
+
             <h1>HOW TO PLAY</h1>
             <ul class="intructions-list">
                 <li>Get a <?= $en_all_2738[6205]['m_icon'] ?> coin for each word you <b class="montserrat read"><?= $en_all_2738[6205]['m_name'] ?></b></li>
@@ -22,7 +31,7 @@ $en_all_10591 = $this->config->item('en_all_10591'); //PLAYER PLAYS
             if ($session_en) {
                 echo '<div style="padding-bottom:21px;"><a href="/play/'.$session_en['en_id'].'" class="btn btn-play montserrat"><span class="icon-block en-icon white-icon">'.$session_en['en_icon'].'</span>My Profile</a></div>';
             } else {
-                echo '<div style="padding-bottom:21px;"><a href="/play/signin" class="btn btn-play montserrat">'.$en_all_11035[4269]['m_name'].'</a></div>';
+                echo '<div style="padding-bottom:21px;"><a href="/play/signin" class="btn btn-play montserrat">'.$en_all_11035[4269]['m_name'].' <i class="fas fa-angle-right"></i></a></div>';
             }
             ?>
 
