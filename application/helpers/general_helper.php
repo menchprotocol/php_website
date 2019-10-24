@@ -274,19 +274,12 @@ function ln_detect_type($string)
             'ln_type_entity_id' => 4318,
         );
 
-    } elseif (!strlen($string)) {
+    } else {
 
         //Regular text link:
         return array(
             'status' => 1,
             'ln_type_entity_id' => 4255, //Text Link
-        );
-
-    } elseif (is_emojis_only($string)) {
-
-        return array(
-            'status' => 1,
-            'ln_type_entity_id' => 10668, //EMOJI
         );
 
     }

@@ -888,26 +888,18 @@ fragment PostListingItemSidebar_post on Post {
         //See what this is:
         $detected_ln_type = ln_detect_type($_POST['ln_content']);
 
-        if (!$detected_ln_type['status']) {
+        if (!$detected_ln_type['status'] && isset($detected_ln_type['url_already_existed']) && $detected_ln_type['url_already_existed']) {
 
-            if(isset($detected_ln_type['url_already_existed']) && $detected_ln_type['url_already_existed']){
+            //See if this is duplicate to either link:
+            $en_lns = $this->READ_model->ln_fetch(array(
+                'ln_id' => $_POST['ln_id'],
+                'ln_type_entity_id IN (' . join(',', $this->config->item('en_ids_4537')) . ')' => null, //Entity URL Links
+            ));
 
-                //See if this is duplicate to either link:
-                $en_lns = $this->READ_model->ln_fetch(array(
-                    'ln_id' => $_POST['ln_id'],
-                    'ln_type_entity_id IN (' . join(',', $this->config->item('en_ids_4537')) . ')' => null, //Entity URL Links
-                ));
-
-                //Are they both different?
-                if (count($en_lns) < 1 || ($en_lns[0]['ln_parent_entity_id'] != $detected_ln_type['en_url']['en_id'] && $en_lns[0]['ln_child_entity_id'] != $detected_ln_type['en_url']['en_id'])) {
-                    //return error:
-                    return echo_json($detected_ln_type);
-                }
-
-            } else {
-
+            //Are they both different?
+            if (count($en_lns) < 1 || ($en_lns[0]['ln_parent_entity_id'] != $detected_ln_type['en_url']['en_id'] && $en_lns[0]['ln_child_entity_id'] != $detected_ln_type['en_url']['en_id'])) {
+                //return error:
                 return echo_json($detected_ln_type);
-
             }
 
         }
