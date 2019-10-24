@@ -108,10 +108,17 @@ if(strlen($flash_message) > 0){
                 <table class="footer-bottom">
                     <tr>
 
+                        <?php
+
+                        $mench_logo = '<img src="/img/mench-v2-128.png" class="footer-logo mench-spin" />';
+                        echo '<td class="block-link block-logo">'. ( count($this->session->userdata('assigned_superpowers_en_ids')) ? '<a href="javascript:void(0);" onclick="$(\'.supwerpower_view\').toggleClass(\'hidden\');">'.$mench_logo.'</a>' : $mench_logo ) .'</td>';
+
+                        ?>
+
                         <td>
                             <div class="supwerpower_view">
 
-                                <img src="/img/mench-v2-128.png" class="search-toggle footer-logo mench-spin" /><span class="mench-logo montserrat search-toggle">MENCH</span>
+                                <span class="mench-logo montserrat search-toggle">MENCH</span>
 
                                 <div class="search-toggle hidden"><form id="searchFrontForm"><input class="form-control algolia_search" type="search" id="mench_search" data-lpignore="true" placeholder="<?= $en_all_11035[7256]['m_name'] ?>"></form></div>
 
@@ -122,7 +129,7 @@ if(strlen($flash_message) > 0){
                                 if(count($this->session->userdata('assigned_superpowers_en_ids'))){
                                     foreach($this->config->item('en_all_10957') as $superpower_en_id => $m){
                                         if(en_auth($superpower_en_id)){
-                                            echo '<a class="btn btn-sm btn-superpower icon-block-lg superpower-frame-'.$superpower_en_id.' '.( in_array($superpower_en_id, $this->session->userdata('activate_superpowers_en_ids')) ? 'active' : '' ).'" href="javascript:void();" onclick="toggle_superpower('.$superpower_en_id.')" data-toggle="tooltip" data-placement="top" title="'.$m['m_name'].' '.$m['m_desc'].'">'.$m['m_icon'].'</a>';
+                                            echo '<a class="btn btn-sm btn-superpower icon-block-lg superpower-frame-'.$superpower_en_id.' '.( in_array($superpower_en_id, $this->session->userdata('activate_superpowers_en_ids')) ? 'active' : '' ).'" href="javascript:void();" onclick="toggle_superpower('.$superpower_en_id.')" title="'.$m['m_name'].' '.$m['m_desc'].'">'.$m['m_icon'].'</a>';
                                         }
                                     }
                                 }
@@ -135,16 +142,14 @@ if(strlen($flash_message) > 0){
 
                         <?php
 
-
-                        //TERMS/SUPERPOWERS:
-                        echo '<td class="block-link"><a '. ( count($this->session->userdata('assigned_superpowers_en_ids')) ? 'href="javascript:void(0);" onclick="$(\'.supwerpower_view\').toggleClass(\'hidden\');"' : 'href="/read/8263" title="'.$en_all_11035[7540]['m_name'].'"' ) .'>'.$en_all_11035[7540]['m_icon'].'</a></td>';
-
-
                         if (isset($session_en['en_id'])) {
 
                             echo '<td class="block-link"><a href="/play/'.$session_en['en_id'].'" data-toggle="tooltip" data-placement="top" title="'.$session_en['en_name'].'">'.$session_en['en_icon'].'</a></td>';
 
                         } else {
+
+                            //TERMS
+                            echo '<td class="block-link"><a href="/read/8263" title="'.$en_all_11035[7540]['m_name'].'">'.$en_all_11035[7540]['m_icon'].'</a></td>';
 
                             //Give option to signin
                             echo '<td class="block-link"><a href="/play/signin" data-toggle="tooltip" data-placement="top" title="'.$en_all_11035[4269]['m_name'].'">'.$en_all_11035[4269]['m_icon'].'</a></td>';

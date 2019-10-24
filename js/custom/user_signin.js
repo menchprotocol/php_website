@@ -90,7 +90,7 @@ function search_email(){
     email_is_searching = true;
     $('#email_check_next').html('<i class="far fa-yin-yang fa-spin"></i>');
     $('#input_email').prop('disabled', true).css('background-color','#F7F7F7');
-    $('#password_errors').html('&nbsp;');
+    $('#password_errors').html('');
     $('#custom_message').html(''); //Remove previous errors, if any
 
     //Check email and validate:
@@ -204,7 +204,7 @@ function singin_check_password(){
 
             //Release field lock:
             $('#password_check_next').html('<i class="fas fa-check-circle"></i>');
-            $('#password_errors').html('&nbsp;');
+            $('#password_errors').html('');
 
             //Redirect
             window.location = data.login_url;

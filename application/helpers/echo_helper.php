@@ -2364,7 +2364,7 @@ function echo_en($en, $is_parent = false)
 }
 
 
-function echo_dropdown($cache_en_id, $selected_en_id = 0, $micro = false, $append_string = null){
+function echo_dropdown($cache_en_id, $selected_en_id = 0, $micro = false, $btn_class = 'btn-primary'){
 
     $CI =& get_instance();
     $en_all_4527 = $CI->config->item('en_all_4527'); //Platform Cache
@@ -2372,11 +2372,11 @@ function echo_dropdown($cache_en_id, $selected_en_id = 0, $micro = false, $appen
 
 //data-toggle="tooltip" data-placement="top" title="'.$en_all_4527[$cache_en_id]['m_name'].'"
     $ui = '<div class="dropdown inline-block">';
-    $ui .= '<button  class="btn btn-sm btn-primary dropdown-toggle" type="button" id="dropdownMenuButton" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">';
+    $ui .= '<button  class="btn btn-sm '.$btn_class.' dropdown-toggle" type="button" id="dropdownMenuButton" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">';
     if($micro){
-        $ui .= ( $selected_en_id > 0 ? $en_all_this[$selected_en_id]['m_icon'] : '' ).$append_string;
+        $ui .= ( $selected_en_id > 0 ? $en_all_this[$selected_en_id]['m_icon'] : '' );
     } else {
-        $ui .= ( $selected_en_id > 0 ? $en_all_this[$selected_en_id]['m_icon'].' '.$en_all_this[$selected_en_id]['m_name'] : 'SELECT' ).$append_string;
+        $ui .= ( $selected_en_id > 0 ? $en_all_this[$selected_en_id]['m_icon'].' '.$en_all_this[$selected_en_id]['m_name'] : 'SELECT' );
     }
     $ui .= '</button>';
     $ui .= '<div class="dropdown-menu" aria-labelledby="dropdownMenuButton">';

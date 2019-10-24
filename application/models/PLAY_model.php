@@ -866,7 +866,14 @@ class PLAY_model extends CI_Model
                 'message' => 'Invalid icon: '. is_valid_icon(null, true),
             );
 
-        } elseif(in_array($action_en_id, array(5981, 5982)) && !(substr($action_command1, 0, 1) == '@' && is_numeric(one_two_explode('@',' ',$action_command1)))){
+        } elseif(in_array($action_en_id, array(5981, 5982)) && !is_valid_en_string($action_command1)){
+
+            return array(
+                'status' => 0,
+                'message' => 'Unknown searched entity. Format must be: @123 Entity Name',
+            );
+
+        } elseif($action_en_id==11956 && (!is_valid_en_string($action_command1) || !is_valid_en_string($action_command2))){
 
             return array(
                 'status' => 0,
@@ -874,6 +881,8 @@ class PLAY_model extends CI_Model
             );
 
         }
+
+
 
 
 
@@ -911,6 +920,11 @@ class PLAY_model extends CI_Model
                 ), true, $ln_creator_entity_id);
 
                 $applied_success++;
+
+            } elseif ($action_en_id == 11956) {
+
+                //ADD IF PARENT
+
 
             } elseif (in_array($action_en_id, array(5981, 5982))) { //Add/Remove parent entity
 

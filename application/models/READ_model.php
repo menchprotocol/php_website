@@ -387,7 +387,7 @@ class READ_model extends CI_Model
                 $html_message .= '<div>READ ID: <a href="https://mench.com/read/view_json/' . $insert_columns['ln_id'] . '" target="_blank">' . $insert_columns['ln_id'] . '</a></div>';
 
                 //Inform how to change settings:
-                $html_message .= '<div style="color: #AAAAAA; font-size:0.9em; margin-top:20px;">Manage your email notifications via <a href="https://mench.com/play/5967" target="_blank">@5967</a></div>';
+                $html_message .= '<div style="color: #DDDDDD; font-size:0.9em; margin-top:20px;">Manage your email notifications via <a href="https://mench.com/play/5967" target="_blank">@5967</a></div>';
 
                 //Send email:
                 $dispatched_email = $this->READ_model->dispatch_emails($sub_emails, $subject, $html_message);
@@ -2606,7 +2606,7 @@ class READ_model extends CI_Model
                 //Finally append READ ID:
                 $personalized_intro .= '<div>' . ( strlen($insert_columns['ln_content']) > 0 ? $insert_columns['ln_content'] : '<i>No link content</i>') . '</div><br />';
                 $personalized_intro .= '<div>READ ID: <a href="https://mench.com/read/view_json/' . $insert_columns['ln_id'] . '" target="_blank">' . $insert_columns['ln_id'] . '</a></div>';
-                $personalized_intro .= '<div style="color: #AAAAAA; font-size:0.9em; margin-top:20px;">Manage this subscription via <a href="https://mench.com/blog/'.$subscriber_en['ln_child_intent_id'].'" target="_blank">#'.$subscriber_en['ln_child_intent_id'].'</a></div>';
+                $personalized_intro .= '<div style="color: #DDDDDD; font-size:0.9em; margin-top:20px;">Manage this subscription via <a href="https://mench.com/blog/'.$subscriber_en['ln_child_intent_id'].'" target="_blank">#'.$subscriber_en['ln_child_intent_id'].'</a></div>';
 
                 //Send email:
                 $dispatched_email = $this->READ_model->dispatch_emails(array($en_email['ln_content']), $subject, $personalized_intro);

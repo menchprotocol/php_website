@@ -284,6 +284,12 @@ function ln_detect_type($string)
 
     }
 }
+
+
+function is_valid_en_string($string){
+    return substr($string, 0, 1) == '@' && is_numeric(one_two_explode('@',' ',$string));
+}
+
 function is_emojis_only( $string ) {
 
     // Array of emoji (v12, 2019) unicodes from https://unicode.org/emoji/charts/emoji-list.html

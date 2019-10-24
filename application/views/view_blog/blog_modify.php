@@ -53,9 +53,9 @@ echo '<div class="row">';
     //RIGHT SETTINGS
     echo '<div class="'.config_var(11095).'">';
         echo '<div class="center-right">';
-            echo echo_dropdown(7585, $in['in_completion_method_entity_id'], false);
-            echo '<div class="inline-block" style="margin-left: 5px;">'.echo_dropdown(4737, $in['in_status_entity_id'], true, null).'</div>';
-echo '<div class="inline-block" style="margin-left: 5px;"><a href="javascript:void(0)" onclick="$(\'.menu_bar\').toggleClass(\'hidden\')" class="btn btn-sm btn-primary"><i class="fas fa-cog" style="font-size: 1.2em;"></i></a></div>';
+            echo echo_dropdown(7585, $in['in_completion_method_entity_id'], false, 'btn-blog');
+            echo '<div class="inline-block" style="margin-left: 5px;">'.echo_dropdown(4737, $in['in_status_entity_id'], true, 'btn-blog').'</div>';
+echo '<div class="inline-block" style="margin-left: 5px;"><a href="javascript:void(0)" onclick="$(\'.menu_bar\').toggleClass(\'hidden\')" class="btn btn-sm btn-blog"><i class="fas fa-cog"></i></a></div>';
         echo '</div>';
     echo '</div>';
 
@@ -117,7 +117,7 @@ foreach ($this->config->item('en_all_11021') as $en_id => $m){
                                        class="form-control intentadder-level-2-parent form-control-thick algolia_search"
                                        intent-id="' . $in['in_id'] . '"
                                        id="addintent-c-' . $in['in_id'] . '-1"
-                                       placeholder="Add Previous Blog">
+                                       placeholder="Add Previous Blog...">
                             </div>
                            <div class="algolia_search_pad in_pad_top hidden"><span>Search blogs or create a new one...</span></div>
                     </div>';
@@ -153,7 +153,7 @@ foreach ($this->config->item('en_all_11021') as $en_id => $m){
                                maxlength="' . config_var(11071) . '"
                                intent-id="' . $in['in_id'] . '"
                                id="addintent-c-' . $in['in_id'] . '-0"
-                               placeholder="Add Next Blog">
+                               placeholder="Add Next Blog...">
                     </div>
                    <div class="algolia_search_pad in_pad_bottom hidden"><span>Search blogs or create a new one...</span></div>
             </div>';
