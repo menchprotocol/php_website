@@ -25,7 +25,7 @@ $en_all_10591 = $this->config->item('en_all_10591'); //PLAYER PLAYS
             </ul>
 
 
-            <div style="margin-bottom: 21px;">
+            <div style="margin-bottom:28px;">
                 <a href="/read" class="btn btn-read montserrat">START READING <i class="fas fa-angle-right"></i></a>
                 <a href="/blog" class="btn btn-blog montserrat">START BLOGGING <i class="fas fa-angle-right"></i></a>
             </div>
