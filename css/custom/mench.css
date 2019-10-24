@@ -509,7 +509,7 @@ li a {
     cursor: default !important;
 }
 
-input.form-control{
+.form-control-thick{
     padding: 25px 10px;
 }
 

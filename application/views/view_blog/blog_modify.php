@@ -114,7 +114,7 @@ foreach ($this->config->item('en_all_11021') as $en_id => $m){
             $this_tab .= '<div class="list_input grey-block '.require_superpower(10989 /* PEGASUS */).'">
                             <div class="form-group is-empty" style="margin: 0; padding: 0;">
                                 <input type="text"
-                                       class="form-control intentadder-level-2-parent algolia_search"
+                                       class="form-control intentadder-level-2-parent form-control-thick algolia_search"
                                        intent-id="' . $in['in_id'] . '"
                                        id="addintent-c-' . $in['in_id'] . '-1"
                                        placeholder="Add Previous Blog">
@@ -149,7 +149,7 @@ foreach ($this->config->item('en_all_11021') as $en_id => $m){
                 $this_tab .= '<div class="list_input grey-block">
                     <div class="form-group is-empty" style="margin: 0; padding: 0;">
                         <input type="text"
-                               class="form-control intentadder-level-2-child algolia_search"
+                               class="form-control intentadder-level-2-child form-control-thick algolia_search"
                                maxlength="' . config_var(11071) . '"
                                intent-id="' . $in['in_id'] . '"
                                id="addintent-c-' . $in['in_id'] . '-0"
