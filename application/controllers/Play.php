@@ -84,7 +84,6 @@ class Play extends CI_Controller
 
                 //Now sync authors in Database:
                 $newly_added = 0;
-                $newly_updated = 0;
 
                 foreach($unique_authors as $author_handler){
 
@@ -137,23 +136,11 @@ class Play extends CI_Controller
                             'ln_child_entity_id' => $added_en['en']['en_id'],
                         ));
 
-                    } else {
-
-                        $newly_updated++;
-
-                        //Medium Topic
-                        $this->READ_model->ln_create(array(
-                            'ln_type_entity_id' => 4230, //Raw link
-                            'ln_creator_entity_id' => $ln_creator_entity_id,
-                            'ln_parent_entity_id' => $medium_topic['en_id'],
-                            'ln_child_entity_id' => $already_added[0]['ln_child_entity_id'],
-                        ));
-
                     }
                 }
 
                 //Count total authors:
-                echo '<div>'.$topic_count.') Added '.$newly_added.' & '.$newly_updated.' updated Authors in ['.$medium_topic_link['ln_content'].'] from the full list ['.join(', ',$unique_authors).']</div>';
+                echo '<div>'.$topic_count.') Added '.$newly_added.' Authors in ['.$medium_topic_link['ln_content'].'] from the full list ['.join(', ',$unique_authors).']</div>';
 
             }
         }
