@@ -12,7 +12,7 @@ defined('BASEPATH') OR exit('No direct script access allowed');
 *
 */
 
-//Generated 2019-10-23 19:01:02 PST
+//Generated 2019-10-23 19:03:06 PST
 
 //PLAY TABS:
 $config['en_ids_11088'] = array(11033,11089);
@@ -41,7 +41,7 @@ $config['en_all_11089'] = array(
         'm_parents' => array(11084,11089,11028),
     ),
     4997 => array(
-        'm_icon' => '<i class="fas fa-list-alt blue" aria-hidden="true"></i>',
+        'm_icon' => '<i class="fas fa-tools blue" aria-hidden="true"></i>',
         'm_name' => 'MASS UPDATE',
         'm_desc' => '',
         'm_parents' => array(11089,10989,4758,4506,4426,4527),
@@ -1467,7 +1467,7 @@ $config['en_all_6404'] = array(
     11060 => array(
         'm_icon' => '',
         'm_name' => 'MENCH PLATFORM VERSION',
-        'm_desc' => '1.0992',
+        'm_desc' => '1.0993',
         'm_parents' => array(6404),
     ),
     11067 => array(
@@ -1728,7 +1728,7 @@ $config['en_all_11028'] = array(
 $config['en_ids_11018'] = array(11161,11019,11020);
 $config['en_all_11018'] = array(
     11161 => array(
-        'm_icon' => '<i class="fas fa-list yellow"></i>',
+        'm_icon' => '<i class="fas fa-tools yellow" aria-hidden="true"></i>',
         'm_name' => 'BLOG MASS UPDATE',
         'm_desc' => '',
         'm_parents' => array(10989,11018,11160),
@@ -2417,7 +2417,7 @@ $config['en_all_4527'] = array(
         'm_parents' => array(4758,3303,4426,4527),
     ),
     4997 => array(
-        'm_icon' => '<i class="fas fa-list-alt blue" aria-hidden="true"></i>',
+        'm_icon' => '<i class="fas fa-tools blue" aria-hidden="true"></i>',
         'm_name' => 'PLAYER MASS UPDATE',
         'm_desc' => '&trim=PLAYER MASS',
         'm_parents' => array(11089,10989,4758,4506,4426,4527),
@@ -6540,7 +6540,7 @@ $config['en_all_4426'] = array(
         'm_parents' => array(4758,3303,4426,4527),
     ),
     4997 => array(
-        'm_icon' => '<i class="fas fa-list-alt blue" aria-hidden="true"></i>',
+        'm_icon' => '<i class="fas fa-tools blue" aria-hidden="true"></i>',
         'm_name' => 'PLAYER MASS UPDATE',
         'm_desc' => '',
         'm_parents' => array(11089,10989,4758,4506,4426,4527),
