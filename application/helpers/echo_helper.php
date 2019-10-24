@@ -6,13 +6,13 @@ function echo_en_load_more($page, $limit, $en__child_count)
      * Gives an option to "Load More" entities when we have too many to show in one go
      * */
 
-    $ui = '<a class="load-more list-group-item" href="javascript:void(0);" onclick="en_load_next_page(' . $page . ', 0)">';
+    $ui = '<div class="load-more list-group-item"><a href="javascript:void(0);" onclick="en_load_next_page(' . $page . ', 0)">';
 
     //Regular section:
     $max_entities = (($page + 1) * $limit);
     $max_entities = ($max_entities > $en__child_count ? $en__child_count : $max_entities);
-    $ui .= '<span class="icon-block-sm"><i class="fas fa-plus-circle"></i></span>Load ' . (($page * $limit) + 1) . ' - ' . $max_entities . ' from ' . $en__child_count . ' total';
-    $ui .= '</a>';
+    $ui .= '<span class="icon-block-sm"><i class="fas fa-search-plus"></i></span>Load ' . (($page * $limit) + 1) . ' - ' . $max_entities . ' from ' . $en__child_count . ' total';
+    $ui .= '</a></div>';
 
     return $ui;
 }

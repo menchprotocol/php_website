@@ -433,6 +433,15 @@ $en_all_11035 = $this->config->item('en_all_11035'); //MENCH PLAYER NAVIGATION
                         $input_options .= '<input type="hidden" name="mass_value2_'.$action_en_id.'" value="" />';
 
 
+                    } elseif($action_en_id == 11956){
+
+                        //IF HAS THIS
+                        $input_options .= '<input type="text" name="mass_value1_'.$action_en_id.'" style="width:300px;" placeholder="IF THIS PLAYER..." class="form-control algolia_search en_quick_search border">';
+
+                        //ADD THIS
+                        $input_options .= '<input type="text" name="mass_value2_'.$action_en_id.'" style="width:300px;" placeholder="ADD THIS PLAYER..." class="form-control algolia_search en_quick_search border">';
+
+
                     } elseif($action_en_id == 5003){
 
                         //Entity Status update:

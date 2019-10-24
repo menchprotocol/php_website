@@ -181,6 +181,7 @@ li a {
     z-index: 9999 !important;
 }
 
+
 .fixed-top, .fixed-bottom {
     z-index: 9999999 !important;
 }
@@ -206,6 +207,7 @@ li a {
     display: block;
     text-decoration: none;
 }
+
 
 .aa-dropdown-menu .aa-suggestion.aa-cursor, .suggestion:hover {
     background-color: #fffba4;
