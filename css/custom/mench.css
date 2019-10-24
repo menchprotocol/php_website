@@ -419,7 +419,7 @@ li a {
     padding:9px 5px 5px;
     display: block;
     text-decoration: none;
-    border-bottom:3px solid;
+    border-bottom:2px solid;
     line-height: 110%;
 }
 
@@ -429,7 +429,7 @@ li a {
 .footer-bottom {
     width: 100%;
     background-color: #F7F7F7;
-    border-top:3px solid #070707;
+    border-top:2px solid #070707;
     min-height:50px;
 }
 .footer-bottom .footer-logo{

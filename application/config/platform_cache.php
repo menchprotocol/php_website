@@ -12,7 +12,7 @@ defined('BASEPATH') OR exit('No direct script access allowed');
 *
 */
 
-//Generated 2019-10-24 13:19:06 PST
+//Generated 2019-10-24 15:46:35 PST
 
 //PLAY TABS:
 $config['en_ids_11088'] = array(11033,11089);
@@ -65,13 +65,13 @@ $config['en_all_10725'] = array(
     ),
     10845 => array(
         'm_icon' => '<i class="far fa-calculator-alt" aria-hidden="true"></i>',
-        'm_name' => 'Math',
+        'm_name' => 'Math Topic',
         'm_desc' => '',
         'm_parents' => array(3311,11097,10725),
     ),
     10846 => array(
         'm_icon' => '<i class="far fa-flask-potion" aria-hidden="true"></i>',
-        'm_name' => 'Science',
+        'm_name' => 'Science Topic',
         'm_desc' => '',
         'm_parents' => array(3311,11097,10725),
     ),
@@ -89,9 +89,9 @@ $config['en_all_10725'] = array(
     ),
     3287 => array(
         'm_icon' => '<i class="fas fa-language isblue" aria-hidden="true"></i>',
-        'm_name' => 'LANGUAGE',
+        'm_name' => 'LANGUAGES',
         'm_desc' => '',
-        'm_parents' => array(3311,11097,10725,7552,6122),
+        'm_parents' => array(10725,7552,6122),
     ),
     10850 => array(
         'm_icon' => '<i class="far fa-chalkboard-teacher"></i>',
@@ -118,81 +118,81 @@ $config['en_ids_10721'] = array(10914,10915,10777,10916,10917,10824,10810,10825,
 $config['en_all_10721'] = array(
     10914 => array(
         'm_icon' => '',
-        'm_name' => 'Addiction',
+        'm_name' => 'Addiction Topic',
         'm_desc' => '',
         'm_parents' => array(3311,11097,10721),
     ),
     10915 => array(
         'm_icon' => '',
-        'm_name' => 'Cannabis',
+        'm_name' => 'Cannabis Topic',
         'm_desc' => '',
         'm_parents' => array(3311,11097,10721),
     ),
     10777 => array(
         'm_icon' => '<i class="far fa-lightbulb-on" aria-hidden="true"></i>',
-        'm_name' => 'Creativity',
+        'm_name' => 'Creativity Topic',
         'm_desc' => '',
-        'm_parents' => array(3311,11097,10721,10711),
+        'm_parents' => array(4305,3311,11097,10721,10711),
     ),
     10916 => array(
         'm_icon' => '',
-        'm_name' => 'Disability',
+        'm_name' => 'Disability Topic',
         'm_desc' => '',
         'm_parents' => array(3311,11097,10721),
     ),
     10917 => array(
         'm_icon' => '',
-        'm_name' => 'Family',
+        'm_name' => 'Family Topic',
         'm_desc' => '',
         'm_parents' => array(3311,11097,10721),
     ),
     10824 => array(
         'm_icon' => '<i class="far fa-dumbbell" aria-hidden="true"></i>',
-        'm_name' => 'Fitness',
+        'm_name' => 'Fitness Topic',
         'm_desc' => '',
-        'm_parents' => array(3311,11097,10721),
+        'm_parents' => array(4305,3311,11097,10721),
     ),
     10810 => array(
         'm_icon' => '<i class="far fa-burger-soda" aria-hidden="true"></i>',
-        'm_name' => 'Food',
+        'm_name' => 'Food Topic',
         'm_desc' => '',
         'm_parents' => array(3311,11097,10721),
     ),
     10825 => array(
         'm_icon' => '<i class="far fa-heart-rate" aria-hidden="true"></i>',
-        'm_name' => 'Health',
+        'm_name' => 'Health Topic',
         'm_desc' => '',
         'm_parents' => array(3311,11097,10721),
     ),
     10829 => array(
         'm_icon' => '<i class="far fa-brain" aria-hidden="true"></i>',
-        'm_name' => 'Mental Health',
+        'm_name' => 'Mental Health Topic',
         'm_desc' => '',
         'm_parents' => array(3311,11097,10721),
     ),
     10834 => array(
         'm_icon' => '<i class="far fa-praying-hands" aria-hidden="true"></i>',
-        'm_name' => 'Mindfulness',
+        'm_name' => 'Mindfulness Topic',
         'm_desc' => '',
         'm_parents' => array(3311,11097,10721),
     ),
     10811 => array(
         'm_icon' => '<i class="far fa-lips" aria-hidden="true"></i>',
-        'm_name' => 'Beauty',
+        'm_name' => 'Beauty Topic',
         'm_desc' => '',
         'm_parents' => array(3311,11097,10809,10721),
     ),
     10812 => array(
         'm_icon' => '<i class="far fa-plane-departure" aria-hidden="true"></i>',
-        'm_name' => 'Travel',
+        'm_name' => 'Travel Topic',
         'm_desc' => '',
         'm_parents' => array(3311,11097,10721),
     ),
     10813 => array(
         'm_icon' => '<i class="far fa-dice" aria-hidden="true"></i>',
-        'm_name' => 'Gaming',
+        'm_name' => 'Gaming Topic',
         'm_desc' => '',
-        'm_parents' => array(3311,11097,10809,10721),
+        'm_parents' => array(4305,3311,11097,10809,10721),
     ),
     10814 => array(
         'm_icon' => '<i class="far fa-home-heart"></i>',
@@ -215,68 +215,8 @@ $config['en_all_10721'] = array(
 );
 
 //Marketing:
-$config['en_ids_10720'] = array(11896,11897,11596,11898,11901,11900,11820,11895,11899,11639,10795,10796,10798,10799,10800,10801,10802,10803,10804,10805,10806,10807,10808);
+$config['en_ids_10720'] = array(10795,10796,10798,10799,10800,10801,10802,10803,10804,10805,10806,10807,10808);
 $config['en_all_10720'] = array(
-    11896 => array(
-        'm_icon' => '<i class="fas fa-cat ismatt"></i>',
-        'm_name' => 'altos',
-        'm_desc' => '',
-        'm_parents' => array(10720,11101,3311,11158,1278),
-    ),
-    11897 => array(
-        'm_icon' => '<i class="fal fa-bat yellow"></i>',
-        'm_name' => 'cbourque',
-        'm_desc' => '',
-        'm_parents' => array(10720,3311,11158,1278),
-    ),
-    11596 => array(
-        'm_icon' => '<i class="far fa-alicorn ispink"></i>',
-        'm_name' => 'danny_forest',
-        'm_desc' => '',
-        'm_parents' => array(11098,10720,11124,3311,11158,1278),
-    ),
-    11898 => array(
-        'm_icon' => '<i class="far fa-horse-head ispink"></i>',
-        'm_name' => 'felsull',
-        'm_desc' => '',
-        'm_parents' => array(10720,3311,11158,1278),
-    ),
-    11901 => array(
-        'm_icon' => '<i class="fal fa-snake yellow"></i>',
-        'm_name' => 'linderforpresident',
-        'm_desc' => '',
-        'm_parents' => array(10797,10720,3311,11158,1278),
-    ),
-    11900 => array(
-        'm_icon' => '<i class="far fa-bat blue"></i>',
-        'm_name' => 'nicolegactivate',
-        'm_desc' => '',
-        'm_parents' => array(10720,3311,11158,1278),
-    ),
-    11820 => array(
-        'm_icon' => '<i class="far fa-dove yellow"></i>',
-        'm_name' => 'reubensalsa',
-        'm_desc' => '',
-        'm_parents' => array(10797,10720,11109,3311,11158,1278),
-    ),
-    11895 => array(
-        'm_icon' => '<i class="fal fa-dove ispink"></i>',
-        'm_name' => 'RozenMD',
-        'm_desc' => '',
-        'm_parents' => array(10720,3311,11158,1278),
-    ),
-    11899 => array(
-        'm_icon' => '<i class="fal fa-cow yellow"></i>',
-        'm_name' => 'rperry2174',
-        'm_desc' => '',
-        'm_parents' => array(10797,10720,3311,11158,1278),
-    ),
-    11639 => array(
-        'm_icon' => '<i class="far fa-deer ismatt"></i>',
-        'm_name' => 'timdenning',
-        'm_desc' => '',
-        'm_parents' => array(10797,10913,10712,11098,10720,11118,10777,10716,3311,11158,1278),
-    ),
     10795 => array(
         'm_icon' => '<i class="far fa-file-chart-line"></i>',
         'm_name' => 'Digital Marketing',
@@ -358,74 +298,8 @@ $config['en_all_10720'] = array(
 );
 
 //Design:
-$config['en_ids_10719'] = array(11724,11250,11917,11731,11919,11736,11907,11916,11493,11489,11918,10784,10785,10786,10787,10788,10789,10790,10791,10792,10793,10794);
+$config['en_ids_10719'] = array(10784,10785,10786,10787,10788,10789,10790,10791,10792,10793,10794);
 $config['en_all_10719'] = array(
-    11724 => array(
-        'm_icon' => '<i class="far fa-turtle blue"></i>',
-        'm_name' => 'bennathan',
-        'm_desc' => '',
-        'm_parents' => array(10719,11119,3311,11158,1278),
-    ),
-    11250 => array(
-        'm_icon' => '<i class="far fa-kiwi-bird ismatt"></i>',
-        'm_name' => 'chuckydee25',
-        'm_desc' => '',
-        'm_parents' => array(10719,10747,10724,3311,11158,1278),
-    ),
-    11917 => array(
-        'm_icon' => '<i class="far fa-turtle blue"></i>',
-        'm_name' => 'jbcolin1818',
-        'm_desc' => '',
-        'm_parents' => array(10719,3311,11158,1278),
-    ),
-    11731 => array(
-        'm_icon' => '<i class="far fa-whale ismatt"></i>',
-        'm_name' => 'j.kapuscik2',
-        'm_desc' => '',
-        'm_parents' => array(10719,11115,10710,11118,3311,11158,1278),
-    ),
-    11919 => array(
-        'm_icon' => '<i class="far fa-snake yellow"></i>',
-        'm_name' => 'kischiman',
-        'm_desc' => '',
-        'm_parents' => array(10719,3311,11158,1278),
-    ),
-    11736 => array(
-        'm_icon' => '<i class="fal fa-turtle yellow"></i>',
-        'm_name' => 'leon.hml',
-        'm_desc' => '',
-        'm_parents' => array(10719,11118,3311,11158,1278),
-    ),
-    11907 => array(
-        'm_icon' => '<i class="fal fa-snake ismatt"></i>',
-        'm_name' => 'MatthewGodfrey',
-        'm_desc' => '',
-        'm_parents' => array(10719,10771,3311,11158,1278),
-    ),
-    11916 => array(
-        'm_icon' => '<i class="far fa-dragon blue"></i>',
-        'm_name' => 'micaelamariniwriter',
-        'm_desc' => '',
-        'm_parents' => array(10719,3311,11158,1278),
-    ),
-    11493 => array(
-        'm_icon' => '<i class="far fa-snake blue"></i>',
-        'm_name' => 'pauldavidkahn',
-        'm_desc' => '',
-        'm_parents' => array(10719,11134,3311,11158,1278),
-    ),
-    11489 => array(
-        'm_icon' => '<i class="fal fa-monkey ismatt"></i>',
-        'm_name' => 'rmhuang89',
-        'm_desc' => '',
-        'm_parents' => array(10719,10846,11134,3311,11158,1278),
-    ),
-    11918 => array(
-        'm_icon' => '<i class="far fa-whale ismatt"></i>',
-        'm_name' => 'varmanatasha',
-        'm_desc' => '',
-        'm_parents' => array(10719,3311,11158,1278),
-    ),
     10784 => array(
         'm_icon' => '<i class="far fa-object-group"></i>',
         'm_name' => 'Web Design',
@@ -570,8 +444,8 @@ $config['en_all_10717'] = array(
     ),
 );
 
-//Money:
-$config['en_ids_10716'] = array(11640,11172,11643,11296,11638,11249,11167,11641,11525,11642,11639,10752,10753,10757);
+//Money Topic:
+$config['en_ids_10716'] = array(11640,11172,11643,11296,11638,11249,11167,11641,11525,11642,11639);
 $config['en_all_10716'] = array(
     11640 => array(
         'm_icon' => '<i class="fal fa-pegasus ismatt"></i>',
@@ -607,7 +481,7 @@ $config['en_all_10716'] = array(
         'm_icon' => '<i class="fas fa-badger-honey blue"></i>',
         'm_name' => 'minutesmag',
         'm_desc' => '',
-        'm_parents' => array(11105,10716,2999,3311,11158,1278),
+        'm_parents' => array(11965,11105,10716,3311,11158,1278),
     ),
     11167 => array(
         'm_icon' => '<i class="far fa-elephant ispink"></i>',
@@ -637,91 +511,13 @@ $config['en_all_10716'] = array(
         'm_icon' => '<i class="far fa-deer ismatt"></i>',
         'm_name' => 'timdenning',
         'm_desc' => '',
-        'm_parents' => array(10797,10913,10712,11098,10720,11118,10777,10716,3311,11158,1278),
-    ),
-    10752 => array(
-        'm_icon' => '<i class="fab fa-bitcoin"></i>',
-        'm_name' => 'Cryptocurrency & Blockchain',
-        'm_desc' => '',
-        'm_parents' => array(10716),
-    ),
-    10753 => array(
-        'm_icon' => '<i class="far fa-user-chart" aria-hidden="true"></i>',
-        'm_name' => 'Economy',
-        'm_desc' => '',
-        'm_parents' => array(3311,11097,10716),
-    ),
-    10757 => array(
-        'm_icon' => '<i class="far fa-chart-bar"></i>',
-        'm_name' => 'Investing',
-        'm_desc' => '',
-        'm_parents' => array(10716),
+        'm_parents' => array(11962,11959,10797,10913,11098,11118,10777,10716,3311,11158,1278),
     ),
 );
 
 //Business:
-$config['en_ids_10712'] = array(11602,11920,11529,11905,11922,11737,11423,11903,11921,11639,10735,10736,10737,10738,10739,10740,10741,10742,10743,10744,10745,7325,10747,10748);
+$config['en_ids_10712'] = array(10735,10736,10737,10738,10739,10740,10741,10742,10743,10744,10745,7325,10748);
 $config['en_all_10712'] = array(
-    11602 => array(
-        'm_icon' => '<i class="fas fa-alicorn ispink"></i>',
-        'm_name' => 'atapalaga97',
-        'm_desc' => '',
-        'm_parents' => array(10712,11123,3311,11158,1278),
-    ),
-    11920 => array(
-        'm_icon' => '<i class="fas fa-horse yellow"></i>',
-        'm_name' => 'bloomberg',
-        'm_desc' => '',
-        'm_parents' => array(10712,3311,11158,1278),
-    ),
-    11529 => array(
-        'm_icon' => '<i class="far fa-unicorn ispink"></i>',
-        'm_name' => 'christylrivers',
-        'm_desc' => '',
-        'm_parents' => array(10712,11130,3311,11158,1278),
-    ),
-    11905 => array(
-        'm_icon' => '<i class="fal fa-fish yellow"></i>',
-        'm_name' => 'dedehenley',
-        'm_desc' => '',
-        'm_parents' => array(10712,10771,3311,11158,1278),
-    ),
-    11922 => array(
-        'm_icon' => '<i class="fal fa-deer-rudolph yellow"></i>',
-        'm_name' => 'jdaghe',
-        'm_desc' => '',
-        'm_parents' => array(10712,3311,11158,1278),
-    ),
-    11737 => array(
-        'm_icon' => '<i class="far fa-squirrel ismatt"></i>',
-        'm_name' => 'lucatag',
-        'm_desc' => '',
-        'm_parents' => array(10712,11117,11118,3311,11158,1278),
-    ),
-    11423 => array(
-        'm_icon' => '<i class="fas fa-ram ispink"></i>',
-        'm_name' => 'pcmagazine',
-        'm_desc' => '',
-        'm_parents' => array(10722,10712,11107,11110,11140,3311,11158,1278),
-    ),
-    11903 => array(
-        'm_icon' => '<i class="fas fa-fish ismatt"></i>',
-        'm_name' => 'shane_barker',
-        'm_desc' => '',
-        'm_parents' => array(10712,10771,3311,11158,1278),
-    ),
-    11921 => array(
-        'm_icon' => '<i class="fas fa-otter ismatt"></i>',
-        'm_name' => 'teampay',
-        'm_desc' => '',
-        'm_parents' => array(10712,3311,11158,1278),
-    ),
-    11639 => array(
-        'm_icon' => '<i class="far fa-deer ismatt"></i>',
-        'm_name' => 'timdenning',
-        'm_desc' => '',
-        'm_parents' => array(10797,10913,10712,11098,10720,11118,10777,10716,3311,11158,1278),
-    ),
     10735 => array(
         'm_icon' => '<i class="far fa-box-usd"></i>',
         'm_name' => 'Business Finance',
@@ -794,12 +590,6 @@ $config['en_all_10712'] = array(
         'm_desc' => '',
         'm_parents' => array(10712),
     ),
-    10747 => array(
-        'm_icon' => '<i class="far fa-photo-video" aria-hidden="true"></i>',
-        'm_name' => 'Media',
-        'm_desc' => '',
-        'm_parents' => array(3311,11097,10712),
-    ),
     10748 => array(
         'm_icon' => '<i class="far fa-hotel"></i>',
         'm_name' => 'Real Estate',
@@ -819,13 +609,13 @@ $config['en_all_10711'] = array(
     ),
     10770 => array(
         'm_icon' => '<i class="far fa-user-chart" aria-hidden="true"></i>',
-        'm_name' => 'Productivity',
+        'm_name' => 'Productivity Topic',
         'm_desc' => '',
         'm_parents' => array(3311,11097,10711),
     ),
     10771 => array(
         'm_icon' => '<i class="far fa-mountain" aria-hidden="true"></i>',
-        'm_name' => 'Leadership',
+        'm_name' => 'Leadership Topic',
         'm_desc' => '',
         'm_parents' => array(3311,11097,10711),
     ),
@@ -843,7 +633,7 @@ $config['en_all_10711'] = array(
     ),
     10773 => array(
         'm_icon' => '<i class="far fa-hands-helping" aria-hidden="true"></i>',
-        'm_name' => 'Parenting',
+        'm_name' => 'Parenting Topic',
         'm_desc' => '',
         'm_parents' => array(3311,11097,10711),
     ),
@@ -855,7 +645,7 @@ $config['en_all_10711'] = array(
     ),
     10775 => array(
         'm_icon' => '<i class="far fa-pray" aria-hidden="true"></i>',
-        'm_name' => 'Spirituality',
+        'm_name' => 'Spirituality Topic',
         'm_desc' => '',
         'm_parents' => array(3311,11097,10711),
     ),
@@ -867,9 +657,9 @@ $config['en_all_10711'] = array(
     ),
     10777 => array(
         'm_icon' => '<i class="far fa-lightbulb-on" aria-hidden="true"></i>',
-        'm_name' => 'Creativity',
+        'm_name' => 'Creativity Topic',
         'm_desc' => '',
-        'm_parents' => array(3311,11097,10721,10711),
+        'm_parents' => array(4305,3311,11097,10721,10711),
     ),
     10778 => array(
         'm_icon' => '<i class="far fa-expand-arrows"></i>',
@@ -879,7 +669,7 @@ $config['en_all_10711'] = array(
     ),
     10779 => array(
         'm_icon' => '<i class="far fa-grin-hearts" aria-hidden="true"></i>',
-        'm_name' => 'Self',
+        'm_name' => 'Self Topic',
         'm_desc' => '',
         'm_parents' => array(3311,11097,10711),
     ),
@@ -910,86 +700,8 @@ $config['en_all_10711'] = array(
 );
 
 //Software Engineering:
-$config['en_ids_10710'] = array(11742,11759,11621,11754,11756,11757,11751,11731,11729,11758,11753,11755,11752,10726,10727,10728,10729,10730,10731,10733,10734);
+$config['en_ids_10710'] = array(10726,10727,10728,10729,10730,10731,10733,10734);
 $config['en_all_10710'] = array(
-    11742 => array(
-        'm_icon' => '<i class="fal fa-dove yellow"></i>',
-        'm_name' => 'anupamchugh',
-        'm_desc' => '',
-        'm_parents' => array(11103,11111,11112,10710,11117,3311,11158,1278),
-    ),
-    11759 => array(
-        'm_icon' => '<i class="far fa-unicorn ismatt"></i>',
-        'm_name' => 'aThinkingBusinessAnalyst',
-        'm_desc' => '',
-        'm_parents' => array(11101,10710,3311,11158,1278),
-    ),
-    11621 => array(
-        'm_icon' => '<i class="fal fa-unicorn ispink"></i>',
-        'm_name' => 'ceyla.ponders',
-        'm_desc' => '',
-        'm_parents' => array(10710,11121,3311,11158,1278),
-    ),
-    11754 => array(
-        'm_icon' => '<i class="far fa-fish ispink"></i>',
-        'm_name' => 'dbolella',
-        'm_desc' => '',
-        'm_parents' => array(10710,3311,11158,1278),
-    ),
-    11756 => array(
-        'm_icon' => '<i class="far fa-dragon ispink"></i>',
-        'm_name' => 'devDeeJay',
-        'm_desc' => '',
-        'm_parents' => array(11103,10710,3311,11158,1278),
-    ),
-    11757 => array(
-        'm_icon' => '<i class="fal fa-horse ismatt"></i>',
-        'm_name' => 'elye.project',
-        'm_desc' => '',
-        'm_parents' => array(11103,11111,10710,3311,11158,1278),
-    ),
-    11751 => array(
-        'm_icon' => '<i class="fas fa-horse-head ispink"></i>',
-        'm_name' => 'greg.farrow1',
-        'm_desc' => '',
-        'm_parents' => array(10710,3311,11158,1278),
-    ),
-    11731 => array(
-        'm_icon' => '<i class="far fa-whale ismatt"></i>',
-        'm_name' => 'j.kapuscik2',
-        'm_desc' => '',
-        'm_parents' => array(10719,11115,10710,11118,3311,11158,1278),
-    ),
-    11729 => array(
-        'm_icon' => '<i class="fas fa-deer ispink"></i>',
-        'm_name' => 'madhukaudantha',
-        'm_desc' => '',
-        'm_parents' => array(10710,11119,3311,11158,1278),
-    ),
-    11758 => array(
-        'm_icon' => '<i class="fas fa-dove ispink"></i>',
-        'm_name' => 'NMichas',
-        'm_desc' => '',
-        'm_parents' => array(10710,3311,11158,1278),
-    ),
-    11753 => array(
-        'm_icon' => '<i class="fas fa-turtle blue"></i>',
-        'm_name' => 'orarbel',
-        'm_desc' => '',
-        'm_parents' => array(10710,3311,11158,1278),
-    ),
-    11755 => array(
-        'm_icon' => '<i class="fas fa-squirrel blue"></i>',
-        'm_name' => 'rahman.s.888',
-        'm_desc' => '',
-        'm_parents' => array(11111,10710,3311,11158,1278),
-    ),
-    11752 => array(
-        'm_icon' => '<i class="fal fa-turtle yellow"></i>',
-        'm_name' => 'royibeni',
-        'm_desc' => '',
-        'm_parents' => array(11112,10710,3311,11158,1278),
-    ),
     10726 => array(
         'm_icon' => '<i class="far fa-browser"></i>',
         'm_name' => 'Web Development',
@@ -1041,65 +753,65 @@ $config['en_all_10710'] = array(
 );
 
 //Arts & Entertainment:
-$config['en_ids_10809'] = array(10811,3005,10907,10908,10909,8866,10813,10910,10724,10722,2999,10911,10797,10826,10227,10912,10913);
+$config['en_ids_10809'] = array(10811,11958,10907,10908,10909,8866,10813,10910,10724,10722,2999,10911,10797,10826,10227,10912,10913);
 $config['en_all_10809'] = array(
     10811 => array(
         'm_icon' => '<i class="far fa-lips" aria-hidden="true"></i>',
-        'm_name' => 'Beauty',
+        'm_name' => 'Beauty Topic',
         'm_desc' => '',
         'm_parents' => array(3311,11097,10809,10721),
     ),
-    3005 => array(
-        'm_icon' => '<i class="far fa-book" aria-hidden="true"></i>',
-        'm_name' => 'Books',
+    11958 => array(
+        'm_icon' => '',
+        'm_name' => 'Books Topic',
         'm_desc' => '',
-        'm_parents' => array(3311,11097,10809,10571,4983,7614,6805,3000),
+        'm_parents' => array(10809,3311,11097),
     ),
     10907 => array(
         'm_icon' => '',
-        'm_name' => 'Comics',
+        'm_name' => 'Comics Topic',
         'm_desc' => '',
         'm_parents' => array(3311,11097,10809),
     ),
     10908 => array(
         'm_icon' => '',
-        'm_name' => 'Culture',
+        'm_name' => 'Culture Topic',
         'm_desc' => '',
         'm_parents' => array(3311,11097,10809),
     ),
     10909 => array(
         'm_icon' => '',
-        'm_name' => 'Fiction',
+        'm_name' => 'Fiction Topic',
         'm_desc' => '',
         'm_parents' => array(3311,11097,10809),
     ),
     8866 => array(
         'm_icon' => '',
-        'm_name' => 'Film',
+        'm_name' => 'Film Topic',
         'm_desc' => '',
         'm_parents' => array(3311,11097,10809,5008),
     ),
     10813 => array(
         'm_icon' => '<i class="far fa-dice" aria-hidden="true"></i>',
-        'm_name' => 'Gaming',
+        'm_name' => 'Gaming Topic',
         'm_desc' => '',
-        'm_parents' => array(3311,11097,10809,10721),
+        'm_parents' => array(4305,3311,11097,10809,10721),
     ),
     10910 => array(
         'm_icon' => '',
-        'm_name' => 'Humor',
+        'm_name' => 'Humor Topic',
         'm_desc' => '',
         'm_parents' => array(3311,11097,10809),
     ),
     10724 => array(
         'm_icon' => '<i class="far fa-music" aria-hidden="true"></i>',
-        'm_name' => 'Music',
+        'm_name' => 'Music Topic',
         'm_desc' => '',
         'm_parents' => array(3311,11097,10809),
     ),
     10722 => array(
         'm_icon' => '<i class="far fa-camera-retro" aria-hidden="true"></i>',
-        'm_name' => 'Photography',
+        'm_name' => 'Photography Topic',
         'm_desc' => '',
         'm_parents' => array(3311,11097,10809),
     ),
@@ -1107,17 +819,17 @@ $config['en_all_10809'] = array(
         'm_icon' => '<i class="far fa-microphone" aria-hidden="true"></i>',
         'm_name' => 'Podcasts',
         'm_desc' => '',
-        'm_parents' => array(3311,11097,10809,10571,4983,7614,6805,3000),
+        'm_parents' => array(10809,10571,4983,7614,6805,3000),
     ),
     10911 => array(
         'm_icon' => '',
-        'm_name' => 'Poetry',
+        'm_name' => 'Poetry Topic',
         'm_desc' => '',
         'm_parents' => array(3311,11097,10809),
     ),
     10797 => array(
         'm_icon' => '<i class="far fa-share-alt" aria-hidden="true"></i>',
-        'm_name' => 'Social Media',
+        'm_name' => 'Social Media Topic',
         'm_desc' => '',
         'm_parents' => array(3311,11097,10809),
     ),
@@ -1129,19 +841,19 @@ $config['en_all_10809'] = array(
     ),
     10227 => array(
         'm_icon' => '',
-        'm_name' => 'Style',
+        'm_name' => 'Style Topic',
         'm_desc' => '',
         'm_parents' => array(3311,11097,10809,5008),
     ),
     10912 => array(
         'm_icon' => '',
-        'm_name' => 'TV',
+        'm_name' => 'TV Topic',
         'm_desc' => '',
         'm_parents' => array(3311,11097,10809),
     ),
     10913 => array(
         'm_icon' => '',
-        'm_name' => 'Writing',
+        'm_name' => 'Writing Topic',
         'm_desc' => '',
         'm_parents' => array(3311,11097,10809),
     ),
@@ -1165,13 +877,13 @@ $config['en_all_10869'] = array(
         'm_icon' => '<i class="far fa-chart-line" aria-hidden="true"></i>',
         'm_name' => 'Business',
         'm_desc' => '',
-        'm_parents' => array(3311,11097,4527,10869),
+        'm_parents' => array(4527,10869),
     ),
     10719 => array(
         'm_icon' => '<i class="far fa-pencil-ruler" aria-hidden="true"></i>',
         'm_name' => 'Design',
         'm_desc' => '',
-        'm_parents' => array(3311,11097,4527,10869),
+        'm_parents' => array(4527,10869),
     ),
     10746 => array(
         'm_icon' => '<i class="far fa-industry"></i>',
@@ -1195,11 +907,11 @@ $config['en_all_10869'] = array(
         'm_icon' => '<i class="far fa-bullseye-arrow" aria-hidden="true"></i>',
         'm_name' => 'Marketing',
         'm_desc' => '',
-        'm_parents' => array(3311,11097,4527,10869),
+        'm_parents' => array(4527,10869),
     ),
     10716 => array(
         'm_icon' => '<i class="far fa-wallet" aria-hidden="true"></i>',
-        'm_name' => 'Money',
+        'm_name' => 'Money Topic',
         'm_desc' => '',
         'm_parents' => array(3311,11097,4527,10869),
     ),
@@ -1219,7 +931,7 @@ $config['en_all_10869'] = array(
         'm_icon' => '<i class="far fa-code" aria-hidden="true"></i>',
         'm_name' => 'Software Engineering',
         'm_desc' => '',
-        'm_parents' => array(3311,11097,4527,10869),
+        'm_parents' => array(4527,10869),
     ),
     10725 => array(
         'm_icon' => '<i class="far fa-atom-alt"></i>',
@@ -1983,8 +1695,8 @@ $config['en_all_11035'] = array(
         'm_parents' => array(11035,2738,7368,4463),
     ),
     7256 => array(
-        'm_icon' => '<i class="fas fa-search"></i>',
-        'm_name' => 'SEARCH BLOG|PLAYER|URL',
+        'm_icon' => '<i class="fas fa-search" aria-hidden="true"></i>',
+        'm_name' => 'SEARCH MENCH',
         'm_desc' => '',
         'm_parents' => array(11035,7368,3323),
     ),
@@ -2378,7 +2090,7 @@ $config['en_all_10692'] = array(
 );
 
 //PLATFORM CACHE PHP:
-$config['en_ids_4527'] = array(7758,10809,10956,11047,6192,7712,4983,7756,4229,10589,10990,4485,6193,7596,7588,7302,4737,7356,7355,6201,11021,4486,7585,10602,7309,7751,6150,10712,10719,10571,10869,10627,10746,7703,7360,7364,7359,10717,10721,10720,11080,2738,7368,7555,6287,11035,11059,11058,10716,6225,10718,10711,11054,4527,6404,6232,4537,6194,11039,6827,4426,4997,11007,4454,6123,6177,11089,11033,3000,7303,6206,11088,4592,4755,6345,11081,4600,7347,5967,6146,6255,4280,10590,10570,4277,6102,7704,6244,6274,7494,6144,7582,6103,10596,10539,10594,10692,10591,10593,7304,6186,4341,4593,10658,10592,11031,11084,6204,10710,10957,10725,6805,4986,7551,7358,7357,11018,11028);
+$config['en_ids_4527'] = array(7758,10809,10956,11047,6192,7712,4983,7756,4229,10589,10990,4485,6193,7596,7588,7302,4737,7356,7355,6201,11021,4486,7585,10602,7309,7751,6150,10712,10719,10869,10627,10746,7703,7360,7364,7359,10717,10721,10720,11080,2738,7368,7555,6287,11035,11059,11058,10716,6225,10718,10711,11054,4527,6404,6232,4537,6194,11039,6827,4426,4997,11007,4454,6123,6177,11089,11033,3000,7303,6206,11088,4592,4755,10571,6345,11081,4600,7347,5967,6146,6255,4280,10590,10570,4277,6102,7704,6244,6274,7494,6144,7582,6103,10596,10539,10594,10692,10591,10593,7304,6186,4341,4593,10658,10592,11031,11084,6204,10710,10957,10725,6805,4986,7551,7358,7357,11018,11028);
 $config['en_all_4527'] = array(
     7758 => array(
         'm_icon' => '<i class="far fa-mountain"></i>',
@@ -2546,19 +2258,13 @@ $config['en_all_4527'] = array(
         'm_icon' => '<i class="far fa-chart-line" aria-hidden="true"></i>',
         'm_name' => 'Business',
         'm_desc' => '',
-        'm_parents' => array(3311,11097,4527,10869),
+        'm_parents' => array(4527,10869),
     ),
     10719 => array(
         'm_icon' => '<i class="far fa-pencil-ruler" aria-hidden="true"></i>',
         'm_name' => 'Design',
         'm_desc' => '',
-        'm_parents' => array(3311,11097,4527,10869),
-    ),
-    10571 => array(
-        'm_icon' => '<i class="fas fa-megaphone blue"></i>',
-        'm_name' => 'FEATURED PLAYERS',
-        'm_desc' => '',
-        'm_parents' => array(4527,4758),
+        'm_parents' => array(4527,10869),
     ),
     10869 => array(
         'm_icon' => '<i class="fas fa-megaphone ispink"></i>',
@@ -2618,7 +2324,7 @@ $config['en_all_4527'] = array(
         'm_icon' => '<i class="far fa-bullseye-arrow" aria-hidden="true"></i>',
         'm_name' => 'Marketing',
         'm_desc' => '',
-        'm_parents' => array(3311,11097,4527,10869),
+        'm_parents' => array(4527,10869),
     ),
     11080 => array(
         'm_icon' => '<i class="far fa-file"></i>',
@@ -2670,7 +2376,7 @@ $config['en_all_4527'] = array(
     ),
     10716 => array(
         'm_icon' => '<i class="far fa-wallet" aria-hidden="true"></i>',
-        'm_name' => 'Money',
+        'm_name' => 'Money Topic',
         'm_desc' => '',
         'm_parents' => array(3311,11097,4527,10869),
     ),
@@ -2823,6 +2529,12 @@ $config['en_all_4527'] = array(
         'm_name' => 'PRIVATE READ',
         'm_desc' => '',
         'm_parents' => array(6771,4463,4426,4527),
+    ),
+    10571 => array(
+        'm_icon' => '<i class="fas fa-megaphone blue" aria-hidden="true"></i>',
+        'm_name' => 'PUBLIC PLAYERS',
+        'm_desc' => '',
+        'm_parents' => array(4527,4758),
     ),
     6345 => array(
         'm_icon' => '<i class="fas fa-comment-check"></i>',
@@ -3032,7 +2744,7 @@ $config['en_all_4527'] = array(
         'm_icon' => '<i class="far fa-code" aria-hidden="true"></i>',
         'm_name' => 'Software Engineering',
         'm_desc' => '',
-        'm_parents' => array(3311,11097,4527,10869),
+        'm_parents' => array(4527,10869),
     ),
     10957 => array(
         'm_icon' => '<i class="fas fa-alicorn blue"></i>',
@@ -4979,7 +4691,7 @@ $config['en_all_10591'] = array(
     ),
 );
 
-//FEATURED PLAYERS:
+//PUBLIC PLAYERS:
 $config['en_ids_10571'] = array(2997,4446,3005,3147,3084,4763,3000,2999,4883,3192,5948,2998);
 $config['en_all_10571'] = array(
     2997 => array(
@@ -4998,7 +4710,7 @@ $config['en_all_10571'] = array(
         'm_icon' => '<i class="far fa-book" aria-hidden="true"></i>',
         'm_name' => 'Books',
         'm_desc' => '',
-        'm_parents' => array(3311,11097,10809,10571,4983,7614,6805,3000),
+        'm_parents' => array(10571,4983,7614,6805,3000),
     ),
     3147 => array(
         'm_icon' => '<i class="far fa-presentation" aria-hidden="true"></i>',
@@ -5028,7 +4740,7 @@ $config['en_all_10571'] = array(
         'm_icon' => '<i class="far fa-microphone" aria-hidden="true"></i>',
         'm_name' => 'Podcasts',
         'm_desc' => '',
-        'm_parents' => array(3311,11097,10809,10571,4983,7614,6805,3000),
+        'm_parents' => array(10809,10571,4983,7614,6805,3000),
     ),
     4883 => array(
         'm_icon' => '<i class="far fa-concierge-bell" aria-hidden="true"></i>',
@@ -5086,7 +4798,7 @@ $config['en_all_4983'] = array(
         'm_icon' => '<i class="far fa-book" aria-hidden="true"></i>',
         'm_name' => 'Books',
         'm_desc' => '',
-        'm_parents' => array(3311,11097,10809,10571,4983,7614,6805,3000),
+        'm_parents' => array(10571,4983,7614,6805,3000),
     ),
     3147 => array(
         'm_icon' => '<i class="far fa-presentation" aria-hidden="true"></i>',
@@ -5116,7 +4828,7 @@ $config['en_all_4983'] = array(
         'm_icon' => '<i class="far fa-microphone" aria-hidden="true"></i>',
         'm_name' => 'Podcasts',
         'm_desc' => '',
-        'm_parents' => array(3311,11097,10809,10571,4983,7614,6805,3000),
+        'm_parents' => array(10809,10571,4983,7614,6805,3000),
     ),
     4883 => array(
         'm_icon' => '<i class="far fa-concierge-bell" aria-hidden="true"></i>',
@@ -6030,8 +5742,8 @@ $config['en_all_7368'] = array(
         'm_parents' => array(2738,7368,4463),
     ),
     7256 => array(
-        'm_icon' => '<i class="fas fa-search"></i>',
-        'm_name' => 'SEARCH BLOG|PLAYER|URL',
+        'm_icon' => '<i class="fas fa-search" aria-hidden="true"></i>',
+        'm_name' => 'SEARCH',
         'm_desc' => 'Intents, Entities & URLs',
         'm_parents' => array(11035,7368,3323),
     ),
@@ -6295,7 +6007,7 @@ $config['en_all_6805'] = array(
         'm_icon' => '<i class="far fa-book" aria-hidden="true"></i>',
         'm_name' => 'Books',
         'm_desc' => '',
-        'm_parents' => array(3311,11097,10809,10571,4983,7614,6805,3000),
+        'm_parents' => array(10571,4983,7614,6805,3000),
     ),
     3147 => array(
         'm_icon' => '<i class="far fa-presentation" aria-hidden="true"></i>',
@@ -6313,7 +6025,7 @@ $config['en_all_6805'] = array(
         'm_icon' => '<i class="far fa-microphone" aria-hidden="true"></i>',
         'm_name' => 'Podcasts',
         'm_desc' => '',
-        'm_parents' => array(3311,11097,10809,10571,4983,7614,6805,3000),
+        'm_parents' => array(10809,10571,4983,7614,6805,3000),
     ),
     4883 => array(
         'm_icon' => '<i class="far fa-concierge-bell" aria-hidden="true"></i>',
@@ -6641,7 +6353,7 @@ $config['en_all_6146'] = array(
 $config['en_ids_6123'] = array(2793,3303,3302,3311,3300);
 $config['en_all_6123'] = array(
     2793 => array(
-        'm_icon' => '<i class="fab fa-facebook"></i>',
+        'm_icon' => '<i class="fab fa-facebook" aria-hidden="true"></i>',
         'm_name' => 'Facebook',
         'm_desc' => '',
         'm_parents' => array(6123,1326,1326,2750),
@@ -8328,7 +8040,7 @@ $config['en_all_3000'] = array(
         'm_icon' => '<i class="far fa-book" aria-hidden="true"></i>',
         'm_name' => 'Books',
         'm_desc' => '',
-        'm_parents' => array(3311,11097,10809,10571,4983,7614,6805,3000),
+        'm_parents' => array(10571,4983,7614,6805,3000),
     ),
     3147 => array(
         'm_icon' => '<i class="far fa-presentation" aria-hidden="true"></i>',
@@ -8346,7 +8058,7 @@ $config['en_all_3000'] = array(
         'm_icon' => '<i class="far fa-microphone" aria-hidden="true"></i>',
         'm_name' => 'Podcasts',
         'm_desc' => '',
-        'm_parents' => array(3311,11097,10809,10571,4983,7614,6805,3000),
+        'm_parents' => array(10809,10571,4983,7614,6805,3000),
     ),
     4883 => array(
         'm_icon' => '<i class="far fa-concierge-bell" aria-hidden="true"></i>',
