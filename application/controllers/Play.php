@@ -84,18 +84,21 @@ class Play extends CI_Controller
 
                 //Now sync authors in Database:
                 $newly_added = 0;
+                $newly_updated = 0;
 
                 foreach($unique_authors as $author_handler){
 
                     $full_url = rtrim($medium_urls[0]['ln_content'], '/') . '/@' . $author_handler;
 
-                    //Add to DB IF not already there:
-                    if(!count($this->READ_model->ln_fetch(array(
+                    $already_added = $this->READ_model->ln_fetch(array(
                         'ln_status_entity_id IN (' . join(',', $this->config->item('en_ids_7360')) . ')' => null, //Link Statuses Active
                         'ln_type_entity_id' => 4256, //Generic URL
                         'ln_parent_entity_id' => 3311, //Medium URL
                         'ln_content' => $full_url,
-                    )))){
+                    ));
+
+                    //Add to DB IF not already there:
+                    if(!count($already_added)){
 
                         $newly_added++;
 
@@ -103,6 +106,14 @@ class Play extends CI_Controller
                         $added_en = $this->PLAY_model->en_verify_create($author_handler, $ln_creator_entity_id, 6181, random_user_icon());
 
                         //Create relevant READS:
+
+                        $this->READ_model->ln_create(array(
+                            'ln_type_entity_id' => 4256, //Generic URL
+                            'ln_creator_entity_id' => $ln_creator_entity_id,
+                            'ln_parent_entity_id' => 3311, //Medium URL
+                            'ln_child_entity_id' => $added_en['en']['en_id'],
+                            'ln_content' => $full_url,
+                        ));
 
                         $this->READ_model->ln_create(array(
                             'ln_type_entity_id' => 4230, //Raw link
@@ -118,20 +129,31 @@ class Play extends CI_Controller
                             'ln_child_entity_id' => $added_en['en']['en_id'],
                         ));
 
+                        //Medium Topic
                         $this->READ_model->ln_create(array(
-                            'ln_type_entity_id' => 4256, //Generic URL
+                            'ln_type_entity_id' => 4230, //Raw link
                             'ln_creator_entity_id' => $ln_creator_entity_id,
-                            'ln_parent_entity_id' => 3311, //Medium URL
+                            'ln_parent_entity_id' => $medium_topic['en_id'],
                             'ln_child_entity_id' => $added_en['en']['en_id'],
-                            'ln_content' => $full_url,
+                        ));
+
+                    } else {
+
+                        $newly_updated++;
+
+                        //Medium Topic
+                        $this->READ_model->ln_create(array(
+                            'ln_type_entity_id' => 4230, //Raw link
+                            'ln_creator_entity_id' => $ln_creator_entity_id,
+                            'ln_parent_entity_id' => $medium_topic['en_id'],
+                            'ln_child_entity_id' => $already_added[0]['ln_child_entity_id'],
                         ));
 
                     }
                 }
 
                 //Count total authors:
-                echo '<div>'.$topic_count.') Added '.$newly_added.' Authors in ['.$medium_topic_link['ln_content'].'] from the full list ['.join(', ',$unique_authors).']</div>';
-
+                echo '<div>'.$topic_count.') Added '.$newly_added.' & '.$newly_updated.' updated Authors in ['.$medium_topic_link['ln_content'].'] from the full list ['.join(', ',$unique_authors).']</div>';
 
             }
         }
