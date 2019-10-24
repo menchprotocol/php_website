@@ -337,12 +337,6 @@ li a {
     border-radius: 3px;
 }
 
-.dropdown-item.active, .dropdown-item:active {
-    color: #fff;
-    background-color: #070707;
-    cursor: default;
-}
-
 .tab-content{
     padding:10px 0;
 }
@@ -501,6 +495,24 @@ li a {
     background-color: #fffba4;
     border: 1px solid #fffba4;
 }
+
+.dropdown-item:focus, .dropdown-item:hover {
+    text-decoration: none;
+    background-color: #fffba4;
+}
+.dropdown-item, .dropdown-item {
+    text-decoration: none;
+}
+.dropdown-item.active, .dropdown-item:active {
+    color: #fff !important;
+    background-color: #070707 !important;
+    cursor: default !important;
+}
+
+input.form-control{
+    padding: 25px 10px;
+}
+
 .player-settings.active{
     background-color: #FFFFFF !important;
     border: 1px solid #070707 !important;

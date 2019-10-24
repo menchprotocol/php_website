@@ -14,16 +14,13 @@ $en_all_10591 = $this->config->item('en_all_10591'); //PLAYER PLAYS
                 <li>Get a <?= $en_all_2738[6205]['m_icon'] ?> coin for each word you <b class="montserrat read"><?= $en_all_2738[6205]['m_name'] ?></b></li>
                 <li>Get a <?= $en_all_2738[4535]['m_icon'] ?> coin for each word you <b class="montserrat blog"><?= $en_all_2738[4535]['m_name'] ?></b></li>
                 <li><b class="montserrat read"><?= $en_all_2738[6205]['m_name'] ?></b> up to <?= config_var(11061) ?> words/month FREE</li>
-                <li><b class="montserrat read"><?= $en_all_2738[6205]['m_name'] ?></b> unlimited words for $5/month</li>
+                <li><b class="montserrat read"><?= $en_all_2738[6205]['m_name'] ?></b> unlimited words for $<?= config_var(11162) ?>/month</li>
                 <li>Earn monthly cash with your <?= $en_all_2738[4535]['m_icon'] ?> coins</li>
-
-                <li class="hidden">Earn 1x <?= $en_all_2738[4536]['m_icon'] ?><b class="montserrat play"><?= $en_all_2738[4536]['m_name'] ?></b> coin when you join</li>
-                <li class="hidden">Earn more coins to unlock new <a href="/play/10957" class="btn btn-sm btn-play montserrat">SUPERPOWERS</a></li>
             </ul>
 
             <?php
             if ($session_en) {
-                echo '<div style="padding-bottom:21px;"><a href="/play/'.$session_en['en_id'].'" class="btn btn-play montserrat">My Profile <span class="icon-block en-icon white-icon">'.$session_en['en_icon'].'</span></a></div>';
+                echo '<div style="padding-bottom:21px;"><a href="/play/'.$session_en['en_id'].'" class="btn btn-play montserrat"><span class="icon-block en-icon white-icon">'.$session_en['en_icon'].'</span>My Profile</a></div>';
             } else {
                 echo '<div style="padding-bottom:21px;"><a href="/play/signin" class="btn btn-play montserrat">'.$en_all_11035[4269]['m_name'].'</a></div>';
             }
@@ -48,21 +45,13 @@ $en_all_10591 = $this->config->item('en_all_10591'); //PLAYER PLAYS
         </div>
     </div>
 
-
     <script>
-
         $(document).ready(function () {
-            load_leaderboard();
-        });
-
-        function load_leaderboard(){
             $.post("/play/leaderboard/", {}, function (data) {
                 $('#leaderboard tbody').html(data);
                 $('[data-toggle="tooltip"]').tooltip();
             });
-        }
-
+        });
     </script>
-
 
 </div>

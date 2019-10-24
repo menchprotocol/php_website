@@ -53,9 +53,9 @@ echo '<div class="row">';
     //RIGHT SETTINGS
     echo '<div class="'.config_var(11095).'">';
         echo '<div class="center-right">';
-            echo echo_dropdown(7585, $in['in_completion_method_entity_id'], false, ': ');
-            echo '<div class="pull-right"><a href="javascript:void(0)" onclick="$(\'.menu_bar\').toggleClass(\'hidden\')" class="btn btn-sm btn-primary inline-block"><i class="fas fa-cog" style="font-size: 1.2em;"></i></a></div>';
-            echo '<div style="margin-right: 5px;" class="pull-right">'.echo_dropdown(4737, $in['in_status_entity_id'], true, null).'</div>';
+            echo echo_dropdown(7585, $in['in_completion_method_entity_id'], false);
+            echo '<div class="inline-block" style="margin-left: 5px;">'.echo_dropdown(4737, $in['in_status_entity_id'], true, null).'</div>';
+echo '<div class="inline-block" style="margin-left: 5px;"><a href="javascript:void(0)" onclick="$(\'.menu_bar\').toggleClass(\'hidden\')" class="btn btn-sm btn-primary"><i class="fas fa-cog" style="font-size: 1.2em;"></i></a></div>';
         echo '</div>';
     echo '</div>';
 
@@ -119,7 +119,7 @@ foreach ($this->config->item('en_all_11021') as $en_id => $m){
                                        id="addintent-c-' . $in['in_id'] . '-1"
                                        placeholder="Add Previous Blog">
                             </div>
-                           <div class="algolia_search_pad in_pad_top hidden"><span>Search existing blogs or create a new one...</span></div>
+                           <div class="algolia_search_pad in_pad_top hidden"><span>Search blogs or create a new one...</span></div>
                     </div>';
 
             $this_tab .= '</div>';
@@ -155,7 +155,7 @@ foreach ($this->config->item('en_all_11021') as $en_id => $m){
                                id="addintent-c-' . $in['in_id'] . '-0"
                                placeholder="Add Next Blog">
                     </div>
-                   <div class="algolia_search_pad in_pad_bottom hidden"><span>Search existing blogs or create a new one...</span></div>
+                   <div class="algolia_search_pad in_pad_bottom hidden"><span>Search blogs or create a new one...</span></div>
             </div>';
             }
 

@@ -253,13 +253,6 @@ function ln_detect_type($string)
             'ln_type_entity_id' => 10669, //ICON
         );
 
-    } elseif (is_emojis_only($string)) {
-
-        return array(
-            'status' => 1,
-            'ln_type_entity_id' => 10668, //EMOJI
-        );
-
     } elseif ((strlen(bigintval($string)) == strlen($string) || (in_array(substr($string , 0, 1), array('+','-')) && strlen(bigintval(substr($string , 1))) == strlen(substr($string , 1)))) && (intval($string) != 0 || $string == '0')) {
 
         return array(
@@ -281,12 +274,19 @@ function ln_detect_type($string)
             'ln_type_entity_id' => 4318,
         );
 
-    } else {
+    } elseif (!strlen($string)) {
 
         //Regular text link:
         return array(
             'status' => 1,
             'ln_type_entity_id' => 4255, //Text Link
+        );
+
+    } elseif (is_emojis_only($string)) {
+
+        return array(
+            'status' => 1,
+            'ln_type_entity_id' => 10668, //EMOJI
         );
 
     }

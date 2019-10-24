@@ -12,7 +12,7 @@ defined('BASEPATH') OR exit('No direct script access allowed');
 *
 */
 
-//Generated 2019-10-23 13:37:29 PST
+//Generated 2019-10-23 18:06:41 PST
 
 //PLAY TABS:
 $config['en_ids_11088'] = array(11033,11089);
@@ -909,16 +909,16 @@ $config['en_all_11007'] = array(
         'm_parents' => array(11061,11007),
     ),
     11011 => array(
-        'm_icon' => '<i class="fas fa-usd-circle ispink"></i>',
-        'm_name' => 'UNLIMITED FOR $5 / MONTH',
+        'm_icon' => '<i class="fas fa-usd-circle ispink" aria-hidden="true"></i>',
+        'm_name' => '$5/MONTH UNLIMITED READING',
         'm_desc' => '',
-        'm_parents' => array(11007),
+        'm_parents' => array(11162,11007),
     ),
     11012 => array(
-        'm_icon' => '<i class="fas fa-usd-circle yellow"></i>',
-        'm_name' => 'UNLIMITED FOR $50 / YEAR',
+        'm_icon' => '<i class="fas fa-usd-circle yellow" aria-hidden="true"></i>',
+        'm_name' => '$50/YEAR UNLIMITED READING',
         'm_desc' => '',
-        'm_parents' => array(11007),
+        'm_parents' => array(11163,11007),
     ),
 );
 
@@ -1384,10 +1384,10 @@ $config['en_all_11058'] = array(
 );
 
 //PLATFORM CONFIG VARIABLES:
-$config['en_ids_6404'] = array(11062,11094,11095,11071,11069,11079,11076,11077,11074,11075,11064,11065,11063,11060,11067,11066,11072,11092,11093,11073,11057,11056,11061,11070);
+$config['en_ids_6404'] = array(11062,11094,11095,11071,11069,11079,11076,11077,11074,11075,11064,11065,11063,11060,11067,11066,11072,11092,11093,11073,11057,11056,11061,11162,11163,11070);
 $config['en_all_6404'] = array(
     11062 => array(
-        'm_icon' => '<i class="far fa-lambda"></i>',
+        'm_icon' => '',
         'm_name' => 'ALGOLIA ENABLED',
         'm_desc' => '1',
         'm_parents' => array(6404),
@@ -1405,85 +1405,85 @@ $config['en_all_6404'] = array(
         'm_parents' => array(6404),
     ),
     11071 => array(
-        'm_icon' => '<i class="far fa-lambda"></i>',
+        'm_icon' => '',
         'm_name' => 'BLOG TITLE MAX LENGTH',
         'm_desc' => '100',
         'm_parents' => array(6404),
     ),
     11069 => array(
-        'm_icon' => '<i class="far fa-lambda"></i>',
+        'm_icon' => '',
         'm_name' => 'BYTES PER WORD',
         'm_desc' => '30000',
         'm_parents' => array(6404),
     ),
     11079 => array(
-        'm_icon' => '<i class="far fa-lambda"></i>',
+        'm_icon' => '',
         'm_name' => 'DEFAULT PLATFORM TIMEZONE',
         'm_desc' => 'America/Los_Angeles',
         'm_parents' => array(6404),
     ),
     11076 => array(
-        'm_icon' => '<i class="far fa-lambda"></i>',
+        'm_icon' => '',
         'm_name' => 'FACEBOOK APP ID',
         'm_desc' => '1782431902047009',
         'm_parents' => array(6404),
     ),
     11077 => array(
-        'm_icon' => '<i class="far fa-lambda"></i>',
+        'm_icon' => '',
         'm_name' => 'FACEBOOK DEFAULT GRAPH VERSION',
         'm_desc' => 'v3.2',
         'm_parents' => array(4506,6404),
     ),
     11074 => array(
-        'm_icon' => '<i class="far fa-lambda"></i>',
+        'm_icon' => '',
         'm_name' => 'FACEBOOK MESSENGER MAX MESSAGE LENGTH',
         'm_desc' => '2000',
         'm_parents' => array(6404),
     ),
     11075 => array(
-        'm_icon' => '<i class="far fa-lambda"></i>',
+        'm_icon' => '',
         'm_name' => 'FACEBOOK PAGE ID',
         'm_desc' => '381488558920384',
         'm_parents' => array(6404),
     ),
     11064 => array(
-        'm_icon' => '<i class="far fa-lambda"></i>',
+        'm_icon' => '',
         'm_name' => 'ITEMS PER PAGE',
         'm_desc' => '100',
         'm_parents' => array(6404),
     ),
     11065 => array(
-        'm_icon' => '<i class="far fa-lambda"></i>',
+        'm_icon' => '',
         'm_name' => 'MAGIC LINK VALID SECONDS',
         'm_desc' => '3600',
         'm_parents' => array(6404),
     ),
     11063 => array(
-        'm_icon' => '<i class="far fa-lambda"></i>',
+        'm_icon' => '',
         'm_name' => 'MAX FILE SIZE [MB]',
         'm_desc' => '25',
         'm_parents' => array(6404),
     ),
     11060 => array(
-        'm_icon' => '<i class="far fa-lambda" aria-hidden="true"></i>',
+        'm_icon' => '',
         'm_name' => 'MENCH PLATFORM VERSION',
         'm_desc' => '1.0992',
         'm_parents' => array(6404),
     ),
     11067 => array(
-        'm_icon' => '<i class="far fa-lambda"></i>',
+        'm_icon' => '',
         'm_name' => 'NODS PER WORD',
         'm_desc' => '50',
         'm_parents' => array(6404),
     ),
     11066 => array(
-        'm_icon' => '<i class="far fa-lambda"></i>',
+        'm_icon' => '',
         'm_name' => 'PASSWORD MIN CHARACTERS',
         'm_desc' => '6',
         'm_parents' => array(6404),
     ),
     11072 => array(
-        'm_icon' => '<i class="far fa-lambda"></i>',
+        'm_icon' => '',
         'm_name' => 'PLAYER NAME MAX LENGTH',
         'm_desc' => '140',
         'm_parents' => array(6404),
@@ -1501,31 +1501,43 @@ $config['en_all_6404'] = array(
         'm_parents' => array(6404),
     ),
     11073 => array(
-        'm_icon' => '<i class="far fa-lambda"></i>',
+        'm_icon' => '',
         'm_name' => 'READABLE MESSAGE MAX LENGTH',
         'm_desc' => '280',
         'm_parents' => array(6404),
     ),
     11057 => array(
-        'm_icon' => '<i class="far fa-lambda"></i>',
+        'm_icon' => '',
         'm_name' => 'READ MARKS MAX',
         'm_desc' => '89',
         'm_parents' => array(6404,4358),
     ),
     11056 => array(
-        'm_icon' => '<i class="far fa-lambda"></i>',
+        'm_icon' => '',
         'm_name' => 'READ MARKS MIN',
         'm_desc' => '-89',
         'm_parents' => array(6404,4358),
     ),
     11061 => array(
-        'm_icon' => '<i class="far fa-lambda"></i>',
+        'm_icon' => '',
         'm_name' => 'READ MONTHLY FREE WORDS',
         'm_desc' => '2000',
         'm_parents' => array(6404),
     ),
+    11162 => array(
+        'm_icon' => '',
+        'm_name' => 'SUBSCRIPTION USD RATE MONTHLY',
+        'm_desc' => '5',
+        'm_parents' => array(6404),
+    ),
+    11163 => array(
+        'm_icon' => '',
+        'm_name' => 'SUBSCRIPTION USD RATE YEARLY',
+        'm_desc' => '50',
+        'm_parents' => array(6404),
+    ),
     11070 => array(
-        'm_icon' => '<i class="far fa-lambda"></i>',
+        'm_icon' => '',
         'm_name' => 'UNKNOWN FILE WORDS',
         'm_desc' => '3',
         'm_parents' => array(6404),
@@ -4561,7 +4573,7 @@ $config['en_all_6192'] = array(
         'm_parents' => array(7582,10984,6192,7756,7585,7486,7485,7309,6997),
     ),
     6677 => array(
-        'm_icon' => '<i class="far fa-comment-check "></i>',
+        'm_icon' => '<i class="far fa-comment" aria-hidden="true"></i>',
         'm_name' => 'BLOG READ & NEXT',
         'm_desc' => '',
         'm_parents' => array(7582,7756,7585,4559,6192),
@@ -4823,7 +4835,7 @@ $config['en_all_7756'] = array(
         'm_parents' => array(10984,7756,7585,7486,7485,7309,6997,6193),
     ),
     6677 => array(
-        'm_icon' => '<i class="far fa-comment-check "></i>',
+        'm_icon' => '<i class="far fa-comment" aria-hidden="true"></i>',
         'm_name' => 'BLOG READ & NEXT',
         'm_desc' => '',
         'm_parents' => array(7582,7756,7585,4559,6192),
@@ -5151,13 +5163,13 @@ $config['en_all_6204'] = array(
 $config['en_ids_7712'] = array(6684,7231);
 $config['en_all_7712'] = array(
     6684 => array(
-        'm_icon' => '<i class="far fa-check-circle"></i>',
+        'm_icon' => '<i class="fas fa-check-circle" aria-hidden="true"></i>',
         'm_name' => 'BLOG SELECT ONE',
         'm_desc' => '',
         'm_parents' => array(7712,7588,7585,6157,6193),
     ),
     7231 => array(
-        'm_icon' => '<i class="far fa-check-square"></i>',
+        'm_icon' => '<i class="fas fa-check-square" aria-hidden="true"></i>',
         'm_name' => 'BLOG SELECT SOME',
         'm_desc' => '',
         'm_parents' => array(7712,7489,7588,7585,6193),
@@ -5410,13 +5422,13 @@ $config['en_all_4229'] = array(
 $config['en_ids_7588'] = array(6684,7231);
 $config['en_all_7588'] = array(
     6684 => array(
-        'm_icon' => '<i class="far fa-check-circle"></i>',
+        'm_icon' => '<i class="fas fa-check-circle" aria-hidden="true"></i>',
         'm_name' => 'BLOG SELECT ONE',
         'm_desc' => '',
         'm_parents' => array(7712,7588,7585,6157,6193),
     ),
     7231 => array(
-        'm_icon' => '<i class="far fa-check-square"></i>',
+        'm_icon' => '<i class="fas fa-check-square" aria-hidden="true"></i>',
         'm_name' => 'BLOG SELECT SOME',
         'm_desc' => '',
         'm_parents' => array(7712,7489,7588,7585,6193),
@@ -5427,13 +5439,13 @@ $config['en_all_7588'] = array(
 $config['en_ids_6193'] = array(6684,7231,6907);
 $config['en_all_6193'] = array(
     6684 => array(
-        'm_icon' => '<i class="far fa-check-circle"></i>',
+        'm_icon' => '<i class="fas fa-check-circle" aria-hidden="true"></i>',
         'm_name' => 'BLOG SELECT ONE',
         'm_desc' => '',
         'm_parents' => array(7712,7588,7585,6157,6193),
     ),
     7231 => array(
-        'm_icon' => '<i class="far fa-check-square"></i>',
+        'm_icon' => '<i class="fas fa-check-square" aria-hidden="true"></i>',
         'm_name' => 'BLOG SELECT SOME',
         'm_desc' => '',
         'm_parents' => array(7712,7489,7588,7585,6193),
@@ -5450,7 +5462,7 @@ $config['en_all_6193'] = array(
 $config['en_ids_7585'] = array(6677,6683,7637,6684,7231,6907,6914);
 $config['en_all_7585'] = array(
     6677 => array(
-        'm_icon' => '<i class="far fa-comment-check "></i>',
+        'm_icon' => '<i class="far fa-comment" aria-hidden="true"></i>',
         'm_name' => 'READ & NEXT',
         'm_desc' => 'User will complete by reading intent messages only. No inputs required.',
         'm_parents' => array(7582,7756,7585,4559,6192),
@@ -5468,13 +5480,13 @@ $config['en_all_7585'] = array(
         'm_parents' => array(7582,7751,7585,6144,6192),
     ),
     6684 => array(
-        'm_icon' => '<i class="far fa-check-circle"></i>',
+        'm_icon' => '<i class="fas fa-check-circle" aria-hidden="true"></i>',
         'm_name' => 'SELECT ONE',
         'm_desc' => 'User will complete by choosing a child intent as their answer',
         'm_parents' => array(7712,7588,7585,6157,6193),
     ),
     7231 => array(
-        'm_icon' => '<i class="far fa-check-square"></i>',
+        'm_icon' => '<i class="fas fa-check-square" aria-hidden="true"></i>',
         'm_name' => 'SELECT SOME',
         'm_desc' => 'User will complete by choosing one or more child intents as their answer',
         'm_parents' => array(7712,7489,7588,7585,6193),
@@ -5509,7 +5521,7 @@ $config['en_all_7582'] = array(
         'm_parents' => array(7582,10984,6192,7756,7585,7486,7485,7309,6997),
     ),
     6677 => array(
-        'm_icon' => '<i class="far fa-comment-check "></i>',
+        'm_icon' => '<i class="far fa-comment" aria-hidden="true"></i>',
         'm_name' => 'BLOG READ & NEXT',
         'm_desc' => '',
         'm_parents' => array(7582,7756,7585,4559,6192),
@@ -5722,7 +5734,7 @@ $config['en_all_7360'] = array(
         'm_parents' => array(7364,7360,6186),
     ),
     6176 => array(
-        'm_icon' => '<i class="fas fa-globe ispink"></i>',
+        'm_icon' => '<i class="fas fa-globe" aria-hidden="true"></i>',
         'm_name' => 'READ PUBLISH',
         'm_desc' => '',
         'm_parents' => array(7360,7359,6186),
@@ -5733,7 +5745,7 @@ $config['en_all_7360'] = array(
 $config['en_ids_7359'] = array(6176);
 $config['en_all_7359'] = array(
     6176 => array(
-        'm_icon' => '<i class="fas fa-globe ispink"></i>',
+        'm_icon' => '<i class="fas fa-globe" aria-hidden="true"></i>',
         'm_name' => 'READ PUBLISH',
         'm_desc' => '',
         'm_parents' => array(7360,7359,6186),
@@ -5750,7 +5762,7 @@ $config['en_all_7358'] = array(
         'm_parents' => array(7358,6177),
     ),
     6181 => array(
-        'm_icon' => '<i class="fas fa-globe blue"></i>',
+        'm_icon' => '<i class="fas fa-globe" aria-hidden="true"></i>',
         'm_name' => 'PLAYER PUBLISH',
         'm_desc' => '',
         'm_parents' => array(7358,7357,6177),
@@ -5761,7 +5773,7 @@ $config['en_all_7358'] = array(
 $config['en_ids_7357'] = array(6181);
 $config['en_all_7357'] = array(
     6181 => array(
-        'm_icon' => '<i class="fas fa-globe blue"></i>',
+        'm_icon' => '<i class="fas fa-globe" aria-hidden="true"></i>',
         'm_name' => 'PLAYER PUBLISH',
         'm_desc' => '',
         'm_parents' => array(7358,7357,6177),
@@ -5778,7 +5790,7 @@ $config['en_all_7356'] = array(
         'm_parents' => array(7356,4737),
     ),
     6184 => array(
-        'm_icon' => '<i class="fas fa-globe yellow "></i>',
+        'm_icon' => '<i class="fas fa-globe" aria-hidden="true"></i>',
         'm_name' => 'BLOG PUBLISH',
         'm_desc' => '',
         'm_parents' => array(7355,7356,4737),
@@ -5789,7 +5801,7 @@ $config['en_all_7356'] = array(
 $config['en_ids_7355'] = array(6184);
 $config['en_all_7355'] = array(
     6184 => array(
-        'm_icon' => '<i class="fas fa-globe yellow "></i>',
+        'm_icon' => '<i class="fas fa-globe" aria-hidden="true"></i>',
         'm_name' => 'BLOG PUBLISH',
         'm_desc' => '',
         'm_parents' => array(7355,7356,4737),
@@ -5863,7 +5875,7 @@ $config['en_all_7304'] = array(
 $config['en_ids_6186'] = array(6176,6175,6173);
 $config['en_all_6186'] = array(
     6176 => array(
-        'm_icon' => '<i class="fas fa-globe ispink"></i>',
+        'm_icon' => '<i class="fas fa-globe" aria-hidden="true"></i>',
         'm_name' => 'PUBLISH',
         'm_desc' => 'live and ready to be shared with users',
         'm_parents' => array(7360,7359,6186),
@@ -5875,7 +5887,7 @@ $config['en_all_6186'] = array(
         'm_parents' => array(7364,7360,6186),
     ),
     6173 => array(
-        'm_icon' => '<i class="far fa-trash-alt isred"></i>',
+        'm_icon' => '<i class="far fa-trash-alt" aria-hidden="true"></i>',
         'm_name' => 'ARCHIVE',
         'm_desc' => 'archived',
         'm_parents' => array(10686,10678,10673,6186),
@@ -6176,7 +6188,7 @@ $config['en_all_6225'] = array(
 $config['en_ids_4737'] = array(6184,6183,6182);
 $config['en_all_4737'] = array(
     6184 => array(
-        'm_icon' => '<i class="fas fa-globe yellow "></i>',
+        'm_icon' => '<i class="fas fa-globe" aria-hidden="true"></i>',
         'm_name' => 'PUBLISH',
         'm_desc' => 'newly added by miner but not yet checked by moderator',
         'm_parents' => array(7355,7356,4737),
@@ -6199,7 +6211,7 @@ $config['en_all_4737'] = array(
 $config['en_ids_6177'] = array(6181,6180,6178);
 $config['en_all_6177'] = array(
     6181 => array(
-        'm_icon' => '<i class="fas fa-globe blue"></i>',
+        'm_icon' => '<i class="fas fa-globe" aria-hidden="true"></i>',
         'm_name' => 'PUBLISH',
         'm_desc' => 'live and ready to be shared with users',
         'm_parents' => array(7358,7357,6177),
@@ -6211,7 +6223,7 @@ $config['en_all_6177'] = array(
         'm_parents' => array(7358,6177),
     ),
     6178 => array(
-        'm_icon' => '<i class="far fa-trash-alt isred"></i>',
+        'm_icon' => '<i class="far fa-trash-alt" aria-hidden="true"></i>',
         'm_name' => 'ARCHIVE',
         'm_desc' => 'archived',
         'm_parents' => array(10672,6177),
