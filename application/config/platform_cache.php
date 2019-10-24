@@ -12,7 +12,7 @@ defined('BASEPATH') OR exit('No direct script access allowed');
 *
 */
 
-//Generated 2019-10-23 19:03:06 PST
+//Generated 2019-10-23 20:03:17 PST
 
 //PLAY TABS:
 $config['en_ids_11088'] = array(11033,11089);
@@ -215,8 +215,68 @@ $config['en_all_10721'] = array(
 );
 
 //Marketing:
-$config['en_ids_10720'] = array(10795,10796,10798,10799,10800,10801,10802,10803,10804,10805,10806,10807,10808);
+$config['en_ids_10720'] = array(11896,11897,11596,11898,11901,11900,11820,11895,11899,11639,10795,10796,10798,10799,10800,10801,10802,10803,10804,10805,10806,10807,10808);
 $config['en_all_10720'] = array(
+    11896 => array(
+        'm_icon' => '<i class="fas fa-cat ismatt"></i>',
+        'm_name' => 'altos',
+        'm_desc' => '',
+        'm_parents' => array(10720,11101,3311,11158,1278),
+    ),
+    11897 => array(
+        'm_icon' => '<i class="fal fa-bat yellow"></i>',
+        'm_name' => 'cbourque',
+        'm_desc' => '',
+        'm_parents' => array(10720,3311,11158,1278),
+    ),
+    11596 => array(
+        'm_icon' => '<i class="far fa-alicorn ispink"></i>',
+        'm_name' => 'danny_forest',
+        'm_desc' => '',
+        'm_parents' => array(11098,10720,11124,3311,11158,1278),
+    ),
+    11898 => array(
+        'm_icon' => '<i class="far fa-horse-head ispink"></i>',
+        'm_name' => 'felsull',
+        'm_desc' => '',
+        'm_parents' => array(10720,3311,11158,1278),
+    ),
+    11901 => array(
+        'm_icon' => '<i class="fal fa-snake yellow"></i>',
+        'm_name' => 'linderforpresident',
+        'm_desc' => '',
+        'm_parents' => array(10797,10720,3311,11158,1278),
+    ),
+    11900 => array(
+        'm_icon' => '<i class="far fa-bat blue"></i>',
+        'm_name' => 'nicolegactivate',
+        'm_desc' => '',
+        'm_parents' => array(10720,3311,11158,1278),
+    ),
+    11820 => array(
+        'm_icon' => '<i class="far fa-dove yellow"></i>',
+        'm_name' => 'reubensalsa',
+        'm_desc' => '',
+        'm_parents' => array(10797,10720,11109,3311,11158,1278),
+    ),
+    11895 => array(
+        'm_icon' => '<i class="fal fa-dove ispink"></i>',
+        'm_name' => 'RozenMD',
+        'm_desc' => '',
+        'm_parents' => array(10720,3311,11158,1278),
+    ),
+    11899 => array(
+        'm_icon' => '<i class="fal fa-cow yellow"></i>',
+        'm_name' => 'rperry2174',
+        'm_desc' => '',
+        'm_parents' => array(10797,10720,3311,11158,1278),
+    ),
+    11639 => array(
+        'm_icon' => '<i class="far fa-deer ismatt"></i>',
+        'm_name' => 'timdenning',
+        'm_desc' => '',
+        'm_parents' => array(10797,10913,10712,11098,10720,11118,10777,10716,3311,11158,1278),
+    ),
     10795 => array(
         'm_icon' => '<i class="far fa-file-chart-line"></i>',
         'm_name' => 'Digital Marketing',
@@ -298,8 +358,74 @@ $config['en_all_10720'] = array(
 );
 
 //Design:
-$config['en_ids_10719'] = array(10784,10785,10786,10787,10788,10789,10790,10791,10792,10793,10794);
+$config['en_ids_10719'] = array(11724,11250,11917,11731,11919,11736,11907,11916,11493,11489,11918,10784,10785,10786,10787,10788,10789,10790,10791,10792,10793,10794);
 $config['en_all_10719'] = array(
+    11724 => array(
+        'm_icon' => '<i class="far fa-turtle blue"></i>',
+        'm_name' => 'bennathan',
+        'm_desc' => '',
+        'm_parents' => array(10719,11119,3311,11158,1278),
+    ),
+    11250 => array(
+        'm_icon' => '<i class="far fa-kiwi-bird ismatt"></i>',
+        'm_name' => 'chuckydee25',
+        'm_desc' => '',
+        'm_parents' => array(10719,10747,10724,3311,11158,1278),
+    ),
+    11917 => array(
+        'm_icon' => '<i class="far fa-turtle blue"></i>',
+        'm_name' => 'jbcolin1818',
+        'm_desc' => '',
+        'm_parents' => array(10719,3311,11158,1278),
+    ),
+    11731 => array(
+        'm_icon' => '<i class="far fa-whale ismatt"></i>',
+        'm_name' => 'j.kapuscik2',
+        'm_desc' => '',
+        'm_parents' => array(10719,11115,10710,11118,3311,11158,1278),
+    ),
+    11919 => array(
+        'm_icon' => '<i class="far fa-snake yellow"></i>',
+        'm_name' => 'kischiman',
+        'm_desc' => '',
+        'm_parents' => array(10719,3311,11158,1278),
+    ),
+    11736 => array(
+        'm_icon' => '<i class="fal fa-turtle yellow"></i>',
+        'm_name' => 'leon.hml',
+        'm_desc' => '',
+        'm_parents' => array(10719,11118,3311,11158,1278),
+    ),
+    11907 => array(
+        'm_icon' => '<i class="fal fa-snake ismatt"></i>',
+        'm_name' => 'MatthewGodfrey',
+        'm_desc' => '',
+        'm_parents' => array(10719,10771,3311,11158,1278),
+    ),
+    11916 => array(
+        'm_icon' => '<i class="far fa-dragon blue"></i>',
+        'm_name' => 'micaelamariniwriter',
+        'm_desc' => '',
+        'm_parents' => array(10719,3311,11158,1278),
+    ),
+    11493 => array(
+        'm_icon' => '<i class="far fa-snake blue"></i>',
+        'm_name' => 'pauldavidkahn',
+        'm_desc' => '',
+        'm_parents' => array(10719,11134,3311,11158,1278),
+    ),
+    11489 => array(
+        'm_icon' => '<i class="fal fa-monkey ismatt"></i>',
+        'm_name' => 'rmhuang89',
+        'm_desc' => '',
+        'm_parents' => array(10719,10846,11134,3311,11158,1278),
+    ),
+    11918 => array(
+        'm_icon' => '<i class="far fa-whale ismatt"></i>',
+        'm_name' => 'varmanatasha',
+        'm_desc' => '',
+        'm_parents' => array(10719,3311,11158,1278),
+    ),
     10784 => array(
         'm_icon' => '<i class="far fa-object-group"></i>',
         'm_name' => 'Web Design',
@@ -445,8 +571,74 @@ $config['en_all_10717'] = array(
 );
 
 //Money:
-$config['en_ids_10716'] = array(10752,10753,10757);
+$config['en_ids_10716'] = array(11640,11172,11643,11296,11638,11249,11167,11641,11525,11642,11639,10752,10753,10757);
 $config['en_all_10716'] = array(
+    11640 => array(
+        'm_icon' => '<i class="fal fa-pegasus ismatt"></i>',
+        'm_name' => 'benlefort1988',
+        'm_desc' => '',
+        'm_parents' => array(10716,3311,11158,1278),
+    ),
+    11172 => array(
+        'm_icon' => '<i class="far fa-squirrel ismatt"></i>',
+        'm_name' => 'dannymaiorca',
+        'm_desc' => '',
+        'm_parents' => array(10716,10753,3311,11158,1278),
+    ),
+    11643 => array(
+        'm_icon' => '<i class="far fa-fish yellow"></i>',
+        'm_name' => 'gk_',
+        'm_desc' => '',
+        'm_parents' => array(10716,3311,11158,1278),
+    ),
+    11296 => array(
+        'm_icon' => '<i class="fas fa-pig ispink"></i>',
+        'm_name' => 'kimduke_68108',
+        'm_desc' => '',
+        'm_parents' => array(10716,10810,3311,11158,1278),
+    ),
+    11638 => array(
+        'm_icon' => '<i class="far fa-bat yellow"></i>',
+        'm_name' => 'kristinwong5',
+        'm_desc' => '',
+        'm_parents' => array(10716,3311,11158,1278),
+    ),
+    11249 => array(
+        'm_icon' => '<i class="fas fa-badger-honey blue"></i>',
+        'm_name' => 'minutesmag',
+        'm_desc' => '',
+        'm_parents' => array(11105,10716,2999,3311,11158,1278),
+    ),
+    11167 => array(
+        'm_icon' => '<i class="far fa-elephant ispink"></i>',
+        'm_name' => 'NautilusMag',
+        'm_desc' => '',
+        'm_parents' => array(10845,10846,10114,10716,11123,11131,11150,10753,3311,11158,1278),
+    ),
+    11641 => array(
+        'm_icon' => '<i class="fal fa-hippo blue"></i>',
+        'm_name' => 'pauljalvarez',
+        'm_desc' => '',
+        'm_parents' => array(10716,3311,11158,1278),
+    ),
+    11525 => array(
+        'm_icon' => '<i class="fas fa-narwhal yellow"></i>',
+        'm_name' => 'TheAtlantic',
+        'm_desc' => '',
+        'm_parents' => array(10846,10716,11130,3311,11158,1278),
+    ),
+    11642 => array(
+        'm_icon' => '<i class="fal fa-frog yellow"></i>',
+        'm_name' => 'themotleyfool',
+        'm_desc' => '',
+        'm_parents' => array(10716,3311,11158,1278),
+    ),
+    11639 => array(
+        'm_icon' => '<i class="far fa-deer ismatt"></i>',
+        'm_name' => 'timdenning',
+        'm_desc' => '',
+        'm_parents' => array(10797,10913,10712,11098,10720,11118,10777,10716,3311,11158,1278),
+    ),
     10752 => array(
         'm_icon' => '<i class="fab fa-bitcoin"></i>',
         'm_name' => 'Cryptocurrency & Blockchain',
@@ -468,8 +660,68 @@ $config['en_all_10716'] = array(
 );
 
 //Business:
-$config['en_ids_10712'] = array(10735,10736,10737,10738,10739,10740,10741,10742,10743,10744,10745,7325,10747,10748);
+$config['en_ids_10712'] = array(11602,11920,11529,11905,11922,11737,11423,11903,11921,11639,10735,10736,10737,10738,10739,10740,10741,10742,10743,10744,10745,7325,10747,10748);
 $config['en_all_10712'] = array(
+    11602 => array(
+        'm_icon' => '<i class="fas fa-alicorn ispink"></i>',
+        'm_name' => 'atapalaga97',
+        'm_desc' => '',
+        'm_parents' => array(10712,11123,3311,11158,1278),
+    ),
+    11920 => array(
+        'm_icon' => '<i class="fas fa-horse yellow"></i>',
+        'm_name' => 'bloomberg',
+        'm_desc' => '',
+        'm_parents' => array(10712,3311,11158,1278),
+    ),
+    11529 => array(
+        'm_icon' => '<i class="far fa-unicorn ispink"></i>',
+        'm_name' => 'christylrivers',
+        'm_desc' => '',
+        'm_parents' => array(10712,11130,3311,11158,1278),
+    ),
+    11905 => array(
+        'm_icon' => '<i class="fal fa-fish yellow"></i>',
+        'm_name' => 'dedehenley',
+        'm_desc' => '',
+        'm_parents' => array(10712,10771,3311,11158,1278),
+    ),
+    11922 => array(
+        'm_icon' => '<i class="fal fa-deer-rudolph yellow"></i>',
+        'm_name' => 'jdaghe',
+        'm_desc' => '',
+        'm_parents' => array(10712,3311,11158,1278),
+    ),
+    11737 => array(
+        'm_icon' => '<i class="far fa-squirrel ismatt"></i>',
+        'm_name' => 'lucatag',
+        'm_desc' => '',
+        'm_parents' => array(10712,11117,11118,3311,11158,1278),
+    ),
+    11423 => array(
+        'm_icon' => '<i class="fas fa-ram ispink"></i>',
+        'm_name' => 'pcmagazine',
+        'm_desc' => '',
+        'm_parents' => array(10722,10712,11107,11110,11140,3311,11158,1278),
+    ),
+    11903 => array(
+        'm_icon' => '<i class="fas fa-fish ismatt"></i>',
+        'm_name' => 'shane_barker',
+        'm_desc' => '',
+        'm_parents' => array(10712,10771,3311,11158,1278),
+    ),
+    11921 => array(
+        'm_icon' => '<i class="fas fa-otter ismatt"></i>',
+        'm_name' => 'teampay',
+        'm_desc' => '',
+        'm_parents' => array(10712,3311,11158,1278),
+    ),
+    11639 => array(
+        'm_icon' => '<i class="far fa-deer ismatt"></i>',
+        'm_name' => 'timdenning',
+        'm_desc' => '',
+        'm_parents' => array(10797,10913,10712,11098,10720,11118,10777,10716,3311,11158,1278),
+    ),
     10735 => array(
         'm_icon' => '<i class="far fa-box-usd"></i>',
         'm_name' => 'Business Finance',
@@ -658,8 +910,86 @@ $config['en_all_10711'] = array(
 );
 
 //Software Engineering:
-$config['en_ids_10710'] = array(10726,10727,10728,10729,10730,10731,10733,10734);
+$config['en_ids_10710'] = array(11742,11759,11621,11754,11756,11757,11751,11731,11729,11758,11753,11755,11752,10726,10727,10728,10729,10730,10731,10733,10734);
 $config['en_all_10710'] = array(
+    11742 => array(
+        'm_icon' => '<i class="fal fa-dove yellow"></i>',
+        'm_name' => 'anupamchugh',
+        'm_desc' => '',
+        'm_parents' => array(11103,11111,11112,10710,11117,3311,11158,1278),
+    ),
+    11759 => array(
+        'm_icon' => '<i class="far fa-unicorn ismatt"></i>',
+        'm_name' => 'aThinkingBusinessAnalyst',
+        'm_desc' => '',
+        'm_parents' => array(11101,10710,3311,11158,1278),
+    ),
+    11621 => array(
+        'm_icon' => '<i class="fal fa-unicorn ispink"></i>',
+        'm_name' => 'ceyla.ponders',
+        'm_desc' => '',
+        'm_parents' => array(10710,11121,3311,11158,1278),
+    ),
+    11754 => array(
+        'm_icon' => '<i class="far fa-fish ispink"></i>',
+        'm_name' => 'dbolella',
+        'm_desc' => '',
+        'm_parents' => array(10710,3311,11158,1278),
+    ),
+    11756 => array(
+        'm_icon' => '<i class="far fa-dragon ispink"></i>',
+        'm_name' => 'devDeeJay',
+        'm_desc' => '',
+        'm_parents' => array(11103,10710,3311,11158,1278),
+    ),
+    11757 => array(
+        'm_icon' => '<i class="fal fa-horse ismatt"></i>',
+        'm_name' => 'elye.project',
+        'm_desc' => '',
+        'm_parents' => array(11103,11111,10710,3311,11158,1278),
+    ),
+    11751 => array(
+        'm_icon' => '<i class="fas fa-horse-head ispink"></i>',
+        'm_name' => 'greg.farrow1',
+        'm_desc' => '',
+        'm_parents' => array(10710,3311,11158,1278),
+    ),
+    11731 => array(
+        'm_icon' => '<i class="far fa-whale ismatt"></i>',
+        'm_name' => 'j.kapuscik2',
+        'm_desc' => '',
+        'm_parents' => array(10719,11115,10710,11118,3311,11158,1278),
+    ),
+    11729 => array(
+        'm_icon' => '<i class="fas fa-deer ispink"></i>',
+        'm_name' => 'madhukaudantha',
+        'm_desc' => '',
+        'm_parents' => array(10710,11119,3311,11158,1278),
+    ),
+    11758 => array(
+        'm_icon' => '<i class="fas fa-dove ispink"></i>',
+        'm_name' => 'NMichas',
+        'm_desc' => '',
+        'm_parents' => array(10710,3311,11158,1278),
+    ),
+    11753 => array(
+        'm_icon' => '<i class="fas fa-turtle blue"></i>',
+        'm_name' => 'orarbel',
+        'm_desc' => '',
+        'm_parents' => array(10710,3311,11158,1278),
+    ),
+    11755 => array(
+        'm_icon' => '<i class="fas fa-squirrel blue"></i>',
+        'm_name' => 'rahman.s.888',
+        'm_desc' => '',
+        'm_parents' => array(11111,10710,3311,11158,1278),
+    ),
+    11752 => array(
+        'm_icon' => '<i class="fal fa-turtle yellow"></i>',
+        'm_name' => 'royibeni',
+        'm_desc' => '',
+        'm_parents' => array(11112,10710,3311,11158,1278),
+    ),
     10726 => array(
         'm_icon' => '<i class="far fa-browser"></i>',
         'm_name' => 'Web Development',
@@ -3374,7 +3704,7 @@ $config['en_all_10593'] = array(
 );
 
 //READ NOD:
-$config['en_ids_10596'] = array(6226,7610,10681,10685,10647,4993,5001,10625,5943,4999,4998,5000,5981,5982,5865,5003,10689,10659,6149,6969,4275,4283,6415,6559,6560,6556,6578,7611,7563,10690,4266,4267,4282,5967,10683,4577,4278,4279,4268,4287,7561,7564,7560,7559,7558,7488,7485,7741,7486,4559,7489,7492,6997,6157,7487,6143,6144,7562,7495,5007,4246,7504,4994);
+$config['en_ids_10596'] = array(6226,7610,10681,10685,10647,4993,5001,10625,5943,4999,4998,5000,5981,11956,5982,5865,5003,10689,10659,6149,6969,4275,4283,6415,6559,6560,6556,6578,7611,7563,10690,4266,4267,4282,5967,10683,4577,4278,4279,4268,4287,7561,7564,7560,7559,7558,7488,7485,7741,7486,4559,7489,7492,6997,6157,7487,6143,6144,7562,7495,5007,4246,7504,4994);
 $config['en_all_10596'] = array(
     6226 => array(
         'm_icon' => '<i class="far fa-sliders-h"></i>',
@@ -3453,6 +3783,12 @@ $config['en_all_10596'] = array(
         'm_name' => 'PLAYER MASS PROFILE ADD',
         'm_desc' => '',
         'm_parents' => array(10596,10589,4593,4997),
+    ),
+    11956 => array(
+        'm_icon' => '<i class="far fa-layer-plus" aria-hidden="true"></i>',
+        'm_name' => 'PLAYER MASS PROFILE IF ADD',
+        'm_desc' => '',
+        'm_parents' => array(10589,10596,4593,4997),
     ),
     5982 => array(
         'm_icon' => '<i class="fas fa-layer-minus"></i>',
@@ -3882,7 +4218,7 @@ $config['en_all_10590'] = array(
 );
 
 //BLOGGERS:
-$config['en_ids_10589'] = array(10671,4983,10573,4228,4229,4250,4601,6226,4231,10660,10676,10678,10679,10677,10686,10663,10664,10661,10675,10681,10685,10650,10648,10644,10651,10647,7757,4259,4261,10669,4260,4319,4230,4255,4318,4256,4258,4257,10672,7545,4251,10653,5001,10625,5943,4999,4998,5000,5981,5982,5865,5003,10689,10646,10654,10657,10673,10656,10659,4235,4275,6132,6415,6559,6560,6556,6578,10690,4266,4267,10683,6155,4577,4549,4551,4550,4557,4278,4279,4268,4460,4547,4287,4548,7561,7564,7560,7559,7558,7488,7485,7741,7486,4559,7489,7492,6140,6997,6157,7487,6143,6144,7578,6224,5007,4246,7504);
+$config['en_ids_10589'] = array(10671,4983,10573,4228,4229,4250,4601,6226,4231,10660,10676,10678,10679,10677,10686,10663,10664,10661,10675,10681,10685,10650,10648,10644,10651,10647,7757,4259,4261,10669,4260,4319,4230,4255,4318,4256,4258,4257,10672,7545,4251,10653,5001,10625,5943,4999,4998,5000,5981,11956,5982,5865,5003,10689,10646,10654,10657,10673,10656,10659,4235,4275,6132,6415,6559,6560,6556,6578,10690,4266,4267,10683,6155,4577,4549,4551,4550,4557,4278,4279,4268,4460,4547,4287,4548,7561,7564,7560,7559,7558,7488,7485,7741,7486,4559,7489,7492,6140,6997,6157,7487,6143,6144,7578,6224,5007,4246,7504);
 $config['en_all_10589'] = array(
     10671 => array(
         'm_icon' => '<i class="far fa-trash-alt"></i>',
@@ -4177,6 +4513,12 @@ $config['en_all_10589'] = array(
         'm_name' => 'PLAYER MASS PROFILE ADD',
         'm_desc' => '',
         'm_parents' => array(10596,10589,4593,4997),
+    ),
+    11956 => array(
+        'm_icon' => '<i class="far fa-layer-plus" aria-hidden="true"></i>',
+        'm_name' => 'PLAYER MASS PROFILE IF ADD',
+        'm_desc' => '',
+        'm_parents' => array(10589,10596,4593,4997),
     ),
     5982 => array(
         'm_icon' => '<i class="fas fa-layer-minus"></i>',
@@ -6448,7 +6790,7 @@ $config['en_all_4280'] = array(
 );
 
 //PLAYER MASS UPDATE:
-$config['en_ids_4997'] = array(5001,10625,5943,4999,4998,5000,5981,5982,5865,5003);
+$config['en_ids_4997'] = array(5001,10625,5943,4999,4998,5000,5981,11956,5982,5865,5003);
 $config['en_all_4997'] = array(
     5001 => array(
         'm_icon' => '<i class="fas fa-sticky-note"></i>',
@@ -6491,6 +6833,12 @@ $config['en_all_4997'] = array(
         'm_name' => 'PROFILE ADD',
         'm_desc' => 'If not already done so, will add searched entity as the parent of all child entities',
         'm_parents' => array(10596,10589,4593,4997),
+    ),
+    11956 => array(
+        'm_icon' => '<i class="far fa-layer-plus" aria-hidden="true"></i>',
+        'm_name' => 'PROFILE IF ADD',
+        'm_desc' => 'Adds a parent entity only IF the entity has another parent entity.',
+        'm_parents' => array(10589,10596,4593,4997),
     ),
     5982 => array(
         'm_icon' => '<i class="fas fa-layer-minus"></i>',
@@ -6988,15 +7336,15 @@ $config['en_all_4600'] = array(
         'm_parents' => array(4600),
     ),
     1278 => array(
-        'm_icon' => '👪',
-        'm_name' => 'People',
+        'm_icon' => '<i class="far fa-users"></i>',
+        'm_name' => 'PEOPLE',
         'm_desc' => '',
         'm_parents' => array(4600),
     ),
 );
 
 //READ TYPE:
-$config['en_ids_4593'] = array(10671,4983,10573,4228,4229,4250,4601,6226,4231,10660,10676,10678,10679,10677,7610,10686,10663,10664,10661,10675,10681,10685,10662,10650,10648,10644,10651,10647,4993,7757,4259,4261,10669,4260,4319,4230,4255,4318,4256,4258,4257,10672,7545,4251,10653,5001,10625,5943,4999,4998,5000,5981,5982,5865,5003,10689,10646,10654,10657,10673,10656,10659,4235,6149,6969,4275,4283,6132,6415,6559,6560,6556,6578,7611,7563,10690,4266,4267,4282,5967,10683,7702,4570,6155,4577,4549,4551,4550,4557,4278,4279,4268,4460,4547,4287,4548,7561,7564,7560,7559,7558,7488,7485,7741,7486,4559,7489,7492,6140,6997,6157,7487,6143,6144,7578,6224,7562,7495,4554,4556,4555,6563,4552,4553,5007,4246,7504,4994);
+$config['en_ids_4593'] = array(10671,4983,10573,4228,4229,4250,4601,6226,4231,10660,10676,10678,10679,10677,7610,10686,10663,10664,10661,10675,10681,10685,10662,10650,10648,10644,10651,10647,4993,7757,4259,4261,10669,4260,4319,4230,4255,4318,4256,4258,4257,10672,7545,4251,10653,5001,10625,5943,4999,4998,5000,5981,11956,5982,5865,5003,10689,10646,10654,10657,10673,10656,10659,4235,6149,6969,4275,4283,6132,6415,6559,6560,6556,6578,7611,7563,10690,4266,4267,4282,5967,10683,7702,4570,6155,4577,4549,4551,4550,4557,4278,4279,4268,4460,4547,4287,4548,7561,7564,7560,7559,7558,7488,7485,7741,7486,4559,7489,7492,6140,6997,6157,7487,6143,6144,7578,6224,7562,7495,4554,4556,4555,6563,4552,4553,5007,4246,7504,4994);
 $config['en_all_4593'] = array(
     10671 => array(
         'm_icon' => '<i class="far fa-trash-alt"></i>',
@@ -7309,6 +7657,12 @@ $config['en_all_4593'] = array(
         'm_name' => 'PLAYER MASS PROFILE ADD',
         'm_desc' => '',
         'm_parents' => array(10596,10589,4593,4997),
+    ),
+    11956 => array(
+        'm_icon' => '<i class="far fa-layer-plus" aria-hidden="true"></i>',
+        'm_name' => 'PLAYER MASS PROFILE IF ADD',
+        'm_desc' => '',
+        'm_parents' => array(10589,10596,4593,4997),
     ),
     5982 => array(
         'm_icon' => '<i class="fas fa-layer-minus"></i>',
