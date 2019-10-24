@@ -134,11 +134,6 @@ class Play extends CI_Controller
 
 
             }
-
-
-            if($topic_count >= 1){
-                break; //One topic for now
-            }
         }
     }
 
