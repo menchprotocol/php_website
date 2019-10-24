@@ -2346,7 +2346,7 @@ function echo_en($en, $is_parent = false)
     }
 
     //MODIFY
-    $ui .= '<span class="icon-block-sm"><a href="javascript:void(0);" onclick="en_modify_load(' . $en['en_id'] . ',' . $ln_id . ')"><i class="fas fa-cog"></i></a></span>';
+    $ui .= '<span class="icon-block-sm"><a href="javascript:void(0);" onclick="en_modify_load(' . $en['en_id'] . ',' . $ln_id . ')"><i class="fas fa-cog blue"></i></a></span>';
 
     $ui .= ' </div>';
 

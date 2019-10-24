@@ -976,6 +976,8 @@ class PLAY_model extends CI_Model
                             'ln_parent_entity_id' => $parent_new_en_id,
                         ));
 
+                        $applied_success++;
+
                     }
 
                 }
