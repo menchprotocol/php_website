@@ -842,7 +842,7 @@ fragment PostListingItemSidebar_post on Post {
          *
          * */
 
-        $session_en = en_auth(null);
+        $session_en = en_auth();
         if (!$session_en) {
             return echo_json(array(
                 'status' => 0,
@@ -1208,7 +1208,7 @@ fragment PostListingItemSidebar_post on Post {
                 'message' => 'Expired Session or Missing Superpower',
             ));
 
-        } elseif(!in_array($superpower_en_id, $this->session->userdata('assigned_superpowers_en_ids'))){
+        } elseif(!en_auth($superpower_en_id)){
 
             //Access not authorized:
             return echo_json(array(
@@ -1621,7 +1621,7 @@ fragment PostListingItemSidebar_post on Post {
     function en_fetch_canonical_url(){
 
         //Auth user and check required variables:
-        $session_en = en_auth(null);
+        $session_en = en_auth();
 
         if (!$session_en) {
             return echo_json(array(
@@ -1658,7 +1658,7 @@ fragment PostListingItemSidebar_post on Post {
     {
 
         //Auth user and check required variables:
-        $session_en = en_auth(null);
+        $session_en = en_auth();
 
         //Description type requirement:
         $contributor_type_requirement = array(4230, 4255); //Raw or Text string
@@ -2490,7 +2490,7 @@ fragment PostListingItemSidebar_post on Post {
     function magiclogin($ln_id){
 
         //Validate email:
-        if(en_auth(null)){
+        if(en_auth()){
             return redirect_message('/blog');
         } elseif(en_auth()){
             return redirect_message('/actionplan/next');
@@ -3343,7 +3343,7 @@ fragment PostListingItemSidebar_post on Post {
             'en_status_entity_id IN (' . join(',', $this->config->item('en_ids_7357')) . ')' => null, //Entity Statuses Public
         ), array(), 0, 0, array(), 'COUNT(en_id) as total_public_entities');
 
-        $session_en = en_auth(null);
+        $session_en = en_auth();
         if (!$session_en) {
 
             //COUNT WORDS BLOG/READ:

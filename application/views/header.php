@@ -33,7 +33,7 @@
     echo '<script type="text/javascript">';
 
     //PLAYER
-    echo ' var js_assigned_superpowers_en_ids = ' . json_encode(( count($this->session->userdata('assigned_superpowers_en_ids')) ? $this->session->userdata('assigned_superpowers_en_ids') : array() )) . '; ';
+    echo ' var js_assigned_superpowers_en_ids = ' . json_encode( count($this->session->userdata('assigned_superpowers_en_ids')) ? $this->session->userdata('assigned_superpowers_en_ids') : array() ) . '; ';
     echo ' var js_pl_id = ' . ( isset($session_en['en_id']) ? $session_en['en_id'] : 0 ) . '; ';
 
     //LOAD JS CACHE:
@@ -110,20 +110,24 @@ if(strlen($flash_message) > 0){
 
                         <td>
                             <div class="supwerpower_view">
+
                                 <img src="/img/mench-v2-128.png" class="search-toggle footer-logo mench-spin" /><span class="mench-logo montserrat search-toggle">MENCH</span>
 
                                 <div class="search-toggle hidden"><form id="searchFrontForm"><input class="form-control algolia_search" type="search" id="mench_search" data-lpignore="true" placeholder="<?= $en_all_11035[7256]['m_name'] ?>"></form></div>
+
                             </div>
                             <div class="supwerpower_view hidden">
+
                                 <?php
                                 if(count($this->session->userdata('assigned_superpowers_en_ids'))){
                                     foreach($this->config->item('en_all_10957') as $superpower_en_id => $m){
-                                        if(in_array($superpower_en_id, $this->session->userdata('assigned_superpowers_en_ids'))){
+                                        if(en_auth($superpower_en_id)){
                                             echo '<a class="btn btn-sm btn-superpower icon-block-lg superpower-frame-'.$superpower_en_id.' '.( in_array($superpower_en_id, $this->session->userdata('activate_superpowers_en_ids')) ? 'active' : '' ).'" href="javascript:void();" onclick="toggle_superpower('.$superpower_en_id.')" data-toggle="tooltip" data-placement="top" title="'.$m['m_name'].' '.$m['m_desc'].'">'.$m['m_icon'].'</a>';
                                         }
                                     }
                                 }
                                 ?>
+
                             </div>
                         </td>
 

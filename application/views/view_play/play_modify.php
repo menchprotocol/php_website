@@ -80,8 +80,7 @@ $en_all_11035 = $this->config->item('en_all_11035'); //MENCH PLAYER NAVIGATION
             <div class="row">
                 <div class="col-md-6">
 
-                    <div class="title"><h4><?= $en_all_7368[4536]['m_icon'].' Entity Settings' ?></h4></div>
-                    <div class="inline-box" style="margin-bottom: 15px;">
+                    <div class="inline-box">
 
 
                         <!-- Entity Status -->
@@ -143,8 +142,6 @@ $en_all_11035 = $this->config->item('en_all_11035'); //MENCH PLAYER NAVIGATION
                 <div class="col-md-6 en-has-tr">
 
                     <div>
-
-                        <div class="title"><h4><?= $en_all_7368[6205]['m_icon'].' Link Settings' ?></h4></div>
 
                         <div class="inline-box">
 
@@ -283,7 +280,7 @@ $en_all_11035 = $this->config->item('en_all_11035'); //MENCH PLAYER NAVIGATION
 
                 //Input to add new parents:
                 $this_tab .= '<div id="new-parent" class="'.require_superpower(10989 /* PEGASUS */).'">
-                    <div class="form-group is-empty"><input type="text" class="form-control new-input algolia_search form-control-thick" data-lpignore="true" placeholder="Add Entity/URL"></div>
+                    <div class="form-group is-empty"><input type="text" class="form-control new-input algolia_search form-control-thick" data-lpignore="true" placeholder="Add Player/URL"></div>
                     <div class="algolia_search_pad hidden"><span>Search existing players, create a new player or paste a URL...</span></div>
             </div>';
 
@@ -323,7 +320,7 @@ $en_all_11035 = $this->config->item('en_all_11035'); //MENCH PLAYER NAVIGATION
 
                 //Input to add new child:
                 $this_tab .= '<div id="new-children" class="'.require_superpower(10989 /* PEGASUS */).'">
-            <div class="form-group is-empty"><input type="text" class="form-control new-input form-control-thick algolia_search" data-lpignore="true" placeholder="Add Entity/URL"></div>
+            <div class="form-group is-empty"><input type="text" class="form-control new-input form-control-thick algolia_search" data-lpignore="true" placeholder="Add Player/URL"></div>
             <div class="algolia_search_pad hidden"><span>Search existing players, create a new player or paste a URL...</span></div>
     </div>';
                 $this_tab .= '</div>';

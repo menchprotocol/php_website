@@ -2085,7 +2085,7 @@ function echo_in($in, $in_linked_id = 0, $is_parent = false)
 
 
 
-    $ui .= '<span id="title_' . $ln_id . '" class="tree_title in_outcome_' . $in['in_id'] . '">' . echo_in_outcome($in['in_outcome'], false) . '</span>';
+    $ui .= '<b id="title_' . $ln_id . '" class="tree_title in_outcome_' . $in['in_id'] . '">' . echo_in_outcome($in['in_outcome'], false) . '</b>';
 
 
 

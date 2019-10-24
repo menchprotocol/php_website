@@ -611,20 +611,21 @@ function in_is_unlockable($in){
     return in_array($in['in_status_entity_id'], $CI->config->item('en_ids_7355') /* Intent Statuses Public */);
 }
 
-function en_auth($required_superpowers = null, $force_redirect = 0)
+function en_auth($superpower_en_id = null, $force_redirect = 0)
 {
 
     //Authenticates logged-in users with their session information
     $CI =& get_instance();
     $session_en = $CI->session->userdata('user');
+    $has_session = ( is_array($session_en) && count($session_en) > 0 );
 
     //Let's start checking various ways we can give user access:
-    if (!$required_superpowers && is_array($session_en) && count($session_en) > 0) {
+    if ($has_session && !$superpower_en_id) {
 
         //No minimum level required, grant access IF user is logged in:
         return $session_en;
 
-    } elseif (isset($session_en['en_id']) && filter_array($session_en['en__parents'], 'en_id', $required_superpowers)) {
+    } elseif ($has_session && in_array($superpower_en_id, $CI->session->userdata('assigned_superpowers_en_ids'))) {
 
         //They are part of one of the levels assigned to them:
         return $session_en;
@@ -634,8 +635,11 @@ function en_auth($required_superpowers = null, $force_redirect = 0)
     //Still here?!
     //We could not find a reason to give user access, so block them:
     if (!$force_redirect) {
+
         return false;
+
     } else {
+
         //Block access:
         if(isset($session_en['en__parents'][0])){
             $goto_url = '/play';

@@ -3386,7 +3386,7 @@ class READ_model extends CI_Model
                 if($is_being_modified){
 
                     //Entity reference must be either the trainer themselves or an expert source:
-                    $session_en = en_auth(null);
+                    $session_en = en_auth();
                     if($string_references['ref_entities'][0] != $session_en['en_id']){
 
                         //Reference is not the logged-in trainer, let's check to make sure it's an expert source

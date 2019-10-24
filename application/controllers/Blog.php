@@ -225,7 +225,7 @@ class Blog extends CI_Controller {
          * */
 
         //Authenticate Trainer:
-        $session_en = en_auth(null);
+        $session_en = en_auth();
         if (!$session_en) {
             return echo_json(array(
                 'status' => 0,
@@ -423,7 +423,7 @@ class Blog extends CI_Controller {
         $en_all_6103 = $this->config->item('en_all_6103'); //Link Metadata
 
         //Authenticate Trainer:
-        $session_en = en_auth(null);
+        $session_en = en_auth();
         $ln_id = intval($_POST['ln_id']);
 
         //Validate intent:
@@ -713,7 +713,7 @@ class Blog extends CI_Controller {
     {
 
         //Authenticate Trainer:
-        $session_en = en_auth(null);
+        $session_en = en_auth();
         if (!$session_en) {
             echo_json(array(
                 'status' => 0,
@@ -777,7 +777,7 @@ class Blog extends CI_Controller {
     {
 
         //Authenticate Trainer:
-        $session_en = en_auth(null);
+        $session_en = en_auth();
 
         if (!$session_en) {
 
@@ -854,7 +854,7 @@ class Blog extends CI_Controller {
     {
 
         //Authenticate Trainer:
-        $session_en = en_auth(null);
+        $session_en = en_auth();
         if (!$session_en) {
 
             return echo_json(array(
@@ -968,7 +968,7 @@ class Blog extends CI_Controller {
          *
          * */
 
-        $session_en = en_auth(null);
+        $session_en = en_auth();
         if (!$session_en) {
             return echo_json(array(
                 'status' => 0,
@@ -1049,7 +1049,7 @@ class Blog extends CI_Controller {
     {
 
         //Authenticate Trainer:
-        $session_en = en_auth(null);
+        $session_en = en_auth();
         if (!$session_en) {
 
             return echo_json(array(
@@ -1090,7 +1090,7 @@ class Blog extends CI_Controller {
     {
 
         //Authenticate Trainer:
-        $session_en = en_auth(null);
+        $session_en = en_auth();
         if (!$session_en) {
             return echo_json(array(
                 'status' => 0,
