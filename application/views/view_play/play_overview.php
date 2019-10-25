@@ -11,11 +11,11 @@ $en_all_10591 = $this->config->item('en_all_10591'); //PLAYER PLAYS
 
             <h1>MENCH IS</h1>
             <ul class="intructions-list">
-                <li>A game of words where players can either <b class="montserrat blog"><?= $en_all_2738[4535]['m_name'] ?></b> or <b class="montserrat read"><?= $en_all_2738[6205]['m_name'] ?></b></li>
+                <li>A game of words where players earn coins as they <b class="montserrat read"><?= $en_all_2738[6205]['m_name'] ?></b> and <b class="montserrat blog"><?= $en_all_2738[4535]['m_name'] ?></b></li>
                 <li>A publishing platform for creating and sharing interactive content</li>
-                <li>A personalized reading experience available on the web and Messenger</li>
+                <li>A personalized reading experience delivered over the web and Messenger</li>
                 <li>A non-profit and open-source project for building and sharing consensus</li>
-                <li>A community of thinkers and doers that share stories and ideas that matter</li>
+                <li>A community of thinkers and doers sharing stories and ideas that matter</li>
             </ul>
 
 
@@ -27,6 +27,14 @@ $en_all_10591 = $this->config->item('en_all_10591'); //PLAYER PLAYS
                 <li><b class="montserrat read"><?= $en_all_2738[6205]['m_name'] ?></b> unlimited words for $<?= config_var(11162) ?>/month</li>
                 <li>Earn monthly cash with your <?= $en_all_2738[4535]['m_icon'] ?> coins</li>
             </ul>
+
+            <?php
+            if ($session_en) {
+                echo '<div style="padding-bottom:21px;"><a href="/play/'.$session_en['en_id'].'" class="btn btn-play montserrat">My Profile</a></div>';
+            } else {
+                echo '<div style="padding-bottom:21px;"><a href="/sign" class="btn btn-play montserrat">'.$en_all_11035[4269]['m_name'].'</a></div>';
+            }
+            ?>
 
         </div>
         <div class="col-lg">
