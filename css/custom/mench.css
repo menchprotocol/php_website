@@ -608,6 +608,10 @@ li a {
     color:#FFFFFF !important;
 }
 
+.double-line-list{
+    width:80%;
+}
+
 /* RESPONSIVE */
 @media (max-width:767px) {
     body {
@@ -623,11 +627,17 @@ li a {
     .searchpad {
         top:300px;
     }
+    .double-line-list{
+        width: 100%;
+    }
 
 }
 @media (max-width:1200px){
     .container {
         max-width: none;
+    }
+    .double-line-list{
+        width:90%;
     }
 }
 

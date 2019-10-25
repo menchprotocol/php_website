@@ -10,7 +10,7 @@ $en_all_10591 = $this->config->item('en_all_10591'); //PLAYER PLAYS
         <div class="col-lg">
 
             <h1>MENCH IS</h1>
-            <ul class="intructions-list">
+            <ul class="intructions-list double-line-list">
                 <li>A game of words where players earn coins as they <b class="montserrat read"><?= $en_all_2738[6205]['m_name'] ?></b> and <b class="montserrat blog"><?= $en_all_2738[4535]['m_name'] ?></b></li>
                 <li>A publishing platform for creating and sharing interactive content</li>
                 <li>A personalized reading experience delivered over the web and Messenger</li>
