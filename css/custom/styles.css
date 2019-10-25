@@ -131,14 +131,14 @@ body.grey-bg {
 }
 
 .badge-primary, .panel-primary>.panel-heading .badge-primary {
-    background-color: #FFDF0F;
+    background-color: #f1d104;
     color: #070707;
 }
 
 .btn-xs.btn-black {
     font-size: 0.6em !important;
     font-weight: normal !important;
-    border: 2px solid #FFDF0F !important;
+    border: 2px solid #f1d104 !important;
     background-color: #fff !important;
     color: #070707 !important;
 }
@@ -465,7 +465,7 @@ input::-webkit-inner-spin-button {
 
 .copy-btn-done {
     color: #070707 !important;
-    background-color: #FFDF0F !important;
+    background-color: #f1d104 !important;
 }
 
 .progress {
@@ -994,8 +994,8 @@ input::-webkit-inner-spin-button {
 
 
 .entity-list .list-group-item.active, .entity-list .list-group-item.active:focus, .entity-list .list-group-item.active:hover {
-    background-color: #FFDF0F;
-    border-color: #FFDF0F;
+    background-color: #f1d104;
+    border-color: #f1d104;
     color: #070707;
 }
 
@@ -1289,7 +1289,7 @@ h5, .h5 {
 }
 
 .public-profiles > a:hover {
-    color: #FFDF0F !important;
+    color: #f1d104 !important;
 }
 
 .subhead {
@@ -2487,7 +2487,7 @@ select.form-control {
 }
 
 .mini-li .fas {
-    color: #FFDF0F;
+    color: #f1d104;
 }
 
 .mini-li a:hover .fas {
@@ -2509,7 +2509,7 @@ select.form-control {
 }
 
 .nav > .active > a:focus, .nav > .active > a:hover {
-    background-color: #FFDF0F !important;
+    background-color: #f1d104 !important;
     cursor: default !important;
 }
 
@@ -3019,7 +3019,7 @@ a .badge {
 }
 
 .badge-click {
-    background-color: #FFDF0F;
+    background-color: #f1d104;
     color: #070707;
     border: 1px solid #070707;
     margin-top: -4px;
@@ -3045,7 +3045,7 @@ h4 .tip-badge {
 .help_body {
     cursor: default;
     display: none;
-    background-color: #FFDF0F;
+    background-color: #f1d104;
     border: 1px solid #FFF;
     margin: 0 0 10px;
     padding: 10px;
@@ -3433,7 +3433,7 @@ h4 .tip-badge {
 
 .nav-pills-primary li.active a {
     border-radius: 5px !important;
-    border: 1px solid #FFDF0F;
+    border: 1px solid #f1d104;
     box-shadow: none !important;
 }
 
@@ -3478,7 +3478,7 @@ h4 .tip-badge {
 
 .navbar-main > .active > a, .navbar-main > .active > a:hover, .navbar-main > .active > a:focus {
     color: #070707 !important;
-    background-color: #FFDF0F !important;
+    background-color: #f1d104 !important;
     border-radius: 5px !important;
     cursor: pointer !important;
     border: 1px solid #FFF;
@@ -3555,7 +3555,7 @@ h4 .tip-badge {
 }
 
 #platform_body .intent-active a, #platform_body .intent-active a:hover, #platform_body .intent-active a:focus, #platform_body .intent-inactive > a:hover , .intent-active .fas, .intent-inactive:hover .fas {
-    background-color: #FFDF0F !important;
+    background-color: #f1d104 !important;
     color: #070707 !important;
     cursor: pointer !important;
 }
@@ -3773,7 +3773,7 @@ h4 .tip-badge {
     background-color: transparent !important;
     cursor: pointer !important;
     color: #2b2b2b !important;
-    border:2px solid #FFDF0F !important;
+    border:2px solid #f1d104 !important;
 }
 
 .white-third{
@@ -4128,7 +4128,7 @@ h4 .tip-badge {
 }
 
 .is-highlighted{
-    background-color:#FFDF0F;
+    background-color:#f1d104;
 }
 .has-data{
     padding-left:5px;

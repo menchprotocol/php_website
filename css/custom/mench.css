@@ -3,7 +3,7 @@
 body {
     background-color: #F7F7F7 !important;
     color: #070707;
-    font-size: 1.4em;
+    font-size: 1.3em;
     margin: 65px 0;
     font-family: 'Open Sans', sans-serif;
     font-weight: 400;
@@ -263,16 +263,16 @@ li a {
 
 /* MENCH Colors */
 .blue, .isblue, .isblue a, .play, .play .fas, .play .far, .play .fal           { color:#008DF2 !important; }
-.yellow, .isyellow, .isyellow a, .blog, .blog .fas, .blog .far, .blog .fal  { color:#FFDF0F !important; }
+.yellow, .isyellow, .isyellow a, .blog, .blog .fas, .blog .far, .blog .fal  { color:#f1d104 !important; }
 .pink, .ispink, .ispink a, .read, .read .fas, .read .far, .read .fal           { color:#FC1B44 !important; }
 
 .border-play     { border-color:#008DF2 !important; }
-.border-blog     { border-color:#FFDF0F !important; }
+.border-blog     { border-color:#f1d104 !important; }
 .border-read     { border-color:#FC1B44 !important; }
 
 
 .background-play, a.border-play:hover, a.border-play:hover .fas     { background-color:#008DF2 !important; color:#FFFFFF !important; }
-.background-blog, a.border-blog:hover, a.border-blog:hover .fas     { background-color:#FFDF0F !important; color:#070707 !important; }
+.background-blog, a.border-blog:hover, a.border-blog:hover .fas     { background-color:#f1d104 !important; color:#070707 !important; }
 .background-read, a.border-read:hover, a.border-read:hover .fas     { background-color:#FC1B44 !important; color:#FFFFFF !important; }
 
 .background-play .fas, .background-read .fas, .background-play .far, .background-read .far, .background-play .fal, .background-read .fal { color:#FFFFFF !important; }
@@ -551,7 +551,7 @@ li a {
     color:#008DF2 !important;
 }
 .btn-superpower.active .fas.yellow, .btn-superpower.active .far.yellow, .btn-superpower.active .fal.yellow {
-    color:#FFDF0F !important;
+    color:#f1d104 !important;
 }
 .btn-superpower.active .fas.ispink, .btn-superpower.active .far.ispink, .btn-superpower.active .fal.ispink {
     color:#FC1B44 !important;
@@ -576,10 +576,11 @@ li a {
     color: #FFFFFF;
 }
 
+
 .btn-read .fas,.btn-read .far,.btn-read .fal { color: #FFFFFF !important; }
 
 .btn.btn-blog, .btn.btn-blog:hover, .btn.btn-blog:focus, .btn.btn-blog:active, .btn.btn-blog.active, .btn.btn-blog:active:focus, .btn.btn-blog:active:hover, .btn.btn-blog.active:focus, .btn.btn-blog.active:hover, .open > .btn.btn-blog.dropdown-toggle, .open > .btn.btn-blog.dropdown-toggle:focus, .open > .btn.btn-blog.dropdown-toggle:hover, .navbar .navbar-nav > li > a.btn.btn-blog, .navbar .navbar-nav > li > a.btn.btn-blog:hover, .navbar .navbar-nav > li > a.btn.btn-blog:focus, .navbar .navbar-nav > li > a.btn.btn-blog:active, .navbar .navbar-nav > li > a.btn.btn-blog.active, .navbar .navbar-nav > li > a.btn.btn-blog:active:focus, .navbar .navbar-nav > li > a.btn.btn-blog:active:hover, .navbar .navbar-nav > li > a.btn.btn-blog.active:focus, .navbar .navbar-nav > li > a.btn.btn-blog.active:hover, .open > .navbar .navbar-nav > li > a.btn.btn-blog.dropdown-toggle, .open > .navbar .navbar-nav > li > a.btn.btn-blog.dropdown-toggle:focus, .open > .navbar .navbar-nav > li > a.btn.btn-blog.dropdown-toggle:hover {
-    background-color: #FFDF0F;
+    background-color: #f1d104;
     color: #070707;
 }
 
