@@ -30,7 +30,7 @@ body {
 
 .intructions-list{
     list-style: decimal;
-    margin-left:-10px;
+    margin-left:-12px;
 }
 
 .nav-tabs-sm .nav-link {
@@ -615,7 +615,7 @@ li a {
 /* RESPONSIVE */
 @media (max-width:767px) {
     body {
-        font-size:1.1em;
+        font-size:1em;
     }
     h4 span{
         margin-top: -18px;
