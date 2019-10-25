@@ -627,9 +627,6 @@ li a {
     .searchpad {
         top:300px;
     }
-    .double-line-list{
-        width: 100%;
-    }
 
 }
 @media (max-width:1200px){
@@ -637,7 +634,7 @@ li a {
         max-width: none;
     }
     .double-line-list{
-        width:90%;
+        width: 100%;
     }
 }
 
