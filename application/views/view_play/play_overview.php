@@ -15,7 +15,7 @@ $en_all_10591 = $this->config->item('en_all_10591'); //PLAYER PLAYS
                 <li>A publishing platform for creating and sharing interactive content</li>
                 <li>A personalized reading experience delivered over the web and Messenger</li>
                 <li>A non-profit and open-source project for building and sharing consensus</li>
-                <li>A community of thinkers and doers sharing stories and ideas that matter</li>
+                <li>A community of thinkers and doers who share stories and ideas that matter</li>
             </ul>
 
 
