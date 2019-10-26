@@ -32,12 +32,6 @@ $en_all_10591 = $this->config->item('en_all_10591'); //PLAYER PLAYS
             <?php
             echo '<div style="padding-bottom:21px;">';
 
-            if ($session_en) {
-                echo '<a href="/play/'.$session_en['en_id'].'" class="btn btn-play montserrat">My Profile <i class="fas fa-arrow-right"></i></a>';
-            } else {
-                echo '<a href="/sign" class="btn btn-play montserrat">'.$en_all_11035[4269]['m_name'].' <i class="fas fa-arrow-right"></i></a>';
-            }
-
             //READ or BLOG
             echo '<a href="/read" class="btn btn-read montserrat" style="margin-left: 5px;">'.$en_all_2738[6205]['m_name'].' <i class="fas fa-arrow-right"></i></a>';
             echo '<a href="/blog" class="btn btn-blog montserrat" style="margin-left: 5px;">'.$en_all_2738[4535]['m_name'].' <i class="fas fa-arrow-right"></i></a>';
