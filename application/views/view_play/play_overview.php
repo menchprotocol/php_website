@@ -14,9 +14,10 @@ $en_all_10591 = $this->config->item('en_all_10591'); //PLAYER PLAYS
                 <li>A game of words where players earn coins as they <b class="montserrat read"><?= $en_all_2738[6205]['m_name'] ?></b> and <b class="montserrat blog"><?= $en_all_2738[4535]['m_name'] ?></b></li>
                 <li>A publishing platform for creating and sharing interactive content</li>
                 <li>A personalized reading experience delivered over the web or Messenger</li>
-                <li>A non-profit and open-source project for building and sharing consensus</li>
-                <li>A community of thinkers and doers who share stories and ideas that matter</li>
+                <li class="learn_more hidden">A non-profit and open-source project for building and sharing consensus</li>
+                <li class="learn_more hidden">A community of thinkers and doers who share stories and ideas that matter</li>
             </ul>
+            <div class="learn_more"><span class="parent-icon icon-block-sm"><i class="fas fa-search-plus"></i></span><a href="javascript:void(0);" onclick="$('.learn_more').toggleClass('hidden')">LEARN MORE</a></div>
 
 
             <h1 style="margin-top:21px;">HOW TO PLAY</h1>
