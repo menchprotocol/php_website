@@ -394,62 +394,62 @@ li a {
 
 
 /* HEADER */
-.header-top{
+.three-menus{
     width: 100%;
     background-color: #F7F7F7;
 }
 
-.header-top td{
+.three-menus td{
     width: 33.3% !important;
 }
 
-.header-top .mn_name{
+.three-menus .mn_name{
     font-size:1.2em;
     margin-left:3px;
     min-width: 76px;
     display: inline-block;
 }
-.header-top .current_count{
+.three-menus .current_count{
     font-size:1em;
     min-width: 92px;
     display: inline-block;
 }
 
-.header-top a{
+.three-menus a{
     padding:9px 5px 5px;
     display: block;
     text-decoration: none;
-    border-bottom:2px solid;
+    border-top:2px solid;
     line-height: 110%;
 }
 
 
 
 /* FOOTER */
-.footer-bottom {
+.mench-navigation {
     width: 100%;
     background-color: #F7F7F7;
-    border-top:2px solid #070707;
+    border-bottom:2px solid #070707;
     min-height:50px;
 }
-.footer-bottom .footer-logo{
+.mench-navigation .mench-logo{
     width: 35px;
     margin-left:5px;
     margin-right:4px;
 }
-.footer-bottom #searchFrontForm, .algolia-autocomplete, .algolia-autocomplete .aa-input, .algolia-autocomplete .aa-hint{
+.mench-navigation #searchFrontForm, .algolia-autocomplete, .algolia-autocomplete .aa-input, .algolia-autocomplete .aa-hint{
      width: 100%;
 }
-.footer-bottom td {
+.mench-navigation td {
     padding:3px 0 3px;
 }
-.footer-bottom .block-link {
+.mench-navigation .block-link {
     width:48px;
     margin: 0;
     padding: 0;
     line-height: 100% !important;
 }
-.footer-bottom .block-link a{
+.mench-navigation .block-link a{
     display: block;
     text-align: center;
     margin-left:5px;
@@ -457,25 +457,25 @@ li a {
     padding: 12px 5px 8px;
 }
 
-.footer-bottom .block-link .fas, .block-link .fal, .block-link .far{
+.mench-navigation .block-link .fas, .block-link .fal, .block-link .far{
     font-size: 1.2em;
 }
-.footer-bottom .block-link a:hover, .block-link a:hover .fas, .block-link a:hover .fal, .block-link a:hover .far {
+.mench-navigation .block-link a:hover, .block-link a:hover .fas, .block-link a:hover .fal, .block-link a:hover .far {
     background-color:#070707;
     color:#FFFFFF !important;
 }
 
-.footer-bottom .block-logo a {
+.mench-navigation .block-logo a {
     display: block;
     text-align: center;
     margin-left: 0;
     padding:0;
 }
-.footer-bottom .block-logo a:hover {
+.mench-navigation .block-logo a:hover {
     background-color: transparent;
 }
 
-.footer-bottom .mench-logo{
+.mench-navigation .mench-logo{
     font-size: 1.8em;
     margin-left:3px;
     line-height: 100%;
@@ -621,7 +621,7 @@ li a {
     h4 span{
         margin-top: -18px;
     }
-    .header-top .mn_name{
+    .three-menus .mn_name{
         min-width: 60px;
     }
     .icon-block-sm{ min-width:26px; }

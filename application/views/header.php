@@ -80,17 +80,18 @@ if(strlen($flash_message) > 0){
 
         ?>
 
-        <!-- HEADER -->
-        <div class="container show-while-searching fixed-top">
+
+
+        <!-- MENCH LINE -->
+        <div class="container show-while-searching fixed-bottom">
             <div class="row">
-                <table class="header-top">
+                <table class="three-menus">
                     <tr>
                         <?php
                         foreach($this->config->item('en_all_2738') as $en_id => $m){
 
                             $handle = strtolower($m['m_name']);
                             $play_logged_in = ($en_id==4536 && isset($session_en['en_id']));
-
 
                             echo '<td valign="bottom"><a class="'.$handle.' border-'.$handle.( $this->uri->segment(1)==$handle ? ' background-'.$handle: null ).'" href="/'.$handle.(intval($this->uri->segment(2) && isset($session_en['en_id']) && (($this->uri->segment(1)=='blog' && $en_id==6205) || ($this->uri->segment(1)=='read' && $en_id==4535))) ? '/'.$this->uri->segment(2) : '' ).'">' . $m['m_icon'] . '<span class="mn_name montserrat">' . $m['m_name'] . '</span> <span class="current_count mono '.( $play_logged_in ? 'hidden' : '' ).'"><i class="far fa-yin-yang fa-spin"></i></span>'.( $play_logged_in ? ' '.trim(one_two_explode('',' ', $session_en['en_name'])) : '' ).'</a></td>';
 
@@ -102,15 +103,18 @@ if(strlen($flash_message) > 0){
         </div>
 
 
-        <!-- FOOTER -->
-        <div class="container show-while-searching fixed-bottom">
+
+
+
+        <!-- 3X NAVIGATION -->
+        <div class="container show-while-searching fixed-top">
             <div class="row">
-                <table class="footer-bottom">
+                <table class="mench-navigation">
                     <tr>
 
                         <?php
 
-                        $mench_logo = '<img src="/img/mench-v2-128.png" class="footer-logo mench-spin" />';
+                        $mench_logo = '<img src="/img/mench-v2-128.png" class="mench-logo mench-spin" />';
                         echo '<td class="block-link block-logo">'. ( count($this->session->userdata('assigned_superpowers_en_ids')) ? '<a href="javascript:void(0);" onclick="$(\'.supwerpower_view\').toggleClass(\'hidden\');">'.$mench_logo.'</a>' : $mench_logo ) .'</td>';
 
                         ?>
@@ -161,6 +165,9 @@ if(strlen($flash_message) > 0){
                 </table>
             </div>
         </div>
+
+
+
 
 
         <!-- SEARCH -->

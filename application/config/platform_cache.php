@@ -12,7 +12,7 @@ defined('BASEPATH') OR exit('No direct script access allowed');
 *
 */
 
-//Generated 2019-10-24 15:46:35 PST
+//Generated 2019-10-25 17:37:27 PST
 
 //PLAY TABS:
 $config['en_ids_11088'] = array(11033,11089);
@@ -1509,7 +1509,7 @@ $config['en_all_6404'] = array(
     11060 => array(
         'm_icon' => '',
         'm_name' => 'MENCH PLATFORM VERSION',
-        'm_desc' => '1.0995',
+        'm_desc' => '1.0996',
         'm_parents' => array(6404),
     ),
     11067 => array(
@@ -1689,7 +1689,7 @@ $config['en_all_11035'] = array(
         'm_parents' => array(11035,4758,4527),
     ),
     4536 => array(
-        'm_icon' => '<i class="fas fa-play-circle blue"></i>',
+        'm_icon' => '<i class="fas fa-play-circle blue" aria-hidden="true"></i>',
         'm_name' => 'PLAY',
         'm_desc' => '',
         'm_parents' => array(11035,2738,7368,4463),
@@ -2035,21 +2035,21 @@ $config['en_all_10956'] = array(
 $config['en_ids_2738'] = array(4536,6205,4535);
 $config['en_all_2738'] = array(
     4536 => array(
-        'm_icon' => '<i class="fas fa-play-circle blue"></i>',
+        'm_icon' => '<i class="fas fa-play-circle blue" aria-hidden="true"></i>',
         'm_name' => 'PLAY',
-        'm_desc' => '',
+        'm_desc' => 'PLAYERS',
         'm_parents' => array(11035,2738,7368,4463),
     ),
     6205 => array(
-        'm_icon' => '<i class="fas fa-info-circle ispink"></i>',
+        'm_icon' => '<i class="fas fa-info-circle ispink" aria-hidden="true"></i>',
         'm_name' => 'READ',
-        'm_desc' => '',
+        'm_desc' => 'WORDS',
         'm_parents' => array(2738,7368,4463),
     ),
     4535 => array(
-        'm_icon' => '<i class="fas fa-plus-circle yellow"></i>',
+        'm_icon' => '<i class="fas fa-plus-circle yellow" aria-hidden="true"></i>',
         'm_name' => 'BLOG',
-        'm_desc' => '',
+        'm_desc' => 'WORDS',
         'm_parents' => array(2738,7368,4463),
     ),
 );
@@ -5712,7 +5712,7 @@ $config['en_all_6287'] = array(
 $config['en_ids_7368'] = array(4535,7291,6287,4536,6205,7256,5007);
 $config['en_all_7368'] = array(
     4535 => array(
-        'm_icon' => '<i class="fas fa-plus-circle yellow"></i>',
+        'm_icon' => '<i class="fas fa-plus-circle yellow" aria-hidden="true"></i>',
         'm_name' => 'BLOG',
         'm_desc' => '',
         'm_parents' => array(2738,7368,4463),
@@ -5730,13 +5730,13 @@ $config['en_all_7368'] = array(
         'm_parents' => array(7368,4527,7284),
     ),
     4536 => array(
-        'm_icon' => '<i class="fas fa-play-circle blue"></i>',
+        'm_icon' => '<i class="fas fa-play-circle blue" aria-hidden="true"></i>',
         'm_name' => 'PLAY',
         'm_desc' => '',
         'm_parents' => array(11035,2738,7368,4463),
     ),
     6205 => array(
-        'm_icon' => '<i class="fas fa-info-circle ispink"></i>',
+        'm_icon' => '<i class="fas fa-info-circle ispink" aria-hidden="true"></i>',
         'm_name' => 'READ',
         'm_desc' => '',
         'm_parents' => array(2738,7368,4463),

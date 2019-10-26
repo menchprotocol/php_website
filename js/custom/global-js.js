@@ -191,7 +191,7 @@ $(document).ready(function () {
             window.location = "/play/" + suggestion.alg_obj_id;
         }
 
-    }).autocomplete({minLength: 1, autoselect: true, keyboardShortcuts: ['s'], dropdownMenuContainer: $('#searchresults')}, [
+    }).autocomplete({minLength: 1, autoselect: true, keyboardShortcuts: ['s']}, [
         {
             source: function (q, cb) {
                 //Do not search if specific command:
