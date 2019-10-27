@@ -22,7 +22,7 @@ $en_all_2738 = $this->config->item('en_all_2738'); //MENCH
                 <li>An interactive blogging platform for sharing stories & ideas that matter</li>
                 <li>An interactive reading platform available on the web & Messenger</li>
                 <li>An open-source protocol for building & sharing consensus</li>
-                <li>A learning game rewarding players every time they <b class="montserrat read"><?= $en_all_2738[6205]['m_name'] ?></b> or <b class="montserrat blog"><?= $en_all_2738[4535]['m_name'] ?></b></li>
+                <li>A learning game that you <b class="montserrat play">PLAY</b> every time you <b class="montserrat read"><?= $en_all_2738[6205]['m_name'] ?></b> or <b class="montserrat blog"><?= $en_all_2738[4535]['m_name'] ?></b></li>
                 <li>A non-profit organization on a mission to expand human potential</li>
             </ul>
 
