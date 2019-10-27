@@ -17,7 +17,7 @@ $en_all_2738 = $this->config->item('en_all_2738'); //MENCH
             <h1>BLOGGING. REINVENTED.</h1>
 
 
-            <h2>ABOUT MENCH</h2>
+            <h2>MENCH IS...</h2>
             <ul class="intructions-list double-line-list">
                 <li>An interactive publishing platform for sharing stories & ideas that matter</li>
                 <li>A conversational reading experience offered over the web or Messenger</li>
