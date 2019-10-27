@@ -21,16 +21,16 @@ $en_all_2738 = $this->config->item('en_all_2738'); //MENCH
             <ul class="intructions-list double-line-list">
                 <li>An interactive blogging platform for sharing stories & ideas that matter</li>
                 <li>An interactive reading platform available on the web & Messenger</li>
-                <li>A learning game rewarding players as they <b class="montserrat read"><?= $en_all_2738[6205]['m_name'] ?></b> & <b class="montserrat blog"><?= $en_all_2738[4535]['m_name'] ?></b></li>
                 <li>An open-source protocol for building & sharing consensus</li>
+                <li>A learning game rewarding players every time they <b class="montserrat read"><?= $en_all_2738[6205]['m_name'] ?></b> or <b class="montserrat blog"><?= $en_all_2738[4535]['m_name'] ?></b></li>
                 <li>A non-profit organization on a mission to expand human potential</li>
             </ul>
 
 
             <h2>PLAYING MENCH</h2>
             <ul class="intructions-list">
-                <li>Earn 1x <?= $en_all_2738[6205]['m_icon'] ?> coin per each word you <b class="montserrat read"><?= $en_all_2738[6205]['m_name'] ?></b></li>
-                <li>Earn 1x <?= $en_all_2738[4535]['m_icon'] ?> coin per each word you <b class="montserrat blog"><?= $en_all_2738[4535]['m_name'] ?></b></li>
+                <li>Earn 1x <?= $en_all_2738[6205]['m_icon'] ?> coin for every word you <b class="montserrat read"><?= $en_all_2738[6205]['m_name'] ?></b></li>
+                <li>Earn 1x <?= $en_all_2738[4535]['m_icon'] ?> coin for every word you <b class="montserrat blog"><?= $en_all_2738[4535]['m_name'] ?></b></li>
                 <li><b class="montserrat read"><?= $en_all_2738[6205]['m_name'] ?></b> up to <?= config_var(11061) ?> words/month <b class="montserrat">FREE</b></li>
                 <li><b class="montserrat read"><?= $en_all_2738[6205]['m_name'] ?></b> unlimited words for $<?= config_var(11162) ?>/month</li>
                 <li>Earn monthly cash with your <?= $en_all_2738[4535]['m_icon'] ?> <b class="montserrat">COINS</b></li>
