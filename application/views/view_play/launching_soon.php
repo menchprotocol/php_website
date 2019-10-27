@@ -27,7 +27,7 @@ $en_all_2738 = $this->config->item('en_all_2738'); //MENCH
             </ul>
 
 
-            <h2>PLAYING MENCH</h2>
+            <h2>HOW TO <b class="play">PLAY</b></h2>
             <ul class="intructions-list">
                 <li>Earn a <?= $en_all_2738[6205]['m_icon'] ?> coin for every word you <b class="montserrat read"><?= $en_all_2738[6205]['m_name'] ?></b></li>
                 <li>Earn a <?= $en_all_2738[4535]['m_icon'] ?> coin for every word you <b class="montserrat blog"><?= $en_all_2738[4535]['m_name'] ?></b></li>
