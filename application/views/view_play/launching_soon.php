@@ -9,7 +9,9 @@ $en_all_2738 = $this->config->item('en_all_2738'); //MENCH
 
         <div class="col-lg-2" style="text-align:left;">
             <img src="/img/mench-v2-128.png" class="mench-spin" />
-            <b class="montserrat read">READ</b> <b class="montserrat play">PLAY</b> <b class="montserrat blog">BLOG</b>
+            <p><b class="montserrat read">READ</b></p>
+            <p><b class="montserrat play">PLAY</b></p>
+            <p><b class="montserrat blog">BLOG</b></p>
         </div>
 
         <div class="col-lg-6">
