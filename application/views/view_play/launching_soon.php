@@ -1,3 +1,6 @@
+<?php
+$en_all_2738 = $this->config->item('en_all_2738'); //MENCH
+?>
 <div class="container">
 
     <div class="row" style="padding-top: 30px;">
