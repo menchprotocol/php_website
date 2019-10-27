@@ -40,8 +40,11 @@ $en_all_2738 = $this->config->item('en_all_2738'); //MENCH
 
             </div>
 
-            <a href="javascript:void(0);" onclick="$('.learn_more').toggleClass('hidden');" class="btn btn-read montserrat learn_more">LEARN MORE <i class="fas fa-search-plus"></i></a>
-            <a href="https://docs.google.com/forms/d/e/1FAIpQLSca_W0_pP1anDmJ9_iJx82icCXTjKMjblXCx9hIHrlScwUoGg/viewform" class="btn btn-play montserrat">JOIN WAIT LIST <i class="fas fa-arrow-right"></i></a>
+            <p>
+                <a href="javascript:void(0);" onclick="$('.learn_more').toggleClass('hidden');" class="btn btn-read montserrat learn_more">LEARN MORE <i class="fas fa-search-plus"></i></a>
+                <a href="https://docs.google.com/forms/d/e/1FAIpQLSca_W0_pP1anDmJ9_iJx82icCXTjKMjblXCx9hIHrlScwUoGg/viewform" class="btn btn-play montserrat">JOIN WAIT LIST <i class="fas fa-arrow-right"></i></a>
+            </p>
+
 
             <p>Or <a href="/play/signin" style="font-weight: bold; text-decoration: underline;">login</a> if you already have an account.</p>
 
