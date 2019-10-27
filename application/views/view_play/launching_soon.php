@@ -22,8 +22,8 @@ $en_all_2738 = $this->config->item('en_all_2738'); //MENCH
                 <li>An interactive publishing platform for sharing stories & ideas that matter</li>
                 <li>A conversational reading experience offered over the web or Messenger</li>
                 <li>A learning game that players <b class="montserrat play">PLAY</b> every time they <b class="montserrat read"><?= $en_all_2738[6205]['m_name'] ?></b> or <b class="montserrat blog"><?= $en_all_2738[4535]['m_name'] ?></b></li>
-                <li>An open-source protocol for building & sharing consensus</li>
-                <li>A non-profit organization on a mission to expand human potential</li>
+                <li class="learn_more hidden">An open-source protocol for building & sharing consensus</li>
+                <li class="learn_more hidden">A non-profit organization on a mission to expand human potential</li>
             </ul>
 
             <div class="learn_more hidden">
