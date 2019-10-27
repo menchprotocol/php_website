@@ -19,7 +19,7 @@ $en_all_2738 = $this->config->item('en_all_2738'); //MENCH
 
             <h2>ABOUT MENCH</h2>
             <ul class="intructions-list double-line-list">
-                <li>An interactive blogging platform for sharing stories & ideas that matter</li>
+                <li>An interactive publishing platform for sharing stories & ideas that matter</li>
                 <li>A conversational reading experience offered over the web or Messenger</li>
                 <li>A learning game that players <b class="montserrat play">PLAY</b> every time they <b class="montserrat read"><?= $en_all_2738[6205]['m_name'] ?></b> or <b class="montserrat blog"><?= $en_all_2738[4535]['m_name'] ?></b></li>
                 <li>An open-source protocol for building & sharing consensus</li>
