@@ -14,7 +14,7 @@ $en_all_2738 = $this->config->item('en_all_2738'); //MENCH
         <div class="col-lg-6">
 
 
-            <h1>BLOGGING. REINVENTED.</h1>
+            <h1>BLOGGING.<br />REINVENTED.</h1>
 
 
             <h2>MENCH IS...</h2>
