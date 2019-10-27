@@ -7,7 +7,7 @@ $en_all_2738 = $this->config->item('en_all_2738'); //MENCH
 
         <div class="col-lg-3">&nbsp;</div>
 
-        <div class="col-lg-2" style="text-align:left;">
+        <div class="col-lg-3" style="text-align:left;">
             <img src="/img/mench-v2-128.png" class="mench-spin" />
         </div>
 
@@ -50,7 +50,7 @@ $en_all_2738 = $this->config->item('en_all_2738'); //MENCH
 
         </div>
 
-        <div class="col-lg-2">&nbsp;</div>
+        <div class="col-lg-1">&nbsp;</div>
     </div>
 
 </div>
