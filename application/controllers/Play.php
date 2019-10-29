@@ -180,6 +180,9 @@ class Play extends CI_Controller
             </div>
         </div>';
 
+        //ADjust width as well:
+        $custom_header .= '<style> .container { max-width:800px !important; } </style>';
+
         $this->load->view('header', array(
             'title' => 'READ. PLAY. BLOG.',
             'hide_header' => 1, //Do not show regular header
