@@ -21,7 +21,7 @@ $en_all_2738 = $this->config->item('en_all_2738'); //MENCH
             <ul class="intructions-list double-line-list">
                 <li>An interactive publishing platform for sharing stories & ideas that matter</li>
                 <li>A conversational reading experience offered over the web or Messenger</li>
-                <li>A learning game that rewards players every time they read and blog</li>
+                <li>A learning game that rewards players every time they read or blog</li>
                 <li class="learn_more hidden">An open-source protocol for building & sharing consensus</li>
                 <li class="learn_more hidden">A non-profit organization on a mission to expand human potential</li>
             </ul>
