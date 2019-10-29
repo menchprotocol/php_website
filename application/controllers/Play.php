@@ -158,7 +158,7 @@ class Play extends CI_Controller
             'hide_header' => 1, //Do not show regular header
             'custom_header' => '<div class="container fixed-top">
             <div class="row">
-                <table class="mench-navigation">
+                <table class="mench-navigation" style="border-bottom:0;">
                     <tr>
                         <td class="block-link block-logo"><img src="/img/mench-v2-128.png" class="mench-logo mench-spin" /></td>
                         <td style="text-align: right;"><a href="https://docs.google.com/forms/d/e/1FAIpQLSca_W0_pP1anDmJ9_iJx82icCXTjKMjblXCx9hIHrlScwUoGg/viewform" class="btn btn-play montserrat">JOIN WAIT LIST <i class="fas fa-arrow-right"></i></a></td>
