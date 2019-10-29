@@ -54,7 +54,7 @@ $en_all_10591 = $this->config->item('en_all_10591'); //PLAYER PLAYS
 
                         foreach($this->config->item('en_all_2738') as $en_id => $m){
                             $handle = strtolower($m['m_name']);
-                            echo '<td valign="bottom" style="width: 33%"><span class="'.$handle.' border-'.$handle.'">' . $m['m_icon'] . '<span class="mn_name montserrat">' . $m['m_name'] . '</span> <span class="inline-block"><span class="current_count"><i class="far fa-yin-yang fa-spin"></i></span> ' . $m['m_desc'] . '</span></span></td>';
+                            echo '<td valign="bottom" style="width: 33%"><span class="'.$handle.' border-'.$handle.'">' . $m['m_icon'] . '<span class="mn_name montserrat current_count"><i class="far fa-yin-yang fa-spin"></i></span> <span class="inline-block">' . $m['m_desc'] . '</span></span></td>';
                         }
 
                         echo '</tr>
