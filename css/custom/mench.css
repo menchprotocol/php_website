@@ -15,6 +15,9 @@ body {
 .table-sm td, .table-sm th {
     padding: .3rem .1em;
 }
+table {
+    width: 100%;
+}
 
 /* FONTS */
 .montserrat {

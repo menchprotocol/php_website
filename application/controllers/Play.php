@@ -153,7 +153,7 @@ class Play extends CI_Controller
             return redirect_message('/blog');
         }
 
-        $custom_header = '<div class="container fixed-top">
+        $custom_header = '<div class="container fixed-top" style="border-bottom: 2px solid #FFFFFF;">
             <div class="row">
                 <table class="mench-navigation" style="border-bottom:0;">
                     <tr>
@@ -164,7 +164,7 @@ class Play extends CI_Controller
             </div>
         </div>
         
-        <div class="container fixed-bottom learn_more hidden">
+        <div class="container fixed-bottom learn_more hidden" style="border-top: 2px solid #FFFFFF;">
             <div class="row">
                 <table class="three-menus">
                     <tr>';
@@ -172,7 +172,7 @@ class Play extends CI_Controller
         foreach($this->config->item('en_all_2738') as $en_id => $m){
             $handle = strtolower($m['m_name']);
             $play_logged_in = ($en_id==4536 && isset($session_en['en_id']));
-            $custom_header .= '<td valign="bottom"><span class="'.$handle.' border-'.$handle.'">' . $m['m_icon'] . '<span class="mn_name montserrat">' . $m['m_name'] . '</span> <span class="inline-block"><span class="current_count mono"><i class="far fa-yin-yang fa-spin"></i></span></span></span></td>';
+            $custom_header .= '<td valign="bottom"><span class="'.$handle.' border-'.$handle.'">' . $m['m_icon'] . '<span class="mn_name montserrat">' . $m['m_name'] . '</span> <span class="inline-block"><span class="current_count mono"><i class="far fa-yin-yang fa-spin"></i></span> ' . $m['m_desc'] . '</span></span></td>';
         }
 
                         $custom_header .= '</tr>
