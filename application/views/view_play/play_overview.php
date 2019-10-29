@@ -18,10 +18,10 @@ $en_all_10591 = $this->config->item('en_all_10591'); //PLAYER PLAYS
             echo '<li class="learn_more"><span class="icon-block-sm"><i class="fas fa-search-plus"></i></span> <a href="javascript:void(0);" onclick="$(\'.learn_more\').toggleClass(\'hidden\')" style="text-decoration: underline;">LEARN MORE</a></li>';
             echo '</ul>';
             ?>
+        </div>
+        <div class="col-lg hidden learn_more">
 
-
-            <div class="learn_more hidden">
-            <h1 style="margin-top:21px;">HOW TO PLAY</h1>
+            <h1 style="margin-bottom: 0;">HOW TO PLAY</h1>
             <ul class="decimal-list">
                 <li>Earn a <?= $en_all_2738[6205]['m_icon'] ?> coin for each word you <b class="montserrat read"><?= $en_all_2738[6205]['m_name'] ?></b></li>
                 <li>Earn a <?= $en_all_2738[4535]['m_icon'] ?> coin for each word you <b class="montserrat blog"><?= $en_all_2738[4535]['m_name'] ?></b></li>
@@ -29,12 +29,9 @@ $en_all_10591 = $this->config->item('en_all_10591'); //PLAYER PLAYS
                 <li><b class="montserrat read"><?= $en_all_2738[6205]['m_name'] ?></b> unlimited words for <b class="montserrat">$<?= config_var(11162) ?>/month</b></li>
                 <li>Earn monthly cash with your <?= $en_all_2738[4535]['m_icon'] ?> coins</li>
             </ul>
-            </div>
 
-        </div>
-        <div class="col-lg hidden learn_more">
 
-            <h1 style="margin-bottom: 0;">TOP PLAYERS</h1>
+            <h1 style="margin-top:21px;">TOP PLAYERS</h1>
             <?php
             echo '<table id="leaderboard" class="table table-sm table-striped">';
             echo '<thead>';
