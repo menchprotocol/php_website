@@ -153,7 +153,7 @@ class Play extends CI_Controller
             return redirect_message('/blog');
         }
 
-        $custom_header = '<div class="container fixed-top" style="border-bottom: 2px solid #FFFFFF;">
+        $custom_header = '<div class="container fixed-top">
             <div class="row">
                 <table class="mench-navigation" style="border-bottom:0;">
                     <tr>

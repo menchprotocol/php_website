@@ -156,7 +156,7 @@ if(strlen($flash_message) > 0){
 
                         if (isset($session_en['en_id'])) {
 
-                            echo '<td class="block-link"><a href="/play/'.$session_en['en_id'].'" data-toggle="tooltip" data-placement="top" title="'.$session_en['en_name'].'">'.$session_en['en_icon'].'</a></td>';
+                            echo '<td class="block-link"><a href="/play/'.$session_en['en_id'].'" title="'.$session_en['en_name'].'">'.$session_en['en_icon'].'</a></td>';
 
                         } else {
 
@@ -164,7 +164,7 @@ if(strlen($flash_message) > 0){
                             echo '<td class="block-link"><a href="/read/8263" title="'.$en_all_11035[7540]['m_name'].'">'.$en_all_11035[7540]['m_icon'].'</a></td>';
 
                             //Give option to signin
-                            echo '<td class="block-link"><a href="/play/signin" data-toggle="tooltip" data-placement="top" title="'.$en_all_11035[4269]['m_name'].'">'.$en_all_11035[4269]['m_icon'].'</a></td>';
+                            echo '<td class="block-link"><a href="/play/signin" title="'.$en_all_11035[4269]['m_name'].'">'.$en_all_11035[4269]['m_icon'].'</a></td>';
 
                         }
                         ?>
