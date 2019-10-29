@@ -15,7 +15,7 @@ body {
 .table-sm td, .table-sm th {
     padding: .3rem .1em;
 }
-table {
+table, div {
     width: 100%;
 }
 
