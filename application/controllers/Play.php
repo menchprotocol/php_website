@@ -789,10 +789,10 @@ fragment PostListingItemSidebar_post on Post {
                 echo '<td><span class="parent-icon icon-block-sm">'.echo_en_icon($ln).'</span>'.( $session_en ? '<a href="/play/'.$ln['en_id'].'">'.$first_name.'</a>' : $first_name ).' '.echo_rank($count+1).'</td>';
 
                 //READ
-                echo '<td>'.( $session_en ? '<a href="/read/history?ln_status_entity_id='.join(',', $this->config->item('en_ids_7359')) /* Link Statuses Public */.'&ln_type_entity_id='.join(',', $this->config->item('en_ids_10590')).'&ln_creator_entity_id='.$ln['en_id'].( $start_date ? '&start_range='.$start_date : $start_date ).'" class="mono">'.number_format($read_coins[0]['total_words'], 0).'</a>' : number_format($read_coins[0]['total_words'], 0) ).'</td>';
+                echo '<td>'.( $session_en ? '<a href="/read/history?ln_status_entity_id='.join(',', $this->config->item('en_ids_7359')) /* Link Statuses Public */.'&ln_type_entity_id='.join(',', $this->config->item('en_ids_10590')).'&ln_creator_entity_id='.$ln['en_id'].( $start_date ? '&start_range='.$start_date : $start_date ).'" class="mono">'.number_format($read_coins[0]['total_words'], 0).'</a>' : '<span class="mono">'.number_format($read_coins[0]['total_words'], 0).'</span>' ).'</td>';
 
                 //BLOG
-                echo '<td>'.( $session_en ? '<a href="/read/history?ln_status_entity_id='.join(',', $this->config->item('en_ids_7359')) /* Link Statuses Public */.'&ln_type_entity_id='.join(',', $this->config->item('en_ids_10589')).'&ln_creator_entity_id='.$ln['en_id'].( $start_date ? '&start_range='.$start_date : $start_date ).'" class="mono">'.number_format($ln['total_words'], 0).'</a>' : number_format($ln['total_words'], 0)  ).'</td>';
+                echo '<td>'.( $session_en ? '<a href="/read/history?ln_status_entity_id='.join(',', $this->config->item('en_ids_7359')) /* Link Statuses Public */.'&ln_type_entity_id='.join(',', $this->config->item('en_ids_10589')).'&ln_creator_entity_id='.$ln['en_id'].( $start_date ? '&start_range='.$start_date : $start_date ).'" class="mono">'.number_format($ln['total_words'], 0).'</a>' : '<span class="mono">'.number_format($ln['total_words'], 0).'</span>'  ).'</td>';
                 echo '</tr>';
 
             }
