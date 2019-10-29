@@ -7,7 +7,7 @@ $en_all_10591 = $this->config->item('en_all_10591'); //PLAYER PLAYS
 <div class="container">
 
     <div class="row">
-        <div class="col-lg">
+        <div class="col-lg-12">
             <?php
             $en_all_4527 = $this->config->item('en_all_4527'); //Platform Cache
             echo '<h1>'.$en_all_4527[11968]['m_name'].'</h1>';
@@ -19,7 +19,7 @@ $en_all_10591 = $this->config->item('en_all_10591'); //PLAYER PLAYS
             echo '</ul>';
             ?>
         </div>
-        <div class="col-lg hidden learn_more">
+        <div class="col-lg-12 hidden learn_more">
 
             <h1 style="margin-bottom: 0;">HOW TO PLAY</h1>
             <ul class="decimal-list">
