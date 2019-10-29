@@ -411,11 +411,6 @@ li a {
     min-width: 76px;
     display: inline-block;
 }
-.three-menus .current_count{
-    font-size:1em;
-    min-width: 92px;
-    display: inline-block;
-}
 
 .three-menus a{
     padding:9px 5px 5px;
