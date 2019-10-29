@@ -27,14 +27,12 @@ body {
 
 .decimal-list{
     list-style: decimal;
+    margin-left:-12px;
 }
 
 .none-list{
     list-style:none;
-}
-
-ul {
-    margin-left:-12px;
+    margin-left:-35px;
 }
 
 .nav-tabs-sm .nav-link {
