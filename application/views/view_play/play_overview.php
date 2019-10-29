@@ -24,7 +24,7 @@ $en_all_10591 = $this->config->item('en_all_10591'); //PLAYER PLAYS
             <li><b class="montserrat play"><?= $en_all_2738[4536]['m_icon'] .' '. $en_all_2738[4536]['m_name'] ?></b> coins awarded for <a href="/play/signin" style="text-decoration: underline;">creating your account</a></li>
             <li><b class="montserrat read"><?= $en_all_2738[6205]['m_icon'] .' '. $en_all_2738[6205]['m_name'] ?></b> coins awarded for every word you read</li>
             <li><b class="montserrat blog"><?= $en_all_2738[4535]['m_icon'] .' '. $en_all_2738[4535]['m_name'] ?></b> coins awarded for every word you blog</li>
-            <li><b class="montserrat read"><?= $en_all_2738[6205]['m_icon'] .' '.$en_all_2738[6205]['m_name'] ?></b> up to <?= config_var(11061) ?> words/month <b class="montserrat">ALWAYS FREE</b></li>
+            <li><b class="montserrat read"><?= $en_all_2738[6205]['m_icon'] .' '.$en_all_2738[6205]['m_name'] ?></b> up to <?= config_var(11061) ?> words/month <b class="montserrat">FREE</b></li>
             <li><b class="montserrat read"><?= $en_all_2738[6205]['m_icon'] .' '.$en_all_2738[6205]['m_name'] ?></b> unlimited words for <b class="montserrat">$<?= config_var(11162) ?>/month</b></li>
             <li><b class="montserrat blog"><?= $en_all_2738[4535]['m_icon'] .' '. $en_all_2738[4535]['m_name'] ?></b> coins earn you monthly cash payouts</li>
         </ul>
