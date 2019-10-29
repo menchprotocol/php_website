@@ -21,7 +21,7 @@ $en_all_10591 = $this->config->item('en_all_10591'); //PLAYER PLAYS
             echo '</ul>';
             ?>
 
-            <div class="learn_more hiddden">
+            <div class="learn_more hidden">
             <h1 style="margin-bottom: 0;">HOW TO PLAY</h1>
             <ul class="decimal-list">
                 <li>Earn a <?= $en_all_2738[6205]['m_icon'] ?> coin for each word you <b class="montserrat read"><?= $en_all_2738[6205]['m_name'] ?></b></li>
