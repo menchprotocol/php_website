@@ -7,7 +7,7 @@ var isAdvancedUpload = function () {
 
 
 //In milli seconds:
-var fadeout_frequency = 5000;
+var fadeout_frequency = 120000;
 var fadeout_speed = 21;
 var updating_basic_stats = false;
 var searchbar_loaded = 0;
