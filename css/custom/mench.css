@@ -19,6 +19,11 @@ table, div {
     width: 100%;
 }
 
+.current_count {
+    font-size: 0.9em;
+    font-weight: bold;
+}
+
 /* FONTS */
 .montserrat {
     font-family: 'Montserrat', sans-serif;

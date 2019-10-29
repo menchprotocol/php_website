@@ -33,8 +33,8 @@ $en_all_10591 = $this->config->item('en_all_10591'); //PLAYER PLAYS
         <h1 style="margin-top:34px;">TOP PLAYERS</h1>
         <?php
         echo '<table id="leaderboard" class="table table-sm table-striped">';
-        echo '<thead class="hidden">';
-        echo '<tr style="padding:0;">';
+        echo '<thead>';
+        echo '<tr style="padding:0; font-size: 1.2em;">';
         echo '<td style="width: 34%">&nbsp;</td>';
         echo '<td style="width: 33%"><span style="padding-right: 2px;">'.$en_all_2738[6205]['m_icon'].'</span><b class="montserrat read">'.$en_all_2738[6205]['m_name'].'</b></td>';
         echo '<td style="width: 33%"><span style="padding-right: 2px;">'.$en_all_2738[4535]['m_icon'].'</span><b class="montserrat blog">'.$en_all_2738[4535]['m_name'].'</b></td>';
