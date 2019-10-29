@@ -9,7 +9,7 @@ $en_all_10591 = $this->config->item('en_all_10591'); //PLAYER PLAYS
     <div class="row">
         <div class="col-lg">
             <?
-            $en_all_4527 = $CI->config->item('en_all_4527'); //Platform Cache
+            $en_all_4527 = $this->config->item('en_all_4527'); //Platform Cache
             echo '<h1>'.$en_all_4527[11968]['m_name'].'</h1>';
             echo '<ul class="none-list">';
             foreach($this->config->item('en_all_11968') as $en_id => $m){
