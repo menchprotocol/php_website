@@ -15,12 +15,9 @@ body {
 .table-sm td, .table-sm th {
     padding: .3rem .1em;
 }
-table, div {
-    width: 100%;
-    margin-bottom: 0;
-}
 
 .table {
+    width: 100%;
     margin-bottom: 0;
 }
 
