@@ -34,6 +34,10 @@ body {
     list-style:none;
     margin-left:-35px;
 }
+.none-list li{
+    margin-bottom: 10px;
+    line-height: 120%;
+}
 
 .nav-tabs-sm .nav-link {
     display: block;

@@ -161,7 +161,7 @@ class Play extends CI_Controller
                 <table class="mench-navigation" style="border-bottom:0;">
                     <tr>
                         <td class="block-link block-logo"><img src="/img/mench-v2-128.png" class="mench-logo mench-spin" /></td>
-                        <td style="text-align: right; padding-right: 5px;"><a href="https://docs.google.com/forms/d/e/1FAIpQLSca_W0_pP1anDmJ9_iJx82icCXTjKMjblXCx9hIHrlScwUoGg/viewform" class="btn btn-play montserrat">JOIN WAIT LIST <i class="fas fa-arrow-right"></i></a></td>
+                        <td style="text-align: right; padding-right: 7px;"><a href="https://docs.google.com/forms/d/e/1FAIpQLSca_W0_pP1anDmJ9_iJx82icCXTjKMjblXCx9hIHrlScwUoGg/viewform" class="btn btn-play montserrat">JOIN WAIT LIST <i class="fas fa-arrow-right"></i></a></td>
                     </tr>
                 </table>
             </div>
