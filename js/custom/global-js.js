@@ -166,22 +166,7 @@ $(document).ready(function () {
 
 
 
-    $("#mench_search").focusin(function() {
-
-        $(".container").not('.show-while-searching').addClass('hidden');
-        $(".searchpad").removeClass('hidden');
-
-    }).keyup(function() {
-
-        $(".container").not('.show-while-searching').addClass('hidden');
-        $(".searchpad").removeClass('hidden');
-
-    }).focusout(function() {
-
-        $(".container").not('.show-while-searching').removeClass('hidden');
-        $(".searchpad").addClass('hidden');
-
-    }).on('autocomplete:selected', function (event, suggestion, dataset) {
+    $("#mench_search").on('autocomplete:selected', function (event, suggestion, dataset) {
 
         $('#mench_search').prop("disabled", true).val('Loading...').css('background-color','#F7F7F7').css('font-size','0.8em');
 

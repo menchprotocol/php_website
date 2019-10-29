@@ -18,7 +18,7 @@ $en_all_2738 = $this->config->item('en_all_2738'); //MENCH
 
 
             <h2>MENCH IS...</h2>
-            <ul class="intructions-list double-line-list">
+            <ul class="decimal-list">
                 <li>An interactive publishing platform for sharing stories & ideas that matter</li>
                 <li>A conversational reading experience offered over the web or Messenger</li>
                 <li>A learning game that rewards players every time they read or blog</li>
@@ -28,7 +28,7 @@ $en_all_2738 = $this->config->item('en_all_2738'); //MENCH
 
             <div class="learn_more hidden">
                 <h2>HOW TO <b class="play">PLAY</b></h2>
-                <ul class="intructions-list">
+                <ul class="decimal-list">
                     <li>Earn a <?= $en_all_2738[6205]['m_icon'] ?> coin for every word you <b class="montserrat read"><?= $en_all_2738[6205]['m_name'] ?></b></li>
                     <li>Earn a <?= $en_all_2738[4535]['m_icon'] ?> coin for every word you <b class="montserrat blog"><?= $en_all_2738[4535]['m_name'] ?></b></li>
                     <li><b class="montserrat read"><?= $en_all_2738[6205]['m_name'] ?></b> up to <?= config_var(11061) ?> words/month <b class="montserrat">FREE</b></li>
@@ -42,7 +42,7 @@ $en_all_2738 = $this->config->item('en_all_2738'); //MENCH
 
             <p>
                 <a href="javascript:void(0);" onclick="$('.learn_more').toggleClass('hidden');" class="btn btn-read montserrat learn_more">READ MORE <i class="fas fa-search-plus"></i></a>
-                <a href="https://docs.google.com/forms/d/e/1FAIpQLSca_W0_pP1anDmJ9_iJx82icCXTjKMjblXCx9hIHrlScwUoGg/viewform" class="btn btn-play montserrat">JOIN WAIT LIST <i class="fas fa-arrow-right"></i></a>
+
             </p>
 
 

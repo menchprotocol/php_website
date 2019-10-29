@@ -153,13 +153,23 @@ class Play extends CI_Controller
             return redirect_message('/blog');
         }
 
-
         $this->load->view('header', array(
             'title' => 'READ. PLAY. BLOG.',
-            'hide_header' => 1,
+            'hide_header' => 1, //Do not show regular header
+            'custom_header' => '<div class="container fixed-top">
+            <div class="row">
+                <table class="mench-navigation">
+                    <tr>
+                        <td class="block-link block-logo"><img src="/img/mench-v2-128.png" class="mench-logo mench-spin" /></td>
+                        <td style="text-align: right;"><a href="https://docs.google.com/forms/d/e/1FAIpQLSca_W0_pP1anDmJ9_iJx82icCXTjKMjblXCx9hIHrlScwUoGg/viewform" class="btn btn-play montserrat">JOIN WAIT LIST <i class="fas fa-arrow-right"></i></a></td>
+                    </tr>
+                </table>
+            </div>
+        </div>',
         ));
-        $this->load->view('view_play/launching_soon');
+        $this->load->view('view_play/play_overview');
         $this->load->view('footer');
+
     }
 
     function echo_post(){

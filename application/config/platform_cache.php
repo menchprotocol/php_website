@@ -11,67 +11,61 @@ defined('BASEPATH') OR exit('No direct script access allowed');
 *
 */
 
-//Generated 2019-10-28 20:59:31 PST
+//Generated 2019-10-29 12:03:19 PST
 
-//MENCH IS...:
-$config['en_ids_11968'] = array(11971,11974,11981,11969,11977,11973,11980,11972,11979,11976);
+//MENCH IS:
+$config['en_ids_11968'] = array(11969,11971,11972,11980,11981,11979,11983,11977,11976);
 $config['en_all_11968'] = array(
-    11971 => array(
-        'm_icon' => '',
-        'm_name' => 'A GAME ABOUT READING AND BLOGGING',
-        'm_desc' => '',
-        'm_parents' => array(11968),
+    11969 => array(
+        'm_icon' => '<i class="far fa-exchange rotate90" aria-hidden="true"></i>',
+        'm_name' => 'INTERACTIVE PUBLISHING',
+        'm_desc' => 'Instead of writing longer blog posts that are read without any meaningful input by the reader, MENCH encourages micro-blogs to be inter-connected with a pre-determined flow that may allow the reader to choose their personalized path.',
+        'm_parents' => array(11982,11968),
     ),
-    11974 => array(
-        'm_icon' => '',
-        'm_name' => 'A MARKETPLACE FOR ONLINE COURSES',
-        'm_desc' => 'because of it\'s flexibility on how you inter-connect blogs, you can create interactive learning courses and tutorials using our simple publishing tools.',
+    11971 => array(
+        'm_icon' => '<i class="far fa-gamepad" aria-hidden="true"></i>',
+        'm_name' => 'A BLOGGING GAME',
+        'm_desc' => 'Earn a red coin for every word you READ and a gold coin for every word you BLOG. READ up to 2000 words/month free or subscribe for $5/month. Earn a monthly income with you gold coins.',
+        'm_parents' => array(11982,11968),
+    ),
+    11972 => array(
+        'm_icon' => '<i class="far fa-lightbulb-on" aria-hidden="true"></i>',
+        'm_name' => 'A MARKETPLACE FOR IDEAS',
+        'm_desc' => 'Anyone can share stories and ideas that matter using our marketplace of blogs that create a publicly editable idea index.',
+        'm_parents' => array(11982,11968),
+    ),
+    11980 => array(
+        'm_icon' => '<i class="far fa-user-friends"></i>',
+        'm_name' => 'A SOCIAL NETWORK',
+        'm_desc' => 'Connect with other readers using social blogs that pre-define the context for interaction to practice or simply discuss something.',
         'm_parents' => array(11968),
     ),
     11981 => array(
-        'm_icon' => '',
-        'm_name' => 'A MULTI-CHANNEL FORM BUILDER',
+        'm_icon' => '<i class="far fa-clipboard" aria-hidden="true"></i>',
+        'm_name' => 'A FORM BUILDER',
         'm_desc' => 'MENCH is ideal for building interactive forms where you can navigate the reader to their next step based on their response.',
         'm_parents' => array(11968),
     ),
-    11969 => array(
-        'm_icon' => '',
-        'm_name' => 'AN INTERACTIVE PUBLISHING PLATFORM',
-        'm_desc' => 'Instead of writing longer blog posts that are read without any meaningful input by the reader, MENCH encourages micro-blogs to be inter-connected with a pre-determined flow that may allow the reader to choose their personalized path.',
-        'm_parents' => array(11968),
-    ),
-    11977 => array(
-        'm_icon' => '',
-        'm_name' => 'A PROTOCOL FOR BUILDING CONSENSUS',
-        'm_desc' => 'By mapping knowledge to underlying intentions, MENCH defines a process to distill knowledge to its first principles and create an inter-connected map of intelligence across multiple expert sources.',
-        'm_parents' => array(11968),
-    ),
-    11973 => array(
-        'm_icon' => '',
-        'm_name' => 'A PUBLICLY EDITABLE IDEA INDEX',
-        'm_desc' => 'Similar to Wikipedia, Mench allows the entire community to engage in the iterative process of improving the blogs that fuel all conversations on MENCH.',
-        'm_parents' => array(11968),
-    ),
-    11980 => array(
-        'm_icon' => '',
-        'm_name' => 'A SOCIAL NETWORK FOR EDUCATION',
-        'm_desc' => 'Bloggers connect readers using social blogs that are designed to create interaction among readers of the same blog.',
-        'm_parents' => array(11968),
-    ),
-    11972 => array(
-        'm_icon' => '',
-        'm_name' => 'A WAY TO SHARE IDEAS AND TELL STORIES',
-        'm_desc' => 'And tell personalized stories that were hardly possible before',
-        'm_parents' => array(11968),
-    ),
     11979 => array(
-        'm_icon' => '',
-        'm_name' => 'A WHITE-LABEL CHATBOT BUILDER',
+        'm_icon' => '<i class="far fa-comment"></i>',
+        'm_name' => 'A BOT PLATFORM',
         'm_desc' => 'Similar to other bot builders and NLP engines that operate based on entities and intents, MENCH too operates based on these two objects to fuel its logic engine.',
         'm_parents' => array(11968),
     ),
+    11983 => array(
+        'm_icon' => '<i class="far fa-chart-network"></i>',
+        'm_name' => 'A KNOWLEDGE GRAPH',
+        'm_desc' => 'MENCH operates based on three tables that represent intents, entities and the links between them.',
+        'm_parents' => array(11968),
+    ),
+    11977 => array(
+        'm_icon' => '<i class="far fa-poll-people"></i>',
+        'm_name' => 'A PROTOCOL TO BUILD CONSENSUS',
+        'm_desc' => 'By mapping knowledge to underlying intentions, MENCH defines a process to create an idea index by distilling knowledge to first principles and creating an inter-connected map of intelligence across multiple expert sources.',
+        'm_parents' => array(11968),
+    ),
     11976 => array(
-        'm_icon' => '',
+        'm_icon' => '<i class="far fa-hands-heart"></i>',
         'm_name' => 'NON-PROFIT AND OPEN-SOURCE',
         'm_desc' => 'On a mission to expand your potential by building and sharing consensus.',
         'm_parents' => array(11968),
@@ -1573,7 +1567,7 @@ $config['en_all_6404'] = array(
     11060 => array(
         'm_icon' => '',
         'm_name' => 'MENCH PLATFORM VERSION',
-        'm_desc' => '1.0998',
+        'm_desc' => '1.0999',
         'm_parents' => array(6404),
     ),
     11067 => array(
@@ -2416,9 +2410,9 @@ $config['en_all_4527'] = array(
     ),
     11968 => array(
         'm_icon' => '',
-        'm_name' => 'MENCH IS...',
+        'm_name' => 'MENCH IS',
         'm_desc' => '',
-        'm_parents' => array(4527,4535,6205,4536),
+        'm_parents' => array(4527,4536),
     ),
     6287 => array(
         'm_icon' => '<i class="far fa-user-shield"></i>',
@@ -2469,7 +2463,7 @@ $config['en_all_4527'] = array(
         'm_parents' => array(4527,10869),
     ),
     11054 => array(
-        'm_icon' => '<i class="fal fa-memory"></i>',
+        'm_icon' => '<i class="fal fa-memory" aria-hidden="true"></i>',
         'm_name' => 'PLATFORM CACHE JS',
         'm_desc' => '',
         'm_parents' => array(4527,7258,7254),

@@ -74,7 +74,16 @@ if(strlen($flash_message) > 0){
 }
 ?>
 
-    <?php if(!isset($hide_header) || !$hide_header){
+
+    <?php
+
+
+    if(isset($custom_header)){
+        echo $custom_header;
+    }
+
+
+    if(!isset($hide_header) || !$hide_header){
 
         $en_all_11035 = $this->config->item('en_all_11035'); //MENCH PLAYER NAVIGATION
 
@@ -82,7 +91,7 @@ if(strlen($flash_message) > 0){
 
 
 
-        <!-- MENCH LINE -->
+        <!-- 3X NAVIGATION -->
         <div class="container show-while-searching fixed-bottom">
             <div class="row">
                 <table class="three-menus">
@@ -105,8 +114,7 @@ if(strlen($flash_message) > 0){
 
 
 
-
-        <!-- 3X NAVIGATION -->
+        <!-- MENCH LINE -->
         <div class="container show-while-searching fixed-top">
             <div class="row">
                 <table class="mench-navigation">
@@ -166,14 +174,5 @@ if(strlen($flash_message) > 0){
             </div>
         </div>
 
-
-
-
-
-        <!-- SEARCH -->
-        <div class="searchpad container hidden">
-            <h1>SEARCH PAD</h1>
-            <div id="searchresults"></div>
-        </div>
 
     <?php } ?>
