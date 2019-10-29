@@ -162,22 +162,6 @@ class Play extends CI_Controller
                     </tr>
                 </table>
             </div>
-        </div>
-        
-        <div class="container fixed-bottom learn_more hidden" style="border-top: 2px solid #FFFFFF;">
-            <div class="row">
-                <table class="three-menus">
-                    <tr>';
-
-        foreach($this->config->item('en_all_2738') as $en_id => $m){
-            $handle = strtolower($m['m_name']);
-            $play_logged_in = ($en_id==4536 && isset($session_en['en_id']));
-            $custom_header .= '<td valign="bottom" style="width: 33%"><span class="'.$handle.' border-'.$handle.'">' . $m['m_icon'] . '<span class="mn_name montserrat">' . $m['m_name'] . '</span> <span class="inline-block"><span class="current_count"><i class="far fa-yin-yang fa-spin"></i></span> ' . $m['m_desc'] . '</span></span></td>';
-        }
-
-                        $custom_header .= '</tr>
-                </table>
-            </div>
         </div>';
 
         //ADjust width as well:
