@@ -34,10 +34,10 @@ $en_all_10591 = $this->config->item('en_all_10591'); //PLAYER PLAYS
         <?php
         echo '<table id="leaderboard" class="table table-sm table-striped">';
         echo '<thead>';
-        echo '<tr style="padding:0; font-size: 1.2em;">';
-        echo '<td style="width: 34%">&nbsp;</td>';
-        echo '<td style="width: 33%"><span style="padding-right: 2px;">'.$en_all_2738[6205]['m_icon'].'</span><b class="montserrat read">'.$en_all_2738[6205]['m_name'].'</b></td>';
-        echo '<td style="width: 33%"><span style="padding-right: 2px;">'.$en_all_2738[4535]['m_icon'].'</span><b class="montserrat blog">'.$en_all_2738[4535]['m_name'].'</b></td>';
+        echo '<tr style="padding:0;">';
+        echo '<td style="width: 33%">&nbsp;</td>';
+        echo '<td style="width: 33%"><span style="padding-right: 2px;">'.$en_all_2738[6205]['m_icon'].'</span><b class="montserrat read" style="font-size: 1.2em;">'.$en_all_2738[6205]['m_name'].'</b></td>';
+        echo '<td style="width: 33%"><span style="padding-right: 2px;">'.$en_all_2738[4535]['m_icon'].'</span><b class="montserrat blog" style="font-size: 1.2em;">'.$en_all_2738[4535]['m_name'].'</b></td>';
         echo '</tr>';
         echo '</thead>';
         echo '<tbody><tr><td colspan="3"><span class="icon-block"><i class="far fa-yin-yang fa-spin"></i></span></td></tr></tbody>';

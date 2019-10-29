@@ -172,7 +172,7 @@ class Play extends CI_Controller
         foreach($this->config->item('en_all_2738') as $en_id => $m){
             $handle = strtolower($m['m_name']);
             $play_logged_in = ($en_id==4536 && isset($session_en['en_id']));
-            $custom_header .= '<td valign="bottom"><span class="'.$handle.' border-'.$handle.'">' . $m['m_icon'] . '<span class="mn_name montserrat">' . $m['m_name'] . '</span> <span class="inline-block"><span class="current_count"><i class="far fa-yin-yang fa-spin"></i></span> ' . $m['m_desc'] . '</span></span></td>';
+            $custom_header .= '<td valign="bottom" style="width: 33%"><span class="'.$handle.' border-'.$handle.'">' . $m['m_icon'] . '<span class="mn_name montserrat">' . $m['m_name'] . '</span> <span class="inline-block"><span class="current_count"><i class="far fa-yin-yang fa-spin"></i></span> ' . $m['m_desc'] . '</span></span></td>';
         }
 
                         $custom_header .= '</tr>
