@@ -11,21 +11,21 @@ defined('BASEPATH') OR exit('No direct script access allowed');
 *
 */
 
-//Generated 2019-10-29 12:03:19 PST
+//Generated 2019-10-29 12:13:38 PST
 
-//MENCH IS:
+//MENCH IS...:
 $config['en_ids_11968'] = array(11969,11971,11972,11980,11981,11979,11983,11977,11976);
 $config['en_all_11968'] = array(
     11969 => array(
         'm_icon' => '<i class="far fa-exchange rotate90" aria-hidden="true"></i>',
         'm_name' => 'INTERACTIVE PUBLISHING',
-        'm_desc' => 'Instead of writing longer blog posts that are read without any meaningful input by the reader, MENCH encourages micro-blogs to be inter-connected with a pre-determined flow that may allow the reader to choose their personalized path.',
+        'm_desc' => 'where bloggers inter-connect micro-blogs and set the flow that enables readers to engage and choose their unique reading path.',
         'm_parents' => array(11982,11968),
     ),
     11971 => array(
         'm_icon' => '<i class="far fa-gamepad" aria-hidden="true"></i>',
         'm_name' => 'A BLOGGING GAME',
-        'm_desc' => 'Earn a red coin for every word you READ and a gold coin for every word you BLOG. READ up to 2000 words/month free or subscribe for $5/month. Earn a monthly income with you gold coins.',
+        'm_desc' => 'where players earn red coins for reading and gold coins for blogging as a way to reward both the input and output of the MENCH platform.',
         'm_parents' => array(11982,11968),
     ),
     11972 => array(
@@ -2410,7 +2410,7 @@ $config['en_all_4527'] = array(
     ),
     11968 => array(
         'm_icon' => '',
-        'm_name' => 'MENCH IS',
+        'm_name' => 'MENCH IS...',
         'm_desc' => '',
         'm_parents' => array(4527,4536),
     ),
