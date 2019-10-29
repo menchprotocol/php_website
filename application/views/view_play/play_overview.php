@@ -32,7 +32,7 @@ $en_all_10591 = $this->config->item('en_all_10591'); //PLAYER PLAYS
             </div>
 
         </div>
-        <div class="col-lg">
+        <div class="col-lg hidden learn_more">
 
             <h1 style="margin-bottom: 0;">TOP PLAYERS</h1>
             <?php
