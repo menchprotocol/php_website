@@ -23,11 +23,11 @@ $en_all_10591 = $this->config->item('en_all_10591'); //PLAYER PLAYS
             <div class="learn_more hidden">
             <h1 style="margin-top:21px;">HOW TO PLAY</h1>
             <ul class="decimal-list">
-                <li>Earn a <?= $en_all_2738[6205]['m_icon'] ?> <b class="montserrat read">RED COIN</b> for each word you <b class="montserrat read"><?= $en_all_2738[6205]['m_name'] ?></b></li>
-                <li>Earn a <?= $en_all_2738[4535]['m_icon'] ?> <b class="montserrat blog">GOLD COIN</b> for each word you <b class="montserrat blog"><?= $en_all_2738[4535]['m_name'] ?></b></li>
+                <li>Earn a <?= $en_all_2738[6205]['m_icon'] ?> coin for each word you <b class="montserrat read"><?= $en_all_2738[6205]['m_name'] ?></b></li>
+                <li>Earn a <?= $en_all_2738[4535]['m_icon'] ?> coin for each word you <b class="montserrat blog"><?= $en_all_2738[4535]['m_name'] ?></b></li>
                 <li><b class="montserrat read"><?= $en_all_2738[6205]['m_name'] ?></b> up to <?= config_var(11061) ?> words/month <b class="montserrat">FREE</b></li>
                 <li><b class="montserrat read"><?= $en_all_2738[6205]['m_name'] ?></b> unlimited words for <b class="montserrat">$<?= config_var(11162) ?>/month</b></li>
-                <li>Earn cash with your <?= $en_all_2738[4535]['m_icon'] ?> <b class="montserrat blog">GOLD COINS</b></li>
+                <li>Earn monthly cash with your <?= $en_all_2738[4535]['m_icon'] ?> coins</li>
             </ul>
             </div>
 
