@@ -20,6 +20,10 @@ table, div {
     margin-bottom: 0;
 }
 
+.table {
+    margin-bottom: 0;
+}
+
 .current_count {
     font-size: 0.9em;
     font-weight: bold;

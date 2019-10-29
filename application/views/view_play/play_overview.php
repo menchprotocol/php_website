@@ -46,21 +46,25 @@ $en_all_10591 = $this->config->item('en_all_10591'); //PLAYER PLAYS
 
 
         <?php
-        echo '<div class="container">
+
+        if($this->uri->segment(1) != 'play'){
+            echo '<div class="container" style="margin-bottom:30px;">
             <div class="row">
                 <table class="three-menus">
                     <tr>';
 
 
-                        foreach($this->config->item('en_all_2738') as $en_id => $m){
-                            $handle = strtolower($m['m_name']);
-                            echo '<td valign="bottom" style="width: 33%"><span class="'.$handle.' border-'.$handle.'">' . $m['m_icon'] . '<span class="mn_name montserrat current_count"><i class="far fa-yin-yang fa-spin"></i></span> <span class="inline-block">' . $m['m_desc'] . '</span></span></td>';
-                        }
+            foreach($this->config->item('en_all_2738') as $en_id => $m){
+                $handle = strtolower($m['m_name']);
+                echo '<td valign="bottom" style="width: 33%"><span class="'.$handle.' border-'.$handle.'">' . $m['m_icon'] . '<span class="mn_name montserrat current_count"><i class="far fa-yin-yang fa-spin"></i></span> <span class="inline-block">' . $m['m_desc'] . '</span></span></td>';
+            }
 
-                        echo '</tr>
+            echo '</tr>
                 </table>
             </div>
         </div>';
+        }
+
         ?>
 
 
