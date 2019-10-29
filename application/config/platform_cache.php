@@ -11,21 +11,21 @@ defined('BASEPATH') OR exit('No direct script access allowed');
 *
 */
 
-//Generated 2019-10-29 12:21:18 PST
+//Generated 2019-10-29 15:42:59 PST
 
-//MENCH IS...:
-$config['en_ids_11968'] = array(11969,11971,11972,11980,11981,11979,11983,11977,11976);
+//BLOGGING. REINVENTED.:
+$config['en_ids_11968'] = array(11971,11969,11972,11980,11981,11979,11983,11977,11976);
 $config['en_all_11968'] = array(
-    11969 => array(
-        'm_icon' => '<i class="fas fa-exchange rotate90" aria-hidden="true"></i>',
-        'm_name' => 'INTERACTIVE PUBLISHING',
-        'm_desc' => 'enabling bloggers to connect micro-blogs with a flow that allows step-by-step engagement by readers where they get to choose their unique reading path.',
-        'm_parents' => array(11982,11968),
-    ),
     11971 => array(
         'm_icon' => '<i class="fas fa-gamepad" aria-hidden="true"></i>',
         'm_name' => 'A BLOGGING GAME',
         'm_desc' => 'where players earn red coins for reading and gold coins for blogging as a way to reward both the input and output of the MENCH platform.',
+        'm_parents' => array(11982,11968),
+    ),
+    11969 => array(
+        'm_icon' => '<i class="fas fa-exchange rotate90" aria-hidden="true"></i>',
+        'm_name' => 'INTERACTIVE PUBLISHING',
+        'm_desc' => 'enabling bloggers to connect micro-blogs with a flow that allows step-by-step engagement by readers where they get to choose their unique reading path.',
         'm_parents' => array(11982,11968),
     ),
     11972 => array(
@@ -2148,7 +2148,7 @@ $config['en_all_10692'] = array(
 );
 
 //PLATFORM CACHE PHP:
-$config['en_ids_4527'] = array(7758,10809,10956,11047,6192,7712,4983,7756,4229,10589,10990,4485,6193,7596,7588,7302,4737,7356,7355,6201,11021,4486,7585,10602,7309,7751,6150,10712,10719,10869,10627,10746,7703,7360,7364,7359,10717,10721,10720,11080,2738,7368,7555,11968,6287,11035,11059,11058,10716,6225,10718,10711,11054,4527,6404,6232,4537,6194,11039,6827,4426,4997,11007,4454,6123,6177,11089,11033,3000,7303,6206,11088,4592,4755,10571,6345,11081,4600,7347,5967,6146,6255,4280,10590,10570,4277,6102,7704,6244,6274,7494,6144,7582,6103,10596,10539,10594,10692,10591,10593,7304,6186,4341,4593,10658,10592,11031,11084,6204,10710,10957,10725,6805,4986,7551,7358,7357,11018,11028);
+$config['en_ids_4527'] = array(7758,10809,10956,11047,6192,7712,4983,7756,4229,10589,11968,10990,4485,6193,7596,7588,7302,4737,7356,7355,6201,11021,4486,7585,10602,7309,7751,6150,10712,10719,10869,10627,10746,7703,7360,7364,7359,10717,10721,10720,11080,2738,7368,7555,6287,11035,11059,11058,10716,6225,10718,10711,11054,4527,6404,6232,4537,6194,11039,6827,4426,4997,11007,4454,6123,6177,11089,11033,3000,7303,6206,11088,4592,4755,10571,6345,11081,4600,7347,5967,6146,6255,4280,10590,10570,4277,6102,7704,6244,6274,7494,6144,7582,6103,10596,10539,10594,10692,10591,10593,7304,6186,4341,4593,10658,10592,11031,11084,6204,10710,10957,10725,6805,4986,7551,7358,7357,11018,11028);
 $config['en_all_4527'] = array(
     7758 => array(
         'm_icon' => '<i class="far fa-mountain"></i>',
@@ -2209,6 +2209,12 @@ $config['en_all_4527'] = array(
         'm_name' => 'BLOGGERS',
         'm_desc' => '',
         'm_parents' => array(4527,10591),
+    ),
+    11968 => array(
+        'm_icon' => '',
+        'm_name' => 'BLOGGING. REINVENTED.',
+        'm_desc' => '',
+        'm_parents' => array(4527,4536),
     ),
     10990 => array(
         'm_icon' => '<i class="fas fa-toolbox yellow"></i>',
@@ -2407,12 +2413,6 @@ $config['en_all_4527'] = array(
         'm_name' => 'MENCH CHANNELS',
         'm_desc' => '&trim=MENCH',
         'm_parents' => array(7305,4527),
-    ),
-    11968 => array(
-        'm_icon' => '',
-        'm_name' => 'MENCH IS...',
-        'm_desc' => '',
-        'm_parents' => array(4527,4536),
     ),
     6287 => array(
         'm_icon' => '<i class="far fa-user-shield"></i>',
