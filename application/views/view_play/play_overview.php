@@ -24,6 +24,7 @@ $en_all_10591 = $this->config->item('en_all_10591'); //PLAYER PLAYS
             <div class="learn_more hidden">
             <h1 style="margin-top:34px;">HOW TO PLAY</h1>
             <ul class="decimal-list">
+                <li>Earn a <?= $en_all_2738[4536]['m_icon'] ?> coin when you <a href="/play/signin" style="text-decoration: underline;">create your account</a></li>
                 <li>Earn a <?= $en_all_2738[6205]['m_icon'] ?> coin for each word you <b class="montserrat read"><?= $en_all_2738[6205]['m_name'] ?></b></li>
                 <li>Earn a <?= $en_all_2738[4535]['m_icon'] ?> coin for each word you <b class="montserrat blog"><?= $en_all_2738[4535]['m_name'] ?></b></li>
                 <li><b class="montserrat read"><?= $en_all_2738[6205]['m_name'] ?></b> up to <?= config_var(11061) ?> words/month <b class="montserrat">FREE</b></li>
