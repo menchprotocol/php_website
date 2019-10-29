@@ -625,6 +625,9 @@ li a {
     .searchpad {
         top:300px;
     }
+    .mini-hidden{
+        display: none;
+    }
 
 }
 @media (max-width:1200px){
