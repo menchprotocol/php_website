@@ -11,7 +11,7 @@ $en_all_10591 = $this->config->item('en_all_10591'); //PLAYER PLAYS
 
         <?php
         $en_all_4527 = $this->config->item('en_all_4527'); //Platform Cache
-        echo '<h1 '.( $session_en ? ' learn_more hidden ' : '' ).'>'.$en_all_4527[11968]['m_name'].'</h1>';
+        echo '<h1 class="'.( $session_en ? ' learn_more hidden ' : '' ).'">'.$en_all_4527[11968]['m_name'].'</h1>';
         echo '<ul class="none-list">';
         foreach($this->config->item('en_all_11968') as $en_id => $m){
             echo '<li class="'.( in_array(11982 , $m['m_parents']) && !$session_en ? '' : ' learn_more hidden ' ).'"><span class="icon-block-sm">'.$m['m_icon'].'</span> <b class="montserrat">'.$m['m_name'].'</b> '.$m['m_desc'].'</li>';
