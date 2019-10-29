@@ -3379,13 +3379,13 @@ fragment PostListingItemSidebar_post on Post {
 
         return echo_json(array(
             'intents' => array(
-                'current_count' => number_format($words_blog[0]['total_words'], 0),
+                'current_count' => echo_number($words_blog[0]['total_words']),
             ),
             'entities' => array(
-                'current_count' => number_format($en_count[0]['total_public_entities'], 0),
+                'current_count' => echo_number($en_count[0]['total_public_entities']),
             ),
             'links' => array(
-                'current_count' => number_format(abs($words_read[0]['total_words']), 0),
+                'current_count' => echo_number(abs($words_read[0]['total_words'])),
             )
         ));
 
