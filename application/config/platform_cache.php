@@ -11,7 +11,7 @@ defined('BASEPATH') OR exit('No direct script access allowed');
 *
 */
 
-//Generated 2019-10-29 18:02:38 PST
+//Generated 2019-10-29 18:50:30 PST
 
 //BLOGGING. REINVENTED.:
 $config['en_ids_11968'] = array(11969,11971,11980,11979,11984,11972,11977,11976);
@@ -19,31 +19,31 @@ $config['en_all_11968'] = array(
     11969 => array(
         'm_icon' => '<i class="fas fa-exchange rotate90" aria-hidden="true"></i>',
         'm_name' => 'INTERACTIVE',
-        'm_desc' => 'where players create & inter-connect micro-blogs (max. 600 characters) that enable readers to choose their personalized reading path.',
+        'm_desc' => 'where players create & inter-link micro-blogs that allow readers to choose their unique reading path.',
         'm_parents' => array(11982,11968),
     ),
     11971 => array(
         'm_icon' => '<i class="fas fa-game-board" aria-hidden="true"></i>',
         'm_name' => 'GAMIFIED',
-        'm_desc' => 'where players earn coins for every word they read or blog and unlock superpowers by ranking in the top 100 monthly leaderboard.',
+        'm_desc' => 'where players earn coins for every word they read or blog and unlock superpowers by ranking in the top 100 leaderboard.',
         'm_parents' => array(11982,11968),
     ),
     11980 => array(
         'm_icon' => '<i class="fas fa-user-friends" aria-hidden="true"></i>',
         'm_name' => 'SOCIAL',
-        'm_desc' => 'where players can connect based on interested topics to discuss or practice something important to them.',
+        'm_desc' => 'where players can make new friends based on their interests to discuss or practice something important to them.',
         'm_parents' => array(11982,11968),
     ),
     11979 => array(
         'm_icon' => '<i class="fas fa-comment-lines" aria-hidden="true"></i>',
         'm_name' => 'CONVERSATIONAL',
-        'm_desc' => 'where players read and blog as if they are chatting with a dear friend over the web or Messenger.',
+        'm_desc' => 'where players read and blog as if they are chatting with a knowledgeable friend over the web or Messenger.',
         'm_parents' => array(11968),
     ),
     11984 => array(
         'm_icon' => '<i class="fas fa-hands-helping" aria-hidden="true"></i>',
         'm_name' => 'COLLABORATIVE',
-        'm_desc' => 'where players can create blogs by linking to any other blog in the marketplace to cover more expert topics.',
+        'm_desc' => 'where players blog by linking to other blogs in the marketplace to expand their conversation with other related blogs.',
         'm_parents' => array(11968),
     ),
     11972 => array(
