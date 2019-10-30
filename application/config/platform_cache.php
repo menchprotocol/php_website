@@ -11,15 +11,15 @@ defined('BASEPATH') OR exit('No direct script access allowed');
 *
 */
 
-//Generated 2019-10-29 19:07:09 PST
+//Generated 2019-10-29 19:13:40 PST
 
 //BLOGGING. REINVENTED.:
 $config['en_ids_11968'] = array(11969,11971,11980,11979,11984,11972,11977,11976);
 $config['en_all_11968'] = array(
     11969 => array(
-        'm_icon' => '<i class="fas fa-exchange rotate90" aria-hidden="true"></i>',
+        'm_icon' => '<i class="fas fa-table-tennis" aria-hidden="true"></i>',
         'm_name' => 'INTERACTIVE',
-        'm_desc' => 'where players create and link micro blogs to each other that allow readers to choose their unique reading path.',
+        'm_desc' => 'where players create micro-blogs that are inter-linked, enabling readers to select their unique reading path.',
         'm_parents' => array(11982,11968),
     ),
     11971 => array(
