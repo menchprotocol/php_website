@@ -11,51 +11,51 @@ defined('BASEPATH') OR exit('No direct script access allowed');
 *
 */
 
-//Generated 2019-10-29 17:09:57 PST
+//Generated 2019-10-29 17:28:03 PST
 
 //BLOGGING. REINVENTED.:
-$config['en_ids_11968'] = array(11971,11969,11972,11980,11979,11977,11976);
+$config['en_ids_11968'] = array(11969,11971,11980,11979,11972,11977,11976);
 $config['en_all_11968'] = array(
-    11971 => array(
-        'm_icon' => '<i class="fas fa-gamepad" aria-hidden="true"></i>',
-        'm_name' => 'GAMIFIED',
-        'm_desc' => 'where players earn coins as they read/blog and may unlock superpowers if they become a top 100 player.',
-        'm_parents' => array(11982,11968),
-    ),
     11969 => array(
         'm_icon' => '<i class="fas fa-exchange rotate90" aria-hidden="true"></i>',
         'm_name' => 'INTERACTIVE',
-        'm_desc' => 'where readers engage micro/inter-connected blogs to navigate their reading path and choose the next blog.',
+        'm_desc' => 'where players read a series of inter-connected blogs and choose their unique reading path along the way.',
         'm_parents' => array(11982,11968),
     ),
-    11972 => array(
-        'm_icon' => '<i class="fas fa-globe" aria-hidden="true"></i>',
-        'm_name' => 'OPEN',
-        'm_desc' => 'where anyone is welcome to publish stories/ideas that matter on our open-source marketplace of blogs.',
+    11971 => array(
+        'm_icon' => '<i class="fas fa-game-board" aria-hidden="true"></i>',
+        'm_name' => 'GAMIFIED',
+        'm_desc' => 'where players earn coins as they read or blog and unlock superpowers by ranking in the top 100 leaderboard.',
         'm_parents' => array(11982,11968),
     ),
     11980 => array(
         'm_icon' => '<i class="fas fa-user-friends" aria-hidden="true"></i>',
         'm_name' => 'SOCIAL',
-        'm_desc' => 'where players connect based on topics to practice/discuss something of interest to them both.',
-        'm_parents' => array(11968),
+        'm_desc' => 'where players connect based on topics to practice and discuss something of interest to them.',
+        'm_parents' => array(11982,11968),
     ),
     11979 => array(
         'm_icon' => '<i class="fas fa-comment-lines" aria-hidden="true"></i>',
         'm_name' => 'CONVERSATIONAL',
-        'm_desc' => 'where players blog with a direct/conversational tone and read over the web or chat apps like Messenger.',
+        'm_desc' => 'where players blog with a direct tone and read over the web or chat apps like Messenger.',
+        'm_parents' => array(11968),
+    ),
+    11972 => array(
+        'm_icon' => '<i class="fas fa-globe" aria-hidden="true"></i>',
+        'm_name' => 'INCLUSIVE',
+        'm_desc' => 'where everyone is welcome to share stories and ideas that matter to them on platform that\'s open-source.',
         'm_parents' => array(11968),
     ),
     11977 => array(
         'm_icon' => '<i class="fas fa-atom-alt" aria-hidden="true"></i>',
         'm_name' => 'PRINCIPLE-DRIVEN',
-        'm_desc' => 'where blogs reference first-principles found in expert sources like books, videos, courses & articles.',
+        'm_desc' => 'where blogs reference first-principles found in expert sources like books, videos, courses and articles.',
         'm_parents' => array(11968),
     ),
     11976 => array(
         'm_icon' => '<i class="fas fa-hands-heart" aria-hidden="true"></i>',
         'm_name' => 'NON-PROFIT',
-        'm_desc' => 'where the entire organization is on a mission to expand human potential by building and sharing consensus.',
+        'm_desc' => 'and on a mission to expand human potential by building and sharing consensus.',
         'm_parents' => array(11968),
     ),
 );
