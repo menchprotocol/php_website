@@ -22,7 +22,7 @@ $en_all_10591 = $this->config->item('en_all_10591'); //PLAYER PLAYS
 
 
         <div class="learn_more hidden">
-            <h1 style="margin-top:34px;">HOW TO PLAY</h1>
+            <h1>HOW TO PLAY</h1>
             <ul class="none-list">
                 <li><b class="montserrat play"><?= $en_all_2738[4536]['m_icon'] .' '. $en_all_2738[4536]['m_name'] ?></b> coin issued for each new account</li>
                 <li><b class="montserrat read"><?= $en_all_2738[6205]['m_icon'] .' '. $en_all_2738[6205]['m_name'] ?></b> coin issued for each word you read</li>
@@ -36,7 +36,7 @@ $en_all_10591 = $this->config->item('en_all_10591'); //PLAYER PLAYS
 
 
         <div class="<?= ( $session_en ? '' : ' learn_more hidden ' ) ?>">
-            <h1 style="margin-top:34px;">TOP PLAYERS</h1>
+            <h1>TOP PLAYERS</h1>
             <?php
             echo '<table id="leaderboard" class="table table-sm table-striped">';
             echo '<thead>';
