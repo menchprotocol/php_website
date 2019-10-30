@@ -11,21 +11,21 @@ defined('BASEPATH') OR exit('No direct script access allowed');
 *
 */
 
-//Generated 2019-10-29 20:03:03 PST
+//Generated 2019-10-29 20:24:19 PST
 
-//BLOGGING. REINVENTED.:
+//BLOGGING. REIMAGINED.:
 $config['en_ids_11968'] = array(11969,11971,11980,11979,11984,11972,11977,11976);
 $config['en_all_11968'] = array(
     11969 => array(
         'm_icon' => '<i class="fas fa-exchange-alt rotate90" aria-hidden="true"></i>',
         'm_name' => 'INTERACTIVE',
-        'm_desc' => 'where players create micro-blogs that are inter-linked, enabling readers to select their unique reading path.',
+        'm_desc' => 'where players create micro-blogs that link together so readers get to choose their unique reading path.',
         'm_parents' => array(11982,11968),
     ),
     11971 => array(
         'm_icon' => '<i class="fas fa-game-board" aria-hidden="true"></i>',
         'm_name' => 'GAMIFIED',
-        'm_desc' => 'where players earn coins for every word they read or blog and unlock superpowers by ranking in the top 100 leaderboard.',
+        'm_desc' => 'where players earn coins for every word they read or blog and unlock superpowers as they earn more coins.',
         'm_parents' => array(11982,11968),
     ),
     11980 => array(
@@ -43,24 +43,24 @@ $config['en_all_11968'] = array(
     11984 => array(
         'm_icon' => '<i class="fas fa-puzzle-piece" aria-hidden="true"></i>',
         'm_name' => 'MODULAR',
-        'm_desc' => 'where players can blog by linking to all published blogs to rapidly build an engaging conversation.',
+        'm_desc' => 'where players can blog by reusing any other published blog to easily create an engaging conversation.',
         'm_parents' => array(11968),
     ),
     11972 => array(
         'm_icon' => '<i class="fas fa-globe" aria-hidden="true"></i>',
-        'm_name' => 'INCLUSIVE',
-        'm_desc' => 'where everyone is welcome to share stories and ideas that matter to them on a platform that\'s open-source.',
+        'm_name' => 'OPEN-EVERYTHING',
+        'm_desc' => 'where everyone is welcome to write code, govern or share stories/ideas that matter to them.',
         'm_parents' => array(11968),
     ),
     11977 => array(
         'm_icon' => '<i class="fas fa-atom-alt" aria-hidden="true"></i>',
         'm_name' => 'PRINCIPLE-DRIVEN',
-        'm_desc' => 'where blogs usually reference first-principles and best-practices from expert sources like books, videos and articles.',
+        'm_desc' => 'where blogs can reference first-principles and best-practices from expert sources like books, videos and articles.',
         'm_parents' => array(11968),
     ),
     11976 => array(
         'm_icon' => '<i class="fas fa-hands-heart" aria-hidden="true"></i>',
-        'm_name' => 'NON-PROFIT',
+        'm_name' => 'NOT-FOR-PROFIT',
         'm_desc' => 'and on a mission to expand human potential by building and sharing consensus.',
         'm_parents' => array(11968),
     ),
@@ -2206,7 +2206,7 @@ $config['en_all_4527'] = array(
     ),
     11968 => array(
         'm_icon' => '',
-        'm_name' => 'BLOGGING. REINVENTED.',
+        'm_name' => 'BLOGGING. REIMAGINED.',
         'm_desc' => '',
         'm_parents' => array(4527,4536),
     ),
