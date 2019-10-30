@@ -559,9 +559,8 @@ function random_user_icon(){
 
     $icon_styles = array('fas', 'far', 'fal');
     $animal_icons = array('alicorn', 'badger-honey', 'bat', 'cat', 'cow', 'crow', 'deer', 'deer-rudolph', 'dog', 'dog-leashed', 'dove', 'dragon', 'duck', 'elephant', 'fish', 'frog', 'hippo', 'horse', 'horse-head', 'kiwi-bird', 'monkey', 'narwhal', 'otter', 'pegasus', 'pig', 'rabbit', 'rabbit-fast', 'ram', 'sheep', 'snake', 'spider-black-widow', 'squirrel', 'turtle', 'unicorn', 'whale');
-    $icon_colors = array('blue', 'ismatt', 'ispink', 'yellow');
 
-    return '<i class="'.$icon_styles[array_rand($icon_styles)].' fa-'.$animal_icons[array_rand($animal_icons)].' '.$icon_colors[array_rand($icon_colors)].'"></i>';
+    return '<i class="'.$icon_styles[array_rand($icon_styles)].' fa-'.$animal_icons[array_rand($animal_icons)].' blue"></i>';
 
 }
 
