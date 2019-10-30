@@ -735,7 +735,7 @@ fragment PostListingItemSidebar_post on Post {
         //Fetch top users per each direction
         $session_en = en_auth();
         $load_max = 100;
-        $show_max = 10;
+        $show_max = 9;
         $en_all_2738 = $this->config->item('en_all_2738'); //MENCH
 
 
@@ -764,7 +764,7 @@ fragment PostListingItemSidebar_post on Post {
         */
 
         //Fetch leaderboard:
-        $blog_coins = $this->READ_model->ln_fetch($filters, array('ln_creator'), ( $session_en ? $load_max : $show_max  ), 0, array('total_words' => 'DESC'), 'SUM(ABS(ln_words)) as total_words, en_name, en_icon, en_id', 'en_id, en_name, en_icon');
+        $blog_coins = $this->READ_model->ln_fetch($filters, array('ln_creator'), ( $session_en ? $load_max : $load_max  ), 0, array('total_words' => 'DESC'), 'SUM(ABS(ln_words)) as total_words, en_name, en_icon, en_id', 'en_id, en_name, en_icon');
 
 
         //Did we find anyone?
