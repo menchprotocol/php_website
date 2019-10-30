@@ -11,63 +11,51 @@ defined('BASEPATH') OR exit('No direct script access allowed');
 *
 */
 
-//Generated 2019-10-29 15:42:59 PST
+//Generated 2019-10-29 17:09:57 PST
 
 //BLOGGING. REINVENTED.:
-$config['en_ids_11968'] = array(11971,11969,11972,11980,11981,11979,11983,11977,11976);
+$config['en_ids_11968'] = array(11971,11969,11972,11980,11979,11977,11976);
 $config['en_all_11968'] = array(
     11971 => array(
         'm_icon' => '<i class="fas fa-gamepad" aria-hidden="true"></i>',
-        'm_name' => 'A BLOGGING GAME',
-        'm_desc' => 'where players earn red coins for reading and gold coins for blogging as a way to reward both the input and output of the MENCH platform.',
+        'm_name' => 'GAMIFIED',
+        'm_desc' => 'where players earn coins as they read/blog and may unlock superpowers if they become a top 100 player.',
         'm_parents' => array(11982,11968),
     ),
     11969 => array(
         'm_icon' => '<i class="fas fa-exchange rotate90" aria-hidden="true"></i>',
-        'm_name' => 'INTERACTIVE PUBLISHING',
-        'm_desc' => 'enabling bloggers to connect micro-blogs with a flow that allows step-by-step engagement by readers where they get to choose their unique reading path.',
+        'm_name' => 'INTERACTIVE',
+        'm_desc' => 'where readers engage micro/inter-connected blogs to navigate their reading path and choose the next blog.',
         'm_parents' => array(11982,11968),
     ),
     11972 => array(
-        'm_icon' => '<i class="fas fa-lightbulb-on" aria-hidden="true"></i>',
-        'm_name' => 'A MARKETPLACE FOR IDEAS',
-        'm_desc' => 'Anyone can share stories and ideas that matter using our marketplace of blogs that create a publicly editable idea index.',
+        'm_icon' => '<i class="fas fa-globe" aria-hidden="true"></i>',
+        'm_name' => 'OPEN',
+        'm_desc' => 'where anyone is welcome to publish stories/ideas that matter on our open-source marketplace of blogs.',
         'm_parents' => array(11982,11968),
     ),
     11980 => array(
-        'm_icon' => '<i class="fas fa-user-friends"></i>',
-        'm_name' => 'A SOCIAL NETWORK',
-        'm_desc' => 'Connect with other readers using social blogs that pre-define the context for interaction to practice or simply discuss something.',
-        'm_parents' => array(11968),
-    ),
-    11981 => array(
-        'm_icon' => '<i class="fas fa-clipboard-check" aria-hidden="true"></i>',
-        'm_name' => 'A FORM BUILDER',
-        'm_desc' => 'MENCH is ideal for building interactive forms where you can navigate the reader to their next step based on their response.',
+        'm_icon' => '<i class="fas fa-user-friends" aria-hidden="true"></i>',
+        'm_name' => 'SOCIAL',
+        'm_desc' => 'where players connect based on topics to practice/discuss something of interest to them both.',
         'm_parents' => array(11968),
     ),
     11979 => array(
         'm_icon' => '<i class="fas fa-comment-lines" aria-hidden="true"></i>',
-        'm_name' => 'A BOT PLATFORM',
-        'm_desc' => 'Similar to other bot builders and NLP engines that operate based on entities and intents, MENCH too operates based on these two objects to fuel its logic engine.',
-        'm_parents' => array(11968),
-    ),
-    11983 => array(
-        'm_icon' => '<i class="fas fa-chart-network"></i>',
-        'm_name' => 'A KNOWLEDGE GRAPH',
-        'm_desc' => 'MENCH operates based on three tables that represent intents, entities and the links between them.',
+        'm_name' => 'CONVERSATIONAL',
+        'm_desc' => 'where players blog with a direct/conversational tone and read over the web or chat apps like Messenger.',
         'm_parents' => array(11968),
     ),
     11977 => array(
-        'm_icon' => '<i class="fas fa-poll-people" aria-hidden="true"></i>',
-        'm_name' => 'A PROTOCOL TO BUILD CONSENSUS',
-        'm_desc' => 'By mapping knowledge to underlying intentions, MENCH defines a process to create an idea index by distilling knowledge to first principles and creating an inter-connected map of intelligence across multiple expert sources.',
+        'm_icon' => '<i class="fas fa-atom-alt" aria-hidden="true"></i>',
+        'm_name' => 'PRINCIPLE-DRIVEN',
+        'm_desc' => 'where blogs reference first-principles found in expert sources like books, videos, courses & articles.',
         'm_parents' => array(11968),
     ),
     11976 => array(
-        'm_icon' => '<i class="fas fa-hands-heart"></i>',
-        'm_name' => 'NON-PROFIT AND OPEN-SOURCE',
-        'm_desc' => 'On a mission to expand your potential by building and sharing consensus.',
+        'm_icon' => '<i class="fas fa-hands-heart" aria-hidden="true"></i>',
+        'm_name' => 'NON-PROFIT',
+        'm_desc' => 'where the entire organization is on a mission to expand human potential by building and sharing consensus.',
         'm_parents' => array(11968),
     ),
 );
