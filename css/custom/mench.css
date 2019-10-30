@@ -467,7 +467,9 @@ li a {
     background-color:#070707;
     color:#FFFFFF !important;
 }
-
+.mench-navigation .block-logo {
+    width: 44px !important;
+}
 .mench-navigation .block-logo a {
     display: block;
     text-align: center;
