@@ -29,7 +29,7 @@ $en_all_10591 = $this->config->item('en_all_10591'); //PLAYER PLAYS
                 <li><b class="montserrat blog"><?= $en_all_2738[4535]['m_icon'] .' '. $en_all_2738[4535]['m_name'] ?></b> coin earned for each word blogged</li>
                 <li><b class="montserrat read"><?= $en_all_2738[6205]['m_icon'] .' '. $en_all_2738[6205]['m_name'] ?></b> coin earned for each word read</li>
                 <li><b class="montserrat read"><?= $en_all_2738[6205]['m_icon'] .' '.$en_all_2738[6205]['m_name'] ?></b> up to <?= config_var(11061) ?> words per month free</li>
-                <li><b class="montserrat read"><?= $en_all_2738[6205]['m_icon'] .' '.$en_all_2738[6205]['m_name'] ?></b> unlimited words for $<?= config_var(11162) ?> per month</li>
+                <li><b class="montserrat read"><?= $en_all_2738[6205]['m_icon'] .' '.$en_all_2738[6205]['m_name'] ?></b> unlimited by donating $<?= config_var(11162) ?> per month</li>
                 <li><b class="montserrat blog"><?= $en_all_2738[4535]['m_icon'] .' '. $en_all_2738[4535]['m_name'] ?></b> coins earn cash income per month</li>
             </ul>
         </div>
