@@ -11,7 +11,7 @@ defined('BASEPATH') OR exit('No direct script access allowed');
 *
 */
 
-//Generated 2019-10-30 14:53:24 PST
+//Generated 2019-10-30 16:25:21 PST
 
 //BLOGGING. REIMAGINED.:
 $config['en_ids_11968'] = array(11969,11971,11980,11984,11972,11977,11976);
@@ -2148,7 +2148,7 @@ $config['en_all_10692'] = array(
 );
 
 //PLATFORM CACHE PHP:
-$config['en_ids_4527'] = array(7758,10809,10956,11047,6192,7712,4983,7756,4229,7585,10589,11968,10990,4485,6193,7596,7588,7302,4737,7356,7355,6201,11021,4486,10602,7309,7751,6150,10712,10719,10869,10627,10746,7703,7360,7364,7359,10717,10721,10720,11080,2738,7368,7555,6287,11035,11059,11058,10716,6225,10718,10711,11054,4527,6404,6232,4537,6194,11039,6827,4426,4997,11007,4454,6123,6177,11089,11033,3000,7303,6206,11088,4592,4755,10571,6345,11081,4600,7347,5967,6146,6255,4280,10590,10570,4277,6102,7704,6244,6274,7494,6144,7582,6103,10596,10539,10594,10692,10591,10593,7304,6186,4341,4593,10658,10592,11031,11084,6204,10710,10957,10725,6805,4986,7551,7358,7357,11018,11028);
+$config['en_ids_4527'] = array(7758,10809,10956,11047,7712,4983,7756,7585,10602,10589,11968,10990,4485,7596,7588,7302,4737,7356,7355,6201,11021,4486,7309,7751,6150,10712,10719,10869,10627,4229,10746,7703,7360,7364,7359,10717,10721,10720,11080,2738,7368,7555,6287,11035,11059,11058,10716,6225,10718,10711,11054,4527,6404,6232,4537,6194,11039,6827,4426,4997,11007,4454,6123,6177,11089,11033,3000,7303,6206,11088,4592,4755,10571,6345,11081,6192,4600,7347,5967,6146,6255,4280,10590,10570,4277,6102,7704,6244,6274,7494,6144,7582,6103,10596,10539,10594,10692,6193,10591,10593,7304,6186,4341,4593,10658,10592,11031,11084,6204,10710,10957,10725,6805,4986,7551,7358,7357,11018,11028);
 $config['en_all_4527'] = array(
     7758 => array(
         'm_icon' => '<i class="far fa-mountain"></i>',
@@ -2174,12 +2174,6 @@ $config['en_all_4527'] = array(
         'm_desc' => '&trim=BLOG',
         'm_parents' => array(10989,4527,11040,10990),
     ),
-    6192 => array(
-        'm_icon' => '<i class="far fa-sitemap "></i>',
-        'm_name' => 'Blog AND',
-        'm_desc' => '&trim=Blog',
-        'm_parents' => array(4527,10602),
-    ),
     7712 => array(
         'm_icon' => '<i class="far fa-question-circle"></i>',
         'm_name' => 'Blog Answer Types',
@@ -2198,17 +2192,17 @@ $config['en_all_4527'] = array(
         'm_desc' => '',
         'm_parents' => array(10893,4527),
     ),
-    4229 => array(
-        'm_icon' => '<i class="fas fa-question-circle yellow"></i>',
-        'm_name' => 'BLOG BRANCH QUALIFY',
-        'm_desc' => '',
-        'm_parents' => array(10594,10589,7703,4527,6410,6283,4593,4486),
-    ),
     7585 => array(
         'm_icon' => '<i class="fas fa-random yellow" aria-hidden="true"></i>',
         'm_name' => 'BLOG FLOW',
         'm_desc' => '&trim=BLOG',
         'm_parents' => array(6204,10651,6160,6194,6232,4527,6201),
+    ),
+    10602 => array(
+        'm_icon' => '<i class="far fa-puzzle-piece" aria-hidden="true"></i>',
+        'm_name' => 'BLOG FLOW TYPES',
+        'm_desc' => '&trim=Blog',
+        'm_parents' => array(10893,6204,7302,4527),
     ),
     10589 => array(
         'm_icon' => '<i class="fas fa-user-edit yellow"></i>',
@@ -2233,12 +2227,6 @@ $config['en_all_4527'] = array(
         'm_name' => 'BLOG NOTES',
         'm_desc' => '&trim=BLOG',
         'm_parents' => array(7552,4535,4527,4463),
-    ),
-    6193 => array(
-        'm_icon' => '<i class="far fa-code-merge "></i>',
-        'm_name' => 'Blog OR',
-        'm_desc' => '&trim=Blog',
-        'm_parents' => array(10602,4527),
     ),
     7596 => array(
         'm_icon' => '<i class="fas fa-triangle yellow"></i>',
@@ -2291,14 +2279,8 @@ $config['en_all_4527'] = array(
     4486 => array(
         'm_icon' => '<i class="fas fa-code-branch rotate74 yellow"></i>',
         'm_name' => 'BLOG TREE BRANCHES',
-        'm_desc' => '&trim=BLOG TREE BRANCH',
+        'm_desc' => '&trim=FLOW',
         'm_parents' => array(10984,11025,10662,4527),
-    ),
-    10602 => array(
-        'm_icon' => '<i class="far fa-puzzle-piece"></i>',
-        'm_name' => 'Blog Type Groups',
-        'm_desc' => '&trim=Blog',
-        'm_parents' => array(10893,6204,7302,4527),
     ),
     7309 => array(
         'm_icon' => '<i class="far fa-cubes"></i>',
@@ -2341,6 +2323,12 @@ $config['en_all_4527'] = array(
         'm_name' => 'File Type Attachment',
         'm_desc' => '',
         'm_parents' => array(4527,6771),
+    ),
+    4229 => array(
+        'm_icon' => '<i class="fas fa-question-circle yellow" aria-hidden="true"></i>',
+        'm_name' => 'FLOW CONDITIONAL',
+        'm_desc' => '',
+        'm_parents' => array(10594,10589,7703,4527,6410,6283,4593,4486),
     ),
     10746 => array(
         'm_icon' => '<i class="far fa-industry"></i>',
@@ -2612,6 +2600,12 @@ $config['en_all_4527'] = array(
         'm_desc' => '',
         'm_parents' => array(4527,6771),
     ),
+    6192 => array(
+        'm_icon' => '<i class="fas fa-sitemap" aria-hidden="true"></i>',
+        'm_name' => 'READ AND',
+        'm_desc' => '&trim=Blog',
+        'm_parents' => array(4527,10602),
+    ),
     4600 => array(
         'm_icon' => '<i class="far fa-badge-check"></i>',
         'm_name' => 'Reader Account Types',
@@ -2737,6 +2731,12 @@ $config['en_all_4527'] = array(
         'm_name' => 'READ OPTIONAL CONNECTIONS',
         'm_desc' => '',
         'm_parents' => array(4527,6771),
+    ),
+    6193 => array(
+        'm_icon' => '<i class="fas fa-code-branch rotate180" aria-hidden="true"></i>',
+        'm_name' => 'READ OR',
+        'm_desc' => '&trim=Blog',
+        'm_parents' => array(10602,4527),
     ),
     10591 => array(
         'm_icon' => '<i class="fas fa-exchange rotate90 ispink"></i>',
@@ -3272,25 +3272,13 @@ $config['en_all_10627'] = array(
 );
 
 //READ ONE WORD + LINKS:
-$config['en_ids_10594'] = array(10573,4228,4229,10660,10664,4318,7545);
+$config['en_ids_10594'] = array(10573,10660,10664,4228,4229,4318,7545);
 $config['en_all_10594'] = array(
     10573 => array(
         'm_icon' => '<i class="fas fa-bookmark yellow"></i>',
         'm_name' => 'BLOG BOOKMARKS',
         'm_desc' => '',
         'm_parents' => array(10989,11033,10990,10594,10589,4593,7703,7551,4485),
-    ),
-    4228 => array(
-        'm_icon' => '<i class="far fa-play yellow"></i>',
-        'm_name' => 'BLOG BRANCH AUTO-NEXT',
-        'm_desc' => '',
-        'm_parents' => array(10594,10589,7703,6410,4593,4486),
-    ),
-    4229 => array(
-        'm_icon' => '<i class="fas fa-question-circle yellow"></i>',
-        'm_name' => 'BLOG BRANCH QUALIFY',
-        'm_desc' => '',
-        'm_parents' => array(10594,10589,7703,4527,6410,6283,4593,4486),
     ),
     10660 => array(
         'm_icon' => '<i class="fas fa-angle-double-right"></i>',
@@ -3303,6 +3291,18 @@ $config['en_all_10594'] = array(
         'm_name' => 'BLOG READ Update Score',
         'm_desc' => '',
         'm_parents' => array(7703,10638,10594,10589,4593,4229,10658),
+    ),
+    4228 => array(
+        'm_icon' => '<i class="far fa-play yellow" aria-hidden="true"></i>',
+        'm_name' => 'FLOW AUTOMATIC',
+        'm_desc' => '',
+        'm_parents' => array(10594,10589,7703,6410,4593,4486),
+    ),
+    4229 => array(
+        'm_icon' => '<i class="fas fa-question-circle yellow" aria-hidden="true"></i>',
+        'm_name' => 'FLOW CONDITIONAL',
+        'm_desc' => '',
+        'm_parents' => array(10594,10589,7703,4527,6410,6283,4593,4486),
     ),
     4318 => array(
         'm_icon' => '<i class="far fa-clock blue"></i>',
@@ -3994,7 +3994,7 @@ $config['en_all_10590'] = array(
 );
 
 //BLOGGERS:
-$config['en_ids_10589'] = array(10671,4983,10573,4228,4229,4250,4601,6226,4231,10660,10676,10678,10679,10677,10686,10663,10664,10661,10675,10681,10685,10650,10648,10644,10651,10647,7757,4259,4261,10669,4260,4319,4230,4255,4318,4256,4258,4257,10672,7545,4251,10653,5001,10625,5943,4999,4998,5000,5981,11956,5982,5865,5003,10689,10646,10654,10657,10673,10656,10659,4235,4275,6132,6415,6559,6560,6556,6578,10690,4266,4267,10683,6155,4577,4549,4551,4550,4557,4278,4279,4268,4460,4547,4287,4548,7561,7564,7560,7559,7558,7488,7485,7741,7486,4559,7489,7492,6140,6997,6157,7487,6143,6144,7578,6224,5007,4246,7504);
+$config['en_ids_10589'] = array(10671,4983,10573,4250,4601,6226,4231,10660,10676,10678,10679,10677,10686,10663,10664,10661,10675,10681,10685,10650,10648,10644,10651,10647,4228,4229,7757,4259,4261,10669,4260,4319,4230,4255,4318,4256,4258,4257,10672,7545,4251,10653,5001,10625,5943,4999,4998,5000,5981,11956,5982,5865,5003,10689,10646,10654,10657,10673,10656,10659,4235,4275,6132,6415,6559,6560,6556,6578,10690,4266,4267,10683,6155,4577,4549,4551,4550,4557,4278,4279,4268,4460,4547,4287,4548,7561,7564,7560,7559,7558,7488,7485,7741,7486,4559,7489,7492,6140,6997,6157,7487,6143,6144,7578,6224,5007,4246,7504);
 $config['en_all_10589'] = array(
     10671 => array(
         'm_icon' => '<i class="far fa-trash-alt"></i>',
@@ -4013,18 +4013,6 @@ $config['en_all_10589'] = array(
         'm_name' => 'BLOG BOOKMARKS',
         'm_desc' => '',
         'm_parents' => array(10989,11033,10990,10594,10589,4593,7703,7551,4485),
-    ),
-    4228 => array(
-        'm_icon' => '<i class="far fa-play yellow"></i>',
-        'm_name' => 'BLOG BRANCH AUTO-NEXT',
-        'm_desc' => '',
-        'm_parents' => array(10594,10589,7703,6410,4593,4486),
-    ),
-    4229 => array(
-        'm_icon' => '<i class="fas fa-question-circle yellow"></i>',
-        'm_name' => 'BLOG BRANCH QUALIFY',
-        'm_desc' => '',
-        'm_parents' => array(10594,10589,7703,4527,6410,6283,4593,4486),
     ),
     4250 => array(
         'm_icon' => '<i class="fas fa-hashtag"></i>',
@@ -4151,6 +4139,18 @@ $config['en_all_10589'] = array(
         'm_name' => 'BLOG Update Verb',
         'm_desc' => '',
         'm_parents' => array(10596,10589,4593,10638),
+    ),
+    4228 => array(
+        'm_icon' => '<i class="far fa-play yellow" aria-hidden="true"></i>',
+        'm_name' => 'FLOW AUTOMATIC',
+        'm_desc' => '',
+        'm_parents' => array(10594,10589,7703,6410,4593,4486),
+    ),
+    4229 => array(
+        'm_icon' => '<i class="fas fa-question-circle yellow" aria-hidden="true"></i>',
+        'm_name' => 'FLOW CONDITIONAL',
+        'm_desc' => '',
+        'm_parents' => array(10594,10589,7703,4527,6410,6283,4593,4486),
     ),
     7757 => array(
         'm_icon' => '<i class="far fa-bookmark ispink"></i>',
@@ -4663,7 +4663,7 @@ $config['en_all_7347'] = array(
     ),
 );
 
-//Blog AND:
+//READ AND:
 $config['en_ids_6192'] = array(7637,6914,6677,6683);
 $config['en_all_6192'] = array(
     7637 => array(
@@ -4692,19 +4692,19 @@ $config['en_all_6192'] = array(
     ),
 );
 
-//Blog Type Groups:
+//BLOG FLOW TYPES:
 $config['en_ids_10602'] = array(6192,6193);
 $config['en_all_10602'] = array(
     6192 => array(
-        'm_icon' => '<i class="far fa-sitemap "></i>',
-        'm_name' => 'and',
-        'm_desc' => 'AND Intents are completed when ALL their children are complete',
+        'm_icon' => '<i class="fas fa-sitemap" aria-hidden="true"></i>',
+        'm_name' => 'read and',
+        'm_desc' => 'Reader is recommended to continue reading all next blogs.',
         'm_parents' => array(4527,10602),
     ),
     6193 => array(
-        'm_icon' => '<i class="far fa-code-merge "></i>',
-        'm_name' => 'or',
-        'm_desc' => 'OR Intents are completed when ANY of their children are complete',
+        'm_icon' => '<i class="fas fa-code-branch rotate180" aria-hidden="true"></i>',
+        'm_name' => 'read or',
+        'm_desc' => 'Reader is asked to choose a personalized path forward.',
         'm_parents' => array(10602,4527),
     ),
 );
@@ -5183,7 +5183,7 @@ $config['en_all_6201'] = array(
 );
 
 //Single Selectable:
-$config['en_ids_6204'] = array(10956,7585,7596,4737,10602,3290,11007,4454,6177,10591,6186,10592,3289);
+$config['en_ids_6204'] = array(10956,7585,10602,7596,4737,3290,11007,4454,6177,10591,6186,10592,3289);
 $config['en_all_6204'] = array(
     10956 => array(
         'm_icon' => '<i class="fas fa-paw blue"></i>',
@@ -5197,6 +5197,12 @@ $config['en_all_6204'] = array(
         'm_desc' => '',
         'm_parents' => array(6204,10651,6160,6194,6232,4527,6201),
     ),
+    10602 => array(
+        'm_icon' => '<i class="far fa-puzzle-piece" aria-hidden="true"></i>',
+        'm_name' => 'BLOG FLOW TYPES',
+        'm_desc' => '',
+        'm_parents' => array(10893,6204,7302,4527),
+    ),
     7596 => array(
         'm_icon' => '<i class="fas fa-triangle yellow"></i>',
         'm_name' => 'BLOG Scope',
@@ -5208,12 +5214,6 @@ $config['en_all_6204'] = array(
         'm_name' => 'BLOG STATUS',
         'm_desc' => '',
         'm_parents' => array(11054,6204,10648,6226,6160,6232,7302,6194,6201,4527),
-    ),
-    10602 => array(
-        'm_icon' => '<i class="far fa-puzzle-piece"></i>',
-        'm_name' => 'Blog Type Groups',
-        'm_desc' => '',
-        'm_parents' => array(10893,6204,7302,4527),
     ),
     3290 => array(
         'm_icon' => '<i class="far fa-transgender blue"></i>',
@@ -5306,7 +5306,7 @@ $config['en_all_7704'] = array(
 );
 
 //Interaction Blog Subscription Types:
-$config['en_ids_7703'] = array(10671,4983,10573,4228,4229,4601,4231,10660,10686,10663,10664,10661,10675,10662,10650,10648,10644,10651,7545,6155,7485,7486,4559,7489,6997,6157,7487,6144);
+$config['en_ids_7703'] = array(10671,4983,10573,4601,4231,10660,10686,10663,10664,10661,10675,10662,10650,10648,10644,10651,4228,4229,7545,6155,7485,7486,4559,7489,6997,6157,7487,6144);
 $config['en_all_7703'] = array(
     10671 => array(
         'm_icon' => '<i class="far fa-trash-alt"></i>',
@@ -5325,18 +5325,6 @@ $config['en_all_7703'] = array(
         'm_name' => 'BLOG BOOKMARKS',
         'm_desc' => '',
         'm_parents' => array(10989,11033,10990,10594,10589,4593,7703,7551,4485),
-    ),
-    4228 => array(
-        'm_icon' => '<i class="far fa-play yellow"></i>',
-        'm_name' => 'BLOG BRANCH AUTO-NEXT',
-        'm_desc' => '',
-        'm_parents' => array(10594,10589,7703,6410,4593,4486),
-    ),
-    4229 => array(
-        'm_icon' => '<i class="fas fa-question-circle yellow"></i>',
-        'm_name' => 'BLOG BRANCH QUALIFY',
-        'm_desc' => '',
-        'm_parents' => array(10594,10589,7703,4527,6410,6283,4593,4486),
     ),
     4601 => array(
         'm_icon' => '<i class="fas fa-search yellow"></i>',
@@ -5415,6 +5403,18 @@ $config['en_all_7703'] = array(
         'm_name' => 'BLOG Update Type',
         'm_desc' => '',
         'm_parents' => array(7703,10539,4593,10589,10638),
+    ),
+    4228 => array(
+        'm_icon' => '<i class="far fa-play yellow" aria-hidden="true"></i>',
+        'm_name' => 'FLOW AUTOMATIC',
+        'm_desc' => '',
+        'm_parents' => array(10594,10589,7703,6410,4593,4486),
+    ),
+    4229 => array(
+        'm_icon' => '<i class="fas fa-question-circle yellow" aria-hidden="true"></i>',
+        'm_name' => 'FLOW CONDITIONAL',
+        'm_desc' => '',
+        'm_parents' => array(10594,10589,7703,4527,6410,6283,4593,4486),
     ),
     7545 => array(
         'm_icon' => '<i class="fas fa-user-tag blue"></i>',
@@ -5501,7 +5501,7 @@ $config['en_all_7596'] = array(
     ),
 );
 
-//BLOG BRANCH QUALIFY:
+//FLOW CONDITIONAL:
 $config['en_ids_4229'] = array(10664,6140,6997);
 $config['en_all_4229'] = array(
     10664 => array(
@@ -5541,7 +5541,7 @@ $config['en_all_7588'] = array(
     ),
 );
 
-//Blog OR:
+//READ OR:
 $config['en_ids_6193'] = array(6684,7231,6907);
 $config['en_all_6193'] = array(
     6684 => array(
@@ -5915,8 +5915,14 @@ $config['en_all_7355'] = array(
 );
 
 //BLOG STATS:
-$config['en_ids_7302'] = array(7596,4737,10602);
+$config['en_ids_7302'] = array(10602,7596,4737);
 $config['en_all_7302'] = array(
+    10602 => array(
+        'm_icon' => '<i class="far fa-puzzle-piece" aria-hidden="true"></i>',
+        'm_name' => 'flow types',
+        'm_desc' => '',
+        'm_parents' => array(10893,6204,7302,4527),
+    ),
     7596 => array(
         'm_icon' => '<i class="fas fa-triangle yellow"></i>',
         'm_name' => 'scope',
@@ -5928,12 +5934,6 @@ $config['en_all_7302'] = array(
         'm_name' => 'status',
         'm_desc' => '',
         'm_parents' => array(11054,6204,10648,6226,6160,6232,7302,6194,6201,4527),
-    ),
-    10602 => array(
-        'm_icon' => '<i class="far fa-puzzle-piece"></i>',
-        'm_name' => 'type groups',
-        'm_desc' => '',
-        'm_parents' => array(10893,6204,7302,4527),
     ),
 );
 
@@ -7120,7 +7120,7 @@ $config['en_all_4600'] = array(
 );
 
 //READ TYPE:
-$config['en_ids_4593'] = array(10671,4983,10573,4228,4229,4250,4601,6226,4231,10660,10676,10678,10679,10677,7610,10686,10663,10664,10661,10675,10681,10685,10662,10650,10648,10644,10651,10647,4993,7757,4259,4261,10669,4260,4319,4230,4255,4318,4256,4258,4257,10672,7545,4251,10653,5001,10625,5943,4999,4998,5000,5981,11956,5982,5865,5003,10689,10646,10654,10657,10673,10656,10659,4235,6149,6969,4275,4283,6132,6415,6559,6560,6556,6578,7611,7563,10690,4266,4267,4282,5967,10683,7702,4570,6155,4577,4549,4551,4550,4557,4278,4279,4268,4460,4547,4287,4548,7561,7564,7560,7559,7558,7488,7485,7741,7486,4559,7489,7492,6140,6997,6157,7487,6143,6144,7578,6224,7562,7495,4554,4556,4555,6563,4552,4553,5007,4246,7504,4994);
+$config['en_ids_4593'] = array(10671,4983,10573,4250,4601,6226,4231,10660,10676,10678,10679,10677,7610,10686,10663,10664,10661,10675,10681,10685,10662,10650,10648,10644,10651,10647,4993,4228,4229,7757,4259,4261,10669,4260,4319,4230,4255,4318,4256,4258,4257,10672,7545,4251,10653,5001,10625,5943,4999,4998,5000,5981,11956,5982,5865,5003,10689,10646,10654,10657,10673,10656,10659,4235,6149,6969,4275,4283,6132,6415,6559,6560,6556,6578,7611,7563,10690,4266,4267,4282,5967,10683,7702,4570,6155,4577,4549,4551,4550,4557,4278,4279,4268,4460,4547,4287,4548,7561,7564,7560,7559,7558,7488,7485,7741,7486,4559,7489,7492,6140,6997,6157,7487,6143,6144,7578,6224,7562,7495,4554,4556,4555,6563,4552,4553,5007,4246,7504,4994);
 $config['en_all_4593'] = array(
     10671 => array(
         'm_icon' => '<i class="far fa-trash-alt"></i>',
@@ -7139,18 +7139,6 @@ $config['en_all_4593'] = array(
         'm_name' => 'BLOG BOOKMARKS',
         'm_desc' => 'Keeps track of the users who can manage/edit the intent',
         'm_parents' => array(10989,11033,10990,10594,10589,4593,7703,7551,4485),
-    ),
-    4228 => array(
-        'm_icon' => '<i class="far fa-play yellow"></i>',
-        'm_name' => 'BLOG BRANCH AUTO-NEXT',
-        'm_desc' => '',
-        'm_parents' => array(10594,10589,7703,6410,4593,4486),
-    ),
-    4229 => array(
-        'm_icon' => '<i class="fas fa-question-circle yellow"></i>',
-        'm_name' => 'BLOG BRANCH QUALIFY',
-        'm_desc' => '',
-        'm_parents' => array(10594,10589,7703,4527,6410,6283,4593,4486),
     ),
     4250 => array(
         'm_icon' => '<i class="fas fa-hashtag"></i>',
@@ -7295,6 +7283,18 @@ $config['en_all_4593'] = array(
         'm_name' => 'BLOG Viewed by BLOGger',
         'm_desc' => '',
         'm_parents' => array(10638,10596,10590,4593),
+    ),
+    4228 => array(
+        'm_icon' => '<i class="far fa-play yellow" aria-hidden="true"></i>',
+        'm_name' => 'FLOW AUTOMATIC',
+        'm_desc' => '',
+        'm_parents' => array(10594,10589,7703,6410,4593,4486),
+    ),
+    4229 => array(
+        'm_icon' => '<i class="fas fa-question-circle yellow" aria-hidden="true"></i>',
+        'm_name' => 'FLOW CONDITIONAL',
+        'm_desc' => '',
+        'm_parents' => array(10594,10589,7703,4527,6410,6283,4593,4486),
     ),
     7757 => array(
         'm_icon' => '<i class="far fa-bookmark ispink"></i>',
@@ -8031,14 +8031,14 @@ $config['en_all_4485'] = array(
 $config['en_ids_4486'] = array(4228,4229);
 $config['en_all_4486'] = array(
     4228 => array(
-        'm_icon' => '<i class="far fa-play yellow"></i>',
-        'm_name' => 'blog branch auto-next',
+        'm_icon' => '<i class="far fa-play yellow" aria-hidden="true"></i>',
+        'm_name' => 'automatic',
         'm_desc' => 'Blogs that follow another blog no matter what',
         'm_parents' => array(10594,10589,7703,6410,4593,4486),
     ),
     4229 => array(
-        'm_icon' => '<i class="fas fa-question-circle yellow"></i>',
-        'm_name' => 'blog branch qualify',
+        'm_icon' => '<i class="fas fa-question-circle yellow" aria-hidden="true"></i>',
+        'm_name' => 'conditional',
         'm_desc' => 'Blogs that follow another blog if the conditional score is met',
         'm_parents' => array(10594,10589,7703,4527,6410,6283,4593,4486),
     ),
