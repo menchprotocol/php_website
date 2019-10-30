@@ -11,7 +11,7 @@ defined('BASEPATH') OR exit('No direct script access allowed');
 *
 */
 
-//Generated 2019-10-29 17:28:03 PST
+//Generated 2019-10-29 17:38:49 PST
 
 //BLOGGING. REINVENTED.:
 $config['en_ids_11968'] = array(11969,11971,11980,11979,11972,11977,11976);
@@ -19,31 +19,31 @@ $config['en_all_11968'] = array(
     11969 => array(
         'm_icon' => '<i class="fas fa-exchange rotate90" aria-hidden="true"></i>',
         'm_name' => 'INTERACTIVE',
-        'm_desc' => 'where players read a series of inter-connected blogs and choose their unique reading path along the way.',
+        'm_desc' => 'where players blog by writing and connecting micro-blogs that allow each reader to choose their unique reading path.',
         'm_parents' => array(11982,11968),
     ),
     11971 => array(
         'm_icon' => '<i class="fas fa-game-board" aria-hidden="true"></i>',
         'm_name' => 'GAMIFIED',
-        'm_desc' => 'where players earn coins as they read or blog and unlock superpowers by ranking in the top 100 leaderboard.',
+        'm_desc' => 'where players earn coins when they read or blog and unlock superpowers by ranking in the top 100 leaderboard.',
         'm_parents' => array(11982,11968),
     ),
     11980 => array(
         'm_icon' => '<i class="fas fa-user-friends" aria-hidden="true"></i>',
         'm_name' => 'SOCIAL',
-        'm_desc' => 'where players connect based on topics to practice and discuss something of interest to them.',
+        'm_desc' => 'where players connect based on topics to discuss or practice something of interest to them.',
         'm_parents' => array(11982,11968),
     ),
     11979 => array(
         'm_icon' => '<i class="fas fa-comment-lines" aria-hidden="true"></i>',
         'm_name' => 'CONVERSATIONAL',
-        'm_desc' => 'where players blog with a direct tone and read over the web or chat apps like Messenger.',
+        'm_desc' => 'where players read and blog as if they are chatting with a dear friend on the web or Messenger.',
         'm_parents' => array(11968),
     ),
     11972 => array(
         'm_icon' => '<i class="fas fa-globe" aria-hidden="true"></i>',
         'm_name' => 'INCLUSIVE',
-        'm_desc' => 'where everyone is welcome to share stories and ideas that matter to them on platform that\'s open-source.',
+        'm_desc' => 'where everyone is welcome to share stories and ideas that matter to them on a platform that\'s open-source.',
         'm_parents' => array(11968),
     ),
     11977 => array(
