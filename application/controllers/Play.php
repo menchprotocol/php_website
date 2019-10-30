@@ -159,7 +159,7 @@ class Play extends CI_Controller
                     <tr>
                         <td class="block-link block-logo"><img src="/img/mench-v2-128.png" class="mench-logo mench-spin" /></td>
                         <td><span class="mench-logo montserrat search-toggle inline-block">MENCH</span></td>
-                        <td style="text-align:right; width:160px; padding-right: 7px;"><a href="https://docs.google.com/forms/d/e/1FAIpQLSca_W0_pP1anDmJ9_iJx82icCXTjKMjblXCx9hIHrlScwUoGg/viewform" class="btn btn-play montserrat">START PLAY <i class="fas fa-arrow-right"></i></a></td>
+                        <td style="text-align:right; width:175px; padding-right: 7px;"><a href="https://docs.google.com/forms/d/e/1FAIpQLSca_W0_pP1anDmJ9_iJx82icCXTjKMjblXCx9hIHrlScwUoGg/viewform" class="btn btn-play montserrat">START PLAY <i class="fas fa-arrow-right"></i></a></td>
                     </tr>
                 </table>
             </div>
