@@ -11,7 +11,7 @@ defined('BASEPATH') OR exit('No direct script access allowed');
 *
 */
 
-//Generated 2019-10-29 18:53:31 PST
+//Generated 2019-10-29 18:56:10 PST
 
 //BLOGGING. REINVENTED.:
 $config['en_ids_11968'] = array(11969,11971,11980,11979,11984,11972,11977,11976);
@@ -41,9 +41,9 @@ $config['en_all_11968'] = array(
         'm_parents' => array(11968),
     ),
     11984 => array(
-        'm_icon' => '<i class="fas fa-hands-helping" aria-hidden="true"></i>',
-        'm_name' => 'COLLABORATIVE',
-        'm_desc' => 'where players can blog by linking to other blogs in the marketplace and expand the scope of their conversation.',
+        'm_icon' => '<i class="fas fa-puzzle-piece" aria-hidden="true"></i>',
+        'm_name' => 'MODULAR',
+        'm_desc' => 'where players can blog by linking to any other blog on the marketplace to continue the conversation.',
         'm_parents' => array(11968),
     ),
     11972 => array(
