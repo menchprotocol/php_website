@@ -423,7 +423,7 @@ li a {
     padding:9px 5px 5px;
     display: block;
     text-decoration: none;
-    border-top:2px solid;
+    border-top:0px solid;
     line-height: 110%;
 }
 
@@ -433,7 +433,6 @@ li a {
 .mench-navigation {
     width: 100%;
     background-color: #F7F7F7;
-    border-bottom:2px solid #070707;
     min-height:50px;
 }
 .mench-navigation #searchFrontForm, .algolia-autocomplete, .algolia-autocomplete .aa-input, .algolia-autocomplete .aa-hint{
