@@ -47,10 +47,10 @@ $en_all_10591 = $this->config->item('en_all_10591'); //PLAYER PLAYS
 
         <?php
         if($this->uri->segment(1) != 'play'){
-            echo '<div class="container learn_more hidden" style="margin-bottom:30px;">
+            echo '<div class="container learn_more hidden table-striped" style="margin-bottom:30px;">
             <div class="row">
                 <table class="three-menus">
-                    <tr><td colspan="3">&nbsp;</td></tr>
+                    <tr><td colspan="3"></td></tr>
                     <tr>';
 
 
