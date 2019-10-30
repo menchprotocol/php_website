@@ -424,7 +424,7 @@ function echo_number($number, $micro = true, $push_message = false)
 
     } else {
 
-        return $number;
+        return intval($number);
 
     }
 }
