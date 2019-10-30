@@ -125,14 +125,13 @@ if(strlen($flash_message) > 0){
                         $mench_logo = '<img src="/img/mench-v2-128.png" class="mench-logo mench-spin" />';
                         echo '<td class="block-link block-logo">'. ( count($this->session->userdata('assigned_superpowers_en_ids')) ? '<a href="javascript:void(0);" onclick="$(\'.supwerpower_view\').toggleClass(\'hidden\');">'.$mench_logo.'</a>' : $mench_logo ) .'</td>';
 
-                        $random_colors = array('blue','yellow','ispink');
 
                         ?>
 
                         <td>
                             <div class="supwerpower_view">
 
-                                <span class="mench-logo montserrat search-toggle"><span class="<?= $random_colors[rand(0,2)] ?>">M</span><span class="<?= $random_colors[rand(0,2)] ?>">E</span><span class="<?= $random_colors[rand(0,2)] ?>">N</span><span class="<?= $random_colors[rand(0,2)] ?>">C</span><span class="<?= $random_colors[rand(0,2)] ?>">H</span></span>
+                                <span class="mench-logo montserrat search-toggle"><?= echo_mench() ?></span>
 
                                 <div class="search-toggle hidden"><form id="searchFrontForm"><input class="form-control algolia_search" type="search" id="mench_search" data-lpignore="true" placeholder="<?= $en_all_11035[7256]['m_name'] ?>"></form></div>
 
