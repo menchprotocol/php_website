@@ -409,6 +409,14 @@ li a {
     transform: rotate(270deg); /* W3C compliant browsers */
 }
 
+.rotate315 {
+    -webkit-transform: rotate(315deg); /* Chrome and other webkit browsers */
+    -moz-transform: rotate(315deg); /* FF */
+    -o-transform: rotate(315deg); /* Opera */
+    -ms-transform: rotate(315deg); /* IE9 */
+    transform: rotate(315deg); /* W3C compliant browsers */
+}
+
 
 /* HEADER */
 .three-menus{

@@ -11,13 +11,13 @@ defined('BASEPATH') OR exit('No direct script access allowed');
 *
 */
 
-//Generated 2019-10-30 14:51:05 PST
+//Generated 2019-10-30 14:53:24 PST
 
 //BLOGGING. REIMAGINED.:
 $config['en_ids_11968'] = array(11969,11971,11980,11984,11972,11977,11976);
 $config['en_all_11968'] = array(
     11969 => array(
-        'm_icon' => '<i class="fas fa-random rotate270" aria-hidden="true"></i>',
+        'm_icon' => '<i class="fas fa-random rotate315" aria-hidden="true"></i>',
         'm_name' => 'INTERACTIVE',
         'm_desc' => 'where micro-blogs are linked together with a flow that\'s either pre-determined or reader-determined to create engaging conversations.',
         'm_parents' => array(11982,11968),
@@ -1567,7 +1567,7 @@ $config['en_all_6404'] = array(
     11060 => array(
         'm_icon' => '',
         'm_name' => 'MENCH PLATFORM VERSION',
-        'm_desc' => '1.010',
+        'm_desc' => '1.011',
         'm_parents' => array(6404),
     ),
     11067 => array(
