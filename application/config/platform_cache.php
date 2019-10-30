@@ -11,7 +11,7 @@ defined('BASEPATH') OR exit('No direct script access allowed');
 *
 */
 
-//Generated 2019-10-29 18:59:53 PST
+//Generated 2019-10-29 19:03:38 PST
 
 //BLOGGING. REINVENTED.:
 $config['en_ids_11968'] = array(11969,11971,11980,11979,11984,11972,11977,11976);
@@ -55,7 +55,7 @@ $config['en_all_11968'] = array(
     11977 => array(
         'm_icon' => '<i class="fas fa-atom-alt" aria-hidden="true"></i>',
         'm_name' => 'PRINCIPLE-DRIVEN',
-        'm_desc' => 'where blogs reference first-principles and best-practices found in expert sources like books, videos and articles.',
+        'm_desc' => 'where blogs usually reference first-principles and best-practices from expert sources like books, videos and articles.',
         'm_parents' => array(11968),
     ),
     11976 => array(
