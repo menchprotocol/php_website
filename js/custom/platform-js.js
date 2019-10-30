@@ -1,4 +1,11 @@
 
+
+var fadeout_frequency = 120000; //milli seconds
+var searchbar_loaded = false;
+var fadeout_speed = 21;
+var updating_basic_stats = false;
+
+
 //For the drag and drop file uploader:
 var isAdvancedUpload = function () {
     var div = document.createElement('div');
@@ -6,11 +13,6 @@ var isAdvancedUpload = function () {
 }();
 
 
-//In milli seconds:
-var fadeout_frequency = 120000;
-var fadeout_speed = 21;
-var updating_basic_stats = false;
-var updating_basic_stats = false;
 
 function load_searchbar(){
     if(searchbar_loaded){
