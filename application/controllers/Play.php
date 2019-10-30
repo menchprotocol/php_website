@@ -736,6 +736,7 @@ fragment PostListingItemSidebar_post on Post {
         $session_en = en_auth();
         $load_max = 100;
         $show_max = 10;
+        $en_all_2738 = $this->config->item('en_all_2738'); //MENCH
 
 
         //Create FILTERS:
@@ -794,10 +795,10 @@ fragment PostListingItemSidebar_post on Post {
                 echo '<td><span class="parent-icon icon-block-sm">'.echo_en_icon($ln).'</span>'.( $session_en ? '<a href="/play/'.$ln['en_id'].'">'.$first_name.'</a>' : $first_name ).' '.echo_rank($count+1).'</td>';
 
                 //READ
-                echo '<td>'.( $session_en ? '<a href="/read/history?ln_status_entity_id='.join(',', $this->config->item('en_ids_7359')) /* Link Statuses Public */.'&ln_type_entity_id='.join(',', $this->config->item('en_ids_10590')).'&ln_creator_entity_id='.$ln['en_id'].( $start_date ? '&start_range='.$start_date : $start_date ).'" class="montserrat read">'.echo_number($read_coins[0]['total_words']).'</a>' : '<span class="montserrat read">'.echo_number($read_coins[0]['total_words']).'</span>' ).'</td>';
+                echo '<td>'.( $session_en ? '<a href="/read/history?ln_status_entity_id='.join(',', $this->config->item('en_ids_7359')) /* Link Statuses Public */.'&ln_type_entity_id='.join(',', $this->config->item('en_ids_10590')).'&ln_creator_entity_id='.$ln['en_id'].( $start_date ? '&start_range='.$start_date : $start_date ).'" class="montserrat read">'.$en_all_2738[6205]['m_icon'].' '.echo_number($read_coins[0]['total_words']).'</a>' : '<span class="montserrat read">'.$en_all_2738[6205]['m_icon'].' '.echo_number($read_coins[0]['total_words']).'</span>' ).'</td>';
 
                 //BLOG
-                echo '<td>'.( $session_en ? '<a href="/read/history?ln_status_entity_id='.join(',', $this->config->item('en_ids_7359')) /* Link Statuses Public */.'&ln_type_entity_id='.join(',', $this->config->item('en_ids_10589')).'&ln_creator_entity_id='.$ln['en_id'].( $start_date ? '&start_range='.$start_date : $start_date ).'" class="montserrat blog">'.echo_number($ln['total_words']).'</a>' : '<span class="montserrat blog">'.echo_number($ln['total_words']).'</span>'  ).'</td>';
+                echo '<td>'.( $session_en ? '<a href="/read/history?ln_status_entity_id='.join(',', $this->config->item('en_ids_7359')) /* Link Statuses Public */.'&ln_type_entity_id='.join(',', $this->config->item('en_ids_10589')).'&ln_creator_entity_id='.$ln['en_id'].( $start_date ? '&start_range='.$start_date : $start_date ).'" class="montserrat blog">'.$en_all_2738[4535]['m_icon'].' '.echo_number($ln['total_words']).'</a>' : '<span class="montserrat blog">'.$en_all_2738[4535]['m_icon'].' '.echo_number($ln['total_words']).'</span>'  ).'</td>';
                 echo '</tr>';
 
             }

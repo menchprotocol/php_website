@@ -39,7 +39,7 @@ $en_all_10591 = $this->config->item('en_all_10591'); //PLAYER PLAYS
             <h1>TOP PLAYERS</h1>
             <?php
             echo '<table id="leaderboard" class="table table-sm table-striped">';
-            echo '<thead>';
+            echo '<thead class="hidden">';
             echo '<tr style="padding:0;">';
             echo '<td style="width: 33%"><span style="padding-right: 2px;">'.$en_all_2738[4536]['m_icon'].'</span><b class="montserrat play" style="font-size: 1.2em;">'.$en_all_2738[4536]['m_name'].'</b></td>';
             echo '<td style="width: 33%"><span style="padding-right: 2px;">'.$en_all_2738[6205]['m_icon'].'</span><b class="montserrat read" style="font-size: 1.2em;">'.$en_all_2738[6205]['m_name'].'</b></td>';
@@ -62,7 +62,7 @@ $en_all_10591 = $this->config->item('en_all_10591'); //PLAYER PLAYS
 
             foreach($this->config->item('en_all_2738') as $en_id => $m){
                 $handle = strtolower($m['m_name']);
-                echo '<td valign="bottom" style="width: 33%"><span class="'.$handle.' border-'.$handle.'">' . $m['m_icon'] . '<span class="mn_name montserrat current_count"><i class="far fa-yin-yang fa-spin"></i></span> <span class="inline-block">' . $m['m_desc'] . '</span></span></td>';
+                echo '<td valign="bottom" style="width: 33%"><span class="'.$handle.' border-'.$handle.'">' . $m['m_icon'] . '<span class="montserrat current_count"><i class="far fa-yin-yang fa-spin"></i></span> <span class="montserrat">' . $m['m_desc'] . '</span></span></td>';
             }
 
             echo '</tr>
