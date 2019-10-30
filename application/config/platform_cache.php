@@ -11,7 +11,7 @@ defined('BASEPATH') OR exit('No direct script access allowed');
 *
 */
 
-//Generated 2019-10-29 20:24:19 PST
+//Generated 2019-10-30 13:07:46 PST
 
 //BLOGGING. REIMAGINED.:
 $config['en_ids_11968'] = array(11969,11971,11980,11979,11984,11972,11977,11976);
@@ -48,8 +48,8 @@ $config['en_all_11968'] = array(
     ),
     11972 => array(
         'm_icon' => '<i class="fas fa-globe" aria-hidden="true"></i>',
-        'm_name' => 'OPEN-EVERYTHING',
-        'm_desc' => 'where everyone is welcome to write code, govern or share stories/ideas that matter to them.',
+        'm_name' => 'INCLUSIVE',
+        'm_desc' => 'where everyone is welcome to write code, govern or share stories and ideas that matter to them.',
         'm_parents' => array(11968),
     ),
     11977 => array(
@@ -1478,7 +1478,7 @@ $config['en_all_11058'] = array(
 );
 
 //PLATFORM CONFIG VARIABLES:
-$config['en_ids_6404'] = array(11062,11094,11095,11071,11069,11079,11076,11077,11074,11075,11064,11065,11063,11060,11067,11066,11072,11092,11093,11073,11057,11056,11061,11162,11163,11070);
+$config['en_ids_6404'] = array(11062,11094,11095,11071,11069,11079,11076,11077,11074,11075,11064,11985,11986,11065,11063,11060,11067,11066,11072,11092,11093,11073,11057,11056,11061,11162,11163,11070);
 $config['en_all_6404'] = array(
     11062 => array(
         'm_icon' => '',
@@ -1544,6 +1544,18 @@ $config['en_all_6404'] = array(
         'm_icon' => '',
         'm_name' => 'ITEMS PER PAGE',
         'm_desc' => '100',
+        'm_parents' => array(6404),
+    ),
+    11985 => array(
+        'm_icon' => '',
+        'm_name' => 'LEADERBOARD CUTOFF COUNT',
+        'm_desc' => '100',
+        'm_parents' => array(6404),
+    ),
+    11986 => array(
+        'm_icon' => '',
+        'm_name' => 'LEADERBOARD TOP COUNT',
+        'm_desc' => '7',
         'm_parents' => array(6404),
     ),
     11065 => array(
@@ -1963,7 +1975,7 @@ $config['en_all_10957'] = array(
         'm_parents' => array(10957),
     ),
     10985 => array(
-        'm_icon' => '<i class="far fa-alicorn yellow"></i>',
+        'm_icon' => '<i class="far fa-alicorn yellow" aria-hidden="true"></i>',
         'm_name' => 'ALICORN',
         'm_desc' => 'Able to mass modify using the TREE UPDATER',
         'm_parents' => array(10957),
