@@ -50,7 +50,7 @@ $en_all_10591 = $this->config->item('en_all_10591'); //PLAYER PLAYS
             echo '<div class="container learn_more hidden" style="margin-bottom:30px;">
             <div class="row">
                 <table class="three-menus">
-                    <tr>';
+                    <tr><td colspan="3"></td></tr><tr>';
 
 
             foreach($this->config->item('en_all_2738') as $en_id => $m){
