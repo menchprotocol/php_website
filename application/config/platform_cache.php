@@ -11,7 +11,7 @@ defined('BASEPATH') OR exit('No direct script access allowed');
 *
 */
 
-//Generated 2019-10-29 19:16:01 PST
+//Generated 2019-10-29 20:03:03 PST
 
 //BLOGGING. REINVENTED.:
 $config['en_ids_11968'] = array(11969,11971,11980,11979,11984,11972,11977,11976);
@@ -1561,7 +1561,7 @@ $config['en_all_6404'] = array(
     11060 => array(
         'm_icon' => '',
         'm_name' => 'MENCH PLATFORM VERSION',
-        'm_desc' => '1.0999',
+        'm_desc' => '1.09991',
         'm_parents' => array(6404),
     ),
     11067 => array(
