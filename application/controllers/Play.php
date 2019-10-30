@@ -3363,6 +3363,8 @@ fragment PostListingItemSidebar_post on Post {
             'en_status_entity_id IN (' . join(',', $this->config->item('en_ids_7357')) . ')' => null, //Entity Statuses Public
         ), array(), 0, 0, array(), 'COUNT(en_id) as total_public_entities');
 
+
+
         $session_en = en_auth();
         if (!$session_en) {
 
@@ -3398,13 +3400,13 @@ fragment PostListingItemSidebar_post on Post {
 
         return echo_json(array(
             'intents' => array(
-                'current_count' => echo_number($words_blog[0]['total_words']),
+                'current_count' => ( $_POST['show_full'] ? number_format($words_blog[0]['total_words'], 0) : echo_number($words_blog[0]['total_words']) ),
             ),
             'entities' => array(
-                'current_count' => echo_number($en_count[0]['total_public_entities']),
+                'current_count' => ( $_POST['show_full'] ? number_format($en_count[0]['total_public_entities'], 0) : echo_number($en_count[0]['total_public_entities']) ),
             ),
             'links' => array(
-                'current_count' => echo_number(abs($words_read[0]['total_words'])),
+                'current_count' => ( $_POST['show_full'] ? number_format(abs($words_read[0]['total_words']), 0) : echo_number(abs($words_read[0]['total_words'])) ),
             )
         ));
 

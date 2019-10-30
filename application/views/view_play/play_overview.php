@@ -4,6 +4,7 @@ $en_all_2738 = $this->config->item('en_all_2738'); //MENCH
 $en_all_11035 = $this->config->item('en_all_11035'); //MENCH PLAYER NAVIGATION
 $en_all_10591 = $this->config->item('en_all_10591'); //PLAYER PLAYS
 ?>
+
 <div class="container">
     <div class="row">
         <div class="col-lg">
@@ -16,7 +17,7 @@ $en_all_10591 = $this->config->item('en_all_10591'); //PLAYER PLAYS
         foreach($this->config->item('en_all_11968') as $en_id => $m){
             echo '<li class="'.( in_array(11982 , $m['m_parents']) && !$session_en ? '' : ' learn_more hidden ' ).'"><span class="icon-block-sm">'.$m['m_icon'].'</span> <b class="montserrat">'.$m['m_name'].'</b> '.$m['m_desc'].'</li>';
         }
-        echo '<li class="learn_more"><span class="icon-block-sm"><i class="fas fa-search-plus"></i></span> <a href="javascript:void(0);" onclick="$(\'.learn_more\').toggleClass(\'hidden\')" style="text-decoration: underline;">MORE</a></li>';
+        echo '<li class="learn_more"><span class="icon-block-sm"><i class="fas fa-search-plus"></i></span> <a href="javascript:void(0);" onclick="$(\'.learn_more\').toggleClass(\'hidden\');update_basic_stats(0);" style="text-decoration: underline;">MORE</a></li>';
         echo '</ul>';
         ?>
 
@@ -47,6 +48,7 @@ $en_all_10591 = $this->config->item('en_all_10591'); //PLAYER PLAYS
 
         <?php
         if($this->uri->segment(1) != 'play'){
+
             echo '<div class="container learn_more hidden table-striped" style="margin-bottom:30px;">
             <div class="row">
                 <table class="three-menus">
@@ -62,6 +64,7 @@ $en_all_10591 = $this->config->item('en_all_10591'); //PLAYER PLAYS
                 </table>
             </div>
         </div>';
+
         }
         ?>
 
@@ -74,7 +77,7 @@ $en_all_10591 = $this->config->item('en_all_10591'); //PLAYER PLAYS
 
 <script>
     $(document).ready(function () {
-        $.post("/play/leaderboard/", {}, function (data) {
+        $.post("/play/leaderboard/", { }, function (data) {
             $('#leaderboard tbody').html(data);
             $('[data-toggle="tooltip"]').tooltip();
         });

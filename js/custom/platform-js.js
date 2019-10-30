@@ -10,7 +10,8 @@ var isAdvancedUpload = function () {
 var fadeout_frequency = 120000;
 var fadeout_speed = 21;
 var updating_basic_stats = false;
-var searchbar_loaded = 0;
+var updating_basic_stats = false;
+
 function load_searchbar(){
     if(searchbar_loaded){
         return false;
@@ -25,10 +26,11 @@ function load_searchbar(){
 $(document).ready(function () {
 
     //Update stats on load:
-    update_basic_stats();
+    update_basic_stats(1);
+
 
     //Continue updating basic stats:
-    setInterval(update_basic_stats, fadeout_frequency);
+    //setInterval(update_basic_stats, fadeout_frequency);
 
 
     $("#mench_search").focus(function() {
@@ -101,7 +103,7 @@ $(document).ready(function () {
 
 
 //Update page count stats & refresh them visually once they change:
-var update_basic_stats = function() {
+var update_basic_stats = function( show_full ) {
     //your jQuery ajax code
 
     if(updating_basic_stats){
@@ -112,7 +114,7 @@ var update_basic_stats = function() {
     updating_basic_stats = true;
 
     //Fetch latest stats:
-    $.post("/play/update_counters", {}, function (data) {
+    $.post("/play/update_counters", { show_full:show_full }, function (data) {
 
         if(data.intents.current_count != $('.blog .current_count').html()){
             $('.blog .current_count').html(data.intents.current_count).fadeOut(fadeout_speed).fadeIn(fadeout_speed);
