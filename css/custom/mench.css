@@ -435,11 +435,6 @@ li a {
     border-bottom:2px solid #070707;
     min-height:50px;
 }
-.mench-navigation .mench-logo{
-    width: 35px;
-    margin-left:5px;
-    margin-right:4px;
-}
 .mench-navigation #searchFrontForm, .algolia-autocomplete, .algolia-autocomplete .aa-input, .algolia-autocomplete .aa-hint{
      width: 100%;
 }
@@ -480,10 +475,12 @@ li a {
     background-color: transparent;
 }
 
-.mench-navigation .mench-logo{
-    font-size: 1.8em;
-    margin-left: 6px;
+.mench-logo{
+    font-size: 1.6em;
     line-height: 100%;
+    width: 35px;
+    margin-left: 6px;
+    margin-right:4px;
     margin-bottom: 5px;
 }
 
