@@ -10,7 +10,7 @@
         //Lock fields:
         pass_is_resetting = true;
         $('#reset_pass_next').html('<span><i class="far fa-yin-yang fa-spin"></i></span>');
-        $('#input_password').prop('disabled', true).css('background-color','#F7F7F7');
+        $('#input_password').prop('disabled', true).css('background-color','#f4f5f7');
 
         //Check email and validate:
         $.post("/play/sign_reset_password_apply", {

@@ -169,7 +169,7 @@ $(document).ready(function () {
 
     $("#mench_search").on('autocomplete:selected', function (event, suggestion, dataset) {
 
-        $('#mench_search').prop("disabled", true).val('Loading...').css('background-color','#F7F7F7').css('font-size','0.8em');
+        $('#mench_search').prop("disabled", true).val('Loading...').css('background-color','#f4f5f7').css('font-size','0.8em');
 
         if (parseInt(suggestion.alg_obj_is_in)==1) {
             window.location = "/read/" + suggestion.alg_obj_id;

@@ -1,7 +1,7 @@
 @CHARSET "ISO-8859-1";
 
 body {
-    background-color: #F7F7F7 !important;
+    background-color: #f4f5f7 !important;
     color: #070707;
     font-size: 1.4em;
     margin: 65px 0;
@@ -104,7 +104,7 @@ h4.thin{
 }
 
 h4.thin b{
-    background-color: #F7F7F7;
+    background-color: #f4f5f7;
     padding:3px;
 }
 
@@ -204,7 +204,7 @@ li a {
 
 .aa-dropdown-menu .aa-suggestion, .suggestion {
     background-color: #FFFFFF;
-    border:1px solid #F7F7F7;
+    border:1px solid #f4f5f7;
     cursor: pointer;
     padding: 7px 5px;
     color: #070707;
@@ -290,7 +290,7 @@ li a {
 /* Color Palette @10604 */
 .isgreen, .isgreen a                { color:#228B22 !important; }
 .isred, .isred a, .fas.redalert     { color:#FF0000 !important; }
-.isgrey, .isgrey a, .lightgrey      { color:#F7F7F7 !important; }
+.isgrey, .isgrey a, .lightgrey      { color:#f4f5f7 !important; }
 .ismatt, .ismatt a                  { color:#070707 !important; }
 
 
@@ -318,7 +318,7 @@ li a {
 .btn-main .far, .btn-main .fas, .btn-main .fal { font-size: 1.5em; margin-top:3px; }
 
 .form-control, .border {
-    border-color:#F7F7F7 !important;
+    border-color:#f4f5f7 !important;
     border-radius: 1px;
 }
 
@@ -356,8 +356,8 @@ li a {
 
 .nav-tabs .nav-item.show .nav-link, .nav-tabs .nav-link.active, .nav-tabs .nav-link:focus, .nav-tabs .nav-link:hover{
     border-color:#070707 !important;
-    border-bottom: 1px solid #F7F7F7 !important;
-    background-color: #F7F7F7 !important;
+    border-bottom: 1px solid #f4f5f7 !important;
+    background-color: #f4f5f7 !important;
 }
 
 /* ROTATIONS */
@@ -421,7 +421,7 @@ li a {
 /* HEADER */
 .three-menus{
     width: 100%;
-    background-color: #F7F7F7;
+    background-color: #f4f5f7;
 }
 
 .three-menus td{
@@ -448,7 +448,7 @@ li a {
 /* FOOTER */
 .mench-navigation {
     width: 100%;
-    background-color: #F7F7F7;
+    background-color: #f4f5f7;
     min-height:50px;
 }
 .mench-navigation #searchFrontForm, .algolia-autocomplete, .algolia-autocomplete .aa-input, .algolia-autocomplete .aa-hint{
@@ -501,7 +501,7 @@ li a {
 }
 
 .list-group-item {
-    border: 1px solid #F7F7F7;
+    border: 1px solid #f4f5f7;
 }
 
 
