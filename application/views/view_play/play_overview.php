@@ -13,7 +13,7 @@ $en_all_10591 = $this->config->item('en_all_10591'); //PLAYER PLAYS
         echo '<h1 class="'.( $session_en ? ' learn_more hidden ' : '' ).'">'.$en_all_4527[11968]['m_name'].'</h1>';
 
         foreach($this->config->item('en_all_11968') as $en_id => $m){
-            echo '<div class="col-lg-4"><div class="icon-block-sm" style="font-size: 66px !important;">'.$m['m_icon'].'</div><b class="montserrat">'.$m['m_name'].'</b> '.$m['m_desc'].'</div>';
+            echo '<div class="col-lg-4" style="text-align: center;"><div style="font-size:100px !important;">'.$m['m_icon'].'</div></div>';
         }
         ?>
     </div>
