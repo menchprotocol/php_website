@@ -11,25 +11,19 @@ defined('BASEPATH') OR exit('No direct script access allowed');
 *
 */
 
-//Generated 2019-10-30 16:25:21 PST
+//Generated 2019-11-05 21:41:55 PST
 
 //BLOGGING. REIMAGINED.:
-$config['en_ids_11968'] = array(11969,11971,11980,11984,11972,11977,11976);
+$config['en_ids_11968'] = array(11969,11980,11984,11972,11977,11976);
 $config['en_all_11968'] = array(
     11969 => array(
-        'm_icon' => '<i class="fas fa-random rotate315" aria-hidden="true"></i>',
+        'm_icon' => '<i class="fas fa-exchange rotate315" aria-hidden="true"></i>',
         'm_name' => 'INTERACTIVE',
         'm_desc' => 'where micro-blogs are linked together with a flow that\'s either pre-determined or reader-determined to create engaging conversations.',
         'm_parents' => array(11982,11968),
     ),
-    11971 => array(
-        'm_icon' => '<i class="fas fa-game-board" aria-hidden="true"></i>',
-        'm_name' => 'GAMIFIED',
-        'm_desc' => 'where players earn crypto coins for either reading or blogging and unlock superpowers as they earn more coins.',
-        'm_parents' => array(11982,11968),
-    ),
     11980 => array(
-        'm_icon' => '<i class="fas fa-user-friends" aria-hidden="true"></i>',
+        'm_icon' => '<i class="fas fa-users" aria-hidden="true"></i>',
         'm_name' => 'SOCIAL',
         'm_desc' => 'where players can make new friends based on their interests to discuss or practice something important to them.',
         'm_parents' => array(11982,11968),
