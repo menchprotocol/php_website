@@ -22,4 +22,5 @@ create table mench_ledger
   transaction_parent_id         bigint,                -- References a parent PLAY/BLOG
   transaction_child_id          bigint,                -- References a child PLAY/BLOG
   transaction_reference_id      bigint                 -- References an internal/external PLAY/BLOG/object
+  
 );
