@@ -9,10 +9,10 @@ create table mench_ledger
   -- REQUIRED:
   transaction_id                bigserial primary key, -- Unique/system-generated ID
   transaction_timestamp         timestamp,             -- Los Angeles time zone
-  transaction_coins             double precision,      -- Positive when input/blog and negative value output/read
-  transaction_impact            double precision,      -- a number between -1 and 1 indicating relative weight
   transaction_type_id           bigint,                -- References a PLAY of https://mench.com/play/4593
   transaction_status_id         bigint,                -- References a PLAY of https://mench.com/play/6186
+  transaction_impact            double precision,      -- a number between -1 and 1 indicating relative weight
+  transaction_coins             double precision,      -- Positive when input/blog and negative value output/read
 
   
   -- OPTIONAL:
