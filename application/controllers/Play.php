@@ -745,8 +745,11 @@ fragment PostListingItemSidebar_post on Post {
             foreach ($blog_coins as $count=>$ln) {
 
                 if($count==$show_max){
-                    echo '<tr class="see_more_who"><td>&nbsp;</td><td colspan="2"><span class="parent-icon icon-block-sm"><i class="fas fa-search-plus blue"></i></span><a href="javascript:void(0);" onclick="$(\'.see_more_who\').toggleClass(\'hidden\')"><b class="montserrat blue" style="text-decoration: none !important;">SEE TOP '.$load_max.'</b></a></td></tr>';
+
+                    echo '<tr class="see_more_who"><td colspan="3"><span class="parent-icon icon-block-sm"><i class="fas fa-search-plus blue"></i></span><a href="javascript:void(0);" onclick="$(\'.see_more_who\').toggleClass(\'hidden\')"><b class="montserrat blue" style="text-decoration: none !important;">SEE TOP '.$load_max.'</b></a></td></tr>';
+
                     echo '<tr class="see_more_who"></tr>';
+
                 }
                 if($ln['total_words'] < 1){
                     continue;
@@ -764,17 +767,55 @@ fragment PostListingItemSidebar_post on Post {
 
                 echo '<tr class="'.( $count<$show_max ? '' : 'see_more_who hidden').'">';
 
-                //READ
-                echo '<td style="width: 27%">'.( $session_en ? '<a href="/read/history?ln_status_entity_id='.join(',', $this->config->item('en_ids_7359')) /* Link Statuses Public */.'&ln_type_entity_id='.join(',', $this->config->item('en_ids_10590')).'&ln_creator_entity_id='.$ln['en_id'].( $start_date ? '&start_range='.$start_date : $start_date ).'" class="montserrat read"><span class="parent-icon icon-block-sm">'.$en_all_2738[6205]['m_icon'].'</span>'.echo_number($read_coins[0]['total_words']).'</a>' : '<span class="montserrat read"><span class="parent-icon icon-block-sm">'.$en_all_2738[6205]['m_icon'].'</span>'.echo_number($read_coins[0]['total_words']).'</span>' ).'</td>';
-
                 //PLAY
                 echo '<td style="width:46%"><span class="parent-icon icon-block-sm">'.echo_en_icon($ln).'</span><b class="montserrat blue">'.( $session_en ? '<a href="/play/'.$ln['en_id'].'">'.$first_name.'</a>' : $first_name ).echo_rank($count+1).'</b></td>';
+
+                //READ
+                echo '<td style="width: 27%">'.( $session_en ? '<a href="/read/history?ln_status_entity_id='.join(',', $this->config->item('en_ids_7359')) /* Link Statuses Public */.'&ln_type_entity_id='.join(',', $this->config->item('en_ids_10590')).'&ln_creator_entity_id='.$ln['en_id'].( $start_date ? '&start_range='.$start_date : $start_date ).'" class="montserrat read"><span class="parent-icon icon-block-sm">'.$en_all_2738[6205]['m_icon'].'</span>'.echo_number($read_coins[0]['total_words']).'</a>' : '<span class="montserrat read"><span class="parent-icon icon-block-sm">'.$en_all_2738[6205]['m_icon'].'</span>'.echo_number($read_coins[0]['total_words']).'</span>' ).'</td>';
 
                 //BLOG
                 echo '<td style="width: 27%">'.( $session_en ? '<a href="/read/history?ln_status_entity_id='.join(',', $this->config->item('en_ids_7359')) /* Link Statuses Public */.'&ln_type_entity_id='.join(',', $this->config->item('en_ids_10589')).'&ln_creator_entity_id='.$ln['en_id'].( $start_date ? '&start_range='.$start_date : $start_date ).'" class="montserrat blog"><span class="parent-icon icon-block-sm">'.$en_all_2738[4535]['m_icon'].'</span>'.echo_number($ln['total_words']).'</a>' : '<span class="montserrat blog"><span class="parent-icon icon-block-sm">'.$en_all_2738[4535]['m_icon'].'</span>'.echo_number($ln['total_words']).'</span>'  ).'</td>';
                 echo '</tr>';
 
             }
+
+
+            //Actually count PLAYERS:
+            $en_count = $this->PLAY_model->en_fetch(array(
+                'en_status_entity_id IN (' . join(',', $this->config->item('en_ids_7357')) . ')' => null, //Entity Statuses Public
+            ), array(), 0, 0, array(), 'COUNT(en_id) as total_public_entities');
+
+            //COUNT WORDS BLOG/READ:
+            $words_blog = $this->READ_model->ln_fetch(array(
+                'ln_type_entity_id IN (' . join(',', $this->config->item('en_ids_10589')) . ')' => null, //BLOGGERS
+                'ln_status_entity_id IN (' . join(',', $this->config->item('en_ids_7359')) . ')' => null, //Link Statuses Public
+            ), array(), 0, 0, array(), 'SUM(ln_words) as total_words');
+
+            $words_read = $this->READ_model->ln_fetch(array(
+                'ln_type_entity_id IN (' . join(',', $this->config->item('en_ids_10590')) . ')' => null, //READERS
+                'ln_status_entity_id IN (' . join(',', $this->config->item('en_ids_7359')) . ')' => null, //Link Statuses Public
+            ), array(), 0, 0, array(), 'SUM(ln_words) as total_words');
+
+
+            echo '<div class="container table-striped" style="margin-bottom:30px;">
+                <div class="row">
+                    <table class="three-menus">
+                        <tr>';
+
+            foreach (array(
+                         4536 => echo_number($en_count[0]['total_public_entities']),
+                         6205 => echo_number(abs($words_read[0]['total_words'])),
+                         4535 => echo_number($words_blog[0]['total_words']),
+                     ) as $en_id => $count){
+                $handle = strtolower($en_all_2738[$en_id]['m_name']);
+                echo '<td valign="bottom" style="width:'.( $en_id==4536 ? 46 : 27 ).'%"><span class="'.$handle.' border-'.$handle.'"><span class="parent-icon icon-block-sm">' . $en_all_2738[$en_id]['m_icon'] . '</span><span class="montserrat current_count">'.$item_count[$en_id].'</span> <span class="montserrat">' . $en_all_2738[$en_id]['m_desc'] . '</span></span></td>';
+            }
+
+            echo '</tr>
+                    </table>
+                </div>
+            </div>';
+
 
         } else {
             echo '<tr><td colspan="3"><div class="alert alert-warning"><i class="fas fa-exclamation-triangle"></i> No Players Yet...</div></td></tr>';
