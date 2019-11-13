@@ -11,7 +11,7 @@ defined('BASEPATH') OR exit('No direct script access allowed');
 *
 */
 
-//Generated 2019-11-05 21:41:55 PST
+//Generated 2019-11-13 06:52:16 PST
 
 //BLOGGING. REIMAGINED.:
 $config['en_ids_11968'] = array(11969,11980,11984,11972,11977,11976);
@@ -2084,24 +2084,24 @@ $config['en_all_10956'] = array(
 );
 
 //MENCH:
-$config['en_ids_2738'] = array(4536,6205,4535);
+$config['en_ids_2738'] = array(6205,4536,4535);
 $config['en_all_2738'] = array(
-    4536 => array(
-        'm_icon' => '<i class="fas fa-circle blue" aria-hidden="true"></i>',
-        'm_name' => 'PLAY',
-        'm_desc' => 'PLAY',
-        'm_parents' => array(11035,2738,7368,4463),
-    ),
     6205 => array(
         'm_icon' => '<i class="fas fa-circle ispink" aria-hidden="true"></i>',
         'm_name' => 'READ',
-        'm_desc' => 'READ',
+        'm_desc' => '',
         'm_parents' => array(2738,7368,4463),
+    ),
+    4536 => array(
+        'm_icon' => '<i class="fas fa-circle blue" aria-hidden="true"></i>',
+        'm_name' => 'PLAY',
+        'm_desc' => 'PLAYERS',
+        'm_parents' => array(11035,2738,7368,4463),
     ),
     4535 => array(
         'm_icon' => '<i class="fas fa-circle yellow" aria-hidden="true"></i>',
         'm_name' => 'BLOG',
-        'm_desc' => 'BLOG',
+        'm_desc' => '',
         'm_parents' => array(2738,7368,4463),
     ),
 );

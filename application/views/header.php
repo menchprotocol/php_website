@@ -100,9 +100,11 @@ if(strlen($flash_message) > 0){
                         foreach($this->config->item('en_all_2738') as $en_id => $m){
 
                             $handle = strtolower($m['m_name']);
-                            $play_logged_in = ($en_id==4536 && isset($session_en['en_id']));
 
-                            echo '<td valign="bottom" style="width: 33%"><a class="'.$handle.' border-'.$handle.( $this->uri->segment(1)==$handle ? ' background-'.$handle: null ).'" href="/'.$handle.(intval($this->uri->segment(2) && isset($session_en['en_id']) && (($this->uri->segment(1)=='blog' && $en_id==6205) || ($this->uri->segment(1)=='read' && $en_id==4535))) ? '/'.$this->uri->segment(2) : '' ).'">' . $m['m_icon'] . '<span class="mn_name montserrat">' . $m['m_name'] . '</span> <span class="inline-block">'.( $play_logged_in ? '' : ' <span class="current_count montserrat"><i class="far fa-yin-yang fa-spin"></i></span>' ).' '.( $play_logged_in ? '<span class="montserrat">'.trim(one_two_explode('',' ', $session_en['en_name'])).'</span>' : '' ).'</span></a></td>';
+                            //Switch betweenh reading/blogging if specific blog is loaded:
+                            $url_postfix = (intval($this->uri->segment(2) && isset($session_en['en_id']) && (($this->uri->segment(1)=='blog' && $en_id==6205) || ($this->uri->segment(1)=='read' && $en_id==4535))) ? '/'.$this->uri->segment(2) : '' );
+
+                            echo '<td valign="bottom" style="width: 33%"><a class="'.$handle.' border-'.$handle.( $this->uri->segment(1)==$handle ? ' background-'.$handle: null ).'" href="/'.$handle.$url_postfix.'">' . $m['m_icon'] . ( isset($session_en['en_id']) ? ( $en_id==4536 ? '<span class="mn_name montserrat">'.trim(one_two_explode('',' ', $session_en['en_name'])).'</span>' : '<span class="current_count montserrat"><i class="far fa-yin-yang fa-spin"></i></span>' ) : '<span class="mn_name montserrat">' . $m['m_name'] . '</span>' ) .'</a></td>';
 
                         }
                         ?>

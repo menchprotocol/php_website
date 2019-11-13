@@ -1,6 +1,6 @@
 
 
-var fadeout_frequency = 120000; //milli seconds
+var fadeout_frequency = 2000; //milli seconds
 var searchbar_loaded = false;
 var fadeout_speed = 21;
 var updating_basic_stats = false;
@@ -27,12 +27,15 @@ function load_searchbar(){
 
 $(document).ready(function () {
 
-    //Update stats on load:
-    update_basic_stats(1);
+    //Continue updating basic stats IF logged in:
+    if(js_pl_id){
 
+        //Update stats on load:
+        update_my_coins();
 
-    //Continue updating basic stats:
-    //setInterval(update_basic_stats, fadeout_frequency);
+        setInterval(update_my_coins, fadeout_frequency);
+
+    }
 
 
     $("#mench_search").focus(function() {
@@ -105,7 +108,7 @@ $(document).ready(function () {
 
 
 //Update page count stats & refresh them visually once they change:
-var update_basic_stats = function( show_full ) {
+var update_my_coins = function( ) {
     //your jQuery ajax code
 
     if(updating_basic_stats){
@@ -116,16 +119,13 @@ var update_basic_stats = function( show_full ) {
     updating_basic_stats = true;
 
     //Fetch latest stats:
-    $.post("/play/update_counters", { show_full:show_full }, function (data) {
+    $.post("/play/update_my_coins", { }, function (data) {
 
-        if(data.intents.current_count != $('.blog .current_count').html()){
-            $('.blog .current_count').html(data.intents.current_count).fadeOut(fadeout_speed).fadeIn(fadeout_speed);
+        if(data.blog_count != $('.blog .current_count').html()){
+            $('.blog .current_count').html(data.blog_count).fadeOut(fadeout_speed).fadeIn(fadeout_speed);
         }
-        if(data.entities.current_count != $('.play .current_count').html()){
-            $('.play .current_count').html(data.entities.current_count).fadeOut(fadeout_speed).fadeIn(fadeout_speed);
-        }
-        if(data.links.current_count != $('.read .current_count').html()){
-            $('.read .current_count').html(data.links.current_count).fadeOut(fadeout_speed).fadeIn(fadeout_speed);
+        if(data.read_count != $('.read .current_count').html()){
+            $('.read .current_count').html(data.read_count).fadeOut(fadeout_speed).fadeIn(fadeout_speed);
         }
 
         updating_basic_stats = false;

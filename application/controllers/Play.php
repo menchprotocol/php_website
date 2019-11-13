@@ -768,6 +768,8 @@ fragment PostListingItemSidebar_post on Post {
         $blog_coins = $this->READ_model->ln_fetch($filters, array('ln_creator'), $load_max, 0, array('total_words' => 'DESC'), 'SUM(ABS(ln_words)) as total_words, en_name, en_icon, en_id', 'en_id, en_name, en_icon');
 
 
+
+
         //Did we find anyone?
         if(count($blog_coins) > 0){
             foreach ($blog_coins as $count=>$ln) {
@@ -3356,58 +3358,30 @@ fragment PostListingItemSidebar_post on Post {
 
 
 
-    function update_counters(){
-
-        //Actually count PLAYERS:
-        $en_count = $this->PLAY_model->en_fetch(array(
-            'en_status_entity_id IN (' . join(',', $this->config->item('en_ids_7357')) . ')' => null, //Entity Statuses Public
-        ), array(), 0, 0, array(), 'COUNT(en_id) as total_public_entities');
-
-
+    function update_my_coins(){
 
         $session_en = en_auth();
         if (!$session_en) {
-
-            //COUNT WORDS BLOG/READ:
-            $words_blog = $this->READ_model->ln_fetch(array(
-                'ln_type_entity_id IN (' . join(',', $this->config->item('en_ids_10589')) . ')' => null, //BLOGGERS
-                'ln_status_entity_id IN (' . join(',', $this->config->item('en_ids_7359')) . ')' => null, //Link Statuses Public
-            ), array(), 0, 0, array(), 'SUM(ln_words) as total_words');
-
-            $words_read = $this->READ_model->ln_fetch(array(
-                'ln_type_entity_id IN (' . join(',', $this->config->item('en_ids_10590')) . ')' => null, //READERS
-                'ln_status_entity_id IN (' . join(',', $this->config->item('en_ids_7359')) . ')' => null, //Link Statuses Public
-            ), array(), 0, 0, array(), 'SUM(ln_words) as total_words');
-
-        } else {
-
-            //COUNT WORDS BLOG/READ:
-            $words_blog = $this->READ_model->ln_fetch(array(
-                'ln_type_entity_id IN (' . join(',', $this->config->item('en_ids_10589')) . ')' => null, //BLOGGERS
-                'ln_creator_entity_id' => $session_en['en_id'],
-                'ln_status_entity_id IN (' . join(',', $this->config->item('en_ids_7359')) . ')' => null, //Link Statuses Public
-            ), array(), 0, 0, array(), 'SUM(ln_words) as total_words');
-
-            $words_read = $this->READ_model->ln_fetch(array(
-                'ln_type_entity_id IN (' . join(',', $this->config->item('en_ids_10590')) . ')' => null, //READERS
-                'ln_creator_entity_id' => $session_en['en_id'],
-                'ln_status_entity_id IN (' . join(',', $this->config->item('en_ids_7359')) . ')' => null, //Link Statuses Public
-            ), array(), 0, 0, array(), 'SUM(ln_words) as total_words');
-
+            return false;
         }
 
+        //COUNT WORDS BLOG/READ:
+        $words_blog = $this->READ_model->ln_fetch(array(
+            'ln_type_entity_id IN (' . join(',', $this->config->item('en_ids_10589')) . ')' => null, //BLOGGERS
+            'ln_status_entity_id IN (' . join(',', $this->config->item('en_ids_7359')) . ')' => null, //Link Statuses Public
+            'ln_creator_entity_id' => $session_en['en_id'],
+        ), array(), 0, 0, array(), 'SUM(ln_words) as total_words');
+
+        $words_read = $this->READ_model->ln_fetch(array(
+            'ln_type_entity_id IN (' . join(',', $this->config->item('en_ids_10590')) . ')' => null, //READERS
+            'ln_status_entity_id IN (' . join(',', $this->config->item('en_ids_7359')) . ')' => null, //Link Statuses Public
+            'ln_creator_entity_id' => $session_en['en_id'],
+        ), array(), 0, 0, array(), 'SUM(ln_words) as total_words');
 
 
         return echo_json(array(
-            'intents' => array(
-                'current_count' => ( $_POST['show_full'] ? number_format($words_blog[0]['total_words'], 0) : echo_number($words_blog[0]['total_words']) ),
-            ),
-            'entities' => array(
-                'current_count' => ( $_POST['show_full'] ? number_format($en_count[0]['total_public_entities'], 0) : echo_number($en_count[0]['total_public_entities']) ),
-            ),
-            'links' => array(
-                'current_count' => ( $_POST['show_full'] ? number_format(abs($words_read[0]['total_words']), 0) : echo_number(abs($words_read[0]['total_words'])) ),
-            )
+            'blog_count' => number_format($words_blog[0]['total_words'], 0),
+            'read_count' => number_format(abs($words_read[0]['total_words']), 0)
         ));
 
     }
