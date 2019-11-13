@@ -21,11 +21,6 @@ body {
     margin-bottom: 0;
 }
 
-.current_count {
-    font-size: 0.9em;
-    font-weight: bold;
-}
-
 /* FONTS */
 .montserrat {
     font-family: 'Montserrat', sans-serif;
