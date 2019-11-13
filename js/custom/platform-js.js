@@ -122,10 +122,10 @@ var update_my_coins = function( ) {
     $.post("/play/update_my_coins", { }, function (data) {
 
         if(data.blog_count != $('.blog .current_count').html()){
-            $('.blog .current_count').html(data.blog_count).fadeOut(fadeout_speed).fadeIn(fadeout_speed);
+            $('.three-menus .blog .current_count').html(data.blog_count).fadeOut(fadeout_speed).fadeIn(fadeout_speed);
         }
         if(data.read_count != $('.read .current_count').html()){
-            $('.read .current_count').html(data.read_count).fadeOut(fadeout_speed).fadeIn(fadeout_speed);
+            $('.three-menus .read .current_count').html(data.read_count).fadeOut(fadeout_speed).fadeIn(fadeout_speed);
         }
 
         updating_basic_stats = false;
