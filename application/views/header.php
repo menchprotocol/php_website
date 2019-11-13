@@ -133,7 +133,7 @@ if(strlen($flash_message) > 0){
                         <td>
                             <div class="supwerpower_view">
 
-                                <span class="mench-logo montserrat search-toggle"><?= echo_mench() ?></span>
+                                <span class="mench-logo montserrat search-toggle">MENCH</span>
 
                                 <div class="search-toggle hidden"><form id="searchFrontForm"><input class="form-control algolia_search" type="search" id="mench_search" data-lpignore="true" placeholder="<?= $en_all_11035[7256]['m_name'] ?>"></form></div>
 

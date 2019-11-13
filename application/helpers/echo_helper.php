@@ -429,11 +429,6 @@ function echo_number($number, $micro = true, $push_message = false)
     }
 }
 
-function echo_mench(){
-    $random_colors = array('blue','yellow','ispink');
-    return '<span class="'.$random_colors[rand(0,2)].'">M</span><span class="'.$random_colors[rand(0,2)].'">E</span><span class="'.$random_colors[rand(0,2)].'">N</span><span class="'.$random_colors[rand(0,2)].'">C</span><span class="'.$random_colors[rand(0,2)].'">H</span>';
-}
-
 function echo_a_an($string){
     return ( in_array(strtolower(substr($string, 0,1)), array('a','e','i','o','u')) ? 'an' : 'a' );
 }
@@ -2186,11 +2181,11 @@ function echo_in($in, $in_linked_id = 0, $is_parent = false)
 
 function echo_rank($integer){
     if($integer==1){
-        return '🏅';
+        return ' 🏅';
     } elseif($integer==2){
-        return '🥈';
+        return ' 🥈';
     } elseif($integer==3){
-        return '🥉';
+        return ' 🥉';
     } else {
         //return echo_ordinal_number($integer);
         return null;

@@ -13,10 +13,11 @@ class Play extends CI_Controller
         date_default_timezone_set(config_var(11079));
     }
 
-
-    function update_11158(){
-
+    function default_redirect(){
+        //READ is default tab to load:
+        return redirect_message('/read');
     }
+
 
     function add_11158(){
 
@@ -146,37 +147,6 @@ class Play extends CI_Controller
         }
     }
 
-    function launching_soon(){
-
-        $session_en = en_auth();
-        if($session_en){
-            return redirect_message('/blog');
-        }
-
-        $custom_header = '<div class="container fixed-top">
-            <div class="row">
-                <table class="mench-navigation" style="border-bottom:0;">
-                    <tr>
-                        <td class="block-link block-logo"><img src="/img/mench-v2-128.png" class="mench-logo mench-spin" /></td>
-                        <td><span class="mench-logo montserrat search-toggle inline-block">'.echo_mench().'</span></td>
-                        <td style="text-align:right; width:150px; padding-right: 7px;"><a href="https://docs.google.com/forms/d/e/1FAIpQLSca_W0_pP1anDmJ9_iJx82icCXTjKMjblXCx9hIHrlScwUoGg/viewform" class="btn btn-play montserrat">JOIN <i class="fas fa-arrow-right"></i></a></td>
-                    </tr>
-                </table>
-            </div>
-        </div>';
-
-        //ADjust width as well:
-        $custom_header .= '<style> .container { max-width:800px !important; } </style>';
-
-        $this->load->view('header', array(
-            'title' => 'READ. PLAY. BLOG.',
-            'hide_header' => 1, //Do not show regular header
-            'custom_header' => $custom_header,
-        ));
-        $this->load->view('view_play/play_overview');
-        $this->load->view('footer');
-
-    }
 
     function echo_post(){
         print_r($_POST);
@@ -794,14 +764,14 @@ fragment PostListingItemSidebar_post on Post {
 
                 echo '<tr class="'.( $count<$show_max ? '' : 'see_more_who hidden').'">';
 
-                //PLAY
-                echo '<td style="width:46%"><span class="parent-icon icon-block-sm">'.echo_en_icon($ln).'</span><b class="montserrat blue">'.( $session_en ? '<a href="/play/'.$ln['en_id'].'">'.$first_name.'</a>' : $first_name ).'</b></td>';
-
                 //READ
                 echo '<td style="width: 27%">'.( $session_en ? '<a href="/read/history?ln_status_entity_id='.join(',', $this->config->item('en_ids_7359')) /* Link Statuses Public */.'&ln_type_entity_id='.join(',', $this->config->item('en_ids_10590')).'&ln_creator_entity_id='.$ln['en_id'].( $start_date ? '&start_range='.$start_date : $start_date ).'" class="montserrat read"><span class="parent-icon icon-block-sm">'.$en_all_2738[6205]['m_icon'].'</span>'.echo_number($read_coins[0]['total_words']).'</a>' : '<span class="montserrat read"><span class="parent-icon icon-block-sm">'.$en_all_2738[6205]['m_icon'].'</span>'.echo_number($read_coins[0]['total_words']).'</span>' ).'</td>';
 
+                //PLAY
+                echo '<td style="width:46%"><span class="parent-icon icon-block-sm">'.echo_en_icon($ln).'</span><b class="montserrat blue">'.( $session_en ? '<a href="/play/'.$ln['en_id'].'">'.$first_name.'</a>' : $first_name ).echo_rank($count+1).'</b></td>';
+
                 //BLOG
-                echo '<td style="width: 27%">'.( $session_en ? '<a href="/read/history?ln_status_entity_id='.join(',', $this->config->item('en_ids_7359')) /* Link Statuses Public */.'&ln_type_entity_id='.join(',', $this->config->item('en_ids_10589')).'&ln_creator_entity_id='.$ln['en_id'].( $start_date ? '&start_range='.$start_date : $start_date ).'" class="montserrat blog"><span class="parent-icon icon-block-sm">'.$en_all_2738[4535]['m_icon'].'</span>'.echo_number($ln['total_words']).'</a>' : '<span class="montserrat blog"><span class="parent-icon icon-block-sm">'.$en_all_2738[4535]['m_icon'].'</span>'.echo_number($ln['total_words']).'</span>'  ).'<span class="pull-right inline-block">'.echo_rank($count+1).'</span></td>';
+                echo '<td style="width: 27%">'.( $session_en ? '<a href="/read/history?ln_status_entity_id='.join(',', $this->config->item('en_ids_7359')) /* Link Statuses Public */.'&ln_type_entity_id='.join(',', $this->config->item('en_ids_10589')).'&ln_creator_entity_id='.$ln['en_id'].( $start_date ? '&start_range='.$start_date : $start_date ).'" class="montserrat blog"><span class="parent-icon icon-block-sm">'.$en_all_2738[4535]['m_icon'].'</span>'.echo_number($ln['total_words']).'</a>' : '<span class="montserrat blog"><span class="parent-icon icon-block-sm">'.$en_all_2738[4535]['m_icon'].'</span>'.echo_number($ln['total_words']).'</span>'  ).'</td>';
                 echo '</tr>';
 
             }
