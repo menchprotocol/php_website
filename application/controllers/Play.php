@@ -745,7 +745,7 @@ fragment PostListingItemSidebar_post on Post {
             foreach ($blog_coins as $count=>$ln) {
 
                 if($count==$show_max){
-                    echo '<tr class="see_more_who"><td colspan="3"><span class="parent-icon icon-block-sm"><i class="fas fa-search-plus blue"></i></span><a href="javascript:void(0);" onclick="$(\'.see_more_who\').toggleClass(\'hidden\')"><b class="montserrat blue">TOP '.$load_max.'</b></a></td></tr>';
+                    echo '<tr class="see_more_who"><td>&nbsp;</td><td colspan="2"><span class="parent-icon icon-block-sm"><i class="fas fa-search-plus blue"></i></span><a href="javascript:void(0);" onclick="$(\'.see_more_who\').toggleClass(\'hidden\')"><b class="montserrat blue" style="text-decoration: none !important;">SEE TOP '.$load_max.'</b></a></td></tr>';
                     echo '<tr class="see_more_who"></tr>';
                 }
                 if($ln['total_words'] < 1){
