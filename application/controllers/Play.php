@@ -780,6 +780,7 @@ fragment PostListingItemSidebar_post on Post {
             }
 
 
+
             //Actually count PLAYERS:
             $en_count = $this->PLAY_model->en_fetch(array(
                 'en_status_entity_id IN (' . join(',', $this->config->item('en_ids_7357')) . ')' => null, //Entity Statuses Public
@@ -797,25 +798,17 @@ fragment PostListingItemSidebar_post on Post {
             ), array(), 0, 0, array(), 'SUM(ln_words) as total_words');
 
 
-            echo '<div class="container table-striped" style="margin-bottom:30px;">
-                <div class="row">
-                    <table class="three-menus">
-                        <tr>';
-
+            //Add total counts row:
+            echo '<tr>';
             foreach (array(
                          4536 => echo_number($en_count[0]['total_public_entities']),
                          6205 => echo_number(abs($words_read[0]['total_words'])),
                          4535 => echo_number($words_blog[0]['total_words']),
-                     ) as $en_id => $count){
+                     ) as $en_id => $current_count){
                 $handle = strtolower($en_all_2738[$en_id]['m_name']);
-                echo '<td valign="bottom" style="width:'.( $en_id==4536 ? 46 : 27 ).'%"><span class="'.$handle.' border-'.$handle.'"><span class="parent-icon icon-block-sm">' . $en_all_2738[$en_id]['m_icon'] . '</span><span class="montserrat current_count">'.$count.'</span> <span class="montserrat">' . $en_all_2738[$en_id]['m_desc'] . '</span></span></td>';
+                echo '<td valign="bottom" style="width:'.( $en_id==4536 ? 46 : 27 ).'%"><span class="'.$handle.' border-'.$handle.'"><span class="parent-icon icon-block-sm">' . $en_all_2738[$en_id]['m_icon'] . '</span><span class="montserrat current_count">'.$current_count.'</span> <span class="montserrat">' . $en_all_2738[$en_id]['m_desc'] . '</span></span></td>';
             }
-
-            echo '</tr>
-                    </table>
-                </div>
-            </div>';
-
+            echo '</tr>';
 
         } else {
             echo '<tr><td colspan="3"><div class="alert alert-warning"><i class="fas fa-exclamation-triangle"></i> No Players Yet...</div></td></tr>';
