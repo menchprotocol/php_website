@@ -8,19 +8,25 @@ $en_all_10591 = $this->config->item('en_all_10591'); //PLAYER PLAYS
 <div class="container">
 
     <div class="row">
-        <div class="col-lg">
-
-
+        <div class="col-md-6">
 
             <h1>HOW TO PLAY</h1>
             <ul class="none-list">
-                <li><b class="montserrat play"><?= $en_all_2738[4536]['m_icon'] .' '. $en_all_2738[4536]['m_name'] ?></b> coin awarded as a new player avatar</li>
-                <li><b class="montserrat blog"><?= $en_all_2738[4535]['m_icon'] .' '. $en_all_2738[4535]['m_name'] ?></b> coin earned for each word blogged</li>
-                <li><b class="montserrat read"><?= $en_all_2738[6205]['m_icon'] .' '. $en_all_2738[6205]['m_name'] ?></b> coin earned for each word read</li>
-                <li><b class="montserrat read"><?= $en_all_2738[6205]['m_icon'] .' '.$en_all_2738[6205]['m_name'] ?></b> up to <?= config_var(11061) ?> words per month free</li>
-                <li><b class="montserrat read"><?= $en_all_2738[6205]['m_icon'] .' '.$en_all_2738[6205]['m_name'] ?></b> unlimited words for $<?= config_var(11162) ?> per month</li>
-                <li><b class="montserrat blog"><?= $en_all_2738[4535]['m_icon'] .' '. $en_all_2738[4535]['m_name'] ?></b> coins earn cash income per month</li>
+                <li><b class="montserrat play"><?= $en_all_2738[4536]['m_icon'] .' '.$en_all_2738[4536]['m_name'] ?></b> COIN EARNED WHEN YOU FIRST JOIN</li>
+                <li><b class="montserrat read"><?= $en_all_2738[6205]['m_icon'] .' '.$en_all_2738[6205]['m_name'] ?></b> COIN EARNED FOR EACH WORD YOU READ</li>
+                <li><b class="montserrat blog"><?= $en_all_2738[4535]['m_icon'] .' '.$en_all_2738[4535]['m_name'] ?></b> COIN EARNED FOR EACH WORD YOU BLOG</li>
+                <li><b class="montserrat read"><?= $en_all_2738[6205]['m_icon'] .' '.$en_all_2738[6205]['m_name'] ?></b> UP TO <?= config_var(11061) ?> WORDS/MONTH FREE</li>
+                <li><b class="montserrat read"><?= $en_all_2738[6205]['m_icon'] .' '.$en_all_2738[6205]['m_name'] ?></b> UNLIMITED WORDS FOR $<?= config_var(11162) ?>/MONTH</li>
+                <li><b class="montserrat blog"><?= $en_all_2738[4535]['m_icon'] .' '. $en_all_2738[4535]['m_name'] ?></b> COINS earn cash income per month</li>
             </ul>
+
+        </div>
+
+        <div class="col-md-6">
+
+
+
+
 
 
 
