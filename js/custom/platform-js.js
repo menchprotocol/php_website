@@ -21,7 +21,8 @@ function load_searchbar(){
 
     searchbar_loaded = 1; //Indicate as loaded
     $('.search-toggle').toggleClass('hidden');
-    $('.algolia_search').focus();
+    $('#mench_search').focus();
+
 }
 
 
