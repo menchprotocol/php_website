@@ -13,7 +13,7 @@
         $('#input_password').prop('disabled', true).css('background-color','#f4f5f7');
 
         //Check email and validate:
-        $.post("/play/sign_reset_password_apply", {
+        $.post("/players/sign_reset_password_apply", {
             ln_id: <?= $validate_link['ln_id'] ?>,
             input_email: '<?= $validate_link['ln_content'] ?>',
             input_password: $('#input_password').val(),

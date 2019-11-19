@@ -768,7 +768,7 @@ fragment PostListingItemSidebar_post on Post {
                 echo '<tr class="'.( $count<$show_max ? '' : 'see_more_who hidden').'">';
 
                 //PLAY
-                echo '<td style="width:46%"><span class="parent-icon icon-block-sm">'.echo_en_icon($ln).'</span><b class="montserrat blue">'.( $session_en ? '<a href="/play/'.$ln['en_id'].'" class="blue">'.$first_name.'</a>' : $first_name ).echo_rank($count+1).'</b></td>';
+                echo '<td style="width:46%"><span class="parent-icon icon-block-sm">'.echo_en_icon($ln).'</span><b class="montserrat blue">'.( $session_en ? '<a href="/players/'.$ln['en_id'].'" class="blue">'.$first_name.'</a>' : $first_name ).echo_rank($count+1).'</b></td>';
 
                 //READ
                 echo '<td style="width: 27%">'.( $session_en ? '<a href="/exchange/history?ln_status_entity_id='.join(',', $this->config->item('en_ids_7359')) /* Link Statuses Public */.'&ln_type_entity_id='.join(',', $this->config->item('en_ids_10590')).'&ln_creator_entity_id='.$ln['en_id'].( $start_date ? '&start_range='.$start_date : $start_date ).'" class="montserrat read"><span class="parent-icon icon-block-sm">'.$en_all_2738[6205]['m_icon'].'</span>'.echo_number($read_coins[0]['total_words']).'</a>' : '<span class="montserrat read"><span class="parent-icon icon-block-sm">'.$en_all_2738[6205]['m_icon'].'</span>'.echo_number($read_coins[0]['total_words']).'</span>' ).'</td>';
@@ -890,7 +890,7 @@ fragment PostListingItemSidebar_post on Post {
         //Return results:
         return echo_json(array(
             'status' => 1,
-            'entity_domain_ui' => '<span class="en_mini_ui_icon parent-icon">' . (isset($url_entity['en_domain']['en_icon']) && strlen($url_entity['en_domain']['en_icon']) > 0 ? $url_entity['en_domain']['en_icon'] : detect_fav_icon($url_entity['url_clean_domain'], true)) . '</span> ' . (isset($url_entity['en_domain']['en_name']) ? $url_entity['en_domain']['en_name'] . ' <a href="/play/' . $url_entity['en_domain']['en_id'] . '" class="underdot" data-toggle="tooltip" title="Click to open domain entity in a new windows" data-placement="top" target="_blank">@' . $url_entity['en_domain']['en_id'] . '</a>' : $url_entity['url_domain_name'] . ' [<span class="underdot" data-toggle="tooltip" title="Domain entity not yet added" data-placement="top">New</span>]'),
+            'entity_domain_ui' => '<span class="en_mini_ui_icon parent-icon">' . (isset($url_entity['en_domain']['en_icon']) && strlen($url_entity['en_domain']['en_icon']) > 0 ? $url_entity['en_domain']['en_icon'] : detect_fav_icon($url_entity['url_clean_domain'], true)) . '</span> ' . (isset($url_entity['en_domain']['en_name']) ? $url_entity['en_domain']['en_name'] . ' <a href="/players/' . $url_entity['en_domain']['en_id'] . '" class="underdot" data-toggle="tooltip" title="Click to open domain entity in a new windows" data-placement="top" target="_blank">@' . $url_entity['en_domain']['en_id'] . '</a>' : $url_entity['url_domain_name'] . ' [<span class="underdot" data-toggle="tooltip" title="Domain entity not yet added" data-placement="top">New</span>]'),
             'js_url_entity' => $url_entity,
         ));
 
@@ -931,7 +931,7 @@ fragment PostListingItemSidebar_post on Post {
 
         return echo_json(array(
             'status' => 1,
-            'html_ui' => '<a href="/play/' . $detected_ln_type['ln_type_entity_id'] . '" style="font-weight: bold;" data-toggle="tooltip" data-placement="top" title="' . $en_all_4592[$detected_ln_type['ln_type_entity_id']]['m_desc'] . '">' . $en_all_4592[$detected_ln_type['ln_type_entity_id']]['m_icon'] . ' ' . $en_all_4592[$detected_ln_type['ln_type_entity_id']]['m_name'] . '</a>',
+            'html_ui' => '<a href="/players/' . $detected_ln_type['ln_type_entity_id'] . '" style="font-weight: bold;" data-toggle="tooltip" data-placement="top" title="' . $en_all_4592[$detected_ln_type['ln_type_entity_id']]['m_desc'] . '">' . $en_all_4592[$detected_ln_type['ln_type_entity_id']]['m_icon'] . ' ' . $en_all_4592[$detected_ln_type['ln_type_entity_id']]['m_name'] . '</a>',
             'en_link_preview' => echo_url_type($_POST['ln_content'], $detected_ln_type['ln_type_entity_id']),
         ));
     }
@@ -1444,7 +1444,7 @@ fragment PostListingItemSidebar_post on Post {
 
                 if($_POST['en_id'] == $_POST['en_focus_id'] || $merged_ens[0]['en_id'] == $_POST['en_focus_id']){
                     //Entity is being Removed and merged into another entity:
-                    $remove_redirect_url = '/play/' . $merged_ens[0]['en_id'];
+                    $remove_redirect_url = '/players/' . $merged_ens[0]['en_id'];
                 }
 
                 $success_message = 'Entity removed and merged its ' . $links_adjusted . ' links here';
@@ -1814,7 +1814,7 @@ fragment PostListingItemSidebar_post on Post {
                     ))) == 0){
                     return echo_json(array(
                         'status' => 0,
-                        'message' => 'Contributor #' . $contributor_num . ' is not linked to @3084 Industry Experts. If you believe '.$referenced_ens[0]['en_name'].' is an industry expert, first create a link to Industry Experts from <a href="/play/'.$referenced_ens[0]['en_id'].'" target="_blank"><b>here<i class="fas fa-external-link"></i></b></a> and then try saving this source again.',
+                        'message' => 'Contributor #' . $contributor_num . ' is not linked to @3084 Industry Experts. If you believe '.$referenced_ens[0]['en_name'].' is an industry expert, first create a link to Industry Experts from <a href="/players/'.$referenced_ens[0]['en_id'].'" target="_blank"><b>here<i class="fas fa-external-link"></i></b></a> and then try saving this source again.',
                     ));
                 }
 
@@ -1974,7 +1974,7 @@ fragment PostListingItemSidebar_post on Post {
 
         if($en_id < 0){
             //Gateway URL to give option to run...
-            die('<a href="/play/cron__update_trust_score">Click here</a> to start running this function.');
+            die('<a href="/players/cron__update_trust_score">Click here</a> to start running this function.');
         }
 
         //Algorithm Weights:
@@ -2128,7 +2128,7 @@ fragment PostListingItemSidebar_post on Post {
         //Make sure email input is provided:
         if(!isset($_GET['email']) || !filter_var($_GET['email'], FILTER_VALIDATE_EMAIL)){
             //Missing email input:
-            return redirect_message('/play/signin', '<div class="alert alert-danger" role="alert">Missing Email</div>');
+            return redirect_message('/players/signin', '<div class="alert alert-danger" role="alert">Missing Email</div>');
         }
 
         //Validate READ ID and matching email:
@@ -2140,7 +2140,7 @@ fragment PostListingItemSidebar_post on Post {
 
         if(count($validate_links) < 1){
             //Probably already completed the reset password:
-            return redirect_message('/play/signin', '<div class="alert alert-danger" role="alert">Reset password link not found</div>');
+            return redirect_message('/players/signin', '<div class="alert alert-danger" role="alert">Reset password link not found</div>');
         }
 
         $this->load->view('header', array(
@@ -2493,12 +2493,12 @@ fragment PostListingItemSidebar_post on Post {
 
         $magic_link_expiry_hours = (config_var(11065)/3600);
         $html_message .= '<div>Signin within '.$magic_link_expiry_hours.'-hour'.echo__s($magic_link_expiry_hours).':</div>';
-        $magiclogin_url = 'https://mench.com/play/magiclogin/' . $reset_link['ln_id'] . '?email='.$_POST['input_email'];
+        $magiclogin_url = 'https://mench.com/players/magiclogin/' . $reset_link['ln_id'] . '?email='.$_POST['input_email'];
         $html_message .= '<div><a href="'.$magiclogin_url.'" target="_blank">' . $magiclogin_url . '</a></div>';
 
         $password_reset_expiry_hours = ($this->config->item('password_reset_expiry')/3600);
         $html_message .= '<br /><br /><div>Or reset password within '.$password_reset_expiry_hours.'-hour'.echo__s($password_reset_expiry_hours).':</div>';
-        $setpassword_url = 'https://mench.com/play/resetpassword/' . $reset_link['ln_id'] . '?email='.$_POST['input_email'];
+        $setpassword_url = 'https://mench.com/players/resetpassword/' . $reset_link['ln_id'] . '?email='.$_POST['input_email'];
         $html_message .= '<div><a href="'.$setpassword_url.'" target="_blank">' . $setpassword_url . '</a></div>';
 
         $html_message .= '<br /><br />';
@@ -2522,7 +2522,7 @@ fragment PostListingItemSidebar_post on Post {
             return redirect_message('/actionplan/next');
         } elseif(!isset($_GET['email']) || !filter_var($_GET['email'], FILTER_VALIDATE_EMAIL)){
             //Missing email input:
-            return redirect_message('/play/signin', '<div class="alert alert-danger" role="alert">Missing Email</div>');
+            return redirect_message('/players/signin', '<div class="alert alert-danger" role="alert">Missing Email</div>');
         }
 
         //Validate READ ID and matching email:
@@ -2533,10 +2533,10 @@ fragment PostListingItemSidebar_post on Post {
         )); //The user making the request
         if(count($validate_links) < 1){
             //Probably already completed the reset password:
-            return redirect_message('/play/signin?input_email='.$_GET['email'], '<div class="alert alert-danger" role="alert">Invalid data source</div>');
+            return redirect_message('/players/signin?input_email='.$_GET['email'], '<div class="alert alert-danger" role="alert">Invalid data source</div>');
         } elseif(strtotime($validate_links[0]['ln_timestamp']) + config_var(11065) < time()){
             //Probably already completed the reset password:
-            return redirect_message('/play/signin?input_email='.$_GET['email'], '<div class="alert alert-danger" role="alert">Magic link has expired. Try again.</div>');
+            return redirect_message('/players/signin?input_email='.$_GET['email'], '<div class="alert alert-danger" role="alert">Magic link has expired. Try again.</div>');
         }
 
         //Fetch entity:
@@ -2544,7 +2544,7 @@ fragment PostListingItemSidebar_post on Post {
             'en_id' => $validate_links[0]['ln_creator_entity_id'],
         ));
         if(count($ens) < 1){
-            return redirect_message('/play/signin?input_email='.$_GET['email'], '<div class="alert alert-danger" role="alert">User not found</div>');
+            return redirect_message('/players/signin?input_email='.$_GET['email'], '<div class="alert alert-danger" role="alert">User not found</div>');
         }
 
         //Log them in:
@@ -3417,7 +3417,7 @@ fragment PostListingItemSidebar_post on Post {
         echo '/*<br />
  * Keep a cache of certain parts of the Intent tree for faster processing<br />
  * So we don\'t have to make DB calls to figure them out every time!<br />
- * See here for all entities cached: https://mench.com/play/4527<br />
+ * See here for all entities cached: https://mench.com/players/4527<br />
  *<br />
  * ATTENTION: Also search for "en_ids_" and "en_all_" when trying to manage these throughout the code base<br />
  *<br />

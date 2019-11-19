@@ -38,7 +38,7 @@ $en_all_10591 = $this->config->item('en_all_10591'); //PLAYER PLAYS
 
 <script>
     $(document).ready(function () {
-        $.post("/play/leaderboard/", { }, function (data) {
+        $.post("/players/leaderboard/", { }, function (data) {
             $('#leaderboard tbody').html(data);
             $('[data-toggle="tooltip"]').tooltip();
         });

@@ -381,7 +381,7 @@ class Ideas extends CI_Controller {
             $item_ui .= '<td style="text-align:left;">';
 
             $item_ui .= '<a href="/ideas/'.$_POST['in_loaded_id'].'#actionplanusers-'.$_POST['in_id'].'" data-toggle="tooltip" data-placement="top" title="Filter by this user"><i class="far fa-filter"></i></a>';
-            $item_ui .= '&nbsp;<a href="/play/'.$apu['en_id'].'" data-toggle="tooltip" data-placement="top" title="User Entity"><i class="fas fa-at"></i></a>';
+            $item_ui .= '&nbsp;<a href="/players/'.$apu['en_id'].'" data-toggle="tooltip" data-placement="top" title="User Entity"><i class="fas fa-at"></i></a>';
 
             $item_ui .= '&nbsp;<a href="/exchange/history?ln_creator_entity_id='.$apu['en_id'].'" data-toggle="tooltip" data-placement="top" title="Full User History"><i class="fas fa-link"></i></a>';
 

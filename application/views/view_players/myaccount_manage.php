@@ -10,7 +10,7 @@ $en_all_11035 = $this->config->item('en_all_11035'); //MENCH PLAYER NAVIGATION
 
 <div class="container">
 
-<h1 style="margin-bottom: 20px;"><?= $session_en['en_icon'] ?> <a href="/play/<?= $session_en['en_id'] ?>"><?= $session_en['en_name'] ?></a> &raquo; <span class="inline-block"><?= $en_all_11035[6225]['m_icon'].' '.$en_all_11035[6225]['m_name'] ?></span></h1>
+<h1 style="margin-bottom: 20px;"><?= $session_en['en_icon'] ?> <a href="/players/<?= $session_en['en_id'] ?>"><?= $session_en['en_name'] ?></a> &raquo; <span class="inline-block"><?= $en_all_11035[6225]['m_icon'].' '.$en_all_11035[6225]['m_name'] ?></span></h1>
 
 <div class="panel-group" id="accordion" role="tablist" aria-multiselectable="true" style="max-width: 500px;">
 

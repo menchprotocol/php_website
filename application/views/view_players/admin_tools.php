@@ -645,7 +645,7 @@ if(!$action) {
 
 } elseif($action=='identical_entity_names') {
 
-    echo '<ul class="breadcrumb"><li><a href="/play/admin_tools">Trainer Tools</a></li><li><b>'.$moderation_tools['/play/admin_tools/'.$action].'</b></li></ul>';
+    echo '<ul class="breadcrumb"><li><a href="/players/admin_tools">Trainer Tools</a></li><li><b>'.$moderation_tools['/players/admin_tools/'.$action].'</b></li></ul>';
 
     $q = $this->db->query('select en1.* from table_entities en1 where (select count(*) from table_entities en2 where en2.en_name = en1.en_name AND en2.en_status_entity_id IN (' . join(',', $this->config->item('en_ids_7358')) . ')) > 1 AND en1.en_status_entity_id IN (' . join(',', $this->config->item('en_ids_7358')) . ') ORDER BY en1.en_name ASC');
     $duplicates = $q->result_array();
@@ -660,7 +660,7 @@ if(!$action) {
                 $prev_title = $en['en_name'];
             }
 
-            echo '<span data-toggle="tooltip" data-placement="right" title="'.$en_all_6177[$en['en_status_entity_id']]['m_name'].': '.$en_all_6177[$en['en_status_entity_id']]['m_desc'].'">' . $en_all_6177[$en['en_status_entity_id']]['m_icon'] . '</span> <a href="/play/' . $en['en_id'] . '"><b>' . $en['en_name'] . '</b></a> @' . $en['en_id'] . '<br />';
+            echo '<span data-toggle="tooltip" data-placement="right" title="'.$en_all_6177[$en['en_status_entity_id']]['m_name'].': '.$en_all_6177[$en['en_status_entity_id']]['m_desc'].'">' . $en_all_6177[$en['en_status_entity_id']]['m_icon'] . '</span> <a href="/players/' . $en['en_id'] . '"><b>' . $en['en_name'] . '</b></a> @' . $en['en_id'] . '<br />';
         }
 
     } else {
@@ -669,7 +669,7 @@ if(!$action) {
 
 } elseif($action=='or__children') {
 
-    echo '<br /><p>Active <a href="/play/6914">Intent Answer Types</a> are listed below.</p><br />';
+    echo '<br /><p>Active <a href="/players/6914">Intent Answer Types</a> are listed below.</p><br />';
 
     $all_steps = 0;
     $all_children = 0;
@@ -720,7 +720,7 @@ if(!$action) {
 } elseif($action=='assessment_marks_list_all') {
 
 
-    echo '<ul class="breadcrumb"><li><a href="/play/admin_tools">Trainer Tools</a></li><li><b>'.$moderation_tools['/play/admin_tools/'.$action].'</b></li></ul>';
+    echo '<ul class="breadcrumb"><li><a href="/players/admin_tools">Trainer Tools</a></li><li><b>'.$moderation_tools['/players/admin_tools/'.$action].'</b></li></ul>';
 
     echo '<p>Below are all the Conditional Step Links:</p>';
     echo '<table class="table table-sm table-striped maxout" style="text-align: left;">';
@@ -858,7 +858,7 @@ if(!$action) {
     //Give an overview of the point links in a hierchial format to enable trainers to overview:
     $_GET['depth_levels']   = ( isset($_GET['depth_levels']) && intval($_GET['depth_levels']) > 0 ? $_GET['depth_levels'] : 3 );
 
-    echo '<ul class="breadcrumb"><li><a href="/play/admin_tools">Trainer Tools</a></li><li><b>'.$moderation_tools['/play/admin_tools/'.$action].'</b></li></ul>';
+    echo '<ul class="breadcrumb"><li><a href="/players/admin_tools">Trainer Tools</a></li><li><b>'.$moderation_tools['/players/admin_tools/'.$action].'</b></li></ul>';
 
 
     echo '<form method="GET" action="">';
@@ -910,7 +910,7 @@ $.post("/ideas/in_report_conditional_steps", {
 
     if(isset($_POST['test_message'])){
 
-        echo '<ul class="breadcrumb"><li><a href="/play/admin_tools">Trainer Tools</a></li><li><a href="/play/admin_tools/'.$action.'">'.$moderation_tools['/play/admin_tools/'.$action].'</a></li><li><b>Review Message</b></li></ul>';
+        echo '<ul class="breadcrumb"><li><a href="/players/admin_tools">Trainer Tools</a></li><li><a href="/players/admin_tools/'.$action.'">'.$moderation_tools['/players/admin_tools/'.$action].'</a></li><li><b>Review Message</b></li></ul>';
 
         if(intval($_POST['push_message']) && intval($_POST['recipient_en'])){
 
@@ -936,7 +936,7 @@ $.post("/ideas/in_report_conditional_steps", {
 
     } else {
 
-        echo '<ul class="breadcrumb"><li><a href="/play/admin_tools">Trainer Tools</a></li><li><b>'.$moderation_tools['/play/admin_tools/'.$action].'</b></li></ul>';
+        echo '<ul class="breadcrumb"><li><a href="/players/admin_tools">Trainer Tools</a></li><li><b>'.$moderation_tools['/players/admin_tools/'.$action].'</b></li></ul>';
 
         //UI to compose a test message:
         echo '<form method="POST" action="" class="maxout">';
