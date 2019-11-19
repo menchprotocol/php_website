@@ -120,13 +120,13 @@ var update_my_coins = function( ) {
     updating_basic_stats = true;
 
     //Fetch latest stats:
-    $.post("/players/update_my_coins", { }, function (data) {
+    $.post("/play/update_my_coins", { }, function (data) {
 
-        if(data.count4535 != $('.en4535 .current_count').html()){
-            $('.three-menus .en4535 .current_count').html(data.count4535).fadeOut(fadeout_speed).fadeIn(fadeout_speed);
+        if(data.blog_count != $('.blog .current_count').html()){
+            $('.three-menus .blog .current_count').html(data.blog_count).fadeOut(fadeout_speed).fadeIn(fadeout_speed);
         }
-        if(data.count6205 != $('.en6205 .current_count').html()){
-            $('.three-menus .en6205 .current_count').html(data.count6205).fadeOut(fadeout_speed).fadeIn(fadeout_speed);
+        if(data.read_count != $('.read .current_count').html()){
+            $('.three-menus .read .current_count').html(data.read_count).fadeOut(fadeout_speed).fadeIn(fadeout_speed);
         }
 
         updating_basic_stats = false;
@@ -149,16 +149,16 @@ function modify_cancel(){
 function en_fetch_canonical_url(query_string, not_found){
 
     //Do a call to PHP to fetch canonical URL and see if that exists:
-    $.post("/players/en_fetch_canonical_url", { search_url:query_string }, function (searchdata) {
+    $.post("/play/en_fetch_canonical_url", { search_url:query_string }, function (searchdata) {
         if(searchdata.status && searchdata.url_already_existed){
             //URL was detected via PHP, update the search results:
             $('.add-source-suggest').remove();
-            $('.not-found').html('<a href="/players/'+searchdata.algolia_object.alg_obj_id+'" class="suggestion">' + echo_js_suggestion(searchdata.algolia_object)+'</a>');
+            $('.not-found').html('<a href="/play/'+searchdata.algolia_object.alg_obj_id+'" class="suggestion">' + echo_js_suggestion(searchdata.algolia_object)+'</a>');
         }
     });
 
     //We did not find the URL, offer them option to add it:
-    return '<a href="/players/add_source_wizard?url='+ encodeURI(query_string) +'" class="suggestion add-source-suggest"><span class="icon-block"><i class="fas fa-plus-circle" style="margin: 0 5px;"></i></span>Add Source Wizard</a>'
+    return '<a href="/play/add_source_wizard?url='+ encodeURI(query_string) +'" class="suggestion add-source-suggest"><span class="icon-block"><i class="fas fa-plus-circle" style="margin: 0 5px;"></i></span>Add Source Wizard</a>'
         + ( not_found ? '<div class="not-found"><i class="fas fa-exclamation-triangle"></i> URL not found</div>' : '');
 }
 
@@ -243,7 +243,7 @@ function toggle_superpower(superpower_id){
     $('.superpower-frame-'+superpower_id).html('<i class="far fa-yin-yang fa-spin"></i>');
 
     //Save session variable to save the state of advance setting:
-    $.post("/players/toggle_superpower/"+superpower_id, {}, function (data) {
+    $.post("/play/toggle_superpower/"+superpower_id, {}, function (data) {
 
         //Change top menu icon:
         $('.superpower-frame-'+superpower_id).html(superpower_icon);

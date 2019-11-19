@@ -210,7 +210,7 @@ function in_message_sort_apply(ln_type_entity_id) {
 
     //Update backend if any:
     if(sort_rank > 0){
-        $.post("/ideas/in_message_sort", {new_ln_orders: new_ln_orders}, function (data) {
+        $.post("/blog/in_message_sort", {new_ln_orders: new_ln_orders}, function (data) {
             //Only show message if there was an error:
             if (!data.status) {
                 //Show error:
@@ -303,7 +303,7 @@ function in_message_modify_save(ln_id, initial_ln_type_entity_id) {
     };
 
     //Update message:
-    $.post("/ideas/in_message_modify_save", modify_data, function (data) {
+    $.post("/blog/in_message_modify_save", modify_data, function (data) {
 
         if (data.status) {
 
@@ -442,7 +442,7 @@ function in_message_from_attachment(droppedFiles, uploadType) {
         ajaxData.append('in_id', in_id);
 
         $.ajax({
-            url: '/ideas/in_message_from_attachment',
+            url: '/blog/in_message_from_attachment',
             type: $('.box' + in_id).attr('method'),
             data: ajaxData,
             dataType: 'json',
@@ -480,7 +480,7 @@ function in_message_create() {
     in_message_form_lock();
 
     //Update backend:
-    $.post("/ideas/in_new_message_from_text", {
+    $.post("/blog/in_new_message_from_text", {
 
         in_id: in_id, //Synonymous
         ln_content: $('#ln_content' + in_id).val(),

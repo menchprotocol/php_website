@@ -266,20 +266,21 @@ li a {
 }
 
 /* MENCH Colors */
-.blue, .isblue, .isblue a, .en4536, .en4536 .fas, .en4536 .far, .en4536 .fal           { color:#008DF2 !important; }
-.yellow, .isyellow, .isyellow a, .en4535, .en4535 .fas, .en4535 .far, .en4535 .fal     { color:#f1d104 !important; }
-.pink, .ispink, .ispink a, .en6205, .en6205 .fas, .en6205 .far, .en6205 .fal           { color:#FC1B44 !important; }
+.blue, .isblue, .isblue a, .play, .play .fas, .play .far, .play .fal           { color:#008DF2 !important; }
+.yellow, .isyellow, .isyellow a, .blog, .blog .fas, .blog .far, .blog .fal  { color:#f1d104 !important; }
+.pink, .ispink, .ispink a, .read, .read .fas, .read .far, .read .fal           { color:#FC1B44 !important; }
 
-.border4536     { border-color:#008DF2 !important; }
-.border4535     { border-color:#f1d104 !important; }
-.border6205     { border-color:#FC1B44 !important; }
+.border-play     { border-color:#008DF2 !important; }
+.border-blog     { border-color:#f1d104 !important; }
+.border-read     { border-color:#FC1B44 !important; }
 
-.background4536, a.border4536:hover, a.border4536:hover .fas     { background-color:#008DF2 !important; color:#FFFFFF !important; }
-.background4535, a.border4535:hover, a.border4535:hover .fas     { background-color:#f1d104 !important; color:#070707 !important; }
-.background6205, a.border6205:hover, a.border6205:hover .fas     { background-color:#FC1B44 !important; color:#FFFFFF !important; }
 
-.background4536 .fas, .background6205 .fas, .background4536 .far, .background6205 .far, .background4536 .fal, .background6205 .fal { color:#FFFFFF !important; }
-.background4535 .fas, .background4535 .far, .background4535 .fal { color:#070707 !important; }
+.background-play, a.border-play:hover, a.border-play:hover .fas     { background-color:#008DF2 !important; color:#FFFFFF !important; }
+.background-blog, a.border-blog:hover, a.border-blog:hover .fas     { background-color:#f1d104 !important; color:#070707 !important; }
+.background-read, a.border-read:hover, a.border-read:hover .fas     { background-color:#FC1B44 !important; color:#FFFFFF !important; }
+
+.background-play .fas, .background-read .fas, .background-play .far, .background-read .far, .background-play .fal, .background-read .fal { color:#FFFFFF !important; }
+.background-blog .fas, .background-blog .far, .background-blog .fal { color:#070707 !important; }
 
 /* Color Palette @10604 */
 .isgreen, .isgreen a                { color:#228B22 !important; }
@@ -572,32 +573,32 @@ li a {
 
 
 
-.btn.btn4536, .btn.btn4536:hover, .btn.btn4536:focus, .btn.btn4536:active, .btn.btn4536.active, .btn.btn4536:active:focus, .btn.btn4536:active:hover, .btn.btn4536.active:focus, .btn.btn4536.active:hover, .open > .btn.btn4536.dropdown-toggle, .open > .btn.btn4536.dropdown-toggle:focus, .open > .btn.btn4536.dropdown-toggle:hover, .navbar .navbar-nav > li > a.btn.btn4536, .navbar .navbar-nav > li > a.btn.btn4536:hover, .navbar .navbar-nav > li > a.btn.btn4536:focus, .navbar .navbar-nav > li > a.btn.btn4536:active, .navbar .navbar-nav > li > a.btn.btn4536.active, .navbar .navbar-nav > li > a.btn.btn4536:active:focus, .navbar .navbar-nav > li > a.btn.btn4536:active:hover, .navbar .navbar-nav > li > a.btn.btn4536.active:focus, .navbar .navbar-nav > li > a.btn.btn4536.active:hover, .open > .navbar .navbar-nav > li > a.btn.btn4536.dropdown-toggle, .open > .navbar .navbar-nav > li > a.btn.btn4536.dropdown-toggle:focus, .open > .navbar .navbar-nav > li > a.btn.btn4536.dropdown-toggle:hover {
+.btn.btn-play, .btn.btn-play:hover, .btn.btn-play:focus, .btn.btn-play:active, .btn.btn-play.active, .btn.btn-play:active:focus, .btn.btn-play:active:hover, .btn.btn-play.active:focus, .btn.btn-play.active:hover, .open > .btn.btn-play.dropdown-toggle, .open > .btn.btn-play.dropdown-toggle:focus, .open > .btn.btn-play.dropdown-toggle:hover, .navbar .navbar-nav > li > a.btn.btn-play, .navbar .navbar-nav > li > a.btn.btn-play:hover, .navbar .navbar-nav > li > a.btn.btn-play:focus, .navbar .navbar-nav > li > a.btn.btn-play:active, .navbar .navbar-nav > li > a.btn.btn-play.active, .navbar .navbar-nav > li > a.btn.btn-play:active:focus, .navbar .navbar-nav > li > a.btn.btn-play:active:hover, .navbar .navbar-nav > li > a.btn.btn-play.active:focus, .navbar .navbar-nav > li > a.btn.btn-play.active:hover, .open > .navbar .navbar-nav > li > a.btn.btn-play.dropdown-toggle, .open > .navbar .navbar-nav > li > a.btn.btn-play.dropdown-toggle:focus, .open > .navbar .navbar-nav > li > a.btn.btn-play.dropdown-toggle:hover {
     background-color: #008DF2;
     color: #FFFFFF;
 }
 
-.btn4536 .fas,.btn4536 .far,.btn4536 .fal { color: #FFFFFF !important; }
+.btn-play .fas,.btn-play .far,.btn-play .fal { color: #FFFFFF !important; }
 
 .btn.btn-main, .btn.btn-main:hover, .btn.btn-main:focus, .btn.btn-main:active, .btn.btn-main.active, .btn.btn-main:active:focus, .btn.btn-main:active:hover, .btn.btn-main.active:focus, .btn.btn-main.active:hover, .open > .btn.btn-main.dropdown-toggle, .open > .btn.btn-main.dropdown-toggle:focus, .open > .btn.btn-main.dropdown-toggle:hover, .navbar .navbar-nav > li > a.btn.btn-main, .navbar .navbar-nav > li > a.btn.btn-main:hover, .navbar .navbar-nav > li > a.btn.btn-main:focus, .navbar .navbar-nav > li > a.btn.btn-main:active, .navbar .navbar-nav > li > a.btn.btn-main.active, .navbar .navbar-nav > li > a.btn.btn-main:active:focus, .navbar .navbar-nav > li > a.btn.btn-main:active:hover, .navbar .navbar-nav > li > a.btn.btn-main.active:focus, .navbar .navbar-nav > li > a.btn.btn-main.active:hover, .open > .navbar .navbar-nav > li > a.btn.btn-main.dropdown-toggle, .open > .navbar .navbar-nav > li > a.btn.btn-main.dropdown-toggle:focus, .open > .navbar .navbar-nav > li > a.btn.btn-main.dropdown-toggle:hover {
     background-color: #070707;
     color: #FFFFFF;
 }
 
-.btn.btn6205, .btn.btn6205:hover, .btn.btn6205:focus, .btn.btn6205:active, .btn.btn6205.active, .btn.btn6205:active:focus, .btn.btn6205:active:hover, .btn.btn6205.active:focus, .btn.btn6205.active:hover, .open > .btn.btn6205.dropdown-toggle, .open > .btn.btn6205.dropdown-toggle:focus, .open > .btn.btn6205.dropdown-toggle:hover, .navbar .navbar-nav > li > a.btn.btn6205, .navbar .navbar-nav > li > a.btn.btn6205:hover, .navbar .navbar-nav > li > a.btn.btn6205:focus, .navbar .navbar-nav > li > a.btn.btn6205:active, .navbar .navbar-nav > li > a.btn.btn6205.active, .navbar .navbar-nav > li > a.btn.btn6205:active:focus, .navbar .navbar-nav > li > a.btn.btn6205:active:hover, .navbar .navbar-nav > li > a.btn.btn6205.active:focus, .navbar .navbar-nav > li > a.btn.btn6205.active:hover, .open > .navbar .navbar-nav > li > a.btn.btn6205.dropdown-toggle, .open > .navbar .navbar-nav > li > a.btn.btn6205.dropdown-toggle:focus, .open > .navbar .navbar-nav > li > a.btn.btn6205.dropdown-toggle:hover {
+.btn.btn-read, .btn.btn-read:hover, .btn.btn-read:focus, .btn.btn-read:active, .btn.btn-read.active, .btn.btn-read:active:focus, .btn.btn-read:active:hover, .btn.btn-read.active:focus, .btn.btn-read.active:hover, .open > .btn.btn-read.dropdown-toggle, .open > .btn.btn-read.dropdown-toggle:focus, .open > .btn.btn-read.dropdown-toggle:hover, .navbar .navbar-nav > li > a.btn.btn-read, .navbar .navbar-nav > li > a.btn.btn-read:hover, .navbar .navbar-nav > li > a.btn.btn-read:focus, .navbar .navbar-nav > li > a.btn.btn-read:active, .navbar .navbar-nav > li > a.btn.btn-read.active, .navbar .navbar-nav > li > a.btn.btn-read:active:focus, .navbar .navbar-nav > li > a.btn.btn-read:active:hover, .navbar .navbar-nav > li > a.btn.btn-read.active:focus, .navbar .navbar-nav > li > a.btn.btn-read.active:hover, .open > .navbar .navbar-nav > li > a.btn.btn-read.dropdown-toggle, .open > .navbar .navbar-nav > li > a.btn.btn-read.dropdown-toggle:focus, .open > .navbar .navbar-nav > li > a.btn.btn-read.dropdown-toggle:hover {
     background-color: #FC1B44;
     color: #FFFFFF;
 }
 
 
-.btn6205 .fas,.btn6205 .far,.btn6205 .fal { color: #FFFFFF !important; }
+.btn-read .fas,.btn-read .far,.btn-read .fal { color: #FFFFFF !important; }
 
-.btn.btn4535, .btn.btn4535:hover, .btn.btn4535:focus, .btn.btn4535:active, .btn.btn4535.active, .btn.btn4535:active:focus, .btn.btn4535:active:hover, .btn.btn4535.active:focus, .btn.btn4535.active:hover, .open > .btn.btn4535.dropdown-toggle, .open > .btn.btn4535.dropdown-toggle:focus, .open > .btn.btn4535.dropdown-toggle:hover, .navbar .navbar-nav > li > a.btn.btn4535, .navbar .navbar-nav > li > a.btn.btn4535:hover, .navbar .navbar-nav > li > a.btn.btn4535:focus, .navbar .navbar-nav > li > a.btn.btn4535:active, .navbar .navbar-nav > li > a.btn.btn4535.active, .navbar .navbar-nav > li > a.btn.btn4535:active:focus, .navbar .navbar-nav > li > a.btn.btn4535:active:hover, .navbar .navbar-nav > li > a.btn.btn4535.active:focus, .navbar .navbar-nav > li > a.btn.btn4535.active:hover, .open > .navbar .navbar-nav > li > a.btn.btn4535.dropdown-toggle, .open > .navbar .navbar-nav > li > a.btn.btn4535.dropdown-toggle:focus, .open > .navbar .navbar-nav > li > a.btn.btn4535.dropdown-toggle:hover {
+.btn.btn-blog, .btn.btn-blog:hover, .btn.btn-blog:focus, .btn.btn-blog:active, .btn.btn-blog.active, .btn.btn-blog:active:focus, .btn.btn-blog:active:hover, .btn.btn-blog.active:focus, .btn.btn-blog.active:hover, .open > .btn.btn-blog.dropdown-toggle, .open > .btn.btn-blog.dropdown-toggle:focus, .open > .btn.btn-blog.dropdown-toggle:hover, .navbar .navbar-nav > li > a.btn.btn-blog, .navbar .navbar-nav > li > a.btn.btn-blog:hover, .navbar .navbar-nav > li > a.btn.btn-blog:focus, .navbar .navbar-nav > li > a.btn.btn-blog:active, .navbar .navbar-nav > li > a.btn.btn-blog.active, .navbar .navbar-nav > li > a.btn.btn-blog:active:focus, .navbar .navbar-nav > li > a.btn.btn-blog:active:hover, .navbar .navbar-nav > li > a.btn.btn-blog.active:focus, .navbar .navbar-nav > li > a.btn.btn-blog.active:hover, .open > .navbar .navbar-nav > li > a.btn.btn-blog.dropdown-toggle, .open > .navbar .navbar-nav > li > a.btn.btn-blog.dropdown-toggle:focus, .open > .navbar .navbar-nav > li > a.btn.btn-blog.dropdown-toggle:hover {
     background-color: #f1d104;
     color: #070707;
 }
 
-.btn4535 .fas,.btn4535 .far,.btn4535 .fal { color: #070707 !important; }
+.btn-blog .fas,.btn-blog .far,.btn-blog .fal { color: #070707 !important; }
 
 
 

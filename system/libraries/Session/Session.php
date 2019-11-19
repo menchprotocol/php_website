@@ -114,7 +114,7 @@ class CI_Session {
 				session_set_save_handler(
 					array($class, 'open'),
 					array($class, 'close'),
-					array($class, 'Exchange'),
+					array($class, 'read'),
 					array($class, 'write'),
 					array($class, 'destroy'),
 					array($class, 'gc')

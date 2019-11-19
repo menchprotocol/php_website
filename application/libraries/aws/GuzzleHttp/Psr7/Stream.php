@@ -20,7 +20,7 @@ class Stream implements StreamInterface
 
     /** @var array Hash of readable and writable stream types */
     private static $readWriteHash = [
-        'Exchange' => [
+        'read' => [
             'r' => true, 'w+' => true, 'r+' => true, 'x+' => true, 'c+' => true,
             'rb' => true, 'w+b' => true, 'r+b' => true, 'x+b' => true,
             'c+b' => true, 'rt' => true, 'w+t' => true, 'r+t' => true,
@@ -65,7 +65,7 @@ class Stream implements StreamInterface
         $this->stream = $stream;
         $meta = stream_get_meta_data($this->stream);
         $this->seekable = $meta['seekable'];
-        $this->readable = isset(self::$readWriteHash['Exchange'][$meta['mode']]);
+        $this->readable = isset(self::$readWriteHash['read'][$meta['mode']]);
         $this->writable = isset(self::$readWriteHash['write'][$meta['mode']]);
         $this->uri = $this->getMetadata('uri');
     }

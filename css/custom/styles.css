@@ -3324,7 +3324,7 @@ h4 .tip-badge {
     text-decoration: none !important;
 }
 
-.price-box .btn4535, .price-box .btn4535:hover {
+.price-box .btn-blog, .price-box .btn-blog:hover {
     color: #070707 !important;
     font-size: 0.9em;
     margin: 0 !important;
@@ -3349,7 +3349,7 @@ h4 .tip-badge {
 
 
 
-.btn4536, .btn6205 {
+.btn-play, .btn-read {
     font-size:15px !important;
 }
 

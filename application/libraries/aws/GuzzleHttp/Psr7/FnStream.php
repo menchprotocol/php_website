@@ -17,7 +17,7 @@ class FnStream implements StreamInterface
     /** @var array Methods that must be implemented in the given array */
     private static $slots = ['__toString', 'close', 'detach', 'rewind',
         'getSize', 'tell', 'eof', 'isSeekable', 'seek', 'isWritable', 'write',
-        'isReadable', 'Exchange', 'getContents', 'getMetadata'];
+        'isReadable', 'read', 'getContents', 'getMetadata'];
 
     /**
      * @param array $methods Hash of method name to a callable.
