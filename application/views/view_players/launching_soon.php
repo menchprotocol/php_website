@@ -29,10 +29,10 @@ $en_all_2738 = $this->config->item('en_all_2738'); //MENCH
             <div class="learn_more hidden">
                 <h2>HOW TO <b class="play">PLAY</b></h2>
                 <ul class="decimal-list">
-                    <li>Earn a <?= $en_all_2738[6205]['m_icon'] ?> coin for every word you <b class="montserrat read"><?= $en_all_2738[6205]['m_name'] ?></b></li>
-                    <li>Earn a <?= $en_all_2738[4535]['m_icon'] ?> coin for every word you <b class="montserrat blog"><?= $en_all_2738[4535]['m_name'] ?></b></li>
-                    <li><b class="montserrat read"><?= $en_all_2738[6205]['m_name'] ?></b> up to <?= config_var(11061) ?> words/month <b class="montserrat">FREE</b></li>
-                    <li><b class="montserrat read"><?= $en_all_2738[6205]['m_name'] ?></b> unlimited words for $<?= config_var(11162) ?>/month</li>
+                    <li>Earn a <?= $en_all_2738[6205]['m_icon'] ?> coin for every word you <b class="montserrat pink"><?= $en_all_2738[6205]['m_name'] ?></b></li>
+                    <li>Earn a <?= $en_all_2738[4535]['m_icon'] ?> coin for every word you <b class="montserrat yellow"><?= $en_all_2738[4535]['m_name'] ?></b></li>
+                    <li><b class="montserrat pink"><?= $en_all_2738[6205]['m_name'] ?></b> up to <?= config_var(11061) ?> words/month <b class="montserrat">FREE</b></li>
+                    <li><b class="montserrat pink"><?= $en_all_2738[6205]['m_name'] ?></b> unlimited words for $<?= config_var(11162) ?>/month</li>
                     <li>Earn monthly cash with your <?= $en_all_2738[4535]['m_icon'] ?> coins</li>
                 </ul>
 
@@ -41,12 +41,12 @@ $en_all_2738 = $this->config->item('en_all_2738'); //MENCH
             </div>
 
             <p>
-                <a href="javascript:void(0);" onclick="$('.learn_more').toggleClass('hidden');" class="btn btn-read montserrat learn_more">READ MORE <i class="fas fa-search-plus"></i></a>
+                <a href="javascript:void(0);" onclick="$('.learn_more').toggleClass('hidden');" class="btn btn6205 montserrat learn_more">READ MORE <i class="fas fa-search-plus"></i></a>
 
             </p>
 
 
-            <p>Or <a href="/play/signin" style="font-weight: bold; text-decoration: underline;">login</a> if you already have an account.</p>
+            <p>Or <a href="/players/signin" style="font-weight: bold; text-decoration: underline;">login</a> if you already have an account.</p>
 
         </div>
 

@@ -160,7 +160,7 @@ function in_modify_load(in_id, ln_id) {
     $('.edit-header').html('<i class="fas fa-cog"></i> ' + $('.in_outcome_' + in_id + ':first').text());
 
     //Fetch Intent Data to load modify widget:
-    $.post("/blog/in_load_data", {
+    $.post("/ideas/in_load_data", {
         in_id: in_id,
         ln_id: ln_id,
         is_parent: ( $('.intent_line_' + in_id).hasClass('parent-intent') ? 1 : 0 ),
@@ -312,7 +312,7 @@ function in_modify_save() {
 
 
     //Save the rest of the content:
-    $.post("/blog/in_modify_save", modify_data, function (data) {
+    $.post("/ideas/in_modify_save", modify_data, function (data) {
 
         if (!data.status) {
 
@@ -378,7 +378,7 @@ function in_modify_save() {
                 if(data.ins_unlocked_completions_count > 0){
                     //We did complete/unlock some intents, inform trainer and refresh:
                     alert('Publishing this intent has just unlocked '+data.steps_unlocked_completions_count+' steps across '+data.ins_unlocked_completions_count+' intents. Page will be refreshed to reflect changes.');
-                    window.location = "/blog/" + in_loaded_id;
+                    window.location = "/ideas/" + in_loaded_id;
                 }
 
             }

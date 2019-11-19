@@ -19,7 +19,7 @@ ga('send', 'pageview');
 
 
 function js_ln_create(new_ln_data){
-    return $.post("/read/js_ln_create", new_ln_data, function (data) {
+    return $.post("/exchange/js_ln_create", new_ln_data, function (data) {
         return data;
     });
 }
@@ -172,9 +172,9 @@ $(document).ready(function () {
         $('#mench_search').prop("disabled", true).val('Loading...').css('background-color','#f4f5f7').css('font-size','0.8em');
 
         if (parseInt(suggestion.alg_obj_is_in)==1) {
-            window.location = "/read/" + suggestion.alg_obj_id;
+            window.location = "/exchange/" + suggestion.alg_obj_id;
         } else {
-            window.location = "/play/" + suggestion.alg_obj_id;
+            window.location = "/players/" + suggestion.alg_obj_id;
         }
 
     }).autocomplete({minLength: 1, autoselect: true, keyboardShortcuts: ['s']}, [

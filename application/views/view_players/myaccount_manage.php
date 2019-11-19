@@ -10,7 +10,7 @@ $en_all_11035 = $this->config->item('en_all_11035'); //MENCH PLAYER NAVIGATION
 
 <div class="container">
 
-<h1 style="margin-bottom: 20px;"><?= $session_en['en_icon'] ?> <a href="/play/<?= $session_en['en_id'] ?>"><?= $session_en['en_name'] ?></a> &raquo; <span class="inline-block"><?= $en_all_11035[6225]['m_icon'].' '.$en_all_11035[6225]['m_name'] ?></span></h1>
+<h1 style="margin-bottom: 20px;"><?= $session_en['en_icon'] ?> <a href="/players/<?= $session_en['en_id'] ?>"><?= $session_en['en_name'] ?></a> &raquo; <span class="inline-block"><?= $en_all_11035[6225]['m_icon'].' '.$en_all_11035[6225]['m_name'] ?></span></h1>
 
 <div class="panel-group" id="accordion" role="tablist" aria-multiselectable="true" style="max-width: 500px;">
 
@@ -42,12 +42,12 @@ $en_all_11035 = $this->config->item('en_all_11035'); //MENCH PLAYER NAVIGATION
         } elseif($acc_en_id==6197 /* Full Name */){
 
             echo '<span class="white-wrapper"><input type="text" id="en_name" class="form-control border" value="'.$session_en['en_name'].'" /></span>
-                    <a href="javascript:void(0)" onclick="save_full_name()" class="btn btn-play">Save</a>
+                    <a href="javascript:void(0)" onclick="save_full_name()" class="btn btn4536">Save</a>
                     <span class="saving-account save_full_name"></span>';
 
         } elseif($acc_en_id==3288 /* Mench Email */){
 
-            $user_emails = $this->READ_model->ln_fetch(array(
+            $user_emails = $this->EXCHANGE_model->ln_fetch(array(
                 'ln_status_entity_id IN (' . join(',', $this->config->item('en_ids_7359')) . ')' => null, //Link Statuses Public
                 'ln_child_entity_id' => $session_en['en_id'],
                 'ln_type_entity_id' => 4255, //Linked Entities Text (Email is text)
@@ -55,12 +55,12 @@ $en_all_11035 = $this->config->item('en_all_11035'); //MENCH PLAYER NAVIGATION
             ));
 
             echo '<span class="white-wrapper"><input type="email" id="en_email" class="form-control border" value="'.( count($user_emails) > 0 ? $user_emails[0]['ln_content'] : '' ).'" placeholder="you@gmail.com" /></span>
-                    <a href="javascript:void(0)" onclick="save_email()" class="btn btn-play">Save</a>
+                    <a href="javascript:void(0)" onclick="save_email()" class="btn btn4536">Save</a>
                     <span class="saving-account save_email"></span>';
 
         } elseif($acc_en_id==3286 /* Password */){
 
-            $user_passwords = $this->READ_model->ln_fetch(array(
+            $user_passwords = $this->EXCHANGE_model->ln_fetch(array(
                 'ln_status_entity_id IN (' . join(',', $this->config->item('en_ids_7359')) . ')' => null, //Link Statuses Public
                 'ln_type_entity_id' => 4255, //Text
                 'ln_parent_entity_id' => 3286, //Password
@@ -68,13 +68,13 @@ $en_all_11035 = $this->config->item('en_all_11035'); //MENCH PLAYER NAVIGATION
             ));
 
             echo '<span class="white-wrapper"><input type="password" id="input_password" class="form-control border" placeholder="Set new password..." /></span>
-                    <a href="javascript:void(0)" onclick="myaccount_update_password()" class="btn btn-play">Save</a>
+                    <a href="javascript:void(0)" onclick="myaccount_update_password()" class="btn btn4536">Save</a>
                     <span class="saving-account save_password"></span>
                     <p>Note: '. ( count($user_passwords) > 0 ? 'Password updated '.echo_time_difference(strtotime($user_passwords[0]['ln_timestamp'])).' ago.' : 'You have not yet set a password.') .'</p>';
 
         } elseif($acc_en_id==4783 /* Phone */){
 
-            $user_phones = $this->READ_model->ln_fetch(array(
+            $user_phones = $this->EXCHANGE_model->ln_fetch(array(
                 'ln_status_entity_id IN (' . join(',', $this->config->item('en_ids_7359')) . ')' => null, //Link Statuses Public
                 'ln_child_entity_id' => $session_en['en_id'],
                 'ln_type_entity_id' => 4319, //Phone are of type number
@@ -82,12 +82,12 @@ $en_all_11035 = $this->config->item('en_all_11035'); //MENCH PLAYER NAVIGATION
             ));
 
             echo '<span class="white-wrapper"><input type="number" id="en_phone" class="form-control border" value="'.( count($user_phones) > 0 ? $user_phones[0]['ln_content'] : '' ).'" placeholder="Set phone number..." /></span>
-                    <a href="javascript:void(0)" onclick="save_phone()" class="btn btn-play">Save</a>
+                    <a href="javascript:void(0)" onclick="save_phone()" class="btn btn4536">Save</a>
                     <span class="saving-account save_phone"></span>';
 
         } elseif($acc_en_id==6123 /* Social Profiles */){
 
-            $user_social_profiles = $this->READ_model->ln_fetch(array(
+            $user_social_profiles = $this->EXCHANGE_model->ln_fetch(array(
                 'ln_status_entity_id IN (' . join(',', $this->config->item('en_ids_7359')) . ')' => null, //Link Statuses Public
                 'ln_type_entity_id' => 4256, //Generic URL
                 'ln_parent_entity_id IN ('.join(',', $this->config->item('en_ids_6123')).')' => null, //Any social profile
@@ -107,7 +107,7 @@ $en_all_11035 = $this->config->item('en_all_11035'); //MENCH PLAYER NAVIGATION
             }
             echo '</table>';
 
-            echo '<a href="javascript:void(0)" onclick="save_social_profiles()" class="btn btn-play">Save</a>
+            echo '<a href="javascript:void(0)" onclick="save_social_profiles()" class="btn btn4536">Save</a>
                                 <span class="saving-account save_social_profiles"></span>';
 
         }

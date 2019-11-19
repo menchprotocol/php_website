@@ -26,7 +26,7 @@ if(count($user_intents) > 0){
         echo '<span class="actionplan_remove" in-id="'.$ln['in_id'].'" data-toggle="tooltip" title="Remove from your Action Plan" data-placement="left"><i class="fas fa-comment-times" style="font-size:1.6em;"></i></span>';
         echo '</span>';
 
-        $completion_rate = $this->READ_model->read__completion_progress($session_en['en_id'], $ln);
+        $completion_rate = $this->EXCHANGE_model->read__completion_progress($session_en['en_id'], $ln);
 
         echo '<span class="actionplan-title in-title-'.$ln['in_id'].'">' . $ln['in_outcome'] . '</span>';
         echo '<div class="actionplan-overview">';
@@ -44,7 +44,7 @@ if(count($user_intents) > 0){
     echo '</div>';
 
     if($has_pending_intentions){
-        echo '<a class="btn btn-blog" href="/actionplan/next" style="display: inline-block; padding:12px 36px; font-size: 1.3em;">Next &nbsp;&nbsp;&nbsp;<i class="fas fa-angle-double-right"></i></a>';
+        echo '<a class="btn btn4535" href="/actionplan/next" style="display: inline-block; padding:12px 36px; font-size: 1.3em;">Next &nbsp;&nbsp;&nbsp;<i class="fas fa-angle-double-right"></i></a>';
     }
 
     if($has_multiple_intentions){

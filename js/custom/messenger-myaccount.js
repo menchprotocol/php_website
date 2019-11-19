@@ -27,7 +27,7 @@ function radio_update(parent_en_id, selected_en_id, enable_mulitiselect){
         $('.radio-'+parent_en_id+' .item-'+selected_en_id).addClass('active');
     }
 
-    $.post("/play/myaccount_radio_update", {
+    $.post("/players/myaccount_radio_update", {
         en_creator_id: en_creator_id,
         parent_en_id: parent_en_id,
         selected_en_id: selected_en_id,
@@ -62,7 +62,7 @@ function save_full_name(){
     $('.save_full_name').html('<span><i class="far fa-yin-yang fa-spin"></i> ' + echo_saving_notify() +  '</span>').hide().fadeIn();
 
     //Save the rest of the content:
-    $.post("/play/myaccount_save_full_name", {
+    $.post("/players/myaccount_save_full_name", {
         en_id: en_creator_id,
         en_name: $('#en_name').val(),
     }, function (data) {
@@ -93,7 +93,7 @@ function save_phone(){
     $('.save_phone').html('<span><i class="far fa-yin-yang fa-spin"></i> ' + echo_saving_notify() +  '</span>').hide().fadeIn();
 
     //Save the rest of the content:
-    $.post("/play/myaccount_save_phone", {
+    $.post("/players/myaccount_save_phone", {
         en_id: en_creator_id,
         en_phone: $('#en_phone').val(),
     }, function (data) {
@@ -124,7 +124,7 @@ function save_email(){
     $('.save_email').html('<span><i class="far fa-yin-yang fa-spin"></i> ' + echo_saving_notify() +  '</span>').hide().fadeIn();
 
     //Save the rest of the content:
-    $.post("/play/myaccount_save_email", {
+    $.post("/players/myaccount_save_email", {
         en_id: en_creator_id,
         en_email: $('#en_email').val(),
     }, function (data) {
@@ -156,7 +156,7 @@ function myaccount_update_password(){
     $('.save_password').html('<span><i class="far fa-yin-yang fa-spin"></i> ' + echo_saving_notify() +  '</span>').hide().fadeIn();
 
     //Save the rest of the content:
-    $.post("/play/myaccount_update_password", {
+    $.post("/players/myaccount_update_password", {
         en_id: en_creator_id,
         input_password: $('#input_password').val(),
     }, function (data) {
@@ -196,7 +196,7 @@ function save_social_profiles(){
     });
 
     //Save the rest of the content:
-    $.post("/play/myaccount_save_social_profiles", {
+    $.post("/players/myaccount_save_social_profiles", {
         en_id: en_creator_id,
         social_profiles: social_profiles,
     }, function (data) {

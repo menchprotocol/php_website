@@ -217,7 +217,7 @@ $en_all_7368 = $this->config->item('en_all_7368'); //Trainer App
     var link_filters = '<?= serialize(count($filters) > 0 ? $filters : array()) ?>';
     var link_join_by = '<?= serialize(count($join_by) > 0 ? $join_by : array()) ?>';
 </script>
-<script src="/js/custom/read_history.js?v=v<?= config_var(11060) ?>"
+<script src="/js/custom/exchange_history.js?v=v<?= config_var(11060) ?>"
         type="text/javascript"></script>
 
 <?php
@@ -347,7 +347,7 @@ echo '</div></td>';
             //Fetch details for this user:
             $all_link_count = 0;
             $select_ui = '';
-            foreach ($this->READ_model->ln_fetch($ini_filter, array('ln_type'), 0, 0, array('en_name' => 'ASC'), 'COUNT(ln_type_entity_id) as total_count, SUM(ABS(ln_words)) as total_words, en_name, ln_type_entity_id', 'ln_type_entity_id, en_name') as $ln) {
+            foreach ($this->EXCHANGE_model->ln_fetch($ini_filter, array('ln_type'), 0, 0, array('en_name' => 'ASC'), 'COUNT(ln_type_entity_id) as total_count, SUM(ABS(ln_words)) as total_words, en_name, ln_type_entity_id', 'ln_type_entity_id, en_name') as $ln) {
                 //Echo drop down:
                 $select_ui .= '<option value="' . $ln['ln_type_entity_id'] . '" ' . ((isset($_GET['ln_type_entity_id']) && $_GET['ln_type_entity_id'] == $ln['ln_type_entity_id']) ? 'selected="selected"' : '') . '>' . $ln['en_name'] . ' ('  . number_format($ln['total_count'], 0) . ')</option>';
                 $all_link_count += $ln['total_count'];
@@ -395,10 +395,10 @@ echo '<div class="filter-statuses filter-in-status hidden"><span class="mini-hea
 
 
 
-    echo '<input type="submit" class="btn btn-sm btn-read" value="Apply" />';
+    echo '<input type="submit" class="btn btn-sm btn6205" value="Apply" />';
 
     if($has_filters){
-        echo ' &nbsp;<a href="/read/history" style="font-size: 0.8em;">Remove Filters</a>';
+        echo ' &nbsp;<a href="/exchange/history" style="font-size: 0.8em;">Remove Filters</a>';
     }
 
     echo '</form>';

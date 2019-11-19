@@ -38,7 +38,7 @@ function load_link_list(link_filters, link_join_by, page_num){
     $('#link_page_'+page_num).html('<div style="margin:20px 0 100px 0;"><i class="far fa-yin-yang fa-spin"></i> ' + echo_loading_notify() +  '</div>').hide().fadeIn();
 
     //Load report based on input fields:
-    $.post("/read/load_link_list", {
+    $.post("/exchange/load_link_list", {
         link_filters: link_filters,
         link_join_by: link_join_by,
         page_num: page_num,
@@ -61,7 +61,7 @@ function load_link_connections(ln_id,load_main) {
     $('.link_connections_link_'+ln_id).html('<span><i class="far fa-yin-yang fa-spin"></i> ' + echo_loading_notify() +  '</span>').hide().fadeIn();
 
     //Fetch Connections UI
-    $.post("/read/load_link_connections", {
+    $.post("/exchange/load_link_connections", {
         ln_id: ln_id,
         load_main:load_main,
     }, function (data) {

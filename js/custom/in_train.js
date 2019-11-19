@@ -148,7 +148,7 @@ function in_sort_save(in_id) {
     //It might be zero for lists that have jsut been emptied
     if (sort_rank > 0 && in_id) {
         //Update backend:
-        $.post("/blog/in_sort_save", {in_id: in_id, new_ln_orders: new_ln_orders}, function (data) {
+        $.post("/ideas/in_sort_save", {in_id: in_id, new_ln_orders: new_ln_orders}, function (data) {
             //Update UI to confirm with user:
             if (!data.status) {
                 //There was some sort of an error returned!
@@ -226,7 +226,7 @@ function in_link_or_create(in_linked_id, is_parent, in_link_child_id) {
     add_to_list(sort_list_id, sort_handler, '<div id="tempLoader" class="list-group-item"><i class="far fa-yin-yang fa-spin"></i> Adding... </div>');
 
     //Update backend:
-    $.post("/blog/in_link_or_create", {
+    $.post("/ideas/in_link_or_create", {
         in_linked_id: in_linked_id,
         is_parent:is_parent,
         in_outcome: intent_name,
