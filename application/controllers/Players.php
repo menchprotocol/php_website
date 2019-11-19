@@ -806,7 +806,7 @@ fragment PostListingItemSidebar_post on Post {
                          4535 => echo_number($words_mined[0]['total_words']),
                      ) as $en_id => $current_count){
                 $handle = strtolower($en_all_2738[$en_id]['m_name']);
-                echo '<td valign="bottom" style="width:'.( $en_id==4536 ? 46 : 27 ).'%"><span class="'.$handle.' border-'.$handle.'"><span class="parent-icon icon-block-sm">' . $en_all_2738[$en_id]['m_icon'] . '</span><span class="montserrat current_count">'.$current_count.'</span> <span class="montserrat">' . $en_all_2738[$en_id]['m_desc'] . '</span></span></td>';
+                echo '<td valign="bottom" style="width:'.( $en_id==4536 ? 46 : 27 ).'%"><span class="en'.$en_id.' border'.$en_id.'"><span class="parent-icon icon-block-sm">' . $en_all_2738[$en_id]['m_icon'] . '</span><span class="montserrat current_count">'.$current_count.'</span> <span class="montserrat">' . $en_all_2738[$en_id]['m_desc'] . '</span></span></td>';
             }
             echo '</tr>';
 
