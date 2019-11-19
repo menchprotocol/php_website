@@ -177,5 +177,4 @@ if(strlen($flash_message) > 0){
             </div>
         </div>
 
-
     <?php } ?>
