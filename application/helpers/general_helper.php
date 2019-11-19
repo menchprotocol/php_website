@@ -42,7 +42,7 @@ function detect_missing_columns($insert_columns, $required_columns, $ln_creator_
         if (!isset($insert_columns[$req_field]) || strlen($insert_columns[$req_field]) == 0) {
             //Ooops, we're missing this required field:
             $CI =& get_instance();
-            $CI->READ_model->ln_create(array(
+            $CI->EXCHANGE_model->ln_create(array(
                 'ln_content' => 'Missing required field [' . $req_field . '] for inserting new DB row',
                 'ln_metadata' => array(
                     'insert_columns' => $insert_columns,
@@ -226,7 +226,7 @@ function ln_detect_type($string)
 
     /*
      * Detect what type of entity-to-entity URL type should we create
-     * based on options listed in this tree: https://mench.com/play/4227
+     * based on options listed in this tree: https://mench.com/players/4227
      * */
 
     $string = trim($string);
@@ -264,7 +264,7 @@ function ln_detect_type($string)
 
         //It's a URL, see what type (this could fail if duplicate, etc...):
         $CI =& get_instance();
-        return $CI->PLAY_model->en_sync_url($string);
+        return $CI->PLAYERS_model->en_sync_url($string);
 
     } elseif (strlen($string) > 9 && (is_valid_date($string) || strtotime($string) > 0)) {
 
@@ -640,9 +640,9 @@ function en_auth($superpower_en_id = null, $force_redirect = 0)
 
         //Block access:
         if(isset($session_en['en__parents'][0])){
-            $goto_url = '/play';
+            $goto_url = '/players';
         } else {
-            $goto_url = '/play/signin?url=' . urlencode($_SERVER['REQUEST_URI']);
+            $goto_url = '/players/signin?url=' . urlencode($_SERVER['REQUEST_URI']);
         }
 
         //Now redirect:
@@ -815,7 +815,7 @@ function upload_to_cdn($file_url, $ln_creator_entity_id = 0, $ln_metadata = null
             }
 
             //Create and link new entity to CDN and uploader:
-            $url_entity = $CI->PLAY_model->en_sync_url($cdn_new_url, $ln_creator_entity_id, array(4396 /* Mench CDN Entity */, $ln_creator_entity_id), 0, $page_title);
+            $url_entity = $CI->PLAYERS_model->en_sync_url($cdn_new_url, $ln_creator_entity_id, array(4396 /* Mench CDN Entity */, $ln_creator_entity_id), 0, $page_title);
 
             if(isset($url_entity['en_url']['en_id']) && $url_entity['en_url']['en_id'] > 0){
 
@@ -828,7 +828,7 @@ function upload_to_cdn($file_url, $ln_creator_entity_id = 0, $ln_metadata = null
 
             } else {
 
-                $CI->READ_model->ln_create(array(
+                $CI->EXCHANGE_model->ln_create(array(
                     'ln_type_entity_id' => 4246, //Platform Bug Reports
                     'ln_creator_entity_id' => $ln_creator_entity_id,
                     'ln_content' => 'upload_to_cdn() Failed to create new entity from CDN file',
@@ -847,7 +847,7 @@ function upload_to_cdn($file_url, $ln_creator_entity_id = 0, $ln_metadata = null
 
         } else {
 
-            $CI->READ_model->ln_create(array(
+            $CI->EXCHANGE_model->ln_create(array(
                 'ln_type_entity_id' => 4246, //Platform Bug Reports
                 'ln_creator_entity_id' => $ln_creator_entity_id,
                 'ln_content' => 'upload_to_cdn() Failed to upload file to Mench CDN',
@@ -868,7 +868,7 @@ function upload_to_cdn($file_url, $ln_creator_entity_id = 0, $ln_metadata = null
     } else {
 
         //Log error:
-        $CI->READ_model->ln_create(array(
+        $CI->EXCHANGE_model->ln_create(array(
             'ln_type_entity_id' => 4246, //Platform Bug Reports
             'ln_creator_entity_id' => $ln_creator_entity_id,
             'ln_content' => 'upload_to_cdn() Failed to load AWS S3 module',
@@ -1020,7 +1020,7 @@ function update_algolia($input_obj_type = null, $input_obj_id = 0, $return_row_o
 
         if(is_dev_environment()){
             //Do a call on live as this does not work on local due to security limitations:
-            return json_decode(@file_get_contents("https://mench.com/read/cron__sync_algolia/" . ( $input_obj_type ? $input_obj_type . '/' . $input_obj_id : '' )));
+            return json_decode(@file_get_contents("https://mench.com/exchange/cron__sync_algolia/" . ( $input_obj_type ? $input_obj_type . '/' . $input_obj_id : '' )));
         }
 
         //Load Algolia Index
@@ -1067,7 +1067,7 @@ function update_algolia($input_obj_type = null, $input_obj_id = 0, $return_row_o
                 $limits['in_status_entity_id IN (' . join(',', $CI->config->item('en_ids_7356')) . ')'] = null; //Intent Statuses Active
             }
 
-            $db_rows['in'] = $CI->BLOG_model->in_fetch($limits, array('in__messages'));
+            $db_rows['in'] = $CI->IDEAS_model->in_fetch($limits, array('in__messages'));
 
         } elseif ($loop_obj == 'en') {
 
@@ -1077,7 +1077,7 @@ function update_algolia($input_obj_type = null, $input_obj_id = 0, $return_row_o
                 $limits['en_status_entity_id IN (' . join(',', $CI->config->item('en_ids_7358')) . ')'] = null; //Entity Statuses Active
             }
 
-            $db_rows['en'] = $CI->PLAY_model->en_fetch($limits, array('en__parents'));
+            $db_rows['en'] = $CI->PLAYERS_model->en_fetch($limits, array('en__parents'));
 
         }
 
@@ -1122,7 +1122,7 @@ function update_algolia($input_obj_type = null, $input_obj_id = 0, $return_row_o
             if ($loop_obj == 'en') {
 
                 //Count published children:
-                $published_child_count = $CI->READ_model->ln_fetch(array(
+                $published_child_count = $CI->EXCHANGE_model->ln_fetch(array(
                     'ln_parent_entity_id' => $db_row['en_id'],
                     'ln_type_entity_id IN (' . join(',', $CI->config->item('en_ids_4592')) . ')' => null, //Entity-to-Entity Links
                     'ln_status_entity_id IN (' . join(',', $CI->config->item('en_ids_7359')) . ')' => null, //Link Statuses Public
@@ -1188,7 +1188,7 @@ function update_algolia($input_obj_type = null, $input_obj_id = 0, $return_row_o
 
 
                 //If trainer has up-voted then give them access to manage intent
-                foreach($CI->READ_model->ln_fetch(array(
+                foreach($CI->EXCHANGE_model->ln_fetch(array(
                     'ln_status_entity_id IN (' . join(',', $CI->config->item('en_ids_7359')) . ')' => null, //Link Statuses Public
                     'ln_type_entity_id' => 4983, //Intent Note Up-Votes
                     'ln_child_intent_id' => $db_row['in_id'],
@@ -1199,7 +1199,7 @@ function update_algolia($input_obj_type = null, $input_obj_id = 0, $return_row_o
 
 
                 //Set published status if featured:
-                if(count($CI->READ_model->ln_fetch(array(
+                if(count($CI->EXCHANGE_model->ln_fetch(array(
                         'in_completion_method_entity_id IN (' . join(',', $CI->config->item('en_ids_7582')) . ')' => null, //READ LOGIN REQUIRED
                         'in_status_entity_id IN (' . join(',', $CI->config->item('en_ids_7355')) . ')' => null, //Intent Statuses Public
                         'ln_status_entity_id IN (' . join(',', $CI->config->item('en_ids_7359')) . ')' => null, //Link Statuses Public
@@ -1358,19 +1358,19 @@ function update_metadata($obj_type, $obj_id, $new_fields, $ln_creator_entity_id 
     //Fetch metadata for this object:
     if ($obj_type == 'in') {
 
-        $db_objects = $CI->BLOG_model->in_fetch(array(
+        $db_objects = $CI->IDEAS_model->in_fetch(array(
             $obj_type . '_id' => $obj_id,
         ));
 
     } elseif ($obj_type == 'en') {
 
-        $db_objects = $CI->PLAY_model->en_fetch(array(
+        $db_objects = $CI->PLAYERS_model->en_fetch(array(
             $obj_type . '_id' => $obj_id,
         ));
 
     } elseif ($obj_type == 'ln') {
 
-        $db_objects = $CI->READ_model->ln_fetch(array(
+        $db_objects = $CI->EXCHANGE_model->ln_fetch(array(
             $obj_type . '_id' => $obj_id,
         ));
 
@@ -1407,19 +1407,19 @@ function update_metadata($obj_type, $obj_id, $new_fields, $ln_creator_entity_id 
     //Now update DB without logging any links as this is considered a back-end update:
     if ($obj_type == 'in') {
 
-        $affected_rows = $CI->BLOG_model->in_update($obj_id, array(
+        $affected_rows = $CI->IDEAS_model->in_update($obj_id, array(
             'in_metadata' => $metadata,
         ), false, $ln_creator_entity_id);
 
     } elseif ($obj_type == 'en') {
 
-        $affected_rows = $CI->PLAY_model->en_update($obj_id, array(
+        $affected_rows = $CI->PLAYERS_model->en_update($obj_id, array(
             'en_metadata' => $metadata,
         ), false, $ln_creator_entity_id);
 
     } elseif ($obj_type == 'ln') {
 
-        $affected_rows = $CI->READ_model->ln_update($obj_id, array(
+        $affected_rows = $CI->EXCHANGE_model->ln_update($obj_id, array(
             'ln_metadata' => $metadata,
         ));
 

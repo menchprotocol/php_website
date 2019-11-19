@@ -5,7 +5,7 @@ defined('BASEPATH') OR exit('No direct script access allowed');
 /*
 * Keep a cache of certain parts of the Intent tree for faster processing
 * So we don't have to make DB calls to figure them out every time!
-* See here for all entities cached: https://mench.com/play/4527
+* See here for all entities cached: https://mench.com/players/4527
 *
 * ATTENTION: Also search for "en_ids_" and "en_all_" when trying to manage these throughout the code base
 *
@@ -1708,7 +1708,7 @@ $config['en_all_11039'] = array(
     11044 => array(
         'm_icon' => '<i class="fas fa-lambda"></i>',
         'm_name' => 'review metadata',
-        'm_desc' => '/play/en_review_metadata/',
+        'm_desc' => '/players/en_review_metadata/',
         'm_parents' => array(11039),
     ),
     11045 => array(

@@ -1,7 +1,7 @@
 <?php
 defined('BASEPATH') OR exit('No direct script access allowed');
 
-class Read extends CI_Controller
+class Exchange extends CI_Controller
 {
 
     function __construct()
@@ -13,22 +13,22 @@ class Read extends CI_Controller
         date_default_timezone_set(config_var(11079));
     }
 
-    function read_overview(){
+    function exchange_overview(){
 
-        if($this->uri->segment(1) != 'read'){
-            return redirect_message('/read'); //DEFAULT
+        if($this->uri->segment(1) != 'exchange'){
+            return redirect_message('/exchange'); //DEFAULT
         }
 
         $this->load->view('header', array(
-            'title' => 'READ',
+            'title' => 'IDEAS WORTH SHARING',
         ));
-        $this->load->view('view_read/read_overview');
+        $this->load->view('view_exchange/exchange_overview');
         $this->load->view('footer');
     }
 
 
 
-    function read_blog($in_id = 0)
+    function read_idea($in_id = 0)
     {
 
         /*
@@ -42,22 +42,22 @@ class Read extends CI_Controller
         $session_en = en_auth();
 
         //Fetch data:
-        $ins = $this->BLOG_model->in_fetch(array(
+        $ins = $this->IDEAS_model->in_fetch(array(
             'in_id' => $in_id,
         ));
 
         //Make sure we found it:
         if ( count($ins) < 1) {
-            return redirect_message('/read', '<div class="alert alert-danger" role="alert">Intent #' . $in_id . ' not found</div>');
+            return redirect_message('/exchange', '<div class="alert alert-danger" role="alert">Intent #' . $in_id . ' not found</div>');
         } elseif(!in_array($ins[0]['in_status_entity_id'], $this->config->item('en_ids_7355') /* Intent Statuses Public */)){
             //Return error:
-            return redirect_message('/read', '<div class="alert alert-danger" role="alert">BLOG is not yet published</div>');
+            return redirect_message('/exchange', '<div class="alert alert-danger" role="alert">BLOG is not yet published</div>');
         }
 
         //Fetch/Create landing page view cookie:
 
         //Log Intent Viewed by User:
-        $this->READ_model->ln_create(array(
+        $this->EXCHANGE_model->ln_create(array(
             'ln_creator_entity_id' => ( isset($session_en['en_id']) ? intval($session_en['en_id']) : 0 ), //if user was available, they are logged as parent entity
             'ln_type_entity_id' => 7610, //Intent Viewed by User
             'ln_parent_intent_id' => $in_id,
@@ -66,12 +66,12 @@ class Read extends CI_Controller
 
 
         $this->load->view('header', array(
-            'title' => echo_in_outcome($ins[0]['in_outcome'], true).' | READ',
+            'title' => echo_in_outcome($ins[0]['in_outcome'], true).' | EXCHANGE',
         ));
 
 
         //Load specific view based on Intent Level:
-        $this->load->view('view_read/read_blog', array(
+        $this->load->view('view_exchange/read_idea', array(
             'in' => $ins[0],
             'session_en' => $session_en,
             'autoexpand' => (isset($_GET['autoexpand']) && intval($_GET['autoexpand'])),
@@ -102,7 +102,7 @@ class Read extends CI_Controller
         $this->load->view('header', array(
             'title' => 'READ HISTORY',
         ));
-        $this->load->view('view_read/read_history');
+        $this->load->view('view_exchange/exchange_history');
         $this->load->view('footer');
     }
 
@@ -124,15 +124,15 @@ class Read extends CI_Controller
         foreach ($this->config->item('en_all_4737') as $en_id => $m) {
 
             //Count this status:
-            $objects_count = $this->BLOG_model->in_fetch(array(
+            $objects_count = $this->IDEAS_model->in_fetch(array(
                 'in_status_entity_id' => $en_id
             ), array(), 0, 0, array(), 'COUNT(in_id) as totals');
 
             //Display this status count:
             echo '<tr>';
-            echo '<td style="text-align: left;"><span class="icon-block">' . $m['m_icon'] . '</span><a href="/play/'.$en_id.'">' . $m['m_name'] . '</a></td>';
+            echo '<td style="text-align: left;"><span class="icon-block">' . $m['m_icon'] . '</span><a href="/players/'.$en_id.'">' . $m['m_name'] . '</a></td>';
 
-            echo '<td style="text-align: right;">' . '<a href="/read/history?in_status_entity_id=' . $en_id . '&ln_type_entity_id=4250">' . number_format($objects_count[0]['totals'],0) .'</a></td>';
+            echo '<td style="text-align: right;">' . '<a href="/exchange/history?in_status_entity_id=' . $en_id . '&ln_type_entity_id=4250">' . number_format($objects_count[0]['totals'],0) .'</a></td>';
 
             echo '</tr>';
 
@@ -144,7 +144,7 @@ class Read extends CI_Controller
 
 
         //Count all Intent Subtypes:
-        $intent_types_counts = $this->BLOG_model->in_fetch(array(
+        $intent_types_counts = $this->IDEAS_model->in_fetch(array(
             'in_status_entity_id IN (' . join(',', $this->config->item('en_ids_7355')) . ')' => null, //Intent Statuses Public
         ), array('in_type'), 0, 0, array(), 'COUNT(in_completion_method_entity_id) as total_count, en_name, en_icon, en_id', 'en_id, en_name, en_icon');
 
@@ -178,14 +178,14 @@ class Read extends CI_Controller
         foreach ($this->config->item('en_all_6177') as $en_id => $m) {
 
             //Count this status:
-            $objects_count = $this->PLAY_model->en_fetch(array(
+            $objects_count = $this->PLAYERS_model->en_fetch(array(
                 'en_status_entity_id' => $en_id
             ), array(), 0, 0, array(), 'COUNT(en_id) as totals');
 
             //Display this status count:
             echo '<tr>';
-            echo '<td style="text-align: left;"><span class="icon-block">' . $m['m_icon'] . '</span><a href="/play/'.$en_id.'">' . $m['m_name'] . '</a></td>';
-            echo '<td style="text-align: right;">' . '<a href="/read/history?en_status_entity_id=' . $en_id . '&ln_type_entity_id=4251">' . number_format($objects_count[0]['totals'], 0) . '</a>' . '</td>';
+            echo '<td style="text-align: left;"><span class="icon-block">' . $m['m_icon'] . '</span><a href="/players/'.$en_id.'">' . $m['m_name'] . '</a></td>';
+            echo '<td style="text-align: right;">' . '<a href="/exchange/history?en_status_entity_id=' . $en_id . '&ln_type_entity_id=4251">' . number_format($objects_count[0]['totals'], 0) . '</a>' . '</td>';
             echo '</tr>';
 
         }
@@ -215,7 +215,7 @@ class Read extends CI_Controller
             foreach($this->config->item('en_all_7358') /* Entity Active Statuses */ as $en_status_entity_id => $m_status){
 
                 //Count this type:
-                $source_count = $this->PLAY_model->en_child_count($en_id, array($en_status_entity_id)); //Count completed
+                $source_count = $this->PLAYERS_model->en_child_count($en_id, array($en_status_entity_id)); //Count completed
 
                 //Addup count:
                 if(isset($total_counts[$en_status_entity_id])){
@@ -232,13 +232,13 @@ class Read extends CI_Controller
                 }
 
                 //Display row:
-                $expert_source_statuses .= '<td style="text-align: right;"'.( $en_status_entity_id != 6181 /* Entity Featured */ ? ' class="' . require_superpower(10989 /* PEGASUS */) . '"' : '' ).'><a href="/play/' . $en_id .'#status-'.$en_status_entity_id.'">'.number_format($source_count,0).'</a></td>';
+                $expert_source_statuses .= '<td style="text-align: right;"'.( $en_status_entity_id != 6181 /* Entity Featured */ ? ' class="' . require_superpower(10989 /* PEGASUS */) . '"' : '' ).'><a href="/players/' . $en_id .'#status-'.$en_status_entity_id.'">'.number_format($source_count,0).'</a></td>';
 
             }
 
             //Echo stats:
             $expert_sources = '<tr class="' .( !$total_counts[6181] ? require_superpower(10989 /* PEGASUS */) : '' ) . '">';
-            $expert_sources .= '<td style="text-align: left;"><span class="icon-block">'.$m['m_icon'].'</span><a href="/play/'.$en_id.'">'.$m['m_name'].'</a></td>';
+            $expert_sources .= '<td style="text-align: left;"><span class="icon-block">'.$m['m_icon'].'</span><a href="/players/'.$en_id.'">'.$m['m_name'].'</a></td>';
             $expert_sources .= $expert_source_statuses;
             $expert_sources .= '</tr>';
 
@@ -300,15 +300,15 @@ class Read extends CI_Controller
         foreach ($this->config->item('en_all_6186') as $en_id => $m) {
 
             //Count this status:
-            $objects_count = $this->READ_model->ln_fetch(array(
+            $objects_count = $this->EXCHANGE_model->ln_fetch(array(
                 'ln_status_entity_id' => $en_id
             ), array(), 0, 0, array(), 'COUNT(ln_id) as totals');
 
             //Display this status count:
             echo '<tr>';
-            echo '<td style="text-align: left;"><span class="icon-block">' . $m['m_icon'] . '</span><a href="/play/'.$en_id.'">' . $m['m_name'] . '</a></td>';
+            echo '<td style="text-align: left;"><span class="icon-block">' . $m['m_icon'] . '</span><a href="/players/'.$en_id.'">' . $m['m_name'] . '</a></td>';
             echo '<td style="text-align: right;">';
-            echo '<a href="/read/history?ln_status_entity_id=' . $en_id . '">' . number_format($objects_count[0]['totals'],0) . '</a>';
+            echo '<a href="/exchange/history?ln_status_entity_id=' . $en_id . '">' . number_format($objects_count[0]['totals'],0) . '</a>';
             echo '</td>';
             echo '</tr>';
 
@@ -322,7 +322,7 @@ class Read extends CI_Controller
 
 
         //Count all rows:
-        $link_types_counts = $this->READ_model->ln_fetch(array(
+        $link_types_counts = $this->EXCHANGE_model->ln_fetch(array(
             'ln_status_entity_id IN (' . join(',', $this->config->item('en_ids_7359')) . ')' => null, //Link Statuses Public
         ), array('ln_type'), 0, 0, array(), 'COUNT(ln_id) as total_count, SUM(ABS(ln_words)) as total_words, en_name, en_icon, en_id', 'en_id, en_name, en_icon');
 
@@ -346,7 +346,7 @@ class Read extends CI_Controller
         }
 
         //Log engagement:
-        echo_json($this->READ_model->ln_create($_POST));
+        echo_json($this->EXCHANGE_model->ln_create($_POST));
     }
 
 
@@ -368,8 +368,8 @@ class Read extends CI_Controller
         $message = '';
 
         //Fetch links and total link counts:
-        $lns = $this->READ_model->ln_fetch($filters, $join_by, $item_per_page, $query_offset);
-        $lns_count = $this->READ_model->ln_fetch($filters, $join_by, 0, 0, array(), 'COUNT(ln_id) as total_count, SUM(ABS(ln_words)) as total_words');
+        $lns = $this->EXCHANGE_model->ln_fetch($filters, $join_by, $item_per_page, $query_offset);
+        $lns_count = $this->EXCHANGE_model->ln_fetch($filters, $join_by, 0, 0, array(), 'COUNT(ln_id) as total_count, SUM(ABS(ln_words)) as total_words');
         $total_items_loaded = ($query_offset+count($lns));
         $has_more_links = ($lns_count[0]['total_count'] > 0 && $total_items_loaded < $lns_count[0]['total_count']);
 
@@ -419,7 +419,7 @@ class Read extends CI_Controller
     {
 
         //Fetch link metadata and display it:
-        $lns = $this->READ_model->ln_fetch(array(
+        $lns = $this->EXCHANGE_model->ln_fetch(array(
             'ln_id' => $ln_id,
         ));
 
@@ -453,7 +453,7 @@ class Read extends CI_Controller
 
         if($input_obj_type < 0){
             //Gateway URL to give option to run...
-            die('<a href="/read/cron__sync_algolia">Click here</a> to start running this function.');
+            die('<a href="/exchange/cron__sync_algolia">Click here</a> to start running this function.');
         }
 
         //Call the update function and passon possible values:
@@ -477,7 +477,7 @@ class Read extends CI_Controller
         }
 
         //Fetch and validate link:
-        $lns = $this->READ_model->ln_fetch(array(
+        $lns = $this->EXCHANGE_model->ln_fetch(array(
             'ln_id' => $_POST['ln_id'],
         ));
         if (count($lns) < 1) {
@@ -491,7 +491,7 @@ class Read extends CI_Controller
         $ln_connections_ui = ( intval($_POST['load_main']) ? '' : echo_ln_connections($lns[0]) );
 
         //Now show all links for this link:
-        foreach ($this->READ_model->ln_fetch(array(
+        foreach ($this->EXCHANGE_model->ln_fetch(array(
             'ln_parent_link_id' => $_POST['ln_id'],
         ), array(), 0, 0, array('ln_id' => 'DESC')) as $ln_child) {
             $ln_connections_ui .= '<div class="read-hisotry-child">' . echo_ln($ln_child, true) . '</div>';
@@ -516,7 +516,7 @@ class Read extends CI_Controller
 
         if($affirmation < 0){
             //Gateway URL to give option to run...
-            die('<a href="/read/cron__sync_gephi">Click here</a> to start running this function.');
+            die('<a href="/exchange/cron__sync_gephi">Click here</a> to start running this function.');
         }
 
         //Boost processing power:
@@ -543,7 +543,7 @@ class Read extends CI_Controller
         );
 
         //Add intents:
-        $ins = $this->BLOG_model->in_fetch(array(
+        $ins = $this->IDEAS_model->in_fetch(array(
             'in_status_entity_id IN (' . join(',', $this->config->item('en_ids_7356')) . ')' => null, //Intent Statuses Active
         ));
         foreach($ins as $in){
@@ -562,7 +562,7 @@ class Read extends CI_Controller
             ));
 
             //Fetch children:
-            foreach($this->READ_model->ln_fetch(array(
+            foreach($this->EXCHANGE_model->ln_fetch(array(
                 'ln_status_entity_id IN (' . join(',', $this->config->item('en_ids_7360')) . ')' => null, //Link Statuses Active
                 'in_status_entity_id IN (' . join(',', $this->config->item('en_ids_7356')) . ')' => null, //Intent Statuses Active
                 'ln_type_entity_id IN (' . join(',', $this->config->item('en_ids_4486')) . ')' => null, //Intent-to-Intent Links
@@ -583,7 +583,7 @@ class Read extends CI_Controller
 
 
         //Add entities:
-        $ens = $this->PLAY_model->en_fetch(array(
+        $ens = $this->PLAYERS_model->en_fetch(array(
             'en_status_entity_id IN (' . join(',', $this->config->item('en_ids_7358')) . ')' => null, //Entity Statuses Active
         ));
         foreach($ens as $en){
@@ -598,7 +598,7 @@ class Read extends CI_Controller
             ));
 
             //Fetch children:
-            foreach($this->READ_model->ln_fetch(array(
+            foreach($this->EXCHANGE_model->ln_fetch(array(
                 'ln_status_entity_id IN (' . join(',', $this->config->item('en_ids_7360')) . ')' => null, //Link Statuses Active
                 'en_status_entity_id IN (' . join(',', $this->config->item('en_ids_7358')) . ')' => null, //Entity Statuses Active
                 'ln_type_entity_id IN (' . join(',', $this->config->item('en_ids_4592')) . ')' => null, //Entity-to-Entity Links
@@ -618,7 +618,7 @@ class Read extends CI_Controller
         }
 
         //Add messages:
-        $messages = $this->READ_model->ln_fetch(array(
+        $messages = $this->EXCHANGE_model->ln_fetch(array(
             'ln_status_entity_id IN (' . join(',', $this->config->item('en_ids_7360')) . ')' => null, //Link Statuses Active
             'in_status_entity_id IN (' . join(',', $this->config->item('en_ids_7356')) . ')' => null, //Intent Statuses Active
             'ln_type_entity_id IN (' . join(',', $this->config->item('en_ids_4485')) . ')' => null, //All Intent Notes
@@ -679,21 +679,21 @@ class Read extends CI_Controller
          * all variables that are not indexed
          * as part of Variables Names entity @6232
          *
-         * https://mench.com/play/6232
+         * https://mench.com/players/6232
          *
          *
          * */
 
         if($affirmation < 0){
             //Gateway URL to give option to run...
-            die('<a href="/read/cron__clean_metadatas">Click here</a> to start running this function.');
+            die('<a href="/exchange/cron__clean_metadatas">Click here</a> to start running this function.');
         }
 
         boost_power();
 
         //Fetch all valid variable names:
         $valid_variables = array();
-        foreach($this->READ_model->ln_fetch(array(
+        foreach($this->EXCHANGE_model->ln_fetch(array(
             'ln_parent_entity_id' => 6232, //Variables Names
             'ln_type_entity_id IN (' . join(',', $this->config->item('en_ids_4592')) . ')' => null, //Entity-to-Entity Links
             'ln_status_entity_id IN (' . join(',', $this->config->item('en_ids_7359')) . ')' => null, //Link Statuses Public
@@ -707,7 +707,7 @@ class Read extends CI_Controller
         $invalid_variables = array();
 
         //Intent Metadata
-        foreach($this->BLOG_model->in_fetch(array()) as $in){
+        foreach($this->IDEAS_model->in_fetch(array()) as $in){
 
             if(strlen($in['in_metadata']) < 1){
                 continue;
@@ -730,7 +730,7 @@ class Read extends CI_Controller
         }
 
         //Entity Metadata
-        foreach($this->PLAY_model->en_fetch(array()) as $en){
+        foreach($this->PLAYERS_model->en_fetch(array()) as $en){
 
             if(strlen($en['en_metadata']) < 1){
                 continue;
@@ -759,7 +759,7 @@ class Read extends CI_Controller
 
         if(count($invalid_variables) > 0){
             //Did we have anything to remove? Report with system bug:
-            $this->READ_model->ln_create(array(
+            $this->EXCHANGE_model->ln_create(array(
                 'ln_content' => 'cron__clean_metadatas() removed '.count($invalid_variables).' unknown variables from intent/entity metadatas. To prevent this from happening, register the variables via Variables Names @6232',
                 'ln_type_entity_id' => 4246, //Platform Bug Reports
                 'ln_parent_entity_id' => 6232, //Variables Names
@@ -789,7 +789,7 @@ class Read extends CI_Controller
         $this->load->view('header', array(
             'title' => '🚩 Action Plan',
         ));
-        $this->load->view('view_read/actionplan_frame', array(
+        $this->load->view('view_exchange/actionplan_frame', array(
             'in_id' => $in_id,
         ));
         $this->load->view('footer');
@@ -822,7 +822,7 @@ class Read extends CI_Controller
         }
 
         //Attempt to add intent to Action Plan:
-        if($this->READ_model->read__intention_add($session_en['en_id'], $_POST['in_id'], 0, false)){
+        if($this->EXCHANGE_model->read__intention_add($session_en['en_id'], $_POST['in_id'], 0, false)){
             //All good:
             return echo_json(array(
                 'status' => 1,
@@ -885,7 +885,7 @@ class Read extends CI_Controller
         }
 
         //Validate Intent:
-        $ins = $this->BLOG_model->in_fetch(array(
+        $ins = $this->IDEAS_model->in_fetch(array(
             'in_id' => $_POST['in_id'],
         ));
         if(count($ins)<1){
@@ -919,14 +919,14 @@ class Read extends CI_Controller
 
 
         //Create message:
-        $ln = $this->READ_model->ln_create(array(
+        $ln = $this->EXCHANGE_model->ln_create(array(
             'ln_status_entity_id' => 6176, //Link Published
             'ln_creator_entity_id' => $session_en['en_id'],
             'ln_type_entity_id' => $_POST['focus_ln_type_entity_id'],
             'ln_parent_entity_id' => $cdn_status['cdn_en']['en_id'],
             'ln_child_intent_id' => intval($_POST['in_id']),
             'ln_content' => '@' . $cdn_status['cdn_en']['en_id'], //Just place the entity reference as the entire message
-            'ln_order' => 1 + $this->READ_model->ln_max_order(array(
+            'ln_order' => 1 + $this->EXCHANGE_model->ln_max_order(array(
                     'ln_type_entity_id' => $_POST['focus_ln_type_entity_id'],
                     'ln_child_intent_id' => $_POST['in_id'],
                 )),
@@ -934,7 +934,7 @@ class Read extends CI_Controller
 
 
         //Fetch full message for proper UI display:
-        $new_messages = $this->READ_model->ln_fetch(array(
+        $new_messages = $this->EXCHANGE_model->ln_fetch(array(
             'ln_id' => $ln['ln_id'],
         ));
 
@@ -965,7 +965,7 @@ class Read extends CI_Controller
         );
 
         //Fetch their current progress links:
-        $progress_links = $this->READ_model->ln_fetch(array(
+        $progress_links = $this->EXCHANGE_model->ln_fetch(array(
             'ln_status_entity_id IN (' . join(',', $this->config->item('en_ids_7360')) . ')' => null, //Link Statuses Active
             'ln_type_entity_id IN (' . join(',', $clear_links) . ')' => null,
             'ln_creator_entity_id' => $en_id,
@@ -977,7 +977,7 @@ class Read extends CI_Controller
             $message = 'I deleted '.count($progress_links).' link'.echo__s(count($progress_links)).' to empty your Action Plan steps. You can also remove your Intentions using the "<i class="fas fa-comment-times" style="color: #222;"></i>" icon below.';
 
             //Log link:
-            $clear_all_link = $this->READ_model->ln_create(array(
+            $clear_all_link = $this->EXCHANGE_model->ln_create(array(
                 'ln_content' => $message,
                 'ln_type_entity_id' => 6415, //Action Plan Reset Steps
                 'ln_creator_entity_id' => $en_id,
@@ -985,7 +985,7 @@ class Read extends CI_Controller
 
             //Remove all progressions:
             foreach($progress_links as $progress_link){
-                $this->READ_model->ln_update($progress_link['ln_id'], array(
+                $this->EXCHANGE_model->ln_update($progress_link['ln_id'], array(
                     'ln_status_entity_id' => 6173, //Link Removed
                     'ln_parent_link_id' => $clear_all_link['ln_id'], //To indicate when it was removed
                 ), $en_id, 6415 /* User Cleared Action Plan */);
@@ -1015,7 +1015,7 @@ class Read extends CI_Controller
             die('<div class="alert alert-danger" role="alert">Failed to authenticate your origin.</div>');
         } elseif (!isset($session_en['en_id'])) {
             //Messenger Webview, authenticate PSID:
-            $session_en = $this->PLAY_model->en_messenger_auth($psid);
+            $session_en = $this->PLAYERS_model->en_messenger_auth($psid);
             //Make sure we found them:
             if (!$session_en) {
                 //We could not authenticate the user!
@@ -1026,7 +1026,7 @@ class Read extends CI_Controller
         $this->load->view('header', array(
             'title' => 'Clear Action Plan',
         ));
-        $this->load->view('view_read/actionplan_delete', array(
+        $this->load->view('view_exchange/actionplan_delete', array(
             'session_en' => $session_en,
         ));
         $this->load->view('footer');
@@ -1052,7 +1052,7 @@ class Read extends CI_Controller
             die('<div class="alert alert-danger" role="alert">Failed to authenticate your origin.</div>');
         } elseif (!isset($session_en['en_id'])) {
             //Messenger Webview, authenticate PSID:
-            $session_en = $this->PLAY_model->en_messenger_auth($psid);
+            $session_en = $this->PLAYERS_model->en_messenger_auth($psid);
             //Make sure we found them:
             if (!$session_en) {
                 //We could not authenticate the user!
@@ -1066,14 +1066,14 @@ class Read extends CI_Controller
         if($in_id=='next'){
 
             //See if we have pending messages:
-            $pending_messages = $this->READ_model->ln_fetch(array(
+            $pending_messages = $this->EXCHANGE_model->ln_fetch(array(
                 'ln_creator_entity_id' => $session_en['en_id'],
                 'ln_type_entity_id' => 4570, //User Received Email Message
                 'ln_status_entity_id IN (' . join(',', $this->config->item('en_ids_7364')) . ')' => null, //Link Statuses Incomplete
             ), array(), 0, 0, array('ln_id' => 'ASC'));
 
             //Find the next item to navigate them to:
-            $next_in_id = $this->READ_model->read__step_next_go($session_en['en_id'], false);
+            $next_in_id = $this->EXCHANGE_model->read__step_next_go($session_en['en_id'], false);
             $in_id = ( $next_in_id > 0 ? $next_in_id : $next_in_id );
 
         } else {
@@ -1089,20 +1089,20 @@ class Read extends CI_Controller
 
             foreach($pending_messages as $pending_message){
                 //Update this message status to delivered as the user has read this email:
-                $this->READ_model->ln_update($pending_message['ln_id'], array(
+                $this->EXCHANGE_model->ln_update($pending_message['ln_id'], array(
                     'ln_status_entity_id' => 6176 /* Link Published */,
                 ), $session_en['en_id'], 10683 /* User Read Email */);
             }
 
             //Show pending messages:
-            $this->load->view('view_read/actionplan_pending_messages', array(
+            $this->load->view('view_exchange/actionplan_pending_messages', array(
                 'pending_messages' => $pending_messages,
             ));
 
         } else {
 
             //Fetch user's intentions as we'd need to know their top-level goals:
-            $user_intents = $this->READ_model->ln_fetch(array(
+            $user_intents = $this->EXCHANGE_model->ln_fetch(array(
                 'ln_creator_entity_id' => $session_en['en_id'],
                 'ln_type_entity_id IN (' . join(',', $this->config->item('en_ids_7347')) . ')' => null, //Action Plan Intention Set
                 'ln_status_entity_id IN (' . join(',', $this->config->item('en_ids_7364')) . ')' => null, //Link Statuses Incomplete
@@ -1113,13 +1113,13 @@ class Read extends CI_Controller
             if ($in_id < 1) {
 
                 //Log Action Plan View:
-                $this->READ_model->ln_create(array(
+                $this->EXCHANGE_model->ln_create(array(
                     'ln_type_entity_id' => 4283, //Opened Action Plan
                     'ln_creator_entity_id' => $session_en['en_id'],
                 ));
 
                 //List all user intentions:
-                $this->load->view('view_read/actionplan_intentions', array(
+                $this->load->view('view_exchange/actionplan_intentions', array(
                     'session_en' => $session_en,
                     'user_intents' => $user_intents,
                     'psid' => $psid,
@@ -1128,7 +1128,7 @@ class Read extends CI_Controller
             } else {
 
                 //Fetch/validate selected intent:
-                $ins = $this->BLOG_model->in_fetch(array(
+                $ins = $this->IDEAS_model->in_fetch(array(
                     'in_id' => $in_id,
                 ));
 
@@ -1139,10 +1139,10 @@ class Read extends CI_Controller
                 }
 
                 //Load Action Plan UI with relevant variables:
-                $this->load->view('view_read/actionplan_step', array(
+                $this->load->view('view_exchange/actionplan_step', array(
                     'session_en' => $session_en,
                     'user_intents' => $user_intents,
-                    'advance_step' => $this->READ_model->read__step_echo($session_en['en_id'], $in_id, false),
+                    'advance_step' => $this->EXCHANGE_model->read__step_echo($session_en['en_id'], $in_id, false),
                     'in' => $ins[0], //Currently focused intention:
                 ));
 
@@ -1176,7 +1176,7 @@ class Read extends CI_Controller
         }
 
         //Call function to remove form action plan:
-        $delete_result = $this->READ_model->read__intention_delete($_POST['en_creator_id'], $_POST['in_id'], 6155); //READER REMOVED BOOKMARK
+        $delete_result = $this->EXCHANGE_model->read__intention_delete($_POST['en_creator_id'], $_POST['in_id'], 6155); //READER REMOVED BOOKMARK
 
         if(!$delete_result['result']){
             return echo_json($delete_result);
@@ -1193,7 +1193,7 @@ class Read extends CI_Controller
 
         //Just give them an overview of what they are about to skip:
         return echo_json(array(
-            'skip_step_preview' => 'WARNING: '.$this->READ_model->read__step_skip_initiate($en_id, $in_id, false).' Are you sure you want to skip?',
+            'skip_step_preview' => 'WARNING: '.$this->EXCHANGE_model->read__step_skip_initiate($en_id, $in_id, false).' Are you sure you want to skip?',
         ));
 
     }
@@ -1202,14 +1202,14 @@ class Read extends CI_Controller
     {
 
         //Actually go ahead and skip
-        $this->READ_model->read__step_skip_apply($en_id, $in_id);
+        $this->EXCHANGE_model->read__step_skip_apply($en_id, $in_id);
         //Assume its all good!
 
         //We actually skipped, draft message:
         $message = '<div class="alert alert-success" role="alert">I successfully skipped selected steps.</div>';
 
         //Find the next item to navigate them to:
-        $next_in_id = $this->READ_model->read__step_next_go($en_id, false);
+        $next_in_id = $this->EXCHANGE_model->read__step_next_go($en_id, false);
         if ($next_in_id > 0) {
             return redirect_message('/actionplan/' . $next_in_id, $message);
         } else {
@@ -1245,7 +1245,7 @@ class Read extends CI_Controller
         foreach($_POST['new_actionplan_order'] as $ln_order => $ln_id){
             if(intval($ln_id) > 0 && intval($ln_order) > 0){
                 //Update order of this link:
-                $results[$ln_order] = $this->READ_model->ln_update(intval($ln_id), array(
+                $results[$ln_order] = $this->EXCHANGE_model->ln_update(intval($ln_id), array(
                     'ln_order' => $ln_order,
                 ), $_POST['en_creator_id'], 6132 /* Intents Ordered by User */);
             }
@@ -1253,10 +1253,10 @@ class Read extends CI_Controller
 
 
         //Fetch top intention that being workined on now:
-        $top_priority = $this->READ_model->read__intention_focus($_POST['en_creator_id']);
+        $top_priority = $this->EXCHANGE_model->read__intention_focus($_POST['en_creator_id']);
         if($top_priority){
             //Communicate top-priority with user:
-            $this->READ_model->dispatch_message(
+            $this->EXCHANGE_model->dispatch_message(
                 '🚩 Action Plan prioritised: Now our focus is to '.$top_priority['in']['in_outcome'].' ('.$top_priority['completion_rate']['completion_percentage'].'% done)',
                 array('en_id' => $_POST['en_creator_id']),
                 true,
@@ -1289,7 +1289,7 @@ class Read extends CI_Controller
         }
 
         //Validate Answer Intent:
-        $answer_ins = $this->BLOG_model->in_fetch(array(
+        $answer_ins = $this->IDEAS_model->in_fetch(array(
             'in_id' => $answer_in_id,
             'in_status_entity_id IN (' . join(',', $this->config->item('en_ids_7355')) . ')' => null, //Intent Statuses Public
         ));
@@ -1298,7 +1298,7 @@ class Read extends CI_Controller
         }
 
         //Fetch current progression links, if any:
-        $current_progression_links = $this->READ_model->ln_fetch(array(
+        $current_progression_links = $this->EXCHANGE_model->ln_fetch(array(
             'ln_type_entity_id IN (' . join(',', $this->config->item('en_ids_6146')) . ')' => null, //User Steps Completed
             'ln_creator_entity_id' => $en_id,
             'ln_parent_intent_id' => $parent_in_id,
@@ -1306,7 +1306,7 @@ class Read extends CI_Controller
         ));
 
         //All good, save chosen OR path
-        $new_progression_link = $this->READ_model->ln_create(array(
+        $new_progression_link = $this->EXCHANGE_model->ln_create(array(
             'ln_creator_entity_id' => $en_id,
             'ln_type_entity_id' => $answer_type_en_id,
             'ln_parent_intent_id' => $parent_in_id,
@@ -1315,11 +1315,11 @@ class Read extends CI_Controller
         ));
 
         //See if we also need to mark the child as complete:
-        $this->READ_model->read__completion_auto_complete($en_id, $answer_ins[0], 7485 /* User Step Answer Unlock */);
+        $this->EXCHANGE_model->read__completion_auto_complete($en_id, $answer_ins[0], 7485 /* User Step Answer Unlock */);
 
         //Archive previous progression links:
         foreach($current_progression_links as $ln){
-            $this->READ_model->ln_update($ln['ln_id'], array(
+            $this->EXCHANGE_model->ln_update($ln['ln_id'], array(
                 'ln_parent_link_id' => $new_progression_link['ln_id'],
                 'ln_status_entity_id' => 6173, //Link Removed
             ), $en_id, 10685 /* User Step Iterated */);
@@ -1343,7 +1343,7 @@ class Read extends CI_Controller
         }
 
 
-        $ins = $this->BLOG_model->in_fetch(array(
+        $ins = $this->IDEAS_model->in_fetch(array(
             'in_id' => $in_id,
             'in_status_entity_id IN (' . join(',', $this->config->item('en_ids_7355')) . ')' => null, //Intent Statuses Public
         ));
@@ -1358,13 +1358,13 @@ class Read extends CI_Controller
         //List the intent:
         return echo_json(array(
             'in_user' => array(
-                'next_in_id' => $this->READ_model->read__step_next_find($session_en['en_id'], $ins[0]),
-                'progress' => $this->READ_model->read__completion_progress($session_en['en_id'], $ins[0]),
-                'marks' => $this->READ_model->read__completion_marks($session_en['en_id'], $ins[0]),
+                'next_in_id' => $this->EXCHANGE_model->read__step_next_find($session_en['en_id'], $ins[0]),
+                'progress' => $this->EXCHANGE_model->read__completion_progress($session_en['en_id'], $ins[0]),
+                'marks' => $this->EXCHANGE_model->read__completion_marks($session_en['en_id'], $ins[0]),
             ),
             'in_general' => array(
-                'recursive_parents' => $this->BLOG_model->in_fetch_recursive_public_parents($ins[0]['in_id']),
-                'common_base' => $this->BLOG_model->in_metadata_common_base($ins[0]),
+                'recursive_parents' => $this->IDEAS_model->in_fetch_recursive_public_parents($ins[0]['in_id']),
+                'common_base' => $this->IDEAS_model->in_metadata_common_base($ins[0]),
             ),
         ));
 
@@ -1384,7 +1384,7 @@ class Read extends CI_Controller
         }
 
         //Validate messenger ID:
-        $user_messenger = $this->READ_model->ln_fetch(array(
+        $user_messenger = $this->EXCHANGE_model->ln_fetch(array(
             'ln_status_entity_id IN (' . join(',', $this->config->item('en_ids_7359')) . ')' => null, //Link Statuses Public
             'ln_type_entity_id IN (' . join(',', $this->config->item('en_ids_4592')) . ')' => null, //Entity-to-Entity Links
             'ln_parent_entity_id' => 6196, //Mench Messenger
@@ -1398,7 +1398,7 @@ class Read extends CI_Controller
         }
 
         //Fetch results and show:
-        return echo_json($this->READ_model->facebook_graph('GET', '/' . $user_messenger[0]['ln_external_id'], array()));
+        return echo_json($this->EXCHANGE_model->facebook_graph('GET', '/' . $user_messenger[0]['ln_external_id'], array()));
 
     }
 
@@ -1414,7 +1414,7 @@ class Read extends CI_Controller
 
         //Let's first give permission to our pages to do so:
         $res = array();
-        array_push($res, $this->READ_model->facebook_graph('POST', '/me/messenger_profile', array(
+        array_push($res, $this->EXCHANGE_model->facebook_graph('POST', '/me/messenger_profile', array(
             'get_started' => array(
                 'payload' => 'GET_STARTED',
             ),
@@ -1429,7 +1429,7 @@ class Read extends CI_Controller
         sleep(2);
 
         //Now let's update the menu:
-        array_push($res, $this->READ_model->facebook_graph('POST', '/me/messenger_profile', array(
+        array_push($res, $this->EXCHANGE_model->facebook_graph('POST', '/me/messenger_profile', array(
             'persistent_menu' => array(
                 array(
                     'locale' => 'default',
@@ -1437,25 +1437,25 @@ class Read extends CI_Controller
                     'disabled_surfaces' => array('CUSTOMER_CHAT_PLUGIN'),
                     'call_to_actions' => array(
                         array(
-                            'title' => '🔵 PLAY',
+                            'title' => '🔵 PLAYERS',
                             'type' => 'web_url',
-                            'url' => 'https://mench.com/play',
+                            'url' => 'https://mench.com/players',
                             'webview_height_ratio' => 'tall',
                             'webview_share_button' => 'hide',
                             'messenger_extensions' => true,
                         ),
                         array(
-                            'title' => '🔴 READ',
+                            'title' => '🔴 EXCHANGE',
                             'type' => 'web_url',
-                            'url' => 'https://mench.com/read',
+                            'url' => 'https://mench.com/exchange',
                             'webview_height_ratio' => 'tall',
                             'webview_share_button' => 'hide',
                             'messenger_extensions' => true,
                         ),
                         array(
-                            'title' => '🟡 BLOG', //Yellow emoji is new so will appear soon (hopefully)
+                            'title' => '🟡 IDEAS', //Yellow emoji is new so will appear soon (hopefully)
                             'type' => 'web_url',
-                            'url' => 'https://mench.com/blog',
+                            'url' => 'https://mench.com/ideas',
                             'webview_height_ratio' => 'tall',
                             'webview_share_button' => 'hide',
                             'messenger_extensions' => true,
@@ -1503,7 +1503,7 @@ class Read extends CI_Controller
             //Likely loaded the URL in browser:
             return print_r('missing');
         } elseif ($ln_metadata['object'] != 'page') {
-            $this->READ_model->ln_create(array(
+            $this->EXCHANGE_model->ln_create(array(
                 'ln_content' => 'facebook_webhook() Function call object value is not equal to [page], which is what was expected.',
                 'ln_metadata' => $ln_metadata,
                 'ln_type_entity_id' => 4246, //Platform Bug Reports
@@ -1520,7 +1520,7 @@ class Read extends CI_Controller
                 //This can happen for the older webhook that we offered to other FB pages:
                 continue;
             } elseif (!isset($entry['messaging'])) {
-                $this->READ_model->ln_create(array(
+                $this->EXCHANGE_model->ln_create(array(
                     'ln_content' => 'facebook_webhook() call missing messaging Array().',
                     'ln_metadata' => $ln_metadata,
                     'ln_type_entity_id' => 4246, //Platform Bug Reports
@@ -1531,16 +1531,16 @@ class Read extends CI_Controller
             //loop though the messages:
             foreach ($entry['messaging'] as $im) {
 
-                if (isset($im['read']) || isset($im['delivery'])) {
+                if (isset($im['Exchange']) || isset($im['delivery'])) {
 
                     //Message read OR delivered
                     $ln_type_entity_id = (isset($im['delivery']) ? 4279 /* Message Delivered */ : 4278 /* Message Read */);
 
                     //Authenticate User:
-                    $en = $this->PLAY_model->en_messenger_auth($im['sender']['id']);
+                    $en = $this->PLAYERS_model->en_messenger_auth($im['sender']['id']);
 
                     //Log Link Only IF last delivery link was 3+ minutes ago (Since Facebook sends many of these):
-                    $last_links_logged = $this->READ_model->ln_fetch(array(
+                    $last_links_logged = $this->EXCHANGE_model->ln_fetch(array(
                         'ln_type_entity_id' => $ln_type_entity_id,
                         'ln_creator_entity_id' => $en['en_id'],
                         'ln_timestamp >=' => date("Y-m-d H:i:s", (time() - (60))), //READ logged less than 1 minutes ago
@@ -1548,7 +1548,7 @@ class Read extends CI_Controller
 
                     if (count($last_links_logged) == 0) {
                         //We had no recent links of this kind, so go ahead and log:
-                        $this->READ_model->ln_create(array(
+                        $this->EXCHANGE_model->ln_create(array(
                             'ln_metadata' => $ln_metadata,
                             'ln_type_entity_id' => $ln_type_entity_id,
                             'ln_creator_entity_id' => $en['en_id'],
@@ -1575,7 +1575,7 @@ class Read extends CI_Controller
 
                     //Set variables:
                     $sent_by_mench = (isset($im['message']['is_echo'])); //Indicates the message sent from the page itself
-                    $en = $this->PLAY_model->en_messenger_auth(($sent_by_mench ? $im['recipient']['id'] : $im['sender']['id']));
+                    $en = $this->PLAYERS_model->en_messenger_auth(($sent_by_mench ? $im['recipient']['id'] : $im['sender']['id']));
                     $is_quick_reply = (isset($im['message']['quick_reply']['payload']));
 
                     //Set more variables:
@@ -1609,11 +1609,11 @@ class Read extends CI_Controller
                         $ln_data['ln_content'] = $im['message']['text']; //Quick reply always has a text
 
                         //Digest quick reply:
-                        $quick_reply_results = $this->READ_model->digest_received_payload($en, $im['message']['quick_reply']['payload']);
+                        $quick_reply_results = $this->EXCHANGE_model->digest_received_payload($en, $im['message']['quick_reply']['payload']);
 
                         if(!$quick_reply_results['status']){
                             //There was an error, inform Trainer:
-                            $this->READ_model->ln_create(array(
+                            $this->EXCHANGE_model->ln_create(array(
                                 'ln_content' => 'digest_received_payload() for message returned error ['.$quick_reply_results['message'].']',
                                 'ln_metadata' => $ln_metadata,
                                 'ln_type_entity_id' => 4246, //Platform Bug Reports
@@ -1756,7 +1756,7 @@ class Read extends CI_Controller
                                  *
                                  * */
 
-                                $this->READ_model->ln_create(array(
+                                $this->EXCHANGE_model->ln_create(array(
                                     'ln_content' => 'api_webhook() received a message type that is not yet implemented: ['.$att['type'].']',
                                     'ln_type_entity_id' => 4246, //Platform Bug Reports
                                     'ln_creator_entity_id' => $en['en_id'],
@@ -1779,7 +1779,7 @@ class Read extends CI_Controller
                                  *
                                  * */
 
-                                $this->READ_model->ln_create(array(
+                                $this->EXCHANGE_model->ln_create(array(
                                     'ln_content' => 'api_webhook() received a message type that is not yet implemented: ['.$att['type'].']',
                                     'ln_type_entity_id' => 4246, //Platform Bug Reports
                                     'ln_creator_entity_id' => $en['en_id'],
@@ -1798,7 +1798,7 @@ class Read extends CI_Controller
                     if (!isset($ln_data['ln_type_entity_id']) || !isset($ln_data['ln_creator_entity_id'])) {
 
                         //Ooooopsi, this seems to be an unknown message type:
-                        $this->READ_model->ln_create(array(
+                        $this->EXCHANGE_model->ln_create(array(
                             'ln_type_entity_id' => 4246, //Platform Bug Reports
                             'ln_creator_entity_id' => $en['en_id'],
                             'ln_content' => 'facebook_webhook() Received unknown message type! Analyze metadata for more details',
@@ -1811,7 +1811,7 @@ class Read extends CI_Controller
 
 
                     //We're all good, log this message:
-                    $new_message = $this->READ_model->ln_create($ln_data);
+                    $new_message = $this->EXCHANGE_model->ln_create($ln_data);
 
 
                     //Did we have a pending response?
@@ -1821,7 +1821,7 @@ class Read extends CI_Controller
                         $pending_mismatches = array();
 
                         //Yes, see if we have a pending requirement submission:
-                        foreach($this->READ_model->ln_fetch(array(
+                        foreach($this->EXCHANGE_model->ln_fetch(array(
                             'ln_type_entity_id' => 6144, //Action Plan Submit Requirements
                             'ln_creator_entity_id' => $ln_data['ln_creator_entity_id'], //for this user
                             'ln_status_entity_id IN (' . join(',', $this->config->item('en_ids_7364')) . ')' => null, //Link Statuses Incomplete
@@ -1842,7 +1842,7 @@ class Read extends CI_Controller
 
                             //We only look at first matching case which covers most cases, but here is an error in case not:
                             if(count($pending_matches) >= 2){
-                                $this->READ_model->ln_create(array(
+                                $this->EXCHANGE_model->ln_create(array(
                                     'ln_content' => 'api_webhook() found multiple matching submission requirements for the same user! Time to program the view with more options.',
                                     'ln_type_entity_id' => 4246, //Platform Bug Reports
                                     'ln_creator_entity_id' => $en['en_id'],
@@ -1858,7 +1858,7 @@ class Read extends CI_Controller
                             //Accept their answer:
 
                             //Validate Action Plan step:
-                            $pending_req_submission = $this->READ_model->ln_fetch(array(
+                            $pending_req_submission = $this->EXCHANGE_model->ln_fetch(array(
                                 'ln_id' => $first_chioce['ln_id'],
                                 //Also validate other requirements:
                                 'ln_type_entity_id' => 6144, //Action Plan Submit Requirements
@@ -1871,7 +1871,7 @@ class Read extends CI_Controller
                             if(isset($pending_req_submission[0])){
 
                                 //Make changes:
-                                $this->READ_model->ln_update($pending_req_submission[0]['ln_id'], array(
+                                $this->EXCHANGE_model->ln_update($pending_req_submission[0]['ln_id'], array(
                                     'ln_content' => $new_message['ln_content'],
                                     'ln_status_entity_id' => 6176, //Link Published
                                     'ln_parent_link_id' => $new_message['ln_id'],
@@ -1879,19 +1879,19 @@ class Read extends CI_Controller
                                 ));
 
                                 //Confirm with user:
-                                $this->READ_model->dispatch_message(
+                                $this->EXCHANGE_model->dispatch_message(
                                     echo_random_message('affirm_progress'),
                                     $en,
                                     true
                                 );
 
                                 //Process on-complete automations:
-                                $this->READ_model->read__completion_checks($en['en_id'], $pending_req_submission[0], true, true);
+                                $this->EXCHANGE_model->read__completion_checks($en['en_id'], $pending_req_submission[0], true, true);
 
                             } else {
 
                                 //Opppsi:
-                                $this->READ_model->ln_create(array(
+                                $this->EXCHANGE_model->ln_create(array(
                                     'ln_parent_link_id' => $first_chioce['ln_id'],
                                     'ln_content' => 'messenger_webhook() failed to validate user response original step',
                                     'ln_type_entity_id' => 4246, //Platform Bug Reports
@@ -1899,7 +1899,7 @@ class Read extends CI_Controller
                                 ));
 
                                 //Confirm with user:
-                                $this->READ_model->dispatch_message(
+                                $this->EXCHANGE_model->dispatch_message(
                                     'Unable to accept your response. My trainers have already been notified.',
                                     $en,
                                     true
@@ -1909,7 +1909,7 @@ class Read extends CI_Controller
 
 
                             //Load next option:
-                            $this->READ_model->read__step_next_go($en['en_id'], true, true);
+                            $this->EXCHANGE_model->read__step_next_go($en['en_id'], true, true);
 
 
                         } elseif(count($pending_mismatches) > 0){
@@ -1920,7 +1920,7 @@ class Read extends CI_Controller
                             $en_all_6144 = $this->config->item('en_all_6144'); //Requirement names
 
                             //We did not have any matches, but has some mismatches, maybe that's what they meant?
-                            $this->READ_model->dispatch_message(
+                            $this->EXCHANGE_model->dispatch_message(
                                 'Error: You should '.$en_all_6144[$mismatch_focus['in_completion_method_entity_id']]['m_name'].' to complete this step.',
                                 $en,
                                 true
@@ -1929,12 +1929,12 @@ class Read extends CI_Controller
                         } elseif($ln_data['ln_type_entity_id']==4547){
 
                             //No requirement submissions for this text message... Digest text message & try to make sense of it:
-                            $this->READ_model->digest_received_text($en, $im['message']['text']);
+                            $this->EXCHANGE_model->digest_received_text($en, $im['message']['text']);
 
                         } else {
 
                             //Let them know that we did not understand them:
-                            $this->READ_model->dispatch_message(
+                            $this->EXCHANGE_model->dispatch_message(
                                 echo_random_message('one_way_only'),
                                 $en,
                                 true,
@@ -1996,10 +1996,10 @@ class Read extends CI_Controller
                     $quick_reply_payload = ($array_ref && isset($array_ref['ref']) && strlen($array_ref['ref']) > 0 ? $array_ref['ref'] : null);
 
                     //Authenticate User:
-                    $en = $this->PLAY_model->en_messenger_auth($im['sender']['id'], $quick_reply_payload);
+                    $en = $this->PLAYERS_model->en_messenger_auth($im['sender']['id'], $quick_reply_payload);
 
                     //Log primary link:
-                    $this->READ_model->ln_create(array(
+                    $this->EXCHANGE_model->ln_create(array(
                         'ln_type_entity_id' => $ln_type_entity_id,
                         'ln_metadata' => $ln_metadata,
                         'ln_content' => $quick_reply_payload,
@@ -2008,10 +2008,10 @@ class Read extends CI_Controller
 
                     //Digest quick reply Payload if any:
                     if ($quick_reply_payload) {
-                        $quick_reply_results = $this->READ_model->digest_received_payload($en, $quick_reply_payload);
+                        $quick_reply_results = $this->EXCHANGE_model->digest_received_payload($en, $quick_reply_payload);
                         if(!$quick_reply_results['status']){
                             //There was an error, inform Trainer:
-                            $this->READ_model->ln_create(array(
+                            $this->EXCHANGE_model->ln_create(array(
                                 'ln_content' => 'digest_received_payload() for postback/referral returned error ['.$quick_reply_results['message'].']',
                                 'ln_metadata' => $ln_metadata,
                                 'ln_type_entity_id' => 4246, //Platform Bug Reports
@@ -2047,10 +2047,10 @@ class Read extends CI_Controller
 
                 } elseif (isset($im['optin'])) {
 
-                    $en = $this->PLAY_model->en_messenger_auth($im['sender']['id']);
+                    $en = $this->PLAYERS_model->en_messenger_auth($im['sender']['id']);
 
                     //Log link:
-                    $this->READ_model->ln_create(array(
+                    $this->EXCHANGE_model->ln_create(array(
                         'ln_metadata' => $ln_metadata,
                         'ln_type_entity_id' => 4266, //Messenger Optin
                         'ln_creator_entity_id' => $en['en_id'],
@@ -2059,10 +2059,10 @@ class Read extends CI_Controller
                 } elseif (isset($im['message_request']) && $im['message_request'] == 'accept') {
 
                     //This is when we message them and they accept to chat because they had Removed Messenger or something...
-                    $en = $this->PLAY_model->en_messenger_auth($im['sender']['id']);
+                    $en = $this->PLAYERS_model->en_messenger_auth($im['sender']['id']);
 
                     //Log link:
-                    $this->READ_model->ln_create(array(
+                    $this->EXCHANGE_model->ln_create(array(
                         'ln_metadata' => $ln_metadata,
                         'ln_type_entity_id' => 4577, //Message Request Accepted
                         'ln_creator_entity_id' => $en['en_id'],
@@ -2071,7 +2071,7 @@ class Read extends CI_Controller
                 } else {
 
                     //This should really not happen!
-                    $this->READ_model->ln_create(array(
+                    $this->EXCHANGE_model->ln_create(array(
                         'ln_content' => 'facebook_webhook() received unrecognized webhook call',
                         'ln_metadata' => $ln_metadata,
                         'ln_type_entity_id' => 4246, //Platform Bug Reports
@@ -2103,7 +2103,7 @@ class Read extends CI_Controller
          *
          * */
 
-        $ln_pending = $this->READ_model->ln_fetch(array(
+        $ln_pending = $this->EXCHANGE_model->ln_fetch(array(
             'ln_status_entity_id' => 6175, //Link Drafting
             'ln_type_entity_id IN (' . join(',', $this->config->item('en_ids_6102')) . ')' => null, //User Sent/Received Media Links
         ), array(), 10);
@@ -2118,7 +2118,7 @@ class Read extends CI_Controller
             }
 
             //Update link:
-            $this->READ_model->ln_update($ln['ln_id'], array(
+            $this->EXCHANGE_model->ln_update($ln['ln_id'], array(
                 'ln_content' => $cdn_status['cdn_url'], //CDN URL
                 'ln_child_entity_id' => $cdn_status['cdn_en']['en_id'], //New URL Entity
                 'ln_status_entity_id' => 6176, //Link Published
@@ -2155,7 +2155,7 @@ class Read extends CI_Controller
 
 
         //Let's fetch all Media files without a Facebook attachment ID:
-        $ln_pending = $this->READ_model->ln_fetch(array(
+        $ln_pending = $this->EXCHANGE_model->ln_fetch(array(
             'ln_type_entity_id IN (' . join(',', array_keys($en_all_11059)) . ')' => null,
             'ln_status_entity_id IN (' . join(',', $this->config->item('en_ids_7359')) . ')' => null, //Link Statuses Public
             'ln_metadata' => null, //Missing Facebook Attachment ID [NOTE: Must make sure ln_metadata is not used for anything else for these link types]
@@ -2188,7 +2188,7 @@ class Read extends CI_Controller
             );
 
             //Attempt to sync Media to Facebook:
-            $result = $this->READ_model->facebook_graph('POST', '/me/message_attachments', $payload);
+            $result = $this->EXCHANGE_model->facebook_graph('POST', '/me/message_attachments', $payload);
 
             if (isset($result['ln_metadata']['result']['attachment_id']) && $result['status']) {
 
@@ -2207,7 +2207,7 @@ class Read extends CI_Controller
             } else {
 
                 //Log error:
-                $this->READ_model->ln_create(array(
+                $this->EXCHANGE_model->ln_create(array(
                     'ln_type_entity_id' => 4246, //Platform Bug Reports
                     'ln_parent_link_id' => $ln['ln_id'],
                     'ln_content' => 'cron__sync_attachments() Failed to sync attachment to Facebook API: ' . (isset($result['ln_metadata']['result']['error']['message']) ? $result['ln_metadata']['result']['error']['message'] : 'Unknown Error'),

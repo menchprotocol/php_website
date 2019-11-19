@@ -23,7 +23,7 @@
 
             } else {
 
-                $bookmark_ins = $this->READ_model->ln_fetch(array(
+                $bookmark_ins = $this->EXCHANGE_model->ln_fetch(array(
                     'in_status_entity_id IN (' . join(',', $this->config->item('en_ids_7356')) . ')' => null, //Intent Statuses Active
                     'ln_status_entity_id IN (' . join(',', $this->config->item('en_ids_7359')) . ')' => null, //Link Statuses Public
                     'ln_type_entity_id' => 10573, //Intent Note Bookmarks
@@ -52,7 +52,7 @@
 
 
 
-                $recent_ins = $this->READ_model->ln_fetch(array(
+                $recent_ins = $this->EXCHANGE_model->ln_fetch(array(
                     'in_status_entity_id IN (' . join(',', $this->config->item('en_ids_7356')) . ')' => null, //Intent Statuses Active
                     'ln_status_entity_id IN (' . join(',', $this->config->item('en_ids_7359')) . ')' => null, //Link Statuses Public
                     'ln_type_entity_id' => 4993, //Trainer View Intent

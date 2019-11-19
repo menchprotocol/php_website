@@ -7,37 +7,37 @@ $en_all_4737 = $this->config->item('en_all_4737'); // Intent Statuses
 $en_all_6177 = $this->config->item('en_all_6177'); //Entity Statuses
 
 $moderation_tools = array(
-    '/play/admin_tools/link_words_stats' => 'Link Words Stats',
-    '/play/admin_tools/in_replace_outcomes' => 'Intent Search/Replace Outcomes',
-    '/play/admin_tools/in_invalid_outcomes' => 'Intent Invalid Outcomes',
-    '/play/admin_tools/actionplan_debugger' => 'My Action Plan Debugger',
-    '/play/admin_tools/en_icon_search' => 'Entity Icon Search',
-    '/play/admin_tools/moderate_intent_notes' => 'Moderate Intent Notes',
-    '/play/admin_tools/identical_intent_outcomes' => 'Identical Intent Outcomes',
-    '/play/admin_tools/identical_entity_names' => 'Identical Entity Names',
-    '/play/admin_tools/or__children' => 'List OR Intents + Answers',
-    '/play/admin_tools/orphan_intents' => 'Orphan Intents',
-    '/play/admin_tools/orphan_entities' => 'Orphan Entities',
-    '/play/admin_tools/assessment_marks_list_all' => 'Completion Marks List All',
-    '/play/admin_tools/assessment_marks_birds_eye' => 'Completion Marks Birds Eye View',
-    '/play/admin_tools/compose_test_message' => 'Compose Test Message',
-    '/play/admin_tools/random_user_icon' => 'Random User Icons',
+    '/players/admin_tools/link_words_stats' => 'Link Words Stats',
+    '/players/admin_tools/in_replace_outcomes' => 'Intent Search/Replace Outcomes',
+    '/players/admin_tools/in_invalid_outcomes' => 'Intent Invalid Outcomes',
+    '/players/admin_tools/actionplan_debugger' => 'My Action Plan Debugger',
+    '/players/admin_tools/en_icon_search' => 'Entity Icon Search',
+    '/players/admin_tools/moderate_intent_notes' => 'Moderate Intent Notes',
+    '/players/admin_tools/identical_intent_outcomes' => 'Identical Intent Outcomes',
+    '/players/admin_tools/identical_entity_names' => 'Identical Entity Names',
+    '/players/admin_tools/or__children' => 'List OR Intents + Answers',
+    '/players/admin_tools/orphan_intents' => 'Orphan Intents',
+    '/players/admin_tools/orphan_entities' => 'Orphan Entities',
+    '/players/admin_tools/assessment_marks_list_all' => 'Completion Marks List All',
+    '/players/admin_tools/assessment_marks_birds_eye' => 'Completion Marks Birds Eye View',
+    '/players/admin_tools/compose_test_message' => 'Compose Test Message',
+    '/players/admin_tools/random_user_icon' => 'Random User Icons',
 );
 
 $cron_jobs = array(
-    '/blog/cron__sync_common_base' => 'Sync Common Base Metadata',
-    '/blog/cron__sync_extra_insights' => 'Sync Extra Insights Metadata',
-    '/play/cron__update_trust_score' => 'Update All Entity Trust Scores',
-    '/read/cron__sync_algolia' => 'Sync Algolia Index [Limited calls!]',
-    '/read/cron__sync_gephi' => 'Sync Gephi Graph Index',
-    '/read/cron__clean_metadatas' => 'Clean Unused Metadata Variables',
+    '/ideas/cron__sync_common_base' => 'Sync Common Base Metadata',
+    '/ideas/cron__sync_extra_insights' => 'Sync Extra Insights Metadata',
+    '/players/cron__update_trust_score' => 'Update All Entity Trust Scores',
+    '/exchange/cron__sync_algolia' => 'Sync Algolia Index [Limited calls!]',
+    '/exchange/cron__sync_gephi' => 'Sync Gephi Graph Index',
+    '/exchange/cron__clean_metadatas' => 'Clean Unused Metadata Variables',
 );
 
 
 $developer_tools = array(
-    '/play/platform_cache' => 'Platform PHP Cache',
-    '/play/my_session' => 'My Session Variables',
-    '/play/php_info' => 'Server PHP Info',
+    '/players/platform_cache' => 'Platform PHP Cache',
+    '/players/my_session' => 'My Session Variables',
+    '/players/php_info' => 'Server PHP Info',
 );
 
 
@@ -45,7 +45,7 @@ $developer_tools = array(
 if(!$action) {
 
     $en_all_7368 = $this->config->item('en_all_7368');
-    echo '<h1>'.$en_all_7368[6287]['m_icon'].' '.$en_all_7368[6287]['m_name'].' <a href="/play/6287" style="font-size: 0.5em; color: #999;" title="'.$en_all_7368[6287]['m_name'].' entity controlling this tool" data-toggle="tooltip" data-placement="right">@6287</a></h1>';
+    echo '<h1>'.$en_all_7368[6287]['m_icon'].' '.$en_all_7368[6287]['m_name'].' <a href="/players/6287" style="font-size: 0.5em; color: #999;" title="'.$en_all_7368[6287]['m_name'].' entity controlling this tool" data-toggle="tooltip" data-placement="right">@6287</a></h1>';
 
     echo '<div class="list-group actionplan_list grey_list maxout">';
     foreach ($moderation_tools as $tool_key => $tool_name) {
@@ -92,7 +92,7 @@ if(!$action) {
 
 
     //Show breadcrumb:
-    echo '<ul class="breadcrumb"><li><a href="/play/admin_tools">Trainer Tools</a></li><li><b>'.$moderation_tools['/play/admin_tools/'.$action].'</b></li></ul>';
+    echo '<ul class="breadcrumb"><li><a href="/players/admin_tools">Trainer Tools</a></li><li><b>'.$moderation_tools['/players/admin_tools/'.$action].'</b></li></ul>';
 
 
     if(isset($_GET['resetall'])){
@@ -106,12 +106,12 @@ if(!$action) {
         //Go through all the links and update their words:
         boost_power();
         $updated = 0;
-        foreach($this->READ_model->ln_fetch(( isset($_GET['updateall']) ? array(
+        foreach($this->EXCHANGE_model->ln_fetch(( isset($_GET['updateall']) ? array(
             'ln_words' => 0,
         ) : array(
             'ln_type_entity_id IN (' . $_GET['updatesome'] . ')' => null,
         )), array(), 0) as $ln){
-            $this->READ_model->ln_update($ln['ln_id'], array(
+            $this->EXCHANGE_model->ln_update($ln['ln_id'], array(
                 'ln_words' => ln_type_word_count($ln),
             ));
             $updated++;
@@ -134,7 +134,7 @@ if(!$action) {
 
 
     //Count them all:
-    $all_stats = $this->READ_model->ln_fetch(array(
+    $all_stats = $this->EXCHANGE_model->ln_fetch(array(
         'ln_status_entity_id IN (' . join(',', $this->config->item('en_ids_7359')) . ')' => null, //Link Statuses Public
     ), array(), 0, 0, array(), 'COUNT(ln_id) as total_links, SUM(ABS(ln_words)) as total_words');
 
@@ -154,7 +154,7 @@ if(!$action) {
     //Now do a high level stats:
     foreach (array('ln_words =', 'ln_words >', 'ln_words <') as $words_setting) {
 
-        $words_stats = $this->READ_model->ln_fetch(array(
+        $words_stats = $this->EXCHANGE_model->ln_fetch(array(
             $words_setting => 0,
             'ln_status_entity_id IN (' . join(',', $this->config->item('en_ids_7359')) . ')' => null, //Link Statuses Public
         ), array(), 0, 0, array(), 'COUNT(ln_id) as total_links, SUM(ln_words) as total_words');
@@ -178,7 +178,7 @@ if(!$action) {
     echo '<tr class="panel-title down-border"><td style="text-align: left;" colspan="6">&nbsp;</td></tr>';
 
     //Show each link type:
-    foreach ($this->READ_model->ln_fetch(array(
+    foreach ($this->EXCHANGE_model->ln_fetch(array(
         'ln_status_entity_id IN (' . join(',', $this->config->item('en_ids_7359')) . ')' => null, //Link Statuses Public
     ), array('ln_type'), 0, 0, array('total_words' => 'DESC'), 'COUNT(ln_id) as total_links, SUM(ln_words) as total_words, en_name, en_icon, en_id', 'en_id, en_name, en_icon') as $ln) {
 
@@ -186,7 +186,7 @@ if(!$action) {
         $word_weight = filter_cache_group($ln['en_id'], 10592);
 
         echo '<tr class="panel-title down-border">';
-        echo '<td style="text-align: left;"><span class="icon-block">'.$ln['en_icon'].'</span> <a href="/play/'.$ln['en_id'].'">'.$ln['en_name'].'</a></td>';
+        echo '<td style="text-align: left;"><span class="icon-block">'.$ln['en_icon'].'</span> <a href="/players/'.$ln['en_id'].'">'.$ln['en_name'].'</a></td>';
         echo '<td style="text-align: left;">'.number_format($ln['total_links'], 0).'</td>';
         echo '<td style="text-align: left;">'.number_format($ln['total_links']/$all_stats[0]['total_links']*100, 2).'%</td>';
         echo '<td style="text-align: left;"><span class="icon-block">'.( in_array($ln['en_id'], $this->config->item('en_ids_10589')) ? $en_all_10591[10589]['m_icon'] : $en_all_10591[10590]['m_icon'] ).'</span>'.number_format(round($ln['total_words']), 0).'</td>';
@@ -201,7 +201,7 @@ if(!$action) {
 } elseif($action=='random_user_icon'){
 
     //Show breadcrumb:
-    echo '<ul class="breadcrumb"><li><a href="/play/admin_tools">Trainer Tools</a></li><li><b>'.$moderation_tools['/play/admin_tools/'.$action].'</b></li></ul>';
+    echo '<ul class="breadcrumb"><li><a href="/players/admin_tools">Trainer Tools</a></li><li><b>'.$moderation_tools['/players/admin_tools/'.$action].'</b></li></ul>';
 
     if(isset($_GET['update_user_icons'])){
 
@@ -217,8 +217,8 @@ if(!$action) {
         }
 
         $updated = 0;
-        foreach($this->READ_model->ln_fetch($base_filters, array('en_child'), 0) as $mench_user){
-            $updated += $this->PLAY_model->en_update($mench_user['en_id'], array(
+        foreach($this->EXCHANGE_model->ln_fetch($base_filters, array('en_child'), 0) as $mench_user){
+            $updated += $this->PLAYERS_model->en_update($mench_user['en_id'], array(
                 'en_icon' => random_user_icon(),
             ));
         }
@@ -237,14 +237,14 @@ if(!$action) {
 
 
     //Fetch pending notes:
-    $pendin_in_notes = $this->READ_model->ln_fetch(array(
+    $pendin_in_notes = $this->EXCHANGE_model->ln_fetch(array(
         'ln_status_entity_id IN (' . join(',', $this->config->item('en_ids_7364')) . ')' => null, //Link Statuses Incomplete
         'ln_type_entity_id IN (' . join(',', $this->config->item('en_ids_4485')) . ')' => null, //All Intent Notes
     ), array('in_child'), config_var(11064), 0, array('ln_id' => 'ASC'));
 
     echo '<div class="row">';
     echo '<div class="col-sm-6">';
-    echo '<ul class="breadcrumb"><li><a href="/play/admin_tools">Trainer Tools</a></li><li><b>'.$moderation_tools['/play/admin_tools/'.$action].'</b></li></ul>';
+    echo '<ul class="breadcrumb"><li><a href="/players/admin_tools">Trainer Tools</a></li><li><b>'.$moderation_tools['/players/admin_tools/'.$action].'</b></li></ul>';
     //List intents and allow to modify and manage intent notes:
     if(count($pendin_in_notes) > 0){
         foreach($pendin_in_notes as $pendin_in_note){
@@ -265,9 +265,9 @@ if(!$action) {
 
 } elseif($action=='orphan_intents') {
 
-    echo '<ul class="breadcrumb"><li><a href="/play/admin_tools">Trainer Tools</a></li><li><b>'.$moderation_tools['/play/admin_tools/'.$action].'</b></li></ul>';
+    echo '<ul class="breadcrumb"><li><a href="/players/admin_tools">Trainer Tools</a></li><li><b>'.$moderation_tools['/players/admin_tools/'.$action].'</b></li></ul>';
 
-    $orphan_ins = $this->BLOG_model->in_fetch(array(
+    $orphan_ins = $this->IDEAS_model->in_fetch(array(
         ' NOT EXISTS (SELECT 1 FROM table_links WHERE in_id=ln_child_intent_id AND ln_type_entity_id IN (' . join(',', $this->config->item('en_ids_4486')) . ') AND ln_status_entity_id IN ('.join(',', $this->config->item('en_ids_7360')) /* Link Statuses Active */.')) ' => null,
         'in_status_entity_id IN (' . join(',', $this->config->item('en_ids_7356')) . ')' => null, //Intent Statuses Active
     ));
@@ -278,16 +278,16 @@ if(!$action) {
         foreach ($orphan_ins as $count => $orphan_in) {
 
             //Show intent:
-            echo '<div>'.($count+1).') <span data-toggle="tooltip" data-placement="right" title="'.$en_all_4737[$orphan_in['in_status_entity_id']]['m_name'].': '.$en_all_4737[$orphan_in['in_status_entity_id']]['m_desc'].'">' . $en_all_4737[$orphan_in['in_status_entity_id']]['m_icon'] . '</span> <a href="/blog/'.$orphan_in['in_id'].'"><b>'.$orphan_in['in_outcome'].'</b></a>';
+            echo '<div>'.($count+1).') <span data-toggle="tooltip" data-placement="right" title="'.$en_all_4737[$orphan_in['in_status_entity_id']]['m_name'].': '.$en_all_4737[$orphan_in['in_status_entity_id']]['m_desc'].'">' . $en_all_4737[$orphan_in['in_status_entity_id']]['m_icon'] . '</span> <a href="/ideas/'.$orphan_in['in_id'].'"><b>'.$orphan_in['in_outcome'].'</b></a>';
 
             //Do we need to remove?
             if($command1=='remove_all'){
 
                 //Remove intent links:
-                $links_removed = $this->BLOG_model->in_unlink($orphan_in['in_id'] , $session_en['en_id']);
+                $links_removed = $this->IDEAS_model->in_unlink($orphan_in['in_id'] , $session_en['en_id']);
 
                 //Remove intent:
-                $this->BLOG_model->in_update($orphan_in['in_id'], array(
+                $this->IDEAS_model->in_update($orphan_in['in_id'], array(
                     'in_status_entity_id' => 6182, /* Intent Removed */
                 ), true, $session_en['en_id']);
 
@@ -305,7 +305,7 @@ if(!$action) {
             echo '<br />';
             echo '<a class="remove-all" href="javascript:void(0);" onclick="$(\'.remove-all\').toggleClass(\'hidden\')">Remove All</a>';
             echo '<div class="remove-all hidden maxout"><b style="color: #FF0000;">WARNING</b>: All intents and all their links will be removed. ONLY do this after reviewing all orphans one-by-one and making sure they cannot become a child of an existing intent.<br /><br /></div>';
-            echo '<a class="remove-all hidden maxout" href="/play/admin_tools/orphan_intents/remove_all" onclick="">Confirm: <b>Remove All</b> &raquo;</a>';
+            echo '<a class="remove-all hidden maxout" href="/players/admin_tools/orphan_intents/remove_all" onclick="">Confirm: <b>Remove All</b> &raquo;</a>';
         }
 
     } else {
@@ -314,9 +314,9 @@ if(!$action) {
 
 } elseif($action=='orphan_entities') {
 
-    echo '<ul class="breadcrumb"><li><a href="/play/admin_tools">Trainer Tools</a></li><li><b>'.$moderation_tools['/play/admin_tools/'.$action].'</b></li></ul>';
+    echo '<ul class="breadcrumb"><li><a href="/players/admin_tools">Trainer Tools</a></li><li><b>'.$moderation_tools['/players/admin_tools/'.$action].'</b></li></ul>';
 
-    $orphan_ens = $this->PLAY_model->en_fetch(array(
+    $orphan_ens = $this->PLAYERS_model->en_fetch(array(
         ' NOT EXISTS (SELECT 1 FROM table_links WHERE en_id=ln_child_entity_id AND ln_type_entity_id IN (' . join(',', $this->config->item('en_ids_4592')) . ') AND ln_status_entity_id IN ('.join(',', $this->config->item('en_ids_7360')) /* Link Statuses Active */.')) ' => null,
         'en_status_entity_id IN (' . join(',', $this->config->item('en_ids_7358')) . ')' => null, //Entity Statuses Active
     ), array('skip_en__parents'));
@@ -327,16 +327,16 @@ if(!$action) {
         foreach ($orphan_ens  as $count => $orphan_en) {
 
             //Show entity:
-            echo '<div>'.($count+1).') <span data-toggle="tooltip" data-placement="right" title="'.$en_all_6177[$orphan_en['en_status_entity_id']]['m_name'].': '.$en_all_6177[$orphan_en['en_status_entity_id']]['m_desc'].'">' . $en_all_6177[$orphan_en['en_status_entity_id']]['m_icon'] . '</span> <a href="/play/'.$orphan_en['en_id'].'"><b>'.$orphan_en['en_name'].'</b></a>';
+            echo '<div>'.($count+1).') <span data-toggle="tooltip" data-placement="right" title="'.$en_all_6177[$orphan_en['en_status_entity_id']]['m_name'].': '.$en_all_6177[$orphan_en['en_status_entity_id']]['m_desc'].'">' . $en_all_6177[$orphan_en['en_status_entity_id']]['m_icon'] . '</span> <a href="/players/'.$orphan_en['en_id'].'"><b>'.$orphan_en['en_name'].'</b></a>';
 
             //Do we need to remove?
             if($command1=='remove_all'){
 
                 //Remove links:
-                $links_removed = $this->PLAY_model->en_unlink($orphan_en['en_id'], $session_en['en_id']);
+                $links_removed = $this->PLAYERS_model->en_unlink($orphan_en['en_id'], $session_en['en_id']);
 
                 //Remove entity:
-                $this->PLAY_model->en_update($orphan_en['en_id'], array(
+                $this->PLAYERS_model->en_update($orphan_en['en_id'], array(
                     'en_status_entity_id' => 6178, /* Entity Removed */
                 ), true, $session_en['en_id']);
 
@@ -354,7 +354,7 @@ if(!$action) {
             echo '<br />';
             echo '<a class="remove-all" href="javascript:void(0);" onclick="$(\'.remove-all\').toggleClass(\'hidden\')">Remove All</a>';
             echo '<div class="remove-all hidden maxout"><b style="color: #FF0000;">WARNING</b>: All entities and all their links will be removed. ONLY do this after reviewing all orphans one-by-one and making sure they cannot become a child of an existing entity.<br /><br /></div>';
-            echo '<a class="remove-all hidden maxout" href="/play/admin_tools/orphan_entities/remove_all" onclick="">Confirm: <b>Remove All</b> &raquo;</a>';
+            echo '<a class="remove-all hidden maxout" href="/players/admin_tools/orphan_entities/remove_all" onclick="">Confirm: <b>Remove All</b> &raquo;</a>';
         }
 
     } else {
@@ -364,7 +364,7 @@ if(!$action) {
 
 } elseif($action=='en_icon_search') {
 
-    echo '<ul class="breadcrumb"><li><a href="/play/admin_tools">Trainer Tools</a></li><li><b>'.$moderation_tools['/play/admin_tools/'.$action].'</b></li></ul>';
+    echo '<ul class="breadcrumb"><li><a href="/players/admin_tools">Trainer Tools</a></li><li><b>'.$moderation_tools['/players/admin_tools/'.$action].'</b></li></ul>';
 
     //UI to compose a test message:
     echo '<form method="GET" action="">';
@@ -376,7 +376,7 @@ if(!$action) {
 
     if(isset($_GET['search_for']) && strlen($_GET['search_for'])>0){
 
-        $matching_results = $this->PLAY_model->en_fetch(array(
+        $matching_results = $this->PLAYERS_model->en_fetch(array(
             'en_status_entity_id IN (' . join(',', $this->config->item('en_ids_7358')) . ')' => null, //Entity Statuses Active
             'LOWER(en_icon) LIKE \'%'.strtolower($_GET['search_for']).'%\'' => null,
         ));
@@ -401,7 +401,7 @@ if(!$action) {
             foreach($matching_results as $count=>$en){
 
                 if(isset($_GET['do_replace']) && isset($_GET['replace_with'])){
-                    $replaced += $this->PLAY_model->en_update($en['en_id'], array(
+                    $replaced += $this->PLAYERS_model->en_update($en['en_id'], array(
                         'en_icon' => str_ireplace($_GET['search_for'], $_GET['replace_with'], $en['en_icon']),
                     ), false, $session_en['en_id']);
 
@@ -409,7 +409,7 @@ if(!$action) {
 
                 echo '<tr class="panel-title down-border">';
                 echo '<td style="text-align: left;">'.($count+1).'</td>';
-                echo '<td style="text-align: left;">'.echo_en_cache('en_all_6177' /* Entity Statuses */, $en['en_status_entity_id'], true, 'right').' <span class="icon-block">'.echo_en_icon($en).'</span><a href="/play/'.$en['en_id'].'">'.$en['en_name'].'</a></td>';
+                echo '<td style="text-align: left;">'.echo_en_cache('en_all_6177' /* Entity Statuses */, $en['en_status_entity_id'], true, 'right').' <span class="icon-block">'.echo_en_icon($en).'</span><a href="/players/'.$en['en_id'].'">'.$en['en_name'].'</a></td>';
                 echo '</tr>';
 
             }
@@ -432,12 +432,12 @@ if(!$action) {
 
 } elseif($action=='actionplan_debugger') {
 
-    echo '<ul class="breadcrumb"><li><a href="/play/admin_tools">Trainer Tools</a></li><li><b>'.$moderation_tools['/play/admin_tools/'.$action].'</b></li></ul>';
+    echo '<ul class="breadcrumb"><li><a href="/players/admin_tools">Trainer Tools</a></li><li><b>'.$moderation_tools['/players/admin_tools/'.$action].'</b></li></ul>';
 
     //List this users Action Plan intents so they can choose:
     echo '<div>Choose one of your action plan intentions to debug:</div><br />';
 
-    $user_intents = $this->READ_model->ln_fetch(array(
+    $user_intents = $this->EXCHANGE_model->ln_fetch(array(
         'ln_creator_entity_id' => $session_en['en_id'],
         'ln_type_entity_id IN (' . join(',', $this->config->item('en_ids_7347')) . ')' => null, //Action Plan Intention Set
         'ln_status_entity_id IN (' . join(',', $this->config->item('en_ids_7364')) . ')' => null, //Link Statuses Incomplete
@@ -445,14 +445,14 @@ if(!$action) {
     ), array('in_parent'), 0, 0, array('ln_order' => 'ASC'));
 
     foreach ($user_intents as $priority => $ln) {
-        echo '<div>'.($priority+1).') <a href="/read/debug/' . $ln['in_id'] . '">' . echo_in_outcome($ln['in_outcome']) . '</a></div>';
+        echo '<div>'.($priority+1).') <a href="/exchange/debug/' . $ln['in_id'] . '">' . echo_in_outcome($ln['in_outcome']) . '</a></div>';
     }
 
 } elseif($action=='in_invalid_outcomes') {
 
-    echo '<ul class="breadcrumb"><li><a href="/play/admin_tools">Trainer Tools</a></li><li><b>'.$moderation_tools['/play/admin_tools/'.$action].'</b></li></ul>';
+    echo '<ul class="breadcrumb"><li><a href="/players/admin_tools">Trainer Tools</a></li><li><b>'.$moderation_tools['/players/admin_tools/'.$action].'</b></li></ul>';
 
-    $active_ins = $this->BLOG_model->in_fetch(array(
+    $active_ins = $this->IDEAS_model->in_fetch(array(
         'in_status_entity_id IN (' . join(',', $this->config->item('en_ids_7356')) . ')' => null, //Intent Statuses Active
     ));
 
@@ -472,7 +472,7 @@ if(!$action) {
     $invalid_outcomes = 0;
     foreach($active_ins as $count=>$in){
 
-        $in_outcome_validation = $this->BLOG_model->in_outcome_validate($in['in_outcome']);
+        $in_outcome_validation = $this->IDEAS_model->in_outcome_validate($in['in_outcome']);
 
         if(!$in_outcome_validation['status']){
 
@@ -481,7 +481,7 @@ if(!$action) {
             //Update intent:
             echo '<tr class="panel-title down-border">';
             echo '<td style="text-align: left;">'.$invalid_outcomes.'</td>';
-            echo '<td style="text-align: left;">'.echo_en_cache('en_all_4737' /* Intent Statuses */, $in['in_status_entity_id'], true, 'right').' <a href="/blog/'.$in['in_id'].'">'.echo_in_outcome($in['in_outcome']).'</a></td>';
+            echo '<td style="text-align: left;">'.echo_en_cache('en_all_4737' /* Intent Statuses */, $in['in_status_entity_id'], true, 'right').' <a href="/ideas/'.$in['in_id'].'">'.echo_in_outcome($in['in_outcome']).'</a></td>';
             echo '</tr>';
 
         }
@@ -492,7 +492,7 @@ if(!$action) {
 } elseif($action=='in_replace_outcomes') {
 
 
-    echo '<ul class="breadcrumb"><li><a href="/play/admin_tools">Trainer Tools</a></li><li><b>'.$moderation_tools['/play/admin_tools/'.$action].'</b></li></ul>';
+    echo '<ul class="breadcrumb"><li><a href="/players/admin_tools">Trainer Tools</a></li><li><b>'.$moderation_tools['/players/admin_tools/'.$action].'</b></li></ul>';
 
     //UI to compose a test message:
     echo '<form method="GET" action="">';
@@ -509,7 +509,7 @@ if(!$action) {
 
     if($search_for_is_set){
 
-        $matching_results = $this->BLOG_model->in_fetch(array(
+        $matching_results = $this->IDEAS_model->in_fetch(array(
             'in_status_entity_id IN (' . join(',', $this->config->item('en_ids_7356')) . ')' => null, //Intent Statuses Active
             'LOWER(in_outcome) LIKE \'%'.strtolower($_GET['search_for']).'%\'' => null,
         ));
@@ -546,7 +546,7 @@ if(!$action) {
                 if($replace_with_is_set){
                     //Do replacement:
                     $new_outcome = str_replace($_GET['search_for'],$_GET['replace_with'],$in['in_outcome']);
-                    $in_outcome_validation = $this->BLOG_model->in_outcome_validate($new_outcome);
+                    $in_outcome_validation = $this->IDEAS_model->in_outcome_validate($new_outcome);
 
                     if($in_outcome_validation['status']){
                         $qualifying_replacements++;
@@ -555,14 +555,14 @@ if(!$action) {
 
                 if($replace_with_is_confirmed && $in_outcome_validation['status']){
                     //Update intent:
-                    $this->BLOG_model->in_update($in['in_id'], array(
+                    $this->IDEAS_model->in_update($in['in_id'], array(
                         'in_outcome' => $in_outcome_validation['in_cleaned_outcome'],
                     ), true, $session_en['en_id']);
                 }
 
                 echo '<tr class="panel-title down-border">';
                 echo '<td style="text-align: left;">'.($count+1).'</td>';
-                echo '<td style="text-align: left;">'.echo_en_cache('en_all_4737' /* Intent Statuses */, $in['in_status_entity_id'], true, 'right').' <a href="/blog/'.$in['in_id'].'">'.$in['in_outcome'].'</a></td>';
+                echo '<td style="text-align: left;">'.echo_en_cache('en_all_4737' /* Intent Statuses */, $in['in_status_entity_id'], true, 'right').' <a href="/ideas/'.$in['in_id'].'">'.$in['in_outcome'].'</a></td>';
 
                 if($replace_with_is_set){
 
@@ -575,13 +575,13 @@ if(!$action) {
 
                     //Loop through parents:
                     $en_all_7585 = $this->config->item('en_all_7585'); // Intent Subtypes
-                    foreach ($this->READ_model->ln_fetch(array(
+                    foreach ($this->EXCHANGE_model->ln_fetch(array(
                         'ln_status_entity_id IN (' . join(',', $this->config->item('en_ids_7360')) . ')' => null, //Link Statuses Active
                         'in_status_entity_id IN (' . join(',', $this->config->item('en_ids_7356')) . ')' => null, //Intent Statuses Active
                         'ln_type_entity_id IN (' . join(',', $this->config->item('en_ids_4486')) . ')' => null, //Intent-to-Intent Links
                         'ln_child_intent_id' => $in['in_id'],
                     ), array('in_parent')) as $in_parent) {
-                        echo '<span class="in_child_icon_' . $in_parent['in_id'] . '"><a href="/blog/' . $in_parent['in_id'] . '" data-toggle="tooltip" title="' . $in_parent['in_outcome'] . '" data-placement="bottom">' . $en_all_7585[$in_parent['in_completion_method_entity_id']]['m_icon'] . '</a> &nbsp;</span>';
+                        echo '<span class="in_child_icon_' . $in_parent['in_id'] . '"><a href="/ideas/' . $in_parent['in_id'] . '" data-toggle="tooltip" title="' . $in_parent['in_outcome'] . '" data-placement="bottom">' . $en_all_7585[$in_parent['in_completion_method_entity_id']]['m_icon'] . '</a> &nbsp;</span>';
                     }
 
                     echo '</td>';
@@ -621,7 +621,7 @@ if(!$action) {
 
 } elseif($action=='identical_intent_outcomes') {
 
-    echo '<ul class="breadcrumb"><li><a href="/play/admin_tools">Trainer Tools</a></li><li><b>'.$moderation_tools['/play/admin_tools/'.$action].'</b></li></ul>';
+    echo '<ul class="breadcrumb"><li><a href="/players/admin_tools">Trainer Tools</a></li><li><b>'.$moderation_tools['/players/admin_tools/'.$action].'</b></li></ul>';
 
     //Do a query to detect intents with the exact same title:
     $q = $this->db->query('select in1.* from table_intents in1 where (select count(*) from table_intents in2 where in2.in_outcome = in1.in_outcome AND in2.in_status_entity_id IN (' . join(',', $this->config->item('en_ids_7356')) . ')) > 1 AND in1.in_status_entity_id IN (' . join(',', $this->config->item('en_ids_7356')) . ') ORDER BY in1.in_outcome ASC');
@@ -636,7 +636,7 @@ if(!$action) {
                 $prev_title = $in['in_outcome'];
             }
 
-            echo '<div><span data-toggle="tooltip" data-placement="right" title="'.$en_all_4737[$in['in_status_entity_id']]['m_name'].': '.$en_all_4737[$in['in_status_entity_id']]['m_desc'].'">' . $en_all_4737[$in['in_status_entity_id']]['m_icon'] . '</span> <a href="/blog/' . $in['in_id'] . '"><b>' . $in['in_outcome'] . '</b></a> #' . $in['in_id'] . '</div>';
+            echo '<div><span data-toggle="tooltip" data-placement="right" title="'.$en_all_4737[$in['in_status_entity_id']]['m_name'].': '.$en_all_4737[$in['in_status_entity_id']]['m_desc'].'">' . $en_all_4737[$in['in_status_entity_id']]['m_icon'] . '</span> <a href="/ideas/' . $in['in_id'] . '"><b>' . $in['in_outcome'] . '</b></a> #' . $in['in_id'] . '</div>';
         }
 
     } else {
@@ -676,16 +676,16 @@ if(!$action) {
     $updated = 0;
     $new_ln_type_entity_id = 7485; //User Step Answer Unlock
 
-    foreach ($this->BLOG_model->in_fetch(array(
+    foreach ($this->IDEAS_model->in_fetch(array(
         'in_status_entity_id IN (' . join(',', $this->config->item('en_ids_7356')) . ')' => null, //Intent Statuses Active
         'in_completion_method_entity_id IN (' . join(',', $this->config->item('en_ids_7712')) . ')' => null,
     ), array(), 0, 0, array('in_id' => 'DESC')) as $count => $in) {
 
-        echo '<div>'.($count+1).') '.echo_en_cache('en_all_4737' /* Intent Statuses */, $in['in_status_entity_id']).' '.echo_en_cache('en_all_6193' /* OR Intents */, $in['in_completion_method_entity_id']).' <b><a href="https://mench.com/blog/'.$in['in_id'].'">'.echo_in_outcome($in['in_outcome']).'</a></b></div>';
+        echo '<div>'.($count+1).') '.echo_en_cache('en_all_4737' /* Intent Statuses */, $in['in_status_entity_id']).' '.echo_en_cache('en_all_6193' /* OR Intents */, $in['in_completion_method_entity_id']).' <b><a href="https://mench.com/ideas/'.$in['in_id'].'">'.echo_in_outcome($in['in_outcome']).'</a></b></div>';
 
         echo '<ul>';
         //Fetch all children for this OR:
-        foreach($this->READ_model->ln_fetch(array(
+        foreach($this->EXCHANGE_model->ln_fetch(array(
             'ln_status_entity_id IN (' . join(',', $this->config->item('en_ids_7360')) . ')' => null, //Link Statuses Active
             'in_status_entity_id IN (' . join(',', $this->config->item('en_ids_7356')) . ')' => null, //Intent Statuses Active
             'ln_type_entity_id' => 4228, //Intent Link Regular Step
@@ -697,7 +697,7 @@ if(!$action) {
             //Count completions:
             if($qualified_update){
 
-                $user_steps = $this->READ_model->ln_fetch(array(
+                $user_steps = $this->EXCHANGE_model->ln_fetch(array(
                     'ln_type_entity_id IN (' . join(',', $this->config->item('en_ids_6255')) . ')' => null, //Action Plan Steps Progressed
                     'ln_parent_intent_id' => $child_or['in_id'],
                     'ln_status_entity_id IN (' . join(',', $this->config->item('en_ids_7359')) . ')' => null, //Link Statuses Public
@@ -709,7 +709,7 @@ if(!$action) {
             }
 
             $all_children++;
-            echo '<li>'.echo_en_cache('en_all_6186' /* Link Statuses */, $child_or['ln_status_entity_id']).' '.echo_en_cache('en_all_4737' /* Intent Statuses */, $child_or['in_status_entity_id']).' '.echo_en_cache('en_all_7585', $child_or['in_completion_method_entity_id']).' <a href="https://mench.com/blog/'.$child_or['in_id'].'" '.( $qualified_update ? '' : 'style="color:#FF0000;"' ).'>'.echo_in_outcome($child_or['in_outcome']).'</a>'.( count($user_steps) > 0 ? ' / Steps: '.count($user_steps) : '' ).'</li>';
+            echo '<li>'.echo_en_cache('en_all_6186' /* Link Statuses */, $child_or['ln_status_entity_id']).' '.echo_en_cache('en_all_4737' /* Intent Statuses */, $child_or['in_status_entity_id']).' '.echo_en_cache('en_all_7585', $child_or['in_completion_method_entity_id']).' <a href="https://mench.com/ideas/'.$child_or['in_id'].'" '.( $qualified_update ? '' : 'style="color:#FF0000;"' ).'>'.echo_in_outcome($child_or['in_outcome']).'</a>'.( count($user_steps) > 0 ? ' / Steps: '.count($user_steps) : '' ).'</li>';
         }
         echo '</ul>';
         echo '<hr />';
@@ -733,7 +733,7 @@ if(!$action) {
     echo '</tr>';
     $counter = 0;
     $total_count = 0;
-    foreach ($this->READ_model->ln_fetch(array(
+    foreach ($this->EXCHANGE_model->ln_fetch(array(
         'ln_status_entity_id IN (' . join(',', $this->config->item('en_ids_7360')) . ')' => null, //Link Statuses Active
         'in_status_entity_id IN (' . join(',', $this->config->item('en_ids_7356')) . ')' => null, //Intent Statuses Active
         'ln_type_entity_id' => 4229, //Intent Link Locked Step
@@ -745,7 +745,7 @@ if(!$action) {
         if($mark){
 
             //Fetch parent intent:
-            $parent_ins = $this->BLOG_model->in_fetch(array(
+            $parent_ins = $this->IDEAS_model->in_fetch(array(
                 'in_id' => $in_ln['ln_parent_intent_id'],
             ));
 
@@ -758,15 +758,15 @@ if(!$action) {
 
             echo '<div>';
             echo '<span style="width:25px; display:inline-block; text-align:center;">'.$en_all_4737[$parent_ins[0]['in_status_entity_id']]['m_icon'].'</span>';
-            echo '<a href="/blog/'.$parent_ins[0]['in_id'].'">'.$parent_ins[0]['in_outcome'].'</a>';
+            echo '<a href="/ideas/'.$parent_ins[0]['in_id'].'">'.$parent_ins[0]['in_outcome'].'</a>';
             echo '</div>';
 
             echo '<div>';
             echo '<span style="width:25px; display:inline-block; text-align:center;">'.$en_all_4737[$in_ln['in_status_entity_id']]['m_icon'].'</span>';
-            echo '<a href="/blog/'.$in_ln['in_id'].'">'.$in_ln['in_outcome'].' [child]</a>';
+            echo '<a href="/ideas/'.$in_ln['in_id'].'">'.$in_ln['in_outcome'].' [child]</a>';
             echo '</div>';
 
-            if(count($this->READ_model->ln_fetch(array(
+            if(count($this->EXCHANGE_model->ln_fetch(array(
                     'ln_status_entity_id IN (' . join(',', $this->config->item('en_ids_7360')) . ')' => null, //Link Statuses Active
                     'in_status_entity_id IN (' . join(',', $this->config->item('en_ids_7356')) . ')' => null, //Intent Statuses Active
                     'in_completion_method_entity_id NOT IN (6907,6914)' => null, //NOT AND/OR Lock
@@ -781,7 +781,7 @@ if(!$action) {
             } else {
 
                 //Update user progression link type:
-                $user_steps = $this->READ_model->ln_fetch(array(
+                $user_steps = $this->EXCHANGE_model->ln_fetch(array(
                     'ln_type_entity_id IN (' . join(',', $this->config->item('en_ids_6255')) . ')' => null, //Action Plan Steps Progressed
                     'ln_parent_intent_id' => $in_ln['in_id'],
                     'ln_status_entity_id IN (' . join(',', $this->config->item('en_ids_7359')) . ')' => null, //Link Statuses Public
@@ -813,7 +813,7 @@ if(!$action) {
         echo '</tr>';
 
         $counter = 0;
-        foreach ($this->READ_model->ln_fetch(array(
+        foreach ($this->EXCHANGE_model->ln_fetch(array(
             'ln_status_entity_id IN (' . join(',', $this->config->item('en_ids_7360')) . ')' => null, //Link Statuses Active
             'in_status_entity_id IN (' . join(',', $this->config->item('en_ids_7356')) . ')' => null, //Intent Statuses Active
             'ln_type_entity_id' => 4228, //Intent Link Regular Step
@@ -825,7 +825,7 @@ if(!$action) {
             if($tr__assessment_points!=0){
 
                 //Fetch parent intent:
-                $parent_ins = $this->BLOG_model->in_fetch(array(
+                $parent_ins = $this->IDEAS_model->in_fetch(array(
                     'in_id' => $in_ln['ln_parent_intent_id'],
                 ));
 
@@ -837,12 +837,12 @@ if(!$action) {
                 echo '<td style="text-align: left;">';
                 echo '<div>';
                 echo '<span style="width:25px; display:inline-block; text-align:center;">'.$en_all_4737[$parent_ins[0]['in_status_entity_id']]['m_icon'].'</span>';
-                echo '<a href="/blog/'.$parent_ins[0]['in_id'].'">'.$parent_ins[0]['in_outcome'].'</a>';
+                echo '<a href="/ideas/'.$parent_ins[0]['in_id'].'">'.$parent_ins[0]['in_outcome'].'</a>';
                 echo '</div>';
 
                 echo '<div>';
                 echo '<span style="width:25px; display:inline-block; text-align:center;">'.$en_all_4737[$in_ln['in_status_entity_id']]['m_icon'].'</span>';
-                echo '<a href="/blog/'.$in_ln['in_id'].'">'.$in_ln['in_outcome'].'</a>';
+                echo '<a href="/ideas/'.$in_ln['in_id'].'">'.$in_ln['in_outcome'].'</a>';
                 echo '</div>';
                 echo '</td>';
                 echo '</tr>';
@@ -887,7 +887,7 @@ $(document).ready(function () {
 //Show spinner:
 $(\'#in_report_conditional_steps\').html(\'<span><i class="far fa-yin-yang fa-spin"></i> \' + echo_loading_notify() +  \'</span>\').hide().fadeIn();
 //Load report based on input fields:
-$.post("/blog/in_report_conditional_steps", {
+$.post("/ideas/in_report_conditional_steps", {
     starting_in: parseInt($(\'#starting_in\').val()),
     depth_levels: parseInt($(\'#depth_levels\').val()),
 }, function (data) {
@@ -915,7 +915,7 @@ $.post("/blog/in_report_conditional_steps", {
         if(intval($_POST['push_message']) && intval($_POST['recipient_en'])){
 
             //Send to Facebook Messenger:
-            $msg_validation = $this->READ_model->dispatch_message(
+            $msg_validation = $this->EXCHANGE_model->dispatch_message(
                 $_POST['test_message'],
                 array('en_id' => intval($_POST['recipient_en'])),
                 true
@@ -923,7 +923,7 @@ $.post("/blog/in_report_conditional_steps", {
 
         } elseif(intval($_POST['recipient_en']) > 0) {
 
-            $msg_validation = $this->READ_model->dispatch_validate_message($_POST['test_message'], array('en_id' => $_POST['recipient_en']), $_POST['push_message']);
+            $msg_validation = $this->EXCHANGE_model->dispatch_validate_message($_POST['test_message'], array('en_id' => $_POST['recipient_en']), $_POST['push_message']);
 
         } else {
 

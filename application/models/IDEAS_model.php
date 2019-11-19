@@ -1,6 +1,6 @@
 <?php if (!defined('BASEPATH')) exit('No direct script access allowed');
 
-class BLOG_model extends CI_Model
+class IDEAS_model extends CI_Model
 {
 
     /*
@@ -45,7 +45,7 @@ class BLOG_model extends CI_Model
                 }
 
                 //Log link new entity:
-                $this->READ_model->ln_create(array(
+                $this->EXCHANGE_model->ln_create(array(
                     'ln_creator_entity_id' => $ln_creator_entity_id,
                     'ln_child_intent_id' => $insert_columns['in_id'],
                     'ln_content' => $insert_columns['in_outcome'],
@@ -53,7 +53,7 @@ class BLOG_model extends CI_Model
                 ));
 
                 //Fetch to return the complete entity data:
-                $ins = $this->BLOG_model->in_fetch(array(
+                $ins = $this->IDEAS_model->in_fetch(array(
                     'in_id' => $insert_columns['in_id'],
                 ));
 
@@ -69,7 +69,7 @@ class BLOG_model extends CI_Model
         } else {
 
             //Ooopsi, something went wrong!
-            $this->READ_model->ln_create(array(
+            $this->EXCHANGE_model->ln_create(array(
                 'ln_content' => 'in_create() failed to create a new intent',
                 'ln_type_entity_id' => 4246, //Platform Bug Reports
                 'ln_creator_entity_id' => $ln_creator_entity_id,
@@ -113,7 +113,7 @@ class BLOG_model extends CI_Model
 
             //Should we append Intent Notes?
             if (in_array('in__messages', $join_objects)) {
-                $ins[$key]['in__messages'] = $this->READ_model->ln_fetch(array(
+                $ins[$key]['in__messages'] = $this->EXCHANGE_model->ln_fetch(array(
                     'ln_status_entity_id IN (' . join(',', $this->config->item('en_ids_7360')) . ')' => null, //Link Statuses Active
                     'ln_type_entity_id IN (' . join(',', $this->config->item('en_ids_4485')) . ')' => null, //All Intent Notes
                     'ln_child_intent_id' => $value['in_id'],
@@ -123,7 +123,7 @@ class BLOG_model extends CI_Model
             //Should we fetch all parent intentions?
             if (in_array('in__parents', $join_objects)) {
 
-                $ins[$key]['in__parents'] = $this->READ_model->ln_fetch(array(
+                $ins[$key]['in__parents'] = $this->EXCHANGE_model->ln_fetch(array(
                     'ln_status_entity_id IN (' . join(',', $this->config->item('en_ids_7360')) . ')' => null, //Link Statuses Active
                     'in_status_entity_id IN (' . join(',', $this->config->item('en_ids_7356')) . ')' => null, //Intent Statuses Active
                     'ln_type_entity_id IN (' . join(',', $this->config->item('en_ids_4486')) . ')' => null, //Intent-to-Intent Links
@@ -136,7 +136,7 @@ class BLOG_model extends CI_Model
             if (in_array('in__children', $join_objects)) {
 
                 //Fetch immediate children:
-                $ins[$key]['in__children'] = $this->READ_model->ln_fetch(array(
+                $ins[$key]['in__children'] = $this->EXCHANGE_model->ln_fetch(array(
                     'ln_status_entity_id IN (' . join(',', $this->config->item('en_ids_7360')) . ')' => null, //Link Statuses Active
                     'in_status_entity_id IN (' . join(',', $this->config->item('en_ids_7356')) . ')' => null, //Intent Statuses Active
                     'ln_type_entity_id IN (' . join(',', $this->config->item('en_ids_4486')) . ')' => null, //Intent-to-Intent Links
@@ -159,7 +159,7 @@ class BLOG_model extends CI_Model
 
         //Fetch current intent filed values so we can compare later on after we've updated it:
         if($ln_creator_entity_id > 0){
-            $before_data = $this->BLOG_model->in_fetch(array('in_id' => $id));
+            $before_data = $this->IDEAS_model->in_fetch(array('in_id' => $id));
         }
 
         //Cleanup metadata if needed:
@@ -229,7 +229,7 @@ class BLOG_model extends CI_Model
 
 
                 //Value has changed, log link:
-                $this->READ_model->ln_create(array(
+                $this->EXCHANGE_model->ln_create(array(
                     'ln_creator_entity_id' => $ln_creator_entity_id,
                     'ln_type_entity_id' => $ln_type_entity_id,
                     'ln_child_intent_id' => $id,
@@ -254,7 +254,7 @@ class BLOG_model extends CI_Model
         } elseif($affected_rows < 1){
 
             //This should not happen:
-            $this->READ_model->ln_create(array(
+            $this->EXCHANGE_model->ln_create(array(
                 'ln_child_intent_id' => $id,
                 'ln_type_entity_id' => 4246, //Platform Bug Reports
                 'ln_creator_entity_id' => $ln_creator_entity_id,
@@ -273,12 +273,12 @@ class BLOG_model extends CI_Model
 
         //Remove intent relations:
         $intent_remove_links = array_merge(
-            $this->READ_model->ln_fetch(array( //Intent Links
+            $this->EXCHANGE_model->ln_fetch(array( //Intent Links
                 'ln_status_entity_id IN (' . join(',', $this->config->item('en_ids_7360')) . ')' => null, //Link Statuses Active
                 'ln_type_entity_id IN (' . join(',', $this->config->item('en_ids_4486')) . ')' => null, //Intent-to-Intent Links
                 '(ln_child_intent_id = '.$in_id.' OR ln_parent_intent_id = '.$in_id.')' => null,
             ), array(), 0),
-            $this->READ_model->ln_fetch(array( //Intent Notes
+            $this->EXCHANGE_model->ln_fetch(array( //Intent Notes
                 'ln_status_entity_id IN (' . join(',', $this->config->item('en_ids_7360')) . ')' => null, //Link Statuses Active
                 'ln_type_entity_id IN (' . join(',', $this->config->item('en_ids_4485')) . ')' => null, //All Intent Notes
                 '(ln_child_intent_id = '.$in_id.' OR ln_parent_intent_id = '.$in_id.')' => null,
@@ -288,7 +288,7 @@ class BLOG_model extends CI_Model
         $links_removed = 0;
         foreach($intent_remove_links as $ln){
             //Remove this link:
-            $links_removed += $this->READ_model->ln_update($ln['ln_id'], array(
+            $links_removed += $this->EXCHANGE_model->ln_update($ln['ln_id'], array(
                 'ln_status_entity_id' => 6173, //Link Removed
             ), $ln_creator_entity_id, 10686 /* Intent Link Unlinked */);
         }
@@ -315,7 +315,7 @@ class BLOG_model extends CI_Model
 
         //Validate Original intent:
         $linking_to_existing = (intval($link_in_id) > 0);
-        $linked_ins = $this->BLOG_model->in_fetch(array(
+        $linked_ins = $this->IDEAS_model->in_fetch(array(
             'in_id' => intval($in_linked_id),
         ));
 
@@ -336,7 +336,7 @@ class BLOG_model extends CI_Model
             //We are linking to $link_in_id, We are NOT creating any new intents...
 
             //Fetch more details on the child intent we're about to link:
-            $ins = $this->BLOG_model->in_fetch(array(
+            $ins = $this->IDEAS_model->in_fetch(array(
                 'in_id' => $link_in_id,
             ));
 
@@ -366,7 +366,7 @@ class BLOG_model extends CI_Model
             $intent_new = $ins[0];
 
             //Make sure this is not a duplicate intent for its parent:
-            $dup_links = $this->READ_model->ln_fetch(array(
+            $dup_links = $this->EXCHANGE_model->ln_fetch(array(
                 'ln_parent_intent_id' => $parent_in['in_id'],
                 'ln_child_intent_id' => $child_in['in_id'],
                 'ln_type_entity_id IN (' . join(',', $this->config->item('en_ids_4486')) . ')' => null, //Intent-to-Intent Links
@@ -397,7 +397,7 @@ class BLOG_model extends CI_Model
             //We are NOT linking to an existing intent, but instead, we're creating a new intent
 
             //Validate Intent Outcome:
-            $in_outcome_validation = $this->BLOG_model->in_outcome_validate($in_outcome);
+            $in_outcome_validation = $this->IDEAS_model->in_outcome_validate($in_outcome);
             if(!$in_outcome_validation['status']){
                 //We had an error, return it:
                 return $in_outcome_validation;
@@ -405,7 +405,7 @@ class BLOG_model extends CI_Model
 
 
             //Create new intent:
-            $intent_new = $this->BLOG_model->in_create(array(
+            $intent_new = $this->IDEAS_model->in_create(array(
                 'in_outcome' => $in_outcome_validation['in_cleaned_outcome'],
                 'in_completion_method_entity_id' => $in_completion_method_entity_id,
                 'in_status_entity_id' => $new_in_status,
@@ -415,12 +415,12 @@ class BLOG_model extends CI_Model
 
 
         //Create Intent Link:
-        $relation = $this->READ_model->ln_create(array(
+        $relation = $this->EXCHANGE_model->ln_create(array(
             'ln_creator_entity_id' => $ln_creator_entity_id,
             'ln_type_entity_id' => 4228, //Intent Link Regular Step
             ( $is_parent ? 'ln_child_intent_id' : 'ln_parent_intent_id' ) => $in_linked_id,
             ( $is_parent ? 'ln_parent_intent_id' : 'ln_child_intent_id' ) => $intent_new['in_id'],
-            'ln_order' => 1 + $this->READ_model->ln_max_order(array(
+            'ln_order' => 1 + $this->EXCHANGE_model->ln_max_order(array(
                     'ln_status_entity_id IN (' . join(',', $this->config->item('en_ids_7360')) . ')' => null, //Link Statuses Active
                     'ln_type_entity_id IN (' . join(',', $this->config->item('en_ids_4486')) . ')' => null, //Intent-to-Intent Links
                     'ln_parent_intent_id' => ( $is_parent ? $intent_new['in_id'] : $in_linked_id ),
@@ -437,7 +437,7 @@ class BLOG_model extends CI_Model
         //Add up-vote if not yet added:
         if($ln_creator_entity_id > 0){
 
-            if(!count($this->READ_model->ln_fetch(array(
+            if(!count($this->EXCHANGE_model->ln_fetch(array(
                     ( $is_parent ? 'ln_child_intent_id' : 'ln_parent_intent_id' ) => $in_linked_id,
                     ( $is_parent ? 'ln_parent_intent_id' : 'ln_child_intent_id' ) => $intent_new['in_id'],
                     'ln_parent_entity_id' => $ln_creator_entity_id,
@@ -446,7 +446,7 @@ class BLOG_model extends CI_Model
                 )))){
 
                 //Add new up-vote:
-                $this->READ_model->ln_create(array(
+                $this->EXCHANGE_model->ln_create(array(
                     'ln_creator_entity_id' => $ln_creator_entity_id,
                     'ln_parent_entity_id' => $ln_creator_entity_id,
                     'ln_type_entity_id' => 4983, //Intent Note Up-Votes
@@ -459,7 +459,7 @@ class BLOG_model extends CI_Model
 
 
         //Fetch and return full data to be properly shown on the UI using the echo_in() function
-        $new_ins = $this->READ_model->ln_fetch(array(
+        $new_ins = $this->EXCHANGE_model->ln_fetch(array(
             ( $is_parent ? 'ln_child_intent_id' : 'ln_parent_intent_id' ) => $in_linked_id,
             ( $is_parent ? 'ln_parent_intent_id' : 'ln_child_intent_id' ) => $intent_new['in_id'],
             'ln_type_entity_id IN (' . join(',', $this->config->item('en_ids_4486')) . ')' => null, //Intent-to-Intent Links
@@ -540,7 +540,7 @@ class BLOG_model extends CI_Model
                 $ui .= '<span style="color: #FF0000;">Error: Unknown Input Type</span>';
 
                 //Log for Trainers:
-                $this->READ_model->ln_create(array(
+                $this->EXCHANGE_model->ln_create(array(
                     'ln_content' => 'in_create_content() has unknown file type @'.$in['in_completion_method_entity_id'],
                     'ln_type_entity_id' => 4246, //Platform Bug Reports
                 ));
@@ -561,7 +561,7 @@ class BLOG_model extends CI_Model
         $grand_parents = array();
 
         //Fetch parents:
-        foreach($this->READ_model->ln_fetch(array(
+        foreach($this->EXCHANGE_model->ln_fetch(array(
             'in_status_entity_id IN (' . join(',', $this->config->item('en_ids_7355')) . ')' => null, //Intent Statuses Public
             'ln_status_entity_id IN (' . join(',', $this->config->item('en_ids_7359')) . ')' => null, //Link Statuses Public
             'ln_type_entity_id IN (' . join(',', $this->config->item('en_ids_4486')) . ')' => null, //Intent-to-Intent Links
@@ -578,7 +578,7 @@ class BLOG_model extends CI_Model
 
 
             //Fetch parents of parents:
-            $recursive_parents = $this->BLOG_model->in_fetch_recursive_public_parents($p_id, false);
+            $recursive_parents = $this->IDEAS_model->in_fetch_recursive_public_parents($p_id, false);
             if(count($recursive_parents) > 0){
                 if($first_level){
                     array_push($grand_parents, array_merge(array($p_id), $recursive_parents));
@@ -600,7 +600,7 @@ class BLOG_model extends CI_Model
         $child_ids = array();
 
         //Fetch parents:
-        foreach($this->READ_model->ln_fetch(array(
+        foreach($this->EXCHANGE_model->ln_fetch(array(
             'in_status_entity_id IN (' . join(',', $this->config->item('en_ids_7356')) . ')' => null, //Intent Statuses Active
             'ln_status_entity_id IN (' . join(',', $this->config->item('en_ids_7360')) . ')' => null, //Link Statuses Active
             'ln_type_entity_id IN (' . join(',', $this->config->item('en_ids_4486')) . ')' => null, //Intent-to-Intent Links
@@ -610,7 +610,7 @@ class BLOG_model extends CI_Model
             array_push($child_ids, intval($in_child['in_id']));
 
             //Fetch parents of parents:
-            $recursive_children = $this->BLOG_model->in_recursive_child_ids($in_child['in_id'], false);
+            $recursive_children = $this->IDEAS_model->in_recursive_child_ids($in_child['in_id'], false);
 
             //Add to current array if we found anything:
             if(count($recursive_children) > 0){
@@ -641,7 +641,7 @@ class BLOG_model extends CI_Model
         );
 
         //Fetch children:
-        foreach($this->READ_model->ln_fetch(array(
+        foreach($this->EXCHANGE_model->ln_fetch(array(
             'ln_status_entity_id IN (' . join(',', $this->config->item('en_ids_7359')) . ')' => null, //Link Statuses Public
             'in_status_entity_id IN (' . join(',', $this->config->item('en_ids_7355')) . ')' => null, //Intent Statuses Public
             'ln_type_entity_id IN (' . join(',', $this->config->item('en_ids_4486')) . ')' => null, //Intent-to-Intent Links
@@ -665,7 +665,7 @@ class BLOG_model extends CI_Model
                 array_push($metadata_this['__in__metadata_common_steps'], intval($in_child['in_id']));
 
                 //Go recursively down:
-                $child_recursion = $this->BLOG_model->in_metadata_common_base($in_child);
+                $child_recursion = $this->IDEAS_model->in_metadata_common_base($in_child);
 
 
                 //Aggregate recursion data:
@@ -737,7 +737,7 @@ class BLOG_model extends CI_Model
          * */
 
         //Fetch this intent:
-        $ins = $this->BLOG_model->in_fetch(array(
+        $ins = $this->IDEAS_model->in_fetch(array(
             'in_id' => $in_id,
             'in_status_entity_id IN (' . join(',', $this->config->item('en_ids_7355')) . ')' => null, //Intent Statuses Public
         ));
@@ -756,7 +756,7 @@ class BLOG_model extends CI_Model
         $locked_steps = ( isset($in_metadata['in__metadata_expansion_conditional']) && count($in_metadata['in__metadata_expansion_conditional']) > 0 ? $in_metadata['in__metadata_expansion_conditional'] : array() );
 
         //Fetch totals for published common step intents:
-        $common_totals = $this->BLOG_model->in_fetch(array(
+        $common_totals = $this->IDEAS_model->in_fetch(array(
             'in_id IN ('.join(',',$flat_common_steps).')' => null,
             'in_status_entity_id IN (' . join(',', $this->config->item('en_ids_7355')) . ')' => null, //Intent Statuses Public
         ), array(), 0, 0, array(), 'COUNT(in_id) as total_steps, SUM(in_completion_seconds) as total_seconds');
@@ -786,7 +786,7 @@ class BLOG_model extends CI_Model
 
         //Add-up Intent Note References:
         //The entities we need to check and see if they are industry experts:
-        foreach ($this->READ_model->ln_fetch(array(
+        foreach ($this->EXCHANGE_model->ln_fetch(array(
             'ln_parent_entity_id >' => 0, //Intent Notes that reference an entity
             'ln_type_entity_id IN (' . join(',', $this->config->item('en_ids_4485')).')' => null, //Intent Notes
             '(ln_child_intent_id = ' . $in_id . ( count($flat_common_steps) > 0 ? ' OR ln_child_intent_id IN ('.join(',',$flat_common_steps).')' : '' ).')' => null,
@@ -795,7 +795,7 @@ class BLOG_model extends CI_Model
         ), array('en_parent'), 0) as $note_en) {
 
             //Referenced entity in intent notes... Fetch parents:
-            foreach($this->READ_model->ln_fetch(array(
+            foreach($this->EXCHANGE_model->ln_fetch(array(
                 'ln_child_entity_id' => $note_en['ln_parent_entity_id'],
                 'ln_type_entity_id IN (' . join(',', $this->config->item('en_ids_4592')).')' => null, //Entity-to-Entity Links
                 'ln_status_entity_id IN (' . join(',', $this->config->item('en_ids_7359')) . ')' => null, //Link Statuses Public
@@ -819,7 +819,7 @@ class BLOG_model extends CI_Model
                 } else {
 
                     //Industry Expert?
-                    $expert_parents = $this->READ_model->ln_fetch(array(
+                    $expert_parents = $this->EXCHANGE_model->ln_fetch(array(
                         'en_status_entity_id IN (' . join(',', $this->config->item('en_ids_7357')) . ')' => null, //Entity Statuses Public
                         'ln_status_entity_id IN (' . join(',', $this->config->item('en_ids_7359')) . ')' => null, //Link Statuses Public
                         'ln_type_entity_id IN (' . join(',', $this->config->item('en_ids_4592')).')' => null, //Entity-to-Entity Links
@@ -858,7 +858,7 @@ class BLOG_model extends CI_Model
 
             foreach($expansion_group as $expansion_in_id){
 
-                $metadata_recursion = $this->BLOG_model->in_metadata_extra_insights($expansion_in_id, false);
+                $metadata_recursion = $this->IDEAS_model->in_metadata_extra_insights($expansion_in_id, false);
 
                 if(!$metadata_recursion){
                     continue;
@@ -969,7 +969,7 @@ class BLOG_model extends CI_Model
 
 
         //Step 1: Is there an OR parent that we can simply answer and unlock?
-        foreach($this->READ_model->ln_fetch(array(
+        foreach($this->EXCHANGE_model->ln_fetch(array(
             'ln_status_entity_id IN (' . join(',', $this->config->item('en_ids_7359')) . ')' => null, //Link Statuses Public
             'in_status_entity_id IN (' . join(',', $this->config->item('en_ids_7355')) . ')' => null, //Intent Statuses Public
             'ln_type_entity_id' => 4228, //Intent Link Regular Step
@@ -983,7 +983,7 @@ class BLOG_model extends CI_Model
 
 
         //Step 2: Are there any locked link parents that the user might be able to unlock?
-        foreach($this->READ_model->ln_fetch(array(
+        foreach($this->EXCHANGE_model->ln_fetch(array(
             'ln_status_entity_id IN (' . join(',', $this->config->item('en_ids_7359')) . ')' => null, //Link Statuses Public
             'in_status_entity_id IN (' . join(',', $this->config->item('en_ids_7355')) . ')' => null, //Intent Statuses Public
             'ln_type_entity_id' => 4229, //Intent Link Locked Step
@@ -991,7 +991,7 @@ class BLOG_model extends CI_Model
         ), array('in_parent'), 0) as $in_locked_parent){
             if(in_is_unlockable($in_locked_parent)){
                 //Need to check recursively:
-                foreach($this->BLOG_model->in_unlock_paths($in_locked_parent) as $locked_path){
+                foreach($this->IDEAS_model->in_unlock_paths($in_locked_parent) as $locked_path){
                     if(count($child_unlock_paths)==0 || !filter_array($child_unlock_paths, 'in_id', $locked_path['in_id'])) {
                         array_push($child_unlock_paths, $locked_path);
                     }
@@ -1010,7 +1010,7 @@ class BLOG_model extends CI_Model
 
 
         //Step 3: We don't have any OR parents, let's see how we can complete all children to meet the requirements:
-        $in__children = $this->READ_model->ln_fetch(array(
+        $in__children = $this->EXCHANGE_model->ln_fetch(array(
             'ln_status_entity_id IN (' . join(',', $this->config->item('en_ids_7359')) . ')' => null, //Link Statuses Public
             'in_status_entity_id IN (' . join(',', $this->config->item('en_ids_7355')) . ')' => null, //Intent Statuses Public
             'ln_type_entity_id' => 4228, //Intent Link Regular Step
@@ -1026,7 +1026,7 @@ class BLOG_model extends CI_Model
             if(in_is_unlockable($in_child)){
 
                 //Need to check recursively:
-                foreach($this->BLOG_model->in_unlock_paths($in_child) as $locked_path){
+                foreach($this->IDEAS_model->in_unlock_paths($in_child) as $locked_path){
                     if(count($child_unlock_paths)==0 || !filter_array($child_unlock_paths, 'in_id', $locked_path['in_id'])) {
                         array_push($child_unlock_paths, $locked_path);
                     }

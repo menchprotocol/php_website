@@ -96,7 +96,7 @@ foreach ($this->config->item('en_all_11021') as $en_id => $m){
         if($en_id2==11019){
 
             //BLOG TREE PREVIOUS
-            $fetch_11019 = $this->READ_model->ln_fetch(array(
+            $fetch_11019 = $this->EXCHANGE_model->ln_fetch(array(
                 'ln_status_entity_id IN (' . join(',', $this->config->item('en_ids_7360')) . ')' => null, //Link Statuses Active
                 'in_status_entity_id IN (' . join(',', $this->config->item('en_ids_7356')) . ')' => null, //Intent Statuses Active
                 'ln_type_entity_id IN (' . join(',', $this->config->item('en_ids_4486')) . ')' => null, //Intent-to-Intent Links
@@ -128,7 +128,7 @@ foreach ($this->config->item('en_all_11021') as $en_id => $m){
         } elseif($en_id2==11020){
 
             //BLOG TREE NEXT
-            $fetch_11020 = $this->READ_model->ln_fetch(array(
+            $fetch_11020 = $this->EXCHANGE_model->ln_fetch(array(
                 'ln_status_entity_id IN (' . join(',', $this->config->item('en_ids_7360')) . ')' => null, //Link Statuses Active
                 'in_status_entity_id IN (' . join(',', $this->config->item('en_ids_7356')) . ')' => null, //Intent Statuses Active
                 'ln_type_entity_id IN (' . join(',', $this->config->item('en_ids_4486')) . ')' => null, //Intent-to-Intent Links
@@ -165,7 +165,7 @@ foreach ($this->config->item('en_all_11021') as $en_id => $m){
         } elseif(in_array($en_id2, array(7347,6146))){
 
             //READER READS & BOOKMARKS
-            $item_counters = $this->READ_model->ln_fetch(array(
+            $item_counters = $this->EXCHANGE_model->ln_fetch(array(
                 'ln_status_entity_id IN (' . join(',', $this->config->item('en_ids_7360')) . ')' => null, //Link Statuses Active
                 'ln_type_entity_id IN (' . join(',', $this->config->item('en_ids_'.$en_id2)) . ')' => null,
                 'ln_parent_intent_id' => $in['in_id'],
@@ -176,7 +176,7 @@ foreach ($this->config->item('en_all_11021') as $en_id => $m){
         } elseif(in_array($en_id2, $this->config->item('en_ids_4485'))){
 
             //BLOG NOTE
-            $blog_notes = $this->READ_model->ln_fetch(array(
+            $blog_notes = $this->EXCHANGE_model->ln_fetch(array(
                 'ln_status_entity_id IN (' . join(',', $this->config->item('en_ids_7360')) . ')' => null, //Link Statuses Active
                 'ln_type_entity_id' => $en_id2,
                 'ln_child_intent_id' => $in['in_id'],

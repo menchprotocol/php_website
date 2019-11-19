@@ -19,12 +19,12 @@ if(in_array($in['in_completion_method_entity_id'], $this->config->item('en_ids_7
 
 
     //Fetch & Display Intent Note Messages:
-    foreach ($this->READ_model->ln_fetch(array(
+    foreach ($this->EXCHANGE_model->ln_fetch(array(
         'ln_status_entity_id IN (' . join(',', $this->config->item('en_ids_7359')) . ')' => null, //Link Statuses Public
         'ln_type_entity_id' => 4231, //Intent Note Messages
         'ln_child_intent_id' => $in['in_id'],
     ), array(), 0, 0, array('ln_order' => 'ASC')) as $ln) {
-        echo $this->READ_model->dispatch_message($ln['ln_content']);
+        echo $this->EXCHANGE_model->dispatch_message($ln['ln_content']);
     }
 
 
@@ -49,7 +49,7 @@ if(in_array($in['in_completion_method_entity_id'], $this->config->item('en_ids_7
     //Check to see if added to Action Plan for logged-in users:
     if(isset($session_en['en_id'])){
 
-        if(count($this->READ_model->ln_fetch(array(
+        if(count($this->EXCHANGE_model->ln_fetch(array(
                 'ln_creator_entity_id' => $session_en['en_id'],
                 'ln_type_entity_id IN (' . join(',', $this->config->item('en_ids_7347')) . ')' => null, //Action Plan Intention Set
                 'ln_status_entity_id IN (' . join(',', $this->config->item('en_ids_7364')) . ')' => null, //Link Statuses Incomplete
@@ -84,7 +84,7 @@ if(in_array($in['in_completion_method_entity_id'], $this->config->item('en_ids_7
     //Start generating relevant intentions we can recommend as other intentions:
 
     //Child intentions:
-    $in__children = $this->READ_model->ln_fetch(array(
+    $in__children = $this->EXCHANGE_model->ln_fetch(array(
         'ln_status_entity_id IN (' . join(',', $this->config->item('en_ids_7359')) . ')' => null, //Link Statuses Public
         'in_completion_method_entity_id IN (' . join(',', $this->config->item('en_ids_7582')) . ')' => null, //READ LOGIN REQUIRED
         'in_status_entity_id IN (' . join(',', $this->config->item('en_ids_7355')) . ')' => null, //Intent Statuses Public
@@ -93,7 +93,7 @@ if(in_array($in['in_completion_method_entity_id'], $this->config->item('en_ids_7
     ), array('in_child'));
 
     //Parent intentions:
-    $in__parents = $this->READ_model->ln_fetch(array(
+    $in__parents = $this->EXCHANGE_model->ln_fetch(array(
         'ln_status_entity_id IN (' . join(',', $this->config->item('en_ids_7359')) . ')' => null, //Link Statuses Public
         'in_completion_method_entity_id IN (' . join(',', $this->config->item('en_ids_7582')) . ')' => null, //READ LOGIN REQUIRED
         'in_status_entity_id IN (' . join(',', $this->config->item('en_ids_7355')) . ')' => null, //Intent Statuses Public
@@ -105,13 +105,13 @@ if(in_array($in['in_completion_method_entity_id'], $this->config->item('en_ids_7
 
     //Sibling intentions:
     $in__siblings = array();
-    foreach ($this->READ_model->ln_fetch(array(
+    foreach ($this->EXCHANGE_model->ln_fetch(array(
         'ln_status_entity_id IN (' . join(',', $this->config->item('en_ids_7359')) . ')' => null, //Link Statuses Public
         'in_status_entity_id IN (' . join(',', $this->config->item('en_ids_7355')) . ')' => null, //Intent Statuses Public
         'ln_type_entity_id' => 4228, //Intent Link Regular Step
         'ln_child_intent_id' => $in['in_id'],
     ), array('in_parent')) as $parent_in) {
-        $in__siblings = array_merge($in__siblings, $this->READ_model->ln_fetch(array(
+        $in__siblings = array_merge($in__siblings, $this->EXCHANGE_model->ln_fetch(array(
             'ln_status_entity_id IN (' . join(',', $this->config->item('en_ids_7359')) . ')' => null, //Link Statuses Public
             'in_completion_method_entity_id IN (' . join(',', $this->config->item('en_ids_7582')) . ')' => null, //READ LOGIN REQUIRED
             'in_status_entity_id IN (' . join(',', $this->config->item('en_ids_7355')) . ')' => null, //Intent Statuses Public
@@ -123,13 +123,13 @@ if(in_array($in['in_completion_method_entity_id'], $this->config->item('en_ids_7
 
     //Granchildren intentions:
     $in__granchildren = array();
-    foreach ($this->READ_model->ln_fetch(array(
+    foreach ($this->EXCHANGE_model->ln_fetch(array(
         'ln_status_entity_id IN (' . join(',', $this->config->item('en_ids_7359')) . ')' => null, //Link Statuses Public
         'in_status_entity_id IN (' . join(',', $this->config->item('en_ids_7355')) . ')' => null, //Intent Statuses Public
         'ln_type_entity_id' => 4228, //Intent Link Regular Step
         'ln_parent_intent_id' => $in['in_id'],
     ), array('in_child')) as $child_in) {
-        $in__granchildren = array_merge($in__granchildren, $this->READ_model->ln_fetch(array(
+        $in__granchildren = array_merge($in__granchildren, $this->EXCHANGE_model->ln_fetch(array(
             'ln_status_entity_id IN (' . join(',', $this->config->item('en_ids_7359')) . ')' => null, //Link Statuses Public
             'in_completion_method_entity_id IN (' . join(',', $this->config->item('en_ids_7582')) . ')' => null, //READ LOGIN REQUIRED
             'in_status_entity_id IN (' . join(',', $this->config->item('en_ids_7355')) . ')' => null, //Intent Statuses Public
@@ -215,12 +215,12 @@ if(in_array($in['in_completion_method_entity_id'], $this->config->item('en_ids_7
 
 
     //Fetch & Display Intent Note Messages:
-    foreach ($this->READ_model->ln_fetch(array(
+    foreach ($this->EXCHANGE_model->ln_fetch(array(
         'ln_status_entity_id IN (' . join(',', $this->config->item('en_ids_7359')) . ')' => null, //Link Statuses Public
         'ln_type_entity_id' => 4231, //Intent Note Messages
         'ln_child_intent_id' => $in['in_id'],
     ), array(), 0, 0, array('ln_order' => 'ASC')) as $ln) {
-        echo $this->READ_model->dispatch_message($ln['ln_content']);
+        echo $this->EXCHANGE_model->dispatch_message($ln['ln_content']);
     }
 
 
@@ -229,7 +229,7 @@ if(in_array($in['in_completion_method_entity_id'], $this->config->item('en_ids_7
 
         //Give option to choose a child path:
         echo '<div class="list-group actionplan_list grey_list" style="margin-top:40px;">';
-        $in__children = $this->READ_model->ln_fetch(array(
+        $in__children = $this->EXCHANGE_model->ln_fetch(array(
             'ln_status_entity_id IN (' . join(',', $this->config->item('en_ids_7360')) . ')' => null, //Link Statuses Active
             'in_status_entity_id IN (' . join(',', $this->config->item('en_ids_7355')) . ')' => null, //Intent Statuses Public
             'ln_type_entity_id' => 4228, //Intent Link Regular Step

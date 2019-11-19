@@ -35,7 +35,7 @@ if(in_array($in['in_id'], $user_intentions_ids)){
 
 
 //Go through parents and detect intersects with user intentions. WARNING: Logic duplicated. Search for "ELEPHANT" to see.
-$recursive_parents = $this->BLOG_model->in_fetch_recursive_public_parents($in['in_id']);
+$recursive_parents = $this->IDEAS_model->in_fetch_recursive_public_parents($in['in_id']);
 
 foreach ($recursive_parents as $grand_parent_ids) {
     //Does this parent and its grandparents have an intersection with the user intentions?
@@ -43,7 +43,7 @@ foreach ($recursive_parents as $grand_parent_ids) {
 
         //Fetch parent intent & show:
         /*
-        $parent_ins = $this->BLOG_model->in_fetch(array(
+        $parent_ins = $this->IDEAS_model->in_fetch(array(
             'in_id' => $grand_parent_ids[0],
         ));
 
@@ -97,7 +97,7 @@ if(!$found_grandpa_intersect){
                 $submission_messages .= '<span style="margin-right:10px;" class="status-label underdot" data-toggle="tooltip" data-placement="top" title="Message added '.echo_time_difference(strtotime($pl['ln_timestamp'])).' ago">'.( $pl['ln_status_entity_id'] == 6176 /* Link Published */ ? $en_all_6146[$pl['ln_type_entity_id']]['m_icon'] /* Show Progression Type */ : $en_all_6186[$pl['ln_status_entity_id']]['m_icon'] /* Show Status */ ).' '.$en_all_6146[$pl['ln_type_entity_id']]['m_name'].'</span>';
 
 
-                $submission_messages .= '<div class="white-bg">'.$this->READ_model->dispatch_message($pl['ln_content'], $session_en).'</div>';
+                $submission_messages .= '<div class="white-bg">'.$this->EXCHANGE_model->dispatch_message($pl['ln_content'], $session_en).'</div>';
             }
         }
     }

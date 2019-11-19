@@ -7,7 +7,7 @@
     foreach($this->config->item('en_all_10869') /* Course Categories */ as $en_id => $m) {
 
         //Count total published courses here:
-        $published_ins = $this->READ_model->ln_fetch(array(
+        $published_ins = $this->EXCHANGE_model->ln_fetch(array(
             'ln_status_entity_id IN (' . join(',', $this->config->item('en_ids_7359')) . ')' => null, //Link Statuses Public
             'in_status_entity_id IN (' . join(',', $this->config->item('en_ids_7355')) . ')' => null, //Intent Statuses Public
             'in_completion_method_entity_id IN (' . join(',', $this->config->item('en_ids_7582')) . ')' => null, //READ LOGIN REQUIRED

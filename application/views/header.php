@@ -102,7 +102,7 @@ if(strlen($flash_message) > 0){
                             $handle = strtolower($m['m_name']);
 
                             //Switch betweenh reading/blogging if specific blog is loaded:
-                            $url_postfix = (intval($this->uri->segment(2) && isset($session_en['en_id']) && (($this->uri->segment(1)=='blog' && $en_id==6205) || ($this->uri->segment(1)=='read' && $en_id==4535))) ? '/'.$this->uri->segment(2) : '' );
+                            $url_postfix = (intval($this->uri->segment(2) && isset($session_en['en_id']) && (($this->uri->segment(1)=='ideas' && $en_id==6205) || ($this->uri->segment(1)=='exchange' && $en_id==4535))) ? '/'.$this->uri->segment(2) : '' );
 
                             echo '<td valign="bottom" style="width: 33%"><a class="en'.$en_id.' border'.$en_id.( $this->uri->segment(1)==$handle ? ' background-'.$en_id: null ).'" href="/'.$handle.$url_postfix.'">' . $m['m_icon'] . ( isset($session_en['en_id']) ? ( $en_id==4536 ? '<span class="mn_name montserrat">'.trim(one_two_explode('',' ', $session_en['en_name'])).'</span>' : '<span class="current_count mn_name montserrat"><i class="far fa-yin-yang fa-spin"></i></span>' ) : '<span class="mn_name montserrat">' . $m['m_name'] . '</span>' ) .'</a></td>';
 
@@ -164,7 +164,7 @@ if(strlen($flash_message) > 0){
                         } else {
 
                             //TERMS
-                            echo '<td class="block-link"><a href="/read/8263" title="'.$en_all_11035[7540]['m_name'].'">'.$en_all_11035[7540]['m_icon'].'</a></td>';
+                            echo '<td class="block-link"><a href="/exchange/8263" title="'.$en_all_11035[7540]['m_name'].'">'.$en_all_11035[7540]['m_icon'].'</a></td>';
 
                             //Give option to signin
                             echo '<td class="block-link"><a href="/play/signin" title="'.$en_all_11035[4269]['m_name'].'">'.$en_all_11035[4269]['m_icon'].'</a></td>';
