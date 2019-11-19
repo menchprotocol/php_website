@@ -395,7 +395,7 @@ echo '<div class="filter-statuses filter-in-status hidden"><span class="mini-hea
 
 
 
-    echo '<input type="submit" class="btn btn-sm btn-read" value="Apply" />';
+    echo '<input type="submit" class="btn btn-sm btn6205" value="Apply" />';
 
     if($has_filters){
         echo ' &nbsp;<a href="/read/history" style="font-size: 0.8em;">Remove Filters</a>';

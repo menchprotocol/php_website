@@ -41,7 +41,7 @@ $en_all_2738 = $this->config->item('en_all_2738'); //MENCH
             </div>
 
             <p>
-                <a href="javascript:void(0);" onclick="$('.learn_more').toggleClass('hidden');" class="btn btn-read montserrat learn_more">READ MORE <i class="fas fa-search-plus"></i></a>
+                <a href="javascript:void(0);" onclick="$('.learn_more').toggleClass('hidden');" class="btn btn6205 montserrat learn_more">READ MORE <i class="fas fa-search-plus"></i></a>
 
             </p>
 

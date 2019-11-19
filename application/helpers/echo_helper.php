@@ -80,7 +80,7 @@ function echo_url_type($url, $en_type_link_id)
 
     } elseif ($en_type_link_id == 4261 /* File URL */) {
 
-        return '<a href="' . $url . '" class="btn btn-blog" target="_blank"><i class="fas fa-cloud-download"></i> Download File</a>';
+        return '<a href="' . $url . '" class="btn btn4535" target="_blank"><i class="fas fa-cloud-download"></i> Download File</a>';
 
     } else {
 
@@ -254,7 +254,7 @@ function echo_in_message_manage($ln)
     $count_msg_trs = $CI->READ_model->ln_fetch(array(
         '( ln_id = ' . $ln['ln_id'] . ' OR ln_parent_link_id = ' . $ln['ln_id'] . ')' => null,
     ), array(), 0, 0, array(), 'COUNT(ln_id) as totals');
-    $ui .= '<li style="min-width:48px; display:inline-block;" class="'.require_superpower(10989 /* PEGASUS */).'"><a class="btn btn-read edit-off" style="border:2px solid #FC1B44 !important;" href="/read/view_json/' . $ln['ln_id'] . '" target="_parent"><i class="fas fa-link iswhite"></i> '.echo_number($count_msg_trs[0]['totals']).'</a></li>';
+    $ui .= '<li style="min-width:48px; display:inline-block;" class="'.require_superpower(10989 /* PEGASUS */).'"><a class="btn btn6205 edit-off" style="border:2px solid #FC1B44 !important;" href="/read/view_json/' . $ln['ln_id'] . '" target="_parent"><i class="fas fa-link iswhite"></i> '.echo_number($count_msg_trs[0]['totals']).'</a></li>';
 
     //Modify:
     $ui .= '<li class="edit-off"><span class="on-hover"><a href="javascript:in_message_modify_start(' . $ln['ln_id'] . ',' . $ln['ln_type_entity_id'] . ');" title="Modify Message" data-toggle="tooltip" data-placement="top"><i class="fas fa-pen-square ispink"></i></a>&nbsp;</span></li>';
@@ -274,10 +274,10 @@ function echo_in_message_manage($ln)
     $ui .= '<li class="edit-on hidden"><span id="charNumEditing' . $ln['ln_id'] . '">0</span>/' . config_var(11073) . '</li>';
 
     //Save Edit:
-    $ui .= '<li class="pull-right edit-on hidden"><a class="btn btn-read white-third" title="Save changes" data-toggle="tooltip" data-placement="top" href="javascript:in_message_modify_save(' . $ln['ln_id'] . ',' . $ln['ln_type_entity_id'] . ');"><i class="fas fa-check"></i> Save</a></li>';
+    $ui .= '<li class="pull-right edit-on hidden"><a class="btn btn6205 white-third" title="Save changes" data-toggle="tooltip" data-placement="top" href="javascript:in_message_modify_save(' . $ln['ln_id'] . ',' . $ln['ln_type_entity_id'] . ');"><i class="fas fa-check"></i> Save</a></li>';
 
     //Cancel Edit:
-    $ui .= '<li class="pull-right edit-on hidden"><a class="btn btn-read white-third" title="Cancel editing" data-toggle="tooltip" data-placement="top" href="javascript:in_message_modify_cancel(' . $ln['ln_id'] . ');"><i class="fas fa-times"></i></a></li>';
+    $ui .= '<li class="pull-right edit-on hidden"><a class="btn btn6205 white-third" title="Cancel editing" data-toggle="tooltip" data-placement="top" href="javascript:in_message_modify_cancel(' . $ln['ln_id'] . ');"><i class="fas fa-times"></i></a></li>';
 
     //Show drop down for message link status:
     $ui .= '<li class="pull-right edit-on hidden"><span class="white-wrapper" style="margin:-12px 0 0 0;">';
@@ -1373,14 +1373,14 @@ function echo_en_messages($ln){
 
     //Referenced Intent:
     $en_all_7585 = $CI->config->item('en_all_7585'); // Intent Subtypes
-    $ui .= '<li><a class="btn btn-blog button-max" style="border:2px solid #f1d104 !important;" href="/blog/' . $ln['ln_child_intent_id'] . '" target="_parent" title="Message Intent: '.$ln['in_outcome'].'" data-toggle="tooltip" data-placement="top">'.$en_all_4737[$ln['in_status_entity_id']]['m_icon'].'&nbsp; '.$en_all_7585[$ln['in_completion_method_entity_id']]['m_icon'].' '.$ln['in_outcome'].'</a></li>';
+    $ui .= '<li><a class="btn btn4535 button-max" style="border:2px solid #f1d104 !important;" href="/blog/' . $ln['ln_child_intent_id'] . '" target="_parent" title="Message Intent: '.$ln['in_outcome'].'" data-toggle="tooltip" data-placement="top">'.$en_all_4737[$ln['in_status_entity_id']]['m_icon'].'&nbsp; '.$en_all_7585[$ln['in_completion_method_entity_id']]['m_icon'].' '.$ln['in_outcome'].'</a></li>';
 
     //READ HISTORY:
     /*
     $count_msg_trs = $CI->READ_model->ln_fetch(array(
         '( ln_id = ' . $ln['ln_id'] . ' OR ln_parent_link_id = ' . $ln['ln_id'] . ')' => null,
     ), array(), 0, 0, array(), 'COUNT(ln_id) as totals');
-    $ui .= '<li><a class="btn btn-blog" style="border:2px solid #f1d104 !important;" href="/read/view_json/' . $ln['ln_id'] . '" target="_parent"><i class="fas fa-link"></i> '.echo_number($count_msg_trs[0]['totals']).'</a></li>';
+    $ui .= '<li><a class="btn btn4535" style="border:2px solid #f1d104 !important;" href="/read/view_json/' . $ln['ln_id'] . '" target="_parent"><i class="fas fa-link"></i> '.echo_number($count_msg_trs[0]['totals']).'</a></li>';
     */
 
 
@@ -1568,7 +1568,7 @@ function echo_in_read($in, $in_common_prefix = null, $hide_class = null)
 
     $ui .= '<span style="color:#222; font-weight:500; font-size:1.2em;">'.echo_in_outcome($in['in_outcome'], false, $in_common_prefix).'</span>';
 
-    $ui .= '<div class="pull-right inline-block"><a class="btn btn-primary btn-read" href="/read/'.$in['in_id'] . '"><i class="fas fa-angle-right"></i></a></div>';
+    $ui .= '<div class="pull-right inline-block"><a class="btn btn-primary btn6205" href="/read/'.$in['in_id'] . '"><i class="fas fa-angle-right"></i></a></div>';
 
     $ui .= '</div>';
     return $ui;
@@ -2127,7 +2127,7 @@ function echo_in($in, $in_linked_id = 0, $is_parent = false)
     if($can_train){
 
         //Modify Intent:
-        $ui .= '<a href="javascript:void(0);" onclick="in_modify_load(' . $in['in_id'] . ',' . $ln_id . ')" class="btn btn-primary btn-blog"><i class="fas fa-cog"></i></a>';
+        $ui .= '<a href="javascript:void(0);" onclick="in_modify_load(' . $in['in_id'] . ',' . $ln_id . ')" class="btn btn-primary btn4535"><i class="fas fa-cog"></i></a>';
 
     } else {
 
@@ -2322,7 +2322,7 @@ function echo_en($en, $is_parent = false)
 
 
     //FOLLOW
-    $ui .= '<div class="pull-right inline-block"><a class="btn btn-primary btn-play" href="/play/' . $en['en_id']. '">' . ($en['en__child_count'] > 0 ? echo_number($en['en__child_count']) : '') . ' <i class="fas fa-angle-right"></i></a></div>';
+    $ui .= '<div class="pull-right inline-block"><a class="btn btn-primary btn4536" href="/play/' . $en['en_id']. '">' . ($en['en__child_count'] > 0 ? echo_number($en['en__child_count']) : '') . ' <i class="fas fa-angle-right"></i></a></div>';
 
 
 

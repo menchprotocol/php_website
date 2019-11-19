@@ -371,7 +371,7 @@ if(!$action) {
 
     echo '<div class="mini-header">Search For:</div>';
     echo '<input type="text" class="form-control border maxout" name="search_for" value="'.@$_GET['search_for'].'"><br />';
-    echo '<input type="submit" class="btn btn-blog" value="Search">';
+    echo '<input type="submit" class="btn btn4535" value="Search">';
 
 
     if(isset($_GET['search_for']) && strlen($_GET['search_for'])>0){
@@ -424,7 +424,7 @@ if(!$action) {
 
         echo '<div class="mini-header">Replace With:</div>';
         echo '<input type="text" class="form-control border maxout" name="replace_with" value="'.@$_GET['replace_with'].'"><br />';
-        echo '<input type="submit" name="do_replace" class="btn btn-blog" value="Replace">';
+        echo '<input type="submit" name="do_replace" class="btn btn4535" value="Replace">';
     }
 
 
@@ -615,7 +615,7 @@ if(!$action) {
     }
 
 
-    echo '<input type="submit" class="btn btn-blog" value="Go">';
+    echo '<input type="submit" class="btn btn4535" value="Go">';
     echo '</form>';
 
 
@@ -874,7 +874,7 @@ if(!$action) {
                     <span class="input-group-addon addon-lean addon-grey" style="color:#070707; font-weight: 300; border-left: 1px solid #ccc; border-right:0px solid #FFF;"> levels deep.</span>
                 </div>
             </div>
-            <input type="submit" class="btn btn-blog btn-sm" value="Go" style="display: inline-block; margin-top: -41px;" />
+            <input type="submit" class="btn btn4535 btn-sm" value="Go" style="display: inline-block; margin-top: -41px;" />
         </div>';
 
     echo '</form>';
@@ -951,7 +951,7 @@ $.post("/blog/in_report_conditional_steps", {
         echo '<input type="number" class="form-control border" name="push_message" value="1"><br /><br />';
 
 
-        echo '<input type="submit" class="btn btn-blog" value="Compose Test Message">';
+        echo '<input type="submit" class="btn btn4535" value="Compose Test Message">';
         echo '</form>';
 
     }

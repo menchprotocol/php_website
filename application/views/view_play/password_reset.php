@@ -67,7 +67,7 @@
             <!-- Apply Buttons -->
             <div id="pass_reset_errors" class="isred"></div>
             <span id="step2buttons">
-                <a href="javascript:void(0)" onclick="sign_reset_password_apply()" id="reset_pass_next" class="btn btn-blog pass btn-raised btn-round btn-next">Update & Sign-In <i class="fas fa-arrow-right"></i></a>
+                <a href="javascript:void(0)" onclick="sign_reset_password_apply()" id="reset_pass_next" class="btn btn4535 pass btn-raised btn-round btn-next">Update & Sign-In <i class="fas fa-arrow-right"></i></a>
             </span>
 
         </div>

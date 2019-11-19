@@ -10,9 +10,13 @@ $route['play']                      = "play/play_overview";
 $route['read']                      = "read/read_overview";
 $route['blog']                      = "blog/blog_overview";
 
-$route['play/(:num)']               = "play/play_modify/$1";
-$route['blog/(:num)']               = "blog/blog_modify/$1";
-$route['read/(:num)']               = "read/read_blog/$1";
+$route['players']                   = "players/play_overview";
+$route['exchange']                  = "exchange/read_overview";
+$route['ideas']                     = "blog/blog_overview";
+
+$route['players/(:num)']            = "players/play_modify/$1";
+$route['ideas/(:num)']              = "ideas/blog_modify/$1";
+$route['exchange/(:num)']           = "exchange/read_blog/$1";
 
 
 //DEPRECATE SOON:

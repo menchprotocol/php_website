@@ -53,9 +53,9 @@ echo '<div class="row">';
     //RIGHT SETTINGS
     echo '<div class="'.config_var(11095).'">';
         echo '<div class="center-right">';
-            echo echo_dropdown(7585, $in['in_completion_method_entity_id'], false, 'btn-blog');
-            echo '<div class="inline-block" style="margin-left: 5px;">'.echo_dropdown(4737, $in['in_status_entity_id'], true, 'btn-blog').'</div>';
-echo '<div class="inline-block" style="margin-left: 5px;"><a href="javascript:void(0)" onclick="$(\'.menu_bar\').toggleClass(\'hidden\')" class="btn btn-sm btn-blog"><i class="fas fa-cog"></i></a></div>';
+            echo echo_dropdown(7585, $in['in_completion_method_entity_id'], false, 'btn4535');
+            echo '<div class="inline-block" style="margin-left: 5px;">'.echo_dropdown(4737, $in['in_status_entity_id'], true, 'btn4535').'</div>';
+echo '<div class="inline-block" style="margin-left: 5px;"><a href="javascript:void(0)" onclick="$(\'.menu_bar\').toggleClass(\'hidden\')" class="btn btn-sm btn4535"><i class="fas fa-cog"></i></a></div>';
         echo '</div>';
     echo '</div>';
 
@@ -227,7 +227,7 @@ foreach ($this->config->item('en_all_11021') as $en_id => $m){
 
 
             //Fetch for all message types:
-            $this_tab .= '<div class="iphone-add-btn all_msg msg_en_type_' . $en_id2 . '"><a href="javascript:in_message_create();" id="add_message_' . $en_id2 . '_' . $in['in_id'] . '" data-toggle="tooltip" title="or hit CTRL+ENTER ;)" data-placement="right" class="btn btn-read" style="color:#FFF !important; font-size:0.8em !important;">ADD TO ' . $en_all_4485[$en_id2]['m_name'] . '</a></div>';
+            $this_tab .= '<div class="iphone-add-btn all_msg msg_en_type_' . $en_id2 . '"><a href="javascript:in_message_create();" id="add_message_' . $en_id2 . '_' . $in['in_id'] . '" data-toggle="tooltip" title="or hit CTRL+ENTER ;)" data-placement="right" class="btn btn6205" style="color:#FFF !important; font-size:0.8em !important;">ADD TO ' . $en_all_4485[$en_id2]['m_name'] . '</a></div>';
 
             $this_tab .= '</form>';
             $this_tab .= '</div>';

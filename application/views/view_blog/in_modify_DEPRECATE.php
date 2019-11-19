@@ -155,7 +155,7 @@
 
         <table class="loadcontent">
             <tr>
-                <td class="save-td"><a href="javascript:in_modify_save();" class="btn btn-blog">Save</a></td>
+                <td class="save-td"><a href="javascript:in_modify_save();" class="btn btn4535">Save</a></td>
                 <td class="save-result-td"><span class="save_intent_changes"></span></td>
             </tr>
         </table>

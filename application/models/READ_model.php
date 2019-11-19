@@ -2142,7 +2142,7 @@ class READ_model extends CI_Model
 
                 } else {
 
-                    $next_step_message .= '<div style="margin: 15px 0 0;"><a href="/actionplan/next" class="btn btn-md btn-blog"><i class="fas fa-angle-right"></i></a></div>';
+                    $next_step_message .= '<div style="margin: 15px 0 0;"><a href="/actionplan/next" class="btn btn-md btn4535"><i class="fas fa-angle-right"></i></a></div>';
 
                 }
             } else {

@@ -325,69 +325,69 @@ input[type="file"] > input[type="button"]::-moz-focus-inner {
   background-color: transparent;
   color: #999999;
 }
-.btn.btn-blog,
-.navbar .navbar-nav > li > a.btn.btn-blog {
+.btn.btn4535,
+.navbar .navbar-nav > li > a.btn.btn4535 {
   box-shadow: 0 2px 2px 0 rgba(156, 39, 176, 0.14), 0 3px 1px -2px rgba(156, 39, 176, 0.2), 0 1px 5px 0 rgba(156, 39, 176, 0.12);
 }
-.btn.btn-blog, .btn.btn-blog:hover, .btn.btn-blog:focus, .btn.btn-blog:active, .btn.btn-blog.active, .btn.btn-blog:active:focus, .btn.btn-blog:active:hover, .btn.btn-blog.active:focus, .btn.btn-blog.active:hover, .open > .btn.btn-blog.dropdown-toggle, .open > .btn.btn-blog.dropdown-toggle:focus, .open > .btn.btn-blog.dropdown-toggle:hover,
-.navbar .navbar-nav > li > a.btn.btn-blog,
-.navbar .navbar-nav > li > a.btn.btn-blog:hover,
-.navbar .navbar-nav > li > a.btn.btn-blog:focus,
-.navbar .navbar-nav > li > a.btn.btn-blog:active,
-.navbar .navbar-nav > li > a.btn.btn-blog.active,
-.navbar .navbar-nav > li > a.btn.btn-blog:active:focus,
-.navbar .navbar-nav > li > a.btn.btn-blog:active:hover,
-.navbar .navbar-nav > li > a.btn.btn-blog.active:focus,
-.navbar .navbar-nav > li > a.btn.btn-blog.active:hover, .open >
-.navbar .navbar-nav > li > a.btn.btn-blog.dropdown-toggle, .open >
-.navbar .navbar-nav > li > a.btn.btn-blog.dropdown-toggle:focus, .open >
-.navbar .navbar-nav > li > a.btn.btn-blog.dropdown-toggle:hover {
+.btn.btn4535, .btn.btn4535:hover, .btn.btn4535:focus, .btn.btn4535:active, .btn.btn4535.active, .btn.btn4535:active:focus, .btn.btn4535:active:hover, .btn.btn4535.active:focus, .btn.btn4535.active:hover, .open > .btn.btn4535.dropdown-toggle, .open > .btn.btn4535.dropdown-toggle:focus, .open > .btn.btn4535.dropdown-toggle:hover,
+.navbar .navbar-nav > li > a.btn.btn4535,
+.navbar .navbar-nav > li > a.btn.btn4535:hover,
+.navbar .navbar-nav > li > a.btn.btn4535:focus,
+.navbar .navbar-nav > li > a.btn.btn4535:active,
+.navbar .navbar-nav > li > a.btn.btn4535.active,
+.navbar .navbar-nav > li > a.btn.btn4535:active:focus,
+.navbar .navbar-nav > li > a.btn.btn4535:active:hover,
+.navbar .navbar-nav > li > a.btn.btn4535.active:focus,
+.navbar .navbar-nav > li > a.btn.btn4535.active:hover, .open >
+.navbar .navbar-nav > li > a.btn.btn4535.dropdown-toggle, .open >
+.navbar .navbar-nav > li > a.btn.btn4535.dropdown-toggle:focus, .open >
+.navbar .navbar-nav > li > a.btn.btn4535.dropdown-toggle:hover {
   background-color: #f1d104;
   color: #070707;
 }
-.btn.btn-blog:focus, .btn.btn-blog:active, .btn.btn-blog:hover,
-.navbar .navbar-nav > li > a.btn.btn-blog:focus,
-.navbar .navbar-nav > li > a.btn.btn-blog:active,
-.navbar .navbar-nav > li > a.btn.btn-blog:hover {
+.btn.btn4535:focus, .btn.btn4535:active, .btn.btn4535:hover,
+.navbar .navbar-nav > li > a.btn.btn4535:focus,
+.navbar .navbar-nav > li > a.btn.btn4535:active,
+.navbar .navbar-nav > li > a.btn.btn4535:hover {
   box-shadow: 0 14px 26px -12px rgba(156, 39, 176, 0.42), 0 4px 23px 0px rgba(0, 0, 0, 0.12), 0 8px 10px -5px rgba(156, 39, 176, 0.2);
 }
-.btn.btn-blog.disabled, .btn.btn-blog.disabled:hover, .btn.btn-blog.disabled:focus, .btn.btn-blog.disabled.focus, .btn.btn-blog.disabled:active, .btn.btn-blog.disabled.active, .btn.btn-blog:disabled, .btn.btn-blog:disabled:hover, .btn.btn-blog:disabled:focus, .btn.btn-blog:disabled.focus, .btn.btn-blog:disabled:active, .btn.btn-blog:disabled.active, .btn.btn-blog[disabled], .btn.btn-blog[disabled]:hover, .btn.btn-blog[disabled]:focus, .btn.btn-blog[disabled].focus, .btn.btn-blog[disabled]:active, .btn.btn-blog[disabled].active, fieldset[disabled] .btn.btn-blog, fieldset[disabled] .btn.btn-blog:hover, fieldset[disabled] .btn.btn-blog:focus, fieldset[disabled] .btn.btn-blog.focus, fieldset[disabled] .btn.btn-blog:active, fieldset[disabled] .btn.btn-blog.active,
-.navbar .navbar-nav > li > a.btn.btn-blog.disabled,
-.navbar .navbar-nav > li > a.btn.btn-blog.disabled:hover,
-.navbar .navbar-nav > li > a.btn.btn-blog.disabled:focus,
-.navbar .navbar-nav > li > a.btn.btn-blog.disabled.focus,
-.navbar .navbar-nav > li > a.btn.btn-blog.disabled:active,
-.navbar .navbar-nav > li > a.btn.btn-blog.disabled.active,
-.navbar .navbar-nav > li > a.btn.btn-blog:disabled,
-.navbar .navbar-nav > li > a.btn.btn-blog:disabled:hover,
-.navbar .navbar-nav > li > a.btn.btn-blog:disabled:focus,
-.navbar .navbar-nav > li > a.btn.btn-blog:disabled.focus,
-.navbar .navbar-nav > li > a.btn.btn-blog:disabled:active,
-.navbar .navbar-nav > li > a.btn.btn-blog:disabled.active,
-.navbar .navbar-nav > li > a.btn.btn-blog[disabled],
-.navbar .navbar-nav > li > a.btn.btn-blog[disabled]:hover,
-.navbar .navbar-nav > li > a.btn.btn-blog[disabled]:focus,
-.navbar .navbar-nav > li > a.btn.btn-blog[disabled].focus,
-.navbar .navbar-nav > li > a.btn.btn-blog[disabled]:active,
-.navbar .navbar-nav > li > a.btn.btn-blog[disabled].active, fieldset[disabled]
-.navbar .navbar-nav > li > a.btn.btn-blog, fieldset[disabled]
-.navbar .navbar-nav > li > a.btn.btn-blog:hover, fieldset[disabled]
-.navbar .navbar-nav > li > a.btn.btn-blog:focus, fieldset[disabled]
-.navbar .navbar-nav > li > a.btn.btn-blog.focus, fieldset[disabled]
-.navbar .navbar-nav > li > a.btn.btn-blog:active, fieldset[disabled]
-.navbar .navbar-nav > li > a.btn.btn-blog.active {
+.btn.btn4535.disabled, .btn.btn4535.disabled:hover, .btn.btn4535.disabled:focus, .btn.btn4535.disabled.focus, .btn.btn4535.disabled:active, .btn.btn4535.disabled.active, .btn.btn4535:disabled, .btn.btn4535:disabled:hover, .btn.btn4535:disabled:focus, .btn.btn4535:disabled.focus, .btn.btn4535:disabled:active, .btn.btn4535:disabled.active, .btn.btn4535[disabled], .btn.btn4535[disabled]:hover, .btn.btn4535[disabled]:focus, .btn.btn4535[disabled].focus, .btn.btn4535[disabled]:active, .btn.btn4535[disabled].active, fieldset[disabled] .btn.btn4535, fieldset[disabled] .btn.btn4535:hover, fieldset[disabled] .btn.btn4535:focus, fieldset[disabled] .btn.btn4535.focus, fieldset[disabled] .btn.btn4535:active, fieldset[disabled] .btn.btn4535.active,
+.navbar .navbar-nav > li > a.btn.btn4535.disabled,
+.navbar .navbar-nav > li > a.btn.btn4535.disabled:hover,
+.navbar .navbar-nav > li > a.btn.btn4535.disabled:focus,
+.navbar .navbar-nav > li > a.btn.btn4535.disabled.focus,
+.navbar .navbar-nav > li > a.btn.btn4535.disabled:active,
+.navbar .navbar-nav > li > a.btn.btn4535.disabled.active,
+.navbar .navbar-nav > li > a.btn.btn4535:disabled,
+.navbar .navbar-nav > li > a.btn.btn4535:disabled:hover,
+.navbar .navbar-nav > li > a.btn.btn4535:disabled:focus,
+.navbar .navbar-nav > li > a.btn.btn4535:disabled.focus,
+.navbar .navbar-nav > li > a.btn.btn4535:disabled:active,
+.navbar .navbar-nav > li > a.btn.btn4535:disabled.active,
+.navbar .navbar-nav > li > a.btn.btn4535[disabled],
+.navbar .navbar-nav > li > a.btn.btn4535[disabled]:hover,
+.navbar .navbar-nav > li > a.btn.btn4535[disabled]:focus,
+.navbar .navbar-nav > li > a.btn.btn4535[disabled].focus,
+.navbar .navbar-nav > li > a.btn.btn4535[disabled]:active,
+.navbar .navbar-nav > li > a.btn.btn4535[disabled].active, fieldset[disabled]
+.navbar .navbar-nav > li > a.btn.btn4535, fieldset[disabled]
+.navbar .navbar-nav > li > a.btn.btn4535:hover, fieldset[disabled]
+.navbar .navbar-nav > li > a.btn.btn4535:focus, fieldset[disabled]
+.navbar .navbar-nav > li > a.btn.btn4535.focus, fieldset[disabled]
+.navbar .navbar-nav > li > a.btn.btn4535:active, fieldset[disabled]
+.navbar .navbar-nav > li > a.btn.btn4535.active {
   box-shadow: none !important;
 }
-.btn.btn-blog.btn-simple,
-.navbar .navbar-nav > li > a.btn.btn-blog.btn-simple {
+.btn.btn4535.btn-simple,
+.navbar .navbar-nav > li > a.btn.btn4535.btn-simple {
   background-color: transparent;
   color: #f1d104;
   box-shadow: none;
 }
-.btn.btn-blog.btn-simple:hover, .btn.btn-blog.btn-simple:focus, .btn.btn-blog.btn-simple:active,
-.navbar .navbar-nav > li > a.btn.btn-blog.btn-simple:hover,
-.navbar .navbar-nav > li > a.btn.btn-blog.btn-simple:focus,
-.navbar .navbar-nav > li > a.btn.btn-blog.btn-simple:active {
+.btn.btn4535.btn-simple:hover, .btn.btn4535.btn-simple:focus, .btn.btn4535.btn-simple:active,
+.navbar .navbar-nav > li > a.btn.btn4535.btn-simple:hover,
+.navbar .navbar-nav > li > a.btn.btn4535.btn-simple:focus,
+.navbar .navbar-nav > li > a.btn.btn4535.btn-simple:active {
   background-color: transparent;
   color: #f1d104;
 }

@@ -11,7 +11,7 @@ defined('BASEPATH') OR exit('No direct script access allowed');
 *
 */
 
-//Generated 2019-11-15 10:10:21 PST
+//Generated 2019-11-19 05:36:35 PST
 
 //BLOGGING. REIMAGINED.:
 $config['en_ids_11968'] = array(11969,11980,11984,11972,11977,11976);
@@ -1561,7 +1561,7 @@ $config['en_all_6404'] = array(
     11060 => array(
         'm_icon' => '',
         'm_name' => 'MENCH PLATFORM VERSION',
-        'm_desc' => '1.0121',
+        'm_desc' => '1.0122',
         'm_parents' => array(6404),
     ),
     11067 => array(
@@ -2094,7 +2094,7 @@ $config['en_all_2738'] = array(
     ),
     6205 => array(
         'm_icon' => '<i class="fas fa-circle ispink" aria-hidden="true"></i>',
-        'm_name' => 'INDEX',
+        'm_name' => 'EXCHANGE',
         'm_desc' => '',
         'm_parents' => array(2738,7368,4463),
     ),
@@ -5767,17 +5767,17 @@ $config['en_all_6287'] = array(
 );
 
 //Mench Blogger Console:
-$config['en_ids_7368'] = array(4535,6205,7291,6287,4536,7256,5007);
+$config['en_ids_7368'] = array(6205,4535,7291,6287,4536,7256,5007);
 $config['en_all_7368'] = array(
-    4535 => array(
-        'm_icon' => '<i class="fas fa-circle yellow" aria-hidden="true"></i>',
-        'm_name' => 'ideas',
+    6205 => array(
+        'm_icon' => '<i class="fas fa-circle ispink" aria-hidden="true"></i>',
+        'm_name' => 'exchange',
         'm_desc' => '',
         'm_parents' => array(2738,7368,4463),
     ),
-    6205 => array(
-        'm_icon' => '<i class="fas fa-circle ispink" aria-hidden="true"></i>',
-        'm_name' => 'index',
+    4535 => array(
+        'm_icon' => '<i class="fas fa-circle yellow" aria-hidden="true"></i>',
+        'm_name' => 'ideas',
         'm_desc' => '',
         'm_parents' => array(2738,7368,4463),
     ),
