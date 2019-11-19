@@ -11,7 +11,7 @@ defined('BASEPATH') OR exit('No direct script access allowed');
 *
 */
 
-//Generated 2019-11-19 05:36:35 PST
+//Generated 2019-11-19 06:10:25 PST
 
 //BLOGGING. REIMAGINED.:
 $config['en_ids_11968'] = array(11969,11980,11984,11972,11977,11976);
@@ -1708,7 +1708,7 @@ $config['en_all_11039'] = array(
     11044 => array(
         'm_icon' => '<i class="fas fa-lambda"></i>',
         'm_name' => 'review metadata',
-        'm_desc' => '/players/en_review_metadata/',
+        'm_desc' => '/play/en_review_metadata/',
         'm_parents' => array(11039),
     ),
     11045 => array(
@@ -2089,19 +2089,19 @@ $config['en_all_2738'] = array(
     4536 => array(
         'm_icon' => '<i class="fas fa-circle blue" aria-hidden="true"></i>',
         'm_name' => 'PLAYERS',
-        'm_desc' => '',
+        'm_desc' => 'BLUE',
         'm_parents' => array(11035,2738,7368,4463),
     ),
     6205 => array(
         'm_icon' => '<i class="fas fa-circle ispink" aria-hidden="true"></i>',
         'm_name' => 'EXCHANGE',
-        'm_desc' => '',
+        'm_desc' => 'RED',
         'm_parents' => array(2738,7368,4463),
     ),
     4535 => array(
         'm_icon' => '<i class="fas fa-circle yellow" aria-hidden="true"></i>',
         'm_name' => 'IDEAS',
-        'm_desc' => '',
+        'm_desc' => 'GOLD',
         'm_parents' => array(2738,7368,4463),
     ),
 );
