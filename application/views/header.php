@@ -86,11 +86,9 @@ if(strlen($flash_message) > 0){
     }
 
 
-    if(!isset($basic_header) && (!isset($hide_header) || !$hide_header)){
+    if(!isset($hide_header) || !$hide_header){
 
         ?>
-
-
 
         <!-- 3X NAVIGATION -->
         <div class="container show-while-searching fixed-bottom">
@@ -154,7 +152,7 @@ if(strlen($flash_message) > 0){
                             </div>
                         </td>
 
-                        <td class="block-link search-toggle"><a class="supwerpower_view" href="javascript:void(0);" onclick="load_searchbar();"><?= $en_all_11035[7256]['m_icon'] ?></a></td>
+                        <td class="block-link search-toggle <?= ( isset($basic_header) ? ' hidden ' : '' ) ?>"><a class="supwerpower_view" href="javascript:void(0);" onclick="load_searchbar();"><?= $en_all_11035[7256]['m_icon'] ?></a></td>
 
                         <?php
 
@@ -165,7 +163,7 @@ if(strlen($flash_message) > 0){
                         } else {
 
                             //TERMS
-                            echo '<td class="block-link"><a href="/read/8263" title="'.$en_all_11035[7540]['m_name'].'">'.$en_all_11035[7540]['m_icon'].'</a></td>';
+                            echo '<td class="block-link '.( isset($basic_header) ? ' hidden ' : '' ).'"><a href="/read/8263" title="'.$en_all_11035[7540]['m_name'].'">'.$en_all_11035[7540]['m_icon'].'</a></td>';
 
                             //Give option to signin
                             echo '<td class="block-link"><a href="/play/signin" title="'.$en_all_11035[4269]['m_name'].'">'.$en_all_11035[4269]['m_icon'].'</a></td>';
@@ -177,34 +175,5 @@ if(strlen($flash_message) > 0){
                 </table>
             </div>
         </div>
-
-
-    <?php } elseif(isset($basic_header) && $basic_header) { ?>
-
-<!-- MENCH LINE -->
-<div class="container show-while-searching fixed-top">
-    <div class="row">
-        <table class="mench-navigation">
-            <tr>
-                <?php
-
-                $mench_logo = '<img src="/img/mench-v2-128.png" class="mench-logo mench-spin" />';
-                echo '<td class="block-link block-logo">'. ( count($this->session->userdata('assigned_superpowers_en_ids')) ? '<a href="javascript:void(0);" onclick="$(\'.supwerpower_view\').toggleClass(\'hidden\');">'.$mench_logo.'</a>' : $mench_logo ) .'</td>';
-
-                if (isset($session_en['en_id'])) {
-
-                    echo '<td class="block-link"><a href="/play/'.$session_en['en_id'].'" title="'.$session_en['en_name'].'">'.$session_en['en_icon'].'</a></td>';
-
-                } else {
-
-                    //Give option to signin
-                    echo '<td class="block-link"><a href="/play/signin" title="'.$en_all_11035[4269]['m_name'].'">'.$en_all_11035[4269]['m_icon'].'</a></td>';
-
-                }
-                ?>
-            </tr>
-        </table>
-    </div>
-</div>
 
     <?php } ?>
