@@ -1,4 +1,7 @@
-<?php $session_en = en_auth(); ?><!doctype html>
+<?php
+$session_en = en_auth();
+$en_all_11035 = $this->config->item('en_all_11035'); //MENCH PLAYER NAVIGATION
+?><!doctype html>
 <html lang="en">
 <head>
 
@@ -84,8 +87,6 @@ if(strlen($flash_message) > 0){
 
 
     if(!isset($basic_header) && (!isset($hide_header) || !$hide_header)){
-
-        $en_all_11035 = $this->config->item('en_all_11035'); //MENCH PLAYER NAVIGATION
 
         ?>
 
