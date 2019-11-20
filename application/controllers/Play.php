@@ -13,9 +13,19 @@ class Play extends CI_Controller
         date_default_timezone_set(config_var(11079));
     }
 
-    function default_redirect(){
+    function home_page(){
         //READ is default tab to load:
-        return redirect_message('/read');
+        //return redirect_message('/read');
+
+        //Show notice for launching soon.
+
+        $this->load->view('header', array(
+            'hide_header' => 1,
+            'title' => 'Interactive Microblogging on Blockchain',
+        ));
+        $this->load->view('view_play/coming_soon');
+        $this->load->view('footer');
+
     }
 
 
