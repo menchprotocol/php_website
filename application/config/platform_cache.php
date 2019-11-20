@@ -11,7 +11,7 @@ defined('BASEPATH') OR exit('No direct script access allowed');
 *
 */
 
-//Generated 2019-11-19 22:29:57 PST
+//Generated 2019-11-20 08:11:12 PST
 
 //BLOGGING. REIMAGINED.:
 $config['en_ids_11968'] = array(11969,11980,11984,11972,11977,11976);
@@ -1723,8 +1723,8 @@ $config['en_all_11039'] = array(
 $config['en_ids_11035'] = array(4269,7291,6225,4536,7256,7540,11087);
 $config['en_all_11035'] = array(
     4269 => array(
-        'm_icon' => '<i class="fas fa-sign-in-alt blue"></i>',
-        'm_name' => 'JOIN/LOGIN',
+        'm_icon' => '<i class="fas fa-sign-in-alt" aria-hidden="true"></i>',
+        'm_name' => 'LOGIN',
         'm_desc' => '',
         'm_parents' => array(11035),
     ),
