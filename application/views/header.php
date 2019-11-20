@@ -178,4 +178,32 @@ if(strlen($flash_message) > 0){
         </div>
 
 
+    <?php } elseif(isset($basic_header) && $basic_header) { ?>
+
+<!-- MENCH LINE -->
+<div class="container show-while-searching fixed-top">
+    <div class="row">
+        <table class="mench-navigation">
+            <tr>
+                <?php
+
+                $mench_logo = '<img src="/img/mench-v2-128.png" class="mench-logo mench-spin" />';
+                echo '<td class="block-link block-logo">'. ( count($this->session->userdata('assigned_superpowers_en_ids')) ? '<a href="javascript:void(0);" onclick="$(\'.supwerpower_view\').toggleClass(\'hidden\');">'.$mench_logo.'</a>' : $mench_logo ) .'</td>';
+
+                if (isset($session_en['en_id'])) {
+
+                    echo '<td class="block-link"><a href="/play/'.$session_en['en_id'].'" title="'.$session_en['en_name'].'">'.$session_en['en_icon'].'</a></td>';
+
+                } else {
+
+                    //Give option to signin
+                    echo '<td class="block-link"><a href="/play/signin" title="'.$en_all_11035[4269]['m_name'].'">'.$en_all_11035[4269]['m_icon'].'</a></td>';
+
+                }
+                ?>
+            </tr>
+        </table>
+    </div>
+</div>
+
     <?php } ?>

@@ -20,7 +20,7 @@ class Play extends CI_Controller
         //Show notice for launching soon.
 
         $this->load->view('header', array(
-            'hide_header' => 1,
+            'basic_header' => 1,
             'title' => 'Interactive Microblogging on Blockchain',
         ));
         $this->load->view('view_play/coming_soon');
