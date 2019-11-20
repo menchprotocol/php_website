@@ -83,7 +83,7 @@ if(strlen($flash_message) > 0){
     }
 
 
-    if(!isset($hide_header) || !$hide_header){
+    if(!isset($basic_header) && (!isset($hide_header) || !$hide_header)){
 
         $en_all_11035 = $this->config->item('en_all_11035'); //MENCH PLAYER NAVIGATION
 
