@@ -91,7 +91,7 @@ if(strlen($flash_message) > 0){
         ?>
 
         <!-- 3X NAVIGATION -->
-        <div class="container show-while-searching fixed-bottom">
+        <div class="container show-while-searching fixed-bottom <?= ( isset($basic_header) ? ' hidden ' : '' ) ?>">
             <div class="row">
                 <table class="three-menus">
                     <tr>
