@@ -1,10 +1,8 @@
-<style> .mench-text { display: none; } </style>
 
 <div class="container">
 
     <div class="row">
         <div class="col-lg-12">
-            <h1>MENCH</h1>
             <ul class="none-list">
                 <?php
                 foreach($this->config->item('en_all_2738') as $en_id => $m){
