@@ -84,7 +84,7 @@ function in_load_search(focus_element, is_in_parent, shortcut) {
                 return;
             } else {
                 algolia_index.search(q, {
-                    filters: ( js_assigned_superpowers_en_ids.includes(10989 /* PEGASUS */) ? '' : '_tags:alg_is_published_featured AND') + ' alg_obj_is_in=1',
+                    filters: ' alg_obj_is_in=1 AND ( _tags:alg_is_published_featured OR _tags:alg_is_published_featured ) ',
                     hitsPerPage: 7,
                 }, function (error, content) {
                     if (error) {

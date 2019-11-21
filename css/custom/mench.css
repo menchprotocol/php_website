@@ -275,12 +275,11 @@ li a {
 .border-read     { border-color:#FC1B44 !important; }
 
 
-.background-play, a.border-play:hover, a.border-play:hover .fas     { background-color:#008DF2 !important; color:#FFFFFF !important; }
+.background-play, a.border-play:hover, a.border-play:hover .fas     { background-color:#008DF2 !important; color:#070707 !important; }
 .background-blog, a.border-blog:hover, a.border-blog:hover .fas     { background-color:#f1d104 !important; color:#070707 !important; }
-.background-read, a.border-read:hover, a.border-read:hover .fas     { background-color:#FC1B44 !important; color:#FFFFFF !important; }
+.background-read, a.border-read:hover, a.border-read:hover .fas     { background-color:#FC1B44 !important; color:#070707 !important; }
 
-.background-play .fas, .background-read .fas, .background-play .far, .background-read .far, .background-play .fal, .background-read .fal { color:#FFFFFF !important; }
-.background-blog .fas, .background-blog .far, .background-blog .fal { color:#070707 !important; }
+.background-play .fas, .background-read .fas, .background-play .far, .background-read .far, .background-play .fal, .background-read .fal, .background-blog .fas, .background-blog .far, .background-blog .fal { color:#070707 !important; }
 
 /* Color Palette @10604 */
 .isgreen, .isgreen a                { color:#228B22 !important; }

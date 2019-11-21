@@ -189,7 +189,7 @@ $(document).ready(function () {
                     //Append filters:
                     algolia_index.search(q, {
                         hitsPerPage: 20,
-                        filters:' alg_obj_is_in' + ($("#mench_search").val().charAt(0) == '#' ? '=1' : ($("#mench_search").val().charAt(0) == '@' ? '=0' : '>=0')) + ( js_assigned_superpowers_en_ids.includes(10989 /* PEGASUS */) ? '' : ' AND _tags:alg_is_published_featured'),
+                        filters:' alg_obj_is_in' + ($("#mench_search").val().charAt(0) == '#' ? '=1' : ($("#mench_search").val().charAt(0) == '@' ? '=0' : '>=0')) + ( js_assigned_superpowers_en_ids.includes(10989 /* PEGASUS */) ? '' : ' AND _tags:alg_is_published_featured '),
                     }, function (error, content) {
                         if (error) {
                             cb([]);

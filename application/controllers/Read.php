@@ -117,7 +117,7 @@ class Read extends CI_Controller
 
 
         //Intent Statuses:
-        echo '<table class="table table-sm table-striped stats-table mini-stats-table intent_statuses '.require_superpower(10989 /* PEGASUS */).'">';
+        echo '<table class="table table-sm table-striped stats-table mini-stats-table intent_statuses '.require_superpower(10939).'">';
         echo '<tr class="panel-title down-border">';
         echo '<td style="text-align: left;" colspan="2">'.$en_all_7302[4737]['m_name'].echo__s(count($this->config->item('en_all_4737')), true).'</td>';
         echo '</tr>';
@@ -171,7 +171,7 @@ class Read extends CI_Controller
 
 
         //Entity Statuses
-        echo '<table class="table table-sm table-striped stats-table mini-stats-table entity_statuses '.require_superpower(10989 /* PEGASUS */).'">';
+        echo '<table class="table table-sm table-striped stats-table mini-stats-table entity_statuses '.require_superpower(10983).'">';
         echo '<tr class="panel-title down-border">';
         echo '<td style="text-align: left;" colspan="2">'.$en_all_7303[6177]['m_name'].echo__s(count($this->config->item('en_all_6177')), true).'</td>';
         echo '</tr>';
@@ -232,12 +232,12 @@ class Read extends CI_Controller
                 }
 
                 //Display row:
-                $expert_source_statuses .= '<td style="text-align: right;"'.( $en_status_entity_id != 6181 /* Entity Featured */ ? ' class="' . require_superpower(10989 /* PEGASUS */) . '"' : '' ).'><a href="/play/' . $en_id .'#status-'.$en_status_entity_id.'">'.number_format($source_count,0).'</a></td>';
+                $expert_source_statuses .= '<td style="text-align: right;"'.( $en_status_entity_id != 6181 /* Entity Featured */ ? ' class="' . require_superpower(10983) . '"' : '' ).'><a href="/play/' . $en_id .'#status-'.$en_status_entity_id.'">'.number_format($source_count,0).'</a></td>';
 
             }
 
             //Echo stats:
-            $expert_sources = '<tr class="' .( !$total_counts[6181] ? require_superpower(10989 /* PEGASUS */) : '' ) . '">';
+            $expert_sources = '<tr class="' .( !$total_counts[6181] ? require_superpower(10983) : '' ) . '">';
             $expert_sources .= '<td style="text-align: left;"><span class="icon-block">'.$m['m_icon'].'</span><a href="/play/'.$en_id.'">'.$m['m_name'].'</a></td>';
             $expert_sources .= $expert_source_statuses;
             $expert_sources .= '</tr>';
@@ -256,9 +256,9 @@ class Read extends CI_Controller
         echo '<td style="text-align: left;">'.$en_all_7303[3000]['m_name'].' ['.number_format($total_total_counts[6181], 0).']</td>';
         foreach($this->config->item('en_all_7358') /* Entity Active Statuses */ as $en_status_entity_id => $m_status){
             if($en_status_entity_id == 6181 /* Entity Published */){
-                echo '<td style="text-align:right;"><div class="' . require_superpower(10989 /* PEGASUS */) . '">' . $en_all_6177[$en_status_entity_id]['m_name'] . '</div></td>';
+                echo '<td style="text-align:right;"><div class="' . require_superpower(10983) . '">' . $en_all_6177[$en_status_entity_id]['m_name'] . '</div></td>';
             } else {
-                echo '<td style="text-align:right;" class="' . require_superpower(10989 /* PEGASUS */) . '">' . $en_all_6177[$en_status_entity_id]['m_name'] . '</td>';
+                echo '<td style="text-align:right;" class="' . require_superpower(10983) . '">' . $en_all_6177[$en_status_entity_id]['m_name'] . '</td>';
             }
         }
         echo '</tr>';
@@ -268,10 +268,10 @@ class Read extends CI_Controller
         echo $expert_sources_unpublished;
 
 
-        echo '<tr style="font-weight: bold;" class="'.require_superpower(10989 /* PEGASUS */).'">';
+        echo '<tr style="font-weight: bold;" class="'.require_superpower(10983).'">';
         echo '<td style="text-align: left;"><span class="icon-block"><i class="fas fa-asterisk"></i></span>Totals</td>';
         foreach($this->config->item('en_all_7358') /* Entity Active Statuses */ as $en_status_entity_id => $m_status){
-            echo '<td style="text-align: right;" '.( $en_status_entity_id != 6181 /* Entity Featured */ ? ' class="' . require_superpower(10989 /* PEGASUS */) . '"' : '' ).'>' . number_format($total_total_counts[$en_status_entity_id], 0) . '</td>';
+            echo '<td style="text-align: right;" '.( $en_status_entity_id != 6181 /* Entity Featured */ ? ' class="' . require_superpower(10983) . '"' : '' ).'>' . number_format($total_total_counts[$en_status_entity_id], 0) . '</td>';
         }
         echo '</tr>';
 
@@ -293,7 +293,7 @@ class Read extends CI_Controller
 
 
         //READ Status:
-        echo '<table class="table table-sm table-striped stats-table mini-stats-table link_statuses '.require_superpower(10989 /* PEGASUS */).'">';
+        echo '<table class="table table-sm table-striped stats-table mini-stats-table link_statuses '.require_superpower(10964).'">';
         echo '<tr class="panel-title down-border">';
         echo '<td style="text-align: left;" colspan="2">'.$en_all_7304[6186]['m_name'].echo__s(count($this->config->item('en_all_6186')), true).'</td>';
         echo '</tr>';
@@ -428,11 +428,14 @@ class Read extends CI_Controller
                 'status' => 0,
                 'message' => 'Invalid READ ID',
             ));
-        } elseif(!en_auth(10989 /* PEGASUS */) /* Viewer NOT a trainer */) {
+        } elseif(!en_auth(10964)) {
+
+            $en_all_10957 = $this->config->item('en_all_10957');
             return echo_json(array(
                 'status' => 0,
-                'message' => 'Missing the superpower required to view this',
+                'message' => 'Missing the '.$en_all_10957[10964]['m_name'].' superpower',
             ));
+
         } else {
 
             //unserialize metadata if needed:
@@ -444,6 +447,7 @@ class Read extends CI_Controller
             echo_json($lns[0]);
 
         }
+
     }
 
 
@@ -1375,11 +1379,14 @@ class Read extends CI_Controller
     function messenger_fetch_profile($psid)
     {
 
-        $session_en = en_auth(10989 /* PEGASUS */);
-        if (!$session_en) {
+
+
+
+        if (!require_superpower(10967, true)) {
+            $en_all_10957 = $this->config->item('en_all_10957');
             return echo_json(array(
                 'status' => 0,
-                'message' => 'Expired Session or Missing Superpower',
+                'message' => 'Missing the '.$en_all_10957[10967]['m_name'].' superpower',
             ));
         }
 

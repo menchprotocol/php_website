@@ -11,7 +11,7 @@ defined('BASEPATH') OR exit('No direct script access allowed');
 *
 */
 
-//Generated 2019-11-20 18:29:10 PST
+//Generated 2019-11-20 23:33:28 PST
 
 //BLOGGING. REIMAGINED.:
 $config['en_ids_11968'] = array(11969,11980,11984,11972,11977,11976);
@@ -1923,25 +1923,25 @@ $config['en_all_10957'] = array(
     10967 => array(
         'm_icon' => '<i class="far fa-bat blue" aria-hidden="true"></i>',
         'm_name' => 'BATMAN',
-        'm_desc' => 'Able to access the admin panel to moderate the MENCH community',
+        'm_desc' => 'Access Player Tools',
         'm_parents' => array(10957),
     ),
     10986 => array(
-        'm_icon' => '<i class="far fa-unicorn blue"></i>',
+        'm_icon' => '<i class="far fa-unicorn blue" aria-hidden="true"></i>',
         'm_name' => 'UNICORN',
-        'm_desc' => 'Greet new players and welcome them to MENCH',
+        'm_desc' => '',
         'm_parents' => array(10957),
     ),
     10964 => array(
-        'm_icon' => '<i class="far fa-elephant ispink"></i>',
+        'm_icon' => '<i class="far fa-elephant ispink" aria-hidden="true"></i>',
         'm_name' => 'ELEPHANT',
-        'm_desc' => 'Able to moderate MENCH by accessing the full READ history',
+        'm_desc' => 'View Read History',
         'm_parents' => array(10957),
     ),
     10988 => array(
-        'm_icon' => '<i class="far fa-dragon ispink"></i>',
+        'm_icon' => '<i class="far fa-dragon ispink" aria-hidden="true"></i>',
         'm_name' => 'DRAGON',
-        'm_desc' => 'Able to feature BLOG by adding topic keywords',
+        'm_desc' => '',
         'm_parents' => array(10957),
     ),
     10989 => array(
@@ -2142,7 +2142,7 @@ $config['en_all_10692'] = array(
 );
 
 //PLATFORM CACHE PHP:
-$config['en_ids_4527'] = array(7758,10809,10956,11047,7712,4983,7756,7585,10602,10589,11968,10990,4485,7596,7588,7302,4737,7356,7355,6201,11021,4486,7309,7751,6150,10712,10719,10869,10627,4229,10746,7703,7360,7364,7359,10717,10721,10720,11080,2738,7368,7555,6287,11035,11059,11058,10716,6225,10718,10711,11054,4527,6404,6232,4537,6194,11039,6827,4426,4997,11007,4454,6123,6177,11089,11033,3000,7303,6206,11088,4592,4755,10571,6345,11081,6192,4600,7347,5967,6146,6255,4280,10590,10570,4277,6102,7704,6244,6274,7494,6144,7582,6103,10596,10539,10594,10692,6193,10591,10593,7304,6186,4341,4593,10658,10592,11031,11084,6204,10710,10957,10725,6805,4986,7551,7358,7357,11018,11028);
+$config['en_ids_4527'] = array(7758,10809,10956,11047,7712,4983,7756,7585,10602,10589,11968,10990,4485,7596,7588,7302,4737,7356,7355,6201,11021,4486,7309,7751,6150,10712,10719,10869,10627,4229,10746,7703,7360,7364,7359,10717,10721,10720,11080,2738,7368,7555,6287,11035,11059,11058,10716,6225,10718,10711,11054,4527,6404,6232,4537,6194,11039,6827,4426,4997,11007,4454,6123,6177,11089,11033,3000,7303,6206,11088,4592,4755,10571,7357,6345,11081,6192,4600,7347,5967,6146,6255,4280,10590,10570,4277,6102,7704,6244,6274,7494,6144,7582,6103,10596,10539,10594,10692,6193,10591,10593,7304,6186,4341,4593,10658,10592,11031,11084,6204,10710,10957,10725,6805,4986,7551,7358,11018,11028);
 $config['en_all_4527'] = array(
     7758 => array(
         'm_icon' => '<i class="far fa-mountain"></i>',
@@ -2582,6 +2582,12 @@ $config['en_all_4527'] = array(
         'm_desc' => '',
         'm_parents' => array(4527,4758),
     ),
+    7357 => array(
+        'm_icon' => '<i class="fas fa-globe" aria-hidden="true"></i>',
+        'm_name' => 'PUBLIC PLAYER STATUSES',
+        'm_desc' => '',
+        'm_parents' => array(4527,4758),
+    ),
     6345 => array(
         'm_icon' => '<i class="fas fa-comment-check"></i>',
         'm_name' => 'Readable by Readers',
@@ -2837,12 +2843,6 @@ $config['en_all_4527'] = array(
     7358 => array(
         'm_icon' => '<i class="far fa-check-circle"></i>',
         'm_name' => 'Thing Statuses Active',
-        'm_desc' => '',
-        'm_parents' => array(4527,4758),
-    ),
-    7357 => array(
-        'm_icon' => '<i class="fas fa-globe"></i>',
-        'm_name' => 'Thing Statuses Public',
         'm_desc' => '',
         'm_parents' => array(4527,4758),
     ),
@@ -5869,7 +5869,7 @@ $config['en_all_7358'] = array(
     ),
 );
 
-//Thing Statuses Public:
+//PUBLIC PLAYER STATUSES:
 $config['en_ids_7357'] = array(6181);
 $config['en_all_7357'] = array(
     6181 => array(

@@ -3510,7 +3510,7 @@ fragment PostListingItemSidebar_post on Post {
         boost_power();
 
         //Validate trainer:
-        $session_en = en_auth(10967 /* BATMAN */, true);
+        $session_en = en_auth(10967, true);
 
         //Load tools:
         $this->load->view('header', array(

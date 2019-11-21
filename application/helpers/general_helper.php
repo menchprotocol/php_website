@@ -671,24 +671,43 @@ function redirect_message($url, $message = null)
 }
 
 
-function find_matching_superpowers($parent_en_ids){
-    $CI =& get_instance();
-    $find_matching_superpowers = array_intersect($CI->config->item('en_ids_10957'), $parent_en_ids);
-    if(count($find_matching_superpowers)>0){
-        return end($find_matching_superpowers);
+function require_superpower($superpower_en_id, $boolean_only = false){
+
+    if( ( is_numeric($superpower_en_id) && intval($superpower_en_id)>0) || ( is_array($superpower_en_id) && count($superpower_en_id)>0 ) ){
+
+        $CI =& get_instance();
+
+        if(en_auth()){
+
+            if(is_array($superpower_en_id)){
+                $is_match = count(array_intersect($superpower_en_id, $CI->session->userdata('activate_superpowers_en_ids')));
+            } else {
+                $is_match = in_array($superpower_en_id, $CI->session->userdata('activate_superpowers_en_ids'));
+            }
+
+        } else {
+
+            //Cannot authenticate if users is not logged-in
+            $is_match = false;
+
+        }
+
+        if($boolean_only){
+
+            return $is_match;
+
+        } else {
+
+            return ' superpower-'.$superpower_en_id.' '.( $is_match ? '' : ' hidden ' );
+
+        }
+
     } else {
-        return 0;
-    }
-}
 
-
-function require_superpower($superpower_en_id){
-    if(!$superpower_en_id){
-        //Ignore calls without a superpower:
+        //Ignore calls without a proper superpower:
         return false;
+
     }
-    $CI =& get_instance();
-    return ' superpower-'.$superpower_en_id.' '.( en_auth() && in_array($superpower_en_id, $CI->session->userdata('activate_superpowers_en_ids')) ? '' : ' hidden ' );
 }
 
 
@@ -1159,7 +1178,6 @@ function update_algolia($input_obj_type = null, $input_obj_id = 0, $return_row_o
                 }
 
                 $export_row['alg_obj_keywords'] = trim(strip_tags($export_row['alg_obj_keywords']));
-
 
                 if($has_featured_parent_en && in_array(intval($db_row['en_status_entity_id']), $CI->config->item('en_ids_7357'))){
                     array_push($export_row['_tags'], 'alg_is_published_featured');
