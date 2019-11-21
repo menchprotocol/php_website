@@ -756,7 +756,7 @@ fragment PostListingItemSidebar_post on Post {
 
                 if($count==$show_max){
 
-                    echo '<tr class="see_more_who"><td colspan="3"><span class="parent-icon icon-block-sm"><i class="fas fa-search-plus blue"></i></span><a href="javascript:void(0);" onclick="$(\'.see_more_who\').toggleClass(\'hidden\')"><b class="montserrat blue" style="text-decoration: none !important;">SEE TOP '.$load_max.'</b></a></td></tr>';
+                    echo '<tr class="see_more_who"><td colspan="3"><span class="parent-icon icon-block"><i class="fas fa-search-plus blue"></i></span><a href="javascript:void(0);" onclick="$(\'.see_more_who\').toggleClass(\'hidden\')"><b class="montserrat blue" style="text-decoration: none !important;">SEE TOP '.$load_max.'</b></a></td></tr>';
 
                     echo '<tr class="see_more_who"></tr>';
 
@@ -779,13 +779,13 @@ fragment PostListingItemSidebar_post on Post {
 
 
                 //PLAY
-                echo '<td><span class="parent-icon icon-block-sm">'.echo_en_icon($ln).'</span><b class="montserrat blue">'.( $session_en ? '<a href="/play/'.$ln['en_id'].'" class="blue">'.$first_name.'</a>' : $first_name ).'</b></td>';
+                echo '<td><span class="parent-icon icon-block">'.echo_en_icon($ln).'</span><b class="montserrat blue">'.( $session_en ? '<a href="/play/'.$ln['en_id'].'" class="blue">'.$first_name.'</a>' : $first_name ).'</b></td>';
 
                 //READ
-                echo '<td>'.( $session_en ? '<a href="/read/history?ln_status_entity_id='.join(',', $this->config->item('en_ids_7359')) /* Link Statuses Public */.'&ln_type_entity_id='.join(',', $this->config->item('en_ids_10590')).'&ln_creator_entity_id='.$ln['en_id'].( $start_date ? '&start_range='.$start_date : $start_date ).'" class="montserrat read"><span class="parent-icon icon-block-sm">'.$en_all_2738[6205]['m_icon'].'</span>'.echo_number($read_coins[0]['total_words']).'</a>' : '<span class="montserrat read"><span class="parent-icon icon-block-sm">'.$en_all_2738[6205]['m_icon'].'</span>'.echo_number($read_coins[0]['total_words']).'</span>' ).'</td>';
+                echo '<td>'.( $session_en ? '<a href="/read/history?ln_status_entity_id='.join(',', $this->config->item('en_ids_7359')) /* Link Statuses Public */.'&ln_type_entity_id='.join(',', $this->config->item('en_ids_10590')).'&ln_creator_entity_id='.$ln['en_id'].( $start_date ? '&start_range='.$start_date : $start_date ).'" class="montserrat read"><span class="parent-icon icon-block">'.$en_all_2738[6205]['m_icon'].'</span>'.echo_number($read_coins[0]['total_words']).'</a>' : '<span class="montserrat read"><span class="parent-icon icon-block">'.$en_all_2738[6205]['m_icon'].'</span>'.echo_number($read_coins[0]['total_words']).'</span>' ).'</td>';
 
                 //BLOG
-                echo '<td>'.( $session_en ? '<a href="/read/history?ln_status_entity_id='.join(',', $this->config->item('en_ids_7359')) /* Link Statuses Public */.'&ln_type_entity_id='.join(',', $this->config->item('en_ids_10589')).'&ln_creator_entity_id='.$ln['en_id'].( $start_date ? '&start_range='.$start_date : $start_date ).'" class="montserrat blog"><span class="parent-icon icon-block-sm">'.$en_all_2738[4535]['m_icon'].'</span>'.echo_number($ln['total_words']).'</a>' : '<span class="montserrat blog"><span class="parent-icon icon-block-sm">'.$en_all_2738[4535]['m_icon'].'</span>'.echo_number($ln['total_words']).'</span> '.echo_rank($count+1)  ).'</td>';
+                echo '<td>'.( $session_en ? '<a href="/read/history?ln_status_entity_id='.join(',', $this->config->item('en_ids_7359')) /* Link Statuses Public */.'&ln_type_entity_id='.join(',', $this->config->item('en_ids_10589')).'&ln_creator_entity_id='.$ln['en_id'].( $start_date ? '&start_range='.$start_date : $start_date ).'" class="montserrat blog"><span class="parent-icon icon-block">'.$en_all_2738[4535]['m_icon'].'</span>'.echo_number($ln['total_words']).'</a>' : '<span class="montserrat blog"><span class="parent-icon icon-block">'.$en_all_2738[4535]['m_icon'].'</span>'.echo_number($ln['total_words']).'</span> '.echo_rank($count+1)  ).'</td>';
                 echo '</tr>';
 
             }
@@ -817,7 +817,7 @@ fragment PostListingItemSidebar_post on Post {
                          4535 => echo_number($words_blog[0]['total_words']), //BLOG
                      ) as $en_id => $current_count){
                 $handle = strtolower($en_all_2738[$en_id]['m_name']);
-                echo '<td valign="bottom" style="width:33%"><span class="'.$handle.' border-'.$handle.'"><span class="parent-icon icon-block-sm">' . $en_all_2738[$en_id]['m_icon'] . '</span><span class="montserrat current_count">'.$current_count.'</span> '.( $en_id==4536 ? '<span class="montserrat">PLAYERS</span>' : '' ).'</span></td>';
+                echo '<td valign="bottom" style="width:33%"><span class="'.$handle.' border-'.$handle.'"><span class="parent-icon icon-block">' . $en_all_2738[$en_id]['m_icon'] . '</span><span class="montserrat current_count">'.$current_count.'</span> '.( $en_id==4536 ? '<span class="montserrat">PLAYERS</span>' : '' ).'</span></td>';
             }
             echo '</tr>';
 

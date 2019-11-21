@@ -175,7 +175,7 @@ if(in_array($in['in_completion_method_entity_id'], $this->config->item('en_ids_7
 
         if(count($already_printed) > $max_visible){
             //Show show more button:
-            echo '<a href="javascript:void(0);" onclick="$(\'.extra-recommendations\').toggleClass(\'hidden\');" class="list-group-item extra-recommendations"><span class="icon-block-sm"><i class="fas fa-plus-circle"></i></span><b style="font-weight: 500;">'.(count($already_printed)-$max_visible).' More Recommendations</b></a>';
+            echo '<a href="javascript:void(0);" onclick="$(\'.extra-recommendations\').toggleClass(\'hidden\');" class="list-group-item extra-recommendations"><span class="icon-block"><i class="fas fa-plus-circle"></i></span><b style="font-weight: 500;">'.(count($already_printed)-$max_visible).' More Recommendations</b></a>';
         }
 
         echo '</div>';
