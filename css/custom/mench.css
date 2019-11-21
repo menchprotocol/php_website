@@ -473,7 +473,7 @@ li a {
 /* FOOTER */
 .mench-navigation {
     width: 100%;
-    background-color: #FFFFFF;
+    background-color: #f4f5f7;
     min-height:50px;
 }
 .mench-navigation #searchFrontForm, .algolia-autocomplete, .algolia-autocomplete .aa-input, .algolia-autocomplete .aa-hint{
