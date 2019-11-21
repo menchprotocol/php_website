@@ -84,8 +84,10 @@ function in_load_search(focus_element, is_in_parent, shortcut) {
                 return;
             } else {
                 algolia_index.search(q, {
-                    filters: ' alg_obj_is_in=1 AND ( _tags:alg_is_published_featured OR _tags:alg_is_published_featured ) ',
+
+                    filters: ' alg_obj_is_in=1 AND ( _tags:alg_is_published_featured ' + ( js_pl_id > 0 ? 'OR _tags:alg_author_' + js_pl_id : '' ) + ' ) ',
                     hitsPerPage: 7,
+
                 }, function (error, content) {
                     if (error) {
                         cb([]);

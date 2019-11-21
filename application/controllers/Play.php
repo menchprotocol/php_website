@@ -3458,12 +3458,11 @@ fragment PostListingItemSidebar_post on Post {
 
                 //Do we have an omit command?
                 if(substr_count($en['ln_content'], '&trim=') == 1){
-                    $trim_word = strtolower(one_two_explode('&trim=','',$en['ln_content']));
-                    $trim_words = explode(' ', $trim_word);
                     $trim_check = 0;
-                    $name_words = explode(' ', strtolower($child['en_name']));
+                    $trim_words = explode(' ', one_two_explode('&trim=','',$en['ln_content']));
+                    $name_words = explode(' ', $child['en_name']);
                     foreach($name_words as $key => $value){
-                        if($value==$trim_words[$trim_check]){
+                        if(strtolower($value)==strtolower($trim_words[$trim_check])){
                             if(isset($trim_words[$trim_check+1])){
                                 $trim_check++;
                             } else {
@@ -3510,7 +3509,7 @@ fragment PostListingItemSidebar_post on Post {
         boost_power();
 
         //Validate trainer:
-        $session_en = en_auth(10967, true);
+        $session_en = en_auth(10984, true);
 
         //Load tools:
         $this->load->view('header', array(

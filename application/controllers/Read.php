@@ -1379,14 +1379,11 @@ class Read extends CI_Controller
     function messenger_fetch_profile($psid)
     {
 
-
-
-
-        if (!require_superpower(10967, true)) {
+        if (!require_superpower(10984, true)) {
             $en_all_10957 = $this->config->item('en_all_10957');
             return echo_json(array(
                 'status' => 0,
-                'message' => 'Missing the '.$en_all_10957[10967]['m_name'].' superpower',
+                'message' => 'Missing the '.$en_all_10957[10984]['m_name'].' superpower',
             ));
         }
 

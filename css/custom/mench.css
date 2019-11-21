@@ -49,6 +49,7 @@ body {
     padding: .5rem .5rem;
     font-size: 0.8em;
     font-family: 'Montserrat', sans-serif;
+    text-transform: uppercase;
 }
 
 .btn-primary {
