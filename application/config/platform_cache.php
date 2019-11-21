@@ -11,7 +11,7 @@ defined('BASEPATH') OR exit('No direct script access allowed');
 *
 */
 
-//Generated 2019-11-21 11:34:57 PST
+//Generated 2019-11-21 12:37:32 PST
 
 //BLOGGING. REIMAGINED.:
 $config['en_ids_11968'] = array(11969,11980,11984,11972,11977,11976);
@@ -1906,30 +1906,30 @@ $config['en_all_10990'] = array(
 );
 
 //SUPERPOWERS:
-$config['en_ids_10957'] = array(10983,10964,10939,10984);
+$config['en_ids_10957'] = array(10939,10984,10964,10983);
 $config['en_all_10957'] = array(
-    10983 => array(
-        'm_icon' => '<i class="far fa-narwhal blue" aria-hidden="true"></i>',
-        'm_name' => 'NARWHAL',
-        'm_desc' => 'PLAY MANAGEMENT',
-        'm_parents' => array(10957),
-    ),
-    10964 => array(
-        'm_icon' => '<i class="far fa-elephant ispink" aria-hidden="true"></i>',
-        'm_name' => 'ELEPHANT',
-        'm_desc' => 'READ HISTORY',
-        'm_parents' => array(10957),
-    ),
     10939 => array(
         'm_icon' => '<i class="far fa-badger-honey yellow" aria-hidden="true"></i>',
         'm_name' => 'HONEY BADGER',
-        'm_desc' => 'BLOG MANAGEMENT',
+        'm_desc' => 'THE POWER TO BLOG',
         'm_parents' => array(10957),
     ),
     10984 => array(
         'm_icon' => '<i class="far fa-deer-rudolph yellow" aria-hidden="true"></i>',
         'm_name' => 'RUDOLPH',
-        'm_desc' => 'BLOG ADVANCE TOOLS',
+        'm_desc' => 'THE POWER TO BLOG PROFESSIONALLY',
+        'm_parents' => array(10957),
+    ),
+    10964 => array(
+        'm_icon' => '<i class="far fa-elephant ispink" aria-hidden="true"></i>',
+        'm_name' => 'ELEPHANT',
+        'm_desc' => 'THE POWER TO READ',
+        'm_parents' => array(10957),
+    ),
+    10983 => array(
+        'm_icon' => '<i class="far fa-narwhal blue" aria-hidden="true"></i>',
+        'm_name' => 'NARWHAL',
+        'm_desc' => 'THE POWER TO PLAY',
         'm_parents' => array(10957),
     ),
 );

@@ -180,21 +180,75 @@ $(document).ready(function () {
     }).autocomplete({minLength: 1, autoselect: true, keyboardShortcuts: ['s']}, [
         {
             source: function (q, cb) {
-                //Do not search if specific command:
-                if (($("#mench_search").val().charAt(0) == '#' || $("#mench_search").val().charAt(0) == '@') && !isNaN($("#mench_search").val().substr(1))) {
+
+                //Players can filter search with first word:
+                var search_only_play = $("#mench_search").val().charAt(0) == '@';
+                var search_only_blog = $("#mench_search").val().charAt(0) == '#';
+
+                //Do not search if specific command ONLY:
+                if (( search_only_blog || search_only_play ) && !isNaN($("#mench_search").val().substr(1)) ) {
+
                     cb([]);
                     return;
+
                 } else {
+
+                    //Now determine the filters we need to apply:
+                    var search_filters = '';
+
+                    if(js_pl_id > 0){
+
+                        //For Players:
+                        if(search_only_play || search_only_blog){
+
+                            if(search_only_play && js_assigned_superpowers_en_ids.includes(10983)){
+
+                                //Can view ALL Players:
+                                search_filters += ' ( alg_obj_is_in = 0 ) ';
+
+                            } else {
+
+                                //Can view limited players:
+                                search_filters += ' ( alg_obj_is_in = '+( search_only_blog ? '1' : '0' )+' AND ( _tags:alg_is_published_featured OR _tags:alg_author_' + js_pl_id + ' )) ';
+                            }
+
+                        } else {
+
+                            if(js_assigned_superpowers_en_ids.includes(10983)){
+
+                                //Can view ALL Players:
+                                search_filters += ' ( alg_obj_is_in = 0 ) OR ( alg_obj_is_in = 1 AND _tags:alg_is_published_featured OR _tags:alg_author_' + js_pl_id + ' ) ';
+
+                            } else {
+
+                                //Can view limited players:
+                                search_filters += ' ( _tags:alg_is_published_featured OR _tags:alg_author_' + js_pl_id + ' ) ';
+
+                            }
+
+                        }
+
+                    } else {
+
+                        //For Guests:
+                        if(search_only_play || search_only_blog){
+
+                            //Guest can search players only with a starting @ sign
+                            search_filters += ' ( alg_obj_is_in = '+( search_only_blog ? '1' : '0' )+' AND _tags:alg_is_published_featured ) ';
+
+                        } else {
+
+                            //Guest can search blogs only by default as they start typing;
+                            search_filters += ' ( alg_obj_is_in = 1 AND _tags:alg_is_published_featured ) ';
+
+                        }
+
+                    }
 
                     //Append filters:
                     algolia_index.search(q, {
                         hitsPerPage: 20,
-                        filters:' alg_obj_is_in' + ($("#mench_search").val().charAt(0) == '#' ? '=1' : ($("#mench_search").val().charAt(0) == '@' ? '=0' : '>=0')) +
-                            ' AND ( _tags:alg_is_published_featured ' + ( js_pl_id > 0 ? 'OR _tags:alg_author_' + js_pl_id : '' ) + ')',
-
-                    //(  js_pl_id > 0 && js_assigned_superpowers_en_ids.includes(10989) ? '' : ' AND _tags:alg_is_published_featured')
-
-
+                        filters:search_filters,
                     }, function (error, content) {
                         if (error) {
                             cb([]);

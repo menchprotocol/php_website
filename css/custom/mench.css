@@ -590,10 +590,15 @@ li a {
     border-radius: 3px;
     padding:0 !important;
     font-size: 1.1em;
+    cursor: help;
 }
 
 .btn-superpower .fas, .btn-superpower .far, .btn-superpower .fal {
     color: #DCDCDC !important;
+}
+
+.btn-superpower.btn-locked {
+    cursor: not-allowed !important;
 }
 
 .btn-superpower.active .fas.blue, .btn-superpower.active .far.blue, .btn-superpower.active .fal.blue {
