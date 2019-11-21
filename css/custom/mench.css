@@ -609,10 +609,10 @@ li a {
 
 .btn.btn-play, .btn.btn-play:hover, .btn.btn-play:focus, .btn.btn-play:active, .btn.btn-play.active, .btn.btn-play:active:focus, .btn.btn-play:active:hover, .btn.btn-play.active:focus, .btn.btn-play.active:hover, .open > .btn.btn-play.dropdown-toggle, .open > .btn.btn-play.dropdown-toggle:focus, .open > .btn.btn-play.dropdown-toggle:hover, .navbar .navbar-nav > li > a.btn.btn-play, .navbar .navbar-nav > li > a.btn.btn-play:hover, .navbar .navbar-nav > li > a.btn.btn-play:focus, .navbar .navbar-nav > li > a.btn.btn-play:active, .navbar .navbar-nav > li > a.btn.btn-play.active, .navbar .navbar-nav > li > a.btn.btn-play:active:focus, .navbar .navbar-nav > li > a.btn.btn-play:active:hover, .navbar .navbar-nav > li > a.btn.btn-play.active:focus, .navbar .navbar-nav > li > a.btn.btn-play.active:hover, .open > .navbar .navbar-nav > li > a.btn.btn-play.dropdown-toggle, .open > .navbar .navbar-nav > li > a.btn.btn-play.dropdown-toggle:focus, .open > .navbar .navbar-nav > li > a.btn.btn-play.dropdown-toggle:hover {
     background-color: #008DF2;
-    color: #FFFFFF;
+    color: #070707;
 }
 
-.btn-play .fas,.btn-play .far,.btn-play .fal { color: #FFFFFF !important; }
+.btn-play .fas,.btn-play .far,.btn-play .fal { color: #070707 !important; }
 
 .btn.btn-main, .btn.btn-main:hover, .btn.btn-main:focus, .btn.btn-main:active, .btn.btn-main.active, .btn.btn-main:active:focus, .btn.btn-main:active:hover, .btn.btn-main.active:focus, .btn.btn-main.active:hover, .open > .btn.btn-main.dropdown-toggle, .open > .btn.btn-main.dropdown-toggle:focus, .open > .btn.btn-main.dropdown-toggle:hover, .navbar .navbar-nav > li > a.btn.btn-main, .navbar .navbar-nav > li > a.btn.btn-main:hover, .navbar .navbar-nav > li > a.btn.btn-main:focus, .navbar .navbar-nav > li > a.btn.btn-main:active, .navbar .navbar-nav > li > a.btn.btn-main.active, .navbar .navbar-nav > li > a.btn.btn-main:active:focus, .navbar .navbar-nav > li > a.btn.btn-main:active:hover, .navbar .navbar-nav > li > a.btn.btn-main.active:focus, .navbar .navbar-nav > li > a.btn.btn-main.active:hover, .open > .navbar .navbar-nav > li > a.btn.btn-main.dropdown-toggle, .open > .navbar .navbar-nav > li > a.btn.btn-main.dropdown-toggle:focus, .open > .navbar .navbar-nav > li > a.btn.btn-main.dropdown-toggle:hover {
     background-color: #070707;
@@ -621,11 +621,11 @@ li a {
 
 .btn.btn-read, .btn.btn-read:hover, .btn.btn-read:focus, .btn.btn-read:active, .btn.btn-read.active, .btn.btn-read:active:focus, .btn.btn-read:active:hover, .btn.btn-read.active:focus, .btn.btn-read.active:hover, .open > .btn.btn-read.dropdown-toggle, .open > .btn.btn-read.dropdown-toggle:focus, .open > .btn.btn-read.dropdown-toggle:hover, .navbar .navbar-nav > li > a.btn.btn-read, .navbar .navbar-nav > li > a.btn.btn-read:hover, .navbar .navbar-nav > li > a.btn.btn-read:focus, .navbar .navbar-nav > li > a.btn.btn-read:active, .navbar .navbar-nav > li > a.btn.btn-read.active, .navbar .navbar-nav > li > a.btn.btn-read:active:focus, .navbar .navbar-nav > li > a.btn.btn-read:active:hover, .navbar .navbar-nav > li > a.btn.btn-read.active:focus, .navbar .navbar-nav > li > a.btn.btn-read.active:hover, .open > .navbar .navbar-nav > li > a.btn.btn-read.dropdown-toggle, .open > .navbar .navbar-nav > li > a.btn.btn-read.dropdown-toggle:focus, .open > .navbar .navbar-nav > li > a.btn.btn-read.dropdown-toggle:hover {
     background-color: #FC1B44;
-    color: #FFFFFF;
+    color: #070707;
 }
 
 
-.btn-read .fas,.btn-read .far,.btn-read .fal { color: #FFFFFF !important; }
+.btn-read .fas,.btn-read .far,.btn-read .fal { color: #070707 !important; }
 
 .btn.btn-blog, .btn.btn-blog:hover, .btn.btn-blog:focus, .btn.btn-blog:active, .btn.btn-blog.active, .btn.btn-blog:active:focus, .btn.btn-blog:active:hover, .btn.btn-blog.active:focus, .btn.btn-blog.active:hover, .open > .btn.btn-blog.dropdown-toggle, .open > .btn.btn-blog.dropdown-toggle:focus, .open > .btn.btn-blog.dropdown-toggle:hover, .navbar .navbar-nav > li > a.btn.btn-blog, .navbar .navbar-nav > li > a.btn.btn-blog:hover, .navbar .navbar-nav > li > a.btn.btn-blog:focus, .navbar .navbar-nav > li > a.btn.btn-blog:active, .navbar .navbar-nav > li > a.btn.btn-blog.active, .navbar .navbar-nav > li > a.btn.btn-blog:active:focus, .navbar .navbar-nav > li > a.btn.btn-blog:active:hover, .navbar .navbar-nav > li > a.btn.btn-blog.active:focus, .navbar .navbar-nav > li > a.btn.btn-blog.active:hover, .open > .navbar .navbar-nav > li > a.btn.btn-blog.dropdown-toggle, .open > .navbar .navbar-nav > li > a.btn.btn-blog.dropdown-toggle:focus, .open > .navbar .navbar-nav > li > a.btn.btn-blog.dropdown-toggle:hover {
     background-color: #f1d104;
