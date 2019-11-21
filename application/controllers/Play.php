@@ -3446,6 +3446,10 @@ fragment PostListingItemSidebar_post on Post {
             ), array('en_child'), 0, 0, array('ln_order' => 'ASC', 'en_name' => 'ASC'));
 
 
+            //Find common base, if any:
+            $common_prefix = common_prefix($children, 'en_name');
+
+            //Generate raw IDs:
             $child_ids = array();
             foreach($children as $child){
                 array_push($child_ids , $child['en_id']);
@@ -3457,23 +3461,8 @@ fragment PostListingItemSidebar_post on Post {
             foreach($children as $child){
 
                 //Do we have an omit command?
-                if(substr_count($en['ln_content'], '&trim=') == 1){
-                    $trim_check = 0;
-                    $trim_words = explode(' ', one_two_explode('&trim=','',$en['ln_content']));
-                    $name_words = explode(' ', $child['en_name']);
-                    foreach($name_words as $key => $value){
-                        if(strtolower($value)==strtolower($trim_words[$trim_check])){
-                            if(isset($trim_words[$trim_check+1])){
-                                $trim_check++;
-                            } else {
-                                unset($name_words[$key]);
-                                $trim_check = 0; //Reset counter
-                            }
-                        }
-                    }
-
-                    //Assign what's left:
-                    $child['en_name'] = trim(join(' ', $name_words));
+                if(strlen($common_prefix) > 0){
+                    $child['en_name'] = trim(substr($child['en_name'], strlen($common_prefix)));
                 }
 
                 //Fetch all parents for this child:

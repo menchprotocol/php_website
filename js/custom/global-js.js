@@ -191,6 +191,10 @@ $(document).ready(function () {
                         hitsPerPage: 20,
                         filters:' alg_obj_is_in' + ($("#mench_search").val().charAt(0) == '#' ? '=1' : ($("#mench_search").val().charAt(0) == '@' ? '=0' : '>=0')) +
                             ' AND ( _tags:alg_is_published_featured ' + ( js_pl_id > 0 ? 'OR _tags:alg_author_' + js_pl_id : '' ) + ')',
+
+                    //(  js_pl_id > 0 && js_assigned_superpowers_en_ids.includes(10989) ? '' : ' AND _tags:alg_is_published_featured')
+
+
                     }, function (error, content) {
                         if (error) {
                             cb([]);

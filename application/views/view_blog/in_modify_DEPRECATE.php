@@ -2,7 +2,7 @@
 <?php $en_all_6103 = $this->config->item('en_all_6103'); //Link Metadata ?>
 <?php $en_all_6201 = $this->config->item('en_all_6201'); //Intent Table ?>
 <?php $en_all_4341 = $this->config->item('en_all_4341'); //Link Table ?>
-<?php $en_all_7368 = $this->config->item('en_all_7368'); //Trainer App ?>
+<?php $en_all_2738 = $this->config->item('en_all_2738'); ?>
 
 
 
@@ -17,7 +17,7 @@
 
             <div class="col-md-6 inlineform">
 
-                <div class="title"><h4><?= $en_all_7368[4535]['m_icon'].' Intent Settings' ?></h4></div>
+                <div class="title"><h4><?= $en_all_2738[4535]['m_icon'].' Intent Settings' ?></h4></div>
 
                 <div class="inline-box" style="margin-bottom: 15px;">
 
@@ -86,7 +86,7 @@
             <div class="col-md-6 in-has-tr">
 
 
-                    <div class="title"><h4><?= $en_all_7368[6205]['m_icon'].' Link Settings' ?></h4></div>
+                    <div class="title"><h4><?= $en_all_2738[6205]['m_icon'].' Link Settings' ?></h4></div>
 
                     <div class="inline-box" style="margin-bottom:0px;">
 

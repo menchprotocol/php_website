@@ -3,7 +3,7 @@
 
 $en_all_6206 = $this->config->item('en_all_6206'); //Entity Table
 $en_all_4341 = $this->config->item('en_all_4341'); //Link Table
-$en_all_7368 = $this->config->item('en_all_7368'); //Trainer App
+$en_all_2738 = $this->config->item('en_all_2738');
 $en_all_6177 = $this->config->item('en_all_6177'); //Entity Statuses
 $en_all_11035 = $this->config->item('en_all_11035'); //MENCH PLAYER NAVIGATION
 ?>

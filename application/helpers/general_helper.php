@@ -733,16 +733,16 @@ function fetch_cookie_order($cookie_name){
 }
 
 
-function in_common_prefix($in__children, $max_look = 0){
+function common_prefix($child_list, $child_field, $max_look = 0){
 
 
-    if(count($in__children) < 2){
+    if(count($child_list) < 2){
         return null; //Cannot do this for less than 2 intents
     }
 
     //Go through each child one by one and see if each word exists in all:
-    $in_common_prefix = '';
-    foreach(explode(' ', $in__children[0]['in_outcome']) as $word_pos=>$word){
+    $common_prefix = '';
+    foreach(explode(' ', $child_list[0][$child_field]) as $word_pos=>$word){
 
         if($max_look > 0 && $word_pos == $max_look){
             break; //Look no more...
@@ -750,10 +750,10 @@ function in_common_prefix($in__children, $max_look = 0){
 
         //Make sure this is the same word across all intents:
         $all_the_same = true;
-        foreach($in__children as $in){
-            $in_words = explode(' ', $in['in_outcome']);
+        foreach($child_list as $child_item){
+            $child_words = explode(' ', $child_item[$child_field]);
 
-            if(!isset($in_words[$word_pos]) || $in_words[$word_pos]!=$word){
+            if(!isset($child_words[$word_pos]) || $child_words[$word_pos]!=$word){
                 //Not the same:
                 $all_the_same = false;
                 break;
@@ -761,13 +761,13 @@ function in_common_prefix($in__children, $max_look = 0){
         }
 
         if($all_the_same){
-            $in_common_prefix .= $word.' ';
+            $common_prefix .= $word.' ';
         } else {
             break;
         }
     }
 
-    return trim($in_common_prefix);
+    return trim($common_prefix);
 }
 
 function upload_to_cdn($file_url, $ln_creator_entity_id = 0, $ln_metadata = null, $is_local = false, $page_title = null)

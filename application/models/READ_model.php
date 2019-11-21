@@ -2031,7 +2031,7 @@ class READ_model extends CI_Model
 
                 //Are we still clean?
                 $key = 0;
-                $in_common_prefix = in_common_prefix($in__children, $max_and_list); //Look only up to the max number of listed intents
+                $common_prefix = common_prefix($in__children, 'in_outcome', $max_and_list); //Look only up to the max number of listed intents
 
                 foreach ($in__children as $child_in) {
 
@@ -2061,12 +2061,12 @@ class READ_model extends CI_Model
                     if(!$push_message){
 
                         //Add HTML step to UI:
-                        $next_step_message .= echo_actionplan_step_child($en_id, $child_in, false, $in_common_prefix);
+                        $next_step_message .= echo_actionplan_step_child($en_id, $child_in, false, $common_prefix);
 
                     } else {
 
                         //Add simple message:
-                        $next_step_message .= ($key + 1) . '. ' . echo_in_outcome($child_in['in_outcome'], $push_message, $in_common_prefix);
+                        $next_step_message .= ($key + 1) . '. ' . echo_in_outcome($child_in['in_outcome'], $push_message, $common_prefix);
 
                     }
 

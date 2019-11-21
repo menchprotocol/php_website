@@ -1,6 +1,6 @@
 
 
-var fadeout_frequency = 2000; //milli seconds
+var fadeout_frequency = 30000; //milli seconds
 var searchbar_loaded = false;
 var fadeout_speed = 21;
 var updating_basic_stats = false;

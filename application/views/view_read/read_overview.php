@@ -19,12 +19,12 @@
             continue;
         }
 
-        $in_common_prefix = in_common_prefix($published_ins);
+        $common_prefix = common_prefix($published_ins, 'in_outcome');
 
         //Create list:
         $category_list = '<div class="list-group actionplan_list grey_list" style="font-size: 0.6em;">';
         foreach($published_ins as $published_in){
-            $category_list .= echo_in_read($published_in, $in_common_prefix);
+            $category_list .= echo_in_read($published_in, $common_prefix);
         }
         $category_list .= '</div>';
 

@@ -190,10 +190,10 @@ function echo_url_embed($url, $full_message = null, $return_array = false)
     }
 }
 
-function echo_in_outcome($in_outcome, $push_message = false, $in_common_prefix = null){
+function echo_in_outcome($in_outcome, $push_message = false, $common_prefix = null){
 
-    if(strlen($in_common_prefix) > 0){
-        $in_outcome = trim(substr($in_outcome, strlen($in_common_prefix)));
+    if(strlen($common_prefix) > 0){
+        $in_outcome = trim(substr($in_outcome, strlen($common_prefix)));
     }
 
     if($push_message){
@@ -503,7 +503,7 @@ function echo_ln($ln, $is_inner = false)
     $en_all_4593 = $CI->config->item('en_all_4593'); //Link Type
     $en_all_4527 = $CI->config->item('en_all_4527'); //Platform Cache
     $en_all_4341 = $CI->config->item('en_all_4341'); //Link Table
-    $en_all_7368 = $CI->config->item('en_all_7368'); //Trainer App
+    $en_all_2738 = $CI->config->item('en_all_2738');
 
 
 
@@ -535,7 +535,7 @@ function echo_ln($ln, $is_inner = false)
     //READ ID Row of data:
     $ui .= '<div class="read-micro-data">';
 
-    $ui .= '<span data-toggle="tooltip" data-placement="top" title="READ ID">'.$en_all_7368[6205]['m_icon'].$ln['ln_id'].'</span>';
+    $ui .= '<span data-toggle="tooltip" data-placement="top" title="READ ID">'.$en_all_2738[6205]['m_icon'].$ln['ln_id'].'</span>';
 
     $ui .= ' &nbsp;&nbsp;<span data-toggle="tooltip" data-placement="top" title="Link is '.$en_all_6186[$ln['ln_status_entity_id']]['m_desc'].'">'.$en_all_6186[$ln['ln_status_entity_id']]['m_icon'].' '.$en_all_6186[$ln['ln_status_entity_id']]['m_name'].'</span>';
 
@@ -681,7 +681,7 @@ function echo_ln($ln, $is_inner = false)
 }
 
 
-function echo_actionplan_step_child($en_id, $in, $is_unlocked_step = false, $in_common_prefix = null){
+function echo_actionplan_step_child($en_id, $in, $is_unlocked_step = false, $common_prefix = null){
 
     $CI =& get_instance();
 
@@ -690,7 +690,7 @@ function echo_actionplan_step_child($en_id, $in, $is_unlocked_step = false, $in_
     //Open list:
     $ui = '<a href="/actionplan/'.$in['in_id']. '" class="list-group-item">';
 
-    $ui .= echo_in_outcome($in['in_outcome'], false, $in_common_prefix);
+    $ui .= echo_in_outcome($in['in_outcome'], false, $common_prefix);
 
     if($is_unlocked_step){
         $en_all_4229 = $CI->config->item('en_all_4229'); //Link Metadata
@@ -1215,7 +1215,7 @@ function echo_tree_actionplan($in, $autoexpand){
     }
 
 
-    $in_common_prefix = in_common_prefix($in__children);
+    $common_prefix = common_prefix($in__children, 'in_outcome');
     $return_html = '';
     $return_html .= '<div class="list-group grey_list actionplan_list maxout public_ap">';
 
@@ -1259,7 +1259,7 @@ function echo_tree_actionplan($in, $autoexpand){
         }
 
 
-        $return_html .= '<span id="title-' . $in_level2['in_id'] . '">' . echo_in_outcome($in_level2['in_outcome'], false, $in_common_prefix) . '</span>';
+        $return_html .= '<span id="title-' . $in_level2['in_id'] . '">' . echo_in_outcome($in_level2['in_outcome'], false, $common_prefix) . '</span>';
 
 
         if($has_level2_content){
@@ -1288,7 +1288,7 @@ function echo_tree_actionplan($in, $autoexpand){
             if (count($in_level2_children) > 0) {
 
                 //See if they have a common base:
-                $in_common_prefix_granchild = in_common_prefix($in_level2_children);
+                $common_prefix_granchild = common_prefix($in_level2_children, 'in_outcome');
 
                 //List level 3:
                 $return_html .= '<ul class="action-plan-sub-list">';
@@ -1312,7 +1312,7 @@ function echo_tree_actionplan($in, $autoexpand){
                         $return_html .= '<span class="icon-block"><i class="fal fa-check-circle"></i></span>';
                     }
 
-                    $return_html .= echo_in_outcome($in_level3['in_outcome'], false, $in_common_prefix_granchild);
+                    $return_html .= echo_in_outcome($in_level3['in_outcome'], false, $common_prefix_granchild);
 
                     if(count($in_level3_messages) > 0){
                         $return_html .= '</a>';
@@ -1549,7 +1549,7 @@ function echo_en_cache($config_var_name, $en_id, $micro_status = true, $data_pla
 }
 
 
-function echo_in_read($in, $in_common_prefix = null, $hide_class = null)
+function echo_in_read($in, $common_prefix = null, $hide_class = null)
 {
 
     //See if user is logged-in:
@@ -1558,7 +1558,7 @@ function echo_in_read($in, $in_common_prefix = null, $hide_class = null)
 
     $ui = '<div class="list-group-item '.$hide_class .'">';
 
-    $ui .= '<span style="color:#222; font-weight:500; font-size:1.2em;">'.echo_in_outcome($in['in_outcome'], false, $in_common_prefix).'</span>';
+    $ui .= '<span style="color:#222; font-weight:500; font-size:1.2em;">'.echo_in_outcome($in['in_outcome'], false, $common_prefix).'</span>';
 
     $ui .= '<div class="pull-right inline-block"><a class="btn btn-primary btn-read" href="/read/'.$in['in_id'] . '"><i class="fas fa-angle-right"></i></a></div>';
 
@@ -2208,7 +2208,7 @@ function echo_en($en, $is_parent = false)
     $session_en = en_auth();
     $en_all_6177 = $CI->config->item('en_all_6177'); //Entity Statuses
     $en_all_4527 = $CI->config->item('en_all_4527'); //Platform Cache
-    $en_all_7368 = $CI->config->item('en_all_7368'); //Trainer App
+    $en_all_2738 = $CI->config->item('en_all_2738');
     $ln_id = (isset($en['ln_id']) ? $en['ln_id'] : 0);
     $ui = null;
 

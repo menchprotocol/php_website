@@ -209,7 +209,7 @@ if(isset($_GET['ln_type_entity_id'])){
 $has_filters = ( count($_GET) > 0 );
 
 
-$en_all_7368 = $this->config->item('en_all_7368'); //Trainer App
+$en_all_2738 = $this->config->item('en_all_2738');
 
 ?>
 
@@ -224,7 +224,7 @@ $en_all_7368 = $this->config->item('en_all_7368'); //Trainer App
 
 echo '<div class="container">';
 
-    echo '<h1 class="inline-block" style="padding-right: 10px;">'.$en_all_7368[6205]['m_icon'].' READ HISTORY</h1>';
+    echo '<h1 class="inline-block" style="padding-right: 10px;">'.$en_all_2738[6205]['m_icon'].' READ HISTORY</h1>';
 
     echo '<div class="inline-block"><i class="far fa-filter"></i> <a href="javascript:void();" onclick="$(\'.show-filter\').toggleClass(\'hidden\');">Filters</a></div>';
 

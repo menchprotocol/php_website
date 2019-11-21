@@ -235,10 +235,10 @@ if(in_array($in['in_completion_method_entity_id'], $this->config->item('en_ids_7
             'ln_type_entity_id' => 4228, //Intent Link Regular Step
             'ln_parent_intent_id' => $in['in_id'],
         ), array('in_child'), 0, 0, array('ln_order' => 'ASC'));
-        $in_common_prefix = in_common_prefix($in__children);
+        $common_prefix = common_prefix($in__children, 'in_outcome');
 
         foreach ($in__children as $child_in) {
-            echo echo_in_read($child_in, $in_common_prefix, null);
+            echo echo_in_read($child_in, $common_prefix, null);
         }
         echo '</div>';
 
