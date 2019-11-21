@@ -216,8 +216,7 @@ $(document).ready(function () {
 
                             if(js_assigned_superpowers_en_ids.includes(10983)){
 
-                                //Can view ALL Players:
-                                search_filters += ' ( alg_obj_is_in = 0 ) OR ( alg_obj_is_in = 1 AND _tags:alg_is_published_featured OR _tags:alg_author_' + js_pl_id + ' ) ';
+                                //no filter
 
                             } else {
 
