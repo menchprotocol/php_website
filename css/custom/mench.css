@@ -288,9 +288,11 @@ li a {
 .ismatt, .ismatt a                  { color:#070707 !important; }
 
 
+
 .mench-spin {
     -webkit-animation: mench-spin 7s infinite linear;
-    animation: mench-spin 7s infinite linear; }
+    animation: mench-spin 7s infinite linear;
+}
 
 @-webkit-keyframes mench-spin {
     0% {
@@ -455,6 +457,10 @@ li a {
 .three-menus td, #leaderboard td{
     width: 33.33%;
     vertical-align: bottom;
+}
+
+#leaderboard .icon-block{
+    margin-left: 1px;
 }
 
 .three-menus .mn_name{
