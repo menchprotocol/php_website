@@ -11,7 +11,7 @@ defined('BASEPATH') OR exit('No direct script access allowed');
 *
 */
 
-//Generated 2019-11-20 16:51:17 PST
+//Generated 2019-11-20 17:12:57 PST
 
 //BLOGGING. REIMAGINED.:
 $config['en_ids_11968'] = array(11969,11980,11984,11972,11977,11976);
@@ -5260,13 +5260,19 @@ $config['en_all_6204'] = array(
 );
 
 //Blog Answer Types:
-$config['en_ids_7712'] = array(6684);
+$config['en_ids_7712'] = array(6684,7231);
 $config['en_all_7712'] = array(
     6684 => array(
         'm_icon' => '<i class="fas fa-check-circle" aria-hidden="true"></i>',
         'm_name' => 'BLOG SELECT ONE',
         'm_desc' => '',
         'm_parents' => array(7712,7588,7585,6157,6193),
+    ),
+    7231 => array(
+        'm_icon' => '<i class="fas fa-check-square" aria-hidden="true"></i>',
+        'm_name' => 'BLOG SELECT SOME',
+        'm_desc' => '',
+        'm_parents' => array(7712,7489,7588,7585,6193),
     ),
 );
 
@@ -5513,7 +5519,7 @@ $config['en_all_4229'] = array(
 );
 
 //Blog Select Publicly:
-$config['en_ids_7588'] = array(6684);
+$config['en_ids_7588'] = array(6684,7231);
 $config['en_all_7588'] = array(
     6684 => array(
         'm_icon' => '<i class="fas fa-check-circle" aria-hidden="true"></i>',
@@ -5521,16 +5527,28 @@ $config['en_all_7588'] = array(
         'm_desc' => '',
         'm_parents' => array(7712,7588,7585,6157,6193),
     ),
+    7231 => array(
+        'm_icon' => '<i class="fas fa-check-square" aria-hidden="true"></i>',
+        'm_name' => 'BLOG SELECT SOME',
+        'm_desc' => '',
+        'm_parents' => array(7712,7489,7588,7585,6193),
+    ),
 );
 
 //READ OR:
-$config['en_ids_6193'] = array(6684,6907);
+$config['en_ids_6193'] = array(6684,7231,6907);
 $config['en_all_6193'] = array(
     6684 => array(
         'm_icon' => '<i class="fas fa-check-circle" aria-hidden="true"></i>',
         'm_name' => 'select one',
         'm_desc' => '',
         'm_parents' => array(7712,7588,7585,6157,6193),
+    ),
+    7231 => array(
+        'm_icon' => '<i class="fas fa-check-square" aria-hidden="true"></i>',
+        'm_name' => 'select some',
+        'm_desc' => '',
+        'm_parents' => array(7712,7489,7588,7585,6193),
     ),
     6907 => array(
         'm_icon' => '<i class="fas fa-cube "></i>',
@@ -5541,7 +5559,7 @@ $config['en_all_6193'] = array(
 );
 
 //BLOG FLOW:
-$config['en_ids_7585'] = array(6677,6683,7637,6684,6907,6914);
+$config['en_ids_7585'] = array(6677,6683,7637,6684,7231,6907,6914);
 $config['en_all_7585'] = array(
     6677 => array(
         'm_icon' => '<i class="far fa-comment" aria-hidden="true"></i>',
@@ -5566,6 +5584,12 @@ $config['en_all_7585'] = array(
         'm_name' => 'select one',
         'm_desc' => 'User will complete by choosing a child intent as their answer',
         'm_parents' => array(7712,7588,7585,6157,6193),
+    ),
+    7231 => array(
+        'm_icon' => '<i class="fas fa-check-square" aria-hidden="true"></i>',
+        'm_name' => 'select some',
+        'm_desc' => 'User will complete by choosing one or more child intents as their answer',
+        'm_parents' => array(7712,7489,7588,7585,6193),
     ),
     6907 => array(
         'm_icon' => '<i class="fas fa-cube "></i>',
