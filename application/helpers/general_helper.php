@@ -673,7 +673,10 @@ function redirect_message($url, $message = null)
 
 function require_superpower($superpower_en_id, $boolean_only = false){
 
-    if( ( is_numeric($superpower_en_id) && intval($superpower_en_id)>0) || ( is_array($superpower_en_id) && count($superpower_en_id)>0 ) ){
+    $is_number = is_numeric($superpower_en_id) && intval($superpower_en_id)>0;
+    $is_array = is_array($superpower_en_id) && count($superpower_en_id)>0;
+
+    if( $is_number || $is_array ){
 
         $CI =& get_instance();
 
@@ -698,7 +701,7 @@ function require_superpower($superpower_en_id, $boolean_only = false){
 
         } else {
 
-            return ' superpower-'.$superpower_en_id.' '.( $is_match ? '' : ' hidden ' );
+            return ( $is_array ? join(' superpower-' , $superpower_en_id) : ' superpower-'.$superpower_en_id ) . ' '.( $is_match ? '' : ' hidden ' );
 
         }
 
