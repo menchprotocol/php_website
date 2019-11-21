@@ -13,7 +13,7 @@ body {
 .row {margin-left:-5px;margin-right:-5px;}
 .container {padding-left:5px;padding-right:5px;}
 .table-sm td, .table-sm th {
-    padding: .3rem .1em;
+    padding: .3rem 0;
 }
 
 .table {
@@ -443,12 +443,12 @@ li a {
 }
 
 /* HEADER */
-.three-menus{
+.three-menus, #leaderboard{
     width: 100%;
     background-color: #f4f5f7;
 }
 
-.three-menus td{
+.three-menus td, #leaderboard td{
     width: 33.33%;
     vertical-align: bottom;
 }
