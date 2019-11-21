@@ -1,9 +1,9 @@
 <style> .mench-text { display: none; } </style>
 
 <div class="container">
-    <div class="row">
 
-        <div class="col-lg-6">
+    <div class="row">
+        <div class="col-lg-12">
             <h1>MENCH</h1>
             <ul class="none-list">
                 <?php
@@ -13,8 +13,10 @@
                 ?>
             </ul>
         </div>
+    </div>
 
-        <div class="col-lg-6">
+    <div class="row">
+        <div class="col-lg-12">
             <h1>PLAYERS</h1>
             <?php
             echo '<table id="leaderboard" class="table table-sm table-striped">';
@@ -22,7 +24,6 @@
             echo '</table>';
             ?>
         </div>
-
     </div>
 </div>
 
