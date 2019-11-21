@@ -11,7 +11,7 @@ defined('BASEPATH') OR exit('No direct script access allowed');
 *
 */
 
-//Generated 2019-11-21 13:52:02 PST
+//Generated 2019-11-21 14:25:47 PST
 
 //BLOGGING. REIMAGINED.:
 $config['en_ids_11968'] = array(11969,11980,11984,11972,11977,11976);
@@ -2048,18 +2048,18 @@ $config['en_all_10956'] = array(
 );
 
 //MENCH:
-$config['en_ids_2738'] = array(6205,4536,4535);
+$config['en_ids_2738'] = array(4536,6205,4535);
 $config['en_all_2738'] = array(
-    6205 => array(
-        'm_icon' => '<i class="fas fa-circle ispink" aria-hidden="true"></i>',
-        'm_name' => 'READ',
-        'm_desc' => 'microblogs interactively and choose your unique reading path. Earn 1 red coin for each word you read over the web or Messenger.',
-        'm_parents' => array(2738,4463),
-    ),
     4536 => array(
         'm_icon' => '<i class="fas fa-circle blue" aria-hidden="true"></i>',
         'm_name' => 'PLAY',
         'm_desc' => 'by simply creating your account. Earn coins as you read and blog. Choose your avatar and unlock superpowers as you earn more coins.',
+        'm_parents' => array(2738,4463),
+    ),
+    6205 => array(
+        'm_icon' => '<i class="fas fa-circle ispink" aria-hidden="true"></i>',
+        'm_name' => 'READ',
+        'm_desc' => 'microblogs interactively and choose your unique reading path. Earn 1 red coin for each word you read over the web or Messenger.',
         'm_parents' => array(2738,4463),
     ),
     4535 => array(
