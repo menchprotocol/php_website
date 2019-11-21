@@ -11,7 +11,7 @@ defined('BASEPATH') OR exit('No direct script access allowed');
 *
 */
 
-//Generated 2019-11-21 13:28:51 PST
+//Generated 2019-11-21 13:52:02 PST
 
 //BLOGGING. REIMAGINED.:
 $config['en_ids_11968'] = array(11969,11980,11984,11972,11977,11976);
@@ -2053,19 +2053,19 @@ $config['en_all_2738'] = array(
     6205 => array(
         'm_icon' => '<i class="fas fa-circle ispink" aria-hidden="true"></i>',
         'm_name' => 'READ',
-        'm_desc' => 'blogs interactively and up to 2,000 words/month free, or subscribe for $5/month. Earn 1 red coin for each word you read.',
+        'm_desc' => 'microblogs interactively and choose your unique reading path. Earn 1 red coin for each word you read over the web or Messenger.',
         'm_parents' => array(2738,4463),
     ),
     4536 => array(
         'm_icon' => '<i class="fas fa-circle blue" aria-hidden="true"></i>',
         'm_name' => 'PLAY',
-        'm_desc' => 'by simply creating your account and earn red/gold coins. Players can choose an avatar and unlock super powers as they read or blog.',
+        'm_desc' => 'by simply creating your account. Earn coins as you read and blog. Choose your avatar and unlock superpowers as you earn more coins.',
         'm_parents' => array(2738,4463),
     ),
     4535 => array(
         'm_icon' => '<i class="fas fa-circle yellow" aria-hidden="true"></i>',
         'm_name' => 'BLOG',
-        'm_desc' => 'by storing, organizing and publishing your ideas on MENCH. Create micro-blogs that are inter-connected and interactively read. Earn 1 gold coin for each word you blog. Gold coins can earn monthly cash payouts.',
+        'm_desc' => 'by saving, organizing and publishing ideas across all channels. Collaboratively link ideas to each other. Earn 1 gold coin for each word you blog.',
         'm_parents' => array(2738,4463),
     ),
 );

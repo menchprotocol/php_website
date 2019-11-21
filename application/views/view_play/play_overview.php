@@ -8,7 +8,7 @@
             <ul class="none-list">
                 <?php
                 foreach($this->config->item('en_all_2738') as $en_id => $m){
-                    echo '<li><b class="montserrat play">'.$m['m_icon'] .' '. $m['m_name'].'</b> '.$m['m_desc'].'</li>';
+                    echo '<li><b class="montserrat '.strtolower($m['m_name']).'">'.$m['m_icon'].' '.$m['m_name'].'</b> '.$m['m_desc'].'</li>';
                 }
                 ?>
             </ul>

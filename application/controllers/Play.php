@@ -811,12 +811,12 @@ fragment PostListingItemSidebar_post on Post {
             //Add total counts row:
             echo '<tr>';
             foreach (array(
-                         4536 => echo_number($en_count[0]['total_public_entities']),
-                         6205 => echo_number(abs($words_read[0]['total_words'])),
-                         4535 => echo_number($words_blog[0]['total_words']),
+                         4536 => echo_number($en_count[0]['total_public_entities']), //PLAY
+                         6205 => echo_number(abs($words_read[0]['total_words'])), //READ
+                         4535 => echo_number($words_blog[0]['total_words']), //BLOG
                      ) as $en_id => $current_count){
                 $handle = strtolower($en_all_2738[$en_id]['m_name']);
-                echo '<td valign="bottom" style="width:'.( $en_id==4536 ? 46 : 27 ).'%"><span class="'.$handle.' border-'.$handle.'"><span class="parent-icon icon-block-sm">' . $en_all_2738[$en_id]['m_icon'] . '</span><span class="montserrat current_count">'.$current_count.'</span> <span class="montserrat">' . $en_all_2738[$en_id]['m_desc'] . '</span></span></td>';
+                echo '<td valign="bottom" style="width:'.( $en_id==4536 ? 46 : 27 ).'%"><span class="'.$handle.' border-'.$handle.'"><span class="parent-icon icon-block-sm">' . $en_all_2738[$en_id]['m_icon'] . '</span><span class="montserrat current_count">'.$current_count.'</span> '.( $en_id==4536 ? '<span class="montserrat">PLAYERS</span>' : '' ).'</span></td>';
             }
             echo '</tr>';
 
