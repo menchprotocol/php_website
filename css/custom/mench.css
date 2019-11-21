@@ -277,7 +277,6 @@ li a {
 
 /* Bottom Navigation */
 .three-menus a { border-bottom: 10px solid #f4f5f7; }
-.focustab { background-color: #FFFFFF; }
 .border-play.focustab, .border-play:hover { border-bottom: 10px solid #008DF2 !important; }
 .border-blog.focustab, .border-blog:hover { border-bottom: 10px solid #f1d104 !important; }
 .border-read.focustab, .border-read:hover { border-bottom: 10px solid #FC1B44 !important; }
