@@ -11,7 +11,7 @@ defined('BASEPATH') OR exit('No direct script access allowed');
 *
 */
 
-//Generated 2019-11-21 12:37:32 PST
+//Generated 2019-11-21 13:28:51 PST
 
 //BLOGGING. REIMAGINED.:
 $config['en_ids_11968'] = array(11969,11980,11984,11972,11977,11976);
@@ -1750,7 +1750,7 @@ $config['en_all_11035'] = array(
         'm_icon' => '<i class="fas fa-search" aria-hidden="true"></i>',
         'm_name' => 'SEARCH MENCH',
         'm_desc' => '',
-        'm_parents' => array(11035,3323),
+        'm_parents' => array(11993,11035,3323),
     ),
     7540 => array(
         'm_icon' => '<i class="fas fa-balance-scale" aria-hidden="true"></i>',
@@ -2053,19 +2053,19 @@ $config['en_all_2738'] = array(
     6205 => array(
         'm_icon' => '<i class="fas fa-circle ispink" aria-hidden="true"></i>',
         'm_name' => 'READ',
-        'm_desc' => '',
+        'm_desc' => 'blogs interactively and up to 2,000 words/month free, or subscribe for $5/month. Earn 1 red coin for each word you read.',
         'm_parents' => array(2738,4463),
     ),
     4536 => array(
         'm_icon' => '<i class="fas fa-circle blue" aria-hidden="true"></i>',
         'm_name' => 'PLAY',
-        'm_desc' => '',
+        'm_desc' => 'by simply creating your account and earn red/gold coins. Players can choose an avatar and unlock super powers as they read or blog.',
         'm_parents' => array(2738,4463),
     ),
     4535 => array(
         'm_icon' => '<i class="fas fa-circle yellow" aria-hidden="true"></i>',
         'm_name' => 'BLOG',
-        'm_desc' => '',
+        'm_desc' => 'by storing, organizing and publishing your ideas on MENCH. Create micro-blogs that are inter-connected and interactively read. Earn 1 gold coin for each word you blog. Gold coins can earn monthly cash payouts.',
         'm_parents' => array(2738,4463),
     ),
 );
