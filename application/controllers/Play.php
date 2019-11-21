@@ -779,13 +779,13 @@ fragment PostListingItemSidebar_post on Post {
 
 
                 //PLAY
-                echo '<td class="triple-row"><span class="parent-icon icon-block-sm">'.echo_en_icon($ln).'</span><b class="montserrat blue">'.( $session_en ? '<a href="/play/'.$ln['en_id'].'" class="blue">'.$first_name.'</a>' : $first_name ).'</b></td>';
+                echo '<td><span class="parent-icon icon-block-sm">'.echo_en_icon($ln).'</span><b class="montserrat blue">'.( $session_en ? '<a href="/play/'.$ln['en_id'].'" class="blue">'.$first_name.'</a>' : $first_name ).'</b></td>';
 
                 //READ
-                echo '<td class="triple-row">'.( $session_en ? '<a href="/read/history?ln_status_entity_id='.join(',', $this->config->item('en_ids_7359')) /* Link Statuses Public */.'&ln_type_entity_id='.join(',', $this->config->item('en_ids_10590')).'&ln_creator_entity_id='.$ln['en_id'].( $start_date ? '&start_range='.$start_date : $start_date ).'" class="montserrat read"><span class="parent-icon icon-block-sm">'.$en_all_2738[6205]['m_icon'].'</span>'.echo_number($read_coins[0]['total_words']).'</a>' : '<span class="montserrat read"><span class="parent-icon icon-block-sm">'.$en_all_2738[6205]['m_icon'].'</span>'.echo_number($read_coins[0]['total_words']).'</span>' ).'</td>';
+                echo '<td>'.( $session_en ? '<a href="/read/history?ln_status_entity_id='.join(',', $this->config->item('en_ids_7359')) /* Link Statuses Public */.'&ln_type_entity_id='.join(',', $this->config->item('en_ids_10590')).'&ln_creator_entity_id='.$ln['en_id'].( $start_date ? '&start_range='.$start_date : $start_date ).'" class="montserrat read"><span class="parent-icon icon-block-sm">'.$en_all_2738[6205]['m_icon'].'</span>'.echo_number($read_coins[0]['total_words']).'</a>' : '<span class="montserrat read"><span class="parent-icon icon-block-sm">'.$en_all_2738[6205]['m_icon'].'</span>'.echo_number($read_coins[0]['total_words']).'</span>' ).'</td>';
 
                 //BLOG
-                echo '<td class="triple-row">'.( $session_en ? '<a href="/read/history?ln_status_entity_id='.join(',', $this->config->item('en_ids_7359')) /* Link Statuses Public */.'&ln_type_entity_id='.join(',', $this->config->item('en_ids_10589')).'&ln_creator_entity_id='.$ln['en_id'].( $start_date ? '&start_range='.$start_date : $start_date ).'" class="montserrat blog"><span class="parent-icon icon-block-sm">'.$en_all_2738[4535]['m_icon'].'</span>'.echo_number($ln['total_words']).'</a>' : '<span class="montserrat blog"><span class="parent-icon icon-block-sm">'.$en_all_2738[4535]['m_icon'].'</span>'.echo_number($ln['total_words']).'</span> '.echo_rank($count+1)  ).'</td>';
+                echo '<td>'.( $session_en ? '<a href="/read/history?ln_status_entity_id='.join(',', $this->config->item('en_ids_7359')) /* Link Statuses Public */.'&ln_type_entity_id='.join(',', $this->config->item('en_ids_10589')).'&ln_creator_entity_id='.$ln['en_id'].( $start_date ? '&start_range='.$start_date : $start_date ).'" class="montserrat blog"><span class="parent-icon icon-block-sm">'.$en_all_2738[4535]['m_icon'].'</span>'.echo_number($ln['total_words']).'</a>' : '<span class="montserrat blog"><span class="parent-icon icon-block-sm">'.$en_all_2738[4535]['m_icon'].'</span>'.echo_number($ln['total_words']).'</span> '.echo_rank($count+1)  ).'</td>';
                 echo '</tr>';
 
             }

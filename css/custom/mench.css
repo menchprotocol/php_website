@@ -442,13 +442,6 @@ li a {
     transform: rotate(315deg); /* W3C compliant browsers */
 }
 
-.triple-row{
-    width:33%;
-    white-space: nowrap;
-    overflow: hidden;
-    text-overflow: ellipsis;
-}
-
 /* HEADER */
 .three-menus{
     width: 100%;
