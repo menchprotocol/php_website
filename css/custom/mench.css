@@ -449,7 +449,8 @@ li a {
 }
 
 .three-menus td{
-    width: 33.3%;
+    width: 33.33%;
+    vertical-align: bottom;
 }
 
 .three-menus .mn_name{
