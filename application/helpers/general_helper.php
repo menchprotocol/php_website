@@ -671,7 +671,6 @@ function redirect_message($url, $message = null)
 }
 
 
-
 function find_matching_superpowers($parent_en_ids){
     $CI =& get_instance();
     $find_matching_superpowers = array_intersect($CI->config->item('en_ids_10957'), $parent_en_ids);
@@ -681,6 +680,7 @@ function find_matching_superpowers($parent_en_ids){
         return 0;
     }
 }
+
 
 function require_superpower($superpower_en_id){
     if(!$superpower_en_id){

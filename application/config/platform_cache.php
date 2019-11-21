@@ -11,7 +11,7 @@ defined('BASEPATH') OR exit('No direct script access allowed');
 *
 */
 
-//Generated 2019-11-20 17:12:57 PST
+//Generated 2019-11-20 18:29:10 PST
 
 //BLOGGING. REIMAGINED.:
 $config['en_ids_11968'] = array(11969,11980,11984,11972,11977,11976);
@@ -1912,18 +1912,18 @@ $config['en_all_10990'] = array(
 );
 
 //SUPERPOWERS:
-$config['en_ids_10957'] = array(10967,10983,10986,10964,10988,10989,10939,10984,10985);
+$config['en_ids_10957'] = array(10983,10967,10986,10964,10988,10989,10939,10984,10985);
 $config['en_all_10957'] = array(
+    10983 => array(
+        'm_icon' => '<i class="far fa-narwhal blue" aria-hidden="true"></i>',
+        'm_name' => 'NARWHAL',
+        'm_desc' => 'Add & Manage PLAYERS',
+        'm_parents' => array(10957),
+    ),
     10967 => array(
         'm_icon' => '<i class="far fa-bat blue" aria-hidden="true"></i>',
         'm_name' => 'BATMAN',
         'm_desc' => 'Able to access the admin panel to moderate the MENCH community',
-        'm_parents' => array(10957),
-    ),
-    10983 => array(
-        'm_icon' => '<i class="far fa-narwhal blue" aria-hidden="true"></i>',
-        'm_name' => 'NARWHAL',
-        'm_desc' => 'Able to create & manage PLAYERS',
         'm_parents' => array(10957),
     ),
     10986 => array(
@@ -1953,7 +1953,7 @@ $config['en_all_10957'] = array(
     10939 => array(
         'm_icon' => '<i class="far fa-badger-honey yellow" aria-hidden="true"></i>',
         'm_name' => 'HONEY BADGER',
-        'm_desc' => 'Able to create & manage BLOGS',
+        'm_desc' => 'Add & Manage BLOGS',
         'm_parents' => array(10957),
     ),
     10984 => array(

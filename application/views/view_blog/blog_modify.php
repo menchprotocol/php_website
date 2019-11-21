@@ -1,3 +1,4 @@
+
 <script>
     //Define some global variables:
     var in_loaded_id = <?= $in['in_id'] ?>;
@@ -48,7 +49,6 @@ echo '<div class="row">';
     echo '<div class="'.config_var(11094).'">';
         echo '<h1>'.echo_in_outcome($in['in_outcome']).'</h1>';
     echo '</div>';
-
 
     //RIGHT SETTINGS
     echo '<div class="'.config_var(11095).'">';
@@ -145,6 +145,7 @@ foreach ($this->config->item('en_all_11021') as $en_id => $m){
             }
 
             //Add child intent:
+            $this_tab .= '<div class="'.require_superpower(10989 /* PEGASUS */).'">';
             if(in_can_train($in['in_id'])){
                 $this_tab .= '<div class="list_input grey-block">
                     <div class="form-group is-empty" style="margin: 0; padding: 0;">
@@ -157,8 +158,11 @@ foreach ($this->config->item('en_all_11021') as $en_id => $m){
                     </div>
                    <div class="algolia_search_pad in_pad_bottom hidden"><span>Search blogs or create a new one...</span></div>
             </div>';
-            }
+            } else {
+                //Give option to request to join as Author:
 
+            }
+            $this_tab .= '</div>';
             $this_tab .= '</div>';
 
 
