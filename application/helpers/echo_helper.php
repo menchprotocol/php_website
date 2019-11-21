@@ -1360,7 +1360,8 @@ function echo_en_messages($ln){
 
     $CI =& get_instance();
     $session_en = en_auth();
-    $en_all_4737 = $CI->config->item('en_all_4737'); // Intent Statuses
+    $en_all_7585 = $CI->config->item('en_all_7585'); //Intent Subtypes
+    $en_all_4737 = $CI->config->item('en_all_4737'); //Intent Statuses
     $en_all_6186 = $CI->config->item('en_all_6186'); //Link Statuses
 
     $ui = '<div class="entities-msg">';
@@ -1372,7 +1373,6 @@ function echo_en_messages($ln){
 
 
     //Referenced Intent:
-    $en_all_7585 = $CI->config->item('en_all_7585'); // Intent Subtypes
     $ui .= '<li><a class="btn btn-blog button-max" style="border:2px solid #f1d104 !important;" href="/blog/' . $ln['ln_child_intent_id'] . '" target="_parent" title="Message Intent: '.$ln['in_outcome'].'" data-toggle="tooltip" data-placement="top">'.$en_all_4737[$ln['in_status_entity_id']]['m_icon'].'&nbsp; '.$en_all_7585[$ln['in_completion_method_entity_id']]['m_icon'].' '.$ln['in_outcome'].'</a></li>';
 
     //READ HISTORY:

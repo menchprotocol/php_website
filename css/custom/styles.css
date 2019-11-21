@@ -1623,11 +1623,6 @@ footer {
     height: 100%;
 }
 
-.msg-nav {
-    list-style-type: none;
-    margin: 0;
-    padding:7px 0 0 0;
-}
 
 .button-max{
     white-space: nowrap;
@@ -1635,36 +1630,8 @@ footer {
     text-overflow: ellipsis;
 }
 
-.msg-nav > li {
-    margin-right: 5px;
-    display: inline-block;
-    padding: 0 5px 0 0;
-    font-size: 0.9em;
-    color: #666;
-}
-
-.msg-nav > li > a {
-    color: #070707;
-    padding: 3px 5px;
-    border-radius: 5px;
-}
-
-.msg-nav > li .btn {
-    margin: -10px 0px 0 0 !important;
-    padding: 0px 4px;
-}
-
-.msg-nav li > .dropup {
-    margin: -4px -8px 0 0 !important;
-    padding: 5px 8px;
-}
-
 .remove_loading .dropup > a {
     padding: 5px 8px;
-}
-
-.msg-nav > li > a:hover {
-    background-color: #f4f5f7;
 }
 
 .msg-show {
