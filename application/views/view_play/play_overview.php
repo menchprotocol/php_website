@@ -15,7 +15,7 @@
         </div>
 
         <div class="col-lg-6">
-            <h1>TOP PLAYERS</h1>
+            <h1>PLAYERS</h1>
             <?php
             echo '<table id="leaderboard" class="table table-sm table-striped">';
             echo '<tbody><tr><td colspan="3"><span class="icon-block"><i class="far fa-yin-yang fa-spin"></i></span></td></tr></tbody>';

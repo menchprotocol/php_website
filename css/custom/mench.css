@@ -11,7 +11,7 @@ body {
 
 [class*="col-"] {padding-left:5px;padding-right:5px;}
 .row {margin-left:-5px;margin-right:-5px;}
-.container {padding-left:5px;padding-right:5px;}
+.container {padding-left:5px;padding-right:5px; background-color: #FFF;}
 .table-sm td, .table-sm th {
     padding: .3rem .1em;
 }
@@ -151,10 +151,10 @@ li a {
 .center-right{ padding-top:43px; }
 
 .table-striped tbody tr:nth-of-type(even) {
-    background-color:transparent;
+    background-color:#f4f5f7;
 }
 .table-striped tbody tr:nth-of-type(odd) {
-    background-color:#FFFFFF;
+    background-color:transparent;
 }
 
 .algolia_search_pad{
@@ -271,16 +271,11 @@ li a {
 .yellow, .isyellow, .isyellow a, .blog, .blog .fas, .blog .far, .blog .fal  { color:#f1d104 !important; }
 .pink, .ispink, .ispink a, .read, .read .fas, .read .far, .read .fal           { color:#FC1B44 !important; }
 
-.border-play     { border-color:#008DF2 !important; }
-.border-blog     { border-color:#f1d104 !important; }
-.border-read     { border-color:#FC1B44 !important; }
-
-
-.background-play, a.border-play:hover, a.border-play:hover .fas     { background-color:#008DF2 !important; color:#070707 !important; }
-.background-blog, a.border-blog:hover, a.border-blog:hover .fas     { background-color:#f1d104 !important; color:#070707 !important; }
-.background-read, a.border-read:hover, a.border-read:hover .fas     { background-color:#FC1B44 !important; color:#070707 !important; }
-
-.background-play .fas, .background-read .fas, .background-play .far, .background-read .far, .background-play .fal, .background-read .fal, .background-blog .fas, .background-blog .far, .background-blog .fal { color:#070707 !important; }
+/* Bottom Navigation */
+.focustab { background-color:#FFFFFF !important; border-top: 2px solid #f4f5f7; }
+.border-play.focustab, .border-play:hover { border-top: 2px solid #008DF2 !important; }
+.border-blog.focustab, .border-blog:hover { border-top: 2px solid #f1d104 !important; }
+.border-read.focustab, .border-read:hover { border-top: 2px solid #FC1B44 !important; }
 
 /* Color Palette @10604 */
 .isgreen, .isgreen a                { color:#228B22 !important; }
@@ -478,7 +473,7 @@ li a {
 /* FOOTER */
 .mench-navigation {
     width: 100%;
-    background-color: #f4f5f7;
+    background-color: #FFFFFF;
     min-height:50px;
 }
 .mench-navigation #searchFrontForm, .algolia-autocomplete, .algolia-autocomplete .aa-input, .algolia-autocomplete .aa-hint{
