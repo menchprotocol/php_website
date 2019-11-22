@@ -165,7 +165,7 @@ li a {
 .table-striped tbody tr:nth-of-type(even) {
     background-color:transparent;
 }
-.table-striped tbody tr:nth-of-type(odd), .list-group .list-group-item:nth-of-type(odd), ul li:nth-of-type(odd) {
+.table-striped tbody tr:nth-of-type(odd), .list-group .list-group-item:nth-of-type(odd), .none-list li:nth-of-type(odd), .decimal-list li:nth-of-type(odd) {
     background-color:#FFFFFF;
 }
 
