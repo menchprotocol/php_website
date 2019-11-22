@@ -2227,7 +2227,7 @@ function echo_en($en, $is_parent = false)
 
     $is_hidden = filter_array($en['en__parents'], 'en_id', 4755);
     $is_published = in_array($en['en_status_entity_id'], $CI->config->item('en_ids_7357'));
-    $is_link_published = in_array($en['ln_status_entity_id'], $CI->config->item('en_ids_7359'));
+    $is_link_published = ( $ln_id > 0 && in_array($en['ln_status_entity_id'], $CI->config->item('en_ids_7359')));
 
 
     //ROW
