@@ -83,6 +83,7 @@ $en_all_11035 = $this->config->item('en_all_11035'); //MENCH PLAYER NAVIGATION
                     <div class="inline-box">
 
 
+
                         <!-- Entity Status -->
                         <span class="mini-header"><?= $en_all_6206[6177]['m_icon'].' '.$en_all_6206[6177]['m_name'] ?></span>
                         <select class="form-control border" id="en_status_entity_id">
@@ -106,6 +107,7 @@ $en_all_11035 = $this->config->item('en_all_11035'); //MENCH PLAYER NAVIGATION
                         </div>
 
 
+
                         <!-- Entity Name -->
                         <span class="mini-header" style="margin-top:20px;"><?= $en_all_6206[6197]['m_icon'].' '.$en_all_6206[6197]['m_name'] ?> [<span style="margin:0 0 10px 0;"><span id="charNameNum">0</span>/<?= config_var(11072) ?></span>]</span>
                         <span class="white-wrapper">
@@ -114,6 +116,7 @@ $en_all_11035 = $this->config->item('en_all_11035'); //MENCH PLAYER NAVIGATION
                                           style="height:66px; min-height:66px;">
                                 </textarea>
                             </span>
+
 
 
                         <!-- Entity Icon -->
@@ -135,6 +138,8 @@ $en_all_11035 = $this->config->item('en_all_11035'); //MENCH PLAYER NAVIGATION
                                 <span class="input-group-addon addon-lean addon-grey icon-demo" style="color:#070707; font-weight: 300; padding-left:7px !important; padding-right:6px !important;"><i class="fas fa-at grey-at"></i></span>
                             </div>
                         </div>
+
+
 
                     </div>
 
@@ -341,10 +346,12 @@ $en_all_11035 = $this->config->item('en_all_11035'); //MENCH PLAYER NAVIGATION
                 //Only show filtering UI if we find child entities with different statuses (Otherwise no need to filter):
                 if (count($child_en_filters) > 0 && $child_en_filters[0]['totals'] < $entity['en__child_count']) {
 
-                    $tab_content .= '<div class="nav nav-tabs nav-tabs-sm">';
 
                     //Load status definitions:
                     $en_all_6177 = $this->config->item('en_all_6177'); //Entity Statuses
+
+                    //Add 2nd Navigation to UI
+                    $tab_content .= '<div class="nav nav-tabs nav-tabs-sm '.require_superpower(10967).'">';
 
                     //Show fixed All button:
                     $tab_content .= '<li class="nav-item"><a href="#" onclick="en_filter_status(-1)" class="nav-link u-status-filter active u-status--1" data-toggle="tooltip" data-placement="top" title="View all entities"><i class="fas fa-at"></i><span class="hide-small"> All</span> [<span class="counter-11029">' . $entity['en__child_count'] . '</span>]</a></li>';
