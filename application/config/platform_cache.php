@@ -11,7 +11,7 @@ defined('BASEPATH') OR exit('No direct script access allowed');
 *
 */
 
-//Generated 2019-11-21 22:35:45 PST
+//Generated 2019-11-21 22:41:29 PST
 
 //BLOGGING. REIMAGINED.:
 $config['en_ids_11968'] = array(11969,11980,11984,11972,11977,11976);
@@ -61,7 +61,7 @@ $config['en_all_11088'] = array(
         'm_icon' => '<i class="fas fa-eye blue" aria-hidden="true"></i>',
         'm_name' => 'PORTFOLIO TABS',
         'm_desc' => '',
-        'm_parents' => array(4527,11088),
+        'm_parents' => array(10983,4527,11088),
     ),
     11033 => array(
         'm_icon' => '<i class="fas fa-toolbox blue" aria-hidden="true"></i>',
@@ -78,7 +78,7 @@ $config['en_all_11089'] = array(
         'm_icon' => '<i class="fas fa-hand-holding-seedling blue" aria-hidden="true"></i>',
         'm_name' => 'PORTFOLIO',
         'm_desc' => '',
-        'm_parents' => array(10983,11084,11089,11028),
+        'm_parents' => array(11084,11089,11028),
     ),
     7545 => array(
         'm_icon' => '<i class="fas fa-user-tag blue" aria-hidden="true"></i>',
@@ -1029,7 +1029,7 @@ $config['en_all_11084'] = array(
         'm_icon' => '<i class="fas fa-hand-holding-seedling blue" aria-hidden="true"></i>',
         'm_name' => 'PORTFOLIO',
         'm_desc' => '',
-        'm_parents' => array(10983,11084,11089,11028),
+        'm_parents' => array(11084,11089,11028),
     ),
     11030 => array(
         'm_icon' => '<i class="fas fa-id-badge blue" aria-hidden="true"></i>',
@@ -1808,7 +1808,7 @@ $config['en_all_11028'] = array(
         'm_icon' => '<i class="fas fa-hand-holding-seedling blue" aria-hidden="true"></i>',
         'm_name' => 'PORTFOLIO',
         'm_desc' => 'What the PLAYER chooses to focus on. It\'s work. It\'s responsibility.',
-        'm_parents' => array(10983,11084,11089,11028),
+        'm_parents' => array(11084,11089,11028),
     ),
 );
 
@@ -2502,7 +2502,7 @@ $config['en_all_4527'] = array(
         'm_icon' => '<i class="fas fa-eye blue" aria-hidden="true"></i>',
         'm_name' => 'PLAY PORTFOLIO TABS',
         'm_desc' => '',
-        'm_parents' => array(4527,11088),
+        'm_parents' => array(10983,4527,11088),
     ),
     11033 => array(
         'm_icon' => '<i class="fas fa-toolbox blue" aria-hidden="true"></i>',
