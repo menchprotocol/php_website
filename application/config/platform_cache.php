@@ -11,7 +11,7 @@ defined('BASEPATH') OR exit('No direct script access allowed');
 *
 */
 
-//Generated 2019-11-22 09:13:00 PST
+//Generated 2019-11-22 09:26:26 PST
 
 //BLOGGING. REIMAGINED.:
 $config['en_ids_11968'] = array(11969,11980,11984,11972,11977,11976);
@@ -1466,7 +1466,7 @@ $config['en_all_11058'] = array(
 );
 
 //PLATFORM CONFIG VARIABLES:
-$config['en_ids_6404'] = array(11062,11094,11095,11071,11069,11079,11995,11076,11077,11074,11075,11064,11985,11065,11063,11060,11067,11066,11072,11092,11093,11073,11057,11056,11061,11162,11163,11986,11070);
+$config['en_ids_6404'] = array(11062,11094,11095,11071,11069,11079,11076,11077,11074,11075,11064,11985,11065,11063,11060,11067,11066,11072,11092,11093,11073,11057,11056,11061,11162,11163,11986,11070);
 $config['en_all_6404'] = array(
     11062 => array(
         'm_icon' => '',
@@ -1502,12 +1502,6 @@ $config['en_all_6404'] = array(
         'm_icon' => '',
         'm_name' => 'DEFAULT PLATFORM TIMEZONE',
         'm_desc' => 'America/Los_Angeles',
-        'm_parents' => array(6404),
-    ),
-    11995 => array(
-        'm_icon' => '',
-        'm_name' => 'default player icon',
-        'm_desc' => '',
         'm_parents' => array(6404),
     ),
     11076 => array(

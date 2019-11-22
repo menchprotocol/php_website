@@ -309,7 +309,7 @@ function echo_en_icon($en_icon = null)
         return $en_icon;
     } else {
         //Return default icon for players:
-        return config_var(11995);
+        return '<i class="fas fa-circle blue"></i>';
     }
 }
 
