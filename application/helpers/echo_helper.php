@@ -2191,7 +2191,7 @@ function echo_caret($en_id, $m, $url_append){
 
     $require_superpowers = array_intersect($CI->config->item('en_ids_10957'), $m['m_parents']);
 
-    $ui = '<li class="nav-item dropdown '.( count($require_superpowers) ? require_superpower(end($require_superpowers)) : '' ).'">';
+    $ui = '<li class="nav-item dropdown '.( count($require_superpowers) ? require_superpower(end($require_superpowers)) : '' ).'" title="'.$m['m_name'].'" data-toggle="tooltip" data-placement="top">';
     $ui .= '<a class="nav-link dropdown-toggle" data-toggle="dropdown" href="#" role="button" aria-haspopup="true" aria-expanded="false"></a>';
     $ui .= '<div class="dropdown-menu">';
     foreach ($CI->config->item('en_all_'.$en_id) as $en_id2 => $m2){

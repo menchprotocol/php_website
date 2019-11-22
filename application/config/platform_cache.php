@@ -11,7 +11,7 @@ defined('BASEPATH') OR exit('No direct script access allowed');
 *
 */
 
-//Generated 2019-11-21 18:30:57 PST
+//Generated 2019-11-21 18:56:38 PST
 
 //BLOGGING. REIMAGINED.:
 $config['en_ids_11968'] = array(11969,11980,11984,11972,11977,11976);
@@ -76,7 +76,7 @@ $config['en_ids_11089'] = array(11029,7545,4997,7347,6146);
 $config['en_all_11089'] = array(
     11029 => array(
         'm_icon' => '<i class="fas fa-hand-holding-seedling blue" aria-hidden="true"></i>',
-        'm_name' => 'PLAYER PORTFOLIO',
+        'm_name' => 'PORTFOLIO',
         'm_desc' => '',
         'm_parents' => array(11084,11089,11028),
     ),
@@ -1027,7 +1027,7 @@ $config['en_ids_11084'] = array(11029,11030);
 $config['en_all_11084'] = array(
     11029 => array(
         'm_icon' => '<i class="fas fa-hand-holding-seedling blue" aria-hidden="true"></i>',
-        'm_name' => 'PLAYER PORTFOLIO',
+        'm_name' => 'PORTFOLIO',
         'm_desc' => '',
         'm_parents' => array(11084,11089,11028),
     ),
@@ -1806,7 +1806,7 @@ $config['en_all_11028'] = array(
     ),
     11029 => array(
         'm_icon' => '<i class="fas fa-hand-holding-seedling blue" aria-hidden="true"></i>',
-        'm_name' => 'PLAYER PORTFOLIO',
+        'm_name' => 'PORTFOLIO',
         'm_desc' => 'What the PLAYER chooses to focus on. It\'s work. It\'s responsibility.',
         'm_parents' => array(11084,11089,11028),
     ),
