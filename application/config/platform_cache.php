@@ -11,7 +11,7 @@ defined('BASEPATH') OR exit('No direct script access allowed');
 *
 */
 
-//Generated 2019-11-21 22:26:23 PST
+//Generated 2019-11-21 22:29:52 PST
 
 //BLOGGING. REIMAGINED.:
 $config['en_ids_11968'] = array(11969,11980,11984,11972,11977,11976);
@@ -78,7 +78,7 @@ $config['en_all_11089'] = array(
         'm_icon' => '<i class="fas fa-hand-holding-seedling blue" aria-hidden="true"></i>',
         'm_name' => 'PORTFOLIO',
         'm_desc' => '',
-        'm_parents' => array(11084,11089,11028),
+        'm_parents' => array(10983,11084,11089,11028),
     ),
     7545 => array(
         'm_icon' => '<i class="fas fa-user-tag blue" aria-hidden="true"></i>',
@@ -1029,7 +1029,7 @@ $config['en_all_11084'] = array(
         'm_icon' => '<i class="fas fa-hand-holding-seedling blue" aria-hidden="true"></i>',
         'm_name' => 'PORTFOLIO',
         'm_desc' => '',
-        'm_parents' => array(11084,11089,11028),
+        'm_parents' => array(10983,11084,11089,11028),
     ),
     11030 => array(
         'm_icon' => '<i class="fas fa-id-badge blue" aria-hidden="true"></i>',
@@ -1808,7 +1808,7 @@ $config['en_all_11028'] = array(
         'm_icon' => '<i class="fas fa-hand-holding-seedling blue" aria-hidden="true"></i>',
         'm_name' => 'PORTFOLIO',
         'm_desc' => 'What the PLAYER chooses to focus on. It\'s work. It\'s responsibility.',
-        'm_parents' => array(11084,11089,11028),
+        'm_parents' => array(10983,11084,11089,11028),
     ),
 );
 
@@ -1930,7 +1930,7 @@ $config['en_all_10957'] = array(
         'm_icon' => '<i class="far fa-narwhal blue" aria-hidden="true"></i>',
         'm_name' => 'NARWHAL',
         'm_desc' => 'THE POWER TO PLAY',
-        'm_parents' => array(11030,10957),
+        'm_parents' => array(10957),
     ),
     10967 => array(
         'm_icon' => '<i class="far fa-bat blue" aria-hidden="true"></i>',
