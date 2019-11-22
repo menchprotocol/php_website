@@ -34,7 +34,7 @@ $en_all_11035 = $this->config->item('en_all_11035'); //MENCH PLAYER NAVIGATION
 
     //STATUS
     $is_published = in_array($entity['en_status_entity_id'], $this->config->item('en_ids_7357'));
-    echo '<span class="icon-block en_status_entity_id_' . $entity['en_id'] . ( $is_published ? 'hidden' : '' ).'"><span data-toggle="tooltip" data-placement="bottom" title="'.$en_all_6177[$entity['en_status_entity_id']]['m_name'].': '.$en_all_6177[$entity['en_status_entity_id']]['m_desc'].'">' . $en_all_6177[$entity['en_status_entity_id']]['m_icon'] . '</span></span>';
+    echo '<span class="icon-block en_status_entity_id_' . $entity['en_id'] . ( $is_published ? ' hidden ' : '' ).'"><span data-toggle="tooltip" data-placement="bottom" title="'.$en_all_6177[$entity['en_status_entity_id']]['m_name'].': '.$en_all_6177[$entity['en_status_entity_id']]['m_desc'].'">' . $en_all_6177[$entity['en_status_entity_id']]['m_icon'] . '</span></span>';
 
 
     //ACCOUNT
