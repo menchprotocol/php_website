@@ -114,7 +114,7 @@ $en_all_11035 = $this->config->item('en_all_11035'); //MENCH PLAYER NAVIGATION
                         <!-- Entity Name -->
                         <span class="mini-header" style="margin-top:20px;"><?= $en_all_6206[6197]['m_icon'].' '.$en_all_6206[6197]['m_name'] ?> [<span style="margin:0 0 10px 0;"><span id="charNameNum">0</span>/<?= config_var(11072) ?></span>]</span>
                         <span class="white-wrapper">
-                                <textarea class="form-control text-edit border" id="en_name"
+                                <textarea class="form-control text-edit border montserrat" id="en_name"
                                           onkeyup="en_name_word_count()" data-lpignore="true"
                                           style="height:66px; min-height:66px;">
                                 </textarea>
