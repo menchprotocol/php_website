@@ -86,6 +86,9 @@ class PLAY_model extends CI_Model
             return false;
         }
 
+        //Transform text:
+        $insert_columns['en_name'] = strtoupper($insert_columns['en_name']);
+
         if (isset($insert_columns['en_metadata'])) {
             $insert_columns['en_metadata'] = serialize($insert_columns['en_metadata']);
         } else {
@@ -211,6 +214,9 @@ class PLAY_model extends CI_Model
         if($ln_creator_entity_id > 0){
             $before_data = $this->PLAY_model->en_fetch(array('en_id' => $id));
         }
+
+        //Transform text:
+        $update_columns['en_name'] = strtoupper($update_columns['en_name']);
 
         //Cleanup metadata if needed:
         if(isset($update_columns['en_metadata']) && is_array($update_columns['en_metadata'])){

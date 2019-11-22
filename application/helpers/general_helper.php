@@ -217,7 +217,7 @@ function detect_fav_icon($url_clean_domain, $return_icon = false){
     if ($is_valid_icon) {
         return '<img src="'.$fav_icon.'">';
     } else {
-        return ( $return_icon ? '<i class="fas fa-circle blue"></i>' : null );
+        return ( $return_icon ? echo_en_icon() : null );
     }
 }
 
@@ -1134,7 +1134,7 @@ function update_algolia($input_obj_type = null, $input_obj_id = 0, $return_row_o
                 $export_row['alg_obj_id'] = intval($db_row['en_id']);
                 $export_row['alg_obj_weight'] = intval($db_row['en_trust_score']);
                 $export_row['alg_obj_status'] = intval($db_row['en_status_entity_id']);
-                $export_row['alg_obj_icon'] = echo_en_icon($db_row);
+                $export_row['alg_obj_icon'] = echo_en_icon($db_row['en_icon']);
                 $export_row['alg_obj_name'] = $db_row['en_name'];
 
                 array_push($export_row['_tags'], 'alg_author_' . $db_row['en_id']);

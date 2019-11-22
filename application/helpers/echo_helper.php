@@ -302,14 +302,14 @@ function echo_in_message_manage($ln)
 }
 
 
-function echo_en_icon($en)
+function echo_en_icon($en_icon = null)
 {
-    //TODO Use this function more often, as there are instnaces where we have this logic replicated! Search for "fas fa-circle blue" to find...
     //A simple function to display the Entity Icon OR the default icon if not available:
-    if (strlen($en['en_icon']) > 0) {
-        return $en['en_icon'];
+    if (strlen($en_icon) > 0) {
+        return $en_icon;
     } else {
-        return '<i class="fas fa-circle blue"></i>';
+        //Return default icon for players:
+        return config_var(11995);
     }
 }
 
@@ -566,7 +566,7 @@ function echo_ln($ln, $is_inner = false)
             ));
             $full_name = $trainer_ens[0]['en_name'];
 
-            $ui .= '<span class="icon-main">'.echo_en_icon($trainer_ens[0]).'</span> ';
+            $ui .= '<span class="icon-main">'.echo_en_icon($trainer_ens[0]['en_icon']).'</span> ';
             $ui .= '<a href="/play/'.$trainer_ens[0]['en_id'].'" data-toggle="tooltip" data-placement="top" title="Link Creator"><b>' . $full_name . '</b></a>';
 
         } else {
@@ -2264,7 +2264,7 @@ function echo_en($en, $is_parent = false)
 
 
     //ICON
-    $ui .= '<span class="icon-block en_ui_icon_' . $en['en_id'] . ' en-icon en__icon_'.$en['en_id'].'" en-is-set="'.( strlen($en['en_icon']) > 0 ? 1 : 0 ).'">' . echo_en_icon($en) . '</span>';
+    $ui .= '<span class="icon-block en_ui_icon_' . $en['en_id'] . ' en-icon en__icon_'.$en['en_id'].'" en-is-set="'.( strlen($en['en_icon']) > 0 ? 1 : 0 ).'">' . echo_en_icon($en['en_icon']) . '</span>';
 
 
     //STATUS
@@ -2325,7 +2325,7 @@ function echo_en($en, $is_parent = false)
 
 
     //FOLLOW
-    $ui .= '<div class="pull-right inline-block" style="padding-left:5px"><a class="btn btn-primary btn-play" href="/play/' . $en['en_id']. '">' . ($en['en__child_count'] > 0 ? echo_number($en['en__child_count']) : '') . ' <i class="fas fa-angle-right"></i></a></div>';
+    $ui .= '<div class="pull-right inline-block" style="padding-left:3px"><a class="btn btn-primary btn-play" href="/play/' . $en['en_id']. '">' . ($en['en__child_count'] > 0 ? echo_number($en['en__child_count']) : '') . ' <i class="fas fa-angle-right"></i></a></div>';
 
 
     //ICON SET
@@ -2334,7 +2334,7 @@ function echo_en($en, $is_parent = false)
     //PARENTS
     if(count($en['en__parents']) > 0){
         foreach ($en['en__parents'] as $en_parent) {
-            $ui .= '<span class="icon-block en_child_icon_' . $en_parent['en_id'] . '"><a href="/play/' . $en_parent['en_id'] . '" data-toggle="tooltip" title="' . $en_parent['en_name'] . (strlen($en_parent['ln_content']) > 0 ? ' = ' . $en_parent['ln_content'] : '') . '" data-placement="bottom">' . echo_en_icon($en_parent) . '</a></span>';
+            $ui .= '<span class="icon-block en_child_icon_' . $en_parent['en_id'] . '"><a href="/play/' . $en_parent['en_id'] . '" data-toggle="tooltip" title="' . $en_parent['en_name'] . (strlen($en_parent['ln_content']) > 0 ? ' = ' . $en_parent['ln_content'] : '') . '" data-placement="bottom">' . echo_en_icon($en_parent['en_icon']) . '</a></span>';
         }
     }
 

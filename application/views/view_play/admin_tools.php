@@ -409,7 +409,7 @@ if(!$action) {
 
                 echo '<tr class="panel-title down-border">';
                 echo '<td style="text-align: left;">'.($count+1).'</td>';
-                echo '<td style="text-align: left;">'.echo_en_cache('en_all_6177' /* Entity Statuses */, $en['en_status_entity_id'], true, 'right').' <span class="icon-block">'.echo_en_icon($en).'</span><a href="/play/'.$en['en_id'].'">'.$en['en_name'].'</a></td>';
+                echo '<td style="text-align: left;">'.echo_en_cache('en_all_6177' /* Entity Statuses */, $en['en_status_entity_id'], true, 'right').' <span class="icon-block">'.echo_en_icon($en['en_icon']).'</span><a href="/play/'.$en['en_id'].'">'.$en['en_name'].'</a></td>';
                 echo '</tr>';
 
             }

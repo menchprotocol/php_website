@@ -26,7 +26,7 @@ $en_all_11035 = $this->config->item('en_all_11035'); //MENCH PLAYER NAVIGATION
 
 
     //NAME
-    echo '<h1 class="inline" style="padding-right:10px;"><span class="en_ui_icon_'.$entity['en_id'].'">'.$entity['en_icon'].'</span> <span class="en_name_'.$entity['en_id'].'">'.$entity['en_name'].'</span></h1>';
+    echo '<h1 class="inline montserrat" style="padding-right:10px;"><span class="en_ui_icon_'.$entity['en_id'].'">'.echo_en_icon($entity['en_icon']).'</span> <span class="en_name_'.$entity['en_id'].'">'.$entity['en_name'].'</span></h1>';
 
 
     echo '<div class="inline-block" style="padding-bottom:10px;">';
@@ -138,7 +138,7 @@ $en_all_11035 = $this->config->item('en_all_11035'); //MENCH PLAYER NAVIGATION
                                 <input type="text" id="en_icon" value=""
                                        maxlength="<?= config_var(11072) ?>" data-lpignore="true" placeholder=""
                                        class="form-control">
-                                <span class="input-group-addon addon-lean addon-grey icon-demo" style="color:#070707; font-weight: 300; padding-left:7px !important; padding-right:6px !important;"><i class="fas fa-circle blue"></i></span>
+                                <span class="input-group-addon addon-lean addon-grey icon-demo" style="color:#070707; font-weight: 300; padding-left:7px !important; padding-right:6px !important;"></span>
                             </div>
                         </div>
 
@@ -291,7 +291,7 @@ $en_all_11035 = $this->config->item('en_all_11035'); //MENCH PLAYER NAVIGATION
                 //Input to add new parents:
                 $this_tab .= '<div id="new-parent" class="'.require_superpower(10983).'">
                     <div class="form-group is-empty"><input type="text" class="form-control new-player-input algolia_search form-control-thick" data-lpignore="true" placeholder="Add Player/URL"></div>
-                    <div class="algolia_search_pad hidden"><b class="montserrat"><span class="icon-block"><i class="fas fa-search-plus blue"></i></span>Search players, create a new player or paste a URL...</b></div>
+                    <div class="algolia_search_pad hidden"><b class="montserrat"><span class="icon-block"><i class="fas fa-search-plus blue"></i></span>Search players, create a new player or paste URL...</b></div>
             </div>';
 
                 $this_tab .= '</div>';
@@ -331,7 +331,7 @@ $en_all_11035 = $this->config->item('en_all_11035'); //MENCH PLAYER NAVIGATION
                 //Input to add new child:
                 $this_tab .= '<div id="new-children" class="'.require_superpower(10983).'">
             <div class="form-group is-empty"><input type="text" class="form-control new-player-input form-control-thick algolia_search" data-lpignore="true" placeholder="Add Player/URL"></div>
-            <div class="algolia_search_pad hidden"><b class="montserrat"><span class="icon-block"><i class="fas fa-search-plus blue"></i></span>Search players, create a new player or paste a URL...</b></div>
+            <div class="algolia_search_pad hidden"><b class="montserrat"><span class="icon-block"><i class="fas fa-search-plus blue"></i></span>Search players, create a new player or paste URL...</b></div>
     </div>';
                 $this_tab .= '</div>';
 
