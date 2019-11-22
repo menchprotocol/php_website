@@ -455,8 +455,11 @@ li a {
 }
 
 .three-menus td, #leaderboard td{
-    width: 33.33%;
+    minwidth: 33.33%;
     vertical-align: bottom;
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
 }
 
 #leaderboard .icon-block{
