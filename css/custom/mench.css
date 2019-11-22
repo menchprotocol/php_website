@@ -167,11 +167,9 @@ li a {
     height: 295px;
 }
 
-.algolia_search_pad span{
-    color: #999;
-    padding-top:20px;
+.algolia_search_pad b{
+    padding-top:5px;
     display: block;
-    text-align: center;
     font-size: 1em;
 }
 
