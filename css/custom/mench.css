@@ -45,7 +45,6 @@ h1, h2, h3, ul, p { padding: 0 5px; }
 
 .none-list{
     list-style:none;
-    margin-left:-35px;
 }
 .none-list li{
     margin-bottom: 10px;
