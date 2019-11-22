@@ -11,7 +11,7 @@ defined('BASEPATH') OR exit('No direct script access allowed');
 *
 */
 
-//Generated 2019-11-21 21:50:49 PST
+//Generated 2019-11-21 22:26:23 PST
 
 //BLOGGING. REIMAGINED.:
 $config['en_ids_11968'] = array(11969,11980,11984,11972,11977,11976);
@@ -1930,7 +1930,7 @@ $config['en_all_10957'] = array(
         'm_icon' => '<i class="far fa-narwhal blue" aria-hidden="true"></i>',
         'm_name' => 'NARWHAL',
         'm_desc' => 'THE POWER TO PLAY',
-        'm_parents' => array(10957),
+        'm_parents' => array(11030,10957),
     ),
     10967 => array(
         'm_icon' => '<i class="far fa-bat blue" aria-hidden="true"></i>',
