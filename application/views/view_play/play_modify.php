@@ -244,7 +244,7 @@ $en_all_11035 = $this->config->item('en_all_11035'); //MENCH PLAYER NAVIGATION
         echo '<div class="'.config_var($col_num==1 ? 11092 : 11093).'">';
 
 
-        echo '<ul class="nav nav-tabs nav-tabs-sm menu_bar">';
+        echo '<ul class="nav nav-tabs nav-tabs-sm menu_bar '.require_superpower(10983).'">';
 
         foreach ($this->config->item('en_all_'.$en_id) as $en_id2 => $m2){
 

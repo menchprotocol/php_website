@@ -2215,8 +2215,19 @@ function echo_en($en, $is_parent = false)
     $ui = null;
 
 
+    //Do we have entity parents loaded in our data-set? If not, load it:
+    if (!isset($en['en__parents'])) {
+        $en['en__parents'] = $CI->READ_model->ln_fetch(array(
+            'ln_type_entity_id IN (' . join(',', $CI->config->item('en_ids_4592')) . ')' => null, //Entity-to-Entity Links
+            'ln_child_entity_id' => $en['en_id'], //This child entity
+            'ln_status_entity_id IN (' . join(',', $CI->config->item('en_ids_7360')) . ')' => null, //Link Statuses Active
+            'en_status_entity_id IN (' . join(',', $CI->config->item('en_ids_7358')) . ')' => null, //Entity Statuses Active
+        ), array('en_parent'), 0, 0, array('en_name' => 'ASC'));
+    }
+
+
     //ROW
-    $ui .= '<div class="list-group-item en-item object_highlight highlight_en_'.$en['en_id'].' en___' . $en['en_id'] . ( $ln_id > 0 ? ' tr_' . $en['ln_id'].' ' : '' ) . ( $is_parent ? ' parent-entity ' : '' ) . '" entity-id="' . $en['en_id'] . '" en-status="' . $en['en_status_entity_id'] . '" tr-id="'.$ln_id.'" ln-status="'.( $ln_id ? $en['ln_status_entity_id'] : 0 ).'" is-parent="' . ($is_parent ? 1 : 0) . '">';
+    $ui .= '<div class="list-group-item en-item object_highlight '.( filter_array($en['en__parents'], 'en_id', 4755) ? require_superpower(10967) : '' ).' highlight_en_'.$en['en_id'].' en___' . $en['en_id'] . ( $ln_id > 0 ? ' tr_' . $en['ln_id'].' ' : '' ) . ( $is_parent ? ' parent-entity ' : '' ) . '" entity-id="' . $en['en_id'] . '" en-status="' . $en['en_status_entity_id'] . '" tr-id="'.$ln_id.'" ln-status="'.( $ln_id ? $en['ln_status_entity_id'] : 0 ).'" is-parent="' . ($is_parent ? 1 : 0) . '">';
 
 
     $ui .= '<div class="col1 col-md">';
@@ -2269,15 +2280,11 @@ function echo_en($en, $is_parent = false)
         //Show link content:
         $ln_content = echo_ln_urls($en['ln_content'] , $en['ln_type_entity_id']);
 
-        //Is this Entity link an Embeddable URL type or not?
-        if($ln_content){
-            $ui .= '</div><div class="col2 col-md">';
-        }
-        $ui .= ' <span class="ln_content ln_content_' . $ln_id . '">';
+        $ui .= ' <span class="ln_content_' . $ln_id . '">';
         $ui .= $ln_content;
         $ui .= '</span>';
 
-        //This is for JS editing:
+        //For JS editing only (HACK):
         $ui .= '<span class="ln_content_val_' . $ln_id . ' hidden">' . $en['ln_content'] . '</span>';
 
     }
@@ -2323,16 +2330,6 @@ function echo_en($en, $is_parent = false)
 
     //ICON SET
     $ui .= '<div class="pull-right inline-block '. require_superpower(10983) .'">';
-
-    //Do we have entity parents loaded in our data-set? If not, load it:
-    if (!isset($en['en__parents'])) {
-        $en['en__parents'] = $CI->READ_model->ln_fetch(array(
-            'ln_type_entity_id IN (' . join(',', $CI->config->item('en_ids_4592')) . ')' => null, //Entity-to-Entity Links
-            'ln_child_entity_id' => $en['en_id'], //This child entity
-            'ln_status_entity_id IN (' . join(',', $CI->config->item('en_ids_7360')) . ')' => null, //Link Statuses Active
-            'en_status_entity_id IN (' . join(',', $CI->config->item('en_ids_7358')) . ')' => null, //Entity Statuses Active
-        ), array('en_parent'), 0, 0, array('en_name' => 'ASC'));
-    }
 
     //PARENTS
     if(count($en['en__parents']) > 0){
