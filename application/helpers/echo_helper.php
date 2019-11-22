@@ -2227,10 +2227,11 @@ function echo_en($en, $is_parent = false)
 
     $is_hidden = filter_array($en['en__parents'], 'en_id', 4755);
     $is_published = in_array($en['en_status_entity_id'], $CI->config->item('en_ids_7357'));
+    $is_link_published = in_array($en['ln_status_entity_id'], $CI->config->item('en_ids_7359'));
 
 
     //ROW
-    $ui .= '<div class="list-group-item en-item object_highlight '.( $is_hidden || !$is_published ? require_superpower(10967) : '' ).' highlight_en_'.$en['en_id'].' en___' . $en['en_id'] . ( $ln_id > 0 ? ' tr_' . $en['ln_id'].' ' : '' ) . ( $is_parent ? ' parent-entity ' : '' ) . '" entity-id="' . $en['en_id'] . '" en-status="' . $en['en_status_entity_id'] . '" tr-id="'.$ln_id.'" ln-status="'.( $ln_id ? $en['ln_status_entity_id'] : 0 ).'" is-parent="' . ($is_parent ? 1 : 0) . '">';
+    $ui .= '<div class="list-group-item en-item object_highlight '.( $is_hidden || !$is_published || !$is_link_published ? require_superpower(10967) : '' ).' highlight_en_'.$en['en_id'].' en___' . $en['en_id'] . ( $ln_id > 0 ? ' tr_' . $en['ln_id'].' ' : '' ) . ( $is_parent ? ' parent-entity ' : '' ) . '" entity-id="' . $en['en_id'] . '" en-status="' . $en['en_status_entity_id'] . '" tr-id="'.$ln_id.'" ln-status="'.( $ln_id ? $en['ln_status_entity_id'] : 0 ).'" is-parent="' . ($is_parent ? 1 : 0) . '">';
 
 
     $ui .= '<div class="col1 col-md">';
@@ -2245,10 +2246,10 @@ function echo_en($en, $is_parent = false)
         $en_all_6186 = $CI->config->item('en_all_6186'); //Link Statuses
 
         //LINK TYPE
-        $ui .= '<span class="icon-block ln_type_' . $ln_id . require_superpower(10983).'"><span data-toggle="tooltip" data-placement="right" title="'.$en_all_4593[$en['ln_type_entity_id']]['m_name'].' @'.$en['ln_type_entity_id'].'">' . $en_all_4593[$en['ln_type_entity_id']]['m_icon'] . '</span></span>';
+        $ui .= '<span class="icon-block ln_type_' . $ln_id . require_superpower(10967).'"><span data-toggle="tooltip" data-placement="right" title="'.$en_all_4593[$en['ln_type_entity_id']]['m_name'].' @'.$en['ln_type_entity_id'].'">' . $en_all_4593[$en['ln_type_entity_id']]['m_icon'] . '</span></span>';
 
         //LINK STATUS
-        $ui .= '<span class="icon-block ln_status_entity_id_' . $ln_id . ( in_array($en['ln_status_entity_id'], $CI->config->item('en_ids_7359')) ? require_superpower(10983) : '' ).'"><span data-toggle="tooltip" data-placement="right" title="'.$en_all_6186[$en['ln_status_entity_id']]['m_name'].' @'.$en['ln_status_entity_id'].': '.$en_all_6186[$en['ln_status_entity_id']]['m_desc'].'">' . $en_all_6186[$en['ln_status_entity_id']]['m_icon'] . '</span></span>';
+        $ui .= '<span class="icon-block ln_status_entity_id_' . $ln_id . ( $is_link_published ? 'hidden' : '' ) .'"><span data-toggle="tooltip" data-placement="right" title="'.$en_all_6186[$en['ln_status_entity_id']]['m_name'].' @'.$en['ln_status_entity_id'].': '.$en_all_6186[$en['ln_status_entity_id']]['m_desc'].'">' . $en_all_6186[$en['ln_status_entity_id']]['m_icon'] . '</span></span>';
 
         //Show link index
         if($en['ln_external_id'] > 0){

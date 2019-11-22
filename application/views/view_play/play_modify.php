@@ -26,14 +26,15 @@ $en_all_11035 = $this->config->item('en_all_11035'); //MENCH PLAYER NAVIGATION
 
 
     //NAME
-    echo '<h1 class="inline montserrat" style="padding-right:10px;"><span class="en_ui_icon_'.$entity['en_id'].'">'.echo_en_icon($entity['en_icon']).'</span> <span class="en_name_'.$entity['en_id'].'">'.$entity['en_name'].'</span></h1>';
+    echo '<h1 class="inline montserrat" style="padding-right:10px;"><span class="icon-block-lg en-icon en_ui_icon_'.$entity['en_id'].'">'.echo_en_icon($entity['en_icon']).'</span> <span class="en_name_'.$entity['en_id'].'">'.$entity['en_name'].'</span></h1>';
 
 
     echo '<div class="inline-block" style="padding-bottom:10px;">';
 
 
     //STATUS
-    echo '<span class="icon-block en_status_entity_id_' . $entity['en_id'] . ( in_array($entity['en_status_entity_id'], $this->config->item('en_ids_7357')) ? require_superpower(10983) : '' ).'"><span data-toggle="tooltip" data-placement="bottom" title="'.$en_all_6177[$entity['en_status_entity_id']]['m_name'].': '.$en_all_6177[$entity['en_status_entity_id']]['m_desc'].'">' . $en_all_6177[$entity['en_status_entity_id']]['m_icon'] . '</span></span>';
+    $is_published = in_array($entity['en_status_entity_id'], $this->config->item('en_ids_7357'));
+    echo '<span class="icon-block en_status_entity_id_' . $entity['en_id'] . ( $is_published ? 'hidden' : '' ).'"><span data-toggle="tooltip" data-placement="bottom" title="'.$en_all_6177[$entity['en_status_entity_id']]['m_name'].': '.$en_all_6177[$entity['en_status_entity_id']]['m_desc'].'">' . $en_all_6177[$entity['en_status_entity_id']]['m_icon'] . '</span></span>';
 
 
     //ACCOUNT
