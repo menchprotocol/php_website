@@ -32,6 +32,7 @@ h1, h2, h3, ul, p { padding: 0 5px; }
 /* FONTS */
 .montserrat {
     font-family: 'Montserrat', sans-serif;
+    text-transform: uppercase;
 }
 .mono{
     font-family: 'Nanum Gothic Coding', monospace;
