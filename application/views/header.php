@@ -99,7 +99,7 @@ if(!isset($hide_header) || !$hide_header){
                         //Switch betweenh reading/blogging if specific blog is loaded:
                         $url_postfix = (intval($this->uri->segment(2) && isset($session_en['en_id']) && (($this->uri->segment(1)=='blog' && $en_id==6205) || ($this->uri->segment(1)=='read' && $en_id==4535))) ? '/'.$this->uri->segment(2) : '' );
 
-                        echo '<td><a class="'.$handle.' border-'.$handle.( $this->uri->segment(1)==$handle ? ' focustab ': '' ).'" href="/'.$handle.$url_postfix.'">' . ( isset($session_en['en_id']) && $en_id!=4536 ? '<span class="parent-icon icon-block">'.$m['m_icon'].'</span><span class="current_count mn_name montserrat"><i class="far fa-yin-yang fa-spin"></i></span>' : '<span class="parent-icon icon-block">'.$m['m_icon'].'</span><span class="mn_name montserrat">' . $m['m_name'] . '</span>' ) .'</a></td>';
+                        echo '<td><a class="'.$handle.' border-'.$handle.( $this->uri->segment(1)==$handle ? ' focustab ': '' ).'" href="/'.$handle.$url_postfix.'">' . ( isset($session_en['en_id']) ? ( $en_id==4536 ? '<span class="parent-icon icon-block">'.$m['m_icon'].'</span><span class="mn_name montserrat">'.trim(one_two_explode('',' ', $session_en['en_name'])).'</span>' : '<span class="parent-icon icon-block">'.$m['m_icon'].'</span><span class="current_count mn_name montserrat"><i class="far fa-yin-yang fa-spin"></i></span>' ) : '<span class="parent-icon icon-block">'.$m['m_icon'].'</span><span class="mn_name montserrat">' . $m['m_name'] . '</span>' ) .'</a></td>';
 
                     }
                     ?>
