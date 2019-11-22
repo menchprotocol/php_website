@@ -319,7 +319,7 @@ function is_valid_icon($string, $only_return_requirements = false){
 
 
     //Check if this is an HTML image tag:
-    $is_img = (substr($string, 0, 10) == '<img src="' && substr($string, -2) == '">' && filter_var(one_two_explode('<img src="','">',$string), FILTER_VALIDATE_URL));
+    $is_img = (substr($string, 0, 10) == '<img src="' && substr($string, -2) == '">' && filter_var(one_two_explode('<img src="','"',$string), FILTER_VALIDATE_URL));
 
     //See if this is an image URL:
     if ($is_img) {
