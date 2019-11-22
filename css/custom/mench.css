@@ -169,6 +169,10 @@ li a {
     background-color:#FFFFFF;
 }
 
+.list-group .list-group-item:nth-of-type(odd) {
+    background-color:#FFFFFF;
+}
+
 .algolia_search_pad{
     height: 295px;
 }
