@@ -240,11 +240,10 @@ $en_all_11035 = $this->config->item('en_all_11035'); //MENCH PLAYER NAVIGATION
         $col_num++;
         $tab_content = '';
         $default_active = false;
-
-        echo '<div class="'.config_var($col_num==1 ? 11092 : 11093).'">';
-
         $require_superpowers = array_intersect($this->config->item('en_ids_10957'), $m['m_parents']);
 
+
+        echo '<div class="'.config_var($col_num==1 ? 11092 : 11093).'">';
         echo '<div class="'.( count($require_superpowers) ? require_superpower(end($require_superpowers)) : '' ).'">';
         echo '<ul class="nav nav-tabs nav-tabs-sm menu_bar">';
 
