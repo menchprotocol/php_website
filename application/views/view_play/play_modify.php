@@ -138,7 +138,7 @@ $en_all_11035 = $this->config->item('en_all_11035'); //MENCH PLAYER NAVIGATION
                                 <input type="text" id="en_icon" value=""
                                        maxlength="<?= config_var(11072) ?>" data-lpignore="true" placeholder=""
                                        class="form-control">
-                                <span class="input-group-addon addon-lean addon-grey icon-demo" style="color:#070707; font-weight: 300; padding-left:7px !important; padding-right:6px !important;"><i class="fas fa-at grey-at"></i></span>
+                                <span class="input-group-addon addon-lean addon-grey icon-demo" style="color:#070707; font-weight: 300; padding-left:7px !important; padding-right:6px !important;"><i class="fas fa-circle blue"></i></span>
                             </div>
                         </div>
 

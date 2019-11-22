@@ -304,12 +304,12 @@ function echo_in_message_manage($ln)
 
 function echo_en_icon($en)
 {
-    //TODO Use this function more often, as there are instnaces where we have this logic replicated! Search for "fas fa-at grey-at" to find...
+    //TODO Use this function more often, as there are instnaces where we have this logic replicated! Search for "fas fa-circle blue" to find...
     //A simple function to display the Entity Icon OR the default icon if not available:
     if (strlen($en['en_icon']) > 0) {
         return $en['en_icon'];
     } else {
-        return '<i class="fas fa-at grey-at"></i>';
+        return '<i class="fas fa-circle blue"></i>';
     }
 }
 
@@ -2283,7 +2283,7 @@ function echo_en($en, $is_parent = false)
         //Show link content:
         $ln_content = echo_ln_urls($en['ln_content'] , $en['ln_type_entity_id']);
 
-        $ui .= ' <span class="ln_content_' . $ln_id . '">';
+        $ui .= ' <span class="ln_content ln_content_' . $ln_id . '">';
         $ui .= $ln_content;
         $ui .= '</span>';
 

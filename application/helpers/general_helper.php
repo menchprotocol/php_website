@@ -217,7 +217,7 @@ function detect_fav_icon($url_clean_domain, $return_icon = false){
     if ($is_valid_icon) {
         return '<img src="'.$fav_icon.'">';
     } else {
-        return ( $return_icon ? '<i class="fas fa-at grey-at"></i>' : null );
+        return ( $return_icon ? '<i class="fas fa-circle blue"></i>' : null );
     }
 }
 

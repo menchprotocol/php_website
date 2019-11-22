@@ -19,7 +19,7 @@ h1, h2, h3, ul, p { padding: 0 5px; }
 [class*="col-"] {padding-left:0px;padding-right:0px;}
 .row {margin-left:0px;margin-right:0px;}
 .container {padding-left:0px;padding-right:0px;}
-
+.ln_content { overflow: hidden; width: 100%; }
 .table-sm td, .table-sm th {
     padding: .3rem 0;
 }
