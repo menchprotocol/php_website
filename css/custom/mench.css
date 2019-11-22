@@ -30,7 +30,7 @@ h1, h2, h3, ul, p { padding: 0 5px; }
 }
 
 /* FONTS */
-.montserrat, .new-player-input {
+.montserrat, .new-player-input, .algolia-autocomplete {
     font-family: 'Montserrat', sans-serif;
     font-weight: bold;
     text-transform: uppercase;
