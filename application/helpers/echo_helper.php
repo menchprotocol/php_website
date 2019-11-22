@@ -2228,7 +2228,7 @@ function echo_en($en, $is_parent = false)
 
     $is_published = in_array($en['en_status_entity_id'], $CI->config->item('en_ids_7357'));
     $is_link_published = ( $ln_id > 0 && in_array($en['ln_status_entity_id'], $CI->config->item('en_ids_7359')));
-    $is_hidden = filter_array($en['en__parents'], 'en_id', 4755);
+    $is_hidden = filter_array($en['en__parents'], 'en_id', '4755');
 
     if(!$session_en && ($is_hidden || !$is_published || !$is_link_published)){
         //Not logged in, so should only see published:
@@ -2243,6 +2243,15 @@ function echo_en($en, $is_parent = false)
 
 
     $ui .= '<div class="col1 col-md">';
+
+
+
+    //ICON
+    $ui .= '<span class="icon-block en_ui_icon_' . $en['en_id'] . ' en-icon en__icon_'.$en['en_id'].'" en-is-set="'.( strlen($en['en_icon']) > 0 ? 1 : 0 ).'">' . echo_en_icon($en['en_icon']) . '</span>';
+
+
+    //STATUS
+    $ui .= '<span class="icon-block en_status_entity_id_' . $en['en_id'] . ( $is_published ? ' hidden ' : '' ).'"><span data-toggle="tooltip" data-placement="right" title="'.$en_all_6177[$en['en_status_entity_id']]['m_name'].' @'.$en['en_status_entity_id'].': '.$en_all_6177[$en['en_status_entity_id']]['m_desc'].'">' . $en_all_6177[$en['en_status_entity_id']]['m_icon'] . '</span></span>';
 
 
 
@@ -2270,14 +2279,6 @@ function echo_en($en, $is_parent = false)
         }
 
     }
-
-
-    //ICON
-    $ui .= '<span class="icon-block en_ui_icon_' . $en['en_id'] . ' en-icon en__icon_'.$en['en_id'].'" en-is-set="'.( strlen($en['en_icon']) > 0 ? 1 : 0 ).'">' . echo_en_icon($en['en_icon']) . '</span>';
-
-
-    //STATUS
-    $ui .= '<span class="icon-block en_status_entity_id_' . $en['en_id'] . ( $is_published ? ' hidden ' : '' ).'"><span data-toggle="tooltip" data-placement="right" title="'.$en_all_6177[$en['en_status_entity_id']]['m_name'].' @'.$en['en_status_entity_id'].': '.$en_all_6177[$en['en_status_entity_id']]['m_desc'].'">' . $en_all_6177[$en['en_status_entity_id']]['m_icon'] . '</span></span>';
 
 
     //NAME
