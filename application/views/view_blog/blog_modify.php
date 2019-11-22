@@ -119,7 +119,7 @@ foreach ($this->config->item('en_all_11021') as $en_id => $m){
                                        id="addintent-c-' . $in['in_id'] . '-1"
                                        placeholder="Add Previous Blog...">
                             </div>
-                           <div class="algolia_search_pad in_pad_top hidden"><span>Search blogs or create a new one...</span></div>
+                           <div class="algolia_search_pad in_pad_top hidden"><b class="montserrat">Search blogs or create a new one...</b></div>
                     </div>';
 
             $this_tab .= '</div>';
@@ -156,7 +156,7 @@ foreach ($this->config->item('en_all_11021') as $en_id => $m){
                                id="addintent-c-' . $in['in_id'] . '-0"
                                placeholder="Add Next Blog...">
                     </div>
-                   <div class="algolia_search_pad in_pad_bottom hidden"><span>Search blogs or create a new one...</span></div>
+                   <div class="algolia_search_pad in_pad_bottom hidden"><b class="montserrat">Search blogs or create a new one...</b></div>
             </div>';
             } else {
                 //Give option to request to join as Author:
