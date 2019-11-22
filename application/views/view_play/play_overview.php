@@ -29,9 +29,6 @@
 
 <script>
     $(document).ready(function () {
-        $.post("/play/leaderboard/", { }, function (data) {
-            $('#leaderboard tbody').html(data);
-            $('[data-toggle="tooltip"]').tooltip();
-        });
+        load_leaderboard();
     });
 </script>

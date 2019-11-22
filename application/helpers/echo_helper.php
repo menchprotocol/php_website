@@ -2258,7 +2258,7 @@ function echo_en($en, $is_parent = false)
 
 
     //NAME
-    $ui .= '<b class="en_name en_name_' . $en['en_id'] . '">' . $en['en_name'] . '</b>';
+    $ui .= '<b class="montserrat en_name_' . $en['en_id'] . '">' . $en['en_name'] . '</b>';
 
 
 
@@ -2316,7 +2316,7 @@ function echo_en($en, $is_parent = false)
 
 
     //FOLLOW
-    $ui .= '<div class="pull-right inline-block"><a class="btn btn-primary btn-play" href="/play/' . $en['en_id']. '">' . ($en['en__child_count'] > 0 ? echo_number($en['en__child_count']) : '') . ' <i class="fas fa-angle-right"></i></a></div>';
+    $ui .= '<div class="pull-right inline-block '.require_superpower(10983).'"><a class="btn btn-primary btn-play" href="/play/' . $en['en_id']. '">' . ($en['en__child_count'] > 0 ? echo_number($en['en__child_count']) : '') . ' <i class="fas fa-angle-right"></i></a></div>';
 
 
 

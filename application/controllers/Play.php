@@ -711,7 +711,7 @@ fragment PostListingItemSidebar_post on Post {
     }
 
 
-    function leaderboard(){
+    function load_leaderboard(){
 
         //Fetch top users per each direction
         $session_en = en_auth();
@@ -756,7 +756,7 @@ fragment PostListingItemSidebar_post on Post {
 
                 if($count==$show_max){
 
-                    echo '<tr class="see_more_who"><td colspan="3"><span class="parent-icon icon-block"><i class="fas fa-search-plus blue"></i></span><a href="javascript:void(0);" onclick="$(\'.see_more_who\').toggleClass(\'hidden\')"><b class="montserrat blue" style="text-decoration: none !important;">SEE TOP '.$load_max.'</b></a></td></tr>';
+                    echo '<tr class="see_more_who"><td colspan="3"><span class="parent-icon icon-block"><i class="fas fa-search-plus blue"></i></span><a href="javascript:void(0);" onclick="$(\'.see_more_who\').toggleClass(\'hidden\')"><b class="montserrat blue" style="text-decoration: none !important;">TOP '.$load_max.'</b></a></td></tr>';
 
                     echo '<tr class="see_more_who"></tr>';
 

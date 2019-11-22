@@ -24,6 +24,13 @@ function js_ln_create(new_ln_data){
     });
 }
 
+function load_leaderboard(){
+    $.post("/play/load_leaderboard/", { }, function (data) {
+        $('#leaderboard tbody').html(data);
+        $('[data-toggle="tooltip"]').tooltip();
+    });
+}
+
 
 function echo_js_suggestion(alg_obj){
 

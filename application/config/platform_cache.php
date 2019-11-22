@@ -11,7 +11,7 @@ defined('BASEPATH') OR exit('No direct script access allowed');
 *
 */
 
-//Generated 2019-11-21 18:56:38 PST
+//Generated 2019-11-21 21:36:43 PST
 
 //BLOGGING. REIMAGINED.:
 $config['en_ids_11968'] = array(11969,11980,11984,11972,11977,11976);
@@ -55,23 +55,23 @@ $config['en_all_11968'] = array(
 );
 
 //PLAY TABS:
-$config['en_ids_11088'] = array(11033,11089);
+$config['en_ids_11088'] = array(11089,11033);
 $config['en_all_11088'] = array(
-    11033 => array(
-        'm_icon' => '<i class="fas fa-toolbox blue" aria-hidden="true"></i>',
-        'm_name' => 'RIGHT TABS',
-        'm_desc' => '',
-        'm_parents' => array(11088,4527),
-    ),
     11089 => array(
         'm_icon' => '<i class="fas fa-eye blue" aria-hidden="true"></i>',
-        'm_name' => 'LEFT TABS',
+        'm_name' => 'PORTFOLIO TABS',
         'm_desc' => '',
         'm_parents' => array(4527,11088),
     ),
+    11033 => array(
+        'm_icon' => '<i class="fas fa-toolbox blue" aria-hidden="true"></i>',
+        'm_name' => 'PROFILE TABS',
+        'm_desc' => '',
+        'm_parents' => array(11088,4527),
+    ),
 );
 
-//PLAY LEFT TABS:
+//PLAY PORTFOLIO TABS:
 $config['en_ids_11089'] = array(11029,7545,4997,7347,6146);
 $config['en_all_11089'] = array(
     11029 => array(
@@ -1039,7 +1039,7 @@ $config['en_all_11084'] = array(
     ),
 );
 
-//PLAY RIGHT TABS:
+//PLAY PROFILE TABS:
 $config['en_ids_11033'] = array(11030,10573,4983,4231,4601,11039);
 $config['en_all_11033'] = array(
     11030 => array(
@@ -2500,13 +2500,13 @@ $config['en_all_4527'] = array(
     ),
     11089 => array(
         'm_icon' => '<i class="fas fa-eye blue" aria-hidden="true"></i>',
-        'm_name' => 'PLAY LEFT TABS',
+        'm_name' => 'PLAY PORTFOLIO TABS',
         'm_desc' => '',
         'm_parents' => array(4527,11088),
     ),
     11033 => array(
         'm_icon' => '<i class="fas fa-toolbox blue" aria-hidden="true"></i>',
-        'm_name' => 'PLAY RIGHT TABS',
+        'm_name' => 'PLAY PROFILE TABS',
         'm_desc' => '',
         'm_parents' => array(11088,4527),
     ),

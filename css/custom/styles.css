@@ -378,16 +378,6 @@ a.badge-primary:hover {
     max-width: 99%;
 }
 
-.top_entity .en_name {
-    font-size: 1.4em;
-    font-weight: bold;
-    padding-left: 3px;
-}
-
-.en_name {
-    font-weight:500;
-}
-
 
 .en_ui_icon{
     width:30px;

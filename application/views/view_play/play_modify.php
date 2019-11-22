@@ -50,6 +50,7 @@ $en_all_11035 = $this->config->item('en_all_11035'); //MENCH PLAYER NAVIGATION
 
 
     //REFERENCES
+    echo '<div class="'.require_superpower(10964).'">';
     $en_count_references = en_count_references($entity['en_id']);
     if(count($en_count_references) > 0){
         $en_all_6194 = $this->config->item('en_all_6194');
@@ -60,6 +61,8 @@ $en_all_11035 = $this->config->item('en_all_11035'); //MENCH PLAYER NAVIGATION
             $ref_count++;
         }
     }
+    echo '</div>';
+
 
     echo '</div>';
 
