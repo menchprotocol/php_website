@@ -75,108 +75,104 @@ if (!isset($flash_message)) {
 if(strlen($flash_message) > 0){
     echo '<div class="container" id="custom_message">'.$flash_message.'</div>';
 }
-?>
 
 
-    <?php
+if(isset($custom_header)){
+    echo $custom_header;
+}
 
 
-    if(isset($custom_header)){
-        echo $custom_header;
-    }
+if(!isset($hide_header) || !$hide_header){
 
+    ?>
 
-    if(!isset($hide_header) || !$hide_header){
+    <!-- 3X NAVIGATION -->
+    <div class="container show-while-searching fixed-bottom <?= ( isset($basic_header) ? ' hidden ' : '' ) ?>">
+        <div class="row">
+            <table class="three-menus">
+                <tr>
+                    <?php
+                    foreach($this->config->item('en_all_2738') as $en_id => $m){
 
-        ?>
+                        $handle = strtolower($m['m_name']);
 
-        <!-- 3X NAVIGATION -->
-        <div class="container show-while-searching fixed-bottom <?= ( isset($basic_header) ? ' hidden ' : '' ) ?>">
-            <div class="row">
-                <table class="three-menus">
-                    <tr>
-                        <?php
-                        foreach($this->config->item('en_all_2738') as $en_id => $m){
+                        //Switch betweenh reading/blogging if specific blog is loaded:
+                        $url_postfix = (intval($this->uri->segment(2) && isset($session_en['en_id']) && (($this->uri->segment(1)=='blog' && $en_id==6205) || ($this->uri->segment(1)=='read' && $en_id==4535))) ? '/'.$this->uri->segment(2) : '' );
 
-                            $handle = strtolower($m['m_name']);
+                        echo '<td><a class="'.$handle.' border-'.$handle.( $this->uri->segment(1)==$handle ? ' focustab ': '' ).'" href="/'.$handle.$url_postfix.'">' . ( isset($session_en['en_id']) && $en_id!=4536 ? '<span class="parent-icon icon-block">'.$m['m_icon'].'</span><span class="current_count mn_name montserrat"><i class="far fa-yin-yang fa-spin"></i></span>' : '<span class="parent-icon icon-block">'.$m['m_icon'].'</span><span class="mn_name montserrat">' . $m['m_name'] . '</span>' ) .'</a></td>';
 
-                            //Switch betweenh reading/blogging if specific blog is loaded:
-                            $url_postfix = (intval($this->uri->segment(2) && isset($session_en['en_id']) && (($this->uri->segment(1)=='blog' && $en_id==6205) || ($this->uri->segment(1)=='read' && $en_id==4535))) ? '/'.$this->uri->segment(2) : '' );
-
-                            echo '<td><a class="'.$handle.' border-'.$handle.( $this->uri->segment(1)==$handle ? ' focustab ': '' ).'" href="/'.$handle.$url_postfix.'">' . ( isset($session_en['en_id']) ? ( $en_id==4536 ? '<span class="parent-icon icon-block">'.$session_en['en_icon'].'</span><span class="mn_name montserrat">'.trim(one_two_explode('',' ', $session_en['en_name'])).'</span>' : '<span class="parent-icon icon-block">'.$m['m_icon'].'</span><span class="current_count mn_name montserrat"><i class="far fa-yin-yang fa-spin"></i></span>' ) : '<span class="parent-icon icon-block">'.$m['m_icon'].'</span><span class="mn_name montserrat">' . $m['m_name'] . '</span>' ) .'</a></td>';
-
-                        }
-                        ?>
-                    </tr>
-                </table>
-            </div>
+                    }
+                    ?>
+                </tr>
+            </table>
         </div>
+    </div>
 
 
 
 
-        <!-- MENCH LINE -->
-        <div class="container show-while-searching fixed-top">
-            <div class="row">
-                <table class="mench-navigation">
-                    <tr>
+    <!-- MENCH LINE -->
+    <div class="container show-while-searching fixed-top">
+        <div class="row">
+            <table class="mench-navigation">
+                <tr>
 
-                        <?php
+                    <?php
 
-                        $mench_logo = '<img src="/img/mench-v2-128.png" class="mench-logo mench-spin" />';
-                        echo '<td class="block-link block-logo">'. ( count($this->session->userdata('assigned_superpowers_en_ids')) ? '<a href="javascript:void(0);" onclick="$(\'.supwerpower_view\').toggleClass(\'hidden\');">'.$mench_logo.'</a>' : $mench_logo ) .'</td>';
+                    $mench_logo = '<img src="/img/mench-v2-128.png" class="mench-logo mench-spin" />';
+                    echo '<td class="block-link block-logo">'. ( count($this->session->userdata('assigned_superpowers_en_ids')) ? '<a href="javascript:void(0);" onclick="$(\'.supwerpower_view\').toggleClass(\'hidden\');">'.$mench_logo.'</a>' : $mench_logo ) .'</td>';
 
 
-                        ?>
+                    ?>
 
-                        <td>
-                            <div class="supwerpower_view">
+                    <td>
+                        <div class="supwerpower_view">
 
-                                <span class="hidden"><span class="mench-logo mench-text montserrat search-toggle <?= ( isset($basic_header) ? ' hidden ' : '' ) ?>">MENCH</span></span>
+                            <span class="hidden"><span class="mench-logo mench-text montserrat search-toggle <?= ( isset($basic_header) ? ' hidden ' : '' ) ?>">MENCH</span></span>
 
-                                <div class="search-toggle hidden"><form id="searchFrontForm"><input class="form-control algolia_search" type="search" id="mench_search" data-lpignore="true" placeholder="<?= $en_all_11035[7256]['m_name'] ?>"></form></div>
+                            <div class="search-toggle hidden"><form id="searchFrontForm"><input class="form-control algolia_search" type="search" id="mench_search" data-lpignore="true" placeholder="<?= $en_all_11035[7256]['m_name'] ?>"></form></div>
 
-                            </div>
-                            <div class="supwerpower_view hidden">
+                        </div>
+                        <div class="supwerpower_view hidden">
 
-                                <?php
-                                if(count($this->session->userdata('assigned_superpowers_en_ids'))){
-                                    foreach($this->config->item('en_all_10957') as $superpower_en_id => $m){
-                                        if(en_auth($superpower_en_id)){
+                            <?php
+                            if(count($this->session->userdata('assigned_superpowers_en_ids'))){
+                                foreach($this->config->item('en_all_10957') as $superpower_en_id => $m){
+                                    if(en_auth($superpower_en_id)){
 
-                                            //Superpower already unlocked:
-                                            echo '<a class="btn btn-sm btn-superpower icon-block-lg superpower-frame-'.$superpower_en_id.' '.( in_array($superpower_en_id, $this->session->userdata('activate_superpowers_en_ids')) ? 'active' : '' ).'" href="javascript:void();" onclick="toggle_superpower('.$superpower_en_id.')" title="'.$m['m_name'].' '.$m['m_desc'].'">'.$m['m_icon'].'</a>';
+                                        //Superpower already unlocked:
+                                        echo '<a class="btn btn-sm btn-superpower icon-block-lg superpower-frame-'.$superpower_en_id.' '.( in_array($superpower_en_id, $this->session->userdata('activate_superpowers_en_ids')) ? 'active' : '' ).'" href="javascript:void();" onclick="toggle_superpower('.$superpower_en_id.')" title="'.$m['m_name'].' '.$m['m_desc'].'">'.$m['m_icon'].'</a>';
 
-                                        }
                                     }
                                 }
-                                ?>
+                            }
+                            ?>
 
-                            </div>
-                        </td>
+                        </div>
+                    </td>
 
-                        <td class="block-link search-toggle <?= ( isset($basic_header) ? ' hidden ' : '' ) ?>"><a class="supwerpower_view" href="javascript:void(0);" onclick="load_searchbar();"><?= $en_all_11035[7256]['m_icon'] ?></a></td>
+                    <td class="block-link search-toggle <?= ( isset($basic_header) ? ' hidden ' : '' ) ?>"><a class="supwerpower_view" href="javascript:void(0);" onclick="load_searchbar();"><?= $en_all_11035[7256]['m_icon'] ?></a></td>
 
-                        <?php
+                    <?php
 
-                        if (isset($session_en['en_id'])) {
+                    if (isset($session_en['en_id'])) {
 
-                            echo '<td class="block-link"><a href="/play/'.$session_en['en_id'].'" title="'.$session_en['en_name'].'">'.$session_en['en_icon'].'</a></td>';
+                        echo '<td class="block-link"><a href="/play/'.$session_en['en_id'].'" title="'.$session_en['en_name'].'">'.$session_en['en_icon'].'</a></td>';
 
-                        } else {
+                    } else {
 
-                            //TERMS
-                            echo '<td class="block-link '.( isset($basic_header) ? ' hidden ' : '' ).'"><a href="/read/8263" title="'.$en_all_11035[7540]['m_name'].'">'.$en_all_11035[7540]['m_icon'].'</a></td>';
+                        //TERMS
+                        echo '<td class="block-link '.( isset($basic_header) ? ' hidden ' : '' ).'"><a href="/read/8263" title="'.$en_all_11035[7540]['m_name'].'">'.$en_all_11035[7540]['m_icon'].'</a></td>';
 
-                            //Give option to signin
-                            echo '<td class="block-link"><a href="/play/signin" title="'.$en_all_11035[4269]['m_name'].'">'.$en_all_11035[4269]['m_icon'].'</a></td>';
+                        //Give option to signin
+                        echo '<td class="block-link"><a href="/play/signin" title="'.$en_all_11035[4269]['m_name'].'">'.$en_all_11035[4269]['m_icon'].'</a></td>';
 
-                        }
-                        ?>
+                    }
+                    ?>
 
-                    </tr>
-                </table>
-            </div>
+                </tr>
+            </table>
         </div>
+    </div>
 
-    <?php } ?>
+<?php } ?>
