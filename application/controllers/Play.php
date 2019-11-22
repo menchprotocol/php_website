@@ -810,7 +810,7 @@ fragment PostListingItemSidebar_post on Post {
 
 
             //Add total counts row:
-            echo '<tr>';
+            echo '<tr class="see_more_who hidden">';
             foreach (array(
                          4536 => echo_number($en_count[0]['total_public_entities']), //PLAY
                          6205 => echo_number(abs($words_read[0]['total_words'])), //READ
