@@ -244,7 +244,8 @@ $en_all_11035 = $this->config->item('en_all_11035'); //MENCH PLAYER NAVIGATION
 
 
         echo '<div class="'.config_var($col_num==1 ? 11092 : 11093).'">';
-        echo '<div class="'.( count($require_superpowers) ? require_superpower(end($require_superpowers)) : '' ).'">';
+
+        echo '<span class="'.( count($require_superpowers) ? require_superpower(end($require_superpowers)) : '' ).'">';
         echo '<ul class="nav nav-tabs nav-tabs-sm menu_bar">';
 
         foreach ($this->config->item('en_all_'.$en_id) as $en_id2 => $m2){
@@ -542,7 +543,7 @@ $en_all_11035 = $this->config->item('en_all_11035'); //MENCH PLAYER NAVIGATION
         }
 
         echo '</ul>';
-        echo '</div>';
+        echo '</span>';
 
         echo $tab_content;
         echo '</div>';
