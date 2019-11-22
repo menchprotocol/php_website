@@ -2225,9 +2225,12 @@ function echo_en($en, $is_parent = false)
         ), array('en_parent'), 0, 0, array('en_name' => 'ASC'));
     }
 
+    $is_hidden = filter_array($en['en__parents'], 'en_id', 4755);
+    $is_published = in_array($en['en_status_entity_id'], $CI->config->item('en_ids_7357'));
+
 
     //ROW
-    $ui .= '<div class="list-group-item en-item object_highlight '.( filter_array($en['en__parents'], 'en_id', 4755) ? require_superpower(10967) : '' ).' highlight_en_'.$en['en_id'].' en___' . $en['en_id'] . ( $ln_id > 0 ? ' tr_' . $en['ln_id'].' ' : '' ) . ( $is_parent ? ' parent-entity ' : '' ) . '" entity-id="' . $en['en_id'] . '" en-status="' . $en['en_status_entity_id'] . '" tr-id="'.$ln_id.'" ln-status="'.( $ln_id ? $en['ln_status_entity_id'] : 0 ).'" is-parent="' . ($is_parent ? 1 : 0) . '">';
+    $ui .= '<div class="list-group-item en-item object_highlight '.( $is_hidden || !$is_published ? require_superpower(10967) : '' ).' highlight_en_'.$en['en_id'].' en___' . $en['en_id'] . ( $ln_id > 0 ? ' tr_' . $en['ln_id'].' ' : '' ) . ( $is_parent ? ' parent-entity ' : '' ) . '" entity-id="' . $en['en_id'] . '" en-status="' . $en['en_status_entity_id'] . '" tr-id="'.$ln_id.'" ln-status="'.( $ln_id ? $en['ln_status_entity_id'] : 0 ).'" is-parent="' . ($is_parent ? 1 : 0) . '">';
 
 
     $ui .= '<div class="col1 col-md">';
@@ -2265,7 +2268,7 @@ function echo_en($en, $is_parent = false)
 
 
     //STATUS
-    $ui .= '<span class="icon-block en_status_entity_id_' . $en['en_id'] . ( in_array($en['en_status_entity_id'], $CI->config->item('en_ids_7357')) ? require_superpower(10983) : '' ).'"><span data-toggle="tooltip" data-placement="right" title="'.$en_all_6177[$en['en_status_entity_id']]['m_name'].' @'.$en['en_status_entity_id'].': '.$en_all_6177[$en['en_status_entity_id']]['m_desc'].'">' . $en_all_6177[$en['en_status_entity_id']]['m_icon'] . '</span></span>';
+    $ui .= '<span class="icon-block en_status_entity_id_' . $en['en_id'] . ( $is_published ? require_superpower(10983) : '' ).'"><span data-toggle="tooltip" data-placement="right" title="'.$en_all_6177[$en['en_status_entity_id']]['m_name'].' @'.$en['en_status_entity_id'].': '.$en_all_6177[$en['en_status_entity_id']]['m_desc'].'">' . $en_all_6177[$en['en_status_entity_id']]['m_icon'] . '</span></span>';
 
 
     //NAME

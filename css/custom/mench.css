@@ -9,10 +9,6 @@ body {
     font-weight: 400;
 }
 
-.list-group-item:nth-of-type(odd) {
-    background-color:#f4f5f7;
-}
-
 h1, h2, h3, ul, p { padding: 0 5px; }
 
 /*
@@ -232,7 +228,7 @@ li a {
     font-style: normal;
 }
 
-.list-group-item{
+.list-group-item {
     padding: 10px 5px;
 }
 
@@ -530,7 +526,8 @@ li a {
 }
 
 .list-group-item {
-    border: 1px solid #f4f5f7;
+    border: 0;
+    background-color:#f4f5f7;
 }
 
 
