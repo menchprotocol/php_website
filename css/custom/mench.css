@@ -261,9 +261,6 @@ img.no-radius {
     overflow-x: hidden;
 }
 
-.nav-tabs .nav-item {
-    margin-bottom: -2px;
-}
 .nav-tabs{
     margin-top: 20px;
 }
@@ -325,7 +322,7 @@ img.no-radius {
 .nav-link.active, .nav-pills .show>.nav-link {
     color: #fff;
     background-color: #070707;
-    border-radius: 3px;
+    border-radius:0;
 }
 
 .tab-content{
