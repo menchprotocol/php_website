@@ -11,7 +11,8 @@ function echo_en_load_more($page, $limit, $en__child_count)
     //Regular section:
     $max_entities = (($page + 1) * $limit);
     $max_entities = ($max_entities > $en__child_count ? $en__child_count : $max_entities);
-    $ui .= '<span class="icon-block"><i class="fas fa-search-plus blue"></i></span>LOAD ' . (($page * $limit) + 1) . ' - ' . $max_entities . ' OF ' . $en__child_count;
+    //$ui .= '<span class="icon-block"><i class="fas fa-search-plus blue"></i></span>LOAD ' . (($page * $limit) + 1) . ' - ' . $max_entities . ' OF ' . $en__child_count; //May not be accurate due to HIDDEN PLAYERS that are not displayed publicly...
+    $ui .= '<span class="icon-block"><i class="fas fa-search-plus blue"></i></span>LOAD MORE';
     $ui .= '</a></div>';
 
     return $ui;
