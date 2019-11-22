@@ -455,7 +455,7 @@ li a {
 }
 
 .three-menus td, #leaderboard td{
-    minwidth: 33.33%;
+    width: 33.33%;
     vertical-align: bottom;
     white-space: nowrap;
     overflow: hidden;
