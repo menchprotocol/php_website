@@ -2189,7 +2189,9 @@ function echo_caret($en_id, $m, $url_append){
     //Display drop down menu:
     $CI =& get_instance();
 
-    $ui = '<li class="nav-item dropdown '.require_superpower(array_intersect($CI->config->item('en_ids_10957'), $m['m_parents'])).'">';
+    $require_superpowers = array_intersect($CI->config->item('en_ids_10957'), $m['m_parents']);
+
+    $ui = '<li class="nav-item dropdown '.( count($require_superpowers) ? require_superpower(end($require_superpowers)) : '' ).'">';
     $ui .= '<a class="nav-link dropdown-toggle" data-toggle="dropdown" href="#" role="button" aria-haspopup="true" aria-expanded="false"></a>';
     $ui .= '<div class="dropdown-menu">';
     foreach ($CI->config->item('en_all_'.$en_id) as $en_id2 => $m2){
@@ -2375,8 +2377,9 @@ function echo_dropdown($cache_en_id, $selected_en_id = 0, $micro = false, $btn_c
     foreach ($en_all_this as $en_id => $m) {
 
         $is_set = ($en_id==$selected_en_id);
+        $require_superpowers = array_intersect($CI->config->item('en_ids_10957'), $m['m_parents']);
 
-        $ui .= '<a class="dropdown-item '.( $is_set ? ' active ' : require_superpower(array_intersect($CI->config->item('en_ids_10957'), $m['m_parents'])) ).'" href="javascript:void();" '.( !$is_set ? 'onclick="update_dropdown('.$cache_en_id.','.$en_id.')' : '' ).'"><span class="icon-block">'.$m['m_icon'].'</span>'.$m['m_name'].'</a>';
+        $ui .= '<a class="dropdown-item '.( $is_set ? ' active ' : ( count($require_superpowers) ? require_superpower(end($require_superpowers)) : '' ) ).'" href="javascript:void();" '.( !$is_set ? 'onclick="update_dropdown('.$cache_en_id.','.$en_id.')' : '' ).'"><span class="icon-block">'.$m['m_icon'].'</span>'.$m['m_name'].'</a>';
     }
 
     $ui .= '</div>';

@@ -673,36 +673,15 @@ function redirect_message($url, $message = null)
 
 function require_superpower($superpower_en_id, $boolean_only = false){
 
-    $is_number = is_numeric($superpower_en_id) && intval($superpower_en_id)>0;
-    $is_array = is_array($superpower_en_id) && count($superpower_en_id)>0;
-
-    if( $is_number || $is_array ){
+    if( intval($superpower_en_id)>0 ){
 
         $CI =& get_instance();
-
-        if(en_auth()){
-
-            if(is_array($superpower_en_id)){
-                $is_match = count(array_intersect($superpower_en_id, $CI->session->userdata('activate_superpowers_en_ids')));
-            } else {
-                $is_match = in_array($superpower_en_id, $CI->session->userdata('activate_superpowers_en_ids'));
-            }
-
-        } else {
-
-            //Cannot authenticate if users is not logged-in
-            $is_match = false;
-
-        }
+        $is_match = (en_auth() ? in_array(intval($superpower_en_id), $CI->session->userdata('activate_superpowers_en_ids')) : false);
 
         if($boolean_only){
-
             return $is_match;
-
         } else {
-
-            return ( $is_array ? join(' superpower-' , $superpower_en_id) : ' superpower-'.$superpower_en_id ) . ' '.( $is_match ? '' : ' hidden ' );
-
+            return ' superpower-'.$superpower_en_id . ' ' . ( $is_match ? '' : ' hidden ' );
         }
 
     } else {
