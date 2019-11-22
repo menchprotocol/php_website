@@ -173,7 +173,7 @@ $(document).ready(function () {
 
 function en_load_search(focus_element, is_en_parent, shortcut) {
 
-    $(focus_element + ' .new-input').focus(function() {
+    $(focus_element + ' .new-player-input').focus(function() {
         $(focus_element + ' .algolia_search_pad' ).removeClass('hidden');
     }).focusout(function() {
         $(focus_element + ' .algolia_search_pad' ).addClass('hidden');
@@ -237,11 +237,11 @@ function en_add_or_link(en_existing_id, is_parent) {
     //If en_existing_id=0 it means we are creating a new entity and then linking it, in which case en_new_string is required
 
     if (is_parent) {
-        var input = $('#new-parent .new-input');
+        var input = $('#new-parent .new-player-input');
         var list_id = 'list-parent';
         var counter_class = '.counter-11030';
     } else {
-        var input = $('#new-children .new-input');
+        var input = $('#new-children .new-player-input');
         var list_id = 'list-children';
         var counter_class = '.counter-11029';
     }

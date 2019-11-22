@@ -290,7 +290,7 @@ $en_all_11035 = $this->config->item('en_all_11035'); //MENCH PLAYER NAVIGATION
 
                 //Input to add new parents:
                 $this_tab .= '<div id="new-parent" class="'.require_superpower(10983).'">
-                    <div class="form-group is-empty"><input type="text" class="form-control new-input algolia_search form-control-thick" data-lpignore="true" placeholder="Add Player/URL"></div>
+                    <div class="form-group is-empty"><input type="text" class="form-control new-player-input algolia_search form-control-thick" data-lpignore="true" placeholder="Add Player/URL"></div>
                     <div class="algolia_search_pad hidden"><span>Search players, create a new player or paste a URL...</span></div>
             </div>';
 
@@ -330,7 +330,7 @@ $en_all_11035 = $this->config->item('en_all_11035'); //MENCH PLAYER NAVIGATION
 
                 //Input to add new child:
                 $this_tab .= '<div id="new-children" class="'.require_superpower(10983).'">
-            <div class="form-group is-empty"><input type="text" class="form-control new-input form-control-thick algolia_search" data-lpignore="true" placeholder="Add Player/URL"></div>
+            <div class="form-group is-empty"><input type="text" class="form-control new-player-input form-control-thick algolia_search" data-lpignore="true" placeholder="Add Player/URL"></div>
             <div class="algolia_search_pad hidden"><span>Search players, create a new player or paste a URL...</span></div>
     </div>';
                 $this_tab .= '</div>';

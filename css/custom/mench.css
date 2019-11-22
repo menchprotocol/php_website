@@ -30,8 +30,9 @@ h1, h2, h3, ul, p { padding: 0 5px; }
 }
 
 /* FONTS */
-.montserrat {
+.montserrat, .new-player-input {
     font-family: 'Montserrat', sans-serif;
+    font-weight: bold;
     text-transform: uppercase;
 }
 .mono{
