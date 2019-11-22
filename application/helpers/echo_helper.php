@@ -2320,13 +2320,12 @@ function echo_en($en, $is_parent = false)
     }
 
 
+    //MODIFY
+    $ui .= '<div class="pull-right inline-block '. require_superpower(10983) .'" style="padding-left:5px;"><a class="btn btn-primary btn-play" href="javascript:void(0);" onclick="en_modify_load(' . $en['en_id'] . ',' . $ln_id . ')"><i class="fas fa-cog"></i></a></div>';
+
+
     //FOLLOW
     $ui .= '<div class="pull-right inline-block"><a class="btn btn-primary btn-play" href="/play/' . $en['en_id']. '">' . ($en['en__child_count'] > 0 ? echo_number($en['en__child_count']) : '') . ' <i class="fas fa-angle-right"></i></a></div>';
-
-
-    //MODIFY
-    $ui .= '<div class="pull-right inline-block '. require_superpower(10983) .'"><a class="btn btn-primary btn-play" href="javascript:void(0);" onclick="en_modify_load(' . $en['en_id'] . ',' . $ln_id . ')"><i class="fas fa-cog"></i></a></div>';
-
 
 
     //ICON SET
