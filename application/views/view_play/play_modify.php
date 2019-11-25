@@ -331,10 +331,18 @@ $en_all_11035 = $this->config->item('en_all_11035'); //MENCH PLAYER NAVIGATION
 
                 //Input to add new child:
                 $this_tab .= '<div id="new-children" class="'.require_superpower(10983).'">
-            <div class="form-group is-empty"><input type="text" class="form-control new-player-input form-control-thick algolia_search" data-lpignore="true" placeholder="Player"></div>
-            <div class="algolia_search_pad hidden"><b class="montserrat"><span class="icon-block"><i class="fas fa-search-plus blue"></i></span>Search players, create a new player or paste URL...</b></div>
-    </div>';
-                $this_tab .= '</div>';
+
+                                <div class="input-group">
+                                    <span class="input-group-addon addon-lean addon-grey"><i class="fas fa-plus-circle blue"></i></span>
+                                    <input type="text" class="form-control new-player-input form-control-thick algolia_search" data-lpignore="true" placeholder="Player">
+                                </div>
+                
+                                <div class="algolia_search_pad hidden"><b class="montserrat"><span class="icon-block"><i class="fas fa-search-plus blue"></i></span>Search players, create a new player or paste URL...</b></div>
+                                                                
+                            </div>';
+                    $this_tab .= '</div>';
+
+
 
 
 
