@@ -112,13 +112,17 @@ foreach ($this->config->item('en_all_11021') as $en_id => $m){
             }
 
             $this_tab .= '<div class="list_input grey-block '.require_superpower(10939).'">
-                            <div class="form-group is-empty" style="margin: 0; padding: 0;">
-                                <input type="text"
+
+
+                <div class="input-group border" style="margin: 0; padding: 0;">
+                    <span class="input-group-addon addon-lean addon-grey" style="color:#070707; font-weight: 300;"><i class="fas fa-plus-circle blue" aria-hidden="true"></i></span>
+                    <input type="text"
                                        class="form-control intentadder-level-2-parent form-control-thick algolia_search"
                                        intent-id="' . $in['in_id'] . '"
                                        id="addintent-c-' . $in['in_id'] . '-1"
                                        placeholder="Add Previous Blog...">
-                            </div>
+                </div>
+                            
                            <div class="algolia_search_pad in_pad_top hidden"><b class="montserrat"><span class="icon-block"><i class="fas fa-search-plus yellow"></i></span>Search blogs or create a new one...</b></div>
                     </div>';
 
