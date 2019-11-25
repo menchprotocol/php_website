@@ -216,7 +216,9 @@ class PLAY_model extends CI_Model
         }
 
         //Transform text:
-        $update_columns['en_name'] = strtoupper($update_columns['en_name']);
+        if(isset($update_columns['en_name'])){
+            $update_columns['en_name'] = strtoupper($update_columns['en_name']);
+        }
 
         //Cleanup metadata if needed:
         if(isset($update_columns['en_metadata']) && is_array($update_columns['en_metadata'])){
