@@ -3395,8 +3395,8 @@ fragment PostListingItemSidebar_post on Post {
 
 
         return echo_json(array(
-            'blog_count' => number_format($words_blog[0]['total_words'], 2),
-            'read_count' => number_format(abs($words_read[0]['total_words']), 2)
+            'blog_count' => number_format($words_blog[0]['total_words'], 0),
+            'read_count' => number_format(abs($words_read[0]['total_words']), 0)
         ));
 
     }
