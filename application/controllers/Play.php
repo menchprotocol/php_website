@@ -3373,7 +3373,7 @@ fragment PostListingItemSidebar_post on Post {
 
 
 
-    function update_my_coins(){
+    function load_coin_count(){
 
         $session_en = en_auth();
         if (!$session_en) {
@@ -3395,8 +3395,8 @@ fragment PostListingItemSidebar_post on Post {
 
 
         return echo_json(array(
-            'blog_count' => number_format($words_blog[0]['total_words'], 0),
-            'read_count' => number_format(abs($words_read[0]['total_words']), 0)
+            'blog_count' => number_format($words_blog[0]['total_words'], 2),
+            'read_count' => number_format(abs($words_read[0]['total_words']), 2)
         ));
 
     }
