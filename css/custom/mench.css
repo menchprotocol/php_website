@@ -393,7 +393,7 @@ img.no-radius {
 }
 
 .note-edit{
-    background-color: #FF0000;
+    background-color: #CCC;
     height: 60px;
     line-height: 100%;
     width: 25px;
@@ -401,6 +401,9 @@ img.no-radius {
     position: absolute;
     right: 0;
     top: 0px;
+}
+.i_content {
+    padding-right:25px;
 }
 
 .note-edit>span{
