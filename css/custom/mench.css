@@ -237,10 +237,6 @@ img.no-radius {
     font-style: normal;
 }
 
-.list-group-item {
-    padding: 3px 1px;
-}
-
 .list-group-item .col2{
     overflow: hidden;
 }
@@ -567,6 +563,8 @@ textarea.msgin{
 .list-group-item {
     border: 0;
     background-color:#f4f5f7;
+    border-radius: 0 !important;
+    padding: 3px 1px;
 }
 
 
