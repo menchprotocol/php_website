@@ -46,7 +46,7 @@ echo '<div class="container">';
 echo '<div class="row">';
 
     //LEFT TITLE
-    echo '<div class="'.config_var(11094).'">';
+    echo '<div class="col-lg-12">';
         echo '<h1>'.echo_in_outcome($in['in_outcome']).'</h1>';
     echo '</div>';
 
@@ -72,7 +72,7 @@ foreach ($this->config->item('en_all_11021') as $en_id => $m){
     $tab_content = '';
     $default_active = false;
     
-    echo '<div class="'.config_var($col_num==1 ? 11094 : 11095).'">';
+    echo '<div class="col-lg-12">';
 
     echo '<ul class="nav nav-tabs nav-tabs-sm menu_bar hidden">';
 
