@@ -38,32 +38,7 @@ $play_focus_found = false; //Used to determine the first tab to be opened
 
 
 
-
 echo '<div class="container">';
-
-
-
-echo '<div class="row">';
-
-    //LEFT TITLE
-    echo '<div class="col-lg-12">';
-        echo '<h1>'.echo_in_outcome($in['in_outcome']).'</h1>';
-    echo '</div>';
-
-    //RIGHT SETTINGS
-    echo '<div class="col-lg-12">';
-        echo '<div class="center-right">';
-            echo echo_dropdown(7585, $in['in_completion_method_entity_id'], false, 'btn-blog');
-            echo '<div class="inline-block" style="margin-left: 5px;">'.echo_dropdown(4737, $in['in_status_entity_id'], true, 'btn-blog').'</div>';
-echo '<div class="inline-block" style="margin-left: 5px;"><a href="javascript:void(0)" onclick="$(\'.menu_bar\').toggleClass(\'hidden\')" class="btn btn-sm btn-blog"><i class="fas fa-cog"></i></a></div>';
-        echo '</div>';
-    echo '</div>';
-
-echo '</div>';
-
-
-
-
 echo '<div class="row">';
 $col_num = 0;
 foreach ($this->config->item('en_all_11021') as $en_id => $m){
@@ -73,6 +48,16 @@ foreach ($this->config->item('en_all_11021') as $en_id => $m){
     $default_active = false;
     
     echo '<div class="col-lg-12">';
+
+    if($col_num==1){
+        echo '<h1>'.echo_in_outcome($in['in_outcome']).'</h1>';
+    } else {
+        echo '<div class="center-right">';
+            echo echo_dropdown(7585, $in['in_completion_method_entity_id'], false, 'btn-blog');
+            echo '<div class="inline-block" style="margin-left: 5px;">'.echo_dropdown(4737, $in['in_status_entity_id'], true, 'btn-blog').'</div>';
+            echo '<div class="inline-block" style="margin-left: 5px;"><a href="javascript:void(0)" onclick="$(\'.menu_bar\').toggleClass(\'hidden\')" class="btn btn-sm btn-blog"><i class="fas fa-cog"></i></a></div>';
+        echo '</div>';
+    }
 
     echo '<ul class="nav nav-tabs nav-tabs-sm menu_bar hidden">';
 
