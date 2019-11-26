@@ -79,12 +79,6 @@ h1, h2, h3, ul, p { padding: 0 5px; }
     border-radius: 0 !important;
 }
 
-
-
-.msg {
-    margin-bottom:15px;
-}
-
 table td { border: none !important; }
 
 h1 {
@@ -338,21 +332,20 @@ img.no-radius {
 .msg-nav {
     list-style-type: none;
     margin: 0;
-    padding:7px 0 0 0;
+    padding:2px 0 0 0;
 }
 
 .msg-nav > li {
     margin-right: 5px;
     display: inline-block;
     padding: 0 5px 0 0;
-    font-size: 0.9em;
     color: #666;
 }
 
 .msg-nav > li > a {
     color: #070707;
     padding: 3px 5px;
-    border-radius: 5px;
+    border-radius: 0;
 }
 
 .msg-nav > li .btn {
