@@ -668,6 +668,16 @@ img.no-radius {
     color:#FFFFFF !important;
 }
 
+
+.is-msg .on-hover {
+    /* Do not hide this for now: */
+    display: inline-block !important;
+}
+
+.is-msg > div:hover .on-hover, .in-editing .on-hover {
+    display: inline-block !important;
+}
+
 /* RESPONSIVE */
 @media (max-width:767px) {
     body {

@@ -3422,14 +3422,6 @@ h4 .tip-badge {
     font-weight: normal;
 }
 
-.is-msg .on-hover {
-    /* Do not hide this for now: */
-    display: inline-block !important;
-}
-
-.is-msg > div:hover .on-hover, .in-editing .on-hover {
-    display: inline-block !important;
-}
 
 
 
