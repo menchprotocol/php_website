@@ -2,13 +2,6 @@
 
     <div class="row">
         <div class="col-lg">
-            <h1>HOW TO BLOG</h1>
-            <ul style="list-style: decimal;">
-                <li>Join MENCH to start blogging.</li>
-            </ul>
-        </div>
-
-        <div class="col-lg">
 
             <h1><i class="fas fa-bookmark isyellow"></i> MY BOOKMARKS</h1>
             <?php
