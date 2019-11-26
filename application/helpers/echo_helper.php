@@ -2387,7 +2387,7 @@ function echo_dropup($cache_en_id, $selected_en_id = 0, $micro = false, $btn_cla
         $is_set = ($en_id==$selected_en_id);
         $superpower_actives = array_intersect($CI->config->item('en_ids_10957'), $m['m_parents']);
 
-        $ui .= '<a class="dropdown-item '.( $is_set ? ' active ' : ( count($superpower_actives) ? superpower_active(end($superpower_actives)) : '' ) ).'" href="javascript:void();" '.( !$is_set ? 'onclick="update_dropdown('.$cache_en_id.','.$en_id.')' : '' ).'"><span class="icon-block">'.$m['m_icon'].'</span>'.$m['m_name'].'</a>';
+        $ui .= '<a class="dropdown-item montserrat doupper '.( $is_set ? ' active ' : ( count($superpower_actives) ? superpower_active(end($superpower_actives)) : '' ) ).'" href="javascript:void();" '.( !$is_set ? 'onclick="update_dropdown('.$cache_en_id.','.$en_id.')' : '' ).'"><span class="icon-block">'.$m['m_icon'].'</span>'.$m['m_name'].'</a>';
     }
 
     $ui .= '</div>';
