@@ -32,9 +32,9 @@ $(document).ready(function () {
     if(js_pl_id){
 
         //Update stats on load:
-        load_coin_count();
+        update_my_coins();
 
-        setInterval(load_coin_count, fadeout_frequency);
+        setInterval(update_my_coins, fadeout_frequency);
 
     }
 
@@ -109,7 +109,7 @@ $(document).ready(function () {
 
 
 //Update page count stats & refresh them visually once they change:
-var load_coin_count = function( ) {
+var update_my_coins = function( ) {
     //your jQuery ajax code
 
     if(updating_basic_stats){
@@ -120,7 +120,7 @@ var load_coin_count = function( ) {
     updating_basic_stats = true;
 
     //Fetch latest stats:
-    $.post("/play/load_coin_count", { }, function (data) {
+    $.post("/play/update_my_coins", { }, function (data) {
 
         if(data.blog_count != $('.blog .current_count').html()){
             $('.three-menus .blog .current_count').html(data.blog_count).fadeOut(fadeout_speed).fadeIn(fadeout_speed);
