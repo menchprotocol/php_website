@@ -410,7 +410,7 @@ img.no-radius {
 
 .note-edit>span{
     display: block;
-    padding-top:2px;
+    padding:3px 0;
 }
 
 /* ROTATIONS */
