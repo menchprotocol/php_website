@@ -241,6 +241,17 @@ function echo_in_note($ln)
     $ui .= $CI->READ_model->dispatch_message($ln['ln_content'], $session_en, false, array(), $ln['ln_child_intent_id']);
     $ui .= '</div>';
 
+    //Editing menu:
+    $ui .= '<div class="note-edit edit-off '.superpower_active(10939).'">';
+    //Modify:
+    $ui .= '<span><a href="javascript:in_message_modify_start(' . $ln['ln_id'] . ',' . $ln['ln_type_entity_id'] . ');" title="Modify Message" data-toggle="tooltip" data-placement="top"><i class="fas fa-pen-square ispink"></i></a></span>';
+
+    //Sort:
+    if(in_array(4603, $en_all_4485[$ln['ln_type_entity_id']]['m_parents'])){
+        $ui .= '<span title="Drag up/down to sort" data-toggle="tooltip" data-placement="top"><i class="fas fa-sort ispink fa-special-sort '.( in_array(4603, $en_all_4485[$ln['ln_type_entity_id']]['m_parents']) ? 'message-sorting' : '' ).'"></i></span>';
+    }
+    $ui .= '</div>';
+
 
     //Text editing:
     $ui .= '<textarea onkeyup="in_message_validate(' . $ln['ln_id'] . ')" name="ln_content" id="message_body_' . $ln['ln_id'] . '" class="edit-on hidden msg msgin algolia_search" placeholder="Blog..." style="margin-top: 4px; width:100%; border:0;">' . $ln['ln_content'] . '</textarea>';

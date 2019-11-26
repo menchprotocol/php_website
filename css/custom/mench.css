@@ -392,6 +392,22 @@ img.no-radius {
     border-radius: 0 !important;
 }
 
+.note-edit{
+    background-color: #FF0000;
+    height: 60px;
+    line-height: 100%;
+    width: 25px;
+    text-align: center;
+    position: absolute;
+    right: 0;
+    top: 0px;
+}
+
+.note-edit>span{
+    display: block;
+    border:1px solid #000;
+}
+
 /* ROTATIONS */
 .rotate30 {
     -webkit-transform: rotate(30deg); /* Chrome and other webkit browsers */
