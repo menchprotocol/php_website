@@ -593,11 +593,12 @@ img.no-radius {
 
 .btn-superpower {
     text-align: center;
-    margin-left: 5px;
-    border-radius: 3px;
+    margin-left: 0;
+    border-radius: 0;
     padding:0 !important;
     font-size: 1.1em;
     cursor: help;
+    margin-top: -10px;
 }
 
 .btn-superpower .fas, .btn-superpower .far, .btn-superpower .fal {
