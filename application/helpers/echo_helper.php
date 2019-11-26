@@ -1572,13 +1572,14 @@ function echo_in_dashboard($in)
 {
     $CI =& get_instance();
     $en_all_7585 = $CI->config->item('en_all_7585'); // Intent Subtypes
-    $ui = '<a href="/blog/' . $in['in_id'] . '" class="list-group-item">';
-    $ui .= '<span class="pull-right">';
-    $ui .= '<span class="badge badge-primary fr-bgd" style="margin-top: -4px;"><i class="fas fa-angle-right"></i></span>';
-    $ui .= '</span>';
+    $ui = '<div class="list-group-item">';
+
+    //FOLLOW
+    $ui .= '<div class="pull-right inline-block" style="padding-left:3px"><a class="btn btn-primary btn-blog" href="/play/' . $en['en_id']. '"><span class="'. require_superpower(10983) .'">' . ($en['en__child_count'] > 0 ? echo_number($en['en__child_count']).' ' : '') . '</span><i class="fas fa-angle-right"></i></a></div>';
+
     $ui .= '<span class="icon-block">'.$en_all_7585[$in['in_completion_method_entity_id']]['m_icon'].'</span>';
-    $ui .= '<span style="color:#222; font-weight:500; font-size:1.2em;">'.echo_in_outcome($in['in_outcome'], false).'</span>';
-    $ui .= '</a>';
+    $ui .= '<b class="montserrat">'.echo_in_outcome($in['in_outcome'], false).'</b>';
+    $ui .= '</div>';
     return $ui;
 }
 

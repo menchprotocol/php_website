@@ -35,7 +35,6 @@ h1, h2, h3, ul, p { padding: 0 5px; }
 .montserrat, .new-player-input, .algolia-autocomplete {
     font-family: 'Montserrat', sans-serif;
     font-weight: bold;
-    text-transform: uppercase;
 }
 .mono{
     font-family: 'Nanum Gothic Coding', monospace;
