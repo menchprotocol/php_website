@@ -711,6 +711,8 @@ img.no-radius {
     .container {
         max-width: none;
     }
+    .icon-block-xlg{ min-width:48px; }
+
 }
 
 @media (max-width:2584px){
