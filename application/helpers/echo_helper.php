@@ -243,7 +243,7 @@ function echo_in_note($ln)
 
 
     //Text editing:
-    $ui .= '<textarea onkeyup="in_message_validate(' . $ln['ln_id'] . ')" name="ln_content" id="message_body_' . $ln['ln_id'] . '" class="edit-on hidden msg msgin algolia_search" placeholder="Write Message..." style="margin-top: 4px;">' . $ln['ln_content'] . '</textarea>';
+    $ui .= '<textarea onkeyup="in_message_validate(' . $ln['ln_id'] . ')" name="ln_content" id="message_body_' . $ln['ln_id'] . '" class="edit-on hidden msg msgin algolia_search" placeholder="Blog..." style="margin-top: 4px; width:100%; border:0;">' . $ln['ln_content'] . '</textarea>';
 
     //Editing menu:
     $ui .= '<ul class="msg-nav '.superpower_active(10939).'">';
@@ -2111,7 +2111,7 @@ function echo_in($in, $in_linked_id = 0, $is_parent = false)
     //Loop through parents:
     foreach ($in['in__parents'] as $in_parent) {
         if($in_linked_id!=$in_parent['in_id']){
-            $ui .= ' &nbsp;<a href="/intents/' . $in_parent['in_id'] . '" data-toggle="tooltip" title="' . stripslashes($in_parent['in_outcome']) . '" data-placement="bottom" class="in_child_icon_' . $in_parent['in_id'] . '">' . $en_all_7585[$in_parent['in_completion_method_entity_id']]['m_icon'] . '</a>';
+            $ui .= ' &nbsp;<a href="/blog/' . $in_parent['in_id'] . '" data-toggle="tooltip" title="' . stripslashes($in_parent['in_outcome']) . '" data-placement="bottom" class="in_child_icon_' . $in_parent['in_id'] . '">' . $en_all_7585[$in_parent['in_completion_method_entity_id']]['m_icon'] . '</a>';
         }
     }
 
@@ -2153,7 +2153,7 @@ function echo_in($in, $in_linked_id = 0, $is_parent = false)
 
 
 
-    $ui .= '&nbsp;<a href="/intents/' . $in['in_id'] . '" class="tree-badge-' . $in['in_id'] . ' badge badge-primary is_not_bg is_hard_link" style="display:inline-block; margin-right:-2px; width:40px; border:2px solid #f1d104 !important;">' . $tree_count . '<i class="fas fa-angle-right"></i></a>';
+    $ui .= '&nbsp;<a href="/blog/' . $in['in_id'] . '" class="tree-badge-' . $in['in_id'] . ' badge badge-primary is_not_bg is_hard_link" style="display:inline-block; margin-right:-2px; width:40px; border:2px solid #f1d104 !important;">' . $tree_count . '<i class="fas fa-angle-right"></i></a>';
 
 
 

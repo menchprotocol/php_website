@@ -389,6 +389,7 @@ img.no-radius {
     border-color:#070707 !important;
     border-bottom: 1px solid #f4f5f7 !important;
     background-color: #f4f5f7 !important;
+    border-radius: 0 !important;
 }
 
 /* ROTATIONS */
