@@ -2373,7 +2373,7 @@ function echo_dropup($cache_en_id, $selected_en_id = 0, $micro = false, $btn_cla
 
 //data-toggle="tooltip" data-placement="top" title="'.$en_all_4527[$cache_en_id]['m_name'].'"
     $ui = '<div class="dropup inline-block">';
-    $ui .= '<button  class="btn btn-sm '.$btn_class.' dropdown-toggle" type="button" id="dropdownMenuButton" data-toggle="dropup" aria-haspopup="true" aria-expanded="false">';
+    $ui .= '<button  class="btn btn-sm '.$btn_class.' dropdown-toggle" type="button" id="dropdownMenuButton" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">';
     if($micro){
         $ui .= ( $selected_en_id > 0 ? $en_all_this[$selected_en_id]['m_icon'] : '' );
     } else {
