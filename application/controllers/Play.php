@@ -651,10 +651,10 @@ fragment PostListingItemSidebar_post on Post {
     function play_modify($en_id)
     {
 
-        $session_en = en_auth();
+        $session_en = superpower_assigned();
 
         //Do we have any mass action to process here?
-        if (en_auth(10983 /* NARWHAL */ /* HONEY BADGER */) && isset($_POST['mass_action_en_id']) && isset($_POST['mass_value1_'.$_POST['mass_action_en_id']]) && isset($_POST['mass_value2_'.$_POST['mass_action_en_id']])) {
+        if (superpower_assigned(10983 /* NARWHAL */ /* HONEY BADGER */) && isset($_POST['mass_action_en_id']) && isset($_POST['mass_value1_'.$_POST['mass_action_en_id']]) && isset($_POST['mass_value2_'.$_POST['mass_action_en_id']])) {
 
             //Process mass action:
             $process_mass_action = $this->PLAY_model->en_mass_update($en_id, intval($_POST['mass_action_en_id']), $_POST['mass_value1_'.$_POST['mass_action_en_id']], $_POST['mass_value2_'.$_POST['mass_action_en_id']], $session_en['en_id']);
@@ -714,7 +714,7 @@ fragment PostListingItemSidebar_post on Post {
     function load_leaderboard(){
 
         //Fetch top users per each direction
-        $session_en = en_auth();
+        $session_en = superpower_assigned();
         $load_max = config_var(11985);
         $show_max = config_var(11986);
         $en_all_2738 = $this->config->item('en_all_2738'); //MENCH
@@ -831,7 +831,7 @@ fragment PostListingItemSidebar_post on Post {
     function signin($in_id = 0){
 
         //Check to see if they are already logged in?
-        $session_en = en_auth();
+        $session_en = superpower_assigned();
         if (isset($session_en['en__parents'][0])) {
             //Lead trainer and above, go to console:
             if($in_id > 0){
@@ -858,7 +858,7 @@ fragment PostListingItemSidebar_post on Post {
     function add_source_wizard()
     {
         //Authenticate Trainer, redirect if failed:
-        $session_en = en_auth(null, true);
+        $session_en = superpower_assigned(null, true);
 
         //Show frame to be loaded in modal:
         $this->load->view('header', array(
@@ -878,7 +878,7 @@ fragment PostListingItemSidebar_post on Post {
          *
          * */
 
-        $session_en = en_auth();
+        $session_en = superpower_assigned();
         if (!$session_en) {
             return echo_json(array(
                 'status' => 0,
@@ -952,7 +952,7 @@ fragment PostListingItemSidebar_post on Post {
     {
 
         //Authenticate Trainer:
-        $session_en = en_auth(10983 /* NARWHAL */ /* HONEY BADGER */);
+        $session_en = superpower_assigned(10983 /* NARWHAL */ /* HONEY BADGER */);
         if (!$session_en) {
             return echo_json(array(
                 'status' => 0,
@@ -1034,7 +1034,7 @@ fragment PostListingItemSidebar_post on Post {
     {
 
         //Auth user and check required variables:
-        $session_en = en_auth(10983 /* NARWHAL */ /* HONEY BADGER */);
+        $session_en = superpower_assigned(10983 /* NARWHAL */ /* HONEY BADGER */);
 
         if (!$session_en) {
             return echo_json(array(
@@ -1234,7 +1234,7 @@ fragment PostListingItemSidebar_post on Post {
     function toggle_superpower($superpower_en_id){
 
         //Toggles the advance session variable for the trainer on/off for logged-in trainers:
-        $session_en = en_auth();
+        $session_en = superpower_assigned();
         $superpower_en_id = intval($superpower_en_id);
         $en_all_10957 = $this->config->item('en_all_10957');
 
@@ -1245,7 +1245,7 @@ fragment PostListingItemSidebar_post on Post {
                 'message' => 'Expired Session or Missing Superpower',
             ));
 
-        } elseif(!en_auth($superpower_en_id)){
+        } elseif(!superpower_assigned($superpower_en_id)){
 
             //Access not authorized:
             return echo_json(array(
@@ -1295,7 +1295,7 @@ fragment PostListingItemSidebar_post on Post {
     {
 
         //Auth user and check required variables:
-        $session_en = en_auth(10983 /* NARWHAL */ /* HONEY BADGER */);
+        $session_en = superpower_assigned(10983 /* NARWHAL */ /* HONEY BADGER */);
         $success_message = 'Saved'; //Default, might change based on what we do...
 
         //Fetch current data:
@@ -1658,7 +1658,7 @@ fragment PostListingItemSidebar_post on Post {
     function en_fetch_canonical_url(){
 
         //Auth user and check required variables:
-        $session_en = en_auth();
+        $session_en = superpower_assigned();
 
         if (!$session_en) {
             return echo_json(array(
@@ -1695,7 +1695,7 @@ fragment PostListingItemSidebar_post on Post {
     {
 
         //Auth user and check required variables:
-        $session_en = en_auth();
+        $session_en = superpower_assigned();
 
         //Description type requirement:
         $contributor_type_requirement = array(4230, 4255); //Raw or Text string
@@ -2527,9 +2527,9 @@ fragment PostListingItemSidebar_post on Post {
     function magiclogin($ln_id){
 
         //Validate email:
-        if(en_auth()){
+        if(superpower_assigned()){
             return redirect_message('/blog');
-        } elseif(en_auth()){
+        } elseif(superpower_assigned()){
             return redirect_message('/actionplan/next');
         } elseif(!isset($_GET['email']) || !filter_var($_GET['email'], FILTER_VALIDATE_EMAIL)){
             //Missing email input:
@@ -2766,7 +2766,7 @@ fragment PostListingItemSidebar_post on Post {
          * */
 
         //Authenticate user:
-        $session_en = en_auth();
+        $session_en = superpower_assigned();
         if (!$psid && !isset($session_en['en_id'])) {
             die('<div class="alert alert-danger" role="alert">Invalid Credentials</div>');
         } elseif (!is_dev_environment() && isset($_GET['sr']) && !parse_signed_request($_GET['sr'])) {
@@ -3373,9 +3373,9 @@ fragment PostListingItemSidebar_post on Post {
 
 
 
-    function load_coin_count(){
+    function update_my_coins(){
 
-        $session_en = en_auth();
+        $session_en = superpower_assigned();
         if (!$session_en) {
             return false;
         }
@@ -3499,7 +3499,7 @@ fragment PostListingItemSidebar_post on Post {
         boost_power();
 
         //Validate trainer:
-        $session_en = en_auth(10984, true);
+        $session_en = superpower_assigned(10984, true);
 
         //Load tools:
         $this->load->view('header', array(

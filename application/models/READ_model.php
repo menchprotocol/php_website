@@ -2782,7 +2782,7 @@ class READ_model extends CI_Model
 
         //Try to fetch session if recipient not provided:
         if(!isset($recipient_en['en_id'])){
-            $recipient_en = en_auth();
+            $recipient_en = superpower_assigned();
         }
 
         $is_being_modified = ( $message_type_en_id > 0 ); //IF $message_type_en_id > 0 means we're adding/editing and need to do extra checks
@@ -3386,7 +3386,7 @@ class READ_model extends CI_Model
                 if($is_being_modified){
 
                     //Entity reference must be either the trainer themselves or an expert source:
-                    $session_en = en_auth();
+                    $session_en = superpower_assigned();
                     if($string_references['ref_entities'][0] != $session_en['en_id']){
 
                         //Reference is not the logged-in trainer, let's check to make sure it's an expert source

@@ -47,11 +47,11 @@ $en_all_11035 = $this->config->item('en_all_11035'); //MENCH PLAYER NAVIGATION
     }
 
     //MODIFY
-    echo '<a href="javascript:void(0);" onclick="en_modify_load(' . $entity['en_id'] . ',0)" class="btn btn-sm btn-play btn-five inline-block '. require_superpower(10983) .'"><i class="fas fa-cog"></i></a>';
+    echo '<a href="javascript:void(0);" onclick="en_modify_load(' . $entity['en_id'] . ',0)" class="btn btn-sm btn-play btn-five inline-block '. superpower_active(10983) .'"><i class="fas fa-cog"></i></a>';
 
 
     //REFERENCES
-    echo '<div class="'.require_superpower(10964).'">';
+    echo '<div class="'.superpower_active(10964).'">';
     $en_count_references = en_count_references($entity['en_id']);
     if(count($en_count_references) > 0){
         $en_all_6194 = $this->config->item('en_all_6194');
@@ -115,7 +115,7 @@ $en_all_11035 = $this->config->item('en_all_11035'); //MENCH PLAYER NAVIGATION
                         <!-- Entity Name -->
                         <span class="mini-header" style="margin-top:20px;"><?= $en_all_6206[6197]['m_icon'].' '.$en_all_6206[6197]['m_name'] ?> [<span style="margin:0 0 10px 0;"><span id="charNameNum">0</span>/<?= config_var(11072) ?></span>]</span>
                         <span class="white-wrapper">
-                                <textarea class="form-control text-edit border montserrat" id="en_name"
+                                <textarea class="form-control text-edit border montserrat doupper" id="en_name"
                                           onkeyup="en_name_word_count()" data-lpignore="true"
                                           style="height:66px; min-height:66px;">
                                 </textarea>
@@ -241,12 +241,12 @@ $en_all_11035 = $this->config->item('en_all_11035'); //MENCH PLAYER NAVIGATION
         $col_num++;
         $tab_content = '';
         $default_active = false;
-        $require_superpowers = array_intersect($this->config->item('en_ids_10957'), $m['m_parents']);
+        $superpower_actives = array_intersect($this->config->item('en_ids_10957'), $m['m_parents']);
 
 
         echo '<div class="col-lg-12">';
 
-        echo '<div class="'.( count($require_superpowers) ? require_superpower(end($require_superpowers)) : '' ).'">';
+        echo '<div class="'.( count($superpower_actives) ? superpower_active(end($superpower_actives)) : '' ).'">';
         echo '<ul class="nav nav-tabs nav-tabs-sm menu_bar">';
 
         foreach ($this->config->item('en_all_'.$en_id) as $en_id2 => $m2){
@@ -290,7 +290,7 @@ $en_all_11035 = $this->config->item('en_all_11035'); //MENCH PLAYER NAVIGATION
                 }
 
                 //Input to add new parents:
-                $this_tab .= '<div id="new-parent" class="'.require_superpower(10983).'">
+                $this_tab .= '<div id="new-parent" class="'.superpower_active(10983).'">
                     <div class="form-group is-empty"><input type="text" class="form-control new-player-input algolia_search form-control-thick" data-lpignore="true" placeholder="+ PLAYER"></div>
                     <div class="algolia_search_pad hidden"><b class="montserrat"><span class="icon-block"><i class="fas fa-search-plus blue"></i></span>Search players, create a new player or paste URL...</b></div>
             </div>';
@@ -330,7 +330,7 @@ $en_all_11035 = $this->config->item('en_all_11035'); //MENCH PLAYER NAVIGATION
                 }
 
                 //Input to add new child:
-                $this_tab .= '<div id="new-children" class="'.require_superpower(10983).'">
+                $this_tab .= '<div id="new-children" class="'.superpower_active(10983).'">
 
 
             <div class="form-group is-empty"><input type="text" class="form-control new-player-input form-control-thick algolia_search" data-lpignore="true" placeholder="+ PLAYER"></div>
@@ -363,7 +363,7 @@ $en_all_11035 = $this->config->item('en_all_11035'); //MENCH PLAYER NAVIGATION
                     $en_all_6177 = $this->config->item('en_all_6177'); //Entity Statuses
 
                     //Add 2nd Navigation to UI
-                    $tab_content .= '<div class="nav nav-tabs nav-tabs-sm '.require_superpower(10967).'">';
+                    $tab_content .= '<div class="nav nav-tabs nav-tabs-sm '.superpower_active(10967).'">';
 
                     //Show fixed All button:
                     $tab_content .= '<li class="nav-item"><a href="#" onclick="en_filter_status(-1)" class="nav-link u-status-filter active u-status--1" data-toggle="tooltip" data-placement="top" title="View all entities"><i class="fas fa-at"></i><span class="hide-small"> All</span> [<span class="counter-11029">' . $entity['en__child_count'] . '</span>]</a></li>';
@@ -536,9 +536,9 @@ $en_all_11035 = $this->config->item('en_all_11035'); //MENCH PLAYER NAVIGATION
                 continue;
             }
 
-            $require_superpowers = array_intersect($this->config->item('en_ids_10957'), $m2['m_parents']);
+            $superpower_actives = array_intersect($this->config->item('en_ids_10957'), $m2['m_parents']);
 
-            echo '<li class="nav-item '.( count($require_superpowers) ? require_superpower(end($require_superpowers)) : '' ).'"><a class="nav-link tab-nav-'.$en_id.' tab-head-'.$en_id2.' '.( $default_active ? ' active ' : '' ).'" href="javascript:void(0);" onclick="loadtab('.$en_id.','.$en_id2.')" data-toggle="tooltip" data-placement="top" title="'.( $show_tab_names ? '' : $m2['m_name'] ).'">'.$m2['m_icon'].( is_null($counter) ? '' : ' <span class="counter-'.$en_id2.require_superpower(10983).'">'.echo_number($counter).'</span>' ).( $show_tab_names ? ' '.$m2['m_name'] : '' ).'</a></li>';
+            echo '<li class="nav-item '.( count($superpower_actives) ? superpower_active(end($superpower_actives)) : '' ).'"><a class="nav-link tab-nav-'.$en_id.' tab-head-'.$en_id2.' '.( $default_active ? ' active ' : '' ).'" href="javascript:void(0);" onclick="loadtab('.$en_id.','.$en_id2.')" data-toggle="tooltip" data-placement="top" title="'.( $show_tab_names ? '' : $m2['m_name'] ).'">'.$m2['m_icon'].( is_null($counter) ? '' : ' <span class="counter-'.$en_id2.superpower_active(10983).'">'.echo_number($counter).'</span>' ).( $show_tab_names ? ' '.$m2['m_name'] : '' ).'</a></li>';
 
 
             $tab_content .= '<div class="tab-content tab-group-'.$en_id.' tab-data-'.$en_id2.( $default_active ? '' : ' hidden ' ).'">';

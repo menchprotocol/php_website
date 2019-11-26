@@ -1,5 +1,5 @@
 <?php
-$session_en = en_auth();
+$session_en = superpower_assigned();
 $en_all_11035 = $this->config->item('en_all_11035'); //MENCH PLAYER NAVIGATION
 ?><!doctype html>
 <html lang="en">
@@ -138,7 +138,7 @@ if(!isset($hide_header) || !$hide_header){
                             <?php
                             if(count($this->session->userdata('assigned_superpowers_en_ids'))){
                                 foreach($this->config->item('en_all_10957') as $superpower_en_id => $m){
-                                    if(en_auth($superpower_en_id)){
+                                    if(superpower_assigned($superpower_en_id)){
 
                                         //Superpower already unlocked:
                                         echo '<a class="btn btn-sm btn-superpower icon-block-lg superpower-frame-'.$superpower_en_id.' '.( in_array($superpower_en_id, $this->session->userdata('activate_superpowers_en_ids')) ? 'active' : '' ).'" href="javascript:void();" onclick="toggle_superpower('.$superpower_en_id.')" title="'.$m['m_name'].' '.$m['m_desc'].'">'.$m['m_icon'].'</a>';
@@ -156,6 +156,11 @@ if(!isset($hide_header) || !$hide_header){
                     <?php
 
                     if (isset($session_en['en_id'])) {
+
+                        if(superpower_assigned(10984)){
+                            $en_all_11035 = $this->config->item('en_all_11035');
+                            echo '<td class="block-link"><a href="/play/admin_tools" title="'.$en_all_11035[6287]['m_name'].'">'.$en_all_11035[6287]['m_icon'].'</a></td>';
+                        }
 
                         echo '<td class="block-link"><a href="/play/'.$session_en['en_id'].'" title="'.$session_en['en_name'].'">'.$session_en['en_icon'].'</a></td>';
 

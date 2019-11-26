@@ -32,7 +32,7 @@ class Blog extends CI_Controller {
     function blog_modify($in_id){
 
         //Make sure user is logged in
-        $session_en = en_auth(null, true);
+        $session_en = superpower_assigned(null, true);
 
         //Validate/fetch BLOG:
         $ins = $this->BLOG_model->in_fetch(array(
@@ -127,7 +127,7 @@ class Blog extends CI_Controller {
     function index()
     {
 
-        $session_en = en_auth();
+        $session_en = superpower_assigned();
 
         if ((isset($_SERVER['SERVER_NAME']) && $_SERVER['SERVER_NAME'] == 'mench.co')) {
 
@@ -146,7 +146,7 @@ class Blog extends CI_Controller {
     function in_report_conditional_steps(){
 
         //Authenticate Trainer:
-        $session_en = en_auth(10984 /* RUDOLPH */);
+        $session_en = superpower_assigned(10984 /* RUDOLPH */);
 
         if (!$session_en) {
             return echo_json(array(
@@ -196,7 +196,7 @@ class Blog extends CI_Controller {
     function in_submit_upvote($in_id){
 
         //Make sure it's a logged in trainer:
-        $session_en = en_auth(null, true);
+        $session_en = superpower_assigned(null, true);
 
         //Log up-vote:
         $this->READ_model->ln_create(array(
@@ -225,7 +225,7 @@ class Blog extends CI_Controller {
          * */
 
         //Authenticate Trainer:
-        $session_en = en_auth();
+        $session_en = superpower_assigned();
         if (!$session_en) {
             return echo_json(array(
                 'status' => 0,
@@ -302,7 +302,7 @@ class Blog extends CI_Controller {
     function in_READ_BOOKMARKS(){
 
         //Authenticate User:
-        $session_en = en_auth();
+        $session_en = superpower_assigned();
 
         if (!$session_en) {
             return echo_json(array(
@@ -423,7 +423,7 @@ class Blog extends CI_Controller {
         $en_all_6103 = $this->config->item('en_all_6103'); //Link Metadata
 
         //Authenticate Trainer:
-        $session_en = en_auth();
+        $session_en = superpower_assigned();
         $ln_id = intval($_POST['ln_id']);
 
         //Validate intent:
@@ -713,7 +713,7 @@ class Blog extends CI_Controller {
     {
 
         //Authenticate Trainer:
-        $session_en = en_auth();
+        $session_en = superpower_assigned();
         if (!$session_en) {
             echo_json(array(
                 'status' => 0,
@@ -777,7 +777,7 @@ class Blog extends CI_Controller {
     {
 
         //Authenticate Trainer:
-        $session_en = en_auth();
+        $session_en = superpower_assigned();
 
         if (!$session_en) {
 
@@ -854,7 +854,7 @@ class Blog extends CI_Controller {
     {
 
         //Authenticate Trainer:
-        $session_en = en_auth();
+        $session_en = superpower_assigned();
         if (!$session_en) {
 
             return echo_json(array(
@@ -968,7 +968,7 @@ class Blog extends CI_Controller {
          *
          * */
 
-        $session_en = en_auth();
+        $session_en = superpower_assigned();
         if (!$session_en) {
             return echo_json(array(
                 'status' => 0,
@@ -1049,7 +1049,7 @@ class Blog extends CI_Controller {
     {
 
         //Authenticate Trainer:
-        $session_en = en_auth();
+        $session_en = superpower_assigned();
         if (!$session_en) {
 
             return echo_json(array(
@@ -1090,7 +1090,7 @@ class Blog extends CI_Controller {
     {
 
         //Authenticate Trainer:
-        $session_en = en_auth();
+        $session_en = superpower_assigned();
         if (!$session_en) {
             return echo_json(array(
                 'status' => 0,

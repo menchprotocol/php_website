@@ -36,6 +36,9 @@ h1, h2, h3, ul, p { padding: 0 5px; }
     font-family: 'Montserrat', sans-serif;
     font-weight: bold;
 }
+.doupper{
+    text-transform: uppercase;
+}
 .mono{
     font-family: 'Nanum Gothic Coding', monospace;
 }
@@ -74,7 +77,6 @@ h1, h2, h3, ul, p { padding: 0 5px; }
     font-size: 0.8em !important;
     font-weight: 300 !important;
     border-radius: 0 !important;
-    padding: .375rem .50rem;
 }
 
 

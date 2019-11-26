@@ -6,7 +6,7 @@
             <h1><i class="fas fa-bookmark isyellow"></i> MY BOOKMARKS</h1>
             <?php
 
-            $session_en = en_auth();
+            $session_en = superpower_assigned();
             $already_shown = array();
 
 

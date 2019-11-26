@@ -53,20 +53,20 @@ if(!$action) {
         echo '<span class="pull-right">';
         echo '<span class="badge badge-primary fr-bgd"><i class="fas fa-angle-right"></i></span>';
         echo '</span>';
-        echo '<span style="color:#222; font-weight:500; font-size:1.2em;">'.$tool_name.'</span>';
+        echo '<b class="montserrat">'.$tool_name.'</b>';
         echo '</a>';
     }
     echo '</div>';
 
 
-    echo '<h3>Developer Tools</h3>';
+    echo '<h1>Developer Tools</h1>';
     echo '<div class="list-group actionplan_list grey_list maxout">';
     foreach ($developer_tools as $tool_key => $tool_name) {
         echo '<a href="' . $tool_key . '" target="_blank" class="list-group-item">';
         echo '<span class="pull-right">';
         echo '<span class="badge badge-primary fr-bgd"><i class="fas fa-external-link"></i></span>';
         echo '</span>';
-        echo '<span style="color:#222; font-weight:500; font-size:1.2em;">'.$tool_name.'</span>';
+        echo '<b class="montserrat">'.$tool_name.'</b>';
         echo '</a>';
 
     }
@@ -74,14 +74,14 @@ if(!$action) {
 
 
 
-    echo '<h3>Automated Cron Jobs</h3>';
+    echo '<h1>Automated Cron Jobs</h1>';
     echo '<div class="list-group actionplan_list grey_list maxout">';
     foreach ($cron_jobs as $tool_key => $tool_name) {
         echo '<a href="' . $tool_key . '" target="_blank" class="list-group-item">';
         echo '<span class="pull-right">';
         echo '<span class="badge badge-primary fr-bgd"><i class="fas fa-external-link"></i></span>';
         echo '</span>';
-        echo '<span style="color:#222; font-weight:500; font-size:1.2em;">'.$tool_name.'</span>';
+        echo '<b class="montserrat">'.$tool_name.'</b>';
         echo '</a>';
 
     }

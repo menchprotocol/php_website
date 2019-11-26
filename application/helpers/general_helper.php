@@ -606,7 +606,49 @@ function in_is_unlockable($in){
     return in_array($in['in_status_entity_id'], $CI->config->item('en_ids_7355') /* Intent Statuses Public */);
 }
 
-function en_auth($superpower_en_id = null, $force_redirect = 0)
+function redirect_message($url, $message = null)
+{
+    //An error handling function that would redirect user to $url with optional $message
+    //Do we have a Message?
+    if ($message) {
+        $CI =& get_instance();
+        $CI->session->set_flashdata('flash_message', $message);
+    }
+
+    if (!$message) {
+        //Do a permanent redirect if message not available:
+        header("Location: " . $url, true, 301);
+        exit;
+    } else {
+        header("Location: " . $url, true);
+        exit;
+    }
+}
+
+
+function superpower_active($superpower_en_id, $boolean_only = false){
+
+    if( intval($superpower_en_id)>0 ){
+
+        $CI =& get_instance();
+        $is_match = (superpower_assigned() ? in_array(intval($superpower_en_id), $CI->session->userdata('activate_superpowers_en_ids')) : false);
+
+        if($boolean_only){
+            return $is_match;
+        } else {
+            return ' superpower-'.$superpower_en_id . ' ' . ( $is_match ? '' : ' hidden ' );
+        }
+
+    } else {
+
+        //Ignore calls without a proper superpower:
+        return false;
+
+    }
+}
+
+
+function superpower_assigned($superpower_en_id = null, $force_redirect = 0)
 {
 
     //Authenticates logged-in users with their session information
@@ -648,46 +690,6 @@ function en_auth($superpower_en_id = null, $force_redirect = 0)
 
 }
 
-function redirect_message($url, $message = null)
-{
-    //An error handling function that would redirect user to $url with optional $message
-    //Do we have a Message?
-    if ($message) {
-        $CI =& get_instance();
-        $CI->session->set_flashdata('flash_message', $message);
-    }
-
-    if (!$message) {
-        //Do a permanent redirect if message not available:
-        header("Location: " . $url, true, 301);
-        exit;
-    } else {
-        header("Location: " . $url, true);
-        exit;
-    }
-}
-
-
-function require_superpower($superpower_en_id, $boolean_only = false){
-
-    if( intval($superpower_en_id)>0 ){
-
-        $CI =& get_instance();
-        $is_match = (en_auth() ? in_array(intval($superpower_en_id), $CI->session->userdata('activate_superpowers_en_ids')) : false);
-
-        if($boolean_only){
-            return $is_match;
-        } else {
-            return ' superpower-'.$superpower_en_id . ' ' . ( $is_match ? '' : ' hidden ' );
-        }
-
-    } else {
-
-        //Ignore calls without a proper superpower:
-        return false;
-
-    }
-}
 
 
 function fetch_cookie_order($cookie_name){

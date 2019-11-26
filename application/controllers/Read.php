@@ -39,7 +39,7 @@ class Read extends CI_Controller
          * */
 
         //Fetch user session:
-        $session_en = en_auth();
+        $session_en = superpower_assigned();
 
         //Fetch data:
         $ins = $this->BLOG_model->in_fetch(array(
@@ -117,7 +117,7 @@ class Read extends CI_Controller
 
 
         //Intent Statuses:
-        echo '<table class="table table-sm table-striped stats-table mini-stats-table intent_statuses '.require_superpower(10939).'">';
+        echo '<table class="table table-sm table-striped stats-table mini-stats-table intent_statuses '.superpower_active(10939).'">';
         echo '<tr class="panel-title down-border">';
         echo '<td style="text-align: left;" colspan="2">'.$en_all_7302[4737]['m_name'].echo__s(count($this->config->item('en_all_4737')), true).'</td>';
         echo '</tr>';
@@ -171,7 +171,7 @@ class Read extends CI_Controller
 
 
         //Entity Statuses
-        echo '<table class="table table-sm table-striped stats-table mini-stats-table entity_statuses '.require_superpower(10983).'">';
+        echo '<table class="table table-sm table-striped stats-table mini-stats-table entity_statuses '.superpower_active(10983).'">';
         echo '<tr class="panel-title down-border">';
         echo '<td style="text-align: left;" colspan="2">'.$en_all_7303[6177]['m_name'].echo__s(count($this->config->item('en_all_6177')), true).'</td>';
         echo '</tr>';
@@ -232,12 +232,12 @@ class Read extends CI_Controller
                 }
 
                 //Display row:
-                $expert_source_statuses .= '<td style="text-align: right;"'.( $en_status_entity_id != 6181 /* Entity Featured */ ? ' class="' . require_superpower(10983) . '"' : '' ).'><a href="/play/' . $en_id .'#status-'.$en_status_entity_id.'">'.number_format($source_count,0).'</a></td>';
+                $expert_source_statuses .= '<td style="text-align: right;"'.( $en_status_entity_id != 6181 /* Entity Featured */ ? ' class="' . superpower_active(10983) . '"' : '' ).'><a href="/play/' . $en_id .'#status-'.$en_status_entity_id.'">'.number_format($source_count,0).'</a></td>';
 
             }
 
             //Echo stats:
-            $expert_sources = '<tr class="' .( !$total_counts[6181] ? require_superpower(10983) : '' ) . '">';
+            $expert_sources = '<tr class="' .( !$total_counts[6181] ? superpower_active(10983) : '' ) . '">';
             $expert_sources .= '<td style="text-align: left;"><span class="icon-block">'.$m['m_icon'].'</span><a href="/play/'.$en_id.'">'.$m['m_name'].'</a></td>';
             $expert_sources .= $expert_source_statuses;
             $expert_sources .= '</tr>';
@@ -256,9 +256,9 @@ class Read extends CI_Controller
         echo '<td style="text-align: left;">'.$en_all_7303[3000]['m_name'].' ['.number_format($total_total_counts[6181], 0).']</td>';
         foreach($this->config->item('en_all_7358') /* Entity Active Statuses */ as $en_status_entity_id => $m_status){
             if($en_status_entity_id == 6181 /* Entity Published */){
-                echo '<td style="text-align:right;"><div class="' . require_superpower(10983) . '">' . $en_all_6177[$en_status_entity_id]['m_name'] . '</div></td>';
+                echo '<td style="text-align:right;"><div class="' . superpower_active(10983) . '">' . $en_all_6177[$en_status_entity_id]['m_name'] . '</div></td>';
             } else {
-                echo '<td style="text-align:right;" class="' . require_superpower(10983) . '">' . $en_all_6177[$en_status_entity_id]['m_name'] . '</td>';
+                echo '<td style="text-align:right;" class="' . superpower_active(10983) . '">' . $en_all_6177[$en_status_entity_id]['m_name'] . '</td>';
             }
         }
         echo '</tr>';
@@ -268,10 +268,10 @@ class Read extends CI_Controller
         echo $expert_sources_unpublished;
 
 
-        echo '<tr style="font-weight: bold;" class="'.require_superpower(10983).'">';
+        echo '<tr style="font-weight: bold;" class="'.superpower_active(10983).'">';
         echo '<td style="text-align: left;"><span class="icon-block"><i class="fas fa-asterisk"></i></span>Totals</td>';
         foreach($this->config->item('en_all_7358') /* Entity Active Statuses */ as $en_status_entity_id => $m_status){
-            echo '<td style="text-align: right;" '.( $en_status_entity_id != 6181 /* Entity Featured */ ? ' class="' . require_superpower(10983) . '"' : '' ).'>' . number_format($total_total_counts[$en_status_entity_id], 0) . '</td>';
+            echo '<td style="text-align: right;" '.( $en_status_entity_id != 6181 /* Entity Featured */ ? ' class="' . superpower_active(10983) . '"' : '' ).'>' . number_format($total_total_counts[$en_status_entity_id], 0) . '</td>';
         }
         echo '</tr>';
 
@@ -293,7 +293,7 @@ class Read extends CI_Controller
 
 
         //READ Status:
-        echo '<table class="table table-sm table-striped stats-table mini-stats-table link_statuses '.require_superpower(10964).'">';
+        echo '<table class="table table-sm table-striped stats-table mini-stats-table link_statuses '.superpower_active(10964).'">';
         echo '<tr class="panel-title down-border">';
         echo '<td style="text-align: left;" colspan="2">'.$en_all_7304[6186]['m_name'].echo__s(count($this->config->item('en_all_6186')), true).'</td>';
         echo '</tr>';
@@ -428,7 +428,7 @@ class Read extends CI_Controller
                 'status' => 0,
                 'message' => 'Invalid READ ID',
             ));
-        } elseif(!en_auth(10964)) {
+        } elseif(!superpower_assigned(10964)) {
 
             $en_all_10957 = $this->config->item('en_all_10957');
             return echo_json(array(
@@ -812,7 +812,7 @@ class Read extends CI_Controller
          * */
 
         //Validate input:
-        $session_en = en_auth();
+        $session_en = superpower_assigned();
         if (!$session_en) {
             return echo_json(array(
                 'status' => 0,
@@ -850,7 +850,7 @@ class Read extends CI_Controller
     {
 
         //Authenticate User:
-        $session_en = en_auth();
+        $session_en = superpower_assigned();
         if (!$session_en) {
 
             return echo_json(array(
@@ -1012,7 +1012,7 @@ class Read extends CI_Controller
     function actionplan_delete($psid = 0)
     {
 
-        $session_en = en_auth();
+        $session_en = superpower_assigned();
         if (!$psid && !isset($session_en['en_id'])) {
             die('<div class="alert alert-danger" role="alert">Invalid Credentials</div>');
         } elseif (!is_dev_environment() && isset($_GET['sr']) && !parse_signed_request($_GET['sr'])) {
@@ -1048,7 +1048,7 @@ class Read extends CI_Controller
          * */
 
         //Authenticate user:
-        $session_en = en_auth();
+        $session_en = superpower_assigned();
         $is_messenger = false;
         if (!$psid && !isset($session_en['en_id'])) {
             die('<div class="alert alert-danger" role="alert">Invalid Credentials</div>');
@@ -1338,7 +1338,7 @@ class Read extends CI_Controller
 
     function debug($in_id){
 
-        $session_en = en_auth();
+        $session_en = superpower_assigned();
         if(!isset($session_en['en_id'])){
             return echo_json(array(
                 'status' => 0,
@@ -1379,7 +1379,7 @@ class Read extends CI_Controller
     function messenger_fetch_profile($psid)
     {
 
-        if (!require_superpower(10984, true)) {
+        if (!superpower_active(10984, true)) {
             $en_all_10957 = $this->config->item('en_all_10957');
             return echo_json(array(
                 'status' => 0,

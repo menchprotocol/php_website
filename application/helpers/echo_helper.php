@@ -223,7 +223,7 @@ function echo_in_note($ln)
      * */
 
     $CI =& get_instance();
-    $session_en = en_auth();
+    $session_en = superpower_assigned();
     $en_all_4485 = $CI->config->item('en_all_4485'); //Intent Notes
 
 
@@ -246,7 +246,7 @@ function echo_in_note($ln)
     $ui .= '<textarea onkeyup="in_message_validate(' . $ln['ln_id'] . ')" name="ln_content" id="message_body_' . $ln['ln_id'] . '" class="edit-on hidden msg msgin algolia_search" placeholder="Write Message..." style="margin-top: 4px;">' . $ln['ln_content'] . '</textarea>';
 
     //Editing menu:
-    $ui .= '<ul class="msg-nav '.require_superpower(10939).'">';
+    $ui .= '<ul class="msg-nav '.superpower_active(10939).'">';
 
 
 
@@ -255,7 +255,7 @@ function echo_in_note($ln)
     $count_msg_trs = $CI->READ_model->ln_fetch(array(
         '( ln_id = ' . $ln['ln_id'] . ' OR ln_parent_link_id = ' . $ln['ln_id'] . ')' => null,
     ), array(), 0, 0, array(), 'COUNT(ln_id) as totals');
-    $ui .= '<li style="min-width:48px; display:inline-block;" class="'.require_superpower(10964).'"><a class="btn btn-read edit-off" style="border:2px solid #FC1B44 !important;" href="/read/view_json/' . $ln['ln_id'] . '" target="_parent"><i class="fas fa-link iswhite"></i> '.echo_number($count_msg_trs[0]['totals']).'</a></li>';
+    $ui .= '<li style="min-width:48px; display:inline-block;" class="'.superpower_active(10964).'"><a class="btn btn-read edit-off" style="border:2px solid #FC1B44 !important;" href="/read/view_json/' . $ln['ln_id'] . '" target="_parent"><i class="fas fa-link iswhite"></i> '.echo_number($count_msg_trs[0]['totals']).'</a></li>';
 
     //Modify:
     $ui .= '<li class="edit-off"><span class="on-hover"><a href="javascript:in_message_modify_start(' . $ln['ln_id'] . ',' . $ln['ln_type_entity_id'] . ');" title="Modify Message" data-toggle="tooltip" data-placement="top"><i class="fas fa-pen-square ispink"></i></a>&nbsp;</span></li>';
@@ -520,7 +520,7 @@ function echo_ln($ln, $is_inner = false)
 
 
 
-    $hide_sensitive_details = ( in_array($ln['ln_type_entity_id'] , $CI->config->item('en_ids_4755')) && !require_superpower(10964, true) );
+    $hide_sensitive_details = ( in_array($ln['ln_type_entity_id'] , $CI->config->item('en_ids_4755')) && !superpower_active(10964, true) );
 
 
 
@@ -1352,7 +1352,7 @@ function echo_tree_actionplan($in, $autoexpand){
 function echo_en_messages($ln){
 
     $CI =& get_instance();
-    $session_en = en_auth();
+    $session_en = superpower_assigned();
     $en_all_7585 = $CI->config->item('en_all_7585'); //Intent Subtypes
     $en_all_4737 = $CI->config->item('en_all_4737'); //Intent Statuses
     $en_all_6186 = $CI->config->item('en_all_6186'); //Link Statuses
@@ -1555,7 +1555,7 @@ function echo_in_read($in, $common_prefix = null, $hide_class = null)
 
     //See if user is logged-in:
     $CI =& get_instance();
-    $session_en = en_auth();
+    $session_en = superpower_assigned();
 
     $ui = '<div class="list-group-item '.$hide_class .'">';
 
@@ -1799,7 +1799,7 @@ function in_can_train($in_id){
     $CI =& get_instance();
 
     //Fetch session:
-    $session_en = en_auth();
+    $session_en = superpower_assigned();
 
     if(!isset($session_en['en_id']) || $in_id < 1){
         return false;
@@ -1935,13 +1935,13 @@ function echo_2level_entities($main_obj, $all_link_types, $link_types_counts, $a
 
         } else {
 
-            $rows .= '<td style="text-align: left;" class="'.( $show_in_advance_only ? require_superpower(10983) : '' ).'">';
+            $rows .= '<td style="text-align: left;" class="'.( $show_in_advance_only ? superpower_active(10983) : '' ).'">';
             $rows .= '<span class="icon-block" style="margin-left:8px;">'.$m['m_icon'].'</span>';
             $rows .= '<a href="/play/'.$en_id.'">'.$m['m_name'].'</a>';
             $rows .= '</td>';
 
 
-            $rows .= '<td style="text-align: right;" class="'.( $show_in_advance_only ? require_superpower(10983) : '' ).'">';
+            $rows .= '<td style="text-align: right;" class="'.( $show_in_advance_only ? superpower_active(10983) : '' ).'">';
             if($display_field=='total_count'){
 
                 $rows .= '<a href="/read/history?ln_status_entity_id='.join(',', $CI->config->item('en_ids_7359')) /* Link Statuses Public */.'&'.$link_field.'=' . $en_id . '" data-toggle="tooltip" data-placement="top" title="'.number_format($ln['total_count'], 0).' Intent'.echo__s($ln['total_count']).'">'.number_format($ln['total_count']/$addup_total_count*100, 1) . '%</a>';
@@ -2034,7 +2034,7 @@ function echo_in($in, $in_linked_id = 0, $is_parent = false)
     $en_all_7585 = $CI->config->item('en_all_7585'); //Intent Subtypes
     $en_all_4527 = $CI->config->item('en_all_4527'); //Platform Cache
 
-    $session_en = en_auth();
+    $session_en = superpower_assigned();
     $in_metadata = unserialize($in['in_metadata']); //Prepare Intent Metadata
     $can_train = ( in_can_train($in['in_id'], $session_en['en_id']) );
 
@@ -2059,14 +2059,14 @@ function echo_in($in, $in_linked_id = 0, $is_parent = false)
     $en_all_4486 = $CI->config->item('en_all_4486');
 
     //LINK TYPE
-    $ui .= '<span class="icon-block ln_type_' . $ln_id . require_superpower(10939) . '"><span data-toggle="tooltip" data-placement="right" title="' . $en_all_4486[$in['ln_type_entity_id']]['m_name'] . ': ' . $en_all_4486[$in['ln_type_entity_id']]['m_desc'] . ' @'.$in['ln_type_entity_id'].'">' . $en_all_4486[$in['ln_type_entity_id']]['m_icon'] . '</span></span>';
+    $ui .= '<span class="icon-block ln_type_' . $ln_id . superpower_active(10939) . '"><span data-toggle="tooltip" data-placement="right" title="' . $en_all_4486[$in['ln_type_entity_id']]['m_name'] . ': ' . $en_all_4486[$in['ln_type_entity_id']]['m_desc'] . ' @'.$in['ln_type_entity_id'].'">' . $en_all_4486[$in['ln_type_entity_id']]['m_icon'] . '</span></span>';
 
     //LINK STATUS
-    $ui .= '<span class="icon-block ln_status_entity_id_' . $ln_id . ( in_array($in['ln_status_entity_id'], $CI->config->item('en_ids_7359')) ? require_superpower(10939) : '' ) . '"><span data-toggle="tooltip" data-placement="right" title="'.$en_all_6186[$in['ln_status_entity_id']]['m_name'].' @'.$in['ln_status_entity_id'].': '.$en_all_6186[$in['ln_status_entity_id']]['m_desc'].'">' . $en_all_6186[$in['ln_status_entity_id']]['m_icon'] . '</span></span>';
+    $ui .= '<span class="icon-block ln_status_entity_id_' . $ln_id . ( in_array($in['ln_status_entity_id'], $CI->config->item('en_ids_7359')) ? superpower_active(10939) : '' ) . '"><span data-toggle="tooltip" data-placement="right" title="'.$en_all_6186[$in['ln_status_entity_id']]['m_name'].' @'.$in['ln_status_entity_id'].': '.$en_all_6186[$in['ln_status_entity_id']]['m_desc'].'">' . $en_all_6186[$in['ln_status_entity_id']]['m_icon'] . '</span></span>';
 
 
     //Show Completion Marks based on Intent Link Type:
-    $ui .= '<span class="in_assessment_' . $ln_id . require_superpower(10939) . '" data-toggle="tooltip" data-placement="right" title="Completion Marks">'. echo_in_marks($in) .'</span>';
+    $ui .= '<span class="in_assessment_' . $ln_id . superpower_active(10939) . '" data-toggle="tooltip" data-placement="right" title="Completion Marks">'. echo_in_marks($in) .'</span>';
 
 
 
@@ -2075,7 +2075,7 @@ function echo_in($in, $in_linked_id = 0, $is_parent = false)
 
 
     //BLOG STATUS
-    $ui .= '<span class="icon-block in_status_entity_id_' . $in['in_id'] . ( in_array($in['in_status_entity_id'], $CI->config->item('en_ids_7355')) ? require_superpower(10939) : '' ) . '"><span data-toggle="tooltip" data-placement="right" title="'.$en_all_4737[$in['in_status_entity_id']]['m_name'].': '.$en_all_4737[$in['in_status_entity_id']]['m_desc'].'">' . $en_all_4737[$in['in_status_entity_id']]['m_icon'] . '</span></span>';
+    $ui .= '<span class="icon-block in_status_entity_id_' . $in['in_id'] . ( in_array($in['in_status_entity_id'], $CI->config->item('en_ids_7355')) ? superpower_active(10939) : '' ) . '"><span data-toggle="tooltip" data-placement="right" title="'.$en_all_4737[$in['in_status_entity_id']]['m_name'].': '.$en_all_4737[$in['in_status_entity_id']]['m_desc'].'">' . $en_all_4737[$in['in_status_entity_id']]['m_icon'] . '</span></span>';
 
 
 
@@ -2092,7 +2092,7 @@ function echo_in($in, $in_linked_id = 0, $is_parent = false)
      *
      * */
 
-    $ui .= '<div style="padding-left:5px;" class="pull-right inline-block '. require_superpower(10939) .'">';
+    $ui .= '<div style="padding-left:5px;" class="pull-right inline-block '. superpower_active(10939) .'">';
 
 
     //Do we have intent parents loaded in our data-set?
@@ -2191,9 +2191,9 @@ function echo_caret($en_id, $m, $url_append){
     //Display drop down menu:
     $CI =& get_instance();
 
-    $require_superpowers = array_intersect($CI->config->item('en_ids_10957'), $m['m_parents']);
+    $superpower_actives = array_intersect($CI->config->item('en_ids_10957'), $m['m_parents']);
 
-    $ui = '<li class="nav-item dropdown '.( count($require_superpowers) ? require_superpower(end($require_superpowers)) : '' ).'" title="'.$m['m_name'].'" data-toggle="tooltip" data-placement="top">';
+    $ui = '<li class="nav-item dropdown '.( count($superpower_actives) ? superpower_active(end($superpower_actives)) : '' ).'" title="'.$m['m_name'].'" data-toggle="tooltip" data-placement="top">';
     $ui .= '<a class="nav-link dropdown-toggle" data-toggle="dropdown" href="#" role="button" aria-haspopup="true" aria-expanded="false"></a>';
     $ui .= '<div class="dropdown-menu">';
     foreach ($CI->config->item('en_all_'.$en_id) as $en_id2 => $m2){
@@ -2209,7 +2209,7 @@ function echo_en($en, $is_parent = false)
 {
 
     $CI =& get_instance();
-    $session_en = en_auth();
+    $session_en = superpower_assigned();
     $en_all_6177 = $CI->config->item('en_all_6177'); //Entity Statuses
     $en_all_4527 = $CI->config->item('en_all_4527'); //Platform Cache
     $en_all_2738 = $CI->config->item('en_all_2738');
@@ -2234,13 +2234,13 @@ function echo_en($en, $is_parent = false)
     if(!$session_en && ($is_hidden || !$is_published || !$is_link_published)){
         //Not logged in, so should only see published:
         return false;
-    } elseif($is_hidden && !require_superpower(10967, true)){
+    } elseif($is_hidden && !superpower_active(10967, true)){
         //They don't have the needed superpower:
         return false;
     }
 
     //ROW
-    $ui .= '<div class="list-group-item en-item object_highlight '.( $is_hidden ? require_superpower(10967) : '' ).' highlight_en_'.$en['en_id'].' en___' . $en['en_id'] . ( $ln_id > 0 ? ' tr_' . $en['ln_id'].' ' : '' ) . ( $is_parent ? ' parent-entity ' : '' ) . '" entity-id="' . $en['en_id'] . '" en-status="' . $en['en_status_entity_id'] . '" tr-id="'.$ln_id.'" ln-status="'.( $ln_id ? $en['ln_status_entity_id'] : 0 ).'" is-parent="' . ($is_parent ? 1 : 0) . '">';
+    $ui .= '<div class="list-group-item en-item object_highlight '.( $is_hidden ? superpower_active(10967) : '' ).' highlight_en_'.$en['en_id'].' en___' . $en['en_id'] . ( $ln_id > 0 ? ' tr_' . $en['ln_id'].' ' : '' ) . ( $is_parent ? ' parent-entity ' : '' ) . '" entity-id="' . $en['en_id'] . '" en-status="' . $en['en_status_entity_id'] . '" tr-id="'.$ln_id.'" ln-status="'.( $ln_id ? $en['ln_status_entity_id'] : 0 ).'" is-parent="' . ($is_parent ? 1 : 0) . '">';
 
 
     $ui .= '<div class="col1 col-md">';
@@ -2264,7 +2264,7 @@ function echo_en($en, $is_parent = false)
         $en_all_6186 = $CI->config->item('en_all_6186'); //Link Statuses
 
         //LINK TYPE
-        $ui .= '<span class="icon-block ln_type_' . $ln_id . require_superpower(10967).'"><span data-toggle="tooltip" data-placement="right" title="'.$en_all_4593[$en['ln_type_entity_id']]['m_name'].' @'.$en['ln_type_entity_id'].'">' . $en_all_4593[$en['ln_type_entity_id']]['m_icon'] . '</span></span>';
+        $ui .= '<span class="icon-block ln_type_' . $ln_id . superpower_active(10967).'"><span data-toggle="tooltip" data-placement="right" title="'.$en_all_4593[$en['ln_type_entity_id']]['m_name'].' @'.$en['ln_type_entity_id'].'">' . $en_all_4593[$en['ln_type_entity_id']]['m_icon'] . '</span></span>';
 
         //LINK STATUS
         $ui .= '<span class="icon-block ln_status_entity_id_' . $ln_id . ( $is_link_published ? ' hidden ' : '' ) .'"><span data-toggle="tooltip" data-placement="right" title="'.$en_all_6186[$en['ln_status_entity_id']]['m_name'].' @'.$en['ln_status_entity_id'].': '.$en_all_6186[$en['ln_status_entity_id']]['m_desc'].'">' . $en_all_6186[$en['ln_status_entity_id']]['m_icon'] . '</span></span>';
@@ -2273,9 +2273,9 @@ function echo_en($en, $is_parent = false)
         if($en['ln_external_id'] > 0){
             if($en['ln_parent_entity_id']==6196){
                 //Give trainers the ability to ping Messenger profiles:
-                $ui .= '<span class="icon-block '.require_superpower(10967).'" data-toggle="tooltip" data-placement="right" title="Link External ID = '.$en['ln_external_id'].' [Messenger Profile]"><a href="/read/messenger_fetch_profile/'.$en['ln_external_id'].'" target="_blank"><i class="fas fa-project-diagram"></i></a></span>';
+                $ui .= '<span class="icon-block '.superpower_active(10967).'" data-toggle="tooltip" data-placement="right" title="Link External ID = '.$en['ln_external_id'].' [Messenger Profile]"><a href="/read/messenger_fetch_profile/'.$en['ln_external_id'].'" target="_blank"><i class="fas fa-project-diagram"></i></a></span>';
             } else {
-                $ui .= '<span class="icon-block '.require_superpower(10967).'" data-toggle="tooltip" data-placement="right" title="Link External ID = '.$en['ln_external_id'].'"><i class="fas fa-project-diagram"></i></span>';
+                $ui .= '<span class="icon-block '.superpower_active(10967).'" data-toggle="tooltip" data-placement="right" title="Link External ID = '.$en['ln_external_id'].'"><i class="fas fa-project-diagram"></i></span>';
             }
         }
 
@@ -2332,15 +2332,15 @@ function echo_en($en, $is_parent = false)
 
 
     //MODIFY
-    $ui .= '<div class="pull-right inline-block '. require_superpower(10983) .'" style="padding-left:5px;"><a class="btn btn-primary btn-play" href="javascript:void(0);" onclick="en_modify_load(' . $en['en_id'] . ',' . $ln_id . ')"><i class="fas fa-cog"></i></a></div>';
+    $ui .= '<div class="pull-right inline-block '. superpower_active(10983) .'" style="padding-left:5px;"><a class="btn btn-primary btn-play" href="javascript:void(0);" onclick="en_modify_load(' . $en['en_id'] . ',' . $ln_id . ')"><i class="fas fa-cog"></i></a></div>';
 
 
     //FOLLOW
-    $ui .= '<div class="pull-right inline-block" style="padding-left:3px"><a class="btn btn-primary btn-play" href="/play/' . $en['en_id']. '"><span class="'. require_superpower(10983) .'">' . ($en['en__child_count'] > 0 ? echo_number($en['en__child_count']).' ' : '') . '</span><i class="fas fa-angle-right"></i></a></div>';
+    $ui .= '<div class="pull-right inline-block" style="padding-left:3px"><a class="btn btn-primary btn-play" href="/play/' . $en['en_id']. '"><span class="'. superpower_active(10983) .'">' . ($en['en__child_count'] > 0 ? echo_number($en['en__child_count']).' ' : '') . '</span><i class="fas fa-angle-right"></i></a></div>';
 
 
     //ICON SET
-    $ui .= '<div class="pull-right inline-block '. require_superpower(10983) .'">';
+    $ui .= '<div class="pull-right inline-block '. superpower_active(10983) .'">';
 
     //PARENTS
     if(count($en['en__parents']) > 0){
@@ -2385,9 +2385,9 @@ function echo_dropdown($cache_en_id, $selected_en_id = 0, $micro = false, $btn_c
     foreach ($en_all_this as $en_id => $m) {
 
         $is_set = ($en_id==$selected_en_id);
-        $require_superpowers = array_intersect($CI->config->item('en_ids_10957'), $m['m_parents']);
+        $superpower_actives = array_intersect($CI->config->item('en_ids_10957'), $m['m_parents']);
 
-        $ui .= '<a class="dropdown-item '.( $is_set ? ' active ' : ( count($require_superpowers) ? require_superpower(end($require_superpowers)) : '' ) ).'" href="javascript:void();" '.( !$is_set ? 'onclick="update_dropdown('.$cache_en_id.','.$en_id.')' : '' ).'"><span class="icon-block">'.$m['m_icon'].'</span>'.$m['m_name'].'</a>';
+        $ui .= '<a class="dropdown-item '.( $is_set ? ' active ' : ( count($superpower_actives) ? superpower_active(end($superpower_actives)) : '' ) ).'" href="javascript:void();" '.( !$is_set ? 'onclick="update_dropdown('.$cache_en_id.','.$en_id.')' : '' ).'"><span class="icon-block">'.$m['m_icon'].'</span>'.$m['m_name'].'</a>';
     }
 
     $ui .= '</div>';

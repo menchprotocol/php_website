@@ -1,7 +1,7 @@
 <?php
 
 //Do they have a local session? (i.e. Browser login):
-$session_en = en_auth();
+$session_en = superpower_assigned();
 
 //Are they logged in via the browser?
 if (isset($session_en['en_id'])) {
