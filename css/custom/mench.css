@@ -393,14 +393,14 @@ img.no-radius {
 }
 
 .note-edit{
-    background-color: #CCC;
-    height:54px;
+    height:56px;
     line-height: 100%;
     width: 25px;
     text-align: center;
     position: absolute;
     right: 0;
     top: 0px;
+    overflow: hidden;
 }
 .i_content {
     padding-right:25px;
@@ -408,7 +408,7 @@ img.no-radius {
 
 .note-edit>span{
     display: block;
-    padding-top: 5px;
+    padding-top: 7px;
 }
 
 /* ROTATIONS */
