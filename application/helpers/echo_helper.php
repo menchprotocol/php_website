@@ -1575,12 +1575,12 @@ function echo_in_dashboard($in)
     $ui = '<div class="list-group-item">';
 
     //FOLLOW
-    $ui .= '<div class="pull-right inline-block" style="padding-left:3px"><a class="btn btn-primary btn-blog" href="/play/' . $en['en_id']. '"><span class="'. require_superpower(10983) .'">' . ($en['en__child_count'] > 0 ? echo_number($en['en__child_count']).' ' : '') . '</span><i class="fas fa-angle-right"></i></a></div>';
-
+    $ui .= '<div class="pull-right inline-block" style="padding-left:3px"><a class="btn btn-primary btn-blog" href="/blog/' . $in['in_id']. '"><i class="fas fa-angle-right"></i></a></div>';
     $ui .= '<span class="icon-block">'.$en_all_7585[$in['in_completion_method_entity_id']]['m_icon'].'</span>';
     $ui .= '<b class="montserrat">'.echo_in_outcome($in['in_outcome'], false).'</b>';
     $ui .= '</div>';
     return $ui;
+
 }
 
 function echo_in_answer_scores($starting_in, $depth_levels, $original_depth_levels, $parent_in_completion_method_entity_id){
