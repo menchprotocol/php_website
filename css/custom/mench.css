@@ -404,10 +404,11 @@ img.no-radius {
     margin-right: 3px;
 }
 
-.msgin{
+textarea.msgin{
     margin-top:2px;
     width:100%;
     border:0;
+    margin-right: 20px;
 }
 .i_content {
     padding-right:20px;
