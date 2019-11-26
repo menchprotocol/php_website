@@ -843,7 +843,7 @@ class Blog extends CI_Controller {
         //Print the challenge:
         return echo_json(array(
             'status' => 1,
-            'message' => echo_in_message_manage(array_merge($ln, array(
+            'message' => echo_in_note(array_merge($ln, array(
                 'ln_child_entity_id' => $session_en['en_id'],
             ))),
         ));
@@ -949,7 +949,7 @@ class Blog extends CI_Controller {
         //Echo message:
         echo_json(array(
             'status' => 1,
-            'message' => echo_in_message_manage(array_merge($new_messages[0], array(
+            'message' => echo_in_note(array_merge($new_messages[0], array(
                 'ln_child_entity_id' => $session_en['en_id'],
             ))),
         ));

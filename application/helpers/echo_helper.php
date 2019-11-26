@@ -211,7 +211,7 @@ function echo_in_outcome($in_outcome, $push_message = false, $common_prefix = nu
 
 
 
-function echo_in_message_manage($ln)
+function echo_in_note($ln)
 {
 
     /*
@@ -2335,7 +2335,7 @@ function echo_en($en, $is_parent = false)
 
 
     //FOLLOW
-    $ui .= '<div class="pull-right inline-block" style="padding-left:3px"><a class="btn btn-primary btn-play" href="/play/' . $en['en_id']. '">' . ($en['en__child_count'] > 0 ? echo_number($en['en__child_count']) : '') . ' <i class="fas fa-angle-right"></i></a></div>';
+    $ui .= '<div class="pull-right inline-block" style="padding-left:3px"><a class="btn btn-primary btn-play" href="/play/' . $en['en_id']. '"><span class="'. require_superpower(10983) .'">' . ($en['en__child_count'] > 0 ? echo_number($en['en__child_count']).' ' : '') . '</span><i class="fas fa-angle-right"></i></a></div>';
 
 
     //ICON SET

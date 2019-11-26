@@ -197,7 +197,7 @@ foreach ($this->config->item('en_all_11021') as $en_id => $m){
             $this_tab .= '<div id="message-sorting" class="list-group list-messages">';
             if ($counter) {
                 foreach ($blog_notes as $in_note) {
-                    $this_tab .= echo_in_message_manage($in_note);
+                    $this_tab .= echo_in_note($in_note);
                 }
             } else {
                 $this_tab .= '<div class="alert alert-warning no-messages' . $in['in_id'] . '_' . $en_id2 . ' all_msg msg_en_type_' . $en_id2 . '"><i class="fas fa-exclamation-triangle"></i> No ' . $en_all_4485[$en_id2]['m_name'] . ' added yet</div>';
