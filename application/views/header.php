@@ -58,6 +58,7 @@ $en_all_11035 = $this->config->item('en_all_11035'); //MENCH PLAYER NAVIGATION
     <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/js/bootstrap.min.js" integrity="sha384-JjSmVgyd0p3pXB1rRibZUAYoIIy6OrQ6VrjIEaFf/nJGzIxFDsf4x0xIM+B07jRM" crossorigin="anonymous"></script>
     <script src="https://kit.fontawesome.com/fbf7f3ae67.js" crossorigin="anonymous"></script>
     <script src="/js/lib/jquery.textcomplete.min.js"></script>
+    <script src="/js/lib/autosize.min.js"></script>
     <script src="/js/lib/autocomplete.jquery.min.js"></script>
     <script src="/js/lib/algoliasearch.min.js"></script>
     <script src="/js/lib/sortable.min.js" type="text/javascript"></script>

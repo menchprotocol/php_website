@@ -262,6 +262,9 @@ function in_message_modify_start(ln_id, initial_ln_type_entity_id) {
     $("#ul-nav-" + ln_id + ">div").css('width', '100%');
     $("#ul-nav-" + ln_id + " textarea").focus();
 
+    //Adjust height:
+    autosize($("#ul-nav-" + ln_id + " textarea"));
+
     //Initiate search:
     in_message_inline_en_search();
 
