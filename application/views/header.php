@@ -134,7 +134,7 @@ if(!isset($hide_header) || !$hide_header){
 
                         </div>
                         <div class="supwerpower_view hidden">
-
+                            <div class="full-width">
                             <?php
                             if(count($this->session->userdata('assigned_superpowers_en_ids'))){
                                 foreach($this->config->item('en_all_10957') as $superpower_en_id => $m){
@@ -147,7 +147,7 @@ if(!isset($hide_header) || !$hide_header){
                                 }
                             }
                             ?>
-
+                            </div>
                         </div>
                     </td>
 
