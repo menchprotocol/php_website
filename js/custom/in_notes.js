@@ -260,10 +260,12 @@ function in_message_modify_start(ln_id, initial_ln_type_entity_id) {
     $("#ul-nav-" + ln_id + " .edit-off").addClass('hidden');
     $("#ul-nav-" + ln_id + " .edit-on").removeClass('hidden');
     $("#ul-nav-" + ln_id + ">div").css('width', '100%');
-    $("#ul-nav-" + ln_id + " textarea").focus();
 
-    //Adjust height:
-    autosize($("#ul-nav-" + ln_id + " textarea"));
+    //Set focus to end of text:
+    var textinput = $("#ul-nav-" + ln_id + " textarea");
+    var data = textinput.val();
+    textinput.focus().val('').val(data);
+    autosize(textinput); //Adjust height
 
     //Initiate search:
     in_message_inline_en_search();
