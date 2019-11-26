@@ -51,7 +51,7 @@ echo '<div class="row">';
     echo '</div>';
 
     //RIGHT SETTINGS
-    echo '<div class="'.config_var(11095).'">';
+    echo '<div class="col-lg-12">';
         echo '<div class="center-right">';
             echo echo_dropdown(7585, $in['in_completion_method_entity_id'], false, 'btn-blog');
             echo '<div class="inline-block" style="margin-left: 5px;">'.echo_dropdown(4737, $in['in_status_entity_id'], true, 'btn-blog').'</div>';
