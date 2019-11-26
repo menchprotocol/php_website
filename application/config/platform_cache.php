@@ -11,7 +11,7 @@ defined('BASEPATH') OR exit('No direct script access allowed');
 *
 */
 
-//Generated 2019-11-26 10:53:53 PST
+//Generated 2019-11-26 11:24:04 PST
 
 //BLOGGING. REIMAGINED.:
 $config['en_ids_11968'] = array(11969,11980,11984,11972,11977,11976);
@@ -1567,7 +1567,7 @@ $config['en_all_6404'] = array(
     11073 => array(
         'm_icon' => '',
         'm_name' => 'READABLE MESSAGE MAX LENGTH',
-        'm_desc' => '280',
+        'm_desc' => '610',
         'm_parents' => array(6404),
     ),
     11057 => array(
