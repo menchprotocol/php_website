@@ -3,7 +3,7 @@
     <div class="row">
         <div class="col-lg">
 
-            <h1><i class="fas fa-bookmark isyellow"></i> MY BOOKMARKS</h1>
+            <h1><span class="icon-block-xlg"><i class="far fa-bookmark"></i></span>BOOKMARKS</h1>
             <?php
 
             $session_en = superpower_assigned();
@@ -55,7 +55,7 @@
 
                     $show_max = 10;
 
-                    echo '<h1><i class="fas fa-bookmark isyellow"></i> MY RECENT</h1>';
+                    echo '<h1><span class="icon-block-xlg"><i class="far fa-history"></i></span>RECENT</h1>';
                     echo '<div class="list-group">';
                     foreach($recent_ins as $recent_in){
 

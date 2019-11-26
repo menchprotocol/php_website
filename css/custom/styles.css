@@ -1185,11 +1185,6 @@ h5, .h5 {
     display: inline-block;
 }
 
-.full-width {
-    width: 100% !important;
-    max-width: none !important;
-}
-
 .video-embed-page {
     max-width: 560px;
     margin: 0 auto;
