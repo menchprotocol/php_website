@@ -16,10 +16,19 @@ function in_message_add_name() {
 function in_message_char_count() {
     //Update count:
     var len = $('#ln_content' + in_id).val().length;
+
+
     if (len > js_en_all_6404[11073]['m_desc']) {
         $('#charNum' + in_id).addClass('overload').text(len);
     } else {
         $('#charNum' + in_id).removeClass('overload').text(len);
+    }
+
+    //Only show counter if getting close to limit:
+    if(len > ( js_en_all_6404[11073]['m_desc'] * 0.85 )){
+        $('#blogNoteCount' + in_id).removeClass('hidden');
+    } else {
+        $('#blogNoteCount' + in_id).addClass('hidden');
     }
 }
 

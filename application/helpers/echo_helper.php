@@ -261,16 +261,16 @@ function echo_in_note($ln)
     $ui .= '<ul class="msg-nav '.superpower_active(10939).'">';
 
     //Counter:
-    $ui .= '<li class="edit-on hidden"><span id="charNumEditing' . $ln['ln_id'] . '">0</span>/' . config_var(11073) . '</li>';
+    $ui .= '<li class="edit-on hidden"><span id="blogNoteCount' . $ln['ln_id'] . '"><span id="charNumEditing' . $ln['ln_id'] . '">0</span>/' . config_var(11073) . '</span></li>';
 
     //Save Edit:
-    $ui .= '<li class="pull-right edit-on hidden"><a class="btn btn-read white-third" title="Save changes" data-toggle="tooltip" data-placement="top" href="javascript:in_message_modify_save(' . $ln['ln_id'] . ',' . $ln['ln_type_entity_id'] . ');"><i class="fas fa-check"></i> Save</a></li>';
+    $ui .= '<li class="pull-right edit-on hidden"><a class="btn btn-blog white-third" title="Save changes" data-toggle="tooltip" data-placement="top" href="javascript:in_message_modify_save(' . $ln['ln_id'] . ',' . $ln['ln_type_entity_id'] . ');"><i class="fas fa-check"></i> Save</a></li>';
 
     //Cancel Edit:
-    $ui .= '<li class="pull-right edit-on hidden"><a class="btn btn-read white-third" title="Cancel editing" data-toggle="tooltip" data-placement="top" href="javascript:in_message_modify_cancel(' . $ln['ln_id'] . ');"><i class="fas fa-times"></i></a></li>';
+    $ui .= '<li class="pull-right edit-on hidden"><a class="btn btn-blog white-third" title="Cancel editing" data-toggle="tooltip" data-placement="top" href="javascript:in_message_modify_cancel(' . $ln['ln_id'] . ');"><i class="fas fa-times"></i></a></li>';
 
     //Show drop down for message link status:
-    $ui .= '<li class="pull-right edit-on hidden"><span class="white-wrapper" style="margin:-12px 0 0 0;">';
+    $ui .= '<li class="pull-right edit-on hidden"><span class="white-wrapper" style="margin:-5px 0 0 0; display: block;">';
     $ui .= '<select id="message_status_' . $ln['ln_id'] . '"  class="form-control border" style="margin-bottom:0;" title="Change message status" data-toggle="tooltip" data-placement="top">';
     foreach($CI->config->item('en_all_6186') /* Link Statuses */ as $en_id => $m){
         $ui .= '<option value="' . $en_id . '" '.( $en_id==$ln['ln_status_entity_id'] ? 'selected="selected"' : '' ).'>' . $m['m_name'] . '</option>';
