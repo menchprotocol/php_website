@@ -1,14 +1,17 @@
 @CHARSET "ISO-8859-1";
+@import url('https://rsms.me/inter/inter.css');
+@supports (font-variation-settings: normal) {
+    html { font-family: 'Inter var', sans-serif; }
+}
 
 body {
     background-color: #f4f5f7 !important;
     color: #070707;
     font-size: 1.4em;
     margin: 65px 0;
-    font-family: 'Open Sans', sans-serif;
+    font-family: 'Inter', sans-serif;
     font-weight: 400;
 }
-
 
 /*
 
@@ -36,11 +39,8 @@ h1, h2, h3, ul, p { padding: 0 5px; }
     font-family: 'Montserrat', sans-serif;
     font-weight: bold;
 }
-.doupper{
+.doupper, .new-player-input{
     text-transform: uppercase;
-}
-.mono{
-    font-family: 'Nanum Gothic Coding', monospace;
 }
 
 .decimal-list{

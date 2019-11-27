@@ -272,7 +272,7 @@ function echo_in_note($ln)
     //Show drop down for message link status:
     $ui .= '<li class="pull-right edit-on hidden"><span class="white-wrapper" style="margin:-5px 0 0 0; display: block;">';
     $ui .= '<select id="message_status_' . $ln['ln_id'] . '"  class="form-control border" style="margin-bottom:0;" title="Change message status" data-toggle="tooltip" data-placement="top">';
-    foreach($CI->config->item('en_all_6186') /* Link Statuses */ as $en_id => $m){
+    foreach($CI->config->item('en_all_12012') as $en_id => $m){
         $ui .= '<option value="' . $en_id . '" '.( $en_id==$ln['ln_status_entity_id'] ? 'selected="selected"' : '' ).'>' . $m['m_name'] . '</option>';
     }
     $ui .= '</select>';
@@ -577,7 +577,7 @@ function echo_ln($ln, $is_inner = false)
 
     //Do we have a content to show?
     if(!$hide_sensitive_details && strlen($ln['ln_content']) > 0){
-        $ui .= '<div class="read-history-msg mono">';
+        $ui .= '<div class="read-history-msg">';
         $ui .= $CI->READ_model->dispatch_message($ln['ln_content']);
         $ui .= '</div>';
     }

@@ -18,7 +18,7 @@ $en_all_11035 = $this->config->item('en_all_11035'); //MENCH PLAYER NAVIGATION
 
 
     <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css" integrity="sha384-ggOyR0iXCbMQv3Xipma34MD+dH/1fQ784/j6cY/iJTQUOhcWr7x9JvoRxT2MZw1T" crossorigin="anonymous">
-    <link href="https://fonts.googleapis.com/css?family=Montserrat:800|Open+Sans:300,400,600|Nanum+Gothic+Coding&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css?family=Montserrat:800&display=swap" rel="stylesheet">
 
     <!--
     <link href="/css/lib/material-dashboard.css" rel="stylesheet"/>
@@ -29,7 +29,6 @@ $en_all_11035 = $this->config->item('en_all_11035'); //MENCH PLAYER NAVIGATION
     -->
 
     <link href="/css/custom/mench.css?v=v<?= config_var(11060) ?>" rel="stylesheet"/>
-
 
     <?php
     //JS DATA
@@ -62,7 +61,6 @@ $en_all_11035 = $this->config->item('en_all_11035'); //MENCH PLAYER NAVIGATION
     <script src="/js/lib/autocomplete.jquery.min.js"></script>
     <script src="/js/lib/algoliasearch.min.js"></script>
     <script src="/js/lib/sortable.min.js" type="text/javascript"></script>
-    <script src="/js/custom/global-js.js?v=v<?= config_var(11060) ?>" type="text/javascript"></script>
     <script src="/js/custom/platform-js.js?v=v<?= config_var(11060) ?>" type="text/javascript"></script>
 </head>
 
