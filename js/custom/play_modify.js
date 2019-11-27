@@ -411,7 +411,7 @@ function en_modify_load(en_id, ln_id) {
 
 
     var en_full_name = $(".en_name_" + en_id + ":first").text();
-    $('#en_name').val(en_full_name).focus();
+    $('#en_name').val(en_full_name.toUpperCase()).focus();
     $('.edit-header').html('<i class="fas fa-cog"></i> ' + en_full_name);
     $('#en_status_entity_id').val($(".en___" + en_id + ":first").attr('en-status'));
     $('.save_entity_changes').html('');
@@ -584,7 +584,7 @@ function en_modify_save() {
     var modify_data = {
         en_focus_id: en_focus_id, //Determines if we need to change location upon removing...
         en_id: parseInt($('#modifybox').attr('entity-id')),
-        en_name: $('#en_name').val(),
+        en_name: $('#en_name').val().toUpperCase(),
         en_icon: $('#en_icon').val(),
         en_status_entity_id: $('#en_status_entity_id').val(), //The new status (might not have changed too)
         en_merge: $('#en_merge').val(),
