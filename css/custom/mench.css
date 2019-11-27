@@ -278,6 +278,11 @@ img.no-radius {
 .ismatt, .ismatt a                  { color:#070707 !important; }
 
 
+.overload {
+    color: #FC1B44;
+    font-weight: bold;
+}
+
 
 .mench-spin {
     -webkit-animation: mench-spin 7s infinite linear;

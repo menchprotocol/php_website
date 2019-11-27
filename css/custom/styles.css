@@ -3141,12 +3141,6 @@ h4 .tip-badge {
     font-size: 18px;
 }
 
-
-.overload {
-    color: #FF0000;
-    font-weight: bold;
-}
-
 .box__dragndrop {
     display: none;
 }
