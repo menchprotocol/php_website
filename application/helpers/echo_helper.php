@@ -243,13 +243,15 @@ function echo_in_note($ln)
 
     //Editing menu:
     $ui .= '<div class="note-edit edit-off '.superpower_active(10939).'">';
+
         //Modify:
-        $ui .= '<span><a href="javascript:in_message_modify_start(' . $ln['ln_id'] . ',' . $ln['ln_type_entity_id'] . ');" title="Modify Message" data-toggle="tooltip" data-placement="top"><i class="fas fa-pen-square yellow"></i></a></span>';
+        $ui .= '<span title="Modify Message" data-toggle="tooltip" data-placement="top"><a href="javascript:in_note_modify_start(' . $ln['ln_id'] . ',' . $ln['ln_type_entity_id'] . ');"><i class="fas fa-pen-square yellow"></i></a></span>';
 
         //Sort:
         if(in_array(4603, $en_all_4485[$ln['ln_type_entity_id']]['m_parents'])){
             $ui .= '<span title="Drag up/down to sort" data-toggle="tooltip" data-placement="top"><i class="fas fa-sort yellow fa-special-sort '.( in_array(4603, $en_all_4485[$ln['ln_type_entity_id']]['m_parents']) ? 'message-sorting' : '' ).'"></i></span>';
         }
+
     $ui .= '</div>';
 
 
@@ -261,13 +263,13 @@ function echo_in_note($ln)
     $ui .= '<ul class="msg-nav '.superpower_active(10939).'">';
 
     //Counter:
-    $ui .= '<li class="edit-on hidden"><span id="blogNoteCount' . $ln['ln_id'] . '"><span id="charNumEditing' . $ln['ln_id'] . '">0</span>/' . config_var(11073) . '</span></li>';
+    $ui .= '<li class="edit-on hidden"><span id="blogNoteCount' . $ln['ln_id'] . '"><span id="charEditingNum' . $ln['ln_id'] . '">0</span>/' . config_var(11073) . '</span></li>';
 
     //Save Edit:
-    $ui .= '<li class="pull-right edit-on hidden"><a class="btn btn-blog white-third" title="Save changes" data-toggle="tooltip" data-placement="top" href="javascript:in_message_modify_save(' . $ln['ln_id'] . ',' . $ln['ln_type_entity_id'] . ');"><i class="fas fa-check"></i> Save</a></li>';
+    $ui .= '<li class="pull-right edit-on hidden"><a class="btn btn-blog white-third" href="javascript:in_note_modify_save(' . $ln['ln_id'] . ',' . $ln['ln_type_entity_id'] . ');" title="Save changes" data-toggle="tooltip" data-placement="top"><i class="fas fa-check"></i> Save</a></li>';
 
     //Cancel Edit:
-    $ui .= '<li class="pull-right edit-on hidden"><a class="btn btn-blog white-third" title="Cancel editing" data-toggle="tooltip" data-placement="top" href="javascript:in_message_modify_cancel(' . $ln['ln_id'] . ');"><i class="fas fa-times"></i></a></li>';
+    $ui .= '<li class="pull-right edit-on hidden"><a class="btn btn-blog white-third" href="javascript:in_note_modify_cancel(' . $ln['ln_id'] . ');" title="Cancel editing" data-toggle="tooltip" data-placement="top"><i class="fas fa-times"></i></a></li>';
 
     //Show drop down for message link status:
     $ui .= '<li class="pull-right edit-on hidden"><span class="white-wrapper" style="margin:-5px 0 0 0; display: block;">';

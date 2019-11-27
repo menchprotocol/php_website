@@ -8,12 +8,12 @@
 
 function in_message_add_name() {
     $('#ln_content' + in_id).insertAtCaret('/firstname ');
-    in_message_char_count();
+    in_new_note_count();
 }
 
 
 //Count text area characters:
-function in_message_char_count() {
+function in_new_note_count() {
     //Update count:
     var len = $('#ln_content' + in_id).val().length;
     if (len > js_en_all_6404[11073]['m_desc']) {
@@ -21,19 +21,26 @@ function in_message_char_count() {
     } else {
         $('#charNum' + in_id).removeClass('overload').text(len);
     }
+
+    //Only show counter if getting close to limit:
+    if(len > ( js_en_all_6404[11073]['m_desc'] * 0.80 )){
+        $('#blogNoteCount' + ln_id).removeClass('hidden');
+    } else {
+        $('#blogNoteCount' + ln_id).addClass('hidden');
+    }
 }
 
-function in_message_validate(ln_id) {
+function in_edit_note_count(ln_id) {
     //See if this is a valid text message editing:
-    if (!($('#charNumEditing' + ln_id).length)) {
+    if (!($('#charEditingNum' + ln_id).length)) {
         return false;
     }
     //Update count:
     var len = $('#message_body_' + ln_id).val().length;
     if (len > js_en_all_6404[11073]['m_desc']) {
-        $('#charNumEditing' + ln_id).addClass('overload').text(len);
+        $('#charEditingNum' + ln_id).addClass('overload').text(len);
     } else {
-        $('#charNumEditing' + ln_id).removeClass('overload').text(len);
+        $('#charEditingNum' + ln_id).removeClass('overload').text(len);
     }
 
     //Only show counter if getting close to limit:
@@ -152,7 +159,7 @@ $(document).ready(function () {
     //Watch for message creation:
     $('#ln_content' + in_id).keydown(function (e) {
         if (e.ctrlKey && e.keyCode == 13) {
-            in_message_create();
+            in_note_add();
         }
     });
 
@@ -260,7 +267,7 @@ function in_message_sort_load() {
 
 }
 
-function in_message_modify_start(ln_id, initial_ln_type_entity_id) {
+function in_note_modify_start(ln_id, initial_ln_type_entity_id) {
 
     //Start editing:
     $("#ul-nav-" + ln_id).addClass('in-editing');
@@ -278,18 +285,18 @@ function in_message_modify_start(ln_id, initial_ln_type_entity_id) {
     in_message_inline_en_search();
 
     //Try to initiate the editor, which only applies to text messages:
-    in_message_validate(ln_id);
+    in_edit_note_count(ln_id);
 
     //Watch typing:
     $(document).keyup(function (e) {
         //Watch for action keys:
         if (e.ctrlKey && e.keyCode == 13) {
-            in_message_modify_save(ln_id, initial_ln_type_entity_id);
+            in_note_modify_save(ln_id, initial_ln_type_entity_id);
         }
     });
 }
 
-function in_message_modify_cancel(ln_id, success=0) {
+function in_note_modify_cancel(ln_id, success=0) {
     //Revert editing:
     $("#ul-nav-" + ln_id).removeClass('in-editing');
     $("#ul-nav-" + ln_id + " .edit-off").removeClass('hidden');
@@ -297,13 +304,13 @@ function in_message_modify_cancel(ln_id, success=0) {
     $("#ul-nav-" + ln_id + ">div").css('width', 'inherit');
 }
 
-function in_message_modify_save(ln_id, initial_ln_type_entity_id) {
+function in_note_modify_save(ln_id, initial_ln_type_entity_id) {
 
     //Show loader:
     $("#ul-nav-" + ln_id + " .edit-updates").html('<div><i class="far fa-yin-yang fa-spin"></i></div>');
 
     //Revert View:
-    in_message_modify_cancel(ln_id, 1);
+    in_note_modify_cancel(ln_id, 1);
 
 
     var modify_data = {
@@ -315,7 +322,7 @@ function in_message_modify_save(ln_id, initial_ln_type_entity_id) {
     };
 
     //Update message:
-    $.post("/blog/in_message_modify_save", modify_data, function (data) {
+    $.post("/blog/in_note_modify_save", modify_data, function (data) {
 
         if (data.status) {
 
@@ -392,7 +399,7 @@ function in_message_form_unlock(result) {
     $('.remove_loading').fadeIn();
 
     $('#add_message_' + focus_ln_type_entity_id + '_' + in_id).html(button_value);
-    $('#add_message_' + focus_ln_type_entity_id + '_' + in_id).attr('href', 'javascript:in_message_create();');
+    $('#add_message_' + focus_ln_type_entity_id + '_' + in_id).attr('href', 'javascript:in_note_add();');
 
     //Remove possible "No message" info box:
     if ($('.no-messages' + in_id + '_' + focus_ln_type_entity_id).length) {
@@ -481,7 +488,7 @@ function in_message_from_attachment(droppedFiles, uploadType) {
     }
 }
 
-function in_message_create() {
+function in_note_add() {
 
     if ($('#ln_content' + in_id).val().length == 0) {
         alert('ERROR: Enter a message');
@@ -505,7 +512,7 @@ function in_message_create() {
 
             //Reset input field:
             $("#ln_content" + in_id).val("");
-            in_message_char_count();
+            in_new_note_count();
 
         }
 

@@ -179,7 +179,7 @@ $en_all_11035 = $this->config->item('en_all_11035'); //MENCH PLAYER NAVIGATION
                                 <span class="white-wrapper">
                                     <textarea class="form-control text-edit border" id="ln_content"
                                               maxlength="<?= config_var(11073) ?>" data-lpignore="true"
-                                              placeholder="Write Message, Drop a File or Paste URL"
+                                              placeholder="Write, Drop a File or Paste URL"
                                               style="height:126px; min-height:126px;">
                                     </textarea>
                                 </span>
@@ -250,7 +250,6 @@ $en_all_11035 = $this->config->item('en_all_11035'); //MENCH PLAYER NAVIGATION
         echo '<ul class="nav nav-tabs nav-tabs-sm menu_bar">';
 
         foreach ($this->config->item('en_all_'.$en_id) as $en_id2 => $m2){
-
 
             //Is this a caret menu?
             if(in_array(11040 , $m2['m_parents'])){
@@ -529,6 +528,14 @@ $en_all_11035 = $this->config->item('en_all_11035'); //MENCH PLAYER NAVIGATION
 
                 $this_tab .= '</div></form>';
 
+                if(isset($fetch_11029)){
+                    //Also add invisible child IDs for quick copy/pasting:
+                    $this_tab .= '<div style="color:#FFFFFF;">';
+                    foreach ($fetch_11029 as $en) {
+                        $this_tab .= $en['en_id'].',';
+                    }
+                    $this_tab .= '</div>';
+                }
             }
 
             //Don't show empty tabs:

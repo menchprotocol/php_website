@@ -1086,7 +1086,7 @@ class Blog extends CI_Controller {
         ));
     }
 
-    function in_message_modify_save()
+    function in_note_modify_save()
     {
 
         //Authenticate Trainer:
