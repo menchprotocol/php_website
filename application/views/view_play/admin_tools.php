@@ -312,6 +312,16 @@ if(!$action) {
         echo '<div class="alert alert-success maxout"><i class="fas fa-check-circle"></i> No orphans found!</div>';
     }
 
+} elseif($action=='upper_entities') {
+
+    $counter = 0;
+    foreach ($this->PLAY_model->en_fetch(array(), array('skip_en__parents')) as $en){
+        $counter += $this->PLAY_model->en_update($en['en_id'], array(
+            'en_name' => strtoupper($en['en_name']),
+        ));
+    }
+    echo $counter.' done';
+
 } elseif($action=='orphan_entities') {
 
     echo '<ul class="breadcrumb"><li><a href="/play/admin_tools">Trainer Tools</a></li><li><b>'.$moderation_tools['/play/admin_tools/'.$action].'</b></li></ul>';
