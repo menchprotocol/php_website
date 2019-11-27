@@ -217,14 +217,14 @@ $en_all_2738 = $this->config->item('en_all_2738');
     var link_filters = '<?= serialize(count($filters) > 0 ? $filters : array()) ?>';
     var link_join_by = '<?= serialize(count($join_by) > 0 ? $join_by : array()) ?>';
 </script>
-<script src="/js/custom/read_history.js?v=v<?= config_var(11060) ?>"
+<script src="/js/custom/mench_ledger.js?v=v<?= config_var(11060) ?>"
         type="text/javascript"></script>
 
 <?php
 
 echo '<div class="container">';
 
-    echo '<h1 class="inline-block" style="padding-right: 10px;">'.$en_all_2738[6205]['m_icon'].' READ HISTORY</h1>';
+    echo '<h1 class="inline-block" style="padding-right: 10px;">'.$en_all_2738[6205]['m_icon'].' MENCH LEDGER</h1>';
 
     echo '<div class="inline-block"><i class="far fa-filter"></i> <a href="javascript:void();" onclick="$(\'.show-filter\').toggleClass(\'hidden\');">Filters</a></div>';
 
@@ -398,7 +398,7 @@ echo '<div class="filter-statuses filter-in-status hidden"><span class="mini-hea
     echo '<input type="submit" class="btn btn-sm btn-read" value="Apply" />';
 
     if($has_filters){
-        echo ' &nbsp;<a href="/read/history" style="font-size: 0.8em;">Remove Filters</a>';
+        echo ' &nbsp;<a href="/read/ledger" style="font-size: 0.8em;">Remove Filters</a>';
     }
 
     echo '</form>';

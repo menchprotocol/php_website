@@ -88,7 +88,7 @@ class Read extends CI_Controller
 
 
 
-    function history()
+    function ledger()
     {
         /*
          *
@@ -100,9 +100,9 @@ class Read extends CI_Controller
 
         //Load header:
         $this->load->view('header', array(
-            'title' => 'READ HISTORY',
+            'title' => 'MENCH LEDGER',
         ));
-        $this->load->view('view_read/read_history');
+        $this->load->view('view_read/mench_ledger');
         $this->load->view('footer');
     }
 
@@ -132,7 +132,7 @@ class Read extends CI_Controller
             echo '<tr>';
             echo '<td style="text-align: left;"><span class="icon-block">' . $m['m_icon'] . '</span><a href="/play/'.$en_id.'">' . $m['m_name'] . '</a></td>';
 
-            echo '<td style="text-align: right;">' . '<a href="/read/history?in_status_entity_id=' . $en_id . '&ln_type_entity_id=4250">' . number_format($objects_count[0]['totals'],0) .'</a></td>';
+            echo '<td style="text-align: right;">' . '<a href="/read/ledger?in_status_entity_id=' . $en_id . '&ln_type_entity_id=4250">' . number_format($objects_count[0]['totals'],0) .'</a></td>';
 
             echo '</tr>';
 
@@ -185,7 +185,7 @@ class Read extends CI_Controller
             //Display this status count:
             echo '<tr>';
             echo '<td style="text-align: left;"><span class="icon-block">' . $m['m_icon'] . '</span><a href="/play/'.$en_id.'">' . $m['m_name'] . '</a></td>';
-            echo '<td style="text-align: right;">' . '<a href="/read/history?en_status_entity_id=' . $en_id . '&ln_type_entity_id=4251">' . number_format($objects_count[0]['totals'], 0) . '</a>' . '</td>';
+            echo '<td style="text-align: right;">' . '<a href="/read/ledger?en_status_entity_id=' . $en_id . '&ln_type_entity_id=4251">' . number_format($objects_count[0]['totals'], 0) . '</a>' . '</td>';
             echo '</tr>';
 
         }
@@ -308,7 +308,7 @@ class Read extends CI_Controller
             echo '<tr>';
             echo '<td style="text-align: left;"><span class="icon-block">' . $m['m_icon'] . '</span><a href="/play/'.$en_id.'">' . $m['m_name'] . '</a></td>';
             echo '<td style="text-align: right;">';
-            echo '<a href="/read/history?ln_status_entity_id=' . $en_id . '">' . number_format($objects_count[0]['totals'],0) . '</a>';
+            echo '<a href="/read/ledger?ln_status_entity_id=' . $en_id . '">' . number_format($objects_count[0]['totals'],0) . '</a>';
             echo '</td>';
             echo '</tr>';
 

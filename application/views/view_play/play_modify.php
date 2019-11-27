@@ -530,7 +530,7 @@ $en_all_11035 = $this->config->item('en_all_11035'); //MENCH PLAYER NAVIGATION
 
                 if(isset($fetch_11029)){
                     //Also add invisible child IDs for quick copy/pasting:
-                    $this_tab .= '<div style="color:#FFFFFF;">';
+                    $this_tab .= '<div style="color:transparent;">';
                     foreach ($fetch_11029 as $en) {
                         $this_tab .= $en['en_id'].',';
                     }

@@ -1731,7 +1731,7 @@ function echo_en_stats_overview($cached_list, $report_name){
 
             $inner_ui .= '<tr>';
             $inner_ui .= '<td style="text-align: left;"><span class="icon-block">' . $people_group['m_icon'] . '</span><a href="/play/'.$group_en_id.'">'.$people_group['m_name'].'</a></td>';
-            $inner_ui .= '<td style="text-align: right;"><a href="/read/history?ln_status_entity_id='.join(',', $CI->config->item('en_ids_7359')) /* Link Statuses Public */.'&ln_type_entity_id='.join(',', $CI->config->item('en_ids_4592')).'&ln_parent_entity_id=' . join(',', $CI->config->item('en_ids_'.$group_en_id)) . '">' . number_format($subset_total, 0) . '</a></td>';
+            $inner_ui .= '<td style="text-align: right;"><a href="/read/ledger?ln_status_entity_id='.join(',', $CI->config->item('en_ids_7359')) /* Link Statuses Public */.'&ln_type_entity_id='.join(',', $CI->config->item('en_ids_4592')).'&ln_parent_entity_id=' . join(',', $CI->config->item('en_ids_'.$group_en_id)) . '">' . number_format($subset_total, 0) . '</a></td>';
             $inner_ui .= '</tr>';
 
         } else {
@@ -1748,7 +1748,7 @@ function echo_en_stats_overview($cached_list, $report_name){
 
             $inner_ui .= '<tr>';
             $inner_ui .= '<td style="text-align: left;"><span class="icon-block">' . $people_group['m_icon'] . '</span><a href="/play/'.$group_en_id.'">' . $people_group['m_name'] . '</a></td>';
-            $inner_ui .= '<td style="text-align: right;"><a href="/read/history?ln_status_entity_id='.join(',', $CI->config->item('en_ids_7359')) /* Link Statuses Public */.'&ln_type_entity_id='.join(',', $CI->config->item('en_ids_4592')).'&ln_parent_entity_id=' . $group_en_id . '">' . number_format($child_links[0]['en__child_count'], 0) . '</a></td>';
+            $inner_ui .= '<td style="text-align: right;"><a href="/read/ledger?ln_status_entity_id='.join(',', $CI->config->item('en_ids_7359')) /* Link Statuses Public */.'&ln_type_entity_id='.join(',', $CI->config->item('en_ids_4592')).'&ln_parent_entity_id=' . $group_en_id . '">' . number_format($child_links[0]['en__child_count'], 0) . '</a></td>';
             $inner_ui .= '</tr>';
 
         }
@@ -1827,7 +1827,7 @@ function echo_in_setting($in_setting_en_id, $in_field_name, $addup_total_count){
         //$ui .= this as the main title:
         $ui .= '<tr>';
         $ui .= '<td style="text-align: left;"><span class="icon-block">'.$in_type['m_icon'].'</span><a href="/play/'.$type_en_id.'">'.$in_type['m_name'].'</a></td>';
-        $ui .= '<td style="text-align: right;"><a href="/read/history?ln_type_entity_id=4250&in_status_entity_id=' . join(',', $CI->config->item('en_ids_7356')) . '&'.$in_field_name.'='.$type_en_id.'" data-toggle="tooltip" data-placement="top" title="'.number_format($in_count[0]['total_public_intents'], 0).' Intent'.echo__s($in_count[0]['total_public_intents']).'">'.number_format($in_count[0]['total_public_intents']/$addup_total_count*100, 1).'%</a></td>';
+        $ui .= '<td style="text-align: right;"><a href="/read/ledger?ln_type_entity_id=4250&in_status_entity_id=' . join(',', $CI->config->item('en_ids_7356')) . '&'.$in_field_name.'='.$type_en_id.'" data-toggle="tooltip" data-placement="top" title="'.number_format($in_count[0]['total_public_intents'], 0).' Intent'.echo__s($in_count[0]['total_public_intents']).'">'.number_format($in_count[0]['total_public_intents']/$addup_total_count*100, 1).'%</a></td>';
         $ui .= '</tr>';
 
     }
@@ -1935,11 +1935,11 @@ function echo_2level_entities($main_obj, $all_link_types, $link_types_counts, $a
             $rows .= '<td style="text-align: right;" class="'.( $show_in_advance_only ? superpower_active(10983) : '' ).'">';
             if($display_field=='total_count'){
 
-                $rows .= '<a href="/read/history?ln_status_entity_id='.join(',', $CI->config->item('en_ids_7359')) /* Link Statuses Public */.'&'.$link_field.'=' . $en_id . '" data-toggle="tooltip" data-placement="top" title="'.number_format($ln['total_count'], 0).' Intent'.echo__s($ln['total_count']).'">'.number_format($ln['total_count']/$addup_total_count*100, 1) . '%</a>';
+                $rows .= '<a href="/read/ledger?ln_status_entity_id='.join(',', $CI->config->item('en_ids_7359')) /* Link Statuses Public */.'&'.$link_field.'=' . $en_id . '" data-toggle="tooltip" data-placement="top" title="'.number_format($ln['total_count'], 0).' Intent'.echo__s($ln['total_count']).'">'.number_format($ln['total_count']/$addup_total_count*100, 1) . '%</a>';
 
             } elseif($display_field=='total_words'){
 
-                $rows .= '<a href="/read/history?ln_status_entity_id='.join(',', $CI->config->item('en_ids_7359')) /* Link Statuses Public */.'&'.$link_field.'=' . $en_id . '" data-toggle="tooltip" data-placement="top" title="'.number_format($ln['total_words'], 0).' Word'.echo__s($ln['total_words']).'">'.number_format($ln['total_words'], 0) . '</a>';
+                $rows .= '<a href="/read/ledger?ln_status_entity_id='.join(',', $CI->config->item('en_ids_7359')) /* Link Statuses Public */.'&'.$link_field.'=' . $en_id . '" data-toggle="tooltip" data-placement="top" title="'.number_format($ln['total_words'], 0).' Word'.echo__s($ln['total_words']).'">'.number_format($ln['total_words'], 0) . '</a>';
 
             }
             $rows .= '</td>';
@@ -1973,11 +1973,11 @@ function echo_2level_entities($main_obj, $all_link_types, $link_types_counts, $a
 
     if($display_field=='total_count'){
 
-        echo '<a href="/read/history?ln_status_entity_id='.join(',', $CI->config->item('en_ids_7359')) /* Link Statuses Public */.'&'.$link_field.'=' . join(',' , $all_link_type_ids) . '" data-toggle="tooltip" data-placement="top" title="'.number_format($total_sum, 0).' Intent'.echo__s($total_sum).'">'.number_format($total_sum/$addup_total_count*100, 1).'%</a>';
+        echo '<a href="/read/ledger?ln_status_entity_id='.join(',', $CI->config->item('en_ids_7359')) /* Link Statuses Public */.'&'.$link_field.'=' . join(',' , $all_link_type_ids) . '" data-toggle="tooltip" data-placement="top" title="'.number_format($total_sum, 0).' Intent'.echo__s($total_sum).'">'.number_format($total_sum/$addup_total_count*100, 1).'%</a>';
 
     } elseif($display_field=='total_words'){
 
-        echo '<a href="/read/history?ln_status_entity_id='.join(',', $CI->config->item('en_ids_7359')) /* Link Statuses Public */.'&'.$link_field.'=' . join(',' , $all_link_type_ids) . '" data-toggle="tooltip" data-placement="top" title="'.number_format($total_sum, 0).' Word'.echo__s($total_sum).'">'.number_format($total_sum, 0).'</a>';
+        echo '<a href="/read/ledger?ln_status_entity_id='.join(',', $CI->config->item('en_ids_7359')) /* Link Statuses Public */.'&'.$link_field.'=' . join(',' , $all_link_type_ids) . '" data-toggle="tooltip" data-placement="top" title="'.number_format($total_sum, 0).' Word'.echo__s($total_sum).'">'.number_format($total_sum, 0).'</a>';
 
     }
 
