@@ -468,7 +468,7 @@ function en_fetch_canonical_url(query_string, not_found){
     });
 
     //We did not find the URL, offer them option to add it:
-    return '<a href="/play/add_source_wizard?url='+ encodeURI(query_string) +'" class="suggestion add-source-suggest"><span class="icon-block"><i class="fas fa-plus-circle" style="margin: 0 5px;"></i></span>Add Source Wizard</a>'
+    return '<a href="/play/add_source_wizard?url='+ encodeURI(query_string) +'" class="suggestion add-source-suggest"><span class="icon-block"><i class="fas fa-plus-circle blue" style="margin: 0 5px;"></i></span>Add Source Wizard</a>'
         + ( not_found ? '<div class="not-found"><i class="fas fa-exclamation-triangle"></i> URL not found</div>' : '');
 }
 
