@@ -11,7 +11,7 @@ defined('BASEPATH') OR exit('No direct script access allowed');
 *
 */
 
-//Generated 2019-11-28 14:11:24 PST
+//Generated 2019-11-28 14:25:32 PST
 
 //BLOG NOTE ADD PLAYER:
 $config['en_ids_12019'] = array(12020,12021,12022);
@@ -1810,7 +1810,7 @@ $config['en_ids_11031'] = array();
 $config['en_all_11031'] = array(
 );
 
-//TREE OF PLAYERS:
+//PLAYERS LINKS DIRECTION:
 $config['en_ids_11028'] = array(11030,11029);
 $config['en_all_11028'] = array(
     11030 => array(
@@ -1827,7 +1827,7 @@ $config['en_all_11028'] = array(
     ),
 );
 
-//TREE OF BLOGS:
+//BLOGS LINKS DIRECTION:
 $config['en_ids_11018'] = array(11020,11019,4601,4983,10573,11161);
 $config['en_all_11018'] = array(
     11020 => array(
@@ -1878,8 +1878,8 @@ $config['en_all_11021'] = array(
         'm_parents' => array(11021,4527),
     ),
     11018 => array(
-        'm_icon' => '<i class="fas fa-exchange rotate90 yellow"></i>',
-        'm_name' => 'TREE OF BLOGS',
+        'm_icon' => '<i class="fas fa-exchange rotate90 yellow" aria-hidden="true"></i>',
+        'm_name' => 'BLOGS LINKS DIRECTION',
         'm_desc' => '',
         'm_parents' => array(4527,11025,11021),
     ),
@@ -2127,7 +2127,7 @@ $config['en_all_10692'] = array(
 );
 
 //PLATFORM MEMORY:
-$config['en_ids_4527'] = array(7758,10809,10956,11047,7712,4983,7756,7585,10602,10589,11968,10990,12019,12017,4485,12012,7347,6146,7596,7588,7302,4737,7356,7355,6201,11021,4486,7309,7751,6150,10712,10719,10869,10627,4229,10746,7703,7364,10717,10721,10720,11080,2738,7555,11035,11059,11058,10716,6225,10718,10711,11054,6404,4527,6232,11039,4537,6194,6827,4426,4997,4454,6123,6177,11007,11089,11033,3000,7303,6206,11088,4592,4755,6287,10571,7357,6345,6192,11081,6193,4600,5967,6255,4280,10590,10570,4277,6102,7704,6244,6274,7494,6144,7582,6103,10596,10539,10594,10692,10591,10593,7304,6186,7360,7359,4341,4593,10658,10592,11031,11084,6204,10710,10957,10725,6805,4986,7551,7358,11018,11028);
+$config['en_ids_4527'] = array(7758,10809,10956,11047,7712,4983,7756,7585,10602,10589,11968,10990,12019,12017,4485,12012,7347,6146,7596,7588,4229,11018,4486,7302,4737,7356,7355,6201,11021,7309,7751,6150,10712,10719,10869,10627,10746,7703,7364,10717,10721,10720,11080,2738,7555,11035,11059,11058,10716,6225,10718,10711,11054,6404,4527,6232,11039,6194,6827,4426,4997,4454,11028,4592,4537,6123,6177,11007,11089,11033,3000,7303,6206,11088,4755,6287,10571,7357,6345,6192,11081,6193,4600,5967,6255,4280,10590,10570,4277,6102,7704,6244,6274,7494,6144,7582,6103,10596,10539,10594,10692,10591,10593,7304,6186,7360,7359,4341,4593,10658,10592,11031,11084,6204,10710,10957,10725,6805,4986,7551,7358);
 $config['en_all_4527'] = array(
     7758 => array(
         'm_icon' => '<i class="far fa-mountain"></i>',
@@ -2249,6 +2249,24 @@ $config['en_all_4527'] = array(
         'm_desc' => '',
         'm_parents' => array(10893,4527),
     ),
+    4229 => array(
+        'm_icon' => '<i class="fas fa-question-circle yellow" aria-hidden="true"></i>',
+        'm_name' => 'BLOGS LINKED CONDITIONAL',
+        'm_desc' => '',
+        'm_parents' => array(10594,10589,7703,4527,6410,6283,4593,4486),
+    ),
+    11018 => array(
+        'm_icon' => '<i class="fas fa-exchange rotate90 yellow" aria-hidden="true"></i>',
+        'm_name' => 'BLOGS LINKS DIRECTION',
+        'm_desc' => '',
+        'm_parents' => array(4527,11025,11021),
+    ),
+    4486 => array(
+        'm_icon' => '<i class="fas fa-link yellow" aria-hidden="true"></i>',
+        'm_name' => 'BLOGS LINKS TYPE',
+        'm_desc' => '',
+        'm_parents' => array(10984,11025,10662,4527),
+    ),
     7302 => array(
         'm_icon' => '<i class="far fa-chart-bar yellow"></i>',
         'm_name' => 'BLOG STATS',
@@ -2284,12 +2302,6 @@ $config['en_all_4527'] = array(
         'm_name' => 'BLOG TABS',
         'm_desc' => '',
         'm_parents' => array(4527,4535),
-    ),
-    4486 => array(
-        'm_icon' => '<i class="fas fa-code-branch rotate74 yellow" aria-hidden="true"></i>',
-        'm_name' => 'BLOG TREE BRANCHES',
-        'm_desc' => '',
-        'm_parents' => array(10984,11025,10662,4527),
     ),
     7309 => array(
         'm_icon' => '<i class="far fa-cubes"></i>',
@@ -2332,12 +2344,6 @@ $config['en_all_4527'] = array(
         'm_name' => 'FILE TYPE ATTACHMENT',
         'm_desc' => '',
         'm_parents' => array(4527,6771),
-    ),
-    4229 => array(
-        'm_icon' => '<i class="fas fa-question-circle yellow" aria-hidden="true"></i>',
-        'm_name' => 'FLOW CONDITIONAL',
-        'm_desc' => '',
-        'm_parents' => array(10594,10589,7703,4527,6410,6283,4593,4486),
     ),
     10746 => array(
         'm_icon' => '<i class="far fa-industry"></i>',
@@ -2465,12 +2471,6 @@ $config['en_all_4527'] = array(
         'm_desc' => '',
         'm_parents' => array(10967,11089,4527,11040),
     ),
-    4537 => array(
-        'm_icon' => '<i class="fal fa-spider-web" aria-hidden="true"></i>',
-        'm_name' => 'PLAY BRANCH URL',
-        'm_desc' => '',
-        'm_parents' => array(4758,4527),
-    ),
     6194 => array(
         'm_icon' => '<i class="far fa-database"></i>',
         'm_name' => 'PLAY CONNECTIONS',
@@ -2500,6 +2500,24 @@ $config['en_all_4527'] = array(
         'm_name' => 'PLAYER NOTIFICATION LEVEL',
         'm_desc' => '',
         'm_parents' => array(7552,6225,6204,4527),
+    ),
+    11028 => array(
+        'm_icon' => '<i class="fas fa-exchange rotate90 blue" aria-hidden="true"></i>',
+        'm_name' => 'PLAYERS LINKS DIRECTION',
+        'm_desc' => '',
+        'm_parents' => array(4527,11026),
+    ),
+    4592 => array(
+        'm_icon' => '<i class="fas fa-link blue" aria-hidden="true"></i>',
+        'm_name' => 'PLAYERS LINKS TYPE',
+        'm_desc' => '',
+        'm_parents' => array(11026,5982,5981,4527),
+    ),
+    4537 => array(
+        'm_icon' => '<i class="fal fa-spider-web" aria-hidden="true"></i>',
+        'm_name' => 'PLAYERS LINKS URLS',
+        'm_desc' => '',
+        'm_parents' => array(4758,4527),
     ),
     6123 => array(
         'm_icon' => '<i class="fab fa-twitter-square blue" aria-hidden="true"></i>',
@@ -2554,12 +2572,6 @@ $config['en_all_4527'] = array(
         'm_name' => 'PLAY TABS',
         'm_desc' => '',
         'm_parents' => array(4527,4536),
-    ),
-    4592 => array(
-        'm_icon' => '<i class="fas fa-code-branch rotate74 blue"></i>',
-        'm_name' => 'PLAY TREE BRANCHES',
-        'm_desc' => '',
-        'm_parents' => array(11026,5982,5981,4527),
     ),
     4755 => array(
         'm_icon' => '<i class="fal fa-eye-slash" aria-hidden="true"></i>',
@@ -2843,18 +2855,6 @@ $config['en_all_4527'] = array(
         'm_desc' => '',
         'm_parents' => array(4527,4758),
     ),
-    11018 => array(
-        'm_icon' => '<i class="fas fa-exchange rotate90 yellow"></i>',
-        'm_name' => 'TREE OF BLOGS',
-        'm_desc' => '',
-        'm_parents' => array(4527,11025,11021),
-    ),
-    11028 => array(
-        'm_icon' => '<i class="fas fa-exchange rotate90 blue"></i>',
-        'm_name' => 'TREE OF PLAYERS',
-        'm_desc' => '',
-        'm_parents' => array(4527,11026),
-    ),
 );
 
 //READ UPDATES:
@@ -2933,8 +2933,8 @@ $config['en_all_10658'] = array(
         'm_parents' => array(4755,10596,10589,4593,10638,10658),
     ),
     10662 => array(
-        'm_icon' => '<i class="fas fa-hashtag"></i>',
-        'm_name' => 'BLOG UPDATE BRANCH',
+        'm_icon' => '<i class="fas fa-hashtag" aria-hidden="true"></i>',
+        'm_name' => 'BLOG UPDATE LINK',
         'm_desc' => '',
         'm_parents' => array(11027,10638,7703,10539,4593,10658),
     ),
@@ -2989,7 +2989,7 @@ $config['en_all_10658'] = array(
 );
 
 //READ ONE WORD:
-$config['en_ids_10539'] = array(10671,10676,10678,10677,10686,10663,10661,10675,10662,10650,10648,10651,7757,10669,4319,4230,4256,4257,10672,10653,10654,10673,10656,4235,6132,6155,4557,4460,4547,6140,7578,6224);
+$config['en_ids_10539'] = array(10671,10676,10678,10677,10686,10663,10661,10675,10650,10662,10648,10651,7757,10672,10653,10669,4319,4230,4256,4257,10654,10673,10656,4235,6132,6155,4557,4460,4547,6140,7578,6224);
 $config['en_all_10539'] = array(
     10671 => array(
         'm_icon' => '<i class="far fa-trash-alt"></i>',
@@ -3039,17 +3039,17 @@ $config['en_all_10539'] = array(
         'm_desc' => '',
         'm_parents' => array(7703,10539,10589,4593,10658,10638),
     ),
-    10662 => array(
-        'm_icon' => '<i class="fas fa-hashtag"></i>',
-        'm_name' => 'BLOG UPDATE BRANCH',
-        'm_desc' => '',
-        'm_parents' => array(11027,10638,7703,10539,4593,10658),
-    ),
     10650 => array(
         'm_icon' => '<i class="far fa-clock"></i>',
         'm_name' => 'BLOG UPDATE COMPLETION TIME',
         'm_desc' => '',
         'm_parents' => array(7703,10539,4593,10589,10638),
+    ),
+    10662 => array(
+        'm_icon' => '<i class="fas fa-hashtag" aria-hidden="true"></i>',
+        'm_name' => 'BLOG UPDATE LINK',
+        'm_desc' => '',
+        'm_parents' => array(11027,10638,7703,10539,4593,10658),
     ),
     10648 => array(
         'm_icon' => '<i class="far fa-sliders-h"></i>',
@@ -3069,36 +3069,6 @@ $config['en_all_10539'] = array(
         'm_desc' => '',
         'm_parents' => array(10539,10589,4755,4593,6150),
     ),
-    10669 => array(
-        'm_icon' => '<i class="fab fa-font-awesome-alt blue"></i>',
-        'm_name' => 'PLAY BRANCH ICON',
-        'm_desc' => '',
-        'm_parents' => array(10589,10539,4593,6198,4592),
-    ),
-    4319 => array(
-        'm_icon' => '<i class="far fa-sort-numeric-down blue"></i>',
-        'm_name' => 'PLAY BRANCH INTEGER',
-        'm_desc' => '',
-        'm_parents' => array(10539,10589,4593,4592),
-    ),
-    4230 => array(
-        'm_icon' => '<i class="far fa-link rotate90 blue"></i>',
-        'm_name' => 'PLAY BRANCH RAW',
-        'm_desc' => '',
-        'm_parents' => array(10539,10589,4593,4592),
-    ),
-    4256 => array(
-        'm_icon' => '<i class="far fa-browser blue"></i>',
-        'm_name' => 'PLAY BRANCH URL',
-        'm_desc' => '',
-        'm_parents' => array(10539,10589,4593,4592,4537),
-    ),
-    4257 => array(
-        'm_icon' => '<i class="far fa-play-circle blue"></i>',
-        'm_name' => 'PLAY BRANCH WIDGET',
-        'm_desc' => '',
-        'm_parents' => array(10539,10589,4593,4592,4537,4506),
-    ),
     10672 => array(
         'm_icon' => '<i class="far fa-trash-alt blue"></i>',
         'm_name' => 'PLAYER ARCHIVED',
@@ -3110,6 +3080,36 @@ $config['en_all_10539'] = array(
         'm_name' => 'PLAYER ICON UPDATE',
         'm_desc' => '',
         'm_parents' => array(4593,10539,10589,10645),
+    ),
+    10669 => array(
+        'm_icon' => '<i class="fab fa-font-awesome-alt blue"></i>',
+        'm_name' => 'PLAYERS LINKED ICON',
+        'm_desc' => '',
+        'm_parents' => array(10589,10539,4593,6198,4592),
+    ),
+    4319 => array(
+        'm_icon' => '<i class="far fa-sort-numeric-down blue"></i>',
+        'm_name' => 'PLAYERS LINKED INTEGER',
+        'm_desc' => '',
+        'm_parents' => array(10539,10589,4593,4592),
+    ),
+    4230 => array(
+        'm_icon' => '<i class="far fa-link rotate90 blue"></i>',
+        'm_name' => 'PLAYERS LINKED RAW',
+        'm_desc' => '',
+        'm_parents' => array(10539,10589,4593,4592),
+    ),
+    4256 => array(
+        'm_icon' => '<i class="far fa-browser blue"></i>',
+        'm_name' => 'PLAYERS LINKED URL',
+        'm_desc' => '',
+        'm_parents' => array(10539,10589,4593,4592,4537),
+    ),
+    4257 => array(
+        'm_icon' => '<i class="far fa-play-circle blue"></i>',
+        'm_name' => 'PLAYERS LINKED WIDGET',
+        'm_desc' => '',
+        'm_parents' => array(10539,10589,4593,4592,4537,4506),
     ),
     10654 => array(
         'm_icon' => '<i class="far fa-sliders-h blue"></i>',
@@ -3190,25 +3190,25 @@ $config['en_ids_10627'] = array(4259,4261,4260,4258,4549,4551,4550,4548,4554,455
 $config['en_all_10627'] = array(
     4259 => array(
         'm_icon' => '<i class="far fa-volume-up blue"></i>',
-        'm_name' => 'PLAY BRANCH AUDIO',
+        'm_name' => 'PLAYERS LINKED AUDIO',
         'm_desc' => '',
         'm_parents' => array(11080,11059,10627,10593,10589,6203,4593,4592,4537),
     ),
     4261 => array(
         'm_icon' => '<i class="far fa-file-pdf blue"></i>',
-        'm_name' => 'PLAY BRANCH FILE',
+        'm_name' => 'PLAYERS LINKED FILE',
         'm_desc' => '',
         'm_parents' => array(11080,11059,10627,10593,10589,6203,4593,4592,4537),
     ),
     4260 => array(
         'm_icon' => '<i class="far fa-image blue"></i>',
-        'm_name' => 'PLAY BRANCH IMAGE',
+        'm_name' => 'PLAYERS LINKED IMAGE',
         'm_desc' => '',
         'm_parents' => array(6198,11080,11059,10627,10593,10589,6203,4593,4592,4537),
     ),
     4258 => array(
         'm_icon' => '<i class="far fa-video blue"></i>',
-        'm_name' => 'PLAY BRANCH VIDEO',
+        'm_name' => 'PLAYERS LINKED VIDEO',
         'm_desc' => '',
         'm_parents' => array(11080,11059,10627,10593,10589,6203,4593,4592,4537),
     ),
@@ -3263,7 +3263,7 @@ $config['en_all_10627'] = array(
 );
 
 //READ ONE WORD + LINKS:
-$config['en_ids_10594'] = array(10573,10660,7545,10664,4228,4229,4318);
+$config['en_ids_10594'] = array(10573,10660,7545,10664,4229,4228,4318);
 $config['en_all_10594'] = array(
     10573 => array(
         'm_icon' => '<i class="fas fa-bookmark yellow" aria-hidden="true"></i>',
@@ -3289,28 +3289,28 @@ $config['en_all_10594'] = array(
         'm_desc' => '',
         'm_parents' => array(7703,10638,10594,10589,4593,4229,10658),
     ),
-    4228 => array(
-        'm_icon' => '<i class="far fa-play yellow" aria-hidden="true"></i>',
-        'm_name' => 'FLOW AUTOMATIC',
-        'm_desc' => '',
-        'm_parents' => array(10594,10589,7703,6410,4593,4486),
-    ),
     4229 => array(
         'm_icon' => '<i class="fas fa-question-circle yellow" aria-hidden="true"></i>',
-        'm_name' => 'FLOW CONDITIONAL',
+        'm_name' => 'BLOGS LINKED CONDITIONAL',
         'm_desc' => '',
         'm_parents' => array(10594,10589,7703,4527,6410,6283,4593,4486),
     ),
+    4228 => array(
+        'm_icon' => '<i class="far fa-play yellow" aria-hidden="true"></i>',
+        'm_name' => 'BLOGS LINKED REQUIRED',
+        'm_desc' => '',
+        'm_parents' => array(10594,10589,7703,6410,4593,4486),
+    ),
     4318 => array(
         'm_icon' => '<i class="far fa-clock blue"></i>',
-        'm_name' => 'PLAY BRANCH TIME',
+        'm_name' => 'PLAYERS LINKED TIME',
         'm_desc' => '',
         'm_parents' => array(10594,10589,4593,4592),
     ),
 );
 
 //READ STATEMENT + LINKS:
-$config['en_ids_10593'] = array(4983,4250,4601,4231,10679,10644,4259,4261,4260,4255,4258,4251,10646,10657,7702,4570,4549,4551,4550,4548,4554,4556,4555,6563,4552,4553);
+$config['en_ids_10593'] = array(4983,4250,4601,4231,10679,10644,4251,10646,4259,4261,4260,4255,4258,10657,7702,4570,4549,4551,4550,4548,4554,4556,4555,6563,4552,4553);
 $config['en_all_10593'] = array(
     4983 => array(
         'm_icon' => '<i class="fas fa-user-edit yellow" aria-hidden="true"></i>',
@@ -3348,36 +3348,6 @@ $config['en_all_10593'] = array(
         'm_desc' => '',
         'm_parents' => array(7703,10589,10593,4593,10638),
     ),
-    4259 => array(
-        'm_icon' => '<i class="far fa-volume-up blue"></i>',
-        'm_name' => 'PLAY BRANCH AUDIO',
-        'm_desc' => '',
-        'm_parents' => array(11080,11059,10627,10593,10589,6203,4593,4592,4537),
-    ),
-    4261 => array(
-        'm_icon' => '<i class="far fa-file-pdf blue"></i>',
-        'm_name' => 'PLAY BRANCH FILE',
-        'm_desc' => '',
-        'm_parents' => array(11080,11059,10627,10593,10589,6203,4593,4592,4537),
-    ),
-    4260 => array(
-        'm_icon' => '<i class="far fa-image blue"></i>',
-        'm_name' => 'PLAY BRANCH IMAGE',
-        'm_desc' => '',
-        'm_parents' => array(6198,11080,11059,10627,10593,10589,6203,4593,4592,4537),
-    ),
-    4255 => array(
-        'm_icon' => '<i class="far fa-align-left blue"></i>',
-        'm_name' => 'PLAY BRANCH TEXT',
-        'm_desc' => '',
-        'm_parents' => array(10593,10589,4593,4592),
-    ),
-    4258 => array(
-        'm_icon' => '<i class="far fa-video blue"></i>',
-        'm_name' => 'PLAY BRANCH VIDEO',
-        'm_desc' => '',
-        'm_parents' => array(11080,11059,10627,10593,10589,6203,4593,4592,4537),
-    ),
     4251 => array(
         'm_icon' => '<i class="fas fa-at blue"></i>',
         'm_name' => 'PLAYER CREATED',
@@ -3389,6 +3359,36 @@ $config['en_all_10593'] = array(
         'm_name' => 'PLAYER NAME UPDATE',
         'm_desc' => '',
         'm_parents' => array(10593,4593,10589,10645),
+    ),
+    4259 => array(
+        'm_icon' => '<i class="far fa-volume-up blue"></i>',
+        'm_name' => 'PLAYERS LINKED AUDIO',
+        'm_desc' => '',
+        'm_parents' => array(11080,11059,10627,10593,10589,6203,4593,4592,4537),
+    ),
+    4261 => array(
+        'm_icon' => '<i class="far fa-file-pdf blue"></i>',
+        'm_name' => 'PLAYERS LINKED FILE',
+        'm_desc' => '',
+        'm_parents' => array(11080,11059,10627,10593,10589,6203,4593,4592,4537),
+    ),
+    4260 => array(
+        'm_icon' => '<i class="far fa-image blue"></i>',
+        'm_name' => 'PLAYERS LINKED IMAGE',
+        'm_desc' => '',
+        'm_parents' => array(6198,11080,11059,10627,10593,10589,6203,4593,4592,4537),
+    ),
+    4255 => array(
+        'm_icon' => '<i class="far fa-align-left blue"></i>',
+        'm_name' => 'PLAYERS LINKED TEXT',
+        'm_desc' => '',
+        'm_parents' => array(10593,10589,4593,4592),
+    ),
+    4258 => array(
+        'm_icon' => '<i class="far fa-video blue"></i>',
+        'm_name' => 'PLAYERS LINKED VIDEO',
+        'm_desc' => '',
+        'm_parents' => array(11080,11059,10627,10593,10589,6203,4593,4592,4537),
     ),
     10657 => array(
         'm_icon' => '<i class="fas fa-sticky-note blue"></i>',
@@ -3985,7 +3985,7 @@ $config['en_all_10590'] = array(
 );
 
 //BLOGGERS:
-$config['en_ids_10589'] = array(10671,4983,10573,4250,4601,6226,4231,10660,10676,10678,10679,10677,7545,10686,10663,10664,10661,10675,10681,10685,10650,10648,10644,10651,10647,4228,4229,7757,4259,4261,10669,4260,4319,4230,4255,4318,4256,4258,4257,10672,4251,10653,5001,10625,5943,4999,4998,5000,5981,11956,5982,5865,5003,10689,10646,10654,10657,10673,10656,10659,4235,4275,6132,6415,6559,6560,6556,6578,10690,4266,4267,10683,6155,4577,4549,4551,4550,4557,4278,4279,4268,4460,4547,4287,4548,7561,7564,7560,7559,7558,7488,7485,7741,7486,4559,7489,7492,6140,6997,6157,7487,6143,6144,7578,6224,5007,4246,7504);
+$config['en_ids_10589'] = array(10671,4983,10573,4250,4601,6226,4231,10660,10676,10678,10679,10677,7545,10686,10663,10664,10661,4229,4228,10675,10681,10685,10650,10648,10644,10651,10647,7757,10672,4251,10653,5001,10625,5943,4999,4998,5000,5981,11956,5982,5865,5003,10689,10646,4259,4261,10669,4260,4319,4230,4255,4318,4256,4258,4257,10654,10657,10673,10656,10659,4235,4275,6132,6415,6559,6560,6556,6578,10690,4266,4267,10683,6155,4577,4549,4551,4550,4557,4278,4279,4268,4460,4547,4287,4548,7561,7564,7560,7559,7558,7488,7485,7741,7486,4559,7489,7492,6140,6997,6157,7487,6143,6144,7578,6224,5007,4246,7504);
 $config['en_all_10589'] = array(
     10671 => array(
         'm_icon' => '<i class="far fa-trash-alt"></i>',
@@ -4089,6 +4089,18 @@ $config['en_all_10589'] = array(
         'm_desc' => '',
         'm_parents' => array(10638,7703,10539,10589,4593,10658),
     ),
+    4229 => array(
+        'm_icon' => '<i class="fas fa-question-circle yellow" aria-hidden="true"></i>',
+        'm_name' => 'BLOGS LINKED CONDITIONAL',
+        'm_desc' => '',
+        'm_parents' => array(10594,10589,7703,4527,6410,6283,4593,4486),
+    ),
+    4228 => array(
+        'm_icon' => '<i class="far fa-play yellow" aria-hidden="true"></i>',
+        'm_name' => 'BLOGS LINKED REQUIRED',
+        'm_desc' => '',
+        'm_parents' => array(10594,10589,7703,6410,4593,4486),
+    ),
     10675 => array(
         'm_icon' => '<i class="fas fa-sort"></i>',
         'm_name' => 'BLOG SORTED',
@@ -4137,89 +4149,11 @@ $config['en_all_10589'] = array(
         'm_desc' => '',
         'm_parents' => array(10596,10589,4593,10638),
     ),
-    4228 => array(
-        'm_icon' => '<i class="far fa-play yellow" aria-hidden="true"></i>',
-        'm_name' => 'FLOW AUTOMATIC',
-        'm_desc' => '',
-        'm_parents' => array(10594,10589,7703,6410,4593,4486),
-    ),
-    4229 => array(
-        'm_icon' => '<i class="fas fa-question-circle yellow" aria-hidden="true"></i>',
-        'm_name' => 'FLOW CONDITIONAL',
-        'm_desc' => '',
-        'm_parents' => array(10594,10589,7703,4527,6410,6283,4593,4486),
-    ),
     7757 => array(
         'm_icon' => '<i class="far fa-bookmark ispink"></i>',
         'm_name' => 'MENCH REMOVED BOOKMARK',
         'm_desc' => '',
         'm_parents' => array(10539,10589,4755,4593,6150),
-    ),
-    4259 => array(
-        'm_icon' => '<i class="far fa-volume-up blue"></i>',
-        'm_name' => 'PLAY BRANCH AUDIO',
-        'm_desc' => '',
-        'm_parents' => array(11080,11059,10627,10593,10589,6203,4593,4592,4537),
-    ),
-    4261 => array(
-        'm_icon' => '<i class="far fa-file-pdf blue"></i>',
-        'm_name' => 'PLAY BRANCH FILE',
-        'm_desc' => '',
-        'm_parents' => array(11080,11059,10627,10593,10589,6203,4593,4592,4537),
-    ),
-    10669 => array(
-        'm_icon' => '<i class="fab fa-font-awesome-alt blue"></i>',
-        'm_name' => 'PLAY BRANCH ICON',
-        'm_desc' => '',
-        'm_parents' => array(10589,10539,4593,6198,4592),
-    ),
-    4260 => array(
-        'm_icon' => '<i class="far fa-image blue"></i>',
-        'm_name' => 'PLAY BRANCH IMAGE',
-        'm_desc' => '',
-        'm_parents' => array(6198,11080,11059,10627,10593,10589,6203,4593,4592,4537),
-    ),
-    4319 => array(
-        'm_icon' => '<i class="far fa-sort-numeric-down blue"></i>',
-        'm_name' => 'PLAY BRANCH INTEGER',
-        'm_desc' => '',
-        'm_parents' => array(10539,10589,4593,4592),
-    ),
-    4230 => array(
-        'm_icon' => '<i class="far fa-link rotate90 blue"></i>',
-        'm_name' => 'PLAY BRANCH RAW',
-        'm_desc' => '',
-        'm_parents' => array(10539,10589,4593,4592),
-    ),
-    4255 => array(
-        'm_icon' => '<i class="far fa-align-left blue"></i>',
-        'm_name' => 'PLAY BRANCH TEXT',
-        'm_desc' => '',
-        'm_parents' => array(10593,10589,4593,4592),
-    ),
-    4318 => array(
-        'm_icon' => '<i class="far fa-clock blue"></i>',
-        'm_name' => 'PLAY BRANCH TIME',
-        'm_desc' => '',
-        'm_parents' => array(10594,10589,4593,4592),
-    ),
-    4256 => array(
-        'm_icon' => '<i class="far fa-browser blue"></i>',
-        'm_name' => 'PLAY BRANCH URL',
-        'm_desc' => '',
-        'm_parents' => array(10539,10589,4593,4592,4537),
-    ),
-    4258 => array(
-        'm_icon' => '<i class="far fa-video blue"></i>',
-        'm_name' => 'PLAY BRANCH VIDEO',
-        'm_desc' => '',
-        'm_parents' => array(11080,11059,10627,10593,10589,6203,4593,4592,4537),
-    ),
-    4257 => array(
-        'm_icon' => '<i class="far fa-play-circle blue"></i>',
-        'm_name' => 'PLAY BRANCH WIDGET',
-        'm_desc' => '',
-        'm_parents' => array(10539,10589,4593,4592,4537,4506),
     ),
     10672 => array(
         'm_icon' => '<i class="far fa-trash-alt blue"></i>',
@@ -4316,6 +4250,72 @@ $config['en_all_10589'] = array(
         'm_name' => 'PLAYER NAME UPDATE',
         'm_desc' => '',
         'm_parents' => array(10593,4593,10589,10645),
+    ),
+    4259 => array(
+        'm_icon' => '<i class="far fa-volume-up blue"></i>',
+        'm_name' => 'PLAYERS LINKED AUDIO',
+        'm_desc' => '',
+        'm_parents' => array(11080,11059,10627,10593,10589,6203,4593,4592,4537),
+    ),
+    4261 => array(
+        'm_icon' => '<i class="far fa-file-pdf blue"></i>',
+        'm_name' => 'PLAYERS LINKED FILE',
+        'm_desc' => '',
+        'm_parents' => array(11080,11059,10627,10593,10589,6203,4593,4592,4537),
+    ),
+    10669 => array(
+        'm_icon' => '<i class="fab fa-font-awesome-alt blue"></i>',
+        'm_name' => 'PLAYERS LINKED ICON',
+        'm_desc' => '',
+        'm_parents' => array(10589,10539,4593,6198,4592),
+    ),
+    4260 => array(
+        'm_icon' => '<i class="far fa-image blue"></i>',
+        'm_name' => 'PLAYERS LINKED IMAGE',
+        'm_desc' => '',
+        'm_parents' => array(6198,11080,11059,10627,10593,10589,6203,4593,4592,4537),
+    ),
+    4319 => array(
+        'm_icon' => '<i class="far fa-sort-numeric-down blue"></i>',
+        'm_name' => 'PLAYERS LINKED INTEGER',
+        'm_desc' => '',
+        'm_parents' => array(10539,10589,4593,4592),
+    ),
+    4230 => array(
+        'm_icon' => '<i class="far fa-link rotate90 blue"></i>',
+        'm_name' => 'PLAYERS LINKED RAW',
+        'm_desc' => '',
+        'm_parents' => array(10539,10589,4593,4592),
+    ),
+    4255 => array(
+        'm_icon' => '<i class="far fa-align-left blue"></i>',
+        'm_name' => 'PLAYERS LINKED TEXT',
+        'm_desc' => '',
+        'm_parents' => array(10593,10589,4593,4592),
+    ),
+    4318 => array(
+        'm_icon' => '<i class="far fa-clock blue"></i>',
+        'm_name' => 'PLAYERS LINKED TIME',
+        'm_desc' => '',
+        'm_parents' => array(10594,10589,4593,4592),
+    ),
+    4256 => array(
+        'm_icon' => '<i class="far fa-browser blue"></i>',
+        'm_name' => 'PLAYERS LINKED URL',
+        'm_desc' => '',
+        'm_parents' => array(10539,10589,4593,4592,4537),
+    ),
+    4258 => array(
+        'm_icon' => '<i class="far fa-video blue"></i>',
+        'm_name' => 'PLAYERS LINKED VIDEO',
+        'm_desc' => '',
+        'm_parents' => array(11080,11059,10627,10593,10589,6203,4593,4592,4537),
+    ),
+    4257 => array(
+        'm_icon' => '<i class="far fa-play-circle blue"></i>',
+        'm_name' => 'PLAYERS LINKED WIDGET',
+        'm_desc' => '',
+        'm_parents' => array(10539,10589,4593,4592,4537,4506),
     ),
     10654 => array(
         'm_icon' => '<i class="far fa-sliders-h blue"></i>',
@@ -5303,7 +5303,7 @@ $config['en_all_7704'] = array(
 );
 
 //INTERACTION BLOG SUBSCRIPTION TYPES:
-$config['en_ids_7703'] = array(10671,4983,10573,4601,4231,10660,7545,10686,10663,10664,10661,10675,10662,10650,10648,10644,10651,4228,4229,6155,7485,7486,4559,7489,6997,6157,7487,6144);
+$config['en_ids_7703'] = array(10671,4983,10573,4601,4231,10660,7545,10686,10663,10664,10661,4229,4228,10675,10650,10662,10648,10644,10651,6155,7485,7486,4559,7489,6997,6157,7487,6144);
 $config['en_all_7703'] = array(
     10671 => array(
         'm_icon' => '<i class="far fa-trash-alt"></i>',
@@ -5371,23 +5371,35 @@ $config['en_all_7703'] = array(
         'm_desc' => '',
         'm_parents' => array(10638,7703,10539,10589,4593,10658),
     ),
+    4229 => array(
+        'm_icon' => '<i class="fas fa-question-circle yellow" aria-hidden="true"></i>',
+        'm_name' => 'BLOGS LINKED CONDITIONAL',
+        'm_desc' => '',
+        'm_parents' => array(10594,10589,7703,4527,6410,6283,4593,4486),
+    ),
+    4228 => array(
+        'm_icon' => '<i class="far fa-play yellow" aria-hidden="true"></i>',
+        'm_name' => 'BLOGS LINKED REQUIRED',
+        'm_desc' => '',
+        'm_parents' => array(10594,10589,7703,6410,4593,4486),
+    ),
     10675 => array(
         'm_icon' => '<i class="fas fa-sort"></i>',
         'm_name' => 'BLOG SORTED',
         'm_desc' => '',
         'm_parents' => array(7703,10539,10589,4593,10658,10638),
     ),
-    10662 => array(
-        'm_icon' => '<i class="fas fa-hashtag"></i>',
-        'm_name' => 'BLOG UPDATE BRANCH',
-        'm_desc' => '',
-        'm_parents' => array(11027,10638,7703,10539,4593,10658),
-    ),
     10650 => array(
         'm_icon' => '<i class="far fa-clock"></i>',
         'm_name' => 'BLOG UPDATE COMPLETION TIME',
         'm_desc' => '',
         'm_parents' => array(7703,10539,4593,10589,10638),
+    ),
+    10662 => array(
+        'm_icon' => '<i class="fas fa-hashtag" aria-hidden="true"></i>',
+        'm_name' => 'BLOG UPDATE LINK',
+        'm_desc' => '',
+        'm_parents' => array(11027,10638,7703,10539,4593,10658),
     ),
     10648 => array(
         'm_icon' => '<i class="far fa-sliders-h"></i>',
@@ -5406,18 +5418,6 @@ $config['en_all_7703'] = array(
         'm_name' => 'BLOG UPDATE TYPE',
         'm_desc' => '',
         'm_parents' => array(7703,10539,4593,10589,10638),
-    ),
-    4228 => array(
-        'm_icon' => '<i class="far fa-play yellow" aria-hidden="true"></i>',
-        'm_name' => 'FLOW AUTOMATIC',
-        'm_desc' => '',
-        'm_parents' => array(10594,10589,7703,6410,4593,4486),
-    ),
-    4229 => array(
-        'm_icon' => '<i class="fas fa-question-circle yellow" aria-hidden="true"></i>',
-        'm_name' => 'FLOW CONDITIONAL',
-        'm_desc' => '',
-        'm_parents' => array(10594,10589,7703,4527,6410,6283,4593,4486),
     ),
     6155 => array(
         'm_icon' => '<i class="far fa-bookmark ispink"></i>',
@@ -5498,7 +5498,7 @@ $config['en_all_7596'] = array(
     ),
 );
 
-//FLOW CONDITIONAL:
+//BLOGS LINKED CONDITIONAL:
 $config['en_ids_4229'] = array(10664,6140,6997);
 $config['en_all_4229'] = array(
     10664 => array(
@@ -7088,7 +7088,7 @@ $config['en_all_4600'] = array(
 );
 
 //READ TYPE:
-$config['en_ids_4593'] = array(10671,4983,10573,4250,4601,6226,4231,10660,10676,10678,10679,10677,7545,7610,10686,10663,10664,10661,10675,10681,10685,10662,10650,10648,10644,10651,10647,4993,4228,4229,7757,4259,4261,10669,4260,4319,4230,4255,4318,4256,4258,4257,10672,4251,10653,5001,10625,5943,4999,4998,5000,5981,11956,5982,5865,5003,10689,10646,10654,10657,10673,10656,10659,4235,6149,6969,4275,4283,6132,6415,6559,6560,6556,6578,7611,7563,10690,4266,4267,4282,5967,10683,7702,4570,6155,4577,4549,4551,4550,4557,4278,4279,4268,4460,4547,4287,4548,7561,7564,7560,7559,7558,7488,7485,7741,7486,4559,7489,7492,6140,6997,6157,7487,6143,6144,7578,6224,7562,7495,4554,4556,4555,6563,4552,4553,5007,4246,7504,4994);
+$config['en_ids_4593'] = array(10671,4983,10573,4250,4601,6226,4231,10660,10676,10678,10679,10677,7545,7610,10686,10663,10664,10661,4229,4228,10675,10681,10685,10650,10662,10648,10644,10651,10647,4993,7757,10672,4251,10653,5001,10625,5943,4999,4998,5000,5981,11956,5982,5865,5003,10689,10646,4259,4261,10669,4260,4319,4230,4255,4318,4256,4258,4257,10654,10657,10673,10656,10659,4235,6149,6969,4275,4283,6132,6415,6559,6560,6556,6578,7611,7563,10690,4266,4267,4282,5967,10683,7702,4570,6155,4577,4549,4551,4550,4557,4278,4279,4268,4460,4547,4287,4548,7561,7564,7560,7559,7558,7488,7485,7741,7486,4559,7489,7492,6140,6997,6157,7487,6143,6144,7578,6224,7562,7495,4554,4556,4555,6563,4552,4553,5007,4246,7504,4994);
 $config['en_all_4593'] = array(
     10671 => array(
         'm_icon' => '<i class="far fa-trash-alt"></i>',
@@ -7198,6 +7198,18 @@ $config['en_all_4593'] = array(
         'm_desc' => '',
         'm_parents' => array(10638,7703,10539,10589,4593,10658),
     ),
+    4229 => array(
+        'm_icon' => '<i class="fas fa-question-circle yellow" aria-hidden="true"></i>',
+        'm_name' => 'BLOGS LINKED CONDITIONAL',
+        'm_desc' => '',
+        'm_parents' => array(10594,10589,7703,4527,6410,6283,4593,4486),
+    ),
+    4228 => array(
+        'm_icon' => '<i class="far fa-play yellow" aria-hidden="true"></i>',
+        'm_name' => 'BLOGS LINKED REQUIRED',
+        'm_desc' => '',
+        'm_parents' => array(10594,10589,7703,6410,4593,4486),
+    ),
     10675 => array(
         'm_icon' => '<i class="fas fa-sort"></i>',
         'm_name' => 'BLOG SORTED',
@@ -7216,17 +7228,17 @@ $config['en_all_4593'] = array(
         'm_desc' => 'When users update their a step they made previous progress',
         'm_parents' => array(4755,10596,10589,4593,10638,10658),
     ),
-    10662 => array(
-        'm_icon' => '<i class="fas fa-hashtag"></i>',
-        'm_name' => 'BLOG UPDATE BRANCH',
-        'm_desc' => '',
-        'm_parents' => array(11027,10638,7703,10539,4593,10658),
-    ),
     10650 => array(
         'm_icon' => '<i class="far fa-clock"></i>',
         'm_name' => 'BLOG UPDATE COMPLETION TIME',
         'm_desc' => '',
         'm_parents' => array(7703,10539,4593,10589,10638),
+    ),
+    10662 => array(
+        'm_icon' => '<i class="fas fa-hashtag" aria-hidden="true"></i>',
+        'm_name' => 'BLOG UPDATE LINK',
+        'm_desc' => '',
+        'm_parents' => array(11027,10638,7703,10539,4593,10658),
     ),
     10648 => array(
         'm_icon' => '<i class="far fa-sliders-h"></i>',
@@ -7258,89 +7270,11 @@ $config['en_all_4593'] = array(
         'm_desc' => '',
         'm_parents' => array(10638,10596,10590,4593),
     ),
-    4228 => array(
-        'm_icon' => '<i class="far fa-play yellow" aria-hidden="true"></i>',
-        'm_name' => 'FLOW AUTOMATIC',
-        'm_desc' => '',
-        'm_parents' => array(10594,10589,7703,6410,4593,4486),
-    ),
-    4229 => array(
-        'm_icon' => '<i class="fas fa-question-circle yellow" aria-hidden="true"></i>',
-        'm_name' => 'FLOW CONDITIONAL',
-        'm_desc' => '',
-        'm_parents' => array(10594,10589,7703,4527,6410,6283,4593,4486),
-    ),
     7757 => array(
         'm_icon' => '<i class="far fa-bookmark ispink"></i>',
         'm_name' => 'MENCH REMOVED BOOKMARK',
         'm_desc' => '',
         'm_parents' => array(10539,10589,4755,4593,6150),
-    ),
-    4259 => array(
-        'm_icon' => '<i class="far fa-volume-up blue"></i>',
-        'm_name' => 'PLAY BRANCH AUDIO',
-        'm_desc' => '',
-        'm_parents' => array(11080,11059,10627,10593,10589,6203,4593,4592,4537),
-    ),
-    4261 => array(
-        'm_icon' => '<i class="far fa-file-pdf blue"></i>',
-        'm_name' => 'PLAY BRANCH FILE',
-        'm_desc' => '',
-        'm_parents' => array(11080,11059,10627,10593,10589,6203,4593,4592,4537),
-    ),
-    10669 => array(
-        'm_icon' => '<i class="fab fa-font-awesome-alt blue"></i>',
-        'm_name' => 'PLAY BRANCH ICON',
-        'm_desc' => '',
-        'm_parents' => array(10589,10539,4593,6198,4592),
-    ),
-    4260 => array(
-        'm_icon' => '<i class="far fa-image blue"></i>',
-        'm_name' => 'PLAY BRANCH IMAGE',
-        'm_desc' => '',
-        'm_parents' => array(6198,11080,11059,10627,10593,10589,6203,4593,4592,4537),
-    ),
-    4319 => array(
-        'm_icon' => '<i class="far fa-sort-numeric-down blue"></i>',
-        'm_name' => 'PLAY BRANCH INTEGER',
-        'm_desc' => '',
-        'm_parents' => array(10539,10589,4593,4592),
-    ),
-    4230 => array(
-        'm_icon' => '<i class="far fa-link rotate90 blue"></i>',
-        'm_name' => 'PLAY BRANCH RAW',
-        'm_desc' => '',
-        'm_parents' => array(10539,10589,4593,4592),
-    ),
-    4255 => array(
-        'm_icon' => '<i class="far fa-align-left blue"></i>',
-        'm_name' => 'PLAY BRANCH TEXT',
-        'm_desc' => '',
-        'm_parents' => array(10593,10589,4593,4592),
-    ),
-    4318 => array(
-        'm_icon' => '<i class="far fa-clock blue"></i>',
-        'm_name' => 'PLAY BRANCH TIME',
-        'm_desc' => '',
-        'm_parents' => array(10594,10589,4593,4592),
-    ),
-    4256 => array(
-        'm_icon' => '<i class="far fa-browser blue"></i>',
-        'm_name' => 'PLAY BRANCH URL',
-        'm_desc' => '',
-        'm_parents' => array(10539,10589,4593,4592,4537),
-    ),
-    4258 => array(
-        'm_icon' => '<i class="far fa-video blue"></i>',
-        'm_name' => 'PLAY BRANCH VIDEO',
-        'm_desc' => '',
-        'm_parents' => array(11080,11059,10627,10593,10589,6203,4593,4592,4537),
-    ),
-    4257 => array(
-        'm_icon' => '<i class="far fa-play-circle blue"></i>',
-        'm_name' => 'PLAY BRANCH WIDGET',
-        'm_desc' => '',
-        'm_parents' => array(10539,10589,4593,4592,4537,4506),
     ),
     10672 => array(
         'm_icon' => '<i class="far fa-trash-alt blue"></i>',
@@ -7437,6 +7371,72 @@ $config['en_all_4593'] = array(
         'm_name' => 'PLAYER NAME UPDATE',
         'm_desc' => '',
         'm_parents' => array(10593,4593,10589,10645),
+    ),
+    4259 => array(
+        'm_icon' => '<i class="far fa-volume-up blue"></i>',
+        'm_name' => 'PLAYERS LINKED AUDIO',
+        'm_desc' => '',
+        'm_parents' => array(11080,11059,10627,10593,10589,6203,4593,4592,4537),
+    ),
+    4261 => array(
+        'm_icon' => '<i class="far fa-file-pdf blue"></i>',
+        'm_name' => 'PLAYERS LINKED FILE',
+        'm_desc' => '',
+        'm_parents' => array(11080,11059,10627,10593,10589,6203,4593,4592,4537),
+    ),
+    10669 => array(
+        'm_icon' => '<i class="fab fa-font-awesome-alt blue"></i>',
+        'm_name' => 'PLAYERS LINKED ICON',
+        'm_desc' => '',
+        'm_parents' => array(10589,10539,4593,6198,4592),
+    ),
+    4260 => array(
+        'm_icon' => '<i class="far fa-image blue"></i>',
+        'm_name' => 'PLAYERS LINKED IMAGE',
+        'm_desc' => '',
+        'm_parents' => array(6198,11080,11059,10627,10593,10589,6203,4593,4592,4537),
+    ),
+    4319 => array(
+        'm_icon' => '<i class="far fa-sort-numeric-down blue"></i>',
+        'm_name' => 'PLAYERS LINKED INTEGER',
+        'm_desc' => '',
+        'm_parents' => array(10539,10589,4593,4592),
+    ),
+    4230 => array(
+        'm_icon' => '<i class="far fa-link rotate90 blue"></i>',
+        'm_name' => 'PLAYERS LINKED RAW',
+        'm_desc' => '',
+        'm_parents' => array(10539,10589,4593,4592),
+    ),
+    4255 => array(
+        'm_icon' => '<i class="far fa-align-left blue"></i>',
+        'm_name' => 'PLAYERS LINKED TEXT',
+        'm_desc' => '',
+        'm_parents' => array(10593,10589,4593,4592),
+    ),
+    4318 => array(
+        'm_icon' => '<i class="far fa-clock blue"></i>',
+        'm_name' => 'PLAYERS LINKED TIME',
+        'm_desc' => '',
+        'm_parents' => array(10594,10589,4593,4592),
+    ),
+    4256 => array(
+        'm_icon' => '<i class="far fa-browser blue"></i>',
+        'm_name' => 'PLAYERS LINKED URL',
+        'm_desc' => '',
+        'm_parents' => array(10539,10589,4593,4592,4537),
+    ),
+    4258 => array(
+        'm_icon' => '<i class="far fa-video blue"></i>',
+        'm_name' => 'PLAYERS LINKED VIDEO',
+        'm_desc' => '',
+        'm_parents' => array(11080,11059,10627,10593,10589,6203,4593,4592,4537),
+    ),
+    4257 => array(
+        'm_icon' => '<i class="far fa-play-circle blue"></i>',
+        'm_name' => 'PLAYERS LINKED WIDGET',
+        'm_desc' => '',
+        'm_parents' => array(10539,10589,4593,4592,4537,4506),
     ),
     10654 => array(
         'm_icon' => '<i class="far fa-sliders-h blue"></i>',
@@ -7866,7 +7866,7 @@ $config['en_all_4593'] = array(
     ),
 );
 
-//PLAY TREE BRANCHES:
+//PLAYERS LINKS TYPE:
 $config['en_ids_4592'] = array(4259,4261,10669,4260,4319,4230,4255,4318,4256,4258,4257);
 $config['en_all_4592'] = array(
     4259 => array(
@@ -7995,12 +7995,12 @@ $config['en_all_4485'] = array(
     ),
 );
 
-//BLOG TREE BRANCHES:
+//BLOGS LINKS TYPE:
 $config['en_ids_4486'] = array(4228,4229);
 $config['en_all_4486'] = array(
     4228 => array(
         'm_icon' => '<i class="far fa-play yellow" aria-hidden="true"></i>',
-        'm_name' => 'AUTOMATIC',
+        'm_name' => 'REQUIRED',
         'm_desc' => 'Blogs that follow another blog no matter what',
         'm_parents' => array(10594,10589,7703,6410,4593,4486),
     ),
@@ -8012,7 +8012,7 @@ $config['en_all_4486'] = array(
     ),
 );
 
-//PLAY BRANCH URL:
+//PLAYERS LINKS URLS:
 $config['en_ids_4537'] = array(4259,4261,4260,4256,4258,4257);
 $config['en_all_4537'] = array(
     4259 => array(
