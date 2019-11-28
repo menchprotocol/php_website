@@ -570,7 +570,7 @@ textarea.msgin{
     margin-left: 10px;
     margin-right:4px;
     margin-bottom: 5px;
-    margin-top: -5px;
+    display: block;
 }
 
 .list-group-item {
