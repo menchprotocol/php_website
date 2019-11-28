@@ -11,7 +11,7 @@ defined('BASEPATH') OR exit('No direct script access allowed');
 *
 */
 
-//Generated 2019-11-28 13:52:07 PST
+//Generated 2019-11-28 13:53:48 PST
 
 //BLOG NOTE ADD PLAYER:
 $config['en_ids_12019'] = array(12020,12021,12022);
@@ -5562,14 +5562,8 @@ $config['en_all_6193'] = array(
 );
 
 //BLOG FLOW:
-$config['en_ids_7585'] = array(12044,6677,6683,7637,6684,7231,6907,6914);
+$config['en_ids_7585'] = array(6677,6683,7637,6684,7231,6907,6914);
 $config['en_all_7585'] = array(
-    12044 => array(
-        'm_icon' => '<i class="far fa-sign-in" aria-hidden="true"></i>',
-        'm_name' => 'LOGIN & NEXT',
-        'm_desc' => 'A starting point where readers are asked to login to continue. This ensures that the reader starts saving the rest of the conversation history.',
-        'm_parents' => array(7585),
-    ),
     6677 => array(
         'm_icon' => '<i class="far fa-comment" aria-hidden="true"></i>',
         'm_name' => 'READ & NEXT',
