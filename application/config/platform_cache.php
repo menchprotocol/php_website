@@ -11,7 +11,7 @@ defined('BASEPATH') OR exit('No direct script access allowed');
 *
 */
 
-//Generated 2019-11-28 13:35:10 PST
+//Generated 2019-11-28 13:52:07 PST
 
 //BLOG NOTE ADD PLAYER:
 $config['en_ids_12019'] = array(12020,12021,12022);
@@ -2074,7 +2074,7 @@ $config['en_all_2738'] = array(
     4536 => array(
         'm_icon' => '<i class="fas fa-circle blue" aria-hidden="true"></i>',
         'm_name' => 'PLAY',
-        'm_desc' => 'a blockchain game by earning crypto coins as you read or blog. Customize your avatar, unlock superpowers and interact with players who share your intentions.',
+        'm_desc' => 'a blockchain game by earning crypto coins as you read or blog. Customize your avatar, unlock superpowers and interact with other players.',
         'm_parents' => array(2738,4463),
     ),
     6205 => array(
