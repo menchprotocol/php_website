@@ -636,10 +636,6 @@ input::-webkit-inner-spin-button {
 
 
 
-.blogs_sortable:hover, .is_level3_sortable:hover, .en-item:hover, .list-messages > div > div:hover {
-    background-color: #E5E5E5 !important;
-    border-color: transparent !important;
-}
 
 .is_level3_sortable:hover {
     background-color: #f4f5f7 !important;
@@ -1646,34 +1642,6 @@ footer {
     display: none;
 }
 
-.list-messages {
-    margin-bottom: 0;
-    padding: 0 0 7px 0;
-}
-
-.list-messages > div {
-    border: 0;
-    margin: 0;
-    padding: 0;
-}
-
-.list-messages > div > div {
-    max-width: 100%;
-    min-width: 280px;
-    border-radius: 5px;
-    border-bottom-right-radius: 1.3em;
-    border-top-right-radius: 1.3em;
-    padding: 5px 10px;
-    font-size: 16px;
-    margin: 0;
-    margin-bottom: 5px;
-    display: inline-block;
-    background-color: #FFF !important;
-}
-
-.list-messages .list-group-item {
-    background-color: transparent;
-}
 
 .tip_bubble {
     padding: 5px 0 5px 5px;
@@ -1741,10 +1709,6 @@ footer {
     top: unset !important;
 }
 
-.list-messages video {
-    border-top-left-radius: 3px;
-    border-top-right-radius: 0.9em;
-}
 
 
 .listerin {
@@ -1817,18 +1781,6 @@ footer {
 
 .new-in3-input input[type=text] {
     font-weight: 300;
-}
-
-.list-messages > div > div > textarea {
-    width: 100%;
-    border: 0;
-    background: transparent;
-    min-height: 90px;
-    line-height: 110%;
-    padding: 5px;
-    font-size: 16px;
-    margin: 10px 0 3px 0;
-    border-radius: 5px;
 }
 
 .below_list {
@@ -4223,10 +4175,6 @@ h4 .tip-badge {
 
     .nav-pills:not(.nav-pills-icons) > li > a {
         font-size: 0.8em;
-    }
-
-    .list-messages > div > div {
-        max-width: 100%;
     }
 
     .card .card-content {

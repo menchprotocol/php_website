@@ -249,7 +249,7 @@ function echo_in_note($ln)
 
         //Sort:
         if(in_array(4603, $en_all_4485[$ln['ln_type_entity_id']]['m_parents'])){
-            $ui .= '<span title="Drag up/down to sort" data-toggle="tooltip" data-placement="top"><i class="fas fa-sort yellow fa-special-sort '.( in_array(4603, $en_all_4485[$ln['ln_type_entity_id']]['m_parents']) ? 'message-sorting' : '' ).'"></i></span>';
+            $ui .= '<span title="Drag up/down to sort" data-toggle="tooltip" data-placement="top"><i class="fas fa-sort yellow fa-special-sort '.( in_array(4603, $en_all_4485[$ln['ln_type_entity_id']]['m_parents']) ? 'blog_note_sorting' : '' ).'"></i></span>';
         }
 
     $ui .= '</div>';
@@ -2238,14 +2238,6 @@ function echo_en($en, $is_parent = false)
 
 
 
-    //ICON
-    $ui .= '<span class="icon-block en_ui_icon_' . $en['en_id'] . ' en-icon en__icon_'.$en['en_id'].'" en-is-set="'.( strlen($en['en_icon']) > 0 ? 1 : 0 ).'">' . echo_en_icon($en['en_icon']) . '</span>';
-
-
-    //STATUS
-    $ui .= '<span class="icon-block en_status_entity_id_' . $en['en_id'] . ( $is_published ? ' hidden ' : '' ).'"><span data-toggle="tooltip" data-placement="right" title="'.$en_all_6177[$en['en_status_entity_id']]['m_name'].' @'.$en['en_status_entity_id'].': '.$en_all_6177[$en['en_status_entity_id']]['m_desc'].'">' . $en_all_6177[$en['en_status_entity_id']]['m_icon'] . '</span></span>';
-
-
 
     //LINK
     if ($ln_id > 0) {
@@ -2273,9 +2265,15 @@ function echo_en($en, $is_parent = false)
     }
 
 
-    //NAME
-    $ui .= '<b class="montserrat en_name_' . $en['en_id'] . '">' . $en['en_name'] . '</b>';
+    //PLAYER ICON
+    $ui .= '<span class="icon-block en_ui_icon_' . $en['en_id'] . ' en-icon en__icon_'.$en['en_id'].'" en-is-set="'.( strlen($en['en_icon']) > 0 ? 1 : 0 ).'">' . echo_en_icon($en['en_icon']) . '</span>';
 
+
+    //PLAYER STATUS
+    $ui .= '<span class="icon-block en_status_entity_id_' . $en['en_id'] . ( $is_published ? ' hidden ' : '' ).'"><span data-toggle="tooltip" data-placement="right" title="'.$en_all_6177[$en['en_status_entity_id']]['m_name'].' @'.$en['en_status_entity_id'].': '.$en_all_6177[$en['en_status_entity_id']]['m_desc'].'">' . $en_all_6177[$en['en_status_entity_id']]['m_icon'] . '</span></span>';
+
+    //PLAYER NAME
+    $ui .= '<b class="montserrat en_name_' . $en['en_id'] . '">' . $en['en_name'] . '</b>';
 
 
 
@@ -2293,8 +2291,6 @@ function echo_en($en, $is_parent = false)
         $ui .= '<span class="ln_content_val_' . $ln_id . ' hidden">' . $en['ln_content'] . '</span>';
 
     }
-
-
 
 
 

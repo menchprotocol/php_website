@@ -403,7 +403,7 @@ $en_all_11035 = $this->config->item('en_all_11035'); //MENCH PLAYER NAVIGATION
 
 
                 //SHOW LASTEST 100
-                $this_tab .= '<div id="list-messages" class="list-group">';
+                $this_tab .= '<div class="list-group">';
                 foreach ($this->READ_model->ln_fetch($blog_note_filters, array('in_child')) as $blog_note) {
                     $this_tab .= echo_en_messages($blog_note);
                 }

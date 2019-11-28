@@ -82,7 +82,7 @@ function in_message_load_type(ln_type_entity_id) {
     $('.msg_en_type_' + ln_type_entity_id).removeClass('hidden');
 
     //Load sorting:
-    in_message_sort_load();
+    in_notes_sort_load();
 
 }
 
@@ -209,7 +209,7 @@ $(document).ready(function () {
 });
 
 
-function in_message_sort_apply(ln_type_entity_id) {
+function in_notes_sort_apply(ln_type_entity_id) {
 
     var new_ln_orders = [];
     var sort_rank = 0;
@@ -225,7 +225,7 @@ function in_message_sort_apply(ln_type_entity_id) {
 
     //Update backend if any:
     if(sort_rank > 0){
-        $.post("/blog/in_message_sort", {new_ln_orders: new_ln_orders}, function (data) {
+        $.post("/blog/in_notes_sort", {new_ln_orders: new_ln_orders}, function (data) {
             //Only show message if there was an error:
             if (!data.status) {
                 //Show error:
@@ -235,17 +235,17 @@ function in_message_sort_apply(ln_type_entity_id) {
     }
 }
 
-function in_message_sort_load() {
+function in_notes_sort_load() {
 
     var inner_content = null;
 
     var sort_msg = Sortable.create( document.getElementById("message-sorting") , {
         animation: 150, // ms, animation speed moving items when sorting, `0` � without animation
-        handle: ".message-sorting", // Restricts sort start click/touch to the specified element
+        handle: ".blog_note_sorting", // Restricts sort start click/touch to the specified element
         draggable: ".blogs_sortable", // Specifies which items inside the element should be sortable
         onUpdate: function (evt/**Event*/) {
             //Apply new sort:
-            in_message_sort_apply(focus_ln_type_entity_id);
+            in_notes_sort_apply(focus_ln_type_entity_id);
         },
         //The next two functions resolve a Bug with sorting iframes like YouTube embeds while also making the UI more informative
         onChoose: function (evt/**Event*/) {
@@ -344,7 +344,7 @@ function in_note_modify_save(ln_id, initial_ln_type_entity_id) {
                         $("#ul-nav-" + ln_id).remove();
 
                         //Adjust sort for this message type:
-                        in_message_sort_apply(focus_ln_type_entity_id);
+                        in_notes_sort_apply(focus_ln_type_entity_id);
 
                     }, 610);
                 }, 610);

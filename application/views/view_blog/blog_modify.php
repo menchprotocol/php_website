@@ -168,6 +168,8 @@ foreach ($this->config->item('en_all_11021') as $en_id => $m){
 
             $counter = $item_counters[0]['totals'];
 
+            $this_tab .= '<div>Under development</div>';
+
         } elseif(in_array($en_id2, $this->config->item('en_ids_4485'))){
 
             //BLOG NOTE
@@ -183,9 +185,12 @@ foreach ($this->config->item('en_all_11021') as $en_id => $m){
                 $default_active = true; //BLOG MESSAGES
             }
 
+
+
+
             //Show no-Message notifications for each message type:
-            $this_tab .= '<div id="intent_messages'.$in['in_id'].'">';
-            $this_tab .= '<div id="message-sorting" class="list-group list-messages">';
+            $this_tab .= '<div id="message-sorting" class="list-group">';
+
             if ($counter) {
                 foreach ($blog_notes as $in_note) {
                     $this_tab .= echo_in_note($in_note);
@@ -193,15 +198,18 @@ foreach ($this->config->item('en_all_11021') as $en_id => $m){
             } else {
                 $this_tab .= '<div class="alert alert-warning no-messages' . $in['in_id'] . '_' . $en_id2 . ' all_msg msg_en_type_' . $en_id2 . '"><i class="fas fa-exclamation-triangle"></i> No ' . $en_all_4485[$en_id2]['m_name'] . ' added yet</div>';
             }
+
+            //ADD NOTE:
+
+
+
             $this_tab .= '</div>';
 
 
-            $this_tab .= '</div>';
 
 
-
-            //ADD NEW:
-            $this_tab .= '<div class="list-group list-messages">';
+            //ADD NEW NOTE:
+            $this_tab .= '<div class="list-group">';
             $this_tab .= '<div class="list-group-item">';
 
             $this_tab .= '<div class="add-msg add-msg' . $in['in_id'] . '">';

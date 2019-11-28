@@ -1045,7 +1045,7 @@ class Blog extends CI_Controller {
 
 
 
-    function in_message_sort()
+    function in_notes_sort()
     {
 
         //Authenticate Trainer:
