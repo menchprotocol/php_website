@@ -11,7 +11,7 @@ defined('BASEPATH') OR exit('No direct script access allowed');
 *
 */
 
-//Generated 2019-11-28 10:56:22 PST
+//Generated 2019-11-28 11:21:28 PST
 
 //BLOG NOTE ADD PLAYER:
 $config['en_ids_12019'] = array(12020,12021,12022);
@@ -2074,19 +2074,19 @@ $config['en_all_2738'] = array(
     4536 => array(
         'm_icon' => '<i class="fas fa-circle blue" aria-hidden="true"></i>',
         'm_name' => 'PLAY',
-        'm_desc' => 'by simply creating your account. Earn coins as you read and blog. Choose your avatar and unlock superpowers as you earn more coins.',
+        'm_desc' => 'by earning MENCH CRYPTO COINS per each word you read or blog. Customize your avatar and unlock superpowers as you advance.',
         'm_parents' => array(2738,4463),
     ),
     6205 => array(
         'm_icon' => '<i class="fas fa-circle ispink" aria-hidden="true"></i>',
         'm_name' => 'READ',
-        'm_desc' => 'microblogs interactively and choose your unique reading path. Earn 1 red coin for each word you read over the web or Messenger.',
+        'm_desc' => 'microblogs interactively and choose your unique reading path. Read over the web or Messenger and earn 1x RED COIN per word.',
         'm_parents' => array(2738,4463),
     ),
     4535 => array(
         'm_icon' => '<i class="fas fa-circle yellow" aria-hidden="true"></i>',
         'm_name' => 'BLOG',
-        'm_desc' => 'by saving, organizing and publishing ideas across all channels. Collaboratively link ideas to each other. Earn 1 gold coin for each word you blog.',
+        'm_desc' => 'by saving, collaboratively organizing and publishing ideas using a simple web app. Earn 1 GOLD COIN per each word you write.',
         'm_parents' => array(2738,4463),
     ),
 );
