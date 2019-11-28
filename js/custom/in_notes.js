@@ -6,27 +6,28 @@
 * */
 
 
-function in_message_add_name() {
-    $('#ln_content' + in_id).insertAtCaret('/firstname ');
-    in_new_note_count();
+function in_message_add_name(en2_id) {
+    $('#ln_content' + en2_id).insertAtCaret('/firstname ');
+    in_new_note_count(en2_id);
 }
 
 
 //Count text area characters:
-function in_new_note_count() {
+function in_new_note_count(en2_id) {
+
     //Update count:
-    var len = $('#ln_content' + in_id).val().length;
+    var len = $('#ln_content' + en2_id).val().length;
     if (len > js_en_all_6404[11073]['m_desc']) {
-        $('#charNum' + in_id).addClass('overload').text(len);
+        $('#charNum' + en2_id).addClass('overload').text(len);
     } else {
-        $('#charNum' + in_id).removeClass('overload').text(len);
+        $('#charNum' + en2_id).removeClass('overload').text(len);
     }
 
     //Only show counter if getting close to limit:
     if(len > ( js_en_all_6404[11073]['m_desc'] * 0.80 )){
-        $('#blogNoteCount' + ln_id).removeClass('hidden');
+        $('#blogNoteCount' + en2_id).removeClass('hidden');
     } else {
-        $('#blogNoteCount' + ln_id).addClass('hidden');
+        $('#blogNoteCount' + en2_id).addClass('hidden');
     }
 }
 
@@ -488,7 +489,7 @@ function in_message_from_attachment(droppedFiles, uploadType) {
     }
 }
 
-function in_note_add() {
+function in_note_add(en2_id) {
 
     if ($('#ln_content' + in_id).val().length == 0) {
         alert('ERROR: Enter a message');
@@ -496,13 +497,13 @@ function in_note_add() {
     }
 
     //Lock message:
-    in_message_form_lock();
+    in_message_form_lock(en2_id);
 
     //Update backend:
     $.post("/blog/in_new_message_from_text", {
 
         in_id: in_id, //Synonymous
-        ln_content: $('#ln_content' + in_id).val(),
+        ln_content: $('#ln_content' + en2_id).val(),
         focus_ln_type_entity_id: focus_ln_type_entity_id,
 
     }, function (data) {
@@ -512,7 +513,7 @@ function in_note_add() {
 
             //Reset input field:
             $("#ln_content" + in_id).val("");
-            in_new_note_count();
+            in_new_note_count(en2_id);
 
         }
 
