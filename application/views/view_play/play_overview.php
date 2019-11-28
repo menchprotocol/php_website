@@ -17,8 +17,13 @@
     <div class="row">
         <div class="col-lg-12">
             <?php
+
+            //COUNT PLAYERS:
+            $q = $this->db->query('SELECT COUNT(ln_id) FROM (SELECT DISTINCT ln_creator_entity_id FROM table_links) AS engaged_players;');
+            $engaged_players = $q->result_array();
+
             echo '<br />';
-            echo '<h2 class="inline montserrat blue"><span class="icon-block-lg en-icon"><i class="far fa-users blue"></i></span> PLAYERS</h2>';
+            echo '<h2 class="inline montserrat blue"><span class="icon-block-lg en-icon"><i class="far fa-users blue"></i></span> '.echo_number($engaged_players[0]['engaged_players']).' PLAYERS</h2>';
             echo '<table id="leaderboard" class="table table-sm table-striped">';
             echo '<tbody><tr><td colspan="3"><span class="icon-block"><i class="far fa-yin-yang fa-spin"></i></span></td></tr></tbody>';
             echo '</table>';
