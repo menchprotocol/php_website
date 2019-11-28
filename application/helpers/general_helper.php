@@ -647,6 +647,18 @@ function superpower_active($superpower_en_id, $boolean_only = false){
     }
 }
 
+function extract_icon_color($en_icon){
+    if(substr_count($en_icon, 'blue')==1){
+        return ' blue ';
+    } elseif(substr_count($en_icon, 'yellow')==1){
+        return ' yellow ';
+    } elseif(substr_count($en_icon, 'ispink')==1){
+        return ' ispink ';
+    } else {
+        return '';
+    }
+}
+
 function unique_players(){
     //COUNT PLAYERS:
     $CI =& get_instance();
