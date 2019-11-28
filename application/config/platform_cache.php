@@ -11,7 +11,7 @@ defined('BASEPATH') OR exit('No direct script access allowed');
 *
 */
 
-//Generated 2019-11-28 12:26:15 PST
+//Generated 2019-11-28 13:35:10 PST
 
 //BLOG NOTE ADD PLAYER:
 $config['en_ids_12019'] = array(12020,12021,12022);
@@ -1612,7 +1612,7 @@ $config['en_all_6404'] = array(
     11060 => array(
         'm_icon' => '',
         'm_name' => 'MENCH PLATFORM VERSION',
-        'm_desc' => '1.01492',
+        'm_desc' => '1.0145',
         'm_parents' => array(6404),
     ),
     11067 => array(
@@ -1798,7 +1798,7 @@ $config['en_all_11035'] = array(
         'm_parents' => array(11993,11035,3323),
     ),
     7540 => array(
-        'm_icon' => '<i class="fas fa-balance-scale" aria-hidden="true"></i>',
+        'm_icon' => '<i class="fas fa-university" aria-hidden="true"></i>',
         'm_name' => 'TERMS OF SERVICE',
         'm_desc' => '',
         'm_parents' => array(11035),
