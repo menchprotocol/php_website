@@ -30,13 +30,67 @@ h1, h2, h3, ul, p { padding: 0 5px; }
     max-width:767px;
 }
 .ln_content { overflow: hidden; width: 100%; }
-.table-sm td, .table-sm th {
-    padding: .3rem 0;
-}
-
+.table-sm td, .table-sm th { padding: .3rem 0; }
 .table {
     width: 100%;
     margin-bottom: 0;
+}
+
+table td { border: none !important; }
+
+h1 {
+    font-family: 'Montserrat', sans-serif;
+    font-size: 1.9em;
+    margin-top:34px;
+    margin-bottom: 21px;
+}
+
+h2 {
+    font-family: 'Montserrat', sans-serif;
+    font-size: 1.2em;
+    color:#070707 !important;
+    margin-top:34px;
+    margin-bottom: 21px;
+}
+
+h4 a{
+    text-decoration:none;
+}
+
+h4.thin{
+    font-family: 'Montserrat', sans-serif;
+    padding:15px 0 0;
+    font-size: 0.7em;
+    color:#070707;
+}
+
+h4.thin b{
+    background-color: #f4f5f7;
+    padding:3px;
+}
+
+h4.thin span{
+    display: block;
+    width: 100%;
+    border-bottom:1px solid #070707;
+    padding: 0;
+    margin: 0;
+    line-height: 100%;
+    margin-top: -23px;
+}
+
+a {
+    color: #070707;
+    text-decoration: underline;
+}
+
+a:hover {
+    color: #070707;
+    text-decoration: none;
+}
+
+li a {
+    text-decoration: none;
 }
 
 /* FONTS */
@@ -84,62 +138,7 @@ h1, h2, h3, ul, p { padding: 0 5px; }
     border-radius: 0 !important;
 }
 
-table td { border: none !important; }
 
-h1 {
-    font-family: 'Montserrat', sans-serif;
-    font-size: 1.9em;
-    margin-top:34px;
-    margin-bottom: 21px;
-}
-
-h2 {
-    font-family: 'Montserrat', sans-serif;
-    padding:5px 0 0;
-    font-size: 1.2em;
-    color:#070707 !important;
-    margin-top: 34px;
-}
-
-h4 a{
-    text-decoration:none;
-}
-
-h4.thin{
-    font-family: 'Montserrat', sans-serif;
-    padding:15px 0 0;
-    font-size: 0.7em;
-    color:#070707;
-}
-
-h4.thin b{
-    background-color: #f4f5f7;
-    padding:3px;
-}
-
-h4.thin span{
-    display: block;
-    width: 100%;
-    border-bottom:1px solid #070707;
-    padding: 0;
-    margin: 0;
-    line-height: 100%;
-    margin-top: -23px;
-}
-
-a {
-    color: #070707;
-    text-decoration: underline;
-}
-
-a:hover {
-    color: #070707;
-    text-decoration: none;
-}
-
-li a {
-    text-decoration: none;
-}
 
 /* FUNCTIONAL */
 .inline-block{ display: inline-block !important; }
@@ -800,5 +799,5 @@ textarea.msgin{
     }
     .icon-block-xlg{ min-width:48px; }
     .list-group-item { padding:2px 0; }
-    .mench-logo{ margin-left:10px; font-size:1.4em; }
+    .mench-logo{ margin-left:10px; }
 }
