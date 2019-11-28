@@ -19,7 +19,7 @@
             <?php
 
             //COUNT PLAYERS:
-            $q = $this->db->query('SELECT COUNT(ln_id) FROM (SELECT DISTINCT ln_creator_entity_id FROM table_links) AS engaged_players;');
+            $q = $this->db->query('SELECT COUNT(*) FROM (SELECT DISTINCT ln_creator_entity_id FROM table_links) AS engaged_players;');
             $engaged_players = $q->result_array();
 
             echo '<br />';
