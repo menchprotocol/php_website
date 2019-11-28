@@ -417,8 +417,7 @@ textarea.msgin{
     color: #070707;
 }
 .i_content {
-    padding: 0px 22px 39px 1px;
-    min-height: 97px;
+    padding: 0px 22px 10px 1px;
 }
 
 .note-edit>span{
@@ -777,7 +776,7 @@ textarea.msgin{
 /* RESPONSIVE */
 @media (max-width:767px) {
     body {
-        font-size:1em;
+        font-size:1.15em;
     }
     h4 span{
         margin-top: -18px;
@@ -800,5 +799,5 @@ textarea.msgin{
     }
     .icon-block-xlg{ min-width:48px; }
     .list-group-item { padding:2px 0; }
-    .mench-logo{ margin-left:9px; margin-top: -8px; }
+    .mench-logo{ margin-left:9px; }
 }
