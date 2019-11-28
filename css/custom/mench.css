@@ -47,7 +47,7 @@ h1 {
 
 h2 {
     font-family: 'Montserrat', sans-serif;
-    font-size: 1.2em;
+    font-size: 1.4em;
     color:#070707 !important;
     margin-top:34px;
     margin-bottom: 21px;
@@ -540,7 +540,7 @@ textarea.msgin{
     text-align: center;
     margin-left:5px;
     color:#070707;
-    padding: 12px 5px 8px;
+    padding: 9px 5px 8px;
 }
 
 .mench-navigation .block-link .fas, .block-link .fal, .block-link .far{
@@ -799,5 +799,5 @@ textarea.msgin{
     }
     .icon-block-xlg{ min-width:48px; }
     .list-group-item { padding:2px 0; }
-    .mench-logo{ margin-left:10px; }
+    .mench-logo{ margin-left:7px; }
 }
