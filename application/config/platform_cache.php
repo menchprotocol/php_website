@@ -11,7 +11,7 @@ defined('BASEPATH') OR exit('No direct script access allowed');
 *
 */
 
-//Generated 2019-11-28 12:12:56 PST
+//Generated 2019-11-28 12:26:15 PST
 
 //BLOG NOTE ADD PLAYER:
 $config['en_ids_12019'] = array(12020,12021,12022);
@@ -1612,7 +1612,7 @@ $config['en_all_6404'] = array(
     11060 => array(
         'm_icon' => '',
         'm_name' => 'MENCH PLATFORM VERSION',
-        'm_desc' => '1.0142',
+        'm_desc' => '1.0145',
         'm_parents' => array(6404),
     ),
     11067 => array(
@@ -2074,19 +2074,19 @@ $config['en_all_2738'] = array(
     4536 => array(
         'm_icon' => '<i class="fas fa-circle blue" aria-hidden="true"></i>',
         'm_name' => 'PLAY',
-        'm_desc' => 'a blockchain game by earning coins as you read or blog. Customize your avatar, unlock superpowers and interact with players who share your intentions.',
+        'm_desc' => 'a blockchain game by earning crypto coins as you read or blog. Customize your avatar, unlock superpowers and interact with players who share your intentions.',
         'm_parents' => array(2738,4463),
     ),
     6205 => array(
         'm_icon' => '<i class="fas fa-circle ispink" aria-hidden="true"></i>',
         'm_name' => 'READ',
-        'm_desc' => 'microblogs by interactively choosing your unique reading path. Earn 1x RED COIN per each word you read over the web or Messenger.',
+        'm_desc' => 'microblogs interactively by choosing your unique reading path. Earn 1x RED COIN for each word you read over the web or Facebook Messenger.',
         'm_parents' => array(2738,4463),
     ),
     4535 => array(
         'm_icon' => '<i class="fas fa-circle yellow" aria-hidden="true"></i>',
         'm_name' => 'BLOG',
-        'm_desc' => 'your ideas by saving, organizing and publishing them collaboratively. Earn 1x GOLD COIN for each word you blog and earn monthly revenues.',
+        'm_desc' => 'ideas collaboratively by saving, organizing and publishing them on MENCH. Earn 1x GOLD COIN for each word you blog and earn monthly revenues.',
         'm_parents' => array(2738,4463),
     ),
 );
