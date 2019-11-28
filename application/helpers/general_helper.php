@@ -647,6 +647,14 @@ function superpower_active($superpower_en_id, $boolean_only = false){
     }
 }
 
+function unique_players(){
+    //COUNT PLAYERS:
+    $CI =& get_instance();
+    $q = $CI->db->query('SELECT COUNT(*) FROM (SELECT DISTINCT ln_creator_entity_id FROM table_links) AS temp;');
+    $engaged_players = $q->result_array();
+    return $engaged_players[0]['count'];
+}
+
 
 function superpower_assigned($superpower_en_id = null, $force_redirect = 0)
 {

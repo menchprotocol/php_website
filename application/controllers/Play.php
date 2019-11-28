@@ -792,10 +792,6 @@ fragment PostListingItemSidebar_post on Post {
 
 
 
-            //Actually count PLAYERS:
-            $q = $this->db->query('SELECT COUNT(*) FROM (SELECT DISTINCT ln_creator_entity_id FROM table_links) AS temp;');
-            $engaged_players = $q->result_array();
-
             //COUNT WORDS BLOG/READ:
             $words_blog = $this->READ_model->ln_fetch(array(
                 'ln_type_entity_id IN (' . join(',', $this->config->item('en_ids_10589')) . ')' => null, //BLOGGERS
@@ -811,7 +807,7 @@ fragment PostListingItemSidebar_post on Post {
             //Add total counts row:
             echo '<tr class="see_more_who hidden">';
             foreach (array(
-                         4536 => echo_number($engaged_players[0]['count']), //PLAY
+                         4536 => echo_number(unique_players()), //PLAY
                          6205 => echo_number(abs($words_read[0]['total_words'])), //READ
                          4535 => echo_number($words_blog[0]['total_words']), //BLOG
                      ) as $en_id => $current_count){

@@ -119,7 +119,7 @@ if(count($current_sign_in_attempt) == 0){
                 <a href="javascript:void(0)" onclick="goto_step(1)" class="btn btn-play transparent pass btn-raised btn-round <?= ( $referrer_in_id > 0 ? '' : ' hidden ' ) ?>"><i class="fas fa-arrow-left"></i></a>
                 <a href="javascript:void(0)" onclick="search_email()" id="email_check_next" class="btn btn-play pass btn-raised btn-round"><i class="fas fa-arrow-right"></i></a>
             </span>
-            <span id="messenger_sign" style="padding-left:5px; font-size:1em !important;" class="<?= ( $referrer_in_id > 0 ? ' hidden ' : '' ) ?>">OR <a href="javascript:void(0)" onclick="confirm_sign_on_messenger()" class="underdot" style="font-size:1em !important;">USE MESSENGER <i class="fab fa-facebook-messenger blue"></i></a></span>
+            <span id="messenger_sign" style="padding-left:5px; font-size:1em !important;" class="<?= ( $referrer_in_id > 0 ? ' hidden ' : '' ) ?>">OR <a href="javascript:void(0)" onclick="confirm_sign_on_messenger()" class="underdot" style="font-size:1em !important;">USE MESSENGER</a> <i class="fab fa-facebook-messenger blue"></i></span>
         </div>
 
 
@@ -160,7 +160,7 @@ if(count($current_sign_in_attempt) == 0){
                 <a href="javascript:void(0)" onclick="singin_check_password()" id="password_check_next" class="btn btn-play pass btn-raised btn-round"><i class="fas fa-arrow-right"></i></a>
             </span>
 
-            <span style="padding-left:5px; font-size:0.9em !important;">OR <a href="javascript:void(0)" onclick="magicemail()" class="underdot" style="font-size:1em !important;">MAGIC LINK <i class="fas fa-envelope-open blue"></i></a></span>
+            <span style="padding-left:5px; font-size:0.9em !important;">OR <a href="javascript:void(0)" onclick="magicemail()" class="underdot" style="font-size:1em !important;">MAGIC LINK</a> <i class="fas fa-envelope-open blue"></i></span>
 
         </div>
 
