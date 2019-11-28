@@ -570,6 +570,7 @@ textarea.msgin{
     margin-left: 10px;
     margin-right:4px;
     margin-bottom: 5px;
+    margin-top: -5px;
 }
 
 .list-group-item {
@@ -799,5 +800,5 @@ textarea.msgin{
     }
     .icon-block-xlg{ min-width:48px; }
     .list-group-item { padding:2px 0; }
-    .mench-logo{ margin-left:9px; }
+    .mench-logo{ margin-left:9px; margin-top: -8px; }
 }
