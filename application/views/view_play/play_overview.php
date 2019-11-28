@@ -3,13 +3,14 @@
 
     <div class="row">
         <div class="col-lg-12">
-            <ul class="none-list">
-                <?php
-                foreach($this->config->item('en_all_2738') as $en_id => $m){
-                    echo '<li><b class="montserrat '.strtolower($m['m_name']).'">'.$m['m_icon'].' '.$m['m_name'].'</b> '.$m['m_desc'].'</li>';
-                }
-                ?>
-            </ul>
+            <?php
+            foreach($this->config->item('en_all_2738') as $en_id => $m){
+                echo '<h1 class="inline montserrat"><span class="icon-block-lg en-icon">'.echo_en_icon($m['m_icon']).'</span> '.$m['m_name'].'</h1>';
+                echo '<p class="inline">'.$m['m_desc'].'</p>';
+                echo '<br />';
+                //echo '<li><b class="montserrat '.strtolower($m['m_name']).'">'.$m['m_icon'].' '.$m['m_name'].'</b> '.$m['m_desc'].'</li>';
+            }
+            ?>
         </div>
     </div>
 
