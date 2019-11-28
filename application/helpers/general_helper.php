@@ -648,7 +648,7 @@ function superpower_active($superpower_en_id, $boolean_only = false){
 }
 
 function extract_icon_color($en_icon){
-    if(substr_count($en_icon, 'blue')==1){
+    if(!strlen($en_icon) || substr_count($en_icon, 'blue')==1){
         return ' blue ';
     } elseif(substr_count($en_icon, 'yellow')==1){
         return ' yellow ';
