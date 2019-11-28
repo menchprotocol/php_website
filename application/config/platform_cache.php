@@ -11,7 +11,7 @@ defined('BASEPATH') OR exit('No direct script access allowed');
 *
 */
 
-//Generated 2019-11-28 10:15:46 PST
+//Generated 2019-11-28 10:32:31 PST
 
 //BLOG NOTE ADD PLAYER:
 $config['en_ids_12019'] = array(12020,12021,12022);
@@ -1933,7 +1933,7 @@ $config['en_all_10957'] = array(
         'm_icon' => '<i class="far fa-deer-rudolph yellow" aria-hidden="true"></i>',
         'm_name' => 'RUDOLPH',
         'm_desc' => 'THE POWER TO BLOG PROFESSIONALLY',
-        'm_parents' => array(10957),
+        'm_parents' => array(10939,10957),
     ),
     10964 => array(
         'm_icon' => '<i class="far fa-elephant ispink" aria-hidden="true"></i>',
@@ -1951,7 +1951,7 @@ $config['en_all_10957'] = array(
         'm_icon' => '<i class="far fa-bat blue" aria-hidden="true"></i>',
         'm_name' => 'BATMAN',
         'm_desc' => 'THE POWER TO PLAY PROFESSIONALLY',
-        'm_parents' => array(10957),
+        'm_parents' => array(10983,10957),
     ),
 );
 
@@ -2808,7 +2808,7 @@ $config['en_all_4527'] = array(
         'm_parents' => array(4527,10869),
     ),
     10957 => array(
-        'm_icon' => '<i class="fas fa-alicorn blue"></i>',
+        'm_icon' => '<i class="fas fa-magic blue" aria-hidden="true"></i>',
         'm_name' => 'SUPERPOWERS',
         'm_desc' => '',
         'm_parents' => array(5007,11008,4527),
