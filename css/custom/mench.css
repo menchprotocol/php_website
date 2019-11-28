@@ -420,6 +420,7 @@ textarea.msgin{
 }
 .i_content {
     padding: 0px 20px 39px 1px;
+    min-height: 97px;
 }
 
 .note-edit>span{
