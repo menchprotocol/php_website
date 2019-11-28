@@ -51,6 +51,7 @@ foreach ($this->config->item('en_all_11021') as $en_id => $m){
 
     if($col_num==1){
 
+
         echo '<h1>'.echo_in_outcome($in['in_outcome']).'</h1>';
 
     } else {

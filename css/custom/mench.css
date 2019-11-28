@@ -314,10 +314,9 @@ img.no-radius {
 .btn-main .far, .btn-main .fas, .btn-main .fal { font-size: 1.5em; margin-top:3px; }
 
 .form-control, .border {
-    border-color:#f4f5f7 !important;
-    border-radius: 1px;
+    border-radius:0;
+    border:0 !important;
 }
-
 
 
 .nav-tabs, .dropdown-menu {
@@ -578,7 +577,7 @@ textarea.msgin{
     border: 0;
     background-color:#f4f5f7;
     border-radius: 0 !important;
-    padding: 3px 1px;
+    padding:5px 0;
 }
 
 
@@ -800,5 +799,6 @@ textarea.msgin{
         max-width: none;
     }
     .icon-block-xlg{ min-width:48px; }
+    .list-group-item { padding:2px 0; }
 
 }
