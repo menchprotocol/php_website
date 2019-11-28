@@ -19,12 +19,11 @@
             <?php
 
             //COUNT PLAYERS:
-            $q = $this->db->query('SELECT COUNT(*) FROM (SELECT DISTINCT ln_creator_entity_id FROM table_links) AS engaged_players;');
+            $q = $this->db->query('SELECT COUNT(*) FROM (SELECT DISTINCT ln_creator_entity_id FROM table_links) AS temp;');
             $engaged_players = $q->result_array();
-            print_r($engaged_players);
 
             echo '<br />';
-            echo '<h2 class="inline montserrat blue"><span class="icon-block-lg en-icon"><i class="far fa-users blue"></i></span> '.echo_number(1).' PLAYERS</h2>';
+            echo '<h2 class="inline montserrat blue"><span class="icon-block-lg en-icon"><i class="far fa-users blue"></i></span> '.echo_number($engaged_players[0]['count']).' PLAYERS</h2>';
             echo '<table id="leaderboard" class="table table-sm table-striped">';
             echo '<tbody><tr><td colspan="3"><span class="icon-block"><i class="far fa-yin-yang fa-spin"></i></span></td></tr></tbody>';
             echo '</table>';
