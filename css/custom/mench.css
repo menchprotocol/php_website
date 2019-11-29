@@ -281,7 +281,16 @@ img.no-radius {
 .isgrey, .isgrey a, .lightgrey      { color:#f4f5f7 !important; }
 .ismatt, .ismatt a                  { color:#070707 !important; }
 
-
+.mixed-a{
+    text-decoration:none;
+    display: block;
+    padding-top: 5px;
+    padding-bottom: 5px;
+    margin-bottom: 5px;
+}
+.mixed-a:hover{
+    background-color: #FFFFFF;
+}
 .overload {
     color: #FC1B44;
     font-weight: bold;

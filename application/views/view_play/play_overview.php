@@ -11,11 +11,10 @@
             );
             echo '<br />';
             foreach($this->config->item('en_all_2738') as $en_id => $m){
-                echo '<a href="'.$navigation[$en_id].'" style="text-decoration:none;">';
+                echo '<a href="'.$navigation[$en_id].'" class="mixed-a">';
                 echo '<h2 class="inline montserrat color'.$en_id.'"><span class="icon-block-lg en-icon">'.echo_en_icon($m['m_icon']).'</span> '.$m['m_name'].'</h2>';
-                echo '<p class="inline"> '.$m['m_desc'].'<span class="inline-block"><i class="fas fa-arrow-right color'.$en_id.'"></i></span></p>';
+                echo '<p class="inline"> '.$m['m_desc'].' <span class="inline-block"><i class="fas fa-arrow-right color'.$en_id.'"></i></span></p>';
                 echo '</a>';
-                echo '<br />';
             }
             ?>
         </div>
