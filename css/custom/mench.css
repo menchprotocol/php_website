@@ -45,7 +45,7 @@ h1 {
     margin-bottom: 21px;
     margin-left: 0;
     padding-left: 0;
-    display: block;
+    display: inline-block;
 }
 
 h2 {
