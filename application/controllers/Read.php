@@ -376,7 +376,7 @@ class Read extends CI_Controller
 
         //Display filter notes:
         if($total_items_loaded > 0){
-            $message .= '<p style="margin:10px 0; font-weight: bold;"><span class="icon-block"><i class="fas fa-file-search"></i></span>'.( $has_more_links && $query_offset==0  ? 'FIRST ' : ($query_offset+1).' - ' ) . ( $total_items_loaded >= ($query_offset+1) ?  $total_items_loaded . ' OF ' : '' ) . number_format($lns_count[0]['total_count'] , 0) .' READS TOTALLING '.number_format($lns_count[0]['total_words'], 2).' WORDS:</p>';
+            $message .= '<b class="montserrat" style="margin:10px 0;"><span class="icon-block"><i class="fas fa-file-search"></i></span>'.( $has_more_links && $query_offset==0  ? 'FIRST ' : ($query_offset+1).' - ' ) . ( $total_items_loaded >= ($query_offset+1) ?  $total_items_loaded . ' OF ' : '' ) . number_format($lns_count[0]['total_count'] , 0) .' READS TOTALLING '.number_format($lns_count[0]['total_words'], 2).' WORDS:</b>';
         }
         //
 

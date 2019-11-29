@@ -226,7 +226,7 @@ echo '<div class="container">';
 
     echo '<h1 class="inline-block ispink" style="padding-right:7px;"><span class="icon-block-lg en-icon"><i class="fas fa-atlas ispink"></i></span>MENCH LEDGER</h1>';
 
-    echo '<div class="inline-block"><i class="far fa-filter"></i><a href="javascript:void();" onclick="$(\'.show-filter\').toggleClass(\'hidden\');">FILTER</a></div>';
+    echo '<div class="inline-block '.superpower_active(10964).'"><i class="far fa-filter"></i><a href="javascript:void();" onclick="$(\'.show-filter\').toggleClass(\'hidden\');">FILTER</a></div>';
 
 
     echo '<div class="inline-box show-filter '.( $has_filters && 0 ? '' : 'hidden' ).'">';
