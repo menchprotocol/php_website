@@ -577,7 +577,7 @@ textarea.msgin{
     font-size: 1.44em;
     line-height: 100%;
     width: 35px;
-    margin-left: 10px;
+    margin-left: 10.3px;
     margin-right:4px;
     margin-bottom: 5px;
     display: block;
@@ -810,5 +810,4 @@ textarea.msgin{
     }
     .icon-block-xlg{ min-width:48px; }
     .list-group-item { padding:2px 0; }
-    .mench-logo{ margin-left:9px; }
 }
