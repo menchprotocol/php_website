@@ -227,7 +227,7 @@ foreach ($this->config->item('en_all_11021') as $en_id => $m){
             $this_tab .= '<td class="padding: 10px 0 0 0;"><div class=""></div></td>';
 
             //File counter:
-            $this_tab .= '<td class="remove_loading" style="width:85px; padding: 10px 0 0 0;"><span class="blogNoteNewCount' . $en_id2 . ' hidden"><span id="charNum' . $en_id2 . '">0</span>/' . config_var(11073).'</span></td>';
+            $this_tab .= '<td class="remove_loading" style="width:85px; padding: 10px 0 0 0;"><span id="blogNoteNewCount' . $en_id2 . '" class="hidden"><span id="charNum' . $en_id2 . '">0</span>/' . config_var(11073).'</span></td>';
 
 
 
