@@ -25,9 +25,9 @@ function in_new_note_count(focus_ln_type_entity_id) {
 
     //Only show counter if getting close to limit:
     if(len > ( js_en_all_6404[11073]['m_desc'] * 0.80 )){
-        $('#blogNoteCount' + focus_ln_type_entity_id).removeClass('hidden');
+        $('#blogNoteNewCount' + focus_ln_type_entity_id).removeClass('hidden');
     } else {
-        $('#blogNoteCount' + focus_ln_type_entity_id).addClass('hidden');
+        $('#blogNoteNewCount' + focus_ln_type_entity_id).addClass('hidden');
     }
 }
 
