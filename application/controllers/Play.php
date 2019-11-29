@@ -654,7 +654,7 @@ fragment PostListingItemSidebar_post on Post {
         $session_en = superpower_assigned();
 
         //Do we have any mass action to process here?
-        if (superpower_assigned(10983 /* NARWHAL */ /* HONEY BADGER */) && isset($_POST['mass_action_en_id']) && isset($_POST['mass_value1_'.$_POST['mass_action_en_id']]) && isset($_POST['mass_value2_'.$_POST['mass_action_en_id']])) {
+        if (superpower_assigned(10983) && isset($_POST['mass_action_en_id']) && isset($_POST['mass_value1_'.$_POST['mass_action_en_id']]) && isset($_POST['mass_value2_'.$_POST['mass_action_en_id']])) {
 
             //Process mass action:
             $process_mass_action = $this->PLAY_model->en_mass_update($en_id, intval($_POST['mass_action_en_id']), $_POST['mass_value1_'.$_POST['mass_action_en_id']], $_POST['mass_value2_'.$_POST['mass_action_en_id']], $session_en['en_id']);
@@ -947,7 +947,7 @@ fragment PostListingItemSidebar_post on Post {
     {
 
         //Authenticate Trainer:
-        $session_en = superpower_assigned(10983 /* NARWHAL */ /* HONEY BADGER */);
+        $session_en = superpower_assigned(10983);
         if (!$session_en) {
             return echo_json(array(
                 'status' => 0,
@@ -1029,7 +1029,7 @@ fragment PostListingItemSidebar_post on Post {
     {
 
         //Auth user and check required variables:
-        $session_en = superpower_assigned(10983 /* NARWHAL */ /* HONEY BADGER */);
+        $session_en = superpower_assigned(10983);
 
         if (!$session_en) {
             return echo_json(array(
@@ -1290,7 +1290,7 @@ fragment PostListingItemSidebar_post on Post {
     {
 
         //Auth user and check required variables:
-        $session_en = superpower_assigned(10983 /* NARWHAL */ /* HONEY BADGER */);
+        $session_en = superpower_assigned(10983);
         $success_message = 'Saved'; //Default, might change based on what we do...
 
         //Fetch current data:

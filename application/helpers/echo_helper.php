@@ -2327,7 +2327,7 @@ function echo_en($en, $is_parent = false)
 
 
     //ICON SET
-    $ui .= '<div class="pull-right inline-block">';
+    $ui .= '<div class="pull-right inline-block '. superpower_active(10983) .'">';
 
     //PARENTS
     if(count($en['en__parents']) > 0){
