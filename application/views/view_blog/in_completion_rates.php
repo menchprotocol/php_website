@@ -49,7 +49,7 @@ foreach($this->READ_model->ln_fetch(array(
 
 echo '<div class="container">';
 
-echo '<h1 style="margin-bottom:30px;" id="title-parent">READ RATES</h1>';
+echo '<h1 style="margin-bottom:30px;">READ RATES</h1>';
 
 echo '<table class="table table-sm table-striped stats-table mini-stats-table" style="font-size: 0.8em;">';
 

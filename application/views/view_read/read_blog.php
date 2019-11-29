@@ -15,8 +15,7 @@ if(in_array($in['in_completion_method_entity_id'], $this->config->item('en_ids_7
 
     <?php
 
-    echo '<h1 style="margin-bottom:30px;" id="title-parent">' . echo_in_outcome($in['in_outcome']) . '</h1>';
-
+    echo '<h1>' . echo_in_outcome($in['in_outcome']) . '</h1>';
 
     //Fetch & Display Intent Note Messages:
     foreach ($this->READ_model->ln_fetch(array(
@@ -211,7 +210,7 @@ if(in_array($in['in_completion_method_entity_id'], $this->config->item('en_ids_7
     <?php
 
     //Intent Title:
-    echo '<h1 style="margin-bottom:30px;" id="title-parent">' . echo_in_outcome($in['in_outcome']) . '</h1>';
+    echo '<h1 style="margin-bottom:30px;">' . echo_in_outcome($in['in_outcome']) . '</h1>';
 
 
     //Fetch & Display Intent Note Messages:
