@@ -221,19 +221,19 @@ foreach ($this->config->item('en_all_11021') as $en_id => $m){
             $this_tab .= '<table class="table table-condensed"><tr>';
 
             //Save button:
-            $this_tab .= '<td style="width:85px; padding:0;"><div class="all_msg msg_en_type_' . $en_id2 . '"><a href="javascript:in_note_add('.$en_id2.');" id="add_message_' . $en_id2 . '_' . $in['in_id'] . '" data-toggle="tooltip" title="or hit CTRL+ENTER ;)" data-placement="right" class="btn btn-blog" style="color:#FFF !important; font-size:0.8em !important;">SAVE</a></div></td>';
+            $this_tab .= '<td style="width:85px; padding: 10px 0 0 0;"><div class="all_msg msg_en_type_' . $en_id2 . '"><a href="javascript:in_note_add('.$en_id2.');" id="add_message_' . $en_id2 . '_' . $in['in_id'] . '" data-toggle="tooltip" title="or hit CTRL+ENTER ;)" data-placement="right" class="btn btn-blog" style="color:#FFF !important; font-size:0.8em !important;">SAVE</a></div></td>';
 
             //Response message:
             $this_tab .= '<td class="padding: 10px 0 0 0;"><div class=""></div></td>';
 
             //File counter:
-            $this_tab .= '<td class="remove_loading" style="width:85px; padding: 10px 0 0 0;"><span id="blogNoteNewCount' . $en_id2 . '" class="hidden"><span id="charNum' . $en_id2 . '">0</span>/' . config_var(11073).'</span></td>';
+            $this_tab .= '<td class="remove_loading" style="width:85px; padding: 10px 0 0 0; font-size: 0.85em;"><span id="blogNoteNewCount' . $en_id2 . '" class="hidden"><span id="charNum' . $en_id2 . '">0</span>/' . config_var(11073).'</span></td>';
 
 
 
             //Insert Menu:
             $this_tab .= '<td class="remove_loading" style="width:20px; padding: 10px 0 0 0;">';
-            $this_tab .= '<a class="nav-link dropdown-toggle" data-toggle="dropdown" href="#" role="button" aria-haspopup="true" aria-expanded="false"></a>';
+            $this_tab .= '<a class="nav-link dropdown-toggle" style="padding: 0;" data-toggle="dropdown" href="#" role="button" aria-haspopup="true" aria-expanded="false"></a>';
             $this_tab .= '<div class="dropdown-menu">';
 
                 //First Name:
