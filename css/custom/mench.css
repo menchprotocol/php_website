@@ -587,6 +587,9 @@ textarea.msgin{
     padding:7px 0;
 }
 
+label {
+    margin-bottom: 0;
+}
 
 .player-settings{
     color: #070707;

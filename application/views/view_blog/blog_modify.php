@@ -243,8 +243,12 @@ foreach ($this->config->item('en_all_11021') as $en_id => $m){
                 $this_tab .= '<input class="box__file inputfile hidden" type="file" name="file" id="file" />';
                 $this_tab .= '<label class="dropdown-item montserrat" class="" for="file" data-toggle="tooltip" title="Upload files up to ' . config_var(11063) . ' MB" data-placement="left"><span class="icon-block en-icon"><i class="far fa-paperclip"></i></span> Upload File</label>';
 
-            //First Name:
-            $this_tab .= '<a class="dropdown-item montserrat" href="javascript:in_note_insert_string('.$en_id2.', \'@\');" data-toggle="tooltip" title="Personalize this message by adding the user\'s First Name" data-placement="left"><span class="icon-block en-icon"><i class="far fa-fingerprint"></i></span> First Name</a>';
+                //Reference Player
+                $this_tab .= '<a class="dropdown-item montserrat" href="javascript:in_note_insert_string('.$en_id2.', \'@\');" data-toggle="tooltip" title="Add @ and start searching to reference a player" data-placement="left"><span class="icon-block en-icon"><i class="far fa-at"></i></span> Reference Player</a>';
+
+                //TODO ADD MORE OPTIONS HERE?
+                //LIST PLAYERS
+                //DRIP PLAYERS
 
             $this_tab .= '</div>';
             $this_tab .= '</td>';
