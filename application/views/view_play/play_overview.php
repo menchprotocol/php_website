@@ -5,9 +5,9 @@
         <div class="col-lg-12">
             <?php
             $navigation = array(
-                4536 => '<a href="/play/signin" class="montserrat blue">START PLAYING</a>', //PLAY
-                6205 => '<a href="/read" class="montserrat ispink">START READING</a>', //READ
-                4535 => '<a href="/blog" class="montserrat yellow">START BLOGGING</a>', //BLOG
+                4536 => '<a href="/play/signin" class="montserrat blue">PLAY</a>', //PLAY
+                6205 => '<a href="/read" class="montserrat ispink">READ</a>', //READ
+                4535 => '<a href="/blog" class="montserrat yellow">BLOG</a>', //BLOG
             );
             echo '<br />';
             foreach($this->config->item('en_all_2738') as $en_id => $m){
