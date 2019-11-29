@@ -52,28 +52,13 @@ function in_edit_note_count(ln_id) {
     }
 }
 
-var $input = $('.box' + in_id).find('input[type="file"]'),
-    $label = $('.box' + in_id).find('label'),
-    showFiles = function (files) {
-        $label.text(files.length > 1 ? ($input.attr('data-multiple-caption') || '').replace('{count}', files.length) : files[0].name);
-    };
-
-$input.on('drop', function (e) {
-    droppedFiles = e.originalEvent.dataTransfer.files; // the files that were dropped
-    showFiles(droppedFiles);
-});
-
-$input.on('change', function (e) {
-    showFiles(e.target.files);
-});
-
 
 function in_message_inline_en_search() {
 
     //Loadup algolia if not already:
     load_js_algolia();
 
-    $('.msgin').textcomplete([
+    $('.note-textarea').textcomplete([
         {
             match: /(^|\s)@(\w*(?:\s*\w*))$/,
             search: function (query, callback) {
@@ -129,51 +114,75 @@ function in_message_inline_en_search() {
 $(document).keyup(function (e) {
     //Watch for action keys:
     if (e.keyCode === 27) {
-        parent.modify_cancel();
+        modify_cancel();
     }
 });
 
 
 $(document).ready(function () {
 
+    //Initiate @ search for all note text areas:
     in_message_inline_en_search();
 
-    //Watch for message creation:
-    $('#ln_content' + in_id).keydown(function (e) {
-        if (e.ctrlKey && e.keyCode == 13) {
-            in_note_add();
-        }
-    });
+    //Loop through all new note inboxes:
+    $(".new-note").each(function () {
+
+        var focus_ln_type_entity_id = parseInt($(this).attr('note-type-id'));
+
+        autosize($(this));
+
+        var $input = $('.box' + focus_ln_type_entity_id).find('input[type="file"]'),
+            $label = $('.box' + focus_ln_type_entity_id).find('label'),
+            showFiles = function (files) {
+                $label.text(files.length > 1 ? ($input.attr('data-multiple-caption') || '').replace('{count}', files.length) : files[0].name);
+            };
+
+        $input.on('drop', function (e) {
+            droppedFiles = e.originalEvent.dataTransfer.files; // the files that were dropped
+            showFiles(droppedFiles);
+        });
+
+        $input.on('change', function (e) {
+            showFiles(e.target.files);
+        });
+
+        //Watch for message creation:
+        $('#ln_content' + focus_ln_type_entity_id).keydown(function (e) {
+            if (e.ctrlKey && e.keyCode == 13) {
+                in_note_add();
+            }
+        });
+
+        //Watchout for file uplods:
+        $('.box' + focus_ln_type_entity_id).find('input[type="file"]').change(function () {
+            in_message_from_attachment(droppedFiles, 'file');
+        });
 
 
-    //Watchout for file uplods:
-    $('.box' + in_id).find('input[type="file"]').change(function () {
-        in_message_from_attachment(droppedFiles, 'file');
-    });
+        //Should we auto start?
+        if (isAdvancedUpload) {
 
+            $('.box' + focus_ln_type_entity_id).addClass('has-advanced-upload');
+            var droppedFiles = false;
 
-    //Should we auto start?
-    if (isAdvancedUpload) {
-
-        $('.box' + in_id).addClass('has-advanced-upload');
-        var droppedFiles = false;
-
-        $('.box' + in_id).on('drag dragstart dragend dragover dragenter dragleave drop', function (e) {
-            e.preventDefault();
-            e.stopPropagation();
-        })
-            .on('dragover dragenter', function () {
-                $('.add-msg' + in_id).addClass('is-working');
-            })
-            .on('dragleave dragend drop', function () {
-                $('.add-msg' + in_id).removeClass('is-working');
-            })
-            .on('drop', function (e) {
-                droppedFiles = e.originalEvent.dataTransfer.files;
+            $('.box' + focus_ln_type_entity_id).on('drag dragstart dragend dragover dragenter dragleave drop', function (e) {
                 e.preventDefault();
-                in_message_from_attachment(droppedFiles, 'drop');
-            });
-    }
+                e.stopPropagation();
+            })
+                .on('dragover dragenter', function () {
+                    $('.add_note_' + focus_ln_type_entity_id).addClass('is-working');
+                })
+                .on('dragleave dragend drop', function () {
+                    $('.add_note_' + focus_ln_type_entity_id).removeClass('is-working');
+                })
+                .on('drop', function (e) {
+                    droppedFiles = e.originalEvent.dataTransfer.files;
+                    e.preventDefault();
+                    in_message_from_attachment(droppedFiles, 'drop');
+                });
+        }
+
+    });
 });
 
 
@@ -183,7 +192,7 @@ function in_notes_sort_apply(focus_ln_type_entity_id) {
     var sort_rank = 0;
     var this_ln_id = 0;
 
-    $("#message-sorting>div.msg_en_type_" + focus_ln_type_entity_id).each(function () {
+    $("#in_notes_sort_>div.msg_en_type_" + focus_ln_type_entity_id).each(function () {
         this_ln_id = parseInt($(this).attr('tr-id'));
         if (this_ln_id > 0) {
             sort_rank++;
@@ -207,7 +216,7 @@ function in_notes_sort_load() {
 
     var inner_content = null;
 
-    var sort_msg = Sortable.create( document.getElementById("message-sorting") , {
+    var sort_msg = Sortable.create( document.getElementById("in_notes_sort_") , {
         animation: 150, // ms, animation speed moving items when sorting, `0` � without animation
         handle: ".blog_note_sorting", // Restricts sort start click/touch to the specified element
         draggable: ".blogs_sortable", // Specifies which items inside the element should be sortable
@@ -236,7 +245,7 @@ function in_notes_sort_load() {
 
 }
 
-function in_note_modify_start(ln_id, initial_ln_type_entity_id) {
+function in_note_modify_start(ln_id, focus_ln_type_entity_id) {
 
     //Start editing:
     $("#ul-nav-" + ln_id).addClass('in-editing');
@@ -260,7 +269,7 @@ function in_note_modify_start(ln_id, initial_ln_type_entity_id) {
     $(document).keyup(function (e) {
         //Watch for action keys:
         if (e.ctrlKey && e.keyCode == 13) {
-            in_note_modify_save(ln_id, initial_ln_type_entity_id);
+            in_note_modify_save(ln_id, focus_ln_type_entity_id);
         }
     });
 }
@@ -273,7 +282,7 @@ function in_note_modify_cancel(ln_id, success=0) {
     $("#ul-nav-" + ln_id + ">div").css('width', 'inherit');
 }
 
-function in_note_modify_save(ln_id, initial_ln_type_entity_id) {
+function in_note_modify_save(ln_id, focus_ln_type_entity_id) {
 
     //Show loader:
     $("#ul-nav-" + ln_id + " .edit-updates").html('<div><i class="far fa-yin-yang fa-spin"></i></div>');
@@ -284,9 +293,8 @@ function in_note_modify_save(ln_id, initial_ln_type_entity_id) {
 
     var modify_data = {
         ln_id: parseInt(ln_id),
-        initial_ln_type_entity_id: parseInt(initial_ln_type_entity_id),
         message_ln_status_entity_id: parseInt($("#message_status_" + ln_id).val()),
-        in_id: parseInt(in_id),
+        in_id: parseInt(in_loaded_id),
         ln_content: $("#ul-nav-" + ln_id + " textarea").val(),
     };
 
@@ -348,15 +356,11 @@ function in_note_modify_save(ln_id, initial_ln_type_entity_id) {
 }
 
 
-var button_value = null;
 
 function in_message_form_lock(focus_ln_type_entity_id) {
-    button_value = $('#add_message_' + focus_ln_type_entity_id + '_' + in_id).html();
-    $('#add_message_' + focus_ln_type_entity_id + '_' + in_id).html('<span><i class="far fa-yin-yang fa-spin"></i></span>');
-    $('#add_message_' + focus_ln_type_entity_id + '_' + in_id).attr('href', '#');
-
-    $('.add-msg' + in_id).addClass('is-working');
-    $('#ln_content' + in_id).prop("disabled", true);
+    $('.save_note_' + focus_ln_type_entity_id).html('<span class="icon-block-lg"><i class="far fa-yin-yang fa-spin"></i></span>').attr('href', '#');
+    $('.add_note_' + focus_ln_type_entity_id).addClass('is-working');
+    $('#ln_content' + focus_ln_type_entity_id).prop("disabled", true);
     $('.remove_loading').hide();
 }
 
@@ -364,37 +368,34 @@ function in_message_form_lock(focus_ln_type_entity_id) {
 function in_message_form_unlock(result, focus_ln_type_entity_id) {
 
     //Update UI to unlock:
-    $('.add-msg' + in_id).removeClass('is-working');
+    $('.save_note_' + focus_ln_type_entity_id).html('SAVE').attr('href', 'javascript:in_note_add('+focus_ln_type_entity_id+');');
+    $('.add_note_' + focus_ln_type_entity_id).removeClass('is-working');
+    $("#ln_content" + focus_ln_type_entity_id).prop("disabled", false).focus();
     $('.remove_loading').fadeIn();
 
-    $('#add_message_' + focus_ln_type_entity_id + '_' + in_id).html(button_value);
-    $('#add_message_' + focus_ln_type_entity_id + '_' + in_id).attr('href', 'javascript:in_note_add();');
 
     //Remove possible "No message" info box:
-    if ($('.no-messages' + in_id + '_' + focus_ln_type_entity_id).length) {
-        $('.no-messages' + in_id + '_' + focus_ln_type_entity_id).hide();
+    if ($('.missing_note_' + focus_ln_type_entity_id).length) {
+        $('.missing_note_' + focus_ln_type_entity_id).hide();
     }
-
-    //Reset Focus:
-    $("#ln_content" + in_id).prop("disabled", false).focus();
 
     //What was the result?
     if (result.status) {
 
         //Append data:
-        $("#message-sorting").append(result.message);
+        $("#in_notes_sort_"+focus_ln_type_entity_id).append(result.message);
 
         //Tooltips:
         $('[data-toggle="tooltip"]').tooltip();
 
         //Hide any errors:
         setTimeout(function () {
-            $(".i_error").fadeOut();
+            $(".note_error_"+focus_ln_type_entity_id).fadeOut();
         }, 4181);
 
     } else {
 
-        alert('ERROR: ' + result.message);
+        $(".note_error_"+focus_ln_type_entity_id).html(result.message);
 
     }
 }
@@ -402,7 +403,7 @@ function in_message_form_unlock(result, focus_ln_type_entity_id) {
 function in_message_from_attachment(droppedFiles, uploadType, focus_ln_type_entity_id) {
 
     //Prevent multiple concurrent uploads:
-    if ($('.box' + in_id).hasClass('is-uploading')) {
+    if ($('.box' + focus_ln_type_entity_id).hasClass('is-uploading')) {
         return false;
     }
 
@@ -411,7 +412,7 @@ function in_message_from_attachment(droppedFiles, uploadType, focus_ln_type_enti
         //Lock message:
         in_message_form_lock(focus_ln_type_entity_id);
 
-        var ajaxData = new FormData($('.box' + in_id).get(0));
+        var ajaxData = new FormData($('.box' + focus_ln_type_entity_id).get(0));
         if (droppedFiles) {
             $.each(droppedFiles, function (i, file) {
                 var thename = $input.attr('name');
@@ -423,19 +424,19 @@ function in_message_from_attachment(droppedFiles, uploadType, focus_ln_type_enti
         }
 
         ajaxData.append('upload_type', uploadType);
-        ajaxData.append('in_id', in_id);
+        ajaxData.append('in_id', in_loaded_id);
         ajaxData.append('focus_ln_type_entity_id', focus_ln_type_entity_id);
 
         $.ajax({
             url: '/blog/in_message_from_attachment',
-            type: $('.box' + in_id).attr('method'),
+            type: $('.box' + focus_ln_type_entity_id).attr('method'),
             data: ajaxData,
             dataType: 'json',
             cache: false,
             contentType: false,
             processData: false,
             complete: function () {
-                $('.box' + in_id).removeClass('is-uploading');
+                $('.box' + focus_ln_type_entity_id).removeClass('is-uploading');
             },
             success: function (data) {
 
@@ -456,7 +457,7 @@ function in_message_from_attachment(droppedFiles, uploadType, focus_ln_type_enti
 
 function in_note_add(focus_ln_type_entity_id) {
 
-    if ($('#ln_content' + in_id).val().length == 0) {
+    if ($('#ln_content' + focus_ln_type_entity_id).val().length == 0) {
         alert('ERROR: Enter a message');
         return false;
     }
@@ -467,7 +468,7 @@ function in_note_add(focus_ln_type_entity_id) {
     //Update backend:
     $.post("/blog/in_new_message_from_text", {
 
-        in_id: in_id, //Synonymous
+        in_id: in_loaded_id, //Synonymous
         ln_content: $('#ln_content' + focus_ln_type_entity_id).val(),
         focus_ln_type_entity_id: focus_ln_type_entity_id,
 
@@ -477,13 +478,13 @@ function in_note_add(focus_ln_type_entity_id) {
         if (data.status) {
 
             //Reset input field:
-            $("#ln_content" + in_id).val("");
+            $("#ln_content" + focus_ln_type_entity_id).val("");
             in_new_note_count(focus_ln_type_entity_id);
 
         }
 
         //Unlock field:
-        in_message_form_unlock(data);
+        in_message_form_unlock(data, focus_ln_type_entity_id);
 
     });
 }

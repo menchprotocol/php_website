@@ -1,37 +1,19 @@
 
-<script>
-    //Define some global variables:
-    var in_loaded_id = <?= $in['in_id'] ?>;
-</script>
-<script src="/js/custom/in_train.js?v=v<?= config_var(11060) ?>"
-        type="text/javascript"></script>
-
 <style>
     .in_child_icon_<?= $in['in_id'] ?> { display:none; }
 </style>
-
-
-<script>
-    //pass core variables to JS:
-    var in_id = <?= $in['in_id'] ?>;
-    var focus_ln_type_entity_id = 4231;
-</script>
-<script src="/js/custom/in_notes.js?v=v<?= config_var(11060) ?>" type="text/javascript"></script>
-
-
 <script>
     //Include some cached entities:
+    var in_loaded_id = <?= $in['in_id'] ?>;
     var js_en_all_4486 = <?= json_encode($this->config->item('en_all_4486')) ?>; // Intent Links
     var js_en_all_7585 = <?= json_encode($this->config->item('en_all_7585')) ?>; // Intent Subtypes
 </script>
-<script src="/js/custom/in_modify.js?v=v<?= config_var(11060) ?>"
-        type="text/javascript"></script>
-
-
+<script src="/js/custom/in_notes.js?v=v<?= config_var(11060) ?>" type="text/javascript"></script>
+<script src="/js/custom/in_modify.js?v=v<?= config_var(11060) ?>" type="text/javascript"></script>
+<script src="/js/custom/in_train.js?v=v<?= config_var(11060) ?>" type="text/javascript"></script>
 
 
 <?php
-
 
 $en_all_4485 = $this->config->item('en_all_4485'); //Intent Notes
 $play_focus_found = false; //Used to determine the first tab to be opened
@@ -189,14 +171,14 @@ foreach ($this->config->item('en_all_11021') as $en_id => $m){
 
 
             //Show no-Message notifications for each message type:
-            $this_tab .= '<div id="message-sorting" class="list-group">';
+            $this_tab .= '<div id="in_notes_sort_" class="list-group">';
 
             if ($counter) {
                 foreach ($blog_notes as $in_note) {
                     $this_tab .= echo_in_note($in_note);
                 }
             } else {
-                $this_tab .= '<div class="alert alert-warning no-messages' . $in['in_id'] . '_' . $en_id2 . ' all_msg msg_en_type_' . $en_id2 . '"><i class="fas fa-exclamation-triangle"></i> No ' . $en_all_4485[$en_id2]['m_name'] . ' added yet</div>';
+                $this_tab .= '<div class="alert alert-warning missing_note_' . $en_id2 . ' msg_en_type_' . $en_id2 . '"><i class="fas fa-exclamation-triangle"></i> No ' . $en_all_4485[$en_id2]['m_name'] . ' added yet</div>';
             }
 
             //ADD NOTE:
@@ -207,24 +189,22 @@ foreach ($this->config->item('en_all_11021') as $en_id => $m){
 
 
 
-
             //ADD NEW NOTE:
             $this_tab .= '<div class="list-group">';
-            $this_tab .= '<div class="list-group-item">';
-            $this_tab .= '<div class="add-msg add-msg' . $in['in_id'] . '">';
-            $this_tab .= '<form class="box box' . $in['in_id'] . '" method="post" enctype="multipart/form-data">'; //Used for dropping files
+            $this_tab .= '<div class="list-group-item add_note_' . $en_id2 . '">';
+            $this_tab .= '<form class="box box' . $en_id2 . '" method="post" enctype="multipart/form-data">'; //Used for dropping files
 
 
-            $this_tab .= '<textarea onkeyup="in_new_note_count('.$en_id2.')" class="form-control msg msgin algolia_search" id="ln_content' . $en_id2 . '" placeholder="Write Message, Drop a File or Paste URL"></textarea>';
+            $this_tab .= '<textarea onkeyup="in_new_note_count('.$en_id2.')" class="form-control msg note-textarea algolia_search new-note" note-type-id="' . $en_id2 . '" id="ln_content' . $en_id2 . '" placeholder="Write Message, Drop a File or Paste URL"></textarea>';
 
 
             $this_tab .= '<table class="table table-condensed"><tr>';
 
             //Save button:
-            $this_tab .= '<td style="width:85px; padding: 10px 0 0 0;"><div class="all_msg msg_en_type_' . $en_id2 . '"><a href="javascript:in_note_add('.$en_id2.');" id="add_message_' . $en_id2 . '_' . $in['in_id'] . '" data-toggle="tooltip" title="or hit CTRL+ENTER ;)" data-placement="right" class="btn btn-blog" style="color:#FFF !important; font-size:0.8em !important;">SAVE</a></div></td>';
+            $this_tab .= '<td style="width:85px; padding: 10px 0 0 0;"><a href="javascript:in_note_add('.$en_id2.');" data-toggle="tooltip" title="or hit CTRL+ENTER ;)" data-placement="right" class="btn btn-blog save_note_'.$en_id2.'">SAVE</a></td>';
 
             //Response message:
-            $this_tab .= '<td class="padding: 10px 0 0 0;"><div class=""></div></td>';
+            $this_tab .= '<td class="padding: 10px 0 0 0;"><div class="note_error_'.$en_id2.'"></div></td>';
 
             //File counter:
             $this_tab .= '<td class="remove_loading" style="width:85px; padding: 10px 0 0 0; font-size: 0.85em;"><span id="blogNoteNewCount' . $en_id2 . '" class="hidden"><span id="charNum' . $en_id2 . '">0</span>/' . config_var(11073).'</span></td>';
@@ -240,11 +220,11 @@ foreach ($this->config->item('en_all_11021') as $en_id => $m){
                 $this_tab .= '<a class="dropdown-item montserrat" href="javascript:in_note_insert_string('.$en_id2.', \'/firstname \');" data-toggle="tooltip" title="Personalize this message by adding the user\'s First Name" data-placement="left"><span class="icon-block en-icon"><i class="far fa-fingerprint"></i></span> FIRST NAME</a>';
 
                 //Upload File:
-                $this_tab .= '<input class="box__file inputfile hidden" type="file" name="file" id="file" />';
-                $this_tab .= '<label class="dropdown-item montserrat" class="" for="file" data-toggle="tooltip" title="Upload files up to ' . config_var(11063) . ' MB" data-placement="left"><span class="icon-block en-icon"><i class="far fa-paperclip"></i></span> Upload File</label>';
+                $this_tab .= '<input class="inputfile hidden" type="file" name="file" id="file" />';
+                $this_tab .= '<label class="dropdown-item montserrat" class="" for="file" data-toggle="tooltip" title="Upload files up to ' . config_var(11063) . ' MB" data-placement="left"><span class="icon-block en-icon"><i class="far fa-paperclip"></i></span> UPLOAD FILE</label>';
 
                 //Reference Player
-                $this_tab .= '<a class="dropdown-item montserrat" href="javascript:in_note_insert_string('.$en_id2.', \'@\');" data-toggle="tooltip" title="Add @ and start searching to reference a player" data-placement="left"><span class="icon-block en-icon"><i class="far fa-at"></i></span> Reference Player</a>';
+                $this_tab .= '<a class="dropdown-item montserrat" href="javascript:in_note_insert_string('.$en_id2.', \'@\');" data-toggle="tooltip" title="Add @ and start searching to reference a player" data-placement="left"><span class="icon-block en-icon"><i class="far fa-at"></i></span> REFERENCE PLAYER</a>';
 
                 //TODO ADD MORE OPTIONS HERE?
                 //LIST PLAYERS
@@ -259,7 +239,6 @@ foreach ($this->config->item('en_all_11021') as $en_id => $m){
 
 
             $this_tab .= '</form>';
-            $this_tab .= '</div>';
             $this_tab .= '</div>';
             $this_tab .= '</div>';
 

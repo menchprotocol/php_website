@@ -162,15 +162,6 @@ body.grey-bg {
     font-size: 0.9em;
 }
 
-.add-msg {
-    width: 100%;
-    background-color: #FFF;
-    min-width: 280px;
-    border-radius: 5px;
-    border-bottom-right-radius: 1.3em;
-    border-top-right-radius: 1.3em;
-}
-
 .panel-group {
     margin-bottom:5px;
 }
@@ -1669,10 +1660,6 @@ footer {
     border-top-right-radius: 1.3em;
 }
 
-.no-messages {
-    background-color: #FEDD1B;
-    color: #070707;
-}
 
 .msg {
     font-size: 1em !important;
@@ -3247,16 +3234,13 @@ h4 .tip-badge {
     overflow: visible !important;
 }
 
-.msgin {
-    min-height: 87px;
-    resize: vertical;
+.note-textarea {
     padding-left: 0 !important;
     padding-top: 0 !important;
     margin-top: 2px;
 }
 
-.msgin::placeholder {
-    font-size: 16px !important;
+.note-textarea::placeholder {
     line-height: 110% !important;
     font-weight: 500 !important;
     color: #888;
