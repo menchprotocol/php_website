@@ -156,7 +156,7 @@ $(document).ready(function () {
 
         //Watchout for file uplods:
         $('.box' + focus_ln_type_entity_id).find('input[type="file"]').change(function () {
-            in_message_from_attachment(droppedFiles, 'file');
+            in_message_from_attachment(droppedFiles, 'file', focus_ln_type_entity_id);
         });
 
 
@@ -179,7 +179,7 @@ $(document).ready(function () {
                 .on('drop', function (e) {
                     droppedFiles = e.originalEvent.dataTransfer.files;
                     e.preventDefault();
-                    in_message_from_attachment(droppedFiles, 'drop');
+                    in_message_from_attachment(droppedFiles, 'drop', focus_ln_type_entity_id);
                 });
         }
 

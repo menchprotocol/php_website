@@ -862,11 +862,18 @@ class Blog extends CI_Controller {
                 'message' => 'Expired Session or Missing Superpower',
             ));
 
-        } elseif (!isset($_POST['in_id']) || !isset($_POST['focus_ln_type_entity_id'])) {
+        } elseif (!isset($_POST['in_id'])) {
 
             return echo_json(array(
                 'status' => 0,
-                'message' => 'Missing intent data.',
+                'message' => 'Missing BLOG',
+            ));
+
+        } elseif (!isset($_POST['focus_ln_type_entity_id'])) {
+
+            return echo_json(array(
+                'status' => 0,
+                'message' => 'Missing Note Type',
             ));
 
         } elseif (!isset($_POST['upload_type']) || !in_array($_POST['upload_type'], array('file', 'drop'))) {
