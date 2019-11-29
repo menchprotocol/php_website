@@ -527,7 +527,7 @@ function echo_ln($ln, $is_inner = false)
     //READ ID Row of data:
     $ui .= '<div class="read-micro-data">';
 
-    $ui .= '<span data-toggle="tooltip" data-placement="top" title="READ ID">'.$en_all_2738[6205]['m_icon'].$ln['ln_id'].'</span>';
+    $ui .= '<span data-toggle="tooltip" data-placement="top" title="READ ID"><i class="fas fa-atlas"></i> '.number_format($ln['ln_id'], 0, '.', '-').'</span>';
 
     $ui .= ' &nbsp;&nbsp;<span data-toggle="tooltip" data-placement="top" title="Link is '.$en_all_6186[$ln['ln_status_entity_id']]['m_desc'].'">'.$en_all_6186[$ln['ln_status_entity_id']]['m_icon'].' '.$en_all_6186[$ln['ln_status_entity_id']]['m_name'].'</span>';
 
@@ -629,7 +629,7 @@ function echo_ln($ln, $is_inner = false)
 
 
     //Link words
-    $ui .= '<span class="read-micro-data"><span data-toggle="tooltip" data-placement="top" title="Number of words exchanged in this link" style="min-width:30px; display: inline-block;"><i class="fas fa-file-word '.( $ln['ln_words'] > 0 ? 'yellow' : 'ispink' ).'"></i> '. number_format(abs($ln['ln_words']), (fmod($ln['ln_words'],1)==0 ? 0 : 2)) .' WORD'.strtoupper(echo__s($ln['ln_words'])).' '.( $ln['ln_words'] > 0 ? 'BLOGGED' : 'READ' ).'</span></span> &nbsp;';
+    $ui .= '<span class="read-micro-data"><span data-toggle="tooltip" data-placement="top" title="TRANSACTION COINS AWARDED" style="min-width:30px; display: inline-block;"><i class="fas fa-circle '.( $ln['ln_words'] > 0 ? 'yellow' : 'ispink' ).'"></i> '. number_format(abs($ln['ln_words']), (fmod($ln['ln_words'],1)==0 ? 0 : 2)) .' COIN'.strtoupper(echo__s($ln['ln_words'])).'</span></span> &nbsp;';
 
 
     if($ln['ln_order'] > 0){
