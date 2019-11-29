@@ -54,6 +54,7 @@ h2 {
     color:#070707 !important;
     margin-top:34px;
     margin-bottom: 21px;
+    margin-left: 3px;
 }
 
 h4 a{
@@ -793,6 +794,7 @@ textarea.msgin{
     h4 span{
         margin-top: -18px;
     }
+    h2{ margin-left: 2px; }
     .three-menus .mn_name{
         min-width: 60px;
     }
