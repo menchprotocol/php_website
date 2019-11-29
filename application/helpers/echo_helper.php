@@ -527,11 +527,11 @@ function echo_ln($ln, $is_inner = false)
     //READ ID Row of data:
     $ui .= '<div class="read-micro-data">';
 
-    $ui .= '<span data-toggle="tooltip" data-placement="top" title="READ ID"><i class="fas fa-atlas"></i> '.number_format($ln['ln_id'], 0, '.', '-').'</span>';
+    $ui .= '<span data-toggle="tooltip" data-placement="top" title="READ ID" class="montserrat"><i class="fas fa-atlas"></i> '.$ln['ln_id'].'</span>';
 
-    $ui .= ' &nbsp;&nbsp;<span data-toggle="tooltip" data-placement="top" title="Link is '.$en_all_6186[$ln['ln_status_entity_id']]['m_desc'].'">'.$en_all_6186[$ln['ln_status_entity_id']]['m_icon'].' '.$en_all_6186[$ln['ln_status_entity_id']]['m_name'].'</span>';
+    $ui .= ' &nbsp;&nbsp;<span data-toggle="tooltip" data-placement="top" title="Link is '.$en_all_6186[$ln['ln_status_entity_id']]['m_desc'].'" class="montserrat">'.$en_all_6186[$ln['ln_status_entity_id']]['m_icon'].' '.$en_all_6186[$ln['ln_status_entity_id']]['m_name'].'</span>';
 
-    $ui .= ' &nbsp;&nbsp;<span data-toggle="tooltip" data-placement="top" title="Link Creation Timestamp: ' . $ln['ln_timestamp'] . ' PST">'.$en_all_4341[4362]['m_icon']. ' ' . echo_time_difference(strtotime($ln['ln_timestamp'])) . ' ago</span>';
+    $ui .= ' &nbsp;&nbsp;<span data-toggle="tooltip" class="montserrat" data-placement="top" title="Link Creation Timestamp: ' . $ln['ln_timestamp'] . ' PST">'.$en_all_4341[4362]['m_icon']. ' ' . echo_time_difference(strtotime($ln['ln_timestamp'])) . ' ago</span>';
 
     $ui .= '</div>';
 
@@ -545,7 +545,7 @@ function echo_ln($ln, $is_inner = false)
         //Hide Trainer identity:
         $full_name = 'Hidden User';
         $ui .= '<span class="icon-main"><i class="fal fa-eye-slash"></i></span>';
-        $ui .= '<b data-toggle="tooltip" data-placement="top" title="Details are kept private">&nbsp;Private Player</b>';
+        $ui .= '<b data-toggle="tooltip" data-placement="top" title="Details are kept private" class="montserrat">&nbsp;Private Player</b>';
 
     } else {
 
@@ -559,18 +559,18 @@ function echo_ln($ln, $is_inner = false)
             $full_name = $trainer_ens[0]['en_name'];
 
             $ui .= '<span class="icon-main">'.echo_en_icon($trainer_ens[0]['en_icon']).'</span> ';
-            $ui .= '<a href="/play/'.$trainer_ens[0]['en_id'].'" data-toggle="tooltip" data-placement="top" title="Link Creator"><b>' . $full_name . '</b></a>';
+            $ui .= '<a href="/play/'.$trainer_ens[0]['en_id'].'" data-toggle="tooltip" data-placement="top" title="Link Creator"><b class="montserrat">' . $full_name . '</b></a>';
 
         } else {
 
             $full_name = 'MENCH';
-            $ui .= ' <b>' . $full_name . '</b>';
+            $ui .= ' <b class="montserrat">' . $full_name . '</b>';
 
         }
     }
 
     //Link Type:
-    $ui .= '&nbsp;'.( strlen($en_all_4593[$ln['ln_type_entity_id']]['m_icon']) > 0 ? '&nbsp;'.$en_all_4593[$ln['ln_type_entity_id']]['m_icon'].'&nbsp;' : '' ).'<a href="/play/'.$ln['ln_type_entity_id'].'" data-toggle="tooltip" data-placement="top" title="Link Type"><b style="padding-left:5px;">'. $en_all_4593[$ln['ln_type_entity_id']]['m_name'] . '</b></a>';
+    $ui .= '&nbsp;'.( strlen($en_all_4593[$ln['ln_type_entity_id']]['m_icon']) > 0 ? '&nbsp;'.$en_all_4593[$ln['ln_type_entity_id']]['m_icon'].'&nbsp;' : '' ).'<a href="/play/'.$ln['ln_type_entity_id'].'" data-toggle="tooltip" data-placement="top" title="Link Type"><b style="padding-left:5px;" class="montserrat">'. $en_all_4593[$ln['ln_type_entity_id']]['m_name'] . '</b></a>';
 
     $ui .= '</div>';
 
