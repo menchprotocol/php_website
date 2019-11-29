@@ -812,7 +812,7 @@ fragment PostListingItemSidebar_post on Post {
                          4535 => echo_number($words_blog[0]['total_words']), //BLOG
                      ) as $en_id => $current_count){
                 $handle = strtolower($en_all_2738[$en_id]['m_name']);
-                echo '<td><span class="'.$handle.'"><span class="parent-icon icon-block">' . $en_all_2738[$en_id]['m_icon'] . '</span><span class="montserrat current_count" data-toggle="tooltip" data-placement="top" title="'.number_format($current_count, 0).'">'.$current_count.'</span> '.( $en_id==4536 ? '<span class="montserrat"><br /><span class="parent-icon icon-block">&nbsp;</span>PLAYERS</span>' : '<span class="montserrat"><br /><span class="parent-icon icon-block">&nbsp;</span>'.strtoupper($handle).'S' ).'</span></td>';
+                echo '<td><span class="'.$handle.'"><span class="parent-icon icon-block">' . $en_all_2738[$en_id]['m_icon'] . '</span><span class="montserrat current_count" data-toggle="tooltip" data-placement="top" title="'.number_format($current_count, 0).'">'.$current_count.'</span> '.( $en_id==4536 ? '<span class="montserrat"><br /><span class="parent-icon icon-block">&nbsp;</span>PLAYERS</span>' : '<span class="montserrat"><br /><span class="parent-icon icon-block">&nbsp;</span>COINS' ).'</span></td>';
             }
             echo '</tr>';
 
