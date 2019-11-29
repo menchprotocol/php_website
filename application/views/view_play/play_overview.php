@@ -15,6 +15,7 @@
                 echo '<h2 class="inline montserrat color'.$en_id.'"><span class="icon-block-lg en-icon">'.echo_en_icon($m['m_icon']).'</span> '.$m['m_name'].'</h2>';
                 echo '<p class="inline"> '.$m['m_desc'].' <span class="inline-block"><i class="fas fa-arrow-right color'.$en_id.'"></i></span></p>';
                 echo '</a>';
+                echo '<br />';
             }
             ?>
         </div>
