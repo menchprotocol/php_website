@@ -26,7 +26,7 @@ $en_all_11035 = $this->config->item('en_all_11035'); //MENCH PLAYER NAVIGATION
 
 
     //NAME
-    echo '<h1 class="inline montserrat '.extract_icon_color($entity['en_icon']).'" style="padding-right:10px;"><span class="icon-block-lg en-icon en_ui_icon_'.$entity['en_id'].'">'.echo_en_icon($entity['en_icon']).'</span> <span class="en_name_'.$entity['en_id'].'">'.$entity['en_name'].'</span></h1>';
+    echo '<h2 class="inline montserrat '.extract_icon_color($entity['en_icon']).'" style="padding-right:10px;"><span class="icon-block-lg en-icon en_ui_icon_'.$entity['en_id'].'">'.echo_en_icon($entity['en_icon']).'</span> <span class="en_name_'.$entity['en_id'].'">'.$entity['en_name'].'</span></h2>';
 
 
     echo '<div class="inline-block" style="padding-bottom:10px;">';
