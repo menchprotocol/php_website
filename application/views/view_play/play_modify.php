@@ -26,11 +26,10 @@ $en_all_11035 = $this->config->item('en_all_11035'); //MENCH PLAYER NAVIGATION
 
 
     //NAME
-    echo '<h1 class="inline montserrat '.extract_icon_color($entity['en_icon']).'" style="padding-right:10px;"><span class="icon-block-lg en-icon en_ui_icon_'.$entity['en_id'].'">'.echo_en_icon($entity['en_icon']).'</span> <span class="en_name_'.$entity['en_id'].'">'.$entity['en_name'].'</span></h1>';
+    echo '<h1 class="inline-block montserrat '.extract_icon_color($entity['en_icon']).'"><span class="icon-block-lg en-icon en_ui_icon_'.$entity['en_id'].'">'.echo_en_icon($entity['en_icon']).'</span> <span class="en_name_'.$entity['en_id'].'">'.$entity['en_name'].'</span></h1>';
 
 
-    echo '<div class="inline-block" style="padding-bottom:10px;">';
-
+    echo '<div class="inline-block" style="padding-bottom:10px; padding-left:10px;">';
 
     //STATUS
     $is_published = in_array($entity['en_status_entity_id'], $this->config->item('en_ids_7357'));
@@ -51,7 +50,7 @@ $en_all_11035 = $this->config->item('en_all_11035'); //MENCH PLAYER NAVIGATION
 
 
     //REFERENCES
-    echo '<div class="'.superpower_active(10964).'">';
+    echo '<div class="inline-block '.superpower_active(10964).'">';
     $en_count_references = en_count_references($entity['en_id']);
     if(count($en_count_references) > 0){
         $en_all_6194 = $this->config->item('en_all_6194');
