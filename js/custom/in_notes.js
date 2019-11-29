@@ -134,18 +134,16 @@ $(document).ready(function () {
         //Activate sorting:
         in_notes_sort_load(focus_ln_type_entity_id);
 
-        var $input = $('.box' + focus_ln_type_entity_id).find('input[type="file"]'),
-            $label = $('.box' + focus_ln_type_entity_id).find('label'),
-            showFiles = function (files) {
-                $label.text(files.length > 1 ? ($input.attr('data-multiple-caption') || '').replace('{count}', files.length) : files[0].name);
-            };
+        var showFiles = function (files) {
+            $('.box' + focus_ln_type_entity_id).find('label').text(files.length > 1 ? ($('.box' + focus_ln_type_entity_id).find('input[type="file"]').attr('data-multiple-caption') || '').replace('{count}', files.length) : files[0].name);
+        };
 
-        $input.on('drop', function (e) {
+        $('.box' + focus_ln_type_entity_id).find('input[type="file"]').on('drop', function (e) {
             droppedFiles = e.originalEvent.dataTransfer.files; // the files that were dropped
             showFiles(droppedFiles);
         });
 
-        $input.on('change', function (e) {
+        $('.box' + focus_ln_type_entity_id).find('input[type="file"]').on('change', function (e) {
             showFiles(e.target.files);
         });
 
@@ -418,7 +416,7 @@ function in_message_from_attachment(droppedFiles, uploadType, focus_ln_type_enti
         var ajaxData = new FormData($('.box' + focus_ln_type_entity_id).get(0));
         if (droppedFiles) {
             $.each(droppedFiles, function (i, file) {
-                var thename = $input.attr('name');
+                var thename = $('.box' + focus_ln_type_entity_id).find('input[type="file"]').attr('name');
                 if (typeof thename == typeof undefined || thename == false) {
                     var thename = 'drop';
                 }
