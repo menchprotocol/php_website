@@ -6,28 +6,28 @@
 * */
 
 
-function in_message_add_name(en2_id) {
-    $('#ln_content' + en2_id).insertAtCaret('/firstname ');
-    in_new_note_count(en2_id);
+function in_note_insert_string(focus_ln_type_entity_id, add_string) {
+    $('#ln_content' + focus_ln_type_entity_id).insertAtCaret(add_string);
+    in_new_note_count(focus_ln_type_entity_id);
 }
 
 
 //Count text area characters:
-function in_new_note_count(en2_id) {
+function in_new_note_count(focus_ln_type_entity_id) {
 
     //Update count:
-    var len = $('#ln_content' + en2_id).val().length;
+    var len = $('#ln_content' + focus_ln_type_entity_id).val().length;
     if (len > js_en_all_6404[11073]['m_desc']) {
-        $('#charNum' + en2_id).addClass('overload').text(len);
+        $('#charNum' + focus_ln_type_entity_id).addClass('overload').text(len);
     } else {
-        $('#charNum' + en2_id).removeClass('overload').text(len);
+        $('#charNum' + focus_ln_type_entity_id).removeClass('overload').text(len);
     }
 
     //Only show counter if getting close to limit:
     if(len > ( js_en_all_6404[11073]['m_desc'] * 0.80 )){
-        $('#blogNoteCount' + en2_id).removeClass('hidden');
+        $('#blogNoteCount' + focus_ln_type_entity_id).removeClass('hidden');
     } else {
-        $('#blogNoteCount' + en2_id).addClass('hidden');
+        $('#blogNoteCount' + focus_ln_type_entity_id).addClass('hidden');
     }
 }
 
@@ -66,25 +66,6 @@ $input.on('drop', function (e) {
 $input.on('change', function (e) {
     showFiles(e.target.files);
 });
-
-
-function in_message_load_type(ln_type_entity_id) {
-
-    //Change Nav header:
-    $('.iphone-nav-tabs li').removeClass('active');
-    $('.nav_' + ln_type_entity_id).addClass('active');
-
-    //Change the global message type variable:
-    focus_ln_type_entity_id = ln_type_entity_id;
-
-    //Adjust UI for Messages:
-    $('.all_msg').addClass('hidden');
-    $('.msg_en_type_' + ln_type_entity_id).removeClass('hidden');
-
-    //Load sorting:
-    in_notes_sort_load();
-
-}
 
 
 function in_message_inline_en_search() {
@@ -165,19 +146,6 @@ $(document).ready(function () {
     });
 
 
-    //Function to control clicks on Message type header:
-    in_message_load_type(focus_ln_type_entity_id);
-
-
-    $('.iphone-nav-tabs a').click(function (e) {
-        //Detect new tab:
-        var parts = $(this).attr('href').split("-");
-
-        //Load new message body into view:
-        in_message_load_type(parts[2]);
-    });
-
-
     //Watchout for file uplods:
     $('.box' + in_id).find('input[type="file"]').change(function () {
         in_message_from_attachment(droppedFiles, 'file');
@@ -209,13 +177,13 @@ $(document).ready(function () {
 });
 
 
-function in_notes_sort_apply(ln_type_entity_id) {
+function in_notes_sort_apply(focus_ln_type_entity_id) {
 
     var new_ln_orders = [];
     var sort_rank = 0;
     var this_ln_id = 0;
 
-    $("#message-sorting>div.msg_en_type_" + ln_type_entity_id).each(function () {
+    $("#message-sorting>div.msg_en_type_" + focus_ln_type_entity_id).each(function () {
         this_ln_id = parseInt($(this).attr('tr-id'));
         if (this_ln_id > 0) {
             sort_rank++;
@@ -382,7 +350,7 @@ function in_note_modify_save(ln_id, initial_ln_type_entity_id) {
 
 var button_value = null;
 
-function in_message_form_lock() {
+function in_message_form_lock(focus_ln_type_entity_id) {
     button_value = $('#add_message_' + focus_ln_type_entity_id + '_' + in_id).html();
     $('#add_message_' + focus_ln_type_entity_id + '_' + in_id).html('<span><i class="far fa-yin-yang fa-spin"></i></span>');
     $('#add_message_' + focus_ln_type_entity_id + '_' + in_id).attr('href', '#');
@@ -393,7 +361,7 @@ function in_message_form_lock() {
 }
 
 
-function in_message_form_unlock(result) {
+function in_message_form_unlock(result, focus_ln_type_entity_id) {
 
     //Update UI to unlock:
     $('.add-msg' + in_id).removeClass('is-working');
@@ -416,9 +384,6 @@ function in_message_form_unlock(result) {
         //Append data:
         $("#message-sorting").append(result.message);
 
-        //Resort/Re-adjust:
-        in_message_load_type(focus_ln_type_entity_id);
-
         //Tooltips:
         $('[data-toggle="tooltip"]').tooltip();
 
@@ -434,7 +399,7 @@ function in_message_form_unlock(result) {
     }
 }
 
-function in_message_from_attachment(droppedFiles, uploadType) {
+function in_message_from_attachment(droppedFiles, uploadType, focus_ln_type_entity_id) {
 
     //Prevent multiple concurrent uploads:
     if ($('.box' + in_id).hasClass('is-uploading')) {
@@ -444,7 +409,7 @@ function in_message_from_attachment(droppedFiles, uploadType) {
     if (isAdvancedUpload) {
 
         //Lock message:
-        in_message_form_lock();
+        in_message_form_lock(focus_ln_type_entity_id);
 
         var ajaxData = new FormData($('.box' + in_id).get(0));
         if (droppedFiles) {
@@ -458,8 +423,8 @@ function in_message_from_attachment(droppedFiles, uploadType) {
         }
 
         ajaxData.append('upload_type', uploadType);
-        ajaxData.append('focus_ln_type_entity_id', focus_ln_type_entity_id);
         ajaxData.append('in_id', in_id);
+        ajaxData.append('focus_ln_type_entity_id', focus_ln_type_entity_id);
 
         $.ajax({
             url: '/blog/in_message_from_attachment',
@@ -474,14 +439,14 @@ function in_message_from_attachment(droppedFiles, uploadType) {
             },
             success: function (data) {
 
-                in_message_form_unlock(data);
+                in_message_form_unlock(data, focus_ln_type_entity_id);
 
             },
             error: function (data) {
                 var result = [];
                 result.status = 0;
                 result.message = data.responseText;
-                in_message_form_unlock(result);
+                in_message_form_unlock(result, focus_ln_type_entity_id);
             }
         });
     } else {
@@ -489,7 +454,7 @@ function in_message_from_attachment(droppedFiles, uploadType) {
     }
 }
 
-function in_note_add(en2_id) {
+function in_note_add(focus_ln_type_entity_id) {
 
     if ($('#ln_content' + in_id).val().length == 0) {
         alert('ERROR: Enter a message');
@@ -497,13 +462,13 @@ function in_note_add(en2_id) {
     }
 
     //Lock message:
-    in_message_form_lock(en2_id);
+    in_message_form_lock(focus_ln_type_entity_id);
 
     //Update backend:
     $.post("/blog/in_new_message_from_text", {
 
         in_id: in_id, //Synonymous
-        ln_content: $('#ln_content' + en2_id).val(),
+        ln_content: $('#ln_content' + focus_ln_type_entity_id).val(),
         focus_ln_type_entity_id: focus_ln_type_entity_id,
 
     }, function (data) {
@@ -513,7 +478,7 @@ function in_note_add(en2_id) {
 
             //Reset input field:
             $("#ln_content" + in_id).val("");
-            in_new_note_count(en2_id);
+            in_new_note_count(focus_ln_type_entity_id);
 
         }
 

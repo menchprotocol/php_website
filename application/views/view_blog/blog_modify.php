@@ -188,7 +188,6 @@ foreach ($this->config->item('en_all_11021') as $en_id => $m){
 
 
 
-
             //Show no-Message notifications for each message type:
             $this_tab .= '<div id="message-sorting" class="list-group">';
 
@@ -216,33 +215,36 @@ foreach ($this->config->item('en_all_11021') as $en_id => $m){
             $this_tab .= '<form class="box box' . $in['in_id'] . '" method="post" enctype="multipart/form-data">'; //Used for dropping files
 
 
-            $this_tab .= '<textarea onkeyup="in_new_note_count('.$en_id2.')" class="form-control msg msgin algolia_search" id="ln_content' . $in['in_id'] . '" placeholder="Write Message, Drop a File or Paste URL"></textarea>';
+            $this_tab .= '<textarea onkeyup="in_new_note_count('.$en_id2.')" class="form-control msg msgin algolia_search" id="ln_content' . $en_id2 . '" placeholder="Write Message, Drop a File or Paste URL"></textarea>';
 
 
             $this_tab .= '<table class="table table-condensed"><tr>';
 
             //Save button:
-            $this_tab .= '<td style="width: 100px; background-color: #FF0000;"><div class="all_msg msg_en_type_' . $en_id2 . '"><a href="javascript:in_note_add('.$en_id2.');" id="add_message_' . $en_id2 . '_' . $in['in_id'] . '" data-toggle="tooltip" title="or hit CTRL+ENTER ;)" data-placement="right" class="btn btn-blog" style="color:#FFF !important; font-size:0.8em !important;">SAVE</a></div></td>';
+            $this_tab .= '<td style="width:85px; padding:0;"><div class="all_msg msg_en_type_' . $en_id2 . '"><a href="javascript:in_note_add('.$en_id2.');" id="add_message_' . $en_id2 . '_' . $in['in_id'] . '" data-toggle="tooltip" title="or hit CTRL+ENTER ;)" data-placement="right" class="btn btn-blog" style="color:#FFF !important; font-size:0.8em !important;">SAVE</a></div></td>';
 
             //Response message:
-            $this_tab .= '<td>Message</td>';
+            $this_tab .= '<td class="padding: 10px 0 0 0;"><div class=""></div></td>';
 
             //File counter:
-            $this_tab .= '<td class="remove_loading" style="width: 100px; background-color: #FF0000;"><span class="blogNoteNewCount' . $in['in_id'] . '"><span id="charNum' . $in['in_id'] . '">0</span>/' . config_var(11073).'</span></td>';
+            $this_tab .= '<td class="remove_loading" style="width:85px; padding: 10px 0 0 0;"><span class="blogNoteNewCount' . $in['in_id'] . '"><span id="charNum' . $in['in_id'] . '">0</span>/' . config_var(11073).'</span></td>';
 
 
 
             //Insert Menu:
-            $this_tab .= '<td class="remove_loading" style="width:30px; background-color: #0000FF;">';
+            $this_tab .= '<td class="remove_loading" style="width:20px; padding: 10px 0 0 0;">';
             $this_tab .= '<a class="nav-link dropdown-toggle" data-toggle="dropdown" href="#" role="button" aria-haspopup="true" aria-expanded="false"></a>';
             $this_tab .= '<div class="dropdown-menu">';
 
                 //First Name:
-                $this_tab .= '<a class="dropdown-item" href="javascript:in_message_add_name('.$en_id2.');" data-toggle="tooltip" title="Personalize this message by adding the user\'s First Name" data-placement="left"><span class="icon-block en-icon"><i class="far fa-fingerprint"></i></span> First Name</a>';
+                $this_tab .= '<a class="dropdown-item montserrat" href="javascript:in_note_insert_string('.$en_id2.', \'/firstname \');" data-toggle="tooltip" title="Personalize this message by adding the user\'s First Name" data-placement="left"><span class="icon-block en-icon"><i class="far fa-fingerprint"></i></span> FIRST NAME</a>';
 
                 //Upload File:
                 $this_tab .= '<input class="box__file inputfile hidden" type="file" name="file" id="file" />';
-                $this_tab .= '<label class="dropdown-item" class="" for="file" data-toggle="tooltip" title="Upload files up to ' . config_var(11063) . ' MB" data-placement="left"><span class="icon-block en-icon"><i class="far fa-paperclip"></i></span> Upload File</label>';
+                $this_tab .= '<label class="dropdown-item montserrat" class="" for="file" data-toggle="tooltip" title="Upload files up to ' . config_var(11063) . ' MB" data-placement="left"><span class="icon-block en-icon"><i class="far fa-paperclip"></i></span> Upload File</label>';
+
+            //First Name:
+            $this_tab .= '<a class="dropdown-item montserrat" href="javascript:in_note_insert_string('.$en_id2.', \'@\');" data-toggle="tooltip" title="Personalize this message by adding the user\'s First Name" data-placement="left"><span class="icon-block en-icon"><i class="far fa-fingerprint"></i></span> First Name</a>';
 
             $this_tab .= '</div>';
             $this_tab .= '</td>';
@@ -258,6 +260,7 @@ foreach ($this->config->item('en_all_11021') as $en_id => $m){
             $this_tab .= '</div>';
 
         }
+
 
 
         $superpower_actives = array_intersect($this->config->item('en_ids_10957'), $m2['m_parents']);

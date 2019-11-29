@@ -402,12 +402,7 @@ img.no-radius {
     border-radius: 0 !important;
 }
 
-.all_msg{
-    min-height: 55px;
-}
-
 .note-edit{
-    height:56px;
     line-height: 100%;
     width: 20px;
     text-align: center;
