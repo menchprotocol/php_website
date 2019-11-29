@@ -171,7 +171,7 @@ foreach ($this->config->item('en_all_11021') as $en_id => $m){
 
 
             //Show no-Message notifications for each message type:
-            $this_tab .= '<div id="in_notes_sort_" class="list-group">';
+            $this_tab .= '<div id="in_notes_list_'.$en_id2.'" class="list-group">';
 
             if ($counter) {
                 foreach ($blog_notes as $in_note) {

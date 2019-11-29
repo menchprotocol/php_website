@@ -131,6 +131,9 @@ $(document).ready(function () {
 
         autosize($(this));
 
+        //Activate sorting:
+        in_notes_sort_load(focus_ln_type_entity_id);
+
         var $input = $('.box' + focus_ln_type_entity_id).find('input[type="file"]'),
             $label = $('.box' + focus_ln_type_entity_id).find('label'),
             showFiles = function (files) {
@@ -192,7 +195,7 @@ function in_notes_sort_apply(focus_ln_type_entity_id) {
     var sort_rank = 0;
     var this_ln_id = 0;
 
-    $("#in_notes_sort_>div.msg_en_type_" + focus_ln_type_entity_id).each(function () {
+    $("#in_notes_list_"+focus_ln_type_entity_id+">div.msg_en_type_" + focus_ln_type_entity_id).each(function () {
         this_ln_id = parseInt($(this).attr('tr-id'));
         if (this_ln_id > 0) {
             sort_rank++;
@@ -212,11 +215,11 @@ function in_notes_sort_apply(focus_ln_type_entity_id) {
     }
 }
 
-function in_notes_sort_load() {
+function in_notes_sort_load(focus_ln_type_entity_id) {
 
     var inner_content = null;
 
-    var sort_msg = Sortable.create( document.getElementById("in_notes_sort_") , {
+    var sort_msg = Sortable.create( document.getElementById("in_notes_list_" + focus_ln_type_entity_id) , {
         animation: 150, // ms, animation speed moving items when sorting, `0` � without animation
         handle: ".blog_note_sorting", // Restricts sort start click/touch to the specified element
         draggable: ".blogs_sortable", // Specifies which items inside the element should be sortable
@@ -383,7 +386,7 @@ function in_message_form_unlock(result, focus_ln_type_entity_id) {
     if (result.status) {
 
         //Append data:
-        $("#in_notes_sort_"+focus_ln_type_entity_id).append(result.message);
+        $("#in_notes_list_"+focus_ln_type_entity_id).append(result.message);
 
         //Tooltips:
         $('[data-toggle="tooltip"]').tooltip();
