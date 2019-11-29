@@ -212,38 +212,48 @@ foreach ($this->config->item('en_all_11021') as $en_id => $m){
             //ADD NEW NOTE:
             $this_tab .= '<div class="list-group">';
             $this_tab .= '<div class="list-group-item">';
-
             $this_tab .= '<div class="add-msg add-msg' . $in['in_id'] . '">';
             $this_tab .= '<form class="box box' . $in['in_id'] . '" method="post" enctype="multipart/form-data">'; //Used for dropping files
 
+
             $this_tab .= '<textarea onkeyup="in_new_note_count('.$en_id2.')" class="form-control msg msgin algolia_search" id="ln_content' . $in['in_id'] . '" placeholder="Write Message, Drop a File or Paste URL"></textarea>';
 
-            $this_tab .= '<div style="margin:0 0 1px 0; font-size:0.8em;">';
+
+            $this_tab .= '<table class="table table-condensed"><tr>';
+
+            //Save button:
+            $this_tab .= '<td style="width: 100px; background-color: #FF0000;"><div class="all_msg msg_en_type_' . $en_id2 . '"><a href="javascript:in_note_add('.$en_id2.');" id="add_message_' . $en_id2 . '_' . $in['in_id'] . '" data-toggle="tooltip" title="or hit CTRL+ENTER ;)" data-placement="right" class="btn btn-blog" style="color:#FFF !important; font-size:0.8em !important;">SAVE</a></div></td>';
+
+            //Response message:
+            $this_tab .= '<td>Message</td>';
+
             //File counter:
-            $this_tab .= '<span class="blogNoteNewCount' . $in['in_id'] . '"><span id="charNum' . $in['in_id'] . '">0</span>/' . config_var(11073).'</span>';
-
-            //firstname
-            $this_tab .= '<a href="javascript:in_message_add_name('.$en_id2.');" class="textarea_buttons remove_loading pull-right inline-block" style="margin-left:8px;" data-toggle="tooltip" title="Personalize this message by adding the user\'s First Name" data-placement="left"><i class="far fa-user"></i> /firstname</a>';
+            $this_tab .= '<td class="remove_loading" style="width: 100px; background-color: #FF0000;"><span class="blogNoteNewCount' . $in['in_id'] . '"><span id="charNum' . $in['in_id'] . '">0</span>/' . config_var(11073).'</span></td>';
 
 
-            $this_tab .= '<ul class="nav nav-tabs nav-tabs-sm menu_bar">';
 
-            foreach ($this->config->item('en_all_') as $en_id2 => $m2) {
-                $this_tab .= echo_caret($en_id2, $m2, $entity['en_id']);
-            }
+            //Insert Menu:
+            $this_tab .= '<td class="remove_loading" style="width:30px; background-color: #0000FF;">';
+            $this_tab .= '<a class="nav-link dropdown-toggle" data-toggle="dropdown" href="#" role="button" aria-haspopup="true" aria-expanded="false"></a>';
+            $this_tab .= '<div class="dropdown-menu">';
 
-            $this_tab .= '</ul>';
+                //First Name:
+                $this_tab .= '<a class="dropdown-item" href="javascript:in_message_add_name('.$en_id2.');" data-toggle="tooltip" title="Personalize this message by adding the user\'s First Name" data-placement="left"><span class="icon-block en-icon"><i class="far fa-fingerprint"></i></span> First Name</a>';
 
-            //Choose a file:
-            $this_tab .= '<div class="remove_loading pull-right inline-block"><input class="box__file inputfile" type="file" name="file" id="file" /><label class="textarea_buttons" for="file" data-toggle="tooltip" title="Upload files up to ' . config_var(11063) . ' MB" data-placement="top"><i class="fal fa-cloud-upload"></i> Upload</label></div>';
+                //Upload File:
+                $this_tab .= '<input class="box__file inputfile hidden" type="file" name="file" id="file" />';
+                $this_tab .= '<label class="dropdown-item" class="" for="file" data-toggle="tooltip" title="Upload files up to ' . config_var(11063) . ' MB" data-placement="left"><span class="icon-block en-icon"><i class="far fa-paperclip"></i></span> Upload File</label>';
+
             $this_tab .= '</div>';
+            $this_tab .= '</td>';
 
-            //Fetch for all message types:
-            $this_tab .= '<div class="iphone-add-btn all_msg msg_en_type_' . $en_id2 . '"><a href="javascript:in_note_add('.$en_id2.');" id="add_message_' . $en_id2 . '_' . $in['in_id'] . '" data-toggle="tooltip" title="or hit CTRL+ENTER ;)" data-placement="right" class="btn btn-blog" style="color:#FFF !important; font-size:0.8em !important;">ADD TO '.$en_all_4485[$en_id2]['m_name'].'</a></div>';
+
+
+            $this_tab .= '</tr></table>';
+
 
             $this_tab .= '</form>';
             $this_tab .= '</div>';
-
             $this_tab .= '</div>';
             $this_tab .= '</div>';
 

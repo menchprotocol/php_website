@@ -777,15 +777,6 @@ textarea.msgin{
     pointer-events: none;
 }
 
-.textarea_buttons {
-    font-weight: bold;
-    font-size: 13px;
-}
-
-.textarea_buttons:hover {
-    color: #777 !important;
-}
-
 /* RESPONSIVE */
 @media (max-width:767px) {
     body {

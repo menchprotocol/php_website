@@ -547,26 +547,17 @@ function echo_ln($ln, $is_inner = false)
         $ui .= '<span class="icon-main"><i class="fal fa-eye-slash"></i></span>';
         $ui .= '<b data-toggle="tooltip" data-placement="top" title="Details are kept private" class="montserrat">&nbsp;Private Player</b>';
 
-    } else {
+    } elseif($ln['ln_creator_entity_id'] > 0){
 
-        //Show Trainer:
-        //Fetch Trainer Entity:
-        if($ln['ln_creator_entity_id'] > 0){
+        //Show Player:
+        $trainer_ens = $CI->PLAY_model->en_fetch(array(
+            'en_id' => $ln['ln_creator_entity_id'],
+        ));
+        $full_name = one_two_explode('',' ', $trainer_ens[0]['en_name']);
 
-            $trainer_ens = $CI->PLAY_model->en_fetch(array(
-                'en_id' => $ln['ln_creator_entity_id'],
-            ));
-            $full_name = one_two_explode('',' ', $trainer_ens[0]['en_name']);
+        $ui .= '<span class="icon-main">'.echo_en_icon($trainer_ens[0]['en_icon']).'</span> ';
+        $ui .= '<a href="/play/'.$trainer_ens[0]['en_id'].'" data-toggle="tooltip" data-placement="top" title="Link Creator"><b class="montserrat">' . $full_name . '</b></a>';
 
-            $ui .= '<span class="icon-main">'.echo_en_icon($trainer_ens[0]['en_icon']).'</span> ';
-            $ui .= '<a href="/play/'.$trainer_ens[0]['en_id'].'" data-toggle="tooltip" data-placement="top" title="Link Creator"><b class="montserrat">' . $full_name . '</b></a>';
-
-        } else {
-
-            $full_name = 'MENCH';
-            $ui .= ' <b class="montserrat">' . $full_name . '</b>';
-
-        }
     }
 
     //Link Type:
