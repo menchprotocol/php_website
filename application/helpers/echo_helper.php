@@ -556,7 +556,7 @@ function echo_ln($ln, $is_inner = false)
             $trainer_ens = $CI->PLAY_model->en_fetch(array(
                 'en_id' => $ln['ln_creator_entity_id'],
             ));
-            $full_name = $trainer_ens[0]['en_name'];
+            $full_name = one_two_explode('',' ', $trainer_ens[0]['en_name']);
 
             $ui .= '<span class="icon-main">'.echo_en_icon($trainer_ens[0]['en_icon']).'</span> ';
             $ui .= '<a href="/play/'.$trainer_ens[0]['en_id'].'" data-toggle="tooltip" data-placement="top" title="Link Creator"><b class="montserrat">' . $full_name . '</b></a>';
