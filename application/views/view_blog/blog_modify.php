@@ -45,7 +45,7 @@ foreach ($this->config->item('en_all_11021') as $en_id => $m){
         echo '<textarea onkeyup="show_save_button()" class="form-control" id="new_blog_title" placeholder="Blog Title">'.$in['in_outcome'].'</textarea>';
         echo '<input type="hidden" id="current_blog_title" value="'.$in['in_outcome'].'" />';
 
-        echo '<div id="blog_title_save" class="hidden"><a href="javascript:in_save_title();" data-toggle="tooltip" title="Shortcut: CTRL+ENTER" data-placement="right" class="btn btn-blog save_note_'.$en_id2.'">SAVE</a></div>';
+        echo '<div id="blog_title_save" class="hidden"><a href="javascript:in_save_title();" data-toggle="tooltip" title="Shortcut: CTRL+ENTER" data-placement="right" class="btn btn-blog">SAVE</a></div>';
 
     } else {
 
