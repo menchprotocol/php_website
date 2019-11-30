@@ -192,7 +192,7 @@ function in_notes_sort_apply(focus_ln_type_entity_id) {
     var sort_rank = 0;
     var this_ln_id = 0;
 
-    $("#in_notes_list_"+focus_ln_type_entity_id+">div.msg_en_type_" + focus_ln_type_entity_id).each(function () {
+    $(".msg_en_type_" + focus_ln_type_entity_id).each(function () {
         this_ln_id = parseInt($(this).attr('tr-id'));
         if (this_ln_id > 0) {
             sort_rank++;
@@ -207,6 +207,8 @@ function in_notes_sort_apply(focus_ln_type_entity_id) {
             if (!data.status) {
                 //Show error:
                 alert('ERROR: ' + data.message);
+            } else {
+                alert('SUCCESS sorted: ' + sort_rank);
             }
         });
     }
@@ -370,7 +372,7 @@ function in_message_form_unlock(result, focus_ln_type_entity_id) {
     if (result.status) {
 
         //Append data:
-        $("#in_notes_list_"+focus_ln_type_entity_id).append(result.message);
+        $(result.message).insertBefore( ".add_note_" + focus_ln_type_entity_id );
 
         //Tooltips:
         $('[data-toggle="tooltip"]').tooltip();
