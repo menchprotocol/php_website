@@ -428,6 +428,9 @@ function in_note_create_upload(droppedFiles, uploadType, focus_ln_type_entity_id
 
                 in_message_form_unlock(data, focus_ln_type_entity_id);
 
+                //Adjust icon again:
+                $('.file_label_' + focus_ln_type_entity_id).html('<span class="icon-block en-icon"><i class="far fa-paperclip"></i></span>');
+
             },
             error: function (data) {
                 var result = [];
