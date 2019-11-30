@@ -245,7 +245,7 @@ function echo_in_note($ln)
     $ui .= '<div class="note-edit edit-off '.superpower_active(10939).'">';
 
         //Modify:
-        $ui .= '<span title="Modify Message" data-toggle="tooltip" data-placement="top"><a href="javascript:in_note_modify_start(' . $ln['ln_id'] . ',' . $ln['ln_type_entity_id'] . ');"><i class="fas fa-pen-square"></i></a></span>';
+        $ui .= '<span title="Modify Message" data-toggle="tooltip" data-placement="top"><a href="javascript:in_note_modify_start(' . $ln['ln_id'] . ');"><i class="fas fa-pen-square"></i></a></span>';
 
         //Sort:
         if(in_array(4603, $en_all_4485[$ln['ln_type_entity_id']]['m_parents'])){
@@ -256,7 +256,7 @@ function echo_in_note($ln)
 
 
     //Text editing:
-    $ui .= '<textarea onkeyup="in_message_validate(' . $ln['ln_id'] . ')" name="ln_content" id="message_body_' . $ln['ln_id'] . '" class="edit-on hidden msg note-textarea algolia_search" placeholder="Blog..." style="padding-right:22px;">' . $ln['ln_content'] . '</textarea>';
+    $ui .= '<textarea onkeyup="in_message_validate(' . $ln['ln_id'] . ')" name="ln_content" id="message_body_' . $ln['ln_id'] . '" class="edit-on hidden msg note-textarea algolia_search" placeholder="Blog...">' . $ln['ln_content'] . '</textarea>';
 
 
     //Editing menu:

@@ -24,11 +24,12 @@ function in_new_note_count(focus_ln_type_entity_id) {
     }
 
     //Only show counter if getting close to limit:
-    if(len > ( js_en_all_6404[11073]['m_desc'] * 0.80 )){
+    if(len > ( js_en_all_6404[11073]['m_desc'] * show_counter_threshold )){
         $('#blogNoteNewCount' + focus_ln_type_entity_id).removeClass('hidden');
     } else {
         $('#blogNoteNewCount' + focus_ln_type_entity_id).addClass('hidden');
     }
+
 }
 
 function in_edit_note_count(ln_id) {
@@ -45,7 +46,7 @@ function in_edit_note_count(ln_id) {
     }
 
     //Only show counter if getting close to limit:
-    if(len > ( js_en_all_6404[11073]['m_desc'] * 0.80 )){
+    if(len > ( js_en_all_6404[11073]['m_desc'] * show_counter_threshold )){
         $('#blogNoteCount' + ln_id).removeClass('hidden');
     } else {
         $('#blogNoteCount' + ln_id).addClass('hidden');
@@ -53,12 +54,12 @@ function in_edit_note_count(ln_id) {
 }
 
 
-function in_message_inline_en_search() {
+function in_message_inline_en_search(obj) {
 
     //Loadup algolia if not already:
     load_js_algolia();
 
-    $('.note-textarea').textcomplete([
+    obj.textcomplete([
         {
             match: /(^|\s)@(\w*(?:\s*\w*))$/,
             search: function (query, callback) {
@@ -113,21 +114,17 @@ function in_message_inline_en_search() {
 
 $(document).ready(function () {
 
-    //Initiate @ search for all note text areas:
-    in_message_inline_en_search();
-
     //Loop through all new note inboxes:
     $(".new-note").each(function () {
 
         var focus_ln_type_entity_id = parseInt($(this).attr('note-type-id'));
 
+        //Initiate @ search for all note text areas:
+        in_message_inline_en_search($(this));
+
         //Watch for focus:
         $(this).focus(function() {
             $( '#notes_control_'+focus_ln_type_entity_id ).removeClass('hidden');
-        }).focusout(function() {
-            if(!$('#ln_content'+focus_ln_type_entity_id).val().length){
-                $( '#notes_control_'+focus_ln_type_entity_id ).addClass('hidden');
-            }
         });
 
         autosize($(this));
@@ -247,7 +244,7 @@ function in_notes_sort_load(focus_ln_type_entity_id) {
 
 }
 
-function in_note_modify_start(ln_id, focus_ln_type_entity_id) {
+function in_note_modify_start(ln_id) {
 
     //Start editing:
     $("#ul-nav-" + ln_id).addClass('in-editing');
@@ -262,14 +259,14 @@ function in_note_modify_start(ln_id, focus_ln_type_entity_id) {
     autosize(textinput); //Adjust height
 
     //Initiate search:
-    in_message_inline_en_search();
+    in_message_inline_en_search(textinput);
 
     //Try to initiate the editor, which only applies to text messages:
     in_edit_note_count(ln_id);
 
 }
 
-function in_note_modify_cancel(ln_id, success=0) {
+function in_note_modify_cancel(ln_id) {
     //Revert editing:
     $("#ul-nav-" + ln_id).removeClass('in-editing');
     $("#ul-nav-" + ln_id + " .edit-off").removeClass('hidden');
@@ -283,7 +280,7 @@ function in_note_modify_save(ln_id, focus_ln_type_entity_id) {
     $("#ul-nav-" + ln_id + " .edit-updates").html('<div><i class="far fa-yin-yang fa-spin"></i></div>');
 
     //Revert View:
-    in_note_modify_cancel(ln_id, 1);
+    in_note_modify_cancel(ln_id);
 
 
     var modify_data = {
@@ -446,11 +443,6 @@ function in_note_create_upload(droppedFiles, uploadType, focus_ln_type_entity_id
 
 function in_note_add(focus_ln_type_entity_id) {
 
-    if ($('#ln_content' + focus_ln_type_entity_id).val().length == 0) {
-        alert('ERROR: Enter a message');
-        return false;
-    }
-
     //Lock message:
     in_message_form_lock(focus_ln_type_entity_id);
 
@@ -476,4 +468,5 @@ function in_note_add(focus_ln_type_entity_id) {
         in_message_form_unlock(data, focus_ln_type_entity_id);
 
     });
+
 }

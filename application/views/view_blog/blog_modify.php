@@ -10,6 +10,7 @@
 <script src="/js/lib/medium.js" type="text/javascript"></script>
 <script>
     //Include some cached entities:
+    var show_counter_threshold = 0.80;
     var in_loaded_id = <?= $in['in_id'] ?>;
     var js_en_all_4486 = <?= json_encode($this->config->item('en_all_4486')) ?>; // Intent Links
     var js_en_all_7585 = <?= json_encode($this->config->item('en_all_7585')) ?>; // Intent Subtypes
@@ -211,31 +212,7 @@ foreach ($this->config->item('en_all_11021') as $en_id => $m){
 
 
 
-            $this_tab .= '<table class="table table-condensed"><tr>';
-
-            $this_tab .= '<td style="padding:0;"><textarea onkeyup="in_new_note_count('.$en_id2.')" class="form-control msg note-textarea algolia_search new-note" note-type-id="' . $en_id2 . '" id="ln_content' . $en_id2 . '" placeholder=" + MESSAGE"></textarea></td>';
-
-            $this_tab .= '<td style="width:22px; padding:0 7px 0 0; text-align: right;">';
-
-            $this_tab .= '<a class="nav-link dropdown-toggle" style="padding:0;  z-index: 99999 !important;" data-toggle="dropdown" href="#" role="button" aria-haspopup="true" aria-expanded="false"></a>';
-            $this_tab .= '<div class="dropdown-menu">';
-
-            //First Name:
-            $this_tab .= '<a class="dropdown-item montserrat" href="javascript:in_note_insert_string('.$en_id2.', \'/firstname \');" data-toggle="tooltip" title="Personalize this message by adding the user\'s First Name" data-placement="left"><span class="icon-block en-icon"><i class="far fa-fingerprint"></i></span> FIRST NAME</a>';
-
-            //Upload File:
-            $this_tab .= '<input class="inputfile hidden" type="file" name="file" id="file" />';
-            $this_tab .= '<label class="dropdown-item montserrat" class="" for="file" data-toggle="tooltip" title="Upload files up to ' . config_var(11063) . ' MB" data-placement="left"><span class="icon-block en-icon"><i class="far fa-paperclip"></i></span> UPLOAD FILE</label>';
-
-            //Reference Player
-            $this_tab .= '<a class="dropdown-item montserrat" href="javascript:in_note_insert_string('.$en_id2.', \'@\');" data-toggle="tooltip" title="Add @ and start searching to reference a player" data-placement="left"><span class="icon-block en-icon"><i class="far fa-at"></i></span> REFERENCE PLAYER</a>';
-
-            //TODO ADD MORE OPTIONS HERE?
-            //LIST PLAYERS
-            //DRIP PLAYERS
-
-            $this_tab .= '</td>';
-            $this_tab .= '</tr></table>';
+            $this_tab .= '<textarea onkeyup="in_new_note_count('.$en_id2.')" class="form-control msg note-textarea algolia_search new-note" note-type-id="' . $en_id2 . '" id="ln_content' . $en_id2 . '" placeholder=" + MESSAGE"></textarea>';
 
 
 
@@ -244,13 +221,30 @@ foreach ($this->config->item('en_all_11021') as $en_id => $m){
             //Save button:
             $this_tab .= '<td style="width:85px; padding: 10px 0 0 0;"><a href="javascript:in_note_add('.$en_id2.');" data-toggle="tooltip" title="or hit CTRL+ENTER ;)" data-placement="right" class="btn btn-blog save_note_'.$en_id2.'">SAVE</a></td>';
 
-            //Response message:
-            $this_tab .= '<td class="padding: 10px 0 0 0;"><div class="note_error_'.$en_id2.'"></div></td>';
-
             //File counter:
-            $this_tab .= '<td class="remove_loading" style="width:85px; padding: 10px 0 0 0; font-size: 0.85em;"><span id="blogNoteNewCount' . $en_id2 . '" class="hidden"><span id="charNum' . $en_id2 . '">0</span>/' . config_var(11073).'</span></td>';
+            $this_tab .= '<td class="remove_loading" style="padding: 10px 0 0 0; font-size: 0.85em;"><span id="blogNoteNewCount' . $en_id2 . '" class="hidden"><span id="charNum' . $en_id2 . '">0</span>/' . config_var(11073).'</span></td>';
+
+            //First Name:
+            $this_tab .= '<td style="width:25px; padding: 10px 0 0 0;"><a class="dropdown-item montserrat" href="javascript:in_note_insert_string('.$en_id2.', \'/firstname \');" data-toggle="tooltip" title="Personalize this message by adding the user\'s First Name" data-placement="top"><span class="icon-block en-icon"><i class="far fa-fingerprint"></i></span></a></td>';
+
+            //Reference Player
+            $this_tab .= '<td style="width:25px; padding: 10px 0 0 0;"><a class="dropdown-item montserrat" href="javascript:in_note_insert_string('.$en_id2.', \'@\');" data-toggle="tooltip" title="Mention a player" data-placement="top"><span class="icon-block en-icon"><i class="far fa-at"></i></span></a></td>';
+
+            //Upload File:
+            $this_tab .= '<td style="width:25px; padding: 10px 0 0 0;">';
+            $this_tab .= '<input class="inputfile hidden" type="file" name="file" id="file" />';
+            $this_tab .= '<label class="dropdown-item montserrat" class="" for="file" data-toggle="tooltip" title="Upload files up to ' . config_var(11063) . ' MB" data-placement="top"><span class="icon-block en-icon"><i class="far fa-paperclip"></i></span></label>';
+            $this_tab .= '</td>';
+
+            //TODO ADD MORE OPTIONS HERE?
+            //LIST PLAYERS
+            //DRIP PLAYERS
 
             $this_tab .= '</tr></table>';
+
+
+            //Response result:
+            $this_tab .= '<div class="note_error_'.$en_id2.'"></div>';
 
 
             $this_tab .= '</form>';
