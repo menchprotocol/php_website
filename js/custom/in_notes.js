@@ -122,7 +122,7 @@ $(document).ready(function () {
         var focus_ln_type_entity_id = parseInt($(this).attr('note-type-id'));
 
         //Watch for focus:
-        $(this).focus(function() {
+        $('.add_note_'+focus_ln_type_entity_id).focus(function() {
             $( '#notes_control_'+focus_ln_type_entity_id ).removeClass('hidden');
         }).focusout(function() {
             if(!$('#ln_content'+focus_ln_type_entity_id).val().length){
@@ -157,7 +157,7 @@ $(document).ready(function () {
 
         //Watchout for file uplods:
         $('.box' + focus_ln_type_entity_id).find('input[type="file"]').change(function () {
-            in_message_from_attachment(droppedFiles, 'file', focus_ln_type_entity_id);
+            in_note_create_upload(droppedFiles, 'file', focus_ln_type_entity_id);
         });
 
 
@@ -180,7 +180,7 @@ $(document).ready(function () {
                 .on('drop', function (e) {
                     droppedFiles = e.originalEvent.dataTransfer.files;
                     e.preventDefault();
-                    in_message_from_attachment(droppedFiles, 'drop', focus_ln_type_entity_id);
+                    in_note_create_upload(droppedFiles, 'drop', focus_ln_type_entity_id);
                 });
         }
 
@@ -389,7 +389,7 @@ function in_message_form_unlock(result, focus_ln_type_entity_id) {
     }
 }
 
-function in_message_from_attachment(droppedFiles, uploadType, focus_ln_type_entity_id) {
+function in_note_create_upload(droppedFiles, uploadType, focus_ln_type_entity_id) {
 
     //Prevent multiple concurrent uploads:
     if ($('.box' + focus_ln_type_entity_id).hasClass('is-uploading')) {
@@ -417,7 +417,7 @@ function in_message_from_attachment(droppedFiles, uploadType, focus_ln_type_enti
         ajaxData.append('focus_ln_type_entity_id', focus_ln_type_entity_id);
 
         $.ajax({
-            url: '/blog/in_message_from_attachment',
+            url: '/blog/in_note_create_upload',
             type: $('.box' + focus_ln_type_entity_id).attr('method'),
             data: ajaxData,
             dataType: 'json',
@@ -455,7 +455,7 @@ function in_note_add(focus_ln_type_entity_id) {
     in_message_form_lock(focus_ln_type_entity_id);
 
     //Update backend:
-    $.post("/blog/in_new_message_from_text", {
+    $.post("/blog/in_note_create_text", {
 
         in_id: in_loaded_id, //Synonymous
         ln_content: $('#ln_content' + focus_ln_type_entity_id).val(),

@@ -773,7 +773,7 @@ class Blog extends CI_Controller {
     }
 
 
-    function in_new_message_from_text()
+    function in_note_create_text()
     {
 
         //Authenticate Trainer:
@@ -850,7 +850,7 @@ class Blog extends CI_Controller {
     }
 
 
-    function in_message_from_attachment()
+    function in_note_create_upload()
     {
 
         //Authenticate Trainer:

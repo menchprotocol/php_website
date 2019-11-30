@@ -2786,6 +2786,7 @@ class READ_model extends CI_Model
         }
 
         $is_being_modified = ( $message_type_en_id > 0 ); //IF $message_type_en_id > 0 means we're adding/editing and need to do extra checks
+        $input_message = trim($input_message);
 
         //Start with basic input validation:
         if (strlen($input_message) < 1) {
