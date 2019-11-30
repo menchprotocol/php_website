@@ -20,7 +20,7 @@ $play_focus_found = false; //Used to determine the first tab to be opened
 
 
 
-echo '<div class="container">';
+echo '<div class="container" style="padding-bottom:54px;">';
 echo '<div class="row">';
 $col_num = 0;
 foreach ($this->config->item('en_all_11021') as $en_id => $m){
@@ -34,16 +34,16 @@ foreach ($this->config->item('en_all_11021') as $en_id => $m){
     if($col_num==1){
 
 
+        echo '<div class="inline-block">'.echo_dropdown(4737, $in['in_status_entity_id'], false, 'btn-blog').'</div>';
+        echo '<div class="inline-block" style="margin-left: 5px;"><a href="javascript:void(0)" onclick="alert(\'Under Dev.\')" class="btn btn-sm btn-blog"><i class="far fa-bookmark"></i></a></div>';
+        echo '<div class="inline-block" style="margin-left: 5px;"><a href="javascript:void(0)" onclick="$(\'.menu_bar\').toggleClass(\'hidden\')" class="btn btn-sm btn-blog"><i class="fas fa-cog"></i></a></div>';
+
         echo '<h1>'.echo_in_outcome($in['in_outcome']).'</h1>';
 
     } else {
 
-        echo '<a href="#secondColumn"></a>';
         echo '<div class="center-right">';
-            echo echo_dropup(7585, $in['in_completion_method_entity_id'], false, 'btn-blog');
-            echo '<div class="inline-block" style="margin-left: 5px;">'.echo_dropup(4737, $in['in_status_entity_id'], true, 'btn-blog').'</div>';
-            echo '<div class="inline-block" style="margin-left: 5px;"><a href="javascript:void(0)" onclick="alert(\'Under Dev.\')" class="btn btn-sm btn-blog"><i class="far fa-bookmark"></i></a></div>';
-            echo '<div class="inline-block" style="margin-left: 5px;"><a href="javascript:void(0)" onclick="$(\'.menu_bar\').toggleClass(\'hidden\')" class="btn btn-sm btn-blog"><i class="fas fa-cog"></i></a></div>';
+            echo '<div class="inline-block">'.echo_dropdown(7585, $in['in_completion_method_entity_id'], false, 'btn-blog').'</div>';
         echo '</div>';
 
     }
@@ -187,7 +187,7 @@ foreach ($this->config->item('en_all_11021') as $en_id => $m){
 
             $this_tab .= '<td style="padding:0;"><textarea onkeyup="in_new_note_count('.$en_id2.')" class="form-control msg note-textarea algolia_search new-note" note-type-id="' . $en_id2 . '" id="ln_content' . $en_id2 . '" placeholder="Write Message, Drop a File or Paste URL"></textarea></td>';
 
-            $this_tab .= '<td style="width:22px; padding:0;">';
+            $this_tab .= '<td style="width:22px; padding:0 7px 0 0; text-align: right;">';
 
             $this_tab .= '<a class="nav-link dropdown-toggle" style="padding:0;  z-index: 99999 !important;" data-toggle="dropdown" href="#" role="button" aria-haspopup="true" aria-expanded="false"></a>';
             $this_tab .= '<div class="dropdown-menu">';

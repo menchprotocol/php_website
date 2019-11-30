@@ -256,7 +256,7 @@ function echo_in_note($ln)
 
 
     //Text editing:
-    $ui .= '<textarea onkeyup="in_message_validate(' . $ln['ln_id'] . ')" name="ln_content" id="message_body_' . $ln['ln_id'] . '" class="edit-on hidden msg note-textarea algolia_search" placeholder="Blog...">' . $ln['ln_content'] . '</textarea>';
+    $ui .= '<textarea onkeyup="in_message_validate(' . $ln['ln_id'] . ')" name="ln_content" id="message_body_' . $ln['ln_id'] . '" class="edit-on hidden msg note-textarea algolia_search" placeholder="Blog..." style="padding-left:22px;">' . $ln['ln_content'] . '</textarea>';
 
 
     //Editing menu:
@@ -2343,14 +2343,14 @@ function echo_en($en, $is_parent = false)
 }
 
 
-function echo_dropup($cache_en_id, $selected_en_id = 0, $micro = false, $btn_class = 'btn-primary'){
+function echo_dropdown($cache_en_id, $selected_en_id = 0, $micro = false, $btn_class = 'btn-primary'){
 
     $CI =& get_instance();
     $en_all_4527 = $CI->config->item('en_all_4527'); //Platform Cache
     $en_all_this = $CI->config->item('en_all_'.$cache_en_id);
 
 //data-toggle="tooltip" data-placement="top" title="'.$en_all_4527[$cache_en_id]['m_name'].'"
-    $ui = '<div class="dropup inline-block">';
+    $ui = '<div class="dropdown inline-block">';
     $ui .= '<button  class="btn btn-sm '.$btn_class.' dropdown-toggle" type="button" id="dropdownMenuButton" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">';
     if($micro){
         $ui .= ( $selected_en_id > 0 ? $en_all_this[$selected_en_id]['m_icon'] : '' );
