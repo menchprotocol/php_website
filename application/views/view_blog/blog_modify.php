@@ -177,17 +177,17 @@ foreach ($this->config->item('en_all_11021') as $en_id => $m){
                 $this_tab .= echo_in_note($in_note);
             }
 
-
             //ADD NEW NOTE:
             $this_tab .= '<div class="list-group-item add_note_' . $en_id2 . '">';
             $this_tab .= '<form class="box box' . $en_id2 . '" method="post" enctype="multipart/form-data">'; //Used for dropping files
 
 
-            $this_tab .= '<textarea onkeyup="in_new_note_count('.$en_id2.')" class="form-control msg note-textarea algolia_search new-note" note-type-id="' . $en_id2 . '" id="ln_content' . $en_id2 . '" placeholder="Write Message, Drop a File or Paste URL"></textarea>';
 
+            $this_tab .= '<table class="table table-condensed hidden" id="notes_control_'.$en_id2.'"><tr>';
 
-            //Editing menu:
-            $this_tab .= '<div class="note-edit">';
+            $this_tab .= '<td style="padding:0;"><textarea onkeyup="in_new_note_count('.$en_id2.')" class="form-control msg note-textarea algolia_search new-note" note-type-id="' . $en_id2 . '" id="ln_content' . $en_id2 . '" placeholder="Write Message, Drop a File or Paste URL"></textarea></td>';
+
+            $this_tab .= '<td style="width:22px; padding:0;">';
 
             $this_tab .= '<a class="nav-link dropdown-toggle" style="padding:5px 0 0 0;  z-index: 99999 !important;" data-toggle="dropdown" href="#" role="button" aria-haspopup="true" aria-expanded="false"></a>';
             $this_tab .= '<div class="dropdown-menu">';
@@ -206,9 +206,8 @@ foreach ($this->config->item('en_all_11021') as $en_id => $m){
             //LIST PLAYERS
             //DRIP PLAYERS
 
-            $this_tab .= '</div>';
-
-            $this_tab .= '</div>';
+            $this_tab .= '</td>';
+            $this_tab .= '</tr></table>';
 
 
 
