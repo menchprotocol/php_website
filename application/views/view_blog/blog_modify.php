@@ -45,7 +45,7 @@ foreach ($this->config->item('en_all_11021') as $en_id => $m){
             echo '<div class="inline-block" style="margin-left: 5px;"><a href="javascript:void(0)" onclick="$(\'.menu_bar\').toggleClass(\'hidden\')" class="btn btn-sm btn-blog"><i class="fas fa-cog"></i></a></div>';
         echo '</div>';
 
-        echo '<h1 id="MediumEditor"><p>'.echo_in_outcome($in['in_outcome']).'</p></h1>';
+        echo '<h1 id="MediumEditor">'.echo_in_outcome($in['in_outcome']).'</h1>';
 
     } else {
 
