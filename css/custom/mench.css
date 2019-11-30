@@ -45,7 +45,6 @@ h1 {
     margin-bottom: 21px;
     margin-left: 0;
     padding-left: 0;
-    display: inline-block;
 }
 
 h2 {
@@ -878,7 +877,12 @@ label {
     margin-top:34px;
     line-height: 110%;
 }
-
+#MediumEditor::placeholder {
+    line-height: 110% !important;
+    font-family: 'Montserrat', sans-serif;
+    font-size: 1.7em;
+    font-weight: bold;
+}
 
 
 

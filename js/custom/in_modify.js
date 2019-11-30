@@ -9,23 +9,6 @@ var match_search_loaded = 0; //Keeps track of when we load the match search
 
 $(document).ready(function () {
 
-
-    new Medium({
-        element: document.getElementById('MediumEditor'),
-        maxLength:2000,
-        mode: Medium.partialMode,
-        autoHR: false,
-        autofocus: true,
-        placeholder: "Blog Title",
-        cssClasses: {
-            editor: 'Medium',
-            pasteHook: 'Medium-paste-hook',
-            placeholder: 'Medium-placeholder',
-            clear: 'Medium-clear'
-        }
-    });
-
-
     //Watch for intent status change:
     $("#in_status_entity_id").change(function () {
 
@@ -42,8 +25,6 @@ $(document).ready(function () {
     $('#ln_type_entity_id, #ln_status_entity_id').change(function () {
         in_adjust_link_ui();
     });
-
-
 
 });
 

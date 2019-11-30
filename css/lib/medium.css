@@ -93,10 +93,12 @@
 	box-shadow: 0px 0px 3px 4px rgba(0, 0, 0, 0.2);
 	}
 
-#MediumEditor p {
+
+#MediumEditor {
 	background-color: #CCC;
 	padding: 5px;
 	border-radius: 5px;
 	margin-bottom: 10px;
 	width: auto;
 }
+
