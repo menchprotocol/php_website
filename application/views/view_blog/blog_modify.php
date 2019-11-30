@@ -13,6 +13,21 @@
     var in_loaded_id = <?= $in['in_id'] ?>;
     var js_en_all_4486 = <?= json_encode($this->config->item('en_all_4486')) ?>; // Intent Links
     var js_en_all_7585 = <?= json_encode($this->config->item('en_all_7585')) ?>; // Intent Subtypes
+
+    new Medium({
+        element: document.getElementById('MediumEditor'),
+        maxLength:2000,
+        mode: Medium.partialMode,
+        autoHR: false,
+        autofocus: true,
+        placeholder: "Blog Title",
+        cssClasses: {
+            editor: 'Medium',
+            pasteHook: 'Medium-paste-hook',
+            placeholder: 'Medium-placeholder',
+            clear: 'Medium-clear'
+        }
+    });
 </script>
 <script src="/js/custom/in_notes.js?v=v<?= config_var(11060) ?>" type="text/javascript"></script>
 <script src="/js/custom/in_modify.js?v=v<?= config_var(11060) ?>" type="text/javascript"></script>
