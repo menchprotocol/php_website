@@ -173,24 +173,13 @@ foreach ($this->config->item('en_all_11021') as $en_id => $m){
             //Show no-Message notifications for each message type:
             $this_tab .= '<div id="in_notes_list_'.$en_id2.'" class="list-group">';
 
-            if ($counter) {
-                foreach ($blog_notes as $in_note) {
-                    $this_tab .= echo_in_note($in_note);
-                }
-            } else {
-                $this_tab .= '<div class="alert alert-warning missing_note_' . $en_id2 . ' msg_en_type_' . $en_id2 . '"><i class="fas fa-exclamation-triangle"></i> No ' . $en_all_4485[$en_id2]['m_name'] . ' added yet</div>';
+            foreach ($blog_notes as $in_note) {
+                $this_tab .= echo_in_note($in_note);
             }
-
-            //ADD NOTE:
-
-
-
-            $this_tab .= '</div>';
 
 
 
             //ADD NEW NOTE:
-            $this_tab .= '<div class="list-group">';
             $this_tab .= '<div class="list-group-item add_note_' . $en_id2 . '">';
             $this_tab .= '<form class="box box' . $en_id2 . '" method="post" enctype="multipart/form-data">'; //Used for dropping files
 
@@ -198,7 +187,7 @@ foreach ($this->config->item('en_all_11021') as $en_id => $m){
             $this_tab .= '<textarea onkeyup="in_new_note_count('.$en_id2.')" class="form-control msg note-textarea algolia_search new-note" note-type-id="' . $en_id2 . '" id="ln_content' . $en_id2 . '" placeholder="Write Message, Drop a File or Paste URL"></textarea>';
 
 
-            $this_tab .= '<table class="table table-condensed"><tr>';
+            $this_tab .= '<table class="table table-condensed hidden" id="notes_control_'.$en_id2.'"><tr>';
 
             //Save button:
             $this_tab .= '<td style="width:85px; padding: 10px 0 0 0;"><a href="javascript:in_note_add('.$en_id2.');" data-toggle="tooltip" title="or hit CTRL+ENTER ;)" data-placement="right" class="btn btn-blog save_note_'.$en_id2.'">SAVE</a></td>';
@@ -240,8 +229,8 @@ foreach ($this->config->item('en_all_11021') as $en_id => $m){
 
             $this_tab .= '</form>';
             $this_tab .= '</div>';
-            $this_tab .= '</div>';
 
+            $this_tab .= '</div>';
         }
 
 

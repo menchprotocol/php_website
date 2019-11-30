@@ -121,6 +121,13 @@ $(document).ready(function () {
 
         var focus_ln_type_entity_id = parseInt($(this).attr('note-type-id'));
 
+        //Watch for focus:
+        $(this).focus(function() {
+            $( '#notes_control_'+focus_ln_type_entity_id ).removeClass('hidden');
+        }).focusout(function() {
+            $( '#notes_control_'+focus_ln_type_entity_id ).addClass('hidden');
+        })
+
         autosize($(this));
 
         //Activate sorting:
@@ -358,12 +365,6 @@ function in_message_form_unlock(result, focus_ln_type_entity_id) {
     $('.add_note_' + focus_ln_type_entity_id).removeClass('is-working');
     $("#ln_content" + focus_ln_type_entity_id).prop("disabled", false).focus();
     $('.remove_loading').fadeIn();
-
-
-    //Remove possible "No message" info box:
-    if ($('.missing_note_' + focus_ln_type_entity_id).length) {
-        $('.missing_note_' + focus_ln_type_entity_id).hide();
-    }
 
     //What was the result?
     if (result.status) {
