@@ -189,7 +189,7 @@ foreach ($this->config->item('en_all_11021') as $en_id => $m){
             //Editing menu:
             $this_tab .= '<div class="note-edit">';
 
-            $this_tab .= '<a class="nav-link dropdown-toggle" style="padding: 0;" data-toggle="dropdown" href="#" role="button" aria-haspopup="true" aria-expanded="false"></a>';
+            $this_tab .= '<a class="nav-link dropdown-toggle" style="padding:5px 0 0 0;  z-index: 99999 !important;" data-toggle="dropdown" href="#" role="button" aria-haspopup="true" aria-expanded="false"></a>';
             $this_tab .= '<div class="dropdown-menu">';
 
             //First Name:
