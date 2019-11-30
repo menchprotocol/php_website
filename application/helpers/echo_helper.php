@@ -256,7 +256,7 @@ function echo_in_note($ln)
 
 
     //Text editing:
-    $ui .= '<textarea onkeyup="in_message_validate(' . $ln['ln_id'] . ')" name="ln_content" id="message_body_' . $ln['ln_id'] . '" class="edit-on hidden msg note-textarea algolia_search" placeholder="Blog..." style="padding-left:22px;">' . $ln['ln_content'] . '</textarea>';
+    $ui .= '<textarea onkeyup="in_message_validate(' . $ln['ln_id'] . ')" name="ln_content" id="message_body_' . $ln['ln_id'] . '" class="edit-on hidden msg note-textarea algolia_search" placeholder="Blog..." style="padding-right:22px;">' . $ln['ln_content'] . '</textarea>';
 
 
     //Editing menu:
