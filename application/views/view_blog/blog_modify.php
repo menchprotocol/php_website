@@ -4,37 +4,12 @@
 </style>
 
 
-<script src="/js/lib/rangy/rangy-core.js" type="text/javascript"></script>
-<script src="/js/lib/rangy/rangy-classapplier.js" type="text/javascript"></script>
-<script src="/js/lib/undo.js" type="text/javascript"></script>
-<script src="/js/lib/medium.js" type="text/javascript"></script>
 <script>
     //Include some cached entities:
     var show_counter_threshold = 0.80;
     var in_loaded_id = <?= $in['in_id'] ?>;
     var js_en_all_4486 = <?= json_encode($this->config->item('en_all_4486')) ?>; // Intent Links
     var js_en_all_7585 = <?= json_encode($this->config->item('en_all_7585')) ?>; // Intent Subtypes
-
-
-    $(document).ready(function () {
-
-        new Medium({
-            element: document.getElementById('MediumEditor'),
-            maxLength:<?= config_var(11071) ?>,
-            mode: Medium.inlineMode,
-            autoHR: false,
-            autofocus: true,
-            placeholder: "Blog Title",
-            cssClasses: {
-                editor: 'Medium',
-                pasteHook: 'Medium-paste-hook',
-                placeholder: 'Medium-placeholder',
-                clear: 'Medium-clear'
-            }
-        });
-
-    });
-
 </script>
 <script src="/js/custom/in_notes.js?v=v<?= config_var(11060) ?>" type="text/javascript"></script>
 <script src="/js/custom/in_modify.js?v=v<?= config_var(11060) ?>" type="text/javascript"></script>
@@ -67,7 +42,10 @@ foreach ($this->config->item('en_all_11021') as $en_id => $m){
             echo '<div class="inline-block" style="margin-left: 5px;"><a href="javascript:void(0)" onclick="$(\'.menu_bar\').toggleClass(\'hidden\')" class="btn btn-sm btn-blog"><i class="fas fa-cog"></i></a></div>';
         echo '</div>';
 
-        echo '<h1 id="MediumEditor">'.echo_in_outcome($in['in_outcome']).'</h1>';
+        echo '<textarea onkeyup="show_save_button()" class="form-control" id="new_blog_title" placeholder="Blog Title">'.$in['in_outcome'].'</textarea>';
+        echo '<input type="hidden" id="current_blog_title" value="'.$in['in_outcome'].'" />';
+
+        echo '<div id="blog_title_save" class="hidden"><a href="javascript:in_save_title();" data-toggle="tooltip" title="Shortcut: CTRL+ENTER" data-placement="right" class="btn btn-blog save_note_'.$en_id2.'">SAVE</a></div>';
 
     } else {
 
@@ -219,7 +197,7 @@ foreach ($this->config->item('en_all_11021') as $en_id => $m){
             $this_tab .= '<table class="table table-condensed hidden" id="notes_control_'.$en_id2.'"><tr>';
 
             //Save button:
-            $this_tab .= '<td style="width:85px; padding: 10px 0 0 0;"><a href="javascript:in_note_add('.$en_id2.');" data-toggle="tooltip" title="or hit CTRL+ENTER ;)" data-placement="right" class="btn btn-blog save_note_'.$en_id2.'">SAVE</a></td>';
+            $this_tab .= '<td style="width:85px; padding: 10px 0 0 0;"><a href="javascript:in_note_add('.$en_id2.');" data-toggle="tooltip" title="Shortcut: CTRL+ENTER" data-placement="right" class="btn btn-blog save_note_'.$en_id2.'">SAVE</a></td>';
 
             //File counter:
             $this_tab .= '<td class="remove_loading" class="remove_loading" style="padding: 10px 0 0 0; font-size: 0.85em;"><span id="blogNoteNewCount' . $en_id2 . '" class="hidden"><span id="charNum' . $en_id2 . '">0</span>/' . config_var(11073).'</span></td>';

@@ -20,6 +20,7 @@ $(document).ready(function () {
         }
     });
 
+    autosize($('new_blog_title'));
 
     //Lookout for intent link type changes:
     $('#ln_type_entity_id, #ln_status_entity_id').change(function () {
@@ -28,6 +29,20 @@ $(document).ready(function () {
 
 });
 
+function show_save_button(){
+    //Detect changes in blog title to show the save button:
+    if($('#new_blog_title').val() == $('#current_blog_title').val()){
+        //Nothing changed, so nothing to save:
+        $('#blog_title_save').addClass('hidden');
+    } else {
+        //Something changed, show save button:
+        $('#blog_title_save').removeClass('hidden');
+    }
+}
+
+function in_save_title(){
+    alert('Under Dev');
+}
 
 //This also has an equal PHP function echo_time_hours() which we want to make sure has more/less the same logic:
 function in_update_time(in_completion_seconds) {
