@@ -96,12 +96,17 @@ li a {
     text-decoration: none;
 }
 
-#new_blog_title, #new_blog_title::placeholder{
+#new_blog_title{
     background-color: transparent !important;
     font-size: 1.7em;
     font-family: 'Montserrat', sans-serif;
     font-weight: bold;
     width: 100%;
+}
+
+#new_blog_title::placeholder{
+      font-family: 'Montserrat', sans-serif;
+      font-weight: bold;
 }
 
 /* FONTS */

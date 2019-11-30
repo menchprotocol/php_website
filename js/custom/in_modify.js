@@ -22,6 +22,13 @@ $(document).ready(function () {
 
     autosize($('#new_blog_title'));
 
+    $('#new_blog_title').keypress(function(event) {
+        if (event.keyCode == 13) {
+            event.preventDefault();
+        }
+    });
+
+
     //Lookout for intent link type changes:
     $('#ln_type_entity_id, #ln_status_entity_id').change(function () {
         in_adjust_link_ui();
