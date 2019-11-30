@@ -122,7 +122,7 @@ $(document).ready(function () {
         var focus_ln_type_entity_id = parseInt($(this).attr('note-type-id'));
 
         //Watch for focus:
-        $('.add_note_'+focus_ln_type_entity_id).focus(function() {
+        $('.add_note_'+focus_ln_type_entity_id + ' *').focus(function() {
             $( '#notes_control_'+focus_ln_type_entity_id ).removeClass('hidden');
         }).focusout(function() {
             if(!$('#ln_content'+focus_ln_type_entity_id).val().length){
