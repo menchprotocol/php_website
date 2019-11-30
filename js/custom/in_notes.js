@@ -207,8 +207,6 @@ function in_notes_sort_apply(focus_ln_type_entity_id) {
             if (!data.status) {
                 //Show error:
                 alert('ERROR: ' + data.message);
-            } else {
-                alert('SUCCESS sorted: ' + sort_rank);
             }
         });
     }
