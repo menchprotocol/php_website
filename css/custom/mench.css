@@ -820,6 +820,10 @@ label {
 .Medium-placeholder-inlineRich div{
     overflow: hidden;
     white-space: nowrap;
+    line-height: 110% !important;
+    font-family: 'Montserrat', sans-serif;
+    font-size: 1.7em;
+    font-weight: bold;
 }
 .Medium-drag {
     position: absolute;
@@ -876,12 +880,6 @@ label {
     width: auto;
     margin-top:34px;
     line-height: 110%;
-}
-#MediumEditor::placeholder {
-    line-height: 110% !important;
-    font-family: 'Montserrat', sans-serif;
-    font-size: 1.7em;
-    font-weight: bold;
 }
 
 
