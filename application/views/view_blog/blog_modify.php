@@ -2,6 +2,12 @@
 <style>
     .in_child_icon_<?= $in['in_id'] ?> { display:none; }
 </style>
+
+
+<script src="/js/lib/rangy/rangy-core.js" type="text/javascript"></script>
+<script src="/js/lib/rangy/rangy-classapplier.js" type="text/javascript"></script>
+<script src="/js/lib/undo.js" type="text/javascript"></script>
+<script src="/js/lib/medium.js" type="text/javascript"></script>
 <script>
     //Include some cached entities:
     var in_loaded_id = <?= $in['in_id'] ?>;
@@ -11,10 +17,7 @@
 <script src="/js/custom/in_notes.js?v=v<?= config_var(11060) ?>" type="text/javascript"></script>
 <script src="/js/custom/in_modify.js?v=v<?= config_var(11060) ?>" type="text/javascript"></script>
 <script src="/js/custom/in_train.js?v=v<?= config_var(11060) ?>" type="text/javascript"></script>
-<script src="/js/lib/rangy/rangy-core.js" type="text/javascript"></script>
-<script src="/js/lib/rangy/rangy-classapplier.js" type="text/javascript"></script>
-<script src="/js/lib/undo.js" type="text/javascript"></script>
-<script src="/js/lib/medium.js" type="text/javascript"></script>
+
 
 <?php
 
