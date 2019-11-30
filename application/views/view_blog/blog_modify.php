@@ -11,7 +11,10 @@
 <script src="/js/custom/in_notes.js?v=v<?= config_var(11060) ?>" type="text/javascript"></script>
 <script src="/js/custom/in_modify.js?v=v<?= config_var(11060) ?>" type="text/javascript"></script>
 <script src="/js/custom/in_train.js?v=v<?= config_var(11060) ?>" type="text/javascript"></script>
-
+<script src="/js/lib/rangy/rangy-core.js" type="text/javascript"></script>
+<script src="/js/lib/rangy/rangy-classapplier.js" type="text/javascript"></script>
+<script src="/js/lib/undo.js" type="text/javascript"></script>
+<script src="/js/lib/medium.js" type="text/javascript"></script>
 
 <?php
 
@@ -39,7 +42,7 @@ foreach ($this->config->item('en_all_11021') as $en_id => $m){
             echo '<div class="inline-block" style="margin-left: 5px;"><a href="javascript:void(0)" onclick="$(\'.menu_bar\').toggleClass(\'hidden\')" class="btn btn-sm btn-blog"><i class="fas fa-cog"></i></a></div>';
         echo '</div>';
 
-        echo '<h1>'.echo_in_outcome($in['in_outcome']).'</h1>';
+        echo '<h1 id="MediumEditor"><p>'.echo_in_outcome($in['in_outcome']).'</p></h1>';
 
     } else {
 

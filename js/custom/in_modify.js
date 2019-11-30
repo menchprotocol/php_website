@@ -7,8 +7,23 @@
 
 var match_search_loaded = 0; //Keeps track of when we load the match search
 
-$(document).ready(function () {
+new Medium({
+    element: document.getElementById('MediumEditor'),
+    maxLength:2000,
+    mode: Medium.partialMode,
+    autoHR: false,
+    autofocus: true,
+    placeholder: "Blog Title",
+    cssClasses: {
+        editor: 'Medium',
+        pasteHook: 'Medium-paste-hook',
+        placeholder: 'Medium-placeholder',
+        clear: 'Medium-clear'
+    }
+});
 
+
+$(document).ready(function () {
 
     //Watch for intent status change:
     $("#in_status_entity_id").change(function () {
