@@ -183,7 +183,7 @@ foreach ($this->config->item('en_all_11021') as $en_id => $m){
 
 
 
-            $this_tab .= '<table class="table table-condensed hidden" id="notes_control_'.$en_id2.'"><tr>';
+            $this_tab .= '<table class="table table-condensed"><tr>';
 
             $this_tab .= '<td style="padding:0;"><textarea onkeyup="in_new_note_count('.$en_id2.')" class="form-control msg note-textarea algolia_search new-note" note-type-id="' . $en_id2 . '" id="ln_content' . $en_id2 . '" placeholder="Write Message, Drop a File or Paste URL"></textarea></td>';
 
