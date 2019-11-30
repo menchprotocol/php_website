@@ -222,16 +222,16 @@ foreach ($this->config->item('en_all_11021') as $en_id => $m){
             $this_tab .= '<td style="width:85px; padding: 10px 0 0 0;"><a href="javascript:in_note_add('.$en_id2.');" data-toggle="tooltip" title="or hit CTRL+ENTER ;)" data-placement="right" class="btn btn-blog save_note_'.$en_id2.'">SAVE</a></td>';
 
             //File counter:
-            $this_tab .= '<td class="remove_loading" style="padding: 10px 0 0 0; font-size: 0.85em;"><span id="blogNoteNewCount' . $en_id2 . '" class="hidden"><span id="charNum' . $en_id2 . '">0</span>/' . config_var(11073).'</span></td>';
+            $this_tab .= '<td class="remove_loading" class="remove_loading" style="padding: 10px 0 0 0; font-size: 0.85em;"><span id="blogNoteNewCount' . $en_id2 . '" class="hidden"><span id="charNum' . $en_id2 . '">0</span>/' . config_var(11073).'</span></td>';
 
             //First Name:
-            $this_tab .= '<td style="width:36px; padding: 10px 0 0 0;"><a href="javascript:in_note_insert_string('.$en_id2.', \'/firstname \');" data-toggle="tooltip" title="Mention readers first name" data-placement="top"><span class="icon-block en-icon"><i class="far fa-fingerprint"></i></span></a></td>';
+            $this_tab .= '<td class="remove_loading" style="width:42px; padding: 10px 0 0 0;"><a href="javascript:in_note_insert_string('.$en_id2.', \'/firstname \');" data-toggle="tooltip" title="Mention readers first name" data-placement="top"><span class="icon-block en-icon"><i class="far fa-fingerprint"></i></span></a></td>';
 
             //Reference Player
-            $this_tab .= '<td style="width:36px; padding: 10px 0 0 0;"><a href="javascript:in_note_insert_string('.$en_id2.', \'@\');" data-toggle="tooltip" title="Reference players or content" data-placement="top"><span class="icon-block en-icon"><i class="far fa-at"></i></span></a></td>';
+            $this_tab .= '<td class="remove_loading" style="width:42px; padding: 10px 0 0 0;"><a href="javascript:in_note_insert_string('.$en_id2.', \'@\');" data-toggle="tooltip" title="Reference players or content" data-placement="top"><span class="icon-block en-icon"><i class="far fa-at"></i></span></a></td>';
 
             //Upload File:
-            $this_tab .= '<td style="width:36px; padding: 10px 0 0 0;">';
+            $this_tab .= '<td class="remove_loading" style="width:42px; padding: 10px 0 0 0;">';
             $this_tab .= '<input class="inputfile hidden" type="file" name="file" id="file" />';
             $this_tab .= '<label class="file_label_'.$en_id2.'" for="file" data-toggle="tooltip" title="Upload files up to ' . config_var(11063) . 'MB" data-placement="top"><span class="icon-block en-icon"><i class="far fa-paperclip"></i></span></label>';
             $this_tab .= '</td>';
