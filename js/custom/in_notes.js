@@ -110,14 +110,6 @@ function in_message_inline_en_search() {
     ]);
 }
 
-//Watch typing:
-$(document).keyup(function (e) {
-    //Watch for action keys:
-    if (e.keyCode === 27) {
-        modify_cancel();
-    }
-});
-
 
 $(document).ready(function () {
 
@@ -150,7 +142,7 @@ $(document).ready(function () {
         //Watch for message creation:
         $('#ln_content' + focus_ln_type_entity_id).keydown(function (e) {
             if (e.ctrlKey && e.keyCode == 13) {
-                in_note_add();
+                in_note_add(focus_ln_type_entity_id);
             }
         });
 
@@ -266,13 +258,6 @@ function in_note_modify_start(ln_id, focus_ln_type_entity_id) {
     //Try to initiate the editor, which only applies to text messages:
     in_edit_note_count(ln_id);
 
-    //Watch typing:
-    $(document).keyup(function (e) {
-        //Watch for action keys:
-        if (e.ctrlKey && e.keyCode == 13) {
-            in_note_modify_save(ln_id, focus_ln_type_entity_id);
-        }
-    });
 }
 
 function in_note_modify_cancel(ln_id, success=0) {

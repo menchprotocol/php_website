@@ -355,14 +355,6 @@ $(document).ready(function () {
         }
     });
 
-    //Watch typing:
-    $(document).keyup(function (e) {
-        //Watch for action keys:
-        if (e.keyCode === 27) { //ESC
-            modify_cancel();
-        }
-    });
-
 
 
     //Load Algolia for link replacement search
