@@ -125,7 +125,7 @@ $(document).ready(function () {
         $(this).focus(function() {
             $( '#notes_control_'+focus_ln_type_entity_id ).removeClass('hidden');
         }).focusout(function() {
-            if(!$('#ln_content').val().length){
+            if(!$('#ln_content'+focus_ln_type_entity_id).val().length){
                 $( '#notes_control_'+focus_ln_type_entity_id ).addClass('hidden');
             }
         })
