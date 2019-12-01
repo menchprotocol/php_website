@@ -119,7 +119,10 @@ li a {
 .doupper, .new-player-input{
     text-transform: uppercase;
 }
-
+.featured-image{
+    max-width: 120px;
+    max-height: 200px;
+}
 .decimal-list{
     list-style: decimal;
     margin-left:-12px;
